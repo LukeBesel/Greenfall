@@ -1,0 +1,74 @@
+extends SceneTree
+## Renders the generative score offline to WAVs in screenshots/ and prints peak / RMS / NaN / click
+## stats per scenario. Run: godot --headless --path . -s tools/render_music.gd [-- --seconds=60]
+
+const Synth := preload("res://audio/music_synth.gd")
+const Director := preload("res://audio/music_director.gd")
+const Mixer := preload("res://audio/music_offline_mixer.gd")
+const RATE: int = 22050
+const BLOCK: int = 512
+
+# name -> list of [time_s, action, arg]
+var scenarios: Dictionary = {
+	"explore": [[0.0, "mood", "explore"], [0.0, "ramp", [0.1, 1.0]], [20.0, "sting", "upgrade"], [42.0, "sting", "level_up"]],
+	"night": [[0.0, "mood", "night"], [0.0, "int", 0.5], [30.0, "sting", "hex_clean"]],
+	"base": [[0.0, "mood", "base"], [0.0, "int", 0.85], [25.0, "sting", "robot_built"]],
+	"cinematic": [[0.0, "mood", "cinematic"], [40.0, "sting", "robot_built"]],
+	"menu": [[0.0, "mood", "menu"], [12.0, "sting", "first_sprout"]],
+	"transitions": [[0.0, "mood", "explore"], [0.0, "int", 0.7], [15.0, "mood", "night"], [30.0, "mood", "cinematic"], [45.0, "mood", "base"], [50.0, "sting", "hex_clean"]],
+}
+
+
+func _init() -> void:
+	var seconds: float = 60.0
+	for a: String in OS.get_cmdline_user_args():
+		if a.begins_with("--seconds="):
+			seconds = float(a.get_slice("=", 1))
+	var t0: int = Time.get_ticks_msec()
+	var samples: Dictionary = Synth.build_all()
+	print("synth build: %d ms" % (Time.get_ticks_msec() - t0))
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://screenshots"))
+	for sname: String in scenarios:
+		var t1: int = Time.get_ticks_msec()
+		var mixer = Mixer.new(samples)
+		var d = Director.new(samples, mixer, 99)
+		var events: Array = (scenarios[sname] as Array).duplicate()
+		var ramp: Array = []
+		var total: int = int(seconds * RATE)
+		var buf := PackedFloat32Array()
+		var pos: int = 0
+		var max_voices: int = 0
+		while pos < total:
+			var t: float = float(pos) / RATE
+			while not events.is_empty() and float(events[0][0]) <= t:
+				var e: Array = events.pop_front()
+				match str(e[1]):
+					"mood": d.set_mood(e[2])
+					"int": d.set_intensity(e[2])
+					"ramp": ramp = e[2]
+					"sting": d.sting(e[2])
+			if not ramp.is_empty():
+				d.set_intensity(lerpf(ramp[0], ramp[1], t / seconds))
+			d.update(float(BLOCK) / RATE)
+			buf.append_array(mixer.mix(BLOCK, d.lpf_cutoff))
+			max_voices = maxi(max_voices, mixer.voice_count())
+			pos += BLOCK
+		var peak: float = 0.0
+		var sq: float = 0.0
+		var bad: int = 0
+		var max_jump: float = 0.0
+		for i: int in buf.size():
+			var x: float = buf[i]
+			if is_nan(x) or is_inf(x):
+				bad += 1
+				continue
+			peak = maxf(peak, absf(x))
+			sq += x * x
+			if i > 0:
+				max_jump = maxf(max_jump, absf(x - buf[i - 1]))
+		var rms: float = sqrt(sq / maxf(1.0, buf.size()))
+		print("%-12s peak %6.1f dBFS  rms %6.1f dBFS  max_step %.4f  nan/inf %d  max_voices %d  (%d ms)" % [
+			sname, linear_to_db(peak), linear_to_db(rms), max_jump, bad, max_voices, Time.get_ticks_msec() - t1])
+		var path: String = "res://screenshots/music_%s.wav" % sname
+		Synth.to_wav(buf).save_to_wav(ProjectSettings.globalize_path(path))
+	quit()

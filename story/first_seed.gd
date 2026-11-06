@@ -159,6 +159,8 @@ func _total_time() -> float:
 
 
 func _cinematic() -> void:
+	if world.get("music") != null:
+		world.music.set_cinematic(true)
 	var cam: CameraRig = world.cam
 	var hud: CanvasLayer = world.hud
 	hud.visible = false
@@ -219,3 +221,6 @@ func _sprout_moment(pos: Vector3) -> void:
 	world.wren.line_started.emit("Keep it watered. Plant more. Every bloom will give you seeds back. This is how it starts.", 1)
 	EventBus.tutorial_changed.emit("")
 	GameState.flags["first_sprout"] = true
+	Audio.music_sting("first_sprout")
+	if world.get("music") != null:
+		world.music.set_cinematic(false)

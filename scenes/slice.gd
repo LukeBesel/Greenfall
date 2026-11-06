@@ -36,6 +36,7 @@ var cam: CameraRig
 var hud: HUD
 var upgrades: UpgradesScreen
 var command: CommandView
+var music: MusicHooks
 var pause_menu: PauseMenu
 var bot: InputSource
 var _cubes_root: Node3D
@@ -164,6 +165,9 @@ func _ready() -> void:
 	upgrades.build_at = func() -> Vector3: return BOARD_POS + Vector3(2.5, 0.2, 0.0)
 	add_child(upgrades)
 	upgrades.closed.connect(_on_modal_closed)
+	music = MusicHooks.new()
+	music.world = self
+	add_child(music)
 	command = CommandView.new()
 	command.world = self
 	add_child(command)

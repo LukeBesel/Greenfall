@@ -1,7 +1,10 @@
 extends Node
 ## Procedural audio. Every SFX is synthesized at startup (original, no external files) with
-## at least 3 variations. Includes a tiny generative music-box layer and an ambient wind loop.
-## Final assets can replace any sound by name via `override(name, streams)`.
+## at least 3 variations. Final assets can replace any sound by name via `override(name, streams)`.
+##
+## Music: a generative, layered ambient score (audio/music_director.gd, instruments from
+## audio/music_synth.gd) on the "Music" bus. Drive it with `set_music_mood()` ("explore",
+## "night", "base", "cinematic", "menu"), `set_music_intensity(0..1)` and `music_sting(name)`.
 
 const RATE: int = 22050
 const PENTATONIC: Array[int] = [0, 2, 4, 7, 9, 12, 14, 16, 19, 21, 24]
@@ -11,15 +14,16 @@ var _players: Array[AudioStreamPlayer] = []
 var _next_player: int = 0
 var _rng := RandomNumberGenerator.new()
 
-# Music box
-var _music_player_pool: Array[AudioStreamPlayer] = []
-var _music_next: int = 0
-var _pluck: AudioStreamWAV
-var _music_time: float = 0.0
-var _music_step: int = 0
-var _melody: Array[int] = []
+const MusicSynth := preload("res://audio/music_synth.gd")
+const MusicDirector := preload("res://audio/music_director.gd")
+const MusicVoices := preload("res://audio/music_voices.gd")
+
+## When false the score fades out (stingers still play; they are feedback).
 var music_enabled: bool = true
-var _wind: AudioStreamPlayer
+var _music: RefCounted  # MusicDirector
+var _music_voices: Node
+var _music_lpf: AudioEffectLowPassFilter
+var _music_last_us: int = 0
 
 
 func _ready() -> void:
@@ -32,20 +36,13 @@ func _ready() -> void:
 		p.bus = "SFX"
 		add_child(p)
 		_players.append(p)
-	for i: int in 8:
-		var m := AudioStreamPlayer.new()
-		m.bus = "Music"
-		add_child(m)
-		_music_player_pool.append(m)
-	_pluck = _gen_pluck()
-	_melody = _compose_melody(32)
-	_wind = AudioStreamPlayer.new()
-	_wind.bus = "Music"
-	_wind.stream = _gen_wind_loop()
-	_wind.volume_db = -20.0
-	add_child(_wind)
-	if DisplayServer.get_name() != "headless":
-		_wind.play()
+	var music_samples: Dictionary = MusicSynth.build_all()
+	_music_voices = MusicVoices.new()
+	_music_voices.name = "MusicVoices"
+	add_child(_music_voices)
+	_music_voices.call("setup", music_samples, "Music", 48)
+	_music = MusicDirector.new(music_samples, _music_voices)
+	_music_last_us = Time.get_ticks_usec()
 	apply_volumes()
 
 
@@ -62,6 +59,27 @@ func _setup_buses() -> void:
 		rev.room_size = 0.25
 		rev.wet = 0.08
 		AudioServer.add_bus_effect(sfx, rev)
+	# Music: gentle tone filter (mood-driven), a roomy reverb, and a safety limiter.
+	var mus: int = AudioServer.get_bus_index("Music")
+	if AudioServer.get_bus_effect_count(mus) == 0:
+		_music_lpf = AudioEffectLowPassFilter.new()
+		_music_lpf.cutoff_hz = 6500.0
+		AudioServer.add_bus_effect(mus, _music_lpf)
+		var mrev := AudioEffectReverb.new()
+		mrev.room_size = 0.7
+		mrev.damping = 0.6
+		mrev.hipass = 0.15
+		mrev.dry = 1.0
+		mrev.wet = 0.22
+		mrev.predelay_msec = 40.0
+		AudioServer.add_bus_effect(mus, mrev)
+		var lim := AudioEffectHardLimiter.new()
+		lim.ceiling_db = -1.0
+		AudioServer.add_bus_effect(mus, lim)
+	else:
+		for i: int in AudioServer.get_bus_effect_count(mus):
+			if AudioServer.get_bus_effect(mus, i) is AudioEffectLowPassFilter:
+				_music_lpf = AudioServer.get_bus_effect(mus, i)
 
 
 func apply_volumes() -> void:
@@ -98,49 +116,48 @@ func has_sound(sound: String) -> bool:
 	return _sounds.has(sound)
 
 
-# --- Music box ----------------------------------------------------------------
+# --- Music --------------------------------------------------------------------
 
-func _process(delta: float) -> void:
-	if not music_enabled or DisplayServer.get_name() == "headless":
+## 0 = sparse and melancholy (pad, air, a few notes); rising adds bass, fuller melody, bells,
+## then a brushed shaker (> ~0.55) and a soft kick (> ~0.75). Layers fade over ~4 s.
+func set_music_intensity(x: float) -> void:
+	if _music:
+		_music.call("set_intensity", x)
+
+
+## "explore" (default), "night", "base", "cinematic", "menu". The mix crossfades over ~4 s;
+## harmony and tempo switch on the next bar line.
+func set_music_mood(mood: String) -> void:
+	if _music:
+		_music.call("set_mood", mood)
+
+
+func get_music_mood() -> String:
+	return str(_music.get("mood")) if _music else ""
+
+
+func get_music_intensity() -> float:
+	return float(_music.get("intensity")) if _music else 0.0
+
+
+## Short musical stinger built from the current chord: "upgrade", "hex_clean", "first_sprout",
+## "robot_built", "level_up". Routed to the Music bus.
+func music_sting(sting_name: String) -> void:
+	if _music:
+		_music.call("sting", sting_name)
+
+
+func _process(_delta: float) -> void:
+	if not _music:
 		return
-	var step_len: float = 60.0 / 76.0 / 2.0  # eighth notes at 76 bpm
-	_music_time += delta
-	while _music_time >= step_len:
-		_music_time -= step_len
-		_music_tick()
-
-
-func _music_tick() -> void:
-	var n: int = _melody[_music_step % _melody.size()]
-	if n >= 0:
-		_play_note(n, -14.0)
-	if _music_step % 8 == 0:
-		var bass: Array[int] = [-12, -15, -8, -10]
-		_play_note(bass[(_music_step / 8) % bass.size()], -19.0)
-	_music_step += 1
-	if _music_step % (_melody.size() * 2) == 0:
-		_melody = _compose_melody(32)
-
-
-func _play_note(semitone: int, db: float) -> void:
-	var p: AudioStreamPlayer = _music_player_pool[_music_next]
-	_music_next = (_music_next + 1) % _music_player_pool.size()
-	p.stream = _pluck
-	p.pitch_scale = pow(2.0, semitone / 12.0)
-	p.volume_db = db
-	p.play()
-
-
-func _compose_melody(length: int) -> Array[int]:
-	var out: Array[int] = []
-	var idx: int = 4
-	for i: int in length:
-		if _rng.randf() < (0.45 if i % 2 == 1 else 0.2):
-			out.append(-1)
-			continue
-		idx = clampi(idx + _rng.randi_range(-2, 2), 0, PENTATONIC.size() - 1)
-		out.append(PENTATONIC[idx])
-	return out
+	# Real time, so Engine.time_scale (autoplay) never changes the tempo.
+	var now: int = Time.get_ticks_usec()
+	var dt: float = (now - _music_last_us) / 1000000.0
+	_music_last_us = now
+	_music.set("enabled", music_enabled)
+	_music.call("update", dt)
+	if _music_lpf:
+		_music_lpf.cutoff_hz = float(_music.get("lpf_cutoff"))
 
 
 # --- Synthesis ----------------------------------------------------------------
@@ -403,32 +420,3 @@ func _generate_all() -> void:
 			var f: float = notes[k]
 			fan[i] += (sin(TAU * f * t) + 0.35 * sin(TAU * f * 2.0 * t) + 0.15 * sin(TAU * f * 3.0 * t)) * exp(-t * 2.2) * 0.13
 	_add("fanfare", fan)
-
-
-func _gen_pluck() -> AudioStreamWAV:
-	# Music-box tine at A4 (440 Hz); pitched per note.
-	var b := _buf(1.8)
-	for i: int in b.size():
-		var t: float = float(i) / RATE
-		b[i] = (sin(TAU * 440.0 * t) + 0.35 * sin(TAU * 880.0 * t) * exp(-t * 3.0) + 0.12 * sin(TAU * 1760.0 * t) * exp(-t * 8.0) + 0.05 * sin(TAU * 3020.0 * t) * exp(-t * 25.0)) * exp(-t * 2.4) * 0.35
-	return _wav(_declick(b))
-
-
-func _gen_wind_loop() -> AudioStreamWAV:
-	var seconds: float = 6.0
-	var b := _buf(seconds)
-	var lp: float = 0.0
-	var lp2: float = 0.0
-	for i: int in b.size():
-		var t: float = float(i) / RATE
-		lp += (_rng.randf_range(-1.0, 1.0) - lp) * 0.02
-		lp2 += (lp - lp2) * 0.05
-		var swell: float = 0.6 + 0.4 * sin(TAU * t / seconds) * sin(TAU * 2.0 * t / seconds)
-		b[i] = lp2 * 3.0 * swell
-	# Crossfade the loop seam.
-	var fade: int = int(0.3 * RATE)
-	for i: int in fade:
-		var g: float = float(i) / fade
-		b[i] = b[i] * g + b[b.size() - fade + i] * (1.0 - g)
-	b.resize(b.size() - fade)
-	return _wav(b, true)
