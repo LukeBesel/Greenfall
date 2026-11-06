@@ -29,7 +29,7 @@ var _cam_to := Transform3D()
 var _cam_dur: float = 1.0
 var _cam_t: float = 0.0
 
-const POD_POS := Vector3(2.6, 0.0, 6.2)
+const POD_POS := Vector3(6.0, 0.0, 9.5)
 
 
 ## Builds the pod prop (also used after the intro as a landmark).

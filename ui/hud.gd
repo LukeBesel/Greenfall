@@ -183,7 +183,7 @@ func _process(delta: float) -> void:
 		_meter_label.text = "%.1f / %.0f" % [patch.compartment.fill, patch.capacity()]
 		if GameState.flags.get("seeds_unlocked", false):
 			var names: Array[String] = ["SCOOP", "PLANT", "WATER"]
-			_tool_label.text = "1 2 3   %s    SEEDS %s    WATER %d/%d    " % [names[patch.tool], Settings.fmt(GameState.get_currency("seeds")), int(patch.water), int(patch.water_cap())]
+			_tool_label.text = "1 2 3   %s    SEEDS %s    COMPOST %s    WATER %d/%d    " % [names[patch.tool], Settings.fmt(GameState.get_currency("seeds")), Settings.fmt(GameState.get_currency("compost")), int(patch.water), int(patch.water_cap())]
 		_meter.set_values(patch.compartment.fill, patch.capacity())
 		_meter.band = Economy.cube_rules.get("perfect_band", [0.9, 1.0])
 		var cap: int = patch.carry_cap()
@@ -227,6 +227,8 @@ func _prompt_text(kind: String) -> String:
 		"seed": return "E   pick up the seed tin"
 		"place": return "E   set bale down"
 		"upgrades": return "E   workbench"
+	if kind.begins_with("E "):
+		return kind
 	return ""
 
 

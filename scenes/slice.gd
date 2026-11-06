@@ -40,6 +40,7 @@ var upgrades: UpgradesScreen
 var command: CommandView
 var music: MusicHooks
 var intro: Intro
+var composter: Composter
 var pause_menu: PauseMenu
 var bot: InputSource
 var _cubes_root: Node3D
@@ -303,6 +304,10 @@ func _ready() -> void:
 	tutorial = Tutorial.new()
 	tutorial.world = self
 	add_child(tutorial)
+	composter = Composter.new()
+	composter.world = self
+	add_child(composter)
+	composter.global_position = Composter.POS + Vector3(0, clampf(layout.height_at(Composter.POS.x, Composter.POS.z), 0.0, 0.3) if layout else 0.0, 0)
 	intro = Intro.new()
 	intro.world = self
 	add_child(intro)
@@ -598,6 +603,8 @@ func travel_to(to_hub: int) -> void:
 
 ## Salvaged building materials from scooped junk (data/hub.json "materials").
 func salvage_materials(type_id: String, vol: float) -> void:
+	if composter:
+		composter.on_salvage(type_id, vol)
 	var m: Dictionary = hub.data.get("materials", {}).get(type_id, {})
 	if m.is_empty():
 		return
@@ -629,6 +636,9 @@ func try_interact(p: Patch) -> void:
 		return
 	if near_bench():
 		open_upgrades()
+		return
+	if composter and composter.near(p.global_position):
+		composter.interact()
 
 
 func interact_prompt(p: Patch) -> String:
@@ -638,6 +648,8 @@ func interact_prompt(p: Patch) -> String:
 		return "shard"
 	if near_bench():
 		return "upgrades"
+	if composter and composter.near(p.global_position):
+		return composter.prompt()
 	if p.global_position.distance_to(FLOWER_POS) < 1.8:
 		return "flower"
 	return ""
