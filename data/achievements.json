@@ -739,6 +739,39 @@
     "target": 10,
     "key": "ark_waves"
    }
+  },
+  {
+   "id": "outpost_1",
+   "name": "Frontier Scale",
+   "desc": "Repair a ruined outpost.",
+   "icon": "map",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "outposts_repaired"
+   }
+  },
+  {
+   "id": "outpost_3",
+   "name": "Outpost Network",
+   "desc": "Repair 3 outposts.",
+   "icon": "map",
+   "cond": {
+    "type": "stat",
+    "target": 3,
+    "key": "outposts_repaired"
+   }
+  },
+  {
+   "id": "outpost_charge",
+   "name": "Pit Stop",
+   "desc": "Build a recharge pad at an outpost.",
+   "icon": "gear",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "outpost_pads"
+   }
   }
  ]
 }

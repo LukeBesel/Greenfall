@@ -56,6 +56,7 @@ var _line_mat: StandardMaterial3D
 var _markers: Dictionary = {}  # robot name -> Node3D
 var _base_marker: Node3D
 var _you_marker: Node3D
+var _outpost_markers: Array[Node3D] = []  # [outposts] one pin per outpost (grey ruin / green working)
 
 # Controller: D-pad / A drive the side panel through focus; moving the left stick switches to
 # the map, where the hex under the screen-centre reticle is painted with A and erased with X.
@@ -535,6 +536,12 @@ func _build_overlay() -> void:
 	_overlay.add_child(_base_marker)
 	_you_marker = _make_pin(Color(0.55, 0.9, 1.0), "YOU")
 	_overlay.add_child(_you_marker)
+	var op: Variant = world.get("outposts")
+	if op is Outposts:
+		for o: Outpost in (op as Outposts).items:
+			var pin: Node3D = _make_pin(Color(0.6, 0.6, 0.6), "OUTPOST %d" % (o.index + 1))
+			_overlay.add_child(pin)
+			_outpost_markers.append(pin)
 	_overlay.visible = false
 
 
@@ -713,6 +720,26 @@ func _update_markers(t: float) -> void:
 	var pp: Vector3 = world.patch.global_position
 	_you_marker.global_position = Vector3(pp.x, _ground_y(pp), pp.z)
 	_you_marker.scale = Vector3.ONE * scale_k * (0.6 + 0.05 * sin(t * 4.0))
+	_update_outpost_markers(scale_k)
+
+
+## [outposts] Ruins are grey ("RUIN"), working outposts green with their level name.
+func _update_outpost_markers(scale_k: float) -> void:
+	var op: Variant = world.get("outposts")
+	if not op is Outposts:
+		return
+	var items: Array[Outpost] = (op as Outposts).items
+	for k: int in mini(items.size(), _outpost_markers.size()):
+		var o: Outpost = items[k]
+		var pin: Node3D = _outpost_markers[k]
+		var p: Vector3 = o.global_position
+		pin.global_position = Vector3(p.x, _ground_y(p), p.z)
+		pin.scale = Vector3.ONE * scale_k * 0.75
+		var col: Color = Color(0.45, 1.0, 0.55) if o.level >= 1 else Color(0.62, 0.6, 0.56)
+		((pin.get_child(0) as MeshInstance3D).material_override as StandardMaterial3D).albedo_color = Color(col, 0.9)
+		var lab: Label3D = pin.get_node("Label")
+		lab.modulate = col
+		lab.text = ("OUTPOST %d · Lv%d" % [k + 1, o.level]) if o.level >= 1 else ("OUTPOST %d · RUIN" % (k + 1))
 
 
 # --- Frame ----------------------------------------------------------------------------------

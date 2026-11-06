@@ -262,5 +262,15 @@
     ["...new ground... unfamiliar..."],
     ["This is the wild. No streets, no buildings. Just the land and whatever we left on it.", "Different dirt, different junk. Same job. I love a change of scenery."],
     ["Every corner of Verdance has its own colours under the junk. Let's find out what this one's are."]
+  ],
+  "outpost_repaired": [
+    ["...a light came on... out there. Far out. Was that you?"],
+    ["Outpost scale online. Haul Bugs out on that edge just got a much shorter walk. They'd thank you if they knew how.", "A weigh station on the frontier again. I used to get readings from these. Lots of zeros. Then nothing.", "Green light on the outpost. I'm logging it as 'ours' now."],
+    ["The old network had dozens of these. Every one you fix, the map gets a little smaller and a lot friendlier.", "Another outpost lit. The bales don't have to come all the way home any more. Neither do we, really."]
+  ],
+  "outpost_upgraded": [
+    ["...bigger... louder... good."],
+    ["Outpost upgraded. The scale sings a slightly higher note now. That's how you know it's happy.", "New kit at the outpost. The robots are already queueing to look at it."],
+    ["That outpost is turning into a proper little base. I'm proud of it. Is that allowed? I'm allowing it."]
   ]
 }
