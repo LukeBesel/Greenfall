@@ -1,0 +1,9 @@
+{
+  "_doc": "Rocket tiers (Mk I-IV), bought in the workbench Rockets tab. Mk I comes with a level 5 base. countdown_s/sequence: shorter launch cinematic; flight_s: globe flight; recharge_s: energy cells refill after a launch before the next one; cargo_mult/cargo_period_s: Rocket Cargo pods (automation/cargo.gd); warp: instant hop (no countdown, a flash).",
+  "tiers": [
+    {"tier": 1, "name": "Mk I Cradle", "desc": "Pearl hull, three swept fins, one cyan engine.", "cost": {}, "countdown_s": 5, "flight_s": 5.0, "recharge_s": 300, "cargo_mult": 1.0, "cargo_period_s": 60},
+    {"tier": 2, "name": "Mk II Glide", "desc": "A hover ring stabilises the climb: shorter countdown, faster flight, cells refill twice as fast. Cargo pods carry 50% more.", "cost": {"cubes": 150000, "sheet_metal": 700, "glass_cullet": 350}, "countdown_s": 3, "flight_s": 3.5, "recharge_s": 150, "cargo_mult": 1.5, "cargo_period_s": 50},
+    {"tier": 3, "name": "Mk III Halo", "desc": "Twin side boosters and a second ring. Cells refill in a minute; cargo pods carry 2.5x, more often.", "requires_research": "rocket_cargo", "cost": {"cubes": 600000, "sheet_metal": 1500, "plastic_stock": 900, "glass_cullet": 900}, "countdown_s": 3, "flight_s": 2.5, "recharge_s": 60, "cargo_mult": 2.5, "cargo_period_s": 40},
+    {"tier": 4, "name": "Mk IV Aurora Warp", "desc": "Energy fins and a warp core: instant hops with no recharge. Cargo pods carry 4x, every 30 s.", "requires_research": "rocket_cargo", "cost": {"cubes": 2500000, "sheet_metal": 3000, "plastic_stock": 2500, "glass_cullet": 2500, "bolts": 400}, "countdown_s": 2, "flight_s": 1.5, "recharge_s": 0, "cargo_mult": 4.0, "cargo_period_s": 30, "warp": true}
+  ]
+}

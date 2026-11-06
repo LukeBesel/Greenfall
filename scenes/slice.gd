@@ -22,6 +22,7 @@ var globe: GlobeView
 var sky_director: SkyDirector
 var hub: Hub
 var rocket: Rocket
+var _pad_holo: LaunchPad  # level 4: hologram of the launch pad to come
 var shards: ShardSystem
 var garden: Garden
 var hex_levels: HexLevels
@@ -143,6 +144,8 @@ func _ready() -> void:
 	hub = Hub.new()
 	hub.name = "Hub"
 	add_child(hub)
+	hub.leveled.connect(func(_l: int) -> void: _refresh_rocket_site())
+	_refresh_rocket_site()
 	# [stations] Conveyor feeder, auto-baler, recycler (automation/stations.gd).
 	var stations := Stations.new()
 	stations.name = "Stations"
@@ -177,7 +180,8 @@ func _ready() -> void:
 	globe = GlobeView.new()
 	globe.planet = planet
 	globe.current_hub = hub_index
-	globe.rocket_ready = func() -> bool: return hub.level >= 5 or DevHooks.has("rocket")
+	globe.rocket_ready = func() -> bool: return rocket_status() == ""
+	globe.rocket_lock_text = rocket_status
 	globe.launch_to = func(i: int) -> void: _launch(i)
 	globe.patch_cell_provider = func() -> int: return planet_cell_at(patch.global_position)
 	globe.holder = patch
@@ -291,16 +295,14 @@ func _ready() -> void:
 	if DevHooks.has("auto-launch") and not GameState.flags.get("auto_launched", false):
 		GameState.flags["auto_launched"] = true
 		get_tree().create_timer(1.0).timeout.connect(func() -> void: _launch(int(DevHooks.get_f("auto-launch", 1.0))))
+	if DevHooks.has("rocket-arrive"):  # screenshots: play the arrival cinematic here
+		GameState.flags["arrived_from_rocket"] = true
 	if GameState.flags.get("arrived_from_rocket", false):
 		GameState.flags.erase("arrived_from_rocket")
-		patch.global_position = SPAWN + Vector3(0, 0.6, 0)
-		EventBus.shake_requested.emit(0.4)
-		Vfx.burst("dust", patch.global_position, Color(0.7, 0.65, 0.6, 0.7), 2.0)
-		Audio.play("clunk", 0.6, 0.0)
+		_arrive_by_rocket.call_deferred()
 		if GameState.flags.has("patch_cargo"):
 			patch.restore_cargo(GameState.flags["patch_cargo"])
 			GameState.flags.erase("patch_cargo")
-		(func() -> void: EventBus.toast.emit("Touchdown: %s. Hub %d of %d. A new lean-to is waiting." % [district_name, hub_index + 1, planet.hubs.size()], "story")).call_deferred()
 	wren = Wren.new()
 	wren.world = self
 	add_child(wren)
@@ -643,13 +645,74 @@ func _on_hex_clean(hid: int) -> void:
 func _launch(to_hub: int) -> void:
 	if launching:
 		return
-	launching = true
 	if rocket == null:
-		rocket = Rocket.new()
-		rocket.world = self
-		add_child(rocket)
-		rocket.position = Vector3(-7.0, 0, 6.5)
+		_place_rocket(false)
 	rocket.launch(to_hub)
+
+
+## "" when the rocket can launch, else why not (no pad yet, or the energy cells are recharging).
+func rocket_status() -> String:
+	if not (hub.level >= 5 or DevHooks.has("rocket") or GameState.world.get("rocket_parked", false)):
+		return "Locked. Upgrade your base to level 5 to build the launch pad."
+	var left: float = RocketTiers.recharge_left()
+	if left > 0.0:
+		return "Energy cells recharging: %s. Rocket upgrades refill them faster." % RocketTiers.fmt_time(left)
+	return ""
+
+
+## Launch pad and rocket (level 5 or --rocket), a hologram of the pad at level 4, or a rocket
+## parked on the ground where it landed in a district without a pad.
+func _refresh_rocket_site() -> void:
+	var has_pad: bool = hub.level >= 5 or DevHooks.has("rocket")
+	if has_pad and (rocket == null or rocket.pad == null):
+		if rocket and not rocket.is_flying():
+			rocket.queue_free()
+			rocket = null
+		if rocket == null:
+			_place_rocket(true)
+			GameState.world.erase("rocket_parked")
+	elif not has_pad and rocket == null and GameState.world.get("rocket_parked", false):
+		_place_rocket(false)
+	var want_holo: bool = hub.level == 4 and not has_pad
+	if want_holo and _pad_holo == null:
+		_pad_holo = LaunchPad.new()
+		_pad_holo.construction = true
+		_pad_holo.position = Rocket.PAD_POS
+		add_child(_pad_holo)
+	elif not want_holo and _pad_holo:
+		_pad_holo.queue_free()
+		_pad_holo = null
+
+
+## Rebuilds the rocket after an upgrade (new tier look), unless it is mid-sequence.
+func refresh_rocket() -> void:
+	if rocket == null or rocket.is_flying():
+		return
+	var had_pad: bool = rocket.pad != null
+	rocket.queue_free()
+	rocket = null
+	_place_rocket(had_pad)
+	Vfx.burst("big_sparkle", Rocket.PAD_POS + Vector3(0, 5.0, 0), Color(0.5, 0.9, 1.0))
+
+
+func _place_rocket(with_pad: bool) -> void:
+	rocket = Rocket.new()
+	rocket.name = "Rocket"
+	rocket.world = self
+	rocket.position = Rocket.PAD_POS
+	add_child(rocket)
+	rocket.setup(with_pad)
+
+
+## Arrived by rocket: it lands on this district's pad (or the ground, and stays parked there).
+func _arrive_by_rocket() -> void:
+	if rocket == null:
+		_place_rocket(false)
+		GameState.world["rocket_parked"] = true
+	rocket.landed.connect(func() -> void:
+		EventBus.toast.emit("Touchdown: %s. Hub %d of %d. %s" % [district_name, hub_index + 1, planet.hubs.size(),
+			"The rocket is parked on the lot, ready when its cells refill." if rocket.pad == null else "Landed on the base pad."], "story"), CONNECT_ONE_SHOT)
+	rocket.arrive()
 
 
 ## Leave this district: persist it, switch the active hub, save without re-gathering, reload.

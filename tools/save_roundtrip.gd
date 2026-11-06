@@ -44,6 +44,7 @@ func _snapshot(s: Node) -> Dictionary:
 		"research": JSON.stringify(Research.done_list()),
 		"goals": JSON.stringify(GameState.flags.get("goals_done", [])),
 		"hub_level": s.hub.level,
+		"rocket_tier": RocketTiers.tier(),
 		"intro_done": GameState.flags.get("intro_done", false),
 		"tagged_cubes": _tagged_cubes(s),
 	}
@@ -84,6 +85,7 @@ func _ready() -> void:
 	GameState.add_currency("cubes", BigNum.from_float(5000))
 	GameState.add_currency("compost", BigNum.from_float(12))
 	GameState.flags["seeds_unlocked"] = true
+	GameState.flags["rocket_tier"] = 3
 	GameState.add_currency("seeds", BigNum.from_float(20))
 	GameState.add_currency("sheet_metal", BigNum.from_float(200))
 	GameState.add_currency("plastic_stock", BigNum.from_float(200))

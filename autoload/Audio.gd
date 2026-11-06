@@ -420,3 +420,39 @@ func _generate_all() -> void:
 			var f: float = notes[k]
 			fan[i] += (sin(TAU * f * t) + 0.35 * sin(TAU * f * 2.0 * t) + 0.15 * sin(TAU * f * 3.0 * t)) * exp(-t * 2.2) * 0.13
 	_add("fanfare", fan)
+	_generate_rocket()
+
+
+## Rocket launch layer: a deep rumbling roar (overlap several for a sustained burn), a two-tone
+## launch siren, and an energy charge-up whine.
+func _generate_rocket() -> void:
+	for v: int in 2:
+		var b := _buf(2.6)
+		var lp: float = 0.0
+		var lp2: float = 0.0
+		for i: int in b.size():
+			var t: float = float(i) / RATE
+			var n: float = _rng.randf_range(-1.0, 1.0)
+			lp += (n - lp) * (0.04 + 0.01 * v)
+			lp2 += (lp - lp2) * 0.2
+			var crackle: float = n * (0.5 if _rng.randf() < 0.012 else 0.04)
+			var rum: float = sin(TAU * (38.0 + 4.0 * v) * t + sin(TAU * 3.0 * t) * 2.0) * 0.25
+			var env: float = smoothstep(0.0, 0.25, t) * (1.0 - smoothstep(2.0, 2.6, t))
+			b[i] = tanh((lp2 * 5.0 + rum + crackle) * 1.4) * 0.55 * env
+		_add("roar", b)
+	var sb := _buf(1.6)
+	var ph: float = 0.0
+	for i: int in sb.size():
+		var t: float = float(i) / RATE
+		var f: float = 620.0 + 330.0 * (0.5 - 0.5 * cos(TAU * t / 1.6))
+		ph += TAU * f / RATE
+		var sq: float = sin(ph) + 0.3 * sin(ph * 2.0) + 0.15 * sin(ph * 3.0)
+		sb[i] = sq * 0.11 * smoothstep(0.0, 0.05, t) * (1.0 - smoothstep(1.5, 1.6, t))
+	_add("siren", sb)
+	var cb := _buf(2.2)
+	var ph2: float = 0.0
+	for i: int in cb.size():
+		var t: float = float(i) / RATE
+		ph2 += TAU * (180.0 + 900.0 * pow(t / 2.2, 1.6)) / RATE
+		cb[i] = (sin(ph2) * 0.6 + sin(ph2 * 1.503) * 0.3) * 0.12 * smoothstep(0.0, 1.8, t) * (1.0 - smoothstep(2.1, 2.2, t))
+	_add("charge", cb)

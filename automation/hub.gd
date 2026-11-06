@@ -3,6 +3,8 @@ extends Node3D
 ## The base at the center of a district. Level 1 is the lean-to (built by the slice scene);
 ## higher levels add structures, each arriving with a fast-build sequence. Also hosts air scrubbers.
 
+signal leveled(level: int)
+
 var data: Dictionary
 var level: int = 1
 var scrubbers: int = 0
@@ -14,6 +16,9 @@ var _fans: Array[Node3D] = []
 func _ready() -> void:
 	data = Economy.read_json("res://data/hub.json")
 	level = int(GameState.world.get("hub_level", 1))
+	if DevHooks.has("hub-level"):  # screenshots: --hub-level=5 builds the base up to that level
+		level = maxi(level, int(DevHooks.get_f("hub-level", 1.0)))
+		GameState.world["hub_level"] = level
 	scrubbers = int(GameState.world.get("hub_scrubbers", 0))
 	for l: int in range(2, level + 1):
 		_build_level(l, false)
@@ -55,6 +60,7 @@ func upgrade() -> bool:
 	GameState.world["hub_level"] = level
 	_build_level(level, true)
 	EventBus.toast.emit("Hub upgraded: %s." % next["name"], "story")
+	leveled.emit(level)
 	return true
 
 
