@@ -100,3 +100,15 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - Hooks into existing code (small, marked `[events]`): `player/patch.gd` (`on_patch_take` before collect, `apply_bale_bonus` at bale), `scenes/slice.gd` (creates the nodes), `ui/upgrades_screen.gd` (tab), `ui/command_view.gd` (pin), `ui/codex_screen.gd` (tab), save round trip covers tokens/contracts/collection/livery.
 - Dev: `--event=ID [--event-at=S --event-look=M]`, `--event-every=S`, `--streak=N`, `--tokens=N`, `--trinkets=N`, `--livery=ID`, `--open=upgrades --tab=contracts --contracts-sample`. Check every event end to end: `godot --headless --path . res://tools/events_check.tscn -- --fresh`. Tests: `tests/test_events.gd`.
 - Next: achievements for events/contracts (needs `data/achievements.json`), event weights by biome (rain more often in marsh), offline: contracts timers only tick while playing (by design).
+
+## In progress (Nov 6, 2026, evening)
+Helpers working in worktrees under /home/user/gf-wt/<name>, each on a wt/<name> branch, merged into claude/kind-wright-rhxixd when done:
+- rocket: futuristic rocket, upgrade tiers with benefits, launch/arrival cinematics
+- story2: Lumi story cinematics (ark, meteor storm, pod ejection, crash), core charge beats, ark finale
+- steam: GodotSteam service (graceful fallback), Steam achievements and cloud saves, demo build, capsule art, trailer shots, docs/steam/
+- deck: Steam Deck / controller pass, auto-detected quality, fewer draw calls in future cities, docs/PERFORMANCE.md
+- drones: robot builder (part slots, personalities, Builder tab)
+- biomes: desert, frozen port, sunken city, Cradle Returns district (hooks into the ark finale)
+- photo: photo mode with Lumi poses and filters
+Next after those merge: localization (extract all UI strings into translation CSV/PO, language picker, pseudo-locale test).
+If a session ends mid-way: check each worktree's `git log`, commit WIP, and resume or merge.
