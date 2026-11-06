@@ -567,6 +567,8 @@ func _process(delta: float) -> void:
 	if DevHooks.has("builder-demo") and not _demo_done and DevHooks._elapsed > 1.0:
 		_demo_done = true
 		demo_builds()
+		if DevHooks.has("builder-shot"):
+			_shot_camera()
 	_tick += delta
 	if _tick < 2.0:
 		return
@@ -600,6 +602,31 @@ func _salvage_find(r: Robot, sc: Dictionary) -> void:
 		_quiet = false
 		EventBus.toast.emit("%s spotted a %s %s." % [r.robot_name, Economy.rarity(rar).get("name", ""), Economy.part_type(t).get("name", "part")], "hint")
 	Audio.play("detector", 1.4, -10.0)
+
+
+## --builder-shot: frame the robots for a screenshot (hides Lumi; --bshot-at=x,z focus point,
+## --bshot-dist, --bshot-yaw, --bshot-pitch).
+func _shot_camera() -> void:
+	var cam: CameraRig = world.get("cam")
+	if cam == null:
+		return
+	var at: PackedStringArray = DevHooks.get_s("bshot-at", "0,0.6").split(",")
+	var focus := Node3D.new()
+	world.add_child(focus)
+	focus.global_position = Vector3(float(at[0]), -0.45, float(at[1]) if at.size() > 1 else 0.6)
+	if world.get("patch") and not DevHooks.has("bshot-lumi"):
+		world.patch.visible = false
+	cam.target = focus
+	cam.min_distance = 1.5
+	cam.distance = DevHooks.get_f("bshot-dist", 4.5)
+	cam.yaw = DevHooks.get_f("bshot-yaw", 0.0)
+	cam.pitch = DevHooks.get_f("bshot-pitch", -0.25)
+	cam.input_enabled = false
+	cam.snap()
+	if DevHooks.has("bshot-nohud"):
+		for c: Node in world.get_children():
+			if c is CanvasLayer and not (c is UpgradesScreen):
+				(c as CanvasLayer).visible = false
 
 
 ## --builder-demo: give the robots in the scene distinct showcase builds (screenshots).

@@ -46,6 +46,8 @@ var _pv: RobotVisual
 var _pv_key: String = ""
 var _t: float = 0.0
 var _bin_t: float = 0.0
+var _sel_key: String = ""
+var _dev_done: bool = false
 
 
 func _ready() -> void:
@@ -293,6 +295,7 @@ func _refresh_all() -> void:
 		_show_preview({}, true)
 		return
 	var tdef: Dictionary = RobotBuilder.trait_def(RobotBuilder.trait_of(_sel))
+	_sel_key = _key(_sel)
 	_title.text = "%s  ·  %s" % [str(Economy.robots.get(_sel.type_id, {}).get("name", "")).to_upper(), Economy.tier_name(_sel.tier)]
 	if not _name_edit.has_focus():
 		_name_edit.text = _sel.robot_name
@@ -494,6 +497,23 @@ func _process(delta: float) -> void:
 	if _bin_t <= 0.0 and _sel:
 		_bin_t = 1.0
 		_refresh_bin()
+		# Builds can change outside this panel (crew presets, save restore, dev hooks).
+		if is_instance_valid(_sel) and _key(_sel) != _sel_key:
+			_pv_key = ""
+			_rebuild_robot_list()
+			_refresh_all()
+	if not _dev_done and DevHooks.has("builder-slot") and DevHooks._elapsed > 2.5:
+		_dev_done = true
+		var bots: Array[Robot] = _bots()
+		var bi: int = int(DevHooks.get_f("builder-robot", 0.0))
+		if bi < bots.size():
+			_select(bots[bi])
+		_set_slot(DevHooks.get_s("builder-slot", "mobility"))
+		_focus_option(int(DevHooks.get_f("builder-opt", 1.0)))
+
+
+func _key(r: Robot) -> String:
+	return "%s|%s|%s" % [r.robot_name, JSON.stringify(r.build), r.trait_id]
 
 
 # --- Actions -------------------------------------------------------------------------------

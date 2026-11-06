@@ -7,7 +7,7 @@ extends Node3D
 ## anim_dy / anim_rot so it adds to the part lift instead of fighting RobotVisual.animate().
 
 const NODE_NAME: String = "Persona"
-const TAG_Y: float = 1.66
+const TAG_Y: float = 1.34
 const HEAR_M: float = 9.0
 
 var robot: Robot
@@ -71,7 +71,7 @@ func refresh() -> void:
 	_def = RobotBuilder.trait_def(trait_id)
 	if _tag:
 		_tag.text = "%s\n%s" % [robot.robot_name, str(_def.get("name", "")).to_upper()]
-		_tag.position.y = TAG_Y + (0.12 if robot.tier >= 3 else 0.0) + (0.14 if robot.build.has("topper") else 0.0)
+		_tag.position.y = TAG_Y + (0.12 if robot.tier >= 3 else 0.0) + (0.16 if robot.build.has("topper") else 0.0) + (0.15 if str(robot.build.get("head", "")) == "periscope" else 0.0)
 
 
 func _kit() -> RobotKit:
