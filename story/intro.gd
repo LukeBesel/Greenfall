@@ -10,7 +10,8 @@ extends Node
 ##   D. The crash beside the old shack, the hatch drops, Lumi drifts out nearly flat: eyes and
 ##      core flicker, a battery readout appears, and WREN explains green light and the plan.
 ## Phases A-C play in a SpaceStage (its own little 3D world); D plays in the game world.
-## The pod stays in the world afterwards as a landmark. Dev: --intro-from=0..3 starts at a phase.
+## The pod stays in the world afterwards as a landmark. Dev: --intro-from=0..4 starts at a phase
+## (3 = the city chase, 4 = the crash).
 
 signal finished
 
@@ -450,7 +451,7 @@ func _phase_landing() -> void:
 	var model: PatchModel = _model()
 	var land: Vector3 = POD_POS + Vector3(0, _ground(POD_POS), 0)
 	_pod.visible = true
-	var start: Vector3 = land + Vector3(-60, 150, 40)
+	var start: Vector3 = land + Vector3(-120, 95, 80)
 	_pod.global_position = start
 	_fire = build_fire()
 	_pod.add_child(_fire)
@@ -459,7 +460,7 @@ func _phase_landing() -> void:
 	_subtitle("")
 	Audio.play("whoosh", 0.4, 0.0)
 	var trail_t: float = 0.0
-	var dur: float = 3.0
+	var dur: float = 0.0 if DevHooks.get_f("intro-from", 0.0) >= 4.0 else 3.0  # 4: start at the crash
 	var dir: Vector3 = (land - start).normalized()
 	_cam_manual = true
 	while trail_t < dur and not _skipped:
@@ -474,8 +475,8 @@ func _phase_landing() -> void:
 		_flicker_fire(_fire, trail_t)
 		if k < 0.7:
 			# Above and behind, looking down past the pod at the city.
-			_cam.global_position = pos - dir * 9.0 + Vector3(2.5, 4.0, 0)
-			_cam.look_at(pos + dir * 30.0, Vector3.UP)
+			_cam.global_position = pos - dir * 10.0 + Vector3(2.5, 5.0, 0)
+			_cam.look_at(pos.lerp(land, 0.6) + Vector3(0, 6.0, 0), Vector3.UP)
 			_cam.fov = 62.0
 		elif _cam_manual:
 			_cam_manual = false
@@ -520,8 +521,8 @@ func _phase_landing() -> void:
 	out_to.y = _ground(out_to) + 0.05
 	patch.visible = true
 	patch.global_position = out_from
+	# Patch faces -Z: look along the drift so Lumi floats out face first.
 	patch.look_at(patch.global_position + (out_to - out_from) * Vector3(1, 0, 1), Vector3.UP)
-	patch.rotate_object_local(Vector3.UP, PI)
 	if model:
 		model.core_glow = 0.25
 	create_tween().tween_property(patch, "global_position", out_to, 2.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)

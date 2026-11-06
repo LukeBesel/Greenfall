@@ -80,3 +80,8 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - State: `GameState.world.outposts.levels` (per district), covered by `tools/save_roundtrip.gd`. Tests: `tests/test_outposts.gd`.
 - Dev hooks: `--outposts=repaired|all:L|I:L[+I:L]` (+ `--outpost-clean`), `--outpost-spawn=N [--outpost-dist --outpost-dx --outpost-yaw]`, `--outpost-repair=N [--outpost-repair-at=S]` (plays the repair sequence).
 - Next: offline progress for outpost sales; let the Command panel send a crew to "work from outpost N".
+
+## Update: Lumi's story told with animation (wt/story2)
+- Done: new ~60 s opening (`story/intro.gd` + `story/space_stage.gd`): the ark Cradle over Verdance (Blender model `art/models/cradle/build_cradle.py`, runtime `story/cradle_ship.gd`), Lumi humming to seedlings in the seed vault, the meteor storm and hull breach, Lumi climbing into a cargo pod with the tray, the pod blown out as the ark sails on, re-entry fire, a chase over the junk city, the crash and a low-battery wake (dim flickering eyes/core, BLOOM CORE 4% readout, WREN explains green light and the plan). Dev: `--intro --intro-from=0..4`.
+- Done: Bloom Core charge (`story/core_charge.gd`, tiny `ui/core_meter.gd` on the HUD) with beats at 25% (memory of the ark's garden deck, `story/cine.gd`), 50% (glow brightens), 75% (the ark crosses the night sky), 100% (finale: the ark descends and Lumi greets it). Dev: `--core-charge=F`, `--core-beat=25|50|75|100`.
+- Next: real voice/hum audio for the vault scene; show the parked ark from more districts.
