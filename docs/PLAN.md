@@ -47,3 +47,4 @@ Only for: the hex-sphere planet + chunking design (M2), save/offline progress (M
 - **Cinematics (owner)**: movie-like opening sequence; big upgrade moments (hub level-ups) play a fast-build sequence (scaffolds, panels and parts snapping in); robots' tractor-beam pickup must look spectacular (beams, floating debris, particles).
 - **Air filtration (owner)**: air-scrubber machines (hub buildings, later towers) suck in and filter the dusty air; over time the haze thins and the sky gets brighter and bluer. This drives the sky/fog state alongside restoration %.
 - **Lighting preference (owner)**: the player should mostly be in sunlight (and moonlight at night), not deep building shadow: high sun elevation over play areas, gentle shadows.
+- **First seed (owner)**: finding the first seed (Act 3, ~45-75 min) is a huge story moment: a long cinematic sequence plus WREN's story of why it must be planted to start greening the world.
