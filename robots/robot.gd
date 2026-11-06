@@ -167,7 +167,7 @@ func _physics_process(delta: float) -> void:
 	visual.animate(hv.length(), _busy > 0.0 or _refilling, delta)
 	visual.beam_to(_beam_target if _busy > 0.0 else null)
 	for i: int in carried.size():
-		carried[i].position = visual.fork_point + Vector3(0, carried[i].size * (0.5 + i), 0)
+		carried[i].position = visual.position + visual.fork_point + Vector3(0, carried[i].size * (0.5 + i), 0)  # [drones] + part lift
 
 
 func _steer(target: Vector3, stop: float) -> Vector3:

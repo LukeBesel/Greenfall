@@ -8,13 +8,13 @@ signal closed
 const TABS: Array[Dictionary] = [
 	{"id": "patch", "name": "Lumi"},
 	{"id": "bots", "name": "Bots"},
-	{"id": "builder", "name": "Builder"},  # [drones] robot builder
 	{"id": "trade", "name": "Trade"},
 	{"id": "hub", "name": "Hub"},
 	{"id": "research", "name": "Research"},
 	{"id": "rockets", "name": "Rockets"},
 	{"id": "cosmetics", "name": "Cosmetics"},
 	{"id": "contracts", "name": "Contracts"},
+	{"id": "builder", "name": "Builder"},  # [drones] robot builder
 ]
 
 var is_open: bool = false
