@@ -1,6 +1,6 @@
 class_name PatchModel
 extends Node3D
-## The player's robot: a futuristic hover bot sent down to clean and repair the world.
+## The player's robot, Lumi (LM-1): the ark's seed-keeper bot, fallen back to Verdance.
 ## Matches the owner's concept sheet: a big wide rounded head with a glossy black visor and thick
 ## glowing "C" eyes, round ear lenses with glow rings, a curved antenna ending in an orange fin,
 ## orange accents, a compact torso with an orange-framed chest screen and glowing waist slots,
@@ -70,6 +70,8 @@ var _dip: float = 0.0
 ## Holding up the survey hologram (right claw raised, palm up).
 var holding: bool = false
 var _hold: float = 0.0
+## Bloom Core glow: multiplies the eyes, thruster ring and cyan trim (low battery < 1, charged > 1).
+var core_glow: float = 1.0
 
 
 func _ready() -> void:
@@ -345,7 +347,9 @@ func _process(delta: float) -> void:
 	# Hover bob and ring pulse.
 	_float.position.y = 0.04 + sin(_t * 2.4) * 0.02 - _dip
 	_dip = maxf(0.0, _dip - delta * 0.4)
-	_ring_mat.emission_energy_multiplier = 3.5 + sin(_t * 9.0) * 0.4 + _flash * 4.0
+	_ring_mat.emission_energy_multiplier = (3.5 + sin(_t * 9.0) * 0.4) * core_glow + _flash * 4.0
+	if _mats.has("glow"):
+		(_mats["glow"] as StandardMaterial3D).emission_energy_multiplier = 3.2 * core_glow
 	_flash = maxf(0.0, _flash - delta * 2.0)
 	# Arms: reach forward and pinch while scooping; the right claw projects a small tractor beam.
 	_scoop_amt = move_toward(_scoop_amt, 1.0 if _scoop_t > 0.0 else 0.0, delta * 5.0)
@@ -391,7 +395,7 @@ func _process(delta: float) -> void:
 	_face_mat.set_shader_parameter("happy", clampf((_happy - 0.6) * 2.5, 0.0, 1.0))
 	_face_mat.set_shader_parameter("blink", 0.9 if sleeping else _blink)
 	_eye_flash = maxf(0.0, _eye_flash - delta * 6.0)
-	_face_mat.set_shader_parameter("energy", 1.2 if sleeping else 4.0 + _flash * 2.0 + _eye_flash * 3.0)
+	_face_mat.set_shader_parameter("energy", 1.2 * minf(core_glow, 1.0) if sleeping else 4.0 * core_glow + _flash * 2.0 + _eye_flash * 3.0)
 
 
 func set_motion(speed: float, speed_ratio: float, local_accel: Vector2, delta: float) -> void:

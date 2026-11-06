@@ -26,6 +26,9 @@ var _task_label: Label
 var _task_caption: Label
 var _tool_label: Label
 var _goals_panel: GoalsPanel
+var _core_label: Label
+var _core_bar: ProgressBar
+var _core_blink: float = 0.0
 
 
 func _ready() -> void:
@@ -112,6 +115,21 @@ func _build_top_right() -> void:
 	_planet_label = _caption("VERDANCE  0.0000%")
 	_planet_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	vb.add_child(_planet_label)
+	# Lumi's Bloom Core (story/core_charge.gd): a thin green charge line under the planet readout.
+	var gap := Control.new()
+	gap.custom_minimum_size = Vector2(0, 6)
+	vb.add_child(gap)
+	_core_label = _caption("BLOOM CORE   4%")
+	_core_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	vb.add_child(_core_label)
+	_core_bar = ProgressBar.new()
+	_core_bar.custom_minimum_size = Vector2(0, 3)
+	_core_bar.show_percentage = false
+	_core_bar.max_value = 1.0
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = Color(0.45, 1.0, 0.6)
+	_core_bar.add_theme_stylebox_override("fill", fill)
+	vb.add_child(_core_bar)
 
 
 func _build_bottom() -> void:
@@ -186,6 +204,17 @@ func _process(delta: float) -> void:
 		var pl: PlanetData = world.planet if world.get("planet") != null else null
 		var frac: float = pl.restored_fraction() if pl else 0.0
 		_planet_label.text = "%s   %s%%      %s  map" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(frac * 100.0), Settings.glyph("open_globe")]
+	var cc: Variant = world.get("core_charge") if world else null
+	if cc is CoreCharge:
+		var v: float = (cc as CoreCharge).shown
+		_core_bar.value = v
+		_core_label.text = "BLOOM CORE   %d%%" % int(floor(v * 100.0 + 0.001))
+		# Low charge blinks amber; charged reads green.
+		_core_blink += delta
+		var low: bool = v < 0.15
+		var col: Color = UITheme.GOLD if low else UITheme.GREEN
+		_core_label.add_theme_color_override("font_color", col if not low or fmod(_core_blink, 1.2) < 0.8 else UITheme.MUTED)
+		(_core_bar.get_theme_stylebox("fill") as StyleBoxFlat).bg_color = Color(1.0, 0.62, 0.25) if low else Color(0.45, 1.0, 0.6)
 	if patch:
 		if patch.detector and not patch.detector.readout_changed.is_connected(_on_signal):
 			patch.detector.readout_changed.connect(_on_signal)

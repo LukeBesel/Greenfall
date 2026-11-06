@@ -9,7 +9,7 @@
      "any": [{"type": "thriving_districts", "target": 1}], "reward": {"cubes": 4000, "seeds": 60, "trinkets": 4}},
     {"id": "green_shoots", "name": "Green Shoots", "desc": "Reclaim 0.25% of the planet, as the hologram counts it.",
      "any": [{"type": "planet_pct", "target": 0.25}, {"type": "thriving_hexes", "target": 150}], "reward": {"cubes": 6000, "seeds": 80, "trinkets": 4}},
-    {"id": "verdance_bloom", "name": "Verdance Bloom", "desc": "Three districts in bloom, or 1% of the planet reclaimed. The Cradle answers.",
+    {"id": "verdance_bloom", "name": "Verdance Bloom", "desc": "Three districts in bloom, or 1% of the planet reclaimed. Lumi's Bloom Core is full and the Cradle comes home.",
      "any": [{"type": "thriving_districts", "target": 3}, {"type": "planet_pct", "target": 1.0}], "finale": true,
      "reward": {"cubes": 20000, "seeds": 200, "trinkets": 10}},
     {"id": "wide_bloom", "name": "Wide Bloom", "desc": "Six districts in bloom, or 2% of the planet reclaimed.",
