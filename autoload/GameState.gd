@@ -146,10 +146,12 @@ func to_dict() -> Dictionary:
 	var cur: Dictionary = {}
 	for k: String in currencies:
 		cur[k] = (currencies[k] as BigNum).serialize()
+	# Keep the in-memory stamp in step with the file, so offline time is measured from the last save.
+	saved_unix = Time.get_unix_time_from_system()
 	return {
 		"version": SAVE_VERSION,
 		"created_unix": created_unix,
-		"saved_unix": Time.get_unix_time_from_system(),
+		"saved_unix": saved_unix,
 		"currencies": cur,
 		"upgrades": upgrades.duplicate(true),
 		"stats": stats.duplicate(true),

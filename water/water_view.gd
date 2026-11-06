@@ -52,7 +52,9 @@ func _process(_delta: float) -> void:
 			n.visible = true
 			n.global_position = a.lerp(b, ph) + Vector3(0, sin(ph * PI) * 0.9, 0)
 			n.rotation = Vector3(0, atan2(b.x - a.x, b.z - a.z), cos(ph * PI) * 1.2)
-			if absf(ph - 0.97) < 0.03:
+			# One splash per jump: the shared soil pool only has Vfx.POOL_PER_KIND emitters.
+			if ph >= 0.97 and not bool(fish.get("splashed", false)):
+				fish["splashed"] = true
 				Vfx.burst("soil", b + Vector3(0, 0.1, 0), Color(0.7, 0.85, 1.0, 0.8), 0.4)
 		else:
 			n.visible = false
@@ -92,3 +94,4 @@ func _new_jump(fish: Dictionary) -> void:
 	var d := Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)).normalized() * randf_range(1.0, 2.0)
 	fish["a"] = a
 	fish["b"] = a + d
+	fish["splashed"] = false

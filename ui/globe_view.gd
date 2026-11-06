@@ -60,6 +60,8 @@ var _fly_t: float = -1.0
 var _fly_from := Vector3.ZERO
 var _fly_to := Vector3.ZERO
 var _fly_dur: float = 5.0
+## Set by fly(): the rocket flight hologram can't be dismissed (the scene reloads after it).
+var _flight_locked: bool = false
 
 
 func _ready() -> void:
@@ -293,6 +295,7 @@ func fly(from_hub: int, to_hub: int, duration: float) -> void:
 	_fly_to = planet.grid.centers[planet.hubs[to_hub]]
 	_fly_dur = duration
 	_fly_t = 0.0
+	_flight_locked = true
 	is_open = true
 	_root.visible = true
 	_zoom = 2.6
@@ -300,7 +303,7 @@ func fly(from_hub: int, to_hub: int, duration: float) -> void:
 
 
 func close_view() -> void:
-	if not is_open:
+	if not is_open or _flight_locked:
 		return
 	is_open = false
 	_root.visible = false
@@ -540,6 +543,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		_yaw += mm.relative.x * 0.006
 		_pitch = clampf(_pitch + mm.relative.y * 0.006, -1.4, 1.4)
 	elif event.is_action_pressed("open_globe") or event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel"):
+		if _flight_locked or _fly_t >= 0.0:
+			get_viewport().set_input_as_handled()
+			return
 		close_view()
 		get_viewport().set_input_as_handled()
 	elif event is InputEventJoypadMotion:

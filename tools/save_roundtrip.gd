@@ -45,7 +45,20 @@ func _snapshot(s: Node) -> Dictionary:
 		"goals": JSON.stringify(GameState.flags.get("goals_done", [])),
 		"hub_level": s.hub.level,
 		"intro_done": GameState.flags.get("intro_done", false),
+		"tagged_cubes": _tagged_cubes(s),
 	}
+
+
+## Values of the marker cubes (a Haul Bug's bale, a cube dropped with Q) found in the saved cube list.
+func _tagged_cubes(s: Node) -> Array:
+	s.persist_save()
+	var out: Array = []
+	for cd: Dictionary in GameState.world.get("cubes", []):
+		var v: float = snappedf(BigNum.from_serialized(cd.get("value", [0.0, 0])).to_float(), 0.01)
+		if v in [41.25, 37.75]:
+			out.append(v)
+	out.sort()
+	return out
 
 
 func _built(s: Node) -> Array:
@@ -107,9 +120,24 @@ func _ready() -> void:
 	if s1.fleet.get("water_net") != null:
 		s1.fleet.water_net.place_tank(s1.field.hex_center(1) + Vector3(2, 0, 0))
 	GameState.flags["research"] = {"done": ["scoop_beam", "salvage_logic"], "queue": [], "active": {}}
+	# A Haul Bug with a bale on its fork, and a cube Patch set down with Q (both must persist).
+	for r: Robot in s1.fleet.robots():
+		if r.type_id == "haulbug":
+			var bale: JunkCube = JunkCube.create(BigNum.from_float(41.25), {"fill": 1.0})
+			s1.add_cube(bale)
+			bale.set_carried(true)
+			bale.reparent(r, true)
+			r.carried.append(bale)
+	s1.patch.global_position = Vector3(9.0, 0.2, 9.0)
+	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
+	s1.add_cube(dropped)
+	s1.patch.pick_up(dropped)
+	await get_tree().physics_frame
+	s1.patch.place_top_cube()
 	for i: int in 30:
 		await get_tree().process_frame
 	var before: Dictionary = _snapshot(s1)
+	_check("tagged_cubes_saved", [37.75, 41.25], before["tagged_cubes"])
 	if not SaveManager.save_game():
 		print("[roundtrip] FAIL save_game returned false")
 		get_tree().quit(1)

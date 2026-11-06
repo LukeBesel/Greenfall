@@ -54,15 +54,20 @@ var _flower: Node3D
 var _sun: DirectionalLight3D
 var _env: Environment
 var _t: float = 0.0
+## Rocket launch → flight → travel: no modal hotkeys, and closing a modal doesn't hand control back.
+var launching: bool = false
 
 
 func _ready() -> void:
 	var t0: int = Time.get_ticks_msec()
 	add_to_group("persist")
+	# Backstop: never start a district frozen (e.g. paused during a rocket flight).
+	get_tree().paused = false
 	_build_environment()
 	var cfg: Dictionary = Economy.planet.get("slice_field", {})
 	var base_seed: int = int(DevHooks.get_f("seed", float(cfg.get("seed", 4471))))
 	var loaded: bool = false
+	var from_memory: bool = GameState.reload_in_memory
 	if GameState.reload_in_memory:
 		GameState.reload_in_memory = false
 		loaded = true
@@ -195,7 +200,7 @@ func _ready() -> void:
 	add_child(pause_menu)
 	pause_menu.closed.connect(_on_modal_closed)
 	if loaded:
-		_restore_world()
+		_restore_world(from_memory)
 	cam.snap()
 	if DevHooks.has("spawn-pos"):
 		var sp: PackedStringArray = DevHooks.get_s("spawn-pos", "0,3").split(",")
@@ -283,6 +288,9 @@ func _ready() -> void:
 		EventBus.shake_requested.emit(0.4)
 		Vfx.burst("dust", patch.global_position, Color(0.7, 0.65, 0.6, 0.7), 2.0)
 		Audio.play("clunk", 0.6, 0.0)
+		if GameState.flags.has("patch_cargo"):
+			patch.restore_cargo(GameState.flags["patch_cargo"])
+			GameState.flags.erase("patch_cargo")
 		(func() -> void: EventBus.toast.emit("Touchdown: %s. Hub %d of %d. A new lean-to is waiting." % [district_name, hub_index + 1, planet.hubs.size()], "story")).call_deferred()
 	wren = Wren.new()
 	wren.world = self
@@ -617,6 +625,9 @@ func _on_hex_clean(hid: int) -> void:
 
 
 func _launch(to_hub: int) -> void:
+	if launching:
+		return
+	launching = true
 	if rocket == null:
 		rocket = Rocket.new()
 		rocket.world = self
@@ -628,10 +639,16 @@ func _launch(to_hub: int) -> void:
 ## Leave this district: persist it, switch the active hub, save without re-gathering, reload.
 func travel_to(to_hub: int) -> void:
 	get_tree().call_group("persist", "persist_save")
+	# Patch's cargo (compartment + carried stack) flies with him; only pos/yaw stay per district.
+	var pd: Dictionary = GameState.world.get("patch", {})
+	GameState.flags["patch_cargo"] = {"compartment": pd.get("compartment", {}), "carried": pd.get("carried", [])}
+	pd.erase("compartment")
+	pd.erase("carried")
 	GameState.switch_hub(to_hub)
 	GameState.flags["arrived_from_rocket"] = true
 	GameState.reload_in_memory = true
 	SaveManager.save_game(false)
+	get_tree().paused = false
 	get_tree().reload_current_scene()
 
 
@@ -770,7 +787,15 @@ func _open_command() -> void:
 	cam.input_enabled = false
 
 
+func any_modal_open() -> bool:
+	return upgrades.is_open or pause_menu.is_open or globe.is_open or command.is_open \
+		or (codex != null and codex.is_open) or (doc_view != null and doc_view.is_open)
+
+
 func _on_modal_closed() -> void:
+	# During the rocket launch the rocket owns the camera and Patch stays hidden and still.
+	if launching:
+		return
 	if patch.input is PlayerInput:
 		(patch.input as PlayerInput).enabled = true
 	cam.input_enabled = true
@@ -779,7 +804,7 @@ func _on_modal_closed() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if upgrades.is_open or pause_menu.is_open or globe.is_open or command.is_open or intro.running or (codex and codex.is_open):
+	if launching or upgrades.is_open or pause_menu.is_open or globe.is_open or command.is_open or intro.busy() or (codex and codex.is_open):
 		return
 	if event.is_action_pressed("open_codex") and codex:
 		_open_codex()
@@ -821,10 +846,22 @@ func persist_save() -> void:
 		var c: JunkCube = n as JunkCube
 		if c and not c.carried and not c.claimed:
 			cubes.append(c.to_dict())
+	# Bales on a Haul Bug's fork are saved as loose cubes beside it; it picks them up again.
+	for r: Robot in fleet.robots():
+		var i: int = 0
+		for c: JunkCube in r.carried:
+			if not is_instance_valid(c):
+				continue
+			var cd: Dictionary = c.to_dict()
+			var p: Vector3 = r.global_position + r.global_basis.x.normalized() * 1.3 + Vector3(0, 0.4 + i * 0.75, 0)
+			cd["pos"] = [p.x, p.y, p.z]
+			cubes.append(cd)
+			i += 1
 	GameState.world["cubes"] = cubes
 
 
-func _restore_world() -> void:
+## from_memory: reloaded by rocket travel (not from disk), so no offline payout or welcome back.
+func _restore_world(from_memory: bool = false) -> void:
 	for cd: Dictionary in GameState.world.get("cubes", []):
 		var c: JunkCube = JunkCube.from_dict(cd)
 		add_cube(c)
@@ -835,6 +872,8 @@ func _restore_world() -> void:
 	if GameState.world.has("patch"):
 		patch.from_dict(GameState.world["patch"])
 	fleet.restore()
+	if from_memory:
+		return
 	var away: float = Time.get_unix_time_from_system() - GameState.saved_unix
 	if GameState.saved_unix > 0.0 and away > 120.0:
 		var sd: Dictionary = hub.scrubber_def() if hub else {}

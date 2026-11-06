@@ -6,6 +6,13 @@ extends Node3D
 var world: Node
 var _body: Node3D
 var _flying: bool = false
+var _last_exhaust_t: float = -1.0
+const EXHAUST_EVERY_S: float = 0.1
+const LIFTOFF_S: float = 4.5
+
+
+func is_flying() -> bool:
+	return _flying
 
 
 func _ready() -> void:
@@ -52,22 +59,32 @@ func launch(to_hub: int) -> void:
 	for i: int in 3:
 		Audio.play("beep", 1.4 - i * 0.15, -4.0)
 		world.wren.line_started.emit(str(3 - i), 2)
-		await get_tree().create_timer(1.0).timeout
+		# process_always = false: the countdown waits while the game is paused.
+		await get_tree().create_timer(1.0, false).timeout
+		if not is_inside_tree():
+			return
 	Audio.play("crunch", 0.5, 0.0)
 	Audio.play("hydraulic", 0.6, -2.0)
-	for k: int in 12:
+	# The steam pool has Vfx.POOL_PER_KIND emitters; more bursts in one frame just restart them.
+	for k: int in 6:
 		Vfx.burst("steam", global_position + Vector3(randf_range(-1, 1), 0.3, randf_range(-1, 1)), Color(0.85, 0.82, 0.78, 0.8), 2.0)
 	EventBus.shake_requested.emit(0.6)
 	Input.start_joy_vibration(0, 0.8, 1.0, 2.0)
 	var start: Vector3 = _body.position
+	_last_exhaust_t = -1.0
 	var tw := create_tween()
 	tw.tween_method(func(t: float) -> void:
 		_body.position = start + Vector3(sin(t * 60.0) * 0.05 * (1.0 - t), t * t * 140.0, 0)
-		if randf() < 0.5:
+		if _last_exhaust_t < 0.0 or (t - _last_exhaust_t) * LIFTOFF_S >= EXHAUST_EVERY_S:
+			_last_exhaust_t = t
 			Vfx.burst("steam", global_position + _body.position, Color(0.9, 0.88, 0.85, 0.7), 0.8)
-		EventBus.shake_requested.emit(0.08 * (1.0 - t)), 0.0, 1.0, 4.5)
+		EventBus.shake_requested.emit(0.08 * (1.0 - t)), 0.0, 1.0, LIFTOFF_S)
 	await tw.finished
+	if not is_inside_tree():
+		return
 	# Flight on the survey globe.
 	world.globe.fly(world.hub_index, to_hub, 5.0)
-	await get_tree().create_timer(5.5).timeout
+	await get_tree().create_timer(5.5, false).timeout
+	if not is_inside_tree():
+		return
 	world.travel_to(to_hub)
