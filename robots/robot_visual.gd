@@ -67,7 +67,8 @@ func build(p_type: String, p_look: String) -> void:
 	_blink_phase = randf() * 4.0
 	_body = Node3D.new()
 	add_child(_body)
-	var key: String = type_id + "/" + look
+	var base_type: String = "scoopie" if type_id in ["seedling", "drip", "multibot"] else type_id
+	var key: String = base_type + "/" + look
 	match key:
 		"haulbug/salvage": _haul_salvage()
 		"haulbug/restored": _haul_restored()
@@ -77,7 +78,35 @@ func build(p_type: String, p_look: String) -> void:
 		"scoopie/modern": _scoop_modern()
 		"scoopie/hover": _scoop_hover()
 		_: _scoop_salvage()
+	if type_id != base_type:
+		_job_kit(type_id)
 	_build_beam()
+
+
+## Job accessories that set planters, waterers and multibots apart from cleaners.
+func _job_kit(t: String) -> void:
+	var top: Vector3 = hopper_point + Vector3(0, 0.08, 0.12)
+	var shiny: bool = look in ["modern", "hover"]
+	match t:
+		"seedling":
+			var green: Material = _gloss(Color(0.35, 0.7, 0.3), 0.3) if shiny else _worn(Color(0.35, 0.6, 0.28), 0.7, 0.4)
+			_mi(_body, ProcMesh.cyl(0.11, 0.13, 0.26, 16), green, top + Vector3(0, 0.13, 0))
+			_mi(_body, ProcMesh.cyl(0.12, 0.12, 0.04, 16), _glow(Color(0.6, 1.0, 0.4), 1.5), top + Vector3(0, 0.27, 0))
+			_rod(_body, top + Vector3(0, 0.0, -0.05), emitter_point + Vector3(0, -0.05, 0), 0.018, green)
+			_stencil(_body, "SEEDS", top + Vector3(0, 0.13, -0.125), Vector3(0, 180, 0), 28)
+		"drip":
+			var blue: Material = _gloss(Color(0.3, 0.55, 0.9), 0.25) if shiny else _worn(Color(0.3, 0.5, 0.75), 0.7, 0.45)
+			_mi(_body, ProcMesh.capsule(0.13, 0.42), blue, top + Vector3(0, 0.13, 0), Vector3(0, 0, 90))
+			_mi(_body, ProcMesh.cyl(0.03, 0.03, 0.45, 8), _worn(Color(0.6, 0.6, 0.6), 0.5, 0.6), top + Vector3(0, 0.05, -0.3), Vector3(90, 0, 0))
+			for x: float in [-0.12, 0.0, 0.12]:
+				_mi(_body, ProcMesh.cyl(0.015, 0.02, 0.05, 8), _glow(Color(0.5, 0.8, 1.0), 1.0), top + Vector3(x, 0.02, -0.5))
+		"multibot":
+			var rack: Material = _worn(Color(0.55, 0.55, 0.58), 0.4, 0.6)
+			_mi(_body, ProcMesh.box(Vector3(0.36, 0.04, 0.2)), rack, top + Vector3(0, 0.03, 0))
+			_mi(_body, ProcMesh.cyl(0.05, 0.05, 0.16, 10), _worn(Color(0.35, 0.6, 0.28), 0.7, 0.4), top + Vector3(-0.12, 0.12, 0))
+			_mi(_body, ProcMesh.capsule(0.05, 0.18), _worn(Color(0.3, 0.5, 0.75), 0.7, 0.4), top + Vector3(0.0, 0.12, 0), Vector3(0, 0, 90))
+			_mi(_body, _rbox(Vector3(0.1, 0.03, 0.12), 0.01, 2), _worn(Color(0.95, 0.75, 0.2), 0.7, 0.4), top + Vector3(0.13, 0.1, 0))
+			_stencil(_body, "MULTI", top + Vector3(0, 0.03, -0.105), Vector3(0, 180, 0), 24)
 
 
 # --- Material helpers ------------------------------------------------------------------
@@ -432,7 +461,7 @@ func _float_hand(parent: Node3D, pos: Vector3, side: float, shell: Material, cuf
 	_mi(h, ProcMesh.cyl(0.03, 0.03, 0.006, 14), _glow(MINT, 3.0), Vector3(-side * 0.05, 0, 0), Vector3(0, 0, 90))
 
 
-## Mk IV: a levitating pearl-and-tangerine egg with a wide visor eye, two orbiting rings, floating hands,
+## Mk IV: a levitating pearl-and-tangerine spinning-top shell with a wraparound scanner band, two orbiting rings, floating hands,
 ## a downward thruster and a tractor-beam dish; junk enters through the glowing crown intake.
 func _scoop_hover() -> void:
 	var pearl: Material = _gloss(Color(0.97, 0.96, 0.94), 0.14, 0.15, 1.0)
@@ -440,19 +469,21 @@ func _scoop_hover() -> void:
 	var gold: Material = _gloss(Color(1.0, 0.76, 0.35), 0.2, 1.0, 0.0)
 	var dark: Material = _gloss(Color(0.05, 0.06, 0.08), 0.12, 0.3, 1.0)
 	var c := Vector3(0, 0.88, 0)
-	_mi(_body, ProcMesh.sphere(0.3, 28, 14), pearl, c, Vector3.ZERO, Vector3(1.0, 1.25, 1.05))
-	_mi(_body, ProcMesh.hemisphere(0.305, 28, 8), tang, c, Vector3(180, 0, 0), Vector3(1.0, 1.15, 1.05))
-	_mi(_body, ProcMesh.torus(0.295, 0.32, 36, 6), gold, c, Vector3.ZERO, Vector3(1.0, 0.7, 1.05))
-	_mi(_body, ProcMesh.torus(0.318, 0.322, 36, 3), _glow(MINT, 2.5), c + Vector3(0, -0.012, 0), Vector3.ZERO, Vector3(1.0, 1.0, 1.05))
-	# Visor face and pill eye.
-	_mi(_body, ProcMesh.sphere(0.2, 20, 10), dark, c + Vector3(0, 0.08, -0.2), Vector3.ZERO, Vector3(1.15, 0.62, 0.55))
-	_eye = _node(_body, c + Vector3(0, 0.085, -0.31))
+	# Wide, low spinning-top shell (deliberately not an egg), tangerine underside.
+	_mi(_body, ProcMesh.sphere(0.3, 32, 14), pearl, c, Vector3.ZERO, Vector3(1.3, 0.8, 1.3))
+	_mi(_body, ProcMesh.hemisphere(0.305, 32, 8), tang, c, Vector3(180, 0, 0), Vector3(1.3, 0.95, 1.3))
+	_mi(_body, ProcMesh.torus(0.37, 0.4, 40, 6), gold, c, Vector3.ZERO, Vector3(1.0, 0.7, 1.0))
+	_mi(_body, ProcMesh.torus(0.392, 0.398, 40, 3), _glow(MINT, 2.5), c + Vector3(0, -0.012, 0))
+	# Scanner band: a dark ring all the way around the shell with one glowing scan segment.
+	_mi(_body, ProcMesh.torus(0.33, 0.395, 40, 6), dark, c + Vector3(0, 0.08, 0), Vector3.ZERO, Vector3(1.0, 0.55, 1.0))
+	_eye = _node(_body, c + Vector3(0, 0.08, -0.38))
 	_eye_mat = _glow(MINT, 4.0)
-	_mi(_eye, ProcMesh.capsule(0.032, 0.16), _eye_mat, Vector3.ZERO, Vector3(0, 0, 90))
+	_mi(_eye, ProcMesh.box(Vector3(0.16, 0.03, 0.03)), _eye_mat, Vector3.ZERO)
+	_mi(_eye, ProcMesh.box(Vector3(0.04, 0.03, 0.03)), _glow(Color(1.0, 0.6, 0.2), 4.0), Vector3(0.11, 0, 0.01))
 	# Crown intake.
-	_mi(_body, ProcMesh.torus(0.07, 0.1, 22, 5), gold, c + Vector3(0, 0.365, 0))
-	_mi(_body, ProcMesh.cyl(0.072, 0.072, 0.01, 18), _glow(MINT, 3.0), c + Vector3(0, 0.362, 0))
-	hopper_point = c + Vector3(0, 0.4, 0)
+	_mi(_body, ProcMesh.torus(0.07, 0.1, 22, 5), gold, c + Vector3(0, 0.235, 0))
+	_mi(_body, ProcMesh.cyl(0.072, 0.072, 0.01, 18), _glow(MINT, 3.0), c + Vector3(0, 0.232, 0))
+	hopper_point = c + Vector3(0, 0.27, 0)
 	# Orbiting rings.
 	var r1 := _ring(_body, c, Vector3(18, 0, 6), 0.9)
 	_mi(r1, ProcMesh.torus(0.44, 0.465, 40, 5), gold, Vector3.ZERO)
@@ -620,10 +651,10 @@ func _haul_hover() -> void:
 	_mi(_body, ProcMesh.hemisphere(0.305, 28, 8), tang, c, Vector3(180, 0, 0), Vector3(1.05, 0.8, 1.3))
 	_mi(_body, ProcMesh.cyl(0.0, 0.14, 0.32, 18), pearl, c + Vector3(0, 0, 0.42), Vector3(-90, 0, 0), Vector3(1.0, 1.0, 0.6))
 	_mi(_body, ProcMesh.torus(0.31, 0.33, 36, 6), gold, c, Vector3.ZERO, Vector3(1.05, 0.6, 1.3))
-	_mi(_body, ProcMesh.sphere(0.2, 20, 10), dark, c + Vector3(0, 0.05, -0.3), Vector3.ZERO, Vector3(1.1, 0.5, 0.5))
-	_eye = _node(_body, c + Vector3(0, 0.055, -0.39))
+	_mi(_body, ProcMesh.torus(0.3, 0.335, 40, 6), dark, c + Vector3(0, 0.05, 0), Vector3.ZERO, Vector3(1.05, 0.5, 1.3))
+	_eye = _node(_body, c + Vector3(0, 0.05, -0.43))
 	_eye_mat = _glow(MINT, 4.0)
-	_mi(_eye, ProcMesh.capsule(0.028, 0.15), _eye_mat, Vector3.ZERO, Vector3(0, 0, 90))
+	_mi(_eye, ProcMesh.box(Vector3(0.14, 0.025, 0.03)), _eye_mat, Vector3.ZERO)
 	var r1 := _ring(_body, c, Vector3(90, 0, 0), 0.8)
 	_mi(r1, ProcMesh.torus(0.46, 0.48, 40, 5), gold, Vector3.ZERO, Vector3.ZERO, Vector3(1.0, 1.0, 0.85))
 	for i: int in 4:
