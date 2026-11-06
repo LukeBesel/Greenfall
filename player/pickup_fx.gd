@@ -108,7 +108,7 @@ func launch(mesh: Mesh, xf: Transform3D, dur: float, big: bool, tint: Color) -> 
 	s.spin = Vector3(_rng.randf_range(-1.5, 1.5), _rng.randf_range(5.0, 8.0) * (1.0 if _rng.randf() < 0.5 else -1.0), _rng.randf_range(-1.5, 1.5))
 	var sc: Vector3 = xf.basis.get_scale()
 	s.radius = clampf(mesh.get_aabb().size.length() * 0.5 * maxf(sc.x, maxf(sc.y, sc.z)), 0.06, 0.6) if mesh else 0.15
-	s.arc_count = (2 if big else 1) if _low else (4 if big else 2)
+	s.arc_count = 0  # clean look: no crawling arcs
 	s.arc_t = 0.0
 	s.flyer.mesh = mesh
 	s.flyer.global_transform = xf
@@ -205,8 +205,8 @@ func _animate(s: Slot, delta: float) -> void:
 	# Lift: hold on the ground for the lock, then rise with an overshoot, drifting toward Patch.
 	var lu: float = clampf((u - 0.12) / 0.4, 0.0, 1.0)
 	var rise: float = 1.0 - pow(1.0 - lu, 3.0)
-	rise += sin(lu * PI) * 0.12
-	var wob: Vector3 = Vector3(sin(s.t * 23.0 + s.phase), 0.0, cos(s.t * 19.0 + s.phase)) * 0.02 * lu
+	rise += sin(lu * PI) * 0.05
+	var wob: Vector3 = Vector3.ZERO
 	var lifted: Vector3 = s.start + Vector3(0, lift_h * rise, 0) + wob
 	# Like the concept: the piece is drawn up into the open claw and floats right at the palm.
 	var hold: Vector3 = s.pos
@@ -215,23 +215,24 @@ func _animate(s: Slot, delta: float) -> void:
 		var out: Vector3 = (claw - chest)
 		out.y = 0.0
 		out = out.normalized() if out.length() > 0.01 else Vector3.FORWARD
-		hold = claw + out * (0.2 + minf(s.radius, 0.3) * 0.6) + Vector3(0, 0.04 + sin(s.t * 6.0 + s.phase) * 0.015, 0)
+		hold = claw + out * (0.2 + minf(s.radius, 0.3) * 0.6) + Vector3(0, 0.04 + sin(s.t * 3.0 + s.phase) * 0.01, 0)
 	var pull: float = smoothstep(0.18, 0.55, u)
 	var hover: Vector3 = lifted.lerp(hold, pull * pull * (3.0 - 2.0 * pull))
 	# Compress: squash into a hot bead and slide a little toward the chest.
-	var cu: float = clampf((u - 0.55) / 0.15, 0.0, 1.0)
-	s.pos = hover.lerp(chest, 0.25 * cu * cu)
+	var cu: float = clampf((u - 0.6) / 0.34, 0.0, 1.0)
+	var ce: float = cu * cu * (3.0 - 2.0 * cu)
+	s.pos = hover.lerp(chest, ce)
 	if not s.streamed:
 		s.burst_pos = s.pos
 	var spin_t: float = s.t * (0.6 if s.big else 1.0)
-	var b: Basis = Basis.from_euler(s.spin * spin_t * smoothstep(0.08, 0.4, u) + Vector3(sin(s.t * 17.0 + s.phase), 0, cos(s.t * 13.0)) * 0.12 * lu)
-	var squash: Vector3 = Vector3.ONE.lerp(Vector3(1.25, 0.35, 1.25), smoothstep(0.0, 0.5, cu)).lerp(Vector3.ONE * 0.08, smoothstep(0.45, 1.0, cu))
-	var pulse: float = 1.0 + 0.06 * sin(s.t * 40.0) * lu
+	var b: Basis = Basis.from_euler(s.spin * 0.12 * spin_t * smoothstep(0.08, 0.4, u))
+	var squash: Vector3 = Vector3.ONE * lerpf(1.0, 0.12, smoothstep(0.2, 1.0, cu))
+	var pulse: float = 1.0
 	s.flyer.global_transform = Transform3D(b * s.start_basis, s.pos)
 	s.flyer.scale *= squash * pulse
-	s.flyer.visible = u < 0.7
+	s.flyer.visible = u < 0.96
 	s.mat.set_shader_parameter("amount", smoothstep(0.0, 0.12, u) * (1.0 + 0.6 * cu))
-	s.mat.set_shader_parameter("heat", smoothstep(0.35, 1.0, cu))
+	s.mat.set_shader_parameter("heat", 0.0)
 	# Arcs re-strike every few frames.
 	s.arc_t -= delta
 	if s.arc_t <= 0.0:
@@ -275,13 +276,13 @@ func _draw_slot(s: Slot) -> void:
 		var snap: float = lerpf(1.9, 1.0, 1.0 - pow(1.0 - ret_in, 3.0))
 		var size: float = (minf(s.radius, 0.45) * 1.3 + 0.1) * snap
 		var flash: float = 1.0 + 1.5 * (1.0 - smoothstep(0.0, 0.12, s.t))
-		_flat(s.start + Vector3(0, 0.03, 0), size, Color(glow, 0.9 * ret_a * minf(flash, 1.6)), s.t * 4.0 + s.phase)
+		_flat(s.start + Vector3(0, 0.03, 0), size, Color(glow, 0.6 * ret_a * minf(flash, 1.4)), s.t * 1.2 + s.phase)
 	# Palm beam (concept style): a fan of fine light rays from the open claw to the piece, with
 	# sparkle dust flowing back into the palm.
-	var las: float = 1.0 - smoothstep(0.58, 0.7, u)
+	var las: float = 1.0 - smoothstep(0.62, 0.8, u)
 	if las > 0.01 and model:
 		var reach: float = 1.0 - pow(1.0 - clampf(s.t / 0.06, 0.0, 1.0), 2.0)
-		var flick: float = 0.85 + 0.15 * sin(s.t * 70.0 + s.phase)
+		var flick: float = 0.93 + 0.07 * sin(s.t * 9.0 + s.phase)
 		var claw: Vector3 = model.claw_point()
 		var tgt: Vector3 = claw.lerp(s.pos, reach)
 		var axis: Vector3 = tgt - claw
@@ -291,10 +292,13 @@ func _draw_slot(s: Slot) -> void:
 		var spread: float = minf(s.radius, 0.3) * 0.9 + 0.05
 		var rays: int = 3
 		for i: int in rays:
-			var ang: float = TAU * float(i) / rays + s.t * 2.0 + s.phase
-			var end: Vector3 = tgt + (side * cos(ang) + upv * sin(ang)) * spread * 0.45
-			_ribbon(claw, end, 0.012, Color(CYAN, 0.25 * las * flick))
-			_ribbon(claw, end, 0.0035, Color(0.9, 1.0, 1.0, 0.95 * las * flick))
+			# Fixed fan (no spinning): rays leave the palm close together and land evenly on the piece.
+			var ang: float = TAU * float(i) / rays + PI * 0.5
+			var off: Vector3 = side * cos(ang) + upv * sin(ang)
+			var start: Vector3 = claw + off * 0.025
+			var end: Vector3 = tgt + off * spread * 0.4
+			_ribbon(start, end, 0.012, Color(CYAN, 0.3 * las * flick))
+			_ribbon(start, end, 0.0045, Color(0.92, 1.0, 1.0, 1.0 * las * flick))
 		var dust: int = 0
 		for i: int in dust:
 			var f: float = fmod(float(i) / dust + s.t * 2.6 + s.phase, 1.0)
@@ -302,7 +306,7 @@ func _draw_slot(s: Slot) -> void:
 			var pp: Vector3 = tgt.lerp(claw, f) + (side * cos(ang2) + upv * sin(ang2)) * spread * (1.0 - f) * 0.9
 			_sprite(pp, 0.025 + 0.02 * (1.0 - f), Color(glow.lerp(Color.WHITE, 0.4), 0.8 * las * sin(f * PI)))
 		if reach >= 1.0:
-			_sprite(s.pos, minf(s.radius, 0.3) * 1.1 + 0.07, Color(glow, 0.4 * las * flick))
+			_sprite(s.pos, minf(s.radius, 0.3) * 1.0 + 0.06, Color(glow, 0.25 * las))
 	# Arcs crawling over the piece while it is held.
 	var arc_a: float = smoothstep(0.1, 0.2, u) * (1.0 - smoothstep(0.62, 0.7, u))
 	if arc_a > 0.01:
@@ -314,10 +318,10 @@ func _draw_slot(s: Slot) -> void:
 				_ribbon(p0, p1, 0.008, Color(0.9, 1.0, 1.0, 1.0 * arc_a))
 	# Compression flash: a hot bead where the piece collapses.
 	var cu: float = clampf((u - 0.55) / 0.15, 0.0, 1.0) * (1.0 - smoothstep(0.72, 0.8, u))
-	if cu > 0.01:
+	if false:
 		_sprite(s.pos, (minf(s.radius, 0.3) * 0.6 + 0.05) * (1.0 + 0.6 * cu), Color(glow.lerp(Color.WHITE, 0.5), 0.8 * cu))
 	# Light stream: motes spiral from the burst point into the chest hopper.
-	if s.streamed and model:
+	if false and s.streamed and model:
 		var chest: Vector3 = model.chest_world()
 		var n: int = (MAX_MOTES if s.big else 9) / (2 if _low else 1)
 		var along: Vector3 = chest - s.burst_pos
