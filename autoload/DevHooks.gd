@@ -38,6 +38,8 @@ extends Node
 ##   --streak=N         start with N cleaning-streak points (30 per tier)
 ##   --tokens=N         start with N contract tokens; --trinkets=N grants N collectibles; --livery=ID equips one
 ##   --tab=contracts    with --open=upgrades: the contracts board and token shop (--contracts-sample fills it)
+##   --demo             [steam] run as the Steam demo build (Demo.is_demo()); --no-steam skips Steam init
+##   --no-hud           [steam] hide HUD, toasts, subtitles and event banners (store screenshots, trailer)
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0
@@ -66,6 +68,8 @@ func _ready() -> void:
 		Settings.colorblind = true
 	if has("time-scale"):
 		Engine.time_scale = float(args["time-scale"])
+	if has("no-hud"):  # [steam] store/trailer shots without HUD, toasts and subtitles
+		add_child(load("res://steam/store_shots.gd").new())
 	if not args.is_empty():
 		print("[DevHooks] args: ", args)
 

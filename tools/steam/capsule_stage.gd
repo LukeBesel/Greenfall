@@ -70,7 +70,7 @@ func _build_env() -> void:
 	env.fog_light_color = Color(0.95, 0.72, 0.52)
 	env.fog_sun_scatter = 0.3
 	env.fog_sky_affect = 0.2
-	env.fog_density = 0.006
+	env.fog_density = 0.008
 	env.volumetric_fog_density = 0.003
 	env.volumetric_fog_albedo = Color(0.95, 0.82, 0.7)
 	env.volumetric_fog_anisotropy = 0.6
@@ -116,7 +116,7 @@ void fragment() {
 	float d = seam(wp.z) - wp.x + (n - 0.5) * 1.6;
 	float g = smoothstep(-0.35, 0.55, d);
 	vec3 dry = texture(dry_a, uv).rgb;
-	vec3 gr = texture(grass_a, uv * 1.3).rgb * vec3(0.95, 1.05, 0.9);
+	vec3 gr = texture(grass_a, uv * 1.3).rgb * vec3(0.55, 0.95, 0.42);
 	ALBEDO = mix(dry, gr, g);
 	NORMAL_MAP = mix(texture(dry_n, uv).rgb, texture(grass_n, uv * 1.3).rgb, g);
 	ROUGHNESS = mix(0.92, 0.85, g);
@@ -142,7 +142,7 @@ void fragment() {
 	add_child(ground)
 
 
-func _add_multimesh(id: String, xs: Array, max_tris: int = 900) -> void:
+func _add_multimesh(id: String, xs: Array, max_tris: int = 600) -> void:
 	if xs.is_empty() or not AssetLib.has_model(id):
 		return
 	var mm := MultiMesh.new()
@@ -219,21 +219,25 @@ func _scatter_green() -> void:
 	rng.seed = 21
 	var kinds: Array = [
 		# id, count, min scale, max scale, depth from seam (min)
-		["grass_medium_01", 2600, 0.8, 1.5, 0.0],
-		["grass_medium_02", 2200, 0.8, 1.4, 0.0],
-		["flower_gazania", 700, 0.9, 1.4, 0.3],
-		["celandine_01", 650, 1.0, 1.6, 0.3],
-		["flower_heliophila", 600, 0.9, 1.5, 0.2],
-		["dandelion_01", 450, 0.9, 1.4, -0.6],
-		["fern_02", 260, 0.7, 1.3, 0.8],
-		["shrub_01", 90, 0.8, 1.6, 2.0],
-		["shrub_02", 90, 0.8, 1.6, 2.0],
-		["pine_sapling_small", 70, 1.5, 3.2, 3.0],
+		["grass_medium_01", 5200, 1.1, 1.9, 0.0, 300],
+		["grass_medium_02", 4600, 1.1, 1.8, 0.0, 300],
+		["flower_gazania", 1300, 1.0, 1.5, 0.3, 400],
+		["celandine_01", 1100, 1.1, 1.7, 0.3, 400],
+		["flower_heliophila", 1000, 1.0, 1.6, 0.2, 400],
+		["dandelion_01", 600, 1.0, 1.5, -0.6, 400],
+		["fern_02", 420, 0.8, 1.4, 0.8, 600],
+		["shrub_01", 110, 0.9, 1.7, 2.0, 1500],
+		["shrub_02", 110, 0.9, 1.7, 2.0, 1500],
+		["pine_sapling_small", 60, 2.0, 3.6, 5.0, 1500],
 	]
 	for k: Array in kinds:
 		var xs: Array = []
 		for i: int in int(k[1]):
-			var p := Vector3(rng.randf_range(-34.0, 3.0), 0, rng.randf_range(-6.0, 34.0))
+			# Most of it where the camera looks (the meadow right of the seam), a sparse rest beyond.
+			var p := Vector3(rng.randf_range(-13.0, 2.5), 0, rng.randf_range(-3.0, 24.0)) if i % 4 != 0 \
+				else Vector3(rng.randf_range(-40.0, 2.5), 0, rng.randf_range(-3.0, 45.0))
+			if str(k[0]) == "pine_sapling_small" and p.z < 8.0:
+				continue
 			var d: float = seam_x(p.z) - p.x
 			if d < float(k[4]):
 				continue
@@ -243,7 +247,7 @@ func _scatter_green() -> void:
 				continue
 			var s: float = rng.randf_range(k[2], k[3])
 			xs.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3.ONE * s), p))
-		_add_multimesh(str(k[0]), xs, 1500)
+		_add_multimesh(str(k[0]), xs, int(k[5]))
 
 
 ## Ruined city on the junk side of the horizon, the bright future city on the green side.
@@ -258,9 +262,9 @@ func _build_skyline() -> void:
 	tower.roughness = 0.35
 	tower.metallic = 0.1
 	var glass := StandardMaterial3D.new()
-	glass.albedo_color = Color(0.32, 0.45, 0.5)
-	glass.roughness = 0.08
-	glass.metallic = 0.6
+	glass.albedo_color = Color(0.55, 0.68, 0.74)
+	glass.roughness = 0.2
+	glass.metallic = 0.3
 	var line := StandardMaterial3D.new()
 	line.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	line.albedo_color = Color(0.7, 0.95, 1.0)
@@ -270,12 +274,12 @@ func _build_skyline() -> void:
 	var leaf := StandardMaterial3D.new()
 	leaf.albedo_color = Color(0.3, 0.5, 0.22)
 	leaf.roughness = 0.9
-	for i: int in 34:
-		var z: float = rng.randf_range(34.0, 70.0)
-		var x: float = rng.randf_range(-70.0, 60.0)
-		var green: bool = x < seam_x(z) * 2.0 - 4.0
-		var h: float = rng.randf_range(18, 46) if green else rng.randf_range(8, 30)
-		var size := Vector3(rng.randf_range(5, 11), h, rng.randf_range(5, 11))
+	for i: int in 40:
+		var z: float = rng.randf_range(80.0, 150.0)
+		var x: float = rng.randf_range(-150.0, 120.0)
+		var green: bool = x < seam_x(z) - 6.0
+		var h: float = rng.randf_range(22, 58) if green else rng.randf_range(8, 26)
+		var size := Vector3(rng.randf_range(6, 13), h, rng.randf_range(6, 13))
 		var mi := MeshInstance3D.new()
 		var bm := BoxMesh.new()
 		bm.size = size
@@ -290,9 +294,9 @@ func _build_skyline() -> void:
 		mi.material_override = tower
 		mi.rotation.y = rng.randf_range(-0.3, 0.3)
 		add_child(mi)
-		var bands: int = int(h / 6.0)
+		var bands: int = int(h / 9.0)
 		for b: int in bands:
-			var y: float = -h * 0.5 + 4.0 + b * 6.0
+			var y: float = -h * 0.5 + 5.0 + b * 9.0
 			var g := MeshInstance3D.new()
 			var gm := BoxMesh.new()
 			gm.size = Vector3(size.x + 0.08, 2.2, size.z + 0.08)
