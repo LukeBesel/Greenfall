@@ -93,7 +93,7 @@ void fragment() {
 	alb = mix(alb, painted, pa);
 	float rough = mix(arm.g * 1.05, 0.7, pa * is_paint);
 	rough = mix(rough, 0.35, core * 0.8);
-	ALBEDO = alb;
+	ALBEDO = alb * 1.22;  // lighter, sun-bleached concrete
 	ROUGHNESS = clamp(rough, 0.05, 1.0);
 	AO = arm.r;
 	NORMAL_MAP = mix(nrm, vec3(0.5, 0.5, 1.0), pa * is_paint * 0.6);
