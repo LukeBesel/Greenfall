@@ -106,6 +106,7 @@ func _apply_grade(sun_up: float) -> void:
 		var fog: Color = _col(grade.get("fog", []), env.fog_light_color)
 		env.fog_light_color = env.fog_light_color.lerp(fog, float(grade.get("fog_amt", 0.5)) * a)
 		env.fog_density *= lerpf(1.0, float(grade.get("fog_mult", 1.0)), a)
+		env.volumetric_fog_density *= lerpf(1.0, float(grade.get("fog_mult", 1.0)), a)
 		env.volumetric_fog_albedo = env.volumetric_fog_albedo.lerp(fog, float(grade.get("fog_amt", 0.5)) * a * 0.7)
 		var sk: float = float(grade.get("sky_amt", 0.5)) * a
 		sky_mat.rayleigh_color = sky_mat.rayleigh_color.lerp(_col(grade.get("rayleigh", []), sky_mat.rayleigh_color), sk)

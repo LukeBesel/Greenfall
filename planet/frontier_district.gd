@@ -59,8 +59,8 @@ func prepare(p_world: Node) -> void:
 	var st: Dictionary = GameState.world.get("frontier", {})
 	storms = int(st.get("storms", 0))
 	storm_t = float(st.get("storm_t", kind.get("storm", {}).get("first_s", 150.0)))
-	heaters = (st.get("heaters", []) as Array).duplicate()
-	greenhouses = (st.get("greenhouses", []) as Array).duplicate()
+	heaters = _ints(st.get("heaters", []))
+	greenhouses = _ints(st.get("greenhouses", []))
 	done = bool(st.get("done", false))
 	growing_frac = float(st.get("growing_frac", 0.0))
 	if not GameState.world.has("hub_level") and kind.has("start_hub_level"):
@@ -73,11 +73,20 @@ func prepare(p_world: Node) -> void:
 				ice.fill(0.0)
 			_update_locks()
 		"sunken_city":
-			drain_order = (st.get("drain_order", []) as Array).duplicate()
+			drain_order = _ints(st.get("drain_order", []))
 			drained = int(st.get("drained", 0))
 			for h: Variant in drain_order:
 				if int(h) >= 0 and int(h) < field.hex_count():
 					Frontiers.drain_hex(field, int(h))
+
+
+## Saved id lists come back from JSON as floats.
+static func _ints(a: Variant) -> Array:
+	var out: Array = []
+	if a is Array:
+		for v: Variant in a:
+			out.append(int(v))
+	return out
 
 
 func _update_locks() -> void:
@@ -127,6 +136,16 @@ func setup() -> void:
 
 
 func _dev_hooks() -> void:
+	if DevHooks.has("frontier-nohud"):  # clean landscape screenshots: hide every overlay after a moment
+		get_tree().create_timer(2.0).timeout.connect(func() -> void:
+			for c: Node in world.get_children():
+				if c is CanvasLayer:
+					(c as CanvasLayer).visible = false
+			for c2: Node in get_children():
+				if c2 is CanvasLayer:
+					(c2 as CanvasLayer).visible = false)
+	if DevHooks.has("frontier-done"):  # Cradle: fire the completion hook now (screenshots / story tests)
+		get_tree().create_timer(DevHooks.get_f("frontier-done", 3.0)).timeout.connect(complete)
 	if DevHooks.has("frontier-cam"):  # --frontier-cam=dist,pitch,yaw (landscape screenshots)
 		var c: PackedStringArray = DevHooks.get_s("frontier-cam", "30,-0.3,0").split(",")
 		var cam: CameraRig = world.cam
