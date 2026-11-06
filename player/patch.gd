@@ -531,7 +531,9 @@ func pop_carried_cube() -> JunkCube:
 	if carried.is_empty():
 		return null
 	var c: JunkCube = carried.pop_back()
-	c.reparent(get_tree().current_scene, true)
+	# Hand it back to the world's Cubes node so it persists (Depot/stations reparent it again).
+	var root: Node = world.get_node_or_null("Cubes") if world else null
+	c.reparent(root if root else get_tree().current_scene, true)
 	return c
 
 
@@ -643,8 +645,15 @@ func from_dict(d: Dictionary) -> void:
 	var p: Array = d.get("pos", [0.0, 0.0, 3.0])
 	global_position = Vector3(float(p[0]), float(p[1]) + 0.05, float(p[2]))
 	rotation.y = float(d.get("yaw", 0.0))
+	restore_cargo(d)
+
+
+## Portable cargo (compartment + carried stack): {"compartment": {...}, "carried": [cube dicts]}.
+## Also used when Patch arrives by rocket with the cargo he took off with.
+func restore_cargo(d: Dictionary) -> void:
 	compartment.from_dict(d.get("compartment", {}))
 	model.set_fill(compartment.ratio(capacity()), Economy.cube_rules.get("perfect_band", [0.9, 1.0]))
+	EventBus.compartment_changed.emit(compartment.fill, capacity())
 	for cd: Dictionary in d.get("carried", []):
 		var cube: JunkCube = JunkCube.from_dict(cd)
 		world.add_cube(cube)

@@ -11,6 +11,8 @@ signal finished
 
 var world: Node
 var running: bool = false
+## True from _finish() until the fade-out has handed the camera and controls back.
+var ending: bool = false
 
 var _cam: Camera3D
 var _prev_cam: Camera3D
@@ -388,6 +390,7 @@ func _finish() -> void:
 	if not running:
 		return
 	running = false
+	ending = true
 	var patch: Node3D = world.patch
 	patch.visible = true
 	var model: PatchModel = patch.get("model")
@@ -401,11 +404,13 @@ func _finish() -> void:
 	var tw := create_tween()
 	tw.tween_property(_fade, "color:a", 1.0, 0.4)
 	tw.tween_callback(func() -> void:
-		if _prev_cam and is_instance_valid(_prev_cam):
+		ending = false
+		var modal: bool = world.has_method("any_modal_open") and world.any_modal_open()
+		if _prev_cam and is_instance_valid(_prev_cam) and not modal:
 			_prev_cam.current = true
 		if _cam:
 			_cam.queue_free()
-		if world.get("hud") != null:
+		if world.get("hud") != null and not modal:
 			world.hud.visible = true
 		if world.get("music") != null:
 			world.music.set_cinematic(false)
@@ -414,11 +419,17 @@ func _finish() -> void:
 		_title.visible = false
 		_sub.visible = false
 		_skip.visible = false
-		_set_player_enabled(true))
+		if not modal:
+			_set_player_enabled(true))
 	tw.tween_property(_fade, "color:a", 0.0, 0.8)
 	tw.tween_callback(func() -> void:
 		_layer.queue_free()
 		finished.emit())
+
+
+## The intro (or its fade-out) still owns the camera and controls.
+func busy() -> bool:
+	return running or ending
 
 
 func _set_player_enabled(on: bool) -> void:
