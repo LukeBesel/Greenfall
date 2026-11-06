@@ -204,7 +204,7 @@ func _launch_step(dt: float) -> void:
 	_once("charge", _ig - 2.1, func() -> void: Audio.play("charge", 1.0, -2.0, 0.0))
 	# Ignition.
 	_once("ignite", _ig, func() -> void:
-		_show_count("WARP" if _warp else "LIFT OFF")
+		_show_count("IGNITION")
 		model.set_charge(0.0)
 		if pad:
 			pad.vent_steam(false)
@@ -232,7 +232,7 @@ func _launch_step(dt: float) -> void:
 	_once("clamps", _ig + 0.55, func() -> void:
 		Audio.play("clunk", 0.7, -2.0)
 		Audio.play("hydraulic", 0.6, -6.0))
-	_once("count_off", _ig + 1.6, func() -> void: _count.visible = false)
+	_once("count_off", _lo + 1.8, func() -> void: _count.visible = false)
 	# Lift-off, climb and the arc over.
 	if t >= _lo:
 		var tau: float = t - _lo
@@ -247,6 +247,8 @@ func _launch_step(dt: float) -> void:
 		_dot.visible = tau > 2.5
 		(_dot.material_override as StandardMaterial3D).albedo_color.a = smoothstep(2.5, 6.0, tau)
 	_once("liftoff", _lo, func() -> void:
+		_count.position = Vector3(-2.6, _base_y + 9.0, 2.0)
+		_show_count("WARP" if _warp else "LIFT OFF")
 		Audio.play("whoosh", 0.35, 0.0)
 		Audio.music_sting("level_up"))
 	_once("billow_off", _lo + 3.0, func() -> void:
@@ -288,9 +290,9 @@ func _launch_camera(t: float, dt: float) -> void:
 		fov = 58.0
 	elif t < _lo + 0.9:
 		# Ignition: close and low by the engine, the plume and the billows.
-		pos = o + Vector3(5.6, 0.9, 3.8).lerp(Vector3(6.3, 0.8, 3.8), (t - (_ig - 0.7)) / (_lo + 1.6 - _ig))
-		look = o + Vector3(0, 2.0, 0)
-		fov = 66.0
+		pos = o + Vector3(2.6, 2.0, 12.5).lerp(Vector3(3.2, 1.8, 11.0), (t - (_ig - 0.7)) / (_lo + 1.6 - _ig))
+		look = o + Vector3(0, 2.6, 0)
+		fov = 58.0
 	elif t < _lo + 4.5:
 		# Lift-off: low, looking up as it climbs.
 		pos = o + Vector3(8.5, 1.0, 3.8)
@@ -432,13 +434,13 @@ func _arrive_camera(t: float, dt: float) -> void:
 	var mp: Vector3 = model.global_position
 	if t < LAND_S * 0.62:
 		_cam.fov = 50.0
-		_place_cam(o + Vector3(10.0, 1.6, 15.0), mp + Vector3(0, 3.0, 0), dt)
+		_place_cam(o + Vector3(-13.0, 1.6, 7.0), mp + Vector3(0, 3.0, 0), dt)
 	elif t < LAND_S + 1.6:
 		_cam.fov = 58.0
 		_place_cam(o + Vector3(7.5, 2.0, 9.5), mp + Vector3(0, 3.0, 0), dt)
 	else:
 		_cam.fov = 55.0
-		_place_cam(o + Vector3(9.0, 4.5, 6.0), o + Vector3(2.5, 3.2, 0.5), dt)
+		_place_cam(o + Vector3(7.0, 3.0, 3.6), o + Vector3(2.0, 2.4, 0.5), dt)
 
 
 func _finish_arrival() -> void:
@@ -641,17 +643,15 @@ func _build_fx() -> void:
 	_trail.damping_min = 1.0
 	_trail.damping_max = 2.0
 	_trail.gravity = Vector3(0.25, 0.2, 0)
-	_trail.emission_shape = CPUParticles3D.EMISSION_SHAPE_SPHERE
-	_trail.emission_sphere_radius = 0.5
 	var c := Curve.new()
+	c.max_value = 6.0  # scale grows past 1 (the default range clamps it)
 	c.add_point(Vector2(0, 0.5))
 	c.add_point(Vector2(0.3, 2.2))
 	c.add_point(Vector2(1, 4.0))
 	_trail.scale_amount_curve = c
 	var tg := Gradient.new()
-	tg.set_color(0, Color(0.85, 0.97, 1.0, 0.0))
-	tg.add_point(0.05, Color(0.92, 0.97, 1.0, 0.7))
-	tg.add_point(0.5, Color(0.92, 0.94, 0.97, 0.35))
+	tg.set_color(0, Color(0.92, 0.97, 1.0, 0.0))
+	tg.add_point(0.12, Color(0.92, 0.97, 1.0, 0.7))
 	tg.set_color(tg.get_point_count() - 1, Color(0.92, 0.94, 0.97, 0.0))
 	_trail.color_ramp = tg
 	var q := QuadMesh.new()
@@ -659,13 +659,17 @@ func _build_fx() -> void:
 	var pm := StandardMaterial3D.new()
 	pm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	pm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	pm.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	# BILLBOARD_ENABLED + keep_scale, not BILLBOARD_PARTICLES: particles not yet emitted have a zero
+	# scale, which the particle billboard ignores (they showed as a dark disc at the emitter).
+	pm.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	pm.billboard_keep_scale = true
 	pm.vertex_color_use_as_albedo = true
+	pm.albedo_color = Color(1.45, 1.5, 1.55)
 	pm.albedo_texture = soft
 	pm.disable_receive_shadows = true
 	q.material = pm
 	_trail.mesh = q
-	_trail.position = Vector3(0, RocketModel.NOZZLE_Y - 1.5, 0)
+	_trail.position = Vector3(0, RocketModel.NOZZLE_Y - 3.5, 0)  # below the hot core
 	model.add_child(_trail)
 	# Ground dust ring when there is no pad (parked landings and take-offs).
 	if pad == null:

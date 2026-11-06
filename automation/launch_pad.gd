@@ -192,14 +192,14 @@ func _build() -> void:
 		_cell_strips.append(strip)
 		_beacon(cp + Vector3(0, 2.68, 0), 0.12)
 		_rod(self, cp + Vector3(signf(-x3) * 0.5, 0.6, 0), tz + Vector3(signf(x3) * 0.5, 0.6, 0), 0.08, grey)
-	# Floodlights aimed at the rocket.
+	# Floodlights on the tower's front corners, aimed at the rocket (no poles in the camera shots).
 	for x4: float in [-1.0, 1.0]:
-		var fp := Vector3(x4 * 4.4, 0, -1.6)
-		_mi(self, ProcMesh.cyl(0.06, 0.09, 5.0, 10), grey, fp + Vector3(0, 2.5, 0))
+		var fp := tz + Vector3(x4 * 0.75, 0, 0.45)
+		_rod(self, tz + Vector3(x4 * 0.5, 8.6, 0.3), fp + Vector3(0, 8.6, 0), 0.05, grey)
 		var head := Node3D.new()
-		head.position = fp + Vector3(0, 5.0, 0)
+		head.position = fp + Vector3(0, 8.6, 0)
 		add_child(head)
-		head.look_at_from_position(head.position + global_position, global_position + Vector3(0, 5.5, 0))
+		head.look_at_from_position(head.position + global_position, global_position + Vector3(x4 * 1.5, 4.0, 0))
 		_mi(head, RobotVisual._rbox(Vector3(0.6, 0.35, 0.3), 0.06, 2), white, Vector3.ZERO)
 		_mi(head, ProcMesh.box(Vector3(0.5, 0.26, 0.02)), Mats.lamp(Color(0.85, 0.95, 1.0), 4.0), Vector3(0, 0, -0.16))
 		var sl := SpotLight3D.new()
@@ -238,7 +238,7 @@ func _build() -> void:
 		s3.initial_velocity_max = 3.5
 		_steam.append(s3)
 	var under := _vapour(Vector3(0, -1, 0))
-	under.position = Vector3(0, TOP_Y - 0.7, 0)
+	under.position = Vector3(0, 0.4, 0)
 	under.spread = 80.0
 	_vents.append(under)
 
@@ -350,24 +350,17 @@ func _vapour(dir: Vector3) -> CPUParticles3D:
 	p.damping_min = 2.2
 	p.damping_max = 3.2
 	p.gravity = Vector3(0, 0.7, 0)
-	p.emission_shape = CPUParticles3D.EMISSION_SHAPE_SPHERE
-	p.emission_sphere_radius = 0.6
-	p.angle_min = -180.0
-	p.angle_max = 180.0
-	p.angular_velocity_min = -20.0
-	p.angular_velocity_max = 20.0
 	p.scale_amount_min = 0.8
 	p.scale_amount_max = 1.4
 	var c := Curve.new()
-	c.add_point(Vector2(0, 0.6))
-	c.add_point(Vector2(0.4, 2.6))
-	c.add_point(Vector2(1, 4.2))
+	c.max_value = 6.0  # scale grows past 1 (the default range clamps it)
+	c.add_point(Vector2(0, 0.5))
+	c.add_point(Vector2(0.4, 1.8))
+	c.add_point(Vector2(1, 3.0))
 	p.scale_amount_curve = c
 	var g := Gradient.new()
-	g.set_color(0, Color(1, 1, 1, 0.0))
-	g.add_point(0.06, Color(0.97, 0.99, 1.0, 0.9))
-	g.add_point(0.55, Color(0.9, 0.94, 0.98, 0.55))
-	g.set_color(g.get_point_count() - 1, Color(0.88, 0.92, 0.96, 0.0))
+	g.set_color(0, Color(0.97, 0.99, 1.0, 0.9))
+	g.set_color(1, Color(0.88, 0.92, 0.96, 0.0))
 	p.color_ramp = g
 	var q := QuadMesh.new()
 	q.size = Vector2(2.2, 2.2)
@@ -391,6 +384,7 @@ func _steam_vent() -> CPUParticles3D:
 	p.damping_max = 2.5
 	p.gravity = Vector3(0, 0.5, 0)
 	var c := Curve.new()
+	c.max_value = 6.0  # scale grows past 1 (the default range clamps it)
 	c.add_point(Vector2(0, 0.4))
 	c.add_point(Vector2(1, 2.5))
 	p.scale_amount_curve = c
@@ -411,8 +405,13 @@ func _puff_mat() -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
 	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	m.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	# BILLBOARD_ENABLED + keep_scale, not BILLBOARD_PARTICLES: particles not yet emitted have a zero
+	# scale, which the particle billboard ignores (they showed as a dark disc at the emitter).
+	m.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	m.billboard_keep_scale = true
 	m.vertex_color_use_as_albedo = true
+	# Brighter than white: vapour lit by the plume must not read as grey against its glow.
+	m.albedo_color = Color(1.45, 1.5, 1.55)
 	m.albedo_texture = _soft_tex
 	m.roughness = 1.0
 	m.disable_receive_shadows = true

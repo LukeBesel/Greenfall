@@ -22,13 +22,13 @@ var _t: float = 0.0
 func _ready() -> void:
 	var len_o: float = 7.5 * scale_len
 	var len_c: float = 3.6 * scale_len
-	_outer_mat = _mat(0.0, 1.5, randf() * 10.0)
-	_outer_mat.set_shader_parameter("opacity", 0.8)
-	_core_mat = _mat(1.0, 4.0, randf() * 10.0)
-	_core_mat.set_shader_parameter("opacity", 1.4)
+	_outer_mat = _mat(0.0, 2.5, randf() * 10.0)
+	_outer_mat.set_shader_parameter("opacity", 1.0)
+	_core_mat = _mat(1.0, 7.0, randf() * 10.0)
+	_core_mat.set_shader_parameter("opacity", 2.0)
 	_core_mat.set_shader_parameter("mid_color", Color(0.75, 0.97, 1.0))
 	_core_mat.set_shader_parameter("edge_color", Color(0.3, 0.85, 1.0))
-	_outer = _cone(radius * 1.05, radius * 2.3, len_o, _outer_mat)
+	_outer = _cone(radius * 1.05, radius * 2.9, len_o, _outer_mat)
 	_core = _cone(radius * 0.7, radius * 0.35, len_c, _core_mat)
 	_flare_mat = StandardMaterial3D.new()
 	_flare_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
