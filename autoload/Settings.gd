@@ -15,6 +15,10 @@ var invert_y: bool = false
 var best_value_tags: bool = true
 enum Quality { LOW, MEDIUM, HIGH, ULTRA }
 var quality: int = Quality.HIGH
+var fullscreen: bool = false
+var vsync: bool = true
+## 3D render resolution as a fraction of the window (UI stays sharp).
+var render_scale: float = 1.0
 
 ## action -> list of InputEvents (defaults). Remaps are stored on top of these.
 var _defaults: Dictionary = {}
@@ -23,6 +27,7 @@ var _defaults: Dictionary = {}
 func _ready() -> void:
 	_register_default_actions()
 	load_settings()
+	apply_display()
 
 
 func _key(code: Key) -> InputEventKey:
@@ -99,6 +104,9 @@ func save_settings() -> void:
 	cfg.set_value("audio", "music", music_volume)
 	cfg.set_value("ui", "best_value_tags", best_value_tags)
 	cfg.set_value("display", "quality", quality)
+	cfg.set_value("display", "fullscreen", fullscreen)
+	cfg.set_value("display", "vsync", vsync)
+	cfg.set_value("display", "render_scale", render_scale)
 	cfg.save(SETTINGS_PATH)
 
 
@@ -117,6 +125,38 @@ func load_settings() -> void:
 	music_volume = float(cfg.get_value("audio", "music", music_volume))
 	best_value_tags = bool(cfg.get_value("ui", "best_value_tags", best_value_tags))
 	quality = int(cfg.get_value("display", "quality", quality))
+	fullscreen = bool(cfg.get_value("display", "fullscreen", fullscreen))
+	vsync = bool(cfg.get_value("display", "vsync", vsync))
+	render_scale = clampf(float(cfg.get_value("display", "render_scale", render_scale)), 0.5, 1.0)
+
+
+## Window mode, vsync and 3D render scale. No-op for the window parts when headless.
+func apply_display() -> void:
+	if is_inside_tree():
+		get_tree().root.scaling_3d_scale = render_scale
+	if DisplayServer.get_name() == "headless":
+		return
+	var want: DisplayServer.WindowMode = DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED
+	var cur: DisplayServer.WindowMode = DisplayServer.window_get_mode()
+	var is_full: bool = cur == DisplayServer.WINDOW_MODE_FULLSCREEN or cur == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
+	if is_full != fullscreen:
+		DisplayServer.window_set_mode(want)
+	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if vsync else DisplayServer.VSYNC_DISABLED)
+
+
+## Re-applies the quality preset to every WorldEnvironment and shadowed sun under `root`
+## (used when the preset changes mid-scene, e.g. from the pause menu).
+func apply_quality_to_tree(root: Node) -> void:
+	if root == null:
+		return
+	for n: Node in root.find_children("*", "WorldEnvironment", true, false):
+		var we: WorldEnvironment = n as WorldEnvironment
+		if we.environment:
+			apply_render_quality(we.environment, root.get_viewport())
+	for n: Node in root.find_children("*", "DirectionalLight3D", true, false):
+		var sun: DirectionalLight3D = n as DirectionalLight3D
+		if sun.shadow_enabled:
+			apply_sun_quality(sun)
 
 
 ## Applies the quality preset to an Environment and viewport. Low drops GI, volumetrics and

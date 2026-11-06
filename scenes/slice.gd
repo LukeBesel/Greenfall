@@ -37,6 +37,7 @@ var hud: HUD
 var upgrades: UpgradesScreen
 var command: CommandView
 var music: MusicHooks
+var intro: Intro
 var pause_menu: PauseMenu
 var bot: InputSource
 var _cubes_root: Node3D
@@ -291,9 +292,21 @@ func _ready() -> void:
 	tutorial = Tutorial.new()
 	tutorial.world = self
 	add_child(tutorial)
-	if not loaded:
+	intro = Intro.new()
+	intro.world = self
+	add_child(intro)
+	var wake := func() -> void:
 		get_tree().create_timer(1.5).timeout.connect(func() -> void:
 			Story.once("wake", "P-47CH  online.  Landing pod sealed.  Cradle uplink: weak.  Running checklist.", "story"))
+	if intro.should_play():
+		intro.finished.connect(wake)
+		intro.play.call_deferred()
+	else:
+		if GameState.flags.get("intro_done", false) or not loaded:
+			GameState.flags["intro_done"] = true
+			intro.place_pod.call_deferred()
+		if not loaded:
+			wake.call()
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -656,7 +669,7 @@ func _on_modal_closed() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if upgrades.is_open or pause_menu.is_open or globe.is_open or command.is_open:
+	if upgrades.is_open or pause_menu.is_open or globe.is_open or command.is_open or intro.running:
 		return
 	if event.is_action_pressed("open_upgrades"):
 		open_upgrades()

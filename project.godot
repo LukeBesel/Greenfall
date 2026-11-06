@@ -8,7 +8,7 @@ config_version=5
 config/name="Greenfall"
 config/description="A bright, cozy incremental game about a rusty cleanup robot healing a planet."
 config/version="0.1.0"
-run/main_scene="res://scenes/slice.tscn"
+run/main_scene="res://scenes/main_menu.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 
 [autoload]

@@ -1,103 +1,72 @@
 {
-  "cubes": 43.1855277359486,
-  "cubes_made": 12.0,
-  "first_cashin_s": 10.1,
-  "first_cube_s": 6.6,
-  "first_upgrade_s": 23.2,
-  "game_time_s": 206.5,
+  "cubes": 67.6898718267679,
+  "cubes_made": 8.0,
+  "first_cashin_s": 10.8,
+  "first_cube_s": 7.3,
+  "first_upgrade_s": 24.0,
+  "game_time_s": 125.1,
   "hexes_cleaned": 0,
   "log": [
     {
       "event": "upgrade",
       "id": "compartment_size",
       "level": 1,
-      "t": 23.2
+      "t": 24.0
     },
     {
       "cubes": 29.2971525661647,
       "hexes": 0,
       "made": 2.0,
-      "t": 30.0
+      "t": 30.5
     },
     {
       "event": "upgrade",
       "id": "scoop_width",
       "level": 1,
-      "t": 37.5
+      "t": 38.5
     },
     {
       "event": "upgrade",
       "id": "compartment_size",
       "level": 2,
-      "t": 51.1
+      "t": 52.2
     },
     {
       "cubes": 13.813148021698,
       "hexes": 0,
       "made": 5.0,
-      "t": 60.1
+      "t": 60.6
     },
     {
       "event": "upgrade",
       "id": "tread_speed",
       "level": 1,
-      "t": 63.9
+      "t": 65.1
     },
     {
       "cubes": 49.6311531275511,
       "hexes": 0,
       "made": 7.0,
-      "t": 90.1
+      "t": 90.7
     },
     {
       "event": "upgrade",
       "id": "scoop_width",
       "level": 2,
-      "t": 102.5
+      "t": 97.7
     },
     {
-      "cubes": 28.5778898015618,
+      "cubes": 67.6898718267679,
       "hexes": 0,
       "made": 8.0,
-      "t": 120.2
-    },
-    {
-      "event": "upgrade",
-      "id": "scoop_speed",
-      "level": 1,
-      "t": 142.5
-    },
-    {
-      "cubes": 44.1195928275585,
-      "hexes": 0,
-      "made": 9.0,
-      "t": 150.3
-    },
-    {
-      "event": "upgrade",
-      "id": "compartment_size",
-      "level": 3,
-      "t": 159.7
-    },
-    {
-      "cubes": 59.6120731689036,
-      "hexes": 0,
-      "made": 11.0,
-      "t": 180.3
-    },
-    {
-      "event": "upgrade",
-      "id": "tread_speed",
-      "level": 2,
-      "t": 199.4
+      "t": 120.7
     }
   ],
-  "perfect_cubes": 12.0,
+  "perfect_cubes": 8.0,
   "pure_cubes": 0,
   "upgrades": {
-    "compartment_size": 3,
-    "scoop_speed": 1,
+    "compartment_size": 2,
     "scoop_width": 2,
-    "tread_speed": 2
+    "tread_speed": 1
   }
 }
