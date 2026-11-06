@@ -1,0 +1,40 @@
+{
+  "_doc": "Lumi Level (systems/lumi_level.gd). Lumi XP comes from everything you do; the level bar sits above the hotbar. need(L) = round(base * L^power) XP from level L to L+1 (see docs/BALANCE.md). xp: points per source. reward: what each level pays (cubes = about cube_secs of current income, floored by min_cubes_per_level x L and capped at max(cap_cubes_base x L^1.5, cap_earned_frac x lifetime cubes); every part_every levels a robot part; every token_every levels tokens; every trinket_every levels a Lumi keepsake for the Collection while any are left, tokens otherwise; seeds_every levels some seeds once the garden is unlocked).",
+  "curve": {
+    "base": 150,
+    "power": 1.5
+  },
+  "max_level": 999,
+  "xp": {
+    "scoop": 1,
+    "bale_made": 3,
+    "bale_sold": 4,
+    "part_found": 12,
+    "hex_cleaned": 25,
+    "hex_level": 15,
+    "goal": 20,
+    "goal_per_index": 1,
+    "event_handled": 50,
+    "event_missed": 10,
+    "achievement": 15,
+    "research": 20,
+    "upgrade": 3,
+    "robot_built": 8,
+    "planted": 2,
+    "bloomed": 2
+  },
+  "reward": {
+    "cube_secs": 30,
+    "min_cubes_per_level": 15,
+    "part_every": 5,
+    "token_every": 5,
+    "tokens": 1,
+    "tokens_per_10_levels": 1,
+    "seeds_every": 2,
+    "seeds": 4,
+    "trinket_every": 10,
+    "trinket_tokens": 3,
+    "cap_cubes_base": 30,
+    "cap_earned_frac": 0.004
+  }
+}

@@ -83,6 +83,7 @@ static func source_name(source: String) -> String:
 		"rare_part_signal": return "Rare Part Signals"
 		"ledger_audit": return "Ledger Audits"
 		"streak": return "Cleaning Streaks"
+		"lumi_level": return "Lumi Levels"  # [hud]
 		"contracts": return "Contracts"
 		"capsule": return "Curio Capsules"
 	return source.capitalize()

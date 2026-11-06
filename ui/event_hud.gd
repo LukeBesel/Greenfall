@@ -62,10 +62,11 @@ func _ready() -> void:
 
 
 func _build_banner() -> void:
+	# [hud] Slim two-line pill: diamond, name and timer on top; what to do and progress below.
 	var mc := MarginContainer.new()
 	mc.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	mc.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	mc.add_theme_constant_override("margin_top", 18)
+	mc.add_theme_constant_override("margin_top", 16)
 	mc.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(mc)
 	var vb := VBoxContainer.new()
@@ -74,27 +75,31 @@ func _build_banner() -> void:
 	mc.add_child(vb)
 	_banner = PanelContainer.new()
 	_banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_banner.custom_minimum_size = Vector2(380, 0)
+	_banner.custom_minimum_size = Vector2(340, 0)
 	vb.add_child(_banner)
-	var hb := HBoxContainer.new()
-	hb.add_theme_constant_override("separation", 12)
-	_banner.add_child(hb)
-	_b_icon = UITheme.label("◆", 26, UITheme.GOLD)
-	_b_icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	hb.add_child(_b_icon)
 	var tv := VBoxContainer.new()
-	tv.add_theme_constant_override("separation", -1)
-	tv.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	hb.add_child(tv)
-	_b_title = UITheme.label("", 17, UITheme.GOLD)
-	tv.add_child(_b_title)
-	_b_hint = UITheme.label("", 14, UITheme.CREAM)
-	tv.add_child(_b_hint)
+	tv.add_theme_constant_override("separation", 0)
+	_banner.add_child(tv)
+	var top := HBoxContainer.new()
+	top.add_theme_constant_override("separation", 8)
+	tv.add_child(top)
+	_b_icon = UITheme.label("◆", 13, UITheme.GOLD)
+	_b_icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	top.add_child(_b_icon)
+	_b_title = UITheme.label("", 14, UITheme.GOLD)
+	_b_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	top.add_child(_b_title)
+	_b_time = UITheme.label("", 14, UITheme.CREAM)
+	top.add_child(_b_time)
+	var bottom := HBoxContainer.new()
+	bottom.add_theme_constant_override("separation", 10)
+	tv.add_child(bottom)
+	_b_hint = UITheme.label("", 13, UITheme.CREAM)
+	bottom.add_child(_b_hint)
 	_b_prog = UITheme.label("", 12, UITheme.MUTED)
-	tv.add_child(_b_prog)
-	_b_time = UITheme.label("", 24, UITheme.CREAM)
-	_b_time.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	hb.add_child(_b_time)
+	_b_prog.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_b_prog.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	bottom.add_child(_b_prog)
 	_banner.visible = false
 	_nudge = UITheme.label("", 13, UITheme.GREEN)
 	_nudge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -102,47 +107,44 @@ func _build_banner() -> void:
 
 
 func _build_streak() -> void:
-	var mc := MarginContainer.new()
-	mc.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-	mc.grow_horizontal = Control.GROW_DIRECTION_BEGIN
-	mc.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	mc.add_theme_constant_override("margin_right", 24)
-	mc.add_theme_constant_override("margin_bottom", 24)
-	mc.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_root.add_child(mc)
+	# [hud] Small and panel-free, to the right of the hotbar; only visible while a streak runs.
 	_streak = PanelContainer.new()
-	_streak.add_theme_stylebox_override("panel", UITheme.box(UITheme.PLUM, UITheme.RUST, 1, 6, 10))
+	_streak.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 	_streak.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_streak.custom_minimum_size = Vector2(210, 0)
-	mc.add_child(_streak)
+	_streak.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	_streak.offset_left = 150.0
+	_streak.offset_right = 290.0
+	_streak.offset_top = -90.0
+	_streak.offset_bottom = -36.0
+	_root.add_child(_streak)
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 3)
+	vb.alignment = BoxContainer.ALIGNMENT_END
 	_streak.add_child(vb)
 	var top := HBoxContainer.new()
+	top.add_theme_constant_override("separation", 6)
 	vb.add_child(top)
-	top.add_child(UITheme.label("S T R E A K", 12, UITheme.MUTED))
-	var sp := Control.new()
-	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	top.add_child(sp)
-	_s_tier = UITheme.label("x0", 20, UITheme.CREAM)
+	top.add_child(UITheme.label("STREAK", 12, UITheme.MUTED))
+	_s_tier = UITheme.label("x0", 16, UITheme.CREAM)
 	top.add_child(_s_tier)
+	_s_bonus = UITheme.label("", 12, UITheme.GREEN)
+	top.add_child(_s_bonus)
 	var pips := HBoxContainer.new()
-	pips.add_theme_constant_override("separation", 4)
+	pips.add_theme_constant_override("separation", 3)
 	vb.add_child(pips)
 	var n: int = events.streak.max_tier if events else 5
 	for i: int in n:
 		var p := ColorRect.new()
-		p.custom_minimum_size = Vector2(34, 5)
+		p.custom_minimum_size = Vector2(18, 3)
 		p.color = Color(1, 1, 1, 0.12)
 		pips.add_child(p)
 		_s_pips.append(p)
 	_s_bar = ProgressBar.new()
 	_s_bar.show_percentage = false
 	_s_bar.max_value = 1.0
-	_s_bar.custom_minimum_size = Vector2(0, 3)
+	_s_bar.custom_minimum_size = Vector2(0, 2)
+	_s_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	vb.add_child(_s_bar)
-	_s_bonus = UITheme.label("", 12, UITheme.GREEN)
-	vb.add_child(_s_bonus)
 	_streak.modulate.a = 0.0
 
 
@@ -171,6 +173,8 @@ func _process(delta: float) -> void:
 		return
 	_t += delta
 	_root.visible = not _modal()
+	_banner.get_parent().get_parent().visible = Settings.hud_mode != Settings.HudMode.HIDDEN  # [hud]
+	_streak.visible = Settings.hud_mode != Settings.HudMode.HIDDEN
 	_update_banner()
 	_update_streak(delta)
 	_marker.queue_redraw()
@@ -192,7 +196,12 @@ func _update_banner() -> void:
 	if _shown_id != str(a["id"]):
 		_shown_id = str(a["id"])
 		_banner.visible = true
-		_banner.add_theme_stylebox_override("panel", UITheme.box(Color(0.04, 0.05, 0.06, 0.78), Color(col, 0.55), 1, 8, 12))
+		var sb: StyleBoxFlat = UITheme.box(Color(0.03, 0.04, 0.05, 0.55), Color(col, 0.4), 1, 14, 0)  # [hud] slim pill
+		sb.content_margin_left = 16
+		sb.content_margin_right = 16
+		sb.content_margin_top = 6
+		sb.content_margin_bottom = 7
+		_banner.add_theme_stylebox_override("panel", sb)
 		_banner.modulate.a = 0.0
 		var tw := create_tween()
 		tw.tween_property(_banner, "modulate:a", 1.0, 0.35)
@@ -216,7 +225,7 @@ func _update_streak(delta: float) -> void:
 	_streak.modulate.a = move_toward(_streak.modulate.a, want, delta * (3.0 if want > 0.0 else 0.8))
 	_pulse = maxf(0.0, _pulse - delta * 2.0)
 	_streak.scale = Vector2.ONE * (1.0 + 0.08 * _pulse)
-	_streak.pivot_offset = _streak.size
+	_streak.pivot_offset = Vector2(0, _streak.size.y)
 	_s_tier.text = "x%d" % tier
 	_s_tier.add_theme_color_override("font_color", UITheme.CREAM.lerp(col, 0.5 + 0.5 * _pulse) if tier > 0 else UITheme.MUTED)
 	for i: int in _s_pips.size():
@@ -224,7 +233,7 @@ func _update_streak(delta: float) -> void:
 	_s_bar.value = s.fill()
 	_s_bar.modulate = col
 	var draining: bool = s.since_scoop > s.grace_s
-	_s_bonus.text = ("+%d%% bale value" % int(round(s.bonus() * 100.0))) + ("   cooling" if draining and s.active() else "") if tier > 0 else ("keep scooping" if s.active() else "")
+	_s_bonus.text = ("+%d%%" % int(round(s.bonus() * 100.0))) if tier > 0 else ""
 	_s_bonus.add_theme_color_override("font_color", UITheme.MUTED if draining else UITheme.GREEN)
 
 
