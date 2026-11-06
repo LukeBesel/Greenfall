@@ -1,9 +1,10 @@
-extends SceneTree
+extends Node
 var st: SpaceStage
 var f: int = 0
-func _initialize() -> void:
+func _ready() -> void:
+	var root: Viewport = get_tree().root
 	var cl := CanvasLayer.new()
-	root.add_child(cl)
+	add_child(cl)
 	st = SpaceStage.new()
 	cl.add_child(st)
 	if OS.get_environment("D3D") == "1":
@@ -25,11 +26,11 @@ func _initialize() -> void:
 		st.lumi.position = Vector3(-0.2, 0.15, -1.05)
 		st.lumi.rotation.y = PI - 0.15
 
-func _process(_d: float) -> bool:
+func _process(_d: float) -> void:
 	f += 1
 	if f == int(OS.get_environment("FR") if OS.get_environment("FR") != "" else "8"):
-		var img: Image = root.get_texture().get_image()
+		var img: Image = get_tree().root.get_texture().get_image()
 		img.save_png(OS.get_environment("OUT"))
 		print("saved ", OS.get_environment("OUT"))
-		quit()
-	return false
+		print("DBG vp size ", st.vp.size, " cam ", st.vp.get_camera_3d(), " cur ", st.cam.current, " csize ", st.size, " world ", st.vp.world_3d, " camworld ", st.cam.get_world_3d(), " env ", st.env.background_mode)
+		get_tree().quit()

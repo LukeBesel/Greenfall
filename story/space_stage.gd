@@ -44,12 +44,12 @@ var _notes: Array[Node3D] = []
 
 
 func _ready() -> void:
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	stretch = true
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	vp = SubViewport.new()
-	vp.own_world_3d = true
 	vp.world_3d = World3D.new()
+	vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	vp.msaa_3d = Viewport.MSAA_2X
 	vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA
 	vp.handle_input_locally = false
@@ -124,7 +124,7 @@ func _build_space() -> void:
 	vp.add_child(root)
 	_sets["space"] = root
 	sun = DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-12, 70, 0)
+	sun.rotation_degrees = Vector3(-24, 52, 0)
 	sun.light_energy = 2.2
 	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = 200.0
@@ -419,28 +419,22 @@ func _mesh(parent: Node3D, mesh: Mesh, mat: Material, pos: Vector3) -> MeshInsta
 
 
 static func _stars() -> ImageTexture:
-	var w: int = 2048
-	var h: int = 1024
+	var w: int = 4096
+	var h: int = 2048
 	var img := Image.create(w, h, false, Image.FORMAT_RGB8)
-	img.fill(Color(0.004, 0.005, 0.012))
+	img.fill(Color(0.003, 0.004, 0.01))
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 21
 	# A faint milky band.
-	for i: int in 9000:
+	for i: int in 30000:
 		var x: int = rng.randi() % w
 		var y: int = clampi(int(h * 0.42 + sin(float(x) / w * TAU) * h * 0.12 + rng.randfn(0.0, h * 0.05)), 0, h - 1)
-		var c := img.get_pixel(x, y) + Color(0.02, 0.02, 0.03)
-		img.set_pixel(x, y, c)
-	for i: int in 7000:
-		var b: float = pow(rng.randf(), 5.0)
+		img.set_pixel(x, y, img.get_pixel(x, y) + Color(0.012, 0.012, 0.02))
+	for i: int in 9000:
+		var b: float = pow(rng.randf(), 6.0)
 		var tint: float = rng.randf()
-		var c := Color(0.75 + tint * 0.25, 0.8 + b * 0.2, 1.0 - tint * 0.2) * (0.2 + b * 1.4)
-		var x: int = rng.randi() % w
-		var y: int = rng.randi() % h
-		img.set_pixel(x, y, c)
-		if b > 0.45 and x + 1 < w and y + 1 < h:
-			img.set_pixel(x + 1, y, c * 0.6)
-			img.set_pixel(x, y + 1, c * 0.6)
+		var c := Color(0.75 + tint * 0.25, 0.8 + b * 0.2, 1.0 - tint * 0.2) * (0.12 + b * 1.6)
+		img.set_pixel(rng.randi() % w, rng.randi() % h, c)
 	return ImageTexture.create_from_image(img)
 
 

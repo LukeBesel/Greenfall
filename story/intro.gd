@@ -623,6 +623,8 @@ func _build_overlay() -> void:
 	_title.grow_vertical = Control.GROW_DIRECTION_BOTH
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_title.add_theme_constant_override("outline_size", 0)
+	_title.offset_top += 150
+	_title.offset_bottom += 150
 	_title.modulate.a = 0.0
 	root.add_child(_title)
 	_sub = UITheme.label("", 18, Color(0.9, 0.92, 0.95))
@@ -687,7 +689,7 @@ func _show_title(t: String, sub: String) -> void:
 	s.name = "TitleSub"
 	s.set_anchors_preset(Control.PRESET_CENTER)
 	s.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	s.offset_top = 30
+	s.offset_top = 180
 	s.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	s.modulate.a = 0.0
 	_title.get_parent().add_child(s)
