@@ -1,226 +1,212 @@
 {
-  "cubes": 356.240193557739,
-  "cubes_made": 4.0,
-  "dead_gaps_min": [],
-  "earned_total": 658.815193557739,
-  "fell_through": 0,
-  "first_cashin_s": 22.3,
-  "first_cube_s": 17.2,
-  "first_hex_s": 80.1,
-  "first_hexlv_1_s": 80.2,
-  "first_upgrade_s": 20.9,
-  "game_time_min": 2.0,
-  "game_time_s": 117.3,
-  "goal_gaps_min": [],
-  "goals_done": 8,
-  "goals_total": 96,
-  "hexes_cleaned": 1,
-  "hub_level": 1,
+  "cubes": 59.4868922871201,
+  "cubes_made": 18.0,
+  "first_cashin_s": 11.8,
+  "first_cube_s": 6.9,
+  "first_upgrade_s": 7.5,
+  "game_time_s": 318.3,
+  "hex_removed_top": [
+    [
+      0.952,
+      0,
+      111.4
+    ],
+    [
+      0.866,
+      0,
+      111.3
+    ],
+    [
+      0.823,
+      0,
+      115.0
+    ],
+    [
+      0.717,
+      0,
+      91.4
+    ],
+    [
+      0.71,
+      0,
+      145.6
+    ],
+    [
+      0.614,
+      0,
+      106.7
+    ]
+  ],
+  "hexes_cleaned": 0,
   "ignored_pieces": 0,
-  "junk_hexes": 33,
   "log": [
     {
       "event": "upgrade",
       "id": "compartment_size",
       "level": 1,
-      "t": 20.9
+      "t": 7.5
     },
     {
       "event": "upgrade",
       "id": "scoop_width",
       "level": 1,
-      "t": 21.9
+      "t": 8.9
     },
     {
       "event": "upgrade",
       "id": "compartment_size",
       "level": 2,
-      "t": 23.0
+      "t": 8.9
     },
     {
       "event": "upgrade",
       "id": "tread_speed",
       "level": 1,
-      "t": 24.0
+      "t": 12.5
     },
     {
-      "bolts": 0.0,
-      "cubes": 55.0,
-      "data": 0.0,
-      "earned": 222.0,
-      "escapes": 0,
-      "glass": 4.0,
-      "goals": 5,
-      "hex_levels": [
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
+      "cubes": 56.7487290049642,
       "hexes": 0,
-      "hub": 1,
-      "metal": 2.4,
-      "parts": 4,
-      "plastic": 2.7,
-      "pos": [
-        -28.6,
-        11.9
-      ],
-      "rate": 4.93,
-      "remote_shops": 0,
-      "research": "",
-      "robots": {},
-      "seeds": 0.0,
-      "stats": {
-        "air_filtered": 0.0,
-        "bales_recycled": 0.0,
-        "garden_stipend": 0.0,
-        "plants_bloomed": 0.0,
-        "plants_planted": 0.0,
-        "research_done": 0.0,
-        "robot_bales": 0.0,
-        "robots_built": 0.0
-      },
-      "t": 60.3,
-      "task": "clean",
-      "upgrades": 4
+      "made": 2.0,
+      "t": 30.2
     },
     {
       "event": "upgrade",
       "id": "scoop_width",
       "level": 2,
-      "t": 75.7
+      "t": 40.4
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_speed",
+      "level": 1,
+      "t": 54.0
+    },
+    {
+      "cubes": 9.45595962543786,
+      "hexes": 0,
+      "made": 4.0,
+      "t": 60.2
     },
     {
       "event": "upgrade",
       "id": "compartment_size",
       "level": 3,
-      "t": 76.7
-    }
-  ],
-  "next_goals": [
-    "cash_10",
-    "shards_1",
-    "hex_3"
-  ],
-  "parts_bought": 0,
-  "parts_found": 6.0,
-  "perfect_cubes": 4.0,
-  "remote_shops": 0,
-  "research_done": [],
-  "research_idle_max_s": 117.0,
-  "research_idle_s": 117.0,
-  "research_starved_s": 117.0,
-  "robots": {},
-  "stuck_escapes": 0,
-  "timeline": [
-    {
-      "kind": "part",
-      "rarity": 1,
-      "stored": 1,
-      "t": 4.4,
-      "type": 0
+      "t": 88.3
     },
     {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 2,
-      "t": 10.3,
-      "type": 6
+      "cubes": 22.319052855216,
+      "hexes": 0,
+      "made": 6.0,
+      "t": 90.2
     },
     {
-      "id": "scoop_15",
-      "kind": "goal",
-      "n": 1,
-      "t": 15.3
+      "event": "upgrade",
+      "id": "tread_speed",
+      "level": 2,
+      "t": 103.9
     },
     {
-      "id": "bale_1",
-      "kind": "goal",
-      "n": 2,
-      "t": 17.4
+      "cubes": 2.63302928789705,
+      "hexes": 0,
+      "made": 8.0,
+      "t": 120.2
     },
     {
-      "id": "upgrade_1",
-      "kind": "goal",
-      "n": 3,
-      "t": 21.0
-    },
-    {
-      "id": "perfect_1",
-      "kind": "goal",
-      "n": 4,
-      "t": 21.7
-    },
-    {
-      "id": "cash_1",
-      "kind": "goal",
-      "n": 5,
-      "t": 22.5
-    },
-    {
-      "kind": "part",
-      "rarity": 1,
-      "stored": 3,
-      "t": 54.6,
-      "type": 6
-    },
-    {
-      "kind": "part",
-      "rarity": 1,
-      "stored": 4,
-      "t": 58.1,
-      "type": 3
-    },
-    {
-      "id": "upgrades_5",
-      "kind": "goal",
-      "n": 6,
-      "t": 76.2
-    },
-    {
-      "id": "compartment_3",
-      "kind": "goal",
-      "n": 7,
-      "t": 76.9
-    },
-    {
-      "hex": 1,
-      "kind": "hex_clean",
-      "n": 1,
-      "t": 80.1
-    },
-    {
-      "hex": 1,
-      "kind": "hex_level",
+      "event": "upgrade",
+      "id": "carry_stack",
       "level": 1,
-      "t": 80.2
+      "t": 141.1
     },
     {
-      "id": "hex_1",
-      "kind": "goal",
-      "n": 8,
-      "t": 80.5
+      "cubes": 21.8568244371936,
+      "hexes": 0,
+      "made": 9.0,
+      "t": 150.2
     },
     {
-      "kind": "part",
-      "rarity": 1,
-      "stored": 5,
-      "t": 99.3,
-      "type": 0
+      "event": "upgrade",
+      "id": "bot_scoopie_speed",
+      "level": 1,
+      "t": 158.1
     },
     {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 6,
-      "t": 103.2,
-      "type": 5
+      "event": "upgrade",
+      "id": "bot_haulbug_speed",
+      "level": 1,
+      "t": 158.8
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_width",
+      "level": 3,
+      "t": 159.5
+    },
+    {
+      "event": "upgrade",
+      "id": "bot_scoopie_scoop_rate",
+      "level": 1,
+      "t": 159.6
+    },
+    {
+      "cubes": 62.7366321135833,
+      "hexes": 0,
+      "made": 11.0,
+      "t": 180.2
+    },
+    {
+      "event": "upgrade",
+      "id": "compartment_size",
+      "level": 4,
+      "t": 190.4
+    },
+    {
+      "cubes": 10.2249285128116,
+      "hexes": 0,
+      "made": 13.0,
+      "t": 210.2
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_speed",
+      "level": 2,
+      "t": 239.5
+    },
+    {
+      "cubes": 9.99994826382393,
+      "hexes": 0,
+      "made": 14.0,
+      "t": 240.2
+    },
+    {
+      "cubes": 69.7250083152279,
+      "hexes": 0,
+      "made": 15.0,
+      "t": 270.2
+    },
+    {
+      "event": "upgrade",
+      "id": "tread_speed",
+      "level": 3,
+      "t": 284.0
+    },
+    {
+      "cubes": 9.2408677036985,
+      "hexes": 0,
+      "made": 17.0,
+      "t": 300.2
     }
   ],
+  "perfect_cubes": 18.0,
+  "pure_cubes": 0,
   "upgrades": {
-    "compartment_size": 3,
-    "scoop_width": 2,
-    "tread_speed": 1
+    "bot_haulbug_speed": 1,
+    "bot_scoopie_scoop_rate": 1,
+    "bot_scoopie_speed": 1,
+    "carry_stack": 1,
+    "compartment_size": 4,
+    "scoop_speed": 2,
+    "scoop_width": 3,
+    "tread_speed": 3
   }
 }

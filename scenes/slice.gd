@@ -34,6 +34,8 @@ var interactables: Interactables
 var eggs: EasterEggs
 var ledger: LedgerArc
 var outposts: Outposts  # [outposts] ruined frontier depots (automation/outposts.gd)
+var events: WorldEvents  # [events] world events, cleaning streak (systems/events.gd)
+var contracts: Contracts  # [events] contracts board + token shop (systems/contracts.gd)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
 var depot: Depot
@@ -404,6 +406,15 @@ func _ready() -> void:
 	ledger.world = self
 	add_child(ledger)
 	ledger.setup()
+	# [events] World events director (+ streak and its HUD) and the contracts board.
+	events = WorldEvents.new()
+	events.name = "WorldEvents"
+	events.world = self
+	add_child(events)
+	contracts = Contracts.new()
+	contracts.name = "Contracts"
+	contracts.world = self
+	add_child(contracts)
 	var bloom := Bloom.new()  # [bloom] post-game milestones + Seed Ark (systems/bloom.gd)
 	bloom.name = "Bloom"
 	bloom.world = self
@@ -995,6 +1006,11 @@ func _restore_world(from_memory: bool = false) -> void:
 ## [outposts] Pins for the Command view: grey ruins, green working outposts with their level.
 func command_markers() -> Array:
 	var out: Array = []
+	# [events] pin on the running world event
+	if events != null:
+		var ep: Variant = events.marker_pos()
+		if ep is Vector3:
+			out.append({"pos": ep, "label": str(events.active.get("name", "EVENT")).to_upper(), "color": events.active.get("color", UITheme.GOLD), "kind": "event"})
 	if outposts == null:
 		return out
 	for o: Outpost in outposts.items:

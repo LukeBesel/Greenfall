@@ -306,6 +306,8 @@ func _take_piece(pid: int) -> void:
 	var mesh: Mesh = world.view.piece_mesh(pid)
 	var color: Color = Color.html(str(Economy.junk_types[type_id].get("cube_color", "#888888")))
 	compartment.reserve(vol)
+	if world.get("events") != null:
+		world.events.on_patch_take(pid, vol)  # [events] streak, surge share, audit score
 	world.collect_piece(pid)
 	# Tractor beam show (pooled, see PickupFx): lock-on reticle, twin lasers, lift with arcs,
 	# compress to light and stream into the chest hopper. Big pieces get a heavier, slower take.
@@ -388,6 +390,8 @@ func _spawn_cube() -> void:
 	var cap: float = capacity()
 	var contents: Dictionary = compartment.take_all()
 	var info: Dictionary = Economy.evaluate_cube(contents, cap)
+	if world.get("events") != null:
+		info = world.events.apply_bale_bonus(info)  # [events] streak tier + Salvage Surge share
 	_was_in_band = false
 	model.set_fill(0.0, [0.9, 1.0])
 	EventBus.compartment_changed.emit(0.0, cap)
@@ -415,6 +419,11 @@ func _spawn_cube() -> void:
 	if info["pure"]:
 		GameState.inc_stat("pure_cubes")
 		label = "PURE  " + label
+	if float(info.get("surge_frac", 0.0)) > 0.0:
+		label = "SURGE  " + label
+		color = Color(1.0, 0.82, 0.3)
+	if float(info.get("streak_bonus", 0.0)) > 0.0:
+		label += "  (streak +%d%%)" % int(round(float(info["streak_bonus"]) * 100.0))
 	Vfx.float_text(global_position + Vector3(0, 1.9, 0), label, color, 0.45, 0.7)
 	EventBus.cube_made.emit(info)
 	get_tree().create_timer(1.5).timeout.connect(func() -> void: if is_instance_valid(model): model.set_happy(0.5))
