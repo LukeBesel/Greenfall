@@ -145,6 +145,8 @@ func _process(delta: float) -> void:
 	var dt: float = _tick
 	_tick = 0.0
 	var changed_hexes: Dictionary = {}
+	# Irrigation research: buried drip lines halve how fast plants dry out.
+	var drain: float = dt * (0.5 if Research.has("irrigation") else 1.0)
 	var hl: HexLevels = world.get("hex_levels") as HexLevels
 	var grow_mult: float = 1.0 + (hl.bonus("grow_pct") if hl else 0.0)
 	var seed_mult: float = 1.0 + (hl.bonus("seed_pct") if hl else 0.0)
@@ -153,7 +155,7 @@ func _process(delta: float) -> void:
 			continue
 		var sp: Dictionary = species[slot_species[s]]
 		if slot_water[s] > 0.0:
-			slot_water[s] = maxf(0.0, slot_water[s] - dt)
+			slot_water[s] = maxf(0.0, slot_water[s] - drain)
 			if slot_water[s] <= 0.0:
 				_update_inst(s)  # droop
 			if slot_stage[s] < 4:

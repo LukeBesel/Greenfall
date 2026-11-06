@@ -332,6 +332,9 @@ func _ready() -> void:
 	tutorial.world = self
 	add_child(tutorial)
 	_setup_research_codex()
+	var cargo := CargoPods.new()
+	cargo.world = self
+	add_child(cargo)
 	composter = Composter.new()
 	composter.world = self
 	add_child(composter)
