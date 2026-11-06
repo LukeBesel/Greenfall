@@ -13,6 +13,8 @@ var _sounds: Dictionary = {}  # name -> Array[AudioStreamWAV]
 var _players: Array[AudioStreamPlayer] = []
 var _next_player: int = 0
 var _rng := RandomNumberGenerator.new()
+var _loops: Dictionary = {}  # name -> AudioStreamWAV (looping)
+var _loop_players: Dictionary = {}  # name -> AudioStreamPlayer
 
 const MusicSynth := preload("res://audio/music_synth.gd")
 const MusicDirector := preload("res://audio/music_director.gd")
@@ -106,6 +108,28 @@ func play(sound: String, pitch: float = 1.0, volume_db: float = 0.0, jitter: flo
 func play_scale(sound: String, step: int, volume_db: float = 0.0) -> void:
 	var s: int = PENTATONIC[clampi(step, 0, PENTATONIC.size() - 1)]
 	play(sound, pow(2.0, s / 12.0), volume_db, 0.0)
+
+
+## Continuous looping sound at `level` 0..1 (0 stops it). Cheap to call every frame; the
+## player is created once per loop name. `pitch` follows the call.
+func loop(sound: String, level: float, pitch: float = 1.0) -> void:
+	var p: AudioStreamPlayer = _loop_players.get(sound)
+	if level <= 0.001:
+		if p and p.playing:
+			p.stop()
+		return
+	if p == null:
+		if not _loops.has(sound):
+			return
+		p = AudioStreamPlayer.new()
+		p.bus = "SFX"
+		p.stream = _loops[sound]
+		add_child(p)
+		_loop_players[sound] = p
+	p.volume_db = linear_to_db(level) - 22.0
+	p.pitch_scale = pitch
+	if not p.playing:
+		p.play()
 
 
 func override(sound: String, streams: Array) -> void:
@@ -202,6 +226,14 @@ func _add(sound: String, b: PackedFloat32Array) -> void:
 
 
 func _generate_all() -> void:
+	# Beam hum: a soft, loopable sci-fi drone (whole cycles per second so it loops seamlessly).
+	var hum := _buf(1.0)
+	for i: int in hum.size():
+		var t: float = float(i) / RATE
+		var trem: float = 0.8 + 0.2 * sin(TAU * 6.0 * t)
+		hum[i] = (sin(TAU * 110.0 * t) * 0.5 + sin(TAU * 220.0 * t + 0.3 * sin(TAU * 3.0 * t)) * 0.3 \
+			+ sin(TAU * 331.0 * t) * 0.12 + sin(TAU * 662.0 * t) * 0.06) * trem * 0.35
+	_loops["beam_hum"] = _wav(hum, true)
 	# Clink: small metallic bits flying into the compartment.
 	for f: float in [1750.0, 2050.0, 2400.0, 1600.0]:
 		var b := _buf(0.2)

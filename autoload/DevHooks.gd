@@ -27,6 +27,7 @@ extends Node
 ##   --ledger-drop[=S]  force a Ledger dump drone S seconds after start (ignores jammers)
 ##   --ledger-resolve[=S]  play the relay "rewrite the contract" cinematic (needs act 3)
 ##   --spawn-relay      put Patch next to the Ledger relay terminal (act >= 3)
+##   --demo-scoop       Patch scoops the nearest junk nonstop (pickup animation shots; --demo-yaw, --demo-speed)
 ##   --spawn-egg=ID     put Patch next to an easter egg in this district (data/eggs.json ids);
 ##                      --egg-dist=M sets the distance, --egg-poke[=S] plays its reaction after S s
 

@@ -48,7 +48,7 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
   1. Automation chain: conveyor/hopper feeder that sends bales to the scale; an auto-baler station; drag-to-assign bots on the map.
   2. Bot build loop: build and upgrade robots straight from the Command panel when at the base, with crew size caps raised by hub level.
   3. Skimmer (water) robot and lake cleaning; Grinder/Recycler to remove trash for good.
-  4. Tractor-beam pickup visuals for Mk III+ and Patch.
+  4. Done: tractor-beam pickup show. Patch (player/pickup_fx.gd, pooled): lock-on reticle, twin claw lasers, shader tractor cone (art/shaders/tractor_beam.gdshader), glowing lifted piece with arcs, compress to light, spiral mote stream into the chest hopper, beam hum; heavier take for big pieces. Mk III/IV helpers use a lighter version of the same beam. Dev hook: --demo-scoop.
   5. Cargo rockets (gate on `Research.has("rocket_cargo")`), then content (easter eggs, Ledger) and polish (cinematic intro, music, exports).
   5. Research tree, cargo rockets, then content (easter eggs, Codex, Ledger) and polish (cinematic intro, music, exports).
 

@@ -10,6 +10,8 @@ const TURN_RATE: float = 9.0
 const GRAVITY: float = 20.0
 const PICKUP_RANGE: float = 1.9
 const CUBE_TIME: float = 1.7
+## Pieces at least this big get the heavy pickup animation.
+const BIG_PIECE_VOL: float = 1.5
 
 var input: InputSource
 var world: Node  # the slice scene: field, view, collect_piece(), depot
@@ -19,6 +21,7 @@ var compartment := Compartment.new()
 var carried: Array[JunkCube] = []
 var model: PatchModel
 var detector: PartDetector
+var pickup_fx: PickupFx
 
 var _scoop_timer: float = 0.0
 var _scoop_combo: int = 0
@@ -63,6 +66,10 @@ func _ready() -> void:
 	detector.name = "Detector"
 	detector.patch = self
 	add_child(detector)
+	pickup_fx = PickupFx.new()
+	pickup_fx.name = "PickupFx"
+	pickup_fx.model = model
+	add_child(pickup_fx)
 	_stack_root = Node3D.new()
 	_stack_root.name = "Stack"
 	_stack_root.position = model.stack_point
@@ -285,31 +292,11 @@ func _take_piece(pid: int) -> void:
 	var color: Color = Color.html(str(Economy.junk_types[type_id].get("cube_color", "#888888")))
 	compartment.reserve(vol)
 	world.collect_piece(pid)
-	# Tractor beam: the claw locks on, the piece lifts and spins in the beam, then is pulled in.
-	var flyer := MeshInstance3D.new()
-	flyer.mesh = mesh
-	get_tree().current_scene.add_child(flyer)
-	flyer.global_transform = start_xf
-	var start: Vector3 = start_xf.origin
-	var start_scale: Vector3 = start_xf.basis.get_scale()
-	var dur: float = 0.36
-	Vfx.burst("sparkle", start + Vector3(0, 0.05, 0), Color(0.45, 0.9, 1.0), 0.25)
-	var tw := flyer.create_tween()
-	tw.tween_method(func(t: float) -> void:
-		if not is_instance_valid(self) or not is_instance_valid(flyer):
-			return
-		var claw: Vector3 = model.claw_point()
-		var lift: Vector3 = start + Vector3(0, 0.35 * smoothstep(0.0, 0.45, t), 0)
-		var pos: Vector3 = lift.lerp(claw, smoothstep(0.4, 1.0, t))
-		flyer.global_position = pos
-		flyer.scale = start_scale * lerpf(1.0, 0.25, smoothstep(0.55, 1.0, t))
-		flyer.rotation += Vector3(0.06, 0.12, 0.04)
-		model.beam_at(pos)
-		, 0.0, 1.0, dur)
-	tw.tween_callback(func() -> void:
-		if is_instance_valid(self):
-			model.beam_at(null))
-	tw.tween_callback(flyer.queue_free)
+	# Tractor beam show (pooled, see PickupFx): lock-on reticle, twin lasers, lift with arcs,
+	# compress to light and stream into the chest hopper. Big pieces get a heavier, slower take.
+	var big: bool = vol >= BIG_PIECE_VOL
+	var dur: float = 0.52 if big else 0.4
+	pickup_fx.launch(mesh, start_xf, dur, big, color)
 	# Arrival is timer-driven so a cut-short animation can never leave volume stuck as pending.
 	get_tree().create_timer(dur, false).timeout.connect(func() -> void:
 		if is_instance_valid(self):
