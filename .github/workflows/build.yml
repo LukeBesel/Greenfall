@@ -5,6 +5,10 @@ on:
   push:
     branches: [main, "claude/**"]
 
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   export:
     runs-on: ubuntu-latest
@@ -28,12 +32,15 @@ jobs:
       - name: Import project
         run: ./godot --headless --path . --import || true
 
-      - name: Export Windows, Linux and macOS
+      - name: Export Windows and Linux
         run: |
           mkdir -p build/windows build/linux build/macos
           ./godot --headless --path . --export-release "Windows Desktop" build/windows/Greenfall.exe
           ./godot --headless --path . --export-release "Linux" build/linux/Greenfall.x86_64
-          ./godot --headless --path . --export-release "macOS" build/macos/Greenfall.zip
+
+      - name: Export macOS
+        continue-on-error: true
+        run: ./godot --headless --path . --export-release "macOS" build/macos/Greenfall.zip
 
       - uses: actions/upload-artifact@v4
         with:
@@ -44,6 +51,7 @@ jobs:
           name: Greenfall-Linux
           path: build/linux
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: Greenfall-macOS
           path: build/macos
