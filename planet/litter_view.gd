@@ -90,7 +90,7 @@ func _build() -> void:
 	var groups: Dictionary = {}  # "cx,cz|mesh" -> Array of [xf, color, hex, x, z, threshold]
 	var area: float = 2.598 * field.hex_size * field.hex_size
 	for id: int in field.hex_count():
-		if field.hex_hub[id] != 0:
+		if field.hex_hub[id] != 0 or field.is_water(id):
 			continue
 		var c: Vector3 = field.hex_center(id)
 		var btype: int = layout.block_type_at(c.x, c.z) if layout else 0

@@ -26,6 +26,7 @@ var shards: ShardSystem
 var garden: Garden
 var first_seed: FirstSeed
 var wildlife: Wildlife
+var water: WaterView
 var doc_view: DocumentView
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
@@ -74,6 +75,13 @@ func _ready() -> void:
 	var types: Array = []
 	for id: String in Economy.junk_ids:
 		types.append(Economy.junk_types[id])
+	# Lake hexes: district hexes that sit on planet water cells.
+	for i: int in Hex.spiral(int(cfg.get("radius", 9))).size():
+		var a: Vector2i = Hex.spiral(int(cfg.get("radius", 9)))[i]
+		var w: Vector2 = Hex.axial_to_world(a, float(cfg.get("hex_size", 3.2)))
+		var cell: int = planet.grid.nearest_from(planet.local_to_dir(anchor_cell, w.x, w.y), anchor_cell)
+		if planet.state[cell] == PlanetData.State.WATER:
+			field.water_ids[i] = true
 	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
 	field.place_landmarks(Economy.landmarks)
 	field.bury_parts(Economy.parts)
@@ -86,6 +94,9 @@ func _ready() -> void:
 	view.name = "FieldView"
 	add_child(view)
 	view.setup(field)
+	water = WaterView.new()
+	water.name = "Water"
+	add_child(water)
 	litter = LitterView.new()
 	litter.name = "Litter"
 	add_child(litter)
@@ -237,6 +248,7 @@ func _ready() -> void:
 	doc_view.closed.connect(_on_modal_closed)
 	first_seed.setup()
 	wildlife.setup()
+	water.setup()
 	tutorial = Tutorial.new()
 	tutorial.world = self
 	add_child(tutorial)

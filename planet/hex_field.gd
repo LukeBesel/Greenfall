@@ -19,6 +19,10 @@ var hex_left: PackedFloat32Array
 var hex_clean: PackedByteArray
 var hex_hub: PackedByteArray  # 1 = hub ground (starts clean, not counted)
 var hex_pieces: Array[PackedInt32Array] = []
+## 1 = lake hex (floating junk, water surface). Set water_ids before generate().
+var hex_water := PackedByteArray()
+var water_ids: Dictionary = {}
+const WATER_Y: float = 0.14
 ## Junk piles per hex: Vector4(x, z, radius, height). Their mounds shrink as the hex is cleaned.
 var hex_piles: Array = []
 
@@ -99,6 +103,8 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 	hex_clean.resize(n)
 	hex_hub = PackedByteArray()
 	hex_hub.resize(n)
+	hex_water = PackedByteArray()
+	hex_water.resize(n)
 	hex_pieces.clear()
 	hex_piles.clear()
 	for i: int in n:
@@ -116,6 +122,11 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 	for id: int in n:
 		var center: Vector3 = hex_center(id)
 		var kind: int = _hex_kind(center)
+		if water_ids.has(id) and kind != HEX_HUB:
+			hex_water[id] = 1
+			junk_hex_count += 1
+			_generate_floating(id, rng, by_id)
+			continue
 		if kind == HEX_HUB:
 			hex_hub[id] = 1
 			hex_clean[id] = 1
@@ -197,6 +208,44 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 const HEX_JUNK: int = 0
 const HEX_HUB: int = 1
 const HEX_BLOCKED: int = 2
+
+
+## Floating junk on a lake hex: light things that float, scattered across the surface.
+func _generate_floating(id: int, rng: RandomNumberGenerator, by_id: Dictionary) -> void:
+	var floaters: Array = [["plastic", "plastic_bottle_gallon"], ["plastic", "bleach_bottle"], ["plastic", "trashbag"], ["plastic", "multi_cleaner_bottle"], ["rubber", "rubber_duck_toy"], ["rubber", "old_tyre"], ["rubber", "dirty_football"], ["glass", "wine_bottles_01"], ["paper", "cardboard_box_01"], ["plastic", "plastic_crate_01"]]
+	var c: Vector3 = hex_center(id)
+	var count: int = rng.randi_range(70, 110)
+	var placed: int = 0
+	var tries: int = 0
+	while placed < count and tries < count * 6:
+		tries += 1
+		var pos: Vector3 = c + Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)) * hex_size
+		if hex_at(pos) != id:
+			continue
+		var f: Array = floaters[rng.randi() % floaters.size()]
+		var type_idx: int = int(by_id.get(f[0], 0))
+		var vol: float = 0.6 * rng.randf_range(0.8, 1.3) if f[1] != "old_tyre" else 2.5
+		pos.y = WATER_Y - 0.06
+		var pid: int = piece_pos.size()
+		piece_pos.append(pos)
+		piece_type.append(type_idx)
+		piece_model.append(str(f[1]))
+		piece_vol.append(vol)
+		piece_hex.append(id)
+		piece_yaw.append(rng.randf() * TAU)
+		piece_scale.append(rng.randf_range(0.9, 1.1))
+		piece_pose.append(1 if f[1] in ["plastic_bottle_gallon", "bleach_bottle", "multi_cleaner_bottle", "old_tyre", "wine_bottles_01"] else 0)
+		piece_tilt.append(rng.randf_range(-0.3, 0.3))
+		piece_embed.append(0.0)
+		piece_alive.append(1)
+		hex_pieces[id].append(pid)
+		hex_total[id] += vol
+		placed += 1
+	hex_left[id] = hex_total[id]
+
+
+func is_water(id: int) -> bool:
+	return id >= 0 and id < hex_water.size() and hex_water[id] == 1
 
 
 func _hex_kind(center: Vector3) -> int:

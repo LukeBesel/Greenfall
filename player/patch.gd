@@ -104,6 +104,12 @@ func _physics_process(delta: float) -> void:
 func _move(delta: float) -> void:
 	var wish: Vector3 = Vector3.ZERO if _cubing > 0.0 else input.get_world_move(cam_yaw_provider.call())
 	var speed: float = stat("move_speed") * (0.55 if input.scoop_held() and wish.length() > 0.1 else 1.0)
+	# Wading: Patch can't swim yet. Shallow lake water slows him and splashes.
+	var here: int = world.field.hex_at(global_position) if world and world.field else -1
+	if here >= 0 and world.field.is_water(here):
+		speed *= 0.45
+		if Vector2(velocity.x, velocity.z).length() > 0.5 and randf() < 0.15:
+			Vfx.burst("soil", global_position + Vector3(0, 0.15, 0), Color(0.6, 0.7, 0.75, 0.7), 0.3)
 	# A heavy stack slows him a touch, never much.
 	speed *= 1.0 - 0.03 * carried.size()
 	var target: Vector3 = wish * speed

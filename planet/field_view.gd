@@ -284,12 +284,17 @@ func _write_hex(id: int, flip_time: float) -> void:
 	var y: int = a.y + field.radius
 	var prev: Color = _state_img.get_pixel(x, y)
 	var ft: float = prev.g if flip_time == -1.0 else flip_time
-	_state_img.set_pixel(x, y, Color(field.removed_fraction(id), ft, float(field.hex_clean[id]), float(field.hex_hub[id])))
+	var flag: float = 1.0 if field.hex_hub[id] == 1 else (0.5 if field.is_water(id) else 0.0)
+	_state_img.set_pixel(x, y, Color(field.removed_fraction(id), ft, float(field.hex_clean[id]), flag))
 
 
 func _flush() -> void:
 	_state_tex.update(_state_img)
 	_dirty_tex = false
+
+
+func state_texture() -> ImageTexture:
+	return _state_tex
 
 
 func set_life(id: int, life: float) -> void:

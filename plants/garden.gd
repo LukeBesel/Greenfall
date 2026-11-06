@@ -33,7 +33,7 @@ func setup() -> void:
 		_sp_weight_sum += float(s.get("weight", 1.0))
 	var field: HexField = world.field
 	for id: int in field.hex_count():
-		if field.hex_hub[id] == 0:
+		if field.hex_hub[id] == 0 and not field.is_water(id):
 			_make_slots(id)
 	_load()
 

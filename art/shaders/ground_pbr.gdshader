@@ -169,14 +169,23 @@ void fragment() {
 		Mat grass = mixm(samp(8, p, 3.0), samp(9, p, 3.5), smoothstep(0.35, 0.8, life));
 		m = mixm(mixm(m, soil, smoothstep(0.0, 0.15, life)), grass, g);
 	}
-	if (is_hub > 0.5 || is_yard) {
+	if (is_hub > 0.75 || is_yard) {
 		m = base;
+	}
+	// Lakebed: dark silty mud that turns to clean wet sand as the water is cleared.
+	if (is_hub > 0.4 && is_hub < 0.6) {
+		Mat mud = samp(4, p, 2.0);
+		mud.alb *= vec3(0.32, 0.3, 0.28);
+		Mat sand = samp(4, p, 2.5);
+		sand.alb *= vec3(0.95, 0.88, 0.7);
+		m = mixm(mud, sand, smoothstep(0.2, 1.0, removed));
+		m.arm.g = 0.25;
 	}
 	// Large-scale value variation to hide tiling.
 	m.alb *= mix(0.84, 1.06, fbm(p * 0.02 + 3.0));
 
 	vec3 emission = vec3(0.0);
-	if (inside && is_hub < 0.5) {
+	if (inside && is_hub < 0.4) {
 		float line = smoothstep(0.05, 0.0, edge_d);
 		if (distance(ax, focus_axial) < 0.5) {
 			emission += vec3(1.0, 0.7, 0.25) * line * 0.3;
