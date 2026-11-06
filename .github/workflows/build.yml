@@ -42,6 +42,17 @@ jobs:
         continue-on-error: true
         run: ./godot --headless --path . --export-release "macOS" build/macos/Greenfall.zip
 
+      # [steam] Demo builds: same game with the "demo" feature tag (steam/demo.gd).
+      - name: Export Windows and Linux demo
+        run: |
+          mkdir -p build/demo/windows build/demo/linux build/demo/macos
+          ./godot --headless --path . --export-release "Windows Desktop Demo" build/demo/windows/GreenfallDemo.exe
+          ./godot --headless --path . --export-release "Linux Demo" build/demo/linux/GreenfallDemo.x86_64
+
+      - name: Export macOS demo
+        continue-on-error: true
+        run: ./godot --headless --path . --export-release "macOS Demo" build/demo/macos/GreenfallDemo.zip
+
       - uses: actions/upload-artifact@v4
         with:
           name: Greenfall-Windows
@@ -55,3 +66,16 @@ jobs:
         with:
           name: Greenfall-macOS
           path: build/macos
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GreenfallDemo-Windows
+          path: build/demo/windows
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GreenfallDemo-Linux
+          path: build/demo/linux
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: GreenfallDemo-macOS
+          path: build/demo/macos

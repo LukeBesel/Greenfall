@@ -195,7 +195,7 @@ func _ready() -> void:
 	globe = GlobeView.new()
 	globe.planet = planet
 	globe.current_hub = hub_index
-	globe.rocket_ready = func() -> bool: return hub.level >= 5 or DevHooks.has("rocket")
+	globe.rocket_ready = func() -> bool: return Demo.rockets_allowed() and (hub.level >= 5 or DevHooks.has("rocket"))  # [steam] Demo
 	globe.launch_to = func(i: int) -> void: _launch(i)
 	globe.patch_cell_provider = func() -> int: return planet_cell_at(patch.global_position)
 	globe.holder = patch
@@ -735,7 +735,7 @@ func _on_hex_clean(hid: int) -> void:
 
 
 func _launch(to_hub: int) -> void:
-	if launching:
+	if launching or Demo.block("rocket"):  # [steam] demo: first district only
 		return
 	launching = true
 	if rocket == null:

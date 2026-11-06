@@ -1,0 +1,19 @@
+{
+ "_doc": "Steam mirror config (steam/steam_service.gd). Achievement API names are the ids in data/achievements.json upper-cased (first_scoop -> FIRST_SCOOP). stats: Steam stats kept in step with GameState.stats[key] (type INT or FLOAT; INT values are floored). Enter the same API names in Steamworks (docs/steam/achievements.csv, docs/steam/stats.csv; regenerate with tools/steam_export.tscn).",
+ "stats": [
+  {"api": "HEXES_CLEANED", "key": "hexes_cleaned", "type": "INT", "name": "Hexes cleaned"},
+  {"api": "HEXES_RESTORED", "key": "hexes_restored", "type": "INT", "name": "Hexes restored"},
+  {"api": "CUBES_MADE", "key": "cubes_made", "type": "INT", "name": "Bales made"},
+  {"api": "PERFECT_CUBES", "key": "perfect_cubes", "type": "INT", "name": "Perfect bales"},
+  {"api": "ROBOTS_BUILT", "key": "robots_built", "type": "INT", "name": "Robots built"},
+  {"api": "UPGRADES_BOUGHT", "key": "upgrades_bought", "type": "INT", "name": "Upgrades bought"},
+  {"api": "PLANTS_PLANTED", "key": "plants_planted", "type": "INT", "name": "Plants planted"},
+  {"api": "PLANTS_BLOOMED", "key": "plants_bloomed", "type": "INT", "name": "Plants bloomed"},
+  {"api": "SHARDS_FOUND", "key": "shards_found", "type": "INT", "name": "Memory shards found"},
+  {"api": "EGGS_FOUND", "key": "eggs_found", "type": "INT", "name": "Curiosities found"},
+  {"api": "OUTPOSTS_REPAIRED", "key": "outposts_repaired", "type": "INT", "name": "Outposts repaired"},
+  {"api": "ARK_WAVES", "key": "ark_waves", "type": "INT", "name": "Seed Ark waves"},
+  {"api": "DISTANCE_M", "key": "distance_m", "type": "FLOAT", "name": "Distance driven (m)"},
+  {"api": "MINUTES_PLAYED", "key": "time_played", "type": "INT", "scale": 0.016666667, "name": "Minutes played"}
+ ]
+}
