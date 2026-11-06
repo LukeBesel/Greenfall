@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://fkxevrwwp6kg"
 path.s3tc="res://.godot/imported/asphalt_02_diff_1k.jpg-51a942962781b8f1affb0fd8e72ea145.s3tc.ctex"
+path.etc2="res://.godot/imported/asphalt_02_diff_1k.jpg-51a942962781b8f1affb0fd8e72ea145.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/asphalt_02/asphalt_02_diff_1k.jpg"
-dest_files=["res://.godot/imported/asphalt_02_diff_1k.jpg-51a942962781b8f1affb0fd8e72ea145.s3tc.ctex"]
+dest_files=["res://.godot/imported/asphalt_02_diff_1k.jpg-51a942962781b8f1affb0fd8e72ea145.s3tc.ctex", "res://.godot/imported/asphalt_02_diff_1k.jpg-51a942962781b8f1affb0fd8e72ea145.etc2.ctex"]
 
 [params]
 

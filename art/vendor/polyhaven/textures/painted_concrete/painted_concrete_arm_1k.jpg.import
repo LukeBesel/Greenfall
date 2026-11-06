@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://b5hf2pcib0qed"
 path.s3tc="res://.godot/imported/painted_concrete_arm_1k.jpg-5c26337d00f58081844ce5347e6216f9.s3tc.ctex"
+path.etc2="res://.godot/imported/painted_concrete_arm_1k.jpg-5c26337d00f58081844ce5347e6216f9.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/painted_concrete/painted_concrete_arm_1k.jpg"
-dest_files=["res://.godot/imported/painted_concrete_arm_1k.jpg-5c26337d00f58081844ce5347e6216f9.s3tc.ctex"]
+dest_files=["res://.godot/imported/painted_concrete_arm_1k.jpg-5c26337d00f58081844ce5347e6216f9.s3tc.ctex", "res://.godot/imported/painted_concrete_arm_1k.jpg-5c26337d00f58081844ce5347e6216f9.etc2.ctex"]
 
 [params]
 

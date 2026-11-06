@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://gmrg3gi3el6i"
 path.s3tc="res://.godot/imported/leafy_grass_nor_gl_1k.jpg-49fb717f76e94dad90cc626df18f8493.s3tc.ctex"
+path.etc2="res://.godot/imported/leafy_grass_nor_gl_1k.jpg-49fb717f76e94dad90cc626df18f8493.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/leafy_grass/leafy_grass_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/leafy_grass_nor_gl_1k.jpg-49fb717f76e94dad90cc626df18f8493.s3tc.ctex"]
+dest_files=["res://.godot/imported/leafy_grass_nor_gl_1k.jpg-49fb717f76e94dad90cc626df18f8493.s3tc.ctex", "res://.godot/imported/leafy_grass_nor_gl_1k.jpg-49fb717f76e94dad90cc626df18f8493.etc2.ctex"]
 
 [params]
 

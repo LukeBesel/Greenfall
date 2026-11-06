@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://d2g3rdt2lhkus"
 path.s3tc="res://.godot/imported/rubble_nor_gl_1k.jpg-dea55cf688154a95758beaec4ef76815.s3tc.ctex"
+path.etc2="res://.godot/imported/rubble_nor_gl_1k.jpg-dea55cf688154a95758beaec4ef76815.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/rubble/rubble_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/rubble_nor_gl_1k.jpg-dea55cf688154a95758beaec4ef76815.s3tc.ctex"]
+dest_files=["res://.godot/imported/rubble_nor_gl_1k.jpg-dea55cf688154a95758beaec4ef76815.s3tc.ctex", "res://.godot/imported/rubble_nor_gl_1k.jpg-dea55cf688154a95758beaec4ef76815.etc2.ctex"]
 
 [params]
 

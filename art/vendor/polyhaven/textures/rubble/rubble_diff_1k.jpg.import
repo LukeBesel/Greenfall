@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bqn07chwmese8"
 path.s3tc="res://.godot/imported/rubble_diff_1k.jpg-ee3afc59fe36d4f232f21f4fb9124cc9.s3tc.ctex"
+path.etc2="res://.godot/imported/rubble_diff_1k.jpg-ee3afc59fe36d4f232f21f4fb9124cc9.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/rubble/rubble_diff_1k.jpg"
-dest_files=["res://.godot/imported/rubble_diff_1k.jpg-ee3afc59fe36d4f232f21f4fb9124cc9.s3tc.ctex"]
+dest_files=["res://.godot/imported/rubble_diff_1k.jpg-ee3afc59fe36d4f232f21f4fb9124cc9.s3tc.ctex", "res://.godot/imported/rubble_diff_1k.jpg-ee3afc59fe36d4f232f21f4fb9124cc9.etc2.ctex"]
 
 [params]
 

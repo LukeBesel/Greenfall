@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://8u1rlejgc37k"
 path.s3tc="res://.godot/imported/red_brick_nor_gl_1k.jpg-8ed10e721295609d863ddfa5d3bc35cb.s3tc.ctex"
+path.etc2="res://.godot/imported/red_brick_nor_gl_1k.jpg-8ed10e721295609d863ddfa5d3bc35cb.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/red_brick/red_brick_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/red_brick_nor_gl_1k.jpg-8ed10e721295609d863ddfa5d3bc35cb.s3tc.ctex"]
+dest_files=["res://.godot/imported/red_brick_nor_gl_1k.jpg-8ed10e721295609d863ddfa5d3bc35cb.s3tc.ctex", "res://.godot/imported/red_brick_nor_gl_1k.jpg-8ed10e721295609d863ddfa5d3bc35cb.etc2.ctex"]
 
 [params]
 

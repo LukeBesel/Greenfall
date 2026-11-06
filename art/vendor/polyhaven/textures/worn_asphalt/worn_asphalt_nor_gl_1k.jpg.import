@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://d3e8bb1w0ce2j"
 path.s3tc="res://.godot/imported/worn_asphalt_nor_gl_1k.jpg-5457700703b5b2dfc9f8631d8602ceca.s3tc.ctex"
+path.etc2="res://.godot/imported/worn_asphalt_nor_gl_1k.jpg-5457700703b5b2dfc9f8631d8602ceca.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/worn_asphalt/worn_asphalt_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/worn_asphalt_nor_gl_1k.jpg-5457700703b5b2dfc9f8631d8602ceca.s3tc.ctex"]
+dest_files=["res://.godot/imported/worn_asphalt_nor_gl_1k.jpg-5457700703b5b2dfc9f8631d8602ceca.s3tc.ctex", "res://.godot/imported/worn_asphalt_nor_gl_1k.jpg-5457700703b5b2dfc9f8631d8602ceca.etc2.ctex"]
 
 [params]
 

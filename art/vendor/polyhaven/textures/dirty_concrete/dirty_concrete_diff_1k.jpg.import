@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cdav4fv7t4hjp"
 path.s3tc="res://.godot/imported/dirty_concrete_diff_1k.jpg-795511130f9867ece223f7507c74fec0.s3tc.ctex"
+path.etc2="res://.godot/imported/dirty_concrete_diff_1k.jpg-795511130f9867ece223f7507c74fec0.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/dirty_concrete/dirty_concrete_diff_1k.jpg"
-dest_files=["res://.godot/imported/dirty_concrete_diff_1k.jpg-795511130f9867ece223f7507c74fec0.s3tc.ctex"]
+dest_files=["res://.godot/imported/dirty_concrete_diff_1k.jpg-795511130f9867ece223f7507c74fec0.s3tc.ctex", "res://.godot/imported/dirty_concrete_diff_1k.jpg-795511130f9867ece223f7507c74fec0.etc2.ctex"]
 
 [params]
 

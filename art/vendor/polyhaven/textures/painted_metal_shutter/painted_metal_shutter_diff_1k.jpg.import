@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://gg5t0pccuswg"
 path.s3tc="res://.godot/imported/painted_metal_shutter_diff_1k.jpg-b0331d2fb3cb615f8d6c7c64761ba6d9.s3tc.ctex"
+path.etc2="res://.godot/imported/painted_metal_shutter_diff_1k.jpg-b0331d2fb3cb615f8d6c7c64761ba6d9.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/painted_metal_shutter/painted_metal_shutter_diff_1k.jpg"
-dest_files=["res://.godot/imported/painted_metal_shutter_diff_1k.jpg-b0331d2fb3cb615f8d6c7c64761ba6d9.s3tc.ctex"]
+dest_files=["res://.godot/imported/painted_metal_shutter_diff_1k.jpg-b0331d2fb3cb615f8d6c7c64761ba6d9.s3tc.ctex", "res://.godot/imported/painted_metal_shutter_diff_1k.jpg-b0331d2fb3cb615f8d6c7c64761ba6d9.etc2.ctex"]
 
 [params]
 

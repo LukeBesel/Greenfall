@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bptqfbm2ts1mo"
 path.s3tc="res://.godot/imported/rusty_metal_02_diff_1k.jpg-32d7b41f7105475f925a1a7161296c0c.s3tc.ctex"
+path.etc2="res://.godot/imported/rusty_metal_02_diff_1k.jpg-32d7b41f7105475f925a1a7161296c0c.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/rusty_metal_02/rusty_metal_02_diff_1k.jpg"
-dest_files=["res://.godot/imported/rusty_metal_02_diff_1k.jpg-32d7b41f7105475f925a1a7161296c0c.s3tc.ctex"]
+dest_files=["res://.godot/imported/rusty_metal_02_diff_1k.jpg-32d7b41f7105475f925a1a7161296c0c.s3tc.ctex", "res://.godot/imported/rusty_metal_02_diff_1k.jpg-32d7b41f7105475f925a1a7161296c0c.etc2.ctex"]
 
 [params]
 

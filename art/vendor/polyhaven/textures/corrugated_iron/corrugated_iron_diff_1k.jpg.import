@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://coilnb71lxmuo"
 path.s3tc="res://.godot/imported/corrugated_iron_diff_1k.jpg-e86f3759a17fb1c2c99ea4aa694b958e.s3tc.ctex"
+path.etc2="res://.godot/imported/corrugated_iron_diff_1k.jpg-e86f3759a17fb1c2c99ea4aa694b958e.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/corrugated_iron/corrugated_iron_diff_1k.jpg"
-dest_files=["res://.godot/imported/corrugated_iron_diff_1k.jpg-e86f3759a17fb1c2c99ea4aa694b958e.s3tc.ctex"]
+dest_files=["res://.godot/imported/corrugated_iron_diff_1k.jpg-e86f3759a17fb1c2c99ea4aa694b958e.s3tc.ctex", "res://.godot/imported/corrugated_iron_diff_1k.jpg-e86f3759a17fb1c2c99ea4aa694b958e.etc2.ctex"]
 
 [params]
 

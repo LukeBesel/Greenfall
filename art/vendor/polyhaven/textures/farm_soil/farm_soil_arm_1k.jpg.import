@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dc1g4jpo86yoe"
 path.s3tc="res://.godot/imported/farm_soil_arm_1k.jpg-704d5393fe733d9c7c1c5e39a2a39d10.s3tc.ctex"
+path.etc2="res://.godot/imported/farm_soil_arm_1k.jpg-704d5393fe733d9c7c1c5e39a2a39d10.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/farm_soil/farm_soil_arm_1k.jpg"
-dest_files=["res://.godot/imported/farm_soil_arm_1k.jpg-704d5393fe733d9c7c1c5e39a2a39d10.s3tc.ctex"]
+dest_files=["res://.godot/imported/farm_soil_arm_1k.jpg-704d5393fe733d9c7c1c5e39a2a39d10.s3tc.ctex", "res://.godot/imported/farm_soil_arm_1k.jpg-704d5393fe733d9c7c1c5e39a2a39d10.etc2.ctex"]
 
 [params]
 

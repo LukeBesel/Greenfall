@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cmxhppfa5goaa"
 path.s3tc="res://.godot/imported/sparse_grass_nor_gl_1k.jpg-a2cb22d7a126c55ca9dd17745743bbea.s3tc.ctex"
+path.etc2="res://.godot/imported/sparse_grass_nor_gl_1k.jpg-a2cb22d7a126c55ca9dd17745743bbea.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/sparse_grass/sparse_grass_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/sparse_grass_nor_gl_1k.jpg-a2cb22d7a126c55ca9dd17745743bbea.s3tc.ctex"]
+dest_files=["res://.godot/imported/sparse_grass_nor_gl_1k.jpg-a2cb22d7a126c55ca9dd17745743bbea.s3tc.ctex", "res://.godot/imported/sparse_grass_nor_gl_1k.jpg-a2cb22d7a126c55ca9dd17745743bbea.etc2.ctex"]
 
 [params]
 

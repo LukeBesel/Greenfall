@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bb2lg5aum6m1r"
 path.s3tc="res://.godot/imported/mud_cracked_dry_03_arm_1k.jpg-90b573459c79f4bd620b0d8d67827d83.s3tc.ctex"
+path.etc2="res://.godot/imported/mud_cracked_dry_03_arm_1k.jpg-90b573459c79f4bd620b0d8d67827d83.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/mud_cracked_dry_03/mud_cracked_dry_03_arm_1k.jpg"
-dest_files=["res://.godot/imported/mud_cracked_dry_03_arm_1k.jpg-90b573459c79f4bd620b0d8d67827d83.s3tc.ctex"]
+dest_files=["res://.godot/imported/mud_cracked_dry_03_arm_1k.jpg-90b573459c79f4bd620b0d8d67827d83.s3tc.ctex", "res://.godot/imported/mud_cracked_dry_03_arm_1k.jpg-90b573459c79f4bd620b0d8d67827d83.etc2.ctex"]
 
 [params]
 

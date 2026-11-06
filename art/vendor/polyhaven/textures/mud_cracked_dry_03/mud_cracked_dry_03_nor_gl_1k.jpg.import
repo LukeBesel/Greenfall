@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bxtb1eg4ttlo5"
 path.s3tc="res://.godot/imported/mud_cracked_dry_03_nor_gl_1k.jpg-fada43b540fa26901492e6c5c0b8eb65.s3tc.ctex"
+path.etc2="res://.godot/imported/mud_cracked_dry_03_nor_gl_1k.jpg-fada43b540fa26901492e6c5c0b8eb65.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/mud_cracked_dry_03/mud_cracked_dry_03_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/mud_cracked_dry_03_nor_gl_1k.jpg-fada43b540fa26901492e6c5c0b8eb65.s3tc.ctex"]
+dest_files=["res://.godot/imported/mud_cracked_dry_03_nor_gl_1k.jpg-fada43b540fa26901492e6c5c0b8eb65.s3tc.ctex", "res://.godot/imported/mud_cracked_dry_03_nor_gl_1k.jpg-fada43b540fa26901492e6c5c0b8eb65.etc2.ctex"]
 
 [params]
 

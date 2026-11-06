@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://clshor8ce73yg"
 path.s3tc="res://.godot/imported/dry_ground_rocks_diff_1k.jpg-7762fd831c85284543431511d487af3e.s3tc.ctex"
+path.etc2="res://.godot/imported/dry_ground_rocks_diff_1k.jpg-7762fd831c85284543431511d487af3e.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/dry_ground_rocks/dry_ground_rocks_diff_1k.jpg"
-dest_files=["res://.godot/imported/dry_ground_rocks_diff_1k.jpg-7762fd831c85284543431511d487af3e.s3tc.ctex"]
+dest_files=["res://.godot/imported/dry_ground_rocks_diff_1k.jpg-7762fd831c85284543431511d487af3e.s3tc.ctex", "res://.godot/imported/dry_ground_rocks_diff_1k.jpg-7762fd831c85284543431511d487af3e.etc2.ctex"]
 
 [params]
 

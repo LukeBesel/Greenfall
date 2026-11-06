@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dkxuyytgh81py"
 path.s3tc="res://.godot/imported/brown_mud_dry_arm_1k.jpg-5c17459d8121e26560984761642bbbab.s3tc.ctex"
+path.etc2="res://.godot/imported/brown_mud_dry_arm_1k.jpg-5c17459d8121e26560984761642bbbab.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/brown_mud_dry/brown_mud_dry_arm_1k.jpg"
-dest_files=["res://.godot/imported/brown_mud_dry_arm_1k.jpg-5c17459d8121e26560984761642bbbab.s3tc.ctex"]
+dest_files=["res://.godot/imported/brown_mud_dry_arm_1k.jpg-5c17459d8121e26560984761642bbbab.s3tc.ctex", "res://.godot/imported/brown_mud_dry_arm_1k.jpg-5c17459d8121e26560984761642bbbab.etc2.ctex"]
 
 [params]
 

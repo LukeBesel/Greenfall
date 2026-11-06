@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://d0mv16lynnc7j"
 path.s3tc="res://.godot/imported/rubble_arm_1k.jpg-40718fbd41cc0782aaf69b46cdb0ae40.s3tc.ctex"
+path.etc2="res://.godot/imported/rubble_arm_1k.jpg-40718fbd41cc0782aaf69b46cdb0ae40.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/rubble/rubble_arm_1k.jpg"
-dest_files=["res://.godot/imported/rubble_arm_1k.jpg-40718fbd41cc0782aaf69b46cdb0ae40.s3tc.ctex"]
+dest_files=["res://.godot/imported/rubble_arm_1k.jpg-40718fbd41cc0782aaf69b46cdb0ae40.s3tc.ctex", "res://.godot/imported/rubble_arm_1k.jpg-40718fbd41cc0782aaf69b46cdb0ae40.etc2.ctex"]
 
 [params]
 

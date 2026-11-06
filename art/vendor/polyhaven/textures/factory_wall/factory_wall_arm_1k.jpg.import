@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://d1xju8xs1bb3u"
 path.s3tc="res://.godot/imported/factory_wall_arm_1k.jpg-2f3e4e0f1e46a8e1b082962dbfddeb58.s3tc.ctex"
+path.etc2="res://.godot/imported/factory_wall_arm_1k.jpg-2f3e4e0f1e46a8e1b082962dbfddeb58.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/factory_wall/factory_wall_arm_1k.jpg"
-dest_files=["res://.godot/imported/factory_wall_arm_1k.jpg-2f3e4e0f1e46a8e1b082962dbfddeb58.s3tc.ctex"]
+dest_files=["res://.godot/imported/factory_wall_arm_1k.jpg-2f3e4e0f1e46a8e1b082962dbfddeb58.s3tc.ctex", "res://.godot/imported/factory_wall_arm_1k.jpg-2f3e4e0f1e46a8e1b082962dbfddeb58.etc2.ctex"]
 
 [params]
 

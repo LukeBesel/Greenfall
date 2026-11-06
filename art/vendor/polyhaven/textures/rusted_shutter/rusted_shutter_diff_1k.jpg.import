@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://v8x2ldjth5ih"
 path.s3tc="res://.godot/imported/rusted_shutter_diff_1k.jpg-b861d076f3921baa5ac73f13eb522405.s3tc.ctex"
+path.etc2="res://.godot/imported/rusted_shutter_diff_1k.jpg-b861d076f3921baa5ac73f13eb522405.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/rusted_shutter/rusted_shutter_diff_1k.jpg"
-dest_files=["res://.godot/imported/rusted_shutter_diff_1k.jpg-b861d076f3921baa5ac73f13eb522405.s3tc.ctex"]
+dest_files=["res://.godot/imported/rusted_shutter_diff_1k.jpg-b861d076f3921baa5ac73f13eb522405.s3tc.ctex", "res://.godot/imported/rusted_shutter_diff_1k.jpg-b861d076f3921baa5ac73f13eb522405.etc2.ctex"]
 
 [params]
 

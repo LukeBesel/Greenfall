@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://vs4id1w0pvhe"
 path.s3tc="res://.godot/imported/rusty_painted_metal_arm_1k.jpg-f7730af2354b9677dd864de9016a3c84.s3tc.ctex"
+path.etc2="res://.godot/imported/rusty_painted_metal_arm_1k.jpg-f7730af2354b9677dd864de9016a3c84.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/rusty_painted_metal/rusty_painted_metal_arm_1k.jpg"
-dest_files=["res://.godot/imported/rusty_painted_metal_arm_1k.jpg-f7730af2354b9677dd864de9016a3c84.s3tc.ctex"]
+dest_files=["res://.godot/imported/rusty_painted_metal_arm_1k.jpg-f7730af2354b9677dd864de9016a3c84.s3tc.ctex", "res://.godot/imported/rusty_painted_metal_arm_1k.jpg-f7730af2354b9677dd864de9016a3c84.etc2.ctex"]
 
 [params]
 

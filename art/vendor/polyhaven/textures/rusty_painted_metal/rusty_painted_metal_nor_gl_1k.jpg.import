@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://b8ub1luaubgd0"
 path.s3tc="res://.godot/imported/rusty_painted_metal_nor_gl_1k.jpg-6d5d5bea01ae4df4d026e27cb59d7a8c.s3tc.ctex"
+path.etc2="res://.godot/imported/rusty_painted_metal_nor_gl_1k.jpg-6d5d5bea01ae4df4d026e27cb59d7a8c.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/rusty_painted_metal/rusty_painted_metal_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/rusty_painted_metal_nor_gl_1k.jpg-6d5d5bea01ae4df4d026e27cb59d7a8c.s3tc.ctex"]
+dest_files=["res://.godot/imported/rusty_painted_metal_nor_gl_1k.jpg-6d5d5bea01ae4df4d026e27cb59d7a8c.s3tc.ctex", "res://.godot/imported/rusty_painted_metal_nor_gl_1k.jpg-6d5d5bea01ae4df4d026e27cb59d7a8c.etc2.ctex"]
 
 [params]
 

@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c7qfchucx2q47"
 path.s3tc="res://.godot/imported/raked_dirt_diff_1k.jpg-8a246aa598d0059558fc87aa06744b9d.s3tc.ctex"
+path.etc2="res://.godot/imported/raked_dirt_diff_1k.jpg-8a246aa598d0059558fc87aa06744b9d.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/raked_dirt/raked_dirt_diff_1k.jpg"
-dest_files=["res://.godot/imported/raked_dirt_diff_1k.jpg-8a246aa598d0059558fc87aa06744b9d.s3tc.ctex"]
+dest_files=["res://.godot/imported/raked_dirt_diff_1k.jpg-8a246aa598d0059558fc87aa06744b9d.s3tc.ctex", "res://.godot/imported/raked_dirt_diff_1k.jpg-8a246aa598d0059558fc87aa06744b9d.etc2.ctex"]
 
 [params]
 

@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://b67cbtxrhmhlc"
 path.s3tc="res://.godot/imported/concrete_floor_worn_001_diff_1k.jpg-d60ae33616a60fc1995036ec3d5e837a.s3tc.ctex"
+path.etc2="res://.godot/imported/concrete_floor_worn_001_diff_1k.jpg-d60ae33616a60fc1995036ec3d5e837a.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/concrete_floor_worn_001/concrete_floor_worn_001_diff_1k.jpg"
-dest_files=["res://.godot/imported/concrete_floor_worn_001_diff_1k.jpg-d60ae33616a60fc1995036ec3d5e837a.s3tc.ctex"]
+dest_files=["res://.godot/imported/concrete_floor_worn_001_diff_1k.jpg-d60ae33616a60fc1995036ec3d5e837a.s3tc.ctex", "res://.godot/imported/concrete_floor_worn_001_diff_1k.jpg-d60ae33616a60fc1995036ec3d5e837a.etc2.ctex"]
 
 [params]
 

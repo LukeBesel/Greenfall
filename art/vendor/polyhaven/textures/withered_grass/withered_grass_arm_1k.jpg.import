@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://ey0bt8wn13tq"
 path.s3tc="res://.godot/imported/withered_grass_arm_1k.jpg-773b9305f8327a0130aae50cb06f21a2.s3tc.ctex"
+path.etc2="res://.godot/imported/withered_grass_arm_1k.jpg-773b9305f8327a0130aae50cb06f21a2.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://art/vendor/polyhaven/textures/withered_grass/withered_grass_arm_1k.jpg"
-dest_files=["res://.godot/imported/withered_grass_arm_1k.jpg-773b9305f8327a0130aae50cb06f21a2.s3tc.ctex"]
+dest_files=["res://.godot/imported/withered_grass_arm_1k.jpg-773b9305f8327a0130aae50cb06f21a2.s3tc.ctex", "res://.godot/imported/withered_grass_arm_1k.jpg-773b9305f8327a0130aae50cb06f21a2.etc2.ctex"]
 
 [params]
 
