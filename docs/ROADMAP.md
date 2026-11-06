@@ -11,7 +11,7 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - [x] M6 Water: lakes, skimmer robots, clarity (research), clean-lake refills.
 - [x] M7 Automation + progression: conveyor feeder, auto-baler, recycler, research tree (30 nodes, Data currency), goals chain (50), base levels, rockets tab.
 - [x] M8 Content/meta: Codex, 54 achievements, stats, cosmetics (6 colourways).
-- [~] M9 Balance: autoplay + robot-report sims done for the first ~15 min; longer-horizon tuning needs play-testing.
+- [~] M9 Balance: mid-game autoplay bot (robots, research, Command zones, garden, base levels) and a 2-hour pass: first robot ~6 min, planting ~20, Sustained ~23, base 3 ~38, base 5 ~75 (district done); see docs/BALANCE.md. Re-run after merging Laser Reach / Multi-Lock.
 - [~] M10 Polish: title screen, settings, music score, QA pass (40 fixes in flight); Windows/Linux/macOS builds from CI.
 - [~] M11 Post-game: Verdance Bloom milestones, Cradle finale, endless Seed Ark waves (no Cradle Mode worlds yet).
 

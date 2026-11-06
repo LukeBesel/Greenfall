@@ -97,12 +97,15 @@ func test_skimmer_defined_and_in_crews() -> void:
 func test_crew_cap_follows_base_level() -> void:
 	var f := Fleet.new()
 	add_child_autofree(f)
+	var cc: Dictionary = Economy.robot_cfg.get("crew_cap", {})
+	var base: int = int(cc.get("base", 3))
+	var per: int = int(cc.get("per_level", 3))
 	GameState.world["hub_level"] = 1
-	assert_eq(f.crew_cap(), 6)
+	assert_eq(f.crew_cap(), base + per)
 	GameState.world["hub_level"] = 3
-	assert_eq(f.crew_cap(), 12)
+	assert_eq(f.crew_cap(), base + 3 * per)
 	GameState.world["hub_level"] = 1
-	for i: int in 6:
+	for i: int in base + per:
 		var r := Robot.new()
 		r.type_id = "scoopie"
 		r.robot_name = "S%d" % i

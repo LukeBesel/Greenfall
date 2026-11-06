@@ -97,6 +97,13 @@ func _physics_process(delta: float) -> void:
 	if _combo_timer <= 0.0:
 		_scoop_combo = 0
 	_move(delta)
+	# Safety net: if physics ever pushes Patch through the ground (seen once in a long autoplay run,
+	# wedged against the base), put him back in the yard instead of falling forever.
+	if global_position.y < -30.0:
+		global_position = Vector3(0.0, 0.6, 3.0)
+		velocity = Vector3.ZERO
+		GameState.inc_stat("fell_through")
+		EventBus.toast.emit("Patch rattles back up into the yard. That was odd.", "info")
 	_handle_cubing(delta)
 	_handle_tools(delta)
 	if tool == Tool.SCOOP:

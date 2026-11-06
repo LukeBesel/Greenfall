@@ -25,11 +25,13 @@ func test_upgrade_needs_materials() -> void:
 	add_child_autofree(hub)
 	GameState.add_currency("cubes", BigNum.from_float(10000))
 	assert_false(hub.upgrade(), "no sheet metal yet")
-	GameState.add_currency("sheet_metal", BigNum.from_float(25))
-	GameState.add_currency("plastic_stock", BigNum.from_float(10))
+	var cost: Dictionary = hub.level_def(2).get("cost", {})
+	for k: String in cost:
+		if k != "cubes":
+			GameState.add_currency(k, BigNum.from_float(float(cost[k])))
 	assert_true(hub.upgrade())
 	assert_eq(hub.level, 2)
-	assert_almost_eq(GameState.get_currency("cubes").to_float(), 9400.0, 0.01)
+	assert_almost_eq(GameState.get_currency("cubes").to_float(), 10000.0 - float(cost.get("cubes", 0.0)), 0.01)
 	assert_gt(hub.sell_mult(), 0.0)
 
 

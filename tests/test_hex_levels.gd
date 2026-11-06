@@ -177,3 +177,16 @@ func test_persist_roundtrip() -> void:
 	hl2.set_process(false)
 	assert_eq(hl2.level_of(hid), 3)
 	assert_almost_eq(hl2.sustain_progress(hid), w.hex_levels.sustain_progress(hid), 0.001, "sustain window restored")
+
+
+func test_garden_stipend_pays_sustained_and_thriving_hexes() -> void:
+	var hl := HexLevels.new()
+	hl.cfg = Economy.read_json("res://data/hex_levels.json")
+	hl.levels = {1: 5, 2: 4, 3: 2}
+	hl._recalc_bonus()
+	var per_min: float = hl.bonus("cubes_per_min")
+	assert_gt(per_min, 0.0, "Sustained/Thriving hexes pay a stipend")
+	var c0: float = GameState.get_currency("cubes").to_float()
+	hl._pay_stipend(60.0)
+	assert_almost_eq(GameState.get_currency("cubes").to_float() - c0, floorf(per_min), 1.0)
+	hl.free()
