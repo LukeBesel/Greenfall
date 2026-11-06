@@ -5,6 +5,7 @@ extends Node3D
 
 ## Emitted after an upgrade raises the level (the yard dressing plays its fix-up flourish).
 signal level_changed(new_level: int)
+signal leveled(level: int)
 
 var data: Dictionary
 var level: int = 1
@@ -17,6 +18,9 @@ var _fans: Array[Node3D] = []
 func _ready() -> void:
 	data = Economy.read_json("res://data/hub.json")
 	level = int(GameState.world.get("hub_level", 1))
+	if DevHooks.has("hub-level"):  # screenshots: --hub-level=5 builds the base up to that level
+		level = maxi(level, int(DevHooks.get_f("hub-level", 1.0)))
+		GameState.world["hub_level"] = level
 	scrubbers = int(GameState.world.get("hub_scrubbers", 0))
 	for l: int in range(2, level + 1):
 		_build_level(l, false)
@@ -59,6 +63,7 @@ func upgrade() -> bool:
 	_build_level(level, true)
 	level_changed.emit(level)
 	EventBus.toast.emit("Hub upgraded: %s." % next["name"], "story")
+	leveled.emit(level)
 	return true
 
 

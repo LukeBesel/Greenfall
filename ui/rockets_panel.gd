@@ -2,6 +2,7 @@ class_name RocketsPanel
 extends VBoxContainer
 ## Rockets tab: launch pad status and the nearest bases to fly to, with each district's progress.
 ## The pad needs a level 5 base. Launching closes the workbench and starts the launch sequence.
+## Also the rocket's tier (Mk I-IV, automation/rocket_tiers.gd): stats and the upgrade button.
 
 var world: Node
 
@@ -14,7 +15,7 @@ func _ready() -> void:
 func _ready_to_launch() -> bool:
 	if world == null:
 		return false
-	return (world.hub != null and world.hub.level >= 5) or DevHooks.has("rocket")
+	return world.rocket_status() == "" if world.has_method("rocket_status") else ((world.hub != null and world.hub.level >= 5) or DevHooks.has("rocket"))
 
 
 func refresh() -> void:
@@ -30,8 +31,13 @@ func refresh() -> void:
 	var sv := VBoxContainer.new()
 	status.add_child(sv)
 	sv.add_child(UITheme.label("LAUNCH PAD", 13, UITheme.MUTED))
+	var why: String = world.rocket_status() if world.has_method("rocket_status") else ""
 	if ready:
-		sv.add_child(UITheme.label("Fuelled and ready. Pick a base to fly to.", 20, UITheme.GREEN))
+		sv.add_child(UITheme.label("Cells charged and ready. Pick a base to fly to.", 20, UITheme.GREEN))
+	elif why.begins_with("Energy"):
+		var lr := UITheme.label(why, 18, UITheme.GOLD)
+		lr.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		sv.add_child(lr)
 	else:
 		var lvl: int = world.hub.level if world.hub else 1
 		sv.add_child(UITheme.label("Not built yet", 20, UITheme.CREAM))
@@ -43,6 +49,7 @@ func refresh() -> void:
 	bar.custom_minimum_size = Vector2(0, 8)
 	bar.value = 100.0 * minf(1.0, float(world.hub.level if world.hub else 1) / 5.0)
 	sv.add_child(bar)
+	_tier_box()
 	add_child(UITheme.label("NEARBY BASES", 13, UITheme.MUTED))
 	var here_i: int = int(world.hub_index)
 	var here: Vector3 = planet.grid.centers[planet.hubs[here_i]]
@@ -75,3 +82,55 @@ func refresh() -> void:
 				world.upgrades.close_screen()
 			world._launch(i))
 		hb.add_child(b)
+
+
+## Current rocket tier with its travel stats, and the next tier's upgrade.
+func _tier_box() -> void:
+	var box := PanelContainer.new()
+	box.add_theme_stylebox_override("panel", UITheme.box(UITheme.PLUM_LIGHT, UITheme.RUST, 1, 6, 14))
+	add_child(box)
+	var v := VBoxContainer.new()
+	v.add_theme_constant_override("separation", 4)
+	box.add_child(v)
+	var d: Dictionary = RocketTiers.def()
+	v.add_child(UITheme.label("ROCKET", 13, UITheme.MUTED))
+	v.add_child(UITheme.label(str(d.get("name", "")), 20, UITheme.CREAM))
+	v.add_child(_stats_label(d, {}))
+	var nd: Dictionary = RocketTiers.next_def()
+	if nd.is_empty():
+		v.add_child(UITheme.label("Top tier: warp hops, no recharge.", 14, UITheme.GREEN))
+		return
+	v.add_child(HSeparator.new())
+	v.add_child(UITheme.label("NEXT: " + str(nd["name"]).to_upper(), 13, UITheme.GOLD))
+	var desc := UITheme.label(str(nd.get("desc", "")), 14, UITheme.CREAM)
+	desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	v.add_child(desc)
+	v.add_child(_stats_label(nd, d))
+	var cost := UITheme.label(HubPanel.cost_text(nd.get("cost", {})), 13, UITheme.MUTED)
+	cost.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	v.add_child(cost)
+	var b := Button.new()
+	var why: String = RocketTiers.blocker()
+	b.text = "Upgrade to " + str(nd["name"]) if why == "" else why
+	b.disabled = why != ""
+	b.custom_minimum_size = Vector2(300, 42)
+	b.pressed.connect(func() -> void:
+		if RocketTiers.upgrade():
+			Audio.play("buy", 0.8, -2.0)
+			Audio.music_sting("upgrade")
+			if world and world.has_method("refresh_rocket"):
+				world.refresh_rocket()
+		else:
+			Audio.play("buzz", 1.2, -8.0)
+		refresh())
+	v.add_child(b)
+
+
+static func _stats_label(d: Dictionary, prev: Dictionary) -> Label:
+	var rs: float = float(d.get("recharge_s", 0.0))
+	var txt: String = "Countdown %ds  ·  Flight %.1fs  ·  Recharge %s  ·  Cargo pods x%.1f every %ds" % [
+		int(d.get("countdown_s", 5)), float(d.get("flight_s", 5.0)), "none" if rs <= 0.0 else RocketTiers.fmt_time(rs),
+		float(d.get("cargo_mult", 1.0)), int(d.get("cargo_period_s", 60))]
+	if bool(d.get("warp", false)):
+		txt += "  ·  WARP"
+	return UITheme.label(txt, 13, UITheme.GREEN if not prev.is_empty() else UITheme.CREAM)

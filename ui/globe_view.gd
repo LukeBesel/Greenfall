@@ -55,6 +55,8 @@ var _prev_cam: Camera3D
 var _handheld: bool = false
 var _holo_mat: ShaderMaterial
 var rocket_ready: Callable = func() -> bool: return false
+## Why the rocket can't launch right now (shown in the hub list while rocket_ready is false).
+var rocket_lock_text: Callable = func() -> String: return "Locked. Upgrade your base to level 5 to build the launch pad."
 var launch_to: Callable = func(_hub: int) -> void: pass
 var current_hub: int = 0
 var _fly_t: float = -1.0
@@ -258,7 +260,7 @@ func _refresh_hubs() -> void:
 		c.queue_free()
 	var ready: bool = rocket_ready.call()
 	if not ready:
-		var l := UITheme.label("Locked. Upgrade your base to level 5 to build the launch pad.", 13, UITheme.MUTED)
+		var l := UITheme.label(str(rocket_lock_text.call()), 13, UITheme.MUTED)
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		_hub_list.add_child(l)
 	var here: Vector3 = planet.grid.centers[planet.hubs[current_hub]]
