@@ -1,35 +1,19 @@
 class_name SettingsPanel
 extends Control
-## Reusable settings screen (title menu and pause menu). Tabs: Audio, Graphics, Controls, Gameplay.
+## Reusable settings screen (title menu and pause menu). Tabs: Audio, Graphics, Controls, Gameplay,
+## Accessibility. Controls holds key / controller rebinding (stored by Settings).
 ## Every change is applied immediately and written with Settings.save_settings().
 ## Controller: up/down moves between rows, left/right changes a value, Q/E or the shoulders switch
 ## tabs, B / Esc closes.
 
 signal closed
 
-const TABS: Array[String] = ["Audio", "Graphics", "Controls", "Gameplay"]
+const TABS: Array[String] = ["Audio", "Graphics", "Controls", "Gameplay", "Accessibility"]
 const ROW_W: float = 300.0
-const BINDINGS: Array = [
-	["Move", ["move_forward", "move_left", "move_back", "move_right"]],
-	["Scoop junk", ["scoop"]],
-	["Press a cube", ["cube"]],
-	["Interact", ["interact"]],
-	["Drop", ["drop"]],
-	["Tools: scoop / plant / water", ["tool_scoop", "tool_plant", "tool_water"]],
-	["Upgrades", ["open_upgrades"]],
-	["Lens view", ["lens_view"]],
-	["Globe map", ["open_globe"]],
-	["Command view", ["open_command"]],
-	["Zoom", ["zoom_in", "zoom_out"]],
-	["Pause", ["pause"]],
-]
-const JOY_NAMES: Dictionary = {
-	JOY_BUTTON_A: "A", JOY_BUTTON_B: "B", JOY_BUTTON_X: "X", JOY_BUTTON_Y: "Y",
-	JOY_BUTTON_BACK: "View", JOY_BUTTON_START: "Menu", JOY_BUTTON_LEFT_STICK: "LS",
-	JOY_BUTTON_RIGHT_STICK: "RS", JOY_BUTTON_LEFT_SHOULDER: "LB", JOY_BUTTON_RIGHT_SHOULDER: "RB",
-	JOY_BUTTON_DPAD_UP: "D-pad up", JOY_BUTTON_DPAD_DOWN: "D-pad down",
-	JOY_BUTTON_DPAD_LEFT: "D-pad left", JOY_BUTTON_DPAD_RIGHT: "D-pad right",
-}
+const BIND_W: float = 190.0
+## Seconds a rebind capture waits before giving up (pad-only players have no Esc).
+const CAPTURE_TIMEOUT: float = 8.0
+const UI_SCALES: Array[float] = [0.8, 0.9, 1.0, 1.1, 1.25, 1.4, 1.5]
 
 ## Darken whatever is behind the panel (off when the host already dims).
 var dim_background: bool = true
@@ -41,6 +25,12 @@ var _tab: int = 0
 var _scroll: ScrollContainer
 var _back: Button
 var _panel: PanelContainer
+## action -> [keyboard Button, pad Button]
+var _bind_buttons: Dictionary = {}
+var _bind_warning: Label
+var _capture_action: String = ""
+var _capture_pad: bool = false
+var _capture_t: float = 0.0
 
 
 func _ready() -> void:
@@ -115,6 +105,7 @@ func _ready() -> void:
 	_build_graphics(_pages[1])
 	_build_controls(_pages[2])
 	_build_gameplay(_pages[3])
+	_build_access(_pages[4])
 
 	var foot := HBoxContainer.new()
 	vb.add_child(foot)
@@ -131,6 +122,15 @@ func _ready() -> void:
 	_tab_buttons[0].button_pressed = true
 	_show_tab(0)
 	visible = false
+	_fit()
+	get_viewport().size_changed.connect(_fit)
+
+
+## Keeps the panel inside the visible area at large UI scales.
+func _fit() -> void:
+	var vs: Vector2 = get_viewport_rect().size
+	_panel.custom_minimum_size.x = minf(860.0, vs.x - 24.0)
+	_scroll.custom_minimum_size.y = clampf(vs.y - 230.0, 220.0, 400.0)
 
 
 # --- Open / close -------------------------------------------------------------------
@@ -150,6 +150,7 @@ func open_panel() -> void:
 func close_panel() -> void:
 	if not is_open:
 		return
+	_end_capture()
 	is_open = false
 	Settings.save_settings()
 	visible = false
@@ -244,61 +245,211 @@ func _build_graphics(p: VBoxContainer) -> void:
 
 
 func _build_controls(p: VBoxContainer) -> void:
+	_section(p, "Bindings")
+	var head := HBoxContainer.new()
+	head.add_theme_constant_override("separation", 12)
+	var h0 := UITheme.label("ACTION   (select a binding to rebind it)", 12, UITheme.MUTED)
+	h0.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	head.add_child(h0)
+	for t: String in ["KEYBOARD / MOUSE", "CONTROLLER"]:
+		var h := UITheme.label(t, 12, UITheme.MUTED)
+		h.custom_minimum_size = Vector2(BIND_W, 0)
+		h.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		head.add_child(h)
+	var hm := MarginContainer.new()
+	hm.add_theme_constant_override("margin_left", 8)
+	hm.add_theme_constant_override("margin_right", 8)
+	hm.add_child(head)
+	p.add_child(hm)
+	for e: Array in Settings.REBINDABLE:
+		_binding_row(p, e[0], e[1])
+	_bind_warning = UITheme.label("", 13, Color(1.0, 0.45, 0.35))
+	_bind_warning.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	p.add_child(_bind_warning)
+	var reset := _value_button()
+	reset.text = "Reset to defaults"
+	reset.pressed.connect(func() -> void:
+		_end_capture()
+		Settings.reset_bindings()
+		Settings.save_settings()
+		_refresh_bindings()
+		Audio.play("click", 0.9, -8.0))
+	_row(p, "Bindings", reset, "Restore every key and controller binding.")
+	_refresh_bindings()
 	_section(p, "Camera")
 	_slider(p, "Mouse sensitivity", Settings.mouse_sensitivity, 0.001, 0.008, 0.00025,
 		func(v: float) -> String: return "x%.1f" % (v / 0.0035),
 		func(v: float) -> void: Settings.mouse_sensitivity = v)
 	_toggle(p, "Invert look Y", Settings.invert_y, func(v: bool) -> void: Settings.invert_y = v)
+	_slider(p, "Field of view", Settings.fov, 50.0, 90.0, 1.0,
+		func(v: float) -> String: return "%d°" % roundi(v),
+		func(v: float) -> void: Settings.fov = v)
+	_toggle(p, "Mouse smoothing", Settings.mouse_smoothing, func(v: bool) -> void: Settings.mouse_smoothing = v,
+		"Eases mouse look over a few frames.")
 	_section(p, "Scooping")
 	_cycler(p, "Scoop button", ["Hold", "Toggle"], 0 if Settings.hold_to_scoop else 1, func(i: int) -> void:
 		Settings.hold_to_scoop = i == 0)
-	_section(p, "Bindings")
-	var grid := GridContainer.new()
-	grid.columns = 3
-	grid.add_theme_constant_override("h_separation", 18)
-	grid.add_theme_constant_override("v_separation", 5)
-	var m := MarginContainer.new()
-	m.add_theme_constant_override("margin_left", 10)
-	m.add_theme_constant_override("margin_right", 10)
-	m.add_child(grid)
-	p.add_child(m)
-	for h: String in ["ACTION", "KEYBOARD / MOUSE", "CONTROLLER"]:
-		grid.add_child(UITheme.label(h, 12, UITheme.MUTED))
-	for entry: Array in BINDINGS:
-		var name_l := UITheme.label(entry[0], 15)
-		name_l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		grid.add_child(name_l)
-		# Single action: every binding. Several actions (Move, Tools, Zoom): the primary binding
-		# of each, so "W A S D" rather than every alternative.
-		var actions: Array = entry[1]
-		var multi: bool = actions.size() > 1
-		var kb: Array[String] = []
-		var pad: Array[String] = []
-		for action: String in actions:
-			if not InputMap.has_action(action):
+
+
+func _binding_row(p: VBoxContainer, action: String, title: String) -> void:
+	var row := PanelContainer.new()
+	var idle: StyleBoxFlat = UITheme.box(Color(1, 1, 1, 0.025), Color(0, 0, 0, 0), 0, 4, 6)
+	var lit: StyleBoxFlat = UITheme.box(Color(1, 0.7, 0.26, 0.08), Color(1, 0.7, 0.26, 0.35), 1, 4, 6)
+	row.add_theme_stylebox_override("panel", idle)
+	p.add_child(row)
+	var hb := HBoxContainer.new()
+	hb.add_theme_constant_override("separation", 12)
+	row.add_child(hb)
+	var l := UITheme.label(title, 16)
+	l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	l.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	hb.add_child(l)
+	var btns: Array[Button] = []
+	for pad: bool in [false, true]:
+		var b := Button.new()
+		b.custom_minimum_size = Vector2(BIND_W, 32)
+		b.add_theme_font_size_override("font_size", 15)
+		b.pressed.connect(_begin_capture.bind(action, pad))
+		b.focus_entered.connect(func() -> void: row.add_theme_stylebox_override("panel", lit))
+		b.focus_exited.connect(func() -> void: row.add_theme_stylebox_override("panel", idle))
+		hb.add_child(b)
+		btns.append(b)
+	btns[0].set_meta("row_ctl", true)
+	btns[0].focus_neighbor_right = btns[0].get_path_to(btns[1])
+	btns[1].focus_neighbor_left = btns[1].get_path_to(btns[0])
+	_bind_buttons[action] = btns
+
+
+func _refresh_bindings() -> void:
+	var conf: Dictionary = Settings.conflicts()
+	for action: String in _bind_buttons:
+		var btns: Array = _bind_buttons[action]
+		for k: int in 2:
+			var b: Button = btns[k]
+			var pad: bool = k == 1
+			if action == _capture_action and pad == _capture_pad:
+				b.text = "press a button…" if pad else "press a key…"
+				b.add_theme_color_override("font_color", UITheme.GOLD)
 				continue
-			var got_kb: bool = false
-			var got_pad: bool = false
-			for ev: InputEvent in InputMap.action_get_events(action):
-				var n: String = _event_name(ev)
-				var is_pad: bool = ev is InputEventJoypadButton or ev is InputEventJoypadMotion
-				if n == "" or (multi and (got_pad if is_pad else got_kb)):
+			var ev: InputEvent = Settings.binding(action, pad)
+			b.text = Settings.event_label(ev) if ev else "—"
+			# Alternatives (e.g. arrow keys next to WASD) in the tooltip.
+			var alts: Array[String] = []
+			for o: InputEvent in InputMap.action_get_events(action):
+				if Settings.is_pad_event(o) == pad and o != ev:
+					alts.append(Settings.event_label(o))
+			b.tooltip_text = ("Also: " + ", ".join(alts)) if not alts.is_empty() else ""
+			var clash: bool = false
+			for other: String in conf.get(action, []):
+				for o: InputEvent in InputMap.action_get_events(action):
+					if Settings.is_pad_event(o) == pad and Settings.find_conflict(action, o) == other:
+						clash = true
+			var col: Color = Color(1.0, 0.45, 0.35) if clash else (UITheme.GOLD if Settings.is_rebound(action) else UITheme.CREAM)
+			b.add_theme_color_override("font_color", col)
+	if _bind_warning:
+		var lines: Array[String] = []
+		var seen: Dictionary = {}
+		for action: String in conf:
+			for other: String in conf[action]:
+				var key: String = "|".join([action, other] if action < other else [other, action])
+				if seen.has(key):
 					continue
-				var target: Array[String] = pad if is_pad else kb
-				if not target.has(n):
-					target.append(n)
-				if is_pad:
-					got_pad = true
-				else:
-					got_kb = true
-		var sep: String = " " if multi and kb.all(func(k: String) -> bool: return k.length() == 1) else " / "
-		grid.add_child(UITheme.label(sep.join(kb), 15, UITheme.GOLD))
-		grid.add_child(UITheme.label(" / ".join(pad), 15, UITheme.CREAM))
+				seen[key] = true
+				var shared: String = ""
+				for o: InputEvent in InputMap.action_get_events(action):
+					if Settings.find_conflict(action, o) == other:
+						shared = Settings.event_label(o)
+						break
+				lines.append("Conflict: %s is used by both %s and %s." % [shared, Settings.display_name(action), Settings.display_name(other)])
+		_bind_warning.text = "\n".join(lines)
+		_bind_warning.visible = not lines.is_empty()
+
+
+func _begin_capture(action: String, pad: bool) -> void:
+	_capture_action = action
+	_capture_pad = pad
+	_capture_t = 0.0
+	_refresh_bindings()
+	Audio.play("click", 1.1, -8.0)
+
+
+func _end_capture() -> void:
+	if _capture_action == "":
+		return
+	_capture_action = ""
+	_refresh_bindings()
+
+
+func _process(delta: float) -> void:
+	if _capture_action == "":
+		return
+	_capture_t += delta
+	if _capture_t > CAPTURE_TIMEOUT:
+		_end_capture()
+
+
+## Rebind capture: grabs the next key / mouse button (keyboard slot) or pad button / stick /
+## trigger (controller slot) before the GUI sees it. Esc cancels.
+func _input(event: InputEvent) -> void:
+	if _capture_action == "" or not is_open:
+		return
+	if event is InputEventKey and (event as InputEventKey).physical_keycode == KEY_ESCAPE:
+		if event.is_pressed():
+			_end_capture()
+		get_viewport().set_input_as_handled()
+		return
+	if _capture_t < 0.15 or event is InputEventMouseMotion:
+		return
+	var got: InputEvent = null
+	if _capture_pad:
+		if event is InputEventJoypadButton and event.is_pressed():
+			var j := InputEventJoypadButton.new()
+			j.button_index = (event as InputEventJoypadButton).button_index
+			got = j
+		elif event is InputEventJoypadMotion and absf((event as InputEventJoypadMotion).axis_value) > 0.6:
+			var m := InputEventJoypadMotion.new()
+			m.axis = (event as InputEventJoypadMotion).axis
+			m.axis_value = signf((event as InputEventJoypadMotion).axis_value)
+			got = m
+		elif (event is InputEventKey or event is InputEventMouseButton) and event.is_pressed():
+			_end_capture()  # keyboard / mouse while waiting for a pad button: cancel
+			get_viewport().set_input_as_handled()
+			return
+	else:
+		if event is InputEventKey and event.is_pressed() and not (event as InputEventKey).echo:
+			var k := InputEventKey.new()
+			var src: InputEventKey = event
+			k.physical_keycode = src.physical_keycode if src.physical_keycode != KEY_NONE else src.keycode
+			got = k
+		elif event is InputEventMouseButton and event.is_pressed():
+			var mb := InputEventMouseButton.new()
+			mb.button_index = (event as InputEventMouseButton).button_index
+			got = mb
+	if got == null:
+		if Settings.is_pad_event(event) != _capture_pad or event is InputEventKey:
+			get_viewport().set_input_as_handled()
+		return
+	get_viewport().set_input_as_handled()
+	var action: String = _capture_action
+	var btn: Button = _bind_buttons[action][1 if _capture_pad else 0]
+	_capture_action = ""
+	apply_binding(action, got)
+	btn.grab_focus()
+
+
+## Binds `ev` to `action` (primary binding of its kind), saves, and refreshes the rows; any
+## clash with another gameplay action is shown as a warning.
+func apply_binding(action: String, ev: InputEvent) -> void:
+	Settings.set_binding(action, ev)
+	Settings.save_settings()
+	_refresh_bindings()
+	Audio.play("click", 1.2, -8.0)
 
 
 func _build_gameplay(p: VBoxContainer) -> void:
 	_section(p, "Comfort")
-	_toggle(p, "Screen shake", Settings.screen_shake, func(v: bool) -> void: Settings.screen_shake = v)
+	_slider(p, "Camera shake", Settings.shake_intensity, 0.0, 1.0, 0.05, _pct,
+		func(v: float) -> void: Settings.shake_intensity = v)
 	_toggle(p, "Reduced motion", Settings.reduced_motion, func(v: bool) -> void: Settings.reduced_motion = v,
 		"Calmer camera and fewer bouncy effects.")
 	_section(p, "Interface")
@@ -306,6 +457,27 @@ func _build_gameplay(p: VBoxContainer) -> void:
 		func(i: int) -> void: Settings.number_format = i)
 	_toggle(p, "Best-value tags", Settings.best_value_tags, func(v: bool) -> void: Settings.best_value_tags = v,
 		"Tag the affordable upgrade that gives the most per cube.")
+
+
+func _build_access(p: VBoxContainer) -> void:
+	_section(p, "Interface")
+	var idx: int = 2
+	for k: int in UI_SCALES.size():
+		if absf(UI_SCALES[k] - Settings.ui_scale) < 0.02:
+			idx = k
+	var names: Array = UI_SCALES.map(func(v: float) -> String: return "%d%%" % roundi(v * 100.0))
+	_cycler(p, "Interface scale", names, idx, func(i: int) -> void:
+		Settings.ui_scale = UI_SCALES[i]
+		Settings.apply_ui_scale(), "Size of menus, HUD and subtitles.")
+	_toggle(p, "Colour-blind palette", Settings.colorblind, func(v: bool) -> void: Settings.colorblind = v,
+		"Okabe-Ito colours for hex progress, the hopper meter and part rarity.")
+	_section(p, "Subtitles")
+	_toggle(p, "Subtitles", Settings.subtitles_enabled, func(v: bool) -> void: Settings.subtitles_enabled = v,
+		"WREN and Ledger lines.")
+	_cycler(p, "Subtitle size", ["Small", "Medium", "Large"], Settings.subtitle_size, func(i: int) -> void:
+		Settings.subtitle_size = i)
+	_toggle(p, "Subtitle background", Settings.subtitle_background, func(v: bool) -> void: Settings.subtitle_background = v,
+		"A solid backdrop behind subtitle text.")
 
 
 # --- Row widgets ----------------------------------------------------------------------
@@ -426,27 +598,3 @@ func _slider(p: VBoxContainer, text: String, value: float, lo: float, hi: float,
 		cb.call(v)
 		Settings.save_settings())
 	_row(p, text, hb, "", s)
-
-
-func _event_name(ev: InputEvent) -> String:
-	if ev is InputEventKey:
-		var k: InputEventKey = ev as InputEventKey
-		var code: Key = k.physical_keycode if k.physical_keycode != KEY_NONE else k.keycode
-		return OS.get_keycode_string(code)
-	if ev is InputEventMouseButton:
-		match (ev as InputEventMouseButton).button_index:
-			MOUSE_BUTTON_LEFT: return "LMB"
-			MOUSE_BUTTON_RIGHT: return "RMB"
-			MOUSE_BUTTON_MIDDLE: return "MMB"
-			MOUSE_BUTTON_WHEEL_UP: return "Wheel up"
-			MOUSE_BUTTON_WHEEL_DOWN: return "Wheel down"
-		return "Mouse"
-	if ev is InputEventJoypadButton:
-		return str(JOY_NAMES.get((ev as InputEventJoypadButton).button_index, "Button"))
-	if ev is InputEventJoypadMotion:
-		match (ev as InputEventJoypadMotion).axis:
-			JOY_AXIS_LEFT_X, JOY_AXIS_LEFT_Y: return "Left stick"
-			JOY_AXIS_RIGHT_X, JOY_AXIS_RIGHT_Y: return "Right stick"
-			JOY_AXIS_TRIGGER_LEFT: return "LT"
-			JOY_AXIS_TRIGGER_RIGHT: return "RT"
-	return ""

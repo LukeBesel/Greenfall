@@ -14,6 +14,7 @@ extends Node
 ##   --give=N           start with N cubes (testing UI)
 ##   --open=NAME        open a UI screen on start (upgrades)
 ##   --quality=N        render quality preset 0..3 (Low..Ultra) for faster screenshots
+##   --ui-scale=X       interface scale 0.8..1.5 for this run (not saved); --colorblind uses that palette
 ##   --tab=ID           upgrades screen starts on this tab (e.g. research)
 ##   --open=codex       open the Codex (--codex-tab=achievements|stats, --codex-sample fakes progress)
 ##   --give-data=N      start with N research Data; --research=a+b grants nodes;
@@ -48,6 +49,11 @@ func _ready() -> void:
 		SaveManager.enabled = false
 	if has("quality"):
 		Settings.quality = clampi(int(get_f("quality", 2.0)), 0, 3)
+	if has("ui-scale"):
+		Settings.ui_scale = get_f("ui-scale", 1.0)
+		Settings.apply_ui_scale()
+	if has("colorblind"):
+		Settings.colorblind = true
 	if has("time-scale"):
 		Engine.time_scale = float(args["time-scale"])
 	if not args.is_empty():

@@ -469,7 +469,7 @@ func _on_part_found(idx: int) -> void:
 	EventBus.part_found.emit(t, r)
 	var rar: Dictionary = Economy.rarity(r)
 	var pt: Dictionary = Economy.part_type(t)
-	var col: Color = Color.html(str(rar.get("color", "#ffffff")))
+	var col: Color = UITheme.rarity_color(r)
 	var pos: Vector3 = f.part_pos[idx]
 	# The part surfaces: a dirty little prop pops up and glints in its rarity color.
 	var mi := MeshInstance3D.new()

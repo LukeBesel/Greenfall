@@ -615,8 +615,10 @@ func _hex_state_color(id: int) -> Color:
 	if field.hex_hub[id] != 0:
 		return UITheme.GOLD
 	if not field.is_clean(id):
-		return Color(1.0, 0.55, 0.35)
+		return UITheme.progress_color("junk") if UITheme.colorblind() else Color(1.0, 0.55, 0.35)
 	var life: float = float(world.garden.hex_life.get(id, 0.0)) if world.garden else 0.0
+	if life > 0.0 and UITheme.colorblind():
+		return UITheme.progress_color("growing")
 	return Color(0.5, 1.0, 0.55) if life > 0.0 else Color(0.9, 0.95, 1.0)
 
 
@@ -631,9 +633,9 @@ func _progress_color(id: int) -> Color:
 	if field.is_water(id) or field.hex_hub[id] != 0:
 		return Color(0, 0, 0, 0)
 	if not field.is_clean(id):
-		return Color(1.0, 0.5, 0.2) if field.removed_fraction(id) < 0.03 else Color(0.3, 0.6, 1.0)
+		return UITheme.progress_color("junk" if field.removed_fraction(id) < 0.03 else "cleaning")
 	var life: float = float(world.garden.hex_life.get(id, 0.0)) if world.garden else 0.0
-	return Color(0.35, 0.95, 0.4) if life > 0.0 else Color(0.3, 0.8, 0.45)
+	return UITheme.progress_color("growing" if life > 0.0 else "clean")
 
 
 func _rebuild_overlay() -> void:
