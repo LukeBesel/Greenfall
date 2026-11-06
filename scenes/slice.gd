@@ -140,6 +140,8 @@ func _ready() -> void:
 	depot.position = Vector3(0, 0, -1.8)
 	add_child(depot)
 	_build_board()
+	if DevHooks.has("future"):  # --future=N preview: the hub at level N too (FutureLayer.apply_preview)
+		GameState.world["hub_level"] = clampi(int(DevHooks.get_f("future", 5.0)), 1, 5)
 	hub = Hub.new()
 	hub.name = "Hub"
 	add_child(hub)
@@ -226,6 +228,9 @@ func _ready() -> void:
 		cam.lens_view = true
 	if DevHooks.has("cam"):
 		cam.apply_preset(DevHooks.get_s("cam", "wide"))
+	if DevHooks.has("cam-pitch"):  # e.g. --cam-pitch=0.05 to look up at the skyline for shots
+		cam.pitch = DevHooks.get_f("cam-pitch", -0.3)
+		cam.snap()
 	if DevHooks.has("give"):
 		GameState.add_currency("cubes", BigNum.from_float(DevHooks.get_f("give", 100.0)))
 	if DevHooks.has("unlock-seeds"):
@@ -317,6 +322,13 @@ func _ready() -> void:
 	hex_levels.world = self
 	add_child(hex_levels)
 	hex_levels.setup()
+	# Future layer: the district builds up into a glowing city as hexes level (planet/future_layer.gd).
+	if DevHooks.has("future"):
+		FutureLayer.apply_preview(self, int(DevHooks.get_f("future", 5.0)))
+	var future := FutureLayer.new()
+	future.name = "FutureLayer"
+	add_child(future)
+	future.setup(self)
 	goals = Goals.new()
 	goals.name = "Goals"
 	goals.world = self
