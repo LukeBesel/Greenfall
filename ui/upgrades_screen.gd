@@ -8,6 +8,7 @@ signal closed
 const TABS: Array[Dictionary] = [
 	{"id": "patch", "name": "Patch"},
 	{"id": "bots", "name": "Bots"},
+	{"id": "trade", "name": "Trade"},
 	{"id": "hub", "name": "Hub"},
 	{"id": "research", "name": "Research"},
 	{"id": "rockets", "name": "Rockets"},
@@ -24,6 +25,7 @@ var _tab: String = "patch"
 var _refresh_t: float = 0.0
 var _robot_cards: Array[RobotCard] = []
 var fleet: Fleet
+var _trade: TradePanel
 var build_at: Callable = func() -> Vector3: return Vector3.ZERO
 
 
@@ -68,7 +70,7 @@ func _ready() -> void:
 	vb.add_child(tabs)
 	for t: Dictionary in TABS:
 		var b := Button.new()
-		var live: bool = t["id"] in ["patch", "bots"]
+		var live: bool = t["id"] in ["patch", "bots", "trade"]
 		b.text = t["name"] if live else "%s (soon)" % t["name"]
 		b.disabled = not live
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
@@ -96,6 +98,15 @@ func _populate() -> void:
 		c.queue_free()
 	_cards.clear()
 	_robot_cards.clear()
+	if _tab == "trade":
+		_grid.columns = 1
+		var tp := TradePanel.new()
+		tp.fleet = fleet
+		tp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_grid.add_child(tp)
+		_trade = tp
+		return
+	_relayout()
 	if _tab == "bots" and fleet:
 		for rid: String in Economy.robot_order:
 			var rc := RobotCard.new(rid, fleet, build_at)
@@ -122,6 +133,9 @@ func _set_tab(id: String) -> void:
 
 
 func _relayout() -> void:
+	if _tab == "trade":
+		_grid.columns = 1
+		return
 	var w: float = _root.size.x - 110.0
 	_grid.columns = clampi(int(w / 350.0), 1, 4)
 
@@ -144,7 +158,9 @@ func _input(event: InputEvent) -> void:
 	if not is_open:
 		return
 	if event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev"):
-		_set_tab("bots" if _tab == "patch" else "patch")
+		var order: Array[String] = ["patch", "bots", "trade"]
+		var i: int = order.find(_tab)
+		_set_tab(order[(i + (1 if event.is_action_pressed("ui_tab_next") else order.size() - 1)) % order.size()])
 		get_viewport().set_input_as_handled()
 
 
@@ -191,3 +207,5 @@ func _refresh_all() -> void:
 		c.refresh()
 	for rc: RobotCard in _robot_cards:
 		rc.refresh()
+	if _tab == "trade" and is_instance_valid(_trade) and Engine.get_process_frames() % 60 == 0:
+		_trade.refresh()

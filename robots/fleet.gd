@@ -127,13 +127,16 @@ func tier_requirements(type_id: String) -> Dictionary:
 	var cost := BigNum.from_float(float(Economy.robots[type_id].get("cost", 100)) * float(nt.get("cost_mult", 1)))
 	var need: int = int(nt.get("requires_core_rarity", 0))
 	var core_i: int = _best_part(part_index("core"), need)
-	var ok: bool = GameState.can_afford("cubes", cost) and core_i >= 0
+	var bolts := BigNum.from_float([10.0, 40.0, 150.0][clampi(t, 0, 2)])
+	var ok: bool = GameState.can_afford("cubes", cost) and core_i >= 0 and GameState.can_afford("bolts", bolts)
 	var reason: String = ""
 	if core_i < 0:
 		reason = "Needs a %s Control Core" % Economy.rarity(need).get("name", "?")
 	elif not GameState.can_afford("cubes", cost):
 		reason = "Not enough cubes"
-	return {"maxed": false, "cost": cost, "core_rarity": need, "ok": ok, "reason": reason, "next": nt}
+	elif not GameState.can_afford("bolts", bolts):
+		reason = "Not enough bolts (scrap spare parts at Haggle's)"
+	return {"maxed": false, "cost": cost, "bolts": bolts, "core_rarity": need, "ok": ok, "reason": reason, "next": nt}
 
 
 func upgrade_tier(type_id: String) -> bool:
@@ -141,6 +144,7 @@ func upgrade_tier(type_id: String) -> bool:
 	if req.get("maxed", false) or not req["ok"]:
 		return false
 	GameState.spend("cubes", req["cost"])
+	GameState.spend("bolts", req["bolts"])
 	GameState.parts.remove_at(_best_part(part_index("core"), int(req["core_rarity"])))
 	var t: int = tier_of(type_id) + 1
 	GameState.flags["tier_" + type_id] = t
