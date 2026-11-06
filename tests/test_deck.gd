@@ -11,7 +11,7 @@ var _saved: Dictionary = {}
 func before_each() -> void:
 	_saved_path = Settings.settings_path
 	Settings.settings_path = TEST_PATH
-	for k: String in ["quality", "quality_auto", "quality_note", "quality_probe_done", "glyph_style", "last_input_pad", "render_scale", "ui_scale"]:
+	for k: String in ["quality", "quality_auto", "quality_note", "quality_probe_done", "glyph_style", "last_input_pad", "render_scale", "ui_scale", "stick_sensitivity"]:
 		_saved[k] = Settings.get(k)
 
 
@@ -92,7 +92,9 @@ func test_manual_choice_turns_auto_off_and_persists() -> void:
 	assert_false(Settings.quality_auto)
 	assert_true(Settings.quality_probe_done)
 	Settings.glyph_style = PadGlyphs.Style.PLAYSTATION
+	Settings.stick_sensitivity = 1.4
 	Settings.save_settings()
+	Settings.stick_sensitivity = 1.0
 	Settings.quality = 3
 	Settings.quality_auto = true
 	Settings.glyph_style = 0
@@ -101,6 +103,7 @@ func test_manual_choice_turns_auto_off_and_persists() -> void:
 	assert_false(Settings.quality_auto)
 	assert_eq(Settings.quality_note, "Steam Deck")
 	assert_eq(Settings.glyph_style, PadGlyphs.Style.PLAYSTATION)
+	assert_almost_eq(Settings.stick_sensitivity, 1.4, 0.001)
 
 
 func test_particles_scale_with_preset() -> void:

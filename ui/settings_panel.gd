@@ -294,6 +294,9 @@ func _build_controls(p: VBoxContainer) -> void:
 	_slider(p, "Mouse sensitivity", Settings.mouse_sensitivity, 0.001, 0.008, 0.00025,
 		func(v: float) -> String: return "x%.1f" % (v / 0.0035),
 		func(v: float) -> void: Settings.mouse_sensitivity = v)
+	_slider(p, "Stick look speed", Settings.stick_sensitivity, 0.5, 2.0, 0.1,  # [deck]
+		func(v: float) -> String: return "x%.1f" % v,
+		func(v: float) -> void: Settings.stick_sensitivity = v)
 	_toggle(p, "Invert look Y", Settings.invert_y, func(v: bool) -> void: Settings.invert_y = v)
 	_slider(p, "Field of view", Settings.fov, 50.0, 90.0, 1.0,
 		func(v: float) -> String: return "%d°" % roundi(v),

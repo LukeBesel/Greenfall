@@ -75,6 +75,8 @@ var quality_note: String = ""
 var quality_probe_done: bool = false
 ## Pad button art: 0 automatic (from the controller's name), 1 Xbox, 2 PlayStation, 3 Steam Deck.
 var glyph_style: int = 0
+## Right-stick camera speed multiplier (0.5..2).
+var stick_sensitivity: float = 1.0
 ## Joypad device id of the last controller input (for the automatic glyph style).
 var last_pad_device: int = 0
 ## Every UI font is at least this many px (Steam Deck readability at 1280x800).
@@ -225,6 +227,7 @@ func save_settings() -> void:
 	cfg.set_value("display", "quality_note", quality_note)
 	cfg.set_value("display", "quality_probe_done", quality_probe_done)
 	cfg.set_value("controls", "glyph_style", glyph_style)
+	cfg.set_value("controls", "stick_sensitivity", stick_sensitivity)
 	cfg.save(settings_path)
 	changed.emit()
 
@@ -272,6 +275,7 @@ func load_settings() -> void:
 	quality_note = str(cfg.get_value("display", "quality_note", ""))
 	quality_probe_done = bool(cfg.get_value("display", "quality_probe_done", false))
 	glyph_style = clampi(int(cfg.get_value("controls", "glyph_style", 0)), 0, 3)
+	stick_sensitivity = clampf(float(cfg.get_value("controls", "stick_sensitivity", 1.0)), 0.5, 2.0)
 	auto_detect_display(cfg)
 
 
