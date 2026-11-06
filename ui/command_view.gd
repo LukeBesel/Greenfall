@@ -57,6 +57,17 @@ var _markers: Dictionary = {}  # robot name -> Node3D
 var _base_marker: Node3D
 var _you_marker: Node3D
 
+# Controller: D-pad / A drive the side panel through focus; moving the left stick switches to
+# the map, where the hex under the screen-centre reticle is painted with A and erased with X.
+const PAD_KEYS: String = "D-pad  panel      Left stick  move      A  mark      X  unmark      LB / RB  zoom      B  back"
+const MOUSE_KEYS: String = "Left drag  mark      Right drag  unmark      WASD / middle drag  move      Wheel  zoom      B  back"
+var _using_pad: bool = false
+var _pad_paint: int = 0  # 1 while A is held on the map, -1 while X is held
+var _reticle_hex: int = -1
+var _reticle: Control
+var _keys: Label
+var _last_focus_id: Array = []  # [meta key, value] of the panel control that had focus
+
 
 func _ready() -> void:
 	layer = 18
@@ -191,8 +202,26 @@ func _ready() -> void:
 	keys_panel.offset_bottom = -14
 	keys_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(keys_panel)
-	var keys := UITheme.label("Left drag  mark      Right drag  unmark      WASD / middle drag  move      Wheel  zoom      B  back", 13, UITheme.MUTED)
-	keys_panel.add_child(keys)
+	_keys = UITheme.label(MOUSE_KEYS, 13, UITheme.MUTED)
+	keys_panel.add_child(_keys)
+	# Screen-centre reticle for controller painting (hidden while using the mouse).
+	_reticle = Control.new()
+	_reticle.set_anchors_preset(Control.PRESET_CENTER)
+	_reticle.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_reticle.visible = false
+	_reticle.draw.connect(func() -> void:
+		var col: Color = UITheme.GOLD
+		for d: Vector2 in [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1)]:
+			_reticle.draw_line(d * 6.0, d * 16.0, col, 2.0)
+		_reticle.draw_arc(Vector2.ZERO, 3.0, 0.0, TAU, 12, col, 2.0))
+	_root.add_child(_reticle)
+
+
+## Visible amber focus ring for controller / keyboard navigation.
+static func focus_box() -> StyleBoxFlat:
+	var sb := UITheme.box(Color(UITheme.GOLD, 0.12), UITheme.GOLD, 2, 4, 6)
+	sb.content_margin_left = 10
+	return sb
 
 
 ## Slate button with a hairline border; pressed lights up in the given colour.
@@ -210,7 +239,7 @@ func _style_button(b: Button, col: Color, stripe: bool) -> void:
 	var pressed_bg := Color(col.r * 0.3, col.g * 0.3, col.b * 0.3, 0.95)
 	b.add_theme_stylebox_override("pressed", mk.call(pressed_bg, col))
 	b.add_theme_stylebox_override("hover_pressed", mk.call(pressed_bg.lightened(0.05), col))
-	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	b.add_theme_stylebox_override("focus", focus_box())
 	b.add_theme_color_override("font_color", UITheme.CREAM)
 	b.add_theme_color_override("font_pressed_color", Color.WHITE)
 	b.add_theme_color_override("font_hover_color", Color.WHITE)
@@ -243,6 +272,9 @@ func open_view() -> void:
 		_sel_bot = false
 	_rebuild_overlay()
 	_refresh()
+	_set_pad(_using_pad)
+	if _using_pad:
+		_focus_panel.call_deferred()
 
 
 func close_view() -> void:
@@ -250,6 +282,10 @@ func close_view() -> void:
 		return
 	is_open = false
 	_paint = 0
+	_pad_paint = 0
+	var fo: Control = get_viewport().gui_get_focus_owner()
+	if fo and _root.is_ancestor_of(fo):
+		fo.release_focus()
 	_root.visible = false
 	_overlay.visible = false
 	if _prev_cam and is_instance_valid(_prev_cam):
@@ -327,8 +363,19 @@ func _refresh() -> void:
 
 
 func _rebuild_list() -> void:
+	# The list buttons are rebuilt on every refresh: remember which one had focus.
+	var fo: Control = get_viewport().gui_get_focus_owner() if is_inside_tree() else null
+	var refocus: bool = fo != null and _list.is_ancestor_of(fo)
+	if refocus:
+		_last_focus_id = _focus_id(fo)
 	for c: Node in _list.get_children():
 		c.queue_free()
+	_fill_list()
+	if refocus:
+		_restore_focus()
+
+
+func _fill_list() -> void:
 	var f: Fleet = world.fleet
 	if f.robots().is_empty():
 		var l := UITheme.label("No robots yet. Build one at the workbench.", 14, UITheme.MUTED)
@@ -347,6 +394,7 @@ func _rebuild_list() -> void:
 		gb.button_pressed = not _sel_bot and _sel_key == role_id
 		gb.text = "%s  %d/%d      %s" % [ROLE_NAMES[role_id], bots.size(), f.crew_cap(), _mode_label(role_id)]
 		gb.pressed.connect(_select.bind(role_id, false))
+		gb.set_meta("role", role_id)
 		_list.add_child(gb)
 		_add_build_row(role_id)
 		for r: Robot in bots:
@@ -360,6 +408,7 @@ func _rebuild_list() -> void:
 			rb.add_theme_color_override("font_pressed_color", ROLE_COLORS[role_id])
 			rb.text = _bot_line(r)
 			rb.set_meta("bot", r.robot_name)
+			rb.add_theme_stylebox_override("focus", focus_box())
 			rb.pressed.connect(_select.bind(r.robot_name, true))
 			_list.add_child(rb)
 
@@ -602,8 +651,10 @@ func _rebuild_overlay() -> void:
 		elif field.is_water(id):
 			edge = Color(0.6, 0.85, 1.0, 0.5)
 		_add_hex_outline(st, id, 0.99, w * 0.7, edge)
-	if _hover_hex >= 0:
+	if _hover_hex >= 0 and not _using_pad:
 		_add_hex_outline(st, _hover_hex, 0.99, w * 2.0, Color(1, 1, 1, 0.95))
+	if _using_pad and _reticle_hex >= 0:
+		_add_hex_outline(st, _reticle_hex, 0.99, w * 2.4, Color(UITheme.GOLD, 0.95))
 	_grid_mi.mesh = st.commit()
 	_rebuild_zone()
 
@@ -678,6 +729,13 @@ func _process(delta: float) -> void:
 	_cam_pos = _cam_pos.lerp(target, clampf(delta * 4.0, 0.0, 1.0))
 	_cam.global_position = _cam_pos
 	_cam.look_at(_cam_pos + (_focus - target).normalized() * 10.0, Vector3.UP)
+	if _using_pad:
+		var rh: int = _hex_under(_screen_centre())
+		if rh != _reticle_hex:
+			_reticle_hex = rh
+			_overlay_t = 1.0
+			if _pad_paint != 0:
+				_paint_hex(rh, _pad_paint)
 	_update_markers(t)
 	_overlay_t += delta
 	if _overlay_t > 0.5:
@@ -746,18 +804,22 @@ func _map_input(event: InputEvent) -> void:
 
 
 func _paint_at(sp: Vector2) -> void:
+	_paint_hex(_hex_under(sp), _paint)
+
+
+## Mark (paint > 0) or unmark one hex in the selected crew's / robot's zone.
+func _paint_hex(h: int, paint: int) -> void:
 	var field: HexField = world.field
-	var h: int = _hex_under(sp)
-	if h < 0 or field.hex_hub[h] != 0:
+	if h < 0 or paint == 0 or field.hex_hub[h] != 0:
 		return
 	var od: Dictionary = world.fleet.order(_sel_key, _sel_bot)
 	var has: bool = (od["zone"] as Array).has(h)
-	if (_paint > 0) == has:
+	if (paint > 0) == has:
 		return
 	if str(od.get("mode", "")) in ["recall", "follow"]:
 		od["mode"] = "priority"  # marking ground means "work here"
-	world.fleet.toggle_zone_hex(_sel_key, _sel_bot, h, _paint > 0)
-	Audio.play("blip", 1.3 if _paint > 0 else 0.9, -14.0)
+	world.fleet.toggle_zone_hex(_sel_key, _sel_bot, h, paint > 0)
+	Audio.play("blip", 1.3 if paint > 0 else 0.9, -14.0)
 	_rebuild_zone()
 	var mode: String = str(od.get("mode", ""))
 	for b: Node in _mode_row.get_children():
@@ -768,6 +830,118 @@ func _paint_at(sp: Vector2) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_open:
 		return
-	if event.is_action_pressed("open_command") or event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel"):
+	# D-pad down is open_command on a pad, but here it moves focus, so only B / Start close.
+	var pad: bool = event is InputEventJoypadButton or event is InputEventJoypadMotion
+	if (event.is_action_pressed("open_command") and not pad) or event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel"):
 		close_view()
 		get_viewport().set_input_as_handled()
+
+
+# --- Controller -------------------------------------------------------------------------------
+
+func _screen_centre() -> Vector2:
+	return get_viewport().get_visible_rect().size * 0.5
+
+
+func _set_pad(on: bool) -> void:
+	if on != _using_pad:
+		_overlay_t = 1.0
+	_using_pad = on
+	if not on:
+		_pad_paint = 0
+	if _reticle:
+		_reticle.visible = on and is_open
+	if _keys:
+		_keys.text = PAD_KEYS if on else MOUSE_KEYS
+
+
+## Runs before the GUI: tracks the input device and drives the map with the pad.
+func _input(event: InputEvent) -> void:
+	if event is InputEventJoypadButton or (event is InputEventJoypadMotion and absf((event as InputEventJoypadMotion).axis_value) > 0.5):
+		if not _using_pad:
+			_set_pad(true)
+	elif event is InputEventMouseButton or event is InputEventKey or (event is InputEventMouseMotion and (event as InputEventMouseMotion).relative.length() > 2.0):
+		if _using_pad:
+			_set_pad(false)
+	if not is_open:
+		return
+	var vp: Viewport = get_viewport()
+	var fo: Control = vp.gui_get_focus_owner()
+	var panel_focus: bool = fo != null and _root.is_ancestor_of(fo)
+	if event is InputEventJoypadMotion:
+		var jm: InputEventJoypadMotion = event
+		# Left stick pans the map (via the move_* axes in _process): leave the panel.
+		if jm.axis in [JOY_AXIS_LEFT_X, JOY_AXIS_LEFT_Y] and absf(jm.axis_value) > 0.5 and panel_focus:
+			_last_focus_id = _focus_id(fo)
+			fo.release_focus()
+			vp.set_input_as_handled()
+		return
+	if not event is InputEventJoypadButton:
+		return
+	var jb: InputEventJoypadButton = event
+	if event.is_action("zoom_in") or event.is_action("zoom_out"):
+		if jb.pressed:
+			_height = maxf(14.0, _height / 1.2) if event.is_action("zoom_in") else minf(200.0, _height * 1.2)
+			_overlay_t = 1.0
+		vp.set_input_as_handled()
+		return
+	if panel_focus:
+		return  # the GUI handles D-pad / A on the focused button
+	match jb.button_index:
+		JOY_BUTTON_A, JOY_BUTTON_X:
+			var p: int = 1 if jb.button_index == JOY_BUTTON_A else -1
+			if jb.pressed:
+				_pad_paint = p
+				_reticle_hex = _hex_under(_screen_centre())
+				_paint_hex(_reticle_hex, p)
+			elif _pad_paint == p:
+				_pad_paint = 0
+			vp.set_input_as_handled()
+		JOY_BUTTON_DPAD_UP, JOY_BUTTON_DPAD_DOWN, JOY_BUTTON_DPAD_LEFT, JOY_BUTTON_DPAD_RIGHT:
+			if jb.pressed:
+				_pad_paint = 0
+				_restore_focus()
+			vp.set_input_as_handled()
+
+
+## Identity of a panel control that survives list rebuilds: [meta key, value].
+func _focus_id(c: Control) -> Array:
+	for k: String in ["mode", "role", "bot", "build_type", "tier_type"]:
+		if c.has_meta(k):
+			return [k, str(c.get_meta(k))]
+	if c == _tank_btn:
+		return ["tank", ""]
+	return []
+
+
+func _find_focusable(id: Array) -> Control:
+	if id.is_empty():
+		return null
+	if id[0] == "tank":
+		return _tank_btn if _tank_btn and _tank_btn.visible else null
+	var stack: Array[Node] = [_root]
+	while not stack.is_empty():
+		var n: Node = stack.pop_back()
+		if n is Button and n.has_meta(id[0]) and str(n.get_meta(id[0])) == id[1] and not n.is_queued_for_deletion() and (n as Control).is_visible_in_tree():
+			return n as Control
+		stack.append_array(n.get_children())
+	return null
+
+
+func _restore_focus() -> void:
+	var c: Control = _find_focusable(_last_focus_id)
+	if c:
+		c.grab_focus()
+	else:
+		_focus_panel()
+
+
+## On open: focus the selected crew's button, else the first mode button.
+func _focus_panel() -> void:
+	if not is_open:
+		return
+	var c: Control = _find_focusable(["bot", _sel_key] if _sel_bot else ["role", _sel_key])
+	if c == null and _mode_row.get_child_count() > 0:
+		c = _mode_row.get_child(0)
+	if c:
+		c.grab_focus()

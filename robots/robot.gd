@@ -50,6 +50,12 @@ var _goal := Vector3.ZERO
 var _goal_d: float = 0.0
 var _trace_t: float = 0.0
 var _skip: Dictionary = {}  # piece / slot ids this robot gave up on after getting stuck
+## Idle back-off: after a district-wide search comes back empty, wait this long before the
+## next one (staggered per robot) instead of rescanning every physics tick.
+var _rescan_t: float = 0.0
+
+const RESCAN_MIN: float = 0.4
+const RESCAN_JITTER: float = 0.3
 
 
 func _ready() -> void:
@@ -80,6 +86,9 @@ func set_job(j: String) -> void:
 	job = j
 	_target_piece = -1
 	_target_slot = -1
+	_rescan_t = 0.0
+	if has_meta("dump_to"):
+		remove_meta("dump_to")
 	_busy = 0.8
 	Vfx.burst("sparkle", global_position + Vector3(0, 0.6, 0), Color(1.0, 0.8, 0.4), 0.5)
 	Audio.play("servo", 1.3, -10.0)
@@ -113,6 +122,7 @@ func _physics_process(delta: float) -> void:
 	_detour_t -= delta
 	_progress_t += delta
 	_busy = maxf(0.0, _busy - delta)
+	_rescan_t = maxf(0.0, _rescan_t - delta)
 	var move := Vector3.ZERO
 	if _busy <= 0.0:
 		_idling = false
@@ -185,9 +195,22 @@ func reset_targets(keep_skip: bool = false) -> void:
 	_refill = {}
 	_refilling = false
 	_shore = Vector3.INF
+	_rescan_t = 0.0
+	# A stale auto-baler claim (role/job changed mid-dump) would otherwise be acted on later.
+	if has_meta("dump_to"):
+		remove_meta("dump_to")
+	_release_bale()
+
+
+## Drop the hauler's current target and clear the reservation it put on that bale.
+func _release_bale() -> void:
 	if _target_bale and is_instance_valid(_target_bale):
 		_target_bale.set_meta("reserved", false)
 	_target_bale = null
+
+
+func _backoff() -> void:
+	_rescan_t = RESCAN_MIN + randf() * RESCAN_JITTER
 
 
 func _fleet() -> Fleet:
@@ -324,8 +347,10 @@ func _unstick() -> void:
 func _think(delta: float) -> Vector3:
 	var f: Fleet = _fleet()
 	if f and f.mode_of(self) == "recall":
-		if role() == "haul" and not carried.is_empty():
-			return _think_haul()
+		if role() == "haul":
+			_release_bale()
+			if not carried.is_empty():
+				return _think_haul(true)  # deliver what it carries, collect nothing new
 		return _steer(_park_pos(), 0.8)
 	match role():
 		"haul":
@@ -350,9 +375,12 @@ func _think_clean(_delta: float) -> Vector3:
 		_make_bale()
 		return Vector3.ZERO
 	if work_hex < 0 or field.is_clean(work_hex):
+		if _rescan_t > 0.0 and hopper.is_empty():
+			return _go_idle(_idle_reason)
 		work_hex = _pick_work_hex()
 		_target_piece = -1
 		if work_hex < 0:
+			_backoff()
 			if not hopper.is_empty():
 				_make_bale()
 				return Vector3.ZERO
@@ -498,8 +526,12 @@ func _think_plant() -> Vector3:
 	if not GameState.can_afford("seeds", BigNum.from_float(1.0)):
 		return _go_idle("out of seeds")
 	if _target_slot < 0 or g.slot_species[_target_slot] >= 0:
+		if _rescan_t > 0.0:
+			_target_slot = -1
+			return _go_idle("no empty soil")
 		_target_slot = _find_slot(g, true)
 		if _target_slot < 0:
+			_backoff()
 			return _go_idle("no empty soil")
 	var m: Vector3 = _steer(g.slot_pos[_target_slot], 0.8)
 	if m == Vector3.ZERO:
@@ -536,8 +568,10 @@ func _think_water(delta: float) -> Vector3:
 	if _target_slot >= 0 and (g.slot_species[_target_slot] < 0 or water_fraction(g, _target_slot) > 0.7):
 		_target_slot = -1  # someone else got it
 	if _target_slot < 0:
-		_target_slot = _find_thirsty(g)
+		_target_slot = _find_thirsty(g) if _rescan_t <= 0.0 else -1
 		if _target_slot < 0:
+			if _rescan_t <= 0.0:
+				_backoff()
 			# Nothing thirsty: top the tank up while it's quiet, then park.
 			if water < tank * 0.5:
 				return _do_refill(delta, tank)
@@ -674,9 +708,12 @@ func _think_skim() -> Vector3:
 	if not hopper.can_accept(stat("capacity")):
 		return _to_shore()
 	if work_hex < 0 or field.is_clean(work_hex):
+		if _rescan_t > 0.0 and hopper.is_empty():
+			return _go_idle(_idle_reason)
 		work_hex = _pick_work_hex()
 		_target_piece = -1
 		if work_hex < 0:
+			_backoff()
 			if not hopper.is_empty():
 				return _to_shore()
 			return _go_idle("lake is clean" if not _stay() else "zone clean")
@@ -780,28 +817,22 @@ func _find_slot_in(g: Garden, empty: bool, z: Array) -> int:
 
 # --- Hauler ----------------------------------------------------------------------------
 
-func _think_haul() -> Vector3:
-	var depot: Depot = world.depot
+## deliver_only (recall): take what it carries to the drop-off and never fetch more.
+func _think_haul(deliver_only: bool = false) -> Vector3:
 	var cap: int = int(round(stat("carry")))
-	if carried.size() >= cap or (not carried.is_empty() and _find_bale() == null):
-		var drop: Vector3 = Stations.haul_drop(self, depot.global_position)  # [stations] feeder pad if closer
-		var m: Vector3 = _steer(drop, 0.6)
-		if depot.pad_contains(global_position) or m == Vector3.ZERO:
-			for c: JunkCube in carried:
-				c.reparent(world.get_node("Cubes"), true)
-				c.global_position = drop + Vector3(randf_range(-0.4, 0.4), 0.6, randf_range(-0.4, 0.4))
-				c.set_carried(false)
-				c.set_meta("reserved", false)
-			log_stats["hauled"] = float(log_stats["hauled"]) + carried.size()
-			carried.clear()
-			_busy = 0.5
-			Audio.play("clunk", 0.9, -10.0)
-		return m
+	if deliver_only or carried.size() >= cap:
+		return _haul_deliver()
 	if _target_bale == null or not is_instance_valid(_target_bale) or _target_bale.carried or _target_bale.claimed:
-		_target_bale = _find_bale()
-		if _target_bale:
-			_target_bale.set_meta("reserved", true)
+		_release_bale()  # Patch grabbed it / it got claimed: let other haulers have it later
+		if _rescan_t <= 0.0:
+			_target_bale = _find_bale()  # one scan per tick at most
+			if _target_bale:
+				_target_bale.set_meta("reserved", true)
+			else:
+				_backoff()
 	if _target_bale == null:
+		if not carried.is_empty():
+			return _haul_deliver()
 		return _go_idle("waiting for bales")
 	var m2: Vector3 = _steer(_target_bale.global_position, 0.9)
 	if m2 == Vector3.ZERO:
@@ -813,6 +844,23 @@ func _think_haul() -> Vector3:
 		_busy = 0.6
 		Audio.play("servo", 0.8, -14.0)
 	return m2
+
+
+func _haul_deliver() -> Vector3:
+	var depot: Depot = world.depot
+	var drop: Vector3 = Stations.haul_drop(self, depot.global_position)  # [stations] feeder pad if closer
+	var m: Vector3 = _steer(drop, 0.6)
+	if depot.pad_contains(global_position) or m == Vector3.ZERO:
+		for c: JunkCube in carried:
+			c.reparent(world.get_node("Cubes"), true)
+			c.global_position = drop + Vector3(randf_range(-0.4, 0.4), 0.6, randf_range(-0.4, 0.4))
+			c.set_carried(false)
+			c.set_meta("reserved", false)
+		log_stats["hauled"] = float(log_stats["hauled"]) + carried.size()
+		carried.clear()
+		_busy = 0.5
+		Audio.play("clunk", 0.9, -10.0)
+	return m
 
 
 func _find_bale() -> JunkCube:

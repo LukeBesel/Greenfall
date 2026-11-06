@@ -18,6 +18,12 @@ var _dur: float = 5.0
 var _idle_t: float = 0.0
 var _bale: JunkCube
 var _bale_info: Dictionary = {}
+## Junk taken out of the store for the press in progress, until the bale exists (saved back
+## into the store so a reload presses it again).
+var _press_contents: Dictionary = {}
+var _press_take: float = 0.0
+## Bale riding the eject ramp (no longer _bale, not yet released): saved as a held bale.
+var _ejecting: JunkCube
 var _platen: Node3D
 var _gate: Node3D
 var _mound: MeshInstance3D
@@ -174,6 +180,8 @@ func _start_press() -> void:
 	for t2: String in store.keys():
 		if float(store[t2]) <= 0.0001:
 			store.erase(t2)
+	_press_contents = contents
+	_press_take = take
 	_bale_info = Economy.evaluate_cube(contents, cap, float(cfg().get("value_mult", 0.85)))
 	_bale_info["perfect"] = false
 	Audio.play("servo", 0.7, -8.0)
@@ -224,6 +232,8 @@ func _press(delta: float) -> void:
 
 
 func _make_bale() -> void:
+	_press_contents = {}
+	_press_take = 0.0
 	_bale = JunkCube.create(_bale_info["value"], _bale_info)
 	_bale.claimed = true
 	add_child(_bale)
@@ -239,6 +249,7 @@ func _eject() -> void:
 		return
 	var c: JunkCube = _bale
 	_bale = null
+	_ejecting = c
 	Audio.play("servo", 1.1, -9.0)
 	var a := Vector3(0, FLOOR_Y + c.size * 0.5, 0)
 	var b := Vector3(0, 0.14 + c.size * 0.5, 1.95)
@@ -249,6 +260,8 @@ func _eject() -> void:
 			r.rotation.x = t * 12.0
 		, 0.0, 1.0, 0.7).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tw.tween_callback(func() -> void:
+		if _ejecting == c:
+			_ejecting = null
 		var fwd: Vector3 = global_basis.z
 		if stations:
 			stations.release_cube(c, c.global_position, fwd * 1.2)
@@ -292,7 +305,14 @@ func _update_visuals(_delta: float) -> void:
 
 
 func to_dict() -> Dictionary:
-	return {"pos": [position.x, position.z], "store": store.duplicate(), "fill": store_fill}
+	var st: Dictionary = store.duplicate()
+	var fill: float = store_fill
+	if phase == "press" and not _press_contents.is_empty():
+		# Mid-stroke, before the bale exists: put the junk back so nothing is lost on reload.
+		for t: String in _press_contents:
+			st[t] = float(st.get(t, 0.0)) + float(_press_contents[t])
+		fill += _press_take
+	return {"pos": [position.x, position.z], "store": st, "fill": fill}
 
 
 func restore(d: Dictionary) -> void:
@@ -303,6 +323,8 @@ func restore(d: Dictionary) -> void:
 func held_dicts() -> Array:
 	if _bale and is_instance_valid(_bale):
 		return [_bale.to_dict()]
+	if _ejecting and is_instance_valid(_ejecting) and _ejecting.claimed:
+		return [_ejecting.to_dict()]
 	return []
 
 

@@ -6,6 +6,7 @@ var _cur: Dictionary
 var _world: Dictionary
 var _stats: Dictionary
 var _ups: Dictionary
+var _flags: Dictionary
 
 
 func before_each() -> void:
@@ -13,6 +14,10 @@ func before_each() -> void:
 	_world = GameState.world
 	_stats = GameState.stats.duplicate(true)
 	_ups = GameState.upgrades.duplicate()
+	_flags = GameState.flags.duplicate(true)
+	GameState.flags = {}
+	for id: String in ["conveyor", "auto_baler", "recycler"]:
+		Research.grant(id)  # stations are research-gated (Stations.block_reason)
 	GameState.currencies = {}
 	GameState.world = {}
 	GameState.upgrades = {}
@@ -23,6 +28,7 @@ func after_each() -> void:
 	GameState.world = _world
 	GameState.stats = _stats
 	GameState.upgrades = _ups
+	GameState.flags = _flags
 
 
 func _rich() -> void:
