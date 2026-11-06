@@ -149,25 +149,26 @@ func target(p: String, t: float) -> Dictionary:
 	}
 	match p:
 		"wave":
-			d["sh_r"] = Vector3(1.35, -0.45, 0.5)
-			d["el_r"] = Vector3(0.05, 0.42 * sin(t * 7.5), 0)
+			d["sh_r"] = Vector3(1.45, 0.35, 1.3)
+			d["el_r"] = Vector3(0.42 * sin(t * 7.5), 0, 0)
 			d["claw_r"] = Vector3(-0.5, -0.5, -0.5)
 			d["sh_l"] = Vector3(0.1, 0, -0.08)
 			d["head"] = Vector3(0.06, -0.12, 0.14)
 			d["happy"] = 1.0
 			d["lean"] = Vector2(0.03, -0.04)
 		"thumbs":
-			d["sh_r"] = Vector3(0.55, 0.4, 0.12)
-			d["el_r"] = Vector3(-0.3, 0, 0)
+			d["sh_r"] = Vector3(0.6, 0.45, 0.3)
+			d["el_r"] = Vector3(-0.4, 0, 0)
 			d["claw_r"] = Vector3(-2.6, 1.7, 1.7)  # top finger up, the other two make a fist
 			d["sh_l"] = Vector3(0.05, 0, -0.1)
 			d["head"] = Vector3(0.04, 0.08, -0.12)
 			d["wink"] = 1.0
 			d["look"] = Vector2(0.2, 0.1)
 		"peace":
-			d["sh_r"] = Vector3(1.3, -0.35, 0.42)
-			d["el_r"] = Vector3(0.12, 0, 0)
-			d["claw_r"] = Vector3(1.7, -1.1, -1.1)  # the two front fingers make the V
+			d["sh_r"] = Vector3(1.5, 0.55, 1.15)
+			d["el_r"] = Vector3(0.15, 0, 0)
+			d["wr_r"] = Vector3(0, 0, PI * 0.5)
+			d["claw_r"] = Vector3(1.7, -1.1, -1.1)  # two fingers spread into a V
 			d["sh_l"] = Vector3(0.1, 0, -0.08)
 			d["head"] = Vector3(0.05, -0.1, 0.2)
 			d["happy"] = 1.0
@@ -186,10 +187,10 @@ func target(p: String, t: float) -> Dictionary:
 			d["blink"] = 0.18
 			d["lean"] = Vector2(-0.06, 0)
 		"sprout":
-			d["sh_r"] = Vector3(0.62, 0.5, 0.06)
-			d["sh_l"] = Vector3(0.62, -0.5, -0.06)
-			d["el_r"] = Vector3(-0.12, 0, 0)
-			d["el_l"] = Vector3(-0.12, 0, 0)
+			d["sh_r"] = Vector3(0.7, 0.3, -0.25)
+			d["sh_l"] = Vector3(0.7, -0.3, 0.25)
+			d["el_r"] = Vector3(-0.2, 0, 0)
+			d["el_l"] = Vector3(-0.2, 0, 0)
 			d["claw_r"] = Vector3(-0.35, -0.35, -0.35)
 			d["claw_l"] = Vector3(-0.35, -0.35, -0.35)
 			d["head"] = Vector3(-0.2, 0, 0.1 + sin(t * 0.9) * 0.03)
@@ -198,18 +199,18 @@ func target(p: String, t: float) -> Dictionary:
 		"sit":
 			d["float_y"] = 0.53 + sin(t * 1.2) * 0.004
 			d["lean"] = Vector2(0.07, 0)
-			d["sh_r"] = Vector3(-0.42, 0, 0.42)
-			d["sh_l"] = Vector3(-0.42, 0, -0.42)
-			d["el_r"] = Vector3(-0.75, 0, 0)
-			d["el_l"] = Vector3(-0.75, 0, 0)
+			d["sh_r"] = Vector3(-0.2, 0, 0.5)
+			d["sh_l"] = Vector3(-0.2, 0, -0.5)
+			d["el_r"] = Vector3(-1.3, 0, 0)
+			d["el_l"] = Vector3(-1.3, 0, 0)
 			d["claw_r"] = Vector3(-0.2, -0.2, -0.2)
 			d["claw_l"] = Vector3(-0.2, -0.2, -0.2)
 			d["head"] = Vector3(0.1, 0.1, 0.13 + sin(t * 0.6) * 0.03)
 			d["blink"] = 0.25
 			d["ring"] = 1.0
 		"holo":
-			d["sh_r"] = Vector3(0.62, 0.2, 0.22)
-			d["el_r"] = Vector3(0.28, 0, 0)
+			d["sh_r"] = Vector3(0.9, 0.5, 0.9)
+			d["el_r"] = Vector3(0.2, 0, 0)
 			d["wr_r"] = Vector3(0, 0, 0)
 			d["claw_r"] = Vector3(-0.9, -0.9, -0.9)
 			d["sh_l"] = Vector3(0.1, 0, -0.08)
@@ -219,10 +220,10 @@ func target(p: String, t: float) -> Dictionary:
 		"cheer":
 			var hop: float = absf(sin(t * 4.5))
 			d["float_y"] = 0.08 + hop * 0.06
-			d["sh_r"] = Vector3(1.55, -0.25, 0.65 + hop * 0.1)
-			d["sh_l"] = Vector3(1.55, 0.25, -0.65 - hop * 0.1)
-			d["el_r"] = Vector3(0.2, 0.15 * sin(t * 9.0), 0)
-			d["el_l"] = Vector3(0.2, -0.15 * sin(t * 9.0), 0)
+			d["sh_r"] = Vector3(1.5, 0.2, 1.25 + hop * 0.12)
+			d["sh_l"] = Vector3(1.5, -0.2, -1.25 - hop * 0.12)
+			d["el_r"] = Vector3(0.2 + 0.15 * sin(t * 9.0), 0, 0)
+			d["el_l"] = Vector3(0.2 - 0.15 * sin(t * 9.0), 0, 0)
 			d["claw_r"] = Vector3(-0.8, -0.8, -0.8)
 			d["claw_l"] = Vector3(-0.8, -0.8, -0.8)
 			d["head"] = Vector3(0.16, 0, sin(t * 4.5) * 0.06)
@@ -232,10 +233,10 @@ func target(p: String, t: float) -> Dictionary:
 		"sleepy":
 			d["float_y"] = 0.0 + sin(t * 0.8) * 0.006
 			d["lean"] = Vector2(-0.07, 0.04)
-			d["sh_r"] = Vector3(-0.12, 0, 0.05)
-			d["sh_l"] = Vector3(-0.12, 0, -0.05)
-			d["el_r"] = Vector3(-1.25, 0, 0)
-			d["el_l"] = Vector3(-1.25, 0, 0)
+			d["sh_r"] = Vector3(0.0, 0, 0.1)
+			d["sh_l"] = Vector3(0.0, 0, -0.1)
+			d["el_r"] = Vector3(-1.35, 0, 0)
+			d["el_l"] = Vector3(-1.35, 0, 0)
 			d["claw_r"] = Vector3(0.5, 0.5, 0.5)
 			d["claw_l"] = Vector3(0.5, 0.5, 0.5)
 			d["head"] = Vector3(-0.3, 0.05, 0.14 + sin(t * 0.8) * 0.02)
@@ -247,7 +248,7 @@ func target(p: String, t: float) -> Dictionary:
 		"hero":
 			d["float_y"] = 0.32 + sin(t * 1.6) * 0.015
 			d["lean"] = Vector2(0.1, -0.03)
-			d["sh_r"] = Vector3(2.35, 0.2, 0.18)
+			d["sh_r"] = Vector3(0.0, 0.35, 2.5)
 			d["el_r"] = Vector3(STRAIGHT, 0, 0)
 			d["claw_r"] = Vector3(1.5, 1.5, 1.5)
 			d["sh_l"] = Vector3(-0.55, 0, -0.32)
@@ -262,15 +263,16 @@ func target(p: String, t: float) -> Dictionary:
 			d["sh_r"] = aim
 			d["el_r"] = Vector3(STRAIGHT + 0.25, 0, 0)
 			d["claw_r"] = Vector3(-0.4, -0.4, -0.4)
-			d["sh_l"] = Vector3(1.25, 0.4, -0.42)
-			d["el_l"] = Vector3(0.12, 0, 0)
+			d["sh_l"] = Vector3(1.5, -0.55, -1.15)
+			d["el_l"] = Vector3(0.15, 0, 0)
+			d["wr_l"] = Vector3(0, 0, -PI * 0.5)
 			d["claw_l"] = Vector3(1.7, -1.1, -1.1)
 			d["head"] = Vector3(0.1, clampf(aim.y * 0.35, -0.3, 0.3), 0.18)
 			d["happy"] = 1.0
 			d["lean"] = Vector2(0.04, 0.05)
 		"curious":
-			d["sh_l"] = Vector3(0.95, -0.55, -0.08)
-			d["el_l"] = Vector3(0.75, 0, 0)
+			d["sh_l"] = Vector3(0.9, -0.45, 0.25)
+			d["el_l"] = Vector3(0.45, 0, 0)
 			d["claw_l"] = Vector3(0.9, 0.9, 0.9)
 			d["sh_r"] = Vector3(0.05, 0, 0.12)
 			d["head"] = Vector3(0.08, 0.15, -0.3 + sin(t * 0.8) * 0.03)
@@ -489,31 +491,16 @@ func _make_sprout() -> Node3D:
 
 
 func _make_cube() -> Node3D:
-	var root := Node3D.new()
-	var mi := MeshInstance3D.new()
-	mi.mesh = ProcMesh.rounded_box(Vector3.ONE, 0.05, 3)
-	var mat := ShaderMaterial.new()
-	mat.shader = preload("res://art/shaders/cube.gdshader")
-	mat.set_shader_parameter("color_a", Color(0.5, 0.47, 0.43))
-	mat.set_shader_parameter("color_b", Color(0.42, 0.3, 0.22))
-	mat.set_shader_parameter("color_c", Color(0.32, 0.45, 0.52))
-	mat.set_shader_parameter("mix_b", 0.35)
-	mat.set_shader_parameter("mix_c", 0.18)
-	mat.set_shader_parameter("seed", 12.0)
-	mat.set_shader_parameter("detail_nrm", AssetLib.tex("rubble", "nor_gl"))
-	mi.material_override = mat
-	mi.scale = Vector3.ONE * 0.6
-	mi.position = Vector3(0, 0.3, 0.04)
-	mi.rotation_degrees = Vector3(0, 8, 0)
-	root.add_child(mi)
-	var strap_mat: Material = Mats.metal("dark_steel")
-	for x: float in [-0.25, 0.25]:  # two steel straps (unit-cube space, like JunkCube)
-		var s := MeshInstance3D.new()
-		s.mesh = ProcMesh.box(Vector3(0.05, 1.025, 1.025))
-		s.material_override = strap_mat
-		s.position = Vector3(x, 0, 0)
-		mi.add_child(s)
-	return root
+	var c := JunkCube.create(BigNum.zero(), {"fill": 1.0, "colors": [Color(0.5, 0.47, 0.43), Color(0.42, 0.3, 0.22), Color(0.32, 0.45, 0.52)]})
+	c.freeze = true
+	c.position = Vector3(0, 0.3, 0.04)
+	c.rotation_degrees = Vector3(0, 8, 0)
+	c.ready.connect(func() -> void:
+		c.remove_from_group("junk_cube")  # a prop: never sold, carried or saved
+		c.collision_layer = 0
+		c.collision_mask = 0
+		c.process_mode = Node.PROCESS_MODE_DISABLED)
+	return c
 
 
 func _make_holo() -> Node3D:

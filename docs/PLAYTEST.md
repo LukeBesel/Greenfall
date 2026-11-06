@@ -41,6 +41,7 @@ Every push to this branch builds the game automatically on GitHub.
 | Command robots | B | D-pad down |
 | Survey hologram (planet map) | M | Back / Select |
 | Lens view | V | Right stick click |
+| Photo mode | P (or Pause menu > Photo mode) | Left stick click |
 | Pause / settings | Esc | Start |
 
 ## Good things to try in a first session

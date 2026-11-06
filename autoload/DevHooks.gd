@@ -38,6 +38,8 @@ extends Node
 ##   --streak=N         start with N cleaning-streak points (30 per tier)
 ##   --tokens=N         start with N contract tokens; --trinkets=N grants N collectibles; --livery=ID equips one
 ##   --tab=contracts    with --open=upgrades: the contracts board and token shop (--contracts-sample fills it)
+##   --photo[=S]        [photo] open photo mode after S s; --photo-seq="pose=wave|filter=golden;..." captures each
+##                      entry (--photo-first/--photo-every=S, --photo-open=lumi,look, --photo-copy=DIR); see ui/photo_mode.gd
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0

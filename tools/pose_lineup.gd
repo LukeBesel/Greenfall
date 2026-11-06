@@ -2,13 +2,14 @@ extends Node3D
 ## [photo] Renders every photo-mode pose side by side (front and 3/4 views) to check the joint
 ## angles quickly:
 ##   xvfb-run -a godot --path . --rendering-driver vulkan --resolution 1600x900 res://tools/pose_lineup.tscn -- --fresh --out=screenshots/poses
-## Writes <out>_0.png (front) and <out>_1.png (3/4 from the right).
+## Writes one 3/4-front close-up per pose: <out>_<pose>.png (combine into a sheet afterwards).
 
 var _cam: Camera3D
 var _t: float = 0.0
 var _i: int = 0
 var _out: String
 var _views: Array = []
+var _ids: Array[String] = []
 
 
 func _ready() -> void:
@@ -39,12 +40,10 @@ func _ready() -> void:
 	ground.material_override = gm
 	add_child(ground)
 	var ids: Array[String] = PhotoPoser.pose_ids()
-	var cols: int = 7
+	_ids = ids
 	for i: int in ids.size():
 		var m := PatchModel.new()
-		var row: int = i / cols
-		var col: int = i % cols
-		m.position = Vector3((col - (cols - 1) * 0.5) * 1.35 + row * 0.6, 0, row * 2.2)
+		m.position = Vector3(i * 4.0, 0, 0)
 		add_child(m)
 		var p := PhotoPoser.new()
 		add_child(p)
@@ -54,17 +53,22 @@ func _ready() -> void:
 		l.text = ids[i]
 		l.font_size = 48
 		l.pixel_size = 0.004
-		l.position = m.position + Vector3(0, 0.02, -0.75)
-		l.rotation_degrees = Vector3(-90, 0, 0)
+		l.position = m.position + Vector3(0.9, 0.02, -0.9)
+		l.rotation_degrees = Vector3(-90, 180, 0)
 		add_child(l)
 	_cam = Camera3D.new()
 	_cam.fov = 42.0
 	add_child(_cam)
 	_cam.current = true
-	_views = [[Vector3(0.3, 2.0, -9.0), Vector3(0.3, 0.6, 1.0)], [Vector3(6.5, 2.4, -6.5), Vector3(0.3, 0.6, 1.0)]]
+	_cam.fov = 34.0
+	for i: int in ids.size():
+		var at := Vector3(i * 4.0, 0, 0)
+		_views.append([at + Vector3(-1.3, 1.15, -2.7), at + Vector3(0, 0.62, 0)])
+	var k: int = 0
 	for p: Node in get_children():
 		if p is PhotoPoser:
-			(p as PhotoPoser).camera_pos = _views[0][0]
+			(p as PhotoPoser).camera_pos = _views[k][0]
+			k += 1
 
 
 func _process(delta: float) -> void:
@@ -73,8 +77,8 @@ func _process(delta: float) -> void:
 	_cam.position = v[0]
 	_cam.look_at(v[1], Vector3.UP)
 	if _t > 4.0:
-		DevHooks.save_viewport("%s_%d.png" % [_out, _i])
+		DevHooks.save_viewport("%s_%s.png" % [_out, _ids[_i]])
 		_i += 1
-		_t = 2.5
+		_t = 3.2
 		if _i >= _views.size():
 			get_tree().quit()
