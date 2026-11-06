@@ -276,11 +276,19 @@ func _handle_scoop(delta: float) -> void:
 	_scoop_timer -= delta
 	if _scoop_timer > 0.0:
 		return
-	var pid: int = world.field.find_scoop_target(scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"))
-	if pid < 0:
-		return
-	_scoop_timer = 1.0 / maxf(stat("scoop_rate"), 0.5)
-	_take_piece(pid)
+	# Multi-Lock: one laser per piece, several pieces per pulse once upgraded.
+	var locks: int = maxi(1, int(round(stat("pickup_count"))))
+	var took: int = 0
+	for k: int in locks:
+		if k > 0 and not compartment.can_accept(cap):
+			break
+		var pid: int = world.field.find_scoop_target(scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"))
+		if pid < 0:
+			break
+		_take_piece(pid)
+		took += 1
+	if took > 0:
+		_scoop_timer = 1.0 / maxf(stat("scoop_rate"), 0.5)
 
 
 func _take_piece(pid: int) -> void:

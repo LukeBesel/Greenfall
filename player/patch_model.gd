@@ -413,7 +413,7 @@ func _update_hopper(delta: float) -> void:
 func _update_beam(delta: float) -> void:
 	_beam_amt = move_toward(_beam_amt, 1.0 if _beam_target != null else 0.0, delta * 8.0)
 	var on: bool = _beam_amt > 0.02 and _beam_target != null
-	_beam.visible = on
+	_beam.visible = false  # no cone: the pickup is a few thin lasers (player/pickup_fx.gd)
 	if not on:
 		return
 	var a: Vector3 = claw_point()

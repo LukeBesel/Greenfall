@@ -206,12 +206,21 @@ func _animate(s: Slot, delta: float) -> void:
 	var lu: float = clampf((u - 0.12) / 0.4, 0.0, 1.0)
 	var rise: float = 1.0 - pow(1.0 - lu, 3.0)
 	rise += sin(lu * PI) * 0.12
-	var drift: Vector3 = (chest - s.start) * Vector3(1, 0, 1) * 0.28 * smoothstep(0.1, 1.0, lu)
-	var wob: Vector3 = Vector3(sin(s.t * 23.0 + s.phase), 0.0, cos(s.t * 19.0 + s.phase)) * 0.025 * lu
-	var hover: Vector3 = s.start + Vector3(0, lift_h * rise, 0) + drift + wob
+	var wob: Vector3 = Vector3(sin(s.t * 23.0 + s.phase), 0.0, cos(s.t * 19.0 + s.phase)) * 0.02 * lu
+	var lifted: Vector3 = s.start + Vector3(0, lift_h * rise, 0) + wob
+	# Like the concept: the piece is drawn up into the open claw and floats right at the palm.
+	var hold: Vector3 = s.pos
+	if model:
+		var claw: Vector3 = model.claw_point()
+		var out: Vector3 = (claw - chest)
+		out.y = 0.0
+		out = out.normalized() if out.length() > 0.01 else Vector3.FORWARD
+		hold = claw + out * (0.2 + minf(s.radius, 0.3) * 0.6) + Vector3(0, 0.04 + sin(s.t * 6.0 + s.phase) * 0.015, 0)
+	var pull: float = smoothstep(0.18, 0.55, u)
+	var hover: Vector3 = lifted.lerp(hold, pull * pull * (3.0 - 2.0 * pull))
 	# Compress: squash into a hot bead and slide a little toward the chest.
-	var cu: float = clampf((u - 0.5) / 0.2, 0.0, 1.0)
-	s.pos = hover.lerp(chest, 0.18 * cu * cu)
+	var cu: float = clampf((u - 0.55) / 0.15, 0.0, 1.0)
+	s.pos = hover.lerp(chest, 0.25 * cu * cu)
 	if not s.streamed:
 		s.burst_pos = s.pos
 	var spin_t: float = s.t * (0.6 if s.big else 1.0)
@@ -267,16 +276,33 @@ func _draw_slot(s: Slot) -> void:
 		var size: float = (minf(s.radius, 0.45) * 1.3 + 0.1) * snap
 		var flash: float = 1.0 + 1.5 * (1.0 - smoothstep(0.0, 0.12, s.t))
 		_flat(s.start + Vector3(0, 0.03, 0), size, Color(glow, 0.9 * ret_a * minf(flash, 1.6)), s.t * 4.0 + s.phase)
-	# Twin lasers: shoot out from both claws, converge on the piece, then cut off.
-	var las: float = 1.0 - smoothstep(0.5, 0.66, u)
+	# Palm beam (concept style): a fan of fine light rays from the open claw to the piece, with
+	# sparkle dust flowing back into the palm.
+	var las: float = 1.0 - smoothstep(0.58, 0.7, u)
 	if las > 0.01 and model:
 		var reach: float = 1.0 - pow(1.0 - clampf(s.t / 0.06, 0.0, 1.0), 2.0)
-		var flick: float = 0.85 + 0.15 * sin(s.t * 90.0 + s.phase)
-		var w: float = 0.012 if s.big else 0.009
-		_laser(model.claw_point(), s.pos, reach, w, las * flick)
-		_laser(model.claw_point_l(), s.pos, reach, w, las * flick)
+		var flick: float = 0.85 + 0.15 * sin(s.t * 70.0 + s.phase)
+		var claw: Vector3 = model.claw_point()
+		var tgt: Vector3 = claw.lerp(s.pos, reach)
+		var axis: Vector3 = tgt - claw
+		var side: Vector3 = axis.cross(Vector3.UP)
+		side = side.normalized() if side.length() > 0.001 else Vector3.RIGHT
+		var upv: Vector3 = side.cross(axis).normalized()
+		var spread: float = minf(s.radius, 0.3) * 0.9 + 0.05
+		var rays: int = 3
+		for i: int in rays:
+			var ang: float = TAU * float(i) / rays + s.t * 2.0 + s.phase
+			var end: Vector3 = tgt + (side * cos(ang) + upv * sin(ang)) * spread * 0.45
+			_ribbon(claw, end, 0.012, Color(CYAN, 0.25 * las * flick))
+			_ribbon(claw, end, 0.0035, Color(0.9, 1.0, 1.0, 0.95 * las * flick))
+		var dust: int = 0
+		for i: int in dust:
+			var f: float = fmod(float(i) / dust + s.t * 2.6 + s.phase, 1.0)
+			var ang2: float = float(i) * 2.39996 + s.t * 5.0
+			var pp: Vector3 = tgt.lerp(claw, f) + (side * cos(ang2) + upv * sin(ang2)) * spread * (1.0 - f) * 0.9
+			_sprite(pp, 0.025 + 0.02 * (1.0 - f), Color(glow.lerp(Color.WHITE, 0.4), 0.8 * las * sin(f * PI)))
 		if reach >= 1.0:
-			_sprite(s.pos, minf(s.radius, 0.3) * 0.9 + 0.06, Color(glow, 0.45 * las * flick))
+			_sprite(s.pos, minf(s.radius, 0.3) * 1.1 + 0.07, Color(glow, 0.4 * las * flick))
 	# Arcs crawling over the piece while it is held.
 	var arc_a: float = smoothstep(0.1, 0.2, u) * (1.0 - smoothstep(0.62, 0.7, u))
 	if arc_a > 0.01:

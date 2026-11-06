@@ -239,6 +239,11 @@ func _ready() -> void:
 	if DevHooks.has("unlock-seeds"):
 		GameState.flags["seeds_unlocked"] = true
 		GameState.add_currency("seeds", BigNum.from_float(200))
+	if DevHooks.has("upgrade-levels"):
+		# --upgrade-levels=multi_lock:3+laser_reach:4  (screenshots/testing)
+		for spec: String in DevHooks.get_s("upgrade-levels", "").split("+"):
+			if ":" in spec:
+				GameState.upgrades[spec.get_slice(":", 0)] = int(spec.get_slice(":", 1))
 	if DevHooks.has("give-parts"):
 		for k: int in int(DevHooks.get_f("give-parts", 8.0)):
 			GameState.parts.append({"type": k % 8, "rarity": mini(k / 8, 4)})

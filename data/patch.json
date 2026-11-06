@@ -4,6 +4,7 @@
     "capacity": 30.0,
     "scoop_width": 1.4,
     "scoop_reach": 2.4,
+    "pickup_count": 1.0,
     "scoop_rate": 8.0,
     "move_speed": 4.6,
     "carry_stack": 1,
