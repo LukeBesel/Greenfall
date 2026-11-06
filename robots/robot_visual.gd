@@ -38,7 +38,7 @@ var _eye_mat: StandardMaterial3D
 var _beacon_mat: StandardMaterial3D
 var _field_mat: StandardMaterial3D
 var _beam: MeshInstance3D
-var _beam_mat: StandardMaterial3D
+var _beam_mat: ShaderMaterial
 var _beam_core_mat: StandardMaterial3D
 var _t: float = 0.0
 var _idle_t: float = 0.0
@@ -972,7 +972,13 @@ func _build_beam() -> void:
 	cone.cap_top = false
 	cone.cap_bottom = false
 	_beam.mesh = cone
-	_beam_mat = _additive(Color(0.3, 1.0, 0.8, 0.22))
+	# Same tractor_beam shader as Patch's claw, lighter (no swirl, dimmer) so it stays a helper.
+	_beam_mat = ShaderMaterial.new()
+	_beam_mat.shader = preload("res://art/shaders/tractor_beam.gdshader")
+	_beam_mat.set_shader_parameter("beam_color", MINT)
+	_beam_mat.set_shader_parameter("intensity", 0.55)
+	_beam_mat.set_shader_parameter("swirl", 0.35)
+	_beam_mat.set_shader_parameter("ring_spacing", 0.16)
 	_beam.material_override = _beam_mat
 	_beam.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	_beam.visible = false
@@ -997,7 +1003,7 @@ func _build_beam() -> void:
 func beam_to(world_pos: Variant) -> void:
 	if _beam == null:
 		return
-	if world_pos == null or not hover:
+	if world_pos == null or not (hover or look == "modern"):
 		_beam.visible = false
 		return
 	var a: Vector3 = _emitter.global_position if _emitter else to_global(emitter_point)
@@ -1006,7 +1012,9 @@ func beam_to(world_pos: Variant) -> void:
 	_beam.visible = true
 	var up: Vector3 = (a - b).normalized()
 	var side: Vector3 = up.cross(Vector3.FORWARD if absf(up.dot(Vector3.FORWARD)) < 0.9 else Vector3.RIGHT).normalized()
-	_beam.global_transform = Transform3D(Basis(side, up, side.cross(up)).scaled(Vector3(1, len, 1)), (a + b) * 0.5)
+	var w: float = 1.0 if hover else 0.45  # Mk III: a slim beam from the arm emitter
+	_beam.global_transform = Transform3D(Basis(side * w, up * len, side.cross(up) * w), (a + b) * 0.5)
+	_beam_mat.set_shader_parameter("beam_length", len)
 
 
 # --- Idle life -------------------------------------------------------------------------
@@ -1084,7 +1092,6 @@ func animate(speed: float, working: bool, delta: float) -> void:
 	if _field_mat:
 		_field_mat.albedo_color.a = 0.07 + 0.03 * sin(_t * 4.0) + (0.05 if working else 0.0)
 	if _beam and _beam.visible:
-		_beam_mat.albedo_color.a = 0.18 + 0.07 * sin(_t * 25.0)
 		_beam_core_mat.albedo_color.a = 0.3 + 0.1 * sin(_t * 40.0)
 	if _beacon_mat:
 		_beacon_mat.emission_energy_multiplier = 1.0 + (2.0 if fmod(_t, 1.4) < 0.15 else 0.0)

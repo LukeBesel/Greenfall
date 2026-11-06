@@ -37,13 +37,18 @@ var _arm_l: Node3D
 var _arm_r: Node3D
 var _claws: Array[Node3D] = []
 var _beam: MeshInstance3D
-var _beam_mat: StandardMaterial3D
-var _beam_core: MeshInstance3D
+var _beam_mat: ShaderMaterial
+var _beam_big: bool = false
 ## World position the tractor beam locks onto (null = no beam).
 var _beam_target: Variant = null
 var _beam_amt: float = 0.0
 var _spark_t: float = 0.0
 var _fill_bar: MeshInstance3D
+var _icon: Label3D
+var _icon_color := Color.WHITE
+## Pickup feedback: hopper pop (fill bar + chest icon) and a quick eye flash.
+var _hopper_pulse: float = 0.0
+var _eye_flash: float = 0.0
 var _hatch: Node3D
 
 var _t: float = 0.0
@@ -149,6 +154,8 @@ func _build() -> void:
 	icon_l.shaded = false
 	icon_l.position = Vector3(0, 0.4, -0.2)
 	_float.add_child(icon_l)
+	_icon = icon_l
+	_icon_color = icon_l.modulate
 	_fill_bar = _mi(_float, ProcMesh.box(Vector3(0.14, 0.01, 0.01)), Mats.lamp(glow, 2.5), Vector3(0, 0.343, -0.2))
 	_fill_bar.scale.x = 0.01
 	# Waist: dark band with a row of glowing slots across the front.
@@ -236,39 +243,26 @@ func _build() -> void:
 		"round":
 			for x: float in [-0.24, 0.24]:
 				_mi(_head, ProcMesh.hemisphere(0.09, 14, 5), trim, Vector3(x, 0.46, 0.02), Vector3(0, 0, signf(x) * -25))
-	# Tractor beam from the right claw: a cone that stretches to whatever is being picked up.
+	# Tractor beam from the right claw: a cone of scrolling energy rings (tractor_beam shader)
+	# that stretches to whatever is being picked up. The twin lasers and arcs are PickupFx.
 	_beam = MeshInstance3D.new()
 	var cone := CylinderMesh.new()
-	cone.top_radius = 0.025
-	cone.bottom_radius = 0.085
+	cone.top_radius = 0.03
+	cone.bottom_radius = 0.12
 	cone.height = 1.0
-	cone.radial_segments = 20
+	cone.radial_segments = 24
+	cone.rings = 6
 	cone.cap_top = false
 	cone.cap_bottom = false
 	_beam.mesh = cone
-	_beam_mat = StandardMaterial3D.new()
-	_beam_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	_beam_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	_beam_mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
-	_beam_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
-	_beam_mat.albedo_color = Color(glow, 0.0)
+	_beam_mat = ShaderMaterial.new()
+	_beam_mat.shader = preload("res://art/shaders/tractor_beam.gdshader")
+	_beam_mat.set_shader_parameter("beam_color", glow)
 	_beam.material_override = _beam_mat
 	_beam.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	_beam.top_level = true
+	_beam.visible = false
 	add_child(_beam)
-	_beam_core = MeshInstance3D.new()
-	var core := CylinderMesh.new()
-	core.top_radius = 0.008
-	core.bottom_radius = 0.03
-	core.height = 1.0
-	core.radial_segments = 10
-	core.cap_top = false
-	core.cap_bottom = false
-	_beam_core.mesh = core
-	_beam_core.material_override = Mats.lamp(glow.lightened(0.4), 4.0)
-	_beam_core.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	_beam_core.top_level = true
-	add_child(_beam_core)
 
 
 func _build_arm(side: float, paint: Material, trim: Material, accent: Material, dark: Material, glow: Color) -> Node3D:
@@ -335,6 +329,7 @@ func _process(delta: float) -> void:
 		var open: float = (0.5 + 0.5 * sin(s * 1.5)) if _scoop_amt > 0.1 else lerpf(0.2, 0.9, _hold)
 		f.rotation = Vector3(-dir.y, dir.x, 0) * open * 0.6
 	_update_beam(delta)
+	_update_hopper(delta)
 	# Press: the body compresses slightly while baling.
 	_root.scale = Vector3(1.0 + _press * 0.04, 1.0 - _press * 0.06, 1.0 + _press * 0.04)
 	if _shudder > 0.0:
@@ -358,7 +353,8 @@ func _process(delta: float) -> void:
 	_face_mat.set_shader_parameter("look", _look)
 	_face_mat.set_shader_parameter("happy", clampf((_happy - 0.6) * 2.5, 0.0, 1.0))
 	_face_mat.set_shader_parameter("blink", 0.9 if sleeping else _blink)
-	_face_mat.set_shader_parameter("energy", 1.2 if sleeping else 4.0 + _flash * 2.0)
+	_eye_flash = maxf(0.0, _eye_flash - delta * 6.0)
+	_face_mat.set_shader_parameter("energy", 1.2 if sleeping else 4.0 + _flash * 2.0 + _eye_flash * 3.0)
 
 
 func set_motion(speed: float, speed_ratio: float, local_accel: Vector2, delta: float) -> void:
@@ -367,9 +363,10 @@ func set_motion(speed: float, speed_ratio: float, local_accel: Vector2, delta: f
 	_ring_mat.emission_energy_multiplier += speed * 0.3
 
 
-## Lock the claw's tractor beam onto a world position (null releases it).
-func beam_at(world_pos: Variant) -> void:
+## Lock the claw's tractor beam onto a world position (null releases it). `big` widens it.
+func beam_at(world_pos: Variant, big: bool = false) -> void:
 	_beam_target = world_pos
+	_beam_big = big
 	if world_pos != null:
 		_scoop_t = maxf(_scoop_t, 0.2)
 
@@ -379,11 +376,44 @@ func claw_point() -> Vector3:
 	return wrist.to_global(Vector3(0, 0, -0.1))
 
 
+## Left claw tip (the second laser emitter).
+func claw_point_l() -> Vector3:
+	var wrist: Node3D = _arm_l.get_meta("wrist")
+	return wrist.to_global(Vector3(0, 0, -0.1))
+
+
+## World position of the chest hopper screen (where pickups stream in).
+func chest_world() -> Vector3:
+	return _float.to_global(Vector3(0, 0.395, -0.2))
+
+
+## Quick brightening of the visor eyes (target lock).
+func eye_flash(amount: float = 0.4) -> void:
+	_eye_flash = maxf(_eye_flash, amount)
+
+
+## Soft pop on the chest panel: the fill bar and icon flare as a pickup lands in the hopper.
+func hopper_pulse(amount: float = 0.6) -> void:
+	_hopper_pulse = clampf(maxf(_hopper_pulse, amount), 0.0, 1.0)
+
+
+func _update_hopper(delta: float) -> void:
+	if _fill_bar == null:
+		return
+	_hopper_pulse = maxf(0.0, _hopper_pulse - delta * 5.0)
+	var p: float = _hopper_pulse
+	_fill_bar.scale.y = 1.0 + p * 2.5
+	_fill_bar.scale.z = 1.0 + p * 1.5
+	(_fill_bar.material_override as StandardMaterial3D).emission_energy_multiplier = 2.5 + p * 7.0
+	if _icon:
+		_icon.modulate = _icon_color.lerp(Color(1.6, 1.8, 1.9), p * 0.8)
+		_icon.scale = Vector3.ONE * (1.0 + p * 0.18)
+
+
 func _update_beam(delta: float) -> void:
 	_beam_amt = move_toward(_beam_amt, 1.0 if _beam_target != null else 0.0, delta * 8.0)
 	var on: bool = _beam_amt > 0.02 and _beam_target != null
 	_beam.visible = on
-	_beam_core.visible = on
 	if not on:
 		return
 	var a: Vector3 = claw_point()
@@ -394,14 +424,15 @@ func _update_beam(delta: float) -> void:
 	var x: Vector3 = y.cross(Vector3.UP if absf(y.y) < 0.95 else Vector3.RIGHT).normalized()
 	var z: Vector3 = x.cross(y)
 	# Cylinder top (narrow) at the claw, wide end at the target.
-	var basis := Basis(x, -y * len, z)
+	var w: float = 1.35 if _beam_big else 1.0
+	var basis := Basis(x * w, -y * len, z * w)
 	_beam.global_transform = Transform3D(basis, a + d * 0.5)
-	_beam_core.global_transform = Transform3D(Basis(x * 0.8, -y * len, z * 0.8), a + d * 0.5)
-	_beam_mat.albedo_color.a = _beam_amt * (0.2 + 0.06 * sin(_t * 40.0))
+	_beam_mat.set_shader_parameter("beam_length", len)
+	_beam_mat.set_shader_parameter("intensity", _beam_amt * (1.25 if _beam_big else 1.0))
 	_spark_t -= delta
 	if _spark_t <= 0.0:
-		_spark_t = 0.12
-		Vfx.burst("sparkle", b, VARIANTS[variant]["glow"], 0.12)
+		_spark_t = 0.16
+		Vfx.burst("sparkle", b, VARIANTS[variant]["glow"], 0.1)
 	# Aim the right arm toward the target.
 	var local: Vector3 = _float.global_transform.affine_inverse() * b
 	var reach: float = clampf(-atan2(local.y - 0.4, -local.z) , -1.4, 0.3)
@@ -423,6 +454,7 @@ func set_fill(ratio: float, band: Array) -> void:
 		return
 	_fill_bar.scale.x = clampf(ratio, 0.01, 1.1)
 	var m: StandardMaterial3D = _fill_bar.material_override
+	hopper_pulse(0.3)
 	if ratio > float(band[1]) + 0.0001:
 		m.emission = Color(1.0, 0.3, 0.25)
 	elif ratio >= float(band[0]):

@@ -155,6 +155,8 @@ func _ready() -> void:
 	if DevHooks.has("autoplay"):
 		bot = AutoplayBot.new(self)
 		patch.input = bot
+	elif DevHooks.has("demo-scoop"):
+		patch.input = DemoScoopInput.new(self)
 	add_child(patch)
 	patch.global_position = SPAWN
 	patch.rotation.y = 0.0
@@ -222,6 +224,12 @@ func _ready() -> void:
 		var pid0: int = field.hex_pieces[hid][0]
 		print("[slice] piece0 xf=", view.piece_transform(pid0), " model=", field.piece_model[pid0], " mm_count=", view._mms.size(), " inst=", view._mms[view._piece_mm[pid0]].instance_count, " mmaabb=", view._mms[view._piece_mm[pid0]].get_aabb(), " itx=", view._mms[view._piece_mm[pid0]].get_instance_transform(view._piece_slot[pid0]))
 		print("[slice] pieces=%d junk_hexes=%d hex%d pieces=%d piles=%s" % [field.piece_count(), field.junk_hex_count, hid, field.hex_pieces[hid].size(), str(field.hex_piles[hid])])
+	if DevHooks.has("demo-scoop"):
+		DemoScoopInput.place(self, patch, patch.global_position)
+		cam.yaw = patch.rotation.y + DevHooks.get_f("demo-yaw", 0.7)
+		cam.distance = DevHooks.get_f("demo-dist", 2.8)
+		cam.pitch = -0.3
+		cam.snap()
 	if DevHooks.has("lens"):
 		cam.lens_view = true
 	if DevHooks.has("cam"):

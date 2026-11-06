@@ -480,6 +480,7 @@ func _pick(pid: int) -> void:
 		else:
 			var top: Vector3 = (start + end) * 0.5 + Vector3(0, 0.6, 0)
 			pos = start.lerp(top, t).lerp(top.lerp(end, t), t)
+			_beam_target = pos  # Mk III shows a slim beam on the arc (hidden on lower tiers)
 		flyer.global_position = pos
 		flyer.scale = start_scale * lerpf(1.0, 0.4, t * t)
 		, 0.0, 1.0, dur)
