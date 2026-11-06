@@ -48,7 +48,8 @@ func _process(delta: float) -> void:
 		return
 	# Lamp sits on the sensor head (lens point, a little up and to the side).
 	var lp: Vector3 = patch.model.lens_point if "lens_point" in patch.model else Vector3(0, 1.3, 0)
-	position = lp + Vector3(0.12, 0.12, 0.0)
+	# Small warning lamp on the crown, behind the antenna: never on the face, where it reads as an eye.
+	position = Vector3(-0.15, 1.06, 0.16)
 	_flash = maxf(0.0, _flash - delta * 9.0)
 	_lamp_mat.emission_energy_multiplier = 0.15 + _flash * 6.0
 	_light.light_energy = _flash * 1.6
