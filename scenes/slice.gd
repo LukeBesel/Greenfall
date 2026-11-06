@@ -21,6 +21,7 @@ var hub: Hub
 var shards: ShardSystem
 var garden: Garden
 var first_seed: FirstSeed
+var wildlife: Wildlife
 var doc_view: DocumentView
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
@@ -192,6 +193,9 @@ func _ready() -> void:
 	garden.world = self
 	add_child(garden)
 	garden.setup()
+	wildlife = Wildlife.new()
+	wildlife.world = self
+	add_child(wildlife)
 	first_seed = FirstSeed.new()
 	first_seed.world = self
 	add_child(first_seed)
@@ -203,6 +207,7 @@ func _ready() -> void:
 	add_child(doc_view)
 	doc_view.closed.connect(_on_modal_closed)
 	first_seed.setup()
+	wildlife.setup()
 	tutorial = Tutorial.new()
 	tutorial.world = self
 	add_child(tutorial)

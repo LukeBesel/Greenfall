@@ -380,6 +380,19 @@ func _generate_all() -> void:
 			var t: float = float(i) / RATE
 			b[i] = (sin(TAU * f * t) * 0.7 + sin(TAU * f * 1.5 * t) * 0.2) * sin(PI * t / 0.07) * 0.18
 		_add("blip", b)
+	# Bird: short trills (FM chirps) for returning wildlife.
+	for v: int in 4:
+		var b := _buf(0.5)
+		var ph: float = 0.0
+		var notes: int = 2 + v
+		for i: int in b.size():
+			var t: float = float(i) / RATE
+			var k: int = int(t / 0.5 * notes)
+			var lt: float = fmod(t, 0.5 / notes) / (0.5 / notes)
+			var f: float = 2600.0 + 900.0 * sin(TAU * lt) + 300.0 * k + 200.0 * v
+			ph += TAU * f / RATE
+			b[i] = sin(ph) * sin(PI * lt) * 0.18
+		_add("bird", b)
 	# Fanfare: milestones.
 	var fan := _buf(1.6)
 	var notes: Array[float] = [523.25, 659.25, 783.99, 1046.5]
