@@ -8,12 +8,12 @@ extends CanvasLayer
 signal closed
 
 const COLORS: Dictionary = {
-	PlanetData.State.JUNK: Color(0.75, 0.38, 0.22),
-	PlanetData.State.CLEAN: Color(0.95, 0.82, 0.5),
-	PlanetData.State.PLANTED: Color(0.55, 0.85, 0.35),
-	PlanetData.State.GROWING: Color(0.3, 0.8, 0.45),
-	PlanetData.State.RESTORED: Color(0.2, 0.95, 0.55),
-	PlanetData.State.WATER: Color(0.15, 0.4, 0.8),
+	PlanetData.State.JUNK: Color(1.0, 0.45, 0.1),
+	PlanetData.State.CLEAN: Color(0.4, 1.0, 0.3),
+	PlanetData.State.PLANTED: Color(0.3, 0.95, 0.5),
+	PlanetData.State.GROWING: Color(0.2, 1.0, 0.7),
+	PlanetData.State.RESTORED: Color(0.75, 1.0, 0.45),
+	PlanetData.State.WATER: Color(0.08, 0.2, 0.45),
 }
 
 var planet: PlanetData
@@ -36,6 +36,12 @@ var _yaw: float = 0.0
 var _pitch: float = 0.3
 var _zoom: float = 3.2
 var _hub_list: VBoxContainer
+var _pct: Label
+var _pct_sub: Label
+var _bar: ProgressBar
+var _rows: VBoxContainer
+var _big: Label
+var _grid_lines: MeshInstance3D
 var rocket_ready: Callable = func() -> bool: return false
 var launch_to: Callable = func(_hub: int) -> void: pass
 var current_hub: int = 0
@@ -53,7 +59,7 @@ func _ready() -> void:
 	_root.theme = UITheme.get_theme()
 	add_child(_root)
 	var dim := ColorRect.new()
-	dim.color = Color(0.01, 0.02, 0.03, 0.82)
+	dim.color = Color(0.02, 0.025, 0.035, 0.9)
 	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_root.add_child(dim)
 	var svc := SubViewportContainer.new()
@@ -81,38 +87,75 @@ func _ready() -> void:
 	env.background_mode = Environment.BG_CLEAR_COLOR
 	env.background_color = Color(0, 0, 0, 0)
 	env.glow_enabled = true
-	env.glow_intensity = 0.8
-	env.glow_bloom = 0.15
+	env.glow_intensity = 0.35
+	env.glow_bloom = 0.0
 	var we := WorldEnvironment.new()
 	we.environment = env
 	_vp.add_child(we)
-	# Side panel.
-	var mc := MarginContainer.new()
-	mc.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-	for side: String in ["margin_left", "margin_top"]:
-		mc.add_theme_constant_override(side, 36)
-	_root.add_child(mc)
-	var vb := VBoxContainer.new()
-	vb.add_theme_constant_override("separation", 6)
-	mc.add_child(vb)
-	vb.add_child(UITheme.label("S U R V E Y   M A P", 13, UITheme.MUTED))
-	vb.add_child(UITheme.label("VERDANCE", 30, UITheme.CREAM))
-	_age = UITheme.label("", 14, UITheme.GOLD)
-	vb.add_child(_age)
-	_stats = UITheme.label("", 15, UITheme.CREAM)
-	vb.add_child(_stats)
+	# Left: survey card (big percentage + counts), then the show-on-map card.
+	var left := VBoxContainer.new()
+	left.add_theme_constant_override("separation", 12)
+	left.position = Vector2(28, 28)
+	_root.add_child(left)
+	var c1: Array = UITheme.card("Survey Map", 300, "Verdance")
+	left.add_child(c1[0])
+	var b1: VBoxContainer = c1[1]
+	_pct = UITheme.label("0.0 %", 40, Color.WHITE)
+	b1.add_child(_pct)
+	_pct_sub = UITheme.label("", 13, UITheme.MUTED)
+	b1.add_child(_pct_sub)
+	_bar = ProgressBar.new()
+	_bar.show_percentage = false
+	_bar.custom_minimum_size = Vector2(0, 8)
+	_bar.add_theme_stylebox_override("fill", UITheme.box(Color(0.4, 1.0, 0.3), Color(0, 0, 0, 0), 0, 4, 0))
+	_bar.add_theme_stylebox_override("background", UITheme.box(Color(1.0, 0.45, 0.1, 0.35), Color(0, 0, 0, 0), 0, 4, 0))
+	b1.add_child(_bar)
+	_rows = VBoxContainer.new()
+	_rows.add_theme_constant_override("separation", 4)
+	b1.add_child(_rows)
+	for k: Array in [["junk", COLORS[PlanetData.State.JUNK], "Not cleaned yet"], ["clean", COLORS[PlanetData.State.CLEAN], "Cleaned"],
+			["planted", COLORS[PlanetData.State.PLANTED], "Planted"], ["growing", COLORS[PlanetData.State.GROWING], "Growing"],
+			["restored", COLORS[PlanetData.State.RESTORED], "Restored"], ["cities", Color(0.85, 0.88, 0.92), "Cities"],
+			["hubs", Color(1.0, 0.75, 0.25), "Bases"]]:
+		var r: HBoxContainer = UITheme.stat_row(k[1], k[2])
+		r.name = k[0]
+		_rows.add_child(r)
+	_stats = UITheme.label("", 1)
+	_stats.visible = false
+	_age = UITheme.label("", 13, UITheme.GOLD)
+	b1.add_child(_age)
 	_resurvey = Button.new()
-	_resurvey.custom_minimum_size = Vector2(240, 44)
+	_resurvey.custom_minimum_size = Vector2(0, 38)
+	UITheme.orange_button(_resurvey)
 	_resurvey.pressed.connect(_on_resurvey)
-	vb.add_child(_resurvey)
-	var close := Button.new()
-	close.text = "Close   M"
-	close.custom_minimum_size = Vector2(240, 40)
-	close.pressed.connect(close_view)
-	vb.add_child(close)
-	vb.add_child(UITheme.label("drag to spin  ·  wheel to zoom", 12, UITheme.MUTED))
+	b1.add_child(_resurvey)
+	# Right: rocket destinations.
+	var right := VBoxContainer.new()
+	right.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	right.offset_right = -28
+	right.offset_top = 28
+	right.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	_root.add_child(right)
+	var c2: Array = UITheme.card("Rocket", 320, "Travel between bases")
+	right.add_child(c2[0])
 	_hub_list = VBoxContainer.new()
-	vb.add_child(_hub_list)
+	_hub_list.add_theme_constant_override("separation", 6)
+	(c2[1] as VBoxContainer).add_child(_hub_list)
+	# Bottom centre: big readout.
+	_big = UITheme.label("", 30, Color.WHITE)
+	_big.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	_big.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	_big.offset_top = -86
+	_big.offset_bottom = -46
+	_big.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_root.add_child(_big)
+	var hint := UITheme.label("Drag to spin   ·   Wheel to zoom   ·   M to close", 13, UITheme.MUTED)
+	hint.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	hint.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	hint.offset_top = -38
+	hint.offset_bottom = -18
+	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_root.add_child(hint)
 	_root.visible = false
 
 
@@ -146,25 +189,38 @@ func open_view() -> void:
 func _refresh_hubs() -> void:
 	for c: Node in _hub_list.get_children():
 		c.queue_free()
-	if not rocket_ready.call():
-		_hub_list.add_child(UITheme.label("Rocket travel: build a level 5 hub.", 13, UITheme.MUTED))
-		return
-	_hub_list.add_child(UITheme.label("R O C K E T   D E S T I N A T I O N S", 12, UITheme.MUTED))
+	var ready: bool = rocket_ready.call()
+	if not ready:
+		var l := UITheme.label("Locked. Upgrade your base to level 5 to build the launch pad.", 13, UITheme.MUTED)
+		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_hub_list.add_child(l)
 	var here: Vector3 = planet.grid.centers[planet.hubs[current_hub]]
 	var order: Array = range(planet.hubs.size())
 	order.sort_custom(func(a: int, b: int) -> bool:
 		return here.angle_to(planet.grid.centers[planet.hubs[a]]) < here.angle_to(planet.grid.centers[planet.hubs[b]]))
-	for i: int in order.slice(1, 9):
+	for i: int in order.slice(1, 6):
 		var cell: int = planet.hubs[i]
-		var name: String = str(planet.cities[planet.city[cell]]["name"]) if planet.city[cell] >= 0 else PlanetData.BIOMES[planet.biome[cell]].capitalize().replace("_", " ") + " site"
+		var nm: String = str(planet.cities[planet.city[cell]]["name"]) if planet.city[cell] >= 0 else PlanetData.BIOMES[planet.biome[cell]].capitalize().replace("_", " ") + " site"
 		var km: float = here.angle_to(planet.grid.centers[cell]) * planet.radius_m / 1000.0
+		var row := PanelContainer.new()
+		row.add_theme_stylebox_override("panel", UITheme.row_box())
+		var hb := HBoxContainer.new()
+		row.add_child(hb)
+		var vb := VBoxContainer.new()
+		vb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		vb.add_theme_constant_override("separation", 0)
+		vb.add_child(UITheme.label(nm, 15, Color.WHITE))
+		vb.add_child(UITheme.label("%.1f km" % km, 12, UITheme.MUTED))
+		hb.add_child(vb)
 		var b := Button.new()
-		b.text = "%s   ·   %.1f km" % [name, km]
-		b.custom_minimum_size = Vector2(240, 34)
+		b.text = "Launch"
+		b.disabled = not ready
+		UITheme.orange_button(b)
 		b.pressed.connect(func() -> void:
 			close_view()
 			launch_to.call(i))
-		_hub_list.add_child(b)
+		hb.add_child(b)
+		_hub_list.add_child(row)
 
 
 ## Rocket flight: a glowing marker arcs from one hub to another while the globe turns to follow.
@@ -202,17 +258,34 @@ func _on_resurvey() -> void:
 func _refresh_text() -> void:
 	var counts: Dictionary = {}
 	var land: int = 0
-	for s: int in _snapshot:
-		counts[s] = int(counts.get(s, 0)) + 1
-		if s != PlanetData.State.WATER:
+	for st: int in _snapshot:
+		counts[st] = int(counts.get(st, 0)) + 1
+		if st != PlanetData.State.WATER:
 			land += 1
-	var pct := func(k: int) -> String: return "%.3f%%" % (100.0 * float(counts.get(k, 0)) / maxf(land, 1))
-	_stats.text = "Hexes   %d  (%d land)\nJunk   %s\nClean   %s\nPlanted   %s\nGrowing   %s\nRestored   %s\nCities   %d" % [
-		_snapshot.size(), land, pct.call(PlanetData.State.JUNK), pct.call(PlanetData.State.CLEAN),
-		pct.call(PlanetData.State.PLANTED), pct.call(PlanetData.State.GROWING), pct.call(PlanetData.State.RESTORED), planet.cities.size()]
+	var junk: int = int(counts.get(PlanetData.State.JUNK, 0))
+	var cleaned: int = land - junk
+	var frac: float = float(cleaned) / maxf(land, 1)
+	_pct.text = "%.3f %%" % (100.0 * frac)
+	_pct_sub.text = "of the planet reclaimed  ·  %s of %s land hexes" % [_num(cleaned), _num(land)]
+	_bar.value = frac * 100.0
+	var vals: Dictionary = {"junk": junk, "clean": counts.get(PlanetData.State.CLEAN, 0), "planted": counts.get(PlanetData.State.PLANTED, 0),
+		"growing": counts.get(PlanetData.State.GROWING, 0), "restored": counts.get(PlanetData.State.RESTORED, 0),
+		"cities": planet.cities.size(), "hubs": planet.hubs.size()}
+	for k: String in vals:
+		((_rows.get_node(k) as HBoxContainer).get_node("Value") as Label).text = _num(int(vals[k]))
+	_big.text = "%s HEXES CLEAN" % _num(cleaned)
 	var age: float = float(GameState.stats.get("time_played", 0.0)) - _snapshot_time
-	_age.text = "surveyed %s ago%s" % [_fmt_age(age), "   ·   OUTDATED" if age > 600.0 else ""]
-	_resurvey.text = "Re-survey   %s cubes" % Settings.fmt(survey_cost())
+	_age.text = "Surveyed %s ago%s" % [_fmt_age(age), "   ·   OUTDATED" if age > 600.0 else ""]
+	_resurvey.text = "Re-survey      %s cubes" % Settings.fmt(survey_cost())
+
+
+static func _num(n: int) -> String:
+	var s: String = str(n)
+	var out: String = ""
+	while s.length() > 3:
+		out = "," + s.substr(s.length() - 3) + out
+		s = s.substr(0, s.length() - 3)
+	return s + out
 
 
 func _fmt_age(s: float) -> String:
@@ -231,9 +304,9 @@ func _build_mesh() -> void:
 		var st: int = _snapshot[i]
 		var col: Color = COLORS.get(st, Color.WHITE)
 		if planet.city[i] >= 0 and st != PlanetData.State.WATER:
-			col = col.lerp(Color(0.75, 0.78, 0.82), 0.45)
+			col = col.lerp(Color(1.0, 0.85, 0.6), 0.3)
 		if st == PlanetData.State.JUNK:
-			col = col.darkened(0.35 * planet.junk[i])
+			col = col.darkened(0.25 * planet.junk[i])
 		var c: Vector3 = g.centers[i] * (1.0 + (0.004 if st != PlanetData.State.WATER else -0.002))
 		var corners: PackedVector3Array = g.corners(i)
 		for k: int in corners.size():
@@ -256,10 +329,43 @@ func _build_mesh() -> void:
 	var mat := StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mat.vertex_color_use_as_albedo = true
-	mat.emission_enabled = true
-	mat.emission = Color(0.05, 0.12, 0.12)
 	m.surface_set_material(0, mat)
 	_globe.mesh = m
+	if _grid_lines == null:
+		_grid_lines = MeshInstance3D.new()
+		_grid_lines.mesh = _lat_long_mesh()
+		_pivot.add_child(_grid_lines)
+
+
+## Thin latitude/longitude lines just above the surface, like a holo projection grid.
+func _lat_long_mesh() -> ArrayMesh:
+	var v := PackedVector3Array()
+	var r: float = 1.012
+	for lat_i: int in range(-75, 90, 15):
+		var lat: float = deg_to_rad(float(lat_i))
+		for k: int in 96:
+			var a0: float = TAU * k / 96.0
+			var a1: float = TAU * (k + 1) / 96.0
+			v.append(Vector3(cos(lat) * cos(a0), sin(lat), cos(lat) * sin(a0)) * r)
+			v.append(Vector3(cos(lat) * cos(a1), sin(lat), cos(lat) * sin(a1)) * r)
+	for lon_i: int in range(0, 360, 15):
+		var lon: float = deg_to_rad(float(lon_i))
+		for k: int in 48:
+			var b0: float = -PI * 0.5 + PI * k / 48.0
+			var b1: float = -PI * 0.5 + PI * (k + 1) / 48.0
+			v.append(Vector3(cos(b0) * cos(lon), sin(b0), cos(b0) * sin(lon)) * r)
+			v.append(Vector3(cos(b1) * cos(lon), sin(b1), cos(b1) * sin(lon)) * r)
+	var arrays: Array = []
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = v
+	var m := ArrayMesh.new()
+	m.add_surface_from_arrays(Mesh.PRIMITIVE_LINES, arrays)
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mat.albedo_color = Color(0.8, 1.0, 0.9, 0.12)
+	m.surface_set_material(0, mat)
+	return m
 
 
 func _process(delta: float) -> void:

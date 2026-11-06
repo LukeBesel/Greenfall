@@ -82,3 +82,89 @@ static func label(text: String, size: int = 20, color: Color = CREAM) -> Label:
 	l.add_theme_font_size_override("font_size", size)
 	l.add_theme_color_override("font_color", color)
 	return l
+
+
+# --- Station panels (map screens): dark card, hazard-stripe top, bold caps title -----------
+
+const ORANGE := Color(1.0, 0.5, 0.15)
+const CARD_BG := Color(0.085, 0.09, 0.105, 0.94)
+static var _stripe_tex: ImageTexture
+
+
+static func hazard_strip(height: int = 7) -> TextureRect:
+	if _stripe_tex == null:
+		var img := Image.create(64, 8, false, Image.FORMAT_RGBA8)
+		for y: int in 8:
+			for x: int in 64:
+				var band: bool = ((x + y) / 6) % 2 == 0
+				img.set_pixel(x, y, Color(1.0, 0.72, 0.1) if band else Color(0.08, 0.08, 0.09))
+		_stripe_tex = ImageTexture.create_from_image(img)
+	var tr := TextureRect.new()
+	tr.texture = _stripe_tex
+	tr.stretch_mode = TextureRect.STRETCH_TILE
+	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	tr.custom_minimum_size = Vector2(0, height)
+	tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return tr
+
+
+## A titled card. Returns [PanelContainer, VBoxContainer body].
+static func card(title: String, width: float = 300.0, subtitle: String = "") -> Array:
+	var pc := PanelContainer.new()
+	var sb := box(CARD_BG, Color(1, 1, 1, 0.08), 1, 8, 0)
+	pc.add_theme_stylebox_override("panel", sb)
+	pc.custom_minimum_size = Vector2(width, 0)
+	var outer := VBoxContainer.new()
+	outer.add_theme_constant_override("separation", 0)
+	pc.add_child(outer)
+	var strip := hazard_strip()
+	outer.add_child(strip)
+	var mc := MarginContainer.new()
+	for side: String in ["margin_left", "margin_right"]:
+		mc.add_theme_constant_override(side, 14)
+	mc.add_theme_constant_override("margin_top", 8)
+	mc.add_theme_constant_override("margin_bottom", 12)
+	outer.add_child(mc)
+	var body := VBoxContainer.new()
+	body.add_theme_constant_override("separation", 6)
+	mc.add_child(body)
+	if subtitle != "":
+		body.add_child(label(subtitle.to_upper(), 11, Color(0.4, 0.75, 1.0)))
+	var t := label(title.to_upper(), 21, Color.WHITE)
+	t.add_theme_constant_override("outline_size", 0)
+	body.add_child(t)
+	return [pc, body]
+
+
+## Row: coloured icon dot, name, right-aligned value.
+static func stat_row(col: Color, name: String, value: String = "") -> HBoxContainer:
+	var hb := HBoxContainer.new()
+	hb.add_theme_constant_override("separation", 10)
+	var dot := Panel.new()
+	dot.custom_minimum_size = Vector2(12, 12)
+	dot.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	dot.add_theme_stylebox_override("panel", box(col, Color(0, 0, 0, 0), 0, 6, 0))
+	hb.add_child(dot)
+	var n := label(name, 14, CREAM)
+	n.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hb.add_child(n)
+	var v := label(value, 14, Color.WHITE)
+	v.name = "Value"
+	hb.add_child(v)
+	return hb
+
+
+static func orange_button(b: Button) -> void:
+	b.add_theme_stylebox_override("normal", box(ORANGE, Color(0, 0, 0, 0), 0, 5, 8))
+	b.add_theme_stylebox_override("hover", box(ORANGE.lightened(0.15), Color(0, 0, 0, 0), 0, 5, 8))
+	b.add_theme_stylebox_override("pressed", box(ORANGE.darkened(0.15), Color(0, 0, 0, 0), 0, 5, 8))
+	b.add_theme_stylebox_override("disabled", box(Color(0.3, 0.3, 0.32, 0.8), Color(0, 0, 0, 0), 0, 5, 8))
+	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	b.add_theme_color_override("font_color", Color.WHITE)
+	b.add_theme_color_override("font_hover_color", Color.WHITE)
+	b.add_theme_color_override("font_pressed_color", Color.WHITE)
+
+
+## Dark row box used for list entries (waypoints, destinations, crews).
+static func row_box() -> StyleBoxFlat:
+	return box(Color(0.05, 0.055, 0.065, 0.9), Color(1, 1, 1, 0.06), 1, 5, 8)
