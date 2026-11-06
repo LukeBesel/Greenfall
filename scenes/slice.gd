@@ -383,6 +383,8 @@ func _ready() -> void:
 	hex_levels.setup()
 	# Future layer: the district builds up into a glowing city as hexes level (planet/future_layer.gd).
 	if DevHooks.has("future"):
+		if frontier:  # [biomes] thaw the ice / run the pumps first so the preview covers every hex
+			frontier.dev_pre_preview()
 		FutureLayer.apply_preview(self, int(DevHooks.get_f("future", 5.0)))
 	var future := FutureLayer.new()
 	future.name = "FutureLayer"

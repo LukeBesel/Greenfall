@@ -1022,7 +1022,7 @@ static func apply_preview(w: Node, n: int) -> void:
 				var s: int = sl[i]
 				if n < 4 and i % 2 == 1:
 					continue
-				g.slot_species[s] = (s * 7 + hid) % maxi(g.species.size(), 1)
+				g.slot_species[s] = g._pick_species(s)  # [biomes] district-appropriate species (frontier natives)
 				g.slot_stage[s] = stage
 				g.slot_water[s] = float(g.species[g.slot_species[s]].get("water_s", 120))
 				g._update_inst(s)

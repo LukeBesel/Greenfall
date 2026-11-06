@@ -127,6 +127,14 @@ func setup() -> void:
 
 
 func _dev_hooks() -> void:
+	if DevHooks.has("frontier-cam"):  # --frontier-cam=dist,pitch,yaw (landscape screenshots)
+		var c: PackedStringArray = DevHooks.get_s("frontier-cam", "30,-0.3,0").split(",")
+		var cam: CameraRig = world.cam
+		cam.max_distance = maxf(cam.max_distance, float(c[0]))
+		cam.distance = float(c[0])
+		cam.pitch = float(c[1]) if c.size() > 1 else -0.3
+		cam.yaw = float(c[2]) if c.size() > 2 else cam.yaw
+		cam.snap()
 	if DevHooks.has("storm"):  # --storm[=S]: a sandstorm S seconds after start (warning skipped)
 		storm_t = DevHooks.get_f("storm", 3.0)
 		if storm_t < 0.5:
@@ -146,6 +154,20 @@ func _dev_hooks() -> void:
 			_build_greenhouse(h, false)
 	if DevHooks.has("drain"):  # --drain=N: run the pumps N times now (skims the rings first)
 		for k: int in int(DevHooks.get_f("drain", 1.0)):
+			for h: int in Frontiers.drain_hexes(world.field, drained + 1, kind.get("flood", {})):
+				_clear_hex(h)
+			drain_next(false)
+
+
+## Dev (--future=N previews): thaw every hex and run every pump stage before the preview cleans
+## and plants the district.
+func dev_pre_preview() -> void:
+	if kid == "frozen_port":
+		ice.fill(0.0)
+		world.field.locked.clear()
+	if kid == "sunken_city":
+		var st: int = int(kind.get("flood", {}).get("stages", 3))
+		while drained < st:
 			for h: int in Frontiers.drain_hexes(world.field, drained + 1, kind.get("flood", {})):
 				_clear_hex(h)
 			drain_next(false)
@@ -214,7 +236,8 @@ func _refresh_summary() -> void:
 	var sd: SkyDirector = world.get("sky_director")
 	if sd:
 		sd.grade_amt = 1.0 - 0.6 * restore
-	view.set_restore(restore)
+	if view:
+		view.set_restore(restore)
 
 
 # --- Dust Flats: sandstorms --------------------------------------------------------------------
@@ -281,7 +304,8 @@ func storm_hit() -> Array[int]:
 		if world.get("planet") != null:
 			world.planet.set_junk(world.slice_cells[h], 1.0 - field.removed_fraction(h))
 		world.view.refresh_hex(h)
-		view.dust_hex(h)
+		if view:
+			view.dust_hex(h)
 		hit.append(h)
 	storms += 1
 	GameState.inc_stat("sandstorms")
@@ -307,7 +331,7 @@ func _is_planted(hid: int) -> bool:
 # --- Frozen Port: ice, heaters, greenhouses ---------------------------------------------------
 
 func _beam_hex() -> int:
-	var p: Patch = world.get("patch")
+	var p: Patch = world.get("patch") as Patch
 	if p == null or p.tool != Patch.Tool.SCOOP or p.input == null or not p.input.scoop_held():
 		return -1
 	var h: int = world.field.hex_at(p.global_position + p.forward() * 2.0)
@@ -322,7 +346,7 @@ func _thaw_step(dt: float) -> void:
 		Vfx.burst("steam", p.global_position + p.forward() * 2.0 + Vector3(0, 0.3, 0), Color(0.9, 0.95, 1.0, 0.6), 0.4)
 	var freed: Array[int] = Frontiers.thaw_step(ice, rates, dt)
 	for h: int in rates:
-		if ice[h] > 0.0 or h in freed:
+		if view and (ice[h] > 0.0 or h in freed):
 			view.set_ice(h, ice[h])
 	for h: int in freed:
 		_on_thawed(h)
@@ -330,7 +354,8 @@ func _thaw_step(dt: float) -> void:
 
 func _on_thawed(h: int) -> void:
 	world.field.locked.erase(h)
-	view.set_ice(h, 0.0)
+	if view:
+		view.set_ice(h, 0.0)
 	Vfx.burst("steam", world.field.hex_center(h) + Vector3(0, 0.4, 0), Color(0.92, 0.96, 1.0, 0.7), 2.0)
 	Audio.play("steam", 0.8, -6.0)
 	GameState.inc_stat("hexes_thawed")
@@ -355,7 +380,8 @@ func _place_heater(h: int, pay: bool) -> bool:
 	if pay and not GameState.spend("cubes", heater_cost()):
 		return false
 	heaters.append(h)
-	view.add_heater(h, pay)
+	if view:
+		view.add_heater(h, pay)
 	GameState.inc_stat("heaters_placed")
 	return true
 
@@ -367,7 +393,8 @@ func _build_greenhouse(h: int, pay: bool) -> bool:
 		return false
 	greenhouses.append(h)
 	world.garden.hex_grow_bonus[h] = float(kind.get("ice", {}).get("greenhouse_grow", 0.25))
-	view.add_greenhouse(h, pay)
+	if view:
+		view.add_greenhouse(h, pay)
 	GameState.inc_stat("greenhouses_built")
 	Codex.unlock("frontiers:greenhouse")
 	if pay and world.get("wren") != null:
@@ -387,7 +414,7 @@ func slot_plantable(hid: int) -> bool:
 # --- The E action (heater / greenhouse) ------------------------------------------------------
 
 func _target_hex() -> int:
-	var p: Patch = world.get("patch")
+	var p: Patch = world.get("patch") as Patch
 	if p == null:
 		return -1
 	var h: int = world.field.hex_at(p.global_position)
@@ -468,7 +495,8 @@ func drain_next(animate: bool) -> Array[int]:
 			hl.levels[h] = 0
 		world.view.refresh_hex(h)
 	EventBus.field_progress_changed.emit(field.cleaned_count, field.junk_hex_count)
-	view.on_drained(hs, animate)
+	if view:
+		view.on_drained(hs, animate)
 	GameState.inc_stat("drain_stages")
 	Codex.unlock("frontiers:pumps")
 	if animate:
@@ -489,7 +517,8 @@ func _cradle_step() -> void:
 		return
 	var before: float = float(cradle.get("pad_clean", 0.0))
 	cradle = Frontiers.cradle_progress(world.field, hl.levels, kind)
-	view.set_cradle(cradle)
+	if view:
+		view.set_cradle(cradle)
 	if before < 1.0 and float(cradle["pad_clean"]) >= 1.0 and not GameState.flags.get("cradle_pad_clean", false):
 		GameState.flags["cradle_pad_clean"] = true
 		EventBus.toast.emit("The landing pad is clean. Now plant it and keep it Sustained.", "story")
@@ -506,7 +535,8 @@ func complete() -> void:
 	done = true
 	GameState.flags["cradle_returned"] = true
 	GameState.inc_stat("cradle_called")
-	view.celebrate()
+	if view:
+		view.celebrate()
 	EventBus.toast.emit("The landing pad is alive and the beacon is lit. The Cradle has answered. It is coming home.", "story")
 	if world.get("wren") != null:
 		world.wren.say("cradle_complete", 1.0, true)
