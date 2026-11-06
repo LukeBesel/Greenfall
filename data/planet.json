@@ -10,7 +10,7 @@
       260,
       420
     ],
-    "clean_threshold": 0.99,
+    "clean_threshold": 0.97,
     "bonus_base": 20.0,
     "bonus_per_volume": 0.25
   }

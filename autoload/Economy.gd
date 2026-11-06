@@ -11,6 +11,10 @@ var cube_rules: Dictionary = {}
 var planet: Dictionary = {}
 var landmarks: Array = []
 var parts: Dictionary = {}
+var robots: Dictionary = {}  # type id -> def
+var robot_order: Array[String] = []
+var robot_tiers: Array = []
+var robot_cfg: Dictionary = {}
 
 
 func _ready() -> void:
@@ -47,6 +51,26 @@ func load_data() -> void:
 	cube_rules = pd.get("cube", {})
 	planet = read_json("res://data/planet.json")
 	parts = read_json("res://data/parts.json")
+	robot_cfg = read_json("res://data/robots.json")
+	robots.clear()
+	robot_order.clear()
+	robot_tiers = robot_cfg.get("tiers", [])
+	for r: Dictionary in robot_cfg.get("types", []):
+		robots[r["id"]] = r
+		robot_order.append(r["id"])
+		# Fleet upgrades become ordinary upgrades on the "bots" tab with stat "<type>.<stat>".
+		for u: Dictionary in r.get("upgrades", []):
+			var uid: String = "bot_%s_%s" % [r["id"], u["stat"]]
+			var d: Dictionary = u.duplicate()
+			d["id"] = uid
+			d["tab"] = "bots"
+			d["robot"] = r["id"]
+			d["name"] = "%s: %s" % [r["name"], u["name"]]
+			d["desc"] = "Every %s in the fleet." % r["name"]
+			d["stat"] = "%s.%s" % [r["id"], u["stat"]]
+			d["icon"] = "speed"
+			upgrade_defs[uid] = d
+			upgrade_order.append(uid)
 
 
 # --- Stats --------------------------------------------------------------------
@@ -55,6 +79,9 @@ func load_data() -> void:
 func stat(stat_id: String, levels: Variant = null) -> float:
 	var lv: Dictionary = levels if levels is Dictionary else GameState.upgrades
 	var value: float = float(patch_base.get(stat_id, 0.0))
+	if "." in stat_id:
+		var parts_id: PackedStringArray = stat_id.split(".")
+		value = float(robots.get(parts_id[0], {}).get("stats", {}).get(parts_id[1], 0.0))
 	var mul: float = 1.0
 	for uid: String in upgrade_order:
 		var u: Dictionary = upgrade_defs[uid]
@@ -227,6 +254,18 @@ func rarity(idx: int) -> Dictionary:
 func part_type(idx: int) -> Dictionary:
 	var t: Array = parts.get("types", [])
 	return t[clampi(idx, 0, t.size() - 1)] if not t.is_empty() else {}
+
+
+## A robot's effective stat: fleet upgrades x tier multiplier x part-rarity bonus.
+func robot_stat(type_id: String, stat_id: String, tier: int = 0, rarity_bonus: float = 0.0) -> float:
+	var v: float = stat("%s.%s" % [type_id, stat_id])
+	if stat_id in ["speed", "scoop_rate", "capacity", "efficiency"]:
+		v *= float(robot_tiers[clampi(tier, 0, robot_tiers.size() - 1)].get("mult", 1.0)) if not robot_tiers.is_empty() else 1.0
+	return v * (1.0 + rarity_bonus)
+
+
+func tier_name(tier: int) -> String:
+	return str(robot_tiers[clampi(tier, 0, robot_tiers.size() - 1)].get("name", "Mk I")) if not robot_tiers.is_empty() else "Mk I"
 
 
 func hex_bonus(junk_volume: float) -> BigNum:

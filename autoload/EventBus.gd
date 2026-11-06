@@ -17,6 +17,7 @@ signal field_progress_changed(cleaned: int, total: int)
 signal upgrade_bought(upgrade_id: String, new_level: int)
 signal milestone_reached(milestone_id: String)
 signal toast(text: String, kind: String)
+signal tutorial_changed(text: String)
 
 # Feel
 signal shake_requested(strength: float)

@@ -11,6 +11,8 @@ var field: HexField
 var layout: CityLayout
 var city: CityView
 var litter: LitterView
+var tutorial: Tutorial
+var fleet: Fleet
 var view: FieldView
 var depot: Depot
 var patch: Patch
@@ -90,7 +92,17 @@ func _ready() -> void:
 	hud.patch = patch
 	hud.world = self
 	add_child(hud)
+	var lens := LensOverlay.new()
+	lens.cam = cam
+	lens.patch = patch
+	add_child(lens)
+	fleet = Fleet.new()
+	fleet.name = "Fleet"
+	fleet.world = self
+	add_child(fleet)
 	upgrades = UpgradesScreen.new()
+	upgrades.fleet = fleet
+	upgrades.build_at = func() -> Vector3: return BOARD_POS + Vector3(2.5, 0.2, 0.0)
 	add_child(upgrades)
 	upgrades.closed.connect(_on_modal_closed)
 	pause_menu = PauseMenu.new()
@@ -110,17 +122,40 @@ func _ready() -> void:
 		var pid0: int = field.hex_pieces[hid][0]
 		print("[slice] piece0 xf=", view.piece_transform(pid0), " model=", field.piece_model[pid0], " mm_count=", view._mms.size(), " inst=", view._mms[view._piece_mm[pid0]].instance_count, " mmaabb=", view._mms[view._piece_mm[pid0]].get_aabb(), " itx=", view._mms[view._piece_mm[pid0]].get_instance_transform(view._piece_slot[pid0]))
 		print("[slice] pieces=%d junk_hexes=%d hex%d pieces=%d piles=%s" % [field.piece_count(), field.junk_hex_count, hid, field.hex_pieces[hid].size(), str(field.hex_piles[hid])])
+	if DevHooks.has("lens"):
+		cam.lens_view = true
 	if DevHooks.has("cam"):
 		cam.apply_preset(DevHooks.get_s("cam", "wide"))
 	if DevHooks.has("give"):
 		GameState.add_currency("cubes", BigNum.from_float(DevHooks.get_f("give", 100.0)))
+	if DevHooks.has("give-parts"):
+		for k: int in int(DevHooks.get_f("give-parts", 8.0)):
+			GameState.parts.append({"type": k % 8, "rarity": mini(k / 8, 4)})
+	if DevHooks.has("robots"):
+		# --robots=scoopie:2,haulbug:1@3  (count, optional tier after @)
+		var n_spawned: int = 0
+		for spec: String in DevHooks.get_s("robots", "").split(","):
+			var tier_i: int = int(spec.get_slice("@", 1)) if "@" in spec else 0
+			var kv: String = spec.get_slice("@", 0)
+			for k: int in int(kv.get_slice(":", 1)):
+				GameState.flags["tier_" + kv.get_slice(":", 0)] = tier_i
+				var rb: Robot = fleet.spawn(kv.get_slice(":", 0), tier_i, Vector3(-2.4 + n_spawned * 1.6, 0.2, 0.6), 0.0, "Test-%d" % k)
+				rb.tier = tier_i
+				rb.rebuild_visual()
+				rb.rotation.y = PI
+				if DevHooks.has("freeze-robots"):
+					rb.set_physics_process(false)
+				n_spawned += 1
 	if DevHooks.get_s("open", "") == "upgrades":
 		open_upgrades.call_deferred()
 	EventBus.hitstop_requested.connect(_hitstop)
 	print("[slice] built in %d ms" % (Time.get_ticks_msec() - t0))
+	tutorial = Tutorial.new()
+	tutorial.world = self
+	add_child(tutorial)
 	if not loaded:
-		get_tree().create_timer(1.2).timeout.connect(func() -> void:
-			Story.once("wake", "Bzzt. Systems... online. So much junk. Hold [LMB] or [Space] to scoop it up.", "story"))
+		get_tree().create_timer(1.5).timeout.connect(func() -> void:
+			Story.once("wake", "P-47CH  restart.  Battery 4%.  Storm charge accepted.  Running checklist.", "story"))
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -450,4 +485,5 @@ func _restore_world() -> void:
 		c.rotation = Vector3(float(r[0]), float(r[1]), float(r[2]))
 	if GameState.world.has("patch"):
 		patch.from_dict(GameState.world["patch"])
+	fleet.restore()
 	EventBus.toast.emit("Welcome back. The junk waited for you.", "info")

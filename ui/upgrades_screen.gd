@@ -22,6 +22,9 @@ var _currency: Label
 var _tab_buttons: Array[Button] = []
 var _tab: String = "patch"
 var _refresh_t: float = 0.0
+var _robot_cards: Array[RobotCard] = []
+var fleet: Fleet
+var build_at: Callable = func() -> Vector3: return Vector3.ZERO
 
 
 func _ready() -> void:
@@ -65,8 +68,10 @@ func _ready() -> void:
 	vb.add_child(tabs)
 	for t: Dictionary in TABS:
 		var b := Button.new()
-		b.text = t["name"] if t["id"] == "patch" else "%s (soon)" % t["name"]
-		b.disabled = t["id"] != "patch"
+		var live: bool = t["id"] in ["patch", "bots"]
+		b.text = t["name"] if live else "%s (soon)" % t["name"]
+		b.disabled = not live
+		b.pressed.connect(_set_tab.bind(str(t["id"])))
 		b.custom_minimum_size = Vector2(120, 44)
 		b.focus_mode = Control.FOCUS_NONE
 		tabs.add_child(b)
@@ -80,6 +85,23 @@ func _ready() -> void:
 	_grid.add_theme_constant_override("h_separation", 14)
 	_grid.add_theme_constant_override("v_separation", 14)
 	scroll.add_child(_grid)
+	_populate()
+	_root.resized.connect(_relayout)
+	_relayout()
+	_root.visible = false
+
+
+func _populate() -> void:
+	for c: Node in _grid.get_children():
+		c.queue_free()
+	_cards.clear()
+	_robot_cards.clear()
+	if _tab == "bots" and fleet:
+		for rid: String in Economy.robot_order:
+			var rc := RobotCard.new(rid, fleet, build_at)
+			rc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			_grid.add_child(rc)
+			_robot_cards.append(rc)
 	for id: String in Economy.upgrade_order:
 		if str(Economy.upgrade_defs[id].get("tab", "patch")) != _tab:
 			continue
@@ -88,9 +110,15 @@ func _ready() -> void:
 		card.bought.connect(func(_i: String, _n: int) -> void: _refresh_all())
 		_grid.add_child(card)
 		_cards.append(card)
-	_root.resized.connect(_relayout)
-	_relayout()
-	_root.visible = false
+
+
+func _set_tab(id: String) -> void:
+	if id == _tab:
+		return
+	_tab = id
+	Audio.play("click", 1.1, -8.0)
+	_populate()
+	_refresh_all()
 
 
 func _relayout() -> void:
@@ -110,6 +138,14 @@ func open_screen() -> void:
 	tw.tween_property(_root, "modulate:a", 1.0, 0.15)
 	if not _cards.is_empty():
 		_cards[0].first_button().call_deferred("grab_focus")
+
+
+func _input(event: InputEvent) -> void:
+	if not is_open:
+		return
+	if event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev"):
+		_set_tab("bots" if _tab == "patch" else "patch")
+		get_viewport().set_input_as_handled()
 
 
 func close_screen() -> void:
@@ -153,3 +189,5 @@ func _refresh_all() -> void:
 		best.is_best_value = true
 	for c: UpgradeCard in _cards:
 		c.refresh()
+	for rc: RobotCard in _robot_cards:
+		rc.refresh()

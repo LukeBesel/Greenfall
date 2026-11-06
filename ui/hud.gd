@@ -22,6 +22,8 @@ var _signal_label: Label
 var _toasts: VBoxContainer
 var _shown_cubes: float = 0.0
 var _bump: float = 0.0
+var _task_label: Label
+var _task_caption: Label
 
 
 func _ready() -> void:
@@ -71,6 +73,16 @@ func _build_top_left() -> void:
 	vb.add_child(_rate_label)
 	_cubes_label = UITheme.label("0", 38, UITheme.CREAM)
 	vb.add_child(_cubes_label)
+	var gap := Control.new()
+	gap.custom_minimum_size = Vector2(0, 14)
+	vb.add_child(gap)
+	_task_caption = _caption("")
+	vb.add_child(_task_caption)
+	_task_label = UITheme.label("", 16, UITheme.CREAM)
+	_task_label.autowrap_mode = TextServer.AUTOWRAP_WORD
+	_task_label.custom_minimum_size = Vector2(360, 0)
+	vb.add_child(_task_label)
+	EventBus.tutorial_changed.connect(_on_task)
 
 
 func _build_top_right() -> void:
@@ -171,6 +183,13 @@ func _process(delta: float) -> void:
 			_hex_label.text = ("HEX  %d%% CLEAR" % int(floor(world.field.removed_fraction(h) * 100.0))) if not world.field.is_clean(h) else "HEX  CLEAR"
 		else:
 			_hex_label.text = ""
+
+
+func _on_task(text: String) -> void:
+	_task_caption.text = "R E S T A R T   C H E C K L I S T" if text != "" else ""
+	_task_label.text = text
+	_task_label.modulate.a = 0.0
+	create_tween().tween_property(_task_label, "modulate:a", 1.0, 0.4)
 
 
 func _on_signal(text: String, color: Color, strength: float) -> void:

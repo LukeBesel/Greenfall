@@ -131,6 +131,9 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 		# Each hex leans toward one junk type so Pure Cubes are a reachable skill goal.
 		var theme: int = _weighted(rng, weights, wsum)
 		var count: int = int(round(lerpf(pieces_per_hex.x, pieces_per_hex.y, t_dist))) + rng.randi_range(-2, 3)
+		# Hexes next to the hub are lighter so the first hex flip comes within a few minutes.
+		if dist <= 1:
+			count = int(count * 0.45)
 		var piles: Array = []
 		if btype == CityLayout.Block.LANDFILL:
 			count = int(count * 2.2)

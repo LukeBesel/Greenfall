@@ -228,6 +228,7 @@ func _take_piece(pid: int) -> void:
 
 func _piece_arrived(type_id: String, vol: float, color: Color) -> void:
 	compartment.add(type_id, vol)
+	_maybe_salvage_part(type_id)
 	GameState.add_junk_removed(type_id, vol)
 	_scoop_combo = mini(_scoop_combo + 1, 10)
 	_combo_timer = 0.7
@@ -344,6 +345,27 @@ func _handle_interact() -> void:
 			world.try_interact(self)
 	elif input.drop_pressed() and not carried.is_empty():
 		place_top_cube()
+
+
+## Electronics (and rarely metal) junk sometimes yields a usable robot part.
+func _maybe_salvage_part(type_id: String) -> void:
+	var chance: float = float(Economy.robot_cfg.get("part_drop", {}).get(type_id, 0.0))
+	if randf() >= chance:
+		return
+	var rar: Array = Economy.parts.get("rarities", [])
+	var roll: float = randf() * 100.0
+	var r: int = 0
+	var acc: float = 0.0
+	for i: int in rar.size():
+		acc += float(rar[i]["weight"])
+		if roll <= acc:
+			r = i
+			break
+	var t: int = randi() % Economy.parts.get("types", [1]).size()
+	GameState.parts.append({"type": t, "rarity": r})
+	var rd: Dictionary = Economy.rarity(r)
+	EventBus.toast.emit("Salvaged: %s %s" % [rd.get("name", ""), Economy.part_type(t).get("name", "part")], "hint")
+	Audio.play("ding", 1.3, -10.0)
 
 
 func _on_part_found(idx: int) -> void:

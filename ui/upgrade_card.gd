@@ -188,7 +188,7 @@ func refresh() -> void:
 	elif maxed:
 		_change.text = "%s%s  (max)" % [_fmt(before), unit]
 		_change.add_theme_color_override("font_color", UITheme.GOLD)
-	elif def["stat"] == "auto_compactor":
+	elif str(def["stat"]) == "auto_compactor":
 		_change.text = "Off  →  On"
 		_change.add_theme_color_override("font_color", UITheme.GREEN)
 	else:

@@ -73,8 +73,12 @@ func _process(delta: float) -> void:
 		global_position = p.to_global(p.model.lens_point)
 		yaw = lerp_angle(yaw, p.rotation.y, clampf(delta * 6.0, 0.0, 1.0))
 		_arm.spring_length = 0.0
+		camera.near = 0.32  # look past the lens housing itself
+		camera.fov = lerpf(camera.fov, 72.0, clampf(delta * 6.0, 0.0, 1.0))
 	else:
 		global_position = _focus
+		camera.near = 0.05
+		camera.fov = lerpf(camera.fov, 62.0, clampf(delta * 6.0, 0.0, 1.0))
 		_arm.spring_length = lerpf(_arm.spring_length, distance, clampf(delta * 8.0, 0.0, 1.0))
 	rotation.y = yaw
 	_pitch_node.rotation.x = pitch

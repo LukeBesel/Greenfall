@@ -74,6 +74,8 @@ func _process(delta: float) -> void:
 			_perf_frames = 0
 	if has("quit-after") and _elapsed >= get_f("quit-after", 5.0):
 		print("[DevHooks] quitting after %.1fs" % _elapsed)
+		if has("report"):
+			print("[report] cubes=%s stats=%s parts=%d" % [GameState.get_currency("cubes").format(), JSON.stringify(GameState.stats), GameState.parts.size()])
 		get_tree().quit()
 
 

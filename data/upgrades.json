@@ -9,9 +9,9 @@
       "desc": "A roomier chest. More junk per cube.",
       "stat": "capacity",
       "mode": "add",
-      "amount": 2.0,
+      "amount": 6.0,
       "unit": "",
-      "base_cost": 15,
+      "base_cost": 30,
       "growth": 1.55,
       "max_level": 25
     },
@@ -25,7 +25,7 @@
       "mode": "add",
       "amount": 0.2,
       "unit": " m",
-      "base_cost": 20,
+      "base_cost": 40,
       "growth": 1.6,
       "max_level": 20
     },
@@ -39,7 +39,7 @@
       "mode": "mul_pct",
       "amount": 0.1,
       "unit": " m/s",
-      "base_cost": 25,
+      "base_cost": 50,
       "growth": 1.5,
       "max_level": 20
     },
@@ -53,7 +53,7 @@
       "mode": "add",
       "amount": 1.0,
       "unit": "",
-      "base_cost": 40,
+      "base_cost": 80,
       "growth": 1.9,
       "max_level": 9
     },
@@ -67,7 +67,7 @@
       "mode": "mul_pct",
       "amount": 0.12,
       "unit": "x",
-      "base_cost": 60,
+      "base_cost": 120,
       "growth": 1.65,
       "max_level": 30
     },
@@ -81,7 +81,7 @@
       "mode": "mul_pct",
       "amount": 0.15,
       "unit": "/s",
-      "base_cost": 35,
+      "base_cost": 70,
       "growth": 1.6,
       "max_level": 15
     },
@@ -95,7 +95,7 @@
       "mode": "add",
       "amount": 1.0,
       "unit": "",
-      "base_cost": 150,
+      "base_cost": 300,
       "growth": 1.0,
       "max_level": 1,
       "requires": {
@@ -112,7 +112,7 @@
       "mode": "add",
       "amount": 0.6,
       "unit": " m",
-      "base_cost": 120,
+      "base_cost": 240,
       "growth": 1.8,
       "max_level": 6,
       "requires": {
@@ -129,7 +129,7 @@
       "mode": "add",
       "amount": 1.0,
       "unit": "",
-      "base_cost": 80,
+      "base_cost": 160,
       "growth": 1.7,
       "max_level": 6
     }
