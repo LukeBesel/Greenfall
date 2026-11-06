@@ -118,6 +118,11 @@ func _ready() -> void:
 	hub = Hub.new()
 	hub.name = "Hub"
 	add_child(hub)
+	# [stations] Conveyor feeder, auto-baler, recycler (automation/stations.gd).
+	var stations := Stations.new()
+	stations.name = "Stations"
+	stations.world = self
+	add_child(stations)
 	_build_flower()
 	patch = Patch.new()
 	patch.name = "Patch"

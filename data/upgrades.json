@@ -132,6 +132,48 @@
       "base_cost": 160,
       "growth": 1.7,
       "max_level": 6
+        },
+    {
+      "id": "belt_speed",
+      "name": "Belt Drive",
+      "tab": "hub",
+      "icon": "speed",
+      "desc": "A bigger motor on the conveyor feeder. Bales ride faster.",
+      "stat": "belt_speed",
+      "mode": "mul_pct",
+      "amount": 0.2,
+      "unit": "x",
+      "base_cost": 300,
+      "growth": 1.7,
+      "max_level": 10
+    },
+    {
+      "id": "baler_speed",
+      "name": "Baler Hydraulics",
+      "tab": "hub",
+      "icon": "press",
+      "desc": "Higher pump pressure. The auto-baler presses faster.",
+      "stat": "baler_speed",
+      "mode": "mul_pct",
+      "amount": 0.2,
+      "unit": "x",
+      "base_cost": 600,
+      "growth": 1.7,
+      "max_level": 10
+    },
+    {
+      "id": "recycler_yield",
+      "name": "Recycler Yield",
+      "tab": "hub",
+      "icon": "auto",
+      "desc": "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale.",
+      "stat": "recycler_yield",
+      "mode": "mul_pct",
+      "amount": 0.15,
+      "unit": "x",
+      "base_cost": 800,
+      "growth": 1.75,
+      "max_level": 12
     }
   ]
 }

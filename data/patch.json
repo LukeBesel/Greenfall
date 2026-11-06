@@ -9,7 +9,10 @@
     "carry_stack": 1,
     "cube_value_mult": 1.0,
     "auto_compactor": 0,
-    "magnet_radius": 0.0
+    "magnet_radius": 0.0,
+    "belt_speed": 1.0,
+    "baler_speed": 1.0,
+    "recycler_yield": 1.0
   },
   "cube": {
     "pure_mult": 2.0,

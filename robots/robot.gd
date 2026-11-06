@@ -198,6 +198,8 @@ func _think(delta: float) -> Vector3:
 # --- Cleaner -------------------------------------------------------------------------
 
 func _think_clean(_delta: float) -> Vector3:
+	if has_meta("dump_to"):  # [stations] driving to an auto-baler (automation/stations.gd)
+		return Stations.dump_step(self)
 	var field: HexField = world.field
 	if not hopper.can_accept(stat("capacity")):
 		_make_bale()
@@ -319,6 +321,8 @@ func _pick(pid: int) -> void:
 func _make_bale() -> void:
 	if hopper.is_empty() or hopper.pending > 0.0:
 		return
+	if Stations.claim_dump(self):  # [stations] tip the hopper into a nearby auto-baler instead
+		return
 	var cap: float = stat("capacity")
 	var contents: Dictionary = hopper.take_all()
 	var info: Dictionary = Economy.evaluate_cube(contents, cap, stat("efficiency"))
@@ -431,11 +435,12 @@ func _think_haul() -> Vector3:
 	var depot: Depot = world.depot
 	var cap: int = int(round(stat("carry")))
 	if carried.size() >= cap or (not carried.is_empty() and _find_bale() == null):
-		var m: Vector3 = _steer(depot.global_position, 0.6)
+		var drop: Vector3 = Stations.haul_drop(self, depot.global_position)  # [stations] feeder pad if closer
+		var m: Vector3 = _steer(drop, 0.6)
 		if depot.pad_contains(global_position) or m == Vector3.ZERO:
 			for c: JunkCube in carried:
 				c.reparent(world.get_node("Cubes"), true)
-				c.global_position = depot.global_position + Vector3(randf_range(-0.4, 0.4), 0.6, randf_range(-0.4, 0.4))
+				c.global_position = drop + Vector3(randf_range(-0.4, 0.4), 0.6, randf_range(-0.4, 0.4))
 				c.set_carried(false)
 				c.set_meta("reserved", false)
 			carried.clear()
@@ -469,7 +474,7 @@ func _find_bale() -> JunkCube:
 		var c: JunkCube = n
 		if c.carried or c.claimed or bool(c.get_meta("reserved", false)) and c != _target_bale:
 			continue
-		if world.depot.pad_contains(c.global_position):
+		if world.depot.pad_contains(c.global_position) or Stations.on_feeder(c):  # [stations]
 			continue
 		var in_zone: bool = z.is_empty() or z.has(world.field.hex_at(c.global_position))
 		if stay and not in_zone:
