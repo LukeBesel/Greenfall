@@ -285,24 +285,30 @@ func _take_piece(pid: int) -> void:
 	var color: Color = Color.html(str(Economy.junk_types[type_id].get("cube_color", "#888888")))
 	compartment.reserve(vol)
 	world.collect_piece(pid)
-	# Fly the piece in an arc into the chest hatch.
+	# Tractor beam: the claw locks on, the piece lifts and spins in the beam, then is pulled in.
 	var flyer := MeshInstance3D.new()
 	flyer.mesh = mesh
 	get_tree().current_scene.add_child(flyer)
 	flyer.global_transform = start_xf
 	var start: Vector3 = start_xf.origin
 	var start_scale: Vector3 = start_xf.basis.get_scale()
-	var dur: float = 0.24
+	var dur: float = 0.36
+	Vfx.burst("sparkle", start + Vector3(0, 0.05, 0), Color(0.45, 0.9, 1.0), 0.25)
 	var tw := flyer.create_tween()
 	tw.tween_method(func(t: float) -> void:
-		if not is_instance_valid(self):
+		if not is_instance_valid(self) or not is_instance_valid(flyer):
 			return
-		var end: Vector3 = to_global(model.chest_point)
-		var top: Vector3 = (start + end) * 0.5 + Vector3(0, 0.9, 0)
-		flyer.global_position = start.lerp(top, t).lerp(top.lerp(end, t), t)
-		flyer.scale = start_scale * lerpf(1.0, 0.35, t * t)
-		flyer.rotation += Vector3(0.2, 0.3, 0.1)
+		var claw: Vector3 = model.claw_point()
+		var lift: Vector3 = start + Vector3(0, 0.35 * smoothstep(0.0, 0.45, t), 0)
+		var pos: Vector3 = lift.lerp(claw, smoothstep(0.4, 1.0, t))
+		flyer.global_position = pos
+		flyer.scale = start_scale * lerpf(1.0, 0.25, smoothstep(0.55, 1.0, t))
+		flyer.rotation += Vector3(0.06, 0.12, 0.04)
+		model.beam_at(pos)
 		, 0.0, 1.0, dur)
+	tw.tween_callback(func() -> void:
+		if is_instance_valid(self):
+			model.beam_at(null))
 	tw.tween_callback(flyer.queue_free)
 	# Arrival is timer-driven so a cut-short animation can never leave volume stuck as pending.
 	get_tree().create_timer(dur, false).timeout.connect(func() -> void:
