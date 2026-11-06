@@ -26,6 +26,10 @@ var _detour := Vector3.ZERO
 var _progress_pos := Vector3.ZERO
 var _progress_t: float = 0.0
 var _beam_target: Variant = null
+## Multibot job ("clean", "plant", "water"); specialists ignore it.
+var job: String = "clean"
+var water: float = 0.0
+var _target_slot: int = -1
 
 
 func _ready() -> void:
@@ -45,7 +49,20 @@ func _ready() -> void:
 
 
 func role() -> String:
-	return str(Economy.robots.get(type_id, {}).get("role", "clean"))
+	var r: String = str(Economy.robots.get(type_id, {}).get("role", "clean"))
+	return job if r == "any" else r
+
+
+## Multibot tool swap: visible attachment change in a burst of sparks.
+func set_job(j: String) -> void:
+	if j == job:
+		return
+	job = j
+	_target_piece = -1
+	_target_slot = -1
+	_busy = 0.8
+	Vfx.burst("sparkle", global_position + Vector3(0, 0.6, 0), Color(1.0, 0.8, 0.4), 0.5)
+	Audio.play("servo", 1.3, -10.0)
 
 
 func rebuild_visual() -> void:
@@ -105,6 +122,10 @@ func _think(delta: float) -> Vector3:
 	match role():
 		"haul":
 			return _think_haul()
+		"plant":
+			return _think_plant()
+		"water":
+			return _think_water()
 		_:
 			return _think_clean(delta)
 
@@ -235,6 +256,73 @@ func _make_bale() -> void:
 	GameState.inc_stat("robot_bales")
 
 
+# --- Planter / waterer ------------------------------------------------------------------
+
+func _think_plant() -> Vector3:
+	var g: Garden = world.get("garden")
+	if g == null or not g.unlocked() or not GameState.can_afford("seeds", BigNum.from_float(1.0)):
+		return Vector3.ZERO
+	if _target_slot < 0 or g.slot_species[_target_slot] >= 0:
+		_target_slot = _find_slot(g, true)
+		if _target_slot < 0:
+			return Vector3.ZERO
+	var m: Vector3 = _steer(g.slot_pos[_target_slot], 0.8)
+	if m == Vector3.ZERO:
+		if g.plant(_target_slot):
+			_busy = 1.0 / maxf(stat("work_rate"), 0.1)
+			_beam_target = g.slot_pos[_target_slot]
+		_target_slot = -1
+	return m
+
+
+func _think_water() -> Vector3:
+	var g: Garden = world.get("garden")
+	if g == null:
+		return Vector3.ZERO
+	var tank: float = stat("tank")
+	if water <= 0.5:
+		# Refill at the hub's barrel.
+		var m: Vector3 = _steer(world.depot.global_position + Vector3(2.5, 0, 2.5), 1.2)
+		if m == Vector3.ZERO:
+			water = tank
+			_busy = 1.0
+			Audio.play("steam", 0.8, -14.0)
+		return m
+	if _target_slot < 0 or g.slot_species[_target_slot] < 0 or g.slot_water[_target_slot] > 20.0:
+		_target_slot = _find_slot(g, false)
+		if _target_slot < 0:
+			return Vector3.ZERO
+	var m2: Vector3 = _steer(g.slot_pos[_target_slot], 0.9)
+	if m2 == Vector3.ZERO:
+		for s: int in g.planted_near(global_position, -global_transform.basis.z, 2.0):
+			g.water(s, 30.0)
+		g.water(_target_slot, 30.0)
+		water -= 1.0
+		_busy = 0.8 / maxf(stat("work_rate"), 0.1)
+		Vfx.burst("soil", g.slot_pos[_target_slot] + Vector3(0, 0.5, 0), Color(0.55, 0.75, 1.0, 0.8), 0.5)
+		_target_slot = -1
+	return m2
+
+
+## Nearest empty (planting) or thirsty (watering) slot on clean hexes.
+func _find_slot(g: Garden, empty: bool) -> int:
+	var best: int = -1
+	var best_d: float = INF
+	for s: int in g.slot_species.size():
+		if not world.field.is_clean(g.slot_hex[s]):
+			continue
+		if empty:
+			if g.slot_species[s] >= 0:
+				continue
+		elif g.slot_species[s] < 0 or g.slot_water[s] > 10.0:
+			continue
+		var d: float = g.slot_pos[s].distance_squared_to(global_position)
+		if d < best_d:
+			best_d = d
+			best = s
+	return best
+
+
 # --- Hauler ----------------------------------------------------------------------------
 
 func _think_haul() -> Vector3:
@@ -289,4 +377,4 @@ func _find_bale() -> JunkCube:
 func to_dict() -> Dictionary:
 	return {"type": type_id, "tier": tier, "rarity_bonus": rarity_bonus, "name": robot_name,
 		"pos": [global_position.x, global_position.y, global_position.z], "hex": work_hex,
-		"hopper": hopper.to_dict()}
+		"hopper": hopper.to_dict(), "job": job}

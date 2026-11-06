@@ -1,32 +1,252 @@
 {
   "_doc": "Robot types. recipe = part type ids needed to build one (any rarity; higher rarity adds +5% per rarity step to the robot's stats). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = rarity index of a Control Core consumed to reach the tier. Fleet upgrades apply to every robot of the type.",
   "types": [
-    {"id": "scoopie", "name": "Scoopie", "role": "clean",
-     "desc": "Small cleaner. Picks junk in its hex and leaves bales behind.",
-     "recipe": ["chassis", "locomotion", "arm", "core"],
-     "cost": 120,
-     "stats": {"speed": 1.6, "scoop_rate": 1.4, "capacity": 12.0, "efficiency": 0.6},
-     "upgrades": [
-       {"stat": "speed", "name": "Drive Motors", "mode": "mul_pct", "amount": 0.12, "base_cost": 90, "growth": 1.6, "max_level": 15, "unit": " m/s"},
-       {"stat": "scoop_rate", "name": "Arm Servos", "mode": "mul_pct", "amount": 0.15, "base_cost": 110, "growth": 1.6, "max_level": 15, "unit": "/s"},
-       {"stat": "capacity", "name": "Hopper Liner", "mode": "add", "amount": 3.0, "base_cost": 130, "growth": 1.65, "max_level": 15, "unit": ""},
-       {"stat": "efficiency", "name": "Compactor Tune", "mode": "mul_pct", "amount": 0.1, "base_cost": 160, "growth": 1.7, "max_level": 20, "unit": "x"}
-     ]},
-    {"id": "haulbug", "name": "Haul Bug", "role": "haul",
-     "desc": "Fork cart. Carries loose bales to the scale.",
-     "recipe": ["chassis", "locomotion", "battery"],
-     "cost": 160,
-     "stats": {"speed": 2.4, "carry": 1.0},
-     "upgrades": [
-       {"stat": "speed", "name": "Drive Motors", "mode": "mul_pct", "amount": 0.12, "base_cost": 100, "growth": 1.6, "max_level": 15, "unit": " m/s"},
-       {"stat": "carry", "name": "Longer Forks", "mode": "add", "amount": 1.0, "base_cost": 250, "growth": 2.0, "max_level": 5, "unit": ""}
-     ]}
+    {
+      "id": "scoopie",
+      "name": "Scoopie",
+      "role": "clean",
+      "desc": "Small cleaner. Picks junk in its hex and leaves bales behind.",
+      "recipe": [
+        "chassis",
+        "locomotion",
+        "arm",
+        "core"
+      ],
+      "cost": 120,
+      "stats": {
+        "speed": 1.6,
+        "scoop_rate": 1.4,
+        "capacity": 12.0,
+        "efficiency": 0.6
+      },
+      "upgrades": [
+        {
+          "stat": "speed",
+          "name": "Drive Motors",
+          "mode": "mul_pct",
+          "amount": 0.12,
+          "base_cost": 90,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": " m/s"
+        },
+        {
+          "stat": "scoop_rate",
+          "name": "Arm Servos",
+          "mode": "mul_pct",
+          "amount": 0.15,
+          "base_cost": 110,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": "/s"
+        },
+        {
+          "stat": "capacity",
+          "name": "Hopper Liner",
+          "mode": "add",
+          "amount": 3.0,
+          "base_cost": 130,
+          "growth": 1.65,
+          "max_level": 15,
+          "unit": ""
+        },
+        {
+          "stat": "efficiency",
+          "name": "Compactor Tune",
+          "mode": "mul_pct",
+          "amount": 0.1,
+          "base_cost": 160,
+          "growth": 1.7,
+          "max_level": 20,
+          "unit": "x"
+        }
+      ]
+    },
+    {
+      "id": "haulbug",
+      "name": "Haul Bug",
+      "role": "haul",
+      "desc": "Fork cart. Carries loose bales to the scale.",
+      "recipe": [
+        "chassis",
+        "locomotion",
+        "battery"
+      ],
+      "cost": 160,
+      "stats": {
+        "speed": 2.4,
+        "carry": 1.0
+      },
+      "upgrades": [
+        {
+          "stat": "speed",
+          "name": "Drive Motors",
+          "mode": "mul_pct",
+          "amount": 0.12,
+          "base_cost": 100,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": " m/s"
+        },
+        {
+          "stat": "carry",
+          "name": "Longer Forks",
+          "mode": "add",
+          "amount": 1.0,
+          "base_cost": 250,
+          "growth": 2.0,
+          "max_level": 5,
+          "unit": ""
+        }
+      ]
+    },
+    {
+      "id": "seedling",
+      "name": "Seedling",
+      "role": "plant",
+      "desc": "Plants seeds in clean ground. Uses your seed stock.",
+      "recipe": [
+        "chassis",
+        "locomotion",
+        "arm",
+        "hopper"
+      ],
+      "cost": 400,
+      "stats": {
+        "speed": 1.5,
+        "work_rate": 0.8
+      },
+      "upgrades": [
+        {
+          "stat": "speed",
+          "name": "Drive Motors",
+          "mode": "mul_pct",
+          "amount": 0.12,
+          "base_cost": 200,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": " m/s"
+        },
+        {
+          "stat": "work_rate",
+          "name": "Seed Drill",
+          "mode": "mul_pct",
+          "amount": 0.15,
+          "base_cost": 260,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": "/s"
+        }
+      ]
+    },
+    {
+      "id": "drip",
+      "name": "Drip",
+      "role": "water",
+      "desc": "Waters thirsty plants. Refills its tank at the hub.",
+      "recipe": [
+        "chassis",
+        "locomotion",
+        "hopper",
+        "battery"
+      ],
+      "cost": 400,
+      "stats": {
+        "speed": 1.7,
+        "work_rate": 1.0,
+        "tank": 20.0
+      },
+      "upgrades": [
+        {
+          "stat": "speed",
+          "name": "Drive Motors",
+          "mode": "mul_pct",
+          "amount": 0.12,
+          "base_cost": 200,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": " m/s"
+        },
+        {
+          "stat": "tank",
+          "name": "Bigger Tank",
+          "mode": "add",
+          "amount": 8.0,
+          "base_cost": 240,
+          "growth": 1.65,
+          "max_level": 15,
+          "unit": ""
+        }
+      ]
+    },
+    {
+      "id": "multibot",
+      "name": "Multibot",
+      "role": "any",
+      "desc": "General helper. Assign it to Clean, Plant or Water on the Allocation Board. Slower than a specialist.",
+      "recipe": [
+        "chassis",
+        "locomotion",
+        "arm",
+        "core",
+        "module"
+      ],
+      "cost": 900,
+      "stats": {
+        "speed": 1.6,
+        "scoop_rate": 1.0,
+        "capacity": 10.0,
+        "efficiency": 0.5,
+        "work_rate": 0.6,
+        "tank": 14.0,
+        "carry": 1.0
+      },
+      "upgrades": [
+        {
+          "stat": "speed",
+          "name": "Drive Motors",
+          "mode": "mul_pct",
+          "amount": 0.12,
+          "base_cost": 300,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": " m/s"
+        }
+      ]
+    }
   ],
   "tiers": [
-    {"name": "Mk I", "look": "salvage", "mult": 1.0, "cost_mult": 0, "requires_core_rarity": -1},
-    {"name": "Mk II", "look": "restored", "mult": 1.5, "cost_mult": 6, "requires_core_rarity": 2},
-    {"name": "Mk III", "look": "modern", "mult": 2.4, "cost_mult": 30, "requires_core_rarity": 3},
-    {"name": "Mk IV", "look": "hover", "mult": 4.0, "cost_mult": 150, "requires_core_rarity": 4}
+    {
+      "name": "Mk I",
+      "look": "salvage",
+      "mult": 1.0,
+      "cost_mult": 0,
+      "requires_core_rarity": -1
+    },
+    {
+      "name": "Mk II",
+      "look": "restored",
+      "mult": 1.5,
+      "cost_mult": 6,
+      "requires_core_rarity": 2
+    },
+    {
+      "name": "Mk III",
+      "look": "modern",
+      "mult": 2.4,
+      "cost_mult": 30,
+      "requires_core_rarity": 3
+    },
+    {
+      "name": "Mk IV",
+      "look": "hover",
+      "mult": 4.0,
+      "cost_mult": 150,
+      "requires_core_rarity": 4
+    }
   ],
-  "part_drop": {"electronics": 0.06, "metal": 0.012}
+  "part_drop": {
+    "electronics": 0.06,
+    "metal": 0.012
+  }
 }

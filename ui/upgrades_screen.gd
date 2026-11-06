@@ -28,6 +28,7 @@ var fleet: Fleet
 var _trade: TradePanel
 var _hub_panel: HubPanel
 var hub: Hub
+var _alloc: AllocationBoard
 var build_at: Callable = func() -> Vector3: return Vector3.ZERO
 
 
@@ -117,6 +118,12 @@ func _populate() -> void:
 		return
 	_relayout()
 	if _tab == "bots" and fleet:
+		var ab := AllocationBoard.new()
+		ab.fleet = fleet
+		ab.world = fleet.world
+		ab.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_grid.add_child(ab)
+		_alloc = ab
 		for rid: String in Economy.robot_order:
 			var rc := RobotCard.new(rid, fleet, build_at)
 			rc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -225,5 +232,7 @@ func _refresh_all() -> void:
 		rc.refresh()
 	if _tab == "trade" and is_instance_valid(_trade) and Engine.get_process_frames() % 60 == 0:
 		_trade.refresh()
+	if _tab == "bots" and is_instance_valid(_alloc):
+		_alloc.refresh()
 	if _tab == "hub" and is_instance_valid(_hub_panel):
 		_hub_panel.refresh()

@@ -159,6 +159,35 @@ func upgrade_tier(type_id: String) -> bool:
 	return true
 
 
+## Multibot allocation: how many multibots work each job.
+func allocation() -> Dictionary:
+	var a: Dictionary = {"clean": 0, "plant": 0, "water": 0}
+	for r: Robot in robots():
+		if r.type_id == "multibot":
+			a[r.job] = int(a.get(r.job, 0)) + 1
+	return a
+
+
+func move_job(from_job: String, to_job: String) -> bool:
+	for r: Robot in robots():
+		if r.type_id == "multibot" and r.job == from_job:
+			r.set_job(to_job)
+			return true
+	return false
+
+
+func apply_preset(clean_pct: float, plant_pct: float) -> void:
+	var mb: Array[Robot] = []
+	for r: Robot in robots():
+		if r.type_id == "multibot":
+			mb.append(r)
+	var n: int = mb.size()
+	var nc: int = int(round(n * clean_pct))
+	var np: int = int(round(n * plant_pct))
+	for i: int in n:
+		mb[i].set_job("clean" if i < nc else ("plant" if i < nc + np else "water"))
+
+
 func persist_save() -> void:
 	var arr: Array = []
 	for r: Robot in robots():
@@ -171,4 +200,5 @@ func restore() -> void:
 		var p: Array = d.get("pos", [0.0, 0.0, 0.0])
 		var r := spawn(str(d["type"]), int(d.get("tier", 0)), Vector3(float(p[0]), float(p[1]) + 0.1, float(p[2])), float(d.get("rarity_bonus", 0.0)), str(d.get("name", "Bot")))
 		r.work_hex = int(d.get("hex", -1))
+		r.job = str(d.get("job", "clean"))
 		r.hopper.from_dict(d.get("hopper", {}))
