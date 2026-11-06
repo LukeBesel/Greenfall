@@ -13,7 +13,7 @@ extends Node3D
 var _cam: Camera3D
 var _pivot: Node3D
 var _model: PatchModel
-var _t: float = 0.0
+var _frames: int = 0
 var _frame: String = "wide"
 
 
@@ -356,8 +356,12 @@ func _place_camera() -> void:
 	_cam.look_at(look, Vector3.UP)
 
 
-func _process(delta: float) -> void:
-	_t += delta
-	# Very slow drift only (TAA needs a near-static frame to resolve).
-	_pivot.position.y = 0.34 + sin(_t * 0.6) * 0.01
+func _process(_delta: float) -> void:
+	_frames += 1
+	# No blinks in a still, and after a few frames Lumi holds the pose so TAA resolves a crisp frame
+	# (software rendering runs at a few seconds per frame here).
+	_model.set("_blink_timer", 99.0)
+	_model.set("_blink", 0.0)
 	_model.look_toward(_cam.global_position)
+	if _frames == 10:
+		_model.process_mode = Node.PROCESS_MODE_DISABLED
