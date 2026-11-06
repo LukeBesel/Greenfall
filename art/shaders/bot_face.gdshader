@@ -27,7 +27,7 @@ vec2 eye(vec2 p, vec2 c, float r, float th) {
 	float ring = 1.0 - smoothstep(th * 0.5 - 0.02, th * 0.5 + 0.02, dist);
 	// Gap on the viewer's right (object -x, since the face looks down -Z), like the letter C.
 	float ang = abs(atan(d.y, -d.x));
-	float gap = smoothstep(0.55, 0.75, ang);
+	float gap = smoothstep(0.45, 0.62, ang);
 	float core = ring * gap;
 	float halo = exp(-dist * dist * 40.0) * gap * 0.5;
 	// Happy: upper arc (an upside-down U) like ^ ^.
@@ -41,18 +41,21 @@ vec2 eye(vec2 p, vec2 c, float r, float th) {
 void fragment() {
 	vec2 p = vec2(lp.x, lp.y) / half_height;
 	vec2 off = look * vec2(0.12, 0.1);
-	vec2 a = eye(p, vec2(-0.6, 0.02) + off, 0.37, 0.21);
-	vec2 b = eye(p, vec2(0.6, 0.02) + off, 0.37, 0.21);
+	vec2 a = eye(p, vec2(-0.6, 0.0) + off, 0.39, 0.24);
+	vec2 b = eye(p, vec2(0.6, 0.0) + off, 0.39, 0.24);
 	// Only on the flat front of the visor, never smeared over its rounded sides.
 	float front = smoothstep(0.55, 0.85, abs(ln.z));
 	float core = clamp(a.x + b.x, 0.0, 1.0) * front;
 	float halo = clamp(a.y + b.y, 0.0, 1.0) * front;
 	float scan = 0.02 * sin(lp.y * 900.0 + TIME * 6.0);
-	ALBEDO = vec3(0.01, 0.012, 0.016);
+	// Glossy screen: a soft diagonal reflection streak across the upper-left of the glass.
+	float streak = (1.0 - smoothstep(0.0, 0.16, abs(p.y - 0.62 + p.x * 0.35))) * smoothstep(-0.2, 0.7, p.x) * front;
+	ALBEDO = vec3(0.01, 0.012, 0.016) + vec3(0.18) * streak;
 	ROUGHNESS = 0.05;
 	METALLIC = 0.0;
 	SPECULAR = 0.9;
 	vec3 hot = mix(eye_color.rgb, vec3(1.0), 0.2);
 	EMISSION = hot * energy * 0.65 * core + eye_color.rgb * energy * 0.18 * halo
-		+ eye_color.rgb * (0.006 + scan * 0.2) * (1.0 - length(p) * 0.45);
+		+ eye_color.rgb * (0.006 + scan * 0.2) * (1.0 - length(p) * 0.45)
+		+ vec3(0.55, 0.62, 0.7) * streak * 0.12;
 }

@@ -185,14 +185,21 @@ func _build() -> void:
 	# Orange accents: a stripe along the crown and small tabs beside the visor.
 	_mi(_head, ProcMesh.rounded_box(Vector3(0.09, 0.03, 0.2), 0.012, 2), accent, Vector3(-0.16, 0.48, 0.08), Vector3(0, 0, 8))
 	for x: float in [-0.335, 0.335]:
-		_mi(_head, ProcMesh.rounded_box(Vector3(0.03, 0.08, 0.1), 0.014, 2), accent, Vector3(x * 1.06, 0.07, 0.1))
-	# Ear lenses: big round housings with a glowing ring and dark glass.
-	for x: float in [-0.385, 0.385]:
+		_mi(_head, ProcMesh.rounded_box(Vector3(0.025, 0.07, 0.09), 0.012, 2), Mats.lamp((v["accent"] as Color), 1.6), Vector3(x * 1.08, 0.05, -0.12))
+	# Ear lenses, set flush into the shell like the concept: a white rim, a dark groove, a bright
+	# glowing ring, and a recessed dark lens with a smaller inner lens and a glint.
+	for x: float in [-0.372, 0.372]:
 		var sx: float = signf(x)
-		_mi(_head, ProcMesh.cyl(0.135, 0.14, 0.07, 32), trim, Vector3(x, 0.22, 0.02), Vector3(0, 0, 90))
-		_mi(_head, ProcMesh.torus(0.085, 0.112, 32, 6), Mats.lamp(glow, 3.8), Vector3(x + sx * 0.035, 0.22, 0.02), Vector3(0, 0, 90))
-		_mi(_head, ProcMesh.cyl(0.08, 0.08, 0.02, 28), Mats.glass(Color(0.03, 0.05, 0.07, 1.0)), Vector3(x + sx * 0.04, 0.22, 0.02), Vector3(0, 0, 90))
-		_mi(_head, ProcMesh.cyl(0.03, 0.03, 0.01, 16), Mats.lamp(glow, 1.5), Vector3(x + sx * 0.05, 0.22, 0.02), Vector3(0, 0, 90))
+		var ear := Node3D.new()
+		ear.position = Vector3(x, 0.2, 0.04)
+		ear.rotation_degrees = Vector3(0, 0, 90)
+		_head.add_child(ear)
+		_mi(ear, ProcMesh.cyl(0.155, 0.16, 0.05, 40), paint, Vector3(0, -sx * 0.01, 0))
+		_mi(ear, ProcMesh.cyl(0.135, 0.135, 0.012, 40), trim, Vector3(0, -sx * 0.031, 0))
+		_mi(ear, ProcMesh.torus(0.1, 0.124, 40, 6), Mats.lamp(glow, 5.0), Vector3(0, -sx * 0.036, 0))
+		_mi(ear, ProcMesh.cyl(0.098, 0.098, 0.01, 36), Mats.glass(Color(0.02, 0.03, 0.045, 1.0)), Vector3(0, -sx * 0.033, 0))
+		_mi(ear, ProcMesh.cyl(0.045, 0.045, 0.008, 24), Mats.glass(Color(0.12, 0.2, 0.26, 1.0)), Vector3(0, -sx * 0.039, 0))
+		_mi(ear, ProcMesh.sphere(0.012, 8, 4), Mats.lamp(Color(0.85, 0.97, 1.0), 2.5), Vector3(0.025, -sx * 0.043, -0.02))
 	# Antenna: a dark curved stalk from the back of the crown ending in an orange swept fin.
 	var fin := Node3D.new()
 	fin.position = Vector3(0.06, 0.48, 0.12)
