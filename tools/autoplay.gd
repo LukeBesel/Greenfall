@@ -97,7 +97,7 @@ func update(delta: float) -> void:
 	_scoop = false
 	_move = Vector3.ZERO
 	_log_timer += delta
-	if _log_timer >= 30.0:
+	if _log_timer >= (5.0 if DevHooks.has("trace-auto") else 30.0):
 		_log_timer = 0.0
 		_log.append({"t": _now(), "cubes": GameState.get_currency("cubes").to_float(), "hexes": world.field.cleaned_count, "made": GameState.stats.get("cubes_made", 0)})
 		var lc: JunkCube = _nearest_loose(p)
@@ -205,6 +205,13 @@ func write_report() -> void:
 	_report["hexes_cleaned"] = world.field.cleaned_count
 	_report["upgrades"] = GameState.upgrades.duplicate()
 	_report["log"] = _log
+	var fr: Array = []
+	for h: int in world.field.hex_count():
+		if world.field.hex_hub[h] == 0 and not world.field.is_water(h):
+			fr.append([snappedf(world.field.removed_fraction(h), 0.001), world.field.hex_clean[h], snappedf(world.field.hex_total[h], 0.1)])
+	fr.sort_custom(func(a: Array, b: Array) -> bool: return a[0] > b[0])
+	_report["hex_removed_top"] = fr.slice(0, 6)
+	_report["ignored_pieces"] = _ignore_piece.size()
 	var path: String = ProjectSettings.globalize_path("res://screenshots/autoplay_report.json")
 	var f := FileAccess.open(path, FileAccess.WRITE)
 	if f:

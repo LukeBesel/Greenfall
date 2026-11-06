@@ -74,8 +74,8 @@
       ],
       "cost": 160,
       "stats": {
-        "speed": 2.4,
-        "carry": 1.0
+        "speed": 2.8,
+        "carry": 2.0
       },
       "upgrades": [
         {
