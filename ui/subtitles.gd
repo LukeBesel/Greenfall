@@ -8,6 +8,7 @@ const GLITCH: String = "▒░#/\\_-~=*"
 var _label: Label
 var _who: Label
 var _box: Control
+var _bg: PanelContainer
 var _full: String = ""
 var _shown: float = 0.0
 var _stage: int = 2
@@ -29,10 +30,14 @@ func _ready() -> void:
 	mc.add_theme_constant_override("margin_bottom", 150)
 	mc.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(mc)
+	# Optional backdrop (Settings.subtitle_background); transparent otherwise.
+	_bg = PanelContainer.new()
+	_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	mc.add_child(_bg)
 	var vb := VBoxContainer.new()
 	vb.custom_minimum_size = Vector2(620, 0)
 	vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	mc.add_child(vb)
+	_bg.add_child(vb)
 	_who = UITheme.label("W R E N", 12, Color(0.55, 0.85, 1.0))
 	_who.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(_who)
@@ -40,8 +45,20 @@ func _ready() -> void:
 	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_label.autowrap_mode = TextServer.AUTOWRAP_WORD
 	vb.add_child(_label)
-	_box = vb
+	_box = _bg
 	_box.modulate.a = 0.0
+	_apply_settings()
+	Settings.changed.connect(_apply_settings)
+
+
+## Subtitle settings: on/off, size, backdrop.
+func _apply_settings() -> void:
+	visible = Settings.subtitles_enabled
+	var sz: Array[int] = UITheme.subtitle_sizes()
+	_who.add_theme_font_size_override("font_size", sz[0])
+	_label.add_theme_font_size_override("font_size", sz[1])
+	(_label.get_parent() as Control).custom_minimum_size.x = 620.0 * clampf(float(sz[1]) / 19.0, 1.0, 1.3)
+	_bg.add_theme_stylebox_override("panel", UITheme.box(Color(0.02, 0.025, 0.035, 0.82), Color(1, 1, 1, 0.08), 1, 6, 12) if Settings.subtitle_background else StyleBoxEmpty.new())
 
 
 func show_line(text: String, stage: int) -> void:
@@ -60,7 +77,7 @@ func _process(delta: float) -> void:
 	var n: int = int(_shown)
 	if n > before and _full.substr(before, 1) != " ":
 		_blip_t -= 1.0
-		if _blip_t <= 0.0:
+		if _blip_t <= 0.0 and visible:
 			_blip_t = 1.0
 			Audio.play("blip", 1.0 + (hash(_full.substr(before, 1)) % 7) * 0.04, -16.0, 0.03)
 	var text: String = _full.substr(0, n)

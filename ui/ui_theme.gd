@@ -193,3 +193,65 @@ static func juice(c: Control, grow: float = 1.035) -> void:
 		if not c.has_focus():
 			to.call(1.0, 1.0))
 	c.focus_exited.connect(off)
+
+
+# --- Colour-blind friendly palette (Settings.colorblind) ------------------------------------
+# Okabe-Ito: distinguishable under protanopia, deuteranopia and tritanopia. Every helper returns
+# the normal art colour when the option is off.
+
+const OKABE_ORANGE := Color("#E69F00")
+const OKABE_SKY := Color("#56B4E9")
+const OKABE_GREEN := Color("#009E73")
+const OKABE_YELLOW := Color("#F0E442")
+const OKABE_BLUE := Color("#0072B2")
+const OKABE_VERMILLION := Color("#D55E00")
+const OKABE_PURPLE := Color("#CC79A7")
+
+const _PROGRESS: Dictionary = {
+	"junk": [Color(1.0, 0.5, 0.2), OKABE_VERMILLION],
+	"cleaning": [Color(0.3, 0.6, 1.0), OKABE_SKY],
+	"clean": [Color(0.3, 0.8, 0.45), OKABE_GREEN],
+	"growing": [Color(0.35, 0.95, 0.4), OKABE_YELLOW],
+}
+const _CB_RARITY: Array[Color] = [OKABE_VERMILLION, Color(0.78, 0.78, 0.78), OKABE_GREEN, OKABE_SKY, OKABE_YELLOW]
+## Globe cell states (PlanetData.State order: JUNK, CLEAN, PLANTED, GROWING, RESTORED, WATER).
+const _CB_GLOBE: Dictionary = {
+	0: OKABE_VERMILLION, 1: OKABE_SKY, 2: OKABE_GREEN, 3: Color("#7FD6B5"), 4: OKABE_YELLOW,
+}
+
+
+static func colorblind() -> bool:
+	return Settings.colorblind
+
+
+## Hex progress colour: "junk" (untouched), "cleaning", "clean", "growing".
+static func progress_color(kind: String) -> Color:
+	var pair: Array = _PROGRESS.get(kind, [Color.WHITE, Color.WHITE])
+	return pair[1] if colorblind() else pair[0]
+
+
+## Globe cell colour for a PlanetData.State; `normal` is the regular art colour.
+static func globe_state_color(state: int, normal: Color) -> Color:
+	return _CB_GLOBE.get(state, normal) if colorblind() else normal
+
+
+## Hopper meter colours: band (Perfect zone tint), good (fill inside the band), over (overfilled).
+static func meter_colors() -> Dictionary:
+	if colorblind():
+		return {"band": Color(OKABE_SKY, 0.22), "good": OKABE_SKY, "over": OKABE_VERMILLION}
+	return {"band": Color(1.0, 0.7, 0.26, 0.18), "good": Color(1.0, 0.7, 0.26), "over": Color(0.95, 0.4, 0.35)}
+
+
+## Part rarity colour (index into data/parts.json rarities).
+static func rarity_color(idx: int) -> Color:
+	if colorblind():
+		return _CB_RARITY[clampi(idx, 0, _CB_RARITY.size() - 1)]
+	return Color.html(str(Economy.rarity(idx).get("color", "#ffffff")))
+
+
+## Subtitle font sizes for Settings.subtitle_size: [speaker/header, body].
+static func subtitle_sizes() -> Array[int]:
+	match Settings.subtitle_size:
+		Settings.SubtitleSize.SMALL: return [11, 16]
+		Settings.SubtitleSize.LARGE: return [15, 25]
+	return [12, 19]

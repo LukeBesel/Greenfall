@@ -185,7 +185,7 @@ func _process(delta: float) -> void:
 		_field_bar.value = pct
 		var pl: PlanetData = world.planet if world.get("planet") != null else null
 		var frac: float = pl.restored_fraction() if pl else 0.0
-		_planet_label.text = "%s   %s%%      M  map" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(frac * 100.0)]
+		_planet_label.text = "%s   %s%%      %s  map" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(frac * 100.0), Settings.glyph("open_globe")]
 	if patch:
 		if patch.detector and not patch.detector.readout_changed.is_connected(_on_signal):
 			patch.detector.readout_changed.connect(_on_signal)
@@ -193,7 +193,7 @@ func _process(delta: float) -> void:
 		if GameState.flags.get("seeds_unlocked", false):
 			var names: Array[String] = ["SCOOP", "PLANT", "WATER"]
 			_tool_label.visible = true
-			_tool_label.text = "1 2 3   %s    SEEDS %s    COMPOST %s    WATER %d/%d" % [names[patch.tool], Settings.fmt(GameState.get_currency("seeds")), Settings.fmt(GameState.get_currency("compost")), int(patch.water), int(patch.water_cap())]
+			_tool_label.text = "%s   %s    SEEDS %s    COMPOST %s    WATER %d/%d" % [_tool_keys(), names[patch.tool], Settings.fmt(GameState.get_currency("seeds")), Settings.fmt(GameState.get_currency("compost")), int(patch.water), int(patch.water_cap())]
 		_meter.set_values(patch.compartment.fill, patch.capacity())
 		_meter.band = Economy.cube_rules.get("perfect_band", [0.9, 1.0])
 		var cap: int = patch.carry_cap()
@@ -229,17 +229,26 @@ func _fmt_small_pct(p: float) -> String:
 	return "%.2f" % p
 
 
+## Prompt line; the button glyph follows the last input device ("E  interact" / "A  interact").
 func _prompt_text(kind: String) -> String:
+	var g: String = Settings.glyph("interact")
 	match kind:
-		"pick_up": return "E   pick up bale"
-		"dig": return "E   dig up part"
-		"shard": return "E   read memory shard"
-		"seed": return "E   pick up the seed tin"
-		"place": return "E   set bale down"
-		"upgrades": return "E   workbench"
+		"pick_up": return g + "   pick up bale"
+		"dig": return g + "   dig up part"
+		"shard": return g + "   read memory shard"
+		"seed": return g + "   pick up the seed tin"
+		"place": return g + "   set bale down"
+		"upgrades": return g + "   workbench"
 	if kind.begins_with("E "):
-		return kind
+		return g + kind.substr(1)
 	return ""
+
+
+## Tool-switch keys for the tool readout ("1 2 3" on keyboard, "D-pad" on a controller).
+func _tool_keys() -> String:
+	if Settings.last_input_pad:
+		return "D-PAD"
+	return "%s %s %s" % [Settings.glyph("tool_scoop"), Settings.glyph("tool_plant"), Settings.glyph("tool_water")]
 
 
 func show_toast(text: String, kind: String = "info") -> void:

@@ -401,9 +401,9 @@ func _build_environment() -> void:
 	env.tonemap_mode = Environment.TONE_MAPPER_AGX
 	env.tonemap_exposure = 1.3
 	env.glow_enabled = true
-	env.glow_intensity = 0.35
-	env.glow_bloom = 0.03
-	env.glow_hdr_threshold = 1.2
+	env.glow_intensity = 0.55
+	env.glow_bloom = 0.07
+	env.glow_hdr_threshold = 0.95
 	env.ssao_enabled = true
 	env.ssao_radius = 1.0
 	env.ssao_intensity = 1.6

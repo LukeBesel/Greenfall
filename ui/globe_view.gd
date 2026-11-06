@@ -123,15 +123,15 @@ func _ready() -> void:
 	_bar = ProgressBar.new()
 	_bar.show_percentage = false
 	_bar.custom_minimum_size = Vector2(0, 8)
-	_bar.add_theme_stylebox_override("fill", UITheme.box(Color(0.4, 1.0, 0.3), Color(0, 0, 0, 0), 0, 4, 0))
-	_bar.add_theme_stylebox_override("background", UITheme.box(Color(1.0, 0.45, 0.1, 0.35), Color(0, 0, 0, 0), 0, 4, 0))
+	_bar.add_theme_stylebox_override("fill", UITheme.box(_legend_col(PlanetData.State.CLEAN), Color(0, 0, 0, 0), 0, 4, 0))
+	_bar.add_theme_stylebox_override("background", UITheme.box(Color(_legend_col(PlanetData.State.JUNK), 0.35), Color(0, 0, 0, 0), 0, 4, 0))
 	b1.add_child(_bar)
 	_rows = VBoxContainer.new()
 	_rows.add_theme_constant_override("separation", 4)
 	b1.add_child(_rows)
-	for k: Array in [["junk", COLORS[PlanetData.State.JUNK], "Not cleaned yet"], ["clean", COLORS[PlanetData.State.CLEAN], "Cleaned"],
-			["planted", COLORS[PlanetData.State.PLANTED], "Planted"], ["growing", COLORS[PlanetData.State.GROWING], "Growing"],
-			["restored", COLORS[PlanetData.State.RESTORED], "Restored"], ["cities", Color(0.85, 0.88, 0.92), "Cities"],
+	for k: Array in [["junk", _legend_col(PlanetData.State.JUNK), "Not cleaned yet"], ["clean", _legend_col(PlanetData.State.CLEAN), "Cleaned"],
+			["planted", _legend_col(PlanetData.State.PLANTED), "Planted"], ["growing", _legend_col(PlanetData.State.GROWING), "Growing"],
+			["restored", _legend_col(PlanetData.State.RESTORED), "Restored"], ["cities", Color(0.85, 0.88, 0.92), "Cities"],
 			["hubs", Color(1.0, 0.75, 0.25), "Bases"]]:
 		var r: HBoxContainer = UITheme.stat_row(k[1], k[2])
 		r.name = k[0]
@@ -432,7 +432,7 @@ func _build_mesh() -> void:
 	var cols := PackedColorArray()
 	for i: int in g.cell_count():
 		var st: int = _snapshot[i]
-		var col: Color = COLORS.get(st, Color.WHITE)
+		var col: Color = UITheme.globe_state_color(st, COLORS.get(st, Color.WHITE))
 		if planet.city[i] >= 0 and st != PlanetData.State.WATER:
 			col = col.lerp(Color(1.0, 0.85, 0.6), 0.3)
 		if st == PlanetData.State.JUNK:
@@ -583,3 +583,8 @@ func focus_on(cell: int) -> void:
 	var c: Vector3 = planet.grid.centers[cell]
 	_yaw = -atan2(c.x, c.z)
 	_pitch = asin(clampf(c.y, -1.0, 1.0))
+
+
+## Legend / bar colour for a cell state (colour-blind palette aware).
+func _legend_col(state: int) -> Color:
+	return UITheme.globe_state_color(state, COLORS.get(state, Color.WHITE))

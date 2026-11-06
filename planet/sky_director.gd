@@ -61,9 +61,9 @@ func _apply() -> void:
 	var is_day: bool = day_t > 0.0 and day_t < 1.0
 	sun.rotation_degrees = Vector3(-maxf(elev, -10.0), -30.0 + day_t * 60.0, 0.0)
 	var sun_up: float = smoothstep(0.0, 12.0, elev)
-	sun.light_energy = 2.6 * sun_up
+	sun.light_energy = 3.0 * sun_up
 	sun.visible = sun_up > 0.01
-	sun.light_color = Color(1.0, 0.75, 0.55).lerp(Color(1.0, 0.94, 0.84), smoothstep(5.0, 30.0, elev))
+	sun.light_color = Color(1.0, 0.7, 0.45).lerp(Color(1.0, 0.93, 0.8), smoothstep(8.0, 40.0, elev))
 	# Moon: opposite side of the sky, bright enough to keep playing.
 	var night_t: float = fmod(time_of_day + 0.25, 1.0) / 0.5
 	var m_elev: float = sin(clampf(night_t, 0.0, 1.0) * PI) * 60.0
@@ -71,11 +71,16 @@ func _apply() -> void:
 	moon.light_energy = 0.55 * smoothstep(0.0, 10.0, m_elev) * (1.0 - sun_up)
 	moon.visible = moon.light_energy > 0.01
 	# Haze drives sky scattering, fog and saturation.
-	sky_mat.turbidity = lerpf(3.0, 9.0, haze)
-	sky_mat.mie_coefficient = lerpf(0.003, 0.009, haze)
-	sky_mat.rayleigh_color = Color(0.26, 0.48, 0.95).lerp(Color(0.38, 0.45, 0.72), haze)
-	env.fog_density = lerpf(0.0012, 0.0035, haze)
-	env.volumetric_fog_density = lerpf(0.002, 0.008, haze)
-	env.adjustment_saturation = lerpf(1.28, 1.12, haze)
+	sky_mat.turbidity = lerpf(3.0, 6.0, haze)
+	sky_mat.mie_coefficient = lerpf(0.003, 0.006, haze)
+	# Dusty but sunlit: the haze is warm and golden, the sky above it still clearly blue.
+	sky_mat.rayleigh_color = Color(0.24, 0.48, 0.98).lerp(Color(0.3, 0.47, 0.9), haze)
+	sky_mat.mie_color = Color(1.0, 0.92, 0.84).lerp(Color(1.0, 0.86, 0.7), haze)
+	env.fog_density = lerpf(0.0010, 0.0022, haze)
+	env.fog_light_color = Color(0.72, 0.82, 1.0).lerp(Color(0.98, 0.88, 0.76), haze * sun_up * 0.7)
+	env.volumetric_fog_density = lerpf(0.0015, 0.0045, haze)
+	env.volumetric_fog_albedo = Color(0.88, 0.91, 0.96).lerp(Color(0.97, 0.92, 0.86), haze)
+	env.adjustment_saturation = lerpf(1.28, 1.22, haze)
+	env.adjustment_contrast = 1.1
 	env.ambient_light_energy = lerpf(0.55, 1.25 if env.sdfgi_enabled else 1.7, maxf(sun_up, 0.35))
 	env.tonemap_exposure = lerpf(1.6, 1.3, sun_up)

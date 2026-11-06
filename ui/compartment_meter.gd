@@ -36,12 +36,13 @@ func _draw() -> void:
 	draw_rect(Rect2(off + Vector2(0, y), Vector2(w, h)), Color(1, 1, 1, 0.1))
 	var b0: float = float(band[0]) / scale_max * w
 	var b1: float = float(band[1]) / scale_max * w
-	draw_rect(Rect2(off + Vector2(b0, y - 2), Vector2(b1 - b0, h + 4)), Color(1.0, 0.7, 0.26, 0.18))
+	var pal: Dictionary = UITheme.meter_colors()
+	draw_rect(Rect2(off + Vector2(b0, y - 2), Vector2(b1 - b0, h + 4)), pal["band"])
 	var r: float = _shown
 	var col: Color = Color(0.9, 0.9, 0.87)
 	if r > float(band[1]) + 0.0001:
-		col = Color(0.95, 0.4, 0.35)
+		col = pal["over"]
 	elif r >= float(band[0]):
-		col = Color(1.0, 0.7, 0.26)
+		col = pal["good"]
 	draw_rect(Rect2(off + Vector2(0, y), Vector2(clampf(r / scale_max, 0.0, 1.0) * w, h)), col)
 	draw_line(off + Vector2(b1, y - 4), off + Vector2(b1, y + h + 4), Color(1, 1, 1, 0.7), 1.0)

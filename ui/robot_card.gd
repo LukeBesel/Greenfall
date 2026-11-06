@@ -113,7 +113,7 @@ func _refresh_slots(recipe: Array) -> void:
 		if r["have"]:
 			var rar: Dictionary = Economy.rarity(int(r["rarity"]))
 			row.text = "■  %s  ·  %s" % [r["name"], rar.get("name", "")]
-			row.add_theme_color_override("font_color", Color.html(str(rar.get("color", "#ffffff"))))
+			row.add_theme_color_override("font_color", UITheme.rarity_color(int(r["rarity"])))
 		else:
 			row.text = "□  %s  ·  missing  (detector, or salvage from electronics junk)" % r["name"]
 			row.add_theme_color_override("font_color", UITheme.MUTED)
