@@ -46,5 +46,4 @@ common/physics_ticks_per_second=60
 
 [rendering]
 
-anti_aliasing/quality/msaa_3d=2
 environment/defaults/default_clear_color=Color(0.55, 0.45, 0.7, 1)

@@ -37,3 +37,8 @@ Status of each milestone lives in `docs/PROGRESS.md`; choices and assumptions in
 
 ## Ultracode / multi-agent use
 Only for: the hex-sphere planet + chunking design (M2), save/offline progress (M5-M7), the economy balance simulator (M9), milestone bug bashes, and bugs that survive two normal fix attempts. Max 6 agents per workflow.
+
+## Owner feature requests (added during M1)
+- **Part detector** (M1 basic, deepened in M3): parts are buried in hexes. Patch's detector beeps faster and his antenna lamp blinks red as he closes in; within range the lens readout shows the part's rarity tier (Rusty → Legendary Maker-Made) by color. Dig to recover it into the Parts inventory.
+- **Survey Drone + hologram map** (M2, with the globe view): an unlockable aerial survey drone (original design, a weathered municipal survey unit). It flies up from Patch and produces a **holographic survey map** of the area/planet showing hex states (junk / clean / planted / growing) with percentages and where robots are working. The hologram is a *snapshot*: it can be pulled up anytime but goes stale as the world changes (shown with a "surveyed N min ago" stamp and faded/estimated regions). Paying for a re-survey refreshes it. Upgrades add periodic automatic updates, then a live layer. Launch/landing and scan animations are a payoff moment.
+- **Hub starts humble** (M1 visuals, M3/M7 systems): the first hub is not a building. It's an open lean-to shack with a salvaged workbench (the upgrade station) and a scrap drop bin on a weigh scale. Hub levels are built from **salvaged building materials** found in the world (planks, sheet metal, beams, pipes, concrete blocks) plus Cubes, upgrading shack → workshop → depot station → garden station.

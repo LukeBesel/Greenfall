@@ -1,11 +1,67 @@
 {
-  "_doc": "Junk types. value = Cubes per unit of compartment volume. colors = palette for pieces (hex). cube_color = color of a Pure cube. shapes = procedural mesh kinds from art/junk_meshes.gd. volume = [min,max] compartment units per piece. weight = relative spawn weight in the Rustlands slice.",
+  "_doc": "Junk types. value = Cubes per compartment unit. cube_color = dominant color a bale shows for this material (muted, real). models: Poly Haven ids with vol (compartment units), w (spawn weight within the type), lie (chance to lie on its side), s (scale jitter range).",
   "types": [
-    {"id": "metal", "name": "Scrap Metal", "value": 1.0, "cube_color": "#c9d3dc", "colors": ["#e8463c", "#c9d3dc", "#f2a03d", "#7fa6c9"], "shapes": ["can", "pipe"], "volume": [0.7, 1.4], "weight": 1.2},
-    {"id": "plastic", "name": "Plastic", "value": 0.6, "cube_color": "#ff7eb6", "colors": ["#ff7eb6", "#ffd23f", "#4cc9f0", "#b388ff"], "shapes": ["bottle", "bag", "cone"], "volume": [0.5, 1.1], "weight": 1.6},
-    {"id": "glass", "name": "Glass", "value": 0.85, "cube_color": "#5ee6c8", "colors": ["#5ee6c8", "#7bd389", "#9ad0ff"], "shapes": ["jar", "bottle"], "volume": [0.6, 1.0], "weight": 0.9},
-    {"id": "rubber", "name": "Rubber", "value": 0.75, "cube_color": "#3d3a4b", "colors": ["#3d3a4b", "#ffcf3f", "#ff8c42"], "shapes": ["tire", "duck"], "volume": [0.9, 1.6], "weight": 0.7},
-    {"id": "electronics", "name": "Electronics", "value": 1.6, "cube_color": "#3ddc84", "colors": ["#3ddc84", "#2a9d8f", "#ffe066"], "shapes": ["board", "gadget"], "volume": [0.6, 1.2], "weight": 0.45},
-    {"id": "fabric", "name": "Fabric", "value": 0.5, "cube_color": "#9d7cff", "colors": ["#9d7cff", "#ff9ecd", "#7ee8fa"], "shapes": ["sock", "rag"], "volume": [0.4, 0.8], "weight": 0.8}
+    {"id": "metal", "name": "Scrap Metal", "value": 1.0, "cube_color": "#8a7f74", "flecks": "#b5652f", "weight": 1.2,
+     "models": [
+       {"id": "can_rusted", "vol": 0.35, "w": 3.0, "lie": 0.7},
+       {"id": "russian_food_cans_01", "vol": 0.5, "w": 1.5, "lie": 0.2},
+       {"id": "oil_tin", "vol": 0.6, "w": 1.2, "lie": 0.5},
+       {"id": "lubricant_spray", "vol": 0.3, "w": 1.5, "lie": 0.8},
+       {"id": "spray_paint_bottles", "vol": 0.5, "w": 1.0, "lie": 0.3},
+       {"id": "metal_jerrycan", "vol": 1.8, "w": 0.8, "lie": 0.5},
+       {"id": "rusted_wheel_rim_01", "vol": 2.2, "w": 0.5, "lie": 0.9}
+     ]},
+    {"id": "plastic", "name": "Plastic", "value": 0.6, "cube_color": "#9fb3bf", "flecks": "#d9c45a", "weight": 1.6,
+     "models": [
+       {"id": "plastic_bottle_gallon", "vol": 0.9, "w": 2.0, "lie": 0.7},
+       {"id": "bleach_bottle", "vol": 0.6, "w": 2.0, "lie": 0.7},
+       {"id": "multi_cleaner_bottle", "vol": 0.5, "w": 1.5, "lie": 0.7},
+       {"id": "multi_cleaner_5_litre", "vol": 1.0, "w": 1.0, "lie": 0.5},
+       {"id": "drain_cleaner", "vol": 0.5, "w": 1.2, "lie": 0.7},
+       {"id": "all_purpose_cleaner", "vol": 0.5, "w": 1.2, "lie": 0.7},
+       {"id": "plastic_jerrycan", "vol": 1.6, "w": 0.8, "lie": 0.4},
+       {"id": "trashbag", "vol": 1.4, "w": 1.6, "lie": 0.0},
+       {"id": "plastic_crate_01", "vol": 2.0, "w": 0.6, "lie": 0.3},
+       {"id": "WetFloorSign_01", "vol": 1.2, "w": 0.4, "lie": 0.8}
+     ]},
+    {"id": "glass", "name": "Glass", "value": 0.85, "cube_color": "#5f7a5e", "flecks": "#a9c9c0", "weight": 0.7,
+     "models": [
+       {"id": "wine_bottles_01", "vol": 1.2, "w": 1.0, "lie": 0.0},
+       {"id": "jug_01", "vol": 0.8, "w": 1.0, "lie": 0.6}
+     ]},
+    {"id": "rubber", "name": "Rubber", "value": 0.75, "cube_color": "#2e2c2b", "flecks": "#5a5450", "weight": 0.7,
+     "models": [
+       {"id": "old_tyre", "vol": 3.0, "w": 2.0, "lie": 0.85},
+       {"id": "rubber_boots", "vol": 0.9, "w": 1.0, "lie": 0.5},
+       {"id": "rubber_duck_toy", "vol": 0.2, "w": 0.3, "lie": 0.3},
+       {"id": "dirty_football", "vol": 0.8, "w": 0.8, "lie": 0.0}
+     ]},
+    {"id": "electronics", "name": "Electronics", "value": 1.6, "cube_color": "#4a5a4c", "flecks": "#c8a24a", "weight": 0.45,
+     "models": [
+       {"id": "circuit_board", "vol": 0.3, "w": 2.0, "lie": 0.0},
+       {"id": "boombox", "vol": 1.5, "w": 1.0, "lie": 0.3},
+       {"id": "classic_laptop", "vol": 1.0, "w": 0.8, "lie": 0.2},
+       {"id": "Television_01", "vol": 3.5, "w": 0.5, "lie": 0.4},
+       {"id": "vintage_microwave", "vol": 3.0, "w": 0.4, "lie": 0.2}
+     ]},
+    {"id": "paper", "name": "Paper & Fabric", "value": 0.5, "cube_color": "#8c7a5c", "flecks": "#b9a98a", "weight": 0.9,
+     "models": [
+       {"id": "cardboard_box_01", "vol": 1.0, "w": 2.0, "lie": 0.3},
+       {"id": "cement_bag", "vol": 1.2, "w": 1.0, "lie": 0.0},
+       {"id": "compost_bag_02", "vol": 1.2, "w": 1.0, "lie": 0.0},
+       {"id": "garden_gloves_01", "vol": 0.2, "w": 1.0, "lie": 0.0},
+       {"id": "long_life_food", "vol": 0.4, "w": 1.0, "lie": 0.3}
+     ]}
+  ],
+  "landmarks": [
+    {"id": "covered_car", "count": 3},
+    {"id": "concrete_road_barrier", "count": 6},
+    {"id": "exterior_aircon_unit", "count": 3},
+    {"id": "electric_stove", "count": 3},
+    {"id": "Barrel_01", "count": 8},
+    {"id": "metal_trash_can", "count": 4},
+    {"id": "propane_tank", "count": 3},
+    {"id": "plastic_monobloc_chair_01", "count": 4},
+    {"id": "dead_tree_trunk", "count": 4}
   ]
 }

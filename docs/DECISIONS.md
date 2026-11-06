@@ -14,3 +14,11 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
 - **Currency "Cubes" vs physical cubes**: physical cubes have a value; cashing them at the Depot adds that value to the Cubes counter. HUD shows the currency with a cube glyph.
 - **M1 test field is already a hex grid** (flat, axial coordinates) so the hex-flip moment and completion bonus are in the slice. M2 swaps the flat grid for the sphere but keeps the same per-hex ledger API.
 - **Patch's look** (original): squat teal-green box body with orange rust, a domed lid "head" fused to the body (no neck), one big round porthole lens on the front of the dome with a dilating iris, a mushroom-shaped antenna bulb, two stubby piston arms, chunky treads, a chest hatch with a fill gauge, one mismatched brass bolt, and a flower sticker on the side.
+
+## Art and tone override (owner, during M1) — supersedes the toon direction above
+- Grounded realism in the spirit of Potato Please: PBR everywhere, real-world scale, atmosphere first, dry dark humor. The toon shader, candy palette, squash/stretch and bouncy numbers from the first slice pass were removed.
+- **Rendering (Godot 4.7.2 Forward+)**: PhysicalSkyMaterial + directional sun, SDFGI, SSAO, SSIL, SSR (Ultra), volumetric fog, subtle glow, TAA, **AgX tonemapping** (available since 4.4). Quality presets Low/Medium/High/Ultra in `Settings.apply_render_quality`; Low (also used automatically on Mobile/Compatibility renderers) drops SDFGI, SSIL, SSR, volumetrics and SSAO and uses plain fog + MSAA.
+- **Assets**: CC0 from Poly Haven only (models + textures at 1k), fetched by `tools/fetch_assets.py` from `data/assets.json`; credits in `docs/CREDITS.md`. ambientCG was requested but its downloads redirect to a host outside the network allowlist, and Poly Haven covers the same needs.
+- Normal maps are imported with `compress/normal_map=1`; vendor textures VRAM-compressed with mipmaps (set in their `.import` files).
+- Ground: one shader over Texture2DArrays (albedo/normal/ARM, 8 layers) so it stays within 16 samplers for the Mobile tier.
+- The first slice's "Perfect/Pure/Lumpy" rules stay; their presentation is now restrained (small crisp text, sound, the bale's look).

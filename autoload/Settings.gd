@@ -13,6 +13,8 @@ var music_volume: float = 0.55
 var mouse_sensitivity: float = 0.0035
 var invert_y: bool = false
 var best_value_tags: bool = true
+enum Quality { LOW, MEDIUM, HIGH, ULTRA }
+var quality: int = Quality.HIGH
 
 ## action -> list of InputEvents (defaults). Remaps are stored on top of these.
 var _defaults: Dictionary = {}
@@ -91,6 +93,7 @@ func save_settings() -> void:
 	cfg.set_value("audio", "sfx", sfx_volume)
 	cfg.set_value("audio", "music", music_volume)
 	cfg.set_value("ui", "best_value_tags", best_value_tags)
+	cfg.set_value("display", "quality", quality)
 	cfg.save(SETTINGS_PATH)
 
 
@@ -108,6 +111,28 @@ func load_settings() -> void:
 	sfx_volume = float(cfg.get_value("audio", "sfx", sfx_volume))
 	music_volume = float(cfg.get_value("audio", "music", music_volume))
 	best_value_tags = bool(cfg.get_value("ui", "best_value_tags", best_value_tags))
+	quality = int(cfg.get_value("display", "quality", quality))
+
+
+## Applies the quality preset to an Environment and viewport. Low drops GI, volumetrics and
+## screen-space effects while keeping the same art direction (also the Mobile-renderer tier).
+func apply_render_quality(env: Environment, vp: Viewport) -> void:
+	var q: int = quality
+	if RenderingServer.get_current_rendering_method() != "forward_plus":
+		q = Quality.LOW
+	env.sdfgi_enabled = q >= Quality.HIGH
+	env.ssil_enabled = q >= Quality.HIGH
+	env.ssr_enabled = q >= Quality.ULTRA
+	env.ssao_enabled = q >= Quality.MEDIUM
+	env.volumetric_fog_enabled = q >= Quality.MEDIUM
+	env.fog_density = 0.004 if env.volumetric_fog_enabled else 0.012
+	env.glow_enabled = q >= Quality.MEDIUM
+	if vp:
+		vp.use_taa = q >= Quality.HIGH
+		vp.msaa_3d = Viewport.MSAA_DISABLED if q >= Quality.HIGH else Viewport.MSAA_2X
+		vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA if q == Quality.MEDIUM else Viewport.SCREEN_SPACE_AA_DISABLED
+		vp.mesh_lod_threshold = [4.0, 2.0, 1.0, 0.5][q]
+	RenderingServer.directional_shadow_atlas_set_size([2048, 4096, 4096, 8192][q], true)
 
 
 func fmt(n: BigNum) -> String:

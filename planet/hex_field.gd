@@ -19,16 +19,21 @@ var hex_left: PackedFloat32Array
 var hex_clean: PackedByteArray
 var hex_hub: PackedByteArray  # 1 = hub ground (starts clean, not counted)
 var hex_pieces: Array[PackedInt32Array] = []
+## Junk piles per hex: Vector4(x, z, radius, height). Their mounds shrink as the hex is cleaned.
+var hex_piles: Array = []
 
 # Pieces
 var piece_pos := PackedVector3Array()
 var piece_type := PackedInt32Array()  # index into Economy.junk_ids
-var piece_shape := PackedStringArray()
+var piece_model := PackedStringArray()
+var piece_pose := PackedByteArray()  # 0 upright, 1 lying (roll about X), 2 lying (roll about Z)
 var piece_vol := PackedFloat32Array()
 var piece_hex := PackedInt32Array()
 var piece_yaw := PackedFloat32Array()
 var piece_scale := PackedFloat32Array()
-var piece_color := PackedColorArray()
+var piece_tilt := PackedFloat32Array()
+## Big immovable wrecks (cars, barriers...) for M1: {model, pos, yaw}. Mega-junk cleanup comes later.
+var landmarks: Array[Dictionary] = []
 var piece_alive := PackedByteArray()
 
 var cleaned_count: int = 0
@@ -87,8 +92,10 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 	hex_hub = PackedByteArray()
 	hex_hub.resize(n)
 	hex_pieces.clear()
+	hex_piles.clear()
 	for i: int in n:
 		hex_pieces.append(PackedInt32Array())
+		hex_piles.append([])
 	var weights: Array[float] = []
 	var wsum: float = 0.0
 	for t: Dictionary in junk_types:
@@ -107,37 +114,89 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 		var t_dist: float = clampf(float(dist - 2) / maxf(radius - 2, 1), 0.0, 1.0)
 		var count: int = int(round(lerpf(pieces_per_hex.x, pieces_per_hex.y, t_dist))) + rng.randi_range(-1, 2)
 		var center: Vector3 = hex_center(id)
-		var cluster: Vector2 = Vector2(rng.randf_range(-0.4, 0.4), rng.randf_range(-0.4, 0.4)) * hex_size
+		var piles: Array = []
+		for k: int in rng.randi_range(1, 2 + int(t_dist > 0.5)):
+			var pc: Vector2 = Vector2(rng.randf_range(-0.45, 0.45), rng.randf_range(-0.45, 0.45)) * hex_size
+			piles.append(Vector4(center.x + pc.x, center.z + pc.y, rng.randf_range(0.9, 1.7), rng.randf_range(0.18, 0.45) * (0.7 + t_dist * 0.6)))
+		hex_piles[id] = piles
 		for k: int in count:
 			var type_idx: int = theme if rng.randf() < 0.62 else _weighted(rng, weights, wsum)
 			var t: Dictionary = junk_types[type_idx]
-			var off: Vector2
-			if rng.randf() < 0.5:
-				off = cluster + Vector2(rng.randfn(0.0, 0.5), rng.randfn(0.0, 0.5)) * hex_size * 0.35
+			var pos: Vector3
+			if rng.randf() < 0.72:
+				var pile: Vector4 = piles[rng.randi() % piles.size()]
+				var ang: float = rng.randf() * TAU
+				var rr: float = absf(rng.randfn(0.0, 0.5)) * pile.z
+				pos = Vector3(pile.x + cos(ang) * rr, 0.0, pile.y + sin(ang) * rr)
 			else:
-				off = Vector2(rng.randf_range(-1.0, 1.0), rng.randf_range(-1.0, 1.0)) * hex_size * 0.75
-			var pos: Vector3 = center + Vector3(off.x, 0.0, off.y)
+				pos = center + Vector3(rng.randf_range(-1.0, 1.0), 0.0, rng.randf_range(-1.0, 1.0)) * hex_size * 0.75
 			# Keep pieces inside their own hex.
 			if hex_at(pos) != id:
-				pos = center + Vector3(off.x, 0.0, off.y) * 0.45
-			var vol_range: Array = t.get("volume", [0.6, 1.2])
-			var vol: float = rng.randf_range(float(vol_range[0]), float(vol_range[1]))
-			var shapes: Array = t.get("shapes", ["can"])
-			var colors: Array = t.get("colors", ["#ffffff"])
+				pos = center + (pos - center) * 0.45
+			var models: Array = t.get("models", [])
+			var mdl: Dictionary = _pick_model(rng, models)
+			var vol: float = float(mdl.get("vol", 1.0)) * rng.randf_range(0.85, 1.15)
 			var pid: int = piece_pos.size()
 			piece_pos.append(pos)
 			piece_type.append(type_idx)
-			piece_shape.append(str(shapes[rng.randi() % shapes.size()]))
+			piece_model.append(str(mdl.get("id", "")))
 			piece_vol.append(vol)
 			piece_hex.append(id)
 			piece_yaw.append(rng.randf() * TAU)
-			piece_scale.append(lerpf(0.85, 1.25, (vol - float(vol_range[0])) / maxf(float(vol_range[1]) - float(vol_range[0]), 0.01)))
-			piece_color.append(Color.html(str(colors[rng.randi() % colors.size()])))
+			piece_scale.append(rng.randf_range(0.9, 1.1))
+			piece_pose.append((1 + rng.randi() % 2) if rng.randf() < float(mdl.get("lie", 0.0)) else 0)
+			piece_tilt.append(rng.randf_range(-0.12, 0.12))
 			piece_alive.append(1)
 			hex_pieces[id].append(pid)
 			hex_total[id] += vol
 		hex_left[id] = hex_total[id]
 	cleaned_count = 0
+
+
+## Height of the junk mound under a point, shrinking as the hex is cleaned (0 once clean).
+func ground_height(id: int, pos: Vector3) -> float:
+	if id < 0 or hex_clean[id] == 1:
+		return 0.0
+	var left: float = 1.0 - removed_fraction(id)
+	var h: float = 0.0
+	for pile: Vector4 in hex_piles[id]:
+		var d: float = Vector2(pos.x - pile.x, pos.z - pile.y).length() / pile.z
+		if d < 1.0:
+			h = maxf(h, pile.w * sqrt(1.0 - d * d))
+	return h * (0.3 + 0.7 * left)
+
+
+func _pick_model(rng: RandomNumberGenerator, models: Array) -> Dictionary:
+	if models.is_empty():
+		return {}
+	var total: float = 0.0
+	for m: Dictionary in models:
+		total += float(m.get("w", 1.0))
+	var r: float = rng.randf() * total
+	for m: Dictionary in models:
+		r -= float(m.get("w", 1.0))
+		if r <= 0.0:
+			return m
+	return models[-1]
+
+
+## Places big wreck props on outer junk hexes (deterministic).
+func place_landmarks(defs: Array) -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value + 7
+	landmarks.clear()
+	var used: Dictionary = {}
+	for d: Dictionary in defs:
+		for k: int in int(d.get("count", 1)):
+			for attempt: int in 20:
+				var id: int = rng.randi_range(0, hex_count() - 1)
+				var dist: int = Hex.distance(hex_axial[id], Vector2i.ZERO)
+				if hex_hub[id] == 1 or dist < 3 or used.has(id):
+					continue
+				used[id] = true
+				var off := Vector3(rng.randf_range(-0.6, 0.6), 0, rng.randf_range(-0.6, 0.6)) * hex_size * 0.4
+				landmarks.append({"model": str(d["id"]), "pos": hex_center(id) + off, "yaw": rng.randf() * TAU, "hex": id})
+				break
 
 
 func _weighted(rng: RandomNumberGenerator, weights: Array[float], wsum: float) -> int:

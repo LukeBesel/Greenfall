@@ -1,24 +1,34 @@
 class_name FieldView
 extends Node3D
-## Presentation of a HexField: restoration ground + MultiMesh junk (one MultiMesh per shape)
-## + a decorative junk-mountain horizon. Reads the sim; never owns game state.
+## Presentation of a HexField: PBR restoration ground, real-model junk in chunked MultiMeshes,
+## big wreck landmarks, and a hazy dirt-hill horizon. Reads the sim; never owns game state.
+
+const CHUNK: int = 5  # hexes per chunk side (axial), for MultiMesh culling + LOD
+const GROUND_LAYERS: Array[String] = [
+	"mud_cracked_dry_03", "dry_ground_rocks", "withered_grass", "road_damaged", "rubble",
+	"dirt", "farm_soil", "concrete_floor_worn_001",
+]
 
 var field: HexField
 var clock: float = 0.0
 
-var _ground: MeshInstance3D
 var _ground_mat: ShaderMaterial
 var _state_img: Image
 var _state_tex: ImageTexture
-var _mm_by_shape: Dictionary = {}  # shape -> MultiMeshInstance3D
-var _piece_slot := PackedInt32Array()  # pid -> instance index inside its shape's multimesh
+var _piece_mm := PackedInt32Array()  # pid -> index into _mms
+var _piece_slot := PackedInt32Array()  # pid -> instance index
+var _mms: Array[MultiMesh] = []
 var _dirty_tex: bool = false
+var _pose_cache: Dictionary = {}
+var _mounds: Array = []  # hex id -> Array[MeshInstance3D]
 
 
 func setup(p_field: HexField) -> void:
 	field = p_field
 	_build_ground()
+	_build_mounds()
 	_build_junk()
+	_build_landmarks()
 	_build_horizon()
 	for id: int in field.hex_count():
 		_write_hex(id, -100.0)
@@ -33,30 +43,68 @@ func _process(delta: float) -> void:
 		_flush()
 
 
+# --- Ground -----------------------------------------------------------------------
+
+static func _tex_array(ids: Array[String], map: String) -> Texture2DArray:
+	var imgs: Array[Image] = []
+	for id: String in ids:
+		var t: Texture2D = AssetLib.tex(id, map)
+		var img: Image = t.get_image() if t else null
+		if img == null:
+			img = Image.create(64, 64, true, Image.FORMAT_RGBA8)
+			img.fill(Color(0.5, 0.5, 1.0) if map == "nor_gl" else Color(0.5, 0.45, 0.4))
+		imgs.append(img)
+	# All layers must share size/format/mipmaps; convert mismatches to the first layer's format.
+	var ref: Image = imgs[0]
+	for i: int in imgs.size():
+		var im: Image = imgs[i]
+		if im.get_format() != ref.get_format() or im.get_size() != ref.get_size() or im.has_mipmaps() != ref.has_mipmaps():
+			if im.is_compressed():
+				im.decompress()
+			if ref.is_compressed():
+				push_warning("Texture array layer %s mismatched; using uncompressed layers" % ids[i])
+			im.convert(ref.get_format() if not ref.is_compressed() else Image.FORMAT_RGBA8)
+			im.resize(ref.get_width(), ref.get_height())
+			if ref.has_mipmaps():
+				im.generate_mipmaps()
+			imgs[i] = im
+	if imgs.any(func(im: Image) -> bool: return im.get_format() != imgs[0].get_format()):
+		for im: Image in imgs:
+			if im.is_compressed():
+				im.decompress()
+			im.convert(Image.FORMAT_RGBA8)
+			if not im.has_mipmaps():
+				im.generate_mipmaps()
+	var arr := Texture2DArray.new()
+	arr.create_from_images(imgs)
+	return arr
+
+
 func _build_ground() -> void:
 	var size: int = field.radius * 2 + 1
 	_state_img = Image.create(size, size, false, Image.FORMAT_RGBAF)
 	_state_tex = ImageTexture.create_from_image(_state_img)
 	_ground_mat = ShaderMaterial.new()
-	_ground_mat.shader = preload("res://art/shaders/ground.gdshader")
+	_ground_mat.shader = preload("res://art/shaders/ground_pbr.gdshader")
+	_ground_mat.set_shader_parameter("albedo_arr", _tex_array(GROUND_LAYERS, "diff"))
+	_ground_mat.set_shader_parameter("normal_arr", _tex_array(GROUND_LAYERS, "nor_gl"))
+	_ground_mat.set_shader_parameter("arm_arr", _tex_array(GROUND_LAYERS, "arm"))
 	_ground_mat.set_shader_parameter("state_tex", _state_tex)
 	_ground_mat.set_shader_parameter("grid_radius", field.radius)
 	_ground_mat.set_shader_parameter("hex_size", field.hex_size)
 	var plane := PlaneMesh.new()
-	var extent: float = (field.radius + 6) * field.hex_size * 2.2
+	var extent: float = (field.radius + 8) * field.hex_size * 2.4
 	plane.size = Vector2(extent, extent)
-	plane.subdivide_width = 8
-	plane.subdivide_depth = 8
+	plane.subdivide_width = 16
+	plane.subdivide_depth = 16
 	plane.material = _ground_mat
-	_ground = MeshInstance3D.new()
-	_ground.name = "Ground"
-	_ground.mesh = plane
-	_ground.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	add_child(_ground)
-	# Collision: a big static floor.
+	var g := MeshInstance3D.new()
+	g.name = "Ground"
+	g.mesh = plane
+	g.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(g)
 	var body := StaticBody3D.new()
 	body.name = "GroundBody"
-	body.collision_layer = 1
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
 	box.size = Vector3(extent, 1.0, extent)
@@ -66,43 +114,101 @@ func _build_ground() -> void:
 	add_child(body)
 
 
-func _build_junk() -> void:
-	var mat := ShaderMaterial.new()
-	mat.shader = preload("res://art/shaders/junk.gdshader")
-	var by_shape: Dictionary = {}
-	for pid: int in field.piece_count():
-		var s: String = field.piece_shape[pid]
-		if not by_shape.has(s):
-			by_shape[s] = PackedInt32Array()
-		(by_shape[s] as PackedInt32Array).append(pid)
-	_piece_slot.resize(field.piece_count())
-	for s: String in by_shape:
-		var pids: PackedInt32Array = by_shape[s]
-		var mm := MultiMesh.new()
-		mm.transform_format = MultiMesh.TRANSFORM_3D
-		mm.use_custom_data = true
-		mm.mesh = JunkMeshes.get_mesh(s)
-		mm.instance_count = pids.size()
-		for i: int in pids.size():
-			var pid: int = pids[i]
-			_piece_slot[pid] = i
-			mm.set_instance_transform(i, piece_transform(pid) if field.piece_alive[pid] == 1 else _hidden())
-			mm.set_instance_custom_data(i, field.piece_color[pid])
-		var mmi := MultiMeshInstance3D.new()
-		mmi.name = "Junk_" + s
-		mmi.multimesh = mm
-		mmi.material_override = mat
-		add_child(mmi)
-		_mm_by_shape[s] = mmi
+# --- Junk -------------------------------------------------------------------------
+
+## Basis + vertical offset so the model rests on the ground in the given pose.
+func _pose_basis(model: String, pose: int, yaw: float, tilt: float, scl: float) -> Transform3D:
+	var b := Basis(Vector3.UP, yaw)
+	match pose:
+		1: b = b * Basis(Vector3.RIGHT, PI * 0.5)
+		2: b = b * Basis(Vector3.FORWARD, PI * 0.5)
+	b = b * Basis(Vector3.RIGHT, tilt) * Basis(Vector3.FORWARD, tilt * 0.7)
+	b = b.scaled(Vector3.ONE * scl)
+	var aabb: AABB = AssetLib.model_aabb(model)
+	var min_y: float = INF
+	for i: int in 8:
+		min_y = minf(min_y, (b * aabb.get_endpoint(i)).y)
+	return Transform3D(b, Vector3(0, -min_y - 0.01, 0))
 
 
 func piece_transform(pid: int) -> Transform3D:
-	var b := Basis(Vector3.UP, field.piece_yaw[pid]).scaled(Vector3.ONE * field.piece_scale[pid])
-	return Transform3D(b, field.piece_pos[pid])
+	var t: Transform3D = _pose_basis(field.piece_model[pid], field.piece_pose[pid], field.piece_yaw[pid], field.piece_tilt[pid], field.piece_scale[pid])
+	var p: Vector3 = field.piece_pos[pid]
+	t.origin += Vector3(p.x, field.ground_height(field.piece_hex[pid], p), p.z)
+	return t
 
 
 func piece_mesh(pid: int) -> Mesh:
-	return JunkMeshes.get_mesh(field.piece_shape[pid])
+	return AssetLib.model_mesh(field.piece_model[pid])
+
+
+func _build_junk() -> void:
+	var groups: Dictionary = {}  # "cx,cy|model" -> PackedInt32Array
+	for pid: int in field.piece_count():
+		var a: Vector2i = field.hex_axial[field.piece_hex[pid]]
+		var key: String = "%d,%d|%s" % [floori(float(a.x) / CHUNK), floori(float(a.y) / CHUNK), field.piece_model[pid]]
+		var arr: PackedInt32Array = groups.get(key, PackedInt32Array())
+		arr.append(pid)
+		groups[key] = arr
+	_piece_mm.resize(field.piece_count())
+	_piece_slot.resize(field.piece_count())
+	for key: String in groups:
+		var pids: PackedInt32Array = groups[key]
+		var model: String = key.split("|")[1]
+		var mm := MultiMesh.new()
+		mm.transform_format = MultiMesh.TRANSFORM_3D
+		mm.mesh = AssetLib.model_mesh(model)
+		mm.instance_count = pids.size()
+		var idx: int = _mms.size()
+		for i: int in pids.size():
+			var pid: int = pids[i]
+			_piece_mm[pid] = idx
+			_piece_slot[pid] = i
+			mm.set_instance_transform(i, piece_transform(pid) if field.piece_alive[pid] == 1 else _hidden())
+		_mms.append(mm)
+		var mmi := MultiMeshInstance3D.new()
+		mmi.name = "Junk_" + key.replace("|", "_").replace(",", "_")
+		mmi.multimesh = mm
+		mmi.visibility_range_end = 140.0
+		add_child(mmi)
+
+
+func _build_mounds() -> void:
+	var mesh := SphereMesh.new()
+	mesh.radius = 1.0
+	mesh.height = 1.0
+	mesh.is_hemisphere = true
+	mesh.radial_segments = 20
+	mesh.rings = 6
+	var mat: StandardMaterial3D = AssetLib.pbr_material("rubble", 0.6, Color(0.62, 0.56, 0.54), true)
+	mesh.material = mat
+	_mounds.resize(field.hex_count())
+	for id: int in field.hex_count():
+		var list: Array = []
+		for pile: Vector4 in field.hex_piles[id]:
+			var mi := MeshInstance3D.new()
+			mi.mesh = mesh
+			mi.position = Vector3(pile.x, -0.02, pile.y)
+			mi.set_meta("pile", pile)
+			add_child(mi)
+			list.append(mi)
+		_mounds[id] = list
+		_update_mounds(id)
+
+
+func _update_mounds(id: int) -> void:
+	var left: float = 0.0 if field.hex_clean[id] == 1 else (0.3 + 0.7 * (1.0 - field.removed_fraction(id)))
+	for mi: MeshInstance3D in _mounds[id]:
+		var pile: Vector4 = mi.get_meta("pile")
+		mi.visible = left > 0.0
+		mi.scale = Vector3(pile.z * 1.05, maxf(pile.w * left, 0.001), pile.z * 1.05)
+
+
+## Re-seat remaining pieces of a hex on its (shrinking) mound.
+func _resettle(id: int) -> void:
+	for pid: int in field.hex_pieces[id]:
+		if field.piece_alive[pid] == 1:
+			_mms[_piece_mm[pid]].set_instance_transform(_piece_slot[pid], piece_transform(pid))
 
 
 func _hidden() -> Transform3D:
@@ -110,19 +216,20 @@ func _hidden() -> Transform3D:
 
 
 func hide_piece(pid: int) -> void:
-	var mmi: MultiMeshInstance3D = _mm_by_shape[field.piece_shape[pid]]
-	mmi.multimesh.set_instance_transform(_piece_slot[pid], _hidden())
+	_mms[_piece_mm[pid]].set_instance_transform(_piece_slot[pid], _hidden())
 
 
 func move_piece(pid: int, pos: Vector3) -> void:
 	field.piece_pos[pid] = pos
-	var mmi: MultiMeshInstance3D = _mm_by_shape[field.piece_shape[pid]]
-	mmi.multimesh.set_instance_transform(_piece_slot[pid], piece_transform(pid))
+	_mms[_piece_mm[pid]].set_instance_transform(_piece_slot[pid], piece_transform(pid))
 
 
-## Call when a piece is removed (partial clean tint) or a hex flips (ripple from now).
+# --- Hex state --------------------------------------------------------------------
+
 func refresh_hex(id: int, flipped_now: bool = false) -> void:
 	_write_hex(id, clock if flipped_now else -1.0)
+	_update_mounds(id)
+	_resettle(id)
 	_dirty_tex = true
 
 
@@ -141,41 +248,75 @@ func _flush() -> void:
 
 
 func set_focus_hex(id: int) -> void:
-	var v: Vector2 = Vector2(9999, 9999) if id < 0 else Vector2(field.hex_axial[id])
-	_ground_mat.set_shader_parameter("focus_axial", v)
+	_ground_mat.set_shader_parameter("focus_axial", Vector2(9999, 9999) if id < 0 else Vector2(field.hex_axial[id]))
+
+
+func set_grid_visible(v: float) -> void:
+	_ground_mat.set_shader_parameter("show_grid", v)
+
+
+# --- Landmarks + horizon ------------------------------------------------------------
+
+func _add_prop(model: String, pos: Vector3, yaw: float, collide: bool, scl: float = 1.0) -> void:
+	var mi := MeshInstance3D.new()
+	mi.mesh = AssetLib.model_mesh(model)
+	var t: Transform3D = _pose_basis(model, 0, yaw, 0.0, scl)
+	t.origin += pos
+	mi.transform = t
+	mi.visibility_range_end = 220.0
+	add_child(mi)
+	if collide:
+		var aabb: AABB = mi.mesh.get_aabb()
+		var body := StaticBody3D.new()
+		var cs := CollisionShape3D.new()
+		var box := BoxShape3D.new()
+		box.size = aabb.size * scl * 0.92
+		cs.shape = box
+		cs.position = aabb.get_center() * scl
+		body.add_child(cs)
+		mi.add_child(body)
+
+
+func _build_landmarks() -> void:
+	for lm: Dictionary in field.landmarks:
+		_add_prop(str(lm["model"]), lm["pos"], float(lm["yaw"]), true)
 
 
 func _build_horizon() -> void:
-	# Soft junk mountains ringing the field: colorful lumps that read as "more to clean out there".
+	# Low dirt and rubble hills ringing the field, with wrecks on them, fading into haze.
 	var rng := RandomNumberGenerator.new()
 	rng.seed = field.seed_value + 99
-	var r0: float = (field.radius + 1.5) * field.hex_size * 1.75
-	var palette: Array[Color] = [Color("#e8463c"), Color("#ff7eb6"), Color("#5ee6c8"), Color("#ffd23f"), Color("#9d7cff"), Color("#f2a03d"), Color("#4cc9f0")]
-	var mat := ShaderMaterial.new()
-	mat.shader = preload("res://art/shaders/toon.gdshader")
-	mat.set_shader_parameter("albedo", Color(1, 1, 1))
-	mat.set_shader_parameter("rust_amount", 0.35)
-	mat.set_shader_parameter("rust_scale", 0.6)
-	var parts: Array = []
-	for i: int in 70:
-		var ang: float = TAU * i / 70.0 + rng.randf_range(-0.03, 0.03)
-		var dist: float = r0 + rng.randf_range(0.0, 22.0)
-		var h: float = rng.randf_range(3.0, 11.0) * (1.0 + dist / r0 * 0.3)
-		var w: float = rng.randf_range(7.0, 14.0)
-		var pos := Vector3(cos(ang) * dist, 0.0, sin(ang) * dist)
-		var c: Color = palette[rng.randi() % palette.size()].lerp(Color(0.55, 0.42, 0.55), 0.45)
-		parts.append(ProcMesh.part(ProcMesh.hemisphere(1.0, 12, 5), ProcMesh.xf(pos, Vector3(0, rng.randf() * 360.0, 0), Vector3(w, h, w * 0.8)), c))
-		# A few big recognisable silhouettes poking out (tires, cans, a fridge).
-		if rng.randf() < 0.35:
-			var top := pos + Vector3(0, h * 0.8, 0)
-			var kind: int = rng.randi() % 3
-			var cc: Color = palette[rng.randi() % palette.size()]
-			match kind:
-				0: parts.append(ProcMesh.part(ProcMesh.torus(1.0, 2.2, 14, 6), ProcMesh.xf(top, Vector3(rng.randf_range(40, 90), rng.randf() * 360.0, 0)), Color(0.25, 0.23, 0.3)))
-				1: parts.append(ProcMesh.part(ProcMesh.cyl(1.0, 1.0, 3.5, 10), ProcMesh.xf(top, Vector3(rng.randf_range(-60, 60), 0, rng.randf_range(30, 80))), cc))
-				_: parts.append(ProcMesh.part(ProcMesh.box(Vector3(2.5, 4.5, 2.2)), ProcMesh.xf(top, Vector3(rng.randf_range(-25, 25), rng.randf() * 360.0, rng.randf_range(-25, 25))), Color(0.92, 0.9, 0.86)))
-	var mi := MeshInstance3D.new()
-	mi.name = "JunkHorizon"
-	mi.mesh = ProcMesh.merge(parts)
-	mi.material_override = mat
-	add_child(mi)
+	var r0: float = (field.radius + 1.6) * field.hex_size * 1.75
+	var mat: StandardMaterial3D = AssetLib.pbr_material("rubble", 0.12, Color(0.85, 0.8, 0.78), true)
+	var mat2: StandardMaterial3D = AssetLib.pbr_material("brown_mud_dry", 0.1, Color(0.9, 0.85, 0.82), true)
+	var hill := SphereMesh.new()
+	hill.radius = 1.0
+	hill.height = 1.0
+	hill.is_hemisphere = true
+	hill.radial_segments = 24
+	hill.rings = 8
+	var props: Array[String] = ["covered_car", "old_tyre", "Barrel_01", "electric_stove", "exterior_aircon_unit", "plastic_crate_01", "trashbag", "metal_jerrycan", "concrete_road_barrier"]
+	for i: int in 54:
+		var ang: float = TAU * i / 54.0 + rng.randf_range(-0.04, 0.04)
+		var dist: float = r0 + rng.randf_range(2.0, 24.0)
+		var h: float = rng.randf_range(2.0, 7.0) * (1.0 + (dist - r0) / r0)
+		var w: float = rng.randf_range(8.0, 15.0)
+		var mi := MeshInstance3D.new()
+		mi.mesh = hill
+		mi.material_override = mat if rng.randf() < 0.6 else mat2
+		mi.position = Vector3(cos(ang) * dist, -0.3, sin(ang) * dist)
+		mi.scale = Vector3(w, h, w * rng.randf_range(0.6, 1.0))
+		mi.rotation.y = rng.randf() * TAU
+		add_child(mi)
+		for k: int in rng.randi_range(1, 4):
+			var model: String = props[rng.randi() % props.size()]
+			var a2: float = rng.randf() * TAU
+			var rr: float = rng.randf_range(0.0, 0.6)
+			var local := Vector3(cos(a2) * rr * w, 0.0, sin(a2) * rr * w)
+			var y: float = h * sqrt(maxf(0.0, 1.0 - rr * rr)) - 0.3
+			_add_prop(model, mi.position + Vector3(local.x, y - 0.25, local.z), rng.randf() * TAU, false, rng.randf_range(0.9, 1.3))
+	# Scattered wrecks between field edge and hills.
+	for i: int in 16:
+		var ang: float = rng.randf() * TAU
+		var dist: float = (field.radius + 0.8) * field.hex_size * 1.6 + rng.randf_range(0.0, 8.0)
+		_add_prop(["covered_car", "concrete_road_barrier", "Barrel_01", "old_tyre"][rng.randi() % 4], Vector3(cos(ang) * dist, 0, sin(ang) * dist), rng.randf() * TAU, true)

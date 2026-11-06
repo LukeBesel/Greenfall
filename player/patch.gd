@@ -185,14 +185,12 @@ func _take_piece(pid: int) -> void:
 	var vol: float = field.piece_vol[pid]
 	var start_xf: Transform3D = world.view.piece_transform(pid)
 	var mesh: Mesh = world.view.piece_mesh(pid)
-	var color: Color = field.piece_color[pid]
+	var color: Color = Color.html(str(Economy.junk_types[type_id].get("cube_color", "#888888")))
 	compartment.reserve(vol)
 	world.collect_piece(pid)
 	# Fly the piece in an arc into the chest hatch.
 	var flyer := MeshInstance3D.new()
 	flyer.mesh = mesh
-	var m: ShaderMaterial = ProcMesh.toon_material(color, 0.0)
-	flyer.material_override = m
 	get_tree().current_scene.add_child(flyer)
 	flyer.global_transform = start_xf
 	var start: Vector3 = start_xf.origin

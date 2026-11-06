@@ -2,5 +2,5 @@
   "_doc": "Planet constants. total_hexes is the target sphere resolution (subdivision 6 = 40962 cells). The slice field counts toward it for the HUD teaser.",
   "name": "Verdance",
   "total_hexes": 40962,
-  "slice_field": {"radius": 9, "hex_size": 3.2, "seed": 4471, "pieces_per_hex": [6, 12], "clean_threshold": 0.99, "bonus_base": 4.0, "bonus_per_volume": 0.3}
+  "slice_field": {"radius": 9, "hex_size": 3.2, "seed": 4471, "pieces_per_hex": [24, 56], "clean_threshold": 0.99, "bonus_base": 4.0, "bonus_per_volume": 0.3}
 }

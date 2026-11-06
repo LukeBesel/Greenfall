@@ -19,6 +19,7 @@ var bot: InputSource
 var _cubes_root: Node3D
 var _flower: Node3D
 var _sun: DirectionalLight3D
+var _env: Environment
 var _t: float = 0.0
 
 
@@ -34,6 +35,7 @@ func _ready() -> void:
 	for id: String in Economy.junk_ids:
 		types.append(Economy.junk_types[id])
 	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
+	field.place_landmarks(Economy.landmarks)
 	var loaded: bool = false
 	if not DevHooks.has("fresh"):
 		loaded = SaveManager.load_game()
@@ -82,6 +84,12 @@ func _ready() -> void:
 	if loaded:
 		_restore_world()
 	cam.snap()
+	if DevHooks.has("spawn-hex"):
+		var hid: int = int(DevHooks.get_f("spawn-hex", 30.0))
+		patch.global_position = field.hex_center(hid) + Vector3(0, 0.05, field.hex_size * 0.9)
+		var pid0: int = field.hex_pieces[hid][0]
+		print("[slice] piece0 xf=", view.piece_transform(pid0), " model=", field.piece_model[pid0], " mm_count=", view._mms.size(), " inst=", view._mms[view._piece_mm[pid0]].instance_count, " mmaabb=", view._mms[view._piece_mm[pid0]].get_aabb(), " itx=", view._mms[view._piece_mm[pid0]].get_instance_transform(view._piece_slot[pid0]))
+		print("[slice] pieces=%d junk_hexes=%d hex%d pieces=%d piles=%s" % [field.piece_count(), field.junk_hex_count, hid, field.hex_pieces[hid].size(), str(field.hex_piles[hid])])
 	if DevHooks.has("cam"):
 		cam.apply_preset(DevHooks.get_s("cam", "wide"))
 	if DevHooks.has("give"):
@@ -100,111 +108,146 @@ func _build_environment() -> void:
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
 	var sky := Sky.new()
-	var sm := ProceduralSkyMaterial.new()
-	sm.sky_top_color = Color(0.43, 0.36, 0.68)
-	sm.sky_horizon_color = Color(0.96, 0.7, 0.78)
-	sm.sky_curve = 0.14
-	sm.ground_horizon_color = Color(0.86, 0.64, 0.72)
-	sm.ground_bottom_color = Color(0.36, 0.27, 0.42)
-	sm.sun_angle_max = 25.0
+	var sm := PhysicalSkyMaterial.new()
+	# Act 1: heavy, hazy, slightly violet-brown sky. Later acts lower turbidity and mie.
+	sm.rayleigh_coefficient = 1.6
+	sm.rayleigh_color = Color(0.42, 0.42, 0.62)
+	sm.mie_coefficient = 0.012
+	sm.mie_eccentricity = 0.82
+	sm.mie_color = Color(0.86, 0.72, 0.66)
+	sm.turbidity = 14.0
+	sm.sun_disk_scale = 1.2
+	sm.ground_color = Color(0.3, 0.27, 0.26)
+	sm.energy_multiplier = 1.0
 	sky.sky_material = sm
+	sky.process_mode = Sky.PROCESS_MODE_REALTIME
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-	env.ambient_light_sky_contribution = 0.85
-	env.ambient_light_energy = 1.1
-	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-	env.tonemap_exposure = 1.08
+	env.reflected_light_source = Environment.REFLECTION_SOURCE_SKY
+	env.tonemap_mode = Environment.TONE_MAPPER_AGX
+	env.tonemap_exposure = 1.0
 	env.glow_enabled = true
-	env.glow_intensity = 0.55
-	env.glow_bloom = 0.06
-	env.glow_hdr_threshold = 0.95
-	env.fog_enabled = true
-	env.fog_light_color = Color(0.82, 0.68, 0.86)
-	env.fog_density = 0.0045
-	env.fog_sky_affect = 0.25
-	env.fog_aerial_perspective = 0.35
+	env.glow_intensity = 0.35
+	env.glow_bloom = 0.03
+	env.glow_hdr_threshold = 1.2
 	env.ssao_enabled = true
-	env.ssao_intensity = 1.4
-	env.ssao_radius = 1.2
+	env.ssao_radius = 1.0
+	env.ssao_intensity = 1.6
+	env.ssil_enabled = true
+	env.ssr_enabled = true
+	env.ssr_max_steps = 48
+	env.sdfgi_enabled = true
+	env.sdfgi_use_occlusion = true
+	env.sdfgi_cascades = 4
+	env.sdfgi_min_cell_size = 0.2
+	env.volumetric_fog_enabled = true
+	env.volumetric_fog_density = 0.012
+	env.volumetric_fog_albedo = Color(0.78, 0.72, 0.74)
+	env.volumetric_fog_emission = Color(0.06, 0.05, 0.07)
+	env.volumetric_fog_anisotropy = 0.55
+	env.volumetric_fog_length = 90.0
+	env.volumetric_fog_sky_affect = 0.6
+	env.fog_enabled = true
+	env.fog_mode = Environment.FOG_MODE_EXPONENTIAL
+	env.fog_light_color = Color(0.62, 0.58, 0.62)
+	env.fog_density = 0.004
+	env.fog_sky_affect = 0.4
 	env.adjustment_enabled = true
-	env.adjustment_saturation = 1.12
-	env.adjustment_contrast = 1.02
+	env.adjustment_saturation = 0.88
+	env.adjustment_contrast = 1.04
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
+	_env = env
 	_sun = DirectionalLight3D.new()
-	_sun.rotation_degrees = Vector3(-50, -38, 0)
-	_sun.light_color = Color(1.0, 0.93, 0.82)
-	_sun.light_energy = 1.3
+	_sun.rotation_degrees = Vector3(-32, -48, 0)
+	_sun.light_color = Color(1.0, 0.9, 0.78)
+	_sun.light_energy = 2.2
+	_sun.light_angular_distance = 0.6
+	_sun.light_volumetric_fog_energy = 1.4
 	_sun.shadow_enabled = true
-	_sun.shadow_blur = 1.5
-	_sun.directional_shadow_max_distance = 70.0
+	_sun.shadow_blur = 1.0
+	_sun.directional_shadow_max_distance = 80.0
 	add_child(_sun)
+	Settings.apply_render_quality(env, get_viewport())
 
 
 func _build_board() -> void:
+	# The hub terminal: an old utility cabinet with a working screen.
 	var board := Node3D.new()
-	board.name = "UpgradeBoard"
+	board.name = "UpgradeTerminal"
 	board.position = BOARD_POS
 	board.rotation_degrees = Vector3(0, 35, 0)
 	add_child(board)
-	var post_mat: ShaderMaterial = ProcMesh.toon_material(Color(0.55, 0.42, 0.35), 0.6, 21.0)
-	for x: float in [-0.7, 0.7]:
-		var post := MeshInstance3D.new()
-		post.mesh = ProcMesh.cyl(0.07, 0.08, 2.0, 8)
-		post.material_override = post_mat
-		post.position = Vector3(x, 1.0, 0)
-		board.add_child(post)
-	var panel := MeshInstance3D.new()
-	panel.mesh = ProcMesh.rounded_box(Vector3(1.9, 1.1, 0.12), 0.06, 2)
-	panel.material_override = ProcMesh.toon_material(Color(0.3, 0.55, 0.52), 0.55, 22.0)
-	panel.position = Vector3(0, 1.6, 0)
-	board.add_child(panel)
-	var l := Label3D.new()
-	l.text = "UPGRADES"
-	l.font_size = 72
-	l.pixel_size = 0.005
-	l.outline_size = 14
-	l.modulate = Color(1.0, 0.9, 0.5)
-	l.outline_modulate = Color(0.15, 0.08, 0.2)
-	l.position = Vector3(0, 1.75, 0.08)
-	board.add_child(l)
-	var l2 := Label3D.new()
-	l2.text = "[E] or [Tab]"
-	l2.font_size = 40
-	l2.pixel_size = 0.005
-	l2.outline_size = 10
-	l2.modulate = Color(1, 1, 1, 0.9)
-	l2.position = Vector3(0, 1.38, 0.08)
-	board.add_child(l2)
+	var cab := MeshInstance3D.new()
+	cab.mesh = AssetLib.model_mesh("utility_box_01")
+	board.add_child(cab)
+	var aabb: AABB = cab.mesh.get_aabb()
+	var screen := Label3D.new()
+	screen.text = "MUNICIPAL SANITATION\nUPGRADE TERMINAL\n> READY_"
+	screen.font_size = 28
+	screen.pixel_size = 0.0018
+	screen.modulate = Color(0.55, 1.0, 0.75)
+	screen.outline_size = 0
+	screen.shaded = false
+	screen.position = Vector3(aabb.get_center().x, aabb.end.y * 0.72, aabb.end.z + 0.01)
+	board.add_child(screen)
+	var lamp := OmniLight3D.new()
+	lamp.light_color = Color(0.55, 1.0, 0.75)
+	lamp.light_energy = 0.4
+	lamp.omni_range = 1.5
+	lamp.position = screen.position + Vector3(0, 0, 0.3)
+	board.add_child(lamp)
+	var sb := StaticBody3D.new()
+	var cs := CollisionShape3D.new()
+	var bs := BoxShape3D.new()
+	bs.size = aabb.size
+	cs.shape = bs
+	cs.position = aabb.get_center()
+	sb.add_child(cs)
+	board.add_child(sb)
+	# Hub dressing: a street lamp and a generator.
+	var sl := MeshInstance3D.new()
+	sl.mesh = AssetLib.model_mesh("street_lamp_01")
+	sl.position = Vector3(4.2, 0, -3.0)
+	add_child(sl)
+	var light := SpotLight3D.new()
+	light.light_color = Color(1.0, 0.82, 0.6)
+	light.light_energy = 3.0
+	light.spot_range = 12.0
+	light.spot_angle = 55.0
+	light.shadow_enabled = true
+	light.position = Vector3(4.2, sl.mesh.get_aabb().end.y - 0.3, -3.0)
+	light.rotation_degrees = Vector3(-90, 0, 0)
+	add_child(light)
+	var gen := MeshInstance3D.new()
+	gen.mesh = AssetLib.model_mesh("portable_generator")
+	gen.position = Vector3(-4.6, 0, 0.8)
+	gen.rotation_degrees = Vector3(0, 70, 0)
+	add_child(gen)
 
 
 func _build_flower() -> void:
-	# The First Flower: growing out of a crack in an old soda can. Never scoopable.
+	# The First Flower: a small wildflower growing beside a crushed can. Never scoopable.
 	_flower = Node3D.new()
 	_flower.name = "FirstFlower"
 	_flower.position = FLOWER_POS
 	add_child(_flower)
-	var parts: Array = []
-	parts.append(ProcMesh.part(JunkMeshes.get_mesh("can"), ProcMesh.xf(Vector3(0, 0, 0), Vector3(0, 30, 0), Vector3.ONE * 1.4), Color(0.9, 0.3, 0.28)))
-	parts.append(ProcMesh.part(ProcMesh.cyl(0.012, 0.016, 0.42, 6), ProcMesh.xf(Vector3(0.02, 0.36, 0), Vector3(0, 0, -6)), Color(0.35, 0.75, 0.35)))
-	parts.append(ProcMesh.part(ProcMesh.sphere(0.06, 8, 4), ProcMesh.xf(Vector3(0.08, 0.24, 0), Vector3(0, 0, -40), Vector3(1.6, 0.4, 0.8)), Color(0.4, 0.82, 0.4)))
-	parts.append(ProcMesh.part(ProcMesh.sphere(0.05, 8, 4), ProcMesh.xf(Vector3(-0.05, 0.31, 0.01), Vector3(0, 0, 35), Vector3(1.6, 0.4, 0.8)), Color(0.4, 0.82, 0.4)))
-	for k: int in 6:
-		var a: float = TAU * k / 6.0
-		parts.append(ProcMesh.part(ProcMesh.sphere(0.045, 8, 4), ProcMesh.xf(Vector3(0.045 + cos(a) * 0.06, 0.58, sin(a) * 0.06), Vector3(0, -a * 57.3, 0), Vector3(1.4, 0.45, 1.0)), Color(1.0, 0.95, 0.98)))
-	parts.append(ProcMesh.part(ProcMesh.sphere(0.035, 8, 4), ProcMesh.xf(Vector3(0.045, 0.6, 0)), Color(1.0, 0.82, 0.25)))
-	var mi := MeshInstance3D.new()
-	mi.mesh = ProcMesh.merge(parts)
-	var mat: ShaderMaterial = ProcMesh.toon_material(Color.WHITE, 0.0)
-	mi.material_override = mat
-	_flower.add_child(mi)
+	var f := MeshInstance3D.new()
+	f.mesh = AssetLib.model_mesh("flower_heliophila")
+	f.scale = Vector3.ONE * 0.8
+	_flower.add_child(f)
+	var can := MeshInstance3D.new()
+	can.mesh = AssetLib.model_mesh("can_rusted")
+	can.position = Vector3(0.12, 0.04, 0.05)
+	can.rotation_degrees = Vector3(90, 20, 0)
+	_flower.add_child(can)
 
 
 func _process(delta: float) -> void:
 	_t += delta
 	if _flower:
-		_flower.rotation.z = sin(_t * 1.3) * 0.03
+		_flower.rotation.z = sin(_t * 1.1) * 0.02
 
 
 # --- Sim hooks used by Patch ----------------------------------------------------

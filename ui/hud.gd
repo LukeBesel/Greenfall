@@ -47,6 +47,15 @@ func _margin(preset: Control.LayoutPreset, m: int = 16) -> MarginContainer:
 	var mc := MarginContainer.new()
 	mc.set_anchors_and_offsets_preset(preset)
 	mc.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# Grow away from the anchored edge so content stays on screen.
+	if preset in [Control.PRESET_TOP_RIGHT, Control.PRESET_BOTTOM_RIGHT, Control.PRESET_CENTER_RIGHT]:
+		mc.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	elif preset in [Control.PRESET_CENTER_BOTTOM, Control.PRESET_CENTER_TOP, Control.PRESET_CENTER]:
+		mc.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	if preset in [Control.PRESET_BOTTOM_LEFT, Control.PRESET_BOTTOM_RIGHT, Control.PRESET_CENTER_BOTTOM]:
+		mc.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	elif preset in [Control.PRESET_CENTER_LEFT, Control.PRESET_CENTER_RIGHT, Control.PRESET_CENTER]:
+		mc.grow_vertical = Control.GROW_DIRECTION_BOTH
 	for side: String in ["margin_left", "margin_right", "margin_top", "margin_bottom"]:
 		mc.add_theme_constant_override(side, m)
 	_root.add_child(mc)

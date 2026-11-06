@@ -9,6 +9,7 @@ var upgrade_order: Array[String] = []
 var patch_base: Dictionary = {}
 var cube_rules: Dictionary = {}
 var planet: Dictionary = {}
+var landmarks: Array = []
 
 
 func _ready() -> void:
@@ -30,7 +31,9 @@ static func read_json(path: String) -> Dictionary:
 func load_data() -> void:
 	junk_types.clear()
 	junk_ids.clear()
-	for t: Dictionary in read_json("res://data/junk.json").get("types", []):
+	var jd: Dictionary = read_json("res://data/junk.json")
+	landmarks = jd.get("landmarks", [])
+	for t: Dictionary in jd.get("types", []):
 		junk_types[t["id"]] = t
 		junk_ids.append(t["id"])
 	upgrade_defs.clear()
