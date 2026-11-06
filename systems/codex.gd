@@ -40,7 +40,10 @@ static func entries() -> Array[Dictionary]:
 		e["hint"] = "Somewhere under the junk."
 		_add("shards", str(s["id"]), str(s.get("title", s["id"])), e)
 	var seen: Dictionary = {}
-	for l: Dictionary in Economy.landmarks:
+	var lms: Array = Economy.landmarks.duplicate()
+	for b: Variant in Economy.biome_sets.values():
+		lms.append_array((b as Dictionary).get("landmarks", []))
+	for l: Dictionary in lms:
 		var lid: String = str(l["id"])
 		if seen.has(lid):
 			continue
@@ -158,3 +161,53 @@ static func scan(world: Node = null) -> Array[String]:
 				if unlock(key):
 					out.append(key)
 	return out
+
+
+# --- Curiosities (easter eggs, data/eggs.json) ------------------------------------------
+
+static var _eggs: Array = []
+
+
+static func egg_defs() -> Array:
+	if _eggs.is_empty():
+		_eggs = Economy.read_json("res://data/eggs.json").get("eggs", [])
+	return _eggs
+
+
+## Where an egg can turn up, for the Curiosities page.
+static func egg_where(e: Dictionary) -> String:
+	if bool(e.get("starter", false)):
+		return "Old Town"
+	if str(e.get("where", "")) == "wild":
+		var b: String = str(e.get("biome", ""))
+		var bs: Dictionary = Economy.biome_set(b)
+		return "Wilderness bases" + (" · often %s" % str(bs.get("name", b.capitalize())) if b != "" else "")
+	return "Any district"
+
+
+## Every curiosity in data order: {id, name, found, hint, lore, toast, where, reward, parts, parts_seen}.
+## Unfound entries keep their name and lore too; the page decides what to show.
+static func curiosities() -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for e: Dictionary in egg_defs():
+		var id: String = str(e["id"])
+		var bits: Array[String] = []
+		var rew: Dictionary = e.get("reward", {})
+		for k: String in rew:
+			bits.append("+%d %s" % [int(rew[k]), k if int(rew[k]) != 1 else k.trim_suffix("s")])
+		var parts: int = int(e.get("parts", 1))
+		out.append({
+			"id": id, "name": str(e.get("name", id)), "found": EasterEggs.is_found(id),
+			"hint": str(e.get("hint", "Keep exploring.")), "lore": str(e.get("lore", "")), "toast": str(e.get("toast", "")),
+			"where": egg_where(e), "reward": "  ".join(bits), "parts": parts,
+			"parts_seen": (GameState.flags.get("egg_%s_parts" % id, []) as Array).size() if parts > 1 else 0,
+		})
+	return out
+
+
+static func curiosities_found() -> int:
+	var n: int = 0
+	for e: Dictionary in egg_defs():
+		if EasterEggs.is_found(str(e["id"])):
+			n += 1
+	return n

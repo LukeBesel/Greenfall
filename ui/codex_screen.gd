@@ -1,9 +1,10 @@
 class_name CodexScreen
 extends CanvasLayer
-## Codex (K / pause menu): three tabs.
+## Codex (K / pause menu): four tabs.
 ##   Codex        entries for junk, plants, robots, memory shards and landmarks you have found
 ##   Achievements every achievement with progress
 ##   Stats        lifetime stats
+##   Curiosities  every easter egg: a silhouette and a hint until found, then its story
 ## Slate glass panel, amber accent; tabs switch with Q/E or the shoulder buttons; tweens in/out.
 
 signal closed
@@ -12,7 +13,9 @@ const TABS: Array[Dictionary] = [
 	{"id": "codex", "name": "Codex"},
 	{"id": "achievements", "name": "Achievements"},
 	{"id": "stats", "name": "Stats"},
+	{"id": "curiosities", "name": "Curiosities"},
 ]
+const CURIO_COLOR := Color(1.0, 0.62, 0.78)
 const CAT_COLORS: Dictionary = {
 	"junk": Color(1.0, 0.7, 0.26), "plants": Color(0.56, 0.86, 0.54), "robots": Color(0.4, 0.72, 1.0),
 	"shards": Color(0.5, 0.85, 1.0), "landmarks": Color(0.83, 0.61, 1.0),
@@ -26,6 +29,13 @@ var _tab: String = "codex"
 var _tab_buttons: Dictionary = {}
 var _summary: Label
 var _tween: Tween
+# Curiosities tab detail pane.
+var _c_icon: Label
+var _c_where: Label
+var _c_name: Label
+var _c_text: Label
+var _c_quote: Label
+var _c_reward: Label
 # Codex tab detail pane.
 var _d_icon: ResearchIcons.IconView
 var _d_cat: Label
@@ -166,7 +176,8 @@ func _build_tab() -> void:
 		var on: bool = id == _tab
 		b.add_theme_stylebox_override("normal", UITheme.box(Color(0.2, 0.15, 0.07, 0.9) if on else UITheme.TEAL, UITheme.GOLD if on else UITheme.RUST, 1, 6, 8))
 		b.add_theme_color_override("font_color", UITheme.GOLD if on else UITheme.CREAM)
-	_summary.text = "%d / %d entries   ·   %d / %d achievements" % [Codex.count(), Codex.total(), Achievements.unlocked_count(), Achievements.defs().size()]
+	_summary.text = "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d achievements" % [Codex.count(), Codex.total(),
+		Codex.curiosities_found(), Codex.egg_defs().size(), Achievements.unlocked_count(), Achievements.defs().size()]
 	var first: Control = null
 	match _tab:
 		"codex":
@@ -175,6 +186,8 @@ func _build_tab() -> void:
 			first = _build_achievements()
 		"stats":
 			first = _build_stats()
+		"curiosities":
+			first = _build_curiosities()
 	if first:
 		first.call_deferred("grab_focus")
 
@@ -296,6 +309,127 @@ func _show_entry(e: Dictionary) -> void:
 	else:
 		_d_desc.text = "Hint: " + str(e["hint"])
 	_d_desc.add_theme_color_override("font_color", UITheme.CREAM if got else UITheme.MUTED)
+
+
+# --- Curiosities tab -----------------------------------------------------------------
+
+func _build_curiosities() -> Control:
+	var hb := HBoxContainer.new()
+	hb.add_theme_constant_override("separation", 16)
+	_body.add_child(hb)
+	var sc := _scroll()
+	sc.size_flags_stretch_ratio = 1.6
+	hb.add_child(sc)
+	var list := VBoxContainer.new()
+	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	list.add_theme_constant_override("separation", 10)
+	sc.add_child(list)
+	var all: Array[Dictionary] = Codex.curiosities()
+	var head := HBoxContainer.new()
+	head.add_theme_constant_override("separation", 8)
+	list.add_child(head)
+	head.add_child(ResearchIcons.IconView.new("star", 26, CURIO_COLOR))
+	head.add_child(UITheme.label("CURIOSITIES", 15, CURIO_COLOR))
+	head.add_child(UITheme.label("%d / %d found" % [Codex.curiosities_found(), all.size()], 13, UITheme.MUTED))
+	var bar := ProgressBar.new()
+	bar.show_percentage = false
+	bar.max_value = maxf(all.size(), 1)
+	bar.value = Codex.curiosities_found()
+	bar.custom_minimum_size = Vector2(160, 6)
+	bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	head.add_child(bar)
+	var first: Control = null
+	# Grouped by where they turn up, so a player knows a rocket trip might be needed.
+	for group: String in ["Old Town", "Any district", "Wilderness bases"]:
+		var items: Array[Dictionary] = []
+		for c: Dictionary in all:
+			if str(c["where"]).begins_with(group):
+				items.append(c)
+		if items.is_empty():
+			continue
+		var n_found: int = items.filter(func(c: Dictionary) -> bool: return bool(c["found"])).size()
+		list.add_child(UITheme.label("%s   %d / %d" % [group.to_upper(), n_found, items.size()], 12, UITheme.MUTED))
+		var flow := HFlowContainer.new()
+		flow.add_theme_constant_override("h_separation", 8)
+		flow.add_theme_constant_override("v_separation", 8)
+		list.add_child(flow)
+		for c: Dictionary in items:
+			var b := _curio_button(c)
+			flow.add_child(b)
+			if first == null:
+				first = b
+	var det := PanelContainer.new()
+	det.add_theme_stylebox_override("panel", _glass(14, 20))
+	det.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hb.add_child(det)
+	var dv := VBoxContainer.new()
+	dv.add_theme_constant_override("separation", 10)
+	det.add_child(dv)
+	_c_icon = UITheme.label("?", 64, UITheme.MUTED)
+	dv.add_child(_c_icon)
+	_c_where = UITheme.label("", 12, CURIO_COLOR)
+	dv.add_child(_c_where)
+	_c_name = UITheme.label("", 24, Color.WHITE)
+	_c_name.autowrap_mode = TextServer.AUTOWRAP_WORD
+	dv.add_child(_c_name)
+	_c_text = UITheme.label("", 16, UITheme.CREAM)
+	_c_text.autowrap_mode = TextServer.AUTOWRAP_WORD
+	_c_text.custom_minimum_size = Vector2(280, 0)
+	dv.add_child(_c_text)
+	_c_quote = UITheme.label("", 14, UITheme.GOLD)
+	_c_quote.autowrap_mode = TextServer.AUTOWRAP_WORD
+	_c_quote.custom_minimum_size = Vector2(280, 0)
+	dv.add_child(_c_quote)
+	_c_reward = UITheme.label("", 13, UITheme.MUTED)
+	dv.add_child(_c_reward)
+	# Show the first found one (or the first hint) to start.
+	var pick: Dictionary = all[0] if not all.is_empty() else {}
+	for c: Dictionary in all:
+		if bool(c["found"]):
+			pick = c
+			break
+	if not pick.is_empty():
+		_show_curio(pick)
+	return first
+
+
+func _curio_button(c: Dictionary) -> Button:
+	var got: bool = bool(c["found"])
+	var b := Button.new()
+	b.custom_minimum_size = Vector2(168, 40)
+	b.text = ("★  " + str(c["name"])) if got else "?   ? ? ?"
+	b.clip_text = true
+	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	b.add_theme_font_size_override("font_size", 14)
+	var col: Color = CURIO_COLOR
+	b.add_theme_stylebox_override("normal", UITheme.box(Color(col.r * 0.15 + 0.05, col.g * 0.15 + 0.05, col.b * 0.15 + 0.05, 0.9) if got else Color(0.05, 0.055, 0.06, 0.85), Color(col, 0.45) if got else Color(1, 1, 1, 0.06), 1, 8, 8))
+	b.add_theme_stylebox_override("hover", UITheme.box(Color(0.12, 0.12, 0.12, 0.95), UITheme.GOLD, 1, 8, 8))
+	b.add_theme_stylebox_override("focus", UITheme.box(Color(0, 0, 0, 0), UITheme.GOLD, 2, 8, 8))
+	b.add_theme_color_override("font_color", UITheme.CREAM if got else Color(UITheme.MUTED, 0.8))
+	UITheme.juice(b, 1.04)
+	b.focus_entered.connect(_show_curio.bind(c))
+	b.mouse_entered.connect(_show_curio.bind(c))
+	b.pressed.connect(func() -> void:
+		_show_curio(c)
+		Audio.play("click", 1.3, -10.0))
+	return b
+
+
+func _show_curio(c: Dictionary) -> void:
+	var got: bool = bool(c["found"])
+	_c_icon.text = "★" if got else "?"
+	_c_icon.add_theme_color_override("font_color", CURIO_COLOR if got else Color(UITheme.MUTED, 0.6))
+	_c_where.text = str(c["where"]).to_upper()
+	_c_name.text = str(c["name"]) if got else "Not found yet"
+	if got:
+		_c_text.text = str(c["lore"])
+		_c_quote.text = "\u201c%s\u201d" % str(c["toast"]) if str(c["toast"]) != "" else ""
+		_c_reward.text = "Found  ·  " + str(c["reward"])
+	else:
+		_c_text.text = "Hint: " + str(c["hint"])
+		_c_quote.text = ("Parts found: %d / %d" % [int(c["parts_seen"]), int(c["parts"])]) if int(c["parts"]) > 1 else ""
+		_c_reward.text = "Reward: a small surprise"
+	_c_text.add_theme_color_override("font_color", UITheme.CREAM if got else UITheme.MUTED)
 
 
 # --- Achievements tab ----------------------------------------------------------------

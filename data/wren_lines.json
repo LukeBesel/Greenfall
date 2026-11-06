@@ -187,5 +187,80 @@
     ["...it stands... how..."],
     ["Eight tyres and a duck. Physics took one look at it and decided to leave it alone.", "Someone balanced that on a dare. The dare outlived everyone."],
     ["If that tower ever falls, I'm declaring a day of mourning."]
+  ],
+  "egg_odd_sock": [
+    ["...one sock... where is... the other one..."],
+    ["One sock. There is always one sock. The Makers never solved it either.", "Keep it. Someday you'll find its partner and it'll be the happiest day of its life."],
+    ["Somewhere on this planet, a sock is waiting for that sock. I believe that."]
+  ],
+  "egg_gold_cube": [
+    ["...employee... of the... month...?"],
+    ["Employee of the Month: a cube. Honestly? Fair.", "The crews voted for that cube every single month. It never took a day off."],
+    ["You'll be Employee of the Month soon, {name}. Don't tell the cube."]
+  ],
+  "egg_weatherman": [
+    ["...forecast... error... error..."],
+    ["Three hundred years of wrong forecasts and not one moment of doubt. I admire that.", "Confetti tomorrow? I'll check the sky. ...No confetti. It's still very sure."],
+    ["The Weatherman says 'green, everywhere, soon'. For once I think it's right."]
+  ],
+  "egg_potato": [
+    ["...large... vegetable... detected..."],
+    ["That is the biggest potato I have ever seen, and I have seen the whole planet from orbit.", "Best in Show. Uncontested. It still counts."],
+    ["Somebody grew that with love. Three hundred years later it still looks proud."]
+  ],
+  "egg_night_shift": [
+    ["...signal... from... up...?"],
+    ["A crew on the moon, still sweeping. I didn't know anyone else was still working. That's... nice.", "They said 'nice work'. To us. I'm going to think about that for a while."],
+    ["Somewhere up there, someone else is tidying their little corner of the sky. We're not alone, {name}."]
+  ],
+  "egg_builders_notes": [
+    ["...notes... from... the builders...?"],
+    ["'Do not fix the rust.' Hm. I agree with the builders.", "They hid more things for us. Of course they did."],
+    ["Whoever built all this, they cared. You can tell from the snail."]
+  ],
+  "egg_scarecrow": [
+    ["...a guard... in the field..."],
+    ["A scarecrow robot, still on shift. No crows in three centuries. Undefeated.", "It waved back! Sort of. Its arm did a creak that I'm counting as a wave."],
+    ["When the birds come back, it'll have a job again. Let's give it one."]
+  ],
+  "egg_fishing_net": [
+    ["...net... tangled... buoy..."],
+    ["The fishers left their nets out to dry. Three hundred years is very dry.", "A buoy, a boot and a crab shell. That's a whole story right there."],
+    ["When the sea is clean, someone will fish here again. Gently, I hope."]
+  ],
+  "egg_parking": [
+    ["...fine... overdue... overdue..."],
+    ["The Ledger fined a car for parking. For three hundred years. Of course it did.", "Amount due: 'yes'. That's the most Ledger sentence I've ever read."],
+    ["That car isn't going anywhere. Let's call it a planter and put flowers in it."]
+  ],
+  "egg_cairn": [
+    ["...stones... stacked... a path..."],
+    ["Every hiker added a stone. You just added one too. The trail remembers you now.", "A cairn means 'someone was here, and you're on the right way'. I like that."],
+    ["Someday people will walk this way again, and they'll see your stone on top."]
+  ],
+  "egg_campfire": [
+    ["...warm... reading: warm..."],
+    ["A campfire. I can see it from orbit. It's the coziest pixel on the planet.", "Somebody sat here and told stories. Let's sit a bit. No stories needed."],
+    ["Sit by the fire, {name}. You've earned a moment."]
+  ],
+  "egg_back_in_five": [
+    ["...back... in five..."],
+    ["'Back in five minutes.' I've been waiting a lot longer than that for my crew too.", "You waited five minutes. That's more than anyone else did. Very polite."],
+    ["They didn't come back in five minutes. But we did, in the end. That counts."]
+  ],
+  "bloom_milestone": [
+    ["...bloom... the planet... is it...?", "...readings rising... green..."],
+    ["Verdance just crossed a line I've been watching for centuries. Look at it, {name}.", "Another bloom milestone. The Cradle's seed counters are actually moving again."],
+    ["The whole planet is answering now. Every district you've touched is singing.", "I keep refreshing the planet scan. It keeps getting greener. I'm not going to stop."]
+  ],
+  "ark_wave": [
+    ["...seed ark... wave... complete..."],
+    ["Seed Ark wave done. The Cradle is already loading the next one. More seeds, more green.", "Another wave planted across the planet. The Cradle hums a little louder each time."],
+    ["Wave after wave. We're not finishing a job any more, {name}. We're tending a garden."]
+  ],
+  "biome_arrival": [
+    ["...new ground... unfamiliar..."],
+    ["This is the wild. No streets, no buildings. Just the land and whatever we left on it.", "Different dirt, different junk. Same job. I love a change of scenery."],
+    ["Every corner of Verdance has its own colours under the junk. Let's find out what this one's are."]
   ]
 }

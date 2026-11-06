@@ -36,6 +36,7 @@ func setup(p_field: HexField) -> void:
 	_build_mounds()
 	_build_junk()
 	_build_landmarks()
+	_apply_biome()
 	for id: int in field.hex_count():
 		_write_hex(id, -100.0)
 	_flush()
@@ -313,7 +314,7 @@ func set_grid_visible(v: float) -> void:
 
 # --- Landmarks + horizon ------------------------------------------------------------
 
-func _add_prop(model: String, pos: Vector3, yaw: float, collide: bool, scl: float = 1.0) -> void:
+func _add_prop(model: String, pos: Vector3, yaw: float, collide: bool, scl: float = 1.0) -> MeshInstance3D:
 	var mi := MeshInstance3D.new()
 	mi.mesh = AssetLib.model_mesh_lite(model, 4000)
 	var t: Transform3D = _pose_basis(model, 0, yaw, 0.0, scl)
@@ -331,11 +332,42 @@ func _add_prop(model: String, pos: Vector3, yaw: float, collide: bool, scl: floa
 		cs.position = aabb.get_center() * scl
 		body.add_child(cs)
 		mi.add_child(body)
+	return mi
 
 
 func _build_landmarks() -> void:
+	var coat: Material = _biome_coat()
 	for lm: Dictionary in field.landmarks:
-		_add_prop(str(lm["model"]), lm["pos"], float(lm["yaw"]), true)
+		var mi: MeshInstance3D = _add_prop(str(lm["model"]), lm["pos"], float(lm["yaw"]), true)
+		if coat:
+			mi.material_overlay = coat
+
+
+## Wilderness districts: tint the ground and grass to the biome and ring the field with its own
+## horizon (sand dunes, frost ridges, stumpy rust hills) so a rocket trip lands somewhere new.
+func _apply_biome() -> void:
+	var b: Dictionary = field.biome_set
+	if b.is_empty():
+		return
+	var gt: Array = b.get("ground_tint", [1, 1, 1, 0])
+	_ground_mat.set_shader_parameter("biome_tint", Vector4(float(gt[0]), float(gt[1]), float(gt[2]), float(gt[3])))
+	var gr: Array = b.get("grass_tint", [1, 1, 1])
+	_ground_mat.set_shader_parameter("grass_tint", Vector3(float(gr[0]), float(gr[1]), float(gr[2])))
+	if layout == null or layout.wild:
+		_build_horizon()
+
+
+## A thin translucent film (sand, frost, moss) over big wrecks; null in cities.
+func _biome_coat() -> Material:
+	var c: Array = field.biome_set.get("coat", [])
+	if c.size() < 4:
+		return null
+	var m := StandardMaterial3D.new()
+	m.albedo_color = Color(float(c[0]), float(c[1]), float(c[2]), float(c[3]))
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.roughness = 1.0
+	m.cull_mode = BaseMaterial3D.CULL_BACK
+	return m
 
 
 func _build_horizon() -> void:
@@ -343,8 +375,11 @@ func _build_horizon() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = field.seed_value + 99
 	var r0: float = (field.radius + 1.6) * field.hex_size * 1.75
-	var mat: StandardMaterial3D = AssetLib.pbr_material("rubble", 0.12, Color(0.85, 0.8, 0.78), true)
-	var mat2: StandardMaterial3D = AssetLib.pbr_material("brown_mud_dry", 0.1, Color(0.9, 0.85, 0.82), true)
+	var ht: Array = field.biome_set.get("hills", [1, 1, 1])
+	var hc := Color(float(ht[0]), float(ht[1]), float(ht[2]))
+	var mat: StandardMaterial3D = AssetLib.pbr_material("rubble", 0.12, Color(0.85, 0.8, 0.78) * hc, true)
+	var mat2: StandardMaterial3D = AssetLib.pbr_material("brown_mud_dry", 0.1, Color(0.9, 0.85, 0.82) * hc, true)
+	var coat: Material = _biome_coat()
 	var hill := SphereMesh.new()
 	hill.radius = 1.0
 	hill.height = 1.0
@@ -352,6 +387,8 @@ func _build_horizon() -> void:
 	hill.radial_segments = 24
 	hill.rings = 8
 	var props: Array[String] = ["covered_car", "old_tyre", "Barrel_01", "electric_stove", "exterior_aircon_unit", "plastic_crate_01", "trashbag", "metal_jerrycan", "concrete_road_barrier"]
+	if field.biome_set.has("horizon"):
+		props.assign(field.biome_set["horizon"])
 	for i: int in 54:
 		var ang: float = TAU * i / 54.0 + rng.randf_range(-0.04, 0.04)
 		var dist: float = r0 + rng.randf_range(2.0, 24.0)
@@ -370,9 +407,13 @@ func _build_horizon() -> void:
 			var rr: float = rng.randf_range(0.0, 0.6)
 			var local := Vector3(cos(a2) * rr * w, 0.0, sin(a2) * rr * w)
 			var y: float = h * sqrt(maxf(0.0, 1.0 - rr * rr)) - 0.3
-			_add_prop(model, mi.position + Vector3(local.x, y - 0.25, local.z), rng.randf() * TAU, false, rng.randf_range(0.9, 1.3))
+			var hp: MeshInstance3D = _add_prop(model, mi.position + Vector3(local.x, y - 0.25, local.z), rng.randf() * TAU, false, rng.randf_range(0.9, 1.3))
+			if coat:
+				hp.material_overlay = coat
 	# Scattered wrecks between field edge and hills.
 	for i: int in 16:
 		var ang: float = rng.randf() * TAU
 		var dist: float = (field.radius + 0.8) * field.hex_size * 1.6 + rng.randf_range(0.0, 8.0)
-		_add_prop(["covered_car", "concrete_road_barrier", "Barrel_01", "old_tyre"][rng.randi() % 4], Vector3(cos(ang) * dist, 0, sin(ang) * dist), rng.randf() * TAU, true)
+		var wreck: MeshInstance3D = _add_prop(props[rng.randi() % props.size()], Vector3(cos(ang) * dist, 0, sin(ang) * dist), rng.randf() * TAU, true)
+		if coat:
+			wreck.material_overlay = coat

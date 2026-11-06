@@ -78,6 +78,9 @@ static func value_of(cond: Dictionary) -> float:
 			return GameState.get_currency(key).to_float()
 		"achievements":
 			return float(unlocked_count())
+		"list":
+			var lv: Variant = GameState.flags.get(key, [])
+			return float((lv as Array).size()) if lv is Array else 0.0
 	return 0.0
 
 

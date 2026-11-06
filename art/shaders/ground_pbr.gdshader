@@ -19,6 +19,9 @@ uniform float time_now = 0.0;
 uniform vec2 focus_axial = vec2(9999.0);
 uniform float ripple_speed = 5.0;
 uniform float show_grid = 0.0;
+// Wilderness biome look (data/junk.json "biomes"): rgb = colour the bare ground leans to, a = amount.
+uniform vec4 biome_tint = vec4(1.0, 1.0, 1.0, 0.0);
+uniform vec3 grass_tint = vec3(1.0);
 
 varying vec3 wpos;
 const float SQRT3 = 1.7320508;
@@ -160,6 +163,12 @@ void fragment() {
 		dirty.alb *= mix(0.9, 0.97, removed);
 		
 	}
+	if (biome_tint.a > 0.001 && !is_road && !is_walk) {
+		float lum_b = dot(base.alb, vec3(0.3, 0.55, 0.15));
+		base.alb = mix(base.alb, lum_b * biome_tint.rgb * 1.9, biome_tint.a);
+		float lum_d = dot(dirty.alb, vec3(0.3, 0.55, 0.15));
+		dirty.alb = mix(dirty.alb, lum_d * biome_tint.rgb * 1.9, biome_tint.a * (0.7 + 0.3 * n2));
+	}
 	Mat m = mixm(dirty, base, reveal);
 	// Life: planted soil darkens and greens over; restored hexes are lush grass (not on roads).
 	if (life > 0.001 && !is_road) {
@@ -167,6 +176,7 @@ void fragment() {
 		Mat soil = m;
 		soil.alb *= vec3(0.75, 0.68, 0.6);
 		Mat grass = mixm(samp(8, p, 3.0), samp(9, p, 3.5), smoothstep(0.35, 0.8, life));
+		grass.alb *= grass_tint;
 		m = mixm(mixm(m, soil, smoothstep(0.0, 0.15, life)), grass, g);
 	}
 	if (is_hub > 0.75 || is_yard) {

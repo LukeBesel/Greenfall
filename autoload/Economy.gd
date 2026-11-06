@@ -10,6 +10,8 @@ var patch_base: Dictionary = {}
 var cube_rules: Dictionary = {}
 var planet: Dictionary = {}
 var landmarks: Array = []
+## Wilderness biome junk sets (data/junk.json "biomes"), keyed by PlanetData biome name.
+var biome_sets: Dictionary = {}
 var parts: Dictionary = {}
 var robots: Dictionary = {}  # type id -> def
 var robot_order: Array[String] = []
@@ -38,6 +40,7 @@ func load_data() -> void:
 	junk_ids.clear()
 	var jd: Dictionary = read_json("res://data/junk.json")
 	landmarks = jd.get("landmarks", [])
+	biome_sets = jd.get("biomes", {})
 	for t: Dictionary in jd.get("types", []):
 		junk_types[t["id"]] = t
 		junk_ids.append(t["id"])
@@ -280,3 +283,13 @@ func tier_name(tier: int) -> String:
 func hex_bonus(junk_volume: float) -> BigNum:
 	var f: Dictionary = planet.get("slice_field", {})
 	return BigNum.from_float(float(f.get("bonus_base", 4.0)) + junk_volume * float(f.get("bonus_per_volume", 0.3)))
+
+
+## Biome set for a wilderness district ({} for cities or unknown biomes).
+func biome_set(biome: String) -> Dictionary:
+	return biome_sets.get(biome, {})
+
+
+## Landmark list for a district: the biome's own wrecks in the wilderness, else the city list.
+func landmarks_for(biome: String) -> Array:
+	return biome_set(biome).get("landmarks", landmarks)

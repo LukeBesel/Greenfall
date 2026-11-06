@@ -100,6 +100,18 @@ static func build(kind: String, part: int = 0) -> Node3D:
 		"wet_floor": return wet_floor()
 		"camera": return security_camera()
 		"tyre_tower": return tyre_tower()
+		"clothesline": return clothesline()
+		"pedestal": return pedestal()
+		"weather_bot": return weather_bot()
+		"potato": return potato()
+		"radio": return radio()
+		"dev_desk": return dev_desk()
+		"scarecrow": return scarecrow()
+		"fishing_net": return fishing_net()
+		"sand_car": return sand_car()
+		"cairn": return cairn()
+		"campfire": return campfire()
+		"drill_press": return drill_press()
 	var n := Node3D.new()
 	n.add_child(mesh(ProcMesh.box(Vector3(0.4, 0.4, 0.4)), vc()))
 	return n
@@ -623,3 +635,331 @@ static func tyre_tower() -> Node3D:
 	stack.add_child(duckie)
 	collider(n, Vector3(0.6, 1.4, 0.6), Vector3(0, 0.7, 0))
 	return n
+
+
+# --- Second wave (content depth): six for anywhere, six for wilderness bases -------------
+
+static func _wood() -> ShaderMaterial:
+	return Mats.worn_paint(Color(0.48, 0.34, 0.22), 0.4, 0.1, 51.0, 0.6)
+
+
+## Scale for a vendor model so it ends up `h` metres tall.
+static func _fit(id: String, h: float) -> float:
+	var a: AABB = AssetLib.model_aabb(id)
+	return h / maxf(a.size.y, 0.01)
+
+
+## A washing line between two poles with exactly one sock on it.
+static func clothesline() -> Node3D:
+	var n := Node3D.new()
+	var steel: StandardMaterial3D = Mats.metal("dark_steel")
+	for x: float in [-1.2, 1.2]:
+		n.add_child(strut(Vector3(x, 0, 0), Vector3(x, 1.75, 0), 0.03, steel))
+		n.add_child(strut(Vector3(x - 0.15, 1.7, 0), Vector3(x + 0.15, 1.7, 0), 0.02, steel))
+	var line := Node3D.new()
+	line.name = "Anim"
+	line.position = Vector3(0, 1.68, 0)
+	n.add_child(line)
+	line.add_child(mesh(ProcMesh.cyl(0.006, 0.006, 2.4, 4), Mats.metal("steel"), Vector3.ZERO, Vector3(0, 0, 90)))
+	var sock := Node3D.new()
+	sock.name = "Prize"
+	sock.position = Vector3(0.25, 0, 0)
+	line.add_child(sock)
+	var parts: Array = []
+	for k: int in 4:
+		parts.append(ProcMesh.part(ProcMesh.cyl(0.055, 0.055, 0.07, 10), ProcMesh.xf(Vector3(0, -0.07 - k * 0.07, 0)), Color(0.9, 0.25, 0.3) if k % 2 == 0 else Color(0.95, 0.92, 0.85)))
+	parts.append(ProcMesh.part(ProcMesh.capsule(0.055, 0.22), ProcMesh.xf(Vector3(0.07, -0.34, 0), Vector3(0, 0, 90)), Color(0.9, 0.25, 0.3)))
+	parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.03, 0.06, 0.02)), ProcMesh.xf(Vector3(0, 0.0, 0)), Color(0.9, 0.75, 0.3)))
+	sock.add_child(mesh(ProcMesh.merge(parts), vc(0.9)))
+	collider(n, Vector3(2.6, 1.8, 0.2), Vector3(0, 0.9, 0))
+	return n
+
+
+## A stone pedestal holding one perfect golden cube.
+static func pedestal() -> Node3D:
+	var n := Node3D.new()
+	var stone: ShaderMaterial = Mats.worn_paint(Color(0.72, 0.7, 0.66), 0.9, 0.05, 61.0, 0.6)
+	n.add_child(mesh(ProcMesh.rounded_box(Vector3(0.7, 0.12, 0.7), 0.02, 2), stone, Vector3(0, 0.06, 0)))
+	n.add_child(mesh(ProcMesh.rounded_box(Vector3(0.5, 0.9, 0.5), 0.03, 2), stone, Vector3(0, 0.57, 0)))
+	n.add_child(mesh(ProcMesh.rounded_box(Vector3(0.62, 0.08, 0.62), 0.02, 2), stone, Vector3(0, 1.06, 0)))
+	var gold := StandardMaterial3D.new()
+	gold.albedo_color = Color(1.0, 0.78, 0.3)
+	gold.metallic = 1.0
+	gold.roughness = 0.22
+	gold.emission_enabled = true
+	gold.emission = Color(1.0, 0.7, 0.25)
+	gold.emission_energy_multiplier = 0.25
+	var cube := mesh(ProcMesh.rounded_box(Vector3(0.34, 0.34, 0.34), 0.03, 2), gold, Vector3(0, 1.3, 0), Vector3(0, 20, 0))
+	cube.name = "Anim"
+	n.add_child(cube)
+	n.add_child(mesh(ProcMesh.box(Vector3(0.36, 0.16, 0.01)), Mats.metal("brass"), Vector3(0, 0.75, 0.256)))
+	n.add_child(label("EMPLOYEE OF\nTHE MONTH\n— CUBE —", 14, Color(0.2, 0.13, 0.05), Vector3(0, 0.75, 0.262)))
+	n.add_child(glow(Color(1.0, 0.8, 0.4), 0.5, 2.0, Vector3(0, 1.6, 0.3)))
+	collider(n, Vector3(0.7, 1.5, 0.7), Vector3(0, 0.75, 0))
+	return n
+
+
+## A weather-station robot on a pole: anemometer cups, one eye, total confidence.
+static func weather_bot() -> Node3D:
+	var n := Node3D.new()
+	n.add_child(mesh(ProcMesh.cyl(0.05, 0.07, 2.0, 8), Mats.worn_paint(Color(0.85, 0.85, 0.8), 0.6, 0.6, 71.0, 0.6), Vector3(0, 1.0, 0)))
+	var head := Node3D.new()
+	head.name = "Anim"
+	head.position = Vector3(0, 2.0, 0)
+	n.add_child(head)
+	var paint: ShaderMaterial = Mats.worn_paint(Color(0.95, 0.75, 0.2), 0.75, 0.55, 72.0, 0.5)
+	head.add_child(mesh(ProcMesh.rounded_box(Vector3(0.42, 0.34, 0.36), 0.07, 2), paint, Vector3(0, 0.17, 0)))
+	head.add_child(mesh(ProcMesh.cyl(0.075, 0.075, 0.03, 14), Mats.glass(Color(0.05, 0.05, 0.06, 1.0), 0.1), Vector3(0, 0.2, 0.185), Vector3(90, 0, 0)))
+	var eye := mesh(ProcMesh.sphere(0.035, 8, 4), Mats.lamp(Color(0.5, 0.85, 1.0), 2.0), Vector3(0, 0.2, 0.2))
+	eye.name = "Screen"
+	head.add_child(eye)
+	var steel: StandardMaterial3D = Mats.metal("steel")
+	head.add_child(mesh(ProcMesh.cyl(0.012, 0.012, 0.3, 6), steel, Vector3(0, 0.49, 0)))
+	var cups := Node3D.new()
+	cups.position = Vector3(0, 0.64, 0)
+	head.add_child(cups)
+	for k: int in 3:
+		var a: float = TAU * k / 3.0
+		cups.add_child(strut(Vector3.ZERO, Vector3(cos(a), 0, sin(a)) * 0.22, 0.008, steel))
+		cups.add_child(mesh(ProcMesh.hemisphere(0.05, 10, 4), Mats.worn_paint(Color(0.9, 0.3, 0.2), 0.8, 0.3, 73.0 + k, 0.4), Vector3(cos(a), 0, sin(a)) * 0.22, Vector3(90, rad_to_deg(-a), 0)))
+	n.add_child(mesh(ProcMesh.box(Vector3(0.5, 0.2, 0.02)), Mats.worn_paint(Color(0.2, 0.35, 0.6), 0.8, 0.4, 74.0, 0.5), Vector3(0, 1.35, 0.06)))
+	n.add_child(label("FORECAST\nALWAYS RIGHT*", 13, Color(0.92, 0.92, 0.85), Vector3(0, 1.35, 0.072)))
+	collider(n, Vector3(0.2, 2.4, 0.2), Vector3(0, 1.2, 0))
+	return n
+
+
+## A show crate with one enormous potato in it.
+static func potato() -> Node3D:
+	var n := Node3D.new()
+	var sc: float = _fit("wooden_crate_02", 0.55)
+	n.add_child(model("wooden_crate_02", Vector3.ZERO, 0.0, sc))
+	var top: float = AssetLib.model_aabb("wooden_crate_02").end.y * sc
+	var parts: Array = []
+	var skin := Color(0.72, 0.55, 0.33)
+	parts.append(ProcMesh.part(ProcMesh.sphere(0.5, 20, 12), ProcMesh.xf(Vector3.ZERO, Vector3(0, 0, 8), Vector3(1.0, 0.62, 0.72)), skin))
+	parts.append(ProcMesh.part(ProcMesh.sphere(0.3, 14, 8), ProcMesh.xf(Vector3(0.32, 0.05, 0.05), Vector3.ZERO, Vector3(1.0, 0.75, 0.85)), skin.darkened(0.04)))
+	for k: int in 9:
+		var a: float = k * 2.4
+		parts.append(ProcMesh.part(ProcMesh.sphere(0.025, 6, 3), ProcMesh.xf(Vector3(cos(a) * 0.38, sin(k * 1.7) * 0.2, sin(a) * 0.3)), skin.darkened(0.35)))
+	var pot := mesh(ProcMesh.merge(parts), vc(0.85))
+	pot.name = "Anim"
+	pot.position = Vector3(0, top + 0.22, 0)
+	n.add_child(pot)
+	var ribbon := mesh(ProcMesh.cyl(0.08, 0.08, 0.02, 12), Mats.lamp(Color(0.25, 0.45, 0.95), 0.3), Vector3(0, top + 0.2, 0.36), Vector3(80, 0, 0))
+	pot.add_child(ribbon)
+	ribbon.position = Vector3(0, 0.0, 0.36)
+	n.add_child(label("SHOW ENTRY", 26, Color(0.18, 0.1, 0.05), Vector3(0, top * 0.5, 0.33)))
+	collider(n, Vector3(1.0, top + 0.6, 0.8), Vector3(0, (top + 0.6) * 0.5, 0))
+	return n
+
+
+## A shortwave radio on a crate, antenna aimed at the moon.
+static func radio() -> Node3D:
+	var n := Node3D.new()
+	var sc: float = _fit("wooden_crate_02", 0.5)
+	n.add_child(model("wooden_crate_02", Vector3.ZERO, 15.0, sc))
+	var top: float = AssetLib.model_aabb("wooden_crate_02").end.y * sc
+	var rs := Node3D.new()
+	rs.name = "Anim"
+	rs.position = Vector3(0, top, 0)
+	n.add_child(rs)
+	rs.add_child(mesh(ProcMesh.rounded_box(Vector3(0.5, 0.3, 0.26), 0.03, 2), Mats.worn_paint(Color(0.3, 0.38, 0.3), 0.85, 0.4, 81.0, 0.5), Vector3(0, 0.15, 0)))
+	var dial := mesh(ProcMesh.box(Vector3(0.22, 0.08, 0.01)), Mats.lamp(Color(1.0, 0.75, 0.35), 0.5), Vector3(-0.08, 0.2, 0.131))
+	dial.name = "Screen"
+	n.add_child(dial)
+	dial.position = Vector3(-0.08, top + 0.2, 0.131)
+	for x: float in [0.12, 0.19]:
+		rs.add_child(mesh(ProcMesh.cyl(0.03, 0.03, 0.03, 10), Mats.metal("chrome"), Vector3(x, 0.12, 0.14), Vector3(90, 0, 0)))
+	rs.add_child(strut(Vector3(0.18, 0.3, -0.05), Vector3(0.5, 1.2, -0.25), 0.007, Mats.metal("chrome")))
+	rs.add_child(strut(Vector3(-0.18, 0.3, -0.05), Vector3(-0.35, 1.0, -0.4), 0.007, Mats.metal("chrome")))
+	collider(n, Vector3(0.7, top + 0.32, 0.6), Vector3(0, (top + 0.32) * 0.5, 0))
+	return n
+
+
+## A folding desk with a clipboard of the builders' notes.
+static func dev_desk() -> Node3D:
+	var n := Node3D.new()
+	var wood: ShaderMaterial = _wood()
+	n.add_child(mesh(ProcMesh.box(Vector3(1.0, 0.04, 0.55)), wood, Vector3(0, 0.74, 0)))
+	var steel: StandardMaterial3D = Mats.metal("dark_steel")
+	for sx: float in [-0.45, 0.45]:
+		n.add_child(strut(Vector3(sx, 0, -0.22), Vector3(sx, 0.72, 0.22), 0.015, steel))
+		n.add_child(strut(Vector3(sx, 0, 0.22), Vector3(sx, 0.72, -0.22), 0.015, steel))
+	var cb := model("clipboard", Vector3(-0.1, 0.76, 0.0), 12.0, 1.0)
+	cb.name = "Anim"
+	n.add_child(cb)
+	n.add_child(mesh(ProcMesh.cyl(0.04, 0.035, 0.1, 12), Mats.worn_paint(Color(0.85, 0.85, 0.82), 0.9, 0.0, 91.0, 0.3), Vector3(0.32, 0.81, 0.08)))
+	n.add_child(mesh(ProcMesh.box(Vector3(0.6, 0.12, 0.01)), Mats.worn_paint(Color(0.95, 0.92, 0.82), 0.9, 0.0, 92.0, 0.3), Vector3(0, 0.62, 0.28)))
+	n.add_child(label("THE BUILDERS · DO NOT TIDY", 13, Color(0.2, 0.18, 0.15), Vector3(0, 0.62, 0.286)))
+	n.add_child(model("plastic_monobloc_chair_01", Vector3(0.0, 0.0, -0.55), 0.0, 0.95))
+	collider(n, Vector3(1.0, 0.78, 0.6), Vector3(0, 0.39, 0))
+	return n
+
+
+## A farm robot dressed as a scarecrow: straw hat, coat, arms out on a crossbar.
+static func scarecrow() -> Node3D:
+	var n := Node3D.new()
+	var wood: ShaderMaterial = _wood()
+	n.add_child(mesh(ProcMesh.cyl(0.05, 0.06, 1.9, 8), wood, Vector3(0, 0.95, 0)))
+	var up := Node3D.new()
+	up.name = "Anim"
+	up.position = Vector3(0, 1.0, 0)
+	n.add_child(up)
+	up.add_child(mesh(ProcMesh.box(Vector3(1.5, 0.06, 0.06)), wood, Vector3(0, 0.45, 0)))
+	var coat: ShaderMaterial = Mats.worn_paint(Color(0.35, 0.42, 0.25), 0.85, 0.1, 101.0, 0.7)
+	up.add_child(mesh(ProcMesh.rounded_box(Vector3(0.5, 0.65, 0.3), 0.08, 2), coat, Vector3(0, 0.2, 0)))
+	for sx: float in [-1.0, 1.0]:
+		up.add_child(mesh(ProcMesh.capsule(0.07, 0.6), coat, Vector3(sx * 0.48, 0.45, 0), Vector3(0, 0, 90)))
+		up.add_child(mesh(ProcMesh.cyl(0.0, 0.08, 0.18, 6), Mats.worn_paint(Color(0.9, 0.78, 0.4), 0.9, 0.0, 102.0, 0.4), Vector3(sx * 0.82, 0.45, 0), Vector3(0, 0, sx * 90)))
+	var paint: ShaderMaterial = Mats.worn_paint(Color(0.75, 0.75, 0.72), 0.7, 0.75, 103.0, 0.6)
+	up.add_child(mesh(ProcMesh.rounded_box(Vector3(0.32, 0.28, 0.28), 0.06, 2), paint, Vector3(0, 0.72, 0)))
+	for sx: float in [-1.0, 1.0]:
+		up.add_child(mesh(ProcMesh.sphere(0.035, 8, 4), Mats.lamp(Color(0.6, 1.0, 0.6), 0.8), Vector3(sx * 0.07, 0.74, 0.142)))
+	var straw: ShaderMaterial = Mats.worn_paint(Color(0.92, 0.8, 0.45), 0.9, 0.0, 104.0, 0.5)
+	up.add_child(mesh(ProcMesh.cyl(0.32, 0.32, 0.02, 18), straw, Vector3(0, 0.87, 0), Vector3(4, 0, -6)))
+	up.add_child(mesh(ProcMesh.cyl(0.13, 0.16, 0.16, 14), straw, Vector3(0, 0.95, 0)))
+	up.add_child(mesh(ProcMesh.cyl(0.165, 0.165, 0.03, 14), Mats.worn_paint(Color(0.75, 0.2, 0.15), 0.9, 0.0, 105.0, 0.4), Vector3(0, 0.89, 0)))
+	collider(n, Vector3(0.3, 2.0, 0.3), Vector3(0, 1.0, 0))
+	return n
+
+
+## A fishing net hung between two posts, with a buoy still tangled in it.
+static func fishing_net() -> Node3D:
+	var n := Node3D.new()
+	var wood: ShaderMaterial = _wood()
+	for x: float in [-1.1, 1.1]:
+		n.add_child(mesh(ProcMesh.cyl(0.05, 0.06, 1.7, 8), wood, Vector3(x, 0.85, 0)))
+	var net := Node3D.new()
+	net.name = "Anim"
+	net.position = Vector3(0, 1.6, 0)
+	n.add_child(net)
+	var parts: Array = []
+	var cord := Color(0.35, 0.55, 0.5)
+	var cols: int = 10
+	var rows: int = 6
+	for i: int in cols + 1:
+		var x: float = -1.1 + 2.2 * i / cols
+		var sag: float = 0.25 * (1.0 - pow(2.0 * i / cols - 1.0, 2.0))
+		parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.012, 1.1, 0.012)), ProcMesh.xf(Vector3(x, -0.55 - sag, 0)), cord))
+	for j: int in rows + 1:
+		var y: float = -1.1 * j / rows
+		for i: int in cols:
+			var x0: float = -1.1 + 2.2 * (i + 0.5) / cols
+			var sag2: float = 0.25 * (1.0 - pow(2.0 * (i + 0.5) / cols - 1.0, 2.0))
+			parts.append(ProcMesh.part(ProcMesh.box(Vector3(2.2 / cols + 0.01, 0.012, 0.012)), ProcMesh.xf(Vector3(x0, y - sag2, 0)), cord))
+	for k: int in 5:
+		parts.append(ProcMesh.part(ProcMesh.sphere(0.05, 8, 4), ProcMesh.xf(Vector3(-0.9 + k * 0.45, 0.02 - 0.2 * (1.0 - pow((k - 2) / 2.0, 2.0)), 0.02)), Color(0.95, 0.6, 0.15)))
+	net.add_child(mesh(ProcMesh.merge(parts), vc(0.95)))
+	var buoy := model("ocean_buoy", Vector3(0.35, -1.05, 0.12), 20.0, _fit("ocean_buoy", 0.55))
+	buoy.name = "Prize"
+	net.add_child(buoy)
+	n.add_child(model("lifebuoy", Vector3(-1.1, 0.9, 0.08), 0.0, _fit("lifebuoy", 0.55)))
+	(n.get_child(n.get_child_count() - 1) as Node3D).rotation_degrees = Vector3(90, 0, 0)
+	collider(n, Vector3(2.4, 1.7, 0.2), Vector3(0, 0.85, 0))
+	return n
+
+
+## A car sunk to its doors in sand, with a very old parking ticket under the wiper.
+static func sand_car() -> Node3D:
+	var n := Node3D.new()
+	var car := model("covered_car", Vector3(0, -0.35, 0), 0.0, 1.0)
+	car.name = "Anim"
+	var coat := StandardMaterial3D.new()
+	coat.albedo_color = Color(0.86, 0.72, 0.5, 0.45)
+	coat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	coat.roughness = 1.0
+	car.material_overlay = coat
+	n.add_child(car)
+	var a: AABB = AssetLib.model_aabb("covered_car")
+	var sand := StandardMaterial3D.new()
+	sand.albedo_color = Color(0.86, 0.73, 0.52)
+	sand.roughness = 1.0
+	n.add_child(mesh(ProcMesh.hemisphere(1.0, 20, 6), sand, Vector3(a.get_center().x, -0.05, a.get_center().z), Vector3.ZERO, Vector3(a.size.x * 0.75, 0.55, a.size.z * 0.7)))
+	n.add_child(mesh(ProcMesh.hemisphere(1.0, 14, 5), sand, Vector3(a.get_center().x + a.size.x * 0.45, -0.05, a.get_center().z + 0.3), Vector3.ZERO, Vector3(1.0, 0.4, 0.9)))
+	var tk := mesh(ProcMesh.box(Vector3(0.3, 0.01, 0.18)), Mats.worn_paint(Color(0.98, 0.95, 0.85), 0.95, 0.0, 111.0, 0.2), Vector3(a.get_center().x, a.end.y - 0.38, a.get_center().z), Vector3(0, 10, 0))
+	n.add_child(tk)
+	n.add_child(label("FINE", 18, Color(0.75, 0.12, 0.1), Vector3(a.get_center().x, a.end.y - 0.37, a.get_center().z), Vector3(-90, 10, 0)))
+	collider(n, Vector3(a.size.x, a.size.y - 0.35, a.size.z) * 0.9, Vector3(a.get_center().x, (a.size.y - 0.35) * 0.5, a.get_center().z))
+	return n
+
+
+## A hiker's cairn of flat stones; Patch adds the top one.
+static func cairn() -> Node3D:
+	var n := Node3D.new()
+	var stack := Node3D.new()
+	stack.name = "Anim"
+	n.add_child(stack)
+	var y: float = 0.0
+	var stone := Mats.worn_paint(Color(0.55, 0.54, 0.52), 0.9, 0.0, 121.0, 0.7)
+	for k: int in 6:
+		var r: float = 0.36 - k * 0.05
+		var h: float = 0.13 - k * 0.008
+		stack.add_child(mesh(ProcMesh.sphere(1.0, 14, 7), stone, Vector3(sin(k * 2.1) * 0.03, y + h * 0.5, cos(k * 1.3) * 0.03), Vector3(0, k * 40.0, sin(k * 1.7) * 6.0), Vector3(r, h * 0.55, r * 0.85)))
+		y += h * 0.92
+	var top := mesh(ProcMesh.sphere(1.0, 12, 6), Mats.worn_paint(Color(0.75, 0.72, 0.66), 0.9, 0.0, 122.0, 0.4), Vector3(0, y + 0.04, 0), Vector3(0, 25, 4), Vector3(0.08, 0.045, 0.07))
+	top.name = "Top"
+	top.visible = false
+	stack.add_child(top)
+	collider(n, Vector3(0.7, y, 0.6), Vector3(0, y * 0.5, 0))
+	return n
+
+
+## A ring of stones, two stools, a kettle: somebody's last camping trip. "Flame" and "Light" wake up.
+static func campfire() -> Node3D:
+	var n := Node3D.new()
+	var parts: Array = []
+	for k: int in 9:
+		var a: float = TAU * k / 9.0
+		parts.append(ProcMesh.part(ProcMesh.sphere(0.1, 10, 5), ProcMesh.xf(Vector3(cos(a) * 0.42, 0.04, sin(a) * 0.42), Vector3(0, k * 30.0, 0), Vector3(1.2, 0.6, 1.0)), Color(0.5, 0.49, 0.47).lightened(0.1 * sin(k * 2.0))))
+	for k: int in 3:
+		parts.append(ProcMesh.part(ProcMesh.cyl(0.04, 0.045, 0.6, 8), ProcMesh.xf(Vector3(0, 0.08, 0), Vector3(90, k * 60.0, 12)), Color(0.32, 0.22, 0.14)))
+	parts.append(ProcMesh.part(ProcMesh.cyl(0.25, 0.3, 0.02, 14), ProcMesh.xf(Vector3(0, 0.01, 0)), Color(0.15, 0.14, 0.13)))
+	n.add_child(mesh(ProcMesh.merge(parts), vc(0.95)))
+	var canvas: ShaderMaterial = Mats.worn_paint(Color(0.3, 0.45, 0.6), 0.9, 0.0, 131.0, 0.5)
+	for sx: float in [-1.0, 1.0]:
+		var st := Node3D.new()
+		st.position = Vector3(sx * 0.95, 0, 0.3)
+		st.rotation.y = sx * 0.5
+		n.add_child(st)
+		st.add_child(strut(Vector3(-0.15, 0, -0.15), Vector3(0.15, 0.38, 0.15), 0.012, Mats.metal("steel")))
+		st.add_child(strut(Vector3(0.15, 0, -0.15), Vector3(-0.15, 0.38, 0.15), 0.012, Mats.metal("steel")))
+		st.add_child(mesh(ProcMesh.box(Vector3(0.34, 0.02, 0.3)), canvas, Vector3(0, 0.39, 0)))
+	var kettle := Node3D.new()
+	kettle.position = Vector3(0.5, 0, -0.35)
+	n.add_child(kettle)
+	var dented := Mats.metal("steel")
+	kettle.add_child(mesh(ProcMesh.sphere(0.12, 14, 8), dented, Vector3(0, 0.1, 0), Vector3.ZERO, Vector3(1, 0.85, 1.05)))
+	kettle.add_child(mesh(ProcMesh.cyl(0.015, 0.03, 0.12, 6), dented, Vector3(0.12, 0.14, 0), Vector3(0, 0, -55)))
+	kettle.add_child(mesh(ProcMesh.torus(0.07, 0.085, 12, 4), Mats.metal("dark_steel"), Vector3(0, 0.22, 0), Vector3(90, 0, 0)))
+	var flame := Node3D.new()
+	flame.name = "Flame"
+	flame.visible = false
+	n.add_child(flame)
+	flame.add_child(mesh(ProcMesh.cyl(0.0, 0.14, 0.38, 8), Mats.lamp(Color(1.0, 0.55, 0.15), 3.0), Vector3(0, 0.27, 0)))
+	flame.add_child(mesh(ProcMesh.cyl(0.0, 0.08, 0.26, 8), Mats.lamp(Color(1.0, 0.85, 0.4), 3.5), Vector3(0.05, 0.22, 0.03)))
+	var l := glow(Color(1.0, 0.6, 0.3), 0.0, 5.0, Vector3(0, 0.6, 0))
+	l.name = "Light"
+	n.add_child(l)
+	collider(n, Vector3(1.0, 0.25, 1.0), Vector3(0, 0.12, 0))
+	return n
+
+
+## A drill press alone in a field, and its sign.
+static func drill_press() -> Node3D:
+	var n := Node3D.new()
+	n.add_child(model("old_drill_press", Vector3.ZERO, 0.0, 1.0))
+	var a: AABB = AssetLib.model_aabb("old_drill_press")
+	var sign := Node3D.new()
+	sign.name = "Sign"
+	sign.position = Vector3(a.end.x + 0.45, 0, 0.3)
+	n.add_child(sign)
+	sign.add_child(mesh(ProcMesh.box(Vector3(0.05, 1.0, 0.05)), _wood(), Vector3(0, 0.5, 0)))
+	sign.add_child(mesh(ProcMesh.box(Vector3(0.55, 0.32, 0.02)), Mats.worn_paint(Color(0.93, 0.9, 0.8), 0.9, 0.1, 141.0, 0.5), Vector3(0, 0.95, 0.035)))
+	sign.add_child(label("BACK IN\n5 MINUTES", 22, Color(0.15, 0.12, 0.1), Vector3(0, 0.95, 0.047)))
+	var bolt := mesh(ProcMesh.cyl(0.025, 0.025, 0.06, 6), Mats.metal("chrome"), Vector3(a.get_center().x, a.end.y * 0.55, a.get_center().z + 0.1))
+	bolt.name = "Bolt"
+	bolt.visible = false
+	n.add_child(bolt)
+	collider(n, a.size * 0.85, a.get_center())
+	return n
+

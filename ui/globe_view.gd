@@ -30,6 +30,7 @@ var _marker: MeshInstance3D
 var _cam: Camera3D
 var _stats: Label
 var _age: Label
+var _ark: Label
 var _resurvey: Button
 var _drag: bool = false
 var _yaw: float = 0.0
@@ -140,6 +141,8 @@ func _ready() -> void:
 	_stats.visible = false
 	_age = UITheme.label("", 13, UITheme.GOLD)
 	b1.add_child(_age)
+	_ark = UITheme.label("", 13, Color(0.6, 1.0, 0.55))  # [bloom] Seed Ark / Verdance Bloom line
+	b1.add_child(_ark)
 	_resurvey = Button.new()
 	_resurvey.custom_minimum_size = Vector2(0, 38)
 	_holo_button(_resurvey)
@@ -407,6 +410,8 @@ func _refresh_text() -> void:
 	var age: float = float(GameState.stats.get("time_played", 0.0)) - _snapshot_time
 	_age.text = "Surveyed %s ago%s" % [_fmt_age(age), "   ·   OUTDATED" if age > 600.0 else ""]
 	_resurvey.text = "Re-survey      %s cubes" % Settings.fmt(survey_cost())
+	_ark.text = Bloom.globe_line()
+	_ark.visible = _ark.text != ""
 
 
 static func _num(n: int) -> String:
