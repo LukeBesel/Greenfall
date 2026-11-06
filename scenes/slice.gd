@@ -96,6 +96,7 @@ func _ready() -> void:
 	view.setup(field)
 	water = WaterView.new()
 	water.name = "Water"
+	water.world = self
 	add_child(water)
 	litter = LitterView.new()
 	litter.name = "Litter"
