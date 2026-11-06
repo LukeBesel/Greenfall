@@ -145,6 +145,9 @@ func _process(delta: float) -> void:
 	var dt: float = _tick
 	_tick = 0.0
 	var changed_hexes: Dictionary = {}
+	var hl: HexLevels = world.get("hex_levels") as HexLevels
+	var grow_mult: float = 1.0 + (hl.bonus("grow_pct") if hl else 0.0)
+	var seed_mult: float = 1.0 + (hl.bonus("seed_pct") if hl else 0.0)
 	for s: int in slot_species.size():
 		if slot_species[s] < 0:
 			continue
@@ -154,7 +157,7 @@ func _process(delta: float) -> void:
 			if slot_water[s] <= 0.0:
 				_update_inst(s)  # droop
 			if slot_stage[s] < 4:
-				slot_progress[s] += dt / float(sp.get("grow_s", 40))
+				slot_progress[s] += dt * grow_mult / float(sp.get("grow_s", 40))
 				if slot_progress[s] >= 1.0:
 					slot_progress[s] = 0.0
 					slot_stage[s] += 1
@@ -163,7 +166,7 @@ func _process(delta: float) -> void:
 					if slot_stage[s] == 1:
 						Audio.play("pop", 1.4, -16.0)
 					if slot_stage[s] == 4:
-						GameState.add_currency("seeds", BigNum.from_float(float(sp.get("seed_yield", 0.5))))
+						GameState.add_currency("seeds", BigNum.from_float(float(sp.get("seed_yield", 0.5)) * seed_mult))
 						GameState.inc_stat("plants_bloomed")
 						Vfx.burst("sparkle", slot_pos[s] + Vector3(0, 0.5, 0), Color(1.0, 0.95, 0.6), 0.25)
 	for h: int in changed_hexes:

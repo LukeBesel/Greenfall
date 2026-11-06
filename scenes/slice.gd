@@ -24,6 +24,8 @@ var hub: Hub
 var rocket: Rocket
 var shards: ShardSystem
 var garden: Garden
+var hex_levels: HexLevels
+var goals: Goals
 var first_seed: FirstSeed
 var wildlife: Wildlife
 var water: WaterView
@@ -273,6 +275,15 @@ func _ready() -> void:
 	garden.world = self
 	add_child(garden)
 	garden.setup()
+	hex_levels = HexLevels.new()
+	hex_levels.name = "HexLevels"
+	hex_levels.world = self
+	add_child(hex_levels)
+	hex_levels.setup()
+	goals = Goals.new()
+	goals.name = "Goals"
+	goals.world = self
+	add_child(goals)
 	wildlife = Wildlife.new()
 	wildlife.world = self
 	add_child(wildlife)
