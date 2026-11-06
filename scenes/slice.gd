@@ -19,6 +19,8 @@ var globe: GlobeView
 var sky_director: SkyDirector
 var hub: Hub
 var shards: ShardSystem
+var garden: Garden
+var first_seed: FirstSeed
 var doc_view: DocumentView
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
@@ -150,6 +152,9 @@ func _ready() -> void:
 		cam.apply_preset(DevHooks.get_s("cam", "wide"))
 	if DevHooks.has("give"):
 		GameState.add_currency("cubes", BigNum.from_float(DevHooks.get_f("give", 100.0)))
+	if DevHooks.has("unlock-seeds"):
+		GameState.flags["seeds_unlocked"] = true
+		GameState.add_currency("seeds", BigNum.from_float(200))
 	if DevHooks.has("give-parts"):
 		for k: int in int(DevHooks.get_f("give-parts", 8.0)):
 			GameState.parts.append({"type": k % 8, "rarity": mini(k / 8, 4)})
@@ -182,6 +187,14 @@ func _ready() -> void:
 	var subs := Subtitles.new()
 	add_child(subs)
 	wren.line_started.connect(subs.show_line)
+	garden = Garden.new()
+	garden.name = "Garden"
+	garden.world = self
+	add_child(garden)
+	garden.setup()
+	first_seed = FirstSeed.new()
+	first_seed.world = self
+	add_child(first_seed)
 	shards = ShardSystem.new()
 	shards.world = self
 	add_child(shards)
@@ -189,6 +202,7 @@ func _ready() -> void:
 	doc_view = DocumentView.new()
 	add_child(doc_view)
 	doc_view.closed.connect(_on_modal_closed)
+	first_seed.setup()
 	tutorial = Tutorial.new()
 	tutorial.world = self
 	add_child(tutorial)
@@ -477,6 +491,9 @@ func _hitstop(duration: float, scale: float) -> void:
 # --- Interaction / UI -------------------------------------------------------------
 
 func try_interact(p: Patch) -> void:
+	if first_seed.near_tin(p.global_position):
+		first_seed.take_tin()
+		return
 	if shards.nearby(p.global_position) >= 0:
 		var doc: Dictionary = shards.take(p.global_position)
 		if not doc.is_empty():
@@ -487,6 +504,8 @@ func try_interact(p: Patch) -> void:
 
 
 func interact_prompt(p: Patch) -> String:
+	if first_seed and first_seed.near_tin(p.global_position):
+		return "seed"
 	if shards and shards.nearby(p.global_position) >= 0:
 		return "shard"
 	if near_bench():
@@ -555,6 +574,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func persist_save() -> void:
 	GameState.world["field"] = field.to_dict()
 	GameState.world["planet"] = planet.to_dict()
+	GameState.world["garden"] = garden.persist()
 	GameState.world["patch"] = patch.to_dict()
 	var cubes: Array = []
 	for n: Node in _cubes_root.get_children():

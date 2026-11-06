@@ -39,6 +39,11 @@ var _distance_accum: float = 0.0
 var _dust_timer: float = 0.0
 var _focus_hex: int = -1
 var prompt: String = ""
+enum Tool { SCOOP, PLANT, WATER }
+var tool: int = Tool.SCOOP
+var water: float = 0.0
+var _plant_t: float = 0.0
+var _water_t: float = 0.0
 
 
 func _ready() -> void:
@@ -86,7 +91,9 @@ func _physics_process(delta: float) -> void:
 		_scoop_combo = 0
 	_move(delta)
 	_handle_cubing(delta)
-	_handle_scoop(delta)
+	_handle_tools(delta)
+	if tool == Tool.SCOOP:
+		_handle_scoop(delta)
 	_handle_interact()
 	_update_stack(delta)
 	_update_hints(delta)
@@ -139,6 +146,75 @@ func _move(delta: float) -> void:
 			_distance_accum = 0.0
 	else:
 		_idle_time += delta
+
+
+# --- Tools: plant and water ---------------------------------------------------------
+
+func water_cap() -> float:
+	return float(Economy.read_json("res://data/plants.json").get("water_tank", 30)) if _water_cap < 0.0 else _water_cap
+
+var _water_cap: float = -1.0
+
+
+func set_tool(t: int) -> void:
+	if t != Tool.SCOOP and (world == null or world.get("garden") == null or not world.garden.unlocked()):
+		EventBus.toast.emit("No seeds yet. Keep cleaning.", "info")
+		return
+	if t == tool:
+		return
+	tool = t
+	Audio.play("servo", 1.2 + t * 0.1, -10.0)
+	EventBus.tool_changed.emit(t)
+
+
+func _handle_tools(delta: float) -> void:
+	if input is PlayerInput and (input as PlayerInput).enabled:
+		if Input.is_action_just_pressed("tool_scoop"):
+			set_tool(Tool.SCOOP)
+		elif Input.is_action_just_pressed("tool_plant"):
+			set_tool(Tool.PLANT)
+		elif Input.is_action_just_pressed("tool_water"):
+			set_tool(Tool.WATER)
+	if _water_cap < 0.0:
+		_water_cap = float(Economy.read_json("res://data/plants.json").get("water_tank", 30))
+	# Refill at the hub's water barrel (anywhere in the yard).
+	if world and world.field and world.field.hex_at(global_position) >= 0 and world.field.hex_hub[world.field.hex_at(global_position)] == 1:
+		if water < _water_cap:
+			water = minf(_water_cap, water + delta * 8.0)
+	if world == null or world.get("garden") == null or _cubing > 0.0:
+		return
+	var g: Garden = world.garden
+	_plant_t -= delta
+	_water_t -= delta
+	if not input.scoop_held():
+		return
+	if tool == Tool.PLANT and _plant_t <= 0.0:
+		_plant_t = 0.65
+		var s: int = g.free_slot_near(global_position, forward())
+		if s >= 0:
+			if g.plant(s):
+				model.set_scooping(true)
+				model.shudder(0.15)
+			else:
+				Audio.play("buzz", 1.2, -10.0)
+				EventBus.toast.emit("Out of seeds. Blooming plants drop more.", "info")
+				_plant_t = 2.0
+	elif tool == Tool.WATER and _water_t <= 0.0:
+		_water_t = 0.25
+		if water <= 0.0:
+			Audio.play("buzz", 1.0, -12.0)
+			_water_t = 1.5
+			EventBus.toast.emit("Watering can is empty. Refill at the hub.", "info")
+			return
+		# The old can leaks: a bit is lost with every pour (an upgrade fixes it).
+		water = maxf(0.0, water - (1.0 if GameState.level_of("fix_can") > 0 else 1.3))
+		var spot: Vector3 = global_position + forward() * 1.3
+		Vfx.burst("soil", spot + Vector3(0, 0.6, 0), Color(0.55, 0.75, 1.0, 0.8), 0.7)
+		Vfx.burst("dust", spot + Vector3(0, 0.05, 0), Color(0.6, 0.75, 0.9, 0.4), 0.3)
+		if randf() < 0.5:
+			Audio.play("steam", 1.8, -16.0)
+		for slot: int in g.planted_near(global_position, forward()):
+			g.water(slot, 30.0)
 
 
 # --- Scooping -----------------------------------------------------------------

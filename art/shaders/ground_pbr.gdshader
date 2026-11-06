@@ -12,6 +12,7 @@ uniform sampler2DArray arm_arr : filter_linear_mipmap_anisotropic, repeat_enable
 uniform sampler2D layout_tex : filter_linear;
 uniform float layout_size = 280.0;
 uniform sampler2D state_tex : filter_nearest;
+uniform sampler2D life_tex : filter_linear;
 uniform int grid_radius = 9;
 uniform float hex_size = 3.2;
 uniform float time_now = 0.0;
@@ -105,7 +106,9 @@ void fragment() {
 	float is_clean = 0.0;
 	float is_hub = 0.0;
 	float flip_t = -100.0;
+	float life = 0.0;
 	if (inside) {
+		life = texture(life_tex, (ax + vec2(float(grid_radius)) + 0.5) / float(grid_radius * 2 + 1)).r;
 		float size = float(grid_radius * 2 + 1);
 		vec4 st = texture(state_tex, (ax + vec2(float(grid_radius)) + 0.5) / size);
 		removed = st.r;
@@ -158,6 +161,14 @@ void fragment() {
 		
 	}
 	Mat m = mixm(dirty, base, reveal);
+	// Life: planted soil darkens and greens over; restored hexes are lush grass (not on roads).
+	if (life > 0.001 && !is_road) {
+		float g = smoothstep(0.0, 1.0, life + (fbm(p * 0.6) - 0.5) * 0.35);
+		Mat soil = m;
+		soil.alb *= vec3(0.75, 0.68, 0.6);
+		Mat grass = mixm(samp(8, p, 3.0), samp(9, p, 3.5), smoothstep(0.35, 0.8, life));
+		m = mixm(mixm(m, soil, smoothstep(0.0, 0.15, life)), grass, g);
+	}
 	if (is_hub > 0.5 || is_yard) {
 		m = base;
 	}

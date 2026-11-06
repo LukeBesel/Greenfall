@@ -9,7 +9,7 @@ extends Node3D
 ## litter and feed them into the wide intake mouth; strapped bales drop out of the rear tailgate hatch.
 ## Faces -Z, base at y = 0. Real-world scale: ~0.9 m to the antenna lamp, ~0.72 m long, ~0.66 m wide.
 
-const BLUE := Color(0.56, 0.79, 0.95)         # powder / sky blue
+const BLUE := Color(0.5, 0.76, 0.95)         # powder / sky blue
 const BLUE_DEEP := Color(0.42, 0.64, 0.82)    # shaded blue for fenders and trim
 const CREAM := Color(0.88, 0.83, 0.70)        # face plate, belly, arms
 const CORAL := Color(0.88, 0.36, 0.25)        # accents: hubs, knobs, fingertips, lamp
@@ -20,16 +20,16 @@ const WHEEL_R: float = 0.075
 const TUB_Y0: float = 0.19
 const TUB_Y1: float = 0.43
 const TUB_HZ: float = 0.33
-const TUB_FZ: float = -0.39   # front of the tub (the "chin" ledge carrying the neck)
+const TUB_FZ: float = -0.36   # front of the tub (the "chin" ledge carrying the neck)
 const L1: float = 0.13
 const L2: float = 0.12
 
 ## Interface: local anchor points used by the controller.
-var chest_point := Vector3(0, 0.3, -0.42)
+var chest_point := Vector3(0, 0.3, -0.39)
 var back_hatch_point := Vector3(0, 0.3, 0.38)
 var vent_points: Array[Vector3] = [Vector3(-0.1, 0.6, 0.18), Vector3(0.1, 0.6, 0.18), Vector3(-0.29, 0.34, 0.1)]
 var stack_point := Vector3(0.15, 0.68, 0.22)
-var lens_point := Vector3(0, 0.645, -0.48)
+var lens_point := Vector3(0, 0.645, -0.46)
 var sleeping: bool = false
 var _iris_now: float = 0.55
 
@@ -112,7 +112,8 @@ func _paint(color: Color, coverage: float, rust: float, seed: float, grime: floa
 	var m: ShaderMaterial = Mats.worn_paint(color, coverage, rust, seed, grime)
 	m.set_shader_parameter("grime_floor", floor_y)
 	m.set_shader_parameter("grime_height", 0.3)
-	m.set_shader_parameter("fade", 0.2)
+	m.set_shader_parameter("fade", 0.15)
+	m.set_shader_parameter("dust", 0.08)
 	m.set_meta("cov", coverage)
 	_paint_mats.append(m)
 	return m
@@ -251,8 +252,10 @@ func _build_shell() -> void:
 	# Cream belly pan, heavily grimed.
 	_bake(_rig, ProcMesh.rounded_box(Vector3(0.5, 0.05, tub_len - 0.06), 0.02, 2), _paint(CREAM.darkened(0.15), 0.55, 0.8, 2.2, 1.0), _x(Vector3(0, TUB_Y0 + 0.01, tub_cz)))
 	# Cream rub strip around the waist where lid meets tub, with a coral pinstripe under it.
-	_bake(_rig, ProcMesh.rounded_box(Vector3(0.55, 0.022, tub_len + 0.008), 0.011, 2), _paint(CREAM, 0.75, 0.65, 2.9, 0.3), _x(Vector3(0, TUB_Y1 - 0.04, tub_cz)))
-	_bake(_rig, ProcMesh.rounded_box(Vector3(0.546, 0.012, tub_len + 0.004), 0.006, 2), _paint(CORAL, 0.75, 0.6, 3.1, 0.3), _x(Vector3(0, 0.33, tub_cz)))
+	# Bands are squashed copies of the tub so their plan-view corners follow its rounding.
+	var band: ArrayMesh = ProcMesh.rounded_box(Vector3(0.556, 0.24, tub_len + 0.016), 0.088, 5)
+	_bake(_rig, band, _paint(CREAM, 0.75, 0.65, 2.9, 0.3), _x(Vector3(0, 0.338, tub_cz), Vector3.ZERO, Vector3(1, 0.024 / 0.24, 1)))
+	_bake(_rig, ProcMesh.rounded_box(Vector3(0.548, 0.24, tub_len + 0.008), 0.084, 5), _paint(CORAL, 0.75, 0.6, 3.1, 0.3), _x(Vector3(0, 0.312, tub_cz), Vector3.ZERO, Vector3(1, 0.012 / 0.24, 1)))
 	# Side bolt rows.
 	for s: float in [-1.0, 1.0]:
 		var pts: Array = []
@@ -301,8 +304,8 @@ func _build_lid() -> void:
 		for xs: float in [-1.0, 1.0]:
 			var dir := Vector3(0.03 * xs / 0.3, sin(a), cos(a)).normalized()
 			var p := dome_c + Vector3(dir.x * 0.3 * dscale.x, dir.y * 0.302 * dscale.y, dir.z * 0.302 * dscale.z)
-			riv.append(ProcMesh.part(ProcMesh.sphere(0.006, 6, 3), _x(p)))
-	_bake_many(_lid, riv, Mats.metal("dark_steel"))
+			riv.append(ProcMesh.part(ProcMesh.sphere(0.0045, 6, 3), _x(p)))
+	_bake_many(_lid, riv, Mats.metal("steel"))
 	# Vent grille near the back of the dome (exhaust heat from the compactor motor).
 	for xs: float in [-1.0, 1.0]:
 		var g: Node3D = _node(_lid, dome_c + Vector3(0.1 * xs, 0.17, 0.12), Vector3(-38, 0, 0))
@@ -334,12 +337,12 @@ func _build_mouth() -> void:
 	var steel: StandardMaterial3D = Mats.metal("dark_steel")
 	var z: float = TUB_FZ
 	# Intake mouth: a wide pill-shaped slot (a little grin under the eye) with a cream surround.
-	_bake(_rig, ProcMesh.rounded_box(Vector3(0.36, 0.13, 0.03), 0.06, 4), _paint(CREAM, 0.75, 0.7, 12.0, 0.4), _x(Vector3(0, 0.305, z + 0.006)))
-	_bake(_rig, ProcMesh.rounded_box(Vector3(0.31, 0.09, 0.03), 0.044, 4), _dark(), _x(Vector3(0, 0.305, z + 0.002)))
+	_bake(_rig, ProcMesh.rounded_box(Vector3(0.36, 0.13, 0.13), 0.064, 5), _paint(CREAM, 0.75, 0.7, 12.0, 0.4), _x(Vector3(0, 0.3, z + 0.006), Vector3.ZERO, Vector3(1, 1, 0.25)))
+	_bake(_rig, ProcMesh.rounded_box(Vector3(0.31, 0.088, 0.088), 0.043, 5), _dark(), _x(Vector3(0, 0.3, z - 0.004), Vector3.ZERO, Vector3(1, 1, 0.25)))
 	var flaps: Array = []
 	for k: int in 6:
 		var x: float = -0.142 + k * 0.057
-		flaps.append(ProcMesh.part(ProcMesh.box(Vector3(0.05, 0.075, 0.006)), _x(Vector3(x * 0.95, 0.312, z - 0.016), Vector3(randf_range(-4, 4), 0, 0))))
+		flaps.append(ProcMesh.part(ProcMesh.box(Vector3(0.05, 0.06, 0.006)), _x(Vector3(x * 0.88, 0.308, z - 0.012), Vector3(randf_range(-4, 4), 0, 0))))
 	_bake_many(_rig, flaps, Mats.rubber(Color(0.08, 0.075, 0.07)))
 	# Scoop lip (chin): a little sloped mustard plate with worn stripes, the "lower jaw".
 	var lip: Array = []
@@ -410,7 +413,7 @@ func _build_hatch() -> void:
 
 func _build_head() -> void:
 	var steel: StandardMaterial3D = Mats.metal("dark_steel")
-	var base := Vector3(0, TUB_Y1, -0.29)
+	var base := Vector3(0, TUB_Y1, -0.27)
 	# Neck: collar, rubber bellows, swivel plate.
 	_bake(_rig, ProcMesh.cyl(0.065, 0.075, 0.035, 18), _paint(CREAM, 0.65, 0.7, 20.0, 0.3), _x(base + Vector3(0, 0.005, 0)))
 	var bel: Array = []
@@ -438,7 +441,8 @@ func _build_head() -> void:
 	# Face disc behind the lens.
 	_bake(_tilt, ProcMesh.cyl(0.112, 0.118, 0.02, 32), _paint(CREAM, 0.7, 0.75, 24.0, 0.2, -0.3), _x(Vector3(0, -0.005, -0.112), Vector3(90, 0, 0)))
 	# Rust-stained brass bezel.
-	var bezel_mat: ShaderMaterial = _paint(Color(0.66, 0.5, 0.26), 0.45, 0.95, 25.0, 0.6, -0.3)
+	var bezel_mat: ShaderMaterial = _paint(Color(0.72, 0.52, 0.22), 0.4, 1.0, 25.0, 0.8, 0.3)
+	bezel_mat.set_shader_parameter("metallic_bare", 0.6)
 	_bake(_tilt, ProcMesh.torus(0.078, 0.105, 36, 10), bezel_mat, _x(Vector3(0, -0.005, -0.128), Vector3(90, 0, 0), Vector3(1, 0.7, 1)))
 	var bz_bolts: Array = []
 	for k: int in 8:
@@ -556,7 +560,7 @@ const SCOOP_KEYS: Array = [
 	[0.74, 70.0, -55.0, -115.0, 0.9, 22.0],
 	[1.0, -30.0, -95.0, -100.0, 0.5, 0.0],
 ]
-const REST_POSE: Array = [0.0, -18.0, -150.0, -125.0, 0.1, 4.0]
+const REST_POSE: Array = [0.0, -72.0, 45.0, 80.0, 0.1, 6.0]
 
 
 func _sample_scoop(t: float) -> Array:

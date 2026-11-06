@@ -83,7 +83,11 @@ def main():
              "| Asset | Type | Author(s) | License | Source |", "|---|---|---|---|---|"]
     with cf.ThreadPoolExecutor(8) as ex:
         infos = dict(zip([a for _, a in jobs], ex.map(info, [a for _, a in jobs])))
-    for k, a in jobs:
+    all_jobs = [("model", a) for a in manifest["polyhaven_models"]] + [("texture", a) for a in manifest["polyhaven_textures"]]
+    if only:
+        with cf.ThreadPoolExecutor(8) as ex:
+            infos.update(dict(zip([a for _, a in all_jobs], ex.map(info, [a for _, a in all_jobs]))))
+    for k, a in all_jobs:
         authors = ", ".join(infos.get(a, {}).get("authors", {}).keys()) or "Poly Haven"
         lines.append(f"| {infos.get(a, {}).get('name', a)} (`{a}`) | {k} | {authors} | CC0 | https://polyhaven.com/a/{a} |")
     lines += ["", "## Fonts", "Godot's built-in default font (Open Sans / Noto, OFL/Apache) is used for UI.", ""]

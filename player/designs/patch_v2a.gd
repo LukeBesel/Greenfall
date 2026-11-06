@@ -24,8 +24,8 @@ const BODY_C := Vector3(0, 0.47, 0.03)
 const BODY_S := Vector3(0.46, 0.46, 0.54)
 const TILT: float = -6.0          # degrees; negative leans the top forward (-Z)
 const EYE_C := Vector3(0, 0.0, -0.085)   # lens centre inside the visor pod
-const L1: float = 0.2
-const L2: float = 0.19
+const L1: float = 0.14
+const L2: float = 0.14
 
 ## Interface: local anchor points used by the controller.
 var chest_point := Vector3(0, 0.30, -0.29)
@@ -280,15 +280,14 @@ func _build_running_gear() -> void:
 
 
 func _build_body() -> void:
-	var shell: ShaderMaterial = _paint(BLUE, 0.58, 0.72, 1.7, 0.6)
+	var shell: ShaderMaterial = _paint(BLUE, 0.7, 0.72, 7.3, 0.5)
 	# Main capsule shell (rounded box, very soft corners), leaning forward.
 	_bake(_body, ProcMesh.rounded_box(BODY_S, 0.2, 6), shell, _body_xf(Vector3.ZERO))
 	# Domed lid.
-	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.03, 0.4, BODY_S.z + 0.03), 0.2, 6), _paint(BLUE.lightened(0.06), 0.62, 0.62, 2.9, 0.3), _body_xf(Vector3(0, 0.215, 0.0)) * _slab(0, 0.06, 0, 0.2))
 	# Rolled seam band where the lid meets the shell.
-	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.012, 0.4, BODY_S.z + 0.012), 0.2, 6), _paint(BLUE_DK, 0.55, 0.75, 4.4, 0.5), _body_xf(Vector3(0, -0.02, 0)) * _slab(0, 0.018, 0, 0.2))
+	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.012, 0.4, BODY_S.z + 0.012), 0.2, 6), _paint(CREAM, 0.6, 0.7, 4.4, 0.5), _body_xf(Vector3(0, -0.02, 0)) * _slab(0, 0.018, 0, 0.2))
 	# Bottom-heavy skirt / bumper band, darker and grimy.
-	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.02, 0.4, BODY_S.z + 0.03), 0.2, 6), _paint(BLUE_DK.lightened(0.15), 0.55, 0.8, 6.6, 0.8, 0.1), _body_xf(Vector3(0, -0.18, 0)) * _slab(0, 0.11, 0, 0.2))
+	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.02, 0.4, BODY_S.z + 0.03), 0.2, 6), _paint(BLUE_DK.lightened(0.22), 0.6, 0.75, 6.6, 0.7, 0.1), _body_xf(Vector3(0, -0.18, 0)) * _slab(0, 0.11, 0, 0.2))
 	# Rubber bump strip around the skirt.
 	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.03, 0.4, BODY_S.z + 0.05), 0.2, 6), Mats.rubber(Color(0.07, 0.07, 0.07)), _body_xf(Vector3(0, -0.14, 0)) * _slab(0, 0.028, 0, 0.2))
 	# Wheel arches: dark recesses either side so the tyres tuck in.
@@ -472,7 +471,7 @@ func _build_hatch() -> void:
 func _build_arm() -> void:
 	var mus: ShaderMaterial = _paint(MUSTARD, 0.6, 0.65, 50.0, 0.5, -0.7)
 	var steel: StandardMaterial3D = Mats.metal("dark_steel")
-	var shoulder_pos := Vector3(0.215, 0.47, -0.2)
+	var shoulder_pos := Vector3(0.215, 0.47, -0.205)
 	# Round coral shoulder disc on the right flank.
 	_bake(_body, ProcMesh.cyl(0.06, 0.065, 0.025, 20), _paint(CORAL, 0.65, 0.6, 51.0, 0.4), _x(Vector3(0.2, 0.47, -0.185), Vector3(0, 45, 90)))
 	var shoulder: Node3D = _node(_body, shoulder_pos)
@@ -514,7 +513,7 @@ const SCOOP_KEYS: Array = [
 	[1.0, -40.0, -60.0, -75.0, 0.4, -4.0],
 ]
 ## Folded "little T-rex arm" rest pose.
-const REST_POSE: Array = [0.0, -75.0, -25.0, -70.0, 0.15, -6.0]
+const REST_POSE: Array = [0.0, -72.0, 45.0, -40.0, 0.15, -4.0]
 
 
 func _sample_scoop(t: float) -> Array:

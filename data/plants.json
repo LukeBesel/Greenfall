@@ -1,0 +1,18 @@
+{
+  "_doc": "Meadow species planted from seed. stage_scale = model scale per stage (seed, sprout, young, mature, bloom). grow_s = seconds per stage while watered. water_s = how long one watering lasts. seed_yield = seeds dropped when it blooms.",
+  "slot_spacing": 2.3,
+  "restored_life": 0.8,
+  "species": [
+    {"id": "grass", "model": "grass_medium_01", "weight": 4, "scale": 0.9, "grow_s": 30, "water_s": 120, "seed_yield": 0.5},
+    {"id": "grass2", "model": "grass_medium_02", "weight": 3, "scale": 0.9, "grow_s": 30, "water_s": 120, "seed_yield": 0.5},
+    {"id": "celandine", "model": "celandine_01", "weight": 2, "scale": 1.2, "grow_s": 40, "water_s": 100, "seed_yield": 1.0},
+    {"id": "gazania", "model": "flower_gazania", "weight": 1.5, "scale": 1.1, "grow_s": 45, "water_s": 100, "seed_yield": 1.0},
+    {"id": "heliophila", "model": "flower_heliophila", "weight": 1.5, "scale": 1.0, "grow_s": 45, "water_s": 100, "seed_yield": 1.0},
+    {"id": "dandelion", "model": "dandelion_01", "weight": 1.5, "scale": 1.0, "grow_s": 35, "water_s": 110, "seed_yield": 1.5},
+    {"id": "fern", "model": "fern_02", "weight": 1, "scale": 0.8, "grow_s": 60, "water_s": 140, "seed_yield": 0.5},
+    {"id": "shrub", "model": "shrub_01", "weight": 0.6, "scale": 0.7, "grow_s": 90, "water_s": 160, "seed_yield": 1.0}
+  ],
+  "stage_scale": [0.08, 0.25, 0.5, 0.8, 1.0],
+  "water_tank": 30,
+  "first_seed": {"hexes_needed": 5, "seeds_given": 15}
+}

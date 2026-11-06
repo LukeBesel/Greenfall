@@ -24,6 +24,7 @@ var _shown_cubes: float = 0.0
 var _bump: float = 0.0
 var _task_label: Label
 var _task_caption: Label
+var _tool_label: Label
 
 
 func _ready() -> void:
@@ -125,6 +126,8 @@ func _build_bottom() -> void:
 	row.add_child(sp)
 	_carry_label = _caption("")
 	row.add_child(_carry_label)
+	_tool_label = _caption("")
+	row.add_child(_tool_label)
 	_meter_label = _caption("0.0 / 10")
 	row.add_child(_meter_label)
 	_meter = CompartmentMeter.new()
@@ -174,6 +177,9 @@ func _process(delta: float) -> void:
 		if patch.detector and not patch.detector.readout_changed.is_connected(_on_signal):
 			patch.detector.readout_changed.connect(_on_signal)
 		_meter_label.text = "%.1f / %.0f" % [patch.compartment.fill, patch.capacity()]
+		if GameState.flags.get("seeds_unlocked", false):
+			var names: Array[String] = ["SCOOP", "PLANT", "WATER"]
+			_tool_label.text = "1 2 3   %s    SEEDS %s    WATER %d/%d    " % [names[patch.tool], Settings.fmt(GameState.get_currency("seeds")), int(patch.water), int(patch.water_cap())]
 		_meter.set_values(patch.compartment.fill, patch.capacity())
 		_meter.band = Economy.cube_rules.get("perfect_band", [0.9, 1.0])
 		var cap: int = patch.carry_cap()
@@ -214,6 +220,7 @@ func _prompt_text(kind: String) -> String:
 		"pick_up": return "E   pick up bale"
 		"dig": return "E   dig up part"
 		"shard": return "E   read memory shard"
+		"seed": return "E   pick up the seed tin"
 		"place": return "E   set bale down"
 		"upgrades": return "E   workbench"
 	return ""

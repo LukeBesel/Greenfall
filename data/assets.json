@@ -68,7 +68,17 @@
     "security_camera_01",
     "concrete_road_barrier_02",
     "modular_airduct_rectangular_01",
-    "modular_metal_gutter"
+    "modular_metal_gutter",
+    "shrub_01",
+    "shrub_02",
+    "fern_02",
+    "pine_sapling_small",
+    "celandine_01",
+    "flower_gazania",
+    "nettle_plant",
+    "grass_medium_02",
+    "watering_can_metal_01",
+    "seeding_tray_01"
   ],
   "polyhaven_textures": [
     "brown_mud_dry",

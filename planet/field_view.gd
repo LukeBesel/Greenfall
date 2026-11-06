@@ -7,6 +7,7 @@ const CHUNK: int = 5  # hexes per chunk side (axial), for MultiMesh culling + LO
 const GROUND_LAYERS: Array[String] = [
 	"worn_asphalt", "road_damaged", "concrete_pavement", "dirty_concrete",
 	"dry_ground_rocks", "withered_grass", "dry_decay_leaves", "rubble",
+	"sparse_grass", "leafy_grass",
 ]
 
 var layout: CityLayout
@@ -22,6 +23,8 @@ var _piece_mm := PackedInt32Array()  # pid -> index into _mms
 var _piece_slot := PackedInt32Array()  # pid -> instance index
 var _mms: Array[MultiMesh] = []
 var _dirty_tex: bool = false
+var _life_img: Image
+var _life_tex: ImageTexture
 var _pose_cache: Dictionary = {}
 var _mounds: Array = []  # hex id -> Array[MeshInstance3D]
 
@@ -93,6 +96,9 @@ func _build_ground() -> void:
 	_ground_mat.set_shader_parameter("normal_arr", _tex_array(GROUND_LAYERS, "nor_gl"))
 	_ground_mat.set_shader_parameter("arm_arr", _tex_array(GROUND_LAYERS, "arm"))
 	_ground_mat.set_shader_parameter("state_tex", _state_tex)
+	_life_img = Image.create(size, size, false, Image.FORMAT_RF)
+	_life_tex = ImageTexture.create_from_image(_life_img)
+	_ground_mat.set_shader_parameter("life_tex", _life_tex)
 	_ground_mat.set_shader_parameter("grid_radius", field.radius)
 	_ground_mat.set_shader_parameter("hex_size", field.hex_size)
 	var extent: float = (layout.extent * 2.0) if layout else (field.radius + 8) * field.hex_size * 2.4
@@ -284,6 +290,12 @@ func _write_hex(id: int, flip_time: float) -> void:
 func _flush() -> void:
 	_state_tex.update(_state_img)
 	_dirty_tex = false
+
+
+func set_life(id: int, life: float) -> void:
+	var a: Vector2i = field.hex_axial[id]
+	_life_img.set_pixel(a.x + field.radius, a.y + field.radius, Color(life, 0, 0))
+	_life_tex.update(_life_img)
 
 
 func set_focus_hex(id: int) -> void:
