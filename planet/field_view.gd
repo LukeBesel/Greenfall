@@ -5,9 +5,12 @@ extends Node3D
 
 const CHUNK: int = 5  # hexes per chunk side (axial), for MultiMesh culling + LOD
 const GROUND_LAYERS: Array[String] = [
-	"mud_cracked_dry_03", "dry_ground_rocks", "withered_grass", "road_damaged", "rubble",
-	"dirt", "farm_soil", "concrete_floor_worn_001",
+	"worn_asphalt", "road_damaged", "concrete_pavement", "dirty_concrete",
+	"dry_ground_rocks", "withered_grass", "dry_decay_leaves", "rubble",
 ]
+
+var layout: CityLayout
+var ground_material: ShaderMaterial
 
 var field: HexField
 var clock: float = 0.0
@@ -25,11 +28,11 @@ var _mounds: Array = []  # hex id -> Array[MeshInstance3D]
 
 func setup(p_field: HexField) -> void:
 	field = p_field
+	layout = field.layout
 	_build_ground()
 	_build_mounds()
 	_build_junk()
 	_build_landmarks()
-	_build_horizon()
 	for id: int in field.hex_count():
 		_write_hex(id, -100.0)
 	_flush()
@@ -92,11 +95,15 @@ func _build_ground() -> void:
 	_ground_mat.set_shader_parameter("state_tex", _state_tex)
 	_ground_mat.set_shader_parameter("grid_radius", field.radius)
 	_ground_mat.set_shader_parameter("hex_size", field.hex_size)
+	var extent: float = (layout.extent * 2.0) if layout else (field.radius + 8) * field.hex_size * 2.4
+	if layout:
+		_ground_mat.set_shader_parameter("layout_tex", ImageTexture.create_from_image(layout.bake_image(extent, 0.25)))
+		_ground_mat.set_shader_parameter("layout_size", extent)
+	ground_material = _ground_mat
 	var plane := PlaneMesh.new()
-	var extent: float = (field.radius + 8) * field.hex_size * 2.4
 	plane.size = Vector2(extent, extent)
-	plane.subdivide_width = 16
-	plane.subdivide_depth = 16
+	plane.subdivide_width = 32
+	plane.subdivide_depth = 32
 	plane.material = _ground_mat
 	var g := MeshInstance3D.new()
 	g.name = "Ground"
@@ -134,7 +141,7 @@ func _pose_basis(model: String, pose: int, yaw: float, tilt: float, scl: float) 
 func piece_transform(pid: int) -> Transform3D:
 	var t: Transform3D = _pose_basis(field.piece_model[pid], field.piece_pose[pid], field.piece_yaw[pid], field.piece_tilt[pid], field.piece_scale[pid])
 	var p: Vector3 = field.piece_pos[pid]
-	t.origin += Vector3(p.x, field.ground_height(field.piece_hex[pid], p), p.z)
+	t.origin += Vector3(p.x, field.piece_rest_y(pid), p.z)
 	return t
 
 
@@ -157,7 +164,7 @@ func _build_junk() -> void:
 		var model: String = key.split("|")[1]
 		var mm := MultiMesh.new()
 		mm.transform_format = MultiMesh.TRANSFORM_3D
-		mm.mesh = AssetLib.model_mesh(model)
+		mm.mesh = AssetLib.model_mesh_lite(model, 700)
 		mm.instance_count = pids.size()
 		var idx: int = _mms.size()
 		for i: int in pids.size():
@@ -169,19 +176,51 @@ func _build_junk() -> void:
 		var mmi := MultiMeshInstance3D.new()
 		mmi.name = "Junk_" + key.replace("|", "_").replace(",", "_")
 		mmi.multimesh = mm
-		mmi.visibility_range_end = 140.0
+		mmi.visibility_range_end = 110.0
+		# Small litter doesn't cast sun shadows (SSAO grounds it); bigger items do.
+		var vol: float = field.piece_vol[pids[0]]
+		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if vol >= 1.2 else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(mmi)
 
 
+static func _mound_mesh() -> ArrayMesh:
+	# Lumpy compacted-debris mound: a hemisphere pushed around by noise, unit radius and height.
+	var noise := FastNoiseLite.new()
+	noise.frequency = 1.6
+	noise.seed = 9
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var rings: int = 10
+	var segs: int = 28
+	var pts: Array = []
+	for r: int in rings + 1:
+		var row: Array = []
+		var phi: float = float(r) / rings * PI * 0.5
+		for k: int in segs + 1:
+			var th: float = float(k) / segs * TAU
+			var dir := Vector3(cos(th) * cos(phi), sin(phi), sin(th) * cos(phi))
+			var d: float = 1.0 + noise.get_noise_3dv(dir * 2.0) * 0.35
+			var v: Vector3 = dir * d
+			if r == 0:
+				v.y = -0.05
+			row.append(v)
+		pts.append(row)
+	for r: int in rings:
+		for k: int in segs:
+			var a: Vector3 = pts[r][k]
+			var b: Vector3 = pts[r][k + 1]
+			var c: Vector3 = pts[r + 1][k + 1]
+			var d: Vector3 = pts[r + 1][k]
+			for v: Vector3 in [a, c, b, a, d, c]:
+				st.add_vertex(v)
+	st.generate_normals()
+	return st.commit()
+
+
 func _build_mounds() -> void:
-	var mesh := SphereMesh.new()
-	mesh.radius = 1.0
-	mesh.height = 1.0
-	mesh.is_hemisphere = true
-	mesh.radial_segments = 20
-	mesh.rings = 6
-	var mat: StandardMaterial3D = AssetLib.pbr_material("rubble", 0.6, Color(0.62, 0.56, 0.54), true)
-	mesh.material = mat
+	var mesh: ArrayMesh = _mound_mesh()
+	var mat: StandardMaterial3D = AssetLib.pbr_material("rubble", 0.9, Color(0.42, 0.38, 0.36), true)
+	mesh.surface_set_material(0, mat)
 	_mounds.resize(field.hex_count())
 	for id: int in field.hex_count():
 		var list: Array = []
@@ -201,7 +240,7 @@ func _update_mounds(id: int) -> void:
 	for mi: MeshInstance3D in _mounds[id]:
 		var pile: Vector4 = mi.get_meta("pile")
 		mi.visible = left > 0.0
-		mi.scale = Vector3(pile.z * 1.05, maxf(pile.w * left, 0.001), pile.z * 1.05)
+		mi.scale = Vector3(pile.z * 1.1, maxf(pile.w * left * 0.9, 0.001), pile.z * 1.1)
 
 
 ## Re-seat remaining pieces of a hex on its (shrinking) mound.
@@ -259,7 +298,7 @@ func set_grid_visible(v: float) -> void:
 
 func _add_prop(model: String, pos: Vector3, yaw: float, collide: bool, scl: float = 1.0) -> void:
 	var mi := MeshInstance3D.new()
-	mi.mesh = AssetLib.model_mesh(model)
+	mi.mesh = AssetLib.model_mesh_lite(model, 4000)
 	var t: Transform3D = _pose_basis(model, 0, yaw, 0.0, scl)
 	t.origin += pos
 	mi.transform = t

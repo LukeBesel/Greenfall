@@ -12,6 +12,8 @@ var stats: Dictionary = {}  # id -> float / Dictionary
 var flags: Dictionary = {}  # id -> Variant (milestones, tutorial, easter eggs)
 ## Opaque per-system blobs (field, player, loose cubes, ...). Systems write and read their own key.
 var world: Dictionary = {}
+## Robot parts in storage: Array of {type: int, rarity: int}.
+var parts: Array = []
 var created_unix: float = 0.0
 var saved_unix: float = 0.0
 
@@ -36,6 +38,7 @@ func new_game() -> void:
 	}
 	flags = {}
 	world = {}
+	parts = []
 	created_unix = Time.get_unix_time_from_system()
 	saved_unix = 0.0
 	_income_log.clear()
@@ -125,6 +128,7 @@ func to_dict() -> Dictionary:
 		"stats": stats.duplicate(true),
 		"flags": flags.duplicate(true),
 		"world": world.duplicate(true),
+		"parts": parts.duplicate(true),
 	}
 
 
@@ -143,3 +147,4 @@ func from_dict(d: Dictionary) -> void:
 		stats[k] = st[k]
 	flags = (d.get("flags", {}) as Dictionary).duplicate(true)
 	world = (d.get("world", {}) as Dictionary).duplicate(true)
+	parts = (d.get("parts", []) as Array).duplicate(true)

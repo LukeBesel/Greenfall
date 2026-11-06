@@ -8,6 +8,8 @@ const FLOWER_POS := Vector3(2.9, 0, 1.4)
 const HEX_MILESTONES: Array[int] = [1, 5, 10, 25, 50, 100, 150, 200, 264]
 
 var field: HexField
+var layout: CityLayout
+var city: CityView
 var view: FieldView
 var depot: Depot
 var patch: Patch
@@ -24,11 +26,13 @@ var _t: float = 0.0
 
 
 func _ready() -> void:
+	var t0: int = Time.get_ticks_msec()
 	add_to_group("persist")
 	_build_environment()
 	var cfg: Dictionary = Economy.planet.get("slice_field", {})
 	var seed_v: int = int(DevHooks.get_f("seed", float(cfg.get("seed", 4471))))
-	field = HexField.new(int(cfg.get("radius", 9)), float(cfg.get("hex_size", 3.2)), seed_v)
+	layout = CityLayout.new(seed_v, 150.0)
+	field = HexField.new(int(cfg.get("radius", 9)), float(cfg.get("hex_size", 3.2)), seed_v, layout)
 	field.clean_threshold = float(cfg.get("clean_threshold", 0.99))
 	var ppx: Array = cfg.get("pieces_per_hex", [6, 12])
 	var types: Array = []
@@ -36,6 +40,7 @@ func _ready() -> void:
 		types.append(Economy.junk_types[id])
 	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
 	field.place_landmarks(Economy.landmarks)
+	field.bury_parts(Economy.parts)
 	var loaded: bool = false
 	if not DevHooks.has("fresh"):
 		loaded = SaveManager.load_game()
@@ -46,6 +51,10 @@ func _ready() -> void:
 	view.name = "FieldView"
 	add_child(view)
 	view.setup(field)
+	city = CityView.new()
+	city.name = "City"
+	add_child(city)
+	city.build(layout, view.ground_material)
 	_cubes_root = Node3D.new()
 	_cubes_root.name = "Cubes"
 	add_child(_cubes_root)
@@ -65,6 +74,7 @@ func _ready() -> void:
 	patch.global_position = SPAWN
 	patch.rotation.y = 0.0
 	depot.patch = patch
+	patch.detector.field = field
 	cam = CameraRig.new()
 	cam.name = "CameraRig"
 	add_child(cam)
@@ -97,6 +107,7 @@ func _ready() -> void:
 	if DevHooks.get_s("open", "") == "upgrades":
 		open_upgrades.call_deferred()
 	EventBus.hitstop_requested.connect(_hitstop)
+	print("[slice] built in %d ms" % (Time.get_ticks_msec() - t0))
 	if not loaded:
 		get_tree().create_timer(1.2).timeout.connect(func() -> void:
 			Story.once("wake", "Bzzt. Systems... online. So much junk. Hold [LMB] or [Space] to scoop it up.", "story"))
@@ -170,6 +181,7 @@ func _build_environment() -> void:
 	_sun.directional_shadow_max_distance = 80.0
 	add_child(_sun)
 	Settings.apply_render_quality(env, get_viewport())
+	Settings.apply_sun_quality(_sun)
 
 
 func _build_board() -> void:
@@ -303,20 +315,32 @@ func _hitstop(duration: float, scale: float) -> void:
 # --- Interaction / UI -------------------------------------------------------------
 
 func try_interact(p: Patch) -> void:
-	if p.global_position.distance_to(BOARD_POS) < 2.6:
+	if near_bench():
 		open_upgrades()
 
 
 func interact_prompt(p: Patch) -> String:
-	if p.global_position.distance_to(BOARD_POS) < 2.6:
+	if near_bench():
 		return "upgrades"
 	if p.global_position.distance_to(FLOWER_POS) < 1.8:
 		return "flower"
 	return ""
 
 
+const BENCH_RANGE: float = 3.2
+
+
+func near_bench() -> bool:
+	return patch != null and patch.global_position.distance_to(BOARD_POS) < BENCH_RANGE
+
+
 func open_upgrades() -> void:
 	if pause_menu.is_open:
+		return
+	# Upgrades are installed at a base workbench, not in the field.
+	if not near_bench() and not DevHooks.has("open"):
+		EventBus.toast.emit("Upgrades need a workbench. Head back to the hub.", "info")
+		Audio.play("buzz", 1.2, -10.0)
 		return
 	upgrades.open_screen()
 	if patch.input is PlayerInput:

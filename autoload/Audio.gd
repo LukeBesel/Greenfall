@@ -313,6 +313,24 @@ func _generate_all() -> void:
 				var t: float = float(i - start) / RATE
 				b[i] += sin(TAU * f * t) * exp(-t * 18.0) * 0.1
 		_add("sparkle", b)
+	# Detector: a clean, slightly sci-fi ping with a quick downward chirp.
+	for f: float in [1480.0, 1760.0, 1320.0]:
+		var b := _buf(0.12)
+		var ph: float = 0.0
+		for i: int in b.size():
+			var t: float = float(i) / RATE
+			ph += TAU * (f * (1.0 + 0.25 * exp(-t * 60.0))) / RATE
+			b[i] = (sin(ph) + 0.25 * sin(ph * 2.0)) * exp(-t * 32.0) * 0.4
+		_add("detector", b)
+	# Dig: shovel-ish soil crunch.
+	for v: int in 3:
+		var b := _buf(0.35)
+		var lp: float = 0.0
+		for i: int in b.size():
+			var t: float = float(i) / RATE
+			lp += (_rng.randf_range(-1.0, 1.0) - lp) * (0.12 + 0.04 * v)
+			b[i] = (lp * 2.2 * (0.6 if _rng.randf() < 0.9 else 1.6) + sin(TAU * 70.0 * t) * 0.3) * exp(-t * 9.0)
+		_add("dig", b)
 	# Fanfare: milestones.
 	var fan := _buf(1.6)
 	var notes: Array[float] = [523.25, 659.25, 783.99, 1046.5]

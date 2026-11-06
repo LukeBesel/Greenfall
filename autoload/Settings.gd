@@ -135,5 +135,12 @@ func apply_render_quality(env: Environment, vp: Viewport) -> void:
 	RenderingServer.directional_shadow_atlas_set_size([2048, 4096, 4096, 8192][q], true)
 
 
+## Sun shadow settings per quality tier.
+func apply_sun_quality(sun: DirectionalLight3D) -> void:
+	var q: int = quality
+	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL if q == Quality.LOW else (DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS if q == Quality.MEDIUM else DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS)
+	sun.directional_shadow_max_distance = [35.0, 55.0, 80.0, 120.0][q]
+
+
 func fmt(n: BigNum) -> String:
 	return n.format(number_format)

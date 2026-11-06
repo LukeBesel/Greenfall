@@ -1,0 +1,22 @@
+{
+  "_doc": "Robot parts found buried in hexes with the detector. rarity weight = relative chance; signal = how far the detector picks it up (multiplier).",
+  "rarities": [
+    {"id": "rusty", "name": "Rusty", "color": "#9c7a5b", "weight": 50, "signal": 1.0, "bolts": 2},
+    {"id": "worn", "name": "Worn", "color": "#c9c9c9", "weight": 28, "signal": 1.1, "bolts": 5},
+    {"id": "restored", "name": "Restored", "color": "#5fbf7a", "weight": 14, "signal": 1.2, "bolts": 12},
+    {"id": "vintage", "name": "Vintage", "color": "#4aa3df", "weight": 6, "signal": 1.35, "bolts": 30},
+    {"id": "legendary", "name": "Legendary Maker-Made", "color": "#e8b44a", "weight": 2, "signal": 1.6, "bolts": 90}
+  ],
+  "types": [
+    {"id": "chassis", "name": "Chassis Frame", "model": "metal_toolbox"},
+    {"id": "locomotion", "name": "Drive Wheel Assembly", "model": "rusted_wheel_rim_01"},
+    {"id": "arm", "name": "Manipulator Arm", "model": "metal_jerrycan"},
+    {"id": "core", "name": "Control Core", "model": "circuit_board"},
+    {"id": "battery", "name": "Battery Cell", "model": "oil_tin"},
+    {"id": "hopper", "name": "Hopper Liner", "model": "plastic_crate_01"},
+    {"id": "sensor", "name": "Sensor Module", "model": "boombox"},
+    {"id": "module", "name": "Special Module", "model": "classic_laptop"}
+  ],
+  "chance_per_hex": 0.14,
+  "detector": {"range": 16.0, "dig_range": 1.4, "dig_time": 1.3, "min_interval": 0.08, "max_interval": 1.4}
+}

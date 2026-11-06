@@ -32,6 +32,13 @@ var piece_hex := PackedInt32Array()
 var piece_yaw := PackedFloat32Array()
 var piece_scale := PackedFloat32Array()
 var piece_tilt := PackedFloat32Array()
+var piece_embed := PackedFloat32Array()  # 0 = on the surface, >0 = fraction of pile height it sits at
+var layout: CityLayout
+## Buried robot parts (found with the detector).
+var part_pos := PackedVector3Array()
+var part_type := PackedInt32Array()
+var part_rarity := PackedInt32Array()
+var part_found := PackedByteArray()
 ## Big immovable wrecks (cars, barriers...) for M1: {model, pos, yaw}. Mega-junk cleanup comes later.
 var landmarks: Array[Dictionary] = []
 var piece_alive := PackedByteArray()
@@ -40,7 +47,8 @@ var cleaned_count: int = 0
 var junk_hex_count: int = 0
 
 
-func _init(p_radius: int = 9, p_hex_size: float = 3.2, p_seed: int = 4471) -> void:
+func _init(p_radius: int = 9, p_hex_size: float = 3.2, p_seed: int = 4471, p_layout: CityLayout = null) -> void:
+	layout = p_layout
 	radius = p_radius
 	hex_size = p_hex_size
 	seed_value = p_seed
@@ -102,41 +110,69 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 		weights.append(float(t.get("weight", 1.0)))
 		wsum += weights[-1]
 	junk_hex_count = 0
+	var by_id: Dictionary = {}
+	for i: int in junk_types.size():
+		by_id[str(junk_types[i]["id"])] = i
 	for id: int in n:
-		var dist: int = Hex.distance(hex_axial[id], Vector2i.ZERO)
-		if dist <= 1:
+		var center: Vector3 = hex_center(id)
+		var kind: int = _hex_kind(center)
+		if kind == HEX_HUB:
 			hex_hub[id] = 1
 			hex_clean[id] = 1
 			continue
+		if kind == HEX_BLOCKED:
+			hex_hub[id] = 2
+			hex_clean[id] = 1
+			continue
 		junk_hex_count += 1
+		var btype: int = layout.block_type_at(center.x, center.z) if layout else CityLayout.Block.LANDFILL
+		var dist: int = Hex.distance(hex_axial[id], Vector2i.ZERO)
+		var t_dist: float = clampf(float(dist - 2) / maxf(radius - 2, 1), 0.0, 1.0)
 		# Each hex leans toward one junk type so Pure Cubes are a reachable skill goal.
 		var theme: int = _weighted(rng, weights, wsum)
-		var t_dist: float = clampf(float(dist - 2) / maxf(radius - 2, 1), 0.0, 1.0)
-		var count: int = int(round(lerpf(pieces_per_hex.x, pieces_per_hex.y, t_dist))) + rng.randi_range(-1, 2)
-		var center: Vector3 = hex_center(id)
+		var count: int = int(round(lerpf(pieces_per_hex.x, pieces_per_hex.y, t_dist))) + rng.randi_range(-2, 3)
 		var piles: Array = []
-		for k: int in rng.randi_range(1, 2 + int(t_dist > 0.5)):
-			var pc: Vector2 = Vector2(rng.randf_range(-0.45, 0.45), rng.randf_range(-0.45, 0.45)) * hex_size
-			piles.append(Vector4(center.x + pc.x, center.z + pc.y, rng.randf_range(0.9, 1.7), rng.randf_range(0.18, 0.45) * (0.7 + t_dist * 0.6)))
+		if btype == CityLayout.Block.LANDFILL:
+			count = int(count * 2.2)
+			for k: int in rng.randi_range(1, 2):
+				var pc := Vector2(rng.randf_range(-0.35, 0.35), rng.randf_range(-0.35, 0.35)) * hex_size
+				piles.append(Vector4(center.x + pc.x, center.z + pc.y, rng.randf_range(1.6, 2.4), rng.randf_range(0.7, 1.4)))
+		elif btype == CityLayout.Block.VACANT:
+			count = int(count * 0.7)
 		hex_piles[id] = piles
-		for k: int in count:
-			var type_idx: int = theme if rng.randf() < 0.62 else _weighted(rng, weights, wsum)
-			var t: Dictionary = junk_types[type_idx]
+		var placed: int = 0
+		var attempts: int = 0
+		while placed < count and attempts < count * 12:
+			attempts += 1
 			var pos: Vector3
-			if rng.randf() < 0.72:
+			var in_pile: bool = not piles.is_empty() and rng.randf() < 0.85
+			if in_pile:
 				var pile: Vector4 = piles[rng.randi() % piles.size()]
 				var ang: float = rng.randf() * TAU
-				var rr: float = absf(rng.randfn(0.0, 0.5)) * pile.z
+				var rr: float = sqrt(rng.randf()) * pile.z
 				pos = Vector3(pile.x + cos(ang) * rr, 0.0, pile.y + sin(ang) * rr)
 			else:
-				pos = center + Vector3(rng.randf_range(-1.0, 1.0), 0.0, rng.randf_range(-1.0, 1.0)) * hex_size * 0.75
-			# Keep pieces inside their own hex.
+				pos = center + Vector3(rng.randf_range(-1.0, 1.0), 0.0, rng.randf_range(-1.0, 1.0)) * hex_size
 			if hex_at(pos) != id:
-				pos = center + (pos - center) * 0.45
-			var models: Array = t.get("models", [])
-			var mdl: Dictionary = _pick_model(rng, models)
+				continue
+			var surf: int = layout.surface_at(pos.x, pos.z) if layout else CityLayout.Surface.LOT
+			if surf == CityLayout.Surface.BUILDING or surf == CityLayout.Surface.YARD:
+				continue
+			# Litter collects in gutters; mid-road stays sparser.
+			if surf == CityLayout.Surface.ROAD and not in_pile:
+				var cd: float = layout.curb_distance(pos.x, pos.z)
+				if rng.randf() > (1.0 if cd < 1.3 else 0.22):
+					continue
+			var type_idx: int = theme if rng.randf() < 0.55 else _weighted(rng, weights, wsum)
+			if surf == CityLayout.Surface.SIDEWALK and rng.randf() < 0.45:
+				type_idx = int(by_id.get("paper" if rng.randf() < 0.4 else "plastic", type_idx))
+			var t: Dictionary = junk_types[type_idx]
+			var mdl: Dictionary = _pick_model(rng, t.get("models", []))
+			if surf == CityLayout.Surface.SIDEWALK and str(t["id"]) == "plastic" and rng.randf() < 0.5:
+				mdl = {"id": "trashbag", "vol": 1.4, "lie": 0.0}
 			var vol: float = float(mdl.get("vol", 1.0)) * rng.randf_range(0.85, 1.15)
 			var pid: int = piece_pos.size()
+			pos.y = layout.height_at(pos.x, pos.z) if layout else 0.0
 			piece_pos.append(pos)
 			piece_type.append(type_idx)
 			piece_model.append(str(mdl.get("id", "")))
@@ -145,12 +181,37 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 			piece_yaw.append(rng.randf() * TAU)
 			piece_scale.append(rng.randf_range(0.9, 1.1))
 			piece_pose.append((1 + rng.randi() % 2) if rng.randf() < float(mdl.get("lie", 0.0)) else 0)
-			piece_tilt.append(rng.randf_range(-0.12, 0.12))
+			piece_tilt.append(rng.randf_range(-0.5, 0.5) if in_pile else rng.randf_range(-0.12, 0.12))
+			piece_embed.append(rng.randf_range(0.55, 1.02) if in_pile else 0.0)
 			piece_alive.append(1)
 			hex_pieces[id].append(pid)
 			hex_total[id] += vol
+			placed += 1
 		hex_left[id] = hex_total[id]
 	cleaned_count = 0
+
+
+const HEX_JUNK: int = 0
+const HEX_HUB: int = 1
+const HEX_BLOCKED: int = 2
+
+
+func _hex_kind(center: Vector3) -> int:
+	if layout == null:
+		return HEX_HUB if Hex.distance(Hex.world_to_axial(Vector2(center.x, center.z), hex_size), Vector2i.ZERO) <= 1 else HEX_JUNK
+	var counts: Dictionary = {}
+	for k: int in 7:
+		var p: Vector3 = center
+		if k > 0:
+			var a: float = TAU * k / 6.0
+			p += Vector3(cos(a), 0, sin(a)) * hex_size * 0.6
+		var s: int = layout.surface_at(p.x, p.z)
+		counts[s] = int(counts.get(s, 0)) + 1
+	if int(counts.get(CityLayout.Surface.YARD, 0)) >= 4:
+		return HEX_HUB
+	if int(counts.get(CityLayout.Surface.BUILDING, 0)) >= 5:
+		return HEX_BLOCKED
+	return HEX_JUNK
 
 
 ## Height of the junk mound under a point, shrinking as the hex is cleaned (0 once clean).
@@ -164,6 +225,11 @@ func ground_height(id: int, pos: Vector3) -> float:
 		if d < 1.0:
 			h = maxf(h, pile.w * sqrt(1.0 - d * d))
 	return h * (0.3 + 0.7 * left)
+
+
+## World Y where a piece rests: surface (curb) height plus its place in a (shrinking) pile.
+func piece_rest_y(pid: int) -> float:
+	return piece_pos[pid].y + ground_height(piece_hex[pid], piece_pos[pid]) * piece_embed[pid]
 
 
 func _pick_model(rng: RandomNumberGenerator, models: Array) -> Dictionary:
@@ -180,6 +246,58 @@ func _pick_model(rng: RandomNumberGenerator, models: Array) -> Dictionary:
 	return models[-1]
 
 
+## Buries robot parts in some junk hexes (deterministic). parts_def = data/parts.json.
+func bury_parts(parts_def: Dictionary) -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value + 21
+	part_pos = PackedVector3Array()
+	part_type = PackedInt32Array()
+	part_rarity = PackedInt32Array()
+	part_found = PackedByteArray()
+	var rar: Array = parts_def.get("rarities", [])
+	var types: Array = parts_def.get("types", [])
+	if rar.is_empty() or types.is_empty():
+		return
+	var wsum: float = 0.0
+	for r: Dictionary in rar:
+		wsum += float(r["weight"])
+	var chance: float = float(parts_def.get("chance_per_hex", 0.14))
+	for id: int in hex_count():
+		if hex_hub[id] != 0 or rng.randf() > chance:
+			continue
+		var c: Vector3 = hex_center(id)
+		var p: Vector3 = c + Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)) * hex_size * 0.6
+		if layout:
+			if layout.surface_at(p.x, p.z) == CityLayout.Surface.BUILDING:
+				continue
+			p.y = layout.height_at(p.x, p.z)
+		var roll: float = rng.randf() * wsum
+		var ri: int = 0
+		for i: int in rar.size():
+			roll -= float(rar[i]["weight"])
+			if roll <= 0.0:
+				ri = i
+				break
+		part_pos.append(p)
+		part_type.append(rng.randi() % types.size())
+		part_rarity.append(ri)
+		part_found.append(0)
+
+
+## Nearest unfound part within range (or -1).
+func nearest_part(pos: Vector3, max_dist: float) -> int:
+	var best: int = -1
+	var best_d: float = max_dist
+	for i: int in part_pos.size():
+		if part_found[i] == 1:
+			continue
+		var d: float = Vector2(pos.x - part_pos[i].x, pos.z - part_pos[i].z).length()
+		if d < best_d:
+			best_d = d
+			best = i
+	return best
+
+
 ## Places big wreck props on outer junk hexes (deterministic).
 func place_landmarks(defs: Array) -> void:
 	var rng := RandomNumberGenerator.new()
@@ -191,11 +309,17 @@ func place_landmarks(defs: Array) -> void:
 			for attempt: int in 20:
 				var id: int = rng.randi_range(0, hex_count() - 1)
 				var dist: int = Hex.distance(hex_axial[id], Vector2i.ZERO)
-				if hex_hub[id] == 1 or dist < 3 or used.has(id):
+				if hex_hub[id] != 0 or dist < 2 or used.has(id):
 					continue
 				used[id] = true
 				var off := Vector3(rng.randf_range(-0.6, 0.6), 0, rng.randf_range(-0.6, 0.6)) * hex_size * 0.4
-				landmarks.append({"model": str(d["id"]), "pos": hex_center(id) + off, "yaw": rng.randf() * TAU, "hex": id})
+				var lp: Vector3 = hex_center(id) + off
+				if layout and layout.surface_at(lp.x, lp.z) in [CityLayout.Surface.BUILDING, CityLayout.Surface.YARD, CityLayout.Surface.SIDEWALK]:
+					continue
+				var yaw: float = rng.randf() * TAU
+				if str(d["id"]) in ["covered_car", "concrete_road_barrier", "concrete_road_barrier_02"]:
+					yaw = (PI * 0.5 if rng.randf() < 0.5 else 0.0) + rng.randf_range(-0.25, 0.25)
+				landmarks.append({"model": str(d["id"]), "pos": lp, "yaw": yaw, "hex": id})
 				break
 
 
@@ -295,6 +419,7 @@ func to_dict() -> Dictionary:
 		"seed": seed_value, "radius": radius,
 		"alive": Marshalls.raw_to_base64(piece_alive),
 		"clean": Marshalls.raw_to_base64(hex_clean),
+		"parts_found": Marshalls.raw_to_base64(part_found) if not part_found.is_empty() else "",
 	}
 
 
@@ -308,6 +433,9 @@ func apply_dict(d: Dictionary) -> bool:
 		return false
 	piece_alive = alive
 	hex_clean = clean
+	var pf: PackedByteArray = Marshalls.base64_to_raw(str(d.get("parts_found", "")))
+	if pf.size() == part_found.size():
+		part_found = pf
 	cleaned_count = 0
 	for id: int in hex_count():
 		hex_left[id] = 0.0

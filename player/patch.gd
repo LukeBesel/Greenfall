@@ -18,6 +18,7 @@ var cam_yaw_provider: Callable = func() -> float: return 0.0
 var compartment := Compartment.new()
 var carried: Array[JunkCube] = []
 var model: PatchModel
+var detector: PartDetector
 
 var _scoop_timer: float = 0.0
 var _scoop_combo: int = 0
@@ -51,6 +52,10 @@ func _ready() -> void:
 	model = PatchModel.new()
 	model.name = "Model"
 	add_child(model)
+	detector = PartDetector.new()
+	detector.name = "Detector"
+	detector.patch = self
+	add_child(detector)
 	_stack_root = Node3D.new()
 	_stack_root.name = "Stack"
 	_stack_root.position = model.stack_point
@@ -310,6 +315,9 @@ func _handle_interact() -> void:
 	if _cubing > 0.0:
 		return
 	if input.interact_pressed():
+		if detector.can_dig() and carried.is_empty():
+			detector.dig(_on_part_found)
+			return
 		var c: JunkCube = nearest_loose_cube()
 		if c and carried.size() < carry_cap():
 			pick_up(c)
@@ -319,6 +327,34 @@ func _handle_interact() -> void:
 			world.try_interact(self)
 	elif input.drop_pressed() and not carried.is_empty():
 		place_top_cube()
+
+
+func _on_part_found(idx: int) -> void:
+	var f: HexField = world.field
+	var t: int = f.part_type[idx]
+	var r: int = f.part_rarity[idx]
+	GameState.parts.append({"type": t, "rarity": r})
+	GameState.inc_stat("parts_found")
+	var rar: Dictionary = Economy.rarity(r)
+	var pt: Dictionary = Economy.part_type(t)
+	var col: Color = Color.html(str(rar.get("color", "#ffffff")))
+	var pos: Vector3 = f.part_pos[idx]
+	# The part surfaces: a dirty little prop pops up and glints in its rarity color.
+	var mi := MeshInstance3D.new()
+	mi.mesh = AssetLib.model_mesh(str(pt.get("model", "metal_toolbox")))
+	get_tree().current_scene.add_child(mi)
+	mi.global_position = pos - Vector3(0, 0.3, 0)
+	var tw := mi.create_tween()
+	tw.tween_property(mi, "global_position", pos + Vector3(0, 0.6, 0), 0.5).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tw.tween_interval(0.8)
+	tw.tween_property(mi, "global_position", to_global(model.chest_point), 0.35)
+	tw.tween_callback(mi.queue_free)
+	Vfx.burst("sparkle", pos + Vector3(0, 0.6, 0), col, 0.7)
+	Audio.play("ding", 1.0 if r < 3 else 0.8, -6.0)
+	if r >= 3:
+		Audio.play("fanfare", 1.0, -8.0)
+	Vfx.float_text(pos + Vector3(0, 1.4, 0), "%s %s" % [rar.get("name", ""), pt.get("name", "Part")], col, 0.55, 0.8)
+	EventBus.toast.emit("Recovered: %s %s" % [rar.get("name", ""), pt.get("name", "part")], "hint")
 
 
 func nearest_loose_cube() -> JunkCube:
@@ -431,6 +467,8 @@ func _update_hints(delta: float) -> void:
 		var pid: int = world.field.find_scoop_target(scoop_origin(), forward(), stat("scoop_reach") + 2.0, stat("scoop_width") + 1.5)
 		if pid >= 0:
 			look = world.field.piece_pos[pid]
+	if prompt == "" and detector.can_dig() and carried.is_empty():
+		prompt = "dig"
 	if world and world.has_method("interact_prompt") and prompt == "":
 		prompt = world.interact_prompt(self)
 	model.look_toward(look)

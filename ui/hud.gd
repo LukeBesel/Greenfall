@@ -17,6 +17,7 @@ var _meter_label: Label
 var _prompt: Label
 var _carry_label: Label
 var _hex_label: Label
+var _signal_label: Label
 var _toasts: VBoxContainer
 var _upgrade_btn: Button
 var _hints: Label
@@ -108,6 +109,9 @@ func _build_bottom() -> void:
 	_prompt = UITheme.label("", 22, UITheme.CREAM)
 	_prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(_prompt)
+	_signal_label = UITheme.label("", 18, Color(1, 0.3, 0.25))
+	_signal_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vb.add_child(_signal_label)
 	_hex_label = UITheme.label("", 16, UITheme.MUTED)
 	_hex_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(_hex_label)
@@ -152,7 +156,7 @@ func _build_bottom_right() -> void:
 	_upgrade_btn.pressed.connect(func() -> void: if world: world.open_upgrades())
 	vb.add_child(_upgrade_btn)
 	var hm: MarginContainer = _margin(Control.PRESET_BOTTOM_LEFT)
-	_hints = UITheme.label("WASD move · Hold LMB/Space scoop · RMB/C cube · E pick up / place · Q drop · Tab upgrades · Wheel zoom · V lens", 14, Color(1, 1, 1, 0.6))
+	_hints = UITheme.label("WASD move · Hold LMB/Space scoop · RMB/C cube · E pick up / place · Q drop · E at hub workbench to upgrade · Wheel zoom · V lens", 14, Color(1, 1, 1, 0.6))
 	_hints.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_hints.custom_minimum_size = Vector2(300, 0)
 	hm.add_child(_hints)
@@ -190,6 +194,8 @@ func _process(delta: float) -> void:
 		_field_bar.value = pct
 		var total: float = float(Economy.planet.get("total_hexes", 40962))
 		_planet_label.text = "%s  %s%%" % [Economy.planet.get("name", "Verdance"), _fmt_small_pct(float(f.cleaned_count) / total * 100.0)]
+	if patch and patch.detector and not patch.detector.readout_changed.is_connected(_on_signal):
+		patch.detector.readout_changed.connect(_on_signal)
 	if patch:
 		_meter_label.text = "%.1f / %.0f" % [patch.compartment.fill, patch.capacity()]
 		_meter.set_values(patch.compartment.fill, patch.capacity())
@@ -207,8 +213,16 @@ func _process(delta: float) -> void:
 		if Economy.is_unlocked(id) and not Economy.is_maxed(id) and GameState.can_afford("cubes", Economy.upgrade_cost(id)):
 			affordable = true
 			break
-	_upgrade_btn.text = "Upgrades  [Tab]" + ("  ●" if affordable else "")
+	var at_bench: bool = world != null and world.near_bench()
+	_upgrade_btn.disabled = not at_bench
+	_upgrade_btn.text = ("Workbench  [E]" if at_bench else "Workbench at hub") + ("  ●" if affordable else "")
 	_upgrade_btn.modulate = Color(1.15, 1.1, 0.8) if affordable else Color.WHITE
+
+
+func _on_signal(text: String, color: Color, strength: float) -> void:
+	_signal_label.text = text
+	_signal_label.add_theme_color_override("font_color", color)
+	_signal_label.modulate.a = 0.55 + strength * 0.45
 
 
 func _fmt_small_pct(p: float) -> String:
@@ -224,8 +238,9 @@ func _fmt_small_pct(p: float) -> String:
 func _prompt_text(kind: String) -> String:
 	match kind:
 		"pick_up": return "[E]  Pick up cube"
+		"dig": return "[E]  Dig up part"
 		"place": return "[E]  Place cube    ·    roll onto the Depot pad to cash in"
-		"upgrades": return "[E]  Upgrade Board"
+		"upgrades": return "[E]  Use workbench"
 		"flower": return "A tiny wildflower. Patch is careful not to scoop it."
 	return ""
 

@@ -10,6 +10,7 @@ var patch_base: Dictionary = {}
 var cube_rules: Dictionary = {}
 var planet: Dictionary = {}
 var landmarks: Array = []
+var parts: Dictionary = {}
 
 
 func _ready() -> void:
@@ -45,6 +46,7 @@ func load_data() -> void:
 	patch_base = pd.get("stats", {})
 	cube_rules = pd.get("cube", {})
 	planet = read_json("res://data/planet.json")
+	parts = read_json("res://data/parts.json")
 
 
 # --- Stats --------------------------------------------------------------------
@@ -215,6 +217,16 @@ func evaluate_cube(contents: Dictionary, capacity: float, value_mult: float = -1
 		"pure": pure, "perfect": perfect, "lumpy": lumpy,
 		"dominant": dominant, "colors": colors, "volume": vol, "fill": fill,
 	}
+
+
+func rarity(idx: int) -> Dictionary:
+	var r: Array = parts.get("rarities", [])
+	return r[clampi(idx, 0, r.size() - 1)] if not r.is_empty() else {}
+
+
+func part_type(idx: int) -> Dictionary:
+	var t: Array = parts.get("types", [])
+	return t[clampi(idx, 0, t.size() - 1)] if not t.is_empty() else {}
 
 
 func hex_bonus(junk_volume: float) -> BigNum:

@@ -13,11 +13,15 @@ extends Node
 ##   --cam=NAME         camera preset for screenshots (see CameraRig.apply_preset)
 ##   --give=N           start with N cubes (testing UI)
 ##   --open=NAME        open a UI screen on start (upgrades)
-##   --turnaround       Patch turnaround shots (see scenes/turnaround.gd)
+##   --quality=N        render quality preset 0..3 (Low..Ultra) for faster screenshots
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0
 var _shots_taken: int = 0
+var _perf_t: float = 0.0
+var _start_ms: int = Time.get_ticks_msec()
+var _frames: int = 0
+var _perf_frames: int = 0
 
 
 func _ready() -> void:
@@ -28,6 +32,8 @@ func _ready() -> void:
 			args[kv[0]] = kv[1] if kv.size() > 1 else "1"
 	if has("fresh") or has("nosave"):
 		SaveManager.enabled = false
+	if has("quality"):
+		Settings.quality = clampi(int(get_f("quality", 2.0)), 0, 3)
 	if has("time-scale"):
 		Engine.time_scale = float(args["time-scale"])
 	if not args.is_empty():
@@ -47,14 +53,25 @@ func get_s(flag: String, default: String) -> String:
 
 
 func _process(delta: float) -> void:
-	# Real (unscaled) time so screenshots line up regardless of time scale.
-	_elapsed += delta / maxf(Engine.time_scale, 0.0001)
+	# Wall-clock time (frame delta is clamped by the engine on very slow frames).
+	_elapsed = (Time.get_ticks_msec() - _start_ms) / 1000.0
+	_frames += 1
 	if has("shot"):
 		var count: int = int(get_f("shots", 1.0))
 		var delay: float = get_f("shot-delay", 2.0)
 		var every: float = get_f("shot-every", 1.0)
 		if _shots_taken < count and _elapsed >= delay + every * _shots_taken:
 			_take_shot(count)
+	if has("perf"):
+		_perf_t += delta
+		_perf_frames += 1
+		if _perf_t >= 3.0:
+			print("[perf] t=%.0fs frames=%d game_fps=%.2f draw_calls=%d objects=%d prims=%d" % [_elapsed, _frames, _perf_frames / _perf_t,
+				RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME),
+				RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_OBJECTS_IN_FRAME),
+				RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME)])
+			_perf_t = 0.0
+			_perf_frames = 0
 	if has("quit-after") and _elapsed >= get_f("quit-after", 5.0):
 		print("[DevHooks] quitting after %.1fs" % _elapsed)
 		get_tree().quit()

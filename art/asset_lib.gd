@@ -19,10 +19,105 @@ static func model_mesh(id: String) -> Mesh:
 	return _meshes[id]
 
 
+static var _lite: Dictionary = {}
+
+
+## A lighter version of a model mesh using the importer-generated LOD closest to (but not above)
+## max_tris triangles per surface. Keeps materials. Falls back to the full mesh.
+static func model_mesh_lite(id: String, max_tris: int = 1500) -> Mesh:
+	var key: String = "%s@%d" % [id, max_tris]
+	if _lite.has(key):
+		return _lite[key]
+	var out: Mesh = lite(model_mesh(id), max_tris)
+	_lite[key] = out
+	return out
+
+
+static var _lite_by_rid: Dictionary = {}
+
+
+## Lighter version of any mesh (see model_mesh_lite).
+static func lite(full: Mesh, max_tris: int) -> Mesh:
+	var key: String = "%d@%d" % [full.get_rid().get_id(), max_tris]
+	if _lite_by_rid.has(key):
+		return _lite_by_rid[key]
+	var out := ArrayMesh.new()
+	var total_full: int = 0
+	var total_lite: int = 0
+	for s: int in full.get_surface_count():
+		var arrays: Array = full.surface_get_arrays(s)
+		var idx_full: PackedInt32Array = arrays[Mesh.ARRAY_INDEX] if arrays[Mesh.ARRAY_INDEX] != null else PackedInt32Array()
+		total_full += idx_full.size() / 3
+		var best: PackedInt32Array = idx_full
+		var surf: Dictionary = RenderingServer.mesh_get_surface(full.get_rid(), s)
+		var vcount: int = (arrays[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()
+		var budget: int = max_tris * 3 / maxi(full.get_surface_count(), 1)
+		var lods: Array = surf.get("lods", [])
+		if best.size() > budget and lods.is_empty():
+			# No importer LODs (merged or odd meshes): generate them now.
+			var im := ImporterMesh.new()
+			im.add_surface(Mesh.PRIMITIVE_TRIANGLES, arrays)
+			im.generate_lods(25.0, 60.0, [])
+			for li: int in im.get_surface_lod_count(0):
+				var idx: PackedInt32Array = im.get_surface_lod_indices(0, li)
+				best = idx
+				if idx.size() <= budget:
+					break
+		if best.size() > budget:
+			for lod: Dictionary in lods:
+				var data: PackedByteArray = lod.get("index_data", PackedByteArray())
+				var wide: bool = vcount > 65535
+				var n: int = data.size() / (4 if wide else 2)
+				if n <= 0:
+					continue
+				var idx := PackedInt32Array()
+				idx.resize(n)
+				for i: int in n:
+					idx[i] = data.decode_u32(i * 4) if wide else data.decode_u16(i * 2)
+				best = idx
+				if n <= budget:
+					break
+		arrays[Mesh.ARRAY_INDEX] = best
+		arrays[Mesh.ARRAY_BONES] = null
+		arrays[Mesh.ARRAY_WEIGHTS] = null
+		total_lite += best.size() / 3
+		out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+		out.surface_set_material(s, full.surface_get_material(s))
+	if total_lite >= total_full:
+		_lite_by_rid[key] = full
+		return full
+	_lite_by_rid[key] = out
+	return out
+
+
 static func model_aabb(id: String) -> AABB:
 	if not _aabbs.has(id):
 		_load_model(id)
 	return _aabbs[id]
+
+
+static var _parts: Dictionary = {}
+
+
+## One named MeshInstance from a model (for files that bundle variants, e.g. fire_hydrant).
+static func model_part(id: String, node_name: String) -> Mesh:
+	var key: String = id + "::" + node_name
+	if _parts.has(key):
+		return _parts[key]
+	var ps: PackedScene = load(MODEL_DIR % [id, id])
+	var root: Node = ps.instantiate()
+	var mesh: Mesh = null
+	var found: Array = []
+	_collect(root, Transform3D.IDENTITY, found)
+	for f: Dictionary in found:
+		if String((f["mi"] as Node).name) == node_name:
+			mesh = (f["mi"] as MeshInstance3D).mesh
+			_apply_overrides(f["mi"], mesh)
+	root.free()
+	if mesh == null:
+		mesh = model_mesh(id)
+	_parts[key] = mesh
+	return mesh
 
 
 static func has_model(id: String) -> bool:
