@@ -201,6 +201,14 @@ func _ready() -> void:
 	if DevHooks.has("give-parts"):
 		for k: int in int(DevHooks.get_f("give-parts", 8.0)):
 			GameState.parts.append({"type": k % 8, "rarity": mini(k / 8, 4)})
+	if DevHooks.has("clean-hexes"):
+		# --clean-hexes=N  pre-clean the N land hexes nearest the base (to test planters/waterers).
+		var land: Array = range(field.hex_count()).filter(func(h: int) -> bool: return field.hex_hub[h] == 0 and not field.is_water(h) and not field.is_clean(h))
+		land.sort_custom(func(a: int, b: int) -> bool: return field.hex_center(a).length() < field.hex_center(b).length())
+		for h: int in land.slice(0, int(DevHooks.get_f("clean-hexes", 2.0))):
+			for pid: int in field.hex_pieces[h]:
+				if field.piece_alive[pid] == 1:
+					collect_piece(pid)
 	if DevHooks.has("robots"):
 		# --robots=scoopie:2,haulbug:1@3  (count, optional tier after @)
 		var n_spawned: int = 0

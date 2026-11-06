@@ -5,10 +5,37 @@ extends Node3D
 const NAMES: Array[String] = ["Bolt", "Rivet", "Tin", "Sprocket", "Gizmo", "Piston", "Nib", "Widget", "Ratchet", "Cog", "Dibs", "Fuse", "Grommet", "Pip", "Socket", "Tack"]
 
 var world: Node
+## Refill points for waterers (base barrel, placed Water Tanks, clean lake hexes).
+var water_net: WaterNet
+var _report_done: bool = false
 
 
 func _ready() -> void:
 	add_to_group("persist")
+	if world != null:
+		water_net = WaterNet.new()
+		water_net.name = "WaterNet"
+		water_net.world = world
+		add_child(water_net)
+
+
+func _process(_delta: float) -> void:
+	# --bot-report (or any --robots run): print what every robot got done just before --quit-after ends the run.
+	if _report_done or not (DevHooks.has("bot-report") or DevHooks.has("robots")) or not DevHooks.has("quit-after"):
+		return
+	if DevHooks._elapsed >= DevHooks.get_f("quit-after", 5.0) - 1.0:
+		_report_done = true
+		print_report()
+
+
+func print_report() -> void:
+	print("[bots] ---- robot report (%d robots, %d/%d hexes clean) ----" % [robots().size(), world.field.junk_hexes_cleaned() if world else 0, world.field.junk_hex_count if world else 0])
+	for r: Robot in robots():
+		var parts: PackedStringArray = []
+		for k: String in r.log_stats:
+			if k != "stall_s" and float(r.log_stats[k]) > 0.0:
+				parts.append("%s=%s" % [k, str(snappedf(float(r.log_stats[k]), 0.1))])
+		print("[bots] %-8s %-9s %s | %s | stalled %.0fs | idle %.0fs" % [r.robot_name, r.type_id, ", ".join(parts), r.status_text(), float(r.log_stats.get("stall_s", 0.0)), float(r.log_stats.get("idle_s", 0.0))])
 
 
 func robots() -> Array[Robot]:
@@ -69,12 +96,63 @@ func recipe_status(type_id: String) -> Array:
 	return out
 
 
+# --- Crews and caps ----------------------------------------------------------------------
+
+## Base level (hub level) that sets crew caps.
+func base_level() -> int:
+	if world != null and world.get("hub") != null:
+		return int(world.hub.level)
+	return int(GameState.world.get("hub_level", 1))
+
+
+## Max robots per crew: base + per_level * hub level (data/robots.json "crew_cap").
+func crew_cap() -> int:
+	var c: Dictionary = Economy.robot_cfg.get("crew_cap", {})
+	return int(c.get("base", 3)) + int(c.get("per_level", 3)) * base_level()
+
+
+## The crew a newly built robot of this type joins (multibots start as cleaners).
+static func crew_of_type(type_id: String) -> String:
+	var r: String = str(Economy.robots.get(type_id, {}).get("role", "clean"))
+	return "clean" if r == "any" else r
+
+
+func crew_size(role_id: String) -> int:
+	return robots_with_role(role_id).size()
+
+
+## Specialist robot types that make up a crew (for the Command panel's Build buttons).
+static func types_for_role(role_id: String) -> Array[String]:
+	var out: Array[String] = []
+	for id: String in Economy.robot_order:
+		if str(Economy.robots[id].get("role", "")) == role_id:
+			out.append(id)
+	return out
+
+
+## "" if the type can be built now, else why not (parts, cubes, crew cap).
+func build_block_reason(type_id: String) -> String:
+	if crew_size(crew_of_type(type_id)) >= crew_cap():
+		return "Crew full (%d/%d): upgrade the hub" % [crew_size(crew_of_type(type_id)), crew_cap()]
+	var missing: int = 0
+	for r: Dictionary in recipe_status(type_id):
+		if not r["have"]:
+			missing += 1
+	if missing > 0:
+		return "Missing %d part%s" % [missing, "" if missing == 1 else "s"]
+	if not GameState.can_afford("cubes", build_cost(type_id)):
+		return "Not enough cubes"
+	return ""
+
+
 func build_cost(type_id: String) -> BigNum:
 	var base: float = float(Economy.robots[type_id].get("cost", 100))
 	return BigNum.from_float(base * pow(1.35, count(type_id)))
 
 
 func can_build(type_id: String) -> bool:
+	if crew_size(crew_of_type(type_id)) >= crew_cap():
+		return false
 	for r: Dictionary in recipe_status(type_id):
 		if not r["have"]:
 			return false
@@ -197,11 +275,11 @@ func apply_preset(clean_pct: float, plant_pct: float) -> void:
 #   "stay":     work only inside the zone; wait there when it is done.
 #   "follow":   the zone is wherever Patch is (hexes around the player).
 #   "recall":   park at the hub until given new orders.
-# Groups are keyed by role ("clean", "haul", "plant", "water"); a single robot's own order
+# Groups are keyed by role ("clean", "haul", "plant", "water", "skim"); a single robot's own order
 # (keyed by name) overrides its group's.
 
 const MODES: Array[String] = ["priority", "stay", "follow", "recall"]
-const ROLES: Array[String] = ["clean", "haul", "plant", "water"]
+const ROLES: Array[String] = ["clean", "haul", "plant", "water", "skim"]
 
 
 func _orders() -> Dictionary:

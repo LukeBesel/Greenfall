@@ -14,6 +14,10 @@ extends Node
 ##   --give=N           start with N cubes (testing UI)
 ##   --open=NAME        open a UI screen on start (upgrades)
 ##   --quality=N        render quality preset 0..3 (Low..Ultra) for faster screenshots
+##   --robots=type:n,..  spawn test robots (slice.gd); any --robots run prints a [bots] report before quitting
+##   --clean-hexes=N    pre-clean the N land hexes nearest the base
+##   --bot-report       print the [bots] robot report before --quit-after
+##   --trace-bot=NAME   print one robot's state every 2 s (target, hopper, stall timer, status)
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0

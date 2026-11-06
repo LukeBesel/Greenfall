@@ -3,6 +3,10 @@ extends CharacterBody3D
 ## A helper robot. Roles:
 ##   clean (Scoopie): picks junk in its work hex, bales it when full, moves on to the next hex.
 ##   haul (Haul Bug): carries loose bales to the scale.
+##   plant (Seedling): plants seeds on clean ground.
+##   water (Drip): sprays the thirstiest plants in its zone, refills at the nearest refill point.
+##   skim (Skimmer): floats over lake hexes netting floating junk, drops bales on the shore.
+## Robots with nothing to do park near their zone (or the base) and idle.
 ## Mk IV units hover and lift junk with a tractor beam; lower tiers scoop with an arm.
 
 var type_id: String = "scoopie"
@@ -30,6 +34,22 @@ var _beam_target: Variant = null
 var job: String = "clean"
 var water: float = 0.0
 var _target_slot: int = -1
+## What this robot got done (for the Command panel / --bot-report).
+var log_stats: Dictionary = {"junk": 0.0, "bales": 0.0, "hauled": 0.0, "planted": 0.0, "watered": 0.0, "refills": 0.0, "idle_s": 0.0, "stall_s": 0.0, "unstuck": 0.0}
+var _idling: bool = false
+var _parked: bool = false
+var _idle_reason: String = ""
+var _refill: Dictionary = {}
+var _refilling: bool = false
+var _refill_fx_t: float = 0.0
+var _shore := Vector3.INF
+var _stall_goal := Vector3.INF
+var _stall_best: float = INF
+var _stall_t: float = 0.0
+var _goal := Vector3.ZERO
+var _goal_d: float = 0.0
+var _trace_t: float = 0.0
+var _skip: Dictionary = {}  # piece / slot ids this robot gave up on after getting stuck
 
 
 func _ready() -> void:
@@ -38,7 +58,7 @@ func _ready() -> void:
 	collision_mask = 1
 	var cs := CollisionShape3D.new()
 	var sh := CylinderShape3D.new()
-	sh.radius = 0.35 if type_id == "scoopie" else 0.45
+	sh.radius = 0.35 if type_id in ["scoopie", "drip", "seedling"] else 0.45
 	sh.height = 0.8
 	cs.shape = sh
 	cs.position = Vector3(0, 0.45, 0)
@@ -71,7 +91,19 @@ func rebuild_visual() -> void:
 
 
 func stat(s: String) -> float:
-	return Economy.robot_stat(type_id, s, tier, rarity_bonus)
+	var v: float = Economy.robot_stat(type_id, s, tier, rarity_bonus)
+	# Water gear also improves with the Mk tier (Economy scales the work stats).
+	if s in ["tank", "refill_rate"]:
+		v *= _tier_mult()
+	elif s == "spray_radius":
+		v *= sqrt(_tier_mult())
+	return v
+
+
+func _tier_mult() -> float:
+	if Economy.robot_tiers.is_empty():
+		return 1.0
+	return float(Economy.robot_tiers[clampi(tier, 0, Economy.robot_tiers.size() - 1)].get("mult", 1.0))
 
 
 func _physics_process(delta: float) -> void:
@@ -82,18 +114,41 @@ func _physics_process(delta: float) -> void:
 	_busy = maxf(0.0, _busy - delta)
 	var move := Vector3.ZERO
 	if _busy <= 0.0:
+		_idling = false
 		move = _think(delta)
+	_watch_stall(move, delta)
+	if DevHooks.get_s("trace-bot", "") == robot_name:
+		_trace_t += delta
+		if _trace_t > 2.0:
+			_trace_t = 0.0
+			var col: KinematicCollision3D = get_last_slide_collision()
+			if col and col.get_collider() is Node:
+				var cn: Node = col.get_collider()
+				print("[trace] hit %s (%s) parent=%s at %s" % [cn.name, cn.get_class(), cn.get_parent().name if cn.get_parent() else "-", str(col.get_position())])
+			print("[trace] %s pos=%s hex=%d work=%d piece=%d ppos=%s busy=%.1f hop=%.1f/%.1f pend=%.1f stall=%.1f move=%s | %s" % [robot_name, str(global_position.snapped(Vector3.ONE * 0.1)), world.field.hex_at(global_position), work_hex, _target_piece, str(world.field.piece_pos[_target_piece].snapped(Vector3.ONE * 0.1)) if _target_piece >= 0 else "-", _busy, hopper.fill, stat("capacity"), hopper.pending, _stall_t, str(move.snapped(Vector3.ONE * 0.1)), status_text()])
+	if _idling:
+		log_stats["idle_s"] = float(log_stats["idle_s"]) + delta
 	var spd: float = stat("speed")
 	var target_v: Vector3 = move * spd
 	var hv := Vector3(velocity.x, 0, velocity.z).move_toward(target_v, 10.0 * delta)
 	velocity = Vector3(hv.x, 0.0 if is_on_floor() else velocity.y - 20.0 * delta, hv.z)
-	if visual.hover:
+	if visual.hover or visual.floats:
+		# Hold a fixed height over whatever is below (and just ahead), so curbs and slabs
+		# poking out of the lake don't wall a hovering/floating robot in.
 		velocity.y = 0.0
-		global_position.y = lerpf(global_position.y, 0.05, delta * 4.0)
+		var lay: CityLayout = world.field.layout
+		var ground: float = 0.0
+		if lay:
+			var ahead: Vector3 = global_position + Vector3(hv.x, 0, hv.z).limit_length(1.0) * 0.6
+			ground = clampf(maxf(lay.height_at(global_position.x, global_position.z), lay.height_at(ahead.x, ahead.z)), 0.0, 0.4)
+		global_position.y = lerpf(global_position.y, ground + 0.06, clampf(delta * 6.0, 0.0, 1.0))
 	if hv.length() > 0.1:
 		rotation.y = lerp_angle(rotation.y, atan2(-hv.x, -hv.z), clampf(delta * 6.0, 0.0, 1.0))
 	move_and_slide()
-	visual.animate(hv.length(), _busy > 0.0, delta)
+	visual.idle = _idling and _parked and _busy <= 0.0
+	if role() == "water":
+		visual.set_fill(water / maxf(stat("tank"), 1.0))
+	visual.animate(hv.length(), _busy > 0.0 or _refilling, delta)
 	visual.beam_to(_beam_target if _busy > 0.0 else null)
 	for i: int in carried.size():
 		carried[i].position = visual.fork_point + Vector3(0, carried[i].size * (0.5 + i), 0)
@@ -103,6 +158,8 @@ func _steer(target: Vector3, stop: float) -> Vector3:
 	var d: Vector3 = target - global_position
 	d.y = 0.0
 	var dist: float = d.length()
+	_goal = target
+	_goal_d = dist
 	if dist <= stop:
 		return Vector3.ZERO
 	var m: Vector3 = d.normalized()
@@ -118,10 +175,15 @@ func _steer(target: Vector3, stop: float) -> Vector3:
 	return m * clampf(dist / 1.2, 0.3, 1.0)
 
 
-func reset_targets() -> void:
+func reset_targets(keep_skip: bool = false) -> void:
+	if not keep_skip:
+		_skip.clear()
 	work_hex = -1
 	_target_piece = -1
 	_target_slot = -1
+	_refill = {}
+	_refilling = false
+	_shore = Vector3.INF
 	if _target_bale and is_instance_valid(_target_bale):
 		_target_bale.set_meta("reserved", false)
 	_target_bale = null
@@ -147,6 +209,8 @@ func status_text() -> String:
 	var f: Fleet = _fleet()
 	if f and f.mode_of(self) == "recall":
 		return "parked at hub" if global_position.distance_to(_park_pos()) < 2.5 else "returning to hub"
+	if _idling:
+		return "idle · " + _idle_reason if _idle_reason != "" else "idle"
 	match role():
 		"haul":
 			if carried.size() > 0:
@@ -155,11 +219,17 @@ func status_text() -> String:
 		"plant":
 			if not GameState.can_afford("seeds", BigNum.from_float(1.0)):
 				return "out of seeds"
-			return "planting" if _target_slot >= 0 else "no empty soil in range"
+			return "planting" if _target_slot >= 0 else "looking for soil"
 		"water":
-			if water <= 0.5:
-				return "refilling"
-			return "watering" if _target_slot >= 0 else "everything watered"
+			if _refilling or water < 1.0:
+				return "refilling at %s (%d%%)" % [str(_refill.get("kind", "barrel")).replace("barrel", "base barrel"), int(100.0 * water / maxf(stat("tank"), 1.0))]
+			return "watering · tank %d%%" % int(100.0 * water / maxf(stat("tank"), 1.0)) if _target_slot >= 0 else "looking for thirsty plants"
+		"skim":
+			if _shore != Vector3.INF:
+				return "taking a bale to shore"
+			if work_hex >= 0:
+				return "skimming lake hex %d (%d%%)" % [work_hex, int(world.field.removed_fraction(work_hex) * 100.0)]
+			return "lake is clean"
 		_:
 			if work_hex >= 0:
 				return "cleaning hex %d (%d%%)" % [work_hex, int(world.field.removed_fraction(work_hex) * 100.0)]
@@ -171,11 +241,83 @@ func _park_pos() -> Vector3:
 	return world.depot.global_position + Vector3(-3.0 + float(i % 6) * 1.2, 0, 4.0 + float(i / 6) * 1.2)
 
 
-func _idle_in_zone(z: Array) -> Vector3:
+## Nothing to do: drive to a parking spot near the zone (or the base) and idle there.
+func _go_idle(reason: String) -> Vector3:
+	_idling = true
+	_idle_reason = reason
+	var m: Vector3 = _steer(_idle_spot(), 0.7)
+	# Close enough if a crew-mate already sits on the spot.
+	if m != Vector3.ZERO and _stall_t > 1.5 and _goal_d < 2.5:
+		m = Vector3.ZERO
+	_parked = m == Vector3.ZERO
+	return m
+
+
+func _idle_spot() -> Vector3:
+	var z: Array = _zone()
 	if z.is_empty():
-		return Vector3.ZERO
-	var c: Vector3 = world.field.hex_center(int(z[0]))
-	return _steer(c, world.field.hex_size * 0.5)
+		return _park_pos()
+	var field: HexField = world.field
+	var best: int = -1
+	var best_d: float = INF
+	for h: Variant in z:
+		var id: int = int(h)
+		if id < 0 or id >= field.hex_count():
+			continue
+		var d: float = field.hex_center(id).distance_squared_to(global_position)
+		if d < best_d:
+			best_d = d
+			best = id
+	if best < 0:
+		return _park_pos()
+	# Spread the crew around the hex center, avoiding building footprints.
+	var c: Vector3 = field.hex_center(best)
+	var i: int = get_index()
+	for k: int in 6:
+		var a: float = TAU * float((i + k) % 6) / 6.0 + 0.4
+		var p: Vector3 = c + Vector3(cos(a), 0, sin(a)) * (0.9 + 0.3 * float(i % 3))
+		if field.layout == null or field.layout.surface_at(p.x, p.z) != CityLayout.Surface.BUILDING:
+			return p
+	return c
+
+
+## Stall watch: wanting to move but not getting closer to the goal (blocked, or sliding
+## sideways along a wall). After a while, give up the target and back off.
+func _watch_stall(move: Vector3, delta: float) -> void:
+	if move.length() < 0.05 or _busy > 0.0:
+		_stall_goal = Vector3.INF
+		_stall_t = 0.0
+		return
+	if _goal.distance_to(_stall_goal) > 0.5 or _goal_d < _stall_best - 0.4:
+		_stall_goal = _goal
+		_stall_best = _goal_d
+		_stall_t = 0.0
+		return
+	_stall_t += delta
+	if _stall_t > 2.0:
+		log_stats["stall_s"] = float(log_stats["stall_s"]) + delta
+	if _stall_t > 6.0:
+		_unstick()
+
+
+func _unstick() -> void:
+	log_stats["unstuck"] = float(log_stats["unstuck"]) + 1.0
+	if _target_piece >= 0:
+		# Whatever blocked this piece probably blocks its neighbours too.
+		for pid: int in world.field.pieces_within(world.field.piece_pos[_target_piece], 1.5):
+			_skip[pid] = true
+		_skip[_target_piece] = true
+	if _target_slot >= 0:
+		_skip[-2 - _target_slot] = true
+	reset_targets(true)
+	_stall_t = 0.0
+	_stall_goal = Vector3.INF
+	# Back off in a random direction, then a little hop free of whatever is pinning it.
+	var a: float = randf() * TAU
+	_detour = Vector3(cos(a), 0, sin(a))
+	_detour_t = 1.5
+	global_position += _detour * 0.35 + Vector3(0, 0.25, 0)
+	Vfx.burst("dust", global_position, Color(0.7, 0.65, 0.6, 0.6), 0.5)
 
 
 func _think(delta: float) -> Vector3:
@@ -190,7 +332,9 @@ func _think(delta: float) -> Vector3:
 		"plant":
 			return _think_plant()
 		"water":
-			return _think_water()
+			return _think_water(delta)
+		"skim":
+			return _think_skim()
 		_:
 			return _think_clean(delta)
 
@@ -209,10 +353,11 @@ func _think_clean(_delta: float) -> Vector3:
 			if not hopper.is_empty():
 				_make_bale()
 				return Vector3.ZERO
-			return _idle_in_zone(_zone()) if _stay() else Vector3.ZERO
+			return _go_idle("zone clean" if _stay() else "nothing left to clean")
 	if _target_piece < 0 or field.piece_alive[_target_piece] == 0:
 		_target_piece = _nearest_piece_in(work_hex)
 		if _target_piece < 0:
+			work_hex = -1  # only pieces we gave up on are left here
 			return Vector3.ZERO
 	var p: Vector3 = field.piece_pos[_target_piece]
 	var reach: float = 1.6 if visual.hover else 0.75
@@ -223,14 +368,16 @@ func _think_clean(_delta: float) -> Vector3:
 	return m
 
 
+## Nearest dirty hex in the zone, else in the district. Cleaners work land, skimmers the lake.
 func _pick_work_hex() -> int:
 	var field: HexField = world.field
+	var lake: bool = role() == "skim"
 	var best: int = -1
 	var best_d: float = INF
 	var z: Array = _zone()
 	for h: Variant in z:
 		var id: int = int(h)
-		if id < 0 or id >= field.hex_count() or field.hex_hub[id] != 0 or field.is_clean(id):
+		if id < 0 or id >= field.hex_count() or field.hex_hub[id] != 0 or field.is_clean(id) or field.is_water(id) != lake or _skip.has(1000000 + id):
 			continue
 		var d: float = field.hex_center(id).distance_squared_to(global_position)
 		if d < best_d:
@@ -239,7 +386,7 @@ func _pick_work_hex() -> int:
 	if best >= 0 or (_stay() and not z.is_empty()):
 		return best
 	for id: int in field.hex_count():
-		if field.hex_hub[id] != 0 or field.is_clean(id):
+		if field.hex_hub[id] != 0 or field.is_clean(id) or field.is_water(id) != lake or _skip.has(1000000 + id):
 			continue
 		var d: float = field.hex_center(id).distance_squared_to(global_position)
 		if d < best_d:
@@ -253,12 +400,14 @@ func _nearest_piece_in(hid: int) -> int:
 	var best: int = -1
 	var best_d: float = INF
 	for pid: int in field.hex_pieces[hid]:
-		if field.piece_alive[pid] == 0:
+		if field.piece_alive[pid] == 0 or _skip.has(pid):
 			continue
 		var d: float = field.piece_pos[pid].distance_squared_to(global_position)
 		if d < best_d:
 			best_d = d
 			best = pid
+	if best < 0:
+		_skip[1000000 + hid] = true  # everything left here is unreachable for this robot
 	return best
 
 
@@ -272,9 +421,10 @@ func _pick(pid: int) -> void:
 	var mesh: Mesh = world.view.piece_mesh(pid)
 	hopper.reserve(vol)
 	world.collect_piece(pid)
+	log_stats["junk"] = float(log_stats["junk"]) + 1.0
 	if world.get("litter") != null:
 		world.litter.sweep(start_xf.origin, 0.6)
-	var dur: float = 0.7 if visual.hover else 0.45
+	var dur: float = 0.7 if visual.hover else (0.6 if visual.floats else 0.45)
 	_busy = maxf(1.0 / maxf(stat("scoop_rate"), 0.1), dur)
 	_beam_target = start_xf.origin
 	var flyer := MeshInstance3D.new()
@@ -331,54 +481,250 @@ func _make_bale() -> void:
 	Audio.play("crunch", 1.3, -12.0)
 	Audio.play("clunk", 1.2, -10.0)
 	GameState.inc_stat("robot_bales")
+	log_stats["bales"] = float(log_stats["bales"]) + 1.0
 
 
-# --- Planter / waterer ------------------------------------------------------------------
+# --- Planter -----------------------------------------------------------------------------
 
 func _think_plant() -> Vector3:
 	var g: Garden = world.get("garden")
-	if g == null or not g.unlocked() or not GameState.can_afford("seeds", BigNum.from_float(1.0)):
-		return Vector3.ZERO
+	if g == null or not g.unlocked():
+		return _go_idle("seeds locked")
+	if not GameState.can_afford("seeds", BigNum.from_float(1.0)):
+		return _go_idle("out of seeds")
 	if _target_slot < 0 or g.slot_species[_target_slot] >= 0:
 		_target_slot = _find_slot(g, true)
 		if _target_slot < 0:
-			return _idle_in_zone(_zone()) if _stay() else Vector3.ZERO
+			return _go_idle("no empty soil")
 	var m: Vector3 = _steer(g.slot_pos[_target_slot], 0.8)
 	if m == Vector3.ZERO:
 		if g.plant(_target_slot):
 			_busy = 1.0 / maxf(stat("work_rate"), 0.1)
 			_beam_target = g.slot_pos[_target_slot]
+			log_stats["planted"] = float(log_stats["planted"]) + 1.0
 		_target_slot = -1
 	return m
 
 
-func _think_water() -> Vector3:
+# --- Waterer -------------------------------------------------------------------------------
+# A Drip carries `tank` units of water; each plant it sprays costs one unit. It goes for the
+# thirstiest plants in its zone first, sprays every planted slot within `spray_radius` of its
+# target in one go, and refills at the nearest refill point (base barrel, Water Tank, clean lake).
+
+const THIRSTY: float = 0.45  # water fraction under which a plant wants watering
+const SPRAY_AMOUNT_S: float = 60.0
+
+
+static func water_fraction(g: Garden, s: int) -> float:
+	if g.slot_species[s] < 0:
+		return 1.0
+	return g.slot_water[s] / maxf(float(g.species[g.slot_species[s]].get("water_s", 120)), 1.0)
+
+
+func _think_water(delta: float) -> Vector3:
 	var g: Garden = world.get("garden")
 	if g == null:
-		return Vector3.ZERO
+		return _go_idle("no garden")
 	var tank: float = stat("tank")
-	if water <= 0.5:
-		# Refill at the hub's barrel.
-		var m: Vector3 = _steer(world.depot.global_position + Vector3(2.5, 0, 2.5), 1.2)
-		if m == Vector3.ZERO:
-			water = tank
-			_busy = 1.0
-			Audio.play("steam", 0.8, -14.0)
-		return m
-	if _target_slot < 0 or g.slot_species[_target_slot] < 0 or g.slot_water[_target_slot] > 20.0:
-		_target_slot = _find_slot(g, false)
+	if _refilling or water < 1.0:
+		return _do_refill(delta, tank)
+	if _target_slot >= 0 and (g.slot_species[_target_slot] < 0 or water_fraction(g, _target_slot) > 0.7):
+		_target_slot = -1  # someone else got it
+	if _target_slot < 0:
+		_target_slot = _find_thirsty(g)
 		if _target_slot < 0:
-			return _idle_in_zone(_zone()) if _stay() else Vector3.ZERO
-	var m2: Vector3 = _steer(g.slot_pos[_target_slot], 0.9)
-	if m2 == Vector3.ZERO:
-		for s: int in g.planted_near(global_position, -global_transform.basis.z, 2.0):
-			g.water(s, 30.0)
-		g.water(_target_slot, 30.0)
-		water -= 1.0
-		_busy = 0.8 / maxf(stat("work_rate"), 0.1)
-		Vfx.burst("soil", g.slot_pos[_target_slot] + Vector3(0, 0.5, 0), Color(0.55, 0.75, 1.0, 0.8), 0.5)
+			# Nothing thirsty: top the tank up while it's quiet, then park.
+			if water < tank * 0.5:
+				return _do_refill(delta, tank)
+			return _go_idle("everything watered")
+	var radius: float = maxf(stat("spray_radius"), 0.8)
+	var reach: float = clampf(radius * 0.7, 0.9, 2.4)
+	var m: Vector3 = _steer(g.slot_pos[_target_slot], reach)
+	if m == Vector3.ZERO:
+		_spray_at(g, g.slot_pos[_target_slot], radius)
 		_target_slot = -1
-	return m2
+	return m
+
+
+## Water every planted, not-full slot within radius of `at` (thirstiest first) with spray arcs.
+func _spray_at(g: Garden, at: Vector3, radius: float) -> void:
+	var cand: Array = []
+	for hid: int in world.field.hexes_near(at, 1):
+		if not g.hex_slots.has(hid):
+			continue
+		for s: int in g.hex_slots[hid]:
+			if g.slot_species[s] < 0 or g.slot_pos[s].distance_to(at) > radius:
+				continue
+			var wf: float = water_fraction(g, s)
+			if wf < 0.9:
+				cand.append([wf, s])
+	cand.sort_custom(func(x: Array, y: Array) -> bool: return x[0] < y[0])
+	var amount: float = SPRAY_AMOUNT_S * maxf(stat("work_rate"), 0.3)
+	var nozzle: Vector3 = to_global(visual.nozzle_point)
+	var net: WaterNet = _fleet().water_net if _fleet() else null
+	var n: int = 0
+	for c: Array in cand:
+		if water < 1.0:
+			break
+		var s: int = int(c[1])
+		g.water(s, amount)
+		water -= 1.0
+		n += 1
+		if net:
+			net.spray(nozzle, g.slot_pos[s] + Vector3(0, 0.1, 0), 0.45 + 0.05 * n)
+	if n == 0:
+		return
+	log_stats["watered"] = float(log_stats["watered"]) + n
+	GameState.inc_stat("plants_watered_by_bots")
+	# Face the spray and hold still while it lands.
+	var d: Vector3 = at - global_position
+	if Vector2(d.x, d.z).length() > 0.05:
+		rotation.y = atan2(-d.x, -d.z)
+	_busy = (0.6 + 0.08 * n) / maxf(stat("work_rate"), 0.3)
+	Audio.play("steam", 1.5, -16.0)
+
+
+## The thirstiest planted slot (zone first), skipping slots another waterer is heading for.
+func _find_thirsty(g: Garden) -> int:
+	var taken: Dictionary = {}
+	var f: Fleet = _fleet()
+	if f:
+		for r: Robot in f.robots():
+			if r != self and r.role() == "water" and r._target_slot >= 0:
+				taken[r._target_slot] = true
+	var z: Array = _zone()
+	var hexes: Array = []
+	if not z.is_empty():
+		hexes = z
+	var best: int = _thirstiest_in(g, hexes, taken) if not hexes.is_empty() else -1
+	if best >= 0 or (_stay() and not z.is_empty()):
+		return best
+	return _thirstiest_in(g, g.hex_slots.keys(), taken)
+
+
+func _thirstiest_in(g: Garden, hexes: Array, taken: Dictionary) -> int:
+	var best: int = -1
+	var best_score: float = INF
+	for h: Variant in hexes:
+		var hid: int = int(h)
+		if not g.hex_slots.has(hid) or not world.field.is_clean(hid):
+			continue
+		for s: int in g.hex_slots[hid]:
+			if g.slot_species[s] < 0 or taken.has(s) or _skip.has(-2 - s):
+				continue
+			var wf: float = water_fraction(g, s)
+			if wf >= THIRSTY:
+				continue
+			# Thirst dominates; distance breaks ties (and keeps trips short).
+			var score: float = wf * 40.0 + g.slot_pos[s].distance_to(global_position) * 0.25
+			if score < best_score:
+				best_score = score
+				best = s
+	return best
+
+
+func _do_refill(delta: float, tank: float) -> Vector3:
+	var f: Fleet = _fleet()
+	var net: WaterNet = f.water_net if f else null
+	if net == null:
+		water = tank  # no world network (tests): instant refill
+		return Vector3.ZERO
+	if _refill.is_empty():
+		_refill = net.nearest_refill(global_position)
+		if _refill.is_empty():
+			return _go_idle("no water source")
+	var spot: Vector3 = _refill["pos"]
+	var stop: float = 1.35 if _refill["kind"] != "lake" else 0.6
+	if not _refilling:
+		var m: Vector3 = _steer(spot, stop)
+		if m != Vector3.ZERO:
+			return m
+		_refilling = true
+	var want: float = minf(maxf(stat("refill_rate"), 3.0) * delta, tank - water)
+	var got: float = net.draw(_refill, want)
+	water = minf(tank, water + got)
+	_refill_fx_t -= delta
+	if _refill_fx_t <= 0.0:
+		_refill_fx_t = 0.5
+		Vfx.burst("soil", to_global(visual.hopper_point) + Vector3(0, 0.15, 0), Color(0.55, 0.8, 1.0, 0.8), 0.25)
+		Audio.play("steam", 0.7, -20.0)
+	if water >= tank - 0.01 or (got <= 0.0 and want > 0.0):
+		if water < tank * 0.3 and got <= 0.0:
+			_refill = {}  # that tank ran dry; try another point
+			_refilling = false
+			return Vector3.ZERO
+		_refilling = false
+		_refill = {}
+		log_stats["refills"] = float(log_stats["refills"]) + 1.0
+		_busy = 0.4
+	return Vector3.ZERO
+
+
+# --- Skimmer -------------------------------------------------------------------------------
+
+func _think_skim() -> Vector3:
+	var field: HexField = world.field
+	if _shore != Vector3.INF:
+		return _to_shore()
+	if not hopper.can_accept(stat("capacity")):
+		return _to_shore()
+	if work_hex < 0 or field.is_clean(work_hex):
+		work_hex = _pick_work_hex()
+		_target_piece = -1
+		if work_hex < 0:
+			if not hopper.is_empty():
+				return _to_shore()
+			return _go_idle("lake is clean" if not _stay() else "zone clean")
+	if _target_piece < 0 or field.piece_alive[_target_piece] == 0:
+		_target_piece = _nearest_piece_in(work_hex)
+		if _target_piece < 0:
+			work_hex = -1
+			return Vector3.ZERO
+	var m: Vector3 = _steer(field.piece_pos[_target_piece], 1.05 if not visual.hover else 1.6)
+	if m == Vector3.ZERO:
+		_pick(_target_piece)
+		_target_piece = -1
+	return m
+
+
+## Carry the full net to the nearest bit of shore and leave a bale there for the haulers.
+func _to_shore() -> Vector3:
+	if hopper.is_empty() and hopper.pending <= 0.0:
+		_shore = Vector3.INF
+		return Vector3.ZERO
+	if _shore == Vector3.INF:
+		_shore = shore_point(world.field, global_position)
+	var m: Vector3 = _steer(_shore, 0.5)
+	if m == Vector3.ZERO and hopper.pending <= 0.0:
+		_make_bale()
+		_shore = Vector3.INF
+	return m
+
+
+## Nearest land point just off a lake hex (not a building), for dropping bales.
+static func shore_point(field: HexField, from: Vector3) -> Vector3:
+	var best := Vector3.INF
+	var best_d: float = INF
+	for id: int in field.hex_count():
+		if not field.is_water(id):
+			continue
+		var wc: Vector3 = field.hex_center(id)
+		for nb: int in field.hexes_near(wc, 1):
+			if nb == id or field.is_water(nb) or field.hex_hub[nb] == 2:
+				continue
+			var lc: Vector3 = field.hex_center(nb)
+			for t: float in [0.3, 0.15, 0.45, 0.0]:
+				var p: Vector3 = lc.lerp(wc, t)
+				if field.layout and field.layout.surface_at(p.x, p.z) == CityLayout.Surface.BUILDING:
+					continue
+				var d: float = p.distance_squared_to(from)
+				if d < best_d:
+					best_d = d
+					best = p
+				break
+	if best == Vector3.INF:
+		return from
+	return best
 
 
 ## Nearest empty (planting) or thirsty (watering) slot on clean hexes.
@@ -391,7 +737,7 @@ func _find_slot(g: Garden, empty: bool) -> int:
 	var best: int = -1
 	var best_d: float = INF
 	for s: int in g.slot_species.size():
-		if not world.field.is_clean(g.slot_hex[s]):
+		if not world.field.is_clean(g.slot_hex[s]) or _skip.has(-2 - s):
 			continue
 		if empty:
 			if g.slot_species[s] >= 0:
@@ -413,6 +759,8 @@ func _find_slot_in(g: Garden, empty: bool, z: Array) -> int:
 		if not g.hex_slots.has(hid) or not world.field.is_clean(hid):
 			continue
 		for s: int in g.hex_slots[hid]:
+			if _skip.has(-2 - s):
+				continue
 			if empty:
 				if g.slot_species[s] >= 0:
 					continue
@@ -438,6 +786,7 @@ func _think_haul() -> Vector3:
 				c.global_position = depot.global_position + Vector3(randf_range(-0.4, 0.4), 0.6, randf_range(-0.4, 0.4))
 				c.set_carried(false)
 				c.set_meta("reserved", false)
+			log_stats["hauled"] = float(log_stats["hauled"]) + carried.size()
 			carried.clear()
 			_busy = 0.5
 			Audio.play("clunk", 0.9, -10.0)
@@ -447,7 +796,7 @@ func _think_haul() -> Vector3:
 		if _target_bale:
 			_target_bale.set_meta("reserved", true)
 	if _target_bale == null:
-		return Vector3.ZERO
+		return _go_idle("waiting for bales")
 	var m2: Vector3 = _steer(_target_bale.global_position, 0.9)
 	if m2 == Vector3.ZERO:
 		_target_bale.set_carried(true)
