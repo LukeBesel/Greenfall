@@ -14,6 +14,10 @@ var world: Node
 var time_of_day: float = 0.3  # 0 = midnight, 0.25 = sunrise, 0.5 = noon
 var haze: float = 1.0          # 1 = Act 1 dusty, 0 = fully clear
 var frozen: bool = false
+## Hooks for the Future Layer (planet/future_layer.gd): a restored district clears its own air
+## (added to the haze reduction) and tints the night fog toward its aurora (rgb, a = strength).
+var clear_bonus: float = 0.0
+var night_tint := Color(0, 0, 0, 0)
 
 
 func setup(p_env: Environment, p_sun: DirectionalLight3D) -> void:
@@ -49,7 +53,7 @@ func _process(delta: float) -> void:
 		time_of_day = fmod(time_of_day + delta / DAY_LENGTH_S, 1.0)
 		GameState.flags["time_of_day"] = time_of_day
 	if world and world.get("planet") != null:
-		var target: float = 1.0 - clampf(world.planet.restored_fraction() * 8.0 + float(GameState.stats.get("air_filtered", 0.0)) * 0.0005, 0.0, 0.85)
+		var target: float = 1.0 - clampf(world.planet.restored_fraction() * 8.0 + float(GameState.stats.get("air_filtered", 0.0)) * 0.0005 + clear_bonus, 0.0, 0.85)
 		haze = lerpf(haze, target, clampf(delta * 0.2, 0.0, 1.0))
 	_apply()
 
@@ -78,6 +82,8 @@ func _apply() -> void:
 	sky_mat.mie_color = Color(1.0, 0.92, 0.84).lerp(Color(1.0, 0.86, 0.7), haze)
 	env.fog_density = lerpf(0.0010, 0.0022, haze)
 	env.fog_light_color = Color(0.72, 0.82, 1.0).lerp(Color(0.98, 0.88, 0.76), haze * sun_up * 0.7)
+	if night_tint.a > 0.0:
+		env.fog_light_color = env.fog_light_color.lerp(Color(night_tint.r, night_tint.g, night_tint.b), night_tint.a * (1.0 - sun_up))
 	env.volumetric_fog_density = lerpf(0.0015, 0.0045, haze)
 	env.volumetric_fog_albedo = Color(0.88, 0.91, 0.96).lerp(Color(0.97, 0.92, 0.86), haze)
 	env.adjustment_saturation = lerpf(1.28, 1.22, haze)
