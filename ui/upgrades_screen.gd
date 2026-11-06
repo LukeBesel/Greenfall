@@ -26,6 +26,8 @@ var _refresh_t: float = 0.0
 var _robot_cards: Array[RobotCard] = []
 var fleet: Fleet
 var _trade: TradePanel
+var _hub_panel: HubPanel
+var hub: Hub
 var build_at: Callable = func() -> Vector3: return Vector3.ZERO
 
 
@@ -70,7 +72,7 @@ func _ready() -> void:
 	vb.add_child(tabs)
 	for t: Dictionary in TABS:
 		var b := Button.new()
-		var live: bool = t["id"] in ["patch", "bots", "trade"]
+		var live: bool = t["id"] in ["patch", "bots", "trade", "hub"]
 		b.text = t["name"] if live else "%s (soon)" % t["name"]
 		b.disabled = not live
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
@@ -98,6 +100,13 @@ func _populate() -> void:
 		c.queue_free()
 	_cards.clear()
 	_robot_cards.clear()
+	if _tab == "hub":
+		_grid.columns = 1
+		var hp := HubPanel.new()
+		hp.hub = hub
+		_grid.add_child(hp)
+		_hub_panel = hp
+		return
 	if _tab == "trade":
 		_grid.columns = 1
 		var tp := TradePanel.new()
@@ -133,6 +142,13 @@ func _set_tab(id: String) -> void:
 
 
 func _relayout() -> void:
+	if _tab == "hub":
+		_grid.columns = 1
+		var hp := HubPanel.new()
+		hp.hub = hub
+		_grid.add_child(hp)
+		_hub_panel = hp
+		return
 	if _tab == "trade":
 		_grid.columns = 1
 		return
@@ -158,7 +174,7 @@ func _input(event: InputEvent) -> void:
 	if not is_open:
 		return
 	if event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev"):
-		var order: Array[String] = ["patch", "bots", "trade"]
+		var order: Array[String] = ["patch", "bots", "hub", "trade"]
 		var i: int = order.find(_tab)
 		_set_tab(order[(i + (1 if event.is_action_pressed("ui_tab_next") else order.size() - 1)) % order.size()])
 		get_viewport().set_input_as_handled()
@@ -209,3 +225,5 @@ func _refresh_all() -> void:
 		rc.refresh()
 	if _tab == "trade" and is_instance_valid(_trade) and Engine.get_process_frames() % 60 == 0:
 		_trade.refresh()
+	if _tab == "hub" and is_instance_valid(_hub_panel):
+		_hub_panel.refresh()

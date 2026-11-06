@@ -37,6 +37,7 @@ var sleeping: bool = false
 var _iris_now: float = 0.55
 
 var _rig: Node3D
+var _body: Node3D
 var _pan: Node3D
 var _tilt: Node3D
 var _lid: Node3D
@@ -83,6 +84,7 @@ func _ready() -> void:
 	_rig = Node3D.new()
 	_rig.name = "Rig"
 	add_child(_rig)
+	_body = _node(_rig, Vector3(0, -0.07, 0))
 	_build_running_gear()
 	_build_body()
 	_build_intake()
@@ -275,37 +277,37 @@ func _build_running_gear() -> void:
 func _build_body() -> void:
 	var shell: ShaderMaterial = _paint(BLUE, 0.74, 0.6, 1.7, 0.7)
 	# Main capsule shell (rounded box, very soft corners), leaning forward.
-	_bake(_rig, ProcMesh.rounded_box(BODY_S, 0.18, 6), shell, _body_xf(Vector3.ZERO))
+	_bake(_body, ProcMesh.rounded_box(BODY_S, 0.18, 6), shell, _body_xf(Vector3.ZERO))
 	# Domed lid.
-	_bake(_rig, ProcMesh.sphere(0.27, 32, 12), _paint(BLUE.lightened(0.05), 0.7, 0.62, 2.9, 0.3),
+	_bake(_body, ProcMesh.sphere(0.27, 32, 12), _paint(BLUE.lightened(0.05), 0.7, 0.62, 2.9, 0.3),
 		_body_xf(Vector3(0, 0.19, 0.0)) * Transform3D(Basis.from_scale(Vector3(0.86, 0.42, 0.96)), Vector3.ZERO))
 	# Rolled seam band where the lid meets the shell.
-	_bake(_rig, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.016, 0.022, BODY_S.z + 0.016), 0.17, 4), _paint(BLUE_DK, 0.55, 0.75, 4.4, 0.5), _body_xf(Vector3(0, 0.12, 0)))
+	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.016, 0.022, BODY_S.z + 0.016), 0.17, 4), _paint(BLUE_DK, 0.55, 0.75, 4.4, 0.5), _body_xf(Vector3(0, 0.12, 0)))
 	# Bottom-heavy skirt / bumper band, darker and grimy.
-	_bake(_rig, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.04, 0.12, BODY_S.z + 0.04), 0.06, 4), _paint(BLUE_DK, 0.5, 0.8, 6.6, 1.0, 0.1), _body_xf(Vector3(0, -0.17, 0)))
+	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.04, 0.12, BODY_S.z + 0.04), 0.06, 4), _paint(BLUE_DK, 0.5, 0.8, 6.6, 1.0, 0.1), _body_xf(Vector3(0, -0.17, 0)))
 	# Rubber bump strip around the skirt.
-	_bake(_rig, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.06, 0.03, BODY_S.z + 0.06), 0.06, 3), Mats.rubber(Color(0.07, 0.07, 0.07)), _body_xf(Vector3(0, -0.15, 0)))
+	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.06, 0.03, BODY_S.z + 0.06), 0.06, 3), Mats.rubber(Color(0.07, 0.07, 0.07)), _body_xf(Vector3(0, -0.15, 0)))
 	# Wheel arches: dark recesses either side so the tyres tuck in.
 	# Side louvre vent (left), bolted.
-	var vent: Node3D = _node(_rig, Vector3(-BODY_S.x * 0.5 - 0.004, 0.52, 0.1), Vector3(0, -90, 0))
+	var vent: Node3D = _node(_body, Vector3(-BODY_S.x * 0.5 - 0.004, 0.52, 0.1), Vector3(0, -90, 0))
 	_bake(vent, ProcMesh.rounded_box(Vector3(0.16, 0.11, 0.03), 0.012, 2), Mats.metal("dark_steel"))
 	var lv: Array = []
 	for k: int in 4:
 		lv.append(ProcMesh.part(ProcMesh.box(Vector3(0.13, 0.01, 0.024)), _x(Vector3(0, -0.036 + k * 0.024, -0.016), Vector3(35, 0, 0))))
 	_bake_many(vent, lv, Mats.metal("steel"))
 	# Mismatched repair patch: a bolted mint plate on the left flank (he is literally patched).
-	var pt: Node3D = _node(_rig, Vector3(-BODY_S.x * 0.5 - 0.006, 0.38, -0.08), Vector3(0, -90, 4))
+	var pt: Node3D = _node(_body, Vector3(-BODY_S.x * 0.5 - 0.006, 0.38, -0.08), Vector3(0, -90, 4))
 	_bake(pt, ProcMesh.box(Vector3(0.15, 0.1, 0.006)), _paint(MINT, 0.6, 0.7, 9.3, 0.5), _x(Vector3.ZERO))
 	_bolts(pt, [Vector3(-0.065, 0.04, -0.004), Vector3(0.065, 0.04, -0.004), Vector3(-0.065, -0.04, -0.004), Vector3(0.065, -0.04, -0.004)], Vector3(0, 0, -1), 0.007)
 	# Serial stencils on both flanks.
-	_stencil(_rig, "P-47CH", 90, Vector3(-BODY_S.x * 0.5 - 0.008, 0.54, -0.1) + Vector3(0, 0, 0), Vector3(TILT * 0.0, -90, 0), Color(0.92, 0.9, 0.82, 0.55))
-	_stencil(_rig, "MUNI SANITATION", 26, Vector3(-BODY_S.x * 0.5 - 0.008, 0.47, -0.1), Vector3(0, -90, 0), Color(0.92, 0.9, 0.82, 0.4))
-	_stencil(_rig, "P-47CH", 60, Vector3(BODY_S.x * 0.5 + 0.008, 0.62, 0.12), Vector3(0, 90, 0), Color(0.92, 0.9, 0.82, 0.5))
+	_stencil(_body, "P-47CH", 90, Vector3(-BODY_S.x * 0.5 - 0.008, 0.54, -0.1) + Vector3(0, 0, 0), Vector3(TILT * 0.0, -90, 0), Color(0.92, 0.9, 0.82, 0.55))
+	_stencil(_body, "MUNI SANITATION", 26, Vector3(-BODY_S.x * 0.5 - 0.008, 0.47, -0.1), Vector3(0, -90, 0), Color(0.92, 0.9, 0.82, 0.4))
+	_stencil(_body, "P-47CH", 60, Vector3(BODY_S.x * 0.5 + 0.008, 0.62, 0.12), Vector3(0, 90, 0), Color(0.92, 0.9, 0.82, 0.5))
 	# Exhaust stub on the lid, rear-right.
-	_bake(_rig, ProcMesh.cyl(0.02, 0.024, 0.09, 12), Mats.metal("dark_steel"), _x(Vector3(0.12, 0.78, 0.17)))
-	_bake(_rig, ProcMesh.torus(0.017, 0.026, 12, 6), Mats.metal("steel"), _x(Vector3(0.12, 0.825, 0.17)))
+	_bake(_body, ProcMesh.cyl(0.02, 0.024, 0.09, 12), Mats.metal("dark_steel"), _x(Vector3(0.12, 0.78, 0.17)))
+	_bake(_body, ProcMesh.torus(0.017, 0.026, 12, 6), Mats.metal("steel"), _x(Vector3(0.12, 0.825, 0.17)))
 	# Fill gauge: five little lamps in a steel strip on the back of the lid (seen from the follow cam).
-	var g: Node3D = _node(_rig, Vector3(0, 0.71, 0.27), Vector3(-40, 0, 0))
+	var g: Node3D = _node(_body, Vector3(0, 0.71, 0.27), Vector3(-40, 0, 0))
 	_bake(g, ProcMesh.rounded_box(Vector3(0.17, 0.045, 0.02), 0.01, 2), Mats.metal("dark_steel"))
 	for k: int in 5:
 		var m: StandardMaterial3D = Mats.lamp(Color(0.45, 0.8, 0.35), 0.1)
@@ -317,7 +319,7 @@ func _build_intake() -> void:
 	var coral: ShaderMaterial = _paint(CORAL, 0.66, 0.6, 11.0, 0.6)
 	var steel: StandardMaterial3D = Mats.metal("dark_steel")
 	# Mouth frame: a rounded coral bezel on the lower front of the shell.
-	var f: Node3D = _node(_rig, Vector3(0, 0.37, -0.255), Vector3(TILT, 0, 0))
+	var f: Node3D = _node(_body, Vector3(0, 0.37, -0.255), Vector3(TILT, 0, 0))
 	_bake(f, ProcMesh.rounded_box(Vector3(0.34, 0.15, 0.06), 0.05, 4), coral, _x(Vector3.ZERO))
 	var dark := StandardMaterial3D.new()
 	dark.albedo_color = Color(0.015, 0.015, 0.015)
@@ -336,13 +338,13 @@ func _build_intake() -> void:
 	for s: float in [-1.0, 1.0]:
 		tr.append(ProcMesh.part(ProcMesh.box(Vector3(0.016, 0.05, 0.13)), _x(Vector3(0.17 * s, 0.31, -0.33), Vector3(-12, 0, 0))))
 	tr.append(ProcMesh.part(ProcMesh.cyl(0.012, 0.012, 0.35, 10), _x(Vector3(0, 0.305, -0.395), Vector3(0, 0, 90))))
-	_bake_many(_rig, tr, _paint(MUSTARD, 0.6, 0.65, 12.0, 0.7))
-	_bake(_rig, ProcMesh.box(Vector3(0.34, 0.02, 0.03)), steel, _x(Vector3(0, 0.28, -0.39)))   # wear strip
+	_bake_many(_body, tr, _paint(MUSTARD, 0.6, 0.65, 12.0, 0.7))
+	_bake(_body, ProcMesh.box(Vector3(0.34, 0.02, 0.03)), steel, _x(Vector3(0, 0.28, -0.39)))   # wear strip
 
 
 func _build_eye() -> void:
 	var steel: StandardMaterial3D = Mats.metal("dark_steel")
-	_pan = _node(_rig, Vector3(0, 0.62, -0.235))
+	_pan = _node(_body, Vector3(0, 0.62, -0.235))
 	# Neck collar sunk into the shell.
 	_bake(_pan, ProcMesh.cyl(0.1, 0.11, 0.04, 20), steel, _x(Vector3(0, -0.06, 0.04), Vector3(-30, 0, 0)))
 	_tilt = _node(_pan, Vector3.ZERO)
@@ -401,7 +403,7 @@ func _build_eye() -> void:
 	for s: float in [-1.0, 1.0]:
 		_bake(_tilt, ProcMesh.cyl(0.018, 0.018, 0.012, 12), steel, _x(Vector3(0.128 * s, 0.0, EYE_C.z + 0.035), Vector3(0, 0, 90)))
 	# Antenna whip with a little lamp, from the hood top-left.
-	var ant: Node3D = _node(_rig, Vector3(-0.13, 0.74, 0.06), Vector3(-8, 0, 10))
+	var ant: Node3D = _node(_body, Vector3(-0.13, 0.74, 0.06), Vector3(-8, 0, 10))
 	_bake(ant, ProcMesh.cyl(0.016, 0.02, 0.03, 10), steel, _x(Vector3(0, 0.01, 0)))
 	var spring: Array = []
 	for k: int in 5:
@@ -417,20 +419,20 @@ func _build_eye() -> void:
 	_lamp_light.light_energy = 0.15
 	_lamp_light.omni_range = 0.5
 	ant.add_child(_lamp_light)
-	_hose(_rig, Vector3(0.09, 0.66, -0.16), Vector3(0.14, 0.72, -0.08), Vector3(0.1, 0.76, 0.0), 0.007)
+	_hose(_body, Vector3(0.09, 0.66, -0.16), Vector3(0.14, 0.72, -0.08), Vector3(0.1, 0.76, 0.0), 0.007)
 
 
 func _build_ram() -> void:
 	# Tiny compaction ram poking out of the lid: a short barrel, chrome rod and coral knob cap.
 	var base := Vector3(0.0, 0.79, 0.07)
-	_bake(_rig, ProcMesh.cyl(0.06, 0.07, 0.025, 20), Mats.metal("dark_steel"), _x(base))
-	_bake(_rig, ProcMesh.cyl(0.042, 0.042, 0.06, 20), _paint(MUSTARD, 0.6, 0.6, 32.0, 0.2, -1.0), _x(base + Vector3(0, 0.04, 0)))
-	_bake(_rig, ProcMesh.cyl(0.047, 0.047, 0.012, 20), Mats.metal("dark_steel"), _x(base + Vector3(0, 0.07, 0)))
-	_bolts(_rig, [base + Vector3(0.055, 0.014, 0), base + Vector3(-0.055, 0.014, 0), base + Vector3(0, 0.014, 0.055), base + Vector3(0, 0.014, -0.055)], Vector3.UP, 0.007)
-	_press_rod = _node(_rig, base + Vector3(0, 0.076, 0))
+	_bake(_body, ProcMesh.cyl(0.06, 0.07, 0.025, 20), Mats.metal("dark_steel"), _x(base))
+	_bake(_body, ProcMesh.cyl(0.042, 0.042, 0.06, 20), _paint(MUSTARD, 0.6, 0.6, 32.0, 0.2, -1.0), _x(base + Vector3(0, 0.04, 0)))
+	_bake(_body, ProcMesh.cyl(0.047, 0.047, 0.012, 20), Mats.metal("dark_steel"), _x(base + Vector3(0, 0.07, 0)))
+	_bolts(_body, [base + Vector3(0.055, 0.014, 0), base + Vector3(-0.055, 0.014, 0), base + Vector3(0, 0.014, 0.055), base + Vector3(0, 0.014, -0.055)], Vector3.UP, 0.007)
+	_press_rod = _node(_body, base + Vector3(0, 0.076, 0))
 	_bake(_press_rod, ProcMesh.cyl(0.014, 0.014, 0.08, 12), Mats.metal("chrome"), _x(Vector3(0, -0.02, 0)))
 	_bake(_press_rod, ProcMesh.sphere(0.03, 16, 8), _paint(CORAL, 0.72, 0.5, 33.0, 0.2, -1.0), _x(Vector3(0, 0.03, 0), Vector3.ZERO, Vector3(1, 0.7, 1)))
-	_hose(_rig, Vector3(0.15, 0.74, 0.12), Vector3(0.1, 0.84, 0.1), Vector3(0.04, 0.83, 0.07), 0.008)
+	_hose(_body, Vector3(0.15, 0.74, 0.12), Vector3(0.1, 0.84, 0.1), Vector3(0.04, 0.83, 0.07), 0.008)
 
 
 func _build_hatch() -> void:
@@ -439,10 +441,10 @@ func _build_hatch() -> void:
 	# Frame and dark opening.
 	var dark := StandardMaterial3D.new()
 	dark.albedo_color = Color(0.02, 0.02, 0.02)
-	_bake(_rig, ProcMesh.rounded_box(Vector3(0.3, 0.24, 0.03), 0.04, 3), dark, _x(Vector3(0, 0.45, zb - 0.01), Vector3(TILT, 0, 0)))
-	_bake(_rig, ProcMesh.rounded_box(Vector3(0.34, 0.28, 0.02), 0.05, 3), steel, _x(Vector3(0, 0.45, zb - 0.02), Vector3(TILT, 0, 0)))
+	_bake(_body, ProcMesh.rounded_box(Vector3(0.3, 0.24, 0.03), 0.04, 3), dark, _x(Vector3(0, 0.45, zb - 0.01), Vector3(TILT, 0, 0)))
+	_bake(_body, ProcMesh.rounded_box(Vector3(0.34, 0.28, 0.02), 0.05, 3), steel, _x(Vector3(0, 0.45, zb - 0.02), Vector3(TILT, 0, 0)))
 	# Door hinged along its top edge, swings up and back.
-	_hatch = _node(_rig, Vector3(0, 0.585, zb + 0.012))
+	_hatch = _node(_body, Vector3(0, 0.585, zb + 0.012))
 	var door_mat: ShaderMaterial = _paint(MUSTARD, 0.62, 0.65, 42.0, 0.7, -0.7)
 	_bake(_hatch, ProcMesh.rounded_box(Vector3(0.31, 0.25, 0.024), 0.045, 3), door_mat, _x(Vector3(0, -0.13, 0)))
 	var ribs: Array = []
@@ -452,15 +454,15 @@ func _build_hatch() -> void:
 	_bake(_hatch, ProcMesh.box(Vector3(0.1, 0.02, 0.03)), steel, _x(Vector3(0, -0.235, 0.02)))   # latch handle
 	_stencil(_hatch, "P-47CH", 40, Vector3(0, -0.11, 0.0125), Vector3(0, 0, 0), Color(0.12, 0.12, 0.1, 0.6))
 	_stencil(_hatch, "BALE OUT", 22, Vector3(0, -0.165, 0.0125), Vector3.ZERO, Color(0.12, 0.12, 0.1, 0.5))
-	_bake(_rig, ProcMesh.cyl(0.012, 0.012, 0.3, 10), Mats.metal("steel"), _x(Vector3(0, 0.585, zb + 0.012), Vector3(0, 0, 90)))
+	_bake(_body, ProcMesh.cyl(0.012, 0.012, 0.3, 10), Mats.metal("steel"), _x(Vector3(0, 0.585, zb + 0.012), Vector3(0, 0, 90)))
 	for s: float in [-1.0, 1.0]:
-		_bake(_rig, ProcMesh.cyl(0.016, 0.016, 0.03, 10), steel, _x(Vector3(0.16 * s, 0.585, zb + 0.012), Vector3(0, 0, 90)))
+		_bake(_body, ProcMesh.cyl(0.016, 0.016, 0.03, 10), steel, _x(Vector3(0.16 * s, 0.585, zb + 0.012), Vector3(0, 0, 90)))
 	# Little bale rack on top-rear.
 	var rack: Array = []
 	for s: float in [-1.0, 1.0]:
 		rack.append(ProcMesh.part(ProcMesh.cyl(0.009, 0.009, 0.06, 6), _x(Vector3(0.13 * s, 0.78, 0.2))))
 	rack.append(ProcMesh.part(ProcMesh.cyl(0.009, 0.009, 0.27, 6), _x(Vector3(0, 0.81, 0.2), Vector3(0, 0, 90))))
-	_bake_many(_rig, rack, Mats.metal("steel"))
+	_bake_many(_body, rack, Mats.metal("steel"))
 
 
 func _build_arm() -> void:
@@ -468,8 +470,8 @@ func _build_arm() -> void:
 	var steel: StandardMaterial3D = Mats.metal("dark_steel")
 	var shoulder_pos := Vector3(0.275, 0.45, -0.13)
 	# Round coral shoulder disc on the right flank.
-	_bake(_rig, ProcMesh.cyl(0.06, 0.065, 0.025, 20), _paint(CORAL, 0.65, 0.6, 51.0, 0.4), _x(Vector3(0.25, 0.45, -0.13), Vector3(0, 0, 90)))
-	var shoulder: Node3D = _node(_rig, shoulder_pos)
+	_bake(_body, ProcMesh.cyl(0.06, 0.065, 0.025, 20), _paint(CORAL, 0.65, 0.6, 51.0, 0.4), _x(Vector3(0.25, 0.45, -0.13), Vector3(0, 0, 90)))
+	var shoulder: Node3D = _node(_body, shoulder_pos)
 	var yaw: Node3D = _node(shoulder, Vector3.ZERO)
 	_bake(yaw, ProcMesh.sphere(0.042, 16, 8), steel, _x(Vector3.ZERO))
 	var upper: Node3D = _node(yaw, Vector3.ZERO)

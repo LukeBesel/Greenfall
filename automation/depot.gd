@@ -168,6 +168,9 @@ func _cash(cube: JunkCube) -> void:
 	_combo += 1
 	_combo_timer = 1.2
 	var v: BigNum = cube.value
+	var w: Node = get_parent()
+	if w and w.get("hub") != null:
+		v = v.mul_f(1.0 + w.hub.sell_mult())
 	GameState.add_currency("cubes", v)
 	GameState.inc_stat("cubes_cashed")
 	EventBus.cube_cashed.emit(v, mouth_world())

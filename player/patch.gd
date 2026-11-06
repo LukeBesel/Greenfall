@@ -229,6 +229,7 @@ func _take_piece(pid: int) -> void:
 func _piece_arrived(type_id: String, vol: float, color: Color) -> void:
 	compartment.add(type_id, vol)
 	_maybe_salvage_part(type_id)
+	world.salvage_materials(type_id, vol)
 	GameState.add_junk_removed(type_id, vol)
 	_scoop_combo = mini(_scoop_combo + 1, 10)
 	_combo_timer = 0.7

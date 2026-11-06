@@ -17,6 +17,7 @@ var fleet: Fleet
 var planet: PlanetData
 var globe: GlobeView
 var sky_director: SkyDirector
+var hub: Hub
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
 var depot: Depot
@@ -80,6 +81,9 @@ func _ready() -> void:
 	depot.position = Vector3(0, 0, -1.8)
 	add_child(depot)
 	_build_board()
+	hub = Hub.new()
+	hub.name = "Hub"
+	add_child(hub)
 	_build_flower()
 	patch = Patch.new()
 	patch.name = "Patch"
@@ -117,6 +121,7 @@ func _ready() -> void:
 	add_child(fleet)
 	upgrades = UpgradesScreen.new()
 	upgrades.fleet = fleet
+	upgrades.hub = hub
 	upgrades.build_at = func() -> Vector3: return BOARD_POS + Vector3(2.5, 0.2, 0.0)
 	add_child(upgrades)
 	upgrades.closed.connect(_on_modal_closed)
@@ -438,6 +443,14 @@ func _on_hex_clean(hid: int) -> void:
 			EventBus.toast.emit("Milestone: %d hexes clean!" % n, "story")
 		if n >= field.junk_hex_count:
 			EventBus.toast.emit("The whole Junkyard is clean. Patch beeps a very long, very happy beep.", "story")
+
+
+## Salvaged building materials from scooped junk (data/hub.json "materials").
+func salvage_materials(type_id: String, vol: float) -> void:
+	var m: Dictionary = hub.data.get("materials", {}).get(type_id, {})
+	if m.is_empty():
+		return
+	GameState.add_currency(str(m["id"]), BigNum.from_float(vol * float(m.get("per_unit", 0.1))))
 
 
 func add_cube(cube: JunkCube) -> void:

@@ -209,6 +209,7 @@ func _pick(pid: int) -> void:
 		if is_instance_valid(self):
 			hopper.add(type_id_j, vol)
 			GameState.add_junk_removed(type_id_j, vol)
+			world.salvage_materials(type_id_j, vol * 0.5)
 			Audio.play("clink", randf_range(0.8, 1.1), -14.0))
 	if hov:
 		Vfx.burst("sparkle", start, Color(0.4, 1.0, 0.85), 0.4)
