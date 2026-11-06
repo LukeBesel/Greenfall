@@ -45,6 +45,10 @@ var part_rarity := PackedInt32Array()
 var part_found := PackedByteArray()
 ## Big immovable wrecks (cars, barriers...) for M1: {model, pos, yaw}. Mega-junk cleanup comes later.
 var landmarks: Array[Dictionary] = []
+## Wilderness biome (PlanetData.BIOMES name) and its junk set (data/junk.json "biomes"); empty in cities.
+## The set only trades piece models (same type, same count, own RNG), so saves stay compatible.
+var biome: String = ""
+var biome_set: Dictionary = {}
 var piece_alive := PackedByteArray()
 
 var cleaned_count: int = 0
@@ -184,6 +188,13 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 			var mdl: Dictionary = _pick_model(rng, t.get("models", []))
 			if surf == CityLayout.Surface.SIDEWALK and str(t["id"]) == "plastic" and rng.randf() < 0.5:
 				mdl = {"id": "trashbag", "vol": 1.4, "lie": 0.0}
+			# The main RNG keeps drawing as for the city model (pose included) so counts never change.
+			var base_lie: float = float(mdl.get("lie", 0.0))
+			var swapped: bool = false
+			if not biome_set.is_empty():
+				var bm: Dictionary = biome_model(mdl, str(t["id"]), id, piece_pos.size())
+				swapped = bm != mdl
+				mdl = bm
 			var vol: float = float(mdl.get("vol", 1.0)) * rng.randf_range(0.85, 1.15)
 			var pid: int = piece_pos.size()
 			pos.y = layout.height_at(pos.x, pos.z) if layout else 0.0
@@ -194,7 +205,12 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 			piece_hex.append(id)
 			piece_yaw.append(rng.randf() * TAU)
 			piece_scale.append(rng.randf_range(0.9, 1.1))
-			piece_pose.append((1 + rng.randi() % 2) if rng.randf() < float(mdl.get("lie", 0.0)) else 0)
+			var pose: int = (1 + rng.randi() % 2) if rng.randf() < base_lie else 0
+			if swapped:
+				var pr := RandomNumberGenerator.new()
+				pr.seed = hash([seed_value, pid, 3313])
+				pose = (1 + pr.randi() % 2) if pr.randf() < float(mdl.get("lie", 0.0)) else 0
+			piece_pose.append(pose)
 			piece_tilt.append(rng.randf_range(-0.5, 0.5) if in_pile else rng.randf_range(-0.12, 0.12))
 			piece_embed.append(rng.randf_range(0.55, 1.02) if in_pile else 0.0)
 			piece_alive.append(1)
@@ -285,6 +301,34 @@ func ground_height(id: int, pos: Vector3) -> float:
 ## World Y where a piece rests: surface (curb) height plus its place in a (shrinking) pile.
 func piece_rest_y(pid: int) -> float:
 	return piece_pos[pid].y + ground_height(piece_hex[pid], piece_pos[pid]) * piece_embed[pid]
+
+
+## The biome's take on a piece (wilderness districts): a sand-blasted rim in the dunes, a lifebuoy
+## on the coast. Separate RNG per piece so the main stream (positions, counts) never changes.
+func biome_model(mdl: Dictionary, type_id: String, hid: int, pid: int) -> Dictionary:
+	var r := RandomNumberGenerator.new()
+	r.seed = hash([seed_value, pid, 7717])
+	var shore: bool = is_shore(hid)
+	var pool: Array = []
+	var chance: float = float(biome_set.get("swap", 0.0))
+	if shore and (biome_set.get("shore", {}) as Dictionary).has(type_id):
+		pool = biome_set["shore"][type_id]
+		chance = float(biome_set.get("shore_swap", chance))
+	else:
+		pool = (biome_set.get("models", {}) as Dictionary).get(type_id, [])
+	if pool.is_empty() or r.randf() >= chance:
+		return mdl
+	return _pick_model(r, pool)
+
+
+## A land hex with a lake hex next to it.
+func is_shore(hid: int) -> bool:
+	if water_ids.is_empty() or water_ids.has(hid):
+		return false
+	for nb: Vector2i in Hex.neighbors(hex_axial[hid]):
+		if water_ids.has(axial_to_id.get(nb, -1)):
+			return true
+	return false
 
 
 func _pick_model(rng: RandomNumberGenerator, models: Array) -> Dictionary:

@@ -6,7 +6,7 @@ var _stats: Dictionary
 var _world: Dictionary
 var _districts: Dictionary
 
-const KNOWN_TYPES: Array[String] = ["stat", "junk_kg", "cubes_earned", "flag", "research", "research_id", "codex", "hub_level", "currency", "achievements"]
+const KNOWN_TYPES: Array[String] = ["stat", "junk_kg", "cubes_earned", "flag", "research", "research_id", "codex", "hub_level", "currency", "achievements", "list"]
 
 
 func before_each() -> void:

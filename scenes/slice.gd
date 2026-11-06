@@ -88,6 +88,9 @@ func _ready() -> void:
 	layout = CityLayout.new(seed_v, 150.0, not is_city)
 	field = HexField.new(int(cfg.get("radius", 9)), float(cfg.get("hex_size", 3.2)), seed_v, layout)
 	field.clean_threshold = float(cfg.get("clean_threshold", 0.99))
+	if not is_city:  # [biomes] wilderness districts get their biome's junk, wrecks and ground tint
+		field.biome = PlanetData.BIOMES[planet.biome[anchor_cell]]
+		field.biome_set = Economy.biome_set(field.biome)
 	var ppx: Array = cfg.get("pieces_per_hex", [6, 12])
 	var types: Array = []
 	for id: String in Economy.junk_ids:
@@ -100,7 +103,7 @@ func _ready() -> void:
 		if planet.state[cell] == PlanetData.State.WATER:
 			field.water_ids[i] = true
 	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
-	field.place_landmarks(Economy.landmarks)
+	field.place_landmarks(Economy.landmarks_for(field.biome))
 	field.bury_parts(Economy.parts)
 	if loaded and GameState.world.has("field"):
 		if not field.apply_dict(GameState.world["field"]):
@@ -353,6 +356,10 @@ func _ready() -> void:
 	ledger.world = self
 	add_child(ledger)
 	ledger.setup()
+	var bloom := Bloom.new()  # [bloom] post-game milestones + Seed Ark (systems/bloom.gd)
+	bloom.name = "Bloom"
+	bloom.world = self
+	add_child(bloom)
 	intro = Intro.new()
 	intro.world = self
 	add_child(intro)
@@ -769,6 +776,11 @@ func _setup_research_codex() -> void:
 			"plants_bloomed": 64, "robots_built": 4, "shards_found": 3, "distance_m": 4380.0, "time_played": 5420.0}
 		for k: String in sample:
 			GameState.stats[k] = float(sample[k])
+		var ei: int = 0
+		for egg: Dictionary in Codex.egg_defs():  # [curiosities] some found, some still hints
+			if ei % 5 in [0, 2, 3]:
+				GameState.flags["egg_" + str(egg["id"])] = true
+			ei += 1
 		Achievements.check_all()
 	if DevHooks.get_s("open", "") == "codex":
 		(func() -> void: _open_codex(DevHooks.get_s("codex-tab", ""))).call_deferred()

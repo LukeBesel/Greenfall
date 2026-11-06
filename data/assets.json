@@ -78,7 +78,18 @@
     "nettle_plant",
     "grass_medium_02",
     "watering_can_metal_01",
-    "seeding_tray_01"
+    "seeding_tray_01",
+    "ocean_buoy",
+    "lifebuoy",
+    "wooden_crate_02",
+    "barrel_03",
+    "rusted_wheel_rim_02",
+    "old_drill_press",
+    "old_military_compressor",
+    "tire_pump",
+    "rusted_spade_01",
+    "tree_stump_01",
+    "hand_truck"
   ],
   "polyhaven_textures": [
     "brown_mud_dry",

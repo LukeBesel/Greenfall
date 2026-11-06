@@ -27,7 +27,9 @@ func setup() -> void:
 		defs[str(e["id"])] = e
 		order.append(str(e["id"]))
 	StorySfx.ensure()
-	var ids: Array[String] = district_eggs(order, defs, GameState.current_hub, world.field.seed_value, int(data.get("per_district", 9)))
+	var wild: bool = world.field.layout != null and world.field.layout.wild
+	var ids: Array[String] = district_eggs(order, defs, GameState.current_hub, world.field.seed_value, int(data.get("per_district", 9)),
+		wild, world.field.biome, int(data.get("wild_per_district", 4)))
 	var avoid: Array[Vector3] = [Vector3.ZERO, FirstSeed.GREENHOUSE_POS, Intro.POD_POS]
 	avoid.append((LedgerArc.relay_spot(world.field)["pos"] as Vector3))
 	var plan: Array[Dictionary] = plan_spots(world.field, ids, defs, avoid)
@@ -47,7 +49,10 @@ func setup() -> void:
 # --- Placement (pure, deterministic) -------------------------------------------------
 
 ## Which eggs live in a district: Old Town (hub 0) gets the starter set; others a seeded pick.
-static func district_eggs(all_ids: Array[String], all_defs: Dictionary, hub: int, seed_v: int, per_district: int) -> Array[String]:
+## Eggs with where = "wild" only appear in wilderness districts, which take up to `wild_n` of them
+## first (eggs whose "biome" matches the district's go to the front), then fill from the rest.
+static func district_eggs(all_ids: Array[String], all_defs: Dictionary, hub: int, seed_v: int, per_district: int,
+		wild: bool = false, biome: String = "", wild_n: int = 4) -> Array[String]:
 	var out: Array[String] = []
 	if hub == 0:
 		for id: String in all_ids:
@@ -56,15 +61,38 @@ static func district_eggs(all_ids: Array[String], all_defs: Dictionary, hub: int
 		return out
 	var r := RandomNumberGenerator.new()
 	r.seed = seed_v + 313
-	var pool: Array[String] = all_ids.duplicate()
+	var general: Array[String] = []
+	var wild_ids: Array[String] = []
+	for id: String in all_ids:
+		if str(all_defs[id].get("where", "")) == "wild":
+			wild_ids.append(id)
+		else:
+			general.append(id)
+	_shuffle(general, r)
+	if wild and not wild_ids.is_empty():
+		_shuffle(wild_ids, r)
+		var match_first: Array[String] = []
+		for id: String in wild_ids:
+			if biome != "" and str(all_defs[id].get("biome", "")) == biome:
+				match_first.append(id)
+		for id: String in wild_ids:
+			if not (id in match_first):
+				match_first.append(id)
+		for i: int in mini(mini(wild_n, per_district), match_first.size()):
+			out.append(match_first[i])
+	for id: String in general:
+		if out.size() >= per_district:
+			break
+		out.append(id)
+	return out
+
+
+static func _shuffle(pool: Array[String], r: RandomNumberGenerator) -> void:
 	for i: int in range(pool.size() - 1, 0, -1):
 		var j: int = r.randi_range(0, i)
 		var tmp: String = pool[i]
 		pool[i] = pool[j]
 		pool[j] = tmp
-	for i: int in mini(per_district, pool.size()):
-		out.append(pool[i])
-	return out
 
 
 ## Deterministic spots for every part of every egg. Open ground (lots, sidewalks; roads only as
@@ -171,9 +199,35 @@ func _spawn(p: Dictionary) -> void:
 	placed.append(e)
 	if kind == "jukebox":
 		_jukebox_node = node
+	if is_found(str(p["id"])):
+		_show_found_state(node, kind)
 	var prompt: String = str(d.get("final_prompt", "")) if bool(p["final"]) else str(d.get("prompt", ""))
 	if prompt != "" and world.get("interactables") != null:
 		world.interactables.register(node, float(d.get("use_range", 2.6)), prompt, _use.bind(e))
+
+
+## Found eggs keep the change Patch made: the sock is gone, the fire is lit, the stone is on top.
+static func _show_found_state(node: Node3D, kind: String) -> void:
+	match kind:
+		"clothesline", "fishing_net":
+			var prize: Node3D = node.get_node_or_null("Anim/Prize")
+			if prize:
+				prize.visible = false
+		"cairn":
+			var top: Node3D = node.get_node_or_null("Anim/Top")
+			if top:
+				top.visible = true
+		"campfire":
+			var fl: Node3D = node.get_node_or_null("Flame")
+			var l: OmniLight3D = node.get_node_or_null("Light")
+			if fl:
+				fl.visible = true
+			if l:
+				l.light_energy = 1.6
+		"drill_press":
+			var b: Node3D = node.get_node_or_null("Bolt")
+			if b:
+				b.visible = true
 
 
 func _refresh_visibility() -> void:
@@ -400,7 +454,8 @@ func _use(e: Dictionary) -> void:
 	match str(d.get("trigger", "")):
 		"night":
 			if _night_amount() < 0.5:
-				EventBus.toast.emit("Through the telescope: just a bright, dusty sky. Come back after dark.", "info")
+				EventBus.toast.emit("The radio hisses quietly. Nothing up there is awake yet. Come back after dark." if kind == "radio" \
+					else "Through the telescope: just a bright, dusty sky. Come back after dark.", "info")
 				Audio.play("click", 0.8, -8.0)
 				return
 		"chain":
@@ -412,9 +467,9 @@ func _use(e: Dictionary) -> void:
 				if world.get("doc_view") != null and not doc.is_empty():
 					world.doc_view.show_doc(doc)
 				return
-	if kind == "time_capsule" and d.has("doc") and world.get("doc_view") != null:
+	if d.has("doc") and world.get("doc_view") != null:
 		var doc2: Dictionary = (d["doc"] as Dictionary).duplicate()
-		doc2["header"] = "T I M E   C A P S U L E   ·   L E T T E R"
+		doc2["header"] = "T I M E   C A P S U L E   ·   L E T T E R" if kind == "time_capsule" else "A   C L I P B O A R D   ·   N O T E S"
 		_effect(e)
 		found(id)
 		world.doc_view.show_doc(doc2)
@@ -514,6 +569,73 @@ func _effect(e: Dictionary) -> void:
 				tw6.tween_property(led, "visible", false, 0.15)
 				tw6.tween_property(led, "visible", true, 0.15)
 			Audio.play("servo", 1.4, -8.0)
+		"clothesline", "fishing_net":
+			_wobble(anim, 0.12)
+			Audio.play("squeak", 1.3, -8.0)
+			var prize: Node3D = n.get_node_or_null("Anim/Prize") if anim else null
+			if prize:
+				prize.visible = false
+			if str(e["kind"]) == "fishing_net":
+				Vfx.burst("sparkle", n.global_position + Vector3(0, 0.6, 0), Color(0.7, 0.85, 1.0), 0.6)
+		"pedestal":
+			if anim:
+				var twp := anim.create_tween()
+				twp.tween_property(anim, "rotation:y", anim.rotation.y + TAU, 1.6).set_trans(Tween.TRANS_SINE)
+			Vfx.burst("sparkle", n.global_position + Vector3(0, 1.3, 0), Color(1.0, 0.85, 0.3), 1.2)
+			Audio.play("chime", 1.5, -6.0)
+		"weather_bot":
+			if anim:
+				var twv := anim.create_tween().set_loops(3)
+				twv.tween_property(anim, "rotation:y", anim.rotation.y + PI * 0.66, 0.25)
+			Audio.play("servo", 1.2, -6.0)
+			var fc: Array[String] = ["CONFETTI", "LIGHT JAZZ", "99% DUCKS", "SUNNY (INDOORS)", "FOG OF NOODLES"]
+			Vfx.float_text(top + Vector3(0, 1.4, 0), "FORECAST: " + fc[randi() % fc.size()], Color(0.7, 0.9, 1.0), 1.1, 1.4)
+		"potato":
+			_squash(anim)
+			Audio.play("dig", 1.4, -6.0)
+			Vfx.float_text(top, "1ST PLACE", Color(0.4, 0.7, 1.0), 1.2, 1.0)
+		"radio":
+			Audio.play("tv_static", 0.7, -8.0)
+			_flash(n.get_node_or_null("Screen"), Color(1.0, 0.7, 0.3), 3.0)
+			_look_up()
+		"dev_desk":
+			Audio.play("pop", 0.8, -6.0)
+			_hop(anim)
+		"scarecrow":
+			if anim:
+				var tws := anim.create_tween()
+				tws.tween_property(anim, "rotation_degrees:z", -12.0, 0.4).set_trans(Tween.TRANS_SINE)
+				tws.tween_property(anim, "rotation_degrees:z", 10.0, 0.6).set_trans(Tween.TRANS_SINE)
+				tws.tween_property(anim, "rotation_degrees:z", 0.0, 0.4).set_trans(Tween.TRANS_SINE)
+			Audio.play("servo", 0.7, -6.0)
+		"sand_car":
+			_wobble(anim, 0.05)
+			Vfx.burst("dust", n.global_position + Vector3(0, 0.6, 0), Color(0.9, 0.8, 0.6, 0.8), 1.2)
+			Audio.play("clunk", 0.7, -6.0)
+		"cairn":
+			var stone: Node3D = n.get_node_or_null("Anim/Top")
+			if stone:
+				stone.visible = true
+				stone.scale = Vector3.ONE * 0.1
+				var twc := stone.create_tween()
+				twc.tween_property(stone, "scale", Vector3.ONE, 0.4).set_trans(Tween.TRANS_BACK)
+			Audio.play("clink", 0.6, -6.0)
+		"campfire":
+			var fire: OmniLight3D = n.get_node_or_null("Light")
+			var flame: Node3D = n.get_node_or_null("Flame")
+			if fire:
+				var twf := fire.create_tween()
+				twf.tween_property(fire, "light_energy", 1.6, 1.2)
+			if flame:
+				flame.visible = true
+			Vfx.burst("sparkle", n.global_position + Vector3(0, 0.4, 0), Color(1.0, 0.6, 0.25), 0.8)
+			Audio.play("whoosh", 0.6, -8.0)
+		"drill_press":
+			_wobble(n.get_node_or_null("Sign"), 0.08)
+			var bolt: Node3D = n.get_node_or_null("Bolt")
+			if bolt:
+				bolt.visible = true
+			Audio.play("clink", 1.2, -6.0)
 		"tyre_tower":
 			if anim:
 				var tw7 := anim.create_tween()
@@ -663,6 +785,11 @@ func found(id: String) -> void:
 		list.append(id)
 	GameState.flags["eggs_found"] = list
 	GameState.inc_stat("eggs_found")
+	if str(d.get("where", "")) == "wild":
+		var wl: Array = GameState.flags.get("eggs_wild", [])
+		if not (id in wl):
+			wl.append(id)
+		GameState.flags["eggs_wild"] = wl
 	var rew: Dictionary = d.get("reward", {})
 	var bits: Array[String] = []
 	for k: String in rew:

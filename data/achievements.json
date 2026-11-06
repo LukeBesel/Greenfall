@@ -1,5 +1,5 @@
 {
- "_doc": "Achievements. cond.type: stat (GameState.stats[key] >= target), junk_kg (kg removed of junk type key, * = all), cubes_earned (lifetime cubes), flag (GameState.flags[key] truthy), research (count researched), research_id (key researched), codex (entries unlocked in category key, * = all), hub_level (best hub level), achievements (count unlocked). Checked about once a second; unlocks persist in GameState.flags.achievements.",
+ "_doc": "Achievements. cond.type: stat (GameState.stats[key] >= target), junk_kg (kg removed of junk type key, * = all), cubes_earned (lifetime cubes), flag (GameState.flags[key] truthy), research (count researched), research_id (key researched), codex (entries unlocked in category key, * = all), hub_level (best hub level), achievements (count unlocked), list (size of the Array in GameState.flags[key]). Checked about once a second; unlocks persist in GameState.flags.achievements.",
  "achievements": [
   {
    "id": "first_scoop",
@@ -584,6 +584,160 @@
    "cond": {
     "type": "achievements",
     "target": 25
+   }
+  },
+  {
+   "id": "curio_5",
+   "name": "Nosy Parker",
+   "desc": "Find 5 curiosities.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 5,
+    "key": "eggs_found"
+   }
+  },
+  {
+   "id": "curio_15",
+   "name": "Cabinet of Curiosities",
+   "desc": "Find 15 curiosities.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 15,
+    "key": "eggs_found"
+   }
+  },
+  {
+   "id": "curio_all",
+   "name": "Every Last Secret",
+   "desc": "Find all 29 curiosities on Verdance.",
+   "icon": "trophy",
+   "cond": {
+    "type": "stat",
+    "target": 29,
+    "key": "eggs_found"
+   }
+  },
+  {
+   "id": "wild_curio",
+   "name": "Off the Beaten Path",
+   "desc": "Find a curiosity that only lives in the wilderness.",
+   "icon": "map",
+   "cond": {
+    "type": "list",
+    "target": 1,
+    "key": "eggs_wild"
+   }
+  },
+  {
+   "id": "wild_curio_all",
+   "name": "Wild at Heart",
+   "desc": "Find all six wilderness curiosities.",
+   "icon": "map",
+   "cond": {
+    "type": "list",
+    "target": 6,
+    "key": "eggs_wild"
+   }
+  },
+  {
+   "id": "biome_1",
+   "name": "Off-Road",
+   "desc": "Land at a wilderness base.",
+   "icon": "rocket",
+   "cond": {
+    "type": "list",
+    "target": 1,
+    "key": "biomes_visited"
+   }
+  },
+  {
+   "id": "biome_3",
+   "name": "Postcards From Verdance",
+   "desc": "Visit wilderness bases in three different biomes.",
+   "icon": "rocket",
+   "cond": {
+    "type": "list",
+    "target": 3,
+    "key": "biomes_visited"
+   }
+  },
+  {
+   "id": "campfire",
+   "name": "Sit a While",
+   "desc": "Rekindle the last campfire.",
+   "icon": "flower",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "egg_campfire"
+   }
+  },
+  {
+   "id": "bloom_meadow",
+   "name": "First Meadow",
+   "desc": "Reach 25 Thriving hexes across Verdance.",
+   "icon": "flower",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "bloom_first_meadow"
+   }
+  },
+  {
+   "id": "bloom_district",
+   "name": "A District in Bloom",
+   "desc": "Bring one district to 60% Thriving.",
+   "icon": "tree",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "bloom_thriving_district"
+   }
+  },
+  {
+   "id": "bloom_verdance",
+   "name": "Verdance Bloom",
+   "desc": "Wake the Cradle: three districts in bloom, or 1% of the planet reclaimed.",
+   "icon": "tree",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "bloom_verdance_bloom"
+   }
+  },
+  {
+   "id": "bloom_evergreen",
+   "name": "Evergreen",
+   "desc": "Twelve districts in bloom, or 3% of the planet reclaimed.",
+   "icon": "leaf",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "bloom_evergreen"
+   }
+  },
+  {
+   "id": "ark_1",
+   "name": "Seed Ark",
+   "desc": "Complete a Seed Ark wave.",
+   "icon": "sprout",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "ark_waves"
+   }
+  },
+  {
+   "id": "ark_10",
+   "name": "Tender of Worlds",
+   "desc": "Complete 10 Seed Ark waves.",
+   "icon": "sprout",
+   "cond": {
+    "type": "stat",
+    "target": 10,
+    "key": "ark_waves"
    }
   }
  ]

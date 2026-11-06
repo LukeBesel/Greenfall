@@ -13,14 +13,22 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - [x] M8 Content/meta: Codex, 54 achievements, stats, cosmetics (6 colourways).
 - [~] M9 Balance: autoplay + robot-report sims done for the first ~15 min; longer-horizon tuning needs play-testing.
 - [~] M10 Polish: title screen, settings, music score, QA pass (40 fixes in flight); Windows/Linux/macOS builds from CI.
-- [ ] M11 Post-game.
+- [~] M11 Post-game: Verdance Bloom milestones, Cradle finale, endless Seed Ark waves (no Cradle Mode worlds yet).
 
 ## Next steps for a new session
 1. Play-test feedback from the owner (docs/PLAYTEST.md); fix what they hit first.
 2. macOS: universal build works (ETC2/ASTC import enabled). For Steam: sign and notarize with the owner's Apple Developer account.
 3. Longer balance: run `--autoplay --time-scale=8 --quit-after=600` and check goals keep a next step within 1-3 minutes past the first hour.
-4. More districts content: more eggs per district, a Codex "Curiosities" page, biome-specific junk for wilderness bases.
-5. Post-game (M11): planet-wide restoration milestones, endless prestige-like "replant the world" loop.
+4. More districts content: aim 40 eggs (29 now); more biome props (nets, satellites) if Poly Haven gets them; per-biome plants/wildlife.
+5. Post-game (M11): Cradle Mode (other worlds + Heirlooms), Garden Mode decorating; tune Bloom thresholds after play-testing.
+
+## Update: content depth (wt/content)
+- Done: Codex **Curiosities** tab (4th tab, `ui/codex_screen.gd`; data from `Codex.curiosities()` in `systems/codex.gd`). Every egg grouped by where it turns up (Old Town / Any district / Wilderness bases): a "? ? ?" silhouette and a hint until found, then the lore, its found-toast as a quote and the reward. Chain eggs show parts found. Dev: `--open=codex --codex-tab=curiosities`.
+- Done: 12 new eggs (29 total, `data/eggs.json` + builders in `story/egg_props.gd` + 3-stage WREN lines): The Odd Sock, Employee of the Month, The Weatherman, Best in Show, Night Shift (night radio), Notes From the Builders (doc); wilderness-only (`"where": "wild"`): The Last Scarecrow, Net Gains, Parking Forever, Trail Cairn, The Last Campfire, Back in Five. `per_district` 10; wild districts take up to `wild_per_district` (4) wild eggs first, biome matches first (`"biome"`). Found eggs keep their changed state (sock gone, fire lit, stone on the cairn).
+- Done: Wilderness biome sets (`data/junk.json` `biomes`, `Economy.biome_set/landmarks_for`): rustlands, dust_dunes, neon_coast, frostcap, fungal_marsh. Per biome: junk model swaps (same type and count, own RNG, so saves stay valid; shore hexes get their own pool: lifebuoys, crates, buoys), own landmark wrecks (drill presses, compressors, stumps, buoys, sand-blasted drums, lots of covered cars in the dunes), a ground tint and grass tint (`ground_pbr.gdshader` `biome_tint`/`grass_tint`), a sand/frost/moss coat over the wrecks, and a tinted horizon ring of dunes/ridges with biome props (`FieldView._apply_biome`). 11 new Poly Haven models in `data/assets.json`. First landing in a new biome: toast + WREN line (`flags.biomes_visited`). Wild hubs are 24-33 (24 frostcap, 25/29 neon coast, 28 dust dunes, the rest rustlands); hub 3 is a city.
+- Done: Post-game (`systems/bloom.gd`, `data/bloom.json`, `story/bloom_finale.gd`). Six Verdance Bloom milestones (Thriving hexes summed over districts, districts >= 60% Thriving, or planet % reclaimed as on the hologram) with rewards. "Verdance Bloom" plays a letterboxed Cradle cinematic (seed pods fall from orbit) and opens the **Seed Ark**: every bloom anywhere fills the next wave (120 x 1.5^n), each wave pays growing rewards; never resets anything. The hologram shows one line (next Bloom milestone, then the Ark wave). Dev: `--bloom-finale`.
+- Done: 14 achievements (68 total; new cond type `list` = size of a flags Array). Tests: `tests/test_curiosities.gd`, `tests/test_bloom.gd`.
+- Not done: the opt-in "reset a district's junk for a multiplier" prestige (the planet-wide counter was chosen instead).
 
 ## Update: Front end (title screen + settings)
 - Done: `scenes/main_menu.tscn` (`ui/main_menu.gd`) is now `run/main_scene`: Aurora hovering in a sunset junk lot with a slow swinging camera, Continue (with a one-line save summary), New Game (confirms before erasing), Settings, Credits (from `docs/CREDITS.md`), Quit. Any DevHooks flag skips straight to `slice.tscn`, so `tools/shot.sh`, autoplay and tests work as before; `--menu` (or `--menu=settings|credits|confirm`, `--tab=N`) stays on the title for screenshots. The title screen turns `SaveManager.enabled` off so autosave can't overwrite the slot with blank state.

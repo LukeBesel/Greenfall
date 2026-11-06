@@ -56,6 +56,12 @@
     "metal_trash_can": {"name": "Trash Can", "hint": "The irony is not lost on Patch.", "desc": "The one place junk was supposed to go. Patch salutes it every time he passes."},
     "propane_tank": {"name": "Propane Tank", "hint": "Handle with care.", "desc": "Long since empty and safe. Someone painted a flower on the side, a long time ago."},
     "plastic_monobloc_chair_01": {"name": "Plastic Chair", "hint": "Somebody sat here.", "desc": "The most common chair in the world. It faces the horizon, as if someone liked to watch the sunset from here."},
-    "dead_tree_trunk": {"name": "Old Tree Trunk", "hint": "It used to be tall.", "desc": "A tree that did not make it. But there are tiny green shoots at its base, and beetles inside, and it is not as dead as it looks."}
+    "dead_tree_trunk": {"name": "Old Tree Trunk", "hint": "It used to be tall.", "desc": "A tree that did not make it. But there are tiny green shoots at its base, and beetles inside, and it is not as dead as it looks."},
+    "old_drill_press": {"name": "Drill Press", "hint": "Out in the rust plains.", "desc": "A workshop drill press standing alone in a field. The workshop around it is long gone; the press stayed exactly where it was told."},
+    "old_military_compressor": {"name": "Field Compressor", "hint": "Out where the wild bases are.", "desc": "A wheeled air compressor, its gauges frozen at 'enough'. It pumped up the tyres of a whole fleet of cleanup carts once."},
+    "tree_stump_01": {"name": "Tree Stump", "hint": "Where a forest used to be.", "desc": "Cut, not fallen. The rings count back further than the Ledger. Moss has started a quiet negotiation with the bark."},
+    "ocean_buoy": {"name": "Washed-up Buoy", "hint": "On a far coast.", "desc": "A channel buoy that drifted inland on a storm tide and never found its way back. Its lamp still blinks, once an hour, out of habit."},
+    "wooden_crate_02": {"name": "Cargo Crate", "hint": "Near the shore, or the dunes.", "desc": "A slatted crate stencilled CRADLE SUPPLY: FRAGILE. Empty. Whatever was inside was planted somewhere, a long time ago."},
+    "barrel_03": {"name": "Sand-Blasted Drum", "hint": "Where the wind carries sand.", "desc": "Centuries of wind have polished this drum down to bare, shining metal. In the dunes even the junk gets buffed."}
   }
 }
