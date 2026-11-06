@@ -363,6 +363,7 @@ func _maybe_salvage_part(type_id: String) -> void:
 			break
 	var t: int = randi() % Economy.parts.get("types", [1]).size()
 	GameState.parts.append({"type": t, "rarity": r})
+	EventBus.part_found.emit(t, r)
 	var rd: Dictionary = Economy.rarity(r)
 	EventBus.toast.emit("Salvaged: %s %s" % [rd.get("name", ""), Economy.part_type(t).get("name", "part")], "hint")
 	Audio.play("ding", 1.3, -10.0)
@@ -374,6 +375,7 @@ func _on_part_found(idx: int) -> void:
 	var r: int = f.part_rarity[idx]
 	GameState.parts.append({"type": t, "rarity": r})
 	GameState.inc_stat("parts_found")
+	EventBus.part_found.emit(t, r)
 	var rar: Dictionary = Economy.rarity(r)
 	var pt: Dictionary = Economy.part_type(t)
 	var col: Color = Color.html(str(rar.get("color", "#ffffff")))

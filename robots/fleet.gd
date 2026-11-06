@@ -98,6 +98,7 @@ func build(type_id: String, at: Vector3) -> Robot:
 	var bonus: float = 0.05 * rarity_sum / maxf(status.size(), 1.0)
 	var r := spawn(type_id, tier_of(type_id), at, bonus, NAMES[randi() % NAMES.size()] + "-%02d" % (randi() % 100))
 	GameState.inc_stat("robots_built")
+	EventBus.robot_built.emit(r.robot_name)
 	EventBus.toast.emit("%s %s assembled. It looks around, then gets to work." % [Economy.robots[type_id]["name"], r.robot_name], "story")
 	return r
 

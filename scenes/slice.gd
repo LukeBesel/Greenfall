@@ -12,6 +12,7 @@ var layout: CityLayout
 var city: CityView
 var litter: LitterView
 var tutorial: Tutorial
+var wren: Wren
 var fleet: Fleet
 var planet: PlanetData
 var globe: GlobeView
@@ -167,6 +168,12 @@ func _ready() -> void:
 			globe.focus_on(planet_cell_at(patch.global_position))).call_deferred()
 	EventBus.hitstop_requested.connect(_hitstop)
 	print("[slice] built in %d ms" % (Time.get_ticks_msec() - t0))
+	wren = Wren.new()
+	wren.world = self
+	add_child(wren)
+	var subs := Subtitles.new()
+	add_child(subs)
+	wren.line_started.connect(subs.show_line)
 	tutorial = Tutorial.new()
 	tutorial.world = self
 	add_child(tutorial)
@@ -490,6 +497,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("open_globe"):
 		globe.open_view()
 		globe.focus_on(planet_cell_at(patch.global_position))
+		wren.say("globe", 0.6)
 		if patch.input is PlayerInput:
 			(patch.input as PlayerInput).enabled = false
 		cam.input_enabled = false

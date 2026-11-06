@@ -373,6 +373,13 @@ func _generate_all() -> void:
 			var saw: float = fmod(ph / TAU, 1.0) * 2.0 - 1.0
 			b[i] = saw * 0.06 * sin(PI * t / 0.3)
 		_add("servo", b)
+	# Blip: WREN's voice, a soft filtered tone per character.
+	for f: float in [620.0, 700.0, 780.0, 660.0]:
+		var b := _buf(0.07)
+		for i: int in b.size():
+			var t: float = float(i) / RATE
+			b[i] = (sin(TAU * f * t) * 0.7 + sin(TAU * f * 1.5 * t) * 0.2) * sin(PI * t / 0.07) * 0.18
+		_add("blip", b)
 	# Fanfare: milestones.
 	var fan := _buf(1.6)
 	var notes: Array[float] = [523.25, 659.25, 783.99, 1046.5]

@@ -18,6 +18,8 @@ signal upgrade_bought(upgrade_id: String, new_level: int)
 signal milestone_reached(milestone_id: String)
 signal toast(text: String, kind: String)
 signal tutorial_changed(text: String)
+signal robot_built(robot_name: String)
+signal part_found(part_type: int, rarity: int)
 
 # Feel
 signal shake_requested(strength: float)
