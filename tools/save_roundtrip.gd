@@ -65,7 +65,7 @@ func _built(s: Node) -> Array:
 	var out: Array = []
 	var st: Node = Stations.of(s)
 	if st:
-		for id: String in ["conveyor", "baler", "recycler"]:
+		for id: String in ["conveyor", "auto_baler", "recycler"]:
 			if st.built(id):
 				out.append(id)
 	return out
@@ -100,8 +100,11 @@ func _ready() -> void:
 		cleaned += 1
 	var st: Node = Stations.of(s1)
 	if st:
-		for id: String in ["conveyor", "baler"]:
-			st.build(id)
+		for id: String in ["conveyor", "auto_baler"]:
+			Research.grant(id)
+			if not st.build(id):
+				print("[roundtrip] FAIL could not build %s: %s" % [id, st.block_reason(id)])
+				_fails += 1
 	for t: String in ["scoopie", "haulbug", "drip", "skimmer"]:
 		var r: Robot = s1.fleet.spawn(t, 1, Vector3(randf_range(-3, 3), 0.2, randf_range(2, 4)), 0.05, "RT-" + t)
 		r.tier = 1
