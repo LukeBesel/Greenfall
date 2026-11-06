@@ -36,3 +36,8 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
 ## The hero: Lumi (LM-1)
 - Name: **Lumi**, designation LM-1 ("lumen"), the seed-keeper bot of the ark *Cradle*. Code identifiers stay `Patch`/`patch_*`; all player-facing text says Lumi.
 - Story: 300 years ago Verdance drowned in waste and its people left on the ark *Cradle* with the last seed vault. During a meteor storm a hull breach blew a cargo pod loose; Lumi had climbed in to save a tray of seedlings and was shot out, falling for days back to Verdance. The ark could not turn back; WREN (the ark AI) can only whisper over a failing relay. Lumi's core runs on photosynthetic "green light", and there is no green left, so its battery is dying. Every plant it grows feeds the core; to get home it must clean, grow enough life to charge a Bloom Core, and rebuild the launch sites so a rocket can reach the ark. Ending: the core is full, the planet is green again, and the ark comes home.
+
+## Steam (Nov 2026)
+- **GodotSteam GDExtension, reached only through `Engine.get_singleton("Steam")`** so the game parses and runs with the addon missing (CI, tests, itch builds). Not vendored yet: the project moved to Codeberg, which the sandbox cannot reach.
+- **Cloud: Remote Storage API by default, newest save wins** using the `saved_unix` stamp inside the save (file mtimes change on copy); ties keep local; a replaced local save is kept as `.local_bak`. Auto-Cloud stays available with one setting.
+- **Demo = same build + `demo` feature tag**, one `Demo.is_demo()` check; separate save folder so a full-game save never opens in the demo, imported once by the full game.
