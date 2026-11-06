@@ -1,0 +1,5 @@
+.godot/
+/screenshots/*.png
+/screenshots/*.avi
+/builds/
+*.tmp

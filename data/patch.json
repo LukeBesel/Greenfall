@@ -1,0 +1,20 @@
+{
+  "_doc": "Patch's base stats before upgrades.",
+  "stats": {
+    "capacity": 10.0,
+    "scoop_width": 1.4,
+    "scoop_reach": 2.4,
+    "scoop_rate": 7.0,
+    "move_speed": 4.6,
+    "carry_stack": 1,
+    "cube_value_mult": 1.0,
+    "auto_compactor": 0,
+    "magnet_radius": 0.0
+  },
+  "cube": {
+    "pure_mult": 2.0,
+    "perfect_mult": 1.5,
+    "lumpy_mult": 0.8,
+    "perfect_band": [0.9, 1.0]
+  }
+}

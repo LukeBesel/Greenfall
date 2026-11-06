@@ -1,0 +1,11 @@
+{
+  "_doc": "Junk types. value = Cubes per unit of compartment volume. colors = palette for pieces (hex). cube_color = color of a Pure cube. shapes = procedural mesh kinds from art/junk_meshes.gd. volume = [min,max] compartment units per piece. weight = relative spawn weight in the Rustlands slice.",
+  "types": [
+    {"id": "metal", "name": "Scrap Metal", "value": 1.0, "cube_color": "#c9d3dc", "colors": ["#e8463c", "#c9d3dc", "#f2a03d", "#7fa6c9"], "shapes": ["can", "pipe"], "volume": [0.7, 1.4], "weight": 1.2},
+    {"id": "plastic", "name": "Plastic", "value": 0.6, "cube_color": "#ff7eb6", "colors": ["#ff7eb6", "#ffd23f", "#4cc9f0", "#b388ff"], "shapes": ["bottle", "bag", "cone"], "volume": [0.5, 1.1], "weight": 1.6},
+    {"id": "glass", "name": "Glass", "value": 0.85, "cube_color": "#5ee6c8", "colors": ["#5ee6c8", "#7bd389", "#9ad0ff"], "shapes": ["jar", "bottle"], "volume": [0.6, 1.0], "weight": 0.9},
+    {"id": "rubber", "name": "Rubber", "value": 0.75, "cube_color": "#3d3a4b", "colors": ["#3d3a4b", "#ffcf3f", "#ff8c42"], "shapes": ["tire", "duck"], "volume": [0.9, 1.6], "weight": 0.7},
+    {"id": "electronics", "name": "Electronics", "value": 1.6, "cube_color": "#3ddc84", "colors": ["#3ddc84", "#2a9d8f", "#ffe066"], "shapes": ["board", "gadget"], "volume": [0.6, 1.2], "weight": 0.45},
+    {"id": "fabric", "name": "Fabric", "value": 0.5, "cube_color": "#9d7cff", "colors": ["#9d7cff", "#ff9ecd", "#7ee8fa"], "shapes": ["sock", "rag"], "volume": [0.4, 0.8], "weight": 0.8}
+  ]
+}

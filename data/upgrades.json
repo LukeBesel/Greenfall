@@ -1,0 +1,13 @@
+{
+  "_doc": "Patch upgrades. Effect per level: mode add => stat += amount*level; mode mul_pct => stat *= (1 + amount*level). cost = base_cost * growth^level. max_level -1 = unlimited.",
+  "upgrades": [
+    {"id": "compartment_size", "name": "Compartment Size", "tab": "patch", "icon": "box", "desc": "A roomier chest. More junk per cube.", "stat": "capacity", "mode": "add", "amount": 2.0, "unit": "", "base_cost": 15, "growth": 1.55, "max_level": 25},
+    {"id": "scoop_width", "name": "Scoop Width", "tab": "patch", "icon": "scoop", "desc": "Longer arms, wider sweeps.", "stat": "scoop_width", "mode": "add", "amount": 0.2, "unit": " m", "base_cost": 20, "growth": 1.6, "max_level": 20},
+    {"id": "tread_speed", "name": "Tread Speed", "tab": "patch", "icon": "tread", "desc": "Oiled treads. Still squeaky.", "stat": "move_speed", "mode": "mul_pct", "amount": 0.1, "unit": " m/s", "base_cost": 25, "growth": 1.5, "max_level": 20},
+    {"id": "carry_stack", "name": "Carry Stack", "tab": "patch", "icon": "stack", "desc": "Balance one more cube on your back.", "stat": "carry_stack", "mode": "add", "amount": 1.0, "unit": "", "base_cost": 40, "growth": 1.9, "max_level": 9},
+    {"id": "compactor_pressure", "name": "Compactor Pressure", "tab": "patch", "icon": "press", "desc": "Squish harder. Denser cubes are worth more.", "stat": "cube_value_mult", "mode": "mul_pct", "amount": 0.12, "unit": "x", "base_cost": 60, "growth": 1.65, "max_level": 30},
+    {"id": "scoop_speed", "name": "Scoop Speed", "tab": "patch", "icon": "speed", "desc": "Faster arms. Clinkier clinks.", "stat": "scoop_rate", "mode": "mul_pct", "amount": 0.15, "unit": "/s", "base_cost": 35, "growth": 1.6, "max_level": 15},
+    {"id": "auto_compactor", "name": "Auto Compactor", "tab": "patch", "icon": "auto", "desc": "Cubes itself when full. Manual Perfect Cubes still pay more.", "stat": "auto_compactor", "mode": "add", "amount": 1.0, "unit": "", "base_cost": 150, "growth": 1.0, "max_level": 1, "requires": {"compartment_size": 2}},
+    {"id": "magnet_arm", "name": "Magnet Arm", "tab": "patch", "icon": "magnet", "desc": "Nearby junk scoots toward you while scooping.", "stat": "magnet_radius", "mode": "add", "amount": 0.6, "unit": " m", "base_cost": 120, "growth": 1.8, "max_level": 6, "requires": {"scoop_width": 2}}
+  ]
+}
