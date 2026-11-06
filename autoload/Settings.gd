@@ -70,6 +70,7 @@ func _register_default_actions() -> void:
 		"zoom_out": [_mouse(MOUSE_BUTTON_WHEEL_DOWN), _joy(JOY_BUTTON_LEFT_SHOULDER)],
 		"lens_view": [_key(KEY_V), _joy(JOY_BUTTON_RIGHT_STICK)],
 		"open_globe": [_key(KEY_M), _joy(JOY_BUTTON_BACK)],
+		"open_command": [_key(KEY_B), _joy(JOY_BUTTON_DPAD_DOWN)],
 		"tool_scoop": [_key(KEY_1), _joy(JOY_BUTTON_DPAD_UP)],
 		"tool_plant": [_key(KEY_2), _joy(JOY_BUTTON_DPAD_LEFT)],
 		"tool_water": [_key(KEY_3), _joy(JOY_BUTTON_DPAD_RIGHT)],

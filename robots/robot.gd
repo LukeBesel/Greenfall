@@ -118,7 +118,72 @@ func _steer(target: Vector3, stop: float) -> Vector3:
 	return m * clampf(dist / 1.2, 0.3, 1.0)
 
 
+func reset_targets() -> void:
+	work_hex = -1
+	_target_piece = -1
+	_target_slot = -1
+	if _target_bale and is_instance_valid(_target_bale):
+		_target_bale.set_meta("reserved", false)
+	_target_bale = null
+
+
+func _fleet() -> Fleet:
+	return get_parent() as Fleet
+
+
+## Hexes from the current order ([] = whole district) and whether to stay inside them.
+func _zone() -> Array:
+	var f: Fleet = _fleet()
+	return f.zone_hexes(self) if f else []
+
+
+func _stay() -> bool:
+	var f: Fleet = _fleet()
+	return f != null and f.mode_of(self) in ["stay", "follow"]
+
+
+## Short line for the Command View.
+func status_text() -> String:
+	var f: Fleet = _fleet()
+	if f and f.mode_of(self) == "recall":
+		return "parked at hub" if global_position.distance_to(_park_pos()) < 2.5 else "returning to hub"
+	match role():
+		"haul":
+			if carried.size() > 0:
+				return "hauling %d bale%s" % [carried.size(), "" if carried.size() == 1 else "s"]
+			return "fetching a bale" if _target_bale else "waiting for bales"
+		"plant":
+			if not GameState.can_afford("seeds", BigNum.from_float(1.0)):
+				return "out of seeds"
+			return "planting" if _target_slot >= 0 else "no empty soil in range"
+		"water":
+			if water <= 0.5:
+				return "refilling"
+			return "watering" if _target_slot >= 0 else "everything watered"
+		_:
+			if work_hex >= 0:
+				return "cleaning hex %d (%d%%)" % [work_hex, int(world.field.removed_fraction(work_hex) * 100.0)]
+			return "zone clean, waiting" if _stay() else "nothing left to clean"
+
+
+func _park_pos() -> Vector3:
+	var i: int = get_index()
+	return world.depot.global_position + Vector3(-3.0 + float(i % 6) * 1.2, 0, 4.0 + float(i / 6) * 1.2)
+
+
+func _idle_in_zone(z: Array) -> Vector3:
+	if z.is_empty():
+		return Vector3.ZERO
+	var c: Vector3 = world.field.hex_center(int(z[0]))
+	return _steer(c, world.field.hex_size * 0.5)
+
+
 func _think(delta: float) -> Vector3:
+	var f: Fleet = _fleet()
+	if f and f.mode_of(self) == "recall":
+		if role() == "haul" and not carried.is_empty():
+			return _think_haul()
+		return _steer(_park_pos(), 0.8)
 	match role():
 		"haul":
 			return _think_haul()
@@ -143,7 +208,8 @@ func _think_clean(_delta: float) -> Vector3:
 		if work_hex < 0:
 			if not hopper.is_empty():
 				_make_bale()
-			return Vector3.ZERO
+				return Vector3.ZERO
+			return _idle_in_zone(_zone()) if _stay() else Vector3.ZERO
 	if _target_piece < 0 or field.piece_alive[_target_piece] == 0:
 		_target_piece = _nearest_piece_in(work_hex)
 		if _target_piece < 0:
@@ -161,6 +227,17 @@ func _pick_work_hex() -> int:
 	var field: HexField = world.field
 	var best: int = -1
 	var best_d: float = INF
+	var z: Array = _zone()
+	for h: Variant in z:
+		var id: int = int(h)
+		if id < 0 or id >= field.hex_count() or field.hex_hub[id] != 0 or field.is_clean(id):
+			continue
+		var d: float = field.hex_center(id).distance_squared_to(global_position)
+		if d < best_d:
+			best_d = d
+			best = id
+	if best >= 0 or (_stay() and not z.is_empty()):
+		return best
 	for id: int in field.hex_count():
 		if field.hex_hub[id] != 0 or field.is_clean(id):
 			continue
@@ -265,7 +342,7 @@ func _think_plant() -> Vector3:
 	if _target_slot < 0 or g.slot_species[_target_slot] >= 0:
 		_target_slot = _find_slot(g, true)
 		if _target_slot < 0:
-			return Vector3.ZERO
+			return _idle_in_zone(_zone()) if _stay() else Vector3.ZERO
 	var m: Vector3 = _steer(g.slot_pos[_target_slot], 0.8)
 	if m == Vector3.ZERO:
 		if g.plant(_target_slot):
@@ -291,7 +368,7 @@ func _think_water() -> Vector3:
 	if _target_slot < 0 or g.slot_species[_target_slot] < 0 or g.slot_water[_target_slot] > 20.0:
 		_target_slot = _find_slot(g, false)
 		if _target_slot < 0:
-			return Vector3.ZERO
+			return _idle_in_zone(_zone()) if _stay() else Vector3.ZERO
 	var m2: Vector3 = _steer(g.slot_pos[_target_slot], 0.9)
 	if m2 == Vector3.ZERO:
 		for s: int in g.planted_near(global_position, -global_transform.basis.z, 2.0):
@@ -306,6 +383,11 @@ func _think_water() -> Vector3:
 
 ## Nearest empty (planting) or thirsty (watering) slot on clean hexes.
 func _find_slot(g: Garden, empty: bool) -> int:
+	var z: Array = _zone()
+	if not z.is_empty():
+		var zs: int = _find_slot_in(g, empty, z)
+		if zs >= 0 or _stay():
+			return zs
 	var best: int = -1
 	var best_d: float = INF
 	for s: int in g.slot_species.size():
@@ -320,6 +402,26 @@ func _find_slot(g: Garden, empty: bool) -> int:
 		if d < best_d:
 			best_d = d
 			best = s
+	return best
+
+
+func _find_slot_in(g: Garden, empty: bool, z: Array) -> int:
+	var best: int = -1
+	var best_d: float = INF
+	for h: Variant in z:
+		var hid: int = int(h)
+		if not g.hex_slots.has(hid) or not world.field.is_clean(hid):
+			continue
+		for s: int in g.hex_slots[hid]:
+			if empty:
+				if g.slot_species[s] >= 0:
+					continue
+			elif g.slot_species[s] < 0 or g.slot_water[s] > 10.0:
+				continue
+			var d: float = g.slot_pos[s].distance_squared_to(global_position)
+			if d < best_d:
+				best_d = d
+				best = s
 	return best
 
 
@@ -361,13 +463,20 @@ func _think_haul() -> Vector3:
 func _find_bale() -> JunkCube:
 	var best: JunkCube = null
 	var best_d: float = INF
+	var z: Array = _zone()
+	var stay: bool = _stay()
 	for n: Node in get_tree().get_nodes_in_group("junk_cube"):
 		var c: JunkCube = n
 		if c.carried or c.claimed or bool(c.get_meta("reserved", false)) and c != _target_bale:
 			continue
 		if world.depot.pad_contains(c.global_position):
 			continue
+		var in_zone: bool = z.is_empty() or z.has(world.field.hex_at(c.global_position))
+		if stay and not in_zone:
+			continue
 		var d: float = c.global_position.distance_squared_to(global_position)
+		if not in_zone:
+			d += 1.0e6  # zone bales first
 		if d < best_d:
 			best_d = d
 			best = c

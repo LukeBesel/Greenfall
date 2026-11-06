@@ -96,7 +96,10 @@ func build(type_id: String, at: Vector3) -> Robot:
 	for i: int in to_remove:
 		GameState.parts.remove_at(i)
 	var bonus: float = 0.05 * rarity_sum / maxf(status.size(), 1.0)
-	var r := spawn(type_id, tier_of(type_id), at, bonus, NAMES[randi() % NAMES.size()] + "-%02d" % (randi() % 100))
+	var rname: String = NAMES[randi() % NAMES.size()] + "-%02d" % (randi() % 100)
+	while find_robot(rname) != null:
+		rname = NAMES[randi() % NAMES.size()] + "-%02d" % (randi() % 100)
+	var r := spawn(type_id, tier_of(type_id), at, bonus, rname)
 	GameState.inc_stat("robots_built")
 	EventBus.robot_built.emit(r.robot_name)
 	EventBus.toast.emit("%s %s assembled. It looks around, then gets to work." % [Economy.robots[type_id]["name"], r.robot_name], "story")
@@ -188,6 +191,107 @@ func apply_preset(clean_pct: float, plant_pct: float) -> void:
 		mb[i].set_job("clean" if i < nc else ("plant" if i < nc + np else "water"))
 
 
+# --- Orders (Command View) -------------------------------------------------------------
+# An order is {"zone": Array[int] hex ids, "mode": String}. Modes:
+#   "priority": work the zone first, then roam the district as usual.
+#   "stay":     work only inside the zone; wait there when it is done.
+#   "follow":   the zone is wherever Patch is (hexes around the player).
+#   "recall":   park at the hub until given new orders.
+# Groups are keyed by role ("clean", "haul", "plant", "water"); a single robot's own order
+# (keyed by name) overrides its group's.
+
+const MODES: Array[String] = ["priority", "stay", "follow", "recall"]
+const ROLES: Array[String] = ["clean", "haul", "plant", "water"]
+
+
+func _orders() -> Dictionary:
+	if not GameState.world.has("orders"):
+		GameState.world["orders"] = {"groups": {}, "bots": {}}
+	return GameState.world["orders"]
+
+
+## The order a robot follows right now ({} = free roam).
+func order_for(r: Robot) -> Dictionary:
+	var o: Dictionary = _orders()
+	var bots: Dictionary = o.get("bots", {})
+	if bots.has(r.robot_name):
+		return bots[r.robot_name]
+	return (o.get("groups", {}) as Dictionary).get(r.role(), {})
+
+
+## Order record for a group key or robot name (creates an empty priority order).
+func order(key: String, is_bot: bool) -> Dictionary:
+	var o: Dictionary = _orders()
+	var table: Dictionary = o["bots" if is_bot else "groups"]
+	if not table.has(key):
+		table[key] = {"zone": [], "mode": "priority"}
+	return table[key]
+
+
+func has_order(key: String, is_bot: bool) -> bool:
+	return (_orders()["bots" if is_bot else "groups"] as Dictionary).has(key)
+
+
+func clear_order(key: String, is_bot: bool) -> void:
+	(_orders()["bots" if is_bot else "groups"] as Dictionary).erase(key)
+	_reset_targets()
+
+
+func toggle_zone_hex(key: String, is_bot: bool, hid: int, on: bool) -> void:
+	var od: Dictionary = order(key, is_bot)
+	var z: Array = od["zone"]
+	var has: bool = z.has(hid)
+	if on and not has:
+		z.append(hid)
+	elif not on and has:
+		z.erase(hid)
+	_reset_targets()
+
+
+func set_mode(key: String, is_bot: bool, mode: String) -> void:
+	order(key, is_bot)["mode"] = mode
+	_reset_targets()
+
+
+## Hexes a robot should work, given its order ([] = no restriction).
+func zone_hexes(r: Robot) -> Array:
+	var od: Dictionary = order_for(r)
+	if od.is_empty():
+		return []
+	if str(od.get("mode", "")) == "follow" and world.patch != null:
+		return world.field.hexes_near(world.patch.global_position, 1)
+	return od.get("zone", [])
+
+
+func mode_of(r: Robot) -> String:
+	var od: Dictionary = order_for(r)
+	if od.is_empty():
+		return "roam"
+	if str(od.get("mode", "priority")) == "priority" and (od.get("zone", []) as Array).is_empty():
+		return "roam"
+	return str(od.get("mode", "priority"))
+
+
+func _reset_targets() -> void:
+	for r: Robot in robots():
+		r.reset_targets()
+
+
+func robots_with_role(role_id: String) -> Array[Robot]:
+	var out: Array[Robot] = []
+	for r: Robot in robots():
+		if r.role() == role_id:
+			out.append(r)
+	return out
+
+
+func find_robot(rname: String) -> Robot:
+	for r: Robot in robots():
+		if r.robot_name == rname:
+			return r
+	return null
+
+
 func persist_save() -> void:
 	var arr: Array = []
 	for r: Robot in robots():
@@ -196,6 +300,15 @@ func persist_save() -> void:
 
 
 func restore() -> void:
+	# JSON round-trips turn hex ids into floats; normalise so zone lookups match.
+	var o: Dictionary = _orders()
+	for t: String in ["groups", "bots"]:
+		var table: Dictionary = o.get(t, {})
+		for k: String in table:
+			var z: Array = []
+			for h: Variant in table[k].get("zone", []):
+				z.append(int(h))
+			table[k]["zone"] = z
 	for d: Dictionary in GameState.world.get("robots", []):
 		var p: Array = d.get("pos", [0.0, 0.0, 0.0])
 		var r := spawn(str(d["type"]), int(d.get("tier", 0)), Vector3(float(p[0]), float(p[1]) + 0.1, float(p[2])), float(d.get("rarity_bonus", 0.0)), str(d.get("name", "Bot")))

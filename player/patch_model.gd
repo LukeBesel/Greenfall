@@ -2,7 +2,7 @@ class_name PatchModel
 extends Node3D
 ## The player's robot: a futuristic hover bot sent down to clean and repair the world.
 ## Big rounded head with a black glass screen face (glowing expressive eyes), round side lenses,
-## a fin antenna, a compact torso with a chest panel, small articulated claw arms, and a glowing
+## a bulb antenna, a compact torso with a chest panel, small articulated claw arms, and a glowing
 ## hover ring instead of legs. Worn, dusty paint. Colorways are unlockable designs ("aurora" is
 ## the default look). Faces -Z. Base (hover ring) near y=0.
 
@@ -168,14 +168,14 @@ func _build() -> void:
 		_mi(_head, ProcMesh.cyl(0.11, 0.115, 0.06, 28), trim, Vector3(x, 0.21, 0), Vector3(0, 0, 90))
 		_mi(_head, ProcMesh.torus(0.06, 0.085, 28, 5), Mats.lamp(glow, 3.5), Vector3(x * 1.1, 0.21, 0), Vector3(0, 0, 90))
 		_mi(_head, ProcMesh.cyl(0.055, 0.055, 0.02, 24), Mats.glass(Color(0.04, 0.06, 0.08, 1.0)), Vector3(x * 1.1, 0.21, 0), Vector3(0, 0, 90))
-	# Fin antenna, swept back.
+	# Antenna: a short springy stalk with a glowing bulb on top.
 	var fin := Node3D.new()
-	fin.position = Vector3(0.04, 0.44, 0.06)
-	fin.rotation_degrees = Vector3(-25, 0, -8)
+	fin.position = Vector3(0.0, 0.425, 0.02)
+	fin.rotation_degrees = Vector3(-10, 0, -6)
 	_head.add_child(fin)
-	_mi(fin, ProcMesh.cyl(0.022, 0.03, 0.14, 8), trim, Vector3(0, 0.07, 0))
-	_mi(fin, ProcMesh.rounded_box(Vector3(0.035, 0.12, 0.22), 0.04, 3), accent, Vector3(0, 0.12, 0.08), Vector3(-50, 0, 0))
-	_mi(fin, ProcMesh.sphere(0.025, 10, 5), Mats.lamp((v["accent"] as Color).lightened(0.25), 3.0), Vector3(0, 0.08, -0.08))
+	_mi(fin, ProcMesh.cyl(0.05, 0.06, 0.03, 16), trim, Vector3(0, 0.0, 0))
+	_mi(fin, ProcMesh.cyl(0.014, 0.018, 0.13, 8), trim, Vector3(0, 0.075, 0))
+	_mi(fin, ProcMesh.sphere(0.045, 16, 8), Mats.lamp((v["accent"] as Color).lightened(0.2), 3.0), Vector3(0, 0.16, 0))
 	# Variant extras.
 	if v.get("leaf", false):
 		var sprout := Node3D.new()

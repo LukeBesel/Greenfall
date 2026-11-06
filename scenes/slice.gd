@@ -35,6 +35,7 @@ var patch: Patch
 var cam: CameraRig
 var hud: HUD
 var upgrades: UpgradesScreen
+var command: CommandView
 var pause_menu: PauseMenu
 var bot: InputSource
 var _cubes_root: Node3D
@@ -161,6 +162,14 @@ func _ready() -> void:
 	upgrades.build_at = func() -> Vector3: return BOARD_POS + Vector3(2.5, 0.2, 0.0)
 	add_child(upgrades)
 	upgrades.closed.connect(_on_modal_closed)
+	command = CommandView.new()
+	command.world = self
+	add_child(command)
+	command.closed.connect(_on_modal_closed)
+	EventBus.robot_built.connect(func(_n: String) -> void:
+		if not GameState.flags.get("hint_command", false):
+			GameState.flags["hint_command"] = true
+			EventBus.toast.emit("Robot uplink online. Press B for Command: paint zones and send crews where you want them.", "info"))
 	pause_menu = PauseMenu.new()
 	add_child(pause_menu)
 	pause_menu.closed.connect(_on_modal_closed)
@@ -198,15 +207,36 @@ func _ready() -> void:
 			var kv: String = spec.get_slice("@", 0)
 			for k: int in int(kv.get_slice(":", 1)):
 				GameState.flags["tier_" + kv.get_slice(":", 0)] = tier_i
-				var rb: Robot = fleet.spawn(kv.get_slice(":", 0), tier_i, Vector3(-2.4 + n_spawned * 1.6, 0.2, 0.6), 0.0, "Test-%d" % k)
+				var rb: Robot = fleet.spawn(kv.get_slice(":", 0), tier_i, Vector3(-2.4 + n_spawned * 1.6, 0.2, 0.6), 0.0, "Test-%d" % n_spawned)
 				rb.tier = tier_i
 				rb.rebuild_visual()
 				rb.rotation.y = PI
 				if DevHooks.has("freeze-robots"):
 					rb.set_physics_process(false)
 				n_spawned += 1
+	if DevHooks.has("order"):
+		# --order=clean:stay:far  (role:mode:hex ids separated by '+', or 'far' = farthest junk hex)
+		var spec_o: PackedStringArray = DevHooks.get_s("order", "").split(":")
+		var hexes: Array = []
+		for t: String in spec_o[2].split("+") if spec_o.size() > 2 else []:
+			if t == "far":
+				var far_h: int = -1
+				for id: int in field.hex_count():
+					if field.hex_hub[id] == 0 and not field.is_clean(id) and (far_h < 0 or field.hex_center(id).length() > field.hex_center(far_h).length()):
+						far_h = id
+				hexes.append(far_h)
+			else:
+				hexes.append(int(t))
+		for h: int in hexes:
+			fleet.toggle_zone_hex(spec_o[0], false, h, true)
+		fleet.set_mode(spec_o[0], false, spec_o[1] if spec_o.size() > 1 else "priority")
+		get_tree().create_timer(DevHooks.get_f("quit-after", 30.0) * 0.5, false).timeout.connect(func() -> void:
+			for r: Robot in fleet.robots():
+				print("[order] %s hex=%d at_hex=%d zone=%s status=%s" % [r.robot_name, r.work_hex, field.hex_at(r.global_position), str(fleet.zone_hexes(r)), r.status_text()]))
 	if DevHooks.get_s("open", "") == "upgrades":
 		open_upgrades.call_deferred()
+	if DevHooks.get_s("open", "") == "command":
+		_open_command.call_deferred()
 	if DevHooks.get_s("open", "") == "globe":
 		(func() -> void:
 			globe.open_view()
@@ -604,6 +634,13 @@ func open_upgrades() -> void:
 	cam.input_enabled = false
 
 
+func _open_command() -> void:
+	command.open_view()
+	if patch.input is PlayerInput:
+		(patch.input as PlayerInput).enabled = false
+	cam.input_enabled = false
+
+
 func _on_modal_closed() -> void:
 	if patch.input is PlayerInput:
 		(patch.input as PlayerInput).enabled = true
@@ -613,10 +650,13 @@ func _on_modal_closed() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if upgrades.is_open or pause_menu.is_open or globe.is_open:
+	if upgrades.is_open or pause_menu.is_open or globe.is_open or command.is_open:
 		return
 	if event.is_action_pressed("open_upgrades"):
 		open_upgrades()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("open_command"):
+		_open_command()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("open_globe"):
 		globe.open_view()
