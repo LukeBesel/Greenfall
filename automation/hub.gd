@@ -13,8 +13,8 @@ var _fans: Array[Node3D] = []
 
 func _ready() -> void:
 	data = Economy.read_json("res://data/hub.json")
-	level = int(GameState.flags.get("hub_level", 1))
-	scrubbers = int(GameState.flags.get("hub_scrubbers", 0))
+	level = int(GameState.world.get("hub_level", 1))
+	scrubbers = int(GameState.world.get("hub_scrubbers", 0))
 	for l: int in range(2, level + 1):
 		_build_level(l, false)
 	for i: int in scrubbers:
@@ -52,7 +52,7 @@ func upgrade() -> bool:
 	if next.is_empty() or not pay(next.get("cost", {})):
 		return false
 	level += 1
-	GameState.flags["hub_level"] = level
+	GameState.world["hub_level"] = level
 	_build_level(level, true)
 	EventBus.toast.emit("Hub upgraded: %s." % next["name"], "story")
 	return true
@@ -77,7 +77,7 @@ func build_scrubber() -> bool:
 		return false
 	_build_scrubber(scrubbers, true)
 	scrubbers += 1
-	GameState.flags["hub_scrubbers"] = scrubbers
+	GameState.world["hub_scrubbers"] = scrubbers
 	EventBus.toast.emit("Air Scrubber online. The fans spin up with a long, dusty sigh.", "story")
 	return true
 

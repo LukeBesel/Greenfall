@@ -311,8 +311,11 @@ func _scoop_restored() -> void:
 			_mi(_body, ProcMesh.rounded_box(Vector3(0.14, 0.03, 0.34), 0.012, 2), paint, Vector3(x, 0.32, z))
 	_mi(_body, ProcMesh.rounded_box(Vector3(0.62, 0.42, 0.68), 0.08, 3), paint, Vector3(0, 0.47, 0))
 	_mi(_body, ProcMesh.rounded_box(Vector3(0.632, 0.05, 0.692), 0.08, 3), accent, Vector3(0, 0.5, 0))
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.64, 0.045, 0.7), 0.03, 2), trim, Vector3(0, 0.69, 0))
-	_mi(_body, ProcMesh.box(Vector3(0.52, 0.01, 0.58)), _gloss(Color(0.04, 0.04, 0.045), 0.8, 0.0, 0.0), Vector3(0, 0.715, 0))
+	for x: float in [-0.29, 0.29]:
+		_mi(_body, ProcMesh.rounded_box(Vector3(0.05, 0.05, 0.66), 0.015, 1), trim, Vector3(x, 0.69, 0))
+	for z: float in [-0.32, 0.32]:
+		_mi(_body, ProcMesh.rounded_box(Vector3(0.62, 0.05, 0.05), 0.015, 1), trim, Vector3(0, 0.69, z))
+	_mi(_body, ProcMesh.box(Vector3(0.52, 0.004, 0.58)), _gloss(Color(0.03, 0.03, 0.035), 0.9, 0.0, 0.0), Vector3(0, 0.683, 0))
 	_stencil(_body, "SCP-2", Vector3(0.318, 0.4, 0.05), Vector3(0, 90, 0), 52, Color(0.12, 0.12, 0.13, 0.9))
 	_stencil(_body, "SCP-2", Vector3(-0.318, 0.4, -0.05), Vector3(0, -90, 0), 52, Color(0.12, 0.12, 0.13, 0.9))
 	for x: float in [-0.2, 0.2]:
@@ -335,7 +338,7 @@ func _scoop_restored() -> void:
 ## Mk III: glossy pearl-white shell over a dark skirt, coral band, panel seams and lime light strips,
 ## a floating visor head and forearms held on glowing magnetic joints.
 func _scoop_modern() -> void:
-	var white: Material = _gloss(Color(0.95, 0.95, 0.96))
+	var white: Material = _gloss(Color(0.95, 0.94, 0.92), 0.35, 0.0, 0.5)
 	var coral: Material = _gloss(Color(1.0, 0.38, 0.26), 0.28)
 	var dark: Material = _gloss(Color(0.07, 0.08, 0.09), 0.35, 0.4, 0.3)
 	var lite: Material = _glow(LIME, 2.5)
@@ -344,7 +347,7 @@ func _scoop_modern() -> void:
 		for z: float in [-0.24, 0.24]:
 			_wheel(_body, Vector3(x, 0.09, z), 0.09, 0.07, Mats.rubber(), dark)
 	_mi(_body, ProcMesh.rounded_box(Vector3(0.64, 0.44, 0.74), 0.16, 4), white, Vector3(0, 0.43, 0))
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.66, 0.08, 0.76), 0.1, 3), coral, Vector3(0, 0.27, 0))
+	_mi(_body, ProcMesh.rounded_box(Vector3(0.656, 0.2, 0.756), 0.13, 3), coral, Vector3(0, 0.31, 0))
 	# Panel seams.
 	_mi(_body, ProcMesh.box(Vector3(0.65, 0.3, 0.006)), dark, Vector3(0, 0.47, 0.06))
 	_mi(_body, ProcMesh.box(Vector3(0.4, 0.006, 0.75)), dark, Vector3(0, 0.44, 0))
@@ -362,7 +365,7 @@ func _scoop_modern() -> void:
 	var hf := _floater(_body, Vector3(0, 0.86, 0.2), 0.012)
 	_head = _node(hf, Vector3.ZERO)
 	_mi(_head, ProcMesh.rounded_box(Vector3(0.34, 0.19, 0.25), 0.085, 3), white, Vector3.ZERO)
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.12, 0.025, 0.22), 0.012, 2), coral, Vector3(0, 0.097, 0.0))
+	_mi(_head, ProcMesh.rounded_box(Vector3(0.345, 0.07, 0.255), 0.03, 2), coral, Vector3(0, 0.065, 0.0))
 	_mi(_head, ProcMesh.rounded_box(Vector3(0.28, 0.1, 0.03), 0.03, 2), _gloss(Color(0.02, 0.03, 0.04), 0.05, 0.3, 1.0), Vector3(0, -0.005, -0.118))
 	_eye = _node(_head, Vector3(0, -0.005, -0.135))
 	_eye_mat = _glow(LIME, 3.5)
@@ -534,7 +537,7 @@ func _haul_restored() -> void:
 ## Mk III: glossy white shell, coral band, lime strips; the forks ride a glowing mag-rail with no mast,
 ## and a floating visor head sits on a magnetic neck.
 func _haul_modern() -> void:
-	var white: Material = _gloss(Color(0.95, 0.95, 0.96))
+	var white: Material = _gloss(Color(0.95, 0.94, 0.92), 0.35, 0.0, 0.5)
 	var coral: Material = _gloss(Color(1.0, 0.38, 0.26), 0.28)
 	var dark: Material = _gloss(Color(0.07, 0.08, 0.09), 0.35, 0.4, 0.3)
 	var lite: Material = _glow(LIME, 2.5)
@@ -543,7 +546,7 @@ func _haul_modern() -> void:
 		for z: float in [-0.12, 0.42]:
 			_wheel(_body, Vector3(x, 0.09, z), 0.09, 0.07, Mats.rubber(), dark)
 	_mi(_body, ProcMesh.rounded_box(Vector3(0.7, 0.36, 0.84), 0.15, 4), white, Vector3(0, 0.39, 0.15))
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.72, 0.07, 0.86), 0.1, 3), coral, Vector3(0, 0.26, 0.15))
+	_mi(_body, ProcMesh.rounded_box(Vector3(0.716, 0.18, 0.856), 0.12, 3), coral, Vector3(0, 0.29, 0.15))
 	_mi(_body, ProcMesh.box(Vector3(0.71, 0.26, 0.006)), dark, Vector3(0, 0.42, 0.25))
 	for x: float in [-0.352, 0.352]:
 		_mi(_body, ProcMesh.box(Vector3(0.006, 0.022, 0.46)), lite, Vector3(x, 0.47, 0.12))
@@ -565,7 +568,7 @@ func _haul_modern() -> void:
 	var hf := _floater(_body, Vector3(0, 0.79, 0.3), 0.012)
 	_head = _node(hf, Vector3.ZERO)
 	_mi(_head, ProcMesh.rounded_box(Vector3(0.34, 0.19, 0.25), 0.085, 3), white, Vector3.ZERO)
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.12, 0.025, 0.22), 0.012, 2), coral, Vector3(0, 0.097, 0.0))
+	_mi(_head, ProcMesh.rounded_box(Vector3(0.345, 0.07, 0.255), 0.03, 2), coral, Vector3(0, 0.065, 0.0))
 	_mi(_head, ProcMesh.rounded_box(Vector3(0.28, 0.1, 0.03), 0.03, 2), _gloss(Color(0.02, 0.03, 0.04), 0.05, 0.3, 1.0), Vector3(0, -0.005, -0.118))
 	_eye = _node(_head, Vector3(0, -0.005, -0.135))
 	_eye_mat = _glow(LIME, 3.5)

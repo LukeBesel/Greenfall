@@ -19,9 +19,13 @@ var extent: float               # half-size of the area the layout covers (meter
 var blocks: Dictionary = {}     # Vector2i -> {type, rect: Rect2 (inside sidewalks), buildings: Array[Dictionary]}
 
 
-func _init(p_seed: int = 4471, p_extent: float = 140.0) -> void:
+var wild: bool = false
+
+
+func _init(p_seed: int = 4471, p_extent: float = 140.0, p_wild: bool = false) -> void:
 	seed_value = p_seed
 	extent = p_extent
+	wild = p_wild
 	_generate()
 
 
@@ -41,6 +45,8 @@ func _generate() -> void:
 		for bz: int in range(-n, n + 1):
 			var key := Vector2i(bx, bz)
 			var t: int = inner.get(key, Block.BUILDINGS if rng.randf() < 0.8 else Block.LANDFILL)
+			if wild:
+				t = Block.HUB if key == Vector2i.ZERO else (Block.LANDFILL if rng.randf() < 0.35 else Block.VACANT)
 			var half: float = PITCH * 0.5 - ROAD_W * 0.5 - WALK_W
 			var c := Vector2(bx * PITCH, bz * PITCH)
 			var rect := Rect2(c - Vector2(half, half), Vector2(half, half) * 2.0)
@@ -97,6 +103,8 @@ func block_key_at(x: float, z: float) -> Vector2i:
 
 
 func surface_at(x: float, z: float) -> int:
+	if wild:
+		return Surface.YARD if (absf(x) < YARD_HALF and absf(z) < YARD_HALF) else Surface.LOT
 	var key: Vector2i = block_key_at(x, z)
 	var c := Vector2(key) * PITCH
 	var lx: float = absf(x - c.x)
@@ -129,6 +137,8 @@ func height_at(x: float, z: float) -> float:
 
 ## Distance from a road point to the nearest curb (0 at the curb). Large when not on a road.
 func curb_distance(x: float, z: float) -> float:
+	if wild:
+		return INF
 	var key: Vector2i = block_key_at(x, z)
 	var c := Vector2(key) * PITCH
 	var road_edge: float = PITCH * 0.5 - ROAD_W * 0.5
@@ -141,6 +151,8 @@ func curb_distance(x: float, z: float) -> float:
 
 ## Lane marking mask at a road point: dashed center lines (0..1).
 func lane_mark(x: float, z: float) -> float:
+	if wild:
+		return 0.0
 	var key: Vector2i = block_key_at(x, z)
 	var c := Vector2(key) * PITCH
 	var lx: float = x - c.x

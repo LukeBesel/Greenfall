@@ -39,10 +39,11 @@ func has_save(s: int = -1) -> bool:
 	return FileAccess.file_exists(slot_path(s))
 
 
-func save_game() -> bool:
+func save_game(gather: bool = true) -> bool:
 	if not enabled or not is_inside_tree():
 		return false
-	get_tree().call_group("persist", "persist_save")
+	if gather:
+		get_tree().call_group("persist", "persist_save")
 	var ok: bool = write_dict(slot_path(), GameState.to_dict())
 	if ok:
 		EventBus.game_saved.emit()

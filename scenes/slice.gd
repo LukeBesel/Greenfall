@@ -15,6 +15,9 @@ var tutorial: Tutorial
 var wren: Wren
 var fleet: Fleet
 var planet: PlanetData
+var hub_index: int = 0
+var anchor_cell: int = 0
+var district_name: String = "Old Town"
 var globe: GlobeView
 var sky_director: SkyDirector
 var hub: Hub
@@ -44,8 +47,23 @@ func _ready() -> void:
 	add_to_group("persist")
 	_build_environment()
 	var cfg: Dictionary = Economy.planet.get("slice_field", {})
-	var seed_v: int = int(DevHooks.get_f("seed", float(cfg.get("seed", 4471))))
-	layout = CityLayout.new(seed_v, 150.0)
+	var base_seed: int = int(DevHooks.get_f("seed", float(cfg.get("seed", 4471))))
+	var loaded: bool = false
+	if not DevHooks.has("fresh"):
+		loaded = SaveManager.load_game()
+	if DevHooks.has("hub"):
+		GameState.switch_hub(int(DevHooks.get_f("hub", 0.0)))
+	planet = PlanetData.new(base_seed, 6, 10.0)
+	planet.generate()
+	if loaded and not GameState.planet_state.is_empty():
+		planet.apply_dict(GameState.planet_state)
+	hub_index = clampi(GameState.current_hub, 0, planet.hubs.size() - 1)
+	anchor_cell = planet.hubs[hub_index]
+	# Each hub's district has its own deterministic seed; city hubs get streets, others are wild.
+	var seed_v: int = base_seed + hub_index * 1009
+	var is_city: bool = planet.city[anchor_cell] >= 0
+	district_name = str(planet.cities[planet.city[anchor_cell]]["name"]) if is_city else PlanetData.BIOMES[planet.biome[anchor_cell]].capitalize().replace("_", " ")
+	layout = CityLayout.new(seed_v, 150.0, not is_city)
 	field = HexField.new(int(cfg.get("radius", 9)), float(cfg.get("hex_size", 3.2)), seed_v, layout)
 	field.clean_threshold = float(cfg.get("clean_threshold", 0.99))
 	var ppx: Array = cfg.get("pieces_per_hex", [6, 12])
@@ -55,16 +73,10 @@ func _ready() -> void:
 	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
 	field.place_landmarks(Economy.landmarks)
 	field.bury_parts(Economy.parts)
-	var loaded: bool = false
-	if not DevHooks.has("fresh"):
-		loaded = SaveManager.load_game()
-		if loaded and GameState.world.has("field"):
-			if not field.apply_dict(GameState.world["field"]):
-				push_warning("Saved field didn't match this field; starting the field fresh.")
-	planet = PlanetData.new(seed_v, 6, 10.0)
-	planet.generate()
-	if loaded and GameState.world.has("planet"):
-		planet.apply_dict(GameState.world["planet"])
+	if loaded and GameState.world.has("field"):
+		if not field.apply_dict(GameState.world["field"]):
+			push_warning("Saved field didn't match this field; starting the field fresh.")
+	loaded = loaded and GameState.world.has("field")
 	_map_slice_to_planet()
 	view = FieldView.new()
 	view.name = "FieldView"
@@ -419,7 +431,7 @@ func _process(delta: float) -> void:
 
 ## The slice is Old Town, the first city: its hexes sit on planet cells around the city center.
 func _map_slice_to_planet() -> void:
-	var anchor: int = int(planet.cities[0]["cell"])
+	var anchor: int = anchor_cell
 	slice_cells.resize(field.hex_count())
 	for id: int in field.hex_count():
 		var c: Vector3 = field.hex_center(id)
@@ -429,7 +441,7 @@ func _map_slice_to_planet() -> void:
 
 
 func planet_cell_at(pos: Vector3) -> int:
-	var anchor: int = int(planet.cities[0]["cell"])
+	var anchor: int = anchor_cell
 	return planet.grid.nearest_from(planet.local_to_dir(anchor, pos.x, pos.z), anchor)
 
 
@@ -578,7 +590,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func persist_save() -> void:
 	GameState.world["field"] = field.to_dict()
-	GameState.world["planet"] = planet.to_dict()
+	GameState.planet_state = planet.to_dict()
 	GameState.world["garden"] = garden.persist()
 	GameState.world["patch"] = patch.to_dict()
 	var cubes: Array = []

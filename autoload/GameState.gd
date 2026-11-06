@@ -14,6 +14,11 @@ var flags: Dictionary = {}  # id -> Variant (milestones, tutorial, easter eggs)
 var world: Dictionary = {}
 ## Robot parts in storage: Array of {type: int, rarity: int}.
 var parts: Array = []
+## Per-hub district state. `world` is always districts[current_hub].
+var districts: Dictionary = {}
+var current_hub: int = 0
+## Whole-planet state (PlanetData.to_dict()).
+var planet_state: Dictionary = {}
 var created_unix: float = 0.0
 var saved_unix: float = 0.0
 
@@ -39,6 +44,9 @@ func new_game() -> void:
 	flags = {}
 	world = {}
 	parts = []
+	districts = {0: world}
+	current_hub = 0
+	planet_state = {}
 	created_unix = Time.get_unix_time_from_system()
 	saved_unix = 0.0
 	_income_log.clear()
@@ -109,6 +117,23 @@ func add_junk_removed(type_id: String, volume: float) -> void:
 	stats["junk_removed"] = d
 
 
+func _districts_for_save() -> Dictionary:
+	districts[current_hub] = world
+	var out: Dictionary = {}
+	for k: int in districts:
+		out[str(k)] = (districts[k] as Dictionary).duplicate(true)
+	return out
+
+
+## Switch the active district (call after the current scene has persisted into `world`).
+func switch_hub(i: int) -> void:
+	districts[current_hub] = world
+	current_hub = i
+	if not districts.has(i):
+		districts[i] = {}
+	world = districts[i]
+
+
 func level_of(upgrade_id: String) -> int:
 	return int(upgrades.get(upgrade_id, 0))
 
@@ -129,6 +154,9 @@ func to_dict() -> Dictionary:
 		"flags": flags.duplicate(true),
 		"world": world.duplicate(true),
 		"parts": parts.duplicate(true),
+		"districts": _districts_for_save(),
+		"current_hub": current_hub,
+		"planet_state": planet_state.duplicate(true),
 	}
 
 
@@ -148,3 +176,13 @@ func from_dict(d: Dictionary) -> void:
 	flags = (d.get("flags", {}) as Dictionary).duplicate(true)
 	world = (d.get("world", {}) as Dictionary).duplicate(true)
 	parts = (d.get("parts", []) as Array).duplicate(true)
+	current_hub = int(d.get("current_hub", 0))
+	planet_state = (d.get("planet_state", {}) as Dictionary).duplicate(true)
+	districts = {}
+	var ds: Dictionary = d.get("districts", {})
+	for k: Variant in ds:
+		districts[int(str(k))] = (ds[k] as Dictionary).duplicate(true)
+	if districts.has(current_hub):
+		world = districts[current_hub]
+	else:
+		districts[current_hub] = world

@@ -127,6 +127,22 @@ func _place_hubs() -> void:
 	hubs.clear()
 	for cd: Dictionary in cities:
 		hubs.append(int(cd["cell"]))
+	# Wilderness hub sites in each biome, away from cities.
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value + 5
+	var tries: int = 0
+	while hubs.size() < cities.size() + 10 and tries < 5000:
+		tries += 1
+		var c: int = rng.randi_range(0, cell_count() - 1)
+		if state[c] == State.WATER or city[c] >= 0:
+			continue
+		var ok: bool = true
+		for h: int in hubs:
+			if grid.centers[c].angle_to(grid.centers[h]) < 0.25:
+				ok = false
+				break
+		if ok:
+			hubs.append(c)
 
 
 ## Cells within `rings` steps of a cell (breadth-first).

@@ -52,7 +52,7 @@ func _ready() -> void:
 	ground.mesh = pm
 	add_child(ground)
 
-	var x: float = -4.9
+	var x: float = 4.9
 	for look: String in LOOKS:
 		for type_id: String in ["scoopie", "haulbug"]:
 			var holder := Node3D.new()
@@ -63,11 +63,11 @@ func _ready() -> void:
 			holder.add_child(v)
 			v.build(type_id, look)
 			_visuals.append(v)
-			if type_id == "haulbug":
+			if type_id == "haulbug" and look in ["restored", "hover"]:
 				_add_bale(holder, v.fork_point)
 			elif look == "hover":
 				_beam_bot = v
-			x += 1.4
+			x -= 1.4
 	# The beam target: a rusted can lifted in front of the Mk IV Scoopie.
 	if _beam_bot:
 		_can = Node3D.new()
@@ -81,10 +81,10 @@ func _ready() -> void:
 		var scr: GDScript = load("res://player/patch_model.gd")
 		if scr and scr.can_instantiate():
 			var patch: Node3D = scr.new()
-			patch.position = Vector3(-6.4, 0, 0)
+			patch.position = Vector3(6.4, 0, 0)
 			patch.rotation_degrees.y = -20.0
 			add_child(patch)
-	for spec: Array in [["old_tyre", Vector3(-5.6, 0.08, -1.2)], ["trashbag", Vector3(6.2, 0, 0.6)], ["plastic_bottle_gallon", Vector3(-2.8, 0, -1.0)], ["can_rusted", Vector3(0.0, 0, -1.1)]]:
+	for spec: Array in [["old_tyre", Vector3(5.6, 0.08, -1.2)], ["trashbag", Vector3(-6.2, 0, 0.6)], ["plastic_bottle_gallon", Vector3(2.8, 0, -1.0)], ["can_rusted", Vector3(0.0, 0, -1.1)]]:
 		var m := MeshInstance3D.new()
 		m.mesh = AssetLib.model_mesh(spec[0])
 		m.position = spec[1]
@@ -96,11 +96,12 @@ func _ready() -> void:
 	add_child(_cam)
 	_cam.current = true
 	_views = [
-		["wide", Vector3(0.2, 2.6, -9.0), Vector3(-0.2, 0.5, 0), 45.0],
-		["mk1", Vector3(-3.2, 1.35, -2.6), Vector3(-4.2, 0.55, 0), 40.0],
-		["mk2", Vector3(-0.4, 1.35, -2.6), Vector3(-1.4, 0.55, 0), 40.0],
-		["mk3", Vector3(2.4, 1.35, -2.6), Vector3(1.4, 0.6, 0), 40.0],
-		["mk4", Vector3(5.2, 1.5, -2.9), Vector3(4.2, 0.75, 0), 40.0],
+		["wide", Vector3(-0.2, 2.6, -9.0), Vector3(0.2, 0.5, 0), 45.0],
+		["mk1", Vector3(3.2, 1.35, -2.7), Vector3(4.2, 0.55, 0), 40.0],
+		["mk2", Vector3(0.4, 1.35, -2.7), Vector3(1.4, 0.55, 0), 40.0],
+		["mk3", Vector3(-2.4, 1.35, -2.7), Vector3(-1.4, 0.6, 0), 40.0],
+		["mk4", Vector3(-5.2, 1.5, -3.0), Vector3(-4.2, 0.75, 0), 40.0],
+		["scale", Vector3(5.0, 1.0, -2.3), Vector3(5.6, 0.45, 0), 42.0],
 	]
 
 
@@ -110,12 +111,23 @@ func _add_bale(holder: Node3D, at: Vector3) -> void:
 	holder.add_child(b)
 	var body := MeshInstance3D.new()
 	body.mesh = ProcMesh.rounded_box(Vector3(0.5, 0.5, 0.5), 0.03, 2)
-	body.material_override = AssetLib.pbr_material("rusty_painted_metal", 1.5, Color(0.9, 0.85, 0.8), true)
+	body.material_override = Mats.worn_paint(Color(0.45, 0.42, 0.38), 0.45, 0.85, 3.0, 0.7)
 	b.add_child(body)
-	for y: float in [-0.12, 0.12]:
+	# Crushed bits poking out of the faces.
+	var cols: Array[Color] = [Color(0.2, 0.4, 0.8), Color(0.85, 0.2, 0.15), Color(0.9, 0.88, 0.8), Color(0.2, 0.6, 0.3), Color(0.95, 0.7, 0.1)]
+	for i: int in 14:
+		var bit := MeshInstance3D.new()
+		bit.mesh = ProcMesh.box(Vector3(randf_range(0.06, 0.16), randf_range(0.03, 0.08), 0.02))
+		bit.material_override = Mats.worn_paint(cols[i % cols.size()], 0.8, 0.5, float(i), 0.5)
+		var face: int = i % 4
+		var off := Vector3(randf_range(-0.18, 0.18), randf_range(-0.18, 0.18), 0.25)
+		bit.position = off.rotated(Vector3.UP, face * PI * 0.5)
+		bit.rotation = Vector3(0, face * PI * 0.5, randf_range(-0.6, 0.6))
+		b.add_child(bit)
+	for y: float in [-0.13, 0.13]:
 		var s := MeshInstance3D.new()
-		s.mesh = ProcMesh.box(Vector3(0.52, 0.03, 0.52))
-		s.material_override = Mats.rubber(Color(0.08, 0.08, 0.09))
+		s.mesh = ProcMesh.box(Vector3(0.515, 0.025, 0.515))
+		s.material_override = Mats.rubber(Color(0.1, 0.1, 0.11))
 		s.position = Vector3(0, y, 0)
 		b.add_child(s)
 

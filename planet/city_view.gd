@@ -40,7 +40,8 @@ func build(p_layout: CityLayout, p_ground_material: Material) -> void:
 	for key: Vector2i in layout.blocks:
 		_build_block(key, layout.blocks[key])
 	_flush_batches()
-	_build_street_props()
+	if not layout.wild:
+		_build_street_props()
 	_build_skyline()
 
 
@@ -105,6 +106,11 @@ const DETAIL_RING: int = 1
 
 func _build_block(key: Vector2i, b: Dictionary) -> void:
 	var rect: Rect2 = b["rect"]
+	if layout.wild:
+		if int(b["type"]) == CityLayout.Block.HUB:
+			var yh := CityLayout.YARD_HALF
+			_build_fence(Rect2(Vector2(-yh, -yh), Vector2(yh, yh) * 2.0), true)
+		return
 	var detailed: bool = maxi(absi(key.x), absi(key.y)) <= DETAIL_RING
 	_build_sidewalks(rect, detailed)
 	match int(b["type"]):

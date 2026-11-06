@@ -2,6 +2,7 @@ extends GutTest
 
 var _cur: Dictionary
 var _flags: Dictionary
+var _world: Dictionary
 
 
 func before_each() -> void:
@@ -9,11 +10,14 @@ func before_each() -> void:
 	_flags = GameState.flags.duplicate(true)
 	GameState.flags = {}
 	GameState.currencies = {}
+	_world = GameState.world
+	GameState.world = {}
 
 
 func after_each() -> void:
 	GameState.currencies = _cur
 	GameState.flags = _flags
+	GameState.world = _world
 
 
 func test_upgrade_needs_materials() -> void:

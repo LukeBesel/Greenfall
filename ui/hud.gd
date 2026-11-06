@@ -168,7 +168,7 @@ func _process(delta: float) -> void:
 	if world and world.field:
 		var f: HexField = world.field
 		var pct: float = float(f.cleaned_count) / maxf(f.junk_hex_count, 1)
-		_field_label.text = "OLD TOWN   %.1f%%" % (pct * 100.0)
+		_field_label.text = "%s   %.1f%%" % [str(world.district_name).to_upper(), pct * 100.0]
 		_field_bar.value = pct
 		var pl: PlanetData = world.planet if world.get("planet") != null else null
 		var frac: float = pl.restored_fraction() if pl else 0.0
