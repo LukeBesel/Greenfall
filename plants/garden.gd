@@ -21,6 +21,11 @@ var slot_yaw := PackedFloat32Array()
 var hex_slots: Dictionary = {}  # hex id -> PackedInt32Array of slot ids
 var hex_life: Dictionary = {}   # hex id -> float 0..1
 
+## [biomes] Frontier hooks (planet/frontier_district.gd): hexes whose slots are made after the
+## others, in this order (Sunken City streets revealed by draining: keeps slot ids stable across
+## saves), and a per-hex growth bonus (Frozen Port greenhouses).
+var late_hexes: Array = []
+var hex_grow_bonus: Dictionary = {}
 var _mms: Dictionary = {}  # "hex|species" -> MultiMeshInstance3D
 var _slot_inst: Dictionary = {}  # slot -> [key, index]
 var _tick: float = 0.0
@@ -33,9 +38,30 @@ func setup() -> void:
 		_sp_weight_sum += float(s.get("weight", 1.0))
 	var field: HexField = world.field
 	for id: int in field.hex_count():
-		if field.hex_hub[id] == 0 and not field.is_water(id):
+		if field.hex_hub[id] == 0 and not field.is_water(id) and not (id in late_hexes):
 			_make_slots(id)
+	for id: Variant in late_hexes:  # [biomes]
+		if not hex_slots.has(int(id)):
+			_make_slots(int(id))
 	_load()
+
+
+## [biomes] Slots for a hex that became land mid-game (a drained Sunken City street).
+func add_hex(hid: int) -> void:
+	if hex_slots.has(hid):
+		return
+	late_hexes.append(hid)
+	_make_slots(hid)
+
+
+## [biomes] Can this empty slot take a seed here? (not under water; frontier rules: cold, greenhouses)
+func plantable(s: int) -> bool:
+	if world == null or world.field.is_water(slot_hex[s]):
+		return false
+	var fr: Variant = world.get("frontier")
+	if fr is FrontierDistrict:
+		return (fr as FrontierDistrict).slot_plantable(slot_hex[s])
+	return true
 
 
 func _make_slots(hid: int) -> void:
@@ -95,6 +121,8 @@ func _slot_near(pos: Vector3, fwd: Vector3, reach: float, empty: bool) -> int:
 		for s: int in hex_slots[h]:
 			if empty != (slot_species[s] < 0):
 				continue
+			if empty and not plantable(s):  # [biomes]
+				continue
 			var d: float = slot_pos[s].distance_to(pos + fwd * 1.0)
 			if d < reach and d < best_d:
 				best_d = d
@@ -130,10 +158,23 @@ func water(slot: int, amount_s: float) -> void:
 
 
 func _pick_species(slot: int) -> int:
-	var r: float = fmod(float(slot) * 0.6180339 + randf() * 0.5, 1.0) * _sp_weight_sum
+	# [biomes] Frontier natives / cold rules scale the weights (Frontiers.species_mult).
+	var biome: String = str(world.field.biome) if world else ""
+	var gh: bool = hex_grow_bonus.has(slot_hex[slot])
+	var ws: Array[float] = []
+	var sum: float = 0.0
+	for sp: Dictionary in species:
+		ws.append(float(sp.get("weight", 1.0)) * Frontiers.species_mult(sp, biome, gh))
+		sum += ws[-1]
+	if sum <= 0.0:
+		return 0
+	var r: float = fmod(float(slot) * 0.6180339 + randf() * 0.5, 1.0) * sum
 	for i: int in species.size():
-		r -= float(species[i].get("weight", 1.0))
-		if r <= 0.0:
+		r -= ws[i]
+		if r <= 0.0 and ws[i] > 0.0:
+			return i
+	for i: int in range(species.size() - 1, -1, -1):
+		if ws[i] > 0.0:
 			return i
 	return 0
 
@@ -146,7 +187,7 @@ func _process(delta: float) -> void:
 	_tick = 0.0
 	var changed_hexes: Dictionary = {}
 	# Irrigation research: buried drip lines halve how fast plants dry out.
-	var drain: float = dt * (0.5 if Research.has("irrigation") else 1.0)
+	var drain: float = dt * (0.5 if Research.has("irrigation") else 1.0) * Frontiers.plant_drain_mult(str(world.field.biome))  # [biomes] desert heat
 	var hl: HexLevels = world.get("hex_levels") as HexLevels
 	var grow_mult: float = 1.0 + (hl.bonus("grow_pct") if hl else 0.0)
 	var seed_mult: float = 1.0 + (hl.bonus("seed_pct") if hl else 0.0)
@@ -159,7 +200,7 @@ func _process(delta: float) -> void:
 			if slot_water[s] <= 0.0:
 				_update_inst(s)  # droop
 			if slot_stage[s] < 4:
-				slot_progress[s] += dt * grow_mult / float(sp.get("grow_s", 40))
+				slot_progress[s] += dt * (grow_mult + float(hex_grow_bonus.get(slot_hex[s], 0.0))) / float(sp.get("grow_s", 40))  # [biomes] greenhouses
 				if slot_progress[s] >= 1.0:
 					slot_progress[s] = 0.0
 					slot_stage[s] += 1

@@ -46,10 +46,10 @@ func refresh() -> void:
 	add_child(UITheme.label("NEARBY BASES", 13, UITheme.MUTED))
 	var here_i: int = int(world.hub_index)
 	var here: Vector3 = planet.grid.centers[planet.hubs[here_i]]
-	var order: Array = range(planet.hubs.size())
+	var order: Array = range(planet.base_hub_count if planet.base_hub_count > 0 else planet.hubs.size())  # [biomes] frontiers listed below
 	order.sort_custom(func(a: int, b: int) -> bool:
 		return here.angle_to(planet.grid.centers[planet.hubs[a]]) < here.angle_to(planet.grid.centers[planet.hubs[b]]))
-	for i: int in order.slice(1, 8):
+	for i: int in order.filter(func(x: int) -> bool: return x != here_i).slice(0, 7):  # [biomes]
 		var cell: int = planet.hubs[i]
 		var nm: String = str(planet.cities[planet.city[cell]]["name"]) if planet.city[cell] >= 0 else PlanetData.BIOMES[planet.biome[cell]].capitalize().replace("_", " ") + " site"
 		var km: float = here.angle_to(planet.grid.centers[cell]) * planet.radius_m / 1000.0
@@ -75,3 +75,4 @@ func refresh() -> void:
 				world.upgrades.close_screen()
 			world._launch(i))
 		hb.add_child(b)
+	FrontierRockets.add_section(self, world, ready)  # [biomes] late-game frontier destinations

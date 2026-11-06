@@ -50,6 +50,8 @@ var landmarks: Array[Dictionary] = []
 var biome: String = ""
 var biome_set: Dictionary = {}
 var piece_alive := PackedByteArray()
+## [biomes] Hexes whose junk can't be taken yet (Frozen Port ice). Scoop and robot queries skip them.
+var locked: Dictionary = {}
 
 var cleaned_count: int = 0
 var junk_hex_count: int = 0
@@ -470,6 +472,8 @@ func find_scoop_target(origin: Vector3, forward: Vector3, reach: float, width: f
 		if h >= 0:
 			near[h] = true
 	for hid: int in near:
+		if locked.has(hid):  # [biomes]
+			continue
 		for pid: int in hex_pieces[hid]:
 			if piece_alive[pid] == 0:
 				continue
@@ -491,6 +495,8 @@ func pieces_within(pos: Vector3, r: float) -> PackedInt32Array:
 	var out := PackedInt32Array()
 	var r2: float = r * r
 	for hid: int in hexes_near(pos, 1 + int(r / hex_size)):
+		if locked.has(hid):  # [biomes]
+			continue
 		for pid: int in hex_pieces[hid]:
 			if piece_alive[pid] == 1 and piece_pos[pid].distance_squared_to(pos) <= r2:
 				out.append(pid)
@@ -502,6 +508,8 @@ func nearest_alive(pos: Vector3) -> int:
 	var best_d: float = INF
 	for ring: int in range(1, radius * 2 + 2):
 		for hid: int in hexes_near(pos, ring):
+			if locked.has(hid):  # [biomes]
+				continue
 			for pid: int in hex_pieces[hid]:
 				if piece_alive[pid] == 0:
 					continue

@@ -50,6 +50,10 @@ static func entries() -> Array[Dictionary]:
 		seen[lid] = true
 		var e: Dictionary = c.get("landmarks", {}).get(lid, {})
 		_add("landmarks", lid, str(e.get("name", lid.capitalize())), e)
+	# [biomes] Frontier districts and their mechanics (unlocked by planet/frontier_district.gd).
+	var fr: Dictionary = c.get("frontiers", {})
+	for fid: String in fr:
+		_add("frontiers", fid, str(fr[fid].get("name", fid.capitalize())), fr[fid])
 	return _entries
 
 

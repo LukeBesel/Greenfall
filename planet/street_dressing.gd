@@ -100,6 +100,8 @@ var district: String = "Old Town"
 var biome: String = ""
 var start_base: bool = true
 var level: int = 1
+## [biomes] Frontier districts dress their own landmarks (planet/frontier_view.gd); no shopfronts.
+var skip_facades: bool = false
 var _style := RandomNumberGenerator.new()   # palette, kits, landmark: fixed per district
 var _layers: Dictionary = {}                # layer name -> Node3D
 var _cur: Node3D
@@ -140,7 +142,7 @@ func build(p_layout: CityLayout, p_field: HexField, p_hub: int = 0, p_district: 
 	_style.seed = layout.seed_value * 31 + 4242
 	_pick_style()
 	_begin("Base")
-	if not layout.wild:
+	if not layout.wild and not skip_facades:  # [biomes]
 		_collect_facades()
 		_build_shopfronts()
 		_build_murals()
@@ -1807,7 +1809,8 @@ func _far_spot(side: float, r: float, a0: float, a1: float) -> Vector3:
 	var best := Vector3(side * 20.0, 0, -52.0)
 	for attempt: int in 60:
 		var ang: float = -PI * 0.5 + side * _style.randf_range(a0, a1 + attempt * 0.01)
-		var dist: float = _style.randf_range(47.0, 60.0 + attempt * 0.3)
+		var d0: float = maxf(47.0, field.hex_size * (field.radius + 0.6) * 1.732) if field and field.radius > 3 else 47.0  # [biomes] bigger frontier fields
+		var dist: float = _style.randf_range(d0, d0 + 13.0 + attempt * 0.3)
 		var p := Vector3(cos(ang) * dist, 0, sin(ang) * dist)
 		var ok: bool = true
 		for o: Vector3 in [Vector3.ZERO, Vector3(r, 0, r), Vector3(-r, 0, r), Vector3(r, 0, -r), Vector3(-r, 0, -r), Vector3(r, 0, 0), Vector3(-r, 0, 0), Vector3(0, 0, r), Vector3(0, 0, -r)]:

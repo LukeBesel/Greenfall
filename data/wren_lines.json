@@ -272,5 +272,60 @@
     ["...bigger... louder... good."],
     ["Outpost upgraded. The scale sings a slightly higher note now. That's how you know it's happy.", "New kit at the outpost. The robots are already queueing to look at it."],
     ["That outpost is turning into a proper little base. I'm proud of it. Is that allowed? I'm allowing it."]
+  ],
+  "frontier_dust_flats": [
+    ["...hot... so much sand... Lumi?"],
+    ["The Dust Flats. That glitter on the horizon is a solar farm, or what is left of it. Mind the wind, Lumi. It moves things.", "Sand to the edge of the world. There used to be a whole power grid out here. The well is dry, so the Drips will need tanks."],
+    ["The Dust Flats. I remember the photos: blue panels to the horizon, humming. We can do that again. Plant windbreaks first."]
+  ],
+  "frontier_frozen_port": [
+    ["...cold... ice on the lens..."],
+    ["The Frozen Port. Everything is locked in ice, junk included. Your beam can melt it, slowly. Heaters do it properly.", "A harbour frozen in mid-shift. The cranes still have containers hanging off them. Bring heaters, Lumi."],
+    ["The Frozen Port. Ships came in here every hour once. Thaw it, and the plants will need a greenhouse, or very stubborn seeds."]
+  ],
+  "frontier_sunken_city": [
+    ["...water... everywhere... rooftops?"],
+    ["The Sunken City. That's the old downtown under there. Skimmers first: clean the water and the old pumps can run again.", "A whole city under the waterline. Rooftops like stepping stones. Clear the drains, and the streets will come back up."],
+    ["The Sunken City. I had friends in those towers. Their names are in my archive. Let's bring the streets back up for them."]
+  ],
+  "frontier_cradle_returns": [
+    ["...Cradle... signal... strong..."],
+    ["This is where the Cradle left from. The launch city. The ground crews kept the towers shining. Only the landing field is buried.", "Cradle Returns. If we clean and green that pad, the ark can land. I mean really land. Here."],
+    ["Lumi. This is the launch field. I watched it from orbit the night we left. Clean the pad, plant it, keep it alive. Then we call them home."]
+  ],
+  "sandstorm_warn": [
+    ["...wind... coming..."],
+    ["Sandstorm on the horizon. Anything clean and bare out there is going to get buried again.", "Wind's rising. Planted hexes hold, and Sustained ones shelter their neighbours. The rest, well."],
+    ["Storm front from the flats. Get the robots home or keep sweeping, your choice. The hedges will hold."]
+  ],
+  "sandstorm_over": [
+    ["...quiet... again..."],
+    ["Storm's past. It dropped junk on {n} hexes. The sheltered ones came through clean.", "There. The wind gave some of it back. Plant a windbreak and it won't next time."],
+    ["Storm over. Every Sustained hex out there is a wall now. Good walls."]
+  ],
+  "thaw_first": [
+    ["...melting... good..."],
+    ["There, the ice let go. The junk underneath is just junk again. Scoop away.", "First hex thawed. A heater keeps warming the hexes around it, too."],
+    ["Thawed. The ground underneath has been waiting three hundred years for that."]
+  ],
+  "greenhouse_built": [
+    ["...glass... warm..."],
+    ["A greenhouse. Inside it, anything grows. Even here.", "Glass, a frame and a little heat. That's all a garden needs, apparently."],
+    ["A greenhouse on the Frozen Port. The Cradle had nine of them. I used to visit the tomatoes."]
+  ],
+  "drain_stage": [
+    ["...pumps... running..."],
+    ["The pumps are running! The water's going down. Look, a street.", "Water level dropped. There's a whole ring of streets out there now, and a lot of stranded junk on them."],
+    ["The pumps remember how. Another ring of the city is back above water. I can see the old tram lines."]
+  ],
+  "cradle_pad": [
+    ["...pad... lights..."],
+    ["The landing pad is clean. Now it needs to be alive. Plant it and keep it Sustained.", "Pad's clear. The ark won't land on bare concrete, though. It wants green under it."],
+    ["The pad lights are on. The Cradle can see them from orbit. It's watching, Lumi."]
+  ],
+  "cradle_complete": [
+    ["...Cradle... coming... home..."],
+    ["Lumi. The beacon is lit. The Cradle has answered. It's coming home.", "Pad green, district thriving, beacon lit. Ark Cradle, you are clear to land. I have waited a long time to say that."],
+    ["Lumi. The Cradle is coming home. Because of you. Small, blue, stubborn you."]
   ]
 }

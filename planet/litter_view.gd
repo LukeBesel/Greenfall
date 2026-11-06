@@ -11,6 +11,8 @@ const CELL: float = 1.0  # pieces per square meter on an ordinary junk hex
 
 var field: HexField
 var layout: CityLayout
+## [biomes] Frontier districts are bigger; thinner litter keeps the instance count in budget.
+var density_mult: float = 1.0
 
 var _mms: Array[MultiMesh] = []
 ## Per hex: Array of [mm_index, slot, x, z, threshold]
@@ -107,7 +109,7 @@ func _build() -> void:
 			mult = 2.2
 		elif btype == CityLayout.Block.VACANT:
 			mult = 0.8
-		var n: int = int(area * DENSITY * mult)
+		var n: int = int(area * DENSITY * mult * density_mult)  # [biomes]
 		var a: Vector2i = field.hex_axial[id]
 		for k: int in n:
 			var p := Vector3(c.x + _rng.randf_range(-1, 1) * field.hex_size, 0, c.z + _rng.randf_range(-1, 1) * field.hex_size)

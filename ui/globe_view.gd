@@ -262,10 +262,10 @@ func _refresh_hubs() -> void:
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		_hub_list.add_child(l)
 	var here: Vector3 = planet.grid.centers[planet.hubs[current_hub]]
-	var order: Array = range(planet.hubs.size())
+	var order: Array = range(planet.base_hub_count if planet.base_hub_count > 0 else planet.hubs.size())  # [biomes] frontiers launch from the Rockets tab
 	order.sort_custom(func(a: int, b: int) -> bool:
 		return here.angle_to(planet.grid.centers[planet.hubs[a]]) < here.angle_to(planet.grid.centers[planet.hubs[b]]))
-	for i: int in order.slice(1, 6):
+	for i: int in order.filter(func(x: int) -> bool: return x != current_hub).slice(0, 5):  # [biomes]
 		var cell: int = planet.hubs[i]
 		var nm: String = str(planet.cities[planet.city[cell]]["name"]) if planet.city[cell] >= 0 else PlanetData.BIOMES[planet.biome[cell]].capitalize().replace("_", " ") + " site"
 		var km: float = here.angle_to(planet.grid.centers[cell]) * planet.radius_m / 1000.0

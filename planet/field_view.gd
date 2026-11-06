@@ -12,6 +12,10 @@ const GROUND_LAYERS: Array[String] = [
 
 var layout: CityLayout
 var ground_material: ShaderMaterial
+## [biomes] Frontier ground: texture layer swaps (layer index -> texture id) and shader extras
+## (x sand ripples, y frost, z wet silt). Set before setup().
+var layer_swap: Dictionary = {}
+var ground_fx := Vector4.ZERO
 
 var field: HexField
 var clock: float = 0.0
@@ -93,9 +97,13 @@ func _build_ground() -> void:
 	_state_tex = ImageTexture.create_from_image(_state_img)
 	_ground_mat = ShaderMaterial.new()
 	_ground_mat.shader = preload("res://art/shaders/ground_pbr.gdshader")
-	_ground_mat.set_shader_parameter("albedo_arr", _tex_array(GROUND_LAYERS, "diff"))
-	_ground_mat.set_shader_parameter("normal_arr", _tex_array(GROUND_LAYERS, "nor_gl"))
-	_ground_mat.set_shader_parameter("arm_arr", _tex_array(GROUND_LAYERS, "arm"))
+	var layers: Array[String] = GROUND_LAYERS.duplicate()
+	for k: Variant in layer_swap:  # [biomes]
+		layers[int(str(k))] = str(layer_swap[k])
+	_ground_mat.set_shader_parameter("albedo_arr", _tex_array(layers, "diff"))
+	_ground_mat.set_shader_parameter("normal_arr", _tex_array(layers, "nor_gl"))
+	_ground_mat.set_shader_parameter("arm_arr", _tex_array(layers, "arm"))
+	_ground_mat.set_shader_parameter("frontier_fx", ground_fx)
 	_ground_mat.set_shader_parameter("state_tex", _state_tex)
 	_life_img = Image.create(size, size, false, Image.FORMAT_RF)
 	_life_tex = ImageTexture.create_from_image(_life_img)

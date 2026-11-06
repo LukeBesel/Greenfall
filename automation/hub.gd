@@ -24,10 +24,18 @@ func _ready() -> void:
 		_build_scrubber(i, false)
 
 
+## [biomes] Frontier bases cost more cubes per level (data/frontiers.json cost_mult; set before _ready).
+var cost_mult: float = 1.0
+
+
 func level_def(l: int) -> Dictionary:
 	for d: Dictionary in data.get("levels", []):
 		if int(d["level"]) == l:
-			return d
+			if is_equal_approx(cost_mult, 1.0) or not (d.get("cost", {}) as Dictionary).has("cubes"):
+				return d
+			var dd: Dictionary = d.duplicate(true)  # [biomes]
+			dd["cost"]["cubes"] = float(dd["cost"]["cubes"]) * cost_mult
+			return dd
 	return {}
 
 
