@@ -502,7 +502,7 @@ func _process(delta: float) -> void:
 			_pv_key = ""
 			_rebuild_robot_list()
 			_refresh_all()
-	if not _dev_done and DevHooks.has("builder-slot") and DevHooks._elapsed > 2.5:
+	if not _dev_done and DevHooks.has("builder-slot"):
 		_dev_done = true
 		var bots: Array[Robot] = _bots()
 		var bi: int = int(DevHooks.get_f("builder-robot", 0.0))

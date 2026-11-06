@@ -60,8 +60,12 @@ func _ready() -> void:
 	_emote.visible = false
 	_emote.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(_emote)
-	EventBus.ui_modal_changed.connect(func(open: bool) -> void: _modal = open)
+	EventBus.ui_modal_changed.connect(_on_modal)
 	refresh()
+
+
+func _on_modal(open: bool) -> void:
+	_modal = open
 
 
 func refresh() -> void:

@@ -60,6 +60,6 @@
     {"id": "sleepy", "name": "Sleepy", "desc": "Dozes off whenever it parks.", "mods": {"work": 0.98, "load": 1.03}, "idle": "doze", "beep": "servo", "pitch": 0.55, "every": 14.0},
     {"id": "tidy", "name": "Tidy", "desc": "Shakes the dust off after every job.", "mods": {"quality": 1.04, "work": 0.98}, "idle": "shake", "beep": "blip", "pitch": 1.1, "every": 10.0},
     {"id": "curious", "name": "Curious", "desc": "Tilts its head at butterflies and bottle caps.", "mods": {"scan": 1.15, "speed": 0.98}, "idle": "tilt", "beep": "blip", "pitch": 1.45, "every": 7.0},
-    {"id": "hummer", "name": "Hummer", "desc": "Hums little tunes while it works.", "mods": {"work": 1.02, "scan": 0.95}, "idle": "sway", "beep": "beep", "pitch": 0.8, "every": 6.0}
+    {"id": "hummer", "name": "Musical", "desc": "Hums little tunes while it works.", "mods": {"work": 1.02, "scan": 0.95}, "idle": "sway", "beep": "beep", "pitch": 0.8, "every": 6.0}
   ]
 }

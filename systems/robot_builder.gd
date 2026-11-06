@@ -564,9 +564,10 @@ func _on_part_found(_t: int, r: int) -> void:
 func _process(delta: float) -> void:
 	if world == null or get_tree().paused:
 		return
-	if DevHooks.has("builder-demo") and not _demo_done and DevHooks._elapsed > 1.0:
+	if DevHooks.has("builder-demo") and not _demo_done:
 		_demo_done = true
 		demo_builds()
+		print("[builder] demo builds on %d robots" % (world.fleet.robots().size() if world.get("fleet") else -1))
 		if DevHooks.has("builder-shot"):
 			_shot_camera()
 	_tick += delta
@@ -604,28 +605,22 @@ func _salvage_find(r: Robot, sc: Dictionary) -> void:
 	Audio.play("detector", 1.4, -10.0)
 
 
-## --builder-shot: frame the robots for a screenshot (hides Lumi; --bshot-at=x,z focus point,
-## --bshot-dist, --bshot-yaw, --bshot-pitch).
+## --builder-shot: a fixed camera for screenshots. --bshot-cam=x,y,z camera position,
+## --bshot-at=x,y,z look-at point; Lumi steps aside (--bshot-lumi keeps her), --bshot-nohud hides HUDs.
 func _shot_camera() -> void:
-	var cam: CameraRig = world.get("cam")
-	if cam == null:
-		return
-	var at: PackedStringArray = DevHooks.get_s("bshot-at", "0,0.6").split(",")
-	var focus := Node3D.new()
-	world.add_child(focus)
-	focus.global_position = Vector3(float(at[0]), -0.45, float(at[1]) if at.size() > 1 else 0.6)
+	var cp: PackedStringArray = DevHooks.get_s("bshot-cam", "0,1.4,4.2").split(",")
+	var ap: PackedStringArray = DevHooks.get_s("bshot-at", "0,0.5,0.6").split(",")
+	var cam := Camera3D.new()
+	cam.fov = DevHooks.get_f("bshot-fov", 50.0)
+	world.add_child(cam)
+	cam.global_position = Vector3(float(cp[0]), float(cp[1]), float(cp[2]))
+	cam.look_at(Vector3(float(ap[0]), float(ap[1]), float(ap[2])), Vector3.UP)
+	cam.make_current()
 	if world.get("patch") and not DevHooks.has("bshot-lumi"):
-		world.patch.visible = false
-	cam.target = focus
-	cam.min_distance = 1.5
-	cam.distance = DevHooks.get_f("bshot-dist", 4.5)
-	cam.yaw = DevHooks.get_f("bshot-yaw", 0.0)
-	cam.pitch = DevHooks.get_f("bshot-pitch", -0.25)
-	cam.input_enabled = false
-	cam.snap()
+		world.patch.global_position = Vector3(float(cp[0]), 0.2, float(cp[2]) + 6.0)
 	if DevHooks.has("bshot-nohud"):
-		for c: Node in world.get_children():
-			if c is CanvasLayer and not (c is UpgradesScreen):
+		for c: Node in get_tree().root.find_children("*", "CanvasLayer", true, false):
+			if not (c is UpgradesScreen):
 				(c as CanvasLayer).visible = false
 
 
