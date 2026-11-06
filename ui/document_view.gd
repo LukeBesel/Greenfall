@@ -57,8 +57,10 @@ func show_doc(doc: Dictionary) -> void:
 		"sign": paper_col = Color(0.85, 0.75, 0.6)
 		"poster": paper_col = Color(0.92, 0.85, 0.7)
 		"voicemail": paper_col = Color(0.88, 0.9, 0.95)
+		"letter": paper_col = Color(0.95, 0.93, 0.86)
+		"contract": paper_col = Color(0.92, 0.93, 0.9)
 	_paper.add_theme_stylebox_override("panel", UITheme.box(paper_col, Color(0, 0, 0, 0.2), 1, 2, 28))
-	_kind.text = "M E M O R Y   S H A R D   ·   %s" % str(doc.get("kind", "")).to_upper()
+	_kind.text = str(doc.get("header", "M E M O R Y   S H A R D   ·   %s" % str(doc.get("kind", "")).to_upper()))
 	_title.text = str(doc.get("title", ""))
 	_body.text = str(doc.get("body", ""))
 	is_open = true

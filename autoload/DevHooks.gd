@@ -14,6 +14,12 @@ extends Node
 ##   --give=N           start with N cubes (testing UI)
 ##   --open=NAME        open a UI screen on start (upgrades)
 ##   --quality=N        render quality preset 0..3 (Low..Ultra) for faster screenshots
+##   --ledger-act=N     jump the Ledger arc to act N (1 intercepts, 2 drones, 3 relay, 4 resolved)
+##   --ledger-drop[=S]  force a Ledger dump drone S seconds after start (ignores jammers)
+##   --ledger-resolve[=S]  play the relay "rewrite the contract" cinematic (needs act 3)
+##   --spawn-relay      put Patch next to the Ledger relay terminal (act >= 3)
+##   --spawn-egg=ID     put Patch next to an easter egg in this district (data/eggs.json ids);
+##                      --egg-dist=M sets the distance, --egg-poke[=S] plays its reaction after S s
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0

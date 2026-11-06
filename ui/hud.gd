@@ -223,7 +223,7 @@ func _prompt_text(kind: String) -> String:
 		"seed": return "E   pick up the seed tin"
 		"place": return "E   set bale down"
 		"upgrades": return "E   workbench"
-	return ""
+	return kind if kind.begins_with("E   ") else ""  # registry prompts arrive pre-written
 
 
 func show_toast(text: String, kind: String = "info") -> void:
