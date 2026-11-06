@@ -14,6 +14,10 @@ extends Node
 ##   --give=N           start with N cubes (testing UI)
 ##   --open=NAME        open a UI screen on start (upgrades)
 ##   --quality=N        render quality preset 0..3 (Low..Ultra) for faster screenshots
+##   --tab=ID           upgrades screen starts on this tab (e.g. research)
+##   --open=codex       open the Codex (--codex-tab=achievements|stats, --codex-sample fakes progress)
+##   --give-data=N      start with N research Data; --research=a+b grants nodes;
+##   --research-start=a+b starts/queues nodes (--research-elapsed=S backdates the start)
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0

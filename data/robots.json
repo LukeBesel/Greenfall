@@ -1,5 +1,5 @@
 {
-  "_doc": "Robot types. recipe = part type ids needed to build one (any rarity; higher rarity adds +5% per rarity step to the robot's stats). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = rarity index of a Control Core consumed to reach the tier. Fleet upgrades apply to every robot of the type.",
+  "_doc": "Robot types. requires_research = research node id needed before the type can be built (absent = unlocked from the start). recipe = part type ids needed to build one (any rarity; higher rarity adds +5% per rarity step to the robot's stats). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = rarity index of a Control Core consumed to reach the tier. Fleet upgrades apply to every robot of the type.",
   "types": [
     {
       "id": "scoopie",
@@ -102,6 +102,7 @@
     },
     {
       "id": "seedling",
+      "requires_research": "seedling_blueprint",
       "name": "Seedling",
       "role": "plant",
       "desc": "Plants seeds in clean ground. Uses your seed stock.",
@@ -141,6 +142,7 @@
     },
     {
       "id": "drip",
+      "requires_research": "drip_blueprint",
       "name": "Drip",
       "role": "water",
       "desc": "Waters thirsty plants. Refills its tank at the hub.",
@@ -181,6 +183,7 @@
     },
     {
       "id": "multibot",
+      "requires_research": "multibot_blueprint",
       "name": "Multibot",
       "role": "any",
       "desc": "General helper. Assign it to Clean, Plant or Water on the Allocation Board. Slower than a specialist.",

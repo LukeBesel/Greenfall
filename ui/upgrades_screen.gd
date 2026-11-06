@@ -29,12 +29,15 @@ var _trade: TradePanel
 var _hub_panel: HubPanel
 var hub: Hub
 var _alloc: AllocationBoard
+var _research: ResearchPanel
 var build_at: Callable = func() -> Vector3: return Vector3.ZERO
 
 
 func _ready() -> void:
 	layer = 20
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	if DevHooks.has("tab"):
+		_tab = DevHooks.get_s("tab", "patch")
 	_root = Control.new()
 	_root.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_root.theme = UITheme.get_theme()
@@ -73,7 +76,7 @@ func _ready() -> void:
 	vb.add_child(tabs)
 	for t: Dictionary in TABS:
 		var b := Button.new()
-		var live: bool = t["id"] in ["patch", "bots", "trade", "hub", "cosmetics"]
+		var live: bool = t["id"] in ["patch", "bots", "trade", "hub", "research", "cosmetics"]
 		b.text = t["name"] if live else "%s (soon)" % t["name"]
 		b.disabled = not live
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
@@ -101,6 +104,11 @@ func _populate() -> void:
 		c.queue_free()
 	_cards.clear()
 	_robot_cards.clear()
+	if _tab == "research":
+		_grid.columns = 1
+		_research = ResearchPanel.new()
+		_grid.add_child(_research)
+		return
 	if _tab == "cosmetics":
 		_grid.columns = 1
 		var cp := CosmeticsPanel.new()
@@ -155,6 +163,9 @@ func _set_tab(id: String) -> void:
 
 
 func _relayout() -> void:
+	if _tab == "research":
+		_grid.columns = 1
+		return
 	if _tab == "cosmetics":
 		_grid.columns = 1
 		var cp := CosmeticsPanel.new()
@@ -187,13 +198,15 @@ func open_screen() -> void:
 	tw.tween_property(_root, "modulate:a", 1.0, 0.15)
 	if not _cards.is_empty():
 		_cards[0].first_button().call_deferred("grab_focus")
+	elif _tab == "research" and is_instance_valid(_research):
+		_research.focus_first.call_deferred()
 
 
 func _input(event: InputEvent) -> void:
 	if not is_open:
 		return
 	if event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev"):
-		var order: Array[String] = ["patch", "bots", "hub", "trade", "cosmetics"]
+		var order: Array[String] = ["patch", "bots", "hub", "trade", "research", "cosmetics"]
 		var i: int = order.find(_tab)
 		_set_tab(order[(i + (1 if event.is_action_pressed("ui_tab_next") else order.size() - 1)) % order.size()])
 		get_viewport().set_input_as_handled()

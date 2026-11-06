@@ -77,6 +77,7 @@ func _register_default_actions() -> void:
 		"ui_tab_next": [_key(KEY_E), _joy(JOY_BUTTON_RIGHT_SHOULDER)],
 		"ui_tab_prev": [_key(KEY_Q), _joy(JOY_BUTTON_LEFT_SHOULDER)],
 		"buy_max": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],
+		"open_codex": [_key(KEY_K), _joy(JOY_BUTTON_MISC1)],
 	}
 	for action: String in _defaults:
 		if not InputMap.has_action(action):

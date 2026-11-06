@@ -3,6 +3,7 @@ extends CanvasLayer
 ## Pause menu with a few settings. Pauses the tree while open.
 
 signal closed
+signal codex_requested
 
 var is_open: bool = false
 var _root: Control
@@ -33,6 +34,9 @@ func _ready() -> void:
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(title)
 	_first = _button(vb, "Resume", close_menu)
+	_button(vb, "Codex  [K]", func() -> void:
+		close_menu()
+		codex_requested.emit())
 	_toggle(vb, "Screen shake", Settings.screen_shake, func(v: bool) -> void: Settings.screen_shake = v)
 	_toggle(vb, "Hold to scoop (off = toggle)", Settings.hold_to_scoop, func(v: bool) -> void: Settings.hold_to_scoop = v)
 	_toggle(vb, "Reduced motion", Settings.reduced_motion, func(v: bool) -> void: Settings.reduced_motion = v)

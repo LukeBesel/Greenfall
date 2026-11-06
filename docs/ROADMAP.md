@@ -11,6 +11,11 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - [~] M5 Growing: planting, watering, growth, allocation board, wildlife; ecosystems/compost pending
 - [ ] M6 Water, M7 Hubs+Rockets (hub levels done), M8-M11
 
+## Update: Research tree, Codex, achievements, stats
+- Done: Research tab on the workbench (`ui/research_panel.gd`, `ui/research_node_card.gd`). 30 nodes in 5 branches (`data/research.json`): Cleaning, Robotics, Botany, Hydrology, Logistics. Costs the new **Data** currency (hex cleaned / restored, blooms, shards read, robot bales). Research runs on wall-clock time (30 s to 5 min), one active + a queue of 3, finishes offline. Logic and state in `systems/research.gd` (`GameState.flags.research`); effects reach the game through `Economy.stat` (`Research.stat_mod`). Gates: `Research.has(id)` (Logistics nodes `conveyor`, `auto_baler`, `recycler`, `rocket_cargo` are flags for the automation work), robots with `requires_research` in `data/robots.json` (Seedling, Drip, Multibot), plant species with `requires_research` in `data/plants.json` (nettle, mint, hedge, pine; applied to the Garden by the live Research node). Stats `lake_clarity` and `drip.range` are exposed for the water systems to read.
+- Done: Codex screen (K, or Pause > Codex): Codex entries (`data/codex.json`, `systems/codex.gd`), 54 achievements (`data/achievements.json`, `systems/achievements.gd`, toast + chime), lifetime Stats (junk kg by type). Unlocks persist in `GameState.flags.codex` / `flags.achievements`. Tests: `tests/test_research.gd`, `tests/test_achievements.gd`.
+- Follow-ups: Garden should read `Economy.stat("plant_growth")`-style hooks if Botany gets growth bonuses; water view should read `lake_clarity`; a HUD Data counter.
+
 ## Update: Command View + Aurora face pass
 - Done: Command View (B / D-pad down). A holo map of the district. Pick a crew or a single robot and paint hexes to set its zone. Modes: Priority, Stay, Follow me, Recall. Orders are saved in `GameState.world.orders` and handled in `Fleet` (`order_for`, `zone_hexes`, `mode_of`); robots honour them in `robot.gd`. Tests are in `tests/test_orders.gd`. Dev hook: `--open=command`, `--order=role:mode:hex+hex|far`.
 - Done: Aurora face now has big glossy oval eyes with catchlights, cheeks and ^ ^ when happy. The fin antenna is replaced by a bulb antenna.
@@ -19,4 +24,4 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
   2. Bot build loop: build and upgrade robots straight from the Command panel when at the base, with crew size caps raised by hub level.
   3. Skimmer (water) robot and lake cleaning; Grinder/Recycler to remove trash for good.
   4. Tractor-beam pickup visuals for Mk III+ and Patch.
-  5. Research tree, cargo rockets, then content (easter eggs, Codex, Ledger) and polish (cinematic intro, music, exports).
+  5. Cargo rockets (gate on `Research.has("rocket_cargo")`), then content (easter eggs, Ledger) and polish (cinematic intro, music, exports).
