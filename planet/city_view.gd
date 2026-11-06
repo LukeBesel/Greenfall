@@ -430,19 +430,88 @@ func _build_street_props() -> void:
 # --- Skyline ------------------------------------------------------------------------
 
 func _build_skyline() -> void:
-	# Tall ruined towers and junk ridges far out, dissolving into the haze.
-	var tower_mats: Array = [AssetLib.pbr_material("concrete_wall_008", 0.08, Color(0.75, 0.72, 0.7), true),
-		AssetLib.pbr_material("factory_wall", 0.06, Color(0.8, 0.76, 0.72), true)]
+	# Far city: real building silhouettes (windows, floor bands, grime) in sun-faded facade colours,
+	# with setbacks, rooftop water tanks, masts and AC boxes, a few broken tops. They fade into haze.
+	var facades: Array = [["painted_concrete", Color(0.86, 0.78, 0.66)], ["brick_wall_02", Color(0.9, 0.82, 0.76)],
+		["red_brick", Color(0.88, 0.72, 0.66)], ["factory_wall", Color(0.8, 0.82, 0.8)], ["painted_concrete", Color(0.7, 0.8, 0.82)],
+		["painted_concrete", Color(0.92, 0.86, 0.72)], ["concrete_wall_008", Color(0.78, 0.76, 0.74)]]
+	var mats: Array[ShaderMaterial] = []
+	for i: int in facades.size():
+		var m := ShaderMaterial.new()
+		m.shader = preload("res://art/shaders/building_far.gdshader")
+		m.set_shader_parameter("wall_alb", AssetLib.tex(facades[i][0], "diff"))
+		m.set_shader_parameter("wall_nrm", AssetLib.tex(facades[i][0], "nor_gl"))
+		m.set_shader_parameter("tint", facades[i][1])
+		m.set_shader_parameter("seed", 3.1 + float(i) * 0.61)
+		mats.append(m)
+	var roof_mat: StandardMaterial3D = AssetLib.pbr_material("concrete_wall_008", 0.2, Color(0.55, 0.53, 0.5), true)
+	var rust_mat: StandardMaterial3D = AssetLib.pbr_material("rusty_metal_02", 0.5, Color(0.9, 0.85, 0.8), true)
 	var r0: float = layout.extent + 20.0
-	for i: int in 70:
-		var ang: float = TAU * i / 70.0 + _rng.randf_range(-0.03, 0.03)
-		var dist: float = r0 + _rng.randf_range(0.0, 160.0)
-		var w: float = _rng.randf_range(14.0, 30.0)
-		var h: float = _rng.randf_range(30.0, 120.0)
-		var mi := MeshInstance3D.new()
-		mi.mesh = ProcMesh.box(Vector3(w, h, w * _rng.randf_range(0.7, 1.2)))
-		mi.material_override = tower_mats[_rng.randi() % tower_mats.size()]
-		mi.position = Vector3(cos(ang) * dist, h * 0.5 - 2.0, sin(ang) * dist)
-		mi.rotation.y = _rng.randf() * TAU
-		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		add_child(mi)
+	for i: int in 90:
+		var ang: float = TAU * i / 90.0 + _rng.randf_range(-0.03, 0.03)
+		var dist: float = r0 + _rng.randf_range(0.0, 170.0)
+		var w: float = _rng.randf_range(14.0, 28.0)
+		var d: float = w * _rng.randf_range(0.7, 1.2)
+		var h: float = roundf(_rng.randf_range(24.0, 110.0) / 3.0) * 3.0
+		var root := Node3D.new()
+		root.position = Vector3(cos(ang) * dist, -1.0, sin(ang) * dist)
+		root.rotation.y = _rng.randf() * TAU
+		add_child(root)
+		var mat: ShaderMaterial = mats[_rng.randi() % mats.size()]
+		var y: float = 0.0
+		var cw: float = w
+		var cd: float = d
+		var tiers: int = 1 + (_rng.randi() % 3 if h > 50.0 else 0)
+		for t: int in tiers:
+			var th: float = h / float(tiers) * (1.2 if t == 0 else 0.9)
+			var mi := MeshInstance3D.new()
+			mi.mesh = ProcMesh.box(Vector3(cw, th, cd))
+			mi.material_override = mat
+			mi.position = Vector3(0, y + th * 0.5, 0)
+			mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			root.add_child(mi)
+			y += th
+			cw *= _rng.randf_range(0.65, 0.85)
+			cd *= _rng.randf_range(0.65, 0.85)
+		# Roof: parapet slab plus clutter.
+		var slab := MeshInstance3D.new()
+		slab.mesh = ProcMesh.box(Vector3(cw / 0.75 * 0.98, 0.6, cd / 0.75 * 0.98))
+		slab.material_override = roof_mat
+		slab.position = Vector3(0, y + 0.3, 0)
+		slab.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		root.add_child(slab)
+		if _rng.randf() < 0.6:
+			var tank := MeshInstance3D.new()
+			tank.mesh = ProcMesh.cyl(1.6, 1.6, 3.0, 12)
+			tank.material_override = rust_mat
+			tank.position = Vector3(_rng.randf_range(-cw, cw) * 0.25, y + 3.6, _rng.randf_range(-cd, cd) * 0.25)
+			tank.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			root.add_child(tank)
+			for k: int in 4:
+				var leg := MeshInstance3D.new()
+				leg.mesh = ProcMesh.cyl(0.12, 0.12, 2.2, 5)
+				leg.material_override = rust_mat
+				leg.position = tank.position + Vector3((1.0 if k % 2 == 0 else -1.0) * 1.1, -2.6, (1.0 if k < 2 else -1.0) * 1.1)
+				root.add_child(leg)
+		if _rng.randf() < 0.45:
+			var mast := MeshInstance3D.new()
+			var mh: float = _rng.randf_range(5.0, 14.0)
+			mast.mesh = ProcMesh.cyl(0.15, 0.3, mh, 6)
+			mast.material_override = rust_mat
+			mast.position = Vector3(_rng.randf_range(-cw, cw) * 0.3, y + mh * 0.5, _rng.randf_range(-cd, cd) * 0.3)
+			root.add_child(mast)
+		for k: int in _rng.randi() % 4:
+			var ac := MeshInstance3D.new()
+			ac.mesh = ProcMesh.box(Vector3(2.0, 1.2, 1.6))
+			ac.material_override = roof_mat
+			ac.position = Vector3(_rng.randf_range(-cw, cw) * 0.35, y + 1.2, _rng.randf_range(-cd, cd) * 0.35)
+			ac.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			root.add_child(ac)
+		if _rng.randf() < 0.18:
+			# Broken top: a tilted slab of the last floor.
+			var broken := MeshInstance3D.new()
+			broken.mesh = ProcMesh.box(Vector3(cw * 0.6, 4.0, cd * 0.5))
+			broken.material_override = mat
+			broken.position = Vector3(cw * 0.15, y + 1.2, 0)
+			broken.rotation = Vector3(0.0, 0.0, _rng.randf_range(0.25, 0.5))
+			root.add_child(broken)

@@ -61,26 +61,34 @@ func _build_meshes() -> void:
 	_meshes.append(_crumple(Vector2(0.45, 0.35), 4, 0.07, r, Color.WHITE))
 	_meshes.append(_crumple(Vector2(0.24, 0.24), 3, 0.12, r, Color.WHITE))
 	# Tiny real items at very low detail.
-	for id: String in ["can_rusted", "bleach_bottle", "lubricant_spray", "garden_gloves_01", "drain_cleaner"]:
-		_meshes.append(AssetLib.model_mesh_lite(id, 160))
+	for id: String in ["can_rusted", "bleach_bottle", "lubricant_spray", "garden_gloves_01", "drain_cleaner",
+			"multi_cleaner_bottle", "russian_food_cans_01", "oil_tin", "circuit_board"]:
+		_meshes.append(AssetLib.model_mesh_lite(id, 220))
 
 
+## Real-world trash colours: mostly sun-faded paper, cardboard, grey film and black bags, with
+## the occasional bright wrapper. Everything gets dusty toward the ground colour.
 func _litter_color() -> Color:
 	var palette: Array[Color] = [
-		Color(0.86, 0.85, 0.8), Color(0.82, 0.8, 0.72), Color(0.62, 0.47, 0.32), Color(0.55, 0.42, 0.3),
-		Color(0.92, 0.92, 0.9), Color(0.15, 0.15, 0.16), Color(0.2, 0.42, 0.75), Color(0.8, 0.18, 0.15),
-		Color(0.95, 0.75, 0.15), Color(0.2, 0.6, 0.3), Color(0.9, 0.45, 0.6), Color(0.35, 0.65, 0.85),
+		Color(0.84, 0.82, 0.74), Color(0.78, 0.74, 0.62), Color(0.6, 0.46, 0.31), Color(0.5, 0.39, 0.27),
+		Color(0.7, 0.71, 0.7), Color(0.12, 0.12, 0.13), Color(0.32, 0.45, 0.62), Color(0.72, 0.24, 0.18),
+		Color(0.86, 0.7, 0.22), Color(0.28, 0.5, 0.32), Color(0.92, 0.92, 0.9), Color(0.3, 0.6, 0.72),
 	]
-	var weights: Array[float] = [3, 3, 3, 2, 2, 2, 1, 1, 1, 0.7, 0.6, 0.8]
+	var weights: Array[float] = [4, 3, 4, 3, 2.5, 2.5, 0.8, 0.8, 0.8, 0.5, 1.5, 0.5]
 	var t: float = 0.0
 	for w: float in weights:
 		t += w
 	var x: float = _rng.randf() * t
+	var c: Color = palette[0]
 	for i: int in palette.size():
 		x -= weights[i]
 		if x <= 0.0:
-			return palette[i].darkened(_rng.randf_range(0.0, 0.3))
-	return palette[0]
+			c = palette[i]
+			break
+	# Fade, grime and dust.
+	c = c.lerp(Color(c.get_luminance(), c.get_luminance(), c.get_luminance()), _rng.randf_range(0.1, 0.4))
+	c = c.darkened(_rng.randf_range(0.05, 0.4))
+	return c.lerp(Color(0.48, 0.43, 0.37), _rng.randf_range(0.0, 0.35))
 
 
 func _build() -> void:
@@ -113,7 +121,8 @@ func _build() -> void:
 			# Layered carpet: later pieces sit on top of earlier ones so the ground disappears.
 			var layer: float = float(k) / float(n)
 			p.y = (layout.height_at(p.x, p.z) if layout else 0.0) + field.ground_height(id, p) * 0.9 + layer * 0.06 * mult
-			var mi: int = _rng.randi() % 4 if _rng.randf() < 0.82 else 4 + _rng.randi() % 5
+			var n_items: int = _meshes.size() - 4
+			var mi: int = _rng.randi() % 4 if _rng.randf() < 0.72 else 4 + _rng.randi() % n_items
 			var b := Basis(Vector3.UP, _rng.randf() * TAU)
 			if mi >= 4:
 				b = b * Basis(Vector3.RIGHT, PI * 0.5)  # small items lie on their side
@@ -156,6 +165,9 @@ func _build() -> void:
 			var mat := StandardMaterial3D.new()
 			mat.vertex_color_use_as_albedo = true
 			mat.roughness = 0.85
+			# Grime: a worn-concrete texture multiplied over the per-piece colour breaks up flat tints.
+			mat.albedo_texture = AssetLib.tex("dirty_concrete", "diff")
+			mat.albedo_color = Color(1.7, 1.7, 1.7)
 			mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 			mat.normal_enabled = true
 			mat.normal_texture = AssetLib.tex("rubble", "nor_gl")

@@ -5,8 +5,8 @@ extends Node3D
 
 var target: Node3D
 var yaw: float = 0.0
-var pitch: float = -0.5
-var distance: float = 8.5
+var pitch: float = -0.3
+var distance: float = 6.2
 var min_distance: float = 3.5
 var max_distance: float = 26.0
 var lens_view: bool = false
@@ -35,6 +35,14 @@ func _ready() -> void:
 	camera = Camera3D.new()
 	camera.fov = Settings.fov
 	camera.far = 600.0
+	# Gentle far blur on High/Ultra: distant skyline softens like a real lens, the play area stays sharp.
+	if Settings.quality >= Settings.Quality.HIGH:
+		var attrs := CameraAttributesPractical.new()
+		attrs.dof_blur_far_enabled = true
+		attrs.dof_blur_far_distance = 55.0
+		attrs.dof_blur_far_transition = 60.0
+		attrs.dof_blur_amount = 0.06
+		camera.attributes = attrs
 	_arm.add_child(camera)
 	camera.current = true
 	EventBus.shake_requested.connect(add_trauma)
