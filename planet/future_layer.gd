@@ -11,13 +11,13 @@ extends Node3D
 ## Cheap: a handful of MultiMeshes (unshaded emissive; the environment glow does the halo),
 ## a few Label3D texts, no lights. New pieces draw in / flicker on via a per-instance birth time.
 
-const CYAN := Color(0.0, 0.78, 1.0)
-const TEAL := Color(0.0, 1.0, 0.68)
-const MAGENTA := Color(1.0, 0.12, 0.78)
+const CYAN := Color(0.62, 0.88, 1.0)  # soft sky-blue light
+const TEAL := Color(0.7, 1.0, 0.85)  # mint
+const MAGENTA := Color(1.0, 0.88, 0.7)  # warm white (was neon magenta)
 const ICE := Color(0.62, 0.86, 1.0)
 const AMBER := Color(1.0, 0.72, 0.32)
 const LIME := Color(0.62, 1.0, 0.42)
-const VIOLET := Color(0.55, 0.3, 1.0)
+const VIOLET := Color(0.85, 0.92, 1.0)  # pale (was violet)
 
 ## Kinds understood by art/shaders/light_seam.gdshader.
 const K_PULSE := 0.0
@@ -133,7 +133,9 @@ static func _add(p: Dictionary, ch: String, xf: Transform3D, col: Color, kind: f
 	var c: Dictionary = p[ch]
 	(c["xf"] as Array).append(xf)
 	(c["col"] as Array).append(col)
-	(c["cus"] as Array).append(Color(_h(key) * 10.0 if seed < 0.0 else seed, kind, en, 0.0))
+	# Toned down: futuristic accents are soft light, not neon (owner: "not that Tron-like").
+	var soft: float = 0.35 if ch in ["line", "seam"] else 0.55
+	(c["cus"] as Array).append(Color(_h(key) * 10.0 if seed < 0.0 else seed, kind, en * soft, 0.0))
 	(c["key"] as Array).append(key)
 
 
@@ -429,7 +431,8 @@ static func _plan_buildings(p: Dictionary, fld: HexField, lay: CityLayout, level
 
 ## Tron lanes: once the ground beside a road is sustained, its curbs and centre line light up.
 static func _plan_roads(p: Dictionary, fld: HexField, lay: CityLayout, levels: Dictionary) -> void:
-	if lay == null or lay.wild:
+	# Glowing road lanes removed: they made the city read as Tron rather than a bright, natural future.
+	if true or lay == null or lay.wild:
 		return
 	var reach: float = fld.hex_size * (fld.radius + 1) * 1.75
 	var half: float = CityLayout.PITCH * 0.5
@@ -662,7 +665,7 @@ func _make_resources() -> void:
 	_aurora_mat.shader = preload("res://art/shaders/future_fx.gdshader")
 	_aurora_mat.set_shader_parameter("mode", 1)
 	_aurora_mat.set_shader_parameter("tint", Color(0.2, 1.0, 0.75))
-	_aurora_mat.set_shader_parameter("tint2", Color(0.85, 0.3, 1.0))
+	_aurora_mat.set_shader_parameter("tint2", Color(0.5, 0.85, 1.0))
 	_aurora = MeshInstance3D.new()
 	_aurora.name = "Aurora"
 	_aurora.mesh = band_mesh(430.0, 70.0, 230.0, deg_to_rad(-200.0), deg_to_rad(40.0), 64)
@@ -800,7 +803,7 @@ func _process(delta: float) -> void:
 	if sd:
 		var sc: float = float(last_plan.get("score", 0.0))
 		sd.set("clear_bonus", smoothstep(0.2, 1.0, sc) * 0.7)
-		sd.set("night_tint", Color(0.45, 0.4, 0.95, smoothstep(0.3, 1.0, sc) * 0.45))
+		sd.set("night_tint", Color(0.55, 0.62, 0.9, smoothstep(0.3, 1.0, sc) * 0.15))
 
 
 func night_factor() -> float:
