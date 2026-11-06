@@ -12,7 +12,7 @@
         "arm",
         "core"
       ],
-      "cost": 120,
+      "cost": 1100,
       "stats": {
         "speed": 1.6,
         "scoop_rate": 1.4,
@@ -72,7 +72,7 @@
         "locomotion",
         "battery"
       ],
-      "cost": 160,
+      "cost": 400,
       "stats": {
         "speed": 2.8,
         "carry": 2.0
@@ -112,7 +112,7 @@
         "arm",
         "hopper"
       ],
-      "cost": 400,
+      "cost": 700,
       "stats": {
         "speed": 1.5,
         "work_rate": 0.8
@@ -152,11 +152,11 @@
         "hopper",
         "battery"
       ],
-      "cost": 400,
+      "cost": 700,
       "stats": {
         "speed": 1.7,
         "work_rate": 1.0,
-        "tank": 20.0,
+        "tank": 26.0,
         "spray_radius": 1.3,
         "refill_rate": 5.0
       },
@@ -214,7 +214,7 @@
         "arm",
         "battery"
       ],
-      "cost": 450,
+      "cost": 800,
       "stats": {
         "speed": 1.8,
         "scoop_rate": 1.5,
@@ -267,7 +267,7 @@
         "core",
         "module"
       ],
-      "cost": 900,
+      "cost": 1600,
       "stats": {
         "speed": 1.6,
         "scoop_rate": 1.0,
@@ -327,8 +327,8 @@
   },
   "crew_cap": {
     "_doc": "Max robots per crew (role) = base + per_level * hub level.",
-    "base": 3,
-    "per_level": 3
+    "base": 1,
+    "per_level": 2
   },
   "water_tank": {
     "_doc": "Placeable refill station for Drip robots. cost in cubes grows per tank; holds `capacity` water and refills itself at `regen` per second (rain catcher + condenser).",

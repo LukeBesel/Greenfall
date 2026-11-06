@@ -27,3 +27,12 @@ func test_higher_tier_earns_more() -> void:
 	var lo: Dictionary = Offline.compute([{"type": "scoopie", "tier": 0}, {"type": "haulbug", "tier": 0}], 0, 1.0, 3600.0)
 	var hi: Dictionary = Offline.compute([{"type": "scoopie", "tier": 3}, {"type": "haulbug", "tier": 0}], 0, 1.0, 3600.0)
 	assert_gt(float(hi["cubes"]), float(lo["cubes"]))
+
+
+func test_capped_by_junk_left() -> void:
+	# A clean district pays nothing offline (no closing and reopening the game for free cubes).
+	var fleet: Array = [{"type": "scoopie", "tier": 0}, {"type": "haulbug", "tier": 0}]
+	var none: Dictionary = Offline.compute(fleet, 0, 1.0, 8.0 * 3600.0, 0.0)
+	assert_eq(float(none["cubes"]), 0.0)
+	var some: Dictionary = Offline.compute(fleet, 0, 1.0, 8.0 * 3600.0, 50.0)
+	assert_almost_eq(float(some["units"]), 50.0, 0.001)

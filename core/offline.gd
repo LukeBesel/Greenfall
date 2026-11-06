@@ -11,7 +11,9 @@ const CAP_S: float = 8.0 * 3600.0
 const AVG_VALUE_PER_UNIT: float = 0.75
 
 
-static func compute(robots: Array, scrubbers: int, filter_per_s: float, elapsed_s: float) -> Dictionary:
+## junk_left caps the junk volume the fleet can bale offline (the district's remaining junk), so a
+## fully clean district stops paying out (no infinite income from closing and reopening the game).
+static func compute(robots: Array, scrubbers: int, filter_per_s: float, elapsed_s: float, junk_left: float = INF) -> Dictionary:
 	var t: float = clampf(elapsed_s, 0.0, CAP_S)
 	var units: float = 0.0
 	var haulers: int = 0
@@ -25,6 +27,7 @@ static func compute(robots: Array, scrubbers: int, filter_per_s: float, elapsed_
 		# Seconds per piece: travel + pick. Roughly 0.9 units of junk per piece.
 		var rate: float = Economy.robot_stat(type_id, "scoop_rate", tier) * 0.35
 		units += rate * 0.9 * t * OFFLINE_RATE
+	units = minf(units, maxf(junk_left, 0.0))
 	var eff: float = 1.0
 	if not robots.is_empty():
 		eff = Economy.robot_stat(str(robots[0].get("type", "scoopie")), "efficiency", int(robots[0].get("tier", 0)))

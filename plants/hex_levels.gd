@@ -21,6 +21,7 @@ var _ring_n: Dictionary = {}  # hex id -> samples filled
 var _ring_sum: Dictionary = {}  # hex id -> sum of samples in the ring
 var _bonus: Dictionary = {}
 var _tick: float = 0.0
+var _stipend_acc: float = 0.0
 ## False in unit tests / catch-up: level-ups pay out and count but skip vfx/audio/toasts.
 var celebrate: bool = true
 
@@ -112,6 +113,7 @@ func step(dt: float) -> void:
 
 
 func _sample_all() -> void:
+	_pay_stipend(float(cfg.get("sample_s", 1.0)))
 	for id: int in levels:
 		var m: Vector3i = _measure(id)
 		if m.x > 0:
@@ -121,6 +123,21 @@ func _sample_all() -> void:
 		var target: int = _target_level(id, m)
 		if target > int(levels[id]):
 			_level_up(id, int(levels[id]), target)
+
+
+## Garden stipend: Sustained and Thriving hexes pay a small steady trickle of cubes (bonus key
+## "cubes_per_min", summed over hexes and capped like the other bonuses). It keeps a district whose
+## junk is all gone moving toward the next base level instead of stalling.
+func _pay_stipend(dt: float) -> void:
+	var per_min: float = bonus("cubes_per_min")
+	if per_min <= 0.0:
+		return
+	_stipend_acc += per_min * dt / 60.0
+	if _stipend_acc >= 1.0:
+		var whole: float = floorf(_stipend_acc)
+		_stipend_acc -= whole
+		GameState.add_currency("cubes", BigNum.from_float(whole))
+		GameState.inc_stat("garden_stipend", whole)
 
 
 ## (planted, watered, bloomed) slot counts of a hex.
@@ -210,7 +227,7 @@ func _level_up(hid: int, from: int, to: int) -> void:
 
 static func reward_text(reward: Dictionary) -> String:
 	var parts: Array[String] = []
-	for k: String in ["cubes", "seeds"]:
+	for k: String in ["cubes", "seeds", "data"]:
 		if float(reward.get(k, 0.0)) > 0.0:
 			parts.append("+%s %s" % [Settings.fmt(BigNum.from_float(float(reward[k]))), k])
 	return "  ".join(parts)

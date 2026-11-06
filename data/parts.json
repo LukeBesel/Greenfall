@@ -17,6 +17,6 @@
     {"id": "sensor", "name": "Sensor Module", "model": "boombox"},
     {"id": "module", "name": "Special Module", "model": "classic_laptop"}
   ],
-  "chance_per_hex": 0.14,
+  "chance_per_hex": 0.45,
   "detector": {"range": 16.0, "dig_range": 1.4, "dig_time": 1.3, "min_interval": 0.08, "max_interval": 1.4}
 }

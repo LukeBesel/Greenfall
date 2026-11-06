@@ -601,9 +601,16 @@ func collect_piece(pid: int) -> void:
 
 
 func _on_hex_clean(hid: int) -> void:
-	var bonus: BigNum = Economy.hex_bonus(field.hex_total[hid])
+	# A hex the Ledger re-dumped on pays only the flat part of its bonus the second time and doesn't
+	# count again toward "Clean N hexes" (otherwise a dump is a profit).
+	var paid: Dictionary = GameState.world.get("hexes_paid", {})
+	var first: bool = not paid.has(str(hid))
+	paid[str(hid)] = true
+	GameState.world["hexes_paid"] = paid
+	var bonus: BigNum = Economy.hex_bonus(field.hex_total[hid] if first else 0.0)
 	GameState.add_currency("cubes", bonus)
-	GameState.inc_stat("hexes_cleaned")
+	if first:
+		GameState.inc_stat("hexes_cleaned")
 	var center: Vector3 = field.hex_center(hid)
 	Audio.play("chime", 1.0, -3.0)
 	Vfx.burst("big_sparkle", center + Vector3(0, 0.3, 0), Color(1.0, 0.92, 0.55))
@@ -880,7 +887,11 @@ func _restore_world(from_memory: bool = false) -> void:
 	var away: float = Time.get_unix_time_from_system() - GameState.saved_unix
 	if GameState.saved_unix > 0.0 and away > 120.0:
 		var sd: Dictionary = hub.scrubber_def() if hub else {}
-		var res: Dictionary = Offline.compute(GameState.world.get("robots", []), hub.scrubbers if hub else 0, float(sd.get("filter_per_s", 1.0)), away)
+		var junk_left: float = 0.0
+		for h: int in field.hex_count():
+			if not field.is_clean(h):
+				junk_left += field.hex_left[h]
+		var res: Dictionary = Offline.compute(GameState.world.get("robots", []), hub.scrubbers if hub else 0, float(sd.get("filter_per_s", 1.0)), away, junk_left)
 		Offline.apply(res)
 		if float(res["units"]) > 0.0 or float(res["air"]) > 0.0:
 			get_tree().create_timer(2.0).timeout.connect(func() -> void: EventBus.toast.emit(Offline.summary_text(res), "story"))

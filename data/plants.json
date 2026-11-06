@@ -18,5 +18,5 @@
   ],
   "stage_scale": [0.08, 0.25, 0.5, 0.8, 1.0],
   "water_tank": 30,
-  "first_seed": {"hexes_needed": 5, "seeds_given": 15}
+  "first_seed": {"hexes_needed": 17, "seeds_given": 15}
 }
