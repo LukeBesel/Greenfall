@@ -42,7 +42,7 @@ func build(p_layout: CityLayout, p_ground_material: Material) -> void:
 	_flush_batches()
 	if not layout.wild:
 		_build_street_props()
-	_build_skyline()
+		_build_skyline()  # wilderness has its own horizon (FieldView hills and biome wrecks)
 
 
 # --- Kit --------------------------------------------------------------------------
@@ -107,10 +107,7 @@ const DETAIL_RING: int = 1
 func _build_block(key: Vector2i, b: Dictionary) -> void:
 	var rect: Rect2 = b["rect"]
 	if layout.wild:
-		if int(b["type"]) == CityLayout.Block.HUB:
-			var yh := CityLayout.YARD_HALF
-			_build_fence(Rect2(Vector2(-yh, -yh), Vector2(yh, yh) * 2.0), true)
-		return
+		return  # the hub yard's fence belongs to StreetDressing (it is ruined, then repaired)
 	var detailed: bool = maxi(absi(key.x), absi(key.y)) <= DETAIL_RING
 	_build_sidewalks(rect, detailed)
 	match int(b["type"]):
@@ -121,8 +118,7 @@ func _build_block(key: Vector2i, b: Dictionary) -> void:
 				else:
 					_build_proxy_building(bd)
 		CityLayout.Block.HUB:
-			var y := CityLayout.YARD_HALF
-			_build_fence(Rect2(Vector2(-y, -y) + Vector2(key) * CityLayout.PITCH, Vector2(y, y) * 2.0), true)
+			pass  # yard fence: StreetDressing
 		CityLayout.Block.PARKING, CityLayout.Block.VACANT:
 			_build_fence(rect, false)
 

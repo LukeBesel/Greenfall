@@ -55,3 +55,27 @@ func test_deterministic_and_batched() -> void:
 		assert_eq((mm_a[i] as MultiMeshInstance3D).multimesh.instance_count, (mm_b[i] as MultiMeshInstance3D).multimesh.instance_count)
 	# Cheap: a few dozen nodes, not hundreds.
 	assert_lt(a.get_child_count(), 60)
+
+
+func test_ruined_base_fixes_up_with_level() -> void:
+	var d := StreetDressing.new()
+	add_child_autofree(d)
+	d.build(layout, field, 3, "Ironside", "", 1)
+	var ruin: Node3D = d.get_node("Ruin")
+	assert_true(ruin.visible, "a non-starter base starts ruined")
+	assert_false((d.get_node("Salvage") as Node3D).visible)
+	assert_false((d.get_node("Future") as Node3D).visible)
+	d.set_level(3, false)
+	assert_false(is_instance_valid(ruin) and ruin.visible, "the ruin is cleared")
+	assert_true((d.get_node("Future") as Node3D).visible, "level 3 brings the futuristic kit")
+	assert_false((d.get_node("Thrive") as Node3D).visible)
+	d.set_level(5, true)  # live: the flourish must not error
+
+
+func test_starter_yard_is_never_ruined() -> void:
+	var d := StreetDressing.new()
+	add_child_autofree(d)
+	d.build(layout, field, 0, "Old Town", "", 1)
+	assert_false(d.has_node("Ruin"))
+	assert_true((d.get_node("Yard") as Node3D).visible)
+	assert_true((d.get_node("Salvage") as Node3D).visible)
