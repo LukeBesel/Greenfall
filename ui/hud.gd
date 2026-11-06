@@ -25,6 +25,7 @@ var _bump: float = 0.0
 var _task_label: Label
 var _task_caption: Label
 var _tool_label: Label
+var _goals_panel: GoalsPanel
 
 
 func _ready() -> void:
@@ -38,6 +39,9 @@ func _ready() -> void:
 	_build_top_right()
 	_build_bottom()
 	_build_toasts()
+	_goals_panel = GoalsPanel.new()
+	_goals_panel.hud = self
+	_root.add_child(_goals_panel)
 	EventBus.compartment_changed.connect(_on_compartment)
 	EventBus.toast.connect(show_toast)
 	EventBus.cube_cashed.connect(func(_v: BigNum, _p: Vector3) -> void: _bump = 1.0)
@@ -187,7 +191,7 @@ func _process(delta: float) -> void:
 		_prompt.text = _prompt_text(patch.prompt)
 		var h: int = patch.focus_hex()
 		if h >= 0 and world.field.hex_hub[h] == 0:
-			_hex_label.text = ("HEX  %d%% CLEAR" % int(floor(world.field.removed_fraction(h) * 100.0))) if not world.field.is_clean(h) else "HEX  CLEAR"
+			_hex_label.text = ("HEX  %d%% CLEAR" % int(floor(world.field.removed_fraction(h) * 100.0))) if not world.field.is_clean(h) else (world.hex_levels.describe(h) if world.get("hex_levels") else "HEX  CLEAR")
 		else:
 			_hex_label.text = ""
 

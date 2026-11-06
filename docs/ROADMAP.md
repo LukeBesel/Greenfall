@@ -11,6 +11,10 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - [~] M5 Growing: planting, watering, growth, allocation board, wildlife; ecosystems/compost pending
 - [ ] M6 Water, M7 Hubs+Rockets (hub levels done), M8-M11
 
+## Update: Hex levels + Goals tracker
+- Done: Hex levels (`plants/hex_levels.gd`, `data/hex_levels.json`). Every non-hub land hex has a level: 0 Junk, 1 Clean, 2 Planted, 3 Growing, 4 Sustained (planted slots watered >= 90% of the last 3 min, which watering robots keep up), 5 Thriving (all in bloom and sustained; extra wildlife). Levels never drop. Each level-up pays cubes/seeds, adds a small permanent growth/seed bonus (applied in `Garden`), counts `hex_lvl_N` stats, and plays a burst, ring, float text, sound and toast. API: `world.hex_levels.level_of(hex)`, `EventBus.hex_level_changed(hex_id, level)`. Saved in `GameState.world.hex_levels` via the persist group. The HUD hex readout shows the level, sustain % and the next step.
+- Done: Goals (`story/goals.gd`, `data/goals.json`, `ui/goals_panel.gd`). A chain of 50 goals (clean, bale, upgrade, robots, command zones, plant, watering robots, sustain, base levels, rocket). The top-right HUD card shows the 3 current goals with bars and rewards. A finished goal flashes, its reward counts up, and the next goal slides in. Done ids are saved in `GameState.flags.goals_done`.
+
 ## Update: Command View + Aurora face pass
 - Done: Command View (B / D-pad down). A holo map of the district. Pick a crew or a single robot and paint hexes to set its zone. Modes: Priority, Stay, Follow me, Recall. Orders are saved in `GameState.world.orders` and handled in `Fleet` (`order_for`, `zone_hexes`, `mode_of`); robots honour them in `robot.gd`. Tests are in `tests/test_orders.gd`. Dev hook: `--open=command`, `--order=role:mode:hex+hex|far`.
 - Done: Aurora face now has big glossy oval eyes with catchlights, cheeks and ^ ^ when happy. The fin antenna is replaced by a bulb antenna.

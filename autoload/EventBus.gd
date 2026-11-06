@@ -13,6 +13,7 @@ signal currency_changed(currency: String, amount: BigNum)
 signal hex_cleaned(hex_id: int, world_pos: Vector3, bonus: BigNum)
 signal field_progress_changed(cleaned: int, total: int)
 signal hex_restored(hex_id: int)
+signal hex_level_changed(hex_id: int, level: int)
 signal tool_changed(tool: int)
 
 # Progression
