@@ -2,14 +2,25 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
-## Status
-- [x] M0 Setup
-- [x] M1 The Slice (city district, Patch, baling, tutorial, lens view)
-- [~] M2 Planet: sphere data + globe done; walking on the sphere (M2b) next
-- [~] M3 Robots: 5 robot types, workshop, fleet upgrades, Mk tiers, Haggle trade; visual redesign in progress
-- [~] M4 Story: WREN, shards, first-seed cinematic; ruins/acts 2+ pending
-- [~] M5 Growing: planting, watering, growth, allocation board, wildlife; ecosystems/compost pending
-- [ ] M6 Water, M7 Hubs+Rockets (hub levels done), M8-M11
+## Status (Nov 2026)
+- [x] M0 Setup, M1 Slice (city district, Aurora/Patch, baling, tutorial, lens view)
+- [x] M2 Planet layer: 40k-hex planet, hand-held survey hologram (M), districts per base, rocket travel. Seamless sphere walking deferred (see DECISIONS).
+- [x] M3 Robots: Scoopie, Haul Bug, Seedling, Drip, Skimmer, Multibot; Mk I-IV tiers with visual upgrades; crews with caps; Command mode (B) to paint zones and give orders; build/upgrade from Command.
+- [x] M4 Story: intro landing cinematic, WREN, memory shards, first-seed cinematic, Ledger arc (acts 1-4, dump drones, jammers, relay), 17 easter eggs.
+- [x] M5 Grow + sustain: planting, watering robots, refill tanks, hex levels Clean > Planted > Growing > Sustained > Thriving, compost press (seeds), wildlife.
+- [x] M6 Water: lakes, skimmer robots, clarity (research), clean-lake refills.
+- [x] M7 Automation + progression: conveyor feeder, auto-baler, recycler, research tree (30 nodes, Data currency), goals chain (50), base levels, rockets tab.
+- [x] M8 Content/meta: Codex, 54 achievements, stats, cosmetics (6 colourways).
+- [~] M9 Balance: autoplay + robot-report sims done for the first ~15 min; longer-horizon tuning needs play-testing.
+- [~] M10 Polish: title screen, settings, music score, QA pass (40 fixes in flight); macOS universal export needs `import_etc2_astc` (see below).
+- [ ] M11 Post-game.
+
+## Next steps for a new session
+1. Play-test feedback from the owner (docs/PLAYTEST.md); fix what they hit first.
+2. macOS universal build: set `rendering/textures/vram_compression/import_etc2_astc=true`, reimport (slow, all textures), then the CI macOS step produces a working .app.
+3. Longer balance: run `--autoplay --time-scale=8 --quit-after=600` and check goals keep a next step within 1-3 minutes past the first hour.
+4. More districts content: more eggs per district, a Codex "Curiosities" page, biome-specific junk for wilderness bases.
+5. Post-game (M11): planet-wide restoration milestones, endless prestige-like "replant the world" loop.
 
 ## Update: Front end (title screen + settings)
 - Done: `scenes/main_menu.tscn` (`ui/main_menu.gd`) is now `run/main_scene`: Aurora hovering in a sunset junk lot with a slow swinging camera, Continue (with a one-line save summary), New Game (confirms before erasing), Settings, Credits (from `docs/CREDITS.md`), Quit. Any DevHooks flag skips straight to `slice.tscn`, so `tools/shot.sh`, autoplay and tests work as before; `--menu` (or `--menu=settings|credits|confirm`, `--tab=N`) stays on the title for screenshots. The title screen turns `SaveManager.enabled` off so autosave can't overwrite the slot with blank state.
