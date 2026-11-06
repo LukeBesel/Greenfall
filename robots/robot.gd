@@ -204,8 +204,8 @@ func _pick(pid: int) -> void:
 		flyer.global_position = pos
 		flyer.scale = start_scale * lerpf(1.0, 0.4, t * t)
 		, 0.0, 1.0, dur)
-	tw.tween_callback(func() -> void:
-		flyer.queue_free()
+	tw.tween_callback(flyer.queue_free)
+	get_tree().create_timer(dur, false).timeout.connect(func() -> void:
 		if is_instance_valid(self):
 			hopper.add(type_id_j, vol)
 			GameState.add_junk_removed(type_id_j, vol)

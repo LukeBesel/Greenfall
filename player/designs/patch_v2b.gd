@@ -487,7 +487,16 @@ func _build_head() -> void:
 	_bake(lens, ProcMesh.cyl(0.058, 0.058, 0.003, 32), glass_mat, _x(Vector3(0, 0, -0.03), Vector3(90, 0, 0)))
 	# Brow plate: hinged above the lens, lifts when happy, droops when sleepy.
 	_brow = _node(_tilt, Vector3(0, 0.1, -0.08))
-	_bake(_brow, ProcMesh.rounded_box(Vector3(0.17, 0.014, 0.075), 0.006, 2), _paint(CREAM, 0.68, 0.7, 26.0, 0.2, -0.5), _x(Vector3(0, 0, -0.035)))
+	# A curved coral eyebrow: a squashed torus arc that follows the top of the head.
+	var arc: Array = []
+	for k: int in 9:
+		var a0: float = deg_to_rad(-48.0 + k * 12.0)
+		var a1: float = deg_to_rad(-48.0 + (k + 1) * 12.0)
+		var p0 := Vector3(sin(a0) * 0.1, cos(a0) * 0.022 - 0.02, -0.045)
+		var p1 := Vector3(sin(a1) * 0.1, cos(a1) * 0.022 - 0.02, -0.045)
+		arc.append(ProcMesh.part(ProcMesh.capsule(0.011, p0.distance_to(p1) + 0.022), _between(p0, p1)))
+	_bake_many(_brow, arc, _paint(CORAL, 0.72, 0.6, 26.0, 0.2, -0.5))
+	_bake(_brow, ProcMesh.rounded_box(Vector3(0.012, 0.012, 0.05), 0.004, 1), Mats.metal("dark_steel"), _x(Vector3(0, -0.005, -0.022)))
 	_bake(_brow, ProcMesh.cyl(0.008, 0.008, 0.15, 8), Mats.metal("steel"), _x(Vector3.ZERO, Vector3(0, 0, 90)))
 	# Little cheek lamps.
 	for s: float in [-1.0, 1.0]:

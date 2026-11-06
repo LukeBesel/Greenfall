@@ -297,9 +297,11 @@ func _take_piece(pid: int) -> void:
 		flyer.scale = start_scale * lerpf(1.0, 0.35, t * t)
 		flyer.rotation += Vector3(0.2, 0.3, 0.1)
 		, 0.0, 1.0, dur)
-	tw.tween_callback(func() -> void:
-		flyer.queue_free()
-		_piece_arrived(type_id, vol, color))
+	tw.tween_callback(flyer.queue_free)
+	# Arrival is timer-driven so a cut-short animation can never leave volume stuck as pending.
+	get_tree().create_timer(dur, false).timeout.connect(func() -> void:
+		if is_instance_valid(self):
+			_piece_arrived(type_id, vol, color))
 
 
 func _piece_arrived(type_id: String, vol: float, color: Color) -> void:
