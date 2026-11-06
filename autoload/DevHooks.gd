@@ -18,6 +18,10 @@ extends Node
 ##   --open=codex       open the Codex (--codex-tab=achievements|stats, --codex-sample fakes progress)
 ##   --give-data=N      start with N research Data; --research=a+b grants nodes;
 ##   --research-start=a+b starts/queues nodes (--research-elapsed=S backdates the start)
+##   --robots=type:n,..  spawn test robots (slice.gd); any --robots run prints a [bots] report before quitting
+##   --clean-hexes=N    pre-clean the N land hexes nearest the base
+##   --bot-report       print the [bots] robot report before --quit-after
+##   --trace-bot=NAME   print one robot's state every 2 s (target, hopper, stall timer, status)
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0

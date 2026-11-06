@@ -10,6 +10,7 @@ var build_at: Callable
 var _title: Label
 var _desc: Label
 var _slots: VBoxContainer
+var _crew: Label
 var _build: Button
 var _tier: Label
 var _tier_req: Label
@@ -32,6 +33,9 @@ func _ready() -> void:
 	_desc = UITheme.label(str(Economy.robots[type_id].get("desc", "")), 14, UITheme.MUTED)
 	_desc.autowrap_mode = TextServer.AUTOWRAP_WORD
 	vb.add_child(_desc)
+	_crew = UITheme.label("", 13, UITheme.CREAM)
+	_crew.autowrap_mode = TextServer.AUTOWRAP_WORD
+	vb.add_child(_crew)
 	vb.add_child(UITheme.label("PARTS", 12, UITheme.MUTED))
 	_slots = VBoxContainer.new()
 	vb.add_child(_slots)
@@ -73,7 +77,16 @@ func refresh() -> void:
 			row.text = "□  %s  ·  missing  (detector, or salvage from electronics junk)" % r["name"]
 			row.add_theme_color_override("font_color", UITheme.MUTED)
 		_slots.add_child(row)
-	_build.text = "Build   %s cubes" % Settings.fmt(fleet.build_cost(type_id))
+	var crew: String = Fleet.crew_of_type(type_id)
+	var cap: int = fleet.crew_cap()
+	var n: int = fleet.crew_size(crew)
+	_crew.text = "Crew: %d / %d  (hub level %d: +%d per level)" % [n, cap, fleet.base_level(), int(Economy.robot_cfg.get("crew_cap", {}).get("per_level", 3))]
+	_crew.add_theme_color_override("font_color", UITheme.GOLD if n >= cap else UITheme.CREAM)
+	if role_is_water() and fleet.water_net:
+		var wn: WaterNet = fleet.water_net
+		_crew.text += "\nWater Tanks: %d / %d placed · next %s cubes (Command view: Place refill tank)" % [wn.tanks.size(), int(WaterNet.cfg().get("max", 6)), Settings.fmt(wn.tank_cost())]
+	var why: String = fleet.build_block_reason(type_id)
+	_build.text = "Build   %s cubes" % Settings.fmt(fleet.build_cost(type_id)) if why == "" or why == "Not enough cubes" else "Build   (%s)" % why
 	_build.disabled = not fleet.can_build(type_id)
 	if not Research.robot_unlocked(type_id):
 		# Blueprint not researched yet (data/robots.json "requires_research").
@@ -91,6 +104,10 @@ func refresh() -> void:
 		_tier_btn.visible = true
 		_tier_btn.text = "Upgrade fleet to %s" % nt["name"]
 		_tier_btn.disabled = not req["ok"]
+
+
+func role_is_water() -> bool:
+	return str(Economy.robots[type_id].get("role", "")) == "water"
 
 
 func _on_build() -> void:

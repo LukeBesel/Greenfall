@@ -13,8 +13,9 @@ const ROLE_COLORS: Dictionary = {
 	"haul": Color(0.55, 0.75, 1.0),
 	"plant": Color(0.55, 0.92, 0.45),
 	"water": Color(0.4, 0.85, 0.95),
+	"skim": Color(0.45, 1.0, 0.75),
 }
-const ROLE_NAMES: Dictionary = {"clean": "Cleaners", "haul": "Haulers", "plant": "Planters", "water": "Waterers"}
+const ROLE_NAMES: Dictionary = {"clean": "Cleaners", "haul": "Haulers", "plant": "Planters", "water": "Waterers", "skim": "Skimmers"}
 const MODE_NAMES: Dictionary = {"priority": "Priority", "stay": "Stay", "follow": "Follow me", "recall": "Recall"}
 const MODE_HELP: Dictionary = {
 	"priority": "Works the marked hexes first, then the rest of the district.",
@@ -39,6 +40,7 @@ var _paint: int = 0  # 0 none, 1 add, -1 remove
 var _pan_drag: bool = false
 var _hover_hex: int = -1
 var _list_t: float = 0.0
+var _tank_btn: Button
 var _overlay_t: float = 0.0
 
 # 3D
@@ -123,7 +125,7 @@ func _ready() -> void:
 	here.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	here.pressed.connect(func() -> void:
 		for h: int in world.field.hexes_near(world.patch.global_position, 1):
-			if world.field.hex_hub[h] == 0 and not world.field.is_water(h):
+			if world.field.hex_hub[h] == 0 and world.field.is_water(h) == (_sel_key == "skim" and not _sel_bot):
 				world.fleet.toggle_zone_hex(_sel_key, _sel_bot, h, true)
 		Audio.play("blip", 1.0, -8.0)
 		_refresh()
@@ -139,12 +141,24 @@ func _ready() -> void:
 		_rebuild_zone())
 	_style_button(clear, UITheme.CREAM, false)
 	row.add_child(clear)
+	# Water Tank: a refill station for waterers, built where Patch stands.
+	_tank_btn = Button.new()
+	_tank_btn.add_theme_font_size_override("font_size", 13)
+	_tank_btn.pressed.connect(func() -> void:
+		var net: WaterNet = world.fleet.water_net
+		if net and net.place_tank(world.patch.global_position):
+			Audio.play("buy", 1.0, -4.0)
+		else:
+			Audio.play("buzz", 1.2, -8.0)
+		_refresh_build())
+	_style_button(_tank_btn, ROLE_COLORS["water"], false)
+	sv.add_child(_tank_btn)
 	var sep := ColorRect.new()
 	sep.color = UITheme.RUST
 	sep.custom_minimum_size = Vector2(0, 1)
 	sv.add_child(sep)
 	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size = Vector2(0, 280)
+	scroll.custom_minimum_size = Vector2(0, 360)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	sv.add_child(scroll)
 	_list = VBoxContainer.new()
@@ -301,7 +315,7 @@ func _refresh() -> void:
 		if od.is_empty() and r:
 			_mode_help.text = "Following the %s orders. Mark hexes or pick a mode to give it its own." % ROLE_NAMES.get(r.role(), "crew").to_lower()
 	else:
-		_title.text = "%s · %d" % [ROLE_NAMES[_sel_key], f.robots_with_role(_sel_key).size()]
+		_title.text = "%s · %d / %d" % [ROLE_NAMES[_sel_key], f.robots_with_role(_sel_key).size(), f.crew_cap()]
 	_title.add_theme_color_override("font_color", _sel_color())
 	if mode != "":
 		_mode_help.text = MODE_HELP.get(mode, "")
@@ -323,7 +337,7 @@ func _rebuild_list() -> void:
 		return
 	for role_id: String in Fleet.ROLES:
 		var bots: Array[Robot] = f.robots_with_role(role_id)
-		if bots.is_empty():
+		if bots.is_empty() and Fleet.types_for_role(role_id).is_empty():
 			continue
 		var gb := Button.new()
 		gb.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -331,9 +345,10 @@ func _rebuild_list() -> void:
 		_style_button(gb, ROLE_COLORS[role_id], true)
 		gb.toggle_mode = true
 		gb.button_pressed = not _sel_bot and _sel_key == role_id
-		gb.text = "%s  %d      %s" % [ROLE_NAMES[role_id], bots.size(), _mode_label(role_id)]
+		gb.text = "%s  %d/%d      %s" % [ROLE_NAMES[role_id], bots.size(), f.crew_cap(), _mode_label(role_id)]
 		gb.pressed.connect(_select.bind(role_id, false))
 		_list.add_child(gb)
+		_add_build_row(role_id)
 		for r: Robot in bots:
 			var rb := Button.new()
 			rb.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -347,6 +362,73 @@ func _rebuild_list() -> void:
 			rb.set_meta("bot", r.robot_name)
 			rb.pressed.connect(_select.bind(r.robot_name, true))
 			_list.add_child(rb)
+
+
+## Build + Upgrade fleet buttons under a crew (they work at the workbench only).
+func _add_build_row(role_id: String) -> void:
+	for t: String in Fleet.types_for_role(role_id):
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 4)
+		var b := Button.new()
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		b.add_theme_font_size_override("font_size", 12)
+		b.set_meta("build_type", t)
+		b.pressed.connect(func() -> void:
+			var r: Robot = world.fleet.build(t, world.upgrades.build_at.call() if world.get("upgrades") else world.depot.global_position + Vector3(0, 0.2, 3))
+			Audio.play("buy" if r else "buzz", 1.0, -4.0 if r else -8.0)
+			_refresh())
+		_style_button(b, ROLE_COLORS[role_id], false)
+		row.add_child(b)
+		var u := Button.new()
+		u.add_theme_font_size_override("font_size", 12)
+		u.set_meta("tier_type", t)
+		u.pressed.connect(func() -> void:
+			Audio.play("buy" if world.fleet.upgrade_tier(t) else "buzz", 0.9, -4.0)
+			_refresh())
+		_style_button(u, UITheme.GOLD, false)
+		row.add_child(u)
+		_list.add_child(row)
+		var info := UITheme.label("", 11, UITheme.MUTED)
+		info.set_meta("build_info", t)
+		_list.add_child(info)
+	_refresh_build()
+
+
+## Live state of the Build / Upgrade buttons and the tank button.
+func _refresh_build() -> void:
+	var f: Fleet = world.fleet
+	var at_bench: bool = world.near_bench() if world.has_method("near_bench") else false
+	for c: Node in _list.get_children():
+		if c is HBoxContainer:
+			for b: Node in c.get_children():
+				if b.has_meta("build_type"):
+					var t: String = str(b.get_meta("build_type"))
+					(b as Button).text = "Build %s  %s" % [Economy.robots[t]["name"], Settings.fmt(f.build_cost(t))]
+					(b as Button).disabled = not (at_bench and f.can_build(t))
+				elif b.has_meta("tier_type"):
+					var req: Dictionary = f.tier_requirements(str(b.get_meta("tier_type")))
+					var maxed: bool = req.get("maxed", false)
+					(b as Button).text = "Max tier" if maxed else "Upgrade > %s" % str(req["next"]["name"])
+					(b as Button).disabled = maxed or not (at_bench and req["ok"])
+					(b as Button).tooltip_text = "" if maxed else "%s cubes, %s bolts, %s Control Core. %s" % [Settings.fmt(req["cost"]), Settings.fmt(req["bolts"]), Economy.rarity(int(req["core_rarity"])).get("name", "?"), req["reason"]]
+		elif c.has_meta("build_info"):
+			var t2: String = str(c.get_meta("build_info"))
+			var have: int = 0
+			var rs: Array = f.recipe_status(t2)
+			for r: Dictionary in rs:
+				if r["have"]:
+					have += 1
+			var why: String = f.build_block_reason(t2)
+			(c as Label).text = "     parts %d/%d · %s" % [have, rs.size(), ("ready" if why == "" else why) if at_bench else "build at the workbench"]
+	if _tank_btn:
+		var net: WaterNet = f.water_net
+		if net == null:
+			_tank_btn.visible = false
+		else:
+			var why2: String = net.place_block_reason(world.patch.global_position)
+			_tank_btn.text = "Place refill tank here  %s  (%d/%d)" % [Settings.fmt(net.tank_cost()), net.tanks.size(), int(WaterNet.cfg().get("max", 6))]
+			_tank_btn.disabled = why2 != ""
+			_tank_btn.tooltip_text = why2 if why2 != "" else "A Water Tank at your hex. Waterers refill at the nearest one."
 
 
 func _mode_label(role_id: String) -> String:
@@ -611,6 +693,7 @@ func _process(delta: float) -> void:
 				var r: Robot = f.find_robot(str(c.get_meta("bot")))
 				if r:
 					(c as Button).text = _bot_line(r)
+		_refresh_build()
 
 
 func _ground_hit(sp: Vector2) -> Vector3:

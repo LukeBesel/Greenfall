@@ -34,7 +34,8 @@
     "haulbug": {"hint": "Build one at the workbench.", "desc": "A fork cart that never complains. It carries loose bales to the scale and parks itself neatly afterwards."},
     "seedling": {"hint": "Research the Seedling Blueprint.", "desc": "A planter bot with a seed hopper on its back. It pats every seed into the soil, twice, just to be sure."},
     "drip": {"hint": "Research the Drip Blueprint.", "desc": "A watering bot with a sloshy tank. It makes a little happy gurgle when a plant drinks."},
-    "multibot": {"hint": "Research the Multibot Blueprint.", "desc": "A helper that can clean, plant or water. Not the fastest at anything, but always where it is needed."}
+    "multibot": {"hint": "Research the Multibot Blueprint.", "desc": "A helper that can clean, plant or water. Not the fastest at anything, but always where it is needed."},
+    "skimmer": {"hint": "Build a Skimmer.", "desc": "A little raft robot with a net and a rubber duck for luck. It drifts across the lakes fishing out bottles, and leaves neat bales on the shore."}
   },
   "shards": {
     "back_soon": {"desc": "A hand-lettered sign from a bakery. Marta promised to be back soon."},

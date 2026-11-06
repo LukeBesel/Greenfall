@@ -1,6 +1,7 @@
 class_name RobotVisual
 extends Node3D
-## Procedural helper-robot models. Two types, four looks by tier, each a clear leap:
+## Procedural helper-robot models. Three body types (scoopie, haul bug, skimmer; planters,
+## waterers and multibots are scoopie bodies with a job kit), four looks by tier, each a clear leap:
 ##   salvage  (Mk I)  junkyard improvisation: mismatched panels and wheels, exposed wiring, one tin-can eye.
 ##   restored (Mk II) repainted and confident: chunky, matching wheels, stripes, a tidy periscope head.
 ##   modern   (Mk III) glossy shells, panel seams, light strips, visor eye, magnetically floating limbs.
@@ -12,6 +13,12 @@ var type_id: String = "scoopie"
 var look: String = "salvage"
 
 var hover: bool = false
+## Skimmers float on pontoons: the robot holds its height instead of falling (and bobs).
+var floats: bool = false
+## Parked with nothing to do: plays a small idle animation.
+var idle: bool = false
+## Spray origin for waterers (local).
+var nozzle_point := Vector3(0, 0.7, -0.55)
 var emitter_point := Vector3(0, 0.5, -0.4)
 var hopper_point := Vector3(0, 0.6, 0)
 var fork_point := Vector3(0, 0.35, -0.7)
@@ -34,6 +41,9 @@ var _beam: MeshInstance3D
 var _beam_mat: StandardMaterial3D
 var _beam_core_mat: StandardMaterial3D
 var _t: float = 0.0
+var _idle_t: float = 0.0
+var _fill_node: Node3D
+var _fill: float = 1.0
 var _blink_phase: float = 0.0
 var _seed: float = 0.0
 
@@ -47,6 +57,8 @@ func build(p_type: String, p_look: String) -> void:
 	type_id = p_type
 	look = p_look
 	hover = look == "hover"
+	floats = type_id == "skimmer"
+	_fill_node = null
 	for c: Node in get_children():
 		remove_child(c)
 		c.queue_free()
@@ -77,6 +89,7 @@ func build(p_type: String, p_look: String) -> void:
 		"scoopie/restored": _scoop_restored()
 		"scoopie/modern": _scoop_modern()
 		"scoopie/hover": _scoop_hover()
+		"skimmer/salvage", "skimmer/restored", "skimmer/modern", "skimmer/hover": _skim()
 		_: _scoop_salvage()
 	if type_id != base_type:
 		_job_kit(type_id)
@@ -95,11 +108,7 @@ func _job_kit(t: String) -> void:
 			_rod(_body, top + Vector3(0, 0.0, -0.05), emitter_point + Vector3(0, -0.05, 0), 0.018, green)
 			_stencil(_body, "SEEDS", top + Vector3(0, 0.13, -0.125), Vector3(0, 180, 0), 28)
 		"drip":
-			var blue: Material = _gloss(Color(0.3, 0.55, 0.9), 0.25) if shiny else _worn(Color(0.3, 0.5, 0.75), 0.7, 0.45)
-			_mi(_body, ProcMesh.capsule(0.13, 0.42), blue, top + Vector3(0, 0.13, 0), Vector3(0, 0, 90))
-			_mi(_body, ProcMesh.cyl(0.03, 0.03, 0.45, 8), _worn(Color(0.6, 0.6, 0.6), 0.5, 0.6), top + Vector3(0, 0.05, -0.3), Vector3(90, 0, 0))
-			for x: float in [-0.12, 0.0, 0.12]:
-				_mi(_body, ProcMesh.cyl(0.015, 0.02, 0.05, 8), _glow(Color(0.5, 0.8, 1.0), 1.0), top + Vector3(x, 0.02, -0.5))
+			_drip_kit(top)
 		"multibot":
 			var rack: Material = _worn(Color(0.55, 0.55, 0.58), 0.4, 0.6)
 			_mi(_body, ProcMesh.box(Vector3(0.36, 0.04, 0.2)), rack, top + Vector3(0, 0.03, 0))
@@ -107,6 +116,102 @@ func _job_kit(t: String) -> void:
 			_mi(_body, ProcMesh.capsule(0.05, 0.18), _worn(Color(0.3, 0.5, 0.75), 0.7, 0.4), top + Vector3(0.0, 0.12, 0), Vector3(0, 0, 90))
 			_mi(_body, _rbox(Vector3(0.1, 0.03, 0.12), 0.01, 2), _worn(Color(0.95, 0.75, 0.2), 0.7, 0.4), top + Vector3(0.13, 0.1, 0))
 			_stencil(_body, "MULTI", top + Vector3(0, 0.03, -0.105), Vector3(0, 180, 0), 24)
+
+
+## Waterer kit per tier: a strapped plastic drum and garden hose (Mk I), a painted tank with a
+## sight glass and spray bar (Mk II), a glossy capsule with a glowing level strip and boom (Mk III),
+## a glass orb of glowing water with a ring nozzle (Mk IV). The level gauge follows the tank.
+func _drip_kit(top: Vector3) -> void:
+	var steel: Material = Mats.metal("steel")
+	match look:
+		"salvage":
+			var drum: Material = _worn(Color(0.2, 0.45, 0.8), 0.85, 0.2, 0.6)
+			_mi(_body, ProcMesh.cyl(0.14, 0.14, 0.42, 18), drum, top + Vector3(0, 0.14, 0.02), Vector3(0, 0, 90))
+			for x: float in [-0.15, 0.15]:
+				_mi(_body, ProcMesh.torus(0.135, 0.15, 18, 4), Mats.rubber(), top + Vector3(x, 0.14, 0.02), Vector3(0, 0, 90))
+			_mi(_body, ProcMesh.cyl(0.04, 0.04, 0.04, 10), _worn(Color(0.9, 0.2, 0.1), 0.8, 0.3), top + Vector3(0.12, 0.29, 0.02))
+			# Jam-jar sight glass with the water inside.
+			var jar := _mi(_body, ProcMesh.cyl(0.055, 0.055, 0.16, 14), _glass(), top + Vector3(-0.2, 0.33, 0.1))
+			jar.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			_fill_gauge(top + Vector3(-0.2, 0.255, 0.1), ProcMesh.cyl(0.048, 0.048, 0.15, 12), Mats.lamp(Color(0.35, 0.7, 1.0), 1.2), 0.15)
+			# Garden hose to a pipe nozzle out front.
+			var hose: Material = Mats.rubber(Color(0.15, 0.55, 0.25))
+			_cable(_body, top + Vector3(-0.2, 0.14, -0.15), top + Vector3(-0.3, 0.0, -0.35), top + Vector3(0, 0.02, -0.48), 0.018, hose)
+			_mi(_body, ProcMesh.cyl(0.03, 0.02, 0.08, 10), Mats.metal("brass"), top + Vector3(0, 0.02, -0.52), Vector3(90, 0, 0))
+			nozzle_point = top + Vector3(0, 0.03, -0.57)
+		"restored":
+			# Painted backpack tank with a sight glass on top, piped to a chrome spray bar out front.
+			var blue: Material = _worn(Color(0.22, 0.5, 0.88), 0.95, 0.2, 0.3, 0.0)
+			var bp := Vector3(0, 0.62, 0.47)
+			_mi(_body, ProcMesh.capsule(0.14, 0.56), blue, bp, Vector3(0, 0, 90))
+			for x: float in [-0.18, 0.18]:
+				_mi(_body, ProcMesh.torus(0.135, 0.148, 20, 4), _worn(Color(0.95, 0.95, 0.92), 0.95, 0.1, 0.2, 0.0), bp + Vector3(x, 0, 0), Vector3(0, 0, 90))
+			_mi(_body, ProcMesh.box(Vector3(0.24, 0.02, 0.05)), Mats.metal("dark_steel"), bp + Vector3(0, 0.14, 0))
+			var gauge := _node(_body, bp + Vector3(-0.11, 0.152, 0))
+			_fill_node = gauge
+			_mi(gauge, ProcMesh.box(Vector3(0.22, 0.01, 0.03)), Mats.lamp(Color(0.35, 0.75, 1.0), 1.8), Vector3(0.11, 0, 0))
+			gauge.set_meta("axis", "x")
+			_cable(_body, bp + Vector3(0.24, 0.0, -0.1), Vector3(0.36, 0.72, 0.0), Vector3(0.18, 0.76, -0.42), 0.02, Mats.rubber(Color(0.12, 0.12, 0.13)))
+			_mi(_body, ProcMesh.cyl(0.018, 0.018, 0.4, 8), Mats.metal("chrome"), Vector3(0, 0.76, -0.43), Vector3(0, 0, 90))
+			for x: float in [-0.14, 0.0, 0.14]:
+				_mi(_body, ProcMesh.cyl(0.015, 0.022, 0.05, 8), _glow(Color(0.5, 0.8, 1.0), 1.0), Vector3(x, 0.74, -0.45), Vector3(-60, 0, 0))
+			_stencil(_body, "H2O", bp + Vector3(0, 0, 0.143), Vector3.ZERO, 30)
+			nozzle_point = Vector3(0, 0.74, -0.48)
+		"modern":
+			# A glossy backpack tank behind the visor head, level strip on top, hose to a front nozzle ring.
+			var white: Material = _gloss(Color(0.95, 0.95, 0.94), 0.25, 0.0, 0.6)
+			var dk: Material = _gloss(Color(0.07, 0.08, 0.09), 0.3, 0.4, 0.3)
+			var bp := Vector3(0, 0.63, 0.47)
+			_mi(_body, ProcMesh.capsule(0.15, 0.56), white, bp, Vector3(0, 0, 90))
+			for x: float in [-0.2, 0.2]:
+				_mi(_body, ProcMesh.torus(0.145, 0.16, 20, 4), _gloss(Color(1.0, 0.38, 0.26), 0.28), bp + Vector3(x, 0, 0), Vector3(0, 0, 90))
+			_mi(_body, _rbox(Vector3(0.36, 0.02, 0.06), 0.01, 1), dk, bp + Vector3(0, 0.148, 0))
+			var strip := _node(_body, bp + Vector3(-0.16, 0.16, 0))
+			_fill_node = strip
+			_mi(strip, ProcMesh.box(Vector3(0.32, 0.012, 0.035)), _glow(Color(0.3, 0.85, 1.0), 2.5), Vector3(0.16, 0, 0))
+			strip.set_meta("axis", "x")
+			_cable(_body, bp + Vector3(0.24, -0.02, -0.08), Vector3(0.38, 0.62, 0.0), Vector3(0.12, 0.6, -0.38), 0.016, dk)
+			_mi(_body, ProcMesh.cyl(0.03, 0.03, 0.08, 12), dk, Vector3(0.08, 0.6, -0.4), Vector3(90, 0, 0))
+			_mi(_body, ProcMesh.torus(0.025, 0.042, 16, 4), _glow(Color(0.3, 0.85, 1.0), 3.0), Vector3(0.08, 0.6, -0.445), Vector3(90, 0, 0))
+			nozzle_point = Vector3(0.08, 0.6, -0.46)
+		_:
+			# Mk IV: a floating glass orb of glowing water above the crown.
+			var orb_c: Vector3 = hopper_point + Vector3(0, 0.22, 0)
+			var orb := _floater(_body, orb_c, 0.02)
+			var glass := _mi(orb, ProcMesh.sphere(0.16, 24, 12), _glass(), Vector3.ZERO)
+			glass.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			var inner := _node(orb, Vector3(0, -0.14, 0))
+			_mi(inner, ProcMesh.sphere(0.135, 20, 10), _glow(Color(0.3, 0.8, 1.0), 2.0), Vector3(0, 0.14, 0))
+			_fill_node = inner
+			_mi(orb, ProcMesh.torus(0.16, 0.18, 28, 4), _gloss(Color(1.0, 0.76, 0.35), 0.2, 1.0, 0.0), Vector3.ZERO)
+			nozzle_point = emitter_point
+	_fill_node_base()
+
+
+func _fill_gauge(bottom: Vector3, mesh: Mesh, mat: Material, h: float) -> void:
+	_fill_node = _node(_body, bottom)
+	_mi(_fill_node, mesh, mat, Vector3(0, h * 0.5, 0))
+
+
+func _fill_node_base() -> void:
+	if _fill_node:
+		_fill_node.set_meta("s0", _fill_node.scale)
+
+
+## Tank level 0..1 for the waterer's gauge.
+func set_fill(f: float) -> void:
+	_fill = clampf(f, 0.0, 1.0)
+
+
+func _glass() -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.albedo_color = Color(0.8, 0.92, 1.0, 0.28)
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.roughness = 0.05
+	m.metallic = 0.1
+	m.clearcoat_enabled = true
+	m.clearcoat = 1.0
+	return m
 
 
 # --- Material helpers ------------------------------------------------------------------
@@ -505,6 +610,179 @@ func _scoop_hover() -> void:
 	emitter_point = _emitter.position
 
 
+# --- Skimmer ---------------------------------------------------------------------------
+
+## Lake bot on twin pontoons with a net basket on deck, a fan at the back and a boom net out
+## front. Mk I floats on two odd plastic drums with a plank deck (and a rubber duck mascot);
+## Mk II on painted pontoons with a periscope head; Mk III on glossy hulls with light strips and
+## a visor head; Mk IV levitates on two glowing pods with a floating hoop and a tractor beam.
+func _skim() -> void:
+	var dark: Material = Mats.metal("dark_steel")
+	var steel: Material = Mats.metal("steel")
+	var net_mat := StandardMaterial3D.new()
+	net_mat.albedo_color = Color(0.2, 0.32, 0.25, 0.55)
+	net_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	net_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	net_mat.roughness = 0.9
+	var hull: Material
+	var trim: Material
+	var accent: Material
+	var hoop_mat: Material = steel
+	match look:
+		"salvage":
+			hull = _worn(Color(0.2, 0.45, 0.8), 0.8, 0.3, 0.6)
+			trim = _wood(0.4)
+			accent = _worn(Color(1.0, 0.5, 0.1), 0.75, 0.4, 0.5)
+		"restored":
+			hull = _worn(Color(0.15, 0.62, 0.62), 0.95, 0.2, 0.3, 0.0)
+			trim = _worn(Color(0.15, 0.16, 0.18), 0.95, 0.2, 0.3, 0.0)
+			accent = _worn(Color(0.95, 0.2, 0.12), 0.95, 0.2, 0.3, 0.0)
+			hoop_mat = Mats.metal("chrome")
+		"modern":
+			hull = _gloss(Color(0.95, 0.95, 0.93), 0.3, 0.0, 0.5)
+			trim = _gloss(Color(0.07, 0.08, 0.09), 0.35, 0.4, 0.3)
+			accent = _gloss(Color(1.0, 0.38, 0.26), 0.28)
+			hoop_mat = _glow(LIME, 2.5)
+		_:
+			hull = _gloss(Color(0.97, 0.96, 0.94), 0.14, 0.15, 1.0)
+			trim = _gloss(Color(0.05, 0.06, 0.08), 0.12, 0.3, 1.0)
+			accent = _gloss(Color(1.0, 0.48, 0.12), 0.2, 0.15, 1.0)
+			hoop_mat = _glow(MINT, 3.0)
+	var lift: float = 0.22 if hover else 0.0
+	# Pontoons.
+	for x: float in [-0.34, 0.34]:
+		var pc := Vector3(x, 0.13 + lift, 0.02)
+		match look:
+			"salvage":
+				var drum: Material = hull if x < 0.0 else _worn(Color(0.85, 0.85, 0.82), 0.7, 0.3, 0.7)
+				_mi(_body, ProcMesh.cyl(0.13, 0.13, 0.82, 16), drum, pc, Vector3(90, 0, 0))
+				for z: float in [-0.25, 0.25]:
+					_mi(_body, ProcMesh.torus(0.125, 0.14, 16, 4), Mats.rubber(), pc + Vector3(0, 0, z), Vector3(90, 0, 0))
+			"restored":
+				_mi(_body, ProcMesh.capsule(0.13, 0.9), hull, pc, Vector3(90, 0, 0))
+				_mi(_body, ProcMesh.torus(0.128, 0.138, 18, 4), _worn(Color(0.95, 0.95, 0.92), 0.95, 0.1, 0.2, 0.0), pc + Vector3(0, 0, -0.18), Vector3(90, 0, 0))
+				_mi(_body, ProcMesh.torus(0.128, 0.138, 18, 4), accent, pc + Vector3(0, 0, 0.2), Vector3(90, 0, 0))
+			"modern":
+				_mi(_body, ProcMesh.capsule(0.13, 0.94), hull, pc, Vector3(90, 0, 0), Vector3(1.0, 1.0, 0.8))
+				_mi(_body, ProcMesh.box(Vector3(0.006, 0.02, 0.5)), _glow(LIME, 2.5), pc + Vector3(x * 0.38, 0.02, 0))
+				_mi(_body, ProcMesh.box(Vector3(0.262, 0.03, 0.62)), accent, pc + Vector3(0, -0.035, 0))
+			_:
+				var pod := _floater(_body, pc, 0.025)
+				_mi(pod, ProcMesh.sphere(0.13, 20, 10), hull, Vector3.ZERO, Vector3.ZERO, Vector3(0.9, 0.7, 3.0))
+				_mi(pod, ProcMesh.sphere(0.12, 16, 8), _glow(MINT, 2.5), Vector3(0, -0.04, 0), Vector3.ZERO, Vector3(0.7, 0.3, 2.6))
+				_thruster(pod, Vector3(0, -0.1, 0.2), 0.05, trim)
+	# Deck across the pontoons.
+	var deck_y: float = 0.29 + lift
+	if look == "salvage":
+		for i: int in 5:
+			_mi(_body, ProcMesh.box(Vector3(0.84, 0.035, 0.12)), _wood(randf()), Vector3(randf_range(-0.02, 0.02), deck_y, -0.28 + i * 0.14), Vector3(0, randf_range(-3, 3), 0))
+		_mi(_body, ProcMesh.box(Vector3(0.04, 0.05, 0.7)), dark, Vector3(-0.2, deck_y - 0.04, 0))
+		_mi(_body, ProcMesh.box(Vector3(0.04, 0.05, 0.7)), dark, Vector3(0.2, deck_y - 0.04, 0))
+	else:
+		_mi(_body, _rbox(Vector3(0.82, 0.06, 0.72), 0.025, 2), hull if hover else trim, Vector3(0, deck_y, 0))
+		if look != "restored":
+			_mi(_body, ProcMesh.box(Vector3(0.6, 0.012, 0.006)), _glow(LIME if look == "modern" else MINT, 2.5), Vector3(0, deck_y, -0.363))
+	# Net basket: where the catch goes.
+	var bc := Vector3(0, deck_y + 0.16, 0.06)
+	if look == "salvage":
+		var crate: Material = _worn(Color(0.95, 0.75, 0.15), 0.8, 0.3, 0.5)
+		for x2: float in [-0.19, 0.19]:
+			for y2: float in [-0.08, 0.04]:
+				_mi(_body, ProcMesh.box(Vector3(0.025, 0.06, 0.34)), crate, bc + Vector3(x2, y2, 0))
+		for z2: float in [-0.17, 0.17]:
+			for y2: float in [-0.08, 0.04]:
+				_mi(_body, ProcMesh.box(Vector3(0.4, 0.06, 0.025)), crate, bc + Vector3(0, y2, z2))
+	elif hover:
+		_mi(_body, ProcMesh.cyl(0.2, 0.15, 0.22, 24), hull, bc)
+		_mi(_body, ProcMesh.torus(0.18, 0.21, 28, 5), accent, bc + Vector3(0, 0.11, 0))
+		_mi(_body, ProcMesh.cyl(0.18, 0.18, 0.01, 24), _glow(MINT, 2.5), bc + Vector3(0, 0.1, 0))
+	else:
+		_mi(_body, _rbox(Vector3(0.42, 0.22, 0.38), 0.04, 2), hull if look == "modern" else accent, bc)
+		_mi(_body, _rbox(Vector3(0.36, 0.02, 0.32), 0.01, 1), _gloss(Color(0.03, 0.03, 0.035), 0.9, 0.0, 0.0), bc + Vector3(0, 0.105, 0))
+	var catch_ := _mi(_body, ProcMesh.hemisphere(0.17, 16, 6), net_mat, bc + Vector3(0, 0.07, 0), Vector3(180, 0, 0), Vector3(1.0, 0.6, 0.9))
+	catch_.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	hopper_point = bc + Vector3(0, 0.12, 0)
+	# Fan at the back: a duct with spinning blades (spins faster when working).
+	var fan_c := Vector3(0, deck_y + 0.24, 0.42)
+	_mi(_body, ProcMesh.torus(0.15, 0.18, 24, 5), dark if look == "salvage" else hull, fan_c, Vector3(90, 0, 0))
+	_rod(_body, Vector3(0, deck_y, 0.36), fan_c + Vector3(0, -0.15, 0), 0.02, dark)
+	var blades := _ring(_body, fan_c, Vector3(90, 0, 0), 6.0)
+	for k: int in 3:
+		_mi(blades, ProcMesh.box(Vector3(0.05, 0.01, 0.14)), accent, Vector3(sin(k * TAU / 3.0), 0, cos(k * TAU / 3.0)) * 0.07, Vector3(0, k * 120.0, 0))
+	_mi(blades, ProcMesh.sphere(0.03, 10, 5), steel, Vector3.ZERO)
+	# Head on a mast behind the basket.
+	match look:
+		"salvage":
+			_rod(_body, Vector3(-0.26, deck_y, 0.24), Vector3(-0.24, deck_y + 0.5, 0.2), 0.02, _worn(Color(0.5, 0.5, 0.48), 0.2, 0.9, 0.6))
+			_head = _node(_body, Vector3(-0.24, deck_y + 0.56, 0.18), Vector3(0, 0, -8))
+			_mi(_head, ProcMesh.cyl(0.07, 0.07, 0.14, 16), _worn(Color(0.2, 0.6, 0.55), 0.6, 0.7), Vector3.ZERO, Vector3(90, 0, 0))
+			_mi(_head, ProcMesh.torus(0.065, 0.075, 16, 4), steel, Vector3(0, 0, 0.04), Vector3(90, 0, 0))
+			_round_eye(_head, Vector3(0, 0, -0.072), 0.042, AMBER, Mats.metal("chrome"))
+			_antenna = _node(_head, Vector3(0.03, 0.065, 0.03))
+			_rod(_antenna, Vector3.ZERO, Vector3(0.0, 0.12, 0.02), 0.004, steel, 5)
+			_mi(_antenna, ProcMesh.sphere(0.016, 8, 4), _worn(Color(0.9, 0.15, 0.1), 0.8, 0.3), Vector3(0.0, 0.125, 0.02))
+			# Rubber duck mascot riding up front.
+			var duck := _node(_body, Vector3(0.27, deck_y + 0.02, -0.26), Vector3(0, 20, 0))
+			var yel: Material = _gloss(Color(1.0, 0.82, 0.1), 0.35, 0.0, 0.3)
+			_mi(duck, ProcMesh.sphere(0.05, 12, 6), yel, Vector3(0, 0.04, 0), Vector3.ZERO, Vector3(1.0, 0.8, 1.25))
+			_mi(duck, ProcMesh.sphere(0.032, 10, 5), yel, Vector3(0, 0.1, -0.035))
+			_mi(duck, ProcMesh.box(Vector3(0.025, 0.01, 0.025)), _gloss(Color(1.0, 0.45, 0.05), 0.4, 0.0, 0.0), Vector3(0, 0.097, -0.068))
+		"restored":
+			_rod(_body, Vector3(-0.22, deck_y, 0.24), Vector3(-0.22, 0.64, 0.24), 0.03, trim)
+			_head_restored(Vector3(-0.22, deck_y + 0.62, 0.2), hull, trim, accent)
+		"modern":
+			_mi(_body, ProcMesh.cyl(0.04, 0.05, 0.12, 14), trim, Vector3(-0.22, deck_y + 0.08, 0.22))
+			_mi(_body, ProcMesh.torus(0.045, 0.065, 18, 4), _glow(LIME, 3.0), Vector3(-0.22, deck_y + 0.15, 0.22))
+			var hf := _floater(_body, Vector3(-0.22, deck_y + 0.3, 0.2), 0.012)
+			_head = _node(hf, Vector3.ZERO)
+			_mi(_head, _rbox(Vector3(0.26, 0.15, 0.2), 0.065, 3), hull, Vector3.ZERO)
+			_mi(_head, _rbox(Vector3(0.265, 0.05, 0.205), 0.02, 2), accent, Vector3(0, 0.05, 0))
+			_mi(_head, _rbox(Vector3(0.2, 0.07, 0.03), 0.025, 2), _gloss(Color(0.02, 0.03, 0.04), 0.05, 0.3, 1.0), Vector3(0, -0.005, -0.095))
+			_eye = _node(_head, Vector3(0, -0.005, -0.112))
+			_eye_mat = _glow(LIME, 3.5)
+			_mi(_eye, _rbox(Vector3(0.13, 0.03, 0.006), 0.01, 1), _eye_mat, Vector3.ZERO)
+		_:
+			var hc := Vector3(-0.2, deck_y + 0.36, 0.2)
+			var hf2 := _floater(_body, hc, 0.02)
+			_head = _node(hf2, Vector3.ZERO)
+			_mi(_head, ProcMesh.sphere(0.12, 24, 12), hull, Vector3.ZERO, Vector3.ZERO, Vector3(1.15, 0.85, 1.0))
+			_mi(_head, ProcMesh.torus(0.11, 0.14, 28, 5), trim, Vector3(0, 0.0, 0), Vector3.ZERO, Vector3(1.0, 0.6, 1.0))
+			_eye = _node(_head, Vector3(0, 0.0, -0.13))
+			_eye_mat = _glow(MINT, 4.0)
+			_mi(_eye, ProcMesh.box(Vector3(0.1, 0.025, 0.025)), _eye_mat, Vector3.ZERO)
+			var r1 := _ring(_body, hc, Vector3(15, 0, 8), 1.1)
+			_mi(r1, ProcMesh.torus(0.19, 0.205, 32, 4), _gloss(Color(1.0, 0.76, 0.35), 0.2, 1.0, 0.0), Vector3.ZERO)
+	if look in ["salvage", "restored"]:
+		_stencil(_body, "SKM-%d" % (1 if look == "salvage" else 2), Vector3(0.48, 0.14 + lift, 0.0), Vector3(0, 90, 0), 40, Color(0.95, 0.95, 0.9, 0.85))
+	# Net arm: a boom out front with a hoop net that dips into the water.
+	_arm = _node(_body, Vector3(0, deck_y + 0.12, -0.3))
+	var boom: Material = _worn(Color(0.5, 0.5, 0.48), 0.2, 0.9, 0.6) if look == "salvage" else trim
+	if hover:
+		var hoop_f := _floater(_arm, Vector3(0, -0.12, -0.42), 0.03)
+		_mi(hoop_f, ProcMesh.torus(0.15, 0.175, 28, 5), hoop_mat, Vector3.ZERO, Vector3(-20, 0, 0))
+		var hn := _mi(hoop_f, ProcMesh.hemisphere(0.15, 16, 6), net_mat, Vector3(0, -0.01, 0), Vector3(160, 0, 0), Vector3(1.0, 0.8, 1.0))
+		hn.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		_emitter = _node(_body, Vector3(0, deck_y + 0.02, -0.34), Vector3(-55, 0, 0))
+		_mi(_emitter, ProcMesh.cyl(0.04, 0.07, 0.06, 18), trim, Vector3.ZERO, Vector3(180, 0, 0))
+		_mi(_emitter, ProcMesh.cyl(0.045, 0.045, 0.01, 18), _glow(MINT, 4.0), Vector3(0, -0.035, 0))
+		emitter_point = _emitter.position
+	else:
+		_mi(_arm, ProcMesh.cyl(0.03, 0.03, 0.2, 10), dark, Vector3.ZERO, Vector3(0, 0, 90))
+		var tip := Vector3(0, -0.2, -0.42)
+		if look == "restored":
+			for x3: float in [-0.06, 0.06]:
+				_rod(_arm, Vector3(x3, 0, 0), tip + Vector3(x3, 0.06, 0.1), 0.016, boom)
+		else:
+			_rod(_arm, Vector3.ZERO, tip + Vector3(0, 0.06, 0.1), 0.022 if look == "salvage" else 0.026, boom)
+		if look == "modern":
+			_mi(_arm, ProcMesh.torus(0.025, 0.04, 14, 4), _glow(LIME, 3.0), tip + Vector3(0, 0.06, 0.1), Vector3(-60, 0, 0))
+		_mi(_arm, ProcMesh.torus(0.15, 0.17, 28, 5), hoop_mat, tip, Vector3(-25, 0, 0))
+		var an := _mi(_arm, ProcMesh.hemisphere(0.15, 16, 6), net_mat, tip + Vector3(0, -0.01, 0), Vector3(155, 0, 0), Vector3(1.0, 0.8, 1.0))
+		an.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		emitter_point = _arm.position + tip
+	nozzle_point = emitter_point
+
+
 # --- Haul Bug --------------------------------------------------------------------------
 
 ## Mk I: a pallet on mismatched wheels with a pipe mast, rebar forks, a toolbox "engine",
@@ -741,10 +1019,33 @@ func animate(speed: float, working: bool, delta: float) -> void:
 		_body.position.y = sin(_t * 2.2) * 0.035
 		_body.rotation.z = sin(_t * 1.3) * 0.03
 		_body.rotation.x = lerpf(_body.rotation.x, -clampf(speed * 0.08, 0.0, 0.15), clampf(delta * 3.0, 0.0, 1.0))
+	elif _body and floats:
+		# Pontoons bob and roll a little on the water.
+		_body.position.y = sin(_t * 1.8 + _seed) * 0.02
+		_body.rotation.z = sin(_t * 1.2 + _seed) * 0.04
+		_body.rotation.x = sin(_t * 1.5) * 0.025 - clampf(speed * 0.04, 0.0, 0.08)
 	elif _body:
 		# Wheeled units idle-rumble; the salvage ones rattle a bit more.
 		var rattle: float = 0.004 if look == "salvage" else 0.0015
 		_body.position.y = absf(sin(_t * (14.0 if look == "salvage" else 9.0))) * rattle * (1.0 + speed)
+	# Idle: parked with nothing to do. A slow look-around sway and a happy little hop now and then.
+	if _body:
+		if idle:
+			_idle_t += delta
+			_body.rotation.y = sin(_idle_t * 0.9 + _seed) * 0.18
+			var ph: float = fmod(_idle_t + _seed, 5.5)
+			if ph < 0.45:
+				_body.position.y += sin(ph / 0.45 * PI) * 0.07
+		else:
+			_idle_t = 0.0
+			_body.rotation.y = lerpf(_body.rotation.y, 0.0, clampf(delta * 5.0, 0.0, 1.0))
+	if _fill_node:
+		var s0: Vector3 = _fill_node.get_meta("s0", Vector3.ONE)
+		var k: float = maxf(_fill, 0.03)
+		if str(_fill_node.get_meta("axis", "y")) == "x":
+			_fill_node.scale.x = lerpf(_fill_node.scale.x, s0.x * k, clampf(delta * 4.0, 0.0, 1.0))
+		else:
+			_fill_node.scale.y = lerpf(_fill_node.scale.y, s0.y * k, clampf(delta * 4.0, 0.0, 1.0))
 	for r: Node3D in _rings:
 		r.rotate_object_local(Vector3.UP, float(r.get_meta("spd", 1.0)) * delta * (2.5 if working else 1.0))
 	for f: Node3D in _floaters:

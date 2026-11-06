@@ -8,6 +8,7 @@ uniform sampler2D wave_nrm : hint_normal, filter_linear_mipmap, repeat_enable;
 uniform int grid_radius = 3;
 uniform float hex_size = 10.0;
 uniform float time_now = 0.0;
+uniform float clarity_bonus = 0.0;  // research (silt filters, irrigation)
 
 varying vec3 wpos;
 const float SQRT3 = 1.7320508;
@@ -40,6 +41,7 @@ void fragment() {
 	if (st.b > 0.5) {
 		clarity = clamp((age * 6.0 - length(p - center)) / 3.0, 0.15, 1.0);
 	}
+	clarity = clamp(clarity + clarity_bonus * (st.b > 0.5 ? 1.0 : 0.5), 0.0, 1.0);
 	vec2 uv1 = p * 0.18 + vec2(TIME * 0.02, TIME * 0.013);
 	vec2 uv2 = p * 0.27 - vec2(TIME * 0.017, -TIME * 0.011);
 	vec3 n = mix(texture(wave_nrm, uv1).rgb, texture(wave_nrm, uv2).rgb, 0.5);

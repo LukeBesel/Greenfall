@@ -145,7 +145,7 @@
       "requires_research": "drip_blueprint",
       "name": "Drip",
       "role": "water",
-      "desc": "Waters thirsty plants. Refills its tank at the hub.",
+      "desc": "Waters the thirstiest plants in its zone with a spray arc. Refills at the base barrel, a Water Tank or a clean lake.",
       "recipe": [
         "chassis",
         "locomotion",
@@ -156,7 +156,9 @@
       "stats": {
         "speed": 1.7,
         "work_rate": 1.0,
-        "tank": 20.0
+        "tank": 20.0,
+        "spray_radius": 1.3,
+        "refill_rate": 5.0
       },
       "upgrades": [
         {
@@ -175,6 +177,77 @@
           "mode": "add",
           "amount": 8.0,
           "base_cost": 240,
+          "growth": 1.65,
+          "max_level": 15,
+          "unit": ""
+        },
+        {
+          "stat": "spray_radius",
+          "name": "Wide Nozzle",
+          "mode": "add",
+          "amount": 0.3,
+          "base_cost": 300,
+          "growth": 1.8,
+          "max_level": 8,
+          "unit": " m"
+        },
+        {
+          "stat": "refill_rate",
+          "name": "Fast Pump",
+          "mode": "mul_pct",
+          "amount": 0.25,
+          "base_cost": 220,
+          "growth": 1.6,
+          "max_level": 12,
+          "unit": "/s"
+        }
+      ]
+    },
+    {
+      "id": "skimmer",
+      "name": "Skimmer",
+      "role": "skim",
+      "desc": "Hover pontoon bot with a net arm. Skims floating junk off the lake and leaves bales on the shore for haulers.",
+      "recipe": [
+        "chassis",
+        "locomotion",
+        "arm",
+        "battery"
+      ],
+      "cost": 450,
+      "stats": {
+        "speed": 1.8,
+        "scoop_rate": 1.5,
+        "capacity": 14.0,
+        "efficiency": 0.6
+      },
+      "upgrades": [
+        {
+          "stat": "speed",
+          "name": "Hover Fans",
+          "mode": "mul_pct",
+          "amount": 0.12,
+          "base_cost": 220,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": " m/s"
+        },
+        {
+          "stat": "scoop_rate",
+          "name": "Net Winch",
+          "mode": "mul_pct",
+          "amount": 0.15,
+          "base_cost": 260,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": "/s"
+        },
+        {
+          "stat": "capacity",
+          "name": "Bigger Net",
+          "mode": "add",
+          "amount": 3.0,
+          "base_cost": 280,
           "growth": 1.65,
           "max_level": 15,
           "unit": ""
@@ -251,5 +324,19 @@
   "part_drop": {
     "electronics": 0.06,
     "metal": 0.012
+  },
+  "crew_cap": {
+    "_doc": "Max robots per crew (role) = base + per_level * hub level.",
+    "base": 3,
+    "per_level": 3
+  },
+  "water_tank": {
+    "_doc": "Placeable refill station for Drip robots. cost in cubes grows per tank; holds `capacity` water and refills itself at `regen` per second (rain catcher + condenser).",
+    "cost": 150,
+    "growth": 1.7,
+    "max": 6,
+    "capacity": 80.0,
+    "regen": 1.2,
+    "min_spacing": 4.0
   }
 }

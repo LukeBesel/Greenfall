@@ -222,6 +222,9 @@ func _generate_floating(id: int, rng: RandomNumberGenerator, by_id: Dictionary) 
 		var pos: Vector3 = c + Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)) * hex_size
 		if hex_at(pos) != id:
 			continue
+		# Nothing floats inside a building footprint (nobody could ever reach it).
+		if layout and layout.surface_at(pos.x, pos.z) == CityLayout.Surface.BUILDING:
+			continue
 		var f: Array = floaters[rng.randi() % floaters.size()]
 		var type_idx: int = int(by_id.get(f[0], 0))
 		var vol: float = 0.6 * rng.randf_range(0.8, 1.3) if f[1] != "old_tyre" else 2.5

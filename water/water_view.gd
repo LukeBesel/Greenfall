@@ -41,6 +41,7 @@ func setup() -> void:
 func _process(_delta: float) -> void:
 	if _mat:
 		_mat.set_shader_parameter("time_now", world.view.clock)
+		_mat.set_shader_parameter("clarity_bonus", Economy.stat("lake_clarity"))
 	var t: float = Time.get_ticks_msec() * 0.001
 	for fish: Dictionary in _fish:
 		var n: MeshInstance3D = fish["node"]
