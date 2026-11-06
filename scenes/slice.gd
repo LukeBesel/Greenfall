@@ -33,6 +33,8 @@ var doc_view: DocumentView
 var interactables: Interactables
 var eggs: EasterEggs
 var ledger: LedgerArc
+var events: WorldEvents  # [events] world events, cleaning streak (systems/events.gd)
+var contracts: Contracts  # [events] contracts board + token shop (systems/contracts.gd)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
 var depot: Depot
@@ -362,6 +364,15 @@ func _ready() -> void:
 	ledger.world = self
 	add_child(ledger)
 	ledger.setup()
+	# [events] World events director (+ streak and its HUD) and the contracts board.
+	events = WorldEvents.new()
+	events.name = "WorldEvents"
+	events.world = self
+	add_child(events)
+	contracts = Contracts.new()
+	contracts.name = "Contracts"
+	contracts.world = self
+	add_child(contracts)
 	var bloom := Bloom.new()  # [bloom] post-game milestones + Seed Ark (systems/bloom.gd)
 	bloom.name = "Bloom"
 	bloom.world = self

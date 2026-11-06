@@ -56,6 +56,7 @@ var _line_mat: StandardMaterial3D
 var _markers: Dictionary = {}  # robot name -> Node3D
 var _base_marker: Node3D
 var _you_marker: Node3D
+var _event_marker: Node3D  # [events] pin on the running world event
 
 # Controller: D-pad / A drive the side panel through focus; moving the left stick switches to
 # the map, where the hex under the screen-centre reticle is painted with A and erased with X.
@@ -535,6 +536,8 @@ func _build_overlay() -> void:
 	_overlay.add_child(_base_marker)
 	_you_marker = _make_pin(Color(0.55, 0.9, 1.0), "YOU")
 	_overlay.add_child(_you_marker)
+	_event_marker = _make_pin(UITheme.GOLD, "EVENT")
+	_overlay.add_child(_event_marker)
 	_overlay.visible = false
 
 
@@ -713,6 +716,17 @@ func _update_markers(t: float) -> void:
 	var pp: Vector3 = world.patch.global_position
 	_you_marker.global_position = Vector3(pp.x, _ground_y(pp), pp.z)
 	_you_marker.scale = Vector3.ONE * scale_k * (0.6 + 0.05 * sin(t * 4.0))
+	var ev: Variant = world.get("events")
+	var ep: Variant = (ev as WorldEvents).marker_pos() if ev is WorldEvents else null
+	_event_marker.visible = ep is Vector3
+	if ep is Vector3:
+		var ecol: Color = (ev as WorldEvents).active.get("color", UITheme.GOLD)
+		_event_marker.global_position = Vector3((ep as Vector3).x, _ground_y(ep), (ep as Vector3).z)
+		_event_marker.scale = Vector3.ONE * scale_k * (0.9 + 0.12 * sin(t * 6.0))
+		((_event_marker.get_child(0) as MeshInstance3D).material_override as StandardMaterial3D).albedo_color = Color(ecol, 0.95)
+		var elab: Label3D = _event_marker.get_node("Label")
+		elab.text = str((ev as WorldEvents).active.get("name", "EVENT")).to_upper()
+		elab.modulate = ecol
 
 
 # --- Frame ----------------------------------------------------------------------------------

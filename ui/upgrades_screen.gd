@@ -13,6 +13,7 @@ const TABS: Array[Dictionary] = [
 	{"id": "research", "name": "Research"},
 	{"id": "rockets", "name": "Rockets"},
 	{"id": "cosmetics", "name": "Cosmetics"},
+	{"id": "contracts", "name": "Contracts"},
 ]
 
 var is_open: bool = false
@@ -79,7 +80,7 @@ func _ready() -> void:
 	vb.add_child(tabs)
 	for t: Dictionary in TABS:
 		var b := Button.new()
-		var live: bool = t["id"] in ["patch", "bots", "trade", "hub", "research", "rockets", "cosmetics"]
+		var live: bool = t["id"] in ["patch", "bots", "trade", "hub", "research", "rockets", "cosmetics", "contracts"]
 		b.text = t["name"] if live else "%s (soon)" % t["name"]
 		b.disabled = not live
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
@@ -112,6 +113,12 @@ func _populate() -> void:
 		_grid.columns = 1
 		_research = ResearchPanel.new()
 		_grid.add_child(_research)
+		return
+	if _tab == "contracts":  # [events] contracts board + token shop
+		_grid.columns = 1
+		var cnp := ContractsPanel.new()
+		cnp.world = fleet.world if fleet else null
+		_grid.add_child(cnp)
 		return
 	if _tab == "cosmetics":
 		_grid.columns = 1
@@ -233,7 +240,7 @@ func _first_focusable(root: Node, allow_disabled: bool) -> Control:
 
 func _relayout() -> void:
 	# Single-panel tabs fill the width; only card grids reflow.
-	if _tab in ["research", "cosmetics", "hub", "trade", "rockets"]:
+	if _tab in ["research", "cosmetics", "hub", "trade", "rockets", "contracts"]:
 		_grid.columns = 1
 		return
 	var w: float = _root.size.x - 110.0

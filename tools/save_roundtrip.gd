@@ -46,6 +46,14 @@ func _snapshot(s: Node) -> Dictionary:
 		"hub_level": s.hub.level,
 		"intro_done": GameState.flags.get("intro_done", false),
 		"tagged_cubes": _tagged_cubes(s),
+		# [events] contracts board (timers excluded: they tick), tokens, collection, livery, shop.
+		"tokens": Contracts.tokens(),
+		"contracts": JSON.stringify(Contracts.slots().map(func(c: Dictionary) -> String: return "%s:%s:%d:%d" % [c.get("state", ""), c.get("tpl", ""), int(c.get("n", 0)), int(c.get("base", 0))])),
+		"contracts_done": int(Contracts.state().get("done_total", 0)),
+		"trinkets": JSON.stringify(Collection.found_list()),
+		"livery": Liveries.equipped(),
+		"shop_owned": JSON.stringify(Contracts.owned()),
+		"events_recent": JSON.stringify(WorldEvents.persist_state().get("recent", [])),
 	}
 
 
@@ -131,6 +139,18 @@ func _ready() -> void:
 			bale.set_carried(true)
 			bale.reparent(r, true)
 			r.carried.append(bale)
+	# [events] Tokens, an accepted contract, a finished one, collectibles and a livery.
+	GameState.add_currency(Contracts.CURRENCY, BigNum.from_float(17))
+	var cst: Dictionary = Contracts.state()
+	cst["slots"] = [Contracts.make_offer(Contracts.template("perfect_bales"), 1), Contracts.make_offer(Contracts.template("scoop"), 0), Contracts.wait_slot(500.0)]
+	Contracts.accept_slot(cst["slots"][0], 3.0)
+	cst["slots"][1]["state"] = "done"
+	cst["done_total"] = 4
+	Collection.grant("golden_bolt", true)
+	Collection.grant("photo_moss_deer", true)
+	Contracts.owned().append("livery_halo")
+	GameState.flags["livery"] = "livery_halo"
+	WorldEvents.persist_state()["recent"] = ["supply_drop", "rain_shower"]
 	s1.patch.global_position = Vector3(9.0, 0.2, 9.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
 	s1.add_cube(dropped)

@@ -1,41 +1,41 @@
 {
-  "cubes": 152.610057345345,
-  "cubes_made": 22.0,
-  "first_cashin_s": 10.7,
-  "first_cube_s": 7.3,
-  "first_hex_s": 395.0,
-  "first_upgrade_s": 7.7,
-  "game_time_s": 442.7,
+  "cubes": 8.27115627341382,
+  "cubes_made": 15.0,
+  "first_cashin_s": 11.8,
+  "first_cube_s": 6.9,
+  "first_hex_s": 121.4,
+  "first_upgrade_s": 7.5,
+  "game_time_s": 356.5,
   "hex_removed_top": [
     [
-      1.0,
-      1,
-      145.6
-    ],
-    [
-      0.997,
+      0.983,
       1,
       115.0
     ],
     [
-      0.911,
+      0.973,
+      1,
+      106.7
+    ],
+    [
+      0.94,
+      0,
+      91.4
+    ],
+    [
+      0.885,
       0,
       111.3
     ],
     [
-      0.872,
+      0.827,
       0,
       111.4
     ],
     [
-      0.855,
+      0.69,
       0,
-      106.7
-    ],
-    [
-      0.717,
-      0,
-      91.4
+      145.6
     ]
   ],
   "hexes_cleaned": 2,
@@ -45,208 +45,190 @@
       "event": "upgrade",
       "id": "compartment_size",
       "level": 1,
-      "t": 7.7
+      "t": 7.5
     },
     {
       "event": "upgrade",
       "id": "scoop_width",
       "level": 1,
-      "t": 9.2
+      "t": 8.9
     },
     {
       "event": "upgrade",
       "id": "compartment_size",
       "level": 2,
-      "t": 9.3
+      "t": 8.9
     },
     {
       "event": "upgrade",
       "id": "tread_speed",
       "level": 1,
-      "t": 11.3
+      "t": 12.5
     },
     {
-      "cubes": 51.2671397142112,
+      "cubes": 57.1727970891595,
       "hexes": 0,
       "made": 2.0,
-      "t": 30.5
+      "t": 30.2
     },
     {
       "event": "upgrade",
       "id": "scoop_width",
       "level": 2,
-      "t": 49.6
+      "t": 45.3
     },
     {
-      "cubes": 29.2300990827382,
+      "cubes": 43.5365195320249,
       "hexes": 0,
       "made": 4.0,
-      "t": 60.6
+      "t": 60.2
     },
     {
       "event": "upgrade",
       "id": "scoop_speed",
       "level": 1,
-      "t": 68.1
+      "t": 67.6
     },
     {
-      "cubes": 42.7365737952292,
+      "cubes": 63.7501844190955,
       "hexes": 0,
-      "made": 6.0,
-      "t": 90.7
+      "made": 5.0,
+      "t": 90.2
     },
     {
       "event": "upgrade",
       "id": "compartment_size",
       "level": 3,
-      "t": 93.7
+      "t": 116.5
     },
     {
-      "cubes": 62.8556009769439,
+      "cubes": 40.667673288852,
       "hexes": 0,
-      "made": 7.0,
-      "t": 120.7
+      "made": 6.0,
+      "t": 120.2
     },
     {
       "event": "upgrade",
       "id": "tread_speed",
       "level": 2,
-      "t": 133.1
-    },
-    {
-      "cubes": 32.9741030678152,
-      "hexes": 0,
-      "made": 9.0,
-      "t": 150.8
+      "t": 121.4
     },
     {
       "event": "upgrade",
       "id": "carry_stack",
       "level": 1,
-      "t": 153.2
+      "t": 122.1
     },
     {
       "event": "upgrade",
       "id": "bot_scoopie_speed",
       "level": 1,
-      "t": 170.7
+      "t": 122.1
     },
     {
       "event": "upgrade",
       "id": "bot_haulbug_speed",
       "level": 1,
-      "t": 171.4
+      "t": 122.8
     },
     {
       "event": "upgrade",
       "id": "scoop_width",
       "level": 3,
-      "t": 172.1
-    },
-    {
-      "cubes": 108.362306113541,
-      "hexes": 0,
-      "made": 10.0,
-      "t": 180.9
+      "t": 133.9
     },
     {
       "event": "upgrade",
       "id": "bot_scoopie_scoop_rate",
       "level": 1,
-      "t": 191.9
+      "t": 134.3
     },
     {
-      "cubes": 54.5818784415721,
-      "hexes": 0,
-      "made": 12.0,
-      "t": 210.9
+      "cubes": 55.5037442571818,
+      "hexes": 1,
+      "made": 8.0,
+      "t": 150.2
     },
     {
       "event": "upgrade",
       "id": "compartment_size",
       "level": 4,
-      "t": 234.1
-    },
-    {
-      "cubes": 44.0087327519058,
-      "hexes": 0,
-      "made": 13.0,
-      "t": 241.0
-    },
-    {
-      "cubes": 100.399320276976,
-      "hexes": 0,
-      "made": 15.0,
-      "t": 271.1
+      "t": 167.6
     },
     {
       "event": "upgrade",
       "id": "scoop_speed",
       "level": 2,
-      "t": 273.9
-    },
-    {
-      "cubes": 101.057584003135,
-      "hexes": 0,
-      "made": 16.0,
-      "t": 301.1
+      "t": 168.0
     },
     {
       "event": "upgrade",
       "id": "tread_speed",
       "level": 3,
-      "t": 328.9
-    },
-    {
-      "cubes": 39.3410494168847,
-      "hexes": 0,
-      "made": 17.0,
-      "t": 331.2
-    },
-    {
-      "cubes": 94.1187069860845,
-      "hexes": 0,
-      "made": 18.0,
-      "t": 361.3
+      "t": 168.7
     },
     {
       "event": "upgrade",
       "id": "compactor_pressure",
       "level": 1,
-      "t": 368.3
+      "t": 168.7
     },
     {
-      "cubes": 112.984006138518,
-      "hexes": 0,
-      "made": 20.0,
-      "t": 391.3
+      "cubes": 9.49518515112986,
+      "hexes": 1,
+      "made": 10.0,
+      "t": 180.2
+    },
+    {
+      "cubes": 82.4928131750833,
+      "hexes": 1,
+      "made": 10.0,
+      "t": 210.2
     },
     {
       "event": "upgrade",
       "id": "bot_scoopie_capacity",
       "level": 1,
-      "t": 395.0
+      "t": 230.2
+    },
+    {
+      "cubes": 34.6246505955468,
+      "hexes": 2,
+      "made": 10.0,
+      "t": 240.2
+    },
+    {
+      "cubes": 44.1061638206254,
+      "hexes": 2,
+      "made": 11.0,
+      "t": 270.2
+    },
+    {
+      "cubes": 112.896316391984,
+      "hexes": 2,
+      "made": 12.0,
+      "t": 300.2
     },
     {
       "event": "upgrade",
       "id": "bot_scoopie_speed",
       "level": 2,
-      "t": 396.0
+      "t": 301.2
+    },
+    {
+      "cubes": 101.064572868873,
+      "hexes": 2,
+      "made": 14.0,
+      "t": 330.2
     },
     {
       "event": "upgrade",
       "id": "carry_stack",
       "level": 2,
-      "t": 421.1
-    },
-    {
-      "cubes": 15.7964984675198,
-      "hexes": 1,
-      "made": 21.0,
-      "t": 421.4
+      "t": 339.3
     }
   ],
-  "perfect_cubes": 22.0,
+  "perfect_cubes": 15.0,
   "pure_cubes": 0,
   "upgrades": {
     "bot_haulbug_speed": 1,

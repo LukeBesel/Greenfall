@@ -13,6 +13,7 @@ The game is playable end to end: title screen → intro cinematic → clean → 
 - **Automation**: conveyor feeder into the scale, auto-baler station that robots dump into, recycler that destroys bales for bolts/materials (and clears the air), compost press turning paper and blooms into seeds.
 - **Progression**: hex levels (Clean, Planted, Growing, Sustained, Thriving) with rewards; 50-goal chain in the HUD; base levels 1-5; research tree (30 nodes, Data currency, real-time, offline); Haggle's parts trade; rockets between bases.
 - **Story**: WREN companion (171 lines, memory stages), memory shards, first-seed cinematic, Ledger antagonist arc (intercepted messages, dump drones, signal jammers, relay rewrite cinematic, seed deliveries), 17 easter eggs.
+- **Variety** (wt/events): world events every 4-8 min (Supply Drop, Salvage Surge, Rain Shower, Robot Hiccup, Wildlife Visit, Rare Part Signal, Ledger Audit), cleaning streak with a small bale bonus, Contracts board + token shop (liveries, blueprint parts, capsules), Collection of 28 trinkets/photos in the Codex.
 - **Meta**: Codex (40 entries), 54 achievements, lifetime stats, saves (versioned, compressed, autosave), offline progress, save/load round-trip tool.
 - **Audio**: synthesized SFX; layered procedural score (explore, base, night, cinematic, menu moods; intensity follows restoration; stingers).
 - **Builds**: export presets; GitHub Actions builds Windows and Linux on every push (macOS needs the ETC2/ASTC import setting).

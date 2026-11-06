@@ -14,7 +14,9 @@ const TABS: Array[Dictionary] = [
 	{"id": "achievements", "name": "Achievements"},
 	{"id": "stats", "name": "Stats"},
 	{"id": "curiosities", "name": "Curiosities"},
+	{"id": "collection", "name": "Collection"},
 ]
+const COLLECT_COLOR := Color(0.55, 0.95, 0.85)
 const CURIO_COLOR := Color(1.0, 0.62, 0.78)
 const CAT_COLORS: Dictionary = {
 	"junk": Color(1.0, 0.7, 0.26), "plants": Color(0.56, 0.86, 0.54), "robots": Color(0.4, 0.72, 1.0),
@@ -176,8 +178,8 @@ func _build_tab() -> void:
 		var on: bool = id == _tab
 		b.add_theme_stylebox_override("normal", UITheme.box(Color(0.2, 0.15, 0.07, 0.9) if on else UITheme.TEAL, UITheme.GOLD if on else UITheme.RUST, 1, 6, 8))
 		b.add_theme_color_override("font_color", UITheme.GOLD if on else UITheme.CREAM)
-	_summary.text = "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d achievements" % [Codex.count(), Codex.total(),
-		Codex.curiosities_found(), Codex.egg_defs().size(), Achievements.unlocked_count(), Achievements.defs().size()]
+	_summary.text = "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements" % [Codex.count(), Codex.total(),
+		Codex.curiosities_found(), Codex.egg_defs().size(), Collection.count(), Collection.total(), Achievements.unlocked_count(), Achievements.defs().size()]
 	var first: Control = null
 	match _tab:
 		"codex":
@@ -188,6 +190,8 @@ func _build_tab() -> void:
 			first = _build_stats()
 		"curiosities":
 			first = _build_curiosities()
+		"collection":
+			first = _build_collection()
 	if first:
 		first.call_deferred("grab_focus")
 
@@ -430,6 +434,117 @@ func _show_curio(c: Dictionary) -> void:
 		_c_quote.text = ("Parts found: %d / %d" % [int(c["parts_seen"]), int(c["parts"])]) if int(c["parts"]) > 1 else ""
 		_c_reward.text = "Reward: a small surprise"
 	_c_text.add_theme_color_override("font_color", UITheme.CREAM if got else UITheme.MUTED)
+
+
+# --- Collection tab ([events]) --------------------------------------------------------
+# Trinkets and photos from world events, contracts, streaks and Curio Capsules (systems/collection.gd).
+
+func _build_collection() -> Control:
+	var hb := HBoxContainer.new()
+	hb.add_theme_constant_override("separation", 16)
+	_body.add_child(hb)
+	var sc := _scroll()
+	sc.size_flags_stretch_ratio = 1.6
+	hb.add_child(sc)
+	var list := VBoxContainer.new()
+	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	list.add_theme_constant_override("separation", 10)
+	sc.add_child(list)
+	var head := HBoxContainer.new()
+	head.add_theme_constant_override("separation", 8)
+	list.add_child(head)
+	head.add_child(ResearchIcons.IconView.new("star", 26, COLLECT_COLOR))
+	head.add_child(UITheme.label("COLLECTION", 15, COLLECT_COLOR))
+	head.add_child(UITheme.label("%d / %d found" % [Collection.count(), Collection.total()], 13, UITheme.MUTED))
+	var bar := ProgressBar.new()
+	bar.show_percentage = false
+	bar.max_value = maxf(Collection.total(), 1)
+	bar.value = Collection.count()
+	bar.custom_minimum_size = Vector2(160, 6)
+	bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	head.add_child(bar)
+	var first: Control = null
+	var pick: Dictionary = {}
+	for src: String in Collection.sources():
+		var items: Array = Collection.defs().filter(func(t: Dictionary) -> bool: return str(t.get("source", "")) == src)
+		var n_found: int = items.filter(func(t: Dictionary) -> bool: return Collection.has(str(t["id"]))).size()
+		list.add_child(UITheme.label("%s   %d / %d" % [Collection.source_name(src).to_upper(), n_found, items.size()], 12, UITheme.MUTED))
+		var flow := HFlowContainer.new()
+		flow.add_theme_constant_override("h_separation", 8)
+		flow.add_theme_constant_override("v_separation", 8)
+		list.add_child(flow)
+		for t: Dictionary in items:
+			var got: bool = Collection.has(str(t["id"]))
+			var b := Button.new()
+			b.custom_minimum_size = Vector2(168, 40)
+			b.text = ("◆  " + str(t["name"])) if got else "?   ? ? ?"
+			b.clip_text = true
+			b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+			b.add_theme_font_size_override("font_size", 14)
+			var col: Color = COLLECT_COLOR
+			b.add_theme_stylebox_override("normal", UITheme.box(Color(col.r * 0.15 + 0.05, col.g * 0.15 + 0.05, col.b * 0.15 + 0.05, 0.9) if got else Color(0.05, 0.055, 0.06, 0.85), Color(col, 0.45) if got else Color(1, 1, 1, 0.06), 1, 8, 8))
+			b.add_theme_stylebox_override("hover", UITheme.box(Color(0.12, 0.12, 0.12, 0.95), UITheme.GOLD, 1, 8, 8))
+			b.add_theme_stylebox_override("focus", UITheme.box(Color(0, 0, 0, 0), UITheme.GOLD, 2, 8, 8))
+			b.add_theme_color_override("font_color", UITheme.CREAM if got else Color(UITheme.MUTED, 0.8))
+			UITheme.juice(b, 1.04)
+			b.focus_entered.connect(_show_trinket.bind(t))
+			b.mouse_entered.connect(_show_trinket.bind(t))
+			b.pressed.connect(func() -> void:
+				_show_trinket(t)
+				Audio.play("click", 1.3, -10.0))
+			flow.add_child(b)
+			if first == null:
+				first = b
+			if pick.is_empty() and got:
+				pick = t
+	var det := PanelContainer.new()
+	det.add_theme_stylebox_override("panel", _glass(14, 20))
+	det.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hb.add_child(det)
+	var dv := VBoxContainer.new()
+	dv.add_theme_constant_override("separation", 10)
+	det.add_child(dv)
+	_c_icon = UITheme.label("?", 64, UITheme.MUTED)
+	dv.add_child(_c_icon)
+	_c_where = UITheme.label("", 12, COLLECT_COLOR)
+	dv.add_child(_c_where)
+	_c_name = UITheme.label("", 24, Color.WHITE)
+	_c_name.autowrap_mode = TextServer.AUTOWRAP_WORD
+	dv.add_child(_c_name)
+	_c_text = UITheme.label("", 16, UITheme.CREAM)
+	_c_text.autowrap_mode = TextServer.AUTOWRAP_WORD
+	_c_text.custom_minimum_size = Vector2(280, 0)
+	dv.add_child(_c_text)
+	_c_reward = UITheme.label("", 13, UITheme.MUTED)
+	_c_reward.autowrap_mode = TextServer.AUTOWRAP_WORD
+	_c_reward.custom_minimum_size = Vector2(280, 0)
+	dv.add_child(_c_reward)
+	if pick.is_empty() and not Collection.defs().is_empty():
+		pick = Collection.defs()[0]
+	if not pick.is_empty():
+		_show_trinket(pick)
+	return first
+
+
+func _show_trinket(t: Dictionary) -> void:
+	var got: bool = Collection.has(str(t["id"]))
+	var src: String = str(t.get("source", ""))
+	_c_icon.text = "◆" if got else "?"
+	_c_icon.add_theme_color_override("font_color", COLLECT_COLOR if got else Color(UITheme.MUTED, 0.6))
+	_c_where.text = Collection.source_name(src).to_upper()
+	_c_name.text = str(t["name"]) if got else "Not found yet"
+	_c_text.text = str(t.get("desc", "")) if got else _trinket_hint(t)
+	_c_text.add_theme_color_override("font_color", UITheme.CREAM if got else UITheme.MUTED)
+	_c_reward.text = "In your collection" if got else ""
+
+
+static func _trinket_hint(t: Dictionary) -> String:
+	match str(t.get("source", "")):
+		"wildlife_visit": return "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
+		"contracts": return "Hint: complete %d contracts at the workbench." % int(t.get("milestone", 1))
+		"capsule": return "Hint: Curio Capsules, in the workbench token shop."
+		"streak": return "Hint: keep scooping without stopping until the streak meter is full."
+	return "Hint: turns up during %s." % Collection.source_name(str(t.get("source", ""))).to_lower()
 
 
 # --- Achievements tab ----------------------------------------------------------------

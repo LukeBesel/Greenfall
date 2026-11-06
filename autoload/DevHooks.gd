@@ -29,6 +29,13 @@ extends Node
 ##   --spawn-relay      put Patch next to the Ledger relay terminal (act >= 3)
 ##   --spawn-egg=ID     put Patch next to an easter egg in this district (data/eggs.json ids);
 ##                      --egg-dist=M sets the distance, --egg-poke[=S] plays its reaction after S s
+##   --event=ID         [events] force a world event (supply_drop, salvage_surge, rain_shower, robot_hiccup,
+##                      wildlife_visit, rare_part_signal, ledger_audit) --event-at=S seconds after start (default 3)
+##   --event-look[=M]   with --event: put Patch M m from the event, facing it (screenshots)
+##   --event-every=S    next random event in S seconds (ignores the min-hexes gate)
+##   --streak=N         start with N cleaning-streak points (30 per tier)
+##   --tokens=N         start with N contract tokens; --trinkets=N grants N collectibles; --livery=ID equips one
+##   --tab=contracts    with --open=upgrades: the contracts board and token shop (--contracts-sample fills it)
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0
