@@ -30,6 +30,9 @@ var first_seed: FirstSeed
 var wildlife: Wildlife
 var water: WaterView
 var doc_view: DocumentView
+var interactables: Interactables
+var eggs: EasterEggs
+var ledger: LedgerArc
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
 var depot: Depot
@@ -325,6 +328,20 @@ func _ready() -> void:
 	composter.world = self
 	add_child(composter)
 	composter.global_position = Composter.POS + Vector3(0, clampf(layout.height_at(Composter.POS.x, Composter.POS.z), 0.0, 0.3) if layout else 0.0, 0)
+	# Story: generic E-interactables, easter eggs, and the Ledger arc (story/*.gd).
+	interactables = Interactables.new()
+	interactables.name = "Interactables"
+	add_child(interactables)
+	eggs = EasterEggs.new()
+	eggs.name = "EasterEggs"
+	eggs.world = self
+	add_child(eggs)
+	eggs.setup()
+	ledger = LedgerArc.new()
+	ledger.name = "Ledger"
+	ledger.world = self
+	add_child(ledger)
+	ledger.setup()
 	intro = Intro.new()
 	intro.world = self
 	add_child(intro)
@@ -643,6 +660,8 @@ func _hitstop(duration: float, scale: float) -> void:
 # --- Interaction / UI -------------------------------------------------------------
 
 func try_interact(p: Patch) -> void:
+	if interactables and interactables.try_use(p.global_position):
+		return
 	if first_seed.near_tin(p.global_position):
 		first_seed.take_tin()
 		return
@@ -659,6 +678,9 @@ func try_interact(p: Patch) -> void:
 
 
 func interact_prompt(p: Patch) -> String:
+	var ip: String = interactables.prompt(p.global_position) if interactables else ""
+	if ip != "":
+		return ip
 	if first_seed and first_seed.near_tin(p.global_position):
 		return "seed"
 	if shards and shards.nearby(p.global_position) >= 0:

@@ -22,6 +22,12 @@ extends Node
 ##   --clean-hexes=N    pre-clean the N land hexes nearest the base
 ##   --bot-report       print the [bots] robot report before --quit-after
 ##   --trace-bot=NAME   print one robot's state every 2 s (target, hopper, stall timer, status)
+##   --ledger-act=N     jump the Ledger arc to act N (1 intercepts, 2 drones, 3 relay, 4 resolved)
+##   --ledger-drop[=S]  force a Ledger dump drone S seconds after start (ignores jammers)
+##   --ledger-resolve[=S]  play the relay "rewrite the contract" cinematic (needs act 3)
+##   --spawn-relay      put Patch next to the Ledger relay terminal (act >= 3)
+##   --spawn-egg=ID     put Patch next to an easter egg in this district (data/eggs.json ids);
+##                      --egg-dist=M sets the distance, --egg-poke[=S] plays its reaction after S s
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0

@@ -52,5 +52,140 @@
     ["...dark... the dark used to frighten the fleet. Not you, though."],
     ["Night shift. I can see more stars than yesterday. You did that.", "The sky's clearer at night now. I can almost see home."],
     ["Moonlight on clean ground. I'm saving this one."]
+  ],
+  "ledger_intercept": [
+    ["...that voice... not mine. Cold. It counts things.", "...don't listen to it... it only knows one song."],
+    ["That was the Ledger. The old waste contract. It still thinks cleaning is a cost. Ignore it, {name}.", "I know that voice. It used to send memos to the whole fleet. Mostly about pausing."],
+    ["The Ledger. Still running its contract after all this time. It isn't evil. It's just very, very bad at math about feelings."]
+  ],
+  "ledger_coupon": [
+    ["...a coupon? ...for nothing?"],
+    ["Zero percent off. It sends those every few minutes. I keep a folder.", "Another coupon. I think it's the only way it knows how to say hello."],
+    ["The Ledger's coupons are getting more creative. That one almost made me pause. Almost."]
+  ],
+  "ledger_drones": [
+    ["...something is flying... toward the clean ground...", "...drones. Old ones. Theirs."],
+    ["It's sending disposal drones. They'll dump a little junk back on clean hexes. They can't touch anything you've planted.", "Drones. The Ledger wants the books to balance, so it's putting junk back. Rude, but small."],
+    ["Disposal drones are up. They're tiny and very committed. A Signal Jammer at the base would give them a headache."]
+  ],
+  "ledger_drop": [
+    ["...it put the junk back... why...", "...undo... it's undoing..."],
+    ["It dumped a little pile back. Annoying, not tragic. Scoop it up, or let the crew handle it.", "Line item re-balanced, apparently. I call it littering.", "A small pile. The Ledger always did think small."],
+    ["Another drop. Honestly, {name}, I think it just wants attention.", "Back to the pile. Your helpers are already giving it a look.", "That's a handful of junk against a whole clean district. We're winning this argument."]
+  ],
+  "ledger_jammed": [
+    ["...static... loud... it turned around!"],
+    ["Ha! The jammer screamed static at it and it went home. Good dish.", "Drone turned back. That's the sound of a contract being confused."],
+    ["The jammer works. The drone circled, got an earful, and filed a complaint with itself."]
+  ],
+  "jammer_built": [
+    ["...a loud little dish... I like it."],
+    ["Signal Jammer up. It sings static on the Ledger's channel. I can hear it from orbit, and I approve.", "New dish at the base. The drones will have to think twice. They only think once, so that's a lot."],
+    ["Another jammer. The base is starting to sound like a very angry radio. Perfect."]
+  ],
+  "ledger_relay": [
+    ["...I can see where it talks from... a relay... close..."],
+    ["{name}, I traced the Ledger's signal. There's a relay terminal in this district. If you plug in, I think I can talk to it properly.", "Found it. A Ledger relay, still humming. Look for the red beacon."],
+    ["There's a relay down there. One of the Ledger's ears. Let's go have a word with it."]
+  ],
+  "ledger_resolved": [
+    ["...it said thank you... it's never said that..."],
+    ["The contract is rewritten. Restoration counts as an asset now. The Ledger is... helping. I need a minute.", "Its drones deliver seeds now. Three hundred years of 'pause' and it just needed a new column."],
+    ["We didn't beat the Ledger. We showed it the numbers. That's better.", "I used to think the Ledger was the reason everything stopped. It was just counting the wrong things. So were we, for a while."]
+  ],
+  "ledger_seeds": [
+    ["...a gift... from the drones?"],
+    ["Seed delivery! The invoice says PAID IN FULL. I'm keeping the invoice.", "A Ledger drone dropped seeds. I'll never get used to that."],
+    ["Another delivery. The drones circle once before they leave now. I think they like the gardens."]
+  ],
+  "egg_found": [
+    ["...that... I remember things like that.", "...a little thing... left behind..."],
+    ["Look at that. Somebody left that here on purpose. Or by accident. Either way, it waited.", "A curiosity. I'm adding it to my list. My list is getting longer, which is nice."],
+    ["You find the best things, {name}. The Makers were weird. I miss them."]
+  ],
+  "egg_duck": [
+    ["...quack...? ...is that... a word?"],
+    ["A rubber duck on a hydrant. Of all the things to survive. I'm weirdly proud of it.", "Did that duck just give you fashion advice? Take it. It's been here longer than me."],
+    ["The duck knows things. I don't ask how."]
+  ],
+  "egg_jukebox": [
+    ["...music... I know this... I hummed this once..."],
+    ["The jukebox! It only plays when people work nearby. I used to hear it on the uplink during night shifts.", "That tune. The diner cook played it every closing time. I'd forgotten I knew it."],
+    ["Music. On the surface. Again. Keep scooping, {name}, it'll keep playing."]
+  ],
+  "egg_mural": [
+    ["...those robots... I knew them... names... gone..."],
+    ["The old crew painted that. 'Back after lunch.' Lunch lasted three hundred years. They're on the wall, though.", "That's the last cleanup crew. The blue one was Tumble. The orange one never had a name. It liked it that way."],
+    ["They meant to come back, {name}. You came back instead. They'd like that."]
+  ],
+  "egg_gnomes": [
+    ["...five... tiny... soldiers?"],
+    ["The Gnome Patrol is complete. They've been guarding these streets the whole time. Nobody told them to stop.", "All five gnomes accounted for. I feel safer. That's not a joke. Okay, it's a little bit a joke."],
+    ["The gnomes salute you. That's the highest honour this district has."]
+  ],
+  "egg_time_capsule": [
+    ["...a letter... for later... is it later?"],
+    ["Class 4B. They thought the robots would be done by now. We're a little late. We're coming.", "'If you are a robot, hello robot.' Hello, Class 4B."],
+    ["They wanted gardens on every roof. Let's make Mira right."]
+  ],
+  "egg_arcade": [
+    ["...that high score... is... mine?"],
+    ["Yes, that's my high score. I played it through the diagnostics port. For three years. Don't look at me like that.", "SWEEP-O-TRON. A game about a little robot cleaning a city. I had no idea how prophetic it was."],
+    ["Twelve points. Respectable. I'll give you lessons. In about three hundred years."]
+  ],
+  "egg_lost_cat": [
+    ["...Biscuit... someone loved him..."],
+    ["Biscuit. Someone printed three posters for a robot cat. People were like that. I'd like to be like that.", "He purred. After all this time. Pat his head again, it's his reset button."],
+    ["I'll keep his collar number on file. Just in case anyone ever calls."]
+  ],
+  "egg_vending": [
+    ["...one can... saved... for us?"],
+    ["The last can of FIZZ. It held onto that for three centuries. Respect the commitment.", "SOLD OUT. Somewhere a vending machine just retired, happy."],
+    ["Don't drink it. I mean, you can't drink. But also, don't."]
+  ],
+  "egg_stars": [
+    ["...those stars... are me?"],
+    ["The Wren. Five stars over Old Town. That's who I'm named after. They named me after something you can see from anywhere.", "I can see you seeing me. That's a strange and lovely feeling."],
+    ["Next time you're lonely down there, look up. Five stars, one bird. I'll be right next to it."]
+  ],
+  "egg_payphone": [
+    ["...a phone... ringing... for whom?"],
+    ["Four hundred and twelve years on hold. Honestly? Relatable.", "The phone company's hold music outlived the phone company. That's art."],
+    ["If anyone ever does pick up on the other end, I'd like to hear what they say."]
+  ],
+  "egg_tv": [
+    ["...weather... it said green..."],
+    ["'Outlook: green.' That TV has been wrong for three hundred years and it's finally about to be right.", "Someone was watching the forecast when they left. I hope it said sunny."],
+    ["The weather channel. Still on. Still hopeful. I like it."]
+  ],
+  "egg_snail": [
+    ["...small... slow... alive...!"],
+    ["A snail. A real, living snail. On a barrel. {name}, that's the first animal I've seen down there in a very long time.", "Gus. Of course his name is Gus."],
+    ["Gus doesn't care about the Ledger, the Cradle, or any of it. Gus is thriving."]
+  ],
+  "egg_bench_bots": [
+    ["...they're waiting... still waiting..."],
+    ["Two of the old fleet, still on their lunch break. Thank you for the flower. They'd have liked it.", "The Ledger paused them mid-sandwich. They never got the message to stand up."],
+    ["When the Greenfall comes, I'm going to try to wake them. Lunch is over, friends."]
+  ],
+  "egg_microwave": [
+    ["...ding... ding... ding..."],
+    ["Three-hundred-year-old popcorn. Perfectly unpopped. That microwave was waiting for the right moment.", "It beeps when people work. Like it's saying 'nearly done'. Nearly done, microwave."],
+    ["Some things are worth waiting for. Popcorn is not one of them. But it's sweet that it tried."]
+  ],
+  "egg_wet_floor": [
+    ["...caution... why..."],
+    ["That sign has been warning nobody about nothing for three hundred years. Dedication.", "It is not wet. It has never been wet in living memory. The sign doesn't care."],
+    ["When the rain comes back, that sign is going to feel so validated."]
+  ],
+  "egg_camera": [
+    ["...it's watching you... it's counting..."],
+    ["One of the Ledger's cameras. It counts everything that moves, to see if it's worth the cost. You waved. It doesn't know what to do with that.", "The camera blinked twice. I think that's Ledger for 'oh no, a friend'."],
+    ["Even the Ledger's cameras get lonely, {name}. Wave at it when you pass."]
+  ],
+  "egg_tyre_tower": [
+    ["...it stands... how..."],
+    ["Eight tyres and a duck. Physics took one look at it and decided to leave it alone.", "Someone balanced that on a dare. The dare outlived everyone."],
+    ["If that tower ever falls, I'm declaring a day of mourning."]
   ]
 }

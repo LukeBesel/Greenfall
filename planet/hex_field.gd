@@ -505,3 +505,23 @@ func apply_dict(d: Dictionary) -> bool:
 		if hex_clean[id] == 1 and hex_hub[id] == 0:
 			cleaned_count += 1
 	return true
+
+
+## Brings removed pieces back (the Ledger's dump drones). Returns true if the hex was clean and
+## is now dirty again. Pieces keep their original slots, so saves (alive/clean bits) just work.
+func revive_pieces(pids: PackedInt32Array) -> bool:
+	var touched: Dictionary = {}
+	for pid: int in pids:
+		if pid < 0 or pid >= piece_alive.size() or piece_alive[pid] == 1:
+			continue
+		piece_alive[pid] = 1
+		hex_left[piece_hex[pid]] += piece_vol[pid]
+		touched[piece_hex[pid]] = true
+	var flipped: bool = false
+	for id: int in touched:
+		hex_left[id] = minf(hex_left[id], hex_total[id])
+		if hex_clean[id] == 1 and hex_hub[id] == 0 and removed_fraction(id) < clean_threshold:
+			hex_clean[id] = 0
+			cleaned_count -= 1
+			flipped = true
+	return flipped

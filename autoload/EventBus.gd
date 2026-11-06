@@ -33,6 +33,10 @@ signal sim_tick(dt: float)
 signal game_loaded()
 signal game_saved()
 signal ui_modal_changed(open: bool)
+
+# Story: easter eggs and the Ledger arc
+signal easter_egg_found(egg_id: String)
+signal ledger_event(kind: String, data: Dictionary)
 @warning_ignore_restore("unused_signal")
 
 # Research / codex / achievements
