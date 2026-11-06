@@ -11,6 +11,9 @@ var fleet: Fleet
 var _list: VBoxContainer
 var _bolts: Label
 var _pity: Label
+var _rows: Array[Dictionary] = []
+var _scrap_btn: Button
+var _pity_type: int = -1
 
 
 func _ready() -> void:
@@ -54,10 +57,10 @@ func _needed_types() -> Array[int]:
 
 
 func refresh() -> void:
-	for c: Node in _list.get_children():
-		c.queue_free()
-	_bolts.text = "Bolts  %s      Parts in storage  %d" % [Settings.fmt(GameState.get_currency("bolts")), GameState.parts.size()]
 	var types: Array = Economy.parts.get("types", [])
+	if _rows.size() != types.size() or not is_instance_valid(_scrap_btn):
+		_build_rows(types.size())
+	_bolts.text = "Bolts  %s      Parts in storage  %d" % [Settings.fmt(GameState.get_currency("bolts")), GameState.parts.size()]
 	var need: Array[int] = _needed_types()
 	# Pity: track how long each needed type has been missing.
 	var t_now: float = float(GameState.stats.get("time_played", 0.0))
@@ -68,52 +71,136 @@ func refresh() -> void:
 			GameState.flags[key] = t_now
 		elif t_now - float(GameState.flags[key]) > PITY_AFTER_S:
 			pity_type = t
+	_pity_type = pity_type
 	_pity.text = ("Haggle: \"Funny thing, I just happened to find a %s. For you, half price.\"" % types[pity_type]["name"]) if pity_type >= 0 else ""
+	var take: Array[int] = swap_take()
+	var swap_tip: String = ""
+	if take.size() >= 3:
+		var names: Array[String] = []
+		for i: int in take:
+			var p: Dictionary = GameState.parts[i]
+			names.append("%s %s" % [Economy.rarity(int(p["rarity"])).get("name", "?"), types[int(p["type"])]["name"]])
+		swap_tip = "Trades away: " + ", ".join(names)
+	else:
+		swap_tip = "Needs 3 spare parts (Control Cores needed for a Mk tier are never traded)."
 	for t: int in types.size():
-		var row := HBoxContainer.new()
-		row.add_theme_constant_override("separation", 8)
-		var name_l := UITheme.label("%s%s" % [types[t]["name"], "   (needed)" if t in need else ""], 15, UITheme.GOLD if t in need else UITheme.CREAM)
-		name_l.custom_minimum_size = Vector2(250, 0)
-		row.add_child(name_l)
-		row.add_child(UITheme.label("own %d" % _owned(t).size(), 14, UITheme.MUTED))
-		var price: float = BUY_PRICE[0] * (0.5 if t == pity_type else 1.0)
-		var buy := Button.new()
+		var row: Dictionary = _rows[t]
+		var needed: bool = t in need
+		var name_l: Label = row["name"]
+		name_l.text = "%s%s" % [types[t]["name"], "   (needed)" if needed else ""]
+		name_l.add_theme_color_override("font_color", UITheme.GOLD if needed else UITheme.CREAM)
+		(row["own"] as Label).text = "own %d" % _owned(t).size()
+		var price: float = _price(t, 0)
+		var buy: Button = row["buy"]
 		buy.text = "Buy Rusty  %s" % Settings.fmt(BigNum.from_float(price))
 		buy.disabled = not GameState.can_afford("cubes", BigNum.from_float(price))
-		buy.pressed.connect(_buy.bind(t, 0, price))
-		row.add_child(buy)
-		var buy2 := Button.new()
+		var buy2: Button = row["buy2"]
 		buy2.text = "Buy Worn  %s" % Settings.fmt(BigNum.from_float(BUY_PRICE[1]))
 		buy2.disabled = not GameState.can_afford("cubes", BigNum.from_float(BUY_PRICE[1]))
-		buy2.pressed.connect(_buy.bind(t, 1, BUY_PRICE[1]))
+		var swap: Button = row["swap"]
+		swap.disabled = take.size() < 3
+		swap.tooltip_text = swap_tip
+	var rusty: int = _rusty_spares().size()
+	_scrap_btn.text = "Scrap %d spare Rusty parts  ->  +%d bolts" % [rusty, rusty * 2]
+	_scrap_btn.disabled = rusty == 0
+
+
+## Rows are created once; refresh() only updates their text and disabled state so focus survives.
+func _build_rows(n: int) -> void:
+	for c: Node in _list.get_children():
+		_list.remove_child(c)
+		c.queue_free()
+	_rows.clear()
+	for t: int in n:
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 8)
+		var name_l := UITheme.label("", 15, UITheme.CREAM)
+		name_l.custom_minimum_size = Vector2(250, 0)
+		row.add_child(name_l)
+		var own_l := UITheme.label("", 14, UITheme.MUTED)
+		row.add_child(own_l)
+		var buy := Button.new()
+		buy.pressed.connect(func() -> void: _buy(t, 0, _price(t, 0)))
+		row.add_child(buy)
+		var buy2 := Button.new()
+		buy2.pressed.connect(func() -> void: _buy(t, 1, _price(t, 1)))
 		row.add_child(buy2)
 		var swap := Button.new()
 		swap.text = "Swap 3 spares"
-		swap.disabled = _spares().size() < 3
 		swap.pressed.connect(_swap.bind(t))
 		row.add_child(swap)
 		_list.add_child(row)
-	var scrap := Button.new()
-	var spares: Array[int] = _spares()
-	scrap.text = "Scrap %d spare Rusty parts  ->  +%d bolts" % [_rusty_spares().size(), _rusty_spares().size() * 2]
-	scrap.disabled = _rusty_spares().is_empty()
-	scrap.pressed.connect(_scrap)
-	_list.add_child(scrap)
+		_rows.append({"name": name_l, "own": own_l, "buy": buy, "buy2": buy2, "swap": swap})
+	_scrap_btn = Button.new()
+	_scrap_btn.pressed.connect(_scrap)
+	_list.add_child(_scrap_btn)
 
 
-## Parts not needed by any recipe slot (keeps one of each needed type).
+func _price(t: int, rarity: int) -> float:
+	return BUY_PRICE[rarity] * (0.5 if rarity == 0 and t == _pity_type else 1.0)
+
+
+func first_button() -> Button:
+	if _rows.is_empty():
+		return null
+	return _rows[0]["buy"]
+
+
+## Lowest Control Core rarity any robot type still needs for its next Mk tier (99 if none).
+func _protected_core_rarity() -> int:
+	var lowest: int = 99
+	if fleet == null:
+		return lowest
+	for rid: String in Economy.robot_order:
+		var req: Dictionary = fleet.tier_requirements(rid)
+		if not req.get("maxed", false):
+			lowest = mini(lowest, int(req.get("core_rarity", 99)))
+	return lowest
+
+
+## Parts not needed by any recipe slot. For each type the highest-rarity parts are kept (as many
+## as all recipes use); Control Cores good enough for a pending Mk tier are never spares.
 func _spares() -> Array[int]:
 	var keep: Dictionary = {}
 	for rid: String in Economy.robot_order:
 		for part_id: String in Economy.robots[rid].get("recipe", []):
 			keep[Fleet.part_index(part_id)] = int(keep.get(Fleet.part_index(part_id), 0)) + 1
-	var counts: Dictionary = {}
-	var out: Array[int] = []
+	var by_type: Dictionary = {}
 	for i: int in GameState.parts.size():
 		var t: int = int(GameState.parts[i]["type"])
-		counts[t] = int(counts.get(t, 0)) + 1
-		if int(counts[t]) > int(keep.get(t, 0)):
+		if not by_type.has(t):
+			by_type[t] = []
+		(by_type[t] as Array).append(i)
+	var core_t: int = Fleet.part_index("core")
+	var core_min: int = _protected_core_rarity()
+	var out: Array[int] = []
+	for t: int in by_type:
+		var idx: Array = by_type[t]
+		idx.sort_custom(func(a: int, b: int) -> bool:
+			var ra: int = int(GameState.parts[a]["rarity"])
+			var rb: int = int(GameState.parts[b]["rarity"])
+			return ra > rb if ra != rb else a < b)
+		for k: int in idx.size():
+			var i: int = idx[k]
+			if k < int(keep.get(t, 0)):
+				continue
+			if t == core_t and int(GameState.parts[i]["rarity"]) >= core_min:
+				continue
 			out.append(i)
+	out.sort()
+	return out
+
+
+## The three spares a swap consumes: lowest rarity first.
+func swap_take() -> Array[int]:
+	var sp: Array[int] = _spares()
+	sp.sort_custom(func(a: int, b: int) -> bool:
+		var ra: int = int(GameState.parts[a]["rarity"])
+		var rb: int = int(GameState.parts[b]["rarity"])
+		return ra < rb if ra != rb else a < b)
+	var out: Array[int] = []
+	if sp.size() >= 3:
+		out = [sp[0], sp[1], sp[2]]
 	return out
 
 
@@ -144,10 +231,9 @@ func _buy(t: int, rarity: int, price: float) -> void:
 
 
 func _swap(t: int) -> void:
-	var sp: Array[int] = _spares()
-	if sp.size() < 3:
+	var take: Array[int] = swap_take()
+	if take.size() < 3:
 		return
-	var take: Array[int] = [sp[0], sp[1], sp[2]]
 	var r: int = 4
 	for i: int in take:
 		r = mini(r, int(GameState.parts[i]["rarity"]))

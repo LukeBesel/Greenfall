@@ -12,7 +12,8 @@
     "magnet_radius": 0.0,
     "belt_speed": 1.0,
     "baler_speed": 1.0,
-    "recycler_yield": 1.0
+    "recycler_yield": 1.0,
+    "detector_range": 16.0
   },
   "cube": {
     "pure_mult": 2.0,

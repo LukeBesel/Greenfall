@@ -5,7 +5,7 @@
     {"id": "scoop_15", "text": "Scoop 15 pieces of junk", "type": "stat", "key": "junk_scooped", "target": 15, "reward": {"cubes": 15}},
     {"id": "bale_1", "text": "Compress your first bale", "type": "stat", "key": "cubes_made", "target": 1, "reward": {"cubes": 20}},
     {"id": "cash_1", "text": "Sell a bale at the scale", "type": "stat", "key": "cubes_cashed", "target": 1, "reward": {"cubes": 25}},
-    {"id": "upgrade_1", "text": "Install an upgrade at the workbench", "type": "stat", "key": "upgrades_bought", "target": 1, "reward": {"cubes": 30}},
+    {"id": "upgrade_1", "text": "Install a workbench upgrade", "type": "stat", "key": "upgrades_bought", "target": 1, "reward": {"cubes": 30}},
     {"id": "hex_1", "text": "Clean your first hex", "type": "stat", "key": "hexes_cleaned", "target": 1, "reward": {"cubes": 50}},
     {"id": "perfect_1", "text": "Make a Perfect bale", "type": "stat", "key": "perfect_cubes", "target": 1, "reward": {"cubes": 60}},
     {"id": "cash_10", "text": "Sell 10 bales", "type": "stat", "key": "cubes_cashed", "target": 10, "reward": {"cubes": 80}},
@@ -16,7 +16,7 @@
     {"id": "earn_1k", "text": "Earn 1,000 cubes", "type": "earned", "target": 1000, "reward": {"cubes": 150}},
     {"id": "scoopie_1", "text": "Build a Scoopie", "type": "robot", "key": "scoopie", "target": 1, "reward": {"cubes": 200}},
     {"id": "hex_5", "text": "Clean 5 hexes", "type": "stat", "key": "hexes_cleaned", "target": 5, "reward": {"cubes": 250}},
-    {"id": "zone_1", "text": "Paint a work zone  (B  Command)", "type": "zone", "target": 1, "reward": {"cubes": 150}},
+    {"id": "zone_1", "text": "Paint a work zone (B Command)", "type": "zone", "target": 1, "reward": {"cubes": 150}},
     {"id": "seeds", "text": "Find the seed tin", "type": "flag", "key": "seeds_unlocked", "target": 1, "reward": {"cubes": 100, "seeds": 5}},
     {"id": "plant_5", "text": "Plant 5 seeds", "type": "stat", "key": "plants_planted", "target": 5, "reward": {"cubes": 100, "seeds": 5}},
     {"id": "hexlv_2", "text": "Get a hex to Planted", "type": "hex_level", "key": 2, "target": 1, "reward": {"cubes": 200}},
@@ -51,6 +51,6 @@
     {"id": "hex_100", "text": "Clean 100 hexes", "type": "stat", "key": "hexes_cleaned", "target": 100, "reward": {"cubes": 10000}},
     {"id": "hexlv_5x8", "text": "Get 8 hexes to Thriving", "type": "hex_level", "key": 5, "target": 8, "reward": {"cubes": 15000, "seeds": 40}},
     {"id": "base_5", "text": "Upgrade the base to level 5", "type": "hub_level", "target": 5, "reward": {"cubes": 20000}},
-    {"id": "rocket", "text": "Launch the rocket to a new district", "type": "districts", "target": 2, "reward": {"cubes": 25000, "seeds": 50}}
+    {"id": "rocket", "text": "Launch the rocket onward", "type": "districts", "target": 2, "reward": {"cubes": 25000, "seeds": 50}}
   ]
 }

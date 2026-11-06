@@ -121,6 +121,12 @@ func _build_bottom() -> void:
 	_prompt = UITheme.label("", 16, UITheme.CREAM)
 	_prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(_prompt)
+	# Tool / seeds / compost / water readout gets its own centred line so the hopper row stays
+	# narrow and clear of the bottom-left toast log at 1280x720.
+	_tool_label = _caption("")
+	_tool_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_tool_label.visible = false
+	vb.add_child(_tool_label)
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 10)
 	vb.add_child(row)
@@ -130,8 +136,6 @@ func _build_bottom() -> void:
 	row.add_child(sp)
 	_carry_label = _caption("")
 	row.add_child(_carry_label)
-	_tool_label = _caption("")
-	row.add_child(_tool_label)
 	_meter_label = _caption("0.0 / 10")
 	row.add_child(_meter_label)
 	_meter = CompartmentMeter.new()
@@ -183,7 +187,8 @@ func _process(delta: float) -> void:
 		_meter_label.text = "%.1f / %.0f" % [patch.compartment.fill, patch.capacity()]
 		if GameState.flags.get("seeds_unlocked", false):
 			var names: Array[String] = ["SCOOP", "PLANT", "WATER"]
-			_tool_label.text = "1 2 3   %s    SEEDS %s    COMPOST %s    WATER %d/%d    " % [names[patch.tool], Settings.fmt(GameState.get_currency("seeds")), Settings.fmt(GameState.get_currency("compost")), int(patch.water), int(patch.water_cap())]
+			_tool_label.visible = true
+			_tool_label.text = "1 2 3   %s    SEEDS %s    COMPOST %s    WATER %d/%d" % [names[patch.tool], Settings.fmt(GameState.get_currency("seeds")), Settings.fmt(GameState.get_currency("compost")), int(patch.water), int(patch.water_cap())]
 		_meter.set_values(patch.compartment.fill, patch.capacity())
 		_meter.band = Economy.cube_rules.get("perfect_band", [0.9, 1.0])
 		var cap: int = patch.carry_cap()

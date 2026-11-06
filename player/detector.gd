@@ -38,7 +38,9 @@ func _ready() -> void:
 
 
 func range_m() -> float:
-	return float(_cfg.get("range", 16.0)) * (1.0 + 0.25 * GameState.level_of("detector_range"))
+	# Base 16 m lives in data/patch.json; the Detector Coil upgrade and Research mods scale it.
+	var r: float = Economy.stat("detector_range")
+	return r if r > 0.0 else float(_cfg.get("range", 16.0))
 
 
 func _process(delta: float) -> void:
