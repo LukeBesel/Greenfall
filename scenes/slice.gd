@@ -53,6 +53,9 @@ var _cubes_root: Node3D
 var _flower: Node3D
 var _sun: DirectionalLight3D
 var _env: Environment
+var dressing: StreetDressing
+## Shack and yard lamp pieces that sit derelict while a non-starter base is at level 1.
+var _ruin_bits: Dictionary = {}
 var _t: float = 0.0
 ## Rocket launch → flight → travel: no modal hotkeys, and closing a modal doesn't hand control back.
 var launching: bool = false
@@ -75,6 +78,8 @@ func _ready() -> void:
 		loaded = SaveManager.load_game()
 	if DevHooks.has("hub") and not loaded:
 		GameState.switch_hub(int(DevHooks.get_f("hub", 0.0)))
+	if DevHooks.has("hub-level"):  # dev: start this base at a given hub level (1-5)
+		GameState.world["hub_level"] = clampi(int(DevHooks.get_f("hub-level", 1.0)), 1, 5)
 	planet = PlanetData.new(base_seed, 6, 10.0)
 	planet.generate()
 	if not GameState.planet_state.is_empty():
@@ -128,10 +133,10 @@ func _ready() -> void:
 	city.build(layout, view.ground_material)
 	# Awnings, neon, murals, string lights, yard slab and props (planet/street_dressing.gd).
 	if not DevHooks.has("no-dressing"):
-		var dressing := StreetDressing.new()
+		dressing = StreetDressing.new()
 		dressing.name = "StreetDressing"
 		add_child(dressing)
-		dressing.build(layout, field)
+		dressing.build(layout, field, hub_index, district_name, "" if is_city else field.biome, int(GameState.world.get("hub_level", 1)))
 	_cubes_root = Node3D.new()
 	_cubes_root.name = "Cubes"
 	add_child(_cubes_root)
@@ -143,6 +148,12 @@ func _ready() -> void:
 	hub = Hub.new()
 	hub.name = "Hub"
 	add_child(hub)
+	# Every base but Old Town's starter lean-to begins derelict and is fixed up level by level.
+	_apply_base_level(hub.level, false)
+	hub.level_changed.connect(func(l: int) -> void:
+		_apply_base_level(l, true)
+		if dressing:
+			dressing.set_level(l, true))
 	# [stations] Conveyor feeder, auto-baler, recycler (automation/stations.gd).
 	var stations := Stations.new()
 	stations.name = "Stations"
@@ -482,6 +493,7 @@ func _build_board() -> void:
 	frame.material_override = pipe
 	shack.add_child(frame)
 	var roof := MeshInstance3D.new()
+	_ruin_bits["roof"] = roof
 	roof.mesh = ProcMesh.box(Vector3(3.7, 0.03, 2.6))
 	roof.material_override = iron
 	roof.position = Vector3(0, 2.3, -0.05)
@@ -493,6 +505,7 @@ func _build_board() -> void:
 	back.position = Vector3(0, 1.15, -1.15)
 	shack.add_child(back)
 	var side := MeshInstance3D.new()
+	_ruin_bits["side"] = side
 	side.mesh = ProcMesh.box(Vector3(0.03, 1.6, 1.4))
 	side.material_override = iron
 	side.position = Vector3(-1.62, 0.8, -0.45)
@@ -525,11 +538,13 @@ func _build_board() -> void:
 	lamp.position = Vector3(0, 2.2, -0.4)
 	lamp.rotation_degrees = Vector3(-90, 0, 0)
 	shack.add_child(lamp)
+	_ruin_bits["lamp"] = lamp
 	var bulb := MeshInstance3D.new()
 	bulb.mesh = ProcMesh.sphere(0.05, 8, 4)
 	bulb.material_override = Mats.lamp(Color(1.0, 0.85, 0.6), 3.0)
 	bulb.position = Vector3(0, 2.15, -0.4)
 	shack.add_child(bulb)
+	_ruin_bits["bulb"] = bulb
 	var sb := StaticBody3D.new()
 	var cs := CollisionShape3D.new()
 	var bs := BoxShape3D.new()
@@ -552,11 +567,41 @@ func _build_board() -> void:
 	light.position = Vector3(4.2, sl.mesh.get_aabb().end.y - 0.3, -3.0)
 	light.rotation_degrees = Vector3(-90, 0, 0)
 	add_child(light)
+	_ruin_bits["street_lamp"] = sl
+	_ruin_bits["street_light"] = light
 	var gen := MeshInstance3D.new()
 	gen.mesh = AssetLib.model_mesh("portable_generator")
 	gen.position = Vector3(-4.6, 0, 0.8)
 	gen.rotation_degrees = Vector3(0, 70, 0)
 	add_child(gen)
+
+
+## Level 1 at any base but Old Town's start: the lean-to roof has slumped off its frame, the side
+## sheet is gone, the bench bulb is dead and the yard lamp lies toppled. From level 2 it is fixed
+## (tweened back into place when it happens live).
+func _apply_base_level(l: int, animate: bool) -> void:
+	var ruined: bool = l <= 1 and hub_index != 0
+	var roof: Node3D = _ruin_bits.get("roof")
+	var sl: Node3D = _ruin_bits.get("street_lamp")
+	if roof == null or sl == null:
+		return
+	var roof_xf := Transform3D(Basis.from_euler(Vector3(deg_to_rad(-9), 0, deg_to_rad(2))), Vector3(0, 2.3, -0.05))
+	var lamp_xf := Transform3D(Basis(), Vector3(4.2, 0, -3.0))
+	if ruined:
+		roof_xf = Transform3D(Basis.from_euler(Vector3(deg_to_rad(-31), deg_to_rad(8), deg_to_rad(17))), Vector3(0.45, 1.3, 0.25))
+		lamp_xf = Transform3D(Basis.from_euler(Vector3(0, deg_to_rad(-35), deg_to_rad(84))), Vector3(4.35, 0.18, -3.0))
+	(_ruin_bits["side"] as Node3D).visible = not ruined
+	(_ruin_bits["lamp"] as Light3D).visible = not ruined
+	(_ruin_bits["street_light"] as Light3D).visible = not ruined
+	(_ruin_bits["bulb"] as Node3D).visible = not ruined
+	if not animate:
+		roof.transform = roof_xf
+		sl.transform = lamp_xf
+		return
+	var tw := create_tween().set_parallel(true)
+	tw.tween_property(roof, "transform", roof_xf, 0.8).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT).set_delay(0.3)
+	tw.tween_property(sl, "transform", lamp_xf, 0.9).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT).set_delay(0.6)
+	Vfx.burst("dust", BOARD_POS + Vector3(0, 1.0, 0), Color(0.7, 0.65, 0.6, 0.6), 1.2)
 
 
 func _build_flower() -> void:

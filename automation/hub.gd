@@ -3,6 +3,9 @@ extends Node3D
 ## The base at the center of a district. Level 1 is the lean-to (built by the slice scene);
 ## higher levels add structures, each arriving with a fast-build sequence. Also hosts air scrubbers.
 
+## Emitted after an upgrade raises the level (the yard dressing plays its fix-up flourish).
+signal level_changed(new_level: int)
+
 var data: Dictionary
 var level: int = 1
 var scrubbers: int = 0
@@ -54,6 +57,7 @@ func upgrade() -> bool:
 	level += 1
 	GameState.world["hub_level"] = level
 	_build_level(level, true)
+	level_changed.emit(level)
 	EventBus.toast.emit("Hub upgraded: %s." % next["name"], "story")
 	return true
 
