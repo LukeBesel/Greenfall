@@ -163,7 +163,7 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 				var cd: float = layout.curb_distance(pos.x, pos.z)
 				if rng.randf() > (1.0 if cd < 1.3 else 0.22):
 					continue
-			var type_idx: int = theme if rng.randf() < 0.55 else _weighted(rng, weights, wsum)
+			var type_idx: int = theme if rng.randf() < 0.35 else _weighted(rng, weights, wsum)
 			if surf == CityLayout.Surface.SIDEWALK and rng.randf() < 0.45:
 				type_idx = int(by_id.get("paper" if rng.randf() < 0.4 else "plastic", type_idx))
 			var t: Dictionary = junk_types[type_idx]
@@ -365,7 +365,12 @@ func find_scoop_target(origin: Vector3, forward: Vector3, reach: float, width: f
 	var right: Vector3 = Vector3(fwd.z, 0.0, -fwd.x)
 	var best: int = -1
 	var best_d: float = INF
-	for hid: int in hexes_near(origin, 1 + int(reach / hex_size)):
+	var near: Dictionary = {}
+	for o: Vector3 in [Vector3.ZERO, fwd * reach, fwd * reach * 0.5 + right * width, fwd * reach * 0.5 - right * width]:
+		var h: int = hex_at(origin + o)
+		if h >= 0:
+			near[h] = true
+	for hid: int in near:
 		for pid: int in hex_pieces[hid]:
 			if piece_alive[pid] == 0:
 				continue

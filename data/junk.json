@@ -26,7 +26,7 @@
      ]},
     {"id": "glass", "name": "Glass", "value": 0.85, "cube_color": "#5f7a5e", "flecks": "#a9c9c0", "weight": 0.7,
      "models": [
-       {"id": "wine_bottles_01", "vol": 1.2, "w": 1.0, "lie": 0.0},
+       {"id": "wine_bottles_01", "vol": 1.2, "w": 1.0, "lie": 0.85},
        {"id": "jug_01", "vol": 0.8, "w": 1.0, "lie": 0.6}
      ]},
     {"id": "rubber", "name": "Rubber", "value": 0.75, "cube_color": "#2e2c2b", "flecks": "#5a5450", "weight": 0.7,

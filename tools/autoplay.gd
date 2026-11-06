@@ -61,11 +61,29 @@ func interact_pressed() -> bool:
 	return i
 
 
+var _detour_t: float = 0.0
+var _detour := Vector3.ZERO
+var _progress_pos := Vector3.ZERO
+var _progress_t: float = 0.0
+
+
 func _go(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
 	var d: Vector3 = target - p.global_position
 	d.y = 0.0
 	var dist: float = d.length()
 	_move = d.normalized() * clampf(dist / 1.5, 0.35, 1.0) if dist > stop_dist else Vector3.ZERO
+	# Obstacle unstick: no progress for a while -> sidestep around it.
+	if _detour_t > 0.0:
+		_move = (_detour + d.normalized() * 0.3).normalized()
+	elif dist > stop_dist + 0.5:
+		if p.global_position.distance_to(_progress_pos) > 0.5:
+			_progress_pos = p.global_position
+			_progress_t = 0.0
+		elif _progress_t > 1.2:
+			var side := Vector3(d.z, 0, -d.x).normalized() * (1.0 if randf() < 0.5 else -1.0)
+			_detour = side
+			_detour_t = 1.4
+			_progress_t = 0.0
 	return dist
 
 
@@ -74,12 +92,16 @@ func update(delta: float) -> void:
 	if p == null:
 		return
 	_cooldown -= delta
+	_detour_t -= delta
+	_progress_t += delta
 	_scoop = false
 	_move = Vector3.ZERO
 	_log_timer += delta
 	if _log_timer >= 30.0:
 		_log_timer = 0.0
 		_log.append({"t": _now(), "cubes": GameState.get_currency("cubes").to_float(), "hexes": world.field.cleaned_count, "made": GameState.stats.get("cubes_made", 0)})
+		var lc: JunkCube = _nearest_loose(p)
+		print("[Autoplay] state pos=%s carried=%d fill=%.1f pending=%.1f cubing=%.1f loose=%s target=%d stuck=%.1f" % [str(p.global_position.snappedf(0.1)), p.carried.size(), p.compartment.fill, p.compartment.pending, p._cubing, str(lc.global_position.snappedf(0.1)) if lc else "none", _target_piece, _stuck_timer])
 	_buy_cheapest()
 	if p._cubing > 0.0:
 		return
@@ -133,7 +155,7 @@ func _nearest_piece(p: Patch) -> int:
 	var field: HexField = world.field
 	var best: int = -1
 	var best_d: float = INF
-	for hid: int in field.hexes_near(p.global_position, 3):
+	for hid: int in field.hexes_near(p.global_position, 1):
 		for pid: int in field.hex_pieces[hid]:
 			if field.piece_alive[pid] == 0 or _ignore_piece.has(pid):
 				continue

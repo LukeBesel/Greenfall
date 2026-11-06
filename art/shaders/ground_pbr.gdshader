@@ -147,15 +147,15 @@ void fragment() {
 	if (reveal < 0.999 && !is_yard) {
 		float gutter = lay.b;
 		float drift = clamp(smoothstep(0.35, 0.7, n2) * 0.6 + gutter * 0.8, 0.0, 1.0);
-		dirty = mixm(dirty, samp(4, p, 3.0), drift * (is_road ? 0.85 : 0.5));
+		dirty = mixm(dirty, samp(4, p, 3.0), drift * (is_road ? 0.55 : 0.35));
 		float leaves = smoothstep(0.5, 0.75, n3) * (0.4 + gutter * 0.6);
 		dirty = mixm(dirty, samp(6, p, 2.0), leaves * 0.8);
 		float rub = smoothstep(0.62, 0.8, fbm(p * 0.11 + 9.0));
 		dirty = mixm(dirty, samp(7, p, 3.0), rub * 0.7);
 		float stain = smoothstep(0.55, 0.85, fbm(p * 0.35 + 3.0));
-		dirty.alb *= mix(1.0, 0.5, stain * 0.8);
-		dirty.alb *= mix(0.78, 0.92, removed);
-		dirty.alb = mix(dirty.alb, dirty.alb * vec3(0.95, 0.9, 0.86), 0.6);
+		dirty.alb *= mix(1.0, 0.7, stain * 0.6);
+		dirty.alb *= mix(0.9, 0.97, removed);
+		
 	}
 	Mat m = mixm(dirty, base, reveal);
 	if (is_hub > 0.5 || is_yard) {

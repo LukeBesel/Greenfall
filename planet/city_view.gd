@@ -115,7 +115,8 @@ func _build_block(key: Vector2i, b: Dictionary) -> void:
 				else:
 					_build_proxy_building(bd)
 		CityLayout.Block.HUB:
-			_build_fence(rect, true)
+			var y := CityLayout.YARD_HALF
+			_build_fence(Rect2(Vector2(-y, -y) + Vector2(key) * CityLayout.PITCH, Vector2(y, y) * 2.0), true)
 		CityLayout.Block.PARKING, CityLayout.Block.VACANT:
 			_build_fence(rect, false)
 
@@ -437,19 +438,5 @@ func _build_skyline() -> void:
 		mi.material_override = tower_mats[_rng.randi() % tower_mats.size()]
 		mi.position = Vector3(cos(ang) * dist, h * 0.5 - 2.0, sin(ang) * dist)
 		mi.rotation.y = _rng.randf() * TAU
-		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		add_child(mi)
-	# Junk ridges: long lumpy mounds of debris.
-	var ridge_mesh: ArrayMesh = FieldView._mound_mesh()
-	var ridge_mat: StandardMaterial3D = AssetLib.pbr_material("rubble", 0.05, Color(0.55, 0.48, 0.44), true)
-	ridge_mesh.surface_set_material(0, ridge_mat)
-	for i: int in 40:
-		var ang: float = TAU * i / 40.0 + _rng.randf_range(-0.05, 0.05)
-		var dist: float = r0 + _rng.randf_range(10.0, 90.0)
-		var mi := MeshInstance3D.new()
-		mi.mesh = ridge_mesh
-		mi.position = Vector3(cos(ang) * dist, -1.0, sin(ang) * dist)
-		mi.scale = Vector3(_rng.randf_range(25, 45), _rng.randf_range(8, 26), _rng.randf_range(18, 30))
-		mi.rotation.y = ang + PI * 0.5
 		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(mi)

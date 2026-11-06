@@ -9,7 +9,7 @@ const DECEL: float = 22.0
 const TURN_RATE: float = 9.0
 const GRAVITY: float = 20.0
 const PICKUP_RANGE: float = 1.9
-const CUBE_TIME: float = 0.42
+const CUBE_TIME: float = 1.7
 
 var input: InputSource
 var world: Node  # the slice scene: field, view, collect_piece(), depot
@@ -25,6 +25,8 @@ var _scoop_combo: int = 0
 var _combo_timer: float = 0.0
 var _cubing: float = 0.0
 var _cube_spawned: bool = false
+var _crunched: bool = false
+var _sweep_timer: float = 0.0
 var _buzz_cooldown: float = 0.0
 var _was_in_band: bool = false
 var _prev_vel := Vector3.ZERO
@@ -157,6 +159,14 @@ func _handle_scoop(delta: float) -> void:
 		_scoop_timer = 0.0
 		return
 	model.set_scooping(true)
+	_sweep_timer -= delta
+	if _sweep_timer <= 0.0 and world.get("litter") != null:
+		_sweep_timer = 0.08
+		var swept: int = world.litter.sweep(scoop_origin() + forward() * 0.9, stat("scoop_width") * 0.55)
+		if swept > 0:
+			Vfx.burst("dust", scoop_origin() + forward() * 0.9, Color(0.62, 0.58, 0.52, 0.35), 0.3)
+			if randf() < 0.35:
+				Audio.play("whoosh", randf_range(1.4, 1.8), -18.0)
 	var cap: float = capacity()
 	if not compartment.can_accept(cap):
 		if _buzz_cooldown <= 0.0:
@@ -243,9 +253,21 @@ func _piece_arrived(type_id: String, vol: float, color: Color) -> void:
 func _handle_cubing(delta: float) -> void:
 	if _cubing > 0.0:
 		_cubing -= delta
-		if not _cube_spawned and _cubing <= CUBE_TIME * 0.35:
+		var t: float = 1.0 - _cubing / CUBE_TIME  # 0..1 through the cycle
+		# Ram down (0-0.5), ram up + hatch open (0.5-0.7), eject (0.68), hatch closes (0.8-1.0).
+		model.press(clampf(t / 0.5, 0.0, 1.0) if t < 0.55 else clampf(1.0 - (t - 0.55) / 0.2, 0.0, 1.0))
+		model.open_hatch(clampf((t - 0.5) / 0.15, 0.0, 1.0) if t < 0.8 else clampf(1.0 - (t - 0.8) / 0.2, 0.0, 1.0))
+		if t > 0.3 and not _crunched:
+			_crunched = true
+			Audio.play("crunch", 0.85, -3.0)
+			EventBus.shake_requested.emit(0.12)
+			Input.start_joy_vibration(0, 0.5, 0.7, 0.25)
+		if not _cube_spawned and t >= 0.68:
 			_cube_spawned = true
 			_spawn_cube()
+		if _cubing <= 0.0:
+			model.press(0.0)
+			model.open_hatch(0.0)
 		return
 	if input.cube_pressed():
 		if compartment.is_empty() or compartment.pending > 0.0:
@@ -260,14 +282,12 @@ func start_cube() -> void:
 		return
 	_cubing = CUBE_TIME
 	_cube_spawned = false
-	model.shudder(CUBE_TIME * 0.7)
-	model.squash(-0.6)
-	Audio.play("crunch", 1.0, -2.0)
-	Audio.play("steam", 1.0, -9.0)
+	_crunched = false
+	model.shudder(CUBE_TIME * 0.45)
+	Audio.play("hydraulic", 1.0, -4.0)
+	Audio.play("groan", 1.0, -8.0)
 	for vp: Vector3 in model.vent_points:
-		Vfx.burst("steam", to_global(vp), Color(1, 1, 1, 0.75))
-	EventBus.shake_requested.emit(0.18)
-	Input.start_joy_vibration(0, 0.4, 0.6, 0.2)
+		Vfx.burst("steam", to_global(vp), Color(0.92, 0.92, 0.9, 0.5), 0.6)
 
 
 func _spawn_cube() -> void:
@@ -279,32 +299,29 @@ func _spawn_cube() -> void:
 	EventBus.compartment_changed.emit(0.0, cap)
 	var cube: JunkCube = JunkCube.create(info["value"], info)
 	world.add_cube(cube)
-	cube.global_position = to_global(model.back_hatch_point + Vector3(0, 0.1, 0.25))
-	cube.linear_velocity = global_transform.basis.z * 2.6 + Vector3(0, 3.2, 0)
-	cube.angular_velocity = Vector3(randf_range(-3, 3), randf_range(-3, 3), randf_range(-3, 3))
-	Audio.play("pop", 1.0, -4.0)
-	model.squash(0.45)
+	cube.global_position = to_global(model.back_hatch_point + Vector3(0, 0.05, 0.3))
+	cube.rotation.y = rotation.y
+	# Pushed out by the ram: slides off the lip and drops with weight.
+	cube.linear_velocity = global_transform.basis.z * 1.4 + Vector3(0, 0.4, 0)
+	cube.angular_velocity = global_transform.basis.x * -1.2
+	Audio.play("clunk", 1.0, -4.0)
 	GameState.inc_stat("cubes_made")
 	var label: String = "+" + Settings.fmt(info["value"])
-	var color: Color = Color(0.9, 1.0, 0.85)
-	var size: float = 0.9
+	var color: Color = Color(0.92, 0.94, 0.9)
 	if info["perfect"]:
 		GameState.inc_stat("perfect_cubes")
-		label = "PERFECT! " + label
-		color = Color(1.0, 0.85, 0.3)
-		size = 1.3
-		Audio.play("sparkle", 1.0, -4.0)
-		Vfx.burst("big_sparkle", cube.global_position, Color(1.0, 0.85, 0.4))
+		label = "PERFECT BALE  " + label
+		color = Color(1.0, 0.82, 0.4)
+		Audio.play("ding", 0.9, -8.0)
 		model.set_happy(1.0)
 	elif info["lumpy"]:
 		GameState.inc_stat("lumpy_cubes")
-		label = "Lumpy " + label
-		color = Color(0.85, 0.75, 0.95)
+		label = "OVERSTUFFED  " + label
+		color = Color(0.8, 0.78, 0.82)
 	if info["pure"]:
 		GameState.inc_stat("pure_cubes")
-		label = "PURE " + label
-		Vfx.burst("sparkle", cube.global_position, (info["colors"] as Array)[0] if not (info["colors"] as Array).is_empty() else Color.WHITE)
-	Vfx.float_text(global_position + Vector3(0, 2.2, 0), label, color, size)
+		label = "PURE  " + label
+	Vfx.float_text(global_position + Vector3(0, 1.9, 0), label, color, 0.45, 0.7)
 	EventBus.cube_made.emit(info)
 	get_tree().create_timer(1.5).timeout.connect(func() -> void: if is_instance_valid(model): model.set_happy(0.5))
 

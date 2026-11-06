@@ -331,6 +331,48 @@ func _generate_all() -> void:
 			lp += (_rng.randf_range(-1.0, 1.0) - lp) * (0.12 + 0.04 * v)
 			b[i] = (lp * 2.2 * (0.6 if _rng.randf() < 0.9 else 1.6) + sin(TAU * 70.0 * t) * 0.3) * exp(-t * 9.0)
 		_add("dig", b)
+	# Hydraulic: pressure hiss that builds then vents.
+	for v: int in 3:
+		var b := _buf(1.1)
+		var lp: float = 0.0
+		var hp: float = 0.0
+		for i: int in b.size():
+			var t: float = float(i) / RATE
+			var n: float = _rng.randf_range(-1.0, 1.0)
+			lp += (n - lp) * (0.25 + 0.05 * v)
+			hp = lp - hp * 0.2
+			var env: float = smoothstep(0.0, 0.15, t) * (0.6 + 0.4 * smoothstep(0.5, 0.8, t)) * (1.0 - smoothstep(0.9, 1.1, t))
+			var pump: float = sin(TAU * (48.0 + 10.0 * t) * t) * 0.25 * (1.0 - smoothstep(0.6, 0.9, t))
+			b[i] = (hp * 0.35 + pump) * env
+		_add("hydraulic", b)
+	# Groan: metal under stress (slow, detuned resonances).
+	for v: int in 3:
+		var b := _buf(1.0)
+		var f0: float = 55.0 + v * 9.0
+		for i: int in b.size():
+			var t: float = float(i) / RATE
+			var wob: float = 1.0 + 0.04 * sin(TAU * 3.1 * t) + 0.02 * sin(TAU * 7.3 * t)
+			var s1: float = sin(TAU * f0 * wob * t) + 0.5 * sin(TAU * f0 * 2.03 * wob * t) + 0.25 * sin(TAU * f0 * 3.97 * t)
+			b[i] = tanh(s1 * 1.6) * 0.22 * smoothstep(0.0, 0.25, t) * (1.0 - smoothstep(0.7, 1.0, t))
+		_add("groan", b)
+	# Clunk: bale hitting the hatch lip and ground.
+	for v: int in 3:
+		var b := _buf(0.4)
+		for i: int in b.size():
+			var t: float = float(i) / RATE
+			var f: float = 70.0 + v * 12.0
+			b[i] = (sin(TAU * f * t) * 0.9 + _rng.randf_range(-0.4, 0.4) * exp(-t * 40.0)) * exp(-t * 11.0)
+		_add("clunk", b)
+	# Servo: small arm motor whir.
+	for v: int in 3:
+		var b := _buf(0.3)
+		var ph: float = 0.0
+		for i: int in b.size():
+			var t: float = float(i) / RATE
+			ph += TAU * (380.0 + 220.0 * sin(PI * t / 0.3) + v * 40.0) / RATE
+			var saw: float = fmod(ph / TAU, 1.0) * 2.0 - 1.0
+			b[i] = saw * 0.06 * sin(PI * t / 0.3)
+		_add("servo", b)
 	# Fanfare: milestones.
 	var fan := _buf(1.6)
 	var notes: Array[float] = [523.25, 659.25, 783.99, 1046.5]

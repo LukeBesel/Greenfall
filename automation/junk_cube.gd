@@ -3,6 +3,7 @@ extends RigidBody3D
 ## A compacted junk cube. Physical, stackable, wobbly. Its value is cashed at a Depot.
 
 static var _mesh: ArrayMesh
+static var _strap_mesh: ArrayMesh
 
 var value: BigNum = BigNum.zero()
 var info: Dictionary = {}
@@ -30,34 +31,51 @@ func _ready() -> void:
 	add_to_group("junk_cube")
 	collision_layer = 4
 	collision_mask = 1 | 2 | 4
-	mass = 1.5
+	mass = 20.0 + 25.0 * float(info.get("fill", 1.0))
 	contact_monitor = true
 	max_contacts_reported = 2
 	var pm := PhysicsMaterial.new()
-	pm.bounce = 0.22
+	pm.bounce = 0.04
 	pm.friction = 0.9
 	physics_material_override = pm
 	if _mesh == null:
-		_mesh = ProcMesh.rounded_box(Vector3.ONE, 0.09, 3)
+		_mesh = ProcMesh.rounded_box(Vector3.ONE, 0.05, 3)
 	_visual = MeshInstance3D.new()
 	_visual.mesh = _mesh
 	_mat = ShaderMaterial.new()
 	_mat.shader = preload("res://art/shaders/cube.gdshader")
 	var cols: Array = info.get("colors", [])
-	var c0: Color = cols[0] if cols.size() > 0 else Color(0.7, 0.7, 0.7)
+	var c0: Color = cols[0] if cols.size() > 0 else Color(0.55, 0.52, 0.5)
 	_mat.set_shader_parameter("color_a", c0)
-	_mat.set_shader_parameter("color_b", cols[1] if cols.size() > 1 else c0.darkened(0.15))
-	_mat.set_shader_parameter("color_c", cols[2] if cols.size() > 2 else c0.lightened(0.2))
-	_mat.set_shader_parameter("speckle", 0.0 if info.get("pure", false) else 1.0)
+	_mat.set_shader_parameter("color_b", cols[1] if cols.size() > 1 else c0.darkened(0.2))
+	_mat.set_shader_parameter("color_c", cols[2] if cols.size() > 2 else c0.lightened(0.15))
+	_mat.set_shader_parameter("mix_b", 0.0 if info.get("pure", false) else 0.35)
+	_mat.set_shader_parameter("mix_c", 0.0 if info.get("pure", false) else 0.18)
 	_mat.set_shader_parameter("perfect", 1.0 if info.get("perfect", false) else 0.0)
-	_mat.set_shader_parameter("pure_shine", 1.0 if info.get("pure", false) else 0.0)
 	_mat.set_shader_parameter("seed", randf() * 100.0)
+	_mat.set_shader_parameter("detail_nrm", AssetLib.tex("rubble", "nor_gl"))
 	_visual.material_override = _mat
 	_visual.scale = Vector3.ONE * size
 	if info.get("lumpy", false):
 		_visual.scale = Vector3(size * 1.08, size * 0.9, size * 1.02)
 		_visual.rotation_degrees = Vector3(4, 7, -5)
 	add_child(_visual)
+	# Two steel strapping bands with crimp seals.
+	if _strap_mesh == null:
+		var parts: Array = []
+		for side: Array in [[Vector3(0, 0, 0.505), Vector3(1.02, 1.02, 0.012)], [Vector3(0, 0, -0.505), Vector3(1.02, 1.02, 0.012)]]:
+			pass
+		for x: float in [-0.25, 0.25]:
+			parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.05, 1.025, 0.012)), ProcMesh.xf(Vector3(x, 0, 0.506))))
+			parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.05, 1.025, 0.012)), ProcMesh.xf(Vector3(x, 0, -0.506))))
+			parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.05, 0.012, 1.025)), ProcMesh.xf(Vector3(x, 0.506, 0))))
+			parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.05, 0.012, 1.025)), ProcMesh.xf(Vector3(x, -0.506, 0))))
+			parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.07, 0.05, 0.02)), ProcMesh.xf(Vector3(x, 0.15, 0.51))))
+		_strap_mesh = ProcMesh.merge(parts)
+	var straps := MeshInstance3D.new()
+	straps.mesh = _strap_mesh
+	straps.material_override = Mats.metal("dark_steel")
+	_visual.add_child(straps)
 	_shape = CollisionShape3D.new()
 	var box := BoxShape3D.new()
 	box.size = Vector3.ONE * size * 0.98
@@ -81,15 +99,12 @@ func _on_body_entered(_body: Node) -> void:
 	var speed: float = linear_velocity.length()
 	if speed > 1.2:
 		_land_cooldown = 0.15
-		Audio.play("thud", clampf(1.4 - size, 0.7, 1.3), linear_to_db(clampf(speed / 6.0, 0.15, 1.0)))
-		squish(clampf(speed * 0.04, 0.05, 0.25))
+		Audio.play("clunk", clampf(1.3 - size, 0.7, 1.2), linear_to_db(clampf(speed / 5.0, 0.15, 1.0)))
+		Vfx.burst("dust", global_position - Vector3(0, size * 0.45, 0), Color(0.6, 0.55, 0.5, 0.5), 0.6)
 
 
-func squish(amount: float) -> void:
-	var base: Vector3 = _visual.scale
-	var tw := create_tween()
-	tw.tween_property(_visual, "scale", Vector3(base.x * (1.0 + amount), base.y * (1.0 - amount), base.z * (1.0 + amount)), 0.06)
-	tw.tween_property(_visual, "scale", base, 0.25).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+func squish(_amount: float) -> void:
+	pass  # Realism pass: bales don't squash; impacts are told by sound and dust.
 
 
 func flash() -> void:

@@ -12,6 +12,7 @@ const ROAD_W: float = 9.0       # carriageway width
 const WALK_W: float = 2.6       # sidewalk width
 const CURB_H: float = 0.12      # sidewalk height above road
 const BUILDING_DEPTH: float = 11.0
+const YARD_HALF: float = 8.5   # half-size of the hub yard
 
 var seed_value: int
 var extent: float               # half-size of the area the layout covers (meters)
@@ -109,7 +110,8 @@ func surface_at(x: float, z: float) -> int:
 	if b.is_empty():
 		return Surface.LOT
 	if int(b["type"]) == Block.HUB:
-		return Surface.YARD
+		# A small swept yard around the hub; the rest of the block is still junk lot.
+		return Surface.YARD if (lx < YARD_HALF and lz < YARD_HALF) else Surface.LOT
 	for bd: Dictionary in b["buildings"]:
 		if (bd["rect"] as Rect2).has_point(Vector2(x, z)):
 			return Surface.BUILDING

@@ -3,3 +3,4 @@
 /screenshots/*.avi
 /builds/
 *.tmp
+*.log

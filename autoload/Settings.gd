@@ -125,7 +125,9 @@ func apply_render_quality(env: Environment, vp: Viewport) -> void:
 	env.ssr_enabled = q >= Quality.ULTRA
 	env.ssao_enabled = q >= Quality.MEDIUM
 	env.volumetric_fog_enabled = q >= Quality.MEDIUM
-	env.fog_density = 0.004 if env.volumetric_fog_enabled else 0.012
+	env.fog_density = 0.0025 if env.volumetric_fog_enabled else 0.005
+	# Without GI the scene loses bounce light: lift ambient so Low still looks bright.
+	env.ambient_light_energy = 1.25 if env.sdfgi_enabled else 1.7
 	env.glow_enabled = q >= Quality.MEDIUM
 	if vp:
 		vp.use_taa = q >= Quality.HIGH

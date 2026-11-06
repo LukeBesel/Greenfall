@@ -14,3 +14,11 @@
 ## Workflow
 - Planning and status: `docs/ROADMAP.md`. Update it before ending a session.
 - The user asked that multi-agent workflows be used sparingly (≤6 agents, ask before more).
+
+## Verification tools
+- Tests: `tools/run_tests.sh` (GUT, headless).
+- Screenshot: `DELAY=60 tools/shot.sh NAME --cam=close --spawn-pos=0,14 --spawn-yaw=3.14` (software Vulkan is slow: Low preset, 960x540; log in screenshots/NAME.log).
+- Robot turnarounds: `tools/turnaround.sh res://player/patch_model.gd screenshots/turn_x`.
+- Autoplay pacing: `godot --headless --path . -- --fresh --autoplay --time-scale=4 --quit-after=200` (report in screenshots/autoplay_report.json).
+- Assets: `python3 tools/fetch_assets.py` after editing `data/assets.json`; new vendor textures need `compress/mode=2` (+ `compress/normal_map=1` for `*_nor_gl_*`) in their .import files.
+- Blender (for modeling) is not preinstalled: `apt-get install -y --no-install-recommends blender`, then script it with `blender -b --python script.py`.

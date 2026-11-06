@@ -3,13 +3,14 @@ extends Node3D
 ## wires sim ↔ view, owns hex-flip moments, saving of world objects, and UI routing.
 
 const SPAWN := Vector3(0, 0.05, 3.0)
-const BOARD_POS := Vector3(-3.4, 0, -1.6)
+const BOARD_POS := Vector3(-3.6, 0, 2.2)
 const FLOWER_POS := Vector3(2.9, 0, 1.4)
 const HEX_MILESTONES: Array[int] = [1, 5, 10, 25, 50, 100, 150, 200, 264]
 
 var field: HexField
 var layout: CityLayout
 var city: CityView
+var litter: LitterView
 var view: FieldView
 var depot: Depot
 var patch: Patch
@@ -51,6 +52,10 @@ func _ready() -> void:
 	view.name = "FieldView"
 	add_child(view)
 	view.setup(field)
+	litter = LitterView.new()
+	litter.name = "Litter"
+	add_child(litter)
+	litter.setup(field)
 	city = CityView.new()
 	city.name = "City"
 	add_child(city)
@@ -94,6 +99,11 @@ func _ready() -> void:
 	if loaded:
 		_restore_world()
 	cam.snap()
+	if DevHooks.has("spawn-pos"):
+		var sp: PackedStringArray = DevHooks.get_s("spawn-pos", "0,3").split(",")
+		patch.global_position = Vector3(float(sp[0]), 0.2, float(sp[1]))
+		patch.rotation.y = DevHooks.get_f("spawn-yaw", 0.0)
+		cam.yaw = patch.rotation.y
 	if DevHooks.has("spawn-hex"):
 		var hid: int = int(DevHooks.get_f("spawn-hex", 30.0))
 		patch.global_position = field.hex_center(hid) + Vector3(0, 0.05, field.hex_size * 0.9)
@@ -121,22 +131,23 @@ func _build_environment() -> void:
 	var sky := Sky.new()
 	var sm := PhysicalSkyMaterial.new()
 	# Act 1: heavy, hazy, slightly violet-brown sky. Later acts lower turbidity and mie.
-	sm.rayleigh_coefficient = 1.6
-	sm.rayleigh_color = Color(0.42, 0.42, 0.62)
-	sm.mie_coefficient = 0.012
+	sm.rayleigh_coefficient = 2.4
+	sm.rayleigh_color = Color(0.3, 0.45, 0.85)
+	sm.mie_coefficient = 0.006
 	sm.mie_eccentricity = 0.82
-	sm.mie_color = Color(0.86, 0.72, 0.66)
-	sm.turbidity = 14.0
+	sm.mie_color = Color(0.95, 0.85, 0.75)
+	sm.turbidity = 6.0
 	sm.sun_disk_scale = 1.2
-	sm.ground_color = Color(0.3, 0.27, 0.26)
+	sm.ground_color = Color(0.45, 0.43, 0.4)
 	sm.energy_multiplier = 1.0
 	sky.sky_material = sm
 	sky.process_mode = Sky.PROCESS_MODE_REALTIME
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 	env.reflected_light_source = Environment.REFLECTION_SOURCE_SKY
+	env.ambient_light_energy = 1.25
 	env.tonemap_mode = Environment.TONE_MAPPER_AGX
-	env.tonemap_exposure = 1.0
+	env.tonemap_exposure = 1.3
 	env.glow_enabled = true
 	env.glow_intensity = 0.35
 	env.glow_bloom = 0.03
@@ -152,28 +163,28 @@ func _build_environment() -> void:
 	env.sdfgi_cascades = 4
 	env.sdfgi_min_cell_size = 0.2
 	env.volumetric_fog_enabled = true
-	env.volumetric_fog_density = 0.012
-	env.volumetric_fog_albedo = Color(0.78, 0.72, 0.74)
-	env.volumetric_fog_emission = Color(0.06, 0.05, 0.07)
+	env.volumetric_fog_density = 0.006
+	env.volumetric_fog_albedo = Color(0.85, 0.86, 0.9)
+	env.volumetric_fog_emission = Color(0.04, 0.045, 0.06)
 	env.volumetric_fog_anisotropy = 0.55
 	env.volumetric_fog_length = 90.0
 	env.volumetric_fog_sky_affect = 0.6
 	env.fog_enabled = true
 	env.fog_mode = Environment.FOG_MODE_EXPONENTIAL
-	env.fog_light_color = Color(0.62, 0.58, 0.62)
-	env.fog_density = 0.004
+	env.fog_light_color = Color(0.72, 0.78, 0.88)
+	env.fog_density = 0.0025
 	env.fog_sky_affect = 0.4
 	env.adjustment_enabled = true
-	env.adjustment_saturation = 0.88
-	env.adjustment_contrast = 1.04
+	env.adjustment_saturation = 1.18
+	env.adjustment_contrast = 1.06
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
 	_env = env
 	_sun = DirectionalLight3D.new()
-	_sun.rotation_degrees = Vector3(-32, -48, 0)
-	_sun.light_color = Color(1.0, 0.9, 0.78)
-	_sun.light_energy = 2.2
+	_sun.rotation_degrees = Vector3(-62, -30, 0)
+	_sun.light_color = Color(1.0, 0.93, 0.82)
+	_sun.light_energy = 2.6
 	_sun.light_angular_distance = 0.6
 	_sun.light_volumetric_fog_energy = 1.4
 	_sun.shadow_enabled = true
@@ -185,39 +196,81 @@ func _build_environment() -> void:
 
 
 func _build_board() -> void:
-	# The hub terminal: an old utility cabinet with a working screen.
-	var board := Node3D.new()
-	board.name = "UpgradeTerminal"
-	board.position = BOARD_POS
-	board.rotation_degrees = Vector3(0, 35, 0)
-	add_child(board)
-	var cab := MeshInstance3D.new()
-	cab.mesh = AssetLib.model_mesh("utility_box_01")
-	board.add_child(cab)
-	var aabb: AABB = cab.mesh.get_aabb()
-	var screen := Label3D.new()
-	screen.text = "MUNICIPAL SANITATION\nUPGRADE TERMINAL\n> READY_"
-	screen.font_size = 28
-	screen.pixel_size = 0.0018
-	screen.modulate = Color(0.55, 1.0, 0.75)
-	screen.outline_size = 0
-	screen.shaded = false
-	screen.position = Vector3(aabb.get_center().x, aabb.end.y * 0.72, aabb.end.z + 0.01)
-	board.add_child(screen)
-	var lamp := OmniLight3D.new()
-	lamp.light_color = Color(0.55, 1.0, 0.75)
-	lamp.light_energy = 0.4
-	lamp.omni_range = 1.5
-	lamp.position = screen.position + Vector3(0, 0, 0.3)
-	board.add_child(lamp)
+	# The first "base": an open lean-to of salvaged pipe and corrugated iron over a workbench.
+	var shack := Node3D.new()
+	shack.name = "Shack"
+	shack.position = BOARD_POS + Vector3(-1.3, 0, 0)
+	shack.rotation_degrees = Vector3(0, 90, 0)  # opens toward +X (the yard)
+	add_child(shack)
+	var pipe: StandardMaterial3D = Mats.metal("dark_steel")
+	var iron: StandardMaterial3D = AssetLib.pbr_material("corrugated_iron", 0.6, Color(0.95, 0.92, 0.88), true)
+	var parts: Array = []
+	for p: Vector3 in [Vector3(-1.6, 0, -1.1), Vector3(1.6, 0, -1.1), Vector3(-1.6, 0, 1.0), Vector3(1.6, 0, 1.0)]:
+		var hgt: float = 2.5 if p.z < 0 else 2.1
+		parts.append(ProcMesh.part(ProcMesh.cyl(0.045, 0.05, hgt, 8), ProcMesh.xf(p + Vector3(0, hgt * 0.5, 0))))
+	parts.append(ProcMesh.part(ProcMesh.cyl(0.035, 0.035, 3.3, 8), ProcMesh.xf(Vector3(0, 2.45, -1.1), Vector3(0, 0, 90))))
+	parts.append(ProcMesh.part(ProcMesh.cyl(0.035, 0.035, 3.3, 8), ProcMesh.xf(Vector3(0, 2.05, 1.0), Vector3(0, 0, 90))))
+	var frame := MeshInstance3D.new()
+	frame.mesh = ProcMesh.merge(parts)
+	frame.material_override = pipe
+	shack.add_child(frame)
+	var roof := MeshInstance3D.new()
+	roof.mesh = ProcMesh.box(Vector3(3.7, 0.03, 2.6))
+	roof.material_override = iron
+	roof.position = Vector3(0, 2.3, -0.05)
+	roof.rotation_degrees = Vector3(-9, 0, 2)
+	shack.add_child(roof)
+	var back := MeshInstance3D.new()
+	back.mesh = ProcMesh.box(Vector3(3.3, 2.3, 0.03))
+	back.material_override = iron
+	back.position = Vector3(0, 1.15, -1.15)
+	shack.add_child(back)
+	var side := MeshInstance3D.new()
+	side.mesh = ProcMesh.box(Vector3(0.03, 1.6, 1.4))
+	side.material_override = iron
+	side.position = Vector3(-1.62, 0.8, -0.45)
+	shack.add_child(side)
+	# Workbench: steel top on welded legs, a vice, tools, a lamp, a clipboard.
+	var bench := Node3D.new()
+	bench.position = Vector3(0, 0, -0.65)
+	shack.add_child(bench)
+	var bparts: Array = []
+	bparts.append(ProcMesh.part(ProcMesh.box(Vector3(2.2, 0.06, 0.8)), ProcMesh.xf(Vector3(0, 0.92, 0))))
+	for x: float in [-1.0, 1.0]:
+		for z: float in [-0.33, 0.33]:
+			bparts.append(ProcMesh.part(ProcMesh.box(Vector3(0.06, 0.9, 0.06)), ProcMesh.xf(Vector3(x, 0.45, z))))
+	bparts.append(ProcMesh.part(ProcMesh.box(Vector3(2.0, 0.03, 0.7)), ProcMesh.xf(Vector3(0, 0.25, 0))))
+	var bmesh := MeshInstance3D.new()
+	bmesh.mesh = ProcMesh.merge(bparts)
+	bmesh.material_override = Mats.worn_paint(Color(0.32, 0.38, 0.45), 0.5, 0.6, 12.0, 0.7)
+	bench.add_child(bmesh)
+	for spec: Array in [["metal_toolbox", Vector3(-0.6, 0.95, 0.0), 0.2], ["clipboard", Vector3(0.35, 0.955, 0.1), 0.0], ["circuit_board", Vector3(0.05, 0.955, 0.05), 0.5], ["oil_tin", Vector3(0.8, 0.95, -0.2), 0.0], ["metal_jerrycan", Vector3(0.7, 0.26, 0.0), 1.2]]:
+		var mi := MeshInstance3D.new()
+		mi.mesh = AssetLib.model_mesh_lite(spec[0], 3000)
+		mi.position = spec[1]
+		mi.rotation.y = spec[2]
+		bench.add_child(mi)
+	var lamp := SpotLight3D.new()
+	lamp.light_color = Color(1.0, 0.85, 0.65)
+	lamp.light_energy = 2.0
+	lamp.spot_range = 3.5
+	lamp.spot_angle = 50.0
+	lamp.position = Vector3(0, 2.2, -0.4)
+	lamp.rotation_degrees = Vector3(-90, 0, 0)
+	shack.add_child(lamp)
+	var bulb := MeshInstance3D.new()
+	bulb.mesh = ProcMesh.sphere(0.05, 8, 4)
+	bulb.material_override = Mats.lamp(Color(1.0, 0.85, 0.6), 3.0)
+	bulb.position = Vector3(0, 2.15, -0.4)
+	shack.add_child(bulb)
 	var sb := StaticBody3D.new()
 	var cs := CollisionShape3D.new()
 	var bs := BoxShape3D.new()
-	bs.size = aabb.size
+	bs.size = Vector3(3.4, 2.4, 1.2)
 	cs.shape = bs
-	cs.position = aabb.get_center()
+	cs.position = Vector3(0, 1.2, -0.6)
 	sb.add_child(cs)
-	board.add_child(sb)
+	shack.add_child(sb)
 	# Hub dressing: a street lamp and a generator.
 	var sl := MeshInstance3D.new()
 	sl.mesh = AssetLib.model_mesh("street_lamp_01")
@@ -269,6 +322,7 @@ func collect_piece(pid: int) -> void:
 	var became_clean: bool = field.remove_piece(pid)
 	view.hide_piece(pid)
 	view.refresh_hex(hid, became_clean)
+	litter.refresh_hex(hid)
 	if became_clean:
 		_on_hex_clean(hid)
 

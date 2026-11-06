@@ -33,9 +33,9 @@ func _ready() -> void:
 		l.no_depth_test = true
 		l.fixed_size = false
 		l.pixel_size = 0.006
-		l.font_size = 64
-		l.outline_size = 18
-		l.outline_modulate = Color(0.18, 0.1, 0.3, 0.85)
+		l.font_size = 48
+		l.outline_size = 8
+		l.outline_modulate = Color(0.05, 0.05, 0.06, 0.7)
 		l.visible = false
 		l.render_priority = 10
 		l.outline_render_priority = 9
@@ -214,22 +214,23 @@ func _base_amount(kind: String) -> int:
 func float_text(pos: Vector3, text: String, color: Color = Color.WHITE, size: float = 1.0, rise: float = 1.4) -> void:
 	var l: Label3D = _texts[_text_idx]
 	_text_idx = (_text_idx + 1) % _texts.size()
-	var tw_old: Variant = l.get_meta("tween", null)
+	var tw_old: Variant = l.get_meta("tween") if l.has_meta("tween") else null
 	if tw_old is Tween and (tw_old as Tween).is_valid():
 		(tw_old as Tween).kill()
 	l.text = text
 	l.modulate = color
 	l.outline_modulate.a = 0.85
 	l.global_position = pos
-	l.scale = Vector3.ONE * size * 0.3
+	l.scale = Vector3.ONE * size
+	l.modulate.a = 0.0
 	l.visible = true
 	var tw: Tween = create_tween()
 	l.set_meta("tween", tw)
 	tw.set_parallel(true)
-	tw.tween_property(l, "scale", Vector3.ONE * size, 0.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tw.tween_property(l, "global_position", pos + Vector3(0, rise, 0), 1.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tw.tween_property(l, "modulate:a", 0.0, 0.35).set_delay(0.8)
-	tw.tween_property(l, "outline_modulate:a", 0.0, 0.35).set_delay(0.8)
+	tw.tween_property(l, "modulate:a", color.a, 0.12)
+	tw.tween_property(l, "global_position", pos + Vector3(0, rise, 0), 1.6).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw.tween_property(l, "modulate:a", 0.0, 0.5).set_delay(1.1)
+	tw.tween_property(l, "outline_modulate:a", 0.0, 0.5).set_delay(1.1)
 	tw.chain().tween_callback(func() -> void: l.visible = false)
 
 
