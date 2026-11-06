@@ -186,20 +186,20 @@ func _build() -> void:
 	_mi(_head, ProcMesh.rounded_box(Vector3(0.09, 0.03, 0.2), 0.012, 2), accent, Vector3(-0.16, 0.48, 0.08), Vector3(0, 0, 8))
 	for x: float in [-0.335, 0.335]:
 		_mi(_head, ProcMesh.rounded_box(Vector3(0.025, 0.07, 0.09), 0.012, 2), Mats.lamp((v["accent"] as Color), 1.6), Vector3(x * 1.08, 0.05, -0.12))
-	# Ear lenses, set flush into the shell like the concept: a white rim, a dark groove, a bright
-	# glowing ring, and a recessed dark lens with a smaller inner lens and a glint.
+	# Ears: compact mechanical caps (not lenses, so they never read as extra eyes): a white
+	# housing, a dark trim ring, a thin glowing accent arc, and a vented end cap.
 	for x: float in [-0.372, 0.372]:
 		var sx: float = signf(x)
 		var ear := Node3D.new()
-		ear.position = Vector3(x, 0.2, 0.04)
+		ear.position = Vector3(x, 0.2, 0.05)
 		ear.rotation_degrees = Vector3(0, 0, 90)
 		_head.add_child(ear)
-		_mi(ear, ProcMesh.cyl(0.155, 0.16, 0.05, 40), paint, Vector3(0, -sx * 0.01, 0))
-		_mi(ear, ProcMesh.cyl(0.135, 0.135, 0.012, 40), trim, Vector3(0, -sx * 0.031, 0))
-		_mi(ear, ProcMesh.torus(0.1, 0.124, 40, 6), Mats.lamp(glow, 5.0), Vector3(0, -sx * 0.036, 0))
-		_mi(ear, ProcMesh.cyl(0.098, 0.098, 0.01, 36), Mats.glass(Color(0.02, 0.03, 0.045, 1.0)), Vector3(0, -sx * 0.033, 0))
-		_mi(ear, ProcMesh.cyl(0.045, 0.045, 0.008, 24), Mats.glass(Color(0.12, 0.2, 0.26, 1.0)), Vector3(0, -sx * 0.039, 0))
-		_mi(ear, ProcMesh.sphere(0.012, 8, 4), Mats.lamp(Color(0.85, 0.97, 1.0), 2.5), Vector3(0.025, -sx * 0.043, -0.02))
+		_mi(ear, ProcMesh.cyl(0.12, 0.13, 0.05, 36), paint, Vector3(0, -sx * 0.012, 0))
+		_mi(ear, ProcMesh.cyl(0.105, 0.105, 0.014, 36), trim, Vector3(0, -sx * 0.036, 0))
+		_mi(ear, ProcMesh.torus(0.088, 0.096, 36, 4), Mats.lamp(glow, 2.2), Vector3(0, -sx * 0.042, 0))
+		_mi(ear, ProcMesh.cyl(0.075, 0.08, 0.02, 32), paint, Vector3(0, -sx * 0.046, 0))
+		for k: int in 3:
+			_mi(ear, ProcMesh.box(Vector3(0.09, 0.012, 0.01)), trim, Vector3(0, -sx * 0.057, -0.03 + k * 0.03), Vector3(90, 0, 0))
 	# Antenna: a dark curved stalk from the back of the crown ending in an orange swept fin.
 	var fin := Node3D.new()
 	fin.position = Vector3(0.06, 0.48, 0.12)
@@ -446,8 +446,9 @@ func look_toward(world_pos: Variant) -> void:
 		return
 	var local: Vector3 = global_transform.affine_inverse() * (world_pos as Vector3)
 	var yaw: float = atan2(-local.x, -local.z)
-	_head_yaw_target = clampf(yaw * 0.6, -0.7, 0.7)
-	_look_target = Vector2(clampf(-yaw * 1.5, -1.0, 1.0), clampf(local.y * 0.5 - 0.3, -1.0, 1.0))
+	_head_yaw_target = clampf(yaw * 0.5, -0.45, 0.45)
+	# Eyes stay facing forward; only the head turns (a hint of eye shift for life).
+	_look_target = Vector2(clampf(-yaw * 0.3, -0.2, 0.2), 0.0)
 
 
 func set_happy(amount: float) -> void:
