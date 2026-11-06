@@ -58,7 +58,7 @@ func _ready() -> void:
 	var title := UITheme.label("SETTINGS", 30, UITheme.GOLD)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	head.add_child(title)
-	var hint := UITheme.label("Q / E  switch tabs", 13, UITheme.MUTED)
+	var hint := PromptLabel.new("{ui_tab_prev}{ui_tab_next}  switch tabs     {ui_cancel}  back", 13)  # [deck]
 	hint.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	head.add_child(hint)
 
@@ -224,8 +224,12 @@ func _build_graphics(p: VBoxContainer) -> void:
 	_section(p, "Rendering")
 	var hint: String = "Low drops GI and fog; Ultra adds reflections." if RenderingServer.get_current_rendering_method() == "forward_plus" \
 		else "This renderer always uses the Low preset."
+	if Settings.quality_note != "":  # [deck] auto-detected preset
+		hint = ("Detected: %s for %s. " % [QualityDetect.preset_name(Settings.quality), Settings.quality_note]) if Settings.quality_auto \
+			else ("Your choice (hardware: %s). " % Settings.quality_note)
+		hint += "Low drops GI, fog and shadows detail; Ultra adds reflections."
 	_cycler(p, "Quality preset", ["Low", "Medium", "High", "Ultra"], Settings.quality, func(i: int) -> void:
-		Settings.quality = i
+		Settings.set_quality_manual(i)  # [deck] a manual choice turns auto-detection off
 		Settings.apply_quality_to_tree(get_tree().current_scene), hint)
 	var scales: Array[float] = [0.5, 0.67, 0.75, 0.85, 1.0]
 	var idx: int = 4
@@ -276,6 +280,9 @@ func _build_controls(p: VBoxContainer) -> void:
 		Audio.play("click", 0.9, -8.0))
 	_row(p, "Bindings", reset, "Restore every key and controller binding.")
 	_refresh_bindings()
+	_cycler(p, "Button prompts", PadGlyphs.STYLE_NAMES, Settings.glyph_style, func(i: int) -> void:  # [deck]
+		Settings.glyph_style = i
+		_refresh_bindings(), "Controller art: Automatic follows the connected pad.")
 	_section(p, "Camera")
 	_slider(p, "Mouse sensitivity", Settings.mouse_sensitivity, 0.001, 0.008, 0.00025,
 		func(v: float) -> String: return "x%.1f" % (v / 0.0035),
@@ -332,7 +339,7 @@ func _refresh_bindings() -> void:
 				b.add_theme_color_override("font_color", UITheme.GOLD)
 				continue
 			var ev: InputEvent = Settings.binding(action, pad)
-			b.text = Settings.event_label(ev) if ev else "—"
+			b.text = (PadGlyphs.event_name(ev) if pad else Settings.event_label(ev)) if ev else "—"  # [deck]
 			# Alternatives (e.g. arrow keys next to WASD) in the tooltip.
 			var alts: Array[String] = []
 			for o: InputEvent in InputMap.action_get_events(action):

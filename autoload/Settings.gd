@@ -67,6 +67,18 @@ var fullscreen: bool = false
 var vsync: bool = true
 ## 3D render resolution as a fraction of the window (UI stays sharp).
 var render_scale: float = 1.0
+# [deck] Auto-detected graphics (systems/quality_detect.gd). quality_auto stays true until the
+# player picks a preset; quality_note says what was detected ("Steam Deck", "integrated GPU ...").
+var quality_auto: bool = false
+var quality_note: String = ""
+## The first-play frame-time probe (systems/quality_probe.gd) ran (it only steps down once).
+var quality_probe_done: bool = false
+## Pad button art: 0 automatic (from the controller's name), 1 Xbox, 2 PlayStation, 3 Steam Deck.
+var glyph_style: int = 0
+## Joypad device id of the last controller input (for the automatic glyph style).
+var last_pad_device: int = 0
+## Every UI font is at least this many px (Steam Deck readability at 1280x800).
+const MIN_FONT_PX: int = 12
 
 ## action -> list of InputEvents (defaults). Remaps are stored on top of these.
 var _defaults: Dictionary = {}
@@ -80,6 +92,8 @@ func _ready() -> void:
 	load_settings()
 	apply_display()
 	apply_ui_scale()
+	add_child(QualityProbe.new())  # [deck] first-play frame-time probe (steps a detected preset down)
+	ReadableUI.install(get_tree())  # [deck] font-size floor for every Label/Button
 
 
 func _input(event: InputEvent) -> void:
@@ -98,6 +112,8 @@ func _input(event: InputEvent) -> void:
 		pad = false
 	else:
 		return
+	if pad:
+		last_pad_device = event.device  # [deck]
 	if pad != last_input_pad:
 		last_input_pad = pad
 		input_device_changed.emit(pad)
@@ -163,6 +179,15 @@ func _register_default_actions() -> void:
 		InputMap.action_erase_events(action)
 		for ev: InputEvent in _defaults[action]:
 			InputMap.action_add_event(action, ev)
+	# [deck] Godot 4.7's built-in ui_accept / ui_cancel have no controller buttons: without these
+	# a pad can move focus but not press anything or back out (Steam Deck: A confirms, B backs).
+	for pair: Array in [["ui_accept", JOY_BUTTON_A], ["ui_cancel", JOY_BUTTON_B]]:
+		var has_btn: bool = false
+		for ev: InputEvent in InputMap.action_get_events(pair[0]):
+			if ev is InputEventJoypadButton and (ev as InputEventJoypadButton).button_index == pair[1]:
+				has_btn = true
+		if not has_btn:
+			InputMap.action_add_event(pair[0], _joy(pair[1]))
 
 
 func save_settings() -> void:
@@ -196,6 +221,10 @@ func save_settings() -> void:
 	cfg.set_value("display", "fullscreen", fullscreen)
 	cfg.set_value("display", "vsync", vsync)
 	cfg.set_value("display", "render_scale", render_scale)
+	cfg.set_value("display", "quality_auto", quality_auto)  # [deck]
+	cfg.set_value("display", "quality_note", quality_note)
+	cfg.set_value("display", "quality_probe_done", quality_probe_done)
+	cfg.set_value("controls", "glyph_style", glyph_style)
 	cfg.save(settings_path)
 	changed.emit()
 
@@ -203,6 +232,7 @@ func save_settings() -> void:
 func load_settings() -> void:
 	var cfg := ConfigFile.new()
 	if cfg.load(settings_path) != OK:
+		auto_detect_display(cfg)  # [deck] first launch
 		return
 	number_format = int(cfg.get_value("display", "number_format", number_format))
 	screen_shake = bool(cfg.get_value("feel", "screen_shake", screen_shake))
@@ -238,6 +268,11 @@ func load_settings() -> void:
 	fullscreen = bool(cfg.get_value("display", "fullscreen", fullscreen))
 	vsync = bool(cfg.get_value("display", "vsync", vsync))
 	render_scale = clampf(float(cfg.get_value("display", "render_scale", render_scale)), 0.5, 1.0)
+	quality_auto = bool(cfg.get_value("display", "quality_auto", false))  # [deck]
+	quality_note = str(cfg.get_value("display", "quality_note", ""))
+	quality_probe_done = bool(cfg.get_value("display", "quality_probe_done", false))
+	glyph_style = clampi(int(cfg.get_value("controls", "glyph_style", 0)), 0, 3)
+	auto_detect_display(cfg)
 
 
 ## Interface scale for every 2D layer (the root window's content scale factor).
@@ -431,13 +466,40 @@ func glyph(action: String) -> String:
 	var ev: InputEvent = binding(action, last_input_pad)
 	if ev == null:
 		ev = binding(action, not last_input_pad)
+	if ev and is_pad_event(ev):
+		return PadGlyphs.event_name(ev)  # [deck] Xbox / PlayStation / Deck names
 	return event_label(ev) if ev else "?"
+
+
+## [deck] Keeps a Label's or Button's text in step with the device in use: `make` returns the
+## text (typically built with glyph()). Called now and on every device or binding change.
+func bind_text(ctl: Control, make: Callable) -> void:
+	var ref: WeakRef = weakref(ctl)  # no strong capture: screens may be freed any time
+	var cbs: Array[Callable] = []
+	var apply: Callable = func() -> void:
+		var c: Object = ref.get_ref()
+		if c == null:
+			if input_device_changed.is_connected(cbs[1]):
+				input_device_changed.disconnect(cbs[1])
+			if changed.is_connected(cbs[0]):
+				changed.disconnect(cbs[0])
+			return
+		c.set("text", make.call())
+	var on_dev: Callable = func(_pad: bool) -> void: apply.call()
+	cbs.append(apply)
+	cbs.append(on_dev)
+	apply.call()
+	input_device_changed.connect(on_dev)
+	changed.connect(apply)
 
 
 ## Window mode, vsync and 3D render scale. No-op for the window parts when headless.
 func apply_display() -> void:
 	if is_inside_tree():
 		get_tree().root.scaling_3d_scale = render_scale
+		# [deck] FSR 1 upscaling when rendering below native (Forward+ / Mobile only).
+		var fsr_ok: bool = RenderingServer.get_current_rendering_method() != "gl_compatibility"
+		get_tree().root.scaling_3d_mode = Viewport.SCALING_3D_MODE_FSR if (render_scale < 0.99 and fsr_ok) else Viewport.SCALING_3D_MODE_BILINEAR
 	if DisplayServer.get_name() == "headless":
 		return
 	var want: DisplayServer.WindowMode = DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED
@@ -461,6 +523,11 @@ func apply_quality_to_tree(root: Node) -> void:
 		var sun: DirectionalLight3D = n as DirectionalLight3D
 		if sun.shadow_enabled:
 			apply_sun_quality(sun)
+	# [deck] Far depth-of-field only on High/Ultra (the camera rig adds it at High+).
+	for n: Node in root.find_children("*", "Camera3D", true, false):
+		var attrs: CameraAttributesPractical = (n as Camera3D).attributes as CameraAttributesPractical
+		if attrs and attrs.dof_blur_amount > 0.0:
+			attrs.dof_blur_far_enabled = quality >= Quality.HIGH
 
 
 ## Applies the quality preset to an Environment and viewport. Low drops GI, volumetrics and
@@ -480,10 +547,15 @@ func apply_render_quality(env: Environment, vp: Viewport) -> void:
 	env.glow_enabled = q >= Quality.MEDIUM
 	if vp:
 		vp.use_taa = q >= Quality.HIGH
-		vp.msaa_3d = Viewport.MSAA_DISABLED if q >= Quality.HIGH else Viewport.MSAA_2X
-		vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA if q == Quality.MEDIUM else Viewport.SCREEN_SPACE_AA_DISABLED
+		# [deck] Low: no MSAA (costly on APUs); FXAA instead.
+		vp.msaa_3d = Viewport.MSAA_DISABLED if (q >= Quality.HIGH or q == Quality.LOW) else Viewport.MSAA_2X
+		vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA if q <= Quality.MEDIUM else Viewport.SCREEN_SPACE_AA_DISABLED
 		vp.mesh_lod_threshold = [4.0, 2.0, 1.0, 0.5][q]
 	RenderingServer.directional_shadow_atlas_set_size([2048, 4096, 4096, 8192][q], true)
+	# [deck] Shadow filtering: fewer PCF taps on Low (still soft-edged).
+	var sq: RenderingServer.ShadowQuality = RenderingServer.SHADOW_QUALITY_SOFT_VERY_LOW if q == Quality.LOW else RenderingServer.SHADOW_QUALITY_SOFT_LOW
+	RenderingServer.directional_soft_shadow_filter_set_quality(sq)
+	RenderingServer.positional_soft_shadow_filter_set_quality(sq)
 
 
 ## Sun shadow settings per quality tier.
@@ -491,6 +563,44 @@ func apply_sun_quality(sun: DirectionalLight3D) -> void:
 	var q: int = quality
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL if q == Quality.LOW else (DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS if q == Quality.MEDIUM else DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS)
 	sun.directional_shadow_max_distance = [35.0, 55.0, 80.0, 120.0][q]
+
+
+# --- [deck] Auto-detected quality --------------------------------------------------------
+
+## Picks quality (and render / UI scale) from the hardware when the saved settings don't have
+## them yet. Never overrides a saved choice. No-op headless (tests and tools keep the defaults).
+func auto_detect_display(cfg: ConfigFile) -> void:
+	if DisplayServer.get_name() == "headless" or settings_path != SETTINGS_PATH:
+		return
+	var has_q: bool = cfg.has_section_key("display", "quality")
+	var has_ui: bool = cfg.has_section_key("ui", "scale")
+	if has_q and has_ui:
+		return
+	var d: Dictionary = QualityDetect.pick(QualityDetect.probe_info())
+	if not has_q:
+		quality = int(d["quality"])
+		if not cfg.has_section_key("display", "render_scale"):
+			render_scale = float(d["render_scale"])
+		quality_auto = true
+		quality_note = str(d["note"])
+		quality_probe_done = false
+		print("[quality] detected %s (%s), render scale %d%%" % [QualityDetect.preset_name(quality), quality_note, roundi(render_scale * 100.0)])
+	if not has_ui and float(d["ui_scale"]) > 0.0:
+		ui_scale = float(d["ui_scale"])
+		print("[quality] handheld screen: interface scale %d%%" % roundi(ui_scale * 100.0))
+	save_settings.call_deferred()
+
+
+## The player picked a preset in Settings: stop auto-adjusting it.
+func set_quality_manual(q: int) -> void:
+	quality = clampi(q, 0, 3)
+	quality_auto = false
+	quality_probe_done = true
+
+
+## Particle count multiplier for the current preset (Low halves bursts and rain).
+func particle_scale() -> float:
+	return [0.5, 0.75, 1.0, 1.0][clampi(quality, 0, 3)]
 
 
 func fmt(n: BigNum) -> String:

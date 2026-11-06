@@ -168,12 +168,12 @@ func _ready() -> void:
 	_big.offset_bottom = -46
 	_big.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_root.add_child(_big)
-	var hint := UITheme.label("Drag to spin   ·   Wheel to zoom   ·   M to close", 13, UITheme.MUTED)
+	var hint := PromptLabel.new("[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close", 13)  # [deck]
+	hint.align_center = true
 	hint.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
 	hint.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	hint.offset_top = -38
 	hint.offset_bottom = -18
-	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_root.add_child(hint)
 	_root.visible = false
 
@@ -251,6 +251,32 @@ func open_view() -> void:
 	create_tween().tween_property(_root, "modulate:a", 1.0, 0.25)
 	_refresh_text()
 	_refresh_hubs()
+	_focus_first.call_deferred()  # [deck] pad players need a focused control for the D-pad
+
+
+## [deck] Whether the action's controller button is held (the wheel keeps its own step zoom).
+func _pad_held(action: String) -> bool:
+	var ev: InputEvent = Settings.binding(action, true)
+	if ev is InputEventJoypadButton:
+		return Input.is_joy_button_pressed(Settings.last_pad_device, (ev as InputEventJoypadButton).button_index)
+	if ev is InputEventJoypadMotion:
+		return Input.get_joy_axis(Settings.last_pad_device, (ev as InputEventJoypadMotion).axis) * signf((ev as InputEventJoypadMotion).axis_value) > 0.5
+	return false
+
+
+## [deck] First enabled Launch button, else Re-survey (the hub list was just rebuilt).
+func _focus_first() -> void:
+	if not is_open:
+		return
+	for row: Node in _hub_list.get_children():
+		if row.is_queued_for_deletion():
+			continue
+		for b: Node in row.find_children("*", "Button", true, false):
+			if not (b as Button).disabled:
+				(b as Button).grab_focus()
+				return
+	if _resurvey and _resurvey.visible and not _resurvey.disabled:
+		_resurvey.grab_focus()
 
 
 func _refresh_hubs() -> void:
@@ -508,6 +534,15 @@ func _process(delta: float) -> void:
 		return
 	if not _drag:
 		_yaw += delta * 0.08
+	# [deck] Right stick spins and tilts the globe; the shoulders zoom (held, not per event).
+	var look: Vector2 = Input.get_vector("look_left", "look_right", "look_up", "look_down")
+	if look != Vector2.ZERO and not _flight_locked and _fly_t < 0.0:
+		_yaw += look.x * delta * 2.2
+		_pitch = clampf(_pitch + look.y * delta * 1.6, -1.4, 1.4)
+	if _pad_held("zoom_in"):
+		_zoom = maxf(1.4, _zoom * (1.0 - delta * 1.2))
+	elif _pad_held("zoom_out"):
+		_zoom = minf(6.0, _zoom * (1.0 + delta * 1.2))
 	_pivot.rotation = Vector3(_pitch, _yaw, 0.0)
 	_cam.position = Vector3(0, 0, _zoom)
 	_cam.look_at(Vector3.ZERO)
@@ -553,10 +588,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			return
 		close_view()
 		get_viewport().set_input_as_handled()
-	elif event is InputEventJoypadMotion:
-		var jm: InputEventJoypadMotion = event
-		if jm.axis == JOY_AXIS_RIGHT_X:
-			_yaw += jm.axis_value * 0.05
+	# (Controller spin / zoom: polled in _process.)
 
 
 func _place_handheld(delta: float) -> void:

@@ -70,7 +70,7 @@ func _ready() -> void:
 	_currency = UITheme.label("0", 32, UITheme.GOLD)
 	header.add_child(_currency)
 	var close := Button.new()
-	close.text = "Close  [Tab]"
+	Settings.bind_text(close, func() -> String: return "Close  [%s]" % Settings.glyph("open_upgrades"))  # [deck]
 	close.custom_minimum_size = Vector2(150, 48)
 	close.pressed.connect(close_screen)
 	_close_btn = close
@@ -89,6 +89,7 @@ func _ready() -> void:
 		tabs.add_child(b)
 		_tab_buttons.append(b)
 	_style_tabs()
+	tabs.add_child(PromptLabel.new("  {ui_tab_prev}{ui_tab_next}", 13))  # [deck] tab-switch glyphs
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED

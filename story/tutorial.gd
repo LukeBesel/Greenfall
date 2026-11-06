@@ -4,11 +4,11 @@ extends Node
 ## Each step completes on a gameplay event; progress persists in GameState.flags.
 
 const STEPS: Array[Dictionary] = [
-	{"id": "scoop", "text": "Hold  LMB / Space  to scoop junk into the hopper", "goal": 8},
-	{"id": "bale", "text": "Fill the hopper near the line, then  RMB / C  to compress a bale"},
-	{"id": "carry", "text": "E  to pick up the bale"},
+	{"id": "scoop", "text": "Hold  {scoop}  to scoop junk into the hopper", "goal": 8},
+	{"id": "bale", "text": "Fill the hopper near the line, then  {cube}  to compress a bale"},
+	{"id": "carry", "text": "{interact}  to pick up the bale"},
 	{"id": "cash", "text": "Set it on the scale by the green skip"},
-	{"id": "upgrade", "text": "Walk into the shack.  E  at the workbench to install an upgrade"},
+	{"id": "upgrade", "text": "Walk into the shack.  {interact}  at the workbench to install an upgrade"},
 	{"id": "hex", "text": "Clear this whole hex. Every last can."},
 ]
 
@@ -25,6 +25,21 @@ func _ready() -> void:
 	EventBus.upgrade_bought.connect(func(_id: String, _l: int) -> void: _progress("upgrade"))
 	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: _progress("hex"))
 	_announce.call_deferred()
+	Settings.input_device_changed.connect(func(_p: bool) -> void:  # [deck] prompts follow the device
+		if not done():
+			EventBus.tutorial_changed.emit(current_text()))
+
+
+## [deck] "{action}" -> the binding's name on the device in use ("LMB" / "RT" / "R2").
+static func glyphs(t: String) -> String:
+	var out: String = t
+	while "{" in out and "}" in out:
+		var a: int = out.find("{")
+		var b: int = out.find("}", a)
+		if b < 0:
+			break
+		out = out.substr(0, a) + Settings.glyph(out.substr(a + 1, b - a - 1)) + out.substr(b + 1)
+	return out
 
 
 func done() -> bool:
@@ -35,7 +50,7 @@ func current_text() -> String:
 	if done():
 		return ""
 	var s: Dictionary = STEPS[step]
-	var t: String = s["text"]
+	var t: String = glyphs(s["text"])
 	if s.has("goal"):
 		t += "   %d/%d" % [mini(_count, int(s["goal"])), int(s["goal"])]
 	return t

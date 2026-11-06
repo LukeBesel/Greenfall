@@ -146,7 +146,7 @@ func take_tin() -> void:
 	GameState.add_currency("seeds", BigNum.from_float(float(cfg.get("seeds_given", 15))))
 	world.patch.water = world.patch.water_cap()
 	world.patch.set_tool(Patch.Tool.PLANT)
-	EventBus.tutorial_changed.emit("Find clean ground.  Hold  LMB  to plant.  3  for the watering can, hold  LMB  to water.")
+	EventBus.tutorial_changed.emit(Tutorial.glyphs("Find clean ground.  Hold  {scoop}  to plant.  {tool_water}  for the watering can, hold  {scoop}  to water."))  # [deck]
 	_waiting_sprout = true
 	_active = false
 

@@ -42,7 +42,7 @@ func _ready() -> void:
 	_body.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_body.custom_minimum_size = Vector2(480, 0)
 	vb.add_child(_body)
-	var hint := UITheme.label("E / Esc   close", 12, Color(0.4, 0.38, 0.35))
+	var hint := PromptLabel.new("{interact}  [k]/ Esc  [/k]close", 13, Color(0.4, 0.38, 0.35))  # [deck]
 	vb.add_child(hint)
 	_root.visible = false
 

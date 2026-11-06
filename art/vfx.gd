@@ -193,7 +193,7 @@ func burst(kind: String, pos: Vector3, color: Color = Color.WHITE, amount_scale:
 	var p: CPUParticles3D = list[idx]
 	p.global_position = pos
 	p.color = color
-	p.amount = maxi(1, int(_base_amount(kind) * amount_scale))
+	p.amount = maxi(1, int(_base_amount(kind) * amount_scale * Settings.particle_scale()))  # [deck] fewer on Low
 	p.restart()
 	p.emitting = true
 

@@ -79,7 +79,7 @@ func _ready() -> void:
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(sp)
 	var close := Button.new()
-	close.text = "Close  [K]"
+	Settings.bind_text(close, func() -> String: return "Close  [%s]" % Settings.glyph("open_codex" if not Settings.last_input_pad else "ui_cancel"))  # [deck]
 	close.custom_minimum_size = Vector2(140, 44)
 	close.focus_mode = Control.FOCUS_NONE
 	close.pressed.connect(close_screen)
@@ -95,7 +95,7 @@ func _ready() -> void:
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
 		tabs.add_child(b)
 		_tab_buttons[str(t["id"])] = b
-	tabs.add_child(UITheme.label("   Q / E  switch tabs", 12, UITheme.MUTED))
+	tabs.add_child(PromptLabel.new("   {ui_tab_prev}{ui_tab_next}  switch tabs", 13))  # [deck]
 	_body = MarginContainer.new()
 	_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	vb.add_child(_body)

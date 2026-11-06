@@ -225,7 +225,7 @@ static func rain() -> Node3D:
 	n.name = "Rain"
 	var drops := CPUParticles3D.new()
 	drops.name = "Drops"
-	drops.amount = 900
+	drops.amount = int(900 * Settings.particle_scale())  # [deck]
 	drops.lifetime = 1.1
 	drops.preprocess = 1.0
 	drops.local_coords = false
@@ -250,7 +250,7 @@ static func rain() -> Node3D:
 	n.add_child(drops)
 	var splash := CPUParticles3D.new()
 	splash.name = "Splash"
-	splash.amount = 160
+	splash.amount = int(160 * Settings.particle_scale())
 	splash.lifetime = 0.35
 	splash.local_coords = false
 	splash.emission_shape = CPUParticles3D.EMISSION_SHAPE_BOX

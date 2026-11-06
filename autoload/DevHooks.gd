@@ -37,6 +37,7 @@ extends Node
 ##   --event-every=S    next random event in S seconds (ignores the min-hexes gate)
 ##   --streak=N         start with N cleaning-streak points (30 per tier)
 ##   --tokens=N         start with N contract tokens; --trinkets=N grants N collectibles; --livery=ID equips one
+##   --pad-audit        [deck] open every screen pad-only and check focus reachability + B to close
 ##   --scene-stats[=S]  [deck] print a geometry census (tools/scene_stats.gd) after S s (headless ok)
 ##   --tab=contracts    with --open=upgrades: the contracts board and token shop (--contracts-sample fills it)
 
@@ -68,6 +69,8 @@ func _ready() -> void:
 		Settings.colorblind = true
 	if has("time-scale"):
 		Engine.time_scale = float(args["time-scale"])
+	if has("pad-audit"):  # [deck] controller-only screen audit (tools/pad_audit.gd)
+		add_child(PadAudit.new())
 	if not args.is_empty():
 		print("[DevHooks] args: ", args)
 
