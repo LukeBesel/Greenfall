@@ -175,13 +175,13 @@ func _build() -> void:
 	_float.add_child(_head)
 	_mi(_head, ProcMesh.rounded_box(Vector3(0.74, 0.5, 0.56), 0.22, 7), paint, Vector3(0, 0.24, 0))
 	# Dark bezel around the visor, then the screen.
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.64, 0.42, 0.53), 0.18, 6), trim, Vector3(0, 0.235, -0.03))
+	_mi(_head, ProcMesh.rounded_box(Vector3(0.64, 0.42, 0.53), 0.13, 6), trim, Vector3(0, 0.235, -0.03))
 	_face_mat = ShaderMaterial.new()
 	_face_mat.shader = preload("res://art/shaders/bot_face.gdshader")
 	_face_mat.set_shader_parameter("eye_color", glow)
 	_face_mat.set_shader_parameter("half_width", 0.29)
 	_face_mat.set_shader_parameter("half_height", 0.18)
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.6, 0.38, 0.53), 0.17, 6), _face_mat, Vector3(0, 0.235, -0.04))
+	_mi(_head, ProcMesh.rounded_box(Vector3(0.6, 0.38, 0.53), 0.1, 6), _face_mat, Vector3(0, 0.235, -0.04))
 	# Orange accents: a stripe along the crown and small tabs beside the visor.
 	_mi(_head, ProcMesh.rounded_box(Vector3(0.09, 0.03, 0.2), 0.012, 2), accent, Vector3(-0.16, 0.48, 0.08), Vector3(0, 0, 8))
 	for x: float in [-0.335, 0.335]:

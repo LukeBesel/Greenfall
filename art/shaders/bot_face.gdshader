@@ -41,10 +41,10 @@ vec2 eye(vec2 p, vec2 c, float r, float th) {
 void fragment() {
 	vec2 p = vec2(lp.x, lp.y) / half_height;
 	vec2 off = look * vec2(0.12, 0.1);
-	vec2 a = eye(p, vec2(-0.6, 0.0) + off, 0.39, 0.24);
-	vec2 b = eye(p, vec2(0.6, 0.0) + off, 0.39, 0.24);
+	vec2 a = eye(p, vec2(-0.52, 0.0) + off, 0.36, 0.22);
+	vec2 b = eye(p, vec2(0.52, 0.0) + off, 0.36, 0.22);
 	// Only on the flat front of the visor, never smeared over its rounded sides.
-	float front = smoothstep(0.55, 0.85, abs(ln.z));
+	float front = smoothstep(0.75, 0.95, abs(ln.z));
 	float core = clamp(a.x + b.x, 0.0, 1.0) * front;
 	float halo = clamp(a.y + b.y, 0.0, 1.0) * front;
 	float scan = 0.02 * sin(lp.y * 900.0 + TIME * 6.0);
