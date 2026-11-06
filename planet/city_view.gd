@@ -23,12 +23,19 @@ var _detail := BuildingDetail.new()
 var _body: BuildingDetail.Geo
 var _det: BuildingDetail.Geo
 const DETAIL_RANGE: float = 240.0
+## [deck] Static city batches: sidewalk tops / curbs / fences merged per 72 m cell (world ==
+## object space for these, so merging is exact), fire escapes instanced per cell.
+var _static := MeshBatch.new()
+var _props := MeshBatch.new()
 
 
 func build(p_layout: CityLayout, p_ground_material: Material) -> void:
 	layout = p_layout
 	ground_material = p_ground_material
 	_rng.seed = layout.seed_value + 1234
+	_static.cell = CityLayout.PITCH * 2.0
+	_props.cell = CityLayout.PITCH * 2.0
+	_props.visibility_end = 260.0
 	_load_kit(APT)
 	_load_kit(FAC)
 	_curb_mat = AssetLib.pbr_material("concrete_pavement", 1.2, Color(0.82, 0.8, 0.78), true)
@@ -38,6 +45,8 @@ func build(p_layout: CityLayout, p_ground_material: Material) -> void:
 	if not layout.wild:
 		_build_street_props()
 		_build_skyline()  # wilderness has its own horizon (FieldView hills and biome wrecks)
+	_static.flush(self)
+	_props.flush(self)
 
 
 # --- Kit --------------------------------------------------------------------------
@@ -67,7 +76,8 @@ func _pick(kit: String, prefix: String) -> String:
 func _place(block: Vector2i, kit: String, piece: String, xf: Transform3D) -> void:
 	if piece == "" or not (_kit[kit] as Dictionary).has(piece):
 		return
-	var key: String = "%d,%d|%s|%s" % [block.x, block.y, kit, piece]
+	# [deck] One MultiMesh per kit piece for the whole detail ring (was one per block per piece).
+	var key: String = "%s|%s" % [kit, piece]
 	if not _batches.has(key):
 		_batches[key] = []
 	var arr: Array = _batches[key]
@@ -78,7 +88,7 @@ func _place(block: Vector2i, kit: String, piece: String, xf: Transform3D) -> voi
 func _flush_batches() -> void:
 	for key: String in _batches:
 		var parts: PackedStringArray = key.split("|")
-		var mesh: Mesh = AssetLib.lite(_kit[parts[1]][parts[2]], 600)
+		var mesh: Mesh = AssetLib.lite(_kit[parts[0]][parts[1]], 600)
 		var xfs: Array = _batches[key]
 		var mm := MultiMesh.new()
 		mm.transform_format = MultiMesh.TRANSFORM_3D
@@ -129,6 +139,11 @@ func _flush_block(key: Vector2i) -> void:
 		var g: BuildingDetail.Geo = _body if pass_i == 0 else _det
 		if g == null or g.empty():
 			continue
+		if pass_i == 0:
+			# [deck] Bodies merge per 72 m cell (world-space shader: exact); detail meshes stay per
+			# block so their 240 m visibility range still measures from the block.
+			_static.merge(g.mesh(c), Transform3D(Basis.IDENTITY, c), BuildingDetail.material(), true)
+			continue
 		var mi := MeshInstance3D.new()
 		mi.name = "Buildings%s_%d_%d" % ["" if pass_i == 0 else "Detail", key.x, key.y]
 		mi.mesh = g.mesh(c)
@@ -155,16 +170,12 @@ func _build_sidewalks(r: Rect2, detailed: bool = true) -> void:
 		Rect2(Vector2(r.end.x, r.position.y), Vector2(w, r.size.y)),
 	]
 	for s: Rect2 in slabs:
-		var top := MeshInstance3D.new()
 		var pm := PlaneMesh.new()
 		pm.size = s.size
 		pm.subdivide_width = int(s.size.x / 2.0)
 		pm.subdivide_depth = int(s.size.y / 2.0)
 		pm.material = ground_material
-		top.mesh = pm
-		top.position = Vector3(s.get_center().x, h, s.get_center().y)
-		top.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		add_child(top)
+		_static.merge(pm, Transform3D(Basis.IDENTITY, Vector3(s.get_center().x, h, s.get_center().y)), null, false)  # [deck]
 		var body := StaticBody3D.new()
 		var cs := CollisionShape3D.new()
 		var shape := ConvexPolygonShape3D.new()
@@ -193,10 +204,7 @@ func _build_sidewalks(r: Rect2, detailed: bool = true) -> void:
 		var horiz: bool = absf(a.y - bb.y) < 0.01
 		curb_parts.append(ProcMesh.part(ProcMesh.box(Vector3(len, h + 0.02, 0.22) if horiz else Vector3(0.22, h + 0.02, len)),
 			ProcMesh.xf(Vector3(mid.x, h * 0.5 - 0.005, mid.y))))
-	var curb := MeshInstance3D.new()
-	curb.mesh = ProcMesh.merge(curb_parts)
-	curb.material_override = _curb_mat
-	add_child(curb)
+	_static.merge(ProcMesh.merge(curb_parts), Transform3D.IDENTITY, _curb_mat, true, Vector3(r.get_center().x, 0, r.get_center().y))  # [deck]
 
 
 func _build_building(block: Vector2i, bd: Dictionary) -> void:
@@ -283,11 +291,7 @@ func _build_building(block: Vector2i, bd: Dictionary) -> void:
 		var bay: int = _rng.randi_range(0, maxi(bays - 2, 0))
 		var o2: Vector2 = origin + along * (bay + 1.5) * BAY + face * 0.7
 		for f: int in range(1, floors):
-			var piece: String = "fire_escape"
-			var m := MeshInstance3D.new()
-			m.mesh = AssetLib.lite(_fire_escape_mesh("modular_fire_escape_platform_middle"), 800)
-			m.transform = Transform3D(basis, Vector3(o2.x, f * FLOOR_H, o2.y))
-			add_child(m)
+			_static.instance(AssetLib.lite(_fire_escape_mesh("modular_fire_escape_platform_middle"), 800), Transform3D(basis, Vector3(o2.x, f * FLOOR_H, o2.y)))  # [deck]
 	# Collision for the whole building footprint.
 	var body := StaticBody3D.new()
 	var cs := CollisionShape3D.new()
@@ -336,33 +340,28 @@ func _build_fence(r: Rect2, partial: bool) -> void:
 		var len: float = a.distance_to(bb)
 		var horiz: bool = absf(a.y - bb.y) < 0.01
 		parts.append(ProcMesh.part(ProcMesh.cyl(0.02, 0.02, len, 6), ProcMesh.xf(Vector3(mid.x, 1.78, mid.y), Vector3(0, 0, 90) if horiz else Vector3(90, 0, 0))))
-	var mi := MeshInstance3D.new()
-	mi.mesh = ProcMesh.merge(parts)
-	mi.material_override = mat
-	add_child(mi)
+	_static.merge(ProcMesh.merge(parts), Transform3D.IDENTITY, mat, true, Vector3(r.get_center().x, 0, r.get_center().y))  # [deck]
 
 
 # --- Street furniture ---------------------------------------------------------------
 
-func _mesh_prop(model: String, pos: Vector3, yaw: float, collide: bool, scl: float = 1.0) -> MeshInstance3D:
-	var mi := MeshInstance3D.new()
-	mi.mesh = AssetLib.lite(AssetLib.model_part(model.get_slice("::", 0), model.get_slice("::", 1)) if "::" in model else AssetLib.model_mesh(model), 2500)
-	mi.position = pos
-	mi.rotation.y = yaw
-	mi.scale = Vector3.ONE * scl
-	mi.visibility_range_end = 260.0
-	add_child(mi)
+## [deck] Street props are instanced per model and 72 m cell (MeshBatch); collision stays as
+## plain StaticBody3D nodes with the same transform.
+func _mesh_prop(model: String, pos: Vector3, yaw: float, collide: bool, scl: float = 1.0, roll: float = 0.0) -> void:
+	var mesh: Mesh = AssetLib.lite(AssetLib.model_part(model.get_slice("::", 0), model.get_slice("::", 1)) if "::" in model else AssetLib.model_mesh(model), 2500)
+	var xf := Transform3D(Basis.from_euler(Vector3(0.0, yaw, roll)) * Basis.from_scale(Vector3.ONE * scl), pos)
+	_props.instance(mesh, xf)
 	if collide:
-		var aabb: AABB = mi.mesh.get_aabb()
+		var aabb: AABB = mesh.get_aabb()
 		var body := StaticBody3D.new()
+		body.transform = Transform3D(Basis.from_euler(Vector3(0.0, yaw, roll)), pos)
 		var cs := CollisionShape3D.new()
 		var box := BoxShape3D.new()
 		box.size = Vector3(maxf(aabb.size.x, 0.2), aabb.size.y, maxf(aabb.size.z, 0.2)) * scl * 0.9
 		cs.shape = box
 		cs.position = aabb.get_center() * scl
 		body.add_child(cs)
-		mi.add_child(body)
-	return mi
+		add_child(body)
 
 
 func _build_street_props() -> void:
@@ -386,9 +385,10 @@ func _build_street_props() -> void:
 					var p: Vector2 = c + (Vector2(t, -walk_mid - 0.6) if side == 0 else Vector2(walk_mid + 0.6, t))
 					var yaw: float = PI if side == 0 else -PI * 0.5
 					if _rng.randf() < 0.75:
-						var lamp: MeshInstance3D = _mesh_prop("street_lamp_02" if _rng.randf() < 0.5 else "street_lamp_01", Vector3(p.x, CityLayout.CURB_H, p.y), yaw + _rng.randf_range(-0.05, 0.05), near)
-						if _rng.randf() < 0.15:
-							lamp.rotation.z = _rng.randf_range(-0.15, 0.15)  # leaning, half-collapsed
+						var lamp_model: String = "street_lamp_02" if _rng.randf() < 0.5 else "street_lamp_01"
+						var lamp_yaw: float = yaw + _rng.randf_range(-0.05, 0.05)
+						var lean: float = _rng.randf_range(-0.15, 0.15) if _rng.randf() < 0.15 else 0.0  # leaning, half-collapsed
+						_mesh_prop(lamp_model, Vector3(p.x, CityLayout.CURB_H, p.y), lamp_yaw, near, 1.0, lean)
 			if not near:
 				continue
 			# Hydrant, manholes, a payphone, benches, utility boxes.
@@ -424,16 +424,29 @@ func _build_skyline() -> void:
 	var roof_mat: StandardMaterial3D = AssetLib.pbr_material("concrete_wall_008", 0.2, Color(0.55, 0.53, 0.5), true)
 	var rust_mat: StandardMaterial3D = AssetLib.pbr_material("rusty_metal_02", 0.5, Color(0.9, 0.85, 0.8), true)
 	var r0: float = layout.extent + 20.0
+	# [deck] Batched: far-shader masses merge per material (the shader is world-space), roof
+	# props instance per mesh (their triplanar materials are object-space). ~700 nodes -> ~20.
+	# Four quadrant cells keep frustum culling useful.
+	var batch := MeshBatch.new()
+	batch.cell = r0 + 200.0
+	var tank_mesh: Mesh = ProcMesh.cyl(1.6, 1.6, 3.0, 12)
+	var leg_mesh: Mesh = ProcMesh.cyl(0.12, 0.12, 2.2, 5)
+	var ac_mesh: Mesh = ProcMesh.box(Vector3(2.0, 1.2, 1.6))
+	# Unique-size slabs and masts merge with world-space triplanar copies (same texture scale; at
+	# 200+ m in haze only the projection's phase differs).
+	var roof_w: StandardMaterial3D = roof_mat.duplicate()
+	roof_w.uv1_world_triplanar = true
+	var rust_w: StandardMaterial3D = rust_mat.duplicate()
+	rust_w.uv1_world_triplanar = true
 	for i: int in 90:
 		var ang: float = TAU * i / 90.0 + _rng.randf_range(-0.03, 0.03)
 		var dist: float = r0 + _rng.randf_range(0.0, 170.0)
 		var w: float = _rng.randf_range(14.0, 28.0)
 		var d: float = w * _rng.randf_range(0.7, 1.2)
 		var h: float = roundf(_rng.randf_range(24.0, 110.0) / 3.0) * 3.0
-		var root := Node3D.new()
-		root.position = Vector3(cos(ang) * dist, -1.0, sin(ang) * dist)
-		root.rotation.y = _rng.randf() * TAU
-		add_child(root)
+		var root := Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), Vector3(cos(ang) * dist, -1.0, sin(ang) * dist))
+		var at := func(p: Vector3, rot: Vector3 = Vector3.ZERO) -> Transform3D:
+			return root * Transform3D(Basis.from_euler(rot), p)
 		var mat: ShaderMaterial = mats[_rng.randi() % mats.size()]
 		var y: float = 0.0
 		var cw: float = w
@@ -441,54 +454,27 @@ func _build_skyline() -> void:
 		var tiers: int = 1 + (_rng.randi() % 3 if h > 50.0 else 0)
 		for t: int in tiers:
 			var th: float = h / float(tiers) * (1.2 if t == 0 else 0.9)
-			var mi := MeshInstance3D.new()
-			mi.mesh = ProcMesh.box(Vector3(cw, th, cd))
-			mi.material_override = mat
-			mi.position = Vector3(0, y + th * 0.5, 0)
-			mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-			root.add_child(mi)
+			batch.merge(ProcMesh.box(Vector3(cw, th, cd)), at.call(Vector3(0, y + th * 0.5, 0)), mat, false)
 			y += th
 			cw *= _rng.randf_range(0.65, 0.85)
 			cd *= _rng.randf_range(0.65, 0.85)
 		# Roof: parapet slab plus clutter.
-		var slab := MeshInstance3D.new()
-		slab.mesh = ProcMesh.box(Vector3(cw / 0.75 * 0.98, 0.6, cd / 0.75 * 0.98))
-		slab.material_override = roof_mat
-		slab.position = Vector3(0, y + 0.3, 0)
-		slab.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		root.add_child(slab)
+		batch.merge(ProcMesh.box(Vector3(cw / 0.75 * 0.98, 0.6, cd / 0.75 * 0.98)), at.call(Vector3(0, y + 0.3, 0)), roof_w, false)
 		if _rng.randf() < 0.6:
-			var tank := MeshInstance3D.new()
-			tank.mesh = ProcMesh.cyl(1.6, 1.6, 3.0, 12)
-			tank.material_override = rust_mat
-			tank.position = Vector3(_rng.randf_range(-cw, cw) * 0.25, y + 3.6, _rng.randf_range(-cd, cd) * 0.25)
-			tank.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-			root.add_child(tank)
+			var tp := Vector3(_rng.randf_range(-cw, cw) * 0.25, y + 3.6, _rng.randf_range(-cd, cd) * 0.25)
+			batch.instance(tank_mesh, at.call(tp), rust_mat, false)
 			for k: int in 4:
-				var leg := MeshInstance3D.new()
-				leg.mesh = ProcMesh.cyl(0.12, 0.12, 2.2, 5)
-				leg.material_override = rust_mat
-				leg.position = tank.position + Vector3((1.0 if k % 2 == 0 else -1.0) * 1.1, -2.6, (1.0 if k < 2 else -1.0) * 1.1)
-				root.add_child(leg)
+				batch.instance(leg_mesh, at.call(tp + Vector3((1.0 if k % 2 == 0 else -1.0) * 1.1, -2.6, (1.0 if k < 2 else -1.0) * 1.1)), rust_mat, true)
 		if _rng.randf() < 0.45:
-			var mast := MeshInstance3D.new()
 			var mh: float = _rng.randf_range(5.0, 14.0)
-			mast.mesh = ProcMesh.cyl(0.15, 0.3, mh, 6)
-			mast.material_override = rust_mat
-			mast.position = Vector3(_rng.randf_range(-cw, cw) * 0.3, y + mh * 0.5, _rng.randf_range(-cd, cd) * 0.3)
-			root.add_child(mast)
+			var mast_mesh: Mesh = ProcMesh.cyl(0.15, 0.3, mh, 6)
+			batch.merge(mast_mesh, at.call(Vector3(_rng.randf_range(-cw, cw) * 0.3, y + mh * 0.5, _rng.randf_range(-cd, cd) * 0.3)), rust_w, true)
 		for k: int in _rng.randi() % 4:
-			var ac := MeshInstance3D.new()
-			ac.mesh = ProcMesh.box(Vector3(2.0, 1.2, 1.6))
-			ac.material_override = roof_mat
-			ac.position = Vector3(_rng.randf_range(-cw, cw) * 0.35, y + 1.2, _rng.randf_range(-cd, cd) * 0.35)
-			ac.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-			root.add_child(ac)
+			batch.instance(ac_mesh, at.call(Vector3(_rng.randf_range(-cw, cw) * 0.35, y + 1.2, _rng.randf_range(-cd, cd) * 0.35)), roof_mat, false)
 		if _rng.randf() < 0.18:
 			# Broken top: a tilted slab of the last floor.
-			var broken := MeshInstance3D.new()
-			broken.mesh = ProcMesh.box(Vector3(cw * 0.6, 4.0, cd * 0.5))
-			broken.material_override = mat
-			broken.position = Vector3(cw * 0.15, y + 1.2, 0)
-			broken.rotation = Vector3(0.0, 0.0, _rng.randf_range(0.25, 0.5))
-			root.add_child(broken)
+			batch.merge(ProcMesh.box(Vector3(cw * 0.6, 4.0, cd * 0.5)), at.call(Vector3(cw * 0.15, y + 1.2, 0), Vector3(0.0, 0.0, _rng.randf_range(0.25, 0.5))), mat, true)
+	var sky := Node3D.new()
+	sky.name = "Skyline"
+	add_child(sky)
+	batch.flush(sky)
