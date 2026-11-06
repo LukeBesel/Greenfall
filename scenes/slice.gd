@@ -16,6 +16,7 @@ var wren: Wren
 var fleet: Fleet
 var planet: PlanetData
 var globe: GlobeView
+var sky_director: SkyDirector
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
 var depot: Depot
@@ -252,6 +253,13 @@ func _build_environment() -> void:
 	add_child(_sun)
 	Settings.apply_render_quality(env, get_viewport())
 	Settings.apply_sun_quality(_sun)
+	sky_director = SkyDirector.new()
+	sky_director.world = self
+	add_child(sky_director)
+	sky_director.setup(env, _sun)
+	if DevHooks.has("time"):
+		sky_director.time_of_day = DevHooks.get_f("time", 0.5)
+		sky_director.frozen = true
 
 
 func _build_board() -> void:
