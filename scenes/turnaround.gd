@@ -42,6 +42,13 @@ func _ready() -> void:
 	sun.light_color = Color(1.0, 0.88, 0.74)
 	sun.shadow_enabled = true
 	add_child(sun)
+	# Cool rim light from behind (like the concept's turnaround: warm key + cyan-white rim).
+	var rim := DirectionalLight3D.new()
+	rim.rotation_degrees = Vector3(-20, 150, 0)
+	rim.light_energy = 1.3
+	rim.light_color = Color(0.65, 0.85, 1.0)
+	rim.light_specular = 1.2
+	add_child(rim)
 	var ground := MeshInstance3D.new()
 	var pm := PlaneMesh.new()
 	pm.size = Vector2(30, 30)

@@ -9,7 +9,7 @@ extends Node3D
 ## the default look). Faces -Z. Base (hover ring) near y=0.
 
 const VARIANTS: Dictionary = {
-	"aurora": {"name": "Aurora", "paint": Color(0.9, 0.9, 0.87), "trim": Color(0.36, 0.38, 0.42), "glow": Color(0.3, 0.88, 1.0), "accent": Color(1.0, 0.62, 0.2), "icon": "recycle"},
+	"aurora": {"name": "Aurora", "paint": Color(0.9, 0.88, 0.83), "trim": Color(0.36, 0.38, 0.42), "glow": Color(0.3, 0.88, 1.0), "accent": Color(1.0, 0.5, 0.12), "icon": "recycle"},
 	"bolt": {"name": "Bolt", "paint": Color(0.95, 0.72, 0.12), "trim": Color(0.3, 0.27, 0.22), "glow": Color(1.0, 0.72, 0.2), "accent": Color(0.25, 0.22, 0.18), "icon": "recycle"},
 	"sprout": {"name": "Sprout", "paint": Color(0.5, 0.56, 0.24), "trim": Color(0.3, 0.32, 0.2), "glow": Color(0.55, 1.0, 0.35), "accent": Color(0.85, 0.7, 0.3), "icon": "leaf", "leaf": true},
 	"pixel": {"name": "Pixel", "paint": Color(0.85, 0.2, 0.18), "trim": Color(0.92, 0.9, 0.86), "glow": Color(1.0, 0.35, 0.5), "accent": Color(0.92, 0.9, 0.86), "icon": "recycle", "ears": "round"},
@@ -87,11 +87,58 @@ func set_variant(v: String) -> void:
 	_build()
 
 
-func _paint(c: Color, seed: float, coverage: float = 0.86) -> ShaderMaterial:
-	var m: ShaderMaterial = Mats.worn_paint(c, coverage, 0.25, seed, 0.45)
-	m.set_shader_parameter("paint_roughness", 0.42)
-	m.set_shader_parameter("dust", 0.55)
+const MODEL_PATH := "res://art/models/aurora/aurora.glb"
+const HERO_PAINT := preload("res://art/shaders/hero_paint.gdshader")
+## Visual layer bit the hero's meshes also sit on, so his own key light only lights him.
+const HERO_LAYER := 2
+## Meshes and pivots baked from art/models/aurora (built by build_aurora.py in Blender).
+static var _parts: Dictionary = {}
+var _mats: Dictionary = {}
+var _paint_mats: Array[ShaderMaterial] = []
+
+
+static func _load_parts() -> void:
+	if not _parts.is_empty():
+		return
+	var scene: PackedScene = load(MODEL_PATH)
+	var inst: Node = scene.instantiate()
+	for n: Node in inst.find_children("*", "MeshInstance3D", true, false):
+		var mi: MeshInstance3D = n
+		_parts[str(mi.name)] = {"mesh": mi.mesh, "pos": mi.position}
+	inst.free()
+
+
+static func _pivot(part: String) -> Vector3:
+	_load_parts()
+	return _parts[part]["pos"]
+
+
+func _paint(c: Color, seed: float, coverage: float = 0.88, metal: float = 0.0, rough: float = 0.42) -> ShaderMaterial:
+	var m: ShaderMaterial = Mats.worn_paint(c, coverage, 0.25, seed, 0.5)
+	m.shader = HERO_PAINT
+	m.set_shader_parameter("paint_roughness", rough)
+	m.set_shader_parameter("paint_metallic", metal)
+	m.set_shader_parameter("dust", 0.45)
+	m.set_shader_parameter("grime", 0.6)
+	m.set_shader_parameter("fade", 0.15 if c.s < 0.5 else 0.0)
+	_paint_mats.append(m)
 	return m
+
+
+## Instance a baked part (mesh vertices are relative to its pivot) with per-surface materials.
+func _part(parent: Node3D, part: String, pos: Vector3 = Vector3.ZERO) -> MeshInstance3D:
+	_load_parts()
+	var mi := MeshInstance3D.new()
+	mi.mesh = _parts[part]["mesh"]
+	mi.position = pos
+	mi.layers = 1 | HERO_LAYER
+	for i: int in mi.mesh.get_surface_count():
+		var src: Material = mi.mesh.surface_get_material(i)
+		var key: String = src.resource_name if src else ""
+		if _mats.has(key):
+			mi.set_surface_override_material(i, _mats[key])
+	parent.add_child(mi)
+	return mi
 
 
 func _mi(parent: Node3D, mesh: Mesh, mat: Material, pos: Vector3, rot: Vector3 = Vector3.ZERO, scl: Vector3 = Vector3.ONE) -> MeshInstance3D:
@@ -101,123 +148,112 @@ func _mi(parent: Node3D, mesh: Mesh, mat: Material, pos: Vector3, rot: Vector3 =
 	m.position = pos
 	m.rotation_degrees = rot
 	m.scale = scl
+	m.layers = 1 | HERO_LAYER
 	parent.add_child(m)
 	return m
 
 
+## Point the paint rim light away from the scene's sun (once the scene is up).
+func _find_sun() -> void:
+	if not is_inside_tree():
+		return
+	for n: Node in get_tree().root.find_children("*", "DirectionalLight3D", true, false):
+		var sun: DirectionalLight3D = n
+		if sun.visible:
+			var to_sun: Vector3 = sun.global_transform.basis.z.normalized()
+			for m: ShaderMaterial in _paint_mats:
+				m.set_shader_parameter("sun_dir", to_sun)
+			return
+
+
 func _build() -> void:
 	var v: Dictionary = VARIANTS[variant]
-	var paint: ShaderMaterial = _paint(v["paint"], 3.0)
-	var trim: ShaderMaterial = _paint(v["trim"], 7.0, 0.9)
-	var accent: ShaderMaterial = _paint(v["accent"], 11.0, 0.8)
-	var dark: StandardMaterial3D = Mats.metal("dark_steel")
 	var glow: Color = v["glow"]
-	var glow_mat: StandardMaterial3D = Mats.lamp(glow, 3.5)
+	var accent_c: Color = v["accent"]
+	_paint_mats.clear()
+	_ring_mat = Mats.lamp(glow, 4.5)
+	var screen := Mats.glass(Color(0.02, 0.03, 0.04, 1.0), 0.08)
+	_mats = {
+		"paint": _paint((v["paint"] as Color).darkened(0.04), 3.0, 0.9),
+		"trim": _paint((v["trim"] as Color).darkened(0.45), 7.0, 0.9, 0.35, 0.4),
+		"accent": _paint(accent_c, 11.0, 0.86),
+		"dark": _paint(Color(0.17, 0.175, 0.19), 5.0, 0.75, 0.6, 0.38),
+		"steel": Mats.metal("steel"),
+		"glow": Mats.lamp(glow, 3.2),
+		"lamp_accent": Mats.lamp(accent_c, 2.4),
+		"screen": screen,
+		"thruster": _ring_mat,
+		"thruster_core": Mats.lamp(glow.lightened(0.4), 5.0),
+	}
+	_face_mat = ShaderMaterial.new()
+	_face_mat.shader = preload("res://art/shaders/bot_face.gdshader")
+	_face_mat.set_shader_parameter("eye_color", glow)
+	_face_mat.set_shader_parameter("half_width", 0.29)
+	_face_mat.set_shader_parameter("half_height", 0.17)
+	_mats["face"] = _face_mat
 	_root = Node3D.new()
 	add_child(_root)
 	_float = Node3D.new()
 	_root.add_child(_float)
 
-	# --- Hover base: dark bowl, thin accent rim, bright thruster ring and light pool.
-	_mi(_float, ProcMesh.hemisphere(0.2, 28, 7), trim, Vector3(0, 0.22, 0), Vector3(180, 0, 0), Vector3(1.0, 0.62, 1.0))
-	_mi(_float, ProcMesh.torus(0.19, 0.215, 36, 5), accent, Vector3(0, 0.215, 0), Vector3.ZERO, Vector3(1, 0.5, 1))
-	_ring_mat = Mats.lamp(glow, 4.5)
-	_mi(_float, ProcMesh.torus(0.1, 0.14, 36, 6), _ring_mat, Vector3(0, 0.1, 0), Vector3.ZERO, Vector3(1, 0.45, 1))
-	_mi(_float, ProcMesh.cyl(0.1, 0.1, 0.01, 28), Mats.lamp(glow.lightened(0.35), 5.0), Vector3(0, 0.092, 0))
+	# --- Body: rounded torso (white upper shell, dark lower section, orange side panels, chest
+	# screen with orange lights, cyan collar strip) on a dark hover bowl with a thruster ring.
+	_part(_float, "body")
+	_part(_float, "thruster")
 	var hover_light := OmniLight3D.new()
 	hover_light.light_color = glow
-	hover_light.light_energy = 1.4
-	hover_light.omni_range = 1.4
+	hover_light.light_energy = 1.6
+	hover_light.omni_range = 1.5
 	hover_light.position = Vector3(0, 0.02, 0)
+	hover_light.shadow_enabled = false
 	_float.add_child(hover_light)
-
-	# --- Torso: compact cream body, dark side plates, orange-framed chest screen, glowing waist slots.
-	_mi(_float, ProcMesh.rounded_box(Vector3(0.44, 0.3, 0.36), 0.12, 4), paint, Vector3(0, 0.38, 0))
-	for x: float in [-0.215, 0.215]:
-		_mi(_float, ProcMesh.rounded_box(Vector3(0.05, 0.2, 0.26), 0.025, 2), trim, Vector3(x, 0.38, 0.0))
-		_mi(_float, ProcMesh.rounded_box(Vector3(0.04, 0.09, 0.1), 0.018, 2), accent, Vector3(x * 1.08, 0.36, -0.07))
-	# Chest screen: orange frame, dark glass, glowing icon.
-	_mi(_float, ProcMesh.rounded_box(Vector3(0.24, 0.17, 0.04), 0.03, 2), accent, Vector3(0, 0.395, -0.168))
-	_mi(_float, ProcMesh.rounded_box(Vector3(0.18, 0.13, 0.03), 0.02, 2), Mats.glass(Color(0.03, 0.05, 0.07, 1.0)), Vector3(0, 0.395, -0.182))
+	# His own soft key light (only lights his meshes) so he reads against the busy world.
+	var key := OmniLight3D.new()
+	key.light_color = Color(1.0, 0.93, 0.84)
+	key.light_energy = 0.8
+	key.omni_range = 2.2
+	key.omni_attenuation = 1.2
+	key.light_cull_mask = HERO_LAYER
+	key.shadow_enabled = false
+	key.light_specular = 0.4
+	key.position = Vector3(0.4, 1.5, 0.9)  # above/behind: the side the game camera usually sees
+	_float.add_child(key)
+	var fill := key.duplicate() as OmniLight3D
+	fill.light_energy = 0.45
+	fill.position = Vector3(-0.5, 1.1, -1.0)  # soft front fill for the face and chest
+	_float.add_child(fill)
 	var icon: String = str(v.get("icon", "recycle"))
 	var icon_l := Label3D.new()
 	icon_l.text = "+" if icon == "plus" else ("❦" if icon == "leaf" else "♻")
 	icon_l.font_size = 64
-	icon_l.pixel_size = 0.0015
-	icon_l.modulate = glow.lightened(0.25)
+	icon_l.pixel_size = 0.0013
+	icon_l.modulate = glow.lightened(0.3)
 	icon_l.outline_size = 0
 	icon_l.shaded = false
-	icon_l.position = Vector3(0, 0.4, -0.2)
+	icon_l.position = Vector3(0, 0.44, -0.182)
 	_float.add_child(icon_l)
-	_fill_bar = _mi(_float, ProcMesh.box(Vector3(0.14, 0.01, 0.01)), Mats.lamp(glow, 2.5), Vector3(0, 0.343, -0.2))
+	_fill_bar = _mi(_float, ProcMesh.box(Vector3(0.14, 0.01, 0.006)), Mats.lamp(glow, 2.5), Vector3(0, 0.388, -0.182))
 	_fill_bar.scale.x = 0.01
-	# Waist: dark band with a row of glowing slots across the front.
-	_mi(_float, ProcMesh.cyl(0.2, 0.19, 0.05, 32), dark, Vector3(0, 0.255, 0), Vector3.ZERO, Vector3(1.05, 1, 0.9))
-	for k: int in 5:
-		var ax: float = deg_to_rad(-40.0 + k * 20.0)
-		_mi(_float, ProcMesh.rounded_box(Vector3(0.05, 0.022, 0.02), 0.008, 1), glow_mat, Vector3(sin(ax) * 0.205, 0.255, -cos(ax) * 0.18), Vector3(0, -rad_to_deg(ax), 0))
-	# Back hatch where bales come out.
+	# Back hatch where bales come out (hinged at its top edge).
 	_hatch = Node3D.new()
-	_hatch.position = Vector3(0, 0.48, 0.17)
+	_hatch.position = _pivot("hatch")
 	_float.add_child(_hatch)
-	_mi(_hatch, ProcMesh.rounded_box(Vector3(0.24, 0.19, 0.03), 0.025, 2), trim, Vector3(0, -0.095, 0.0))
-	_mi(_hatch, ProcMesh.box(Vector3(0.12, 0.012, 0.01)), Mats.lamp(glow, 1.5), Vector3(0, -0.05, 0.018))
-	_mi(_hatch, ProcMesh.rounded_box(Vector3(0.05, 0.05, 0.02), 0.01, 1), accent, Vector3(0.08, -0.14, 0.018))
+	_part(_hatch, "hatch")
 
 	# --- Arms with three-finger claws.
-	_arm_l = _build_arm(-1.0, paint, trim, accent, dark, glow)
-	_arm_r = _build_arm(1.0, paint, trim, accent, dark, glow)
+	_arm_l = _build_arm(-1.0)
+	_arm_r = _build_arm(1.0)
 
-	# --- Head: big, wide, rounded; most of the front is a glossy black visor.
-	_mi(_float, ProcMesh.cyl(0.07, 0.08, 0.06, 14), dark, Vector3(0, 0.55, 0))
+	# --- Head: big rounded shell, glossy convex visor, ear discs with glow rings, crown vent,
+	# curved antenna with an orange fin.
 	_head = Node3D.new()
-	_head.position = Vector3(0, 0.56, 0)
+	_head.position = _pivot("head")
 	_float.add_child(_head)
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.74, 0.5, 0.56), 0.22, 7), paint, Vector3(0, 0.24, 0))
-	# Dark bezel around the visor, then the screen.
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.64, 0.42, 0.53), 0.13, 6), trim, Vector3(0, 0.235, -0.03))
-	_face_mat = ShaderMaterial.new()
-	_face_mat.shader = preload("res://art/shaders/bot_face.gdshader")
-	_face_mat.set_shader_parameter("eye_color", glow)
-	_face_mat.set_shader_parameter("half_width", 0.29)
-	_face_mat.set_shader_parameter("half_height", 0.18)
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.6, 0.38, 0.53), 0.1, 6), _face_mat, Vector3(0, 0.235, -0.04))
-	# Orange accents: a stripe along the crown and small tabs beside the visor.
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.09, 0.03, 0.2), 0.012, 2), accent, Vector3(-0.16, 0.48, 0.08), Vector3(0, 0, 8))
-	for x: float in [-0.335, 0.335]:
-		_mi(_head, ProcMesh.rounded_box(Vector3(0.025, 0.07, 0.09), 0.012, 2), Mats.lamp((v["accent"] as Color), 1.6), Vector3(x * 1.08, 0.05, -0.12))
-	# Ears: compact mechanical caps (not lenses, so they never read as extra eyes): a white
-	# housing, a dark trim ring, a thin glowing accent arc, and a vented end cap.
-	for x: float in [-0.372, 0.372]:
-		var sx: float = signf(x)
-		var ear := Node3D.new()
-		ear.position = Vector3(x, 0.2, 0.05)
-		ear.rotation_degrees = Vector3(0, 0, 90)
-		_head.add_child(ear)
-		_mi(ear, ProcMesh.cyl(0.12, 0.13, 0.05, 36), paint, Vector3(0, -sx * 0.012, 0))
-		_mi(ear, ProcMesh.cyl(0.105, 0.105, 0.014, 36), trim, Vector3(0, -sx * 0.036, 0))
-		_mi(ear, ProcMesh.torus(0.088, 0.096, 36, 4), Mats.lamp(glow, 2.2), Vector3(0, -sx * 0.042, 0))
-		_mi(ear, ProcMesh.cyl(0.075, 0.08, 0.02, 32), paint, Vector3(0, -sx * 0.046, 0))
-		for k: int in 3:
-			_mi(ear, ProcMesh.box(Vector3(0.09, 0.012, 0.01)), trim, Vector3(0, -sx * 0.057, -0.03 + k * 0.03), Vector3(90, 0, 0))
-	# Antenna: a dark curved stalk from the back of the crown ending in an orange swept fin.
-	var fin := Node3D.new()
-	fin.position = Vector3(0.06, 0.48, 0.12)
-	_head.add_child(fin)
-	_mi(fin, ProcMesh.cyl(0.04, 0.05, 0.035, 14), trim, Vector3.ZERO)
-	var seg1 := Node3D.new()
-	seg1.rotation_degrees = Vector3(28, 0, -10)
-	fin.add_child(seg1)
-	_mi(seg1, ProcMesh.cyl(0.016, 0.02, 0.12, 8), dark, Vector3(0, 0.06, 0))
-	var seg2 := Node3D.new()
-	seg2.position = Vector3(0, 0.12, 0)
-	seg2.rotation_degrees = Vector3(-80, 0, 0)
-	seg1.add_child(seg2)
-	_mi(seg2, ProcMesh.sphere(0.022, 10, 5), dark, Vector3.ZERO)
-	_mi(seg2, ProcMesh.cyl(0.013, 0.016, 0.07, 8), dark, Vector3(0, 0.035, 0))
-	_mi(seg2, ProcMesh.rounded_box(Vector3(0.07, 0.18, 0.025), 0.012, 3), accent, Vector3(0, 0.14, 0.0), Vector3(-15, 0, 0))
-	_mi(seg2, ProcMesh.sphere(0.014, 8, 4), Mats.lamp((v["accent"] as Color).lightened(0.3), 3.0), Vector3(0, 0.23, -0.02))
+	_part(_head, "head")
+	_part(_head, "visor", _pivot("visor") - _pivot("head"))
+	call_deferred("_find_sun")
 	# Variant extras.
+	var trim: Material = _mats["trim"]
 	if v.get("leaf", false):
 		var sprout := Node3D.new()
 		sprout.position = Vector3(-0.12, 0.48, -0.02)
@@ -271,37 +307,38 @@ func _build() -> void:
 	add_child(_beam_core)
 
 
-func _build_arm(side: float, paint: Material, trim: Material, accent: Material, dark: Material, glow: Color) -> Node3D:
+func _build_arm(side: float) -> Node3D:
+	var sfx: String = "_r" if side > 0.0 else "_l"
+	var sp: Vector3 = _pivot("arm_shoulder" + sfx)
+	var ep: Vector3 = _pivot("arm_elbow" + sfx)
+	var wp: Vector3 = _pivot("arm_wrist" + sfx)
 	var shoulder := Node3D.new()
-	shoulder.position = Vector3(0.26 * side, 0.44, -0.02)
+	shoulder.position = sp
 	_float.add_child(shoulder)
-	_mi(shoulder, ProcMesh.sphere(0.06, 14, 7), dark, Vector3.ZERO)
-	# Armoured upper arm with an accent band.
-	_mi(shoulder, ProcMesh.rounded_box(Vector3(0.085, 0.16, 0.09), 0.035, 3), paint, Vector3(0.045 * side, -0.07, -0.03), Vector3(-25, 0, side * 22))
-	_mi(shoulder, ProcMesh.rounded_box(Vector3(0.09, 0.025, 0.095), 0.01, 1), accent, Vector3(0.06 * side, -0.11, -0.05), Vector3(-25, 0, side * 22))
+	_part(shoulder, "arm_shoulder" + sfx)
 	var elbow := Node3D.new()
-	elbow.position = Vector3(0.08 * side, -0.13, -0.08)
+	elbow.position = ep - sp
 	shoulder.add_child(elbow)
-	_mi(elbow, ProcMesh.sphere(0.04, 12, 6), dark, Vector3.ZERO)
-	# Forearm: dark mechanical with a piston and a glowing wrist ring.
-	_mi(elbow, ProcMesh.rounded_box(Vector3(0.06, 0.06, 0.15), 0.02, 2), trim, Vector3(0, -0.005, -0.08))
-	_mi(elbow, ProcMesh.cyl(0.01, 0.01, 0.12, 6), Mats.metal("steel"), Vector3(0.035 * side, 0.02, -0.07), Vector3(90, 0, 0))
+	_part(elbow, "arm_elbow" + sfx)
 	var wrist := Node3D.new()
-	wrist.position = Vector3(0, -0.01, -0.17)
+	wrist.position = wp - ep
 	elbow.add_child(wrist)
-	_mi(wrist, ProcMesh.torus(0.026, 0.04, 16, 4), Mats.lamp(glow, 2.5), Vector3.ZERO, Vector3(90, 0, 0))
-	_mi(wrist, ProcMesh.cyl(0.04, 0.035, 0.04, 14), dark, Vector3(0, 0, -0.03), Vector3(90, 0, 0))
+	_part(wrist, "arm_wrist" + sfx)
 	for k: int in 3:
 		var a: float = TAU * k / 3.0 + PI * 0.5
 		var f := Node3D.new()
-		f.position = Vector3(cos(a) * 0.028, sin(a) * 0.028, -0.05)
+		f.position = Vector3(cos(a) * 0.026, sin(a) * 0.026, -0.045)
 		wrist.add_child(f)
-		_mi(f, ProcMesh.capsule(0.014, 0.06), dark, Vector3(cos(a) * 0.006, sin(a) * 0.006, -0.025), Vector3(90, 0, 0))
+		# The finger meshes point down -Z with their outer face on +Y; turn them to face outward.
+		var orient := Node3D.new()
+		orient.rotation.z = a - PI * 0.5
+		f.add_child(orient)
+		_part(orient, "finger")
 		var tip := Node3D.new()
-		tip.position = Vector3(cos(a) * 0.01, sin(a) * 0.01, -0.055)
-		tip.rotation = Vector3(-sin(a), cos(a), 0) * -0.5
-		f.add_child(tip)
-		_mi(tip, ProcMesh.capsule(0.012, 0.05), trim, Vector3(0, 0, -0.02), Vector3(90, 0, 0))
+		tip.position = Vector3(0, 0.002, -0.058)
+		tip.rotation.x = -0.45
+		orient.add_child(tip)
+		_part(tip, "finger_tip")
 		f.set_meta("dir", Vector2(cos(a), sin(a)))
 		_claws.append(f)
 	shoulder.set_meta("elbow", elbow)
