@@ -42,6 +42,17 @@ var _bar: ProgressBar
 var _rows: VBoxContainer
 var _big: Label
 var _grid_lines: MeshInstance3D
+## Hand-held mode: Patch raises a claw and projects the globe into the real world.
+var holder: Node3D  # Patch (has .model: PatchModel)
+var world_root: Node3D
+var _dim: ColorRect
+var _svc: SubViewportContainer
+var _anchor: Node3D
+var _beam: MeshInstance3D
+var _world_cam: Camera3D
+var _prev_cam: Camera3D
+var _handheld: bool = false
+var _holo_mat: ShaderMaterial
 var rocket_ready: Callable = func() -> bool: return false
 var launch_to: Callable = func(_hub: int) -> void: pass
 var current_hub: int = 0
@@ -61,8 +72,11 @@ func _ready() -> void:
 	var dim := ColorRect.new()
 	dim.color = Color(0.02, 0.025, 0.035, 0.9)
 	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(dim)
+	_dim = dim
 	var svc := SubViewportContainer.new()
+	_svc = svc
 	svc.stretch = true
 	svc.set_anchors_preset(Control.PRESET_FULL_RECT)
 	svc.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -77,8 +91,8 @@ func _ready() -> void:
 	_globe = MeshInstance3D.new()
 	_pivot.add_child(_globe)
 	_marker = MeshInstance3D.new()
-	_marker.mesh = ProcMesh.sphere(0.02, 10, 5)
-	_marker.material_override = Mats.lamp(Color(1.0, 0.75, 0.25), 6.0)
+	_marker.mesh = ProcMesh.sphere(0.03, 10, 5)
+	_marker.material_override = Mats.lamp(Color(1.0, 0.95, 0.6), 2.0)
 	_pivot.add_child(_marker)
 	_cam = Camera3D.new()
 	_cam.fov = 40.0
@@ -97,10 +111,10 @@ func _ready() -> void:
 	left.add_theme_constant_override("separation", 12)
 	left.position = Vector2(28, 28)
 	_root.add_child(left)
-	var c1: Array = UITheme.card("Survey Map", 300, "Verdance")
+	var c1: Array = _holo_card("Survey", 300, "Verdance  ·  hand-held projection")
 	left.add_child(c1[0])
 	var b1: VBoxContainer = c1[1]
-	_pct = UITheme.label("0.0 %", 40, Color.WHITE)
+	_pct = UITheme.label("0.0 %", 40, HOLO.lerp(Color.WHITE, 0.7))
 	b1.add_child(_pct)
 	_pct_sub = UITheme.label("", 13, UITheme.MUTED)
 	b1.add_child(_pct_sub)
@@ -126,7 +140,7 @@ func _ready() -> void:
 	b1.add_child(_age)
 	_resurvey = Button.new()
 	_resurvey.custom_minimum_size = Vector2(0, 38)
-	UITheme.orange_button(_resurvey)
+	_holo_button(_resurvey)
 	_resurvey.pressed.connect(_on_resurvey)
 	b1.add_child(_resurvey)
 	# Right: rocket destinations.
@@ -136,13 +150,13 @@ func _ready() -> void:
 	right.offset_top = 28
 	right.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	_root.add_child(right)
-	var c2: Array = UITheme.card("Rocket", 320, "Travel between bases")
+	var c2: Array = _holo_card("Rocket", 320, "Travel between bases")
 	right.add_child(c2[0])
 	_hub_list = VBoxContainer.new()
 	_hub_list.add_theme_constant_override("separation", 6)
 	(c2[1] as VBoxContainer).add_child(_hub_list)
 	# Bottom centre: big readout.
-	_big = UITheme.label("", 30, Color.WHITE)
+	_big = UITheme.label("", 24, Color(HOLO, 0.9))
 	_big.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
 	_big.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	_big.offset_top = -86
@@ -157,6 +171,53 @@ func _ready() -> void:
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_root.add_child(hint)
 	_root.visible = false
+
+
+const HOLO := Color(0.45, 0.88, 1.0)
+
+
+## Translucent projected pane: faint cyan glass, hairline edge, corner ticks, light title.
+func _holo_card(title: String, width: float, subtitle: String) -> Array:
+	var pc := PanelContainer.new()
+	var sb := UITheme.box(Color(0.04, 0.16, 0.22, 0.55), Color(HOLO, 0.45), 1, 2, 14)
+	sb.shadow_color = Color(HOLO, 0.1)
+	sb.shadow_size = 8
+	pc.add_theme_stylebox_override("panel", sb)
+	pc.custom_minimum_size = Vector2(width, 0)
+	var body := VBoxContainer.new()
+	body.add_theme_constant_override("separation", 6)
+	pc.add_child(body)
+	body.add_child(UITheme.label(subtitle, 11, Color(HOLO, 0.7)))
+	body.add_child(UITheme.label(title.to_upper(), 20, HOLO.lerp(Color.WHITE, 0.5)))
+	var line := ColorRect.new()
+	line.color = Color(HOLO, 0.5)
+	line.custom_minimum_size = Vector2(0, 1)
+	body.add_child(line)
+	# Corner ticks drawn over the pane.
+	var ticks := Control.new()
+	ticks.set_anchors_preset(Control.PRESET_FULL_RECT)
+	ticks.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pc.add_child(ticks)
+	ticks.draw.connect(func() -> void:
+		var sz: Vector2 = ticks.size
+		var c := Color(HOLO, 0.9)
+		for corner: Vector2 in [Vector2.ZERO, Vector2(sz.x, 0), Vector2(0, sz.y), sz]:
+			var dx: float = 1.0 if corner.x == 0.0 else -1.0
+			var dy: float = 1.0 if corner.y == 0.0 else -1.0
+			ticks.draw_line(corner, corner + Vector2(dx * 12, 0), c, 2.0)
+			ticks.draw_line(corner, corner + Vector2(0, dy * 12), c, 2.0))
+	return [pc, body]
+
+
+func _holo_button(b: Button) -> void:
+	b.add_theme_stylebox_override("normal", UITheme.box(Color(HOLO, 0.16), Color(HOLO, 0.6), 1, 2, 8))
+	b.add_theme_stylebox_override("hover", UITheme.box(Color(HOLO, 0.3), Color(HOLO, 0.9), 1, 2, 8))
+	b.add_theme_stylebox_override("pressed", UITheme.box(Color(HOLO, 0.45), HOLO, 1, 2, 8))
+	b.add_theme_stylebox_override("disabled", UITheme.box(Color(HOLO, 0.04), Color(HOLO, 0.15), 1, 2, 8))
+	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	b.add_theme_color_override("font_color", HOLO.lerp(Color.WHITE, 0.6))
+	b.add_theme_color_override("font_hover_color", Color.WHITE)
+	b.add_theme_color_override("font_disabled_color", Color(HOLO, 0.35))
 
 
 func survey_cost() -> BigNum:
@@ -180,6 +241,7 @@ func open_view() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	EventBus.ui_modal_changed.emit(true)
 	Audio.play("whoosh", 0.7, -8.0)
+	_set_handheld(holder != null and world_root != null)
 	_root.modulate.a = 0.0
 	create_tween().tween_property(_root, "modulate:a", 1.0, 0.25)
 	_refresh_text()
@@ -215,7 +277,7 @@ func _refresh_hubs() -> void:
 		var b := Button.new()
 		b.text = "Launch"
 		b.disabled = not ready
-		UITheme.orange_button(b)
+		_holo_button(b)
 		b.pressed.connect(func() -> void:
 			close_view()
 			launch_to.call(i))
@@ -242,8 +304,73 @@ func close_view() -> void:
 		return
 	is_open = false
 	_root.visible = false
+	_set_handheld(false)
 	EventBus.ui_modal_changed.emit(false)
 	closed.emit()
+
+
+## Switch between the hand-held hologram in the world and the full-screen view (rocket flight).
+func _set_handheld(on: bool) -> void:
+	var model: PatchModel = holder.get("model") if holder else null
+	if on:
+		if _anchor == null:
+			_anchor = Node3D.new()
+			_anchor.name = "SurveyHologram"
+			world_root.add_child(_anchor)
+			_beam = MeshInstance3D.new()
+			var cone := CylinderMesh.new()
+			cone.top_radius = 0.9
+			cone.bottom_radius = 0.04
+			cone.height = 1.0
+			cone.cap_top = false
+			cone.cap_bottom = false
+			_beam.mesh = cone
+			var bm := StandardMaterial3D.new()
+			bm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+			bm.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+			bm.cull_mode = BaseMaterial3D.CULL_DISABLED
+			bm.albedo_color = Color(0.25, 0.7, 1.0) * 0.18
+			_beam.material_override = bm
+			_beam.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			world_root.add_child(_beam)
+			_world_cam = Camera3D.new()
+			_world_cam.fov = 55.0
+			_world_cam.near = 0.05
+			world_root.add_child(_world_cam)
+		_pivot.reparent(_anchor, false)
+		_pivot.position = Vector3.ZERO
+		_anchor.visible = true
+		_beam.visible = true
+		_prev_cam = get_viewport().get_camera_3d()
+		_world_cam.global_transform = _prev_cam.global_transform if _prev_cam else Transform3D.IDENTITY
+		_world_cam.current = true
+		_dim.visible = false
+		_svc.visible = false
+		_anchor.scale = Vector3.ONE * 0.01
+		create_tween().tween_property(_anchor, "scale", Vector3.ONE * 0.3, 0.45).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		Audio.play("sparkle", 0.6, -10.0)
+		if world_root.get("hud") != null:
+			world_root.hud.visible = false
+		if model:
+			model.holding = true
+			model.set_happy(0.7)
+	else:
+		if _anchor and _pivot.get_parent() == _anchor:
+			_pivot.reparent(_vp, false)
+			_pivot.position = Vector3.ZERO
+			_pivot.scale = Vector3.ONE
+		if _anchor:
+			_anchor.visible = false
+			_beam.visible = false
+		if _prev_cam and is_instance_valid(_prev_cam) and _handheld:
+			_prev_cam.current = true
+		_dim.visible = true
+		_svc.visible = true
+		if world_root and world_root.get("hud") != null:
+			world_root.hud.visible = true
+		if model:
+			model.holding = false
+	_handheld = on
 
 
 func _on_resurvey() -> void:
@@ -326,10 +453,10 @@ func _build_mesh() -> void:
 	arrays[Mesh.ARRAY_COLOR] = cols
 	var m := ArrayMesh.new()
 	m.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-	var mat := StandardMaterial3D.new()
-	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mat.vertex_color_use_as_albedo = true
-	m.surface_set_material(0, mat)
+	if _holo_mat == null:
+		_holo_mat = ShaderMaterial.new()
+		_holo_mat.shader = preload("res://art/shaders/hologram.gdshader")
+	m.surface_set_material(0, _holo_mat)
 	_globe.mesh = m
 	if _grid_lines == null:
 		_grid_lines = MeshInstance3D.new()
@@ -362,8 +489,8 @@ func _lat_long_mesh() -> ArrayMesh:
 	m.add_surface_from_arrays(Mesh.PRIMITIVE_LINES, arrays)
 	var mat := StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	mat.albedo_color = Color(0.8, 1.0, 0.9, 0.12)
+	mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+	mat.albedo_color = Color(0.35, 0.8, 1.0, 1.0) * 0.25
 	m.surface_set_material(0, mat)
 	return m
 
@@ -376,6 +503,8 @@ func _process(delta: float) -> void:
 	_pivot.rotation = Vector3(_pitch, _yaw, 0.0)
 	_cam.position = Vector3(0, 0, _zoom)
 	_cam.look_at(Vector3.ZERO)
+	if _handheld:
+		_place_handheld(delta)
 	if _fly_t >= 0.0:
 		_fly_t += delta / _fly_dur
 		var t: float = clampf(_fly_t, 0.0, 1.0)
@@ -417,6 +546,31 @@ func _unhandled_input(event: InputEvent) -> void:
 		var jm: InputEventJoypadMotion = event
 		if jm.axis == JOY_AXIS_RIGHT_X:
 			_yaw += jm.axis_value * 0.05
+
+
+func _place_handheld(delta: float) -> void:
+	var model: PatchModel = holder.get("model")
+	var hand: Vector3 = model.hand_point() if model else holder.global_position + Vector3(0, 1.0, 0)
+	var r: float = 0.3
+	var side: Vector3 = (model.global_basis.x if model else holder.global_basis.x).normalized()
+	var fwd0: Vector3 = -(model.global_basis.z if model else holder.global_basis.z)
+	fwd0.y = 0.0
+	hand += side * 0.18 + fwd0.normalized() * 0.12
+	var center: Vector3 = hand + Vector3(0, r + 0.1, 0)
+	_anchor.global_position = center
+	# Beam: from the claw up into the globe.
+	var h: float = center.y - hand.y
+	_beam.global_transform = Transform3D(Basis().scaled(Vector3(r * 0.9, h, r * 0.9)), hand + Vector3(0, h * 0.5, 0))
+	# Camera in front of Patch, a little to the side: Aurora's face lit by the globe it holds.
+	var fwd: Vector3 = -(model.global_basis.z if model else holder.global_basis.z)
+	fwd.y = 0.0
+	fwd = fwd.normalized()
+	var right: Vector3 = fwd.cross(Vector3.UP)
+	var dist: float = remap(_zoom, 1.4, 6.0, 0.9, 2.6)
+	var want: Vector3 = center + fwd * dist * 1.1 - right * dist * 0.75 + Vector3(0, 0.1 + dist * 0.1, 0)
+	_world_cam.global_position = _world_cam.global_position.lerp(want, clampf(delta * 4.0, 0.0, 1.0))
+	var look_at_p: Vector3 = center.lerp(holder.global_position + Vector3(0, 0.75, 0), 0.4)
+	_world_cam.look_at(look_at_p, Vector3.UP)
 
 
 func focus_on(cell: int) -> void:

@@ -168,3 +168,26 @@ static func orange_button(b: Button) -> void:
 ## Dark row box used for list entries (waypoints, destinations, crews).
 static func row_box() -> StyleBoxFlat:
 	return box(Color(0.05, 0.055, 0.065, 0.9), Color(1, 1, 1, 0.06), 1, 5, 8)
+
+
+## Subtle hover/focus feedback: the control grows a touch and brightens. Works inside containers
+## (only scale and modulate are animated, which containers leave alone).
+static func juice(c: Control, grow: float = 1.035) -> void:
+	c.resized.connect(func() -> void: c.pivot_offset = c.size * 0.5)
+	var to: Callable = func(s: float, bright: float) -> void:
+		if not c.is_inside_tree():
+			return
+		var tw: Tween = c.create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		tw.tween_property(c, "scale", Vector2(s, s), 0.14)
+		tw.tween_property(c, "modulate", Color(bright, bright, bright, 1.0), 0.14)
+	var on: Callable = func() -> void: to.call(grow, 1.12)
+	var off: Callable = func() -> void:
+		if c is BaseButton and (c as BaseButton).is_hovered():
+			return
+		to.call(1.0, 1.0)
+	c.mouse_entered.connect(on)
+	c.focus_entered.connect(on)
+	c.mouse_exited.connect(func() -> void:
+		if not c.has_focus():
+			to.call(1.0, 1.0))
+	c.focus_exited.connect(off)

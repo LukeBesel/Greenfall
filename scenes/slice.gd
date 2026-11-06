@@ -150,6 +150,8 @@ func _ready() -> void:
 	globe.rocket_ready = func() -> bool: return hub.level >= 5 or DevHooks.has("rocket")
 	globe.launch_to = func(i: int) -> void: _launch(i)
 	globe.patch_cell_provider = func() -> int: return planet_cell_at(patch.global_position)
+	globe.holder = patch
+	globe.world_root = self
 	add_child(globe)
 	globe.closed.connect(_on_modal_closed)
 	fleet = Fleet.new()

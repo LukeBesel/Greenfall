@@ -55,6 +55,9 @@ var _blink: float = 0.0
 var _flash: float = 0.0
 var _lean := Vector2.ZERO
 var _dip: float = 0.0
+## Holding up the survey hologram (right claw raised, palm up).
+var holding: bool = false
+var _hold: float = 0.0
 
 
 func _ready() -> void:
@@ -260,9 +263,16 @@ func _process(delta: float) -> void:
 	_arm_r.rotation.x = lerpf(0.15 * sin(_t * 1.3), -0.9 + sin(s) * 0.15, _scoop_amt)
 	_arm_l.rotation.x = lerpf(0.15 * sin(_t * 1.3 + 1.0), -0.5 + sin(s + 1.5) * 0.12, _scoop_amt * 0.7)
 	_arm_r.rotation.z = lerpf(0.0, -0.25, _scoop_amt)
+	_hold = move_toward(_hold, 1.0 if holding else 0.0, delta * 3.0)
+	if _hold > 0.0:
+		var e: float = _hold * _hold * (3.0 - 2.0 * _hold)
+		_arm_r.rotation.x = lerpf(_arm_r.rotation.x, -1.25 + sin(_t * 1.6) * 0.03, e)
+		_arm_r.rotation.z = lerpf(_arm_r.rotation.z, 0.35, e)
+		var elbow_h: Node3D = _arm_r.get_meta("elbow")
+		elbow_h.rotation.x = lerpf(0.0, 0.9, e)
 	for f: Node3D in _claws:
 		var dir: Vector2 = f.get_meta("dir")
-		var open: float = (0.5 + 0.5 * sin(s * 1.5)) if _scoop_amt > 0.1 else 0.2
+		var open: float = (0.5 + 0.5 * sin(s * 1.5)) if _scoop_amt > 0.1 else lerpf(0.2, 0.9, _hold)
 		f.rotation = Vector3(-dir.y, dir.x, 0) * open * 0.6
 	_beam_mat.albedo_color.a = _scoop_amt * (0.22 + 0.06 * sin(_t * 30.0))
 	_beam.visible = _scoop_amt > 0.02
@@ -296,6 +306,12 @@ func set_motion(speed: float, speed_ratio: float, local_accel: Vector2, delta: f
 	var target := Vector2(clampf(-local_accel.y * 0.015, -0.18, 0.18) - speed_ratio * 0.08, clampf(local_accel.x * 0.012, -0.15, 0.15))
 	_lean = _lean.lerp(target, clampf(delta * 6.0, 0.0, 1.0))
 	_ring_mat.emission_energy_multiplier += speed * 0.3
+
+
+## World position just above the raised right claw (where the hologram sits).
+func hand_point() -> Vector3:
+	var elbow_h: Node3D = _arm_r.get_meta("elbow")
+	return elbow_h.to_global(Vector3(0, -0.02, -0.2))
 
 
 func set_scooping(active: bool) -> void:
