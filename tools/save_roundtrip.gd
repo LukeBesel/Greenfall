@@ -131,7 +131,7 @@ func _ready() -> void:
 			bale.set_carried(true)
 			bale.reparent(r, true)
 			r.carried.append(bale)
-	s1.patch.global_position = Vector3(9.0, 0.2, 9.0)
+	s1.patch.global_position = Vector3(3.0, 0.2, 5.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
 	s1.add_cube(dropped)
 	s1.patch.pick_up(dropped)
