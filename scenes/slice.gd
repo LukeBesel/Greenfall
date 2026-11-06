@@ -559,4 +559,11 @@ func _restore_world() -> void:
 	if GameState.world.has("patch"):
 		patch.from_dict(GameState.world["patch"])
 	fleet.restore()
+	var away: float = Time.get_unix_time_from_system() - GameState.saved_unix
+	if GameState.saved_unix > 0.0 and away > 120.0:
+		var sd: Dictionary = hub.scrubber_def() if hub else {}
+		var res: Dictionary = Offline.compute(GameState.world.get("robots", []), hub.scrubbers if hub else 0, float(sd.get("filter_per_s", 1.0)), away)
+		Offline.apply(res)
+		if float(res["units"]) > 0.0 or float(res["air"]) > 0.0:
+			get_tree().create_timer(2.0).timeout.connect(func() -> void: EventBus.toast.emit(Offline.summary_text(res), "story"))
 	EventBus.toast.emit("Welcome back. The junk waited for you.", "info")
