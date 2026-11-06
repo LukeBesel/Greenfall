@@ -31,3 +31,13 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
   3. Skimmer (water) robot and lake cleaning; Grinder/Recycler to remove trash for good.
   4. Tractor-beam pickup visuals for Mk III+ and Patch.
   5. Cargo rockets (gate on `Research.has("rocket_cargo")`), then content (easter eggs, Ledger) and polish (cinematic intro, music, exports).
+  5. Research tree, cargo rockets, then content (easter eggs, Codex, Ledger) and polish (cinematic intro, music, exports).
+
+## Update: bale automation + Recycler (wt/stations)
+- Done: `automation/stations.gd` (manager, group "stations", state in `GameState.world.stations`, data in `data/stations.json`) with three machines bought in the Hub tab (`ui/stations_panel.gd`, added to `HubPanel`):
+  - Conveyor Feeder (`automation/conveyor.gd`): hopper pad with a roller turntable at (7, -0.8), scrolling cleated belt (`art/shaders/belt.gdshader`) into the scale. Haulers drop there when it is closer (`Stations.haul_drop`); Patch drives on to unload.
+  - Auto-baler (`automation/auto_baler.gd`, group "baler_station"): air-dropped at the cleaning frontier; cleaners tip full hoppers into it (`Stations.claim_dump`/`dump_step`, marked `[stations]` in robot.gd) and it presses denser bales with a hydraulic platen, then rolls them out for haulers. "Move to frontier" button.
+  - Recycler (`automation/recycler.gd`, hub level 2): shredder drums + smelter; bales are destroyed for bolts, building stock and a few cubes; stats `bales_recycled`, `junk_destroyed_kg`; adds to `air_filtered` (sky haze). Fed by an incline belt (auto-route every Nth bale) or the hand-feed plate.
+  - Upgrades (tab hub): Belt Drive, Baler Hydraulics, Recycler Yield (bases in patch.json).
+- Dev hooks: `--stations=all --stations-demo --route=N --stations-pose=K`. Tests: `tests/test_stations.gd`.
+- Next: robot status text for "dumping at baler", Command View marker for the baler, offline progress for stations.

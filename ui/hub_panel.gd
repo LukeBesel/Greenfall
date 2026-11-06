@@ -9,6 +9,7 @@ var _btn: Button
 var _scrub: Label
 var _scrub_btn: Button
 var _mats: Label
+var _stations: StationsPanel  # [stations]
 
 
 func _ready() -> void:
@@ -45,6 +46,10 @@ func _ready() -> void:
 			Audio.play("buzz", 1.2, -8.0)
 		refresh())
 	add_child(_scrub_btn)
+	# [stations] Conveyor / auto-baler / recycler section (ui/stations_panel.gd).
+	add_child(HSeparator.new())
+	_stations = StationsPanel.new()
+	add_child(_stations)
 	refresh()
 
 
@@ -79,3 +84,5 @@ func refresh() -> void:
 		"\nRequires hub level %d." % int(sd.get("requires_level", 2)) if locked else "\nNeeds " + cost_text(sd.get("cost", {}), hub.scrubber_cost_mult())]
 	_scrub_btn.text = "Build Air Scrubber"
 	_scrub_btn.disabled = locked or hub.scrubbers >= int(sd.get("max", 6)) or not Hub.can_pay(sd.get("cost", {}), hub.scrubber_cost_mult())
+	if _stations:  # [stations]
+		_stations.refresh()
