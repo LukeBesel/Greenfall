@@ -131,6 +131,12 @@ static func _new_plan() -> Dictionary:
 
 static func _add(p: Dictionary, ch: String, xf: Transform3D, col: Color, kind: float, en: float, key: int, seed: float = -1.0) -> void:
 	var c: Dictionary = p[ch]
+	# Thin, delicate light lines and small orbs (owner: thin glowing lines are fine, nothing thick).
+	if ch == "line":
+		xf.basis.y *= 0.35
+		xf.basis.z *= 0.35
+	elif ch == "orb":
+		xf.basis = xf.basis.scaled(Vector3.ONE * 0.65)
 	(c["xf"] as Array).append(xf)
 	(c["col"] as Array).append(col)
 	# Toned down: futuristic accents are soft light, not neon (owner: "not that Tron-like").
