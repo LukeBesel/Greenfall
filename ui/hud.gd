@@ -71,9 +71,14 @@ static func _caption(text: String) -> Label:
 
 func _build_top_left() -> void:
 	var mc: MarginContainer = _margin(Control.PRESET_TOP_LEFT)
+	# Dark glass card so the text reads over bright litter and sky (matches the goals card).
+	var card := PanelContainer.new()
+	card.add_theme_stylebox_override("panel", UITheme.box(UITheme.PLUM, UITheme.RUST, 1, 6, 12))
+	card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	mc.add_child(card)
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", -2)
-	mc.add_child(vb)
+	card.add_child(vb)
 	_rate_label = _caption("C U B E S")
 	vb.add_child(_rate_label)
 	_cubes_label = UITheme.label("0", 38, UITheme.CREAM)

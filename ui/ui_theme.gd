@@ -46,7 +46,9 @@ static func get_theme() -> Theme:
 	t.default_font = font()
 	t.default_font_size = 17
 	t.set_color("font_color", "Label", CREAM)
-	t.set_color("font_shadow_color", "Label", Color(0, 0, 0, 0.55))
+	t.set_color("font_shadow_color", "Label", Color(0, 0, 0, 0.5))
+	# Soft dark halo so HUD text stays readable over bright litter and sky.
+	t.set_constant("shadow_outline_size", "Label", 5)
 	t.set_constant("shadow_offset_x", "Label", 0)
 	t.set_constant("shadow_offset_y", "Label", 1)
 	t.set_constant("outline_size", "Label", 0)
