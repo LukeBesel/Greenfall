@@ -77,17 +77,45 @@ static func part_index(part_id: String) -> int:
 	return -1
 
 
+## Lowest Control Core rarity that some robot type's next Mk tier needs (huge when none does).
+## Cores at or above it are worth keeping for upgrade_tier.
+func core_keep_rarity() -> int:
+	var need: int = 1 << 30
+	for tid: String in Economy.robot_order:
+		var t: int = tier_of(tid)
+		if t + 1 >= Economy.robot_tiers.size():
+			continue
+		var r: int = int(Economy.robot_tiers[t + 1].get("requires_core_rarity", 0))
+		if r >= 0:
+			need = mini(need, r)
+	return need
+
+
 ## Recipe status: Array of {part_id, name, have: bool, rarity: int}.
+## Non-core slots take the best part in storage. The "core" slot spares tier-up cores: it takes
+## the best core below core_keep_rarity(), and only if there is none, the weakest one above it.
 func recipe_status(type_id: String) -> Array:
 	var out: Array = []
 	var used: Dictionary = {}
+	var keep: int = core_keep_rarity()
 	for part_id: String in Economy.robots[type_id].get("recipe", []):
 		var idx: int = part_index(part_id)
 		var have: int = -1
 		for i: int in GameState.parts.size():
-			if used.has(i):
+			if used.has(i) or int(GameState.parts[i]["type"]) != idx:
 				continue
-			if int(GameState.parts[i]["type"]) == idx and (have < 0 or int(GameState.parts[i]["rarity"]) > int(GameState.parts[have]["rarity"])):
+			if have < 0:
+				have = i
+				continue
+			var ri: int = int(GameState.parts[i]["rarity"])
+			var rh: int = int(GameState.parts[have]["rarity"])
+			if part_id == "core":
+				if (ri < keep) != (rh < keep):
+					if ri < keep:
+						have = i  # a spare core always beats one needed for a Mk tier
+				elif (ri > rh) if ri < keep else (ri < rh):
+					have = i
+			elif ri > rh:
 				have = i
 		if have >= 0:
 			used[have] = true
@@ -130,9 +158,27 @@ static func types_for_role(role_id: String) -> Array[String]:
 	return out
 
 
-## "" if the type can be built now, else why not (parts, cubes, crew cap).
+## Multibot jobs, in the order a new one fills them.
+const MULTI_JOBS: Array[String] = ["clean", "plant", "water"]
+
+
+## First crew a new robot of this type can join without breaking the cap ("" = all full).
+## Specialists have one crew; a multibot can take any job with room.
+func join_crew(type_id: String) -> String:
+	var jobs: Array[String] = [crew_of_type(type_id)]
+	if str(Economy.robots.get(type_id, {}).get("role", "")) == "any":
+		jobs = MULTI_JOBS
+	for j: String in jobs:
+		if crew_size(j) < crew_cap():
+			return j
+	return ""
+
+
+## "" if the type can be built now, else why not (research, crew cap, parts, cubes).
 func build_block_reason(type_id: String) -> String:
-	if crew_size(crew_of_type(type_id)) >= crew_cap():
+	if not Research.robot_unlocked(type_id):
+		return "Locked · research %s" % str(Research.def(Research.robot_requirement(type_id)).get("name", "?"))
+	if join_crew(type_id) == "":
 		return "Crew full (%d/%d): upgrade the hub" % [crew_size(crew_of_type(type_id)), crew_cap()]
 	var missing: int = 0
 	for r: Dictionary in recipe_status(type_id):
@@ -151,20 +197,13 @@ func build_cost(type_id: String) -> BigNum:
 
 
 func can_build(type_id: String) -> bool:
-	var req: String = str(Economy.robots.get(type_id, {}).get("requires_research", ""))
-	if req != "" and not Research.has(req):
-		return false
-	if crew_size(crew_of_type(type_id)) >= crew_cap():
-		return false
-	for r: Dictionary in recipe_status(type_id):
-		if not r["have"]:
-			return false
-	return GameState.can_afford("cubes", build_cost(type_id))
+	return build_block_reason(type_id) == ""
 
 
 func build(type_id: String, at: Vector3) -> Robot:
 	if not can_build(type_id):
 		return null
+	var crew: String = join_crew(type_id)
 	var status: Array = recipe_status(type_id)
 	var rarity_sum: float = 0.0
 	var to_remove: Array[int] = []
@@ -181,6 +220,8 @@ func build(type_id: String, at: Vector3) -> Robot:
 	while find_robot(rname) != null:
 		rname = NAMES[randi() % NAMES.size()] + "-%02d" % (randi() % 100)
 	var r := spawn(type_id, tier_of(type_id), at, bonus, rname)
+	if str(Economy.robots[type_id].get("role", "")) == "any":
+		r.job = crew  # start in a crew that has room
 	GameState.inc_stat("robots_built")
 	EventBus.robot_built.emit(r.robot_name)
 	EventBus.toast.emit("%s %s assembled. It looks around, then gets to work." % [Economy.robots[type_id]["name"], r.robot_name], "story")
@@ -253,6 +294,8 @@ func allocation() -> Dictionary:
 
 
 func move_job(from_job: String, to_job: String) -> bool:
+	if from_job == to_job or crew_size(to_job) >= crew_cap():
+		return false  # crew full
 	for r: Robot in robots():
 		if r.type_id == "multibot" and r.job == from_job:
 			r.set_job(to_job)
@@ -268,8 +311,37 @@ func apply_preset(clean_pct: float, plant_pct: float) -> void:
 	var n: int = mb.size()
 	var nc: int = int(round(n * clean_pct))
 	var np: int = int(round(n * plant_pct))
-	for i: int in n:
-		mb[i].set_job("clean" if i < nc else ("plant" if i < nc + np else "water"))
+	var want: Dictionary = {"clean": mini(nc, n), "plant": clampi(np, 0, maxi(n - nc, 0)), "water": maxi(n - nc - np, 0)}
+	# Room per job = cap minus the specialists already in that crew.
+	var cap: int = crew_cap()
+	var room: Dictionary = {}
+	for j: String in MULTI_JOBS:
+		var multi_in: int = 0
+		for r: Robot in mb:
+			if r.job == j:
+				multi_in += 1
+		room[j] = maxi(cap - (crew_size(j) - multi_in), 0)
+		want[j] = mini(int(want[j]), int(room[j]))
+	var left: int = n - int(want["clean"]) - int(want["plant"]) - int(want["water"])
+	for j: String in MULTI_JOBS:
+		var add: int = mini(left, int(room[j]) - int(want[j]))
+		want[j] = int(want[j]) + add
+		left -= add
+	# Bots already in a job with quota stay put; the rest move to jobs with quota left.
+	var quota: Dictionary = want.duplicate()
+	var movers: Array[Robot] = []
+	for r: Robot in mb:
+		if int(quota.get(r.job, 0)) > 0:
+			quota[r.job] = int(quota[r.job]) - 1
+		else:
+			movers.append(r)
+	for r: Robot in movers:
+		for j: String in MULTI_JOBS:
+			if int(quota[j]) > 0:
+				quota[j] = int(quota[j]) - 1
+				r.set_job(j)
+				break
+		# No job has room: the bot keeps its job (only possible in an already over-cap save).
 
 
 # --- Orders (Command View) -------------------------------------------------------------

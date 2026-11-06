@@ -116,6 +116,10 @@ func flash() -> void:
 ## Switches between physical and carried (kinematic, no collision).
 func set_carried(on: bool) -> void:
 	carried = on
+	if on:
+		# Off the ground: a hauler's reservation no longer applies (Patch may grab a bale a
+		# Haul Bug was heading for, and put it down somewhere else).
+		set_meta("reserved", false)
 	freeze = on
 	freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
 	_shape.disabled = on
@@ -133,6 +137,7 @@ func to_dict() -> Dictionary:
 		"rot": [rotation.x, rotation.y, rotation.z],
 		"pure": info.get("pure", false), "perfect": info.get("perfect", false),
 		"lumpy": info.get("lumpy", false), "fill": info.get("fill", 1.0), "colors": cols,
+		"dominant": str(info.get("dominant", "")), "volume": float(info.get("volume", 0.0)),
 	}
 
 
@@ -143,5 +148,9 @@ static func from_dict(d: Dictionary) -> JunkCube:
 	var info_d: Dictionary = {
 		"pure": d.get("pure", false), "perfect": d.get("perfect", false),
 		"lumpy": d.get("lumpy", false), "fill": float(d.get("fill", 1.0)), "colors": cols,
+		"dominant": str(d.get("dominant", "")),
 	}
+	# Only when saved: pre-fix saves fall back to fill * 12 in the recycler (0.0 would pay nothing).
+	if d.has("volume") and float(d["volume"]) > 0.0:
+		info_d["volume"] = float(d["volume"])
 	return JunkCube.create(BigNum.from_serialized(d.get("value", [0.0, 0])), info_d)

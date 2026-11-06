@@ -106,6 +106,10 @@ func built(id: String) -> bool:
 func block_reason(id: String) -> String:
 	if built(id):
 		return "Built."
+	# Research gate. Runs after built() so stations already standing in older saves (or placed by
+	# the --stations dev hook) stay usable.
+	if Research.exists(id) and not Research.has(id):
+		return "Requires research: %s." % str(Research.def(id).get("name", id))
 	var d: Dictionary = def(id)
 	if hub_level() < int(d.get("requires_level", 1)):
 		return "Requires hub level %d." % int(d.get("requires_level", 1))
@@ -258,6 +262,10 @@ static func route_text(n: int) -> String:
 
 ## Cleaner with a full hopper: head for the auto-baler instead of baling on the spot.
 static func claim_dump(r: Robot) -> bool:
+	# Only cleaners tip into the baler: a Skimmer (or a Multibot on another job) would set
+	# dump_to that its think step never reads and loop at the shore forever.
+	if r.role() != "clean":
+		return false
 	var s: Stations = of(r)
 	if s == null or s.baler == null or r.hopper.is_empty() or r.hopper.pending > 0.0:
 		return false
