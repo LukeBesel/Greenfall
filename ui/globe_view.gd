@@ -272,7 +272,7 @@ func _refresh_hubs() -> void:
 		vb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		vb.add_theme_constant_override("separation", 0)
 		vb.add_child(UITheme.label(nm, 15, Color.WHITE))
-		vb.add_child(UITheme.label("%.1f km" % km, 12, UITheme.MUTED))
+		vb.add_child(UITheme.label("%d sectors away" % int(km * 1000.0 / 17.3), 12, UITheme.MUTED))
 		hb.add_child(vb)
 		var b := Button.new()
 		b.text = "Launch"

@@ -1,6 +1,6 @@
 class_name UpgradesScreen
 extends CanvasLayer
-## One place for every upgrade: tabs (Patch now; Bots, Hub, Research, Rockets, Cosmetics later),
+## One place for every upgrade: tabs Patch, Bots, Trade, Hub, Research, Rockets and Cosmetics,
 ## a responsive grid of UpgradeCards, live currency, controller tab switching.
 
 signal closed
@@ -76,7 +76,7 @@ func _ready() -> void:
 	vb.add_child(tabs)
 	for t: Dictionary in TABS:
 		var b := Button.new()
-		var live: bool = t["id"] in ["patch", "bots", "trade", "hub", "research", "cosmetics"]
+		var live: bool = t["id"] in ["patch", "bots", "trade", "hub", "research", "rockets", "cosmetics"]
 		b.text = t["name"] if live else "%s (soon)" % t["name"]
 		b.disabled = not live
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
@@ -122,6 +122,13 @@ func _populate() -> void:
 		_grid.add_child(hp)
 		_hub_panel = hp
 		return
+	if _tab == "rockets":
+		_grid.columns = 1
+		var rp := RocketsPanel.new()
+		rp.world = fleet.world if fleet else null
+		rp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_grid.add_child(rp)
+		return
 	if _tab == "trade":
 		_grid.columns = 1
 		var tp := TradePanel.new()
@@ -163,23 +170,8 @@ func _set_tab(id: String) -> void:
 
 
 func _relayout() -> void:
-	if _tab == "research":
-		_grid.columns = 1
-		return
-	if _tab == "cosmetics":
-		_grid.columns = 1
-		var cp := CosmeticsPanel.new()
-		cp.world = fleet.world if fleet else null
-		_grid.add_child(cp)
-		return
-	if _tab == "hub":
-		_grid.columns = 1
-		var hp := HubPanel.new()
-		hp.hub = hub
-		_grid.add_child(hp)
-		_hub_panel = hp
-		return
-	if _tab == "trade":
+	# Single-panel tabs fill the width; only card grids reflow.
+	if _tab in ["research", "cosmetics", "hub", "trade", "rockets"]:
 		_grid.columns = 1
 		return
 	var w: float = _root.size.x - 110.0
@@ -206,7 +198,7 @@ func _input(event: InputEvent) -> void:
 	if not is_open:
 		return
 	if event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev"):
-		var order: Array[String] = ["patch", "bots", "hub", "trade", "research", "cosmetics"]
+		var order: Array[String] = ["patch", "bots", "hub", "trade", "research", "rockets", "cosmetics"]
 		var i: int = order.find(_tab)
 		_set_tab(order[(i + (1 if event.is_action_pressed("ui_tab_next") else order.size() - 1)) % order.size()])
 		get_viewport().set_input_as_handled()
