@@ -75,7 +75,7 @@ func say(trigger: String, chance: float = 1.0, important: bool = false, vars: Di
 	var pick: int = options[randi() % options.size()]
 	used.append(pick)
 	GameState.flags[used_key] = used
-	var text: String = str(pool[pick]).format({"name": GameState.flags.get("patch_name", "Patch")}.merged(vars))
+	var text: String = str(pool[pick]).format({"name": GameState.flags.get("patch_name", "Lumi")}.merged(vars))
 	_queue.append({"text": text, "stage": st})
 
 

@@ -75,4 +75,4 @@ func _advance() -> void:
 func _announce() -> void:
 	EventBus.tutorial_changed.emit(current_text())
 	if done():
-		EventBus.toast.emit("Restart checklist complete. Patch is back on the job.", "story")
+		EventBus.toast.emit("Restart checklist complete. Lumi is back on the job.", "story")

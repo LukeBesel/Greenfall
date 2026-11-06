@@ -813,4 +813,4 @@ func found(id: String) -> void:
 				w.say("egg_found", 1.0, true))
 	if found_count() == defs.size():
 		get_tree().create_timer(6.0, false).timeout.connect(func() -> void:
-			EventBus.toast.emit("Every curiosity on the list, found. Patch's collection compartment is very full of memories.", "story"))
+			EventBus.toast.emit("Every curiosity on the list, found. Lumi's collection compartment is very full of memories.", "story"))

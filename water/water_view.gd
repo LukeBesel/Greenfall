@@ -68,7 +68,7 @@ func _on_clean(hid: int, pos: Vector3, _bonus: BigNum) -> void:
 	Audio.play("chime", 0.6, -2.0)
 	Audio.play("whoosh", 0.4, -6.0)
 	EventBus.shake_requested.emit(0.1)
-	world.wren.line_started.emit("The water... I can see the bottom. Patch, there's something moving down there.", 1)
+	world.wren.line_started.emit("The water... I can see the bottom. Lumi, there's something moving down there.", 1)
 	_stock_fish(hid)
 
 

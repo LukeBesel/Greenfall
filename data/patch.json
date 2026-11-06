@@ -1,5 +1,5 @@
 {
-  "_doc": "Patch's base stats before upgrades.",
+  "_doc": "Lumi's base stats before upgrades.",
   "stats": {
     "capacity": 30.0,
     "scoop_width": 1.4,

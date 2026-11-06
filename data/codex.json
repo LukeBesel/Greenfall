@@ -1,5 +1,5 @@
 {
-  "_doc": "Codex entries. Each category's keys match ids in junk.json / plants.json / robots.json / shards.json / junk.json landmarks. Entries unlock when found: junk = first scooped, plants = first planted, robots = first built, shards = read, landmarks = Patch rolls near one. kg_per_unit converts compartment units of junk to kilograms for the Stats tab.",
+  "_doc": "Codex entries. Each category's keys match ids in junk.json / plants.json / robots.json / shards.json / junk.json landmarks. Entries unlock when found: junk = first scooped, plants = first planted, robots = first built, shards = read, landmarks = Lumi rolls near one. kg_per_unit converts compartment units of junk to kilograms for the Stats tab.",
   "categories": [
     {"id": "junk", "name": "Junk", "icon": "junk"},
     {"id": "plants", "name": "Plants", "icon": "flower"},
@@ -10,10 +10,10 @@
   "junk": {
     "metal": {"kg_per_unit": 2.4, "hint": "Rusty, clanky, everywhere.", "desc": "Cans, tins and bent brackets. Most of it was made to last, and it did. Pressed into bales, it can be rolled and stamped into something useful again."},
     "plastic": {"kg_per_unit": 0.6, "hint": "Bright colours that never faded.", "desc": "Bottles, crates and the occasional chair. It outlived the people who bought it. It weighs almost nothing, and still the ground under it stayed bare."},
-    "glass": {"kg_per_unit": 1.8, "hint": "It glints in the dust.", "desc": "Jugs and wine bottles, a few still corked. Sorted by colour, glass melts down beautifully. Patch likes how the light comes through it."},
+    "glass": {"kg_per_unit": 1.8, "hint": "It glints in the dust.", "desc": "Jugs and wine bottles, a few still corked. Sorted by colour, glass melts down beautifully. Lumi likes how the light comes through it."},
     "rubber": {"kg_per_unit": 1.5, "hint": "Squeaky. Bouncy. Sad.", "desc": "Tyres, boots and one very patient rubber duck. Rubber holds water, and water holds mosquitoes. Clearing it makes room for frogs."},
-    "electronics": {"kg_per_unit": 1.2, "hint": "It might still remember something.", "desc": "Laptops, radios and televisions with nothing left to say. Inside are tiny useful parts. Patch keeps the good ones for new friends."},
-    "paper": {"kg_per_unit": 0.4, "hint": "Soft, and slowly going back to soil.", "desc": "Cardboard boxes, bags and old gloves. Paper is the one kind of junk that is already trying to become soil. Patch helps it along."}
+    "electronics": {"kg_per_unit": 1.2, "hint": "It might still remember something.", "desc": "Laptops, radios and televisions with nothing left to say. Inside are tiny useful parts. Lumi keeps the good ones for new friends."},
+    "paper": {"kg_per_unit": 0.4, "hint": "Soft, and slowly going back to soil.", "desc": "Cardboard boxes, bags and old gloves. Paper is the one kind of junk that is already trying to become soil. Lumi helps it along."}
   },
   "plants": {
     "grass": {"name": "Meadow Grass", "hint": "Plant your first seeds.", "desc": "The first thing to come back, always. Its roots knit the loose dust together so other plants have something to hold on to."},
@@ -27,7 +27,7 @@
     "nettle": {"name": "Nettle", "hint": "Needs Hardy Nettles research.", "desc": "Stingy, stubborn and wonderful. Nettles pull nutrients up from deep down, and caterpillars adore them."},
     "mint": {"name": "Wild Mint", "hint": "Needs Wild Mint research.", "desc": "Crush a leaf and the whole hex smells fresh. Mint spreads quickly. Nobody minds."},
     "hedge": {"name": "Hedgerow", "hint": "Needs Hedgerows research.", "desc": "A dense green wall, alive with small rustlings. Hedges are highways for hedgehogs, and hotels for wrens."},
-    "pine": {"name": "Pine Sapling", "hint": "Needs Evergreen Saplings research.", "desc": "Knee-high today. In a hundred years, a forest that smells of resin and rain. Patch plants it carefully, for whoever comes after."}
+    "pine": {"name": "Pine Sapling", "hint": "Needs Evergreen Saplings research.", "desc": "Knee-high today. In a hundred years, a forest that smells of resin and rain. Lumi plants it carefully, for whoever comes after."}
   },
   "robots": {
     "scoopie": {"hint": "Build one at the workbench.", "desc": "A small, earnest cleaner with one scoop arm and a lot of enthusiasm. It hums when it finds a good pile."},
@@ -42,7 +42,7 @@
     "kid_drawing": {"desc": "A crayon drawing, folded small enough to fit a pocket."},
     "gardener_list": {"desc": "Someone's to-do list for a garden. Half the items are ticked."},
     "receipt": {"desc": "A till receipt from the last ordinary day."},
-    "maint_log": {"desc": "A maintenance log for a unit that looked a lot like Patch."},
+    "maint_log": {"desc": "A maintenance log for a unit that looked a lot like Lumi."},
     "ledger_memo": {"desc": "An office memo about the evacuation. Very polite. Very tired."},
     "voicemail": {"desc": "A voicemail transcript. Someone was calling to say they were safe."},
     "poster": {"desc": "A faded safety poster. The smiling robot on it is waving."}
@@ -53,7 +53,7 @@
     "exterior_aircon_unit": {"name": "Air Conditioner", "hint": "It used to hum.", "desc": "An old outdoor unit with a rusted fan. Small birds have started nesting behind the grille."},
     "electric_stove": {"name": "Abandoned Stove", "hint": "A kitchen, without the kitchen.", "desc": "Someone carried it this far and then set it down. Its oven door still opens with a cheerful squeak."},
     "Barrel_01": {"name": "Old Barrel", "hint": "Dented and rusty.", "desc": "Empty now, thankfully. Turned on its side it makes a decent shelter for a fox."},
-    "metal_trash_can": {"name": "Trash Can", "hint": "The irony is not lost on Patch.", "desc": "The one place junk was supposed to go. Patch salutes it every time he passes."},
+    "metal_trash_can": {"name": "Trash Can", "hint": "The irony is not lost on Lumi.", "desc": "The one place junk was supposed to go. Lumi salutes it every time he passes."},
     "propane_tank": {"name": "Propane Tank", "hint": "Handle with care.", "desc": "Long since empty and safe. Someone painted a flower on the side, a long time ago."},
     "plastic_monobloc_chair_01": {"name": "Plastic Chair", "hint": "Somebody sat here.", "desc": "The most common chair in the world. It faces the horizon, as if someone liked to watch the sunset from here."},
     "dead_tree_trunk": {"name": "Old Tree Trunk", "hint": "It used to be tall.", "desc": "A tree that did not make it. But there are tiny green shoots at its base, and beetles inside, and it is not as dead as it looks."},

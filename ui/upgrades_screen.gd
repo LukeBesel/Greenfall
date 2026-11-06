@@ -6,7 +6,7 @@ extends CanvasLayer
 signal closed
 
 const TABS: Array[Dictionary] = [
-	{"id": "patch", "name": "Patch"},
+	{"id": "patch", "name": "Lumi"},
 	{"id": "bots", "name": "Bots"},
 	{"id": "trade", "name": "Trade"},
 	{"id": "hub", "name": "Hub"},

@@ -905,7 +905,7 @@ func resolve() -> void:
 	var otw := create_tween()
 	otw.tween_method(func(v: float) -> void: orbit.call(lerpf(0.9, -0.7, v), lerpf(6.5, 4.6, v), lerpf(2.2, 1.6, v)), 0.0, 1.0, total * 0.7).set_trans(Tween.TRANS_SINE)
 	Audio.play("glitch", 0.7, -4.0)
-	var pname: String = str(GameState.flags.get("patch_name", "Patch"))
+	var pname: String = str(GameState.flags.get("patch_name", "Lumi"))
 	for i: int in lines.size():
 		var l: Array = lines[i]
 		var who: String = str(l[0])

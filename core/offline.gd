@@ -57,7 +57,7 @@ static func summary_text(result: Dictionary) -> String:
 	if float(result["cubes"]) > 0.0:
 		lines.append("The fleet baled and delivered %s cubes." % Settings.fmt(BigNum.from_float(float(result["cubes"]))))
 	elif float(result["waiting_value"]) > 0.0:
-		lines.append("Bales worth %s were stacked at the hub with nobody to haul them. Patch cashed them in. A Haul Bug would keep them moving." % Settings.fmt(BigNum.from_float(float(result["waiting_value"]))))
+		lines.append("Bales worth %s were stacked at the hub with nobody to haul them. Lumi cashed them in. A Haul Bug would keep them moving." % Settings.fmt(BigNum.from_float(float(result["waiting_value"]))))
 	if float(result["air"]) > 0.0:
 		lines.append("The scrubbers filtered the air the whole time. It's a little clearer.")
 	return "\n".join(lines)

@@ -1,5 +1,5 @@
 {
-  "_doc": "Patch upgrades. Effect per level: mode add => stat += amount*level; mode mul_pct => stat *= (1 + amount*level). cost = base_cost * growth^level. max_level -1 = unlimited.",
+  "_doc": "Lumi upgrades. Effect per level: mode add => stat += amount*level; mode mul_pct => stat *= (1 + amount*level). cost = base_cost * growth^level. max_level -1 = unlimited.",
   "upgrades": [
     {
       "id": "compartment_size",

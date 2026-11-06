@@ -390,7 +390,7 @@ func _ready() -> void:
 	add_child(intro)
 	var wake := func() -> void:
 		get_tree().create_timer(1.5).timeout.connect(func() -> void:
-			Story.once("wake", "P-47CH  online.  Landing pod sealed.  Cradle uplink: weak.  Running checklist.", "story"))
+			Story.once("wake", "LM-1  online.  Landing pod sealed.  Cradle uplink: weak.  Running checklist.", "story"))
 	if intro.should_play():
 		intro.finished.connect(wake)
 		intro.play.call_deferred()
@@ -663,7 +663,7 @@ func _on_hex_clean(hid: int) -> void:
 			Vfx.burst("confetti", patch.global_position + Vector3(0, 1.5, 0), Color.WHITE)
 			EventBus.toast.emit("Milestone: %d hexes clean!" % n, "story")
 		if n >= field.junk_hex_count:
-			EventBus.toast.emit("The whole Junkyard is clean. Patch beeps a very long, very happy beep.", "story")
+			EventBus.toast.emit("The whole Junkyard is clean. Lumi beeps a very long, very happy beep.", "story")
 
 
 func _launch(to_hub: int) -> void:

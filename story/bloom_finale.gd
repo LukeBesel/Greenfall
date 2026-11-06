@@ -6,7 +6,7 @@ extends Node3D
 ## Seed Ark loop opens. Frees itself when done.
 
 const LINES: Array[Array] = [
-	["Patch. Stop for a second. Look up.", 3.5],
+	["Lumi. Stop for a second. Look up.", 3.5],
 	["Something is moving in orbit. It's the Cradle. My Cradle. The seed bays are opening on their own.", 6.0],
 	["CRADLE:  GROUND REPORT RECEIVED.  GREEN DETECTED.  RESUMING SEED SCHEDULE.", 5.5],
 	["It hasn't said a word in three hundred years. It was waiting for proof that the soil remembered how.", 6.0],
@@ -60,7 +60,7 @@ func play() -> void:
 	tw.tween_method(func(v: float) -> void:
 		cam.yaw = start_yaw + v * 2.4
 		cam.pitch = lerpf(-0.25, -0.08, sin(v * PI)), 0.0, 1.0, total)
-	var name_s: String = str(GameState.flags.get("patch_name", "Patch"))
+	var name_s: String = str(GameState.flags.get("patch_name", "Lumi"))
 	var i: int = 0
 	for l: Array in LINES:
 		world.wren.line_started.emit(str(l[0]).format({"name": name_s}), 2)

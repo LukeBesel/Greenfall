@@ -32,3 +32,7 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
 - **Hex levels never drop** (rewards are one-off); Ledger drops can make a clean, unplanted hex dirty again but never touch planted ground.
 - **Physics at 120 Hz** for smooth motion on high-refresh displays.
 - **Music** is synthesized at startup (no downloadable music source in the container).
+
+## The hero: Lumi (LM-1)
+- Name: **Lumi**, designation LM-1 ("lumen"), the seed-keeper bot of the ark *Cradle*. Code identifiers stay `Patch`/`patch_*`; all player-facing text says Lumi.
+- Story: 300 years ago Verdance drowned in waste and its people left on the ark *Cradle* with the last seed vault. During a meteor storm a hull breach blew a cargo pod loose; Lumi had climbed in to save a tray of seedlings and was shot out, falling for days back to Verdance. The ark could not turn back; WREN (the ark AI) can only whisper over a failing relay. Lumi's core runs on photosynthetic "green light", and there is no green left, so its battery is dying. Every plant it grows feeds the core; to get home it must clean, grow enough life to charge a Bloom Core, and rebuild the launch sites so a rocket can reach the ark. Ending: the core is full, the planet is green again, and the ark comes home.

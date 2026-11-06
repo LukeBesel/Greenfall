@@ -114,7 +114,7 @@ func ready_to_find() -> bool:
 func _check() -> void:
 	if ready_to_find() and not GameState.flags.get("seed_signal", false):
 		GameState.flags["seed_signal"] = true
-		world.wren.line_started.emit("Patch. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look.", 1)
+		world.wren.line_started.emit("Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look.", 1)
 		Audio.play("detector", 0.7, -6.0)
 
 
@@ -216,7 +216,7 @@ func _sprout_moment(pos: Vector3) -> void:
 	Vfx.burst("big_sparkle", pos + Vector3(0, 0.3, 0), Color(0.7, 1.0, 0.6))
 	Audio.play("chime", 0.7, -2.0)
 	Audio.play("fanfare", 0.8, -6.0)
-	world.wren.line_started.emit("...It's green. Patch, it's actually green.", 1)
+	world.wren.line_started.emit("...It's green. Lumi, it's actually green.", 1)
 	await get_tree().create_timer(4.5).timeout
 	world.wren.line_started.emit("Keep it watered. Plant more. Every bloom will give you seeds back. This is how it starts.", 1)
 	EventBus.tutorial_changed.emit("")

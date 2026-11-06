@@ -1,5 +1,5 @@
 {
-  "_doc": "WREN's lines by trigger. Each trigger has lines per memory stage: 0 = fragmented (rendered with glitches), 1 = recovering, 2 = whole. A line is never repeated until the pool for that trigger and stage is used up. {name} = Patch's name, {robot} = a robot name.",
+  "_doc": "WREN's lines by trigger. Each trigger has lines per memory stage: 0 = fragmented (rendered with glitches), 1 = recovering, 2 = whole. A line is never repeated until the pool for that trigger and stage is used up. {name} = Lumi's name, {robot} = a robot name.",
   "wake": [
     ["...carrier... is someone... there? Signal at four percent. Hello?", "I don't... I don't know who I am. But I can see you. Small. Blue. Rusty. Hello."]
   ],

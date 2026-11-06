@@ -1,6 +1,6 @@
 class_name Patch
 extends CharacterBody3D
-## P-47CH "Patch": the player robot. Movement on treads, scooping junk into the chest compartment,
+## P-47CH "Lumi": the player robot. Movement on treads, scooping junk into the chest compartment,
 ## compacting cubes (Pure / Perfect / Lumpy), carrying a wobbly stack and dropping or stacking cubes.
 ## All intent comes from an InputSource so the player, touch and the autoplay bot share this code.
 
@@ -103,7 +103,7 @@ func _physics_process(delta: float) -> void:
 		global_position = Vector3(0.0, 0.6, 3.0)
 		velocity = Vector3.ZERO
 		GameState.inc_stat("fell_through")
-		EventBus.toast.emit("Patch rattles back up into the yard. That was odd.", "info")
+		EventBus.toast.emit("Lumi rattles back up into the yard. That was odd.", "info")
 	_handle_cubing(delta)
 	_handle_tools(delta)
 	if tool == Tool.SCOOP:

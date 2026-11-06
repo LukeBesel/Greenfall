@@ -31,4 +31,4 @@ func _on_hex_cleaned(_hex_id: int, _pos: Vector3, _bonus: BigNum) -> void:
 
 
 func _on_upgrade_bought(_id: String, _level: int) -> void:
-	once("first_upgrade", "Upgraded! Patch feels a little less creaky.", "hint")
+	once("first_upgrade", "Upgraded! Lumi feels a little less creaky.", "hint")

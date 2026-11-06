@@ -257,7 +257,7 @@ func play() -> void:
 	await _wait(0.6)
 	if _skipped:
 		return
-	_subtitle("WREN:  ...Signal. Patch? P-47CH, can you hear me?")
+	_subtitle("WREN:  ...Signal. Lumi? LM-1, can you hear me?")
 	await _wait(3.2)
 	if _skipped:
 		return
