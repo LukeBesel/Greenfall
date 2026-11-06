@@ -212,6 +212,8 @@ func _ready() -> void:
 			globe.open_view()
 			globe.focus_on(planet_cell_at(patch.global_position))).call_deferred()
 	EventBus.hitstop_requested.connect(_hitstop)
+	for sig: Signal in [EventBus.hex_cleaned, EventBus.robot_built, EventBus.upgrade_bought]:
+		sig.connect(func(_a: Variant = null, _b: Variant = null, _c: Variant = null) -> void: CosmeticsPanel.check_unlocks())
 	print("[slice] built in %d ms  district=%s hub=%d" % [Time.get_ticks_msec() - t0, district_name, hub_index])
 	if DevHooks.has("auto-launch") and not GameState.flags.get("auto_launched", false):
 		GameState.flags["auto_launched"] = true
@@ -255,7 +257,7 @@ func _ready() -> void:
 	add_child(tutorial)
 	if not loaded:
 		get_tree().create_timer(1.5).timeout.connect(func() -> void:
-			Story.once("wake", "P-47CH  restart.  Battery 4%.  Storm charge accepted.  Running checklist.", "story"))
+			Story.once("wake", "P-47CH  online.  Landing pod sealed.  Cradle uplink: weak.  Running checklist.", "story"))
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 

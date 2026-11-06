@@ -69,7 +69,7 @@ void fragment() {
 	float is_metal = step(1.0 - metal_share, fract(r * 3.7));
 	col = mix(col, fleck.rgb, step(0.93, fract(r * 11.3)) * 0.8);
 	// Crevices between chunks are dark.
-	float crev = smoothstep(0.08, 0.0, v.y);
+	float crev = (1.0 - smoothstep(0.0, 0.08, v.y));
 	col *= 1.0 - crev * 0.65;
 	// Grime toward the bottom.
 	col *= mix(0.65, 1.0, smoothstep(-0.5, 0.2, lp.y));

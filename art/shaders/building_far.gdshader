@@ -50,9 +50,9 @@ void fragment() {
 		alb = mix(alb, glass, win);
 		rough = mix(rough, 0.25, win * step(0.12, r));
 		// Floor band and grime streaks under windows.
-		float band = smoothstep(0.03, 0.0, abs(f.y - 0.02));
+		float band = (1.0 - smoothstep(0.0, 0.03, abs(f.y - 0.02)));
 		alb *= 1.0 - band * 0.3;
-		float streak = step(0.25, f.x) * step(f.x, 0.75) * smoothstep(0.3, 0.0, f.y) * 0.35 * h21(id + 3.0);
+		float streak = step(0.25, f.x) * step(f.x, 0.75) * (1.0 - smoothstep(0.0, 0.3, f.y)) * 0.35 * h21(id + 3.0);
 		alb *= 1.0 - streak;
 		// Darker toward the ground.
 		alb *= mix(0.7, 1.0, smoothstep(0.0, 6.0, wp.y));

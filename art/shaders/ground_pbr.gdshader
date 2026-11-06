@@ -123,7 +123,7 @@ void fragment() {
 		float d = length(local);
 		float front = age * ripple_speed;
 		reveal = clamp((front - d) / 1.6 + fbm(p * 0.8) * 0.6 - 0.3, 0.0, 1.0);
-		wave = smoothstep(1.4, 0.0, abs(front - d)) * smoothstep(3.0, 1.0, age);
+		wave = (1.0 - smoothstep(0.0, 1.4, abs(front - d))) * (1.0 - smoothstep(1.0, 3.0, age));
 	}
 	if (!inside) {
 		reveal = 0.0;
@@ -186,7 +186,7 @@ void fragment() {
 
 	vec3 emission = vec3(0.0);
 	if (inside && is_hub < 0.4) {
-		float line = smoothstep(0.05, 0.0, edge_d);
+		float line = (1.0 - smoothstep(0.0, 0.05, edge_d));
 		if (distance(ax, focus_axial) < 0.5) {
 			emission += vec3(1.0, 0.7, 0.25) * line * 0.3;
 		}

@@ -73,7 +73,7 @@ func _ready() -> void:
 	vb.add_child(tabs)
 	for t: Dictionary in TABS:
 		var b := Button.new()
-		var live: bool = t["id"] in ["patch", "bots", "trade", "hub"]
+		var live: bool = t["id"] in ["patch", "bots", "trade", "hub", "cosmetics"]
 		b.text = t["name"] if live else "%s (soon)" % t["name"]
 		b.disabled = not live
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
@@ -101,6 +101,12 @@ func _populate() -> void:
 		c.queue_free()
 	_cards.clear()
 	_robot_cards.clear()
+	if _tab == "cosmetics":
+		_grid.columns = 1
+		var cp := CosmeticsPanel.new()
+		cp.world = fleet.world if fleet else null
+		_grid.add_child(cp)
+		return
 	if _tab == "hub":
 		_grid.columns = 1
 		var hp := HubPanel.new()
@@ -149,6 +155,12 @@ func _set_tab(id: String) -> void:
 
 
 func _relayout() -> void:
+	if _tab == "cosmetics":
+		_grid.columns = 1
+		var cp := CosmeticsPanel.new()
+		cp.world = fleet.world if fleet else null
+		_grid.add_child(cp)
+		return
 	if _tab == "hub":
 		_grid.columns = 1
 		var hp := HubPanel.new()
@@ -181,7 +193,7 @@ func _input(event: InputEvent) -> void:
 	if not is_open:
 		return
 	if event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev"):
-		var order: Array[String] = ["patch", "bots", "hub", "trade"]
+		var order: Array[String] = ["patch", "bots", "hub", "trade", "cosmetics"]
 		var i: int = order.find(_tab)
 		_set_tab(order[(i + (1 if event.is_action_pressed("ui_tab_next") else order.size() - 1)) % order.size()])
 		get_viewport().set_input_as_handled()
