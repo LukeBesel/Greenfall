@@ -185,7 +185,7 @@ func _build() -> void:
 	# Orange accents: a stripe along the crown and small tabs beside the visor.
 	_mi(_head, ProcMesh.rounded_box(Vector3(0.09, 0.03, 0.2), 0.012, 2), accent, Vector3(-0.16, 0.48, 0.08), Vector3(0, 0, 8))
 	for x: float in [-0.335, 0.335]:
-		_mi(_head, ProcMesh.rounded_box(Vector3(0.035, 0.12, 0.07), 0.014, 2), accent, Vector3(x * 1.02, 0.15, -0.19))
+		_mi(_head, ProcMesh.rounded_box(Vector3(0.03, 0.08, 0.1), 0.014, 2), accent, Vector3(x * 1.06, 0.07, 0.1))
 	# Ear lenses: big round housings with a glowing ring and dark glass.
 	for x: float in [-0.385, 0.385]:
 		var sx: float = signf(x)

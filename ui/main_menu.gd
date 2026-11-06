@@ -137,6 +137,9 @@ func _build_stage() -> void:
 		mi.rotation_degrees = spec[2]
 		add_child(mi)
 
+	_scatter_junk()
+	_build_skyline()
+
 	_pivot = Node3D.new()
 	add_child(_pivot)
 	_model = PatchModel.new()
@@ -152,6 +155,80 @@ func _build_stage() -> void:
 	add_child(_cam)
 	_cam.current = true
 	_place_camera()
+
+
+## A carpet of litter and a few heaped piles: the world Aurora has come to clean.
+func _scatter_junk() -> void:
+	var ids: Array[String] = []
+	for t: Dictionary in Economy.junk_types.values():
+		for m: Dictionary in t.get("models", []):
+			if AssetLib.has_model(str(m["id"])):
+				ids.append(str(m["id"]))
+	if ids.is_empty():
+		return
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 7
+	var per: Dictionary = {}
+	for i: int in 1400:
+		var r: float = sqrt(rng.randf()) * 26.0
+		var a: float = rng.randf() * TAU
+		var p := Vector3(cos(a) * r, 0, sin(a) * r)
+		if p.length() < 1.3:
+			continue  # keep a little clearing under the robot
+		var id: String = ids[rng.randi() % ids.size()]
+		var lie: bool = rng.randf() < 0.6
+		var b := Basis(Vector3.UP, rng.randf() * TAU)
+		if lie:
+			b = b * Basis(Vector3.RIGHT if rng.randf() < 0.5 else Vector3.FORWARD, PI * 0.5)
+		var sc: float = rng.randf_range(0.85, 1.2)
+		if not per.has(id):
+			per[id] = []
+		(per[id] as Array).append(Transform3D(b.scaled(Vector3.ONE * sc), p + Vector3(0, 0.03 if lie else 0.0, 0)))
+	# Heaps: denser clusters stacked a little higher.
+	for h: int in 9:
+		var c := Vector3(rng.randf_range(-18, 18), 0, rng.randf_range(-6, 22))
+		if c.length() < 4.0:
+			continue
+		for k: int in 70:
+			var off := Vector3(rng.randf_range(-1.6, 1.6), 0, rng.randf_range(-1.6, 1.6))
+			var y: float = maxf(0.0, 1.1 - off.length() * 0.65) * rng.randf()
+			var id2: String = ids[rng.randi() % ids.size()]
+			var b2 := Basis.from_euler(Vector3(rng.randf() * TAU, rng.randf() * TAU, rng.randf() * TAU))
+			if not per.has(id2):
+				per[id2] = []
+			(per[id2] as Array).append(Transform3D(b2, c + off + Vector3(0, y, 0)))
+	for id3: String in per:
+		var xs: Array = per[id3]
+		var mm := MultiMesh.new()
+		mm.transform_format = MultiMesh.TRANSFORM_3D
+		mm.mesh = AssetLib.model_mesh_lite(id3, 900)
+		mm.instance_count = xs.size()
+		for j: int in xs.size():
+			mm.set_instance_transform(j, xs[j])
+		var mmi := MultiMeshInstance3D.new()
+		mmi.multimesh = mm
+		add_child(mmi)
+
+
+## Hazy ruined city silhouettes on the horizon.
+func _build_skyline() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 11
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = Color(0.36, 0.3, 0.28)
+	mat.roughness = 0.95
+	for i: int in 26:
+		var a: float = rng.randf_range(-PI, PI)
+		var d: float = rng.randf_range(32.0, 60.0)
+		var size := Vector3(rng.randf_range(6, 14), rng.randf_range(8, 34), rng.randf_range(6, 14))
+		var mi := MeshInstance3D.new()
+		var bm := BoxMesh.new()
+		bm.size = size
+		mi.mesh = bm
+		mi.material_override = mat
+		mi.position = Vector3(sin(a) * d, size.y * 0.5 - rng.randf_range(0.0, 3.0), cos(a) * d)
+		mi.rotation = Vector3(rng.randf_range(-0.04, 0.04), rng.randf() * TAU, rng.randf_range(-0.06, 0.06))
+		add_child(mi)
 
 
 func _place_camera() -> void:
