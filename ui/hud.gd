@@ -167,8 +167,9 @@ func _process(delta: float) -> void:
 		var pct: float = float(f.cleaned_count) / maxf(f.junk_hex_count, 1)
 		_field_label.text = "OLD TOWN   %.1f%%" % (pct * 100.0)
 		_field_bar.value = pct
-		var total: float = float(Economy.planet.get("total_hexes", 40962))
-		_planet_label.text = "%s   %s%%" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(float(f.cleaned_count) / total * 100.0)]
+		var pl: PlanetData = world.planet if world.get("planet") != null else null
+		var frac: float = pl.restored_fraction() if pl else 0.0
+		_planet_label.text = "%s   %s%%      M  map" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(frac * 100.0)]
 	if patch:
 		if patch.detector and not patch.detector.readout_changed.is_connected(_on_signal):
 			patch.detector.readout_changed.connect(_on_signal)

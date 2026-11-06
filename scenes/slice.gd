@@ -13,6 +13,9 @@ var city: CityView
 var litter: LitterView
 var tutorial: Tutorial
 var fleet: Fleet
+var planet: PlanetData
+var globe: GlobeView
+var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
 var depot: Depot
 var patch: Patch
@@ -50,6 +53,11 @@ func _ready() -> void:
 		if loaded and GameState.world.has("field"):
 			if not field.apply_dict(GameState.world["field"]):
 				push_warning("Saved field didn't match this field; starting the field fresh.")
+	planet = PlanetData.new(seed_v, 6, 10.0)
+	planet.generate()
+	if loaded and GameState.world.has("planet"):
+		planet.apply_dict(GameState.world["planet"])
+	_map_slice_to_planet()
 	view = FieldView.new()
 	view.name = "FieldView"
 	add_child(view)
@@ -96,6 +104,11 @@ func _ready() -> void:
 	lens.cam = cam
 	lens.patch = patch
 	add_child(lens)
+	globe = GlobeView.new()
+	globe.planet = planet
+	globe.patch_cell_provider = func() -> int: return planet_cell_at(patch.global_position)
+	add_child(globe)
+	globe.closed.connect(_on_modal_closed)
 	fleet = Fleet.new()
 	fleet.name = "Fleet"
 	fleet.world = self
@@ -148,6 +161,10 @@ func _ready() -> void:
 				n_spawned += 1
 	if DevHooks.get_s("open", "") == "upgrades":
 		open_upgrades.call_deferred()
+	if DevHooks.get_s("open", "") == "globe":
+		(func() -> void:
+			globe.open_view()
+			globe.focus_on(planet_cell_at(patch.global_position))).call_deferred()
 	EventBus.hitstop_requested.connect(_hitstop)
 	print("[slice] built in %d ms" % (Time.get_ticks_msec() - t0))
 	tutorial = Tutorial.new()
@@ -352,9 +369,28 @@ func _process(delta: float) -> void:
 
 # --- Sim hooks used by Patch ----------------------------------------------------
 
+## The slice is Old Town, the first city: its hexes sit on planet cells around the city center.
+func _map_slice_to_planet() -> void:
+	var anchor: int = int(planet.cities[0]["cell"])
+	slice_cells.resize(field.hex_count())
+	for id: int in field.hex_count():
+		var c: Vector3 = field.hex_center(id)
+		slice_cells[id] = planet.grid.nearest_from(planet.local_to_dir(anchor, c.x, c.z), anchor)
+		if field.is_clean(id) and field.hex_hub[id] == 0:
+			planet.mark_clean(slice_cells[id])
+
+
+func planet_cell_at(pos: Vector3) -> int:
+	var anchor: int = int(planet.cities[0]["cell"])
+	return planet.grid.nearest_from(planet.local_to_dir(anchor, pos.x, pos.z), anchor)
+
+
 func collect_piece(pid: int) -> void:
 	var hid: int = field.piece_hex[pid]
 	var became_clean: bool = field.remove_piece(pid)
+	planet.set_junk(slice_cells[hid], 1.0 - field.removed_fraction(hid))
+	if became_clean:
+		planet.mark_clean(slice_cells[hid])
 	view.hide_piece(pid)
 	view.refresh_hex(hid, became_clean)
 	litter.refresh_hex(hid)
@@ -446,10 +482,17 @@ func _on_modal_closed() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if upgrades.is_open or pause_menu.is_open:
+	if upgrades.is_open or pause_menu.is_open or globe.is_open:
 		return
 	if event.is_action_pressed("open_upgrades"):
 		open_upgrades()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("open_globe"):
+		globe.open_view()
+		globe.focus_on(planet_cell_at(patch.global_position))
+		if patch.input is PlayerInput:
+			(patch.input as PlayerInput).enabled = false
+		cam.input_enabled = false
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("pause"):
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED or true:
@@ -466,6 +509,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func persist_save() -> void:
 	GameState.world["field"] = field.to_dict()
+	GameState.world["planet"] = planet.to_dict()
 	GameState.world["patch"] = patch.to_dict()
 	var cubes: Array = []
 	for n: Node in _cubes_root.get_children():

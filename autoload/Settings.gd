@@ -69,6 +69,7 @@ func _register_default_actions() -> void:
 		"zoom_in": [_mouse(MOUSE_BUTTON_WHEEL_UP), _joy(JOY_BUTTON_RIGHT_SHOULDER)],
 		"zoom_out": [_mouse(MOUSE_BUTTON_WHEEL_DOWN), _joy(JOY_BUTTON_LEFT_SHOULDER)],
 		"lens_view": [_key(KEY_V), _joy(JOY_BUTTON_RIGHT_STICK)],
+		"open_globe": [_key(KEY_M), _joy(JOY_BUTTON_BACK)],
 		"ui_tab_next": [_key(KEY_E), _joy(JOY_BUTTON_RIGHT_SHOULDER)],
 		"ui_tab_prev": [_key(KEY_Q), _joy(JOY_BUTTON_LEFT_SHOULDER)],
 		"buy_max": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],
