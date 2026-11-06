@@ -47,11 +47,10 @@ func _ready() -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(root)
 	var mc := MarginContainer.new()
-	# Top right, under the district readout: away from WREN's centered subtitles.
-	mc.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	mc.grow_horizontal = Control.GROW_DIRECTION_BEGIN
-	mc.add_theme_constant_override("margin_top", 84)
-	mc.add_theme_constant_override("margin_right", 22)
+	# Top centre: the goals panel owns the top right and WREN's subtitles sit low in the middle.
+	mc.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	mc.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	mc.add_theme_constant_override("margin_top", 22)
 	mc.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(mc)
 	_box = PanelContainer.new()
