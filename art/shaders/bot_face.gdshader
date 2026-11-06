@@ -11,6 +11,7 @@ uniform float energy = 4.0;
 uniform vec2 look = vec2(0.0);       // -1..1 eye offset (kept small: the eyes face forward)
 uniform float happy = 0.0;           // 0 = C eyes, 1 = smiling arcs
 uniform float blink = 0.0;           // 1 = closed
+uniform float wink = 0.0;            // [photo] closes only the left eye (photo mode expressions)
 uniform float half_width = 0.29;
 uniform float half_height = 0.17;
 uniform float eye_spacing = 0.7;    // eye centre offset from the middle (in half-heights)
@@ -20,9 +21,9 @@ varying vec3 lp;
 varying vec3 ln;
 
 // Returns (core, hot, halo, glint).
-vec4 eye(vec2 p, vec2 c, float R) {
+vec4 eye(vec2 p, vec2 c, float R, float bl) {
 	vec2 d = p - c;
-	d.y /= max(1.0 - blink * 0.92, 0.08);
+	d.y /= max(1.0 - bl * 0.92, 0.08);
 	float r = length(d);
 	float aa = 0.02;
 	float disc = 1.0 - smoothstep(R - aa, R + aa, r);
@@ -56,8 +57,8 @@ void vertex() {
 void fragment() {
 	vec2 p = vec2(lp.x, lp.y) / half_height;
 	vec2 off = look * vec2(0.1, 0.06);
-	vec4 a = eye(p, vec2(eye_spacing, 0.02) + off, eye_radius);
-	vec4 b = eye(p, vec2(-eye_spacing, 0.02) + off, eye_radius);
+	vec4 a = eye(p, vec2(eye_spacing, 0.02) + off, eye_radius, blink);
+	vec4 b = eye(p, vec2(-eye_spacing, 0.02) + off, eye_radius, max(blink, wink));
 	float front = smoothstep(0.8, 0.95, -ln.z);
 	float core = clamp(a.x + b.x, 0.0, 1.0) * front;
 	float hot = clamp(a.y + b.y, 0.0, 1.0) * front;

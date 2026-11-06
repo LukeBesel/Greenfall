@@ -36,6 +36,7 @@ var ledger: LedgerArc
 var outposts: Outposts  # [outposts] ruined frontier depots (automation/outposts.gd)
 var events: WorldEvents  # [events] world events, cleaning streak (systems/events.gd)
 var contracts: Contracts  # [events] contracts board + token shop (systems/contracts.gd)
+var photo: PhotoMode  # [photo] photo mode (ui/photo_mode.gd)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
 var depot: Depot
@@ -226,6 +227,10 @@ func _ready() -> void:
 	pause_menu = PauseMenu.new()
 	add_child(pause_menu)
 	pause_menu.closed.connect(_on_modal_closed)
+	photo = PhotoMode.new()  # [photo]
+	photo.world = self
+	add_child(photo)
+	pause_menu.photo_requested.connect(func() -> void: photo.try_open(true))
 	if loaded:
 		_restore_world(from_memory)
 	cam.snap()
@@ -904,7 +909,8 @@ func _open_command() -> void:
 
 func any_modal_open() -> bool:
 	return upgrades.is_open or pause_menu.is_open or globe.is_open or command.is_open \
-		or (codex != null and codex.is_open) or (doc_view != null and doc_view.is_open)
+		or (codex != null and codex.is_open) or (doc_view != null and doc_view.is_open) \
+		or (photo != null and photo.is_open)  # [photo]
 
 
 func _on_modal_closed() -> void:

@@ -18,6 +18,7 @@ const REBINDABLE: Array = [
 	["open_upgrades", "Upgrades"], ["open_command", "Command view"], ["open_globe", "Globe map"],
 	["lens_view", "Lens view"], ["open_codex", "Codex"], ["pause", "Pause"],
 	["zoom_in", "Zoom in"], ["zoom_out", "Zoom out"],
+	["photo_mode", "Photo mode"],  # [photo]
 ]
 const JOY_NAMES: Dictionary = {
 	JOY_BUTTON_A: "A", JOY_BUTTON_B: "B", JOY_BUTTON_X: "X", JOY_BUTTON_Y: "Y",
@@ -156,6 +157,7 @@ func _register_default_actions() -> void:
 		"ui_tab_prev": [_key(KEY_Q), _joy(JOY_BUTTON_LEFT_SHOULDER)],
 		"buy_max": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],
 		"open_codex": [_key(KEY_K), _joy(JOY_BUTTON_MISC1)],
+		"photo_mode": [_key(KEY_P), _joy(JOY_BUTTON_LEFT_STICK)],  # [photo]
 	}
 	for action: String in _defaults:
 		if not InputMap.has_action(action):
