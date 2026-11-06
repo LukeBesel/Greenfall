@@ -126,6 +126,12 @@ func _ready() -> void:
 	city.name = "City"
 	add_child(city)
 	city.build(layout, view.ground_material)
+	# Awnings, neon, murals, string lights, yard slab and props (planet/street_dressing.gd).
+	if not DevHooks.has("no-dressing"):
+		var dressing := StreetDressing.new()
+		dressing.name = "StreetDressing"
+		add_child(dressing)
+		dressing.build(layout, field)
 	_cubes_root = Node3D.new()
 	_cubes_root.name = "Cubes"
 	add_child(_cubes_root)
