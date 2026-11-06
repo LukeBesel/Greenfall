@@ -197,7 +197,7 @@ func target(p: String, t: float) -> Dictionary:
 			d["happy"] = 1.0
 			d["lean"] = Vector2(-0.04, 0)
 		"sit":
-			d["float_y"] = 0.53 + sin(t * 1.2) * 0.004
+			d["float_y"] = 0.47 + sin(t * 1.2) * 0.004
 			d["lean"] = Vector2(0.07, 0)
 			d["sh_r"] = Vector3(-0.2, 0, 0.5)
 			d["sh_l"] = Vector3(-0.2, 0, -0.5)
@@ -220,10 +220,11 @@ func target(p: String, t: float) -> Dictionary:
 		"cheer":
 			var hop: float = absf(sin(t * 4.5))
 			d["float_y"] = 0.08 + hop * 0.06
-			d["sh_r"] = Vector3(1.5, 0.2, 1.25 + hop * 0.12)
-			d["sh_l"] = Vector3(1.5, -0.2, -1.25 - hop * 0.12)
-			d["el_r"] = Vector3(0.2 + 0.15 * sin(t * 9.0), 0, 0)
-			d["el_l"] = Vector3(0.2 - 0.15 * sin(t * 9.0), 0, 0)
+			# Both arms up in a V, clear of the big head.
+			d["sh_r"] = Vector3(0.0, 0.25, 2.25 + hop * 0.12)
+			d["sh_l"] = Vector3(0.0, -0.25, -2.25 - hop * 0.12)
+			d["el_r"] = Vector3(STRAIGHT + 0.35 + 0.15 * sin(t * 9.0), 0, 0)
+			d["el_l"] = Vector3(STRAIGHT + 0.35 - 0.15 * sin(t * 9.0), 0, 0)
 			d["claw_r"] = Vector3(-0.8, -0.8, -0.8)
 			d["claw_l"] = Vector3(-0.8, -0.8, -0.8)
 			d["head"] = Vector3(0.16, 0, sin(t * 4.5) * 0.06)
@@ -240,15 +241,15 @@ func target(p: String, t: float) -> Dictionary:
 			d["claw_r"] = Vector3(0.5, 0.5, 0.5)
 			d["claw_l"] = Vector3(0.5, 0.5, 0.5)
 			d["head"] = Vector3(-0.3, 0.05, 0.14 + sin(t * 0.8) * 0.02)
-			d["blink"] = 0.74
-			d["energy"] = 1.1
+			d["blink"] = 0.66
+			d["energy"] = 1.8
 			d["look"] = Vector2(0, -0.4)
 			d["ring"] = 0.8 + absf(sin(t * 1.5)) * 0.4
 			d["dim"] = 1.0
 		"hero":
 			d["float_y"] = 0.32 + sin(t * 1.6) * 0.015
 			d["lean"] = Vector2(0.1, -0.03)
-			d["sh_r"] = Vector3(0.0, 0.35, 2.5)
+			d["sh_r"] = Vector3(0.0, 0.4, 2.15)  # fist pumped up and out, clear of the head
 			d["el_r"] = Vector3(STRAIGHT, 0, 0)
 			d["claw_r"] = Vector3(1.5, 1.5, 1.5)
 			d["sh_l"] = Vector3(-0.55, 0, -0.32)
@@ -271,8 +272,8 @@ func target(p: String, t: float) -> Dictionary:
 			d["happy"] = 1.0
 			d["lean"] = Vector2(0.04, 0.05)
 		"curious":
-			d["sh_l"] = Vector3(0.9, -0.45, 0.25)
-			d["el_l"] = Vector3(0.45, 0, 0)
+			d["sh_l"] = Vector3(1.1, -0.5, 0.35)
+			d["el_l"] = Vector3(0.55, 0, 0)
 			d["claw_l"] = Vector3(0.9, 0.9, 0.9)
 			d["sh_r"] = Vector3(0.05, 0, 0.12)
 			d["head"] = Vector3(0.08, 0.15, -0.3 + sin(t * 0.8) * 0.03)

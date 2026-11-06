@@ -14,7 +14,8 @@ extends CanvasLayer
 ## Dev flags (screenshots): --photo[=S] opens after S wall-clock seconds; --photo-seq="k=v|k=v;..."
 ## applies each entry then captures, one every --photo-every=S seconds (keys: any panel value
 ## by name, plus yaw/pitch; pose/filter/eyes/weather take ids); --photo-open=lumi,look opens those
-## panel sections only; --photo-collapsed; --photo-copy=DIR also copies captures to res://DIR.
+## panel sections only; --photo-collapsed; --photo-copy=DIR also copies captures to res://DIR;
+## --photo-close closes photo mode after the last capture.
 
 signal opened
 signal closed
@@ -896,11 +897,14 @@ static func next_shot_path() -> String:
 # --- Dev automation (screenshots) -----------------------------------------------------------
 
 func _dev_tick() -> void:
+	if _dev_open_ms == 0 and not is_open:
+		return  # the dev sequence already ran and closed
 	if _dev_open_ms < 0 or Time.get_ticks_msec() < _dev_open_ms:
 		return
 	if not is_open:
 		if block_reason(true) == "":
 			open(true)
+			_dev_open_ms = 0
 			_dev_next_ms = Time.get_ticks_msec() + int(DevHooks.get_f("photo-first", 12.0) * 1000.0)
 			if not _dev_seq.is_empty():
 				_dev_apply(str(_dev_seq[0]))
@@ -913,6 +917,10 @@ func _dev_tick() -> void:
 	_dev_next_ms = -1
 	await capture()
 	_dev_seq.pop_front()
+	if _dev_seq.is_empty() and DevHooks.has("photo-close"):
+		print("[photo] closing")
+		close()
+		return
 	if not _dev_seq.is_empty():
 		_dev_apply(str(_dev_seq[0]))
 		_dev_next_ms = Time.get_ticks_msec() + int(DevHooks.get_f("photo-every", 20.0) * 1000.0)
