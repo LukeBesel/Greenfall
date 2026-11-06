@@ -1,0 +1,160 @@
+class_name Codex
+extends RefCounted
+## Codex entries (data/codex.json): junk, plants, robots, memory shards and landmarks.
+## Unlocked keys ("junk:metal") persist in GameState.flags["codex"] (an Array).
+
+const PATH: String = "res://data/codex.json"
+## Landmarks count as found when Patch is this close (m).
+const LANDMARK_RANGE: float = 7.0
+
+static var _cfg: Dictionary = {}
+static var _entries: Array[Dictionary] = []
+
+
+static func cfg() -> Dictionary:
+	if _cfg.is_empty():
+		_cfg = Economy.read_json(PATH)
+	return _cfg
+
+
+static func categories() -> Array:
+	return cfg().get("categories", [])
+
+
+## All entries in display order: {key, cat, id, name, desc, hint}.
+static func entries() -> Array[Dictionary]:
+	if not _entries.is_empty():
+		return _entries
+	var c: Dictionary = cfg()
+	for id: String in Economy.junk_ids:
+		var e: Dictionary = c.get("junk", {}).get(id, {})
+		_add("junk", id, str(Economy.junk_types[id].get("name", id)), e)
+	var plants: Array = Economy.read_json("res://data/plants.json").get("species", [])
+	for sp: Dictionary in plants:
+		var e: Dictionary = c.get("plants", {}).get(str(sp["id"]), {})
+		_add("plants", str(sp["id"]), str(e.get("name", str(sp["id"]).capitalize())), e)
+	for id: String in Economy.robot_order:
+		_add("robots", id, str(Economy.robots[id].get("name", id)), c.get("robots", {}).get(id, {}))
+	for s: Dictionary in Economy.read_json("res://data/shards.json").get("shards", []):
+		var e: Dictionary = (c.get("shards", {}).get(str(s["id"]), {}) as Dictionary).duplicate()
+		e["hint"] = "Somewhere under the junk."
+		_add("shards", str(s["id"]), str(s.get("title", s["id"])), e)
+	var seen: Dictionary = {}
+	for l: Dictionary in Economy.landmarks:
+		var lid: String = str(l["id"])
+		if seen.has(lid):
+			continue
+		seen[lid] = true
+		var e: Dictionary = c.get("landmarks", {}).get(lid, {})
+		_add("landmarks", lid, str(e.get("name", lid.capitalize())), e)
+	return _entries
+
+
+static func _add(cat: String, id: String, name: String, e: Dictionary) -> void:
+	_entries.append({"key": "%s:%s" % [cat, id], "cat": cat, "id": id, "name": name,
+		"desc": str(e.get("desc", "")), "hint": str(e.get("hint", "Not found yet."))})
+
+
+static func entry(key: String) -> Dictionary:
+	for e: Dictionary in entries():
+		if e["key"] == key:
+			return e
+	return {}
+
+
+static func unlocked_list() -> Array:
+	var v: Variant = GameState.flags.get("codex")
+	if not (v is Array):
+		v = []
+		GameState.flags["codex"] = v
+	return v
+
+
+static func is_unlocked(key: String) -> bool:
+	var v: Variant = GameState.flags.get("codex")
+	return v is Array and key in (v as Array)
+
+
+## Returns true when newly unlocked.
+static func unlock(key: String) -> bool:
+	if is_unlocked(key) or entry(key).is_empty():
+		return false
+	unlocked_list().append(key)
+	EventBus.codex_unlocked.emit(key)
+	return true
+
+
+static func count(cat: String = "*") -> int:
+	var n: int = 0
+	for k: Variant in unlocked_list():
+		if cat == "*" or str(k).begins_with(cat + ":"):
+			n += 1
+	return n
+
+
+static func total(cat: String = "*") -> int:
+	var n: int = 0
+	for e: Dictionary in entries():
+		if cat == "*" or e["cat"] == cat:
+			n += 1
+	return n
+
+
+## Kilograms per compartment unit of a junk type.
+static func kg_per_unit(type_id: String) -> float:
+	return float(cfg().get("junk", {}).get(type_id, {}).get("kg_per_unit", 1.0))
+
+
+## Lifetime kg of junk removed (type "*" = all types).
+static func junk_kg(type_id: String = "*") -> float:
+	var d: Dictionary = GameState.stats.get("junk_removed", {})
+	var kg: float = 0.0
+	for t: String in d:
+		if type_id == "*" or t == type_id:
+			kg += float(d[t]) * kg_per_unit(t)
+	return kg
+
+
+## Unlocks everything the current game state shows was found. Returns new keys.
+## `world` (the slice) is optional: with it, plants in the ground, robots in the fleet and
+## nearby landmarks are checked too.
+static func scan(world: Node = null) -> Array[String]:
+	var out: Array[String] = []
+	var jr: Dictionary = GameState.stats.get("junk_removed", {})
+	for t: String in jr:
+		if float(jr[t]) > 0.0 and unlock("junk:" + t):
+			out.append("junk:" + t)
+	for s: Variant in GameState.flags.get("shards_found", []):
+		if unlock("shards:" + str(s)):
+			out.append("shards:" + str(s))
+	for id: String in Economy.robot_order:
+		if GameState.flags.has("tier_" + id) and unlock("robots:" + id):
+			out.append("robots:" + id)
+	if world == null:
+		return out
+	var fleet: Variant = world.get("fleet")
+	if fleet is Fleet:
+		for r: Robot in (fleet as Fleet).robots():
+			if unlock("robots:" + r.type_id):
+				out.append("robots:" + r.type_id)
+	var garden: Variant = world.get("garden")
+	if garden is Garden:
+		var g: Garden = garden
+		var seen: Dictionary = {}
+		for si: int in g.slot_species:
+			if si >= 0 and not seen.has(si) and si < g.species.size():
+				seen[si] = true
+				var key: String = "plants:" + str(g.species[si]["id"])
+				if unlock(key):
+					out.append(key)
+	var patch: Variant = world.get("patch")
+	var field: Variant = world.get("field")
+	if patch is Node3D and field is HexField:
+		var p: Vector3 = (patch as Node3D).global_position
+		for l: Dictionary in (field as HexField).landmarks:
+			var lp: Variant = l.get("pos")
+			if lp is Vector3 and Vector2(p.x - (lp as Vector3).x, p.z - (lp as Vector3).z).length() < LANDMARK_RANGE:
+				var key: String = "landmarks:" + str(l["model"])
+				if unlock(key):
+					out.append(key)
+	return out

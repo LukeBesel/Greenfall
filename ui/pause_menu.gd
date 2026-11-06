@@ -3,6 +3,7 @@ extends CanvasLayer
 ## Pause menu. Pauses the tree while open. Settings live in the shared SettingsPanel.
 
 signal closed
+signal codex_requested
 
 const TITLE_SCENE: String = "res://scenes/main_menu.tscn"
 
@@ -45,6 +46,9 @@ func _ready() -> void:
 	var buttons: Array[Button] = []
 	_first = _button(vb, "Resume", close_menu)
 	buttons.append(_first)
+	buttons.append(_button(vb, "Codex  [K]", func() -> void:
+		close_menu()
+		codex_requested.emit()))
 	_settings_btn = _button(vb, "Settings", _open_settings)
 	buttons.append(_settings_btn)
 	buttons.append(_button(vb, "Save game", func() -> void:

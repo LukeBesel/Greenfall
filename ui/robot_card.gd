@@ -75,6 +75,10 @@ func refresh() -> void:
 		_slots.add_child(row)
 	_build.text = "Build   %s cubes" % Settings.fmt(fleet.build_cost(type_id))
 	_build.disabled = not fleet.can_build(type_id)
+	if not Research.robot_unlocked(type_id):
+		# Blueprint not researched yet (data/robots.json "requires_research").
+		_build.text = "Locked  ·  research %s" % Research.def(Research.robot_requirement(type_id)).get("name", "?")
+		_build.disabled = true
 	var req: Dictionary = fleet.tier_requirements(type_id)
 	if req.get("maxed", false):
 		_tier.text = "Fleet tier: %s (max)" % Economy.tier_name(t)
@@ -90,6 +94,9 @@ func refresh() -> void:
 
 
 func _on_build() -> void:
+	if not Research.robot_unlocked(type_id):
+		Audio.play("buzz", 1.2, -8.0)
+		return
 	var r: Robot = fleet.build(type_id, build_at.call())
 	if r:
 		Audio.play("buy", 1.0, -2.0)

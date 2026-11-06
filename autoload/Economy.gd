@@ -94,7 +94,8 @@ func stat(stat_id: String, levels: Variant = null) -> float:
 			value += float(u["amount"]) * level
 		else:
 			mul *= 1.0 + float(u["amount"]) * level
-	return value * mul
+	# Research bonuses (systems/research.gd) apply on top of upgrades.
+	return Research.stat_mod(stat_id, value * mul)
 
 
 ## Where a stat comes from: [{source, text}], for the "no hidden multipliers" tooltip.
@@ -109,6 +110,7 @@ func stat_breakdown(stat_id: String) -> Array[Dictionary]:
 			out.append({"source": "%s Lv %d" % [u["name"], level], "text": "+" + _fmt_stat(float(u["amount"]) * level)})
 		else:
 			out.append({"source": "%s Lv %d" % [u["name"], level], "text": "x%.2f" % (1.0 + float(u["amount"]) * level)})
+	out.append_array(Research.breakdown(stat_id))
 	return out
 
 

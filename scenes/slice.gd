@@ -42,6 +42,9 @@ var music: MusicHooks
 var intro: Intro
 var composter: Composter
 var pause_menu: PauseMenu
+var research: Research
+var achievements: Achievements
+var codex: CodexScreen
 var bot: InputSource
 var _cubes_root: Node3D
 var _flower: Node3D
@@ -304,6 +307,7 @@ func _ready() -> void:
 	tutorial = Tutorial.new()
 	tutorial.world = self
 	add_child(tutorial)
+	_setup_research_codex()
 	composter = Composter.new()
 	composter.world = self
 	add_child(composter)
@@ -676,6 +680,54 @@ func open_upgrades() -> void:
 	cam.input_enabled = false
 
 
+func _setup_research_codex() -> void:
+	research = Research.new()
+	research.world = self
+	add_child(research)
+	achievements = Achievements.new()
+	achievements.world = self
+	add_child(achievements)
+	codex = CodexScreen.new()
+	add_child(codex)
+	codex.closed.connect(_on_modal_closed)
+	pause_menu.codex_requested.connect(_open_codex)
+	if DevHooks.has("give-data"):
+		GameState.add_currency(Research.CURRENCY, BigNum.from_float(DevHooks.get_f("give-data", 500.0)))
+	if DevHooks.has("research"):
+		# --research=scoop_beam+wide_beam (researched) ; --research-start=bigger_hopper+conveyor
+		for id: String in DevHooks.get_s("research", "").split("+"):
+			Research.grant(id)
+	if DevHooks.has("research-start"):
+		for id: String in DevHooks.get_s("research-start", "").split("+"):
+			GameState.add_currency(Research.CURRENCY, Research.cost(id))
+			Research.start(id, Research.now() - DevHooks.get_f("research-elapsed", 0.0))
+	if DevHooks.has("codex-sample"):
+		# Screenshot helper: a game a little way in (some finds, stats and achievements).
+		var i: int = 0
+		for e: Dictionary in Codex.entries():
+			if i % 3 != 2:
+				Codex.unlock(str(e["key"]))
+			i += 1
+		for t: String in Economy.junk_ids:
+			GameState.add_junk_removed(t, 40.0 + 25.0 * Economy.junk_ids.find(t))
+		var sample: Dictionary = {"hexes_cleaned": 37, "cubes_made": 212, "pure_cubes": 31, "perfect_cubes": 58, "plants_planted": 120,
+			"plants_bloomed": 64, "robots_built": 4, "shards_found": 3, "distance_m": 4380.0, "time_played": 5420.0}
+		for k: String in sample:
+			GameState.stats[k] = float(sample[k])
+		Achievements.check_all()
+	if DevHooks.get_s("open", "") == "codex":
+		(func() -> void: _open_codex(DevHooks.get_s("codex-tab", ""))).call_deferred()
+
+
+func _open_codex(tab: String = "") -> void:
+	if codex.is_open:
+		return
+	codex.open_screen(tab)
+	if patch.input is PlayerInput:
+		(patch.input as PlayerInput).enabled = false
+	cam.input_enabled = false
+
+
 func _open_command() -> void:
 	command.open_view()
 	if patch.input is PlayerInput:
@@ -692,9 +744,12 @@ func _on_modal_closed() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if upgrades.is_open or pause_menu.is_open or globe.is_open or command.is_open or intro.running:
+	if upgrades.is_open or pause_menu.is_open or globe.is_open or command.is_open or intro.running or (codex and codex.is_open):
 		return
-	if event.is_action_pressed("open_upgrades"):
+	if event.is_action_pressed("open_codex") and codex:
+		_open_codex()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("open_upgrades"):
 		open_upgrades()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("open_command"):

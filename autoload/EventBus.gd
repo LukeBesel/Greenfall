@@ -34,3 +34,10 @@ signal game_loaded()
 signal game_saved()
 signal ui_modal_changed(open: bool)
 @warning_ignore_restore("unused_signal")
+
+# Research / codex / achievements
+@warning_ignore_start("unused_signal")
+signal research_completed(research_id: String)
+signal achievement_unlocked(achievement_id: String)
+signal codex_unlocked(entry_key: String)
+@warning_ignore_restore("unused_signal")
