@@ -36,6 +36,7 @@ var _perf_t: float = 0.0
 var _start_ms: int = Time.get_ticks_msec()
 var _frames: int = 0
 var _perf_frames: int = 0
+var _perf_wall: float = 0.0
 
 
 func _ready() -> void:
@@ -77,7 +78,8 @@ func _process(delta: float) -> void:
 		if _shots_taken < count and _elapsed >= delay + every * _shots_taken:
 			_take_shot(count)
 	if has("perf"):
-		_perf_t += delta
+		# Wall clock too: on software rendering the clamped delta never adds up to 3 s.
+		_perf_t = maxf(_perf_t + delta, _elapsed - _perf_wall)
 		_perf_frames += 1
 		if _perf_t >= 3.0:
 			print("[perf] t=%.0fs frames=%d game_fps=%.2f draw_calls=%d objects=%d prims=%d" % [_elapsed, _frames, _perf_frames / _perf_t,
@@ -85,6 +87,7 @@ func _process(delta: float) -> void:
 				RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_OBJECTS_IN_FRAME),
 				RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME)])
 			_perf_t = 0.0
+			_perf_wall = _elapsed
 			_perf_frames = 0
 	if has("quit-after") and _elapsed >= get_f("quit-after", 5.0):
 		print("[DevHooks] quitting after %.1fs" % _elapsed)
