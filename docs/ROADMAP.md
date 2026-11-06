@@ -12,12 +12,12 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - [x] M7 Automation + progression: conveyor feeder, auto-baler, recycler, research tree (30 nodes, Data currency), goals chain (50), base levels, rockets tab.
 - [x] M8 Content/meta: Codex, 54 achievements, stats, cosmetics (6 colourways).
 - [~] M9 Balance: autoplay + robot-report sims done for the first ~15 min; longer-horizon tuning needs play-testing.
-- [~] M10 Polish: title screen, settings, music score, QA pass (40 fixes in flight); macOS universal export needs `import_etc2_astc` (see below).
+- [~] M10 Polish: title screen, settings, music score, QA pass (40 fixes in flight); Windows/Linux/macOS builds from CI.
 - [ ] M11 Post-game.
 
 ## Next steps for a new session
 1. Play-test feedback from the owner (docs/PLAYTEST.md); fix what they hit first.
-2. macOS universal build: set `rendering/textures/vram_compression/import_etc2_astc=true`, reimport (slow, all textures), then the CI macOS step produces a working .app.
+2. macOS: universal build works (ETC2/ASTC import enabled). For Steam: sign and notarize with the owner's Apple Developer account.
 3. Longer balance: run `--autoplay --time-scale=8 --quit-after=600` and check goals keep a next step within 1-3 minutes past the first hour.
 4. More districts content: more eggs per district, a Codex "Curiosities" page, biome-specific junk for wilderness bases.
 5. Post-game (M11): planet-wide restoration milestones, endless prestige-like "replant the world" loop.
