@@ -19,6 +19,8 @@ var districts: Dictionary = {}
 var current_hub: int = 0
 ## Whole-planet state (PlanetData.to_dict()).
 var planet_state: Dictionary = {}
+## Set while switching districts: the next scene load uses the in-memory state (not saved).
+var reload_in_memory: bool = false
 var created_unix: float = 0.0
 var saved_unix: float = 0.0
 

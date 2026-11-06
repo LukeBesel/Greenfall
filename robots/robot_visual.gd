@@ -126,6 +126,32 @@ func _wood(tint: float) -> StandardMaterial3D:
 
 # --- Mesh helpers ----------------------------------------------------------------------
 
+## ProcMesh.rounded_box with its triangle winding reversed: the shared builder emits back-facing
+## triangles (only the far walls render), so flip each triangle here.
+static var _rbox_cache: Dictionary = {}
+
+
+static func _rbox(size: Vector3, radius: float, seg: int = 4) -> ArrayMesh:
+	var key: String = "%s|%.4f|%d" % [size, radius, seg]
+	if _rbox_cache.has(key):
+		return _rbox_cache[key]
+	var src: ArrayMesh = ProcMesh.rounded_box(size, radius, seg)
+	var arr: Array = src.surface_get_arrays(0)
+	for idx: int in [Mesh.ARRAY_VERTEX, Mesh.ARRAY_NORMAL, Mesh.ARRAY_COLOR]:
+		var a = arr[idx]
+		if a == null:
+			continue
+		for t: int in range(0, a.size(), 3):
+			var tmp = a[t + 1]
+			a[t + 1] = a[t + 2]
+			a[t + 2] = tmp
+		arr[idx] = a
+	var out := ArrayMesh.new()
+	out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
+	_rbox_cache[key] = out
+	return out
+
+
 func _mi(parent: Node3D, mesh: Mesh, mat: Material, pos: Vector3, rot: Vector3 = Vector3.ZERO, scl: Vector3 = Vector3.ONE) -> MeshInstance3D:
 	var m := MeshInstance3D.new()
 	m.mesh = mesh
@@ -242,10 +268,10 @@ func _scoop_salvage() -> void:
 	_wheel(_body, Vector3(0.27, 0.105, -0.27), 0.105, 0.05, tyre, _worn(Color(0.95, 0.75, 0.15), 0.8, 0.5))
 	# Trough hopper, every panel from a different scrap.
 	_mi(_body, ProcMesh.box(Vector3(0.5, 0.03, 0.56)), frame, Vector3(0, 0.24, 0))
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.025, 0.36, 0.57), 0.01, 1), _worn(Color(0.38, 0.72, 0.55), 0.6, 0.7), Vector3(-0.255, 0.41, 0), Vector3(0, 0, -5))
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.025, 0.33, 0.57), 0.01, 1), _worn(Color(0.82, 0.25, 0.16), 0.55, 0.8), Vector3(0.258, 0.4, 0), Vector3(0, 0, 6))
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.53, 0.42, 0.025), 0.01, 1), _worn(Color(0.95, 0.7, 0.15), 0.6, 0.7), Vector3(0, 0.44, 0.285))
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.52, 0.25, 0.025), 0.01, 1), _worn(Color(0.6, 0.6, 0.6), 0.1, 0.9), Vector3(0, 0.36, -0.285), Vector3(8, 0, 0))
+	_mi(_body, _rbox(Vector3(0.025, 0.36, 0.57), 0.01, 1), _worn(Color(0.38, 0.72, 0.55), 0.6, 0.7), Vector3(-0.255, 0.41, 0), Vector3(0, 0, -5))
+	_mi(_body, _rbox(Vector3(0.025, 0.33, 0.57), 0.01, 1), _worn(Color(0.82, 0.25, 0.16), 0.55, 0.8), Vector3(0.258, 0.4, 0), Vector3(0, 0, 6))
+	_mi(_body, _rbox(Vector3(0.53, 0.42, 0.025), 0.01, 1), _worn(Color(0.95, 0.7, 0.15), 0.6, 0.7), Vector3(0, 0.44, 0.285))
+	_mi(_body, _rbox(Vector3(0.52, 0.25, 0.025), 0.01, 1), _worn(Color(0.6, 0.6, 0.6), 0.1, 0.9), Vector3(0, 0.36, -0.285), Vector3(8, 0, 0))
 	# Riveted patch plate and rivets.
 	_mi(_body, ProcMesh.box(Vector3(0.012, 0.13, 0.17)), _worn(Color(0.35, 0.45, 0.75), 0.65, 0.6), Vector3(0.28, 0.46, 0.05), Vector3(0, 0, 6))
 	for p: Vector3 in [Vector3(0.29, 0.52, -0.02), Vector3(0.29, 0.52, 0.12), Vector3(0.276, 0.4, -0.02), Vector3(0.276, 0.4, 0.12)]:
@@ -254,7 +280,7 @@ func _scoop_salvage() -> void:
 	hopper_point = Vector3(0, 0.55, 0)
 	# Car battery strapped to the back, wires everywhere.
 	_mi(_body, ProcMesh.box(Vector3(0.3, 0.02, 0.15)), frame, Vector3(0.04, 0.25, 0.37))
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.22, 0.15, 0.13), 0.01, 1), _gloss(Color(0.07, 0.07, 0.08), 0.6, 0.0, 0.0), Vector3(0.05, 0.335, 0.37))
+	_mi(_body, _rbox(Vector3(0.22, 0.15, 0.13), 0.01, 1), _gloss(Color(0.07, 0.07, 0.08), 0.6, 0.0, 0.0), Vector3(0.05, 0.335, 0.37))
 	_mi(_body, ProcMesh.cyl(0.015, 0.015, 0.025, 8), Mats.lamp(Color(0.9, 0.15, 0.1), 0.3), Vector3(-0.02, 0.42, 0.37))
 	_mi(_body, ProcMesh.cyl(0.015, 0.015, 0.025, 8), Mats.metal("dark_steel"), Vector3(0.12, 0.42, 0.37))
 	_cable(_body, Vector3(-0.02, 0.43, 0.37), Vector3(-0.12, 0.72, 0.45), Vector3(-0.17, 0.62, 0.3), 0.009, Mats.rubber(Color(0.75, 0.1, 0.08)))
@@ -288,8 +314,8 @@ func _scoop_salvage() -> void:
 func _head_restored(pos: Vector3, paint: Material, trim: Material, accent: Material) -> void:
 	_mi(_body, ProcMesh.cyl(0.035, 0.045, pos.y - 0.62, 12), trim, Vector3(pos.x, (pos.y + 0.62) * 0.5, pos.z + 0.04))
 	_head = _node(_body, pos)
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.24, 0.16, 0.19), 0.05, 2), paint, Vector3.ZERO)
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.26, 0.02, 0.1), 0.008, 1), accent, Vector3(0, 0.085, -0.08), Vector3(-10, 0, 0))
+	_mi(_head, _rbox(Vector3(0.24, 0.16, 0.19), 0.05, 2), paint, Vector3.ZERO)
+	_mi(_head, _rbox(Vector3(0.26, 0.02, 0.1), 0.008, 1), accent, Vector3(0, 0.085, -0.08), Vector3(-10, 0, 0))
 	_round_eye(_head, Vector3(0, -0.005, -0.1), 0.048, WARM, trim)
 	for x: float in [-0.125, 0.125]:
 		_mi(_head, ProcMesh.cyl(0.03, 0.03, 0.03, 12), trim, Vector3(x, 0, 0), Vector3(0, 0, 90))
@@ -304,17 +330,17 @@ func _scoop_restored() -> void:
 	var trim: Material = _worn(Color(0.15, 0.16, 0.18), 0.95, 0.2, 0.3, 0.0)
 	var accent: Material = _worn(Color(0.9, 0.16, 0.1), 0.95, 0.2, 0.3, 0.0)
 	var tyre: Material = Mats.rubber()
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.6, 0.1, 0.74), 0.03, 2), trim, Vector3(0, 0.2, 0))
+	_mi(_body, _rbox(Vector3(0.6, 0.1, 0.74), 0.03, 2), trim, Vector3(0, 0.2, 0))
 	for x: float in [-0.37, 0.37]:
 		for z: float in [-0.24, 0.24]:
 			_wheel(_body, Vector3(x, 0.15, z), 0.15, 0.1, tyre, accent)
-			_mi(_body, ProcMesh.rounded_box(Vector3(0.14, 0.03, 0.34), 0.012, 2), paint, Vector3(x, 0.32, z))
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.62, 0.42, 0.68), 0.08, 3), paint, Vector3(0, 0.47, 0))
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.632, 0.05, 0.692), 0.08, 3), accent, Vector3(0, 0.5, 0))
+			_mi(_body, _rbox(Vector3(0.14, 0.03, 0.34), 0.012, 2), paint, Vector3(x, 0.32, z))
+	_mi(_body, _rbox(Vector3(0.62, 0.42, 0.68), 0.08, 3), paint, Vector3(0, 0.47, 0))
+	_mi(_body, _rbox(Vector3(0.632, 0.05, 0.692), 0.08, 3), accent, Vector3(0, 0.5, 0))
 	for x: float in [-0.29, 0.29]:
-		_mi(_body, ProcMesh.rounded_box(Vector3(0.05, 0.05, 0.66), 0.015, 1), trim, Vector3(x, 0.69, 0))
+		_mi(_body, _rbox(Vector3(0.05, 0.05, 0.66), 0.015, 1), trim, Vector3(x, 0.69, 0))
 	for z: float in [-0.32, 0.32]:
-		_mi(_body, ProcMesh.rounded_box(Vector3(0.62, 0.05, 0.05), 0.015, 1), trim, Vector3(0, 0.69, z))
+		_mi(_body, _rbox(Vector3(0.62, 0.05, 0.05), 0.015, 1), trim, Vector3(0, 0.69, z))
 	_mi(_body, ProcMesh.box(Vector3(0.52, 0.004, 0.58)), _gloss(Color(0.03, 0.03, 0.035), 0.9, 0.0, 0.0), Vector3(0, 0.683, 0))
 	_stencil(_body, "SCP-2", Vector3(0.318, 0.4, 0.05), Vector3(0, 90, 0), 52, Color(0.12, 0.12, 0.13, 0.9))
 	_stencil(_body, "SCP-2", Vector3(-0.318, 0.4, -0.05), Vector3(0, -90, 0), 52, Color(0.12, 0.12, 0.13, 0.9))
@@ -329,7 +355,7 @@ func _scoop_restored() -> void:
 	for x: float in [-0.25, 0.25]:
 		_rod(_arm, Vector3(x, 0, 0), Vector3(x, -0.2, -0.24), 0.028, trim)
 		_rod(_arm, Vector3(x * 0.8, 0.02, 0), Vector3(x * 0.8, -0.12, -0.16), 0.018, Mats.metal("chrome"))
-	_mi(_arm, ProcMesh.rounded_box(Vector3(0.54, 0.13, 0.2), 0.03, 2), paint, Vector3(0, -0.27, -0.32))
+	_mi(_arm, _rbox(Vector3(0.54, 0.13, 0.2), 0.03, 2), paint, Vector3(0, -0.27, -0.32))
 	for i: int in 5:
 		_mi(_arm, ProcMesh.box(Vector3(0.04, 0.02, 0.05)), Mats.metal("steel"), Vector3(-0.2 + i * 0.1, -0.33, -0.43))
 	emitter_point = _arm.position + Vector3(0, -0.27, -0.36)
@@ -342,21 +368,22 @@ func _scoop_modern() -> void:
 	var coral: Material = _gloss(Color(1.0, 0.38, 0.26), 0.28)
 	var dark: Material = _gloss(Color(0.07, 0.08, 0.09), 0.35, 0.4, 0.3)
 	var lite: Material = _glow(LIME, 2.5)
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.58, 0.14, 0.7), 0.06, 2), dark, Vector3(0, 0.13, 0))
+	_mi(_body, _rbox(Vector3(0.58, 0.14, 0.7), 0.06, 2), dark, Vector3(0, 0.13, 0))
 	for x: float in [-0.25, 0.25]:
 		for z: float in [-0.24, 0.24]:
 			_wheel(_body, Vector3(x, 0.09, z), 0.09, 0.07, Mats.rubber(), dark)
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.64, 0.44, 0.74), 0.16, 4), white, Vector3(0, 0.43, 0))
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.656, 0.2, 0.756), 0.13, 3), coral, Vector3(0, 0.31, 0))
+	_mi(_body, _rbox(Vector3(0.64, 0.44, 0.74), 0.16, 4), white, Vector3(0, 0.43, 0))
+	_mi(_body, _rbox(Vector3(0.656, 0.2, 0.756), 0.13, 3), coral, Vector3(0, 0.31, 0))
 	# Panel seams.
-	_mi(_body, ProcMesh.box(Vector3(0.65, 0.3, 0.006)), dark, Vector3(0, 0.47, 0.06))
-	_mi(_body, ProcMesh.box(Vector3(0.4, 0.006, 0.75)), dark, Vector3(0, 0.44, 0))
+	for x: float in [-0.321, 0.321]:
+		_mi(_body, ProcMesh.box(Vector3(0.004, 0.2, 0.004)), dark, Vector3(x, 0.5, 0.12))
+	_mi(_body, ProcMesh.box(Vector3(0.3, 0.004, 0.004)), dark, Vector3(0, 0.5, -0.371))
 	# Light strips.
 	for x: float in [-0.322, 0.322]:
 		_mi(_body, ProcMesh.box(Vector3(0.006, 0.022, 0.36)), lite, Vector3(x, 0.52, -0.08))
 	_mi(_body, ProcMesh.box(Vector3(0.28, 0.022, 0.006)), lite, Vector3(0, 0.36, -0.372))
 	# Hopper mouth with a glowing ring.
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.42, 0.02, 0.5), 0.05, 2), dark, Vector3(0, 0.645, 0))
+	_mi(_body, _rbox(Vector3(0.42, 0.02, 0.5), 0.05, 2), dark, Vector3(0, 0.645, 0))
 	_mi(_body, ProcMesh.torus(0.2, 0.215, 28, 4), lite, Vector3(0, 0.652, 0), Vector3.ZERO, Vector3(1.0, 1.0, 1.2))
 	hopper_point = Vector3(0, 0.66, 0)
 	# Floating visor head over a magnetic neck.
@@ -364,12 +391,12 @@ func _scoop_modern() -> void:
 	_mi(_body, ProcMesh.torus(0.045, 0.065, 18, 4), _glow(LIME, 3.0), Vector3(0, 0.755, 0.22))
 	var hf := _floater(_body, Vector3(0, 0.86, 0.2), 0.012)
 	_head = _node(hf, Vector3.ZERO)
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.34, 0.19, 0.25), 0.085, 3), white, Vector3.ZERO)
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.345, 0.07, 0.255), 0.03, 2), coral, Vector3(0, 0.065, 0.0))
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.28, 0.1, 0.03), 0.03, 2), _gloss(Color(0.02, 0.03, 0.04), 0.05, 0.3, 1.0), Vector3(0, -0.005, -0.118))
+	_mi(_head, _rbox(Vector3(0.34, 0.19, 0.25), 0.085, 3), white, Vector3.ZERO)
+	_mi(_head, _rbox(Vector3(0.345, 0.07, 0.255), 0.03, 2), coral, Vector3(0, 0.065, 0.0))
+	_mi(_head, _rbox(Vector3(0.28, 0.1, 0.03), 0.03, 2), _gloss(Color(0.02, 0.03, 0.04), 0.05, 0.3, 1.0), Vector3(0, -0.005, -0.118))
 	_eye = _node(_head, Vector3(0, -0.005, -0.135))
 	_eye_mat = _glow(LIME, 3.5)
-	_mi(_eye, ProcMesh.rounded_box(Vector3(0.17, 0.035, 0.006), 0.012, 1), _eye_mat, Vector3.ZERO)
+	_mi(_eye, _rbox(Vector3(0.17, 0.035, 0.006), 0.012, 1), _eye_mat, Vector3.ZERO)
 	_antenna = _node(_head, Vector3(-0.12, 0.09, 0.06))
 	_rod(_antenna, Vector3.ZERO, Vector3(0, 0.08, 0), 0.006, dark, 6)
 	_mi(_antenna, ProcMesh.sphere(0.018, 10, 5), coral, Vector3(0, 0.085, 0))
@@ -382,7 +409,7 @@ func _scoop_modern() -> void:
 	var fore := _floater(_arm, Vector3(0, -0.02, -0.02), 0.01)
 	for x: float in [-0.35, 0.35]:
 		_rod(fore, Vector3(x * 1.03, -0.12, -0.23), Vector3(x * 0.9, -0.2, -0.33), 0.034, white, 12)
-	_mi(fore, ProcMesh.rounded_box(Vector3(0.58, 0.07, 0.22), 0.03, 2), coral, Vector3(0, -0.24, -0.38), Vector3(-8, 0, 0))
+	_mi(fore, _rbox(Vector3(0.58, 0.07, 0.22), 0.03, 2), coral, Vector3(0, -0.24, -0.38), Vector3(-8, 0, 0))
 	_mi(fore, ProcMesh.box(Vector3(0.5, 0.012, 0.006)), lite, Vector3(0, -0.205, -0.49), Vector3(-8, 0, 0))
 	emitter_point = _arm.position + Vector3(0, -0.26, -0.4)
 
@@ -472,7 +499,7 @@ func _haul_salvage() -> void:
 	_mi(_body, ProcMesh.box(Vector3(0.4, 0.19, 0.19)), conc, Vector3(0, 0.345, 0.47))
 	_stencil(_body, "HAUL", Vector3(0, 0.35, 0.566), Vector3.ZERO, 56, Color(0.85, 0.2, 0.12, 0.85))
 	var red: Material = _worn(Color(0.85, 0.15, 0.1), 0.7, 0.6)
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.3, 0.16, 0.16), 0.015, 1), red, Vector3(0.1, 0.33, 0.18))
+	_mi(_body, _rbox(Vector3(0.3, 0.16, 0.16), 0.015, 1), red, Vector3(0.1, 0.33, 0.18))
 	_rod(_body, Vector3(0.0, 0.43, 0.18), Vector3(0.2, 0.43, 0.18), 0.008, Mats.metal("steel"))
 	_cable(_body, Vector3(0.0, 0.35, 0.1), Vector3(-0.12, 0.3, -0.05), Vector3(-0.2, 0.55, -0.22), 0.009, Mats.rubber(Color(0.85, 0.7, 0.1)))
 	_cable(_body, Vector3(0.2, 0.38, 0.1), Vector3(0.3, 0.6, 0.0), Vector3(0.2, 0.75, -0.22), 0.008, Mats.rubber(Color(0.75, 0.1, 0.08)))
@@ -510,9 +537,9 @@ func _haul_restored() -> void:
 	for x: float in [-0.38, 0.38]:
 		for z: float in [-0.1, 0.4]:
 			_wheel(_body, Vector3(x, 0.15, z), 0.15, 0.11, tyre, accent)
-			_mi(_body, ProcMesh.rounded_box(Vector3(0.15, 0.03, 0.34), 0.012, 2), paint, Vector3(x, 0.32, z))
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.64, 0.32, 0.74), 0.07, 3), paint, Vector3(0, 0.36, 0.15))
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.66, 0.24, 0.18), 0.05, 2), trim, Vector3(0, 0.46, 0.55))
+			_mi(_body, _rbox(Vector3(0.15, 0.03, 0.34), 0.012, 2), paint, Vector3(x, 0.32, z))
+	_mi(_body, _rbox(Vector3(0.64, 0.32, 0.74), 0.07, 3), paint, Vector3(0, 0.36, 0.15))
+	_mi(_body, _rbox(Vector3(0.66, 0.24, 0.18), 0.05, 2), trim, Vector3(0, 0.46, 0.55))
 	for i: int in 4:
 		_mi(_body, ProcMesh.box(Vector3(0.06, 0.2, 0.01)), accent, Vector3(-0.24 + i * 0.16, 0.46, 0.643), Vector3(0, 0, 35))
 	_stencil(_body, "HB-2", Vector3(0.323, 0.36, 0.1), Vector3(0, 90, 0), 56, Color(0.12, 0.12, 0.13, 0.9))
@@ -541,38 +568,40 @@ func _haul_modern() -> void:
 	var coral: Material = _gloss(Color(1.0, 0.38, 0.26), 0.28)
 	var dark: Material = _gloss(Color(0.07, 0.08, 0.09), 0.35, 0.4, 0.3)
 	var lite: Material = _glow(LIME, 2.5)
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.62, 0.14, 0.82), 0.06, 2), dark, Vector3(0, 0.13, 0.15))
+	_mi(_body, _rbox(Vector3(0.62, 0.14, 0.82), 0.06, 2), dark, Vector3(0, 0.13, 0.15))
 	for x: float in [-0.27, 0.27]:
 		for z: float in [-0.12, 0.42]:
 			_wheel(_body, Vector3(x, 0.09, z), 0.09, 0.07, Mats.rubber(), dark)
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.7, 0.36, 0.84), 0.15, 4), white, Vector3(0, 0.39, 0.15))
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.716, 0.18, 0.856), 0.12, 3), coral, Vector3(0, 0.29, 0.15))
-	_mi(_body, ProcMesh.box(Vector3(0.71, 0.26, 0.006)), dark, Vector3(0, 0.42, 0.25))
+	_mi(_body, _rbox(Vector3(0.7, 0.36, 0.84), 0.15, 4), white, Vector3(0, 0.39, 0.15))
+	_mi(_body, _rbox(Vector3(0.716, 0.18, 0.856), 0.12, 3), coral, Vector3(0, 0.29, 0.15))
+	for x: float in [-0.351, 0.351]:
+		_mi(_body, ProcMesh.box(Vector3(0.004, 0.16, 0.004)), dark, Vector3(x, 0.45, 0.3))
 	for x: float in [-0.352, 0.352]:
 		_mi(_body, ProcMesh.box(Vector3(0.006, 0.022, 0.46)), lite, Vector3(x, 0.47, 0.12))
 	_mi(_body, ProcMesh.box(Vector3(0.36, 0.022, 0.006)), lite, Vector3(0, 0.47, 0.572))
 	# Mag rail and floating fork carriage.
-	_mi(_body, ProcMesh.rounded_box(Vector3(0.52, 0.5, 0.06), 0.03, 2), dark, Vector3(0, 0.45, -0.28))
-	for x: float in [-0.2, 0.2]:
-		_mi(_body, ProcMesh.box(Vector3(0.02, 0.44, 0.006)), lite, Vector3(x, 0.45, -0.312))
+	_mi(_body, _rbox(Vector3(0.48, 0.4, 0.06), 0.03, 2), dark, Vector3(0, 0.42, -0.28))
+	_mi(_body, _rbox(Vector3(0.5, 0.06, 0.08), 0.025, 2), coral, Vector3(0, 0.63, -0.28))
+	for x: float in [-0.19, 0.19]:
+		_mi(_body, ProcMesh.box(Vector3(0.016, 0.34, 0.006)), lite, Vector3(x, 0.42, -0.312))
 	var forks := _floater(_body, Vector3.ZERO, 0.008)
-	_mi(forks, ProcMesh.rounded_box(Vector3(0.46, 0.14, 0.035), 0.02, 2), coral, Vector3(0, 0.26, -0.34))
+	_mi(forks, _rbox(Vector3(0.46, 0.14, 0.035), 0.02, 2), coral, Vector3(0, 0.26, -0.34))
 	for x: float in [-0.15, 0.15]:
-		_mi(forks, ProcMesh.rounded_box(Vector3(0.085, 0.03, 0.54), 0.012, 2), white, Vector3(x, 0.135, -0.62))
-		_mi(forks, ProcMesh.box(Vector3(0.087, 0.006, 0.4)), lite, Vector3(x, 0.152, -0.64))
-		_mi(forks, ProcMesh.rounded_box(Vector3(0.085, 0.15, 0.03), 0.012, 2), white, Vector3(x, 0.2, -0.36))
+		_mi(forks, _rbox(Vector3(0.085, 0.03, 0.54), 0.012, 2), white, Vector3(x, 0.135, -0.62))
+		_mi(forks, ProcMesh.box(Vector3(0.02, 0.006, 0.4)), lite, Vector3(x, 0.151, -0.64))
+		_mi(forks, _rbox(Vector3(0.085, 0.15, 0.03), 0.012, 2), white, Vector3(x, 0.2, -0.36))
 	fork_point = Vector3(0, 0.15, -0.64)
 	# Floating head.
 	_mi(_body, ProcMesh.cyl(0.04, 0.05, 0.1, 14), dark, Vector3(0, 0.62, 0.32))
 	_mi(_body, ProcMesh.torus(0.045, 0.065, 18, 4), _glow(LIME, 3.0), Vector3(0, 0.685, 0.32))
 	var hf := _floater(_body, Vector3(0, 0.79, 0.3), 0.012)
 	_head = _node(hf, Vector3.ZERO)
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.34, 0.19, 0.25), 0.085, 3), white, Vector3.ZERO)
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.345, 0.07, 0.255), 0.03, 2), coral, Vector3(0, 0.065, 0.0))
-	_mi(_head, ProcMesh.rounded_box(Vector3(0.28, 0.1, 0.03), 0.03, 2), _gloss(Color(0.02, 0.03, 0.04), 0.05, 0.3, 1.0), Vector3(0, -0.005, -0.118))
+	_mi(_head, _rbox(Vector3(0.34, 0.19, 0.25), 0.085, 3), white, Vector3.ZERO)
+	_mi(_head, _rbox(Vector3(0.345, 0.07, 0.255), 0.03, 2), coral, Vector3(0, 0.065, 0.0))
+	_mi(_head, _rbox(Vector3(0.28, 0.1, 0.03), 0.03, 2), _gloss(Color(0.02, 0.03, 0.04), 0.05, 0.3, 1.0), Vector3(0, -0.005, -0.118))
 	_eye = _node(_head, Vector3(0, -0.005, -0.135))
 	_eye_mat = _glow(LIME, 3.5)
-	_mi(_eye, ProcMesh.rounded_box(Vector3(0.17, 0.035, 0.006), 0.012, 1), _eye_mat, Vector3.ZERO)
+	_mi(_eye, _rbox(Vector3(0.17, 0.035, 0.006), 0.012, 1), _eye_mat, Vector3.ZERO)
 	_antenna = _node(_head, Vector3(0.12, 0.09, 0.06))
 	_rod(_antenna, Vector3.ZERO, Vector3(0, 0.08, 0), 0.006, dark, 6)
 	_mi(_antenna, ProcMesh.sphere(0.018, 10, 5), coral, Vector3(0, 0.085, 0))
@@ -606,8 +635,8 @@ func _haul_hover() -> void:
 	var fc := Vector3(0, 0.66, -0.68)
 	for s: float in [-1.0, 1.0]:
 		var pad := _floater(_body, fc + Vector3(s * 0.37, 0.02, 0), 0.012)
-		_mi(pad, ProcMesh.rounded_box(Vector3(0.07, 0.5, 0.48), 0.03, 2), pearl, Vector3.ZERO)
-		_mi(pad, ProcMesh.rounded_box(Vector3(0.075, 0.08, 0.5), 0.03, 2), tang, Vector3(0, 0.2, 0))
+		_mi(pad, _rbox(Vector3(0.07, 0.5, 0.48), 0.03, 2), pearl, Vector3.ZERO)
+		_mi(pad, _rbox(Vector3(0.075, 0.08, 0.5), 0.03, 2), tang, Vector3(0, 0.2, 0))
 		_mi(pad, ProcMesh.box(Vector3(0.006, 0.36, 0.36)), _glow(MINT, 3.0), Vector3(-s * 0.037, -0.02, 0))
 		_mi(pad, ProcMesh.cyl(0.03, 0.03, 0.01, 12), _glow(MINT, 3.0), Vector3(0, -0.255, 0))
 		_rod(_body, c + Vector3(s * 0.22, -0.05, -0.25), fc + Vector3(s * 0.34, 0.24, 0.2), 0.012, _additive(Color(0.2, 0.8, 0.7, 0.25)), 6)

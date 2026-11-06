@@ -110,7 +110,7 @@ func _add_bale(holder: Node3D, at: Vector3) -> void:
 	b.position = at + Vector3(0, 0.25, 0)
 	holder.add_child(b)
 	var body := MeshInstance3D.new()
-	body.mesh = ProcMesh.rounded_box(Vector3(0.5, 0.5, 0.5), 0.03, 2)
+	body.mesh = ProcMesh.box(Vector3(0.5, 0.5, 0.5))
 	body.material_override = Mats.worn_paint(Color(0.45, 0.42, 0.38), 0.45, 0.85, 3.0, 0.7)
 	b.add_child(body)
 	# Crushed bits poking out of the faces.

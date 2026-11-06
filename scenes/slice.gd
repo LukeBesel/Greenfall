@@ -21,6 +21,7 @@ var district_name: String = "Old Town"
 var globe: GlobeView
 var sky_director: SkyDirector
 var hub: Hub
+var rocket: Rocket
 var shards: ShardSystem
 var garden: Garden
 var first_seed: FirstSeed
@@ -49,13 +50,16 @@ func _ready() -> void:
 	var cfg: Dictionary = Economy.planet.get("slice_field", {})
 	var base_seed: int = int(DevHooks.get_f("seed", float(cfg.get("seed", 4471))))
 	var loaded: bool = false
-	if not DevHooks.has("fresh"):
+	if GameState.reload_in_memory:
+		GameState.reload_in_memory = false
+		loaded = true
+	elif not DevHooks.has("fresh"):
 		loaded = SaveManager.load_game()
-	if DevHooks.has("hub"):
+	if DevHooks.has("hub") and not loaded:
 		GameState.switch_hub(int(DevHooks.get_f("hub", 0.0)))
 	planet = PlanetData.new(base_seed, 6, 10.0)
 	planet.generate()
-	if loaded and not GameState.planet_state.is_empty():
+	if not GameState.planet_state.is_empty():
 		planet.apply_dict(GameState.planet_state)
 	hub_index = clampi(GameState.current_hub, 0, planet.hubs.size() - 1)
 	anchor_cell = planet.hubs[hub_index]
@@ -129,6 +133,9 @@ func _ready() -> void:
 	add_child(lens)
 	globe = GlobeView.new()
 	globe.planet = planet
+	globe.current_hub = hub_index
+	globe.rocket_ready = func() -> bool: return hub.level >= 5 or DevHooks.has("rocket")
+	globe.launch_to = func(i: int) -> void: _launch(i)
 	globe.patch_cell_provider = func() -> int: return planet_cell_at(patch.global_position)
 	add_child(globe)
 	globe.closed.connect(_on_modal_closed)
@@ -193,7 +200,17 @@ func _ready() -> void:
 			globe.open_view()
 			globe.focus_on(planet_cell_at(patch.global_position))).call_deferred()
 	EventBus.hitstop_requested.connect(_hitstop)
-	print("[slice] built in %d ms" % (Time.get_ticks_msec() - t0))
+	print("[slice] built in %d ms  district=%s hub=%d" % [Time.get_ticks_msec() - t0, district_name, hub_index])
+	if DevHooks.has("auto-launch") and not GameState.flags.get("auto_launched", false):
+		GameState.flags["auto_launched"] = true
+		get_tree().create_timer(1.0).timeout.connect(func() -> void: _launch(int(DevHooks.get_f("auto-launch", 1.0))))
+	if GameState.flags.get("arrived_from_rocket", false):
+		GameState.flags.erase("arrived_from_rocket")
+		patch.global_position = SPAWN + Vector3(0, 0.6, 0)
+		EventBus.shake_requested.emit(0.4)
+		Vfx.burst("dust", patch.global_position, Color(0.7, 0.65, 0.6, 0.7), 2.0)
+		Audio.play("clunk", 0.6, 0.0)
+		(func() -> void: EventBus.toast.emit("Touchdown: %s. Hub %d of %d. A new lean-to is waiting." % [district_name, hub_index + 1, planet.hubs.size()], "story")).call_deferred()
 	wren = Wren.new()
 	wren.world = self
 	add_child(wren)
@@ -483,6 +500,25 @@ func _on_hex_clean(hid: int) -> void:
 			EventBus.toast.emit("Milestone: %d hexes clean!" % n, "story")
 		if n >= field.junk_hex_count:
 			EventBus.toast.emit("The whole Junkyard is clean. Patch beeps a very long, very happy beep.", "story")
+
+
+func _launch(to_hub: int) -> void:
+	if rocket == null:
+		rocket = Rocket.new()
+		rocket.world = self
+		add_child(rocket)
+		rocket.position = Vector3(-7.0, 0, 6.5)
+	rocket.launch(to_hub)
+
+
+## Leave this district: persist it, switch the active hub, save without re-gathering, reload.
+func travel_to(to_hub: int) -> void:
+	get_tree().call_group("persist", "persist_save")
+	GameState.switch_hub(to_hub)
+	GameState.flags["arrived_from_rocket"] = true
+	GameState.reload_in_memory = true
+	SaveManager.save_game(false)
+	get_tree().reload_current_scene()
 
 
 ## Salvaged building materials from scooped junk (data/hub.json "materials").

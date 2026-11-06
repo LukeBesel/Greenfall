@@ -35,6 +35,14 @@ var _drag: bool = false
 var _yaw: float = 0.0
 var _pitch: float = 0.3
 var _zoom: float = 3.2
+var _hub_list: VBoxContainer
+var rocket_ready: Callable = func() -> bool: return false
+var launch_to: Callable = func(_hub: int) -> void: pass
+var current_hub: int = 0
+var _fly_t: float = -1.0
+var _fly_from := Vector3.ZERO
+var _fly_to := Vector3.ZERO
+var _fly_dur: float = 5.0
 
 
 func _ready() -> void:
@@ -103,6 +111,8 @@ func _ready() -> void:
 	close.pressed.connect(close_view)
 	vb.add_child(close)
 	vb.add_child(UITheme.label("drag to spin  ·  wheel to zoom", 12, UITheme.MUTED))
+	_hub_list = VBoxContainer.new()
+	vb.add_child(_hub_list)
 	_root.visible = false
 
 
@@ -130,6 +140,45 @@ func open_view() -> void:
 	_root.modulate.a = 0.0
 	create_tween().tween_property(_root, "modulate:a", 1.0, 0.25)
 	_refresh_text()
+	_refresh_hubs()
+
+
+func _refresh_hubs() -> void:
+	for c: Node in _hub_list.get_children():
+		c.queue_free()
+	if not rocket_ready.call():
+		_hub_list.add_child(UITheme.label("Rocket travel: build a level 5 hub.", 13, UITheme.MUTED))
+		return
+	_hub_list.add_child(UITheme.label("R O C K E T   D E S T I N A T I O N S", 12, UITheme.MUTED))
+	var here: Vector3 = planet.grid.centers[planet.hubs[current_hub]]
+	var order: Array = range(planet.hubs.size())
+	order.sort_custom(func(a: int, b: int) -> bool:
+		return here.angle_to(planet.grid.centers[planet.hubs[a]]) < here.angle_to(planet.grid.centers[planet.hubs[b]]))
+	for i: int in order.slice(1, 9):
+		var cell: int = planet.hubs[i]
+		var name: String = str(planet.cities[planet.city[cell]]["name"]) if planet.city[cell] >= 0 else PlanetData.BIOMES[planet.biome[cell]].capitalize().replace("_", " ") + " site"
+		var km: float = here.angle_to(planet.grid.centers[cell]) * planet.radius_m / 1000.0
+		var b := Button.new()
+		b.text = "%s   ·   %.1f km" % [name, km]
+		b.custom_minimum_size = Vector2(240, 34)
+		b.pressed.connect(func() -> void:
+			close_view()
+			launch_to.call(i))
+		_hub_list.add_child(b)
+
+
+## Rocket flight: a glowing marker arcs from one hub to another while the globe turns to follow.
+func fly(from_hub: int, to_hub: int, duration: float) -> void:
+	if _snapshot.is_empty():
+		survey()
+	_fly_from = planet.grid.centers[planet.hubs[from_hub]]
+	_fly_to = planet.grid.centers[planet.hubs[to_hub]]
+	_fly_dur = duration
+	_fly_t = 0.0
+	is_open = true
+	_root.visible = true
+	_zoom = 2.6
+	Audio.play("whoosh", 0.5, -4.0)
 
 
 func close_view() -> void:
@@ -221,6 +270,17 @@ func _process(delta: float) -> void:
 	_pivot.rotation = Vector3(_pitch, _yaw, 0.0)
 	_cam.position = Vector3(0, 0, _zoom)
 	_cam.look_at(Vector3.ZERO)
+	if _fly_t >= 0.0:
+		_fly_t += delta / _fly_dur
+		var t: float = clampf(_fly_t, 0.0, 1.0)
+		var dir: Vector3 = _fly_from.slerp(_fly_to, t).normalized()
+		_marker.position = dir * (1.02 + sin(t * PI) * 0.25)
+		_yaw = lerp_angle(_yaw, -atan2(dir.x, dir.z), delta * 3.0)
+		_pitch = lerpf(_pitch, asin(clampf(dir.y, -1.0, 1.0)), delta * 3.0)
+		_pivot.rotation = Vector3(_pitch, _yaw, 0.0)
+		if _fly_t >= 1.0:
+			_fly_t = -1.0
+		return
 	var pc: int = patch_cell_provider.call()
 	if pc >= 0:
 		_marker.position = planet.grid.centers[pc] * 1.02
