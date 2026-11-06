@@ -590,7 +590,7 @@ func _start_supply(d: Dictionary, force: bool) -> bool:
 	crate.add_child(chute)
 	# --event-land (screenshots): start just above the junk and drift down slowly.
 	var low: bool = DevHooks.has("event-land")
-	crate.position = Vector3(0, 3.2 if low else 30.0, 0)
+	crate.position = Vector3(0, 1.3 if low else 30.0, 0)
 	crate.rotation.y = rng.randf() * TAU
 	active["crate"] = crate
 	active["chute"] = chute

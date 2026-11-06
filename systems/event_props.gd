@@ -137,7 +137,7 @@ static func zone_ring(radius: float, col: Color) -> MeshInstance3D:
 static func crate() -> Node3D:
 	var n := Node3D.new()
 	n.name = "Crate"
-	var paint: ShaderMaterial = Mats.worn_paint(Color(0.86, 0.88, 0.9), 0.92, 0.15, 17.0, 0.35)
+	var paint: ShaderMaterial = Mats.worn_paint(Color(0.2, 0.36, 0.48), 0.92, 0.15, 17.0, 0.35)
 	var steel: StandardMaterial3D = Mats.metal("dark_steel")
 	var cyan := Mats.lamp(Color(0.37, 0.9, 1.0), 2.6)
 	_mi(n, ProcMesh.rounded_box(Vector3(0.95, 0.62, 0.72), 0.06, 2), paint, Vector3(0, 0.31, 0))
@@ -150,7 +150,7 @@ static func crate() -> Node3D:
 	n.add_child(lid)
 	_mi(lid, ProcMesh.rounded_box(Vector3(0.99, 0.08, 0.76), 0.03, 2), paint, Vector3(0, 0.04, 0.36))
 	_mi(lid, ProcMesh.box(Vector3(0.5, 0.02, 0.1)), cyan, Vector3(0, 0.09, 0.36))
-	var lab: Label3D = EggProps.label("CRADLE · SUPPLY", 22, Color(0.12, 0.2, 0.26), Vector3(0, 0.38, 0.365))
+	var lab: Label3D = EggProps.label("CRADLE · SUPPLY", 22, Color(0.85, 0.95, 1.0), Vector3(0, 0.38, 0.365))
 	n.add_child(lab)
 	var glow := OmniLight3D.new()
 	glow.name = "Glow"
