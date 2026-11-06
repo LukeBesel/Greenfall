@@ -4,5 +4,9 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 
 ## Status
 - [x] M0 Setup
-- [ ] M1 The Slice: playable city-district slice; pacing, lens view and tutorial still open (see PROGRESS)
-- [ ] M2 Planet, M3 Robots, ... (see PLAN)
+- [x] M1 The Slice (city district, Patch, baling, tutorial, lens view)
+- [~] M2 Planet: sphere data + globe done; walking on the sphere (M2b) next
+- [~] M3 Robots: 5 robot types, workshop, fleet upgrades, Mk tiers, Haggle trade; visual redesign in progress
+- [~] M4 Story: WREN, shards, first-seed cinematic; ruins/acts 2+ pending
+- [~] M5 Growing: planting, watering, growth, allocation board, wildlife; ecosystems/compost pending
+- [ ] M6 Water, M7 Hubs+Rockets (hub levels done), M8-M11

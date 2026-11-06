@@ -1,26 +1,27 @@
 # Progress
 
-## Current state (end of session 1)
-M0 done. M1 ("The Slice") is playable but not finished: the art direction changed mid-milestone (owner's realism override + many feature notes), so the slice was rebuilt around a city district.
+## Current state (session 1, continued)
+M0 done. M1 slice playable. Large parts of M2-M5 are in, built on the Old Town district slice.
 
-### Built and verified
-- Toolchain: Godot 4.7.2, GUT 9.7.1 (28 tests passing: BigNum, economy, saves/migration, field generation, compartment rules), Poly Haven CC0 asset pipeline (`tools/fetch_assets.py`), Blender 4.0 available in the container (`apt-get install blender`) for future modeling.
-- World: city district (`planet/city_layout.gd`, `planet/city_view.gd`): 36 m blocks, roads with faded lane paint, curbs and sidewalks, modular-facade buildings near the play area, proxy buildings and towers beyond. Hub block: small swept yard with a lean-to shack + workbench and a scrap skip on a weigh scale.
-- Hexes: 10 m radius (260 m²), 37 in the slice, junk hexes ~260-420 collectible real-model pieces each (landfill lots ×2.2, piled heaps), plus a dense layered litter carpet (~30/m²) that Patch's scoop sweeps through and that thins/vanishes as the hex is cleaned.
-- Ground: PBR Texture2DArray shader; cleaning reveals cracked asphalt with lane paint, sidewalk concrete, or dry dirt.
-- Patch: "Drum" design chosen from a 3-way design competition (turnarounds in `screenshots/turn_drum_*.png`): upright rusted drum on 2 drive wheels + caster, offset sensor head with 8-blade iris, clamshell arms, lid ram, rear bale hatch.
-- Loop: scoop individual items → hopper fill gauge with Perfect band → hydraulic baling (ram, hatch, strapped bale ejects) → carry/stack bales → scale + skip cashes them. Upgrades only at the hub workbench. Part detector: beeps faster and blinks red near buried parts, rarity readout within 4 m, dig to recover parts into storage.
-- UI: thin industrial HUD (cubes, district/planet %, hopper gauge, detector readout, message log); upgrade cards restyled by the shared theme.
-- Lighting: physical sky, AgX, high sun, quality presets Low..Ultra (Low drops GI/volumetrics/SSR).
+### Systems in the game now
+- **World**: Old Town city district (roads, sidewalks, kit buildings, props, skyline), 10 m hexes covered in real-model junk on a dense litter carpet that the scoop sweeps through. PBR ground that cleans to asphalt/concrete/dirt and greens with plant life.
+- **Patch**: "Beetle" design (v2): small, cute, light-blue worn paint over rust. Scoop → hopper with Perfect band → hydraulic baling → carry → scale + skip. Tools 1/2/3: Scoop, Plant, Water (leaky can, refills at the hub). Part detector (beeps, red blink, rarity readout, dig). Lens view (V).
+- **Hub**: lean-to shack with workbench (upgrades only there), scrap skip on a weigh scale. Hub levels 2-5 from salvaged materials (sheet metal, plastic stock, glass) with fast-build sequences; air scrubbers.
+- **Robots**: Scoopie (clean), Haul Bug (deliver bales), Seedling (plant), Drip (water), Multibot (assignable). Built from part recipes at the workbench; fleet upgrades; Mk I-IV tiers (salvage → restored → modern → hover with tractor beams; Mk tiers cost cubes + bolts + a rarer Control Core). Allocation Board with presets and bottleneck hints.
+- **Parts**: buried (detector), salvaged from electronics; Haggle's Parts Trade (buy, swap 3-for-1, scrap for bolts, pity offer).
+- **Planet**: 40,962-hex geodesic sphere, lakes/inland seas (~25%), biomes, 24 cities incl. Old Capital. Holographic survey globe (M): snapshot with age, paid re-survey. The slice is mapped onto planet cells; restoration % is planet-wide.
+- **Growing**: first-seed greenhouse event with cinematic + WREN story; planting slots per clean hex, growth stages with watering/droop, blooms drop seeds; Planted → Growing → Restored per cell; wildlife (butterflies, birds, birdsong) in restored hexes.
+- **Story**: restart-checklist tutorial; WREN dialogue (memory stages, glitched early lines, no-repeat pools, voice blips); 8 Memory Shards (documents) revealed by cleaning.
+- **Sky**: day/night cycle with bright moonlight and stars; haze lifts with restoration and air scrubbers.
+- **Meta**: saves (versioned, compressed), offline progress (50%, 8 h cap, needs a hauler), autosave.
+- **Tests**: 48 GUT tests (BigNum, economy, saves, field, geosphere, planet, WREN, hub, offline, garden).
 
 ### Measured
-- Autoplay (headless, `--autoplay --time-scale=4`): first bale 4.9 s, first cash-in 8.3 s, first upgrade 17 s; 67 bales in ~13 game-minutes; **0 hexes cleaned** in that time (hexes are now big and need 99%).
-- Rendering in the cloud container uses software Vulkan: ~0.25 fps at 960×540 Low, 11 M primitives, ~2.7k draw calls. Real-GPU frame times not measured yet.
+- Autoplay: first bale ~7 s, first cash-in ~10 s, first upgrade ~23 s, first hex ~4 min; 4 hexes in ~9.5 min.
+- Robot-only run (2 Scoopie, 1 Haul Bug, 1 Seedling, 1 Drip, ~8 game-min): 2 hexes cleaned, 34 planted, 20 bloomed.
 
-### Known issues / next steps (in priority order)
-1. **Pacing**: first hex flip far too slow with 10 m hexes. Options: lower clean threshold to 95%, fewer collectible pieces in ring-1 hexes, faster early scoop. Retune with autoplay.
-2. Litter colors read a bit pastel/confetti-like; add printed-paper/label textures and more cardboard/plastic film variety; more collectible variety (crumpled paper, cups, styrofoam as pickups).
-3. Lens view (first-person) polish and diegetic HUD; touch overlay.
-4. Tutorial (WREN intro, workbench lesson) replaces on-screen hints.
-5. Performance: litter carpet + junk are heavy for software rendering; profile on a real GPU, add distance-based density for litter.
-6. Then M2 (planet sphere, 40,962+ hexes, many cities, lakes) and M3 (robots: build from parts, fleet upgrade tracks, rusty → futuristic tiers, tractor-beam pickup).
+### Next steps
+1. Integrate the robot-line visual redesign (design workflow running: sleek Mk III/IV, floating rings, tractor beams).
+2. M2b: walk on the actual sphere (region streaming, gravity to center, cities in local frames, rocket travel between hubs).
+3. M6 water (lakes, clarity, aquatic robots), M7 rockets + research tree, M8 content, M9 balance, M10 polish/exports (Windows, Linux, macOS, Android).
+4. Real-GPU performance pass.
