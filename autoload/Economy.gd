@@ -78,10 +78,7 @@ func load_data() -> void:
 ## Effective value of a stat given the current upgrade levels (or an override map).
 func stat(stat_id: String, levels: Variant = null) -> float:
 	var lv: Dictionary = levels if levels is Dictionary else GameState.upgrades
-	var value: float = float(patch_base.get(stat_id, 0.0))
-	if "." in stat_id:
-		var parts_id: PackedStringArray = stat_id.split(".")
-		value = float(robots.get(parts_id[0], {}).get("stats", {}).get(parts_id[1], 0.0))
+	var value: float = base_stat(stat_id)
 	var mul: float = 1.0
 	for uid: String in upgrade_order:
 		var u: Dictionary = upgrade_defs[uid]
@@ -98,9 +95,19 @@ func stat(stat_id: String, levels: Variant = null) -> float:
 	return Research.stat_mod(stat_id, value * mul)
 
 
+## Base value of a stat before upgrades: Patch stats come from data/patch.json, dotted robot
+## stats ("<type>.<stat>") from data/robots.json (Mk I, before tier and rarity multipliers).
+func base_stat(stat_id: String) -> float:
+	if "." in stat_id:
+		var parts_id: PackedStringArray = stat_id.split(".")
+		return float(robots.get(parts_id[0], {}).get("stats", {}).get(parts_id[1], 0.0))
+	return float(patch_base.get(stat_id, 0.0))
+
+
 ## Where a stat comes from: [{source, text}], for the "no hidden multipliers" tooltip.
 func stat_breakdown(stat_id: String) -> Array[Dictionary]:
-	var out: Array[Dictionary] = [{"source": "Base", "text": _fmt_stat(float(patch_base.get(stat_id, 0.0)))}]
+	var base_label: String = "Base (Mk I, before tier and part rarity)" if "." in stat_id else "Base"
+	var out: Array[Dictionary] = [{"source": base_label, "text": _fmt_stat(base_stat(stat_id))}]
 	for uid: String in upgrade_order:
 		var u: Dictionary = upgrade_defs[uid]
 		var level: int = GameState.level_of(uid)

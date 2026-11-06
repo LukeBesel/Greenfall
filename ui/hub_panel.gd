@@ -104,10 +104,17 @@ func refresh() -> void:
 		_btn.visible = true
 	var sd: Dictionary = hub.scrubber_def()
 	var locked: bool = hub.level < int(sd.get("requires_level", 2))
-	_scrub.text = "%s   ·   %d / %d built\n%s%s" % [sd.get("name", ""), hub.scrubbers, int(sd.get("max", 6)), sd.get("desc", ""),
-		"\nRequires hub level %d." % int(sd.get("requires_level", 2)) if locked else "\nNeeds " + cost_text(sd.get("cost", {}), hub.scrubber_cost_mult())]
-	_scrub_btn.text = "Build Air Scrubber"
-	_scrub_btn.disabled = locked or hub.scrubbers >= int(sd.get("max", 6)) or not Hub.can_pay(sd.get("cost", {}), hub.scrubber_cost_mult())
+	var maxed: bool = hub.scrubbers >= int(sd.get("max", 6))
+	var suffix: String
+	if locked:
+		suffix = "\nRequires hub level %d." % int(sd.get("requires_level", 2))
+	elif maxed:
+		suffix = "\nAll built (max)."
+	else:
+		suffix = "\nNeeds " + cost_text(sd.get("cost", {}), hub.scrubber_cost_mult())
+	_scrub.text = "%s   ·   %d / %d built\n%s%s" % [sd.get("name", ""), hub.scrubbers, int(sd.get("max", 6)), sd.get("desc", ""), suffix]
+	_scrub_btn.text = "Air Scrubbers maxed" if maxed else "Build Air Scrubber"
+	_scrub_btn.disabled = locked or maxed or not Hub.can_pay(sd.get("cost", {}), hub.scrubber_cost_mult())
 	if _stations:  # [stations]
 		_stations.refresh()
 	var lg: Node = _ledger()

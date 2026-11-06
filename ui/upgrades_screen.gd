@@ -23,6 +23,8 @@ var _currency: Label
 var _tab_buttons: Array[Button] = []
 var _tab: String = "patch"
 var _refresh_t: float = 0.0
+var _trade_t: float = 0.0
+var _close_btn: Button
 var _robot_cards: Array[RobotCard] = []
 var fleet: Fleet
 var _trade: TradePanel
@@ -70,6 +72,7 @@ func _ready() -> void:
 	close.text = "Close  [Tab]"
 	close.custom_minimum_size = Vector2(150, 48)
 	close.pressed.connect(close_screen)
+	_close_btn = close
 	header.add_child(close)
 	var tabs := HBoxContainer.new()
 	tabs.add_theme_constant_override("separation", 8)
@@ -84,6 +87,7 @@ func _ready() -> void:
 		b.focus_mode = Control.FOCUS_NONE
 		tabs.add_child(b)
 		_tab_buttons.append(b)
+	_style_tabs()
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -164,9 +168,67 @@ func _set_tab(id: String) -> void:
 	if id == _tab:
 		return
 	_tab = id
+	_style_tabs()
 	Audio.play("click", 1.1, -8.0)
 	_populate()
+	_trade_t = 0.0
 	_refresh_all()
+	_focus_default.call_deferred()
+
+
+## Highlights the active tab button (same amber "on" style as the Codex tabs).
+func _style_tabs() -> void:
+	for i: int in mini(TABS.size(), _tab_buttons.size()):
+		var on: bool = TABS[i]["id"] == _tab
+		var b: Button = _tab_buttons[i]
+		b.add_theme_stylebox_override("normal", UITheme.box(Color(0.2, 0.15, 0.07, 0.9) if on else UITheme.TEAL, UITheme.GOLD if on else UITheme.RUST, 1, 6, 8))
+		b.add_theme_color_override("font_color", UITheme.GOLD if on else UITheme.CREAM)
+
+
+## Gives controller/keyboard players a focused control on every tab. The old tab's children are
+## only queue_freed, so freed or queued nodes are skipped.
+func _focus_default() -> void:
+	if not is_open:
+		return
+	if _tab == "research":
+		if is_instance_valid(_research) and not _research.is_queued_for_deletion():
+			_research.focus_first()
+		return
+	var target: Control = null
+	if not _cards.is_empty() and is_instance_valid(_cards[0]):
+		target = _cards[0].first_button()
+	elif not _robot_cards.is_empty() and is_instance_valid(_robot_cards[0]):
+		target = _robot_cards[0].first_button()
+	elif _tab == "trade" and is_instance_valid(_trade):
+		target = _trade.first_button()
+	if target == null or not _focusable(target, true):
+		target = _first_focusable(_grid, false)
+	if target == null:
+		target = _first_focusable(_grid, true)
+	if target == null:
+		target = _close_btn
+	if target:
+		target.grab_focus()
+
+
+func _focusable(c: Control, allow_disabled: bool) -> bool:
+	if not is_instance_valid(c) or c.is_queued_for_deletion() or not c.is_visible_in_tree():
+		return false
+	if c.focus_mode == Control.FOCUS_NONE:
+		return false
+	return allow_disabled or not (c is BaseButton and (c as BaseButton).disabled)
+
+
+func _first_focusable(root: Node, allow_disabled: bool) -> Control:
+	for child: Node in root.get_children():
+		if child.is_queued_for_deletion():
+			continue
+		if child is Control and _focusable(child as Control, allow_disabled):
+			return child as Control
+		var f: Control = _first_focusable(child, allow_disabled)
+		if f:
+			return f
+	return null
 
 
 func _relayout() -> void:
@@ -188,18 +250,23 @@ func open_screen() -> void:
 	_root.modulate.a = 0.0
 	var tw := create_tween()
 	tw.tween_property(_root, "modulate:a", 1.0, 0.15)
-	if not _cards.is_empty():
-		_cards[0].first_button().call_deferred("grab_focus")
-	elif _tab == "research" and is_instance_valid(_research):
-		_research.focus_first.call_deferred()
+	_trade_t = 0.0
+	_focus_default.call_deferred()
 
 
 func _input(event: InputEvent) -> void:
 	if not is_open:
 		return
+	# Handled here (before GUI focus navigation) because Tab is also ui_focus_next.
+	if event.is_action_pressed("open_upgrades"):
+		close_screen()
+		get_viewport().set_input_as_handled()
+		return
 	if event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev"):
-		var order: Array[String] = ["patch", "bots", "hub", "trade", "research", "rockets", "cosmetics"]
-		var i: int = order.find(_tab)
+		var order: Array[String] = []
+		for t: Dictionary in TABS:
+			order.append(str(t["id"]))
+		var i: int = maxi(0, order.find(_tab))
 		_set_tab(order[(i + (1 if event.is_action_pressed("ui_tab_next") else order.size() - 1)) % order.size()])
 		get_viewport().set_input_as_handled()
 
@@ -217,7 +284,7 @@ func close_screen() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_open:
 		return
-	if event.is_action_pressed("open_upgrades") or event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel"):
+	if event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel"):
 		close_screen()
 		get_viewport().set_input_as_handled()
 
@@ -230,6 +297,11 @@ func _process(delta: float) -> void:
 	if _refresh_t <= 0.0:
 		_refresh_t = 0.25
 		_refresh_all()
+	_trade_t -= delta
+	if _trade_t <= 0.0:
+		_trade_t = 0.5
+		if _tab == "trade" and is_instance_valid(_trade):
+			_trade.refresh()
 
 
 func _refresh_all() -> void:
@@ -247,8 +319,6 @@ func _refresh_all() -> void:
 		c.refresh()
 	for rc: RobotCard in _robot_cards:
 		rc.refresh()
-	if _tab == "trade" and is_instance_valid(_trade) and Engine.get_process_frames() % 60 == 0:
-		_trade.refresh()
 	if _tab == "bots" and is_instance_valid(_alloc):
 		_alloc.refresh()
 	if _tab == "hub" and is_instance_valid(_hub_panel):

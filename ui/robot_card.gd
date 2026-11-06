@@ -15,6 +15,7 @@ var _build: Button
 var _tier: Label
 var _tier_req: Label
 var _tier_btn: Button
+var _last_recipe: Array = []
 
 
 func _init(p_type: String, p_fleet: Fleet, p_build_at: Callable) -> void:
@@ -65,18 +66,7 @@ func refresh() -> void:
 	var def: Dictionary = Economy.robots[type_id]
 	var t: int = fleet.tier_of(type_id)
 	_title.text = "%s   ·   %s   ·   %d built" % [def["name"], Economy.tier_name(t), fleet.count(type_id)]
-	for c: Node in _slots.get_children():
-		c.queue_free()
-	for r: Dictionary in fleet.recipe_status(type_id):
-		var row := UITheme.label("", 14)
-		if r["have"]:
-			var rar: Dictionary = Economy.rarity(int(r["rarity"]))
-			row.text = "■  %s  ·  %s" % [r["name"], rar.get("name", "")]
-			row.add_theme_color_override("font_color", Color.html(str(rar.get("color", "#ffffff"))))
-		else:
-			row.text = "□  %s  ·  missing  (detector, or salvage from electronics junk)" % r["name"]
-			row.add_theme_color_override("font_color", UITheme.MUTED)
-		_slots.add_child(row)
+	_refresh_slots(fleet.recipe_status(type_id))
 	var crew: String = Fleet.crew_of_type(type_id)
 	var cap: int = fleet.crew_cap()
 	var n: int = fleet.crew_size(crew)
@@ -104,6 +94,29 @@ func refresh() -> void:
 		_tier_btn.visible = true
 		_tier_btn.text = "Upgrade fleet to %s" % nt["name"]
 		_tier_btn.disabled = not req["ok"]
+
+
+## Recipe rows are built once and updated in place; nothing happens when the recipe is unchanged.
+func _refresh_slots(recipe: Array) -> void:
+	if recipe == _last_recipe and _slots.get_child_count() == recipe.size():
+		return
+	_last_recipe = recipe.duplicate(true)
+	while _slots.get_child_count() > recipe.size():
+		var old: Node = _slots.get_child(_slots.get_child_count() - 1)
+		_slots.remove_child(old)
+		old.queue_free()
+	while _slots.get_child_count() < recipe.size():
+		_slots.add_child(UITheme.label("", 14))
+	for i: int in recipe.size():
+		var r: Dictionary = recipe[i]
+		var row: Label = _slots.get_child(i) as Label
+		if r["have"]:
+			var rar: Dictionary = Economy.rarity(int(r["rarity"]))
+			row.text = "■  %s  ·  %s" % [r["name"], rar.get("name", "")]
+			row.add_theme_color_override("font_color", Color.html(str(rar.get("color", "#ffffff"))))
+		else:
+			row.text = "□  %s  ·  missing  (detector, or salvage from electronics junk)" % r["name"]
+			row.add_theme_color_override("font_color", UITheme.MUTED)
 
 
 func role_is_water() -> bool:
