@@ -172,6 +172,11 @@ func _bolts(parent: Node3D, points: Array, normal: Vector3, size: float = 0.009)
 	_bake_many(parent, parts, Mats.metal("dark_steel"))
 
 
+## Thin slab whose plan outline follows the body's rounded corners (rounded box squashed in Y).
+func _slab(w: float, h: float, d: float, plan_r: float) -> Transform3D:
+	return Transform3D(Basis.from_scale(Vector3(1, h / (plan_r * 2.0), 1)), Vector3.ZERO)
+
+
 ## Point on the body shell surface: body-space direction -> rig position (rounded box approximation).
 func _body_xf(local: Vector3, rot: Vector3 = Vector3.ZERO) -> Transform3D:
 	var b := Basis.from_euler(Vector3(deg_to_rad(TILT), 0, 0))
@@ -275,17 +280,17 @@ func _build_running_gear() -> void:
 
 
 func _build_body() -> void:
-	var shell: ShaderMaterial = _paint(BLUE, 0.64, 0.68, 1.7, 0.6)
+	var shell: ShaderMaterial = _paint(BLUE, 0.58, 0.72, 1.7, 0.6)
 	# Main capsule shell (rounded box, very soft corners), leaning forward.
-	_bake(_body, ProcMesh.rounded_box(BODY_S, 0.18, 6), shell, _body_xf(Vector3.ZERO))
+	_bake(_body, ProcMesh.rounded_box(BODY_S, 0.2, 6), shell, _body_xf(Vector3.ZERO))
 	# Domed lid.
-	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.03, 0.07, BODY_S.z + 0.03), 0.035, 4), _paint(BLUE.lightened(0.06), 0.66, 0.62, 2.9, 0.3), _body_xf(Vector3(0, 0.205, 0.0)))
+	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.03, 0.4, BODY_S.z + 0.03), 0.2, 6), _paint(BLUE.lightened(0.06), 0.62, 0.62, 2.9, 0.3), _body_xf(Vector3(0, 0.215, 0.0)) * _slab(0, 0.06, 0, 0.2))
 	# Rolled seam band where the lid meets the shell.
-	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.012, 0.02, BODY_S.z + 0.012), 0.17, 4), _paint(BLUE_DK, 0.55, 0.75, 4.4, 0.5), _body_xf(Vector3(0, -0.02, 0)))
+	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.012, 0.4, BODY_S.z + 0.012), 0.2, 6), _paint(BLUE_DK, 0.55, 0.75, 4.4, 0.5), _body_xf(Vector3(0, -0.02, 0)) * _slab(0, 0.018, 0, 0.2))
 	# Bottom-heavy skirt / bumper band, darker and grimy.
-	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.02, 0.12, BODY_S.z + 0.04), 0.06, 4), _paint(BLUE_DK.lightened(0.15), 0.55, 0.8, 6.6, 0.8, 0.1), _body_xf(Vector3(0, -0.17, 0)))
+	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.02, 0.4, BODY_S.z + 0.03), 0.2, 6), _paint(BLUE_DK.lightened(0.15), 0.55, 0.8, 6.6, 0.8, 0.1), _body_xf(Vector3(0, -0.18, 0)) * _slab(0, 0.11, 0, 0.2))
 	# Rubber bump strip around the skirt.
-	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.03, 0.03, BODY_S.z + 0.07), 0.06, 3), Mats.rubber(Color(0.07, 0.07, 0.07)), _body_xf(Vector3(0, -0.15, 0)))
+	_bake(_body, ProcMesh.rounded_box(Vector3(BODY_S.x + 0.03, 0.4, BODY_S.z + 0.05), 0.2, 6), Mats.rubber(Color(0.07, 0.07, 0.07)), _body_xf(Vector3(0, -0.14, 0)) * _slab(0, 0.028, 0, 0.2))
 	# Wheel arches: dark recesses either side so the tyres tuck in.
 	# Side louvre vent (left), bolted.
 	var vent: Node3D = _node(_body, Vector3(-BODY_S.x * 0.5 - 0.004, 0.5, 0.17), Vector3(0, -90, 0))
@@ -509,7 +514,7 @@ const SCOOP_KEYS: Array = [
 	[1.0, -40.0, -60.0, -75.0, 0.4, -4.0],
 ]
 ## Folded "little T-rex arm" rest pose.
-const REST_POSE: Array = [0.0, -80.0, 30.0, 50.0, 0.1, -6.0]
+const REST_POSE: Array = [0.0, -75.0, -25.0, -70.0, 0.15, -6.0]
 
 
 func _sample_scoop(t: float) -> Array:

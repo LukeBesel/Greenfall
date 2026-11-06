@@ -213,6 +213,7 @@ func _prompt_text(kind: String) -> String:
 	match kind:
 		"pick_up": return "E   pick up bale"
 		"dig": return "E   dig up part"
+		"shard": return "E   read memory shard"
 		"place": return "E   set bale down"
 		"upgrades": return "E   workbench"
 	return ""

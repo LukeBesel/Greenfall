@@ -18,6 +18,8 @@ var planet: PlanetData
 var globe: GlobeView
 var sky_director: SkyDirector
 var hub: Hub
+var shards: ShardSystem
+var doc_view: DocumentView
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
 var depot: Depot
@@ -180,6 +182,13 @@ func _ready() -> void:
 	var subs := Subtitles.new()
 	add_child(subs)
 	wren.line_started.connect(subs.show_line)
+	shards = ShardSystem.new()
+	shards.world = self
+	add_child(shards)
+	shards.setup()
+	doc_view = DocumentView.new()
+	add_child(doc_view)
+	doc_view.closed.connect(_on_modal_closed)
 	tutorial = Tutorial.new()
 	tutorial.world = self
 	add_child(tutorial)
@@ -468,11 +477,18 @@ func _hitstop(duration: float, scale: float) -> void:
 # --- Interaction / UI -------------------------------------------------------------
 
 func try_interact(p: Patch) -> void:
+	if shards.nearby(p.global_position) >= 0:
+		var doc: Dictionary = shards.take(p.global_position)
+		if not doc.is_empty():
+			doc_view.show_doc(doc)
+		return
 	if near_bench():
 		open_upgrades()
 
 
 func interact_prompt(p: Patch) -> String:
+	if shards and shards.nearby(p.global_position) >= 0:
+		return "shard"
 	if near_bench():
 		return "upgrades"
 	if p.global_position.distance_to(FLOWER_POS) < 1.8:
