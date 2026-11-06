@@ -231,6 +231,13 @@ func _build_graphics(p: VBoxContainer) -> void:
 	_cycler(p, "Quality preset", ["Low", "Medium", "High", "Ultra"], Settings.quality, func(i: int) -> void:
 		Settings.set_quality_manual(i)  # [deck] a manual choice turns auto-detection off
 		Settings.apply_quality_to_tree(get_tree().current_scene), hint)
+	# [deck] Renderer: Mobile is lighter on old integrated GPUs (always the Low look). Restart needed.
+	var methods: Array[String] = ["forward_plus", "mobile"]
+	var cur_m: int = 1 if Settings.renderer_override() == "mobile" else 0
+	var running: String = RenderingServer.get_current_rendering_method()
+	_cycler(p, "Renderer", ["Standard (Forward+)", "Light (Mobile)"], cur_m, func(i: int) -> void:
+		Settings.set_renderer_override(methods[i]),
+		"Light suits older integrated graphics. Takes effect after restarting the game (now: %s)." % running.capitalize().replace("_", " "))
 	var scales: Array[float] = [0.5, 0.67, 0.75, 0.85, 1.0]
 	var idx: int = 4
 	for k: int in scales.size():

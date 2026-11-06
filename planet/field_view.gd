@@ -176,7 +176,7 @@ func _build_junk() -> void:
 		var model: String = key.split("|")[1]
 		var mm := MultiMesh.new()
 		mm.transform_format = MultiMesh.TRANSFORM_3D
-		mm.mesh = AssetLib.model_mesh_lite(model, 700)
+		mm.mesh = AssetLib.model_mesh_lite(model, [320, 500, 700, 700][clampi(Settings.quality, 0, 3)])  # [deck] lighter junk on Low/Medium
 		mm.instance_count = pids.size()
 		var idx: int = _mms.size()
 		for i: int in pids.size():

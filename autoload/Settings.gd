@@ -591,6 +591,28 @@ func auto_detect_display(cfg: ConfigFile) -> void:
 	save_settings.call_deferred()
 
 
+## [deck] Renderer override (project setting application/config/project_settings_override
+## points here). "" = the project's Forward+ (Metal on macOS, Vulkan / D3D12 elsewhere, OpenGL if
+## neither works); "mobile" = Godot's Mobile renderer for weak GPUs. Applies after a restart.
+const RENDERER_OVERRIDE: String = "user://renderer_override.cfg"
+
+
+func renderer_override() -> String:
+	var cfg := ConfigFile.new()
+	if cfg.load(RENDERER_OVERRIDE) != OK:
+		return ""
+	return str(cfg.get_value("rendering", "renderer/rendering_method", ""))
+
+
+func set_renderer_override(method: String) -> void:
+	if method == "" or method == "forward_plus":
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(RENDERER_OVERRIDE))
+		return
+	var cfg := ConfigFile.new()
+	cfg.set_value("rendering", "renderer/rendering_method", method)
+	cfg.save(RENDERER_OVERRIDE)
+
+
 ## The player picked a preset in Settings: stop auto-adjusting it.
 func set_quality_manual(q: int) -> void:
 	quality = clampi(q, 0, 3)

@@ -17,6 +17,7 @@ var _mms: Array[MultiMesh] = []
 var _by_hex: Array = []
 var _meshes: Array[Mesh] = []
 var _rng := RandomNumberGenerator.new()
+var _carpet_mat: StandardMaterial3D
 
 
 func setup(p_field: HexField) -> void:
@@ -56,14 +57,18 @@ func _build_meshes() -> void:
 	var r := RandomNumberGenerator.new()
 	r.seed = 77
 	# Sheets / wrappers / film / cardboard scraps (vertex color white: tinted per instance).
-	_meshes.append(_crumple(Vector2(0.3, 0.22), 3, 0.05, r, Color.WHITE))
-	_meshes.append(_crumple(Vector2(0.16, 0.12), 2, 0.03, r, Color.WHITE))
-	_meshes.append(_crumple(Vector2(0.45, 0.35), 4, 0.07, r, Color.WHITE))
-	_meshes.append(_crumple(Vector2(0.24, 0.24), 3, 0.12, r, Color.WHITE))
+	# [deck] Low preset: one fewer crumple segment and much lighter tiny items (this layer is
+	# ~150k instances, the biggest triangle load in the game).
+	var low: bool = Settings.quality == Settings.Quality.LOW
+	var dseg: int = 1 if low else 0
+	_meshes.append(_crumple(Vector2(0.3, 0.22), 3 - dseg, 0.05, r, Color.WHITE))
+	_meshes.append(_crumple(Vector2(0.16, 0.12), 2 - dseg, 0.03, r, Color.WHITE))
+	_meshes.append(_crumple(Vector2(0.45, 0.35), 4 - dseg, 0.07, r, Color.WHITE))
+	_meshes.append(_crumple(Vector2(0.24, 0.24), 3 - dseg, 0.12, r, Color.WHITE))
 	# Tiny real items at very low detail.
 	for id: String in ["can_rusted", "bleach_bottle", "lubricant_spray", "garden_gloves_01", "drain_cleaner",
 			"multi_cleaner_bottle", "russian_food_cans_01", "oil_tin", "circuit_board"]:
-		_meshes.append(AssetLib.model_mesh_lite(id, 220))
+		_meshes.append(AssetLib.model_mesh_lite(id, [70, 140, 220, 220][clampi(Settings.quality, 0, 3)]))
 
 
 ## Real-world trash colours: mostly sun-faded paper, cardboard, grey film and black bags, with
@@ -160,9 +165,16 @@ func _build() -> void:
 		var mmi := MultiMeshInstance3D.new()
 		mmi.multimesh = mm
 		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		mmi.visibility_range_end = 120.0
-		if mm.use_colors:
+		# [deck] Tiny items (5-15 cm, ~1 px past this) stop drawing earlier than the paper carpet.
+		mmi.visibility_range_end = (80.0 if Settings.quality == Settings.Quality.LOW else 120.0) if mm.use_colors \
+			else (45.0 if Settings.quality == Settings.Quality.LOW else 75.0)
+		mmi.visibility_range_end_margin = 8.0
+		mmi.visibility_range_fade_mode = GeometryInstance3D.VISIBILITY_RANGE_FADE_DISABLED
+		if mm.use_colors and _carpet_mat:
+			mmi.material_override = _carpet_mat  # [deck] one shared material for every chunk
+		elif mm.use_colors:
 			var mat := StandardMaterial3D.new()
+			_carpet_mat = mat
 			mat.vertex_color_use_as_albedo = true
 			mat.roughness = 0.85
 			# Grime: a worn-concrete texture multiplied over the per-piece colour breaks up flat tints.

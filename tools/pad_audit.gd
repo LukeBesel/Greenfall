@@ -9,9 +9,21 @@ extends Node
 ##   - no text entry (LineEdit / TextEdit) is needed;
 ##   - the pad's B button closes it.
 ## Prints "[pad] <screen>: OK | <problems>" per screen and "[pad] RESULT pass|fail".
+## `--audit-shots=DIR` (rendered runs) also saves a screenshot of every screen into DIR, which
+## makes it a one-process UI tour for checking layouts at a given resolution (e.g. 1280x800).
 
 var _fails: int = 0
 var _checked: int = 0
+var _shots: Array[String] = []
+
+
+## Screenshot of the current screen (when --audit-shots is set; after a couple of real frames).
+func _shot() -> void:
+	if not DevHooks.has("audit-shots") or _shots.is_empty() or DisplayServer.get_name() == "headless":
+		return
+	await _frames(int(DevHooks.get_f("audit-frames", 3.0)))
+	var name: String = _shots[-1].to_lower().replace("/", "_").replace(" ", "_")
+	DevHooks.save_viewport("%s/%02d_%s.png" % [DevHooks.get_s("audit-shots", "screenshots/ui_tour"), _checked, name])
 
 
 func _ready() -> void:
@@ -55,22 +67,26 @@ func _audit_game(w: Node) -> void:
 		up.call("_focus_default")
 		await _frames(2)
 		_check("Workbench/%s" % t["name"], up.get("_root"))
+		await _shot()
 	await _close_with_b("Workbench", func() -> bool: return up.is_open)
 	var cv: CommandView = w.get("command")
 	w.call("_open_command")
 	await _frames(6)
 	_check("Command view", cv.get("_root"))
+	await _shot()
 	await _close_with_b("Command view", func() -> bool: return cv.is_open)
 	var gv: GlobeView = w.get("globe")
 	gv.open_view()
 	await _frames(6)
 	_check("Globe map", gv.get("_root"))
+	await _shot()
 	await _close_with_b("Globe map", func() -> bool: return gv.is_open)
 	var cx: CodexScreen = w.get("codex")
 	for t: Dictionary in CodexScreen.TABS:
 		cx.open_screen(str(t["id"]))
 		await _frames(6)
 		_check("Codex/%s" % t["name"], cx.get("_root"))
+		await _shot()
 		cx.close_screen()
 		await _frames(2)
 	cx.open_screen("codex")
@@ -80,6 +96,7 @@ func _audit_game(w: Node) -> void:
 	pm.open_menu()
 	await _frames(4)
 	_check("Pause menu", pm.get("_root"))
+	await _shot()
 	var sp: SettingsPanel = pm.get("_settings")
 	pm.call("_open_settings")
 	await _frames(4)
@@ -103,6 +120,7 @@ func _audit_menu(m: Node) -> void:
 	await _frames(10)
 	var ui: Control = m.get("_ui")
 	_check("Title menu", ui)
+	await _shot()
 	var sp: SettingsPanel = m.get("_settings")
 	if sp:
 		if m.has_method("_open_settings"):
@@ -121,6 +139,7 @@ func _audit_settings(sp: SettingsPanel, label: String) -> void:
 		(sp.get("_tab_buttons") as Array)[i].grab_focus()
 		await _frames(2)
 		_check("%s/%s" % [label, SettingsPanel.TABS[i]], sp)
+		await _shot()
 
 
 func _close_with_b(label: String, still_open: Callable) -> void:
@@ -138,6 +157,7 @@ func _fail(label: String, why: String) -> void:
 ## Focus reachability from the focused control over D-pad neighbours only (no Tab key on a pad).
 func _check(label: String, root: Control, focus_optional: bool = false) -> void:
 	_checked += 1
+	_shots.append(label)
 	var problems: Array[String] = []
 	if root == null or not root.is_visible_in_tree():
 		_fail(label, "screen not visible")

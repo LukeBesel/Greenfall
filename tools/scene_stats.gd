@@ -33,6 +33,7 @@ static func census(root: Node, shadow_splits: int = 1) -> Dictionary:
 			var m: Mesh = (g as MeshInstance3D).mesh
 			surf = m.get_surface_count() if m else 0
 			row["meshes"] += 1
+			row["tris"] += _tris(m)
 			for s: int in surf:
 				var mat: Material = (g as MeshInstance3D).get_active_material(s)
 				if mat:
@@ -41,7 +42,9 @@ static func census(root: Node, shadow_splits: int = 1) -> Dictionary:
 			var mm: MultiMesh = (g as MultiMeshInstance3D).multimesh
 			surf = mm.mesh.get_surface_count() if mm and mm.mesh else 0
 			row["multimeshes"] += 1
-			row["mm_instances"] += mm.visible_instance_count if mm and mm.visible_instance_count >= 0 else (mm.instance_count if mm else 0)
+			var n_inst: int = mm.visible_instance_count if mm and mm.visible_instance_count >= 0 else (mm.instance_count if mm else 0)
+			row["mm_instances"] += n_inst
+			row["tris"] += n_inst * _tris(mm.mesh if mm else null)
 		elif g is Label3D:
 			row["labels"] += 1
 		elif g is GPUParticles3D or g is CPUParticles3D:
@@ -64,7 +67,24 @@ static func census(root: Node, shadow_splits: int = 1) -> Dictionary:
 
 static func _blank() -> Dictionary:
 	return {"nodes": 0, "meshes": 0, "multimeshes": 0, "mm_instances": 0, "labels": 0, "particles": 0,
-		"surfaces": 0, "shadow_surfaces": 0, "est_draws": 0}
+		"surfaces": 0, "shadow_surfaces": 0, "est_draws": 0, "tris": 0}
+
+
+static var _tri_cache: Dictionary = {}
+
+
+static func _tris(m: Mesh) -> int:
+	if m == null:
+		return 0
+	var id: int = m.get_rid().get_id()
+	if _tri_cache.has(id):
+		return _tri_cache[id]
+	var t: int = 0
+	for s: int in m.get_surface_count():
+		var arr: Array = m.surface_get_arrays(s)
+		t += ((arr[Mesh.ARRAY_INDEX] as PackedInt32Array).size() if arr[Mesh.ARRAY_INDEX] != null else (arr[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()) / 3
+	_tri_cache[id] = t
+	return t
 
 
 static func print_census(root: Node, shadow_splits: int = 1) -> void:
@@ -72,12 +92,12 @@ static func print_census(root: Node, shadow_splits: int = 1) -> void:
 	var groups: Dictionary = c["groups"]
 	var keys: Array = groups.keys()
 	keys.sort_custom(func(a: String, b: String) -> bool: return int(groups[a]["est_draws"]) > int(groups[b]["est_draws"]))
-	print("[stats] group                 nodes  meshes  mm(inst)    labels  surf  shadow  est_draws")
+	print("[stats] group                 nodes  meshes  mm(inst)    labels  surf  shadow  est_draws   tris")
 	for k: String in keys:
 		var r: Dictionary = groups[k]
 		if int(r["est_draws"]) < 4:
 			continue
-		print("[stats] %-20s %6d %7d %4d(%6d) %6d %5d %7d %10d" % [k.left(20), r["nodes"], r["meshes"], r["multimeshes"], r["mm_instances"], r["labels"], r["surfaces"], r["shadow_surfaces"], r["est_draws"]])
+		print("[stats] %-20s %6d %7d %4d(%6d) %6d %5d %7d %10d %9d" % [k.left(20), r["nodes"], r["meshes"], r["multimeshes"], r["mm_instances"], r["labels"], r["surfaces"], r["shadow_surfaces"], r["est_draws"], r["tris"]])
 	var t: Dictionary = c["total"]
-	print("[stats] TOTAL nodes=%d meshes=%d multimeshes=%d mm_instances=%d labels=%d surfaces=%d shadow_surfaces=%d materials=%d est_draws=%d" % [
-		t["nodes"], t["meshes"], t["multimeshes"], t["mm_instances"], t["labels"], t["surfaces"], t["shadow_surfaces"], t["materials"], t["est_draws"]])
+	print("[stats] TOTAL nodes=%d meshes=%d multimeshes=%d mm_instances=%d labels=%d surfaces=%d shadow_surfaces=%d materials=%d est_draws=%d tris=%d" % [
+		t["nodes"], t["meshes"], t["multimeshes"], t["mm_instances"], t["labels"], t["surfaces"], t["shadow_surfaces"], t["materials"], t["est_draws"], t["tris"]])
