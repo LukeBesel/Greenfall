@@ -194,10 +194,7 @@ func _launch_step(dt: float) -> void:
 		pad.set_gangway(smoothstep(arm_t, arm_t + 1.0, t))
 	_once("hoses", hose_t, func() -> void:
 		Audio.play("hydraulic", 0.8, -2.0)
-		Audio.play("steam", 0.6, -2.0)
-		if pad:
-			for h: Vector3 in [Vector3(-0.3, 4.0, -3.0), Vector3(0.3, 4.6, -3.0)]:
-				Vfx.burst("steam", global_position + h, Color(0.95, 0.97, 1.0, 0.8), 1.5))
+		Audio.play("steam", 0.6, -2.0))
 	_once("gangway", arm_t, func() -> void:
 		Audio.play("servo", 0.5, -2.0)
 		Audio.play("groan", 1.4, -10.0))
@@ -290,7 +287,7 @@ func _launch_camera(t: float, dt: float) -> void:
 		fov = 58.0
 	elif t < _lo + 0.9:
 		# Ignition: close and low by the engine, the plume and the billows.
-		pos = o + Vector3(2.6, 2.0, 12.5).lerp(Vector3(3.2, 1.8, 11.0), (t - (_ig - 0.7)) / (_lo + 1.6 - _ig))
+		pos = o + Vector3(5.0, 3.8, 12.5).lerp(Vector3(5.4, 3.4, 11.0), (t - (_ig - 0.7)) / (_lo + 1.6 - _ig))
 		look = o + Vector3(0, 2.6, 0)
 		fov = 58.0
 	elif t < _lo + 4.5:
@@ -434,7 +431,7 @@ func _arrive_camera(t: float, dt: float) -> void:
 	var mp: Vector3 = model.global_position
 	if t < LAND_S * 0.62:
 		_cam.fov = 50.0
-		_place_cam(o + Vector3(-13.0, 1.6, 7.0), mp + Vector3(0, 3.0, 0), dt)
+		_place_cam(o + Vector3(-11.0, 2.0, -4.0), mp + Vector3(0, 3.0, 0), dt)
 	elif t < LAND_S + 1.6:
 		_cam.fov = 58.0
 		_place_cam(o + Vector3(7.5, 2.0, 9.5), mp + Vector3(0, 3.0, 0), dt)

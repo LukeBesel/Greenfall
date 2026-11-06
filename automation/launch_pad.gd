@@ -33,7 +33,7 @@ shader_type spatial;
 render_mode unshaded, blend_add, cull_disabled, depth_draw_never;
 uniform vec4 col : source_color = vec4(0.3, 0.88, 1.0, 1.0);
 uniform float speed = 0.35;
-uniform float energy = 3.0;
+uniform float energy = 1.6;
 uniform float dashes = 24.0;
 void fragment() {
 	float a = UV.x * dashes;
@@ -57,15 +57,15 @@ func _build() -> void:
 	var grey := _gloss(Color(0.55, 0.58, 0.62), 0.3, 0.7, 0.3)
 	var dark := _gloss(Color(0.05, 0.06, 0.08), 0.12, 0.4, 1.0)
 	var tang := _gloss(Color(1.0, 0.55, 0.18), 0.22, 0.1, 1.0)
-	var glow := Mats.lamp(RocketModel.GLOW, 3.0)
+	var glow := Mats.lamp(RocketModel.GLOW, 1.6)  # thin, subtle accent lines
 	# Deck: a shallow dish, flat on top, open in the middle (the flame pit) so the plume passes through.
 	var pit: float = 1.3
 	var prof := PackedVector2Array([Vector2(pit, TOP_Y - 0.5), Vector2(2.2, TOP_Y - 0.5), Vector2(3.05, TOP_Y - 0.25), Vector2(R, TOP_Y - 0.08), Vector2(R, TOP_Y), Vector2(pit, TOP_Y), Vector2(pit, TOP_Y - 0.5)])
 	var deck := _mi(self, RocketModel.lathe(prof, 56), white, Vector3.ZERO)
 	deck.set_meta("deck", true)
 	_mi(self, ProcMesh.torus(2.5, 2.95, 56, 4), dark, Vector3(0, TOP_Y + 0.005, 0)).scale = Vector3(1, 0.05, 1)
-	_mi(self, ProcMesh.torus(pit - 0.02, pit + 0.1, 40, 4), glow, Vector3(0, TOP_Y + 0.02, 0))
-	_mi(self, ProcMesh.torus(pit - 0.02, pit + 0.06, 40, 4), glow, Vector3(0, TOP_Y - 0.5, 0))
+	_mi(self, ProcMesh.torus(pit, pit + 0.03, 40, 3), glow, Vector3(0, TOP_Y + 0.02, 0))
+	_mi(self, ProcMesh.torus(pit, pit + 0.025, 40, 3), glow, Vector3(0, TOP_Y - 0.5, 0))
 	# Flame grate: three thin spokes across the pit.
 	for k: int in 3:
 		var a: float = TAU * k / 3.0 + 0.5
@@ -75,7 +75,7 @@ func _build() -> void:
 	var sh := Shader.new()
 	sh.code = CHASE_SHADER
 	_chase_mat.shader = sh
-	var rim := _mi(self, ProcMesh.torus(2.68, 2.8, 64, 3), _chase_mat, Vector3(0, TOP_Y + 0.02, 0))
+	var rim := _mi(self, ProcMesh.torus(2.72, 2.76, 64, 3), _chase_mat, Vector3(0, TOP_Y + 0.02, 0))
 	rim.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	# Tangerine hazard chevrons at the deck edge, the pad number on the deck.
 	for k: int in 8:
@@ -91,16 +91,16 @@ func _build() -> void:
 	num.position = Vector3(0, TOP_Y + 0.04, 2.0)
 	add_child(num)
 	# Underside glow and three anti-grav emitters with light beams to ground plates.
-	_mi(self, ProcMesh.torus(1.9, 2.0, 40, 4), Mats.lamp(RocketModel.GLOW, 2.0), Vector3(0, TOP_Y - 0.5, 0))
+	_mi(self, ProcMesh.torus(1.93, 1.96, 40, 3), Mats.lamp(RocketModel.GLOW, 1.4), Vector3(0, TOP_Y - 0.5, 0))
 	for a_deg: float in RocketModel.CLAMP_ANGLES:
 		var a3: float = deg_to_rad(a_deg + 60.0)
 		var p := Vector3(cos(a3) * 2.45, 0, sin(a3) * 2.45)
 		_mi(self, ProcMesh.cyl(0.32, 0.22, 0.3, 20), white, p + Vector3(0, TOP_Y - 0.55, 0))
-		_mi(self, ProcMesh.torus(0.2, 0.26, 20, 4), glow, p + Vector3(0, TOP_Y - 0.71, 0))
+		_mi(self, ProcMesh.torus(0.21, 0.235, 20, 3), glow, p + Vector3(0, TOP_Y - 0.71, 0))
 		var beam := _mi(self, ProcMesh.cyl(0.22, 0.42, TOP_Y - 0.72, 16), RocketModel._additive(Color(0.25, 0.8, 1.0, 0.22)), p + Vector3(0, (TOP_Y - 0.72) * 0.5, 0))
 		beam.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		_mi(self, ProcMesh.cyl(0.55, 0.6, 0.06, 6), grey, p + Vector3(0, 0.03, 0))
-		_mi(self, ProcMesh.torus(0.42, 0.48, 6, 3), glow, p + Vector3(0, 0.07, 0))
+		_mi(self, ProcMesh.torus(0.44, 0.465, 6, 3), glow, p + Vector3(0, 0.07, 0))
 	# Energy clamps: pylons from the deck leaning in to hold the hull; they swing out at ignition.
 	var hold_r: float = 1.62 if rocket_tier >= 3 else 1.04
 	for a_deg: float in RocketModel.CLAMP_ANGLES:
@@ -113,16 +113,16 @@ func _build() -> void:
 		var top := Vector3(0, 2.3, -(2.3 - hold_r - 0.12))
 		_mi(piv, ProcMesh.cyl(0.22, 0.28, 0.2, 16), grey, Vector3(0, 0.1, 0))
 		_rod(piv, Vector3(0, 0.15, 0), top, 0.1, white)
-		_rod(piv, Vector3(0, 0.4, 0.02), top + Vector3(0, -0.2, 0.08), 0.03, glow)
+		_rod(piv, Vector3(0, 0.4, 0.02), top + Vector3(0, -0.2, 0.08), 0.012, glow)
 		_mi(piv, RobotVisual._rbox(Vector3(0.36, 0.42, 0.2), 0.06, 2), white, top)
-		_mi(piv, ProcMesh.box(Vector3(0.28, 0.3, 0.04)), Mats.lamp(RocketModel.GLOW, 4.0), top + Vector3(0, 0, -0.11))
+		_mi(piv, ProcMesh.box(Vector3(0.22, 0.24, 0.03)), Mats.lamp(RocketModel.GLOW, 2.0), top + Vector3(0, 0, -0.11))
 		_clamps.append(piv)
 	# Service tower.
 	var tz := Vector3(0, 0, TOWER_Z)
 	_mi(self, ProcMesh.cyl(0.95, 1.05, 0.25, 6), grey, tz + Vector3(0, 0.12, 0))
 	_mi(self, RobotVisual._rbox(Vector3(1.0, 11.6, 1.0), 0.14, 3), white, tz + Vector3(0, 5.95, 0))
 	for x: float in [-0.36, 0.36]:
-		_mi(self, ProcMesh.box(Vector3(0.05, 10.8, 0.03)), glow, tz + Vector3(x, 5.9, 0.51))
+		_mi(self, ProcMesh.box(Vector3(0.02, 10.8, 0.02)), glow, tz + Vector3(x, 5.9, 0.51))
 	for y: float in [3.0, 6.2, 9.4]:
 		_mi(self, ProcMesh.box(Vector3(1.04, 0.7, 1.04)), dark, tz + Vector3(0, y, 0))
 		_mi(self, ProcMesh.box(Vector3(1.06, 0.05, 1.06)), tang, tz + Vector3(0, y - 0.4, 0))
@@ -151,7 +151,7 @@ func _build() -> void:
 	lift.position = tz + Vector3(0, 0.3, 0.75)
 	add_child(lift)
 	_mi(lift, ProcMesh.cyl(0.42, 0.42, 0.06, 24), white, Vector3.ZERO)
-	_mi(lift, ProcMesh.torus(0.38, 0.44, 24, 4), glow, Vector3(0, 0.02, 0))
+	_mi(lift, ProcMesh.torus(0.4, 0.425, 24, 3), glow, Vector3(0, 0.02, 0))
 	# Gangway: pivots at the tower, reaches the hatch, swings away before ignition.
 	var hy: float = TOP_Y + RocketModel.HATCH_Y * _rocket_scale() - 0.6
 	gangway = Node3D.new()
@@ -163,7 +163,7 @@ func _build() -> void:
 	for x2: float in [-0.45, 0.45]:
 		var rail := _mi(gangway, ProcMesh.box(Vector3(0.04, 0.6, reach)), Mats.glass(Color(0.4, 0.8, 1.0, 0.25)), Vector3(x2, 0.36, reach * 0.5))
 		rail.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		_mi(gangway, ProcMesh.box(Vector3(0.05, 0.04, reach)), glow, Vector3(x2, 0.67, reach * 0.5))
+		_mi(gangway, ProcMesh.box(Vector3(0.02, 0.02, reach)), glow, Vector3(x2, 0.67, reach * 0.5))
 	# Umbilicals: two hoses from the tower to the hull; they drop away at T-3.
 	for k2: int in 2:
 		var hy2: float = TOP_Y + (2.5 + k2 * 0.7) * _rocket_scale()
@@ -188,7 +188,7 @@ func _build() -> void:
 		var strip := Node3D.new()
 		strip.position = cp + Vector3(0, 0.5, 0.55)
 		add_child(strip)
-		_mi(strip, ProcMesh.box(Vector3(0.12, 1.6, 0.04)), glow, Vector3(0, 0.8, 0))
+		_mi(strip, ProcMesh.box(Vector3(0.05, 1.6, 0.03)), glow, Vector3(0, 0.8, 0))
 		_cell_strips.append(strip)
 		_beacon(cp + Vector3(0, 2.68, 0), 0.12)
 		_rod(self, cp + Vector3(signf(-x3) * 0.5, 0.6, 0), tz + Vector3(signf(x3) * 0.5, 0.6, 0), 0.08, grey)
