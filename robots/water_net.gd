@@ -51,6 +51,9 @@ func refill_points() -> Array[Dictionary]:
 	if world == null:
 		return out
 	out.append({"kind": "barrel", "pos": barrel_pos(), "index": -1})
+	var op: Variant = world.get("outposts")  # [outposts] water drums at repaired outposts
+	if op is Outposts:
+		out.append_array((op as Outposts).refill_points())
 	for i: int in tanks.size():
 		if float(tanks[i]["water"]) >= 1.0:
 			out.append({"kind": "tank", "pos": tanks[i]["pos"], "index": i})

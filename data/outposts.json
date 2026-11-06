@@ -1,0 +1,16 @@
+{
+  "_doc": "Ruined outposts (automation/outposts.gd). Each district has 3-4 at fixed seeded spots on the frontier ring. Repair needs the outpost's hex mostly clean (clean_needed = removed fraction) and costs cubes + building stock; each repair in a district costs repair_growth x more. A repaired outpost is a working scale (same value logic as the main depot + sell_bonus of its level), a Drip refill point and an idle spot for robots. Level 2 = Big Skip (bigger pad, better price), level 3 = Recharge Pad (robots passing within charge_radius run charge_mult faster for charge_s seconds).",
+  "count": [3, 4],
+  "clean_needed": 0.9,
+  "footprint": 3.6,
+  "repair_cost": {"cubes": 450, "sheet_metal": 18, "plastic_stock": 8},
+  "repair_growth": 1.6,
+  "levels": [
+    {"level": 1, "name": "Weigh Station", "desc": "A working scale and skip on the frontier. Haul Bugs deliver to the nearest scale.", "sell_bonus": 0.0, "pad_radius": 1.6},
+    {"level": 2, "name": "Big Skip", "desc": "A bigger skip and a wider, faster scale plate. Bales here sell for 15% more.", "sell_bonus": 0.15, "pad_radius": 2.1, "cost": {"cubes": 1600, "sheet_metal": 40, "plastic_stock": 20}},
+    {"level": 3, "name": "Recharge Pad", "desc": "A charging pad. Robots passing over it run 40% faster for 25 s.", "sell_bonus": 0.2, "pad_radius": 2.1, "cost": {"cubes": 4200, "sheet_metal": 90, "plastic_stock": 45, "glass_cullet": 20}}
+  ],
+  "charge_radius": 2.4,
+  "charge_mult": 1.4,
+  "charge_s": 25.0
+}

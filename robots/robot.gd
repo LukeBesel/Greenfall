@@ -139,7 +139,7 @@ func _physics_process(delta: float) -> void:
 			print("[trace] %s pos=%s hex=%d work=%d piece=%d ppos=%s busy=%.1f hop=%.1f/%.1f pend=%.1f stall=%.1f move=%s | %s" % [robot_name, str(global_position.snapped(Vector3.ONE * 0.1)), world.field.hex_at(global_position), work_hex, _target_piece, str(world.field.piece_pos[_target_piece].snapped(Vector3.ONE * 0.1)) if _target_piece >= 0 else "-", _busy, hopper.fill, stat("capacity"), hopper.pending, _stall_t, str(move.snapped(Vector3.ONE * 0.1)), status_text()])
 	if _idling:
 		log_stats["idle_s"] = float(log_stats["idle_s"]) + delta
-	var spd: float = stat("speed")
+	var spd: float = stat("speed") * Outposts.charge_mult(self, world, delta)  # [outposts] recharge pad
 	var target_v: Vector3 = move * spd
 	var hv := Vector3(velocity.x, 0, velocity.z).move_toward(target_v, 10.0 * delta)
 	velocity = Vector3(hv.x, 0.0 if is_on_floor() else velocity.y - 20.0 * delta, hv.z)
@@ -277,10 +277,16 @@ func _go_idle(reason: String) -> Vector3:
 	return m
 
 
+## [outposts] With no zone, park at the nearest working outpost when it is closer than the base.
+func _rest_pos() -> Vector3:
+	var p: Vector3 = Outposts.idle_spot(world, global_position, get_index())
+	return p if p != Vector3.INF else _park_pos()
+
+
 func _idle_spot() -> Vector3:
 	var z: Array = _zone()
 	if z.is_empty():
-		return _park_pos()
+		return _rest_pos()
 	var field: HexField = world.field
 	var best: int = -1
 	var best_d: float = INF
@@ -847,7 +853,7 @@ func _think_haul(deliver_only: bool = false) -> Vector3:
 
 
 func _haul_deliver() -> Vector3:
-	var depot: Depot = world.depot
+	var depot: Depot = Outposts.nearest_depot(world, global_position)  # [outposts] nearest working scale
 	var drop: Vector3 = Stations.haul_drop(self, depot.global_position)  # [stations] feeder pad if closer
 	var m: Vector3 = _steer(drop, 0.6)
 	if depot.pad_contains(global_position) or m == Vector3.ZERO:
@@ -872,7 +878,7 @@ func _find_bale() -> JunkCube:
 		var c: JunkCube = n
 		if c.carried or c.claimed or bool(c.get_meta("reserved", false)) and c != _target_bale:
 			continue
-		if world.depot.pad_contains(c.global_position) or Stations.on_feeder(c):  # [stations]
+		if world.depot.pad_contains(c.global_position) or Stations.on_feeder(c) or Outposts.on_pad(world, c.global_position):  # [stations] [outposts]
 			continue
 		var in_zone: bool = z.is_empty() or z.has(world.field.hex_at(c.global_position))
 		if stay and not in_zone:

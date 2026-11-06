@@ -33,6 +33,7 @@ var doc_view: DocumentView
 var interactables: Interactables
 var eggs: EasterEggs
 var ledger: LedgerArc
+var outposts: Outposts  # [outposts] ruined frontier depots (automation/outposts.gd)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
 var depot: Depot
@@ -352,6 +353,11 @@ func _ready() -> void:
 	interactables = Interactables.new()
 	interactables.name = "Interactables"
 	add_child(interactables)
+	outposts = Outposts.new()
+	outposts.name = "Outposts"
+	outposts.world = self
+	add_child(outposts)
+	outposts.setup()
 	eggs = EasterEggs.new()
 	eggs.name = "EasterEggs"
 	eggs.world = self

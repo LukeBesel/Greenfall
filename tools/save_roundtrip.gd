@@ -46,7 +46,18 @@ func _snapshot(s: Node) -> Dictionary:
 		"hub_level": s.hub.level,
 		"intro_done": GameState.flags.get("intro_done", false),
 		"tagged_cubes": _tagged_cubes(s),
+		"outposts": _outposts(s),
 	}
+
+
+## [outposts] Live outpost levels (and whether each repaired one has a working scale).
+func _outposts(s: Node) -> Array:
+	var out: Array = []
+	if s.get("outposts") == null:
+		return out
+	for o: Outpost in s.outposts.items:
+		out.append("%d%s" % [o.level, "+scale" if o.scale_depot != null else ""])
+	return out
 
 
 ## Values of the marker cubes (a Haul Bug's bale, a cube dropped with Q) found in the saved cube list.
@@ -120,6 +131,11 @@ func _ready() -> void:
 		if free >= 0:
 			s1.garden.plant(free)
 	s1.composter.level = 3
+	# [outposts] Repair outpost 0 and take it to Big Skip; repair the last one too.
+	if s1.get("outposts") != null and s1.outposts.items.size() >= 2:
+		s1.outposts.repair(0, false, true)
+		s1.outposts.upgrade(0, false, true)
+		s1.outposts.repair(s1.outposts.items.size() - 1, false, true)
 	if s1.fleet.get("water_net") != null:
 		s1.fleet.water_net.place_tank(s1.field.hex_center(1) + Vector3(2, 0, 0))
 	GameState.flags["research"] = {"done": ["scoop_beam", "salvage_logic"], "queue": [], "active": {}}

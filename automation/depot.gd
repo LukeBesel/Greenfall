@@ -7,6 +7,15 @@ const PAD_RADIUS: float = 1.7
 const FEED_INTERVAL: float = 0.16
 
 var patch: Node3D  # Patch (set by the scene)
+## [outposts] Outpost scales reuse this class: `bare` skips the main depot's visuals (the outpost
+## builds its own and sets `mouth_local`), `world` names the slice when the parent isn't it, and
+## `value_bonus` adds to the hub's sell multiplier.
+var bare: bool = false
+var world: Node
+var pad_radius: float = PAD_RADIUS
+var value_bonus: float = 0.0
+var mouth_local := Vector3.ZERO
+var cashed: int = 0  ## bales cashed here this session (dev reports)
 var _chute: Node3D
 var _chute_mouth: Vector3
 var _feed_timer: float = 0.0
@@ -21,7 +30,10 @@ var _t: float = 0.0
 
 func _ready() -> void:
 	add_to_group("depot")
-	_build()
+	if bare:
+		_chute_mouth = mouth_local
+	else:
+		_build()
 
 
 func _build() -> void:
@@ -116,7 +128,16 @@ func _build() -> void:
 func pad_contains(world_pos: Vector3) -> bool:
 	var d: Vector3 = world_pos - global_position
 	d.y = 0.0
-	return d.length() <= PAD_RADIUS
+	return d.length() <= pad_radius
+
+
+## What a bale is worth here relative to its base value (hub level bonus + this scale's bonus).
+func sell_factor() -> float:
+	var w: Node = world if world else get_parent()
+	var m: float = 1.0 + value_bonus
+	if w and w.get("hub") != null:
+		m += float(w.hub.sell_mult())
+	return m
 
 
 func mouth_world() -> Vector3:
@@ -167,12 +188,13 @@ func _swallow(cube: JunkCube) -> void:
 func _cash(cube: JunkCube) -> void:
 	_combo += 1
 	_combo_timer = 1.2
+	cashed += 1
 	var v: BigNum = cube.value
-	var w: Node = get_parent()
-	if w and w.get("hub") != null:
-		v = v.mul_f(1.0 + w.hub.sell_mult())
+	v = v.mul_f(sell_factor())
 	GameState.add_currency("cubes", v)
 	GameState.inc_stat("cubes_cashed")
+	if bare:
+		GameState.inc_stat("outpost_bales")  # [outposts]
 	EventBus.cube_cashed.emit(v, mouth_world())
 	Audio.play_scale("coin", mini(_combo - 1, 8), -4.0)
 	var col: Color = Color(1.0, 0.75, 0.35) if cube.info.get("perfect", false) else Color(0.9, 0.92, 0.88)

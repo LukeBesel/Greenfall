@@ -202,6 +202,9 @@ func _process(delta: float) -> void:
 		var h: int = patch.focus_hex()
 		if h >= 0 and world.field.hex_hub[h] == 0:
 			_hex_label.text = ("HEX  %d%% CLEAR" % int(floor(world.field.removed_fraction(h) * 100.0))) if not world.field.is_clean(h) else (world.hex_levels.describe(h) if world.get("hex_levels") else "HEX  CLEAR")
+			var op: Variant = world.get("outposts")  # [outposts] note the outpost on this hex
+			if op is Outposts and (op as Outposts).hex_note(h) != "":
+				_hex_label.text += "\n" + (op as Outposts).hex_note(h)
 		else:
 			_hex_label.text = ""
 

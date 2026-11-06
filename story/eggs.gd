@@ -32,6 +32,8 @@ func setup() -> void:
 		wild, world.field.biome, int(data.get("wild_per_district", 4)))
 	var avoid: Array[Vector3] = [Vector3.ZERO, FirstSeed.GREENHOUSE_POS, Intro.POD_POS]
 	avoid.append((LedgerArc.relay_spot(world.field)["pos"] as Vector3))
+	for s: Dictionary in Outposts.plan(world.field):  # [outposts] keep eggs off the outpost slabs
+		avoid.append(s["pos"] as Vector3)
 	var plan: Array[Dictionary] = plan_spots(world.field, ids, defs, avoid)
 	for p: Dictionary in plan:
 		_spawn(p)
