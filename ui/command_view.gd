@@ -1,7 +1,13 @@
 class_name CommandView
 extends CanvasLayer
-## Command mode: the camera lifts into an overhead view of the real district (RTS style).
-## Hex outlines are drawn on the ground, robots get coloured rings, and the base gets a marker.
+## Command mode: a tactical, RTS-style view of the real district. The camera lifts into an
+## angled overhead shot (cool, desaturated grade so the overlay reads); hexes, zones, robots and
+## map markers are drawn as a crisp 2D overlay projected from the ground plane:
+##  - junk hexes get a hatched heat tint, growing hexes a soft green wash (clean ones stay clear);
+##  - thin glowing grid lines only around the cursor and the selected zone, fading with distance;
+##  - the selected crew's / robot's zone: soft fill, bright animated border and corner brackets;
+##  - robots: role-coloured badges with heading chevron and a status pip;
+##  - labelled markers for the base, Patch and anything added with set_map_marker() (outposts).
 ## Pick a crew (cleaners / haulers / planters / waterers) or one robot in the panel, then mark
 ## hexes on the ground to give it a work zone. Modes: Priority (zone first, then roam), Stay
 ## (zone only), Follow me (hexes around Patch) or Recall (park at the base).
@@ -24,38 +30,71 @@ const MODE_HELP: Dictionary = {
 	"recall": "Comes back and parks at the base.",
 }
 
+# Tactical palette for the overlay.
+const GRID_COL := Color(0.62, 0.86, 1.0)
+const JUNK_COL := Color(1.0, 0.56, 0.22)
+const JUNK_HOT := Color(1.0, 0.3, 0.2)
+const CLEANING_COL := Color(0.4, 0.7, 1.0)
+const GROW_COL := Color(0.45, 0.95, 0.5)
+const PANEL_BG := Color(0.045, 0.05, 0.06, 0.86)
+const ROW_BG := Color(1, 1, 1, 0.035)
+
+# Camera.
+const PITCH_DEG: float = 54.0
+const ZOOM_MIN: float = 30.0
+const ZOOM_MAX: float = 240.0
+const ZOOM_DEFAULT: float = 100.0
+
 var world: Node
 var is_open: bool = false
 
 var _root: Control
 var _input_area: Control
+var _map: Control  # 2D overlay canvas (under the panels)
 var _list: VBoxContainer
 var _title: Label
+var _title_icon: RoleIcon
+var _title_chip: PanelContainer
 var _mode_row: HBoxContainer
 var _mode_help: Label
-var _info: RichTextLabel
+var _info_name: Label
+var _info_count: Label
+var _info_bar: ProgressBar
+var _info_bots: Label
 var _sel_key: String = "clean"
 var _sel_bot: bool = false
 var _paint: int = 0  # 0 none, 1 add, -1 remove
 var _pan_drag: bool = false
 var _hover_hex: int = -1
+var _hover_world := Vector3.INF
 var _list_t: float = 0.0
 var _tank_btn: Button
 var _overlay_t: float = 0.0
+var _tip: PanelContainer
+var _tip_title: Label
+var _tip_body: Label
+var _tip_bar: ProgressBar
 
-# 3D
+# 3D camera
 var _cam: Camera3D
 var _prev_cam: Camera3D
 var _focus := Vector3.ZERO
-var _height: float = 105.0
+var _look := Vector3.ZERO
+var _height: float = ZOOM_DEFAULT  # camera distance to the focus point (zoom)
 var _cam_pos := Vector3.ZERO
-var _overlay: Node3D
-var _grid_mi: MeshInstance3D
-var _zone_mi: MeshInstance3D
-var _line_mat: StandardMaterial3D
-var _markers: Dictionary = {}  # robot name -> Node3D
-var _base_marker: Node3D
-var _you_marker: Node3D
+
+# Overlay caches (world space). Rebuilt on open / zone change / every half second.
+var _corners: Array[PackedVector3Array] = []  # per hex: 6 ground corners
+var _fill_cols := PackedColorArray()
+var _zone_set: Dictionary = {}
+var _zone_edges: Array = []  # [a: Vector3, b: Vector3] boundary edges of the selected zone
+var _other_edges: Array = []  # [a, b, col] boundary edges of other crews' zones
+var _hatch: ImageTexture
+var _proj: Array[PackedVector2Array] = []
+var _proj_ok := PackedByteArray()
+
+## Extra labelled markers (outposts, landmarks...): id -> {pos: Vector3, label: String, color: Color, kind: String}.
+var map_markers: Dictionary = {}
 
 # Controller: D-pad / A drive the side panel through focus; moving the left stick switches to
 # the map, where the hex under the screen-centre reticle is painted with A and erased with X.
@@ -67,6 +106,61 @@ var _reticle_hex: int = -1
 var _reticle: Control
 var _keys: Label
 var _last_focus_id: Array = []  # [meta key, value] of the panel control that had focus
+
+
+## Small vector glyph per crew role (also drawn on the map badges).
+class RoleIcon extends Control:
+	var role: String = "clean"
+	var col: Color = Color.WHITE
+
+	func _init(p_role: String = "clean", p_col: Color = Color.WHITE, px: float = 18.0) -> void:
+		role = p_role
+		col = p_col
+		custom_minimum_size = Vector2(px, px)
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+		size_flags_vertical = Control.SIZE_SHRINK_CENTER
+
+	func set_role(p_role: String, p_col: Color) -> void:
+		role = p_role
+		col = p_col
+		queue_redraw()
+
+	func _draw() -> void:
+		CommandView.draw_role_glyph(self, role, size * 0.5, minf(size.x, size.y) * 0.5, col)
+
+
+static func draw_role_glyph(ci: CanvasItem, role: String, c: Vector2, r: float, col: Color) -> void:
+	var w: float = maxf(1.5, r * 0.2)
+	match role:
+		"clean":  # scoop bucket with a handle
+			var pts := PackedVector2Array([c + Vector2(-0.8, -0.2) * r, c + Vector2(0.8, -0.2) * r, c + Vector2(0.5, 0.75) * r, c + Vector2(-0.5, 0.75) * r])
+			ci.draw_colored_polygon(pts, col)
+			ci.draw_line(c + Vector2(0.0, -0.2) * r, c + Vector2(0.55, -0.9) * r, col, w, true)
+		"haul":  # crate
+			var rc := Rect2(c - Vector2(0.75, 0.6) * r, Vector2(1.5, 1.2) * r)
+			ci.draw_rect(rc, col, false, w, true)
+			ci.draw_line(rc.position + Vector2(0, rc.size.y * 0.35), rc.position + Vector2(rc.size.x, rc.size.y * 0.35), col, w, true)
+			ci.draw_rect(Rect2(c + Vector2(-0.2, -0.6) * r, Vector2(0.4, 0.5) * r), col)
+		"plant":  # leaf with a stem
+			var leaf := PackedVector2Array()
+			for i: int in 9:
+				var t: float = float(i) / 8.0
+				leaf.append(c + Vector2(-0.7 + 1.4 * t, 0.6 - 1.4 * t) * r + Vector2(-1, -1).normalized() * sin(t * PI) * r * 0.45)
+			for i: int in range(7, 0, -1):
+				var t2: float = float(i) / 8.0
+				leaf.append(c + Vector2(-0.7 + 1.4 * t2, 0.6 - 1.4 * t2) * r + Vector2(1, 1).normalized() * sin(t2 * PI) * r * 0.45)
+			ci.draw_colored_polygon(leaf, col)
+			ci.draw_line(c + Vector2(-0.7, 0.6) * r, c + Vector2(-0.95, 0.9) * r, col, w, true)
+		"water":  # droplet
+			ci.draw_circle(c + Vector2(0, 0.25) * r, r * 0.6, col)
+			ci.draw_colored_polygon(PackedVector2Array([c + Vector2(0, -0.95) * r, c + Vector2(0.55, 0.0) * r, c + Vector2(-0.55, 0.0) * r]), col)
+		_:  # waves (skimmers)
+			for k: int in 2:
+				var pl := PackedVector2Array()
+				for i: int in 9:
+					var t3: float = float(i) / 8.0
+					pl.append(c + Vector2(-0.85 + 1.7 * t3, -0.25 + 0.55 * float(k) + sin(t3 * TAU) * 0.18) * r)
+				ci.draw_polyline(pl, col, w, true)
 
 
 func _ready() -> void:
@@ -84,35 +178,69 @@ func _ready() -> void:
 	_input_area.mouse_filter = Control.MOUSE_FILTER_STOP
 	_input_area.gui_input.connect(_map_input)
 	_root.add_child(_input_area)
-	# Soft vignette so the overhead view reads as a mode, not gameplay.
+	# Slight edge vignette: frames the tactical view without darkening the centre.
 	var vig := TextureRect.new()
 	vig.set_anchors_preset(Control.PRESET_FULL_RECT)
 	vig.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var g := GradientTexture2D.new()
 	g.fill = GradientTexture2D.FILL_RADIAL
 	g.fill_from = Vector2(0.5, 0.5)
-	g.fill_to = Vector2(1.05, 1.05)
+	g.fill_to = Vector2(1.08, 1.08)
 	var grad := Gradient.new()
-	grad.set_color(0, Color(0, 0, 0, 0))
-	grad.set_color(1, Color(0.0, 0.02, 0.04, 0.5))
+	grad.offsets = PackedFloat32Array([0.0, 0.55, 1.0])
+	grad.colors = PackedColorArray([Color(0, 0, 0, 0), Color(0.0, 0.02, 0.05, 0.08), Color(0.0, 0.02, 0.05, 0.62)])
 	g.gradient = grad
 	vig.texture = g
 	vig.stretch_mode = TextureRect.STRETCH_SCALE
 	_root.add_child(vig)
+	# 2D tactical overlay.
+	_map = Control.new()
+	_map.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_map.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_map.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+	_map.draw.connect(_draw_map)
+	_root.add_child(_map)
+	_hatch = _make_hatch()
 
 	var side := PanelContainer.new()
-	side.add_theme_stylebox_override("panel", UITheme.box(UITheme.PLUM, UITheme.RUST, 1, 6, 14))
+	var side_sb := UITheme.box(PANEL_BG, Color(1, 1, 1, 0.09), 1, 10, 16)
+	side_sb.border_width_top = 2
+	side_sb.border_color = Color(1, 1, 1, 0.09)
+	side_sb.shadow_color = Color(0, 0, 0, 0.35)
+	side_sb.shadow_size = 18
+	side.add_theme_stylebox_override("panel", side_sb)
 	side.position = Vector2(20, 20)
-	side.custom_minimum_size = Vector2(300, 0)
+	side.custom_minimum_size = Vector2(330, 0)
 	_root.add_child(side)
 	var sv := VBoxContainer.new()
-	sv.add_theme_constant_override("separation", 8)
+	sv.add_theme_constant_override("separation", 9)
 	side.add_child(sv)
-	sv.add_child(UITheme.label("COMMAND", 12, UITheme.MUTED))
+	var head := HBoxContainer.new()
+	head.add_theme_constant_override("separation", 8)
+	sv.add_child(head)
+	var accent := ColorRect.new()
+	accent.color = UITheme.GOLD
+	accent.custom_minimum_size = Vector2(3, 12)
+	accent.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	head.add_child(accent)
+	var cap := UITheme.label("COMMAND", 12, UITheme.MUTED)
+	cap.add_theme_constant_override("shadow_outline_size", 0)
+	head.add_child(cap)
+	var trow := HBoxContainer.new()
+	trow.add_theme_constant_override("separation", 10)
+	sv.add_child(trow)
+	_title_icon = RoleIcon.new("clean", ROLE_COLORS["clean"], 26.0)
+	trow.add_child(_title_icon)
 	_title = UITheme.label("", 22)
-	sv.add_child(_title)
+	_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_title.clip_text = true
+	trow.add_child(_title)
+	_title_chip = _chip("", UITheme.CREAM, 13)
+	_title_chip.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	trow.add_child(_title_chip)
+	# Modes: a segmented control.
 	_mode_row = HBoxContainer.new()
-	_mode_row.add_theme_constant_override("separation", 4)
+	_mode_row.add_theme_constant_override("separation", 3)
 	sv.add_child(_mode_row)
 	for m: String in Fleet.MODES:
 		var b := Button.new()
@@ -126,7 +254,7 @@ func _ready() -> void:
 		_mode_row.add_child(b)
 	_mode_help = UITheme.label("", 13, UITheme.MUTED)
 	_mode_help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_mode_help.custom_minimum_size = Vector2(272, 36)
+	_mode_help.custom_minimum_size = Vector2(298, 36)
 	sv.add_child(_mode_help)
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 4)
@@ -134,6 +262,7 @@ func _ready() -> void:
 	var here := Button.new()
 	here.text = "Mark around me"
 	here.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	here.add_theme_font_size_override("font_size", 14)
 	here.pressed.connect(func() -> void:
 		for h: int in world.field.hexes_near(world.patch.global_position, 1):
 			if world.field.hex_hub[h] == 0 and world.field.is_water(h) == (_sel_key == "skim" and not _sel_bot):
@@ -145,6 +274,7 @@ func _ready() -> void:
 	row.add_child(here)
 	var clear := Button.new()
 	clear.text = "Clear"
+	clear.add_theme_font_size_override("font_size", 14)
 	clear.pressed.connect(func() -> void:
 		world.fleet.clear_order(_sel_key, _sel_bot)
 		Audio.play("click", 0.9, -8.0)
@@ -165,37 +295,65 @@ func _ready() -> void:
 	_style_button(_tank_btn, ROLE_COLORS["water"], false)
 	sv.add_child(_tank_btn)
 	var sep := ColorRect.new()
-	sep.color = UITheme.RUST
+	sep.color = Color(1, 1, 1, 0.08)
 	sep.custom_minimum_size = Vector2(0, 1)
 	sv.add_child(sep)
+	var crew_cap := UITheme.label("CREWS", 11, UITheme.MUTED)
+	crew_cap.add_theme_constant_override("shadow_outline_size", 0)
+	sv.add_child(crew_cap)
 	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size = Vector2(0, 360)
+	scroll.custom_minimum_size = Vector2(0, 330)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	sv.add_child(scroll)
 	_list = VBoxContainer.new()
 	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_list.add_theme_constant_override("separation", 2)
+	_list.add_theme_constant_override("separation", 3)
 	scroll.add_child(_list)
 
-	# Top-right progress readout and bottom key hints.
+	# Top-right district readout: name, progress bar, legend.
 	var info_panel := PanelContainer.new()
-	info_panel.add_theme_stylebox_override("panel", UITheme.box(UITheme.PLUM, UITheme.RUST, 1, 6, 10))
+	info_panel.add_theme_stylebox_override("panel", UITheme.box(PANEL_BG, Color(1, 1, 1, 0.09), 1, 10, 14))
 	info_panel.set_anchors_preset(Control.PRESET_TOP_RIGHT)
 	info_panel.offset_right = -20
 	info_panel.offset_top = 20
 	info_panel.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	info_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(info_panel)
-	_info = RichTextLabel.new()
-	_info.bbcode_enabled = true
-	_info.fit_content = true
-	_info.autowrap_mode = TextServer.AUTOWRAP_OFF
-	_info.add_theme_font_override("normal_font", UITheme.font())
-	_info.add_theme_font_size_override("normal_font_size", 14)
-	_info.custom_minimum_size = Vector2(330, 0)
-	info_panel.add_child(_info)
+	var iv := VBoxContainer.new()
+	iv.add_theme_constant_override("separation", 6)
+	iv.custom_minimum_size = Vector2(300, 0)
+	info_panel.add_child(iv)
+	var ih := HBoxContainer.new()
+	iv.add_child(ih)
+	_info_name = UITheme.label("", 17)
+	_info_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	ih.add_child(_info_name)
+	_info_bots = UITheme.label("", 13, UITheme.MUTED)
+	ih.add_child(_info_bots)
+	_info_bar = ProgressBar.new()
+	_info_bar.show_percentage = false
+	_info_bar.custom_minimum_size = Vector2(0, 5)
+	_info_bar.add_theme_stylebox_override("fill", UITheme.box(GROW_COL, Color(0, 0, 0, 0), 0, 2, 0))
+	_info_bar.add_theme_stylebox_override("background", UITheme.box(Color(1, 1, 1, 0.08), Color(0, 0, 0, 0), 0, 2, 0))
+	iv.add_child(_info_bar)
+	_info_count = UITheme.label("", 13, UITheme.MUTED)
+	iv.add_child(_info_count)
+	var legend := HBoxContainer.new()
+	legend.add_theme_constant_override("separation", 12)
+	iv.add_child(legend)
+	for pair: Array in [["junk", "junk"], ["cleaning", "cleaning"], ["clean", "clean"], ["growing", "growing"]]:
+		var lh := HBoxContainer.new()
+		lh.add_theme_constant_override("separation", 5)
+		var sw := ColorRect.new()
+		sw.custom_minimum_size = Vector2(9, 9)
+		sw.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		sw.color = _legend_color(pair[0])
+		lh.add_child(sw)
+		lh.add_child(UITheme.label(pair[1], 12, UITheme.MUTED))
+		legend.add_child(lh)
+
 	var keys_panel := PanelContainer.new()
-	keys_panel.add_theme_stylebox_override("panel", UITheme.box(UITheme.PLUM, UITheme.RUST, 1, 6, 8))
+	keys_panel.add_theme_stylebox_override("panel", UITheme.box(PANEL_BG, Color(1, 1, 1, 0.07), 1, 14, 9))
 	keys_panel.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
 	keys_panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	keys_panel.grow_vertical = Control.GROW_DIRECTION_BEGIN
@@ -204,6 +362,26 @@ func _ready() -> void:
 	_root.add_child(keys_panel)
 	_keys = UITheme.label(MOUSE_KEYS, 13, UITheme.MUTED)
 	keys_panel.add_child(_keys)
+	# Hover tooltip.
+	_tip = PanelContainer.new()
+	_tip.add_theme_stylebox_override("panel", UITheme.box(Color(0.04, 0.045, 0.055, 0.92), Color(1, 1, 1, 0.12), 1, 6, 9))
+	_tip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_tip.visible = false
+	_root.add_child(_tip)
+	var tv := VBoxContainer.new()
+	tv.add_theme_constant_override("separation", 4)
+	tv.custom_minimum_size = Vector2(170, 0)
+	_tip.add_child(tv)
+	_tip_title = UITheme.label("", 13, UITheme.CREAM)
+	tv.add_child(_tip_title)
+	_tip_bar = ProgressBar.new()
+	_tip_bar.show_percentage = false
+	_tip_bar.custom_minimum_size = Vector2(0, 4)
+	_tip_bar.add_theme_stylebox_override("fill", UITheme.box(JUNK_COL, Color(0, 0, 0, 0), 0, 2, 0))
+	_tip_bar.add_theme_stylebox_override("background", UITheme.box(Color(1, 1, 1, 0.1), Color(0, 0, 0, 0), 0, 2, 0))
+	tv.add_child(_tip_bar)
+	_tip_body = UITheme.label("", 12, UITheme.MUTED)
+	tv.add_child(_tip_body)
 	# Screen-centre reticle for controller painting (hidden while using the mouse).
 	_reticle = Control.new()
 	_reticle.set_anchors_preset(Control.PRESET_CENTER)
@@ -212,9 +390,58 @@ func _ready() -> void:
 	_reticle.draw.connect(func() -> void:
 		var col: Color = UITheme.GOLD
 		for d: Vector2 in [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1)]:
-			_reticle.draw_line(d * 6.0, d * 16.0, col, 2.0)
-		_reticle.draw_arc(Vector2.ZERO, 3.0, 0.0, TAU, 12, col, 2.0))
+			_reticle.draw_line(d * 6.0, d * 16.0, col, 2.0, true)
+		_reticle.draw_arc(Vector2.ZERO, 3.0, 0.0, TAU, 12, col, 2.0, true))
 	_root.add_child(_reticle)
+
+
+static func _make_hatch() -> ImageTexture:
+	var img := Image.create(32, 32, false, Image.FORMAT_RGBA8)
+	for y: int in 32:
+		for x: int in 32:
+			var d: int = (x + y) % 16
+			var a: float = 0.3 + 0.7 * clampf(1.0 - absf(float(d) - 2.0) / 2.5, 0.0, 1.0)
+			img.set_pixel(x, y, Color(1, 1, 1, a))
+	img.generate_mipmaps()
+	return ImageTexture.create_from_image(img)
+
+
+func _legend_color(kind: String) -> Color:
+	if UITheme.colorblind():
+		return UITheme.progress_color(kind)
+	match kind:
+		"junk":
+			return JUNK_COL
+		"cleaning":
+			return CLEANING_COL
+		"growing":
+			return GROW_COL
+	return Color(0.85, 0.9, 0.95, 0.6)
+
+
+## Rounded status chip: [PanelContainer > Label].
+func _chip(text: String, col: Color, fs: int = 11) -> PanelContainer:
+	var pc := PanelContainer.new()
+	var sb := UITheme.box(Color(col.r, col.g, col.b, 0.14), Color(col.r, col.g, col.b, 0.35), 1, 9, 0)
+	sb.content_margin_left = 7
+	sb.content_margin_right = 7
+	sb.content_margin_top = 1
+	sb.content_margin_bottom = 1
+	pc.add_theme_stylebox_override("panel", sb)
+	pc.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var l := UITheme.label(text, fs, col)
+	l.add_theme_constant_override("shadow_outline_size", 0)
+	pc.add_child(l)
+	return pc
+
+
+func _set_chip(pc: PanelContainer, text: String, col: Color) -> void:
+	var l: Label = pc.get_child(0)
+	l.text = text
+	l.add_theme_color_override("font_color", col)
+	var sb: StyleBoxFlat = pc.get_theme_stylebox("panel")
+	sb.bg_color = Color(col.r, col.g, col.b, 0.14)
+	sb.border_color = Color(col.r, col.g, col.b, 0.35)
 
 
 ## Visible amber focus ring for controller / keyboard navigation.
@@ -228,17 +455,18 @@ static func focus_box() -> StyleBoxFlat:
 ## Crew buttons get a coloured stripe on the left.
 func _style_button(b: Button, col: Color, stripe: bool) -> void:
 	var mk := func(bg: Color, border: Color) -> StyleBoxFlat:
-		var sb := UITheme.box(bg, border, 1, 4, 6)
+		var sb := UITheme.box(bg, border, 1, 5, 6)
 		if stripe:
 			sb.border_width_left = 3
 		sb.content_margin_left = 10
 		return sb
-	var edge: Color = col if stripe else UITheme.RUST
-	b.add_theme_stylebox_override("normal", mk.call(UITheme.TEAL, edge))
-	b.add_theme_stylebox_override("hover", mk.call(UITheme.PLUM_LIGHT.lightened(0.08), col if stripe else Color(1, 1, 1, 0.25)))
-	var pressed_bg := Color(col.r * 0.3, col.g * 0.3, col.b * 0.3, 0.95)
+	var edge: Color = col if stripe else Color(1, 1, 1, 0.08)
+	b.add_theme_stylebox_override("normal", mk.call(Color(0.12, 0.13, 0.145, 0.85), edge))
+	b.add_theme_stylebox_override("hover", mk.call(Color(0.17, 0.18, 0.2, 0.92), col if stripe else Color(1, 1, 1, 0.25)))
+	var pressed_bg := Color(col.r * 0.26, col.g * 0.26, col.b * 0.26, 0.95)
 	b.add_theme_stylebox_override("pressed", mk.call(pressed_bg, col))
 	b.add_theme_stylebox_override("hover_pressed", mk.call(pressed_bg.lightened(0.05), col))
+	b.add_theme_stylebox_override("disabled", mk.call(Color(0.08, 0.085, 0.09, 0.6), Color(1, 1, 1, 0.04)))
 	b.add_theme_stylebox_override("focus", focus_box())
 	b.add_theme_color_override("font_color", UITheme.CREAM)
 	b.add_theme_color_override("font_pressed_color", Color.WHITE)
@@ -250,21 +478,21 @@ func _style_button(b: Button, col: Color, stripe: bool) -> void:
 func open_view() -> void:
 	if world == null:
 		return
-	if _overlay == null:
+	if _cam == null:
 		_build_overlay()
 	is_open = true
 	_root.visible = true
-	_overlay.visible = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	EventBus.ui_modal_changed.emit(true)
 	Audio.play("whoosh", 1.2, -10.0)
 	if world.get("hud") != null:
 		world.hud.visible = false
-	# Lift from the play camera into the overhead view.
+	# Lift from the play camera into the tactical view.
 	_prev_cam = get_viewport().get_camera_3d()
 	_focus = world.patch.global_position
 	_focus.y = 0.0
 	_cam_pos = _prev_cam.global_position if _prev_cam else _focus + Vector3(0, 10, 10)
+	_look = _focus
 	_cam.global_position = _cam_pos
 	_cam.current = true
 	if _sel_bot and world.fleet.find_robot(_sel_key) == null:
@@ -287,7 +515,6 @@ func close_view() -> void:
 	if fo and _root.is_ancestor_of(fo):
 		fo.release_focus()
 	_root.visible = false
-	_overlay.visible = false
 	if _prev_cam and is_instance_valid(_prev_cam):
 		_prev_cam.current = true
 	if world.get("hud") != null:
@@ -314,6 +541,13 @@ func _on_mode(m: String) -> void:
 	Audio.play("servo", 1.4, -10.0)
 	_refresh()
 	_rebuild_zone()
+
+
+func _sel_role() -> String:
+	if _sel_bot:
+		var r: Robot = world.fleet.find_robot(_sel_key)
+		return r.role() if r else "clean"
+	return _sel_key
 
 
 func _sel_color() -> Color:
@@ -348,11 +582,14 @@ func _refresh() -> void:
 	if _sel_bot:
 		var r: Robot = f.find_robot(_sel_key)
 		_title.text = _sel_key
+		_set_chip(_title_chip, Economy.tier_name(r.tier) if r else "", _sel_color())
 		if od.is_empty() and r:
 			_mode_help.text = "Following the %s orders. Mark hexes or pick a mode to give it its own." % ROLE_NAMES.get(r.role(), "crew").to_lower()
 	else:
-		_title.text = "%s · %d / %d" % [ROLE_NAMES[_sel_key], f.robots_with_role(_sel_key).size(), f.crew_cap()]
+		_title.text = ROLE_NAMES[_sel_key]
+		_set_chip(_title_chip, "%d / %d" % [f.robots_with_role(_sel_key).size(), f.crew_cap()], _sel_color())
 	_title.add_theme_color_override("font_color", _sel_color())
+	_title_icon.set_role(_sel_role(), _sel_color())
 	if mode != "":
 		_mode_help.text = MODE_HELP.get(mode, "")
 	elif not _sel_bot:
@@ -375,6 +612,27 @@ func _rebuild_list() -> void:
 		_restore_focus()
 
 
+## Content row laid over a Button (the Button keeps focus, toggle and metas).
+func _button_content(b: Button, left: float) -> HBoxContainer:
+	var hb := HBoxContainer.new()
+	hb.set_anchors_preset(Control.PRESET_FULL_RECT)
+	hb.offset_left = left
+	hb.offset_right = -8
+	hb.add_theme_constant_override("separation", 8)
+	hb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	b.add_child(hb)
+	return hb
+
+
+func _mode_chip_color(label: String, role_col: Color) -> Color:
+	match label:
+		"roaming":
+			return UITheme.MUTED
+		"recall":
+			return Color(0.75, 0.8, 0.9)
+	return role_col
+
+
 func _fill_list() -> void:
 	var f: Fleet = world.fleet
 	if f.robots().is_empty():
@@ -386,31 +644,83 @@ func _fill_list() -> void:
 		var bots: Array[Robot] = f.robots_with_role(role_id)
 		if bots.is_empty() and Fleet.types_for_role(role_id).is_empty():
 			continue
+		var col: Color = ROLE_COLORS[role_id]
 		var gb := Button.new()
-		gb.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		gb.custom_minimum_size = Vector2(0, 32)
-		_style_button(gb, ROLE_COLORS[role_id], true)
+		gb.custom_minimum_size = Vector2(0, 38)
+		_style_button(gb, col, true)
 		gb.toggle_mode = true
 		gb.button_pressed = not _sel_bot and _sel_key == role_id
-		gb.text = "%s  %d/%d      %s" % [ROLE_NAMES[role_id], bots.size(), f.crew_cap(), _mode_label(role_id)]
+		gb.tooltip_text = "%s  %d/%d  %s" % [ROLE_NAMES[role_id], bots.size(), f.crew_cap(), _mode_label(role_id)]
 		gb.pressed.connect(_select.bind(role_id, false))
 		gb.set_meta("role", role_id)
 		_list.add_child(gb)
+		var hb: HBoxContainer = _button_content(gb, 12)
+		hb.add_child(RoleIcon.new(role_id, col, 18.0))
+		var nl := UITheme.label(ROLE_NAMES[role_id], 15, UITheme.CREAM)
+		nl.add_theme_constant_override("shadow_outline_size", 0)
+		hb.add_child(nl)
+		var cl := UITheme.label("%d/%d" % [bots.size(), f.crew_cap()], 13, UITheme.MUTED)
+		cl.add_theme_constant_override("shadow_outline_size", 0)
+		hb.add_child(cl)
+		var sp := Control.new()
+		sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		sp.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		hb.add_child(sp)
+		var ml: String = _mode_label(role_id)
+		var chip: PanelContainer = _chip(ml.to_upper(), _mode_chip_color(ml, col), 10)
+		chip.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		hb.add_child(chip)
 		_add_build_row(role_id)
 		for r: Robot in bots:
 			var rb := Button.new()
-			rb.alignment = HORIZONTAL_ALIGNMENT_LEFT
-			rb.add_theme_font_size_override("font_size", 12)
-			rb.flat = true
+			rb.flat = false
 			rb.toggle_mode = true
+			rb.custom_minimum_size = Vector2(0, 26)
 			rb.button_pressed = _sel_bot and _sel_key == r.robot_name
-			rb.add_theme_color_override("font_color", UITheme.MUTED)
-			rb.add_theme_color_override("font_pressed_color", ROLE_COLORS[role_id])
-			rb.text = _bot_line(r)
 			rb.set_meta("bot", r.robot_name)
+			rb.tooltip_text = _bot_line(r).strip_edges()
+			var empty := UITheme.box(Color(0, 0, 0, 0), Color(0, 0, 0, 0), 0, 4, 4)
+			rb.add_theme_stylebox_override("normal", empty)
+			rb.add_theme_stylebox_override("hover", UITheme.box(Color(1, 1, 1, 0.05), Color(0, 0, 0, 0), 0, 4, 4))
+			var psb := UITheme.box(Color(col.r, col.g, col.b, 0.12), col, 0, 4, 4)
+			psb.border_width_left = 2
+			rb.add_theme_stylebox_override("pressed", psb)
+			rb.add_theme_stylebox_override("hover_pressed", psb)
 			rb.add_theme_stylebox_override("focus", focus_box())
 			rb.pressed.connect(_select.bind(r.robot_name, true))
 			_list.add_child(rb)
+			var bh: HBoxContainer = _button_content(rb, 22)
+			bh.add_theme_constant_override("separation", 7)
+			var dot := ColorRect.new()
+			dot.custom_minimum_size = Vector2(6, 6)
+			dot.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			bh.add_child(dot)
+			var nm := UITheme.label(r.robot_name, 13, col if rb.button_pressed else UITheme.CREAM)
+			nm.add_theme_constant_override("shadow_outline_size", 0)
+			bh.add_child(nm)
+			var tc: PanelContainer = _chip(Economy.tier_name(r.tier), UITheme.MUTED, 10)
+			tc.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			bh.add_child(tc)
+			var st := UITheme.label("", 12, UITheme.MUTED)
+			st.add_theme_constant_override("shadow_outline_size", 0)
+			st.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			st.clip_text = true
+			st.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+			bh.add_child(st)
+			rb.set_meta("dot", dot)
+			rb.set_meta("st", st)
+			_update_bot_row(rb, r)
+
+
+func _update_bot_row(rb: Button, r: Robot) -> void:
+	var st: Label = rb.get_meta("st") if rb.has_meta("st") else null
+	var dot: ColorRect = rb.get_meta("dot") if rb.has_meta("dot") else null
+	var s: String = r.status_text()
+	if st:
+		st.text = s
+	if dot:
+		dot.color = _status_color(s)
+	rb.tooltip_text = _bot_line(r).strip_edges()
 
 
 ## Build + Upgrade fleet buttons under a crew (they work at the workbench only).
@@ -437,7 +747,8 @@ func _add_build_row(role_id: String) -> void:
 		_style_button(u, UITheme.GOLD, false)
 		row.add_child(u)
 		_list.add_child(row)
-		var info := UITheme.label("", 11, UITheme.MUTED)
+		var info := UITheme.label("", 11, Color(UITheme.MUTED, 0.85))
+		info.add_theme_constant_override("shadow_outline_size", 0)
 		info.set_meta("build_info", t)
 		_list.add_child(info)
 	_refresh_build()
@@ -468,7 +779,7 @@ func _refresh_build() -> void:
 				if r["have"]:
 					have += 1
 			var why: String = f.build_block_reason(t2)
-			(c as Label).text = "     parts %d/%d · %s" % [have, rs.size(), ("ready" if why == "" else why) if at_bench else "build at the workbench"]
+			(c as Label).text = "  parts %d/%d · %s" % [have, rs.size(), ("ready" if why == "" else why) if at_bench else "build at the workbench"]
 	if _tank_btn:
 		var net: WaterNet = f.water_net
 		if net == null:
@@ -494,14 +805,27 @@ func _bot_line(r: Robot) -> String:
 	return "     %s  %s · %s" % [r.robot_name, Economy.tier_name(r.tier), r.status_text()]
 
 
-# --- 3D overlay ------------------------------------------------------------------------------
+## Status pip colour from a robot's status line: working green, idle amber, travelling blue,
+## blocked red.
+func _status_color(s: String) -> Color:
+	if s.begins_with("idle") or "waiting" in s or "nothing" in s or "clean," in s or "lake is clean" in s:
+		return Color(1.0, 0.75, 0.3)
+	if s.begins_with("out of") or "stuck" in s:
+		return Color(1.0, 0.38, 0.32)
+	if "parked" in s or "returning" in s or "refilling" in s or "looking" in s or "fetching" in s:
+		return Color(0.5, 0.75, 1.0)
+	return Color(0.45, 0.95, 0.55)
+
+
+# --- Map overlay ------------------------------------------------------------------------------
 
 func _build_overlay() -> void:
 	_cam = Camera3D.new()
-	_cam.fov = 50.0
+	_cam.fov = 44.0
+	_cam.near = 0.5
 	_cam.far = 900.0
 	world.add_child(_cam)
-	# Clear air up here: no haze or volumetric fog washing out the overview.
+	# Clear air and a cool, desaturated tactical grade so the overlay pops.
 	var we: WorldEnvironment = world.get_node_or_null("WorldEnvironment")
 	var src: Environment = we.environment if we else null
 	if src == null and world.get("_env") != null:
@@ -512,68 +836,24 @@ func _build_overlay() -> void:
 		env.volumetric_fog_enabled = false
 		env.sdfgi_enabled = false
 		env.ssr_enabled = false
+		env.adjustment_enabled = true
+		env.adjustment_brightness = 0.8
+		env.adjustment_contrast = 1.08
+		env.adjustment_saturation = 0.45
+		var lut := GradientTexture1D.new()
+		var lg := Gradient.new()
+		lg.set_color(0, Color(0.0, 0.015, 0.05))
+		lg.set_color(1, Color(0.9, 0.96, 1.0))
+		lut.gradient = lg
+		env.adjustment_color_correction = lut
 		_cam.environment = env
-	_overlay = Node3D.new()
-	_overlay.name = "CommandOverlay"
-	world.add_child(_overlay)
-	_line_mat = StandardMaterial3D.new()
-	_line_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	_line_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	_line_mat.vertex_color_use_as_albedo = true
-	_line_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
-	_line_mat.no_depth_test = true
-	_line_mat.render_priority = 2
-	_grid_mi = MeshInstance3D.new()
-	_grid_mi.material_override = _line_mat
-	_grid_mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	_overlay.add_child(_grid_mi)
-	_zone_mi = MeshInstance3D.new()
-	_zone_mi.material_override = _line_mat
-	_zone_mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	_overlay.add_child(_zone_mi)
-	_base_marker = _make_pin(UITheme.GOLD, "BASE")
-	_overlay.add_child(_base_marker)
-	_you_marker = _make_pin(Color(0.55, 0.9, 1.0), "YOU")
-	_overlay.add_child(_you_marker)
-	_overlay.visible = false
-
-
-func _make_pin(col: Color, text: String) -> Node3D:
-	var n := Node3D.new()
-	var ring := MeshInstance3D.new()
-	ring.mesh = ProcMesh.torus(1.1, 1.4, 32, 4)
-	ring.material_override = _flat_mat(col, 0.9)
-	ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	n.add_child(ring)
-	var lab := Label3D.new()
-	lab.text = text
-	lab.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	lab.no_depth_test = true
-	lab.fixed_size = true
-	lab.pixel_size = 0.00045
-	lab.font_size = 30
-	lab.outline_size = 8
-	lab.modulate = col
-	lab.position = Vector3(0, 2.5, 0)
-	lab.name = "Label"
-	n.add_child(lab)
-	return n
-
-
-func _flat_mat(col: Color, alpha: float) -> StandardMaterial3D:
-	var m := StandardMaterial3D.new()
-	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	m.albedo_color = Color(col, alpha)
-	m.no_depth_test = true
-	m.render_priority = 3
-	return m
+	_cache_corners()
 
 
 func _ground_y(p: Vector3) -> float:
 	var layout: CityLayout = world.field.layout
 	# Sidewalk/curb height only: never climb onto roofs.
-	return clampf(layout.height_at(p.x, p.z) if layout else 0.0, 0.0, 0.3) + 0.12
+	return clampf(layout.height_at(p.x, p.z) if layout else 0.0, 0.0, 0.3) + 0.06
 
 
 func _corner(c: Vector3, k: int, r: float) -> Vector3:
@@ -582,137 +862,368 @@ func _corner(c: Vector3, k: int, r: float) -> Vector3:
 	return Vector3(p.x, _ground_y(p), p.z)
 
 
-## Thick hex outline as a strip of quads hugging the ground.
-func _add_hex_outline(st: SurfaceTool, id: int, shrink: float, width: float, col: Color) -> void:
+func _cache_corners() -> void:
 	var field: HexField = world.field
-	var c: Vector3 = field.hex_center(id)
-	var r: float = field.hex_size * shrink
-	for k: int in 6:
-		var p0: Vector3 = _corner(c, k, r)
-		var p1: Vector3 = _corner(c, k + 1, r)
-		var q0: Vector3 = _corner(c, k, r - width)
-		var q1: Vector3 = _corner(c, k + 1, r - width)
-		for v: Vector3 in [p0, p1, q1, p0, q1, q0]:
-			st.set_color(col)
-			st.add_vertex(v)
+	_corners.clear()
+	for id: int in field.hex_count():
+		var c: Vector3 = field.hex_center(id)
+		var pts := PackedVector3Array()
+		for k: int in 6:
+			pts.append(_corner(c, k, field.hex_size))
+		_corners.append(pts)
 
 
-func _add_hex_fill(st: SurfaceTool, id: int, shrink: float, col: Color) -> void:
-	var field: HexField = world.field
-	var c: Vector3 = field.hex_center(id)
-	var r: float = field.hex_size * shrink
-	var cy := Vector3(c.x, _ground_y(c), c.z)
-	for k: int in 6:
-		for v: Vector3 in [cy, _corner(c, k, r), _corner(c, k + 1, r)]:
-			st.set_color(col)
-			st.add_vertex(v)
-
-
-func _hex_state_color(id: int) -> Color:
-	var field: HexField = world.field
-	if field.is_water(id):
-		return Color(0.4, 0.7, 1.0)
-	if field.hex_hub[id] != 0:
-		return UITheme.GOLD
-	if not field.is_clean(id):
-		return UITheme.progress_color("junk") if UITheme.colorblind() else Color(1.0, 0.55, 0.35)
-	var life: float = float(world.garden.hex_life.get(id, 0.0)) if world.garden else 0.0
-	if life > 0.0 and UITheme.colorblind():
-		return UITheme.progress_color("growing")
-	return Color(0.5, 1.0, 0.55) if life > 0.0 else Color(0.9, 0.95, 1.0)
-
-
-func _lw() -> float:
-	return 0.08 + _height * 0.0035
-
-
-## Progress colours, read at a glance from above:
-## orange = untouched junk, blue = being cleaned, green = clean, bright green = growing.
+## Fill colour per hex: hatched heat tint on junk (hotter = more junk left), blue while being
+## cleaned, a soft wash on growing ground; clean ground stays clear.
 func _progress_color(id: int) -> Color:
 	var field: HexField = world.field
 	if field.is_water(id) or field.hex_hub[id] != 0:
 		return Color(0, 0, 0, 0)
 	if not field.is_clean(id):
-		return UITheme.progress_color("junk" if field.removed_fraction(id) < 0.03 else "cleaning")
+		var rem: float = 1.0 - field.removed_fraction(id)
+		if UITheme.colorblind():
+			return Color(UITheme.progress_color("junk" if rem > 0.97 else "cleaning"), 0.16 + 0.16 * rem)
+		if rem > 0.97:
+			return Color(JUNK_COL.lerp(JUNK_HOT, 0.3), 0.32)
+		return Color(CLEANING_COL.lerp(JUNK_COL, rem * 0.5), 0.25 + 0.15 * rem)
 	var life: float = float(world.garden.hex_life.get(id, 0.0)) if world.garden else 0.0
-	return UITheme.progress_color("growing" if life > 0.0 else "clean")
+	if life > 0.0:
+		return Color(UITheme.progress_color("growing") if UITheme.colorblind() else GROW_COL, 0.13)
+	return Color(0, 0, 0, 0)
 
 
 func _rebuild_overlay() -> void:
 	var field: HexField = world.field
-	var w: float = _lw()
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	if _corners.size() != field.hex_count():
+		_cache_corners()
+	_fill_cols.resize(field.hex_count())
 	for id: int in field.hex_count():
-		var col: Color = _progress_color(id)
-		if col.a > 0.0:
-			_add_hex_fill(st, id, 0.97, Color(col, 0.38))
-		var edge: Color = Color(1, 1, 1, 0.55)
-		if field.hex_hub[id] != 0:
-			edge = Color(UITheme.GOLD, 0.9)
-		elif field.is_water(id):
-			edge = Color(0.6, 0.85, 1.0, 0.5)
-		_add_hex_outline(st, id, 0.99, w * 0.7, edge)
-	if _hover_hex >= 0 and not _using_pad:
-		_add_hex_outline(st, _hover_hex, 0.99, w * 2.0, Color(1, 1, 1, 0.95))
-	if _using_pad and _reticle_hex >= 0:
-		_add_hex_outline(st, _reticle_hex, 0.99, w * 2.4, Color(UITheme.GOLD, 0.95))
-	_grid_mi.mesh = st.commit()
+		_fill_cols[id] = _progress_color(id)
 	_rebuild_zone()
 
 
+static func _edge_key(a: Vector3, b: Vector3) -> Vector2i:
+	var m: Vector3 = (a + b) * 0.5
+	return Vector2i(roundi(m.x * 4.0), roundi(m.z * 4.0))
+
+
+## Boundary edges (edges not shared with another hex of the set).
+func _boundary(ids: Array) -> Array:
+	var count: Dictionary = {}
+	var edges: Dictionary = {}
+	for h: Variant in ids:
+		var id: int = int(h)
+		if id < 0 or id >= _corners.size():
+			continue
+		var pts: PackedVector3Array = _corners[id]
+		for k: int in 6:
+			var key: Vector2i = _edge_key(pts[k], pts[(k + 1) % 6])
+			count[key] = int(count.get(key, 0)) + 1
+			edges[key] = [pts[k], pts[(k + 1) % 6]]
+	var out: Array = []
+	for key: Vector2i in edges:
+		if int(count[key]) == 1:
+			out.append(edges[key])
+	return out
+
+
 func _rebuild_zone() -> void:
-	if _zone_mi == null:
+	if world == null or _corners.is_empty():
 		return
 	var zone: Array = _sel_zone()
-	var col: Color = _sel_color()
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var n: int = 0
+	_zone_set.clear()
 	for h: Variant in zone:
-		_add_hex_outline(st, int(h), 0.93, _lw() * 2.5, Color(col, 0.95))
-		n += 1
-	# Other crews' zones, faintly.
+		_zone_set[int(h)] = true
+	_zone_edges = _boundary(zone)
+	_other_edges.clear()
 	if not _sel_bot:
 		for role_id: String in Fleet.ROLES:
 			if role_id == _sel_key or not world.fleet.has_order(role_id, false):
 				continue
-			for h: Variant in world.fleet.order(role_id, false).get("zone", []):
-				_add_hex_outline(st, int(h), 0.87, _lw() * 1.2, Color(ROLE_COLORS[role_id], 0.45))
-				n += 1
-	_zone_mi.mesh = st.commit() if n > 0 else null
+			for e: Array in _boundary(world.fleet.order(role_id, false).get("zone", [])):
+				_other_edges.append([e[0], e[1], ROLE_COLORS[role_id]])
+	if _map:
+		_map.queue_redraw()
 
 
-func _update_markers(t: float) -> void:
-	var f: Fleet = world.fleet
-	var alive: Dictionary = {}
-	var scale_k: float = clampf(_height / 35.0, 0.5, 5.0)
-	for r: Robot in f.robots():
-		alive[r.robot_name] = true
-		var m: Node3D = _markers.get(r.robot_name)
-		if m == null:
-			m = _make_pin(ROLE_COLORS.get(r.role(), Color.WHITE), r.robot_name)
-			_overlay.add_child(m)
-			_markers[r.robot_name] = m
-		var col: Color = ROLE_COLORS.get(r.role(), Color.WHITE)
-		var selected: bool = (_sel_bot and r.robot_name == _sel_key) or (not _sel_bot and r.role() == _sel_key)
-		var ring: MeshInstance3D = m.get_child(0)
-		(ring.material_override as StandardMaterial3D).albedo_color = Color(col, 0.95 if selected else 0.5)
-		m.scale = Vector3.ONE * (0.55 + (0.08 * sin(t * 5.0) if selected else 0.0)) * scale_k
-		m.global_position = Vector3(r.global_position.x, _ground_y(r.global_position), r.global_position.z)
-		var lab: Label3D = m.get_node("Label")
-		lab.visible = _sel_bot and r.robot_name == _sel_key
-		lab.modulate = col
-	for k: String in _markers.keys():
-		if not alive.has(k):
-			(_markers[k] as Node3D).queue_free()
-			_markers.erase(k)
+func _project_all() -> void:
+	var n: int = _corners.size()
+	_proj.resize(n)
+	_proj_ok.resize(n)
+	for id: int in n:
+		var pts: PackedVector3Array = _corners[id]
+		var out := PackedVector2Array()
+		out.resize(6)
+		var ok: int = 1
+		for k: int in 6:
+			if _cam.is_position_behind(pts[k]):
+				ok = 0
+				break
+			out[k] = _cam.unproject_position(pts[k])
+		_proj[id] = out
+		_proj_ok[id] = ok
+
+
+func _sp(p: Vector3) -> Vector2:
+	return _cam.unproject_position(p)
+
+
+func _draw_map() -> void:
+	if not is_open or _cam == null or _corners.is_empty():
+		return
+	var t: float = Time.get_ticks_msec() * 0.001
+	var field: HexField = world.field
+	_project_all()
+	var vr: Rect2 = _map.get_viewport_rect().grow(80.0)
+	# 1. Hex state fills (world-locked hatching on junk).
+	for id: int in _corners.size():
+		if _proj_ok[id] == 0 or id >= _fill_cols.size():
+			continue
+		var col: Color = _fill_cols[id]
+		if col.a <= 0.0:
+			continue
+		var pts: PackedVector2Array = _proj[id]
+		if not vr.has_point(pts[0]):
+			continue
+		var uvs := PackedVector2Array()
+		for k: int in 6:
+			var w: Vector3 = _corners[id][k]
+			uvs.append(Vector2(w.x, w.z) * 0.32)
+		var cols := PackedColorArray([col, col, col, col, col, col])
+		_map.draw_polygon(pts, cols, uvs, _hatch)
+	# 2. Other crews' zones, faint.
+	for e: Array in _other_edges:
+		if _cam.is_position_behind(e[0]) or _cam.is_position_behind(e[1]):
+			continue
+		_map.draw_line(_sp(e[0]), _sp(e[1]), Color(e[2], 0.5), 1.5, true)
+	# 3. Grid lines near the cursor, fading out with distance.
+	var cursor: Vector3 = _hover_world
+	if _using_pad:
+		cursor = _ground_hit(_screen_centre())
+	var sel_col: Color = _sel_color()
+	if cursor != Vector3.INF:
+		var reach: float = world.field.hex_size * 3.2 + _height * 0.1
+		for id: int in _corners.size():
+			if _proj_ok[id] == 0:
+				continue
+			var c: Vector3 = field.hex_center(id)
+			var d: float = Vector2(c.x - cursor.x, c.z - cursor.z).length()
+			if d > reach:
+				continue
+			var a: float = 1.0 - smoothstep(reach * 0.25, reach, d)
+			var pts2: PackedVector2Array = _proj[id]
+			var loop := PackedVector2Array(pts2)
+			loop.append(pts2[0])
+			_map.draw_polyline(loop, Color(GRID_COL, 0.10 * a), 4.0, true)
+			_map.draw_polyline(loop, Color(GRID_COL, 0.55 * a), 1.0, true)
+	# 4. Selected zone: soft fill, glowing animated border, corner brackets, label.
+	if not _zone_set.is_empty():
+		var pulse: float = 0.5 + 0.5 * sin(t * 2.4)
+		for h: int in _zone_set:
+			if h < _proj.size() and _proj_ok[h] == 1:
+				_map.draw_colored_polygon(_proj[h], Color(sel_col, 0.1 + 0.05 * pulse))
+		var bb := Rect2()
+		var first: bool = true
+		for e: Array in _zone_edges:
+			if _cam.is_position_behind(e[0]) or _cam.is_position_behind(e[1]):
+				continue
+			var a2: Vector2 = _sp(e[0])
+			var b2: Vector2 = _sp(e[1])
+			var ph: float = 0.5 + 0.5 * sin(t * 3.0 - ((e[0] as Vector3).x + (e[0] as Vector3).z) * 0.25)
+			_map.draw_line(a2, b2, Color(sel_col, 0.16 + 0.1 * pulse), 8.0, true)
+			_map.draw_line(a2, b2, Color(sel_col.lightened(0.25 * ph), 0.8 + 0.2 * ph), 2.0, true)
+			if first:
+				bb = Rect2(a2, Vector2.ZERO)
+				first = false
+			bb = bb.expand(a2).expand(b2)
+		if not first:
+			bb = bb.grow(10.0)
+			var tl: float = clampf(minf(bb.size.x, bb.size.y) * 0.2, 8.0, 22.0)
+			var bc := Color(sel_col, 0.9)
+			for cn: Vector2 in [bb.position, Vector2(bb.end.x, bb.position.y), bb.end, Vector2(bb.position.x, bb.end.y)]:
+				var sx: float = 1.0 if cn.x <= bb.get_center().x else -1.0
+				var sy: float = 1.0 if cn.y <= bb.get_center().y else -1.0
+				_map.draw_line(cn, cn + Vector2(tl * sx, 0), bc, 2.0, true)
+				_map.draw_line(cn, cn + Vector2(0, tl * sy), bc, 2.0, true)
+			var txt: String = "%s · %d HEX%s" % [(_sel_key if _sel_bot else ROLE_NAMES[_sel_key]).to_upper(), _zone_set.size(), "" if _zone_set.size() == 1 else "ES"]
+			_tag(Vector2(bb.position.x, bb.position.y - 8.0), txt, sel_col, false)
+	# 5. Hovered / reticle hex.
+	var hh: int = _reticle_hex if _using_pad else _hover_hex
+	if hh >= 0 and hh < _proj.size() and _proj_ok[hh] == 1:
+		var hp: PackedVector2Array = _proj[hh]
+		var loop2 := PackedVector2Array(hp)
+		loop2.append(hp[0])
+		var hc: Color = UITheme.GOLD if _using_pad else Color(0.92, 0.97, 1.0)
+		_map.draw_colored_polygon(hp, Color(hc, 0.08))
+		_map.draw_polyline(loop2, Color(hc, 0.25), 6.0, true)
+		_map.draw_polyline(loop2, Color(hc, 0.95), 1.6, true)
+	# 6. Labelled markers: base, outposts, you.
+	for m: Dictionary in _frame_markers():
+		_draw_marker(m, t)
+	# 7. Robots.
+	for r: Robot in world.fleet.robots():
+		_draw_robot(r, t)
+
+
+## Text tag with a dark rounded backing. If centred, x is the tag's centre.
+func _tag(pos: Vector2, text: String, col: Color, centred: bool, fs: int = 12) -> void:
+	var font: Font = UITheme.font()
+	var sz: Vector2 = font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, fs)
+	var pad := Vector2(7, 3)
+	var x0: float = pos.x - (sz.x * 0.5 if centred else 0.0)
+	var rc := Rect2(Vector2(x0 - pad.x, pos.y - sz.y - pad.y), sz + pad * 2.0)
+	var sb := UITheme.box(Color(0.03, 0.035, 0.045, 0.82), Color(col, 0.55), 1, 4, 0)
+	_map.draw_style_box(sb, rc)
+	_map.draw_string(font, Vector2(x0, pos.y - 3.0), text, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, col)
+
+
+## Base and Patch every frame, plus map_markers and anything world.command_markers() returns.
+func _frame_markers() -> Array:
+	var out: Array = []
 	var dp: Vector3 = world.depot.global_position
-	_base_marker.global_position = Vector3(dp.x, _ground_y(dp), dp.z)
-	_base_marker.scale = Vector3.ONE * scale_k * 0.9
-	var pp: Vector3 = world.patch.global_position
-	_you_marker.global_position = Vector3(pp.x, _ground_y(pp), pp.z)
-	_you_marker.scale = Vector3.ONE * scale_k * (0.6 + 0.05 * sin(t * 4.0))
+	out.append({"pos": dp, "label": "BASE", "color": UITheme.GOLD, "kind": "base"})
+	for m: Variant in map_markers.values():
+		out.append(m)
+	if world.has_method("command_markers"):
+		for m2: Variant in world.command_markers():
+			if m2 is Dictionary:
+				out.append(m2)
+	out.append({"pos": world.patch.global_position, "label": "YOU", "color": Color(0.55, 0.9, 1.0), "kind": "you"})
+	return out
+
+
+## Adds or moves a labelled map marker (e.g. an outpost). kind: "outpost", "base", "you" or any.
+func set_map_marker(id: String, pos: Vector3, label: String, col: Color = Color(0.7, 0.95, 0.75), kind: String = "outpost") -> void:
+	map_markers[id] = {"pos": pos, "label": label, "color": col, "kind": kind}
+
+
+func remove_map_marker(id: String) -> void:
+	map_markers.erase(id)
+
+
+## Replaces all markers whose id starts with prefix with one per position (labels "NAME 1", ...).
+## Entries can be Vector3 or {pos, label, color, kind} dictionaries.
+func set_map_markers_from_list(prefix: String, list: Array, label: String = "OUTPOST", col: Color = Color(0.7, 0.95, 0.75)) -> void:
+	for k: String in map_markers.keys():
+		if k.begins_with(prefix):
+			map_markers.erase(k)
+	for i: int in list.size():
+		var e: Variant = list[i]
+		if e is Vector3:
+			set_map_marker("%s%d" % [prefix, i], e, "%s %d" % [label, i + 1] if list.size() > 1 else label, col)
+		elif e is Dictionary:
+			var d: Dictionary = e
+			set_map_marker("%s%d" % [prefix, i], d.get("pos", Vector3.ZERO), str(d.get("label", label)), d.get("color", col), str(d.get("kind", "outpost")))
+
+
+func _draw_marker(m: Dictionary, t: float) -> void:
+	var pos: Vector3 = m.get("pos", Vector3.ZERO)
+	var g := Vector3(pos.x, _ground_y(pos), pos.z)
+	if _cam.is_position_behind(g):
+		return
+	var col: Color = m.get("color", Color.WHITE)
+	var kind: String = str(m.get("kind", "outpost"))
+	var p: Vector2 = _sp(g)
+	if kind == "you":
+		var pr: float = 7.0 + 1.5 * sin(t * 4.0)
+		_map.draw_arc(p, pr + 5.0, 0.0, TAU, 32, Color(col, 0.25), 3.0, true)
+		_map.draw_circle(p, pr * 0.6, Color(col, 0.95))
+		_map.draw_arc(p, pr, 0.0, TAU, 32, Color(col, 0.9), 1.5, true)
+		_tag(p + Vector2(0, -16), str(m.get("label", "")), col, true, 11)
+		return
+	# Ground ring + stem + diamond head + label.
+	var ring: float = 12.0 if kind == "base" else 9.0
+	_map.draw_arc(p, ring, 0.0, TAU, 40, Color(col, 0.35), 4.0, true)
+	_map.draw_arc(p, ring, 0.0, TAU, 40, Color(col, 0.95), 1.5, true)
+	var head: Vector2 = p + Vector2(0, -34.0 if kind == "base" else -26.0)
+	_map.draw_line(p, head, Color(col, 0.8), 1.5, true)
+	var dsz: float = 7.0 if kind == "base" else 5.5
+	var dia := PackedVector2Array([head + Vector2(0, -dsz), head + Vector2(dsz, 0), head + Vector2(0, dsz), head + Vector2(-dsz, 0)])
+	_map.draw_colored_polygon(dia, Color(0.03, 0.035, 0.045, 0.9))
+	var loop := PackedVector2Array(dia)
+	loop.append(dia[0])
+	_map.draw_polyline(loop, col, 2.0, true)
+	_map.draw_circle(head, dsz * 0.38, col)
+	_tag(head + Vector2(0, -dsz - 5.0), str(m.get("label", "")), col, true, 13 if kind == "base" else 12)
+
+
+func _draw_robot(r: Robot, t: float) -> void:
+	var gp := Vector3(r.global_position.x, _ground_y(r.global_position), r.global_position.z)
+	if _cam.is_position_behind(gp):
+		return
+	var p: Vector2 = _sp(gp)
+	var role: String = r.role()
+	var col: Color = ROLE_COLORS.get(role, Color.WHITE)
+	var selected: bool = (_sel_bot and r.robot_name == _sel_key) or (not _sel_bot and role == _sel_key)
+	var rad: float = 10.0
+	# Heading chevron, projected from the robot's forward.
+	var fwd: Vector3 = -r.global_transform.basis.z
+	fwd.y = 0.0
+	if fwd.length() > 0.01:
+		var tip2: Vector2 = _sp(gp + fwd.normalized() * 1.5) - p
+		if tip2.length() > 0.01:
+			var dir: Vector2 = tip2.normalized()
+			var nrm := Vector2(-dir.y, dir.x)
+			var base_c: Vector2 = p + dir * (rad + 2.0)
+			_map.draw_colored_polygon(PackedVector2Array([base_c + dir * 7.0, base_c + nrm * 5.0, base_c - nrm * 5.0]), Color(col, 0.95 if selected else 0.7))
+	if selected:
+		var pulse: float = 0.5 + 0.5 * sin(t * 4.0)
+		_map.draw_arc(p, rad + 4.0 + pulse * 2.0, 0.0, TAU, 32, Color(col, 0.28), 3.0, true)
+	_map.draw_circle(p + Vector2(0, 2), rad + 1.0, Color(0, 0, 0, 0.35))
+	_map.draw_circle(p, rad, Color(0.05, 0.055, 0.065, 0.92))
+	_map.draw_arc(p, rad, 0.0, TAU, 32, Color(col, 1.0 if selected else 0.75), 2.0 if selected else 1.5, true)
+	draw_role_glyph(_map, role, p, rad * 0.55, Color(col, 1.0 if selected else 0.85))
+	# Status pip.
+	var sc: Color = _status_color(r.status_text())
+	var pp: Vector2 = p + Vector2(rad * 0.75, -rad * 0.75)
+	_map.draw_circle(pp, 3.6, Color(0.03, 0.03, 0.04))
+	_map.draw_circle(pp, 2.6, sc)
+	if _sel_bot and r.robot_name == _sel_key:
+		_tag(p + Vector2(0, -rad - 6.0), r.robot_name, col, true, 11)
+
+
+func _update_tooltip() -> void:
+	var h: int = _reticle_hex if _using_pad else _hover_hex
+	if h < 0 or _paint != 0 or _pad_paint != 0:
+		_tip.visible = false
+		return
+	var field: HexField = world.field
+	var title: String = "HEX %d" % h
+	var lines: Array[String] = []
+	var bar: float = -1.0
+	if field.hex_hub[h] != 0:
+		title = "BASE YARD"
+		lines.append("Home ground, always clean")
+	elif field.is_water(h):
+		title = "LAKE HEX %d" % h
+		var f: float = field.removed_fraction(h)
+		lines.append("Clean" if field.is_clean(h) else "Floating junk  %d%% left" % int(round((1.0 - f) * 100.0)))
+		bar = 0.0 if field.is_clean(h) else 1.0 - f
+	elif field.is_clean(h):
+		lines.append("Clean")
+	else:
+		var left: float = 1.0 - field.removed_fraction(h)
+		lines.append("Junk  %d%% left" % int(round(left * 100.0)))
+		bar = left
+	var hl: Variant = world.get("hex_levels")
+	if hl != null:
+		var l: int = (hl as HexLevels).level_of(h)
+		if l >= 0:
+			lines.append("Level %d · %s" % [l, (hl as HexLevels).level_name(l)])
+	if _zone_set.has(h):
+		lines.append("In %s zone" % (_sel_key if _sel_bot else ROLE_NAMES[_sel_key]))
+	_tip_title.text = title
+	_tip_body.text = "\n".join(lines)
+	_tip_bar.visible = bar >= 0.0
+	_tip_bar.value = maxf(bar, 0.0) * 100.0
+	var anchor: Vector2 = _screen_centre() if _using_pad else get_viewport().get_mouse_position()
+	_tip.reset_size()
+	var vs: Vector2 = get_viewport().get_visible_rect().size
+	var pos: Vector2 = anchor + Vector2(22, 18)
+	pos.x = minf(pos.x, vs.x - _tip.size.x - 10.0)
+	pos.y = minf(pos.y, vs.y - _tip.size.y - 10.0)
+	_tip.position = pos
+	_tip.visible = true
 
 
 # --- Frame ----------------------------------------------------------------------------------
@@ -720,31 +1231,42 @@ func _update_markers(t: float) -> void:
 func _process(delta: float) -> void:
 	if not is_open:
 		return
-	var t: float = Time.get_ticks_msec() * 0.001
-	# WASD pans the overhead camera.
+	# WASD pans the camera.
 	var mv := Vector2(Input.get_axis("move_left", "move_right"), Input.get_axis("move_forward", "move_back"))
-	_focus += Vector3(mv.x, 0, mv.y) * _height * 0.9 * delta
+	_focus += Vector3(mv.x, 0, mv.y) * _height * 0.8 * delta
 	var lim: float = (world.field.radius + 1.0) * world.field.hex_size * 1.8
 	_focus.x = clampf(_focus.x, -lim, lim)
 	_focus.z = clampf(_focus.z, -lim, lim)
-	var target: Vector3 = _focus + Vector3(0, _height, _height * 0.55)
-	_cam_pos = _cam_pos.lerp(target, clampf(delta * 4.0, 0.0, 1.0))
+	var pitch: float = deg_to_rad(PITCH_DEG)
+	var target: Vector3 = _focus + Vector3(0, sin(pitch), cos(pitch)) * _height
+	var k: float = clampf(delta * 5.0, 0.0, 1.0)
+	_cam_pos = _cam_pos.lerp(target, k)
+	_look = _look.lerp(_focus, k)
 	_cam.global_position = _cam_pos
-	_cam.look_at(_cam_pos + (_focus - target).normalized() * 10.0, Vector3.UP)
+	if not _cam_pos.is_equal_approx(_look):
+		_cam.look_at(_look, Vector3.UP)
 	if _using_pad:
 		var rh: int = _hex_under(_screen_centre())
 		if rh != _reticle_hex:
 			_reticle_hex = rh
-			_overlay_t = 1.0
 			if _pad_paint != 0:
 				_paint_hex(rh, _pad_paint)
-	_update_markers(t)
+	else:
+		# Keep the hover hex right while the camera glides.
+		_hover_world = _ground_hit(get_viewport().get_mouse_position())
+		_hover_hex = world.field.hex_at(_hover_world) if _hover_world != Vector3.INF else -1
 	_overlay_t += delta
 	if _overlay_t > 0.5:
 		_overlay_t = 0.0
 		_rebuild_overlay()
+	_map.queue_redraw()
+	_update_tooltip()
 	var f: Fleet = world.fleet
-	_info.text = "%s     %d / %d hexes clean     %d robots\n[color=#ff8033]■[/color] junk    [color=#4d99ff]■[/color] cleaning    [color=#4dcc73]■[/color] clean    [color=#59f266]■[/color] growing" % [str(world.district_name), world.field.junk_hexes_cleaned(), world.field.junk_hex_count, f.robots().size()]
+	_info_name.text = str(world.district_name)
+	_info_bots.text = "%d robots" % f.robots().size()
+	var total: int = maxi(world.field.junk_hex_count, 1)
+	_info_bar.value = 100.0 * float(world.field.junk_hexes_cleaned()) / float(total)
+	_info_count.text = "%d / %d hexes clean" % [world.field.junk_hexes_cleaned(), world.field.junk_hex_count]
 	_list_t += delta
 	if _list_t > 0.6:
 		_list_t = 0.0
@@ -752,7 +1274,7 @@ func _process(delta: float) -> void:
 			if c.has_meta("bot"):
 				var r: Robot = f.find_robot(str(c.get_meta("bot")))
 				if r:
-					(c as Button).text = _bot_line(r)
+					_update_bot_row(c as Button, r)
 		_refresh_build()
 
 
@@ -771,6 +1293,16 @@ func _hex_under(sp: Vector2) -> int:
 	return world.field.hex_at(p)
 
 
+func _zoom(factor: float, toward: Vector2) -> void:
+	var before: float = _height
+	_height = clampf(_height * factor, ZOOM_MIN, ZOOM_MAX)
+	# Zoom toward the cursor a little, like an RTS.
+	if _height < before and toward != Vector2.INF:
+		var hit: Vector3 = _ground_hit(toward)
+		if hit != Vector3.INF:
+			_focus += Vector3(hit.x - _focus.x, 0, hit.z - _focus.z) * 0.15
+
+
 func _map_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event
@@ -787,20 +1319,17 @@ func _map_input(event: InputEvent) -> void:
 				_pan_drag = mb.pressed
 			MOUSE_BUTTON_WHEEL_UP:
 				if mb.pressed:
-					_height = maxf(14.0, _height / 1.12)
-					_overlay_t = 1.0
+					_zoom(1.0 / 1.12, get_viewport().get_mouse_position())
 			MOUSE_BUTTON_WHEEL_DOWN:
 				if mb.pressed:
-					_height = minf(200.0, _height * 1.12)
-					_overlay_t = 1.0
+					_zoom(1.12, Vector2.INF)
 	elif event is InputEventMouseMotion:
 		var mm: InputEventMouseMotion = event
 		var h: int = _hex_under(get_viewport().get_mouse_position())
 		if h != _hover_hex:
 			_hover_hex = h
-			_overlay_t = 1.0
 		if _pan_drag:
-			_focus -= Vector3(mm.relative.x, 0, mm.relative.y) * _height * 0.0025
+			_focus -= Vector3(mm.relative.x, 0, mm.relative.y) * _height * 0.0022
 		elif _paint != 0:
 			_paint_at(get_viewport().get_mouse_position())
 
@@ -846,8 +1375,6 @@ func _screen_centre() -> Vector2:
 
 
 func _set_pad(on: bool) -> void:
-	if on != _using_pad:
-		_overlay_t = 1.0
 	_using_pad = on
 	if not on:
 		_pad_paint = 0
@@ -883,8 +1410,7 @@ func _input(event: InputEvent) -> void:
 	var jb: InputEventJoypadButton = event
 	if event.is_action("zoom_in") or event.is_action("zoom_out"):
 		if jb.pressed:
-			_height = maxf(14.0, _height / 1.2) if event.is_action("zoom_in") else minf(200.0, _height * 1.2)
-			_overlay_t = 1.0
+			_zoom(1.0 / 1.2 if event.is_action("zoom_in") else 1.2, Vector2.INF)
 		vp.set_input_as_handled()
 		return
 	if panel_focus:
