@@ -30,7 +30,8 @@ extends Node
 ##   --spawn-egg=ID     put Patch next to an easter egg in this district (data/eggs.json ids);
 ##                      --egg-dist=M sets the distance, --egg-poke[=S] plays its reaction after S s
 ##   --event=ID         [events] force a world event (supply_drop, salvage_surge, rain_shower, robot_hiccup,
-##                      wildlife_visit, rare_part_signal, ledger_audit) --event-at=S seconds after start (default 3)
+##                      wildlife_visit, rare_part_signal, ledger_audit) --event-at=S wall-clock seconds after start (default 3);
+##                      --event-land drops the supply crate from just above the junk, slowly (screenshots)
 ##   --event-look[=M]   with --event: put Patch M m from the event, facing it (screenshots)
 ##   --event-every=S    next random event in S seconds (ignores the min-hexes gate)
 ##   --streak=N         start with N cleaning-streak points (30 per tier)

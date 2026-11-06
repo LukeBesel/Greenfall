@@ -53,6 +53,9 @@ func _contracts() -> Contracts:
 
 
 func _process(delta: float) -> void:
+	# Rebuild as soon as anything changes; the timers/labels tick twice a second.
+	if _signature() != _sig:
+		refresh(false)
 	_t += delta
 	if _t < 0.5:
 		return

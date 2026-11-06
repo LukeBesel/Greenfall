@@ -86,7 +86,7 @@ static func hex_glow(size: float, col: Color, curtain: float = 1.6) -> Node3D:
 			st.add_vertex(v[0] + Vector3(0, 0.05, 0))
 		# Light curtain: bright at the base, fading upward.
 		var up := Vector3(0, curtain, 0)
-		var base := Color(1, 1, 1, 0.45)
+		var base := Color(1, 1, 1, 0.38)
 		for v: Array in [[o0, base], [o1, base], [o1 + up, soft], [o0, base], [o1 + up, soft], [o0 + up, soft]]:
 			st.set_color(v[1])
 			st.add_vertex(v[0] + Vector3(0, 0.05, 0))
@@ -99,7 +99,7 @@ static func hex_glow(size: float, col: Color, curtain: float = 1.6) -> Node3D:
 	var light := OmniLight3D.new()
 	light.light_color = col
 	light.omni_range = size * 1.1
-	light.light_energy = 1.4
+	light.light_energy = 0.8
 	light.position = Vector3(0, 2.0, 0)
 	n.add_child(light)
 	return n

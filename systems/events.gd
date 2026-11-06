@@ -176,7 +176,8 @@ func _dev_hooks() -> void:
 ## --event-look[=M]: screenshot helper, puts Patch M metres from the event, facing it.
 func _dev_look(at: Vector3, dist: float) -> void:
 	var p: Patch = world.patch
-	var d: Vector3 = at - p.global_position
+	# Stand between the base and the event, looking outward (the base's sheds stay behind the camera).
+	var d: Vector3 = at
 	d.y = 0.0
 	d = d.normalized() if d.length() > 0.1 else Vector3.FORWARD
 	var spot: Vector3 = at - d * dist
@@ -206,13 +207,13 @@ func _process(delta: float) -> void:
 	if _sync_t > 1.0:
 		_sync_t = 0.0
 		Liveries.sync(fleet)
-	if _dev_event_t >= 0.0:
-		_dev_event_t -= delta
-		if _dev_event_t < 0.0:
-			var id: String = DevHooks.get_s("event", "supply_drop")
-			print("[events] dev start %s -> %s" % [id, str(start(id, true))])
-			if DevHooks.has("event-look") and active.get("pos") is Vector3:
-				_dev_look(active["pos"], DevHooks.get_f("event-look", 9.0))
+	# Wall clock (DevHooks._elapsed): on software rendering game time crawls.
+	if _dev_event_t >= 0.0 and DevHooks._elapsed >= _dev_event_t:
+		_dev_event_t = -1.0
+		var id: String = DevHooks.get_s("event", "supply_drop")
+		print("[events] dev start %s -> %s" % [id, str(start(id, true))])
+		if DevHooks.has("event-look") and active.get("pos") is Vector3:
+			_dev_look(active["pos"], DevHooks.get_f("event-look", 9.0))
 	if _paused():
 		return
 	streak.tick(delta)
@@ -582,16 +583,19 @@ func _start_supply(d: Dictionary, force: bool) -> bool:
 	var beacon: Node3D = EventProps.beacon(col, 30.0, 0.3)
 	root.add_child(beacon)
 	var crate: Node3D = EventProps.crate()
+	crate.scale = Vector3.ONE * 1.4
 	root.add_child(crate)
 	var chute: Node3D = EventProps.parachute()
 	chute.position = Vector3(0, 0.62, 0)
 	crate.add_child(chute)
-	crate.position = Vector3(0, 30.0, 0)
+	# --event-land (screenshots): start just above the junk and drift down slowly.
+	var low: bool = DevHooks.has("event-land")
+	crate.position = Vector3(0, 3.2 if low else 30.0, 0)
 	crate.rotation.y = rng.randf() * TAU
 	active["crate"] = crate
 	active["chute"] = chute
 	var tw := crate.create_tween()
-	tw.tween_property(crate, "position:y", 0.12, 8.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw.tween_property(crate, "position:y", 0.12, 90.0 if low else 8.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tw.tween_callback(_supply_landed)
 	return true
 

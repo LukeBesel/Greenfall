@@ -109,7 +109,11 @@ static func wait_slot(seconds: float) -> Dictionary:
 
 static func text_of(slot: Dictionary) -> String:
 	var t: Dictionary = template(str(slot.get("tpl", "")))
-	return str(t.get("text", "%d")) % int(slot.get("n", 1)) if not t.is_empty() else "?"
+	if t.is_empty():
+		return "?"
+	if int(slot.get("n", 1)) == 1 and t.has("text_1"):
+		return str(t["text_1"])
+	return str(t.get("text", "%d")) % int(slot.get("n", 1))
 
 
 ## Raw counter a contract watches (a lifetime stat, a peak since accepting, or a hex-level count).
@@ -205,7 +209,7 @@ static func owned() -> Array:
 
 func _ready() -> void:
 	rng.randomize()
-	state()
+	step(state(), 0.0, live_value, new_offer)  # a fresh board is filled right away
 	if DevHooks.has("contracts-sample"):
 		_sample.call_deferred()
 

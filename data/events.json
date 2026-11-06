@@ -57,10 +57,10 @@
       {"id": "scoop", "text": "Scoop %d pieces of junk", "stat": "junk_scooped", "n": [120, 200, 320, 450], "time_s": [480, 600, 720, 720], "tokens": 3},
       {"id": "dig_parts", "text": "Dig up %d buried parts", "stat": "parts_found", "n": [2, 3, 4, 5], "time_s": [600, 720, 840, 900], "tokens": 4},
       {"id": "streak", "text": "Reach a tier %d cleaning streak", "peak": "streak", "n": [3, 4, 5, 5], "time_s": [480, 480, 480, 360], "tokens": 3},
-      {"id": "events", "text": "Handle %d world event(s)", "stat": "ev_events_done", "n": [1, 1, 2, 2], "time_s": [900, 900, 1200, 1200], "tokens": 5},
+      {"id": "events", "text": "Handle %d world events", "text_1": "Handle a world event", "stat": "ev_events_done", "n": [1, 1, 2, 2], "time_s": [900, 900, 1200, 1200], "tokens": 5},
       {"id": "plant", "text": "Plant %d sprouts", "stat": "plants_planted", "n": [12, 20, 30, 45], "time_s": [600, 720, 840, 900], "tokens": 4, "requires": "seeds_unlocked"},
       {"id": "bloom", "text": "Grow %d plants to bloom", "stat": "plants_bloomed", "n": [8, 15, 25, 40], "time_s": [720, 840, 900, 900], "tokens": 5, "requires": "first_sprout"},
-      {"id": "sustain", "text": "Get %d more hex(es) to Sustained", "hex_level": 4, "n": [1, 1, 2, 3], "time_s": [900, 900, 1200, 1200], "tokens": 7, "requires": "first_sprout"}
+      {"id": "sustain", "text": "Get %d more hexes to Sustained", "text_1": "Get one more hex to Sustained", "hex_level": 4, "n": [1, 1, 2, 3], "time_s": [900, 900, 1200, 1200], "tokens": 7, "requires": "first_sprout"}
     ]
   },
   "shop": [
