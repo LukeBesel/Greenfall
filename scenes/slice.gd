@@ -990,3 +990,19 @@ func _restore_world(from_memory: bool = false) -> void:
 		if float(res["units"]) > 0.0 or float(res["air"]) > 0.0:
 			get_tree().create_timer(2.0).timeout.connect(func() -> void: EventBus.toast.emit(Offline.summary_text(res), "story"))
 	EventBus.toast.emit("Welcome back. The junk waited for you.", "info")
+
+
+## [outposts] Pins for the Command view: grey ruins, green working outposts with their level.
+func command_markers() -> Array:
+	var out: Array = []
+	if outposts == null:
+		return out
+	for o: Outpost in outposts.items:
+		var working: bool = o.level >= 1
+		out.append({
+			"pos": o.global_position,
+			"label": ("OUTPOST %d · Lv%d" % [o.index + 1, o.level]) if working else ("OUTPOST %d · RUIN" % (o.index + 1)),
+			"color": Color(0.45, 1.0, 0.55) if working else Color(0.62, 0.6, 0.56),
+			"kind": "outpost",
+		})
+	return out

@@ -31,7 +31,14 @@ void fragment() {
 	if (top) {
 		fp = wp.xz;
 	}
-	vec3 alb = texture(wall_alb, fp * 0.25).rgb * tint.rgb;
+	// Texture for detail only: desaturate it (some source textures are green paint) and take the
+	// colour from the tint. Roofs get their own grey membrane look.
+	vec3 tx = texture(wall_alb, fp * 0.25).rgb;
+	float tl = dot(tx, vec3(0.299, 0.587, 0.114));
+	vec3 alb = mix(vec3(tl), tx, 0.2) * tint.rgb * 1.45;
+	if (top) {
+		alb = vec3(tl) * vec3(0.95, 0.93, 0.9) * 1.1;
+	}
 	vec3 nrm = texture(wall_nrm, fp * 0.25).rgb;
 	float rough = 0.9;
 	if (!top) {

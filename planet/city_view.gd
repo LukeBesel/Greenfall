@@ -16,10 +16,13 @@ var play_radius: float = 60.0
 var _kit: Dictionary = {}  # kit id -> {name -> Mesh}
 var _batches: Dictionary = {}  # "blockkey|kit|piece" -> Array[Transform3D]
 var _rng := RandomNumberGenerator.new()
-var _interior_mat: StandardMaterial3D
-var _wall_mats: Array[StandardMaterial3D] = []
-var _roof_mat: StandardMaterial3D
 var _curb_mat: StandardMaterial3D
+var _detail := BuildingDetail.new()
+## Per-block merged building geometry (BuildingDetail.Geo): body (always drawn) and detail
+## (rooftop props, balconies, fire escapes, awnings; culled beyond DETAIL_RANGE).
+var _body: BuildingDetail.Geo
+var _det: BuildingDetail.Geo
+const DETAIL_RANGE: float = 240.0
 
 
 func build(p_layout: CityLayout, p_ground_material: Material) -> void:
@@ -28,14 +31,6 @@ func build(p_layout: CityLayout, p_ground_material: Material) -> void:
 	_rng.seed = layout.seed_value + 1234
 	_load_kit(APT)
 	_load_kit(FAC)
-	_interior_mat = StandardMaterial3D.new()
-	_interior_mat.albedo_color = Color(0.05, 0.045, 0.045)
-	_interior_mat.roughness = 1.0
-	_wall_mats = [AssetLib.pbr_material("painted_concrete", 0.4, Color(0.8, 0.76, 0.7), true),
-		AssetLib.pbr_material("brick_wall_02", 0.4, Color.WHITE, true),
-		AssetLib.pbr_material("red_brick", 0.4, Color(0.9, 0.85, 0.82), true),
-		AssetLib.pbr_material("factory_wall", 0.3, Color.WHITE, true)]
-	_roof_mat = AssetLib.pbr_material("dirty_concrete", 0.3, Color(0.7, 0.68, 0.66), true)
 	_curb_mat = AssetLib.pbr_material("concrete_pavement", 1.2, Color(0.82, 0.8, 0.78), true)
 	for key: Vector2i in layout.blocks:
 		_build_block(key, layout.blocks[key])
@@ -112,37 +107,39 @@ func _build_block(key: Vector2i, b: Dictionary) -> void:
 	_build_sidewalks(rect, detailed)
 	match int(b["type"]):
 		CityLayout.Block.BUILDINGS:
+			_body = BuildingDetail.Geo.new()
+			_det = BuildingDetail.Geo.new()
 			for bd: Dictionary in b["buildings"]:
 				if detailed:
 					_build_building(key, bd)
 				else:
-					_build_proxy_building(bd)
+					_detail.proxy_building(bd, _body, _det)
+			_flush_block(key)
 		CityLayout.Block.HUB:
 			pass  # yard fence: StreetDressing
 		CityLayout.Block.PARKING, CityLayout.Block.VACANT:
 			_build_fence(rect, false)
 
 
-var _far_mats: Array = []
-
-
-func _build_proxy_building(bd: Dictionary) -> void:
-	if _far_mats.is_empty():
-		for spec: Array in [["painted_concrete", Color(0.82, 0.78, 0.72)], ["brick_wall_02", Color(0.9, 0.86, 0.82)], ["red_brick", Color(0.85, 0.8, 0.78)], ["factory_wall", Color(0.85, 0.82, 0.78)]]:
-			var m := ShaderMaterial.new()
-			m.shader = preload("res://art/shaders/building_far.gdshader")
-			m.set_shader_parameter("wall_alb", AssetLib.tex(spec[0], "diff"))
-			m.set_shader_parameter("wall_nrm", AssetLib.tex(spec[0], "nor_gl"))
-			m.set_shader_parameter("tint", spec[1])
-			m.set_shader_parameter("seed", float(_far_mats.size()) * 0.37)
-			_far_mats.append(m)
-	var r: Rect2 = bd["rect"]
-	var h: float = int(bd["floors"]) * FLOOR_H
-	var mi := MeshInstance3D.new()
-	mi.mesh = ProcMesh.box(Vector3(r.size.x, h, r.size.y))
-	mi.material_override = _far_mats[int(bd["seed"]) % _far_mats.size()]
-	mi.position = Vector3(r.get_center().x, h * 0.5, r.get_center().y)
-	add_child(mi)
+## One body and one detail MeshInstance per block, centred on the block so the detail mesh's
+## visibility range measures from there.
+func _flush_block(key: Vector2i) -> void:
+	var c := Vector3(key.x * CityLayout.PITCH, 0.0, key.y * CityLayout.PITCH)
+	for pass_i: int in 2:
+		var g: BuildingDetail.Geo = _body if pass_i == 0 else _det
+		if g == null or g.empty():
+			continue
+		var mi := MeshInstance3D.new()
+		mi.name = "Buildings%s_%d_%d" % ["" if pass_i == 0 else "Detail", key.x, key.y]
+		mi.mesh = g.mesh(c)
+		mi.material_override = BuildingDetail.material()
+		mi.position = c
+		if pass_i == 1:
+			mi.visibility_range_end = DETAIL_RANGE
+			mi.visibility_range_end_margin = 20.0
+		add_child(mi)
+	_body = null
+	_det = null
 
 
 func _build_sidewalks(r: Rect2, detailed: bool = true) -> void:
@@ -271,32 +268,16 @@ func _build_building(block: Vector2i, bd: Dictionary) -> void:
 	else:
 		mass_r = Rect2(r.position, r.size - Vector2(inset, 0))
 	var mass_h: float = float(maxi(ruin_from, 1) if ruin_from < floors else floors) * FLOOR_H
-	var inner := MeshInstance3D.new()
-	inner.mesh = ProcMesh.box(Vector3(mass_r.size.x, mass_h - 0.05, mass_r.size.y))
-	inner.material_override = _interior_mat
-	inner.position = Vector3(mass_r.get_center().x, (mass_h - 0.05) * 0.5, mass_r.get_center().y)
-	add_child(inner)
-	# Plain walls on the sides and back (slightly larger shell) + roof slab.
-	var shell := MeshInstance3D.new()
-	var shell_r: Rect2 = mass_r.grow(-0.02)
-	shell.mesh = ProcMesh.box(Vector3(shell_r.size.x, height, shell_r.size.y) - Vector3(0.0, 0.0, 0.0))
-	shell.material_override = _wall_mats[_rng.randi() % _wall_mats.size()]
-	shell.position = Vector3(shell_r.get_center().x, height * 0.5, shell_r.get_center().y)
-	# The shell would hide the facade windows; push it back from the facade by a little more.
-	var back := 0.6
-	shell.position -= Vector3(face.x, 0, face.y) * back * 0.5
-	shell.scale = Vector3(1.0 - absf(face.x) * back / maxf(shell_r.size.x, 1.0), 1.0, 1.0 - absf(face.y) * back / maxf(shell_r.size.y, 1.0))
-	add_child(shell)
-	var roof := MeshInstance3D.new()
-	roof.mesh = ProcMesh.box(Vector3(r.size.x, 0.2, r.size.y))
-	roof.material_override = _roof_mat
-	roof.position = Vector3(r.get_center().x, mass_h + 0.1, r.get_center().y)
-	add_child(roof)
-	# Roof clutter.
-	for k: int in _rng.randi_range(0, 3):
-		var model: String = ["exterior_aircon_unit", "modular_airduct_rectangular_01", "Barrel_01", "plastic_crate_01"][_rng.randi() % 4]
-		var p := Vector2(_rng.randf_range(r.position.x + 1.0, r.end.x - 1.0), _rng.randf_range(r.position.y + 1.0, r.end.y - 1.0))
-		_mesh_prop(model, Vector3(p.x, mass_h + 0.2, p.y), _rng.randf() * TAU, false)
+	# Interior mass (dark rooms behind the windows), side/back walls with windows, and the
+	# roof (membrane, parapets, bulkheads, HVAC, tanks...) all go into the block's merged mesh.
+	_body.mat(BuildingDetail.K_DARK, Color(0.05, 0.045, 0.045))
+	_body.abox(Vector3(mass_r.position.x, 0.0, mass_r.position.y), Vector3(mass_r.size.x, mass_h - 0.05, mass_r.size.y))
+	var pal: Array = BuildingDetail.APT_PALETTE[(int(bd["seed"]) >> 3) % BuildingDetail.APT_PALETTE.size()]
+	var shell_r: Rect2 = BuildingDetail._inset_front(mass_r.grow(-0.02), face, 0.6, 0.0)
+	_body.uv = BuildingDetail._bay_uv(r, int(bd["seed"]) & 0xffff)
+	_body.mat(BuildingDetail.K_FACADE, pal[1], pal[0], BuildingDetail.F_RIBBON if kit == FAC else 0)
+	_body.abox(Vector3(shell_r.position.x, 0.0, shell_r.position.y), Vector3(shell_r.size.x, height, shell_r.size.y), BuildingDetail.K_ROOF if ruin_from < floors else -2)
+	_detail.kit_roof(_body, _det, r, face, mass_h, floors, kit == FAC, int(bd["seed"]), ruin_from < floors)
 	# Fire escape on some apartment facades.
 	if kit == APT and floors >= 3 and _rng.randf() < 0.45:
 		var bay: int = _rng.randi_range(0, maxi(bays - 2, 0))
