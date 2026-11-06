@@ -46,16 +46,16 @@ func _build_env() -> void:
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
 	var sky := Sky.new()
-	var sm := PhysicalSkyMaterial.new()
-	sm.rayleigh_coefficient = 3.0
-	sm.rayleigh_color = Color(0.3, 0.45, 0.85)
-	sm.mie_coefficient = 0.01
-	sm.mie_eccentricity = 0.86
-	sm.mie_color = Color(1.0, 0.74, 0.5)
-	sm.turbidity = 9.0
-	sm.sun_disk_scale = 2.0
-	sm.ground_color = Color(0.3, 0.28, 0.22)
-	sm.energy_multiplier = 1.35
+	# Hand-graded golden hour: blue zenith, warm peach horizon (the physical sky went grey here).
+	var sm := ProceduralSkyMaterial.new()
+	sm.sky_top_color = Color(0.26, 0.45, 0.78)
+	sm.sky_horizon_color = Color(0.98, 0.78, 0.58)
+	sm.sky_curve = 0.12
+	sm.sky_energy_multiplier = 1.15
+	sm.ground_horizon_color = Color(0.85, 0.7, 0.55)
+	sm.ground_bottom_color = Color(0.3, 0.26, 0.22)
+	sm.sun_angle_max = 18.0
+	sm.sun_curve = 0.08
 	sky.sky_material = sm
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
@@ -67,11 +67,11 @@ func _build_env() -> void:
 	env.glow_hdr_threshold = 1.1
 	env.fog_enabled = true
 	env.fog_mode = Environment.FOG_MODE_EXPONENTIAL
-	env.fog_light_color = Color(0.95, 0.72, 0.52)
+	env.fog_light_color = Color(0.98, 0.8, 0.62)
 	env.fog_sun_scatter = 0.3
-	env.fog_sky_affect = 0.2
-	env.fog_density = 0.008
-	env.volumetric_fog_density = 0.003
+	env.fog_sky_affect = 0.06
+	env.fog_density = 0.004
+	env.volumetric_fog_density = 0.0015
 	env.volumetric_fog_albedo = Color(0.95, 0.82, 0.7)
 	env.volumetric_fog_anisotropy = 0.6
 	env.adjustment_enabled = true
@@ -83,7 +83,7 @@ func _build_env() -> void:
 	env.ambient_light_energy *= 0.85
 	# Low golden sun behind and a little right of the robot: rims Lumi, lights the meadow.
 	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-11, -24, 0)
+	sun.rotation_degrees = Vector3(-16, 128, 0)  # from camera-left: lights Lumi's face and the meadow
 	sun.light_color = Color(1.0, 0.7, 0.45)
 	sun.light_energy = 2.3
 	sun.light_angular_distance = 1.0
@@ -116,7 +116,7 @@ void fragment() {
 	float d = seam(wp.z) - wp.x + (n - 0.5) * 1.6;
 	float g = smoothstep(-0.35, 0.55, d);
 	vec3 dry = texture(dry_a, uv).rgb;
-	vec3 gr = texture(grass_a, uv * 1.3).rgb * vec3(0.55, 0.95, 0.42);
+	vec3 gr = texture(grass_a, uv * 1.3).rgb * vec3(0.48, 0.92, 0.36);
 	ALBEDO = mix(dry, gr, g);
 	NORMAL_MAP = mix(texture(dry_n, uv).rgb, texture(grass_n, uv * 1.3).rgb, g);
 	ROUGHNESS = mix(0.92, 0.85, g);
@@ -142,12 +142,22 @@ void fragment() {
 	add_child(ground)
 
 
-func _add_multimesh(id: String, xs: Array, max_tris: int = 600) -> void:
+func _add_multimesh(id: String, xs: Array, max_tris: int = 600, tint: Color = Color.WHITE) -> void:
 	if xs.is_empty() or not AssetLib.has_model(id):
 		return
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
-	mm.mesh = AssetLib.model_mesh_lite(id, max_tris)
+	var mesh: Mesh = AssetLib.model_mesh_lite(id, max_tris)
+	if tint != Color.WHITE and mesh is ArrayMesh:
+		# Fresh, watered green instead of the scans' dry late-summer straw.
+		mesh = mesh.duplicate()
+		for si: int in mesh.get_surface_count():
+			var m: Material = mesh.surface_get_material(si)
+			if m is StandardMaterial3D:
+				var m2: StandardMaterial3D = m.duplicate()
+				m2.albedo_color = m2.albedo_color * tint
+				mesh.surface_set_material(si, m2)
+	mm.mesh = mesh
 	mm.instance_count = xs.size()
 	for j: int in xs.size():
 		mm.set_instance_transform(j, xs[j])
@@ -173,8 +183,8 @@ func _scatter_junk() -> void:
 		var d: float = p.x - seam_x(p.z)
 		if d < 0.2 or (d < 1.6 and rng.randf() > (d - 0.2) / 1.4):
 			continue
-		if Vector2(p.x, p.z).length() < 1.2:
-			continue  # a little clearing under the robot
+		if Vector2(p.x, p.z).length() < 1.2 or (p.z < 0.6 and p.x < 4.5) or p.z < -1.8:
+			continue  # a little clearing under the robot, nothing big right in front of the lens
 		var id: String = ids[rng.randi() % ids.size()]
 		var lie: bool = rng.randf() < 0.6
 		var b := Basis(Vector3.UP, rng.randf() * TAU)
@@ -219,19 +229,17 @@ func _scatter_green() -> void:
 	rng.seed = 21
 	var kinds: Array = [
 		# id, count, min scale, max scale, depth from seam (min)
-		["grass_medium_01", 5200, 1.1, 1.9, 0.0, 300],
-		["grass_medium_02", 4600, 1.1, 1.8, 0.0, 300],
-		["flower_gazania", 1300, 1.0, 1.5, 0.3, 400],
-		["celandine_01", 1100, 1.1, 1.7, 0.3, 400],
-		["flower_heliophila", 1000, 1.0, 1.6, 0.2, 400],
-		["dandelion_01", 600, 1.0, 1.5, -0.6, 400],
-		["fern_02", 420, 0.8, 1.4, 0.8, 600],
-		["shrub_01", 110, 0.9, 1.7, 2.0, 1500],
-		["shrub_02", 110, 0.9, 1.7, 2.0, 1500],
-		["pine_sapling_small", 60, 2.0, 3.6, 5.0, 1500],
+		["grass_medium_01", 5200, 1.1, 1.9, 0.0, 100000],
+		["grass_medium_02", 4600, 1.1, 1.8, 0.0, 100000],
+		["flower_gazania", 1300, 1.0, 1.5, 0.3, 100000],
+		["celandine_01", 1100, 1.1, 1.7, 0.3, 100000],
+		["flower_heliophila", 1000, 1.0, 1.6, 0.2, 100000],
+		["dandelion_01", 600, 1.0, 1.5, -0.6, 100000],
+		["fern_02", 420, 0.8, 1.4, 0.8, 100000],
 	]
 	for k: Array in kinds:
 		var xs: Array = []
+		var far: Array = []
 		for i: int in int(k[1]):
 			# Most of it where the camera looks (the meadow right of the seam), a sparse rest beyond.
 			var p := Vector3(rng.randf_range(-13.0, 2.5), 0, rng.randf_range(-3.0, 24.0)) if i % 4 != 0 \
@@ -246,8 +254,13 @@ func _scatter_green() -> void:
 			if Vector2(p.x, p.z).length() < 0.9 and str(k[0]).begins_with("shrub"):
 				continue
 			var s: float = rng.randf_range(k[2], k[3])
-			xs.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3.ONE * s), p))
-		_add_multimesh(str(k[0]), xs, int(k[5]))
+			var xf := Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3.ONE * s), p)
+			# Full scan detail near the lens, the importer LOD further out (keeps the render tractable).
+			(xs if p.z < 9.0 and p.x > -9.0 else far).append(xf)
+		var leafy: bool = str(k[0]).begins_with("grass") or str(k[0]).begins_with("fern") or str(k[0]).begins_with("shrub")
+		var tint: Color = Color(0.62, 1.0, 0.5) if leafy else Color.WHITE
+		_add_multimesh(str(k[0]), xs, int(k[5]), tint)
+		_add_multimesh(str(k[0]), far, 1500, tint)
 
 
 ## Ruined city on the junk side of the horizon, the bright future city on the green side.
@@ -274,12 +287,15 @@ func _build_skyline() -> void:
 	var leaf := StandardMaterial3D.new()
 	leaf.albedo_color = Color(0.3, 0.5, 0.22)
 	leaf.roughness = 0.9
-	for i: int in 40:
-		var z: float = rng.randf_range(80.0, 150.0)
-		var x: float = rng.randf_range(-150.0, 120.0)
-		var green: bool = x < seam_x(z) - 6.0
-		var h: float = rng.randf_range(22, 58) if green else rng.randf_range(8, 26)
-		var size := Vector3(rng.randf_range(6, 13), h, rng.randf_range(6, 13))
+	for i: int in 30:
+		# Low and far: a few degrees above the horizon, hazed by the fog.
+		var z: float = rng.randf_range(170.0, 260.0)
+		var x: float = rng.randf_range(-260.0, 230.0)
+		var green: bool = x < seam_x(z) - 30.0
+		if green:
+			continue  # the green side stays open sky: the clean world ahead
+		var h: float = rng.randf_range(16, 34) if green else rng.randf_range(8, 22)
+		var size := Vector3(rng.randf_range(9, 16), h, rng.randf_range(9, 16))
 		var mi := MeshInstance3D.new()
 		var bm := BoxMesh.new()
 		bm.size = size
@@ -294,29 +310,29 @@ func _build_skyline() -> void:
 		mi.material_override = tower
 		mi.rotation.y = rng.randf_range(-0.3, 0.3)
 		add_child(mi)
-		var bands: int = int(h / 9.0)
+		var bands: int = int(h / 7.0)
 		for b: int in bands:
-			var y: float = -h * 0.5 + 5.0 + b * 9.0
+			var y: float = -h * 0.5 + 4.0 + b * 7.0
 			var g := MeshInstance3D.new()
 			var gm := BoxMesh.new()
-			gm.size = Vector3(size.x + 0.08, 2.2, size.z + 0.08)
+			gm.size = Vector3(size.x + 0.1, 2.6, size.z + 0.1)
 			g.mesh = gm
 			g.material_override = glass
 			g.position = Vector3(0, y, 0)
 			mi.add_child(g)
 			var l := MeshInstance3D.new()
 			var lm := BoxMesh.new()
-			lm.size = Vector3(size.x + 0.14, 0.08, size.z + 0.14)
+			lm.size = Vector3(size.x + 0.2, 0.35, size.z + 0.2)
 			l.mesh = lm
 			l.material_override = line
-			l.position = Vector3(0, y + 1.25, 0)
+			l.position = Vector3(0, y + 1.5, 0)
 			mi.add_child(l)
 		var roof := MeshInstance3D.new()
 		var rm := BoxMesh.new()
-		rm.size = Vector3(size.x * 0.9, 0.9, size.z * 0.9)
+		rm.size = Vector3(size.x * 0.9, 2.0, size.z * 0.9)
 		roof.mesh = rm
 		roof.material_override = leaf
-		roof.position = Vector3(0, h * 0.5 + 0.45, 0)
+		roof.position = Vector3(0, h * 0.5 + 1.0, 0)
 		mi.add_child(roof)
 
 
@@ -325,9 +341,9 @@ func _place_camera() -> void:
 	match _frame:
 		"hero":
 			# 3840x1240: wide meadow-to-junk panorama, Lumi right of centre (the library logo sits left).
-			_cam.fov = 26.0
-			_cam.position = Vector3(0.9, 1.05, -6.2)
-			_cam.h_offset = -1.05
+			_cam.fov = 28.0
+			_cam.position = Vector3(0.9, 0.95, -3.6)
+			_cam.h_offset = -0.5
 			look = Vector3(0.9, 1.0, 0)
 		"tall":
 			_cam.fov = 48.0
