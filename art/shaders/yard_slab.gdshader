@@ -54,7 +54,7 @@ void fragment() {
 	vec3 alb = texture(conc_alb, uv).rgb;
 	vec3 nrm = texture(conc_nrm, uv).rgb;
 	vec3 arm = texture(conc_arm, uv).rgb;
-	alb *= mix(0.78, 1.0, h) * vec3(0.93, 0.93, 0.95);
+	alb *= mix(0.95, 1.2, h) * vec3(0.98, 0.97, 0.95);
 	float asphalt = step(0.86, hash(cell + 11.0 + seed));
 	if (asphalt > 0.5) {
 		vec2 auv = w * 0.4;
@@ -65,10 +65,10 @@ void fragment() {
 	// Sawn joints: a thin dark groove with a lighter lip, dirt packed in.
 	vec2 d = min(f, 1.0 - f) * bay;
 	float jd = min(d.x, d.y);
-	float joint = smoothstep(0.03, 0.012, jd);
-	float lip = smoothstep(0.09, 0.03, jd) * (1.0 - joint);
-	alb = mix(alb, alb * 1.06, lip * 0.5);
-	alb = mix(alb, vec3(0.07, 0.065, 0.055), joint);
+	float joint = smoothstep(0.035, 0.018, jd);
+	float lip = smoothstep(0.1, 0.035, jd) * (1.0 - joint);
+	alb = mix(alb, alb * 0.82, lip * 0.6);
+	alb = mix(alb, vec3(0.035, 0.032, 0.028), joint);
 	// Moss / grime creeping along the joints, more near the fence.
 	float edge = smoothstep(half_size - 2.5, half_size, max(abs(w.x), abs(w.y)));
 	float moss = smoothstep(0.25, 0.0, jd) * smoothstep(0.55, 0.8, fbm(w * 1.3 + seed)) * (0.35 + edge);

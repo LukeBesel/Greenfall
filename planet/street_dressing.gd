@@ -3,7 +3,8 @@ extends Node3D
 ## Colour, life and focal points for the start district: striped shop awnings, faded painted
 ## shop signs, a few neon signs, big weathered murals and a billboard, string lights, bunting
 ## and laundry across the streets, painted pots, bright plastic crates and barrels, and on the
-## hub yard painted floor markings, oil-sheen puddles and mossy cracks with weeds.
+## hub yard real concrete slabs (joints, oil, asphalt patches) with painted markings, oil-sheen
+## puddles, mossy cracks with weeds, pallets, tarps, drums, crates and a work light.
 ## Purely presentational and deterministic from the district seed (nothing is saved). Built
 ## once, only around the hub (CityView.DETAIL_RING blocks); batched into a handful of merged
 ## meshes and MultiMeshes. Animation (neon buzz, bulb twinkle, cloth sway) lives in shaders.
@@ -70,6 +71,7 @@ var _pennants: Array = []
 var _cloth: Array = [[], [], []]  # towel / shirt / trousers: [Transform3D, Color]
 var _crates: Array = []
 var _barrels: Array = []
+var _drums: Array = []
 var _pots: Array = []
 var _twigs: Array = []
 var _puddles: Array = []    # Transform3D
@@ -710,7 +712,8 @@ func _build_yard_lights() -> void:
 		tops.append(_pole(Vector3(c.x, 0, c.y), 5.6))
 	# Perimeter and a cross over the yard: warm festoon lights.
 	for i: int in 4:
-		_string_lights(tops[i], tops[(i + 1) % 4], 1.0, true)
+		if i != 2:  # no run along the front edge: it would hang across the default camera view
+			_string_lights(tops[i], tops[(i + 1) % 4], 1.0, true)
 	_string_lights(tops[0], tops[2], 1.6, true, 0.6)
 	_string_lights(tops[1], tops[3], 1.6, true, 0.6)
 	# Bunting just under the back run.
@@ -798,13 +801,22 @@ func _build_yard_paint() -> void:
 	img.generate_mipmaps()
 	var tex := ImageTexture.create_from_image(img)
 	var mat := ShaderMaterial.new()
-	mat.shader = preload("res://art/shaders/yard_paint.gdshader")
+	mat.shader = preload("res://art/shaders/yard_slab.gdshader")
 	mat.set_shader_parameter("paint", tex)
+	mat.set_shader_parameter("conc_alb", AssetLib.tex("concrete_floor_worn_001", "diff"))
+	mat.set_shader_parameter("conc_nrm", AssetLib.tex("concrete_floor_worn_001", "nor_gl"))
+	mat.set_shader_parameter("conc_arm", AssetLib.tex("concrete_floor_worn_001", "arm"))
+	mat.set_shader_parameter("asph_alb", AssetLib.tex("worn_asphalt", "diff"))
+	mat.set_shader_parameter("asph_nrm", AssetLib.tex("worn_asphalt", "nor_gl"))
+	mat.set_shader_parameter("half_size", half)
+	mat.set_shader_parameter("bay", half * 2.0 / 6.0)
+	mat.set_shader_parameter("seed", float(layout.seed_value % 97))
 	var mi := MeshInstance3D.new()
 	var pm := PlaneMesh.new()
 	pm.size = Vector2(half * 2.0, half * 2.0)
 	mi.mesh = pm
-	mi.position = Vector3(0, 0.018, 0)
+	mi.name = "YardSlab"
+	mi.position = Vector3(0, 0.012, 0)
 	mi.material_override = mat
 	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(mi)
@@ -848,28 +860,129 @@ func _build_puddles() -> void:
 ## Stacks of bright plastic crates and a barrel or two, tucked into the yard's fence corners
 ## (hub ground: no junk, no plant slots, nothing parks there).
 func _build_crates() -> void:
-	var y: float = CityLayout.YARD_HALF - 0.9
+	var y: float = CityLayout.YARD_HALF - 0.95
 	var body := StaticBody3D.new()
 	add_child(body)
-	for c: Vector2 in [Vector2(-y, -y), Vector2(y, -y), Vector2(-y, y), Vector2(y, y)]:
+	var corners: Array[Vector2] = [Vector2(-y, -y), Vector2(y, -y), Vector2(-y, y), Vector2(y, y)]
+	for ci: int in 4:
+		var c: Vector2 = corners[ci]
+		# Slide the kit in along the diagonal until it sits wholly on hub ground (no junk, no
+		# plant slots): the hexagonal hub area doesn't reach the square yard's corners.
+		for step: int in 12:
+			if _on_hub_ground(Vector3(c.x, 0, c.y), 1.0):
+				break
+			c -= c.normalized() * 0.3
 		var base := Vector3(c.x, 0, c.y)
 		var out := Vector3(signf(c.x), 0, signf(c.y))
-		var n: int = _rng.randi_range(2, 4)
-		var yaw: float = _rng.randf_range(-0.25, 0.25)
-		for k: int in n:
-			var off := Vector3(_rng.randf_range(-0.05, 0.05), 0.16 + k * 0.32, _rng.randf_range(-0.05, 0.05))
-			_crate(Transform3D(Basis(Vector3.UP, yaw + _rng.randf_range(-0.15, 0.15)), base + off), PLASTIC[_rng.randi() % PLASTIC.size()])
-		var side := Vector3(-out.x * 0.75, 0, 0)
-		_crate(Transform3D(Basis(Vector3.UP, yaw + 0.3), base + side + Vector3(0, 0.16, 0)), PLASTIC[_rng.randi() % PLASTIC.size()])
-		var bpos: Vector3 = base + Vector3(0, 0, -out.z * 0.8)
-		_barrels.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), bpos), PLASTIC[_rng.randi() % PLASTIC.size()]])
-		_pot(base + Vector3(-out.x * 0.75, 0, -out.z * 0.75))
+		var yaw: float = _rng.randf_range(-0.2, 0.2)
+		# A pallet on the ground under everything.
+		_pallet(Transform3D(Basis(Vector3.UP, yaw), base + Vector3(-out.x * 0.15, 0, -out.z * 0.15)))
+		var top: float = 0.14
+		match ci:
+			0:  # crate stack and a plastic barrel
+				var n: int = _rng.randi_range(2, 4)
+				for k: int in n:
+					_crate(Transform3D(Basis(Vector3.UP, yaw + _rng.randf_range(-0.12, 0.12)), base + Vector3(_rng.randf_range(-0.04, 0.04), top + 0.16 + k * 0.32, 0.0)), PLASTIC[_rng.randi() % PLASTIC.size()])
+				_barrels.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), base + Vector3(-out.x * 1.0, 0, 0)), PLASTIC[1]])
+			1:  # steel drums and a tarp-covered heap
+				for k: int in 3:
+					var dp: Vector3 = base + Vector3(-out.x * (0.1 + (k % 2) * 0.62), top, -out.z * (k / 2) * 0.62 - out.z * 0.1)
+					_drums.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), dp), [Color(0.55, 0.13, 0.08), Color(0.12, 0.25, 0.45), Color(0.2, 0.32, 0.18)][k]])
+				_tarp(Transform3D(Basis(Vector3.UP, _rng.randf_range(0.0, TAU)), base + Vector3(-out.x * 0.4, 0, -out.z * 1.5)), Vector2(1.8, 1.4), 0.75, Color(0.13, 0.32, 0.62))
+			2:  # stacked pallets and a crate
+				for k: int in range(1, 4):
+					_pallet(Transform3D(Basis(Vector3.UP, yaw + _rng.randf_range(-0.08, 0.08)), base + Vector3(-out.x * 0.15, k * 0.14, -out.z * 0.15)))
+				_crate(Transform3D(Basis(Vector3.UP, yaw + 0.4), base + Vector3(-out.x * 1.05, 0.16, 0.1)), PLASTIC[_rng.randi() % PLASTIC.size()])
+				_pot(base + Vector3(0.0, 0, -out.z * 1.1))
+			3:  # tarp heap and a work light aimed into the yard
+				_tarp(Transform3D(Basis(Vector3.UP, _rng.randf_range(0.0, TAU)), base + Vector3(-out.x * 0.1, 0.0, -out.z * 0.1)), Vector2(1.6, 1.5), 0.9, Color(0.55, 0.5, 0.2))
+				_crate(Transform3D(Basis(Vector3.UP, yaw - 0.3), base + Vector3(-out.x * 1.1, 0.16, 0.0)), PLASTIC[_rng.randi() % PLASTIC.size()])
+				_work_light(base + Vector3(-out.x * 0.6, 0, -out.z * 1.4), Vector3(-out.x, 0, -out.z).normalized())
 		var cs := CollisionShape3D.new()
 		var bs := BoxShape3D.new()
-		bs.size = Vector3(1.7, maxf(n * 0.32, 0.9), 1.7)
+		bs.size = Vector3(1.6, 1.0, 1.6)
 		cs.shape = bs
-		cs.position = base + Vector3(-out.x * 0.3, bs.size.y * 0.5, -out.z * 0.3)
+		cs.position = base + Vector3(-out.x * 0.15, 0.5, -out.z * 0.15)
 		body.add_child(cs)
+
+
+func _on_hub_ground(p: Vector3, r: float) -> bool:
+	if field == null:
+		return true
+	for o: Vector3 in [Vector3.ZERO, Vector3(r, 0, r), Vector3(-r, 0, r), Vector3(r, 0, -r), Vector3(-r, 0, -r)]:
+		var hid: int = field.hex_at(p + o)
+		if hid >= 0 and field.hex_hub[hid] == 0:
+			return false
+	return field.pieces_within(p, r + 0.4).is_empty()
+
+
+func _pallet(xf: Transform3D) -> void:
+	var wood := Color(0.6, 0.5, 0.36, PAINT).darkened(_rng.randf_range(0.0, 0.3))
+	for k: int in 3:
+		_deco.box(xf * Transform3D(Basis(), Vector3(0, 0.05, (k - 1) * 0.5)), Vector3(1.2, 0.09, 0.09), wood.darkened(0.15))
+	for k: int in 7:
+		if _rng.randf() < 0.08:
+			continue  # a broken board
+		_deco.box(xf * Transform3D(Basis(Vector3.UP, _rng.randf_range(-0.02, 0.02)), Vector3((k - 3) * 0.19, 0.115, 0)), Vector3(0.12, 0.022, 1.12), wood)
+
+
+## A tarpaulin thrown over a heap: a lumpy draped grid, drooping to the ground at the edges.
+func _tarp(xf: Transform3D, size: Vector2, h: float, col: Color) -> void:
+	col.a = FABRIC
+	var n: int = 9
+	var pts: Array = []
+	var r := RandomNumberGenerator.new()
+	r.seed = _rng.randi()
+	for j: int in n + 1:
+		var row: Array = []
+		for i: int in n + 1:
+			var u: float = float(i) / n * 2.0 - 1.0
+			var v: float = float(j) / n * 2.0 - 1.0
+			var d: float = clampf(maxf(absf(u), absf(v)) * 0.6 + Vector2(u, v).length() * 0.5, 0.0, 1.0)
+			var y: float = h * pow(1.0 - d * d, 0.8) * r.randf_range(0.75, 1.05) + 0.02
+			row.append(xf * Vector3(u * size.x * 0.5, y, v * size.y * 0.5))
+		pts.append(row)
+	for j: int in n:
+		for i: int in n:
+			var shade: float = r.randf_range(0.85, 1.0)
+			var cc := Color(col.r * shade, col.g * shade, col.b * shade, FABRIC)
+			_deco.quad(pts[j][i], pts[j][i + 1], pts[j + 1][i + 1], pts[j + 1][i], cc)
+	# Rope over the top.
+	_deco.rod(pts[0][n / 2], pts[n / 2][n / 2] + Vector3.UP * 0.02, 0.012, Color(0.7, 0.62, 0.45, PAINT))
+	_deco.rod(pts[n / 2][n / 2] + Vector3.UP * 0.02, pts[n][n / 2], 0.012, Color(0.7, 0.62, 0.45, PAINT))
+
+
+## Construction work light on a tripod, lamp lit, cable snaking off along the fence.
+func _work_light(base: Vector3, aim: Vector3) -> void:
+	var steel := Color(0.85, 0.65, 0.1, STEEL)  # yellow-painted steel
+	var top: Vector3 = base + Vector3.UP * 1.9
+	for k: int in 3:
+		var a: float = TAU * k / 3.0 + 0.3
+		_deco.rod(top - Vector3.UP * 0.4, base + Vector3(cos(a), 0, sin(a)) * 0.55, 0.018, steel)
+	_deco.rod(top - Vector3.UP * 0.4, top, 0.022, steel)
+	var right: Vector3 = Vector3.UP.cross(aim).normalized()
+	var head := Transform3D(Basis(right, Vector3.UP, aim).rotated(right, 0.35), top + Vector3.UP * 0.12)
+	_deco.box(head, Vector3(0.42, 0.3, 0.14), Color(0.1, 0.1, 0.11, STEEL))
+	_tubes.box(head.translated_local(Vector3(0, 0, 0.075)), Vector3(0.34, 0.22, 0.01), Color(1.0, 0.9, 0.75), Vector2(9.1, 0.0))
+	var sl := SpotLight3D.new()
+	sl.light_color = Color(1.0, 0.88, 0.72)
+	sl.light_energy = 2.5
+	sl.spot_range = 14.0
+	sl.spot_angle = 38.0
+	sl.shadow_enabled = false
+	sl.transform = Transform3D(Basis.looking_at(head.basis.z, Vector3.UP), head.origin)
+	add_child(sl)
+	# Cable along the ground toward the shack.
+	var cable := Color(0.05, 0.05, 0.05, PAINT)
+	var p: Vector3 = base + Vector3(0, 0.015, 0)
+	var goal := Vector3(-CityLayout.YARD_HALF + 0.5, 0.015, base.z)
+	var steps: int = 24
+	var prev: Vector3 = p
+	for k: int in range(1, steps + 1):
+		var t: float = float(k) / steps
+		var q: Vector3 = p.lerp(goal, t) + Vector3(0, 0, sin(t * 17.0) * 0.12 + 0.25 * sin(t * PI))
+		_deco.rod(prev, q, 0.012, cable)
+		prev = q
 
 
 ## Weeds and wildflowers in the yard cracks, along the fence and in the gutters.
@@ -933,6 +1046,8 @@ func _flush() -> void:
 			_mm("Laundry%d" % k, cloth_meshes[k], _cloth[k], fabric, true)
 	if not _crates.is_empty():
 		_mm("Crates", _crate_mesh(), _crates, mat, true)
+	if not _drums.is_empty():
+		_mm("Drums", _drum_mesh(), _drums, mat, true)
 	if not _barrels.is_empty():
 		_mm("Barrels", _barrel_mesh(), _barrels, mat, true)
 	if not _pots.is_empty():
@@ -1059,6 +1174,17 @@ func _barrel_mesh() -> ArrayMesh:
 		ProcMesh.part(ProcMesh.cyl(0.305, 0.305, 0.05, 14), ProcMesh.xf(Vector3(0, 0.3, 0)), Color(0.85, 0.85, 0.85, PLAST)),
 		ProcMesh.part(ProcMesh.cyl(0.305, 0.305, 0.05, 14), ProcMesh.xf(Vector3(0, 0.62, 0)), Color(0.85, 0.85, 0.85, PLAST)),
 		ProcMesh.part(ProcMesh.cyl(0.05, 0.05, 0.04, 8), ProcMesh.xf(Vector3(0.14, 0.91, 0.05)), Color(0.2, 0.2, 0.2, PLAST)),
+	]
+	return ProcMesh.merge(parts)
+
+
+func _drum_mesh() -> ArrayMesh:
+	var m := Color(1, 1, 1, STEEL)
+	var parts: Array = [
+		ProcMesh.part(ProcMesh.cyl(0.29, 0.29, 0.88, 16), ProcMesh.xf(Vector3(0, 0.44, 0)), m),
+		ProcMesh.part(ProcMesh.cyl(0.3, 0.3, 0.03, 16), ProcMesh.xf(Vector3(0, 0.29, 0)), m),
+		ProcMesh.part(ProcMesh.cyl(0.3, 0.3, 0.03, 16), ProcMesh.xf(Vector3(0, 0.59, 0)), m),
+		ProcMesh.part(ProcMesh.cyl(0.3, 0.3, 0.025, 16), ProcMesh.xf(Vector3(0, 0.875, 0)), Color(0.8, 0.8, 0.8, STEEL)),
 	]
 	return ProcMesh.merge(parts)
 
