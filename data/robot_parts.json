@@ -1,0 +1,65 @@
+{
+  "_doc": "[drones] Robot Builder parts. Five slots per robot; 'stock' (no entry) keeps the Mk tier's own look and stats. mods are multipliers on generic stats: speed, load (hopper capacity / fork carry / water tank), work (scoop / plant / spray / refill rate), quality (cube efficiency), reach (spray radius), scan (chance to spot salvage while working). Every non-cosmetic part has at least one upside and one downside (gentle: specialised, not strictly better). source: craft (bolts + one stored part of a type, optional cubes), haggle (Haggle's rotating builder stall: cubes + bolts), token (contract token shop), research (unlock node, then craft), drop (rare finds), set (Maker Fragments + a Vintage-or-better part). roles: which crews a tool fits (multibots take any tool).",
+  "slots": [
+    {"id": "chassis", "name": "Chassis"},
+    {"id": "head", "name": "Head"},
+    {"id": "mobility", "name": "Mobility"},
+    {"id": "tool", "name": "Tool"},
+    {"id": "topper", "name": "Topper"}
+  ],
+  "stats": [
+    {"id": "speed", "name": "Speed"},
+    {"id": "load", "name": "Load"},
+    {"id": "work", "name": "Work rate"},
+    {"id": "quality", "name": "Cube quality"},
+    {"id": "reach", "name": "Spray reach"},
+    {"id": "scan", "name": "Scan"}
+  ],
+  "salvage": {"_doc": "Working robots spot salvage now and then: chance per second = base * scan. A find is a stored part (mostly Rusty/Worn); 1 in fragment_one_in is a Maker Fragment.", "base_per_s": 0.0011, "fragment_one_in": 10, "clover_one_in": 40, "dig_fragment_chance": [0.02, 0.03, 0.05, 0.25, 0.5]},
+  "haggle": {"_doc": "Haggle's builder stall: `offers` haggle-source parts, reshuffled every `rotate_s` seconds of play.", "offers": 3, "rotate_s": 480},
+  "set_bonus": {"id": "maker", "name": "Maker Resonance", "mods": {"speed": 1.05, "work": 1.06}, "desc": "All three Maker parts fitted: +5% speed, +6% work."},
+  "parts": [
+    {"id": "light_frame", "slot": "chassis", "name": "Light Frame", "desc": "Slim exposed rails instead of a full shell.", "mods": {"speed": 1.1, "load": 0.9}, "source": {"kind": "craft", "bolts": 8, "part": "chassis"}},
+    {"id": "cargo_hull", "slot": "chassis", "name": "Cargo Hull", "desc": "Thick side plates and a rear rack. Holds more, drives heavier.", "mods": {"load": 1.15, "speed": 0.92}, "source": {"kind": "craft", "bolts": 10, "part": "chassis"}},
+    {"id": "sealed_shell", "slot": "chassis", "name": "Sealed Shell", "desc": "Smooth covers keep grit out of the compactor. Fussier to service.", "mods": {"quality": 1.08, "work": 0.95}, "source": {"kind": "research", "research": "auto_sort", "bolts": 14, "part": "chassis"}},
+    {"id": "maker_shell", "slot": "chassis", "name": "Maker Shell", "desc": "Pearl fairings with gold trim, as the Makers built them. Part of the Maker set.", "set": "maker", "mods": {"quality": 1.1, "load": 1.05, "speed": 0.95}, "source": {"kind": "set", "fragments": 4, "part": "chassis", "min_rarity": 3, "bolts": 30}},
+
+    {"id": "big_eye", "slot": "head", "name": "Big-Eye Sensor", "desc": "A huge lens. Spots salvage from far off, gets a little distracted.", "mods": {"scan": 1.6, "work": 0.95}, "source": {"kind": "craft", "bolts": 8, "part": "sensor"}},
+    {"id": "focus_visor", "slot": "head", "name": "Focus Visor", "desc": "Blinkers for robots. Works faster, notices less.", "mods": {"work": 1.1, "scan": 0.7}, "source": {"kind": "haggle", "cubes": 900, "bolts": 6}},
+    {"id": "periscope", "slot": "head", "name": "Periscope", "desc": "Sees over the plants: wider spray, slower to turn.", "mods": {"reach": 1.15, "speed": 0.95}, "source": {"kind": "research", "research": "spray_heads", "bolts": 12, "part": "sensor"}},
+    {"id": "chatter_dome", "slot": "head", "name": "Chatterbox Dome", "desc": "Glass dome with a speaker. Gossips about junk, finds a bit more of it.", "mods": {"scan": 1.2, "quality": 0.97}, "source": {"kind": "haggle", "cubes": 600, "bolts": 4}},
+    {"id": "maker_optic", "slot": "head", "name": "Maker Optic", "desc": "A floating gem lens under a gold brow. Part of the Maker set.", "set": "maker", "mods": {"scan": 1.4, "work": 1.04, "reach": 0.95}, "source": {"kind": "set", "fragments": 4, "part": "sensor", "min_rarity": 3, "bolts": 30}},
+
+    {"id": "treads", "slot": "mobility", "name": "Treads", "desc": "Rubber tracks. Carries more, rolls slower.", "mods": {"load": 1.2, "speed": 0.88}, "source": {"kind": "craft", "bolts": 6, "part": "locomotion"}},
+    {"id": "rotor", "slot": "mobility", "name": "Quad Rotor", "desc": "Four ducted fans. Quick, but every kilo counts.", "mods": {"speed": 1.18, "load": 0.85}, "source": {"kind": "research", "research": "swarm_sync", "bolts": 16, "part": "locomotion"}},
+    {"id": "legs", "slot": "mobility", "name": "Walker Legs", "desc": "Four careful legs. A steady platform for the arm.", "mods": {"work": 1.08, "speed": 0.94}, "source": {"kind": "research", "research": "salvage_logic", "bolts": 10, "part": "locomotion"}},
+    {"id": "hover_skirt", "slot": "mobility", "name": "Hover Skirt", "desc": "A cushion of air. Glides fast, shakes the hopper.", "mods": {"speed": 1.1, "quality": 0.94}, "source": {"kind": "haggle", "cubes": 1400, "bolts": 10}},
+    {"id": "maker_glider", "slot": "mobility", "name": "Maker Glider", "desc": "Twin levitation pods with a thin light seam. Part of the Maker set.", "set": "maker", "mods": {"speed": 1.12, "load": 0.94}, "source": {"kind": "set", "fragments": 6, "part": "locomotion", "min_rarity": 3, "bolts": 40}},
+
+    {"id": "wide_scoop", "slot": "tool", "name": "Wide Scoop", "desc": "Grabs more per pass, picks up some grit too.", "roles": ["clean", "skim"], "mods": {"work": 1.15, "quality": 0.92}, "source": {"kind": "craft", "bolts": 8, "part": "arm"}},
+    {"id": "fine_sieve", "slot": "tool", "name": "Fine Sieve", "desc": "Shakes the dirt out: cleaner cubes, slower scooping.", "roles": ["clean", "skim"], "mods": {"quality": 1.12, "work": 0.9}, "source": {"kind": "token", "tokens": 14}},
+    {"id": "long_forks", "slot": "tool", "name": "Long Forks", "desc": "Room for one more bale. Wobbly at speed.", "roles": ["haul"], "mods": {"load": 1.25, "speed": 0.9}, "source": {"kind": "research", "research": "haul_routes", "bolts": 12, "part": "arm"}},
+    {"id": "tow_hook", "slot": "tool", "name": "Tow Hook", "desc": "Winch and hook: drags bales quickly, eyes on the hook.", "roles": ["haul"], "mods": {"speed": 1.12, "scan": 0.8}, "source": {"kind": "haggle", "cubes": 800, "bolts": 6}},
+    {"id": "seed_drill", "slot": "tool", "name": "Seed Drill", "desc": "An auger that plants fast. Heavy on the nose.", "roles": ["plant"], "mods": {"work": 1.15, "speed": 0.92}, "source": {"kind": "research", "research": "pollinator_survey", "bolts": 12, "part": "arm"}},
+    {"id": "mist_sprayer", "slot": "tool", "name": "Mist Sprayer", "desc": "Fan nozzle: waters a wider circle, empties the tank sooner.", "roles": ["water"], "mods": {"reach": 1.25, "load": 0.88}, "source": {"kind": "craft", "bolts": 10, "part": "hopper"}},
+    {"id": "jet_nozzle", "slot": "tool", "name": "Jet Nozzle", "desc": "Strong straight jet: quicker watering, narrower spray.", "roles": ["water"], "mods": {"work": 1.15, "reach": 0.88}, "source": {"kind": "token", "tokens": 14}},
+
+    {"id": "antenna", "slot": "topper", "name": "Bulb Antenna", "desc": "A springy antenna with a soft glowing bulb.", "source": {"kind": "craft", "bolts": 2, "part": ""}},
+    {"id": "top_hat", "slot": "topper", "name": "Tiny Top Hat", "desc": "For the robot who means business.", "source": {"kind": "haggle", "cubes": 300, "bolts": 2}},
+    {"id": "crew_flag", "slot": "topper", "name": "Crew Flag", "desc": "A little flag in the crew's colour.", "source": {"kind": "craft", "bolts": 3, "part": ""}},
+    {"id": "bobble_plant", "slot": "topper", "name": "Bobble Plant", "desc": "A sprout on a spring. Boings when it brakes.", "source": {"kind": "drop", "hint": "Haggle's welcome gift with your first robot"}},
+    {"id": "traffic_cone", "slot": "topper", "name": "Traffic Cone", "desc": "Found it, kept it, wears it.", "source": {"kind": "haggle", "cubes": 200, "bolts": 1}},
+    {"id": "propeller_cap", "slot": "topper", "name": "Propeller Cap", "desc": "Spins when it hurries. Does not help.", "source": {"kind": "token", "tokens": 10}},
+    {"id": "lucky_clover", "slot": "topper", "name": "Lucky Clover", "desc": "A four-leaf clover that floats. Rare: a robot has to spot one.", "source": {"kind": "drop", "hint": "Rare salvage find (robots with a good Scan)"}},
+    {"id": "maker_crest", "slot": "topper", "name": "Maker Crest", "desc": "A floating gold ring. Purely for show; the Makers loved a show.", "source": {"kind": "set", "fragments": 2, "part": "", "min_rarity": 0, "bolts": 10}}
+  ],
+  "traits": [
+    {"id": "cautious", "name": "Cautious", "desc": "Looks both ways. Twice.", "mods": {"speed": 0.97, "quality": 1.03}, "idle": "look", "beep": "blip", "pitch": 0.9, "every": 11.0},
+    {"id": "speedy", "name": "Speedy", "desc": "Always in a hurry, sometimes a messy one.", "mods": {"speed": 1.04, "quality": 0.98}, "idle": "spin", "beep": "pop", "pitch": 1.7, "every": 9.0},
+    {"id": "chatty", "name": "Chatty", "desc": "Beeps at everything. Mostly at you.", "mods": {"scan": 1.1}, "idle": "hop", "beep": "beep", "pitch": 1.25, "every": 4.5},
+    {"id": "sleepy", "name": "Sleepy", "desc": "Dozes off whenever it parks.", "mods": {"work": 0.98, "load": 1.03}, "idle": "doze", "beep": "servo", "pitch": 0.55, "every": 14.0},
+    {"id": "tidy", "name": "Tidy", "desc": "Shakes the dust off after every job.", "mods": {"quality": 1.04, "work": 0.98}, "idle": "shake", "beep": "blip", "pitch": 1.1, "every": 10.0},
+    {"id": "curious", "name": "Curious", "desc": "Tilts its head at butterflies and bottle caps.", "mods": {"scan": 1.15, "speed": 0.98}, "idle": "tilt", "beep": "blip", "pitch": 1.45, "every": 7.0},
+    {"id": "hummer", "name": "Hummer", "desc": "Hums little tunes while it works.", "mods": {"work": 1.02, "scan": 0.95}, "idle": "sway", "beep": "beep", "pitch": 0.8, "every": 6.0}
+  ]
+}

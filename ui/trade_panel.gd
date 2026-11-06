@@ -14,6 +14,8 @@ var _pity: Label
 var _rows: Array[Dictionary] = []
 var _scrap_btn: Button
 var _pity_type: int = -1
+var _bits_label: Label  # [drones] Haggle's builder stall
+var _bits: HBoxContainer
 
 
 func _ready() -> void:
@@ -31,6 +33,12 @@ func _ready() -> void:
 	_list = VBoxContainer.new()
 	_list.add_theme_constant_override("separation", 6)
 	add_child(_list)
+	# [drones] Haggle's builder stall: a few robot builder parts, new stock every few minutes.
+	_bits_label = UITheme.label("", 15, UITheme.CREAM)
+	add_child(_bits_label)
+	_bits = HBoxContainer.new()
+	_bits.add_theme_constant_override("separation", 8)
+	add_child(_bits)
 	refresh()
 
 
@@ -103,6 +111,40 @@ func refresh() -> void:
 	var rusty: int = _rusty_spares().size()
 	_scrap_btn.text = "Scrap %d spare Rusty parts  ->  +%d bolts" % [rusty, rusty * 2]
 	_scrap_btn.disabled = rusty == 0
+	_refresh_bits()
+
+
+## [drones] Builder stall rows (buttons are rebuilt only when the stock rotates, so focus survives).
+func _refresh_bits() -> void:
+	if _bits == null:
+		return
+	var offers: Array[String] = RobotBuilder.haggle_offers()
+	_bits_label.text = "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab" % ceili(RobotBuilder.haggle_seconds_left() / 60.0)
+	if str(_bits.get_meta("ids", [])) != str(offers):
+		_bits.set_meta("ids", offers)
+		for c: Node in _bits.get_children():
+			_bits.remove_child(c)
+			c.queue_free()
+		for id: String in offers:
+			var b := Button.new()
+			b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			b.custom_minimum_size = Vector2(0, 52)
+			b.pressed.connect(func() -> void:
+				var why: String = RobotBuilder.buy_haggle(id)
+				if why != "":
+					Audio.play("buzz", 1.2, -8.0)
+				else:
+					EventBus.toast.emit("Haggle: \"%s. Treat it nicely.\"" % str(RobotBuilder.part(id).get("name", id)), "hint")
+				refresh())
+			_bits.add_child(b)
+	for i: int in mini(offers.size(), _bits.get_child_count()):
+		var id: String = offers[i]
+		var p: Dictionary = RobotBuilder.part(id)
+		var src: Dictionary = p.get("source", {})
+		var b: Button = _bits.get_child(i) as Button
+		b.text = "%s  (own %d)\n%s cubes + %d bolts" % [str(p.get("name", id)), RobotBuilder.count(id), Settings.fmt(BigNum.from_float(float(src.get("cubes", 0)))), int(src.get("bolts", 0))]
+		b.tooltip_text = str(p.get("desc", ""))
+		b.disabled = RobotBuilder.haggle_block_reason(id) != ""
 
 
 ## Rows are created once; refresh() only updates their text and disabled state so focus survives.

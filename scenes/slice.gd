@@ -206,6 +206,10 @@ func _ready() -> void:
 	fleet.name = "Fleet"
 	fleet.world = self
 	add_child(fleet)
+	var builder := RobotBuilder.new()  # [drones] robot builder: salvage finds, starter kit, dev hooks
+	builder.name = "RobotBuilder"
+	builder.world = self
+	add_child(builder)
 	upgrades = UpgradesScreen.new()
 	upgrades.fleet = fleet
 	upgrades.hub = hub

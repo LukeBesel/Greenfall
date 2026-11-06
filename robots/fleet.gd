@@ -468,3 +468,5 @@ func restore() -> void:
 		r.work_hex = int(d.get("hex", -1))
 		r.job = str(d.get("job", "clean"))
 		r.hopper.from_dict(d.get("hopper", {}))
+		r.trait_id = str(d.get("trait", ""))  # [drones] builder parts + personality
+		RobotBuilder.set_build(r, d.get("build", {}))

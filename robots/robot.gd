@@ -32,6 +32,10 @@ var _progress_t: float = 0.0
 var _beam_target: Variant = null
 ## Multibot job ("clean", "plant", "water"); specialists ignore it.
 var job: String = "clean"
+## [drones] Robot Builder: fitted parts {slot: part_id}, personality trait, cached stat multipliers.
+var build: Dictionary = {}
+var trait_id: String = ""
+var build_mods: Dictionary = {}
 var water: float = 0.0
 var _target_slot: int = -1
 ## What this robot got done (for the Command panel / --bot-report).
@@ -97,6 +101,7 @@ func set_job(j: String) -> void:
 func rebuild_visual() -> void:
 	var look: String = str(Economy.robot_tiers[tier].get("look", "salvage")) if tier < Economy.robot_tiers.size() else "salvage"
 	visual.build(type_id, look)
+	RobotBuilder.on_visual_rebuilt(self)  # [drones] part meshes, name tag, personality
 
 
 func stat(s: String) -> float:
@@ -107,7 +112,7 @@ func stat(s: String) -> float:
 	elif s == "spray_radius":
 		v *= sqrt(_tier_mult())
 		v += maxf(0.0, Economy.stat("drip.range"))
-	return v
+	return v * float(build_mods.get(s, 1.0))  # [drones] builder parts + trait
 
 
 func _tier_mult() -> float:
@@ -896,4 +901,4 @@ func _find_bale() -> JunkCube:
 func to_dict() -> Dictionary:
 	return {"type": type_id, "tier": tier, "rarity_bonus": rarity_bonus, "name": robot_name,
 		"pos": [global_position.x, global_position.y, global_position.z], "hex": work_hex,
-		"hopper": hopper.to_dict(), "job": job}
+		"hopper": hopper.to_dict(), "job": job, "build": build.duplicate(), "trait": trait_id}  # [drones] build + trait

@@ -71,7 +71,12 @@
     {"id": "part_vintage", "kind": "part", "name": "Vintage Blueprint Part", "desc": "A random Vintage robot part, freshly printed.", "cost": 16, "rarity": 3, "repeat": true},
     {"id": "part_legendary", "kind": "part", "name": "Legendary Blueprint Part", "desc": "A Maker-Made Legendary part. The good stuff.", "cost": 48, "rarity": 4, "repeat": true},
     {"id": "seed_crate", "kind": "seeds", "name": "Seed Crate", "desc": "25 seeds in a crate that smells of summer.", "cost": 6, "amount": 25, "repeat": true},
-    {"id": "curio_capsule", "kind": "capsule", "name": "Curio Capsule", "desc": "A sealed capsule with a collectible inside you haven't got yet.", "cost": 12, "repeat": true}
+    {"id": "curio_capsule", "kind": "capsule", "name": "Curio Capsule", "desc": "A sealed capsule with a collectible inside you haven't got yet.", "cost": 12, "repeat": true},
+    {"id": "bp_fine_sieve", "kind": "builder", "part": "fine_sieve", "name": "Fine Sieve (Builder)", "desc": "Cleaner tool: cleaner cubes, slower scooping.", "cost": 14, "color": "#ffd27a", "repeat": true},
+    {"id": "bp_jet_nozzle", "kind": "builder", "part": "jet_nozzle", "name": "Jet Nozzle (Builder)", "desc": "Waterer tool: quicker watering, narrower spray.", "cost": 14, "color": "#7ad8ff", "repeat": true},
+    {"id": "bp_propeller_cap", "kind": "builder", "part": "propeller_cap", "name": "Propeller Cap (Builder)", "desc": "A topper that spins when its robot hurries.", "cost": 10, "color": "#ffb36b", "repeat": true},
+    {"id": "bp_crate", "kind": "builder", "name": "Builder Crate", "desc": "A random robot builder part you don't have yet.", "cost": 12, "color": "#a8f0c0", "repeat": true},
+    {"id": "bp_fragments", "kind": "builder", "fragments": 2, "name": "Maker Fragments x2", "desc": "Two shards of Maker alloy for the Maker set.", "cost": 20, "color": "#ffe08a", "repeat": true}
   ],
   "trinkets": [
     {"id": "brass_compass", "name": "Brass Compass", "source": "supply_drop", "desc": "Points north, mostly. Came wrapped in a sock in a supply crate."},
