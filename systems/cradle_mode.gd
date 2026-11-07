@@ -406,12 +406,12 @@ static func _carry_flags() -> Dictionary:
 
 
 ## Seeds a new world and starts it. Saves the world being left first. Returns the new record.
-static func launch_new_world(tree: SceneTree = null) -> Dictionary:
+static func launch_new_world(tree: SceneTree = null, slot: int = -1) -> Dictionary:
 	bank()
 	if tree:
 		SaveManager.save_game()
 	var carry: Dictionary = _carry_flags()
-	var w: Dictionary = _add_world()
+	var w: Dictionary = _add_world(slot)
 	_p()["current"] = worlds().size() - 1
 	_p()["unlocked"] = true
 	apply_current()
