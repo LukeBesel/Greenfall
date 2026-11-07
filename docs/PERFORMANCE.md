@@ -109,4 +109,27 @@ split into ground cells so culling and visibility ranges still work.
 - Field junk: MultiMeshes whose pieces are all scooped are hidden (late game they were empty
   draws). Litter: one shared material for every chunk; tiny items end at 75 m.
 
-Results: see the table below (filled from the renders in the deck branch report).
+Low also drops triangles: ground litter and junk use lighter meshes, and tiny litter items stop
+drawing at 45 m (Low) / 75 m (others).
+
+### Results (1280x800, default spawn view, settled frames, Forward+ on lavapipe)
+
+Numbers are `RenderingServer` in-frame totals (all passes: depth prepass, colour, shadow
+cascades). Before = commit 3c86504, after = this branch. "Future" = `--future=5 --hub-level=5`.
+
+| View | Preset | Draw calls before | after | change | Primitives before | after | change |
+|---|---|---|---|---|---|---|---|
+| Start (Old Town) | High | 3,245 | 2,939 | -9% | 29.8 M | 30.5 M | +2% |
+| Start (Old Town) | Low | 1,742 | 1,586 | -9% | 23.4 M | 16.2 M | -31% |
+| Late-game future city | High | 8,614 | 4,220 | -51% | 31.8 M | 25.6 M | -20% |
+| Late-game future city | Low | 4,235 | 2,187 | -48% | 24.5 M | 13.9 M | -43% |
+
+Headless census (`--scene-stats`, the whole scene, not frustum-culled): geometry nodes
+2,351 -> 962 at the start and 3,058 -> 974 late game; estimated draws 7,389 -> 3,696 and
+13,926 -> 4,257. The biggest late-game wins: garden plants (308 MultiMeshes -> 48), the city
+(1,783 nodes -> ~460) and butterflies (332 nodes -> 1).
+
+The start view at High is already dominated by unique shadow-casting geometry near the player
+(the hub yard, shack, Lumi, junk heaps); the next candidates are outposts (~120 meshes) and
+easter-egg props (~70). Frame rates in the container are meaningless (software Vulkan); check
+the targets above on a Deck and an integrated-GPU laptop.
