@@ -18,6 +18,7 @@ var nursery: Nursery
 var album: PhotoAlbum
 var panel: ExtrasPanel
 var run: WeeklyRun
+var _wall_jobs: Array = []  # dev: [msec, Callable] run by the wall clock (slow software renders)
 
 
 static func attach(slice: Node) -> ExtrasDirector:
@@ -33,7 +34,16 @@ static func of(slice: Node) -> ExtrasDirector:
 	return slice.get_node_or_null("ExtrasDirector") as ExtrasDirector if slice else null
 
 
+func _process(_delta: float) -> void:
+	for i: int in range(_wall_jobs.size() - 1, -1, -1):
+		if Time.get_ticks_msec() >= int(_wall_jobs[i][0]):
+			var cb: Callable = _wall_jobs[i][1]
+			_wall_jobs.remove_at(i)
+			cb.call()
+
+
 func _setup() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	add_to_group("persist")
 	GameState.stats["weekly_chips"] = float(WeeklyChallenge.chip_count())  # profile-wide, mirrored for achievements
 	radio = Radio.new()
@@ -77,8 +87,8 @@ func _setup() -> void:
 		get_tree().create_timer(DevHooks.get_f("album-at", 8.0), false).timeout.connect(func() -> void:
 			album.dev_snap(Array(DevHooks.get_s("album-snap", "before").split("+", false))))
 	if DevHooks.has("extras"):
-		get_tree().create_timer(DevHooks.get_f("extras-at", 1.0), true).timeout.connect(func() -> void:
-			ExtrasPanel.open_for(world, DevHooks.get_s("extras", "radio")))
+		_wall_jobs.append([Time.get_ticks_msec() + int(DevHooks.get_f("extras-at", 1.0) * 1000.0), func() -> void:
+			ExtrasPanel.open_for(world, DevHooks.get_s("extras", "radio"))])
 	if DevHooks.has("extras-cam"):
 		_cam.call_deferred()
 	if DevHooks.has("extras-nohud") and world.get("hud") != null:
