@@ -29,6 +29,7 @@ const PIT_R: float = 78.0
 const SHAFT_K: float = 0.42
 const PIT_DEPTH: float = 62.0
 const RIM_Y: float = 1.2
+const SUN_DIST: float = 2300.0
 
 var world: Node
 var field: HexField
@@ -59,6 +60,7 @@ var _haze: CPUParticles3D
 var _motes: CPUParticles3D
 var _moons: Array[Node3D] = []
 var _sun_b: DirectionalLight3D
+var _sun_b_disc: MeshInstance3D
 var _suns: Dictionary = {}
 var _t: float = 0.0
 var _tick: float = 99.0
@@ -288,6 +290,39 @@ func _sky() -> void:
 	_sun_b.light_angular_distance = 0.6 * float(b.get("size", 0.4))
 	_sun_b.light_volumetric_fog_energy = 0.4
 	add_child(_sun_b)
+	# PhysicalSkyMaterial only draws the first light's disc: the companion gets a far billboard
+	# (small hot core, thin soft halo; additive, unfogged).
+	var g := Gradient.new()
+	g.offsets = PackedFloat32Array([0.0, 0.1, 0.14, 0.35, 1.0])
+	g.colors = PackedColorArray([Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0.22), Color(1, 1, 1, 0.05), Color(1, 1, 1, 0)])
+	var gt := GradientTexture2D.new()
+	gt.gradient = g
+	gt.fill = GradientTexture2D.FILL_RADIAL
+	gt.fill_from = Vector2(0.5, 0.5)
+	gt.fill_to = Vector2(1.0, 0.5)
+	gt.width = 128
+	gt.height = 128
+	var dm := StandardMaterial3D.new()
+	dm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	dm.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+	dm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	dm.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	dm.disable_fog = true
+	dm.no_depth_test = false
+	dm.albedo_texture = gt
+	var bc: Color = b["color"]
+	dm.albedo_color = Color(bc.r, bc.g, bc.b) * 1.8
+	var q := QuadMesh.new()
+	# Core ~ the companion's angular size (at least 0.3 deg so it reads), halo out to ~7x.
+	var core_deg: float = maxf(0.6 * float(b.get("size", 0.4)), 0.3)
+	var w: float = 2.0 * SUN_DIST * tan(deg_to_rad(core_deg) * 0.5) / 0.1
+	q.size = Vector2(w, w)
+	_sun_b_disc = MeshInstance3D.new()
+	_sun_b_disc.name = "CompanionDisc"
+	_sun_b_disc.mesh = q
+	_sun_b_disc.material_override = dm
+	_sun_b_disc.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(_sun_b_disc)
 
 
 func _update_suns() -> void:
@@ -306,6 +341,12 @@ func _update_suns() -> void:
 	var sep: float = deg_to_rad(float(b.get("sep_deg", 11.0)))
 	_sun_b.global_basis = Basis(Vector3.UP, sep) * Basis(sun.global_basis.x, -sep * 0.3) * sun.global_basis
 	_sun_b.visible = sun.visible
+	var cam: Camera3D = get_viewport().get_camera_3d() if is_inside_tree() else null
+	if _sun_b_disc and cam:
+		_sun_b_disc.global_position = cam.global_position + _sun_b.global_basis.z * SUN_DIST
+		var up_k: float = _smooth(-0.02, 0.06, _sun_b.global_basis.z.y)
+		(_sun_b_disc.material_override as StandardMaterial3D).albedo_color.a = up_k
+		_sun_b_disc.visible = up_k > 0.0
 	# Same day curve as the primary, at the companion's share of the light.
 	_sun_b.light_energy = sun.light_energy * float(b.get("energy", 0.2)) / maxf(float(a.get("energy", 1.0)), 0.01)
 	var we: Environment = world.get("_env")
