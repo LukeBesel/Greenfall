@@ -186,6 +186,7 @@ Wave 1 helpers (worktrees /home/user/gf-wt/<name>, branches wt/<name>):
 - wild: wildlife (cats, birds, rats, rabbits, deer, foxes, fish, ducks, frogs, frontier animals), Collection hooks
 - first: first-hour polish (tutorial panel, juice, pacing)
 - vqa: visual QA sweep (docs/VISUAL_QA.md) and the known visual leftovers
+Trailer notes (owner): feature some of the cooler Lumi designs (Bolt, Sprout, Pixel, Nova, Patch) in the trailer, e.g. a quick design-swap montage.
 Wave 2 (after merging wave 1): late-game Cradle Mode / Garden Mode + eggs, real translations (de/fr/es/pt-BR/zh/ja drafts), code health (exit crash 134, split scenes/slice.gd), trailer capture. Then merge the PR into main.
 If a session ends: commit WIP in each worktree, then resume or merge.
 ## Update: whole game, beatable end to end (wt/beat)
