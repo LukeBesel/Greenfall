@@ -1238,6 +1238,7 @@ func pet(a: Animal) -> void:
 		if pm.has_method("set_happy"):
 			pm.call("set_happy", 1.0)
 	GameState.inc_stat("cats_petted")
+	GameState.inc_stat("wildlife_petted")  # any animal petted (unlocks the Pixel design, systems/designs.gd)
 	mark_seen("cat")
 	if a.pets >= 3 and not a.named and adopted_cat().is_empty():
 		adopt(a)
