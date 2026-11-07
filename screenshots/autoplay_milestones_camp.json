@@ -34,5 +34,15 @@
   "frozen_port_base5_s": 20395.4,
   "frozen_port_growing50_s": 20707.8,
   "launch_4_s": 20708.8,
-  "arrive_sunken_city_s": 20745.4
+  "arrive_sunken_city_s": 20745.4,
+  "sunken_city_base5_s": 24501.6,
+  "sunken_city_growing50_s": 25529.9,
+  "launch_5_s": 25529.9,
+  "arrive_cradle_returns_s": 25566.9,
+  "core_75_s": 26549.3,
+  "cradle_returns_base5_s": 27015.4,
+  "cradle_returns_growing50_s": 28264.5,
+  "cradle_complete_s": 28754.1,
+  "core_100_s": 28755.0,
+  "finale_done_s": 28796.7
 }

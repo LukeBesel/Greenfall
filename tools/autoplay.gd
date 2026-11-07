@@ -1281,7 +1281,7 @@ func _robot_health() -> Dictionary:
 	for r: Robot in fl.robots():
 		var st: String = re.sub(r.status_text(), "#", true)
 		counts[st] = int(counts.get(st, 0)) + 1
-		var busy: bool = not (st.begins_with("idle") or st.begins_with("parked") or st.begins_with("waiting") or st.contains("nothing left") or st.contains("is clean") or st.contains("out of seeds") or st.contains("zone clean"))
+		var busy: bool = not (st.begins_with("idle") or st.begins_with("parked") or st.begins_with("waiting") or st.contains("nothing left") or st.contains("is clean") or st.contains("out of seeds") or st.contains("zone clean") or st.begins_with("looking for"))
 		var last: Vector3 = _bot_pos.get(r.robot_name, Vector3.INF)
 		if busy and last != Vector3.INF and last.distance_to(r.global_position) < 0.5:
 			_bot_still[r.robot_name] = int(_bot_still.get(r.robot_name, 0)) + 1

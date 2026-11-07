@@ -50,6 +50,7 @@ var _refill_fx_t: float = 0.0
 var _shore := Vector3.INF
 var _shore_t: float = 0.0  # [beat] time spent heading for this shore point
 var _bad_shore: Array = []  # [beat] shore points this skimmer couldn't reach
+var _bad_refill: Array = []  # [beat] refill points this robot got stuck on the way to
 var _stall_goal := Vector3.INF
 var _stall_best: float = INF
 var _stall_t: float = 0.0
@@ -364,6 +365,12 @@ func _unstick() -> void:
 		_skip[_target_piece] = true
 	if _target_slot >= 0:
 		_skip[-2 - _target_slot] = true
+	# [beat] Pinned on the way to a refill point: try another one next time (a Drip circled a
+	# blocked barrel for good at the Cradle).
+	if not _refill.is_empty() and not _refilling:
+		_bad_refill.append(_refill["pos"])
+		if _bad_refill.size() > 6:
+			_bad_refill.pop_front()
 	reset_targets(true)
 	_stall_t = 0.0
 	_stall_goal = Vector3.INF
@@ -706,7 +713,7 @@ func _do_refill(delta: float, tank: float) -> Vector3:
 		water = tank  # no world network (tests): instant refill
 		return Vector3.ZERO
 	if _refill.is_empty():
-		_refill = net.nearest_refill(global_position)
+		_refill = net.nearest_refill(global_position, _bad_refill)
 		if _refill.is_empty():
 			return _go_idle(_t("no water source"))
 	var spot: Vector3 = _refill["pos"]
@@ -731,6 +738,7 @@ func _do_refill(delta: float, tank: float) -> Vector3:
 			return Vector3.ZERO
 		_refilling = false
 		_refill = {}
+		_bad_refill.clear()
 		log_stats["refills"] = float(log_stats["refills"]) + 1.0
 		_busy = 0.4
 	return Vector3.ZERO
