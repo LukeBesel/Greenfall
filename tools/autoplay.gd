@@ -1166,12 +1166,18 @@ func _swap_spares(robot: String) -> void:
 
 
 ## [money] Research costs cubes now. The bot treats the field-note cubes (the old Data income)
-## as its research fund, like a player who spends the research share on research; it also starts
-## research when cubes are plentiful.
+## as its research fund, like a player who spends the research share on research (so research and
+## the base levels pace as they did with Data); it also starts research when it is rich.
 func _research_ok(id: String) -> bool:
 	var c: float = Research.cost(id).to_float()
 	var fund: float = float(GameState.stats.get("notes_cubes", 0.0)) + float(GameState.stats.get("wildlife_cubes", 0.0)) - float(GameState.stats.get("bot_research_spent", 0.0))
-	return c <= fund or GameState.get_currency("cubes").to_float() > c * 4.0
+	return c <= fund or GameState.get_currency("cubes").to_float() > maxf(c * 4.0, _research_reserve())
+
+
+## Cubes the bot keeps for the next base level / robot before dipping into them for research.
+func _research_reserve() -> float:
+	var nxt: Dictionary = world.hub.level_def(world.hub.level + 1) if world.get("hub") != null else {}
+	return float(nxt.get("cost", {}).get("cubes", 0.0)) * 1.5 + 2000.0
 
 
 func _research_pick() -> String:

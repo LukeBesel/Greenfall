@@ -98,8 +98,17 @@ func _chip(id: String, amount_text: String, delta: float, note: String = "") -> 
 	dl2.add_theme_color_override("font_color", UITheme.GREEN if dv > 0.0 else UITheme.MUTED)
 
 
+var _demo_t: float = 0.0
+
+
 func _process(delta: float) -> void:
 	_warm = maxf(0.0, _warm - delta)
+	if DevHooks.has("money-chips") and _warm <= 0.0:  # [money] screenshots: keep the Parts/Seeds chips up
+		_demo_t -= delta
+		if _demo_t <= 0.0:
+			_demo_t = 2.5
+			GameState.add_currency("parts", BigNum.from_float(24))
+			GameState.add_currency("seeds", BigNum.from_float(2))
 	var cubes: BigNum = GameState.get_currency("cubes")
 	var target: float = cubes.to_float()
 	if in_flight > 0.0:  # [first]
