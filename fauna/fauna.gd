@@ -17,7 +17,8 @@ extends Node3D
 ## Sightings (in view and near Lumi) unlock Codex "Animals" entries (flags.fauna_seen); photos
 ## in photo mode go into the Collection (flags.fauna_photos, trinkets pic_<species>).
 ##
-## Dev: --fauna-look=SPECIES[,dist,pitch,yaw] frames Lumi next to one (after --fauna-look-at=S,
+## Dev: --fauna-look=SPECIES[,dist,pitch,yaw] puts Lumi beside one and frames it with a held camera
+## (--fauna-gap, --fauna-coat, --fauna-lerp, --fauna-fov, --fauna-free; after --fauna-look-at=S,
 ## default 0), --fauna-lakes cleans every lake, --fauna-pose=sit|groom|sleep|pet|graze|fly holds a pose, --fauna-dense spawns on
 ## every qualifying hex, --fauna-report[=S] prints the census.
 
