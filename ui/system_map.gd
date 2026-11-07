@@ -91,6 +91,7 @@ func open_map(from_planet: bool = false) -> void:
 			_first.call_deferred("grab_focus")
 	if world and world.get("hud") != null:
 		world.hud.visible = false
+	Codex.unlock("homeward:binary_suns")
 	Audio.play("whoosh", 0.7, -8.0)
 
 
@@ -275,12 +276,11 @@ func _build_suns() -> void:
 
 func _planet_color(k: int) -> Color:
 	var d: Dictionary = Homeward.planet_def(k)
-	var reg: Dictionary = Economy.read_json("res://data/planets.json") if ResourceLoader.exists("res://data/planets.json") or FileAccess.file_exists("res://data/planets.json") else {}
-	var e: Variant = (reg.get("planets", {}) as Variant)
-	if e is Dictionary and (e as Dictionary).has(str(d["id"])):
-		var col: Variant = ((e as Dictionary)[str(d["id"])] as Dictionary).get("color")
-		if col is Array and (col as Array).size() >= 3:
-			return Color(float(col[0]), float(col[1]), float(col[2]))
+	var col: Variant = HomewardDirector.registry_entry(str(d["id"])).get("color")  # data/planets.json looks, if merged
+	if col is Array and (col as Array).size() >= 3:
+		return Color(float(col[0]), float(col[1]), float(col[2]))
+	if col is String and Color.html_is_valid(str(col)):
+		return Color.html(str(col))
 	var c: Array = d.get("color", [0.5, 0.5, 0.5])
 	return Color(float(c[0]), float(c[1]), float(c[2]))
 

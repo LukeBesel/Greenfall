@@ -53,6 +53,12 @@ func _setup() -> void:
 	if g is GlobeView:
 		(g as GlobeView).open_system = func() -> void: map.open_map(true)
 	_dev_hooks()
+	# Saves from before Homeward that already reached the Cradle: the answer counts as heard.
+	if not Homeward.answered() and Homeward.current_planet() == 0 and GameState.flags.get("cradle_returned", false) \
+			and (GameState.flags.get("bloom_finale_seen", false) or GameState.flags.get("cradle_answered", false)):
+		Homeward.state()["answered"] = true
+		GameState.flags["cradle_answered"] = true
+		Homeward.save()
 	# The interplanetary rocket travels with Lumi: keep the best in-planet tier on every planet.
 	var best: int = maxi(int(GameState.flags.get("rocket_tier", 1)), int(Homeward.state().get("rocket_tier", 1)))
 	GameState.flags["rocket_tier"] = best
@@ -145,10 +151,29 @@ func _dress_planet() -> void:
 	if k == 0 or world.get("field") == null:
 		return
 	var path: String = "res://planet/planets/%s/env.gd" % id
+	var reg: Dictionary = registry_entry(id)  # data/planets.json (the planet art helpers), if merged
+	if reg.has("env"):
+		path = str(reg["env"])
 	if ResourceLoader.exists(path):
-		var scr: Script = load(path)
-		if scr and scr.has_method("apply"):
+		var scr: GDScript = load(path) as GDScript
+		if scr:
 			scr.call("apply", world, world.field, Frontiers.world_kind(world))
+			print("[home] planet env %s applied" % path)
+
+
+## data/planets.json entry for a planet id ({} without the file): a dict keyed by id, or a list of {id: ...}.
+static func registry_entry(id: String) -> Dictionary:
+	if not FileAccess.file_exists("res://data/planets.json"):
+		return {}
+	var d: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/planets.json"))
+	var ps: Variant = (d as Dictionary).get("planets", d) if d is Dictionary else d
+	if ps is Dictionary and (ps as Dictionary).get(id) is Dictionary:
+		return (ps as Dictionary)[id]
+	if ps is Array:
+		for e: Variant in ps:
+			if e is Dictionary and str((e as Dictionary).get("id", "")) == id:
+				return e
+	return {}
 
 
 # --- Restoration -----------------------------------------------------------------------------
