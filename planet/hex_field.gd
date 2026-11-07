@@ -214,7 +214,7 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 			var af: float = owned_area_factor(id)
 			count = int(round(count * af))
 			vol_scale /= af
-			hex_cluster[id] = clampi(int(round(1.0 / vol_scale)) - 1, 0, 3)
+			hex_cluster[id] = clampi(int(floor(1.0 / vol_scale - 0.25)), 0, 3)
 		var piles: Array = []
 		if btype == CityLayout.Block.LANDFILL:
 			count = int(count * 2.2)
