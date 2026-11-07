@@ -741,9 +741,22 @@ static func dev_hooks(world: Node) -> void:
 		set_current(s)
 		refresh_player(world)
 	if DevHooks.has("lumi-builder") and world:
-		var at: float = DevHooks.get_f("lumi-builder-at", 3.0)
-		world.get_tree().create_timer(at, true).timeout.connect(func() -> void:
-			LumiBuilder.open(world, world))
+		# Wall clock, like --shot-delay (game time crawls on software rendering).
+		_dev_builder_ms = Time.get_ticks_msec() + int(DevHooks.get_f("lumi-builder-at", 3.0) * 1000.0)
+		world.get_tree().process_frame.connect(_dev_builder_tick.bind(world))
+
+
+static var _dev_builder_ms: int = -1
+
+
+static func _dev_builder_tick(world: Node) -> void:
+	if _dev_builder_ms < 0 or Time.get_ticks_msec() < _dev_builder_ms or not is_instance_valid(world):
+		return
+	_dev_builder_ms = -1
+	var b: LumiBuilder = LumiBuilder.open(world, world)
+	var sel: String = DevHooks.get_s("lumi-builder-slot", "")
+	if sel != "":
+		b.call_deferred("_select", sel)
 
 
 static func _dev_unlock_all() -> void:
