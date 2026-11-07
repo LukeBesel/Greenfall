@@ -110,6 +110,85 @@ func _tagged_cubes(s: Node) -> Array:
 	return out
 
 
+## [biomes] Snapshot of a frontier district's persisted state.
+func _frontier_snap(s: Node) -> Dictionary:
+	var fd: FrontierDistrict = s.frontier
+	var ice_sum: float = 0.0
+	for v: float in fd.ice:
+		ice_sum += v
+	var planted: int = 0
+	for sp: int in s.garden.slot_species:
+		if sp >= 0:
+			planted += 1
+	return {"kind": fd.kid, "heaters": JSON.stringify(fd.heaters), "greenhouses": JSON.stringify(fd.greenhouses),
+		"ice": snappedf(ice_sum, 0.01), "locked": s.field.locked.size(), "drained": fd.drained,
+		"drain_order": JSON.stringify(fd.drain_order), "storms": fd.storms, "cleaned": s.field.cleaned_count,
+		"alive": s.field.piece_alive.count(1), "slots": s.garden.slot_pos.size(), "planted": planted,
+		"water": s.field.hex_water.count(1), "hub_level": s.hub.level}
+
+
+func _frontier_roundtrip(packed: PackedScene, kid: String, hub_i: int) -> void:
+	GameState.switch_hub(hub_i)
+	GameState.reload_in_memory = true
+	var s1: Node = packed.instantiate()
+	get_tree().root.add_child(s1)
+	for i: int in 5:
+		await get_tree().process_frame
+	var fd: FrontierDistrict = s1.frontier
+	if fd == null:
+		_check("frontier_%s_built" % kid, true, false)
+		s1.queue_free()
+		return
+	GameState.add_currency("cubes", BigNum.from_float(500000))
+	GameState.add_currency("seeds", BigNum.from_float(30))
+	match kid:
+		"frozen_port":
+			var iced: Array = range(fd.ice.size()).filter(func(h: int) -> bool: return fd.ice[h] > 0.0)
+			fd._place_heater(int(iced[0]), true)
+			fd._place_heater(int(iced[1]), true)
+			fd._thaw_step(30.0)
+			var h: int = int(iced[2])
+			fd.ice[h] = 0.0
+			fd._update_locks()
+			fd._clear_hex(h)
+			fd._build_greenhouse(h, true)
+			Research.grant("cold_hardy_seeds")
+		"sunken_city":
+			for h: int in Frontiers.drain_hexes(s1.field, 1, fd.kind["flood"]):
+				fd._clear_hex(h)
+			fd.drain_next(false)
+			var street: int = int(fd.drain_order[0])
+			fd._clear_hex(street)
+		"dust_flats":
+			for h: int in s1.field.hex_count():
+				if s1.field.hex_hub[h] == 0 and Frontiers.ring_of(s1.field, h) <= 2:
+					fd._clear_hex(h)
+			fd.storm_hit()
+	for k: int in s1.garden.slot_species.size():
+		if s1.garden.slot_species[k] < 0 and s1.field.is_clean(s1.garden.slot_hex[k]) and s1.garden.plantable(k):
+			s1.garden.plant(k)
+			break
+	s1.hub.upgrade()
+	for i: int in 5:
+		await get_tree().process_frame
+	var before: Dictionary = _frontier_snap(s1)
+	if not SaveManager.save_game():
+		_check("frontier_%s_saved" % kid, true, false)
+	s1.queue_free()
+	await get_tree().process_frame
+	GameState.from_dict(SaveManager.read_dict(SaveManager.slot_path()))
+	GameState.reload_in_memory = true
+	var s2: Node = packed.instantiate()
+	get_tree().root.add_child(s2)
+	for i: int in 5:
+		await get_tree().process_frame
+	var after: Dictionary = _frontier_snap(s2)
+	for k: String in before:
+		_check("frontier_%s_%s" % [kid, k], before[k], after[k])
+	s2.queue_free()
+	await get_tree().process_frame
+
+
 func _built(s: Node) -> Array:
 	var out: Array = []
 	var st: Node = Stations.of(s)
@@ -245,6 +324,12 @@ func _ready() -> void:
 	var after: Dictionary = _snapshot(s2)
 	for k: String in before:
 		_check(k, before[k], after[k])
+	# [biomes] Frontier districts: ice/heaters/greenhouses, pump stages, storm count.
+	var fhubs: Dictionary = (s2.planet as PlanetData).frontier_hubs.duplicate()
+	s2.queue_free()
+	await get_tree().process_frame
+	for kid: String in ["frozen_port", "sunken_city", "dust_flats"]:
+		await _frontier_roundtrip(packed, kid, int(fhubs[kid]))
 	SaveManager.delete_save()
 	print("[roundtrip] %s (%d failures)" % ["OK" if _fails == 0 else "FAILED", _fails])
 	get_tree().quit(1 if _fails > 0 else 0)

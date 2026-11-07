@@ -39,6 +39,7 @@ var events: WorldEvents  # [events] world events, cleaning streak (systems/event
 var lumi_level: LumiLevel  # [hud] Lumi Level / XP (systems/lumi_level.gd), drawn by the hotbar
 var contracts: Contracts  # [events] contracts board + token shop (systems/contracts.gd)
 var photo: PhotoMode  # [photo] photo mode (ui/photo_mode.gd)
+var frontier: FrontierDistrict  # [biomes] late-game frontier districts (planet/frontier_district.gd)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
 var depot: Depot
@@ -90,30 +91,48 @@ func _ready() -> void:
 	planet.generate()
 	if not GameState.planet_state.is_empty():
 		planet.apply_dict(GameState.planet_state)
+	if DevHooks.has("frontier") and not loaded:  # [biomes] dev: --frontier=dust_flats|frozen_port|sunken_city|cradle_returns
+		GameState.switch_hub(int(planet.frontier_hubs.get(DevHooks.get_s("frontier", "dust_flats"), 0)))
+		if DevHooks.has("hub-level"):
+			GameState.world["hub_level"] = clampi(int(DevHooks.get_f("hub-level", 1.0)), 1, 5)
 	hub_index = clampi(GameState.current_hub, 0, planet.hubs.size() - 1)
 	anchor_cell = planet.hubs[hub_index]
 	# Each hub's district has its own deterministic seed; city hubs get streets, others are wild.
 	var seed_v: int = base_seed + hub_index * 1009
 	var is_city: bool = planet.city[anchor_cell] >= 0
 	district_name = str(planet.cities[planet.city[anchor_cell]]["name"]) if is_city else PlanetData.BIOMES[planet.biome[anchor_cell]].capitalize().replace("_", " ")
-	layout = CityLayout.new(seed_v, 150.0, not is_city)
-	field = HexField.new(int(cfg.get("radius", 9)), float(cfg.get("hex_size", 3.2)), seed_v, layout)
+	var fk: Dictionary = Frontiers.field_params(planet, hub_index)  # [biomes] frontier district?
+	var f_radius: int = int(fk.get("radius", cfg.get("radius", 9)))
+	if not fk.is_empty():
+		district_name = str(fk.get("name", district_name))
+	layout = CityLayout.new(seed_v, 150.0, (not is_city) if fk.is_empty() else str(fk.get("layout", "wild")) != "city")
+	field = HexField.new(f_radius, float(cfg.get("hex_size", 3.2)), seed_v, layout)
 	field.clean_threshold = float(cfg.get("clean_threshold", 0.99))
 	if not is_city:  # [biomes] wilderness districts get their biome's junk, wrecks and ground tint
 		field.biome = PlanetData.BIOMES[planet.biome[anchor_cell]]
 		field.biome_set = Economy.biome_set(field.biome)
-	var ppx: Array = cfg.get("pieces_per_hex", [6, 12])
+	if not fk.is_empty():  # [biomes]
+		field.biome = str(fk["biome"])
+		field.biome_set = Economy.biome_set(field.biome)
+	var ppx: Array = (cfg.get("pieces_per_hex", [6, 12]) as Array).duplicate()
+	if not fk.is_empty():  # [biomes] more junk per hex
+		ppx = [int(float(ppx[0]) * float(fk.get("pieces_mult", 1.0))), int(float(ppx[1]) * float(fk.get("pieces_mult", 1.0)))]
 	var types: Array = []
 	for id: String in Economy.junk_ids:
 		types.append(Economy.junk_types[id])
 	# Lake hexes: district hexes that sit on planet water cells.
-	for i: int in Hex.spiral(int(cfg.get("radius", 9))).size():
-		var a: Vector2i = Hex.spiral(int(cfg.get("radius", 9)))[i]
+	for i: int in Hex.spiral(f_radius).size():
+		var a: Vector2i = Hex.spiral(f_radius)[i]
 		var w: Vector2 = Hex.axial_to_world(a, float(cfg.get("hex_size", 3.2)))
 		var cell: int = planet.grid.nearest_from(planet.local_to_dir(anchor_cell, w.x, w.y), anchor_cell)
 		if planet.state[cell] == PlanetData.State.WATER:
 			field.water_ids[i] = true
+	if not fk.is_empty():  # [biomes] the frontier's own harbour / flood replaces planet lakes
+		field.water_ids = Frontiers.water_ids_for(fk, f_radius, float(cfg.get("hex_size", 3.2)))
+		field.float_mult = float(fk.get("float_mult", 1.0))
 	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
+	if not fk.is_empty():
+		Frontiers.toughen(field, float(fk.get("vol_mult", 1.0)))
 	field.place_landmarks(Economy.landmarks_for(field.biome))
 	field.bury_parts(Economy.parts)
 	if loaded and GameState.world.has("field"):
@@ -121,9 +140,18 @@ func _ready() -> void:
 			push_warning("Saved field didn't match this field; starting the field fresh.")
 	loaded = loaded and GameState.world.has("field")
 	_map_slice_to_planet()
+	if not fk.is_empty():  # [biomes] ice locks, drained streets, base start level: before the views
+		frontier = FrontierDistrict.new()
+		frontier.name = "Frontier"
+		add_child(frontier)
+		frontier.prepare(self)
 	view = FieldView.new()
 	view.name = "FieldView"
 	add_child(view)
+	if not fk.is_empty():  # [biomes] frontier ground textures and shader extras
+		view.layer_swap = fk.get("ground_layers", {})
+		var gfx: Array = fk.get("fx", [0, 0, 0, 0])
+		view.ground_fx = Vector4(float(gfx[0]), float(gfx[1]), float(gfx[2]), float(gfx[3]))
 	view.setup(field)
 	water = WaterView.new()
 	water.name = "Water"
@@ -132,6 +160,7 @@ func _ready() -> void:
 	litter = LitterView.new()
 	litter.name = "Litter"
 	add_child(litter)
+	litter.density_mult = float(fk.get("litter_mult", 1.0))  # [biomes]
 	litter.setup(field)
 	city = CityView.new()
 	city.name = "City"
@@ -142,7 +171,8 @@ func _ready() -> void:
 		dressing = StreetDressing.new()
 		dressing.name = "StreetDressing"
 		add_child(dressing)
-		dressing.build(layout, field, hub_index, district_name, "" if is_city else field.biome, int(GameState.world.get("hub_level", 1)))
+		dressing.skip_facades = not fk.is_empty()  # [biomes] (the Sunken City's facades sit below the waterline)
+		dressing.build(layout, field, hub_index, district_name, ("" if is_city else field.biome) if fk.is_empty() else str(fk.get("dressing_biome", "")), int(GameState.world.get("hub_level", 1)))
 	_cubes_root = Node3D.new()
 	_cubes_root.name = "Cubes"
 	add_child(_cubes_root)
@@ -155,6 +185,7 @@ func _ready() -> void:
 		GameState.world["hub_level"] = clampi(int(DevHooks.get_f("future", 5.0)), 1, 5)
 	hub = Hub.new()
 	hub.name = "Hub"
+	hub.cost_mult = float(fk.get("cost_mult", 1.0))  # [biomes] frontier bases cost more cubes
 	add_child(hub)
 	# Every base but Old Town's starter lean-to begins derelict and is fixed up level by level.
 	_apply_base_level(hub.level, false)
@@ -359,6 +390,8 @@ func _ready() -> void:
 	garden.name = "Garden"
 	garden.world = self
 	add_child(garden)
+	if frontier:  # [biomes] drained Sunken City streets keep their slot order
+		garden.late_hexes = frontier.drain_order.duplicate()
 	garden.setup()
 	hex_levels = HexLevels.new()
 	hex_levels.name = "HexLevels"
@@ -367,6 +400,8 @@ func _ready() -> void:
 	hex_levels.setup()
 	# Future layer: the district builds up into a glowing city as hexes level (planet/future_layer.gd).
 	if DevHooks.has("future"):
+		if frontier:  # [biomes] thaw the ice / run the pumps first so the preview covers every hex
+			frontier.dev_pre_preview()
 		FutureLayer.apply_preview(self, int(DevHooks.get_f("future", 5.0)))
 	var future := FutureLayer.new()
 	future.name = "FutureLayer"
@@ -435,6 +470,8 @@ func _ready() -> void:
 	bloom.name = "Bloom"
 	bloom.world = self
 	add_child(bloom)
+	if frontier:  # [biomes] frontier mechanics and visuals, once the scene is built
+		frontier.setup()
 	intro = Intro.new()
 	intro.world = self
 	add_child(intro)
@@ -752,6 +789,9 @@ func _on_hex_clean(hid: int) -> void:
 
 func _launch(to_hub: int) -> void:
 	if launching:
+		return
+	if not Frontiers.can_launch(planet, to_hub):  # [biomes] frontier destinations unlock late
+		EventBus.toast.emit("%s is out of range: %s" % [Frontiers.kind_name(planet.frontier_kind(to_hub)), "  ".join(Frontiers.unlock_status(planet.frontier_kind(to_hub), planet.frontier_hubs)["lines"])], "info")
 		return
 	if rocket == null:
 		_place_rocket(false)

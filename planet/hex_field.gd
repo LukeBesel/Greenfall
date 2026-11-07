@@ -50,6 +50,10 @@ var landmarks: Array[Dictionary] = []
 var biome: String = ""
 var biome_set: Dictionary = {}
 var piece_alive := PackedByteArray()
+## [biomes] Hexes whose junk can't be taken yet (Frozen Port ice). Scoop and robot queries skip them.
+var locked: Dictionary = {}
+## [biomes] More floating junk per lake hex (the Sunken City's flood, the Frozen Port's harbour).
+var float_mult: float = 1.0
 
 var cleaned_count: int = 0
 var junk_hex_count: int = 0
@@ -230,7 +234,7 @@ const HEX_BLOCKED: int = 2
 func _generate_floating(id: int, rng: RandomNumberGenerator, by_id: Dictionary) -> void:
 	var floaters: Array = [["plastic", "plastic_bottle_gallon"], ["plastic", "bleach_bottle"], ["plastic", "trashbag"], ["plastic", "multi_cleaner_bottle"], ["rubber", "rubber_duck_toy"], ["rubber", "old_tyre"], ["rubber", "dirty_football"], ["glass", "wine_bottles_01"], ["paper", "cardboard_box_01"], ["plastic", "plastic_crate_01"]]
 	var c: Vector3 = hex_center(id)
-	var count: int = rng.randi_range(70, 110)
+	var count: int = int(rng.randi_range(70, 110) * float_mult)  # [biomes]
 	var placed: int = 0
 	var tries: int = 0
 	while placed < count and tries < count * 6:
@@ -470,6 +474,8 @@ func find_scoop_target(origin: Vector3, forward: Vector3, reach: float, width: f
 		if h >= 0:
 			near[h] = true
 	for hid: int in near:
+		if locked.has(hid):  # [biomes]
+			continue
 		for pid: int in hex_pieces[hid]:
 			if piece_alive[pid] == 0:
 				continue
@@ -491,6 +497,8 @@ func pieces_within(pos: Vector3, r: float) -> PackedInt32Array:
 	var out := PackedInt32Array()
 	var r2: float = r * r
 	for hid: int in hexes_near(pos, 1 + int(r / hex_size)):
+		if locked.has(hid):  # [biomes]
+			continue
 		for pid: int in hex_pieces[hid]:
 			if piece_alive[pid] == 1 and piece_pos[pid].distance_squared_to(pos) <= r2:
 				out.append(pid)
@@ -502,6 +510,8 @@ func nearest_alive(pos: Vector3) -> int:
 	var best_d: float = INF
 	for ring: int in range(1, radius * 2 + 2):
 		for hid: int in hexes_near(pos, ring):
+			if locked.has(hid):  # [biomes]
+				continue
 			for pid: int in hex_pieces[hid]:
 				if piece_alive[pid] == 0:
 					continue

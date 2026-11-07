@@ -45,3 +45,10 @@ signal research_completed(research_id: String)
 signal achievement_unlocked(achievement_id: String)
 signal codex_unlocked(entry_key: String)
 @warning_ignore_restore("unused_signal")
+
+# [biomes] Frontier districts. cradle_district_complete fires once per save when the Cradle Returns
+# landing pad is clean and Sustained and the district is Growing enough (planet/frontier_district.gd).
+# It is the hook for the ark finale (story/*): see docs/DECISIONS.md.
+@warning_ignore_start("unused_signal")
+signal cradle_district_complete(hub_index: int)
+@warning_ignore_restore("unused_signal")

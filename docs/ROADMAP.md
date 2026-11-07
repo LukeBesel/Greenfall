@@ -148,3 +148,11 @@ If a session ends mid-way: check each worktree's `git log`, commit WIP, and resu
 - Save: builds and traits in each robot's dict; bin, fragments, presets in `GameState.flags.builder`; covered by `tools/save_roundtrip.gd`. Goals `builder_1`, `builder_full`, `builder_preset`; achievements Mix and Match, As the Makers Made It, Hat Rack. Tests: `tests/test_robot_builder.gd`.
 - Dev: `--builder-sample` (stocked bin), `--builder-demo` (showcase builds on the robots in the scene), `--builder-shot [--bshot-cam=x,y,z --bshot-at=x,y,z --bshot-fov --bshot-nohud]`, `--open=upgrades --tab=builder [--builder-robot=N --builder-slot=ID --builder-opt=N]`.
 - Next: per-hub kiosk for the stall; Codex Parts page entries for builder parts; trait-aware WREN lines.
+## Update: frontier districts (wt/biomes)
+- Done: four late-game frontier districts, one extra hub each, reached from the Rockets tab's FRONTIERS section (`data/frontiers.json`, `planet/frontiers.gd`, `planet/frontier_district.gd`, `planet/frontier_view.gd`, `ui/frontier_rockets.gd`). Radius-4 fields, bulkier junk, bales x3-x12, base costs x4-x16, own junk sets, ground textures (sand_01, snow_02, damp_sand), ground shader extras (sand ripples, frost, wet silt), sky/fog grades, landmarks staged ruin -> painted -> white/futuristic with base level.
+  - Dust Flats: dunes, half-buried ship, solar farm, wind turbines; sandstorms re-dust unsheltered clean hexes (Sustained hexes shelter neighbours); dry well, slow tanks.
+  - Frozen Port: cranes, container yard, frozen harbour; per-hex ice locks junk; heaters (E) and Lumi's beam thaw; greenhouses (E with the seed tool) or Cold-Hardy Seeds for planting.
+  - Sunken City: flooded downtown, the city rises as pumps drain ring by ring once 80% of the next ring is skimmed; stranded debris on revealed streets.
+  - Cradle Returns: white launch city, gantries, landing pad (7 hexes, must be Sustained) + 70% Growing -> `EventBus.cradle_district_complete(hub_index)` (ark finale hook, see DECISIONS).
+  - 8 research nodes (tiers 6-7), 7 native/cold-hardy species, 9 Codex Frontiers entries, WREN lines. Tests `tests/test_frontiers.gd`; save round trip covers frontier state. Balance: docs/BALANCE.md "Frontier districts".
+- Next: autoplay support (rockets, heaters), achievements for frontiers, a play-test of frontier pacing.

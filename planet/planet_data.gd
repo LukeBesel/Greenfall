@@ -6,7 +6,12 @@ extends RefCounted
 
 enum State { JUNK, CLEAN, PLANTED, GROWING, RESTORED, WATER }
 
-const BIOMES: Array[String] = ["rustlands", "sprawl", "neon_coast", "fungal_marsh", "dust_dunes", "frostcap", "old_capital", "lake"]
+const BIOMES: Array[String] = ["rustlands", "sprawl", "neon_coast", "fungal_marsh", "dust_dunes", "frostcap", "old_capital", "lake",
+	"dust_flats", "frozen_port", "sunken_city", "cradle_landing"]  # [biomes] late-game frontier biomes (planet/frontiers.gd)
+## [biomes] Frontier districts (data/frontiers.json): one extra hub each, appended after the
+## ordinary hubs so existing hub indices never move. kind id -> hub index.
+const FRONTIER_KINDS: Array[String] = ["dust_flats", "frozen_port", "sunken_city", "cradle_returns"]
+const FRONTIER_BIOMES: Array[String] = ["dust_flats", "frozen_port", "sunken_city", "cradle_landing"]
 
 var grid: GeoSphere
 var seed_value: int
@@ -18,6 +23,8 @@ var junk := PackedFloat32Array()    # remaining junk fraction (1 = untouched)
 var state := PackedByteArray()
 var cities: Array[Dictionary] = []  # {name, cell, rings, capital}
 var hubs: Array[int] = []           # hub site cells (first = Junkyard Hub / start)
+var frontier_hubs: Dictionary = {}  # [biomes] frontier kind id -> hub index
+var base_hub_count: int = 0         # [biomes] hubs before the frontier ones
 var _land: int = 0
 var _done: int = 0
 
@@ -85,6 +92,7 @@ func generate(water_fraction: float = 0.25, city_count: int = 24) -> void:
 				break
 	_place_cities(city_count)
 	_place_hubs()
+	_place_frontiers()
 	recount()
 
 
@@ -143,6 +151,61 @@ func _place_hubs() -> void:
 				break
 		if ok:
 			hubs.append(c)
+
+
+## [biomes] One remote hub per frontier kind, chosen to suit it: the Dust Flats in dry country,
+## the Frozen Port near a pole, the Sunken City among lakes, the Cradle's launch city near the
+## equator. Deterministic from the seed; the cells around each are painted with its biome.
+func _place_frontiers() -> void:
+	base_hub_count = hubs.size()
+	frontier_hubs.clear()
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value + 11
+	for k: int in FRONTIER_KINDS.size():
+		var best: int = -1
+		var best_score: float = -INF
+		for t: int in 500:
+			var c: int = rng.randi_range(0, cell_count() - 1)
+			if state[c] == State.WATER or city[c] >= 0:
+				continue
+			var near: float = INF
+			for h: int in hubs:
+				near = minf(near, grid.centers[c].angle_to(grid.centers[h]))
+			if near < 0.2:
+				continue
+			var lat: float = absf(asin(clampf(grid.centers[c].y, -1.0, 1.0))) / (PI * 0.5)
+			var score: float = minf(near, 0.5) + rng.randf() * 0.1
+			match FRONTIER_KINDS[k]:
+				"dust_flats":
+					score += 1.0 if biome[c] == BIOMES.find("dust_dunes") else 0.0
+				"frozen_port":
+					score += lat * 1.5
+				"sunken_city":
+					var wet: int = 0
+					for n: int in cells_within(c, 2):
+						if state[n] == State.WATER:
+							wet += 1
+					score += minf(wet, 8) * 0.15
+				_:
+					score += (1.0 - lat)
+			if score > best_score:
+				best_score = score
+				best = c
+		if best < 0:
+			continue
+		hubs.append(best)
+		frontier_hubs[FRONTIER_KINDS[k]] = hubs.size() - 1
+		for n: int in cells_within(best, 2):
+			if state[n] != State.WATER:
+				biome[n] = BIOMES.find(FRONTIER_BIOMES[k])
+
+
+## [biomes] Frontier kind id of a hub ("" for ordinary bases).
+func frontier_kind(hub_index: int) -> String:
+	for k: String in frontier_hubs:
+		if int(frontier_hubs[k]) == hub_index:
+			return k
+	return ""
 
 
 ## Cells within `rings` steps of a cell (breadth-first).

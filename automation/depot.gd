@@ -137,6 +137,8 @@ func sell_factor() -> float:
 	var m: float = 1.0 + value_bonus
 	if w and w.get("hub") != null:
 		m += float(w.hub.sell_mult())
+	if w and w.get("field") != null:  # [biomes] frontier junk sells for more (data/frontiers.json value_mult)
+		m *= float(Frontiers.def_for_biome(str(w.field.biome)).get("value_mult", 1.0))
 	return m
 
 

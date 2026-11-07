@@ -419,7 +419,7 @@ func _pick_work_hex() -> int:
 	var z: Array = _zone()
 	for h: Variant in z:
 		var id: int = int(h)
-		if id < 0 or id >= field.hex_count() or field.hex_hub[id] != 0 or field.is_clean(id) or field.is_water(id) != lake or _skip.has(1000000 + id):
+		if id < 0 or id >= field.hex_count() or field.hex_hub[id] != 0 or field.is_clean(id) or field.is_water(id) != lake or _skip.has(1000000 + id) or field.locked.has(id):  # [biomes] ice
 			continue
 		var d: float = field.hex_center(id).distance_squared_to(global_position)
 		if d < best_d:
@@ -428,7 +428,7 @@ func _pick_work_hex() -> int:
 	if best >= 0 or (_stay() and not z.is_empty()):
 		return best
 	for id: int in field.hex_count():
-		if field.hex_hub[id] != 0 or field.is_clean(id) or field.is_water(id) != lake or _skip.has(1000000 + id):
+		if field.hex_hub[id] != 0 or field.is_clean(id) or field.is_water(id) != lake or _skip.has(1000000 + id) or field.locked.has(id):  # [biomes] ice
 			continue
 		var d: float = field.hex_center(id).distance_squared_to(global_position)
 		if d < best_d:
@@ -794,7 +794,7 @@ func _find_slot(g: Garden, empty: bool) -> int:
 		if not world.field.is_clean(g.slot_hex[s]) or _skip.has(-2 - s):
 			continue
 		if empty:
-			if g.slot_species[s] >= 0:
+			if g.slot_species[s] >= 0 or not g.plantable(s):  # [biomes] cold / flooded slots
 				continue
 		elif g.slot_species[s] < 0 or g.slot_water[s] > 10.0:
 			continue
@@ -816,7 +816,7 @@ func _find_slot_in(g: Garden, empty: bool, z: Array) -> int:
 			if _skip.has(-2 - s):
 				continue
 			if empty:
-				if g.slot_species[s] >= 0:
+				if g.slot_species[s] >= 0 or not g.plantable(s):  # [biomes] cold / flooded slots
 					continue
 			elif g.slot_species[s] < 0 or g.slot_water[s] > 10.0:
 				continue

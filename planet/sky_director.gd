@@ -18,6 +18,11 @@ var frozen: bool = false
 ## (added to the haze reduction) and tints the night fog toward its aurora (rgb, a = strength).
 var clear_bonus: float = 0.0
 var night_tint := Color(0, 0, 0, 0)
+## [biomes] Frontier colour grade (data/frontiers.json "grade") and a sandstorm amount 0..1
+## (planet/frontier_district.gd). The grade eases off as the district is restored (grade_amt).
+var grade: Dictionary = {}
+var grade_amt: float = 1.0
+var storm: float = 0.0
 
 
 func setup(p_env: Environment, p_sun: DirectionalLight3D) -> void:
@@ -90,3 +95,38 @@ func _apply() -> void:
 	env.adjustment_contrast = 1.1
 	env.ambient_light_energy = lerpf(0.55, 1.25 if env.sdfgi_enabled else 1.7, maxf(sun_up, 0.35))
 	env.tonemap_exposure = lerpf(1.6, 1.3, sun_up)
+	if not grade.is_empty() or storm > 0.0:
+		_apply_grade(sun_up)
+
+
+## [biomes] Blend the frontier grade over the computed sky and fog; then the storm on top.
+func _apply_grade(sun_up: float) -> void:
+	var a: float = clampf(grade_amt, 0.0, 1.0)
+	if not grade.is_empty():
+		var fog: Color = _col(grade.get("fog", []), env.fog_light_color)
+		env.fog_light_color = env.fog_light_color.lerp(fog, float(grade.get("fog_amt", 0.5)) * a)
+		env.fog_density *= lerpf(1.0, float(grade.get("fog_mult", 1.0)), a)
+		env.volumetric_fog_density *= lerpf(1.0, float(grade.get("fog_mult", 1.0)), a)
+		env.volumetric_fog_albedo = env.volumetric_fog_albedo.lerp(fog, float(grade.get("fog_amt", 0.5)) * a * 0.7)
+		var sk: float = float(grade.get("sky_amt", 0.5)) * a
+		sky_mat.rayleigh_color = sky_mat.rayleigh_color.lerp(_col(grade.get("rayleigh", []), sky_mat.rayleigh_color), sk)
+		sky_mat.mie_color = sky_mat.mie_color.lerp(_col(grade.get("mie", []), sky_mat.mie_color), sk)
+		env.adjustment_saturation *= lerpf(1.0, float(grade.get("sat", 1.0)), a)
+		env.tonemap_exposure *= lerpf(1.0, float(grade.get("exposure", 1.0)), a)
+	if storm > 0.0:
+		var st: float = clampf(storm, 0.0, 1.0)
+		var dust := Color(0.78, 0.6, 0.4)
+		env.fog_light_color = env.fog_light_color.lerp(dust, st * 0.85)
+		env.fog_density = lerpf(env.fog_density, 0.028, st)
+		env.volumetric_fog_density = lerpf(env.volumetric_fog_density, 0.03, st)
+		env.volumetric_fog_albedo = env.volumetric_fog_albedo.lerp(dust, st)
+		sun.light_energy *= 1.0 - 0.55 * st
+		sky_mat.mie_coefficient = lerpf(sky_mat.mie_coefficient, 0.05, st)
+		sky_mat.mie_color = sky_mat.mie_color.lerp(dust, st)
+		env.adjustment_saturation *= 1.0 - 0.15 * st
+
+
+static func _col(a: Variant, fallback: Color) -> Color:
+	if a is Array and (a as Array).size() >= 3:
+		return Color(float(a[0]), float(a[1]), float(a[2]))
+	return fallback

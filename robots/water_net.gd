@@ -41,6 +41,24 @@ static func cfg() -> Dictionary:
 	return Economy.robot_cfg.get("water_tank", {})
 
 
+## [biomes] Frontier water rules (data/frontiers.json "water"): a dry base well and slow tanks.
+func _water_rules() -> Dictionary:
+	if world == null or world.get("field") == null:
+		return {}
+	return Frontiers.def_for_biome(str(world.field.biome)).get("water", {})
+
+
+func barrel_dry() -> bool:
+	return bool(_water_rules().get("barrel_dry", false))
+
+
+func tank_regen_mult() -> float:
+	var w: Dictionary = _water_rules()
+	if w.is_empty():
+		return 1.0
+	return float(w.get("tank_regen_mult", 1.0)) * (float(w.get("condenser_mult", 1.0)) if Research.has("dew_condensers") else 1.0)
+
+
 func barrel_pos() -> Vector3:
 	return (world.depot.global_position if world and world.get("depot") else Vector3.ZERO) + BARREL_OFFSET
 
@@ -50,7 +68,8 @@ func refill_points() -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	if world == null:
 		return out
-	out.append({"kind": "barrel", "pos": barrel_pos(), "index": -1})
+	if not barrel_dry():  # [biomes] the Dust Flats well is dry: Drips need Water Tanks
+		out.append({"kind": "barrel", "pos": barrel_pos(), "index": -1})
 	var op: Variant = world.get("outposts")  # [outposts] water drums at repaired outposts
 	if op is Outposts:
 		out.append_array((op as Outposts).refill_points())
@@ -158,7 +177,7 @@ func _add_tank(pos: Vector3, water: float, fx: bool) -> void:
 func _process(delta: float) -> void:
 	_t += delta
 	var cap: float = float(cfg().get("capacity", 80.0))
-	var regen: float = float(cfg().get("regen", 1.2))
+	var regen: float = float(cfg().get("regen", 1.2)) * tank_regen_mult()  # [biomes]
 	for t: Dictionary in tanks:
 		t["water"] = minf(cap, float(t["water"]) + regen * delta)
 		var g: Node3D = t["gauge"]

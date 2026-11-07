@@ -307,3 +307,50 @@ events, so a human levels a little faster.
   `first_seed.hexes_needed` or Multi-Lock's `base_cost`.
 - `tier_1` (Mk II) needs a Restored Control Core, which only comes from digging/salvage luck; it sits late in
   the chain so it can't block.
+
+## Frontier districts (late game, wt/biomes)
+
+Four frontier districts extend the grind after the ordinary bases (`data/frontiers.json`). Numbers from
+`godot --headless --path . res://tools/frontier_balance.tscn` (one representative seed; "Value at scale" is
+volume x junk value x the frontier's `value_mult`, before Pure/Perfect bonuses and hub sell bonus;
+"Base 1-5 cubes" is the sum of hub level cube costs x `cost_mult`):
+
+| District | Hexes (water) | Pieces | Junk volume | Volume x value | Value at scale | Base 1-5 cubes |
+|---|---|---|---|---|---|---|
+| Ordinary district | 32 (0) | 13232 | 12925 | 10130 | 10130 | 78500 |
+| Dust Flats | 60 (0) | 23729 | 37772 | 31109 | 93327 | 314000 |
+| Frozen Port | 60 (23) | 22520 | 38924 | 28777 | 143885 | 549500 |
+| Sunken City | 60 (54) | 15569 | 19193 | 13209 | 105675 | 628000 |
+| Cradle Returns | 60 (0) | 23729 | 48696 | 39197 | 470369 | 1256000 (starts at base 3: 1.04M left) |
+
+- **Size**: radius 4 (60 junk hexes vs ~33), 1.5-3x the junk volume of an ordinary district, bulkier pieces
+  (`vol_mult` 1.3-1.6: more compartment per piece, so more bales per hex). Sunken City floats 3.2x the usual
+  lake junk and every drained hex gets ~30% of its pieces back as stranded silt.
+- **Pay**: bales sell for x3 / x5 / x8 / x12, so cubes per minute keep pace with late-game research and robot
+  tiers; base levels cost x4 / x7 / x8 / x16 the cubes (materials unchanged: finite per district). The
+  cost-to-junk-value ratio (3-6) stays under the ordinary district's (~7.8) because the garden stipend and
+  hex-level rewards are not multiplied in frontiers.
+- **Gates** (unlock chain): Dust Flats = Dune Charts (600 Data, 7 min) + 2 bases at level 5; Frozen Port =
+  Thermal Lance (800, 8 min) + 3 bases at 5 + Dust Flats base 3; Sunken City = Pump Works (1000, 10 min,
+  after Dew Condensers) + 4 bases at 5 + Frozen Port base 3; Cradle Returns = Ark Beacon (1500, 15 min) +
+  all three frontier bases at 5 + every frontier 50% Growing or better. Research tiers 6-7 add 8 nodes
+  (5,850 Data in total).
+- **Rarer seeds**: frontier natives have seed_yield 0.6-0.9 (meadow species 0.5-1.5) and ordinary species
+  only roll at `native_mult` (0.35 in the Dust Flats, 0.5 in the Sunken City); the Frozen Port grows nothing
+  outdoors without Cold-Hardy Seeds (950 Data) and only cold-hardy species then.
+- **Twists that cost time** (all tunable in data):
+  - Dust Flats: a sandstorm every 5-8 min (first ~2.5 min after landing) re-dusts 2 + cleaned/10 hexes (max 6)
+    with ~7% of their volume; planted hexes and anything within 1 ring (2 with Dune Fences, which also cut the
+    storm 40%) of a Sustained hex are safe. Plants dry 1.5x faster; the base well is dry and tanks refill at
+    0.3x (x2.5 with Dew Condensers), so Drips need several tanks.
+  - Frozen Port: ~85% of hexes (50% of ring 1) and the whole harbour start iced. Beam thaw 240 s per hex
+    (120 s with the Thermal Lance), heater 80 s (50 s with Heat Pumps) plus 22% (33%) on each neighbour.
+    Heaters cost 90 x 1.32^n cubes (max 16), greenhouses 450 x 1.25^n (+25% growth inside).
+  - Sunken City: 54 of 60 hexes start under water; each pump stage needs 80% of the next ring skimmed. Three
+    stages (rings 2, 3, 4), each reveals streets with stranded junk for Scoopies and Lumi.
+  - Cradle Returns: the 7-hex landing pad must be Sustained (level 4) and 70% of the district Growing (3+).
+- **Pacing (estimate, not yet measured)**: with a late-game fleet (Mk III-IV, ~15 robots per district), an
+  ordinary district took ~75 min to base 5 in the 2-hour autoplay pass. Scaling by junk volume and the extra
+  mechanics, expect roughly 2.5-3.5 h per frontier to base 5 and 50% Growing, and 3-5 h for the Cradle pad
+  and 70% Growing: about 12-16 h of long tail. The autoplay bot cannot fly rockets or place heaters yet, so
+  these need a play-test; tune `pieces_mult`, `value_mult`, `cost_mult` and the storm/ice numbers first.

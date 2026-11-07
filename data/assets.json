@@ -89,7 +89,17 @@
     "tire_pump",
     "rusted_spade_01",
     "tree_stump_01",
-    "hand_truck"
+    "hand_truck",
+    "crystalline_iceplant",
+    "dead_quiver_trunk",
+    "wild_rooibos_bush",
+    "flower_ursinia",
+    "periwinkle_plant",
+    "moss_01",
+    "namaqualand_rocks_01",
+    "dutch_ship_medium",
+    "small_lpg_tank",
+    "industrial_pastic_container"
   ],
   "polyhaven_textures": [
     "brown_mud_dry",
@@ -121,7 +131,10 @@
     "brick_wall_02",
     "red_brick",
     "painted_concrete",
-    "asphalt_02"
+    "asphalt_02",
+    "sand_01",
+    "snow_02",
+    "damp_sand"
   ],
   "polyhaven_hdris": []
 }

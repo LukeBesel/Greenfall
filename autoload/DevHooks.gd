@@ -48,6 +48,11 @@ extends Node
 ##   --builder-sample   [drones] stocked builder parts bin; --builder-demo showcase builds on the robots;
 ##                      --builder-shot fixed camera (--bshot-cam=x,y,z --bshot-at=x,y,z --bshot-fov --bshot-nohud --bshot-lumi);
 ##                      --tab=builder [--builder-robot=N --builder-slot=ID --builder-opt=N] focuses a part
+##   --frontier=ID      [biomes] start in a frontier district (dust_flats, frozen_port, sunken_city, cradle_returns);
+##                      --frontiers-open lets the rocket fly there without the unlocks; --storm[=S] sandstorm after S s
+##                      (--storm-hold keeps it blowing); --thaw-all; --frontier-heaters=N; --frontier-greenhouses=N;
+##                      --drain=N runs the Sunken City pumps N times; --frontier-done[=S] fires the Cradle hook;
+##                      --frontier-cam=dist,pitch,yaw and --frontier-nohud for landscape screenshots
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0

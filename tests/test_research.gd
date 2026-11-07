@@ -39,13 +39,15 @@ func _data() -> float:
 
 func test_tree_data_is_consistent() -> void:
 	var ids: Array[String] = Research.ids()
-	assert_between(ids.size(), 28, 36, "about 30 nodes")
+	assert_between(ids.size(), 28, 40, "about 30 nodes plus the frontier tiers")  # [biomes] tiers 6-7
 	assert_eq(Research.branches().size(), 5)
 	for id: String in ["conveyor", "auto_baler", "recycler", "rocket_cargo"]:
 		assert_true(Research.exists(id), "logistics node %s" % id)
 	for id: String in ids:
 		var d: Dictionary = Research.def(id)
-		assert_between(float(d["time_s"]), 30.0, 300.0, "%s takes 30 s - 5 min" % id)
+		# [biomes] frontier tiers (6-7) are the late-game long tail: up to 15 min.
+		var max_s: float = 300.0 if int(d["tier"]) < 6 else 900.0
+		assert_between(float(d["time_s"]), 30.0, max_s, "%s takes 30 s - %d min" % [id, int(max_s / 60.0)])
 		for r: String in Research.requires(id):
 			assert_true(Research.exists(r), "%s requires known %s" % [id, r])
 			assert_lt(int(Research.def(r)["tier"]), int(d["tier"]), "%s requires an earlier tier" % id)

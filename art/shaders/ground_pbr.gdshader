@@ -22,6 +22,8 @@ uniform float show_grid = 0.0;
 // Wilderness biome look (data/junk.json "biomes"): rgb = colour the bare ground leans to, a = amount.
 uniform vec4 biome_tint = vec4(1.0, 1.0, 1.0, 0.0);
 uniform vec3 grass_tint = vec3(1.0);
+// [biomes] Frontier ground extras: x = wind-rippled sand, y = frost/snow, z = wet silt, w unused.
+uniform vec4 frontier_fx = vec4(0.0);
 
 varying vec3 wpos;
 const float SQRT3 = 1.7320508;
@@ -170,6 +172,32 @@ void fragment() {
 		dirty.alb = mix(dirty.alb, lum_d * biome_tint.rgb * 1.9, biome_tint.a * (0.7 + 0.3 * n2));
 	}
 	Mat m = mixm(dirty, base, reveal);
+	// [biomes] Frontier ground extras (off roads and sidewalks).
+	if (frontier_fx.x > 0.001 && !is_road && !is_walk && !is_yard) {
+		// Wind ripples: long parallel crests that wander, crisp on the lit side.
+		float ph = dot(p, vec2(0.83, 0.56)) * 2.6 + fbm(p * 0.18) * 7.0;
+		float crest = sin(ph);
+		float amt = frontier_fx.x * (0.6 + 0.4 * smoothstep(0.3, 0.7, n2));
+		m.alb *= 1.0 + crest * 0.06 * amt;
+		m.nrm.x = clamp(m.nrm.x + cos(ph) * 0.12 * amt, 0.0, 1.0);
+		m.alb = mix(m.alb, m.alb * vec3(1.05, 0.98, 0.9), amt * 0.4);
+	}
+	if (frontier_fx.y > 0.001 && !is_yard) {
+		// Frost and old snow: patchy, heavier on dirty ground and in hollows, thin on clean.
+		float fr = smoothstep(0.32, 0.62, fbm(p * 0.21 + 17.0) + n3 * 0.25) * frontier_fx.y;
+		fr *= mix(1.0, 0.45, reveal);
+		vec3 snow = vec3(0.86, 0.9, 0.96) * (0.92 + 0.08 * n1);
+		m.alb = mix(m.alb, snow, fr * 0.85);
+		m.arm.g = mix(m.arm.g, 0.42, fr);
+		m.nrm = mix(m.nrm, vec3(0.5, 0.5, 1.0), fr * 0.6);
+	}
+	if (frontier_fx.z > 0.001 && !is_yard) {
+		// Wet silt left by the flood: darker, glossy, puddled in the low spots.
+		float wet = frontier_fx.z * (0.55 + 0.45 * smoothstep(0.4, 0.7, fbm(p * 0.33 + 41.0)));
+		m.alb *= mix(1.0, 0.6, wet);
+		m.alb = mix(m.alb, m.alb * vec3(0.92, 0.96, 0.95), wet);
+		m.arm.g = mix(m.arm.g, 0.18, wet);
+	}
 	// Life: planted soil darkens and greens over; restored hexes are lush grass (not on roads).
 	if (life > 0.001 && !is_road) {
 		float g = smoothstep(0.0, 1.0, life + (fbm(p * 0.6) - 0.5) * 0.35);

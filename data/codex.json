@@ -5,7 +5,8 @@
     {"id": "plants", "name": "Plants", "icon": "flower"},
     {"id": "robots", "name": "Robots", "icon": "bot"},
     {"id": "shards", "name": "Memory Shards", "icon": "book"},
-    {"id": "landmarks", "name": "Landmarks", "icon": "map"}
+    {"id": "landmarks", "name": "Landmarks", "icon": "map"},
+    {"id": "frontiers", "name": "Frontiers", "icon": "map"}
   ],
   "junk": {
     "metal": {"kg_per_unit": 2.4, "hint": "Rusty, clanky, everywhere.", "desc": "Cans, tins and bent brackets. Most of it was made to last, and it did. Pressed into bales, it can be rolled and stamped into something useful again."},
@@ -27,7 +28,14 @@
     "nettle": {"name": "Nettle", "hint": "Needs Hardy Nettles research.", "desc": "Stingy, stubborn and wonderful. Nettles pull nutrients up from deep down, and caterpillars adore them."},
     "mint": {"name": "Wild Mint", "hint": "Needs Wild Mint research.", "desc": "Crush a leaf and the whole hex smells fresh. Mint spreads quickly. Nobody minds."},
     "hedge": {"name": "Hedgerow", "hint": "Needs Hedgerows research.", "desc": "A dense green wall, alive with small rustlings. Hedges are highways for hedgehogs, and hotels for wrens."},
-    "pine": {"name": "Pine Sapling", "hint": "Needs Evergreen Saplings research.", "desc": "Knee-high today. In a hundred years, a forest that smells of resin and rain. Lumi plants it carefully, for whoever comes after."}
+    "pine": {"name": "Pine Sapling", "hint": "Needs Evergreen Saplings research.", "desc": "Knee-high today. In a hundred years, a forest that smells of resin and rain. Lumi plants it carefully, for whoever comes after."},
+    "iceplant": {"name": "Crystalline Iceplant", "hint": "Plant in the Dust Flats.", "desc": "A desert succulent whose leaves are covered in tiny glassy blisters that store water. It glitters at noon and needs almost nothing to drink."},
+    "rooibos": {"name": "Wild Rooibos", "hint": "Plant in the Dust Flats.", "desc": "A needle-leafed bush that turns rusty red in the heat. Its roots go down further than you would believe. It holds the sand in place."},
+    "ursinia": {"name": "Ursinia", "hint": "Plant in the Dust Flats.", "desc": "A bright orange desert daisy. After the first rain in years, whole slopes of them opened at once, and the Cradle's old cameras saw it from orbit."},
+    "periwinkle": {"name": "Periwinkle", "hint": "A cold-hardy seed for the Frozen Port.", "desc": "An evergreen groundcover with violet flowers. It keeps its leaves under snow and simply carries on in spring."},
+    "frost_moss": {"name": "Frost Moss", "hint": "A cold-hardy seed for the Frozen Port.", "desc": "A tight green cushion that grows on cold stone. It is slow, but it survives what nothing else does, and it makes soil where there was none."},
+    "reed": {"name": "Marsh Reed", "hint": "Plant on the drained streets of the Sunken City.", "desc": "Tall reeds that drink the silt dry and filter the last of the floodwater. Little birds sit on them and complain about the wind."},
+    "marsh_mint": {"name": "Marsh Mint", "hint": "Plant in the Sunken City.", "desc": "Mint that does not mind wet feet. The drained streets smell of it on warm evenings."}
   },
   "robots": {
     "scoopie": {"hint": "Build one at the workbench.", "desc": "A small, earnest cleaner with one scoop arm and a lot of enthusiasm. It hums when it finds a good pile."},
@@ -62,6 +70,23 @@
     "tree_stump_01": {"name": "Tree Stump", "hint": "Where a forest used to be.", "desc": "Cut, not fallen. The rings count back further than the Ledger. Moss has started a quiet negotiation with the bark."},
     "ocean_buoy": {"name": "Washed-up Buoy", "hint": "On a far coast.", "desc": "A channel buoy that drifted inland on a storm tide and never found its way back. Its lamp still blinks, once an hour, out of habit."},
     "wooden_crate_02": {"name": "Cargo Crate", "hint": "Near the shore, or the dunes.", "desc": "A slatted crate stencilled CRADLE SUPPLY: FRAGILE. Empty. Whatever was inside was planted somewhere, a long time ago."},
-    "barrel_03": {"name": "Sand-Blasted Drum", "hint": "Where the wind carries sand.", "desc": "Centuries of wind have polished this drum down to bare, shining metal. In the dunes even the junk gets buffed."}
+    "barrel_03": {"name": "Sand-Blasted Drum", "hint": "Where the wind carries sand.", "desc": "Centuries of wind have polished this drum down to bare, shining metal. In the dunes even the junk gets buffed."},
+    "dead_quiver_trunk": {"name": "Dead Quiver Tree", "hint": "Out in the Dust Flats.", "desc": "A desert tree that stored water in its trunk until there was none left to store. It still stands, bleached silver, pointing at the sky."},
+    "namaqualand_rocks_01": {"name": "Desert Rocks", "hint": "Scattered over the Dust Flats.", "desc": "Wind-polished stones. Lumi swears one of them looks like WREN's logo. WREN says it does not."},
+    "small_lpg_tank": {"name": "Gas Bottle", "hint": "Frozen into the port yard.", "desc": "A small gas bottle with a frozen valve. The harbour heaters once ran on these. Now they run on Lumi."},
+    "portable_generator": {"name": "Field Generator", "hint": "Near the Cradle's old launch field.", "desc": "A ground-crew generator, still labelled LAUNCH SUPPORT. It powered the floodlights on the night the Cradle left."},
+    "utility_box_01": {"name": "Launch Utility Box", "hint": "Near the Cradle's old launch field.", "desc": "A junction box for the launch field's lights. Someone wrote GOOD LUCK on the door in marker pen, three hundred years ago."},
+    "concrete_road_barrier_02": {"name": "Blast Barrier", "hint": "Around the landing pad.", "desc": "Barriers that kept the crowd back from the pad. The crowd has been gone a long time. The barriers took their job very seriously."}
+  },
+  "frontiers": {
+    "dust_flats": {"name": "Dust Flats", "hint": "Research Dune Charts and fly there.", "desc": "Old salt flats where a solar farm once powered half a continent. Sandstorms roll in every few minutes and bury cleaned ground again; Sustained hexes shelter their neighbours. The well is dry: Drips need Water Tanks."},
+    "frozen_port": {"name": "Frozen Port", "hint": "Research the Thermal Lance and fly there.", "desc": "A container harbour frozen solid. Junk is locked in ice until it is thawed: Lumi's beam melts it slowly, heaters melt it fast and warm the hexes around them. Plants need a greenhouse, or Cold-Hardy Seeds."},
+    "sunken_city": {"name": "Sunken City", "hint": "Research Pump Works and fly there.", "desc": "A downtown that went under when the sea walls failed. Skimmers net the floating junk; once most of a ring is clean, the old pumps run and the water drops, revealing streets full of stranded debris."},
+    "cradle_returns": {"name": "Cradle Returns", "hint": "Restore all three frontiers and research the Ark Beacon.", "desc": "The launch city the Cradle left from. Its towers were kept by ground crews, but the landing field is buried. Clean and green the pad, and the ark can come home."},
+    "sandstorm": {"name": "Sandstorms", "hint": "Wait for the wind in the Dust Flats.", "desc": "The wind picks up junk from the open flats and drops it on clean ground. Planted hexes are never touched, and Sustained hexes break the wind for every hex next to them."},
+    "thaw": {"name": "Thawing", "hint": "Melt the ice in the Frozen Port.", "desc": "Hold the beam on ice and it slowly melts. A heater thaws a whole hex in about a minute and keeps warming the hexes around it."},
+    "greenhouse": {"name": "Greenhouses", "hint": "Build one in the Frozen Port.", "desc": "A glass hex over clean ground. Anything grows inside, a quarter faster than outdoors."},
+    "pumps": {"name": "The Old Pumps", "hint": "Clean the water in the Sunken City.", "desc": "The city's flood pumps still work. They only needed the drains cleared. Every time they run, a ring of streets comes back out of the water."},
+    "ark_pad": {"name": "The Landing Pad", "hint": "Find it in Cradle Returns.", "desc": "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Sustained before the ark will trust it."}
   }
 }
