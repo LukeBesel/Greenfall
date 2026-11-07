@@ -393,14 +393,16 @@ static func slag_mesh(seed_v: int) -> ArrayMesh:
 	nz.frequency = 1.4
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var na: int = 28
-	var nr: int = 9
+	var na: int = 40
+	var nr: int = 12
 	for j: int in na + 1:
 		var a: float = TAU * j / na
 		for i: int in nr:
 			var u: float = float(i) / (nr - 1)
-			var rr: float = u * (1.0 + nz.get_noise_2d(cos(a), sin(a)) * 0.25)
-			var hgt: float = pow(1.0 - u, 1.3) + nz.get_noise_2d(cos(a) * u * 3.0, sin(a) * u * 3.0) * 0.06
+			var rr: float = u * (1.0 + nz.get_noise_2d(cos(a), sin(a)) * 0.35)
+			# Lumpy tipped-load profile: a ragged crest, dumped lobes and gullies down the flanks.
+			var gully: float = absf(nz.get_noise_2d(cos(a) * 4.0 + 9.0, sin(a) * 4.0)) * 0.12 * u
+			var hgt: float = pow(1.0 - u, 1.15) * (1.0 + nz.get_noise_2d(cos(a) * 2.0 + 3.0, sin(a) * 2.0) * 0.25) - gully + nz.get_noise_2d(cos(a) * u * 6.0, sin(a) * u * 6.0) * 0.05 * (1.0 - u)
 			st.add_vertex(Vector3(cos(a) * rr, maxf(hgt, 0.0) - (0.05 if i == nr - 1 else 0.0), sin(a) * rr))
 	for j: int in na:
 		for i: int in nr - 1:

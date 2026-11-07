@@ -866,8 +866,20 @@ func _apply_restore() -> void:
 
 # --- Dev ------------------------------------------------------------------------------------
 
-## --planet-cam=dist,pitch,yaw[,fov] for landscape shots.
+## --planet-cam=dist,pitch,yaw[,fov] for landscape shots; --planet-view=x,y,z,lx,ly,lz[,fov] puts a
+## free camera anywhere (landmark close-ups beyond the walkable field).
 func _dev_hooks() -> void:
+	if DevHooks.has("planet-view"):
+		var v: PackedStringArray = DevHooks.get_s("planet-view", "0,40,40,0,0,0").split(",")
+		if v.size() >= 6:
+			var fc := Camera3D.new()
+			fc.name = "PlanetViewCam"
+			fc.far = 2600.0
+			fc.fov = float(v[6]) if v.size() > 6 else 55.0
+			add_child(fc)
+			fc.global_position = Vector3(float(v[0]), float(v[1]), float(v[2]))
+			fc.look_at(Vector3(float(v[3]), float(v[4]), float(v[5])))
+			fc.current = true
 	if DevHooks.has("planet-nohud"):  # clean landscape shots: hide every overlay (see _process)
 		set_meta("nohud", true)
 	if DevHooks.has("planet-cam"):
