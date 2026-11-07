@@ -3,6 +3,7 @@ extends Node3D
 ##   --view=portrait : alone at the portrait's 3/4 angle and scale, warm side light, dark warm
 ##                     backdrop, left claw reaching for a can with the cyan pickup lasers.
 ##   --view=turn     : front, 3/4, side, back 3/4 and back (the turnaround layout), one PNG each.
+##   --view=blink    : head close-up, a blink at phase 0 (open), 50 ms (closing), 90 ms (shut), 170 ms (opening).
 ##   --out=screenshots/hero/x  (writes <out>.png or <out>_N.png), --eyes=crescent|round|happy|bar|heart
 ## Run (software Vulkan is slow, keep the settle time):
 ##   xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --rendering-driver vulkan --resolution 1280x800 \
@@ -18,6 +19,7 @@ var _t: float = 0.0
 var _can: Node3D
 var _lasers: Array[MeshInstance3D] = []
 var _settle: float = 8.0
+const BLINK_PHASES := [-1.0, 0.05, 0.09, 0.17]
 
 
 func _ready() -> void:
@@ -128,6 +130,10 @@ func _ready() -> void:
 		cam_attr.dof_blur_amount = 0.08
 		_cam.attributes = cam_attr
 		_build_can_and_lasers()
+	elif _view == "blink":
+		_cam.fov = 18.0
+		for k: int in BLINK_PHASES.size():
+			_shots.append([Vector3(0.35, 1.0, -2.6), Vector3(0, 0.84, 0)])
 	else:
 		_cam.fov = 17.0
 		var d2: float = 4.6
@@ -175,6 +181,11 @@ func _build_can_and_lasers() -> void:
 
 
 func _pose() -> void:
+	if _view == "blink":
+		_model._blink_timer = 100.0
+		var ph: float = BLINK_PHASES[clampi(_i, 0, BLINK_PHASES.size() - 1)]
+		(_model.get("_face_mat") as ShaderMaterial).set_shader_parameter("blink", PatchModel.blink_curve(ph))
+		return
 	if _view != "portrait":
 		return
 	# Left arm raised and reaching toward the can (the portrait's beam arm), claws open.

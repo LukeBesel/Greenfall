@@ -60,3 +60,31 @@ func test_eye_shapes() -> void:
 		assert_eq(int(m._face_mat.get_shader_parameter("eye_shape")), i)
 	m.set_eye_shape("nope")
 	assert_eq(int(m._face_mat.get_shader_parameter("eye_shape")), PatchModel.EYE_SHAPES.size() - 1)
+
+
+func test_blink_is_crisp() -> void:
+	assert_eq(PatchModel.blink_curve(-1.0), 0.0)
+	assert_true(PatchModel.blink_curve(0.035) < 0.5, "eases in")
+	assert_eq(PatchModel.blink_curve(PatchModel.BLINK_CLOSE + 0.01), 1.0, "shut by ~70 ms")
+	assert_true(PatchModel.BLINK_LEN < 0.3, "whole blink under 0.3 s")
+	assert_eq(PatchModel.blink_curve(PatchModel.BLINK_LEN + 0.01), 0.0)
+	var m := _model()
+	m._blink_timer = 0.0
+	var shut: bool = false
+	for i: int in 30:
+		m._process(0.01)
+		shut = shut or float(m._face_mat.get_shader_parameter("blink")) > 0.99
+	assert_true(shut, "a blink fully closes")
+	assert_true(float(m._face_mat.get_shader_parameter("blink")) < 0.01 or m._blink_double, "and reopens")
+
+
+func test_happy_face_never_parks_half_way() -> void:
+	var m := _model()
+	m.set_happy(0.9)
+	for i: int in 30:
+		m._process(0.02)
+	assert_eq(float(m._face_mat.get_shader_parameter("happy")), 1.0)
+	m.set_happy(0.5)
+	for i: int in 30:
+		m._process(0.02)
+	assert_eq(float(m._face_mat.get_shader_parameter("happy")), 0.0)

@@ -79,6 +79,15 @@ var _head_yaw: float = 0.0
 var _head_yaw_target: float = 0.0
 var _blink_timer: float = 2.5
 var _blink: float = 0.0
+## Blink phase time (s): < 0 idle (or the gap before a double blink), 0..BLINK_LEN blinking.
+var _blink_t: float = -1.0
+var _blink_double: bool = false
+var _sleep_amt: float = 0.0
+var _happy_face: float = 0.0
+const BLINK_CLOSE := 0.07
+const BLINK_HOLD := 0.04
+const BLINK_OPEN := 0.11
+const BLINK_LEN := BLINK_CLOSE + BLINK_HOLD + BLINK_OPEN
 var _flash: float = 0.0
 var _lean := Vector2.ZERO
 var _dip: float = 0.0
@@ -602,16 +611,35 @@ func _process(delta: float) -> void:
 	_look = _look.lerp(_look_target, delta * 6.0)
 	_happy = lerpf(_happy, _happy_target, delta * 4.0)
 	_iris_now = _happy
+	# [hero] Crisp blinks (owner: "closing slowly"): ~70 ms close, a short hold, ~110 ms open, and
+	# now and then a double blink. Sleep closes/opens eased over about a second / half a second.
 	_blink_timer -= delta
-	if _blink_timer <= 0.0:
-		_blink_timer = randf_range(2.0, 5.0)
-		_blink = 1.0
-	_blink = maxf(0.0, _blink - delta * 7.0)
+	if _blink_timer <= 0.0 and _blink_t < 0.0:
+		_blink_t = 0.0
+		_blink_double = randf() < 0.22
+		_blink_timer = randf_range(2.2, 5.5)
+	if _blink_t >= 0.0:
+		_blink_t += delta
+		if _blink_t > BLINK_LEN:
+			if _blink_double:
+				_blink_double = false
+				_blink_t = -0.12  # a short gap, then the second blink
+			else:
+				_blink_t = -1.0
+	elif _blink_t > -0.5:
+		_blink_t = minf(_blink_t + delta, 0.0)  # counting the double-blink gap up to 0
+	_blink = blink_curve(_blink_t)
+	_sleep_amt = move_toward(_sleep_amt, 1.0 if sleeping else 0.0, delta * (0.9 if sleeping else 2.2))
+	var sleep_e: float = _sleep_amt * _sleep_amt * (3.0 - 2.0 * _sleep_amt)
+	# Happy face: snaps between C eyes and ^ ^ in ~0.17 s (the shader squashes the C shut before the
+	# arc opens), never parked half way.
+	var want_happy: bool = _happy_target > 0.8 or (_happy_bias > 0.5 and _eye_flash < 0.2)
+	_happy_face = move_toward(_happy_face, 1.0 if want_happy else 0.0, delta * 6.0)
 	_face_mat.set_shader_parameter("look", _look)
-	_face_mat.set_shader_parameter("happy", maxf(clampf((_happy - 0.6) * 2.5, 0.0, 1.0), _happy_bias * (1.0 - minf(_eye_flash * 2.0, 1.0))))
-	_face_mat.set_shader_parameter("blink", 0.9 if sleeping else _blink)
+	_face_mat.set_shader_parameter("happy", _happy_face)
+	_face_mat.set_shader_parameter("blink", maxf(_blink, sleep_e * 0.9))
 	_eye_flash = maxf(0.0, _eye_flash - delta * 6.0)
-	_face_mat.set_shader_parameter("energy", 1.2 * minf(core_glow, 1.0) if sleeping else 4.0 * core_glow + _flash * 2.0 + _eye_flash * 3.0)
+	_face_mat.set_shader_parameter("energy", lerpf(4.0 * core_glow + _flash * 2.0 + _eye_flash * 3.0, 1.2 * minf(core_glow, 1.0), sleep_e))
 
 
 func set_motion(speed: float, speed_ratio: float, local_accel: Vector2, delta: float) -> void:
@@ -770,6 +798,19 @@ func look_toward(world_pos: Variant) -> void:
 	_head_yaw_target = clampf(yaw * 0.5, -0.45, 0.45)
 	# Eyes stay facing forward; only the head turns (a hint of eye shift for life).
 	_look_target = Vector2(clampf(-yaw * 0.3, -0.2, 0.2), 0.0)
+
+
+## Eyelid closure (0 open .. 1 shut) at blink phase time t: fast ease-in close, hold, ease-out open.
+static func blink_curve(t: float) -> float:
+	if t < 0.0 or t > BLINK_LEN:
+		return 0.0
+	if t < BLINK_CLOSE:
+		var a: float = t / BLINK_CLOSE
+		return a * a
+	if t < BLINK_CLOSE + BLINK_HOLD:
+		return 1.0
+	var b: float = 1.0 - (t - BLINK_CLOSE - BLINK_HOLD) / BLINK_OPEN
+	return b * b * (3.0 - 2.0 * b)
 
 
 func set_happy(amount: float) -> void:
