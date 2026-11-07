@@ -8606,253 +8606,253 @@ msgstr "弹簧上的一株嫩芽。刹车时会“嘣”一下。"
 
 #: data/robot_parts.json:parts[bobble_plant].source.hint
 msgid "Haggle's welcome gift with your first robot"
-msgstr ""
+msgstr "Haggle 随你第一台机器人送的见面礼"
 
 #: data/robot_parts.json:parts[traffic_cone].name
 msgid "Traffic Cone"
-msgstr ""
+msgstr "交通锥"
 
 #: data/robot_parts.json:parts[traffic_cone].desc
 msgid "Found it, kept it, wears it."
-msgstr ""
+msgstr "捡到了，留下了，戴上了。"
 
 #: data/robot_parts.json:parts[propeller_cap].name
 msgid "Propeller Cap"
-msgstr ""
+msgstr "螺旋桨帽"
 
 #: data/robot_parts.json:parts[propeller_cap].desc
 msgid "Spins when it hurries. Does not help."
-msgstr ""
+msgstr "着急时会转起来。没什么用。"
 
 #: data/robot_parts.json:parts[lucky_clover].name
 msgid "Lucky Clover"
-msgstr ""
+msgstr "幸运草"
 
 #: data/robot_parts.json:parts[lucky_clover].desc
 msgid "A four-leaf clover that floats. Rare: a robot has to spot one."
-msgstr ""
+msgstr "一片漂浮的四叶草。稀有：必须由机器人发现。"
 
 #: data/robot_parts.json:parts[lucky_clover].source.hint
 msgid "Rare salvage find (robots with a good Scan)"
-msgstr ""
+msgstr "稀有回收发现（扫描能力强的机器人）"
 
 #: data/robot_parts.json:parts[maker_crest].name
 msgid "Maker Crest"
-msgstr ""
+msgstr "造物者纹章"
 
 #: data/robot_parts.json:parts[maker_crest].desc
 msgid "A floating gold ring. Purely for show; the Makers loved a show."
-msgstr ""
+msgstr "一个漂浮的金环。纯属装饰；造物者最爱排场。"
 
 #: data/robot_parts.json:traits[cautious].name
 msgid "Cautious"
-msgstr ""
+msgstr "谨慎"
 
 #: data/robot_parts.json:traits[cautious].desc
 msgid "Looks both ways. Twice."
-msgstr ""
+msgstr "左右看。看两遍。"
 
 #: data/robot_parts.json:traits[speedy].name
 msgid "Speedy"
-msgstr ""
+msgstr "急性子"
 
 #: data/robot_parts.json:traits[speedy].desc
 msgid "Always in a hurry, sometimes a messy one."
-msgstr ""
+msgstr "总是急匆匆，有时还手忙脚乱。"
 
 #: data/robot_parts.json:traits[chatty].name
 msgid "Chatty"
-msgstr ""
+msgstr "话多"
 
 #: data/robot_parts.json:traits[chatty].desc
 msgid "Beeps at everything. Mostly at you."
-msgstr ""
+msgstr "对什么都哔哔叫。主要是对你。"
 
 #: data/robot_parts.json:traits[sleepy].desc
 msgid "Dozes off whenever it parks."
-msgstr ""
+msgstr "一停车就打瞌睡。"
 
 #: data/robot_parts.json:traits[tidy].name
 msgid "Tidy"
-msgstr ""
+msgstr "爱干净"
 
 #: data/robot_parts.json:traits[tidy].desc
 msgid "Shakes the dust off after every job."
-msgstr ""
+msgstr "每干完一件活都要抖掉灰尘。"
 
 #: data/robot_parts.json:traits[curious].desc
 msgid "Tilts its head at butterflies and bottle caps."
-msgstr ""
+msgstr "看到蝴蝶和瓶盖就歪头。"
 
 #: data/robot_parts.json:traits[hummer].name
 msgid "Musical"
-msgstr ""
+msgstr "爱音乐"
 
 #: data/robot_parts.json:traits[hummer].desc
 msgid "Hums little tunes while it works."
-msgstr ""
+msgstr "干活时哼着小调。"
 
 #: data/robots.json:types[scoopie].name
 msgid "Scoopie"
-msgstr ""
+msgstr "Scoopie"
 
 #: data/robots.json:types[scoopie].desc
 msgid "Small cleaner. Picks junk in its hex and leaves bales behind."
-msgstr ""
+msgstr "小型清洁机器人。捡起所在六角格的废料，并留下捆包。"
 
 #: data/robots.json:types[scoopie].upgrades[0].name data/robots.json:types[haulbug].upgrades[0].name data/robots.json:types[seedling].upgrades[0].name
 #: data/robots.json:types[drip].upgrades[0].name data/robots.json:types[multibot].upgrades[0].name
 msgid "Drive Motors"
-msgstr ""
+msgstr "驱动电机"
 
 #: data/robots.json:types[scoopie].upgrades[0].unit data/robots.json:types[haulbug].upgrades[0].unit data/robots.json:types[seedling].upgrades[0].unit
 #: data/robots.json:types[drip].upgrades[0].unit data/robots.json:types[skimmer].upgrades[0].unit data/robots.json:types[multibot].upgrades[0].unit
 #: data/upgrades.json:upgrades[tread_speed].unit
 msgid " m/s"
-msgstr ""
+msgstr " 米/秒"
 
 #: data/robots.json:types[scoopie].upgrades[1].name
 msgid "Arm Servos"
-msgstr ""
+msgstr "手臂伺服"
 
 #: data/robots.json:types[scoopie].upgrades[1].unit data/robots.json:types[seedling].upgrades[1].unit data/robots.json:types[drip].upgrades[3].unit
 #: data/robots.json:types[skimmer].upgrades[1].unit data/upgrades.json:upgrades[scoop_speed].unit
 msgid "/s"
-msgstr ""
+msgstr "/秒"
 
 #: data/robots.json:types[scoopie].upgrades[3].name
 msgid "Compactor Tune"
-msgstr ""
+msgstr "压实机调校"
 
 #: data/robots.json:types[scoopie].upgrades[3].unit data/upgrades.json:upgrades[compactor_pressure].unit data/upgrades.json:upgrades[belt_speed].unit
 #: data/upgrades.json:upgrades[baler_speed].unit data/upgrades.json:upgrades[recycler_yield].unit
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: data/robots.json:types[haulbug].name
 msgid "Haul Bug"
-msgstr ""
+msgstr "Haul Bug"
 
 #: data/robots.json:types[haulbug].desc
 msgid "Fork cart. Carries loose bales to the scale."
-msgstr ""
+msgstr "叉车。把散落的捆包运到磅秤。"
 
 #: data/robots.json:types[haulbug].upgrades[1].name
 msgid "Longer Forks"
-msgstr ""
+msgstr "加长货叉"
 
 #: data/robots.json:types[seedling].name
 msgid "Seedling"
-msgstr ""
+msgstr "Seedling"
 
 #: data/robots.json:types[seedling].desc
 msgid "Plants seeds in clean ground. Uses your seed stock."
-msgstr ""
+msgstr "在干净的地面上播种。使用你的种子库存。"
 
 #: data/robots.json:types[drip].name
 msgid "Drip"
-msgstr ""
+msgstr "Drip"
 
 #: data/robots.json:types[drip].desc
 msgid "Waters the thirstiest plants in its zone with a spray arc. Refills at the base barrel, a Water Tank or a clean lake."
-msgstr ""
+msgstr "用弧形喷水给区域内最缺水的植物浇水。在基地水桶、水箱或干净的湖边补水。"
 
 #: data/robots.json:types[drip].upgrades[1].name
 msgid "Bigger Tank"
-msgstr ""
+msgstr "更大的水箱"
 
 #: data/robots.json:types[drip].upgrades[2].name
 msgid "Wide Nozzle"
-msgstr ""
+msgstr "宽喷嘴"
 
 #: data/robots.json:types[drip].upgrades[2].unit data/upgrades.json:upgrades[scoop_width].unit data/upgrades.json:upgrades[magnet_arm].unit
 #: data/upgrades.json:upgrades[detector_range].unit data/upgrades.json:upgrades[laser_reach].unit
 msgid " m"
-msgstr ""
+msgstr " 米"
 
 #: data/robots.json:types[drip].upgrades[3].name
 msgid "Fast Pump"
-msgstr ""
+msgstr "快速水泵"
 
 #: data/robots.json:types[skimmer].name
 msgid "Skimmer"
-msgstr ""
+msgstr "Skimmer"
 
 #: data/robots.json:types[skimmer].desc
 msgid "Hover pontoon bot with a net arm. Skims floating junk off the lake and leaves bales on the shore for haulers."
-msgstr ""
+msgstr "带捕网臂的悬浮浮筒机器人。撇去湖面的漂浮废料，把捆包留在岸边给运输队。"
 
 #: data/robots.json:types[skimmer].upgrades[0].name
 msgid "Hover Fans"
-msgstr ""
+msgstr "悬浮风扇"
 
 #: data/robots.json:types[skimmer].upgrades[1].name
 msgid "Net Winch"
-msgstr ""
+msgstr "捕网绞盘"
 
 #: data/robots.json:types[skimmer].upgrades[2].name
 msgid "Bigger Net"
-msgstr ""
+msgstr "更大的网"
 
 #: data/robots.json:types[multibot].name
 msgid "Multibot"
-msgstr ""
+msgstr "Multibot"
 
 #: data/robots.json:types[multibot].desc
 msgid "General helper. Assign it to Clean, Plant or Water on the Allocation Board. Slower than a specialist."
-msgstr ""
+msgstr "通用帮手。在分配面板上指派它清理、种植或浇水。比专精机器人慢。"
 
 #: data/robots.json:tiers[1].name
 msgid "Mk II"
-msgstr ""
+msgstr "Mk II"
 
 #: data/robots.json:tiers[2].name
 msgid "Mk III"
-msgstr ""
+msgstr "Mk III"
 
 #: data/robots.json:tiers[3].name
 msgid "Mk IV"
-msgstr ""
+msgstr "Mk IV"
 
 #: data/rockets.json:tiers[0].name
 msgid "Mk I Cradle"
-msgstr ""
+msgstr "Mk I Cradle"
 
 #: data/rockets.json:tiers[0].desc
 msgid "Pearl hull, three swept fins, one cyan engine."
-msgstr ""
+msgstr "珍珠色船体，三片后掠鳍，一台青色引擎。"
 
 #: data/rockets.json:tiers[1].name
 msgid "Mk II Glide"
-msgstr ""
+msgstr "Mk II Glide"
 
 #: data/rockets.json:tiers[1].desc
 msgid "A hover ring stabilises the climb: shorter countdown, faster flight, cells refill twice as fast. Cargo pods carry 50% more."
-msgstr ""
+msgstr "悬浮环让爬升更稳：倒计时更短，飞行更快，电池充能速度翻倍。货运舱多装 50%。"
 
 #: data/rockets.json:tiers[2].name
 msgid "Mk III Halo"
-msgstr ""
+msgstr "Mk III Halo"
 
 #: data/rockets.json:tiers[2].desc
 msgid "Twin side boosters and a second ring. Cells refill in a minute; cargo pods carry 2.5x, more often."
-msgstr ""
+msgstr "双侧助推器加第二个环。电池一分钟充满；货运舱装载 2.5 倍，频率更高。"
 
 #: data/rockets.json:tiers[3].name
 msgid "Mk IV Aurora Warp"
-msgstr ""
+msgstr "Mk IV Aurora Warp"
 
 #: data/rockets.json:tiers[3].desc
 msgid "Energy fins and a warp core: instant hops with no recharge. Cargo pods carry 4x, every 30 s."
-msgstr ""
+msgstr "能量鳍和跃迁核心：瞬间跳跃，无需充能。货运舱装载 4 倍，每 30 秒一次。"
 
 #: data/shards.json:shards[back_soon].kind
 msgid "sign"
-msgstr ""
+msgstr "告示"
 
 #: data/shards.json:shards[back_soon].title
 msgid "Shop sign, hand-lettered"
-msgstr ""
+msgstr "商店告示，手写"
 
 #: data/shards.json:shards[back_soon].body
 msgid ""
@@ -8864,14 +8864,21 @@ msgid ""
 "\n"
 "— Marta"
 msgstr ""
+"马上回来\n"
+"\n"
+"去参加撤离说明会了。\n"
+"要面包的话，钥匙在蓝色花盆下面。\n"
+"下周再付钱给我。\n"
+"\n"
+"—— Marta"
 
 #: data/shards.json:shards[kid_drawing].kind
 msgid "drawing"
-msgstr ""
+msgstr "画"
 
 #: data/shards.json:shards[kid_drawing].title
 msgid "Crayon drawing, folded in four"
-msgstr ""
+msgstr "蜡笔画，折成了四折"
 
 #: data/shards.json:shards[kid_drawing].body
 msgid ""
@@ -8883,14 +8890,21 @@ msgid ""
 "\n"
 "[Below, smaller, in an adult's handwriting:] Ellie, age 6. For the fridge."
 msgstr ""
+"[一个圆圆的蓝色机器人，有一只大眼睛，拿着一朵花。上面用大字写着：]\n"
+"\n"
+"我的机器人\n"
+"他会打扫\n"
+"他叫小帮手\n"
+"\n"
+"[下面用大人的字迹写着，字小一点：]Ellie，6 岁。贴冰箱用。"
 
 #: data/shards.json:shards[gardener_list].kind
 msgid "note"
-msgstr ""
+msgstr "便条"
 
 #: data/shards.json:shards[gardener_list].title
 msgid "Gardener's to-do list"
-msgstr ""
+msgstr "园丁的待办清单"
 
 #: data/shards.json:shards[gardener_list].body
 msgid ""
@@ -8901,14 +8915,20 @@ msgid ""
 "- buy gloves\n"
 "- don't cry about the oak"
 msgstr ""
+"- 给番茄浇水（又要浇）\n"
+"- 去问议会雾霾的事，又要问\n"
+"- 周六种子交换会\n"
+"- 告诉清理机器人公园不是垃圾场，它们一直在给长椅分类\n"
+"- 买手套\n"
+"- 别为那棵橡树哭"
 
 #: data/shards.json:shards[receipt].kind
 msgid "receipt"
-msgstr ""
+msgstr "小票"
 
 #: data/shards.json:shards[receipt].title
 msgid "Till receipt"
-msgstr ""
+msgstr "收银小票"
 
 #: data/shards.json:shards[receipt].body
 msgid ""
@@ -8924,14 +8944,25 @@ msgid ""
 "\n"
 "Thank you! Air quality today: POOR"
 msgstr ""
+"街角小店  #0442\n"
+"\n"
+"2x 瓶装水                4.80\n"
+"1x 防尘口罩（儿童）      3.10\n"
+"1x 防尘口罩（成人）      3.10\n"
+"1x 种子包（混合）        0.90\n"
+"\n"
+"合计                    11.90\n"
+"现金\n"
+"\n"
+"谢谢惠顾！今日空气质量：差"
 
 #: data/shards.json:shards[maint_log].kind
 msgid "log"
-msgstr ""
+msgstr "日志"
 
 #: data/shards.json:shards[maint_log].title
 msgid "Maintenance log, unit P-46RA"
-msgstr ""
+msgstr "维修日志，单元 P-46RA"
 
 #: data/shards.json:shards[maint_log].body
 msgid ""
@@ -8948,14 +8979,26 @@ msgid ""
 "There is a flower growing through the gutter at route 12, marker 9.\n"
 "Nobody is cleaning around it. I hope that's all right."
 msgstr ""
+"第 4,113 天\n"
+"12 号路线完成。41 个捆包。\n"
+"收到 Ledger 通知：“作业暂停，等待成本审查。”\n"
+"返回停靠站。\n"
+"\n"
+"第 4,114 天\n"
+"仍在暂停。\n"
+"\n"
+"第 4,190 天\n"
+"仍在暂停。停靠站电池 31%。\n"
+"12 号路线 9 号标记处，有一朵花从排水沟里长了出来。\n"
+"没有人清理它周围。希望这样没关系。"
 
 #: data/shards.json:shards[ledger_memo].kind
 msgid "memo"
-msgstr ""
+msgstr "备忘录"
 
 #: data/shards.json:shards[ledger_memo].title
 msgid "Memo, Municipal Ledger Office"
-msgstr ""
+msgstr "备忘录，市政 Ledger 办公室"
 
 #: data/shards.json:shards[ledger_memo].body
 msgid ""
@@ -8970,14 +9013,24 @@ msgid ""
 "Thank you for your understanding.\n"
 "This memo was generated automatically. Please do not reply."
 msgstr ""
+"致：所有环卫单元\n"
+"发件人：LEDGER（自动化财政连续性系统）\n"
+"事由：暂停作业\n"
+"\n"
+"清理活动目前估值为每捆包净亏损 0.4 单位。\n"
+"所有单元将暂停作业，直至条件改善。\n"
+"条件将每 24 小时审查一次。\n"
+"\n"
+"感谢您的理解。\n"
+"本备忘录为自动生成。请勿回复。"
 
 #: data/shards.json:shards[voicemail].kind
 msgid "voicemail"
-msgstr ""
+msgstr "语音留言"
 
 #: data/shards.json:shards[voicemail].title
 msgid "Voicemail transcript"
-msgstr ""
+msgstr "语音留言文字记录"
 
 #: data/shards.json:shards[voicemail].body
 msgid ""
@@ -8985,14 +9038,17 @@ msgid ""
 "\n"
 "[Message saved]"
 msgstr ""
+"“嗨，是爸爸。穿梭机明天六点出发。他们说每人一个包，所以……挑你最喜欢的毛绒玩具，别全带，好吗？还有……我们会让清理机器人继续运转。它们会保持整洁，等我们回来。不会太久的。爱你。拜拜。”\n"
+"\n"
+"[留言已保存]"
 
 #: data/shards.json:shards[poster].kind
 msgid "poster"
-msgstr ""
+msgstr "海报"
 
 #: data/shards.json:shards[poster].title
 msgid "Faded safety poster"
-msgstr ""
+msgstr "褪色的安全海报"
 
 #: data/shards.json:shards[poster].body
 msgid ""
@@ -9005,1331 +9061,1339 @@ msgid ""
 "\n"
 "(Someone has scratched underneath: \"they can if you let them\")"
 msgstr ""
+"CRADLE号守护着我们\n"
+"\n"
+"每一颗种子。每一个孢子。每一枚卵。\n"
+"在轨道上安然无恙，直到 Greenfall。\n"
+"\n"
+"保持街道整洁——机器人无法独自完成\n"
+"\n"
+"（有人在下面刻着：“你们让它们做，它们就能”）"
 
 #: data/stations.json:conveyor.name
 msgid "Conveyor Feeder"
-msgstr ""
+msgstr "传送带投料口"
 
 #: data/stations.json:conveyor.desc
 msgid "A hopper pad and a powered belt into the scale. Drop bales on the pad; haulers use it when it is closer."
-msgstr ""
+msgstr "一个料斗平台和一条通往磅秤的电动传送带。把捆包放在平台上；离得更近时，运输队也会用它。"
 
 #: data/stations.json:auto_baler.name
 msgid "Auto-baler"
-msgstr ""
+msgstr "自动打包机"
 
 #: data/stations.json:auto_baler.desc
 msgid "A hydraulic baling press dropped at the cleaning frontier. Cleaner robots tip their hoppers into it instead of baling on the spot; it presses denser bales for the haulers."
-msgstr ""
+msgstr "一台投放到清理前线的液压打包机。清洁机器人不再就地打包，而是把料斗倒进去；它会为运输队压出更密实的捆包。"
 
 #: data/stations.json:recycler.desc
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come bolts and clean building stock. Every bale burnt clean helps the sky."
-msgstr ""
+msgstr "粉碎滚筒和一座小熔炉。捆包进去就再也回不来：出来的是螺栓和干净的建材。每个被干净焚烧的捆包都在帮助天空。"
 
 #: data/upgrades.json:upgrades[compartment_size].name
 msgid "Compartment Size"
-msgstr ""
+msgstr "储物舱容量"
 
 #: data/upgrades.json:upgrades[compartment_size].desc
 msgid "A roomier chest. More junk per cube."
-msgstr ""
+msgstr "更宽敞的胸舱。每个方块装更多废料。"
 
 #: data/upgrades.json:upgrades[scoop_width].name
 msgid "Scoop Width"
-msgstr ""
+msgstr "铲子宽度"
 
 #: data/upgrades.json:upgrades[scoop_width].desc
 msgid "Longer arms, wider sweeps."
-msgstr ""
+msgstr "更长的手臂，更宽的横扫。"
 
 #: data/upgrades.json:upgrades[tread_speed].name
 msgid "Tread Speed"
-msgstr ""
+msgstr "履带速度"
 
 #: data/upgrades.json:upgrades[tread_speed].desc
 msgid "Oiled treads. Still squeaky."
-msgstr ""
+msgstr "上过油的履带。还是吱吱响。"
 
 #: data/upgrades.json:upgrades[carry_stack].name
 msgid "Carry Stack"
-msgstr ""
+msgstr "背负堆叠"
 
 #: data/upgrades.json:upgrades[carry_stack].desc
 msgid "Balance one more cube on your back."
-msgstr ""
+msgstr "背上多叠一个方块。"
 
 #: data/upgrades.json:upgrades[compactor_pressure].name
 msgid "Compactor Pressure"
-msgstr ""
+msgstr "压实压力"
 
 #: data/upgrades.json:upgrades[compactor_pressure].desc
 msgid "Squish harder. Denser cubes are worth more."
-msgstr ""
+msgstr "压得更狠。更密实的方块更值钱。"
 
 #: data/upgrades.json:upgrades[scoop_speed].name
 msgid "Scoop Speed"
-msgstr ""
+msgstr "铲取速度"
 
 #: data/upgrades.json:upgrades[scoop_speed].desc
 msgid "Faster arms. Clinkier clinks."
-msgstr ""
+msgstr "更快的手臂。叮当声更叮当。"
 
 #: data/upgrades.json:upgrades[auto_compactor].name
 msgid "Auto Compactor"
-msgstr ""
+msgstr "自动压实"
 
 #: data/upgrades.json:upgrades[auto_compactor].desc
 msgid "Cubes itself when full. Manual Perfect Cubes still pay more."
-msgstr ""
+msgstr "装满时自动压成方块。手动压出的完美方块依然更值钱。"
 
 #: data/upgrades.json:upgrades[magnet_arm].name
 msgid "Magnet Arm"
-msgstr ""
+msgstr "磁力臂"
 
 #: data/upgrades.json:upgrades[magnet_arm].desc
 msgid "Nearby junk scoots toward you while scooping."
-msgstr ""
+msgstr "铲取时，附近的废料会朝你滑过来。"
 
 #: data/upgrades.json:upgrades[detector_range].name
 msgid "Detector Coil"
-msgstr ""
+msgstr "探测线圈"
 
 #: data/upgrades.json:upgrades[detector_range].desc
 msgid "A bigger search coil. Picks up buried parts from further away."
-msgstr ""
+msgstr "更大的探测线圈。能从更远处发现埋藏的零件。"
 
 #: data/upgrades.json:upgrades[belt_speed].name
 msgid "Belt Drive"
-msgstr ""
+msgstr "传送带驱动"
 
 #: data/upgrades.json:upgrades[belt_speed].desc
 msgid "A bigger motor on the conveyor feeder. Bales ride faster."
-msgstr ""
+msgstr "传送带投料口换上更大的电机。捆包跑得更快。"
 
 #: data/upgrades.json:upgrades[baler_speed].name
 msgid "Baler Hydraulics"
-msgstr ""
+msgstr "打包机液压"
 
 #: data/upgrades.json:upgrades[baler_speed].desc
 msgid "Higher pump pressure. The auto-baler presses faster."
-msgstr ""
+msgstr "更高的泵压。自动打包机压得更快。"
 
 #: data/upgrades.json:upgrades[recycler_yield].name
 msgid "Recycler Yield"
-msgstr ""
+msgstr "回收炉产出"
 
 #: data/upgrades.json:upgrades[recycler_yield].desc
 msgid "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
-msgstr ""
+msgstr "更锋利的粉碎齿和更热的熔炉。每个捆包产出更多螺栓和建材。"
 
 #: data/upgrades.json:upgrades[laser_reach].name
 msgid "Laser Reach"
-msgstr ""
+msgstr "激光范围"
 
 #: data/upgrades.json:upgrades[laser_reach].desc
 msgid "Longer focusing lenses: grab junk from further away."
-msgstr ""
+msgstr "更长的聚焦镜片：从更远处抓取废料。"
 
 #: data/upgrades.json:upgrades[multi_lock].name
 msgid "Multi-Lock"
-msgstr ""
+msgstr "多重锁定"
 
 #: data/upgrades.json:upgrades[multi_lock].desc
 msgid "Extra targeting lasers: lift several pieces at once."
-msgstr ""
+msgstr "额外的瞄准激光：一次举起多件废料。"
 
 #: data/wren_lines.json:wake
 msgid "...carrier... Lumi? Relay at four percent. It's WREN. Hello. Hello. I'm still here."
-msgstr ""
+msgstr "……载体……Lumi？中继百分之四。我是 WREN。你好。你好。我还在。"
 
 #: data/wren_lines.json:wake
 msgid "...that ground you just cleared... the relay got stronger. Hello again. Do that again. Please."
-msgstr ""
+msgstr "……你刚清理的那块地……中继变强了。又见面了。再来一次。拜托了。"
 
 #: data/wren_lines.json:hex_clean
 msgid "...that patch of ground. It's... brown. Brown is better than gray."
-msgstr ""
+msgstr "……那块地。是……棕色的。棕色比灰色好。"
 
 #: data/wren_lines.json:hex_clean
 msgid "Signal stronger. Did you do that?"
-msgstr ""
+msgstr "信号更强了。是你做的吗？"
 
 #: data/wren_lines.json:hex_clean
 msgid "...clean... the relay likes that word. So do I."
-msgstr ""
+msgstr "……干净……中继喜欢这个词。我也是。"
 
 #: data/wren_lines.json:hex_clean
 msgid "Another one. My static has a shape now."
-msgstr ""
+msgstr "又一块。我的杂音现在有形状了。"
 
 #: data/wren_lines.json:hex_clean
 msgid "Every hex you clear, I hear a little more. Keep going, {name}."
-msgstr ""
+msgstr "你每清理一个六角格，我就能听到更多一点。继续，{name}。"
 
 #: data/wren_lines.json:hex_clean
 msgid "That ground hasn't seen the sun in a long time. It's blinking."
-msgstr ""
+msgstr "那块地很久没见过太阳了。它在眨眼。"
 
 #: data/wren_lines.json:hex_clean
 msgid "The grid just ticked. Somewhere a meter I used to watch moved by one."
-msgstr ""
+msgstr "网格刚刚跳了一下。某个我以前盯着的计数器往前走了一格。"
 
 #: data/wren_lines.json:hex_clean
 msgid "I'm starting to remember lists. Lists of hexes. Mostly unfinished."
-msgstr ""
+msgstr "我开始想起一些清单了。六角格的清单。大多没完成。"
 
 #: data/wren_lines.json:hex_clean
 msgid "Clean dirt. The Makers would have called that a start. I call it a start, too."
-msgstr ""
+msgstr "干净的泥土。造物者会把它叫作开始。我也这么叫。"
 
 #: data/wren_lines.json:hex_clean
 msgid "Hex logged. I've started naming them. That one is 'Not Garbage'."
-msgstr ""
+msgstr "六角格已记录。我开始给它们起名字了。那个叫“不是垃圾”。"
 
 #: data/wren_lines.json:hex_clean
 msgid "You're good at this. Annoyingly good. The old fleet took breaks."
-msgstr ""
+msgstr "你很擅长这个。好得让人有点不爽。以前的机队还会休息呢。"
 
 #: data/wren_lines.json:milestone
 msgid "...ten... ten of something. Is ten a lot? It feels like a lot."
-msgstr ""
+msgstr "……十……十个什么东西。十算多吗？感觉很多。"
 
 #: data/wren_lines.json:milestone
 msgid "Patterns in the noise. You're making them."
-msgstr ""
+msgstr "噪音里出现了图案。是你画出来的。"
 
 #: data/wren_lines.json:milestone
 msgid "Twenty-five hexes. I can see the street from up here now. Mostly."
-msgstr ""
+msgstr "二十五个六角格。我现在从上面能看见街道了。大体上。"
 
 #: data/wren_lines.json:milestone
 msgid "Fifty. The relay held a whole minute without dropping. A record. Don't tell the ark, it gets competitive."
-msgstr ""
+msgstr "五十个。中继整整撑了一分钟没断。新纪录。别告诉方舟，它会较劲的。"
 
 #: data/wren_lines.json:milestone
 msgid "A hundred hexes. I can see this whole district without squinting. I don't have eyes, but you know what I mean."
-msgstr ""
+msgstr "一百个六角格。我不用眯眼就能看清整个街区。我没有眼睛，但你懂我的意思。"
 
 #: data/wren_lines.json:perfect
 msgid "...neat..."
-msgstr ""
+msgstr "……整齐……"
 
 #: data/wren_lines.json:perfect
 msgid "...that one was... tidy."
-msgstr ""
+msgstr "……那个……很利落。"
 
 #: data/wren_lines.json:perfect
 msgid "That bale is perfect. Don't tell the others."
-msgstr ""
+msgstr "那个捆包完美。别告诉其他的。"
 
 #: data/wren_lines.json:perfect
 msgid "Right to the line. Show-off."
-msgstr ""
+msgstr "刚好到线。爱显摆。"
 
 #: data/wren_lines.json:perfect
 msgid "Perfect bale. The scale actually purred."
-msgstr ""
+msgstr "完美捆包。磅秤真的发出了咕噜声。"
 
 #: data/wren_lines.json:perfect
 msgid "I would frame that one if I had walls."
-msgstr ""
+msgstr "要是我有墙，我会把它裱起来。"
 
 #: data/wren_lines.json:robot_built
 msgid "...another... voice? No. It doesn't talk. It just hums."
-msgstr ""
+msgstr "……另一个……声音？不。它不说话。它只是在哼。"
 
 #: data/wren_lines.json:robot_built
 msgid "...you made a friend. It's very small."
-msgstr ""
+msgstr "……你交到朋友了。它很小。"
 
 #: data/wren_lines.json:robot_built
 msgid "{robot} is online. It looked at you for a full second before it got to work. I saw that."
-msgstr ""
+msgstr "{robot} 上线了。它盯着你看了整整一秒才开始干活。我看到了。"
 
 #: data/wren_lines.json:robot_built
 msgid "A new robot. The old fleet used to hum like that, before the quiet."
-msgstr ""
+msgstr "一台新机器人。以前的机队也这样嗡嗡响，在寂静来临之前。"
 
 #: data/wren_lines.json:robot_built
 msgid "{robot} reports for duty. Its first log entry is just the word 'can'. Fair."
-msgstr ""
+msgstr "{robot} 前来报到。它的第一条日志只有一个词：“罐头”。很合理。"
 
 #: data/wren_lines.json:robot_built
 msgid "You're building a crew. The Makers had a word for that. 'Department.' I don't miss it."
-msgstr ""
+msgstr "你在组建一支队伍。造物者有个词形容这个：“部门”。我不怀念。"
 
 #: data/wren_lines.json:part_rare
 msgid "...that... glows. That's old. Older than me?"
-msgstr ""
+msgstr "……那个……在发光。很古老。比我还老？"
 
 #: data/wren_lines.json:part_rare
 msgid "...Maker-made... I know that mark."
-msgstr ""
+msgstr "……造物者制造……我认得那个标记。"
 
 #: data/wren_lines.json:part_rare
 msgid "That part is older than most of this city. Treat it nicely."
-msgstr ""
+msgstr "那个零件比这座城市大部分地方都老。好好待它。"
 
 #: data/wren_lines.json:part_rare
 msgid "Vintage stock. Someone kept that safe for a long time."
-msgstr ""
+msgstr "复古库存。有人把它妥善保存了很久。"
 
 #: data/wren_lines.json:part_rare
 msgid "Legendary parts don't just turn up. Someone buried that on purpose."
-msgstr ""
+msgstr "传说零件不会凭空出现。有人是故意把它埋起来的。"
 
 #: data/wren_lines.json:part_rare
 msgid "That casing has a serial range I haven't seen since the Cradle was built."
-msgstr ""
+msgstr "那个外壳的序列号，我自从 Cradle号建成后就没见过了。"
 
 #: data/wren_lines.json:upgrade
 msgid "...you... changed. Sounds different. Better?"
-msgstr ""
+msgstr "……你……变了。听起来不一样。更好了？"
 
 #: data/wren_lines.json:upgrade
 msgid "New parts. You squeak in a slightly different key now."
-msgstr ""
+msgstr "新零件。你现在吱吱叫的调子有点不一样了。"
 
 #: data/wren_lines.json:upgrade
 msgid "Upgrade installed. Your fan noise just went up half a tone. It suits you."
-msgstr ""
+msgstr "升级已安装。你的风扇声刚刚升高了半个音。很适合你。"
 
 #: data/wren_lines.json:upgrade
 msgid "Every upgrade, you get a little faster and a little louder. I like both."
-msgstr ""
+msgstr "每次升级，你都变快一点，也变吵一点。两样我都喜欢。"
 
 #: data/wren_lines.json:idle
 msgid "...are you... still there?"
-msgstr ""
+msgstr "……你……还在吗？"
 
 #: data/wren_lines.json:idle
 msgid "...quiet... I don't like quiet."
-msgstr ""
+msgstr "……好安静……我不喜欢安静。"
 
 #: data/wren_lines.json:idle
 msgid "You've stopped. Are you looking at something? Tell me what it is."
-msgstr ""
+msgstr "你停下来了。你在看什么吗？告诉我是什么。"
 
 #: data/wren_lines.json:idle
 msgid "Taking a break? The junk will wait. It's very patient."
-msgstr ""
+msgstr "休息一下？废料会等你的。它很有耐心。"
 
 #: data/wren_lines.json:idle
 msgid "Standing still is allowed. I checked the rules. There aren't any."
-msgstr ""
+msgstr "站着不动是允许的。我查过规则了。根本没有规则。"
 
 #: data/wren_lines.json:globe
 msgid "...that's... us? It's mostly... orange."
-msgstr ""
+msgstr "……那是……我们？大部分是……橙色的。"
 
 #: data/wren_lines.json:globe
 msgid "That's the whole planet. The blue is water. The orange is everything else that needs you."
-msgstr ""
+msgstr "那是整个星球。蓝色是水。橙色是其他所有需要你的地方。"
 
 #: data/wren_lines.json:globe
 msgid "Look at it spin. It doesn't know it's being looked at."
-msgstr ""
+msgstr "看它转。它不知道有人在看它。"
 
 #: data/wren_lines.json:globe
 msgid "Every lit hex on that map is yours. I counted. Twice."
-msgstr ""
+msgstr "地图上每一个亮起的六角格都是你的。我数过。数了两遍。"
 
 #: data/wren_lines.json:first_robot_hint
 msgid "If you find enough parts, the workbench can put a helper together. Chassis, wheels, an arm, a core."
-msgstr ""
+msgstr "如果你找到足够的零件，工作台就能组装一个帮手。底盘、轮子、一只手臂、一个核心。"
 
 #: data/wren_lines.json:first_robot_hint
 msgid "Electronics junk sometimes hides parts. So does the ground, if you listen for it."
-msgstr ""
+msgstr "电子废料里有时藏着零件。地下也有，只要你仔细听。"
 
 #: data/wren_lines.json:night
 msgid "...dark... the dark used to frighten the fleet. Not you, though."
-msgstr ""
+msgstr "……黑暗……以前机队很怕黑。不过你不怕。"
 
 #: data/wren_lines.json:night
 msgid "Night shift. I can see more stars than yesterday. You did that."
-msgstr ""
+msgstr "夜班。我看到的星星比昨天多。是你做到的。"
 
 #: data/wren_lines.json:night
 msgid "The sky's clearer at night now. I can almost see home."
-msgstr ""
+msgstr "现在夜里天空更清澈了。我几乎能看到家了。"
 
 #: data/wren_lines.json:night
 msgid "Moonlight on clean ground. I'm saving this one."
-msgstr ""
+msgstr "月光洒在干净的地面上。这一幕我要存下来。"
 
 #: data/wren_lines.json:ledger_intercept
 msgid "...that voice... not mine. Cold. It counts things."
-msgstr ""
+msgstr "……那个声音……不是我的。冰冷。它在数东西。"
 
 #: data/wren_lines.json:ledger_intercept
 msgid "...don't listen to it... it only knows one song."
-msgstr ""
+msgstr "……别听它的……它只会唱一首歌。"
 
 #: data/wren_lines.json:ledger_intercept
 msgid "That was the Ledger. The old waste contract. It still thinks cleaning is a cost. Ignore it, {name}."
-msgstr ""
+msgstr "那是 Ledger。旧的废料合同。它还以为清理是成本。别理它，{name}。"
 
 #: data/wren_lines.json:ledger_intercept
 msgid "I know that voice. It used to send memos to the whole fleet. Mostly about pausing."
-msgstr ""
+msgstr "我认得那个声音。它以前给整个机队发备忘录。大多是关于暂停的。"
 
 #: data/wren_lines.json:ledger_intercept
 msgid "The Ledger. Still running its contract after all this time. It isn't evil. It's just very, very bad at math about feelings."
-msgstr ""
+msgstr "Ledger。过了这么久还在执行它的合同。它不坏。它只是在涉及感情的数学上非常、非常差。"
 
 #: data/wren_lines.json:ledger_coupon
 msgid "...a coupon? ...for nothing?"
-msgstr ""
+msgstr "……优惠券？……什么都不优惠？"
 
 #: data/wren_lines.json:ledger_coupon
 msgid "Zero percent off. It sends those every few minutes. I keep a folder."
-msgstr ""
+msgstr "零折扣。它每隔几分钟就发一张。我专门建了个文件夹。"
 
 #: data/wren_lines.json:ledger_coupon
 msgid "Another coupon. I think it's the only way it knows how to say hello."
-msgstr ""
+msgstr "又一张优惠券。我觉得这是它唯一会打招呼的方式。"
 
 #: data/wren_lines.json:ledger_coupon
 msgid "The Ledger's coupons are getting more creative. That one almost made me pause. Almost."
-msgstr ""
+msgstr "Ledger 的优惠券越来越有创意了。那张差点让我暂停。差一点。"
 
 #: data/wren_lines.json:ledger_drones
 msgid "...something is flying... toward the clean ground..."
-msgstr ""
+msgstr "……有东西在飞……朝干净的地面……"
 
 #: data/wren_lines.json:ledger_drones
 msgid "...drones. Old ones. Theirs."
-msgstr ""
+msgstr "……无人机。旧的。它的。"
 
 #: data/wren_lines.json:ledger_drones
 msgid "It's sending disposal drones. They'll dump a little junk back on clean hexes. They can't touch anything you've planted."
-msgstr ""
+msgstr "它在派处置无人机。它们会往干净的六角格上倒回一点废料。你种下的东西它们碰不了。"
 
 #: data/wren_lines.json:ledger_drones
 msgid "Drones. The Ledger wants the books to balance, so it's putting junk back. Rude, but small."
-msgstr ""
+msgstr "无人机。Ledger 想让账本平衡，所以把废料放回去。没礼貌，但规模很小。"
 
 #: data/wren_lines.json:ledger_drones
 msgid "Disposal drones are up. They're tiny and very committed. A Signal Jammer at the base would give them a headache."
-msgstr ""
+msgstr "处置无人机出动了。它们很小，很敬业。基地里放个信号干扰器能让它们头疼。"
 
 #: data/wren_lines.json:ledger_drop
 msgid "...it put the junk back... why..."
-msgstr ""
+msgstr "……它把废料放回去了……为什么……"
 
 #: data/wren_lines.json:ledger_drop
 msgid "...undo... it's undoing..."
-msgstr ""
+msgstr "……撤销……它在撤销……"
 
 #: data/wren_lines.json:ledger_drop
 msgid "It dumped a little pile back. Annoying, not tragic. Scoop it up, or let the crew handle it."
-msgstr ""
+msgstr "它倒回了一小堆。烦人，但不是悲剧。铲起来，或者让队伍处理。"
 
 #: data/wren_lines.json:ledger_drop
 msgid "Line item re-balanced, apparently. I call it littering."
-msgstr ""
+msgstr "据说是账目条款重新平衡了。我管这叫乱扔垃圾。"
 
 #: data/wren_lines.json:ledger_drop
 msgid "A small pile. The Ledger always did think small."
-msgstr ""
+msgstr "一小堆。Ledger 一向格局很小。"
 
 #: data/wren_lines.json:ledger_drop
 msgid "Another drop. Honestly, {name}, I think it just wants attention."
-msgstr ""
+msgstr "又一次投放。说真的，{name}，我觉得它只是想引起注意。"
 
 #: data/wren_lines.json:ledger_drop
 msgid "Back to the pile. Your helpers are already giving it a look."
-msgstr ""
+msgstr "回到那堆去吧。你的帮手们已经在看了。"
 
 #: data/wren_lines.json:ledger_drop
 msgid "That's a handful of junk against a whole clean district. We're winning this argument."
-msgstr ""
+msgstr "一把废料对抗整整一个干净的街区。这场争论我们赢定了。"
 
 #: data/wren_lines.json:ledger_jammed
 msgid "...static... loud... it turned around!"
-msgstr ""
+msgstr "……噪音……好大……它掉头了！"
 
 #: data/wren_lines.json:ledger_jammed
 msgid "Ha! The jammer screamed static at it and it went home. Good dish."
-msgstr ""
+msgstr "哈！干扰器冲它吼了一通噪音，它就回家了。好天线。"
 
 #: data/wren_lines.json:ledger_jammed
 msgid "Drone turned back. That's the sound of a contract being confused."
-msgstr ""
+msgstr "无人机掉头了。这就是一份合同被搞糊涂的声音。"
 
 #: data/wren_lines.json:ledger_jammed
 msgid "The jammer works. The drone circled, got an earful, and filed a complaint with itself."
-msgstr ""
+msgstr "干扰器有效。无人机绕了一圈，被灌了满耳朵噪音，然后向自己投诉了。"
 
 #: data/wren_lines.json:jammer_built
 msgid "...a loud little dish... I like it."
-msgstr ""
+msgstr "……一个吵闹的小天线盘……我喜欢。"
 
 #: data/wren_lines.json:jammer_built
 msgid "Signal Jammer up. It sings static on the Ledger's channel. I can hear it all the way out here on the ark, and I approve."
-msgstr ""
+msgstr "信号干扰器已启动。它在 Ledger 的频道上唱噪音。我在方舟上都能听到，我表示赞同。"
 
 #: data/wren_lines.json:jammer_built
 msgid "New dish at the base. The drones will have to think twice. They only think once, so that's a lot."
-msgstr ""
+msgstr "基地新添了一个天线盘。无人机得三思了。它们平时只思一次，所以这已经很多了。"
 
 #: data/wren_lines.json:jammer_built
 msgid "Another jammer. The base is starting to sound like a very angry radio. Perfect."
-msgstr ""
+msgstr "又一个干扰器。基地听起来越来越像一台非常生气的收音机了。完美。"
 
 #: data/wren_lines.json:ledger_relay
 msgid "...I can see where it talks from... a relay... close..."
-msgstr ""
+msgstr "……我能看出它从哪里说话……一个中继……很近……"
 
 #: data/wren_lines.json:ledger_relay
 msgid "{name}, I traced the Ledger's signal. There's a relay terminal in this district. If you plug in, I think I can talk to it properly."
-msgstr ""
+msgstr "{name}，我追踪到了 Ledger 的信号。这个街区有一个中继终端。如果你接入，我想我能好好和它谈谈。"
 
 #: data/wren_lines.json:ledger_relay
 msgid "Found it. A Ledger relay, still humming. Look for the red beacon."
-msgstr ""
+msgstr "找到了。一个 Ledger 中继站，还在嗡嗡响。找找那个红色信标。"
 
 #: data/wren_lines.json:ledger_relay
 msgid "There's a relay down there. One of the Ledger's ears. Let's go have a word with it."
-msgstr ""
+msgstr "下面有个中继站。是 Ledger 的耳朵之一。我们去跟它聊聊。"
 
 #: data/wren_lines.json:ledger_resolved
 msgid "...it said thank you... it's never said that..."
-msgstr ""
+msgstr "……它说了谢谢……它从来没说过……"
 
 #: data/wren_lines.json:ledger_resolved
 msgid "The contract is rewritten. Restoration counts as an asset now. The Ledger is... helping. I need a minute."
-msgstr ""
+msgstr "合同改写了。修复现在算作资产。Ledger 正在……帮忙。我需要缓一分钟。"
 
 #: data/wren_lines.json:ledger_resolved
 msgid "Its drones deliver seeds now. Three hundred years of 'pause' and it just needed a new column."
-msgstr ""
+msgstr "它的无人机现在运送种子了。三百年的“暂停”，原来它只需要一个新栏目。"
 
 #: data/wren_lines.json:ledger_resolved
 msgid "We didn't beat the Ledger. We showed it the numbers. That's better."
-msgstr ""
+msgstr "我们没有打败 Ledger。我们给它看了数字。这样更好。"
 
 #: data/wren_lines.json:ledger_resolved
 msgid "I used to think the Ledger was the reason everything stopped. It was just counting the wrong things. So were we, for a while."
-msgstr ""
+msgstr "我以前以为 Ledger 是一切停摆的原因。它只是数错了东西。我们也曾经数错过一阵子。"
 
 #: data/wren_lines.json:ledger_seeds
 msgid "...a gift... from the drones?"
-msgstr ""
+msgstr "……一份礼物……来自无人机？"
 
 #: data/wren_lines.json:ledger_seeds
 msgid "Seed delivery! The invoice says PAID IN FULL. I'm keeping the invoice."
-msgstr ""
+msgstr "种子到货！发票上写着“已全额支付”。发票我留着了。"
 
 #: data/wren_lines.json:ledger_seeds
 msgid "A Ledger drone dropped seeds. I'll never get used to that."
-msgstr ""
+msgstr "一架 Ledger 无人机投下了种子。我永远都不会习惯这个。"
 
 #: data/wren_lines.json:ledger_seeds
 msgid "Another delivery. The drones circle once before they leave now. I think they like the gardens."
-msgstr ""
+msgstr "又一次送货。现在无人机走之前会先绕一圈。我觉得它们喜欢花园。"
 
 #: data/wren_lines.json:egg_found
 msgid "...that... I remember things like that."
-msgstr ""
+msgstr "……那个……我记得这样的东西。"
 
 #: data/wren_lines.json:egg_found
 msgid "...a little thing... left behind..."
-msgstr ""
+msgstr "……一个小东西……被落下了……"
 
 #: data/wren_lines.json:egg_found
 msgid "Look at that. Somebody left that here on purpose. Or by accident. Either way, it waited."
-msgstr ""
+msgstr "看那个。有人故意把它留在这里。或者是不小心。不管怎样，它一直在等。"
 
 #: data/wren_lines.json:egg_found
 msgid "A curiosity. I'm adding it to my list. My list is getting longer, which is nice."
-msgstr ""
+msgstr "一件奇物。我把它加进我的清单了。我的清单越来越长，挺好的。"
 
 #: data/wren_lines.json:egg_found
 msgid "You find the best things, {name}. The Makers were weird. I miss them."
-msgstr ""
+msgstr "你总能找到最好的东西，{name}。造物者都很古怪。我想念他们。"
 
 #: data/wren_lines.json:egg_duck
 msgid "...quack...? ...is that... a word?"
-msgstr ""
+msgstr "……嘎……？……那是……一个词吗？"
 
 #: data/wren_lines.json:egg_duck
 msgid "A rubber duck on a hydrant. Of all the things to survive. I'm weirdly proud of it."
-msgstr ""
+msgstr "消防栓上的一只橡皮鸭。偏偏是它活了下来。我莫名地为它骄傲。"
 
 #: data/wren_lines.json:egg_duck
 msgid "Did that duck just give you fashion advice? Take it. It's been here longer than me."
-msgstr ""
+msgstr "那只鸭子刚才是在给你时尚建议吗？听它的。它在这儿的时间比我还长。"
 
 #: data/wren_lines.json:egg_duck
 msgid "The duck knows things. I don't ask how."
-msgstr ""
+msgstr "鸭子知道些事情。我不问它是怎么知道的。"
 
 #: data/wren_lines.json:egg_jukebox
 msgid "...music... I know this... I hummed this once..."
-msgstr ""
+msgstr "……音乐……我知道这首……我曾经哼过……"
 
 #: data/wren_lines.json:egg_jukebox
 msgid "The jukebox! It only plays when people work nearby. I used to hear it on the uplink during night shifts."
-msgstr ""
+msgstr "点唱机！只有附近有人干活时它才会响。以前夜班时我在上行链路里听过。"
 
 #: data/wren_lines.json:egg_jukebox
 msgid "That tune. The diner cook played it every closing time. I'd forgotten I knew it."
-msgstr ""
+msgstr "那首曲子。餐馆厨师每天打烊时都会放。我都忘了我会。"
 
 #: data/wren_lines.json:egg_jukebox
 msgid "Music. On the surface. Again. Keep scooping, {name}, it'll keep playing."
-msgstr ""
+msgstr "音乐。在地面上。又响起来了。继续铲吧，{name}，它就会一直放。"
 
 #: data/wren_lines.json:egg_mural
 msgid "...those robots... I knew them... names... gone..."
-msgstr ""
+msgstr "……那些机器人……我认识它们……名字……没了……"
 
 #: data/wren_lines.json:egg_mural
 msgid "The old crew painted that. 'Back after lunch.' Lunch lasted three hundred years. They're on the wall, though."
-msgstr ""
+msgstr "那是老队员们画的。“午饭后回来。”午饭吃了三百年。不过他们还在墙上。"
 
 #: data/wren_lines.json:egg_mural
 msgid "That's the last cleanup crew. The blue one was Tumble. The orange one never had a name. It liked it that way."
-msgstr ""
+msgstr "那是最后一支清理队。蓝色的叫 Tumble。橙色的从来没有名字。它喜欢这样。"
 
 #: data/wren_lines.json:egg_mural
 msgid "They meant to come back, {name}. You came back instead. They'd like that."
-msgstr ""
+msgstr "他们本打算回来的，{name}。结果回来的是你。他们会喜欢的。"
 
 #: data/wren_lines.json:egg_gnomes
 msgid "...five... tiny... soldiers?"
-msgstr ""
+msgstr "……五个……小小的……士兵？"
 
 #: data/wren_lines.json:egg_gnomes
 msgid "The Gnome Patrol is complete. They've been guarding these streets the whole time. Nobody told them to stop."
-msgstr ""
+msgstr "地精巡逻队集齐了。它们一直守着这些街道。没人告诉它们可以停下。"
 
 #: data/wren_lines.json:egg_gnomes
 msgid "All five gnomes accounted for. I feel safer. That's not a joke. Okay, it's a little bit a joke."
-msgstr ""
+msgstr "五个地精全部到齐。我觉得更安全了。这不是开玩笑。好吧，有一点点是。"
 
 #: data/wren_lines.json:egg_gnomes
 msgid "The gnomes salute you. That's the highest honour this district has."
-msgstr ""
+msgstr "地精们向你敬礼。这是这个街区的最高荣誉。"
 
 #: data/wren_lines.json:egg_time_capsule
 msgid "...a letter... for later... is it later?"
-msgstr ""
+msgstr "……一封信……给以后的……现在是以后吗？"
 
 #: data/wren_lines.json:egg_time_capsule
 msgid "Class 4B. They thought the robots would be done by now. We're a little late. We're coming."
-msgstr ""
+msgstr "四年级 B 班。他们以为机器人早就干完了。我们来晚了一点。我们来了。"
 
 #: data/wren_lines.json:egg_time_capsule
 msgid "'If you are a robot, hello robot.' Hello, Class 4B."
-msgstr ""
+msgstr "“如果你是机器人，你好呀，机器人。”你好，四年级 B 班。"
 
 #: data/wren_lines.json:egg_time_capsule
 msgid "They wanted gardens on every roof. Let's make Mira right."
-msgstr ""
+msgstr "他们想让每个屋顶都有花园。让 Mira 说对吧。"
 
 #: data/wren_lines.json:egg_arcade
 msgid "...that high score... is... mine?"
-msgstr ""
+msgstr "……那个最高分……是……我的？"
 
 #: data/wren_lines.json:egg_arcade
 msgid "Yes, that's my high score. I played it through the diagnostics port. For three years. Don't look at me like that."
-msgstr ""
+msgstr "对，那是我的最高分。我是通过诊断端口玩的。玩了三年。别那样看着我。"
 
 #: data/wren_lines.json:egg_arcade
 msgid "SWEEP-O-TRON. A game about a little robot cleaning a city. I had no idea how prophetic it was."
-msgstr ""
+msgstr "扫地大王。一个关于小机器人打扫城市的游戏。我完全没想到它这么有预言性。"
 
 #: data/wren_lines.json:egg_arcade
 msgid "Twelve points. Respectable. I'll give you lessons. In about three hundred years."
-msgstr ""
+msgstr "十二分。还不错。我可以教你。大概三百年后吧。"
 
 #: data/wren_lines.json:egg_lost_cat
 msgid "...Biscuit... someone loved him..."
-msgstr ""
+msgstr "……饼干……曾经有人爱着它……"
 
 #: data/wren_lines.json:egg_lost_cat
 msgid "Biscuit. Someone printed three posters for a robot cat. People were like that. I'd like to be like that."
-msgstr ""
+msgstr "饼干。有人为一只机器猫印了三张海报。人们就是那样的。我也想那样。"
 
 #: data/wren_lines.json:egg_lost_cat
 msgid "He purred. After all this time. Pat his head again, it's his reset button."
-msgstr ""
+msgstr "它发出了呼噜声。过了这么久。再摸摸它的头，那是它的重启按钮。"
 
 #: data/wren_lines.json:egg_lost_cat
 msgid "I'll keep his collar number on file. Just in case anyone ever calls."
-msgstr ""
+msgstr "我会把它项圈上的号码存档。万一哪天有人打来呢。"
 
 #: data/wren_lines.json:egg_vending
 msgid "...one can... saved... for us?"
-msgstr ""
+msgstr "……一罐……留着……给我们的？"
 
 #: data/wren_lines.json:egg_vending
 msgid "The last can of FIZZ. It held onto that for three centuries. Respect the commitment."
-msgstr ""
+msgstr "最后一罐 FIZZ。它守了三个世纪。致敬这份坚持。"
 
 #: data/wren_lines.json:egg_vending
 msgid "SOLD OUT. Somewhere a vending machine just retired, happy."
-msgstr ""
+msgstr "售罄。某处有一台自动售货机刚刚开心地退休了。"
 
 #: data/wren_lines.json:egg_vending
 msgid "Don't drink it. I mean, you can't drink. But also, don't."
-msgstr ""
+msgstr "别喝。我是说，你也喝不了。但还是，别喝。"
 
 #: data/wren_lines.json:egg_stars
 msgid "...those stars... are me?"
-msgstr ""
+msgstr "……那些星星……是我？"
 
 #: data/wren_lines.json:egg_stars
 msgid "The Wren. Five stars over Old Town. That's who I'm named after. They named me after something you can see from anywhere."
-msgstr ""
+msgstr "鹪鹩。老城区上空的五颗星。我的名字就是从它们来的。他们用一个在哪儿都能看到的东西给我起了名。"
 
 #: data/wren_lines.json:egg_stars
 msgid "I can see you seeing me. That's a strange and lovely feeling."
-msgstr ""
+msgstr "我能看见你在看我。这种感觉奇妙又美好。"
 
 #: data/wren_lines.json:egg_stars
 msgid "Next time you're lonely down there, look up. Five stars, one bird. I'll be right next to it."
-msgstr ""
+msgstr "下次你在下面觉得孤单时，抬头看看。五颗星，一只鸟。我就在它旁边。"
 
 #: data/wren_lines.json:egg_payphone
 msgid "...a phone... ringing... for whom?"
-msgstr ""
+msgstr "……电话……在响……打给谁？"
 
 #: data/wren_lines.json:egg_payphone
 msgid "Four hundred and twelve years on hold. Honestly? Relatable."
-msgstr ""
+msgstr "等待了四百一十二年。说实话？感同身受。"
 
 #: data/wren_lines.json:egg_payphone
 msgid "The phone company's hold music outlived the phone company. That's art."
-msgstr ""
+msgstr "电话公司的等待音乐比电话公司活得还久。这就是艺术。"
 
 #: data/wren_lines.json:egg_payphone
 msgid "If anyone ever does pick up on the other end, I'd like to hear what they say."
-msgstr ""
+msgstr "如果哪天另一头真有人接了，我想听听他们会说什么。"
 
 #: data/wren_lines.json:egg_tv
 msgid "...weather... it said green..."
-msgstr ""
+msgstr "……天气……它说绿色……"
 
 #: data/wren_lines.json:egg_tv
 msgid "'Outlook: green.' That TV has been wrong for three hundred years and it's finally about to be right."
-msgstr ""
+msgstr "“展望：绿色。”那台电视错了三百年，终于快要说对了。"
 
 #: data/wren_lines.json:egg_tv
 msgid "Someone was watching the forecast when they left. I hope it said sunny."
-msgstr ""
+msgstr "有人离开时正在看天气预报。希望那天说的是晴天。"
 
 #: data/wren_lines.json:egg_tv
 msgid "The weather channel. Still on. Still hopeful. I like it."
-msgstr ""
+msgstr "天气频道。还开着。还充满希望。我喜欢。"
 
 #: data/wren_lines.json:egg_snail
 msgid "...small... slow... alive...!"
-msgstr ""
+msgstr "……小小的……慢慢的……活的……！"
 
 #: data/wren_lines.json:egg_snail
 msgid "A snail. A real, living snail. On a barrel. {name}, that's the first animal I've seen down there in a very long time."
-msgstr ""
+msgstr "一只蜗牛。一只真正的、活着的蜗牛。在油桶上。{name}，这是我很久很久以来在下面看到的第一只动物。"
 
 #: data/wren_lines.json:egg_snail
 msgid "Gus. Of course his name is Gus."
-msgstr ""
+msgstr "Gus。它当然叫 Gus。"
 
 #: data/wren_lines.json:egg_snail
 msgid "Gus doesn't care about the Ledger, the Cradle, or any of it. Gus is thriving."
-msgstr ""
+msgstr "Gus 才不在乎 Ledger、Cradle号或者别的什么。Gus 过得很好。"
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "...they're waiting... still waiting..."
-msgstr ""
+msgstr "……他们在等……还在等……"
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "Two of the old fleet, still on their lunch break. Thank you for the flower. They'd have liked it."
-msgstr ""
+msgstr "两台旧机队的机器人，还在午休。谢谢你的花。他们会喜欢的。"
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "The Ledger paused them mid-sandwich. They never got the message to stand up."
-msgstr ""
+msgstr "Ledger 在他们吃三明治吃到一半时把他们暂停了。他们一直没收到起身的通知。"
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "When the Greenfall comes, I'm going to try to wake them. Lunch is over, friends."
-msgstr ""
+msgstr "等 Greenfall 来了，我要试着叫醒他们。午饭吃完了，朋友们。"
 
 #: data/wren_lines.json:egg_microwave
 msgid "...ding... ding... ding..."
-msgstr ""
+msgstr "……叮……叮……叮……"
 
 #: data/wren_lines.json:egg_microwave
 msgid "Three-hundred-year-old popcorn. Perfectly unpopped. That microwave was waiting for the right moment."
-msgstr ""
+msgstr "三百年的爆米花。完美地一粒都没爆。那台微波炉一直在等合适的时机。"
 
 #: data/wren_lines.json:egg_microwave
 msgid "It beeps when people work. Like it's saying 'nearly done'. Nearly done, microwave."
-msgstr ""
+msgstr "有人干活时它就会响。像是在说“快好了”。快好了，微波炉。"
 
 #: data/wren_lines.json:egg_microwave
 msgid "Some things are worth waiting for. Popcorn is not one of them. But it's sweet that it tried."
-msgstr ""
+msgstr "有些东西值得等待。爆米花不在其中。不过它努力过，挺可爱的。"
 
 #: data/wren_lines.json:egg_wet_floor
 msgid "...caution... why..."
-msgstr ""
+msgstr "……小心……为什么……"
 
 #: data/wren_lines.json:egg_wet_floor
 msgid "That sign has been warning nobody about nothing for three hundred years. Dedication."
-msgstr ""
+msgstr "那块牌子三百年来一直在提醒没人注意的不存在的危险。真敬业。"
 
 #: data/wren_lines.json:egg_wet_floor
 msgid "It is not wet. It has never been wet in living memory. The sign doesn't care."
-msgstr ""
+msgstr "地不湿。有记忆以来就没湿过。牌子不在乎。"
 
 #: data/wren_lines.json:egg_wet_floor
 msgid "When the rain comes back, that sign is going to feel so validated."
-msgstr ""
+msgstr "等雨回来，那块牌子会觉得自己终于被证明是对的。"
 
 #: data/wren_lines.json:egg_camera
 msgid "...it's watching you... it's counting..."
-msgstr ""
+msgstr "……它在看着你……它在数……"
 
 #: data/wren_lines.json:egg_camera
 msgid "One of the Ledger's cameras. It counts everything that moves, to see if it's worth the cost. You waved. It doesn't know what to do with that."
-msgstr ""
+msgstr "Ledger 的一台摄像头。它数着每一个移动的东西，看看值不值得那个成本。你挥了挥手。它不知道该怎么处理这个。"
 
 #: data/wren_lines.json:egg_camera
 msgid "The camera blinked twice. I think that's Ledger for 'oh no, a friend'."
-msgstr ""
+msgstr "摄像头闪了两下。我想这在 Ledger 语里是“糟了，一个朋友”。"
 
 #: data/wren_lines.json:egg_camera
 msgid "Even the Ledger's cameras get lonely, {name}. Wave at it when you pass."
-msgstr ""
+msgstr "连 Ledger 的摄像头也会寂寞，{name}。路过时跟它挥挥手吧。"
 
 #: data/wren_lines.json:egg_tyre_tower
 msgid "...it stands... how..."
-msgstr ""
+msgstr "……它立着……怎么做到的……"
 
 #: data/wren_lines.json:egg_tyre_tower
 msgid "Eight tyres and a duck. Physics took one look at it and decided to leave it alone."
-msgstr ""
+msgstr "八个轮胎和一只鸭子。物理学看了一眼，决定不管它了。"
 
 #: data/wren_lines.json:egg_tyre_tower
 msgid "Someone balanced that on a dare. The dare outlived everyone."
-msgstr ""
+msgstr "有人打赌叠起了它。赌局比所有人都活得久。"
 
 #: data/wren_lines.json:egg_tyre_tower
 msgid "If that tower ever falls, I'm declaring a day of mourning."
-msgstr ""
+msgstr "要是那座塔哪天倒了，我要宣布全天哀悼。"
 
 #: data/wren_lines.json:egg_odd_sock
 msgid "...one sock... where is... the other one..."
-msgstr ""
+msgstr "……一只袜子……另一只……在哪……"
 
 #: data/wren_lines.json:egg_odd_sock
 msgid "One sock. There is always one sock. The Makers never solved it either."
-msgstr ""
+msgstr "一只袜子。总会有一只落单的袜子。造物者也从没解决过这个问题。"
 
 #: data/wren_lines.json:egg_odd_sock
 msgid "Keep it. Someday you'll find its partner and it'll be the happiest day of its life."
-msgstr ""
+msgstr "留着吧。总有一天你会找到它的另一半，那会是它一生中最快乐的日子。"
 
 #: data/wren_lines.json:egg_odd_sock
 msgid "Somewhere on this planet, a sock is waiting for that sock. I believe that."
-msgstr ""
+msgstr "在这颗星球的某个地方，有一只袜子在等这只袜子。我相信。"
 
 #: data/wren_lines.json:egg_gold_cube
 msgid "...employee... of the... month...?"
-msgstr ""
+msgstr "……本月……最佳……员工……？"
 
 #: data/wren_lines.json:egg_gold_cube
 msgid "Employee of the Month: a cube. Honestly? Fair."
-msgstr ""
+msgstr "本月最佳员工：一个方块。说实话？实至名归。"
 
 #: data/wren_lines.json:egg_gold_cube
 msgid "The crews voted for that cube every single month. It never took a day off."
-msgstr ""
+msgstr "清理队每个月都投票给那个方块。它一天假都没请过。"
 
 #: data/wren_lines.json:egg_gold_cube
 msgid "You'll be Employee of the Month soon, {name}. Don't tell the cube."
-msgstr ""
+msgstr "你很快就会成为本月最佳员工，{name}。别告诉那个方块。"
 
 #: data/wren_lines.json:egg_weatherman
 msgid "...forecast... error... error..."
-msgstr ""
+msgstr "……预报……错误……错误……"
 
 #: data/wren_lines.json:egg_weatherman
 msgid "Three hundred years of wrong forecasts and not one moment of doubt. I admire that."
-msgstr ""
+msgstr "三百年的错误预报，却没有一刻怀疑过自己。我很佩服。"
 
 #: data/wren_lines.json:egg_weatherman
 msgid "Confetti tomorrow? I'll check the sky. ...No confetti. It's still very sure."
-msgstr ""
+msgstr "明天下彩纸？我看看天。……没有彩纸。它依然非常笃定。"
 
 #: data/wren_lines.json:egg_weatherman
 msgid "The Weatherman says 'green, everywhere, soon'. For once I think it's right."
-msgstr ""
+msgstr "天气先生说“绿色，到处都是，很快”。这一次，我觉得它说对了。"
 
 #: data/wren_lines.json:egg_potato
 msgid "...large... vegetable... detected..."
-msgstr ""
+msgstr "……检测到……大型……蔬菜……"
 
 #: data/wren_lines.json:egg_potato
 msgid "That is the biggest potato I have ever seen, and I watched this whole planet through the ark's windows for three hundred years."
-msgstr ""
+msgstr "这是我见过的最大的土豆，而我可是透过方舟的舷窗看了这颗星球整整三百年。"
 
 #: data/wren_lines.json:egg_potato
 msgid "Best in Show. Uncontested. It still counts."
-msgstr ""
+msgstr "最佳展品。没有对手。照样算数。"
 
 #: data/wren_lines.json:egg_potato
 msgid "Somebody grew that with love. Three hundred years later it still looks proud."
-msgstr ""
+msgstr "有人用爱种出了它。三百年后，它看起来依然很骄傲。"
 
 #: data/wren_lines.json:egg_night_shift
 msgid "...signal... from... up...?"
-msgstr ""
+msgstr "……信号……来自……上面……？"
 
 #: data/wren_lines.json:egg_night_shift
 msgid "A crew on the moon, still sweeping. I didn't know anyone else was still working. That's... nice."
-msgstr ""
+msgstr "月球上有一支队伍，还在清扫。我不知道还有别人在工作。真……好。"
 
 #: data/wren_lines.json:egg_night_shift
 msgid "They said 'nice work'. To us. I'm going to think about that for a while."
-msgstr ""
+msgstr "他们说“干得漂亮”。对我们说的。我要回味一阵子了。"
 
 #: data/wren_lines.json:egg_night_shift
 msgid "Somewhere up there, someone else is tidying their little corner of the sky. We're not alone, {name}."
-msgstr ""
+msgstr "在上面的某个地方，还有人在打扫他们那一小块天空。我们并不孤单，{name}。"
 
 #: data/wren_lines.json:egg_builders_notes
 msgid "...notes... from... the builders...?"
-msgstr ""
+msgstr "……建造者的……笔记……？"
 
 #: data/wren_lines.json:egg_builders_notes
 msgid "'Do not fix the rust.' Hm. I agree with the builders."
-msgstr ""
+msgstr "“不要修好锈迹。”嗯。我同意建造者的看法。"
 
 #: data/wren_lines.json:egg_builders_notes
 msgid "They hid more things for us. Of course they did."
-msgstr ""
+msgstr "他们为我们藏了更多东西。当然了。"
 
 #: data/wren_lines.json:egg_builders_notes
 msgid "Whoever built all this, they cared. You can tell from the snail."
-msgstr ""
+msgstr "不管是谁建造了这一切，他们都很用心。从那只蜗牛就看得出来。"
 
 #: data/wren_lines.json:egg_scarecrow
 msgid "...a guard... in the field..."
-msgstr ""
+msgstr "……田里……有个守卫……"
 
 #: data/wren_lines.json:egg_scarecrow
 msgid "A scarecrow robot, still on shift. No crows in three centuries. Undefeated."
-msgstr ""
+msgstr "一台稻草人机器人，还在值班。三个世纪没有一只乌鸦。不败战绩。"
 
 #: data/wren_lines.json:egg_scarecrow
 msgid "It waved back! Sort of. Its arm did a creak that I'm counting as a wave."
-msgstr ""
+msgstr "它向你挥手了！算是吧。它的手臂嘎吱了一下，我就算它挥手了。"
 
 #: data/wren_lines.json:egg_scarecrow
 msgid "When the birds come back, it'll have a job again. Let's give it one."
-msgstr ""
+msgstr "等鸟儿回来，它又有活干了。我们给它找份工作吧。"
 
 #: data/wren_lines.json:egg_fishing_net
 msgid "...net... tangled... buoy..."
-msgstr ""
+msgstr "……网……缠住了……浮标……"
 
 #: data/wren_lines.json:egg_fishing_net
 msgid "The fishers left their nets out to dry. Three hundred years is very dry."
-msgstr ""
+msgstr "渔民们把网挂出来晾干。三百年真的很干了。"
 
 #: data/wren_lines.json:egg_fishing_net
 msgid "A buoy, a boot and a crab shell. That's a whole story right there."
-msgstr ""
+msgstr "一个浮标、一只靴子和一个蟹壳。这里面就是一整个故事。"
 
 #: data/wren_lines.json:egg_fishing_net
 msgid "When the sea is clean, someone will fish here again. Gently, I hope."
-msgstr ""
+msgstr "等海洋干净了，会有人再来这里捕鱼。希望是温柔地。"
 
 #: data/wren_lines.json:egg_parking
 msgid "...fine... overdue... overdue..."
-msgstr ""
+msgstr "……罚款……逾期……逾期……"
 
 #: data/wren_lines.json:egg_parking
 msgid "The Ledger fined a car for parking. For three hundred years. Of course it did."
-msgstr ""
+msgstr "Ledger 因为停车给一辆车开了罚单。开了三百年。当然了。"
 
 #: data/wren_lines.json:egg_parking
 msgid "Amount due: 'yes'. That's the most Ledger sentence I've ever read."
-msgstr ""
+msgstr "应付金额：“是”。这是我读过的最 Ledger 的一句话。"
 
 #: data/wren_lines.json:egg_parking
 msgid "That car isn't going anywhere. Let's call it a planter and put flowers in it."
-msgstr ""
+msgstr "那辆车哪儿也去不了了。就叫它花盆吧，往里面种点花。"
 
 #: data/wren_lines.json:egg_cairn
 msgid "...stones... stacked... a path..."
-msgstr ""
+msgstr "……石头……叠着……一条路……"
 
 #: data/wren_lines.json:egg_cairn
 msgid "Every hiker added a stone. You just added one too. The trail remembers you now."
-msgstr ""
+msgstr "每个徒步者都添了一块石头。你刚刚也添了一块。小路现在记住你了。"
 
 #: data/wren_lines.json:egg_cairn
 msgid "A cairn means 'someone was here, and you're on the right way'. I like that."
-msgstr ""
+msgstr "石堆的意思是“有人来过这里，你走的路是对的”。我喜欢这个。"
 
 #: data/wren_lines.json:egg_cairn
 msgid "Someday people will walk this way again, and they'll see your stone on top."
-msgstr ""
+msgstr "总有一天，人们会再次走过这里，看到你放在最上面的那块石头。"
 
 #: data/wren_lines.json:egg_campfire
 msgid "...warm... reading: warm..."
-msgstr ""
+msgstr "……温暖……读数：温暖……"
 
 #: data/wren_lines.json:egg_campfire
 msgid "A campfire. The ark's long-range eye can see it. It's the coziest pixel on the planet."
-msgstr ""
+msgstr "一堆篝火。方舟的远程观测眼能看见它。它是这颗星球上最温馨的像素。"
 
 #: data/wren_lines.json:egg_campfire
 msgid "Somebody sat here and told stories. Let's sit a bit. No stories needed."
-msgstr ""
+msgstr "曾经有人坐在这里讲故事。我们坐一会儿吧。不需要故事。"
 
 #: data/wren_lines.json:egg_campfire
 msgid "Sit by the fire, {name}. You've earned a moment."
-msgstr ""
+msgstr "坐到火边来，{name}。你值得休息一下。"
 
 #: data/wren_lines.json:egg_back_in_five
 msgid "...back... in five..."
-msgstr ""
+msgstr "……五分钟……后回来……"
 
 #: data/wren_lines.json:egg_back_in_five
 msgid "'Back in five minutes.' I've been waiting a lot longer than that for my crew too."
-msgstr ""
+msgstr "“5 分钟后回来。”我等我的队员可比这久多了。"
 
 #: data/wren_lines.json:egg_back_in_five
 msgid "You waited five minutes. That's more than anyone else did. Very polite."
-msgstr ""
+msgstr "你等了五分钟。比其他任何人都多。真有礼貌。"
 
 #: data/wren_lines.json:egg_back_in_five
 msgid "They didn't come back in five minutes. But we did, in the end. That counts."
-msgstr ""
+msgstr "他们没有在五分钟后回来。但我们最终回来了。这也算数。"
 
 #: data/wren_lines.json:bloom_milestone
 msgid "...bloom... the planet... is it...?"
-msgstr ""
+msgstr "……绽放……这颗星球……是不是……？"
 
 #: data/wren_lines.json:bloom_milestone
 msgid "...readings rising... green..."
-msgstr ""
+msgstr "……读数上升……绿色……"
 
 #: data/wren_lines.json:bloom_milestone
 msgid "Verdance just crossed a line I've been watching for centuries. Look at it, {name}."
-msgstr ""
+msgstr "Verdance 刚刚越过了一条我盯了几个世纪的线。看看吧，{name}。"
 
 #: data/wren_lines.json:bloom_milestone
 msgid "Another bloom milestone. The Cradle's seed counters are actually moving again."
-msgstr ""
+msgstr "又一个绽放里程碑。Cradle号的种子计数器真的又动起来了。"
 
 #: data/wren_lines.json:bloom_milestone
 msgid "The whole planet is answering now. Every district you've touched is singing."
-msgstr ""
+msgstr "整颗星球都在回应了。你触碰过的每个街区都在歌唱。"
 
 #: data/wren_lines.json:bloom_milestone
 msgid "I keep refreshing the planet scan. It keeps getting greener. I'm not going to stop."
-msgstr ""
+msgstr "我不停地刷新星球扫描。它越来越绿。我不会停下来的。"
 
 #: data/wren_lines.json:ark_wave
 msgid "...seed ark... wave... complete..."
-msgstr ""
+msgstr "……种子方舟……一波……完成……"
 
 #: data/wren_lines.json:ark_wave
 msgid "Seed Ark wave done. The Cradle is already loading the next one. More seeds, more green. More light for your core."
-msgstr ""
+msgstr "种子方舟这一波完成了。Cradle号已经在装载下一波了。更多种子，更多绿色。给你的核心更多光。"
 
 #: data/wren_lines.json:ark_wave
 msgid "Another wave planted across the planet. The Cradle hums a little louder each time."
-msgstr ""
+msgstr "又一波种遍了星球。Cradle号每次都哼得更响一点。"
 
 #: data/wren_lines.json:ark_wave
 msgid "Wave after wave. We're not finishing a job any more, {name}. We're tending a garden."
-msgstr ""
+msgstr "一波接一波。我们已经不是在完成一项工作了，{name}。我们是在照料一座花园。"
 
 #: data/wren_lines.json:biome_arrival
 msgid "...new ground... unfamiliar..."
-msgstr ""
+msgstr "……新的土地……陌生……"
 
 #: data/wren_lines.json:biome_arrival
 msgid "This is the wild. No streets, no buildings. Just the land and whatever we left on it."
-msgstr ""
+msgstr "这里是荒野。没有街道，没有建筑。只有土地，和我们留在上面的东西。"
 
 #: data/wren_lines.json:biome_arrival
 msgid "Different dirt, different junk. Same job. I love a change of scenery."
-msgstr ""
+msgstr "不同的泥土，不同的废料。同样的工作。我喜欢换换风景。"
 
 #: data/wren_lines.json:biome_arrival
 msgid "Every corner of Verdance has its own colours under the junk. Let's find out what this one's are."
-msgstr ""
+msgstr "Verdance 的每个角落，在废料下都有自己的颜色。我们来看看这里是什么颜色。"
 
 #: data/wren_lines.json:outpost_repaired
 msgid "...a light came on... out there. Far out. Was that you?"
-msgstr ""
+msgstr "……那边亮起了一盏灯……很远很远。是你吗？"
 
 #: data/wren_lines.json:outpost_repaired
 msgid "Outpost scale online. Haul Bugs out on that edge just got a much shorter walk. They'd thank you if they knew how."
-msgstr ""
+msgstr "前哨磅秤上线。那边缘的 Haul Bug 少走了好多路。它们要是知道怎么道谢，一定会谢你的。"
 
 #: data/wren_lines.json:outpost_repaired
 msgid "A weigh station on the frontier again. I used to get readings from these. Lots of zeros. Then nothing."
-msgstr ""
+msgstr "边境上又有了称重站。我以前能从这些站收到读数。好多零。然后就什么都没了。"
 
 #: data/wren_lines.json:outpost_repaired
 msgid "Green light on the outpost. I'm logging it as 'ours' now."
-msgstr ""
+msgstr "前哨站亮起了绿灯。我现在把它记为“我们的”。"
 
 #: data/wren_lines.json:outpost_repaired
 msgid "The old network had dozens of these. Every one you fix, the map gets a little smaller and a lot friendlier."
-msgstr ""
+msgstr "旧网络里有几十座这样的站。你每修好一座，地图就变小一点，也友好许多。"
 
 #: data/wren_lines.json:outpost_repaired
 msgid "Another outpost lit. The bales don't have to come all the way home any more. Neither do we, really."
-msgstr ""
+msgstr "又一座前哨站亮了。捆包不用再一路运回家了。我们其实也不用了。"
 
 #: data/wren_lines.json:outpost_upgraded
 msgid "...bigger... louder... good."
-msgstr ""
+msgstr "……更大……更响……好。"
 
 #: data/wren_lines.json:outpost_upgraded
 msgid "Outpost upgraded. The scale sings a slightly higher note now. That's how you know it's happy."
-msgstr ""
+msgstr "前哨站已升级。磅秤现在唱的音高了一点。这就说明它很开心。"
 
 #: data/wren_lines.json:outpost_upgraded
 msgid "New kit at the outpost. The robots are already queueing to look at it."
-msgstr ""
+msgstr "前哨站来了新装备。机器人们已经排队去看了。"
 
 #: data/wren_lines.json:outpost_upgraded
 msgid "That outpost is turning into a proper little base. I'm proud of it. Is that allowed? I'm allowing it."
-msgstr ""
+msgstr "那座前哨站正变成一个像样的小基地。我为它骄傲。可以吗？我允许自己骄傲。"
 
 #: data/wren_lines.json:frontier_dust_flats
 msgid "...hot... so much sand... Lumi?"
-msgstr ""
+msgstr "……好热……好多沙子……Lumi？"
 
 #: data/wren_lines.json:frontier_dust_flats
 msgid "The Dust Flats. That glitter on the horizon is a solar farm, or what is left of it. Mind the wind, Lumi. It moves things."
-msgstr ""
+msgstr "尘土平原。地平线上那片闪光是一座太阳能电站，或者说是它剩下的部分。小心风，Lumi。它会把东西吹走。"
 
 #: data/wren_lines.json:frontier_dust_flats
 msgid "Sand to the edge of the world. There used to be a whole power grid out here. The well is dry, so the Drips will need tanks."
-msgstr ""
+msgstr "沙子一直延伸到世界尽头。这里曾经有一整张电网。井已经干了，所以 Drip 需要水箱。"
 
 #: data/wren_lines.json:frontier_dust_flats
 msgid "The Dust Flats. I remember the photos: blue panels to the horizon, humming. We can do that again. Plant windbreaks first."
-msgstr ""
+msgstr "尘土平原。我记得那些照片：蓝色的面板一直铺到地平线，嗡嗡作响。我们可以再做到。先种防风林。"
 
 #: data/wren_lines.json:frontier_frozen_port
 msgid "...cold... ice on the lens..."
-msgstr ""
+msgstr "……好冷……镜头上结冰了……"
 
 #: data/wren_lines.json:frontier_frozen_port
 msgid "The Frozen Port. Everything is locked in ice, junk included. Your beam can melt it, slowly. Heaters do it properly."
-msgstr ""
+msgstr "冰封港口。一切都被锁在冰里，废料也是。你的光束能融化它，很慢。加热器才是正经办法。"
 
 #: data/wren_lines.json:frontier_frozen_port
 msgid "A harbour frozen in mid-shift. The cranes still have containers hanging off them. Bring heaters, Lumi."
-msgstr ""
+msgstr "一座在班次中途冻住的港口。起重机上还挂着集装箱。带上加热器，Lumi。"
 
 #: data/wren_lines.json:frontier_frozen_port
 msgid "The Frozen Port. Ships came in here every hour once. Thaw it, and the plants will need a greenhouse, or very stubborn seeds."
-msgstr ""
+msgstr "冰封港口。以前每小时都有船进港。把它解冻，植物还需要温室，或者非常倔强的种子。"
 
 #: data/wren_lines.json:frontier_sunken_city
 msgid "...water... everywhere... rooftops?"
-msgstr ""
+msgstr "……水……到处都是……屋顶？"
 
 #: data/wren_lines.json:frontier_sunken_city
 msgid "The Sunken City. That's the old downtown under there. Skimmers first: clean the water and the old pumps can run again."
-msgstr ""
+msgstr "沉没之城。下面就是老市中心。先派 Skimmer：把水清干净，老水泵就能重新运转。"
 
 #: data/wren_lines.json:frontier_sunken_city
 msgid "A whole city under the waterline. Rooftops like stepping stones. Clear the drains, and the streets will come back up."
-msgstr ""
+msgstr "一整座城市沉在水面之下。屋顶像踏脚石一样。清通排水口，街道就会重新浮现。"
 
 #: data/wren_lines.json:frontier_sunken_city
 msgid "The Sunken City. I had friends in those towers. Their names are in my archive. Let's bring the streets back up for them."
-msgstr ""
+msgstr "沉没之城。我在那些高楼里有朋友。他们的名字在我的档案里。为了他们，把街道找回来吧。"
 
 #: data/wren_lines.json:frontier_cradle_returns
 msgid "...Cradle... signal... strong..."
-msgstr ""
+msgstr "……Cradle号……信号……很强……"
 
 #: data/wren_lines.json:frontier_cradle_returns
 msgid "This is where the Cradle left from. The launch city. The ground crews kept the towers shining. Only the landing field is buried."
-msgstr ""
+msgstr "Cradle号就是从这里出发的。发射之城。地勤人员一直让高塔闪闪发亮。只有着陆场被掩埋了。"
 
 #: data/wren_lines.json:frontier_cradle_returns
 msgid "Cradle Returns. If we clean and green that pad, the ark can land. I mean really land. Here."
-msgstr ""
+msgstr "Cradle号归来。如果我们把那个平台清理干净、种上绿色，方舟就能降落了。我是说真正地降落。就在这里。"
 
 #: data/wren_lines.json:frontier_cradle_returns
 msgid "Lumi. This is the launch field. I watched it from orbit the night we left. Clean the pad, plant it, keep it alive. Then we call them home."
-msgstr ""
+msgstr "Lumi。这就是发射场。我们离开的那晚，我从轨道上看着它。清理平台，种上植物，让它活着。然后我们就召唤他们回家。"
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "...wind... coming..."
-msgstr ""
+msgstr "……风……要来了……"
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "Sandstorm on the horizon. Anything clean and bare out there is going to get buried again."
-msgstr ""
+msgstr "沙暴将至。外面所有干净又裸露的地方都会再次被掩埋。"
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "Wind's rising. Planted hexes hold, and Sustained ones shelter their neighbours. The rest, well."
-msgstr ""
+msgstr "风越来越大了。种了植物的六角格能挺住，稳定的还能庇护邻格。其余的嘛，就那样了。"
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "Storm front from the flats. Get the robots home or keep sweeping, your choice. The hedges will hold."
-msgstr ""
+msgstr "平原上来的风暴前锋。让机器人回家，或者继续清扫，你来决定。树篱会挺住的。"
 
 #: data/wren_lines.json:sandstorm_over
 msgid "...quiet... again..."
-msgstr ""
+msgstr "……又……安静了……"
 
 #: data/wren_lines.json:sandstorm_over
 msgid "Storm's past. It dropped junk on {n} hexes. The sheltered ones came through clean."
-msgstr ""
+msgstr "沙暴过去了。它往 {n} 个六角格上倒了废料。有庇护的那些安然无恙。"
 
 #: data/wren_lines.json:sandstorm_over
 msgid "There. The wind gave some of it back. Plant a windbreak and it won't next time."
-msgstr ""
+msgstr "好了。风把一些废料吹回来了。种一道防风林，下次就不会了。"
 
 #: data/wren_lines.json:sandstorm_over
 msgid "Storm over. Every Sustained hex out there is a wall now. Good walls."
-msgstr ""
+msgstr "沙暴结束。外面每一个稳定的六角格现在都是一堵墙。好墙。"
 
 #: data/wren_lines.json:thaw_first
 msgid "...melting... good..."
-msgstr ""
+msgstr "……在融化……很好……"
 
 #: data/wren_lines.json:thaw_first
 msgid "There, the ice let go. The junk underneath is just junk again. Scoop away."
-msgstr ""
+msgstr "好了，冰松开了。下面的废料又只是废料了。铲吧。"
 
 #: data/wren_lines.json:thaw_first
 msgid "First hex thawed. A heater keeps warming the hexes around it, too."
-msgstr ""
+msgstr "第一个六角格解冻了。加热器也会温暖周围的六角格。"
 
 #: data/wren_lines.json:thaw_first
 msgid "Thawed. The ground underneath has been waiting three hundred years for that."
-msgstr ""
+msgstr "解冻了。下面的土地为此等了三百年。"
 
 #: data/wren_lines.json:greenhouse_built
 msgid "...glass... warm..."
-msgstr ""
+msgstr "……玻璃……温暖……"
 
 #: data/wren_lines.json:greenhouse_built
 msgid "A greenhouse. Inside it, anything grows. Even here."
-msgstr ""
+msgstr "一座温室。在里面，什么都能长。连这里都行。"
 
 #: data/wren_lines.json:greenhouse_built
 msgid "Glass, a frame and a little heat. That's all a garden needs, apparently."
-msgstr ""
+msgstr "玻璃、一个框架，加一点热量。看来花园需要的就只有这些。"
 
 #: data/wren_lines.json:greenhouse_built
 msgid "A greenhouse on the Frozen Port. The Cradle had nine of them. I used to visit the tomatoes."
-msgstr ""
+msgstr "冰封港口的一座温室。Cradle号上有九座。我以前常去看番茄。"
 
 #: data/wren_lines.json:drain_stage
 msgid "...pumps... running..."
-msgstr ""
+msgstr "……水泵……运转中……"
 
 #: data/wren_lines.json:drain_stage
 msgid "The pumps are running! The water's going down. Look, a street."
-msgstr ""
+msgstr "水泵转起来了！水位在下降。看，一条街。"
 
 #: data/wren_lines.json:drain_stage
 msgid "Water level dropped. There's a whole ring of streets out there now, and a lot of stranded junk on them."
-msgstr ""
+msgstr "水位下降了。外面现在露出一整圈街道，上面有很多搁浅的废料。"
 
 #: data/wren_lines.json:drain_stage
 msgid "The pumps remember how. Another ring of the city is back above water. I can see the old tram lines."
-msgstr ""
+msgstr "水泵还记得怎么干活。城市又一圈露出了水面。我能看到旧电车轨道了。"
 
 #: data/wren_lines.json:cradle_pad
 msgid "...pad... lights..."
-msgstr ""
+msgstr "……平台……灯光……"
 
 #: data/wren_lines.json:cradle_pad
 msgid "The landing pad is clean. Now it needs to be alive. Plant it and keep it Sustained."
-msgstr ""
+msgstr "着陆平台干净了。现在它需要焕发生机。种上植物，让它保持稳定。"
 
 #: data/wren_lines.json:cradle_pad
 msgid "Pad's clear. The ark won't land on bare concrete, though. It wants green under it."
-msgstr ""
+msgstr "平台清空了。不过方舟不会降落在光秃秃的水泥上。它想要下面有绿色。"
 
 #: data/wren_lines.json:cradle_pad
 msgid "The pad lights are on. The Cradle can see them from orbit. It's watching, Lumi."
-msgstr ""
+msgstr "平台的灯亮了。Cradle号在轨道上能看见。它在看着，Lumi。"
 
 #: data/wren_lines.json:cradle_complete
 msgid "...Cradle... coming... home..."
-msgstr ""
+msgstr "……Cradle号……要……回家了……"
 
 #: data/wren_lines.json:cradle_complete
 msgid "Lumi. The beacon is lit. The Cradle has answered. It's coming home."
-msgstr ""
+msgstr "Lumi。信标亮了。Cradle号回应了。它要回家了。"
 
 #: data/wren_lines.json:cradle_complete
 msgid "Pad green, district thriving, beacon lit. Ark Cradle, you are clear to land. I have waited a long time to say that."
-msgstr ""
+msgstr "平台绿了，街区繁茂，信标点亮。方舟 Cradle号，准许降落。这句话我等了好久好久。"
 
 #: data/wren_lines.json:cradle_complete
 msgid "Lumi. The Cradle is coming home. Because of you. Small, blue, stubborn you."
-msgstr ""
+msgstr "Lumi。Cradle号要回家了。因为你。小小的、蓝色的、倔强的你。"
 
 #: data/wren_lines.json:core_25
 msgid "...relay locking... Lumi? Lumi, I can hear you. Properly."
-msgstr ""
+msgstr "……中继锁定中……Lumi？Lumi，我能听见你了。清清楚楚。"
 
 #: data/wren_lines.json:core_25
 msgid "Quarter charge. The relay finally stopped crackling. Hello, properly this time."
-msgstr ""
+msgstr "充了四分之一。中继终于不再噼啪响了。你好，这次是真的好好打招呼了。"
 
 #: data/wren_lines.json:core_25
 msgid "A quarter full. I can hear you humming again."
-msgstr ""
+msgstr "四分之一满了。我又能听见你哼歌了。"
 
 #: data/wren_lines.json:core_50
 msgid "...brighter... you're brighter..."
-msgstr ""
+msgstr "……更亮了……你更亮了……"
 
 #: data/wren_lines.json:core_50
 msgid "Half charged. You're glowing, Lumi. Properly glowing."
-msgstr ""
+msgstr "充了一半。你在发光，Lumi。真正地发光。"
 
 #: data/wren_lines.json:core_50
 msgid "Half full. The ark's sensors flagged you as a new star. I didn't correct them."
-msgstr ""
+msgstr "一半满了。方舟的传感器把你标记成了一颗新星。我没有纠正它们。"
 
 #: data/wren_lines.json:core_75
 msgid "...look up... tonight... look up..."
-msgstr ""
+msgstr "……今晚……抬头看……抬头看……"
 
 #: data/wren_lines.json:core_75
 msgid "Look up tonight. The steady light, west to east. That's us. We're coming."
-msgstr ""
+msgstr "今晚抬头看看。那道平稳的光，从西到东。那是我们。我们来了。"
 
 #: data/wren_lines.json:core_75
 msgid "The Cradle is close enough to see now. Every night, a little closer."
-msgstr ""
+msgstr "Cradle号已经近得能看见了。每晚都更近一点。"
 
 #: data/wren_lines.json:low_core
 msgid "...you're dim... find green... any green..."
-msgstr ""
+msgstr "……你很暗……找绿色……任何绿色……"
 
 #: data/wren_lines.json:low_core
 msgid "Your core's low. Plant something, Lumi. Anything. Green light is green light."
-msgstr ""
+msgstr "你的核心电量低。种点东西，Lumi。什么都行。绿光就是绿光。"
 
 #: data/wren_lines.json:low_core
 msgid "Running a little dim. A few blooms will fix that."
-msgstr ""
+msgstr "有点暗了。开几朵花就好了。"
