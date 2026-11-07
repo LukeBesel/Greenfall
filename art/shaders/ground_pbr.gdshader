@@ -26,7 +26,7 @@ uniform float show_grid = 0.0;
 // Wilderness biome look (data/junk.json "biomes"): rgb = colour the bare ground leans to, a = amount.
 uniform vec4 biome_tint = vec4(1.0, 1.0, 1.0, 0.0);
 uniform vec3 grass_tint = vec3(1.0);
-// [biomes] Frontier ground extras: x = wind-rippled sand, y = frost/snow, z = wet silt, w unused.
+// [biomes] Frontier ground extras: x = wind-rippled sand, y = frost/snow, z = wet silt, w glassy ice ([planet-rime]).
 uniform vec4 frontier_fx = vec4(0.0);
 // [biomes2] Frontiers: the ground stops here and the terrain mesh (frontier_view.gd) takes over.
 uniform float clip_r = 0.0;
@@ -226,6 +226,16 @@ void fragment() {
 		m.arm.g = mix(m.arm.g, 0.42, fr);
 		m.nrm = mix(m.nrm, vec3(0.5, 0.5, 1.0), fr * 0.6);
 	}
+	if (frontier_fx.w > 0.001 && !is_yard) {
+		// [planet-rime] Glassy ice sheet (Rime): junk-strewn ground is frozen under clear blue ice
+		// with fracture lines; it thins out to snow and bare ice as a hex is cleaned.
+		float sheet = frontier_fx.w * smoothstep(0.3, 0.62, fbm(p * 0.09 + 23.0) + (1.0 - reveal) * 0.3);
+		float crk = 1.0 - smoothstep(0.0, 0.02, abs(fbm(p * 0.18 + 5.0) - 0.5));
+		vec3 icec = mix(vec3(0.34, 0.58, 0.78), vec3(0.85, 0.93, 1.0), crk * 0.6) * (0.85 + 0.2 * n3);
+		m.alb = mix(m.alb, icec, sheet * 0.8);
+		m.arm.g = mix(m.arm.g, 0.08, sheet);
+		m.nrm = mix(m.nrm, vec3(0.5, 0.5, 1.0), sheet * 0.8);
+	}
 	if (frontier_fx.z > 0.001 && !is_yard) {
 		// Wet silt left by the flood: darker, glossy, puddled in the low spots.
 		float wet = frontier_fx.z * (0.55 + 0.45 * smoothstep(0.4, 0.7, fbm(p * 0.33 + 41.0)));
@@ -270,7 +280,7 @@ void fragment() {
 	NORMAL_MAP = m.nrm;
 	AO = m.arm.r;
 	AO_LIGHT_AFFECT = 0.4;
-	ROUGHNESS = clamp(m.arm.g, 0.35, 1.0);
+	ROUGHNESS = clamp(m.arm.g, frontier_fx.w > 0.001 ? 0.08 : 0.35, 1.0);  // [planet-rime] glassy ice may go below 0.35
 	METALLIC = 0.0;
 	SPECULAR = 0.4;
 	EMISSION = emission;
