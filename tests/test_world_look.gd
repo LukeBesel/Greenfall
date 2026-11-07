@@ -350,3 +350,44 @@ func test_profile_is_stamped_and_synced_to_steam_cloud() -> void:
 	assert_almost_eq(CradleMode.starseeds(), 99.0, 0.001)
 	SteamService.detach()
 	fake.free()
+
+
+# --- Binary sun ----------------------------------------------------------------------------
+
+func test_binary_sun_defaults_and_geometry() -> void:
+	var s: Dictionary = BinarySun.suns_for("verdance")
+	assert_lt(float(s["b"]["size"]), float(s["a"]["size"]), "the companion is the smaller star")
+	assert_lt(float(s["b"]["energy"]), float(s["a"]["energy"]))
+	var cb: Color = BinarySun.color_of(s["b"]["color"], Color.WHITE)
+	assert_gt(cb.r, cb.b + 0.3, "and the cooler, orange-red one")
+	assert_almost_eq(BinarySun.separation_of(s), 14.0, 0.001)
+	assert_almost_eq(BinarySun.separation_of({"a": {"dir": Vector3(1, 0, 0)}, "b": {"dir": Vector3(0, 0, 1)}}), 90.0, 0.01)
+	var bs := BinarySun.new()
+	bs.separation_deg = 20.0
+	var to_a := Vector3(0.3, 0.5, -0.8).normalized()
+	var to_b: Vector3 = bs.companion_dir(to_a)
+	assert_almost_eq(to_b.y, to_a.y, 0.0001, "same height: they rise and set together")
+	assert_almost_eq(rad_to_deg(Vector2(to_a.x, to_a.z).angle_to(Vector2(to_b.x, to_b.z))), -20.0, 0.01)
+	bs.free()
+
+
+func test_every_sky_has_two_suns() -> void:
+	var env := Environment.new()
+	var sky := Sky.new()
+	sky.sky_material = PhysicalSkyMaterial.new()
+	env.sky = sky
+	var sun := DirectionalLight3D.new()
+	add_child_autofree(sun)
+	var sd := SkyDirector.new()
+	add_child_autofree(sd)
+	sd.setup(env, sun)
+	assert_not_null(sd.binary, "Verdance too")
+	assert_eq(sd.binary.planet_id, "verdance")
+	sd.time_of_day = 0.5
+	sd._apply()
+	assert_gt(sd.binary.fill.light_energy, 0.0, "the companion's warm fill at noon")
+	assert_false(sd.binary.fill.shadow_enabled, "unshadowed (the primary carries shadows)")
+	assert_gt(sun.light_energy, sd.binary.fill.light_energy)
+	sd.time_of_day = 0.0
+	sd._apply()
+	assert_false(sd.binary.fill.visible, "both suns are down at midnight")
