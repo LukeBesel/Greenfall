@@ -17,10 +17,17 @@ var _pinned_resto: float = -1.0  # [sound] dev --restoration
 
 
 func _ready() -> void:
-	EventBus.upgrade_bought.connect(func(_id: String, _lvl: int) -> void: Audio.music_sting("upgrade"))
-	EventBus.robot_built.connect(func(_n: String) -> void: Audio.music_sting("robot_built"))
-	EventBus.hex_restored.connect(func(_h: int) -> void: Audio.music_sting("level_up"))
+	EventBus.upgrade_bought.connect(func(_id: String, _lvl: int) -> void:
+		Audio.music_activity(0.06)  # [sound] busy play picks the upbeat tracks
+		Audio.music_sting("upgrade"))
+	EventBus.robot_built.connect(func(_n: String) -> void:
+		Audio.music_activity(0.15)
+		Audio.music_sting("robot_built"))
+	EventBus.hex_restored.connect(func(_h: int) -> void:
+		Audio.music_activity(0.1)
+		Audio.music_sting("level_up"))
 	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void:
+		Audio.music_activity(0.07)
 		var now: float = Time.get_ticks_msec() * 0.001
 		if now - _last_hex_sting > 6.0:
 			_last_hex_sting = now

@@ -27,6 +27,7 @@ const MusicDirector := preload("res://audio/music_director.gd")
 const MusicVoices := preload("res://audio/music_voices.gd")
 const PlanetSynth := preload("res://audio/planet_synth.gd")  # [sound]
 const PlanetThemes := preload("res://audio/planet_themes.gd")  # [sound]
+const MusicTracks := preload("res://audio/music_tracks.gd")  # [sound]
 const AmbienceBeds := preload("res://audio/ambience.gd")  # [sound]
 const AmbienceSynth := preload("res://audio/ambience_synth.gd")  # [sound]
 ## [sound] Mix: how far music / ambience dip while WREN speaks, and the attack / release times.
@@ -62,6 +63,7 @@ func _ready() -> void:
 		add_child(p)
 		_players.append(p)
 	var music_samples: Dictionary = MusicSynth.build_all()
+	music_samples.merge(PlanetSynth.build("groove", music_samples))  # [sound] Verdance's upbeat tracks
 	_music_samples = music_samples
 	_music_voices = MusicVoices.new()
 	_music_voices.name = "MusicVoices"
@@ -239,6 +241,8 @@ func set_music_intensity(x: float) -> void:
 ## harmony and tempo switch on the next bar line.
 func set_music_mood(mood: String) -> void:
 	if _music:
+		if mood == "homecoming":
+			_ensure_instruments("homecoming")  # [sound] the ending's choir
 		_music.call("set_mood", mood)
 
 
@@ -296,6 +300,46 @@ func release_theme() -> void:
 	_apply_theme(_theme_world, _resto_world)
 
 
+## Busy play (cleaning, building) nudges the score toward its upbeat tracks. MusicHooks calls it.
+func music_activity(amount: float) -> void:
+	if _music:
+		_music.call("pulse_activity", amount)
+
+
+## For the radio: loops composed track `id` (see music_track_ids()) with no gaps until
+## stop_track(). Unknown ids are ignored (returns false).
+func play_track(id: String) -> bool:
+	if _music == null or not MusicTracks.TRACKS.has(id):
+		return false
+	var planet: String = str(MusicTracks.TRACKS[id]["planet"])
+	_ensure_instruments(planet if planet != "" else "homecoming")
+	return bool(_music.call("play_track", id))
+
+
+func stop_track() -> void:
+	if _music:
+		_music.call("stop_track")
+
+
+## The composed track playing now ("" for a generative piece or a silence gap).
+func get_music_track() -> String:
+	return "" if _music == null or bool(_music.call("in_gap")) else str(_music.call("current_track"))
+
+
+## Composed track ids, all or for one planet ("verdance", "ochre", ...; "" = all).
+func music_track_ids(planet: String = "") -> Array[String]:
+	var out: Array[String] = []
+	for id: String in MusicTracks.TRACKS:
+		if planet == "" or str(MusicTracks.TRACKS[id]["planet"]) == planet:
+			out.append(id)
+	return out
+
+
+## The display title of a track (English data; tr() it at display time). "" if unknown.
+func music_track_title(id: String) -> String:
+	return str(MusicTracks.TRACKS[id]["title"]) if MusicTracks.TRACKS.has(id) else ""
+
+
 func planet_theme_ids() -> Array[String]:
 	return PlanetThemes.IDS.duplicate()
 
@@ -303,14 +347,22 @@ func planet_theme_ids() -> Array[String]:
 func _apply_theme(id: String, resto: float) -> void:
 	if _music == null:
 		return
-	if not _music_samples.has(PlanetSynth.NEEDS.get(id, ["pad_warm"])[0]):
-		var extra: Dictionary = PlanetSynth.build(id, _music_samples)
-		_music_samples.merge(extra)
-		_music_voices.call("add_samples", extra)
+	_ensure_instruments(id)
 	_music.call("set_theme", id)
 	if _ambience:
 		_ambience.call("set_planet", id)
 	_apply_resto(resto)
+
+
+## Builds instrument group `group` (a planet id, "groove" or "homecoming") if any is missing.
+func _ensure_instruments(group: String) -> void:
+	for n: String in PlanetSynth.NEEDS.get(group, []):
+		if not _music_samples.has(n):
+			var extra: Dictionary = PlanetSynth.build(group, _music_samples)
+			_music_samples.merge(extra)
+			if _music_voices:
+				_music_voices.call("add_samples", extra)
+			return
 
 
 func _apply_resto(x: float) -> void:

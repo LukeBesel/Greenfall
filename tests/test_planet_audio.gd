@@ -7,6 +7,7 @@ const Mixer := preload("res://audio/music_offline_mixer.gd")
 const Synth := preload("res://audio/music_synth.gd")
 const PlanetSynth := preload("res://audio/planet_synth.gd")
 const Themes := preload("res://audio/planet_themes.gd")
+const Tracks := preload("res://audio/music_tracks.gd")
 
 static var _samples: Dictionary = {}
 
@@ -74,57 +75,129 @@ func test_hold_and_release_theme() -> void:
 	assert_almost_eq(Audio.get_restoration(), 0.4, 0.001)
 
 
-func test_resolve_voices_moods_per_planet() -> void:
-	var v: Dictionary = Director.resolve("explore", "verdance", 1.0, true)
-	assert_eq(int(v["key"]), Director.KEY_ROOT)
-	assert_eq(str(v["texture"]), "")
-	var ruined: Dictionary = Director.resolve("explore", "anvil", 0.0, false)
-	var restored: Dictionary = Director.resolve("explore", "anvil", 1.0, true)
-	assert_eq(int(ruined["key"]), 48)
+func test_resolve_track_restores_the_same_motif() -> void:
+	var v: Dictionary = Director.resolve("cinematic")
+	assert_eq(int(v["key"]), Director.KEY_ROOT, "story moods stay in the shared key")
+	var ruined: Dictionary = Director.resolve_track("anvil_foundry", "explore", 0.0, false)
+	var restored: Dictionary = Director.resolve_track("anvil_foundry", "explore", 1.0, true)
 	assert_eq(ruined["mode"], Themes.PHRYGIAN)
 	assert_eq(restored["mode"], Themes.IONIAN, "Anvil turns hopeful: major once restored")
+	assert_eq(ruined["motif"], restored["motif"], "the same motif, transformed")
+	assert_eq(str(ruined["voice"]), "synth")
+	assert_eq(str(restored["voice"]), "piano")
 	assert_gt(float(restored["lpf"]), float(ruined["lpf"]), "restored is brighter")
 	assert_gt(float(restored["bloom"]), float(ruined["bloom"]), "restored blooms fuller")
-	var cine: Dictionary = Director.resolve("cinematic", "rime", 0.5, false)
-	assert_eq(int(cine["key"]), Director.KEY_ROOT, "cinematic is shared by every planet")
-	var night: Dictionary = Director.resolve("night", "ochre", 0.0, false)
-	assert_lt(float(night["bpm"]), float(Director.resolve("explore", "ochre", 0.0, false)["bpm"]))
-	for id: String in Themes.THEMES:
-		for r: float in [0.0, 0.5, 1.0]:
-			var m: Dictionary = Director.resolve("explore", id, r, r > 0.5)
-			assert_lt(int(m["mel_lo"]), int(m["mel_hi"]), "%s melody range" % id)
-			assert_eq((m["prog"] as Array).size(), 4, "%s progression" % id)
+	var night: Dictionary = Director.resolve_track("ochre_sunbaked", "night", 0.0, false)
+	assert_lt(float(night["mix"]["kick"]), float(Director.resolve_track("ochre_sunbaked", "explore", 0.0, false)["mix"]["kick"]), "calmer at night")
 
 
-func test_director_switches_theme_on_a_bar_line() -> void:
+func test_every_track_is_well_formed() -> void:
+	var smp: Dictionary = _all_samples()
+	for id: String in Tracks.TRACKS:
+		for hi: bool in [false, true]:
+			var m: Dictionary = Director.resolve_track(id, "explore", 1.0 if hi else 0.0, hi)
+			assert_eq((m["prog"] as Array).size(), 8, "%s: 8 chords" % id)
+			assert_eq((m["mode"] as Array).size(), 7, "%s: mode" % id)
+			assert_eq(str(m["bassline"]).length(), 16, "%s: bassline" % id)
+			assert_gt((m["motif"] as Array).size(), 6, "%s: has a motif" % id)
+			for e: Array in m["motif"]:
+				assert_true(int(e[0]) >= 0 and int(e[0]) < 32, "%s: motif step" % id)
+			for part: String in m["drums"]:
+				assert_eq(str(m["drums"][part]).length(), 16, "%s: %s pattern" % [id, part])
+			var names: Array = [m["voice"], m["lead2"], m["pad"][0], m["pad"][1], m["bass"], m["bell"], m["arp_sample"]]
+			for part: String in m["drums"]:
+				var k: Variant = m["kit"][part]
+				names.append_array(k if k is Array else [k])
+			for n: Variant in names:
+				assert_true(smp.has(str(n)), "%s uses a real instrument: %s" % [id, n])
+
+
+func test_planet_pools_have_calm_and_active_tracks() -> void:
+	for planet: String in ["ochre", "tidewell", "rime", "anvil"]:
+		var ids: Array[String] = Tracks.for_planet(planet)
+		assert_between(ids.size(), 2, 3, "%s: 2-3 tracks" % planet)
+		var energies: Dictionary = {}
+		for id: String in ids:
+			energies[Tracks.TRACKS[id]["energy"]] = true
+		assert_true(energies.has("calm") and energies.has("active"), "%s: calm and active" % planet)
+	assert_eq(Tracks.for_planet("verdance").size(), 2, "Verdance: two upbeat cleaning tracks")
+	assert_eq(Audio.music_track_ids("anvil").size(), 3)
+	assert_eq(Audio.music_track_title("anvil_foundry"), "Foundry Heart")
+	assert_eq(Audio.music_track_title("nope"), "")
+
+
+func test_director_switches_planet_on_a_bar_line() -> void:
 	var mixer := Mixer.new(_all_samples())
 	var d := Director.new(_all_samples(), mixer, 7)
 	_run(d, mixer, 1.0)
-	assert_eq(d._active_theme, "verdance")
+	assert_eq(d.current_track(), "", "Verdance starts on its generative piece")
 	assert_true(d.set_theme("rime"))
 	assert_false(d.set_theme("bogus"))
-	assert_eq(d.theme, "rime")
-	_run(d, mixer, 12.0)
+	d.pulse_activity(1.0)
+	_run(d, mixer, 8.0)
 	assert_eq(d._active_theme, "rime")
+	assert_eq(d.current_track(), "rime_aurora", "busy play picks the active track")
 	assert_eq(int(d._cur["key"]), 47)
-	# Every scale tone is in B Aeolian (or a chord tone that replaced its neighbour).
-	assert_true(d._scale_pcs.has(11), "B is in the scale")
 	d.set_restoration(1.0)
-	_run(d, mixer, 40.0)
+	d._chord_i = 7  # jump to the end of the pass: the restored harmony lands on the next cycle
+	_run(d, mixer, 12.0)
 	assert_true(d._resto_hi)
-	assert_eq(d._cur["mode"], Themes.LYDIAN, "restored progression lands on a cycle boundary")
+	assert_eq(d._cur["mode"], Themes.IONIAN)
+
+
+func test_silence_gap_between_tracks() -> void:
+	var mixer := Mixer.new(_all_samples())
+	var d := Director.new(_all_samples(), mixer, 11)
+	d.set_theme("ochre")
+	_run(d, mixer, 3.0)
+	var first: String = d.current_track()
+	assert_true(Tracks.for_planet("ochre").has(first))
+	d._cycles_left = 1
+	d._chord_i = 7
+	var saw_gap: bool = false
+	var t: float = 0.0
+	while t < 20.0 and not saw_gap:
+		_run(d, mixer, 0.5)
+		t += 0.5
+		saw_gap = d.in_gap()
+	assert_true(saw_gap, "a silence gap follows the track")
+	_run(d, mixer, 6.0)
+	assert_lt(float(d._gains["melody"]), 0.05, "only the air plays in the gap")
+	d._gap_left = 0.01
+	_run(d, mixer, 3.0)
+	assert_false(d.in_gap())
+	assert_ne(d.current_track(), first, "the next track is a different one")
+
+
+func test_radio_forced_track_loops_without_gaps() -> void:
+	var mixer := Mixer.new(_all_samples())
+	var d := Director.new(_all_samples(), mixer, 5)
+	assert_false(d.play_track("no_such_track"))
+	assert_true(d.play_track("anvil_ash"))
+	_run(d, mixer, 6.0)
+	assert_eq(d.current_track(), "anvil_ash")
+	d._cycles_left = 1
+	d._chord_i = 7
+	_run(d, mixer, 12.0)
+	assert_false(d.in_gap(), "the radio never gaps")
+	assert_eq(d.current_track(), "anvil_ash")
+	d.stop_track()
+	_run(d, mixer, 8.0)
+	assert_ne(d.current_track(), "anvil_ash")
+	assert_false(Audio.play_track("bogus"))
 
 
 func test_homecoming_quotes_the_motif() -> void:
 	var mixer := Mixer.new(_all_samples())
 	var d := Director.new(_all_samples(), mixer, 3)
 	d.set_mood("homecoming")
-	_run(d, mixer, 10.0)
+	_run(d, mixer, 1.5)
 	assert_eq(d._active, "homecoming")
-	assert_true(bool(d._cur["motif"]))
-	var ph: Dictionary = Director.MOTIF[d._chord_i % Director.MOTIF.size()]
-	for s: int in ph:
-		assert_eq(int((d._mel_line[s] as Array)[0]), int(ph[s]), "motif note at step %d" % s)
+	assert_eq(d.current_track(), "homecoming")
+	assert_eq(d._chord_i, 0)
+	var expect: Array = Director.MOTIF_CALL
+	for e: Array in expect:
+		assert_eq(int((d._mel_line[int(e[0])] as Array)[0]), int(e[1]), "the intro motif at step %d" % e[0])
 	d.sting("motif")  # no error
 	d.sting("unknown_sting")
 	assert_push_warning("unknown sting")

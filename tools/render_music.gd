@@ -17,17 +17,8 @@ var scenarios: Dictionary = {
 	"cinematic": [[0.0, "mood", "cinematic"], [40.0, "sting", "robot_built"]],
 	"menu": [[0.0, "mood", "menu"], [12.0, "sting", "first_sprout"]],
 	"transitions": [[0.0, "mood", "explore"], [0.0, "int", 0.7], [15.0, "mood", "night"], [30.0, "mood", "cinematic"], [45.0, "mood", "base"], [50.0, "sting", "hex_clean"]],
-	# [sound] Planet themes, ruined then restored, and the ending.
-	"homecoming": [[0.0, "mood", "homecoming"], [0.5, "sting", "motif"]],
-	"ochre": [[0.0, "theme", "ochre"], [0.0, "int", 0.5], [20.0, "sting", "upgrade"]],
-	"ochre_restored": [[0.0, "theme", "ochre"], [0.0, "resto", 1.0], [0.0, "int", 0.85]],
-	"tidewell": [[0.0, "theme", "tidewell"], [0.0, "int", 0.5]],
-	"tidewell_restored": [[0.0, "theme", "tidewell"], [0.0, "resto", 1.0], [0.0, "int", 0.85]],
-	"rime": [[0.0, "theme", "rime"], [0.0, "int", 0.5], [30.0, "mood", "night"]],
-	"rime_restored": [[0.0, "theme", "rime"], [0.0, "resto", 1.0], [0.0, "int", 0.85]],
-	"anvil": [[0.0, "theme", "anvil"], [0.0, "int", 0.5]],
-	"anvil_restored": [[0.0, "theme", "anvil"], [0.0, "resto", 1.0], [0.0, "int", 0.85], [25.0, "mood", "base"]],
-	"anvil_bloom": [[0.0, "theme", "anvil"], [0.0, "ramp_resto", [0.0, 1.0]], [0.0, "int", 0.6]],
+	# [sound] Composed tracks are added in _init() (one scenario per track, plus restored ones).
+	"rotation": [[0.0, "theme", "verdance"], [0.0, "int", 0.6], [0.0, "activity", 0.8], [0.0, "gaps", true]],
 }
 
 
@@ -38,11 +29,20 @@ func _init() -> void:
 			seconds = float(a.get_slice("=", 1))
 	var t0: int = Time.get_ticks_msec()
 	var only: String = ""
+	var out_dir: String = ""
 	for a: String in OS.get_cmdline_user_args():
 		if a.begins_with("--only="):
 			only = a.get_slice("=", 1)
+		if a.begins_with("--out="):
+			out_dir = a.get_slice("=", 1)
 	var samples: Dictionary = Synth.build_all()
 	print("synth build: %d ms" % (Time.get_ticks_msec() - t0))
+	const Tracks := preload("res://audio/music_tracks.gd")  # [sound]
+	for id: String in Tracks.TRACKS:
+		var secs: float = 150.0 if id == "homecoming" else 50.0
+		scenarios[id] = [[0.0, "track", id], [0.0, "int", 0.7], [0.0, "activity", 0.7], [0.0, "len", secs]]
+		if (Tracks.TRACKS[id] as Dictionary).has("restored"):
+			scenarios[id + "_restored"] = [[0.0, "resto", 1.0], [0.0, "track", id], [0.0, "int", 0.8], [0.0, "activity", 0.7], [0.0, "len", 50.0]]
 	for th: String in PlanetSynth.NEEDS:  # [sound]
 		var t2: int = Time.get_ticks_msec()
 		samples.merge(PlanetSynth.build(th, samples))
@@ -58,6 +58,10 @@ func _init() -> void:
 		var ramp: Array = []
 		var ramp_resto: Array = []
 		var total: int = int(seconds * RATE)
+		for e0: Array in events:
+			if str(e0[1]) == "len":
+				total = int(float(e0[2]) * RATE)
+		d.gaps_enabled = false
 		var buf := PackedFloat32Array()
 		var pos: int = 0
 		var max_voices: int = 0
@@ -71,6 +75,9 @@ func _init() -> void:
 					"ramp": ramp = e[2]
 					"sting": d.sting(e[2])
 					"theme": d.set_theme(e[2])
+					"track": d.play_track(e[2])
+					"activity": d.pulse_activity(e[2])
+					"gaps": d.gaps_enabled = e[2]
 					"resto": d.set_restoration(e[2])
 					"ramp_resto": ramp_resto = e[2]
 			if not ramp_resto.is_empty():
@@ -98,5 +105,7 @@ func _init() -> void:
 		print("%-12s peak %6.1f dBFS  rms %6.1f dBFS  max_step %.4f  nan/inf %d  max_voices %d  (%d ms)" % [
 			sname, linear_to_db(peak), linear_to_db(rms), max_jump, bad, max_voices, Time.get_ticks_msec() - t1])
 		var path: String = "res://screenshots/music_%s.wav" % sname
-		Synth.to_wav(buf).save_to_wav(ProjectSettings.globalize_path(path))
+		if out_dir != "":
+			path = out_dir.path_join("music_%s.wav" % sname)
+		Synth.to_wav(buf).save_to_wav(path if path.begins_with("/") else ProjectSettings.globalize_path(path))
 	quit()
