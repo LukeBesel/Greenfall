@@ -396,6 +396,7 @@ func _ready() -> void:
 	await _late_multi_world(packed)  # [late] Cradle Mode: a second world, the profile, travel both ways
 	_profiles_roundtrip()  # [worlds2] save profiles: migration into p1, profiles kept apart
 	await _old_save_migration(packed)  # [money] a v1 save with the old currencies loads into the three
+	_v2_save_migration()  # [ui2] robot part items -> Parts
 	SaveManager.delete_save()
 	print("[roundtrip] %s (%d failures)" % ["OK" if _fails == 0 else "FAILED", _fails])
 	get_tree().quit(1 if _fails > 0 else 0)
@@ -414,6 +415,7 @@ func _old_save_migration(packed: PackedScene) -> void:
 		cur[k] = BigNum.from_float(float(old[k])).serialize()
 	d["currencies"] = cur
 	d["flags"]["builder"] = {"inv": {"treads": 1}, "fragments": 2}
+	d["parts"] = [{"type": 0, "rarity": 0}, {"type": 3, "rarity": 3}]  # [ui2] robot part items -> Parts (v3)
 	SaveManager.write_dict(SaveManager.slot_path(), d)
 	Currencies.warn_legacy = false
 	var ok: bool = SaveManager.load_game()
@@ -422,7 +424,8 @@ func _old_save_migration(packed: PackedScene) -> void:
 	_check("old_save_version", GameState.SAVE_VERSION, int(GameState.to_dict()["version"]))
 	_check("old_save_ids", JSON.stringify(["cubes", "parts", "seeds"]), JSON.stringify(_sorted_keys(GameState.currencies)))
 	_check("old_save_cubes", 2000.0 + 75.0 * 10.0 + 3.0 * 150.0, snappedf(GameState.get_currency("cubes").to_float(), 0.01))
-	_check("old_save_parts", 40.0 * 5.0 + 120.0 + 60.0 + 30.0 + 11.0 * 5.0 + 2.0 * 25.0, snappedf(GameState.get_currency("parts").to_float(), 0.01))
+	_check("old_save_parts", 40.0 * 5.0 + 120.0 + 60.0 + 30.0 + 11.0 * 5.0 + 2.0 * 25.0 + 10.0 + 150.0, snappedf(GameState.get_currency("parts").to_float(), 0.01))
+	_check("old_save_no_part_items", 0, GameState.parts.size())  # [ui2]
 	_check("old_save_seeds", 15.0, snappedf(GameState.get_currency("seeds").to_float(), 0.01))
 	_check("old_save_hopper", 9.0, snappedf(Composter.hopper(), 0.01))
 	_check("old_save_builder_inv", 1, RobotBuilder.count("treads"))
@@ -434,6 +437,24 @@ func _old_save_migration(packed: PackedScene) -> void:
 	_check("old_save_slice_runs", true, is_instance_valid(s3) and s3.is_inside_tree())
 	s3.queue_free()
 	await get_tree().process_frame
+
+
+## [ui2] A v2 save (three currencies, robot part items in storage) -> v3: the items become Parts
+## at their rarity's value; nothing else changes.
+func _v2_save_migration() -> void:
+	GameState.new_game()
+	var d: Dictionary = GameState.to_dict()
+	d["version"] = 2
+	d["currencies"]["parts"] = BigNum.from_float(100.0).serialize()
+	d["parts"] = [{"type": 0, "rarity": 0}, {"type": 1, "rarity": 1}, {"type": 3, "rarity": 2}, {"type": 3, "rarity": 4}]
+	d["flags"]["tier_scoopie"] = 1
+	SaveManager.write_dict(SaveManager.slot_path(), d)
+	var ok: bool = SaveManager.load_game()
+	_check("v3_save_loads", true, ok)
+	_check("v3_save_version", 3, int(GameState.to_dict()["version"]))
+	_check("v3_parts_from_items", 100.0 + 10.0 + 25.0 + 60.0 + 450.0, snappedf(GameState.get_currency("parts").to_float(), 0.01))
+	_check("v3_no_items_left", 0, GameState.parts.size())
+	_check("v3_tier_kept", 1, int(GameState.flags.get("tier_scoopie", 0)))
 
 
 func _sorted_keys(d: Dictionary) -> Array:

@@ -1,5 +1,5 @@
 {
-  "_doc": "[money] parts = Parts paid when a spare is scrapped at Haggle's. Robot parts found buried in hexes with the detector. rarity weight = relative chance; signal = how far the detector picks it up (multiplier).",
+  "_doc": "[ui2] parts = the Parts a found robot part pays (RobotParts.salvage; save v3 converts held items at the same values). Robot parts found buried in hexes with the detector. rarity weight = relative chance; signal = how far the detector picks it up (multiplier).",
   "rarities": [
     {"id": "rusty", "name": "Rusty", "color": "#9c7a5b", "weight": 50, "signal": 1.0, "parts": 10},
     {"id": "worn", "name": "Worn", "color": "#c9c9c9", "weight": 28, "signal": 1.1, "parts": 25},
