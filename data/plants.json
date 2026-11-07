@@ -25,6 +25,6 @@
   ],
   "stage_scale": [0.08, 0.25, 0.5, 0.8, 1.0],
   "water_tank": 30,
-  "first_seed": {"hexes_needed": 8, "seeds_given": 1},
+  "first_seed": {"hexes_needed": 7, "seeds_given": 1},
   "seed_finds": {"chance": 0.006, "organic_mult": 2.5, "cooldown_s": 60}
 }
