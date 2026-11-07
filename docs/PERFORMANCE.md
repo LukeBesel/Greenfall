@@ -171,10 +171,10 @@ with `--no-junk-lod` as "before":
 
 | View | Primitives before | after | change | Draw calls before | after |
 |---|---|---|---|---|---|
-| Sunken City start | 97.6 M | PERF_SUNKEN | | 2,028 | DRAW_SUNKEN |
-| Frozen Port start | 131.1 M | PERF_PORT | | 1,674 | DRAW_PORT |
+| Sunken City start | 97.6 M | 18.9 M | -81% | 2,028 | 2,217 |
+| Frozen Port start | 131.1 M | 25.4 M | -81% | 1,674 | 2,149 |
 
-Software-rendered frames per second in the container doubled to tripled (0.12-0.14 -> 0.3+); on
+Software-rendered frames per second in the container went from 0.12 to 0.75 in the Sunken City; on
 real hardware use the targets above.
 
 Headless census of junk triangles (`--scene-stats`, whole district, not frustum-culled):
