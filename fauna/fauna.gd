@@ -92,6 +92,7 @@ var _cam: Camera3D
 var _night: float = 0.0
 var _warm: Array[Vector3] = []
 var _look_done: bool = false
+var age: float = 0.0  # seconds since setup (game time)
 var _heart_mesh: Mesh
 var _heart_mat: StandardMaterial3D
 
@@ -170,6 +171,7 @@ func replan() -> void:
 		else:
 			for k: int in int(e["n"]):
 				_desired["%s|%d|%d" % [sid, h, k]] = e
+	if DevHooks.has("fauna-debug"): print("[fauna] plan ", plan.size(), " regs ", regs, " night ", _night, " desired ", _desired.size())
 	var named: Dictionary = adopted_cat()
 	if not named.is_empty() and int(named.get("hub", -1)) == int(world.get("hub_index") if world.get("hub_index") != null else 0):
 		_desired["named_cat"] = {"sp": "cat", "hex": -2, "n": 1}
@@ -182,9 +184,10 @@ func replan() -> void:
 	for key: String in _desired:
 		if have.has(key) or float(_cooldown.get(key, 0.0)) > 0.0:
 			continue
+		if DevHooks.has("fauna-debug"): print("[fauna] spawn ", key)
 		if _spawn(key, _desired[key]):
 			spawned += 1
-		if spawned >= 12:
+		if spawned >= (40 if age < 4.0 else 12):
 			break
 
 
@@ -433,6 +436,7 @@ func _process(delta: float) -> void:
 	if world == null or world.get("patch") == null:
 		return
 	_frame += 1
+	age += delta
 	var patch: Node3D = world.patch
 	var pv: Vector3 = patch.get("velocity") if patch.get("velocity") != null else Vector3.ZERO
 	_lumi_speed = Vector2(pv.x, pv.z).length()
@@ -478,7 +482,7 @@ func _process(delta: float) -> void:
 	if not _look_done and DevHooks.has("fauna-look"):
 		_dev_look()
 	if DevHooks.has("fauna-report") and not has_meta("reported"):
-		if Time.get_ticks_msec() * 0.001 > DevHooks.get_f("fauna-report", 8.0):
+		if age > DevHooks.get_f("fauna-report", 8.0):
 			set_meta("reported", true)
 			print("[fauna] ", census())
 
@@ -1567,7 +1571,7 @@ func _ambience(delta: float) -> void:
 
 ## --fauna-look=SPECIES[,dist,pitch,yaw]: put Lumi beside the nearest one and frame both.
 func _dev_look() -> void:
-	if Time.get_ticks_msec() * 0.001 < DevHooks.get_f("fauna-look-at", 5.0):
+	if age < DevHooks.get_f("fauna-look-at", 5.0):
 		return
 	var parts: PackedStringArray = DevHooks.get_s("fauna-look", "cat").split(",")
 	var sid: String = parts[0]
@@ -1576,7 +1580,7 @@ func _dev_look() -> void:
 		if a.sp == sid and a.state != St.LEAVE and (best == null or a.pos.distance_to(_lumi_pos) < best.pos.distance_to(_lumi_pos)):
 			best = a
 	if best == null:
-		if Time.get_ticks_msec() * 0.001 > DevHooks.get_f("fauna-look-at", 5.0) + 20.0:
+		if age > DevHooks.get_f("fauna-look-at", 5.0) + 20.0:
 			_look_done = true
 			print("[fauna] look: no %s here (%s)" % [sid, str(census())])
 		return

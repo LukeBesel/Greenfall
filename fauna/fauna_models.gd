@@ -5,7 +5,7 @@ extends RefCounted
 ## fits (street_rat), which the rat uses; everything else is built here. Cached per id.
 ## Sizes are real-world-ish (a cat is ~0.55 m nose to rump, a roe deer ~0.75 m at the shoulder).
 
-const M := FaunaMesh
+const M = preload("res://fauna/fauna_mesh.gd")
 
 static var _cache: Dictionary = {}
 
