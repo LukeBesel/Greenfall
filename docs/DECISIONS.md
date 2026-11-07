@@ -175,8 +175,9 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
 - **Research costs cubes (x10 the old Data) plus real time**; the old Data sources ("field notes":
   hexes cleaned, restored, shards, robot bales, blooms) pay those cubes instead, so research paces as
   it did. Thriving wildlife notes are a small cube trickle (6/min per hex, capped at 300/min).
-- **Robot part items stay items** (the rarity-graded parts the recipes, tiers and the Builder use);
-  they are not a currency. In the UI they are "robot parts"; the currency is "Parts".
+- ~~Robot part items stay items~~ [ui2, Nov 7]: superseded. The owner found the two "parts" confusing;
+  a found robot part now pays Parts at its rarity's value (save v3 converts held items), builds and
+  Mk tiers cost Parts + cubes. See "Simpler workbench" below.
 - **Contracts and World Events are one Requests board.** Requests pay cubes or parts; the token shop
   became a reward track (liveries, Builder parts, Curio Capsules, rare robot parts at 2..20 finished
   requests; a Vintage part every 5 after). Handled world events count as finished requests.
@@ -191,3 +192,17 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
   plentiful where Data used to be the gate.
 - **The Ledger is quieter**: one uplink line per act; coupons and quips are small notify-stack
   entries, coupons every 12-20 min (was 4-7).
+
+## Simpler workbench (wt/ui2, Nov 7)
+- **One parts**: robot part items became Parts at the rarity's old scrap value (10/25/60/150/450).
+  Keeping the rarity roll keeps the detector exciting (a Legendary find is a big Parts payout).
+- **Build cost = cubes + Parts** (Scoopie 40, Haul Bug 25, Seedling/Drip 40, Skimmer 45, Multibot 90,
+  x1.35 per robot owned like the cubes). Mk steps: cubes as before + 110 / 350 / 1200 Parts (the old
+  Parts price plus the Control Core's value). Robots built from now have no rarity bonus.
+- **No trading**: Haggle's trade, scrap and swap are gone; Haggle survives only as a name in data
+  ids ("haggle" source = the Locker shop). His builder stall no longer rotates.
+- **Requests start themselves and never expire**: the owner found Accept / Pass / timers too much.
+- **Locker at hub level 3**; cosmetic parts are unlocks (owning one fits every robot). Robot Builder
+  parts lost their stat mods (pure cosmetics); the Maker set's +5% speed / +6% work is the one perk.
+- **Hub card shows "what you get"** computed from data (sell bonus, crew spots, the scrubber,
+  stations and Locker levels, the launch pad at 5).

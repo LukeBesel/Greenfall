@@ -93,6 +93,8 @@ func _ready() -> void:
 	side.add_child(stc[0])
 	_stations = StationsPanel.new()
 	(stc[1] as VBoxContainer).add_child(_stations)
+	for g: Node in _stations.find_children("*", "GridContainer", true, false):
+		(g as GridContainer).columns = 1  # one column beside the level card
 	# [scope] The Telescope (ui/telescope_panel.gd).
 	var tc: Array = BenchKit.card()
 	side.add_child(tc[0])

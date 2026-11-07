@@ -66,7 +66,7 @@ func _ready() -> void:
 	vb.add_child(_change)
 	var cost_row := HBoxContainer.new()
 	vb.add_child(cost_row)
-	cost_row.add_child(UIIcon.new("cube", 26, UITheme.GOLD))
+	cost_row.add_child(CurrencyIcon.new("cubes", 26.0))  # [ui2] the same cube glyph everywhere
 	_cost = UITheme.label("", 21, UITheme.GOLD)
 	cost_row.add_child(_cost)
 	var sp := Control.new()

@@ -4,8 +4,8 @@ extends Button
 ## States: locked / available / queued / active (progress ring) / researched. Hover and focus
 ## grow it a touch; starting research pops it; finishing it bursts and flashes.
 
-const W: float = 200.0
-const H: float = 76.0
+const W: float = 210.0  # [ui2] bigger, readable cards (was 200 x 76, 15 / 12 px text)
+const H: float = 86.0
 
 var node_id: String
 var accent: Color = UITheme.GOLD
@@ -163,11 +163,11 @@ func _draw() -> void:
 	# Text.
 	var f: Font = UITheme.font()
 	var tx: float = 62.0
-	var lines: PackedStringArray = _wrap(f, tr(str(d.get("name", node_id))), size.x - tx - 22.0, 15)
-	var y0: float = 31.0 if lines.size() == 1 else 25.0
+	var lines: PackedStringArray = _wrap(f, tr(str(d.get("name", node_id))), size.x - tx - 22.0, 17)
+	var y0: float = 36.0 if lines.size() == 1 else 28.0
 	for i: int in lines.size():
-		draw_string(f, Vector2(tx, y0 + i * 17.0), lines[i], HORIZONTAL_ALIGNMENT_LEFT, size.x - tx - 8.0, 15, name_col)
-	var sub_y: float = 53.0 if lines.size() == 1 else 62.0
+		draw_string(f, Vector2(tx, y0 + i * 19.0), lines[i], HORIZONTAL_ALIGNMENT_LEFT, size.x - tx - 8.0, 17, name_col)
+	var sub_y: float = 62.0 if lines.size() == 1 else 72.0
 	var sub: String = ""
 	var sub_col: Color = UITheme.MUTED
 	match state:
@@ -183,7 +183,7 @@ func _draw() -> void:
 		_:
 			sub = tr("%s  ·  %s") % [L10nFmt.amount("cubes", Research.cost(node_id).to_float()), Research.time_text(Research.duration(node_id))]
 			sub_col = UITheme.GOLD if state == "available" and _affordable else UITheme.MUTED
-	draw_string(f, Vector2(tx, sub_y), sub, HORIZONTAL_ALIGNMENT_LEFT, size.x - tx - 8.0, 12, sub_col)
+	draw_string(f, Vector2(tx, sub_y), sub, HORIZONTAL_ALIGNMENT_LEFT, size.x - tx - 8.0, 14, sub_col)
 	if _flash > 0.0:
 		draw_style_box(UITheme.box(Color(1, 0.95, 0.8, _flash * 0.45), Color(0, 0, 0, 0), 0, 12, 0), rect)
 

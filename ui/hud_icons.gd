@@ -31,18 +31,9 @@ static func draw(ci: CanvasItem, kind: String, c: Vector2, r: float, col: Color,
 			ci.draw_line(cc + Vector2(cos(PI + PI / 6.0), sin(PI + PI / 6.0)) * rr, tip, col, w, true)
 			ci.draw_arc(cc, rr * 0.6, PI * 0.55, PI * 0.95, 8, Color(col, 0.6), w * 0.8, true)
 		"cube":
-			var t := c + Vector2(0, -r * 0.8)
-			var l := c + Vector2(-r * 0.72, -r * 0.4)
-			var rr := c + Vector2(r * 0.72, -r * 0.4)
-			var m := c
-			var b := c + Vector2(0, r * 0.8)
-			ci.draw_colored_polygon(PackedVector2Array([t, rr, m, l]), Color(col, 0.22))
-			ci.draw_polyline(PackedVector2Array([t, rr, rr + Vector2(0, r * 0.8), b, l + Vector2(0, r * 0.8), l, t]), col, w, true)
-			ci.draw_polyline(PackedVector2Array([l, m, rr]), col, w, true)
-			ci.draw_line(m, b, col, w, true)
+			_cube(ci, c, r, col, w)  # [ui2]
 		"seed":
-			ci.draw_arc(c, r * 0.5, 0.0, TAU, 20, col, w, true)
-			ci.draw_line(c + Vector2(0, -r * 0.5), c + Vector2(r * 0.25, -r * 0.85), col, w, true)
+			_seed(ci, c, r, col, w)  # [ui2]
 		"compost":
 			for k: int in 3:
 				ci.draw_arc(c + Vector2((k - 1) * r * 0.42, r * 0.2 - (k % 2) * r * 0.32), r * 0.3, 0.0, TAU, 12, col, w, true)
@@ -58,12 +49,7 @@ static func draw(ci: CanvasItem, kind: String, c: Vector2, r: float, col: Color,
 			ci.draw_polyline(hex, col, w, true)
 			ci.draw_circle(c, r * 0.18, col)
 		"part":
-			ci.draw_arc(c, r * 0.42, 0.0, TAU, 20, col, w, true)
-			for k: int in 6:
-				var a: float = TAU * k / 6.0
-				var d := Vector2(cos(a), sin(a))
-				ci.draw_line(c + d * r * 0.5, c + d * r * 0.78, col, w * 1.4, true)
-			ci.draw_circle(c, r * 0.14, col)
+			_gear(ci, c, r, col, w)  # [ui2]
 		"lock":
 			ci.draw_arc(c + Vector2(0, -r * 0.15), r * 0.3, PI, TAU, 12, col, w, true)
 			ci.draw_line(c + Vector2(-r * 0.3, -r * 0.15), c + Vector2(-r * 0.3, 0), col, w, true)
@@ -77,6 +63,83 @@ static func draw(ci: CanvasItem, kind: String, c: Vector2, r: float, col: Color,
 			ci.draw_polyline(s, col, w, true)
 		_:
 			ci.draw_arc(c, r * 0.5, 0.0, TAU, 16, col, w, true)
+
+
+# --- [ui2] Currency glyphs: crisp hairlines with a thin glow and soft facet tints -------------
+
+## The same path twice: a wide faint stroke (the glow), then the crisp hairline.
+static func _glow(ci: CanvasItem, pts: PackedVector2Array, col: Color, w: float) -> void:
+	ci.draw_polyline(pts, Color(col, 0.13), w * 3.4, true)
+	ci.draw_polyline(pts, col, w, true)
+
+
+## Cube: an isometric cube with three shaded facets, a glowing silhouette, the inner Y edges and
+## a small highlight where the top meets the front.
+static func _cube(ci: CanvasItem, c: Vector2, r: float, col: Color, w: float) -> void:
+	var h: float = r * 0.84
+	var hw: float = r * 0.74
+	var t := c + Vector2(0, -h)
+	var tl := c + Vector2(-hw, -h * 0.5)
+	var tr := c + Vector2(hw, -h * 0.5)
+	var m := c
+	var bl := c + Vector2(-hw, h * 0.5)
+	var br := c + Vector2(hw, h * 0.5)
+	var b := c + Vector2(0, h)
+	ci.draw_colored_polygon(PackedVector2Array([t, tr, m, tl]), Color(col, 0.34))
+	ci.draw_colored_polygon(PackedVector2Array([tl, m, b, bl]), Color(col, 0.17))
+	ci.draw_colored_polygon(PackedVector2Array([m, tr, br, b]), Color(col, 0.07))
+	_glow(ci, PackedVector2Array([t, tr, br, b, bl, tl, t]), col, w)
+	ci.draw_polyline(PackedVector2Array([tl, m, tr]), Color(col, 0.8), w * 0.85, true)
+	ci.draw_line(m, b, Color(col, 0.8), w * 0.85, true)
+	ci.draw_circle(m, maxf(w * 0.9, r * 0.07), Color(1, 1, 1, 0.85).lerp(col, 0.3))
+
+
+## Parts: an eight-tooth gear with a hex bolt hole.
+static func _gear(ci: CanvasItem, c: Vector2, r: float, col: Color, w: float) -> void:
+	var ro: float = r * 0.9
+	var ri: float = r * 0.68
+	var n: int = 8
+	var step: float = TAU / n
+	var pts := PackedVector2Array()
+	for i: int in n:
+		var a: float = i * step - PI * 0.5
+		for k: Array in [[ri, -0.32], [ro, -0.19], [ro, 0.19], [ri, 0.32]]:
+			var ang: float = a + step * float(k[1])
+			pts.append(c + Vector2(cos(ang), sin(ang)) * float(k[0]))
+	var fill := PackedVector2Array(pts)
+	pts.append(pts[0])
+	ci.draw_colored_polygon(fill, Color(col, 0.2))
+	_glow(ci, pts, col, w)
+	var hexp := PackedVector2Array()
+	for k: int in 7:
+		var ang2: float = TAU * k / 6.0
+		hexp.append(c + Vector2(cos(ang2), sin(ang2)) * r * 0.3)
+	ci.draw_colored_polygon(hexp.slice(0, 6), Color(0.02, 0.03, 0.04, 0.55))
+	ci.draw_polyline(hexp, col, w * 0.9, true)
+	ci.draw_arc(c, r * 0.5, -PI * 0.95, -PI * 0.55, 8, Color(1, 1, 1, 0.5).lerp(col, 0.4), w * 0.8, true)
+
+
+## Seeds: a plump seed with its seam, and a sprout with one leaf curling out of the top.
+static func _seed(ci: CanvasItem, c: Vector2, r: float, col: Color, w: float) -> void:
+	var body := PackedVector2Array()
+	var cc: Vector2 = c + Vector2(0, r * 0.28)
+	for k: int in 25:
+		var a: float = TAU * k / 24.0
+		# An egg: rounder at the bottom, a little pointed at the top, tilted a touch.
+		var rr: float = r * (0.5 + 0.06 * sin(a))
+		var p := Vector2(cos(a) * rr * 0.82, sin(a) * rr * (1.0 if sin(a) > 0.0 else 1.18))
+		body.append(cc + p.rotated(0.32))
+	ci.draw_colored_polygon(body.slice(0, 24), Color(col, 0.24))
+	_glow(ci, body, col, w)
+	var top: Vector2 = cc + Vector2(0, -r * 0.59).rotated(0.32)
+	var bot: Vector2 = cc + Vector2(0, r * 0.42).rotated(0.32)
+	ci.draw_line(top.lerp(bot, 0.18), top.lerp(bot, 0.85), Color(col, 0.6), w * 0.8, true)
+	var stem := PackedVector2Array()
+	for k: int in 9:
+		var t: float = k / 8.0
+		stem.append(top + Vector2(-r * 0.12 * sin(t * PI), -r * 0.42 * t))
+	ci.draw_polyline(stem, col, w, true)
+	_leaf(ci, stem[stem.size() - 1], Vector2(r * 0.46, -r * 0.16), col, w * 0.9)
 
 
 static func _leaf(ci: CanvasItem, base: Vector2, tip_off: Vector2, col: Color, w: float) -> void:

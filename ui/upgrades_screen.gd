@@ -159,6 +159,7 @@ func _ready() -> void:
 
 func _populate() -> void:
 	for c: Node in _grid.get_children():
+		_grid.remove_child(c)  # [ui2] out of the tree now: no focus neighbours into a dying tab
 		c.queue_free()
 	_cards.clear()
 	_robot_cards.clear()
@@ -241,6 +242,8 @@ func _set_tab(id: String) -> void:
 	if id == _tab:
 		return
 	_tab = id
+	_close_btn.focus_neighbor_bottom = NodePath()  # [ui2] the old tab's buttons are going away
+	_focus_sig = ""
 	_style_tabs()
 	Audio.play("click", 1.1, -8.0)
 	_populate()

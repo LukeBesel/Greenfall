@@ -52,6 +52,7 @@ extends Node
 ##   --builder-sample   [drones] stocked builder parts bin; --builder-demo showcase builds on the robots;
 ##                      --builder-shot fixed camera (--bshot-cam=x,y,z --bshot-at=x,y,z --bshot-fov --bshot-nohud --bshot-lumi);
 ##                      --tab=builder [--builder-robot=N --builder-slot=ID --builder-opt=N] focuses a part
+##   [ui2] --locker opens the workbench Locker before hub level 3 (--tab=locker; cosmetics/builder/trade map to locker/bots)
 ##   [vqa2] --no-junk-lod keeps all junk on its near mesh (A/B perf); --lod-debug prints junk LOD flips
 ##   --frontier=ID      [biomes] start in a frontier district (dust_flats, frozen_port, sunken_city, cradle_returns);
 ##                      --frontiers-open lets the rocket fly there without the unlocks; --storm[=S] sandstorm after S s
