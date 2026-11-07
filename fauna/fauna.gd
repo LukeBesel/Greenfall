@@ -1633,6 +1633,11 @@ func _dev_look() -> void:
 			print("[fauna] look: no %s here (%s)" % [sid, str(census())])
 		return
 	_look_done = true
+	# Shots: hide one-off particle bursts (level-up sparkles) that would sit on the first frames.
+	for c: Node in Vfx.get_children():
+		if c is CPUParticles3D:
+			(c as CPUParticles3D).emitting = false
+			(c as CPUParticles3D).visible = false
 	var a: Animal = best
 	var patch: Node3D = world.patch
 	var side: float = float(parts[4]) if parts.size() > 4 else 1.0
