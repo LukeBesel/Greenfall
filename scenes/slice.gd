@@ -522,6 +522,7 @@ func _ready() -> void:
 	scope.name = "Telescope"
 	scope.world = self
 	add_child(scope)
+	(func() -> void: PropColliders.push_out_pieces(self, field, view)).call_deferred()  # [world2] junk out of solid props
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 

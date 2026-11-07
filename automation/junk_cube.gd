@@ -30,7 +30,7 @@ static func create(p_value: BigNum, p_info: Dictionary) -> JunkCube:
 func _ready() -> void:
 	add_to_group("junk_cube")
 	collision_layer = 4
-	collision_mask = 1 | 2 | 4
+	collision_mask = 1 | 2 | 4 | PhysLayers.PROP | PhysLayers.MOUND  # [world2] props and junk mounds
 	mass = 20.0 + 25.0 * float(info.get("fill", 1.0))
 	contact_monitor = true
 	max_contacts_reported = 2

@@ -722,6 +722,7 @@ func rebuild() -> void:
 			buf[o + 18] = cu.b
 			buf[o + 19] = float(_known[k])
 		var mm: MultiMesh = (_mmi[ch] as MultiMeshInstance3D).multimesh
+		(_mmi[ch] as MultiMeshInstance3D).set_meta("inst_xf", xfs)  # [world2] collider audit / FutureColliders
 		mm.instance_count = n
 		if n > 0:
 			mm.buffer = buf

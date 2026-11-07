@@ -86,6 +86,13 @@ func _build() -> void:
 	post.material_override = Mats.worn_paint(Color(0.85, 0.82, 0.75), 0.6, 0.6, 9.0)
 	post.position = Vector3(PAD_RADIUS * 1.05, 0.7, -PAD_RADIUS * 0.6)
 	add_child(post)
+	var pcs := CollisionShape3D.new()  # [world2] the dial post is solid (local frame, shared shape)
+	pcs.shape = PropColliders.cyl_shape(0.08, 1.4)
+	pcs.position = post.position
+	var pbody := StaticBody3D.new()
+	pbody.collision_layer = PhysLayers.PROP
+	pbody.add_child(pcs)
+	add_child(pbody)
 	var dial := MeshInstance3D.new()
 	dial.mesh = ProcMesh.cyl(0.22, 0.22, 0.08, 24)
 	dial.material_override = Mats.worn_paint(Color(0.9, 0.88, 0.82), 0.8, 0.4, 10.0)

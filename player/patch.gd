@@ -52,7 +52,7 @@ var _water_t: float = 0.0
 func _ready() -> void:
 	add_to_group("patch")
 	collision_layer = 2
-	collision_mask = 1 | 4
+	collision_mask = 1 | 4 | PhysLayers.PROP  # [world2] props are solid
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
 	box.size = Vector3(1.1, 1.2, 1.0)

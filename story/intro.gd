@@ -183,6 +183,8 @@ func place_pod() -> void:
 	_pod.rotation = Vector3(0, 0.5, 0)
 	_hatch = _pod.get_node("Hatch")
 	_hatch.rotation.x = -1.45
+	PropColliders.fit(PropColliders.body(_pod, "Props"), _pod)  # [world2] the landed pod is solid
+	PropColliders.push_out_pieces(_pod, world.field, world.get("view"))
 	if _fire and is_instance_valid(_fire):
 		_fire.queue_free()
 	_fire = null

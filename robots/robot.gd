@@ -67,7 +67,7 @@ const RESCAN_JITTER: float = 0.3
 func _ready() -> void:
 	add_to_group("robot")
 	collision_layer = 8
-	collision_mask = 1
+	collision_mask = 1 | PhysLayers.PROP  # [world2] props are solid
 	var cs := CollisionShape3D.new()
 	var sh := CylinderShape3D.new()
 	sh.radius = 0.35 if type_id in ["scoopie", "drip", "seedling"] else 0.45

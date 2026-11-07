@@ -69,6 +69,7 @@ func flush(parent: Node) -> Array[GeometryInstance3D]:
 				mm.set_instance_transform(i, xfs[i])
 			var mmi := MultiMeshInstance3D.new()
 			mmi.multimesh = mm
+			mmi.set_meta("inst_xf", xfs)  # [world2] CPU copy for tools/collider_audit.gd (headless can't read MultiMeshes back)
 			g = mmi
 		_finish(g, b["mat"], b["shadow"])
 		parent.add_child(g)

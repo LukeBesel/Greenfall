@@ -39,6 +39,7 @@ func _ready() -> void:
 	level = int(GameState.world.get("composter_level", 1))
 	_build()
 	position = POS
+	(func() -> void: PropColliders.fit(PropColliders.body(self, "Props"), self)).call_deferred()  # [world2] solid bins
 
 
 func active() -> bool:
