@@ -46,6 +46,7 @@ func _setup() -> void:
 			sw["finale"] = i == 0
 		CradleMode.profile["current"] = 0
 	CradleMode.mirror_stats()
+	GameState.flags["last_district"] = str(world.get("district_name"))  # [worlds2] save profile summary
 	decor = Decor.new()
 	world.add_child(decor)
 	decor.setup(world)
@@ -62,6 +63,9 @@ func _setup() -> void:
 	if GameState.flags.get("late_new_world", false):
 		_arrive_new_world.call_deferred()
 	_world_look.call_deferred()
+	(func() -> void:  # [worlds2] the world's sky, landmark and weathering; WREN's story for it
+		WorldLookView.attach(world)
+		WorldStory.attach(world)).call_deferred()
 	if DevHooks.has("decor-sample"):
 		_decor_sample.call_deferred()
 	if DevHooks.has("late-save-after"):  # dev: write the save S seconds in (prepared states for shots)
@@ -122,7 +126,7 @@ func _process(delta: float) -> void:
 		GameState.flags["late_bridge_hint"] = true
 		CradleMode.bank()
 		get_tree().create_timer(8.0, false).timeout.connect(func() -> void:
-			EventBus.toast.emit(tr("Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."), "story")
+			EventBus.toast.emit(tr("Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."), "story")
 			if world.get("wren") != null:
 				world.wren.say("cradle_mode", 1.0, true))
 
@@ -160,7 +164,7 @@ func dev_post_finale() -> void:
 	GameState.stats["hexes_cleaned"] = maxf(float(GameState.stats.get("hexes_cleaned", 0.0)), 420.0)
 	GameState.world["hub_level"] = 5
 	GameState.add_currency("cubes", BigNum.from_float(DevHooks.get_f("post-cubes", 400000.0)))
-	GameState.add_currency("trinkets", BigNum.from_float(12))
+	GameState.add_currency("cubes", BigNum.from_float(1800))  # [money] was 12 trinkets
 	GameState.add_currency("seeds", BigNum.from_float(300))
 	if world.get("hub") != null and int(world.hub.level) < 5:  # the base as the campaign left it
 		for l: int in range(int(world.hub.level) + 1, 6):
@@ -201,18 +205,22 @@ func _arrive_new_world() -> void:
 func _world_look() -> void:
 	if CradleMode.current_index() <= 0 or world.get("frontier") != null or world.get("view") == null:
 		return
-	var coat: Array = WorldGen.world_type(str(CradleMode.current_world().get("type", ""))).get("coat", [])
-	for mid: Variant in CradleMode.modifiers():
-		if coat.is_empty():
-			coat = WorldGen.modifier(str(mid)).get("coat", [])
-	if coat.size() < 6 or not world.view.has_method("set_junk_overlay"):
+	# [worlds2] The world type's coat, made wetter by Heavy Rain and shinier by Rich Salvage (systems/world_look.gd).
+	var rain_coat: Array = []
+	for mid: Variant in WorldLook.current().get("mods", CradleMode.modifiers()):
+		if rain_coat.is_empty():
+			rain_coat = WorldGen.modifier(str(mid)).get("coat", [])
+	var jc: Dictionary = WorldLook.junk_coat(WorldGen.world_type(str(CradleMode.current_world().get("type", ""))).get("coat", []), WorldLook.current(), rain_coat)
+	if jc.is_empty() or not world.view.has_method("set_junk_overlay"):
 		return
 	var m := ShaderMaterial.new()
 	m.shader = preload("res://art/shaders/junk_coat.gdshader")
-	m.set_shader_parameter("coat", Color(float(coat[0]), float(coat[1]), float(coat[2])))
-	m.set_shader_parameter("top_amt", float(coat[3]))
-	m.set_shader_parameter("film", float(coat[4]))
-	m.set_shader_parameter("roughness", float(coat[5]))
+	m.set_shader_parameter("coat", jc["coat"])
+	m.set_shader_parameter("top_amt", float(jc["top"]))
+	m.set_shader_parameter("film", float(jc["film"]))
+	m.set_shader_parameter("roughness", float(jc["roughness"]))
+	m.set_shader_parameter("metal", float(jc["metal"]))
+	m.set_shader_parameter("spec", float(jc["spec"]))
 	world.view.set_junk_overlay(m)
 
 

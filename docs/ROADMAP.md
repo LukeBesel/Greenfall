@@ -40,6 +40,22 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
   frontier goals); land at a chosen district on another planet (its PlanetData isn't generated until
   visited); pace the four planets end to end with the bot without --home-ff; a Lumi design for the
   ending; worlds2's world picker should honour `Homeward` planets (records with "planet").
+## Update: three currencies (wt/money, Nov 7)
+- Done: exactly three currencies, Cubes / Parts / Seeds, from one source of truth (`data/currencies.json`, `core/currencies.gd`). Retired ids (bolts, sheet metal, plastic, glass, Data, compost, tokens, trinkets, Maker Fragments; Starseeds in the profile) are a legacy alias layer in `GameState.add_currency/get_currency/spend/can_afford` (fixed rates, one debug warning per id); `Currencies.fold()` for cost dicts, `GameState.can_afford_all/spend_all/add_all`. Every caller and data file uses the new ids (test_money checks the data files).
+- Done: save v2 (`SaveManager.migrate_v2`): old balances fold at the same rates; compost goes into the compost press hopper; Maker Fragments become Parts. Round trip has an old-save case.
+- Done: Parts from scooped metal/plastic/glass junk, the recycler (parts_per_bale + stock), Haggle's scrap bin, requests and Lumi levels; they pay for base levels, stations, outposts, rockets, robot tiers and the Builder. Research costs cubes (x10) plus real time; the old Data sources pay those cubes as field notes; Thriving wildlife is a small cube trickle. Compost press: organic junk and blooms go into its hopper, seeds come out.
+- Done: Contracts + World Events = one Requests board (workbench Requests tab: the live world event, three requests paying cubes or parts, the reward track that replaced the token shop). Trinkets are Collection finds only (decor uses `needs_finds`). Heirlooms are milestone unlocks (`systems/heirloom_track.gd`).
+- Done: HUD cluster shows Cubes, plus Parts/Seeds chips when they change; workbench header shows all three with the same glyphs (`ui/currency_icon.gd`); cost labels go through `Currencies.cost_text` / `L10nFmt.amount`.
+- Done: the Ledger is rarer and quieter (one uplink line per act; coupons and quips as small notify entries, every 12-20 min).
+- Balance: docs/BALANCE.md "Three currencies". Next: the "home" helper owns Cradle Mode; if it drops Heirlooms or the restoration score, delete `systems/heirloom_track.gd` and its two hooks in `systems/cradle_mode.gd`.
+
+## Update: the Telescope and remote progress (wt/scope)
+- Done: **Telescope** (`automation/telescope.gd`, data in `data/telescope.json`): a pearl-white observatory with a satin plinth, a dark glass band, a thin cyan light seam under the dome and a slim mast. It stands in the yard at (-5.6, -2.8), door facing the depot. Built from the Hub tab (`ui/telescope_panel.gd`): base level 4 or the Observatory Optics research (Robotics tier 6), 6000 cubes and 40 parts (bolts until a parts currency exists). E at the door: the two dome shells part on their rails and the tube rises, then the view opens.
+- Done: **Telescope view** (`ui/telescope_view.gd`). System: an orrery with both suns (star_a/star_b from `data/solar_system.json` when it exists, else the canon defaults) and the planets on their orbits (solar system file, else `planets_default`); profile worlds are matched by `planet_id`/name, unknown worlds get outer orbits. A `ui/system_map.gd` with a `planet_picked` signal is used instead when present. Visited worlds (a save on disk) can be picked; the current one is marked. Remote: `ui/remote_district.gd` builds the base district read-only from the save (clean bits + hex levels; ground baked into one texture with noise-warped borders; junk piles as one MultiMesh; base blocks by hub level; ground colours from `data/planets.json` env hints if present, else the world type), with the crew's robot models on simple loops (cleaners beam at the junk front and drop bales, haulers carry them home, Drips spray light over green hexes, Seedlings plant). Two directional lights for the two suns (`SolarSystem.suns_for` if it exists). Framed by `art/shaders/telescope_lens.gdshader` (vignette, faint chromatic shimmer), a reticle and readouts (planet, district %, robots active, last visit, cubes waiting).
+- Done: **Remote progress** (`systems/remote_progress.gd`): other worlds' crews work at 50% of the offline rate via `Offline.compute` (same 8 h and junk-left caps), paid on arrival by world travel only (never with the offline payout). See docs/BALANCE.md "Remote progress". **Care package** (400 cubes, 5 min double speed, one at a time, extra capped at 75% of cost). **Sightings**: holding a Ledger wreck or a deer in the reticle unlocks `sightings:ledger_wreck` / `animals:deer`; the first look unlocks `sightings:first_light` (new Codex category "Sightings").
+- Hooks (tagged `[scope]`): `scenes/slice.gd` (adds the Telescope node, keeps `scope_from_memory`), `ui/hub_panel.gd` (section), `systems/codex.gd` (category), `data/research.json` (node), `data/codex.json`.
+- Dev: `--scope` (built free), `--scope-sample` (a sample visited world with no save), `--open=scope [--scope-pick=N]`, `--scope-open` (dome open), `--scope-look=N` (focus point), `--scope-debug`. Tests: `tests/test_remote_progress.gd`; the save round trip checks the telescope, its Codex entry and a care package in the profile.
+- Next: when "home" lands, pass `planet_id` on the profile world records so the five planets match by id; when "extras" lands, make its idle gains call `Offline.compute` too (remote progress only covers non-current worlds).
 
 ## Update: visual QA pass (wt/vqa)
 - Done: Cradle Returns towers are premium curtain-wall glass (`art/shaders/tower_glass.gdshader`: metres-in-UV panel grid, hair-thin satin mullions, spandrels, per-panel tint/tilt, a few lit offices at night) with satin trims instead of white fins and floor bands; glass podiums and pavilions; the apron's dark band was smoothed normals across 30 m faces (`_arc_mesh` now flat); pale cool paving; lush lawn green via biome_tint.
@@ -352,3 +368,53 @@ solar-system orrery that zooms into a planet's globe to pick the hub (wt/home).
   `Audio.play_track(id)` / `stop_track()`. See docs/AUDIO.md. Needs wiring on the planet branches:
   call `set_planet_theme` on planet load, `set_music_mood("homecoming")` in the ending, and
   `Audio.loop("hover_spray", x)` while Lumi hovers over water. Next: owner listening pass.
+## Update: each world its own look, story and save sync (wt/worlds2)
+- **World looks** (`systems/world_look.gd`, `data/world_looks.json`, `planet/world_look_view.gd`): each
+  Cradle Mode world type has its own sky grade (over the planet haze, easing off as the district is
+  restored but keeping its identity), a sky body (`planet/sky_body.gd`, `art/shaders/sky_body.gdshader`:
+  a ringed gas giant over the Ice Moon, twin moons over the Desert, a big tide moon over the Ocean, a
+  shattered moon with a debris ring over the Rust World; the Marsh mist hides the sky), a city tint and
+  weathering overlay (`art/shaders/world_weather.gdshader`: frosted, sun-bleached, coastal, overgrown,
+  corroded), yard dressing (drift colour, bleached cloth, puddles) and a landmark
+  (`planet/world_landmark.gd`: seed silo, solar tower, surge barrier, overgrown cooling tower, gantry
+  crane; ruined parts until base 3, thin trim lights from base 3, mended from base 4). Modifiers show:
+  Long Nights darkens nights (`SkyDirector.night_dark`), Heavy Rain doubles yard puddles, wets the junk
+  and thickens the fog, Rich Salvage gives the junk a metallic shine. Verdance is untouched.
+- **Save profiles** (3 slots, `user://saves/p1..p3`; `SaveManager.profile_slot/profile_dir/set_profile/
+  delete_profile`, `systems/profile_slots.gd`): each has its own worlds, Heirlooms and progress; settings
+  are shared. Pre-profile saves move into p1 on first start (`SaveManager.migrate_to_profiles`).
+  Title > Profiles (`ui/profile_picker.gd`): per slot name, play time, planets, current planet and
+  district, Bloom %, cubes / seeds / parts; Continue (then the planet list, `ui/world_picker.gd`, when
+  the profile has more than one), New (confirm), Rename, Delete (confirm). Pad focus grid; cancel backs
+  out. `CradleMode.select_world` points Continue at a planet (an unplayed one lands fresh).
+- **Planet hook for the fixed solar system**: `WorldLook.planet_id()` (a world record's "planet"/"look"
+  key), `data/world_looks.json` "planets" maps planet ids onto look types (with overrides), and when
+  `data/planets.json` lists a planet with an env script (default `planet/planets/<id>/env.gd`),
+  `WorldLookView` instances it and calls `apply(world, field, kind)` (kind city | wild | frontier;
+  optional `set_progress(progress, hub_level)`); the env then owns the art (no generic landmark or sky
+  body unless the look says keep_landmark / keep_sky_body); grade, tint and weathering stay data-driven.
+- **WREN per world** (`systems/world_story.gd`, `data/wren_lines.json` `world_<planet or type>_<beat>`):
+  arrival, two memory notes revealing what the Ledger did to that world (strip-mined, pumped dry,
+  dredged, poisoned, its ships broken), halfway and restored, clear over the ark's
+  relay (`Wren.say(..., stage_override)`), remembered per world save (`flags.world_story`).
+- **Steam Cloud**: `profile.save` is stamped with `saved_unix` and uploaded on every write, so newest-wins
+  sync covers it with the world slots (docs/steam/README.md updated for both cloud modes).
+- **Binary sun on every planet** (owner rule; `planet/binary_sun.gd`, `art/shaders/sun_disc.gdshader`, made
+  by SkyDirector, so Verdance and frontiers too): the PhysicalSky draws the warm primary (scaled by its
+  size), the cooler companion gets its own disc with a thin halo at a fixed separation (they rise and set
+  together) and an unshadowed warm fill light. Sizes and energies come from `SolarSystem.suns_for(planet)`
+  (home's systems/solar_system.gd + data/solar_system.json) when present, else the canon defaults.
+- Steam Cloud covers every profile folder under a per-profile prefix (`p2_slot_0.save`); unprefixed cloud
+  saves from older builds are adopted into profile 1.
+- Dev: `--world-mods=heavy_rain+long_nights` (shots), `--menu=profiles|worlds --sample-worlds=N` (title).
+- Tests: `tests/test_world_look.gd` (look selection, planet mapping and env hook, modifiers, easing,
+  landmarks, sky bodies, WREN beats and lines, picker focus and selection, profile cloud stamp) and
+  `tests/test_profiles.gd` (migration, isolation, New/Delete/Rename, summaries, focus grid, cloud
+  prefixes); round trip checks the world look, the WREN thread, the profile stamp, migration into p1
+  and two profiles kept apart.
+- Next: wildlife and plants per world type (snow hares, dune lizards); per-world music tint; the world
+  picker could show a small render of each world.
+
+Music (owner, Nov 7): music is frozen as-is; do not spend more time composing. The owner may source different
+music later, so keep tracks swappable (Audio.play_track ids). SFX should stay satisfying (pickup, bale, sale already
+tuned in the first-hour pass); no new SFX work unless a bug.

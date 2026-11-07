@@ -101,7 +101,7 @@ func refresh() -> void:
 	_relocate.disabled = s.baler == null or not s.baler.idle() or not Hub.can_pay(s.def("auto_baler").get("relocate_cost", {}))
 	_route_btn.visible = s.recycler != null and s.conveyor != null
 	_route_btn.text = tr("Auto-route: %s") % Stations.route_text(s.route_n)
-	_stats.text = tr("Bales recycled %d   ·   Junk destroyed %s kg   ·   Bolts %s") % [int(GameState.stats.get("bales_recycled", 0.0)),
-		Settings.fmt(BigNum.from_float(float(GameState.stats.get("junk_destroyed_kg", 0.0)))), Settings.fmt(GameState.get_currency("bolts"))]
+	_stats.text = tr("Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s") % [int(GameState.stats.get("bales_recycled", 0.0)),  # [money]
+		Settings.fmt(BigNum.from_float(float(GameState.stats.get("junk_destroyed_kg", 0.0)))), Settings.fmt(GameState.get_currency("parts"))]
 	for c: UpgradeCard in _cards:
 		c.refresh()

@@ -50,7 +50,7 @@ func after_each() -> void:
 
 
 func _rich() -> void:
-	for k: String in ["cubes", "sheet_metal", "plastic_stock", "glass_cullet"]:
+	for k: String in Currencies.IDS:  # [money]
 		GameState.add_currency(k, BigNum.from_float(1.0e6))
 
 

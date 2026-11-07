@@ -8,7 +8,8 @@
     {"id": "landmarks", "name": "Landmarks", "icon": "map"},
     {"id": "animals", "name": "Animals", "icon": "leaf"},
     {"id": "frontiers", "name": "Frontiers", "icon": "map"},
-    {"id": "homeward", "name": "Homeward", "icon": "map"}
+    {"id": "homeward", "name": "Homeward", "icon": "map"},
+    {"id": "sightings", "name": "Sightings", "icon": "star"}
   ],
   "junk": {
     "metal": {"kg_per_unit": 2.4, "hint": "Rusty, clanky, everywhere.", "desc": "Cans, tins and bent brackets. Most of it was made to last, and it did. Pressed into bales, it can be rolled and stamped into something useful again."},
@@ -119,5 +120,10 @@
     "ledger_system": {"name": "The Ledger, Inc.", "hint": "Light the Cradle Returns beacon.", "desc": "The Ledger was never only Verdance's problem. It held mining rights to every world around the two suns: Ochre's sands, Tidewell's seabed, Rime's warm core, Anvil's whole crust. When the ore ran out it closed the books, kept the profits and left five planets under its trash. The audits never stopped. Nobody was left to read them."},
     "binary_suns": {"name": "Hearth and Ember", "hint": "Open the solar-system map.", "desc": "The Verdance system has two suns: Hearth, warm and white, and Ember, its small orange companion. Every world sees both. On Ochre they are huge and hot; from Rime they are two bright points, and the stars stay out all day."},
     "homecoming": {"name": "Homecoming", "hint": "Restore every world and launch home.", "desc": "Five worlds alive again. A rocket built from all of them. One seed planted in a bed with a yellow fence. The Cradle opened its bay for a small robot with a seedling tray, and below decks the Makers woke up to a green sky."}
+  },
+  "_sightings_doc": "[scope] Seen through the Telescope (ui/telescope_view.gd).",
+  "sightings": {
+    "first_light": {"name": "First Light", "hint": "Build a Telescope and look through it.", "desc": "The first look across the system from your own observatory. Two suns, a handful of worlds, and somewhere down there, your crews still at work."},
+    "ledger_wreck": {"name": "Ledger Wreck", "hint": "Through the telescope, on a world where the Ledger's drones came down.", "desc": "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."}
   }
 }

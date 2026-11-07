@@ -229,7 +229,7 @@ func _build_stars() -> void:
 		m.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
 		m.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
 		m.vertex_color_use_as_albedo = true
-		m.albedo_texture = BinarySun._disc_tex()
+		m.albedo_texture = _glow_tex()
 		var mmi := MultiMeshInstance3D.new()
 		mmi.multimesh = mm
 		mmi.material_override = m
@@ -253,7 +253,7 @@ func _sun(col: Color, r: float, energy: float) -> Node3D:
 	hm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	hm.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
 	hm.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
-	hm.albedo_texture = BinarySun._disc_tex()
+	hm.albedo_texture = _glow_tex()
 	hm.albedo_color = Color(col.r, col.g, col.b, 0.55)
 	halo.material_override = hm
 	halo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -396,6 +396,21 @@ func _build_planet(k: int) -> void:
 	p.add_child(lab)
 	_labels.append(lab)
 	_planets.append(p)
+
+
+## A bright core with a soft, thin halo (stars, sun halos).
+static func _glow_tex() -> GradientTexture2D:
+	var g := GradientTexture2D.new()
+	g.width = 128
+	g.height = 128
+	g.fill = GradientTexture2D.FILL_RADIAL
+	g.fill_from = Vector2(0.5, 0.5)
+	g.fill_to = Vector2(1.0, 0.5)
+	var grad := Gradient.new()
+	grad.offsets = PackedFloat32Array([0.0, 0.16, 0.22, 0.45, 1.0])
+	grad.colors = PackedColorArray([Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0.22), Color(1, 1, 1, 0.05), Color(1, 1, 1, 0)])
+	g.gradient = grad
+	return g
 
 
 static func _rim_shader() -> Shader:

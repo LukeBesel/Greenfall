@@ -142,9 +142,17 @@ static func stored_pct(k: int) -> float:
 ## The system planet the player is on (-1 on a "beyond the system" Cradle Mode world).
 static func current_planet() -> int:
 	var w: Dictionary = CradleMode.current_world()
-	if w.has("planet"):
-		return int(w["planet"])
+	if w.has("planet"):  # worlds2's key: the planet id ("ochre"); an int index is read too
+		var v: Variant = w["planet"]
+		return planet_index(str(v)) if v is String else int(v)
 	return 0 if int(w.get("index", 0)) == 0 else -1
+
+
+static func _planet_of(w: Dictionary) -> int:
+	if not w.has("planet"):
+		return -1
+	var v: Variant = w["planet"]
+	return planet_index(str(v)) if v is String else int(v)
 
 
 ## Profile world index of planet k, or -1 if not visited yet.
@@ -152,7 +160,7 @@ static func world_of(k: int) -> int:
 	var ws: Array = CradleMode.worlds()
 	for i: int in ws.size():
 		var w: Dictionary = ws[i]
-		if (k == 0 and int(w.get("index", -1)) == 0) or int(w.get("planet", -1)) == k:
+		if (k == 0 and int(w.get("index", -1)) == 0) or _planet_of(w) == k:
 			return i
 	return -1
 
@@ -299,10 +307,8 @@ static func next_drive() -> Dictionary:
 	return {}
 
 
-## The parts currency until the money pass lands ("parts"), else bolts.
+## Cost keys are currency ids (cubes, parts).
 static func _cur(k: String) -> String:
-	if k == "parts" and not GameState.currencies.has("parts") and GameState.currencies.has("bolts"):
-		return "bolts"
 	return k
 
 
@@ -363,7 +369,7 @@ static func make_planet_world(k: int) -> Dictionary:
 	w["name"] = str(d.get("name", "?"))
 	w["type"] = str(d.get("type", "rust_world"))
 	w["modifiers"] = (d.get("mods", []) as Array).duplicate()
-	w["planet"] = k
+	w["planet"] = str(d.get("id", ""))  # worlds2 reads this id for the planet's look and sky
 	return w
 
 

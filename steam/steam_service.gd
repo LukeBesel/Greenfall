@@ -94,9 +94,14 @@ func attach(s: Object, init: bool = true) -> bool:
 	status = "Steam active (app %d)" % app_id()
 	cloud = SteamCloud.new(api) if cloud_mode() == "remote_storage" else null
 	if cloud and cloud.enabled():
-		var res: Dictionary = cloud.sync_dir(SaveManager.save_dir())
-		if not res.is_empty():
-			print("[steam] cloud sync: ", res)
+		# [worlds2] Every save profile's folder, each under its own cloud prefix.
+		var legacy: int = cloud.adopt_legacy("p1_")
+		if legacy > 0:
+			print("[steam] cloud: %d pre-profile saves adopted into profile 1" % legacy)
+		for n: int in range(1, SaveManager.PROFILES + 1):
+			var res: Dictionary = cloud.sync_dir(SaveManager.profile_dir(n), "p%d_" % n)
+			if not res.is_empty():
+				print("[steam] cloud sync p%d: " % n, res)
 	sync_achievements()
 	print("[steam] ", status)
 	return true
@@ -218,7 +223,7 @@ func on_saved(path: String) -> void:
 
 func on_deleted(path: String) -> void:
 	if active and cloud:
-		cloud.delete(path.get_file())
+		cloud.delete(SteamCloud.cloud_name(path))  # [worlds2] profile-prefixed name
 
 
 # --- Store / overlay ----------------------------------------------------------------------

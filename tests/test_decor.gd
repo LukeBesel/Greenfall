@@ -114,7 +114,6 @@ func test_buying_and_refunds_make_moving_free() -> void:
 
 func test_collection_gate() -> void:
 	GameState.add_currency("cubes", BigNum.from_float(1e7))
-	GameState.add_currency("trinkets", BigNum.from_float(100))
 	assert_ne(Decor.buy_block_reason("lumi_sculpture"), "", "needs Collection finds first")
 	var need: int = int(Decor.def("lumi_sculpture")["needs_finds"])
 	var found: Array = []

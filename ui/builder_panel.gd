@@ -390,7 +390,7 @@ func _refresh_bin() -> void:
 	var total: int = 0
 	for id: String in RobotBuilder.inv():
 		total += int(RobotBuilder.inv()[id])
-	_bin.text = tr("Parts bin %d   ·   Maker Fragments %d   ·   Bolts %s") % [total, RobotBuilder.fragments(), Settings.fmt(GameState.get_currency("bolts"))]
+	_bin.text = tr("Builder bin %d   ·   Parts %s") % [total, Settings.fmt(GameState.get_currency("parts"))]  # [money]
 	var offers: Array[String] = []
 	for id: String in RobotBuilder.haggle_offers():
 		offers.append(tr(str(RobotBuilder.part(id).get("name", id))))

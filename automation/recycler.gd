@@ -2,7 +2,7 @@ class_name Recycler
 extends Node3D
 ## The Recycler: bales drop into a throat with two counter-rotating toothed shredder drums; the
 ## shred is blown into a little smelter (glowing window, chimney steam). The bale is gone for
-## good; out come bolts, clean building stock and a few cubes. Fed by the conveyor's incline belt
+## good; out come Parts and a few cubes [money]. Fed by the conveyor's incline belt
 ## or by hand on the intake plate (Patch drives on, his bales hop in). Local +Z faces the feeder.
 
 const THROAT := Vector3(0, 1.05, 0.2)
@@ -83,38 +83,38 @@ func feed(cube: JunkCube) -> void:
 		Audio.play("thud", 0.8, -6.0))
 
 
-## Pays out for one bale and frees it. Returns what it gave: {bolts, cubes, materials: {id: amt}, kg}.
+## Pays out for one bale and frees it. Returns what it gave: {parts, cubes, kg}.
+## [money] Bolts and the three building stocks are one currency now: Parts. A bale gives a flat
+## parts_per_bale plus its volume's worth of stock (metal-heavy bales give the most).
 func recycle(cube: JunkCube) -> Dictionary:
 	var d: Dictionary = stations.def("recycler") if stations else Economy.read_json("res://data/stations.json").get("recycler", {})
 	var y: float = Stations.yield_mult()
 	var fill: float = clampf(float(cube.info.get("fill", 1.0)), 0.25, 1.2)
 	var vol: float = float(cube.info.get("volume", fill * 12.0))
-	var bolts: float = maxf(1.0, round(float(d.get("bolts_per_bale", 2.0)) * (0.5 + fill) * y))
+	var parts: float = maxf(1.0, round(float(d.get("parts_per_bale", 10.0)) * (0.5 + fill) * y))
 	var cubes: BigNum = cube.value.mul_f(float(d.get("cube_mult", 0.25)))
-	var mats: Dictionary = {}
 	if _hub_data.is_empty():
 		_hub_data = Economy.read_json("res://data/hub.json")
 	var mdefs: Dictionary = _hub_data.get("materials", {})
 	var dom: String = str(cube.info.get("dominant", ""))
 	var per: float = vol * float(d.get("material_mult", 4.0)) * y
 	if mdefs.has(dom):
-		mats[str(mdefs[dom]["id"])] = per * float(mdefs[dom].get("per_unit", 0.1))
+		parts += per * float(mdefs[dom].get("per_unit", 0.1))
 	else:
-		# Mixed or unknown junk: an even split of the three stocks.
+		# Mixed or unknown junk: the average of the three stocks.
 		for k: String in mdefs:
-			mats[str(mdefs[k]["id"])] = per * float(mdefs[k].get("per_unit", 0.1)) / maxf(mdefs.size(), 1.0)
-	GameState.add_currency("bolts", BigNum.from_float(bolts))
+			parts += per * float(mdefs[k].get("per_unit", 0.1)) / maxf(mdefs.size(), 1.0)
+	parts = round(parts * 10.0) / 10.0
+	GameState.add_currency("parts", BigNum.from_float(parts))
 	if cubes.mantissa > 0.0:
 		GameState.add_currency("cubes", cubes)
-	for id: String in mats:
-		GameState.add_currency(id, BigNum.from_float(mats[id]))
 	var kg: float = cube.mass
 	GameState.inc_stat("bales_recycled")
 	GameState.inc_stat("junk_destroyed_kg", kg)
 	GameState.inc_stat("air_filtered", float(d.get("air_per_bale", 30.0)))
 	queue.erase(cube)
 	cube.queue_free()
-	return {"bolts": bolts, "cubes": cubes, "materials": mats, "kg": kg}
+	return {"parts": parts, "cubes": cubes, "kg": kg}
 
 
 func build_in() -> void:
@@ -216,11 +216,7 @@ func _finish() -> void:
 	var window: Vector3 = to_global(Vector3(-2.15, 0.62, -0.3))
 	Vfx.burst("steam", to_global(Vector3(-1.55, 3.55, -0.3)), Color(0.95, 0.95, 0.97, 0.6), 1.0)
 	Vfx.burst("sparkle", window, Color(1.0, 0.55, 0.15), 1.0)
-	var txt: String = tr("+%d bolts") % int(got["bolts"])
-	var names: Dictionary = {"sheet_metal": "metal", "plastic_stock": "plastic", "glass_cullet": "glass"}
-	for id: String in got["materials"]:
-		if float(got["materials"][id]) >= 0.05:
-			txt += "  +%.1f %s" % [float(got["materials"][id]), names.get(id, id)]
+	var txt: String = L10nFmt.amount("parts", float(got["parts"]), true)  # [money]
 	Vfx.float_text(throat_world() + Vector3(0, 0.8, 0), txt, Color(0.75, 0.95, 1.0), 0.7, 1.2)
 	Vfx.float_text(throat_world() + Vector3(0, 1.25, 0), tr("GONE FOR GOOD  -%d kg") % int(got["kg"]), Color(0.7, 1.0, 0.7), 0.55, 1.4)
 	_pop_ingot()

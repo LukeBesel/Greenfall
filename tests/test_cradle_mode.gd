@@ -62,7 +62,8 @@ func test_bank_pays_only_what_is_new() -> void:
 	GameState.flags["cradle_returned"] = true
 	var first: int = CradleMode.bank()
 	assert_gt(first, 0)
-	assert_eq(int(CradleMode.starseeds()), first)
+	assert_eq(int(CradleMode.profile["starseeds_total"]), first, "[money] banked as a restoration score")
+	assert_eq(int(CradleMode.starseeds()), 0, "nothing to spend: Starseeds are not a currency")
 	assert_eq(CradleMode.bank(), 0, "banking twice pays nothing more")
 	GameState.stats["ark_waves"] = 3.0
 	assert_eq(CradleMode.bank(), int(WorldGen.cfg()["prestige"]["per_ark_wave"]), "one more wave pays one wave")
@@ -71,27 +72,33 @@ func test_bank_pays_only_what_is_new() -> void:
 
 # --- Heirlooms ----------------------------------------------------------------------------
 
-func test_heirloom_costs_grow_and_buying_spends_starseeds() -> void:
+func test_heirloom_costs_grow_and_unlock_by_milestones() -> void:
+	# [money] Heirlooms are milestone unlocks: the banked score passes the old prices in order.
 	var d: Dictionary = CradleMode.heirloom_def("green_thumb")
 	assert_false(d.is_empty())
 	var c0: int = CradleMode.heirloom_cost(d, 0)
 	var c1: int = CradleMode.heirloom_cost(d, 1)
 	assert_eq(c0, int(d["cost"]))
 	assert_gt(c1, c0)
-	assert_false(CradleMode.buy("green_thumb"), "can't buy with no Starseeds")
-	CradleMode.profile["starseeds"] = float(c0 + c1)
-	assert_true(CradleMode.buy("green_thumb"))
-	assert_true(CradleMode.buy("green_thumb"))
-	assert_eq(CradleMode.heirloom_level("green_thumb"), 2)
-	assert_almost_eq(CradleMode.starseeds(), 0.0, 0.001)
-	assert_eq(int(GameState.stats["heirloom_levels"]), 2, "mirrored for goals and achievements")
+	assert_false(CradleMode.buy("green_thumb"), "nothing is bought")
+	var steps: Array[Dictionary] = HeirloomTrack.steps(CradleMode.heirloom_defs())
+	assert_eq(str(steps[0]["id"]), "head_start", "cheapest first")
+	for i: int in steps.size() - 1:
+		assert_lt(int(steps[i]["at"]), int(steps[i + 1]["at"]), "thresholds rise")
+	CradleMode.profile["starseeds_total"] = float(steps[2]["at"])
+	HeirloomTrack.apply(CradleMode.profile, CradleMode.heirloom_defs())
+	assert_eq(CradleMode.heirloom_total(), 3, "three steps reached, three levels")
+	CradleMode.mirror_stats()
+	assert_eq(int(GameState.stats["heirloom_levels"]), 3, "mirrored for goals and achievements")
+	(CradleMode.profile["heirlooms"] as Dictionary)["archivist"] = 2
+	HeirloomTrack.apply(CradleMode.profile, CradleMode.heirloom_defs())
+	assert_eq(CradleMode.heirloom_level("archivist"), 2, "levels an old profile bought are kept")
 
 
 func test_heirlooms_cap_at_max() -> void:
 	var d: Dictionary = CradleMode.heirloom_def("archivist")
-	CradleMode.profile["starseeds"] = 99999.0
-	for i: int in int(d["max"]) + 2:
-		CradleMode.buy("archivist")
+	CradleMode.profile["starseeds_total"] = 999999.0
+	HeirloomTrack.apply(CradleMode.profile, CradleMode.heirloom_defs())
 	assert_eq(CradleMode.heirloom_level("archivist"), int(d["max"]))
 	assert_ne(CradleMode.buy_block_reason("archivist"), "")
 
@@ -196,7 +203,9 @@ func test_launch_a_new_world_then_travel_back() -> void:
 	assert_eq(CradleMode.current_index(), 1)
 	assert_ne(SaveManager.slot, 0, "a new world gets its own slot")
 	assert_eq(str(Economy.planet["name"]), str(w["name"]))
-	assert_almost_eq(GameState.get_currency("cubes").to_float(), 1500.0, 0.01, "fresh world: only the Head Start kit")
+	# [money] banking on launch unlocks Heirloom milestones too (the Data Cache pays cubes now)
+	var kit: Dictionary = CradleMode.start_kit(CradleMode.profile["heirlooms"])
+	assert_almost_eq(GameState.get_currency("cubes").to_float(), float(kit["cubes"]) + float(kit["data"]) * Research.note_cubes(), 0.01, "fresh world: only the kit")
 	assert_eq(JSON.stringify(GameState.flags.get("achievements")), JSON.stringify({"hex_1": 1.0}), "achievements carry over")
 	assert_false(GameState.flags.has("bloom_finale_seen"), "the new world's story starts over")
 	assert_true(CradleMode.unlocked(), "but Cradle Mode stays open (profile)")

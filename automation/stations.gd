@@ -114,7 +114,7 @@ func block_reason(id: String) -> String:
 	if hub_level() < int(d.get("requires_level", 1)):
 		return tr("Requires hub level %d.") % int(d.get("requires_level", 1))
 	if not Hub.can_pay(d.get("cost", {})):
-		return tr("Not enough materials.")
+		return tr("Not enough cubes or parts.")  # [money]
 	return ""
 
 

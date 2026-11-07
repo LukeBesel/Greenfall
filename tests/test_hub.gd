@@ -38,7 +38,7 @@ func test_upgrade_needs_materials() -> void:
 func test_scrubber_requires_level_and_scales() -> void:
 	var hub := Hub.new()
 	add_child_autofree(hub)
-	for k: String in ["cubes", "sheet_metal", "plastic_stock", "glass_cullet"]:
+	for k: String in Currencies.IDS:  # [money]
 		GameState.add_currency(k, BigNum.from_float(1.0e6))
 	assert_false(hub.build_scrubber(), "locked at level 1")
 	hub.upgrade()

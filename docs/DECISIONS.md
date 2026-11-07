@@ -112,6 +112,20 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
   across worlds, not across profiles). Achievements, Codex and skins carry into new worlds.
 - **Each world keeps its own story beats** (seed tin, Ledger, finale): Seed Vault adds seeds but does
   not skip the tin (skipping it pulled the bot into hand-watering and made worlds slower).
+- **A world's look is data, applied after the district is built** (wt/worlds2): `data/world_looks.json`
+  per world type, read by CityView / StreetDressing for tints at build time and by `WorldLookView` for
+  sky, sky body, weathering overlay and landmark. The grade and weathering ease with the base level or
+  field progress but never fully go (a restored Ice Moon is still an ice moon). Frontier districts keep
+  their own grade and landmarks; the sky body and Long Nights carry over. Verdance gets no look at all.
+- **WREN is clear on new worlds**: she speaks over the ark's relay, so world-thread lines use signal
+  stage 2 from the first line instead of the campaign's glitched stage 0.
+- **Save profiles are folders** (`user://saves/p1..p3`): SaveManager.save_dir() is the active profile's
+  folder, so CradleMode, slots and every system stay unchanged; the Steam Cloud names carry the profile
+  as a prefix. Settings are shared across profiles.
+- **Planets own their art, the look stays data**: a planet with an env script in data/planets.json
+  draws its own landmarks and sky; the generic look keeps grade, tint and weathering.
+- **The profile syncs like a save**: it carries `saved_unix` so the Steam Cloud newest-wins rule applies
+  to it unchanged; the SteamService autoload syncs before CradleBoot reads it.
 - **Decorations refund in full** so moving costs nothing; their bonus is small and per district.
   Wildlife integration is a group hook ("decor" + metas), no dependency either way.
 
@@ -126,7 +140,7 @@ Mechanics:
 - **Planets are profile worlds with fixed seeds, names, types and modifiers** (`data/homeward.json`, `Homeward.make_planet_world`), so every system persists per planet through the existing slot machinery and worlds2's save slots. A record with `"planet": k` keeps its type when its mix is recomputed (`WorldGen.make(..., type_id)` from `CradleMode.current_full`). Verdance is world 0 / planet 0, unchanged.
 - **Random Cradle Mode worlds are kept as the post-game "beyond the system" mode**: the Ark Bridge's "Seed a new world" opens only after Homecoming (`CradleMode.unlocked()` is set by the ending). Every random world keeps its own finale (`Homeward.redirect_finale` only redirects on system planets, and only before the ending).
 - **Restoration per planet** (never drops, profile `homeward.pct`): Verdance = its Bloom Core charge (100% when the Cradle answers); the others = 0.5·thriving/target + 0.3·bases L5/target + 0.2·(landing district Thriving share / 60%). The targets are smaller than Verdance's campaign, growing from Ochre to Anvil. System % = mean of the five, shown on the solar map. A restored planet gives its relic and one **Heirloom pick** (Heirlooms become milestone unlocks, no Starseeds; `CradleMode.buy` spends a pick first).
-- **Rocket drive tiers are separate from the in-planet Mk I-IV** (`data/homeward.json` drive, profile `homeward.drive`, carried to every planet; the visible rocket keeps its Mk look, so `RocketTiers` and the rocket model are untouched): Mk V Orbital (after the Cradle answers; Ochre, Tidewell), Mk VI Interplanetary (one relic; Rime, Anvil), Mk VII Homeward (all relics, system 100%, built only at Cradle Returns). Priced in cubes and parts (`Homeward._cur` maps parts to bolts until the money pass lands). **Per-planet nav**: a planet also needs its chart, i.e. the previous planet at 50%. The in-planet rocket tier is carried too (best of all planets).
+- **Rocket drive tiers are separate from the in-planet Mk I-IV** (`data/homeward.json` drive, profile `homeward.drive`, carried to every planet; the visible rocket keeps its Mk look, so `RocketTiers` and the rocket model are untouched): Mk V Orbital (after the Cradle answers; Ochre, Tidewell), Mk VI Interplanetary (one relic; Rime, Anvil), Mk VII Homeward (all relics, system 100%, built only at Cradle Returns). Priced in cubes and parts. **Per-planet nav**: a planet also needs its chart, i.e. the previous planet at 50%. The in-planet rocket tier is carried too (best of all planets).
 - **Travel**: the solar map's Launch (or the autoplay) runs the rocket's own launch sequence with a sentinel target (`Homeward.PLANET_BASE - k`, `HOME`); `automation/rocket.gd` hands the flight to `HomewardDirector.start_flight / travel`: the solar map shows the flight, then `Homeward.travel_to_planet` switches worlds and the rocket's arrival plays there (a new planet gets a rocket parked on the ground, so Lumi can always fly back).
 - **The solar map (ui/system_map.gd) is a 3D orrery** in its own World3D: the two suns circling, thin additive orbit lines, planets with restoration rings and labels (name, %, drive needed), two starfield shells for parallax. Selecting a planet glides the camera in; on the current planet "Choose a district" zooms in and hands over to the survey globe full screen (hubs and districts); closing the globe pulls back out. Other planets land at their last district (their PlanetData isn't generated until visited).
 - **Text**: all player-facing strings through tr(); data JSON stays English.
@@ -161,3 +175,34 @@ Mechanics:
   "Ambience" bus that sends to SFX, so the SFX slider covers it; a slider at 0 mutes its bus.
   Track loudness is kept within about +-2 dB of the generative explore piece (tools/render_music.gd).
 - **No new save state**: planet code re-sends the theme on load; restoration comes from the planet.
+
+## Three currencies (wt/money, Nov 7)
+- **Exactly three currencies: Cubes, Parts, Seeds** (owner: "keep it extremely low like 3 or less").
+  One source of truth: `data/currencies.json` + `core/currencies.gd` (ids, names, icons, colours,
+  legacy table). GameState stores only these three.
+- **Legacy alias layer, not a hard break**: `add_currency / get_currency / spend / can_afford` accept
+  the retired ids and map them at a fixed rate (bolts x5 parts, sheet metal / plastic / glass x1
+  parts, Data x10 cubes, compost x0.25 seeds, tokens x5 parts, trinkets x150 cubes, Maker Fragments
+  x25 parts), warning once per id in debug builds, so code from parallel branches keeps working
+  through merges. `Currencies.fold()` does the same for cost/reward dictionaries.
+- **Save v2** folds old balances at the same rates; old compost goes into the compost press's hopper
+  (a machine fill level, not a currency) and Maker Fragments into Parts. Nothing earned is lost.
+- **Research costs cubes (x10 the old Data) plus real time**; the old Data sources ("field notes":
+  hexes cleaned, restored, shards, robot bales, blooms) pay those cubes instead, so research paces as
+  it did. Thriving wildlife notes are a small cube trickle (6/min per hex, capped at 300/min).
+- **Robot part items stay items** (the rarity-graded parts the recipes, tiers and the Builder use);
+  they are not a currency. In the UI they are "robot parts"; the currency is "Parts".
+- **Contracts and World Events are one Requests board.** Requests pay cubes or parts; the token shop
+  became a reward track (liveries, Builder parts, Curio Capsules, rare robot parts at 2..20 finished
+  requests; a Vintage part every 5 after). Handled world events count as finished requests.
+- **Trinkets are only Collection finds.** Decorations that cost trinkets now need Collection finds
+  (`needs_finds`); old trinket rewards pay 150 cubes each.
+- **Heirlooms are milestone unlocks** (systems/heirloom_track.gd): the banked restoration score (the
+  old Starseed total) passes the old prices in a fixed cheapest-first order. Kept self-contained
+  because the "home" helper is replacing Cradle Mode's main flow.
+- **Base 2 and 3 ask 150 / 350 parts** (were 25 metal + 15 plastic / 90 metal + 60 plastic + 30
+  glass): with one pooled currency the per-type gates vanished; those amounts arrive at about the
+  minute the metal and glass used to. Frontier research costs x25 cubes (x10 below): late cubes are
+  plentiful where Data used to be the gate.
+- **The Ledger is quieter**: one uplink line per act; coupons and quips are small notify-stack
+  entries, coupons every 12-20 min (was 4-7).

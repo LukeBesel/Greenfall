@@ -57,7 +57,7 @@ func test_planet_pct_weights_and_cap() -> void:
 
 
 func test_store_never_drops_and_restoring_gives_relic_and_pick() -> void:
-	CradleMode.profile["worlds"].append({"index": 1, "planet": 1, "seed": 51207, "name": "Ochre", "type": "desert_world", "slot": 1})
+	CradleMode.profile["worlds"].append({"index": 1, "planet": "ochre", "seed": 51207, "name": "Ochre", "type": "desert_world", "slot": 1})
 	CradleMode.profile["current"] = 1
 	assert_eq(Homeward.current_planet(), 1)
 	assert_eq(Homeward.store_current(0.4), [] as Array[int])
