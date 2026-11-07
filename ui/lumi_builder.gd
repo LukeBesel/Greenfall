@@ -52,7 +52,7 @@ var _first_editor: Control
 
 static func open(w: Node, parent: Node) -> LumiBuilder:
 	var cl := CanvasLayer.new()
-	cl.layer = 40
+	cl.layer = 100  # above the HUD and the workbench
 	cl.process_mode = Node.PROCESS_MODE_ALWAYS
 	var b := LumiBuilder.new()
 	b.world = w
@@ -76,8 +76,6 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_build()
 	_select("presets")
-	_root.modulate.a = 0.0
-	create_tween().tween_property(_root, "modulate:a", 1.0, 0.15)
 	Audio.play("click", 1.1, -6.0)
 
 
@@ -129,7 +127,7 @@ func _build() -> void:
 	body.add_child(side_scroll)
 	_side = VBoxContainer.new()
 	_side.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_side.add_theme_constant_override("separation", 2)
+	_side.add_theme_constant_override("separation", 1)
 	side_scroll.add_child(_side)
 	_build_side()
 
@@ -209,12 +207,12 @@ func _build_side() -> void:
 		if g != group:
 			group = g
 			var gl := UITheme.label(tr(g).to_upper(), 12, UITheme.MUTED)
-			gl.custom_minimum_size = Vector2(0, 22)
+			gl.custom_minimum_size = Vector2(0, 16)
 			gl.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
 			_side.add_child(gl)
 		_side_entry(str(s["id"]), tr(str(s["name"])), str(s.get("kind", "")))
 	var gl2 := UITheme.label(tr("Saved").to_upper(), 12, UITheme.MUTED)
-	gl2.custom_minimum_size = Vector2(0, 22)
+	gl2.custom_minimum_size = Vector2(0, 16)
 	gl2.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
 	_side.add_child(gl2)
 	_side_entry("looks", tr("Saved looks"), "")
@@ -222,7 +220,7 @@ func _build_side() -> void:
 
 func _side_entry(slot: String, text: String, kind: String) -> void:
 	var b := Button.new()
-	b.custom_minimum_size = Vector2(SIDE_W - 12, 29)
+	b.custom_minimum_size = Vector2(SIDE_W - 12, 24)
 	b.focus_mode = Control.FOCUS_ALL
 	b.toggle_mode = false
 	var hb := HBoxContainer.new()
@@ -231,7 +229,7 @@ func _side_entry(slot: String, text: String, kind: String) -> void:
 	hb.offset_right = -8
 	hb.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	b.add_child(hb)
-	var l := UITheme.label(text, 15, UITheme.CREAM)
+	var l := UITheme.label(text, 14, UITheme.CREAM)
 	l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	l.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
