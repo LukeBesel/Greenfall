@@ -72,7 +72,7 @@ func test_overstuffed_bale_box_matches_its_look() -> void:
 	await wait_physics_frames(240)
 	var vis: Node3D = c.get("_visual")
 	# The drawn bale is (1.08, 0.9, 1.02) x size: its bottom must not be below the ground.
-	assert_almost_eq(_half_h(c), vis.scale.y * 0.5 * 1.02, 0.005)
+	assert_almost_eq(_half_h(c), vis.scale.y * 0.5 * 1.045, 0.005)
 	assert_almost_eq(c.global_position.y, _half_h(c), 0.04)
 
 

@@ -584,6 +584,8 @@ func place_top_cube() -> void:
 
 
 func _update_stack(delta: float) -> void:
+	if not carried.is_empty():
+		_stack_root.position = CarryPoint.of(model, self)  # [world2] held clearly above Lumi, not inside him
 	# Wobbly spring sway driven by acceleration.
 	var acc: Vector3 = global_transform.basis.inverse() * (velocity - _prev_vel)
 	_stack_sway_v += (Vector2(acc.z, -acc.x) * 0.9 - _stack_sway * 60.0 - _stack_sway_v * 7.0) * delta
