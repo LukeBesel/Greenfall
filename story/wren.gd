@@ -48,6 +48,12 @@ func _on_hex(_h: int, _p: Vector3, _b: BigNum) -> void:
 	say("hex_clean", 0.4)
 
 
+## [onboard] Queue a scripted line (already translated), whether or not she is "awake" yet.
+func speak(text: String, stage: int = 1) -> void:
+	if text != "":
+		_queue.append({"text": text, "stage": stage})
+
+
 ## Queue a line from a trigger pool. chance < 1 lets frequent events stay sparse.
 ## [worlds2] stage_override >= 0 speaks from that signal stage (Cradle Mode worlds: WREN talks over the
 ## ark's own relay, clear from the first line).

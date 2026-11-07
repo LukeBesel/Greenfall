@@ -12,8 +12,9 @@ const STEPS: Array[Dictionary] = [
 	{"id": "carry", "text": "{interact}  to pick up the bale"},
 	{"id": "cash", "text": "Carry it onto the scale"},
 	{"id": "upgrade", "text": "{interact}  at the workbench to upgrade"},
-	{"id": "hex", "text": "Clean this hex completely"},
 ]
+# [onboard] "Clean this hex completely" is now the story objective "Clean a hex" (story/objectives.gd),
+# which outlines its hex on the ground; an old save on that step simply counts the checklist as done.
 const DONE_TEXT: String = "Lumi is back on the job"
 # l10n:end
 
@@ -24,7 +25,6 @@ var step: int = 0
 var marker: TutorialMarker
 var _count: int = 0
 var _target_t: float = 0.0
-var _target_hex: int = -1
 
 
 func _ready() -> void:
@@ -33,7 +33,6 @@ func _ready() -> void:
 	EventBus.cube_made.connect(func(_i: Dictionary) -> void: _progress("bale"))
 	EventBus.cube_cashed.connect(func(_v: BigNum, _p: Vector3) -> void: _progress("cash"))
 	EventBus.upgrade_bought.connect(func(_id: String, _l: int) -> void: _progress("upgrade"))
-	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: _progress("hex"))
 	if not done():
 		marker = TutorialMarker.new()
 		marker.world = world
@@ -91,9 +90,6 @@ func step_progress() -> Array:
 	if s.has("goal"):
 		var g: int = int(s["goal"])
 		return [float(mini(_count, g)) / g, "%d / %d" % [mini(_count, g), g]]
-	if s["id"] == "hex" and _target_hex >= 0 and world and world.field:
-		var f: float = (world.field as HexField).removed_fraction(_target_hex)
-		return [f, "%d%%" % int(floor(f * 100.0))]
 	return [-1.0, ""]
 
 
@@ -143,10 +139,6 @@ func target() -> Dictionary:
 				return {"pos": (world.depot as Node3D).global_position, "kind": "pad"}
 		"upgrade":
 			return {"pos": world.BOARD_POS, "kind": "bench"}
-		"hex":
-			var pid3: int = _last_pieces_target(at)
-			if pid3 >= 0:
-				return {"pos": f.piece_pos[pid3], "kind": "piece"}
 	return {}
 
 
@@ -162,41 +154,6 @@ func _nearest_loose_cube(at: Vector3) -> JunkCube:
 			bd = d
 			best = c
 	return best
-
-
-func _hex_ok(f: HexField, h: int) -> bool:
-	return h >= 0 and not f.is_clean(h) and f.hex_hub[h] == 0 and not f.is_water(h) and not f.locked.has(h)
-
-
-## The hex to finish: the one Lumi is working on, else the most-cleared unfinished hex nearby.
-## Points at its nearest remaining piece so the last can is never a hunt.
-func _last_pieces_target(at: Vector3) -> int:
-	var f: HexField = world.field
-	var h: int = world.patch.focus_hex()
-	if not _hex_ok(f, h):
-		h = _target_hex if _hex_ok(f, _target_hex) else -1
-		if h < 0:
-			var best: float = -INF
-			for hid: int in f.hexes_near(at, 2):
-				if not _hex_ok(f, hid):
-					continue
-				var score: float = f.removed_fraction(hid) - f.hex_center(hid).distance_to(at) * 0.01
-				if score > best:
-					best = score
-					h = hid
-	_target_hex = h
-	if h < 0:
-		return f.nearest_alive(at)
-	var out: int = -1
-	var bd: float = INF
-	for pid: int in f.hex_pieces[h]:
-		if f.piece_alive[pid] == 0:
-			continue
-		var d: float = f.piece_pos[pid].distance_squared_to(at)
-		if d < bd:
-			bd = d
-			out = pid
-	return out
 
 
 func _progress(id: String) -> void:

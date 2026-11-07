@@ -76,6 +76,8 @@ func _snapshot(s: Node) -> Dictionary:
 		"decor_charm": snappedf(float(GameState.world.get("decor_charm", 0.0)), 0.01),
 		"world_index": int(GameState.flags.get("world_index", 0)),
 		# [scope] the Telescope at this base, its sightings and use stats.
+		# [onboard] story objectives, WREN's brief, the detector explanation, the Requests board unlock.
+		"onboard": "obj=%d brief=%s signal=%s requests=%s" % [int(GameState.flags.get("objective_step", 0)), str(GameState.flags.get("onboard_brief", false)), str(GameState.flags.get("signal_explained", false)), str(GameState.flags.get("requests_unlocked", false))],
 		"telescope": "%s %s uses=%d" % [str(Telescope.of(s).built() if Telescope.of(s) else "none"), str(Codex.is_unlocked("sightings:first_light")), int(GameState.stats.get("telescope_uses", 0))],
 	}
 
@@ -312,6 +314,11 @@ func _ready() -> void:
 	Contracts.owned().append("livery_halo")
 	GameState.flags["livery"] = "livery_halo"
 	WorldEvents.persist_state()["recent"] = ["supply_drop", "rain_shower"]
+	# [onboard] Past the brief, on the "Build a Haul Bug" objective, detector explained, board open.
+	GameState.flags["onboard_brief"] = true
+	GameState.flags["objective_step"] = 4
+	GameState.flags["signal_explained"] = true
+	GameState.flags["requests_unlocked"] = true
 	# [hud] Some Lumi XP across a couple of levels.
 	if s1.get("lumi_level") != null:
 		s1.lumi_level.add("dev", LumiLevel.need(1) + LumiLevel.need(2) + 37)

@@ -229,6 +229,7 @@ func _style_tabs() -> void:
 		var b: Button = _tab_buttons[i]
 		b.add_theme_stylebox_override("normal", UITheme.box(Color(0.2, 0.15, 0.07, 0.9) if on else UITheme.TEAL, UITheme.GOLD if on else UITheme.RUST, 1, 6, 8))
 		b.add_theme_color_override("font_color", UITheme.GOLD if on else UITheme.CREAM)
+		b.visible = TABS[i]["id"] != "contracts" or Contracts.unlocked()  # [onboard] the board opens later
 
 
 ## Gives controller/keyboard players a focused control on every tab. The old tab's children are
@@ -312,6 +313,10 @@ func _relayout() -> void:
 
 func open_screen() -> void:
 	is_open = true
+	if _tab == "contracts" and not Contracts.unlocked():  # [onboard]
+		_tab = "patch"
+		_populate()
+	_style_tabs()  # [onboard] the Requests tab appears once the board is open
 	_root.visible = true
 	_refresh_all()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -335,7 +340,8 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev"):
 		var order: Array[String] = []
 		for t: Dictionary in TABS:
-			order.append(str(t["id"]))
+			if str(t["id"]) != "contracts" or Contracts.unlocked():  # [onboard]
+				order.append(str(t["id"]))
 		var i: int = maxi(0, order.find(_tab))
 		_set_tab(order[(i + (1 if event.is_action_pressed("ui_tab_next") else order.size() - 1)) % order.size()])
 		get_viewport().set_input_as_handled()

@@ -52,6 +52,7 @@ var upgrades: UpgradesScreen
 var command: CommandView
 var music: MusicHooks
 var intro: Intro
+var objectives: Objectives  # [onboard] first-minutes story objectives (story/objectives.gd)
 var core_charge: CoreCharge
 var composter: Composter
 var pause_menu: PauseMenu
@@ -517,6 +518,9 @@ func _ready() -> void:
 			intro.place_pod.call_deferred()
 		if not loaded:
 			wake.call()
+	objectives = Objectives.new()  # [onboard] WREN's plan after the intro + the objective card
+	objectives.world = self
+	add_child(objectives)
 	LateDirector.attach(self)  # [late] Garden Mode, Ark Bridge, Cradle Mode worlds (systems/late_director.gd)
 	var scope := Telescope.new()  # [scope] the Telescope + remote progress (automation/telescope.gd)
 	scope.name = "Telescope"
@@ -998,8 +1002,12 @@ func open_upgrades() -> void:
 		return
 	# Upgrades are installed at a base workbench, not in the field.
 	if not near_bench() and not DevHooks.has("open"):
-		EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
-		Audio.play("buzz", 1.2, -10.0)
+		# [onboard] Away from the bench, Tab shows the key hints while held (the toast only once).
+		if hud and hud.has_method("peek_hints"):
+			hud.peek_hints()
+		if not GameState.flags.get("bench_hint_seen", false):
+			GameState.flags["bench_hint_seen"] = true
+			EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
 		return
 	upgrades.open_screen()
 	if patch.input is PlayerInput:

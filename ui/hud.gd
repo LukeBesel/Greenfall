@@ -9,7 +9,8 @@ extends CanvasLayer
 ##                 above it the interact prompt and a contextual readout (hex %, part signal,
 ##                 carried bales) that only shows while relevant
 ##   bottom-left   one notification stack for toasts, achievements and story lines (ui/notify_stack.gd)
-##   bottom-right  key hints (Full mode, or during the restart checklist)
+##   bottom-right  key hints in a readable pill (ui/key_hints.gd): the first minutes, Full mode, or
+##                 while Tab is held away from the workbench [onboard]
 ## Settings.hud_mode: FULL (no auto-fade), MINIMAL (default: extras fade after a few seconds without
 ## change), HIDDEN (only prompts and notifications).
 ## Public API kept for callers: show_toast(text, kind), visible, patch, world. New: notify(),
@@ -17,6 +18,7 @@ extends CanvasLayer
 
 const FADE_AFTER_S: float = 6.0
 const CONTEXT_HOLD_S: float = 3.0
+const CONTEXT_COLOR := Color(0.8, 0.82, 0.8)  # [onboard] brighter than UITheme.MUTED
 
 var patch: Patch
 var world: Node
@@ -35,7 +37,7 @@ var _planet_label: Label
 var _prompt: Label
 var _context: Label
 var _notify: NotifyStack
-var _hints: Label
+var _hints: KeyHints  # [onboard] was a 12 px muted label
 var _goals_panel: GoalsPanel  # legacy name (same node as `goals`)
 var _district_sig: String = ""
 var _district_idle: float = 0.0
@@ -55,7 +57,7 @@ func _ready() -> void:
 	_root = Control.new()
 	_root.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_root.theme = UITheme.get_theme()
+	_root.theme = HudReadable.theme()  # [onboard] heavier halo + font so HUD text reads over busy scenes
 	add_child(_root)
 	_build_scrims()
 	lumi = (world.get("lumi_level") as LumiLevel) if world else null
@@ -104,7 +106,7 @@ func _build_scrims() -> void:
 	var spec: Array = [
 		# [anchor, size, gradient centre (UV), gradient edge (UV)]
 		[Control.PRESET_TOP_LEFT, Vector2(460, 220), Vector2(0, 0), Vector2(1, 0)],
-		[Control.PRESET_TOP_RIGHT, Vector2(520, 300), Vector2(1, 0), Vector2(0, 0)],
+		[Control.PRESET_TOP_RIGHT, Vector2(560, 380), Vector2(1, 0), Vector2(0, 0)],  # [onboard] taller: objective card
 		[Control.PRESET_CENTER_BOTTOM, Vector2(760, 380), Vector2(0.5, 1), Vector2(1, 1)],
 	]
 	for e: Array in spec:
@@ -204,7 +206,7 @@ func _build_bottom() -> void:
 	_prompt = UITheme.label("", 16, UITheme.CREAM)
 	_prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(_prompt)
-	_context = UITheme.label("", 13, UITheme.MUTED)
+	_context = UITheme.label("", 14, CONTEXT_COLOR)  # [onboard] 13 px muted was hard to read
 	_context.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_context.custom_minimum_size = Vector2(360, 0)
 	_context.clip_text = true  # [vqa] one short phrase; never wider than the hotbar area
@@ -223,9 +225,14 @@ func _build_notify() -> void:
 
 func _build_hints() -> void:
 	var mc: MarginContainer = _margin(Control.PRESET_BOTTOM_RIGHT)
-	_hints = UITheme.label("", 12, Color(UITheme.MUTED, 0.9))
-	_hints.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_hints = KeyHints.new()  # [onboard] readable pill; shows itself when it should (KeyHints.want_shown)
+	_hints.world = world
 	mc.add_child(_hints)
+
+
+## [onboard] Tab away from the workbench: the full key list for a few seconds (scenes/slice.gd).
+func peek_hints() -> void:
+	_hints.peek(3.0)
 
 
 func _apply_mode() -> void:
@@ -285,7 +292,6 @@ func _process(delta: float) -> void:
 		hotbar.set_hopper(patch.compartment.fill, patch.capacity())
 		_prompt.text = _prompt_text(patch.prompt)
 		_update_context(delta, minimal)
-	_update_hints()
 
 
 ## Hex %, part signal and carried bales in one quiet line that only shows while relevant:
@@ -316,7 +322,7 @@ func _update_context(delta: float, minimal: bool) -> void:
 		_context_idle = 0.0
 	_context_idle += delta
 	_context.text = text
-	_context.add_theme_color_override("font_color", _signal_color if strong and patch.carried.is_empty() else UITheme.MUTED)
+	_context.add_theme_color_override("font_color", _signal_color if strong and patch.carried.is_empty() else CONTEXT_COLOR)
 	var want: float = 1.0 if (_context_idle < CONTEXT_HOLD_S or strong or not patch.carried.is_empty()) and text != "" else 0.0
 	if hotbar.celebrating():
 		want = 0.0
@@ -344,14 +350,6 @@ func _on_signal(text: String, color: Color, strength: float) -> void:
 	_signal_text = text
 	_signal_color = color
 	_signal_strength = strength
-
-
-func _update_hints() -> void:
-	var tutorial_on: bool = int(GameState.flags.get("tutorial_step", 0)) < Tutorial.STEPS.size()
-	var show_: bool = Settings.hud_mode == Settings.HudMode.FULL or (Settings.hud_mode == Settings.HudMode.MINIMAL and tutorial_on)
-	_hints.visible = show_
-	if show_:
-		_hints.text = tr("%s  map      %s  command      %s  lens      %s  goals") % [Settings.glyph("open_globe"), Settings.glyph("open_command"), Settings.glyph("lens_view"), Settings.glyph("toggle_goals")]
 
 
 func _fmt_small_pct(p: float) -> String:
