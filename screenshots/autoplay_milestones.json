@@ -13,5 +13,12 @@
   "first_hexlv_2_s": 1898.0,
   "first_hexlv_3_s": 1941.9,
   "first_hexlv_4_s": 2074.8,
-  "first_hexlv_5_s": 2642.0
+  "first_hexlv_5_s": 2642.0,
+  "first_seedling_s": 2712.0,
+  "base_3_s": 3963.9,
+  "first_drip_s": 4137.1,
+  "base_4_s": 5170.0,
+  "first_multibot_s": 5376.5,
+  "launch_1_s": 6143.5,
+  "base_5_s": 6143.5
 }

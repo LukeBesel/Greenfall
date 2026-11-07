@@ -82,30 +82,46 @@ var _stopping: bool = false
 func _init(p_world: Node) -> void:
 	world = p_world
 	Research.now_override = 1000.0
-	EventBus.cube_made.connect(func(_i: Dictionary) -> void: _mark("first_cube_s"))
-	EventBus.cube_cashed.connect(func(_v: BigNum, _p: Vector3) -> void: _mark("first_cashin_s"))
-	EventBus.upgrade_bought.connect(func(id: String, lv: int) -> void:
+	_hook(EventBus.cube_made, func(_i: Dictionary) -> void: _mark("first_cube_s"))
+	_hook(EventBus.cube_cashed, func(_v: BigNum, _p: Vector3) -> void: _mark("first_cashin_s"))
+	_hook(EventBus.upgrade_bought, func(id: String, lv: int) -> void:
 		_mark("first_upgrade_s")
 		_progress()
 		_log.append({"t": _now(), "event": "upgrade", "id": id, "level": lv}))
-	EventBus.hex_cleaned.connect(func(h: int, _p: Vector3, _b: BigNum) -> void:
+	_hook(EventBus.hex_cleaned, func(h: int, _p: Vector3, _b: BigNum) -> void:
 		_mark("first_hex_s")
 		_event("hex_clean", {"hex": h, "n": world.field.cleaned_count}))
-	EventBus.hex_level_changed.connect(func(h: int, lv: int) -> void:
+	_hook(EventBus.hex_level_changed, func(h: int, lv: int) -> void:
 		_mark("first_hexlv_%d_s" % lv)
 		_event("hex_level", {"hex": h, "level": lv}))
-	EventBus.robot_built.connect(func(n: String) -> void:
+	_hook(EventBus.robot_built, func(n: String) -> void:
 		_mark("first_robot_s")
 		_progress()
 		var r: Robot = world.fleet.find_robot(n) if world.fleet else null
 		var tid: String = r.type_id if r else "?"
 		_mark("first_%s_s" % tid)
 		_event("robot", {"type": tid, "name": n, "fleet": world.fleet.robots().size() if world.fleet else 0}))
-	EventBus.research_completed.connect(func(id: String) -> void:
+	_hook(EventBus.research_completed, func(id: String) -> void:
 		_mark("first_research_s")
 		_event("research", {"id": id}))
-	EventBus.part_found.connect(func(t: int, r: int) -> void: _event("part", {"type": t, "rarity": r, "stored": GameState.parts.size()}))
+	_hook(EventBus.part_found, func(t: int, r: int) -> void: _event("part", {"type": t, "rarity": r, "stored": GameState.parts.size()}))
 	world.tree_exiting.connect(write_report)
+	world.tree_exiting.connect(_unhook)  # [beat] rocket travel reloads the scene: drop the old bot's hooks
+
+
+var _hooks: Array = []
+
+
+func _hook(sig: Signal, f: Callable) -> void:
+	sig.connect(f)
+	_hooks.append([sig, f])
+
+
+func _unhook() -> void:
+	for h: Array in _hooks:
+		if (h[0] as Signal).is_connected(h[1]):
+			(h[0] as Signal).disconnect(h[1])
+	_hooks.clear()
 
 
 func _now() -> float:

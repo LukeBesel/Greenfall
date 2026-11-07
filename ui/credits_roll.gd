@@ -9,7 +9,7 @@ extends CanvasLayer
 
 signal finished
 
-const SPEED: float = 46.0  ## px per second
+const SPEED: float = 60.0  ## px per second
 const FADE_S: float = 1.2
 
 var _bg: ColorRect
