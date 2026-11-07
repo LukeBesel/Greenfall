@@ -68,7 +68,7 @@ func _ready() -> void:
 	var hp: Vector3 = hopper_pos()
 	var main: Array[Vector3] = [hp + Vector3(-PAD_HALF - 0.05, 0.16, 0), hp + Vector3(-2.0, 0.52, 0), Vector3(1.25, 0.52, hp.z)]
 	_add_line(main, "depot")
-	var sign_label := Mats.stencil("TO  SCALE  ◀", 60, Color(0.12, 0.1, 0.08, 0.9))
+	var sign_label := Mats.stencil(tr("TO  SCALE  ◀"), 60, Color(0.12, 0.1, 0.08, 0.9))
 	sign_label.position = Vector3(3.4, 0.5, hp.z + BELT_W * 0.5 + 0.075)
 	add_child(sign_label)
 
@@ -179,7 +179,7 @@ func _build_pad() -> void:
 	gantry.material_override = _frame_mat
 	gantry.position = hp
 	add_child(gantry)
-	var sign_label := Mats.stencil("BALE  FEED", 110, Color(0.1, 0.09, 0.08, 0.95))
+	var sign_label := Mats.stencil(tr("BALE  FEED"), 110, Color(0.1, 0.09, 0.08, 0.95))
 	sign_label.position = hp + Vector3(0, 1.98, PAD_HALF + 0.145)
 	add_child(sign_label)
 	var lamp := MeshInstance3D.new()

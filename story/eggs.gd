@@ -203,7 +203,7 @@ func _spawn(p: Dictionary) -> void:
 		_jukebox_node = node
 	if is_found(str(p["id"])):
 		_show_found_state(node, kind)
-	var prompt: String = str(d.get("final_prompt", "")) if bool(p["final"]) else str(d.get("prompt", ""))
+	var prompt: String = tr(str(d.get("final_prompt", ""))) if bool(p["final"]) else tr(str(d.get("prompt", "")))
 	if prompt != "" and world.get("interactables") != null:
 		world.interactables.register(node, float(d.get("use_range", 2.6)), prompt, _use.bind(e))
 
@@ -242,7 +242,7 @@ func _refresh_visibility() -> void:
 			n.visible = is_found(id) or world.field.is_clean(int(e["hex"]))
 			if n.visible and not was and not is_found(id):
 				Vfx.burst("sparkle", n.global_position + Vector3(0, 0.5, 0), Color(0.6, 0.95, 1.0))
-				EventBus.toast.emit("Something metal surfaced in the cleared ground.", "info")
+				EventBus.toast.emit(tr("Something metal surfaced in the cleared ground."), "info")
 		elif bool(e["final"]):
 			n.visible = is_found(id) or _parts_seen(id).size() >= int(e["def"].get("parts", 1))
 
@@ -422,7 +422,7 @@ func _mark_part(e: Dictionary) -> void:
 	var n: Node3D = e["node"]
 	_hop(n.get_node_or_null("Anim"))
 	Audio.play_scale("blip", seen.size() * 2, -6.0)
-	var label: String = "Gnome %d / %d" % [seen.size(), total] if str(e["kind"]) == "gnome" else "%d / %d" % [seen.size(), total]
+	var label: String = tr("Gnome %d / %d") % [seen.size(), total] if str(e["kind"]) == "gnome" else "%d / %d" % [seen.size(), total]
 	Vfx.float_text(n.global_position + Vector3(0, 1.3, 0), label, Color(1.0, 0.9, 0.6), 1.1, 1.0)
 	if seen.size() >= total:
 		if e["def"].has("final"):
@@ -430,7 +430,7 @@ func _mark_part(e: Dictionary) -> void:
 			for f: Dictionary in placed:
 				if f["id"] == id and bool(f["final"]):
 					Vfx.burst("sparkle", (f["node"] as Node3D).global_position + Vector3(0, 0.5, 0), Color(1.0, 0.8, 0.5))
-			EventBus.toast.emit("The last poster points somewhere close. Something orange is curled up nearby.", "info")
+			EventBus.toast.emit(tr("The last poster points somewhere close. Something orange is curled up nearby."), "info")
 		else:
 			_chain_complete(e)
 			found(id)
@@ -456,8 +456,8 @@ func _use(e: Dictionary) -> void:
 	match str(d.get("trigger", "")):
 		"night":
 			if _night_amount() < 0.5:
-				EventBus.toast.emit("The radio hisses quietly. Nothing up there is awake yet. Come back after dark." if kind == "radio" \
-					else "Through the telescope: just a bright, dusty sky. Come back after dark.", "info")
+				EventBus.toast.emit(tr("The radio hisses quietly. Nothing up there is awake yet. Come back after dark.") if kind == "radio" \
+					else tr("Through the telescope: just a bright, dusty sky. Come back after dark."), "info")
 				Audio.play("click", 0.8, -8.0)
 				return
 		"chain":
@@ -477,7 +477,7 @@ func _use(e: Dictionary) -> void:
 		world.doc_view.show_doc(doc2)
 		return
 	if kind == "vending" and is_found(id):
-		Vfx.float_text((e["node"] as Node3D).global_position + Vector3(0, 2.2, 0), "SOLD OUT", Color(1.0, 0.4, 0.3), 1.2, 1.0)
+		Vfx.float_text((e["node"] as Node3D).global_position + Vector3(0, 2.2, 0), tr("SOLD OUT"), Color(1.0, 0.4, 0.3), 1.2, 1.0)
 		Audio.play("buzz", 1.3, -8.0)
 		_wobble(e["node"], 0.04)
 		return
@@ -494,7 +494,7 @@ func _effect(e: Dictionary) -> void:
 		"duck":
 			Audio.play("quack", 1.0, -2.0)
 			_squash(anim)
-			Vfx.float_text(top, "QUACK!", Color(1.0, 0.9, 0.3), 1.3, 1.2)
+			Vfx.float_text(top, tr("QUACK!"), Color(1.0, 0.9, 0.3), 1.3, 1.2)
 			EventBus.toast.emit(_duck_hint(), "hint")
 		"jukebox":
 			_play_jukebox()
@@ -512,10 +512,10 @@ func _effect(e: Dictionary) -> void:
 		"arcade":
 			Audio.play("arcade", 1.0, -4.0)
 			_flash(n.get_node_or_null("Screen"), Color(0.4, 1.0, 0.7), 3.0)
-			Vfx.float_text(top + Vector3(0, 0.6, 0), "NEW CHALLENGER!", Color(0.5, 1.0, 0.7), 1.2, 1.0)
+			Vfx.float_text(top + Vector3(0, 0.6, 0), tr("NEW CHALLENGER!"), Color(0.5, 1.0, 0.7), 1.2, 1.0)
 			get_tree().create_timer(2.2, false).timeout.connect(func() -> void:
 				Audio.play("arcade", 0.6, -6.0)
-				Vfx.float_text(top + Vector3(0, 0.6, 0), "GAME OVER  ·  SCORE 12", Color(1.0, 0.6, 0.4), 1.1, 1.0))
+				Vfx.float_text(top + Vector3(0, 0.6, 0), tr("GAME OVER  ·  SCORE 12"), Color(1.0, 0.6, 0.4), 1.1, 1.0))
 		"cat_shell":
 			Audio.play("purr", 1.0, -3.0)
 			var eye: OmniLight3D = n.get_node_or_null("Light")
@@ -545,7 +545,7 @@ func _effect(e: Dictionary) -> void:
 			_flash(n.get_node_or_null("Screen"), Color(1.0, 1.0, 1.0), 2.0)
 		"snail":
 			_hop(anim)
-			Vfx.float_text(n.global_position + Vector3(0, 1.3, 0), "hi, Gus", Color(0.9, 1.0, 0.8), 1.0, 0.8)
+			Vfx.float_text(n.global_position + Vector3(0, 1.3, 0), tr("hi, Gus"), Color(0.9, 1.0, 0.8), 1.0, 0.8)
 		"bench_bots":
 			var fl: Node3D = n.get_node_or_null("Flower")
 			if fl:
@@ -590,12 +590,12 @@ func _effect(e: Dictionary) -> void:
 				var twv := anim.create_tween().set_loops(3)
 				twv.tween_property(anim, "rotation:y", anim.rotation.y + PI * 0.66, 0.25)
 			Audio.play("servo", 1.2, -6.0)
-			var fc: Array[String] = ["CONFETTI", "LIGHT JAZZ", "99% DUCKS", "SUNNY (INDOORS)", "FOG OF NOODLES"]
+			var fc: Array[String] = [tr("CONFETTI"), tr("LIGHT JAZZ"), tr("99% DUCKS"), tr("SUNNY (INDOORS)"), tr("FOG OF NOODLES")]
 			Vfx.float_text(top + Vector3(0, 1.4, 0), "FORECAST: " + fc[randi() % fc.size()], Color(0.7, 0.9, 1.0), 1.1, 1.4)
 		"potato":
 			_squash(anim)
 			Audio.play("dig", 1.4, -6.0)
-			Vfx.float_text(top, "1ST PLACE", Color(0.4, 0.7, 1.0), 1.2, 1.0)
+			Vfx.float_text(top, tr("1ST PLACE"), Color(0.4, 0.7, 1.0), 1.2, 1.0)
 		"radio":
 			Audio.play("tv_static", 0.7, -8.0)
 			_flash(n.get_node_or_null("Screen"), Color(1.0, 0.7, 0.3), 3.0)
@@ -651,8 +651,8 @@ func _duck_hint() -> String:
 	var have: Array = GameState.flags.get("skins_unlocked", ["aurora"])
 	for sid: String in CosmeticsPanel.UNLOCKS:
 		if not (sid in have) and PatchModel.VARIANTS.has(sid):
-			return "The duck squeaks a secret: \"%s\" unlocks the %s design." % [CosmeticsPanel.UNLOCKS[sid], PatchModel.VARIANTS[sid]["name"]]
-	return "The duck has taught you everything it knows. Quack."
+			return tr("The duck squeaks a secret: \"%s\" unlocks the %s design.") % [CosmeticsPanel.UNLOCKS[sid], tr(str(PatchModel.VARIANTS[sid]["name"]))]
+	return tr("The duck has taught you everything it knows. Quack.")
 
 
 func _play_jukebox() -> void:
@@ -801,8 +801,8 @@ func found(id: String) -> void:
 	Vfx.burst("confetti", pos, Color.WHITE, 0.5)
 	Audio.play("sparkle", 1.0, -4.0)
 	Audio.play("chime", 1.2, -8.0)
-	EventBus.toast.emit(str(d.get("toast", "")), "story")
-	EventBus.toast.emit("Curiosity found: %s  (%d / %d)   %s" % [d.get("name", id), found_count(), defs.size(), "  ".join(bits)], "hint")
+	EventBus.toast.emit(tr(str(d.get("toast", ""))), "story")
+	EventBus.toast.emit(tr("Curiosity found: %s  (%d / %d)   %s") % [tr(str(d.get("name", id))), found_count(), defs.size(), "  ".join(bits)], "hint")
 	EventBus.easter_egg_found.emit(id)
 	if world and world.get("wren") != null:
 		var w: Wren = world.wren
@@ -813,4 +813,4 @@ func found(id: String) -> void:
 				w.say("egg_found", 1.0, true))
 	if found_count() == defs.size():
 		get_tree().create_timer(6.0, false).timeout.connect(func() -> void:
-			EventBus.toast.emit("Every curiosity on the list, found. Lumi's collection compartment is very full of memories.", "story"))
+			EventBus.toast.emit(tr("Every curiosity on the list, found. Lumi's collection compartment is very full of memories."), "story"))

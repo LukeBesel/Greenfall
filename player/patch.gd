@@ -103,7 +103,7 @@ func _physics_process(delta: float) -> void:
 		global_position = Vector3(0.0, 0.6, 3.0)
 		velocity = Vector3.ZERO
 		GameState.inc_stat("fell_through")
-		EventBus.toast.emit("Lumi rattles back up into the yard. That was odd.", "info")
+		EventBus.toast.emit(tr("Lumi rattles back up into the yard. That was odd."), "info")
 	_handle_cubing(delta)
 	_handle_tools(delta)
 	if tool == Tool.SCOOP:
@@ -178,7 +178,7 @@ var _water_cap: float = -1.0
 
 func set_tool(t: int) -> void:
 	if t != Tool.SCOOP and (world == null or world.get("garden") == null or not world.garden.unlocked()):
-		EventBus.toast.emit("No seeds yet. Keep cleaning.", "info")
+		EventBus.toast.emit(tr("No seeds yet. Keep cleaning."), "info")
 		return
 	if t == tool:
 		return
@@ -217,14 +217,14 @@ func _handle_tools(delta: float) -> void:
 				model.shudder(0.15)
 			else:
 				Audio.play("buzz", 1.2, -10.0)
-				EventBus.toast.emit("Out of seeds. Blooming plants drop more.", "info")
+				EventBus.toast.emit(tr("Out of seeds. Blooming plants drop more."), "info")
 				_plant_t = 2.0
 	elif tool == Tool.WATER and _water_t <= 0.0:
 		_water_t = 0.25
 		if water <= 0.0:
 			Audio.play("buzz", 1.0, -12.0)
 			_water_t = 1.5
-			EventBus.toast.emit("Watering can is empty. Refill at the hub.", "info")
+			EventBus.toast.emit(tr("Watering can is empty. Refill at the hub."), "info")
 			return
 		# The old can leaks: a bit is lost with every pour (an upgrade fixes it).
 		water = maxf(0.0, water - (1.0 if GameState.level_of("fix_can") > 0 else 1.3))
@@ -408,22 +408,22 @@ func _spawn_cube() -> void:
 	var color: Color = Color(0.92, 0.94, 0.9)
 	if info["perfect"]:
 		GameState.inc_stat("perfect_cubes")
-		label = "PERFECT BALE  " + label
+		label = tr("PERFECT BALE  %s") % label
 		color = Color(1.0, 0.82, 0.4)
 		Audio.play("ding", 0.9, -8.0)
 		model.set_happy(1.0)
 	elif info["lumpy"]:
 		GameState.inc_stat("lumpy_cubes")
-		label = "OVERSTUFFED  " + label
+		label = tr("OVERSTUFFED  %s") % label
 		color = Color(0.8, 0.78, 0.82)
 	if info["pure"]:
 		GameState.inc_stat("pure_cubes")
-		label = "PURE  " + label
+		label = tr("PURE  %s") % label
 	if float(info.get("surge_frac", 0.0)) > 0.0:
-		label = "SURGE  " + label
+		label = tr("SURGE  %s") % label
 		color = Color(1.0, 0.82, 0.3)
 	if float(info.get("streak_bonus", 0.0)) > 0.0:
-		label += "  (streak +%d%%)" % int(round(float(info["streak_bonus"]) * 100.0))
+		label += tr("  (streak +%d%%)") % int(round(float(info["streak_bonus"]) * 100.0))
 	Vfx.float_text(global_position + Vector3(0, 1.9, 0), label, color, 0.45, 0.7)
 	EventBus.cube_made.emit(info)
 	get_tree().create_timer(1.5).timeout.connect(func() -> void: if is_instance_valid(model): model.set_happy(0.5))
@@ -467,7 +467,7 @@ func _maybe_salvage_part(type_id: String) -> void:
 	GameState.parts.append({"type": t, "rarity": r})
 	EventBus.part_found.emit(t, r)
 	var rd: Dictionary = Economy.rarity(r)
-	EventBus.toast.emit("Salvaged: %s %s" % [rd.get("name", ""), Economy.part_type(t).get("name", "part")], "hint")
+	EventBus.toast.emit(tr("Salvaged: %s %s") % [tr(str(rd.get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))], "hint")
 	Audio.play("ding", 1.3, -10.0)
 
 
@@ -496,8 +496,8 @@ func _on_part_found(idx: int) -> void:
 	Audio.play("ding", 1.0 if r < 3 else 0.8, -6.0)
 	if r >= 3:
 		Audio.play("fanfare", 1.0, -8.0)
-	Vfx.float_text(pos + Vector3(0, 1.4, 0), "%s %s" % [rar.get("name", ""), pt.get("name", "Part")], col, 0.55, 0.8)
-	EventBus.toast.emit("Recovered: %s %s" % [rar.get("name", ""), pt.get("name", "part")], "hint")
+	Vfx.float_text(pos + Vector3(0, 1.4, 0), "%s %s" % [tr(str(rar.get("name", ""))), tr(str(pt.get("name", "Part")))], col, 0.55, 0.8)
+	EventBus.toast.emit(tr("Recovered: %s %s") % [tr(str(rar.get("name", ""))), tr(str(pt.get("name", "part")))], "hint")
 
 
 func nearest_loose_cube() -> JunkCube:

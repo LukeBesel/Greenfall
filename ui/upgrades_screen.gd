@@ -5,6 +5,7 @@ extends CanvasLayer
 
 signal closed
 
+# l10n:begin
 const TABS: Array[Dictionary] = [
 	{"id": "patch", "name": "Lumi"},
 	{"id": "bots", "name": "Bots"},
@@ -16,6 +17,7 @@ const TABS: Array[Dictionary] = [
 	{"id": "contracts", "name": "Contracts"},
 	{"id": "builder", "name": "Builder"},  # [drones] robot builder
 ]
+# l10n:end
 
 var is_open: bool = false
 var _root: Control
@@ -63,7 +65,7 @@ func _ready() -> void:
 	panel.add_child(vb)
 	var header := HBoxContainer.new()
 	vb.add_child(header)
-	header.add_child(UITheme.label("UPGRADES", 34, UITheme.GOLD))
+	header.add_child(UITheme.label(tr("UPGRADES"), 34, UITheme.GOLD))
 	var sp := Control.new()
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(sp)
@@ -71,7 +73,7 @@ func _ready() -> void:
 	_currency = UITheme.label("0", 32, UITheme.GOLD)
 	header.add_child(_currency)
 	var close := Button.new()
-	Settings.bind_text(close, func() -> String: return "Close  [%s]" % Settings.glyph("open_upgrades"))  # [deck]
+	Settings.bind_text(close, func() -> String: return tr("Close  [%s]") % Settings.glyph("open_upgrades"))  # [deck]
 	close.custom_minimum_size = Vector2(150, 48)
 	close.pressed.connect(close_screen)
 	_close_btn = close
@@ -82,7 +84,7 @@ func _ready() -> void:
 	for t: Dictionary in TABS:
 		var b := Button.new()
 		var live: bool = t["id"] in ["patch", "bots", "trade", "hub", "research", "rockets", "cosmetics", "contracts", "builder"]  # [drones]
-		b.text = t["name"] if live else "%s (soon)" % t["name"]
+		b.text = tr(str(t["name"])) if live else tr("%s (soon)") % tr(str(t["name"]))
 		b.disabled = not live
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
 		b.custom_minimum_size = Vector2(88, 44)  # [deck] 8 tabs fit 1280x800 at 110% interface scale

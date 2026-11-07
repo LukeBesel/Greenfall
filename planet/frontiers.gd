@@ -59,7 +59,7 @@ static func world_kind(world: Node) -> String:
 
 
 static func kind_name(id: String) -> String:
-	return str(def(id).get("name", id.capitalize()))
+	return TranslationServer.translate(str(def(id).get("name", id.capitalize())))
 
 
 # --- Saved per-district state ------------------------------------------------------------
@@ -109,20 +109,20 @@ static func unlock_status(id: String, frontier_hubs: Dictionary) -> Dictionary:
 		var rid: String = str(u["research"])
 		var ok: bool = Research.has(rid)
 		met += int(ok)
-		lines.append("%s Research %s" % ["✓" if ok else "·", str(Research.def(rid).get("name", rid))])
+		lines.append(TranslationServer.translate("%s Research %s") % ["✓" if ok else "·", TranslationServer.translate(str(Research.def(rid).get("name", rid)))])
 	if u.has("bases_l5"):
 		total += 1
 		var have: int = bases_at_level(5)
 		var ok2: bool = have >= int(u["bases_l5"])
 		met += int(ok2)
-		lines.append("%s %d bases at level 5 (%d)" % ["✓" if ok2 else "·", int(u["bases_l5"]), have])
+		lines.append(TranslationServer.translate("%s %d bases at level 5 (%d)") % ["✓" if ok2 else "·", int(u["bases_l5"]), have])
 	if u.has("frontier"):
 		total += 1
 		var fid: String = str(u["frontier"])
 		var lvl: int = base_level(int(frontier_hubs.get(fid, -1))) if frontier_hubs.has(fid) else 0
 		var ok3: bool = lvl >= int(u.get("frontier_level", 1))
 		met += int(ok3)
-		lines.append("%s %s base at level %d (%d)" % ["✓" if ok3 else "·", kind_name(fid), int(u.get("frontier_level", 1)), lvl])
+		lines.append(TranslationServer.translate("%s %s base at level %d (%d)") % ["✓" if ok3 else "·", kind_name(fid), int(u.get("frontier_level", 1)), lvl])
 	if u.has("frontiers_l5"):
 		total += 1
 		var n: int = 0
@@ -131,7 +131,7 @@ static func unlock_status(id: String, frontier_hubs: Dictionary) -> Dictionary:
 				n += 1
 		var ok4: bool = n >= int(u["frontiers_l5"])
 		met += int(ok4)
-		lines.append("%s All three frontier bases at level 5 (%d)" % ["✓" if ok4 else "·", n])
+		lines.append(TranslationServer.translate("%s All three frontier bases at level 5 (%d)") % ["✓" if ok4 else "·", n])
 	if u.has("frontier_growing"):
 		total += 1
 		var need: float = float(u["frontier_growing"])
@@ -140,7 +140,7 @@ static func unlock_status(id: String, frontier_hubs: Dictionary) -> Dictionary:
 			worst = minf(worst, growing_frac(int(frontier_hubs.get(fid, -1))) if frontier_hubs.has(fid) else 0.0)
 		var ok5: bool = worst >= need - 0.0001
 		met += int(ok5)
-		lines.append("%s Every frontier %d%% Growing or better (lowest %d%%)" % ["✓" if ok5 else "·", int(need * 100.0), int(worst * 100.0)])
+		lines.append(TranslationServer.translate("%s Every frontier %d%% Growing or better (lowest %d%%)") % ["✓" if ok5 else "·", int(need * 100.0), int(worst * 100.0)])
 	return {"ok": met >= total, "lines": lines, "progress": float(met) / maxf(total, 1.0)}
 
 

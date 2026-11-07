@@ -10,6 +10,7 @@ signal input_device_changed(pad: bool)
 ## Gameplay actions the Controls tab can rebind: [action, display name]. All share one input
 ## context (gameplay), so a key used by two of them is a conflict. UI-only actions (ui_tab_*,
 ## buy_max) live in their own context and are not checked against these.
+# l10n:begin
 const REBINDABLE: Array = [
 	["move_forward", "Move forward"], ["move_back", "Move back"],
 	["move_left", "Move left"], ["move_right", "Move right"],
@@ -21,6 +22,8 @@ const REBINDABLE: Array = [
 	["zoom_in", "Zoom in"], ["zoom_out", "Zoom out"],
 	["photo_mode", "Photo mode"],  # [photo]
 ]
+# l10n:end
+# l10n:begin
 const JOY_NAMES: Dictionary = {
 	JOY_BUTTON_A: "A", JOY_BUTTON_B: "B", JOY_BUTTON_X: "X", JOY_BUTTON_Y: "Y",
 	JOY_BUTTON_BACK: "View", JOY_BUTTON_START: "Menu", JOY_BUTTON_LEFT_STICK: "LS",
@@ -29,6 +32,7 @@ const JOY_NAMES: Dictionary = {
 	JOY_BUTTON_DPAD_LEFT: "D-pad left", JOY_BUTTON_DPAD_RIGHT: "D-pad right",
 	JOY_BUTTON_MISC1: "Share",
 }
+# l10n:end
 enum SubtitleSize { SMALL, MEDIUM, LARGE }
 
 ## Where settings are written (tests point this at a scratch file).
@@ -85,6 +89,19 @@ var glyph_style: int = 0
 var stick_sensitivity: float = 1.0
 ## Joypad device id of the last controller input (for the automatic glyph style).
 var last_pad_device: int = 0
+## [l10n] UI language: "" = system default, else a locale code (see LANGUAGES). Saved.
+var language: String = ""
+## [l10n] Dev override from `--locale=xx` (never saved).
+var locale_override: String = ""
+## [l10n] Language picker entries: [locale code, name shown in its own language]. "" follows the OS.
+const LANGUAGES: Array = [
+	["", "System default"], ["en", "English"],
+	["de", "Deutsch (sample)"], ["es", "Español (sample)"],
+	["pseudo", "Pseudo (test)"],
+]
+## [l10n] Locales "System default" may pick. Partial sample translations are left out so a German
+## or Spanish OS never shows a half-translated game; add a code here once its .po is complete.
+const SYSTEM_LOCALES: Array[String] = ["en"]
 ## Every UI font is at least this many px (Steam Deck readability at 1280x800).
 const MIN_FONT_PX: int = 12
 
@@ -98,6 +115,10 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_register_default_actions()
 	load_settings()
+	for a: String in OS.get_cmdline_user_args():  # [l10n] dev hook: --locale=pseudo|de|es|en
+		if a.begins_with("--locale="):
+			locale_override = a.substr(9)
+	apply_language()
 	apply_display()
 	apply_ui_scale()
 	add_child(QualityProbe.new())  # [deck] first-play frame-time probe (steps a detected preset down)
@@ -237,6 +258,7 @@ func save_settings() -> void:
 	cfg.set_value("display", "quality_probe_done", quality_probe_done)
 	cfg.set_value("controls", "glyph_style", glyph_style)
 	cfg.set_value("controls", "stick_sensitivity", stick_sensitivity)
+	cfg.set_value("ui", "language", language)  # [l10n]
 	cfg.save(settings_path)
 	changed.emit()
 
@@ -286,7 +308,25 @@ func load_settings() -> void:
 	quality_probe_done = bool(cfg.get_value("display", "quality_probe_done", false))
 	glyph_style = clampi(int(cfg.get_value("controls", "glyph_style", 0)), 0, 3)
 	stick_sensitivity = clampf(float(cfg.get_value("controls", "stick_sensitivity", 1.0)), 0.5, 2.0)
+	language = str(cfg.get_value("ui", "language", ""))  # [l10n]
 	auto_detect_display(cfg)
+
+
+## [l10n] The locale actually used: the dev override, the chosen language, or the OS language when
+## it is one of SYSTEM_LOCALES (else English).
+func resolved_locale() -> String:
+	if locale_override != "":
+		return locale_override
+	if language != "":
+		return language
+	var os_lang: String = OS.get_locale_language()
+	return os_lang if os_lang in SYSTEM_LOCALES else "en"
+
+
+## [l10n] Applies the language to TranslationServer. Controls showing a plain msgid update at once;
+## text built in code refreshes when its screen is rebuilt.
+func apply_language() -> void:
+	TranslationServer.set_locale(resolved_locale())
 
 
 ## Interface scale for every 2D layer (the root window's content scale factor).
@@ -305,7 +345,7 @@ static func is_pad_event(ev: InputEvent) -> bool:
 func display_name(action: String) -> String:
 	for e: Array in REBINDABLE:
 		if e[0] == action:
-			return e[1]
+			return tr(e[1])
 	return action
 
 
@@ -454,22 +494,22 @@ static func event_label(ev: InputEvent) -> String:
 		return OS.get_keycode_string(_key_code(ev as InputEventKey))
 	if ev is InputEventMouseButton:
 		match (ev as InputEventMouseButton).button_index:
-			MOUSE_BUTTON_LEFT: return "LMB"
-			MOUSE_BUTTON_RIGHT: return "RMB"
-			MOUSE_BUTTON_MIDDLE: return "MMB"
-			MOUSE_BUTTON_WHEEL_UP: return "Wheel up"
-			MOUSE_BUTTON_WHEEL_DOWN: return "Wheel down"
-		return "Mouse %d" % int((ev as InputEventMouseButton).button_index)
+			MOUSE_BUTTON_LEFT: return TranslationServer.translate("LMB")
+			MOUSE_BUTTON_RIGHT: return TranslationServer.translate("RMB")
+			MOUSE_BUTTON_MIDDLE: return TranslationServer.translate("MMB")
+			MOUSE_BUTTON_WHEEL_UP: return TranslationServer.translate("Wheel up")
+			MOUSE_BUTTON_WHEEL_DOWN: return TranslationServer.translate("Wheel down")
+		return TranslationServer.translate("Mouse %d") % int((ev as InputEventMouseButton).button_index)
 	if ev is InputEventJoypadButton:
-		return str(JOY_NAMES.get((ev as InputEventJoypadButton).button_index, "Button %d" % int((ev as InputEventJoypadButton).button_index)))
+		return TranslationServer.translate(str(JOY_NAMES.get((ev as InputEventJoypadButton).button_index, TranslationServer.translate("Button %d") % int((ev as InputEventJoypadButton).button_index))))
 	if ev is InputEventJoypadMotion:
 		var m: InputEventJoypadMotion = ev
 		var up: bool = m.axis_value < 0.0
 		match m.axis:
-			JOY_AXIS_LEFT_X: return "LS left" if up else "LS right"
-			JOY_AXIS_LEFT_Y: return "LS up" if up else "LS down"
-			JOY_AXIS_RIGHT_X: return "RS left" if up else "RS right"
-			JOY_AXIS_RIGHT_Y: return "RS up" if up else "RS down"
+			JOY_AXIS_LEFT_X: return TranslationServer.translate("LS left") if up else TranslationServer.translate("LS right")
+			JOY_AXIS_LEFT_Y: return TranslationServer.translate("LS up") if up else TranslationServer.translate("LS down")
+			JOY_AXIS_RIGHT_X: return TranslationServer.translate("RS left") if up else TranslationServer.translate("RS right")
+			JOY_AXIS_RIGHT_Y: return TranslationServer.translate("RS up") if up else TranslationServer.translate("RS down")
 			JOY_AXIS_TRIGGER_LEFT: return "LT"
 			JOY_AXIS_TRIGGER_RIGHT: return "RT"
 	return ""

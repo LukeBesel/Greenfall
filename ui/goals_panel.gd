@@ -181,7 +181,7 @@ func _assign(r: Dictionary, gi: int, animate: bool) -> void:
 		return
 	r["shown"] = _goals.progress(gi)
 	var title: Label = r["title"]
-	title.text = str(_goals.chain[gi].get("text", ""))
+	title.text = tr(str(_goals.chain[gi].get("text", "")))
 	title.add_theme_color_override("font_color", UITheme.CREAM)
 	if animate:
 		r["busy"] = true
@@ -208,7 +208,7 @@ func _draw_line(r: Dictionary) -> void:
 	var v: float = minf(_goals.value_of(gi), tgt)
 	var txt: String = ("%s / %s" % [_n(floorf(v)), _n(tgt)]) if tgt > 1.0 else ""
 	if fl > 0.0:
-		txt = "DONE"
+		txt = tr("DONE")
 	var lw: float = 150.0 if expanded else 120.0
 	var x0: float = w - lw
 	line.draw_rect(Rect2(x0, y, lw, 2.0), Color(1, 1, 1, 0.14))
@@ -232,7 +232,7 @@ func _on_completed(gi: int) -> void:
 	_idle = 0.0
 	var reward: String = reward_text(_goals.reward_of(gi), 1.0)
 	if hud and hud.has_method("notify"):
-		hud.call("notify", "Goal complete  ·  %s%s" % [str(_goals.chain[gi].get("text", "")), ("    " + reward) if reward != "" else ""], "goal")
+		hud.call("notify", tr("Goal complete  ·  %s%s") % [tr(str(_goals.chain[gi].get("text", ""))), ("    " + reward) if reward != "" else ""], "goal")
 	Audio.play("ding", 1.35, -12.0)
 	for r: Dictionary in _rows:
 		if int(r["goal"]) == gi:
@@ -259,7 +259,7 @@ static func reward_text(reward: Dictionary, t: float) -> String:
 	var parts: Array[String] = []
 	for k: String in ["cubes", "seeds"]:
 		if float(reward.get(k, 0.0)) > 0.0:
-			parts.append("+%s %s" % [_n(round(float(reward[k]) * t)), k])
+			parts.append((TranslationServer.translate("+%s cubes") if k == "cubes" else TranslationServer.translate("+%s seeds")) % _n(round(float(reward[k]) * t)))
 	return "  ".join(parts)
 
 

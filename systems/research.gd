@@ -170,24 +170,24 @@ static func can_start(id: String) -> bool:
 ## Why a node can't be started right now ("" = it can).
 static func reason(id: String) -> String:
 	if not exists(id):
-		return "Unknown research"
+		return TranslationServer.translate("Unknown research")
 	match status(id):
 		"researched":
-			return "Already researched"
+			return TranslationServer.translate("Already researched")
 		"active":
-			return "Researching now"
+			return TranslationServer.translate("Researching now")
 		"queued":
-			return "Already queued"
+			return TranslationServer.translate("Already queued")
 		"locked":
 			var names: Array[String] = []
 			for r: String in requires(id):
 				if not has(r) and not is_active(r) and not is_queued(r):
-					names.append(str(def(r).get("name", r)))
-			return "Needs " + ", ".join(names)
+					names.append(TranslationServer.translate(str(def(r).get("name", r))))
+			return TranslationServer.translate("Needs %s") % ", ".join(names)
 	if not active().is_empty() and queue().size() >= max_queue():
-		return "Queue is full"
+		return TranslationServer.translate("Queue is full")
 	if not GameState.can_afford(CURRENCY, cost(id)):
-		return "Not enough data"
+		return TranslationServer.translate("Not enough data")
 	return ""
 
 
@@ -316,7 +316,7 @@ static func time_text(s: float) -> String:
 	var n: int = int(ceil(s))
 	if n >= 60:
 		return "%d:%02d" % [n / 60, n % 60]
-	return "%ds" % n
+	return TranslationServer.translate("%ds") % n
 
 
 # --- Effects ---------------------------------------------------------------------
@@ -363,7 +363,7 @@ static func breakdown(stat_id: String) -> Array[Dictionary]:
 			if str(e.get("stat", "")) != stat_id:
 				continue
 			var txt: String = ("+%s" % _num(float(e["amount"]))) if str(e.get("mode", "add")) == "add" else "x%.2f" % (1.0 + float(e["amount"]))
-			out.append({"source": "Research: %s" % def(id).get("name", id), "text": txt})
+			out.append({"source": "Research: %s" % TranslationServer.translate(str(def(id).get("name", id))), "text": txt})
 	return out
 
 
@@ -371,6 +371,7 @@ static func _num(v: float) -> String:
 	return str(int(round(v))) if is_equal_approx(v, round(v)) else "%.2f" % v
 
 
+# l10n:begin
 const STAT_NAMES: Dictionary = {
 	"scoop_reach": "scoop reach", "scoop_width": "scoop width", "capacity": "compartment size",
 	"cube_value_mult": "bale value", "magnet_radius": "magnet radius", "scoop_rate": "scoop speed",
@@ -378,6 +379,7 @@ const STAT_NAMES: Dictionary = {
 	"speed": "speed", "work_rate": "work rate", "tank": "tank", "range": "range",
 	"efficiency": "bale quality", "carry": "carry",
 }
+# l10n:end
 
 
 ## Human lines for a node's effects ("+20% scoop width", "Unlocks Seedling").
@@ -388,19 +390,19 @@ static func effect_lines(id: String) -> Array[String]:
 			var sid: String = str(e["stat"])
 			var who: String = ""
 			if "." in sid:
-				who = str(Economy.robots.get(sid.get_slice(".", 0), {}).get("name", sid.get_slice(".", 0))) + " "
+				who = TranslationServer.translate(str(Economy.robots.get(sid.get_slice(".", 0), {}).get("name", sid.get_slice(".", 0)))) + " "
 				sid = sid.get_slice(".", 1)
-			var nm: String = str(STAT_NAMES.get(sid, sid.replace("_", " ")))
+			var nm: String = TranslationServer.translate(str(STAT_NAMES.get(sid, sid.replace("_", " "))))
 			if str(e.get("mode", "add")) == "add":
 				out.append("+%s %s%s" % [_num(float(e["amount"])), who, nm])
 			else:
 				out.append("+%d%% %s%s" % [int(round(float(e["amount"]) * 100.0)), who, nm])
 		elif e.has("unlock_robot"):
-			out.append("Unlocks the %s robot" % Economy.robots.get(str(e["unlock_robot"]), {}).get("name", e["unlock_robot"]))
+			out.append(TranslationServer.translate("Unlocks the %s robot") % TranslationServer.translate(str(Economy.robots.get(str(e["unlock_robot"]), {}).get("name", e["unlock_robot"]))))
 		elif e.has("unlock_plant"):
-			out.append("Unlocks %s seeds" % str(e["unlock_plant"]).capitalize())
+			out.append(TranslationServer.translate("Unlocks %s seeds") % str(e["unlock_plant"]).capitalize())
 		elif e.has("flag"):
-			out.append("Unlocks: %s" % def(id).get("name", id))
+			out.append(TranslationServer.translate("Unlocks: %s") % TranslationServer.translate(str(def(id).get("name", id))))
 	return out
 
 
@@ -444,7 +446,7 @@ static func award_data(base: float) -> float:
 	GameState.inc_stat("data_earned", amt)
 	if not GameState.flags.get("hint_data", false):
 		GameState.flags["hint_data"] = true
-		EventBus.toast.emit("Field data logged. Spend Data on Research at the workbench (Research tab).", "hint")
+		EventBus.toast.emit(TranslationServer.translate("Field data logged. Spend Data on Research at the workbench (Research tab)."), "hint")
 	return amt
 
 
@@ -462,8 +464,8 @@ func _ready() -> void:
 	if not finished.is_empty():
 		var names: Array[String] = []
 		for id: String in finished:
-			names.append(str(def(id).get("name", id)))
-		(func() -> void: EventBus.toast.emit("While you were away, research finished: %s." % ", ".join(names), "story")).call_deferred()
+			names.append(tr(str(def(id).get("name", id))))
+		(func() -> void: EventBus.toast.emit(tr("While you were away, research finished: %s.") % ", ".join(names), "story")).call_deferred()
 
 
 func _process(delta: float) -> void:
@@ -486,5 +488,5 @@ func _process(delta: float) -> void:
 
 func _on_completed(id: String) -> void:
 	Audio.play("chime", 1.2, -3.0)
-	EventBus.toast.emit("Research complete: %s. %s" % [def(id).get("name", id), ". ".join(effect_lines(id))], "story")
+	EventBus.toast.emit(tr("Research complete: %s. %s") % [tr(str(def(id).get("name", id))), ". ".join(effect_lines(id))], "story")
 	_garden_applied = -1

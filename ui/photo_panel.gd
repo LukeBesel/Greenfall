@@ -54,8 +54,8 @@ func _ready() -> void:
 	var hv := VBoxContainer.new()
 	hv.add_theme_constant_override("separation", 0)
 	head.add_child(hv)
-	hv.add_child(UITheme.label("CAPTURE  ·  LM-1 LENS", 11, Color(0.4, 0.75, 1.0)))
-	var title := UITheme.label("PHOTO MODE", 22, Color.WHITE)
+	hv.add_child(UITheme.label(tr("CAPTURE  ·  LM-1 LENS"), 11, Color(0.4, 0.75, 1.0)))
+	var title := UITheme.label(tr("PHOTO MODE"), 22, Color.WHITE)
 	hv.add_child(title)
 	_scroll = ScrollContainer.new()
 	_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -85,7 +85,7 @@ func _ready() -> void:
 	fh.add_theme_constant_override("separation", 6)
 	fv.add_child(fh)
 	_capture = Button.new()
-	_capture.text = "Capture"
+	_capture.text = tr("Capture")
 	_capture.custom_minimum_size = Vector2(0, 42)
 	_capture.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_capture.add_theme_font_size_override("font_size", 17)
@@ -94,7 +94,7 @@ func _ready() -> void:
 	_capture.pressed.connect(func() -> void: capture_pressed.emit())
 	fh.add_child(_capture)
 	var close := Button.new()
-	close.text = "Exit"
+	close.text = tr("Exit")
 	close.custom_minimum_size = Vector2(84, 42)
 	close.pressed.connect(func() -> void: close_pressed.emit())
 	fh.add_child(close)
@@ -208,7 +208,7 @@ func cycler(p: VBoxContainer, text: String, key: String, options: Array) -> void
 	b.custom_minimum_size = Vector2(176, ROW_H)
 	b.add_theme_font_size_override("font_size", 13)
 	b.clip_text = true
-	var show: Callable = func() -> void: b.text = "‹  %s  ›" % options[clampi(int(owner_mode.get_value(key)), 0, options.size() - 1)]
+	var show: Callable = func() -> void: b.text = "‹  %s  ›" % tr(str(options[clampi(int(owner_mode.get_value(key)), 0, options.size() - 1)]))
 	var step: Callable = func(d: int) -> void:
 		owner_mode.set_value(key, wrapi(int(owner_mode.get_value(key)) + d, 0, options.size()))
 		show.call()
@@ -237,9 +237,9 @@ func toggle(p: VBoxContainer, text: String, key: String) -> void:
 	b.button_pressed = bool(owner_mode.get_value(key))
 	b.add_theme_stylebox_override("pressed", UITheme.box(Color(0.22, 0.15, 0.05, 0.92), UITheme.GOLD, 1, 2, 8))
 	b.add_theme_color_override("font_pressed_color", UITheme.GOLD)
-	b.text = "On" if b.button_pressed else "Off"
+	b.text = tr("On") if b.button_pressed else tr("Off")
 	b.toggled.connect(func(v: bool) -> void:
-		b.text = "On" if v else "Off"
+		b.text = tr("On") if v else tr("Off")
 		owner_mode.set_value(key, v)
 		Audio.play("click", 1.1 if v else 0.9, -10.0))
 	b.gui_input.connect(func(e: InputEvent) -> void:
@@ -277,7 +277,7 @@ func refresh(key: String = "") -> void:
 			"toggle":
 				var b: Button = r["ctl"]
 				b.set_pressed_no_signal(bool(owner_mode.get_value(k)))
-				b.text = "On" if b.button_pressed else "Off"
+				b.text = tr("On") if b.button_pressed else tr("Off")
 
 
 func set_collapsed(c: bool) -> void:
@@ -315,8 +315,8 @@ func _update_hints() -> void:
 	if _hint == null:
 		return
 	if Settings.last_input_pad:
-		_hint.text = "RS orbit · LT/RT distance · LB/RB zoom · D-pad roll/height · X capture · Y hide panel · View orbit/free · B exit"
-		(_tab.get_child(0) as Label).text = "PHOTO MODE   Y"
+		_hint.text = tr("RS orbit · LT/RT distance · LB/RB zoom · D-pad roll/height · X capture · Y hide panel · View orbit/free · B exit")
+		(_tab.get_child(0) as Label).text = tr("PHOTO MODE   Y")
 	else:
-		_hint.text = "Drag orbit/look · Wheel distance · WASD move · R/F height · Q/E roll · Z/X zoom · C capture · Tab hide panel · H hide UI · Esc exit"
-		(_tab.get_child(0) as Label).text = "PHOTO MODE   Tab"
+		_hint.text = tr("Drag orbit/look · Wheel distance · WASD move · R/F height · Q/E roll · Z/X zoom · C capture · Tab hide panel · H hide UI · Esc exit")
+		(_tab.get_child(0) as Label).text = tr("PHOTO MODE   Tab")

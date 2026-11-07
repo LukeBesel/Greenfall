@@ -28,17 +28,17 @@ static func entries() -> Array[Dictionary]:
 	var c: Dictionary = cfg()
 	for id: String in Economy.junk_ids:
 		var e: Dictionary = c.get("junk", {}).get(id, {})
-		_add("junk", id, str(Economy.junk_types[id].get("name", id)), e)
+		_add("junk", id, TranslationServer.translate(str(Economy.junk_types[id].get("name", id))), e)
 	var plants: Array = Economy.read_json("res://data/plants.json").get("species", [])
 	for sp: Dictionary in plants:
 		var e: Dictionary = c.get("plants", {}).get(str(sp["id"]), {})
-		_add("plants", str(sp["id"]), str(e.get("name", str(sp["id"]).capitalize())), e)
+		_add("plants", str(sp["id"]), TranslationServer.translate(str(e.get("name", str(sp["id"]).capitalize()))), e)
 	for id: String in Economy.robot_order:
-		_add("robots", id, str(Economy.robots[id].get("name", id)), c.get("robots", {}).get(id, {}))
+		_add("robots", id, TranslationServer.translate(str(Economy.robots[id].get("name", id))), c.get("robots", {}).get(id, {}))
 	for s: Dictionary in Economy.read_json("res://data/shards.json").get("shards", []):
 		var e: Dictionary = (c.get("shards", {}).get(str(s["id"]), {}) as Dictionary).duplicate()
-		e["hint"] = "Somewhere under the junk."
-		_add("shards", str(s["id"]), str(s.get("title", s["id"])), e)
+		e["hint"] = TranslationServer.translate("Somewhere under the junk.")
+		_add("shards", str(s["id"]), TranslationServer.translate(str(s.get("title", s["id"]))), e)
 	var seen: Dictionary = {}
 	var lms: Array = Economy.landmarks.duplicate()
 	for b: Variant in Economy.biome_sets.values():
@@ -49,17 +49,17 @@ static func entries() -> Array[Dictionary]:
 			continue
 		seen[lid] = true
 		var e: Dictionary = c.get("landmarks", {}).get(lid, {})
-		_add("landmarks", lid, str(e.get("name", lid.capitalize())), e)
+		_add("landmarks", lid, TranslationServer.translate(str(e.get("name", lid.capitalize()))), e)
 	# [biomes] Frontier districts and their mechanics (unlocked by planet/frontier_district.gd).
 	var fr: Dictionary = c.get("frontiers", {})
 	for fid: String in fr:
-		_add("frontiers", fid, str(fr[fid].get("name", fid.capitalize())), fr[fid])
+		_add("frontiers", fid, TranslationServer.translate(str(fr[fid].get("name", fid.capitalize()))), fr[fid])
 	return _entries
 
 
 static func _add(cat: String, id: String, name: String, e: Dictionary) -> void:
 	_entries.append({"key": "%s:%s" % [cat, id], "cat": cat, "id": id, "name": name,
-		"desc": str(e.get("desc", "")), "hint": str(e.get("hint", "Not found yet."))})
+		"desc": TranslationServer.translate(str(e.get("desc", ""))), "hint": TranslationServer.translate(str(e.get("hint", "Not found yet.")))})
 
 
 static func entry(key: String) -> Dictionary:
@@ -181,12 +181,12 @@ static func egg_defs() -> Array:
 ## Where an egg can turn up, for the Curiosities page.
 static func egg_where(e: Dictionary) -> String:
 	if bool(e.get("starter", false)):
-		return "Old Town"
+		return TranslationServer.translate("Old Town")
 	if str(e.get("where", "")) == "wild":
 		var b: String = str(e.get("biome", ""))
 		var bs: Dictionary = Economy.biome_set(b)
-		return "Wilderness bases" + (" · often %s" % str(bs.get("name", b.capitalize())) if b != "" else "")
-	return "Any district"
+		return TranslationServer.translate("Wilderness bases") + (TranslationServer.translate(" · often %s") % TranslationServer.translate(str(bs.get("name", b.capitalize()))) if b != "" else "")
+	return TranslationServer.translate("Any district")
 
 
 ## Every curiosity in data order: {id, name, found, hint, lore, toast, where, reward, parts, parts_seen}.
@@ -201,8 +201,8 @@ static func curiosities() -> Array[Dictionary]:
 			bits.append("+%d %s" % [int(rew[k]), k if int(rew[k]) != 1 else k.trim_suffix("s")])
 		var parts: int = int(e.get("parts", 1))
 		out.append({
-			"id": id, "name": str(e.get("name", id)), "found": EasterEggs.is_found(id),
-			"hint": str(e.get("hint", "Keep exploring.")), "lore": str(e.get("lore", "")), "toast": str(e.get("toast", "")),
+			"id": id, "name": TranslationServer.translate(str(e.get("name", id))), "found": EasterEggs.is_found(id),
+			"hint": TranslationServer.translate(str(e.get("hint", "Keep exploring."))), "lore": TranslationServer.translate(str(e.get("lore", ""))), "toast": TranslationServer.translate(str(e.get("toast", ""))),
 			"where": egg_where(e), "reward": "  ".join(bits), "parts": parts,
 			"parts_seen": (GameState.flags.get("egg_%s_parts" % id, []) as Array).size() if parts > 1 else 0,
 		})

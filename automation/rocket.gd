@@ -202,7 +202,7 @@ func _launch_step(dt: float) -> void:
 	_once("charge", _ig - 2.1, func() -> void: Audio.play("charge", 1.0, -2.0, 0.0))
 	# Ignition.
 	_once("ignite", _ig, func() -> void:
-		_show_count("IGNITION")
+		_show_count(tr("IGNITION"))
 		model.set_charge(0.0)
 		if pad:
 			pad.vent_steam(false)
@@ -249,7 +249,7 @@ func _launch_step(dt: float) -> void:
 		(_dot.material_override as StandardMaterial3D).albedo_color.a = smoothstep(2.5, 6.0, tau)
 	_once("liftoff", _lo, func() -> void:
 		_count.position = Vector3(-2.6, _base_y + 9.0, 2.0)
-		_show_count("WARP" if _warp else "LIFT OFF")
+		_show_count(tr("WARP") if _warp else tr("LIFT OFF"))
 		Audio.play("whoosh", 0.35, 0.0)
 		Audio.music_sting("level_up"))
 	_once("billow_off", _lo + 3.0, func() -> void:
@@ -753,7 +753,7 @@ func _build_ui() -> void:
 	_fade.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_ui.add_child(_fade)
 	_hint = Label.new()
-	_hint.text = "Space / Esc  skip"
+	_hint.text = tr("Space / Esc  skip")
 	_hint.add_theme_font_size_override("font_size", 15)
 	_hint.add_theme_color_override("font_color", Color(0.75, 0.9, 1.0))
 	_hint.anchor_left = 1.0

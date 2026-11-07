@@ -150,7 +150,7 @@ static func crate() -> Node3D:
 	n.add_child(lid)
 	_mi(lid, ProcMesh.rounded_box(Vector3(0.99, 0.08, 0.76), 0.03, 2), paint, Vector3(0, 0.04, 0.36))
 	_mi(lid, ProcMesh.box(Vector3(0.5, 0.02, 0.1)), cyan, Vector3(0, 0.09, 0.36))
-	var lab: Label3D = EggProps.label("CRADLE · SUPPLY", 22, Color(0.85, 0.95, 1.0), Vector3(0, 0.38, 0.365))
+	var lab: Label3D = EggProps.label(TranslationServer.translate("CRADLE · SUPPLY"), 22, Color(0.85, 0.95, 1.0), Vector3(0, 0.38, 0.365))
 	n.add_child(lab)
 	var glow := OmniLight3D.new()
 	glow.name = "Glow"

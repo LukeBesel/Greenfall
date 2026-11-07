@@ -163,7 +163,7 @@ func _draw() -> void:
 	# Text.
 	var f: Font = UITheme.font()
 	var tx: float = 62.0
-	var lines: PackedStringArray = _wrap(f, str(d.get("name", node_id)), size.x - tx - 22.0, 15)
+	var lines: PackedStringArray = _wrap(f, tr(str(d.get("name", node_id))), size.x - tx - 22.0, 15)
 	var y0: float = 31.0 if lines.size() == 1 else 25.0
 	for i: int in lines.size():
 		draw_string(f, Vector2(tx, y0 + i * 17.0), lines[i], HORIZONTAL_ALIGNMENT_LEFT, size.x - tx - 8.0, 15, name_col)
@@ -172,16 +172,16 @@ func _draw() -> void:
 	var sub_col: Color = UITheme.MUTED
 	match state:
 		"researched":
-			sub = "Researched"
+			sub = tr("Researched")
 			sub_col = Color(accent, 0.9)
 		"active":
-			sub = "%s left" % Research.time_text(Research.remaining())
+			sub = tr("%s left") % Research.time_text(Research.remaining())
 			sub_col = UITheme.GOLD
 		"queued":
-			sub = "Queued  ·  %s" % Research.time_text(Research.duration(node_id))
+			sub = tr("Queued  ·  %s") % Research.time_text(Research.duration(node_id))
 			sub_col = UITheme.CREAM
 		_:
-			sub = "%s data  ·  %s" % [Settings.fmt(Research.cost(node_id)), Research.time_text(Research.duration(node_id))]
+			sub = tr("%s data  ·  %s") % [Settings.fmt(Research.cost(node_id)), Research.time_text(Research.duration(node_id))]
 			sub_col = UITheme.GOLD if state == "available" and _affordable else UITheme.MUTED
 	draw_string(f, Vector2(tx, sub_y), sub, HORIZONTAL_ALIGNMENT_LEFT, size.x - tx - 8.0, 12, sub_col)
 	if _flash > 0.0:

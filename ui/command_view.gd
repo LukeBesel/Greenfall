@@ -21,14 +21,16 @@ const ROLE_COLORS: Dictionary = {
 	"water": Color(0.4, 0.85, 0.95),
 	"skim": Color(0.45, 1.0, 0.75),
 }
-const ROLE_NAMES: Dictionary = {"clean": "Cleaners", "haul": "Haulers", "plant": "Planters", "water": "Waterers", "skim": "Skimmers"}
-const MODE_NAMES: Dictionary = {"priority": "Priority", "stay": "Stay", "follow": "Follow me", "recall": "Recall"}
+const ROLE_NAMES: Dictionary = {"clean": "Cleaners", "haul": "Haulers", "plant": "Planters", "water": "Waterers", "skim": "Skimmers"}  # l10n
+const MODE_NAMES: Dictionary = {"priority": "Priority", "stay": "Stay", "follow": "Follow me", "recall": "Recall"}  # l10n
+# l10n:begin
 const MODE_HELP: Dictionary = {
 	"priority": "Works the marked hexes first, then the rest of the district.",
 	"stay": "Works only the marked hexes, and waits there when they are done.",
 	"follow": "Works the hexes around you, wherever you go.",
 	"recall": "Comes back and parks at the base.",
 }
+# l10n:end
 
 # Tactical palette for the overlay.
 const GRID_COL := Color(0.62, 0.86, 1.0)
@@ -101,7 +103,7 @@ var map_markers: Dictionary = {}
 const PAD_KEYS: String = "D-pad  panel      Left stick  move      A  mark      X  unmark      LB / RB  zoom      B  back"
 const MOUSE_KEYS: String = "Left drag  mark      Right drag  unmark      WASD / middle drag  move      Wheel  zoom      B  back"
 ## [deck] The live prompt line (glyphs follow the device and pad family).
-const KEYS_TEMPLATE: String = "[p]{@dpad}  panel      {@move}  move      {pad:#0}  mark      {pad:#2}  unmark      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  back[/p][k]Left drag  mark      Right drag  unmark      {@move} / middle drag  move      Wheel  zoom      {kbd:open_command}  back[/k]"
+const KEYS_TEMPLATE: String = "[p]{@dpad}  panel      {@move}  move      {pad:#0}  mark      {pad:#2}  unmark      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  back[/p][k]Left drag  mark      Right drag  unmark      {@move} / middle drag  move      Wheel  zoom      {kbd:open_command}  back[/k]"  # l10n
 var _using_pad: bool = false
 var _pad_paint: int = 0  # 1 while A is held on the map, -1 while X is held
 var _reticle_hex: int = -1
@@ -225,7 +227,7 @@ func _ready() -> void:
 	accent.custom_minimum_size = Vector2(3, 12)
 	accent.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	head.add_child(accent)
-	var cap := UITheme.label("COMMAND", 12, UITheme.MUTED)
+	var cap := UITheme.label(tr("COMMAND"), 12, UITheme.MUTED)
 	cap.add_theme_constant_override("shadow_outline_size", 0)
 	head.add_child(cap)
 	var trow := HBoxContainer.new()
@@ -246,7 +248,7 @@ func _ready() -> void:
 	sv.add_child(_mode_row)
 	for m: String in Fleet.MODES:
 		var b := Button.new()
-		b.text = MODE_NAMES[m]
+		b.text = tr(MODE_NAMES[m])
 		b.toggle_mode = true
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.add_theme_font_size_override("font_size", 13)
@@ -262,7 +264,7 @@ func _ready() -> void:
 	row.add_theme_constant_override("separation", 4)
 	sv.add_child(row)
 	var here := Button.new()
-	here.text = "Mark around me"
+	here.text = tr("Mark around me")
 	here.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	here.add_theme_font_size_override("font_size", 14)
 	here.pressed.connect(func() -> void:
@@ -275,7 +277,7 @@ func _ready() -> void:
 	_style_button(here, UITheme.CREAM, false)
 	row.add_child(here)
 	var clear := Button.new()
-	clear.text = "Clear"
+	clear.text = tr("Clear")
 	clear.add_theme_font_size_override("font_size", 14)
 	clear.pressed.connect(func() -> void:
 		world.fleet.clear_order(_sel_key, _sel_bot)
@@ -300,7 +302,7 @@ func _ready() -> void:
 	sep.color = Color(1, 1, 1, 0.08)
 	sep.custom_minimum_size = Vector2(0, 1)
 	sv.add_child(sep)
-	var crew_cap := UITheme.label("CREWS", 11, UITheme.MUTED)
+	var crew_cap := UITheme.label(tr("CREWS"), 11, UITheme.MUTED)
 	crew_cap.add_theme_constant_override("shadow_outline_size", 0)
 	sv.add_child(crew_cap)
 	var scroll := ScrollContainer.new()
@@ -362,7 +364,7 @@ func _ready() -> void:
 	keys_panel.offset_bottom = -14
 	keys_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(keys_panel)
-	_keys = PromptLabel.new(KEYS_TEMPLATE, 13)
+	_keys = PromptLabel.new(tr(KEYS_TEMPLATE), 13)
 	keys_panel.add_child(_keys)
 	# Hover tooltip.
 	_tip = PanelContainer.new()
@@ -586,16 +588,16 @@ func _refresh() -> void:
 		_title.text = _sel_key
 		_set_chip(_title_chip, Economy.tier_name(r.tier) if r else "", _sel_color())
 		if od.is_empty() and r:
-			_mode_help.text = "Following the %s orders. Mark hexes or pick a mode to give it its own." % ROLE_NAMES.get(r.role(), "crew").to_lower()
+			_mode_help.text = tr("Following the %s orders. Mark hexes or pick a mode to give it its own.") % tr(ROLE_NAMES.get(r.role(), "crew")).to_lower()
 	else:
-		_title.text = ROLE_NAMES[_sel_key]
+		_title.text = tr(ROLE_NAMES[_sel_key])
 		_set_chip(_title_chip, "%d / %d" % [f.robots_with_role(_sel_key).size(), f.crew_cap()], _sel_color())
 	_title.add_theme_color_override("font_color", _sel_color())
 	_title_icon.set_role(_sel_role(), _sel_color())
 	if mode != "":
-		_mode_help.text = MODE_HELP.get(mode, "")
+		_mode_help.text = tr(str(MODE_HELP.get(mode, "")))
 	elif not _sel_bot:
-		_mode_help.text = "No orders yet: roaming the district. Drag on the ground to mark where to work."
+		_mode_help.text = tr("No orders yet: roaming the district. Drag on the ground to mark where to work.")
 	for b: Node in _mode_row.get_children():
 		(b as Button).button_pressed = str(b.get_meta("mode")) == mode
 	_rebuild_list()
@@ -638,7 +640,7 @@ func _mode_chip_color(label: String, role_col: Color) -> Color:
 func _fill_list() -> void:
 	var f: Fleet = world.fleet
 	if f.robots().is_empty():
-		var l := UITheme.label("No robots yet. Build one at the workbench.", 14, UITheme.MUTED)
+		var l := UITheme.label(tr("No robots yet. Build one at the workbench."), 14, UITheme.MUTED)
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		_list.add_child(l)
 		return
@@ -652,13 +654,13 @@ func _fill_list() -> void:
 		_style_button(gb, col, true)
 		gb.toggle_mode = true
 		gb.button_pressed = not _sel_bot and _sel_key == role_id
-		gb.tooltip_text = "%s  %d/%d  %s" % [ROLE_NAMES[role_id], bots.size(), f.crew_cap(), _mode_label(role_id)]
+		gb.tooltip_text = "%s  %d/%d  %s" % [tr(ROLE_NAMES[role_id]), bots.size(), f.crew_cap(), _mode_label(role_id)]
 		gb.pressed.connect(_select.bind(role_id, false))
 		gb.set_meta("role", role_id)
 		_list.add_child(gb)
 		var hb: HBoxContainer = _button_content(gb, 12)
 		hb.add_child(RoleIcon.new(role_id, col, 18.0))
-		var nl := UITheme.label(ROLE_NAMES[role_id], 15, UITheme.CREAM)
+		var nl := UITheme.label(tr(ROLE_NAMES[role_id]), 15, UITheme.CREAM)
 		nl.add_theme_constant_override("shadow_outline_size", 0)
 		hb.add_child(nl)
 		var cl := UITheme.label("%d/%d" % [bots.size(), f.crew_cap()], 13, UITheme.MUTED)
@@ -719,7 +721,7 @@ func _update_bot_row(rb: Button, r: Robot) -> void:
 	var dot: ColorRect = rb.get_meta("dot") if rb.has_meta("dot") else null
 	var s: String = r.status_text()
 	if st:
-		st.text = s
+		st.text = r.status_label()  # [l10n] translated; s (English) drives the pip colour
 	if dot:
 		dot.color = _status_color(s)
 	rb.tooltip_text = _bot_line(r).strip_edges()
@@ -765,14 +767,14 @@ func _refresh_build() -> void:
 			for b: Node in c.get_children():
 				if b.has_meta("build_type"):
 					var t: String = str(b.get_meta("build_type"))
-					(b as Button).text = "Build %s  %s" % [Economy.robots[t]["name"], Settings.fmt(f.build_cost(t))]
+					(b as Button).text = tr("Build %s  %s") % [tr(str(Economy.robots[t]["name"])), Settings.fmt(f.build_cost(t))]
 					(b as Button).disabled = not (at_bench and f.can_build(t))
 				elif b.has_meta("tier_type"):
 					var req: Dictionary = f.tier_requirements(str(b.get_meta("tier_type")))
 					var maxed: bool = req.get("maxed", false)
-					(b as Button).text = "Max tier" if maxed else "Upgrade > %s" % str(req["next"]["name"])
+					(b as Button).text = tr("Max tier") if maxed else tr("Upgrade > %s") % tr(str(req["next"]["name"]))
 					(b as Button).disabled = maxed or not (at_bench and req["ok"])
-					(b as Button).tooltip_text = "" if maxed else "%s cubes, %s bolts, %s Control Core. %s" % [Settings.fmt(req["cost"]), Settings.fmt(req["bolts"]), Economy.rarity(int(req["core_rarity"])).get("name", "?"), req["reason"]]
+					(b as Button).tooltip_text = "" if maxed else tr("%s cubes, %s bolts, %s Control Core. %s") % [Settings.fmt(req["cost"]), Settings.fmt(req["bolts"]), tr(str(Economy.rarity(int(req["core_rarity"])).get("name", "?"))), req["reason"]]
 		elif c.has_meta("build_info"):
 			var t2: String = str(c.get_meta("build_info"))
 			var have: int = 0
@@ -781,16 +783,16 @@ func _refresh_build() -> void:
 				if r["have"]:
 					have += 1
 			var why: String = f.build_block_reason(t2)
-			(c as Label).text = "  parts %d/%d · %s" % [have, rs.size(), ("ready" if why == "" else why) if at_bench else "build at the workbench"]
+			(c as Label).text = tr("  parts %d/%d · %s") % [have, rs.size(), ("ready" if why == "" else why) if at_bench else tr("build at the workbench")]
 	if _tank_btn:
 		var net: WaterNet = f.water_net
 		if net == null:
 			_tank_btn.visible = false
 		else:
 			var why2: String = net.place_block_reason(world.patch.global_position)
-			_tank_btn.text = "Place refill tank here  %s  (%d/%d)" % [Settings.fmt(net.tank_cost()), net.tanks.size(), int(WaterNet.cfg().get("max", 6))]
+			_tank_btn.text = tr("Place refill tank here  %s  (%d/%d)") % [Settings.fmt(net.tank_cost()), net.tanks.size(), int(WaterNet.cfg().get("max", 6))]
 			_tank_btn.disabled = why2 != ""
-			_tank_btn.tooltip_text = why2 if why2 != "" else "A Water Tank at your hex. Waterers refill at the nearest one."
+			_tank_btn.tooltip_text = why2 if why2 != "" else tr("A Water Tank at your hex. Waterers refill at the nearest one.")
 
 
 func _mode_label(role_id: String) -> String:
@@ -800,11 +802,11 @@ func _mode_label(role_id: String) -> String:
 	var od: Dictionary = f.order(role_id, false)
 	if str(od.get("mode", "")) == "priority" and (od.get("zone", []) as Array).is_empty():
 		return "roaming"
-	return MODE_NAMES[str(od.get("mode", "priority"))].to_lower()
+	return tr(MODE_NAMES[str(od.get("mode", "priority"))]).to_lower()
 
 
 func _bot_line(r: Robot) -> String:
-	return "     %s  %s · %s" % [r.robot_name, Economy.tier_name(r.tier), r.status_text()]
+	return "     %s  %s · %s" % [r.robot_name, Economy.tier_name(r.tier), r.status_label()]
 
 
 ## Status pip colour from a robot's status line: working green, idle amber, travelling blue,
@@ -1047,7 +1049,7 @@ func _draw_map() -> void:
 				var sy: float = 1.0 if cn.y <= bb.get_center().y else -1.0
 				_map.draw_line(cn, cn + Vector2(tl * sx, 0), bc, 2.0, true)
 				_map.draw_line(cn, cn + Vector2(0, tl * sy), bc, 2.0, true)
-			var txt: String = "%s · %d HEX%s" % [(_sel_key if _sel_bot else ROLE_NAMES[_sel_key]).to_upper(), _zone_set.size(), "" if _zone_set.size() == 1 else "ES"]
+			var txt: String = tr_n("%s · %d HEX", "%s · %d HEXES", _zone_set.size()) % [(_sel_key if _sel_bot else tr(ROLE_NAMES[_sel_key])).to_upper(), _zone_set.size()]
 			_tag(Vector2(bb.position.x, bb.position.y - 8.0), txt, sel_col, false)
 	# 5. Hovered / reticle hex.
 	var hh: int = _reticle_hex if _using_pad else _hover_hex
@@ -1083,14 +1085,14 @@ func _tag(pos: Vector2, text: String, col: Color, centred: bool, fs: int = 12) -
 func _frame_markers() -> Array:
 	var out: Array = []
 	var dp: Vector3 = world.depot.global_position
-	out.append({"pos": dp, "label": "BASE", "color": UITheme.GOLD, "kind": "base"})
+	out.append({"pos": dp, "label": tr("BASE"), "color": UITheme.GOLD, "kind": "base"})
 	for m: Variant in map_markers.values():
 		out.append(m)
 	if world.has_method("command_markers"):
 		for m2: Variant in world.command_markers():
 			if m2 is Dictionary:
 				out.append(m2)
-	out.append({"pos": world.patch.global_position, "label": "YOU", "color": Color(0.55, 0.9, 1.0), "kind": "you"})
+	out.append({"pos": world.patch.global_position, "label": tr("YOU"), "color": Color(0.55, 0.9, 1.0), "kind": "you"})
 	return out
 
 
@@ -1190,30 +1192,30 @@ func _update_tooltip() -> void:
 		_tip.visible = false
 		return
 	var field: HexField = world.field
-	var title: String = "HEX %d" % h
+	var title: String = tr("HEX %d") % h
 	var lines: Array[String] = []
 	var bar: float = -1.0
 	if field.hex_hub[h] != 0:
-		title = "BASE YARD"
-		lines.append("Home ground, always clean")
+		title = tr("BASE YARD")
+		lines.append(tr("Home ground, always clean"))
 	elif field.is_water(h):
-		title = "LAKE HEX %d" % h
+		title = tr("LAKE HEX %d") % h
 		var f: float = field.removed_fraction(h)
-		lines.append("Clean" if field.is_clean(h) else "Floating junk  %d%% left" % int(round((1.0 - f) * 100.0)))
+		lines.append(tr("Clean") if field.is_clean(h) else tr("Floating junk  %d%% left") % int(round((1.0 - f) * 100.0)))
 		bar = 0.0 if field.is_clean(h) else 1.0 - f
 	elif field.is_clean(h):
-		lines.append("Clean")
+		lines.append(tr("Clean"))
 	else:
 		var left: float = 1.0 - field.removed_fraction(h)
-		lines.append("Junk  %d%% left" % int(round(left * 100.0)))
+		lines.append(tr("Junk  %d%% left") % int(round(left * 100.0)))
 		bar = left
 	var hl: Variant = world.get("hex_levels")
 	if hl != null:
 		var l: int = (hl as HexLevels).level_of(h)
 		if l >= 0:
-			lines.append("Level %d · %s" % [l, (hl as HexLevels).level_name(l)])
+			lines.append(tr("Level %d · %s") % [l, (hl as HexLevels).level_name(l)])
 	if _zone_set.has(h):
-		lines.append("In %s zone" % (_sel_key if _sel_bot else ROLE_NAMES[_sel_key]))
+		lines.append(tr("In %s zone") % (_sel_key if _sel_bot else tr(ROLE_NAMES[_sel_key])))
 	_tip_title.text = title
 	_tip_body.text = "\n".join(lines)
 	_tip_bar.visible = bar >= 0.0
@@ -1265,10 +1267,10 @@ func _process(delta: float) -> void:
 	_update_tooltip()
 	var f: Fleet = world.fleet
 	_info_name.text = str(world.district_name)
-	_info_bots.text = "%d robots" % f.robots().size()
+	_info_bots.text = tr("%d robots") % f.robots().size()
 	var total: int = maxi(world.field.junk_hex_count, 1)
 	_info_bar.value = 100.0 * float(world.field.junk_hexes_cleaned()) / float(total)
-	_info_count.text = "%d / %d hexes clean" % [world.field.junk_hexes_cleaned(), world.field.junk_hex_count]
+	_info_count.text = tr("%d / %d hexes clean") % [world.field.junk_hexes_cleaned(), world.field.junk_hex_count]
 	_list_t += delta
 	if _list_t > 0.6:
 		_list_t = 0.0
@@ -1357,7 +1359,7 @@ func _paint_hex(h: int, paint: int) -> void:
 	var mode: String = str(od.get("mode", ""))
 	for b: Node in _mode_row.get_children():
 		(b as Button).button_pressed = str(b.get_meta("mode")) == mode
-	_mode_help.text = MODE_HELP.get(mode, "")
+	_mode_help.text = tr(str(MODE_HELP.get(mode, "")))
 
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -19,16 +19,16 @@ func once(id: String, text: String, kind: String = "story") -> void:
 
 
 func _on_cube_made(info: Dictionary) -> void:
-	once("first_cube", "Your first cube! Carry it to the Depot pad.", "hint")
+	once("first_cube", tr("Your first cube! Carry it to the Depot pad."), "hint")
 	if info.get("perfect", false):
-		once("first_perfect", "PERFECT CUBE! Filled right to the line.", "hint")
+		once("first_perfect", tr("PERFECT CUBE! Filled right to the line."), "hint")
 	if info.get("pure", false):
-		once("first_pure", "A Pure Cube: one kind of junk is worth double.", "hint")
+		once("first_pure", tr("A Pure Cube: one kind of junk is worth double."), "hint")
 
 
 func _on_hex_cleaned(_hex_id: int, _pos: Vector3, _bonus: BigNum) -> void:
-	once("first_hex", "A whole hex is clean! The ground remembers its colors.", "story")
+	once("first_hex", tr("A whole hex is clean! The ground remembers its colors."), "story")
 
 
 func _on_upgrade_bought(_id: String, _level: int) -> void:
-	once("first_upgrade", "Upgraded! Lumi feels a little less creaky.", "hint")
+	once("first_upgrade", tr("Upgraded! Lumi feels a little less creaky."), "hint")

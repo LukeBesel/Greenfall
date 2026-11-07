@@ -216,13 +216,13 @@ func _finish() -> void:
 	var window: Vector3 = to_global(Vector3(-2.15, 0.62, -0.3))
 	Vfx.burst("steam", to_global(Vector3(-1.55, 3.55, -0.3)), Color(0.95, 0.95, 0.97, 0.6), 1.0)
 	Vfx.burst("sparkle", window, Color(1.0, 0.55, 0.15), 1.0)
-	var txt: String = "+%d bolts" % int(got["bolts"])
+	var txt: String = tr("+%d bolts") % int(got["bolts"])
 	var names: Dictionary = {"sheet_metal": "metal", "plastic_stock": "plastic", "glass_cullet": "glass"}
 	for id: String in got["materials"]:
 		if float(got["materials"][id]) >= 0.05:
 			txt += "  +%.1f %s" % [float(got["materials"][id]), names.get(id, id)]
 	Vfx.float_text(throat_world() + Vector3(0, 0.8, 0), txt, Color(0.75, 0.95, 1.0), 0.7, 1.2)
-	Vfx.float_text(throat_world() + Vector3(0, 1.25, 0), "GONE FOR GOOD  -%d kg" % int(got["kg"]), Color(0.7, 1.0, 0.7), 0.55, 1.4)
+	Vfx.float_text(throat_world() + Vector3(0, 1.25, 0), tr("GONE FOR GOOD  -%d kg") % int(got["kg"]), Color(0.7, 1.0, 0.7), 0.55, 1.4)
 	_pop_ingot()
 
 
@@ -281,10 +281,10 @@ func _build() -> void:
 	rib_mi.mesh = ProcMesh.merge(ribs)
 	rib_mi.material_override = body_mat
 	add_child(rib_mi)
-	var label := Mats.stencil("RECYCLER", 120, Color(0.95, 0.93, 0.85, 0.92))
+	var label := Mats.stencil(tr("RECYCLER"), 120, Color(0.95, 0.93, 0.85, 0.92))
 	label.position = Vector3(-0.1, 0.7, 0.905)
 	add_child(label)
-	var label2 := Mats.stencil("SHRED  ·  SMELT  ·  GONE FOR GOOD", 52, Color(0.95, 0.85, 0.4, 0.9))
+	var label2 := Mats.stencil(tr("SHRED  ·  SMELT  ·  GONE FOR GOOD"), 52, Color(0.95, 0.85, 0.4, 0.9))
 	label2.position = Vector3(-0.1, 0.46, 0.905)
 	add_child(label2)
 	# Throat: a flared hopper with hazard lips, seen into from above.
@@ -437,7 +437,7 @@ func _build() -> void:
 		st.basis = b
 		st.position = PAD_LOCAL + Vector3(0, 0.085, 0) + b * Vector3(0, 0, PAD_HALF - 0.05)
 		add_child(st)
-	var pl := Mats.stencil("HAND FEED", 64, Color(0.95, 0.85, 0.35, 0.9))
+	var pl := Mats.stencil(tr("HAND FEED"), 64, Color(0.95, 0.85, 0.35, 0.9))
 	pl.rotation_degrees = Vector3(-90, 0, 0)
 	pl.position = PAD_LOCAL + Vector3(0, 0.09, 0)
 	add_child(pl)

@@ -65,7 +65,7 @@ func begin() -> void:
 	_cap.offset_bottom = -30
 	_cap.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	root.add_child(_cap)
-	var skip := UITheme.label("Space / Esc  skip", 12, Color(1, 1, 1, 0.45))
+	var skip := UITheme.label(tr("Space / Esc  skip"), 12, Color(1, 1, 1, 0.45))
 	skip.set_anchors_preset(Control.PRESET_TOP_RIGHT)
 	skip.offset_left = -170
 	skip.offset_top = 24
@@ -114,7 +114,7 @@ func close_stage() -> void:
 
 
 func caption(t: String) -> void:
-	_cap.text = t
+	_cap.text = tr(t) if t != "" else t  # [l10n]
 	_cap.modulate.a = 0.0
 	if t != "":
 		_cap.create_tween().tween_property(_cap, "modulate:a", 1.0, 0.5)

@@ -27,15 +27,19 @@ const K_BLINK := 3.0
 const K_DRIFT := 4.0
 const K_STEADY := 5.0
 
+# l10n:begin
 const MESSAGES: Array[String] = [
 	"GROW TOGETHER", "THANK YOU, PATCH", "EVERY SEED COUNTS", "TOMORROW IS GROWING",
 	"HELLO, NEIGHBOR!", "CLEAN AIR TODAY  98%", "FRESH SPROUTS DAILY", "SOLAR GRID  100%",
 	"OPEN SKY  OPEN HEARTS", "WATER IS LIFE", "NEXT GLIDER  2 MIN", "BUILT BY HANDS & BOTS",
 ]
+# l10n:end
+# l10n:begin
 const SKY_MESSAGES: Array[String] = [
 	"WELCOME TO THE NEW GREENFALL", "THE CITY IS BREATHING AGAIN", "PLANT SOMETHING TODAY",
 	"SKYWAY OPEN  ALL ABOARD", "TOGETHER WE BLOOM", "LIGHT  WATER  LIFE",
 ]
+# l10n:end
 
 ## Static instance channels: name -> [mesh id, material id, casts shadow].
 const CHANNELS: Dictionary = {
@@ -755,7 +759,7 @@ func _build_labels(list: Array) -> void:
 		if _labels.has(k):
 			continue
 		var l := Label3D.new()
-		var txt: String = str(d["text"])
+		var txt: String = tr(str(d["text"]))
 		l.text = txt
 		l.font_size = 96
 		l.outline_size = 18

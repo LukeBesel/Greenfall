@@ -170,7 +170,7 @@ static func jukebox() -> Node3D:
 	var disc := mesh(ProcMesh.cyl(0.13, 0.13, 0.01, 24), Mats.metal("dark_steel"), Vector3(0, 1.0, 0.25), Vector3(90, 0, 0))
 	disc.name = "Disc"
 	n.add_child(disc)
-	n.add_child(label("SELECT  A1  ·  B4  ·  C7", 22, Color(0.95, 0.9, 0.7), Vector3(0, 0.74, 0.32)))
+	n.add_child(label(TranslationServer.translate("SELECT  A1  ·  B4  ·  C7"), 22, Color(0.95, 0.9, 0.7), Vector3(0, 0.74, 0.32)))
 	var l := glow(Color(1.0, 0.7, 0.4), 0.0, 4.0, Vector3(0, 1.0, 0.8))
 	l.name = "Light"
 	n.add_child(l)
@@ -195,7 +195,7 @@ static func mural() -> Node3D:
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
 	m.alpha_scissor_threshold = 0.5
 	n.add_child(mesh(q, m, Vector3(0, 1.32, 0.145)))
-	var spray := label("WE'LL BE BACK AFTER LUNCH", 60, Color(1.0, 0.97, 0.9), Vector3(0, 2.36, 0.15))
+	var spray := label(TranslationServer.translate("WE'LL BE BACK AFTER LUNCH"), 60, Color(1.0, 0.97, 0.9), Vector3(0, 2.36, 0.15))
 	spray.outline_size = 10
 	spray.outline_modulate = Color(0.1, 0.12, 0.2, 0.9)
 	n.add_child(spray)
@@ -310,7 +310,7 @@ static func time_capsule() -> Node3D:
 	tube.add_child(mesh(ProcMesh.cyl(0.18, 0.18, 0.8, 20), Mats.worn_paint(Color(0.3, 0.55, 0.5), 0.7, 0.5, 7.0, 0.5)))
 	for y: float in [-0.42, 0.42]:
 		tube.add_child(mesh(ProcMesh.cyl(0.2, 0.2, 0.06, 20), Mats.metal("brass"), Vector3(0, y, 0)))
-	tube.add_child(label("OPEN IN 100 YEARS", 26, Color(0.95, 0.92, 0.8), Vector3(0, 0, 0.185), Vector3(0, 0, 90)))
+	tube.add_child(label(TranslationServer.translate("OPEN IN 100 YEARS"), 26, Color(0.95, 0.92, 0.8), Vector3(0, 0, 0.185), Vector3(0, 0, 90)))
 	n.add_child(glow(Color(0.6, 0.95, 1.0), 0.8, 2.5, Vector3(0, 0.6, 0)))
 	return n
 
@@ -327,12 +327,12 @@ static func arcade() -> Node3D:
 	var scr := mesh(ProcMesh.box(Vector3(0.6, 0.5, 0.02)), Mats.lamp(Color(0.1, 0.3, 0.25), 0.4), Vector3(0, 1.38, 0.135), Vector3(-12, 0, 0))
 	scr.name = "Screen"
 	n.add_child(scr)
-	n.add_child(label("HI-SCORE", 20, Color(1.0, 0.9, 0.3), Vector3(0, 1.5, 0.16), Vector3(-12, 0, 0), true))
-	n.add_child(label("WREN  999990", 24, Color(0.4, 1.0, 0.6), Vector3(0, 1.38, 0.16), Vector3(-12, 0, 0), true))
-	n.add_child(label("INSERT COIN", 18, Color(1.0, 0.5, 0.4), Vector3(0, 1.24, 0.16), Vector3(-12, 0, 0), true))
+	n.add_child(label(TranslationServer.translate("HI-SCORE"), 20, Color(1.0, 0.9, 0.3), Vector3(0, 1.5, 0.16), Vector3(-12, 0, 0), true))
+	n.add_child(label(TranslationServer.translate("WREN  999990"), 24, Color(0.4, 1.0, 0.6), Vector3(0, 1.38, 0.16), Vector3(-12, 0, 0), true))
+	n.add_child(label(TranslationServer.translate("INSERT COIN"), 18, Color(1.0, 0.5, 0.4), Vector3(0, 1.24, 0.16), Vector3(-12, 0, 0), true))
 	var marquee := mesh(ProcMesh.box(Vector3(0.7, 0.18, 0.02)), Mats.lamp(Color(1.0, 0.6, 0.25), 1.2), Vector3(0, 1.82, 0.225))
 	n.add_child(marquee)
-	n.add_child(label("SWEEP-O-TRON", 30, Color(0.2, 0.08, 0.05), Vector3(0, 1.82, 0.237)))
+	n.add_child(label(TranslationServer.translate("SWEEP-O-TRON"), 30, Color(0.2, 0.08, 0.05), Vector3(0, 1.82, 0.237)))
 	n.add_child(mesh(ProcMesh.cyl(0.012, 0.012, 0.1, 6), Mats.metal("chrome"), Vector3(-0.15, 1.13, 0.28)))
 	n.add_child(mesh(ProcMesh.sphere(0.03, 8, 4), Mats.lamp(Color(0.9, 0.1, 0.1), 0.5), Vector3(-0.15, 1.18, 0.28)))
 	for k: int in 3:
@@ -424,7 +424,7 @@ static func cat_shell() -> Node3D:
 		var a: float = PI * 0.15 + k * 0.42
 		body.add_child(mesh(ProcMesh.capsule(0.05, 0.18), shell, Vector3(-0.2 + cos(a) * 0.3, 0.08, sin(a) * 0.3), Vector3(90, -rad_to_deg(a), 0)))
 	body.add_child(mesh(ProcMesh.cyl(0.11, 0.11, 0.02, 16), Mats.metal("brass"), Vector3(0, 0.39, 0), Vector3.ZERO))
-	body.add_child(label("BISCUIT", 18, Color(0.25, 0.15, 0.1), Vector3(0, 0.401, 0), Vector3(-90, 0, 0)))
+	body.add_child(label(TranslationServer.translate("BISCUIT"), 18, Color(0.25, 0.15, 0.1), Vector3(0, 0.401, 0), Vector3(-90, 0, 0)))
 	var eye := glow(Color(0.5, 1.0, 0.6), 0.0, 1.5, Vector3(0.55, 0.3, 0.08))
 	eye.name = "Light"
 	n.add_child(eye)
@@ -452,7 +452,7 @@ static func vending() -> Node3D:
 	var sign := mesh(ProcMesh.box(Vector3(0.86, 0.22, 0.02)), Mats.lamp(Color(1.0, 0.9, 0.75), 1.2), Vector3(0, 1.9 - 0.12, 0.41))
 	sign.name = "Screen"
 	n.add_child(sign)
-	n.add_child(label("FIZZ", 54, Color(0.75, 0.12, 0.1), Vector3(0, 1.78, 0.425)))
+	n.add_child(label(TranslationServer.translate("FIZZ"), 54, Color(0.75, 0.12, 0.1), Vector3(0, 1.78, 0.425)))
 	n.add_child(mesh(ProcMesh.box(Vector3(0.18, 0.5, 0.03)), Mats.metal("steel"), Vector3(0.34, 1.2, 0.41)))
 	n.add_child(mesh(ProcMesh.box(Vector3(0.05, 0.02, 0.01)), Mats.lamp(Color(0.2, 1.0, 0.3), 1.5), Vector3(0.34, 1.35, 0.43)))
 	n.add_child(mesh(ProcMesh.box(Vector3(0.5, 0.16, 0.06)), Mats.metal("dark_steel"), Vector3(-0.1, 0.3, 0.42)))
@@ -598,7 +598,7 @@ static func wet_floor() -> Node3D:
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	m.roughness = 1.0
 	n.add_child(mesh(q, m, Vector3(0.15, 0.012, 0.35), Vector3(-90, 20, 0)))
-	n.add_child(label("(it is not wet)", 14, Color(0.3, 0.25, 0.2), Vector3(0.2, 0.015, 0.36), Vector3(-90, 20, 0)))
+	n.add_child(label(TranslationServer.translate("(it is not wet)"), 14, Color(0.3, 0.25, 0.2), Vector3(0.2, 0.015, 0.36), Vector3(-90, 20, 0)))
 	return n
 
 
@@ -615,7 +615,7 @@ static func security_camera() -> Node3D:
 	led.name = "Led"
 	head.add_child(led)
 	n.add_child(mesh(ProcMesh.box(Vector3(1.0, 0.36, 0.03)), Mats.worn_paint(Color(0.85, 0.75, 0.2), 0.8, 0.5, 42.0, 0.6), Vector3(0, 1.7, 0.1)))
-	n.add_child(label("THE LEDGER IS WATCHING\n(FOR SAVINGS)", 18, Color(0.12, 0.1, 0.08), Vector3(0, 1.7, 0.117)))
+	n.add_child(label(TranslationServer.translate("THE LEDGER IS WATCHING\n(FOR SAVINGS)"), 18, Color(0.12, 0.1, 0.08), Vector3(0, 1.7, 0.117)))
 	collider(n, Vector3(0.18, 3.0, 0.18), Vector3(0, 1.5, 0))
 	return n
 
@@ -693,7 +693,7 @@ static func pedestal() -> Node3D:
 	cube.name = "Anim"
 	n.add_child(cube)
 	n.add_child(mesh(ProcMesh.box(Vector3(0.36, 0.16, 0.01)), Mats.metal("brass"), Vector3(0, 0.75, 0.256)))
-	n.add_child(label("EMPLOYEE OF\nTHE MONTH\n— CUBE —", 14, Color(0.2, 0.13, 0.05), Vector3(0, 0.75, 0.262)))
+	n.add_child(label(TranslationServer.translate("EMPLOYEE OF\nTHE MONTH\n— CUBE —"), 14, Color(0.2, 0.13, 0.05), Vector3(0, 0.75, 0.262)))
 	n.add_child(glow(Color(1.0, 0.8, 0.4), 0.5, 2.0, Vector3(0, 1.6, 0.3)))
 	collider(n, Vector3(0.7, 1.5, 0.7), Vector3(0, 0.75, 0))
 	return n
@@ -723,7 +723,7 @@ static func weather_bot() -> Node3D:
 		cups.add_child(strut(Vector3.ZERO, Vector3(cos(a), 0, sin(a)) * 0.22, 0.008, steel))
 		cups.add_child(mesh(ProcMesh.hemisphere(0.05, 10, 4), Mats.worn_paint(Color(0.9, 0.3, 0.2), 0.8, 0.3, 73.0 + k, 0.4), Vector3(cos(a), 0, sin(a)) * 0.22, Vector3(90, rad_to_deg(-a), 0)))
 	n.add_child(mesh(ProcMesh.box(Vector3(0.5, 0.2, 0.02)), Mats.worn_paint(Color(0.2, 0.35, 0.6), 0.8, 0.4, 74.0, 0.5), Vector3(0, 1.35, 0.06)))
-	n.add_child(label("FORECAST\nALWAYS RIGHT*", 13, Color(0.92, 0.92, 0.85), Vector3(0, 1.35, 0.072)))
+	n.add_child(label(TranslationServer.translate("FORECAST\nALWAYS RIGHT*"), 13, Color(0.92, 0.92, 0.85), Vector3(0, 1.35, 0.072)))
 	collider(n, Vector3(0.2, 2.4, 0.2), Vector3(0, 1.2, 0))
 	return n
 
@@ -748,7 +748,7 @@ static func potato() -> Node3D:
 	var ribbon := mesh(ProcMesh.cyl(0.08, 0.08, 0.02, 12), Mats.lamp(Color(0.25, 0.45, 0.95), 0.3), Vector3(0, top + 0.2, 0.36), Vector3(80, 0, 0))
 	pot.add_child(ribbon)
 	ribbon.position = Vector3(0, 0.0, 0.36)
-	n.add_child(label("SHOW ENTRY", 26, Color(0.18, 0.1, 0.05), Vector3(0, top * 0.5, 0.33)))
+	n.add_child(label(TranslationServer.translate("SHOW ENTRY"), 26, Color(0.18, 0.1, 0.05), Vector3(0, top * 0.5, 0.33)))
 	collider(n, Vector3(1.0, top + 0.6, 0.8), Vector3(0, (top + 0.6) * 0.5, 0))
 	return n
 
@@ -790,7 +790,7 @@ static func dev_desk() -> Node3D:
 	n.add_child(cb)
 	n.add_child(mesh(ProcMesh.cyl(0.04, 0.035, 0.1, 12), Mats.worn_paint(Color(0.85, 0.85, 0.82), 0.9, 0.0, 91.0, 0.3), Vector3(0.32, 0.81, 0.08)))
 	n.add_child(mesh(ProcMesh.box(Vector3(0.6, 0.12, 0.01)), Mats.worn_paint(Color(0.95, 0.92, 0.82), 0.9, 0.0, 92.0, 0.3), Vector3(0, 0.62, 0.28)))
-	n.add_child(label("THE BUILDERS · DO NOT TIDY", 13, Color(0.2, 0.18, 0.15), Vector3(0, 0.62, 0.286)))
+	n.add_child(label(TranslationServer.translate("THE BUILDERS · DO NOT TIDY"), 13, Color(0.2, 0.18, 0.15), Vector3(0, 0.62, 0.286)))
 	n.add_child(model("plastic_monobloc_chair_01", Vector3(0.0, 0.0, -0.55), 0.0, 0.95))
 	collider(n, Vector3(1.0, 0.78, 0.6), Vector3(0, 0.39, 0))
 	return n
@@ -878,7 +878,7 @@ static func sand_car() -> Node3D:
 	n.add_child(mesh(ProcMesh.hemisphere(1.0, 14, 5), sand, Vector3(a.get_center().x + a.size.x * 0.45, -0.05, a.get_center().z + 0.3), Vector3.ZERO, Vector3(1.0, 0.4, 0.9)))
 	var tk := mesh(ProcMesh.box(Vector3(0.3, 0.01, 0.18)), Mats.worn_paint(Color(0.98, 0.95, 0.85), 0.95, 0.0, 111.0, 0.2), Vector3(a.get_center().x, a.end.y - 0.38, a.get_center().z), Vector3(0, 10, 0))
 	n.add_child(tk)
-	n.add_child(label("FINE", 18, Color(0.75, 0.12, 0.1), Vector3(a.get_center().x, a.end.y - 0.37, a.get_center().z), Vector3(-90, 10, 0)))
+	n.add_child(label(TranslationServer.translate("FINE"), 18, Color(0.75, 0.12, 0.1), Vector3(a.get_center().x, a.end.y - 0.37, a.get_center().z), Vector3(-90, 10, 0)))
 	collider(n, Vector3(a.size.x, a.size.y - 0.35, a.size.z) * 0.9, Vector3(a.get_center().x, (a.size.y - 0.35) * 0.5, a.get_center().z))
 	return n
 
@@ -955,7 +955,7 @@ static func drill_press() -> Node3D:
 	n.add_child(sign)
 	sign.add_child(mesh(ProcMesh.box(Vector3(0.05, 1.0, 0.05)), _wood(), Vector3(0, 0.5, 0)))
 	sign.add_child(mesh(ProcMesh.box(Vector3(0.55, 0.32, 0.02)), Mats.worn_paint(Color(0.93, 0.9, 0.8), 0.9, 0.1, 141.0, 0.5), Vector3(0, 0.95, 0.035)))
-	sign.add_child(label("BACK IN\n5 MINUTES", 22, Color(0.15, 0.12, 0.1), Vector3(0, 0.95, 0.047)))
+	sign.add_child(label(TranslationServer.translate("BACK IN\n5 MINUTES"), 22, Color(0.15, 0.12, 0.1), Vector3(0, 0.95, 0.047)))
 	var bolt := mesh(ProcMesh.cyl(0.025, 0.025, 0.06, 6), Mats.metal("chrome"), Vector3(a.get_center().x, a.end.y * 0.55, a.get_center().z + 0.1))
 	bolt.name = "Bolt"
 	bolt.visible = false

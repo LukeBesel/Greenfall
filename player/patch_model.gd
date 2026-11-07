@@ -8,6 +8,7 @@ extends Node3D
 ## bowl with a bright thruster ring instead of legs. Worn, dusty paint. Colorways are unlockable designs ("aurora" is
 ## the default look). Faces -Z. Base (hover ring) near y=0.
 
+# l10n:begin
 const VARIANTS: Dictionary = {
 	"aurora": {"name": "Aurora", "paint": Color(0.9, 0.88, 0.83), "trim": Color(0.36, 0.38, 0.42), "glow": Color(0.3, 0.88, 1.0), "accent": Color(1.0, 0.5, 0.12), "icon": "recycle"},
 	"bolt": {"name": "Bolt", "paint": Color(0.95, 0.72, 0.12), "trim": Color(0.3, 0.27, 0.22), "glow": Color(1.0, 0.72, 0.2), "accent": Color(0.25, 0.22, 0.18), "icon": "recycle"},
@@ -16,6 +17,7 @@ const VARIANTS: Dictionary = {
 	"nova": {"name": "Nova", "paint": Color(0.26, 0.24, 0.3), "trim": Color(0.15, 0.14, 0.18), "glow": Color(0.72, 0.4, 1.0), "accent": Color(0.72, 0.4, 1.0), "icon": "recycle", "ears": "cat"},
 	"patch": {"name": "Patch", "paint": Color(0.92, 0.9, 0.86), "trim": Color(0.35, 0.36, 0.38), "glow": Color(1.0, 0.7, 0.25), "accent": Color(1.0, 0.5, 0.15), "icon": "plus"},
 }
+# l10n:end
 
 var variant: String = "aurora"
 

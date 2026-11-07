@@ -92,7 +92,7 @@ func build(p_tier: int) -> void:
 	name_l.position = Vector3(0, 3.45, hull_r(3.45) + 0.01)
 	add_child(name_l)
 	var tag := Label3D.new()
-	tag.text = ["", "MK I", "MK II", "MK III", "MK IV"][tier]
+	tag.text = ["", tr("MK I"), tr("MK II"), tr("MK III"), tr("MK IV")][tier]
 	tag.font_size = 64
 	tag.pixel_size = 0.0028
 	tag.modulate = Color(0.45, 1.3, 1.7)

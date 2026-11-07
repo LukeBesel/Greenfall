@@ -50,7 +50,7 @@ static func grant(id: String, quiet: bool = false) -> bool:
 	found_list().append(id)
 	GameState.inc_stat("trinkets_found")
 	if not quiet:
-		EventBus.toast.emit("New for your Collection: %s. See it in the Codex (K)." % str(def(id).get("name", id)), "story")
+		EventBus.toast.emit(TranslationServer.translate("New for your Collection: %s. See it in the Codex (K).") % TranslationServer.translate(str(def(id).get("name", id))), "story")
 		Audio.play("sparkle", 1.1, -6.0)
 	return true
 
@@ -75,17 +75,17 @@ static func roll(source: String, r: float) -> String:
 ## Human label for where a trinket comes from (Collection page).
 static func source_name(source: String) -> String:
 	match source:
-		"supply_drop": return "Supply Drops"
-		"salvage_surge": return "Salvage Surges"
-		"rain_shower": return "Rain Showers"
-		"robot_hiccup": return "Robot Hiccups"
-		"wildlife_visit": return "Wildlife Photos"
-		"rare_part_signal": return "Rare Part Signals"
-		"ledger_audit": return "Ledger Audits"
-		"streak": return "Cleaning Streaks"
-		"lumi_level": return "Lumi Levels"  # [hud]
-		"contracts": return "Contracts"
-		"capsule": return "Curio Capsules"
+		"supply_drop": return TranslationServer.translate("Supply Drops")
+		"salvage_surge": return TranslationServer.translate("Salvage Surges")
+		"rain_shower": return TranslationServer.translate("Rain Showers")
+		"robot_hiccup": return TranslationServer.translate("Robot Hiccups")
+		"wildlife_visit": return TranslationServer.translate("Wildlife Photos")
+		"rare_part_signal": return TranslationServer.translate("Rare Part Signals")
+		"ledger_audit": return TranslationServer.translate("Ledger Audits")
+		"streak": return TranslationServer.translate("Cleaning Streaks")
+		"lumi_level": return TranslationServer.translate("Lumi Levels")  # [hud]
+		"contracts": return TranslationServer.translate("Contracts")
+		"capsule": return TranslationServer.translate("Curio Capsules")
 	return source.capitalize()
 
 

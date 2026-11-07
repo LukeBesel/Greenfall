@@ -125,7 +125,7 @@ static func pick(info: Dictionary) -> Dictionary:
 
 
 static func preset_name(q: int) -> String:
-	return ["Low", "Medium", "High", "Ultra"][clampi(q, 0, 3)]
+	return TranslationServer.translate(["Low", "Medium", "High", "Ultra"][clampi(q, 0, 3)])  # l10n
 
 
 static func _has_any(s: String, hints: Array) -> bool:

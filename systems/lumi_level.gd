@@ -209,26 +209,26 @@ func _grant(lv: int) -> String:
 	var cubes: float = float(plan["cubes"])
 	if cubes > 0.0:
 		GameState.add_currency("cubes", BigNum.from_float(cubes))
-		bits.append("+%s cubes" % Settings.fmt(BigNum.from_float(cubes)))
+		bits.append(tr("+%s cubes") % Settings.fmt(BigNum.from_float(cubes)))
 	if int(plan["seeds"]) > 0:
 		GameState.add_currency("seeds", BigNum.from_float(int(plan["seeds"])))
-		bits.append("+%d seeds" % int(plan["seeds"]))
+		bits.append(tr("+%d seeds") % int(plan["seeds"]))
 	if int(plan["parts"]) > 0:
 		var types: Array = Economy.parts.get("types", [])
 		var t: int = randi() % maxi(types.size(), 1)
 		var r: int = int(plan["part_rarity"])
 		GameState.parts.append({"type": t, "rarity": r})
 		EventBus.part_found.emit(t, r)
-		bits.append("+%s %s" % [Economy.rarity(r).get("name", ""), Economy.part_type(t).get("name", "part")])
+		bits.append("+%s %s" % [tr(str(Economy.rarity(r).get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))])
 	var tokens: int = int(plan["tokens"])
 	if bool(plan["trinket"]):
 		var left: Array[String] = Collection.unfound("lumi_level")  # in order: L10, L20, ...
 		var tid: String = left[0] if not left.is_empty() else ""
 		if tid != "" and Collection.grant(tid, true):
-			bits.append(str(Collection.def(tid).get("name", tid)))
+			bits.append(tr(str(Collection.def(tid).get("name", tid))))
 		else:
 			tokens += int(rw.get("trinket_tokens", 3))
 	if tokens > 0:
 		GameState.add_currency(Contracts.CURRENCY, BigNum.from_float(tokens))
-		bits.append("+%d token%s" % [tokens, "" if tokens == 1 else "s"])
+		bits.append(tr_n("+%d token", "+%d tokens", tokens) % tokens)
 	return "  ".join(bits)

@@ -22,8 +22,8 @@ func _ready() -> void:
 	var head := HBoxContainer.new()
 	head.add_theme_constant_override("separation", 14)
 	add_child(head)
-	head.add_child(UITheme.label("CONTRACTS", 20, UITheme.CREAM))
-	head.add_child(UITheme.label("Optional jobs with a timer. Finish in time for tokens; nothing is lost if one runs out.", 13, UITheme.MUTED))
+	head.add_child(UITheme.label(tr("CONTRACTS"), 20, UITheme.CREAM))
+	head.add_child(UITheme.label(tr("Optional jobs with a timer. Finish in time for tokens; nothing is lost if one runs out."), 13, UITheme.MUTED))
 	var sp := Control.new()
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	head.add_child(sp)
@@ -36,7 +36,7 @@ func _ready() -> void:
 	var sh := HBoxContainer.new()
 	sh.add_theme_constant_override("separation", 14)
 	add_child(sh)
-	sh.add_child(UITheme.label("TOKEN SHOP", 20, UITheme.CREAM))
+	sh.add_child(UITheme.label(tr("TOKEN SHOP"), 20, UITheme.CREAM))
 	_collection = UITheme.label("", 13, UITheme.MUTED)
 	_collection.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	sh.add_child(_collection)
@@ -75,8 +75,8 @@ func _signature() -> String:
 
 
 func refresh(force: bool = false) -> void:
-	_tokens.text = "◈  %d tokens" % Contracts.tokens()
-	_collection.text = "Collection  %d / %d   ·   see the Codex (K)" % [Collection.count(), Collection.total()]
+	_tokens.text = tr("◈  %d tokens") % Contracts.tokens()
+	_collection.text = tr("Collection  %d / %d   ·   see the Codex (K)") % [Collection.count(), Collection.total()]
 	var sig: String = _signature()
 	if force or sig != _sig:
 		_sig = sig
@@ -123,7 +123,7 @@ func _rebuild_slots() -> void:
 		var tag: String = {"offer": "N E W   O F F E R", "active": "I N   P R O G R E S S", "done": "C O M P L E T E", "wait": "P O S T I N G   S O O N"}.get(st, "")
 		vb.add_child(UITheme.label(tag, 11, col))
 		if st == "wait":
-			var l := UITheme.label("A new contract is being posted.", 16, UITheme.MUTED)
+			var l := UITheme.label(tr("A new contract is being posted."), 16, UITheme.MUTED)
 			l.autowrap_mode = TextServer.AUTOWRAP_WORD
 			vb.add_child(l)
 			refs["timer"] = UITheme.label("", 14, UITheme.MUTED)
@@ -133,7 +133,7 @@ func _rebuild_slots() -> void:
 		var title := UITheme.label(Contracts.text_of(s), 19, UITheme.CREAM)
 		title.autowrap_mode = TextServer.AUTOWRAP_WORD
 		vb.add_child(title)
-		vb.add_child(UITheme.label("Reward  ◈ %d tokens  +  cubes" % int(s.get("tokens", 0)), 14, TOKEN_COLOR))
+		vb.add_child(UITheme.label(tr("Reward  ◈ %d tokens  +  cubes") % int(s.get("tokens", 0)), 14, TOKEN_COLOR))
 		if st == "active" or st == "done":
 			var bar := ProgressBar.new()
 			bar.show_percentage = false
@@ -155,7 +155,7 @@ func _rebuild_slots() -> void:
 		match st:
 			"offer":
 				var acc := Button.new()
-				acc.text = "Accept  (%s)" % _clock(float(s.get("time_s", 600)))
+				acc.text = tr("Accept  (%s)") % _clock(float(s.get("time_s", 600)))
 				acc.custom_minimum_size = Vector2(170, 40)
 				UITheme.orange_button(acc)
 				acc.pressed.connect(func() -> void:
@@ -164,7 +164,7 @@ func _rebuild_slots() -> void:
 						refresh(true))
 				row.add_child(acc)
 				var pass_b := Button.new()
-				pass_b.text = "Pass"
+				pass_b.text = tr("Pass")
 				pass_b.custom_minimum_size = Vector2(80, 40)
 				pass_b.pressed.connect(func() -> void:
 					var c: Contracts = _contracts()
@@ -174,13 +174,13 @@ func _rebuild_slots() -> void:
 				row.add_child(pass_b)
 			"active":
 				var b := Button.new()
-				b.text = "Working on it"
+				b.text = tr("Working on it")
 				b.disabled = true
 				b.custom_minimum_size = Vector2(170, 40)
 				row.add_child(b)
 			"done":
 				var cl := Button.new()
-				cl.text = "Claim  ◈ %d" % int(s.get("tokens", 0))
+				cl.text = tr("Claim  ◈ %d") % int(s.get("tokens", 0))
 				cl.custom_minimum_size = Vector2(170, 40)
 				UITheme.orange_button(cl)
 				cl.pressed.connect(func() -> void:
@@ -205,9 +205,9 @@ func _tick_labels() -> void:
 		var timer: Label = refs.get("timer")
 		match st:
 			"wait":
-				timer.text = "Next posting in %s" % _clock(float(s.get("wait", 0.0)))
+				timer.text = tr("Next posting in %s") % _clock(float(s.get("wait", 0.0)))
 			"offer":
-				timer.text = "Time limit %s once accepted   ·   offer open %s" % [_clock(float(s.get("time_s", 600))), _clock(float(s.get("offer_left", 0.0)))]
+				timer.text = tr("Time limit %s once accepted   ·   offer open %s") % [_clock(float(s.get("time_s", 600))), _clock(float(s.get("offer_left", 0.0)))]
 			"active", "done":
 				var have: float = Contracts.count_of(s, c.live_value(s)) if c else 0.0
 				if st == "done":
@@ -218,7 +218,7 @@ func _tick_labels() -> void:
 				var cnt: Label = refs.get("count")
 				if cnt:
 					cnt.text = "%d / %d" % [int(have), int(s.get("n", 1))]
-				timer.text = ("Time left %s" % _clock(float(s.get("left", 0.0)))) if st == "active" else "Finished. Claim your tokens!"
+				timer.text = (tr("Time left %s") % _clock(float(s.get("left", 0.0)))) if st == "active" else tr("Finished. Claim your tokens!")
 				timer.add_theme_color_override("font_color", Color(1.0, 0.55, 0.35) if st == "active" and float(s.get("left", 0.0)) < 60.0 else UITheme.MUTED)
 
 
@@ -241,11 +241,11 @@ func _rebuild_shop() -> void:
 		var price: String = "◈ %d" % int(it.get("cost", 0))
 		var status: String = price
 		if kind == "livery" and have:
-			status = "Equipped  (press to remove)" if Liveries.equipped() == id else "Owned  ·  press to equip"
+			status = tr("Equipped  (press to remove)") if Liveries.equipped() == id else tr("Owned  ·  press to equip")
 		var why: String = Contracts.block_reason(id)
 		if why != "" and not (kind == "livery" and have):
 			status = "%s   ·   %s" % [price, why]
-		b.text = "%s\n%s\n%s" % [str(it.get("name", id)), str(it.get("desc", "")), status]
+		b.text = "%s\n%s\n%s" % [tr(str(it.get("name", id))), tr(str(it.get("desc", ""))), status]
 		b.disabled = why != "" and not (kind == "livery" and have)
 		b.add_theme_color_override("font_color", col.lightened(0.25))
 		b.add_theme_stylebox_override("normal", UITheme.box(Color(col.r * 0.12 + 0.04, col.g * 0.12 + 0.04, col.b * 0.12 + 0.04, 0.92), Color(col, 0.6 if Liveries.equipped() == id else 0.25), 2 if Liveries.equipped() == id else 1, 8, 10))

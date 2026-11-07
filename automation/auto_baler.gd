@@ -474,10 +474,10 @@ func _build() -> void:
 	lamp.material_override = _lamp_mat
 	lamp.position = Vector3(-hw - 0.15, 2.86, 0.2)
 	add_child(lamp)
-	var label := Mats.stencil("AUTO-BALER", 96, Color(0.95, 0.93, 0.85, 0.92))
+	var label := Mats.stencil(tr("AUTO-BALER"), 96, Color(0.95, 0.93, 0.85, 0.92))
 	label.position = Vector3(0, 2.6, hd + 0.155)
 	add_child(label)
-	var warn := Mats.stencil("KEEP CLEAR · 40 T", 44, Color(0.95, 0.8, 0.3, 0.9))
+	var warn := Mats.stencil(tr("KEEP CLEAR · 40 T"), 44, Color(0.95, 0.8, 0.3, 0.9))
 	warn.position = Vector3(-hw - 0.12, 1.4, hd + 0.125)
 	warn.rotation_degrees = Vector3(0, 0, 90)
 	add_child(warn)

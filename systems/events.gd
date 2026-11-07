@@ -274,8 +274,8 @@ func start(id: String, force: bool = false) -> bool:
 	var d: Dictionary = def(id)
 	if d.is_empty():
 		return false
-	active = {"id": id, "name": str(d.get("name", id)), "color": Color.html(str(d.get("color", "#ffffff"))),
-		"left": float(d.get("duration_s", 120)), "dur": float(d.get("duration_s", 120)), "hint": str(d.get("hud", "")),
+	active = {"id": id, "name": tr(str(d.get("name", id))), "color": Color.html(str(d.get("color", "#ffffff"))),
+		"left": float(d.get("duration_s", 120)), "dur": float(d.get("duration_s", 120)), "hint": tr(str(d.get("hud", ""))),
 		"progress": "", "pos": null}
 	var ok: bool = false
 	var arg: String = ""
@@ -295,7 +295,7 @@ func start(id: String, force: bool = false) -> bool:
 		arg = LedgerArc.compass((active["pos"] as Vector3) - world.patch.global_position)
 	if id == "robot_hiccup":
 		arg = str(active.get("robot_name", "A robot"))
-	var toast: String = str(d.get("toast", d.get("name", id)))
+	var toast: String = tr(str(d.get("toast", d.get("name", id))))
 	EventBus.toast.emit(toast % arg if "%s" in toast else toast, "story")
 	Audio.play("blip", 1.25, -4.0)
 	Audio.play("chime", 1.5, -8.0)
@@ -433,7 +433,7 @@ func _on_streak_up(tier: int) -> void:
 	var col: Color = Color(0.45, 0.9, 1.0).lerp(Color(1.0, 0.75, 0.25), float(tier) / maxf(streak.max_tier, 1))
 	Audio.play_scale("chime", tier + 2, -8.0)
 	Vfx.ring(p.global_position + Vector3(0, 0.1, 0), 1.2 + tier * 0.25, col, 0.5)
-	Vfx.float_text(p.global_position + Vector3(0, 2.2, 0), "STREAK x%d  +%d%%" % [tier, int(round(streak.bonus() * 100.0))], col, 0.55, 0.9)
+	Vfx.float_text(p.global_position + Vector3(0, 2.2, 0), tr("STREAK x%d  +%d%%") % [tier, int(round(streak.bonus() * 100.0))], col, 0.55, 0.9)
 	var best: float = float(GameState.stats.get("best_streak_tier", 0))
 	if tier > best:
 		GameState.stats["best_streak_tier"] = tier
@@ -473,19 +473,19 @@ func _pay(rw: Dictionary, at: Vector3, source: String) -> String:
 	if rw.has("income_s"):
 		var c: float = progress_cubes(float(rw["income_s"]))
 		GameState.add_currency("cubes", BigNum.from_float(c))
-		bits.append("+%s cubes" % Settings.fmt(BigNum.from_float(c)))
+		bits.append(tr("+%s cubes") % Settings.fmt(BigNum.from_float(c)))
 	if rw.has("bolts"):
 		var b: int = _range_i(rw["bolts"])
 		GameState.add_currency("bolts", BigNum.from_float(b))
-		bits.append("+%d bolts" % b)
+		bits.append(tr("+%d bolts") % b)
 	if rw.has("seeds") and GameState.flags.get("seeds_unlocked", false):
 		var s: int = _range_i(rw["seeds"])
 		GameState.add_currency("seeds", BigNum.from_float(s))
-		bits.append("+%d seeds" % s)
+		bits.append(tr("+%d seeds") % s)
 	if rw.has("data"):
 		var dv: int = _range_i(rw["data"])
 		GameState.add_currency(Research.CURRENCY, BigNum.from_float(dv))
-		bits.append("+%d data" % dv)
+		bits.append(tr("+%d data") % dv)
 	var n_parts: int = int(rw.get("parts", 0))
 	if rw.has("part_rarity"):
 		n_parts = maxi(n_parts, 1)
@@ -497,17 +497,17 @@ func _pay(rw: Dictionary, at: Vector3, source: String) -> String:
 		var t: int = rng.randi() % maxi(Economy.parts.get("types", [1]).size(), 1)
 		GameState.parts.append({"type": t, "rarity": r})
 		EventBus.part_found.emit(t, r)
-		bits.append("+%s %s" % [Economy.rarity(r).get("name", ""), Economy.part_type(t).get("name", "part")])
+		bits.append("+%s %s" % [tr(str(Economy.rarity(r).get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))])
 	var tok: int = int(rw.get("tokens", 0))
 	if rng.randf() < float(rw.get("tokens_chance", 0.0)):
 		tok += 1
 	if tok > 0:
 		GameState.add_currency(Contracts.CURRENCY, BigNum.from_float(tok))
-		bits.append("+%d token%s" % [tok, "" if tok == 1 else "s"])
+		bits.append(tr_n("+%d token", "+%d tokens", tok) % tok)
 	if rng.randf() < float(rw.get("trinket_chance", 0.0)):
 		var tid: String = Collection.roll(source, rng.randf())
 		if tid != "" and Collection.grant(tid):
-			bits.append(str(Collection.def(tid).get("name", tid)))
+			bits.append(tr(str(Collection.def(tid).get("name", tid))))
 	var text: String = "  ".join(bits)
 	if text != "":
 		Vfx.float_text(at + Vector3(0, 1.6, 0), text, Color(0.75, 1.0, 0.85), 0.55, 1.6)
@@ -629,7 +629,7 @@ func _update_supply() -> void:
 	for pid: int in zone:
 		alive += world.field.piece_alive[pid]
 	var need: int = maxi(1, int(ceil(int(active["n0"]) * 0.08)))
-	active["progress"] = "%d pieces of junk left around the crate" % maxi(alive - need, 0)
+	active["progress"] = tr("%d pieces of junk left around the crate") % maxi(alive - need, 0)
 	if bool(active["landed"]) and alive <= need:
 		var pos: Vector3 = active["pos"]
 		if is_instance_valid(crate):
@@ -654,9 +654,9 @@ func _update_supply() -> void:
 		Vfx.burst("confetti", pos + Vector3(0, 1.0, 0), Color.WHITE, 0.6)
 		Audio.play("fanfare", 1.15, -6.0)
 		var got: String = _pay(def("supply_drop").get("reward", {}), pos, "supply_drop")
-		_finish(true, "Supply crate opened: %s" % got)
+		_finish(true, tr("Supply crate opened: %s") % got)
 	elif float(active["left"]) <= 0.0:
-		_finish(false, "The supply crate's beacon timed out and a drone hauled it back up. Another will come.")
+		_finish(false, tr("The supply crate's beacon timed out and a drone hauled it back up. Another will come."))
 
 
 # --- Salvage surge -----------------------------------------------------------------------------
@@ -703,12 +703,12 @@ func _update_surge(_delta: float) -> void:
 			var pid: int = pids[rng.randi() % pids.size()]
 			if world.field.piece_alive[pid] == 1:
 				Vfx.burst("sparkle", world.field.piece_pos[pid] + Vector3(0, 0.2, 0), Color(1.0, 0.85, 0.35), 0.25)
-	active["progress"] = "%d pieces grabbed at 3x" % int(active.get("took", 0))
+	active["progress"] = tr("%d pieces grabbed at 3x") % int(active.get("took", 0))
 	if float(active["left"]) <= 0.0 or world.field.is_clean(h):
 		var took: int = int(active.get("took", 0))
 		if took >= 20:
 			_pay({"trinket_chance": float(def("salvage_surge").get("reward", {}).get("trinket_chance", 0.15))}, world.patch.global_position, "salvage_surge")
-		_finish(took > 0, ("The surge faded. You grabbed %d pieces at triple value; they pay out when you bale." % took) if took > 0 else "The surge faded. Next time!")
+		_finish(took > 0, (tr("The surge faded. You grabbed %d pieces at triple value; they pay out when you bale.") % took) if took > 0 else tr("The surge faded. Next time!"))
 
 
 # --- Rain shower -------------------------------------------------------------------------------
@@ -756,7 +756,7 @@ func _update_rain(_delta: float) -> void:
 				if g.slot_species[s] >= 0 and g.slot_water[s] < 30.0:
 					g.water(s, 30.0 - g.slot_water[s])
 					active["watered"] = int(active["watered"]) + 1
-	active["progress"] = "Every plant is drinking"
+	active["progress"] = tr("Every plant is drinking")
 	if float(active["left"]) <= 0.0:
 		# Puddles linger and dry slowly after the rain.
 		for pd: Variant in active.get("puddles", []):
@@ -766,7 +766,7 @@ func _update_rain(_delta: float) -> void:
 				tw.tween_property(pd, "scale", Vector3(0.01, 1, 0.01), 12.0)
 				tw.tween_callback((pd as Node).queue_free)
 		var got: String = _pay(def("rain_shower").get("reward", {}), world.patch.global_position, "rain_shower")
-		_finish(true, "The rain moves on. The ground soaked it up: %s" % got)
+		_finish(true, tr("The rain moves on. The ground soaked it up: %s") % got)
 
 
 # --- Robot hiccup ------------------------------------------------------------------------------
@@ -787,7 +787,7 @@ func _start_hiccup(_d: Dictionary, _force: bool) -> bool:
 	marker.position = Vector3(0, 2.2, 0)
 	r.add_child(marker)
 	active["marker"] = marker
-	world.interactables.register(r, 2.8, "E   fix %s's hiccup" % r.robot_name, _fix_hiccup)
+	world.interactables.register(r, 2.8, tr("E   fix %s's hiccup") % r.robot_name, _fix_hiccup)
 	return true
 
 
@@ -814,9 +814,9 @@ func _update_hiccup(delta: float) -> void:
 			tw.tween_property(bot.visual, "position:y", 0.18, 0.08)
 			tw.tween_property(bot.visual, "position:y", 0.0, 0.18).set_trans(Tween.TRANS_BOUNCE)
 	var d: float = bot.global_position.distance_to(world.patch.global_position)
-	active["progress"] = "%s is %d m away" % [bot.robot_name, int(d)]
+	active["progress"] = tr("%s is %d m away") % [bot.robot_name, int(d)]
 	if float(active["left"]) <= 0.0:
-		_finish(false, "%s shook off its hiccups on its own. It looks embarrassed." % bot.robot_name)
+		_finish(false, tr("%s shook off its hiccups on its own. It looks embarrassed.") % bot.robot_name)
 
 
 func _fix_hiccup() -> void:
@@ -830,7 +830,7 @@ func _fix_hiccup() -> void:
 	Audio.play("servo", 1.0, -4.0)
 	Audio.play("ding", 1.2, -6.0)
 	var got: String = _pay(def("robot_hiccup").get("reward", {}), bot.global_position, "robot_hiccup")
-	_finish(true, "%s is fixed and back to work. %s" % [bot.robot_name, got])
+	_finish(true, tr("%s is fixed and back to work. %s") % [bot.robot_name, got])
 
 
 # --- Wildlife visit ----------------------------------------------------------------------------
@@ -878,13 +878,13 @@ func _start_wildlife(d: Dictionary, force: bool) -> bool:
 	Vfx.burst("sparkle", at + Vector3(0, 0.6, 0), Color.html(str(pick["glow"])), 0.6)
 	active["animal"] = an
 	active["animal_id"] = str(pick["id"])
-	active["animal_name"] = str(pick["name"])
+	active["animal_name"] = tr(str(pick["name"]))
 	active["animal_body"] = str(pick.get("body", "fox"))
 	active["hex"] = best
 	active["pos"] = at
 	active["goal"] = at
-	active["name"] = "Wildlife Visit: %s" % str(pick["name"])
-	world.interactables.register(an, 3.4, "E   take a photo of the %s" % str(pick["name"]), _photo)
+	active["name"] = tr("Wildlife Visit: %s") % tr(str(pick["name"]))
+	world.interactables.register(an, 3.4, tr("E   take a photo of the %s") % tr(str(pick["name"])), _photo)
 	return true
 
 
@@ -915,10 +915,10 @@ func _update_wildlife(delta: float) -> void:
 		var c: Vector3 = world.field.hex_center(int(active["hex"]))
 		active["goal"] = _gp(c + Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)) * world.field.hex_size * 0.45)
 	active["pos"] = an.global_position
-	active["progress"] = "%s, %d m away" % [str(active["animal_name"]), int(an.global_position.distance_to(world.patch.global_position))]
+	active["progress"] = tr("%s, %d m away") % [str(active["animal_name"]), int(an.global_position.distance_to(world.patch.global_position))]
 	if float(active["left"]) <= 0.0:
 		_animal_leave(an)
-		_finish(false, "The %s wandered off. It'll be back somewhere green." % str(active["animal_name"]))
+		_finish(false, tr("The %s wandered off. It'll be back somewhere green.") % str(active["animal_name"]))
 
 
 func _animal_leave(an: Node3D) -> void:
@@ -948,7 +948,7 @@ func _photo() -> void:
 	rw.erase("trinket_chance")
 	var got: String = _pay(rw, an.global_position, "wildlife_visit")
 	_animal_leave(an)
-	_finish(true, ("Snap! The %s is in your Collection. %s" if first else "Snap! Another lovely shot of the %s. %s") % [str(active.get("animal_name", "visitor")), got])
+	_finish(true, (tr("Snap! The %s is in your Collection. %s") if first else tr("Snap! Another lovely shot of the %s. %s")) % [str(active.get("animal_name", "visitor")), got])
 
 
 # --- Rare part signal --------------------------------------------------------------------------
@@ -998,13 +998,13 @@ func _update_signal() -> void:
 		ring.scale = Vector3(s, 1, s)
 	var idx: int = int(active["part"])
 	var d: float = Vector2(world.field.part_pos[idx].x - world.patch.global_position.x, world.field.part_pos[idx].z - world.patch.global_position.z).length()
-	active["progress"] = "Signal %d%%" % int(clampf(1.0 - d / 40.0, 0.0, 1.0) * 100.0)
+	active["progress"] = tr("Signal %d%%") % int(clampf(1.0 - d / 40.0, 0.0, 1.0) * 100.0)
 	if world.field.part_found[idx] == 1:
 		var got: String = _pay(def("rare_part_signal").get("reward", {}), world.field.part_pos[idx], "rare_part_signal")
 		Audio.play("fanfare", 1.0, -6.0)
-		_finish(true, "That was the signal: a stash with a rare part inside. %s" % got)
+		_finish(true, tr("That was the signal: a stash with a rare part inside. %s") % got)
 	elif float(active["left"]) <= 0.0:
-		_finish(false, "The signal faded. The part is still down there; the detector will find it.")
+		_finish(false, tr("The signal faded. The part is still down there; the detector will find it."))
 
 
 # --- Ledger audit ------------------------------------------------------------------------------
@@ -1070,8 +1070,8 @@ func _update_audit(_delta: float) -> void:
 			alive.append(pid)
 	var board: Label3D = active.get("board")
 	if is_instance_valid(board):
-		board.text = "AUDIT   YOU %d  :  %d DRONE" % [int(active["player"]), int(active["drone_n"])]
-	active["progress"] = "You %d  :  %d Drone   ·   %d left" % [int(active["player"]), int(active["drone_n"]), alive.size()]
+		board.text = tr("AUDIT   YOU %d  :  %d DRONE") % [int(active["player"]), int(active["drone_n"])]
+	active["progress"] = tr("You %d  :  %d Drone   ·   %d left") % [int(active["player"]), int(active["drone_n"]), alive.size()]
 	if bool(active["working"]) and is_instance_valid(drone) and _tick_t >= float(active["pace"]) and not alive.is_empty():
 		_tick_t = 0.0
 		var best: int = alive[0]
@@ -1108,11 +1108,11 @@ func _update_audit(_delta: float) -> void:
 		if won:
 			var got: String = _pay(def("ledger_audit").get("reward", {}), active["pos"], "ledger_audit")
 			Audio.play("fanfare", 1.2, -6.0)
-			_finish(true, "Audit won, %d to %d! The Ledger stamps it APPROVED. %s" % [you, dn, got])
+			_finish(true, tr("Audit won, %d to %d! The Ledger stamps it APPROVED. %s") % [you, dn, got])
 		else:
 			var c: float = progress_cubes(20.0)
 			GameState.add_currency("cubes", BigNum.from_float(c))
-			_finish(false, "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes." % [dn, you, Settings.fmt(BigNum.from_float(c))])
+			_finish(false, tr("The drone won the audit, %d to %d. It left a tip anyway: +%s cubes.") % [dn, you, Settings.fmt(BigNum.from_float(c))])
 
 
 # --- Queries for the HUD and Command view --------------------------------------------------------

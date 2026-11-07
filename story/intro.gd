@@ -250,7 +250,7 @@ func _phase_ark() -> void:
 	_fade_to(0.0, 2.5)
 	if await _hold(1.4):
 		return
-	_show_title("GREENFALL", "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle.")
+	_show_title("GREENFALL", tr("Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."))
 	if await _hold(3.8):
 		return
 	_hide_title()
@@ -268,7 +268,7 @@ func _phase_ark() -> void:
 		st.shot(v + Vector3(1.9, 1.35, 0.9), v + Vector3(-0.3, 0.8, -0.7), v + Vector3(1.35, 1.15, 0.45), v + Vector3(-0.25, 0.8, -0.75), 7.5, 42.0, 36.0))
 	if _skipped:
 		return
-	_subtitle("Lumi, the ark's little seed-keeper, sang to the seedlings every night.")
+	_subtitle(tr("Lumi, the ark's little seed-keeper, sang to the seedlings every night."))
 	var hum_t: float = 0.0
 	var next_note: float = 0.0
 	var said: bool = false
@@ -281,7 +281,7 @@ func _phase_ark() -> void:
 		st.lumi.rotation.z = sin(hum_t * 3.0) * 0.06
 		if hum_t > 1.6 and not said:
 			said = true
-			_wren("Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do.", WREN_CLEAR)
+			_wren(tr("Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."), WREN_CLEAR)
 		await get_tree().process_frame
 	st.lumi.rotation.z = 0.0
 
@@ -300,7 +300,7 @@ func _phase_storm() -> void:
 		st.shot(Vector3(10, -9, 30), Vector3(-6, -1, 0), Vector3(4, -7, 24), Vector3(-3, -1, 0), 6.0, 46.0, 44.0))
 	if _skipped:
 		return
-	_subtitle("Then, one night, the sky came apart.")
+	_subtitle(tr("Then, one night, the sky came apart."))
 	Audio.play("whoosh", 0.6, -6.0)
 	for i: int in 9:
 		var a := Vector3(randf_range(-80, -30), randf_range(30, 60), randf_range(-40, 20))
@@ -332,7 +332,7 @@ func _phase_storm() -> void:
 	if _skipped:
 		return
 	_subtitle("")
-	_wren("Hull breach in the vault bay! Lumi, leave the trays, get clear!", WREN_CLEAR)
+	_wren(tr("Hull breach in the vault bay! Lumi, leave the trays, get clear!"), WREN_CLEAR)
 	for i: int in 2:
 		st.debris(v + Vector3(randf_range(-2, 2), 3.6, 3.5), 5, 2.5, 0.4)
 	Audio.play("servo", 1.0, -6.0)
@@ -395,7 +395,7 @@ func _phase_storm() -> void:
 		st.aim(Vector3(-6, -12, 22).lerp(Vector3(-10, -22, 26), t / 4.0), look, lerpf(48.0, 56.0, t / 4.0))
 		if t > 0.8 and not said:
 			said = true
-			_wren("Lumi— hold on— I can't turn her around— hold on—", WREN_GLITCH)
+			_wren(tr("Lumi— hold on— I can't turn her around— hold on—"), WREN_GLITCH)
 		await get_tree().process_frame
 
 
@@ -408,7 +408,7 @@ func _phase_fall() -> void:
 		return
 	st.set_alarm(0.0)
 	st.ark.visible = false
-	_subtitle("The ark could not turn back. The pod fell for days.")
+	_subtitle(tr("The ark could not turn back. The pod fell for days."))
 	# Re-entry: the pod tumbles toward Verdance wrapped in fire.
 	st.show_set("space")
 	st.pod.visible = true
@@ -580,24 +580,24 @@ func _wake(out_from: Vector3, out_to: Vector3) -> void:
 		return
 	if model:
 		model.look_toward(out_to + Vector3(3, 1, 2))
-	_wren("...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance.", WREN_GLITCH)
+	_wren(tr("...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."), WREN_GLITCH)
 	if await _hold(4.0):
 		return
 	if model:
 		model.look_toward(null)
 	# Pull back so the battery readout and Lumi share the frame.
 	_shot(_cam.global_position, out_to + Vector3(0, 0.7, 0), out_to + fwd * 3.2 + Vector3(1.4, 1.5, 0.6), out_to + Vector3(0, 0.6, 0), 12.0)
-	_wren("Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading.", WREN_GLITCH)
+	_wren(tr("Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."), WREN_GLITCH)
 	if await _hold(5.0):
 		return
-	_wren("So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core.", 1)
+	_wren(tr("So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."), 1)
 	if model:
 		model.set_happy(0.7)
 		model.flash()
 		Audio.play("chirp" if Audio.has_sound("chirp") else "blip", 1.3, -6.0)
 	if await _hold(4.2):
 		return
-	_wren("Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time.", 1)
+	_wren(tr("Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."), 1)
 	await _hold(4.0)
 
 
@@ -660,7 +660,7 @@ func _build_overlay() -> void:
 	_sub.modulate.a = 0.0
 	root.add_child(_sub)
 	_skip = UITheme.label("", 12, Color(1, 1, 1, 0.45))
-	Settings.bind_text(_skip, func() -> String: return "%s  skip" % ("Space / Esc" if not Settings.last_input_pad else Settings.glyph("ui_accept")))  # [deck]
+	Settings.bind_text(_skip, func() -> String: return tr("%s  skip") % (tr("Space / Esc") if not Settings.last_input_pad else Settings.glyph("ui_accept")))  # [deck]
 	_skip.set_anchors_preset(Control.PRESET_TOP_RIGHT)
 	_skip.offset_left = -170
 	_skip.offset_top = 24
@@ -701,7 +701,7 @@ func _build_battery(root: Control) -> void:
 	cells.add_child(nub)
 	_battery_pct = UITheme.label("%d%%" % int(round(CoreCharge.START * 100.0)), 26, Color(1.0, 0.45, 0.3))
 	row.add_child(_battery_pct)
-	box.add_child(UITheme.label("GREEN LIGHT  ·  NONE DETECTED", 12, Color(1.0, 0.6, 0.4, 0.85)))
+	box.add_child(UITheme.label(tr("GREEN LIGHT  ·  NONE DETECTED"), 12, Color(1.0, 0.6, 0.4, 0.85)))
 
 
 func _show_battery() -> void:

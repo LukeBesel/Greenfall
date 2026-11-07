@@ -309,9 +309,9 @@ func _build_ui() -> void:
 	var gap := Control.new()
 	gap.custom_minimum_size = Vector2(0, 12)
 	col.add_child(gap)
-	col.add_child(UITheme.label("One small robot. One very big cleanup.", 20, Color(0.92, 0.88, 0.8)))
+	col.add_child(UITheme.label(tr("One small robot. One very big cleanup."), 20, Color(0.92, 0.88, 0.8)))
 	if Demo.is_demo():  # [steam]
-		col.add_child(UITheme.label("DEMO  ·  the first district", 15, UITheme.GOLD))
+		col.add_child(UITheme.label(tr("DEMO  ·  the first district"), 15, UITheme.GOLD))
 	var spacer := Control.new()
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	col.add_child(spacer)
@@ -323,21 +323,21 @@ func _build_ui() -> void:
 	col.add_child(_menu_box)
 	var buttons: Array[Button] = []
 	if not _save.is_empty():
-		_continue = _menu_button("Continue", _on_continue, _save_summary())
+		_continue = _menu_button(tr("Continue"), _on_continue, _save_summary())
 		buttons.append(_continue)
-	_new_game = _menu_button("New Game", _on_new_game)
+	_new_game = _menu_button(tr("New Game"), _on_new_game)
 	buttons.append(_new_game)
 	if Demo.is_demo():  # [steam]
-		buttons.append(_menu_button("Wishlist on Steam", SteamService.open_store_page))
-	buttons.append(_menu_button("Settings", _open_settings))
-	buttons.append(_menu_button("Credits", _open_credits))
-	buttons.append(_menu_button("Quit", func() -> void: get_tree().quit()))
+		buttons.append(_menu_button(tr("Wishlist on Steam"), SteamService.open_store_page))
+	buttons.append(_menu_button(tr("Settings"), _open_settings))
+	buttons.append(_menu_button(tr("Credits"), _open_credits))
+	buttons.append(_menu_button(tr("Quit"), func() -> void: get_tree().quit()))
 	_chain_focus(buttons)
 	var spacer2 := Control.new()
 	spacer2.custom_minimum_size = Vector2(0, 26)
 	col.add_child(spacer2)
 	var ver: String = str(ProjectSettings.get_setting("application/config/version", ""))
-	col.add_child(UITheme.label(("v" + ver + "   ·   " if ver != "" else "") + "Made with Godot", 12, Color(1, 1, 1, 0.4)))
+	col.add_child(UITheme.label(("v" + ver + "   ·   " if ver != "" else "") + tr("Made with Godot"), 12, Color(1, 1, 1, 0.4)))
 
 	_settings = SettingsPanel.new()
 	_settings.closed.connect(_on_sub_closed.bind(2))
@@ -423,16 +423,17 @@ func _save_summary() -> String:
 	var hub: int = int(_save.get("current_hub", 0)) + 1
 	var stats: Dictionary = _save.get("stats", {})
 	var secs: int = int(float(stats.get("time_played", 0.0)))
-	var played: String = "%dh %02dm" % [secs / 3600, (secs / 60) % 60] if secs >= 3600 else "%dm" % maxi(1, secs / 60)
+	var played: String = tr("%dh %02dm") % [secs / 3600, (secs / 60) % 60] if secs >= 3600 else tr("%dm") % maxi(1, secs / 60)
 	var cubes: String = "0"
 	var cur: Dictionary = _save.get("currencies", {})
 	if cur.has("cubes"):
 		cubes = Settings.fmt(BigNum.from_serialized(cur["cubes"]))
-	var parts: Array[String] = ["Hub %d" % hub, played, "%s cubes" % cubes]
+	# TRANSLATORS: Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
+	var parts: Array[String] = [tr("Hub %d") % hub, played, tr("%s cubes") % cubes]
 	var saved: float = float(_save.get("saved_unix", 0.0))
 	if saved > 0.0:
 		var dt: Dictionary = Time.get_datetime_dict_from_unix_time(int(saved + Time.get_time_zone_from_system().get("bias", 0) * 60))
-		var months: Array[String] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+		var months: Array[String] = [tr("Jan"), tr("Feb"), tr("Mar"), tr("Apr"), tr("May"), tr("Jun"), tr("Jul"), tr("Aug"), tr("Sep"), tr("Oct"), tr("Nov"), tr("Dec")]
 		parts.append("%d %s %02d:%02d" % [dt["day"], months[int(dt["month"]) - 1], dt["hour"], dt["minute"]])
 	return "  ·  ".join(parts)
 
@@ -499,7 +500,7 @@ func _on_sub_closed(which: int) -> void:
 	var target: Button = _new_game
 	for c: Node in _menu_box.get_children():
 		var b: Button = c as Button
-		if b and ((which == 1 and b.text == "CREDITS") or (which == 2 and b.text == "SETTINGS")):
+		if b and ((which == 1 and b.text == tr("Credits").to_upper()) or (which == 2 and b.text == tr("Settings").to_upper())):
 			target = b
 	target.grab_focus()
 
@@ -528,7 +529,7 @@ func _build_credits() -> void:
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 12)
 	pc.add_child(vb)
-	vb.add_child(UITheme.label("CREDITS", 30, UITheme.GOLD))
+	vb.add_child(UITheme.label(tr("CREDITS"), 30, UITheme.GOLD))
 	var scroll := ScrollContainer.new()
 	scroll.custom_minimum_size = Vector2(0, 420)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -543,7 +544,7 @@ func _build_credits() -> void:
 	rt.text = _credits_bbcode()
 	scroll.add_child(rt)
 	var back := Button.new()
-	back.text = "Back"
+	back.text = tr("Back")
 	back.custom_minimum_size = Vector2(150, 44)
 	back.size_flags_horizontal = Control.SIZE_SHRINK_END
 	back.pressed.connect(_on_sub_closed.bind(1))
@@ -556,10 +557,10 @@ func _build_credits() -> void:
 func _credits_bbcode() -> String:
 	var gold: String = UITheme.GOLD.to_html(false)
 	var muted: String = UITheme.MUTED.to_html(false)
-	var out: String = "[b][color=#%s]GREENFALL[/color][/b]\nCode, procedural meshes, synthesized audio and writing are original to Greenfall.\n\n" % gold
+	var out: String = tr("[b][color=#%s]GREENFALL[/color][/b]\nCode, procedural meshes, synthesized audio and writing are original to Greenfall.\n\n") % gold
 	var f := FileAccess.open("res://docs/CREDITS.md", FileAccess.READ)
 	if f == null:
-		return out + "Third-party assets: CC0, Poly Haven (polyhaven.com)."
+		return out + tr("Third-party assets: CC0, Poly Haven (polyhaven.com).")
 	var by_type: Dictionary = {}
 	var order: Array[String] = []
 	var tail: Array[String] = []
@@ -577,7 +578,7 @@ func _credits_bbcode() -> String:
 				if not by_type.has(kind):
 					by_type[kind] = []
 					order.append(kind)
-				(by_type[kind] as Array).append("%s [color=#%s]by %s[/color]" % [asset, muted, cells[2].strip_edges()])
+				(by_type[kind] as Array).append(tr("%s [color=#%s]by %s[/color]") % [asset, muted, cells[2].strip_edges()])
 		elif line.begins_with("## "):
 			in_tail = true
 			tail.append("[b][color=#%s]%s[/color][/b]" % [gold, line.substr(3).to_upper()])
@@ -611,8 +612,8 @@ func _build_confirm() -> void:
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 14)
 	pc.add_child(vb)
-	vb.add_child(UITheme.label("START A NEW GAME?", 24, UITheme.GOLD))
-	var msg := UITheme.label("Your current save will be erased. This can't be undone.", 16)
+	vb.add_child(UITheme.label(tr("START A NEW GAME?"), 24, UITheme.GOLD))
+	var msg := UITheme.label(tr("Your current save will be erased. This can't be undone."), 16)
 	msg.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	vb.add_child(msg)
 	var hb := HBoxContainer.new()
@@ -620,13 +621,13 @@ func _build_confirm() -> void:
 	hb.alignment = BoxContainer.ALIGNMENT_END
 	vb.add_child(hb)
 	_confirm_no = Button.new()
-	_confirm_no.text = "Keep my save"
+	_confirm_no.text = tr("Keep my save")
 	_confirm_no.custom_minimum_size = Vector2(170, 46)
 	_confirm_no.pressed.connect(_on_sub_closed.bind(3))
 	UITheme.juice(_confirm_no)
 	hb.add_child(_confirm_no)
 	var yes := Button.new()
-	yes.text = "Erase and start"
+	yes.text = tr("Erase and start")
 	yes.custom_minimum_size = Vector2(190, 46)
 	UITheme.orange_button(yes)
 	yes.add_theme_stylebox_override("focus", UITheme.box(Color(0, 0, 0, 0), Color.WHITE, 2, 5, 8))

@@ -176,7 +176,7 @@ func _play(beat: int) -> void:
 		75:
 			await _beat_ark_star()
 		100:
-			EventBus.toast.emit("Bloom Core 100%. Lumi's core is full of green light.", "story")
+			EventBus.toast.emit(tr("Bloom Core 100%. Lumi's core is full of green light."), "story")
 			var bl: Node = world.get_node_or_null("Bloom")
 			if DevHooks.get_f("core-beat", 0.0) == 100.0 and bl is Bloom:
 				(bl as Bloom).play_finale(true)
@@ -201,8 +201,8 @@ func _beat_memory() -> void:
 		model.flash()
 		model.set_happy(1.0)
 	Audio.play("chime", 1.2, -8.0)
-	c.caption("Bloom Core  25%")
-	c.wren("There. The relay just locked on. Lumi, I can hear you properly now. Clear as the old days.", 1)
+	c.caption(tr("Bloom Core  25%"))
+	c.wren(tr("There. The relay just locked on. Lumi, I can hear you properly now. Clear as the old days."), 1)
 	if await c.hold(4.6):
 		await c.end()
 		return
@@ -222,7 +222,7 @@ func _beat_memory() -> void:
 	st.env.adjustment_saturation = 0.8
 	st.shot(g + Vector3(5.5, 2.4, 7.5), g + Vector3(0.3, 1.0, 1.0), g + Vector3(3.2, 1.6, 4.6), g + Vector3(0.4, 0.9, 1.0), 11.0, 44.0, 40.0)
 	c.fade_to(0.0, 1.2)
-	c.caption("A memory  ·  the garden deck of the Cradle")
+	c.caption(tr("A memory  ·  the garden deck of the Cradle"))
 	var t: float = 0.0
 	var said: int = 0
 	while t < 10.5 and not c.skipped:
@@ -230,14 +230,14 @@ func _beat_memory() -> void:
 		lumi.beam_at(g + Vector3(0.1 + sin(t * 0.8) * 0.3, 0.1, 0.3))
 		if t > 1.0 and said == 0:
 			said = 1
-			c.wren("Remember the garden deck? You watered every bed twice, just to be sure.", 2)
+			c.wren(tr("Remember the garden deck? You watered every bed twice, just to be sure."), 2)
 		if t > 5.8 and said == 1:
 			said = 2
-			c.wren("Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting.", 2)
+			c.wren(tr("Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."), 2)
 		await get_tree().process_frame
 	lumi.beam_at(null)
 	await c.end()
-	EventBus.toast.emit("Bloom Core 25%: WREN's signal is clear now.", "story")
+	EventBus.toast.emit(tr("Bloom Core 25%: WREN's signal is clear now."), "story")
 
 
 # --- 50%: the glow comes back -------------------------------------------------------------
@@ -254,9 +254,9 @@ func _beat_glow() -> void:
 	Vfx.burst("big_sparkle", p + Vector3(0, 1.0, 0), Color(0.5, 1.0, 0.85), 1.2)
 	Vfx.burst("sparkle", p + Vector3(0, 0.6, 0), Color(0.7, 1.0, 0.6), 1.0)
 	Audio.play("fanfare", 1.3, -10.0)
-	EventBus.toast.emit("Bloom Core 50%: Lumi's glow is back, brighter than it has been in years.", "story")
+	EventBus.toast.emit(tr("Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."), "story")
 	if world.get("wren") != null:
-		world.wren.line_started.emit("Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright.", 2)
+		world.wren.line_started.emit(tr("Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."), 2)
 	await get_tree().create_timer(2.0).timeout
 
 
@@ -289,7 +289,7 @@ func _beat_ark_star() -> void:
 	var look: Vector3 = p + fwd * 20.0 + Vector3(0, 13.0, 0)
 	c.cam.global_transform = Transform3D(Basis(), cam_pos).looking_at(look, Vector3.UP)
 	c.cam.fov = 58.0
-	c.caption("That night...")
+	c.caption(tr("That night..."))
 	c.fade_to(0.0, 1.4)
 	var star: Node3D = _build_star(4.0)
 	world.add_child(star)
@@ -310,12 +310,12 @@ func _beat_ark_star() -> void:
 		if t > 2.5 and said == 0:
 			said = 1
 			c.caption("")
-			c.wren("Lumi, look up. That light. West to east, steady, not twinkling.", 2)
+			c.wren(tr("Lumi, look up. That light. West to east, steady, not twinkling."), 2)
 			if model:
 				model.set_happy(1.0)
 		if t > 7.0 and said == 1:
 			said = 2
-			c.wren("That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you.", 2)
+			c.wren(tr("That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."), 2)
 			Audio.play("chime", 0.9, -10.0)
 		await get_tree().process_frame
 	await c.end()
@@ -325,7 +325,7 @@ func _beat_ark_star() -> void:
 		sd.frozen = froze
 	if model:
 		model.look_toward(null)
-	EventBus.toast.emit("Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky.", "story")
+	EventBus.toast.emit(tr("Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."), "story")
 
 
 ## The ark seen from the ground: a bright steady point with a soft halo (no fog on it).

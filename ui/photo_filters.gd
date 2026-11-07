@@ -6,6 +6,7 @@ extends RefCounted
 
 const ORDER: Array[String] = ["natural", "golden", "dawn", "neon", "film", "mono", "holo", "bloom"]
 
+# l10n:begin
 const PRESETS: Dictionary = {
 	"natural": {"name": "Natural", "contrast": 1.0, "saturation": 1.0, "warmth": 0.0, "vignette": 0.15, "grain": 0.03},
 	"golden": {"name": "Golden Hour", "contrast": 1.06, "saturation": 1.1, "warmth": 0.65, "vignette": 0.35, "grain": 0.05,
@@ -23,6 +24,7 @@ const PRESETS: Dictionary = {
 	"bloom": {"name": "Bloom", "contrast": 0.98, "saturation": 1.1, "warmth": 0.1, "vignette": 0.2, "grain": 0.04,
 		"bloom": 0.75, "soft": 0.14, "glow": 2.0},
 }
+# l10n:end
 
 ## Hidden grade defaults (anything a preset leaves out).
 const HIDDEN: Dictionary = {
@@ -34,7 +36,7 @@ const HIDDEN: Dictionary = {
 static func names() -> Array[String]:
 	var out: Array[String] = []
 	for id: String in ORDER:
-		out.append(str(PRESETS[id]["name"]))
+		out.append(TranslationServer.translate(str(PRESETS[id]["name"])))
 	return out
 
 

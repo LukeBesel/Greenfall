@@ -58,11 +58,11 @@ func _process(delta: float) -> void:
 		return
 	_root.queue_redraw()
 	var fill: float = patch.compartment.ratio(patch.capacity()) * 100.0
-	_readout.text = "LM-1  OPTICAL   %s\nIRIS  f/%.1f      HOPPER  %d%%\n%s" % [
-		"REC" if fmod(_t, 1.2) < 0.7 else "   ",
+	_readout.text = tr("LM-1  OPTICAL   %s\nIRIS  f/%.1f      HOPPER  %d%%\n%s") % [
+		tr("REC") if fmod(_t, 1.2) < 0.7 else "   ",
 		lerpf(8.0, 2.0, patch.model._iris_now if "_iris_now" in patch.model else 0.5), int(fill),
-		"BALE READY" if patch.compartment.ratio(patch.capacity()) >= 0.9 else ""]
+		tr("BALE READY") if patch.compartment.ratio(patch.capacity()) >= 0.9 else ""]
 	_signal.text = ""
 	if patch.detector and patch.detector.target >= 0:
-		_signal.text = "◢ SIGNAL %d%%" % int(patch.detector.strength * 100.0)
+		_signal.text = tr("◢ SIGNAL %d%%") % int(patch.detector.strength * 100.0)
 	_signal.position = Vector2(_root.size.x * 0.5 - 50.0, _root.size.y * 0.5 + 44.0)

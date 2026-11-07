@@ -304,30 +304,30 @@ func upgrade_cost(i: int) -> Dictionary:
 ## "" when outpost i can be repaired now, else why not.
 func repair_block(i: int) -> String:
 	if i < 0 or i >= spots.size():
-		return "No outpost."
+		return tr("No outpost.")
 	if level_of(i) >= 1:
-		return "Already repaired."
+		return tr("Already repaired.")
 	if items.size() > i and items[i].busy:
 		return "Building..."
 	if clean_fraction(i) < clean_needed():
-		return "Clear the junk around it first (%d%% of %d%%)." % [int(clean_fraction(i) * 100.0), int(clean_needed() * 100.0)]
+		return tr("Clear the junk around it first (%d%% of %d%%).") % [int(clean_fraction(i) * 100.0), int(clean_needed() * 100.0)]
 	if not Hub.can_pay(repair_cost(i)):
-		return "Not enough materials."
+		return tr("Not enough materials.")
 	return ""
 
 
 func upgrade_block(i: int) -> String:
 	if i < 0 or i >= spots.size():
-		return "No outpost."
+		return tr("No outpost.")
 	var lv: int = level_of(i)
 	if lv < 1:
-		return "Repair it first."
+		return tr("Repair it first.")
 	if lv >= max_level():
-		return "Fully upgraded."
+		return tr("Fully upgraded.")
 	if items.size() > i and items[i].busy:
 		return "Building..."
 	if not Hub.can_pay(upgrade_cost(i)):
-		return "Not enough materials."
+		return tr("Not enough materials.")
 	return ""
 
 
@@ -344,8 +344,8 @@ func repair(i: int, animate: bool = true, free: bool = false) -> bool:
 	if i < items.size():
 		Audio.play("buy", 1.0, -2.0)
 		items[i].set_level(1, animate, func() -> void:
-			EventBus.toast.emit("Outpost %d repaired: a working scale on the frontier. Haul Bugs deliver to the nearest scale now." % (i + 1), "story")
-			Vfx.float_text(items[i].pad_world() + Vector3(0, 2.4, 0), "OUTPOST ONLINE", Color(0.6, 1.0, 0.65), 1.6, 2.0)
+			EventBus.toast.emit(tr("Outpost %d repaired: a working scale on the frontier. Haul Bugs deliver to the nearest scale now.") % (i + 1), "story")
+			Vfx.float_text(items[i].pad_world() + Vector3(0, 2.4, 0), tr("OUTPOST ONLINE"), Color(0.6, 1.0, 0.65), 1.6, 2.0)
 			if world.get("wren") != null:
 				world.wren.say("outpost_repaired", 1.0, true))
 	return true
@@ -365,9 +365,9 @@ func upgrade(i: int, animate: bool = true, free: bool = false) -> bool:
 		GameState.inc_stat("outpost_pads")
 	if i < items.size():
 		Audio.play("buy", 1.0, -2.0)
-		var nm: String = str(level_def(lv + 1).get("name", ""))
+		var nm: String = tr(str(level_def(lv + 1).get("name", "")))
 		items[i].set_level(lv + 1, animate, func() -> void:
-			EventBus.toast.emit("Outpost %d upgraded: %s. %s" % [i + 1, nm, str(level_def(lv + 1).get("desc", ""))], "story")
+			EventBus.toast.emit(tr("Outpost %d upgraded: %s. %s") % [i + 1, nm, tr(str(level_def(lv + 1).get("desc", "")))], "story")
 			if world.get("wren") != null:
 				world.wren.say("outpost_upgraded", 1.0, true))
 	return true
@@ -392,7 +392,7 @@ static func cost_text(cost: Dictionary) -> String:
 	var names: Dictionary = {"cubes": "cubes"}
 	var mats: Dictionary = Economy.read_json("res://data/hub.json").get("materials", {})
 	for k: String in mats:
-		names[str(mats[k]["id"])] = str(mats[k]["name"]).to_lower()
+		names[str(mats[k]["id"])] = TranslationServer.translate(str(mats[k]["name"])).to_lower()
 	var parts: Array[String] = []
 	for k: String in cost:
 		parts.append("%s %s" % [Settings.fmt(BigNum.from_float(float(cost[k]))), names.get(k, k)])
@@ -403,11 +403,11 @@ func prompt(i: int) -> String:
 	var lv: int = level_of(i)
 	if lv <= 0:
 		if clean_fraction(i) < clean_needed():
-			return "E   Ruined outpost · clear its hex first (%d%% / %d%%)" % [int(clean_fraction(i) * 100.0), int(clean_needed() * 100.0)]
-		return "E   Repair outpost · %s%s" % [cost_text(repair_cost(i)), "" if Hub.can_pay(repair_cost(i)) else "  (need more)"]
+			return tr("E   Ruined outpost · clear its hex first (%d%% / %d%%)") % [int(clean_fraction(i) * 100.0), int(clean_needed() * 100.0)]
+		return tr("E   Repair outpost · %s%s") % [cost_text(repair_cost(i)), "" if Hub.can_pay(repair_cost(i)) else tr("  (need more)")]
 	if lv >= max_level():
-		return "E   Outpost %d · %s · bales +%d%%" % [i + 1, str(level_def(lv).get("name", "")), int(float(level_def(lv).get("sell_bonus", 0.0)) * 100.0)]
-	return "E   Upgrade outpost: %s · %s%s" % [str(level_def(lv + 1).get("name", "")), cost_text(upgrade_cost(i)), "" if Hub.can_pay(upgrade_cost(i)) else "  (need more)"]
+		return tr("E   Outpost %d · %s · bales +%d%%") % [i + 1, tr(str(level_def(lv).get("name", ""))), int(float(level_def(lv).get("sell_bonus", 0.0)) * 100.0)]
+	return tr("E   Upgrade outpost: %s · %s%s") % [tr(str(level_def(lv + 1).get("name", ""))), cost_text(upgrade_cost(i)), "" if Hub.can_pay(upgrade_cost(i)) else tr("  (need more)")]
 
 
 func use(i: int) -> void:
@@ -417,17 +417,17 @@ func use(i: int) -> void:
 		if why == "":
 			repair(i)
 		else:
-			EventBus.toast.emit("Outpost %d: %s" % [i + 1, why], "info")
+			EventBus.toast.emit(tr("Outpost %d: %s") % [i + 1, why], "info")
 			Audio.play("error", 1.0, -8.0)
 	elif lv < max_level():
 		var why2: String = upgrade_block(i)
 		if why2 == "":
 			upgrade(i)
 		else:
-			EventBus.toast.emit("Outpost %d upgrade: %s" % [i + 1, why2], "info")
+			EventBus.toast.emit(tr("Outpost %d upgrade: %s") % [i + 1, why2], "info")
 			Audio.play("error", 1.0, -8.0)
 	else:
-		EventBus.toast.emit("Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge." % [i + 1, str(level_def(lv).get("name", "")), int(float(level_def(lv).get("sell_bonus", 0.0)) * 100.0)], "info")
+		EventBus.toast.emit(tr("Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge.") % [i + 1, tr(str(level_def(lv).get("name", ""))), int(float(level_def(lv).get("sell_bonus", 0.0)) * 100.0)], "info")
 
 
 # --- Queries for robots, water, HUD and Command view -----------------------------------
@@ -530,5 +530,5 @@ func hex_note(h: int) -> String:
 		return ""
 	var lv: int = level_of(i)
 	if lv <= 0:
-		return "OUTPOST %d  RUINED · repair at %d%% clear" % [i + 1, int(clean_needed() * 100.0)]
-	return "OUTPOST %d  %s" % [i + 1, str(level_def(lv).get("name", "")).to_upper()]
+		return tr("OUTPOST %d  RUINED · repair at %d%% clear") % [i + 1, int(clean_needed() * 100.0)]
+	return tr("OUTPOST %d  %s") % [i + 1, tr(str(level_def(lv).get("name", ""))).to_upper()]

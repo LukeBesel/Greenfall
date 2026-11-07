@@ -119,7 +119,7 @@ func recipe_status(type_id: String) -> Array:
 				have = i
 		if have >= 0:
 			used[have] = true
-		out.append({"part_id": part_id, "name": Economy.part_type(idx).get("name", part_id), "have": have >= 0,
+		out.append({"part_id": part_id, "name": tr(str(Economy.part_type(idx).get("name", part_id))), "have": have >= 0,
 			"rarity": int(GameState.parts[have]["rarity"]) if have >= 0 else -1, "index": have})
 	return out
 
@@ -177,17 +177,17 @@ func join_crew(type_id: String) -> String:
 ## "" if the type can be built now, else why not (research, crew cap, parts, cubes).
 func build_block_reason(type_id: String) -> String:
 	if not Research.robot_unlocked(type_id):
-		return "Locked · research %s" % str(Research.def(Research.robot_requirement(type_id)).get("name", "?"))
+		return tr("Locked · research %s") % tr(str(Research.def(Research.robot_requirement(type_id)).get("name", "?")))
 	if join_crew(type_id) == "":
-		return "Crew full (%d/%d): upgrade the hub" % [crew_size(crew_of_type(type_id)), crew_cap()]
+		return tr("Crew full (%d/%d): upgrade the hub") % [crew_size(crew_of_type(type_id)), crew_cap()]
 	var missing: int = 0
 	for r: Dictionary in recipe_status(type_id):
 		if not r["have"]:
 			missing += 1
 	if missing > 0:
-		return "Missing %d part%s" % [missing, "" if missing == 1 else "s"]
+		return tr_n("Missing %d part", "Missing %d parts", missing) % missing
 	if not GameState.can_afford("cubes", build_cost(type_id)):
-		return "Not enough cubes"
+		return tr("Not enough cubes")
 	return ""
 
 
@@ -224,8 +224,8 @@ func build(type_id: String, at: Vector3) -> Robot:
 		r.job = crew  # start in a crew that has room
 	GameState.inc_stat("robots_built")
 	EventBus.robot_built.emit(r.robot_name)
-	var quirk: String = str(RobotBuilder.trait_def(RobotBuilder.trait_of(r)).get("name", "")).to_lower()  # [drones] personality
-	EventBus.toast.emit("%s %s assembled. It looks around, then gets to work.%s" % [Economy.robots[type_id]["name"], r.robot_name, (" Seems %s." % quirk) if quirk != "" else ""], "story")
+	var quirk: String = tr(str(RobotBuilder.trait_def(RobotBuilder.trait_of(r)).get("name", ""))).to_lower()  # [drones] personality
+	EventBus.toast.emit(tr("%s %s assembled. It looks around, then gets to work.%s") % [tr(str(Economy.robots[type_id]["name"])), r.robot_name, (tr(" Seems %s.") % quirk) if quirk != "" else ""], "story")
 	return r
 
 
@@ -257,11 +257,11 @@ func tier_requirements(type_id: String) -> Dictionary:
 	var ok: bool = GameState.can_afford("cubes", cost) and core_i >= 0 and GameState.can_afford("bolts", bolts)
 	var reason: String = ""
 	if core_i < 0:
-		reason = "Needs a %s Control Core" % Economy.rarity(need).get("name", "?")
+		reason = tr("Needs a %s Control Core") % tr(str(Economy.rarity(need).get("name", "?")))
 	elif not GameState.can_afford("cubes", cost):
-		reason = "Not enough cubes"
+		reason = tr("Not enough cubes")
 	elif not GameState.can_afford("bolts", bolts):
-		reason = "Not enough bolts (scrap spare parts at Haggle's)"
+		reason = tr("Not enough bolts (scrap spare parts at Haggle's)")
 	return {"maxed": false, "cost": cost, "bolts": bolts, "core_rarity": need, "ok": ok, "reason": reason, "next": nt}
 
 
@@ -281,7 +281,7 @@ func upgrade_tier(type_id: String) -> bool:
 			r.rebuild_visual()
 			Vfx.burst("big_sparkle", r.global_position + Vector3(0, 0.6, 0), Color(0.5, 0.9, 1.0) if t >= 2 else Color(1.0, 0.8, 0.4))
 	Audio.play("fanfare", 1.0, -6.0)
-	EventBus.toast.emit("%s fleet upgraded to %s." % [Economy.robots[type_id]["name"], Economy.tier_name(t)], "story")
+	EventBus.toast.emit(tr("%s fleet upgraded to %s.") % [tr(str(Economy.robots[type_id]["name"])), Economy.tier_name(t)], "story")
 	return true
 
 

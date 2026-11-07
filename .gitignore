@@ -8,3 +8,4 @@
 /screenshots/**/*.png
 /screenshots/**/*.jpg
 /screenshots/**/*.webp
+__pycache__/
