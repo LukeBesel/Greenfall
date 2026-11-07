@@ -62,8 +62,9 @@ func test_xp_table_covers_the_sources() -> void:
 func test_reward_schedule() -> void:
 	var r2: Dictionary = LumiLevel.reward_plan(2, 0.0, 0.0, true)
 	assert_gt(float(r2["cubes"]), 0.0, "every level pays cubes (floor)")
-	assert_gt(int(r2["seeds"]), 0, "even levels pay seeds once the garden is open")
-	assert_eq(int(LumiLevel.reward_plan(2, 0.0, 0.0, false)["seeds"]), 0, "no seeds before the garden")
+	var se: int = int(LumiLevel.cfg().get("reward", {}).get("seeds_every", 3))  # [first] scarce early seeds
+	assert_gt(int(LumiLevel.reward_plan(se, 0.0, 0.0, true)["seeds"]), 0, "every seeds_every-th level pays seeds once the garden is open")
+	assert_eq(int(LumiLevel.reward_plan(se, 0.0, 0.0, false)["seeds"]), 0, "no seeds before the garden")
 	var r5: Dictionary = LumiLevel.reward_plan(5, 0.0, 0.0, false)
 	assert_eq(int(r5["parts"]), 1)
 	assert_gt(int(r5["tokens"]), 0)
@@ -133,7 +134,7 @@ func test_goal_tracker_compact_and_expandable() -> void:
 	gp.toggle()
 	assert_true(gp.expanded)
 	gp.set_checklist("Hold  LMB  to scoop   2/8")
-	assert_true(gp._check.visible)
+	assert_true(gp.checklist.visible)
 	assert_eq(GoalsPanel._strip_count("Hold  LMB  to scoop   2/8"), "Hold  LMB  to scoop")
 
 

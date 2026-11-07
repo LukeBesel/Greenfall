@@ -147,7 +147,7 @@ func _on_buy(n: int) -> void:
 		return
 	Audio.play("buy", 1.0, -2.0)
 	Audio.play("coin", 1.0 + minf(got, 10) * 0.03, -6.0)
-	Audio.play("sparkle", 1.0, -8.0)
+	Audio.play("confirm", 1.0 + minf(got - 1, 6) * 0.025, -6.0)  # [first] two-note confirm
 	_flash.color.a = 0.55
 	var tw2 := create_tween().set_parallel(true)
 	tw2.tween_property(_flash, "color:a", 0.0, 0.35)

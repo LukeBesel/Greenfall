@@ -435,6 +435,9 @@ func _ready() -> void:
 	tutorial = Tutorial.new()
 	tutorial.world = self
 	add_child(tutorial)
+	var feel := FeelFx.new()  # [first] core-loop juice (bale press, first robot, hex reveal)
+	feel.world = self
+	add_child(feel)
 	_setup_research_codex()
 	var cargo := CargoPods.new()
 	cargo.world = self
