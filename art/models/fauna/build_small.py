@@ -66,7 +66,7 @@ def build(parts, root_name):
 			bpy.ops.object.modifier_apply(modifier=m.name)
 		# Triangle budget per part (dozens of birds share one MultiMesh).
 		key = p.name.split("__")[0].rstrip("0123456789").rstrip("_")
-		budget = {"BODY": 1100, "HEAD": 700, "TAIL": 160, "LEG_BL": 120, "LEG_BR": 120, "WING_L": 260, "WING_R": 260, "WINGTIP_L": 320, "WINGTIP_R": 320}.get(key, 300)
+		budget = {"BODY": 1100, "FLEX": 1600, "HIND": 300, "FRONT": 200, "HEAD": 900, "TAIL": 160, "LEG_BL": 120, "LEG_BR": 120, "WING_L": 260, "WING_R": 260, "WINGTIP_L": 320, "WINGTIP_R": 320}.get(key, 300)
 		if p.name.startswith("HEAD2") or p.name.startswith("HEAD3"):
 			budget = 160
 		if p.name.startswith("BODY") and p.name != "BODY":
@@ -370,13 +370,150 @@ def duck_parts(flying):
 	return parts
 
 
+# ----------------------------------------------------------------------------------- rabbit, seal, fish
+def glossy_eye(name, piv, ec, r, fwd_x):
+	"""A dark glossy eye with a catchlight (part `name`, rigid with `piv`)."""
+	gl = ec + V(0.35 * r * fwd_x, 0.45 * r, -0.55 * r)
+	sol = [fb.ellipsoid(ec, V(r, r * 1.05, r * 0.8), segs=14, rings=9), fb.ellipsoid(gl, V(r * 0.26, r * 0.26, r * 0.18), segs=6, rings=4)]
+	return Part(name, piv, sol, lambda co, n: (1, 1, 1, 0) if (co - gl).length < r * 0.3 else (0.03, 0.02, 0.015, 0), gloss=True)
+
+
+def rabbit_parts():
+	fur, belly, pink = (0.72, 0.58, 0.45), (0.95, 0.92, 0.87), (0.9, 0.66, 0.64)
+	parts = []
+
+	def furc(co, n):
+		v = 1.0 + 0.06 * noise.noise(co * 80.0)
+		if n.y < -0.3 or (co.z < -0.05 and co.y < 0.13):
+			return (belly[0], belly[1], belly[2], 0.2)
+		return (fur[0] * v, fur[1] * v, fur[2] * v, 1.0)
+	body = [fb.ellipsoid(V(0, 0.12, 0.045), V(0.088, 0.096, 0.108)), fb.ellipsoid(V(0, 0.13, -0.045), V(0.066, 0.078, 0.075))]
+	rot_bm(body[0], (-18, 0, 0), V(0, 0.12, 0.045))
+	parts.append(Part("BODY", V(0, 0, 0), body, furc, voxel=0.004, smooth=8))
+	parts.append(Part("TAIL", V(0, 0.13, 0.14), [fb.ellipsoid(V(0, 0.14, 0.155), V(0.032, 0.03, 0.026))], lambda co, n: (0.97, 0.96, 0.94, 0), voxel=0.003, smooth=3))
+	for x in (-1, 1):
+		hind = [fb.ellipsoid(V(0.064 * x, 0.085, 0.07), V(0.034, 0.062, 0.072)), fb.ellipsoid(V(0.06 * x, 0.016, 0.03), V(0.022, 0.015, 0.066))]
+		rot_bm(hind[0], (-22, 0, 0), V(0.064 * x, 0.085, 0.07))
+		parts.append(Part("HIND%d" % (x + 2), V(0.06 * x, 0.1, 0.07), hind, furc, voxel=0.0035, smooth=5))
+		front = [fb.capsule(V(0.032 * x, 0.1, -0.075), V(0.03 * x, 0.022, -0.088), 0.015, 0.011), fb.ellipsoid(V(0.03 * x, 0.012, -0.098), V(0.013, 0.01, 0.018))]
+		parts.append(Part("FRONT%d" % (x + 2), V(0.032 * x, 0.11, -0.07), front, lambda co, n: (belly[0], belly[1], belly[2], 0.3), voxel=0.003, smooth=4))
+	c = V(0, 0.2, -0.105)
+	hp = V(0, 0.16, -0.07)
+	head = [fb.ellipsoid(c, V(0.05, 0.049, 0.058))] + [fb.ellipsoid(c + V(0.022 * x, -0.02, -0.03), V(0.03, 0.027, 0.03)) for x in (-1, 1)] + [fb.ellipsoid(c + V(0, -0.022, -0.052), V(0.022, 0.017, 0.016))]
+
+	def headc(co, n):
+		r = co - c
+		if r.z < -0.045 and r.y < -0.008:
+			return (belly[0], belly[1], belly[2], 0.2)
+		v = 1.0 + 0.06 * noise.noise(co * 80.0)
+		return (fur[0] * v, fur[1] * v, fur[2] * v, 1.0)
+	parts.append(Part("HEAD", hp, head, headc, voxel=0.003, smooth=6))
+	ears = []
+	for x in (-1, 1):
+		ec = c + V(0.022 * x, 0.105, 0.028)
+		e = fb.ellipsoid(ec, V(0.02, 0.072, 0.01))
+		rot_bm(e, (-14, 0, -9 * x), ec)
+		ears.append(e)
+
+	def earc(co, n):
+		if n.z < -0.4:
+			return (pink[0], pink[1], pink[2], 0)
+		if co.y > c.y + 0.16:
+			return (fur[0] * 0.6, fur[1] * 0.6, fur[2] * 0.6, 1.0)
+		return (fur[0], fur[1], fur[2], 1.0)
+	parts.append(Part("HEAD2__", hp, ears, earc, sub=1))
+	parts.append(Part("HEAD3__", hp, [fb.ellipsoid(c + V(0, -0.006, -0.064), V(0.008, 0.006, 0.004))], lambda co, n: (pink[0], pink[1], pink[2], 0), gloss=True))
+	for x in (-1, 1):
+		parts.append(glossy_eye("HEAD%d__" % (5 + x), hp, c + V(0.036 * x, 0.012, -0.026), 0.0135, x))
+	return parts
+
+
+def seal_parts():
+	fur, belly, spot, flip = (0.92, 0.92, 0.92), (1.0, 0.98, 0.95), (0.42, 0.42, 0.44), (0.6, 0.6, 0.61)
+	parts = []
+	bc, br = V(0, 0.2, 0.02), V(0.21, 0.19, 0.42)
+
+	def furc(co, n):
+		if n.y < -0.35:
+			return (belly[0], belly[1], belly[2], 0.45)
+		sp = noise.noise(co * 22.0)
+		if sp > 0.42:
+			return (spot[0], spot[1], spot[2], 1.0)
+		return (fur[0], fur[1], fur[2], 1.0)
+	body = [fb.ellipsoid(bc, br), fb.ellipsoid(V(0, 0.215, -0.27), V(0.2, 0.2, 0.2)), fb.ellipsoid(V(0, 0.16, 0.36), V(0.135, 0.12, 0.2)), fb.ellipsoid(V(0, 0.165, 0.53), V(0.075, 0.065, 0.1))]
+	parts.append(Part("FLEX", V(0, 0.15, -0.1), body, furc, voxel=0.008, smooth=8))
+	fl = []
+	for x in (-1, 1):
+		a = fb.ellipsoid(V(0.05 * x, 0.21, 0.7), V(0.05, 0.014, 0.1))
+		rot_bm(a, (-28, 16 * x, 0), V(0.05 * x, 0.21, 0.7))
+		fl.append(a)
+	parts.append(Part("TAIL", V(0, 0.17, 0.6), fl, lambda co, n: (flip[0], flip[1], flip[2], 0.6), sub=1))
+	ff = []
+	for x in (-1, 1):
+		a = fb.ellipsoid(V(0.2 * x, 0.06, -0.24), V(0.075, 0.02, 0.045))
+		rot_bm(a, (0, 35 * x, -25 * x), V(0.2 * x, 0.06, -0.24))
+		ff.append(a)
+	parts.append(Part("FRONT", V(0, 0.12, -0.22), ff, lambda co, n: (flip[0], flip[1], flip[2], 0.6), sub=1))
+	c = V(0, 0.43, -0.5)
+	hp = V(0, 0.25, -0.3)
+	pad = (0.97, 0.96, 0.93)
+	head = [fb.capsule(V(0, 0.26, -0.3), V(0, 0.38, -0.45), 0.165, 0.112, segs=18), fb.ellipsoid(c, V(0.115, 0.105, 0.115)),
+		fb.ellipsoid(c + V(0, -0.06, -0.09), V(0.034, 0.02, 0.03))] + [fb.ellipsoid(c + V(0.031 * x, -0.034, -0.098), V(0.04, 0.034, 0.04)) for x in (-1, 1)]
+
+	def headc(co, n):
+		r = co - c
+		if r.z < -0.07 and r.y < -0.005:
+			return (pad[0], pad[1], pad[2], 0.5)
+		return furc(co, n)
+	parts.append(Part("HEAD", hp, head, headc, voxel=0.006, smooth=7))
+	nose = [fb.ellipsoid(c + V(0, -0.012, -0.135), V(0.024, 0.017, 0.012))]
+	for x in (-1, 1):
+		for w in range(4):
+			o = c + V(0.05 * x, -0.028 - w * 0.008, -0.118)
+			nose.append(fb.capsule(o, o + V(0.1 * x, 0.012 - w * 0.016, 0.03), 0.0024, 0.0014, segs=5))
+
+	def nosec(co, n):
+		if (co - (c + V(0, -0.012, -0.135))).length < 0.03:
+			return (0.08, 0.06, 0.06, 0)
+		return (0.95, 0.93, 0.86, 0)
+	parts.append(Part("HEAD2__", hp, nose, nosec, gloss=True))
+	for x in (-1, 1):
+		parts.append(glossy_eye("HEAD%d__" % (5 + x), hp, c + V(0.056 * x, 0.024, -0.093), 0.028, x))
+	return parts
+
+
+def fish_parts():
+	def fishc(co, n):
+		if n.y > 0.25:
+			return (1, 1, 1, 1.0)  # back: coat tint
+		if n.y < -0.4:
+			return (0.97, 0.96, 0.92, 0)
+		return (0.86, 0.88, 0.86, 0.15)
+	body = [fb.ellipsoid(V(0, 0, 0), V(0.036, 0.052, 0.14)), fb.ellipsoid(V(0, -0.006, -0.135), V(0.016, 0.012, 0.012))]
+	parts = [Part("FLEX", V(0, 0, -0.06), body, fishc, voxel=0.004, smooth=6)]
+	fins = []
+	bm = bmesh.new()
+	for pts, th in (([(0, 0.05, -0.01), (0, 0.09, 0.04), (0, 0.05, 0.05)], 0.003), ([(0, 0.0, 0.125), (0, 0.055, 0.2), (0, 0.01, 0.17), (0, -0.05, 0.2)], 0.003)):
+		b2 = bmesh.new()
+		vs = [b2.verts.new(V(*p)) for p in pts]
+		b2.faces.new(vs)
+		bmesh.ops.solidify(b2, geom=b2.faces[:], thickness=th)
+		fins.append(b2)
+	parts.append(Part("FLEX2__", V(0, 0, -0.06), fins, lambda co, n: (1, 1, 1, 1.0), sub=1))
+	for x in (-1, 1):
+		parts.append(glossy_eye("FLEX%d__" % (5 + x), V(0, 0, -0.06), V(0.027 * x, 0.012, -0.1), 0.009, x))
+	return parts
+
+
 # ----------------------------------------------------------------------------------- main
-only = [x for x in opt.get("only", "pigeon,sparrow,songbird,gull,duck").split(",") if x]
+only = [x for x in opt.get("only", "pigeon,sparrow,songbird,gull,duck,rabbit,seal,fish").split(",") if x]
 for sid in only:
 	fb.reset()
 	if sid == "duck":
 		build(duck_parts(False), "stand")
 		build(duck_parts(True), "fly")
+	elif sid in ("rabbit", "seal", "fish"):
+		build({"rabbit": rabbit_parts, "seal": seal_parts, "fish": fish_parts}[sid](), "stand")
 	else:
 		build(bird_parts(sid, BIRDS[sid], False), "stand")
 		build(bird_parts(sid, BIRDS[sid], True), "fly")
@@ -391,10 +528,10 @@ for sid in only:
 			if o.type == 'MESH':
 				saved[o.name] = o.data.materials[0]
 				o.data.materials[0] = pv
-		fly = bpy.data.objects["fly"]
-		k0 = {"pigeon": 1.0, "sparrow": 0.6, "songbird": 0.6, "gull": 1.6, "duck": 1.2}[sid]
+		fly = bpy.data.objects.get("fly") or bpy.data.objects.new("fly", None)
+		k0 = {"pigeon": 1.0, "sparrow": 0.6, "songbird": 0.6, "gull": 1.6, "duck": 1.2, "rabbit": 0.8, "seal": 3.0, "fish": 0.6}[sid]
 		fly.location = (-0.45 * k0, 0.1 * k0, 0.12 * k0)
-		k = {"pigeon": 1.0, "sparrow": 0.6, "songbird": 0.6, "gull": 1.6, "duck": 1.2}[sid]
+		k = k0
 		fb.preview(os.path.join(opt["preview"], "s_%s.png" % sid), (0.5 * k, 0.75 * k, 0.35 * k), (-0.2 * k, 0, 0.1 * k))
 		fly.location = (0, 0, 0)
 		for o in bpy.data.objects:
