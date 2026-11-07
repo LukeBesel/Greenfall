@@ -39,6 +39,7 @@ static func cube_round(q: float, r: float) -> Vector2i:
 
 static func distance(a: Vector2i, b: Vector2i) -> int:
 	var d: Vector2i = a - b
+	@warning_ignore("integer_division")
 	return (absi(d.x) + absi(d.y) + absi(d.x + d.y)) / 2
 
 

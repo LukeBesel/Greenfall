@@ -102,6 +102,7 @@ func _job_kit(t: String) -> void:
 	var shiny: bool = look in ["modern", "hover"]
 	match t:
 		"seedling":
+			@warning_ignore("incompatible_ternary")
 			var green: Material = _gloss(Color(0.35, 0.7, 0.3), 0.3) if shiny else _worn(Color(0.35, 0.6, 0.28), 0.7, 0.4)
 			_mi(_body, ProcMesh.cyl(0.11, 0.13, 0.26, 16), green, top + Vector3(0, 0.13, 0))
 			_mi(_body, ProcMesh.cyl(0.12, 0.12, 0.04, 16), _glow(Color(0.6, 1.0, 0.4), 1.5), top + Vector3(0, 0.27, 0))
@@ -122,7 +123,7 @@ func _job_kit(t: String) -> void:
 ## sight glass and spray bar (Mk II), a glossy capsule with a glowing level strip and boom (Mk III),
 ## a glass orb of glowing water with a ring nozzle (Mk IV). The level gauge follows the tank.
 func _drip_kit(top: Vector3) -> void:
-	var steel: Material = Mats.metal("steel")
+	var _steel: Material = Mats.metal("steel")
 	match look:
 		"salvage":
 			var drum: Material = _worn(Color(0.2, 0.45, 0.8), 0.85, 0.2, 0.6)

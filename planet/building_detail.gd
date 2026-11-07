@@ -184,6 +184,7 @@ class Geo:
 		return v.is_empty()
 
 	func tri_count() -> int:
+		@warning_ignore("integer_division")
 		return v.size() / 3
 
 	## Mesh with vertices relative to origin (so the instance can sit at the block centre and
@@ -216,6 +217,7 @@ static func _v3(p: Vector2, y: float) -> Vector3:
 
 ## Window-grid offsets so bays start at the building's corner.
 static func _bay_uv(r: Rect2, salt: int) -> Vector2:
+	@warning_ignore("integer_division")
 	return Vector2(-r.position.x + 300.0 + 3.0 * float(salt % 40), -r.position.y + 300.0 + 3.0 * float((salt / 40) % 40))
 
 
@@ -268,6 +270,7 @@ func proxy_building(bd: Dictionary, body: Geo, det: Geo) -> void:
 	var tiers: Array = []
 	var lower: int = floors
 	if floors >= 6 and rng.randf() < 0.6:
+		@warning_ignore("integer_division")
 		lower = floors - rng.randi_range(2, maxi(2, floors / 2))
 	tiers.append([r, 0, lower])
 	if lower < floors:

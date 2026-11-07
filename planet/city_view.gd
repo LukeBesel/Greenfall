@@ -73,7 +73,7 @@ func _pick(kit: String, prefix: String) -> String:
 	return names[_rng.randi() % names.size()]
 
 
-func _place(block: Vector2i, kit: String, piece: String, xf: Transform3D) -> void:
+func _place(_block: Vector2i, kit: String, piece: String, xf: Transform3D) -> void:
 	if piece == "" or not (_kit[kit] as Dictionary).has(piece):
 		return
 	# [deck] One MultiMesh per kit piece for the whole detail ring (was one per block per piece).

@@ -1,7 +1,7 @@
 extends SceneTree
 ## [health] GDScript warnings audit. Godot only shows warnings in the editor (or to an attached
 ## debugger), so tools/warnings_audit.sh turns every "warn" level warning into an error through a
-## temporary override.cfg and this script compiles every project script once; each warning is then
+## temporary override.cfg and this script compiles every project script once (on the first frame); each warning is then
 ## printed as "SCRIPT ERROR: Parse Error: ... (Warning treated as error.)" with its file and line.
 ## Run through tools/warnings_audit.sh, not directly. Skips addons/ (GUT).
 ##   --list-levels   print the warn-level settings as override.cfg lines (used by the shell script)
@@ -27,13 +27,21 @@ func _init() -> void:
 		print("\n".join(out))
 		quit()
 		return
+	# Compile on the first frame: autoload names (Settings, Economy...) only resolve once they exist.
+	process_frame.connect(_audit, CONNECT_ONE_SHOT)
+
+
+func _audit() -> void:
 	var files: Array[String] = []
 	_collect("res://", files)
 	files.sort()
 	for f: String in files:
 		if OS.get_environment("WA_VERBOSE") != "":
 			print("[wa] ", f)
-		ResourceLoader.load(f, "", ResourceLoader.CACHE_MODE_IGNORE)
+		# Each script compiles (and reports) once; already-loaded ones (autoloads, their deps)
+		# reported when they first compiled at startup. Reloading those in place crashes.
+		if not ResourceLoader.has_cached(f):
+			ResourceLoader.load(f)
 	print("[warnings_audit] compiled %d scripts" % files.size())
 	quit()
 

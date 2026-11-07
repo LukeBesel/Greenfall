@@ -2,7 +2,6 @@ extends Node
 ## Story beats and companion lines. M1 only has Patch's own little reactions (beeps + toasts);
 ## WREN's dialogue system arrives in M4 and will live here.
 
-var _shown: Dictionary = {}
 
 
 func _ready() -> void:

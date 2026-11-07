@@ -146,7 +146,7 @@ func _frontier_roundtrip(packed: PackedScene, kid: String, hub_i: int) -> void:
 	GameState.add_currency("seeds", BigNum.from_float(30))
 	match kid:
 		"frozen_port":
-			var iced: Array = range(fd.ice.size()).filter(func(h: int) -> bool: return fd.ice[h] > 0.0)
+			var iced: Array = range(fd.ice.size()).filter(func(h_: int) -> bool: return fd.ice[h_] > 0.0)
 			fd._place_heater(int(iced[0]), true)
 			fd._place_heater(int(iced[1]), true)
 			fd._thaw_step(30.0)

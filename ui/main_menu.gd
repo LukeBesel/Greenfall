@@ -423,6 +423,7 @@ func _save_summary() -> String:
 	var hub: int = int(_save.get("current_hub", 0)) + 1
 	var stats: Dictionary = _save.get("stats", {})
 	var secs: int = int(float(stats.get("time_played", 0.0)))
+	@warning_ignore("integer_division")
 	var played: String = tr("%dh %02dm") % [secs / 3600, (secs / 60) % 60] if secs >= 3600 else tr("%dm") % maxi(1, secs / 60)
 	var cubes: String = "0"
 	var cur: Dictionary = _save.get("currencies", {})

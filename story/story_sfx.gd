@@ -74,6 +74,7 @@ static func _reg(id: String, bufs: Array) -> void:
 
 
 static func wav(samples: PackedFloat32Array, loop: bool = false) -> AudioStreamWAV:
+	@warning_ignore("integer_division")
 	var n: int = mini(int(0.004 * RATE), samples.size() / 2)
 	if not loop:
 		for i: int in n:

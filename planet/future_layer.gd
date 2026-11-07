@@ -463,6 +463,7 @@ static func _plan_roads(p: Dictionary, fld: HexField, lay: CityLayout, levels: D
 				# Light pylons on the sidewalks (slim white poles, glowing tips) and, now and then,
 				# a holo gate spanning the road with a friendly message.
 				if lv >= 5 and i % 4 == 0:
+					@warning_ignore("integer_division")  # [health]
 					var sgn: float = 1.0 if (i / 4) % 2 == 0 else -1.0
 					var lo: float = CityLayout.ROAD_W * 0.5 + 1.0
 					var pp: Vector3 = Vector3(road + lo * sgn, CityLayout.CURB_H, mid) if axis == 0 else Vector3(mid, CityLayout.CURB_H, road + lo * sgn)
@@ -479,6 +480,7 @@ static func _plan_roads(p: Dictionary, fld: HexField, lay: CityLayout, levels: D
 						_add(p, "line", seg_xf(gp + Vector3(0, 0.4, 0), gp + Vector3(0, gy + 1.5, 0), 0.05, 0.3), CYAN, K_PULSE, 2.0, _key(27, int(gp.x * 10.0), int(gp.z * 10.0)))
 					var gyaw: float = 0.0 if axis == 0 else PI * 0.5
 					var gkey: int = _key(28, axis, int(road), i)
+					@warning_ignore("integer_division")  # [health]
 					var gtint: Color = [CYAN, MAGENTA, TEAL][(i / 8) % 3]
 					var gxf: Transform3D = _sign(p, (g0 + g1) * 0.5 + Vector3(0, gy + 0.8, 0), gyaw, gw - 0.5, 1.5, gtint, 0.0, 2.6, gkey)
 					(p["labels"] as Array).append({"key": gkey, "xf": gxf, "w": gw - 0.5, "h": 1.5, "text": MESSAGES[int(_h(axis, int(road), i + 7) * MESSAGES.size())], "col": gtint})
@@ -576,7 +578,9 @@ static func _plan_skyline(p: Dictionary, fld: HexField, lay: CityLayout, s: floa
 		var n_car: int = int(round(smoothstep(0.35, 1.0, s) * 20.0))
 		for i: int in n_car:
 			var road: float = (1.0 if i % 2 == 0 else -1.0) * CityLayout.PITCH * 0.5
+			@warning_ignore("integer_division")  # [health]
 			var lane: float = (1.6 if (i / 2) % 2 == 0 else -1.6)
+			@warning_ignore("integer_division")  # [health]
 			(p["movers"] as Array).append({"type": 1, "axis": (i / 4) % 2, "road": road + lane, "dir": 1.0 if lane > 0.0 else -1.0,
 				"h": 5.8 + 2.2 * _h(seed_v, i, 80), "speed": 7.0 + 4.0 * _h(seed_v, i, 81), "phase": _h(seed_v, i, 82) * 140.0,
 				"key": _key(59, i), "col": [CYAN, MAGENTA, ICE][i % 3]})
@@ -1006,7 +1010,6 @@ static func apply_preview(w: Node, n: int) -> void:
 		var stage: int = [0, 0, 1, 2, 3, 4][n]
 		for hid: int in hl.levels:
 			var sl: PackedInt32Array = g.hex_slots.get(hid, PackedInt32Array())
-			var planted: int = 0
 			var sum: float = 0.0
 			for i: int in sl.size():
 				var s: int = sl[i]
@@ -1016,7 +1019,6 @@ static func apply_preview(w: Node, n: int) -> void:
 				g.slot_stage[s] = stage
 				g.slot_water[s] = float(g.species[g.slot_species[s]].get("water_s", 120))
 				g._update_inst(s)
-				planted += 1
 				sum += stage + 1.0
 			if sl.size() > 0:
 				var life: float = sum / (sl.size() * 5.0)

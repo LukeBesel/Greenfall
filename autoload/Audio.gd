@@ -219,6 +219,7 @@ func _buf(seconds: float) -> PackedFloat32Array:
 
 ## Fades the first and last few ms to avoid clicks.
 func _declick(b: PackedFloat32Array) -> PackedFloat32Array:
+	@warning_ignore("integer_division")
 	var n: int = mini(int(0.004 * RATE), b.size() / 2)
 	for i: int in n:
 		var g: float = float(i) / n
@@ -441,11 +442,11 @@ func _generate_all() -> void:
 	for v: int in 4:
 		var b := _buf(0.5)
 		var ph: float = 0.0
-		var notes: int = 2 + v
+		var notes_: int = 2 + v
 		for i: int in b.size():
 			var t: float = float(i) / RATE
-			var k: int = int(t / 0.5 * notes)
-			var lt: float = fmod(t, 0.5 / notes) / (0.5 / notes)
+			var k: int = int(t / 0.5 * notes_)
+			var lt: float = fmod(t, 0.5 / notes_) / (0.5 / notes_)
 			var f: float = 2600.0 + 900.0 * sin(TAU * lt) + 300.0 * k + 200.0 * v
 			ph += TAU * f / RATE
 			b[i] = sin(ph) * sin(PI * lt) * 0.18

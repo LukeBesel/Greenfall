@@ -98,6 +98,7 @@ static func hazard_strip(height: int = 7) -> TextureRect:
 		var img := Image.create(64, 8, false, Image.FORMAT_RGBA8)
 		for y: int in 8:
 			for x: int in 64:
+				@warning_ignore("integer_division")
 				var band: bool = ((x + y) / 6) % 2 == 0
 				img.set_pixel(x, y, Color(1.0, 0.72, 0.1) if band else Color(0.08, 0.08, 0.09))
 		_stripe_tex = ImageTexture.create_from_image(img)

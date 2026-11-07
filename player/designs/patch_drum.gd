@@ -610,7 +610,7 @@ func _build_hatch() -> void:
 func _build_arm(s: float) -> void:
 	var yel: ShaderMaterial = _paint(YELLOW, 0.55, 0.65, 50.0 + s * 3.0, 0.5, -0.7)
 	var steel: StandardMaterial3D = Mats.metal("dark_steel")
-	var chrome: StandardMaterial3D = Mats.metal("chrome")
+	var _chrome: StandardMaterial3D = Mats.metal("chrome")
 	var shoulder_pos := Vector3(0.355 * s, 0.73, -0.25)
 	# Shoulder bracket bolted to the trough cheek and drum.
 	_bake(_rig, ProcMesh.box(Vector3(0.03, 0.16, 0.16)), steel, _x(Vector3(0.325 * s, 0.68, -0.24)))
@@ -702,7 +702,7 @@ func _sample_scoop(t: float) -> Array:
 	return SCOOP_KEYS[SCOOP_KEYS.size() - 1]
 
 
-func _update_arms(delta: float) -> void:
+func _update_arms(_delta: float) -> void:
 	for arm: Dictionary in _arms:
 		var s: float = arm["s"]
 		var phase: float = _scoop_phase + (0.0 if s > 0.0 else 0.5)

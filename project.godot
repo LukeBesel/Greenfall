@@ -25,6 +25,10 @@ Story="*res://autoload/Story.gd"
 Vfx="*res://art/vfx.gd"
 DevHooks="*res://autoload/DevHooks.gd"
 
+[debug]
+
+gdscript/warnings/static_called_on_instance=0
+
 [display]
 
 window/size/viewport_width=1280

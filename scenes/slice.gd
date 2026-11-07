@@ -319,6 +319,7 @@ func _ready() -> void:
 				GameState.upgrades[spec.get_slice(":", 0)] = int(spec.get_slice(":", 1))
 	if DevHooks.has("give-parts"):
 		for k: int in int(DevHooks.get_f("give-parts", 8.0)):
+			@warning_ignore("integer_division")  # [health]
 			GameState.parts.append({"type": k % 8, "rarity": mini(k / 8, 4)})
 	if DevHooks.has("clean-hexes"):
 		# --clean-hexes=N  pre-clean the N land hexes nearest the base (to test planters/waterers).
@@ -347,6 +348,7 @@ func _ready() -> void:
 		# --order=clean:stay:far  (role:mode:hex ids separated by '+', or 'far' = farthest junk hex)
 		var spec_o: PackedStringArray = DevHooks.get_s("order", "").split(":")
 		var hexes: Array = []
+		@warning_ignore("incompatible_ternary")  # [health]
 		for t: String in spec_o[2].split("+") if spec_o.size() > 2 else []:
 			if t == "far":
 				var far_h: int = -1

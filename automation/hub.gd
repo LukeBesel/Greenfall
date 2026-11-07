@@ -11,7 +11,6 @@ var data: Dictionary
 var level: int = 1
 var scrubbers: int = 0
 var _parts: Array[Node3D] = []
-var _scrubber_nodes: Array[Node3D] = []
 var _fans: Array[Node3D] = []
 var _demo_t: float = 0.0  # [steam]
 
@@ -215,7 +214,7 @@ func _build_level(l: int, animate: bool) -> void:
 			if animate:
 				_scaffold(Vector3(-7.0, 0, -5.0), Vector3(2.0, 9.0, 2.0), 2.6)
 			_piece(ProcMesh.cyl(0.15, 0.3, 9.0, 10), white, Transform3D(Basis(), Vector3(-7.0, 4.5, -5.0)), animate, 0.0)
-			var hubn := _piece(ProcMesh.capsule(0.25, 0.9), white, Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(-7.0, 9.0, -4.7)), animate, 0.4)
+			_piece(ProcMesh.capsule(0.25, 0.9), white, Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(-7.0, 9.0, -4.7)), animate, 0.4)
 			var rotor := Node3D.new()
 			rotor.position = Vector3(-7.0, 9.0, -4.25)
 			add_child(rotor)

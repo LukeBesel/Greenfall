@@ -264,6 +264,7 @@ func _update_pads(dt: float) -> void:
 			swell = 0.75 + 0.4 * clampf((_clock - float(p["start"])) / chord_len, 0.0, 1.0)
 		var base: float = G_PAD * shaped * float(_gains["pad"]) * breath * swell
 		var ids: Array = p["ids"]
+		@warning_ignore("integer_division")
 		for k: int in ids.size() / 2:
 			var morph: float = clampf(0.5 + 0.5 * sin(_clock * TAU * 0.045 + k * 1.7), 0.0, 1.0) * bright
 			backend.call("set_gain", ids[k * 2], base * (1.0 - 0.6 * morph))
@@ -361,6 +362,7 @@ func _play_step() -> void:
 	var kk: float = float(g["kick"])
 	if kk > 0.01 and _step % 4 == 0:
 		var kg: Array[float] = [1.0, 0.55, 0.85, 0.55]
+		@warning_ignore("integer_division")
 		_note("kick", 69, G_KICK * kg[_step / 4] * kk)
 
 

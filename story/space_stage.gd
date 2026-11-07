@@ -40,7 +40,6 @@ var _planet_mat: ShaderMaterial
 var _alarm: float = 0.0
 var _t: float = 0.0
 var _vault_lights: Array[OmniLight3D] = []
-var _notes: Array[Node3D] = []
 
 
 func _ready() -> void:

@@ -39,7 +39,6 @@ var _flood: MeshInstance3D
 var _flood_mat: ShaderMaterial
 var _sink: float = 0.0
 var _rotors: Array[Node3D] = []
-var _pad_ring: MeshInstance3D
 var _pad_mat: StandardMaterial3D
 var _pylon_lamps: Array[MeshInstance3D] = []
 var _beams: Node3D
@@ -519,6 +518,7 @@ func _build_terrain(look: Dictionary) -> void:
 	var gt: Array = field.biome_set.get("ground_tint", [])
 	if gt.size() >= 4 and not look.has("biome_tint"):
 		_terrain_mat.set_shader_parameter("biome_tint", Vector4(float(gt[0]), float(gt[1]), float(gt[2]), float(gt[3])))
+	@warning_ignore("integer_division")
 	var per: int = na / sectors
 	for sct: int in sectors:
 		var st := SurfaceTool.new()
@@ -591,9 +591,9 @@ func _build_desert() -> void:
 		_model("covered_car", p, yaw, 1.0, null, Vector3(_rng.randf_range(-0.15, 0.15), 0, _rng.randf_range(-0.2, 0.2)), coat)
 		_drift(always, p + Vector3(-1.2, 0.3, -0.8), 0.6, _rng.randf_range(3.5, 5.0), _rng.randf_range(0.9, 1.4))
 	for i: int in 10:
-		var q: Vector3 = _polar(_rng.randf() * TAU, e + _rng.randf_range(4.0, 60.0))
-		q.y = _gy(q)
-		_model("dead_quiver_trunk", q, _rng.randf() * TAU, _rng.randf_range(1.6, 2.6))
+		var q_: Vector3 = _polar(_rng.randf() * TAU, e + _rng.randf_range(4.0, 60.0))
+		q_.y = _gy(q_)
+		_model("dead_quiver_trunk", q_, _rng.randf() * TAU, _rng.randf_range(1.6, 2.6))
 	for i: int in 12:
 		var q2: Vector3 = _polar(_rng.randf() * TAU, e + _rng.randf_range(2.0, 40.0))
 		q2.y = _gy(q2) - 0.3
@@ -1345,7 +1345,7 @@ static func _arc_mesh(r1: float, r2: float, a0: float, a1: float, h: float, segs
 
 ## The launch city's apron around the field: a clean paved ring with planters, slim lamp posts
 ## and one faint light inlay. Ground crews kept it swept.
-func _build_plaza(e: float) -> void:
+func _build_plaza(_e: float) -> void:
 	var b := Batch.new()
 	var paving: Material = AssetLib.pbr_material("concrete_pavement", 0.12, Color(1.08, 1.08, 1.1), true)
 	var r0: float = _r_in - 1.0
@@ -1374,7 +1374,7 @@ func _build_plaza(e: float) -> void:
 
 ## The launch city skyline: slender towers of dark glass behind white fins and floor bands, with
 ## setbacks, crowns and the odd spire, rising behind the pad; low white pavilions between.
-func _build_skyline_cradle(e: float) -> void:
+func _build_skyline_cradle(_e: float) -> void:
 	var b := Batch.new()
 	var white: Material = _mat("white")
 	var glass: Material = _mat("tower_glass")
@@ -1431,6 +1431,7 @@ func _build_skyline_cradle(e: float) -> void:
 			y += th
 			cw *= _rng.randf_range(0.72, 0.85)
 		# Crown: a white cap with one faint light band; some get a spire.
+		@warning_ignore("incompatible_ternary")
 		b.add(ProcMesh.cyl(cw * 0.62, cw * 0.62, 1.6, 24) if is_round else _box(), Transform3D(bs, p + Vector3(0, y + 0.8, 0)) if is_round else Transform3D((bs * Basis.from_scale(Vector3(cw * 1.08, 1.6, cw * 0.86))), p + Vector3(0, y + 0.8, 0)), white)
 		b.add(ProcMesh.torus(cw * 0.55, cw * 0.58, 32, 3), Transform3D(Basis().scaled(Vector3(1, 0.3, 1)), p + Vector3(0, y - 0.6, 0)), _mat("line_soft"))
 		if _rng.randf() < 0.35:

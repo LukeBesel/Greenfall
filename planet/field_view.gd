@@ -36,7 +36,6 @@ var _piece_shown := PackedByteArray()
 var _dirty_tex: bool = false
 var _life_img: Image
 var _life_tex: ImageTexture
-var _pose_cache: Dictionary = {}
 var _mounds: Array = []  # hex id -> Array[MeshInstance3D]
 
 

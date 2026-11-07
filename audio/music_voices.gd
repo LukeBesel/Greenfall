@@ -74,6 +74,7 @@ func stop(id: int) -> void:
 func _valid(id: int) -> int:
 	if id < 0:
 		return -1
+	@warning_ignore("integer_division")
 	var idx: int = id / 65536
 	if idx >= _players.size() or (_gen[idx] & 0xFFFF) != id % 65536:
 		return -1

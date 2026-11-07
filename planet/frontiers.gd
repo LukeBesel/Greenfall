@@ -225,6 +225,7 @@ static func storm_candidates(field: HexField, levels: Dictionary, planted: Calla
 ## How many hexes a storm hits: grows with how much of the district is clean.
 static func storm_count(storm: Dictionary, cleaned: int, fences: bool) -> int:
 	var h: Array = storm.get("hexes", [2, 6])
+	@warning_ignore("integer_division")
 	var n: int = int(h[0]) + cleaned / maxi(1, int(storm.get("per_cleaned", 10)))
 	n = mini(n, int(h[1]))
 	if fences:

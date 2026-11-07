@@ -173,7 +173,7 @@ func _bolts(parent: Node3D, points: Array, normal: Vector3, size: float = 0.009)
 
 
 ## Thin slab whose plan outline follows the body's rounded corners (rounded box squashed in Y).
-func _slab(w: float, h: float, d: float, plan_r: float) -> Transform3D:
+func _slab(_w: float, h: float, _d: float, plan_r: float) -> Transform3D:
 	return Transform3D(Basis.from_scale(Vector3(1, h / (plan_r * 2.0), 1)), Vector3.ZERO)
 
 

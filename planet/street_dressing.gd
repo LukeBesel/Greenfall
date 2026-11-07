@@ -598,7 +598,6 @@ func _awning(top_mid: Vector3, al: Vector3, out: Vector3, width: float, col: Col
 	var depth: float = _rng.randf_range(1.15, 1.45)
 	var drop: float = _rng.randf_range(0.5, 0.7)
 	var stripes: int = maxi(4, int(width / 0.32))
-	var sw: float = width / stripes
 	var rows: int = 4
 	var left: Vector3 = Vector3(top_mid.x, y_top, top_mid.z) - al * width * 0.5
 	var dirt: float = _rng.randf_range(0.75, 1.0)
@@ -639,7 +638,7 @@ func _awning(top_mid: Vector3, al: Vector3, out: Vector3, width: float, col: Col
 
 
 ## Faded hand-painted sign board flat on the wall above a shop.
-func _painted_sign(text: String, center: Vector3, al: Vector3, out: Vector3, width: float) -> void:
+func _painted_sign(text: String, center: Vector3, _al: Vector3, out: Vector3, width: float) -> void:
 	var bg: Color = [Color(0.12, 0.25, 0.22), Color(0.55, 0.12, 0.1), Color(0.1, 0.16, 0.35), Color(0.85, 0.75, 0.55), Color(0.2, 0.2, 0.2)][_rng.randi() % 5]
 	var fg: Color = Color(0.95, 0.88, 0.62) if bg.get_luminance() < 0.5 else Color(0.5, 0.12, 0.08)
 	var h: float = 0.62
@@ -1047,6 +1046,7 @@ func _build_yard_paint() -> void:
 		var steps: int = maxi(1, int(pa.distance_to(pb)))
 		for k: int in steps + 1:
 			var p: Vector2 = pa.lerp(pb, float(k) / steps)
+			@warning_ignore("integer_division")
 			img.fill_rect(Rect2i(int(p.x) - wpx / 2, int(p.y) - wpx / 2, wpx, wpx), col)
 	# Hazard border: diagonal yellow/black stripes in a band just inside the fence.
 	var band: int = int(0.6 / mpp)
@@ -1055,6 +1055,7 @@ func _build_yard_paint() -> void:
 	for e: int in range(inset, inset + band):
 		for i: int in range(e, px - e):
 			for ij: Vector2i in [Vector2i(i, e), Vector2i(i, px - 1 - e), Vector2i(e, i), Vector2i(px - 1 - e, i)]:
+				@warning_ignore("integer_division")
 				var stripe: bool = ((ij.x + ij.y) / spx) % 2 == 0
 				img.set_pixelv(ij, _hazard_a if stripe else Color(0.07, 0.07, 0.07, 0.85))
 	# Walkway: two yellow lines from the front edge in to the depot.
@@ -1125,7 +1126,7 @@ func _build_yard_paint() -> void:
 	_cur.add_child(mi)
 
 
-func _paint_glyph(img: Image, ch: String, center: Vector2, h: float, col: Color, _to_px: Callable, line: Callable) -> void:
+func _paint_glyph(_img: Image, ch: String, center: Vector2, h: float, col: Color, _to_px: Callable, line: Callable) -> void:
 	var s: float = h / 6.0
 	# Painted on the ground, read from the hub (looking toward -z): glyph +y maps to world -z.
 	for poly: Array in GLYPHS.get(ch, []):
@@ -1220,6 +1221,7 @@ func _corner_kit(kit: int, base: Vector3, out: Vector3) -> void:
 			_barrels.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), base + Vector3(-out.x * 1.0, 0, 0)), _plastic[1 % _plastic.size()]])
 		1:  # steel drums and a tarp-covered heap
 			for k: int in 3:
+				@warning_ignore("integer_division")
 				var dp: Vector3 = base + Vector3(-out.x * (0.1 + (k % 2) * 0.62), top, -out.z * (k / 2) * 0.62 - out.z * 0.1)
 				_drums.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), dp), [Color(0.55, 0.13, 0.08), Color(0.12, 0.25, 0.45), Color(0.2, 0.32, 0.18)][k]])
 				if snow:
@@ -1265,6 +1267,7 @@ func _corner_kit(kit: int, base: Vector3, out: Vector3) -> void:
 				_prop("plastic_jerrycan" if k < 2 else "metal_jerrycan", Transform3D(Basis(Vector3.UP, yaw + k * 0.5), base + Vector3(-out.x * (0.3 + k * 0.4), 0, -out.z * 0.9)))
 		13:  # rustlands: oil drum cluster, one toppled
 			for k: int in 4:
+				@warning_ignore("integer_division")
 				var dp: Vector3 = base + Vector3(-out.x * (0.1 + (k % 2) * 0.62), top, -out.z * (k / 2) * 0.62)
 				_drums.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), dp), Color(0.42, 0.24, 0.14).lerp(Color(0.2, 0.22, 0.25), _rng.randf())])
 			_drums.append([Transform3D(Basis(Vector3.RIGHT, PI * 0.5).rotated(Vector3.UP, yaw + 0.7), base + Vector3(-out.x * 1.3, 0.3, -out.z * 1.4)), Color(0.5, 0.28, 0.14)])
@@ -1317,7 +1320,9 @@ func _tarp(xf: Transform3D, size: Vector2, h: float, col: Color) -> void:
 			var cc := Color(col.r * shade, col.g * shade, col.b * shade, FABRIC)
 			_deco.quad(pts[j][i], pts[j][i + 1], pts[j + 1][i + 1], pts[j + 1][i], cc)
 	# Rope over the top.
+	@warning_ignore("integer_division")
 	_deco.rod(pts[0][n / 2], pts[n / 2][n / 2] + Vector3.UP * 0.02, 0.012, Color(0.7, 0.62, 0.45, PAINT))
+	@warning_ignore("integer_division")
 	_deco.rod(pts[n / 2][n / 2] + Vector3.UP * 0.02, pts[n][n / 2], 0.012, Color(0.7, 0.62, 0.45, PAINT))
 
 
@@ -2227,6 +2232,7 @@ func _build_fence(ruined: bool) -> void:
 			_deco.rod(bp, top, 0.06 if style == "wire" else 0.035, pc)
 			if biome == "frostcap":
 				_deco.box(Transform3D(Basis(), top + Vector3(0, 0.03, 0)), Vector3(0.16, 0.06, 0.16), SNOW)
+			@warning_ignore("incompatible_ternary")
 			tops.append(top if state == 0 else null)
 		for k: int in n:
 			var t0: Variant = tops[k]

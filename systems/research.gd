@@ -319,6 +319,7 @@ static func grant(id: String) -> void:
 static func time_text(s: float) -> String:
 	var n: int = int(ceil(s))
 	if n >= 60:
+		@warning_ignore("integer_division")
 		return "%d:%02d" % [n / 60, n % 60]
 	return TranslationServer.translate("%ds") % n
 
