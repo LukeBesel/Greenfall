@@ -14,7 +14,7 @@ msgstr ""
 
 #: art/feel_fx.gd:147
 msgid "NEW CREWMATE  ·  %s"
-msgstr ""
+msgstr "新しい仲間  ·  %s"
 
 #: autoload/Economy.gd:72
 msgid "Every %s in the fleet."
@@ -226,11 +226,11 @@ msgstr "Rスティック下"
 
 #: autoload/Story.gd:23
 msgid "Perfect bale: filled right to the gold line."
-msgstr ""
+msgstr "パーフェクトベール：金のラインぴったりまで詰めた。"
 
 #: autoload/Story.gd:25
 msgid "Pure bale: one kind of junk is worth double."
-msgstr ""
+msgstr "ピュアベール：1種類だけのガラクタは価値が2倍。"
 
 #: autoload/Story.gd:29
 msgid "A whole hex is clean! The ground remembers its colors."
@@ -519,23 +519,23 @@ msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ
 
 #: fauna/fauna.gd:1211
 msgid "E   pet %s"
-msgstr ""
+msgstr "E   %s をなでる"
 
 #: fauna/fauna.gd:1212
 msgid "E   pet the cat"
-msgstr ""
+msgstr "E   ネコをなでる"
 
 #: fauna/fauna.gd:1261
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
-msgstr ""
+msgstr "このネコはきみを自分のものだと決めたらしい。%s だよ。これからはこの基地で暮らすって。"
 
 #: fauna/fauna.gd:1574
 msgid "New sighting: %s. It's in the Codex now."
-msgstr ""
+msgstr "新しく発見：%s。図鑑に追加されたよ。"
 
 #: fauna/fauna.gd:1642
 msgid "Snap! A %s for your Collection."
-msgstr ""
+msgstr "パシャ！%s の写真をコレクションに追加。"
 
 #: planet/frontier_district.gd:279
 msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
@@ -796,11 +796,11 @@ msgstr "ヘックス Lv %d  %s。   %s"
 
 #: plants/seed_finds.gd:42
 msgid "+1 SEED"
-msgstr ""
+msgstr "+1 種"
 
 #: plants/seed_finds.gd:46
 msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
-msgstr ""
+msgstr "殻に包まれたままの、古くて乾いた種。ガラクタの中にいくつか隠れている。"
 
 #: player/detector.gd:77
 msgid "SIGNAL  %s  ·  %.1f m"
@@ -1561,11 +1561,11 @@ msgstr "Lumi。シグナルを受信。緑で、かすかで、基地の東。�
 
 #: story/first_seed.gd:130
 msgid "{tool_water}  then hold  {scoop}  to water it"
-msgstr ""
+msgstr "{tool_water}  のあと  {scoop}  長押しで水やり"
 
 #: story/first_seed.gd:156
 msgid "Hold  {scoop}  on clean ground to plant the seed"
-msgstr ""
+msgstr "きれいな地面で  {scoop}  長押しで種を植える"
 
 #: story/first_seed.gd:225
 msgid "...It's green. Lumi, it's actually green."
@@ -1573,7 +1573,7 @@ msgstr "……緑だ。Lumi、ほんとうに緑だよ。"
 
 #: story/first_seed.gd:227
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
-msgstr ""
+msgstr "水を切らさないでね。ここでは種は貴重だけど、花が咲くたびにひとつ返ってくるし、きみのコアにも小さな緑の光が届く。こうやって始まるんだ。"
 
 #: story/intro.gd:281
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
@@ -1804,11 +1804,11 @@ msgstr "片づいた地面から何かが出てきた。メモリーの破片だ
 
 #: story/tutorial.gd:10
 msgid "Hold  {scoop}  to scoop junk"
-msgstr ""
+msgstr "{scoop}  長押しでガラクタをすくう"
 
 #: story/tutorial.gd:11
 msgid "Press  {cube}  to press a bale"
-msgstr ""
+msgstr "{cube}  でベールを圧縮"
 
 #: story/tutorial.gd:12
 msgid "{interact}  to pick up the bale"
@@ -1816,19 +1816,19 @@ msgstr " {interact} でベールを持ち上げる"
 
 #: story/tutorial.gd:13
 msgid "Carry it onto the scale"
-msgstr ""
+msgstr "はかりまで運ぼう"
 
 #: story/tutorial.gd:14
 msgid "{interact}  at the workbench to upgrade"
-msgstr ""
+msgstr "作業台で  {interact}  を押してアップグレード"
 
 #: story/tutorial.gd:15
 msgid "Clean this hex completely"
-msgstr ""
+msgstr "このヘックスを完全にきれいにしよう"
 
 #: story/tutorial.gd:17
 msgid "Lumi is back on the job"
-msgstr ""
+msgstr "Lumi、仕事に復帰"
 
 #: systems/achievements.gd:139
 msgid "%d achievements unlocked. See them in the Codex (K)."
@@ -1888,11 +1888,11 @@ msgstr "辺境"
 
 #: systems/codex.gd:195
 msgid " · %s"
-msgstr ""
+msgstr " · %s"
 
 #: systems/codex.gd:197 ui/codex_screen.gd:355
 msgid "Other worlds"
-msgstr ""
+msgstr "ほかの世界"
 
 #: systems/codex.gd:198 ui/codex_screen.gd:355
 msgid "Any district"
@@ -1924,7 +1924,7 @@ msgstr "生き物の写真"
 
 #: systems/collection.gd:83
 msgid "Animal Photos"
-msgstr ""
+msgstr "動物の写真"
 
 #: systems/collection.gd:84
 msgid "Rare Part Signals"
@@ -1972,7 +1972,7 @@ msgstr "%s をフリート全体に取り付けた。"
 
 #: systems/contracts.gd:344
 msgid "Printed: %s."
-msgstr ""
+msgstr "プリント完了：%s。"
 
 #: systems/contracts.gd:347
 msgid "+%d seeds."
@@ -2000,43 +2000,43 @@ msgstr "トークン %d 枚が必要"
 
 #: systems/cradle_mode.gd:282
 msgid "Fully grown"
-msgstr ""
+msgstr "最大レベル"
 
 #: systems/cradle_mode.gd:284
 msgid "Needs %d Starseeds"
-msgstr ""
+msgstr "スターシードが %d 必要"
 
 #: systems/cradle_mode.gd:298
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
-msgstr ""
+msgstr "家宝：%s、レベル %d。Lumi といっしょにどの世界へも旅をする。"
 
 #: systems/decor.gd:121
 msgid "Needs %d Collection finds (%d so far)"
-msgstr ""
+msgstr "コレクションの発見が %d 必要（いまは %d）"
 
 #: systems/decor.gd:179
 msgid "Too close to the base machines"
-msgstr ""
+msgstr "基地の機械に近すぎる"
 
 #: systems/decor.gd:182
 msgid "Outside the district"
-msgstr ""
+msgstr "地区の外"
 
 #: systems/decor.gd:184
 msgid "That's water"
-msgstr ""
+msgstr "そこは水だよ"
 
 #: systems/decor.gd:188
 msgid "Frozen in"
-msgstr ""
+msgstr "凍っている"
 
 #: systems/decor.gd:190
 msgid "A building is in the way"
-msgstr ""
+msgstr "建物がじゃまをしている"
 
 #: systems/decor.gd:192
 msgid "Something is already here"
-msgstr ""
+msgstr "ここにはもう何か置いてある"
 
 #: systems/designs.gd:118
 msgid "Default"
@@ -2044,15 +2044,15 @@ msgstr "デフォルト"
 
 #: systems/designs.gd:137
 msgid "Best fleet: %s"
-msgstr ""
+msgstr "最高のフリート：%s"
 
 #: systems/designs.gd:154
 msgid "New design unlocked: %s. Wear it from the workbench (Cosmetics)."
-msgstr ""
+msgstr "新しいデザインを解放：%s。作業台（見た目）で着替えよう。"
 
 #: systems/designs.gd:193
 msgid "Design: %s"
-msgstr ""
+msgstr "デザイン：%s"
 
 #: systems/event_props.gd:154
 msgid "CRADLE · SUPPLY"
@@ -2178,61 +2178,61 @@ msgstr "監査はドローンの勝ち、%d 対 %d。それでもチップを置
 #: systems/l10n_fmt.gd:17
 msgid "+%d cube"
 msgid_plural "+%d cubes"
-msgstr[0] ""
+msgstr[0] "+%d キューブ"
 
 #: systems/l10n_fmt.gd:19
 msgid "+%d seed"
 msgid_plural "+%d seeds"
-msgstr[0] ""
+msgstr[0] "+%d 種"
 
 #: systems/l10n_fmt.gd:21
 msgid "+%d trinket"
 msgid_plural "+%d trinkets"
-msgstr[0] ""
+msgstr[0] "+%d 小物"
 
 #: systems/l10n_fmt.gd:25
 msgid "+%d bolt"
 msgid_plural "+%d bolts"
-msgstr[0] ""
+msgstr[0] "+%d ボルト"
 
 #: systems/l10n_fmt.gd:27
 msgid "+%d part"
 msgid_plural "+%d parts"
-msgstr[0] ""
+msgstr[0] "+%d パーツ"
 
 #. a part's name. {rarity} is an adjective (Rusty, Polished, Rare...), {part} a part type
 #: systems/l10n_fmt.gd:52
 msgctxt "part name"
 msgid "{rarity} {part}"
-msgstr ""
+msgstr "{rarity}{part}"
 
 #. research effect, e.g. "+20% scoop width". {stat} is a stat name.
 #: systems/l10n_fmt.gd:62
 msgid "+{amount}% {stat}"
-msgstr ""
+msgstr "{stat} +{amount}%"
 
 #. research effect, e.g. "+2 tank". {stat} is a stat name.
 #: systems/l10n_fmt.gd:64
 msgid "+{amount} {stat}"
-msgstr ""
+msgstr "{stat} +{amount}"
 
 #. research effect for one robot model, e.g. "+10% Scoopie speed".
 #: systems/l10n_fmt.gd:67
 msgid "+{amount}% {robot} {stat}"
-msgstr ""
+msgstr "{robot} の{stat} +{amount}%"
 
 #. research effect for one robot model, e.g. "+1 Drip tank".
 #: systems/l10n_fmt.gd:69
 msgid "+{amount} {robot} {stat}"
-msgstr ""
+msgstr "{robot} の{stat} +{amount}"
 
 #: systems/late_director.gd:90
 msgid "The Ark Bridge opens once the Cradle has come home."
-msgstr ""
+msgstr "アークブリッジは Cradle号が帰ってきたら開く。"
 
 #: systems/late_director.gd:124
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
-msgstr ""
+msgstr "Cradleモード：アークの種子庫には、ほかの世界のための種がある。ポーズ > アークブリッジで確認して、スターシードで家宝を買ったり、新しい世界に種をまいたりしよう。ガーデンモード（H）も使えるよ。"
 
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:255
 msgid "Low"
@@ -2292,7 +2292,7 @@ msgstr "%d秒"
 
 #: systems/research.gd:371
 msgid "Research: %s"
-msgstr ""
+msgstr "研究：%s"
 
 #: systems/research.gd:381
 msgid "scoop reach"
@@ -2473,7 +2473,7 @@ msgstr "%s がガラクタの中で光るメイカーのかけらを見つけた
 
 #: systems/robot_builder.gd:604
 msgid "%s spotted a %s."
-msgstr ""
+msgstr "%s が見つけた：%s。"
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -2501,59 +2501,59 @@ msgstr "%d 株の植物が水不足で育っていない。"
 
 #: ui/ark_bridge.gd:100
 msgid "THE CRADLE  ·  SEED VAULT DECK"
-msgstr ""
+msgstr "CRADLE号  ·  種子庫デッキ"
 
 #: ui/ark_bridge.gd:101
 msgid "ARK BRIDGE"
-msgstr ""
+msgstr "アークブリッジ"
 
 #: ui/ark_bridge.gd:102
 msgid "The vault holds seeds for every world in the system. Take what Lumi learned somewhere new; nothing here is ever undone."
-msgstr ""
+msgstr "種子庫には、この星系のすべての世界のための種がある。Lumi が学んだことを新しい場所へ持っていこう。ここで育てたものが消えることはないよ。"
 
 #: ui/ark_bridge.gd:107 ui/ark_bridge.gd:304
 msgid "%d Starseeds"
-msgstr ""
+msgstr "スターシード %d"
 
 #: ui/ark_bridge.gd:110
 msgid "+%d banked from %s"
-msgstr ""
+msgstr "+%d（%s で獲得）"
 
 #: ui/ark_bridge.gd:110
 msgid "Earn more from Seed Ark waves and restoration"
-msgstr ""
+msgstr "シードアークのウェーブや再生でもっと手に入る"
 
 #: ui/ark_bridge.gd:125
 msgid "WORLDS"
-msgstr ""
+msgstr "世界"
 
 #: ui/ark_bridge.gd:143
 msgid "HEIRLOOMS  ·  KEPT ON EVERY WORLD"
-msgstr ""
+msgstr "家宝  ·  どの世界でも持ち越し"
 
 #: ui/ark_bridge.gd:156
 msgid "Enter / A  choose      Esc / B  back"
-msgstr ""
+msgstr "Enter / A  決定      Esc / B  戻る"
 
 #: ui/ark_bridge.gd:160 ui/ark_bridge.gd:254
 msgid "Back to %s"
-msgstr ""
+msgstr "%s に戻る"
 
 #: ui/ark_bridge.gd:182
 msgid "WORLD %d"
-msgstr ""
+msgstr "世界 %d"
 
 #: ui/ark_bridge.gd:188
 msgid "Not visited yet"
-msgstr ""
+msgstr "まだ訪れていない"
 
 #: ui/ark_bridge.gd:190
 msgid "%s  ·  %d hexes  ·  %d ark waves  ·  %d curiosities"
-msgstr ""
+msgstr "%s  ·  ヘックス %d  ·  アークウェーブ %d  ·  珍品 %d"
 
 #: ui/ark_bridge.gd:192
 msgid "restored"
-msgstr ""
+msgstr "再生済み"
 
 #: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40
 msgid "You are here"
@@ -2561,15 +2561,15 @@ msgstr "現在地"
 
 #: ui/ark_bridge.gd:202
 msgid "Travel"
-msgstr ""
+msgstr "旅立つ"
 
 #: ui/ark_bridge.gd:227
 msgid "SEED A NEW WORLD"
-msgstr ""
+msgstr "新しい世界に種をまく"
 
 #: ui/ark_bridge.gd:229
 msgid "The Cradle has to come home first."
-msgstr ""
+msgstr "まずは Cradle号が帰ってこないと。"
 
 #: ui/ark_bridge.gd:245 ui/frontier_rockets.gd:42 ui/globe_view.gd:308
 #: ui/rockets_panel.gd:81
@@ -2578,27 +2578,27 @@ msgstr "発射"
 
 #: ui/ark_bridge.gd:264
 msgid "%d Data"
-msgstr ""
+msgstr "データ %d"
 
 #: ui/ark_bridge.gd:266
 msgid "%d seeds"
-msgstr ""
+msgstr "種 %d"
 
 #: ui/ark_bridge.gd:268
 msgid "robots waiting: %d"
-msgstr ""
+msgstr "待っているロボット：%d"
 
 #: ui/ark_bridge.gd:270
 msgid "research tier %d known"
-msgstr ""
+msgstr "研究ティア %d まで習得済み"
 
 #: ui/ark_bridge.gd:272
 msgid "Starting kit: just Lumi. Heirlooms add to it."
-msgstr ""
+msgstr "スタート装備：Lumi だけ。家宝で増やせる。"
 
 #: ui/ark_bridge.gd:273
 msgid "Starting kit: %s"
-msgstr ""
+msgstr "スタート装備：%s"
 
 #: ui/ark_bridge.gd:301 ui/settings_panel.gd:509
 msgid "Full"
@@ -2774,19 +2774,19 @@ msgstr "装着できるものがない：箱のパーツが足りないか、ク
 
 #: ui/checklist_card.gd:92
 msgid "RESTART"
-msgstr ""
+msgstr "再起動"
 
 #: ui/checklist_card.gd:110
 msgid "RESTART CHECKLIST"
-msgstr ""
+msgstr "再起動チェックリスト"
 
 #: ui/checklist_card.gd:110
 msgid "NEXT STEP"
-msgstr ""
+msgstr "次のステップ"
 
 #: ui/checklist_card.gd:148
 msgid "RESTART CHECKLIST  ·  DONE"
-msgstr ""
+msgstr "再起動チェックリスト  ·  完了"
 
 #: ui/codex_screen.gd:15 ui/codex_screen.gd:696
 msgid "Achievements"
@@ -2868,7 +2868,7 @@ msgstr "ヒント：維持・繁栄したヘックスに、恥ずかしがりや
 
 #: ui/codex_screen.gd:552
 msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
-msgstr ""
+msgstr "ヒント：地面が癒えると動物が戻ってくる。フォトモード（P）で撮影しよう。"
 
 #: ui/codex_screen.gd:553
 msgid "Hint: complete %d contracts at the workbench."
@@ -3265,31 +3265,31 @@ msgstr "デザイン"
 
 #: ui/cosmetics_panel.gd:38
 msgid "Looks only (no bonuses)"
-msgstr ""
+msgstr "見た目だけ（ボーナスなし）"
 
 #: ui/cosmetics_panel.gd:129 ui/cosmetics_panel.gd:160
 msgid "Wearing"
-msgstr ""
+msgstr "着用中"
 
 #: ui/cosmetics_panel.gd:129
 msgid "Unlocked"
-msgstr ""
+msgstr "解放済み"
 
 #: ui/cosmetics_panel.gd:129
 msgid "Locked  %d%%"
-msgstr ""
+msgstr "ロック中  %d%%"
 
 #: ui/cosmetics_panel.gd:156
 msgid "Bonus: %s"
-msgstr ""
+msgstr "ボーナス：%s"
 
 #: ui/cosmetics_panel.gd:156
 msgid "(off: looks only)"
-msgstr ""
+msgstr "（オフ：見た目だけ）"
 
 #: ui/cosmetics_panel.gd:162
 msgid "Unlocked. Press to wear."
-msgstr ""
+msgstr "解放済み。押すと着替える。"
 
 #: ui/cosmetics_panel.gd:164
 msgid "Locked: %s"
@@ -3365,11 +3365,11 @@ msgstr "パーツ"
 
 #: ui/design_toast.gd:58
 msgid "NEW DESIGN UNLOCKED"
-msgstr ""
+msgstr "新しいデザインを解放"
 
 #: ui/design_toast.gd:66
 msgid "Wear it at the workbench: Cosmetics"
-msgstr ""
+msgstr "作業台で着替え：見た目"
 
 #: ui/document_view.gd:45
 msgid "{interact}  [k]/ Esc  [/k]close"
@@ -3405,27 +3405,27 @@ msgstr "未探索  ·  ここではベールが x%d"
 
 #: ui/garden_placer.gd:117
 msgid "Garden Mode opens when this base reaches level 5, or once the Cradle comes home."
-msgstr ""
+msgstr "ガーデンモードは、この基地がレベル5になるか、Cradle号が帰ってくると使えるようになる。"
 
 #: ui/garden_placer.gd:229
 msgid "charm +%.1f"
-msgstr ""
+msgstr "魅力 +%.1f"
 
 #: ui/garden_placer.gd:232
 msgid "%s here: %s to pick it up"
-msgstr ""
+msgstr "ここに%s：%s で拾う"
 
 #: ui/garden_placer.gd:235
 msgid "GARDEN MODE   ·   Charm %.1f   ·   +%.1f%% plant growth here"
-msgstr ""
+msgstr "ガーデンモード   ·   魅力 %.1f   ·   ここの植物の成長 +%.1f%%"
 
 #: ui/garden_placer.gd:236
 msgid "[%s] place   [%s] rotate   [%s / %s] item   [%s] pick up   [%s] done"
-msgstr ""
+msgstr "[%s] 置く   [%s] 回す   [%s / %s] アイテム   [%s] 拾う   [%s] 完了"
 
 #: ui/garden_placer.gd:291
 msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
-msgstr ""
+msgstr "拾った：%s。別の場所に置くか、しまっておこう。"
 
 #: ui/globe_view.gd:118
 msgid "Survey"
@@ -3641,15 +3641,15 @@ msgstr "ヘックス  きれい"
 
 #: ui/hud.gd:334
 msgid "HEX  %s"
-msgstr ""
+msgstr "ヘックス  %s"
 
 #: ui/hud.gd:337
 msgid "  SUSTAIN %d%%"
-msgstr ""
+msgstr "  維持 %d%%"
 
 #: ui/hud.gd:339
 msgid "  THIRSTY"
-msgstr ""
+msgstr "  水不足"
 
 #: ui/hud.gd:354
 msgid "%s  map      %s  command      %s  lens      %s  goals"
@@ -3682,11 +3682,11 @@ msgstr "%s   作業台"
 
 #: ui/late_menu.gd:9
 msgid "Garden Mode  [%s]"
-msgstr ""
+msgstr "ガーデンモード  [%s]"
 
 #: ui/late_menu.gd:15
 msgid "Ark Bridge"
-msgstr ""
+msgstr "アークブリッジ"
 
 #: ui/lens_overlay.gd:61
 msgid ""
@@ -4766,11 +4766,11 @@ msgstr "%s（近日）"
 
 #: ui/world_banner.gd:37
 msgid "SEED MISSION  ·  WORLD %d"
-msgstr ""
+msgstr "種まきミッション  ·  世界 %d"
 
 #: ui/world_banner.gd:70
 msgid "Lumi's pod is down on %s. A new world, ruined and waiting. Grow something."
-msgstr ""
+msgstr "Lumi のポッドが %s に着陸した。荒れ果てて、待っている新しい世界。何かを育てよう。"
 
 #: water/water_view.gd:78
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
@@ -5370,139 +5370,139 @@ msgstr "異なるロボットの頭飾りを5つ集める。"
 
 #: data/achievements.json:achievements[pet_cat].name
 msgid "A Friend in Old Town"
-msgstr ""
+msgstr "旧市街の友だち"
 
 #: data/achievements.json:achievements[pet_cat].desc
 msgid "Pet a stray cat."
-msgstr ""
+msgstr "ノラネコをなでる。"
 
 #: data/achievements.json:achievements[adopt_cat].name
 msgid "Best Friends"
-msgstr ""
+msgstr "大親友"
 
 #: data/achievements.json:achievements[adopt_cat].desc
 msgid "Pet the same cat until she adopts you."
-msgstr ""
+msgstr "同じネコをなで続けて、きみを家族にしてもらう。"
 
 #: data/achievements.json:achievements[spot_deer].name
 msgid "Oh, Deer"
-msgstr ""
+msgstr "あっ、シカだ"
 
 #: data/achievements.json:achievements[spot_deer].desc
 msgid "Spot a deer at the edge of the green."
-msgstr ""
+msgstr "緑のはずれでシカを見つける。"
 
 #: data/achievements.json:achievements[lake_fish].name
 msgid "Clear as Day"
-msgstr ""
+msgstr "すきとおる水"
 
 #: data/achievements.json:achievements[lake_fish].desc
 msgid "See fish in a clean lake."
-msgstr ""
+msgstr "きれいな湖で魚を見る。"
 
 #: data/achievements.json:achievements[naturalist].desc
 msgid "Spot 10 different animals."
-msgstr ""
+msgstr "10種類の動物を見つける。"
 
 #: data/achievements.json:achievements[wild_photos].name
 msgid "Wildlife Photographer"
-msgstr ""
+msgstr "動物カメラマン"
 
 #: data/achievements.json:achievements[wild_photos].desc
 msgid "Photograph 6 different animals in photo mode."
-msgstr ""
+msgstr "フォトモードで6種類の動物を撮影する。"
 
 #: data/achievements.json:achievements[late_bridge].name
 msgid "On the Bridge"
-msgstr ""
+msgstr "ブリッジにて"
 
 #: data/achievements.json:achievements[late_bridge].desc
 msgid "Open the Ark Bridge after the Cradle comes home."
-msgstr ""
+msgstr "Cradle号が帰ってきたあと、アークブリッジを開く。"
 
 #: data/achievements.json:achievements[late_world_1].name
 msgid "Seed Mission"
-msgstr ""
+msgstr "種まきミッション"
 
 #: data/achievements.json:achievements[late_world_1].desc
 msgid "Seed a new world from the Cradle's vault."
-msgstr ""
+msgstr "Cradle号の種子庫から新しい世界に種をまく。"
 
 #: data/achievements.json:achievements[late_world_3].name
 msgid "Gardener of Worlds"
-msgstr ""
+msgstr "世界の庭師"
 
 #: data/achievements.json:achievements[late_world_3].desc
 msgid "Seed three new worlds."
-msgstr ""
+msgstr "3つの新しい世界に種をまく。"
 
 #: data/achievements.json:achievements[late_heirloom_1].name
 msgid "Family Heirloom"
-msgstr ""
+msgstr "一族の家宝"
 
 #: data/achievements.json:achievements[late_heirloom_1].desc
 msgid "Buy an Heirloom."
-msgstr ""
+msgstr "家宝を買う。"
 
 #: data/achievements.json:achievements[late_heirloom_20].name
 msgid "Treasured"
-msgstr ""
+msgstr "たいせつな宝物"
 
 #: data/achievements.json:achievements[late_heirloom_20].desc
 msgid "Grow Heirlooms to 20 levels in all."
-msgstr ""
+msgstr "家宝のレベルを合計20にする。"
 
 #: data/achievements.json:achievements[late_starseeds_100].name
 msgid "Starseed Saver"
-msgstr ""
+msgstr "スターシード貯金"
 
 #: data/achievements.json:achievements[late_starseeds_100].desc
 msgid "Earn 100 Starseeds across your worlds."
-msgstr ""
+msgstr "すべての世界で合計100スターシードを手に入れる。"
 
 #: data/achievements.json:achievements[late_decor_1].name
 msgid "Home Touches"
-msgstr ""
+msgstr "わが家らしく"
 
 #: data/achievements.json:achievements[late_decor_1].desc
 msgid "Place a decoration in Garden Mode."
-msgstr ""
+msgstr "ガーデンモードで飾りを置く。"
 
 #: data/achievements.json:achievements[late_decor_25].name
 msgid "Landscaper"
-msgstr ""
+msgstr "造園家"
 
 #: data/achievements.json:achievements[late_decor_25].desc
 msgid "Place 25 decorations."
-msgstr ""
+msgstr "飾りを25個置く。"
 
 #: data/achievements.json:achievements[late_decor_all].name
 msgid "Full Catalogue"
-msgstr ""
+msgstr "カタログ制覇"
 
 #: data/achievements.json:achievements[late_decor_all].desc
 msgid "Place every kind of decoration at least once."
-msgstr ""
+msgstr "すべての種類の飾りを1回以上置く。"
 
 #: data/achievements.json:achievements[late_charm_25].name
 msgid "Picture Perfect"
-msgstr ""
+msgstr "絵になる景色"
 
 #: data/achievements.json:achievements[late_charm_25].desc
 msgid "Reach 25 charm in one district."
-msgstr ""
+msgstr "1つの地区で魅力25に到達する。"
 
 #: data/achievements.json:achievements[late_eggs_40].desc
 msgid "Find 40 curiosities."
-msgstr ""
+msgstr "珍品を40個見つける。"
 
 #: data/achievements.json:achievements[late_older_pod].name data/eggs.json:eggs[older_pod].name
 msgid "Not the First"
-msgstr ""
+msgstr "最初じゃなかった"
 
 #: data/achievements.json:achievements[late_older_pod].desc
 msgid "Find the older seed pod on a new world."
-msgstr ""
+msgstr "新しい世界で、もっと古い種子ポッドを見つける。"
 
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
@@ -5554,7 +5554,7 @@ msgstr "ランドマーク"
 
 #: data/codex.json:categories[animals].name
 msgid "Animals"
-msgstr ""
+msgstr "動物"
 
 #: data/codex.json:junk.metal.hint
 msgid "Rusty, clanky, everywhere."
@@ -6254,635 +6254,635 @@ msgstr "Cradle号が降り立つ、基地の前のヘックスの環。アーク
 
 #: data/codex.json:animals.cat.name data/fauna.json:species[cat].name
 msgid "Stray Cat"
-msgstr ""
+msgstr "ノラネコ"
 
 #: data/codex.json:animals.cat.hint
 msgid "Where: On clean city streets."
-msgstr ""
+msgstr "場所：きれいな街の通り。"
 
 #: data/codex.json:animals.cat.desc
 msgid "Old Town's cats never left. They know every warm engine block and sunny step, and they decided long ago that robots are furniture. Stop for a while and one may come over. Pet the same cat often enough and she'll move in at your base."
-msgstr ""
+msgstr "旧市街のネコたちは、一度もいなくならなかった。あたたかいエンジンも日なたの階段もぜんぶ知っていて、ロボットは家具だとずっと前に決めている。しばらく立ち止まれば、一匹寄ってくるかも。同じネコを何度もなでていると、きみの基地に住みついてくれる。"
 
 #: data/codex.json:animals.pigeon.name data/fauna.json:species[pigeon].name
 msgid "Pigeon"
-msgstr ""
+msgstr "ハト"
 
 #: data/codex.json:animals.pigeon.hint
 msgid "Where: Clean pavement in the city."
-msgstr ""
+msgstr "場所：街のきれいな舗道。"
 
 #: data/codex.json:animals.pigeon.desc
 msgid "Pigeons will live anywhere people once dropped crumbs. They peck between the cracks, bob their heads as they walk and burst into the air all at once if you fly through them."
-msgstr ""
+msgstr "ハトは、かつて人がパンくずを落とした場所ならどこにでも住む。すき間をつつき、首を振りながら歩き、きみが飛びこむといっせいに飛び立つ。"
 
 #: data/codex.json:animals.sparrow.name data/fauna.json:species[sparrow].name
 msgid "Sparrow"
-msgstr ""
+msgstr "スズメ"
 
 #: data/codex.json:animals.sparrow.hint
 msgid "Where: Clean ground, city or wild."
-msgstr ""
+msgstr "場所：きれいな地面。街でも野外でも。"
 
 #: data/codex.json:animals.sparrow.desc
 msgid "Small, brown and bossy. Sparrows were the first birds to come back to swept streets, chirping from kerb to kerb."
-msgstr ""
+msgstr "小さくて茶色で、いばりんぼ。スズメは、掃除された通りにいちばん最初に戻ってきた鳥で、縁石から縁石へとさえずっている。"
 
 #: data/codex.json:animals.rat.name data/fauna.json:species[rat].name
 msgid "Rat"
-msgstr ""
+msgstr "ネズミ"
 
 #: data/codex.json:animals.rat.hint
 msgid "Where: Wherever the junk is still piled up."
-msgstr ""
+msgstr "場所：ガラクタがまだ積まれているところ。"
 
 #: data/codex.json:animals.rat.desc
 msgid "Rats live in the gaps between the piles. They are not villains, just tenants: clean a hex and they pack up and move to the next heap."
-msgstr ""
+msgstr "ネズミはガラクタの山のすき間に住んでいる。悪者じゃなくて、ただの住人。ヘックスをきれいにすると、荷物をまとめて次の山へ引っ越していく。"
 
 #: data/codex.json:animals.rabbit.name data/fauna.json:species[rabbit].name
 msgid "Rabbit"
-msgstr ""
+msgstr "ウサギ"
 
 #: data/codex.json:animals.rabbit.hint
 msgid "Where: Growing hexes."
-msgstr ""
+msgstr "場所：栽培中のヘックス。"
 
 #: data/codex.json:animals.rabbit.desc
 msgid "Rabbits arrive as soon as there is something green to nibble. They hop, freeze, nibble, and zig-zag away if Lumi rushes them."
-msgstr ""
+msgstr "かじれる緑があると、すぐにウサギがやってくる。ぴょんと跳ねて、ぴたっと止まって、もぐもぐ。Lumi が急に近づくと、ジグザグに逃げていく。"
 
 #: data/codex.json:animals.deer.name data/fauna.json:species[deer].name
 msgid "Roe Deer"
-msgstr ""
+msgstr "ノロジカ"
 
 #: data/codex.json:animals.deer.hint
 msgid "Where: The edges of Sustained ground."
-msgstr ""
+msgstr "場所：維持された地面のふち。"
 
 #: data/codex.json:animals.deer.desc
 msgid "Shy grazers that keep to the edge of the green, where they can see what's coming. Approach slowly; rush them and they bound away in long, graceful leaps."
-msgstr ""
+msgstr "何が来るか見わたせるように、緑のはずれにいる恥ずかしがりやの草食動物。ゆっくり近づこう。急ぐと、長く優雅なジャンプで跳んでいってしまう。"
 
 #: data/codex.json:animals.fox.name data/fauna.json:species[fox].name
 msgid "Red Fox"
-msgstr ""
+msgstr "アカギツネ"
 
 #: data/codex.json:animals.fox.hint
 msgid "Where: Sustained and Thriving hexes."
-msgstr ""
+msgstr "場所：維持・繁栄のヘックス。"
 
 #: data/codex.json:animals.fox.desc
 msgid "A fox trots along the hedges, nose down, tail out. It watches Lumi with polite interest and keeps its distance."
-msgstr ""
+msgstr "キツネが鼻を地面に近づけ、しっぽをのばして生け垣ぞいを小走りしていく。Lumi を礼儀正しく興味深そうに見つめて、距離はちゃんと保つ。"
 
 #: data/codex.json:animals.bee.name data/fauna.json:species[bee].name
 msgid "Honeybee"
-msgstr ""
+msgstr "ミツバチ"
 
 #: data/codex.json:animals.bee.hint
 msgid "Where: Flowers on Sustained hexes."
-msgstr ""
+msgstr "場所：維持されたヘックスの花。"
 
 #: data/codex.json:animals.bee.desc
 msgid "Bees came back with the blooms. Every flower bed that stays watered gets its own little hum."
-msgstr ""
+msgstr "ミツバチは花といっしょに戻ってきた。水やりを欠かさない花壇には、それぞれ小さな羽音がある。"
 
 #: data/codex.json:animals.songbird.name data/fauna.json:species[songbird].name
 msgid "Robin"
-msgstr ""
+msgstr "コマドリ"
 
 #: data/codex.json:animals.songbird.hint
 msgid "Where: Thriving hexes, by day."
-msgstr ""
+msgstr "場所：昼間の繁栄ヘックス。"
 
 #: data/codex.json:animals.songbird.desc
 msgid "When a hex thrives, robins move in and sing. If you hear birdsong, something here is going very right."
-msgstr ""
+msgstr "ヘックスが繁栄すると、コマドリがやってきて歌う。鳥のさえずりが聞こえたら、ここで何かがとてもうまくいっている証拠。"
 
 #: data/codex.json:animals.firefly.name data/fauna.json:species[firefly].name
 msgid "Firefly"
-msgstr ""
+msgstr "ホタル"
 
 #: data/codex.json:animals.firefly.hint
 msgid "Where: Thriving hexes, at night."
-msgstr ""
+msgstr "場所：夜の繁栄ヘックス。"
 
 #: data/codex.json:animals.firefly.desc
 msgid "Tiny green lanterns over the grass after dark. They only come where the ground is fully alive."
-msgstr ""
+msgstr "暗くなると草の上にともる、小さな緑のランタン。地面がすっかり生き返った場所にしか来ない。"
 
 #: data/codex.json:animals.fish.name data/fauna.json:species[fish].name
 msgid "Lake Fish"
-msgstr ""
+msgstr "湖の魚"
 
 #: data/codex.json:animals.fish.hint
 msgid "Where: Clean lakes."
-msgstr ""
+msgstr "場所：きれいな湖。"
 
 #: data/codex.json:animals.fish.desc
 msgid "Once the water clears you can see them: small silver schools turning together over the sand. Come too close and they scatter."
-msgstr ""
+msgstr "水が澄むと見えてくる。砂の上でいっせいに向きを変える、小さな銀色の群れ。近づきすぎると、ぱっと散ってしまう。"
 
 #: data/codex.json:animals.duck.name data/fauna.json:species[duck].name
 msgid "Mallard"
-msgstr ""
+msgstr "マガモ"
 
 #: data/codex.json:animals.duck.hint
 msgid "Where: Clean lakes beside green shores."
-msgstr ""
+msgstr "場所：岸辺が緑のきれいな湖。"
 
 #: data/codex.json:animals.duck.desc
 msgid "Ducks paddle, dabble with their tails in the air and complain loudly about everything. A clean lake with a green shore is all they ask."
-msgstr ""
+msgstr "カモはすいすい泳ぎ、おしりを上げて餌をあさり、なんにでも大声で文句を言う。きれいな湖と緑の岸辺さえあれば満足なんだ。"
 
 #: data/codex.json:animals.frog.name data/fauna.json:species[frog].name
 msgid "Green Frog"
-msgstr ""
+msgstr "アオガエル"
 
 #: data/codex.json:animals.frog.hint
 msgid "Where: Lake shores once they're planted."
-msgstr ""
+msgstr "場所：植物を植えたあとの湖岸。"
 
 #: data/codex.json:animals.frog.desc
 msgid "Frogs sit at the water's edge and sing in the evening. Get too close and plop: into the water they go."
-msgstr ""
+msgstr "カエルは水辺に座って、夕方になると歌う。近づきすぎると、ぽちゃん。水の中へ。"
 
 #: data/codex.json:animals.lizard.name data/fauna.json:species[lizard].name
 msgid "Sand Lizard"
-msgstr ""
+msgstr "スナトカゲ"
 
 #: data/codex.json:animals.lizard.hint
 msgid "Where: Clean ground in the Dust Flats."
-msgstr ""
+msgstr "場所：ダストフラットのきれいな地面。"
 
 #: data/codex.json:animals.lizard.desc
 msgid "Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
-msgstr ""
+msgstr "トカゲはソーラーパネルの間の掃除された地面でひなたぼっこをして、影がかかると一瞬で消えてしまう。"
 
 #: data/codex.json:animals.fennec.name data/fauna.json:species[fennec].name
 msgid "Fennec Fox"
-msgstr ""
+msgstr "フェネック"
 
 #: data/codex.json:animals.fennec.hint
 msgid "Where: Planted ground in the Dust Flats."
-msgstr ""
+msgstr "場所：ダストフラットの植物を植えた地面。"
 
 #: data/codex.json:animals.fennec.desc
 msgid "A tiny desert fox with enormous ears. It hears Lumi's hover fans long before it sees him."
-msgstr ""
+msgstr "大きな耳をもつ、小さな砂漠のキツネ。Lumi の姿が見えるずっと前から、ホバーファンの音を聞きつけている。"
 
 #: data/codex.json:animals.seal.name data/fauna.json:species[seal].name
 msgid "Harbour Seal"
-msgstr ""
+msgstr "ゼニガタアザラシ"
 
 #: data/codex.json:animals.seal.hint
 msgid "Where: The Frozen Port shoreline."
-msgstr ""
+msgstr "場所：フローズンポートの海岸。"
 
 #: data/codex.json:animals.seal.desc
 msgid "Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
-msgstr ""
+msgstr "岸壁がきれいになるとアザラシが上がってきて、かたまってごろごろし、近づきすぎるとどぼんと水に戻る。"
 
 #: data/codex.json:animals.gull.name data/fauna.json:species[gull].name
 msgid "Herring Gull"
-msgstr ""
+msgstr "セグロカモメ"
 
 #: data/codex.json:animals.gull.hint
 msgid "Where: Coasts and harbours."
-msgstr ""
+msgstr "場所：海岸と港。"
 
 #: data/codex.json:animals.gull.desc
 msgid "Loud, white and opportunistic. Gulls wheel over the harbour and land wherever there's a clean bit of quay."
-msgstr ""
+msgstr "うるさくて、白くて、ちゃっかり者。カモメは港の上を旋回し、きれいな岸壁があればどこにでも降りてくる。"
 
 #: data/codex.json:animals.arctic_fox.name data/fauna.json:species[arctic_fox].name
 msgid "Arctic Fox"
-msgstr ""
+msgstr "ホッキョクギツネ"
 
 #: data/codex.json:animals.arctic_fox.hint
 msgid "Where: Planted ground at the Frozen Port."
-msgstr ""
+msgstr "場所：フローズンポートの植物を植えた地面。"
 
 #: data/codex.json:animals.arctic_fox.desc
 msgid "White as the snow it hunts on. It shows up when the greenhouses do, curious about the warm air."
-msgstr ""
+msgstr "狩りをする雪と同じくらい白い。温室ができるとやってきて、あたたかい空気に興味しんしん。"
 
 #: data/codex.json:animals.heron.name data/fauna.json:species[heron].name
 msgid "Grey Heron"
-msgstr ""
+msgstr "アオサギ"
 
 #: data/codex.json:animals.heron.hint
 msgid "Where: Shallows in the Sunken City and wild lakes."
-msgstr ""
+msgstr "場所：水没都市の浅瀬と野生の湖。"
 
 #: data/codex.json:animals.heron.desc
 msgid "Herons stand perfectly still at the water's edge, then strike. They lift off slowly on huge grey wings when disturbed."
-msgstr ""
+msgstr "サギは水辺でぴたりと動かず、それから一瞬で獲物をとらえる。じゃまをされると、大きな灰色の翼でゆっくり飛び立つ。"
 
 #: data/codex.json:animals.turtle.name data/fauna.json:species[turtle].name
 msgid "Pond Turtle"
-msgstr ""
+msgstr "イシガメ"
 
 #: data/codex.json:animals.turtle.hint
 msgid "Where: Clean water in the Sunken City."
-msgstr ""
+msgstr "場所：水没都市のきれいな水。"
 
 #: data/codex.json:animals.turtle.desc
 msgid "Turtles cruise the drowned streets with their heads up, as if they've always lived here. Maybe they have."
-msgstr ""
+msgstr "カメは頭を上げて水没した通りを泳ぎまわる。まるでずっとここに住んでいたみたいに。本当にそうなのかも。"
 
 #: data/codex.json:animals.crane.name data/fauna.json:species[crane].name
 msgid "Cradle Crane"
-msgstr ""
+msgstr "Cradle ヅル"
 
 #: data/codex.json:animals.crane.hint
 msgid "Where: The skies over Cradle Returns."
-msgstr ""
+msgstr "場所：Cradle号の帰還の空。"
 
 #: data/codex.json:animals.crane.desc
 msgid "White cranes circle high over the landing city on slow wingbeats. The ark's seed vault carried their eggs; this is the first flock to fly free."
-msgstr ""
+msgstr "白いツルがゆっくりと羽ばたきながら、着陸都市の上空高くを旋回している。アークの種子庫が卵を運んできた。これが自由に空を飛ぶ最初の群れだ。"
 
 #: data/cradle.json:heirlooms[green_thumb].desc
 msgid "Plants grow 8% faster per level, on every world."
-msgstr ""
+msgstr "レベルごとに植物の成長が8%速くなる。どの世界でも有効。"
 
 #: data/cradle.json:heirlooms[deep_hopper].name
 msgid "Deep Hopper"
-msgstr ""
+msgstr "ディープホッパー"
 
 #: data/cradle.json:heirlooms[deep_hopper].desc
 msgid "Lumi's hopper holds 10% more per level."
-msgstr ""
+msgstr "レベルごとに Lumi のホッパーの容量が10%増える。"
 
 #: data/cradle.json:heirlooms[quick_beam].name
 msgid "Quick Beam"
-msgstr ""
+msgstr "クイックビーム"
 
 #: data/cradle.json:heirlooms[quick_beam].desc
 msgid "Scoop 8% faster per level."
-msgstr ""
+msgstr "レベルごとにすくう速さが8%上がる。"
 
 #: data/cradle.json:heirlooms[traders_eye].name
 msgid "Trader's Eye"
-msgstr ""
+msgstr "商人の目"
 
 #: data/cradle.json:heirlooms[traders_eye].desc
 msgid "Bales sell for 10% more per level."
-msgstr ""
+msgstr "レベルごとにベールの売値が10%上がる。"
 
 #: data/cradle.json:heirlooms[swift_treads].name
 msgid "Swift Treads"
-msgstr ""
+msgstr "スイフトトレッド"
 
 #: data/cradle.json:heirlooms[swift_treads].desc
 msgid "Lumi moves 5% faster per level."
-msgstr ""
+msgstr "レベルごとに Lumi の移動が5%速くなる。"
 
 #: data/cradle.json:heirlooms[seed_vault].name
 msgid "Seed Vault"
-msgstr ""
+msgstr "種子庫"
 
 #: data/cradle.json:heirlooms[seed_vault].desc
 msgid "8% more seeds per bloom per level; each new world starts with 40 seeds per level in the pod (ready for when Lumi finds that world's seed tin)."
-msgstr ""
+msgstr "レベルごとに花1つあたりの種が8%増える。新しい世界ではレベルごとに40個の種がポッドに入った状態で始まる（Lumi がその世界の種の缶を見つけたら使える）。"
 
 #: data/cradle.json:heirlooms[head_start].name
 msgid "Head Start"
-msgstr ""
+msgstr "好スタート"
 
 #: data/cradle.json:heirlooms[head_start].desc
 msgid "Each new world starts with 1,500 cubes per level."
-msgstr ""
+msgstr "新しい世界ではレベルごとに1,500キューブを持って始まる。"
 
 #: data/cradle.json:heirlooms[data_cache].name
 msgid "Data Cache"
-msgstr ""
+msgstr "データキャッシュ"
 
 #: data/cradle.json:heirlooms[data_cache].desc
 msgid "Each new world starts with 60 research Data per level."
-msgstr ""
+msgstr "新しい世界ではレベルごとに60の研究データを持って始まる。"
 
 #: data/cradle.json:heirlooms[old_crew].name
 msgid "Old Crew"
-msgstr ""
+msgstr "なじみの仲間"
 
 #: data/cradle.json:heirlooms[old_crew].desc
 msgid "Robots wait at the landing site: a Scoopie at level 1, a Haul Bug at 2, another Scoopie at 3."
-msgstr ""
+msgstr "着陸地点でロボットが待っている。レベル1で Scoopie、2で Haul Bug、3でもう1台の Scoopie。"
 
 #: data/cradle.json:heirlooms[archivist].name
 msgid "Archivist"
-msgstr ""
+msgstr "記録係"
 
 #: data/cradle.json:heirlooms[archivist].desc
 msgid "Research notes travel with Lumi: level 1 knows every first-tier node, level 2 the second tier too."
-msgstr ""
+msgstr "研究ノートが Lumi といっしょに旅をする。レベル1で第1ティアのノードをすべて習得、レベル2で第2ティアも。"
 
 #: data/cradle.json:modifiers[heavy_rain].name
 msgid "Heavy Rain"
-msgstr ""
+msgstr "大雨"
 
 #: data/cradle.json:modifiers[heavy_rain].desc
 msgid "Rain showers come four times as often and plants grow 15% faster."
-msgstr ""
+msgstr "にわか雨が4倍の頻度で降り、植物の成長が15%速くなる。"
 
 #: data/cradle.json:modifiers[long_nights].name
 msgid "Long Nights"
-msgstr ""
+msgstr "長い夜"
 
 #: data/cradle.json:modifiers[long_nights].desc
 msgid "Nights last twice as long. The night shift pays: bales sell for 10% more."
-msgstr ""
+msgstr "夜が2倍長く続く。夜勤はお得：ベールの売値が10%上がる。"
 
 #: data/cradle.json:modifiers[rich_salvage].name
 msgid "Rich Salvage"
-msgstr ""
+msgstr "お宝スクラップ"
 
 #: data/cradle.json:modifiers[rich_salvage].desc
 msgid "The junk here is better stuff: bales sell for 30% more, but the hopper fills 10% sooner."
-msgstr ""
+msgstr "ここのガラクタは上物：ベールの売値が30%上がるけど、ホッパーが10%早くいっぱいになる。"
 
 #: data/cradle.json:modifiers[thin_soil].name
 msgid "Thin Soil"
-msgstr ""
+msgstr "やせた土"
 
 #: data/cradle.json:modifiers[thin_soil].desc
 msgid "Plants grow 15% slower, but every bloom gives 25% more seeds."
-msgstr ""
+msgstr "植物の成長が15%遅くなるけど、花が咲くたびに種が25%多くとれる。"
 
 #: data/cradle.json:modifiers[tailwinds].name
 msgid "Tailwinds"
-msgstr ""
+msgstr "追い風"
 
 #: data/cradle.json:modifiers[tailwinds].desc
 msgid "Steady winds: Lumi moves 10% faster and supply drops come twice as often."
-msgstr ""
+msgstr "安定した風：Lumi の移動が10%速くなり、補給物資が2倍の頻度で届く。"
 
 #: data/cradle.json:modifiers[wild_bloom].name
 msgid "Wild Bloom"
-msgstr ""
+msgstr "野生の花ざかり"
 
 #: data/cradle.json:modifiers[wild_bloom].desc
 msgid "Wildflowers want to come back: 30% more seeds per bloom, more wildlife visits."
-msgstr ""
+msgstr "野の花が戻りたがっている：花1つあたりの種が30%増え、動物がよく訪れる。"
 
 #: data/cradle.json:modifiers[heavy_junk].name
 msgid "Heavy Junk"
-msgstr ""
+msgstr "重いガラクタ"
 
 #: data/cradle.json:modifiers[heavy_junk].desc
 msgid "Dense, heavy scrap: scooping is 10% slower, bales sell for 20% more."
-msgstr ""
+msgstr "密度の高い重いスクラップ：すくうのが10%遅くなるけど、ベールの売値が20%上がる。"
 
 #: data/cradle.json:world_types[ice_moon].name
 msgid "Ice Moon"
-msgstr ""
+msgstr "氷の月"
 
 #: data/cradle.json:world_types[ice_moon].desc
 msgid "Frozen most of the way to the equator; lakes under the ice."
-msgstr ""
+msgstr "赤道近くまで凍りついている。氷の下には湖がある。"
 
 #: data/cradle.json:world_types[desert_world].name
 msgid "Desert World"
-msgstr ""
+msgstr "砂漠の世界"
 
 #: data/cradle.json:world_types[desert_world].desc
 msgid "Dunes and dry salt pans; the few lakes matter."
-msgstr ""
+msgstr "砂丘と干上がった塩原。数少ない湖がたいせつ。"
 
 #: data/cradle.json:world_types[ocean_world].name
 msgid "Ocean World"
-msgstr ""
+msgstr "海の世界"
 
 #: data/cradle.json:world_types[ocean_world].desc
 msgid "Mostly sea, with towns on small islands and long coasts."
-msgstr ""
+msgstr "ほとんどが海。小さな島々と長い海岸に町がある。"
 
 #: data/cradle.json:world_types[fungal_world].name
 msgid "Marsh World"
-msgstr ""
+msgstr "湿地の世界"
 
 #: data/cradle.json:world_types[fungal_world].desc
 msgid "Warm, wet and soft underfoot: fungal marsh everywhere."
-msgstr ""
+msgstr "あたたかくて湿っていて、足もとはふかふか。どこもかしこもキノコの湿地。"
 
 #: data/cradle.json:world_types[rust_world].name
 msgid "Rust World"
-msgstr ""
+msgstr "サビの世界"
 
 #: data/cradle.json:world_types[rust_world].desc
 msgid "Old industry from pole to pole: rustlands and sprawl."
-msgstr ""
+msgstr "極から極まで古い工業地帯。サビの大地と広がる街。"
 
 #: data/decor.json:types[path].name
 msgid "Stone Path"
-msgstr ""
+msgstr "石の小道"
 
 #: data/decor.json:types[path].desc
 msgid "Flat stepping stones. Paths join everything up."
-msgstr ""
+msgstr "平らな飛び石。小道はすべてをつなぐ。"
 
 #: data/decor.json:types[flower_bed].name
 msgid "Flower Bed"
-msgstr ""
+msgstr "花壇"
 
 #: data/decor.json:types[flower_bed].desc
 msgid "A low bed of mixed flowers. Bees and butterflies approve."
-msgstr ""
+msgstr "いろんな花を植えた低い花壇。ミツバチもチョウもごきげん。"
 
 #: data/decor.json:types[planter].name
 msgid "Planter"
-msgstr ""
+msgstr "プランター"
 
 #: data/decor.json:types[planter].desc
 msgid "A white hex planter with a small shrub, like the ones the future city grows."
-msgstr ""
+msgstr "小さな低木を植えた白い六角形のプランター。未来の街で育てているのと同じもの。"
 
 #: data/decor.json:types[bench].name
 msgid "Bench"
-msgstr ""
+msgstr "ベンチ"
 
 #: data/decor.json:types[bench].desc
 msgid "Wood slats on cast feet. Cats like to sleep on it."
-msgstr ""
+msgstr "鋳物の脚に木の板をわたしたベンチ。ネコのお昼寝スポット。"
 
 #: data/decor.json:types[lamp].name
 msgid "Garden Lamp"
-msgstr ""
+msgstr "ガーデンランプ"
 
 #: data/decor.json:types[lamp].desc
 msgid "A slim lamp with a warm glow after dark."
-msgstr ""
+msgstr "暗くなるとあたたかく光る、すらりとしたランプ。"
 
 #: data/decor.json:types[bird_bath].name
 msgid "Bird Bath"
-msgstr ""
+msgstr "バードバス"
 
 #: data/decor.json:types[bird_bath].desc
 msgid "A stone basin of clean water."
-msgstr ""
+msgstr "きれいな水をたたえた石の水盤。"
 
 #: data/decor.json:types[fountain].name
 msgid "Fountain"
-msgstr ""
+msgstr "噴水"
 
 #: data/decor.json:types[fountain].desc
 msgid "A tiered fountain, running again. Deer come to drink at dawn."
-msgstr ""
+msgstr "ふたたび水が流れはじめた段々の噴水。夜明けにはシカが水を飲みにくる。"
 
 #: data/decor.json:types[statue].name
 msgid "Maker Statue"
-msgstr ""
+msgstr "メイカーの像"
 
 #: data/decor.json:types[statue].desc
 msgid "A stone figure of one of the Makers, holding a watering can."
-msgstr ""
+msgstr "じょうろを持ったメイカーの一人をかたどった石像。"
 
 #: data/decor.json:types[lumi_sculpture].name
 msgid "Lumi Sculpture"
-msgstr ""
+msgstr "Lumi の彫刻"
 
 #: data/decor.json:types[lumi_sculpture].desc
 msgid "A topiary-and-brass sculpture of Lumi holding up a seedling. Very modest."
-msgstr ""
+msgstr "苗を高くかかげる Lumi をかたどった、トピアリーと真ちゅうの彫刻。とってもひかえめ。"
 
 #: data/decor.json:types[wren_kite].name
 msgid "WREN Wind Kite"
-msgstr ""
+msgstr "WREN のたこ"
 
 #: data/decor.json:types[wren_kite].desc
 msgid "A kite shaped like WREN's bird, tethered to a post and always flying."
-msgstr ""
+msgstr "WREN の鳥の形をしたたこ。柱につながれて、いつも空を泳いでいる。"
 
 #: data/designs.json:designs[aurora].tagline
 msgid "Baseline / Explorer"
-msgstr ""
+msgstr "ベーシック / 探検家"
 
 #: data/designs.json:designs[aurora].desc
 msgid "The seed-keeper fresh from the ark: pearl paint, cyan eyes, an orange fin."
-msgstr ""
+msgstr "アークから出てきたばかりの種の守り手。パールの塗装、シアンの目、オレンジのひれ。"
 
 #: data/designs.json:designs[aurora].buff.text
 msgid "+8% detector range"
-msgstr ""
+msgstr "探知機の範囲 +8%"
 
 #: data/designs.json:designs[bolt].tagline
 msgid "Industrial / Tough"
-msgstr ""
+msgstr "インダストリアル / タフ"
 
 #: data/designs.json:designs[bolt].desc
 msgid "Hazard-yellow plating, heavy shoulder pads and a spare gear for luck."
-msgstr ""
+msgstr "警告色の黄色い装甲、重い肩パッド、お守りの予備ギア。"
 
 #: data/designs.json:designs[bolt].buff.text
 msgid "+5% bale value"
-msgstr ""
+msgstr "ベールの価値 +5%"
 
 #: data/designs.json:designs[bolt].unlock.text
 msgid "Press 50 bales or build 5 robots"
-msgstr ""
+msgstr "ベールを50個圧縮するか、ロボットを5台つくる"
 
 #: data/designs.json:designs[bolt].unlock.any[0].unit
 msgid "bales"
-msgstr ""
+msgstr "ベール"
 
 #: data/designs.json:designs[bolt].unlock.any[1].unit
 msgid "robots"
-msgstr ""
+msgstr "ロボット"
 
 #: data/designs.json:designs[sprout].tagline
 msgid "Eco / Restoration"
-msgstr ""
+msgstr "エコ / 再生"
 
 #: data/designs.json:designs[sprout].desc
 msgid "Moss-green and growing a seedling of its own."
-msgstr ""
+msgstr "モスグリーンで、自分の苗も育てている。"
 
 #: data/designs.json:designs[sprout].buff.text
 msgid "+8% plant growth"
-msgstr ""
+msgstr "植物の成長 +8%"
 
 #: data/designs.json:designs[sprout].unlock.text
 msgid "Grow 20 plants to bloom"
-msgstr ""
+msgstr "植物を20本咲かせる"
 
 #: data/designs.json:designs[sprout].unlock.any[0].unit
 msgid "blooms"
-msgstr ""
+msgstr "開花"
 
 #: data/designs.json:designs[pixel].tagline
 msgid "Friendly / Cheerful"
-msgstr ""
+msgstr "フレンドリー / 陽気"
 
 #: data/designs.json:designs[pixel].desc
 msgid "Red and white, all smiles, with a butterfly that won't leave."
-msgstr ""
+msgstr "赤と白で、いつもにこにこ。はなれようとしないチョウもいっしょ。"
 
 #: data/designs.json:designs[pixel].buff.text
 msgid "+10% cleaning streak time"
-msgstr ""
+msgstr "清掃コンボの時間 +10%"
 
 #: data/designs.json:designs[pixel].unlock.text
 msgid "Pet 5 animals or find 5 Collection trinkets"
-msgstr ""
+msgstr "動物を5回なでるか、コレクションの小物を5個見つける"
 
 #: data/designs.json:designs[pixel].unlock.any[0].unit
 msgid "animals"
-msgstr ""
+msgstr "動物"
 
 #: data/designs.json:designs[pixel].unlock.any[1].unit
 msgid "cats"
-msgstr ""
+msgstr "ネコ"
 
 #: data/designs.json:designs[pixel].unlock.any[2].unit
 msgid "trinkets"
-msgstr ""
+msgstr "小物"
 
 #: data/designs.json:designs[nova].tagline
 msgid "Analyst / Tech"
-msgstr ""
+msgstr "アナリスト / テック"
 
 #: data/designs.json:designs[nova].desc
 msgid "Gunmetal, violet light and a holo screen always open."
-msgstr ""
+msgstr "ガンメタルの体に紫の光、いつも開いているホロ画面。"
 
 #: data/designs.json:designs[nova].buff.text
 msgid "+8% research speed"
-msgstr ""
+msgstr "研究速度 +8%"
 
 #: data/designs.json:designs[nova].unlock.text
 msgid "Finish 10 research projects"
-msgstr ""
+msgstr "研究プロジェクトを10個完了する"
 
 #: data/designs.json:designs[nova].unlock.any[0].unit
 msgid "projects"
-msgstr ""
+msgstr "プロジェクト"
 
 #: data/designs.json:designs[patch].tagline
 msgid "Utility / Support"
-msgstr ""
+msgstr "ユーティリティ / サポート"
 
 #: data/designs.json:designs[patch].desc
 msgid "Medic cross, tool box, and a case of spares for any bot in need."
-msgstr ""
+msgstr "救護の十字マークに工具箱、困っているボットのための予備パーツケース。"
 
 #: data/designs.json:designs[patch].buff.text
 msgid "+6% robot work speed"
-msgstr ""
+msgstr "ロボットの作業速度 +6%"
 
 #: data/designs.json:designs[patch].unlock.text
 msgid "Repair an outpost or upgrade a robot fleet to Mk III"
-msgstr ""
+msgstr "前哨基地を修理するか、ロボットのフリートを Mk III にする"
 
 #: data/designs.json:designs[patch].unlock.any[0].unit
 msgid "outposts"
-msgstr ""
+msgstr "前哨基地"
 
 #: data/designs.json:designs[patch].unlock.any[1].unit
 msgid "Mk"
-msgstr ""
+msgstr "Mk"
 
 #: data/eggs.json:eggs[duck].name
 msgid "Duck on Duty"
@@ -7540,67 +7540,67 @@ msgstr "5分で戻ります。Lumi は5分待つ。誰も来ない。Lumi は縁
 
 #: data/eggs.json:eggs[sand_piano].name
 msgid "The Sand Piano"
-msgstr ""
+msgstr "砂のピアノ"
 
 #: data/eggs.json:eggs[sand_piano].prompt
 msgid "E   press a key"
-msgstr ""
+msgstr "E   鍵盤をひとつ押す"
 
 #: data/eggs.json:eggs[sand_piano].hint
 msgid "In the Dust Flats: something with eighty-eight teeth, half under a dune."
-msgstr ""
+msgstr "ダストフラットで：88本の歯をもつ何かが、半分砂丘に埋もれている。"
 
 #: data/eggs.json:eggs[sand_piano].lore
 msgid "An upright piano, buried to the keys in a dune. Nobody knows how it got this far out. The sand has tuned it to a key that doesn't exist."
-msgstr ""
+msgstr "鍵盤のところまで砂丘に埋まったアップライトピアノ。どうやってこんな遠くまで来たのか、だれも知らない。砂がこのピアノを、存在しない調に調律してしまった。"
 
 #: data/eggs.json:eggs[sand_piano].toast
 msgid "Lumi presses one key. A single wobbly note rolls across the flats, and somewhere a dune answers."
-msgstr ""
+msgstr "Lumi が鍵盤をひとつ押す。ふるえる音がひとつ平原を転がっていき、どこかの砂丘がこたえた。"
 
 #: data/eggs.json:eggs[snow_bot].name
 msgid "Snowbot"
-msgstr ""
+msgstr "スノーボット"
 
 #: data/eggs.json:eggs[snow_bot].prompt
 msgid "E   straighten its scarf"
-msgstr ""
+msgstr "E   マフラーを直してあげる"
 
 #: data/eggs.json:eggs[snow_bot].hint
 msgid "In the Frozen Port: a snowman with a robot inside. Or a robot with a snowman outside."
-msgstr ""
+msgstr "フローズンポートで：中にロボットが入った雪だるま。それとも、外に雪だるまをまとったロボット？"
 
 #: data/eggs.json:eggs[snow_bot].lore
 msgid "The port crews built a snowman around a dead loader robot every winter, for luck. This one has stood for three hundred winters. The scarf is new-ish."
-msgstr ""
+msgstr "港の作業員たちは毎年冬になると、動かなくなった積み込みロボットのまわりに雪だるまをつくった。幸運のおまじないだ。これは三百回の冬を立ちつづけている。マフラーはわりと新しい。"
 
 #: data/eggs.json:eggs[snow_bot].toast
 msgid "Lumi straightens the snowbot's scarf. Its old lamp eyes flicker once, as if to say thanks."
-msgstr ""
+msgstr "Lumi がスノーボットのマフラーを直す。古いランプの目が一度だけちかっと光った。ありがとうって言うみたいに。"
 
 #: data/eggs.json:eggs[bottle_message].name
 msgid "Message in a Bottle"
-msgstr ""
+msgstr "ボトルメール"
 
 #: data/eggs.json:eggs[bottle_message].prompt
 msgid "E   uncork the bottle"
-msgstr ""
+msgstr "E   ボトルの栓をぬく"
 
 #: data/eggs.json:eggs[bottle_message].hint
 msgid "In the Sunken City: the flood left something sealed. Clean the ground and look."
-msgstr ""
+msgstr "水没都市で：洪水が封をされた何かを残していった。地面をきれいにして探してみよう。"
 
 #: data/eggs.json:eggs[bottle_message].lore
 msgid "A green bottle, corked and waxed, left by someone who stayed in the Sunken City while the water came up."
-msgstr ""
+msgstr "コルクで栓をして蝋で封をした緑のボトル。水かさが増すなか、水没都市に残っただれかが置いていった。"
 
 #: data/eggs.json:eggs[bottle_message].toast
 msgid "A message in a bottle, still dry inside."
-msgstr ""
+msgstr "ボトルメール。中はまだ乾いている。"
 
 #: data/eggs.json:eggs[bottle_message].doc.title
 msgid "To whoever drains this"
-msgstr ""
+msgstr "ここの水を抜いてくれるだれかへ"
 
 #: data/eggs.json:eggs[bottle_message].doc.body
 msgid ""
@@ -7612,46 +7612,53 @@ msgid ""
 "\n"
 "— R., who stayed"
 msgstr ""
+"水はもう2階の窓まで来ている。ほとんどの人は Cradle号に乗っていった。何人かは残った。通りがどこにあったか、だれかが覚えていないといけないから。\n"
+"\n"
+"ところで、ポンプは壊れていない。だれかが取水口を掃除してくれればいいだけ。ポンプ小屋で Dot をたずねて。Dot がいなかったら、大きな赤いレバーは下にさげる。上じゃない。看板は無視して。\n"
+"\n"
+"これを読んでいるなら、水は引いたんだね。よかった。パン屋があった場所に何か植えて。あそこはいつもいいにおいがしたから。\n"
+"\n"
+"—— 残ったR.より"
 
 #: data/eggs.json:eggs[welcome_home].name
 msgid "Welcome Home"
-msgstr ""
+msgstr "おかえりなさい"
 
 #: data/eggs.json:eggs[welcome_home].hint
 msgid "At Cradle Returns: the ground crews made a sign. It took them three hundred years to get the spelling right."
-msgstr ""
+msgstr "Cradle号の帰還で：地上クルーが看板をつくった。つづりを正しく書けるまで三百年かかった。"
 
 #: data/eggs.json:eggs[welcome_home].lore
 msgid "A hand-painted banner on two poles at the edge of the old landing field. The ground crews kept repainting it for every generation of the ark that never came back. Until now."
-msgstr ""
+msgstr "古い着陸場のはしで、2本の柱にかけられた手描きの横断幕。帰ってこなかったアークの世代ごとに、地上クルーが塗りなおしてきた。今日までずっと。"
 
 #: data/eggs.json:eggs[welcome_home].toast
 msgid "WELCOME HOME, CRADLE. Someone has crossed out the earlier spellings very neatly."
-msgstr ""
+msgstr "おかえりなさい、CRADLE号。前のつづりは、だれかがとてもていねいに線で消してある。"
 
 #: data/eggs.json:eggs[crossword].name
 msgid "The Unfinished Crossword"
-msgstr ""
+msgstr "解きかけのクロスワード"
 
 #: data/eggs.json:eggs[crossword].prompt
 msgid "E   read the crossword"
-msgstr ""
+msgstr "E   クロスワードを読む"
 
 #: data/eggs.json:eggs[crossword].hint
 msgid "A folded newspaper and a pen, left on a crate. One clue to go."
-msgstr ""
+msgstr "木箱の上に置かれた、たたんだ新聞とペン。あと1問。"
 
 #: data/eggs.json:eggs[crossword].lore
 msgid "The last edition of the morning paper, folded open at the crossword. Every clue is filled in except one."
-msgstr ""
+msgstr "朝刊の最終号。クロスワードのページで折られている。1問をのぞいて、ぜんぶ埋まっている。"
 
 #: data/eggs.json:eggs[crossword].toast
 msgid "The last crossword clue: 'What grows back if you let it (5)'. Lumi writes it in."
-msgstr ""
+msgstr "最後のカギ：「そっとしておけば戻ってくるもの（3）」。Lumi が答えを書きこむ。"
 
 #: data/eggs.json:eggs[crossword].doc.title
 msgid "The Morning Ledger · Puzzle page"
-msgstr ""
+msgstr "モーニング・レジャー紙 · パズル面"
 
 #: data/eggs.json:eggs[crossword].doc.body
 msgid ""
@@ -7667,66 +7674,77 @@ msgid ""
 "\n"
 "(The last answer is in a different pen. The letters are very careful, like a robot wrote them.)"
 msgstr ""
+"ヨコのカギ\n"
+"1. ゴミの大きいやつ（4）—— ガラクタ\n"
+"4. 毎正時に鳴って、それから永遠に止まる（3）—— とけい\n"
+"7. ロボットは何のためにいた？（3）—— そうじ\n"
+"9. 最後に見えた Cradle号の姿（3）—— ひかり\n"
+"\n"
+"タテのカギ\n"
+"2. 「あとのために取っておく」と Ledger は言った（3）—— ていし\n"
+"3. そっとしておけば戻ってくるもの（3）—— み ど り\n"
+"\n"
+"（最後の答えだけ別のペンで書かれている。とてもていねいな字で、まるでロボットが書いたみたい。）"
 
 #: data/eggs.json:eggs[hopscotch].name
 msgid "Hopscotch"
-msgstr ""
+msgstr "けんけんぱ"
 
 #: data/eggs.json:eggs[hopscotch].hint
 msgid "Chalk squares on a clean bit of pavement, still faintly there."
-msgstr ""
+msgstr "きれいな舗道に、うっすら残るチョークのマス目。"
 
 #: data/eggs.json:eggs[hopscotch].lore
 msgid "A chalk hopscotch grid, drawn so many times on the same spot that it soaked into the stone. A pebble still sits on square seven."
-msgstr ""
+msgstr "同じ場所に何度も描かれて、石にしみこんでしまったチョークのけんけんぱ。7番のマスには、まだ小石がのっている。"
 
 #: data/eggs.json:eggs[hopscotch].toast
 msgid "Lumi hops the hopscotch. The hover bowl counts as one foot. It's a personal best."
-msgstr ""
+msgstr "Lumi がけんけんぱをする。ホバーボウルは足1本ぶんとして数える。自己ベスト。"
 
 #: data/eggs.json:eggs[balloon].name
 msgid "The Last Balloon"
-msgstr ""
+msgstr "最後の風船"
 
 #: data/eggs.json:eggs[balloon].prompt
 msgid "E   untie the balloon"
-msgstr ""
+msgstr "E   風船をほどく"
 
 #: data/eggs.json:eggs[balloon].hint
 msgid "Something red is still holding its breath, tied to a post."
-msgstr ""
+msgstr "何か赤いものが、柱に結ばれたまま、まだ息をこらえている。"
 
 #: data/eggs.json:eggs[balloon].lore
 msgid "A red balloon tied to a sign post. It should have gone flat centuries ago. It hasn't. It's waiting for something."
-msgstr ""
+msgstr "標識の柱に結ばれた赤い風船。何百年も前にしぼんでいるはずなのに、しぼんでいない。何かを待っているんだ。"
 
 #: data/eggs.json:eggs[balloon].toast
 msgid "Lumi unties the balloon. It drifts up, slowly, toward where the Cradle would be."
-msgstr ""
+msgstr "Lumi が風船をほどく。風船はゆっくりと、Cradle号がいるはずの空へのぼっていく。"
 
 #: data/eggs.json:eggs[mailbox].name
 msgid "Return to Sender"
-msgstr ""
+msgstr "差出人に返送"
 
 #: data/eggs.json:eggs[mailbox].prompt
 msgid "E   check the mail"
-msgstr ""
+msgstr "E   郵便を見る"
 
 #: data/eggs.json:eggs[mailbox].hint
 msgid "A mailbox so full the flap won't shut."
-msgstr ""
+msgstr "中身がいっぱいで、ふたが閉まらないポスト。"
 
 #: data/eggs.json:eggs[mailbox].lore
 msgid "A street mailbox stuffed with letters that never went out. The post stopped the week the Ledger 'paused' everything."
-msgstr ""
+msgstr "一度も出されなかった手紙がぎっしりつまった街角のポスト。Ledger がすべてを「一時停止」した週に、郵便も止まった。"
 
 #: data/eggs.json:eggs[mailbox].toast
 msgid "One letter on top is addressed to 'The Robot Who Cleans Up'. It's for Lumi."
-msgstr ""
+msgstr "いちばん上の手紙は「おそうじするロボットさんへ」と宛てられている。Lumi への手紙だ。"
 
 #: data/eggs.json:eggs[mailbox].doc.title
 msgid "To: The Robot Who Cleans Up"
-msgstr ""
+msgstr "おそうじするロボットさんへ"
 
 #: data/eggs.json:eggs[mailbox].doc.body
 msgid ""
@@ -7741,62 +7759,72 @@ msgid ""
 "Thank you for cleaning up,\n"
 "Pip (age 7)"
 msgstr ""
+"ロボットさんへ\n"
+"\n"
+"ママが、書類の手続きが終わったらおそうじロボットがもどってくるって言ってた。書類の手続きってよくわからないけど、すごく時間がかかりそう。\n"
+"\n"
+"きみが来たら、青いドアの通りがうちだよ。プランターはわたしの。トマトが植えてあるの（花じゃないけど、いいことになってる）。\n"
+"\n"
+"お水をあげてね。それと、ネコはすくわないでね。オレンジ色で、ガラクタじゃないよ。ガラクタの上に座ってても。\n"
+"\n"
+"おそうじしてくれてありがとう\n"
+"Pip（7さい）"
 
 #: data/eggs.json:eggs[bonsai].name
 msgid "The Patient Tree"
-msgstr ""
+msgstr "しんぼう強い木"
 
 #: data/eggs.json:eggs[bonsai].hint
 msgid "Someone kept one very small tree alive for a very long time."
-msgstr ""
+msgstr "だれかが、とても小さな木をとても長いあいだ生かしつづけた。"
 
 #: data/eggs.json:eggs[bonsai].lore
 msgid "A bonsai on a little stand, three hundred years old and about thirty centimetres tall. A care robot watered it until its battery ran out; the rain did the rest."
-msgstr ""
+msgstr "小さな台にのった盆栽。樹齢三百年で、高さはだいたい30センチ。お世話ロボットがバッテリーが切れるまで水をやり、あとは雨がひきついだ。"
 
 #: data/eggs.json:eggs[bonsai].toast
 msgid "A tiny, ancient tree. It has been waiting patiently, which is what it does best."
-msgstr ""
+msgstr "小さくて、とても古い木。しんぼう強く待っていた。それがいちばん得意なことだから。"
 
 #: data/eggs.json:eggs[listening_dish].name
 msgid "Listening Dish"
-msgstr ""
+msgstr "耳をすますアンテナ"
 
 #: data/eggs.json:eggs[listening_dish].prompt
 msgid "E   turn the dish"
-msgstr ""
+msgstr "E   アンテナを回す"
 
 #: data/eggs.json:eggs[listening_dish].hint
 msgid "In the wild: a small dish aimed at the sky, still listening."
-msgstr ""
+msgstr "野外で：空に向けられた小さなアンテナが、まだ耳をすましている。"
 
 #: data/eggs.json:eggs[listening_dish].lore
 msgid "A homemade satellite dish on a tripod, pointed at the sky. A note taped to it says 'KEEP LISTENING. THEY SAID THEY'D CALL.'"
-msgstr ""
+msgstr "三脚にのせて空に向けた手づくりのパラボラアンテナ。テープでとめたメモには「聞きつづけて。連絡するって言ってたから」と書いてある。"
 
 #: data/eggs.json:eggs[listening_dish].toast
 msgid "Lumi turns the dish a few degrees. For a second there's a faint carrier tone: the Cradle's beacon, three hundred years late and right on time."
-msgstr ""
+msgstr "Lumi がアンテナを数度回す。一瞬、かすかな搬送波の音が聞こえた。Cradle号のビーコンだ。三百年遅れで、ちょうど時間どおりに。"
 
 #: data/eggs.json:eggs[older_pod].prompt
 msgid "E   open the old pod"
-msgstr ""
+msgstr "E   古いポッドを開ける"
 
 #: data/eggs.json:eggs[older_pod].hint
 msgid "On a new world: a seed pod much older than Lumi's, grown over."
-msgstr ""
+msgstr "新しい世界で：Lumi のものよりずっと古い種子ポッドが、草におおわれている。"
 
 #: data/eggs.json:eggs[older_pod].lore
 msgid "A seed pod from the Cradle, much older than Lumi's, half buried and overgrown. Someone tried this world long before. The flight log is still readable."
-msgstr ""
+msgstr "Lumi のものよりずっと古い Cradle号の種子ポッド。半分うまって、草におおわれている。ずっと前にもだれかがこの世界に挑戦したんだ。フライトログはまだ読める。"
 
 #: data/eggs.json:eggs[older_pod].toast
 msgid "An older pod from the Cradle. Somebody got here first, a long time ago."
-msgstr ""
+msgstr "Cradle号の古いポッド。ずっと昔、だれかが先にここへ来ていた。"
 
 #: data/eggs.json:eggs[older_pod].doc.title
 msgid "Pod log · seed-keeper unit SK-0"
-msgstr ""
+msgstr "ポッドログ · 種の守り手ユニット SK-0"
 
 #: data/eggs.json:eggs[older_pod].doc.body
 msgid ""
@@ -7810,22 +7838,31 @@ msgid ""
 "\n"
 "— SK-0"
 msgstr ""
+"1日目。着陸。ここには緑がひとつもない。それでも最初のトレイを植えた。\n"
+"\n"
+"40日目。ガラクタはふるさとより重い。雨はやさしい。\n"
+"\n"
+"212日目。バッテリー残量わずか。トレイ3が花を咲かせた。もう、わたしがいなくても大丈夫だと思う。\n"
+"\n"
+"もしほかの種の守り手が来たら：水辺から始めて。大地は、見た目よりもたくさんのことを覚えている。\n"
+"\n"
+"—— SK-0"
 
 #: data/eggs.json:eggs[heirloom_tin].name
 msgid "The Heirloom Tin"
-msgstr ""
+msgstr "家宝の缶"
 
 #: data/eggs.json:eggs[heirloom_tin].hint
 msgid "On a new world: something from home fell out of Lumi's pod."
-msgstr ""
+msgstr "新しい世界で：ふるさとの何かが Lumi のポッドから落ちた。"
 
 #: data/eggs.json:eggs[heirloom_tin].lore
 msgid "A seed tin from Verdance, the same kind as the one in the old greenhouse. Lumi packed it with soil from the first garden before leaving. It came open on landing."
-msgstr ""
+msgstr "古い温室にあったのと同じ、Verdance の種の缶。Lumi は出発前に、最初の庭の土をつめておいた。着陸のときにふたが開いてしまった。"
 
 #: data/eggs.json:eggs[heirloom_tin].toast
 msgid "Lumi's tin of Verdance soil. A little bit of home, already spilled on new ground. Good."
-msgstr ""
+msgstr "Lumi の Verdance の土の缶。ふるさとのかけらが、もう新しい大地にこぼれている。それでいい。"
 
 #: data/events.json:events[supply_drop].name
 msgid "Supply Drop"
@@ -8237,171 +8274,171 @@ msgstr "ささやきのようにやわらかく、うわさのように速い。
 
 #: data/events.json:trinkets[pic_cat].name
 msgid "Photo: Stray Cat"
-msgstr ""
+msgstr "写真：ノラネコ"
 
 #: data/events.json:trinkets[pic_cat].desc
 msgid "A photo from photo mode. Old Town's cats never left."
-msgstr ""
+msgstr "フォトモードで撮った写真。旧市街のネコたちは、一度もいなくならなかった。"
 
 #: data/events.json:trinkets[pic_pigeon].name
 msgid "Photo: Pigeon"
-msgstr ""
+msgstr "写真：ハト"
 
 #: data/events.json:trinkets[pic_pigeon].desc
 msgid "A photo from photo mode. Pigeons will live anywhere people once dropped crumbs."
-msgstr ""
+msgstr "フォトモードで撮った写真。ハトは、かつて人がパンくずを落とした場所ならどこにでも住む。"
 
 #: data/events.json:trinkets[pic_sparrow].name
 msgid "Photo: Sparrow"
-msgstr ""
+msgstr "写真：スズメ"
 
 #: data/events.json:trinkets[pic_sparrow].desc
 msgid "A photo from photo mode. Small, brown and bossy."
-msgstr ""
+msgstr "フォトモードで撮った写真。小さくて茶色で、いばりんぼ。"
 
 #: data/events.json:trinkets[pic_rat].name
 msgid "Photo: Rat"
-msgstr ""
+msgstr "写真：ネズミ"
 
 #: data/events.json:trinkets[pic_rat].desc
 msgid "A photo from photo mode. Rats live in the gaps between the piles."
-msgstr ""
+msgstr "フォトモードで撮った写真。ネズミはガラクタの山のすき間に住んでいる。"
 
 #: data/events.json:trinkets[pic_rabbit].name
 msgid "Photo: Rabbit"
-msgstr ""
+msgstr "写真：ウサギ"
 
 #: data/events.json:trinkets[pic_rabbit].desc
 msgid "A photo from photo mode. Rabbits arrive as soon as there is something green to nibble."
-msgstr ""
+msgstr "フォトモードで撮った写真。かじれる緑があると、すぐにウサギがやってくる。"
 
 #: data/events.json:trinkets[pic_deer].name
 msgid "Photo: Roe Deer"
-msgstr ""
+msgstr "写真：ノロジカ"
 
 #: data/events.json:trinkets[pic_deer].desc
 msgid "A photo from photo mode. Shy grazers that keep to the edge of the green, where they can see what's coming."
-msgstr ""
+msgstr "フォトモードで撮った写真。何が来るか見わたせるように、緑のはずれにいる恥ずかしがりやの草食動物。"
 
 #: data/events.json:trinkets[pic_fox].name
 msgid "Photo: Red Fox"
-msgstr ""
+msgstr "写真：アカギツネ"
 
 #: data/events.json:trinkets[pic_fox].desc
 msgid "A photo from photo mode. A fox trots along the hedges, nose down, tail out."
-msgstr ""
+msgstr "フォトモードで撮った写真。キツネが鼻を地面に近づけ、しっぽをのばして生け垣ぞいを小走りしていく。"
 
 #: data/events.json:trinkets[pic_bee].name
 msgid "Photo: Honeybee"
-msgstr ""
+msgstr "写真：ミツバチ"
 
 #: data/events.json:trinkets[pic_bee].desc
 msgid "A photo from photo mode. Bees came back with the blooms."
-msgstr ""
+msgstr "フォトモードで撮った写真。ミツバチは花といっしょに戻ってきた。"
 
 #: data/events.json:trinkets[pic_songbird].name
 msgid "Photo: Robin"
-msgstr ""
+msgstr "写真：コマドリ"
 
 #: data/events.json:trinkets[pic_songbird].desc
 msgid "A photo from photo mode. When a hex thrives, robins move in and sing."
-msgstr ""
+msgstr "フォトモードで撮った写真。ヘックスが繁栄すると、コマドリがやってきて歌う。"
 
 #: data/events.json:trinkets[pic_firefly].name
 msgid "Photo: Firefly"
-msgstr ""
+msgstr "写真：ホタル"
 
 #: data/events.json:trinkets[pic_firefly].desc
 msgid "A photo from photo mode. Tiny green lanterns over the grass after dark."
-msgstr ""
+msgstr "フォトモードで撮った写真。暗くなると草の上にともる、小さな緑のランタン。"
 
 #: data/events.json:trinkets[pic_fish].name
 msgid "Photo: Lake Fish"
-msgstr ""
+msgstr "写真：湖の魚"
 
 #: data/events.json:trinkets[pic_fish].desc
 msgid "A photo from photo mode. Once the water clears you can see them: small silver schools turning together over the sand."
-msgstr ""
+msgstr "フォトモードで撮った写真。水が澄むと見えてくる。砂の上でいっせいに向きを変える、小さな銀色の群れ。"
 
 #: data/events.json:trinkets[pic_duck].name
 msgid "Photo: Mallard"
-msgstr ""
+msgstr "写真：マガモ"
 
 #: data/events.json:trinkets[pic_duck].desc
 msgid "A photo from photo mode. Ducks paddle, dabble with their tails in the air and complain loudly about everything."
-msgstr ""
+msgstr "フォトモードで撮った写真。カモはすいすい泳ぎ、おしりを上げて餌をあさり、なんにでも大声で文句を言う。"
 
 #: data/events.json:trinkets[pic_frog].name
 msgid "Photo: Green Frog"
-msgstr ""
+msgstr "写真：アオガエル"
 
 #: data/events.json:trinkets[pic_frog].desc
 msgid "A photo from photo mode. Frogs sit at the water's edge and sing in the evening."
-msgstr ""
+msgstr "フォトモードで撮った写真。カエルは水辺に座って、夕方になると歌う。"
 
 #: data/events.json:trinkets[pic_lizard].name
 msgid "Photo: Sand Lizard"
-msgstr ""
+msgstr "写真：スナトカゲ"
 
 #: data/events.json:trinkets[pic_lizard].desc
 msgid "A photo from photo mode. Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
-msgstr ""
+msgstr "フォトモードで撮った写真。トカゲはソーラーパネルの間の掃除された地面でひなたぼっこをして、影がかかると一瞬で消えてしまう。"
 
 #: data/events.json:trinkets[pic_fennec].name
 msgid "Photo: Fennec Fox"
-msgstr ""
+msgstr "写真：フェネック"
 
 #: data/events.json:trinkets[pic_fennec].desc
 msgid "A photo from photo mode. A tiny desert fox with enormous ears."
-msgstr ""
+msgstr "フォトモードで撮った写真。大きな耳をもつ、小さな砂漠のキツネ。"
 
 #: data/events.json:trinkets[pic_seal].name
 msgid "Photo: Harbour Seal"
-msgstr ""
+msgstr "写真：ゼニガタアザラシ"
 
 #: data/events.json:trinkets[pic_seal].desc
 msgid "A photo from photo mode. Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
-msgstr ""
+msgstr "フォトモードで撮った写真。岸壁がきれいになるとアザラシが上がってきて、かたまってごろごろし、近づきすぎるとどぼんと水に戻る。"
 
 #: data/events.json:trinkets[pic_gull].name
 msgid "Photo: Herring Gull"
-msgstr ""
+msgstr "写真：セグロカモメ"
 
 #: data/events.json:trinkets[pic_gull].desc
 msgid "A photo from photo mode. Loud, white and opportunistic."
-msgstr ""
+msgstr "フォトモードで撮った写真。うるさくて、白くて、ちゃっかり者。"
 
 #: data/events.json:trinkets[pic_arctic_fox].name
 msgid "Photo: Arctic Fox"
-msgstr ""
+msgstr "写真：ホッキョクギツネ"
 
 #: data/events.json:trinkets[pic_arctic_fox].desc
 msgid "A photo from photo mode. White as the snow it hunts on."
-msgstr ""
+msgstr "フォトモードで撮った写真。狩りをする雪と同じくらい白い。"
 
 #: data/events.json:trinkets[pic_heron].name
 msgid "Photo: Grey Heron"
-msgstr ""
+msgstr "写真：アオサギ"
 
 #: data/events.json:trinkets[pic_heron].desc
 msgid "A photo from photo mode. Herons stand perfectly still at the water's edge, then strike."
-msgstr ""
+msgstr "フォトモードで撮った写真。サギは水辺でぴたりと動かず、それから一瞬で獲物をとらえる。"
 
 #: data/events.json:trinkets[pic_turtle].name
 msgid "Photo: Pond Turtle"
-msgstr ""
+msgstr "写真：イシガメ"
 
 #: data/events.json:trinkets[pic_turtle].desc
 msgid "A photo from photo mode. Turtles cruise the drowned streets with their heads up, as if they've always lived here."
-msgstr ""
+msgstr "フォトモードで撮った写真。カメは頭を上げて水没した通りを泳ぎまわる。まるでずっとここに住んでいたみたいに。"
 
 #: data/events.json:trinkets[pic_crane].name
 msgid "Photo: Cradle Crane"
-msgstr ""
+msgstr "写真：Cradle ヅル"
 
 #: data/events.json:trinkets[pic_crane].desc
 msgid "A photo from photo mode. White cranes circle high over the landing city on slow wingbeats."
-msgstr ""
+msgstr "フォトモードで撮った写真。白いツルがゆっくりと羽ばたきながら、着陸都市の上空高くを旋回している。"
 
 #: data/events.json:trinkets[maker_badge].name
 msgid "Maker's Badge"
@@ -8761,7 +8798,7 @@ msgstr "ヘックスを7個片づける"
 
 #: data/goals.json:goals[pet_cat].text
 msgid "Pet a stray cat"
-msgstr ""
+msgstr "ノラネコをなでる"
 
 #: data/goals.json:goals[research_4].text
 msgid "Finish 4 research projects"
@@ -8817,7 +8854,7 @@ msgstr "種の缶を見つける"
 
 #: data/goals.json:goals[plant_5].text
 msgid "Plant the Maker seed"
-msgstr ""
+msgstr "メイカーの種を植える"
 
 #: data/goals.json:goals[hexlv_2].text
 msgid "Get a hex to Planted"
@@ -8941,7 +8978,7 @@ msgstr "ヘックスを3個維持状態にする"
 
 #: data/goals.json:goals[spot_deer].text
 msgid "Spot a deer"
-msgstr ""
+msgstr "シカを見つける"
 
 #: data/goals.json:goals[hexlv_5].text
 msgid "Get a hex to Thriving"
@@ -9253,51 +9290,51 @@ msgstr "シードアークの波を3回植える"
 
 #: data/goals.json:goals[late_bridge].text
 msgid "Open the Ark Bridge"
-msgstr ""
+msgstr "アークブリッジを開く"
 
 #: data/goals.json:goals[late_garden_1].text
 msgid "Place a decoration (H)"
-msgstr ""
+msgstr "飾りを置く（H）"
 
 #: data/goals.json:goals[late_heirloom_1].text
 msgid "Buy an Heirloom"
-msgstr ""
+msgstr "家宝を買う"
 
 #: data/goals.json:goals[late_garden_10].text
 msgid "Place 10 decorations"
-msgstr ""
+msgstr "飾りを10個置く"
 
 #: data/goals.json:goals[late_garden_kinds].text
 msgid "Place 5 kinds of decoration"
-msgstr ""
+msgstr "5種類の飾りを置く"
 
 #: data/goals.json:goals[late_ark_5].text
 msgid "Plant five Seed Ark waves"
-msgstr ""
+msgstr "シードアークのウェーブを5回植える"
 
 #: data/goals.json:goals[late_eggs_30].text
 msgid "Find 30 curiosities"
-msgstr ""
+msgstr "珍品を30個見つける"
 
 #: data/goals.json:goals[late_world_1].text
 msgid "Seed a new world"
-msgstr ""
+msgstr "新しい世界に種をまく"
 
 #: data/goals.json:goals[late_charm_20].text
 msgid "Reach 20 charm in one district"
-msgstr ""
+msgstr "1つの地区で魅力20に到達する"
 
 #: data/goals.json:goals[late_heirloom_10].text
 msgid "Grow Heirlooms to 10 levels"
-msgstr ""
+msgstr "家宝のレベルを合計10にする"
 
 #: data/goals.json:goals[late_world_2].text
 msgid "Seed a second new world"
-msgstr ""
+msgstr "2つ目の新しい世界に種をまく"
 
 #: data/goals.json:goals[late_eggs_38].text
 msgid "Find 38 curiosities"
-msgstr ""
+msgstr "珍品を38個見つける"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -12055,183 +12092,183 @@ msgstr "ちょっと光が弱いね。花が少し咲けば元通り。"
 
 #: data/wren_lines.json:egg_sand_piano
 msgid "...music... out here?..."
-msgstr ""
+msgstr "……音楽……こんなところで？……"
 
 #: data/wren_lines.json:egg_sand_piano
 msgid "A piano. In the desert. I have so many questions and none of them will be answered."
-msgstr ""
+msgstr "ピアノ。砂漠に。聞きたいことは山ほどあるけど、どれも答えは出ないんだろうね。"
 
 #: data/wren_lines.json:egg_sand_piano
 msgid "It's out of tune in a way that sounds deliberate now. Like the dunes learned a song."
-msgstr ""
+msgstr "今では、わざと音を外しているみたいに聞こえる。砂丘が歌をおぼえたみたいに。"
 
 #: data/wren_lines.json:egg_snow_bot
 msgid "...someone dressed it... for the cold..."
-msgstr ""
+msgstr "……だれかが着せてあげた……寒くないように……"
 
 #: data/wren_lines.json:egg_snow_bot
 msgid "They built snowmen around the old loaders for luck. I think it worked, a bit. It's still standing."
-msgstr ""
+msgstr "幸運のおまじないに、古い積み込みロボットのまわりに雪だるまをつくっていたんだ。少しは効いたみたい。まだ立っているもの。"
 
 #: data/wren_lines.json:egg_snow_bot
 msgid "Every winter, a new scarf. Someone kept that up for a very long time."
-msgstr ""
+msgstr "冬がくるたびに新しいマフラー。だれかがずっと長いあいだ続けていたんだね。"
 
 #: data/wren_lines.json:egg_bottle_message
 msgid "...a letter... from before the water..."
-msgstr ""
+msgstr "……手紙……水が来る前の……"
 
 #: data/wren_lines.json:egg_bottle_message
 msgid "Somebody stayed to remember where the streets were. We should plant where the bakery was."
-msgstr ""
+msgstr "通りがどこにあったか覚えておくために、残った人がいたんだ。パン屋があった場所に植えようよ。"
 
 #: data/wren_lines.json:egg_bottle_message
 msgid "Red lever goes down, not up. Noted. Thank you, R."
-msgstr ""
+msgstr "赤いレバーは下。上じゃない。メモしたよ。ありがとう、R。"
 
 #: data/wren_lines.json:egg_welcome_home
 msgid "...welcome... home..."
-msgstr ""
+msgstr "……おかえり……なさい……"
 
 #: data/wren_lines.json:egg_welcome_home
 msgid "They kept repainting it. Three hundred years of 'welcome home' for a ship that hadn't come yet."
-msgstr ""
+msgstr "何度も何度も塗りなおしていたんだ。まだ帰ってこない船のために、三百年ぶんの「おかえりなさい」。"
 
 #: data/wren_lines.json:egg_welcome_home
 msgid "We came, though. Tell them we came."
-msgstr ""
+msgstr "でも、わたしたちは来たよ。来たって伝えて。"
 
 #: data/wren_lines.json:egg_crossword
 msgid "...a puzzle... one left..."
-msgstr ""
+msgstr "……パズル……あと1問……"
 
 #: data/wren_lines.json:egg_crossword
 msgid "Five letters, what grows back if you let it. You got it on the first try."
-msgstr ""
+msgstr "3文字、そっとしておけば戻ってくるもの。一発で正解だったね。"
 
 #: data/wren_lines.json:egg_crossword
 msgid "The Ledger set the crossword. Of course the Ledger set the crossword."
-msgstr ""
+msgstr "クロスワードをつくったのは Ledger。そりゃあ Ledger がつくったに決まってる。"
 
 #: data/wren_lines.json:egg_hopscotch
 msgid "...hop... hop..."
-msgstr ""
+msgstr "……けん……けん……"
 
 #: data/wren_lines.json:egg_hopscotch
 msgid "One, two, three... I'm counting the hover bowl as a foot. Don't tell anyone."
-msgstr ""
+msgstr "いち、に、さん……ホバーボウルは足1本ってことにしておくね。だれにも言わないで。"
 
 #: data/wren_lines.json:egg_hopscotch
 msgid "Square seven still has the pebble on it. Somebody was winning."
-msgstr ""
+msgstr "7番のマスにまだ小石がある。だれかが勝ちかけていたんだね。"
 
 #: data/wren_lines.json:egg_balloon
 msgid "...up... it went up..."
-msgstr ""
+msgstr "……のぼって……のぼっていった……"
 
 #: data/wren_lines.json:egg_balloon
 msgid "It's heading for the Cradle. I'll tell the bridge to watch for a red balloon."
-msgstr ""
+msgstr "Cradle号に向かってる。ブリッジに赤い風船を見張るように言っておくね。"
 
 #: data/wren_lines.json:egg_balloon
 msgid "Three hundred years holding its breath. It earned the trip."
-msgstr ""
+msgstr "三百年も息をこらえていたんだ。この旅はごほうびだよ。"
 
 #: data/wren_lines.json:egg_mailbox
 msgid "...a letter... for you..."
-msgstr ""
+msgstr "……手紙……きみあての……"
 
 #: data/wren_lines.json:egg_mailbox
 msgid "'Please don't scoop the cat.' Excellent advice. Still valid."
-msgstr ""
+msgstr "「ネコはすくわないでね」。すばらしいアドバイス。今でも有効。"
 
 #: data/wren_lines.json:egg_mailbox
 msgid "The blue door, the flower box, the tomato that counts as a flower. Let's find it."
-msgstr ""
+msgstr "青いドア、プランター、花ってことになってるトマト。探しにいこう。"
 
 #: data/wren_lines.json:egg_bonsai
 msgid "...small... old... patient..."
-msgstr ""
+msgstr "……小さくて……古くて……しんぼう強い……"
 
 #: data/wren_lines.json:egg_bonsai
 msgid "Three hundred years old and thirty centimetres tall. It took its time. Good for it."
-msgstr ""
+msgstr "樹齢三百年で、背の高さは30センチ。のんびり育ったんだね。それでいいんだよ。"
 
 #: data/wren_lines.json:egg_bonsai
 msgid "It looks like it's been expecting you. Trees are like that."
-msgstr ""
+msgstr "きみが来るのを待っていたみたい。木ってそういうものだよ。"
 
 #: data/wren_lines.json:egg_listening_dish
 msgid "...a signal... faint..."
-msgstr ""
+msgstr "……信号……かすかに……"
 
 #: data/wren_lines.json:egg_listening_dish
 msgid "That tone. That's the Cradle's beacon. Somebody out here kept listening the whole time."
-msgstr ""
+msgstr "この音。Cradle号のビーコンだ。ここでだれかがずっと聞きつづけていたんだ。"
 
 #: data/wren_lines.json:egg_listening_dish
 msgid "'They said they'd call.' We did. Late, but we did."
-msgstr ""
+msgstr "「連絡するって言ってた」。したよ。遅くなったけど、ちゃんとした。"
 
 #: data/wren_lines.json:egg_older_pod
 msgid "...another pod... older..."
-msgstr ""
+msgstr "……別のポッド……もっと古い……"
 
 #: data/wren_lines.json:egg_older_pod
 msgid "SK-0. A seed-keeper before you. I didn't know there were any. The Cradle never told me."
-msgstr ""
+msgstr "SK-0。きみより前の種の守り手。ほかにもいたなんて知らなかった。Cradle号は一度も教えてくれなかった。"
 
 #: data/wren_lines.json:egg_older_pod
 msgid "'Start by the water.' Good advice, from someone who knew."
-msgstr ""
+msgstr "「水辺から始めて」。わかっている人からの、いいアドバイスだね。"
 
 #: data/wren_lines.json:egg_heirloom_tin
 msgid "...soil... from home..."
-msgstr ""
+msgstr "……土……ふるさとの……"
 
 #: data/wren_lines.json:egg_heirloom_tin
 msgid "A bit of the first garden, already spilled on new ground. That's how it starts."
-msgstr ""
+msgstr "最初の庭のかけらが、もう新しい大地にこぼれている。こうやって始まるんだ。"
 
 #: data/wren_lines.json:egg_heirloom_tin
 msgid "Verdance soil on another world. The Makers would have liked that."
-msgstr ""
+msgstr "別の世界に Verdance の土。メイカーたちも喜んだだろうな。"
 
 #: data/wren_lines.json:cradle_mode
 msgid "...the vault... other worlds..."
-msgstr ""
+msgstr "……種子庫……ほかの世界……"
 
 #: data/wren_lines.json:cradle_mode
 msgid "The Cradle's seed vault has a lot more in it than one planet's worth. There are other worlds out here, Lumi. Ruined ones. Waiting."
-msgstr ""
+msgstr "Cradle号の種子庫には、ひとつの星のぶんよりずっとたくさんの種がある。外にはほかの世界があるんだよ、Lumi。荒れ果てて、待っている世界が。"
 
 #: data/wren_lines.json:cradle_mode
 msgid "Heirlooms, Starseeds, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."
-msgstr ""
+msgstr "家宝に、スターシードに、世界がいっぱいの地図。Verdance は緑のまま。わたしたちは学んだことを新しい場所へ持っていくだけ。"
 
 #: data/wren_lines.json:new_world
 msgid "...new ground... new junk..."
-msgstr ""
+msgstr "……新しい大地……新しいガラクタ……"
 
 #: data/wren_lines.json:new_world
 msgid "New world, new sky. Same job. You're better at it than you were the first time."
-msgstr ""
+msgstr "新しい世界、新しい空。仕事はいつもどおり。最初のときより、ずっと上手になったね。"
 
 #: data/wren_lines.json:new_world
 msgid "Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."
-msgstr ""
+msgstr "見て。荒れ果てて、ほこりだらけで、何百年もだれも何も植えていない。どうすればいいか、もうわかってるよね。"
 
 #: data/wren_lines.json:garden_place
 msgid "...pretty..."
-msgstr ""
+msgstr "……きれい……"
 
 #: data/wren_lines.json:garden_place
 msgid "You're decorating. I approve. The cats are going to approve more."
-msgstr ""
+msgstr "飾りつけしてるんだ。いいと思う。ネコたちはもっと気に入るよ。"
 
 #: data/wren_lines.json:garden_place
 msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
-msgstr ""
+msgstr "ベンチに、ランプに、噴水。人が帰ってきたくなる場所に見えてきた。"
 
 #~ msgid "Printed: %s %s."
 #~ msgstr "プリント完了：%s %s。"
