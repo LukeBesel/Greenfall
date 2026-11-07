@@ -47,6 +47,11 @@ steam/cloud_mode="remote_storage"
 
 pointing/emulate_touch_from_mouse=false
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://locale/de.po", "res://locale/es.po", "res://locale/pseudo.po")
+locale/fallback="en"
+
 [physics]
 
 common/physics_ticks_per_second=120

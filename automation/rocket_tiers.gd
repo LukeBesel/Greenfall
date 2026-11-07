@@ -41,12 +41,12 @@ static func next_def() -> Dictionary:
 static func blocker() -> String:
 	var nd: Dictionary = next_def()
 	if nd.is_empty():
-		return "Top tier"
+		return TranslationServer.translate("Top tier")
 	var rq: String = str(nd.get("requires_research", ""))
 	if rq != "" and not Research.has(rq):
-		return "Needs the Rocket Cargo research"
+		return TranslationServer.translate("Needs the Rocket Cargo research")
 	if not Hub.can_pay(nd.get("cost", {})):
-		return "Not enough materials"
+		return TranslationServer.translate("Not enough materials")
 	return ""
 
 
@@ -59,7 +59,7 @@ static func upgrade() -> bool:
 	GameState.flags["rocket_tier"] = int(nd["tier"])
 	# A new rocket comes with full cells.
 	GameState.flags.erase("rocket_ready_unix")
-	EventBus.toast.emit("Rocket upgraded: %s." % nd["name"], "story")
+	EventBus.toast.emit(TranslationServer.translate("Rocket upgraded: %s.") % TranslationServer.translate(str(nd["name"])), "story")
 	return true
 
 

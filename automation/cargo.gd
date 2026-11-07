@@ -34,7 +34,7 @@ func _process(delta: float) -> void:
 	var amount: float = PER_ROBOT * float(n) * maxf(Economy.stat("cube_value_mult"), 1.0) * float(tdef.get("cargo_mult", 1.0))
 	GameState.add_currency("cubes", BigNum.from_float(amount))
 	GameState.inc_stat("cargo_pods")
-	EventBus.toast.emit("Cargo pod landed: %s cubes from %d robots in other districts." % [Settings.fmt(BigNum.from_float(amount)), n], "info")
+	EventBus.toast.emit(tr("Cargo pod landed: %s cubes from %d robots in other districts.") % [Settings.fmt(BigNum.from_float(amount)), n], "info")
 	if world and world.get("depot") != null:
 		Vfx.burst("dust", world.depot.global_position + Vector3(2, 0.3, -2), Color(0.8, 0.75, 0.65), 0.8)
 	Audio.play("thud", 0.9, -8.0)

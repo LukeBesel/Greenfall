@@ -33,7 +33,7 @@ func _ready() -> void:
 	col.add_theme_constant_override("separation", 12)
 	panel.add_child(col)
 
-	col.add_child(UITheme.label("END OF THE DEMO", 13, UITheme.MUTED))
+	col.add_child(UITheme.label(tr("END OF THE DEMO"), 13, UITheme.MUTED))
 	var title := UITheme.label("GREENFALL", 64, Color(1.0, 0.95, 0.86))
 	title.add_theme_font_override("font", StoreArt.logo_font())
 	col.add_child(title)
@@ -43,13 +43,13 @@ func _ready() -> void:
 	bar.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	col.add_child(bar)
 	var lead: String = {
-		"rocket": "The launch pad is waiting, but the rest of Verdance is in the full game.",
-		"base": "Your base has grown as far as the demo goes.",
+		"rocket": tr("The launch pad is waiting, but the rest of Verdance is in the full game."),
+		"base": tr("Your base has grown as far as the demo goes."),
 	}.get(reason, "You've earned the next base level. That's where the demo ends.")
 	var head := UITheme.label(lead, 20, UITheme.CREAM)
 	head.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	col.add_child(head)
-	var body := UITheme.label("In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over.", 15, UITheme.MUTED)
+	var body := UITheme.label(tr("In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."), 15, UITheme.MUTED)
 	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	col.add_child(body)
 
@@ -57,10 +57,10 @@ func _ready() -> void:
 	stats.add_theme_constant_override("separation", 26)
 	col.add_child(stats)
 	for row: Array in [
-		["Hexes cleaned", str(int(GameState.stats.get("hexes_cleaned", 0)))],
-		["Bales made", str(int(GameState.stats.get("cubes_made", 0)))],
-		["Robots built", str(int(GameState.stats.get("robots_built", 0)))],
-		["Time played", _fmt_time(float(GameState.stats.get("time_played", 0.0)))],
+		[tr("Hexes cleaned"), str(int(GameState.stats.get("hexes_cleaned", 0)))],
+		[tr("Bales made"), str(int(GameState.stats.get("cubes_made", 0)))],
+		[tr("Robots built"), str(int(GameState.stats.get("robots_built", 0)))],
+		[tr("Time played"), _fmt_time(float(GameState.stats.get("time_played", 0.0)))],
 	]:
 		var v := VBoxContainer.new()
 		v.add_theme_constant_override("separation", 0)
@@ -75,7 +75,7 @@ func _ready() -> void:
 	buttons.add_theme_constant_override("separation", 12)
 	col.add_child(buttons)
 	_wish = Button.new()
-	_wish.text = "Wishlist on Steam"
+	_wish.text = tr("Wishlist on Steam")
 	_wish.custom_minimum_size = Vector2(250, 50)
 	_wish.add_theme_font_size_override("font_size", 19)
 	UITheme.orange_button(_wish)
@@ -84,19 +84,19 @@ func _ready() -> void:
 		Audio.play("chime", 1.0, -6.0))
 	buttons.add_child(_wish)
 	var keep := Button.new()
-	keep.text = "Keep playing"
+	keep.text = tr("Keep playing")
 	keep.custom_minimum_size = Vector2(170, 50)
 	keep.pressed.connect(close)
 	buttons.add_child(keep)
 	var quit := Button.new()
-	quit.text = "Title screen"
+	quit.text = tr("Title screen")
 	quit.custom_minimum_size = Vector2(150, 50)
 	quit.pressed.connect(func() -> void:
 		SaveManager.save_game()
 		close()
 		get_tree().change_scene_to_file("res://scenes/main_menu.tscn"))
 	buttons.add_child(quit)
-	var note := UITheme.label("Keep playing: the first district stays open, at base level %d." % Demo.MAX_BASE_LEVEL, 12, UITheme.MUTED)
+	var note := UITheme.label(tr("Keep playing: the first district stays open, at base level %d.") % Demo.MAX_BASE_LEVEL, 12, UITheme.MUTED)
 	col.add_child(note)
 
 	modulate.a = 0.0
@@ -120,4 +120,4 @@ func close() -> void:
 
 static func _fmt_time(s: float) -> String:
 	var m: int = int(s / 60.0)
-	return "%dh %02dm" % [m / 60, m % 60] if m >= 60 else "%d min" % m
+	return TranslationServer.translate("%dh %02dm") % [m / 60, m % 60] if m >= 60 else TranslationServer.translate("%d min") % m

@@ -75,10 +75,10 @@ func _process(delta: float) -> void:
 	var text: String = ""
 	var col := Color(1, 0.3, 0.25)
 	if d < 4.0:
-		text = "SIGNAL  %s  ·  %.1f m" % [str(rar.get("name", "?")).to_upper(), d]
+		text = tr("SIGNAL  %s  ·  %.1f m") % [tr(str(rar.get("name", "?"))).to_upper(), d]
 		col = UITheme.rarity_color(field.part_rarity[target])
 	elif strength > 0.0:
-		text = "SIGNAL  %d%%" % int(strength * 100.0)
+		text = tr("SIGNAL  %d%%") % int(strength * 100.0)
 	readout_changed.emit(text, col, strength)
 
 

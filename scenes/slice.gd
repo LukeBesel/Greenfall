@@ -131,6 +131,9 @@ func _ready() -> void:
 	if not fk.is_empty():  # [biomes] the frontier's own harbour / flood replaces planet lakes
 		field.water_ids = Frontiers.water_ids_for(fk, f_radius, float(cfg.get("hex_size", 3.2)))
 		field.float_mult = float(fk.get("float_mult", 1.0))
+	# Older saves were generated with straight hex borders; keep their piece layout identical.
+	if loaded and GameState.world.has("field"):
+		field.natural_borders = bool((GameState.world["field"] as Dictionary).get("natural_borders", false))
 	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
 	if not fk.is_empty():
 		Frontiers.toughen(field, float(fk.get("vol_mult", 1.0)))
@@ -269,7 +272,7 @@ func _ready() -> void:
 	EventBus.robot_built.connect(func(_n: String) -> void:
 		if not GameState.flags.get("hint_command", false):
 			GameState.flags["hint_command"] = true
-			EventBus.toast.emit("Robot uplink online. Press B for Command: paint zones and send crews where you want them.", "info"))
+			EventBus.toast.emit(tr("Robot uplink online. Press B for Command: paint zones and send crews where you want them."), "info"))
 	pause_menu = PauseMenu.new()
 	add_child(pause_menu)
 	pause_menu.closed.connect(_on_modal_closed)
@@ -485,7 +488,7 @@ func _ready() -> void:
 	add_child(intro)
 	var wake := func() -> void:
 		get_tree().create_timer(1.5).timeout.connect(func() -> void:
-			Story.once("wake", "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something.", "story"))
+			Story.once("wake", tr("LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."), "story"))
 	if intro.should_play():
 		intro.finished.connect(wake)
 		intro.play.call_deferred()
@@ -776,7 +779,7 @@ func _on_hex_clean(hid: int) -> void:
 	Audio.play("chime", 1.0, -3.0)
 	Vfx.burst("big_sparkle", center + Vector3(0, 0.3, 0), Color(1.0, 0.92, 0.55))
 	Vfx.ring(center, field.hex_size * 1.1, Color(1.0, 0.9, 0.5, 0.9), 0.8)
-	Vfx.float_text(center + Vector3(0, 1.4, 0), "HEX CLEAN!  +" + Settings.fmt(bonus), Color(1.0, 0.92, 0.45), 1.5, 2.0)
+	Vfx.float_text(center + Vector3(0, 1.4, 0), tr("HEX CLEAN!  +%s") % Settings.fmt(bonus), Color(1.0, 0.92, 0.45), 1.5, 2.0)
 	EventBus.hex_cleaned.emit(hid, center, bonus)
 	EventBus.field_progress_changed.emit(field.cleaned_count, field.junk_hex_count)
 	patch.model.set_happy(1.0)
@@ -790,16 +793,16 @@ func _on_hex_clean(hid: int) -> void:
 		if n > 1:
 			Audio.play("fanfare", 1.0, -5.0)
 			Vfx.burst("confetti", patch.global_position + Vector3(0, 1.5, 0), Color.WHITE)
-			EventBus.toast.emit("Milestone: %d hexes clean!" % n, "story")
+			EventBus.toast.emit(tr("Milestone: %d hexes clean!") % n, "story")
 		if n >= field.junk_hex_count:
-			EventBus.toast.emit("The whole Junkyard is clean. Lumi beeps a very long, very happy beep.", "story")
+			EventBus.toast.emit(tr("The whole Junkyard is clean. Lumi beeps a very long, very happy beep."), "story")
 
 
 func _launch(to_hub: int) -> void:
 	if launching or Demo.block("rocket"):  # [steam] demo: first district only
 		return
 	if not Frontiers.can_launch(planet, to_hub):  # [biomes] frontier destinations unlock late
-		EventBus.toast.emit("%s is out of range: %s" % [Frontiers.kind_name(planet.frontier_kind(to_hub)), "  ".join(Frontiers.unlock_status(planet.frontier_kind(to_hub), planet.frontier_hubs)["lines"])], "info")
+		EventBus.toast.emit(tr("%s is out of range: %s") % [Frontiers.kind_name(planet.frontier_kind(to_hub)), "  ".join(Frontiers.unlock_status(planet.frontier_kind(to_hub), planet.frontier_hubs)["lines"])], "info")
 		return
 	if rocket == null:
 		_place_rocket(false)
@@ -809,10 +812,10 @@ func _launch(to_hub: int) -> void:
 ## "" when the rocket can launch, else why not (no pad yet, or the energy cells are recharging).
 func rocket_status() -> String:
 	if not (hub.level >= 5 or DevHooks.has("rocket") or GameState.world.get("rocket_parked", false)):
-		return "Locked. Upgrade your base to level 5 to build the launch pad."
+		return tr("Locked. Upgrade your base to level 5 to build the launch pad.")
 	var left: float = RocketTiers.recharge_left()
 	if left > 0.0:
-		return "Energy cells recharging: %s. Rocket upgrades refill them faster." % RocketTiers.fmt_time(left)
+		return tr("Energy cells recharging: %s. Rocket upgrades refill them faster.") % RocketTiers.fmt_time(left)
 	return ""
 
 
@@ -866,8 +869,8 @@ func _arrive_by_rocket() -> void:
 		_place_rocket(false)
 		GameState.world["rocket_parked"] = true
 	rocket.landed.connect(func() -> void:
-		EventBus.toast.emit("Touchdown: %s. Hub %d of %d. %s" % [district_name, hub_index + 1, planet.hubs.size(),
-			"The rocket is parked on the lot, ready when its cells refill." if rocket.pad == null else "Landed on the base pad."], "story"), CONNECT_ONE_SHOT)
+		EventBus.toast.emit(tr("Touchdown: %s. Hub %d of %d. %s") % [district_name, hub_index + 1, planet.hubs.size(),
+			tr("The rocket is parked on the lot, ready when its cells refill.") if rocket.pad == null else tr("Landed on the base pad.")], "story"), CONNECT_ONE_SHOT)
 	rocket.arrive()
 
 
@@ -958,7 +961,7 @@ func open_upgrades() -> void:
 		return
 	# Upgrades are installed at a base workbench, not in the field.
 	if not near_bench() and not DevHooks.has("open"):
-		EventBus.toast.emit("Upgrades need a workbench. Head back to the hub.", "info")
+		EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
 		Audio.play("buzz", 1.2, -10.0)
 		return
 	upgrades.open_screen()
@@ -1126,7 +1129,7 @@ func _restore_world(from_memory: bool = false) -> void:
 		Offline.apply(res)
 		if float(res["units"]) > 0.0 or float(res["air"]) > 0.0:
 			get_tree().create_timer(2.0).timeout.connect(func() -> void: EventBus.toast.emit(Offline.summary_text(res), "story"))
-	EventBus.toast.emit("Welcome back. The junk waited for you.", "info")
+	EventBus.toast.emit(tr("Welcome back. The junk waited for you."), "info")
 
 
 ## [outposts] Pins for the Command view: grey ruins, green working outposts with their level.
@@ -1136,14 +1139,14 @@ func command_markers() -> Array:
 	if events != null:
 		var ep: Variant = events.marker_pos()
 		if ep is Vector3:
-			out.append({"pos": ep, "label": str(events.active.get("name", "EVENT")).to_upper(), "color": events.active.get("color", UITheme.GOLD), "kind": "event"})
+			out.append({"pos": ep, "label": tr(str(events.active.get("name", "EVENT"))).to_upper(), "color": events.active.get("color", UITheme.GOLD), "kind": "event"})
 	if outposts == null:
 		return out
 	for o: Outpost in outposts.items:
 		var working: bool = o.level >= 1
 		out.append({
 			"pos": o.global_position,
-			"label": ("OUTPOST %d · Lv%d" % [o.index + 1, o.level]) if working else ("OUTPOST %d · RUIN" % (o.index + 1)),
+			"label": (tr("OUTPOST %d · Lv%d") % [o.index + 1, o.level]) if working else (tr("OUTPOST %d · RUIN") % (o.index + 1)),
 			"color": Color(0.45, 1.0, 0.55) if working else Color(0.62, 0.6, 0.56),
 			"kind": "outpost",
 		})

@@ -6,8 +6,10 @@ extends VBoxContainer
 ## No panel: text with a soft shadow, hairline icons.
 
 const CHIP_LIFE: float = 3.5
+# l10n:begin
 const NAMES: Dictionary = {"sheet_metal": "SHEET METAL", "plastic_stock": "PLASTIC", "glass_cullet": "GLASS",
 	"data": "DATA", "tokens": "TOKENS", "seeds": "SEEDS", "compost": "COMPOST", "bolts": "BOLTS", "parts": "PARTS"}
+# l10n:end
 const HIDDEN_IDS: Array[String] = ["cubes", "trinkets"]
 
 var _count: Label
@@ -71,7 +73,7 @@ func _on_currency(id: String, amount: BigNum) -> void:
 func _on_part(_t: int, r: int) -> void:
 	if _warm > 0.0:
 		return
-	_chip("parts", str(GameState.parts.size()), 1.0, str(Economy.rarity(r).get("name", "")))
+	_chip("parts", str(GameState.parts.size()), 1.0, tr(str(Economy.rarity(r).get("name", ""))))
 
 
 func _chip(id: String, amount_text: String, delta: float, note: String = "") -> void:
@@ -97,7 +99,7 @@ func _chip(id: String, amount_text: String, delta: float, note: String = "") -> 
 		_chip_map[id] = c
 	c["delta"] = float(c["delta"]) + delta
 	c["left"] = CHIP_LIFE
-	(c["label"] as Label).text = "%s  %s" % [str(NAMES.get(id, id.replace("_", " ").to_upper())), amount_text]
+	(c["label"] as Label).text = "%s  %s" % [tr(str(NAMES.get(id, id.replace("_", " ").to_upper()))), amount_text]
 	var dv: float = float(c["delta"])
 	var dl2: Label = c["delta_label"]
 	dl2.text = ("%s%s" % ["+" if dv > 0.0 else "-", Settings.fmt(BigNum.from_float(absf(dv)))]) + (("  " + note) if note != "" else "")

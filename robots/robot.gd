@@ -42,6 +42,7 @@ var _target_slot: int = -1
 var log_stats: Dictionary = {"junk": 0.0, "bales": 0.0, "hauled": 0.0, "planted": 0.0, "watered": 0.0, "refills": 0.0, "idle_s": 0.0, "stall_s": 0.0, "unstuck": 0.0}
 var _idling: bool = false
 var _parked: bool = false
+var _l10n: bool = false  # [l10n] status_label() in progress
 var _idle_reason: String = ""
 var _refill: Dictionary = {}
 var _refilling: bool = false
@@ -234,35 +235,52 @@ func _stay() -> bool:
 
 
 ## Short line for the Command View.
+## Status line in English (logic and logs read it: Command view pip colours, tests, [bots] report).
+## status_label() is the same line translated for display.
 func status_text() -> String:
 	var f: Fleet = _fleet()
 	if f and f.mode_of(self) == "recall":
-		return "parked at hub" if global_position.distance_to(_park_pos()) < 2.5 else "returning to hub"
+		return _t("parked at hub") if global_position.distance_to(_park_pos()) < 2.5 else _t("returning to hub")
 	if _idling:
-		return "idle · " + _idle_reason if _idle_reason != "" else "idle"
+		return _t("idle · %s") % _t(_idle_reason) if _idle_reason != "" else _t("idle")
 	match role():
 		"haul":
 			if carried.size() > 0:
+				if _l10n:
+					return tr_n("hauling %d bale", "hauling %d bales", carried.size()) % carried.size()
 				return "hauling %d bale%s" % [carried.size(), "" if carried.size() == 1 else "s"]
-			return "fetching a bale" if _target_bale else "waiting for bales"
+			return _t("fetching a bale") if _target_bale else _t("waiting for bales")
 		"plant":
 			if not GameState.can_afford("seeds", BigNum.from_float(1.0)):
-				return "out of seeds"
-			return "planting" if _target_slot >= 0 else "looking for soil"
+				return _t("out of seeds")
+			return _t("planting") if _target_slot >= 0 else _t("looking for soil")
 		"water":
 			if _refilling or water < 1.0:
-				return "refilling at %s (%d%%)" % [str(_refill.get("kind", "barrel")).replace("barrel", "base barrel"), int(100.0 * water / maxf(stat("tank"), 1.0))]
-			return "watering · tank %d%%" % int(100.0 * water / maxf(stat("tank"), 1.0)) if _target_slot >= 0 else "looking for thirsty plants"
+				return _t("refilling at %s (%d%%)") % [str({"barrel": _t("base barrel"), "tank": _t("tank"), "lake": _t("lake")}.get(str(_refill.get("kind", "barrel")), str(_refill.get("kind", "")))), int(100.0 * water / maxf(stat("tank"), 1.0))]
+			return _t("watering · tank %d%%") % int(100.0 * water / maxf(stat("tank"), 1.0)) if _target_slot >= 0 else _t("looking for thirsty plants")
 		"skim":
 			if _shore != Vector3.INF:
-				return "taking a bale to shore"
+				return _t("taking a bale to shore")
 			if work_hex >= 0:
-				return "skimming lake hex %d (%d%%)" % [work_hex, int(world.field.removed_fraction(work_hex) * 100.0)]
-			return "lake is clean"
+				return _t("skimming lake hex %d (%d%%)") % [work_hex, int(world.field.removed_fraction(work_hex) * 100.0)]
+			return _t("lake is clean")
 		_:
 			if work_hex >= 0:
-				return "cleaning hex %d (%d%%)" % [work_hex, int(world.field.removed_fraction(work_hex) * 100.0)]
-			return "zone clean, waiting" if _stay() else "nothing left to clean"
+				return _t("cleaning hex %d (%d%%)") % [work_hex, int(world.field.removed_fraction(work_hex) * 100.0)]
+			return _t("zone clean, waiting") if _stay() else _t("nothing left to clean")
+
+
+## [l10n] status_text() translated, for the screen.
+func status_label() -> String:
+	_l10n = true
+	var s: String = status_text()
+	_l10n = false
+	return s
+
+
+## [l10n] Translates only while status_label() runs (the extractor reads _t("...") like tr()).
+func _t(s: String) -> String:
+	return tr(s) if _l10n else s
 
 
 func _park_pos() -> Vector3:
@@ -395,7 +413,7 @@ func _think_clean(_delta: float) -> Vector3:
 			if not hopper.is_empty():
 				_make_bale()
 				return Vector3.ZERO
-			return _go_idle("zone clean" if _stay() else "nothing left to clean")
+			return _go_idle(_t("zone clean") if _stay() else _t("nothing left to clean"))
 	if _target_piece < 0 or field.piece_alive[_target_piece] == 0:
 		_target_piece = _nearest_piece_in(work_hex)
 		if _target_piece < 0:
@@ -534,17 +552,17 @@ func _make_bale() -> void:
 func _think_plant() -> Vector3:
 	var g: Garden = world.get("garden")
 	if g == null or not g.unlocked():
-		return _go_idle("seeds locked")
+		return _go_idle(_t("seeds locked"))
 	if not GameState.can_afford("seeds", BigNum.from_float(1.0)):
-		return _go_idle("out of seeds")
+		return _go_idle(_t("out of seeds"))
 	if _target_slot < 0 or g.slot_species[_target_slot] >= 0:
 		if _rescan_t > 0.0:
 			_target_slot = -1
-			return _go_idle("no empty soil")
+			return _go_idle(_t("no empty soil"))
 		_target_slot = _find_slot(g, true)
 		if _target_slot < 0:
 			_backoff()
-			return _go_idle("no empty soil")
+			return _go_idle(_t("no empty soil"))
 	var m: Vector3 = _steer(g.slot_pos[_target_slot], 0.8)
 	if m == Vector3.ZERO:
 		if g.plant(_target_slot):
@@ -573,7 +591,7 @@ static func water_fraction(g: Garden, s: int) -> float:
 func _think_water(delta: float) -> Vector3:
 	var g: Garden = world.get("garden")
 	if g == null:
-		return _go_idle("no garden")
+		return _go_idle(_t("no garden"))
 	var tank: float = stat("tank")
 	if _refilling or water < 1.0:
 		return _do_refill(delta, tank)
@@ -587,7 +605,7 @@ func _think_water(delta: float) -> Vector3:
 			# Nothing thirsty: top the tank up while it's quiet, then park.
 			if water < tank * 0.5:
 				return _do_refill(delta, tank)
-			return _go_idle("everything watered")
+			return _go_idle(_t("everything watered"))
 	var radius: float = maxf(stat("spray_radius"), 0.8)
 	var reach: float = clampf(radius * 0.7, 0.9, 2.4)
 	var m: Vector3 = _steer(g.slot_pos[_target_slot], reach)
@@ -683,7 +701,7 @@ func _do_refill(delta: float, tank: float) -> Vector3:
 	if _refill.is_empty():
 		_refill = net.nearest_refill(global_position)
 		if _refill.is_empty():
-			return _go_idle("no water source")
+			return _go_idle(_t("no water source"))
 	var spot: Vector3 = _refill["pos"]
 	var stop: float = 1.35 if _refill["kind"] != "lake" else 0.6
 	if not _refilling:
@@ -728,7 +746,7 @@ func _think_skim() -> Vector3:
 			_backoff()
 			if not hopper.is_empty():
 				return _to_shore()
-			return _go_idle("lake is clean" if not _stay() else "zone clean")
+			return _go_idle(_t("lake is clean") if not _stay() else _t("zone clean"))
 	if _target_piece < 0 or field.piece_alive[_target_piece] == 0:
 		_target_piece = _nearest_piece_in(work_hex)
 		if _target_piece < 0:
@@ -845,7 +863,7 @@ func _think_haul(deliver_only: bool = false) -> Vector3:
 	if _target_bale == null:
 		if not carried.is_empty():
 			return _haul_deliver()
-		return _go_idle("waiting for bales")
+		return _go_idle(_t("waiting for bales"))
 	var m2: Vector3 = _steer(_target_bale.global_position, 0.9)
 	if m2 == Vector3.ZERO:
 		_target_bale.set_carried(true)

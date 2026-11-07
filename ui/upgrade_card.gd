@@ -49,17 +49,17 @@ func _ready() -> void:
 	tvb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tvb.add_theme_constant_override("separation", -2)
 	top.add_child(tvb)
-	_name = UITheme.label(str(def["name"]), 23)
+	_name = UITheme.label(tr(str(def["name"])), 23)
 	tvb.add_child(_name)
-	_level = UITheme.label("Lv 0", 16, UITheme.MUTED)
+	_level = UITheme.label(tr("Lv 0"), 16, UITheme.MUTED)
 	tvb.add_child(_level)
-	_tag = UITheme.label("BEST VALUE", 13, Color(0.15, 0.1, 0.05))
+	_tag = UITheme.label(tr("BEST VALUE"), 13, Color(0.15, 0.1, 0.05))
 	_tag.add_theme_stylebox_override("normal", UITheme.box(UITheme.GOLD, Color(0, 0, 0, 0), 0, 8, 4))
 	_tag.add_theme_constant_override("outline_size", 0)
 	_tag.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	_tag.visible = false
 	top.add_child(_tag)
-	_desc = UITheme.label(str(def.get("desc", "")), 16, UITheme.MUTED)
+	_desc = UITheme.label(tr(str(def.get("desc", ""))), 16, UITheme.MUTED)
 	_desc.autowrap_mode = TextServer.AUTOWRAP_WORD
 	vb.add_child(_desc)
 	_change = UITheme.label("", 21, UITheme.GREEN)
@@ -82,9 +82,9 @@ func _ready() -> void:
 	var btns := HBoxContainer.new()
 	btns.add_theme_constant_override("separation", 8)
 	vb.add_child(btns)
-	_btn1 = _make_btn("Buy", 1, btns)
+	_btn1 = _make_btn(tr("Buy"), 1, btns)
 	_btn10 = _make_btn("x10", 10, btns)
-	_btnmax = _make_btn("Max", 0, btns)
+	_btnmax = _make_btn(tr("Max"), 0, btns)
 	_breakdown = UITheme.label("", 13, UITheme.MUTED)
 	_breakdown.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_breakdown.visible = false
@@ -174,29 +174,29 @@ func refresh() -> void:
 	var maxed: bool = Economy.is_maxed(upgrade_id)
 	var unlocked: bool = Economy.is_unlocked(upgrade_id)
 	var mx: int = Economy.upgrade_max(upgrade_id)
-	_level.text = "Lv %d%s" % [lv, (" / %d" % mx) if mx > 0 else ""]
-	var unit: String = str(def.get("unit", ""))
+	_level.text = tr("Lv %d%s") % [lv, (" / %d" % mx) if mx > 0 else ""]
+	var unit: String = tr(str(def.get("unit", "")))
 	var before: float = Economy.stat_with_upgrade_level(upgrade_id, lv)
 	var after: float = Economy.stat_with_upgrade_level(upgrade_id, lv + 1)
 	if not unlocked:
 		var req: Dictionary = def.get("requires", {})
 		var parts: Array[String] = []
 		for rid: String in req:
-			parts.append("%s Lv %d" % [Economy.upgrade_defs[rid]["name"], int(req[rid])])
-		_change.text = "Requires " + ", ".join(parts)
+			parts.append(tr("%s Lv %d") % [tr(str(Economy.upgrade_defs[rid]["name"])), int(req[rid])])
+		_change.text = tr("Requires %s") % ", ".join(parts)
 		_change.add_theme_color_override("font_color", UITheme.MUTED)
 	elif maxed:
-		_change.text = "%s%s  (max)" % [_fmt(before), unit]
+		_change.text = tr("%s%s  (max)") % [_fmt(before), unit]
 		_change.add_theme_color_override("font_color", UITheme.GOLD)
 	elif str(def["stat"]) == "auto_compactor":
-		_change.text = "Off  →  On"
+		_change.text = tr("Off  →  On")
 		_change.add_theme_color_override("font_color", UITheme.GREEN)
 	else:
 		_change.text = "%s%s  →  %s%s" % [_fmt(before), unit, _fmt(after), unit]
 		_change.add_theme_color_override("font_color", UITheme.GREEN)
 	var money: BigNum = GameState.get_currency("cubes")
 	var cost: BigNum = Economy.upgrade_cost(upgrade_id)
-	_cost.text = "MAX" if maxed else Settings.fmt(cost)
+	_cost.text = tr("MAX") if maxed else Settings.fmt(cost)
 	var ratio: float = 1.0 if maxed else clampf(money.ratio_to(cost), 0.0, 1.0)
 	_bar.value = ratio
 	_affordable = unlocked and not maxed and ratio >= 1.0
@@ -205,18 +205,18 @@ func refresh() -> void:
 	_btn10.disabled = not unlocked or maxed or can10 < 2
 	_btn10.text = "x%d" % mini(10, maxi(can10, 2)) if can10 >= 2 else "x10"
 	_btnmax.disabled = not unlocked or maxed or can10 < 1
-	_btnmax.text = "Max (%d)" % can10 if can10 > 1 else "Max"
+	_btnmax.text = tr("Max (%d)") % can10 if can10 > 1 else tr("Max")
 	if _affordable or maxed:
 		_eta.text = ""
 	else:
 		var rate: float = GameState.income_rate()
 		var need: float = cost.sub(money).to_float()
-		_eta.text = ("in about %s" % _fmt_time(need / rate)) if rate > 0.01 else "earn more cubes"
+		_eta.text = (tr("in about %s") % _fmt_time(need / rate)) if rate > 0.01 else tr("earn more cubes")
 	_tag.visible = is_best_value and _affordable and Settings.best_value_tags
 	var lines: Array[String] = []
 	for b: Dictionary in Economy.stat_breakdown(def["stat"]):
-		lines.append("%s %s" % [b["source"], b["text"]])
-	_breakdown.text = "Where it comes from:  " + "  ·  ".join(lines)
+		lines.append("%s %s" % [b["source"], tr(str(b["text"]))])
+	_breakdown.text = tr("Where it comes from:  %s") % "  ·  ".join(lines)
 	var style: StyleBoxFlat = UITheme.box(UITheme.PLUM_LIGHT if _affordable else UITheme.PLUM,
 		UITheme.GOLD if _affordable else UITheme.RUST, 4 if _affordable else 3, 16, 12)
 	add_theme_stylebox_override("panel", style)
@@ -254,5 +254,5 @@ func _fmt_time(seconds: float) -> String:
 	if seconds < 60.0:
 		return "%d s" % int(ceil(seconds))
 	if seconds < 3600.0:
-		return "%d min" % int(ceil(seconds / 60.0))
+		return tr("%d min") % int(ceil(seconds / 60.0))
 	return "%.1f h" % (seconds / 3600.0)

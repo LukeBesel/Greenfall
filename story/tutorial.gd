@@ -3,6 +3,7 @@ extends Node
 ## Patch's restart checklist: a diegetic, step-by-step tutorial told by his own systems.
 ## Each step completes on a gameplay event; progress persists in GameState.flags.
 
+# l10n:begin
 const STEPS: Array[Dictionary] = [
 	{"id": "scoop", "text": "Hold  {scoop}  to scoop junk into the hopper", "goal": 8},
 	{"id": "bale", "text": "Fill the hopper near the line, then  {cube}  to compress a bale"},
@@ -11,6 +12,7 @@ const STEPS: Array[Dictionary] = [
 	{"id": "upgrade", "text": "Walk into the shack.  {interact}  at the workbench to install an upgrade"},
 	{"id": "hex", "text": "Clear this whole hex. Every last can."},
 ]
+# l10n:end
 
 var world: Node
 var step: int = 0
@@ -50,7 +52,7 @@ func current_text() -> String:
 	if done():
 		return ""
 	var s: Dictionary = STEPS[step]
-	var t: String = glyphs(s["text"])
+	var t: String = glyphs(tr(str(s["text"])))
 	if s.has("goal"):
 		t += "   %d/%d" % [mini(_count, int(s["goal"])), int(s["goal"])]
 	return t
@@ -90,4 +92,4 @@ func _advance() -> void:
 func _announce() -> void:
 	EventBus.tutorial_changed.emit(current_text())
 	if done():
-		EventBus.toast.emit("Restart checklist complete. Lumi is back on the job.", "story")
+		EventBus.toast.emit(tr("Restart checklist complete. Lumi is back on the job."), "story")

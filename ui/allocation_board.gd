@@ -10,7 +10,7 @@ var _hint: Label
 
 func _ready() -> void:
 	add_theme_constant_override("separation", 6)
-	add_child(UITheme.label("ALLOCATION BOARD   ·   MULTIBOTS", 16, UITheme.CREAM))
+	add_child(UITheme.label(tr("ALLOCATION BOARD   ·   MULTIBOTS"), 16, UITheme.CREAM))
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 18)
 	add_child(row)
@@ -36,7 +36,7 @@ func _ready() -> void:
 			btns.add_child(b)
 	var presets := HBoxContainer.new()
 	add_child(presets)
-	for p: Array in [["Clean Push", 1.0, 0.0], ["Balanced", 0.5, 0.3], ["Garden Mode", 0.1, 0.45]]:
+	for p: Array in [[tr("Clean Push"), 1.0, 0.0], [tr("Balanced"), 0.5, 0.3], [tr("Garden Mode"), 0.1, 0.45]]:
 		var b := Button.new()
 		b.text = p[0]
 		b.custom_minimum_size = Vector2(120, 36)
@@ -72,7 +72,7 @@ func refresh() -> void:
 			thirsty += 1
 	var lines: Array[String] = []
 	if g.unlocked() and empty_clean > 60:
-		lines.append("%d clean spots are waiting for planters." % empty_clean)
+		lines.append(tr("%d clean spots are waiting for planters.") % empty_clean)
 	if thirsty > 10:
-		lines.append("%d plants are thirsty and not growing." % thirsty)
+		lines.append(tr("%d plants are thirsty and not growing.") % thirsty)
 	_hint.text = "\n".join(lines)

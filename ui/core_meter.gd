@@ -19,7 +19,7 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_theme_constant_override("separation", 2)
 	custom_minimum_size = Vector2(150, 0)
-	_label = UITheme.label("BLOOM CORE", 12, UITheme.MUTED)
+	_label = UITheme.label(tr("BLOOM CORE"), 12, UITheme.MUTED)
 	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	add_child(_label)
 	_bar = ProgressBar.new()
@@ -39,7 +39,7 @@ func set_charge(f: float) -> void:
 	if _bar == null:
 		return
 	_bar.value = _charge
-	_label.text = "BLOOM CORE   %d%%" % int(floor(_charge * 100.0 + 0.001))
+	_label.text = tr("BLOOM CORE   %d%%") % int(floor(_charge * 100.0 + 0.001))
 	_fill.bg_color = AMBER if _charge < LOW else GREEN
 
 

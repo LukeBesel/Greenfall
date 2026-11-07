@@ -9,6 +9,11 @@ signal hex_became_clean(hex_id: int)
 var radius: int
 var hex_size: float
 var seed_value: int
+## Natural junk borders: pieces are kept or dropped by a noise-warped hex test (the same warp the
+## ground shader samples from border_warp_tex), so where junk ends wanders instead of tracing hex
+## edges. Saves made before this keep the straight test (their piece ids must stay the same).
+var natural_borders: bool = true
+var _warp_noise: FastNoiseLite
 var clean_threshold: float = 0.99
 
 # Hexes
@@ -77,6 +82,32 @@ func piece_count() -> int:
 func hex_center(id: int) -> Vector3:
 	var p: Vector2 = Hex.axial_to_world(hex_axial[id], hex_size)
 	return Vector3(p.x, 0.0, p.y)
+
+
+## Organic offset for border tests: about a hex wide at most, smooth over a few metres.
+func border_warp(p: Vector3) -> Vector3:
+	if _warp_noise == null:
+		_warp_noise = FastNoiseLite.new()
+		_warp_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+		_warp_noise.seed = 4177
+		_warp_noise.frequency = 0.07
+		_warp_noise.fractal_octaves = 3
+	var wx: float = _warp_noise.get_noise_2d(p.x, p.z)
+	var wz: float = _warp_noise.get_noise_2d(p.x + 913.0, p.z - 377.0)
+	return Vector3(wx, 0.0, wz) * hex_size * 0.75
+
+
+## The warp baked into an RG texture (0.5 = no offset) covering extent x extent metres around
+## the origin, for the ground shader to sample.
+func border_warp_image(extent: float, res: int = 256) -> Image:
+	var img := Image.create(res, res, false, Image.FORMAT_RGF)
+	var scale: float = hex_size * 0.75
+	for y: int in res:
+		for x: int in res:
+			var wp := Vector3((float(x) + 0.5) / res * extent - extent * 0.5, 0.0, (float(y) + 0.5) / res * extent - extent * 0.5)
+			var w: Vector3 = border_warp(wp) / scale
+			img.set_pixel(x, y, Color(w.x, w.z, 0.0))
+	return img
 
 
 func hex_at(world: Vector3) -> int:
@@ -175,7 +206,7 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 				pos = Vector3(pile.x + cos(ang) * rr, 0.0, pile.y + sin(ang) * rr)
 			else:
 				pos = center + Vector3(rng.randf_range(-1.0, 1.0), 0.0, rng.randf_range(-1.0, 1.0)) * hex_size
-			if hex_at(pos) != id:
+			if (hex_at(pos + border_warp(pos)) if natural_borders else hex_at(pos)) != id:
 				continue
 			var surf: int = layout.surface_at(pos.x, pos.z) if layout else CityLayout.Surface.LOT
 			if surf == CityLayout.Surface.BUILDING or surf == CityLayout.Surface.YARD:
@@ -530,7 +561,7 @@ func junk_hexes_cleaned() -> int:
 
 func to_dict() -> Dictionary:
 	return {
-		"seed": seed_value, "radius": radius,
+		"seed": seed_value, "radius": radius, "natural_borders": natural_borders,
 		"alive": Marshalls.raw_to_base64(piece_alive),
 		"clean": Marshalls.raw_to_base64(hex_clean),
 		"parts_found": Marshalls.raw_to_base64(part_found) if not part_found.is_empty() else "",

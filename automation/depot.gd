@@ -112,7 +112,7 @@ func _build() -> void:
 	lamp.material_override = Mats.lamp(Color(1.0, 0.65, 0.2), 1.2)
 	lamp.position = post.position + Vector3(0, 1.05, 0)
 	add_child(lamp)
-	var sign_label := Mats.stencil("SCRAP  INTAKE  ·  WEIGH HERE", 64, Color(0.92, 0.9, 0.82, 0.9))
+	var sign_label := Mats.stencil(tr("SCRAP  INTAKE  ·  WEIGH HERE"), 64, Color(0.92, 0.9, 0.82, 0.9))
 	sign_label.position = Vector3(0, h * 0.62, d * 0.5 + 0.11)
 	_chute.add_child(sign_label)
 	var sb := StaticBody3D.new()

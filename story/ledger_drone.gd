@@ -47,7 +47,7 @@ func _build() -> void:
 	hull.add_child(EggProps.mesh(ProcMesh.sphere(0.09, 12, 6), _eye_mat, Vector3(0, 0.02, 0.5)))
 	hull.add_child(EggProps.mesh(ProcMesh.cyl(0.13, 0.13, 0.04, 14), steel, Vector3(0, 0.02, 0.49), Vector3(90, 0, 0)))
 	for s: float in [-1.0, 1.0]:
-		var st := EggProps.label("LEDGER  WMS-07", 26, Color(0.95, 0.8, 0.5, 0.9), Vector3(s * 0.755, 0.06, 0), Vector3(0, s * 90.0, 0))
+		var st := EggProps.label(tr("LEDGER  WMS-07"), 26, Color(0.95, 0.8, 0.5, 0.9), Vector3(s * 0.755, 0.06, 0), Vector3(0, s * 90.0, 0))
 		hull.add_child(st)
 	# Arms + ducted rotors.
 	for p: Vector3 in [Vector3(0.95, 0.12, 0.7), Vector3(-0.95, 0.12, 0.7), Vector3(0.95, 0.12, -0.7), Vector3(-0.95, 0.12, -0.7)]:

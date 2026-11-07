@@ -123,25 +123,25 @@ func tank_cost() -> BigNum:
 ## "" if a tank can go at pos, else the reason it can't.
 func place_block_reason(pos: Vector3) -> String:
 	if world == null:
-		return "No world"
+		return tr("No world")
 	var f: HexField = world.field
 	var h: int = f.hex_at(pos)
 	if tanks.size() >= int(cfg().get("max", 6)):
-		return "Tank limit reached"
+		return tr("Tank limit reached")
 	if h < 0 or f.hex_hub[h] == 2:
-		return "Can't build here"
+		return tr("Can't build here")
 	if f.is_water(h):
-		return "Not on the lake"
+		return tr("Not on the lake")
 	if not f.is_clean(h):
-		return "Clean this hex first"
+		return tr("Clean this hex first")
 	var spacing: float = float(cfg().get("min_spacing", 4.0))
 	if pos.distance_to(barrel_pos()) < spacing:
-		return "Too close to the base barrel"
+		return tr("Too close to the base barrel")
 	for t: Dictionary in tanks:
 		if pos.distance_to(t["pos"]) < spacing:
-			return "Too close to another tank"
+			return tr("Too close to another tank")
 	if not GameState.can_afford("cubes", tank_cost()):
-		return "Not enough cubes"
+		return tr("Not enough cubes")
 	return ""
 
 
@@ -151,7 +151,7 @@ func place_tank(pos: Vector3) -> bool:
 		return false
 	GameState.spend("cubes", tank_cost())
 	_add_tank(pos, float(cfg().get("capacity", 80.0)), true)
-	EventBus.toast.emit("Water Tank placed. Waterers nearby will refill here.", "info")
+	EventBus.toast.emit(tr("Water Tank placed. Waterers nearby will refill here."), "info")
 	GameState.inc_stat("water_tanks")
 	return true
 
@@ -284,7 +284,7 @@ func _build_tank(n: Node3D) -> Node3D:
 	_mi(gauge, ProcMesh.box(Vector3(0.09, h * 0.78, 0.02)), Mats.lamp(Color(0.35, 0.75, 1.0), 2.2), Vector3(0, h * 0.39, 0))
 	for k: int in 4:
 		_mi(n, ProcMesh.box(Vector3(0.18, 0.012, 0.022)), steel, front + Vector3(0, base_y + h * (0.1 + 0.195 * (k + 1)), -0.004))
-	var tag: Label3D = Mats.stencil("WATER", 44, Color(0.95, 0.95, 0.9, 0.92))
+	var tag: Label3D = Mats.stencil(tr("WATER"), 44, Color(0.95, 0.95, 0.9, 0.92))
 	tag.rotation_degrees = Vector3(0, 90, 0)
 	tag.position = Vector3(r + 0.015, base_y + h * 0.7, 0)
 	n.add_child(tag)

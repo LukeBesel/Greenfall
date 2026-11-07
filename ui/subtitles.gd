@@ -62,6 +62,7 @@ func _apply_settings() -> void:
 
 
 func show_line(text: String, stage: int) -> void:
+	text = tr(text) if text != "" else text  # [l10n] raw data lines (formatted ones arrive translated)
 	_full = text
 	_shown = 0.0
 	_stage = stage

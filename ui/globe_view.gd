@@ -116,7 +116,7 @@ func _ready() -> void:
 	left.add_theme_constant_override("separation", 12)
 	left.position = Vector2(28, 28)
 	_root.add_child(left)
-	var c1: Array = _holo_card("Survey", 300, "Verdance  ·  hand-held projection")
+	var c1: Array = _holo_card(tr("Survey"), 300, tr("Verdance  ·  hand-held projection"))
 	left.add_child(c1[0])
 	var b1: VBoxContainer = c1[1]
 	_pct = UITheme.label("0.0 %", 40, HOLO.lerp(Color.WHITE, 0.7))
@@ -132,10 +132,10 @@ func _ready() -> void:
 	_rows = VBoxContainer.new()
 	_rows.add_theme_constant_override("separation", 4)
 	b1.add_child(_rows)
-	for k: Array in [["junk", _legend_col(PlanetData.State.JUNK), "Not cleaned yet"], ["clean", _legend_col(PlanetData.State.CLEAN), "Cleaned"],
-			["planted", _legend_col(PlanetData.State.PLANTED), "Planted"], ["growing", _legend_col(PlanetData.State.GROWING), "Growing"],
-			["restored", _legend_col(PlanetData.State.RESTORED), "Restored"], ["cities", Color(0.85, 0.88, 0.92), "Cities"],
-			["hubs", Color(1.0, 0.75, 0.25), "Bases"]]:
+	for k: Array in [["junk", _legend_col(PlanetData.State.JUNK), tr("Not cleaned yet")], ["clean", _legend_col(PlanetData.State.CLEAN), tr("Cleaned")],
+			["planted", _legend_col(PlanetData.State.PLANTED), tr("Planted")], ["growing", _legend_col(PlanetData.State.GROWING), tr("Growing")],
+			["restored", _legend_col(PlanetData.State.RESTORED), tr("Restored")], ["cities", Color(0.85, 0.88, 0.92), tr("Cities")],
+			["hubs", Color(1.0, 0.75, 0.25), tr("Bases")]]:
 		var r: HBoxContainer = UITheme.stat_row(k[1], k[2])
 		r.name = k[0]
 		_rows.add_child(r)
@@ -157,7 +157,7 @@ func _ready() -> void:
 	right.offset_top = 28
 	right.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	_root.add_child(right)
-	var c2: Array = _holo_card("Rocket", 320, "Travel between bases")
+	var c2: Array = _holo_card(tr("Rocket"), 320, tr("Travel between bases"))
 	right.add_child(c2[0])
 	_hub_list = VBoxContainer.new()
 	_hub_list.add_theme_constant_override("separation", 6)
@@ -170,7 +170,7 @@ func _ready() -> void:
 	_big.offset_bottom = -46
 	_big.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_root.add_child(_big)
-	var hint := PromptLabel.new("[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close", 13)  # [deck]
+	var hint := PromptLabel.new(tr("[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"), 13)  # [deck]
 	hint.align_center = true
 	hint.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
 	hint.grow_horizontal = Control.GROW_DIRECTION_BOTH
@@ -295,7 +295,7 @@ func _refresh_hubs() -> void:
 		return here.angle_to(planet.grid.centers[planet.hubs[a]]) < here.angle_to(planet.grid.centers[planet.hubs[b]]))
 	for i: int in order.filter(func(x: int) -> bool: return x != current_hub).slice(0, 5):  # [biomes]
 		var cell: int = planet.hubs[i]
-		var nm: String = str(planet.cities[planet.city[cell]]["name"]) if planet.city[cell] >= 0 else PlanetData.BIOMES[planet.biome[cell]].capitalize().replace("_", " ") + " site"
+		var nm: String = tr(str(planet.cities[planet.city[cell]]["name"])) if planet.city[cell] >= 0 else PlanetData.BIOMES[planet.biome[cell]].capitalize().replace("_", " ") + " site"
 		var km: float = here.angle_to(planet.grid.centers[cell]) * planet.radius_m / 1000.0
 		var row := PanelContainer.new()
 		row.add_theme_stylebox_override("panel", UITheme.row_box())
@@ -305,10 +305,10 @@ func _refresh_hubs() -> void:
 		vb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		vb.add_theme_constant_override("separation", 0)
 		vb.add_child(UITheme.label(nm, 15, Color.WHITE))
-		vb.add_child(UITheme.label("%d sectors away" % int(km * 1000.0 / 17.3), 12, UITheme.MUTED))
+		vb.add_child(UITheme.label(tr("%d sectors away") % int(km * 1000.0 / 17.3), 12, UITheme.MUTED))
 		hb.add_child(vb)
 		var b := Button.new()
-		b.text = "Launch"
+		b.text = tr("Launch")
 		b.disabled = not ready
 		_holo_button(b)
 		b.pressed.connect(func() -> void:
@@ -427,17 +427,17 @@ func _refresh_text() -> void:
 	var cleaned: int = land - junk
 	var frac: float = float(cleaned) / maxf(land, 1)
 	_pct.text = "%.3f %%" % (100.0 * frac)
-	_pct_sub.text = "of the planet reclaimed  ·  %s of %s land hexes" % [_num(cleaned), _num(land)]
+	_pct_sub.text = tr("of the planet reclaimed  ·  %s of %s land hexes") % [_num(cleaned), _num(land)]
 	_bar.value = frac * 100.0
 	var vals: Dictionary = {"junk": junk, "clean": counts.get(PlanetData.State.CLEAN, 0), "planted": counts.get(PlanetData.State.PLANTED, 0),
 		"growing": counts.get(PlanetData.State.GROWING, 0), "restored": counts.get(PlanetData.State.RESTORED, 0),
 		"cities": planet.cities.size(), "hubs": planet.hubs.size()}
 	for k: String in vals:
 		((_rows.get_node(k) as HBoxContainer).get_node("Value") as Label).text = _num(int(vals[k]))
-	_big.text = "%s HEXES CLEAN" % _num(cleaned)
+	_big.text = tr("%s HEXES CLEAN") % _num(cleaned)
 	var age: float = float(GameState.stats.get("time_played", 0.0)) - _snapshot_time
-	_age.text = "Surveyed %s ago%s" % [_fmt_age(age), "   ·   OUTDATED" if age > 600.0 else ""]
-	_resurvey.text = "Re-survey      %s cubes" % Settings.fmt(survey_cost())
+	_age.text = tr("Surveyed %s ago%s") % [_fmt_age(age), tr("   ·   OUTDATED") if age > 600.0 else ""]
+	_resurvey.text = tr("Re-survey      %s cubes") % Settings.fmt(survey_cost())
 	_ark.text = Bloom.globe_line()
 	_ark.visible = _ark.text != ""
 
@@ -455,7 +455,7 @@ func _fmt_age(s: float) -> String:
 	if s < 60.0:
 		return "%d s" % int(s)
 	if s < 3600.0:
-		return "%d min" % int(s / 60.0)
+		return tr("%d min") % int(s / 60.0)
 	return "%.1f h" % (s / 3600.0)
 
 

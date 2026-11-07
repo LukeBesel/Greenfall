@@ -134,17 +134,17 @@ func _process(delta: float) -> void:
 	if _first:
 		_first = false
 		if got.size() > 3:
-			EventBus.toast.emit("%d achievements unlocked. See them in the Codex (K)." % got.size(), "story")
+			EventBus.toast.emit(tr("%d achievements unlocked. See them in the Codex (K).") % got.size(), "story")
 			Audio.play("chime", 1.0, -4.0)
 			got.clear()
 		if found.size() > 3:
 			found.clear()
 	for id: String in got:
 		var a: Dictionary = def(id)
-		EventBus.toast.emit("Achievement: %s. %s" % [a.get("name", id), a.get("desc", "")], "story")
+		EventBus.toast.emit(tr("Achievement: %s. %s") % [tr(str(a.get("name", id))), tr(str(a.get("desc", "")))], "story")
 		Audio.play("chime", 1.0, -2.0)
 	if found.size() > 2:
-		EventBus.toast.emit("Codex: %d new entries." % found.size(), "info")
+		EventBus.toast.emit(tr("Codex: %d new entries.") % found.size(), "info")
 	else:
 		for k: String in found:
-			EventBus.toast.emit("Codex entry: %s" % Codex.entry(k).get("name", k), "info")
+			EventBus.toast.emit(tr("Codex entry: %s") % tr(str(Codex.entry(k).get("name", k))), "info")

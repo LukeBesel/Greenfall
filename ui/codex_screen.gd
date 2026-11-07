@@ -9,6 +9,7 @@ extends CanvasLayer
 
 signal closed
 
+# l10n:begin
 const TABS: Array[Dictionary] = [
 	{"id": "codex", "name": "Codex"},
 	{"id": "achievements", "name": "Achievements"},
@@ -16,6 +17,7 @@ const TABS: Array[Dictionary] = [
 	{"id": "curiosities", "name": "Curiosities"},
 	{"id": "collection", "name": "Collection"},
 ]
+# l10n:end
 const COLLECT_COLOR := Color(0.55, 0.95, 0.85)
 const CURIO_COLOR := Color(1.0, 0.62, 0.78)
 const CAT_COLORS: Dictionary = {
@@ -71,7 +73,7 @@ func _ready() -> void:
 	header.add_theme_constant_override("separation", 12)
 	vb.add_child(header)
 	header.add_child(ResearchIcons.IconView.new("book", 40, UITheme.GOLD))
-	header.add_child(UITheme.label("CODEX", 32, UITheme.GOLD))
+	header.add_child(UITheme.label(tr("CODEX"), 32, UITheme.GOLD))
 	_summary = UITheme.label("", 14, UITheme.MUTED)
 	_summary.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	header.add_child(_summary)
@@ -79,7 +81,7 @@ func _ready() -> void:
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(sp)
 	var close := Button.new()
-	Settings.bind_text(close, func() -> String: return "Close  [%s]" % Settings.glyph("open_codex" if not Settings.last_input_pad else "ui_cancel"))  # [deck]
+	Settings.bind_text(close, func() -> String: return tr("Close  [%s]") % Settings.glyph("open_codex" if not Settings.last_input_pad else "ui_cancel"))  # [deck]
 	close.custom_minimum_size = Vector2(140, 44)
 	close.focus_mode = Control.FOCUS_NONE
 	close.pressed.connect(close_screen)
@@ -89,13 +91,13 @@ func _ready() -> void:
 	vb.add_child(tabs)
 	for t: Dictionary in TABS:
 		var b := Button.new()
-		b.text = str(t["name"])
+		b.text = tr(str(t["name"]))
 		b.custom_minimum_size = Vector2(150, 42)
 		b.focus_mode = Control.FOCUS_NONE
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
 		tabs.add_child(b)
 		_tab_buttons[str(t["id"])] = b
-	tabs.add_child(PromptLabel.new("   {ui_tab_prev}{ui_tab_next}  switch tabs", 13))  # [deck]
+	tabs.add_child(PromptLabel.new(tr("   {ui_tab_prev}{ui_tab_next}  switch tabs"), 13))  # [deck]
 	_body = MarginContainer.new()
 	_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	vb.add_child(_body)
@@ -178,7 +180,7 @@ func _build_tab() -> void:
 		var on: bool = id == _tab
 		b.add_theme_stylebox_override("normal", UITheme.box(Color(0.2, 0.15, 0.07, 0.9) if on else UITheme.TEAL, UITheme.GOLD if on else UITheme.RUST, 1, 6, 8))
 		b.add_theme_color_override("font_color", UITheme.GOLD if on else UITheme.CREAM)
-	_summary.text = "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements" % [Codex.count(), Codex.total(),
+	_summary.text = tr("%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements") % [Codex.count(), Codex.total(),
 		Codex.curiosities_found(), Codex.egg_defs().size(), Collection.count(), Collection.total(), Achievements.unlocked_count(), Achievements.defs().size()]
 	var first: Control = null
 	match _tab:
@@ -230,7 +232,7 @@ func _build_codex() -> Control:
 		head.add_theme_constant_override("separation", 8)
 		list.add_child(head)
 		head.add_child(ResearchIcons.IconView.new(str(cat.get("icon", "book")), 26, col))
-		head.add_child(UITheme.label(str(cat["name"]).to_upper(), 15, col))
+		head.add_child(UITheme.label(tr(str(cat["name"])).to_upper(), 15, col))
 		head.add_child(UITheme.label("%d / %d" % [Codex.count(cid), Codex.total(cid)], 13, UITheme.MUTED))
 		var flow := HFlowContainer.new()
 		flow.add_theme_constant_override("h_separation", 8)
@@ -271,7 +273,7 @@ func _entry_button(e: Dictionary, col: Color) -> Button:
 	var got: bool = Codex.is_unlocked(str(e["key"]))
 	var b := Button.new()
 	b.custom_minimum_size = Vector2(150, 40)
-	b.text = str(e["name"]) if got else "? ? ?"
+	b.text = tr(str(e["name"])) if got else "? ? ?"
 	b.clip_text = true
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	b.add_theme_font_size_override("font_size", 14)
@@ -301,17 +303,17 @@ func _show_entry(e: Dictionary) -> void:
 	var cat_name: String = str(e["cat"]).to_upper()
 	for cat: Dictionary in Codex.categories():
 		if cat["id"] == e["cat"]:
-			cat_name = str(cat["name"]).to_upper()
+			cat_name = tr(str(cat["name"])).to_upper()
 	_d_cat.text = cat_name
 	_d_cat.add_theme_color_override("font_color", col)
-	_d_name.text = str(e["name"]) if got else "Not found yet"
+	_d_name.text = tr(str(e["name"])) if got else tr("Not found yet")
 	if got:
 		var extra: String = ""
 		if e["cat"] == "junk":
-			extra = "\n\nCleared so far: %s" % _kg(Codex.junk_kg(str(e["id"])))
-		_d_desc.text = str(e["desc"]) + extra
+			extra = tr("\n\nCleared so far: %s") % _kg(Codex.junk_kg(str(e["id"])))
+		_d_desc.text = tr(str(e["desc"])) + extra
 	else:
-		_d_desc.text = "Hint: " + str(e["hint"])
+		_d_desc.text = "Hint: " + tr(str(e["hint"]))
 	_d_desc.add_theme_color_override("font_color", UITheme.CREAM if got else UITheme.MUTED)
 
 
@@ -333,8 +335,8 @@ func _build_curiosities() -> Control:
 	head.add_theme_constant_override("separation", 8)
 	list.add_child(head)
 	head.add_child(ResearchIcons.IconView.new("star", 26, CURIO_COLOR))
-	head.add_child(UITheme.label("CURIOSITIES", 15, CURIO_COLOR))
-	head.add_child(UITheme.label("%d / %d found" % [Codex.curiosities_found(), all.size()], 13, UITheme.MUTED))
+	head.add_child(UITheme.label(tr("CURIOSITIES"), 15, CURIO_COLOR))
+	head.add_child(UITheme.label(tr("%d / %d found") % [Codex.curiosities_found(), all.size()], 13, UITheme.MUTED))
 	var bar := ProgressBar.new()
 	bar.show_percentage = false
 	bar.max_value = maxf(all.size(), 1)
@@ -344,7 +346,7 @@ func _build_curiosities() -> Control:
 	head.add_child(bar)
 	var first: Control = null
 	# Grouped by where they turn up, so a player knows a rocket trip might be needed.
-	for group: String in ["Old Town", "Any district", "Wilderness bases"]:
+	for group: String in [tr("Old Town"), tr("Any district"), tr("Wilderness bases")]:
 		var items: Array[Dictionary] = []
 		for c: Dictionary in all:
 			if str(c["where"]).begins_with(group):
@@ -401,7 +403,7 @@ func _curio_button(c: Dictionary) -> Button:
 	var got: bool = bool(c["found"])
 	var b := Button.new()
 	b.custom_minimum_size = Vector2(168, 40)
-	b.text = ("★  " + str(c["name"])) if got else "?   ? ? ?"
+	b.text = ("★  " + tr(str(c["name"]))) if got else "?   ? ? ?"
 	b.clip_text = true
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	b.add_theme_font_size_override("font_size", 14)
@@ -424,15 +426,15 @@ func _show_curio(c: Dictionary) -> void:
 	_c_icon.text = "★" if got else "?"
 	_c_icon.add_theme_color_override("font_color", CURIO_COLOR if got else Color(UITheme.MUTED, 0.6))
 	_c_where.text = str(c["where"]).to_upper()
-	_c_name.text = str(c["name"]) if got else "Not found yet"
+	_c_name.text = tr(str(c["name"])) if got else tr("Not found yet")
 	if got:
-		_c_text.text = str(c["lore"])
-		_c_quote.text = "\u201c%s\u201d" % str(c["toast"]) if str(c["toast"]) != "" else ""
-		_c_reward.text = "Found  ·  " + str(c["reward"])
+		_c_text.text = tr(str(c["lore"]))
+		_c_quote.text = "\u201c%s\u201d" % tr(str(c["toast"])) if str(c["toast"]) != "" else ""
+		_c_reward.text = tr("Found  ·  %s") % tr(str(c["reward"]))
 	else:
-		_c_text.text = "Hint: " + str(c["hint"])
-		_c_quote.text = ("Parts found: %d / %d" % [int(c["parts_seen"]), int(c["parts"])]) if int(c["parts"]) > 1 else ""
-		_c_reward.text = "Reward: a small surprise"
+		_c_text.text = "Hint: " + tr(str(c["hint"]))
+		_c_quote.text = (tr("Parts found: %d / %d") % [int(c["parts_seen"]), int(c["parts"])]) if int(c["parts"]) > 1 else ""
+		_c_reward.text = tr("Reward: a small surprise")
 	_c_text.add_theme_color_override("font_color", UITheme.CREAM if got else UITheme.MUTED)
 
 
@@ -454,8 +456,8 @@ func _build_collection() -> Control:
 	head.add_theme_constant_override("separation", 8)
 	list.add_child(head)
 	head.add_child(ResearchIcons.IconView.new("star", 26, COLLECT_COLOR))
-	head.add_child(UITheme.label("COLLECTION", 15, COLLECT_COLOR))
-	head.add_child(UITheme.label("%d / %d found" % [Collection.count(), Collection.total()], 13, UITheme.MUTED))
+	head.add_child(UITheme.label(tr("COLLECTION"), 15, COLLECT_COLOR))
+	head.add_child(UITheme.label(tr("%d / %d found") % [Collection.count(), Collection.total()], 13, UITheme.MUTED))
 	var bar := ProgressBar.new()
 	bar.show_percentage = false
 	bar.max_value = maxf(Collection.total(), 1)
@@ -477,7 +479,7 @@ func _build_collection() -> Control:
 			var got: bool = Collection.has(str(t["id"]))
 			var b := Button.new()
 			b.custom_minimum_size = Vector2(168, 40)
-			b.text = ("◆  " + str(t["name"])) if got else "?   ? ? ?"
+			b.text = ("◆  " + tr(str(t["name"]))) if got else "?   ? ? ?"
 			b.clip_text = true
 			b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 			b.add_theme_font_size_override("font_size", 14)
@@ -532,19 +534,19 @@ func _show_trinket(t: Dictionary) -> void:
 	_c_icon.text = "◆" if got else "?"
 	_c_icon.add_theme_color_override("font_color", COLLECT_COLOR if got else Color(UITheme.MUTED, 0.6))
 	_c_where.text = Collection.source_name(src).to_upper()
-	_c_name.text = str(t["name"]) if got else "Not found yet"
-	_c_text.text = str(t.get("desc", "")) if got else _trinket_hint(t)
+	_c_name.text = tr(str(t["name"])) if got else tr("Not found yet")
+	_c_text.text = tr(str(t.get("desc", ""))) if got else _trinket_hint(t)
 	_c_text.add_theme_color_override("font_color", UITheme.CREAM if got else UITheme.MUTED)
-	_c_reward.text = "In your collection" if got else ""
+	_c_reward.text = tr("In your collection") if got else ""
 
 
 static func _trinket_hint(t: Dictionary) -> String:
 	match str(t.get("source", "")):
-		"wildlife_visit": return "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
-		"contracts": return "Hint: complete %d contracts at the workbench." % int(t.get("milestone", 1))
-		"capsule": return "Hint: Curio Capsules, in the workbench token shop."
-		"streak": return "Hint: keep scooping without stopping until the streak meter is full."
-	return "Hint: turns up during %s." % Collection.source_name(str(t.get("source", ""))).to_lower()
+		"wildlife_visit": return TranslationServer.translate("Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera.")
+		"contracts": return TranslationServer.translate("Hint: complete %d contracts at the workbench.") % int(t.get("milestone", 1))
+		"capsule": return TranslationServer.translate("Hint: Curio Capsules, in the workbench token shop.")
+		"streak": return TranslationServer.translate("Hint: keep scooping without stopping until the streak meter is full.")
+	return TranslationServer.translate("Hint: turns up during %s.") % Collection.source_name(str(t.get("source", ""))).to_lower()
 
 
 # --- Achievements tab ----------------------------------------------------------------
@@ -604,16 +606,16 @@ func _achievement_card(a: Dictionary) -> Button:
 	vb.add_theme_constant_override("separation", 2)
 	vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hb.add_child(vb)
-	var n := UITheme.label(str(a["name"]), 16, Color.WHITE if got else UITheme.CREAM)
+	var n := UITheme.label(tr(str(a["name"])), 16, Color.WHITE if got else UITheme.CREAM)
 	n.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	vb.add_child(n)
-	var d := UITheme.label(str(a.get("desc", "")), 12, UITheme.MUTED)
+	var d := UITheme.label(tr(str(a.get("desc", ""))), 12, UITheme.MUTED)
 	d.autowrap_mode = TextServer.AUTOWRAP_WORD
 	d.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	vb.add_child(d)
 	if got:
 		var when: String = Time.get_date_string_from_unix_time(int(float(Achievements.unlocked_map()[id])))
-		var l := UITheme.label("Unlocked  ·  %s" % when, 11, UITheme.GOLD)
+		var l := UITheme.label(tr("Unlocked  ·  %s") % when, 11, UITheme.GOLD)
 		l.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		vb.add_child(l)
 	else:
@@ -651,41 +653,41 @@ func _build_stats() -> Control:
 	var st: Dictionary = GameState.stats
 	var junk_rows: Array = []
 	for t: String in Economy.junk_ids:
-		junk_rows.append([Color.html(str(Economy.junk_types[t].get("cube_color", "#888888"))).lightened(0.25), str(Economy.junk_types[t].get("name", t)), _kg(Codex.junk_kg(t))])
-	junk_rows.append([UITheme.GOLD, "Total", _kg(Codex.junk_kg("*"))])
-	var first: Control = _stat_card(grid, "Junk removed", "by type", junk_rows)
-	_stat_card(grid, "Cleaning", "", [
-		[UITheme.GOLD, "Hexes cleaned", _int(st.get("hexes_cleaned", 0))],
-		[UITheme.GREEN, "Hexes restored", _int(st.get("hexes_restored", 0))],
-		[UITheme.CREAM, "Bales pressed", _int(st.get("cubes_made", 0))],
-		[Color(0.6, 0.86, 1.0), "Pure bales", _int(st.get("pure_cubes", 0))],
-		[UITheme.GOLD, "Perfect bales", _int(st.get("perfect_cubes", 0))],
-		[UITheme.MUTED, "Lumpy bales", _int(st.get("lumpy_cubes", 0))],
-		[UITheme.GOLD, "Bales cashed in", _int(st.get("cubes_cashed", 0))],
-		[UITheme.GOLD, "Cubes earned", Settings.fmt(BigNum.from_serialized(st.get("cubes_earned_total", [0.0, 0])))],
+		junk_rows.append([Color.html(str(Economy.junk_types[t].get("cube_color", "#888888"))).lightened(0.25), tr(str(Economy.junk_types[t].get("name", t))), _kg(Codex.junk_kg(t))])
+	junk_rows.append([UITheme.GOLD, tr("Total"), _kg(Codex.junk_kg("*"))])
+	var first: Control = _stat_card(grid, tr("Junk removed"), tr("by type"), junk_rows)
+	_stat_card(grid, tr("Cleaning"), "", [
+		[UITheme.GOLD, tr("Hexes cleaned"), _int(st.get("hexes_cleaned", 0))],
+		[UITheme.GREEN, tr("Hexes restored"), _int(st.get("hexes_restored", 0))],
+		[UITheme.CREAM, tr("Bales pressed"), _int(st.get("cubes_made", 0))],
+		[Color(0.6, 0.86, 1.0), tr("Pure bales"), _int(st.get("pure_cubes", 0))],
+		[UITheme.GOLD, tr("Perfect bales"), _int(st.get("perfect_cubes", 0))],
+		[UITheme.MUTED, tr("Lumpy bales"), _int(st.get("lumpy_cubes", 0))],
+		[UITheme.GOLD, tr("Bales cashed in"), _int(st.get("cubes_cashed", 0))],
+		[UITheme.GOLD, tr("Cubes earned"), Settings.fmt(BigNum.from_serialized(st.get("cubes_earned_total", [0.0, 0])))],
 	])
-	_stat_card(grid, "Growing", "", [
-		[UITheme.GREEN, "Seeds planted", _int(st.get("plants_planted", 0))],
-		[Color(1.0, 0.85, 0.4), "Plants bloomed", _int(st.get("plants_bloomed", 0))],
-		[Color(0.6, 0.8, 1.0), "Air filtered", _int(st.get("air_filtered", 0))],
+	_stat_card(grid, tr("Growing"), "", [
+		[UITheme.GREEN, tr("Seeds planted"), _int(st.get("plants_planted", 0))],
+		[Color(1.0, 0.85, 0.4), tr("Plants bloomed"), _int(st.get("plants_bloomed", 0))],
+		[Color(0.6, 0.8, 1.0), tr("Air filtered"), _int(st.get("air_filtered", 0))],
 	])
-	_stat_card(grid, "Robots", "", [
-		[Color(0.4, 0.72, 1.0), "Robots built", _int(st.get("robots_built", 0))],
-		[UITheme.CREAM, "Bales by robots", _int(st.get("robot_bales", 0))],
-		[UITheme.GOLD, "Parts dug up", _int(st.get("parts_found", 0))],
+	_stat_card(grid, tr("Robots"), "", [
+		[Color(0.4, 0.72, 1.0), tr("Robots built"), _int(st.get("robots_built", 0))],
+		[UITheme.CREAM, tr("Bales by robots"), _int(st.get("robot_bales", 0))],
+		[UITheme.GOLD, tr("Parts dug up"), _int(st.get("parts_found", 0))],
 	])
-	_stat_card(grid, "Exploring", "", [
-		[UITheme.CREAM, "Distance rolled", _dist(float(st.get("distance_m", 0.0)))],
-		[Color(0.5, 0.85, 1.0), "Memory shards read", _int(st.get("shards_found", 0))],
-		[Color(0.83, 0.61, 1.0), "Codex entries", "%d / %d" % [Codex.count(), Codex.total()]],
-		[UITheme.MUTED, "Time played", _time(float(st.get("time_played", 0.0)))],
+	_stat_card(grid, tr("Exploring"), "", [
+		[UITheme.CREAM, tr("Distance rolled"), _dist(float(st.get("distance_m", 0.0)))],
+		[Color(0.5, 0.85, 1.0), tr("Memory shards read"), _int(st.get("shards_found", 0))],
+		[Color(0.83, 0.61, 1.0), tr("Codex entries"), "%d / %d" % [Codex.count(), Codex.total()]],
+		[UITheme.MUTED, tr("Time played"), _time(float(st.get("time_played", 0.0)))],
 	])
-	_stat_card(grid, "Progress", "", [
-		[UITheme.GOLD, "Upgrades bought", _int(st.get("upgrades_bought", 0))],
-		[Color(0.45, 0.8, 1.0), "Data earned", _int(st.get("data_earned", 0))],
-		[Color(0.45, 0.8, 1.0), "Research done", "%d / %d" % [Research.done_list().size(), Research.ids().size()]],
-		[UITheme.GOLD, "Achievements", "%d / %d" % [Achievements.unlocked_count(), Achievements.defs().size()]],
-		[UITheme.CREAM, "Best hub level", str(Achievements.best_hub_level())],
+	_stat_card(grid, tr("Progress"), "", [
+		[UITheme.GOLD, tr("Upgrades bought"), _int(st.get("upgrades_bought", 0))],
+		[Color(0.45, 0.8, 1.0), tr("Data earned"), _int(st.get("data_earned", 0))],
+		[Color(0.45, 0.8, 1.0), tr("Research done"), "%d / %d" % [Research.done_list().size(), Research.ids().size()]],
+		[UITheme.GOLD, tr("Achievements"), "%d / %d" % [Achievements.unlocked_count(), Achievements.defs().size()]],
+		[UITheme.CREAM, tr("Best hub level"), str(Achievements.best_hub_level())],
 	])
 	return first
 
@@ -735,21 +737,21 @@ static func _kg(kg: float) -> String:
 	if kg >= 10000.0:
 		return "%.1f t" % (kg / 1000.0)
 	if kg >= 100.0:
-		return "%s kg" % _group(int(round(kg)))
-	return "%.1f kg" % kg
+		return TranslationServer.translate("%s kg") % _group(int(round(kg)))
+	return TranslationServer.translate("%.1f kg") % kg
 
 
 static func _dist(m: float) -> String:
-	return "%.2f km" % (m / 1000.0) if m >= 1000.0 else "%d m" % int(m)
+	return TranslationServer.translate("%.2f km") % (m / 1000.0) if m >= 1000.0 else "%d m" % int(m)
 
 
 static func _time(s: float) -> String:
 	var n: int = int(s)
 	if n >= 3600:
-		return "%dh %02dm" % [n / 3600, (n % 3600) / 60]
+		return TranslationServer.translate("%dh %02dm") % [n / 3600, (n % 3600) / 60]
 	if n >= 60:
-		return "%dm %02ds" % [n / 60, n % 60]
-	return "%ds" % n
+		return TranslationServer.translate("%dm %02ds") % [n / 60, n % 60]
+	return TranslationServer.translate("%ds") % n
 
 
 static func _short(v: float) -> String:

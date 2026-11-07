@@ -474,7 +474,7 @@ func _build_fixed(lv: int, drop_lv: int) -> void:
 		plate_n.add_child(_strip(Vector3(t * hs, y - 0.005, -hs), Vector3(t * hs, y - 0.005, hs), 0.018, grid))
 	plate_n.add_child(EggProps.mesh(ProcMesh.torus(r * 0.42, r * 0.47, 40, 4), cyan, Vector3(0, y, 0)))
 	plate_n.add_child(EggProps.mesh(ProcMesh.box(Vector3(hs * 2.0, 0.6, hs * 2.0)), _holo_mat(Color(0.3, 0.85, 1.0), 0.05), Vector3(0, y + 0.3, 0)))
-	plate_n.add_child(EggProps.label("SCALE", 40, Color(0.6, 0.95, 1.0), Vector3(0, y + 0.01, r * 0.62), Vector3(-90, 0, 0), true))
+	plate_n.add_child(EggProps.label(tr("SCALE"), 40, Color(0.6, 0.95, 1.0), Vector3(0, y + 0.01, r * 0.62), Vector3(-90, 0, 0), true))
 	# Skip: glossy white hull, orange band, cyan rim lines, glowing number.
 	var sk: Vector3 = _skip_size(lv)
 	var skip_n := Node3D.new()
@@ -485,7 +485,7 @@ func _build_fixed(lv: int, drop_lv: int) -> void:
 	skip_n.add_child(_strip(Vector3(-sk.x * 0.5, sk.y + 0.05, sk.z * 0.5 + 0.08), Vector3(sk.x * 0.5, sk.y + 0.05, sk.z * 0.5 + 0.08), 0.045, cyan))
 	skip_n.add_child(_strip(Vector3(-sk.x * 0.5, sk.y + 0.05, -sk.z * 0.5 - 0.08), Vector3(sk.x * 0.5, sk.y + 0.05, -sk.z * 0.5 - 0.08), 0.045, cyan))
 	skip_n.add_child(EggProps.mesh(ProcMesh.box(Vector3(sk.x * 0.7, 0.34, 0.02)), glass, Vector3(0, sk.y * 0.58, sk.z * 0.5 + 0.11)))
-	skip_n.add_child(EggProps.label("OUTPOST %d%s" % [index + 1, "  ·  BIG SKIP" if big else ""], 34, Color(0.55, 0.95, 1.0), Vector3(0, sk.y * 0.58, sk.z * 0.5 + 0.125), Vector3.ZERO, true))
+	skip_n.add_child(EggProps.label(tr("OUTPOST %d%s") % [index + 1, tr("  ·  BIG SKIP") if big else ""], 34, Color(0.55, 0.95, 1.0), Vector3(0, sk.y * 0.58, sk.z * 0.5 + 0.125), Vector3.ZERO, true))
 	var fill := MeshInstance3D.new()
 	fill.mesh = FieldView._mound_mesh()
 	fill.material_override = AssetLib.pbr_material("rubble", 1.0, Color(0.6, 0.55, 0.5), true)
@@ -600,7 +600,7 @@ func _build_fixed(lv: int, drop_lv: int) -> void:
 	var t1: Label3D = EggProps.label("W E I G H   S T A T I O N", 30, Color(0.65, 0.97, 1.0), Vector3(0, 0.1, 0.01), Vector3.ZERO, true)
 	t1.double_sided = true
 	_holo.add_child(t1)
-	var t2: Label3D = EggProps.label("OUTPOST %d  ·  ONLINE" % (index + 1), 22, Color(1.0, 0.65, 0.3), Vector3(0, -0.13, 0.01), Vector3.ZERO, true)
+	var t2: Label3D = EggProps.label(tr("OUTPOST %d  ·  ONLINE") % (index + 1), 22, Color(1.0, 0.65, 0.3), Vector3(0, -0.13, 0.01), Vector3.ZERO, true)
 	t2.double_sided = true
 	_holo.add_child(t2)
 	# Hovering cargo pods on a dark pad.
@@ -634,7 +634,7 @@ func _build_fixed(lv: int, drop_lv: int) -> void:
 		cp.add_child(EggProps.mesh(ProcMesh.cyl(1.0, 1.0, 1.2, 32), _holo_mat(Color(0.3, 0.85, 1.0), 0.05), Vector3(0, 0.75, 0)))
 		_charge_light = EggProps.glow(Color(0.35, 0.85, 1.0), 1.0, 4.0, Vector3(0, 0.6, 0))
 		cp.add_child(_charge_light)
-		cp.add_child(EggProps.label("RECHARGE", 34, Color(0.75, 0.95, 1.0), Vector3(0, 0.14, 0.7), Vector3(-90, 0, 0), true))
+		cp.add_child(EggProps.label(tr("RECHARGE"), 34, Color(0.75, 0.95, 1.0), Vector3(0, 0.14, 0.7), Vector3(-90, 0, 0), true))
 	if drop_lv > 0:
 		_drop_in(drop_lv)
 

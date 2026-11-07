@@ -12,6 +12,10 @@ uniform sampler2DArray arm_arr : filter_linear_mipmap_anisotropic, repeat_enable
 uniform sampler2D layout_tex : filter_linear;
 uniform float layout_size = 280.0;
 uniform sampler2D state_tex : filter_nearest;
+// Natural borders: offset (RG, metres / warp_amp) baked by HexField.border_warp_image().
+uniform sampler2D warp_tex : filter_linear;
+uniform float warp_size = 280.0;
+uniform float warp_amp = 0.0;
 uniform sampler2D life_tex : filter_linear;
 uniform int grid_radius = 9;
 uniform float hex_size = 3.2;
@@ -112,25 +116,40 @@ void fragment() {
 	float edge_d = apothem - mx;
 	float hex_dist = (abs(ax.x) + abs(ax.y) + abs(ax.x + ax.y)) * 0.5;
 	bool inside = hex_dist <= float(grid_radius);
+	// Natural borders: the ground state is looked up at a noise-warped position, so the line
+	// between clean / green / junk ground wanders organically instead of following hex edges.
+	// (Selection outline and grid lines still use the true hex.)
+	// Same warp the junk placement used (so ground and junk edges agree), plus a little fine wobble.
+	vec2 warp = texture(warp_tex, p / warp_size + 0.5).rg * warp_amp
+		+ (vec2(fbm(p * 0.9 + 3.0), fbm(p * 0.9 + 91.0)) - 0.5) * hex_size * 0.18 * step(0.001, warp_amp);
+	vec2 pw = p + warp;
+	vec2 qr_w = vec2((SQRT3 / 3.0 * pw.x - pw.y / 3.0) / hex_size, (2.0 / 3.0 * pw.y) / hex_size);
+	vec2 ax_s = hex_round(qr_w);
+	vec2 center_s = vec2(hex_size * (SQRT3 * ax_s.x + SQRT3 * 0.5 * ax_s.y), hex_size * 1.5 * ax_s.y);
+	bool inside_s = (abs(ax_s.x) + abs(ax_s.y) + abs(ax_s.x + ax_s.y)) * 0.5 <= float(grid_radius);
 	float removed = 0.0;
 	float is_clean = 0.0;
 	float is_hub = 0.0;
 	float flip_t = -100.0;
 	float life = 0.0;
+	float size = float(grid_radius * 2 + 1);
 	if (inside) {
-		life = texture(life_tex, (ax + vec2(float(grid_radius)) + 0.5) / float(grid_radius * 2 + 1)).r;
-		float size = float(grid_radius * 2 + 1);
-		vec4 st = texture(state_tex, (ax + vec2(float(grid_radius)) + 0.5) / size);
+		// Hub/lake flag stays on the true hex (the yard slab and lake water are hex-shaped meshes).
+		is_hub = texture(state_tex, (ax + vec2(float(grid_radius)) + 0.5) / size).a;
+	}
+	if (inside_s) {
+		vec4 st = texture(state_tex, (ax_s + vec2(float(grid_radius)) + 0.5) / size);
 		removed = st.r;
 		flip_t = st.g;
 		is_clean = st.b;
-		is_hub = st.a;
+		// Greenery fades smoothly between neighbouring hexes (linear filter at the warped spot).
+		life = texture(life_tex, (qr_w + vec2(float(grid_radius)) + 0.5) / size).r;
 	}
 	float reveal = 0.0;
 	float wave = 0.0;
 	if (is_clean > 0.5) {
 		float age = time_now - flip_t;
-		float d = length(local);
+		float d = length(pw - center_s);
 		float front = age * ripple_speed;
 		reveal = clamp((front - d) / 1.6 + fbm(p * 0.8) * 0.6 - 0.3, 0.0, 1.0);
 		wave = (1.0 - smoothstep(0.0, 1.4, abs(front - d))) * (1.0 - smoothstep(1.0, 3.0, age));

@@ -55,7 +55,7 @@ func _reveal(hid: int, fresh: bool) -> void:
 	_visible[hid] = node
 	if fresh:
 		Vfx.burst("sparkle", pos + Vector3(0, 0.4, 0), Color(0.5, 0.85, 1.0))
-		EventBus.toast.emit("Something surfaced in the cleared ground. A memory shard.", "story")
+		EventBus.toast.emit(tr("Something surfaced in the cleared ground. A memory shard."), "story")
 
 
 ## Returns the shard index within reach of a position, or -1.

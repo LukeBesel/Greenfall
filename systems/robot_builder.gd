@@ -58,14 +58,14 @@ static func all_parts() -> Array:
 static func slot_name(slot: String) -> String:
 	for s: Dictionary in cfg().get("slots", []):
 		if str(s["id"]) == slot:
-			return str(s["name"])
+			return TranslationServer.translate(str(s["name"]))
 	return slot.capitalize()
 
 
 static func stat_name(id: String) -> String:
 	for s: Dictionary in cfg().get("stats", []):
 		if str(s["id"]) == id:
-			return str(s["name"])
+			return TranslationServer.translate(str(s["name"]))
 	return id.capitalize()
 
 
@@ -252,11 +252,11 @@ static func equip(r: Robot, slot: String, id: String) -> String:
 	if id != "":
 		var p: Dictionary = part(id)
 		if p.is_empty() or str(p["slot"]) != slot:
-			return "Wrong slot"
+			return TranslationServer.translate("Wrong slot")
 		if not fits(id, r.type_id):
-			return "Doesn't fit a %s" % str(Economy.robots.get(r.type_id, {}).get("name", r.type_id))
+			return TranslationServer.translate("Doesn't fit a %s") % TranslationServer.translate(str(Economy.robots.get(r.type_id, {}).get("name", r.type_id)))
 		if not take_part(id):
-			return "None in the parts bin"
+			return TranslationServer.translate("None in the parts bin")
 	if cur != "":
 		inv()[cur] = count(cur) + 1
 	if id == "":
@@ -287,9 +287,9 @@ static func rename(fleet: Fleet, r: Robot, new_name: String) -> String:
 	if n == r.robot_name:
 		return ""
 	if n.length() < 2:
-		return "Names need at least 2 letters"
+		return TranslationServer.translate("Names need at least 2 letters")
 	if fleet and fleet.find_robot(n) != null:
-		return "Another robot is already called %s" % n
+		return TranslationServer.translate("Another robot is already called %s") % n
 	if fleet:
 		var bots: Dictionary = (GameState.world.get("orders", {}) as Dictionary).get("bots", {})
 		if bots.has(r.robot_name):
@@ -340,22 +340,22 @@ static func _part_to_use(type_id: String, min_rarity: int) -> int:
 static func craft_block_reason(id: String) -> String:
 	var p: Dictionary = part(id)
 	if p.is_empty() or not craftable(id):
-		return "Can't be crafted"
+		return TranslationServer.translate("Can't be crafted")
 	var src: Dictionary = p["source"]
 	var lr: String = locked_research(id)
 	if lr != "":
-		return "Research %s" % str(Research.def(lr).get("name", lr))
+		return TranslationServer.translate("Research %s") % TranslationServer.translate(str(Research.def(lr).get("name", lr)))
 	if int(src.get("fragments", 0)) > fragments():
-		return "Needs %d Maker Fragments (%d)" % [int(src["fragments"]), fragments()]
+		return TranslationServer.translate("Needs %d Maker Fragments (%d)") % [int(src["fragments"]), fragments()]
 	var ptype: String = str(src.get("part", ""))
 	if ptype != "" and _part_to_use(ptype, int(src.get("min_rarity", 0))) < 0:
-		var pname: String = str(Economy.part_type(Fleet.part_index(ptype)).get("name", ptype))
+		var pname: String = TranslationServer.translate(str(Economy.part_type(Fleet.part_index(ptype)).get("name", ptype)))
 		var mr: int = int(src.get("min_rarity", 0))
-		return "Needs a %s%s" % ["%s+ " % Economy.rarity(mr).get("name", "") if mr > 0 else "", pname]
+		return TranslationServer.translate("Needs a %s%s") % ["%s+ " % TranslationServer.translate(str(Economy.rarity(mr).get("name", ""))) if mr > 0 else "", pname]
 	if not GameState.can_afford("bolts", BigNum.from_float(float(src.get("bolts", 0)))):
-		return "Needs %d bolts" % int(src.get("bolts", 0))
+		return TranslationServer.translate("Needs %d bolts") % int(src.get("bolts", 0))
 	if not GameState.can_afford("cubes", BigNum.from_float(float(src.get("cubes", 0)))):
-		return "Not enough cubes"
+		return TranslationServer.translate("Not enough cubes")
 	return ""
 
 
@@ -365,22 +365,22 @@ static func cost_text(id: String) -> String:
 	var bits: Array[String] = []
 	match str(src.get("kind", "")):
 		"haggle":
-			return "Haggle's stall · %s cubes + %d bolts" % [Settings.fmt(BigNum.from_float(float(src.get("cubes", 0)))), int(src.get("bolts", 0))]
+			return TranslationServer.translate("Haggle's stall · %s cubes + %d bolts") % [Settings.fmt(BigNum.from_float(float(src.get("cubes", 0)))), int(src.get("bolts", 0))]
 		"token":
-			return "Token shop · ◈ %d" % int(src.get("tokens", 0))
+			return TranslationServer.translate("Token shop · ◈ %d") % int(src.get("tokens", 0))
 		"drop":
-			return str(src.get("hint", "Rare find"))
+			return TranslationServer.translate(str(src.get("hint", "Rare find")))
 	if int(src.get("fragments", 0)) > 0:
-		bits.append("%d Maker Fragments" % int(src["fragments"]))
+		bits.append(TranslationServer.translate("%d Maker Fragments") % int(src["fragments"]))
 	if int(src.get("bolts", 0)) > 0:
-		bits.append("%d bolts" % int(src["bolts"]))
+		bits.append(TranslationServer.translate("%d bolts") % int(src["bolts"]))
 	var ptype: String = str(src.get("part", ""))
 	if ptype != "":
 		var mr: int = int(src.get("min_rarity", 0))
-		bits.append("%s%s" % ["%s+ " % Economy.rarity(mr).get("name", "") if mr > 0 else "", Economy.part_type(Fleet.part_index(ptype)).get("name", ptype)])
+		bits.append("%s%s" % ["%s+ " % TranslationServer.translate(str(Economy.rarity(mr).get("name", ""))) if mr > 0 else "", TranslationServer.translate(str(Economy.part_type(Fleet.part_index(ptype)).get("name", ptype)))])
 	if int(src.get("cubes", 0)) > 0:
-		bits.append("%s cubes" % Settings.fmt(BigNum.from_float(float(src["cubes"]))))
-	return "Craft · " + " + ".join(bits)
+		bits.append(TranslationServer.translate("%s cubes") % Settings.fmt(BigNum.from_float(float(src["cubes"]))))
+	return TranslationServer.translate("Craft · %s") % " + ".join(bits)
 
 
 static func craft(id: String) -> bool:
@@ -429,12 +429,12 @@ static func haggle_seconds_left(play_time: float = -1.0) -> float:
 
 static func haggle_block_reason(id: String) -> String:
 	if not (id in haggle_offers()):
-		return "Not in Haggle's stall right now"
+		return TranslationServer.translate("Not in Haggle's stall right now")
 	var src: Dictionary = part(id).get("source", {})
 	if not GameState.can_afford("cubes", BigNum.from_float(float(src.get("cubes", 0)))):
-		return "Not enough cubes"
+		return TranslationServer.translate("Not enough cubes")
 	if not GameState.can_afford("bolts", BigNum.from_float(float(src.get("bolts", 0)))):
-		return "Needs %d bolts" % int(src.get("bolts", 0))
+		return TranslationServer.translate("Needs %d bolts") % int(src.get("bolts", 0))
 	return ""
 
 
@@ -456,9 +456,9 @@ static func get_block_reason(id: String) -> String:
 		"haggle":
 			return haggle_block_reason(id)
 		"token":
-			return "Contract token shop"
+			return TranslationServer.translate("Contract token shop")
 		"drop":
-			return str(part(id).get("source", {}).get("hint", "Rare find"))
+			return TranslationServer.translate(str(part(id).get("source", {}).get("hint", "Rare find")))
 	return craft_block_reason(id)
 
 
@@ -548,7 +548,7 @@ func _on_robot_built(_n: String) -> void:
 	st()["starter"] = true
 	add_part("treads")
 	add_part("bobble_plant")
-	EventBus.toast.emit("Haggle: \"First bot? Treads on the house. And a plant, bots like plants.\" (Workbench > Builder)", "story")
+	EventBus.toast.emit(tr("Haggle: \"First bot? Treads on the house. And a plant, bots like plants.\" (Workbench > Builder)"), "story")
 
 
 ## Dug-up parts sometimes come with a Maker Fragment (much likelier on Vintage/Legendary finds).
@@ -558,7 +558,7 @@ func _on_part_found(_t: int, r: int) -> void:
 	var ch: Array = cfg().get("salvage", {}).get("dig_fragment_chance", [0.02])
 	if rng.randf() < float(ch[clampi(r, 0, ch.size() - 1)]):
 		add_fragments(1)
-		EventBus.toast.emit("A Maker Fragment was tucked inside it. (%d)" % fragments(), "hint")
+		EventBus.toast.emit(tr("A Maker Fragment was tucked inside it. (%d)") % fragments(), "hint")
 
 
 func _process(delta: float) -> void:
@@ -590,10 +590,10 @@ func _salvage_find(r: Robot, sc: Dictionary) -> void:
 	GameState.inc_stat("builder_salvage_finds")
 	if rng.randi() % maxi(int(sc.get("clover_one_in", 40)), 1) == 0:
 		add_part("lucky_clover")
-		EventBus.toast.emit("%s spotted something green and lucky: a Lucky Clover!" % r.robot_name, "story")
+		EventBus.toast.emit(tr("%s spotted something green and lucky: a Lucky Clover!") % r.robot_name, "story")
 	elif rng.randi() % maxi(int(sc.get("fragment_one_in", 10)), 1) == 0:
 		add_fragments(1)
-		EventBus.toast.emit("%s spotted a Maker Fragment glinting in the junk. (%d)" % [r.robot_name, fragments()], "story")
+		EventBus.toast.emit(tr("%s spotted a Maker Fragment glinting in the junk. (%d)") % [r.robot_name, fragments()], "story")
 	else:
 		var t: int = rng.randi() % maxi(Economy.parts.get("types", [1]).size(), 1)
 		var rar: int = 0 if rng.randf() < 0.7 else 1
@@ -601,7 +601,7 @@ func _salvage_find(r: Robot, sc: Dictionary) -> void:
 		_quiet = true
 		EventBus.part_found.emit(t, rar)
 		_quiet = false
-		EventBus.toast.emit("%s spotted a %s %s." % [r.robot_name, Economy.rarity(rar).get("name", ""), Economy.part_type(t).get("name", "part")], "hint")
+		EventBus.toast.emit(tr("%s spotted a %s %s.") % [r.robot_name, tr(str(Economy.rarity(rar).get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))], "hint")
 	Audio.play("detector", 1.4, -10.0)
 
 

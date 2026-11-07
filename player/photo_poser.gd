@@ -12,17 +12,21 @@ extends Node
 ##   elbow.x = -PI/2 straightens the arm; elbow.y sways a raised forearm side to side.
 ##   Finger curl > 0 pinches the claw shut, < 0 spreads it.
 
+# l10n:begin
 const POSES: Array = [
 	["idle", "Hover"], ["wave", "Wave"], ["thumbs", "Thumbs up"], ["peace", "Peace sign"],
 	["scan", "Laser scan"], ["sprout", "Holding a sprout"], ["sit", "Sitting on a cube"],
 	["holo", "Hologram map"], ["cheer", "Happy ^ ^"], ["sleepy", "Low battery"],
 	["hero", "Heroic hover"], ["selfie", "Selfie"], ["curious", "Curious tilt"],
 ]
+# l10n:end
+# l10n:begin
 const EYES: Array = [
 	["auto", "Pose default"], ["bright", "Bright"], ["happy", "Happy ^ ^"], ["wink", "Wink"],
 	["sleepy", "Sleepy"], ["wide", "Wide awake"], ["closed", "Closed"],
 	["left", "Look left"], ["right", "Look right"], ["up", "Look up"],
 ]
+# l10n:end
 const STRAIGHT: float = -PI * 0.5
 
 var model: PatchModel
@@ -58,14 +62,14 @@ static func pose_ids() -> Array[String]:
 static func pose_names() -> Array[String]:
 	var out: Array[String] = []
 	for p: Array in POSES:
-		out.append(str(p[1]))
+		out.append(TranslationServer.translate(str(p[1])))
 	return out
 
 
 static func eye_names() -> Array[String]:
 	var out: Array[String] = []
 	for e: Array in EYES:
-		out.append(str(e[1]))
+		out.append(TranslationServer.translate(str(e[1])))
 	return out
 
 

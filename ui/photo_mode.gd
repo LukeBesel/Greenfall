@@ -23,9 +23,9 @@ signal captured(path: String)
 
 const SHOT_DIR: String = "user://screenshots"
 const FREE_RADIUS: float = 25.0
-const WEATHER: Array[String] = ["Live", "Clear", "Haze", "Mist"]
-const RES: Array[String] = ["1x  (window)", "2x  (supersampled)"]
-const CAM_MODES: Array[String] = ["Orbit Lumi", "Free fly"]
+const WEATHER: Array[String] = ["Live", "Clear", "Haze", "Mist"]  # l10n
+const RES: Array[String] = ["1x  (window)", "2x  (supersampled)"]  # l10n
+const CAM_MODES: Array[String] = ["Orbit Lumi", "Free fly"]  # l10n
 
 var world: Node
 var is_open: bool = false
@@ -113,22 +113,22 @@ func block_reason(from_menu: bool = false) -> String:
 	if world == null or world.get("patch") == null:
 		return "unavailable"
 	if bool(world.get("launching")):
-		return "Photo mode isn't available during a rocket flight."
+		return tr("Photo mode isn't available during a rocket flight.")
 	var intro: Variant = world.get("intro")
 	if intro is Node and (intro as Node).has_method("busy") and bool((intro as Node).call("busy")):
-		return "Photo mode isn't available during a cinematic."
+		return tr("Photo mode isn't available during a cinematic.")
 	var ledger: Variant = world.get("ledger")
 	if ledger is Object and bool((ledger as Object).get("busy")):
-		return "Photo mode isn't available during a cinematic."
+		return tr("Photo mode isn't available during a cinematic.")
 	var hud: Variant = world.get("hud")
 	if hud is CanvasLayer and not (hud as CanvasLayer).visible:
-		return "Photo mode isn't available during a cinematic."
+		return tr("Photo mode isn't available during a cinematic.")
 	if not from_menu:
 		if world.has_method("any_modal_open") and bool(world.call("any_modal_open")):
 			return "modal"
 		var cam: Variant = world.get("cam")
 		if cam is Object and not bool((cam as Object).get("input_enabled")):
-			return "Photo mode isn't available during a cinematic."
+			return tr("Photo mode isn't available during a cinematic.")
 	return ""
 
 
@@ -364,42 +364,42 @@ func _build_ui() -> void:
 	_ui.add_child(_panel)
 	_panel.capture_pressed.connect(capture)
 	_panel.close_pressed.connect(close)
-	var s: VBoxContainer = _panel.section("Camera")
-	_panel.cycler(s, "Mode", "cam_mode", CAM_MODES)
-	_panel.slider(s, "Field of view", "fov", 20.0, 100.0, 1.0, func(v: float) -> String: return "%d°" % int(v))
-	_panel.slider(s, "Roll", "roll", -45.0, 45.0, 1.0, func(v: float) -> String: return "%d°" % int(v))
-	_panel.slider(s, "Distance", "distance", 1.0, 12.0, 0.1, func(v: float) -> String: return "%.1f m" % v)
-	_panel.slider(s, "Height", "height", -0.3, 2.5, 0.05, func(v: float) -> String: return "%.2f m" % v)
-	_panel.action(s, "Reset camera", reset_camera)
-	s = _panel.section("Lens")
-	_panel.toggle(s, "Auto-focus Lumi", "autofocus")
-	_panel.slider(s, "Focus distance", "focus", 0.5, 30.0, 0.1, func(v: float) -> String: return "%.1f m" % v)
-	_panel.slider(s, "Blur", "blur", 0.0, 1.0, 0.01, func(v: float) -> String: return "Off" if v < 0.01 else "%d%%" % int(v * 100.0))
-	_panel.slider(s, "Exposure", "exposure", 0.4, 2.2, 0.01, func(v: float) -> String: return "%+.1f EV" % (log(v) / log(2.0)))
-	s = _panel.section("Look")
-	_panel.cycler(s, "Filter", "filter", PhotoFilters.names())
-	_panel.slider(s, "Contrast", "contrast", 0.6, 1.5, 0.01, func(v: float) -> String: return "%d" % int(round((v - 1.0) * 100.0)))
-	_panel.slider(s, "Saturation", "saturation", 0.0, 1.6, 0.01, func(v: float) -> String: return "%d" % int(round((v - 1.0) * 100.0)))
-	_panel.slider(s, "Warmth", "warmth", -1.0, 1.0, 0.01, func(v: float) -> String: return "%d" % int(round(v * 100.0)))
-	_panel.slider(s, "Vignette", "vignette", 0.0, 1.0, 0.01, func(v: float) -> String: return "%d%%" % int(v * 100.0))
-	_panel.slider(s, "Grain", "grain", 0.0, 1.0, 0.01, func(v: float) -> String: return "%d%%" % int(v * 100.0))
-	s = _panel.section("World", false)
-	_panel.toggle(s, "Set time of day", "time_override")
-	_panel.slider(s, "Time", "time", 0.0, 1.0, 0.005, func(v: float) -> String:
+	var s: VBoxContainer = _panel.section(tr("Camera"))
+	_panel.cycler(s, tr("Mode"), "cam_mode", CAM_MODES)
+	_panel.slider(s, tr("Field of view"), "fov", 20.0, 100.0, 1.0, func(v: float) -> String: return "%d°" % int(v))
+	_panel.slider(s, tr("Roll"), "roll", -45.0, 45.0, 1.0, func(v: float) -> String: return "%d°" % int(v))
+	_panel.slider(s, tr("Distance"), "distance", 1.0, 12.0, 0.1, func(v: float) -> String: return "%.1f m" % v)
+	_panel.slider(s, tr("Height"), "height", -0.3, 2.5, 0.05, func(v: float) -> String: return "%.2f m" % v)
+	_panel.action(s, tr("Reset camera"), reset_camera)
+	s = _panel.section(tr("Lens"))
+	_panel.toggle(s, tr("Auto-focus Lumi"), "autofocus")
+	_panel.slider(s, tr("Focus distance"), "focus", 0.5, 30.0, 0.1, func(v: float) -> String: return "%.1f m" % v)
+	_panel.slider(s, tr("Blur"), "blur", 0.0, 1.0, 0.01, func(v: float) -> String: return tr("Off") if v < 0.01 else "%d%%" % int(v * 100.0))
+	_panel.slider(s, tr("Exposure"), "exposure", 0.4, 2.2, 0.01, func(v: float) -> String: return tr("%+.1f EV") % (log(v) / log(2.0)))
+	s = _panel.section(tr("Look"))
+	_panel.cycler(s, tr("Filter"), "filter", PhotoFilters.names())
+	_panel.slider(s, tr("Contrast"), "contrast", 0.6, 1.5, 0.01, func(v: float) -> String: return "%d" % int(round((v - 1.0) * 100.0)))
+	_panel.slider(s, tr("Saturation"), "saturation", 0.0, 1.6, 0.01, func(v: float) -> String: return "%d" % int(round((v - 1.0) * 100.0)))
+	_panel.slider(s, tr("Warmth"), "warmth", -1.0, 1.0, 0.01, func(v: float) -> String: return "%d" % int(round(v * 100.0)))
+	_panel.slider(s, tr("Vignette"), "vignette", 0.0, 1.0, 0.01, func(v: float) -> String: return "%d%%" % int(v * 100.0))
+	_panel.slider(s, tr("Grain"), "grain", 0.0, 1.0, 0.01, func(v: float) -> String: return "%d%%" % int(v * 100.0))
+	s = _panel.section(tr("World"), false)
+	_panel.toggle(s, tr("Set time of day"), "time_override")
+	_panel.slider(s, tr("Time"), "time", 0.0, 1.0, 0.005, func(v: float) -> String:
 		var mins: int = int(round(v * 1440.0)) % 1440
 		return "%02d:%02d" % [mins / 60, mins % 60])
-	_panel.cycler(s, "Weather", "weather", WEATHER)
-	s = _panel.section("Lumi")
-	_panel.cycler(s, "Pose", "pose", PhotoPoser.pose_names())
-	_panel.cycler(s, "Eyes", "eyes", PhotoPoser.eye_names())
-	_panel.slider(s, "Turn", "turn", -180.0, 180.0, 1.0, func(v: float) -> String: return "%d°" % int(v))
-	_panel.toggle(s, "Show robots", "robots")
-	s = _panel.section("Frame", false)
-	_panel.toggle(s, "Hide HUD", "hide_hud")
-	_panel.toggle(s, "Rule of thirds", "thirds")
-	_panel.toggle(s, "Letterbox 2.39:1", "letterbox")
-	_panel.toggle(s, "Greenfall stamp", "logo")
-	_panel.cycler(s, "Resolution", "res", RES)
+	_panel.cycler(s, tr("Weather"), "weather", WEATHER)
+	s = _panel.section(tr("Lumi"))
+	_panel.cycler(s, tr("Pose"), "pose", PhotoPoser.pose_names())
+	_panel.cycler(s, tr("Eyes"), "eyes", PhotoPoser.eye_names())
+	_panel.slider(s, tr("Turn"), "turn", -180.0, 180.0, 1.0, func(v: float) -> String: return "%d°" % int(v))
+	_panel.toggle(s, tr("Show robots"), "robots")
+	s = _panel.section(tr("Frame"), false)
+	_panel.toggle(s, tr("Hide HUD"), "hide_hud")
+	_panel.toggle(s, tr("Rule of thirds"), "thirds")
+	_panel.toggle(s, tr("Letterbox 2.39:1"), "letterbox")
+	_panel.toggle(s, tr("Greenfall stamp"), "logo")
+	_panel.cycler(s, tr("Resolution"), "res", RES)
 	_toast = PanelContainer.new()
 	_toast.add_theme_stylebox_override("panel", UITheme.box(Color(0.045, 0.05, 0.055, 0.88), Color(1, 1, 1, 0.12), 1, 5, 10))
 	_toast.anchor_top = 1.0
@@ -416,7 +416,7 @@ func _build_ui() -> void:
 	var dev_open: String = DevHooks.get_s("photo-open", "")
 	if dev_open != "":
 		var want: PackedStringArray = dev_open.split(",")
-		for n: String in ["Camera", "Lens", "Look", "World", "Lumi", "Frame"]:
+		for n: String in [tr("Camera"), tr("Lens"), tr("Look"), tr("World"), tr("Lumi"), tr("Frame")]:
 			_panel.open_section(n, want.has(n.to_lower()))
 	if DevHooks.has("photo-collapsed"):
 		_panel.set_collapsed(true)
@@ -848,7 +848,7 @@ func capture() -> String:
 		_sv.size = base
 	if img == null or img.is_empty():  # e.g. headless (no renderer)
 		_capturing = false
-		toast("Couldn't capture the photo.")
+		toast(tr("Couldn't capture the photo."))
 		print("[photo] capture skipped (no image)")
 		return ""
 	var path: String = next_shot_path()
@@ -857,7 +857,7 @@ func capture() -> String:
 	var err: Error = img.save_png(abs_path)
 	_capturing = false
 	if err != OK:
-		toast("Couldn't save the photo (%s)." % error_string(err))
+		toast(tr("Couldn't save the photo (%s).") % error_string(err))
 		return ""
 	if DevHooks.has("photo-copy"):
 		var dst: String = ProjectSettings.globalize_path("res://" + DevHooks.get_s("photo-copy", "screenshots/photo"))
@@ -870,7 +870,7 @@ func capture() -> String:
 		create_tween().tween_property(_flash, "color:a", 0.0, 0.35)
 	if _panel:
 		_panel.flash_capture()
-	toast("Saved  %s  (%dx%d)" % [abs_path, img.get_width(), img.get_height()])
+	toast(tr("Saved  %s  (%dx%d)") % [abs_path, img.get_width(), img.get_height()])
 	captured.emit(abs_path)
 	return abs_path
 

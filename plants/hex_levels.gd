@@ -48,7 +48,7 @@ func level_def(l: int) -> Dictionary:
 
 
 func level_name(l: int) -> String:
-	return str(level_def(l).get("name", "Lv %d" % l))
+	return tr(str(level_def(l).get("name", "Lv %d" % l)))
 
 
 func count_at_least(l: int) -> int:
@@ -86,14 +86,14 @@ func describe(hid: int) -> String:
 	var l: int = level_of(hid)
 	if l < 0:
 		return ""
-	var s: String = "HEX  LV %d  %s" % [l, level_name(l).to_upper()]
+	var s: String = tr("HEX  LV %d  %s") % [l, level_name(l).to_upper()]
 	if l == 3 or (l == 4 and not sustained_now(hid)):
 		if _ring_n.has(hid) and watered_ratio(hid) >= float(cfg.get("sustain_ratio", 0.9)):
-			s += "      SUSTAIN  %d%%" % int(sustain_progress(hid) * 100.0)
+			s += tr("      SUSTAIN  %d%%") % int(sustain_progress(hid) * 100.0)
 		elif _ring_n.has(hid):
-			s += "      THIRSTY"
+			s += tr("      THIRSTY")
 	if l < MAX_LEVEL:
-		s += "      next: " + str(level_def(l).get("hint", ""))
+		s += tr("      next: %s") % tr(str(level_def(l).get("hint", "")))
 	return s
 
 
@@ -239,14 +239,14 @@ func _celebrate(hid: int, to: int, reward: Dictionary) -> void:
 	var nm: String = level_name(to)
 	Vfx.burst("big_sparkle" if to >= 4 else "sparkle", c + Vector3(0, 0.5, 0), col, 1.0 if to >= 4 else 2.0)
 	Vfx.ring(c, world.field.hex_size * 1.05, Color(col.r, col.g, col.b, 0.85), 0.9)
-	Vfx.float_text(c + Vector3(0, 2.0, 0), "HEX LV %d  %s" % [to, nm.to_upper()], col, 1.3 if to < 4 else 1.7, 2.2)
+	Vfx.float_text(c + Vector3(0, 2.0, 0), tr("HEX LV %d  %s") % [to, nm.to_upper()], col, 1.3 if to < 4 else 1.7, 2.2)
 	Audio.play("sparkle" if to < 4 else "chime", 0.9 + 0.08 * to, -6.0 if to < 4 else -3.0)
 	if to == MAX_LEVEL:
 		Audio.play("bird", 1.1, -10.0, 0.0)
 		var wl: Node = world.get("wildlife")
 		if wl and wl.has_method("_on_restored"):
 			wl.call("_on_restored", hid)  # extra butterflies and a bird for a thriving hex
-	EventBus.toast.emit("Hex Lv %d  %s.   %s" % [to, nm, reward_text(reward)], "story" if to >= 4 else "hint")
+	EventBus.toast.emit(tr("Hex Lv %d  %s.   %s") % [to, nm, reward_text(reward)], "story" if to >= 4 else "hint")
 
 
 func _recalc_bonus() -> void:

@@ -74,7 +74,7 @@ func upgrade() -> bool:
 	GameState.world["hub_level"] = level
 	_build_level(level, true)
 	level_changed.emit(level)
-	EventBus.toast.emit("Hub upgraded: %s." % next["name"], "story")
+	EventBus.toast.emit(tr("Hub upgraded: %s.") % tr(str(next["name"])), "story")
 	leveled.emit(level)
 	return true
 
@@ -105,7 +105,7 @@ func build_scrubber() -> bool:
 	_build_scrubber(scrubbers, true)
 	scrubbers += 1
 	GameState.world["hub_scrubbers"] = scrubbers
-	EventBus.toast.emit("Air Scrubber online. The fans spin up with a long, dusty sigh.", "story")
+	EventBus.toast.emit(tr("Air Scrubber online. The fans spin up with a long, dusty sigh."), "story")
 	return true
 
 

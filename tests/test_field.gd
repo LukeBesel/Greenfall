@@ -35,8 +35,19 @@ func test_hub_hexes_start_clean_and_empty() -> void:
 
 
 func test_pieces_live_in_their_hex() -> void:
+	# Natural borders: a piece belongs to the hex its noise-warped position falls in.
 	for pid: int in field.piece_count():
-		assert_eq(field.hex_at(field.piece_pos[pid]), field.piece_hex[pid])
+		var p: Vector3 = field.piece_pos[pid]
+		var got: int = field.hex_at(p + field.border_warp(p)) if field.natural_borders else field.hex_at(p)
+		assert_eq(got, field.piece_hex[pid])
+
+
+func test_natural_borders_spill_past_straight_edges() -> void:
+	var outside: int = 0
+	for pid: int in field.piece_count():
+		if field.hex_at(field.piece_pos[pid]) != field.piece_hex[pid]:
+			outside += 1
+	assert_true(outside > 0, "some junk should wander past the straight hex edge")
 
 
 func test_removing_all_pieces_cleans_hex_once() -> void:

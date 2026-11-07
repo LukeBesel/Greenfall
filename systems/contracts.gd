@@ -112,8 +112,8 @@ static func text_of(slot: Dictionary) -> String:
 	if t.is_empty():
 		return "?"
 	if int(slot.get("n", 1)) == 1 and t.has("text_1"):
-		return str(t["text_1"])
-	return str(t.get("text", "%d")) % int(slot.get("n", 1))
+		return TranslationServer.translate(str(t["text_1"]))
+	return TranslationServer.translate(str(t.get("text", "%d"))) % int(slot.get("n", 1))
 
 
 ## Raw counter a contract watches (a lifetime stat, a peak since accepting, or a hex-level count).
@@ -238,13 +238,13 @@ func _process(delta: float) -> void:
 		var s: Dictionary = slots()[int(e["i"])]
 		match str(e["kind"]):
 			"done":
-				EventBus.toast.emit("Contract complete: %s. Claim %d tokens at the workbench." % [text_of(s), int(s.get("tokens", 0))], "story")
+				EventBus.toast.emit(tr("Contract complete: %s. Claim %d tokens at the workbench.") % [text_of(s), int(s.get("tokens", 0))], "story")
 				Audio.play("chime", 1.2, -4.0)
 				Audio.play("coin", 1.3, -8.0)
 				if world.get("wren") != null:
 					world.wren.say("contract_done", 0.6)
 			"failed":
-				EventBus.toast.emit("A contract ran out of time. No harm done; a new one will be posted soon.", "info")
+				EventBus.toast.emit(tr("A contract ran out of time. No harm done; a new one will be posted soon."), "info")
 
 
 ## The board is open in the workbench: keep timers running so the panel stays live.
@@ -309,7 +309,7 @@ func claim(i: int) -> int:
 	arr[i] = wait_slot(rng.randf_range(float(cd[0]), float(cd[1])))
 	Audio.play("fanfare", 1.1, -6.0)
 	Audio.play("coin", 1.0, -4.0)
-	EventBus.toast.emit("Contract paid: +%d tokens, +%s cubes." % [tok, Settings.fmt(BigNum.from_float(cubes))], "story")
+	EventBus.toast.emit(tr("Contract paid: +%d tokens, +%s cubes.") % [tok, Settings.fmt(BigNum.from_float(cubes))], "story")
 	for t: Dictionary in Collection.defs():
 		if str(t.get("source", "")) == "contracts" and int(st["done_total"]) >= int(t.get("milestone", 999)):
 			Collection.grant(str(t["id"]))
@@ -320,7 +320,7 @@ func claim(i: int) -> int:
 func buy(item_id: String) -> String:
 	var it: Dictionary = shop_item(item_id)
 	if it.is_empty():
-		return "Unknown item"
+		return tr("Unknown item")
 	var kind: String = str(it.get("kind", ""))
 	var have: Array = owned()
 	if kind == "livery" and item_id in have:
@@ -335,28 +335,28 @@ func buy(item_id: String) -> String:
 		"livery":
 			have.append(item_id)
 			GameState.flags["livery"] = item_id
-			EventBus.toast.emit("%s fitted to the whole fleet." % str(it["name"]), "story")
+			EventBus.toast.emit(tr("%s fitted to the whole fleet.") % tr(str(it["name"])), "story")
 		"part":
 			var t: int = rng.randi() % maxi(Economy.parts.get("types", [1]).size(), 1)
 			var r: int = int(it.get("rarity", 3))
 			GameState.parts.append({"type": t, "rarity": r})
 			EventBus.part_found.emit(t, r)
-			EventBus.toast.emit("Printed: %s %s." % [Economy.rarity(r).get("name", ""), Economy.part_type(t).get("name", "part")], "story")
+			EventBus.toast.emit(tr("Printed: %s %s.") % [tr(str(Economy.rarity(r).get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))], "story")
 		"seeds":
 			GameState.add_currency("seeds", BigNum.from_float(float(it.get("amount", 20))))
-			EventBus.toast.emit("+%d seeds." % int(it.get("amount", 20)), "hint")
+			EventBus.toast.emit(tr("+%d seeds.") % int(it.get("amount", 20)), "hint")
 		"capsule":
 			Collection.grant(Collection.roll("capsule", rng.randf()))
 		"builder":  # [drones] robot builder parts and Maker Fragments
 			if it.has("fragments"):
 				RobotBuilder.add_fragments(int(it["fragments"]))
-				EventBus.toast.emit("+%d Maker Fragments (%d)." % [int(it["fragments"]), RobotBuilder.fragments()], "story")
+				EventBus.toast.emit(tr("+%d Maker Fragments (%d).") % [int(it["fragments"]), RobotBuilder.fragments()], "story")
 			else:
 				var pid: String = str(it.get("part", ""))
 				if pid == "":
 					pid = RobotBuilder.roll_unowned(rng)
 				RobotBuilder.add_part(pid)
-				EventBus.toast.emit("Printed: %s. Fit it in the Builder tab." % str(RobotBuilder.part(pid).get("name", pid)), "story")
+				EventBus.toast.emit(tr("Printed: %s. Fit it in the Builder tab.") % tr(str(RobotBuilder.part(pid).get("name", pid))), "story")
 	GameState.inc_stat("tokens_spent", float(it.get("cost", 0)))
 	Audio.play("buy", 1.0, -2.0)
 	return ""
@@ -366,11 +366,11 @@ static func block_reason(item_id: String) -> String:
 	var it: Dictionary = shop_item(item_id)
 	var kind: String = str(it.get("kind", ""))
 	if kind == "seeds" and not GameState.flags.get("seeds_unlocked", false):
-		return "Unlocks with planting"
+		return TranslationServer.translate("Unlocks with planting")
 	if kind == "capsule" and Collection.unfound("capsule").is_empty():
-		return "Collection complete"
+		return TranslationServer.translate("Collection complete")
 	if kind == "livery" and item_id in owned():
 		return ""
 	if tokens() < int(it.get("cost", 0)):
-		return "Needs %d tokens" % int(it.get("cost", 0))
+		return TranslationServer.translate("Needs %d tokens") % int(it.get("cost", 0))
 	return ""

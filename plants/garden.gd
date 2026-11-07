@@ -250,7 +250,7 @@ func _recount(hid: int) -> void:
 	elif planted > 0:
 		planet.state[cell] = PlanetData.State.PLANTED
 	if before != planet.state[cell] and planet.state[cell] == PlanetData.State.RESTORED:
-		EventBus.toast.emit("A hex is fully restored. Something small is already living in it.", "story")
+		EventBus.toast.emit(tr("A hex is fully restored. Something small is already living in it."), "story")
 		Audio.play("chime", 0.8, -4.0)
 		EventBus.hex_restored.emit(hid)
 

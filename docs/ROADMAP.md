@@ -115,7 +115,7 @@ Helpers working in worktrees under /home/user/gf-wt/<name>, each on a wt/<name> 
 - drones: robot builder (part slots, personalities, Builder tab)
 - biomes: desert, frozen port, sunken city, Cradle Returns district (hooks into the ark finale)
 - photo: photo mode with Lumi poses and filters
-Next after those merge: localization (extract all UI strings into translation CSV/PO, language picker, pseudo-locale test).
+Next after those merge: localization (done on wt/l10n, see "Update: localization" below).
 If a session ends mid-way: check each worktree's `git log`, commit WIP, and resume or merge.
 
 ## Update: Rocket + launch pad + launch/arrival cinematics + rocket tiers
@@ -167,3 +167,12 @@ If a session ends mid-way: check each worktree's `git log`, commit WIP, and resu
 - Done: new ~60 s opening (`story/intro.gd` + `story/space_stage.gd`): the ark Cradle over Verdance (Blender model `art/models/cradle/build_cradle.py`, runtime `story/cradle_ship.gd`), Lumi humming to seedlings in the seed vault, the meteor storm and hull breach, Lumi climbing into a cargo pod with the tray, the pod blown out as the ark sails on, re-entry fire, a chase over the junk city, the crash and a low-battery wake (dim flickering eyes/core, BLOOM CORE 4% readout, WREN explains green light and the plan). Dev: `--intro --intro-from=0..4`.
 - Done: Bloom Core charge (`story/core_charge.gd`, tiny `ui/core_meter.gd` on the HUD) with beats at 25% (memory of the ark's garden deck, `story/cine.gd`), 50% (glow brightens), 75% (the ark crosses the night sky), 100% (finale: the ark descends and Lumi greets it). Dev: `--core-charge=F`, `--core-beat=25|50|75|100`.
 - Next: real voice/hum audio for the vault scene; show the parked ark from more districts.
+
+## Update: localization (wt/l10n)
+- Done: gettext pipeline on Godot's TranslationServer (docs/LOCALIZATION.md). `tools/extract_strings.py` builds `locale/greenfall.pot` (~2,460 strings: ~1,060 from GDScript `tr`/`tr_n`/`TranslationServer.translate`/`# l10n` const tables, ~1,400 from the player-facing fields of 20 data/*.json files), regenerates the pseudo-locale `locale/pseudo.po` (accents, brackets, ~35% longer, placeholders kept) and merges new msgids into every other `.po`; rerunnable, `--check` for CI. PO files registered in project.godot and exported (`locale/*.po`).
+- Done: ~900 UI strings wrapped in tr() across ~85 scripts (menus, HUD, workbench tabs, Codex, Command, globe, photo mode, toasts, story beats); data text (codex, goals, achievements, upgrades, research, eggs, events, contracts, robots, parts, frontiers, hub, rockets, bloom, shards, WREN and Ledger lines) translated where shown; toasts, subtitles, Ledger lines and captions translate at the sink too. English-text logic checks now compare translated prefixes; `Robot.status_text()` stays English for logic, `status_label()` is shown.
+- Done: Settings > Gameplay > Language (System default, English, Deutsch/Español samples, Pseudo); saved as `[ui] language`; panel rebuilds on change; "System default" only picks complete languages (`Settings.SYSTEM_LOCALES`). Dev: `--locale=xx`, `--l10n-audit` (lists on-screen text that skipped tr(), `tools/l10n_audit.gd`). Test: `tests/test_l10n.gd` (locales load, pseudo/de/es translate, placeholders preserved in every translation, setting persists, UI font has Latin-extended glyphs).
+- Fonts: UI font (Godot default Open Sans) covers Latin ext, Greek, Cyrillic; Ledger font Anonymous Pro the same minus a few Latin-B letters; neither has CJK/Hangul (fallback needed for ZH/JA/KO).
+- Not translated: 3D world signage (street_dressing shop signs, robot decals), proper names (districts, robot names), dev/log text.
+- Next: real translations (DE, FR, ES, PT-BR, ZH-CN, JA, KO, RU), CJK fallback font, a pseudo-locale layout pass on every screen with screenshots, `extract_strings.py --check` in CI.
+

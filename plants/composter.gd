@@ -56,21 +56,21 @@ func near(p: Vector3) -> bool:
 
 func prompt() -> String:
 	if not active():
-		return "E   compost press  ·  dormant until something grows"
+		return tr("E   compost press  ·  dormant until something grows")
 	if level >= max_level():
-		return "E   compost press  ·  Lv %d (max)" % level
-	return "E   upgrade compost press to Lv %d  ·  %s cubes" % [level + 1, Settings.fmt(upgrade_cost())]
+		return tr("E   compost press  ·  Lv %d (max)") % level
+	return tr("E   upgrade compost press to Lv %d  ·  %s cubes") % [level + 1, Settings.fmt(upgrade_cost())]
 
 
 func interact() -> void:
 	if not active():
-		EventBus.toast.emit("The press is cold. Grow something first: it runs on what plants leave behind.", "hint")
+		EventBus.toast.emit(tr("The press is cold. Grow something first: it runs on what plants leave behind."), "hint")
 		Audio.play("buzz", 1.1, -10.0)
 		return
 	if level >= max_level():
 		return
 	if not GameState.spend("cubes", upgrade_cost()):
-		EventBus.toast.emit("Not enough cubes to upgrade the press.", "info")
+		EventBus.toast.emit(tr("Not enough cubes to upgrade the press."), "info")
 		Audio.play("buzz", 1.2, -10.0)
 		return
 	level += 1
@@ -79,7 +79,7 @@ func interact() -> void:
 	Vfx.burst("big_sparkle", global_position + Vector3(0, 1.4, 0), Color(0.7, 1.0, 0.55))
 	Audio.play("hydraulic", 1.0, -6.0)
 	Audio.music_sting("upgrade")
-	EventBus.toast.emit("Compost press Lv %d: %.0f s cycles, %.1f seeds each." % [level, cycle_seconds(), seeds_per_cycle()], "story")
+	EventBus.toast.emit(tr("Compost press Lv %d: %.0f s cycles, %.1f seeds each.") % [level, cycle_seconds(), seeds_per_cycle()], "story")
 	_refresh_label()
 
 
@@ -129,9 +129,9 @@ func _refresh_label() -> void:
 	if _label == null:
 		return
 	if not active():
-		_label.text = "COMPOST PRESS\ndormant"
+		_label.text = tr("COMPOST PRESS\ndormant")
 		return
-	_label.text = "COMPOST PRESS  Lv %d\ncompost %s  →  seeds" % [level, Settings.fmt(GameState.get_currency("compost"))]
+	_label.text = tr("COMPOST PRESS  Lv %d\ncompost %s  →  seeds") % [level, Settings.fmt(GameState.get_currency("compost"))]
 
 
 func _build() -> void:

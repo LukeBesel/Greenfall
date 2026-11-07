@@ -19,7 +19,7 @@ func _ready() -> void:
 
 
 static func accent(kind: String, text: String) -> Color:
-	if text.begins_with("Achievement"):
+	if text.begins_with("Achievement") or text.begins_with(TranslationServer.translate("Achievement: %s. %s").get_slice("%", 0)):  # [l10n]
 		return UITheme.GOLD
 	match kind:
 		"story": return UITheme.GOLD
@@ -32,6 +32,7 @@ static func accent(kind: String, text: String) -> Color:
 func push(text: String, kind: String = "info") -> void:
 	if text.strip_edges() == "":
 		return
+	text = tr(text)  # [l10n] plain data toasts (formatted ones arrive translated)
 	for r: Dictionary in _rows:
 		if str(r["text"]) == text and is_instance_valid(r["node"]):
 			r["count"] = int(r["count"]) + 1

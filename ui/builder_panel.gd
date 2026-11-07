@@ -9,6 +9,7 @@ extends HBoxContainer
 
 const PREVIEW_SIZE := Vector2i(360, 190)
 const BAD := Color(1.0, 0.55, 0.45)
+# l10n:begin
 const ROLE_STATS: Dictionary = {
 	"clean": [["speed", "Speed", " m/s"], ["scoop_rate", "Scoop rate", "/s"], ["capacity", "Hopper", ""], ["efficiency", "Cube quality", "x"], ["scan", "Scan", "%"]],
 	"skim": [["speed", "Speed", " m/s"], ["scoop_rate", "Net rate", "/s"], ["capacity", "Hopper", ""], ["efficiency", "Cube quality", "x"], ["scan", "Scan", "%"]],
@@ -16,7 +17,8 @@ const ROLE_STATS: Dictionary = {
 	"plant": [["speed", "Speed", " m/s"], ["work_rate", "Planting", "/s"], ["scan", "Scan", "%"]],
 	"water": [["speed", "Speed", " m/s"], ["work_rate", "Spray rate", "/s"], ["tank", "Tank", ""], ["spray_radius", "Spray reach", " m"], ["refill_rate", "Refill", "/s"], ["scan", "Scan", "%"]],
 }
-const CREW_NAMES: Dictionary = {"clean": "Clean", "haul": "Haul", "plant": "Plant", "water": "Water", "skim": "Skim"}
+# l10n:end
+const CREW_NAMES: Dictionary = {"clean": "Clean", "haul": "Haul", "plant": "Plant", "water": "Water", "skim": "Skim"}  # l10n
 
 var fleet: Fleet
 var _sel: Robot
@@ -96,7 +98,7 @@ func _column(title: String, width: float) -> VBoxContainer:
 
 
 func _build_left() -> void:
-	var vb: VBoxContainer = _column("YOUR ROBOTS", 214)
+	var vb: VBoxContainer = _column(tr("YOUR ROBOTS"), 214)
 	_robot_list = VBoxContainer.new()
 	_robot_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_robot_list.add_theme_constant_override("separation", 5)
@@ -136,7 +138,7 @@ func _build_mid() -> void:
 			_rename(_name_edit.text))
 	nr.add_child(_name_edit)
 	var reroll := Button.new()
-	reroll.text = "New name"
+	reroll.text = tr("New name")
 	reroll.custom_minimum_size = Vector2(0, 38)
 	reroll.pressed.connect(func() -> void:
 		if _sel:
@@ -148,7 +150,7 @@ func _build_mid() -> void:
 	_stats = VBoxContainer.new()
 	_stats.add_theme_constant_override("separation", 1)
 	_mid.add_child(_stats)
-	_empty = UITheme.label("No robots yet. Build one in the Bots tab, then fit it out here.\nHaggle throws in a set of treads with your first robot.", 16, UITheme.MUTED)
+	_empty = UITheme.label(tr("No robots yet. Build one in the Bots tab, then fit it out here.\nHaggle throws in a set of treads with your first robot."), 16, UITheme.MUTED)
 	_empty.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_empty.visible = false
 	_mid.add_child(_empty)
@@ -203,7 +205,7 @@ func _build_stage() -> void:
 
 
 func _build_right() -> void:
-	_right = _column("PART SLOTS", 350)
+	_right = _column(tr("PART SLOTS"), 350)
 	for s: String in RobotBuilder.SLOTS:
 		var b := Button.new()
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -215,7 +217,7 @@ func _build_right() -> void:
 		b.focus_entered.connect(func() -> void: _set_slot(s))
 		_right.add_child(b)
 		_slot_btns[s] = b
-	_right.add_child(UITheme.label("PARTS THAT FIT", 12, Color(0.4, 0.75, 1.0)))
+	_right.add_child(UITheme.label(tr("PARTS THAT FIT"), 12, Color(0.4, 0.75, 1.0)))
 	_opts = VBoxContainer.new()
 	_opts.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_opts.add_theme_constant_override("separation", 4)
@@ -272,7 +274,7 @@ func _style_robot_list() -> void:
 		if not is_instance_valid(r):
 			continue
 		var full: bool = RobotBuilder.is_full_custom(r.build)
-		b.text = "%s%s\n%s %s · %s" % [r.robot_name, "  ★" if full else "", str(Economy.robots.get(r.type_id, {}).get("name", r.type_id)), Economy.tier_name(r.tier), str(RobotBuilder.trait_def(RobotBuilder.trait_of(r)).get("name", ""))]
+		b.text = "%s%s\n%s %s · %s" % [r.robot_name, "  ★" if full else "", tr(str(Economy.robots.get(r.type_id, {}).get("name", r.type_id))), Economy.tier_name(r.tier), tr(str(RobotBuilder.trait_def(RobotBuilder.trait_of(r)).get("name", "")))]
 		var on: bool = r == _sel
 		var col: Color = RobotBuilder.CREW_COLORS.get(r.role(), UITheme.GOLD)
 		b.add_theme_stylebox_override("normal", UITheme.box(Color(col.r * 0.15 + 0.03, col.g * 0.15 + 0.03, col.b * 0.15 + 0.03, 0.95) if on else UITheme.TEAL, col if on else Color(col, 0.25), 1, 6, 8))
@@ -286,19 +288,19 @@ func _refresh_all() -> void:
 		n.visible = has
 	_right.get_parent().get_parent().visible = has
 	if not has:
-		_title.text = "ROBOT BUILDER"
+		_title.text = tr("ROBOT BUILDER")
 		_show_preview({}, true)
 		return
 	var tdef: Dictionary = RobotBuilder.trait_def(RobotBuilder.trait_of(_sel))
 	_sel_key = _key(_sel)
-	_title.text = "%s  ·  %s" % [str(Economy.robots.get(_sel.type_id, {}).get("name", "")).to_upper(), Economy.tier_name(_sel.tier)]
+	_title.text = "%s  ·  %s" % [tr(str(Economy.robots.get(_sel.type_id, {}).get("name", ""))).to_upper(), Economy.tier_name(_sel.tier)]
 	if not _name_edit.has_focus():
 		_name_edit.text = _sel.robot_name
-	_trait.text = "%s  —  %s  %s" % [str(tdef.get("name", "")).to_upper(), str(tdef.get("desc", "")), _mods_text(tdef.get("mods", {}))]
+	_trait.text = "%s  —  %s  %s" % [tr(str(tdef.get("name", ""))).to_upper(), tr(str(tdef.get("desc", ""))), _mods_text(tdef.get("mods", {}))]
 	for s: String in RobotBuilder.SLOTS:
 		var id: String = str(_sel.build.get(s, ""))
 		var b: Button = _slot_btns[s]
-		b.text = "%s   %s" % [RobotBuilder.slot_name(s).to_upper(), "Stock" if id == "" else str(RobotBuilder.part(id).get("name", id))]
+		b.text = "%s   %s" % [RobotBuilder.slot_name(s).to_upper(), tr("Stock") if id == "" else tr(str(RobotBuilder.part(id).get("name", id)))]
 		var on: bool = s == _slot
 		b.add_theme_stylebox_override("normal", UITheme.box(Color(0.2, 0.15, 0.07, 0.9) if on else UITheme.TEAL, UITheme.GOLD if on else UITheme.RUST, 1, 4, 8))
 		b.add_theme_color_override("font_color", UITheme.GOLD if on else (Color.WHITE if id != "" else UITheme.MUTED))
@@ -334,7 +336,7 @@ func _rebuild_options() -> void:
 		var line2: String = ""
 		var col: Color = UITheme.CREAM
 		if id == "":
-			b.text = "Stock  ·  the %s look%s" % [Economy.tier_name(_sel.tier), "   (fitted)" if cur == "" else ""]
+			b.text = tr("Stock  ·  the %s look%s") % [Economy.tier_name(_sel.tier), tr("   (fitted)") if cur == "" else ""]
 		else:
 			var p: Dictionary = RobotBuilder.part(id)
 			var n: int = RobotBuilder.count(id)
@@ -342,7 +344,7 @@ func _rebuild_options() -> void:
 				line2 = "fitted"
 				col = UITheme.GOLD
 			elif n > 0:
-				line2 = "in the bin: %d  ·  press to fit" % n
+				line2 = tr("in the bin: %d  ·  press to fit") % n
 				col = Color.WHITE
 			else:
 				var why: String = RobotBuilder.get_block_reason(id)
@@ -351,9 +353,9 @@ func _rebuild_options() -> void:
 					line2 += "  ·  " + why
 					col = UITheme.MUTED
 				else:
-					line2 += "  ·  press to get + fit"
+					line2 += tr("  ·  press to get + fit")
 					col = UITheme.GREEN
-			b.text = "%s%s\n%s" % [str(p.get("name", id)), "  (Maker set)" if p.has("set") else "", line2]
+			b.text = "%s%s\n%s" % [tr(str(p.get("name", id))), tr("  (Maker set)") if p.has("set") else "", line2]
 		b.add_theme_color_override("font_color", col)
 		b.focus_entered.connect(func() -> void: _preview_candidate(id))
 		b.mouse_entered.connect(func() -> void: _preview_candidate(id))
@@ -371,28 +373,28 @@ func _focus_option(i: int) -> void:
 
 func _refresh_presets() -> void:
 	var crew: String = _sel.role()
-	var cn: String = str(CREW_NAMES.get(crew, crew.capitalize()))
+	var cn: String = tr(str(CREW_NAMES.get(crew, crew.capitalize())))
 	var pre: Dictionary = RobotBuilder.preset(crew)
-	_preset_save.text = "Save as %s preset" % cn
+	_preset_save.text = tr("Save as %s preset") % cn
 	var n: int = fleet.robots_with_role(crew).size() if fleet else 0
-	_preset_apply.text = "Fit preset on crew (%d)" % n
+	_preset_apply.text = tr("Fit preset on crew (%d)") % n
 	_preset_apply.disabled = pre.is_empty()
 	var names: Array[String] = []
 	for s: String in RobotBuilder.SLOTS:
 		if pre.has(s):
-			names.append(str(RobotBuilder.part(str(pre[s])).get("name", "")))
-	_preset_info.text = "%s crew preset: %s" % [cn, ", ".join(names) if not names.is_empty() else "none saved"]
+			names.append(tr(str(RobotBuilder.part(str(pre[s])).get("name", ""))))
+	_preset_info.text = tr("%s crew preset: %s") % [cn, ", ".join(names) if not names.is_empty() else tr("none saved")]
 
 
 func _refresh_bin() -> void:
 	var total: int = 0
 	for id: String in RobotBuilder.inv():
 		total += int(RobotBuilder.inv()[id])
-	_bin.text = "Parts bin %d   ·   Maker Fragments %d   ·   Bolts %s" % [total, RobotBuilder.fragments(), Settings.fmt(GameState.get_currency("bolts"))]
+	_bin.text = tr("Parts bin %d   ·   Maker Fragments %d   ·   Bolts %s") % [total, RobotBuilder.fragments(), Settings.fmt(GameState.get_currency("bolts"))]
 	var offers: Array[String] = []
 	for id: String in RobotBuilder.haggle_offers():
-		offers.append(str(RobotBuilder.part(id).get("name", id)))
-	_haggle.text = "Haggle's stall: %s  (new stock in %d min)" % [", ".join(offers), ceili(RobotBuilder.haggle_seconds_left() / 60.0)]
+		offers.append(tr(str(RobotBuilder.part(id).get("name", id))))
+	_haggle.text = tr("Haggle's stall: %s  (new stock in %d min)") % [", ".join(offers), ceili(RobotBuilder.haggle_seconds_left() / 60.0)]
 
 
 # --- Preview + stats -----------------------------------------------------------------------
@@ -413,12 +415,12 @@ func _preview_candidate(id: String) -> void:
 	_show_preview(cand)
 	_show_stats(cand)
 	if id == "":
-		_info.text = "Stock part: no changes. The %s look of this robot type." % Economy.tier_name(_sel.tier)
+		_info.text = tr("Stock part: no changes. The %s look of this robot type.") % Economy.tier_name(_sel.tier)
 	else:
 		var p: Dictionary = RobotBuilder.part(id)
-		_info.text = "%s  %s" % [str(p.get("desc", "")), _mods_text(p.get("mods", {}))]
+		_info.text = "%s  %s" % [tr(str(p.get("desc", ""))), _mods_text(p.get("mods", {}))]
 		if RobotBuilder.has_set(cand) and not RobotBuilder.has_set(_sel.build):
-			_info.text += "   " + str(RobotBuilder.cfg().get("set_bonus", {}).get("desc", ""))
+			_info.text += "   " + tr(str(RobotBuilder.cfg().get("set_bonus", {}).get("desc", "")))
 
 
 func _mods_text(mods: Dictionary) -> String:
@@ -469,7 +471,7 @@ func _show_stats(cand: Dictionary) -> void:
 			nxt = round(nxt)
 		var hb := HBoxContainer.new()
 		hb.add_theme_constant_override("separation", 8)
-		var nl := UITheme.label(str(row[1]), 14, UITheme.CREAM)
+		var nl := UITheme.label(tr(str(row[1])), 14, UITheme.CREAM)
 		nl.custom_minimum_size = Vector2(120, 0)
 		hb.add_child(nl)
 		var fmt: String = "%.0f" if s in ["scan", "carry", "capacity", "tank"] else "%.2f"
@@ -544,7 +546,7 @@ func _on_option(id: String) -> void:
 		var why: String = RobotBuilder.obtain(id)
 		if why != "":
 			Audio.play("buzz", 1.2, -8.0)
-			EventBus.toast.emit("%s: %s" % [str(RobotBuilder.part(id).get("name", id)), why], "info")
+			EventBus.toast.emit("%s: %s" % [tr(str(RobotBuilder.part(id).get("name", id))), why], "info")
 			return
 	var err: String = RobotBuilder.equip(_sel, _slot, id)
 	if err != "":
@@ -559,7 +561,7 @@ func _on_save_preset() -> void:
 	if _sel == null:
 		return
 	RobotBuilder.save_preset(_sel.role(), _sel.build)
-	EventBus.toast.emit("Saved %s's build as the %s crew preset." % [_sel.robot_name, str(CREW_NAMES.get(_sel.role(), ""))], "hint")
+	EventBus.toast.emit(tr("Saved %s's build as the %s crew preset.") % [_sel.robot_name, tr(str(CREW_NAMES.get(_sel.role(), "")))], "hint")
 	_refresh_all()
 
 
@@ -567,7 +569,7 @@ func _on_apply_preset() -> void:
 	if _sel == null:
 		return
 	var n: int = RobotBuilder.apply_preset(fleet, _sel.role())
-	EventBus.toast.emit("Fitted %d part%s across the %s crew." % [n, "" if n == 1 else "s", str(CREW_NAMES.get(_sel.role(), ""))] if n > 0 else "Nothing to fit: the bin is short of those parts, or the crew already has them.", "hint")
+	EventBus.toast.emit(tr_n("Fitted %d part across the %s crew.", "Fitted %d parts across the %s crew.", n) % [n, tr(str(CREW_NAMES.get(_sel.role(), "")))] if n > 0 else tr("Nothing to fit: the bin is short of those parts, or the crew already has them."), "hint")
 	_pv_key = ""
 	_refresh_all()
 

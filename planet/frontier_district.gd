@@ -127,7 +127,7 @@ func setup() -> void:
 			seen.append(kid)
 		GameState.flags["frontiers_visited"] = seen
 		get_tree().create_timer(5.0, false).timeout.connect(func() -> void:
-			EventBus.toast.emit("%s: %s" % [Frontiers.kind_name(kid), str(kind.get("tagline", ""))], "story")
+			EventBus.toast.emit("%s: %s" % [Frontiers.kind_name(kid), tr(str(kind.get("tagline", "")))], "story")
 			if world.get("wren") != null:
 				world.wren.say("frontier_" + kid, 1.0, true))
 	_dev_hooks()
@@ -265,7 +265,7 @@ func _storm_step(dt: float) -> void:
 			storm_t -= dt
 			if storm_t <= float(s.get("warn_s", 18.0)) and not DevHooks.has("storm"):
 				storm_phase = 1
-				EventBus.toast.emit("Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold.", "story")
+				EventBus.toast.emit(tr("Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."), "story")
 				if world.get("wren") != null:
 					world.wren.say("sandstorm_warn", 1.0, true)
 				Audio.play("whoosh", 0.5, -6.0)
@@ -329,7 +329,7 @@ func storm_hit() -> Array[int]:
 	EventBus.field_progress_changed.emit(field.cleaned_count, field.junk_hex_count)
 	if not hit.is_empty() and world.get("wren") != null:
 		world.wren.say("sandstorm_over", 1.0, true, {"n": hit.size()})
-	EventBus.toast.emit("The sandstorm buried %d hex%s again. Sustained hexes shelter their neighbours." % [hit.size(), "" if hit.size() == 1 else "es"] if not hit.is_empty() else "The storm blew over. Everything held.", "info")
+	EventBus.toast.emit(tr_n("The sandstorm buried %d hex again. Sustained hexes shelter their neighbours.", "The sandstorm buried %d hexes again. Sustained hexes shelter their neighbours.", hit.size()) % hit.size() if not hit.is_empty() else tr("The storm blew over. Everything held."), "info")
 	print("[frontier] storm %d hit %s" % [storms, str(hit)])
 	return hit
 
@@ -377,7 +377,7 @@ func _on_thawed(h: int) -> void:
 	GameState.inc_stat("hexes_thawed")
 	Codex.unlock("frontiers:thaw")
 	if int(GameState.stats.get("hexes_thawed", 0)) <= 1:
-		EventBus.toast.emit("The ice let go. The junk underneath is just junk again.", "info")
+		EventBus.toast.emit(tr("The ice let go. The junk underneath is just junk again."), "info")
 		if world.get("wren") != null:
 			world.wren.say("thaw_first", 1.0, true)
 
@@ -468,9 +468,9 @@ func _act_enabled() -> bool:
 func _prompt() -> String:
 	match _action():
 		"heater":
-			return "E   Light a heater on this ice · %s cubes" % Settings.fmt(heater_cost())
+			return tr("E   Light a heater on this ice · %s cubes") % Settings.fmt(heater_cost())
 		"greenhouse":
-			return "E   Build a greenhouse on this hex · %s cubes" % Settings.fmt(greenhouse_cost())
+			return tr("E   Build a greenhouse on this hex · %s cubes") % Settings.fmt(greenhouse_cost())
 	return ""
 
 
@@ -480,11 +480,11 @@ func _use() -> void:
 		"heater":
 			if not _place_heater(h, true):
 				Audio.play("buzz", 1.0, -8.0)
-				EventBus.toast.emit("Not enough cubes for a heater." if heaters.size() < int(kind.get("ice", {}).get("heater_max", 16)) else "Heater limit reached. Move on to the next ice once these have done their work.", "info")
+				EventBus.toast.emit(tr("Not enough cubes for a heater.") if heaters.size() < int(kind.get("ice", {}).get("heater_max", 16)) else tr("Heater limit reached. Move on to the next ice once these have done their work."), "info")
 		"greenhouse":
 			if not _build_greenhouse(h, true):
 				Audio.play("buzz", 1.0, -8.0)
-				EventBus.toast.emit("Not enough cubes for a greenhouse.", "info")
+				EventBus.toast.emit(tr("Not enough cubes for a greenhouse."), "info")
 
 
 # --- Sunken City: pumps ------------------------------------------------------------------------
@@ -516,7 +516,7 @@ func drain_next(animate: bool) -> Array[int]:
 	GameState.inc_stat("drain_stages")
 	Codex.unlock("frontiers:pumps")
 	if animate:
-		EventBus.toast.emit("The old pumps are running. The water drops and a ring of streets comes back up, with a lot of stranded junk.", "story")
+		EventBus.toast.emit(tr("The old pumps are running. The water drops and a ring of streets comes back up, with a lot of stranded junk."), "story")
 		if world.get("wren") != null:
 			world.wren.say("drain_stage", 1.0, true)
 		EventBus.shake_requested.emit(0.3)
@@ -537,7 +537,7 @@ func _cradle_step() -> void:
 		view.set_cradle(cradle)
 	if before < 1.0 and float(cradle["pad_clean"]) >= 1.0 and not GameState.flags.get("cradle_pad_clean", false):
 		GameState.flags["cradle_pad_clean"] = true
-		EventBus.toast.emit("The landing pad is clean. Now plant it and keep it Sustained.", "story")
+		EventBus.toast.emit(tr("The landing pad is clean. Now plant it and keep it Sustained."), "story")
 		if world.get("wren") != null:
 			world.wren.say("cradle_pad", 1.0, true)
 	if bool(cradle["done"]) and not done:
@@ -553,7 +553,7 @@ func complete() -> void:
 	GameState.inc_stat("cradle_called")
 	if view:
 		view.celebrate()
-	EventBus.toast.emit("The landing pad is alive and the beacon is lit. The Cradle has answered. It is coming home.", "story")
+	EventBus.toast.emit(tr("The landing pad is alive and the beacon is lit. The Cradle has answered. It is coming home."), "story")
 	if world.get("wren") != null:
 		world.wren.say("cradle_complete", 1.0, true)
 	Audio.play("fanfare", 0.8, -2.0)
@@ -588,30 +588,30 @@ func card_text() -> String:
 	match kid:
 		"dust_flats":
 			if storm_phase == 2:
-				lines.append("Sandstorm blowing")
+				lines.append(tr("Sandstorm blowing"))
 			else:
-				lines.append("Next sandstorm  %d:%02d" % [int(storm_t) / 60, int(storm_t) % 60])
-			lines.append("Well dry: Drips refill at tanks")
+				lines.append(tr("Next sandstorm  %d:%02d") % [int(storm_t) / 60, int(storm_t) % 60])
+			lines.append(tr("Well dry: Drips refill at tanks"))
 		"frozen_port":
 			var n: int = 0
 			for v: float in ice:
 				if v > 0.0:
 					n += 1
-			lines.append("%d hexes iced  ·  %d heaters" % [n, heaters.size()])
-			lines.append("Greenhouses %d%s" % [greenhouses.size(), "  ·  cold-hardy seeds" if Research.has("cold_hardy_seeds") else ""])
+			lines.append(tr("%d hexes iced  ·  %d heaters") % [n, heaters.size()])
+			lines.append(tr("Greenhouses %d%s") % [greenhouses.size(), tr("  ·  cold-hardy seeds") if Research.has("cold_hardy_seeds") else ""])
 		"sunken_city":
 			var fl: Dictionary = kind.get("flood", {})
 			if drained >= int(fl.get("stages", 3)):
-				lines.append("Water down: all streets above water")
+				lines.append(tr("Water down: all streets above water"))
 			else:
-				lines.append("Pumps: ring %d skimmed %d%% / %d%%" % [drained + 2, int(Frontiers.drain_progress(world.field, drained + 1, fl) * 100.0), int(float(fl.get("drain_at", 0.8)) * 100.0)])
-			lines.append("Water level %d / %d" % [int(fl.get("stages", 3)) - drained, int(fl.get("stages", 3))])
+				lines.append(tr("Pumps: ring %d skimmed %d%% / %d%%") % [drained + 2, int(Frontiers.drain_progress(world.field, drained + 1, fl) * 100.0), int(float(fl.get("drain_at", 0.8)) * 100.0)])
+			lines.append(tr("Water level %d / %d") % [int(fl.get("stages", 3)) - drained, int(fl.get("stages", 3))])
 		"cradle_returns":
 			if done:
-				lines.append("The Cradle is coming home")
+				lines.append(tr("The Cradle is coming home"))
 			else:
-				lines.append("Pad clean %d%%  ·  Sustained %d%%" % [int(float(cradle.get("pad_clean", 0.0)) * 100.0), int(float(cradle.get("pad_level", 0.0)) * 100.0)])
-				lines.append("District Growing %d%% / %d%%" % [int(float(cradle.get("district", 0.0)) * 100.0), int(float(kind.get("complete", {}).get("frac", 0.7)) * 100.0)])
+				lines.append(tr("Pad clean %d%%  ·  Sustained %d%%") % [int(float(cradle.get("pad_clean", 0.0)) * 100.0), int(float(cradle.get("pad_level", 0.0)) * 100.0)])
+				lines.append(tr("District Growing %d%% / %d%%") % [int(float(cradle.get("district", 0.0)) * 100.0), int(float(kind.get("complete", {}).get("frac", 0.7)) * 100.0)])
 	return "\n".join(lines)
 
 

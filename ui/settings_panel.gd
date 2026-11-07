@@ -8,7 +8,7 @@ extends Control
 
 signal closed
 
-const TABS: Array[String] = ["Audio", "Graphics", "Controls", "Gameplay", "Accessibility"]
+const TABS: Array[String] = ["Audio", "Graphics", "Controls", "Gameplay", "Accessibility"]  # l10n
 const ROW_W: float = 300.0
 const BIND_W: float = 190.0
 ## Seconds a rebind capture waits before giving up (pad-only players have no Esc).
@@ -55,10 +55,10 @@ func _ready() -> void:
 
 	var head := HBoxContainer.new()
 	vb.add_child(head)
-	var title := UITheme.label("SETTINGS", 30, UITheme.GOLD)
+	var title := UITheme.label(tr("SETTINGS"), 30, UITheme.GOLD)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	head.add_child(title)
-	var hint := PromptLabel.new("{ui_tab_prev}{ui_tab_next}  switch tabs     {ui_cancel}  back", 13)  # [deck]
+	var hint := PromptLabel.new(tr("{ui_tab_prev}{ui_tab_next}  switch tabs     {ui_cancel}  back"), 13)  # [deck]
 	hint.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	head.add_child(hint)
 
@@ -68,7 +68,7 @@ func _ready() -> void:
 	var group := ButtonGroup.new()
 	for i: int in TABS.size():
 		var b := Button.new()
-		b.text = TABS[i].to_upper()
+		b.text = tr(TABS[i]).to_upper()
 		b.toggle_mode = true
 		b.button_group = group
 		b.custom_minimum_size = Vector2(0, 40)
@@ -109,12 +109,12 @@ func _ready() -> void:
 
 	var foot := HBoxContainer.new()
 	vb.add_child(foot)
-	var saved := UITheme.label("Changes are saved automatically.", 13, UITheme.MUTED)
+	var saved := UITheme.label(tr("Changes are saved automatically."), 13, UITheme.MUTED)
 	saved.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	saved.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	foot.add_child(saved)
 	_back = Button.new()
-	_back.text = "Back"
+	_back.text = tr("Back")
 	_back.custom_minimum_size = Vector2(150, 44)
 	_back.pressed.connect(close_panel)
 	UITheme.juice(_back)
@@ -124,6 +124,30 @@ func _ready() -> void:
 	visible = false
 	_fit()
 	get_viewport().size_changed.connect(_fit)
+
+
+## [l10n] Rebuilds the pages after a language change so every row shows the new language, and
+## puts focus back on the language picker.
+func _relocalize() -> void:
+	_end_capture()
+	_bind_buttons.clear()
+	for page: VBoxContainer in _pages:
+		for c: Node in page.get_children():
+			page.remove_child(c)
+			c.queue_free()
+	_build_audio(_pages[0])
+	_build_graphics(_pages[1])
+	_build_controls(_pages[2])
+	_build_gameplay(_pages[3])
+	_build_access(_pages[4])
+	for i: int in TABS.size():
+		_tab_buttons[i].text = tr(TABS[i]).to_upper()
+	_back.text = tr("Back")
+	_show_tab(_tab)
+	for c: Node in _pages[_tab].find_children("*", "Button", true, false):
+		if (c as Control).has_meta("row_ctl"):
+			(c as Control).grab_focus()
+			break
 
 
 ## Keeps the panel inside the visible area at large UI scales.
@@ -207,62 +231,62 @@ func _link_focus() -> void:
 # --- Pages ----------------------------------------------------------------------------
 
 func _build_audio(p: VBoxContainer) -> void:
-	_section(p, "Volume")
+	_section(p, tr("Volume"))
 	_slider(p, "Master", Settings.master_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
 		Settings.master_volume = v
 		Audio.apply_volumes())
 	_slider(p, "Music", Settings.music_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
 		Settings.music_volume = v
 		Audio.apply_volumes())
-	_slider(p, "Sound effects", Settings.sfx_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
+	_slider(p, tr("Sound effects"), Settings.sfx_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
 		Settings.sfx_volume = v
 		Audio.apply_volumes()
 		Audio.play("click", 1.0, -6.0))
 
 
 func _build_graphics(p: VBoxContainer) -> void:
-	_section(p, "Rendering")
-	var hint: String = "Low drops GI and fog; Ultra adds reflections." if RenderingServer.get_current_rendering_method() == "forward_plus" \
-		else "This renderer always uses the Low preset."
+	_section(p, tr("Rendering"))
+	var hint: String = tr("Low drops GI and fog; Ultra adds reflections.") if RenderingServer.get_current_rendering_method() == "forward_plus" \
+		else tr("This renderer always uses the Low preset.")
 	if Settings.quality_note != "":  # [deck] auto-detected preset
-		hint = ("Detected: %s for %s. " % [QualityDetect.preset_name(Settings.quality), Settings.quality_note]) if Settings.quality_auto \
-			else ("Your choice (hardware: %s). " % Settings.quality_note)
-		hint += "Low drops GI, fog and shadows detail; Ultra adds reflections."
-	_cycler(p, "Quality preset", ["Low", "Medium", "High", "Ultra"], Settings.quality, func(i: int) -> void:
+		hint = (tr("Detected: %s for %s. ") % [QualityDetect.preset_name(Settings.quality), Settings.quality_note]) if Settings.quality_auto \
+			else (tr("Your choice (hardware: %s). ") % Settings.quality_note)
+		hint += tr("Low drops GI, fog and shadows detail; Ultra adds reflections.")
+	_cycler(p, tr("Quality preset"), [tr("Low"), tr("Medium"), tr("High"), tr("Ultra")], Settings.quality, func(i: int) -> void:
 		Settings.set_quality_manual(i)  # [deck] a manual choice turns auto-detection off
 		Settings.apply_quality_to_tree(get_tree().current_scene), hint)
 	# [deck] Renderer: Mobile is lighter on old integrated GPUs (always the Low look). Restart needed.
 	var methods: Array[String] = ["forward_plus", "mobile"]
 	var cur_m: int = 1 if Settings.renderer_override() == "mobile" else 0
 	var running: String = RenderingServer.get_current_rendering_method()
-	_cycler(p, "Renderer", ["Standard (Forward+)", "Light (Mobile)"], cur_m, func(i: int) -> void:
+	_cycler(p, tr("Renderer"), [tr("Standard (Forward+)"), tr("Light (Mobile)")], cur_m, func(i: int) -> void:
 		Settings.set_renderer_override(methods[i]),
-		"Light suits older integrated graphics. Takes effect after restarting the game (now: %s)." % running.capitalize().replace("_", " "))
+		tr("Light suits older integrated graphics. Takes effect after restarting the game (now: %s).") % running.capitalize().replace("_", " "))
 	var scales: Array[float] = [0.5, 0.67, 0.75, 0.85, 1.0]
 	var idx: int = 4
 	for k: int in scales.size():
 		if absf(scales[k] - Settings.render_scale) < 0.02:
 			idx = k
-	_cycler(p, "Render scale", ["50%", "67%", "75%", "85%", "100%"], idx, func(i: int) -> void:
+	_cycler(p, tr("Render scale"), ["50%", "67%", "75%", "85%", "100%"], idx, func(i: int) -> void:
 		Settings.render_scale = scales[i]
-		Settings.apply_display(), "Lower renders 3D at a smaller size; the interface stays sharp.")
-	_section(p, "Display")
-	_toggle(p, "Fullscreen", Settings.fullscreen, func(v: bool) -> void:
+		Settings.apply_display(), tr("Lower renders 3D at a smaller size; the interface stays sharp."))
+	_section(p, tr("Display"))
+	_toggle(p, tr("Fullscreen"), Settings.fullscreen, func(v: bool) -> void:
 		Settings.fullscreen = v
 		Settings.apply_display())
-	_toggle(p, "V-Sync", Settings.vsync, func(v: bool) -> void:
+	_toggle(p, tr("V-Sync"), Settings.vsync, func(v: bool) -> void:
 		Settings.vsync = v
 		Settings.apply_display())
 
 
 func _build_controls(p: VBoxContainer) -> void:
-	_section(p, "Bindings")
+	_section(p, tr("Bindings"))
 	var head := HBoxContainer.new()
 	head.add_theme_constant_override("separation", 12)
-	var h0 := UITheme.label("ACTION   (select a binding to rebind it)", 12, UITheme.MUTED)
+	var h0 := UITheme.label(tr("ACTION   (select a binding to rebind it)"), 12, UITheme.MUTED)
 	h0.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	head.add_child(h0)
-	for t: String in ["KEYBOARD / MOUSE", "CONTROLLER"]:
+	for t: String in [tr("KEYBOARD / MOUSE"), tr("CONTROLLER")]:
 		var h := UITheme.label(t, 12, UITheme.MUTED)
 		h.custom_minimum_size = Vector2(BIND_W, 0)
 		h.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -273,38 +297,38 @@ func _build_controls(p: VBoxContainer) -> void:
 	hm.add_child(head)
 	p.add_child(hm)
 	for e: Array in Settings.REBINDABLE:
-		_binding_row(p, e[0], e[1])
+		_binding_row(p, e[0], tr(e[1]))
 	_bind_warning = UITheme.label("", 13, Color(1.0, 0.45, 0.35))
 	_bind_warning.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	p.add_child(_bind_warning)
 	var reset := _value_button()
-	reset.text = "Reset to defaults"
+	reset.text = tr("Reset to defaults")
 	reset.pressed.connect(func() -> void:
 		_end_capture()
 		Settings.reset_bindings()
 		Settings.save_settings()
 		_refresh_bindings()
 		Audio.play("click", 0.9, -8.0))
-	_row(p, "Bindings", reset, "Restore every key and controller binding.")
+	_row(p, tr("Bindings"), reset, tr("Restore every key and controller binding."))
 	_refresh_bindings()
-	_cycler(p, "Button prompts", PadGlyphs.STYLE_NAMES, Settings.glyph_style, func(i: int) -> void:  # [deck]
+	_cycler(p, tr("Button prompts"), PadGlyphs.STYLE_NAMES, Settings.glyph_style, func(i: int) -> void:  # [deck]
 		Settings.glyph_style = i
-		_refresh_bindings(), "Controller art: Automatic follows the connected pad.")
-	_section(p, "Camera")
-	_slider(p, "Mouse sensitivity", Settings.mouse_sensitivity, 0.001, 0.008, 0.00025,
+		_refresh_bindings(), tr("Controller art: Automatic follows the connected pad."))
+	_section(p, tr("Camera"))
+	_slider(p, tr("Mouse sensitivity"), Settings.mouse_sensitivity, 0.001, 0.008, 0.00025,
 		func(v: float) -> String: return "x%.1f" % (v / 0.0035),
 		func(v: float) -> void: Settings.mouse_sensitivity = v)
-	_slider(p, "Stick look speed", Settings.stick_sensitivity, 0.5, 2.0, 0.1,  # [deck]
+	_slider(p, tr("Stick look speed"), Settings.stick_sensitivity, 0.5, 2.0, 0.1,  # [deck]
 		func(v: float) -> String: return "x%.1f" % v,
 		func(v: float) -> void: Settings.stick_sensitivity = v)
-	_toggle(p, "Invert look Y", Settings.invert_y, func(v: bool) -> void: Settings.invert_y = v)
-	_slider(p, "Field of view", Settings.fov, 50.0, 90.0, 1.0,
+	_toggle(p, tr("Invert look Y"), Settings.invert_y, func(v: bool) -> void: Settings.invert_y = v)
+	_slider(p, tr("Field of view"), Settings.fov, 50.0, 90.0, 1.0,
 		func(v: float) -> String: return "%d°" % roundi(v),
 		func(v: float) -> void: Settings.fov = v)
-	_toggle(p, "Mouse smoothing", Settings.mouse_smoothing, func(v: bool) -> void: Settings.mouse_smoothing = v,
-		"Eases mouse look over a few frames.")
-	_section(p, "Scooping")
-	_cycler(p, "Scoop button", ["Hold", "Toggle"], 0 if Settings.hold_to_scoop else 1, func(i: int) -> void:
+	_toggle(p, tr("Mouse smoothing"), Settings.mouse_smoothing, func(v: bool) -> void: Settings.mouse_smoothing = v,
+		tr("Eases mouse look over a few frames."))
+	_section(p, tr("Scooping"))
+	_cycler(p, tr("Scoop button"), [tr("Hold"), tr("Toggle")], 0 if Settings.hold_to_scoop else 1, func(i: int) -> void:
 		Settings.hold_to_scoop = i == 0)
 
 
@@ -345,7 +369,7 @@ func _refresh_bindings() -> void:
 			var b: Button = btns[k]
 			var pad: bool = k == 1
 			if action == _capture_action and pad == _capture_pad:
-				b.text = "press a button…" if pad else "press a key…"
+				b.text = tr("press a button…") if pad else tr("press a key…")
 				b.add_theme_color_override("font_color", UITheme.GOLD)
 				continue
 			var ev: InputEvent = Settings.binding(action, pad)
@@ -377,7 +401,7 @@ func _refresh_bindings() -> void:
 					if Settings.find_conflict(action, o) == other:
 						shared = Settings.event_label(o)
 						break
-				lines.append("Conflict: %s is used by both %s and %s." % [shared, Settings.display_name(action), Settings.display_name(other)])
+				lines.append(tr("Conflict: %s is used by both %s and %s.") % [shared, Settings.display_name(action), Settings.display_name(other)])
 		_bind_warning.text = "\n".join(lines)
 		_bind_warning.visible = not lines.is_empty()
 
@@ -464,39 +488,47 @@ func apply_binding(action: String, ev: InputEvent) -> void:
 
 
 func _build_gameplay(p: VBoxContainer) -> void:
-	_section(p, "Comfort")
-	_slider(p, "Camera shake", Settings.shake_intensity, 0.0, 1.0, 0.05, _pct,
+	# [l10n] Language picker: System default, English, sample languages, Pseudo (test).
+	_section(p, tr("Language"))
+	var codes: Array = Settings.LANGUAGES.map(func(l: Array) -> String: return str(l[0]))
+	var names: Array = Settings.LANGUAGES.map(func(l: Array) -> String: return tr("System default") if str(l[0]) == "" else str(l[1]))
+	_cycler(p, tr("Language"), names, maxi(0, codes.find(Settings.language)), func(i: int) -> void:
+		Settings.language = codes[i]
+		Settings.apply_language()
+		_relocalize.call_deferred(), tr("Menus, HUD, subtitles and story text. Pseudo is for testing translations."))
+	_section(p, tr("Comfort"))
+	_slider(p, tr("Camera shake"), Settings.shake_intensity, 0.0, 1.0, 0.05, _pct,
 		func(v: float) -> void: Settings.shake_intensity = v)
-	_toggle(p, "Reduced motion", Settings.reduced_motion, func(v: bool) -> void: Settings.reduced_motion = v,
-		"Calmer camera and fewer bouncy effects.")
-	_section(p, "Interface")
-	_cycler(p, "Number format", ["Short (1.2K)", "Scientific (1.2e3)", "Engineering (1.2e3)"], Settings.number_format,
+	_toggle(p, tr("Reduced motion"), Settings.reduced_motion, func(v: bool) -> void: Settings.reduced_motion = v,
+		tr("Calmer camera and fewer bouncy effects."))
+	_section(p, tr("Interface"))
+	_cycler(p, tr("Number format"), [tr("Short (1.2K)"), tr("Scientific (1.2e3)"), tr("Engineering (1.2e3)")], Settings.number_format,
 		func(i: int) -> void: Settings.number_format = i)
-	_toggle(p, "Best-value tags", Settings.best_value_tags, func(v: bool) -> void: Settings.best_value_tags = v,
-		"Tag the affordable upgrade that gives the most per cube.")
-	_cycler(p, "HUD", ["Full", "Minimal", "Hidden"], Settings.hud_mode, func(i: int) -> void:  # [hud]
-		Settings.hud_mode = i, "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages.")
+	_toggle(p, tr("Best-value tags"), Settings.best_value_tags, func(v: bool) -> void: Settings.best_value_tags = v,
+		tr("Tag the affordable upgrade that gives the most per cube."))
+	_cycler(p, tr("HUD"), [tr("Full"), tr("Minimal"), tr("Hidden")], Settings.hud_mode, func(i: int) -> void:  # [hud]
+		Settings.hud_mode = i, tr("Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."))
 
 
 func _build_access(p: VBoxContainer) -> void:
-	_section(p, "Interface")
+	_section(p, tr("Interface"))
 	var idx: int = 2
 	for k: int in UI_SCALES.size():
 		if absf(UI_SCALES[k] - Settings.ui_scale) < 0.02:
 			idx = k
 	var names: Array = UI_SCALES.map(func(v: float) -> String: return "%d%%" % roundi(v * 100.0))
-	_cycler(p, "Interface scale", names, idx, func(i: int) -> void:
+	_cycler(p, tr("Interface scale"), names, idx, func(i: int) -> void:
 		Settings.ui_scale = UI_SCALES[i]
-		Settings.apply_ui_scale(), "Size of menus, HUD and subtitles.")
-	_toggle(p, "Colour-blind palette", Settings.colorblind, func(v: bool) -> void: Settings.colorblind = v,
-		"Okabe-Ito colours for hex progress, the hopper meter and part rarity.")
-	_section(p, "Subtitles")
-	_toggle(p, "Subtitles", Settings.subtitles_enabled, func(v: bool) -> void: Settings.subtitles_enabled = v,
-		"WREN and Ledger lines.")
-	_cycler(p, "Subtitle size", ["Small", "Medium", "Large"], Settings.subtitle_size, func(i: int) -> void:
+		Settings.apply_ui_scale(), tr("Size of menus, HUD and subtitles."))
+	_toggle(p, tr("Colour-blind palette"), Settings.colorblind, func(v: bool) -> void: Settings.colorblind = v,
+		tr("Okabe-Ito colours for hex progress, the hopper meter and part rarity."))
+	_section(p, tr("Subtitles"))
+	_toggle(p, tr("Subtitles"), Settings.subtitles_enabled, func(v: bool) -> void: Settings.subtitles_enabled = v,
+		tr("WREN and Ledger lines."))
+	_cycler(p, tr("Subtitle size"), [tr("Small"), tr("Medium"), tr("Large")], Settings.subtitle_size, func(i: int) -> void:
 		Settings.subtitle_size = i)
-	_toggle(p, "Subtitle background", Settings.subtitle_background, func(v: bool) -> void: Settings.subtitle_background = v,
-		"A solid backdrop behind subtitle text.")
+	_toggle(p, tr("Subtitle background"), Settings.subtitle_background, func(v: bool) -> void: Settings.subtitle_background = v,
+		tr("A solid backdrop behind subtitle text."))
 
 
 # --- Row widgets ----------------------------------------------------------------------
@@ -580,7 +612,7 @@ func _toggle(p: VBoxContainer, text: String, value: bool, cb: Callable, hint: St
 	var on_box: StyleBoxFlat = UITheme.box(Color(0.22, 0.15, 0.05, 0.92), UITheme.GOLD, 1, 2, 8)
 	b.add_theme_stylebox_override("pressed", on_box)
 	b.add_theme_color_override("font_pressed_color", UITheme.GOLD)
-	var show: Callable = func(v: bool) -> void: b.text = "On" if v else "Off"
+	var show: Callable = func(v: bool) -> void: b.text = tr("On") if v else tr("Off")
 	show.call(value)
 	b.toggled.connect(func(v: bool) -> void:
 		show.call(v)

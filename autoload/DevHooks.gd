@@ -7,6 +7,8 @@ extends Node
 ##   --shot=PATH        save a viewport PNG (res:// or relative to project) after --shot-delay seconds
 ##   --shots=N          take N screenshots spaced by --shot-every seconds (suffix _0, _1, ...)
 ##   --quit-after=S     quit after S seconds (game time)
+##   [l10n] --locale=xx  force a locale (pseudo, de, es, en; not saved); --l10n-audit lists on-screen
+##                      text that skipped tr() (screenshots/l10n_audit.txt, use with --locale=pseudo)
 ##   --autoplay         let tools/autoplay.gd drive Patch
 ##   --time-scale=X     Engine.time_scale
 ##   --seed=N           override the slice field seed
@@ -85,6 +87,10 @@ func _ready() -> void:
 		Settings.colorblind = true
 	if has("time-scale"):
 		Engine.time_scale = float(args["time-scale"])
+	if has("l10n-audit"):  # [l10n] untranslated on-screen text (tools/l10n_audit.gd), use with --locale=pseudo
+		var au := L10nAudit.new()
+		au.name = "L10nAudit"
+		add_child(au)
 	if has("pad-audit"):  # [deck] controller-only screen audit (tools/pad_audit.gd)
 		add_child(PadAudit.new())
 	if has("no-hud"):  # [steam] store/trailer shots without HUD, toasts and subtitles
@@ -136,6 +142,8 @@ func _process(delta: float) -> void:
 		print("[DevHooks] quitting after %.1fs" % _elapsed)
 		if has("report"):
 			print("[report] cubes=%s stats=%s parts=%d" % [GameState.get_currency("cubes").format(), JSON.stringify(GameState.stats), GameState.parts.size()])
+		if has_node("L10nAudit"):  # [l10n]
+			(get_node("L10nAudit") as L10nAudit).report()
 		get_tree().quit()
 
 

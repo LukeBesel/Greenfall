@@ -105,16 +105,16 @@ func built(id: String) -> bool:
 ## "" when it can be built now, else why not.
 func block_reason(id: String) -> String:
 	if built(id):
-		return "Built."
+		return tr("Built.")
 	# Research gate. Runs after built() so stations already standing in older saves (or placed by
 	# the --stations dev hook) stay usable.
 	if Research.exists(id) and not Research.has(id):
-		return "Requires research: %s." % str(Research.def(id).get("name", id))
+		return tr("Requires research: %s.") % tr(str(Research.def(id).get("name", id)))
 	var d: Dictionary = def(id)
 	if hub_level() < int(d.get("requires_level", 1)):
-		return "Requires hub level %d." % int(d.get("requires_level", 1))
+		return tr("Requires hub level %d.") % int(d.get("requires_level", 1))
 	if not Hub.can_pay(d.get("cost", {})):
-		return "Not enough materials."
+		return tr("Not enough materials.")
 	return ""
 
 
@@ -129,17 +129,17 @@ func build(id: String) -> bool:
 			st["conveyor"] = true
 			_spawn_conveyor()
 			conveyor.build_in()
-			EventBus.toast.emit("Conveyor Feeder online. Drop bales on the yellow pad.", "story")
+			EventBus.toast.emit(tr("Conveyor Feeder online. Drop bales on the yellow pad."), "story")
 		"recycler":
 			st["recycler"] = true
 			_spawn_recycler()
 			recycler.build_in()
-			EventBus.toast.emit("Recycler lit. Bales that go in here are gone for good.", "story")
+			EventBus.toast.emit(tr("Recycler lit. Bales that go in here are gone for good."), "story")
 		"auto_baler":
 			var p: Vector3 = frontier_pos()
 			_spawn_baler(p, true)
 			st["baler"] = baler.to_dict()
-			EventBus.toast.emit("Auto-baler dropped at the cleaning frontier. Cleaners will tip their hoppers into it.", "story")
+			EventBus.toast.emit(tr("Auto-baler dropped at the cleaning frontier. Cleaners will tip their hoppers into it."), "story")
 	Audio.play("buy", 1.0, -2.0)
 	return true
 
@@ -248,14 +248,14 @@ func cycle_route() -> void:
 static func route_text(n: int) -> String:
 	match n:
 		0:
-			return "Off: every bale to the scale"
+			return TranslationServer.translate("Off: every bale to the scale")
 		1:
-			return "All bales to the recycler"
+			return TranslationServer.translate("All bales to the recycler")
 		2:
-			return "Every 2nd bale to the recycler"
+			return TranslationServer.translate("Every 2nd bale to the recycler")
 		3:
-			return "Every 3rd bale to the recycler"
-	return "Every %dth bale to the recycler" % n
+			return TranslationServer.translate("Every 3rd bale to the recycler")
+	return TranslationServer.translate("Every %dth bale to the recycler") % n
 
 
 # --- Robot hooks (robots/robot.gd) ----------------------------------------------------

@@ -68,8 +68,8 @@ func load_data() -> void:
 			d["id"] = uid
 			d["tab"] = "bots"
 			d["robot"] = r["id"]
-			d["name"] = "%s: %s" % [r["name"], u["name"]]
-			d["desc"] = "Every %s in the fleet." % r["name"]
+			d["name"] = "%s: %s" % [tr(str(r["name"])), tr(str(u["name"]))]
+			d["desc"] = tr("Every %s in the fleet.") % tr(str(r["name"]))
 			d["stat"] = "%s.%s" % [r["id"], u["stat"]]
 			d["icon"] = "speed"
 			upgrade_defs[uid] = d
@@ -109,7 +109,7 @@ func base_stat(stat_id: String) -> float:
 
 ## Where a stat comes from: [{source, text}], for the "no hidden multipliers" tooltip.
 func stat_breakdown(stat_id: String) -> Array[Dictionary]:
-	var base_label: String = "Base (Mk I, before tier and part rarity)" if "." in stat_id else "Base"
+	var base_label: String = tr("Base (Mk I, before tier and part rarity)") if "." in stat_id else tr("Base")
 	var out: Array[Dictionary] = [{"source": base_label, "text": _fmt_stat(base_stat(stat_id))}]
 	for uid: String in upgrade_order:
 		var u: Dictionary = upgrade_defs[uid]
@@ -117,9 +117,9 @@ func stat_breakdown(stat_id: String) -> Array[Dictionary]:
 		if u["stat"] != stat_id or level <= 0:
 			continue
 		if u["mode"] == "add":
-			out.append({"source": "%s Lv %d" % [u["name"], level], "text": "+" + _fmt_stat(float(u["amount"]) * level)})
+			out.append({"source": "%s Lv %d" % [tr(str(u["name"])), level], "text": "+" + _fmt_stat(float(u["amount"]) * level)})
 		else:
-			out.append({"source": "%s Lv %d" % [u["name"], level], "text": "x%.2f" % (1.0 + float(u["amount"]) * level)})
+			out.append({"source": "%s Lv %d" % [tr(str(u["name"])), level], "text": "x%.2f" % (1.0 + float(u["amount"]) * level)})
 	out.append_array(Research.breakdown(stat_id))
 	return out
 
@@ -277,7 +277,7 @@ func robot_stat(type_id: String, stat_id: String, tier: int = 0, rarity_bonus: f
 
 
 func tier_name(tier: int) -> String:
-	return str(robot_tiers[clampi(tier, 0, robot_tiers.size() - 1)].get("name", "Mk I")) if not robot_tiers.is_empty() else "Mk I"
+	return tr(str(robot_tiers[clampi(tier, 0, robot_tiers.size() - 1)].get("name", "Mk I"))) if not robot_tiers.is_empty() else tr("Mk I")
 
 
 func hex_bonus(junk_volume: float) -> BigNum:

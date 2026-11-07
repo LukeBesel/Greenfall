@@ -31,14 +31,14 @@ func _ready() -> void:
 	var dvb := VBoxContainer.new()
 	dvb.add_theme_constant_override("separation", 2)
 	dbox.add_child(dvb)
-	dvb.add_child(UITheme.label("FIELD DATA", 12, UITheme.MUTED))
+	dvb.add_child(UITheme.label(tr("FIELD DATA"), 12, UITheme.MUTED))
 	var drow := HBoxContainer.new()
 	drow.add_theme_constant_override("separation", 8)
 	dvb.add_child(drow)
 	drow.add_child(ResearchIcons.IconView.new("data", 34, Color(0.45, 0.8, 1.0)))
 	_data_lbl = UITheme.label("0", 30, Color(0.6, 0.86, 1.0))
 	drow.add_child(_data_lbl)
-	var earn := UITheme.label("Clean hexes, grow blooms, read shards and let robots work.", 12, UITheme.MUTED)
+	var earn := UITheme.label(tr("Clean hexes, grow blooms, read shards and let robots work."), 12, UITheme.MUTED)
 	earn.autowrap_mode = TextServer.AUTOWRAP_WORD
 	earn.custom_minimum_size = Vector2(200, 0)
 	dvb.add_child(earn)
@@ -57,7 +57,7 @@ func _ready() -> void:
 	avb.add_theme_constant_override("separation", 2)
 	avb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	ahb.add_child(avb)
-	avb.add_child(UITheme.label("RESEARCHING", 12, UITheme.MUTED))
+	avb.add_child(UITheme.label(tr("RESEARCHING"), 12, UITheme.MUTED))
 	_active_name = UITheme.label("", 18, UITheme.CREAM)
 	avb.add_child(_active_name)
 	_active_time = UITheme.label("", 14, UITheme.GOLD)
@@ -160,19 +160,19 @@ func refresh() -> void:
 func _update_active() -> void:
 	var aid: String = Research.active_id()
 	if aid == "":
-		_active_name.text = "Nothing yet"
-		_active_time.text = "Pick a glowing card below"
+		_active_name.text = tr("Nothing yet")
+		_active_time.text = tr("Pick a glowing card below")
 		_active_ring.progress = 0.0
 		_active_ring.kind = "data"
 	else:
-		_active_name.text = str(Research.def(aid).get("name", aid))
-		_active_time.text = "%s left  ·  %d%%" % [Research.time_text(Research.remaining()), int(Research.progress(aid) * 100.0)]
+		_active_name.text = tr(str(Research.def(aid).get("name", aid)))
+		_active_time.text = tr("%s left  ·  %d%%") % [Research.time_text(Research.remaining()), int(Research.progress(aid) * 100.0)]
 		_active_ring.progress = Research.progress(aid)
 		_active_ring.kind = str(Research.def(aid).get("icon", "data"))
 	var q: Array[String] = []
 	for id: String in Research.queue():
-		q.append(str(Research.def(id).get("name", id)))
-	_queue_lbl.text = ("Next: " + ", ".join(q)) if not q.is_empty() else "Queue: empty  (%d slots)" % Research.max_queue()
+		q.append(tr(str(Research.def(id).get("name", id))))
+	_queue_lbl.text = ("Next: " + ", ".join(q)) if not q.is_empty() else tr("Queue: empty  (%d slots)") % Research.max_queue()
 	_active_ring.queue_redraw()
 
 
@@ -185,24 +185,24 @@ func _update_detail() -> void:
 	if _focus_id == "":
 		return
 	var d: Dictionary = Research.def(_focus_id)
-	_d_name.text = str(d.get("name", _focus_id))
-	_d_desc.text = str(d.get("desc", ""))
+	_d_name.text = tr(str(d.get("name", _focus_id)))
+	_d_desc.text = tr(str(d.get("desc", "")))
 	_d_fx.text = "  ·  ".join(Research.effect_lines(_focus_id))
 	var st: String = Research.status(_focus_id)
 	match st:
 		"researched":
-			_d_cost.text = "Researched"
+			_d_cost.text = tr("Researched")
 			_d_hint.text = ""
 		"active":
-			_d_cost.text = "%s left" % Research.time_text(Research.remaining())
-			_d_hint.text = "Press again to cancel (refund)"
+			_d_cost.text = tr("%s left") % Research.time_text(Research.remaining())
+			_d_hint.text = tr("Press again to cancel (refund)")
 		"queued":
-			_d_cost.text = "Queued #%d" % (Research.queue_position(_focus_id) + 1)
-			_d_hint.text = "Press again to cancel (refund)"
+			_d_cost.text = tr("Queued #%d") % (Research.queue_position(_focus_id) + 1)
+			_d_hint.text = tr("Press again to cancel (refund)")
 		_:
-			_d_cost.text = "%s data  ·  %s" % [Settings.fmt(Research.cost(_focus_id)), Research.time_text(Research.duration(_focus_id))]
+			_d_cost.text = tr("%s data  ·  %s") % [Settings.fmt(Research.cost(_focus_id)), Research.time_text(Research.duration(_focus_id))]
 			var why: String = Research.reason(_focus_id)
-			_d_hint.text = why if why != "" else ("Press to research" if Research.active().is_empty() else "Press to queue")
+			_d_hint.text = why if why != "" else (tr("Press to research") if Research.active().is_empty() else tr("Press to queue"))
 
 
 func _on_card_pressed(id: String) -> void:
@@ -211,7 +211,7 @@ func _on_card_pressed(id: String) -> void:
 	if st == "active" or st == "queued":
 		Research.cancel(id)
 		Audio.play("click", 0.8, -6.0)
-		EventBus.toast.emit("%s cancelled. Data refunded." % Research.def(id).get("name", id), "info")
+		EventBus.toast.emit(tr("%s cancelled. Data refunded.") % tr(str(Research.def(id).get("name", id))), "info")
 	elif Research.start(id):
 		Audio.play("buy", 1.1, -3.0)
 		c.pop()
@@ -337,7 +337,7 @@ class Graph extends Control:
 					total += 1
 					done += 1 if Research.has(id) else 0
 			var x0: float = i * cw + (cw - ResearchNodeCard.W) * 0.5
-			draw_string(f, Vector2(x0, 20), str(br[i]["name"]).to_upper(), HORIZONTAL_ALIGNMENT_LEFT, ResearchNodeCard.W, 15, col)
+			draw_string(f, Vector2(x0, 20), tr(str(br[i]["name"])).to_upper(), HORIZONTAL_ALIGNMENT_LEFT, ResearchNodeCard.W, 15, col)
 			draw_string(f, Vector2(x0, 20), "%d/%d" % [done, total], HORIZONTAL_ALIGNMENT_RIGHT, ResearchNodeCard.W, 12, UITheme.MUTED)
 			draw_rect(Rect2(x0, 28, ResearchNodeCard.W, 2), Color(1, 1, 1, 0.07))
 			draw_rect(Rect2(x0, 28, ResearchNodeCard.W * done / maxf(total, 1.0), 2), col)

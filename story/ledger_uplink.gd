@@ -132,7 +132,7 @@ func show_now(text: String, friendly: bool = false, hold: float = -1.0) -> void:
 
 
 func _start(l: Dictionary) -> void:
-	_full = str(l["text"])
+	_full = tr(str(l["text"])) if str(l["text"]) != "" else ""
 	_friendly = bool(l["friendly"])
 	_shown = 0.0
 	_hold = 3.2 + _full.length() * 0.045
@@ -144,9 +144,9 @@ func _start(l: Dictionary) -> void:
 	_style.border_color = Color(0.4, 0.9, 0.55, 0.75) if _friendly else Color(RED, 0.75)
 	_style.bg_color = Color(0.015, 0.06, 0.03, 0.86) if _friendly else Color(0.07, 0.015, 0.012, 0.86)
 	_style.bg_color.a = 0.97 if Settings.subtitle_background else 0.86
-	var h: String = str(l["header"])
-	_header.text = h if h != "" else ("<< LEDGER // CONTRACT 0001 // AMENDED >>" if _friendly else "<< INTERCEPT // LEDGER-NODE 07 // UNSECURED CHANNEL >>")
-	_footer.text = "line item %04d   checksum %s" % [randi() % 9999, "OK" if _friendly else "MISMATCH"]
+	var h: String = tr(str(l["header"])) if str(l["header"]) != "" else ""
+	_header.text = h if h != "" else (tr("<< LEDGER // CONTRACT 0001 // AMENDED >>") if _friendly else tr("<< INTERCEPT // LEDGER-NODE 07 // UNSECURED CHANNEL >>"))
+	_footer.text = tr("line item %04d   checksum %s") % [randi() % 9999, "OK" if _friendly else tr("MISMATCH")]
 	_box.modulate.a = 1.0
 	if visible and Audio.has_sound("glitch"):
 		Audio.play("glitch", 1.0, -14.0 if _friendly else -9.0)

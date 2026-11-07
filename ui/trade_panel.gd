@@ -20,9 +20,9 @@ var _bits: HBoxContainer
 
 func _ready() -> void:
 	add_theme_constant_override("separation", 8)
-	var head := UITheme.label("HAGGLE'S PARTS TRADE", 20, UITheme.CREAM)
+	var head := UITheme.label(tr("HAGGLE'S PARTS TRADE"), 20, UITheme.CREAM)
 	add_child(head)
-	var blurb := UITheme.label("\"Everything's original. Mostly. Three of yours for one of mine, no questions, some questions.\"", 14, UITheme.MUTED)
+	var blurb := UITheme.label(tr("\"Everything's original. Mostly. Three of yours for one of mine, no questions, some questions.\""), 14, UITheme.MUTED)
 	blurb.autowrap_mode = TextServer.AUTOWRAP_WORD
 	add_child(blurb)
 	_bolts = UITheme.label("", 15, UITheme.GOLD)
@@ -68,7 +68,7 @@ func refresh() -> void:
 	var types: Array = Economy.parts.get("types", [])
 	if _rows.size() != types.size() or not is_instance_valid(_scrap_btn):
 		_build_rows(types.size())
-	_bolts.text = "Bolts  %s      Parts in storage  %d" % [Settings.fmt(GameState.get_currency("bolts")), GameState.parts.size()]
+	_bolts.text = tr("Bolts  %s      Parts in storage  %d") % [Settings.fmt(GameState.get_currency("bolts")), GameState.parts.size()]
 	var need: Array[int] = _needed_types()
 	# Pity: track how long each needed type has been missing.
 	var t_now: float = float(GameState.stats.get("time_played", 0.0))
@@ -80,36 +80,36 @@ func refresh() -> void:
 		elif t_now - float(GameState.flags[key]) > PITY_AFTER_S:
 			pity_type = t
 	_pity_type = pity_type
-	_pity.text = ("Haggle: \"Funny thing, I just happened to find a %s. For you, half price.\"" % types[pity_type]["name"]) if pity_type >= 0 else ""
+	_pity.text = (tr("Haggle: \"Funny thing, I just happened to find a %s. For you, half price.\"") % tr(str(types[pity_type]["name"]))) if pity_type >= 0 else ""
 	var take: Array[int] = swap_take()
 	var swap_tip: String = ""
 	if take.size() >= 3:
 		var names: Array[String] = []
 		for i: int in take:
 			var p: Dictionary = GameState.parts[i]
-			names.append("%s %s" % [Economy.rarity(int(p["rarity"])).get("name", "?"), types[int(p["type"])]["name"]])
-		swap_tip = "Trades away: " + ", ".join(names)
+			names.append("%s %s" % [tr(str(Economy.rarity(int(p["rarity"])).get("name", "?"))), tr(str(types[int(p["type"])]["name"]))])
+		swap_tip = tr("Trades away: %s") % ", ".join(names)
 	else:
-		swap_tip = "Needs 3 spare parts (Control Cores needed for a Mk tier are never traded)."
+		swap_tip = tr("Needs 3 spare parts (Control Cores needed for a Mk tier are never traded).")
 	for t: int in types.size():
 		var row: Dictionary = _rows[t]
 		var needed: bool = t in need
 		var name_l: Label = row["name"]
-		name_l.text = "%s%s" % [types[t]["name"], "   (needed)" if needed else ""]
+		name_l.text = "%s%s" % [tr(str(types[t]["name"])), tr("   (needed)") if needed else ""]
 		name_l.add_theme_color_override("font_color", UITheme.GOLD if needed else UITheme.CREAM)
-		(row["own"] as Label).text = "own %d" % _owned(t).size()
+		(row["own"] as Label).text = tr("own %d") % _owned(t).size()
 		var price: float = _price(t, 0)
 		var buy: Button = row["buy"]
-		buy.text = "Buy Rusty  %s" % Settings.fmt(BigNum.from_float(price))
+		buy.text = tr("Buy Rusty  %s") % Settings.fmt(BigNum.from_float(price))
 		buy.disabled = not GameState.can_afford("cubes", BigNum.from_float(price))
 		var buy2: Button = row["buy2"]
-		buy2.text = "Buy Worn  %s" % Settings.fmt(BigNum.from_float(BUY_PRICE[1]))
+		buy2.text = tr("Buy Worn  %s") % Settings.fmt(BigNum.from_float(BUY_PRICE[1]))
 		buy2.disabled = not GameState.can_afford("cubes", BigNum.from_float(BUY_PRICE[1]))
 		var swap: Button = row["swap"]
 		swap.disabled = take.size() < 3
 		swap.tooltip_text = swap_tip
 	var rusty: int = _rusty_spares().size()
-	_scrap_btn.text = "Scrap %d spare Rusty parts  ->  +%d bolts" % [rusty, rusty * 2]
+	_scrap_btn.text = tr("Scrap %d spare Rusty parts  ->  +%d bolts") % [rusty, rusty * 2]
 	_scrap_btn.disabled = rusty == 0
 	_refresh_bits()
 
@@ -119,7 +119,7 @@ func _refresh_bits() -> void:
 	if _bits == null:
 		return
 	var offers: Array[String] = RobotBuilder.haggle_offers()
-	_bits_label.text = "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab" % ceili(RobotBuilder.haggle_seconds_left() / 60.0)
+	_bits_label.text = tr("BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab") % ceili(RobotBuilder.haggle_seconds_left() / 60.0)
 	if str(_bits.get_meta("ids", [])) != str(offers):
 		_bits.set_meta("ids", offers)
 		for c: Node in _bits.get_children():
@@ -134,7 +134,7 @@ func _refresh_bits() -> void:
 				if why != "":
 					Audio.play("buzz", 1.2, -8.0)
 				else:
-					EventBus.toast.emit("Haggle: \"%s. Treat it nicely.\"" % str(RobotBuilder.part(id).get("name", id)), "hint")
+					EventBus.toast.emit(tr("Haggle: \"%s. Treat it nicely.\"") % tr(str(RobotBuilder.part(id).get("name", id))), "hint")
 				refresh())
 			_bits.add_child(b)
 	for i: int in mini(offers.size(), _bits.get_child_count()):
@@ -142,8 +142,8 @@ func _refresh_bits() -> void:
 		var p: Dictionary = RobotBuilder.part(id)
 		var src: Dictionary = p.get("source", {})
 		var b: Button = _bits.get_child(i) as Button
-		b.text = "%s  (own %d)\n%s cubes + %d bolts" % [str(p.get("name", id)), RobotBuilder.count(id), Settings.fmt(BigNum.from_float(float(src.get("cubes", 0)))), int(src.get("bolts", 0))]
-		b.tooltip_text = str(p.get("desc", ""))
+		b.text = tr("%s  (own %d)\n%s cubes + %d bolts") % [tr(str(p.get("name", id))), RobotBuilder.count(id), Settings.fmt(BigNum.from_float(float(src.get("cubes", 0)))), int(src.get("bolts", 0))]
+		b.tooltip_text = tr(str(p.get("desc", "")))
 		b.disabled = RobotBuilder.haggle_block_reason(id) != ""
 
 
@@ -168,7 +168,7 @@ func _build_rows(n: int) -> void:
 		buy2.pressed.connect(func() -> void: _buy(t, 1, _price(t, 1)))
 		row.add_child(buy2)
 		var swap := Button.new()
-		swap.text = "Swap 3 spares"
+		swap.text = tr("Swap 3 spares")
 		swap.pressed.connect(_swap.bind(t))
 		row.add_child(swap)
 		_list.add_child(row)

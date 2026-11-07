@@ -10,6 +10,7 @@ extends Node3D
 ## True while the finale owns the screen (CoreCharge waits for it).
 static var playing: bool = false
 
+# l10n:begin
 const LINES: Array[Array] = [
 	["Lumi. Stop for a second. Look up.", 3.5],
 	["Your core just hit full. Every bloom on Verdance is shining green, and the Cradle can see all of it.", 6.0],
@@ -20,6 +21,7 @@ const LINES: Array[Array] = [
 	["The seed bays are open. From now on every bloom, anywhere on Verdance, fills the next Seed Ark wave.", 6.0],
 	["Nothing is waiting to end, {name}. Nobody is keeping score. We're home. We just keep planting.", 5.5],
 ]
+# l10n:end
 ## Where the ark parks, relative to the district spawn.
 const PARK := Vector3(-6.0, 62.0, -70.0)
 
@@ -106,7 +108,7 @@ func play() -> void:
 		t += get_process_delta_time()
 		if t >= next_line and line_i < LINES.size():
 			var l: Array = LINES[line_i]
-			world.wren.line_started.emit(str(l[0]).format({"name": name_s}), 2)
+			world.wren.line_started.emit(tr(str(l[0])).format({"name": name_s}), 2)
 			if line_i == 2 or line_i == 6 or line_i == 7:
 				_seed_rain(8 if line_i != 6 else 14)
 			if line_i == 4:
@@ -132,7 +134,7 @@ func play() -> void:
 		await get_tree().process_frame
 	_restore()
 	Audio.music_sting("level_up")
-	EventBus.toast.emit("The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram (M).", "story")
+	EventBus.toast.emit(tr("The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram (M)."), "story")
 	await get_tree().create_timer(1.0).timeout
 	queue_free()
 

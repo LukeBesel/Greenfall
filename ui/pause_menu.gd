@@ -38,30 +38,30 @@ func _ready() -> void:
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 10)
 	panel.add_child(vb)
-	var title := UITheme.label("PAUSED", 32, UITheme.GOLD)
+	var title := UITheme.label(tr("PAUSED"), 32, UITheme.GOLD)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(title)
 	var gap := Control.new()
 	gap.custom_minimum_size = Vector2(0, 4)
 	vb.add_child(gap)
 	var buttons: Array[Button] = []
-	_first = _button(vb, "Resume", close_menu)
+	_first = _button(vb, tr("Resume"), close_menu)
 	buttons.append(_first)
-	var codex_btn: Button = _button(vb, "Codex", func() -> void:
+	var codex_btn: Button = _button(vb, tr("Codex"), func() -> void:
 		close_menu()
 		codex_requested.emit())
-	Settings.bind_text(codex_btn, func() -> String: return "Codex  [%s]" % Settings.glyph("open_codex"))  # [deck]
+	Settings.bind_text(codex_btn, func() -> String: return tr("Codex  [%s]") % Settings.glyph("open_codex"))  # [deck]
 	buttons.append(codex_btn)
-	buttons.append(_button(vb, "Photo mode  [%s]" % Settings.glyph("photo_mode"), func() -> void:  # [photo]
+	buttons.append(_button(vb, tr("Photo mode  [%s]") % Settings.glyph("photo_mode"), func() -> void:  # [photo]
 		close_menu()
 		photo_requested.emit()))
-	_settings_btn = _button(vb, "Settings", _open_settings)
+	_settings_btn = _button(vb, tr("Settings"), _open_settings)
 	buttons.append(_settings_btn)
-	buttons.append(_button(vb, "Save game", func() -> void:
+	buttons.append(_button(vb, tr("Save game"), func() -> void:
 		if SaveManager.save_game():
-			EventBus.toast.emit("Saved.", "info")))
-	buttons.append(_button(vb, "Quit to title", _quit_to_title))
-	buttons.append(_button(vb, "Quit to desktop", func() -> void:
+			EventBus.toast.emit(tr("Saved."), "info")))
+	buttons.append(_button(vb, tr("Quit to title"), _quit_to_title))
+	buttons.append(_button(vb, tr("Quit to desktop"), func() -> void:
 		SaveManager.save_game()
 		get_tree().quit()))
 	for i: int in buttons.size():

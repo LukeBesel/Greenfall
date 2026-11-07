@@ -165,9 +165,9 @@ static func globe_line() -> String:
 				break
 		if done_list().is_empty() or next.is_empty():
 			return ""
-		return "Verdance Bloom %d / %d  ·  next: %s" % [done_list().size(), milestones().size(), str(next.get("name", ""))]
+		return TranslationServer.translate("Verdance Bloom %d / %d  ·  next: %s") % [done_list().size(), milestones().size(), TranslationServer.translate(str(next.get("name", "")))]
 	var w: int = int(ark_state()["wave"])
-	return "Seed Ark wave %d  ·  %d / %d blooms planet-wide" % [w + 1, mini(ark_progress(), ark_target(w)), ark_target(w)]
+	return TranslationServer.translate("Seed Ark wave %d  ·  %d / %d blooms planet-wide") % [w + 1, mini(ark_progress(), ark_target(w)), ark_target(w)]
 
 
 # --- Live node -----------------------------------------------------------------------
@@ -194,8 +194,8 @@ func _visit_biome() -> void:
 		return
 	seen.append(b)
 	GameState.flags["biomes_visited"] = seen
-	var nm: String = str(Economy.biome_set(b).get("name", b.capitalize()))
-	EventBus.toast.emit("Wilderness: %s. New ground, new junk, new colours under it." % nm, "story")
+	var nm: String = tr(str(Economy.biome_set(b).get("name", b.capitalize())))
+	EventBus.toast.emit(tr("Wilderness: %s. New ground, new junk, new colours under it.") % nm, "story")
 	if world.get("wren") != null:
 		get_tree().create_timer(4.0, false).timeout.connect(func() -> void: world.wren.say("biome_arrival", 1.0, true))
 
@@ -237,7 +237,7 @@ func _process(delta: float) -> void:
 	var waves: int = ark_step()
 	if waves > 0:
 		var w: int = int(ark_state()["wave"])
-		EventBus.toast.emit("Seed Ark wave %d planted across Verdance. The Cradle drops a gift. Next wave: %d blooms." % [w, ark_target(w)], "story")
+		EventBus.toast.emit(tr("Seed Ark wave %d planted across Verdance. The Cradle drops a gift. Next wave: %d blooms.") % [w, ark_target(w)], "story")
 		Audio.play("fanfare", 1.1, -8.0)
 		if world and world.get("wren") != null:
 			world.wren.say("ark_wave", 1.0, true)
@@ -248,7 +248,7 @@ func _celebrate(id: String) -> void:
 	for m: Dictionary in milestones():
 		if str(m["id"]) == id:
 			ms = m
-	EventBus.toast.emit("Verdance Bloom: %s. %s" % [ms.get("name", id), ms.get("desc", "")], "story")
+	EventBus.toast.emit(tr("Verdance Bloom: %s. %s") % [tr(str(ms.get("name", id))), tr(str(ms.get("desc", "")))], "story")
 	EventBus.toast.emit(_reward_text(ms.get("reward", {})), "hint")
 	Audio.play("fanfare", 0.9, -4.0)
 	if world and world.get("patch") != null:

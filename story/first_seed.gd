@@ -4,6 +4,7 @@ extends Node3D
 ## the first planting and the first sprout. Runs once.
 
 const GREENHOUSE_POS := Vector3(15.0, 0.0, -9.0)
+# l10n:begin
 const LINES: Array[Array] = [
 	["Wait. Hold it up to the light.", 3.5],
 	["That's a Maker seed tin. Cradle stamp on the lid. One of ours, left behind in the rush.", 5.0],
@@ -14,6 +15,7 @@ const LINES: Array[Array] = [
 	["That somebody is you. Small. Stubborn. Running on four percent. Perfect.", 4.5],
 	["Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it.", 6.0],
 ]
+# l10n:end
 
 var world: Node
 var _tin: Node3D
@@ -114,7 +116,7 @@ func ready_to_find() -> bool:
 func _check() -> void:
 	if ready_to_find() and not GameState.flags.get("seed_signal", false):
 		GameState.flags["seed_signal"] = true
-		world.wren.line_started.emit("Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look.", 1)
+		world.wren.line_started.emit(tr("Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."), 1)
 		Audio.play("detector", 0.7, -6.0)
 
 
@@ -146,7 +148,7 @@ func take_tin() -> void:
 	GameState.add_currency("seeds", BigNum.from_float(float(cfg.get("seeds_given", 15))))
 	world.patch.water = world.patch.water_cap()
 	world.patch.set_tool(Patch.Tool.PLANT)
-	EventBus.tutorial_changed.emit(Tutorial.glyphs("Find clean ground.  Hold  {scoop}  to plant.  {tool_water}  for the watering can, hold  {scoop}  to water."))  # [deck]
+	EventBus.tutorial_changed.emit(Tutorial.glyphs(tr("Find clean ground.  Hold  {scoop}  to plant.  {tool_water}  for the watering can, hold  {scoop}  to water.")))  # [deck]
 	_waiting_sprout = true
 	_active = false
 
@@ -216,9 +218,9 @@ func _sprout_moment(pos: Vector3) -> void:
 	Vfx.burst("big_sparkle", pos + Vector3(0, 0.3, 0), Color(0.7, 1.0, 0.6))
 	Audio.play("chime", 0.7, -2.0)
 	Audio.play("fanfare", 0.8, -6.0)
-	world.wren.line_started.emit("...It's green. Lumi, it's actually green.", 1)
+	world.wren.line_started.emit(tr("...It's green. Lumi, it's actually green."), 1)
 	await get_tree().create_timer(4.5).timeout
-	world.wren.line_started.emit("Keep it watered. Plant more. Every bloom gives you seeds back, and a little green light for your core. This is how it starts.", 1)
+	world.wren.line_started.emit(tr("Keep it watered. Plant more. Every bloom gives you seeds back, and a little green light for your core. This is how it starts."), 1)
 	EventBus.tutorial_changed.emit("")
 	GameState.flags["first_sprout"] = true
 	Audio.music_sting("first_sprout")

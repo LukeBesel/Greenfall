@@ -8,7 +8,7 @@ static func add_section(panel: Control, world: Node, pad_ready: bool) -> void:
 	var planet: PlanetData = world.planet
 	if planet.frontier_hubs.is_empty():
 		return
-	panel.add_child(UITheme.label("FRONTIERS", 13, UITheme.MUTED))
+	panel.add_child(UITheme.label(TranslationServer.translate("FRONTIERS"), 13, UITheme.MUTED))
 	for fid: String in Frontiers.ids():
 		if not planet.frontier_hubs.has(fid):
 			continue
@@ -27,8 +27,8 @@ static func add_section(panel: Control, world: Node, pad_ready: bool) -> void:
 		vb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		vb.add_theme_constant_override("separation", 1)
 		hb.add_child(vb)
-		vb.add_child(UITheme.label(str(d.get("name", fid)), 17, UITheme.CREAM if open else UITheme.MUTED))
-		var tag := UITheme.label(str(d.get("tagline", "")), 12, UITheme.MUTED)
+		vb.add_child(UITheme.label(TranslationServer.translate(str(d.get("name", fid))), 17, UITheme.CREAM if open else UITheme.MUTED))
+		var tag := UITheme.label(TranslationServer.translate(str(d.get("tagline", ""))), 12, UITheme.MUTED)
 		tag.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		vb.add_child(tag)
 		if not open:
@@ -36,9 +36,9 @@ static func add_section(panel: Control, world: Node, pad_ready: bool) -> void:
 				vb.add_child(UITheme.label(line, 12, UITheme.GREEN if line.begins_with("✓") else UITheme.MUTED))
 		else:
 			var lvl: int = Frontiers.base_level(hub_i)
-			vb.add_child(UITheme.label("You are here" if here else ("Base level %d" % lvl if lvl > 0 else "Unexplored  ·  bales sell x%d here" % int(float(d.get("value_mult", 1.0)))), 12, UITheme.GREEN))
+			vb.add_child(UITheme.label(TranslationServer.translate("You are here") if here else (TranslationServer.translate("Base level %d") % lvl if lvl > 0 else TranslationServer.translate("Unexplored  ·  bales sell x%d here") % int(float(d.get("value_mult", 1.0)))), 12, UITheme.GREEN))
 		var b := Button.new()
-		b.text = "Launch"
+		b.text = TranslationServer.translate("Launch")
 		b.custom_minimum_size = Vector2(110, 38)
 		b.disabled = not (open and pad_ready) or here
 		b.pressed.connect(func() -> void:

@@ -74,7 +74,7 @@ func refresh() -> void:
 	trait_id = RobotBuilder.trait_of(robot)
 	_def = RobotBuilder.trait_def(trait_id)
 	if _tag:
-		_tag.text = "%s\n%s" % [robot.robot_name, str(_def.get("name", "")).to_upper()]
+		_tag.text = "%s\n%s" % [robot.robot_name, tr(str(_def.get("name", ""))).to_upper()]
 		_tag.position.y = TAG_Y + (0.12 if robot.tier >= 3 else 0.0) + (0.16 if robot.build.has("topper") else 0.0) + (0.15 if str(robot.build.get("head", "")) == "periscope" else 0.0)
 
 

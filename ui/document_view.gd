@@ -42,7 +42,7 @@ func _ready() -> void:
 	_body.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_body.custom_minimum_size = Vector2(480, 0)
 	vb.add_child(_body)
-	var hint := PromptLabel.new("{interact}  [k]/ Esc  [/k]close", 13, Color(0.4, 0.38, 0.35))  # [deck]
+	var hint := PromptLabel.new(tr("{interact}  [k]/ Esc  [/k]close"), 13, Color(0.4, 0.38, 0.35))  # [deck]
 	vb.add_child(hint)
 	_root.visible = false
 
@@ -60,9 +60,9 @@ func show_doc(doc: Dictionary) -> void:
 		"letter": paper_col = Color(0.95, 0.93, 0.86)
 		"contract": paper_col = Color(0.92, 0.93, 0.9)
 	_paper.add_theme_stylebox_override("panel", UITheme.box(paper_col, Color(0, 0, 0, 0.2), 1, 2, 28))
-	_kind.text = str(doc.get("header", "M E M O R Y   S H A R D   ·   %s" % str(doc.get("kind", "")).to_upper()))
-	_title.text = str(doc.get("title", ""))
-	_body.text = str(doc.get("body", ""))
+	_kind.text = tr(str(doc["header"])) if doc.has("header") else tr("M E M O R Y   S H A R D   ·   %s") % tr(str(doc.get("kind", ""))).to_upper()
+	_title.text = tr(str(doc.get("title", "")))
+	_body.text = tr(str(doc.get("body", "")))
 	is_open = true
 	_root.visible = true
 	get_tree().paused = true

@@ -70,4 +70,4 @@ static func show_end_screen(kind: String = "auto") -> void:
 
 ## Text for the base panel when the demo cap is reached.
 static func base_cap_text() -> String:
-	return "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of Verdance." % MAX_BASE_LEVEL
+	return TranslationServer.translate("Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of Verdance.") % MAX_BASE_LEVEL

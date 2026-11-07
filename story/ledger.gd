@@ -150,7 +150,7 @@ func _check_acts() -> void:
 	EventBus.ledger_event.emit("act", {"act": nxt})
 	if cur < 1 and nxt >= 1:
 		for l: String in cfg.get("act1", []):
-			uplink.show_line(l.format({"district": str(world.district_name).to_upper()}))
+			uplink.show_line(tr(l).format({"district": str(world.district_name).to_upper()}))
 		_wren_later("ledger_intercept", 9.0)
 	if cur < 2 and nxt >= 2:
 		for l: String in cfg.get("act2", []):
@@ -158,7 +158,7 @@ func _check_acts() -> void:
 		_drop_timer = float(cfg.get("drop", {}).get("first_after_s", 45.0))
 		_wren_later("ledger_drones", 7.0)
 		get_tree().create_timer(14.0, false).timeout.connect(func() -> void:
-			EventBus.toast.emit("New at the workbench, Hub tab: Signal Jammer. It scrambles the Ledger's drones near the base.", "hint"))
+			EventBus.toast.emit(tr("New at the workbench, Hub tab: Signal Jammer. It scrambles the Ledger's drones near the base."), "hint"))
 	if cur < 3 and nxt >= 3:
 		GameState.flags["ledger_relay_hub"] = GameState.current_hub
 		_place_relay()
@@ -167,7 +167,7 @@ func _check_acts() -> void:
 		_wren_later("ledger_relay", 8.0)
 		get_tree().create_timer(12.0, false).timeout.connect(func() -> void:
 			if relay:
-				EventBus.toast.emit("WREN traced the Ledger's relay: %s of the hub. Look for the red beacon." % compass(relay.global_position), "story"))
+				EventBus.toast.emit(tr("WREN traced the Ledger's relay: %s of the hub. Look for the red beacon.") % compass(relay.global_position), "story"))
 
 
 func _wren_later(trigger: String, delay: float) -> void:
@@ -242,7 +242,7 @@ func _send_coupon() -> void:
 	if not (pick in seen):
 		seen.append(pick)
 	GameState.flags["ledger_coupons"] = seen
-	uplink.show_line(str(all[pick]), false, "<< INTERCEPT // LEDGER PROMOTIONS // %d OF %d >>" % [seen.size(), all.size()])
+	uplink.show_line(str(all[pick]), false, tr("<< INTERCEPT // LEDGER PROMOTIONS // %d OF %d >>") % [seen.size(), all.size()])
 	if world and world.get("wren") != null:
 		world.wren.say("ledger_coupon", 0.6)
 
@@ -285,7 +285,7 @@ func build_jammer() -> bool:
 	var i: int = jammer_count()
 	GameState.world["ledger_jammers"] = i + 1
 	_build_jammer(i, true)
-	EventBus.toast.emit("Signal Jammer online. Drones within %d m of the base will get an earful of static." % int(jammer_radius()), "story")
+	EventBus.toast.emit(tr("Signal Jammer online. Drones within %d m of the base will get an earful of static.") % int(jammer_radius()), "story")
 	EventBus.ledger_event.emit("jammer", {"count": i + 1})
 	if world and world.get("wren") != null:
 		world.wren.say("jammer_built", 1.0, true)
@@ -296,13 +296,13 @@ func build_jammer() -> bool:
 func jammer_text() -> String:
 	var d: Dictionary = jammer_def()
 	var n: int = jammer_count()
-	var s: String = "%s   ·   %d / %d built\n%s" % [d.get("name", "Signal Jammer"), n, int(d.get("max", 3)), d.get("desc", "")]
+	var s: String = tr("%s   ·   %d / %d built\n%s") % [tr(str(d.get("name", "Signal Jammer"))), n, int(d.get("max", 3)), tr(str(d.get("desc", "")))]
 	if n > 0:
-		s += "\nCovering %d m around the base." % int(jammer_radius())
+		s += tr("\nCovering %d m around the base.") % int(jammer_radius())
 	if resolved():
-		s += "\nThe Ledger is on our side now. The jammers just hum along to the music."
+		s += tr("\nThe Ledger is on our side now. The jammers just hum along to the music.")
 	elif n < int(d.get("max", 3)):
-		s += "\nNeeds " + HubPanel.cost_text(d.get("cost", {}), jammer_cost_mult())
+		s += "\n" + tr("Needs %s") % HubPanel.cost_text(d.get("cost", {}), jammer_cost_mult())
 	return s
 
 
@@ -467,8 +467,8 @@ func _marker(spot: Vector3, col: Color) -> MeshInstance3D:
 func _fly_dump(hid: int, pids: PackedInt32Array, spot: Vector3, jammed: bool) -> void:
 	var warn: Array = cfg.get("drop_warn", [])
 	var first: bool = int(GameState.stats.get("ledger_drops", 0)) == 0 and int(GameState.stats.get("ledger_jammed", 0)) == 0
-	EventBus.toast.emit("Ledger drone inbound, %s! It's heading for a clean hex." % compass(spot - world.patch.global_position) if not first
-		else "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground." % compass(spot - world.patch.global_position), "story")
+	EventBus.toast.emit(tr("Ledger drone inbound, %s! It's heading for a clean hex.") % compass(spot - world.patch.global_position) if not first
+		else tr("A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground.") % compass(spot - world.patch.global_position), "story")
 	if not warn.is_empty():
 		uplink.show_line(str(warn[rng.randi() % warn.size()]))
 	Audio.play("glitch", 0.8, -8.0)
@@ -504,7 +504,7 @@ func _jammed(marker: MeshInstance3D, exit_from: Vector3) -> void:
 	if d == null:
 		return
 	Vfx.burst("bits", d.global_position, Color(0.4, 0.85, 1.0), 1.5)
-	Vfx.float_text(d.global_position + Vector3(0, 1.2, 0), "SIGNAL JAMMED", Color(0.45, 0.9, 1.0), 1.6, 1.2)
+	Vfx.float_text(d.global_position + Vector3(0, 1.2, 0), tr("SIGNAL JAMMED"), Color(0.45, 0.9, 1.0), 1.6, 1.2)
 	Audio.play("buzz", 0.7, -4.0)
 	Audio.play("glitch", 1.2, -6.0)
 	for j: Node3D in _jammers:
@@ -534,7 +534,7 @@ func _dump(hid: int, pids: PackedInt32Array, marker: MeshInstance3D, exit_from: 
 	# Re-check: Patch may have planted here (or the hex got dirty) during the approach.
 	if not field.is_clean(hid) or is_planted(hid):
 		marker.queue_free()
-		uplink.show_line("Target re-classified as ASSET. Aborting. ...Interesting.")
+		uplink.show_line(tr("Target re-classified as ASSET. Aborting. ...Interesting."))
 		var tw0 := d.create_tween()
 		tw0.tween_property(d, "global_position", exit_from, 6.0).set_trans(Tween.TRANS_SINE)
 		tw0.tween_callback(_drone_done.bind(d))
@@ -600,7 +600,7 @@ func _landed(hid: int, pids: PackedInt32Array, marker: MeshInstance3D, falling: 
 	print("[ledger] drop landed: hex %d, %d pieces, clean=%s" % [hid, pids.size(), str(field.is_clean(hid))])
 	EventBus.ledger_event.emit("drop", {"hex": hid, "pieces": pids.size()})
 	if int(GameState.stats.get("ledger_drops", 0)) <= 1:
-		EventBus.toast.emit("The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away.", "hint")
+		EventBus.toast.emit(tr("The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."), "hint")
 	if world.get("wren") != null:
 		world.wren.say("ledger_drop", 0.9, true)
 
@@ -656,7 +656,7 @@ func _seed_crate() -> Node3D:
 	var wood: StandardMaterial3D = AssetLib.pbr_material("painted_metal_shutter", 0.6, Color(0.5, 0.85, 0.55), true)
 	n.add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(0.6, 0.45, 0.45), 0.04, 2), wood, Vector3(0, -0.2, 0)))
 	n.add_child(EggProps.mesh(ProcMesh.box(Vector3(0.62, 0.06, 0.47)), Mats.lamp(Color(0.4, 1.0, 0.5), 1.2), Vector3(0, -0.2, 0)))
-	n.add_child(EggProps.label("SEEDS · PAID IN FULL", 18, Color(0.1, 0.25, 0.12), Vector3(0, -0.12, 0.231)))
+	n.add_child(EggProps.label(tr("SEEDS · PAID IN FULL"), 18, Color(0.1, 0.25, 0.12), Vector3(0, -0.12, 0.231)))
 	return n
 
 
@@ -673,7 +673,7 @@ func _drop_crate(crate: Node3D, spot: Vector3) -> void:
 		GameState.add_currency("seeds", BigNum.from_float(n))
 		GameState.inc_stat("ledger_seed_drops")
 		Vfx.burst("sparkle", spot + Vector3(0, 0.6, 0), Color(0.6, 1.0, 0.6))
-		Vfx.float_text(spot + Vector3(0, 1.4, 0), "+%d seeds" % n, Color(0.6, 1.0, 0.6), 1.3, 1.5)
+		Vfx.float_text(spot + Vector3(0, 1.4, 0), tr("+%d seeds") % n, Color(0.6, 1.0, 0.6), 1.3, 1.5)
 		Audio.play("pop", 1.0, -4.0)
 		EventBus.ledger_event.emit("seeds", {"seeds": n})
 		if world.get("wren") != null:
@@ -743,7 +743,7 @@ func _place_relay() -> void:
 	_set_relay_friendly(resolved(), false)
 	if world.get("interactables") != null:
 		world.interactables.register(relay, 3.2, func() -> String:
-			return "E   jack in: rewrite the Ledger's contract" if act() == 3 else "E   read the amended contract", _use_relay)
+			return tr("E   jack in: rewrite the Ledger's contract") if act() == 3 else tr("E   read the amended contract"), _use_relay)
 
 
 func _use_relay() -> void:
@@ -768,7 +768,7 @@ func _build_relay() -> Node3D:
 	n.add_child(EggProps.mesh(ProcMesh.box(Vector3(1.4, 0.9, 0.5)), body, Vector3(0, 0.75, 0.35)))
 	_relay_screen = Mats.lamp(Color(1.0, 0.2, 0.12), 1.6)
 	n.add_child(EggProps.mesh(ProcMesh.box(Vector3(1.2, 0.7, 0.03)), _relay_screen, Vector3(0, 1.85, 0.16)))
-	_relay_label = EggProps.label("LEDGER RELAY 07\nCONTRACT 0001: ACTIVE\nWASTE IS A LINE ITEM", 30, Color(1.0, 0.85, 0.75), Vector3(0, 1.85, 0.18), Vector3.ZERO, true)
+	_relay_label = EggProps.label(tr("LEDGER RELAY 07\nCONTRACT 0001: ACTIVE\nWASTE IS A LINE ITEM"), 30, Color(1.0, 0.85, 0.75), Vector3(0, 1.85, 0.18), Vector3.ZERO, true)
 	_relay_label.font = LedgerUplink.mono_font()
 	n.add_child(_relay_label)
 	for k: int in 6:
@@ -783,7 +783,7 @@ func _build_relay() -> Node3D:
 	for k: int in 3:
 		var cab := EggProps.mesh(ProcMesh.cyl(0.05, 0.05, 2.0 + k * 0.6, 6), Mats.rubber(), Vector3(-0.9 - k * 0.5, 0.32, -0.6 + k * 0.4), Vector3(0, 30.0 + k * 20.0, 88))
 		n.add_child(cab)
-	n.add_child(EggProps.label("RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS", 20, Color(0.9, 0.85, 0.7), Vector3(0, 0.75, 0.605)))
+	n.add_child(EggProps.label(tr("RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"), 20, Color(0.9, 0.85, 0.7), Vector3(0, 0.75, 0.605)))
 	_relay_light = OmniLight3D.new()
 	_relay_light.light_color = Color(1.0, 0.25, 0.15)
 	_relay_light.light_energy = 2.0
@@ -822,7 +822,7 @@ func _set_relay_friendly(v: bool, animate: bool) -> void:
 		_relay_screen.emission = c
 		_relay_light.light_color = c
 		_relay_beacon.emission = c
-	_relay_label.text = "LEDGER RELAY 07\nCONTRACT 0001: AMENDED\nRESTORATION = ASSET" if v else "LEDGER RELAY 07\nCONTRACT 0001: ACTIVE\nWASTE IS A LINE ITEM"
+	_relay_label.text = tr("LEDGER RELAY 07\nCONTRACT 0001: AMENDED\nRESTORATION = ASSET") if v else tr("LEDGER RELAY 07\nCONTRACT 0001: ACTIVE\nWASTE IS A LINE ITEM")
 	_relay_label.modulate = Color(0.8, 1.0, 0.85) if v else Color(1.0, 0.85, 0.75)
 	_relay_beam.visible = not v
 
@@ -909,13 +909,13 @@ func resolve() -> void:
 	for i: int in lines.size():
 		var l: Array = lines[i]
 		var who: String = str(l[0])
-		var text: String = str(l[1]).format({"name": pname})
+		var text: String = tr(str(l[1])).format({"name": pname})  # [l10n]
 		var dur: float = float(l[2])
 		match who:
 			"wren": world.wren.line_started.emit(text, 2)
 			"ledger": uplink.show_now(text, false, maxf(dur - text.length() / 42.0 - 0.6, 0.3))
 			"friendly": uplink.show_now(text, true, maxf(dur - text.length() / 42.0 - 0.6, 0.3))
-		if text.begins_with("RECALCULATING"):
+		if str(l[1]).begins_with("RECALCULATING"):
 			_set_relay_friendly(true, true)
 			Vfx.burst("big_sparkle", rp + Vector3(0, 2.0, 0.4), Color(0.5, 1.0, 0.6))
 			Audio.play("chime", 0.8, -4.0)
@@ -939,7 +939,7 @@ func resolve() -> void:
 		GameState.add_currency(k, BigNum.from_float(float(rew[k])))
 	GameState.flags["seeds_unlocked"] = true
 	Audio.music_sting("first_sprout")
-	EventBus.toast.emit("The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)" % int(rew.get("seeds", 0)), "story")
+	EventBus.toast.emit(tr("The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)") % int(rew.get("seeds", 0)), "story")
 	EventBus.ledger_event.emit("resolved", {})
 	world.wren.say("ledger_resolved", 1.0, true)
 	_seed_timer = 25.0
@@ -947,7 +947,7 @@ func resolve() -> void:
 	print("[ledger] contract rewritten: act %d" % act())
 	if (GameState.flags.get("ledger_coupons", []) as Array).size() >= (cfg.get("coupons", []) as Array).size():
 		get_tree().create_timer(30.0, false).timeout.connect(func() -> void:
-			uplink.show_line(str(cfg.get("lonely", "")), true, "<< LEDGER // OFF THE RECORD >>"))
+			uplink.show_line(str(cfg.get("lonely", "")), true, tr("<< LEDGER // OFF THE RECORD >>")))
 
 
 func _cinematic_drones(rp: Vector3, cam: Camera3D, look: Vector3) -> void:

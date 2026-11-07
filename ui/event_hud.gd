@@ -124,7 +124,7 @@ func _build_streak() -> void:
 	var top := HBoxContainer.new()
 	top.add_theme_constant_override("separation", 6)
 	vb.add_child(top)
-	top.add_child(UITheme.label("STREAK", 12, UITheme.MUTED))
+	top.add_child(UITheme.label(tr("STREAK"), 12, UITheme.MUTED))
 	_s_tier = UITheme.label("x0", 16, UITheme.CREAM)
 	top.add_child(_s_tier)
 	_s_bonus = UITheme.label("", 12, UITheme.GREEN)
@@ -189,7 +189,7 @@ func _update_banner() -> void:
 			tw.tween_callback(func() -> void: _banner.visible = events.active.size() > 0)
 		_shown_id = ""
 		var ready_n: int = Contracts.count_state("done")
-		_nudge.text = ("CONTRACT READY  ·  claim it at the workbench" if ready_n == 1 else "%d CONTRACTS READY  ·  claim them at the workbench" % ready_n) if ready_n > 0 else ""
+		_nudge.text = (tr("CONTRACT READY  ·  claim it at the workbench") if ready_n == 1 else tr("%d CONTRACTS READY  ·  claim them at the workbench") % ready_n) if ready_n > 0 else ""
 		return
 	_nudge.text = ""
 	var col: Color = a.get("color", UITheme.GOLD)
@@ -209,8 +209,8 @@ func _update_banner() -> void:
 	_b_icon.add_theme_color_override("font_color", col)
 	_b_icon.modulate.a = 0.65 + 0.35 * sin(_t * 4.0)
 	_b_title.add_theme_color_override("font_color", col)
-	_b_title.text = str(a.get("name", "")).to_upper()
-	_b_hint.text = str(a.get("hint", ""))
+	_b_title.text = tr(str(a.get("name", ""))).to_upper()
+	_b_hint.text = tr(str(a.get("hint", "")))
 	_b_prog.text = str(a.get("progress", ""))
 	var left: float = maxf(float(a.get("left", 0.0)), 0.0)
 	_b_time.text = "%d:%02d" % [int(left) / 60, int(left) % 60]

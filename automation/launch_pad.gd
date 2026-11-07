@@ -80,7 +80,7 @@ func _build() -> void:
 		var a2: float = TAU * (k + 0.5) / 8.0
 		_mi(self, ProcMesh.box(Vector3(0.12, 0.03, 0.5)), tang, Vector3(cos(a2) * 3.1, TOP_Y + 0.01, sin(a2) * 3.1), Vector3(0, -rad_to_deg(a2), 0))
 	var num := Label3D.new()
-	num.text = "PAD 01"
+	num.text = tr("PAD 01")
 	num.font_size = 96
 	num.pixel_size = 0.006
 	num.modulate = Color(0.5, 1.5, 2.0)
@@ -210,7 +210,7 @@ func _build() -> void:
 		head.add_child(sl)
 	# The pad sign.
 	var sign_l := Label3D.new()
-	sign_l.text = "LAUNCH PAD"
+	sign_l.text = tr("LAUNCH PAD")
 	sign_l.font_size = 96
 	sign_l.pixel_size = 0.008
 	sign_l.modulate = Color(0.5, 1.5, 2.0, 0.9)
@@ -261,7 +261,7 @@ func _build_hologram() -> void:
 	ghost.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	_mi(self, ProcMesh.box(Vector3(1.0, 11.0, 1.0)), holo, Vector3(0, 5.5, TOWER_Z))
 	var sign_l := Label3D.new()
-	sign_l.text = "LAUNCH PAD\nBASE LEVEL 5"
+	sign_l.text = tr("LAUNCH PAD\nBASE LEVEL 5")
 	sign_l.font_size = 80
 	sign_l.pixel_size = 0.008
 	sign_l.modulate = Color(0.5, 1.5, 2.0, 0.9)

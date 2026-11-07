@@ -69,10 +69,10 @@ func _process(_delta: float) -> void:
 	print("[quality] probe: %.1f fps at %s (target %.0f)" % [fps, QualityDetect.preset_name(Settings.quality), target])
 	if q != Settings.quality:
 		Settings.quality = q
-		Settings.quality_note += ("; " if Settings.quality_note != "" else "") + "stepped down after a frame-rate check"
+		Settings.quality_note += ("; " if Settings.quality_note != "" else "") + tr("stepped down after a frame-rate check")
 		Settings.apply_quality_to_tree(cur)
 		Settings.save_settings()
-		EventBus.toast.emit("Graphics set to %s to keep things smooth. You can change it in Settings." % QualityDetect.preset_name(q), "info")
+		EventBus.toast.emit(tr("Graphics set to %s to keep things smooth. You can change it in Settings.") % QualityDetect.preset_name(q), "info")
 		_phase = 1  # settle and measure again at the new preset
 		_t0 = now
 		return

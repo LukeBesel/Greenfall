@@ -21,11 +21,13 @@ const HOLD_ZOOM_S: float = 0.3
 const CYAN := Color(0.55, 0.9, 1.0)
 const XP_COL := Color(0.5, 0.95, 0.75)
 const CORE_COL := Color(0.45, 1.0, 0.6)
+# l10n:begin
 const TOOLS: Array[Dictionary] = [
 	{"id": "scoop", "name": "SCOOP", "action": "tool_scoop", "icon": "scoop"},
 	{"id": "plant", "name": "PLANT", "action": "tool_plant", "icon": "plant"},
 	{"id": "water", "name": "WATER", "action": "tool_water", "icon": "water"},
 ]
+# l10n:end
 
 var patch: Patch
 var world: Node
@@ -283,7 +285,7 @@ func _draw_level(cx: float, y: float) -> void:
 	# XP tick at the right end.
 	if _xp_tick > 0 and _lvl_t <= 0.0:
 		var a: float = clampf(_xp_tick_t / 0.5, 0.0, 1.0)
-		_text(Vector2(x0 + LEVEL_W + 8.0, y + 5.0), "+%d XP" % _xp_tick, 12, Color(XP_COL, 0.85 * a), HORIZONTAL_ALIGNMENT_LEFT)
+		_text(Vector2(x0 + LEVEL_W + 8.0, y + 5.0), tr("+%d XP") % _xp_tick, 12, Color(XP_COL, 0.85 * a), HORIZONTAL_ALIGNMENT_LEFT)
 	# Bloom Core ring at the left end.
 	if _core >= 0.0:
 		var c := Vector2(x0 - 14.0, y + 1.5)
@@ -293,7 +295,7 @@ func _draw_level(cx: float, y: float) -> void:
 		draw_circle(c, 1.6, Color(CORE_COL, 0.4 + 0.5 * _core))
 		var show_pct: float = 1.0 if Settings.hud_mode == Settings.HudMode.FULL else clampf(_core_t / 0.6, 0.0, 1.0)
 		if show_pct > 0.01:
-			_text(Vector2(c.x - 10.0, y + 5.5), "CORE %d%%" % int(floor(_core * 100.0 + 0.001)), 12, Color(CORE_COL, 0.85 * show_pct), HORIZONTAL_ALIGNMENT_RIGHT)
+			_text(Vector2(c.x - 10.0, y + 5.5), tr("CORE %d%%") % int(floor(_core * 100.0 + 0.001)), 12, Color(CORE_COL, 0.85 * show_pct), HORIZONTAL_ALIGNMENT_RIGHT)
 	# Level-up banner: "LEVEL 7" and the reward line, rising slightly and fading.
 	if _lvl_t > 0.0:
 		var a2: float = clampf(_lvl_t / 0.6, 0.0, 1.0) * clampf((3.6 - _lvl_t) / 0.25, 0.0, 1.0)
@@ -365,7 +367,7 @@ func _draw_slots(cx: float, y: float) -> void:
 		var a: float = 1.0 if Settings.hud_mode == Settings.HudMode.FULL else clampf(_tool_name_t / 0.5, 0.0, 1.0)
 		var sr := Rect2(x0 + patch.tool * (SLOT + GAP), y - RAISE, SLOT, SLOT)
 		if _lvl_t <= 0.0:
-			_text(Vector2(sr.get_center().x, y - RAISE - 7.0), str(TOOLS[patch.tool]["name"]), 12, Color(CYAN, 0.9 * a))
+			_text(Vector2(sr.get_center().x, y - RAISE - 7.0), tr(str(TOOLS[patch.tool]["name"])), 12, Color(CYAN, 0.9 * a))
 	# Bumper glyphs on a pad.
 	if pad and multi:
 		_pill(Vector2(x0 - 22.0, y + SLOT * 0.5), "LB")

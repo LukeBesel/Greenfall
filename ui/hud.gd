@@ -68,7 +68,7 @@ func _ready() -> void:
 	EventBus.toast.connect(show_toast)
 	if lumi:
 		lumi.leveled.connect(func(lv: int, rw: String) -> void:
-			notify("Lumi reached level %d%s" % [lv, ("  ·  " + rw) if rw != "" else ""], "level"))
+			notify(tr("Lumi reached level %d%s") % [lv, ("  ·  " + rw) if rw != "" else ""], "level"))
 	Settings.changed.connect(_apply_mode)
 	_apply_mode()
 
@@ -153,7 +153,7 @@ func _build_top_right() -> void:
 	_district.add_theme_constant_override("separation", 3)
 	_district.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	vb.add_child(_district)
-	_field_label = UITheme.label("OLD TOWN   0%", 13, UITheme.CREAM)
+	_field_label = UITheme.label(tr("OLD TOWN   0%"), 13, UITheme.CREAM)
 	_field_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_district.add_child(_field_label)
 	_field_bar = Control.new()
@@ -286,11 +286,11 @@ func _process(delta: float) -> void:
 func _update_context(delta: float, minimal: bool) -> void:
 	var bits: Array[String] = []
 	if not patch.carried.is_empty():
-		bits.append("CARRYING %d/%d" % [patch.carried.size(), patch.carry_cap()])
+		bits.append(tr("CARRYING %d/%d") % [patch.carried.size(), patch.carry_cap()])
 	var h: int = patch.focus_hex()
 	var hex_text: String = ""
 	if h >= 0 and world and world.field.hex_hub[h] == 0:
-		hex_text = ("HEX  %d%% CLEAR" % int(floor(world.field.removed_fraction(h) * 100.0))) if not world.field.is_clean(h) else (world.hex_levels.describe(h) if world.get("hex_levels") else "HEX  CLEAR")
+		hex_text = (tr("HEX  %d%% CLEAR") % int(floor(world.field.removed_fraction(h) * 100.0))) if not world.field.is_clean(h) else (world.hex_levels.describe(h) if world.get("hex_levels") else tr("HEX  CLEAR"))
 		var op: Variant = world.get("outposts")  # [outposts] note the outpost on this hex
 		if op is Outposts and (op as Outposts).hex_note(h) != "":
 			hex_text += "   ·   " + (op as Outposts).hex_note(h)
@@ -325,7 +325,7 @@ func _update_hints() -> void:
 	var show: bool = Settings.hud_mode == Settings.HudMode.FULL or (Settings.hud_mode == Settings.HudMode.MINIMAL and tutorial_on)
 	_hints.visible = show
 	if show:
-		_hints.text = "%s  map      %s  command      %s  lens      %s  goals" % [Settings.glyph("open_globe"), Settings.glyph("open_command"), Settings.glyph("lens_view"), Settings.glyph("toggle_goals")]
+		_hints.text = tr("%s  map      %s  command      %s  lens      %s  goals") % [Settings.glyph("open_globe"), Settings.glyph("open_command"), Settings.glyph("lens_view"), Settings.glyph("toggle_goals")]
 
 
 func _fmt_small_pct(p: float) -> String:
@@ -342,12 +342,13 @@ func _fmt_small_pct(p: float) -> String:
 func _prompt_text(kind: String) -> String:
 	var g: String = Settings.glyph("interact")
 	match kind:
-		"pick_up": return g + "   pick up bale"
-		"dig": return g + "   dig up part"
-		"shard": return g + "   read memory shard"
-		"seed": return g + "   pick up the seed tin"
-		"place": return g + "   set bale down"
-		"upgrades": return g + "   workbench"
+		# TRANSLATORS: %s is the interact key or pad button glyph (E / A).
+		"pick_up": return tr("%s   pick up bale") % g
+		"dig": return tr("%s   dig up part") % g
+		"shard": return tr("%s   read memory shard") % g
+		"seed": return tr("%s   pick up the seed tin") % g
+		"place": return tr("%s   set bale down") % g
+		"upgrades": return tr("%s   workbench") % g
 	if kind.begins_with("E "):
 		return g + kind.substr(1)
 	return ""
