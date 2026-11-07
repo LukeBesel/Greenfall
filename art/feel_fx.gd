@@ -189,7 +189,7 @@ func _on_hex_cleaned(hid: int, center: Vector3, _bonus: BigNum) -> void:
 ## fired ~40 s (wall) before --shot-delay and the game clock freezes at its peak (Engine.time_scale
 ## = 0); the shot then captures that instant. Pair with --time-scale=0.05 so the freeze lands within
 ## a fraction of a game second of the peak.
-const DEMO_PEAK: Dictionary = {"bale": 1.3, "sale": 0.78, "robot": 0.42, "reveal": 0.45}
+const DEMO_PEAK: Dictionary = {"bale": 0.22, "sale": 0.75, "robot": 0.42, "reveal": 0.45}
 
 var _demo_setup: bool = false
 
@@ -205,11 +205,17 @@ func _demo_tick() -> void:
 	_demo_done = true
 	match _demo:
 		"bale":
-			p.start_cube()
+			# Straight to the ram stroke and the eject (the press cycle runs on capped physics steps).
+			p.model.press(1.0)
+			bale_press(p)
+			for vp: Vector3 in p.model.vent_points:
+				Vfx.burst("steam", p.to_global(vp), Color(0.92, 0.92, 0.9, 0.5), 0.6)
+			p.call("_spawn_cube")
 		"sale":
 			var cube: JunkCube = JunkCube.create(BigNum.from_float(84.0), {"fill": 0.95, "perfect": true, "colors": [Color(0.55, 0.5, 0.45)]})
 			world.add_cube(cube)
 			cube.global_position = (world.depot as Node3D).global_position + Vector3(0.0, 0.3, 0.0)
+			world.depot.call("_swallow", cube)
 		"robot":
 			var at: Vector3 = p.global_position + p.forward() * 2.0 + p.global_transform.basis.x * 1.1
 			var r: Robot = world.fleet.spawn("scoopie", 0, at, 0.0, "Tin-15")
@@ -219,11 +225,9 @@ func _demo_tick() -> void:
 			for pid: int in world.field.hex_pieces[_demo_hex]:
 				if world.field.piece_alive[pid] != 0:
 					world.collect_piece(pid)
-	# Bale and sale run on physics (capped steps per slow frame), so count physics time there.
-	var phys: bool = _demo in ["bale", "sale"]
-	get_tree().create_timer(float(DEMO_PEAK.get(_demo, 0.5)), true, phys).timeout.connect(func() -> void:
-		Engine.time_scale = 0.0
-		print("[first] demo %s frozen at its peak" % _demo))
+	# Freeze after enough rendered frames to reach the peak (process time per frame is known only
+	# once frames run: count game time ourselves).
+	_freeze_at_peak(float(DEMO_PEAK.get(_demo, 0.5)))
 
 
 var _demo_hex: int = -1
@@ -248,3 +252,12 @@ func _demo_prepare(p: Patch) -> void:
 			world.cam.distance = DevHooks.get_f("demo-dist", 9.0)
 			world.cam.pitch = -0.62
 			world.cam.snap()
+
+
+func _freeze_at_peak(peak: float) -> void:
+	var t: float = 0.0
+	while t < peak:
+		await get_tree().process_frame
+		t += get_process_delta_time()
+	Engine.time_scale = 0.0
+	print("[first] demo %s frozen at its peak (%.2f s)" % [_demo, t])
