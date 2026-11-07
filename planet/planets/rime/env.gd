@@ -423,6 +423,7 @@ func _build_terrain() -> void:
 				for idx: int in [a0, a0 + 1, b0, b0, a0 + 1, b0 + 1]:
 					st.add_index(idx)
 		st.generate_normals()
+		_collide_sector(st)
 		var mi := MeshInstance3D.new()
 		mi.name = "Ice%d" % sct
 		mi.mesh = st.commit()
@@ -431,6 +432,33 @@ func _build_terrain() -> void:
 	var gm: ShaderMaterial = world.view.ground_material if world.get("view") != null else null
 	if gm:
 		gm.set_shader_parameter("clip_r", _r_in + 3.0)
+
+
+## Walkable ice near the field (Lumi may wander past the edge): a collision copy of the inner
+## rings, so nobody walks through drifts and ridges. The borehole keeps an invisible lid.
+func _collide_sector(st: SurfaceTool) -> void:
+	var r_max: float = _r_in + 120.0
+	var arrays: Array = st.commit_to_arrays()
+	var verts: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+	var idx: Variant = arrays[Mesh.ARRAY_INDEX]
+	var faces := PackedVector3Array()
+	var n: int = (idx as PackedInt32Array).size() if idx is PackedInt32Array else verts.size()
+	for k: int in range(0, n, 3):
+		var a: Vector3 = verts[idx[k]] if idx is PackedInt32Array else verts[k]
+		if Vector2(a.x, a.z).length() > r_max:
+			continue
+		for m: int in 3:
+			faces.append(verts[idx[k + m]] if idx is PackedInt32Array else verts[k + m])
+	if faces.is_empty():
+		return
+	var shape := ConcavePolygonShape3D.new()
+	shape.set_faces(faces)
+	var body := StaticBody3D.new()
+	body.name = "IceBody"
+	var cs := CollisionShape3D.new()
+	cs.shape = shape
+	body.add_child(cs)
+	add_child(body)
 
 
 # --- Materials ----------------------------------------------------------------------------------
@@ -677,7 +705,7 @@ func _build_borehole() -> void:
 	smi.visibility_range_end = 600.0
 	_groups["always"].add_child(smi)
 	# Cold mist venting out of the hole: slow and tall.
-	_mist = _vapour(c + Vector3(0, rim_y - 6.0, 0), br * 0.6, 46, 22.0, Vector2(9.0, 22.0), Vector2(1.6, 3.0))
+	_mist = _vapour(c + Vector3(0, rim_y - 8.0, 0), br * 0.7, 60, 24.0, Vector2(10.0, 24.0), Vector2(1.6, 3.2))
 	_mist_mat = _mist.material_override as ShaderMaterial
 
 
@@ -1105,7 +1133,7 @@ func _vapour(pos: Vector3, radius: float, amount: int, life: float, size: Vector
 	var q := QuadMesh.new()
 	q.size = Vector2.ONE
 	p.mesh = q
-	p.material_override = _vent_mat if size.y < 15.0 else _vapour_material(Color(0.82, 0.9, 1.0), 0.22, 0.5)
+	p.material_override = _vent_mat if size.y < 15.0 else _vapour_material(Color(0.82, 0.9, 1.0), 0.36, 0.58)
 	p.position = pos
 	p.visibility_aabb = AABB(Vector3(-radius - 20, -5, -radius - 20), Vector3(radius * 2 + 40, life * speed.y + 30, radius * 2 + 40))
 	_groups["always"].add_child(p)
@@ -1317,6 +1345,9 @@ func _dev_hooks() -> void:
 	if DevHooks.has("rime-restore"):
 		_forced_restore = clampf(DevHooks.get_f("rime-restore", 1.0), 0.0, 1.0)
 		set_restore(_forced_restore)
+	var pt: Node3D = world.get("patch")
+	if pt and Vector2(pt.global_position.x, pt.global_position.z).length() > _r_in - 2.0:
+		pt.global_position.y = ground_y(pt.global_position.x, pt.global_position.z) + 0.3
 	var cam: Node = world.get("cam")
 	if DevHooks.has("rime-cam") and cam:
 		var c: PackedStringArray = DevHooks.get_s("rime-cam", "30,-0.3,0").split(",")

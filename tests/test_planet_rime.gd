@@ -78,6 +78,7 @@ func test_env_applies_headless() -> void:
 	assert_not_null(re)
 	assert_true(env.sky.sky_material is ShaderMaterial, "Rime's own sky")
 	assert_gt(re.find_children("*", "MeshInstance3D", true, false).size(), 20)
+	assert_gt(re.find_children("IceBody*", "StaticBody3D", true, false).size(), 0, "walkable ice near the field")
 	re.set_level(1, false)
 	assert_true((re.get_node("Ruin") as Node3D).visible)
 	assert_false((re.get_node("Future") as Node3D).visible)
