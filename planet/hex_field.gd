@@ -54,6 +54,17 @@ var piece_yaw := PackedFloat32Array()
 var piece_scale := PackedFloat32Array()
 var piece_tilt := PackedFloat32Array()
 var piece_embed := PackedFloat32Array()  # 0 = on the surface, >0 = fraction of pile height it sits at
+## [world2] Size class per piece from its model's base volume (not saved; rebuilt with the field):
+## SIZE_SMALL (< 1.5), SIZE_MEDIUM (< 2.5), SIZE_LARGE (tyres, TVs, microwaves, stoves...).
+var piece_size := PackedByteArray()
+const SIZE_SMALL: int = 0
+const SIZE_MEDIUM: int = 1
+const SIZE_LARGE: int = 2
+const LARGE_VOL: float = 2.5
+
+
+static func size_class(base_vol: float) -> int:
+	return SIZE_LARGE if base_vol >= LARGE_VOL else (SIZE_MEDIUM if base_vol >= 1.5 else SIZE_SMALL)
 var layout: CityLayout
 ## Buried robot parts (found with the detector).
 var part_pos := PackedVector3Array()
@@ -264,7 +275,12 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 				var bm: Dictionary = biome_model(mdl, str(t["id"]), id, piece_pos.size())
 				swapped = bm != mdl
 				mdl = bm
+			if gen2 and dist <= 1 and float(mdl.get("vol", 1.0)) >= LARGE_VOL:
+				# [world2] No big items (tyres, TVs, stoves) in the starting hexes: Lumi isn't strong
+				# enough for them yet. Own RNG, so the main draws (and the rest of the field) don't shift.
+				mdl = _small_model(t, str(t["id"]), piece_pos.size())
 			var vol: float = float(mdl.get("vol", 1.0)) * rng.randf_range(0.85, 1.15) * vol_scale
+			piece_size.append(size_class(float(mdl.get("vol", 1.0))))
 			var pid: int = piece_pos.size()
 			pos.y = layout.height_at(pos.x, pos.z) if layout else 0.0
 			piece_pos.append(pos)
@@ -369,6 +385,7 @@ func _generate_floating(id: int, rng: RandomNumberGenerator, by_id: Dictionary) 
 		piece_type.append(type_idx)
 		piece_model.append(str(f[1]))
 		piece_vol.append(vol)
+		piece_size.append(size_class(2.5 if f[1] == "old_tyre" else 0.6))  # [world2]
 		piece_hex.append(id)
 		piece_yaw.append(rng.randf() * TAU)
 		piece_scale.append(rng.randf_range(0.9, 1.1))
@@ -437,6 +454,19 @@ func biome_model(mdl: Dictionary, type_id: String, hid: int, pid: int) -> Dictio
 		pool = (biome_set.get("models", {}) as Dictionary).get(type_id, [])
 	if pool.is_empty() or r.randf() >= chance:
 		return mdl
+	return _pick_model(r, pool)
+
+
+## [world2] A small or medium model of the same junk type (biome set first), for the starting hexes.
+func _small_model(t: Dictionary, type_id: String, pid: int) -> Dictionary:
+	var r := RandomNumberGenerator.new()
+	r.seed = hash([seed_value, pid, 4141])
+	var pool: Array = []
+	for m: Variant in (biome_set.get("models", {}) as Dictionary).get(type_id, []) + t.get("models", []):
+		if float((m as Dictionary).get("vol", 1.0)) < LARGE_VOL:
+			pool.append(m)
+	if pool.is_empty():
+		return {"id": "trashbag", "vol": 1.4, "lie": 0.0}
 	return _pick_model(r, pool)
 
 

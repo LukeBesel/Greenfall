@@ -93,3 +93,14 @@ func test_yard_stays_clear() -> void:
 		assert_ne(layout.surface_at(p.x, p.z), CityLayout.Surface.YARD, "junk on the yard slab at %s" % str(p))
 		if layout.surface_at(p.x, p.z) == CityLayout.Surface.YARD:
 			return
+
+
+func test_no_large_items_in_the_starting_hexes() -> void:
+	# [world2] Playtest #2: no tyres/TVs/stoves around the base; every piece has a size class.
+	assert_eq(field.piece_size.size(), field.piece_count())
+	var large: int = 0
+	for pid: int in field.piece_count():
+		if field.piece_size[pid] == HexField.SIZE_LARGE:
+			large += 1
+			assert_gt(Hex.distance(field.hex_axial[field.piece_hex[pid]], Vector2i.ZERO), 1, "large %s in a starting hex" % field.piece_model[pid])
+	assert_gt(large, 0, "big items still exist further out")

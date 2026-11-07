@@ -125,6 +125,25 @@ func build(p_field: HexField) -> void:
 	print("[farjunk] %d pieces + %d litter from %.0f to %.0f m (%d models)" % [pieces, litter, inner_r, FAR_R, models.size()])
 
 
+## [world2] Ground state for a hub or building-blocked hex (gen 2): its open ground belongs to the
+## neighbouring junk hexes, so it shows their mean cleaning and turns clean only when all are.
+## Returns Vector2(removed fraction, clean 0/1).
+static func owner_state(f: HexField, id: int) -> Vector2:
+	var rem: float = 0.0
+	var n: int = 0
+	var all_clean: bool = true
+	for o: Vector2i in Hex.DIRECTIONS:
+		var nb: int = int(f.axial_to_id.get(f.hex_axial[id] + o, -1))
+		if nb < 0 or f.hex_hub[nb] != 0 or f.is_water(nb):
+			continue
+		rem += f.removed_fraction(nb)
+		n += 1
+		all_clean = all_clean and f.is_clean(nb)
+	if n == 0:
+		return Vector2(1.0, 1.0)
+	return Vector2(rem / n, 1.0 if all_clean else 0.0)
+
+
 ## Open ground outside the field: not in a field hex (warped), not a building or the yard.
 func _open(p: Vector3) -> bool:
 	if field.hex_at(p) >= 0 or field.owner_hex(p) >= 0:

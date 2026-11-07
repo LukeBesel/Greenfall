@@ -309,6 +309,11 @@ func _set_shown(pid: int, on: bool) -> void:
 
 func refresh_hex(id: int, flipped_now: bool = false) -> void:
 	_write_hex(id, clock if flipped_now else -1.0)
+	if field.junk_gen >= 2:  # [world2] hub/blocked ground follows the junk hexes that own it
+		for o: Vector2i in Hex.DIRECTIONS:
+			var nb: int = int(field.axial_to_id.get(field.hex_axial[id] + o, -1))
+			if nb >= 0 and field.hex_hub[nb] != 0:
+				_write_hex(nb, clock if flipped_now else -1.0)
 	_update_mounds(id)
 	_resettle(id)
 	_dirty_tex = true
@@ -321,6 +326,10 @@ func _write_hex(id: int, flip_time: float) -> void:
 	var prev: Color = _state_img.get_pixel(x, y)
 	var ft: float = prev.g if flip_time == -1.0 else flip_time
 	var flag: float = 1.0 if field.hex_hub[id] == 1 else (0.5 if field.is_water(id) else 0.0)
+	if field.junk_gen >= 2 and field.hex_hub[id] != 0:  # [world2] only the yard slab is clean ground
+		var nb: Vector2 = FarJunk.owner_state(field, id)
+		_state_img.set_pixel(x, y, Color(nb.x, ft, nb.y, 0.0))
+		return
 	_state_img.set_pixel(x, y, Color(field.removed_fraction(id), ft, float(field.hex_clean[id]), flag))
 
 
