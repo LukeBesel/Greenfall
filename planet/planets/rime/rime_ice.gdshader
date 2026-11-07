@@ -88,8 +88,8 @@ void fragment() {
 	float ice_rough = 0.06 + 0.12 * fr1 + 0.1 * n3;
 	// --- Snow ---------------------------------------------------------------------------
 	vec3 snow = mix(texture(snow_tex, p * 0.11).rgb, texture(snow_tex, p * 0.023 + 0.3).rgb, 0.45) * snow_tint;
-	float snow_amt = clamp(drift * 1.2 + smoothstep(0.55, 0.8, n2) * 0.5 - slope * 1.6 - ridge * 0.4, 0.0, 1.0);
-	snow_amt = max(snow_amt, smoothstep(0.62, 0.9, n2 + (1.0 - slope) * 0.2) * 0.6 * (1.0 - crev));
+	float snow_amt = clamp(drift * 1.1 + smoothstep(0.58, 0.8, n2) * 0.45 - slope * 1.8 - ridge * 0.5 - 0.15, 0.0, 1.0);
+	snow_amt = max(snow_amt, smoothstep(0.66, 0.9, n2 + (1.0 - slope) * 0.15) * 0.5 * (1.0 - crev));
 	vec3 alb = mix(ice, snow, snow_amt);
 	float rough = mix(ice_rough, 0.62, snow_amt);
 	// Steep faces (ridges, cliffs) are bare blue ice with banding.

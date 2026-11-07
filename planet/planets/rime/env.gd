@@ -1162,9 +1162,9 @@ func _dress_field() -> void:
 		var m := ShaderMaterial.new()
 		m.shader = preload("res://art/shaders/junk_coat.gdshader")
 		m.set_shader_parameter("coat", Color(float(jt[0]), float(jt[1]), float(jt[2])))
-		m.set_shader_parameter("top_amt", 0.95)
-		m.set_shader_parameter("film", 0.3)
-		m.set_shader_parameter("roughness", 0.22)
+		m.set_shader_parameter("top_amt", 0.6)
+		m.set_shader_parameter("film", 0.12)
+		m.set_shader_parameter("roughness", 0.3)
 		_mats["junk_coat"] = m
 		view.set_junk_overlay(m)
 	# If the view was not dressed before setup, remove its generic dirt-hill horizon.
@@ -1304,7 +1304,7 @@ func _apply_restore() -> void:
 	if _mist_mat:
 		_mist_mat.set_shader_parameter("tint", Color(0.8, 0.88, 1.0).lerp(Color(1.0, 0.94, 0.86), w))
 	if _mats.has("junk_coat"):
-		(_mats["junk_coat"] as ShaderMaterial).set_shader_parameter("top_amt", lerpf(0.95, 0.55, w))
+		(_mats["junk_coat"] as ShaderMaterial).set_shader_parameter("top_amt", lerpf(0.6, 0.3, w))
 
 
 ## Dev: --rime-cam=dist,pitch,yaw[,fov] (landscape shots), --rime-nohud, --rime-restore=R (holds
@@ -1414,13 +1414,13 @@ func _update_light() -> void:
 	var day_fog := Color(fc.x, fc.y, fc.z)
 	_env.fog_light_color = Color(0.03, 0.05, 0.1).lerp(day_fog, sun_up)
 	_env.fog_density = float(fog.get("density", 0.0006)) * lerpf(1.25, 0.85, w)
-	_env.fog_sky_affect = 0.12
+	_env.fog_sky_affect = 0.0
 	_env.fog_aerial_perspective = float(fog.get("aerial", 0.35))
 	_env.fog_height = float(fog.get("height", 1.6))
 	_env.fog_height_density = float(fog.get("height_density", 0.006)) * (1.0 + night)
 	_env.volumetric_fog_density = lerpf(0.0012, 0.0006, w)
 	_env.volumetric_fog_albedo = Color(0.82, 0.88, 0.98)
-	_env.volumetric_fog_sky_affect = 0.05
+	_env.volumetric_fog_sky_affect = 0.0
 	var amb: Dictionary = kind.get("ambient", {})
 	var ac: Vector3 = _v3(amb.get("color", [0.6, 0.72, 0.92]))
 	_env.ambient_light_color = Color(0.22, 0.27, 0.42).lerp(Color(ac.x, ac.y, ac.z), sun_up).lerp(Color(0.75, 0.72, 0.68), w * 0.15)

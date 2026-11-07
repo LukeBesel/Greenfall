@@ -23,8 +23,8 @@ uniform float sun_b_amt = 0.25;
 uniform vec3 giant_dir = vec3(-0.38, 0.17, -0.91);
 uniform float giant_r = 0.325;     // sin of the angular radius
 uniform vec3 giant_pole = vec3(0.25, 0.95, 0.18);
-uniform float ring_in = 1.35;
-uniform float ring_out = 2.35;
+uniform float ring_in = 1.3;
+uniform float ring_out = 2.25;
 uniform vec3 band_a : source_color = vec3(0.86, 0.78, 0.64);
 uniform vec3 band_b : source_color = vec3(0.52, 0.66, 0.68);
 uniform vec3 band_c : source_color = vec3(0.68, 0.56, 0.62);
@@ -142,32 +142,34 @@ void sky() {
 		// Its edge melts a little into the horizon haze (it is far beyond the air).
 		front = mix(front, col, exp(-max(el, 0.0) * 40.0) * 0.35);
 	}
-	// --- Rings --------------------------------------------------------------------------
-	float dn = dot(d, pole);
-	if (abs(dn) > 0.0005) {
-		float tr = dot(gc, pole) / dn;
-		if (tr > 0.0) {
-			vec3 q = d * tr;
-			float rr = length(q - gc) / giant_r;
-			if (rr > ring_in && rr < ring_out) {
-				float u = (rr - ring_in) / (ring_out - ring_in);
-				float dens = 0.55 + 0.45 * sin(u * 61.0) * sin(u * 23.0 + 1.0);
-				dens *= smoothstep(0.0, 0.04, u) * smoothstep(1.0, 0.93, u);
-				dens *= 1.0 - smoothstep(0.52, 0.55, u) * smoothstep(0.6, 0.57, u) * 0.92;   // the gap
-				dens = clamp(dens * (0.6 + 0.4 * vnoise(vec2(u * 160.0, 0.5))), 0.0, 1.0) * 0.85;
-				// Planet shadow on the rings.
-				vec3 toq = q - gc;
-				float along = dot(toq, L);
-				float perp = length(toq - L * along);
-				float shadow = (along < 0.0 && perp < giant_r) ? 0.08 : 1.0;
-				vec3 rc = mix(vec3(0.82, 0.76, 0.66), vec3(0.62, 0.7, 0.74), u) * (0.55 * shadow + 0.02);
-				if (tr < t_planet) {
-					front = mix(front, rc, dens);
-					occl = max(occl, dens);
-				} else if (occl < 0.5) {
-					front = mix(front, rc, dens);
-					occl = max(occl, dens);
-				}
+	// --- Rings ---------------------------------------------------------------------------
+	// The giant is far away: rays near it are treated as parallel (gnomonic offset v from its
+	// centre), so the ring is a clean tilted ellipse instead of sweeping over the viewer.
+	float gdot = dot(d, gc);
+	float pg = dot(gc, pole);
+	if (gdot > 0.2 && abs(pg) > 0.02) {
+		vec3 v = d / gdot - gc;
+		float s = -dot(v, pole) / pg;
+		vec3 toq = v + gc * s;
+		float rr = length(toq) / giant_r;
+		if (rr > ring_in && rr < ring_out) {
+			float u = (rr - ring_in) / (ring_out - ring_in);
+			float dens = 0.55 + 0.45 * sin(u * 61.0) * sin(u * 23.0 + 1.0);
+			dens *= smoothstep(0.0, 0.04, u) * smoothstep(1.0, 0.93, u);
+			dens *= 1.0 - smoothstep(0.52, 0.55, u) * smoothstep(0.6, 0.57, u) * 0.92;   // the gap
+			dens = clamp(dens * (0.6 + 0.4 * vnoise(vec2(u * 160.0, 0.5))), 0.0, 1.0) * 0.85;
+			// Planet shadow on the rings (cast away from the suns).
+			float along = dot(toq, L);
+			float perp = length(toq - L * along);
+			float shadow = (along < 0.0 && perp < giant_r) ? 0.08 : 1.0;
+			float ringlit = 0.35 + 0.65 * abs(dot(L, pole));
+			vec3 rc = mix(vec3(0.82, 0.76, 0.66), vec3(0.62, 0.7, 0.74), u) * (0.6 * shadow * ringlit + 0.02);
+			float vv = dot(v, v);
+			float s_front = -sqrt(max(giant_r * giant_r - vv, 0.0));
+			bool on_planet = vv < giant_r * giant_r;
+			if (!on_planet || s < s_front) {
+				front = mix(front, rc, dens);
+				occl = max(occl, dens);
 			}
 		}
 	}
