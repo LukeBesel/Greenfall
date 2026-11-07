@@ -391,6 +391,7 @@ func _ground() -> void:
 	if wm is ShaderMaterial:
 		(wm as ShaderMaterial).set_shader_parameter("murky_col", Vector3(0.3, 0.12, 0.06))
 		(wm as ShaderMaterial).set_shader_parameter("clear_col", Vector3(0.09, 0.36, 0.38))
+		(wm as ShaderMaterial).set_shader_parameter("alpha_mc", Vector2(0.97, 0.8))
 
 
 ## Anvil's land: rolling dust plains, layered mesas past ~110 m, a canyon to the west, flat
@@ -849,6 +850,11 @@ func _apply_restore() -> void:
 	if sd:
 		sd.set("grade", sky_grade(r))
 		sd.set("grade_amt", 1.0)
+	# Thin Mars-like air scatters little blue; the terraformed atmosphere thickens.
+	var we: Environment = world.get("_env")
+	if we and we.sky and we.sky.sky_material is PhysicalSkyMaterial:
+		var sk: Dictionary = entry.get("sky", {})
+		(we.sky.sky_material as PhysicalSkyMaterial).rayleigh_coefficient = lerpf(float(sk.get("rayleigh_coef", 1.4)), float((entry.get("restored", {}) as Dictionary).get("rayleigh_coef", 2.6)), _smooth(0.1, 0.95, r))
 		sd.set("clear_bonus", maxf(float(sd.get("clear_bonus")), 0.85 * r))
 	# The core: ember red, dim, slowly breathing; rekindled warm white-gold as Anvil recovers.
 	var cc: Color = EMBER.lerp(CORE_WARM, _smooth(0.3, 0.9, r))
