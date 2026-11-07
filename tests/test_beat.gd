@@ -144,3 +144,15 @@ func test_save_falls_back_to_tmp_when_rename_was_interrupted() -> void:
 	assert_true(SaveManager.read_dict(path).is_empty())
 	assert_false(SaveManager.read_dict(path + ".tmp").is_empty())
 	DirAccess.remove_absolute(path + ".tmp")
+
+
+func test_rocket_recharge_survives_a_clock_change() -> void:
+	var saved: float = RocketTiers.now_override
+	RocketTiers.now_override = 5000.0
+	GameState.flags["rocket_ready_unix"] = 1.0e9  # a timestamp from another clock
+	var left: float = RocketTiers.recharge_left()
+	assert_lte(left, float(RocketTiers.def().get("recharge_s", 0.0)))
+	RocketTiers.now_override = 5000.0 + left + 1.0
+	assert_eq(RocketTiers.recharge_left(), 0.0, "it counts down instead of sticking at full")
+	RocketTiers.now_override = saved
+	GameState.flags.erase("rocket_ready_unix")

@@ -75,8 +75,13 @@ static func recharge_left() -> float:
 	if DevHooks.has("auto-launch"):
 		return 0.0
 	var at: float = float(GameState.flags.get("rocket_ready_unix", 0.0))
-	# [beat] Never more than a full recharge (clock changed, or a save from another clock).
-	return clampf(at - _clock(), 0.0, float(def().get("recharge_s", 0.0)))
+	# [beat] Never more than a full recharge (clock set back, or a save from another clock): restart
+	# the countdown from now instead of waiting for the old timestamp.
+	var full: float = float(def().get("recharge_s", 0.0))
+	if at - _clock() > full:
+		at = _clock() + full
+		GameState.flags["rocket_ready_unix"] = at
+	return maxf(0.0, at - _clock())
 
 
 static func mark_launched() -> void:
