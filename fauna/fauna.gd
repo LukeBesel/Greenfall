@@ -131,6 +131,12 @@ func setup(p_world: Node) -> void:
 				fl.cleaned_count += 1
 			if fl.is_water(h):
 				world.view.refresh_hex(h, false)
+	if DevHooks.has("fauna-look") and not DevHooks.has("core-beat"):
+		# Shots: --future previews would otherwise trigger the Bloom Core story beats (cinematics).
+		var beats: Array = CoreCharge.beats_done()
+		for b: int in [25, 50, 75]:
+			if not (b in beats):
+				beats.append(b)
 	if DevHooks.has("fauna-look") or DevHooks.has("fauna-dense"):
 		# Screenshots: software rendering draws only a few frames, so populate right away.
 		_lumi_pos = world.patch.global_position if world.get("patch") else Vector3.ZERO
