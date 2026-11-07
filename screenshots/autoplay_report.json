@@ -249,9 +249,9 @@
       "bolts": 939.0,
       "bots": {
         "hauling # bales": 2,
-        "idle · everything watered": 5,
-        "idle · no empty soil": 1,
-        "idle · nothing left to clean": 3,
+        "idle \u00b7 everything watered": 5,
+        "idle \u00b7 no empty soil": 1,
+        "idle \u00b7 nothing left to clean": 3,
         "looking for thirsty plants": 1,
         "skimming lake hex # (#%)": 3,
         "taking a bale to shore": 4
@@ -309,12 +309,12 @@
       "bots": {
         "hauling # bale": 1,
         "hauling # bales": 1,
-        "idle · everything watered": 4,
-        "idle · no empty soil": 1,
-        "idle · nothing left to clean": 3,
+        "idle \u00b7 everything watered": 4,
+        "idle \u00b7 no empty soil": 1,
+        "idle \u00b7 nothing left to clean": 3,
         "skimming lake hex # (#%)": 4,
         "taking a bale to shore": 3,
-        "watering · tank #%": 2
+        "watering \u00b7 tank #%": 2
       },
       "cubes": 126666.0,
       "data": 17512.3,
@@ -369,9 +369,9 @@
       "bots": {
         "hauling # bale": 1,
         "hauling # bales": 1,
-        "idle · everything watered": 6,
-        "idle · no empty soil": 1,
-        "idle · nothing left to clean": 3,
+        "idle \u00b7 everything watered": 6,
+        "idle \u00b7 no empty soil": 1,
+        "idle \u00b7 nothing left to clean": 3,
         "skimming lake hex # (#%)": 4,
         "taking a bale to shore": 3
       },
@@ -427,13 +427,13 @@
       "bolts": 954.0,
       "bots": {
         "hauling # bales": 2,
-        "idle · everything watered": 4,
-        "idle · no empty soil": 1,
-        "idle · nothing left to clean": 3,
+        "idle \u00b7 everything watered": 4,
+        "idle \u00b7 no empty soil": 1,
+        "idle \u00b7 nothing left to clean": 3,
         "looking for thirsty plants": 1,
         "skimming lake hex # (#%)": 5,
         "taking a bale to shore": 2,
-        "watering · tank #%": 1
+        "watering \u00b7 tank #%": 1
       },
       "cubes": 130790.0,
       "data": 17548.5,
@@ -536,11 +536,11 @@
       "bots": {
         "cleaning hex # (#%)": 2,
         "hauling # bales": 2,
-        "idle · everything watered": 4,
-        "idle · nothing left to clean": 1,
+        "idle \u00b7 everything watered": 4,
+        "idle \u00b7 nothing left to clean": 1,
         "planting": 1,
         "skimming lake hex # (#%)": 7,
-        "watering · tank #%": 2
+        "watering \u00b7 tank #%": 2
       },
       "cubes": 173744.0,
       "data": 17636.0,
@@ -673,11 +673,11 @@
       "bots": {
         "cleaning hex # (#%)": 2,
         "hauling # bales": 2,
-        "idle · everything watered": 4,
-        "idle · nothing left to clean": 1,
+        "idle \u00b7 everything watered": 4,
+        "idle \u00b7 nothing left to clean": 1,
         "planting": 1,
         "skimming lake hex # (#%)": 7,
-        "watering · tank #%": 3
+        "watering \u00b7 tank #%": 3
       },
       "cubes": 169342.0,
       "data": 17780.9,
@@ -798,13 +798,13 @@
       "bots": {
         "cleaning hex # (#%)": 2,
         "hauling # bales": 2,
-        "idle · everything watered": 1,
-        "idle · nothing left to clean": 1,
+        "idle \u00b7 everything watered": 1,
+        "idle \u00b7 nothing left to clean": 1,
         "looking for soil": 1,
         "looking for thirsty plants": 1,
         "skimming lake hex # (#%)": 6,
         "taking a bale to shore": 1,
-        "watering · tank #%": 5
+        "watering \u00b7 tank #%": 5
       },
       "cubes": 172717.0,
       "data": 17919.9,
@@ -952,11 +952,11 @@
         "cleaning hex # (#%)": 3,
         "fetching a bale": 1,
         "hauling # bale": 1,
-        "idle · everything watered": 3,
+        "idle \u00b7 everything watered": 3,
         "looking for thirsty plants": 2,
         "planting": 1,
         "skimming lake hex # (#%)": 7,
-        "watering · tank #%": 2
+        "watering \u00b7 tank #%": 2
       },
       "cubes": 188691.0,
       "data": 18151.8,
@@ -1081,11 +1081,11 @@
         "cleaning hex # (#%)": 3,
         "fetching a bale": 1,
         "hauling # bale": 1,
-        "idle · everything watered": 3,
+        "idle \u00b7 everything watered": 3,
         "planting": 1,
         "skimming lake hex # (#%)": 6,
         "taking a bale to shore": 1,
-        "watering · tank #%": 4
+        "watering \u00b7 tank #%": 4
       },
       "cubes": 191727.0,
       "data": 18350.7,
@@ -1181,7 +1181,7 @@
         "planting": 1,
         "skimming lake hex # (#%)": 6,
         "taking a bale to shore": 1,
-        "watering · tank #%": 6
+        "watering \u00b7 tank #%": 6
       },
       "cubes": 194740.0,
       "data": 18529.0,
@@ -1293,11 +1293,11 @@
       "bots": {
         "cleaning hex # (#%)": 3,
         "hauling # bales": 2,
-        "idle · everything watered": 5,
+        "idle \u00b7 everything watered": 5,
         "looking for soil": 1,
         "refilling at tank (#%)": 1,
         "skimming lake hex # (#%)": 7,
-        "watering · tank #%": 1
+        "watering \u00b7 tank #%": 1
       },
       "cubes": 197453.0,
       "data": 18687.9,
@@ -1384,11 +1384,11 @@
       "bots": {
         "cleaning hex # (#%)": 3,
         "hauling # bales": 2,
-        "idle · everything watered": 4,
-        "idle · lake is clean": 7,
+        "idle \u00b7 everything watered": 4,
+        "idle \u00b7 lake is clean": 7,
         "looking for thirsty plants": 2,
         "planting": 1,
-        "watering · tank #%": 2
+        "watering \u00b7 tank #%": 2
       },
       "cubes": 192228.0,
       "data": 18833.5,
@@ -1479,11 +1479,11 @@
       "bots": {
         "cleaning hex # (#%)": 3,
         "hauling # bales": 2,
-        "idle · everything watered": 4,
-        "idle · lake is clean": 7,
+        "idle \u00b7 everything watered": 4,
+        "idle \u00b7 lake is clean": 7,
         "looking for thirsty plants": 2,
         "planting": 1,
-        "watering · tank #%": 3
+        "watering \u00b7 tank #%": 3
       },
       "cubes": 189228.0,
       "data": 19001.7,
@@ -1610,11 +1610,11 @@
       "bots": {
         "cleaning hex # (#%)": 3,
         "hauling # bales": 2,
-        "idle · everything watered": 5,
-        "idle · lake is clean": 7,
+        "idle \u00b7 everything watered": 5,
+        "idle \u00b7 lake is clean": 7,
         "looking for thirsty plants": 1,
         "planting": 1,
-        "watering · tank #%": 3
+        "watering \u00b7 tank #%": 3
       },
       "cubes": 193440.0,
       "data": 19182.0,
@@ -1734,10 +1734,10 @@
         "cleaning hex # (#%)": 3,
         "hauling # bale": 1,
         "hauling # bales": 1,
-        "idle · lake is clean": 7,
+        "idle \u00b7 lake is clean": 7,
         "looking for soil": 1,
         "looking for thirsty plants": 1,
-        "watering · tank #%": 8
+        "watering \u00b7 tank #%": 8
       },
       "cubes": 196426.0,
       "data": 19244.7,
@@ -1805,11 +1805,11 @@
         "cleaning hex # (#%)": 3,
         "hauling # bale": 1,
         "hauling # bales": 1,
-        "idle · everything watered": 6,
-        "idle · lake is clean": 7,
+        "idle \u00b7 everything watered": 6,
+        "idle \u00b7 lake is clean": 7,
         "planting": 1,
         "refilling at tank (#%)": 1,
-        "watering · tank #%": 2
+        "watering \u00b7 tank #%": 2
       },
       "cubes": 198709.0,
       "data": 19300.0,
@@ -1952,10 +1952,10 @@
         "cleaning hex # (#%)": 3,
         "hauling # bale": 1,
         "hauling # bales": 1,
-        "idle · lake is clean": 7,
+        "idle \u00b7 lake is clean": 7,
         "looking for thirsty plants": 2,
         "planting": 1,
-        "watering · tank #%": 7
+        "watering \u00b7 tank #%": 7
       },
       "cubes": 201105.0,
       "data": 19377.3,
@@ -2032,11 +2032,11 @@
         "cleaning hex # (#%)": 3,
         "hauling # bale": 1,
         "hauling # bales": 1,
-        "idle · everything watered": 6,
-        "idle · lake is clean": 7,
+        "idle \u00b7 everything watered": 6,
+        "idle \u00b7 lake is clean": 7,
         "looking for thirsty plants": 2,
         "planting": 1,
-        "watering · tank #%": 1
+        "watering \u00b7 tank #%": 1
       },
       "cubes": 208451.0,
       "data": 19457.4,
@@ -2162,10 +2162,10 @@
         "cleaning hex # (#%)": 3,
         "hauling # bale": 1,
         "hauling # bales": 1,
-        "idle · lake is clean": 7,
+        "idle \u00b7 lake is clean": 7,
         "looking for thirsty plants": 1,
         "planting": 1,
-        "watering · tank #%": 8
+        "watering \u00b7 tank #%": 8
       },
       "cubes": 211557.0,
       "data": 19501.6,
@@ -2326,13 +2326,13 @@
       "bots": {
         "hauling # bale": 1,
         "hauling # bales": 1,
-        "idle · everything watered": 6,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 1,
+        "idle \u00b7 everything watered": 6,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 1,
         "looking for thirsty plants": 3,
         "nothing left to clean": 2,
         "planting": 1,
-        "watering · tank #%": 2
+        "watering \u00b7 tank #%": 2
       },
       "cubes": 72077.0,
       "data": 19600.1,
@@ -2423,11 +2423,11 @@
         "cleaning hex # (#%)": 6,
         "hauling # bale": 1,
         "hauling # bales": 1,
-        "idle · everything watered": 4,
-        "idle · lake is clean": 7,
+        "idle \u00b7 everything watered": 4,
+        "idle \u00b7 lake is clean": 7,
         "looking for thirsty plants": 1,
         "planting": 1,
-        "watering · tank #%": 6
+        "watering \u00b7 tank #%": 6
       },
       "cubes": 4279.0,
       "data": 19671.0,
@@ -2530,13 +2530,13 @@
       "bots": {
         "fetching a bale": 1,
         "hauling # bales": 1,
-        "idle · everything watered": 3,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 7,
+        "idle \u00b7 everything watered": 3,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 7,
         "looking for thirsty plants": 3,
         "planting": 1,
         "refilling at tank (#%)": 1,
-        "watering · tank #%": 4
+        "watering \u00b7 tank #%": 4
       },
       "cubes": 7127.0,
       "data": 19808.5,
@@ -2641,11 +2641,11 @@
       "bots": {
         "fetching a bale": 1,
         "hauling # bales": 1,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 8,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 8,
         "looking for thirsty plants": 1,
         "planting": 1,
-        "watering · tank #%": 10
+        "watering \u00b7 tank #%": 10
       },
       "cubes": 2335.0,
       "data": 19894.4,
@@ -2752,13 +2752,13 @@
       "bots": {
         "hauling # bale": 1,
         "hauling # bales": 1,
-        "idle · everything watered": 5,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 8,
+        "idle \u00b7 everything watered": 5,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 8,
         "looking for thirsty plants": 2,
         "planting": 1,
         "refilling at base barrel (#%)": 1,
-        "watering · tank #%": 3
+        "watering \u00b7 tank #%": 3
       },
       "cubes": 6355.0,
       "data": 19982.8,
@@ -2813,10 +2813,10 @@
       "bots": {
         "hauling # bale": 1,
         "hauling # bales": 1,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 8,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 8,
         "planting": 1,
-        "watering · tank #%": 11
+        "watering \u00b7 tank #%": 11
       },
       "cubes": 9248.0,
       "data": 20087.5,
@@ -2925,13 +2925,13 @@
       "bots": {
         "hauling # bale": 1,
         "hauling # bales": 1,
-        "idle · everything watered": 1,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 9,
+        "idle \u00b7 everything watered": 1,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 9,
         "looking for thirsty plants": 1,
         "planting": 1,
         "refilling at tank (#%)": 1,
-        "watering · tank #%": 8
+        "watering \u00b7 tank #%": 8
       },
       "cubes": 6249.0,
       "data": 20159.1,
@@ -3042,11 +3042,11 @@
       "bots": {
         "hauling # bale": 1,
         "hauling # bales": 1,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 9,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 9,
         "looking for thirsty plants": 1,
         "planting": 1,
-        "watering · tank #%": 10
+        "watering \u00b7 tank #%": 10
       },
       "cubes": 9184.0,
       "data": 20231.4,
@@ -3159,13 +3159,13 @@
       "bots": {
         "hauling # bale": 1,
         "hauling # bales": 1,
-        "idle · everything watered": 3,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 9,
+        "idle \u00b7 everything watered": 3,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 9,
         "looking for thirsty plants": 3,
         "planting": 1,
         "refilling at tank (#%)": 1,
-        "watering · tank #%": 4
+        "watering \u00b7 tank #%": 4
       },
       "cubes": 12542.0,
       "data": 20286.2,
@@ -3280,13 +3280,13 @@
       "bots": {
         "fetching a bale": 1,
         "hauling # bales": 1,
-        "idle · everything watered": 1,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 10,
+        "idle \u00b7 everything watered": 1,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 10,
         "looking for thirsty plants": 4,
         "planting": 1,
         "refilling at tank (#%)": 1,
-        "watering · tank #%": 5
+        "watering \u00b7 tank #%": 5
       },
       "cubes": 2196.0,
       "data": 20379.7,
@@ -3402,11 +3402,11 @@
       "bolts": 1008.0,
       "bots": {
         "hauling # bales": 2,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 10,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 10,
         "looking for thirsty plants": 1,
         "planting": 1,
-        "watering · tank #%": 10
+        "watering \u00b7 tank #%": 10
       },
       "cubes": 5211.0,
       "data": 20460.3,
@@ -3524,13 +3524,13 @@
       "bolts": 1008.0,
       "bots": {
         "hauling # bales": 2,
-        "idle · everything watered": 1,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 10,
+        "idle \u00b7 everything watered": 1,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 10,
         "looking for soil": 1,
         "looking for thirsty plants": 2,
         "refilling at tank (#%)": 1,
-        "watering · tank #%": 7
+        "watering \u00b7 tank #%": 7
       },
       "cubes": 8129.0,
       "data": 20555.4,
@@ -3584,13 +3584,13 @@
       "bolts": 1008.0,
       "bots": {
         "hauling # bales": 2,
-        "idle · everything watered": 1,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 10,
+        "idle \u00b7 everything watered": 1,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 10,
         "looking for thirsty plants": 3,
         "planting": 1,
         "refilling at tank (#%)": 1,
-        "watering · tank #%": 6
+        "watering \u00b7 tank #%": 6
       },
       "cubes": 11136.0,
       "data": 20671.5,
@@ -3710,12 +3710,12 @@
       "bolts": 1008.0,
       "bots": {
         "hauling # bales": 2,
-        "idle · everything watered": 1,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 10,
+        "idle \u00b7 everything watered": 1,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 10,
         "looking for thirsty plants": 3,
         "planting": 1,
-        "watering · tank #%": 7
+        "watering \u00b7 tank #%": 7
       },
       "cubes": 14723.0,
       "data": 20753.4,
@@ -3837,12 +3837,12 @@
       "bolts": 1018.0,
       "bots": {
         "hauling # bales": 2,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 11,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 11,
         "looking for thirsty plants": 1,
         "planting": 1,
         "refilling at tank (#%)": 5,
-        "watering · tank #%": 5
+        "watering \u00b7 tank #%": 5
       },
       "cubes": 5897.0,
       "data": 20838.0,
@@ -3966,12 +3966,12 @@
       "bolts": 1018.0,
       "bots": {
         "hauling # bales": 2,
-        "idle · everything watered": 2,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 11,
+        "idle \u00b7 everything watered": 2,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 11,
         "planting": 1,
         "refilling at tank (#%)": 3,
-        "watering · tank #%": 6
+        "watering \u00b7 tank #%": 6
       },
       "cubes": 12331.0,
       "data": 20933.1,
@@ -4098,12 +4098,12 @@
       "bots": {
         "fetching a bale": 1,
         "hauling # bale": 1,
-        "idle · lake is clean": 7,
-        "idle · nothing left to clean": 11,
+        "idle \u00b7 lake is clean": 7,
+        "idle \u00b7 nothing left to clean": 11,
         "looking for thirsty plants": 3,
         "planting": 2,
         "refilling at base barrel (#%)": 1,
-        "watering · tank #%": 7
+        "watering \u00b7 tank #%": 7
       },
       "cubes": 7873.0,
       "data": 20989.9,
@@ -6374,5 +6374,113 @@
     "scoop_speed": 11,
     "scoop_width": 13,
     "tread_speed": 15
+  },
+  "campaign_full_run_min": {
+    "first_cube_s": 0.6,
+    "first_upgrade_s": 0.6,
+    "first_cashin_s": 0.7,
+    "first_hex_s": 2.3,
+    "first_hexlv_1_s": 2.3,
+    "first_research_s": 5.8,
+    "first_robot_s": 7.2,
+    "first_scoopie_s": 7.2,
+    "first_haulbug_s": 9.4,
+    "base_2_s": 11.4,
+    "first_skimmer_s": 31.5,
+    "first_hexlv_2_s": 31.6,
+    "first_hexlv_3_s": 32.4,
+    "first_hexlv_4_s": 34.6,
+    "first_hexlv_5_s": 44.0,
+    "first_seedling_s": 45.2,
+    "base_3_s": 66.1,
+    "first_drip_s": 69.0,
+    "base_4_s": 86.2,
+    "first_multibot_s": 89.6,
+    "launch_1_s": 102.4,
+    "base_5_s": 102.4,
+    "launch_2_s": 180.1,
+    "arrive_dust_flats_s": 180.7,
+    "dust_flats_base5_s": 254.5,
+    "core_25_s": 281.4,
+    "seed_tin_s": 281.4,
+    "garden_takes_off_s": 281.4,
+    "dust_flats_growing50_s": 281.8,
+    "core_50_s": 283.8,
+    "launch_3_s": 308.5,
+    "arrive_frozen_port_s": 309.2,
+    "frozen_port_base5_s": 339.9,
+    "frozen_port_growing50_s": 345.1,
+    "launch_4_s": 345.1,
+    "arrive_sunken_city_s": 345.8,
+    "sunken_city_base5_s": 408.4,
+    "sunken_city_growing50_s": 425.5,
+    "launch_5_s": 425.5,
+    "arrive_cradle_returns_s": 426.1,
+    "core_75_s": 442.5,
+    "cradle_returns_base5_s": 450.3,
+    "cradle_returns_growing50_s": 471.1,
+    "cradle_complete_s": 479.2,
+    "core_100_s": 479.2,
+    "finale_done_s": 479.9,
+    "ark_wave_1_s": 480.6
+  },
+  "campaign_note": "Full run New Game -> Cradle -> Seed Ark in 7 continued stages (--save-dir=camp, 16x). Stage code changed between stages (fixes found on the way); first-district numbers from the re-run with the final pacing are in first_district_final_min. Marks core_25/seed_tin/garden_takes_off at 281.4 were added to the bot mid-run (real: core 25% at 49 min in that run).",
+  "first_district_final_min": {
+    "first_cube_s": 0.6,
+    "first_upgrade_s": 0.6,
+    "first_cashin_s": 0.7,
+    "first_hex_s": 4.3,
+    "first_hexlv_1_s": 4.3,
+    "first_research_s": 8.9,
+    "first_robot_s": 9.1,
+    "first_scoopie_s": 9.1,
+    "first_haulbug_s": 9.2,
+    "first_skimmer_s": 17.9,
+    "base_2_s": 19.3,
+    "seed_tin_s": 25.7,
+    "first_hexlv_2_s": 26.1,
+    "first_hexlv_3_s": 26.9,
+    "first_hexlv_4_s": 29.1,
+    "first_hexlv_5_s": 29.4,
+    "base_3_s": 43.0,
+    "core_25_s": 46.3,
+    "first_seedling_s": 49.1,
+    "first_drip_s": 62.7,
+    "base_4_s": 69.2,
+    "garden_takes_off_s": 70.1,
+    "launch_1_s": 74.4,
+    "base_5_s": 74.4
+  },
+  "cradle_jump_min": {
+    "first_research_s": 0.0,
+    "arrive_cradle_returns_s": 0.0,
+    "seed_tin_s": 0.0,
+    "garden_takes_off_s": 0.0,
+    "base_3_s": 0.0,
+    "first_robot_s": 0.0,
+    "first_drip_s": 0.0,
+    "first_upgrade_s": 0.0,
+    "first_scoopie_s": 0.1,
+    "first_cube_s": 0.1,
+    "first_haulbug_s": 0.2,
+    "first_cashin_s": 0.3,
+    "first_seedling_s": 0.6,
+    "first_hex_s": 0.9,
+    "first_hexlv_1_s": 0.9,
+    "first_hexlv_2_s": 1.0,
+    "first_hexlv_3_s": 1.6,
+    "first_multibot_s": 2.5,
+    "core_25_s": 2.8,
+    "first_hexlv_5_s": 3.9,
+    "first_hexlv_4_s": 4.7,
+    "cradle_returns_growing50_s": 16.3,
+    "base_4_s": 16.9,
+    "core_50_s": 32.0,
+    "cradle_returns_base5_s": 36.5,
+    "base_5_s": 36.5,
+    "core_75_s": 56.1,
+    "core_100_s": 56.1,
+    "cradle_complete_s": 56.1,
+    "finale_done_s": 56.8
   }
 }
