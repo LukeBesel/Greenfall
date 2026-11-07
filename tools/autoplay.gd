@@ -73,6 +73,7 @@ var _bench_fails: int = 0
 var _remote_shops: int = 0
 var _skip_shard: Dictionary = {}
 var _shard_t: Dictionary = {}
+var _stopping: bool = false
 
 
 func _init(p_world: Node) -> void:
@@ -112,6 +113,17 @@ func _mark(key: String) -> void:
 	if not _report.has(key):
 		_report[key] = _now()
 		print("[Autoplay] %s at %.1fs" % [key, _report[key]])
+		AutoplayCampaign.mark(key, _now())
+		if DevHooks.get_s("stop-at", "") == key:
+			_stop_run("stop-at " + key)
+
+
+## Ends a staged run: save (with --save-dir), write the report, quit.
+func _stop_run(why: String) -> void:
+	print("[Autoplay] stopping: %s at %.1f min" % [why, _now() / 60.0])
+	SaveManager.save_game()
+	write_report()
+	world.get_tree().quit()
 
 
 func _event(kind: String, data: Dictionary = {}) -> void:
@@ -188,6 +200,10 @@ func update(delta: float) -> void:
 		return
 	_dt = delta
 	Research.now_override = 1000.0 + float(GameState.stats.get("time_played", 0.0))
+	if DevHooks.has("game-minutes") and _now() >= DevHooks.get_f("game-minutes", 60.0) * 60.0 and not _stopping:
+		_stopping = true
+		_stop_run("game-minutes")
+		return
 	_hook_goals()
 	if DevHooks.has("probe") and not _report.has("probed"):
 		_report["probed"] = true
@@ -1223,6 +1239,8 @@ func write_report() -> void:
 	_report["timeline"] = _timeline
 	_report["log"] = _log
 	_report["ignored_pieces"] = _ignore_piece.size()
+	_report["campaign_min"] = AutoplayCampaign.timeline_min()  # [beat] milestones across stages
+	_report["district"] = str(world.get("district_name"))
 	var path: String = ProjectSettings.globalize_path("res://screenshots/autoplay_report.json")
 	var f := FileAccess.open(path, FileAccess.WRITE)
 	if f:
