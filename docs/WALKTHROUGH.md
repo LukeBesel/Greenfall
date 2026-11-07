@@ -73,22 +73,22 @@ hooks instead of played through.
   base 5 2:32 [bot].
 - Goals: fix up the new base (3, 4), Clean 50 hexes, 800 blooms, 40 restored hexes, second base at 5.
 - **Dust Flats unlock**: research Dune Charts (logistics line: ... Haul Routes > Rocket Cargo >
-  Dune Charts, 33k cubes in all) **and** two bases at level 5.
+  Dune Charts, 28.2k cubes in all) **and** two bases at level 5.
 
 ## 7. Dust Flats (3:00-4:30)
 - Radius-4 frontier (60 hexes), bulkier junk, bales x3, base costs x4 (286k cubes for levels 2-5).
 - Sandstorms every 5-8 min (first after 2.5 min) re-dust clean, bare, unplanted hexes that no
   Sustained hex shelters. Plant early; Dune Fences research widens shelter.
 - The well is dry: Drips refill at Water Tanks only (Dew Condensers research triples tank refill).
-- **Frozen Port unlock**: Thermal Lance research (cleaning line, 35k cubes), three bases at 5, Dust
+- **Frozen Port unlock**: Thermal Lance research (cleaning line, 29.8k cubes), three bases at 5, Dust
   Flats base at 3. The bot finishes Dust (base 5 + 50% Growing) before moving on.
 
 ## 8. Frozen Port (4:30-6:00)
 - Junk is locked in ice: Lumi's beam thaws a hex slowly (twice as fast with the Thermal Lance);
   heaters (E on ice, 90 cubes growing x1.32, max 16) thaw their hex fast and warm the neighbours.
-- Outdoors only cold-hardy plants grow after Cold-Hardy Seeds (Botany line, 56k cubes); before that,
+- Outdoors only cold-hardy plants grow after Cold-Hardy Seeds (Botany line, 51.4k cubes); before that,
   greenhouses (E with the seed tool on a clean hex; 450 cubes growing x1.25) take any seed.
-- **Sunken City unlock**: Pump Works research (hydrology line, 56k cubes), four bases at 5, Frozen
+- **Sunken City unlock**: Pump Works research (hydrology line, 51k cubes), four bases at 5, Frozen
   Port base at 3.
 
 ## 9. Sunken City (6:00-7:30)
@@ -97,7 +97,7 @@ hooks instead of played through.
 - Base costs x8; bales x8.
 
 ## 10. Cradle Returns and the finale (7:30-9:00)
-- **Unlock**: Ark Beacon research (102k cubes in all, needs Dune Charts + Dew Condensers), all three
+- **Unlock**: Ark Beacon research (91.7k cubes in all, needs Dune Charts + Dew Condensers), all three
   frontier bases at level 5, and every frontier at least 50% Growing.
 - The base starts at level 3 (ground crews kept it). Clean the 7-hex landing pad, plant it and get
   every pad hex to Sustained; get 70% of the district Growing.
