@@ -81,7 +81,7 @@ static func save_profile() -> bool:
 	DirAccess.make_dir_recursive_absolute(profile_path().get_base_dir())
 	_p()["saved_unix"] = Time.get_unix_time_from_system()  # [worlds2] Steam Cloud: newest profile wins
 	var ok: bool = SaveManager.write_dict(profile_path(), to_dict())
-	if ok and path_override == "":
+	if ok:
 		SteamService.on_saved(profile_path())  # [worlds2] the profile syncs with the world slots
 	return ok
 
