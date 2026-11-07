@@ -302,3 +302,33 @@ If a session ends: commit WIP in each worktree, then resume or merge.
 - Next: per-world WREN story beats; a title-screen world picker; Steam Cloud for profile.save; a
   stronger visual identity per world type (sky tint, skyline); wildlife reacting to decor (wt/wild).
 
+
+## Update: restored ground turns green (wt/green)
+- Root causes of "restored districts look brown": (1) the Poly Haven grass ground textures
+  (sparse_grass / leafy_grass) are olive-brown and tan, so even life 1.0 rendered tan under AgX;
+  (2) the plant files are whole rows of variants (and their LOD copies) merged into one mesh, then
+  decimated to ~1500 tris, so each slot showed a thin smear of life-size 20-40 cm clumps; (3) most of
+  a city hex is road, which never changed; (4) only ~15-45 plant slots per 10 m hex.
+- `plants/meadow.gd` + `art/shaders/meadow.gdshader`: living ground cover placed once over lots,
+  sidewalk fringes and kerb verges (~8-11k grass tufts, ~2-3k flower clumps, ~3.4k row sprouts at
+  High), grown entirely in the vertex shader from the field's life texture (R life, G hex level, B row
+  angle) at the same warped position as the ground, so the edges follow HexField.border_warp and
+  nothing is rebuilt on the CPU. Thriving hexes add shrubs, ferns and small trees (real plant models).
+  Planted = dark tilled soil in furrows (ground_pbr) with sprouts on the crests; Growing = young grass
+  patches; Sustained = closed sward + flowers; Thriving = dense meadow, flower carpet, shrubs/trees.
+- Ground: grass recoloured to rich greens (`grass_mat`), tilled rows, restored streets get clean
+  grey asphalt, grass verges from the kerbs and moss in cracks. Life texture is RGBA8 (filterable
+  everywhere) and uploads once per frame.
+- Garden plants: one variant per slot (`plants/plant_parts.gd`), `plant_scale` 1.8 in plants.json.
+  Butterflies 1.8x.
+- Dev: `--restore=N[,level]` / `--restore-ramp` / `--restore=lake[,level]` (real planted slots,
+  life, part-watered plants, Drips + a Seedling), `--green-cam=hid,dist,pitch,yaw`,
+  `--garden-report[=S]`, `--no-meadow`. `--future=N` now uses the same realistic growth.
+- Ledger intercepts: compact top-left card, short, no footer, hidden in Command view, photo mode,
+  cinematics and with the HUD hidden (the relay cinematic's own lines still show). Header text is
+  now "INTERCEPT // LEDGER" / "LEDGER // AMENDED" (new msgids: re-run tools/extract_strings.py after
+  merging with the translations branch).
+- Duck egg ("Duck on Duty") used the merged fire_hydrant file (clean + aged hydrants plus caps):
+  now one aged hydrant. The --fauna-look=duck shot needs a green shore: use `--restore=lake,5`.
+- Next: per-variant garden batches raise draw calls (~130 batches with all species); a merged
+  per-chunk garden mesh would cut it. Grass density by quality preset should be checked on real GPUs.
