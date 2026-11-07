@@ -1,11 +1,13 @@
 class_name PatchModel
 extends Node3D
 ## The player's robot, Lumi (LM-1): the ark's seed-keeper bot, fallen back to Verdance.
-## Matches the owner's concept sheet: a big wide rounded head with a glossy black visor and thick
-## glowing "C" eyes, vented ear side-pods with a thin glow stripe and an antenna stub, a curved antenna ending in an orange fin,
-## orange accents, a compact torso with an orange-framed chest screen and glowing waist slots,
-## segmented arms with three-finger claws (the right one projects a tractor beam), and a hover
-## bowl with a bright thruster ring instead of legs. Worn, dusty paint. Colorways are unlockable designs ("aurora" is
+## Matches the owner's Aurora portrait and turnaround (rebuilt Nov 2026, art/models/aurora/build_aurora.py):
+## a wide rounded-rectangle head (about 56% of his height) with a thick off-white shell, one curved
+## glossy black visor across nearly the whole front with two oversized cyan crescent eyes, round side
+## modules with a thin cyan ring lens and a mechanical hub, a short swept-back fin with an amber edge,
+## a compact torso tucked under the head with a raised recycling plate and orange latches, short
+## chunky arms with curved claws (the right one projects the pickup lasers), and a compact rounded
+## underside with one recessed hover ring. Worn, dusty paint. Colorways are unlockable designs ("aurora" is
 ## the default look). Faces -Z. Base (hover ring) near y=0.
 
 # Unlockable designs (owner's concept sheet; gameplay side in systems/designs.gd + data/designs.json).
@@ -27,11 +29,17 @@ const VARIANTS: Dictionary = {
 var variant: String = "aurora"
 
 # Interface used by Patch, the camera, the detector and baling.
-var chest_point := Vector3(0, 0.38, -0.22)
-var back_hatch_point := Vector3(0, 0.36, 0.2)
-var vent_points: Array[Vector3] = [Vector3(-0.33, 0.78, 0.0), Vector3(0.33, 0.78, 0.0)]
-var stack_point := Vector3(0, 1.22, 0.3)
-var lens_point := Vector3(0, 0.78, -0.3)
+var chest_point := Vector3(0, 0.4, -0.24)
+var back_hatch_point := Vector3(0, 0.38, 0.21)
+var vent_points: Array[Vector3] = [Vector3(-0.1, 0.98, 0.34), Vector3(0.1, 0.98, 0.34)]  # head's back vent slot
+var stack_point := Vector3(0, 1.3, 0.3)
+var lens_point := Vector3(0, 0.83, -0.37)
+## [hero] Attachment anchors for head pieces, chest icons, held items and back gear (character
+## builder). Positions in the model's float space (head_top in the head's space); see get_anchor().
+const ANCHORS := {"head_top": Vector3(0, 0.57, 0.03), "chest_plate": Vector3(0, 0.43, -0.224), "hand_r": Vector3(0, 0, -0.1), "hand_l": Vector3(0, 0, -0.1), "back": Vector3(0, 0.42, 0.215)}
+## Eye shapes for bot_face.gdshader's eye_shape (VARIANTS may set "eyes"; set_eye_shape() at runtime).
+const EYE_SHAPES := ["crescent", "round", "happy", "bar", "heart"]
+var _anchors: Dictionary = {}
 var sleeping: bool = false
 var _iris_now: float = 0.5
 
@@ -212,6 +220,12 @@ func _build() -> void:
 		"steel": Mats.metal("steel"),
 		"glow": Mats.lamp(glow, 3.2),
 		"lamp_accent": Mats.lamp(lamp_c, 2.4),
+		# [hero] Rebuild: side-module ring lenses and the hatch frame (thinner, dimmer than the eyes),
+		# the raised chest plate, the fin and the claws.
+		"glow_soft": Mats.lamp(glow, 1.5),
+		"plate": _paint((v["paint"] as Color).lightened(0.06), 17.0, cover, 0.25, 0.36),
+		"fin": _paint((v["trim"] as Color).lightened(0.12), 19.0, cover - 0.06, 0.55, 0.36),
+		"claw": _paint(Color(0.29, 0.3, 0.32), 23.0, 0.7, 0.7, 0.34),
 		# Design add-on materials (designs.glb).
 		"rust": _paint(Color(0.42, 0.36, 0.3), 13.0, 0.45, 0.5, 0.5),
 		"leaf": _leaf_mat(),
@@ -229,8 +243,11 @@ func _build() -> void:
 		m.set_shader_parameter("moss", float(v.get("moss", 0.0)))
 	if float(v.get("stripes", 0.0)) > 0.0:
 		(_mats["accent"] as ShaderMaterial).set_shader_parameter("stripes", float(v["stripes"]))
-	_face_mat.set_shader_parameter("half_width", 0.29)
-	_face_mat.set_shader_parameter("half_height", 0.17)
+	_face_mat.set_shader_parameter("half_width", 0.325)
+	_face_mat.set_shader_parameter("half_height", 0.212)
+	_face_mat.set_shader_parameter("eye_radius", 0.5)
+	_face_mat.set_shader_parameter("eye_spacing", 0.8)
+	_face_mat.set_shader_parameter("eye_shape", maxi(EYE_SHAPES.find(str(v.get("eyes", "crescent"))), 0))
 	_mats["face"] = _face_mat
 	_root = Node3D.new()
 	add_child(_root)
@@ -267,7 +284,10 @@ func _build() -> void:
 	_icon = null
 	_icon_mesh = null
 	if icon == "leaf" or icon == "cross":
-		_icon_mesh = _part(_float, "acc_icon_" + icon, _pivot("acc_icon_" + icon))
+		# designs.glb icons (modelled for the old chest screen): placed on the new plate.
+		_icon_mesh = _part(_float, "acc_icon_" + icon, ANCHORS["chest_plate"] + Vector3(0, 0, -0.004))
+	elif icon == "recycle" and _parts.has("icon_recycle"):
+		_icon_mesh = _part(_float, "icon_recycle", _pivot("icon_recycle"))
 	var icon_l := Label3D.new()
 	icon_l.visible = _icon_mesh == null
 	icon_l.text = "♻"
@@ -276,11 +296,11 @@ func _build() -> void:
 	icon_l.modulate = glow.lightened(0.3)
 	icon_l.outline_size = 0
 	icon_l.shaded = false
-	icon_l.position = Vector3(0, 0.44, -0.182)
+	icon_l.position = ANCHORS["chest_plate"] + Vector3(0, 0, -0.004)
 	_float.add_child(icon_l)
 	_icon = icon_l
 	_icon_color = icon_l.modulate
-	_fill_bar = _mi(_float, ProcMesh.box(Vector3(0.14, 0.01, 0.006)), Mats.lamp(glow, 2.5), Vector3(0, 0.388, -0.182))
+	_fill_bar = _mi(_float, ProcMesh.box(Vector3(0.14, 0.008, 0.005)), Mats.lamp(glow, 2.5), Vector3(0, 0.356, -0.226))
 	_fill_bar.scale.x = 0.01
 	# Back hatch where bales come out (hinged at its top edge).
 	_hatch = Node3D.new()
@@ -299,6 +319,7 @@ func _build() -> void:
 	_float.add_child(_head)
 	_part(_head, "head")
 	_part(_head, "visor", _pivot("visor") - _pivot("head"))
+	_make_anchors()
 	call_deferred("_find_sun")
 	_build_accessories(v)
 	# Tractor beam from the right claw: a cone of scrolling energy rings (tractor_beam shader)
@@ -542,6 +563,8 @@ func _process(delta: float) -> void:
 	_ring_mat.emission_energy_multiplier = (3.5 + sin(_t * 9.0) * 0.4) * core_glow + _flash * 4.0
 	if _mats.has("glow"):
 		(_mats["glow"] as StandardMaterial3D).emission_energy_multiplier = 3.2 * core_glow
+	if _mats.has("glow_soft"):
+		(_mats["glow_soft"] as StandardMaterial3D).emission_energy_multiplier = 1.5 * core_glow
 	_flash = maxf(0.0, _flash - delta * 2.0)
 	# Arms: reach forward and pinch while scooping; the right claw projects a small tractor beam.
 	_scoop_amt = move_toward(_scoop_amt, 1.0 if _scoop_t > 0.0 else 0.0, delta * 5.0)
@@ -618,7 +641,37 @@ func claw_point_l() -> Vector3:
 
 ## World position of the chest hopper screen (where pickups stream in).
 func chest_world() -> Vector3:
-	return _float.to_global(Vector3(0, 0.395, -0.2))
+	return _float.to_global(Vector3(0, 0.42, -0.23))
+
+
+## [hero] Anchor nodes for add-ons: "head_top" (on the head, turns with it), "chest_plate",
+## "back" (float space) and "hand_r" / "hand_l" (claw tips, on the wrists).
+func _make_anchors() -> void:
+	_anchors.clear()
+	for n: String in ANCHORS:
+		var a := Node3D.new()
+		a.name = n
+		a.position = ANCHORS[n]
+		var parent: Node3D = _float
+		if n == "head_top":
+			parent = _head
+		elif n == "hand_r":
+			parent = _arm_r.get_meta("wrist")
+		elif n == "hand_l":
+			parent = _arm_l.get_meta("wrist")
+		parent.add_child(a)
+		_anchors[n] = a
+
+
+func get_anchor(anchor: String) -> Node3D:
+	return _anchors.get(anchor) as Node3D
+
+
+## Eye shape by name (EYE_SHAPES) for the face shader.
+func set_eye_shape(shape: String) -> void:
+	var i: int = EYE_SHAPES.find(shape)
+	if i >= 0 and _face_mat:
+		_face_mat.set_shader_parameter("eye_shape", i)
 
 
 ## Quick brightening of the visor eyes (target lock).

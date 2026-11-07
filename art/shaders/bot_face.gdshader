@@ -20,11 +20,25 @@ uniform float half_width = 0.29;
 uniform float half_height = 0.17;
 uniform float eye_spacing = 0.7;    // eye centre offset from the middle (in half-heights)
 uniform float eye_radius = 0.52;
+// [hero] Eye shape for the character builder: 0 crescent C (Aurora), 1 round, 2 happy arcs,
+// 3 visor bar (one rounded bar across both eyes), 4 heart. Blink/happy/wink work on every shape.
+uniform int eye_shape = 0;
 uniform float pupil_radius = 0.6;   // dark centre radius (in eye radii)
 uniform vec2 pupil_offset = vec2(-0.3, 0.26); // dark centre offset (in eye radii; -x = viewer's right)
 
 varying vec3 lp;
 varying vec3 ln;
+
+float dot2(vec2 v) { return dot(v, v); }
+
+// Heart distance (iq), heart spanning about y 0..1, x -0.6..0.6.
+float sd_heart(vec2 p) {
+	p.x = abs(p.x);
+	if (p.y + p.x > 1.0) {
+		return sqrt(dot2(p - vec2(0.25, 0.75))) - sqrt(2.0) / 4.0;
+	}
+	return sqrt(min(dot2(p - vec2(0.0, 1.0)), dot2(p - 0.5 * max(p.x + p.y, 0.0)))) * sign(p.x - p.y);
+}
 
 // Returns (core, shade, halo, glint). shade = 0 outer rim .. 1 next to the dark centre.
 vec4 eye(vec2 p, vec2 c, float R, float bl, float hp) {
@@ -39,12 +53,24 @@ vec4 eye(vec2 p, vec2 c, float R, float bl, float hp) {
 	float Rp = pupil_radius * R;
 	float rp = length(d - pc);
 	float pupil = 1.0 - smoothstep(Rp - aa, Rp + aa, rp);
+	if (eye_shape == 1) {
+		pupil = 0.0;  // round: one solid disc
+	} else if (eye_shape == 4) {
+		float sd = sd_heart(d / (R * 1.75) + vec2(0.0, 0.55)) * R * 1.75;
+		disc = 1.0 - smoothstep(-aa, aa, sd);
+		r = R + max(sd, 0.0);
+		pupil = 0.0;
+	}
 	float on_c = step(0.04, c_open);
 	float core = disc * (1.0 - pupil) * on_c;
 	float shade = clamp(1.0 - (r - (Rp - length(pc))) / max(R - Rp + length(pc), 0.01), 0.0, 1.0);
 	float halo = exp(-max(r - R, 0.0) * max(r - R, 0.0) * 160.0) * (1.0 - disc) * 0.5 * on_c;
 	float glint = 1.0 - smoothstep(0.085 * R, 0.13 * R, length(d - pc - vec2(-0.3, 0.34) * Rp));
-	glint *= pupil * disc * step(0.3, c_open);
+	glint *= (eye_shape == 0 ? pupil * disc : 0.0) * step(0.3, c_open);
+	if (eye_shape == 1 || eye_shape == 4) {
+		// Catchlight on the solid shapes: a small dark-edged white dot at the upper right.
+		glint = (1.0 - smoothstep(0.1 * R, 0.15 * R, length(d - vec2(-0.38, 0.36) * R))) * disc * step(0.3, c_open);
+	}
 	// Happy: an upper arc (^) that opens over the second half of the morph.
 	float a_open = smoothstep(0.5, 1.0, hp) * (1.0 - bl * 0.9);
 	float on_a = step(0.04, a_open);
@@ -65,8 +91,25 @@ void vertex() {
 void fragment() {
 	vec2 p = vec2(lp.x, lp.y) / half_height;
 	vec2 off = look * vec2(0.1, 0.06);
-	vec4 a = eye(p, vec2(eye_spacing, 0.02) + off, eye_radius, blink, happy);
-	vec4 b = eye(p, vec2(-eye_spacing, 0.02) + off, eye_radius, max(blink, wink), happy);
+	float hp = eye_shape == 2 ? 1.0 : happy;
+	vec4 a = eye(p, vec2(eye_spacing, 0.02) + off, eye_radius, blink, hp);
+	vec4 b = eye(p, vec2(-eye_spacing, 0.02) + off, eye_radius, max(blink, wink), hp);
+	if (eye_shape == 3) {
+		// Visor bar: one rounded bar across both eye positions (squashes for blink and happy).
+		float open_ = max((1.0 - blink * 0.94) * (1.0 - smoothstep(0.0, 0.5, hp)), 0.0);
+		vec2 bp = p - vec2(0.0, 0.02) - off;
+		vec2 hs = vec2(eye_spacing + eye_radius * 0.75, eye_radius * 0.32 * max(open_, 0.05));
+		float rr = hs.y;
+		vec2 qd = abs(bp) - hs + vec2(rr);
+		float sd = length(max(qd, 0.0)) + min(max(qd.x, qd.y), 0.0) - rr;
+		float bar = (1.0 - smoothstep(-0.018, 0.018, sd)) * step(0.04, open_);
+		float bar_halo = exp(-max(sd, 0.0) * max(sd, 0.0) * 160.0) * (1.0 - bar) * 0.5 * step(0.04, open_);
+		float shade_b = 1.0 - clamp(abs(bp.y) / max(hs.y, 0.01), 0.0, 1.0);
+		vec4 arcs_a = a * step(0.5, hp);
+		vec4 arcs_b = b * step(0.5, hp);
+		a = vec4(max(bar, arcs_a.x), mix(shade_b, arcs_a.y, arcs_a.x), max(bar_halo, arcs_a.z), 0.0);
+		b = arcs_b;
+	}
 	float front = smoothstep(0.55, 0.8, -ln.z);
 	float core = clamp(a.x + b.x, 0.0, 1.0) * front;
 	float shade = clamp(a.y * a.x + b.y * b.x, 0.0, 1.0);

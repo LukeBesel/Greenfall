@@ -1,8 +1,9 @@
 shader_type spatial;
 // Worn paint for the hero bot's baked mesh (art/models/aurora). Same layering as worn_metal
 // (paint over rust over steel, object-space triplanar textures) but driven by the vertex colours
-// baked in Blender: R = ambient occlusion, G = convex edge wear, B = cavity dirt. Chips and scuffs
-// gather on edges, grime in cavities and seams. A soft cool fresnel rim (stronger on the side
+// baked in Blender: R = ambient occlusion, G = convex edge wear, B = cavity dirt, A = 1 - joint wear.
+// Chips exposing dark metal gather on edges and around joints (little wear on open panels), fine
+// scratches cross the paint, grime sits in cavities and panel seams. A soft cool fresnel rim (stronger on the side
 // facing away from the sun) helps the hero read against the busy world.
 render_mode diffuse_burley, specular_schlick_ggx;
 
@@ -98,13 +99,14 @@ void fragment() {
 	float big = fbm3(q);
 	float fine = fbm3(q * 4.0 + 3.0);
 	// Paint chips: noise everywhere, much stronger on convex edges.
-	float chip_n = big * 0.75 + fine * 0.35 - edge * edge_wear * 0.55;
+	float joint = 1.0 - vcol.a;
+	float chip_n = big * 0.55 + fine * 0.45 + 0.12 - edge * edge_wear * 0.8 - joint * 0.35;
 	float paint = smoothstep(1.0 - paint_coverage - 0.03, 1.0 - paint_coverage + 0.03, chip_n);
 	// Small dark specks / pits in the paint (like the concept's speckled shell).
 	float sp = smoothstep(0.8, 0.9, n3(opos * 110.0 + seed * 5.0)) * clamp(smoothstep(0.45, 0.75, fbm3(q * 0.8 + 5.0)) + edge * 0.6, 0.0, 1.0);
 	paint *= 1.0 - sp * specks;
 	float rust = smoothstep(0.35, 0.65, fbm3(q * 1.7 + 11.0) + rust_amount * 0.4 - 0.2);
-	vec3 bare_alb = mix(m_alb * 0.55, r_alb * 0.7, max(rust, 0.4));
+	vec3 bare_alb = mix(m_alb * 0.42, r_alb * 0.6, rust * 0.6);
 	vec3 bare_nrm = mix(m_nrm, r_nrm, rust);
 	float bare_rough = mix(m_arm.g, r_arm.g, rust);
 	float bare_metal = mix(metallic_bare, 0.1, rust);
@@ -126,7 +128,9 @@ void fragment() {
 	float metal = mix(bare_metal, paint_metallic, paint);
 	// Fine scratches.
 	float scr = smoothstep(0.985, 1.0, n3(vec3(opos.x * 160.0, opos.y * 8.0, opos.z * 160.0) + seed));
-	alb = mix(alb, m_alb * 0.9, scr * paint * 0.6);
+	scr = max(scr, smoothstep(0.988, 1.0, n3(vec3(opos.y * 170.0 + opos.x * 60.0, opos.x * 7.0, opos.z * 170.0) + seed + 9.0)));
+	scr *= smoothstep(0.3, 0.7, fbm3(q * 0.9 + 41.0)) + edge * 0.5 + joint * 0.5;
+	alb = mix(alb, m_alb * 0.9, clamp(scr, 0.0, 1.0) * paint * 0.6);
 	// Grime: cavities, occluded areas, low on each part; dust settles on top faces.
 	float g = clamp(cav * 1.2 + (1.0 - ao) * 1.1, 0.0, 1.0) * grime;
 	// Broad brownish smudges and stains.
