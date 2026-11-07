@@ -318,3 +318,18 @@ it to die under its trash; each planet reveals more. The game ends when every pl
 Verdance, builds a big launch base, gives the rocket a final "Homeward" upgrade, plants the last seed and launches
 home (reusing the launch sequence, ark finale and space stage), then credits. Random Cradle Mode worlds become
 optional post-game. Owner: wt/home (progression, story, ending) + wt/worlds2 (planet looks, 3 save profiles).
+
+### [planet-tidewell] Tidewell (Ocean World) environment
+- Done (wt/p_tidewell): `planet/planets/tidewell/` (env.gd entry `TidewellEnv.apply(world, field, kind)`, plus
+  static hooks `prepare` / `field_water` / `post_generate` that the slice calls while the field is made),
+  registered in `data/planets.json`. Opaque ocean shader to the horizon (swell, shore foam, whitecaps, depth
+  colour from baked bed maps, refracted seabed with caustics, kelp, coral, fish/whale shadows, oil slicks that
+  clear hex by hex), archipelago of isles / sandbars / reefs, Ledger jack-up dredging rigs and a half-sunk ore
+  barge, drowned tower tops, buoys, moorings; restored: mangroves, palms, floating gardens, lighthouses with thin
+  beams; future: white sea platforms, solar rafts, light buoys. Lumi floats over water (bob, wake ring, spray,
+  mirrored reflection; no wading slowdown via `world.meta hover_water`), skimmers leave wakes. Binary suns
+  (`TideSuns`: companion light + sky disc, SolarSystem.suns_for when present). Trash rafts (ghost-net mats) and a
+  nets-and-buoys junk palette. Dev: `--planet-env=tidewell [--tide-cam=dist,pitch,yaw[,fov]]`. Test:
+  `tests/test_planet_tidewell.gd`.
+- Next: home wires Tidewell as a campaign planet (call the same hooks from its world build); fauna2 may add
+  `tidewell` to gull/fish regions; sound: music key `tidewell_swell`.
