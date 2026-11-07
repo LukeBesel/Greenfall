@@ -579,9 +579,11 @@ func find_scoop_target(origin: Vector3, forward: Vector3, reach: float, width: f
 	var best_d: float = INF
 	var near: Dictionary = {}
 	for o: Vector3 in [Vector3.ZERO, fwd * reach, fwd * reach * 0.5 + right * width, fwd * reach * 0.5 - right * width]:
-		var h: int = hex_at(origin + o)
-		if h >= 0:
-			near[h] = true
+		# [world2] A piece belongs to the hex its warped position falls in (gen 2: owner_hex), which
+		# can differ from the straight hex under the scoop near borders, the hub and blocked hexes.
+		for h: int in [hex_at(origin + o), owner_hex(origin + o)]:
+			if h >= 0:
+				near[h] = true
 	for hid: int in near:
 		if locked.has(hid):  # [biomes]
 			continue
@@ -605,7 +607,7 @@ func find_scoop_target(origin: Vector3, forward: Vector3, reach: float, width: f
 func pieces_within(pos: Vector3, r: float) -> PackedInt32Array:
 	var out := PackedInt32Array()
 	var r2: float = r * r
-	for hid: int in hexes_near(pos, 1 + int(r / hex_size)):
+	for hid: int in hexes_near(pos, 1 + int(r / hex_size) + (1 if junk_gen >= 2 else 0)):  # [world2] owners can sit two rings out
 		if locked.has(hid):  # [biomes]
 			continue
 		for pid: int in hex_pieces[hid]:
