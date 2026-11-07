@@ -442,3 +442,19 @@ Data changes (early-game values only):
 - Code: the dormant compost press (before the first sprout) only heaps up 8 compost, so its first output
   is two seeds, not an hour of paper (`plants/composter.gd` DORMANT_CAP).
 - Tried and reverted: Scoopie 1200-1350 (first robot ~8 min, but the second-Scoopie goal stalled 10 min).
+
+## Cradle Mode (post-game prestige, wt/late)
+- **Starseeds** (data/cradle.json `prestige`): 4 per Seed Ark wave, 6 per Bloom milestone,
+  1.5 x sqrt(Thriving hexes over all districts), 20 for the Cradle, 3 per level-5 base. A finished
+  campaign (4 milestones, 1-3 waves, ~600 Thriving hexes, 7 bases at 5) is ~95; every further wave is 4.
+  A world only ever pays what it earned since it last banked (`claimed`).
+- **Heirloom costs**: cost x growth^level (5-15 base, x1.45-2.0). ~95 Starseeds buys about 10-12
+  cheap levels or 4-5 deep ones; maxing everything costs ~1,900, so the loop lasts many worlds.
+- **Modifiers** are mild (x0.85-1.3 on one or two stats) and each world has two, one usually a gift.
+- **Measured** (bot, game minutes after landing): with 12 Heirloom levels the first new world reached
+  base 2/3/4 at 5.6 / 24.9 / 54.6 min, against 14.1 / 32.8 / 78.6 on the same world with none and
+  18.5 / 39.0 / 62.4 on Verdance. An early Seed Vault that skipped the seed tin made the bot water by
+  hand instead of cleaning (base 3 at 74.6 min); it now only adds seeds, and each world keeps its tin.
+- **Garden charm**: +0.4% plant growth per charm point in that district, capped at +8% (charm 20;
+  the fountain is 4, a bench 1.5, a path 0.2). Decorations refund in full when picked up.
+

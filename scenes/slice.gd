@@ -77,7 +77,7 @@ func _ready() -> void:
 	get_tree().paused = false
 	_build_environment()
 	var cfg: Dictionary = Economy.planet.get("slice_field", {})
-	var base_seed: int = int(DevHooks.get_f("seed", float(cfg.get("seed", 4471))))
+	var base_seed: int = int(DevHooks.get_f("seed", float(CradleMode.world_seed())))  # [late] Cradle Mode worlds (Verdance = slice_field seed)
 	var loaded: bool = false
 	var from_memory: bool = GameState.reload_in_memory
 	if GameState.reload_in_memory:
@@ -90,6 +90,7 @@ func _ready() -> void:
 	if DevHooks.has("hub-level"):  # dev: start this base at a given hub level (1-5)
 		GameState.world["hub_level"] = clampi(int(DevHooks.get_f("hub-level", 1.0)), 1, 5)
 	planet = PlanetData.new(base_seed, 6, 10.0)
+	planet.mix = CradleMode.planet_mix()  # [late] this world's biome mix and towns (systems/world_gen.gd)
 	planet.generate()
 	if not GameState.planet_state.is_empty():
 		planet.apply_dict(GameState.planet_state)
@@ -158,6 +159,8 @@ func _ready() -> void:
 		var gfx: Array = fk.get("fx", [0, 0, 0, 0])
 		view.ground_fx = Vector4(float(gfx[0]), float(gfx[1]), float(gfx[2]), float(gfx[3]))
 		view.skip_horizon = true  # [biomes2] FrontierView builds the terrain and skyline
+	elif CradleMode.current_index() > 0:  # [late] another world's ground (snow on an ice moon, sand on a desert world)
+		CradleMode.dress_view(view)
 	view.setup(field)
 	water = WaterView.new()
 	water.name = "Water"
@@ -512,6 +515,7 @@ func _ready() -> void:
 			intro.place_pod.call_deferred()
 		if not loaded:
 			wake.call()
+	LateDirector.attach(self)  # [late] Garden Mode, Ark Bridge, Cradle Mode worlds (systems/late_director.gd)
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 

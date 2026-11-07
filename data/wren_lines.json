@@ -347,5 +347,20 @@
     ["...you're dim... find green... any green..."],
     ["Your core's low. Plant something, Lumi. Anything. Green light is green light."],
     ["Running a little dim. A few blooms will fix that."]
-  ]
+  ],
+  "egg_sand_piano": [["...music... out here?..."], ["A piano. In the desert. I have so many questions and none of them will be answered."], ["It's out of tune in a way that sounds deliberate now. Like the dunes learned a song."]],
+  "egg_snow_bot": [["...someone dressed it... for the cold..."], ["They built snowmen around the old loaders for luck. I think it worked, a bit. It's still standing."], ["Every winter, a new scarf. Someone kept that up for a very long time."]],
+  "egg_bottle_message": [["...a letter... from before the water..."], ["Somebody stayed to remember where the streets were. We should plant where the bakery was."], ["Red lever goes down, not up. Noted. Thank you, R."]],
+  "egg_welcome_home": [["...welcome... home..."], ["They kept repainting it. Three hundred years of 'welcome home' for a ship that hadn't come yet."], ["We came, though. Tell them we came."]],
+  "egg_crossword": [["...a puzzle... one left..."], ["Five letters, what grows back if you let it. You got it on the first try."], ["The Ledger set the crossword. Of course the Ledger set the crossword."]],
+  "egg_hopscotch": [["...hop... hop..."], ["One, two, three... I'm counting the hover bowl as a foot. Don't tell anyone."], ["Square seven still has the pebble on it. Somebody was winning."]],
+  "egg_balloon": [["...up... it went up..."], ["It's heading for the Cradle. I'll tell the bridge to watch for a red balloon."], ["Three hundred years holding its breath. It earned the trip."]],
+  "egg_mailbox": [["...a letter... for you..."], ["'Please don't scoop the cat.' Excellent advice. Still valid."], ["The blue door, the flower box, the tomato that counts as a flower. Let's find it."]],
+  "egg_bonsai": [["...small... old... patient..."], ["Three hundred years old and thirty centimetres tall. It took its time. Good for it."], ["It looks like it's been expecting you. Trees are like that."]],
+  "egg_listening_dish": [["...a signal... faint..."], ["That tone. That's the Cradle's beacon. Somebody out here kept listening the whole time."], ["'They said they'd call.' We did. Late, but we did."]],
+  "egg_older_pod": [["...another pod... older..."], ["SK-0. A seed-keeper before you. I didn't know there were any. The Cradle never told me."], ["'Start by the water.' Good advice, from someone who knew."]],
+  "egg_heirloom_tin": [["...soil... from home..."], ["A bit of the first garden, already spilled on new ground. That's how it starts."], ["Verdance soil on another world. The Makers would have liked that."]],
+  "cradle_mode": [["...the vault... other worlds..."], ["The Cradle's seed vault has a lot more in it than one planet's worth. There are other worlds out here, Lumi. Ruined ones. Waiting."], ["Heirlooms, Starseeds, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."]],
+  "new_world": [["...new ground... new junk..."], ["New world, new sky. Same job. You're better at it than you were the first time."], ["Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."]],
+  "garden_place": [["...pretty..."], ["You're decorating. I approve. The cats are going to approve more."], ["A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."]]
 }

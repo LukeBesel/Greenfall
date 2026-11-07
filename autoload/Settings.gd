@@ -203,6 +203,7 @@ func _register_default_actions() -> void:
 		"open_codex": [_key(KEY_K), _joy(JOY_BUTTON_MISC1)],
 		"toggle_goals": [_key(KEY_G), _joy(JOY_BUTTON_LEFT_STICK)],  # [hud] expand the goal tracker
 		"photo_mode": [_key(KEY_P)],  # [photo] pad: via the pause menu
+		"garden_mode": [_key(KEY_H)],  # [late] Garden Mode (ui/garden_placer.gd); pad: via the pause menu
 	}
 	for action: String in _defaults:
 		if not InputMap.has_action(action):

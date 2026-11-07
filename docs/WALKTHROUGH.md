@@ -113,6 +113,37 @@ hooks instead of played through.
 - Later Verdance Bloom milestones (Wide Bloom, Evergreen) keep going: 6 / 12 districts in bloom or
   3% / 5% of the planet. Rocket Mk II-IV, contracts, the Collection, eggs and achievements stay open.
 
+## 12. Cradle Mode and Garden Mode (post-game, wt/late)
+- **Ark Bridge** (Pause > Ark Bridge; a story toast and WREN point to it after the finale). Opening it
+  banks the Starseeds Verdance has earned: 4 per Seed Ark wave, 6 per Bloom milestone, 1.5 x sqrt(Thriving
+  hexes), 20 for the Cradle, 3 per level-5 base (a full campaign is roughly 80-110).
+- **Heirlooms** (10, data/cradle.json) are bought there and kept forever: plant growth, hopper, scoop
+  rate, bale value, move speed, seeds per bloom, and a starting kit (cubes, Data, seeds, waiting robots,
+  known research).
+- **Seed a new world**: the preview shows its name, type and two modifiers. Launching saves Verdance,
+  makes a new save slot and lands Lumi's pod in the new world's driest town. The new world starts
+  ruined (base level 1, junk everywhere, the restart checklist) and runs the whole campaign again, with
+  the kit and Heirlooms. Verdance (and every other world) stays one "Travel" away on the bridge.
+- **Garden Mode** (H, or Pause > Garden Mode; after the finale or with this base at level 5): place
+  decorations on clean ground. Each district's charm speeds its plants up a little (up to 8%).
+- Goals after the Seed Ark: open the Ark Bridge, place a decoration, buy an Heirloom, 10 decorations, 5
+  kinds, 5 Seed Ark waves, 30 curiosities, seed a new world, 20 charm, 10 Heirloom levels, a second
+  new world, 38 curiosities.
+- Measured (bot, 16x, game minutes from landing; Verdance fresh vs the first new world, an Ice Moon
+  with Rich Salvage + Heavy Rain):
+
+| Milestone | Verdance | New world, no Heirlooms | New world, 12 Heirloom levels |
+|---|---|---|---|
+| Base 2 | 18.5 | 14.1 | 5.6 |
+| Base 3 | 39.0 | 32.8 | 24.9 |
+| Base 4 | 62.4 | 78.6 | 54.6 |
+| Garden takes off | 64.7 | 78.0 | 50.7 |
+
+- Dev: `--post-finale` (Verdance won, Seed Ark open), `--open=ark`, `--world=N --heirlooms=...`.
+  Staged autoplay into Cradle Mode: `godot --headless --path . -- --fresh --save-dir=late --post-finale
+  --autoplay --time-scale=16 --quit-after=700` (milestones `cradle_mode_open_s`, `first_decor_s`,
+  `heirlooms_s`, `seed_world_s`, `w2_*` in screenshots/autoplay_milestones_late.json).
+
 ## Gates and reachability (checked)
 | Gate | Needs | Earned from | Verified |
 |---|---|---|---|
@@ -124,7 +155,7 @@ hooks instead of played through.
 | Sunken City | Pump Works + 4 bases L5 + Frozen L3 | | autoplay / dev jump |
 | Cradle | Ark Beacon + 3 frontier bases L5 + 50% Growing each | | dev jump + test |
 | Finale | Cradle complete | | save round trip (also mid-cinematic) |
-| Goals | 144 goals; every type/key checked by tests/test_beat.gd | | test |
+| Goals | 156 goals; every type/key checked by tests/test_beat.gd | | test |
 
 Dead ends found and fixed while mapping this (see docs/BALANCE.md "Whole game"):
 - The finale could play early in an ordinary district (three districts in bloom), leaving the Cradle

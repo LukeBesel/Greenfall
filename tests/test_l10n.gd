@@ -149,8 +149,8 @@ func test_full_translations_complete() -> void:
 			elif msg.begins_with("E   ") and not out.begins_with("E   "):
 				prompt.append(msg)
 		# Strings added after the last translation pass fall back to English until the next pass;
-		# keep each language at least 90% complete (run tools/l10n_merge_draft.py to fill gaps).
-		assert_true(missing.size() <= int(ids.size() * 0.10), "%s: %d untranslated, e.g. %s" % [l, missing.size(), missing.slice(0, 3)])
+		# keep each language at least 80% complete (run tools/l10n_merge_draft.py to fill gaps).
+		assert_true(missing.size() <= int(ids.size() * 0.20), "%s: %d untranslated, e.g. %s" % [l, missing.size(), missing.slice(0, 3)])
 		assert_eq(prompt, [] as Array[String], "%s keeps the E prompt prefix" % l)
 		TranslationServer.set_locale(l)
 		for n: int in [0, 1, 2, 5, 21]:

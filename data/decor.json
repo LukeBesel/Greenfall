@@ -1,0 +1,20 @@
+{
+  "_doc": "[late] Garden Mode decorations (systems/decor.gd, art/decor_props.gd, ui/garden_placer.gd). Placed on a 1 m grid on clean ground in a district (not on buildings, water or the base yard machinery). size: footprint in grid cells [w, d] before rotation. cost: currencies spent (cubes, trinkets = Collection gift tokens); needs_finds: Collection finds needed before it can be bought. charm: each district's charm is the sum of its decorations; charm raises that district's plant growth by charm_growth per point, up to charm_cap. wildlife: kinds of animals that like it (the decor group hook for wildlife: nodes in group 'decor' with meta decor_type / decor_wildlife). Removing a decoration gives everything back, so moving one costs nothing.",
+  "grid": 1.0,
+  "yard_radius": 9.0,
+  "charm_growth": 0.004,
+  "charm_cap": 0.08,
+  "unlock_hub_level": 5,
+  "types": [
+    {"id": "path", "name": "Stone Path", "desc": "Flat stepping stones. Paths join everything up.", "size": [1, 1], "cost": {"cubes": 300}, "charm": 0.2, "wildlife": []},
+    {"id": "flower_bed", "name": "Flower Bed", "desc": "A low bed of mixed flowers. Bees and butterflies approve.", "size": [2, 1], "cost": {"cubes": 2500, "seeds": 5}, "charm": 1.2, "wildlife": ["bee", "butterfly", "bird"]},
+    {"id": "planter", "name": "Planter", "desc": "A white hex planter with a small shrub, like the ones the future city grows.", "size": [1, 1], "cost": {"cubes": 3000}, "charm": 1.0, "wildlife": ["bird"]},
+    {"id": "bench", "name": "Bench", "desc": "Wood slats on cast feet. Cats like to sleep on it.", "size": [2, 1], "cost": {"cubes": 5000}, "charm": 1.5, "wildlife": ["cat", "bird"]},
+    {"id": "lamp", "name": "Garden Lamp", "desc": "A slim lamp with a warm glow after dark.", "size": [1, 1], "cost": {"cubes": 4000}, "charm": 1.0, "wildlife": ["moth"]},
+    {"id": "bird_bath", "name": "Bird Bath", "desc": "A stone basin of clean water.", "size": [1, 1], "cost": {"cubes": 6000}, "charm": 1.5, "wildlife": ["bird", "cat"]},
+    {"id": "fountain", "name": "Fountain", "desc": "A tiered fountain, running again. Deer come to drink at dawn.", "size": [2, 2], "cost": {"cubes": 40000, "trinkets": 3}, "charm": 4.0, "wildlife": ["bird", "deer"]},
+    {"id": "statue", "name": "Maker Statue", "desc": "A stone figure of one of the Makers, holding a watering can.", "size": [2, 2], "cost": {"cubes": 30000, "trinkets": 2}, "charm": 3.0, "wildlife": ["bird"]},
+    {"id": "lumi_sculpture", "name": "Lumi Sculpture", "desc": "A topiary-and-brass sculpture of Lumi holding up a seedling. Very modest.", "size": [2, 2], "cost": {"cubes": 80000, "trinkets": 5}, "needs_finds": 8, "charm": 5.0, "wildlife": ["bird", "cat", "deer"]},
+    {"id": "wren_kite", "name": "WREN Wind Kite", "desc": "A kite shaped like WREN's bird, tethered to a post and always flying.", "size": [1, 1], "cost": {"cubes": 12000, "trinkets": 1}, "needs_finds": 4, "charm": 2.0, "wildlife": ["bird"]}
+  ]
+}

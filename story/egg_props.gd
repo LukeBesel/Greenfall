@@ -112,6 +112,9 @@ static func build(kind: String, part: int = 0) -> Node3D:
 		"cairn": return cairn()
 		"campfire": return campfire()
 		"drill_press": return drill_press()
+	var late: Node3D = EggPropsLate.build(kind, part)  # [late] the newer curiosities (story/egg_props_late.gd)
+	if late:
+		return late
 	var n := Node3D.new()
 	n.add_child(mesh(ProcMesh.box(Vector3(0.4, 0.4, 0.4)), vc()))
 	return n

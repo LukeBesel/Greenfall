@@ -871,6 +871,138 @@
     "target": 6,
     "key": "fauna_photos"
    }
+  },
+  {
+   "id": "late_bridge",
+   "name": "On the Bridge",
+   "desc": "Open the Ark Bridge after the Cradle comes home.",
+   "icon": "rocket",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "ark_bridge_opened"
+   }
+  },
+  {
+   "id": "late_world_1",
+   "name": "Seed Mission",
+   "desc": "Seed a new world from the Cradle's vault.",
+   "icon": "rocket",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "worlds_seeded"
+   }
+  },
+  {
+   "id": "late_world_3",
+   "name": "Gardener of Worlds",
+   "desc": "Seed three new worlds.",
+   "icon": "map",
+   "cond": {
+    "type": "stat",
+    "target": 3,
+    "key": "worlds_seeded"
+   }
+  },
+  {
+   "id": "late_heirloom_1",
+   "name": "Family Heirloom",
+   "desc": "Buy an Heirloom.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "heirloom_levels"
+   }
+  },
+  {
+   "id": "late_heirloom_20",
+   "name": "Treasured",
+   "desc": "Grow Heirlooms to 20 levels in all.",
+   "icon": "trophy",
+   "cond": {
+    "type": "stat",
+    "target": 20,
+    "key": "heirloom_levels"
+   }
+  },
+  {
+   "id": "late_starseeds_100",
+   "name": "Starseed Saver",
+   "desc": "Earn 100 Starseeds across your worlds.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 100,
+    "key": "starseeds_earned"
+   }
+  },
+  {
+   "id": "late_decor_1",
+   "name": "Home Touches",
+   "desc": "Place a decoration in Garden Mode.",
+   "icon": "flower",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "decor_placed"
+   }
+  },
+  {
+   "id": "late_decor_25",
+   "name": "Landscaper",
+   "desc": "Place 25 decorations.",
+   "icon": "tree",
+   "cond": {
+    "type": "stat",
+    "target": 25,
+    "key": "decor_placed"
+   }
+  },
+  {
+   "id": "late_decor_all",
+   "name": "Full Catalogue",
+   "desc": "Place every kind of decoration at least once.",
+   "icon": "check",
+   "cond": {
+    "type": "stat",
+    "target": 10,
+    "key": "decor_kinds"
+   }
+  },
+  {
+   "id": "late_charm_25",
+   "name": "Picture Perfect",
+   "desc": "Reach 25 charm in one district.",
+   "icon": "leaf",
+   "cond": {
+    "type": "stat",
+    "target": 25,
+    "key": "decor_charm_best"
+   }
+  },
+  {
+   "id": "late_eggs_40",
+   "name": "Cabinet of Curiosities",
+   "desc": "Find 40 curiosities.",
+   "icon": "book",
+   "cond": {
+    "type": "stat",
+    "target": 40,
+    "key": "eggs_found"
+   }
+  },
+  {
+   "id": "late_older_pod",
+   "name": "Not the First",
+   "desc": "Find the older seed pod on a new world.",
+   "icon": "sprout",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "egg_older_pod"
+   }
   }
  ]
 }

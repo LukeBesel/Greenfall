@@ -190,6 +190,11 @@ static func egg_where(e: Dictionary) -> String:
 		var b: String = str(e.get("biome", ""))
 		var bs: Dictionary = Economy.biome_set(b)
 		return TranslationServer.translate("Wilderness bases") + (TranslationServer.translate(" · often %s") % TranslationServer.translate(str(bs.get("name", b.capitalize()))) if b != "" else "")
+	if str(e.get("where", "")) == "frontier":  # [late]
+		var fb: String = str(e.get("biome", ""))
+		return TranslationServer.translate("Frontiers") + TranslationServer.translate(" · %s") % TranslationServer.translate(str(Economy.biome_set(fb).get("name", fb.capitalize().replace("_", " "))))
+	if str(e.get("where", "")) == "new_world":  # [late]
+		return TranslationServer.translate("Other worlds")
 	return TranslationServer.translate("Any district")
 
 

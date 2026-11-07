@@ -60,6 +60,8 @@ extends Node
 ##   --demo             [steam] run as the Steam demo build (Demo.is_demo()); --no-steam skips Steam init
 ##   --no-hud           [steam] hide HUD, toasts, subtitles and event banners (store screenshots, trailer)
 ##   --demo-end[=S]     [steam] show the end-of-demo screen after S seconds
+##   [late] --post-finale (Verdance won), --world=N, --heirlooms=id:lv+.., --starseeds=N, --open=ark|garden,
+##          --decor-sample, --new-world[=S], --no-banner; full list in systems/late_director.gd
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0

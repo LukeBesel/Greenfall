@@ -55,6 +55,7 @@ func _ready() -> void:
 	buttons.append(_button(vb, tr("Photo mode  [%s]") % Settings.glyph("photo_mode"), func() -> void:  # [photo]
 		close_menu()
 		photo_requested.emit()))
+	buttons.append_array(LateMenu.add_buttons(self, vb, _button))  # [late] Garden Mode, Ark Bridge
 	_settings_btn = _button(vb, tr("Settings"), _open_settings)
 	buttons.append(_settings_btn)
 	buttons.append(_button(vb, tr("Save game"), func() -> void:
@@ -113,6 +114,7 @@ func open_menu() -> void:
 	get_tree().paused = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	EventBus.ui_modal_changed.emit(true)
+	LateMenu.refresh(self)  # [late] show Garden Mode / Ark Bridge once they are open
 	_first.call_deferred("grab_focus")
 
 

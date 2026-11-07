@@ -99,3 +99,19 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
 - **Designs are data + one model**: one PatchModel body with per-design paint/glow and add-on parts from a second GLB (`designs.glb`) built by the same Blender script, so every design shares the hero's rig, animation and quality. Add-ons bake AO against the hero alone (the hero bakes without them), so the default look is unchanged.
 - **Buffs are slight and optional**: 5-10% on one themed stat, applied last in `Economy.stat` (after research), shown in the stat breakdown; "Looks only" turns them all off (per save, `flags.designs_looks_only`). Aurora's +8% detector range is on by default.
 - **Unlock conditions are any-of achievement conditions** (`Achievements.value_of` + `fleet_tier`), checked by the Achievements tick; old saves keep their earlier unlocks (`flags.skins_unlocked`).
+
+## Late game (wt/late, Nov 7)
+- **Worlds are save slots; the profile is the only shared state.** Each Cradle Mode world is a normal
+  save in its own slot (Verdance = slot 0), so every system persists per world for free and old worlds
+  stay playable. `profile.save` holds worlds, Starseeds and Heirlooms; `--fresh` keeps it in memory.
+- **Heirlooms reach the game through one hook** (`Economy.stat` -> `CradleMode.stat_mod`), together
+  with world modifiers and decor charm, so no system needs to know about worlds.
+- **World 0 is untouched**: Verdance keeps seed 4471 and an empty planet mix, so the campaign, tests
+  and existing saves generate exactly as before. New worlds land in their driest town.
+- **New Game erases every world and the Heirlooms** (it is a full restart; Heirlooms are permanent
+  across worlds, not across profiles). Achievements, Codex and skins carry into new worlds.
+- **Each world keeps its own story beats** (seed tin, Ledger, finale): Seed Vault adds seeds but does
+  not skip the tin (skipping it pulled the bot into hand-watering and made worlds slower).
+- **Decorations refund in full** so moving costs nothing; their bonus is small and per district.
+  Wildlife integration is a group hook ("decor" + metas), no dependency either way.
+
