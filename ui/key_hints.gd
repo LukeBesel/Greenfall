@@ -119,7 +119,7 @@ func _fit() -> void:
 	for c: Node in rows:
 		w += (c as Control).get_combined_minimum_size().x
 	w += 18.0 * maxf(0.0, rows.size() - 1) + 2.0
-	var cap: float = 1180.0 if mode == Mode.PAUSE else 620.0
+	var cap: float = 1180.0 if mode == Mode.PAUSE else 400.0  # HUD: stay right of the hotbar
 	_flow.custom_minimum_size.x = minf(w, cap)
 
 
