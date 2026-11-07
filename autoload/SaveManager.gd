@@ -72,6 +72,11 @@ func save_game(gather: bool = true) -> bool:
 	if not (enabled or dev_dir != "") or not is_inside_tree():  # [beat] --save-dir saves even with --fresh
 		return false
 	if gather:
+		# [beat] Not mid-launch: Lumi is on the lift with the cells already spent; the last autosave
+		# (or the save travel_to writes on arrival) is the consistent one.
+		var sc: Node = get_tree().current_scene
+		if sc and bool(sc.get("launching")):
+			return false
 		get_tree().call_group("persist", "persist_save")
 	var ok: bool = write_dict(slot_path(), GameState.to_dict())
 	if ok:
