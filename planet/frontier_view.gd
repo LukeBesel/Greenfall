@@ -483,8 +483,13 @@ func _snow_h(x: float, z: float, t: float) -> float:
 	var ramp: float = _smooth(10.0, 110.0, t)
 	var hills: float = (_n1.get_noise_2d(x, z) * 0.5 + 0.5) * lerpf(1.5, 26.0, clampf(t / 420.0, 0.0, 1.0))
 	var drift: float = (_n2.get_noise_2d(x, z) * 0.5 + 0.5) * 1.6
-	var ridge: float = 1.0 - absf(_n3.get_noise_2d(x * 1.3, z * 1.3))
-	var mount: float = pow(ridge, 3.0) * 120.0 * _smooth(330.0, 620.0, t)
+	# [vqa] Rounded crease (sqrt(n^2 + e) instead of |n|) and a second, finer ridge octave: crisp
+	# alpine ridges without the sawtooth spikes the coarse mesh turned into facets.
+	var rn: float = _n3.get_noise_2d(x * 1.3, z * 1.3)
+	var ridge: float = 1.0 - sqrt(rn * rn + 0.0025)
+	var rn2: float = _n1.get_noise_2d(x * 3.1 + 500.0, z * 3.1)
+	var ridge2: float = 1.0 - sqrt(rn2 * rn2 + 0.004)
+	var mount: float = (pow(ridge, 2.6) * 110.0 + pow(ridge2, 2.0) * 18.0 * ridge) * _smooth(330.0, 620.0, t)
 	var land_h: float = 0.4 + drift + hills * ramp + mount
 	var land: float = 1.0 - _smooth(_quay_x - 6.0, _quay_x + 2.0, x)
 	var sea_h: float = -3.0 + mount * _smooth(420.0, 700.0, t) * 1.1
