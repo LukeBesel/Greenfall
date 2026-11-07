@@ -125,6 +125,8 @@ func setup(p_world: Node) -> void:
 		replan()
 		for a: Animal in animals:
 			a.fade = 1.0
+		if DevHooks.has("fauna-report"):
+			print("[fauna] at start: ", census())
 
 
 # --- Planning ----------------------------------------------------------------------------------

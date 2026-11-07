@@ -8,9 +8,9 @@ shader_type spatial;
 render_mode diffuse_burley, specular_schlick_ggx, cull_back;
 
 uniform vec3 coats[8];
-uniform float fur_rim = 0.35;
+uniform float fur_rim = 0.25;
 uniform float roughness_base = 0.82;
-uniform float sss_amt = 0.15;
+uniform float sss_amt = 0.08;
 
 varying float v_ao;
 varying vec2 v_mask;
@@ -63,7 +63,8 @@ void vertex() {
 }
 
 void fragment() {
-	vec3 alb = mix(COLOR.rgb, COLOR.rgb * v_tint, v_mask.x);
+	// Vertex colours and coat tints are authored in sRGB.
+	vec3 alb = pow(mix(COLOR.rgb, COLOR.rgb * v_tint, v_mask.x), vec3(2.2));
 	ALBEDO = alb * v_ao;
 	ROUGHNESS = mix(roughness_base, 0.12, v_mask.y);
 	SPECULAR = mix(0.3, 0.7, v_mask.y);
