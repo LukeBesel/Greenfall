@@ -21,6 +21,7 @@ func _ready() -> void:
 	match _view:
 		"ark": _setup_ark()
 		"pod": _setup_pod()
+		"crash": _setup_pod(true)
 		"loading": _setup_loading()
 
 
@@ -40,7 +41,7 @@ func _setup_ark() -> void:
 	]
 
 
-func _setup_pod() -> void:
+func _setup_pod(crash: bool = false) -> void:
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
 	var sky := Sky.new()
@@ -68,19 +69,26 @@ func _setup_pod() -> void:
 	ground.mesh = pm
 	add_child(ground)
 	_pod = EscapePod.build()
-	_pod.rotation.y = 0.5
-	add_child(_pod)
+	var site: CrashSite = CrashSite.attach(self, _pod, Vector3.ZERO, 0.5)
 	_cam = Camera3D.new()
 	_cam.fov = 50.0
 	add_child(_cam)
 	_cam.current = true
-	var front: Vector3 = _pod.global_transform * Vector3(1.0, 1.1, -4.6)
-	_cam.look_at_from_position(front, _pod.global_transform * Vector3(0, 0.85, 0), Vector3.UP)
 	var pod: Node3D = _pod
+	if crash:
+		# Before / after: damaged (smoke, sparks, torn panel, worn paint), then repaired.
+		EscapePod.set_open(pod, true, CrashSite.LEAN.x)
+		var eye: Vector3 = Vector3(-3.6, 2.3, -4.6)
+		_cam.look_at_from_position(eye, Vector3(0.3, 0.8, 0.6), Vector3.UP)
+		_shots = [[4.0, Callable()], [12.0, func() -> void: pass]]
+		get_tree().create_timer(4.6).timeout.connect(func() -> void: site.set_stage(2))
+		return
+	var front: Vector3 = pod.global_transform * Vector3(1.0, 1.1, -4.6)
+	_cam.look_at_from_position(front, pod.global_transform * Vector3(0, 0.85, 0), Vector3.UP)
 	get_tree().create_timer(2.0).timeout.connect(func() -> void:
 		EscapePod.open_door(pod, func(p: Vector3, _d: Vector3) -> void:
-			Vfx.burst("steam", pod.global_transform * p, Color(0.92, 0.94, 0.97, 0.75), 0.35)))
-	_shots = [[2.38, Callable()], [4.4, Callable()]]
+			Vfx.burst("steam", pod.global_transform * p, Color(0.92, 0.94, 0.97, 0.75), 0.35), 1.0, CrashSite.LEAN.x))
+	_shots = [[2.4, Callable()], [4.6, Callable()]]
 
 
 func _setup_loading() -> void:

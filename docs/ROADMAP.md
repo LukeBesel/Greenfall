@@ -432,7 +432,18 @@ tuned in the first-hour pass); no new SFX work unless a bug.
 - **Escape pod** (`story/escape_pod.gd`, `Intro.build_pod()` delegates): one lathed shell with the door
   cut out of it (no overlapping faces), jamb, cabin lining, porthole, beacon; `open_door()` = seal pop
   with steam from the seams, gravity drop into a ramp, settle, warm light spill on the ground.
-- Previews: `res://scenes/story_preview.tscn -- --view=ark|pod|loading --out=...`.
-- Tests: `tests/test_subtitles.gd` (rule for every intro line, chunking, glitch spans, one line at a time).
+- **Pod = Seedglider family** (owner): ten-facet shell with sharp chines, swept graphite fins with
+  tangerine tips and orange running lamps, cyan glass porthole, thin cyan line, the ship palette;
+  uses `art/shaders/ship_paint.gdshader` (wt/ship) when present, else clear-coat StandardMaterial3D.
+  The ark's cargo rack holds six of these pods; the intro's pod leaves rack slot 2 exactly where it
+  hung (`CradleShip.pod_xform(k)`), falls, lands in its crash pose and opens with a lean-corrected ramp.
+- **Crash site** (`story/crash_site.gd`): scorched furrow along the approach, thrown-up clods, two hull
+  shards, the pod sunk and leaning, a light smoke plume (one CPUParticles3D), a torn panel with
+  flickering wiring, spark bursts and stuttering seams. Mends with upgrades (no new save state):
+  first upgrade = sparks stop, panel bolted back, faint smoke; 4 upgrade levels = repaired, clean paint,
+  calm beacon (`CrashSite.stage_for_upgrades()`).
+- Previews: `res://scenes/story_preview.tscn -- --view=ark|pod|crash|loading --out=...`.
+- Tests: `tests/test_subtitles.gd` (rule for every intro line, chunking, glitch spans, one line at a time),
+  `tests/test_crash_site.gd` (pod parts, door angle, repair stages).
 - Next: split the district build across frames so the loading bar keeps moving during it; pre-build
   the intro's SpaceStage behind the loader (its first frames compile on the intro's black fade now).
