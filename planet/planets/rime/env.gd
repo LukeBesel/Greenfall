@@ -63,8 +63,8 @@ var _bloom_full: Array[int] = []
 var _bloom_gate: Array[float] = []
 var _shards: MultiMesh
 var _shard_base: Array[Transform3D] = []
-var _vent_mat: ShaderMaterial
-var _mist_mat: ShaderMaterial
+var _vent_mat: StandardMaterial3D
+var _mist_mat: StandardMaterial3D
 var _vents: Array[CPUParticles3D] = []
 var _mist: CPUParticles3D
 var _dust: CPUParticles3D
@@ -710,7 +710,7 @@ func _build_borehole() -> void:
 	_groups["always"].add_child(smi)
 	# Cold mist venting out of the hole: slow and tall.
 	_mist = _vapour(c + Vector3(0, rim_y - 8.0, 0), br * 0.7, 60, 24.0, Vector2(10.0, 24.0), Vector2(1.6, 3.2))
-	_mist_mat = _mist.material_override as ShaderMaterial
+	_mist_mat = _mist.material_override as StandardMaterial3D
 
 
 ## An irregular ice crystal (a stretched octahedron with jittered tips).
@@ -1088,32 +1088,37 @@ func _build_greenhouses() -> void:
 
 # --- Air: vapour, diamond dust ------------------------------------------------------------------
 
-func _vapour_material(tint: Color, density: float, bright: float = 0.62) -> ShaderMaterial:
-	var nz := FastNoiseLite.new()
-	nz.seed = 812
-	nz.frequency = 0.03
-	nz.fractal_octaves = 4
-	var tex := NoiseTexture2D.new()
-	tex.width = 128
-	tex.height = 128
-	tex.seamless = true
-	tex.normalize = true
-	tex.generate_mipmaps = true
-	tex.noise = nz
-	var m := ShaderMaterial.new()
-	m.shader = preload("res://art/shaders/vapour_puff.gdshader")
-	m.set_shader_parameter("noise_tex", tex)
-	m.set_shader_parameter("tint", tint)
-	m.set_shader_parameter("shade", Color(0.6, 0.68, 0.8))
-	m.set_shader_parameter("brightness", bright)
-	m.set_shader_parameter("density", density)
+## Lit, soft vapour puffs (scene light shades them, so they never glare like an emitter).
+func _vapour_material(tint: Color, alpha: float) -> StandardMaterial3D:
+	var g := Gradient.new()
+	g.set_color(0, Color(1, 1, 1, 1))
+	g.add_point(0.45, Color(1, 1, 1, 0.55))
+	g.set_color(g.get_point_count() - 1, Color(1, 1, 1, 0))
+	var tx := GradientTexture2D.new()
+	tx.gradient = g
+	tx.fill = GradientTexture2D.FILL_RADIAL
+	tx.fill_from = Vector2(0.5, 0.5)
+	tx.fill_to = Vector2(1.0, 0.5)
+	tx.width = 64
+	tx.height = 64
+	var m := StandardMaterial3D.new()
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	m.vertex_color_use_as_albedo = true
+	m.albedo_texture = tx
+	m.albedo_color = Color(tint.r, tint.g, tint.b, alpha)
+	m.roughness = 1.0
+	m.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
+	m.depth_draw_mode = BaseMaterial3D.DEPTH_DRAW_DISABLED
+	m.shadow_to_opacity = false
+	m.disable_receive_shadows = true
 	return m
 
 
 ## A slow vapour column: few, big, long-lived puffs drifting up (weak gravity).
 func _vapour(pos: Vector3, radius: float, amount: int, life: float, size: Vector2, speed: Vector2) -> CPUParticles3D:
 	if _vent_mat == null:
-		_vent_mat = _vapour_material(Color(0.86, 0.92, 1.0), 0.42)
+		_vent_mat = _vapour_material(Color(0.9, 0.94, 1.0), 0.3)
 	var p := CPUParticles3D.new()
 	p.amount = maxi(2, int(amount * Settings.particle_scale()))
 	p.lifetime = life
@@ -1133,11 +1138,17 @@ func _vapour(pos: Vector3, radius: float, amount: int, life: float, size: Vector
 	curve.add_point(Vector2(0.0, 0.35))
 	curve.add_point(Vector2(1.0, 1.0))
 	p.scale_amount_curve = curve
+	var ramp := Gradient.new()
+	ramp.set_color(0, Color(1, 1, 1, 0))
+	ramp.add_point(0.15, Color(1, 1, 1, 1))
+	ramp.add_point(0.6, Color(1, 1, 1, 0.7))
+	ramp.set_color(ramp.get_point_count() - 1, Color(1, 1, 1, 0))
+	p.color_ramp = ramp
 	p.local_coords = false
 	var q := QuadMesh.new()
 	q.size = Vector2.ONE
 	p.mesh = q
-	p.material_override = _vent_mat if size.y < 15.0 else _vapour_material(Color(0.82, 0.9, 1.0), 0.36, 0.58)
+	p.material_override = _vent_mat if size.y < 15.0 else _vapour_material(Color(0.88, 0.93, 1.0), 0.22)
 	p.position = pos
 	p.visibility_aabb = AABB(Vector3(-radius - 20, -5, -radius - 20), Vector3(radius * 2 + 40, life * speed.y + 30, radius * 2 + 40))
 	_groups["always"].add_child(p)
@@ -1331,10 +1342,11 @@ func _apply_restore() -> void:
 		var k: float = _smooth(_bloom_gate[i], 1.0, w)
 		_bloom_mms[i].visible_instance_count = int(round(_bloom_full[i] * k))
 	if _vent_mat:
-		_vent_mat.set_shader_parameter("tint", Color(0.86, 0.92, 1.0).lerp(Color(1.0, 0.97, 0.93), w))
-		_vent_mat.set_shader_parameter("density", lerpf(0.4, 0.62, w))
+		var vc: Color = Color(0.9, 0.94, 1.0).lerp(Color(1.0, 0.97, 0.93), w)
+		_vent_mat.albedo_color = Color(vc.r, vc.g, vc.b, lerpf(0.28, 0.42, w))
 	if _mist_mat:
-		_mist_mat.set_shader_parameter("tint", Color(0.8, 0.88, 1.0).lerp(Color(1.0, 0.94, 0.86), w))
+		var mc: Color = Color(0.88, 0.93, 1.0).lerp(Color(1.0, 0.95, 0.88), w)
+		_mist_mat.albedo_color = Color(mc.r, mc.g, mc.b, lerpf(0.22, 0.3, w))
 	if _mats.has("junk_coat"):
 		(_mats["junk_coat"] as ShaderMaterial).set_shader_parameter("top_amt", lerpf(0.6, 0.3, w))
 
