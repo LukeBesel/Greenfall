@@ -185,7 +185,8 @@ func _arrive_new_world() -> void:
 			var rb: Robot = fl.spawn(str(bots[i]), 0, Vector3(-2.4 + i * 1.6, 0.2, 0.8), 0.0, "Heir-%d" % (i + 1))
 			if rb:
 				rb.rotation.y = PI
-	WorldBanner.show_world(world, w)
+	if not DevHooks.has("no-banner"):  # dev: shots without the arrival card
+		WorldBanner.show_world(world, w)
 	print("[late] arrived on world %d %s: cubes=%s data=%s seeds_unlocked=%s robots=%d research=%d" % [int(w.get("index", 0)), str(w.get("name", "")),
 		GameState.get_currency("cubes").format(), GameState.get_currency(Research.CURRENCY).format(), str(GameState.flags.get("seeds_unlocked", false)),
 		fl.robots().size() if fl else 0, Research.done_list().size()])

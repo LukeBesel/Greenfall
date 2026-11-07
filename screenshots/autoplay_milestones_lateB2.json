@@ -28,5 +28,11 @@
   "w2_garden_takes_off_s": 3039.6,
   "w2_base_4_s": 3275.3,
   "base_4_s": 3275.3,
-  "first_multibot_s": 3426.5
+  "first_multibot_s": 3426.5,
+  "w2_base_5_s": 4234.2,
+  "launch_1_s": 4234.2,
+  "base_5_s": 4234.2,
+  "launch_2_s": 6279.7,
+  "arrive_dust_flats_s": 6316.3,
+  "dust_flats_base5_s": 8284.2
 }
