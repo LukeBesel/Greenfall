@@ -86,7 +86,7 @@ func _rebuild() -> void:
 	_sig = _signature()
 	for c: Node in _flow.get_children():
 		c.queue_free()
-	_flow.custom_minimum_size.x = (720.0 if mode == Mode.PAUSE else 560.0) if _full else 0.0
+	_flow.custom_minimum_size.x = 400.0  # a flow box needs a width or it stacks; _fit() sets the real one
 	for it: Array in _items():
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 7)
@@ -109,6 +109,18 @@ func _rebuild() -> void:
 		l.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		row.add_child(l)
 		_flow.add_child(row)
+	_fit.call_deferred()
+
+
+## One row when it fits (the HUD's short list), else wrap at the cap.
+func _fit() -> void:
+	var w: float = 0.0
+	var rows: Array[Node] = _flow.get_children().filter(func(c: Node) -> bool: return not c.is_queued_for_deletion())
+	for c: Node in rows:
+		w += (c as Control).get_combined_minimum_size().x
+	w += 18.0 * maxf(0.0, rows.size() - 1) + 2.0
+	var cap: float = 1180.0 if mode == Mode.PAUSE else 620.0
+	_flow.custom_minimum_size.x = minf(w, cap)
 
 
 func _process(delta: float) -> void:
