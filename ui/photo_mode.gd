@@ -827,6 +827,11 @@ func _set_ui_hidden(h: bool) -> void:
 
 ## Saves the current photo as a timestamped PNG in user://screenshots (2x renders the photo
 ## viewport at twice the window size for a few frames). Returns the absolute path ("" on error).
+## [wild] The photo camera while photo mode is open (Fauna checks which animals are in frame).
+func camera() -> Camera3D:
+	return _cam
+
+
 func capture() -> String:
 	if not is_open or _capturing or _sv == null:
 		return ""

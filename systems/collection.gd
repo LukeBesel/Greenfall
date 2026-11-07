@@ -80,6 +80,7 @@ static func source_name(source: String) -> String:
 		"rain_shower": return TranslationServer.translate("Rain Showers")
 		"robot_hiccup": return TranslationServer.translate("Robot Hiccups")
 		"wildlife_visit": return TranslationServer.translate("Wildlife Photos")
+		"animal_photos": return TranslationServer.translate("Animal Photos")  # [wild]
 		"rare_part_signal": return TranslationServer.translate("Rare Part Signals")
 		"ledger_audit": return TranslationServer.translate("Ledger Audits")
 		"streak": return TranslationServer.translate("Cleaning Streaks")

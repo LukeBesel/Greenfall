@@ -6,6 +6,7 @@
     {"id": "robots", "name": "Robots", "icon": "bot"},
     {"id": "shards", "name": "Memory Shards", "icon": "book"},
     {"id": "landmarks", "name": "Landmarks", "icon": "map"},
+    {"id": "animals", "name": "Animals", "icon": "leaf"},
     {"id": "frontiers", "name": "Frontiers", "icon": "map"}
   ],
   "junk": {
@@ -88,5 +89,28 @@
     "greenhouse": {"name": "Greenhouses", "hint": "Build one in the Frozen Port.", "desc": "A glass hex over clean ground. Anything grows inside, a quarter faster than outdoors."},
     "pumps": {"name": "The Old Pumps", "hint": "Clean the water in the Sunken City.", "desc": "The city's flood pumps still work. They only needed the drains cleared. Every time they run, a ring of streets comes back out of the water."},
     "ark_pad": {"name": "The Landing Pad", "hint": "Find it in Cradle Returns.", "desc": "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Sustained before the ark will trust it."}
+  },
+  "animals": {
+    "cat": {"name": "Stray Cat", "hint": "Where: On clean city streets.", "desc": "Old Town's cats never left. They know every warm engine block and sunny step, and they decided long ago that robots are furniture. Stop for a while and one may come over. Pet the same cat often enough and she'll move in at your base."},
+    "pigeon": {"name": "Pigeon", "hint": "Where: Clean pavement in the city.", "desc": "Pigeons will live anywhere people once dropped crumbs. They peck between the cracks, bob their heads as they walk and burst into the air all at once if you fly through them."},
+    "sparrow": {"name": "Sparrow", "hint": "Where: Clean ground, city or wild.", "desc": "Small, brown and bossy. Sparrows were the first birds to come back to swept streets, chirping from kerb to kerb."},
+    "rat": {"name": "Rat", "hint": "Where: Wherever the junk is still piled up.", "desc": "Rats live in the gaps between the piles. They are not villains, just tenants: clean a hex and they pack up and move to the next heap."},
+    "rabbit": {"name": "Rabbit", "hint": "Where: Growing hexes.", "desc": "Rabbits arrive as soon as there is something green to nibble. They hop, freeze, nibble, and zig-zag away if Lumi rushes them."},
+    "deer": {"name": "Roe Deer", "hint": "Where: The edges of Sustained ground.", "desc": "Shy grazers that keep to the edge of the green, where they can see what's coming. Approach slowly; rush them and they bound away in long, graceful leaps."},
+    "fox": {"name": "Red Fox", "hint": "Where: Sustained and Thriving hexes.", "desc": "A fox trots along the hedges, nose down, tail out. It watches Lumi with polite interest and keeps its distance."},
+    "bee": {"name": "Honeybee", "hint": "Where: Flowers on Sustained hexes.", "desc": "Bees came back with the blooms. Every flower bed that stays watered gets its own little hum."},
+    "songbird": {"name": "Robin", "hint": "Where: Thriving hexes, by day.", "desc": "When a hex thrives, robins move in and sing. If you hear birdsong, something here is going very right."},
+    "firefly": {"name": "Firefly", "hint": "Where: Thriving hexes, at night.", "desc": "Tiny green lanterns over the grass after dark. They only come where the ground is fully alive."},
+    "fish": {"name": "Lake Fish", "hint": "Where: Clean lakes.", "desc": "Once the water clears you can see them: small silver schools turning together over the sand. Come too close and they scatter."},
+    "duck": {"name": "Mallard", "hint": "Where: Clean lakes beside green shores.", "desc": "Ducks paddle, dabble with their tails in the air and complain loudly about everything. A clean lake with a green shore is all they ask."},
+    "frog": {"name": "Green Frog", "hint": "Where: Lake shores once they're planted.", "desc": "Frogs sit at the water's edge and sing in the evening. Get too close and plop: into the water they go."},
+    "lizard": {"name": "Sand Lizard", "hint": "Where: Clean ground in the Dust Flats.", "desc": "Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."},
+    "fennec": {"name": "Fennec Fox", "hint": "Where: Planted ground in the Dust Flats.", "desc": "A tiny desert fox with enormous ears. It hears Lumi's hover fans long before it sees him."},
+    "seal": {"name": "Harbour Seal", "hint": "Where: The Frozen Port shoreline.", "desc": "Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."},
+    "gull": {"name": "Herring Gull", "hint": "Where: Coasts and harbours.", "desc": "Loud, white and opportunistic. Gulls wheel over the harbour and land wherever there's a clean bit of quay."},
+    "arctic_fox": {"name": "Arctic Fox", "hint": "Where: Planted ground at the Frozen Port.", "desc": "White as the snow it hunts on. It shows up when the greenhouses do, curious about the warm air."},
+    "heron": {"name": "Grey Heron", "hint": "Where: Shallows in the Sunken City and wild lakes.", "desc": "Herons stand perfectly still at the water's edge, then strike. They lift off slowly on huge grey wings when disturbed."},
+    "turtle": {"name": "Pond Turtle", "hint": "Where: Clean water in the Sunken City.", "desc": "Turtles cruise the drowned streets with their heads up, as if they've always lived here. Maybe they have."},
+    "crane": {"name": "Cradle Crane", "hint": "Where: The skies over Cradle Returns.", "desc": "White cranes circle high over the landing city on slow wingbeats. The ark's seed vault carried their eggs; this is the first flock to fly free."}
   }
 }

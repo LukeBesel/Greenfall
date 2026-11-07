@@ -18,6 +18,15 @@ var _bird_mat: StandardMaterial3D
 func setup() -> void:
 	_wing_mesh = _make_wing()
 	EventBus.hex_restored.connect(_on_restored)
+	# [wild] Butterflies already flutter over Growing hexes (a few; more when the hex is restored).
+	EventBus.hex_level_changed.connect(func(hid: int, lvl: int) -> void:
+		if lvl == 3:
+			add_butterflies(hid, 3))
+	var hl: Node = world.get("hex_levels")
+	if hl:
+		for hid: Variant in hl.get("levels"):
+			if int(hl.get("levels")[hid]) == 3:
+				add_butterflies(int(hid), 3)
 	for hid: Variant in world.garden.hex_life:
 		if float(world.garden.hex_life[hid]) >= 0.8:
 			_on_restored(int(hid))
@@ -50,6 +59,16 @@ func _on_restored(hid: int) -> void:
 		bird.scale = Vector3(6, 6, 6)
 		add_child(bird)
 		_birds.append({"node": bird, "center": c, "r": randf_range(12, 25), "h": randf_range(14, 22), "a": randf() * TAU, "s": randf_range(0.25, 0.4)})
+
+
+## [wild] A few butterflies over a hex (Growing hexes; restored ones get the full set above).
+func add_butterflies(hid: int, n: int) -> void:
+	var c: Vector3 = world.field.hex_center(hid)
+	for i: int in n:
+		var pos: Vector3 = c + Vector3(randf_range(-5, 5), randf_range(0.4, 1.1), randf_range(-5, 5))
+		_flies.append({"pos": pos, "basis": Basis.IDENTITY, "home": c, "target": pos, "phase": randf() * TAU,
+			"col": BUTTERFLY_COLORS[randi() % BUTTERFLY_COLORS.size()]})
+	_sync_wings()
 
 
 ## [deck] All butterfly wings are one MultiMesh (two instances per butterfly, colour per
