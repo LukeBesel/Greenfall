@@ -17,6 +17,7 @@ func _ready() -> void:
 	_out = DevHooks.get_s("out", "")
 	_view = DevHooks.get_s("ship-view", "lineup")
 	_env()
+	get_viewport().msaa_3d = Viewport.MSAA_4X
 	_cam = Camera3D.new()
 	_cam.fov = 40.0
 	_cam.far = 900.0
@@ -37,7 +38,7 @@ func _env() -> void:
 	env.background_mode = Environment.BG_SKY
 	var sky := Sky.new()
 	var sm := PhysicalSkyMaterial.new()
-	sm.turbidity = 6.0
+	sm.turbidity = 4.0
 	sm.mie_coefficient = 0.004
 	sm.ground_color = Color(0.5, 0.52, 0.55)
 	sky.sky_material = sm
@@ -52,7 +53,7 @@ func _env() -> void:
 	env.ssao_enabled = true
 	env.ssao_intensity = 1.2
 	env.fog_enabled = true
-	env.fog_density = 0.0025
+	env.fog_density = 0.0008
 	env.fog_light_color = Color(0.78, 0.83, 0.9)
 	var we := WorldEnvironment.new()
 	we.environment = env
@@ -105,16 +106,22 @@ func _lineup() -> void:
 		l.modulate = Color(0.35, 0.9, 1.3)
 		l.shaded = false
 		l.rotation_degrees = Vector3(-90, 0, 0)
-		l.position = Vector3(x, 0.02, 6.0 + ShipModel.front_shift(t) * sc * 0.5)
+		l.position = Vector3(x, 0.02, (3.1 + ShipModel.front_shift(t) * 0.5) * sc + 1.8)
 		add_child(l)
-	var mid: float = (centres[0] + centres[-1]) * 0.5
+	var left: float = centres[0] - ShipModel.extent(LINEUP[0]).y * ShipTiers.scale_of(LINEUP[0])
+	var mid: float = (left + x + prev_half) * 0.5
+	var w: float = x + prev_half - left
 	if _view == "top":
-		_cam.position = Vector3(mid, 70.0, 6.0)
+		_cam.position = Vector3(mid, w * 1.1, 4.0)
 		_cam.look_at(Vector3(mid, 0, 0), Vector3.FORWARD)
 	else:
-		_cam.fov = 30.0
-		_cam.position = Vector3(mid + 16.0, 24.0, 62.0)
-		_cam.look_at(Vector3(mid + 1.0, 1.0, 0.0), Vector3.UP)
+		_cam.fov = 26.0
+		var d: float = w * 1.12
+		var az: float = deg_to_rad(DevHooks.get_f("az", 18.0))
+		var el: float = deg_to_rad(DevHooks.get_f("el", 17.0))
+		var tgt := Vector3(mid, 1.2, 1.0)
+		_cam.position = tgt + Vector3(sin(az) * cos(el), sin(el), cos(az) * cos(el)) * d
+		_cam.look_at(tgt, Vector3.UP)
 
 
 func _hero() -> void:
