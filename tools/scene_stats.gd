@@ -90,7 +90,7 @@ static func _tris(m: Mesh) -> int:
 
 static func print_census(root: Node, shadow_splits: int = 1) -> void:
 	if OS.get_environment("CAM_PROBE") != "":
-		probe_camera(root)
+		probe_camera(root, float(OS.get_environment("CAM_PROBE_REACH")) if OS.get_environment("CAM_PROBE_REACH") != "" else 6.0)
 	for fv: Node in root.find_children("*", "FieldView", true, false):  # [vqa2] junk LOD split
 		if (fv as FieldView).lod:
 			var c2: Vector2i = (fv as FieldView).lod.counts()
@@ -121,8 +121,27 @@ static func probe_camera(root: Node, reach: float = 6.0) -> void:
 	var vs: Vector2 = root.get_viewport().get_visible_rect().size
 	print("[camprobe] cam=%s fwd=%s near=%.2f" % [cam.global_position, -cam.global_basis.z, cam.near])
 	var hits: Dictionary = {}
+	var pts: Array = []
 	for fy: float in [0.5, 0.8, 0.9, 0.97]:
 		for fx: float in [0.1, 0.3, 0.5, 0.7, 0.9]:
+			pts.append(Vector2(fx, fy))
+	if OS.get_environment("CAM_PROBE_AT") != "":  # e.g. "0.955,0.74": one screen point only
+		var at: PackedStringArray = OS.get_environment("CAM_PROBE_AT").split(",")
+		pts = [Vector2(float(at[0]), float(at[1]))]
+		var o0: Vector3 = cam.project_ray_origin(vs * pts[0])
+		var d0: Vector3 = cam.project_ray_normal(vs * pts[0])
+		var wp: Vector3 = o0 + d0 * ((0.12 - o0.y) / d0.y)
+		var sl: Node = root.get_tree().current_scene
+		var info: String = ""
+		if sl and sl.get("field") != null:
+			var f: HexField = sl.field
+			var hid: int = f.hex_at(wp)
+			info = " hex=%d water=%s grid_r=%d" % [hid, str(f.is_water(hid)) if hid >= 0 else "-", f.radius]
+		print("[camprobe] point on y=0.12: %s%s" % [wp, info])
+	for pt: Vector2 in pts:
+		var fx: float = pt.x
+		var fy: float = pt.y
+		if true:
 			var o: Vector3 = cam.project_ray_origin(vs * Vector2(fx, fy))
 			var d: Vector3 = cam.project_ray_normal(vs * Vector2(fx, fy))
 			for n: Node in root.find_children("*", "GeometryInstance3D", true, false):

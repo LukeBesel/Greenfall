@@ -210,6 +210,9 @@ func _build_junk() -> void:
 ## [biomes2] Frontiers: a weathering overlay (art/shaders/junk_coat.gdshader) on every junk piece.
 func set_junk_overlay(m: Material) -> void:
 	lod.set_overlay(m)  # [vqa2] near + far junk
+	for list: Variant in _mounds:  # [vqa2] the debris mounds too (dark rubble crescents in the dunes)
+		for mi: MeshInstance3D in list:
+			mi.material_overlay = m
 
 
 static func _mound_mesh() -> ArrayMesh:
