@@ -11,7 +11,8 @@ locale/
                   complete MACHINE DRAFTS (Nov 2026), not yet reviewed by native speakers
 ```
 
-All six languages are complete drafts written by an AI translator (2,523 strings each). They are
+All six languages are complete drafts written by an AI translator (2,968 strings each, Nov 2026;
+the second pass filled wildlife, Lumi designs and the late game). They are
 shown to players today (Settings > Gameplay > Language, and "System default" on a matching OS), so
 a review pass per language is the next step before a store release; see "Reviewing a machine
 draft" below.
@@ -147,17 +148,36 @@ Review workflow, per language:
 
 Known draft caveats a reviewer should look at:
 
-- **Part rarity + part name** are joined as `"%s %s"` (`"Rusty" + "Chassis Frame"`). Romance
-  languages put the adjective after the noun and inflect it; the drafts use a neutral adjective
-  form. A proper fix is one format string per language order, or translating each combination.
+- **Part rarity + part name** use one pattern, `{rarity} {part}` with msgctxt "part name"
+  (`L10nFmt.part_name()`); fr/es/pt_BR put the adjective after the noun. The rarity adjective is one
+  translated word, so it does not agree in gender with every part (the drafts pick one form).
 - **Robot traits** (`Cautious`, `Speedy`, ...) fill `" Seems %s."`; `Curious` and `Sleepy` share a
   msgid with an achievement and an eye pose, so one word must fit both.
 - **Animal names** fill `"E   take a photo of the %s"` etc.; the drafts avoid gendered articles.
-- A few English source lines still say "Patch" (the robot's old name, e.g. the "THANK YOU, PATCH"
-  street sign and two collectibles); the collectible drafts say Lumi, the sign keeps "PATCH".
-- `◈` (token icon) is missing from every UI font, English included; it renders as a box.
+- The "THANK YOU, PATCH" street sign keeps the robot's old name on purpose.
+- The token icon is `◆` (U+25C6). The UI fonts lack it; both CJK subsets carry it in their base
+  set and are attached as fallbacks in every locale, so it renders everywhere.
 - `tools/l10n_merge_draft.py` is the tool the drafts were merged with (it validates placeholders
   between msgid and msgstr); it reads draft TSVs from the untracked `.l10n_work/` folder.
+
+## Filling a content drop
+
+New content arrives in English and shows in English until translated; `tests/test_l10n.gd`
+(`test_full_translations_complete`) fails while any language misses a string. To fill it:
+
+1. `python3 tools/extract_strings.py` (new msgids are merged in, empty).
+2. `python3 tools/l10n_status.py` prints coverage per language; `--export` writes
+   `.l10n_work/todo.tsv` (untracked): every missing string in the keyed draft format, with its
+   translator notes and source references. `--missing de` lists one language; `--check` exits 1 on
+   any gap.
+3. Copy it to `.l10n_work/<lang>_<chunk>.tsv` per language and replace the English after each tab
+   (`=msgid<TAB>text`; plurals `=msgid<TAB>P<TAB>form0<TAB>form1`; a msgctxt entry is `=ctx::msgid`).
+4. `python3 tools/l10n_merge_draft.py de fr es pt_BR zh_CN ja` merges and checks placeholders,
+   brace keys, tags and the `E   ` prefix; then `python3 tools/build_cjk_fonts.py` for zh_CN/ja.
+
+Shared display formats live in `systems/l10n_fmt.gd` (`L10nFmt`): use `reward()` / `amount()` for
+"+N <currency>", `part_name()` / `part_label()` for rarity + part, `stat_effect()` for research
+lines, instead of joining English words in code.
 
 ## Pseudo-locale (testing)
 

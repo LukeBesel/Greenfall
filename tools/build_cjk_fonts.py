@@ -47,7 +47,7 @@ def decode_range(codec: str, rows: range, cols: range) -> set[str]:
 
 
 def base_set(locale: str) -> set[str]:
-    s = rng(0x3000, 0x303F) | rng(0xFF00, 0xFFEF) | rng(0x2010, 0x2027) | set("…·—–“”‘’《》「」『』【】〈〉※〜")
+    s = rng(0x3000, 0x303F) | rng(0xFF00, 0xFFEF) | rng(0x2010, 0x2027) | set("…·—–“”‘’《》「」『』【】〈〉※〜◆")  # ◆ = token icon (UI font lacks it)
     if locale == "zh_CN":
         s |= decode_range("gb2312", range(0xB0, 0xD8), range(0xA1, 0xFF))   # GB2312 level 1 (3,755 Han)
     else:

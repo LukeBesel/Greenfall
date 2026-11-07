@@ -497,7 +497,7 @@ func _pay(rw: Dictionary, at: Vector3, source: String) -> String:
 		var t: int = rng.randi() % maxi(Economy.parts.get("types", [1]).size(), 1)
 		GameState.parts.append({"type": t, "rarity": r})
 		EventBus.part_found.emit(t, r)
-		bits.append("+%s %s" % [tr(str(Economy.rarity(r).get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))])
+		bits.append("+" + L10nFmt.part_name(r, t))  # [i18n2]
 	var tok: int = int(rw.get("tokens", 0))
 	if rng.randf() < float(rw.get("tokens_chance", 0.0)):
 		tok += 1

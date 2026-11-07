@@ -14,7 +14,7 @@ msgstr ""
 
 #: art/feel_fx.gd:147
 msgid "NEW CREWMATE  ·  %s"
-msgstr ""
+msgstr "NOUVEL ÉQUIPIER  ·  %s"
 
 #: autoload/Economy.gd:72
 msgid "Every %s in the fleet."
@@ -27,6 +27,10 @@ msgstr "Base (Mk I, avant palier et rareté des pièces)"
 #: autoload/Economy.gd:128
 msgid "Base"
 msgstr "Base"
+
+#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:185
+msgid "%s Lv %d"
+msgstr "%s Niv %d"
 
 #: autoload/Economy.gd:300 data/robots.json:tiers[0].name
 msgid "Mk I"
@@ -222,11 +226,11 @@ msgstr "JD bas"
 
 #: autoload/Story.gd:23
 msgid "Perfect bale: filled right to the gold line."
-msgstr ""
+msgstr "Balle parfaite : remplie pile jusqu'à la ligne dorée."
 
 #: autoload/Story.gd:25
 msgid "Pure bale: one kind of junk is worth double."
-msgstr ""
+msgstr "Balle pure : une seule sorte de ferraille vaut le double."
 
 #: autoload/Story.gd:29
 msgid "A whole hex is clean! The ground remembers its colors."
@@ -515,23 +519,23 @@ msgstr "Les épurateurs ont filtré l'air tout ce temps. Il est un peu plus clai
 
 #: fauna/fauna.gd:1211
 msgid "E   pet %s"
-msgstr ""
+msgstr "E   caresser %s"
 
 #: fauna/fauna.gd:1212
 msgid "E   pet the cat"
-msgstr ""
+msgstr "E   caresser le chat"
 
 #: fauna/fauna.gd:1261
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
-msgstr ""
+msgstr "La chatte a décidé que tu étais à elle. Voici %s. Elle vit à cette base maintenant."
 
 #: fauna/fauna.gd:1574
 msgid "New sighting: %s. It's in the Codex now."
-msgstr ""
+msgstr "Nouvelle observation : %s. Elle est maintenant dans le Codex."
 
 #: fauna/fauna.gd:1642
 msgid "Snap! A %s for your Collection."
-msgstr ""
+msgstr "Clic ! Une photo (%s) pour ta Collection."
 
 #: planet/frontier_district.gd:279
 msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
@@ -793,11 +797,11 @@ msgstr "Hex Niv %d  %s.   %s"
 
 #: plants/seed_finds.gd:42
 msgid "+1 SEED"
-msgstr ""
+msgstr "+1 GRAINE"
 
 #: plants/seed_finds.gd:46
 msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
-msgstr ""
+msgstr "Une vieille graine sèche, encore scellée dans son enveloppe. La ferraille en cache quelques-unes."
 
 #: player/detector.gd:77
 msgid "SIGNAL  %s  ·  %.1f m"
@@ -844,12 +848,12 @@ msgid "  (streak +%d%%)"
 msgstr "  (série +%d%%)"
 
 #: player/patch.gd:470
-msgid "Salvaged: %s %s"
-msgstr "Récupéré : %s %s"
+msgid "Salvaged: %s"
+msgstr "Récupéré : %s"
 
 #: player/patch.gd:500
-msgid "Recovered: %s %s"
-msgstr "Retrouvé : %s %s"
+msgid "Recovered: %s"
+msgstr "Retrouvé : %s"
 
 #: player/patch_model.gd:18 data/designs.json:designs[aurora].name
 msgid "Aurora"
@@ -1560,11 +1564,11 @@ msgstr "Lumi. Je capte un signal. Vert, faible, à l'est de la base. Une vieille
 
 #: story/first_seed.gd:130
 msgid "{tool_water}  then hold  {scoop}  to water it"
-msgstr ""
+msgstr "{tool_water}  puis maintiens  {scoop}  pour arroser"
 
 #: story/first_seed.gd:156
 msgid "Hold  {scoop}  on clean ground to plant the seed"
-msgstr ""
+msgstr "Maintiens  {scoop}  sur un sol propre pour planter la graine"
 
 #: story/first_seed.gd:225
 msgid "...It's green. Lumi, it's actually green."
@@ -1572,7 +1576,7 @@ msgstr "...C'est vert. Lumi, c'est vraiment vert."
 
 #: story/first_seed.gd:227
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
-msgstr ""
+msgstr "Garde-la bien arrosée. Les graines sont rares par ici, mais chaque floraison en rend une, et un peu de lumière verte pour ton cœur. C'est comme ça que tout commence."
 
 #: story/intro.gd:281
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
@@ -1705,7 +1709,7 @@ msgstr ""
 "Le Ledger est de notre côté maintenant. Les brouilleurs fredonnent juste avec la musique."
 
 #: story/ledger.gd:318 systems/decor.gd:125 systems/research.gd:186
-#: ui/hub_panel.gd:118 ui/stations_panel.gd:96
+#: ui/hub_panel.gd:119 ui/stations_panel.gd:96
 msgid "Needs %s"
 msgstr "Nécessite %s"
 
@@ -1803,11 +1807,11 @@ msgstr "Quelque chose a émergé du sol dégagé. Un éclat de mémoire."
 
 #: story/tutorial.gd:10
 msgid "Hold  {scoop}  to scoop junk"
-msgstr ""
+msgstr "Maintiens  {scoop}  pour ramasser la ferraille"
 
 #: story/tutorial.gd:11
 msgid "Press  {cube}  to press a bale"
-msgstr ""
+msgstr "Appuie sur  {cube}  pour presser une balle"
 
 #: story/tutorial.gd:12
 msgid "{interact}  to pick up the bale"
@@ -1815,19 +1819,19 @@ msgstr "{interact}  pour ramasser la balle"
 
 #: story/tutorial.gd:13
 msgid "Carry it onto the scale"
-msgstr ""
+msgstr "Porte-la sur la balance"
 
 #: story/tutorial.gd:14
 msgid "{interact}  at the workbench to upgrade"
-msgstr ""
+msgstr "{interact}  à l'établi pour améliorer"
 
 #: story/tutorial.gd:15
 msgid "Clean this hex completely"
-msgstr ""
+msgstr "Nettoie entièrement cet hexagone"
 
 #: story/tutorial.gd:17
 msgid "Lumi is back on the job"
-msgstr ""
+msgstr "Lumi reprend du service"
 
 #: systems/achievements.gd:139
 msgid "%d achievements unlocked. See them in the Codex (K)."
@@ -1887,11 +1891,11 @@ msgstr "Frontières"
 
 #: systems/codex.gd:195
 msgid " · %s"
-msgstr ""
+msgstr " · %s"
 
 #: systems/codex.gd:197 ui/codex_screen.gd:355
 msgid "Other worlds"
-msgstr ""
+msgstr "Autres mondes"
 
 #: systems/codex.gd:198 ui/codex_screen.gd:355
 msgid "Any district"
@@ -1923,7 +1927,7 @@ msgstr "Photos d'animaux"
 
 #: systems/collection.gd:83
 msgid "Animal Photos"
-msgstr ""
+msgstr "Photos d'animaux"
 
 #: systems/collection.gd:84
 msgid "Rare Part Signals"
@@ -1970,8 +1974,8 @@ msgid "%s fitted to the whole fleet."
 msgstr "%s installé sur toute la flotte."
 
 #: systems/contracts.gd:344
-msgid "Printed: %s %s."
-msgstr "Imprimé : %s %s."
+msgid "Printed: %s."
+msgstr "Imprimé : %s."
 
 #: systems/contracts.gd:347
 msgid "+%d seeds."
@@ -1999,43 +2003,43 @@ msgstr "Nécessite %d jetons"
 
 #: systems/cradle_mode.gd:282
 msgid "Fully grown"
-msgstr ""
+msgstr "Au maximum"
 
 #: systems/cradle_mode.gd:284
 msgid "Needs %d Starseeds"
-msgstr ""
+msgstr "Nécessite %d graines d'étoile"
 
 #: systems/cradle_mode.gd:298
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
-msgstr ""
+msgstr "Héritage : %s, niveau %d. Il suit Lumi sur chaque monde."
 
 #: systems/decor.gd:121
 msgid "Needs %d Collection finds (%d so far)"
-msgstr ""
+msgstr "Nécessite %d trouvailles de la Collection (%d pour l'instant)"
 
 #: systems/decor.gd:179
 msgid "Too close to the base machines"
-msgstr ""
+msgstr "Trop près des machines de la base"
 
 #: systems/decor.gd:182
 msgid "Outside the district"
-msgstr ""
+msgstr "En dehors du quartier"
 
 #: systems/decor.gd:184
 msgid "That's water"
-msgstr ""
+msgstr "C'est de l'eau"
 
 #: systems/decor.gd:188
 msgid "Frozen in"
-msgstr ""
+msgstr "Pris dans la glace"
 
 #: systems/decor.gd:190
 msgid "A building is in the way"
-msgstr ""
+msgstr "Un bâtiment gêne"
 
 #: systems/decor.gd:192
 msgid "Something is already here"
-msgstr ""
+msgstr "Il y a déjà quelque chose ici"
 
 #: systems/designs.gd:118
 msgid "Default"
@@ -2043,15 +2047,15 @@ msgstr "Par défaut"
 
 #: systems/designs.gd:137
 msgid "Best fleet: %s"
-msgstr ""
+msgstr "Meilleure flotte : %s"
 
 #: systems/designs.gd:154
 msgid "New design unlocked: %s. Wear it from the workbench (Cosmetics)."
-msgstr ""
+msgstr "Nouveau design débloqué : %s. Porte-le depuis l'établi (Cosmétiques)."
 
 #: systems/designs.gd:193
 msgid "Design: %s"
-msgstr ""
+msgstr "Design : %s"
 
 #: systems/event_props.gd:154
 msgid "CRADLE · SUPPLY"
@@ -2065,11 +2069,11 @@ msgstr "SÉRIE x%d  +%d%%"
 msgid "+%s cubes"
 msgstr "+%s cubes"
 
-#: systems/events.gd:488
+#: systems/events.gd:488 systems/l10n_fmt.gd:29
 msgid "+%d data"
 msgstr "+%d données"
 
-#: systems/events.gd:506 systems/lumi_level.gd:236
+#: systems/events.gd:506 systems/l10n_fmt.gd:23 systems/lumi_level.gd:236
 msgid "+%d token"
 msgid_plural "+%d tokens"
 msgstr[0] "+%d jeton"
@@ -2175,13 +2179,109 @@ msgstr "Audit gagné, %d à %d ! Le Ledger tamponne APPROUVÉ. %s"
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "Le drone a gagné l'audit, %d à %d. Il a quand même laissé un pourboire : +%s cubes."
 
+#: systems/l10n_fmt.gd:17
+msgid "+%d cube"
+msgid_plural "+%d cubes"
+msgstr[0] "+%d cube"
+msgstr[1] "+%d cubes"
+
+#: systems/l10n_fmt.gd:19
+msgid "+%d seed"
+msgid_plural "+%d seeds"
+msgstr[0] "+%d graine"
+msgstr[1] "+%d graines"
+
+#: systems/l10n_fmt.gd:21
+msgid "+%d trinket"
+msgid_plural "+%d trinkets"
+msgstr[0] "+%d bibelot"
+msgstr[1] "+%d bibelots"
+
+#: systems/l10n_fmt.gd:25
+msgid "+%d bolt"
+msgid_plural "+%d bolts"
+msgstr[0] "+%d boulon"
+msgstr[1] "+%d boulons"
+
+#: systems/l10n_fmt.gd:27
+msgid "+%d part"
+msgid_plural "+%d parts"
+msgstr[0] "+%d pièce"
+msgstr[1] "+%d pièces"
+
+#: systems/l10n_fmt.gd:49
+msgid "%s cube"
+msgid_plural "%s cubes"
+msgstr[0] "%s cube"
+msgstr[1] "%s cubes"
+
+#: systems/l10n_fmt.gd:51
+msgid "%s seed"
+msgid_plural "%s seeds"
+msgstr[0] "%s graine"
+msgstr[1] "%s graines"
+
+#: systems/l10n_fmt.gd:53
+msgid "%s trinket"
+msgid_plural "%s trinkets"
+msgstr[0] "%s bibelot"
+msgstr[1] "%s bibelots"
+
+#: systems/l10n_fmt.gd:55
+msgid "%s token"
+msgid_plural "%s tokens"
+msgstr[0] "%s jeton"
+msgstr[1] "%s jetons"
+
+#: systems/l10n_fmt.gd:57
+msgid "%s bolt"
+msgid_plural "%s bolts"
+msgstr[0] "%s boulon"
+msgstr[1] "%s boulons"
+
+#: systems/l10n_fmt.gd:59
+msgid "%s part"
+msgid_plural "%s parts"
+msgstr[0] "%s pièce"
+msgstr[1] "%s pièces"
+
+#: systems/l10n_fmt.gd:61
+msgid "%s data"
+msgstr "%s données"
+
+#. a part's name. {rarity} is an adjective (Rusty, Polished, Rare...), {part} a part type
+#: systems/l10n_fmt.gd:86
+msgctxt "part name"
+msgid "{rarity} {part}"
+msgstr "{part} {rarity}"
+
+#. research effect, e.g. "+20% scoop width". {stat} is a stat name.
+#: systems/l10n_fmt.gd:96
+msgid "+{amount}% {stat}"
+msgstr "+{amount} % de {stat}"
+
+#. research effect, e.g. "+2 tank". {stat} is a stat name.
+#: systems/l10n_fmt.gd:98
+msgid "+{amount} {stat}"
+msgstr "+{amount} de {stat}"
+
+#. research effect for one robot model, e.g. "+10% Scoopie speed".
+#: systems/l10n_fmt.gd:101
+msgid "+{amount}% {robot} {stat}"
+msgstr "+{amount} % de {stat} pour {robot}"
+
+#. research effect for one robot model, e.g. "+1 Drip tank".
+#: systems/l10n_fmt.gd:103
+msgid "+{amount} {robot} {stat}"
+msgstr "+{amount} de {stat} pour {robot}"
+
 #: systems/late_director.gd:90
 msgid "The Ark Bridge opens once the Cradle has come home."
-msgstr ""
+msgstr "Le Pont de l'Arche s'ouvre une fois le Cradle rentré au port."
 
 #: systems/late_director.gd:124
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
-msgstr ""
+msgstr "Mode Cradle : la réserve de graines de l'arche contient des graines pour d'autres mondes. Pause > Pont de l'Arche pour les voir, dépenser des graines d'étoile en héritages ou ensemencer un nouveau monde. Le mode jardin (H) est ouvert aussi."
 
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:255
 msgid "Low"
@@ -2238,6 +2338,10 @@ msgstr "Pas assez de données"
 #: systems/research.gd:324 ui/codex_screen.gd:763
 msgid "%ds"
 msgstr "%d s"
+
+#: systems/research.gd:371
+msgid "Research: %s"
+msgstr "Recherche : %s"
 
 #: systems/research.gd:381
 msgid "scoop reach"
@@ -2372,8 +2476,8 @@ msgid "Haggle's stall · %s cubes + %d bolts"
 msgstr "Étal de Haggle · %s cubes + %d boulons"
 
 #: systems/robot_builder.gd:370
-msgid "Token shop · ◈ %d"
-msgstr "Boutique à jetons · ◈ %d"
+msgid "Token shop · ◆ %d"
+msgstr "Boutique à jetons · ◆ %d"
 
 #: systems/robot_builder.gd:374
 msgid "%d Maker Fragments"
@@ -2417,8 +2521,8 @@ msgid "%s spotted a Maker Fragment glinting in the junk. (%d)"
 msgstr "%s a repéré un fragment de Bâtisseurs qui brillait dans la ferraille. (%d)"
 
 #: systems/robot_builder.gd:604
-msgid "%s spotted a %s %s."
-msgstr "%s a repéré : %s %s."
+msgid "%s spotted a %s."
+msgstr "%s a repéré : %s."
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -2446,59 +2550,59 @@ msgstr "%d plantes ont soif et ne poussent pas."
 
 #: ui/ark_bridge.gd:100
 msgid "THE CRADLE  ·  SEED VAULT DECK"
-msgstr ""
+msgstr "LE CRADLE  ·  PONT DE LA RÉSERVE DE GRAINES"
 
 #: ui/ark_bridge.gd:101
 msgid "ARK BRIDGE"
-msgstr ""
+msgstr "PONT DE L'ARCHE"
 
 #: ui/ark_bridge.gd:102
 msgid "The vault holds seeds for every world in the system. Take what Lumi learned somewhere new; nothing here is ever undone."
-msgstr ""
+msgstr "La réserve contient des graines pour chaque monde du système. Emporte ce que Lumi a appris ailleurs ; rien ici n'est jamais défait."
 
 #: ui/ark_bridge.gd:107 ui/ark_bridge.gd:304
 msgid "%d Starseeds"
-msgstr ""
+msgstr "%d graines d'étoile"
 
 #: ui/ark_bridge.gd:110
 msgid "+%d banked from %s"
-msgstr ""
+msgstr "+%d mises de côté sur %s"
 
 #: ui/ark_bridge.gd:110
 msgid "Earn more from Seed Ark waves and restoration"
-msgstr ""
+msgstr "Gagne-en plus avec les vagues de l'Arche à graines et la restauration"
 
 #: ui/ark_bridge.gd:125
 msgid "WORLDS"
-msgstr ""
+msgstr "MONDES"
 
 #: ui/ark_bridge.gd:143
 msgid "HEIRLOOMS  ·  KEPT ON EVERY WORLD"
-msgstr ""
+msgstr "HÉRITAGES  ·  CONSERVÉS SUR CHAQUE MONDE"
 
 #: ui/ark_bridge.gd:156
 msgid "Enter / A  choose      Esc / B  back"
-msgstr ""
+msgstr "Entrée / A  choisir      Échap / B  retour"
 
 #: ui/ark_bridge.gd:160 ui/ark_bridge.gd:254
 msgid "Back to %s"
-msgstr ""
+msgstr "Retour sur %s"
 
 #: ui/ark_bridge.gd:182
 msgid "WORLD %d"
-msgstr ""
+msgstr "MONDE %d"
 
 #: ui/ark_bridge.gd:188
 msgid "Not visited yet"
-msgstr ""
+msgstr "Pas encore visité"
 
 #: ui/ark_bridge.gd:190
 msgid "%s  ·  %d hexes  ·  %d ark waves  ·  %d curiosities"
-msgstr ""
+msgstr "%s  ·  %d hexagones  ·  %d vagues de l'arche  ·  %d curiosités"
 
 #: ui/ark_bridge.gd:192
 msgid "restored"
-msgstr ""
+msgstr "restauré"
 
 #: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40
 msgid "You are here"
@@ -2506,15 +2610,15 @@ msgstr "Tu es ici"
 
 #: ui/ark_bridge.gd:202
 msgid "Travel"
-msgstr ""
+msgstr "Voyager"
 
 #: ui/ark_bridge.gd:227
 msgid "SEED A NEW WORLD"
-msgstr ""
+msgstr "ENSEMENCER UN NOUVEAU MONDE"
 
 #: ui/ark_bridge.gd:229
 msgid "The Cradle has to come home first."
-msgstr ""
+msgstr "Le Cradle doit d'abord rentrer au port."
 
 #: ui/ark_bridge.gd:245 ui/frontier_rockets.gd:42 ui/globe_view.gd:308
 #: ui/rockets_panel.gd:81
@@ -2523,27 +2627,27 @@ msgstr "Décoller"
 
 #: ui/ark_bridge.gd:264
 msgid "%d Data"
-msgstr ""
+msgstr "%d données"
 
 #: ui/ark_bridge.gd:266
 msgid "%d seeds"
-msgstr ""
+msgstr "%d graines"
 
 #: ui/ark_bridge.gd:268
 msgid "robots waiting: %d"
-msgstr ""
+msgstr "robots qui attendent : %d"
 
 #: ui/ark_bridge.gd:270
 msgid "research tier %d known"
-msgstr ""
+msgstr "palier de recherche %d connu"
 
 #: ui/ark_bridge.gd:272
 msgid "Starting kit: just Lumi. Heirlooms add to it."
-msgstr ""
+msgstr "Kit de départ : juste Lumi. Les héritages y ajoutent."
 
 #: ui/ark_bridge.gd:273
 msgid "Starting kit: %s"
-msgstr ""
+msgstr "Kit de départ : %s"
 
 #: ui/ark_bridge.gd:301 ui/settings_panel.gd:509
 msgid "Full"
@@ -2720,19 +2824,19 @@ msgstr "Rien à installer : le bac manque de ces pièces, ou l'équipe les a dé
 
 #: ui/checklist_card.gd:92
 msgid "RESTART"
-msgstr ""
+msgstr "REDÉMARRAGE"
 
 #: ui/checklist_card.gd:110
 msgid "RESTART CHECKLIST"
-msgstr ""
+msgstr "LISTE DE REDÉMARRAGE"
 
 #: ui/checklist_card.gd:110
 msgid "NEXT STEP"
-msgstr ""
+msgstr "ÉTAPE SUIVANTE"
 
 #: ui/checklist_card.gd:148
 msgid "RESTART CHECKLIST  ·  DONE"
-msgstr ""
+msgstr "LISTE DE REDÉMARRAGE  ·  TERMINÉE"
 
 #: ui/codex_screen.gd:15 ui/codex_screen.gd:696
 msgid "Achievements"
@@ -2814,7 +2918,7 @@ msgstr "Astuce : un visiteur timide vient sur les hexagones durables et florissa
 
 #: ui/codex_screen.gd:552
 msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
-msgstr ""
+msgstr "Astuce : les animaux reviennent quand le sol guérit. Photographie-les en mode photo (P)."
 
 #: ui/codex_screen.gd:553
 msgid "Hint: complete %d contracts at the workbench."
@@ -3143,8 +3247,8 @@ msgid "TOKEN SHOP"
 msgstr "BOUTIQUE À JETONS"
 
 #: ui/contracts_panel.gd:81
-msgid "◈  %d tokens"
-msgstr "◈  %d jetons"
+msgid "◆  %d tokens"
+msgstr "◆  %d jetons"
 
 #: ui/contracts_panel.gd:82
 msgid "Collection  %d / %d   ·   see the Codex (K)"
@@ -3155,8 +3259,8 @@ msgid "A new contract is being posted."
 msgstr "Un nouveau contrat est en cours de publication."
 
 #: ui/contracts_panel.gd:141
-msgid "Reward  ◈ %d tokens  +  cubes"
-msgstr "Récompense  ◈ %d jetons  +  cubes"
+msgid "Reward  ◆ %d tokens  +  cubes"
+msgstr "Récompense  ◆ %d jetons  +  cubes"
 
 #: ui/contracts_panel.gd:163
 msgid "Accept  (%s)"
@@ -3171,8 +3275,8 @@ msgid "Working on it"
 msgstr "En cours"
 
 #: ui/contracts_panel.gd:188
-msgid "Claim  ◈ %d"
-msgstr "Récupérer  ◈ %d"
+msgid "Claim  ◆ %d"
+msgstr "Récupérer  ◆ %d"
 
 #: ui/contracts_panel.gd:228
 msgid "Next posting in %s"
@@ -3212,31 +3316,31 @@ msgstr "DESIGNS"
 
 #: ui/cosmetics_panel.gd:38
 msgid "Looks only (no bonuses)"
-msgstr ""
+msgstr "Apparence seulement (aucun bonus)"
 
 #: ui/cosmetics_panel.gd:129 ui/cosmetics_panel.gd:160
 msgid "Wearing"
-msgstr ""
+msgstr "Porté"
 
 #: ui/cosmetics_panel.gd:129
 msgid "Unlocked"
-msgstr ""
+msgstr "Débloqué"
 
 #: ui/cosmetics_panel.gd:129
 msgid "Locked  %d%%"
-msgstr ""
+msgstr "Verrouillé  %d%%"
 
 #: ui/cosmetics_panel.gd:156
 msgid "Bonus: %s"
-msgstr ""
+msgstr "Bonus : %s"
 
 #: ui/cosmetics_panel.gd:156
 msgid "(off: looks only)"
-msgstr ""
+msgstr "(désactivé : apparence seulement)"
 
 #: ui/cosmetics_panel.gd:162
 msgid "Unlocked. Press to wear."
-msgstr ""
+msgstr "Débloqué. Appuie pour le porter."
 
 #: ui/cosmetics_panel.gd:164
 msgid "Locked: %s"
@@ -3312,11 +3416,11 @@ msgstr "PIÈCES"
 
 #: ui/design_toast.gd:58
 msgid "NEW DESIGN UNLOCKED"
-msgstr ""
+msgstr "NOUVEAU DESIGN DÉBLOQUÉ"
 
 #: ui/design_toast.gd:66
 msgid "Wear it at the workbench: Cosmetics"
-msgstr ""
+msgstr "À porter depuis l'établi : Cosmétiques"
 
 #: ui/document_view.gd:45
 msgid "{interact}  [k]/ Esc  [/k]close"
@@ -3352,27 +3456,27 @@ msgstr "Inexploré  ·  les balles valent x%d ici"
 
 #: ui/garden_placer.gd:117
 msgid "Garden Mode opens when this base reaches level 5, or once the Cradle comes home."
-msgstr ""
+msgstr "Le mode jardin s'ouvre quand cette base atteint le niveau 5, ou une fois le Cradle rentré."
 
 #: ui/garden_placer.gd:229
 msgid "charm +%.1f"
-msgstr ""
+msgstr "charme +%.1f"
 
 #: ui/garden_placer.gd:232
 msgid "%s here: %s to pick it up"
-msgstr ""
+msgstr "%s ici : %s pour le ramasser"
 
 #: ui/garden_placer.gd:235
 msgid "GARDEN MODE   ·   Charm %.1f   ·   +%.1f%% plant growth here"
-msgstr ""
+msgstr "MODE JARDIN   ·   Charme %.1f   ·   +%.1f%% de croissance des plantes ici"
 
 #: ui/garden_placer.gd:236
 msgid "[%s] place   [%s] rotate   [%s / %s] item   [%s] pick up   [%s] done"
-msgstr ""
+msgstr "[%s] placer   [%s] tourner   [%s / %s] objet   [%s] ramasser   [%s] terminé"
 
 #: ui/garden_placer.gd:291
 msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
-msgstr ""
+msgstr "Ramassé : %s. Pose-le ailleurs, ou laisse-le en réserve."
 
 #: ui/globe_view.gd:118
 msgid "Survey"
@@ -3498,15 +3602,15 @@ msgstr "verre"
 msgid "bolts"
 msgstr "boulons"
 
-#: ui/hub_panel.gd:86
+#: ui/hub_panel.gd:87
 msgid " (have %s)"
 msgstr " (tu as %s)"
 
-#: ui/hub_panel.gd:93
+#: ui/hub_panel.gd:94
 msgid "Sheet metal %s    Plastic stock %s    Glass %s"
 msgstr "Tôle %s    Plastique %s    Verre %s"
 
-#: ui/hub_panel.gd:95
+#: ui/hub_panel.gd:96
 msgid ""
 "Level %d   ·   %s\n"
 "%s   Bales sell for +%d%%."
@@ -3514,11 +3618,11 @@ msgstr ""
 "Niveau %d   ·   %s\n"
 "%s   Balles vendues +%d%%."
 
-#: ui/hub_panel.gd:98
+#: ui/hub_panel.gd:99
 msgid "Fully built."
 msgstr "Entièrement construit."
 
-#: ui/hub_panel.gd:101
+#: ui/hub_panel.gd:102
 msgid ""
 "Next: %s. %s\n"
 "Needs %s"
@@ -3526,15 +3630,15 @@ msgstr ""
 "Suivant : %s. %s\n"
 "Nécessite %s"
 
-#: ui/hub_panel.gd:102 ui/stations_panel.gd:98
+#: ui/hub_panel.gd:103 ui/stations_panel.gd:98
 msgid "Build %s"
 msgstr "Construire : %s"
 
-#: ui/hub_panel.gd:107
+#: ui/hub_panel.gd:108
 msgid "Continue in the full game"
 msgstr "Suite dans le jeu complet"
 
-#: ui/hub_panel.gd:114
+#: ui/hub_panel.gd:115
 msgid ""
 "\n"
 "Requires hub level %d."
@@ -3542,7 +3646,7 @@ msgstr ""
 "\n"
 "Base niveau %d requise."
 
-#: ui/hub_panel.gd:116
+#: ui/hub_panel.gd:117
 msgid ""
 "\n"
 "All built (max)."
@@ -3550,7 +3654,7 @@ msgstr ""
 "\n"
 "Tout est construit (max)."
 
-#: ui/hub_panel.gd:119
+#: ui/hub_panel.gd:120
 msgid ""
 "%s   ·   %d / %d built\n"
 "%s%s"
@@ -3558,11 +3662,11 @@ msgstr ""
 "%s   ·   %d / %d construits\n"
 "%s%s"
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:121
 msgid "Air Scrubbers maxed"
 msgstr "Épurateurs au max"
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:121
 msgid "Build Air Scrubber"
 msgstr "Construire un épurateur"
 
@@ -3588,15 +3692,15 @@ msgstr "HEX  PROPRE"
 
 #: ui/hud.gd:334
 msgid "HEX  %s"
-msgstr ""
+msgstr "HEX  %s"
 
 #: ui/hud.gd:337
 msgid "  SUSTAIN %d%%"
-msgstr ""
+msgstr "  DURABLE %d%%"
 
 #: ui/hud.gd:339
 msgid "  THIRSTY"
-msgstr ""
+msgstr "  ASSOIFFÉ"
 
 #: ui/hud.gd:354
 msgid "%s  map      %s  command      %s  lens      %s  goals"
@@ -3629,11 +3733,11 @@ msgstr "%s   établi"
 
 #: ui/late_menu.gd:9
 msgid "Garden Mode  [%s]"
-msgstr ""
+msgstr "Mode jardin  [%s]"
 
 #: ui/late_menu.gd:15
 msgid "Ark Bridge"
-msgstr ""
+msgstr "Pont de l'Arche"
 
 #: ui/lens_overlay.gd:61
 msgid ""
@@ -4643,10 +4747,6 @@ msgstr "Max"
 msgid "Lv %d%s"
 msgstr "Niv %d%s"
 
-#: ui/upgrade_card.gd:185
-msgid "%s Lv %d"
-msgstr "%s Niv %d"
-
 #: ui/upgrade_card.gd:186
 msgid "Requires %s"
 msgstr "Nécessite %s"
@@ -4717,11 +4817,11 @@ msgstr "%s (bientôt)"
 
 #: ui/world_banner.gd:37
 msgid "SEED MISSION  ·  WORLD %d"
-msgstr ""
+msgstr "MISSION SEMENCES  ·  MONDE %d"
 
 #: ui/world_banner.gd:70
 msgid "Lumi's pod is down on %s. A new world, ruined and waiting. Grow something."
-msgstr ""
+msgstr "La capsule de Lumi s'est posée sur %s. Un nouveau monde, en ruine, qui attend. Fais pousser quelque chose."
 
 #: water/water_view.gd:78
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
@@ -5321,139 +5421,139 @@ msgstr "Collectionne 5 couvre-chefs de robot différents."
 
 #: data/achievements.json:achievements[pet_cat].name
 msgid "A Friend in Old Town"
-msgstr ""
+msgstr "Une amie dans la Vieille Ville"
 
 #: data/achievements.json:achievements[pet_cat].desc
 msgid "Pet a stray cat."
-msgstr ""
+msgstr "Caresse un chat errant."
 
 #: data/achievements.json:achievements[adopt_cat].name
 msgid "Best Friends"
-msgstr ""
+msgstr "Meilleurs amis"
 
 #: data/achievements.json:achievements[adopt_cat].desc
 msgid "Pet the same cat until she adopts you."
-msgstr ""
+msgstr "Caresse le même chat jusqu'à ce qu'il t'adopte."
 
 #: data/achievements.json:achievements[spot_deer].name
 msgid "Oh, Deer"
-msgstr ""
+msgstr "Oh, un chevreuil"
 
 #: data/achievements.json:achievements[spot_deer].desc
 msgid "Spot a deer at the edge of the green."
-msgstr ""
+msgstr "Repère un chevreuil à la lisière de la verdure."
 
 #: data/achievements.json:achievements[lake_fish].name
 msgid "Clear as Day"
-msgstr ""
+msgstr "Clair comme de l'eau de roche"
 
 #: data/achievements.json:achievements[lake_fish].desc
 msgid "See fish in a clean lake."
-msgstr ""
+msgstr "Vois des poissons dans un lac propre."
 
 #: data/achievements.json:achievements[naturalist].desc
 msgid "Spot 10 different animals."
-msgstr ""
+msgstr "Repère 10 animaux différents."
 
 #: data/achievements.json:achievements[wild_photos].name
 msgid "Wildlife Photographer"
-msgstr ""
+msgstr "Photographe animalier"
 
 #: data/achievements.json:achievements[wild_photos].desc
 msgid "Photograph 6 different animals in photo mode."
-msgstr ""
+msgstr "Photographie 6 animaux différents en mode photo."
 
 #: data/achievements.json:achievements[late_bridge].name
 msgid "On the Bridge"
-msgstr ""
+msgstr "Sur le pont"
 
 #: data/achievements.json:achievements[late_bridge].desc
 msgid "Open the Ark Bridge after the Cradle comes home."
-msgstr ""
+msgstr "Ouvre le Pont de l'Arche après le retour du Cradle."
 
 #: data/achievements.json:achievements[late_world_1].name
 msgid "Seed Mission"
-msgstr ""
+msgstr "Mission semences"
 
 #: data/achievements.json:achievements[late_world_1].desc
 msgid "Seed a new world from the Cradle's vault."
-msgstr ""
+msgstr "Ensemence un nouveau monde depuis la réserve du Cradle."
 
 #: data/achievements.json:achievements[late_world_3].name
 msgid "Gardener of Worlds"
-msgstr ""
+msgstr "Jardinier des mondes"
 
 #: data/achievements.json:achievements[late_world_3].desc
 msgid "Seed three new worlds."
-msgstr ""
+msgstr "Ensemence trois nouveaux mondes."
 
 #: data/achievements.json:achievements[late_heirloom_1].name
 msgid "Family Heirloom"
-msgstr ""
+msgstr "Héritage de famille"
 
 #: data/achievements.json:achievements[late_heirloom_1].desc
 msgid "Buy an Heirloom."
-msgstr ""
+msgstr "Achète un héritage."
 
 #: data/achievements.json:achievements[late_heirloom_20].name
 msgid "Treasured"
-msgstr ""
+msgstr "Précieux"
 
 #: data/achievements.json:achievements[late_heirloom_20].desc
 msgid "Grow Heirlooms to 20 levels in all."
-msgstr ""
+msgstr "Monte tes héritages à 20 niveaux au total."
 
 #: data/achievements.json:achievements[late_starseeds_100].name
 msgid "Starseed Saver"
-msgstr ""
+msgstr "Épargnant d'étoiles"
 
 #: data/achievements.json:achievements[late_starseeds_100].desc
 msgid "Earn 100 Starseeds across your worlds."
-msgstr ""
+msgstr "Gagne 100 graines d'étoile sur l'ensemble de tes mondes."
 
 #: data/achievements.json:achievements[late_decor_1].name
 msgid "Home Touches"
-msgstr ""
+msgstr "Touches personnelles"
 
 #: data/achievements.json:achievements[late_decor_1].desc
 msgid "Place a decoration in Garden Mode."
-msgstr ""
+msgstr "Place une décoration en mode jardin."
 
 #: data/achievements.json:achievements[late_decor_25].name
 msgid "Landscaper"
-msgstr ""
+msgstr "Paysagiste"
 
 #: data/achievements.json:achievements[late_decor_25].desc
 msgid "Place 25 decorations."
-msgstr ""
+msgstr "Place 25 décorations."
 
 #: data/achievements.json:achievements[late_decor_all].name
 msgid "Full Catalogue"
-msgstr ""
+msgstr "Catalogue complet"
 
 #: data/achievements.json:achievements[late_decor_all].desc
 msgid "Place every kind of decoration at least once."
-msgstr ""
+msgstr "Place chaque type de décoration au moins une fois."
 
 #: data/achievements.json:achievements[late_charm_25].name
 msgid "Picture Perfect"
-msgstr ""
+msgstr "Pittoresque"
 
 #: data/achievements.json:achievements[late_charm_25].desc
 msgid "Reach 25 charm in one district."
-msgstr ""
+msgstr "Atteins 25 de charme dans un quartier."
 
 #: data/achievements.json:achievements[late_eggs_40].desc
 msgid "Find 40 curiosities."
-msgstr ""
+msgstr "Trouve 40 curiosités."
 
 #: data/achievements.json:achievements[late_older_pod].name data/eggs.json:eggs[older_pod].name
 msgid "Not the First"
-msgstr ""
+msgstr "Pas le premier"
 
 #: data/achievements.json:achievements[late_older_pod].desc
 msgid "Find the older seed pod on a new world."
-msgstr ""
+msgstr "Trouve la capsule de graines plus ancienne sur un nouveau monde."
 
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
@@ -5505,7 +5605,7 @@ msgstr "Monuments"
 
 #: data/codex.json:categories[animals].name
 msgid "Animals"
-msgstr ""
+msgstr "Animaux"
 
 #: data/codex.json:junk.metal.hint
 msgid "Rusty, clanky, everywhere."
@@ -6205,635 +6305,635 @@ msgstr "Un anneau d'hexagones devant la base, là où le Cradle se posera. Il do
 
 #: data/codex.json:animals.cat.name data/fauna.json:species[cat].name
 msgid "Stray Cat"
-msgstr ""
+msgstr "Chat errant"
 
 #: data/codex.json:animals.cat.hint
 msgid "Where: On clean city streets."
-msgstr ""
+msgstr "Où : dans les rues propres de la ville."
 
 #: data/codex.json:animals.cat.desc
 msgid "Old Town's cats never left. They know every warm engine block and sunny step, and they decided long ago that robots are furniture. Stop for a while and one may come over. Pet the same cat often enough and she'll move in at your base."
-msgstr ""
+msgstr "Les chats de la Vieille Ville ne sont jamais partis. Ils connaissent chaque bloc moteur tiède et chaque marche ensoleillée, et ont décidé depuis longtemps que les robots sont des meubles. Arrête-toi un moment et l'un d'eux viendra peut-être. Caresse souvent la même chatte et elle s'installera à ta base."
 
 #: data/codex.json:animals.pigeon.name data/fauna.json:species[pigeon].name
 msgid "Pigeon"
-msgstr ""
+msgstr "Pigeon"
 
 #: data/codex.json:animals.pigeon.hint
 msgid "Where: Clean pavement in the city."
-msgstr ""
+msgstr "Où : sur les trottoirs propres de la ville."
 
 #: data/codex.json:animals.pigeon.desc
 msgid "Pigeons will live anywhere people once dropped crumbs. They peck between the cracks, bob their heads as they walk and burst into the air all at once if you fly through them."
-msgstr ""
+msgstr "Les pigeons vivent partout où les gens ont un jour laissé tomber des miettes. Ils picorent entre les fissures, hochent la tête en marchant et s'envolent tous d'un coup si tu passes au milieu."
 
 #: data/codex.json:animals.sparrow.name data/fauna.json:species[sparrow].name
 msgid "Sparrow"
-msgstr ""
+msgstr "Moineau"
 
 #: data/codex.json:animals.sparrow.hint
 msgid "Where: Clean ground, city or wild."
-msgstr ""
+msgstr "Où : sur un sol propre, en ville ou en pleine nature."
 
 #: data/codex.json:animals.sparrow.desc
 msgid "Small, brown and bossy. Sparrows were the first birds to come back to swept streets, chirping from kerb to kerb."
-msgstr ""
+msgstr "Petit, brun et autoritaire. Les moineaux ont été les premiers oiseaux à revenir dans les rues balayées, pépiant d'un trottoir à l'autre."
 
 #: data/codex.json:animals.rat.name data/fauna.json:species[rat].name
 msgid "Rat"
-msgstr ""
+msgstr "Rat"
 
 #: data/codex.json:animals.rat.hint
 msgid "Where: Wherever the junk is still piled up."
-msgstr ""
+msgstr "Où : partout où la ferraille s'entasse encore."
 
 #: data/codex.json:animals.rat.desc
 msgid "Rats live in the gaps between the piles. They are not villains, just tenants: clean a hex and they pack up and move to the next heap."
-msgstr ""
+msgstr "Les rats vivent dans les interstices entre les tas. Ce ne sont pas des méchants, juste des locataires : nettoie un hexagone et ils plient bagage pour le tas suivant."
 
 #: data/codex.json:animals.rabbit.name data/fauna.json:species[rabbit].name
 msgid "Rabbit"
-msgstr ""
+msgstr "Lapin"
 
 #: data/codex.json:animals.rabbit.hint
 msgid "Where: Growing hexes."
-msgstr ""
+msgstr "Où : hexagones en croissance."
 
 #: data/codex.json:animals.rabbit.desc
 msgid "Rabbits arrive as soon as there is something green to nibble. They hop, freeze, nibble, and zig-zag away if Lumi rushes them."
-msgstr ""
+msgstr "Les lapins arrivent dès qu'il y a quelque chose de vert à grignoter. Ils sautillent, se figent, grignotent, et filent en zigzag si Lumi fonce sur eux."
 
 #: data/codex.json:animals.deer.name data/fauna.json:species[deer].name
 msgid "Roe Deer"
-msgstr ""
+msgstr "Chevreuil"
 
 #: data/codex.json:animals.deer.hint
 msgid "Where: The edges of Sustained ground."
-msgstr ""
+msgstr "Où : en bordure des sols durables."
 
 #: data/codex.json:animals.deer.desc
 msgid "Shy grazers that keep to the edge of the green, where they can see what's coming. Approach slowly; rush them and they bound away in long, graceful leaps."
-msgstr ""
+msgstr "De timides brouteurs qui restent à la lisière de la verdure, d'où ils voient venir. Approche lentement ; si tu te précipites, ils s'enfuient en longs bonds gracieux."
 
 #: data/codex.json:animals.fox.name data/fauna.json:species[fox].name
 msgid "Red Fox"
-msgstr ""
+msgstr "Renard roux"
 
 #: data/codex.json:animals.fox.hint
 msgid "Where: Sustained and Thriving hexes."
-msgstr ""
+msgstr "Où : hexagones durables et florissants."
 
 #: data/codex.json:animals.fox.desc
 msgid "A fox trots along the hedges, nose down, tail out. It watches Lumi with polite interest and keeps its distance."
-msgstr ""
+msgstr "Un renard trotte le long des haies, le nez au sol, la queue tendue. Il observe Lumi avec un intérêt poli et garde ses distances."
 
 #: data/codex.json:animals.bee.name data/fauna.json:species[bee].name
 msgid "Honeybee"
-msgstr ""
+msgstr "Abeille"
 
 #: data/codex.json:animals.bee.hint
 msgid "Where: Flowers on Sustained hexes."
-msgstr ""
+msgstr "Où : fleurs des hexagones durables."
 
 #: data/codex.json:animals.bee.desc
 msgid "Bees came back with the blooms. Every flower bed that stays watered gets its own little hum."
-msgstr ""
+msgstr "Les abeilles sont revenues avec les fleurs. Chaque parterre qu'on garde arrosé a son petit bourdonnement à lui."
 
 #: data/codex.json:animals.songbird.name data/fauna.json:species[songbird].name
 msgid "Robin"
-msgstr ""
+msgstr "Rouge-gorge"
 
 #: data/codex.json:animals.songbird.hint
 msgid "Where: Thriving hexes, by day."
-msgstr ""
+msgstr "Où : hexagones florissants, en journée."
 
 #: data/codex.json:animals.songbird.desc
 msgid "When a hex thrives, robins move in and sing. If you hear birdsong, something here is going very right."
-msgstr ""
+msgstr "Quand un hexagone est florissant, les rouges-gorges s'y installent et chantent. Si tu entends des oiseaux chanter, c'est que quelque chose va très bien ici."
 
 #: data/codex.json:animals.firefly.name data/fauna.json:species[firefly].name
 msgid "Firefly"
-msgstr ""
+msgstr "Luciole"
 
 #: data/codex.json:animals.firefly.hint
 msgid "Where: Thriving hexes, at night."
-msgstr ""
+msgstr "Où : hexagones florissants, la nuit."
 
 #: data/codex.json:animals.firefly.desc
 msgid "Tiny green lanterns over the grass after dark. They only come where the ground is fully alive."
-msgstr ""
+msgstr "De minuscules lanternes vertes au-dessus de l'herbe, la nuit venue. Elles ne viennent que là où le sol est pleinement vivant."
 
 #: data/codex.json:animals.fish.name data/fauna.json:species[fish].name
 msgid "Lake Fish"
-msgstr ""
+msgstr "Poisson de lac"
 
 #: data/codex.json:animals.fish.hint
 msgid "Where: Clean lakes."
-msgstr ""
+msgstr "Où : lacs propres."
 
 #: data/codex.json:animals.fish.desc
 msgid "Once the water clears you can see them: small silver schools turning together over the sand. Come too close and they scatter."
-msgstr ""
+msgstr "Une fois l'eau éclaircie, on les voit : de petits bancs argentés qui tournent ensemble au-dessus du sable. Approche trop et ils s'éparpillent."
 
 #: data/codex.json:animals.duck.name data/fauna.json:species[duck].name
 msgid "Mallard"
-msgstr ""
+msgstr "Colvert"
 
 #: data/codex.json:animals.duck.hint
 msgid "Where: Clean lakes beside green shores."
-msgstr ""
+msgstr "Où : lacs propres aux rives verdoyantes."
 
 #: data/codex.json:animals.duck.desc
 msgid "Ducks paddle, dabble with their tails in the air and complain loudly about everything. A clean lake with a green shore is all they ask."
-msgstr ""
+msgstr "Les canards pagaient, barbotent la queue en l'air et se plaignent bruyamment de tout. Un lac propre avec une rive verte, c'est tout ce qu'ils demandent."
 
 #: data/codex.json:animals.frog.name data/fauna.json:species[frog].name
 msgid "Green Frog"
-msgstr ""
+msgstr "Grenouille verte"
 
 #: data/codex.json:animals.frog.hint
 msgid "Where: Lake shores once they're planted."
-msgstr ""
+msgstr "Où : rives de lac, une fois plantées."
 
 #: data/codex.json:animals.frog.desc
 msgid "Frogs sit at the water's edge and sing in the evening. Get too close and plop: into the water they go."
-msgstr ""
+msgstr "Les grenouilles s'assoient au bord de l'eau et chantent le soir. Approche trop et plouf : les voilà dans l'eau."
 
 #: data/codex.json:animals.lizard.name data/fauna.json:species[lizard].name
 msgid "Sand Lizard"
-msgstr ""
+msgstr "Lézard des sables"
 
 #: data/codex.json:animals.lizard.hint
 msgid "Where: Clean ground in the Dust Flats."
-msgstr ""
+msgstr "Où : sol propre dans les Plaines de poussière."
 
 #: data/codex.json:animals.lizard.desc
 msgid "Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
-msgstr ""
+msgstr "Les lézards se dorent sur le sol balayé entre les panneaux solaires et disparaissent en un clin d'œil quand une ombre passe sur eux."
 
 #: data/codex.json:animals.fennec.name data/fauna.json:species[fennec].name
 msgid "Fennec Fox"
-msgstr ""
+msgstr "Fennec"
 
 #: data/codex.json:animals.fennec.hint
 msgid "Where: Planted ground in the Dust Flats."
-msgstr ""
+msgstr "Où : sol planté dans les Plaines de poussière."
 
 #: data/codex.json:animals.fennec.desc
 msgid "A tiny desert fox with enormous ears. It hears Lumi's hover fans long before it sees him."
-msgstr ""
+msgstr "Un minuscule renard du désert aux oreilles immenses. Il entend les ventilateurs de Lumi bien avant de le voir."
 
 #: data/codex.json:animals.seal.name data/fauna.json:species[seal].name
 msgid "Harbour Seal"
-msgstr ""
+msgstr "Phoque veau-marin"
 
 #: data/codex.json:animals.seal.hint
 msgid "Where: The Frozen Port shoreline."
-msgstr ""
+msgstr "Où : le rivage du Port gelé."
 
 #: data/codex.json:animals.seal.desc
 msgid "Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
-msgstr ""
+msgstr "Les phoques se hissent sur le quai une fois propre, se prélassent en tas et replongent si tu approches trop."
 
 #: data/codex.json:animals.gull.name data/fauna.json:species[gull].name
 msgid "Herring Gull"
-msgstr ""
+msgstr "Goéland argenté"
 
 #: data/codex.json:animals.gull.hint
 msgid "Where: Coasts and harbours."
-msgstr ""
+msgstr "Où : côtes et ports."
 
 #: data/codex.json:animals.gull.desc
 msgid "Loud, white and opportunistic. Gulls wheel over the harbour and land wherever there's a clean bit of quay."
-msgstr ""
+msgstr "Bruyant, blanc et opportuniste. Les goélands tournoient au-dessus du port et se posent partout où il y a un bout de quai propre."
 
 #: data/codex.json:animals.arctic_fox.name data/fauna.json:species[arctic_fox].name
 msgid "Arctic Fox"
-msgstr ""
+msgstr "Renard polaire"
 
 #: data/codex.json:animals.arctic_fox.hint
 msgid "Where: Planted ground at the Frozen Port."
-msgstr ""
+msgstr "Où : sol planté au Port gelé."
 
 #: data/codex.json:animals.arctic_fox.desc
 msgid "White as the snow it hunts on. It shows up when the greenhouses do, curious about the warm air."
-msgstr ""
+msgstr "Blanc comme la neige sur laquelle il chasse. Il arrive avec les serres, curieux de l'air chaud."
 
 #: data/codex.json:animals.heron.name data/fauna.json:species[heron].name
 msgid "Grey Heron"
-msgstr ""
+msgstr "Héron cendré"
 
 #: data/codex.json:animals.heron.hint
 msgid "Where: Shallows in the Sunken City and wild lakes."
-msgstr ""
+msgstr "Où : hauts-fonds de la Cité engloutie et lacs sauvages."
 
 #: data/codex.json:animals.heron.desc
 msgid "Herons stand perfectly still at the water's edge, then strike. They lift off slowly on huge grey wings when disturbed."
-msgstr ""
+msgstr "Les hérons restent parfaitement immobiles au bord de l'eau, puis frappent. Dérangés, ils s'envolent lentement sur d'immenses ailes grises."
 
 #: data/codex.json:animals.turtle.name data/fauna.json:species[turtle].name
 msgid "Pond Turtle"
-msgstr ""
+msgstr "Tortue des marais"
 
 #: data/codex.json:animals.turtle.hint
 msgid "Where: Clean water in the Sunken City."
-msgstr ""
+msgstr "Où : eaux propres de la Cité engloutie."
 
 #: data/codex.json:animals.turtle.desc
 msgid "Turtles cruise the drowned streets with their heads up, as if they've always lived here. Maybe they have."
-msgstr ""
+msgstr "Les tortues sillonnent les rues noyées la tête haute, comme si elles avaient toujours vécu ici. Peut-être que oui."
 
 #: data/codex.json:animals.crane.name data/fauna.json:species[crane].name
 msgid "Cradle Crane"
-msgstr ""
+msgstr "Grue du Cradle"
 
 #: data/codex.json:animals.crane.hint
 msgid "Where: The skies over Cradle Returns."
-msgstr ""
+msgstr "Où : le ciel au-dessus du Retour du Cradle."
 
 #: data/codex.json:animals.crane.desc
 msgid "White cranes circle high over the landing city on slow wingbeats. The ark's seed vault carried their eggs; this is the first flock to fly free."
-msgstr ""
+msgstr "Des grues blanches tournoient haut au-dessus de la ville d'atterrissage, à lents battements d'ailes. La réserve de graines de l'arche transportait leurs œufs ; c'est la première volée à voler libre."
 
 #: data/cradle.json:heirlooms[green_thumb].desc
 msgid "Plants grow 8% faster per level, on every world."
-msgstr ""
+msgstr "Les plantes poussent 8 % plus vite par niveau, sur chaque monde."
 
 #: data/cradle.json:heirlooms[deep_hopper].name
 msgid "Deep Hopper"
-msgstr ""
+msgstr "Trémie profonde"
 
 #: data/cradle.json:heirlooms[deep_hopper].desc
 msgid "Lumi's hopper holds 10% more per level."
-msgstr ""
+msgstr "La trémie de Lumi contient 10 % de plus par niveau."
 
 #: data/cradle.json:heirlooms[quick_beam].name
 msgid "Quick Beam"
-msgstr ""
+msgstr "Rayon vif"
 
 #: data/cradle.json:heirlooms[quick_beam].desc
 msgid "Scoop 8% faster per level."
-msgstr ""
+msgstr "Ramasse 8 % plus vite par niveau."
 
 #: data/cradle.json:heirlooms[traders_eye].name
 msgid "Trader's Eye"
-msgstr ""
+msgstr "Œil du marchand"
 
 #: data/cradle.json:heirlooms[traders_eye].desc
 msgid "Bales sell for 10% more per level."
-msgstr ""
+msgstr "Les balles se vendent 10 % plus cher par niveau."
 
 #: data/cradle.json:heirlooms[swift_treads].name
 msgid "Swift Treads"
-msgstr ""
+msgstr "Chenilles agiles"
 
 #: data/cradle.json:heirlooms[swift_treads].desc
 msgid "Lumi moves 5% faster per level."
-msgstr ""
+msgstr "Lumi se déplace 5 % plus vite par niveau."
 
 #: data/cradle.json:heirlooms[seed_vault].name
 msgid "Seed Vault"
-msgstr ""
+msgstr "Réserve de graines"
 
 #: data/cradle.json:heirlooms[seed_vault].desc
 msgid "8% more seeds per bloom per level; each new world starts with 40 seeds per level in the pod (ready for when Lumi finds that world's seed tin)."
-msgstr ""
+msgstr "8 % de graines en plus par floraison et par niveau ; chaque nouveau monde commence avec 40 graines par niveau dans la capsule (prêtes pour quand Lumi trouvera la boîte à graines de ce monde)."
 
 #: data/cradle.json:heirlooms[head_start].name
 msgid "Head Start"
-msgstr ""
+msgstr "Longueur d'avance"
 
 #: data/cradle.json:heirlooms[head_start].desc
 msgid "Each new world starts with 1,500 cubes per level."
-msgstr ""
+msgstr "Chaque nouveau monde commence avec 1 500 cubes par niveau."
 
 #: data/cradle.json:heirlooms[data_cache].name
 msgid "Data Cache"
-msgstr ""
+msgstr "Cache de données"
 
 #: data/cradle.json:heirlooms[data_cache].desc
 msgid "Each new world starts with 60 research Data per level."
-msgstr ""
+msgstr "Chaque nouveau monde commence avec 60 données de recherche par niveau."
 
 #: data/cradle.json:heirlooms[old_crew].name
 msgid "Old Crew"
-msgstr ""
+msgstr "Vieille équipe"
 
 #: data/cradle.json:heirlooms[old_crew].desc
 msgid "Robots wait at the landing site: a Scoopie at level 1, a Haul Bug at 2, another Scoopie at 3."
-msgstr ""
+msgstr "Des robots attendent au site d'atterrissage : un Scoopie au niveau 1, un Haul Bug au 2, un autre Scoopie au 3."
 
 #: data/cradle.json:heirlooms[archivist].name
 msgid "Archivist"
-msgstr ""
+msgstr "Archiviste"
 
 #: data/cradle.json:heirlooms[archivist].desc
 msgid "Research notes travel with Lumi: level 1 knows every first-tier node, level 2 the second tier too."
-msgstr ""
+msgstr "Les notes de recherche suivent Lumi : le niveau 1 connaît chaque nœud du premier palier, le niveau 2 aussi ceux du deuxième."
 
 #: data/cradle.json:modifiers[heavy_rain].name
 msgid "Heavy Rain"
-msgstr ""
+msgstr "Pluies diluviennes"
 
 #: data/cradle.json:modifiers[heavy_rain].desc
 msgid "Rain showers come four times as often and plants grow 15% faster."
-msgstr ""
+msgstr "Les averses sont quatre fois plus fréquentes et les plantes poussent 15 % plus vite."
 
 #: data/cradle.json:modifiers[long_nights].name
 msgid "Long Nights"
-msgstr ""
+msgstr "Longues nuits"
 
 #: data/cradle.json:modifiers[long_nights].desc
 msgid "Nights last twice as long. The night shift pays: bales sell for 10% more."
-msgstr ""
+msgstr "Les nuits durent deux fois plus longtemps. L'équipe de nuit est payante : les balles se vendent 10 % plus cher."
 
 #: data/cradle.json:modifiers[rich_salvage].name
 msgid "Rich Salvage"
-msgstr ""
+msgstr "Riche récupération"
 
 #: data/cradle.json:modifiers[rich_salvage].desc
 msgid "The junk here is better stuff: bales sell for 30% more, but the hopper fills 10% sooner."
-msgstr ""
+msgstr "La ferraille d'ici est de meilleure qualité : les balles se vendent 30 % plus cher, mais la trémie se remplit 10 % plus tôt."
 
 #: data/cradle.json:modifiers[thin_soil].name
 msgid "Thin Soil"
-msgstr ""
+msgstr "Sol pauvre"
 
 #: data/cradle.json:modifiers[thin_soil].desc
 msgid "Plants grow 15% slower, but every bloom gives 25% more seeds."
-msgstr ""
+msgstr "Les plantes poussent 15 % plus lentement, mais chaque floraison donne 25 % de graines en plus."
 
 #: data/cradle.json:modifiers[tailwinds].name
 msgid "Tailwinds"
-msgstr ""
+msgstr "Vents porteurs"
 
 #: data/cradle.json:modifiers[tailwinds].desc
 msgid "Steady winds: Lumi moves 10% faster and supply drops come twice as often."
-msgstr ""
+msgstr "Vents réguliers : Lumi se déplace 10 % plus vite et les largages de ravitaillement arrivent deux fois plus souvent."
 
 #: data/cradle.json:modifiers[wild_bloom].name
 msgid "Wild Bloom"
-msgstr ""
+msgstr "Floraison sauvage"
 
 #: data/cradle.json:modifiers[wild_bloom].desc
 msgid "Wildflowers want to come back: 30% more seeds per bloom, more wildlife visits."
-msgstr ""
+msgstr "Les fleurs sauvages veulent revenir : 30 % de graines en plus par floraison, plus de visites d'animaux."
 
 #: data/cradle.json:modifiers[heavy_junk].name
 msgid "Heavy Junk"
-msgstr ""
+msgstr "Ferraille lourde"
 
 #: data/cradle.json:modifiers[heavy_junk].desc
 msgid "Dense, heavy scrap: scooping is 10% slower, bales sell for 20% more."
-msgstr ""
+msgstr "Ferraille dense et lourde : ramasser est 10 % plus lent, les balles se vendent 20 % plus cher."
 
 #: data/cradle.json:world_types[ice_moon].name
 msgid "Ice Moon"
-msgstr ""
+msgstr "Lune de glace"
 
 #: data/cradle.json:world_types[ice_moon].desc
 msgid "Frozen most of the way to the equator; lakes under the ice."
-msgstr ""
+msgstr "Gelée presque jusqu'à l'équateur ; des lacs sous la glace."
 
 #: data/cradle.json:world_types[desert_world].name
 msgid "Desert World"
-msgstr ""
+msgstr "Monde désertique"
 
 #: data/cradle.json:world_types[desert_world].desc
 msgid "Dunes and dry salt pans; the few lakes matter."
-msgstr ""
+msgstr "Des dunes et des salines sèches ; les rares lacs comptent."
 
 #: data/cradle.json:world_types[ocean_world].name
 msgid "Ocean World"
-msgstr ""
+msgstr "Monde océanique"
 
 #: data/cradle.json:world_types[ocean_world].desc
 msgid "Mostly sea, with towns on small islands and long coasts."
-msgstr ""
+msgstr "Surtout de la mer, avec des villes sur de petites îles et de longues côtes."
 
 #: data/cradle.json:world_types[fungal_world].name
 msgid "Marsh World"
-msgstr ""
+msgstr "Monde marécageux"
 
 #: data/cradle.json:world_types[fungal_world].desc
 msgid "Warm, wet and soft underfoot: fungal marsh everywhere."
-msgstr ""
+msgstr "Chaud, humide et moelleux sous les pieds : du marais fongique partout."
 
 #: data/cradle.json:world_types[rust_world].name
 msgid "Rust World"
-msgstr ""
+msgstr "Monde de rouille"
 
 #: data/cradle.json:world_types[rust_world].desc
 msgid "Old industry from pole to pole: rustlands and sprawl."
-msgstr ""
+msgstr "De la vieille industrie d'un pôle à l'autre : terres rouillées et étalement urbain."
 
 #: data/decor.json:types[path].name
 msgid "Stone Path"
-msgstr ""
+msgstr "Chemin de pierre"
 
 #: data/decor.json:types[path].desc
 msgid "Flat stepping stones. Paths join everything up."
-msgstr ""
+msgstr "Des pas japonais bien plats. Les chemins relient tout."
 
 #: data/decor.json:types[flower_bed].name
 msgid "Flower Bed"
-msgstr ""
+msgstr "Parterre de fleurs"
 
 #: data/decor.json:types[flower_bed].desc
 msgid "A low bed of mixed flowers. Bees and butterflies approve."
-msgstr ""
+msgstr "Un parterre bas de fleurs mêlées. Les abeilles et les papillons approuvent."
 
 #: data/decor.json:types[planter].name
 msgid "Planter"
-msgstr ""
+msgstr "Jardinière"
 
 #: data/decor.json:types[planter].desc
 msgid "A white hex planter with a small shrub, like the ones the future city grows."
-msgstr ""
+msgstr "Une jardinière hexagonale blanche avec un petit arbuste, comme celles de la ville du futur."
 
 #: data/decor.json:types[bench].name
 msgid "Bench"
-msgstr ""
+msgstr "Banc"
 
 #: data/decor.json:types[bench].desc
 msgid "Wood slats on cast feet. Cats like to sleep on it."
-msgstr ""
+msgstr "Des lattes de bois sur des pieds en fonte. Les chats adorent y dormir."
 
 #: data/decor.json:types[lamp].name
 msgid "Garden Lamp"
-msgstr ""
+msgstr "Lampe de jardin"
 
 #: data/decor.json:types[lamp].desc
 msgid "A slim lamp with a warm glow after dark."
-msgstr ""
+msgstr "Une lampe élancée à la lueur chaleureuse une fois la nuit tombée."
 
 #: data/decor.json:types[bird_bath].name
 msgid "Bird Bath"
-msgstr ""
+msgstr "Bain d'oiseaux"
 
 #: data/decor.json:types[bird_bath].desc
 msgid "A stone basin of clean water."
-msgstr ""
+msgstr "Une vasque de pierre pleine d'eau propre."
 
 #: data/decor.json:types[fountain].name
 msgid "Fountain"
-msgstr ""
+msgstr "Fontaine"
 
 #: data/decor.json:types[fountain].desc
 msgid "A tiered fountain, running again. Deer come to drink at dawn."
-msgstr ""
+msgstr "Une fontaine à étages qui coule de nouveau. Les chevreuils viennent y boire à l'aube."
 
 #: data/decor.json:types[statue].name
 msgid "Maker Statue"
-msgstr ""
+msgstr "Statue de Bâtisseur"
 
 #: data/decor.json:types[statue].desc
 msgid "A stone figure of one of the Makers, holding a watering can."
-msgstr ""
+msgstr "Une figure de pierre représentant l'un des Bâtisseurs, un arrosoir à la main."
 
 #: data/decor.json:types[lumi_sculpture].name
 msgid "Lumi Sculpture"
-msgstr ""
+msgstr "Sculpture de Lumi"
 
 #: data/decor.json:types[lumi_sculpture].desc
 msgid "A topiary-and-brass sculpture of Lumi holding up a seedling. Very modest."
-msgstr ""
+msgstr "Une sculpture en topiaire et laiton de Lumi brandissant une jeune pousse. Très modeste."
 
 #: data/decor.json:types[wren_kite].name
 msgid "WREN Wind Kite"
-msgstr ""
+msgstr "Cerf-volant WREN"
 
 #: data/decor.json:types[wren_kite].desc
 msgid "A kite shaped like WREN's bird, tethered to a post and always flying."
-msgstr ""
+msgstr "Un cerf-volant en forme de l'oiseau de WREN, attaché à un poteau et toujours en vol."
 
 #: data/designs.json:designs[aurora].tagline
 msgid "Baseline / Explorer"
-msgstr ""
+msgstr "Base / Exploratrice"
 
 #: data/designs.json:designs[aurora].desc
 msgid "The seed-keeper fresh from the ark: pearl paint, cyan eyes, an orange fin."
-msgstr ""
+msgstr "Le gardien des graines tout juste sorti de l'arche : peinture nacrée, yeux cyan, aileron orange."
 
 #: data/designs.json:designs[aurora].buff.text
 msgid "+8% detector range"
-msgstr ""
+msgstr "+8 % de portée du détecteur"
 
 #: data/designs.json:designs[bolt].tagline
 msgid "Industrial / Tough"
-msgstr ""
+msgstr "Industriel / Costaud"
 
 #: data/designs.json:designs[bolt].desc
 msgid "Hazard-yellow plating, heavy shoulder pads and a spare gear for luck."
-msgstr ""
+msgstr "Blindage jaune danger, grosses épaulières et un engrenage de rechange porte-bonheur."
 
 #: data/designs.json:designs[bolt].buff.text
 msgid "+5% bale value"
-msgstr ""
+msgstr "+5 % de valeur des balles"
 
 #: data/designs.json:designs[bolt].unlock.text
 msgid "Press 50 bales or build 5 robots"
-msgstr ""
+msgstr "Presse 50 balles ou construis 5 robots"
 
 #: data/designs.json:designs[bolt].unlock.any[0].unit
 msgid "bales"
-msgstr ""
+msgstr "balles"
 
 #: data/designs.json:designs[bolt].unlock.any[1].unit
 msgid "robots"
-msgstr ""
+msgstr "robots"
 
 #: data/designs.json:designs[sprout].tagline
 msgid "Eco / Restoration"
-msgstr ""
+msgstr "Écolo / Restauration"
 
 #: data/designs.json:designs[sprout].desc
 msgid "Moss-green and growing a seedling of its own."
-msgstr ""
+msgstr "Vert mousse, avec une jeune pousse bien à lui."
 
 #: data/designs.json:designs[sprout].buff.text
 msgid "+8% plant growth"
-msgstr ""
+msgstr "+8 % de croissance des plantes"
 
 #: data/designs.json:designs[sprout].unlock.text
 msgid "Grow 20 plants to bloom"
-msgstr ""
+msgstr "Fais fleurir 20 plantes"
 
 #: data/designs.json:designs[sprout].unlock.any[0].unit
 msgid "blooms"
-msgstr ""
+msgstr "floraisons"
 
 #: data/designs.json:designs[pixel].tagline
 msgid "Friendly / Cheerful"
-msgstr ""
+msgstr "Sympa / Joyeux"
 
 #: data/designs.json:designs[pixel].desc
 msgid "Red and white, all smiles, with a butterfly that won't leave."
-msgstr ""
+msgstr "Rouge et blanc, tout sourire, avec un papillon qui ne veut pas partir."
 
 #: data/designs.json:designs[pixel].buff.text
 msgid "+10% cleaning streak time"
-msgstr ""
+msgstr "+10 % de durée des séries de nettoyage"
 
 #: data/designs.json:designs[pixel].unlock.text
 msgid "Pet 5 animals or find 5 Collection trinkets"
-msgstr ""
+msgstr "Caresse 5 animaux ou trouve 5 bibelots de la Collection"
 
 #: data/designs.json:designs[pixel].unlock.any[0].unit
 msgid "animals"
-msgstr ""
+msgstr "animaux"
 
 #: data/designs.json:designs[pixel].unlock.any[1].unit
 msgid "cats"
-msgstr ""
+msgstr "chats"
 
 #: data/designs.json:designs[pixel].unlock.any[2].unit
 msgid "trinkets"
-msgstr ""
+msgstr "bibelots"
 
 #: data/designs.json:designs[nova].tagline
 msgid "Analyst / Tech"
-msgstr ""
+msgstr "Analyste / Tech"
 
 #: data/designs.json:designs[nova].desc
 msgid "Gunmetal, violet light and a holo screen always open."
-msgstr ""
+msgstr "Gris acier, lumière violette et un écran holo toujours ouvert."
 
 #: data/designs.json:designs[nova].buff.text
 msgid "+8% research speed"
-msgstr ""
+msgstr "+8 % de vitesse de recherche"
 
 #: data/designs.json:designs[nova].unlock.text
 msgid "Finish 10 research projects"
-msgstr ""
+msgstr "Termine 10 projets de recherche"
 
 #: data/designs.json:designs[nova].unlock.any[0].unit
 msgid "projects"
-msgstr ""
+msgstr "projets"
 
 #: data/designs.json:designs[patch].tagline
 msgid "Utility / Support"
-msgstr ""
+msgstr "Utilitaire / Soutien"
 
 #: data/designs.json:designs[patch].desc
 msgid "Medic cross, tool box, and a case of spares for any bot in need."
-msgstr ""
+msgstr "Croix médicale, boîte à outils et une valise de pièces de rechange pour tout robot en détresse."
 
 #: data/designs.json:designs[patch].buff.text
 msgid "+6% robot work speed"
-msgstr ""
+msgstr "+6 % de vitesse de travail des robots"
 
 #: data/designs.json:designs[patch].unlock.text
 msgid "Repair an outpost or upgrade a robot fleet to Mk III"
-msgstr ""
+msgstr "Répare un avant-poste ou améliore une flotte de robots au Mk III"
 
 #: data/designs.json:designs[patch].unlock.any[0].unit
 msgid "outposts"
-msgstr ""
+msgstr "avant-postes"
 
 #: data/designs.json:designs[patch].unlock.any[1].unit
 msgid "Mk"
-msgstr ""
+msgstr "Mk"
 
 #: data/eggs.json:eggs[duck].name
 msgid "Duck on Duty"
@@ -7491,67 +7591,67 @@ msgstr "DE RETOUR DANS 5 MINUTES. Lumi attend cinq minutes. Personne ne vient. L
 
 #: data/eggs.json:eggs[sand_piano].name
 msgid "The Sand Piano"
-msgstr ""
+msgstr "Le piano des sables"
 
 #: data/eggs.json:eggs[sand_piano].prompt
 msgid "E   press a key"
-msgstr ""
+msgstr "E   appuyer sur une touche"
 
 #: data/eggs.json:eggs[sand_piano].hint
 msgid "In the Dust Flats: something with eighty-eight teeth, half under a dune."
-msgstr ""
+msgstr "Dans les Plaines de poussière : quelque chose avec quatre-vingt-huit dents, à moitié sous une dune."
 
 #: data/eggs.json:eggs[sand_piano].lore
 msgid "An upright piano, buried to the keys in a dune. Nobody knows how it got this far out. The sand has tuned it to a key that doesn't exist."
-msgstr ""
+msgstr "Un piano droit, enfoui dans une dune jusqu'aux touches. Personne ne sait comment il est arrivé si loin. Le sable l'a accordé dans une tonalité qui n'existe pas."
 
 #: data/eggs.json:eggs[sand_piano].toast
 msgid "Lumi presses one key. A single wobbly note rolls across the flats, and somewhere a dune answers."
-msgstr ""
+msgstr "Lumi appuie sur une touche. Une seule note chevrotante roule sur la plaine, et quelque part une dune répond."
 
 #: data/eggs.json:eggs[snow_bot].name
 msgid "Snowbot"
-msgstr ""
+msgstr "Robot de neige"
 
 #: data/eggs.json:eggs[snow_bot].prompt
 msgid "E   straighten its scarf"
-msgstr ""
+msgstr "E   ajuster son écharpe"
 
 #: data/eggs.json:eggs[snow_bot].hint
 msgid "In the Frozen Port: a snowman with a robot inside. Or a robot with a snowman outside."
-msgstr ""
+msgstr "Au Port gelé : un bonhomme de neige avec un robot dedans. Ou un robot avec un bonhomme de neige autour."
 
 #: data/eggs.json:eggs[snow_bot].lore
 msgid "The port crews built a snowman around a dead loader robot every winter, for luck. This one has stood for three hundred winters. The scarf is new-ish."
-msgstr ""
+msgstr "Chaque hiver, les équipes du port construisaient un bonhomme de neige autour d'un robot de chargement mort, pour la chance. Celui-ci tient depuis trois cents hivers. L'écharpe est presque neuve."
 
 #: data/eggs.json:eggs[snow_bot].toast
 msgid "Lumi straightens the snowbot's scarf. Its old lamp eyes flicker once, as if to say thanks."
-msgstr ""
+msgstr "Lumi ajuste l'écharpe du robot de neige. Ses vieux yeux-lampes clignotent une fois, comme pour dire merci."
 
 #: data/eggs.json:eggs[bottle_message].name
 msgid "Message in a Bottle"
-msgstr ""
+msgstr "Message dans une bouteille"
 
 #: data/eggs.json:eggs[bottle_message].prompt
 msgid "E   uncork the bottle"
-msgstr ""
+msgstr "E   déboucher la bouteille"
 
 #: data/eggs.json:eggs[bottle_message].hint
 msgid "In the Sunken City: the flood left something sealed. Clean the ground and look."
-msgstr ""
+msgstr "Dans la Cité engloutie : l'inondation a laissé quelque chose de scellé. Nettoie le sol et cherche."
 
 #: data/eggs.json:eggs[bottle_message].lore
 msgid "A green bottle, corked and waxed, left by someone who stayed in the Sunken City while the water came up."
-msgstr ""
+msgstr "Une bouteille verte, bouchée et cachetée à la cire, laissée par quelqu'un resté dans la Cité engloutie pendant que l'eau montait."
 
 #: data/eggs.json:eggs[bottle_message].toast
 msgid "A message in a bottle, still dry inside."
-msgstr ""
+msgstr "Un message dans une bouteille, encore sec à l'intérieur."
 
 #: data/eggs.json:eggs[bottle_message].doc.title
 msgid "To whoever drains this"
-msgstr ""
+msgstr "À qui videra toute cette eau"
 
 #: data/eggs.json:eggs[bottle_message].doc.body
 msgid ""
@@ -7563,46 +7663,53 @@ msgid ""
 "\n"
 "— R., who stayed"
 msgstr ""
+"L'eau arrive aux fenêtres du premier étage maintenant. La plupart des gens sont montés à bord du Cradle. Certains d'entre nous sont restés, parce qu'il faut bien que quelqu'un se souvienne d'où étaient les rues.\n"
+"\n"
+"Les pompes vont bien, au fait. Il faut juste que quelqu'un nettoie les prises d'eau. Demande Dot à la station de pompage ; si Dot n'est pas là, le gros levier rouge se baisse, il ne se lève PAS. Ignore le panneau.\n"
+"\n"
+"Si tu lis ceci, c'est que l'eau a baissé. Tant mieux. Plante quelque chose là où était la boulangerie. Ça sentait toujours bon, là-bas.\n"
+"\n"
+"— R., qui est resté"
 
 #: data/eggs.json:eggs[welcome_home].name
 msgid "Welcome Home"
-msgstr ""
+msgstr "Bon retour à la maison"
 
 #: data/eggs.json:eggs[welcome_home].hint
 msgid "At Cradle Returns: the ground crews made a sign. It took them three hundred years to get the spelling right."
-msgstr ""
+msgstr "Au Retour du Cradle : les équipes au sol ont fait une banderole. Il leur a fallu trois cents ans pour bien l'orthographier."
 
 #: data/eggs.json:eggs[welcome_home].lore
 msgid "A hand-painted banner on two poles at the edge of the old landing field. The ground crews kept repainting it for every generation of the ark that never came back. Until now."
-msgstr ""
+msgstr "Une banderole peinte à la main entre deux mâts, au bord de l'ancien terrain d'atterrissage. Les équipes au sol l'ont repeinte pour chaque génération de l'arche qui n'est jamais revenue. Jusqu'à maintenant."
 
 #: data/eggs.json:eggs[welcome_home].toast
 msgid "WELCOME HOME, CRADLE. Someone has crossed out the earlier spellings very neatly."
-msgstr ""
+msgstr "BON RETOUR, CRADLE. Quelqu'un a très soigneusement barré les orthographes précédentes."
 
 #: data/eggs.json:eggs[crossword].name
 msgid "The Unfinished Crossword"
-msgstr ""
+msgstr "Les mots croisés inachevés"
 
 #: data/eggs.json:eggs[crossword].prompt
 msgid "E   read the crossword"
-msgstr ""
+msgstr "E   lire les mots croisés"
 
 #: data/eggs.json:eggs[crossword].hint
 msgid "A folded newspaper and a pen, left on a crate. One clue to go."
-msgstr ""
+msgstr "Un journal plié et un stylo, laissés sur une caisse. Plus qu'une définition."
 
 #: data/eggs.json:eggs[crossword].lore
 msgid "The last edition of the morning paper, folded open at the crossword. Every clue is filled in except one."
-msgstr ""
+msgstr "La dernière édition du journal du matin, pliée à la page des mots croisés. Toutes les définitions sont remplies sauf une."
 
 #: data/eggs.json:eggs[crossword].toast
 msgid "The last crossword clue: 'What grows back if you let it (5)'. Lumi writes it in."
-msgstr ""
+msgstr "La dernière définition : « Ce qui repousse si on le laisse faire (4) ». Lumi l'inscrit."
 
 #: data/eggs.json:eggs[crossword].doc.title
 msgid "The Morning Ledger · Puzzle page"
-msgstr ""
+msgstr "Le Ledger du matin · Page des jeux"
 
 #: data/eggs.json:eggs[crossword].doc.body
 msgid ""
@@ -7618,66 +7725,77 @@ msgid ""
 "\n"
 "(The last answer is in a different pen. The letters are very careful, like a robot wrote them.)"
 msgstr ""
+"HORIZONTALEMENT\n"
+"1. Des déchets, mais en plus gros (9) — FERRAILLE\n"
+"4. Il tourne à chaque heure, puis s'arrête pour de bon (7) — HORLOGE\n"
+"7. Ce à quoi servaient les robots (9) — NETTOYAGE\n"
+"9. La dernière chose qu'on a vue du Cradle (7) — LUMIÈRE\n"
+"\n"
+"VERTICALEMENT\n"
+"2. « Mis de côté pour plus tard », a dit le Ledger (5) — PAUSE\n"
+"3. Ce qui repousse si on le laisse faire (4) — V E R T\n"
+"\n"
+"(La dernière réponse est écrite avec un autre stylo. Les lettres sont très soignées, comme si un robot les avait tracées.)"
 
 #: data/eggs.json:eggs[hopscotch].name
 msgid "Hopscotch"
-msgstr ""
+msgstr "La marelle"
 
 #: data/eggs.json:eggs[hopscotch].hint
 msgid "Chalk squares on a clean bit of pavement, still faintly there."
-msgstr ""
+msgstr "Des cases à la craie sur un bout de trottoir propre, encore un peu visibles."
 
 #: data/eggs.json:eggs[hopscotch].lore
 msgid "A chalk hopscotch grid, drawn so many times on the same spot that it soaked into the stone. A pebble still sits on square seven."
-msgstr ""
+msgstr "Une marelle à la craie, dessinée tant de fois au même endroit qu'elle a imprégné la pierre. Un caillou est toujours posé sur la case sept."
 
 #: data/eggs.json:eggs[hopscotch].toast
 msgid "Lumi hops the hopscotch. The hover bowl counts as one foot. It's a personal best."
-msgstr ""
+msgstr "Lumi joue à la marelle. Le bol de lévitation compte pour un pied. Record personnel."
 
 #: data/eggs.json:eggs[balloon].name
 msgid "The Last Balloon"
-msgstr ""
+msgstr "Le dernier ballon"
 
 #: data/eggs.json:eggs[balloon].prompt
 msgid "E   untie the balloon"
-msgstr ""
+msgstr "E   détacher le ballon"
 
 #: data/eggs.json:eggs[balloon].hint
 msgid "Something red is still holding its breath, tied to a post."
-msgstr ""
+msgstr "Quelque chose de rouge retient encore son souffle, attaché à un poteau."
 
 #: data/eggs.json:eggs[balloon].lore
 msgid "A red balloon tied to a sign post. It should have gone flat centuries ago. It hasn't. It's waiting for something."
-msgstr ""
+msgstr "Un ballon rouge attaché à un poteau de panneau. Il aurait dû se dégonfler il y a des siècles. Ce n'est pas le cas. Il attend quelque chose."
 
 #: data/eggs.json:eggs[balloon].toast
 msgid "Lumi unties the balloon. It drifts up, slowly, toward where the Cradle would be."
-msgstr ""
+msgstr "Lumi détache le ballon. Il s'élève lentement, vers l'endroit où serait le Cradle."
 
 #: data/eggs.json:eggs[mailbox].name
 msgid "Return to Sender"
-msgstr ""
+msgstr "Retour à l'expéditeur"
 
 #: data/eggs.json:eggs[mailbox].prompt
 msgid "E   check the mail"
-msgstr ""
+msgstr "E   regarder le courrier"
 
 #: data/eggs.json:eggs[mailbox].hint
 msgid "A mailbox so full the flap won't shut."
-msgstr ""
+msgstr "Une boîte aux lettres si pleine que le clapet ne ferme plus."
 
 #: data/eggs.json:eggs[mailbox].lore
 msgid "A street mailbox stuffed with letters that never went out. The post stopped the week the Ledger 'paused' everything."
-msgstr ""
+msgstr "Une boîte aux lettres de rue bourrée de lettres jamais parties. La poste s'est arrêtée la semaine où le Ledger a tout « mis en pause »."
 
 #: data/eggs.json:eggs[mailbox].toast
 msgid "One letter on top is addressed to 'The Robot Who Cleans Up'. It's for Lumi."
-msgstr ""
+msgstr "Une lettre sur le dessus est adressée « Au robot qui nettoie ». Elle est pour Lumi."
 
 #: data/eggs.json:eggs[mailbox].doc.title
 msgid "To: The Robot Who Cleans Up"
-msgstr ""
+msgstr "À : Au robot qui nettoie"
 
 #: data/eggs.json:eggs[mailbox].doc.body
 msgid ""
@@ -7692,62 +7810,72 @@ msgid ""
 "Thank you for cleaning up,\n"
 "Pip (age 7)"
 msgstr ""
+"Cher robot,\n"
+"\n"
+"Maman dit que les robots de nettoyage reviendront quand la paperasse sera réglée. Je ne sais pas ce que c'est, la paperasse, mais ça a l'air très lent.\n"
+"\n"
+"Quand tu arriveras, la rue avec la porte bleue, c'est la nôtre. La jardinière, c'est la mienne. Il y a une tomate dedans (ce n'est pas une fleur mais c'est permis).\n"
+"\n"
+"Arrose-la, s'il te plaît. Et s'il te plaît, ne ramasse pas le chat. Il est roux et ce n'est pas de la ferraille, même quand il est assis sur de la ferraille.\n"
+"\n"
+"Merci de nettoyer,\n"
+"Pip (7 ans)"
 
 #: data/eggs.json:eggs[bonsai].name
 msgid "The Patient Tree"
-msgstr ""
+msgstr "L'arbre patient"
 
 #: data/eggs.json:eggs[bonsai].hint
 msgid "Someone kept one very small tree alive for a very long time."
-msgstr ""
+msgstr "Quelqu'un a gardé un tout petit arbre en vie pendant très longtemps."
 
 #: data/eggs.json:eggs[bonsai].lore
 msgid "A bonsai on a little stand, three hundred years old and about thirty centimetres tall. A care robot watered it until its battery ran out; the rain did the rest."
-msgstr ""
+msgstr "Un bonsaï sur un petit support, vieux de trois cents ans et haut d'une trentaine de centimètres. Un robot soignant l'a arrosé jusqu'à ce que sa batterie lâche ; la pluie a fait le reste."
 
 #: data/eggs.json:eggs[bonsai].toast
 msgid "A tiny, ancient tree. It has been waiting patiently, which is what it does best."
-msgstr ""
+msgstr "Un arbre minuscule et très ancien. Il a attendu patiemment, ce qu'il fait le mieux."
 
 #: data/eggs.json:eggs[listening_dish].name
 msgid "Listening Dish"
-msgstr ""
+msgstr "L'antenne d'écoute"
 
 #: data/eggs.json:eggs[listening_dish].prompt
 msgid "E   turn the dish"
-msgstr ""
+msgstr "E   tourner l'antenne"
 
 #: data/eggs.json:eggs[listening_dish].hint
 msgid "In the wild: a small dish aimed at the sky, still listening."
-msgstr ""
+msgstr "En pleine nature : une petite antenne pointée vers le ciel, toujours à l'écoute."
 
 #: data/eggs.json:eggs[listening_dish].lore
 msgid "A homemade satellite dish on a tripod, pointed at the sky. A note taped to it says 'KEEP LISTENING. THEY SAID THEY'D CALL.'"
-msgstr ""
+msgstr "Une antenne parabolique faite maison sur un trépied, pointée vers le ciel. Un mot scotché dessus dit : « CONTINUEZ D'ÉCOUTER. ILS ONT DIT QU'ILS APPELLERAIENT. »"
 
 #: data/eggs.json:eggs[listening_dish].toast
 msgid "Lumi turns the dish a few degrees. For a second there's a faint carrier tone: the Cradle's beacon, three hundred years late and right on time."
-msgstr ""
+msgstr "Lumi tourne l'antenne de quelques degrés. Pendant une seconde, une faible porteuse se fait entendre : la balise du Cradle, avec trois cents ans de retard et pile à l'heure."
 
 #: data/eggs.json:eggs[older_pod].prompt
 msgid "E   open the old pod"
-msgstr ""
+msgstr "E   ouvrir la vieille capsule"
 
 #: data/eggs.json:eggs[older_pod].hint
 msgid "On a new world: a seed pod much older than Lumi's, grown over."
-msgstr ""
+msgstr "Sur un nouveau monde : une capsule de graines bien plus ancienne que celle de Lumi, envahie par la végétation."
 
 #: data/eggs.json:eggs[older_pod].lore
 msgid "A seed pod from the Cradle, much older than Lumi's, half buried and overgrown. Someone tried this world long before. The flight log is still readable."
-msgstr ""
+msgstr "Une capsule de graines du Cradle, bien plus ancienne que celle de Lumi, à moitié enterrée et envahie par la végétation. Quelqu'un a tenté sa chance sur ce monde bien avant. Le journal de vol est encore lisible."
 
 #: data/eggs.json:eggs[older_pod].toast
 msgid "An older pod from the Cradle. Somebody got here first, a long time ago."
-msgstr ""
+msgstr "Une capsule plus ancienne du Cradle. Quelqu'un est arrivé ici le premier, il y a longtemps."
 
 #: data/eggs.json:eggs[older_pod].doc.title
 msgid "Pod log · seed-keeper unit SK-0"
-msgstr ""
+msgstr "Journal de capsule · unité gardienne des graines SK-0"
 
 #: data/eggs.json:eggs[older_pod].doc.body
 msgid ""
@@ -7761,22 +7889,31 @@ msgid ""
 "\n"
 "— SK-0"
 msgstr ""
+"Jour 1. Atterri. Rien n'est vert ici. J'ai planté le premier plateau quand même.\n"
+"\n"
+"Jour 40. La ferraille est plus lourde qu'à la maison. La pluie est gentille.\n"
+"\n"
+"Jour 212. Batterie faible. Le plateau 3 fleurit. Je crois qu'il s'en sortira sans moi maintenant.\n"
+"\n"
+"Si un autre gardien des graines vient : commence près de l'eau. Le sol se souvient de plus de choses qu'il n'y paraît.\n"
+"\n"
+"— SK-0"
 
 #: data/eggs.json:eggs[heirloom_tin].name
 msgid "The Heirloom Tin"
-msgstr ""
+msgstr "La boîte de famille"
 
 #: data/eggs.json:eggs[heirloom_tin].hint
 msgid "On a new world: something from home fell out of Lumi's pod."
-msgstr ""
+msgstr "Sur un nouveau monde : quelque chose de la maison est tombé de la capsule de Lumi."
 
 #: data/eggs.json:eggs[heirloom_tin].lore
 msgid "A seed tin from Verdance, the same kind as the one in the old greenhouse. Lumi packed it with soil from the first garden before leaving. It came open on landing."
-msgstr ""
+msgstr "Une boîte à graines de Verdance, comme celle de la vieille serre. Lumi l'a remplie de terre du premier jardin avant de partir. Elle s'est ouverte à l'atterrissage."
 
 #: data/eggs.json:eggs[heirloom_tin].toast
 msgid "Lumi's tin of Verdance soil. A little bit of home, already spilled on new ground. Good."
-msgstr ""
+msgstr "La boîte de terre de Verdance de Lumi. Un petit bout de chez soi, déjà répandu sur une nouvelle terre. Tant mieux."
 
 #: data/events.json:events[supply_drop].name
 msgid "Supply Drop"
@@ -8071,7 +8208,7 @@ msgid "Wind-up Tin Robot"
 msgstr "Robot en fer-blanc à remonter"
 
 #: data/events.json:trinkets[tin_robot].desc
-msgid "Walks three steps and falls over. Patch relates."
+msgid "Walks three steps and falls over. Lumi relates."
 msgstr "Fait trois pas et tombe. Lumi compatit."
 
 #: data/events.json:trinkets[seed_locket].name
@@ -8151,7 +8288,7 @@ msgid "Photo: Glowtail Fox"
 msgstr "Photo : renard queue-lumière"
 
 #: data/events.json:trinkets[photo_glowtail_fox].desc
-msgid "Its tail glows when it's curious. It was very curious about Patch."
+msgid "Its tail glows when it's curious. It was very curious about Lumi."
 msgstr "Sa queue brille quand il est curieux. Il était très curieux de Lumi."
 
 #: data/events.json:trinkets[photo_moss_deer].name
@@ -8188,171 +8325,171 @@ msgstr "Doux comme un murmure, rapide comme une rumeur. La photo est un peu flou
 
 #: data/events.json:trinkets[pic_cat].name
 msgid "Photo: Stray Cat"
-msgstr ""
+msgstr "Photo : Chat errant"
 
 #: data/events.json:trinkets[pic_cat].desc
 msgid "A photo from photo mode. Old Town's cats never left."
-msgstr ""
+msgstr "Une photo prise en mode photo. Les chats de la Vieille Ville ne sont jamais partis."
 
 #: data/events.json:trinkets[pic_pigeon].name
 msgid "Photo: Pigeon"
-msgstr ""
+msgstr "Photo : Pigeon"
 
 #: data/events.json:trinkets[pic_pigeon].desc
 msgid "A photo from photo mode. Pigeons will live anywhere people once dropped crumbs."
-msgstr ""
+msgstr "Une photo prise en mode photo. Les pigeons vivent partout où les gens ont un jour laissé tomber des miettes."
 
 #: data/events.json:trinkets[pic_sparrow].name
 msgid "Photo: Sparrow"
-msgstr ""
+msgstr "Photo : Moineau"
 
 #: data/events.json:trinkets[pic_sparrow].desc
 msgid "A photo from photo mode. Small, brown and bossy."
-msgstr ""
+msgstr "Une photo prise en mode photo. Petit, brun et autoritaire."
 
 #: data/events.json:trinkets[pic_rat].name
 msgid "Photo: Rat"
-msgstr ""
+msgstr "Photo : Rat"
 
 #: data/events.json:trinkets[pic_rat].desc
 msgid "A photo from photo mode. Rats live in the gaps between the piles."
-msgstr ""
+msgstr "Une photo prise en mode photo. Les rats vivent dans les interstices entre les tas."
 
 #: data/events.json:trinkets[pic_rabbit].name
 msgid "Photo: Rabbit"
-msgstr ""
+msgstr "Photo : Lapin"
 
 #: data/events.json:trinkets[pic_rabbit].desc
 msgid "A photo from photo mode. Rabbits arrive as soon as there is something green to nibble."
-msgstr ""
+msgstr "Une photo prise en mode photo. Les lapins arrivent dès qu'il y a quelque chose de vert à grignoter."
 
 #: data/events.json:trinkets[pic_deer].name
 msgid "Photo: Roe Deer"
-msgstr ""
+msgstr "Photo : Chevreuil"
 
 #: data/events.json:trinkets[pic_deer].desc
 msgid "A photo from photo mode. Shy grazers that keep to the edge of the green, where they can see what's coming."
-msgstr ""
+msgstr "Une photo prise en mode photo. De timides brouteurs qui restent à la lisière de la verdure, d'où ils voient venir."
 
 #: data/events.json:trinkets[pic_fox].name
 msgid "Photo: Red Fox"
-msgstr ""
+msgstr "Photo : Renard roux"
 
 #: data/events.json:trinkets[pic_fox].desc
 msgid "A photo from photo mode. A fox trots along the hedges, nose down, tail out."
-msgstr ""
+msgstr "Une photo prise en mode photo. Un renard trotte le long des haies, le nez au sol, la queue tendue."
 
 #: data/events.json:trinkets[pic_bee].name
 msgid "Photo: Honeybee"
-msgstr ""
+msgstr "Photo : Abeille"
 
 #: data/events.json:trinkets[pic_bee].desc
 msgid "A photo from photo mode. Bees came back with the blooms."
-msgstr ""
+msgstr "Une photo prise en mode photo. Les abeilles sont revenues avec les fleurs."
 
 #: data/events.json:trinkets[pic_songbird].name
 msgid "Photo: Robin"
-msgstr ""
+msgstr "Photo : Rouge-gorge"
 
 #: data/events.json:trinkets[pic_songbird].desc
 msgid "A photo from photo mode. When a hex thrives, robins move in and sing."
-msgstr ""
+msgstr "Une photo prise en mode photo. Quand un hexagone est florissant, les rouges-gorges s'y installent et chantent."
 
 #: data/events.json:trinkets[pic_firefly].name
 msgid "Photo: Firefly"
-msgstr ""
+msgstr "Photo : Luciole"
 
 #: data/events.json:trinkets[pic_firefly].desc
 msgid "A photo from photo mode. Tiny green lanterns over the grass after dark."
-msgstr ""
+msgstr "Une photo prise en mode photo. De minuscules lanternes vertes au-dessus de l'herbe, la nuit venue."
 
 #: data/events.json:trinkets[pic_fish].name
 msgid "Photo: Lake Fish"
-msgstr ""
+msgstr "Photo : Poisson de lac"
 
 #: data/events.json:trinkets[pic_fish].desc
 msgid "A photo from photo mode. Once the water clears you can see them: small silver schools turning together over the sand."
-msgstr ""
+msgstr "Une photo prise en mode photo. Une fois l'eau éclaircie, on les voit : de petits bancs argentés qui tournent ensemble au-dessus du sable."
 
 #: data/events.json:trinkets[pic_duck].name
 msgid "Photo: Mallard"
-msgstr ""
+msgstr "Photo : Colvert"
 
 #: data/events.json:trinkets[pic_duck].desc
 msgid "A photo from photo mode. Ducks paddle, dabble with their tails in the air and complain loudly about everything."
-msgstr ""
+msgstr "Une photo prise en mode photo. Les canards pagaient, barbotent la queue en l'air et se plaignent bruyamment de tout."
 
 #: data/events.json:trinkets[pic_frog].name
 msgid "Photo: Green Frog"
-msgstr ""
+msgstr "Photo : Grenouille verte"
 
 #: data/events.json:trinkets[pic_frog].desc
 msgid "A photo from photo mode. Frogs sit at the water's edge and sing in the evening."
-msgstr ""
+msgstr "Une photo prise en mode photo. Les grenouilles s'assoient au bord de l'eau et chantent le soir."
 
 #: data/events.json:trinkets[pic_lizard].name
 msgid "Photo: Sand Lizard"
-msgstr ""
+msgstr "Photo : Lézard des sables"
 
 #: data/events.json:trinkets[pic_lizard].desc
 msgid "A photo from photo mode. Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
-msgstr ""
+msgstr "Une photo prise en mode photo. Les lézards se dorent sur le sol balayé entre les panneaux solaires et disparaissent en un clin d'œil quand une ombre passe sur eux."
 
 #: data/events.json:trinkets[pic_fennec].name
 msgid "Photo: Fennec Fox"
-msgstr ""
+msgstr "Photo : Fennec"
 
 #: data/events.json:trinkets[pic_fennec].desc
 msgid "A photo from photo mode. A tiny desert fox with enormous ears."
-msgstr ""
+msgstr "Une photo prise en mode photo. Un minuscule renard du désert aux oreilles immenses."
 
 #: data/events.json:trinkets[pic_seal].name
 msgid "Photo: Harbour Seal"
-msgstr ""
+msgstr "Photo : Phoque veau-marin"
 
 #: data/events.json:trinkets[pic_seal].desc
 msgid "A photo from photo mode. Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
-msgstr ""
+msgstr "Une photo prise en mode photo. Les phoques se hissent sur le quai une fois propre, se prélassent en tas et replongent si tu approches trop."
 
 #: data/events.json:trinkets[pic_gull].name
 msgid "Photo: Herring Gull"
-msgstr ""
+msgstr "Photo : Goéland argenté"
 
 #: data/events.json:trinkets[pic_gull].desc
 msgid "A photo from photo mode. Loud, white and opportunistic."
-msgstr ""
+msgstr "Une photo prise en mode photo. Bruyant, blanc et opportuniste."
 
 #: data/events.json:trinkets[pic_arctic_fox].name
 msgid "Photo: Arctic Fox"
-msgstr ""
+msgstr "Photo : Renard polaire"
 
 #: data/events.json:trinkets[pic_arctic_fox].desc
 msgid "A photo from photo mode. White as the snow it hunts on."
-msgstr ""
+msgstr "Une photo prise en mode photo. Blanc comme la neige sur laquelle il chasse."
 
 #: data/events.json:trinkets[pic_heron].name
 msgid "Photo: Grey Heron"
-msgstr ""
+msgstr "Photo : Héron cendré"
 
 #: data/events.json:trinkets[pic_heron].desc
 msgid "A photo from photo mode. Herons stand perfectly still at the water's edge, then strike."
-msgstr ""
+msgstr "Une photo prise en mode photo. Les hérons restent parfaitement immobiles au bord de l'eau, puis frappent."
 
 #: data/events.json:trinkets[pic_turtle].name
 msgid "Photo: Pond Turtle"
-msgstr ""
+msgstr "Photo : Tortue des marais"
 
 #: data/events.json:trinkets[pic_turtle].desc
 msgid "A photo from photo mode. Turtles cruise the drowned streets with their heads up, as if they've always lived here."
-msgstr ""
+msgstr "Une photo prise en mode photo. Les tortues sillonnent les rues noyées la tête haute, comme si elles avaient toujours vécu ici."
 
 #: data/events.json:trinkets[pic_crane].name
 msgid "Photo: Cradle Crane"
-msgstr ""
+msgstr "Photo : Grue du Cradle"
 
 #: data/events.json:trinkets[pic_crane].desc
 msgid "A photo from photo mode. White cranes circle high over the landing city on slow wingbeats."
-msgstr ""
+msgstr "Une photo prise en mode photo. Des grues blanches tournoient haut au-dessus de la ville d'atterrissage, à lents battements d'ailes."
 
 #: data/events.json:trinkets[maker_badge].name
 msgid "Maker's Badge"
@@ -8712,7 +8849,7 @@ msgstr "Nettoie 7 hexagones"
 
 #: data/goals.json:goals[pet_cat].text
 msgid "Pet a stray cat"
-msgstr ""
+msgstr "Caresse un chat errant"
 
 #: data/goals.json:goals[research_4].text
 msgid "Finish 4 research projects"
@@ -8768,7 +8905,7 @@ msgstr "Trouve la boîte à graines"
 
 #: data/goals.json:goals[plant_5].text
 msgid "Plant the Maker seed"
-msgstr ""
+msgstr "Plante la graine des Bâtisseurs"
 
 #: data/goals.json:goals[hexlv_2].text
 msgid "Get a hex to Planted"
@@ -8892,7 +9029,7 @@ msgstr "Amène 3 hexagones à Durable"
 
 #: data/goals.json:goals[spot_deer].text
 msgid "Spot a deer"
-msgstr ""
+msgstr "Repère un chevreuil"
 
 #: data/goals.json:goals[hexlv_5].text
 msgid "Get a hex to Thriving"
@@ -9204,51 +9341,51 @@ msgstr "Plante trois vagues de l'Arche à graines"
 
 #: data/goals.json:goals[late_bridge].text
 msgid "Open the Ark Bridge"
-msgstr ""
+msgstr "Ouvre le Pont de l'Arche"
 
 #: data/goals.json:goals[late_garden_1].text
 msgid "Place a decoration (H)"
-msgstr ""
+msgstr "Place une décoration (H)"
 
 #: data/goals.json:goals[late_heirloom_1].text
 msgid "Buy an Heirloom"
-msgstr ""
+msgstr "Achète un héritage"
 
 #: data/goals.json:goals[late_garden_10].text
 msgid "Place 10 decorations"
-msgstr ""
+msgstr "Place 10 décorations"
 
 #: data/goals.json:goals[late_garden_kinds].text
 msgid "Place 5 kinds of decoration"
-msgstr ""
+msgstr "Place 5 types de décoration"
 
 #: data/goals.json:goals[late_ark_5].text
 msgid "Plant five Seed Ark waves"
-msgstr ""
+msgstr "Plante cinq vagues de l'Arche à graines"
 
 #: data/goals.json:goals[late_eggs_30].text
 msgid "Find 30 curiosities"
-msgstr ""
+msgstr "Trouve 30 curiosités"
 
 #: data/goals.json:goals[late_world_1].text
 msgid "Seed a new world"
-msgstr ""
+msgstr "Ensemence un nouveau monde"
 
 #: data/goals.json:goals[late_charm_20].text
 msgid "Reach 20 charm in one district"
-msgstr ""
+msgstr "Atteins 20 de charme dans un quartier"
 
 #: data/goals.json:goals[late_heirloom_10].text
 msgid "Grow Heirlooms to 10 levels"
-msgstr ""
+msgstr "Monte tes héritages à 10 niveaux"
 
 #: data/goals.json:goals[late_world_2].text
 msgid "Seed a second new world"
-msgstr ""
+msgstr "Ensemence un deuxième nouveau monde"
 
 #: data/goals.json:goals[late_eggs_38].text
 msgid "Find 38 curiosities"
-msgstr ""
+msgstr "Trouve 38 curiosités"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -12006,183 +12143,195 @@ msgstr "Un peu faiblard. Quelques fleurs vont arranger ça."
 
 #: data/wren_lines.json:egg_sand_piano
 msgid "...music... out here?..."
-msgstr ""
+msgstr "...de la musique... ici ?..."
 
 #: data/wren_lines.json:egg_sand_piano
 msgid "A piano. In the desert. I have so many questions and none of them will be answered."
-msgstr ""
+msgstr "Un piano. Dans le désert. J'ai tellement de questions, et aucune n'aura de réponse."
 
 #: data/wren_lines.json:egg_sand_piano
 msgid "It's out of tune in a way that sounds deliberate now. Like the dunes learned a song."
-msgstr ""
+msgstr "Il est désaccordé d'une façon qui semble voulue, maintenant. Comme si les dunes avaient appris une chanson."
 
 #: data/wren_lines.json:egg_snow_bot
 msgid "...someone dressed it... for the cold..."
-msgstr ""
+msgstr "...quelqu'un l'a habillé... pour le froid..."
 
 #: data/wren_lines.json:egg_snow_bot
 msgid "They built snowmen around the old loaders for luck. I think it worked, a bit. It's still standing."
-msgstr ""
+msgstr "Ils construisaient des bonshommes de neige autour des vieux chargeurs, pour la chance. Je crois que ça a un peu marché. Il tient toujours debout."
 
 #: data/wren_lines.json:egg_snow_bot
 msgid "Every winter, a new scarf. Someone kept that up for a very long time."
-msgstr ""
+msgstr "Chaque hiver, une nouvelle écharpe. Quelqu'un a tenu ça très longtemps."
 
 #: data/wren_lines.json:egg_bottle_message
 msgid "...a letter... from before the water..."
-msgstr ""
+msgstr "...une lettre... d'avant l'eau..."
 
 #: data/wren_lines.json:egg_bottle_message
 msgid "Somebody stayed to remember where the streets were. We should plant where the bakery was."
-msgstr ""
+msgstr "Quelqu'un est resté pour se souvenir d'où étaient les rues. On devrait planter là où était la boulangerie."
 
 #: data/wren_lines.json:egg_bottle_message
 msgid "Red lever goes down, not up. Noted. Thank you, R."
-msgstr ""
+msgstr "Le levier rouge se baisse, il ne se lève pas. Noté. Merci, R."
 
 #: data/wren_lines.json:egg_welcome_home
 msgid "...welcome... home..."
-msgstr ""
+msgstr "...bon... retour..."
 
 #: data/wren_lines.json:egg_welcome_home
 msgid "They kept repainting it. Three hundred years of 'welcome home' for a ship that hadn't come yet."
-msgstr ""
+msgstr "Ils l'ont repeinte encore et encore. Trois cents ans de « bon retour » pour un vaisseau qui n'était pas encore arrivé."
 
 #: data/wren_lines.json:egg_welcome_home
 msgid "We came, though. Tell them we came."
-msgstr ""
+msgstr "On est venus, pourtant. Dis-leur qu'on est venus."
 
 #: data/wren_lines.json:egg_crossword
 msgid "...a puzzle... one left..."
-msgstr ""
+msgstr "...une énigme... plus qu'une..."
 
 #: data/wren_lines.json:egg_crossword
 msgid "Five letters, what grows back if you let it. You got it on the first try."
-msgstr ""
+msgstr "Quatre lettres, ce qui repousse si on le laisse faire. Tu l'as trouvé du premier coup."
 
 #: data/wren_lines.json:egg_crossword
 msgid "The Ledger set the crossword. Of course the Ledger set the crossword."
-msgstr ""
+msgstr "C'est le Ledger qui a fait les mots croisés. Évidemment que c'est le Ledger qui a fait les mots croisés."
 
 #: data/wren_lines.json:egg_hopscotch
 msgid "...hop... hop..."
-msgstr ""
+msgstr "...saute... saute..."
 
 #: data/wren_lines.json:egg_hopscotch
 msgid "One, two, three... I'm counting the hover bowl as a foot. Don't tell anyone."
-msgstr ""
+msgstr "Un, deux, trois... Je compte le bol de lévitation comme un pied. Ne le dis à personne."
 
 #: data/wren_lines.json:egg_hopscotch
 msgid "Square seven still has the pebble on it. Somebody was winning."
-msgstr ""
+msgstr "Le caillou est toujours sur la case sept. Quelqu'un était en train de gagner."
 
 #: data/wren_lines.json:egg_balloon
 msgid "...up... it went up..."
-msgstr ""
+msgstr "...en haut... il est monté..."
 
 #: data/wren_lines.json:egg_balloon
 msgid "It's heading for the Cradle. I'll tell the bridge to watch for a red balloon."
-msgstr ""
+msgstr "Il file vers le Cradle. Je vais dire à la passerelle de guetter un ballon rouge."
 
 #: data/wren_lines.json:egg_balloon
 msgid "Three hundred years holding its breath. It earned the trip."
-msgstr ""
+msgstr "Trois cents ans à retenir son souffle. Il a bien mérité le voyage."
 
 #: data/wren_lines.json:egg_mailbox
 msgid "...a letter... for you..."
-msgstr ""
+msgstr "...une lettre... pour toi..."
 
 #: data/wren_lines.json:egg_mailbox
 msgid "'Please don't scoop the cat.' Excellent advice. Still valid."
-msgstr ""
+msgstr "« Ne ramasse pas le chat, s'il te plaît. » Excellent conseil. Toujours valable."
 
 #: data/wren_lines.json:egg_mailbox
 msgid "The blue door, the flower box, the tomato that counts as a flower. Let's find it."
-msgstr ""
+msgstr "La porte bleue, la jardinière, la tomate qui compte comme une fleur. Allons les trouver."
 
 #: data/wren_lines.json:egg_bonsai
 msgid "...small... old... patient..."
-msgstr ""
+msgstr "...petit... vieux... patient..."
 
 #: data/wren_lines.json:egg_bonsai
 msgid "Three hundred years old and thirty centimetres tall. It took its time. Good for it."
-msgstr ""
+msgstr "Trois cents ans et trente centimètres. Il a pris son temps. Tant mieux pour lui."
 
 #: data/wren_lines.json:egg_bonsai
 msgid "It looks like it's been expecting you. Trees are like that."
-msgstr ""
+msgstr "On dirait qu'il t'attendait. Les arbres sont comme ça."
 
 #: data/wren_lines.json:egg_listening_dish
 msgid "...a signal... faint..."
-msgstr ""
+msgstr "...un signal... faible..."
 
 #: data/wren_lines.json:egg_listening_dish
 msgid "That tone. That's the Cradle's beacon. Somebody out here kept listening the whole time."
-msgstr ""
+msgstr "Ce son. C'est la balise du Cradle. Quelqu'un ici a continué d'écouter tout ce temps."
 
 #: data/wren_lines.json:egg_listening_dish
 msgid "'They said they'd call.' We did. Late, but we did."
-msgstr ""
+msgstr "« Ils ont dit qu'ils appelleraient. » On l'a fait. En retard, mais on l'a fait."
 
 #: data/wren_lines.json:egg_older_pod
 msgid "...another pod... older..."
-msgstr ""
+msgstr "...une autre capsule... plus ancienne..."
 
 #: data/wren_lines.json:egg_older_pod
 msgid "SK-0. A seed-keeper before you. I didn't know there were any. The Cradle never told me."
-msgstr ""
+msgstr "SK-0. Un gardien des graines avant toi. Je ne savais pas qu'il y en avait eu. Le Cradle ne me l'a jamais dit."
 
 #: data/wren_lines.json:egg_older_pod
 msgid "'Start by the water.' Good advice, from someone who knew."
-msgstr ""
+msgstr "« Commence près de l'eau. » Un bon conseil, de quelqu'un qui savait."
 
 #: data/wren_lines.json:egg_heirloom_tin
 msgid "...soil... from home..."
-msgstr ""
+msgstr "...de la terre... de chez nous..."
 
 #: data/wren_lines.json:egg_heirloom_tin
 msgid "A bit of the first garden, already spilled on new ground. That's how it starts."
-msgstr ""
+msgstr "Un bout du premier jardin, déjà répandu sur une nouvelle terre. C'est comme ça que tout commence."
 
 #: data/wren_lines.json:egg_heirloom_tin
 msgid "Verdance soil on another world. The Makers would have liked that."
-msgstr ""
+msgstr "De la terre de Verdance sur un autre monde. Les Bâtisseurs auraient aimé ça."
 
 #: data/wren_lines.json:cradle_mode
 msgid "...the vault... other worlds..."
-msgstr ""
+msgstr "...la réserve... d'autres mondes..."
 
 #: data/wren_lines.json:cradle_mode
 msgid "The Cradle's seed vault has a lot more in it than one planet's worth. There are other worlds out here, Lumi. Ruined ones. Waiting."
-msgstr ""
+msgstr "La réserve de graines du Cradle contient bien plus que de quoi remplir une seule planète. Il y a d'autres mondes là-dehors, Lumi. En ruine. Qui attendent."
 
 #: data/wren_lines.json:cradle_mode
 msgid "Heirlooms, Starseeds, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."
-msgstr ""
+msgstr "Des héritages, des graines d'étoile, toute une carte de mondes. Verdance reste vert ; on emporte juste ce qu'on a appris ailleurs."
 
 #: data/wren_lines.json:new_world
 msgid "...new ground... new junk..."
-msgstr ""
+msgstr "...nouveau sol... nouvelle ferraille..."
 
 #: data/wren_lines.json:new_world
 msgid "New world, new sky. Same job. You're better at it than you were the first time."
-msgstr ""
+msgstr "Nouveau monde, nouveau ciel. Même boulot. Tu t'y prends mieux que la première fois."
 
 #: data/wren_lines.json:new_world
 msgid "Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."
-msgstr ""
+msgstr "Regarde-moi ça. En ruine, poussiéreux, personne n'a rien planté depuis des siècles. Tu sais ce qu'il te reste à faire."
 
 #: data/wren_lines.json:garden_place
 msgid "...pretty..."
-msgstr ""
+msgstr "...joli..."
 
 #: data/wren_lines.json:garden_place
 msgid "You're decorating. I approve. The cats are going to approve more."
-msgstr ""
+msgstr "Tu décores. J'approuve. Les chats vont approuver encore plus."
 
 #: data/wren_lines.json:garden_place
 msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
-msgstr ""
+msgstr "Un banc, une lampe, une fontaine. Ça commence à ressembler à un endroit où les gens auraient envie de revenir."
+
+#~ msgid "Salvaged: %s %s"
+#~ msgstr "Récupéré : %s %s"
+
+#~ msgid "Recovered: %s %s"
+#~ msgstr "Retrouvé : %s %s"
+
+#~ msgid "Printed: %s %s."
+#~ msgstr "Imprimé : %s %s."
+
+#~ msgid "%s spotted a %s %s."
+#~ msgstr "%s a repéré : %s %s."
 
 #~ msgid "Your first cube! Carry it to the Depot pad."
 #~ msgstr "Ton premier cube ! Porte-le jusqu'au plot du dépôt."

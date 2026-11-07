@@ -240,7 +240,7 @@ static func reward_text(reward: Dictionary) -> String:
 	var parts: Array[String] = []
 	for k: String in ["cubes", "seeds", "data"]:
 		if float(reward.get(k, 0.0)) > 0.0:
-			parts.append("+%s %s" % [Settings.fmt(BigNum.from_float(float(reward[k]))), k])
+			parts.append(L10nFmt.amount(k, float(reward[k]), true))  # [i18n2]
 	return "  ".join(parts)
 
 

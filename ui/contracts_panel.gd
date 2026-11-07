@@ -78,7 +78,7 @@ func _signature() -> String:
 
 
 func refresh(force: bool = false) -> void:
-	_tokens.text = tr("◈  %d tokens") % Contracts.tokens()
+	_tokens.text = tr("◆  %d tokens") % Contracts.tokens()
 	_collection.text = tr("Collection  %d / %d   ·   see the Codex (K)") % [Collection.count(), Collection.total()]
 	var sig: String = _signature()
 	if force or sig != _sig:
@@ -138,7 +138,7 @@ func _rebuild_slots() -> void:
 		var title := UITheme.label(Contracts.text_of(s), 19, UITheme.CREAM)
 		title.autowrap_mode = TextServer.AUTOWRAP_WORD
 		vb.add_child(title)
-		vb.add_child(UITheme.label(tr("Reward  ◈ %d tokens  +  cubes") % int(s.get("tokens", 0)), 14, TOKEN_COLOR))
+		vb.add_child(UITheme.label(tr("Reward  ◆ %d tokens  +  cubes") % int(s.get("tokens", 0)), 14, TOKEN_COLOR))
 		if st == "active" or st == "done":
 			var bar := ProgressBar.new()
 			bar.show_percentage = false
@@ -185,7 +185,7 @@ func _rebuild_slots() -> void:
 				row.add_child(b)
 			"done":
 				var cl := Button.new()
-				cl.text = tr("Claim  ◈ %d") % int(s.get("tokens", 0))
+				cl.text = tr("Claim  ◆ %d") % int(s.get("tokens", 0))
 				cl.custom_minimum_size = Vector2(170, 40)
 				UITheme.orange_button(cl)
 				cl.pressed.connect(func() -> void:
@@ -258,7 +258,7 @@ func _rebuild_shop() -> void:
 		b.autowrap_mode = TextServer.AUTOWRAP_WORD
 		b.add_theme_font_size_override("font_size", 14)
 		var have: bool = id in owned
-		var price: String = "◈ %d" % int(it.get("cost", 0))
+		var price: String = "◆ %d" % int(it.get("cost", 0))
 		var status: String = price
 		if kind == "livery" and have:
 			status = tr("Equipped  (press to remove)") if Liveries.equipped() == id else tr("Owned  ·  press to equip")

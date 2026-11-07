@@ -83,7 +83,8 @@ static func cost_text(cost: Dictionary, mult: float = 1.0) -> String:
 	for k: String in cost:
 		var need := BigNum.from_float(float(cost[k]) * mult)
 		var have: BigNum = GameState.get_currency(k)
-		parts.append("%s %s%s" % [Settings.fmt(need), TranslationServer.translate(str(names.get(k, k))), "" if have.gte(need) else TranslationServer.translate(" (have %s)") % Settings.fmt(have)])
+		var what: String = L10nFmt.amount(k, need.to_float()) if L10nFmt.has_count(k) else "%s %s" % [Settings.fmt(need), TranslationServer.translate(str(names.get(k, k)))]  # [i18n2]
+		parts.append(what + ("" if have.gte(need) else TranslationServer.translate(" (have %s)") % Settings.fmt(have)))
 	return ",  ".join(parts)
 
 

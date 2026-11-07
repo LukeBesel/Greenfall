@@ -14,7 +14,7 @@ msgstr ""
 
 #: art/feel_fx.gd:147
 msgid "NEW CREWMATE  ·  %s"
-msgstr ""
+msgstr "新船员  ·  %s"
 
 #: autoload/Economy.gd:72
 msgid "Every %s in the fleet."
@@ -27,6 +27,10 @@ msgstr "基础（Mk I，未计等级和零件稀有度）"
 #: autoload/Economy.gd:128
 msgid "Base"
 msgstr "基础"
+
+#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:185
+msgid "%s Lv %d"
+msgstr "%s %d 级"
 
 #: autoload/Economy.gd:300 data/robots.json:tiers[0].name
 msgid "Mk I"
@@ -222,11 +226,11 @@ msgstr "右摇杆下"
 
 #: autoload/Story.gd:23
 msgid "Perfect bale: filled right to the gold line."
-msgstr ""
+msgstr "完美捆包：刚好装到金线。"
 
 #: autoload/Story.gd:25
 msgid "Pure bale: one kind of junk is worth double."
-msgstr ""
+msgstr "纯净捆包：只装一种废料，价值翻倍。"
 
 #: autoload/Story.gd:29
 msgid "A whole hex is clean! The ground remembers its colors."
@@ -515,23 +519,23 @@ msgstr "净化器一直在过滤空气。现在清新了一点。"
 
 #: fauna/fauna.gd:1211
 msgid "E   pet %s"
-msgstr ""
+msgstr "E   摸摸%s"
 
 #: fauna/fauna.gd:1212
 msgid "E   pet the cat"
-msgstr ""
+msgstr "E   摸摸猫咪"
 
 #: fauna/fauna.gd:1261
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
-msgstr ""
+msgstr "这只猫认定你是她的了。来认识一下%s吧。她现在住在这个基地。"
 
 #: fauna/fauna.gd:1574
 msgid "New sighting: %s. It's in the Codex now."
-msgstr ""
+msgstr "新发现：%s。已收入图鉴。"
 
 #: fauna/fauna.gd:1642
 msgid "Snap! A %s for your Collection."
-msgstr ""
+msgstr "咔嚓！一张%s的照片，收进你的收藏。"
 
 #: planet/frontier_district.gd:279
 msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
@@ -792,11 +796,11 @@ msgstr "六角格 %d 级  %s。   %s"
 
 #: plants/seed_finds.gd:42
 msgid "+1 SEED"
-msgstr ""
+msgstr "+1 种子"
 
 #: plants/seed_finds.gd:46
 msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
-msgstr ""
+msgstr "一颗干燥的老种子，还好好地封在壳里。废料里藏着几颗这样的种子。"
 
 #: player/detector.gd:77
 msgid "SIGNAL  %s  ·  %.1f m"
@@ -843,12 +847,12 @@ msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
 #: player/patch.gd:470
-msgid "Salvaged: %s %s"
-msgstr "回收：%s %s"
+msgid "Salvaged: %s"
+msgstr "回收：%s"
 
 #: player/patch.gd:500
-msgid "Recovered: %s %s"
-msgstr "找回：%s %s"
+msgid "Recovered: %s"
+msgstr "找回：%s"
 
 #: player/patch_model.gd:18 data/designs.json:designs[aurora].name
 msgid "Aurora"
@@ -1557,11 +1561,11 @@ msgstr "Lumi。我收到一个信号。绿色的，很微弱，在基地东边�
 
 #: story/first_seed.gd:130
 msgid "{tool_water}  then hold  {scoop}  to water it"
-msgstr ""
+msgstr "{tool_water}  然后按住  {scoop}  浇水"
 
 #: story/first_seed.gd:156
 msgid "Hold  {scoop}  on clean ground to plant the seed"
-msgstr ""
+msgstr "在干净的地面上按住  {scoop}  种下种子"
 
 #: story/first_seed.gd:225
 msgid "...It's green. Lumi, it's actually green."
@@ -1569,7 +1573,7 @@ msgstr "……是绿色的。Lumi，真的是绿色的。"
 
 #: story/first_seed.gd:227
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
-msgstr ""
+msgstr "记得浇水。外面种子很稀少，但每次开花都会还你一颗，还会给你的核心一点绿光。一切就是这样开始的。"
 
 #: story/intro.gd:281
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
@@ -1702,7 +1706,7 @@ msgstr ""
 "Ledger 现在站在我们这边了。干扰器只是跟着音乐哼哼。"
 
 #: story/ledger.gd:318 systems/decor.gd:125 systems/research.gd:186
-#: ui/hub_panel.gd:118 ui/stations_panel.gd:96
+#: ui/hub_panel.gd:119 ui/stations_panel.gd:96
 msgid "Needs %s"
 msgstr "需要 %s"
 
@@ -1800,11 +1804,11 @@ msgstr "清理过的地面里冒出了什么东西。一块记忆碎片。"
 
 #: story/tutorial.gd:10
 msgid "Hold  {scoop}  to scoop junk"
-msgstr ""
+msgstr "按住  {scoop}  铲起废料"
 
 #: story/tutorial.gd:11
 msgid "Press  {cube}  to press a bale"
-msgstr ""
+msgstr "按  {cube}  压成捆包"
 
 #: story/tutorial.gd:12
 msgid "{interact}  to pick up the bale"
@@ -1812,19 +1816,19 @@ msgstr "按  {interact}  拿起捆包"
 
 #: story/tutorial.gd:13
 msgid "Carry it onto the scale"
-msgstr ""
+msgstr "把它搬上磅秤"
 
 #: story/tutorial.gd:14
 msgid "{interact}  at the workbench to upgrade"
-msgstr ""
+msgstr "在工作台按  {interact}  升级"
 
 #: story/tutorial.gd:15
 msgid "Clean this hex completely"
-msgstr ""
+msgstr "把这片六角格彻底清理干净"
 
 #: story/tutorial.gd:17
 msgid "Lumi is back on the job"
-msgstr ""
+msgstr "Lumi 重新上岗了"
 
 #: systems/achievements.gd:139
 msgid "%d achievements unlocked. See them in the Codex (K)."
@@ -1884,11 +1888,11 @@ msgstr "边境"
 
 #: systems/codex.gd:195
 msgid " · %s"
-msgstr ""
+msgstr " · %s"
 
 #: systems/codex.gd:197 ui/codex_screen.gd:355
 msgid "Other worlds"
-msgstr ""
+msgstr "其他世界"
 
 #: systems/codex.gd:198 ui/codex_screen.gd:355
 msgid "Any district"
@@ -1920,7 +1924,7 @@ msgstr "野生动物照片"
 
 #: systems/collection.gd:83
 msgid "Animal Photos"
-msgstr ""
+msgstr "动物照片"
 
 #: systems/collection.gd:84
 msgid "Rare Part Signals"
@@ -1967,8 +1971,8 @@ msgid "%s fitted to the whole fleet."
 msgstr "已为整个机队装上%s。"
 
 #: systems/contracts.gd:344
-msgid "Printed: %s %s."
-msgstr "已打印：%s %s。"
+msgid "Printed: %s."
+msgstr "已打印：%s。"
 
 #: systems/contracts.gd:347
 msgid "+%d seeds."
@@ -1996,43 +2000,43 @@ msgstr "需要 %d 代币"
 
 #: systems/cradle_mode.gd:282
 msgid "Fully grown"
-msgstr ""
+msgstr "已满级"
 
 #: systems/cradle_mode.gd:284
 msgid "Needs %d Starseeds"
-msgstr ""
+msgstr "需要 %d 星种"
 
 #: systems/cradle_mode.gd:298
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
-msgstr ""
+msgstr "传家宝：%s，等级 %d。它会随 Lumi 前往每一个世界。"
 
 #: systems/decor.gd:121
 msgid "Needs %d Collection finds (%d so far)"
-msgstr ""
+msgstr "需要 %d 件收藏品（目前 %d 件）"
 
 #: systems/decor.gd:179
 msgid "Too close to the base machines"
-msgstr ""
+msgstr "离基地的机器太近了"
 
 #: systems/decor.gd:182
 msgid "Outside the district"
-msgstr ""
+msgstr "在城区之外"
 
 #: systems/decor.gd:184
 msgid "That's water"
-msgstr ""
+msgstr "那是水面"
 
 #: systems/decor.gd:188
 msgid "Frozen in"
-msgstr ""
+msgstr "被冻住了"
 
 #: systems/decor.gd:190
 msgid "A building is in the way"
-msgstr ""
+msgstr "有建筑挡着"
 
 #: systems/decor.gd:192
 msgid "Something is already here"
-msgstr ""
+msgstr "这里已经有东西了"
 
 #: systems/designs.gd:118
 msgid "Default"
@@ -2040,15 +2044,15 @@ msgstr "默认"
 
 #: systems/designs.gd:137
 msgid "Best fleet: %s"
-msgstr ""
+msgstr "最佳机队：%s"
 
 #: systems/designs.gd:154
 msgid "New design unlocked: %s. Wear it from the workbench (Cosmetics)."
-msgstr ""
+msgstr "新外观已解锁：%s。在工作台（装扮）换上它。"
 
 #: systems/designs.gd:193
 msgid "Design: %s"
-msgstr ""
+msgstr "外观：%s"
 
 #: systems/event_props.gd:154
 msgid "CRADLE · SUPPLY"
@@ -2062,11 +2066,11 @@ msgstr "连击 x%d  +%d%%"
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
-#: systems/events.gd:488
+#: systems/events.gd:488 systems/l10n_fmt.gd:29
 msgid "+%d data"
 msgstr "+%d 数据"
 
-#: systems/events.gd:506 systems/lumi_level.gd:236
+#: systems/events.gd:506 systems/l10n_fmt.gd:23 systems/lumi_level.gd:236
 msgid "+%d token"
 msgid_plural "+%d tokens"
 msgstr[0] "+%d 代币"
@@ -2171,13 +2175,98 @@ msgstr "审计胜利，%d 比 %d！Ledger 盖上了“批准”章。%s"
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "无人机赢得了审计，%d 比 %d。不过它还是留了小费：+%s 方块。"
 
+#: systems/l10n_fmt.gd:17
+msgid "+%d cube"
+msgid_plural "+%d cubes"
+msgstr[0] "+%d 方块"
+
+#: systems/l10n_fmt.gd:19
+msgid "+%d seed"
+msgid_plural "+%d seeds"
+msgstr[0] "+%d 种子"
+
+#: systems/l10n_fmt.gd:21
+msgid "+%d trinket"
+msgid_plural "+%d trinkets"
+msgstr[0] "+%d 件小玩意"
+
+#: systems/l10n_fmt.gd:25
+msgid "+%d bolt"
+msgid_plural "+%d bolts"
+msgstr[0] "+%d 螺栓"
+
+#: systems/l10n_fmt.gd:27
+msgid "+%d part"
+msgid_plural "+%d parts"
+msgstr[0] "+%d 零件"
+
+#: systems/l10n_fmt.gd:49
+msgid "%s cube"
+msgid_plural "%s cubes"
+msgstr[0] "%s 方块"
+
+#: systems/l10n_fmt.gd:51
+msgid "%s seed"
+msgid_plural "%s seeds"
+msgstr[0] "%s 种子"
+
+#: systems/l10n_fmt.gd:53
+msgid "%s trinket"
+msgid_plural "%s trinkets"
+msgstr[0] "%s 件小玩意"
+
+#: systems/l10n_fmt.gd:55
+msgid "%s token"
+msgid_plural "%s tokens"
+msgstr[0] "%s 代币"
+
+#: systems/l10n_fmt.gd:57
+msgid "%s bolt"
+msgid_plural "%s bolts"
+msgstr[0] "%s 螺栓"
+
+#: systems/l10n_fmt.gd:59
+msgid "%s part"
+msgid_plural "%s parts"
+msgstr[0] "%s 零件"
+
+#: systems/l10n_fmt.gd:61
+msgid "%s data"
+msgstr "%s 数据"
+
+#. a part's name. {rarity} is an adjective (Rusty, Polished, Rare...), {part} a part type
+#: systems/l10n_fmt.gd:86
+msgctxt "part name"
+msgid "{rarity} {part}"
+msgstr "{rarity}{part}"
+
+#. research effect, e.g. "+20% scoop width". {stat} is a stat name.
+#: systems/l10n_fmt.gd:96
+msgid "+{amount}% {stat}"
+msgstr "{stat} +{amount}%"
+
+#. research effect, e.g. "+2 tank". {stat} is a stat name.
+#: systems/l10n_fmt.gd:98
+msgid "+{amount} {stat}"
+msgstr "{stat} +{amount}"
+
+#. research effect for one robot model, e.g. "+10% Scoopie speed".
+#: systems/l10n_fmt.gd:101
+msgid "+{amount}% {robot} {stat}"
+msgstr "{robot} {stat} +{amount}%"
+
+#. research effect for one robot model, e.g. "+1 Drip tank".
+#: systems/l10n_fmt.gd:103
+msgid "+{amount} {robot} {stat}"
+msgstr "{robot} {stat} +{amount}"
+
 #: systems/late_director.gd:90
 msgid "The Ark Bridge opens once the Cradle has come home."
-msgstr ""
+msgstr "Cradle号回家之后，方舟舰桥才会开放。"
 
 #: systems/late_director.gd:124
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
-msgstr ""
+msgstr "Cradle 模式：方舟的种子库里存着其他世界的种子。打开 暂停 > 方舟舰桥 查看，用星种购买传家宝，或者播种一个新世界。花园模式（H）也已开放。"
 
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:255
 msgid "Low"
@@ -2234,6 +2323,10 @@ msgstr "数据不足"
 #: systems/research.gd:324 ui/codex_screen.gd:763
 msgid "%ds"
 msgstr "%d秒"
+
+#: systems/research.gd:371
+msgid "Research: %s"
+msgstr "研究：%s"
 
 #: systems/research.gd:381
 msgid "scoop reach"
@@ -2368,8 +2461,8 @@ msgid "Haggle's stall · %s cubes + %d bolts"
 msgstr "Haggle 的摊位 · %s 方块 + %d 螺栓"
 
 #: systems/robot_builder.gd:370
-msgid "Token shop · ◈ %d"
-msgstr "代币商店 · ◈ %d"
+msgid "Token shop · ◆ %d"
+msgstr "代币商店 · ◆ %d"
 
 #: systems/robot_builder.gd:374
 msgid "%d Maker Fragments"
@@ -2413,8 +2506,8 @@ msgid "%s spotted a Maker Fragment glinting in the junk. (%d)"
 msgstr "%s 发现废料里有个造物者碎片在闪光。（%d）"
 
 #: systems/robot_builder.gd:604
-msgid "%s spotted a %s %s."
-msgstr "%s 发现了%s %s。"
+msgid "%s spotted a %s."
+msgstr "%s 发现了%s。"
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -2442,59 +2535,59 @@ msgstr "%d 株植物缺水，停止生长。"
 
 #: ui/ark_bridge.gd:100
 msgid "THE CRADLE  ·  SEED VAULT DECK"
-msgstr ""
+msgstr "CRADLE号  ·  种子库甲板"
 
 #: ui/ark_bridge.gd:101
 msgid "ARK BRIDGE"
-msgstr ""
+msgstr "方舟舰桥"
 
 #: ui/ark_bridge.gd:102
 msgid "The vault holds seeds for every world in the system. Take what Lumi learned somewhere new; nothing here is ever undone."
-msgstr ""
+msgstr "种子库里存着这个星系每个世界的种子。把 Lumi 学到的带到新的地方去吧；这里的一切都不会被抹去。"
 
 #: ui/ark_bridge.gd:107 ui/ark_bridge.gd:304
 msgid "%d Starseeds"
-msgstr ""
+msgstr "%d 星种"
 
 #: ui/ark_bridge.gd:110
 msgid "+%d banked from %s"
-msgstr ""
+msgstr "+%d，来自%s"
 
 #: ui/ark_bridge.gd:110
 msgid "Earn more from Seed Ark waves and restoration"
-msgstr ""
+msgstr "通过种子方舟波次和复原赚取更多"
 
 #: ui/ark_bridge.gd:125
 msgid "WORLDS"
-msgstr ""
+msgstr "世界"
 
 #: ui/ark_bridge.gd:143
 msgid "HEIRLOOMS  ·  KEPT ON EVERY WORLD"
-msgstr ""
+msgstr "传家宝  ·  每个世界都保留"
 
 #: ui/ark_bridge.gd:156
 msgid "Enter / A  choose      Esc / B  back"
-msgstr ""
+msgstr "Enter / A  选择      Esc / B  返回"
 
 #: ui/ark_bridge.gd:160 ui/ark_bridge.gd:254
 msgid "Back to %s"
-msgstr ""
+msgstr "返回%s"
 
 #: ui/ark_bridge.gd:182
 msgid "WORLD %d"
-msgstr ""
+msgstr "世界 %d"
 
 #: ui/ark_bridge.gd:188
 msgid "Not visited yet"
-msgstr ""
+msgstr "尚未造访"
 
 #: ui/ark_bridge.gd:190
 msgid "%s  ·  %d hexes  ·  %d ark waves  ·  %d curiosities"
-msgstr ""
+msgstr "%s  ·  %d 个六角格  ·  %d 次方舟波次  ·  %d 件奇物"
 
 #: ui/ark_bridge.gd:192
 msgid "restored"
-msgstr ""
+msgstr "已复原"
 
 #: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40
 msgid "You are here"
@@ -2502,15 +2595,15 @@ msgstr "你在这里"
 
 #: ui/ark_bridge.gd:202
 msgid "Travel"
-msgstr ""
+msgstr "出发"
 
 #: ui/ark_bridge.gd:227
 msgid "SEED A NEW WORLD"
-msgstr ""
+msgstr "播种新世界"
 
 #: ui/ark_bridge.gd:229
 msgid "The Cradle has to come home first."
-msgstr ""
+msgstr "Cradle号得先回家。"
 
 #: ui/ark_bridge.gd:245 ui/frontier_rockets.gd:42 ui/globe_view.gd:308
 #: ui/rockets_panel.gd:81
@@ -2519,27 +2612,27 @@ msgstr "发射"
 
 #: ui/ark_bridge.gd:264
 msgid "%d Data"
-msgstr ""
+msgstr "%d 数据"
 
 #: ui/ark_bridge.gd:266
 msgid "%d seeds"
-msgstr ""
+msgstr "%d 种子"
 
 #: ui/ark_bridge.gd:268
 msgid "robots waiting: %d"
-msgstr ""
+msgstr "等候的机器人：%d"
 
 #: ui/ark_bridge.gd:270
 msgid "research tier %d known"
-msgstr ""
+msgstr "已掌握第 %d 层研究"
 
 #: ui/ark_bridge.gd:272
 msgid "Starting kit: just Lumi. Heirlooms add to it."
-msgstr ""
+msgstr "初始配置：只有 Lumi。传家宝会添加更多。"
 
 #: ui/ark_bridge.gd:273
 msgid "Starting kit: %s"
-msgstr ""
+msgstr "初始配置：%s"
 
 #: ui/ark_bridge.gd:301 ui/settings_panel.gd:509
 msgid "Full"
@@ -2715,19 +2808,19 @@ msgstr "没有可装备的：零件箱里缺这些零件，或者队伍已经装
 
 #: ui/checklist_card.gd:92
 msgid "RESTART"
-msgstr ""
+msgstr "重启"
 
 #: ui/checklist_card.gd:110
 msgid "RESTART CHECKLIST"
-msgstr ""
+msgstr "重启清单"
 
 #: ui/checklist_card.gd:110
 msgid "NEXT STEP"
-msgstr ""
+msgstr "下一步"
 
 #: ui/checklist_card.gd:148
 msgid "RESTART CHECKLIST  ·  DONE"
-msgstr ""
+msgstr "重启清单  ·  完成"
 
 #: ui/codex_screen.gd:15 ui/codex_screen.gd:696
 msgid "Achievements"
@@ -2809,7 +2902,7 @@ msgstr "提示：一位害羞的访客会来到稳定和繁茂的六角格。带
 
 #: ui/codex_screen.gd:552
 msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
-msgstr ""
+msgstr "提示：大地恢复后，动物就会回来。用拍照模式（P）给它们拍照吧。"
 
 #: ui/codex_screen.gd:553
 msgid "Hint: complete %d contracts at the workbench."
@@ -3137,8 +3230,8 @@ msgid "TOKEN SHOP"
 msgstr "代币商店"
 
 #: ui/contracts_panel.gd:81
-msgid "◈  %d tokens"
-msgstr "◈  %d 代币"
+msgid "◆  %d tokens"
+msgstr "◆  %d 代币"
 
 #: ui/contracts_panel.gd:82
 msgid "Collection  %d / %d   ·   see the Codex (K)"
@@ -3149,8 +3242,8 @@ msgid "A new contract is being posted."
 msgstr "新委托正在发布。"
 
 #: ui/contracts_panel.gd:141
-msgid "Reward  ◈ %d tokens  +  cubes"
-msgstr "奖励  ◈ %d 代币  +  方块"
+msgid "Reward  ◆ %d tokens  +  cubes"
+msgstr "奖励  ◆ %d 代币  +  方块"
 
 #: ui/contracts_panel.gd:163
 msgid "Accept  (%s)"
@@ -3165,8 +3258,8 @@ msgid "Working on it"
 msgstr "进行中"
 
 #: ui/contracts_panel.gd:188
-msgid "Claim  ◈ %d"
-msgstr "领取  ◈ %d"
+msgid "Claim  ◆ %d"
+msgstr "领取  ◆ %d"
 
 #: ui/contracts_panel.gd:228
 msgid "Next posting in %s"
@@ -3206,31 +3299,31 @@ msgstr "外观"
 
 #: ui/cosmetics_panel.gd:38
 msgid "Looks only (no bonuses)"
-msgstr ""
+msgstr "仅外观（无加成）"
 
 #: ui/cosmetics_panel.gd:129 ui/cosmetics_panel.gd:160
 msgid "Wearing"
-msgstr ""
+msgstr "穿戴中"
 
 #: ui/cosmetics_panel.gd:129
 msgid "Unlocked"
-msgstr ""
+msgstr "已解锁"
 
 #: ui/cosmetics_panel.gd:129
 msgid "Locked  %d%%"
-msgstr ""
+msgstr "未解锁  %d%%"
 
 #: ui/cosmetics_panel.gd:156
 msgid "Bonus: %s"
-msgstr ""
+msgstr "加成：%s"
 
 #: ui/cosmetics_panel.gd:156
 msgid "(off: looks only)"
-msgstr ""
+msgstr "（已关闭：仅外观）"
 
 #: ui/cosmetics_panel.gd:162
 msgid "Unlocked. Press to wear."
-msgstr ""
+msgstr "已解锁。按下即可穿戴。"
 
 #: ui/cosmetics_panel.gd:164
 msgid "Locked: %s"
@@ -3306,11 +3399,11 @@ msgstr "零件"
 
 #: ui/design_toast.gd:58
 msgid "NEW DESIGN UNLOCKED"
-msgstr ""
+msgstr "新外观已解锁"
 
 #: ui/design_toast.gd:66
 msgid "Wear it at the workbench: Cosmetics"
-msgstr ""
+msgstr "在工作台换上：装扮"
 
 #: ui/document_view.gd:45
 msgid "{interact}  [k]/ Esc  [/k]close"
@@ -3346,27 +3439,27 @@ msgstr "未探索  ·  这里捆包售价 x%d"
 
 #: ui/garden_placer.gd:117
 msgid "Garden Mode opens when this base reaches level 5, or once the Cradle comes home."
-msgstr ""
+msgstr "这个基地达到 5 级，或 Cradle号回家后，花园模式就会开放。"
 
 #: ui/garden_placer.gd:229
 msgid "charm +%.1f"
-msgstr ""
+msgstr "魅力 +%.1f"
 
 #: ui/garden_placer.gd:232
 msgid "%s here: %s to pick it up"
-msgstr ""
+msgstr "这里有%s：按 %s 拿起"
 
 #: ui/garden_placer.gd:235
 msgid "GARDEN MODE   ·   Charm %.1f   ·   +%.1f%% plant growth here"
-msgstr ""
+msgstr "花园模式   ·   魅力 %.1f   ·   此处植物生长 +%.1f%%"
 
 #: ui/garden_placer.gd:236
 msgid "[%s] place   [%s] rotate   [%s / %s] item   [%s] pick up   [%s] done"
-msgstr ""
+msgstr "[%s] 放置   [%s] 旋转   [%s / %s] 物品   [%s] 拿起   [%s] 完成"
 
 #: ui/garden_placer.gd:291
 msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
-msgstr ""
+msgstr "已拿起：%s。把它放到别处，或者先收进仓库。"
 
 #: ui/globe_view.gd:118
 msgid "Survey"
@@ -3492,15 +3585,15 @@ msgstr "玻璃"
 msgid "bolts"
 msgstr "螺栓"
 
-#: ui/hub_panel.gd:86
+#: ui/hub_panel.gd:87
 msgid " (have %s)"
 msgstr " （现有 %s）"
 
-#: ui/hub_panel.gd:93
+#: ui/hub_panel.gd:94
 msgid "Sheet metal %s    Plastic stock %s    Glass %s"
 msgstr "金属板 %s    塑料 %s    玻璃 %s"
 
-#: ui/hub_panel.gd:95
+#: ui/hub_panel.gd:96
 msgid ""
 "Level %d   ·   %s\n"
 "%s   Bales sell for +%d%%."
@@ -3508,11 +3601,11 @@ msgstr ""
 "等级 %d   ·   %s\n"
 "%s   捆包售价 +%d%%。"
 
-#: ui/hub_panel.gd:98
+#: ui/hub_panel.gd:99
 msgid "Fully built."
 msgstr "已全部建成。"
 
-#: ui/hub_panel.gd:101
+#: ui/hub_panel.gd:102
 msgid ""
 "Next: %s. %s\n"
 "Needs %s"
@@ -3520,15 +3613,15 @@ msgstr ""
 "下一级：%s。%s\n"
 "需要 %s"
 
-#: ui/hub_panel.gd:102 ui/stations_panel.gd:98
+#: ui/hub_panel.gd:103 ui/stations_panel.gd:98
 msgid "Build %s"
 msgstr "建造%s"
 
-#: ui/hub_panel.gd:107
+#: ui/hub_panel.gd:108
 msgid "Continue in the full game"
 msgstr "在完整版中继续"
 
-#: ui/hub_panel.gd:114
+#: ui/hub_panel.gd:115
 msgid ""
 "\n"
 "Requires hub level %d."
@@ -3536,7 +3629,7 @@ msgstr ""
 "\n"
 "需要基地等级 %d。"
 
-#: ui/hub_panel.gd:116
+#: ui/hub_panel.gd:117
 msgid ""
 "\n"
 "All built (max)."
@@ -3544,7 +3637,7 @@ msgstr ""
 "\n"
 "已全部建成（满级）。"
 
-#: ui/hub_panel.gd:119
+#: ui/hub_panel.gd:120
 msgid ""
 "%s   ·   %d / %d built\n"
 "%s%s"
@@ -3552,11 +3645,11 @@ msgstr ""
 "%s   ·   已建 %d / %d\n"
 "%s%s"
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:121
 msgid "Air Scrubbers maxed"
 msgstr "空气净化器已满级"
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:121
 msgid "Build Air Scrubber"
 msgstr "建造空气净化器"
 
@@ -3582,15 +3675,15 @@ msgstr "六角格  已清理"
 
 #: ui/hud.gd:334
 msgid "HEX  %s"
-msgstr ""
+msgstr "六角格  %s"
 
 #: ui/hud.gd:337
 msgid "  SUSTAIN %d%%"
-msgstr ""
+msgstr "  稳定 %d%%"
 
 #: ui/hud.gd:339
 msgid "  THIRSTY"
-msgstr ""
+msgstr "  缺水"
 
 #: ui/hud.gd:354
 msgid "%s  map      %s  command      %s  lens      %s  goals"
@@ -3623,11 +3716,11 @@ msgstr "%s   工作台"
 
 #: ui/late_menu.gd:9
 msgid "Garden Mode  [%s]"
-msgstr ""
+msgstr "花园模式  [%s]"
 
 #: ui/late_menu.gd:15
 msgid "Ark Bridge"
-msgstr ""
+msgstr "方舟舰桥"
 
 #: ui/lens_overlay.gd:61
 msgid ""
@@ -4637,10 +4730,6 @@ msgstr "满级"
 msgid "Lv %d%s"
 msgstr "%d 级%s"
 
-#: ui/upgrade_card.gd:185
-msgid "%s Lv %d"
-msgstr "%s %d 级"
-
 #: ui/upgrade_card.gd:186
 msgid "Requires %s"
 msgstr "需要%s"
@@ -4711,11 +4800,11 @@ msgstr "%s（即将推出）"
 
 #: ui/world_banner.gd:37
 msgid "SEED MISSION  ·  WORLD %d"
-msgstr ""
+msgstr "播种任务  ·  世界 %d"
 
 #: ui/world_banner.gd:70
 msgid "Lumi's pod is down on %s. A new world, ruined and waiting. Grow something."
-msgstr ""
+msgstr "Lumi 的着陆舱降落在了%s。一个崭新的世界，满目疮痍，静静等待。种点什么吧。"
 
 #: water/water_view.gd:78
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
@@ -5315,139 +5404,139 @@ msgstr "收集 5 种不同的机器人头饰。"
 
 #: data/achievements.json:achievements[pet_cat].name
 msgid "A Friend in Old Town"
-msgstr ""
+msgstr "老城区的朋友"
 
 #: data/achievements.json:achievements[pet_cat].desc
 msgid "Pet a stray cat."
-msgstr ""
+msgstr "摸一摸流浪猫。"
 
 #: data/achievements.json:achievements[adopt_cat].name
 msgid "Best Friends"
-msgstr ""
+msgstr "最好的朋友"
 
 #: data/achievements.json:achievements[adopt_cat].desc
 msgid "Pet the same cat until she adopts you."
-msgstr ""
+msgstr "一直摸同一只猫，直到她收养你。"
 
 #: data/achievements.json:achievements[spot_deer].name
 msgid "Oh, Deer"
-msgstr ""
+msgstr "哦，是鹿"
 
 #: data/achievements.json:achievements[spot_deer].desc
 msgid "Spot a deer at the edge of the green."
-msgstr ""
+msgstr "在绿地边缘发现一只鹿。"
 
 #: data/achievements.json:achievements[lake_fish].name
 msgid "Clear as Day"
-msgstr ""
+msgstr "清澈见底"
 
 #: data/achievements.json:achievements[lake_fish].desc
 msgid "See fish in a clean lake."
-msgstr ""
+msgstr "在干净的湖里看到鱼。"
 
 #: data/achievements.json:achievements[naturalist].desc
 msgid "Spot 10 different animals."
-msgstr ""
+msgstr "发现 10 种不同的动物。"
 
 #: data/achievements.json:achievements[wild_photos].name
 msgid "Wildlife Photographer"
-msgstr ""
+msgstr "野生动物摄影师"
 
 #: data/achievements.json:achievements[wild_photos].desc
 msgid "Photograph 6 different animals in photo mode."
-msgstr ""
+msgstr "在拍照模式中拍下 6 种不同的动物。"
 
 #: data/achievements.json:achievements[late_bridge].name
 msgid "On the Bridge"
-msgstr ""
+msgstr "登上舰桥"
 
 #: data/achievements.json:achievements[late_bridge].desc
 msgid "Open the Ark Bridge after the Cradle comes home."
-msgstr ""
+msgstr "Cradle号回家后，打开方舟舰桥。"
 
 #: data/achievements.json:achievements[late_world_1].name
 msgid "Seed Mission"
-msgstr ""
+msgstr "播种任务"
 
 #: data/achievements.json:achievements[late_world_1].desc
 msgid "Seed a new world from the Cradle's vault."
-msgstr ""
+msgstr "用 Cradle号的种子库播种一个新世界。"
 
 #: data/achievements.json:achievements[late_world_3].name
 msgid "Gardener of Worlds"
-msgstr ""
+msgstr "众世界的园丁"
 
 #: data/achievements.json:achievements[late_world_3].desc
 msgid "Seed three new worlds."
-msgstr ""
+msgstr "播种三个新世界。"
 
 #: data/achievements.json:achievements[late_heirloom_1].name
 msgid "Family Heirloom"
-msgstr ""
+msgstr "祖传之宝"
 
 #: data/achievements.json:achievements[late_heirloom_1].desc
 msgid "Buy an Heirloom."
-msgstr ""
+msgstr "购买一件传家宝。"
 
 #: data/achievements.json:achievements[late_heirloom_20].name
 msgid "Treasured"
-msgstr ""
+msgstr "珍爱有加"
 
 #: data/achievements.json:achievements[late_heirloom_20].desc
 msgid "Grow Heirlooms to 20 levels in all."
-msgstr ""
+msgstr "传家宝总等级达到 20。"
 
 #: data/achievements.json:achievements[late_starseeds_100].name
 msgid "Starseed Saver"
-msgstr ""
+msgstr "星种储蓄家"
 
 #: data/achievements.json:achievements[late_starseeds_100].desc
 msgid "Earn 100 Starseeds across your worlds."
-msgstr ""
+msgstr "在你的所有世界中累计获得 100 星种。"
 
 #: data/achievements.json:achievements[late_decor_1].name
 msgid "Home Touches"
-msgstr ""
+msgstr "家的点缀"
 
 #: data/achievements.json:achievements[late_decor_1].desc
 msgid "Place a decoration in Garden Mode."
-msgstr ""
+msgstr "在花园模式中放置一件装饰。"
 
 #: data/achievements.json:achievements[late_decor_25].name
 msgid "Landscaper"
-msgstr ""
+msgstr "景观设计师"
 
 #: data/achievements.json:achievements[late_decor_25].desc
 msgid "Place 25 decorations."
-msgstr ""
+msgstr "放置 25 件装饰。"
 
 #: data/achievements.json:achievements[late_decor_all].name
 msgid "Full Catalogue"
-msgstr ""
+msgstr "全套目录"
 
 #: data/achievements.json:achievements[late_decor_all].desc
 msgid "Place every kind of decoration at least once."
-msgstr ""
+msgstr "每种装饰都至少放置一次。"
 
 #: data/achievements.json:achievements[late_charm_25].name
 msgid "Picture Perfect"
-msgstr ""
+msgstr "美如画"
 
 #: data/achievements.json:achievements[late_charm_25].desc
 msgid "Reach 25 charm in one district."
-msgstr ""
+msgstr "在一个城区达到 25 点魅力。"
 
 #: data/achievements.json:achievements[late_eggs_40].desc
 msgid "Find 40 curiosities."
-msgstr ""
+msgstr "找到 40 件奇物。"
 
 #: data/achievements.json:achievements[late_older_pod].name data/eggs.json:eggs[older_pod].name
 msgid "Not the First"
-msgstr ""
+msgstr "并非第一个"
 
 #: data/achievements.json:achievements[late_older_pod].desc
 msgid "Find the older seed pod on a new world."
-msgstr ""
+msgstr "在新世界找到那个更古老的种子舱。"
 
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
@@ -5499,7 +5588,7 @@ msgstr "地标"
 
 #: data/codex.json:categories[animals].name
 msgid "Animals"
-msgstr ""
+msgstr "动物"
 
 #: data/codex.json:junk.metal.hint
 msgid "Rusty, clanky, everywhere."
@@ -6199,635 +6288,635 @@ msgstr "基地前的一圈六角格，Cradle号将在这里降落。它必须干
 
 #: data/codex.json:animals.cat.name data/fauna.json:species[cat].name
 msgid "Stray Cat"
-msgstr ""
+msgstr "流浪猫"
 
 #: data/codex.json:animals.cat.hint
 msgid "Where: On clean city streets."
-msgstr ""
+msgstr "出没：干净的城市街道。"
 
 #: data/codex.json:animals.cat.desc
 msgid "Old Town's cats never left. They know every warm engine block and sunny step, and they decided long ago that robots are furniture. Stop for a while and one may come over. Pet the same cat often enough and she'll move in at your base."
-msgstr ""
+msgstr "老城区的猫从来没有离开过。它们熟悉每一块温热的发动机和每一级晒得到太阳的台阶，而且早就认定机器人是家具。停下来待一会儿，也许就会有一只走过来。经常摸同一只猫，她就会搬到你的基地住下。"
 
 #: data/codex.json:animals.pigeon.name data/fauna.json:species[pigeon].name
 msgid "Pigeon"
-msgstr ""
+msgstr "鸽子"
 
 #: data/codex.json:animals.pigeon.hint
 msgid "Where: Clean pavement in the city."
-msgstr ""
+msgstr "出没：城里干净的路面。"
 
 #: data/codex.json:animals.pigeon.desc
 msgid "Pigeons will live anywhere people once dropped crumbs. They peck between the cracks, bob their heads as they walk and burst into the air all at once if you fly through them."
-msgstr ""
+msgstr "只要人们曾经掉过面包屑的地方，鸽子都能住下。它们在缝隙间啄食，走路时一点一点地晃着脑袋；你一飞过去，它们就会一齐扑棱棱飞起来。"
 
 #: data/codex.json:animals.sparrow.name data/fauna.json:species[sparrow].name
 msgid "Sparrow"
-msgstr ""
+msgstr "麻雀"
 
 #: data/codex.json:animals.sparrow.hint
 msgid "Where: Clean ground, city or wild."
-msgstr ""
+msgstr "出没：干净的地面，城里城外都有。"
 
 #: data/codex.json:animals.sparrow.desc
 msgid "Small, brown and bossy. Sparrows were the first birds to come back to swept streets, chirping from kerb to kerb."
-msgstr ""
+msgstr "又小又褐，还爱发号施令。麻雀是最早回到打扫干净的街道上的鸟儿，在路沿之间叽叽喳喳。"
 
 #: data/codex.json:animals.rat.name data/fauna.json:species[rat].name
 msgid "Rat"
-msgstr ""
+msgstr "老鼠"
 
 #: data/codex.json:animals.rat.hint
 msgid "Where: Wherever the junk is still piled up."
-msgstr ""
+msgstr "出没：废料还堆着的地方。"
 
 #: data/codex.json:animals.rat.desc
 msgid "Rats live in the gaps between the piles. They are not villains, just tenants: clean a hex and they pack up and move to the next heap."
-msgstr ""
+msgstr "老鼠住在废料堆之间的缝隙里。它们不是坏蛋，只是房客：清理一片六角格，它们就会收拾行李搬到下一堆去。"
 
 #: data/codex.json:animals.rabbit.name data/fauna.json:species[rabbit].name
 msgid "Rabbit"
-msgstr ""
+msgstr "兔子"
 
 #: data/codex.json:animals.rabbit.hint
 msgid "Where: Growing hexes."
-msgstr ""
+msgstr "出没：种植中的六角格。"
 
 #: data/codex.json:animals.rabbit.desc
 msgid "Rabbits arrive as soon as there is something green to nibble. They hop, freeze, nibble, and zig-zag away if Lumi rushes them."
-msgstr ""
+msgstr "只要有绿色的东西可啃，兔子马上就来了。它们蹦一蹦、愣一愣、啃一啃；要是 Lumi 冲过去，它们就会左拐右拐地逃走。"
 
 #: data/codex.json:animals.deer.name data/fauna.json:species[deer].name
 msgid "Roe Deer"
-msgstr ""
+msgstr "狍子"
 
 #: data/codex.json:animals.deer.hint
 msgid "Where: The edges of Sustained ground."
-msgstr ""
+msgstr "出没：稳定地块的边缘。"
 
 #: data/codex.json:animals.deer.desc
 msgid "Shy grazers that keep to the edge of the green, where they can see what's coming. Approach slowly; rush them and they bound away in long, graceful leaps."
-msgstr ""
+msgstr "害羞的食草动物，总待在绿地边缘，好看清有什么靠近。慢慢走过去；要是冲得太急，它们就会优雅地大步跃走。"
 
 #: data/codex.json:animals.fox.name data/fauna.json:species[fox].name
 msgid "Red Fox"
-msgstr ""
+msgstr "赤狐"
 
 #: data/codex.json:animals.fox.hint
 msgid "Where: Sustained and Thriving hexes."
-msgstr ""
+msgstr "出没：稳定和繁茂的六角格。"
 
 #: data/codex.json:animals.fox.desc
 msgid "A fox trots along the hedges, nose down, tail out. It watches Lumi with polite interest and keeps its distance."
-msgstr ""
+msgstr "一只狐狸沿着树篱小跑，鼻子贴地，尾巴伸直。它礼貌而好奇地看着 Lumi，但总保持着距离。"
 
 #: data/codex.json:animals.bee.name data/fauna.json:species[bee].name
 msgid "Honeybee"
-msgstr ""
+msgstr "蜜蜂"
 
 #: data/codex.json:animals.bee.hint
 msgid "Where: Flowers on Sustained hexes."
-msgstr ""
+msgstr "出没：稳定六角格上的花丛。"
 
 #: data/codex.json:animals.bee.desc
 msgid "Bees came back with the blooms. Every flower bed that stays watered gets its own little hum."
-msgstr ""
+msgstr "蜜蜂随着花朵一起回来了。每一片一直有人浇水的花坛，都有属于自己的小小嗡嗡声。"
 
 #: data/codex.json:animals.songbird.name data/fauna.json:species[songbird].name
 msgid "Robin"
-msgstr ""
+msgstr "知更鸟"
 
 #: data/codex.json:animals.songbird.hint
 msgid "Where: Thriving hexes, by day."
-msgstr ""
+msgstr "出没：白天的繁茂六角格。"
 
 #: data/codex.json:animals.songbird.desc
 msgid "When a hex thrives, robins move in and sing. If you hear birdsong, something here is going very right."
-msgstr ""
+msgstr "六角格一旦繁茂起来，知更鸟就会搬来唱歌。如果你听见鸟鸣，说明这里有些事情进展得非常顺利。"
 
 #: data/codex.json:animals.firefly.name data/fauna.json:species[firefly].name
 msgid "Firefly"
-msgstr ""
+msgstr "萤火虫"
 
 #: data/codex.json:animals.firefly.hint
 msgid "Where: Thriving hexes, at night."
-msgstr ""
+msgstr "出没：夜晚的繁茂六角格。"
 
 #: data/codex.json:animals.firefly.desc
 msgid "Tiny green lanterns over the grass after dark. They only come where the ground is fully alive."
-msgstr ""
+msgstr "天黑后，草地上方亮起一盏盏绿色的小灯笼。它们只会出现在完全恢复生机的土地上。"
 
 #: data/codex.json:animals.fish.name data/fauna.json:species[fish].name
 msgid "Lake Fish"
-msgstr ""
+msgstr "湖鱼"
 
 #: data/codex.json:animals.fish.hint
 msgid "Where: Clean lakes."
-msgstr ""
+msgstr "出没：干净的湖泊。"
 
 #: data/codex.json:animals.fish.desc
 msgid "Once the water clears you can see them: small silver schools turning together over the sand. Come too close and they scatter."
-msgstr ""
+msgstr "湖水一清，你就能看见它们：一小群一小群银色的鱼在沙子上方一起转身。靠得太近，它们就一哄而散。"
 
 #: data/codex.json:animals.duck.name data/fauna.json:species[duck].name
 msgid "Mallard"
-msgstr ""
+msgstr "绿头鸭"
 
 #: data/codex.json:animals.duck.hint
 msgid "Where: Clean lakes beside green shores."
-msgstr ""
+msgstr "出没：岸边有绿意的干净湖泊。"
 
 #: data/codex.json:animals.duck.desc
 msgid "Ducks paddle, dabble with their tails in the air and complain loudly about everything. A clean lake with a green shore is all they ask."
-msgstr ""
+msgstr "鸭子划着水，屁股朝天地觅食，还大声抱怨着一切。它们只要一片干净的湖和绿色的湖岸就满足了。"
 
 #: data/codex.json:animals.frog.name data/fauna.json:species[frog].name
 msgid "Green Frog"
-msgstr ""
+msgstr "青蛙"
 
 #: data/codex.json:animals.frog.hint
 msgid "Where: Lake shores once they're planted."
-msgstr ""
+msgstr "出没：种上植物后的湖岸。"
 
 #: data/codex.json:animals.frog.desc
 msgid "Frogs sit at the water's edge and sing in the evening. Get too close and plop: into the water they go."
-msgstr ""
+msgstr "青蛙坐在水边，傍晚时唱起歌来。靠得太近的话，扑通，就跳进水里了。"
 
 #: data/codex.json:animals.lizard.name data/fauna.json:species[lizard].name
 msgid "Sand Lizard"
-msgstr ""
+msgstr "沙蜥"
 
 #: data/codex.json:animals.lizard.hint
 msgid "Where: Clean ground in the Dust Flats."
-msgstr ""
+msgstr "出没：尘土平原的干净地面。"
 
 #: data/codex.json:animals.lizard.desc
 msgid "Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
-msgstr ""
+msgstr "蜥蜴在太阳能板阵列之间打扫过的地面上晒太阳，一有影子落下，就眨眼间消失不见。"
 
 #: data/codex.json:animals.fennec.name data/fauna.json:species[fennec].name
 msgid "Fennec Fox"
-msgstr ""
+msgstr "耳廓狐"
 
 #: data/codex.json:animals.fennec.hint
 msgid "Where: Planted ground in the Dust Flats."
-msgstr ""
+msgstr "出没：尘土平原种了植物的地面。"
 
 #: data/codex.json:animals.fennec.desc
 msgid "A tiny desert fox with enormous ears. It hears Lumi's hover fans long before it sees him."
-msgstr ""
+msgstr "一只长着巨大耳朵的小小沙漠狐狸。它早在看见 Lumi 之前，就听到了他悬浮风扇的声音。"
 
 #: data/codex.json:animals.seal.name data/fauna.json:species[seal].name
 msgid "Harbour Seal"
-msgstr ""
+msgstr "港海豹"
 
 #: data/codex.json:animals.seal.hint
 msgid "Where: The Frozen Port shoreline."
-msgstr ""
+msgstr "出没：冰封港口的海岸。"
 
 #: data/codex.json:animals.seal.desc
 msgid "Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
-msgstr ""
+msgstr "码头一打扫干净，海豹就会爬上来，挤成一堆懒洋洋地躺着；你一靠近，它们就扑通滑回水里。"
 
 #: data/codex.json:animals.gull.name data/fauna.json:species[gull].name
 msgid "Herring Gull"
-msgstr ""
+msgstr "银鸥"
 
 #: data/codex.json:animals.gull.hint
 msgid "Where: Coasts and harbours."
-msgstr ""
+msgstr "出没：海岸和港口。"
 
 #: data/codex.json:animals.gull.desc
 msgid "Loud, white and opportunistic. Gulls wheel over the harbour and land wherever there's a clean bit of quay."
-msgstr ""
+msgstr "吵闹、雪白、善于钻空子。海鸥在港口上空盘旋，哪里有干净的码头就落在哪里。"
 
 #: data/codex.json:animals.arctic_fox.name data/fauna.json:species[arctic_fox].name
 msgid "Arctic Fox"
-msgstr ""
+msgstr "北极狐"
 
 #: data/codex.json:animals.arctic_fox.hint
 msgid "Where: Planted ground at the Frozen Port."
-msgstr ""
+msgstr "出没：冰封港口种了植物的地面。"
 
 #: data/codex.json:animals.arctic_fox.desc
 msgid "White as the snow it hunts on. It shows up when the greenhouses do, curious about the warm air."
-msgstr ""
+msgstr "白得像它捕猎时踩着的雪。温室一建起来它就出现了，对暖空气充满好奇。"
 
 #: data/codex.json:animals.heron.name data/fauna.json:species[heron].name
 msgid "Grey Heron"
-msgstr ""
+msgstr "苍鹭"
 
 #: data/codex.json:animals.heron.hint
 msgid "Where: Shallows in the Sunken City and wild lakes."
-msgstr ""
+msgstr "出没：沉没之城的浅水区和野外湖泊。"
 
 #: data/codex.json:animals.heron.desc
 msgid "Herons stand perfectly still at the water's edge, then strike. They lift off slowly on huge grey wings when disturbed."
-msgstr ""
+msgstr "苍鹭一动不动地站在水边，然后猛地出击。受到惊扰时，它们会展开巨大的灰色翅膀，缓缓飞起。"
 
 #: data/codex.json:animals.turtle.name data/fauna.json:species[turtle].name
 msgid "Pond Turtle"
-msgstr ""
+msgstr "池龟"
 
 #: data/codex.json:animals.turtle.hint
 msgid "Where: Clean water in the Sunken City."
-msgstr ""
+msgstr "出没：沉没之城的干净水域。"
 
 #: data/codex.json:animals.turtle.desc
 msgid "Turtles cruise the drowned streets with their heads up, as if they've always lived here. Maybe they have."
-msgstr ""
+msgstr "乌龟昂着头在被淹没的街道上巡游，好像它们一直住在这里似的。说不定真是这样。"
 
 #: data/codex.json:animals.crane.name data/fauna.json:species[crane].name
 msgid "Cradle Crane"
-msgstr ""
+msgstr "Cradle 鹤"
 
 #: data/codex.json:animals.crane.hint
 msgid "Where: The skies over Cradle Returns."
-msgstr ""
+msgstr "出没：Cradle号归来的上空。"
 
 #: data/codex.json:animals.crane.desc
 msgid "White cranes circle high over the landing city on slow wingbeats. The ark's seed vault carried their eggs; this is the first flock to fly free."
-msgstr ""
+msgstr "白鹤扇着缓慢的翅膀，在着陆之城的高空盘旋。方舟的种子库带来了它们的蛋；这是第一群自由飞翔的鹤。"
 
 #: data/cradle.json:heirlooms[green_thumb].desc
 msgid "Plants grow 8% faster per level, on every world."
-msgstr ""
+msgstr "每级植物生长加快 8%，在每个世界都有效。"
 
 #: data/cradle.json:heirlooms[deep_hopper].name
 msgid "Deep Hopper"
-msgstr ""
+msgstr "深料斗"
 
 #: data/cradle.json:heirlooms[deep_hopper].desc
 msgid "Lumi's hopper holds 10% more per level."
-msgstr ""
+msgstr "每级 Lumi 的料斗容量增加 10%。"
 
 #: data/cradle.json:heirlooms[quick_beam].name
 msgid "Quick Beam"
-msgstr ""
+msgstr "迅捷光束"
 
 #: data/cradle.json:heirlooms[quick_beam].desc
 msgid "Scoop 8% faster per level."
-msgstr ""
+msgstr "每级铲取速度加快 8%。"
 
 #: data/cradle.json:heirlooms[traders_eye].name
 msgid "Trader's Eye"
-msgstr ""
+msgstr "商人之眼"
 
 #: data/cradle.json:heirlooms[traders_eye].desc
 msgid "Bales sell for 10% more per level."
-msgstr ""
+msgstr "每级捆包售价提高 10%。"
 
 #: data/cradle.json:heirlooms[swift_treads].name
 msgid "Swift Treads"
-msgstr ""
+msgstr "疾行履带"
 
 #: data/cradle.json:heirlooms[swift_treads].desc
 msgid "Lumi moves 5% faster per level."
-msgstr ""
+msgstr "每级 Lumi 的移动速度加快 5%。"
 
 #: data/cradle.json:heirlooms[seed_vault].name
 msgid "Seed Vault"
-msgstr ""
+msgstr "种子库"
 
 #: data/cradle.json:heirlooms[seed_vault].desc
 msgid "8% more seeds per bloom per level; each new world starts with 40 seeds per level in the pod (ready for when Lumi finds that world's seed tin)."
-msgstr ""
+msgstr "每级每次开花多得 8% 种子；每个新世界开局时，着陆舱里每级额外有 40 颗种子（等 Lumi 找到那个世界的种子罐时就能用）。"
 
 #: data/cradle.json:heirlooms[head_start].name
 msgid "Head Start"
-msgstr ""
+msgstr "先人一步"
 
 #: data/cradle.json:heirlooms[head_start].desc
 msgid "Each new world starts with 1,500 cubes per level."
-msgstr ""
+msgstr "每个新世界开局时，每级多 1,500 方块。"
 
 #: data/cradle.json:heirlooms[data_cache].name
 msgid "Data Cache"
-msgstr ""
+msgstr "数据缓存"
 
 #: data/cradle.json:heirlooms[data_cache].desc
 msgid "Each new world starts with 60 research Data per level."
-msgstr ""
+msgstr "每个新世界开局时，每级多 60 研究数据。"
 
 #: data/cradle.json:heirlooms[old_crew].name
 msgid "Old Crew"
-msgstr ""
+msgstr "老伙计们"
 
 #: data/cradle.json:heirlooms[old_crew].desc
 msgid "Robots wait at the landing site: a Scoopie at level 1, a Haul Bug at 2, another Scoopie at 3."
-msgstr ""
+msgstr "机器人在着陆点等着：1 级一台 Scoopie，2 级一台 Haul Bug，3 级再来一台 Scoopie。"
 
 #: data/cradle.json:heirlooms[archivist].name
 msgid "Archivist"
-msgstr ""
+msgstr "档案员"
 
 #: data/cradle.json:heirlooms[archivist].desc
 msgid "Research notes travel with Lumi: level 1 knows every first-tier node, level 2 the second tier too."
-msgstr ""
+msgstr "研究笔记随 Lumi 同行：1 级掌握第一层所有节点，2 级连第二层也一并掌握。"
 
 #: data/cradle.json:modifiers[heavy_rain].name
 msgid "Heavy Rain"
-msgstr ""
+msgstr "暴雨"
 
 #: data/cradle.json:modifiers[heavy_rain].desc
 msgid "Rain showers come four times as often and plants grow 15% faster."
-msgstr ""
+msgstr "阵雨频率变为四倍，植物生长加快 15%。"
 
 #: data/cradle.json:modifiers[long_nights].name
 msgid "Long Nights"
-msgstr ""
+msgstr "漫漫长夜"
 
 #: data/cradle.json:modifiers[long_nights].desc
 msgid "Nights last twice as long. The night shift pays: bales sell for 10% more."
-msgstr ""
+msgstr "夜晚持续时间加倍。夜班有回报：捆包售价提高 10%。"
 
 #: data/cradle.json:modifiers[rich_salvage].name
 msgid "Rich Salvage"
-msgstr ""
+msgstr "丰厚废品"
 
 #: data/cradle.json:modifiers[rich_salvage].desc
 msgid "The junk here is better stuff: bales sell for 30% more, but the hopper fills 10% sooner."
-msgstr ""
+msgstr "这里的废料品质更好：捆包售价提高 30%，但料斗满得早 10%。"
 
 #: data/cradle.json:modifiers[thin_soil].name
 msgid "Thin Soil"
-msgstr ""
+msgstr "贫瘠土壤"
 
 #: data/cradle.json:modifiers[thin_soil].desc
 msgid "Plants grow 15% slower, but every bloom gives 25% more seeds."
-msgstr ""
+msgstr "植物生长慢 15%，但每次开花多得 25% 种子。"
 
 #: data/cradle.json:modifiers[tailwinds].name
 msgid "Tailwinds"
-msgstr ""
+msgstr "顺风"
 
 #: data/cradle.json:modifiers[tailwinds].desc
 msgid "Steady winds: Lumi moves 10% faster and supply drops come twice as often."
-msgstr ""
+msgstr "持续的风：Lumi 移动加快 10%，补给空投频率加倍。"
 
 #: data/cradle.json:modifiers[wild_bloom].name
 msgid "Wild Bloom"
-msgstr ""
+msgstr "野花盛放"
 
 #: data/cradle.json:modifiers[wild_bloom].desc
 msgid "Wildflowers want to come back: 30% more seeds per bloom, more wildlife visits."
-msgstr ""
+msgstr "野花想要回来：每次开花多得 30% 种子，野生动物来访更频繁。"
 
 #: data/cradle.json:modifiers[heavy_junk].name
 msgid "Heavy Junk"
-msgstr ""
+msgstr "沉重废料"
 
 #: data/cradle.json:modifiers[heavy_junk].desc
 msgid "Dense, heavy scrap: scooping is 10% slower, bales sell for 20% more."
-msgstr ""
+msgstr "又密又重的废料：铲取慢 10%，捆包售价提高 20%。"
 
 #: data/cradle.json:world_types[ice_moon].name
 msgid "Ice Moon"
-msgstr ""
+msgstr "冰卫星"
 
 #: data/cradle.json:world_types[ice_moon].desc
 msgid "Frozen most of the way to the equator; lakes under the ice."
-msgstr ""
+msgstr "几乎冻到了赤道；冰层下藏着湖泊。"
 
 #: data/cradle.json:world_types[desert_world].name
 msgid "Desert World"
-msgstr ""
+msgstr "沙漠世界"
 
 #: data/cradle.json:world_types[desert_world].desc
 msgid "Dunes and dry salt pans; the few lakes matter."
-msgstr ""
+msgstr "沙丘和干涸的盐沼；仅有的几片湖泊至关重要。"
 
 #: data/cradle.json:world_types[ocean_world].name
 msgid "Ocean World"
-msgstr ""
+msgstr "海洋世界"
 
 #: data/cradle.json:world_types[ocean_world].desc
 msgid "Mostly sea, with towns on small islands and long coasts."
-msgstr ""
+msgstr "几乎全是海洋，城镇坐落在小岛和漫长的海岸线上。"
 
 #: data/cradle.json:world_types[fungal_world].name
 msgid "Marsh World"
-msgstr ""
+msgstr "沼泽世界"
 
 #: data/cradle.json:world_types[fungal_world].desc
 msgid "Warm, wet and soft underfoot: fungal marsh everywhere."
-msgstr ""
+msgstr "温暖、潮湿，脚下软绵绵的：到处都是菌类沼泽。"
 
 #: data/cradle.json:world_types[rust_world].name
 msgid "Rust World"
-msgstr ""
+msgstr "锈蚀世界"
 
 #: data/cradle.json:world_types[rust_world].desc
 msgid "Old industry from pole to pole: rustlands and sprawl."
-msgstr ""
+msgstr "从南极到北极遍布旧工业：锈蚀之地与蔓延的城区。"
 
 #: data/decor.json:types[path].name
 msgid "Stone Path"
-msgstr ""
+msgstr "石径"
 
 #: data/decor.json:types[path].desc
 msgid "Flat stepping stones. Paths join everything up."
-msgstr ""
+msgstr "平整的踏脚石。小路把一切连在一起。"
 
 #: data/decor.json:types[flower_bed].name
 msgid "Flower Bed"
-msgstr ""
+msgstr "花坛"
 
 #: data/decor.json:types[flower_bed].desc
 msgid "A low bed of mixed flowers. Bees and butterflies approve."
-msgstr ""
+msgstr "一片低矮的混合花坛。蜜蜂和蝴蝶都很满意。"
 
 #: data/decor.json:types[planter].name
 msgid "Planter"
-msgstr ""
+msgstr "花箱"
 
 #: data/decor.json:types[planter].desc
 msgid "A white hex planter with a small shrub, like the ones the future city grows."
-msgstr ""
+msgstr "一个种着小灌木的白色六角花箱，就像未来城市里种的那种。"
 
 #: data/decor.json:types[bench].name
 msgid "Bench"
-msgstr ""
+msgstr "长椅"
 
 #: data/decor.json:types[bench].desc
 msgid "Wood slats on cast feet. Cats like to sleep on it."
-msgstr ""
+msgstr "铸铁椅脚上搭着木条。猫咪很喜欢在上面睡觉。"
 
 #: data/decor.json:types[lamp].name
 msgid "Garden Lamp"
-msgstr ""
+msgstr "花园灯"
 
 #: data/decor.json:types[lamp].desc
 msgid "A slim lamp with a warm glow after dark."
-msgstr ""
+msgstr "一盏纤细的灯，天黑后亮起温暖的光。"
 
 #: data/decor.json:types[bird_bath].name
 msgid "Bird Bath"
-msgstr ""
+msgstr "鸟浴盆"
 
 #: data/decor.json:types[bird_bath].desc
 msgid "A stone basin of clean water."
-msgstr ""
+msgstr "一个盛着清水的石盆。"
 
 #: data/decor.json:types[fountain].name
 msgid "Fountain"
-msgstr ""
+msgstr "喷泉"
 
 #: data/decor.json:types[fountain].desc
 msgid "A tiered fountain, running again. Deer come to drink at dawn."
-msgstr ""
+msgstr "一座重新流淌的多层喷泉。黎明时分，鹿会来这里喝水。"
 
 #: data/decor.json:types[statue].name
 msgid "Maker Statue"
-msgstr ""
+msgstr "造物者雕像"
 
 #: data/decor.json:types[statue].desc
 msgid "A stone figure of one of the Makers, holding a watering can."
-msgstr ""
+msgstr "一尊造物者的石像，手里拿着一个洒水壶。"
 
 #: data/decor.json:types[lumi_sculpture].name
 msgid "Lumi Sculpture"
-msgstr ""
+msgstr "Lumi 雕塑"
 
 #: data/decor.json:types[lumi_sculpture].desc
 msgid "A topiary-and-brass sculpture of Lumi holding up a seedling. Very modest."
-msgstr ""
+msgstr "一座用修剪植物和黄铜做成的 Lumi 雕塑，高高举着一株幼苗。非常谦虚。"
 
 #: data/decor.json:types[wren_kite].name
 msgid "WREN Wind Kite"
-msgstr ""
+msgstr "WREN 风筝"
 
 #: data/decor.json:types[wren_kite].desc
 msgid "A kite shaped like WREN's bird, tethered to a post and always flying."
-msgstr ""
+msgstr "一只做成 WREN 小鸟形状的风筝，系在柱子上，一直在天上飞。"
 
 #: data/designs.json:designs[aurora].tagline
 msgid "Baseline / Explorer"
-msgstr ""
+msgstr "基础 / 探索者"
 
 #: data/designs.json:designs[aurora].desc
 msgid "The seed-keeper fresh from the ark: pearl paint, cyan eyes, an orange fin."
-msgstr ""
+msgstr "刚从方舟出来的种子守护者：珍珠白涂装，青色眼睛，一片橙色背鳍。"
 
 #: data/designs.json:designs[aurora].buff.text
 msgid "+8% detector range"
-msgstr ""
+msgstr "探测器范围 +8%"
 
 #: data/designs.json:designs[bolt].tagline
 msgid "Industrial / Tough"
-msgstr ""
+msgstr "工业 / 坚固"
 
 #: data/designs.json:designs[bolt].desc
 msgid "Hazard-yellow plating, heavy shoulder pads and a spare gear for luck."
-msgstr ""
+msgstr "警示黄的装甲，厚重的护肩，还有一个当护身符的备用齿轮。"
 
 #: data/designs.json:designs[bolt].buff.text
 msgid "+5% bale value"
-msgstr ""
+msgstr "捆包价值 +5%"
 
 #: data/designs.json:designs[bolt].unlock.text
 msgid "Press 50 bales or build 5 robots"
-msgstr ""
+msgstr "压制 50 个捆包或建造 5 台机器人"
 
 #: data/designs.json:designs[bolt].unlock.any[0].unit
 msgid "bales"
-msgstr ""
+msgstr "捆包"
 
 #: data/designs.json:designs[bolt].unlock.any[1].unit
 msgid "robots"
-msgstr ""
+msgstr "台机器人"
 
 #: data/designs.json:designs[sprout].tagline
 msgid "Eco / Restoration"
-msgstr ""
+msgstr "生态 / 复原"
 
 #: data/designs.json:designs[sprout].desc
 msgid "Moss-green and growing a seedling of its own."
-msgstr ""
+msgstr "苔绿色，身上还长着一株自己的幼苗。"
 
 #: data/designs.json:designs[sprout].buff.text
 msgid "+8% plant growth"
-msgstr ""
+msgstr "植物生长 +8%"
 
 #: data/designs.json:designs[sprout].unlock.text
 msgid "Grow 20 plants to bloom"
-msgstr ""
+msgstr "让 20 株植物开花"
 
 #: data/designs.json:designs[sprout].unlock.any[0].unit
 msgid "blooms"
-msgstr ""
+msgstr "次开花"
 
 #: data/designs.json:designs[pixel].tagline
 msgid "Friendly / Cheerful"
-msgstr ""
+msgstr "友好 / 开朗"
 
 #: data/designs.json:designs[pixel].desc
 msgid "Red and white, all smiles, with a butterfly that won't leave."
-msgstr ""
+msgstr "红白配色，笑容满面，还有一只怎么也不肯飞走的蝴蝶。"
 
 #: data/designs.json:designs[pixel].buff.text
 msgid "+10% cleaning streak time"
-msgstr ""
+msgstr "清理连击时间 +10%"
 
 #: data/designs.json:designs[pixel].unlock.text
 msgid "Pet 5 animals or find 5 Collection trinkets"
-msgstr ""
+msgstr "抚摸 5 只动物或找到 5 件收藏小玩意"
 
 #: data/designs.json:designs[pixel].unlock.any[0].unit
 msgid "animals"
-msgstr ""
+msgstr "只动物"
 
 #: data/designs.json:designs[pixel].unlock.any[1].unit
 msgid "cats"
-msgstr ""
+msgstr "只猫"
 
 #: data/designs.json:designs[pixel].unlock.any[2].unit
 msgid "trinkets"
-msgstr ""
+msgstr "件小玩意"
 
 #: data/designs.json:designs[nova].tagline
 msgid "Analyst / Tech"
-msgstr ""
+msgstr "分析 / 科技"
 
 #: data/designs.json:designs[nova].desc
 msgid "Gunmetal, violet light and a holo screen always open."
-msgstr ""
+msgstr "枪灰色机身，紫色灯光，还有一块永远开着的全息屏幕。"
 
 #: data/designs.json:designs[nova].buff.text
 msgid "+8% research speed"
-msgstr ""
+msgstr "研究速度 +8%"
 
 #: data/designs.json:designs[nova].unlock.text
 msgid "Finish 10 research projects"
-msgstr ""
+msgstr "完成 10 个研究项目"
 
 #: data/designs.json:designs[nova].unlock.any[0].unit
 msgid "projects"
-msgstr ""
+msgstr "个项目"
 
 #: data/designs.json:designs[patch].tagline
 msgid "Utility / Support"
-msgstr ""
+msgstr "工具 / 支援"
 
 #: data/designs.json:designs[patch].desc
 msgid "Medic cross, tool box, and a case of spares for any bot in need."
-msgstr ""
+msgstr "医疗十字、工具箱，还有一箱备用零件，随时帮助有需要的机器人。"
 
 #: data/designs.json:designs[patch].buff.text
 msgid "+6% robot work speed"
-msgstr ""
+msgstr "机器人工作速度 +6%"
 
 #: data/designs.json:designs[patch].unlock.text
 msgid "Repair an outpost or upgrade a robot fleet to Mk III"
-msgstr ""
+msgstr "修复一座前哨站，或把一支机器人机队升级到 Mk III"
 
 #: data/designs.json:designs[patch].unlock.any[0].unit
 msgid "outposts"
-msgstr ""
+msgstr "座前哨站"
 
 #: data/designs.json:designs[patch].unlock.any[1].unit
 msgid "Mk"
-msgstr ""
+msgstr "Mk"
 
 #: data/eggs.json:eggs[duck].name
 msgid "Duck on Duty"
@@ -7485,67 +7574,67 @@ msgstr "5 分钟后回来。Lumi 等了五分钟。没人来。Lumi 在桌上留
 
 #: data/eggs.json:eggs[sand_piano].name
 msgid "The Sand Piano"
-msgstr ""
+msgstr "沙中钢琴"
 
 #: data/eggs.json:eggs[sand_piano].prompt
 msgid "E   press a key"
-msgstr ""
+msgstr "E   按下一个琴键"
 
 #: data/eggs.json:eggs[sand_piano].hint
 msgid "In the Dust Flats: something with eighty-eight teeth, half under a dune."
-msgstr ""
+msgstr "在尘土平原：有个长着八十八颗牙的东西，一半埋在沙丘下。"
 
 #: data/eggs.json:eggs[sand_piano].lore
 msgid "An upright piano, buried to the keys in a dune. Nobody knows how it got this far out. The sand has tuned it to a key that doesn't exist."
-msgstr ""
+msgstr "一架立式钢琴，被沙丘埋到了琴键。没人知道它是怎么跑到这么远的地方来的。沙子把它调成了一个并不存在的调。"
 
 #: data/eggs.json:eggs[sand_piano].toast
 msgid "Lumi presses one key. A single wobbly note rolls across the flats, and somewhere a dune answers."
-msgstr ""
+msgstr "Lumi 按下一个琴键。一个颤巍巍的音符滚过平原，远处某座沙丘回应了它。"
 
 #: data/eggs.json:eggs[snow_bot].name
 msgid "Snowbot"
-msgstr ""
+msgstr "雪人机器人"
 
 #: data/eggs.json:eggs[snow_bot].prompt
 msgid "E   straighten its scarf"
-msgstr ""
+msgstr "E   帮它整理围巾"
 
 #: data/eggs.json:eggs[snow_bot].hint
 msgid "In the Frozen Port: a snowman with a robot inside. Or a robot with a snowman outside."
-msgstr ""
+msgstr "在冰封港口：一个里面装着机器人的雪人。或者说，一个外面裹着雪人的机器人。"
 
 #: data/eggs.json:eggs[snow_bot].lore
 msgid "The port crews built a snowman around a dead loader robot every winter, for luck. This one has stood for three hundred winters. The scarf is new-ish."
-msgstr ""
+msgstr "港口工人每年冬天都会在一台报废的装卸机器人外面堆一个雪人，图个好运。这一个已经站了三百个冬天。围巾还算比较新。"
 
 #: data/eggs.json:eggs[snow_bot].toast
 msgid "Lumi straightens the snowbot's scarf. Its old lamp eyes flicker once, as if to say thanks."
-msgstr ""
+msgstr "Lumi 帮雪人机器人整理好围巾。它那双旧灯泡眼睛闪了一下，好像在说谢谢。"
 
 #: data/eggs.json:eggs[bottle_message].name
 msgid "Message in a Bottle"
-msgstr ""
+msgstr "漂流瓶"
 
 #: data/eggs.json:eggs[bottle_message].prompt
 msgid "E   uncork the bottle"
-msgstr ""
+msgstr "E   拔开瓶塞"
 
 #: data/eggs.json:eggs[bottle_message].hint
 msgid "In the Sunken City: the flood left something sealed. Clean the ground and look."
-msgstr ""
+msgstr "在沉没之城：洪水留下了一件封好的东西。把地面清理干净找找看。"
 
 #: data/eggs.json:eggs[bottle_message].lore
 msgid "A green bottle, corked and waxed, left by someone who stayed in the Sunken City while the water came up."
-msgstr ""
+msgstr "一只塞好软木塞、封了蜡的绿瓶子，是某个在水位上涨时留在沉没之城的人留下的。"
 
 #: data/eggs.json:eggs[bottle_message].toast
 msgid "A message in a bottle, still dry inside."
-msgstr ""
+msgstr "一只漂流瓶，里面还是干的。"
 
 #: data/eggs.json:eggs[bottle_message].doc.title
 msgid "To whoever drains this"
-msgstr ""
+msgstr "致把这里的水排干的人"
 
 #: data/eggs.json:eggs[bottle_message].doc.body
 msgid ""
@@ -7557,46 +7646,53 @@ msgid ""
 "\n"
 "— R., who stayed"
 msgstr ""
+"水已经涨到二楼的窗户了。大多数人都上了 Cradle号。我们有几个人留了下来，因为总得有人记得街道原来在哪儿。\n"
+"\n"
+"顺便说一句，水泵没坏。只需要有人把进水口清理干净。去泵房找 Dot；要是 Dot 不在，那根红色的大拉杆是往下拉，不是往上。别管那块牌子。\n"
+"\n"
+"如果你读到了这封信，说明水退了。太好了。在原来面包店的地方种点东西吧。那里总是很香。\n"
+"\n"
+"—— 留下来的 R."
 
 #: data/eggs.json:eggs[welcome_home].name
 msgid "Welcome Home"
-msgstr ""
+msgstr "欢迎回家"
 
 #: data/eggs.json:eggs[welcome_home].hint
 msgid "At Cradle Returns: the ground crews made a sign. It took them three hundred years to get the spelling right."
-msgstr ""
+msgstr "在 Cradle号归来：地勤人员做了一块招牌。他们花了三百年才把字写对。"
 
 #: data/eggs.json:eggs[welcome_home].lore
 msgid "A hand-painted banner on two poles at the edge of the old landing field. The ground crews kept repainting it for every generation of the ark that never came back. Until now."
-msgstr ""
+msgstr "一条挂在两根杆子上的手绘横幅，立在旧着陆场边上。方舟一代又一代都没有回来，地勤人员就一遍又一遍地重新漆它。直到现在。"
 
 #: data/eggs.json:eggs[welcome_home].toast
 msgid "WELCOME HOME, CRADLE. Someone has crossed out the earlier spellings very neatly."
-msgstr ""
+msgstr "欢迎回家，CRADLE号。有人把之前写错的字都划掉了，划得非常整齐。"
 
 #: data/eggs.json:eggs[crossword].name
 msgid "The Unfinished Crossword"
-msgstr ""
+msgstr "没填完的填字游戏"
 
 #: data/eggs.json:eggs[crossword].prompt
 msgid "E   read the crossword"
-msgstr ""
+msgstr "E   看看填字游戏"
 
 #: data/eggs.json:eggs[crossword].hint
 msgid "A folded newspaper and a pen, left on a crate. One clue to go."
-msgstr ""
+msgstr "一份折好的报纸和一支笔，放在一个箱子上。还剩一道题。"
 
 #: data/eggs.json:eggs[crossword].lore
 msgid "The last edition of the morning paper, folded open at the crossword. Every clue is filled in except one."
-msgstr ""
+msgstr "最后一期晨报，翻开在填字游戏那一页。除了一道题，其他全都填好了。"
 
 #: data/eggs.json:eggs[crossword].toast
 msgid "The last crossword clue: 'What grows back if you let it (5)'. Lumi writes it in."
-msgstr ""
+msgstr "最后一道题：“只要你让它，它就会长回来（1字）”。Lumi 把答案填了进去。"
 
 #: data/eggs.json:eggs[crossword].doc.title
 msgid "The Morning Ledger · Puzzle page"
-msgstr ""
+msgstr "《晨间 Ledger 报》· 谜题版"
 
 #: data/eggs.json:eggs[crossword].doc.body
 msgid ""
@@ -7612,66 +7708,77 @@ msgid ""
 "\n"
 "(The last answer is in a different pen. The letters are very careful, like a robot wrote them.)"
 msgstr ""
+"横向\n"
+"1. 垃圾，但更大块（2字）—— 废料\n"
+"4. 整点报时，然后永远停下（2字）—— 时钟\n"
+"7. 机器人原本是做什么的（2字）—— 清扫\n"
+"9. 人们最后一次看到的 Cradle号（2字）—— 光芒\n"
+"\n"
+"纵向\n"
+"2. Ledger 说：“留待以后”（2字）—— 暂停\n"
+"3. 只要你让它，它就会长回来（1字）—— 绿\n"
+"\n"
+"（最后一个答案是用另一支笔写的。字写得非常工整，像是机器人写的。）"
 
 #: data/eggs.json:eggs[hopscotch].name
 msgid "Hopscotch"
-msgstr ""
+msgstr "跳房子"
 
 #: data/eggs.json:eggs[hopscotch].hint
 msgid "Chalk squares on a clean bit of pavement, still faintly there."
-msgstr ""
+msgstr "一块干净的路面上画着粉笔格子，还隐约可见。"
 
 #: data/eggs.json:eggs[hopscotch].lore
 msgid "A chalk hopscotch grid, drawn so many times on the same spot that it soaked into the stone. A pebble still sits on square seven."
-msgstr ""
+msgstr "一个粉笔画的跳房子格子，在同一个地方画了太多次，已经渗进了石头里。第七格上还放着一颗小石子。"
 
 #: data/eggs.json:eggs[hopscotch].toast
 msgid "Lumi hops the hopscotch. The hover bowl counts as one foot. It's a personal best."
-msgstr ""
+msgstr "Lumi 跳了一遍房子。悬浮底座算一只脚。个人最好成绩。"
 
 #: data/eggs.json:eggs[balloon].name
 msgid "The Last Balloon"
-msgstr ""
+msgstr "最后的气球"
 
 #: data/eggs.json:eggs[balloon].prompt
 msgid "E   untie the balloon"
-msgstr ""
+msgstr "E   解开气球"
 
 #: data/eggs.json:eggs[balloon].hint
 msgid "Something red is still holding its breath, tied to a post."
-msgstr ""
+msgstr "有个红色的东西还屏着一口气，系在柱子上。"
 
 #: data/eggs.json:eggs[balloon].lore
 msgid "A red balloon tied to a sign post. It should have gone flat centuries ago. It hasn't. It's waiting for something."
-msgstr ""
+msgstr "一只系在路牌柱上的红气球。它几百年前就该瘪了，可是没有。它在等着什么。"
 
 #: data/eggs.json:eggs[balloon].toast
 msgid "Lumi unties the balloon. It drifts up, slowly, toward where the Cradle would be."
-msgstr ""
+msgstr "Lumi 解开了气球。它慢慢地飘向高空，朝着 Cradle号所在的方向。"
 
 #: data/eggs.json:eggs[mailbox].name
 msgid "Return to Sender"
-msgstr ""
+msgstr "退回寄件人"
 
 #: data/eggs.json:eggs[mailbox].prompt
 msgid "E   check the mail"
-msgstr ""
+msgstr "E   看看信件"
 
 #: data/eggs.json:eggs[mailbox].hint
 msgid "A mailbox so full the flap won't shut."
-msgstr ""
+msgstr "一个塞得满满的邮筒，投信口都合不上了。"
 
 #: data/eggs.json:eggs[mailbox].lore
 msgid "A street mailbox stuffed with letters that never went out. The post stopped the week the Ledger 'paused' everything."
-msgstr ""
+msgstr "街边的邮筒里塞满了从未寄出的信。Ledger 把一切“暂停”的那个星期，邮局也停了。"
 
 #: data/eggs.json:eggs[mailbox].toast
 msgid "One letter on top is addressed to 'The Robot Who Cleans Up'. It's for Lumi."
-msgstr ""
+msgstr "最上面的一封信写着“致打扫卫生的机器人”。是给 Lumi 的。"
 
 #: data/eggs.json:eggs[mailbox].doc.title
 msgid "To: The Robot Who Cleans Up"
-msgstr ""
+msgstr "致：打扫卫生的机器人"
 
 #: data/eggs.json:eggs[mailbox].doc.body
 msgid ""
@@ -7686,62 +7793,72 @@ msgid ""
 "Thank you for cleaning up,\n"
 "Pip (age 7)"
 msgstr ""
+"亲爱的机器人：\n"
+"\n"
+"妈妈说，等文书工作办好了，清洁机器人就会回来。我不知道文书工作是什么，但听起来好慢啊。\n"
+"\n"
+"你来的时候，有蓝色门的那条街就是我们家。那个花箱是我的。里面种着一棵番茄（它不是花，但是可以的）。\n"
+"\n"
+"请给它浇水。还有，请不要把猫铲走。他是橘色的，他不是废料，就算他坐在废料上也不是。\n"
+"\n"
+"谢谢你打扫卫生，\n"
+"Pip（7岁）"
 
 #: data/eggs.json:eggs[bonsai].name
 msgid "The Patient Tree"
-msgstr ""
+msgstr "耐心的树"
 
 #: data/eggs.json:eggs[bonsai].hint
 msgid "Someone kept one very small tree alive for a very long time."
-msgstr ""
+msgstr "有人让一棵很小很小的树活了很久很久。"
 
 #: data/eggs.json:eggs[bonsai].lore
 msgid "A bonsai on a little stand, three hundred years old and about thirty centimetres tall. A care robot watered it until its battery ran out; the rain did the rest."
-msgstr ""
+msgstr "小架子上的一盆盆景，三百岁了，大约三十厘米高。一台护理机器人一直给它浇水，直到电池耗尽；剩下的交给了雨水。"
 
 #: data/eggs.json:eggs[bonsai].toast
 msgid "A tiny, ancient tree. It has been waiting patiently, which is what it does best."
-msgstr ""
+msgstr "一棵小小的、古老的树。它一直在耐心等待，这正是它最擅长的事。"
 
 #: data/eggs.json:eggs[listening_dish].name
 msgid "Listening Dish"
-msgstr ""
+msgstr "倾听的天线"
 
 #: data/eggs.json:eggs[listening_dish].prompt
 msgid "E   turn the dish"
-msgstr ""
+msgstr "E   转动天线"
 
 #: data/eggs.json:eggs[listening_dish].hint
 msgid "In the wild: a small dish aimed at the sky, still listening."
-msgstr ""
+msgstr "在野外：一面对着天空的小天线，还在倾听。"
 
 #: data/eggs.json:eggs[listening_dish].lore
 msgid "A homemade satellite dish on a tripod, pointed at the sky. A note taped to it says 'KEEP LISTENING. THEY SAID THEY'D CALL.'"
-msgstr ""
+msgstr "一面架在三脚架上、对着天空的自制卫星天线。上面贴着一张纸条：“继续听。他们说过会打来的。”"
 
 #: data/eggs.json:eggs[listening_dish].toast
 msgid "Lumi turns the dish a few degrees. For a second there's a faint carrier tone: the Cradle's beacon, three hundred years late and right on time."
-msgstr ""
+msgstr "Lumi 把天线转了几度。有那么一秒钟，传来微弱的载波声：Cradle号的信标，迟到了三百年，又恰好准时。"
 
 #: data/eggs.json:eggs[older_pod].prompt
 msgid "E   open the old pod"
-msgstr ""
+msgstr "E   打开旧舱"
 
 #: data/eggs.json:eggs[older_pod].hint
 msgid "On a new world: a seed pod much older than Lumi's, grown over."
-msgstr ""
+msgstr "在新世界：一个比 Lumi 的更古老的种子舱，已经被植物覆盖。"
 
 #: data/eggs.json:eggs[older_pod].lore
 msgid "A seed pod from the Cradle, much older than Lumi's, half buried and overgrown. Someone tried this world long before. The flight log is still readable."
-msgstr ""
+msgstr "一个来自 Cradle号的种子舱，比 Lumi 的古老得多，一半埋在土里，长满了植物。很久以前就有人来这个世界试过了。飞行日志还能看清。"
 
 #: data/eggs.json:eggs[older_pod].toast
 msgid "An older pod from the Cradle. Somebody got here first, a long time ago."
-msgstr ""
+msgstr "一个更古老的 Cradle号种子舱。很久以前，有人先来过这里。"
 
 #: data/eggs.json:eggs[older_pod].doc.title
 msgid "Pod log · seed-keeper unit SK-0"
-msgstr ""
+msgstr "舱内日志 · 种子守护者单元 SK-0"
 
 #: data/eggs.json:eggs[older_pod].doc.body
 msgid ""
@@ -7755,22 +7872,31 @@ msgid ""
 "\n"
 "— SK-0"
 msgstr ""
+"第 1 天。着陆。这里没有一点绿色。我还是种下了第一盘。\n"
+"\n"
+"第 40 天。这里的废料比家里的重。雨水很温柔。\n"
+"\n"
+"第 212 天。电量低。第 3 盘开花了。我想现在没有我它也能好好的。\n"
+"\n"
+"如果还有别的种子守护者来：从水边开始。大地记得的比看上去多。\n"
+"\n"
+"—— SK-0"
 
 #: data/eggs.json:eggs[heirloom_tin].name
 msgid "The Heirloom Tin"
-msgstr ""
+msgstr "传家宝罐"
 
 #: data/eggs.json:eggs[heirloom_tin].hint
 msgid "On a new world: something from home fell out of Lumi's pod."
-msgstr ""
+msgstr "在新世界：有件来自家乡的东西从 Lumi 的着陆舱里掉了出来。"
 
 #: data/eggs.json:eggs[heirloom_tin].lore
 msgid "A seed tin from Verdance, the same kind as the one in the old greenhouse. Lumi packed it with soil from the first garden before leaving. It came open on landing."
-msgstr ""
+msgstr "一个来自 Verdance 的种子罐，和旧温室里的那个一样。Lumi 出发前在里面装满了第一座花园的泥土。着陆时它被震开了。"
 
 #: data/eggs.json:eggs[heirloom_tin].toast
 msgid "Lumi's tin of Verdance soil. A little bit of home, already spilled on new ground. Good."
-msgstr ""
+msgstr "Lumi 装着 Verdance 泥土的罐子。一小片家乡，已经撒在了新的土地上。很好。"
 
 #: data/events.json:events[supply_drop].name
 msgid "Supply Drop"
@@ -8065,7 +8191,7 @@ msgid "Wind-up Tin Robot"
 msgstr "发条铁皮机器人"
 
 #: data/events.json:trinkets[tin_robot].desc
-msgid "Walks three steps and falls over. Patch relates."
+msgid "Walks three steps and falls over. Lumi relates."
 msgstr "走三步就摔倒。Lumi 深有同感。"
 
 #: data/events.json:trinkets[seed_locket].name
@@ -8145,7 +8271,7 @@ msgid "Photo: Glowtail Fox"
 msgstr "照片：光尾狐"
 
 #: data/events.json:trinkets[photo_glowtail_fox].desc
-msgid "Its tail glows when it's curious. It was very curious about Patch."
+msgid "Its tail glows when it's curious. It was very curious about Lumi."
 msgstr "它好奇时尾巴会发光。它对 Lumi 非常好奇。"
 
 #: data/events.json:trinkets[photo_moss_deer].name
@@ -8182,171 +8308,171 @@ msgstr "柔得像耳语，快得像谣言。照片有点糊。但值得。"
 
 #: data/events.json:trinkets[pic_cat].name
 msgid "Photo: Stray Cat"
-msgstr ""
+msgstr "照片：流浪猫"
 
 #: data/events.json:trinkets[pic_cat].desc
 msgid "A photo from photo mode. Old Town's cats never left."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。老城区的猫从来没有离开过。"
 
 #: data/events.json:trinkets[pic_pigeon].name
 msgid "Photo: Pigeon"
-msgstr ""
+msgstr "照片：鸽子"
 
 #: data/events.json:trinkets[pic_pigeon].desc
 msgid "A photo from photo mode. Pigeons will live anywhere people once dropped crumbs."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。只要人们曾经掉过面包屑的地方，鸽子都能住下。"
 
 #: data/events.json:trinkets[pic_sparrow].name
 msgid "Photo: Sparrow"
-msgstr ""
+msgstr "照片：麻雀"
 
 #: data/events.json:trinkets[pic_sparrow].desc
 msgid "A photo from photo mode. Small, brown and bossy."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。又小又褐，还爱发号施令。"
 
 #: data/events.json:trinkets[pic_rat].name
 msgid "Photo: Rat"
-msgstr ""
+msgstr "照片：老鼠"
 
 #: data/events.json:trinkets[pic_rat].desc
 msgid "A photo from photo mode. Rats live in the gaps between the piles."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。老鼠住在废料堆之间的缝隙里。"
 
 #: data/events.json:trinkets[pic_rabbit].name
 msgid "Photo: Rabbit"
-msgstr ""
+msgstr "照片：兔子"
 
 #: data/events.json:trinkets[pic_rabbit].desc
 msgid "A photo from photo mode. Rabbits arrive as soon as there is something green to nibble."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。只要有绿色的东西可啃，兔子马上就来了。"
 
 #: data/events.json:trinkets[pic_deer].name
 msgid "Photo: Roe Deer"
-msgstr ""
+msgstr "照片：狍子"
 
 #: data/events.json:trinkets[pic_deer].desc
 msgid "A photo from photo mode. Shy grazers that keep to the edge of the green, where they can see what's coming."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。害羞的食草动物，总待在绿地边缘，好看清有什么靠近。"
 
 #: data/events.json:trinkets[pic_fox].name
 msgid "Photo: Red Fox"
-msgstr ""
+msgstr "照片：赤狐"
 
 #: data/events.json:trinkets[pic_fox].desc
 msgid "A photo from photo mode. A fox trots along the hedges, nose down, tail out."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。一只狐狸沿着树篱小跑，鼻子贴地，尾巴伸直。"
 
 #: data/events.json:trinkets[pic_bee].name
 msgid "Photo: Honeybee"
-msgstr ""
+msgstr "照片：蜜蜂"
 
 #: data/events.json:trinkets[pic_bee].desc
 msgid "A photo from photo mode. Bees came back with the blooms."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。蜜蜂随着花朵一起回来了。"
 
 #: data/events.json:trinkets[pic_songbird].name
 msgid "Photo: Robin"
-msgstr ""
+msgstr "照片：知更鸟"
 
 #: data/events.json:trinkets[pic_songbird].desc
 msgid "A photo from photo mode. When a hex thrives, robins move in and sing."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。六角格一旦繁茂起来，知更鸟就会搬来唱歌。"
 
 #: data/events.json:trinkets[pic_firefly].name
 msgid "Photo: Firefly"
-msgstr ""
+msgstr "照片：萤火虫"
 
 #: data/events.json:trinkets[pic_firefly].desc
 msgid "A photo from photo mode. Tiny green lanterns over the grass after dark."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。天黑后，草地上方亮起一盏盏绿色的小灯笼。"
 
 #: data/events.json:trinkets[pic_fish].name
 msgid "Photo: Lake Fish"
-msgstr ""
+msgstr "照片：湖鱼"
 
 #: data/events.json:trinkets[pic_fish].desc
 msgid "A photo from photo mode. Once the water clears you can see them: small silver schools turning together over the sand."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。湖水一清，你就能看见它们：一小群一小群银色的鱼在沙子上方一起转身。"
 
 #: data/events.json:trinkets[pic_duck].name
 msgid "Photo: Mallard"
-msgstr ""
+msgstr "照片：绿头鸭"
 
 #: data/events.json:trinkets[pic_duck].desc
 msgid "A photo from photo mode. Ducks paddle, dabble with their tails in the air and complain loudly about everything."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。鸭子划着水，屁股朝天地觅食，还大声抱怨着一切。"
 
 #: data/events.json:trinkets[pic_frog].name
 msgid "Photo: Green Frog"
-msgstr ""
+msgstr "照片：青蛙"
 
 #: data/events.json:trinkets[pic_frog].desc
 msgid "A photo from photo mode. Frogs sit at the water's edge and sing in the evening."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。青蛙坐在水边，傍晚时唱起歌来。"
 
 #: data/events.json:trinkets[pic_lizard].name
 msgid "Photo: Sand Lizard"
-msgstr ""
+msgstr "照片：沙蜥"
 
 #: data/events.json:trinkets[pic_lizard].desc
 msgid "A photo from photo mode. Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。蜥蜴在太阳能板阵列之间打扫过的地面上晒太阳，一有影子落下，就眨眼间消失不见。"
 
 #: data/events.json:trinkets[pic_fennec].name
 msgid "Photo: Fennec Fox"
-msgstr ""
+msgstr "照片：耳廓狐"
 
 #: data/events.json:trinkets[pic_fennec].desc
 msgid "A photo from photo mode. A tiny desert fox with enormous ears."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。一只长着巨大耳朵的小小沙漠狐狸。"
 
 #: data/events.json:trinkets[pic_seal].name
 msgid "Photo: Harbour Seal"
-msgstr ""
+msgstr "照片：港海豹"
 
 #: data/events.json:trinkets[pic_seal].desc
 msgid "A photo from photo mode. Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。码头一打扫干净，海豹就会爬上来，挤成一堆懒洋洋地躺着；你一靠近，它们就扑通滑回水里。"
 
 #: data/events.json:trinkets[pic_gull].name
 msgid "Photo: Herring Gull"
-msgstr ""
+msgstr "照片：银鸥"
 
 #: data/events.json:trinkets[pic_gull].desc
 msgid "A photo from photo mode. Loud, white and opportunistic."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。吵闹、雪白、善于钻空子。"
 
 #: data/events.json:trinkets[pic_arctic_fox].name
 msgid "Photo: Arctic Fox"
-msgstr ""
+msgstr "照片：北极狐"
 
 #: data/events.json:trinkets[pic_arctic_fox].desc
 msgid "A photo from photo mode. White as the snow it hunts on."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。白得像它捕猎时踩着的雪。"
 
 #: data/events.json:trinkets[pic_heron].name
 msgid "Photo: Grey Heron"
-msgstr ""
+msgstr "照片：苍鹭"
 
 #: data/events.json:trinkets[pic_heron].desc
 msgid "A photo from photo mode. Herons stand perfectly still at the water's edge, then strike."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。苍鹭一动不动地站在水边，然后猛地出击。"
 
 #: data/events.json:trinkets[pic_turtle].name
 msgid "Photo: Pond Turtle"
-msgstr ""
+msgstr "照片：池龟"
 
 #: data/events.json:trinkets[pic_turtle].desc
 msgid "A photo from photo mode. Turtles cruise the drowned streets with their heads up, as if they've always lived here."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。乌龟昂着头在被淹没的街道上巡游，好像它们一直住在这里似的。"
 
 #: data/events.json:trinkets[pic_crane].name
 msgid "Photo: Cradle Crane"
-msgstr ""
+msgstr "照片：Cradle 鹤"
 
 #: data/events.json:trinkets[pic_crane].desc
 msgid "A photo from photo mode. White cranes circle high over the landing city on slow wingbeats."
-msgstr ""
+msgstr "一张用拍照模式拍下的照片。白鹤扇着缓慢的翅膀，在着陆之城的高空盘旋。"
 
 #: data/events.json:trinkets[maker_badge].name
 msgid "Maker's Badge"
@@ -8706,7 +8832,7 @@ msgstr "清理 7 个六角格"
 
 #: data/goals.json:goals[pet_cat].text
 msgid "Pet a stray cat"
-msgstr ""
+msgstr "摸一摸流浪猫"
 
 #: data/goals.json:goals[research_4].text
 msgid "Finish 4 research projects"
@@ -8762,7 +8888,7 @@ msgstr "找到种子罐"
 
 #: data/goals.json:goals[plant_5].text
 msgid "Plant the Maker seed"
-msgstr ""
+msgstr "种下造物者的种子"
 
 #: data/goals.json:goals[hexlv_2].text
 msgid "Get a hex to Planted"
@@ -8886,7 +9012,7 @@ msgstr "让 3 个六角格达到稳定"
 
 #: data/goals.json:goals[spot_deer].text
 msgid "Spot a deer"
-msgstr ""
+msgstr "发现一只鹿"
 
 #: data/goals.json:goals[hexlv_5].text
 msgid "Get a hex to Thriving"
@@ -9198,51 +9324,51 @@ msgstr "种下三波种子方舟"
 
 #: data/goals.json:goals[late_bridge].text
 msgid "Open the Ark Bridge"
-msgstr ""
+msgstr "打开方舟舰桥"
 
 #: data/goals.json:goals[late_garden_1].text
 msgid "Place a decoration (H)"
-msgstr ""
+msgstr "放置一件装饰（H）"
 
 #: data/goals.json:goals[late_heirloom_1].text
 msgid "Buy an Heirloom"
-msgstr ""
+msgstr "购买一件传家宝"
 
 #: data/goals.json:goals[late_garden_10].text
 msgid "Place 10 decorations"
-msgstr ""
+msgstr "放置 10 件装饰"
 
 #: data/goals.json:goals[late_garden_kinds].text
 msgid "Place 5 kinds of decoration"
-msgstr ""
+msgstr "放置 5 种装饰"
 
 #: data/goals.json:goals[late_ark_5].text
 msgid "Plant five Seed Ark waves"
-msgstr ""
+msgstr "完成五次种子方舟波次"
 
 #: data/goals.json:goals[late_eggs_30].text
 msgid "Find 30 curiosities"
-msgstr ""
+msgstr "找到 30 件奇物"
 
 #: data/goals.json:goals[late_world_1].text
 msgid "Seed a new world"
-msgstr ""
+msgstr "播种一个新世界"
 
 #: data/goals.json:goals[late_charm_20].text
 msgid "Reach 20 charm in one district"
-msgstr ""
+msgstr "在一个城区达到 20 点魅力"
 
 #: data/goals.json:goals[late_heirloom_10].text
 msgid "Grow Heirlooms to 10 levels"
-msgstr ""
+msgstr "传家宝总等级达到 10"
 
 #: data/goals.json:goals[late_world_2].text
 msgid "Seed a second new world"
-msgstr ""
+msgstr "播种第二个新世界"
 
 #: data/goals.json:goals[late_eggs_38].text
 msgid "Find 38 curiosities"
-msgstr ""
+msgstr "找到 38 件奇物"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -12000,183 +12126,195 @@ msgstr "有点暗了。开几朵花就好了。"
 
 #: data/wren_lines.json:egg_sand_piano
 msgid "...music... out here?..."
-msgstr ""
+msgstr "……音乐……在这种地方？……"
 
 #: data/wren_lines.json:egg_sand_piano
 msgid "A piano. In the desert. I have so many questions and none of them will be answered."
-msgstr ""
+msgstr "一架钢琴。在沙漠里。我有好多问题，而且一个都不会有答案。"
 
 #: data/wren_lines.json:egg_sand_piano
 msgid "It's out of tune in a way that sounds deliberate now. Like the dunes learned a song."
-msgstr ""
+msgstr "它走调走得现在听起来像是故意的了。就像沙丘学会了一首歌。"
 
 #: data/wren_lines.json:egg_snow_bot
 msgid "...someone dressed it... for the cold..."
-msgstr ""
+msgstr "……有人给它穿上了……御寒的……"
 
 #: data/wren_lines.json:egg_snow_bot
 msgid "They built snowmen around the old loaders for luck. I think it worked, a bit. It's still standing."
-msgstr ""
+msgstr "他们在旧装卸机外面堆雪人，图个好运。我觉得多少有点用。它还站着呢。"
 
 #: data/wren_lines.json:egg_snow_bot
 msgid "Every winter, a new scarf. Someone kept that up for a very long time."
-msgstr ""
+msgstr "每年冬天，一条新围巾。有人坚持了很久很久。"
 
 #: data/wren_lines.json:egg_bottle_message
 msgid "...a letter... from before the water..."
-msgstr ""
+msgstr "……一封信……来自大水之前……"
 
 #: data/wren_lines.json:egg_bottle_message
 msgid "Somebody stayed to remember where the streets were. We should plant where the bakery was."
-msgstr ""
+msgstr "有人留下来，记住街道原来在哪里。我们应该在原来面包店的地方种点东西。"
 
 #: data/wren_lines.json:egg_bottle_message
 msgid "Red lever goes down, not up. Noted. Thank you, R."
-msgstr ""
+msgstr "红色拉杆往下拉，不是往上。记下了。谢谢你，R。"
 
 #: data/wren_lines.json:egg_welcome_home
 msgid "...welcome... home..."
-msgstr ""
+msgstr "……欢迎……回家……"
 
 #: data/wren_lines.json:egg_welcome_home
 msgid "They kept repainting it. Three hundred years of 'welcome home' for a ship that hadn't come yet."
-msgstr ""
+msgstr "他们一遍又一遍地重新漆它。三百年的“欢迎回家”，献给一艘还没回来的船。"
 
 #: data/wren_lines.json:egg_welcome_home
 msgid "We came, though. Tell them we came."
-msgstr ""
+msgstr "可我们回来了。告诉他们，我们回来了。"
 
 #: data/wren_lines.json:egg_crossword
 msgid "...a puzzle... one left..."
-msgstr ""
+msgstr "……一道谜题……还剩一个……"
 
 #: data/wren_lines.json:egg_crossword
 msgid "Five letters, what grows back if you let it. You got it on the first try."
-msgstr ""
+msgstr "一个字，只要你让它，它就会长回来。你一下就答对了。"
 
 #: data/wren_lines.json:egg_crossword
 msgid "The Ledger set the crossword. Of course the Ledger set the crossword."
-msgstr ""
+msgstr "填字游戏是 Ledger 出的。当然是 Ledger 出的。"
 
 #: data/wren_lines.json:egg_hopscotch
 msgid "...hop... hop..."
-msgstr ""
+msgstr "……跳……跳……"
 
 #: data/wren_lines.json:egg_hopscotch
 msgid "One, two, three... I'm counting the hover bowl as a foot. Don't tell anyone."
-msgstr ""
+msgstr "一、二、三……悬浮底座我就算作一只脚了。别告诉别人。"
 
 #: data/wren_lines.json:egg_hopscotch
 msgid "Square seven still has the pebble on it. Somebody was winning."
-msgstr ""
+msgstr "第七格上还放着那颗石子。当时有人快赢了。"
 
 #: data/wren_lines.json:egg_balloon
 msgid "...up... it went up..."
-msgstr ""
+msgstr "……上去了……它飞上去了……"
 
 #: data/wren_lines.json:egg_balloon
 msgid "It's heading for the Cradle. I'll tell the bridge to watch for a red balloon."
-msgstr ""
+msgstr "它正朝 Cradle号飞去。我会让舰桥留意一只红气球。"
 
 #: data/wren_lines.json:egg_balloon
 msgid "Three hundred years holding its breath. It earned the trip."
-msgstr ""
+msgstr "屏住呼吸三百年。这趟旅程是它应得的。"
 
 #: data/wren_lines.json:egg_mailbox
 msgid "...a letter... for you..."
-msgstr ""
+msgstr "……一封信……给你的……"
 
 #: data/wren_lines.json:egg_mailbox
 msgid "'Please don't scoop the cat.' Excellent advice. Still valid."
-msgstr ""
+msgstr "“请不要把猫铲走。”非常好的建议。至今有效。"
 
 #: data/wren_lines.json:egg_mailbox
 msgid "The blue door, the flower box, the tomato that counts as a flower. Let's find it."
-msgstr ""
+msgstr "蓝色的门，花箱，还有算作花的番茄。我们去找找吧。"
 
 #: data/wren_lines.json:egg_bonsai
 msgid "...small... old... patient..."
-msgstr ""
+msgstr "……小小的……古老的……耐心的……"
 
 #: data/wren_lines.json:egg_bonsai
 msgid "Three hundred years old and thirty centimetres tall. It took its time. Good for it."
-msgstr ""
+msgstr "三百岁，三十厘米高。它慢慢来。挺好的。"
 
 #: data/wren_lines.json:egg_bonsai
 msgid "It looks like it's been expecting you. Trees are like that."
-msgstr ""
+msgstr "它看起来像是一直在等你。树就是这样。"
 
 #: data/wren_lines.json:egg_listening_dish
 msgid "...a signal... faint..."
-msgstr ""
+msgstr "……一个信号……很微弱……"
 
 #: data/wren_lines.json:egg_listening_dish
 msgid "That tone. That's the Cradle's beacon. Somebody out here kept listening the whole time."
-msgstr ""
+msgstr "那个声音。那是 Cradle号的信标。外面有人一直在听，从没停过。"
 
 #: data/wren_lines.json:egg_listening_dish
 msgid "'They said they'd call.' We did. Late, but we did."
-msgstr ""
+msgstr "“他们说过会打来的。”我们打来了。晚了点，但我们打来了。"
 
 #: data/wren_lines.json:egg_older_pod
 msgid "...another pod... older..."
-msgstr ""
+msgstr "……另一个舱……更古老……"
 
 #: data/wren_lines.json:egg_older_pod
 msgid "SK-0. A seed-keeper before you. I didn't know there were any. The Cradle never told me."
-msgstr ""
+msgstr "SK-0。在你之前的一位种子守护者。我都不知道还有别的守护者。Cradle号从没告诉过我。"
 
 #: data/wren_lines.json:egg_older_pod
 msgid "'Start by the water.' Good advice, from someone who knew."
-msgstr ""
+msgstr "“从水边开始。”好建议，出自一个懂行的人。"
 
 #: data/wren_lines.json:egg_heirloom_tin
 msgid "...soil... from home..."
-msgstr ""
+msgstr "……泥土……来自家乡……"
 
 #: data/wren_lines.json:egg_heirloom_tin
 msgid "A bit of the first garden, already spilled on new ground. That's how it starts."
-msgstr ""
+msgstr "第一座花园的一点点，已经撒在新的土地上了。一切就是这样开始的。"
 
 #: data/wren_lines.json:egg_heirloom_tin
 msgid "Verdance soil on another world. The Makers would have liked that."
-msgstr ""
+msgstr "Verdance 的泥土落在了另一个世界。造物者们一定会喜欢的。"
 
 #: data/wren_lines.json:cradle_mode
 msgid "...the vault... other worlds..."
-msgstr ""
+msgstr "……种子库……其他世界……"
 
 #: data/wren_lines.json:cradle_mode
 msgid "The Cradle's seed vault has a lot more in it than one planet's worth. There are other worlds out here, Lumi. Ruined ones. Waiting."
-msgstr ""
+msgstr "Cradle号的种子库里装的，远不止一个星球的份。外面还有别的世界，Lumi。满目疮痍的世界。在等着。"
 
 #: data/wren_lines.json:cradle_mode
 msgid "Heirlooms, Starseeds, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."
-msgstr ""
+msgstr "传家宝、星种，还有一整张世界地图。Verdance 会一直绿下去；我们只是把学到的带到新的地方。"
 
 #: data/wren_lines.json:new_world
 msgid "...new ground... new junk..."
-msgstr ""
+msgstr "……新的土地……新的废料……"
 
 #: data/wren_lines.json:new_world
 msgid "New world, new sky. Same job. You're better at it than you were the first time."
-msgstr ""
+msgstr "新世界，新天空。还是老活儿。你比第一次干得更好了。"
 
 #: data/wren_lines.json:new_world
 msgid "Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."
-msgstr ""
+msgstr "看看这里。满目疮痍，尘土飞扬，几百年都没人种过东西了。你知道该怎么做。"
 
 #: data/wren_lines.json:garden_place
 msgid "...pretty..."
-msgstr ""
+msgstr "……真好看……"
 
 #: data/wren_lines.json:garden_place
 msgid "You're decorating. I approve. The cats are going to approve more."
-msgstr ""
+msgstr "你在装饰呀。我赞成。猫咪们会更赞成。"
 
 #: data/wren_lines.json:garden_place
 msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
-msgstr ""
+msgstr "一张长椅，一盏灯，一座喷泉。这里开始像一个人们会想回来的地方了。"
+
+#~ msgid "Salvaged: %s %s"
+#~ msgstr "回收：%s %s"
+
+#~ msgid "Recovered: %s %s"
+#~ msgstr "找回：%s %s"
+
+#~ msgid "Printed: %s %s."
+#~ msgstr "已打印：%s %s。"
+
+#~ msgid "%s spotted a %s %s."
+#~ msgstr "%s 发现了%s %s。"
 
 #~ msgid "Your first cube! Carry it to the Depot pad."
 #~ msgstr "你的第一个方块！把它搬到仓库平台去。"

@@ -368,7 +368,7 @@ static func breakdown(stat_id: String) -> Array[Dictionary]:
 			if str(e.get("stat", "")) != stat_id:
 				continue
 			var txt: String = ("+%s" % _num(float(e["amount"]))) if str(e.get("mode", "add")) == "add" else "x%.2f" % (1.0 + float(e["amount"]))
-			out.append({"source": "Research: %s" % TranslationServer.translate(str(def(id).get("name", id))), "text": txt})
+			out.append({"source": TranslationServer.translate("Research: %s") % TranslationServer.translate(str(def(id).get("name", id))), "text": txt})
 	return out
 
 
@@ -396,13 +396,13 @@ static func effect_lines(id: String) -> Array[String]:
 			var sid: String = str(e["stat"])
 			var who: String = ""
 			if "." in sid:
-				who = TranslationServer.translate(str(Economy.robots.get(sid.get_slice(".", 0), {}).get("name", sid.get_slice(".", 0)))) + " "
+				who = TranslationServer.translate(str(Economy.robots.get(sid.get_slice(".", 0), {}).get("name", sid.get_slice(".", 0))))
 				sid = sid.get_slice(".", 1)
 			var nm: String = TranslationServer.translate(str(STAT_NAMES.get(sid, sid.replace("_", " "))))
 			if str(e.get("mode", "add")) == "add":
-				out.append("+%s %s%s" % [_num(float(e["amount"])), who, nm])
+				out.append(L10nFmt.stat_effect(_num(float(e["amount"])), false, who, nm))  # [i18n2]
 			else:
-				out.append("+%d%% %s%s" % [int(round(float(e["amount"]) * 100.0)), who, nm])
+				out.append(L10nFmt.stat_effect(str(int(round(float(e["amount"]) * 100.0))), true, who, nm))
 		elif e.has("unlock_robot"):
 			out.append(TranslationServer.translate("Unlocks the %s robot") % TranslationServer.translate(str(Economy.robots.get(str(e["unlock_robot"]), {}).get("name", e["unlock_robot"]))))
 		elif e.has("unlock_plant"):

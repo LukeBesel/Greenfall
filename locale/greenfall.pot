@@ -27,6 +27,10 @@ msgstr ""
 msgid "Base"
 msgstr ""
 
+#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:185
+msgid "%s Lv %d"
+msgstr ""
+
 #: autoload/Economy.gd:300 data/robots.json:tiers[0].name
 msgid "Mk I"
 msgstr ""
@@ -837,11 +841,11 @@ msgid "  (streak +%d%%)"
 msgstr ""
 
 #: player/patch.gd:470
-msgid "Salvaged: %s %s"
+msgid "Salvaged: %s"
 msgstr ""
 
 #: player/patch.gd:500
-msgid "Recovered: %s %s"
+msgid "Recovered: %s"
 msgstr ""
 
 #: player/patch_model.gd:18 data/designs.json:designs[aurora].name
@@ -1683,7 +1687,7 @@ msgid ""
 msgstr ""
 
 #: story/ledger.gd:318 systems/decor.gd:125 systems/research.gd:186
-#: ui/hub_panel.gd:118 ui/stations_panel.gd:96
+#: ui/hub_panel.gd:119 ui/stations_panel.gd:96
 msgid "Needs %s"
 msgstr ""
 
@@ -1942,7 +1946,7 @@ msgid "%s fitted to the whole fleet."
 msgstr ""
 
 #: systems/contracts.gd:344
-msgid "Printed: %s %s."
+msgid "Printed: %s."
 msgstr ""
 
 #: systems/contracts.gd:347
@@ -2037,11 +2041,11 @@ msgstr ""
 msgid "+%s cubes"
 msgstr ""
 
-#: systems/events.gd:488
+#: systems/events.gd:488 systems/l10n_fmt.gd:29
 msgid "+%d data"
 msgstr ""
 
-#: systems/events.gd:506 systems/lumi_level.gd:236
+#: systems/events.gd:506 systems/l10n_fmt.gd:23 systems/lumi_level.gd:236
 msgid "+%d token"
 msgid_plural "+%d tokens"
 msgstr[0] ""
@@ -2147,6 +2151,102 @@ msgstr ""
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr ""
 
+#: systems/l10n_fmt.gd:17
+msgid "+%d cube"
+msgid_plural "+%d cubes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:19
+msgid "+%d seed"
+msgid_plural "+%d seeds"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:21
+msgid "+%d trinket"
+msgid_plural "+%d trinkets"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:25
+msgid "+%d bolt"
+msgid_plural "+%d bolts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:27
+msgid "+%d part"
+msgid_plural "+%d parts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:49
+msgid "%s cube"
+msgid_plural "%s cubes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:51
+msgid "%s seed"
+msgid_plural "%s seeds"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:53
+msgid "%s trinket"
+msgid_plural "%s trinkets"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:55
+msgid "%s token"
+msgid_plural "%s tokens"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:57
+msgid "%s bolt"
+msgid_plural "%s bolts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:59
+msgid "%s part"
+msgid_plural "%s parts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:61
+msgid "%s data"
+msgstr ""
+
+#. a part's name. {rarity} is an adjective (Rusty, Polished, Rare...), {part} a part type
+#: systems/l10n_fmt.gd:86
+msgctxt "part name"
+msgid "{rarity} {part}"
+msgstr ""
+
+#. research effect, e.g. "+20% scoop width". {stat} is a stat name.
+#: systems/l10n_fmt.gd:96
+msgid "+{amount}% {stat}"
+msgstr ""
+
+#. research effect, e.g. "+2 tank". {stat} is a stat name.
+#: systems/l10n_fmt.gd:98
+msgid "+{amount} {stat}"
+msgstr ""
+
+#. research effect for one robot model, e.g. "+10% Scoopie speed".
+#: systems/l10n_fmt.gd:101
+msgid "+{amount}% {robot} {stat}"
+msgstr ""
+
+#. research effect for one robot model, e.g. "+1 Drip tank".
+#: systems/l10n_fmt.gd:103
+msgid "+{amount} {robot} {stat}"
+msgstr ""
+
 #: systems/late_director.gd:90
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr ""
@@ -2209,6 +2309,10 @@ msgstr ""
 
 #: systems/research.gd:324 ui/codex_screen.gd:763
 msgid "%ds"
+msgstr ""
+
+#: systems/research.gd:371
+msgid "Research: %s"
 msgstr ""
 
 #: systems/research.gd:381
@@ -2344,7 +2448,7 @@ msgid "Haggle's stall · %s cubes + %d bolts"
 msgstr ""
 
 #: systems/robot_builder.gd:370
-msgid "Token shop · ◈ %d"
+msgid "Token shop · ◆ %d"
 msgstr ""
 
 #: systems/robot_builder.gd:374
@@ -2389,7 +2493,7 @@ msgid "%s spotted a Maker Fragment glinting in the junk. (%d)"
 msgstr ""
 
 #: systems/robot_builder.gd:604
-msgid "%s spotted a %s %s."
+msgid "%s spotted a %s."
 msgstr ""
 
 #: ui/allocation_board.gd:13
@@ -3110,7 +3214,7 @@ msgid "TOKEN SHOP"
 msgstr ""
 
 #: ui/contracts_panel.gd:81
-msgid "◈  %d tokens"
+msgid "◆  %d tokens"
 msgstr ""
 
 #: ui/contracts_panel.gd:82
@@ -3122,7 +3226,7 @@ msgid "A new contract is being posted."
 msgstr ""
 
 #: ui/contracts_panel.gd:141
-msgid "Reward  ◈ %d tokens  +  cubes"
+msgid "Reward  ◆ %d tokens  +  cubes"
 msgstr ""
 
 #: ui/contracts_panel.gd:163
@@ -3138,7 +3242,7 @@ msgid "Working on it"
 msgstr ""
 
 #: ui/contracts_panel.gd:188
-msgid "Claim  ◈ %d"
+msgid "Claim  ◆ %d"
 msgstr ""
 
 #: ui/contracts_panel.gd:228
@@ -3465,61 +3569,61 @@ msgstr ""
 msgid "bolts"
 msgstr ""
 
-#: ui/hub_panel.gd:86
+#: ui/hub_panel.gd:87
 msgid " (have %s)"
 msgstr ""
 
-#: ui/hub_panel.gd:93
+#: ui/hub_panel.gd:94
 msgid "Sheet metal %s    Plastic stock %s    Glass %s"
 msgstr ""
 
-#: ui/hub_panel.gd:95
+#: ui/hub_panel.gd:96
 msgid ""
 "Level %d   ·   %s\n"
 "%s   Bales sell for +%d%%."
 msgstr ""
 
-#: ui/hub_panel.gd:98
+#: ui/hub_panel.gd:99
 msgid "Fully built."
 msgstr ""
 
-#: ui/hub_panel.gd:101
+#: ui/hub_panel.gd:102
 msgid ""
 "Next: %s. %s\n"
 "Needs %s"
 msgstr ""
 
-#: ui/hub_panel.gd:102 ui/stations_panel.gd:98
+#: ui/hub_panel.gd:103 ui/stations_panel.gd:98
 msgid "Build %s"
 msgstr ""
 
-#: ui/hub_panel.gd:107
+#: ui/hub_panel.gd:108
 msgid "Continue in the full game"
 msgstr ""
 
-#: ui/hub_panel.gd:114
+#: ui/hub_panel.gd:115
 msgid ""
 "\n"
 "Requires hub level %d."
 msgstr ""
 
-#: ui/hub_panel.gd:116
+#: ui/hub_panel.gd:117
 msgid ""
 "\n"
 "All built (max)."
 msgstr ""
 
-#: ui/hub_panel.gd:119
+#: ui/hub_panel.gd:120
 msgid ""
 "%s   ·   %d / %d built\n"
 "%s%s"
 msgstr ""
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:121
 msgid "Air Scrubbers maxed"
 msgstr ""
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:121
 msgid "Build Air Scrubber"
 msgstr ""
 
@@ -4588,10 +4692,6 @@ msgstr ""
 
 #: ui/upgrade_card.gd:177
 msgid "Lv %d%s"
-msgstr ""
-
-#: ui/upgrade_card.gd:185
-msgid "%s Lv %d"
 msgstr ""
 
 #: ui/upgrade_card.gd:186
@@ -7993,7 +8093,7 @@ msgid "Wind-up Tin Robot"
 msgstr ""
 
 #: data/events.json:trinkets[tin_robot].desc
-msgid "Walks three steps and falls over. Patch relates."
+msgid "Walks three steps and falls over. Lumi relates."
 msgstr ""
 
 #: data/events.json:trinkets[seed_locket].name
@@ -8073,7 +8173,7 @@ msgid "Photo: Glowtail Fox"
 msgstr ""
 
 #: data/events.json:trinkets[photo_glowtail_fox].desc
-msgid "Its tail glows when it's curious. It was very curious about Patch."
+msgid "Its tail glows when it's curious. It was very curious about Lumi."
 msgstr ""
 
 #: data/events.json:trinkets[photo_moss_deer].name

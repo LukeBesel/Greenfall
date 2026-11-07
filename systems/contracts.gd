@@ -341,7 +341,7 @@ func buy(item_id: String) -> String:
 			var r: int = int(it.get("rarity", 3))
 			GameState.parts.append({"type": t, "rarity": r})
 			EventBus.part_found.emit(t, r)
-			EventBus.toast.emit(tr("Printed: %s %s.") % [tr(str(Economy.rarity(r).get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))], "story")
+			EventBus.toast.emit(tr("Printed: %s.") % L10nFmt.part_name(r, t), "story")
 		"seeds":
 			GameState.add_currency("seeds", BigNum.from_float(float(it.get("amount", 20))))
 			EventBus.toast.emit(tr("+%d seeds.") % int(it.get("amount", 20)), "hint")

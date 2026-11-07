@@ -220,6 +220,13 @@ Known: Godot exits with code 134 after some headless runs (engine cleanup at qui
 - Tests: `tests/test_l10n.gd` checks every locale loads, is complete, keeps placeholders (order of % specs) and the `E   ` prefix, plurals, CJK glyph coverage (has_char), system locale mapping.
 - Next: native-speaker review per language (workflow in docs/LOCALIZATION.md, "Reviewing a machine draft"); rarity+part name word order (`"%s %s"`) for Romance languages; HUD/button overflow pass in de/fr; `◈` glyph missing from the UI font; Korean/Russian.
 
+## Update: translation fill pass (wt/i18n2)
+- Done: 467 new strings drafted in all six languages (first-hour polish, Lumi designs, wildlife + Codex Animals + photo trinkets, visual QA, late game: Cradle Mode, Ark Bridge, Heirlooms, Garden Mode, 41 eggs, goals, achievements, WREN lines). 2,968/2,968 per language, still MACHINE DRAFT.
+- Done: `systems/l10n_fmt.gd` (`L10nFmt`): reward suffixes (`reward()`, `amount()` with plurals: "+25 cubes", "+1 trinket", "+1.2K cubes"), rarity + part as one msgctxt'd pattern `{rarity} {part}` ("part name"; fr/es/pt use `{part} {rarity}`), research effect lines `+{amount}% {robot} {stat}`. Used by eggs, codex, events, Lumi level, contracts, robot builder, trade, research, bloom, hex levels, decor, outposts, hub, salvage toasts.
+- Done: token glyph `◈` -> `◆` (in both CJK subsets' base set, reached by the UI and Ledger fonts); "Patch" -> "Lumi" in the tin robot and glowtail fox collectibles (street sign kept); pseudo.po passes `msgfmt --check`.
+- Done: `test_full_translations_complete` is strict again (0 missing; handles msgctxt ids). `tools/l10n_status.py` (coverage table, `--missing xx`, `--export` -> `.l10n_work/todo.tsv`, `--check`); `tools/l10n_merge_draft.py` reads keyed plural/context lines. Tests: tests/test_l10n_fmt.gd.
+- Next: native review; Romance gender agreement of rarity adjectives (drafts use one form per rarity); districts on the HUD ("OLD TOWN") stay English by design.
+
 
 ## In progress (Nov 7, 2026): deep dive
 Wave 1 helpers (worktrees /home/user/gf-wt/<name>, branches wt/<name>):
