@@ -38,6 +38,6 @@ void fragment() {
 	ROUGHNESS = 0.9;
 	NORMAL = -NORMAL;
 	float vein = 1.0 - smoothstep(0.0, 0.045, abs(vnoise(q * vec2(0.6, 0.35) + 3.0) - 0.5));
-	float e = pow(d, 1.7) * (0.55 + 0.45 * band) + vein * smoothstep(0.25, 0.9, d) * 0.9;
+	float e = (0.12 + 0.6 * smoothstep(0.0, 0.25, d) + pow(d, 1.4)) * (0.55 + 0.45 * band) + vein * smoothstep(0.05, 0.6, d) * 1.2;
 	EMISSION = glow_col * e * glow;
 }

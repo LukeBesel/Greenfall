@@ -53,6 +53,7 @@ var _n2 := FastNoiseLite.new()
 var _n3 := FastNoiseLite.new()
 var _core_mat: ShaderMaterial
 var _core_floor: StandardMaterial3D
+var _mouth_mat: StandardMaterial3D
 var _plants: Array[MultiMeshInstance3D] = []
 var _plant_n: PackedInt32Array = PackedInt32Array()
 var _devils: Array[Dictionary] = []
@@ -574,6 +575,25 @@ func _build_pit() -> void:
 	fl.material_override = _core_floor
 	fl.position = Vector3(pit_c.x, -PIT_DEPTH - depth + 4.0, pit_c.z)
 	add_child(fl)
+	# Heat glow rising out of the mouth: soft additive discs a little down the shaft.
+	_mouth_mat = StandardMaterial3D.new()
+	_mouth_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	_mouth_mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+	_mouth_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	_mouth_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	_mouth_mat.disable_receive_shadows = true
+	_mouth_mat.albedo_texture = soft_dot()
+	_mouth_mat.albedo_color = Color(EMBER.r, EMBER.g, EMBER.b, 0.5)
+	for k: int in 3:
+		var md := MeshInstance3D.new()
+		md.name = "MouthGlow%d" % k
+		var mp := PlaneMesh.new()
+		mp.size = Vector2(r0 * 2.0, r0 * 2.0) * (1.0 - 0.15 * k)
+		md.mesh = mp
+		md.material_override = _mouth_mat
+		md.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		md.position = Vector3(pit_c.x, -PIT_DEPTH - 14.0 - 22.0 * k, pit_c.z)
+		add_child(md)
 
 
 ## Bench heights: flat rim berm, then six stepped benches down to the shaft mouth.
@@ -878,8 +898,9 @@ func _apply_restore() -> void:
 	var cc: Color = EMBER.lerp(CORE_WARM, _smooth(0.3, 0.9, r))
 	var breathe: float = 0.85 + 0.15 * sin(_t * 0.6)
 	_core_mat.set_shader_parameter("glow_col", Vector3(cc.r, cc.g, cc.b))
-	_core_mat.set_shader_parameter("glow", lerpf(0.9, 1.7, r) * breathe)
+	_core_mat.set_shader_parameter("glow", lerpf(1.6, 2.4, r) * breathe)
 	_core_floor.albedo_color = cc * lerpf(0.9, 1.6, r) * breathe
+	_mouth_mat.albedo_color = Color(cc.r, cc.g, cc.b, lerpf(0.4, 0.55, r) * breathe)
 
 
 # --- Dev ------------------------------------------------------------------------------------
