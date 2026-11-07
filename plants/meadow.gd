@@ -189,7 +189,7 @@ func _place_sprouts(mesh: Mesh, step: float, gm: ShaderMaterial, rng: RandomNumb
 				p.y = layout.height_at(p.x, p.z) if layout else 0.0
 				_bucket(buckets, p, Transform3D(Basis(Vector3.UP, a + rng.randf_range(-0.6, 0.6)), p),
 					Color(rng.randf() * 0.9, rng.randf(), 0.0, rng.randf()))
-	_emit(buckets, mesh, _material(2, 0.16, gm), 2)
+	_emit(buckets, mesh, _material(2, 0.24, gm), 2)
 
 
 func _bucket(buckets: Dictionary, p: Vector3, xf: Transform3D, cd: Color) -> void:
