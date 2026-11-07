@@ -1645,7 +1645,11 @@ func _dev_look() -> void:
 				break
 	patch.global_position = Vector3(lp.x, _ground_y(lp) + 0.05, lp.z)
 	var to: Vector3 = a.pos - lp
-	patch.rotation.y = atan2(to.x, to.z)
+	var base_yaw: float = atan2(to.x, to.z)
+	patch.rotation.y = base_yaw + PI  # Lumi's model faces -Z: turn him toward the animal
+	var lm: Node = patch.get("model")
+	if lm and lm.has_method("look_toward"):
+		lm.call("look_toward", a.pos + Vector3(0, 0.2, 0))
 	if a.kind == "cat":
 		a.yaw = atan2(-(lp.x - a.pos.x), -(lp.z - a.pos.z))
 	a.hold = true
@@ -1671,7 +1675,7 @@ func _dev_look() -> void:
 	var cam: Node = world.get("cam")
 	if cam:
 		var yaw_off: float = float(parts[3]) if parts.size() > 3 else 0.6
-		cam.set("yaw", patch.rotation.y + PI + yaw_off)
+		cam.set("yaw", base_yaw + PI + yaw_off)
 		cam.set("distance", float(parts[1]) if parts.size() > 1 else 3.2)
 		cam.set("pitch", float(parts[2]) if parts.size() > 2 else -0.22)
 		if cam.has_method("snap"):
