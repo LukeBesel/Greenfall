@@ -214,6 +214,7 @@ func build(p_world: Node, p_field: HexField, p_kind: Dictionary) -> void:
 		n.name = g.capitalize()
 		add_child(n)
 		_groups[g] = n
+	_dev_clean_water()
 	_plan_islands()
 	_build_ocean()
 	_build_islands()
@@ -278,6 +279,25 @@ func _process(delta: float) -> void:
 
 func _measure() -> void:
 	pass
+
+
+## Dev: --tide-clean (or a --future preview) skims every water hex clean (restored-look shots).
+func _dev_clean_water() -> void:
+	if not (DevHooks.has("tide-clean") or DevHooks.has("future")):
+		return
+	var view: Node = world.get("view")
+	for pid: int in field.piece_count():
+		var h: int = field.piece_hex[pid]
+		if field.piece_alive[pid] == 1 and field.is_water(h):
+			field.remove_piece(pid)
+			if view:
+				view.call("hide_piece", pid)
+	for h: int in field.hex_count():
+		if field.is_water(h) and not field.is_clean(h):
+			field.hex_clean[h] = 1
+			field.cleaned_count += 1
+			if view:
+				view.call("refresh_hex", h, false)
 
 
 ## Open sea to the horizon: a long far plane, and the far blur only far out.

@@ -171,7 +171,7 @@ void fragment() {
 	float oil = 0.0;
 	// Oil slicks on dirty water: smooth dark film patches drifting slowly.
 	float slick_n = fbm3(p * 0.045 + vec2(TIME * 0.004, -TIME * 0.003));
-	oil = (1.0 - clarity) * smoothstep(0.42, 0.62, slick_n) * mix(0.7, 1.0, in_field);
+	oil = (1.0 - clarity) * smoothstep(0.5, 0.66, slick_n) * mix(0.6, 1.0, in_field);
 	float foam = 0.0;
 	vec2 ripple = vec2(0.0);
 	for (int i = 0; i < 8; i++) {
@@ -248,23 +248,24 @@ void fragment() {
 	float T = exp(-absorb * L);
 	vec3 body = mix(deep_col, shallow_col, exp(-hdepth * 0.28));
 	body = mix(body, lagoon_col, exp(-hdepth * 1.1) * 0.6);
-	body = mix(murky_col + vec3(0.03, 0.02, 0.0) * fbm3(p * 0.02), body, clarity);
+	vec3 murk = mix(murky_col, deep_col * 0.7 + vec3(0.05, 0.06, 0.06), smoothstep(40.0, 400.0, r) * (1.0 - in_field) * 0.8);
+	body = mix(murk + vec3(0.03, 0.02, 0.0) * fbm3(p * 0.02), body, clarity);
 	vec3 col = mix(body, bed_c * mix(vec3(0.75, 0.95, 0.9), vec3(1.0), exp(-L * 0.1)), T);
 
 	// Oil film: dark, glossy, with a faint thin-film rainbow at grazing angles.
 	float fres = pow(1.0 - clamp(dot(-V, vec3(0.0, 1.0, 0.0)), 0.0, 1.0), 3.0);
 	vec3 film = 0.5 + 0.5 * cos(6.2831 * (slick_n * 3.0 + fres * 1.2 + vec3(0.0, 0.33, 0.67)));
-	vec3 oil_c = oil_col + film * 0.05 * (0.3 + fres);
+	vec3 oil_c = oil_col + film * 0.022 * (0.25 + fres);
 	col = mix(col, oil_c, oil * 0.85);
 	// Scum lines (bubbles and grime) where the slicks gather.
-	float scum = (1.0 - clarity) * smoothstep(0.02, 0.0, abs(slick_n - 0.42)) * 0.5;
+	float scum = (1.0 - clarity) * smoothstep(0.008, 0.0, abs(slick_n - 0.5)) * 0.22 * (1.0 - smoothstep(15.0, 60.0, cam_d)) * vnoise(p * 1.7);
 
 	// --- Foam: shoreline bands, whitecaps on swell crests offshore.
 	float shore = smoothstep(1.1, 0.05, depth);
 	float bands = 0.5 + 0.5 * sin(depth * 9.0 - TIME * 1.6 + vnoise(p * 0.3) * 4.0);
 	float fnoise = fbm3(p * 0.6 + vec2(TIME * 0.15, 0.0));
-	foam += shore * smoothstep(0.35, 0.75, bands * 0.6 + fnoise * 0.6);
-	foam += smoothstep(0.3, 0.0, depth) * 0.6 * fnoise;
+	foam += shore * smoothstep(0.45, 0.85, bands * 0.6 + fnoise * 0.6) * 0.8;
+	foam += smoothstep(0.25, 0.0, depth) * 0.5 * fnoise;
 	float cap = smoothstep(0.8, 1.0, swell_h) * smoothstep(0.6, 0.85, fnoise) * smoothstep(0.1, 0.3, swell_k);
 	foam += cap * 0.55;
 	foam += scum;
