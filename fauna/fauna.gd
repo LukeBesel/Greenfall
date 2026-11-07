@@ -18,7 +18,7 @@ extends Node3D
 ## in photo mode go into the Collection (flags.fauna_photos, trinkets pic_<species>).
 ##
 ## Dev: --fauna-look=SPECIES[,dist,pitch,yaw] frames Lumi next to one (after --fauna-look-at=S,
-## default 5), --fauna-pose=sit|groom|sleep|pet|graze|fly holds a pose, --fauna-dense spawns on
+## default 0), --fauna-lakes cleans every lake, --fauna-pose=sit|groom|sleep|pet|graze|fly holds a pose, --fauna-dense spawns on
 ## every qualifying hex, --fauna-report[=S] prints the census.
 
 enum St { IDLE, WALK, GRAZE, SIT, GROOM, SLEEP, FOLLOW, FLEE, FLY, PECK, PET, BASK, SWIM, SOAR, LEAVE }
@@ -119,6 +119,18 @@ func setup(p_world: Node) -> void:
 	if ph and ph.has_signal("captured"):
 		ph.connect("captured", _on_photo)
 	add_to_group("fauna")
+	if DevHooks.has("fauna-lakes"):  # dev: clean every lake hex (water shots)
+		var fl: HexField = world.field
+		for pid: int in fl.piece_count():
+			if fl.piece_alive[pid] == 1 and fl.is_water(fl.piece_hex[pid]):
+				fl.remove_piece(pid)
+				world.view.hide_piece(pid)
+		for h: int in fl.hex_count():
+			if fl.is_water(h) and not fl.is_clean(h):
+				fl.hex_clean[h] = 1
+				fl.cleaned_count += 1
+			if fl.is_water(h):
+				world.view.refresh_hex(h, false)
 	if DevHooks.has("fauna-look") or DevHooks.has("fauna-dense"):
 		# Screenshots: software rendering draws only a few frames, so populate right away.
 		_lumi_pos = world.patch.global_position if world.get("patch") else Vector3.ZERO
@@ -179,7 +191,15 @@ func replan() -> void:
 		else:
 			for k: int in int(e["n"]):
 				_desired["%s|%d|%d" % [sid, h, k]] = e
-	if DevHooks.has("fauna-debug"): print("[fauna] plan ", plan.size(), " regs ", regs, " night ", _night, " desired ", _desired.size())
+	if DevHooks.has("fauna-debug"):
+		var wn: int = 0
+		var wc: int = 0
+		var edges: int = 0
+		for c: Dictionary in ctxs:
+			wn += 1 if c["water"] else 0
+			wc += 1 if c["water"] and c["clean"] else 0
+			edges += 1 if c["edge"] else 0
+		print("[fauna] plan ", plan.size(), " regs ", regs, " night ", _night, " desired ", _desired.size(), " water ", wn, " clean ", wc, " edges ", edges)
 	var named: Dictionary = adopted_cat()
 	if not named.is_empty() and int(named.get("hub", -1)) == int(world.get("hub_index") if world.get("hub_index") != null else 0):
 		_desired["named_cat"] = {"sp": "cat", "hex": -2, "n": 1}
@@ -195,7 +215,7 @@ func replan() -> void:
 		if DevHooks.has("fauna-debug"): print("[fauna] spawn ", key)
 		if _spawn(key, _desired[key]):
 			spawned += 1
-		if spawned >= (40 if age < 4.0 else 12):
+		if spawned >= (40 if age < 4.0 else 12) and not dense and not DevHooks.has("fauna-look"):
 			break
 
 
