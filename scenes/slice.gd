@@ -471,6 +471,8 @@ func _ready() -> void:
 	bloom.name = "Bloom"
 	bloom.world = self
 	add_child(bloom)
+	# Cradle Returns complete -> the ark comes home (the finale plays once per save).
+	EventBus.cradle_district_complete.connect(func(_h: int) -> void: bloom.play_finale(), CONNECT_ONE_SHOT)
 	if frontier:  # [biomes] frontier mechanics and visuals, once the scene is built
 		frontier.setup()
 	core_charge = CoreCharge.new()  # Lumi's Bloom Core charge + its story beats (story/core_charge.gd)
