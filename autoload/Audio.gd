@@ -48,6 +48,10 @@ func _ready() -> void:
 	apply_volumes()
 
 
+func _exit_tree() -> void:
+	StorySfx.finish_pending()  # [health] an unwaited WorkerThreadPool task crashes the engine at exit
+
+
 func _setup_buses() -> void:
 	for bus_name: String in ["Music", "SFX"]:
 		if AudioServer.get_bus_index(bus_name) == -1:

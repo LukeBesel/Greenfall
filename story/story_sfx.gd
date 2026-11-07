@@ -43,12 +43,20 @@ static func prewarm_music_box() -> void:
 
 
 static func music_box() -> AudioStreamWAV:
-	if _box_task >= 0:
-		WorkerThreadPool.wait_for_task_completion(_box_task)
-		_box_task = -1
+	finish_pending()
 	if _box == null:
 		_box = wav(_music_box())
 	return _box
+
+
+## [health] Waits for the music-box worker task. WorkerThreadPool keeps a task (and its lambda,
+## which holds a reference to this GDScript) until it is waited on; one left over at quit is freed
+## after the GDScript language has shut down and crashes the exit (SIGABRT, exit code 134).
+## Called from Audio._exit_tree() so every quit path waits before scripting is torn down.
+static func finish_pending() -> void:
+	if _box_task >= 0:
+		WorkerThreadPool.wait_for_task_completion(_box_task)
+		_box_task = -1
 
 
 static func stream(id: String) -> AudioStream:
