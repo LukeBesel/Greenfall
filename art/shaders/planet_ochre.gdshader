@@ -109,6 +109,6 @@ void fragment() {
 	float lights = smoothstep(0.88, 0.97, pl_noise(p * 85.0 + 7.0)) * (in_mine * (1.0 - restoration) + wet * grow * 0.7);
 	col += vec3(1.0, 0.62, 0.3) * lights * 0.35 * (1.0 - day);
 	float fr = 1.0 - clamp(dot(ng, v), 0.0, 1.0);
-	col = mix(col, vec3(0.92, 0.66, 0.4) * (lit + 0.01), pow(fr, 2.2) * mix(0.55, 0.4, restoration));
+	col = mix(col, vec3(0.92, 0.66, 0.4) * (lit + 0.01), pow(fr, 3.0) * mix(0.36, 0.28, restoration));
 	ALBEDO = col;
 }

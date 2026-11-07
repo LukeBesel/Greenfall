@@ -34,10 +34,10 @@ void fragment() {
 	// the great rift: a band along a great circle, wandering, on one face of the world
 	vec3 k = normalize(vec3(0.25, 0.92, -0.3));
 	float g = dot(p, k) + 0.07 * (pl_fbm(p * 4.0 + 2.0, 4) - 0.5);
-	float arc = smoothstep(-0.3, 0.3, dot(p, normalize(vec3(0.85, 0.0, 0.5))));
+	float arc = smoothstep(0.05, 0.55, dot(p, normalize(vec3(0.85, 0.0, 0.5))));
 	float wg = max(fwidth(g), 0.004);
-	float rift = (1.0 - smoothstep(0.012, 0.045 + wg, abs(g))) * arc;
-	float rift_wall = (1.0 - smoothstep(0.03, 0.08, abs(g))) * arc;
+	float rift = (1.0 - smoothstep(0.006, 0.024 + wg, abs(g))) * arc;
+	float rift_wall = (1.0 - smoothstep(0.015, 0.05, abs(g))) * arc;
 	// side canyons: iso-lines of a warped field near the rift and in the highlands
 	float cf = pl_fbm(p * 5.0 + wv * 1.6 + 8.0, min(oct, 5));
 	float side = (1.0 - smoothstep(0.0, max(fwidth(cf) * 1.4, 0.012), abs(cf - 0.5))) * high * 0.8;
@@ -91,6 +91,6 @@ void fragment() {
 	vec3 lava = mix(vec3(1.0, 0.28, 0.05), vec3(1.0, 0.62, 0.28), clamp(seam + foundry, 0.0, 1.0));
 	col += lava * heat * mix(0.35, 0.8, 1.0 - day);
 	float fr = 1.0 - clamp(dot(ng, v), 0.0, 1.0);
-	col = mix(col, vec3(0.8, 0.45, 0.28) * (lit + 0.01), pow(fr, 2.6) * mix(0.4, 0.3, restoration));
+	col = mix(col, vec3(0.8, 0.45, 0.28) * (lit + 0.01), pow(fr, 3.2) * mix(0.3, 0.22, restoration));
 	ALBEDO = col;
 }

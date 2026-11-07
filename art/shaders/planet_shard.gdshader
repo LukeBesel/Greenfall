@@ -7,8 +7,8 @@ render_mode unshaded, cull_back, shadows_disabled, fog_disabled;
 
 #include "res://art/shaders/planet_lib.gdshaderinc"
 
-uniform vec3 ice_a = vec3(0.78, 0.9, 1.0);
-uniform vec3 ice_b = vec3(0.45, 0.68, 0.95);
+uniform vec3 ice_a = vec3(0.62, 0.8, 0.98);
+uniform vec3 ice_b = vec3(0.32, 0.56, 0.9);
 uniform vec3 glow_col = vec3(0.3, 0.6, 1.0);
 uniform float planet_r_world = 1.0;
 varying vec3 w_n;
@@ -33,7 +33,7 @@ void fragment() {
 	float sa = pl_planet_shadow(w_p, center, planet_r_world, la);
 	float sb = pl_planet_shadow(w_p, center, planet_r_world, lb);
 	vec3 albedo = mix(ice_a, ice_b, custom.x);
-	vec3 diff = sun_a_col * sa * (clamp(dot(n, la), 0.0, 1.0) * 0.8 + 0.2) + sun_b_col * sb * (clamp(dot(n, lb), 0.0, 1.0) * 0.8 + 0.2);
+	vec3 diff = sun_a_col * sa * (clamp(dot(n, la), 0.0, 1.0) * 0.6 + 0.12) + sun_b_col * sb * (clamp(dot(n, lb), 0.0, 1.0) * 0.6 + 0.12);
 	float pa = pow(clamp(dot(n, normalize(la + v)), 0.0, 1.0), 90.0) * 3.0;
 	float pb = pow(clamp(dot(n, normalize(lb + v)), 0.0, 1.0), 90.0) * 3.0;
 	vec3 col = albedo * (diff + vec3(0.03, 0.04, 0.06));

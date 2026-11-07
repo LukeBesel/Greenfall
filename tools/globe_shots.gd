@@ -41,7 +41,7 @@ void sky() {
 	float star = step(0.985, s) * smoothstep(0.12, 0.0, length(o)) * (0.25 + 0.75 * h(c + 9.1));
 	vec3 tint = mix(vec3(0.75, 0.85, 1.0), vec3(1.0, 0.85, 0.7), h(c + 5.5));
 	float band = exp(-pow(EYEDIR.y * 3.0 - EYEDIR.x, 2.0) * 2.0) * 0.006;
-	COLOR = vec3(0.004, 0.005, 0.009) + tint * star * 0.8 + vec3(0.5, 0.55, 0.7) * band;
+	COLOR = vec3(0.0015, 0.002, 0.004) + tint * star * 0.8 + vec3(0.5, 0.55, 0.7) * band;
 }"""
 	sm.shader = sh
 	sky.sky_material = sm

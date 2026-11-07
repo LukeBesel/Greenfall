@@ -48,7 +48,7 @@ void fragment() {
 		float d = acos(clamp(dot(p, c), -1.0, 1.0));
 		float f = exp(-(d * d) / (sz * sz));
 		float dir = c.y >= 0.0 ? 1.0 : -1.0;  // spin with the hemisphere
-		sp = pl_rotate(sp, c, dir * swirl * 7.0 * f);
+		sp = pl_rotate(sp, c, dir * swirl * 5.0 * f * (0.85 + 0.3 * pl_noise(p * 6.0)));
 		storm += f;
 		eye = max(eye, 1.0 - smoothstep(sz * 0.05, sz * 0.13, d));
 	}

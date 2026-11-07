@@ -27,7 +27,7 @@ void fragment() {
 	vec4 r = pl_ridged(p * 2.4 + wv * 1.4 + 3.0, max(oct - 2, 2));
 	float chain = smoothstep(0.55, 0.85, r.x);
 	vec4 isl = pl_fbmd(p * 11.0 + wv * 2.0, max(oct - 2, 2), 0.5, 0.6);
-	float ih = chain * 0.7 + isl.x * 0.55 + smoothstep(0.35, 0.6, sea.x) * 0.5 - 0.62;
+	float ih = chain * 0.7 + isl.x * 0.55 + smoothstep(0.35, 0.6, sea.x) * 0.5 - 0.52;
 	float land = smoothstep(-0.005, 0.01, ih);
 	float shelf = smoothstep(-0.22, 0.0, ih);
 	float depth = clamp(0.5 - sea.x * 0.7, 0.0, 1.0);
@@ -61,11 +61,11 @@ void fragment() {
 	vec3 ripple = pl_noised(p * 70.0 + vec3(0.0, TIME * 0.05, 0.0)).yzw + pl_noised(p * 190.0).yzw * 0.5;
 	vec3 nw = normalize(mat3(MODEL_MATRIX) * pl_grad_normal(p, ripple, 0.0035));
 	float wet = (1.0 - land) * (1.0 - cap);
-	col += (pl_spec2(ng, nw, v, 22.0, 0.08) + pl_spec2(ng, nw, v, 260.0, 0.65)) * wet * mix(0.55, 1.0, ocean_r);
+	col += (pl_spec2(ng, nw, v, 22.0, 0.08) + pl_spec2(ng, nw, v, 420.0, 0.22)) * wet * mix(0.55, 1.0, ocean_r);
 	float day = pl_daylight(ng);
 	float town = smoothstep(0.78, 0.92, pl_noise(p * 120.0)) * land * smoothstep(0.0, 0.05, ih) * (1.0 - smoothstep(0.1, 0.2, ih));
 	col += vec3(1.0, 0.78, 0.5) * town * 0.4 * ocean_r * (1.0 - day);
 	float fr = 1.0 - clamp(dot(ng, v), 0.0, 1.0);
-	col = mix(col, vec3(0.35, 0.6, 1.0) * (lit + 0.012), pow(fr, 2.4) * 0.5);
+	col = mix(col, vec3(0.35, 0.6, 1.0) * (lit + 0.012), pow(fr, 3.2) * 0.32);
 	ALBEDO = col;
 }

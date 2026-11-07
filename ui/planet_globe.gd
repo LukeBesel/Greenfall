@@ -22,13 +22,13 @@ const MOTE_SHARE: Array[float] = [0.35, 0.7, 1.0]
 ## Per-planet look. Colours are linear-ish albedo; tilt in radians; spin in rad/s.
 const CFG: Dictionary = {
 	"verdance": {"seed": 3.7, "tilt": 0.41, "spin": 0.05, "au": 1.0,
-		"clouds": {"col_ruin": Color(0.5, 0.41, 0.32), "col_ok": Color(0.96, 0.97, 0.99), "cover_ruin": 0.62, "cover_ok": 0.44, "opacity_ruin": 0.55, "opacity_ok": 0.9, "scale": 2.0, "band": 0.25, "storms": 1, "swirl": 0.8, "storm_size": 0.28},
+		"clouds": {"col_ruin": Color(0.4, 0.32, 0.24), "col_ok": Color(0.94, 0.95, 0.97), "cover_ruin": 0.44, "cover_ok": 0.37, "opacity_ruin": 0.5, "opacity_ok": 0.88, "scale": 2.0, "band": 0.25, "storms": 1, "swirl": 0.8, "storm_size": 0.28},
 		"atmo": {"col_ruin": Color(0.62, 0.45, 0.3), "col_ok": Color(0.32, 0.58, 1.0), "strength_ruin": 0.7, "strength_ok": 1.0, "thickness": 0.07}},
-	"ochre": {"seed": 1.3, "tilt": 0.22, "spin": 0.035, "au": 0.62,
+	"ochre": {"seed": 1.3, "face": -0.3, "tilt": 0.22, "spin": 0.035, "au": 0.62,
 		"atmo": {"col_ruin": Color(0.95, 0.66, 0.38), "col_ok": Color(0.85, 0.7, 0.55), "strength_ruin": 0.75, "strength_ok": 0.7, "thickness": 0.09, "falloff": 0.45},
 		"ring": "dust"},
 	"tidewell": {"seed": 5.9, "tilt": 0.3, "spin": 0.06, "au": 1.55,
-		"clouds": {"col_ruin": Color(0.72, 0.74, 0.74), "col_ok": Color(0.97, 0.98, 1.0), "cover_ruin": 0.5, "cover_ok": 0.47, "opacity_ruin": 0.82, "opacity_ok": 0.93, "scale": 2.3, "band": 0.45, "storms": 3, "swirl": 1.15, "storm_size": 0.34},
+		"clouds": {"col_ruin": Color(0.72, 0.74, 0.74), "col_ok": Color(0.97, 0.98, 1.0), "cover_ruin": 0.42, "cover_ok": 0.38, "opacity_ruin": 0.8, "opacity_ok": 0.92, "scale": 2.3, "band": 0.45, "storms": 3, "swirl": 0.8, "storm_size": 0.34},
 		"atmo": {"col_ruin": Color(0.42, 0.58, 0.8), "col_ok": Color(0.3, 0.56, 1.0), "strength_ruin": 0.9, "strength_ok": 1.05, "thickness": 0.07}},
 	"anvil": {"seed": 8.2, "tilt": 0.44, "spin": 0.04, "au": 2.4,
 		"clouds": {"col_ruin": Color(0.55, 0.36, 0.26), "col_ok": Color(0.85, 0.78, 0.72), "cover_ruin": 0.22, "cover_ok": 0.2, "opacity_ruin": 0.4, "opacity_ok": 0.5, "scale": 1.6, "band": 0.8, "storms": 0, "sharp": 0.2},
@@ -96,7 +96,7 @@ func setup(id: String, restoration_: float = 0.0, tint: Color = Color(0.0, 0.0, 
 	add_child(_tilt)
 	_body = Node3D.new()
 	_body.name = "Body"
-	_body.rotation.y = float(_cfg.get("seed", 0.0)) * 1.3
+	_body.rotation.y = float(_cfg.get("face", float(_cfg.get("seed", 0.0)) * 1.3))
 	_tilt.add_child(_body)
 	_surface = _sphere_node(1.0, _surface_shader(planet_id))
 	_surface_mat = _surface.material_override as ShaderMaterial
@@ -153,7 +153,7 @@ func set_restoration(f: float) -> void:
 	for mm: MultiMeshInstance3D in _multis:
 		var mat: ShaderMaterial = mm.material_override as ShaderMaterial
 		if ring == "fire":
-			mat.set_shader_parameter("intensity", lerpf(1.0, 0.45, restoration))
+			mat.set_shader_parameter("intensity", lerpf(1.6, 0.7, restoration))
 	for m: ShaderMaterial in _ring_mats:
 		if ring == "dust":
 			m.set_shader_parameter("opacity", lerpf(0.34, 0.24, restoration))
@@ -261,7 +261,7 @@ static func sun_light(id: String) -> Dictionary:
 		ea *= k
 		eb *= k
 	# Soften for a UI view: half the falloff, then a floor so the far worlds still read.
-	var ui_a: float = clampf(lerpf(1.0, ea, 0.45), 0.72, 1.3) * 1.15
+	var ui_a: float = clampf(lerpf(1.0, ea, 0.45), 0.72, 1.3)
 	var ui_b: float = clampf(eb / maxf(ea, 0.01), 0.1, 0.6) * ui_a
 	var r: Dictionary = {"a": Color(ca.r * ui_a, ca.g * ui_a, ca.b * ui_a), "b": Color(cb.r * ui_b, cb.g * ui_b, cb.b * ui_b), "sep": sep}
 	_sun_cache[id] = r
@@ -455,8 +455,8 @@ func _build_fire_ring() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 9203
 	_ring_pivot.rotation = Vector3(-0.22, 0.0, 0.12)
-	_add_ring_band(1.38, 2.15, {"col_a": Color(0.36, 0.3, 0.27), "col_b": Color(0.16, 0.13, 0.12), "opacity": 0.3, "band_freq": 26.0, "gaps": 0.5, "clumps": 0.55, "scatter": 0.8, "ember": Color(0.09, 0.025, 0.006)})
-	_add_motes(900, 1.4, 2.12, 0.04, 0.006, 0.02, {"col_hot": Color(1.0, 0.62, 0.26), "col_cool": Color(0.75, 0.16, 0.03), "intensity": 1.0, "flicker": 0.7, "sunlit": 0.0}, -0.15, rng)
+	_add_ring_band(1.38, 2.15, {"col_a": Color(0.36, 0.3, 0.27), "col_b": Color(0.16, 0.13, 0.12), "opacity": 0.22, "band_freq": 26.0, "gaps": 0.5, "clumps": 0.55, "scatter": 0.8, "ember": Color(0.09, 0.025, 0.006)})
+	_add_motes(900, 1.4, 2.12, 0.04, 0.008, 0.026, {"col_hot": Color(1.0, 0.62, 0.26), "col_cool": Color(0.75, 0.16, 0.03), "intensity": 1.6, "flicker": 0.7, "sunlit": 0.0}, -0.15, rng)
 
 
 ## A tall faceted ice spike (hexagonal bipyramid, long point up), flat shaded. Unit length.
@@ -571,7 +571,7 @@ func _sync() -> void:
 		var cam: Camera3D = get_viewport().get_camera_3d() if is_inside_tree() and get_viewport() else null
 		var bx: Basis = cam.global_transform.basis if cam else Basis()
 		# Key light from the upper left of the view, a little behind the planet's limb.
-		_dir_a = (bx * Vector3(-0.68, 0.36, 0.64)).normalized()
+		_dir_a = (bx * Vector3(-0.82, 0.34, 0.46)).normalized()
 		_dir_b = _dir_a.rotated((bx * Vector3.UP).normalized(), deg_to_rad(_sep_deg)).normalized()
 	var rw: float = radius * (global_transform.basis.get_scale().x if is_inside_tree() else 1.0)
 	for m: ShaderMaterial in _mats:

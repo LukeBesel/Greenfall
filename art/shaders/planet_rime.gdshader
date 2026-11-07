@@ -27,7 +27,7 @@ void fragment() {
 	vec4 b = pl_fbmd(p * 2.0 + seed, oct, 0.5, 0.0);
 	vec3 c1 = pl_cells(p * 3.4 + wv + seed);
 	float e1 = c1.y - c1.x;
-	float w1 = max(fwidth(e1) * 1.2, 0.025);
+	float w1 = max(fwidth(e1) * 1.0, 0.014);
 	float fault = 1.0 - smoothstep(0.0, w1, e1);
 	float ridge = exp(-pow(e1 / 0.13, 2.0));
 	float crack2 = 0.0;
@@ -47,11 +47,12 @@ void fragment() {
 	float cap = smoothstep(0.7, 0.82, lat + 0.06 * (b.x));
 	float crackk = 1.0 - cap * 0.75;
 
-	vec3 ice = mix(vec3(0.74, 0.83, 0.93), vec3(0.88, 0.9, 0.92), c1.z);
+	vec3 ice = mix(vec3(0.62, 0.76, 0.9), vec3(0.86, 0.9, 0.94), c1.z);
+	ice = mix(ice, vec3(0.55, 0.72, 0.9), smoothstep(0.45, 0.75, pl_fbm(p * 3.0 + 9.0, min(oct, 4))) * 0.5);
 	ice = mix(ice, vec3(0.86, 0.83, 0.78), smoothstep(0.75, 0.95, c1.z) * 0.5);  // old creamy plates
 	ice *= 0.92 + 0.12 * plate2;
 	ice = mix(ice, vec3(0.93, 0.95, 0.98), ridge * 0.35);
-	vec3 faultc = vec3(0.1, 0.34, 0.75);
+	vec3 faultc = vec3(0.2, 0.52, 0.95);
 	vec3 albedo = mix(ice, faultc, fault * crackk);
 	albedo = mix(albedo, vec3(0.35, 0.55, 0.82), max(crack2 * 0.55, lin * 0.7) * crackk);
 	albedo = mix(albedo, vec3(0.95, 0.97, 1.0), cap * 0.85);
@@ -76,6 +77,6 @@ void fragment() {
 	col += glow * (fault * 0.1 + lin * 0.05 + crack2 * 0.03) * crackk * (0.35 + 0.65 * (1.0 - day));
 	col += albedo * vec3(0.03, 0.045, 0.07) * (1.0 - day);  // soft inner light, never pitch black
 	float fr = 1.0 - clamp(dot(ng, v), 0.0, 1.0);
-	col = mix(col, vec3(0.7, 0.85, 1.0) * (lit + 0.04), pow(fr, 3.0) * 0.45);
+	col = mix(col, vec3(0.7, 0.85, 1.0) * (lit + 0.04), pow(fr, 3.2) * 0.35);
 	ALBEDO = col;
 }

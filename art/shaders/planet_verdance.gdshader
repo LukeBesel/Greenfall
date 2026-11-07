@@ -23,7 +23,7 @@ void fragment() {
 	vec3 q = p * 1.45 + vec3(seed, seed * 0.7, -seed);
 	vec3 wv = pl_warp(q * 1.3, min(oct, 4)) * 1.1;
 	vec4 c = pl_fbmd(q + wv, oct, 0.5, 0.0);
-	float h = c.x + 0.06;
+	float h = c.x - 0.02;
 	vec4 m = pl_ridged(p * 3.1 + wv * 1.6 + seed * 1.3, max(oct - 2, 2));
 	float inland = smoothstep(0.02, 0.22, h);
 	float mtn = m.x * inland;
@@ -34,8 +34,8 @@ void fragment() {
 	float n1 = pl_fbm(p * 8.0 + seed, min(oct, 5));
 	float n2 = pl_fbm(p * 21.0 + 3.0, min(oct, 4));
 	// --- ruined land: rust, grey junk fields, scrap flecks
-	vec3 rust = mix(vec3(0.20, 0.11, 0.06), vec3(0.44, 0.25, 0.12), n1);
-	rust = mix(rust, vec3(0.33, 0.30, 0.27), smoothstep(0.52, 0.72, n2) * 0.75);
+	vec3 rust = mix(vec3(0.15, 0.075, 0.035), vec3(0.38, 0.19, 0.08), n1);
+	rust = mix(rust, vec3(0.3, 0.27, 0.24), smoothstep(0.56, 0.74, n2) * 0.6);
 	float speck = oct >= 5 ? smoothstep(0.72, 0.92, pl_noise(p * 95.0 + 1.3)) : 0.0;
 	rust = mix(rust, vec3(0.6, 0.55, 0.5), speck * 0.45);
 	rust = mix(rust, vec3(0.26, 0.2, 0.16), smoothstep(0.15, 0.6, mtn));
@@ -74,7 +74,7 @@ void fragment() {
 	vec3 col = albedo * (lit + vec3(0.012, 0.014, 0.02));
 	// sun glints on open water (dimmer through the smog)
 	vec3 nw = normalize(mat3(MODEL_MATRIX) * pl_grad_normal(p, pl_noised(p * 60.0).yzw, 0.004));
-	col += pl_spec2(ng, nw, v, 70.0, mix(0.18, 0.5, ocean_r)) * (1.0 - land) * (1.0 - cap);
+	col += pl_spec2(ng, nw, v, 160.0, mix(0.1, 0.28, ocean_r)) * (1.0 - land) * (1.0 - cap);
 	// night side: scattered junk fires when ruined, warm city lights on restored coasts
 	float day = pl_daylight(ng);
 	float fires = smoothstep(0.86, 0.97, pl_noise(p * 70.0 + 4.0)) * land * (1.0 - mask) * (1.0 - cap);
@@ -84,6 +84,6 @@ void fragment() {
 	// aerial haze toward the limb: dusty when ruined, blue when restored
 	float fr = 1.0 - clamp(dot(ng, v), 0.0, 1.0);
 	vec3 atmo = mix(vec3(0.55, 0.42, 0.3), vec3(0.32, 0.56, 1.0), restoration);
-	col = mix(col, atmo * (lit + 0.01), pow(fr, 2.6) * mix(0.55, 0.42, restoration));
+	col = mix(col, atmo * (lit + 0.01), pow(fr, 3.4) * mix(0.32, 0.26, restoration));
 	ALBEDO = col;
 }
