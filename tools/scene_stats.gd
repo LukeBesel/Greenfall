@@ -127,9 +127,23 @@ static func probe_camera(root: Node, reach: float = 6.0) -> void:
 			var d: Vector3 = cam.project_ray_normal(vs * Vector2(fx, fy))
 			for n: Node in root.find_children("*", "GeometryInstance3D", true, false):
 				var g: GeometryInstance3D = n as GeometryInstance3D
-				if not g.is_visible_in_tree() or g is MultiMeshInstance3D:
+				if not g.is_visible_in_tree():
 					continue
 				var box: AABB = g.global_transform * g.get_aabb()
+				if g is MultiMeshInstance3D:  # test each instance's own box
+					var mm: MultiMesh = (g as MultiMeshInstance3D).multimesh
+					if mm == null or mm.mesh == null or not box.intersects(AABB(o, d * reach).abs().grow(0.01)):
+						continue
+					var nvis: int = mm.visible_instance_count if mm.visible_instance_count >= 0 else mm.instance_count
+					for ii: int in mini(nvis, 20000):
+						var ib: AABB = g.global_transform * mm.get_instance_transform(ii) * mm.mesh.get_aabb()
+						var ih: Variant = ib.intersects_segment(o, o + d * reach)
+						if ih != null or ib.has_point(o):
+							var idist: float = 0.0 if ih == null else o.distance_to(ih)
+							var ik: String = "%s#%d" % [g.get_path(), ii]
+							if not hits.has(ik) or float(hits[ik][0]) > idist:
+								hits[ik] = [idist, fy, ib.size]
+					continue
 				var hit: Variant = box.intersects_segment(o, o + d * reach)
 				if hit != null or box.has_point(o):
 					var dist: float = 0.0 if hit == null else o.distance_to(hit)
@@ -137,4 +151,8 @@ static func probe_camera(root: Node, reach: float = 6.0) -> void:
 					if not hits.has(k) or float(hits[k][0]) > dist:
 						hits[k] = [dist, fy, box.size]
 	for k: String in hits:
-		print("[camprobe] %.2f m (row %.2f) size=%s %s" % [hits[k][0], hits[k][1], hits[k][2], k])
+		var nd: Node = root.get_node_or_null(NodePath(k.split("#")[0]))
+		var extra: String = ""
+		if nd is MeshInstance3D:
+			extra = " at %s mesh=%s %s" % [(nd as Node3D).global_position, (nd as MeshInstance3D).mesh.resource_name, (nd as MeshInstance3D).mesh.resource_path]
+		print("[camprobe] %.2f m (row %.2f) size=%s %s%s" % [hits[k][0], hits[k][1], hits[k][2], k, extra])
