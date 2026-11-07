@@ -64,7 +64,11 @@ func _quad_material(tex: Texture2D, additive: bool) -> StandardMaterial3D:
 	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	m.blend_mode = BaseMaterial3D.BLEND_MODE_ADD if additive else BaseMaterial3D.BLEND_MODE_MIX
-	m.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	# BILLBOARD_ENABLED + keep_scale rather than BILLBOARD_PARTICLES: particles that are not emitted yet
+	# (one-shot bursts, explosiveness < 1) carry a zero scale, which the particle billboard ignores, so
+	# they drew as a dark disc at the emitter. None of these effects use per-particle rotation.
+	m.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	m.billboard_keep_scale = true
 	m.vertex_color_use_as_albedo = true
 	m.albedo_texture = tex
 	return m

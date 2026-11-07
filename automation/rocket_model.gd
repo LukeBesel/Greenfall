@@ -1,33 +1,48 @@
 class_name RocketModel
 extends Node3D
-## The hub rocket's look, in the same design family as Aurora and the Mk III/IV robots: a smooth
-## pearl-white lathed hull, a dark wraparound visor with two glowing eyes, cyan seam rings, a
-## tangerine band, swept fins on landing feet and a cyan energy engine. Higher tiers (Mk I-IV,
-## automation/rocket_tiers.gd) add orbiting hover rings, side boosters, gold trim and energy fins.
+## The base rocket, in Lumi's design language (player/patch_model.gd, the Mk III/IV robots): a long,
+## tapered pearl-white hull with a subtle waist, a recessed dark visor with Lumi's glowing C eyes
+## (art/shaders/bot_face.gdshader), swept blade wings growing out of the body, landing legs that
+## fold flush into the hull in flight, tangerine accents and thin, subtle cyan lines. Higher tiers
+## (Mk I-IV, automation/rocket_tiers.gd) add panels, hover rings, winglets, wingtip nacelles,
+## canards, gold trim and energy wing extensions.
 ## Local frame: +Z is the front (visor), the boarding hatch faces -Z, base of the feet at y=0.
 
 const GLOW := Color(0.3, 0.88, 1.0)
 const ACCENT := Color(1.0, 0.55, 0.18)
-const HULL_TOP: float = 9.55
-const HATCH_Y: float = 4.55
+## Hull profile (radius, height): engine skirt, shoulder, waist, cockpit bulge, long tapered nose.
+const PROFILE: Array[Vector2] = [Vector2(0.58, 1.05), Vector2(0.74, 1.25), Vector2(0.86, 1.6), Vector2(0.93, 2.1),
+	Vector2(0.95, 2.6), Vector2(0.92, 3.2), Vector2(0.85, 3.9), Vector2(0.81, 4.4), Vector2(0.83, 4.9),
+	Vector2(0.87, 5.6), Vector2(0.88, 6.2), Vector2(0.86, 6.9), Vector2(0.8, 7.6), Vector2(0.7, 8.3),
+	Vector2(0.56, 9.0), Vector2(0.4, 9.6), Vector2(0.24, 10.15), Vector2(0.1, 10.55), Vector2(0.0, 10.75)]
+const HULL_TOP: float = 10.75
+const HATCH_Y: float = 5.6
+const VISOR_Y: float = 7.0
 ## Nozzle exit (local): where the plume starts.
 const NOZZLE_Y: float = 0.5
-const FIN_ANGLES: Array[float] = [30.0, 150.0, 270.0]
-## Where the pad's clamps hold the rocket (between the fins; the Mk III boosters sit here too).
-const CLAMP_ANGLES: Array[float] = [90.0, 210.0, 330.0]
+const WING_ANGLES: Array[float] = [30.0, 150.0, 270.0]
+const LEG_ANGLES: Array[float] = [70.0, 190.0, 310.0]
+## Where the pad's clamps hold the rocket (between the wings, clear of the legs), and at what height.
+const CLAMP_ANGLES: Array[float] = [110.0, 230.0, 350.0]
+const CLAMP_Y: float = 2.0
+const CLAMP_BASE_R: float = 1.75
+const LEG_FOLD: float = 2.75  # radians the legs swing up to lie along the hull
 
 var tier: int = 1
 var plume: RocketPlume
 var hatch: Node3D
 var _glow_mats: Array[StandardMaterial3D] = []
-var _eyes: Array[Node3D] = []
 var _rings: Array[Node3D] = []
+var _legs: Array[Node3D] = []
+var _face: ShaderMaterial
 var _beacon_mat: StandardMaterial3D
 var _engine_mat: StandardMaterial3D
 var _boosters: Array[RocketPlume] = []
 var _t: float = 0.0
 var _blink: float = 2.0
+var _blink_v: float = 0.0
 var _charge: float = 0.0
+var _legs_k: float = 1.0
 
 
 func build(p_tier: int) -> void:
@@ -35,133 +50,180 @@ func build(p_tier: int) -> void:
 	for c: Node in get_children():
 		c.queue_free()
 	_glow_mats.clear()
-	_eyes.clear()
 	_rings.clear()
+	_legs.clear()
 	_boosters.clear()
-	var pearl := _gloss(Color(0.96, 0.96, 0.95), 0.16, 0.08, 1.0)
+	var pearl := _gloss(Color(0.96, 0.96, 0.95), 0.14, 0.08, 1.0)
+	var pearl2 := _gloss(Color(0.88, 0.89, 0.9), 0.2, 0.15, 1.0)   # slightly darker panels
 	var tang := _gloss(ACCENT, 0.22, 0.1, 1.0)
 	var dark := _gloss(Color(0.04, 0.05, 0.07), 0.08, 0.4, 1.0)
-	var trim := _gloss(Color(1.0, 0.78, 0.38), 0.2, 1.0, 0.0) if tier >= 4 else _gloss(Color(0.55, 0.58, 0.63), 0.25, 0.9, 0.0)
-	var glow := _glow(GLOW, 1.6)  # thin, subtle accent lines (not Tron-thick)
-	# Hull: one smooth lathe from the engine skirt to the nose.
-	var prof := PackedVector2Array([Vector2(0.55, 1.1), Vector2(0.78, 1.32), Vector2(0.95, 1.7), Vector2(1.03, 2.3), Vector2(1.05, 3.0)])
-	for i: int in range(0, 15):
-		var u: float = float(i) / 14.0
-		var y: float = lerpf(3.4, HULL_TOP, u)
-		var k: float = clampf((y - 5.2) / (HULL_TOP - 5.2), 0.0, 1.0)
-		prof.append(Vector2(1.05 * pow(1.0 - pow(k, 2.2), 0.6), y))
-	_mi(self, lathe(prof, 40), pearl, Vector3.ZERO)
-	_mi(self, ProcMesh.cyl(0.55, 0.55, 0.02, 24), dark, Vector3(0, 1.1, 0))
-	# Tangerine band and the cyan seam rings.
-	_mi(self, ProcMesh.cyl(1.065, 1.06, 0.34, 40), tang, Vector3(0, 2.45, 0))
-	for y: float in [3.0, 5.25, 7.75]:
-		var r: float = hull_r(y)
-		_mi(self, ProcMesh.torus(r + 0.002, r + 0.016, 48, 3), glow, Vector3(0, y, 0))
-	# Tangerine nose cap (like Aurora's antenna fin) and vertical light strips on the flanks.
-	var cap := PackedVector2Array()
-	for i: int in 7:
-		var y3: float = lerpf(HULL_TOP - 0.75, HULL_TOP, float(i) / 6.0)
-		cap.append(Vector2(hull_r(y3) + 0.01, y3))
-	_mi(self, lathe(cap, 32), tang, Vector3.ZERO)
+	var seam := _gloss(Color(0.3, 0.32, 0.36), 0.35, 0.5, 0.0)
+	var trim := _gloss(Color(1.0, 0.78, 0.38), 0.2, 1.0, 0.0) if tier >= 4 else _gloss(Color(0.62, 0.65, 0.7), 0.22, 0.9, 0.0)
+	var glow := _glow(GLOW, 1.6)  # thin, subtle accent lines (never thick)
+	# Hull: one smooth lathe; 20 sides give a faint faceted silhouette under smooth shading.
+	_mi(self, lathe(PackedVector2Array(PROFILE), 20), pearl, Vector3.ZERO)
+	_mi(self, ProcMesh.cyl(0.58, 0.58, 0.02, 20), dark, Vector3(0, 1.05, 0))
+	# Panel seams (dark hairlines) and two thin cyan lines.
+	for y: float in [2.6, 6.2, 9.0]:
+		_ring_line(y, 0.006, seam)
+	for y2: float in [4.4, 8.3]:
+		_ring_line(y2, 0.008, glow)
 	for a_deg: float in [0.0, 180.0]:
-		var a5: float = deg_to_rad(a_deg)
-		var rr: float = hull_r(4.1) + 0.012
-		var strip := _mi(self, ProcMesh.box(Vector3(0.022, 2.1, 0.02)), glow, Vector3(cos(a5) * rr, 4.12, sin(a5) * rr))
-		strip.rotation.y = -a5 + PI * 0.5
-	# Dark wraparound visor (front), with Aurora's glowing eyes.
-	var vprof := PackedVector2Array()
-	for i: int in 9:
-		var y2: float = lerpf(6.2, 7.35, float(i) / 8.0)
-		vprof.append(Vector2(hull_r(y2) + 0.015, y2))
-	_mi(self, lathe(vprof, 24, deg_to_rad(28.0), deg_to_rad(152.0)), dark, Vector3.ZERO)
-	for side: float in [-1.0, 1.0]:
-		var th: float = deg_to_rad(90.0 + side * 13.0)
-		var r2: float = hull_r(6.8) + 0.04
-		var eye := Node3D.new()
-		eye.position = Vector3(cos(th) * r2, 6.8, sin(th) * r2)
-		eye.rotation.y = -th + PI * 0.5
-		add_child(eye)
-		_mi(eye, ProcMesh.capsule(0.07, 0.36), _glow(GLOW, 4.0), Vector3.ZERO, Vector3(0, 0, 0), Vector3(1, 1, 0.35))
-		_eyes.append(eye)
-	# Porthole below the visor: dark glass and a glow ring.
-	var pr: float = hull_r(4.2)
-	_mi(self, ProcMesh.cyl(0.26, 0.26, 0.06, 24), dark, Vector3(0, 4.2, pr - 0.01), Vector3(90, 0, 0))
-	_mi(self, ProcMesh.torus(0.26, 0.285, 24, 3), glow, Vector3(0, 4.2, pr + 0.01), Vector3(90, 0, 0))
-	# Markings: name and a holographic tier tag.
-	var name_l := Mats.stencil("GREENFALL", 64, Color(0.2, 0.24, 0.3, 0.9))
-	name_l.pixel_size = 0.0045
-	name_l.position = Vector3(0, 3.55, hull_r(3.55) + 0.012)
+		var a0: float = deg_to_rad(a_deg)
+		var rr: float = hull_r(5.25) + 0.004
+		var vs := _mi(self, ProcMesh.box(Vector3(0.012, 1.7, 0.012)), seam, Vector3(cos(a0) * rr, 5.3, sin(a0) * rr))
+		vs.rotation.y = -a0 + PI * 0.5
+	# Tangerine shoulder band and nose tip.
+	_band(2.18, 2.42, 0.006, tang)
+	_band(HULL_TOP - 0.55, HULL_TOP, 0.006, tang)
+	# Recessed visor: a curved dark glass band (Lumi's face shader) between two pearl lips.
+	_build_visor(pearl)
+	# Porthole on the left flank and the markings.
+	var pa: float = deg_to_rad(40.0)
+	var pr: float = hull_r(5.4)
+	var port := Node3D.new()
+	port.position = Vector3(cos(pa) * pr, 5.4, sin(pa) * pr)
+	port.rotation.y = -pa + PI * 0.5
+	add_child(port)
+	_mi(port, ProcMesh.cyl(0.17, 0.17, 0.04, 20), dark, Vector3.ZERO, Vector3(90, 0, 0))
+	_mi(port, ProcMesh.torus(0.17, 0.19, 20, 3), glow, Vector3(0, 0, 0.01), Vector3(90, 0, 0))
+	var name_l := Mats.stencil("GREENFALL", 64, Color(0.22, 0.26, 0.32, 0.9))
+	name_l.pixel_size = 0.0034
+	name_l.position = Vector3(0, 3.45, hull_r(3.45) + 0.01)
 	add_child(name_l)
 	var tag := Label3D.new()
 	tag.text = ["", "MK I", "MK II", "MK III", "MK IV"][tier]
-	tag.font_size = 72
-	tag.pixel_size = 0.004
-	tag.modulate = Color(0.5, 1.6, 2.0)
+	tag.font_size = 64
+	tag.pixel_size = 0.0028
+	tag.modulate = Color(0.45, 1.3, 1.7)
 	tag.outline_size = 0
 	tag.shaded = false
-	tag.position = Vector3(0, 2.0, hull_r(2.0) + 0.04)
+	tag.position = Vector3(0, 3.15, hull_r(3.15) + 0.012)
 	add_child(tag)
-	# Boarding hatch at the back (-Z): a rounded door in a glowing frame.
+	# Boarding hatch at the back (-Z): a rounded door in a hairline glow frame.
 	var hr: float = hull_r(HATCH_Y)
-	_mi(self, RobotVisual._rbox(Vector3(0.82, 1.16, 0.06), 0.11, 3), glow, Vector3(0, HATCH_Y, -hr + 0.015))
+	_mi(self, RobotVisual._rbox(Vector3(0.74, 1.06, 0.05), 0.11, 3), glow, Vector3(0, HATCH_Y, -hr + 0.012))
 	hatch = Node3D.new()
 	hatch.position = Vector3(0, HATCH_Y, -hr - 0.02)
 	add_child(hatch)
-	_mi(hatch, RobotVisual._rbox(Vector3(0.78, 1.12, 0.08), 0.1, 3), pearl, Vector3.ZERO)
-	_mi(hatch, ProcMesh.box(Vector3(0.4, 0.05, 0.02)), tang, Vector3(0, 0.3, -0.045))
+	_mi(hatch, RobotVisual._rbox(Vector3(0.7, 1.02, 0.07), 0.1, 3), pearl, Vector3.ZERO)
+	_mi(hatch, ProcMesh.box(Vector3(0.3, 0.035, 0.02)), tang, Vector3(0, 0.3, -0.04))
 	# Engine: dark bell with a cyan heart.
-	var bell := PackedVector2Array([Vector2(0.36, 1.15), Vector2(0.42, 0.95), Vector2(0.55, 0.68), Vector2(0.68, NOZZLE_Y)])
-	_mi(self, lathe(bell, 28), _gloss(Color(0.12, 0.13, 0.15), 0.3, 0.9, 0.0), Vector3.ZERO).set_meta("double", true)
+	var bell := PackedVector2Array([Vector2(0.36, 1.1), Vector2(0.42, 0.92), Vector2(0.54, 0.68), Vector2(0.64, NOZZLE_Y)])
+	_mi(self, lathe(bell, 28), _gloss(Color(0.12, 0.13, 0.15), 0.3, 0.9, 0.0), Vector3.ZERO)
 	_engine_mat = _glow(GLOW, 1.0)
 	_engine_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
-	_mi(self, ProcMesh.cyl(0.4, 0.4, 0.02, 24), _engine_mat, Vector3(0, 1.0, 0))
-	_mi(self, ProcMesh.torus(0.66, 0.69, 28, 3), _glow(GLOW, 1.6), Vector3(0, NOZZLE_Y + 0.02, 0))
-	# Three swept fins on landing feet (at 30, 150 and 270 degrees: clear of the hatch side).
-	var fin_poly := PackedVector2Array([Vector2(0.7, 4.0), Vector2(0.75, 1.5), Vector2(1.75, 0.42), Vector2(2.0, 0.42), Vector2(2.0, 0.95), Vector2(1.1, 2.75)])
-	for a_deg: float in FIN_ANGLES:
-		var fin := Node3D.new()
-		fin.rotation.y = -deg_to_rad(a_deg)
-		add_child(fin)
-		_mi(fin, extrude(fin_poly, 0.12), pearl, Vector3.ZERO)
-		_mi(fin, ProcMesh.box(Vector3(0.26, 0.55, 0.14)), tang, Vector3(1.87, 0.7, 0))
-		_rod(fin, Vector3(1.1, 2.75, 0.0), Vector3(2.0, 0.95, 0.0), 0.012, glow)
-		_mi(fin, ProcMesh.cyl(0.07, 0.09, 0.42, 12), trim, Vector3(1.88, 0.24, 0))
-		_mi(fin, ProcMesh.cyl(0.24, 0.3, 0.08, 20), dark, Vector3(1.88, 0.04, 0))
-		_mi(fin, ProcMesh.torus(0.28, 0.3, 20, 3), glow, Vector3(1.88, 0.08, 0))
-		if tier >= 4:  # energy fin: a translucent cyan blade beyond the hard fin
-			var ef := _mi(fin, extrude(PackedVector2Array([Vector2(1.1, 2.75), Vector2(2.0, 0.95), Vector2(2.55, 1.35), Vector2(1.6, 3.4)]), 0.02), _additive(Color(0.25, 0.75, 1.0, 0.5)), Vector3.ZERO)
+	_mi(self, ProcMesh.cyl(0.38, 0.38, 0.02, 24), _engine_mat, Vector3(0, 0.98, 0))
+	_mi(self, ProcMesh.torus(0.62, 0.645, 28, 3), glow, Vector3(0, NOZZLE_Y + 0.02, 0))
+	# Swept blade wings, integrated into the body.
+	var wing := PackedVector2Array([Vector2(0.62, 5.6), Vector2(0.62, 1.35), Vector2(2.25, 0.62), Vector2(2.55, 0.62),
+		Vector2(2.48, 1.05), Vector2(1.05, 3.8)])
+	for a_deg2: float in WING_ANGLES:
+		var w := _radial_node(a_deg2)
+		_mi(w, extrude(wing, 0.085), pearl, Vector3.ZERO)
+		_mi(w, extrude(PackedVector2Array([Vector2(2.1, 0.62), Vector2(2.55, 0.62), Vector2(2.48, 1.05), Vector2(2.15, 1.6)]), 0.095), tang, Vector3.ZERO)
+		_rod(w, Vector3(1.05, 3.8, 0.0), Vector3(2.15, 1.6, 0.0), 0.008, glow)
+		if tier >= 2:  # winglet at the tip
+			_mi(w, extrude(PackedVector2Array([Vector2(2.36, 0.95), Vector2(2.52, 0.8), Vector2(2.68, 2.05), Vector2(2.56, 2.1)]), 0.06), pearl2, Vector3.ZERO)
+		if tier >= 3:  # wingtip nacelle with its own small engine
+			_mi(w, ProcMesh.capsule(0.15, 1.5), pearl, Vector3(2.55, 1.2, 0))
+			_mi(w, ProcMesh.torus(0.14, 0.155, 16, 3), glow, Vector3(2.55, 0.52, 0), Vector3.ZERO)
+			var bp := RocketPlume.new()
+			bp.scale_len = 0.45
+			bp.radius = 0.13
+			bp.position = Vector3(2.55, 0.45, 0)
+			w.add_child(bp)
+			_boosters.append(bp)
+		if tier >= 4:  # energy extension beyond the trailing edge
+			var ef := _mi(w, extrude(PackedVector2Array([Vector2(1.05, 3.8), Vector2(2.15, 1.6), Vector2(3.0, 1.1), Vector2(1.75, 3.95)]), 0.02), _additive(Color(0.25, 0.75, 1.0, 0.35)), Vector3.ZERO)
 			ef.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	# Landing legs: hinged at the shoulder, deployed for the pad, folded flush in flight.
+	for a_deg3: float in LEG_ANGLES:
+		var base := _radial_node(a_deg3)
+		_mi(base, ProcMesh.box(Vector3(0.05, 2.2, 0.2)), dark, Vector3(hull_r(3.0) - 0.02, 3.0, 0))  # recess
+		var leg := Node3D.new()
+		leg.position = Vector3(0.9, 1.95, 0)
+		base.add_child(leg)
+		var foot := Vector3(0.85, -1.95, 0)
+		_rod(leg, Vector3.ZERO, foot, 0.06, trim)
+		_rod(leg, Vector3(0.0, -0.6, 0), foot * 0.7, 0.035, pearl)
+		_mi(leg, ProcMesh.cyl(0.16, 0.2, 0.06, 18), dark, foot + Vector3(0, 0.0, 0))
+		_mi(leg, ProcMesh.torus(0.18, 0.195, 18, 3), glow, foot + Vector3(0, 0.035, 0))
+		_legs.append(leg)
+	set_legs(_legs_k)
 	# Nose beacon.
 	_beacon_mat = Mats.lamp(Color(1.0, 0.4, 0.15), 4.0)
-	_mi(self, ProcMesh.sphere(0.09, 12, 6), _beacon_mat, Vector3(0, HULL_TOP - 0.02, 0))
-	_mi(self, ProcMesh.cyl(0.02, 0.04, 0.5, 8), trim, Vector3(0, HULL_TOP - 0.25, 0))
+	_mi(self, ProcMesh.sphere(0.05, 10, 5), _beacon_mat, Vector3(0, HULL_TOP + 0.02, 0))
 	# Tier extras.
-	if tier >= 2:
-		_add_ring(4.3, 1.75, Vector3.ZERO, 0.6, trim)
+	if tier >= 2:  # tangerine side panels and a hover ring at the waist
+		for side: float in [0.0, PI]:
+			var pprof := PackedVector2Array()
+			for i: int in 7:
+				var yy: float = lerpf(4.9, 6.1, float(i) / 6.0)
+				pprof.append(Vector2(hull_r(yy) + 0.006, yy))
+			_mi(self, lathe(pprof, 8, side - 0.35, side + 0.35), pearl2, Vector3.ZERO)
+		_add_ring(4.4, 1.35, Vector3.ZERO, 0.6, trim)
 	if tier >= 3:
-		_add_ring(6.3, 1.45, Vector3(0.18, 0, 0.1), -0.9, trim)
-		for a_deg: float in [210.0, 330.0]:
-			var a: float = deg_to_rad(a_deg)
-			var p := Vector3(cos(a) * 1.32, 0, sin(a) * 1.32)
-			_mi(self, ProcMesh.capsule(0.27, 2.9), pearl, p + Vector3(0, 2.75, 0))
-			_mi(self, ProcMesh.cyl(0.29, 0.29, 0.18, 20), tang, p + Vector3(0, 3.6, 0))
-			_mi(self, ProcMesh.torus(0.27, 0.29, 20, 3), glow, p + Vector3(0, 1.45, 0))
-			_rod(self, p * 0.82 + Vector3(0, 3.0, 0), p * 0.5 + Vector3(0, 3.0, 0), 0.05, trim)
-			var bp := RocketPlume.new()
-			bp.scale_len = 0.55
-			bp.radius = 0.24
-			bp.position = p + Vector3(0, 1.3, 0)
-			add_child(bp)
-			_boosters.append(bp)
+		_add_ring(7.6, 1.15, Vector3(0.14, 0, 0.08), -0.9, trim)
+		var canard := PackedVector2Array([Vector2(0.5, 8.6), Vector2(0.62, 7.7), Vector2(1.05, 7.55), Vector2(0.95, 7.85)])
+		for a_deg4: float in [90.0, 210.0, 330.0]:
+			_mi(_radial_node(a_deg4), extrude(canard, 0.05), pearl, Vector3.ZERO)
 	if tier >= 4:
-		_add_ring(8.2, 0.95, Vector3(-0.12, 0, 0.08), 1.3, trim)
-		var halo := _mi(self, ProcMesh.torus(0.19, 0.21, 24, 3), _glow(Color(1.0, 0.8, 0.45), 2.5), Vector3(0, HULL_TOP + 0.35, 0))
+		_add_ring(9.3, 0.8, Vector3(-0.1, 0, 0.06), 1.3, trim)
+		var halo := _mi(self, ProcMesh.torus(0.15, 0.165, 24, 3), _glow(Color(1.0, 0.8, 0.45), 2.5), Vector3(0, HULL_TOP + 0.3, 0))
 		halo.set_meta("spin", 1.0)
+		_band(2.05, 2.12, 0.01, trim)
 	plume = RocketPlume.new()
 	plume.position = Vector3(0, NOZZLE_Y, 0)
 	plume.scale_len = [1.0, 1.0, 1.15, 1.3, 1.5][tier]
-	plume.radius = 0.62
+	plume.radius = 0.58
 	add_child(plume)
+
+
+## A node at the hull's axis turned so its local +X points out along `a_deg` (lathe angle).
+func _radial_node(a_deg: float) -> Node3D:
+	var n := Node3D.new()
+	n.rotation.y = -deg_to_rad(a_deg)
+	add_child(n)
+	return n
+
+
+func _ring_line(y: float, w: float, mat: Material) -> void:
+	var r: float = hull_r(y)
+	_mi(self, ProcMesh.torus(r, r + w * 1.6, 48, 3), mat, Vector3(0, y, 0))
+
+
+func _band(y0: float, y1: float, lift: float, mat: Material) -> void:
+	var prof := PackedVector2Array()
+	for i: int in 6:
+		var y: float = lerpf(y0, y1, float(i) / 5.0)
+		prof.append(Vector2(hull_r(y) + lift, y))
+	_mi(self, lathe(prof, 40), mat, Vector3.ZERO)
+
+
+func _build_visor(lip_mat: Material) -> void:
+	var hh: float = 0.28
+	var prof := PackedVector2Array()
+	for i: int in 7:
+		var y: float = lerpf(-hh, hh, float(i) / 6.0)
+		prof.append(Vector2(hull_r(VISOR_Y + y) + 0.012, y))
+	# Built around -Z then turned to face +Z, so the face shader's "front" (-Z) is the visor centre.
+	var v := Node3D.new()
+	v.position = Vector3(0, VISOR_Y, 0)
+	v.rotation.y = PI
+	add_child(v)
+	_face = ShaderMaterial.new()
+	_face.shader = preload("res://art/shaders/bot_face.gdshader")
+	_face.set_shader_parameter("eye_color", GLOW)
+	_face.set_shader_parameter("half_width", 0.62)
+	_face.set_shader_parameter("half_height", hh)
+	_face.set_shader_parameter("eye_spacing", 0.78)
+	_face.set_shader_parameter("energy", 3.2)
+	_mi(v, lathe(prof, 20, deg_to_rad(270.0 - 52.0), deg_to_rad(270.0 + 52.0)), _face, Vector3.ZERO)
+	# Pearl lips above and below make the glass sit recessed in the hull.
+	for y2: float in [-hh - 0.02, hh + 0.02]:
+		var lip := PackedVector2Array([Vector2(hull_r(VISOR_Y + y2) + 0.0, y2 - 0.035), Vector2(hull_r(VISOR_Y + y2) + 0.035, y2), Vector2(hull_r(VISOR_Y + y2) + 0.0, y2 + 0.035)])
+		_mi(v, lathe(lip, 20, deg_to_rad(270.0 - 56.0), deg_to_rad(270.0 + 56.0)), lip_mat, Vector3.ZERO)
 
 
 func _add_ring(y: float, r: float, tilt: Vector3, spd: float, trim: Material) -> void:
@@ -171,20 +233,24 @@ func _add_ring(y: float, r: float, tilt: Vector3, spd: float, trim: Material) ->
 	ring.set_meta("spd", spd)
 	ring.set_meta("y", y)
 	add_child(ring)
-	_mi(ring, ProcMesh.torus(r - 0.07, r + 0.07, 56, 8), _gloss(Color(0.96, 0.96, 0.95), 0.15, 0.1, 1.0), Vector3.ZERO)
-	_mi(ring, ProcMesh.torus(r - 0.085, r - 0.068, 56, 3), _glow(GLOW, 1.8), Vector3.ZERO)
+	_mi(ring, ProcMesh.torus(r - 0.045, r + 0.045, 56, 8), _gloss(Color(0.96, 0.96, 0.95), 0.15, 0.1, 1.0), Vector3.ZERO)
+	_mi(ring, ProcMesh.torus(r - 0.058, r - 0.048, 56, 3), _glow(GLOW, 1.8), Vector3.ZERO)
 	for k: int in 3:
 		var a: float = TAU * k / 3.0
-		_mi(ring, ProcMesh.sphere(0.09, 10, 5), trim, Vector3(cos(a) * r, 0, sin(a) * r))
+		_mi(ring, ProcMesh.sphere(0.06, 10, 5), trim, Vector3(cos(a) * r, 0, sin(a) * r))
 	_rings.append(ring)
 
 
-## Hull radius at height y (matches the lathe profile above).
+## Hull radius at height y (interpolates PROFILE).
 static func hull_r(y: float) -> float:
-	if y < 3.0:
-		return lerpf(0.95, 1.05, clampf((y - 1.7) / 1.3, 0.0, 1.0))
-	var k: float = clampf((y - 5.2) / (HULL_TOP - 5.2), 0.0, 1.0)
-	return 1.05 * pow(1.0 - pow(k, 2.2), 0.6)
+	if y <= PROFILE[0].y:
+		return PROFILE[0].x
+	for i: int in range(1, PROFILE.size()):
+		if y <= PROFILE[i].y:
+			var a: Vector2 = PROFILE[i - 1]
+			var b: Vector2 = PROFILE[i]
+			return lerpf(a.x, b.x, (y - a.y) / (b.y - a.y))
+	return 0.0
 
 
 ## 0..1 extra brightness on the glow parts (charging before ignition).
@@ -192,22 +258,31 @@ func set_charge(c: float) -> void:
 	_charge = c
 
 
+## 1 = legs down (standing), 0 = folded flush against the hull.
+func set_legs(k: float) -> void:
+	_legs_k = k
+	for leg: Node3D in _legs:
+		leg.rotation.z = (1.0 - k) * LEG_FOLD
+
+
 func _process(delta: float) -> void:
 	_t += delta
 	for ring: Node3D in _rings:
 		ring.rotate_y(delta * float(ring.get_meta("spd")))
-		ring.position.y = float(ring.get_meta("y")) + sin(_t * 1.3 + float(ring.get_meta("spd"))) * 0.06
+		ring.position.y = float(ring.get_meta("y")) + sin(_t * 1.3 + float(ring.get_meta("spd"))) * 0.05
 	_blink -= delta
-	var eye_s: float = 1.0
+	var want: float = 0.0
 	if _blink < 0.12:
-		eye_s = 0.15
+		want = 1.0
 		if _blink < 0.0:
 			_blink = randf_range(2.0, 4.5)
-	for e: Node3D in _eyes:
-		e.scale.y = lerpf(e.scale.y, eye_s, clampf(delta * 30.0, 0.0, 1.0))
+	_blink_v = lerpf(_blink_v, want, clampf(delta * 30.0, 0.0, 1.0))
+	if _face:
+		_face.set_shader_parameter("blink", _blink_v)
+		_face.set_shader_parameter("energy", 3.2 + _charge * 3.0)
 	if _beacon_mat:
 		_beacon_mat.emission_energy_multiplier = 6.0 if fmod(_t, 1.2) < 0.15 else 0.4
-	var pulse: float = 1.0 + _charge * (1.2 + 0.8 * sin(_t * (8.0 + 20.0 * _charge)))
+	var pulse: float = 1.0 + _charge * (1.0 + 0.6 * sin(_t * (8.0 + 20.0 * _charge)))
 	for m: StandardMaterial3D in _glow_mats:
 		m.emission_energy_multiplier = float(m.get_meta("base")) * pulse
 	if _engine_mat:
