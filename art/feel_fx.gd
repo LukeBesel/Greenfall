@@ -200,7 +200,7 @@ func _demo_tick() -> void:
 		_demo_setup = true
 		_demo_prepare(p)
 	var t: float = float(DevHooks.get("_elapsed"))
-	if t < DevHooks.get_f("shot-delay", 60.0) - DevHooks.get_f("demo-lead", 40.0):
+	if t < DevHooks.get_f("shot-delay", 60.0) - DevHooks.get_f("demo-lead", 60.0):
 		return
 	_demo_done = true
 	match _demo:
@@ -219,7 +219,9 @@ func _demo_tick() -> void:
 			for pid: int in world.field.hex_pieces[_demo_hex]:
 				if world.field.piece_alive[pid] != 0:
 					world.collect_piece(pid)
-	get_tree().create_timer(float(DEMO_PEAK.get(_demo, 0.5))).timeout.connect(func() -> void:
+	# Bale and sale run on physics (capped steps per slow frame), so count physics time there.
+	var phys: bool = _demo in ["bale", "sale"]
+	get_tree().create_timer(float(DEMO_PEAK.get(_demo, 0.5)), true, phys).timeout.connect(func() -> void:
 		Engine.time_scale = 0.0
 		print("[first] demo %s frozen at its peak" % _demo))
 
