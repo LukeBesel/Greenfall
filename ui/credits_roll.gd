@@ -20,6 +20,7 @@ var _t: float = 0.0
 var _done: bool = false
 var _was_paused: bool = false
 var _scroll_end: float = 0.0
+var _w: float = 760.0
 
 
 ## Plays the roll over the current scene. Returns the node (await its `finished`).
@@ -44,6 +45,8 @@ func _ready() -> void:
 	_col.add_theme_constant_override("separation", 6)
 	_col.modulate.a = 0.0
 	add_child(_col)
+	var vp: Vector2 = get_viewport().get_visible_rect().size
+	_w = minf(vp.x - 32.0, 760.0)
 	for e: Array in entries():
 		_col.add_child(_line(str(e[0]), str(e[1])))
 	_hint = UITheme.label(tr("Esc  Skip"), 13, UITheme.MUTED)
@@ -64,12 +67,13 @@ func _ready() -> void:
 
 func _layout() -> void:
 	var vp: Vector2 = get_viewport().get_visible_rect().size
-	var w: float = minf(vp.x - 32.0, 760.0)
+	var w: float = _w
 	_col.custom_minimum_size = Vector2(w, 0)
 	_col.size = Vector2(w, 0)
 	_col.reset_size()
 	_col.position = Vector2((vp.x - w) * 0.5, vp.y + 20.0)
-	_scroll_end = -_col.size.y - 20.0
+	_scroll_end = -_col.get_combined_minimum_size().y - 20.0
+	print("[credits] %d rows, %.0f px" % [_col.get_child_count(), -_scroll_end])
 	if DevHooks.has("credits-hold"):  # screenshots: hold the roll at this many px scrolled
 		_col.position.y = vp.y * 0.18 - DevHooks.get_f("credits-hold", 0.0)
 
@@ -80,6 +84,7 @@ func _line(kind: String, text: String) -> Control:
 	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	l.custom_minimum_size = Vector2(_w, 0)  # autowrap needs a width up front
 	match kind:
 		"title":
 			l.add_theme_font_size_override("font_size", 54)
@@ -97,7 +102,7 @@ func _line(kind: String, text: String) -> Control:
 			l.add_theme_font_size_override("font_size", 13)
 			l.add_theme_color_override("font_color", UITheme.MUTED)
 		"gap":
-			l.custom_minimum_size = Vector2(0, 46)
+			l.custom_minimum_size = Vector2(_w, 46)
 	return l
 
 
@@ -192,6 +197,7 @@ func skip() -> void:
 	tw.tween_property(_bg, "color:a", 0.0, FADE_S)
 	tw.tween_callback(func() -> void:
 		get_tree().paused = _was_paused
+		print("[credits] done")
 		finished.emit()
 		queue_free())
 
