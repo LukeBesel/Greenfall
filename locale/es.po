@@ -1893,11 +1893,11 @@ msgstr ""
 msgid "Best fleet: %s"
 msgstr ""
 
-#: systems/designs.gd:153
+#: systems/designs.gd:154
 msgid "New design unlocked: %s. Wear it from the workbench (Cosmetics)."
 msgstr ""
 
-#: systems/designs.gd:192
+#: systems/designs.gd:193
 msgid "Design: %s"
 msgstr ""
 
@@ -2924,31 +2924,31 @@ msgstr ""
 msgid "Looks only (no bonuses)"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:110 ui/cosmetics_panel.gd:141
+#: ui/cosmetics_panel.gd:129 ui/cosmetics_panel.gd:160
 msgid "Wearing"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:110
+#: ui/cosmetics_panel.gd:129
 msgid "Unlocked"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:110
+#: ui/cosmetics_panel.gd:129
 msgid "Locked  %d%%"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:137
+#: ui/cosmetics_panel.gd:156
 msgid "Bonus: %s"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:137
+#: ui/cosmetics_panel.gd:156
 msgid "(off: looks only)"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:143
+#: ui/cosmetics_panel.gd:162
 msgid "Unlocked. Press to wear."
 msgstr ""
 
-#: ui/cosmetics_panel.gd:145
+#: ui/cosmetics_panel.gd:164
 msgid "Locked: %s"
 msgstr ""
 

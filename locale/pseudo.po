@@ -1920,11 +1920,11 @@ msgstr "[Ðéƒàûļţ ~]"
 msgid "Best fleet: %s"
 msgstr "[Béšţ ƒļééţ: %s ~~]"
 
-#: systems/designs.gd:153
+#: systems/designs.gd:154
 msgid "New design unlocked: %s. Wear it from the workbench (Cosmetics)."
 msgstr "[Ñéŵ ðéšîĝñ ûñļôçķéð: %s. Ŵéàŕ îţ ƒŕôm ţĥé ŵôŕķbéñçĥ (Çôšméţîçš). ~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/designs.gd:192
+#: systems/designs.gd:193
 msgid "Design: %s"
 msgstr "[Ðéšîĝñ: %s ~]"
 
@@ -2956,31 +2956,31 @@ msgstr "[ÐÉŠÎĜÑŠ ~]"
 msgid "Looks only (no bonuses)"
 msgstr "[Ļôôķš ôñļý (ñô bôñûšéš) ~~~~~]"
 
-#: ui/cosmetics_panel.gd:110 ui/cosmetics_panel.gd:141
+#: ui/cosmetics_panel.gd:129 ui/cosmetics_panel.gd:160
 msgid "Wearing"
 msgstr "[Ŵéàŕîñĝ ~]"
 
-#: ui/cosmetics_panel.gd:110
+#: ui/cosmetics_panel.gd:129
 msgid "Unlocked"
 msgstr "[Ûñļôçķéð ~]"
 
-#: ui/cosmetics_panel.gd:110
+#: ui/cosmetics_panel.gd:129
 msgid "Locked  %d%%"
 msgstr "[Ļôçķéð  %d%% ~]"
 
-#: ui/cosmetics_panel.gd:137
+#: ui/cosmetics_panel.gd:156
 msgid "Bonus: %s"
 msgstr "[Bôñûš: %s ~]"
 
-#: ui/cosmetics_panel.gd:137
+#: ui/cosmetics_panel.gd:156
 msgid "(off: looks only)"
 msgstr "[(ôƒƒ: ļôôķš ôñļý) ~~~]"
 
-#: ui/cosmetics_panel.gd:143
+#: ui/cosmetics_panel.gd:162
 msgid "Unlocked. Press to wear."
 msgstr "[Ûñļôçķéð. Þŕéšš ţô ŵéàŕ. ~~~~~]"
 
-#: ui/cosmetics_panel.gd:145
+#: ui/cosmetics_panel.gd:164
 msgid "Locked: %s"
 msgstr "[Ļôçķéð: %s ~]"
 
