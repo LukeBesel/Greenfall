@@ -523,6 +523,10 @@ func _ready() -> void:
 	scope.world = self
 	add_child(scope)
 	(func() -> void: PropColliders.push_out_pieces(self, field, view)).call_deferred()  # [world2] junk out of solid props
+	if DevHooks.has("bale-shot"):  # [world2] bale close-up staging (tools/bale_shot.gd)
+		var bs: Node = load("res://tools/bale_shot.gd").new()
+		bs.set("world", self)
+		add_child(bs)
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 

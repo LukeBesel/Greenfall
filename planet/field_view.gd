@@ -262,6 +262,7 @@ func _build_mounds() -> void:
 			mi.position = Vector3(pile.x, -0.02, pile.y)
 			mi.set_meta("pile", pile)
 			add_child(mi)
+			mi.set_meta("body", MoundColliders.make(self, pile))  # [world2] bales rest on the heap
 			list.append(mi)
 		_mounds[id] = list
 		_update_mounds(id)
@@ -273,6 +274,7 @@ func _update_mounds(id: int) -> void:
 		var pile: Vector4 = mi.get_meta("pile")
 		mi.visible = left > 0.0
 		mi.scale = Vector3(pile.z * 1.1, maxf(pile.w * left * 0.9, 0.001), pile.z * 1.1)
+		MoundColliders.update(mi.get_meta("body", null), mi.scale, mi.visible)  # [world2]
 
 
 ## Re-seat remaining pieces of a hex on its (shrinking) mound.

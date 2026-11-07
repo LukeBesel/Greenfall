@@ -553,9 +553,9 @@ func place_top_cube() -> void:
 	var c: JunkCube = pop_carried_cube()
 	if c == null:
 		return
-	var front: Vector3 = global_position + forward() * 1.25
 	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
-	var q := PhysicsRayQueryParameters3D.create(front + Vector3(0, 12.0, 0), front + Vector3(0, -1.0, 0), 1 | 4)
+	var front: Vector3 = JunkCube.free_spot(space, global_position, forward(), c.size)  # [world2] never into a wall or prop
+	var q := PhysicsRayQueryParameters3D.create(front + Vector3(0, 2.5, 0), front + Vector3(0, -1.0, 0), 1 | 4 | PhysLayers.MOUND)  # [world2] from just above (not onto roofs), heaps count
 	var hit: Dictionary = space.intersect_ray(q)
 	var y: float = 0.0
 	if not hit.is_empty():
