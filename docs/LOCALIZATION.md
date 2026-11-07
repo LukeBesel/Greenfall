@@ -7,8 +7,14 @@ language: every msgid is the English text, so an untranslated string simply show
 locale/
   greenfall.pot   template, generated (never edit)
   pseudo.po       pseudo-locale, generated (never edit)
-  de.po, es.po    tiny samples: main menu, pause menu, language picker
+  de.po fr.po es.po pt_BR.po zh_CN.po ja.po
+                  complete MACHINE DRAFTS (Nov 2026), not yet reviewed by native speakers
 ```
+
+All six languages are complete drafts written by an AI translator (2,523 strings each). They are
+shown to players today (Settings > Gameplay > Language, and "System default" on a matching OS), so
+a review pass per language is the next step before a store release; see "Reviewing a machine
+draft" below.
 
 The PO files are registered in `project.godot` under `internationalization/locale/translations`
 and are exported by the `locale/*.po` include filter in `export_presets.cfg`.
@@ -81,8 +87,9 @@ For one English word with two meanings, use a context: `tr("Clean", "hex state")
 3. Add `res://locale/xx.po` to `internationalization/locale/translations` in `project.godot`.
 4. Add `["xx", "Name in its own language"]` to `Settings.LANGUAGES` (`autoload/Settings.gd`).
 5. When the translation is complete, add `"xx"` to `Settings.SYSTEM_LOCALES` so "System default"
-   picks it on a matching OS. Until then players choose it by hand (the German and Spanish samples
-   are deliberately not in that list, so a German OS never sees a half-translated game).
+   picks it on a matching OS (`Settings.system_locale_for()` maps `de_AT` to `de`, `pt_PT` to
+   `pt_BR`, `zh_Hans_CN` to `zh_CN`; Traditional Chinese stays English). Until then players choose
+   it by hand, so an OS in that language never sees a half-translated game.
 6. Check fonts (below), then play with `--locale=xx`.
 
 ## Translators: working with the PO files
@@ -109,6 +116,49 @@ Rules for every translation:
 - Place names (Old Town, Verdance, the districts) and robot names are proper nouns and are not in
   the POT; "GREENFALL" (the logo) stays as is.
 
+## Reviewing a machine draft
+
+The six full translations were drafted by an AI translator in one pass, with this brief: cozy,
+warm, playful; Lumi is a small, brave seed-keeper robot; WREN is a dry, kind AI companion; the
+Ledger is a cold corporate antagonist in a formal, bureaucratic register. Lumi, LM-1, WREN, Cradle,
+Verdance, Greenfall and the robot model names (Scoopie, Haul Bug, Seedling, Drip, Skimmer,
+Multibot) were kept in Latin script; the Ledger keeps its English name too.
+
+**Why the entries are not marked `#, fuzzy`.** Godot's PO loader skips fuzzy entries at runtime
+(checked on 4.7: a fuzzy entry comes back untranslated), and `tools/extract_strings.py` drops `#,`
+flags when it rewrites the files. So the draft status lives in each file's header comment
+(`# MACHINE DRAFT ... Reviewed: none yet.`), which the extractor keeps.
+
+Review workflow, per language:
+
+1. Load `locale/xx.po` in Poedit or a Weblate component (setup above). Weblate can mark every
+   string "needs editing" on import, which gives reviewers a queue without breaking the game.
+2. Review in this order: the UI (`ui/`, `autoload/Settings.gd`, `.tscn` references), story and WREN
+   lines (`data/wren_lines.json`, `story/`), the Ledger (`data/ledger.json`, `story/ledger*.gd`;
+   keep the bureaucratic tone), then codex, goals and achievements (`data/*.json`).
+3. Play with `--locale=xx` and the pseudo checks below; in particular watch buttons and HUD
+   labels for overflow (German and French run long) and check the tone of WREN against the brief.
+4. Keep placeholders, the `E   ` prompt prefix, `[k]`/`[p]`/bbcode tags and `\n` breaks (rules
+   above). `tests/test_l10n.gd` checks placeholders, the prompt prefix, completeness and plurals.
+5. For `zh_CN` and `ja`, rebuild the font subsets after editing (`python3 tools/build_cjk_fonts.py`,
+   below); the test fails if a translation uses a character the font lacks.
+6. When a language is reviewed, edit its header comment to `Reviewed: <who>, <date>` (and drop
+   "MACHINE DRAFT"), and note it in docs/ROADMAP.md.
+
+Known draft caveats a reviewer should look at:
+
+- **Part rarity + part name** are joined as `"%s %s"` (`"Rusty" + "Chassis Frame"`). Romance
+  languages put the adjective after the noun and inflect it; the drafts use a neutral adjective
+  form. A proper fix is one format string per language order, or translating each combination.
+- **Robot traits** (`Cautious`, `Speedy`, ...) fill `" Seems %s."`; `Curious` and `Sleepy` share a
+  msgid with an achievement and an eye pose, so one word must fit both.
+- **Animal names** fill `"E   take a photo of the %s"` etc.; the drafts avoid gendered articles.
+- A few English source lines still say "Patch" (the robot's old name, e.g. the "THANK YOU, PATCH"
+  street sign and two collectibles); the collectible drafts say Lumi, the sign keeps "PATCH".
+- `◈` (token icon) is missing from every UI font, English included; it renders as a box.
+- `tools/l10n_merge_draft.py` is the tool the drafts were merged with (it validates placeholders
+  between msgid and msgstr); it reads draft TSVs from the untracked `.l10n_work/` folder.
+
 ## Pseudo-locale (testing)
 
 `locale/pseudo.po` is generated from the POT: letters get accents, every string is wrapped in
@@ -134,18 +184,25 @@ Dev hook: `--locale=xx` forces any locale for one run (never saved). The setting
 
 - **UI font**: Godot's built-in default (`ThemeDB.fallback_font`, Open Sans SemiBold), used through
   `UITheme.font()` and the title font. Covers Latin-1, Latin Extended-A/B (DE, FR, ES, PT, PL, CS,
-  TR ...), Greek and Cyrillic, checked in `tests/test_l10n.gd` and by hand. **No CJK or Hangul.**
+  TR ...), Greek and Cyrillic, checked in `tests/test_l10n.gd` and by hand. No CJK or Hangul of
+  its own.
 - **Ledger terminal font**: `ui/fonts/AnonymousPro-*.ttf`. Covers Latin-1, Latin Extended-A, Greek
-  and Cyrillic; lacks `ẞ` and some Latin Extended-B / Additional letters; **no CJK or Hangul.**
+  and Cyrillic; lacks `ẞ` and some Latin Extended-B / Additional letters; no CJK of its own.
+- **CJK fallback**: `ui/fonts/cjk/NotoSansSC-Subset.otf` (1.6 MB) and `NotoSansJP-Subset.otf`
+  (1.7 MB), Noto Sans CJK Regular (OFL 1.1, `ui/fonts/cjk/OFL_NotoSansCJK.txt`). `ui/cjk_fallback.gd`
+  (`CJKFallback.apply()`, called from `Settings.apply_language()`) adds both as `fallbacks` on the
+  UI font and the Ledger font; the one matching the locale goes first, so shared Han characters
+  get Japanese or Simplified Chinese glyph shapes. Both are always attached, so the language
+  picker shows 简体中文 and 日本語 in every locale.
+- **Rebuilding the subsets.** Each subset holds every character its `.po` uses plus a base set
+  (kana, CJK punctuation, full-width forms, GB2312 level 1 for SC, JIS X 0208 level 1 for JP), so
+  most review edits need no rebuild. After editing `zh_CN.po` or `ja.po`:
+  `apt-get install -y --no-install-recommends fonts-noto-cjk` (once), then
+  `python3 tools/build_cjk_fonts.py`. `tests/test_l10n.gd` (`test_cjk_glyphs_render`) fails when a
+  character is missing.
+- **Korean** would need a third subset (index 1, Noto Sans CJK KR, in `tools/build_cjk_fonts.py`).
 - **Robot body stencils** (`player/designs/*`, `robots/robot_visual.gd`) use system monospace fonts
   for decals; they are art and stay English.
-
-For ZH-CN, JA and KO, both fonts need a fallback: add a CJK font (e.g. Noto Sans CJK SC / JP / KR,
-or one subset font per language to keep the size down: a full Noto CJK is 15-20 MB) as a
-`FontFile.fallbacks` entry on the UI theme font and the Ledger font, loaded only when that locale
-is active. Godot falls back to system fonts on desktop by default, which works on most Windows and
-macOS machines but not reliably on Linux or the Steam Deck, so ship the fallback. Cyrillic (RU)
-needs no new font. No large font files are in the repository yet.
 
 ## What is not translated (yet)
 

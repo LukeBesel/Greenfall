@@ -179,6 +179,12 @@ Known: Godot exits with code 134 after some headless runs (engine cleanup at qui
 - Not translated: 3D world signage (street_dressing shop signs, robot decals), proper names (districts, robot names), dev/log text.
 - Next: real translations (DE, FR, ES, PT-BR, ZH-CN, JA, KO, RU), CJK fallback font, a pseudo-locale layout pass on every screen with screenshots, `extract_strings.py --check` in CI.
 
+## Update: translations (wt/i18n)
+- Done: complete MACHINE-DRAFT translations, 2,523/2,523 strings each: German, French, Spanish, Brazilian Portuguese, Simplified Chinese, Japanese (`locale/{de,fr,es,pt_BR,zh_CN,ja}.po`, header comment "MACHINE DRAFT ... Reviewed: none yet"; not marked fuzzy because Godot skips fuzzy entries). Plural forms per language (fr/pt_BR: n > 1; zh/ja: one form). `msgfmt --check` clean; `tools/l10n_merge_draft.py` validates placeholders.
+- Done: CJK fallback fonts: Noto Sans CJK SC/JP subsets (3.3 MB, OFL) in `ui/fonts/cjk/`, built by `tools/build_cjk_fonts.py`, attached by `ui/cjk_fallback.gd` to the UI and Ledger fonts (locale's font first). Language picker lists all six with native names; all six in `Settings.SYSTEM_LOCALES` with `Settings.system_locale_for()` (de_AT -> de, pt_PT -> pt_BR, zh_Hans_CN -> zh_CN, zh_TW -> en). Compass directions ("north of you") now translated (`LedgerArc.compass_label()`).
+- Tests: `tests/test_l10n.gd` checks every locale loads, is complete, keeps placeholders (order of % specs) and the `E   ` prefix, plurals, CJK glyph coverage (has_char), system locale mapping.
+- Next: native-speaker review per language (workflow in docs/LOCALIZATION.md, "Reviewing a machine draft"); rarity+part name word order (`"%s %s"`) for Romance languages; HUD/button overflow pass in de/fr; `◈` glyph missing from the UI font; Korean/Russian.
+
 
 ## In progress (Nov 7, 2026): deep dive
 Wave 1 helpers (worktrees /home/user/gf-wt/<name>, branches wt/<name>):
