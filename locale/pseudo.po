@@ -157,63 +157,63 @@ msgstr "[Ð-þàð ŕîĝĥţ ~]"
 msgid "Share"
 msgstr "[Šĥàŕé ~]"
 
-#: autoload/Settings.gd:497
+#: autoload/Settings.gd:515
 msgid "LMB"
 msgstr "[ĻMB ~]"
 
-#: autoload/Settings.gd:498
+#: autoload/Settings.gd:516
 msgid "RMB"
 msgstr "[ŔMB ~]"
 
-#: autoload/Settings.gd:499
+#: autoload/Settings.gd:517
 msgid "MMB"
 msgstr "[MMB ~]"
 
-#: autoload/Settings.gd:500
+#: autoload/Settings.gd:518
 msgid "Wheel up"
 msgstr "[Ŵĥééļ ûþ ~]"
 
-#: autoload/Settings.gd:501
+#: autoload/Settings.gd:519
 msgid "Wheel down"
 msgstr "[Ŵĥééļ ðôŵñ ~]"
 
-#: autoload/Settings.gd:502
+#: autoload/Settings.gd:520
 msgid "Mouse %d"
 msgstr "[Môûšé %d ~]"
 
-#: autoload/Settings.gd:504
+#: autoload/Settings.gd:522
 msgid "Button %d"
 msgstr "[Bûţţôñ %d ~]"
 
-#: autoload/Settings.gd:509
+#: autoload/Settings.gd:527
 msgid "LS left"
 msgstr "[ĻŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:509
+#: autoload/Settings.gd:527
 msgid "LS right"
 msgstr "[ĻŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:510
+#: autoload/Settings.gd:528
 msgid "LS up"
 msgstr "[ĻŠ ûþ ~]"
 
-#: autoload/Settings.gd:510
+#: autoload/Settings.gd:528
 msgid "LS down"
 msgstr "[ĻŠ ðôŵñ ~]"
 
-#: autoload/Settings.gd:511
+#: autoload/Settings.gd:529
 msgid "RS left"
 msgstr "[ŔŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:511
+#: autoload/Settings.gd:529
 msgid "RS right"
 msgstr "[ŔŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:512
+#: autoload/Settings.gd:530
 msgid "RS up"
 msgstr "[ŔŠ ûþ ~]"
 
-#: autoload/Settings.gd:512
+#: autoload/Settings.gd:530
 msgid "RS down"
 msgstr "[ŔŠ ðôŵñ ~]"
 
@@ -1615,15 +1615,49 @@ msgstr "[Ñéŵ àţ ţĥé ŵôŕķbéñçĥ, Ĥûb ţàb: Šîĝñàļ Ĵàmm�
 msgid "WREN traced the Ledger's relay: %s of the hub. Look for the red beacon."
 msgstr "[ŴŔÉÑ ţŕàçéð ţĥé Ļéðĝéŕ'š ŕéļàý: %s ôƒ ţĥé ĥûb. Ļôôķ ƒôŕ ţĥé ŕéð béàçôñ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:245
+#. compass directions fill "%s of the hub" / "%s of you" ("north of you").
+#: story/ledger.gd:192
+msgid "north"
+msgstr "[ñôŕţĥ ~]"
+
+#. compass directions fill "%s of the hub" / "%s of you" ("north of you").
+#: story/ledger.gd:192
+msgid "north-east"
+msgstr "[ñôŕţĥ-éàšţ ~]"
+
+#: story/ledger.gd:193
+msgid "east"
+msgstr "[éàšţ ~]"
+
+#: story/ledger.gd:193
+msgid "south-east"
+msgstr "[šôûţĥ-éàšţ ~]"
+
+#: story/ledger.gd:194
+msgid "south"
+msgstr "[šôûţĥ ~]"
+
+#: story/ledger.gd:194
+msgid "south-west"
+msgstr "[šôûţĥ-ŵéšţ ~]"
+
+#: story/ledger.gd:195
+msgid "west"
+msgstr "[ŵéšţ ~]"
+
+#: story/ledger.gd:195
+msgid "north-west"
+msgstr "[ñôŕţĥ-ŵéšţ ~]"
+
+#: story/ledger.gd:258
 msgid "<< INTERCEPT // LEDGER PROMOTIONS // %d OF %d >>"
 msgstr "[<< ÎÑŢÉŔÇÉÞŢ // ĻÉÐĜÉŔ ÞŔÔMÔŢÎÔÑŠ // %d ÔF %d >> ~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:288
+#: story/ledger.gd:301
 msgid "Signal Jammer online. Drones within %d m of the base will get an earful of static."
 msgstr "[Šîĝñàļ Ĵàmméŕ ôñļîñé. Ðŕôñéš ŵîţĥîñ %d m ôƒ ţĥé bàšé ŵîļļ ĝéţ àñ éàŕƒûļ ôƒ šţàţîç. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:299
+#: story/ledger.gd:312
 msgid ""
 "%s   ·   %d / %d built\n"
 "%s"
@@ -1631,7 +1665,7 @@ msgstr ""
 "[%s   ·   %d / %d bûîļţ\n"
 "%s ~~~~~~]"
 
-#: story/ledger.gd:301
+#: story/ledger.gd:314
 msgid ""
 "\n"
 "Covering %d m around the base."
@@ -1639,7 +1673,7 @@ msgstr ""
 "[\n"
 "Çôvéŕîñĝ %d m àŕôûñð ţĥé bàšé. ~~~~~~~~]"
 
-#: story/ledger.gd:303
+#: story/ledger.gd:316
 msgid ""
 "\n"
 "The Ledger is on our side now. The jammers just hum along to the music."
@@ -1647,48 +1681,48 @@ msgstr ""
 "[\n"
 "Ţĥé Ļéðĝéŕ îš ôñ ôûŕ šîðé ñôŵ. Ţĥé ĵàmméŕš ĵûšţ ĥûm àļôñĝ ţô ţĥé mûšîç. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:305 systems/research.gd:186 ui/hub_panel.gd:118
+#: story/ledger.gd:318 systems/research.gd:186 ui/hub_panel.gd:118
 #: ui/stations_panel.gd:96
 msgid "Needs %s"
 msgstr "[Ñééðš %s ~]"
 
-#: story/ledger.gd:470
+#: story/ledger.gd:483
 msgid "Ledger drone inbound, %s! It's heading for a clean hex."
 msgstr "[Ļéðĝéŕ ðŕôñé îñbôûñð, %s! Îţ'š ĥéàðîñĝ ƒôŕ à çļéàñ ĥéx. ~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:471
+#: story/ledger.gd:484
 msgid "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground."
 msgstr "[À Ļéðĝéŕ ðŕôñé îš çômîñĝ ţô ðûmþ ĵûñķ ôñ à çļéàñ ĥéx (%s ôƒ ýôû). Îţ çàñ'ţ ţôûçĥ þļàñţéð ĝŕôûñð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:507
+#: story/ledger.gd:520
 msgid "SIGNAL JAMMED"
 msgstr "[ŠÎĜÑÀĻ ĴÀMMÉÐ ~~]"
 
-#: story/ledger.gd:537
+#: story/ledger.gd:550
 msgid "Target re-classified as ASSET. Aborting. ...Interesting."
 msgstr "[Ţàŕĝéţ ŕé-çļàššîƒîéð àš ÀŠŠÉŢ. Àbôŕţîñĝ. ...Îñţéŕéšţîñĝ. ~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:603
+#: story/ledger.gd:616
 msgid "The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."
 msgstr "[Ţĥé ðŕôñé ðûmþéð à ļîţţļé ĵûñķ bàçķ. Šçôôþ îţ ûþ, ôŕ ļéţ ýôûŕ ĥéļþéŕš ţîðý îţ. À Šîĝñàļ Ĵàmméŕ àţ ţĥé bàšé ķééþš ðŕôñéš àŵàý. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:659
+#: story/ledger.gd:672
 msgid "SEEDS · PAID IN FULL"
 msgstr "[ŠÉÉÐŠ · ÞÀÎÐ ÎÑ FÛĻĻ ~~~~]"
 
-#: story/ledger.gd:676 systems/events.gd:484 systems/lumi_level.gd:218
+#: story/ledger.gd:689 systems/events.gd:484 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "[+%d šééðš ~]"
 
-#: story/ledger.gd:746
+#: story/ledger.gd:759
 msgid "E   jack in: rewrite the Ledger's contract"
 msgstr "E   [ĵàçķ îñ: ŕéŵŕîţé ţĥé Ļéðĝéŕ'š çôñţŕàçţ ~~~~~~~~~~]"
 
-#: story/ledger.gd:746
+#: story/ledger.gd:759
 msgid "E   read the amended contract"
 msgstr "E   [ŕéàð ţĥé àméñðéð çôñţŕàçţ ~~~~~~]"
 
-#: story/ledger.gd:771 story/ledger.gd:825
+#: story/ledger.gd:784 story/ledger.gd:838
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: ACTIVE\n"
@@ -1698,11 +1732,11 @@ msgstr ""
 "ÇÔÑŢŔÀÇŢ 0001: ÀÇŢÎVÉ\n"
 "ŴÀŠŢÉ ÎŠ À ĻÎÑÉ ÎŢÉM ~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:786
+#: story/ledger.gd:799
 msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
 msgstr "[ŔÉĻÀÝ 07  ·  ÞŔÔÞÉŔŢÝ ÔF ŢĤÉ ĻÉÐĜÉŔ  ·  ÑÔ ÛÑŠÇĤÉÐÛĻÉÐ ÀÇÇÉŠŠ ~~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:825
+#: story/ledger.gd:838
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: AMENDED\n"
@@ -1712,11 +1746,11 @@ msgstr ""
 "ÇÔÑŢŔÀÇŢ 0001: ÀMÉÑÐÉÐ\n"
 "ŔÉŠŢÔŔÀŢÎÔÑ = ÀŠŠÉŢ ~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:942
+#: story/ledger.gd:955
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr "[Ţĥé Ļéðĝéŕ'š çôñţŕàçţ îš ŕéŵŕîţţéñ. Îţš ðŕôñéš ðéļîvéŕ šééðš ñôŵ. (+%d šééðš) ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:950
+#: story/ledger.gd:963
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr "[<< ĻÉÐĜÉŔ // ÔFF ŢĤÉ ŔÉÇÔŔÐ >> ~~~~~~~]"
 

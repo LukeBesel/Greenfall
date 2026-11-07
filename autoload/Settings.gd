@@ -96,12 +96,12 @@ var locale_override: String = ""
 ## [l10n] Language picker entries: [locale code, name shown in its own language]. "" follows the OS.
 const LANGUAGES: Array = [
 	["", "System default"], ["en", "English"],
-	["de", "Deutsch (sample)"], ["es", "Español (sample)"],
+	["de", "Deutsch"], ["fr", "Français"], ["es", "Español"], ["pt_BR", "Português (Brasil)"],  # [i18n]
+	["zh_CN", "简体中文"], ["ja", "日本語"],  # [i18n]
 	["pseudo", "Pseudo (test)"],
 ]
-## [l10n] Locales "System default" may pick. Partial sample translations are left out so a German
-## or Spanish OS never shows a half-translated game; add a code here once its .po is complete.
-const SYSTEM_LOCALES: Array[String] = ["en"]
+## [l10n] Locales "System default" may pick (complete .po files only; see docs/LOCALIZATION.md).
+const SYSTEM_LOCALES: Array[String] = ["en", "de", "fr", "es", "pt_BR", "zh_CN", "ja"]  # [i18n]
 ## Every UI font is at least this many px (Steam Deck readability at 1280x800).
 const MIN_FONT_PX: int = 12
 
@@ -319,14 +319,32 @@ func resolved_locale() -> String:
 		return locale_override
 	if language != "":
 		return language
-	var os_lang: String = OS.get_locale_language()
-	return os_lang if os_lang in SYSTEM_LOCALES else "en"
+	return system_locale_for(OS.get_locale())  # [i18n]
+
+
+## [i18n] Maps an OS locale ("de_AT", "pt_PT", "zh_Hans_CN", "ja_JP") to one of SYSTEM_LOCALES, else
+## "en". Exact match first, then the language; Traditional Chinese (TW/HK/MO/Hant) stays English.
+static func system_locale_for(os_locale: String) -> String:
+	if os_locale in SYSTEM_LOCALES:
+		return os_locale
+	var lang: String = os_locale.split("_")[0].split("-")[0].to_lower()
+	if lang in SYSTEM_LOCALES:
+		return lang
+	if lang == "zh":
+		for t: String in ["TW", "HK", "MO", "Hant"]:
+			if t in os_locale:
+				return "en"
+	for l: String in SYSTEM_LOCALES:
+		if l.begins_with(lang + "_"):
+			return l
+	return "en"
 
 
 ## [l10n] Applies the language to TranslationServer. Controls showing a plain msgid update at once;
 ## text built in code refreshes when its screen is rebuilt.
 func apply_language() -> void:
 	TranslationServer.set_locale(resolved_locale())
+	CJKFallback.apply(resolved_locale())  # [i18n] CJK glyph fallback on the UI fonts
 
 
 ## Interface scale for every 2D layer (the root window's content scale factor).

@@ -167,7 +167,7 @@ func _check_acts() -> void:
 		_wren_later("ledger_relay", 8.0)
 		get_tree().create_timer(12.0, false).timeout.connect(func() -> void:
 			if relay:
-				EventBus.toast.emit(tr("WREN traced the Ledger's relay: %s of the hub. Look for the red beacon.") % compass(relay.global_position), "story"))
+				EventBus.toast.emit(tr("WREN traced the Ledger's relay: %s of the hub. Look for the red beacon.") % compass_label(relay.global_position), "story"))
 
 
 func _wren_later(trigger: String, delay: float) -> void:
@@ -176,11 +176,24 @@ func _wren_later(trigger: String, delay: float) -> void:
 			world.wren.say(trigger, 1.0, true))
 
 
+const COMPASS: Array[String] = ["north", "north-east", "east", "south-east", "south", "south-west", "west", "north-west"]
+
+
+## English compass name (stable for logic and tests); compass_label() is the display copy.
 static func compass(p: Vector3) -> String:
 	# +X east, -Z north (CityLayout: x east, z south).
 	var a: float = rad_to_deg(atan2(p.x, -p.z))
-	var names: Array[String] = ["north", "north-east", "east", "south-east", "south", "south-west", "west", "north-west"]
-	return names[int(round(fposmod(a, 360.0) / 45.0)) % 8]
+	return COMPASS[int(round(fposmod(a, 360.0) / 45.0)) % 8]
+
+
+## [i18n] Translated compass direction for messages ("%s of you").
+static func compass_label(p: Vector3) -> String:
+	# TRANSLATORS: compass directions fill "%s of the hub" / "%s of you" ("north of you").
+	var labels: Array[String] = [TranslationServer.translate("north"), TranslationServer.translate("north-east"),
+		TranslationServer.translate("east"), TranslationServer.translate("south-east"),
+		TranslationServer.translate("south"), TranslationServer.translate("south-west"),
+		TranslationServer.translate("west"), TranslationServer.translate("north-west")]
+	return labels[COMPASS.find(compass(p))]
 
 
 func _range(key: String, default: float) -> float:
@@ -467,8 +480,8 @@ func _marker(spot: Vector3, col: Color) -> MeshInstance3D:
 func _fly_dump(hid: int, pids: PackedInt32Array, spot: Vector3, jammed: bool) -> void:
 	var warn: Array = cfg.get("drop_warn", [])
 	var first: bool = int(GameState.stats.get("ledger_drops", 0)) == 0 and int(GameState.stats.get("ledger_jammed", 0)) == 0
-	EventBus.toast.emit(tr("Ledger drone inbound, %s! It's heading for a clean hex.") % compass(spot - world.patch.global_position) if not first
-		else tr("A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground.") % compass(spot - world.patch.global_position), "story")
+	EventBus.toast.emit(tr("Ledger drone inbound, %s! It's heading for a clean hex.") % compass_label(spot - world.patch.global_position) if not first
+		else tr("A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground.") % compass_label(spot - world.patch.global_position), "story")
 	if not warn.is_empty():
 		uplink.show_line(str(warn[rng.randi() % warn.size()]))
 	Audio.play("glitch", 0.8, -8.0)
