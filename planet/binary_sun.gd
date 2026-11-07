@@ -48,6 +48,27 @@ func _ready() -> void:
 	add_child(disc)
 	if sky and sky.sky_mat:
 		_base_disk = sky.sky_mat.sun_disk_scale
+	if DevHooks.has("suns-cam"):  # dev shots: look at both suns from beside Lumi
+		get_tree().create_timer(1.0).timeout.connect(_suns_cam)
+
+
+func _suns_cam() -> void:
+	var w: Node = sky.world if sky else null
+	if w == null or sky.sun == null:
+		return
+	var to_a: Vector3 = sky.sun.global_transform.basis.z.normalized()
+	var mid: Vector3 = (to_a + SolarSystem.suns_for(SolarSystem.current_id(), to_a)["b"]["dir"] as Vector3).normalized()
+	var flat := Vector3(mid.x, 0, mid.z).normalized()
+	var cam := Camera3D.new()
+	cam.fov = 60.0
+	cam.far = 1500.0
+	(w as Node).add_child(cam)
+	var p: Vector3 = (w.get("patch") as Node3D).global_position if w.get("patch") != null else Vector3.ZERO
+	cam.global_position = p - flat * 6.0 + Vector3(0, 1.6, 0)
+	cam.look_at(cam.global_position + flat * 10.0 + Vector3(0, mid.y / maxf(0.2, Vector2(mid.x, mid.z).length()) * 10.0 * 0.75, 0), Vector3.UP)
+	cam.current = true
+	if w.get("hud") != null:
+		w.hud.visible = false
 
 
 ## A bright core with a soft, thin halo (the owner: subtle glow).

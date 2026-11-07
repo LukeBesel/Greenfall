@@ -62,7 +62,7 @@ static func step(world: Node) -> String:
 			if not _build_drive(world, ff):
 				return ""
 		if ff:
-			GameState.flags.erase("rocket_ready_unix")
+			_ff_rocket()
 		if SystemMap.launch_blocker(world, target) != "":
 			return ""
 		AutoplayLate.mark("home_launch_%s_s" % str(Homeward.planet_def(target)["id"]))
@@ -71,7 +71,7 @@ static func step(world: Node) -> String:
 	# Every planet restored: home to Verdance's Cradle Returns, then the Homeward rocket.
 	if k != 0:
 		if ff:
-			GameState.flags.erase("rocket_ready_unix")
+			_ff_rocket()
 		if SystemMap.launch_blocker(world, 0) != "":
 			return ""
 		HomewardDirector._launch(world, Homeward.PLANET_BASE)
@@ -81,7 +81,7 @@ static func step(world: Node) -> String:
 		if pl == null or not pl.frontier_hubs.has("cradle_returns"):
 			return ""
 		if ff:
-			GameState.flags.erase("rocket_ready_unix")
+			_ff_rocket()
 		if world.rocket_status() != "":
 			return "wait"
 		world._launch(int(pl.frontier_hubs["cradle_returns"]))
@@ -98,7 +98,7 @@ static func step(world: Node) -> String:
 		AutoplayLate.mark("home_last_seed_s")
 		return "planted the last seed"
 	if ff:
-		GameState.flags.erase("rocket_ready_unix")
+		_ff_rocket()
 	AutoplayLate.mark("home_launch_home_s")
 	if HomewardDirector.launch_home(world):
 		return "launch home"
@@ -121,3 +121,9 @@ static func _build_drive(world: Node, ff: bool) -> bool:
 	AutoplayLate.mark("home_drive_%d_s" % Homeward.drive())
 	print("[Autoplay] home: built %s" % str(nd["name"]))
 	return true
+
+
+## Fast-forward: the cells are full and a rocket stands ready (a dev-hook start has no pad yet).
+static func _ff_rocket() -> void:
+	GameState.flags.erase("rocket_ready_unix")
+	GameState.world["rocket_parked"] = true

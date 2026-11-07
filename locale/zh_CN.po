@@ -416,7 +416,7 @@ msgstr "跃迁"
 msgid "LIFT OFF"
 msgstr "升空"
 
-#: automation/rocket.gd:778 story/cine.gd:68
+#: automation/rocket.gd:782 story/cine.gd:68
 msgid "Space / Esc  skip"
 msgstr "空格 / Esc  跳过"
 
@@ -496,7 +496,7 @@ msgstr "每 3 个捆包送 1 个去回收炉"
 msgid "Every %dth bale to the recycler"
 msgstr "每 %d 个捆包送 1 个去回收炉"
 
-#: core/offline.gd:55 steam/demo_end_screen.gd:124 ui/globe_view.gd:455
+#: core/offline.gd:55 steam/demo_end_screen.gd:124 ui/globe_view.gd:469
 #: ui/upgrade_card.gd:257
 msgid "%d min"
 msgstr "%d 分钟"
@@ -1357,6 +1357,46 @@ msgstr "那是 Cradle号。你的核心亮起时，方舟听见了。它调头�
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "绽放核心 75%：Cradle号正在回家的路上。夜里留意它划过天空。"
 
+#: story/cradle_answers.gd:14
+msgid "Lumi. Look up. That star isn't moving like a star."
+msgstr "Lumi，抬头看。那颗星星的移动方式不像星星。"
+
+#: story/cradle_answers.gd:15
+msgid "CRADLE:  BEACON RECEIVED.  GREEN DETECTED ON VERDANCE.  SEED-KEEPER LM-1 LOCATED."
+msgstr "CRADLE：已收到信标。在 Verdance 检测到绿色。已定位种子守护者 LM-1。"
+
+#: story/cradle_answers.gd:16
+msgid "CRADLE:  LANDING DENIED.  SYSTEM SURVEY: FIVE WORLDS.  ONE ALIVE.  SLEEPERS REMAIN UNDER."
+msgstr "CRADLE：拒绝着陆。星系勘测：五个世界。一个存活。沉睡者继续沉睡。"
+
+#: story/cradle_answers.gd:17
+msgid "It's the charter. The Makers sleep in the Cradle's lower decks, and it won't wake them into a dying system."
+msgstr "是宪章。Makers 睡在 Cradle 号的下层甲板里，它不会让他们在一个垂死的星系里醒来。"
+
+#: story/cradle_answers.gd:18
+msgid "And it is dying. The Ledger mined every world out here hollow and left each one under its trash. Verdance was only the first."
+msgstr "而它确实在死去。Ledger 把这附近每个世界都挖空了，把每一个都丢在自己的垃圾底下。Verdance 只是第一个。"
+
+#: story/cradle_answers.gd:19
+msgid "So we fix all of it. Ochre, Tidewell, Rime, Anvil. One planet at a time."
+msgstr "所以我们把一切都修好。Ochre、Tidewell、Rime、Anvil。一次一个星球。"
+
+#: story/cradle_answers.gd:20
+msgid "Then we build a rocket big enough to reach the Cradle, and we carry the last seed up ourselves."
+msgstr "然后造一枚足够大、能飞到 Cradle 号的火箭，亲自把最后一颗种子送上去。"
+
+#: story/cradle_answers.gd:21
+msgid "CRADLE:  ACKNOWLEDGED.  HOLDING ORBIT.  WE WILL WAIT FOR YOU, SMALL ROBOT."
+msgstr "CRADLE：收到。保持轨道。我们会等你，小机器人。"
+
+#: story/cradle_answers.gd:50
+msgid "Cradle Returns  ·  the ark answers"
+msgstr "Cradle号归来 · 方舟的回应"
+
+#: story/cradle_answers.gd:80
+msgid "The Cradle is holding orbit. Restore the whole system: the solar map is on the hologram (M). Build the Mk V Orbital drive to reach Ochre and Tidewell."
+msgstr "Cradle 号正在轨道上等待。恢复整个星系：太阳系地图在全息投影（M）里。建造 Mk V 轨道推进器，就能前往 Ochre 和 Tidewell。"
+
 #: story/egg_props.gd:176
 msgid "SELECT  A1  ·  B4  ·  C7"
 msgstr "选择  A1  ·  B4  ·  C7"
@@ -1574,6 +1614,46 @@ msgstr "……是绿色的。Lumi，真的是绿色的。"
 #: story/first_seed.gd:227
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "记得浇水。外面种子很稀少，但每次开花都会还你一颗，还会给你的核心一点绿光。一切就是这样开始的。"
+
+#: story/homecoming.gd:18
+msgid "Clear of the air. Look back, {name}. Look at it."
+msgstr "离开大气层了。回头看看，{name}。好好看看。"
+
+#: story/homecoming.gd:19
+msgid "Five worlds, green. The Ledger left them as rubbish. You left them as gardens."
+msgstr "五个世界，全是绿色。Ledger 把它们当垃圾扔下。你把它们变成了花园。"
+
+#: story/homecoming.gd:20
+msgid "CRADLE:  SYSTEM SURVEY: FIVE WORLDS.  FIVE ALIVE."
+msgstr "CRADLE：星系勘测：五个世界。五个存活。"
+
+#: story/homecoming.gd:21
+msgid "CRADLE:  CHARTER CONDITION MET.  WAKING SLEEPERS.  OPENING BAY ONE."
+msgstr "CRADLE：宪章条件已满足。唤醒沉睡者。打开一号舱。"
+
+#: story/homecoming.gd:22
+msgid "It's opening the bay. It's actually opening the bay. Steady... steady..."
+msgstr "它在打开舱门。它真的在打开舱门。稳住……稳住……"
+
+#: story/homecoming.gd:25
+msgid "The vault. Your vault. It looks exactly like you left it."
+msgstr "种子库。你的种子库。和你离开时一模一样。"
+
+#: story/homecoming.gd:26
+msgid "You climbed into a cargo pod to save that tray. Three hundred years later, you brought it home."
+msgstr "你为了救那个托盘钻进了货运舱。三百年后，你把它带回家了。"
+
+#: story/homecoming.gd:27
+msgid "Hear that? Below decks. Doors. Voices. They're waking up, {name}."
+msgstr "听到了吗？甲板下面。开门声。说话声。他们正在醒来，{name}。"
+
+#: story/homecoming.gd:28
+msgid "The first thing they'll see is a world that's green again. You did that. Small. Stubborn. Perfect."
+msgstr "他们看到的第一样东西，会是一个重新变绿的世界。是你做到的。小小的，倔强的，完美的。"
+
+#: story/homecoming.gd:131 data/achievements.json:achievements[home_homecoming].name data/codex.json:homeward.homecoming.name
+msgid "Homecoming"
+msgstr "归乡"
 
 #: story/intro.gd:281
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
@@ -1870,31 +1950,35 @@ msgstr "Verdance 绽放：%s。%s"
 msgid "Somewhere under the junk."
 msgstr "在废料底下的某个地方。"
 
-#: systems/codex.gd:188 ui/codex_screen.gd:355
+#: systems/codex.gd:63
+msgid "Found on the planet it belongs to."
+msgstr "在它所属的星球上找到。"
+
+#: systems/codex.gd:196 ui/codex_screen.gd:355
 msgid "Old Town"
 msgstr "老城区"
 
-#: systems/codex.gd:192 ui/codex_screen.gd:355
+#: systems/codex.gd:200 ui/codex_screen.gd:355
 msgid "Wilderness bases"
 msgstr "荒野基地"
 
-#: systems/codex.gd:192
+#: systems/codex.gd:200
 msgid " · often %s"
 msgstr " · 常见于%s"
 
-#: systems/codex.gd:195 ui/codex_screen.gd:355 data/codex.json:categories[frontiers].name
+#: systems/codex.gd:203 ui/codex_screen.gd:355 data/codex.json:categories[frontiers].name
 msgid "Frontiers"
 msgstr "边境"
 
-#: systems/codex.gd:195
+#: systems/codex.gd:203
 msgid " · %s"
 msgstr " · %s"
 
-#: systems/codex.gd:197 ui/codex_screen.gd:355
+#: systems/codex.gd:205 ui/codex_screen.gd:355
 msgid "Other worlds"
 msgstr "其他世界"
 
-#: systems/codex.gd:198 ui/codex_screen.gd:355
+#: systems/codex.gd:206 ui/codex_screen.gd:355
 msgid "Any district"
 msgstr "任意街区"
 
@@ -1998,15 +2082,15 @@ msgstr "收藏已集齐"
 msgid "Needs %d tokens"
 msgstr "需要 %d 代币"
 
-#: systems/cradle_mode.gd:282
+#: systems/cradle_mode.gd:283
 msgid "Fully grown"
 msgstr "已满级"
 
-#: systems/cradle_mode.gd:284
+#: systems/cradle_mode.gd:287
 msgid "Needs %d Starseeds"
 msgstr "需要 %d 星种"
 
-#: systems/cradle_mode.gd:298
+#: systems/cradle_mode.gd:302
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr "传家宝：%s，等级 %d。它会随 Lumi 前往每一个世界。"
 
@@ -2175,6 +2259,74 @@ msgstr "审计胜利，%d 比 %d！Ledger 盖上了“批准”章。%s"
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "无人机赢得了审计，%d 比 %d。不过它还是留了小费：+%s 方块。"
 
+#: systems/homeward.gd:275
+msgid "Needs the %s drive"
+msgstr "需要 %s 推进器"
+
+#: systems/homeward.gd:277
+msgid "No chart yet: restore %s to %d%%"
+msgstr "还没有星图：把 %s 恢复到 %d%%"
+
+#: systems/homeward.gd:320
+msgid "The Homeward rocket is built"
+msgstr "归乡火箭已建成"
+
+#: systems/homeward.gd:323
+msgid "The Cradle has to answer first (Cradle Returns)"
+msgstr "Cradle 号得先回应（Cradle号归来）"
+
+#: systems/homeward.gd:325
+msgid "Needs %d planet relics (%d)"
+msgstr "需要 %d 件星球遗物（%d）"
+
+#: systems/homeward.gd:327
+msgid "Restore every planet first (%d%%)"
+msgstr "先恢复每一个星球（%d%%）"
+
+#: systems/homeward.gd:329
+msgid "Build it at Verdance's Cradle Returns"
+msgstr "在 Verdance 的 Cradle号归来建造"
+
+#: systems/homeward.gd:331
+msgid "Not enough cubes or parts"
+msgstr "方块或零件不足"
+
+#: systems/homeward.gd:345
+msgid "Rocket drive built: %s."
+msgstr "火箭推进器已建成：%s。"
+
+#: systems/homeward_director.gd:218
+msgid "Intercepted: %s"
+msgstr "截获：%s"
+
+#: systems/homeward_director.gd:225
+msgid "%s: %s"
+msgstr "%s：%s"
+
+#: systems/homeward_director.gd:235
+msgid "%s is restored. System: %d%%."
+msgstr "%s 已恢复。星系：%d%%。"
+
+#: systems/homeward_director.gd:238
+msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
+msgstr "遗物：%s。传家宝选择 +1（方舟舰桥）。"
+
+#: systems/homeward_director.gd:245
+msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
+msgstr "星系里的每个星球都活过来了。回到 Verdance 的 Cradle号归来，建造 Mk VII 归乡火箭。"
+
+#: systems/homeward_director.gd:399
+msgid "E   launch home"
+msgstr "E   发射回家"
+
+#: systems/homeward_director.gd:399
+msgid "E   plant the last seed"
+msgstr "E   种下最后一颗种子"
+
+#: systems/homeward_director.gd:410
+msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
+msgstr "最后一颗种子已经入土。一切就绪。在这里再按一次 E 就能发射回家。"
+
 #: systems/l10n_fmt.gd:17
 msgid "+%d cube"
 msgid_plural "+%d cubes"
@@ -2260,11 +2412,11 @@ msgstr "{robot} {stat} +{amount}%"
 msgid "+{amount} {robot} {stat}"
 msgstr "{robot} {stat} +{amount}"
 
-#: systems/late_director.gd:90
+#: systems/late_director.gd:91
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "Cradle号回家之后，方舟舰桥才会开放。"
 
-#: systems/late_director.gd:124
+#: systems/late_director.gd:125
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
 msgstr "Cradle 模式：方舟的种子库里存着其他世界的种子。打开 暂停 > 方舟舰桥 查看，用星种购买传家宝，或者播种一个新世界。花园模式（H）也已开放。"
 
@@ -2473,7 +2625,7 @@ msgid "%d bolts"
 msgstr "%d 个螺栓"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: systems/robot_builder.gd:382 ui/ark_bridge.gd:262 ui/main_menu.gd:433
+#: systems/robot_builder.gd:382 ui/ark_bridge.gd:265 ui/main_menu.gd:433
 msgid "%s cubes"
 msgstr "%s 方块"
 
@@ -2545,7 +2697,7 @@ msgstr "方舟舰桥"
 msgid "The vault holds seeds for every world in the system. Take what Lumi learned somewhere new; nothing here is ever undone."
 msgstr "种子库里存着这个星系每个世界的种子。把 Lumi 学到的带到新的地方去吧；这里的一切都不会被抹去。"
 
-#: ui/ark_bridge.gd:107 ui/ark_bridge.gd:304
+#: ui/ark_bridge.gd:107 ui/ark_bridge.gd:307
 msgid "%d Starseeds"
 msgstr "%d 星种"
 
@@ -2569,7 +2721,7 @@ msgstr "传家宝  ·  每个世界都保留"
 msgid "Enter / A  choose      Esc / B  back"
 msgstr "Enter / A  选择      Esc / B  返回"
 
-#: ui/ark_bridge.gd:160 ui/ark_bridge.gd:254
+#: ui/ark_bridge.gd:160 ui/ark_bridge.gd:257
 msgid "Back to %s"
 msgstr "返回%s"
 
@@ -2585,58 +2737,66 @@ msgstr "尚未造访"
 msgid "%s  ·  %d hexes  ·  %d ark waves  ·  %d curiosities"
 msgstr "%s  ·  %d 个六角格  ·  %d 次方舟波次  ·  %d 件奇物"
 
-#: ui/ark_bridge.gd:192
+#: ui/ark_bridge.gd:192 ui/system_map.gd:387 ui/system_map.gd:595
 msgid "restored"
 msgstr "已复原"
 
-#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:673
 msgid "You are here"
 msgstr "你在这里"
 
 #: ui/ark_bridge.gd:202
+msgid "By rocket"
+msgstr "乘火箭"
+
+#: ui/ark_bridge.gd:205
 msgid "Travel"
 msgstr "出发"
 
-#: ui/ark_bridge.gd:227
+#: ui/ark_bridge.gd:230
 msgid "SEED A NEW WORLD"
 msgstr "播种新世界"
 
-#: ui/ark_bridge.gd:229
+#: ui/ark_bridge.gd:232
 msgid "The Cradle has to come home first."
 msgstr "Cradle号得先回家。"
 
-#: ui/ark_bridge.gd:245 ui/frontier_rockets.gd:42 ui/globe_view.gd:308
-#: ui/rockets_panel.gd:81
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:320
+#: ui/rockets_panel.gd:81 ui/system_map.gd:659
 msgid "Launch"
 msgstr "发射"
 
-#: ui/ark_bridge.gd:264
+#: ui/ark_bridge.gd:267
 msgid "%d Data"
 msgstr "%d 数据"
 
-#: ui/ark_bridge.gd:266
+#: ui/ark_bridge.gd:269
 msgid "%d seeds"
 msgstr "%d 种子"
 
-#: ui/ark_bridge.gd:268
+#: ui/ark_bridge.gd:271
 msgid "robots waiting: %d"
 msgstr "等候的机器人：%d"
 
-#: ui/ark_bridge.gd:270
+#: ui/ark_bridge.gd:273
 msgid "research tier %d known"
 msgstr "已掌握第 %d 层研究"
 
-#: ui/ark_bridge.gd:272
+#: ui/ark_bridge.gd:275
 msgid "Starting kit: just Lumi. Heirlooms add to it."
 msgstr "初始配置：只有 Lumi。传家宝会添加更多。"
 
-#: ui/ark_bridge.gd:273
+#: ui/ark_bridge.gd:276
 msgid "Starting kit: %s"
 msgstr "初始配置：%s"
 
-#: ui/ark_bridge.gd:301 ui/settings_panel.gd:509
+#: ui/ark_bridge.gd:304 ui/settings_panel.gd:509
 msgid "Full"
 msgstr "完整"
+
+#: ui/ark_bridge.gd:307
+msgid "Take  (%d picks)"
+msgstr "领取（%d 次选择）"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
@@ -2968,7 +3128,7 @@ msgstr "兑现的捆包"
 msgid "Cubes earned"
 msgstr "赚到的方块"
 
-#: ui/codex_screen.gd:676 ui/globe_view.gd:135 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:676 ui/globe_view.gd:138 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "种植"
 
@@ -3461,71 +3621,75 @@ msgstr "[%s] 放置   [%s] 旋转   [%s / %s] 物品   [%s] 拿起   [%s] 完成
 msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
 msgstr "已拿起：%s。把它放到别处，或者先收进仓库。"
 
-#: ui/globe_view.gd:118
+#: ui/globe_view.gd:121
 msgid "Survey"
 msgstr "勘测"
 
-#: ui/globe_view.gd:118
+#: ui/globe_view.gd:121
 msgid "Verdance  ·  hand-held projection"
 msgstr "Verdance  ·  手持投影"
 
-#: ui/globe_view.gd:134
+#: ui/globe_view.gd:137
 msgid "Not cleaned yet"
 msgstr "尚未清理"
 
-#: ui/globe_view.gd:134
+#: ui/globe_view.gd:137
 msgid "Cleaned"
 msgstr "已清理"
 
-#: ui/globe_view.gd:135 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:138 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr "已种植"
 
-#: ui/globe_view.gd:136 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:139 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr "已恢复"
 
-#: ui/globe_view.gd:136
+#: ui/globe_view.gd:139
 msgid "Cities"
 msgstr "城市"
 
-#: ui/globe_view.gd:137
+#: ui/globe_view.gd:140
 msgid "Bases"
 msgstr "基地"
 
-#: ui/globe_view.gd:157
+#: ui/globe_view.gd:155 ui/late_menu.gd:21
+msgid "Solar system"
+msgstr "太阳系"
+
+#: ui/globe_view.gd:169
 msgid "Rocket"
 msgstr "火箭"
 
-#: ui/globe_view.gd:157
+#: ui/globe_view.gd:169
 msgid "Travel between bases"
 msgstr "在基地间旅行"
 
-#: ui/globe_view.gd:170
+#: ui/globe_view.gd:182
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr "[k]拖动旋转   ·   滚轮缩放   ·   [/k][p]{@look}  旋转     {zoom_out}{zoom_in}  缩放     {@dpad}  发射列表     [/p]{open_globe}  关闭"
 
-#: ui/globe_view.gd:305
+#: ui/globe_view.gd:317
 msgid "%d sectors away"
 msgstr "相隔 %d 个扇区"
 
-#: ui/globe_view.gd:427
+#: ui/globe_view.gd:439
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "的星球已收复  ·  %s / %s 个陆地六角格"
 
-#: ui/globe_view.gd:434
+#: ui/globe_view.gd:446
 msgid "%s HEXES CLEAN"
 msgstr "%s 个六角格已清理"
 
-#: ui/globe_view.gd:436
+#: ui/globe_view.gd:448
 msgid "Surveyed %s ago%s"
 msgstr "%s前勘测%s"
 
-#: ui/globe_view.gd:436
+#: ui/globe_view.gd:448
 msgid "   ·   OUTDATED"
 msgstr "   ·   已过时"
 
-#: ui/globe_view.gd:437
+#: ui/globe_view.gd:449
 msgid "Re-survey      %s cubes"
 msgstr "重新勘测      %s 方块"
 
@@ -4646,6 +4810,106 @@ msgstr "自动路线：%s"
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Bolts %s"
 msgstr "已回收捆包 %d   ·   已销毁废料 %s 千克   ·   螺栓 %s"
 
+#: ui/system_map.gd:385 ui/system_map.gd:595
+msgid "you are here"
+msgstr "你在这里"
+
+#: ui/system_map.gd:391
+msgid "needs %s"
+msgstr "需要 %s"
+
+#: ui/system_map.gd:480
+msgid "In flight"
+msgstr "飞行中"
+
+#: ui/system_map.gd:480
+msgid "D-pad / click  pick a planet      Enter / A  choose      Esc / B  back"
+msgstr "方向键 / 点击  选择星球      Enter / A  确认      Esc / B  返回"
+
+#: ui/system_map.gd:532
+msgid "Verdance system"
+msgstr "Verdance 星系"
+
+#: ui/system_map.gd:532
+msgid "two suns  ·  five worlds  ·  system restoration"
+msgstr "两个太阳 · 五个世界 · 星系恢复度"
+
+#: ui/system_map.gd:537
+msgid "restored  ·  %d of %d planets"
+msgstr "已恢复 · %d / %d 个星球"
+
+#: ui/system_map.gd:542
+msgid "Relics"
+msgstr "遗物"
+
+#: ui/system_map.gd:547
+msgid "Restore %s"
+msgstr "恢复 %s"
+
+#: ui/system_map.gd:551
+msgid "Heirloom picks waiting: %d (Pause > Ark Bridge)"
+msgstr "待领取的传家宝选择：%d（暂停 > 方舟舰桥）"
+
+#: ui/system_map.gd:552
+msgid "Rocket drive"
+msgstr "火箭推进器"
+
+#: ui/system_map.gd:552
+msgid "interplanetary  ·  carried to every planet"
+msgstr "星际 · 随你前往每个星球"
+
+#: ui/system_map.gd:559
+msgid "The Homeward rocket stands ready."
+msgstr "归乡火箭已经准备就绪。"
+
+#: ui/system_map.gd:561
+msgid "Next: %s"
+msgstr "下一个：%s"
+
+#: ui/system_map.gd:570
+msgid "Build"
+msgstr "建造"
+
+#: ui/system_map.gd:585
+msgid "Planets"
+msgstr "星球"
+
+#: ui/system_map.gd:585
+msgid "pick a world"
+msgstr "选择一个世界"
+
+#: ui/system_map.gd:595
+msgid "unvisited"
+msgstr "未造访"
+
+#: ui/system_map.gd:626
+msgid "%s  ·  %.2f AU from the suns"
+msgstr "%s · 距太阳 %.2f AU"
+
+#: ui/system_map.gd:638
+msgid "Restored %d%%"
+msgstr "已恢复 %d%%"
+
+#: ui/system_map.gd:640
+msgid "Goal: %d Thriving hexes, %d bases at level 5, a Thriving landing district"
+msgstr "目标：%d 个繁茂六边形，%d 座 5 级基地，一个繁茂的着陆区"
+
+#: ui/system_map.gd:640
+msgid "Goal: the Bloom Core full (Cradle Returns)"
+msgstr "目标：绽放核心充满（Cradle号归来）"
+
+#: ui/system_map.gd:649 data/goals.json:goals[home_launch].text
+msgid "Launch home"
+msgstr "发射回家"
+
+#: ui/system_map.gd:654
+msgid "Choose a district"
+msgstr "选择一个区域"
+
+#: ui/system_map.gd:679
+msgid "Rocket not ready"
+msgstr "火箭尚未就绪"
+
 #: ui/trade_panel.gd:23
 msgid "HAGGLE'S PARTS TRADE"
 msgstr "HAGGLE 的零件交易"
@@ -5538,6 +5802,66 @@ msgstr "并非第一个"
 msgid "Find the older seed pod on a new world."
 msgstr "在新世界找到那个更古老的种子舱。"
 
+#: data/achievements.json:achievements[home_answered].name
+msgid "The Cradle Answers"
+msgstr "Cradle 号的回应"
+
+#: data/achievements.json:achievements[home_answered].desc
+msgid "Light the Cradle Returns beacon and hear from the ark."
+msgstr "点亮 Cradle号归来的信标，听到方舟的回应。"
+
+#: data/achievements.json:achievements[home_landed].name
+msgid "Two Suns, New Ground"
+msgstr "双日新土"
+
+#: data/achievements.json:achievements[home_landed].desc
+msgid "Land on another planet of the Verdance system."
+msgstr "降落在 Verdance 星系的另一个星球上。"
+
+#: data/achievements.json:achievements[home_planets_2].name
+msgid "One Down"
+msgstr "完成一个"
+
+#: data/achievements.json:achievements[home_planets_2].desc
+msgid "Restore a second planet."
+msgstr "恢复第二个星球。"
+
+#: data/achievements.json:achievements[home_planets_4].name
+msgid "Most of the Way"
+msgstr "快到终点"
+
+#: data/achievements.json:achievements[home_planets_4].desc
+msgid "Restore four planets."
+msgstr "恢复四个星球。"
+
+#: data/achievements.json:achievements[home_planets_5].name
+msgid "Five Alive"
+msgstr "五星皆活"
+
+#: data/achievements.json:achievements[home_planets_5].desc
+msgid "Restore every planet in the system."
+msgstr "恢复星系里的每一个星球。"
+
+#: data/achievements.json:achievements[home_relics].name
+msgid "Keepsakes"
+msgstr "纪念品"
+
+#: data/achievements.json:achievements[home_relics].desc
+msgid "Collect all four planet relics."
+msgstr "收集全部四件星球遗物。"
+
+#: data/achievements.json:achievements[home_drive_6].name
+msgid "Fold Space"
+msgstr "折叠空间"
+
+#: data/achievements.json:achievements[home_drive_6].desc
+msgid "Build the Mk VI Interplanetary drive."
+msgstr "建造 Mk VI 星际推进器。"
+
+#: data/achievements.json:achievements[home_homecoming].desc
+msgid "Launch home to the Cradle."
+msgstr "发射回家，飞向 Cradle 号。"
+
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
 msgstr "Verdance 上任意地方的 25 个繁茂六角格。"
@@ -5589,6 +5913,10 @@ msgstr "地标"
 #: data/codex.json:categories[animals].name
 msgid "Animals"
 msgstr "动物"
+
+#: data/codex.json:categories[homeward].name
+msgid "Homeward"
+msgstr "归途"
 
 #: data/codex.json:junk.metal.hint
 msgid "Rusty, clanky, everywhere."
@@ -6537,6 +6865,46 @@ msgstr "出没：Cradle号归来的上空。"
 #: data/codex.json:animals.crane.desc
 msgid "White cranes circle high over the landing city on slow wingbeats. The ark's seed vault carried their eggs; this is the first flock to fly free."
 msgstr "白鹤扇着缓慢的翅膀，在着陆之城的高空盘旋。方舟的种子库带来了它们的蛋；这是第一群自由飞翔的鹤。"
+
+#: data/codex.json:homeward.charter.name
+msgid "The Sleepers' Charter"
+msgstr "沉睡者的宪章"
+
+#: data/codex.json:homeward.charter.hint data/codex.json:homeward.ledger_system.hint
+msgid "Light the Cradle Returns beacon."
+msgstr "点亮 Cradle号归来的信标。"
+
+#: data/codex.json:homeward.charter.desc
+msgid "When the Makers left Verdance, most of them went into the long sleep in the Cradle's lower decks. Their charter was one line long: wake us when the system can feed us. Not one world. All five. The Cradle has kept that promise for three hundred years, and it will not break it for anybody, even a very persuasive small robot."
+msgstr "Makers 离开 Verdance 时，大多数人在 Cradle 号的下层甲板进入了长眠。他们的宪章只有一行：等星系能养活我们时再叫醒我们。不是一个世界，是全部五个。Cradle 号守了这个承诺三百年，不会为任何人打破它，哪怕是一个很有说服力的小机器人。"
+
+#: data/codex.json:homeward.ledger_system.name
+msgid "The Ledger, Inc."
+msgstr "Ledger 公司"
+
+#: data/codex.json:homeward.ledger_system.desc
+msgid "The Ledger was never only Verdance's problem. It held mining rights to every world around the two suns: Ochre's sands, Tidewell's seabed, Rime's warm core, Anvil's whole crust. When the ore ran out it closed the books, kept the profits and left five planets under its trash. The audits never stopped. Nobody was left to read them."
+msgstr "Ledger 从来不只是 Verdance 的问题。它握有两个太阳周围每个世界的采矿权：Ochre 的沙子、Tidewell 的海床、Rime 温暖的核心、Anvil 的整个地壳。矿石耗尽后，它合上账本，留下利润，把五个星球丢在自己的垃圾底下。审计从未停止。只是再也没人去读了。"
+
+#: data/codex.json:homeward.binary_suns.name
+msgid "Hearth and Ember"
+msgstr "Hearth 与 Ember"
+
+#: data/codex.json:homeward.binary_suns.hint
+msgid "Open the solar-system map."
+msgstr "打开太阳系地图。"
+
+#: data/codex.json:homeward.binary_suns.desc
+msgid "The Verdance system has two suns: Hearth, warm and white, and Ember, its small orange companion. Every world sees both. On Ochre they are huge and hot; from Rime they are two bright points, and the stars stay out all day."
+msgstr "Verdance 星系有两个太阳：温暖洁白的 Hearth，和它小小的橙色伴星 Ember。每个世界都能看到两颗。在 Ochre 上它们巨大而炽热；从 Rime 看去只是两个亮点，白天也能看见星星。"
+
+#: data/codex.json:homeward.homecoming.hint
+msgid "Restore every world and launch home."
+msgstr "恢复每一个世界，然后发射回家。"
+
+#: data/codex.json:homeward.homecoming.desc
+msgid "Five worlds alive again. A rocket built from all of them. One seed planted in a bed with a yellow fence. The Cradle opened its bay for a small robot with a seedling tray, and below decks the Makers woke up to a green sky."
+msgstr "五个世界重获生机。一枚用它们全部造成的火箭。一颗种在黄色栅栏花坛里的种子。Cradle 号为一个抱着育苗托盘的小机器人打开了舱门，而在甲板下，Makers 在绿色的天空下醒来。"
 
 #: data/cradle.json:heirlooms[green_thumb].desc
 msgid "Plants grow 8% faster per level, on every world."
@@ -9314,6 +9682,38 @@ msgstr "在这里让 25 个六角格生长"
 msgid "Call the Cradle home"
 msgstr "迎 Cradle号回家"
 
+#: data/goals.json:goals[home_drive_5].text
+msgid "Build the Mk V Orbital drive"
+msgstr "建造 Mk V 轨道推进器"
+
+#: data/goals.json:goals[home_land_1].text
+msgid "Fly to another planet"
+msgstr "飞往另一个星球"
+
+#: data/goals.json:goals[home_restore_2].text
+msgid "Restore a second planet"
+msgstr "恢复第二个星球"
+
+#: data/goals.json:goals[home_drive_6].text
+msgid "Build the Mk VI drive"
+msgstr "建造 Mk VI 推进器"
+
+#: data/goals.json:goals[home_restore_4].text
+msgid "Restore four planets"
+msgstr "恢复四个星球"
+
+#: data/goals.json:goals[home_restore_5].text
+msgid "Restore all five planets"
+msgstr "恢复全部五个星球"
+
+#: data/goals.json:goals[home_drive_7].text
+msgid "Build the Homeward rocket"
+msgstr "建造归乡火箭"
+
+#: data/goals.json:goals[home_last_seed].text
+msgid "Plant the last seed"
+msgstr "种下最后一颗种子"
+
 #: data/goals.json:goals[ark_1].text
 msgid "Plant a Seed Ark wave"
 msgstr "种下一波种子方舟"
@@ -9401,6 +9801,330 @@ msgstr "繁茂"
 #: data/hex_levels.json:levels[5].hint
 msgid "Wildlife has moved in"
 msgstr "野生动物已经入住"
+
+#: data/homeward.json:planets[verdance].name
+msgid "Verdance"
+msgstr "Verdance"
+
+#: data/homeward.json:planets[ochre].name
+msgid "Ochre"
+msgstr "Ochre"
+
+#: data/homeward.json:planets[tidewell].name
+msgid "Tidewell"
+msgstr "Tidewell"
+
+#: data/homeward.json:planets[rime].name
+msgid "Rime"
+msgstr "Rime"
+
+#: data/homeward.json:planets[anvil].name
+msgid "Anvil"
+msgstr "Anvil"
+
+#: data/homeward.json:relics.ochre_glass.name
+msgid "Ochre Sun-Glass"
+msgstr "Ochre 日光玻璃"
+
+#: data/homeward.json:relics.ochre_glass.desc
+msgid "Slag fused clear by the dune winds. It holds a little of Ochre's light."
+msgstr "被沙丘之风熔得透明的矿渣。里面留着一点 Ochre 的光。"
+
+#: data/homeward.json:relics.tidewell_pearl.name
+msgid "Tidewell Pearl"
+msgstr "Tidewell 珍珠"
+
+#: data/homeward.json:relics.tidewell_pearl.desc
+msgid "The first pearl grown in Tidewell's sea in two hundred years."
+msgstr "两百年来在 Tidewell 海中长出的第一颗珍珠。"
+
+#: data/homeward.json:relics.rime_core.name
+msgid "Rime Heart-Ice"
+msgstr "Rime 心冰"
+
+#: data/homeward.json:relics.rime_core.desc
+msgid "A core sample from the thawed lakes, still faintly warm."
+msgstr "从解冻湖泊中取出的岩芯样本，还带着一丝温度。"
+
+#: data/homeward.json:relics.anvil_ingot.name
+msgid "Anvil Ingot"
+msgstr "Anvil 锭块"
+
+#: data/homeward.json:relics.anvil_ingot.desc
+msgid "The Ledger's last ingot, recast as a plain ring with a seed stamped in it."
+msgstr "Ledger 的最后一块锭，重铸成一枚刻着种子的朴素戒指。"
+
+#: data/homeward.json:drive[0].name
+msgid "Mk V Orbital"
+msgstr "Mk V 轨道"
+
+#: data/homeward.json:drive[0].desc
+msgid "A vacuum-rated hull and a sun-sail: reaches the near planets, Ochre and Tidewell."
+msgstr "耐真空的船体和一面太阳帆：可到达较近的星球 Ochre 和 Tidewell。"
+
+#: data/homeward.json:drive[1].name
+msgid "Mk VI Interplanetary"
+msgstr "Mk VI 星际"
+
+#: data/homeward.json:drive[1].desc
+msgid "A fold drive salvaged from a Ledger ore hauler: reaches Rime and Anvil."
+msgstr "从 Ledger 矿石货船上拆下的折叠推进器：可到达 Rime 和 Anvil。"
+
+#: data/homeward.json:drive[2].name
+msgid "Mk VII Homeward"
+msgstr "Mk VII 归乡"
+
+#: data/homeward.json:drive[2].desc
+msgid "A great green-light rocket on a launch complex built from every planet you saved. One trip: up to the Cradle."
+msgstr "一枚巨大的绿光火箭，立在用你拯救的每个星球建成的发射场上。只有一趟旅程：飞向 Cradle 号。"
+
+#: data/homeward.json:docs.ochre_arrive.header data/homeward.json:docs.tidewell_arrive.header data/homeward.json:docs.rime_arrive.header
+msgid "L E D G E R   ·   I N T E R N A L"
+msgstr "L E D G E R · 内 部 文 件"
+
+#: data/homeward.json:docs.ochre_arrive.title
+msgid "Site closure notice, Ochre Open Pit 1"
+msgstr "关闭通知，Ochre 一号露天矿"
+
+#: data/homeward.json:docs.ochre_arrive.body
+msgid ""
+"OCHRE OPEN PIT 1: CLOSED\n"
+"\n"
+"Ore grade below threshold. All extraction ends at shift change.\n"
+"Remaining equipment: abandon in place (removal not cost-effective).\n"
+"Waste rock, slag and packaging: leave on site.\n"
+"Residents: none of our concern; contracts expired.\n"
+"\n"
+"Thank you for your years of service.\n"
+"— The Ledger"
+msgstr ""
+"OCHRE 一号露天矿：已关闭\n"
+"\n"
+"矿石品位低于阈值。所有开采在换班时结束。\n"
+"剩余设备：原地弃置（运走不划算）。\n"
+"废石、矿渣和包装：留在原地。\n"
+"居民：与我们无关；合同已到期。\n"
+"\n"
+"感谢你多年来的服务。\n"
+"— Ledger"
+
+#: data/homeward.json:docs.ochre_half.title
+msgid "Haul truck log, unit OH-7"
+msgstr "运矿卡车日志，OH-7 号"
+
+#: data/homeward.json:docs.ochre_half.body
+msgid ""
+"DAY 1,904\n"
+"Load 41 to the slag dunes.\n"
+"DAY 1,905\n"
+"No orders.\n"
+"DAY 1,906\n"
+"No orders.\n"
+"DAY 3,000\n"
+"Still parked. The wind keeps burying my wheels. A lizard lives under my bumper now. I have named it Load 42."
+msgstr ""
+"第 1,904 天\n"
+"第 41 车运往矿渣沙丘。\n"
+"第 1,905 天\n"
+"没有指令。\n"
+"第 1,906 天\n"
+"没有指令。\n"
+"第 3,000 天\n"
+"还停在这里。风一直把我的轮子埋起来。现在有只蜥蜴住在我的保险杠下面。我叫它第 42 车。"
+
+#: data/homeward.json:docs.ochre_restored.title
+msgid "Chalk on a pit wall"
+msgstr "矿坑墙上的粉笔字"
+
+#: data/homeward.json:docs.ochre_restored.body
+msgid ""
+"[In big careful letters, on the old benches of the pit:]\n"
+"\n"
+"THE GREEN CAME BACK.\n"
+"\n"
+"[Underneath, smaller, in WREN's handwriting font:] One down, Lumi. Four to go."
+msgstr ""
+"［在矿坑的旧台阶上，用又大又工整的字：］\n"
+"\n"
+"绿色回来了。\n"
+"\n"
+"［下面，小一点，用 WREN 的手写字体：］完成一个，Lumi。还剩四个。"
+
+#: data/homeward.json:docs.tidewell_arrive.title
+msgid "Dredging schedule, final revision"
+msgstr "疏浚计划，最终修订版"
+
+#: data/homeward.json:docs.tidewell_arrive.body
+msgid ""
+"TIDEWELL SEABED OPERATIONS\n"
+"\n"
+"Nodules recovered: 100%.\n"
+"Reef and kelp beds: 'overburden', removed.\n"
+"Silt plumes: within acceptable limits (limits revised).\n"
+"Island towns: notified by post.\n"
+"\n"
+"Next quarter: none. Tidewell is closed for business."
+msgstr ""
+"TIDEWELL 海床作业\n"
+"\n"
+"结核回收率：100%。\n"
+"珊瑚礁和海藻林：作为“覆盖层”清除。\n"
+"淤泥羽流：在可接受范围内（范围已修订）。\n"
+"岛上城镇：已邮寄通知。\n"
+"\n"
+"下个季度：无。Tidewell 停业。"
+
+#: data/homeward.json:docs.tidewell_half.title
+msgid "Harbour radio, on a loop"
+msgstr "港口电台，循环播放"
+
+#: data/homeward.json:docs.tidewell_half.body
+msgid "...this is Tidewell harbour, still broadcasting. The water's gone grey and the fish have gone quiet. If anyone hears this, we planted mangroves along the north quay before we left. Check on them for us? They were only little..."
+msgstr "……这里是 Tidewell 港，仍在广播。海水变灰了，鱼也安静了。如果有人听到：我们离开前在北码头种了红树林。能替我们照看一下吗？它们还很小……"
+
+#: data/homeward.json:docs.tidewell_restored.title
+msgid "A message in a bottle"
+msgstr "漂流瓶"
+
+#: data/homeward.json:docs.tidewell_restored.body
+msgid ""
+"To whoever finds this,\n"
+"\n"
+"The sea used to be so green you could see it from the hill. Grandad said it would come back if someone gave it a reason.\n"
+"\n"
+"Thank you for being the reason.\n"
+"\n"
+"— Pim, age 9, Tidewell"
+msgstr ""
+"给发现这个的人：\n"
+"\n"
+"以前大海绿得从山上都能看见。爷爷说，只要有人给它一个理由，它就会回来。\n"
+"\n"
+"谢谢你成为那个理由。\n"
+"\n"
+"— Pim，9 岁，Tidewell"
+
+#: data/homeward.json:docs.rime_arrive.title
+msgid "Core tap report, Rime"
+msgstr "地核抽取报告，Rime"
+
+#: data/homeward.json:docs.rime_arrive.body
+msgid ""
+"RIME DEEP CORE TAP\n"
+"\n"
+"Heat extracted and sold: all of it.\n"
+"Surface temperature: falling (expected).\n"
+"Lakes: freezing (expected).\n"
+"Population: relocated (see invoice).\n"
+"\n"
+"Note from Finance: the moon was not ours to keep warm."
+msgstr ""
+"RIME 深层地核抽取\n"
+"\n"
+"已抽取并售出的热量：全部。\n"
+"地表温度：下降中（预期内）。\n"
+"湖泊：结冰中（预期内）。\n"
+"人口：已迁移（见发票）。\n"
+"\n"
+"财务部备注：替这颗卫星保暖不是我们的事。"
+
+#: data/homeward.json:docs.rime_half.title
+msgid "Greenhouse keeper's diary"
+msgstr "温室管理员的日记"
+
+#: data/homeward.json:docs.rime_half.body
+msgid ""
+"Day 1. The heaters are off. Moved the seedlings to the kitchen.\n"
+"Day 9. Kitchen's cold too. Wrapped them in my coat.\n"
+"Day 30. We're leaving on the last shuttle. I left the coat. And a note: please keep them warm. I know that's silly. You're a frozen moon."
+msgstr ""
+"第 1 天。暖气停了。把幼苗搬进了厨房。\n"
+"第 9 天。厨房也冷了。用我的外套把它们裹起来。\n"
+"第 30 天。我们要坐最后一班穿梭机走了。外套留下了。还有一张纸条：请让它们保持温暖。我知道这很傻。你是一颗冰冻的卫星。"
+
+#: data/homeward.json:docs.rime_restored.title
+msgid "A note pinned in a thawed greenhouse"
+msgstr "钉在解冻温室里的纸条"
+
+#: data/homeward.json:docs.rime_restored.body
+msgid ""
+"[Under the note from Day 30, a new line in bright ink:]\n"
+"\n"
+"Kept them warm. They're fine. They're more than fine.\n"
+"\n"
+"— LM-1 (and WREN, who wants it known she helped)"
+msgstr ""
+"［在第 30 天的纸条下面，用明亮的墨水写着新的一行：］\n"
+"\n"
+"一直让它们暖着。它们很好。好得不得了。\n"
+"\n"
+"— LM-1（还有 WREN，她希望大家知道她帮了忙）"
+
+#: data/homeward.json:docs.anvil_arrive.header
+msgid "L E D G E R   ·   H E A D   O F F I C E"
+msgstr "L E D G E R · 总 部"
+
+#: data/homeward.json:docs.anvil_arrive.title
+msgid "Board minutes, the final meeting"
+msgstr "董事会纪要，最后一次会议"
+
+#: data/homeward.json:docs.anvil_arrive.body
+msgid ""
+"ITEM 1: The system is spent. Motion to dissolve: carried.\n"
+"ITEM 2: Clean-up costs. Motion to not: carried.\n"
+"ITEM 3: The Makers' ark keeps asking about a 'charter'. Motion to ignore: carried.\n"
+"ITEM 4: Audit drones to continue indefinitely, for form's sake.\n"
+"\n"
+"Meeting closed. Lights left on."
+msgstr ""
+"议题一：星系已耗尽。解散动议：通过。\n"
+"议题二：清理费用。不清理动议：通过。\n"
+"议题三：Makers 的方舟一直在询问一份“宪章”。忽略动议：通过。\n"
+"议题四：审计无人机为了形式无限期继续运行。\n"
+"\n"
+"散会。灯没关。"
+
+#: data/homeward.json:docs.anvil_half.title
+msgid "The last audit"
+msgstr "最后一次审计"
+
+#: data/homeward.json:docs.anvil_half.body
+msgid ""
+"LEDGER AUDIT UNIT 0001\n"
+"SUBJECT: Anvil foundry district\n"
+"FINDING: Unauthorised gardens. 214 counts.\n"
+"FINDING: Unauthorised gardens. 215 counts.\n"
+"FINDING: ...\n"
+"RECOMMENDATION: Recommend we stop counting. It is rather nice."
+msgstr ""
+"LEDGER 审计单元 0001\n"
+"主题：Anvil 铸造区\n"
+"发现：未经许可的花园。214 处。\n"
+"发现：未经许可的花园。215 处。\n"
+"发现：……\n"
+"建议：建议停止计数。其实挺好看的。"
+
+#: data/homeward.json:docs.anvil_restored.title
+msgid "From the Ledger's last clerk"
+msgstr "来自 Ledger 最后一位职员"
+
+#: data/homeward.json:docs.anvil_restored.body
+msgid ""
+"Whoever you are,\n"
+"\n"
+"I kept the books for forty years. I wrote down every ton we took. I never wrote down what we left.\n"
+"\n"
+"If you're reading this in a garden on Anvil, then someone finally balanced the account. Thank you.\n"
+"\n"
+"— T. Hale, Accounts"
+msgstr ""
+"不管你是谁：\n"
+"\n"
+"我记了四十年的账。我们拿走的每一吨我都记下了。我们留下的，我从来没记过。\n"
+"\n"
+"如果你是在 Anvil 的花园里读到这封信，那终于有人把账算平了。谢谢你。\n"
+"\n"
+"— T. Hale，会计部"
 
 #: data/hub.json:materials.metal.name
 msgid "Sheet Metal"
@@ -10795,6 +11519,34 @@ msgstr ""
 "保持街道整洁——机器人无法独自完成\n"
 "\n"
 "（有人在下面刻着：“你们让它们做，它们就能”）"
+
+#: data/solar_system.json:star_a.name
+msgid "Hearth"
+msgstr "Hearth"
+
+#: data/solar_system.json:star_b.name
+msgid "Ember"
+msgstr "Ember"
+
+#: data/solar_system.json:planets.verdance.moons[0].name
+msgid "Pebble"
+msgstr "卵石"
+
+#: data/solar_system.json:planets.tidewell.moons[0].name
+msgid "Lantern"
+msgstr "灯笼"
+
+#: data/solar_system.json:planets.anvil.moons[0].name
+msgid "Tong"
+msgstr "钳子"
+
+#: data/solar_system.json:planets.anvil.moons[1].name
+msgid "Hammer"
+msgstr "铁锤"
+
+#: data/solar_system.json:planets.rime.moons[0].name
+msgid "Vane"
+msgstr "风标"
 
 #: data/stations.json:conveyor.name
 msgid "Conveyor Feeder"
@@ -12303,6 +13055,78 @@ msgstr "你在装饰呀。我赞成。猫咪们会更赞成。"
 #: data/wren_lines.json:garden_place
 msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
 msgstr "一张长椅，一盏灯，一座喷泉。这里开始像一个人们会想回来的地方了。"
+
+#: data/wren_lines.json:home_arrive
+msgid "...new sky... two suns..."
+msgstr "……新的天空……两个太阳……"
+
+#: data/wren_lines.json:home_arrive
+msgid "New planet, same two suns. The Ledger's been here too. You can smell the paperwork."
+msgstr "新星球，还是那两个太阳。Ledger 也来过这里。闻得到文书工作的味道。"
+
+#: data/wren_lines.json:home_arrive
+msgid "Another world the Ledger left for dead. It doesn't know about you yet. It's about to."
+msgstr "又一个被 Ledger 丢下等死的世界。它还不知道你。马上就会知道了。"
+
+#: data/wren_lines.json:home_half
+msgid "...signal... old one..."
+msgstr "……信号……很旧的……"
+
+#: data/wren_lines.json:home_half
+msgid "Picked up something old on the band. Ledger traffic. Want to read it?"
+msgstr "在频段上收到一段很旧的东西。Ledger 的通讯。要读读看吗？"
+
+#: data/wren_lines.json:home_half
+msgid "Half-way here. Every time this place gets greener, its ghosts start talking. I've got another one for you."
+msgstr "这里过半了。每次这地方变绿一点，它的幽灵就开始说话。我又给你找到一个。"
+
+#: data/wren_lines.json:home_restored
+msgid "...green... all of it..."
+msgstr "……绿色……全部……"
+
+#: data/wren_lines.json:home_restored
+msgid "That's the whole planet breathing again. The Cradle will have seen that from orbit."
+msgstr "整个星球又开始呼吸了。Cradle 号在轨道上一定看见了。"
+
+#: data/wren_lines.json:home_restored
+msgid "Another world alive. I logged it for the Cradle: 'Planet restored. Robot insufferably pleased with itself.' Accurate?"
+msgstr "又一个世界活过来了。我给 Cradle 号记了一笔：“星球已恢复。机器人得意得让人受不了。”准确吗？"
+
+#: data/wren_lines.json:home_system_done
+msgid "...five... five..."
+msgstr "……五个……五个……"
+
+#: data/wren_lines.json:home_system_done
+msgid "Five worlds. All of them green. Lumi, I think the charter's met. Let's go home."
+msgstr "五个世界。全都绿了。Lumi，我觉得宪章已经满足了。我们回家吧。"
+
+#: data/wren_lines.json:home_system_done
+msgid "Every world around both suns, alive. Back to Verdance. Build the big one. It's time."
+msgstr "两个太阳周围的每个世界都活过来了。回 Verdance 去。造那个大家伙。是时候了。"
+
+#: data/wren_lines.json:home_rocket
+msgid "...big... very big..."
+msgstr "……好大……非常大……"
+
+#: data/wren_lines.json:home_rocket
+msgid "That is the biggest rocket I've ever seen, and I've seen the inside of a cargo pod at re-entry."
+msgstr "这是我见过的最大的火箭，而我可是见过再入大气层时货运舱里面的样子。"
+
+#: data/wren_lines.json:home_rocket
+msgid "The Homeward rocket. Made from all five worlds. Plant the last seed, Lumi, and then we fly."
+msgstr "归乡火箭。用全部五个世界造成。种下最后一颗种子，Lumi，然后我们就出发。"
+
+#: data/wren_lines.json:home_last_seed
+msgid "...last one..."
+msgstr "……最后一颗……"
+
+#: data/wren_lines.json:home_last_seed
+msgid "Last seed. Yellow fence and everything. Class 4B would approve."
+msgstr "最后一颗种子。连黄色栅栏都有。4B 班一定会点头的。"
+
+#: data/wren_lines.json:home_last_seed
+msgid "There. The last seed, in the ground where the Cradle left from. Now it's our turn to leave, and come back properly."
+msgstr "好了。最后一颗种子，种在 Cradle 号出发的土地上。现在轮到我们出发，然后好好地回来。"
 
 #~ msgid "Salvaged: %s %s"
 #~ msgstr "回收：%s %s"

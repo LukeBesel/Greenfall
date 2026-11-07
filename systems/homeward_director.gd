@@ -15,6 +15,8 @@ extends Node
 ##   --cradle-answers[=S]     play "The Cradle Answers" S seconds in
 ##   --homecoming[=S]         play the Homecoming ending S seconds in (no rocket launch needed)
 ##   --home-ready             Mk VII built and the last seed planted (launch home from the map)
+##   --home-sample            shots: Verdance and Ochre restored, Tidewell half, Mk VI
+##   --system-zoom=K          with --open=system: glide in to planet K (--system-zoom-at=S)
 ##   --fly-planet=N[,S]       launch the rocket to system planet N after S seconds (no checks)
 
 const CHECK_S: float = 3.0
@@ -65,7 +67,11 @@ func _setup() -> void:
 	elif Homeward.current_planet() > 0 and not Homeward.beat_done("%s_arrive" % _pid()):
 		get_tree().create_timer(8.0, false).timeout.connect(func() -> void: _arrival_beat(Homeward.current_planet()))
 	if DevHooks.get_s("open", "") == "system":
-		(func() -> void: map.open_map()).call_deferred()
+		(func() -> void:
+			map.open_map()
+			if DevHooks.has("system-zoom"):  # dev: --system-zoom=K glides in to planet K
+				get_tree().create_timer(DevHooks.get_f("system-zoom-at", 2.0), true, false, true).timeout.connect(func() -> void:
+					map._select(int(DevHooks.get_f("system-zoom", 1.0)), true))).call_deferred()
 
 
 func _pid(k: int = -1) -> String:
@@ -88,6 +94,20 @@ func _dev_hooks() -> void:
 		s["answered"] = true
 		GameState.flags["cradle_answered"] = true
 		s["drive"] = maxi(int(s.get("drive", 0)), 6)
+	if DevHooks.has("home-sample"):  # shots: a campaign under way (Verdance and Ochre done, Tidewell half)
+		s["answered"] = true
+		GameState.flags["cradle_answered"] = true
+		s["drive"] = maxi(int(s.get("drive", 0)), 6)
+		for kv: Array in [["verdance", 1.0], ["ochre", 1.0], ["tidewell", 0.55], ["rime", 0.12]]:
+			(s["pct"] as Dictionary)[kv[0]] = kv[1]
+		for rid: String in ["ochre_glass"]:
+			if not (rid in Homeward.relics()):
+				Homeward.relics().append(rid)
+		if Homeward.world_of(3) < 0:
+			for k: int in [1, 2, 3]:
+				Homeward.make_planet_world(k)
+		CradleMode.profile["current"] = 0
+		Homeward.mirror_stats()
 	if DevHooks.has("home-ready"):
 		s["drive"] = 7
 		GameState.flags["home_last_seed"] = true
