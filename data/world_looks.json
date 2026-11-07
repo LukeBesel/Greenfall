@@ -2,26 +2,26 @@
   "_doc": "Looks are per type and can be mapped per planet: \"planets\" maps a planet id onto a look type (\"frost_moon\": \"ice_moon\") or a type with overrides ({\"look\": \"ice_moon\", \"landmark\": \"gantry\"}); a world record's \"look\" key names one (WorldLook.look_for_planet). [worlds2] How each Cradle Mode world type looks (systems/world_look.gd, planet/world_look_view.gd). grade: the sky and fog grade over the planet's own haze (planet/sky_director.gd, the same keys as data/frontiers.json grade); it eases off by restore_ease as the district is restored, so a world starts in its own weather and clears toward bright air without losing its identity. dust: a light dust storm amount that clears with restoration. sky_body: a big body in the sky (kind ringed | moon | shattered; size = angular size of the billboard in degrees, yaw/elev in degrees, twin = a second small moon). city: tint multiplies building and skyline facade colours; weather is the weathering overlay on the city (art/shaders/world_weather.gdshader: top = cover on up faces, film = everywhere, low = a band rising from the ground, streak = vertical streaks under ledges). dress: the base yard (planet/street_dressing.gd: drift amount and colour, awning bleach, puddle count). landmark: one big silhouette per world type out past the city (planet/world_landmark.gd). Modifiers add on top: long_nights darkens nights, heavy_rain doubles puddles and wets the junk, rich_salvage makes the junk shine.",
   "types": {
     "ice_moon": {
-      "grade": {"fog": [0.8, 0.88, 1.0], "fog_amt": 0.6, "fog_mult": 0.85, "rayleigh": [0.36, 0.56, 0.96], "mie": [0.9, 0.95, 1.0], "sky_amt": 0.7, "sat": 0.9, "exposure": 1.02, "turbidity": 2.4, "mie_coef": 0.0016, "aerial": 0.5, "contrast": 1.06, "sun": [0.9, 0.95, 1.0]},
+      "grade": {"fog_density": 0.0007, "vol_density": 0.001, "fog": [0.8, 0.88, 1.0], "fog_amt": 0.6, "fog_mult": 0.6, "rayleigh": [0.3, 0.52, 0.98], "mie": [0.9, 0.95, 1.0], "sky_amt": 0.7, "sat": 0.9, "exposure": 1.02, "turbidity": 2.4, "mie_coef": 0.0016, "aerial": 0.5, "contrast": 1.06, "sun": [0.9, 0.95, 1.0]},
       "restore_ease": 0.4,
-      "sky_body": {"kind": "ringed", "size": 30.0, "yaw": 205.0, "elev": 20.0, "body": [0.86, 0.82, 0.72], "band": [0.6, 0.68, 0.76], "ring": [0.92, 0.9, 0.84], "tilt": 0.32},
+      "sky_body": {"kind": "ringed", "size": 30.0, "yaw": 194.0, "elev": 25.0, "body": [0.86, 0.82, 0.72], "band": [0.6, 0.68, 0.76], "ring": [0.92, 0.9, 0.84], "tilt": 0.32},
       "city": {"tint": [0.86, 0.92, 1.0], "style": "frosted", "weather": {"coat": [0.93, 0.96, 1.0], "top": 0.85, "film": 0.1, "low": [0.86, 0.92, 0.98], "low_amt": 0.35, "low_h": 1.2, "streak": [0.7, 0.8, 0.9], "streak_amt": 0.15}},
       "dress": {"drift": 0.9, "drift_col": [0.92, 0.95, 0.99], "bleach": 0.25, "puddles": 0.4},
       "landmark": "cryo_spire"
     },
     "desert_world": {
-      "grade": {"fog": [1.0, 0.8, 0.54], "fog_amt": 0.65, "fog_mult": 1.15, "rayleigh": [0.4, 0.5, 0.78], "mie": [1.0, 0.76, 0.44], "sky_amt": 0.65, "sat": 1.0, "exposure": 1.0, "turbidity": 7.0, "mie_coef": 0.0085, "aerial": 0.35, "contrast": 1.08, "sun": [1.0, 0.84, 0.6]},
+      "grade": {"fog_density": 0.0011, "vol_density": 0.0016, "fog": [1.0, 0.8, 0.54], "fog_amt": 0.65, "fog_mult": 1.15, "rayleigh": [0.4, 0.5, 0.78], "mie": [1.0, 0.76, 0.44], "sky_amt": 0.65, "sat": 1.0, "exposure": 1.0, "turbidity": 7.0, "mie_coef": 0.0085, "aerial": 0.35, "contrast": 1.08, "sun": [1.0, 0.84, 0.6]},
       "restore_ease": 0.45,
-      "dust": 0.1,
+      "dust": 0.05,
       "sky_body": {"kind": "moon", "size": 7.0, "yaw": 160.0, "elev": 22.0, "body": [0.96, 0.9, 0.8], "band": [0.8, 0.72, 0.62], "twin": 1.0},
       "city": {"tint": [1.0, 0.96, 0.88], "style": "bleached", "weather": {"coat": [0.9, 0.8, 0.62], "top": 0.65, "film": 0.16, "low": [0.86, 0.74, 0.55], "low_amt": 0.45, "low_h": 1.4, "streak": [0.95, 0.92, 0.86], "streak_amt": 0.12}},
       "dress": {"drift": 0.85, "drift_col": [0.88, 0.74, 0.52], "bleach": 0.6, "puddles": 0.0},
       "landmark": "sun_tower"
     },
     "ocean_world": {
-      "grade": {"fog": [0.62, 0.76, 0.96], "fog_amt": 0.6, "fog_mult": 0.9, "rayleigh": [0.1, 0.32, 1.0], "mie": [0.84, 0.92, 1.0], "sky_amt": 0.85, "sat": 1.06, "exposure": 1.0, "turbidity": 2.2, "mie_coef": 0.0022, "aerial": 0.6, "contrast": 1.08, "sun": [0.97, 0.98, 1.0], "height_fog": [0.8, 0.01]},
+      "grade": {"fog_density": 0.0007, "vol_density": 0.001, "fog": [0.62, 0.76, 0.96], "fog_amt": 0.6, "fog_mult": 0.9, "rayleigh": [0.1, 0.32, 1.0], "mie": [0.84, 0.92, 1.0], "sky_amt": 0.85, "sat": 1.06, "exposure": 1.0, "turbidity": 2.2, "mie_coef": 0.0022, "aerial": 0.6, "contrast": 1.08, "sun": [0.97, 0.98, 1.0], "height_fog": [0.8, 0.01]},
       "restore_ease": 0.35,
-      "sky_body": {"kind": "moon", "size": 17.0, "yaw": 215.0, "elev": 17.0, "body": [0.86, 0.88, 0.92], "band": [0.62, 0.66, 0.72]},
+      "sky_body": {"kind": "moon", "size": 17.0, "yaw": 200.0, "elev": 23.0, "body": [0.86, 0.88, 0.92], "band": [0.62, 0.66, 0.72]},
       "city": {"tint": [0.92, 0.98, 1.02], "style": "coastal", "weather": {"coat": [0.92, 0.94, 0.92], "top": 0.25, "film": 0.05, "low": [0.26, 0.34, 0.36], "low_amt": 0.5, "low_h": 1.7, "streak": [0.9, 0.92, 0.9], "streak_amt": 0.25}},
       "dress": {"drift": 0.45, "drift_col": [0.84, 0.8, 0.66], "bleach": 0.15, "puddles": 1.8},
       "landmark": "surge_barrier"
@@ -34,10 +34,10 @@
       "landmark": "bloom_stack"
     },
     "rust_world": {
-      "grade": {"fog": [0.86, 0.58, 0.42], "fog_amt": 0.7, "fog_mult": 1.3, "rayleigh": [0.6, 0.42, 0.38], "mie": [0.96, 0.62, 0.4], "sky_amt": 0.7, "sat": 0.96, "exposure": 1.0, "turbidity": 8.0, "mie_coef": 0.0095, "aerial": 0.4, "contrast": 1.08, "sun": [1.0, 0.78, 0.6]},
+      "grade": {"fog_density": 0.0012, "vol_density": 0.0018, "fog": [0.86, 0.58, 0.42], "fog_amt": 0.7, "fog_mult": 1.3, "rayleigh": [0.6, 0.42, 0.38], "mie": [0.96, 0.62, 0.4], "sky_amt": 0.7, "sat": 0.96, "exposure": 1.0, "turbidity": 8.0, "mie_coef": 0.0095, "aerial": 0.4, "contrast": 1.08, "sun": [1.0, 0.78, 0.6]},
       "restore_ease": 0.45,
       "dust": 0.14,
-      "sky_body": {"kind": "shattered", "size": 20.0, "yaw": 150.0, "elev": 21.0, "body": [0.62, 0.48, 0.4], "band": [0.4, 0.3, 0.26], "ring": [0.7, 0.55, 0.45], "tilt": -0.25},
+      "sky_body": {"kind": "shattered", "size": 20.0, "yaw": 158.0, "elev": 23.0, "body": [0.62, 0.48, 0.4], "band": [0.4, 0.3, 0.26], "ring": [0.7, 0.55, 0.45], "tilt": -0.25},
       "city": {"tint": [1.0, 0.86, 0.76], "style": "corroded", "weather": {"coat": [0.55, 0.32, 0.2], "top": 0.5, "film": 0.08, "low": [0.4, 0.24, 0.14], "low_amt": 0.35, "low_h": 1.0, "streak": [0.46, 0.22, 0.09], "streak_amt": 0.55}},
       "dress": {"drift": 0.35, "drift_col": [0.56, 0.36, 0.22], "bleach": 0.1, "puddles": 0.7},
       "landmark": "gantry"
