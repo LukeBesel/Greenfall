@@ -136,10 +136,8 @@ func setup() -> void:
 
 
 func _dev_hooks() -> void:
-	if DevHooks.has("frontier-nohud"):  # clean landscape screenshots: hide every overlay after a moment
-		get_tree().create_timer(2.0).timeout.connect(func() -> void:
-			for c: Node in get_tree().root.find_children("*", "CanvasLayer", true, false):
-				(c as CanvasLayer).visible = false)
+	if DevHooks.has("frontier-nohud"):  # clean landscape screenshots: hide every overlay (see _process)
+		set_meta("nohud", true)
 	if DevHooks.has("frontier-done"):  # Cradle: fire the completion hook now (screenshots / story tests)
 		get_tree().create_timer(DevHooks.get_f("frontier-done", 3.0)).timeout.connect(complete)
 	if DevHooks.has("frontier-cam"):  # --frontier-cam=dist,pitch,yaw (landscape screenshots)
@@ -204,6 +202,9 @@ func _process(delta: float) -> void:
 		return
 	_tick += delta
 	_hint_t = maxf(0.0, _hint_t - delta)
+	if has_meta("nohud"):
+		for c: Node in get_tree().root.find_children("*", "CanvasLayer", true, false):
+			(c as CanvasLayer).visible = false
 	_update_act()
 	var paused: bool = bool(world.get("launching")) or world.any_modal_open()
 	match kid:

@@ -373,12 +373,12 @@ func _build_desert() -> void:
 	dune.rings = 10
 	for i: int in 30:
 		var ang: float = TAU * i / 30.0 + _rng.randf_range(-0.08, 0.08)
-		var dist: float = e + _rng.randf_range(16.0, 90.0)
+		var dist: float = e + _rng.randf_range(26.0, 100.0)
 		var w: float = _rng.randf_range(18.0, 34.0)
 		always.add(dune, Transform3D(Basis(Vector3.UP, 0.6 + _rng.randf_range(-0.2, 0.2)).scaled(Vector3(w, _rng.randf_range(3.0, 9.0) * (1.0 + (dist - e) / 120.0), w * 0.38)), _polar(ang, dist, -0.6)), _mat("sand"))
 	always.flush(_groups["always"])
 	# A trading ship, half-buried in the sand, listing hard. The flats were a sea once.
-	var ship: MeshInstance3D = _model("dutch_ship_medium", _polar(-1.95, e + 26.0, -3.2), 0.9, 1.0, null, Vector3(0.0, 0, 0.22), coat)
+	var ship: MeshInstance3D = _model("dutch_ship_medium", _polar(-1.95, e + 12.0, -3.2), 0.9, 1.0, null, Vector3(0.0, 0, 0.22), coat)
 	if ship:
 		ship.rotation = Vector3(0.05, 0.9, 0.24)
 	# Cars and drums buried to the windows near the edge, quiver trunks and rocks.
@@ -390,7 +390,7 @@ func _build_desert() -> void:
 	for i: int in 12:
 		_model("namaqualand_rocks_01", _polar(_rng.randf() * TAU, e + _rng.randf_range(2.0, 30.0)), _rng.randf() * TAU, _rng.randf_range(2.0, 4.0))
 	# The solar farm: three blocks of panel rows.
-	for f: Array in [[-1.15, e + 12.0], [-2.45, e + 16.0], [2.6, e + 14.0]]:
+	for f: Array in [[-1.55, e + 10.0], [-2.45, e + 16.0], [2.6, e + 14.0]]:
 		_solar_farm(_polar(float(f[0]), float(f[1])), float(f[0]) + PI * 0.5)
 	# Futuristic: tall white wind turbines on the far dunes.
 	for a: float in [-1.4, -1.75, -0.95, 2.2]:
