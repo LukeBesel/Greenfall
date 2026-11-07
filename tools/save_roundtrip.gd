@@ -77,7 +77,7 @@ func _fauna(s: Node) -> String:
 			if a.named:
 				named = a.cat_name
 	return "%s %s %s %s live=%s" % [str(GameState.flags.get("fauna_seen", [])), str(GameState.flags.get("fauna_photos", [])),
-		str(GameState.flags.get("fauna_cat", {}).get("name", "")), str(GameState.flags.get("fauna_cat", {}).get("coat", "")), named]
+		str(GameState.flags.get("fauna_cat", {}).get("name", "")), str(int(GameState.flags.get("fauna_cat", {}).get("coat", -1))), named]
 
 
 ## [drones] "name:trait:slot=part,..." per robot, sorted.
