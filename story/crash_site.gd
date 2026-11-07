@@ -22,6 +22,11 @@ var _smoke: CPUParticles3D
 var _panel: Node3D
 var _wires: OmniLight3D
 var _wire_node: Node3D
+var _plate: MeshInstance3D
+var _bolts: Node3D
+var _plate_line: MeshInstance3D
+var _halo: MeshInstance3D
+var _fin_lamps: Array[StandardMaterial3D] = []
 var _wire_mat: StandardMaterial3D
 var _seam: StandardMaterial3D
 var _beacon: StandardMaterial3D
@@ -87,6 +92,14 @@ func set_stage(s: int) -> void:
 	EscapePod.set_wear(pod, EscapePod.PEARL, 0.45 if stage == 0 else (0.25 if stage == 1 else 0.0))
 	_seam.emission_energy_multiplier = 1.5
 	_seam.emission = EscapePod.CYAN
+	# Patched: tangerine bolts on the plate. Repaired: clean plate with a cyan line, a calm halo,
+	# the fin running lamps blinking in turn.
+	_bolts.visible = stage >= 1
+	_plate_line.visible = stage == 2
+	_plate.material_override = EscapePod.paint(EscapePod.PANEL if stage < 2 else EscapePod.PEARL, 0.35, 0.3 if stage < 2 else 0.0)
+	_halo.visible = stage == 2
+	for m: StandardMaterial3D in _fin_lamps:
+		m.emission_energy_multiplier = 0.0 if stage == 0 else 2.5
 
 
 # --- Ground ------------------------------------------------------------------------------
@@ -155,6 +168,11 @@ func _build_damage() -> void:
 			_seam = m
 	if _seam == null:
 		_seam = Mats.lamp(EscapePod.CYAN, 1.5)
+	for k: int in 3:
+		var fl: MeshInstance3D = pod.get_node_or_null("Fin%d/Lamp" % k)
+		if fl:
+			fl.material_override = (fl.material_override as StandardMaterial3D).duplicate()
+			_fin_lamps.append(fl.material_override as StandardMaterial3D)
 	var bn: MeshInstance3D = pod.get_node_or_null("Beacon")
 	_beacon = bn.material_override as StandardMaterial3D if bn else Mats.lamp(EscapePod.LAMP, 3.0)
 	# A hull panel torn loose on the flank facing the start, hanging from its top edge.
@@ -175,6 +193,31 @@ func _build_damage() -> void:
 	plate.material_override = EscapePod.paint(EscapePod.PANEL, 0.35, 0.3)
 	plate.position = Vector3(0, -0.15, 0.009)
 	swing.add_child(plate)
+	_plate = plate
+	# Repair details: four bolt heads (patched) and a thin cyan line across the plate (repaired).
+	_bolts = Node3D.new()
+	swing.add_child(_bolts)
+	for bx: float in [-0.15, 0.15]:
+		for by: float in [-0.03, -0.27]:
+			var bolt := MeshInstance3D.new()
+			bolt.mesh = ProcMesh.cyl(0.014, 0.014, 0.012, 6)
+			bolt.material_override = EscapePod.paint(EscapePod.TANGERINE, 0.3)
+			bolt.rotation.x = PI * 0.5
+			bolt.position = Vector3(bx, by, 0.022)
+			_bolts.add_child(bolt)
+	_plate_line = MeshInstance3D.new()
+	_plate_line.mesh = ProcMesh.box(Vector3(0.26, 0.008, 0.004))
+	_plate_line.material_override = Mats.lamp(EscapePod.CYAN, 1.5)
+	_plate_line.position = Vector3(0, -0.15, 0.02)
+	swing.add_child(_plate_line)
+	# Repaired: a thin cyan halo on the ground around the pod.
+	_halo = MeshInstance3D.new()
+	_halo.mesh = ProcMesh.torus(1.15, 1.19, 64, 4)
+	_halo.material_override = Mats.lamp(EscapePod.CYAN, 1.2)
+	_halo.scale = Vector3(1, 0.2, 1)
+	_halo.position = Vector3(0, 0.03, 0)
+	_halo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(_halo)
 	_panel = swing
 	# Exposed wiring behind it: a hot glow that flickers.
 	var wires := MeshInstance3D.new()
@@ -239,6 +282,10 @@ func _process(delta: float) -> void:
 	if _beacon:
 		var on: bool = fmod(_t, 0.7) < 0.08 or (fmod(_t, 0.7) > 0.16 and fmod(_t, 0.7) < 0.22) if stage == 0 else fmod(_t, 2.2) < 0.15
 		_beacon.emission_energy_multiplier = 3.0 if on else 0.3
+	if stage == 2:
+		for k: int in _fin_lamps.size():
+			_fin_lamps[k].emission_energy_multiplier = 3.0 if fmod(_t * 0.8 + k * 0.33, 1.0) < 0.12 else 0.4
+		_halo.material_override.set("emission_energy_multiplier", 1.0 + 0.25 * sin(_t * 1.6))
 	if stage != 0:
 		return
 	# Glitching seams: mostly steady, with short stutters (on/off, a red tinge).

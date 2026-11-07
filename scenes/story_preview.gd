@@ -80,8 +80,9 @@ func _setup_pod(crash: bool = false) -> void:
 		EscapePod.set_open(pod, true, CrashSite.LEAN.x)
 		var eye: Vector3 = Vector3(-4.6, 2.2, -1.2)
 		_cam.look_at_from_position(eye, Vector3(0.6, 0.9, 1.0), Vector3.UP)
-		_shots = [[4.0, Callable()], [12.0, func() -> void: pass]]
-		get_tree().create_timer(4.6).timeout.connect(func() -> void: site.set_stage(2))
+		_shots = [[4.0, Callable()], [7.0, Callable()], [15.0, Callable()]]
+		get_tree().create_timer(4.6).timeout.connect(func() -> void: site.set_stage(1))
+		get_tree().create_timer(7.6).timeout.connect(func() -> void: site.set_stage(2))
 		return
 	var front: Vector3 = pod.global_transform * Vector3(1.0, 1.1, -4.6)
 	_cam.look_at_from_position(front, pod.global_transform * Vector3(0, 0.85, 0), Vector3.UP)
