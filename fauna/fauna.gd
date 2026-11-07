@@ -383,7 +383,7 @@ func _props_blocked(p: Vector3, r: float) -> bool:
 func _ensure_space() -> void:
 	if _space_t > 0.0 and not space.cells.is_empty():
 		return
-	_space_t = 30.0
+	_space_t = 90.0
 	space = FaunaSpace.new()
 	var skip: Array = [self]
 	for nm: String in ["patch", "garden", "hud", "photo", "intro", "globe", "command", "pause_menu", "codex", "upgrades"]:
@@ -396,7 +396,7 @@ func _ensure_space() -> void:
 	var t0: int = Time.get_ticks_usec()
 	var n: int = space.scan(world, skip)
 	if DevHooks.has("fauna-debug") or DevHooks.has("fauna-report"):
-		print("[fauna] space: %d props, %d cells, %.1f ms" % [n, space.cells.size(), (Time.get_ticks_usec() - t0) / 1000.0])
+		print("[fauna] space: %d props, %d cells, %d perches, %.1f ms" % [n, space.cells.size(), space.perches.size(), (Time.get_ticks_usec() - t0) / 1000.0])
 		if DevHooks.has("fauna-debug"):
 			var ks: Array = space.by_node.keys()
 			ks.sort_custom(func(x: String, y: String) -> bool: return int(space.by_node[x]) > int(space.by_node[y]))

@@ -76,6 +76,10 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
 - **Animals are pure visuals**: no colliders, no navigation; standing spots and wander targets (plus their midpoint) are checked against live junk pieces, mounds and building footprints. Robots and Lumi pass through them.
 - **The plan is stateless**: counts come from hex levels, biome, lake cleanliness and time of day, seeded per district/hex/species, so nothing about the animals needs saving except player-facing progress (sightings, photos, the adopted cat).
 - **Sightings need the animal in view and near Lumi**; photo credit needs the animal in the photo camera's frustum at >= ~4% of the frame height (no occlusion test).
+- **Still procedural after the rebuild (wt/fauna2)**: Blender GLBs would have needed the rig data re-attached per vertex; the soft-primitive builder already gives the cat's quality, so the other animals got the same treatment (more primitives, jointed legs, faces with catchlights, mottled colour) and keep the one-MultiMesh-per-model vertex-shader rig.
+- **Two-part wings**: the outer wing carries a second pivot (CUSTOM1 = shoulder) so the hand can lag and fold on the upstroke; one rigid wing per side read as a "paper plane".
+- **Spacing without colliders**: animals still have no physics bodies. Every place one stands is checked against other animals (body radius per species, including where they're heading), a prop grid stamped from prop-sized meshes (catches the many props that have no collider), one physics shape query on the static layer, fence lines, the yard and outposts. The grid is rebuilt every 90 s rather than tracked live.
+- **Perches come from geometry**: the top of any tall, slim mesh (lamp posts, roof crowns, trees) is a perch, read from the mesh's highest vertices, so new props become perches without data.
 
 ## Whole game (wt/beat, Nov 7)
 - **The Cradle is the true ending.** The Verdance Bloom milestone (finale, Bloom Core 100%, Seed Ark)
