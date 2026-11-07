@@ -318,3 +318,11 @@ it to die under its trash; each planet reveals more. The game ends when every pl
 Verdance, builds a big launch base, gives the rocket a final "Homeward" upgrade, plants the last seed and launches
 home (reusing the launch sequence, ark finale and space stage), then credits. Random Cradle Mode worlds become
 optional post-game. Owner: wt/home (progression, story, ending) + wt/worlds2 (planet looks, 3 save profiles).
+- Audio (wt/sound): done. Per-planet music (`Audio.set_planet_theme(id)`, `Audio.set_restoration(0..1)`):
+  2-3 composed tracks per planet with motifs, grooves and restored variants (`audio/music_tracks.gd`),
+  two upbeat Verdance cleaning tracks, rotation with silence gaps, activity-driven energy; planet
+  ambience beds with restored layers (`audio/ambience.gd`); the "homecoming" mood (Greenfall motif,
+  first heard as the intro sting); WREN ducking, Master limiter, Ambience bus under SFX; radio API
+  `Audio.play_track(id)` / `stop_track()`. See docs/AUDIO.md. Needs wiring on the planet branches:
+  call `set_planet_theme` on planet load, `set_music_mood("homecoming")` in the ending, and
+  `Audio.loop("hover_spray", x)` while Lumi hovers over water. Next: owner listening pass.
