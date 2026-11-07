@@ -187,8 +187,8 @@ func _on_hex_cleaned(hid: int, center: Vector3, _bonus: BigNum) -> void:
 # --- Dev: stage a moment for screenshots ----------------------------------------------------
 ## --first-demo=bale|sale|robot|reveal: software renders run a few frames a minute, so the moment is
 ## fired ~40 s (wall) before --shot-delay and the game clock freezes at its peak (Engine.time_scale
-## = 0); the shot then captures that instant. Pair with --time-scale=0.05 so the freeze lands within
-## a fraction of a game second of the peak.
+## = 0); the shot then captures that instant. Leave the time scale at 1: a slow frame advances at most
+## 8 physics ticks (0.133 s x time scale), so the freeze lands within a frame of the peak.
 const DEMO_PEAK: Dictionary = {"bale": 0.22, "sale": 0.75, "robot": 0.42, "reveal": 0.45}
 
 var _demo_setup: bool = false

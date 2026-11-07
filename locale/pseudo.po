@@ -9,7 +9,7 @@ msgstr ""
 "Language: pseudo\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: art/feel_fx.gd:140
+#: art/feel_fx.gd:147
 msgid "NEW CREWMATE  ·  %s"
 msgstr "[ÑÉŴ ÇŔÉŴMÀŢÉ  ·  %s ~~~~]"
 
@@ -217,17 +217,13 @@ msgstr "[ŔŠ ûþ ~]"
 msgid "RS down"
 msgstr "[ŔŠ ðôŵñ ~]"
 
-#: autoload/Story.gd:22
-msgid "Your first cube! Carry it to the Depot pad."
-msgstr "[Ýôûŕ ƒîŕšţ çûbé! Çàŕŕý îţ ţô ţĥé Ðéþôţ þàð. ~~~~~~~~~~~~]"
-
 #: autoload/Story.gd:24
-msgid "PERFECT CUBE! Filled right to the line."
-msgstr "[ÞÉŔFÉÇŢ ÇÛBÉ! Fîļļéð ŕîĝĥţ ţô ţĥé ļîñé. ~~~~~~~~~~~]"
+msgid "Perfect bale: filled right to the gold line."
+msgstr "[Þéŕƒéçţ bàļé: ƒîļļéð ŕîĝĥţ ţô ţĥé ĝôļð ļîñé. ~~~~~~~~~~~~]"
 
 #: autoload/Story.gd:26
-msgid "A Pure Cube: one kind of junk is worth double."
-msgstr "[À Þûŕé Çûbé: ôñé ķîñð ôƒ ĵûñķ îš ŵôŕţĥ ðôûbļé. ~~~~~~~~~~~~~]"
+msgid "Pure bale: one kind of junk is worth double."
+msgstr "[Þûŕé bàļé: ôñé ķîñð ôƒ ĵûñķ îš ŵôŕţĥ ðôûbļé. ~~~~~~~~~~~~]"
 
 #: autoload/Story.gd:30
 msgid "A whole hex is clean! The ground remembers its colors."
@@ -704,31 +700,31 @@ msgstr "[ŢÔĜÉŢĤÉŔ ŴÉ BĻÔÔM ~~~]"
 msgid "LIGHT  WATER  LIFE"
 msgstr "[ĻÎĜĤŢ  ŴÀŢÉŔ  ĻÎFÉ ~~~]"
 
-#: plants/composter.gd:59
+#: plants/composter.gd:61
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   [çômþôšţ þŕéšš  ·  ðôŕmàñţ ûñţîļ šôméţĥîñĝ ĝŕôŵš ~~~~~~~~~~~~~]"
 
-#: plants/composter.gd:61
+#: plants/composter.gd:63
 msgid "E   compost press  ·  Lv %d (max)"
 msgstr "E   [çômþôšţ þŕéšš  ·  Ļv %d (màx) ~~~~~~~]"
 
-#: plants/composter.gd:62
+#: plants/composter.gd:64
 msgid "E   upgrade compost press to Lv %d  ·  %s cubes"
 msgstr "E   [ûþĝŕàðé çômþôšţ þŕéšš ţô Ļv %d  ·  %s çûbéš ~~~~~~~~~~~~]"
 
-#: plants/composter.gd:67
+#: plants/composter.gd:69
 msgid "The press is cold. Grow something first: it runs on what plants leave behind."
 msgstr "[Ţĥé þŕéšš îš çôļð. Ĝŕôŵ šôméţĥîñĝ ƒîŕšţ: îţ ŕûñš ôñ ŵĥàţ þļàñţš ļéàvé béĥîñð. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: plants/composter.gd:73
+#: plants/composter.gd:75
 msgid "Not enough cubes to upgrade the press."
 msgstr "[Ñôţ éñôûĝĥ çûbéš ţô ûþĝŕàðé ţĥé þŕéšš. ~~~~~~~~~~]"
 
-#: plants/composter.gd:82
+#: plants/composter.gd:84
 msgid "Compost press Lv %d: %.0f s cycles, %.1f seeds each."
 msgstr "[Çômþôšţ þŕéšš Ļv %d: %.0f š çýçļéš, %.1f šééðš éàçĥ. ~~~~~~~~~~~~~~~]"
 
-#: plants/composter.gd:132
+#: plants/composter.gd:138
 msgid ""
 "COMPOST PRESS\n"
 "dormant"
@@ -736,7 +732,7 @@ msgstr ""
 "[ÇÔMÞÔŠŢ ÞŔÉŠŠ\n"
 "ðôŕmàñţ ~~~~]"
 
-#: plants/composter.gd:134
+#: plants/composter.gd:140
 msgid ""
 "COMPOST PRESS  Lv %d\n"
 "compost %s  →  seeds"
@@ -771,6 +767,14 @@ msgstr "[ĤÉX ĻV %d  %s ~~]"
 #: plants/hex_levels.gd:249
 msgid "Hex Lv %d  %s.   %s"
 msgstr "[Ĥéx Ļv %d  %s.   %s ~~~~]"
+
+#: plants/seed_finds.gd:42
+msgid "+1 SEED"
+msgstr "[+1 ŠÉÉÐ ~]"
+
+#: plants/seed_finds.gd:46
+msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
+msgstr "[À ðŕý ôļð šééð, šţîļļ šéàļéð îñ îţš ĥûšķ. Ĵûñķ ĥîðéš à ƒéŵ ôƒ ţĥéšé. ~~~~~~~~~~~~~~~~~~~~~]"
 
 #: player/detector.gd:78
 msgid "SIGNAL  %s  ·  %.1f m"
@@ -1129,59 +1133,59 @@ msgstr "[ŴÀŢÉŔ ~]"
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: þàîñţ žôñéš àñð šéñð çŕéŵš ŵĥéŕé ýôû ŵàñţ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:494
+#: scenes/slice.gd:497
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "[ĻM-1 ôñļîñé. Bļôôm Çôŕé 4%: ĝŕééñ ļîĝĥţ ļôŵ. Çŕàðļé ŕéļàý: ƒàîñţ. Ĝŕôŵ šôméţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:787
+#: scenes/slice.gd:790
 msgid "HEX CLEAN!  +%s"
 msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 
-#: scenes/slice.gd:801
+#: scenes/slice.gd:804
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice.gd:803
+#: scenes/slice.gd:806
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "[Ţĥé ŵĥôļé Ĵûñķýàŕð îš çļéàñ. Ļûmî bééþš à véŕý ļôñĝ, véŕý ĥàþþý bééþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:810
+#: scenes/slice.gd:813
 msgid "%s is out of range: %s"
 msgstr "[%s îš ôûţ ôƒ ŕàñĝé: %s ~~~~~]"
 
-#: scenes/slice.gd:820
+#: scenes/slice.gd:823
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ 5 ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:823 ui/rockets_panel.gd:39
+#: scenes/slice.gd:826 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "[Éñéŕĝý çéļļš ŕéçĥàŕĝîñĝ: %s. Ŕôçķéţ ûþĝŕàðéš ŕéƒîļļ ţĥém ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:877
+#: scenes/slice.gd:880
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "[Ţôûçĥðôŵñ: %s. Ĥûb %d ôƒ %d. %s ~~~~~~~~]"
 
-#: scenes/slice.gd:878
+#: scenes/slice.gd:881
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "[Ţĥé ŕôçķéţ îš þàŕķéð ôñ ţĥé ļôţ, ŕéàðý ŵĥéñ îţš çéļļš ŕéƒîļļ. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:878
+#: scenes/slice.gd:881
 msgid "Landed on the base pad."
 msgstr "[Ļàñðéð ôñ ţĥé bàšé þàð. ~~~~~]"
 
-#: scenes/slice.gd:969
+#: scenes/slice.gd:972
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1137
+#: scenes/slice.gd:1140
 msgid "Welcome back. The junk waited for you."
 msgstr "[Ŵéļçômé bàçķ. Ţĥé ĵûñķ ŵàîţéð ƒôŕ ýôû. ~~~~~~~~~~]"
 
-#: scenes/slice.gd:1154
+#: scenes/slice.gd:1157
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:1154
+#: scenes/slice.gd:1157
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 

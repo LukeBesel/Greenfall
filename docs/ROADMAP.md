@@ -198,7 +198,7 @@ Known: Godot exits with code 134 after some headless runs (engine cleanup at qui
 - Done: no HUD/world flash between the title fade and the intro (black cover until the intro overlay is up);
   gameplay camera snapped behind Lumi under the intro's fade-out.
 - Done: early pacing and the scarce seed trickle: see docs/BALANCE.md "First hour".
-- Dev: `--tutorial-step=N`; `--first-demo=bale|sale|robot|reveal --time-scale=0.05` freezes the moment at its
-  peak for screenshots. Tests: `tests/test_first_hour.gd`.
+- Dev: `--tutorial-step=N`; `--first-demo=bale|sale|robot|reveal` (optionally `--demo-lead=S`) freezes the moment at
+  its peak for screenshots. Tests: `tests/test_first_hour.gd`.
 - Next: the autoplay bot never uses the Builder (stalls on `builder_1`); the HUD context line under the
   prompt gets long over outposts (hex level + next + outpost note) and sits close to the level bar.
