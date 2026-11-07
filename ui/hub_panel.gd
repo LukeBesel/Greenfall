@@ -10,6 +10,7 @@ var _scrub: Label
 var _scrub_btn: Button
 var _mats: Label
 var _stations: StationsPanel  # [stations]
+var _scope: TelescopePanel  # [scope]
 var _jam_sep: HSeparator
 var _jam: Label
 var _jam_btn: Button
@@ -53,6 +54,10 @@ func _ready() -> void:
 	add_child(HSeparator.new())
 	_stations = StationsPanel.new()
 	add_child(_stations)
+	# [scope] The Telescope (ui/telescope_panel.gd).
+	add_child(HSeparator.new())
+	_scope = TelescopePanel.new()
+	add_child(_scope)
 	# Signal Jammer (the Ledger arc, story/ledger.gd): shown once the dump drones start.
 	_jam_sep = HSeparator.new()
 	add_child(_jam_sep)
@@ -122,6 +127,8 @@ func refresh() -> void:
 	_scrub_btn.disabled = locked or maxed or not Hub.can_pay(sd.get("cost", {}), hub.scrubber_cost_mult())
 	if _stations:  # [stations]
 		_stations.refresh()
+	if _scope:  # [scope]
+		_scope.refresh()
 	var lg: Node = _ledger()
 	var jam_on: bool = lg != null and lg.jammer_visible()
 	_jam_sep.visible = jam_on

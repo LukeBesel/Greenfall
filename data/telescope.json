@@ -1,0 +1,22 @@
+{
+  "_doc": "[scope] The Telescope (automation/telescope.gd, ui/telescope_view.gd, systems/remote_progress.gd). Built once per base from the Hub tab. Unlocked by the 'observatory' research node or base level 4. 'parts' is paid in the 'parts' currency when the game has one, else in bolts. Remote progress: robots on other worlds work at remote_factor x the offline rate (core/offline.gd), capped by Offline.CAP_S and the junk left there. A care package spends cubes here for boost_s seconds of boost_mult robot speed on the watched world (one at a time).",
+  "name": "Telescope",
+  "desc": "A small observatory dome with a long-range optical array. Look across the system at the other worlds you have visited and watch your crews there at work.",
+  "requires_level": 4,
+  "requires_research": "observatory",
+  "cost": {"cubes": 6000, "parts": 40},
+  "pos": [-4.0, -7.9],
+  "yaw_deg": 30.0,
+  "use_range": 3.4,
+  "remote_factor": 0.5,
+  "min_away_s": 120.0,
+  "care": {"cost_cubes": 400, "boost_s": 300.0, "boost_mult": 2.0, "extra_cap": 0.75},
+  "spot_s": 1.2,
+  "planets_default": [
+    {"id": "ochre", "name": "Ochre", "orbit_au": 0.62, "color": [0.86, 0.56, 0.3]},
+    {"id": "verdance", "name": "Verdance", "orbit_au": 1.0, "color": [0.32, 0.6, 0.42]},
+    {"id": "tidewell", "name": "Tidewell", "orbit_au": 1.55, "color": [0.24, 0.5, 0.76]},
+    {"id": "anvil", "name": "Anvil", "orbit_au": 2.4, "color": [0.58, 0.48, 0.44]},
+    {"id": "rime", "name": "Rime", "orbit_au": 3.9, "color": [0.82, 0.88, 0.96]}
+  ]
+}

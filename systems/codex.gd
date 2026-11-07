@@ -58,6 +58,10 @@ static func entries() -> Array[Dictionary]:
 	var an: Dictionary = c.get("animals", {})
 	for aid: String in an:
 		_add("animals", aid, TranslationServer.translate(str(an[aid].get("name", aid.capitalize()))), an[aid])
+	# [scope] Seen through the Telescope (ui/telescope_view.gd).
+	var si: Dictionary = c.get("sightings", {})
+	for sid: String in si:
+		_add("sightings", sid, TranslationServer.translate(str(si[sid].get("name", sid.capitalize()))), si[sid])
 	return _entries
 
 

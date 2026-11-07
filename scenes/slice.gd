@@ -32,6 +32,7 @@ var wildlife: Wildlife
 var water: WaterView
 var doc_view: DocumentView
 var interactables: Interactables
+var scope_from_memory: bool = false  # [scope]
 var eggs: EasterEggs
 var ledger: LedgerArc
 var outposts: Outposts  # [outposts] ruined frontier depots (automation/outposts.gd)
@@ -80,6 +81,7 @@ func _ready() -> void:
 	var base_seed: int = int(DevHooks.get_f("seed", float(CradleMode.world_seed())))  # [late] Cradle Mode worlds (Verdance = slice_field seed)
 	var loaded: bool = false
 	var from_memory: bool = GameState.reload_in_memory
+	scope_from_memory = from_memory  # [scope] remote progress pays on world arrival (automation/telescope.gd)
 	if GameState.reload_in_memory:
 		GameState.reload_in_memory = false
 		loaded = true
@@ -516,6 +518,10 @@ func _ready() -> void:
 		if not loaded:
 			wake.call()
 	LateDirector.attach(self)  # [late] Garden Mode, Ark Bridge, Cradle Mode worlds (systems/late_director.gd)
+	var scope := Telescope.new()  # [scope] the Telescope + remote progress (automation/telescope.gd)
+	scope.name = "Telescope"
+	scope.world = self
+	add_child(scope)
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
