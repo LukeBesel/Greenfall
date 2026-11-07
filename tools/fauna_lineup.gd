@@ -10,7 +10,7 @@ var _i: int = -1
 var _wait: int = 0
 var _out: String
 var _cam: Camera3D
-var _cur: MultiMeshInstance3D
+var _cur: Node3D
 
 
 func _ready() -> void:
@@ -63,6 +63,25 @@ func _process(_delta: float) -> void:
 	if _cur:
 		_cur.queue_free()
 	var id: String = _ids[_i]
+	if id.begins_with("rig:"):
+		# rig:MODEL:ACTION:COAT  (skinned model, e.g. rig:cat:Sit:0)
+		var bits: PackedStringArray = id.split(":")
+		var r: FaunaRig = FaunaRig.make(bits[1])
+		add_child(r)
+		r.set_coat(FaunaRig.CAT_COATS[int(bits[3]) % FaunaRig.CAT_COATS.size()] if bits.size() > 3 else {})
+		r.set_eyes_closed(1.0 if bits[2] == "Sleep" else 0.0)
+		r.play(bits[2], 1.0, 0.0)
+		r.advance(0.3)
+		_cur = r
+		var rr: float = 0.42
+		var rc := Vector3(0, 0.2, -0.05)
+		var ry: float = DevHooks.get_f("yaw", 0.75)
+		var rp: float = DevHooks.get_f("pitch", 0.22)
+		var rdir := Vector3(sin(ry) * cos(rp), sin(rp), -cos(ry) * cos(rp))
+		_cam.global_transform = Transform3D(Basis.looking_at(-rdir, Vector3.UP), rc + rdir * rr / tan(deg_to_rad(_cam.fov * 0.5)))
+		_ids[_i] = id.replace(":", "_")
+		_wait = 6
+		return
 	var mesh: Mesh = FaunaModels.mesh(id)
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D

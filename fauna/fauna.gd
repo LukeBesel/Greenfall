@@ -66,6 +66,8 @@ class Animal:
 	var seen: bool = false
 	var hold: bool = false
 	var perch: bool = false  # [fauna2] landing on / sitting on a perch up high
+	var rig: FaunaRig  # [fauna2] skinned model (cats), else drawn in a MultiMesh
+	var rig_prev: Vector3 = Vector3.INF
 
 var world: Node
 var animals: Array[Animal] = []
@@ -103,6 +105,7 @@ var space := FaunaSpace.new()  # [fauna2] prop occupancy grid (rebuilt now and t
 var _space_t: float = 0.0
 var _cyl := CylinderShape3D.new()
 var ambience: FaunaAmbience
+var _frame_dt: float = 0.016
 
 
 func setup(p_world: Node) -> void:
@@ -545,6 +548,7 @@ func _spawn(key: String, e: Dictionary) -> bool:
 		"cat":
 			a.state = St.SIT
 			a.t = _rng.randf_range(2.0, 6.0)
+			_attach_rig(a, "cat")
 			a.anchor = Node3D.new()
 			a.anchor.name = "CatAnchor"
 			add_child(a.anchor)
@@ -558,6 +562,55 @@ func _spawn(key: String, e: Dictionary) -> bool:
 			a.t = _rng.randf_range(1.0, 4.0)
 	animals.append(a)
 	return true
+
+
+## [fauna2] Gives an animal its skinned model, when one is built for it.
+func _attach_rig(a: Animal, model: String) -> void:
+	if DevHooks.has("fauna-no-rig"):
+		return
+	var r: FaunaRig = FaunaRig.make(model)
+	if r == null:
+		return
+	add_child(r)
+	r.global_position = a.pos
+	if model == "cat":
+		r.set_coat(FaunaRig.CAT_COATS[a.coat % FaunaRig.CAT_COATS.size()])
+	a.rig = r
+
+
+## [fauna2] Poses a rigged animal from its state: the action, its speed, eyes and head look.
+func _drive_rig(a: Animal, xf: Transform3D, dt: float) -> void:
+	var r: FaunaRig = a.rig
+	r.global_transform = xf
+	var spd: float = 0.0
+	if a.rig_prev != Vector3.INF and dt > 0.0001:
+		spd = Vector2(a.pos.x - a.rig_prev.x, a.pos.z - a.rig_prev.z).length() / dt
+	a.rig_prev = a.pos
+	var closed: float = 0.0
+	var look: bool = true
+	match a.state:
+		St.SIT:
+			r.play("Sit")
+		St.GROOM:
+			r.play("Groom")
+			look = false
+		St.SLEEP:
+			r.play("Sleep", 1.0, 0.6)
+			closed = 1.0
+			look = false
+		St.PET:
+			r.play("Pet")
+			closed = 1.0
+		_:
+			if spd > 1.1:
+				r.play("Trot", clampf(spd / 1.6, 0.7, 2.2), 0.2)
+			elif spd > 0.06:
+				r.play("Walk", clampf(spd / 0.45, 0.5, 2.0), 0.25)
+			else:
+				r.play("Sit" if a.state == St.SIT else "Idle")
+	r.set_eyes_closed(closed)
+	r.look(a.head_yaw if look else 0.0, a.head_pitch * 0.6 if look else 0.0)
+	r.advance(dt)
 
 
 func _count_state(sid: String, st: int) -> int:
@@ -587,6 +640,9 @@ func _leave(a: Animal) -> void:
 
 
 func _remove(a: Animal) -> void:
+	if a.rig:
+		a.rig.queue_free()
+		a.rig = null
 	if a.anchor:
 		var ints: Node = world.get("interactables")
 		if ints:
@@ -635,6 +691,7 @@ func _process(delta: float) -> void:
 	if world == null or world.get("patch") == null:
 		return
 	_frame += 1
+	_frame_dt = delta
 	age += delta
 	var patch: Node3D = world.patch
 	var pv: Vector3 = patch.get("velocity") if patch.get("velocity") != null else Vector3.ZERO
@@ -1594,6 +1651,8 @@ func _draw_all() -> void:
 	for a: Animal in animals:
 		var s: float = a.size * clampf(a.fade, 0.0, 1.0)
 		if s <= 0.001:
+			if a.rig:
+				a.rig.visible = false
 			continue
 		match a.kind:
 			"school":
@@ -1628,6 +1687,10 @@ func _draw_all() -> void:
 				if a.kind == "cat" and a.state == St.SLEEP:
 					breathe = 1.0 + sin(now * 1.6 + a.phase) * 0.025
 				var xf := Transform3D(b2.scaled(Vector3(s, s * breathe, s)), a.pos + Vector3(0, a.bob, 0))
+				if a.rig:
+					a.rig.visible = true
+					_drive_rig(a, Transform3D(Basis(Vector3.UP, a.yaw).scaled(Vector3.ONE * s), a.pos + Vector3(0, a.bob, 0)), _frame_dt)
+					continue
 				var model: String = _model_for(a)
 				if model == "rat" and not is_rigged(FaunaModels.mesh("rat")):
 					xf = Transform3D(xf.basis * _rat_fix(), xf.origin)
