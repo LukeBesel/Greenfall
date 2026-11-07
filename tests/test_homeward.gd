@@ -171,3 +171,14 @@ func test_rocket_targets_are_out_of_hub_range() -> void:
 	assert_lt(Homeward.PLANET_BASE - 4, Homeward.PLANET_BASE + 1)
 	assert_lt(Homeward.HOME, Homeward.PLANET_BASE - Homeward.planets().size())
 	assert_false(HomewardDirector.travel(null, 3), "ordinary hub hops are untouched")
+
+
+func test_score_track_waits_for_the_ending() -> void:
+	GameState.stats["ark_waves"] = 2.0
+	GameState.flags["cradle_returned"] = true
+	assert_gt(CradleMode.bank(), 0)
+	assert_almost_eq(float(CradleMode.profile.get("starseeds_total", 0.0)), 0.0, 0.0001, "no score during the campaign: planet picks instead")
+	Homeward.state()["done"] = true
+	GameState.stats["ark_waves"] = 4.0
+	assert_gt(CradleMode.bank(), 0)
+	assert_gt(float(CradleMode.profile.get("starseeds_total", 0.0)), 0.0, "post-game: the score track runs")

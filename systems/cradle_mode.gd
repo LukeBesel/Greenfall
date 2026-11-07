@@ -236,9 +236,9 @@ static func bank() -> int:
 	if bool(GameState.flags.get("bloom_finale_seen", false)):
 		w["finale"] = true
 		_p()["unlocked"] = true
-	# [home] On the system's planets Heirlooms come from planet picks; the score track only runs
-	# beyond the system (post-game random worlds), so the two never double up.
-	if Homeward.current_planet() < 0:
+	# [home] During the system campaign Heirlooms come from planet picks; the score track runs only
+	# after Homecoming or beyond the system (post-game), so the two never double up.
+	if Homeward.current_planet() < 0 or Homeward.done():
 		_p()["starseeds_total"] = float(_p().get("starseeds_total", 0.0)) + gain
 	# [money] No Starseed currency: the banked score unlocks Heirloom levels (systems/heirloom_track.gd).
 	for id: String in HeirloomTrack.apply(_p(), heirloom_defs()):
