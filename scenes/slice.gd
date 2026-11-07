@@ -63,6 +63,7 @@ var _flower: Node3D
 var _sun: DirectionalLight3D
 var _env: Environment
 var dressing: StreetDressing
+var _penv: Dictionary = {}  # [planet-anvil] dev --planet-env entry (data/planets.json)
 ## Shack and yard lamp pieces that sit derelict while a non-starter base is at level 1.
 var _ruin_bits: Dictionary = {}
 var _t: float = 0.0
@@ -105,6 +106,11 @@ func _ready() -> void:
 	var is_city: bool = planet.city[anchor_cell] >= 0
 	district_name = str(planet.cities[planet.city[anchor_cell]]["name"]) if is_city else PlanetData.BIOMES[planet.biome[anchor_cell]].capitalize().replace("_", " ")
 	var fk: Dictionary = Frontiers.field_params(planet, hub_index)  # [biomes] frontier district?
+	if DevHooks.has("planet-env"):  # [planet-anvil] dev: --planet-env=<id> (data/planets.json): a wild district dressed as that planet
+		_penv = (AnvilEnv.load_json("res://data/planets.json").get(DevHooks.get_s("planet-env", ""), {}) as Dictionary)
+		if not _penv.is_empty():
+			is_city = false
+			district_name = str(_penv.get("district_name", _penv.get("name", district_name)))
 	var f_radius: int = int(fk.get("radius", cfg.get("radius", 9)))
 	if not fk.is_empty():
 		district_name = str(fk.get("name", district_name))
@@ -136,6 +142,7 @@ func _ready() -> void:
 	# Older saves were generated with straight hex borders; keep their piece layout identical.
 	if loaded and GameState.world.has("field"):
 		field.natural_borders = bool((GameState.world["field"] as Dictionary).get("natural_borders", false))
+	_planet_env("prepare_field")  # [planet-anvil]
 	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
 	if not fk.is_empty():
 		Frontiers.toughen(field, float(fk.get("vol_mult", 1.0)))
@@ -161,6 +168,7 @@ func _ready() -> void:
 		view.skip_horizon = true  # [biomes2] FrontierView builds the terrain and skyline
 	elif CradleMode.current_index() > 0:  # [late] another world's ground (snow on an ice moon, sand on a desert world)
 		CradleMode.dress_view(view)
+	_planet_env("prepare_view")  # [planet-anvil]
 	view.setup(field)
 	water = WaterView.new()
 	water.name = "Water"
@@ -515,9 +523,24 @@ func _ready() -> void:
 			intro.place_pod.call_deferred()
 		if not loaded:
 			wake.call()
+	_planet_env("apply")  # [planet-anvil]
 	LateDirector.attach(self)  # [late] Garden Mode, Ark Bridge, Cradle Mode worlds (systems/late_director.gd)
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+## [planet-anvil] Dev (--planet-env): runs a planet env script's static step on this district.
+func _planet_env(step: String) -> void:
+	if _penv.is_empty() or not ResourceLoader.exists(str(_penv.get("env", ""))):
+		return
+	var s: Script = load(str(_penv["env"]))
+	match step:
+		"prepare_field":
+			s.call(step, field, _penv)
+		"prepare_view":
+			s.call(step, view, _penv)
+		"apply":
+			s.call(step, self, field, _penv)
 
 
 func _build_environment() -> void:
