@@ -16,6 +16,7 @@ func before_each() -> void:
 	add_child_autofree(parent)
 	lod = JunkLod.new(field, 1)
 	lod.near_radius = 9.0
+	lod.heavy_radius = 4.0
 	var pids := PackedInt32Array()
 	for pid: int in field.piece_count():
 		pids.append(pid)
@@ -90,3 +91,15 @@ func test_stars_fade_out_by_day() -> void:
 	assert_almost_eq(SkyDirector.star_level(0.0), 1.0, 0.001)
 	assert_almost_eq(SkyDirector.star_level(1.0), 0.0, 0.001)
 	assert_lt(SkyDirector.star_level(0.5), 0.05)
+
+
+func test_bands_hold_with_hysteresis() -> void:
+	lod.near_radius = 30.0
+	lod.heavy_radius = 15.0
+	assert_eq(lod.band_for(10.0, 0), 2)
+	assert_eq(lod.band_for(18.0, 2), 2, "just past the heavy edge stays heavy-near")
+	assert_eq(lod.band_for(25.0, 2), 1)
+	assert_eq(lod.band_for(33.0, 1), 1, "just past the near edge stays near")
+	assert_eq(lod.band_for(40.0, 1), 0)
+	assert_eq(lod.band_for(40.0, 2), 0)
+	assert_eq(lod.band_for(28.0, 0), 1)

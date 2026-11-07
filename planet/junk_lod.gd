@@ -12,11 +12,16 @@ extends RefCounted
 const HIDDEN := Transform3D(Basis(Vector3.ZERO, Vector3.ZERO, Vector3.ZERO), Vector3(0, -50, 0))
 const NEAR_RADIUS: Array[float] = [26.0, 32.0, 40.0, 52.0]  # by quality preset, metres to hex centre
 const FAR_TRIS: Array[int] = [80, 120, 180, 240]
+## Models whose near mesh stays heavy (importer LODs stall: the 10k-triangle plastic crate)
+## switch closer, to a far mesh with 4x the usual budget.
+const HEAVY_TRIS: int = 3000
+const HEAVY_RADIUS: Array[float] = [14.0, 16.0, 20.0, 26.0]
 const HYSTERESIS: float = 6.0
 const UPDATE_EVERY: float = 0.2
 
 var field: HexField
 var near_radius: float = 38.0
+var heavy_radius: float = 16.0
 var near_mm: Array[MultiMesh] = []
 var far_mm: Array[MultiMesh] = []
 var near_mmi: Array[MultiMeshInstance3D] = []
@@ -27,7 +32,8 @@ var _group := PackedInt32Array()  # pid -> group
 var _where := PackedByteArray()  # pid -> 0 hidden, 1 near, 2 far
 var _slot := PackedInt32Array()  # pid -> index in its buffer
 var _xf: Array[Transform3D] = []  # pid -> current transform (CPU copy: reading MultiMesh back can stall)
-var _hex_near := PackedByteArray()  # hex -> 1 near
+var _hex_near := PackedByteArray()  # hex -> band: 2 inside heavy_radius, 1 inside near_radius, 0 far
+var _heavy := PackedByteArray()  # group -> 1 heavy model
 var _t: float = 0.0
 var _forced: bool = false
 var _last_cam := Vector3(INF, INF, INF)
@@ -36,22 +42,26 @@ var _last_cam := Vector3(INF, INF, INF)
 func _init(p_field: HexField, quality: int) -> void:
 	field = p_field
 	near_radius = NEAR_RADIUS[clampi(quality, 0, 3)]
+	heavy_radius = HEAVY_RADIUS[clampi(quality, 0, 3)]
 	if DevHooks.has("no-junk-lod"):  # A/B measurements: everything stays NEAR (the old look and cost)
 		near_radius = 1e9
+		heavy_radius = 1e9
 	var n: int = field.piece_count()
 	_group.resize(n)
 	_where.resize(n)
 	_slot.resize(n)
 	_xf.resize(n)
 	_hex_near.resize(field.hex_count())
-	_hex_near.fill(1)  # until the first camera update everything counts as near (no pop on load)
+	_hex_near.fill(2)  # until the first camera update everything counts as near (no pop on load)
 
 
 ## Registers one group; returns its index. Both MMIs are added to `parent`.
 func add_group(parent: Node3D, name: String, model: String, near_mesh: Mesh, pids: PackedInt32Array, shadows: bool, quality: int) -> int:
 	var g: int = near_mm.size()
+	var heavy: bool = _tris(near_mesh) > HEAVY_TRIS
+	_heavy.append(1 if heavy else 0)
 	var mm_n := _new_mm(near_mesh, pids.size())
-	var mm_f := _new_mm(far_mesh(model, FAR_TRIS[clampi(quality, 0, 3)]), pids.size())
+	var mm_f := _new_mm(far_mesh(model, FAR_TRIS[clampi(quality, 0, 3)] * (4 if heavy else 1)), pids.size())
 	near_mm.append(mm_n)
 	far_mm.append(mm_f)
 	_near_pids.append(PackedInt32Array())
@@ -95,7 +105,7 @@ func is_shown(pid: int) -> bool:
 
 ## Shows a piece at xf (or moves it there).
 func show_piece(pid: int, xf: Transform3D) -> void:
-	var want: int = 1 if _hex_near[field.piece_hex[pid]] == 1 else 2
+	var want: int = _want(pid, _hex_near[field.piece_hex[pid]])
 	_xf[pid] = xf
 	if _where[pid] == want:
 		(near_mm if want == 1 else far_mm)[_group[pid]].set_instance_transform(_slot[pid], xf)
@@ -156,6 +166,11 @@ func _remove(pid: int) -> void:
 	_where[pid] = 0
 
 
+## 1 = NEAR buffer, 2 = FAR buffer for a piece whose hex is in `band`.
+func _want(pid: int, band: int) -> int:
+	return 1 if band == 2 or (band == 1 and _heavy[_group[pid]] == 0) else 2
+
+
 func _current_xf(pid: int) -> Transform3D:
 	return _xf[pid]
 
@@ -171,8 +186,6 @@ func update(delta: float, cam: Vector3) -> void:
 		return
 	_last_cam = cam
 	_forced = false
-	var r_in: float = near_radius
-	var r_out: float = near_radius + HYSTERESIS
 	var flips: int = 0
 	var maxd: float = 0.0
 	for h: int in field.hex_count():
@@ -181,21 +194,29 @@ func update(delta: float, cam: Vector3) -> void:
 		var d: float = field.hex_center(h).distance_to(cam)
 		maxd = maxf(maxd, d)
 		var was: int = _hex_near[h]
-		var now: int = was
-		if was == 1 and d > r_out:
-			now = 0
-		elif was == 0 and d < r_in:
-			now = 1
+		var now: int = band_for(d, was)
 		if now == was:
 			continue
 		_hex_near[h] = now
 		flips += 1
 		for pid: int in field.hex_pieces[h]:
 			if _where[pid] != 0:
-				_remove(pid)
-				_append(pid, 1 if now == 1 else 2, _xf[pid])
+				var w: int = _want(pid, now)
+				if w != _where[pid]:
+					_remove(pid)
+					_append(pid, w, _xf[pid])
 	if DevHooks.has("lod-debug"):
 		print("[lod] cam=%s flips=%d maxd=%.0f counts=%s id=%d" % [cam, flips, maxd, counts(), get_instance_id()])
+
+
+## Distance band with hysteresis: a hex only leaves a band once it is HYSTERESIS past its edge.
+func band_for(d: float, was: int) -> int:
+	var now: int = 2 if d < heavy_radius else (1 if d < near_radius else 0)
+	if now < was:  # moving outwards: hold the inner band a little longer
+		var edge: float = heavy_radius if was == 2 else near_radius
+		if d <= edge + HYSTERESIS:
+			now = was if was - now == 1 else (1 if d <= near_radius + HYSTERESIS else 0)
+	return now
 
 
 ## Overhead views (Command) or anything that wants every hex re-sorted on the next update.
