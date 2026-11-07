@@ -79,7 +79,11 @@ static func save_profile() -> bool:
 	if not persist:
 		return false
 	DirAccess.make_dir_recursive_absolute(profile_path().get_base_dir())
-	return SaveManager.write_dict(profile_path(), to_dict())
+	_p()["saved_unix"] = Time.get_unix_time_from_system()  # [worlds2] Steam Cloud: newest profile wins
+	var ok: bool = SaveManager.write_dict(profile_path(), to_dict())
+	if ok and path_override == "":
+		SteamService.on_saved(profile_path())  # [worlds2] the profile syncs with the world slots
+	return ok
 
 
 static func to_dict() -> Dictionary:
@@ -94,6 +98,7 @@ static func from_dict(d: Dictionary) -> Dictionary:
 	for k: String in ["starseeds", "starseeds_total"]:
 		p[k] = float(d.get(k, 0.0))
 	p["unlocked"] = bool(d.get("unlocked", false))
+	p["saved_unix"] = float(d.get("saved_unix", 0.0))  # [worlds2]
 	p["current"] = int(d.get("current", 0))
 	var hl: Dictionary = {}
 	for k: Variant in (d.get("heirlooms", {}) as Dictionary):
@@ -472,6 +477,27 @@ static func _change_scene(tree: SceneTree) -> void:
 	# Deferred: callers can be deep inside the old scene's physics step (the autoplay bot is),
 	# and the old scene leaves the tree as soon as the change runs.
 	tree.change_scene_to_file.call_deferred("res://scenes/slice.tscn")
+
+
+## [worlds2] Title screen world picker: make world `i` the current one without changing scenes, so
+## Continue loads it. A world with no save yet is prepared fresh (with the carried-over meta flags
+## read from the save of the world that was current). Returns false for a bad index.
+static func select_world(i: int) -> bool:
+	if i < 0 or i >= worlds().size():
+		return false
+	var carry: Dictionary = {}
+	if SaveManager.has_save():
+		var fl: Dictionary = SaveManager.read_dict(SaveManager.slot_path()).get("flags", {})
+		for k: Variant in WorldGen.cfg().get("carry_flags", []):
+			if fl.has(str(k)):
+				carry[str(k)] = fl[str(k)]
+	_p()["current"] = i
+	apply_current()
+	save_profile()
+	if not SaveManager.has_save() and i > 0:
+		prepare_new_world_state(carry)
+		GameState.reload_in_memory = true  # the slice starts from this prepared state
+	return true
 
 
 ## Title screen New Game: every world is erased and the profile starts over.

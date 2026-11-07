@@ -23,6 +23,8 @@ var night_tint := Color(0, 0, 0, 0)
 var grade: Dictionary = {}
 var grade_amt: float = 1.0
 var storm: float = 0.0
+## [worlds2] Long Nights (systems/world_look.gd): how much darker nights are, 0..1.
+var night_dark: float = 0.0
 
 
 func setup(p_env: Environment, p_sun: DirectionalLight3D) -> void:
@@ -96,6 +98,12 @@ func _apply() -> void:
 	env.tonemap_exposure = lerpf(1.6, 1.3, sun_up)
 	if not grade.is_empty() or storm > 0.0:
 		_apply_grade(sun_up)
+	if night_dark > 0.0:  # [worlds2] Long Nights: a dimmer moon, less ambient, a darker sky
+		var nd: float = clampf(night_dark, 0.0, 1.0) * (1.0 - sun_up)
+		moon.light_energy *= 1.0 - 0.45 * nd
+		env.ambient_light_energy *= 1.0 - 0.4 * nd
+		env.tonemap_exposure *= 1.0 - 0.22 * nd
+		sky_mat.energy_multiplier = 1.0 - 0.5 * nd
 
 
 ## [biomes] Blend the frontier grade over the computed sky and fog; then the storm on top.
