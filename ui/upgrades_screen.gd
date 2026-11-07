@@ -14,7 +14,7 @@ const TABS: Array[Dictionary] = [
 	{"id": "research", "name": "Research"},
 	{"id": "rockets", "name": "Rockets"},
 	{"id": "cosmetics", "name": "Cosmetics"},
-	{"id": "contracts", "name": "Contracts"},
+	{"id": "contracts", "name": "Requests"},  # [money] contracts + world events
 	{"id": "builder", "name": "Builder"},  # [drones] robot builder
 ]
 # l10n:end
@@ -24,6 +24,8 @@ var _root: Control
 var _grid: GridContainer
 var _cards: Array[UpgradeCard] = []
 var _currency: Label
+var _parts_lbl: Label  # [money] the other two currencies, small, next to cubes
+var _seeds_lbl: Label
 var _tab_buttons: Array[Button] = []
 var _tab: String = "patch"
 var _refresh_t: float = 0.0
@@ -70,6 +72,19 @@ func _ready() -> void:
 	var sp := Control.new()
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(sp)
+	# [money] The three currencies with their HUD glyphs: Parts and Seeds small beside Cubes.
+	for cur: String in ["parts", "seeds"]:
+		header.add_child(CurrencyIcon.new(cur, 24.0))
+		var l: Label = UITheme.label("0", 20, CurrencyIcon.tint(cur))
+		l.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		header.add_child(l)
+		if cur == "parts":
+			_parts_lbl = l
+		else:
+			_seeds_lbl = l
+		var gap := Control.new()
+		gap.custom_minimum_size = Vector2(10, 0)
+		header.add_child(gap)
 	header.add_child(UIIcon.new("cube", 40, UITheme.GOLD))
 	_currency = UITheme.label("0", 32, UITheme.GOLD)
 	header.add_child(_currency)
@@ -348,6 +363,8 @@ func _process(delta: float) -> void:
 	if not is_open:
 		return
 	_currency.text = Settings.fmt(GameState.get_currency("cubes"))
+	_parts_lbl.text = Settings.fmt(GameState.get_currency("parts"))
+	_seeds_lbl.text = Settings.fmt(GameState.get_currency("seeds"))
 	_refresh_t -= delta
 	if _refresh_t <= 0.0:
 		_refresh_t = 0.25

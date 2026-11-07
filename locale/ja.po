@@ -264,11 +264,11 @@ msgstr "ベール投入口"
 msgid "SCRAP  INTAKE  ·  WEIGH HERE"
 msgstr "スクラップ受付  ·  ここで計量"
 
-#: automation/hub.gd:76
+#: automation/hub.gd:69
 msgid "Hub upgraded: %s."
 msgstr "基地をアップグレード：%s。"
 
-#: automation/hub.gd:107
+#: automation/hub.gd:100
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "空気清浄機が稼働。ファンが長い、ほこりっぽいため息とともに回りだした。"
 
@@ -321,8 +321,8 @@ msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr "まず周りのガラクタを片づけよう（%d%% / %d%%）。"
 
 #: automation/outposts.gd:318 automation/outposts.gd:333 automation/stations.gd:117
-msgid "Not enough materials."
-msgstr "素材が足りません。"
+msgid "Not enough cubes or parts."
+msgstr "キューブかパーツが足りない。"
 
 #: automation/outposts.gd:327
 msgid "Repair it first."
@@ -344,63 +344,59 @@ msgstr "前哨基地 稼働"
 msgid "Outpost %d upgraded: %s. %s"
 msgstr "前哨基地 %d をアップグレード：%s。%s"
 
-#: automation/outposts.gd:409
+#: automation/outposts.gd:402
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr "E   廃墟の前哨基地 · 先にヘックスを片づけよう（%d%% / %d%%）"
 
-#: automation/outposts.gd:410
+#: automation/outposts.gd:403
 msgid "E   Repair outpost · %s%s"
 msgstr "E   前哨基地を修理 · %s%s"
 
-#: automation/outposts.gd:410 automation/outposts.gd:413
+#: automation/outposts.gd:403 automation/outposts.gd:406
 msgid "  (need more)"
 msgstr "  （まだ足りない）"
 
-#: automation/outposts.gd:412
+#: automation/outposts.gd:405
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr "E   前哨基地 %d · %s · ベール +%d%%"
 
-#: automation/outposts.gd:413
+#: automation/outposts.gd:406
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr "E   前哨基地をアップグレード：%s · %s%s"
 
-#: automation/outposts.gd:423
+#: automation/outposts.gd:416
 msgid "Outpost %d: %s"
 msgstr "前哨基地 %d：%s"
 
-#: automation/outposts.gd:430
+#: automation/outposts.gd:423
 msgid "Outpost %d upgrade: %s"
 msgstr "前哨基地 %d のアップグレード：%s"
 
-#: automation/outposts.gd:433
+#: automation/outposts.gd:426
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr "前哨基地 %d：%s。ここではベールが +%d%% で売れる。パッドを通るロボットはスピードがチャージされる。"
 
-#: automation/outposts.gd:536
+#: automation/outposts.gd:529
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr "前哨基地 %d  廃墟 · きれいさ %d%% で修理可能"
 
-#: automation/outposts.gd:537
+#: automation/outposts.gd:530
 msgid "OUTPOST %d  %s"
 msgstr "前哨基地 %d  %s"
 
-#: automation/recycler.gd:219 systems/events.gd:480
-msgid "+%d bolts"
-msgstr "+%d ボルト"
-
-#: automation/recycler.gd:225
+#: automation/recycler.gd:221
 msgid "GONE FOR GOOD  -%d kg"
 msgstr "完全処分  -%d kg"
 
-#: automation/recycler.gd:285
+#: automation/recycler.gd:281
 msgid "RECYCLER"
 msgstr "リサイクラー"
 
-#: automation/recycler.gd:288
+#: automation/recycler.gd:284
 msgid "SHRED  ·  SMELT  ·  GONE FOR GOOD"
 msgstr "粉砕  ·  溶解  ·  完全処分"
 
-#: automation/recycler.gd:441
+#: automation/recycler.gd:437
 msgid "HAND FEED"
 msgstr "手動投入"
 
@@ -445,8 +441,8 @@ msgid "Needs the Rocket Cargo research"
 msgstr "研究「ロケット貨物」が必要"
 
 #: automation/rocket_tiers.gd:56
-msgid "Not enough materials"
-msgstr "素材が足りません"
+msgid "Not enough cubes or parts"
+msgstr "キューブかパーツが足りない"
 
 #: automation/rocket_tiers.gd:69
 msgid "Rocket upgraded: %s."
@@ -726,31 +722,31 @@ msgstr "いっしょに咲こう"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  いのち"
 
-#: plants/composter.gd:61
+#: plants/composter.gd:74
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   コンポストプレス  ·  何かが育つまで休止中"
 
-#: plants/composter.gd:63
+#: plants/composter.gd:76
 msgid "E   compost press  ·  Lv %d (max)"
 msgstr "E   コンポストプレス  ·  Lv %d（最大）"
 
-#: plants/composter.gd:64
+#: plants/composter.gd:77
 msgid "E   upgrade compost press to Lv %d  ·  %s cubes"
 msgstr "E   コンポストプレスを Lv %d に  ·  %s キューブ"
 
-#: plants/composter.gd:69
+#: plants/composter.gd:82
 msgid "The press is cold. Grow something first: it runs on what plants leave behind."
 msgstr "プレスは冷えている。まず何かを育てよう。植物が残したもので動くんだ。"
 
-#: plants/composter.gd:75
+#: plants/composter.gd:88
 msgid "Not enough cubes to upgrade the press."
 msgstr "プレスのアップグレードに必要なキューブが足りない。"
 
-#: plants/composter.gd:84
+#: plants/composter.gd:97
 msgid "Compost press Lv %d: %.0f s cycles, %.1f seeds each."
 msgstr "コンポストプレス Lv %d：%.0f 秒サイクル、各 %.1f 粒の種。"
 
-#: plants/composter.gd:138
+#: plants/composter.gd:151
 msgid ""
 "COMPOST PRESS\n"
 "dormant"
@@ -758,13 +754,13 @@ msgstr ""
 "コンポストプレス\n"
 "休止中"
 
-#: plants/composter.gd:140
+#: plants/composter.gd:153
 msgid ""
 "COMPOST PRESS  Lv %d\n"
-"compost %s  →  seeds"
+"hopper %d%%  →  seeds"
 msgstr ""
 "コンポストプレス  Lv %d\n"
-"コンポスト %s  →  種"
+"ホッパー %d%%  →  種"
 
 #: plants/garden.gd:256
 msgid "A hex is fully restored. Something small is already living in it."
@@ -980,7 +976,8 @@ msgid_plural "Missing %d parts"
 msgstr[0] "パーツが %d 個足りない"
 
 #: robots/fleet.gd:190 robots/fleet.gd:262 robots/water_net.gd:149
-#: systems/robot_builder.gd:358 systems/robot_builder.gd:435 ui/robot_card.gd:79
+#: systems/research.gd:194 systems/robot_builder.gd:362 systems/robot_builder.gd:435
+#: ui/robot_card.gd:79
 msgid "Not enough cubes"
 msgstr "キューブが足りない"
 
@@ -997,8 +994,8 @@ msgid "Needs a %s Control Core"
 msgstr "%sコントロールコアが必要"
 
 #: robots/fleet.gd:264
-msgid "Not enough bolts (scrap spare parts at Haggle's)"
-msgstr "ボルトが足りない（Haggle の店で予備パーツを解体しよう）"
+msgid "Not enough parts (scrap spares at Haggle's or run the recycler)"
+msgstr "パーツが足りない（Haggle の店で余りを解体するか、リサイクラーを動かそう）"
 
 #: robots/fleet.gd:284
 msgid "%s fleet upgraded to %s."
@@ -1133,7 +1130,7 @@ msgstr "ここには建てられない"
 msgid "Not on the lake"
 msgstr "湖の上には置けない"
 
-#: robots/water_net.gd:141 systems/decor.gd:186
+#: robots/water_net.gd:141 systems/decor.gd:180
 msgid "Clean this hex first"
 msgstr "まずこのヘックスを片づけよう"
 
@@ -1639,49 +1636,49 @@ msgstr "作業台に新登場、基地タブ：シグナルジャマー。基地
 msgid "WREN traced the Ledger's relay: %s of the hub. Look for the red beacon."
 msgstr "WREN が Ledger のリレーを突き止めた：基地の%s。赤いビーコンを探そう。"
 
+#: story/ledger.gd:182
+msgid "Ledger: %s"
+msgstr "Ledger：%s"
+
 #. compass directions fill "%s of the hub" / "%s of you" ("north of you").
-#: story/ledger.gd:192
+#: story/ledger.gd:204
 msgid "north"
 msgstr "北"
 
 #. compass directions fill "%s of the hub" / "%s of you" ("north of you").
-#: story/ledger.gd:192
+#: story/ledger.gd:204
 msgid "north-east"
 msgstr "北東"
 
-#: story/ledger.gd:193
+#: story/ledger.gd:205
 msgid "east"
 msgstr "東"
 
-#: story/ledger.gd:193
+#: story/ledger.gd:205
 msgid "south-east"
 msgstr "南東"
 
-#: story/ledger.gd:194
+#: story/ledger.gd:206
 msgid "south"
 msgstr "南"
 
-#: story/ledger.gd:194
+#: story/ledger.gd:206
 msgid "south-west"
 msgstr "南西"
 
-#: story/ledger.gd:195
+#: story/ledger.gd:207
 msgid "west"
 msgstr "西"
 
-#: story/ledger.gd:195
+#: story/ledger.gd:207
 msgid "north-west"
 msgstr "北西"
 
-#: story/ledger.gd:258
-msgid "<< INTERCEPT // LEDGER PROMOTIONS // %d OF %d >>"
-msgstr "<< 傍受 // LEDGER キャンペーン // %d / %d >>"
-
-#: story/ledger.gd:301
+#: story/ledger.gd:311
 msgid "Signal Jammer online. Drones within %d m of the base will get an earful of static."
 msgstr "シグナルジャマー稼働。基地から %d m 以内のドローンはノイズをたっぷり浴びることになる。"
 
-#: story/ledger.gd:312
+#: story/ledger.gd:322
 msgid ""
 "%s   ·   %d / %d built\n"
 "%s"
@@ -1689,7 +1686,7 @@ msgstr ""
 "%s   ·   %d / %d 建設済み\n"
 "%s"
 
-#: story/ledger.gd:314
+#: story/ledger.gd:324
 msgid ""
 "\n"
 "Covering %d m around the base."
@@ -1697,7 +1694,7 @@ msgstr ""
 "\n"
 "基地の周囲 %d m をカバー。"
 
-#: story/ledger.gd:316
+#: story/ledger.gd:326
 msgid ""
 "\n"
 "The Ledger is on our side now. The jammers just hum along to the music."
@@ -1705,48 +1702,49 @@ msgstr ""
 "\n"
 "Ledger はもう私たちの味方。ジャマーは音楽に合わせてハミングしているだけ。"
 
-#: story/ledger.gd:318 systems/decor.gd:125 systems/research.gd:186
-#: ui/hub_panel.gd:119 ui/stations_panel.gd:96
+#: story/ledger.gd:328 systems/decor.gd:119 systems/research.gd:186
+#: systems/robot_builder.gd:360 systems/robot_builder.gd:437 ui/hub_panel.gd:121
+#: ui/stations_panel.gd:96
 msgid "Needs %s"
 msgstr "%s が必要"
 
-#: story/ledger.gd:483
+#: story/ledger.gd:493
 msgid "Ledger drone inbound, %s! It's heading for a clean hex."
 msgstr "Ledger のドローンが接近中、%s！きれいなヘックスに向かっている。"
 
-#: story/ledger.gd:484
+#: story/ledger.gd:494
 msgid "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground."
 msgstr "Ledger のドローンがきれいなヘックスにガラクタを捨てに来る（君の%s）。植えた地面には手を出せない。"
 
-#: story/ledger.gd:520
+#: story/ledger.gd:530
 msgid "SIGNAL JAMMED"
 msgstr "シグナル妨害"
 
-#: story/ledger.gd:550
+#: story/ledger.gd:560
 msgid "Target re-classified as ASSET. Aborting. ...Interesting."
 msgstr "対象を資産として再分類。中止します。……興味深い。"
 
-#: story/ledger.gd:616
+#: story/ledger.gd:626
 msgid "The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."
 msgstr "ドローンがガラクタを少し捨てていった。すくうか、ヘルパーたちに片づけてもらおう。基地にシグナルジャマーがあればドローンは近寄らない。"
 
-#: story/ledger.gd:672
+#: story/ledger.gd:682
 msgid "SEEDS · PAID IN FULL"
 msgstr "種 · 全額支払済み"
 
-#: story/ledger.gd:689 systems/events.gd:484 systems/lumi_level.gd:218
+#: story/ledger.gd:699 systems/events.gd:486 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d 種"
 
-#: story/ledger.gd:759
+#: story/ledger.gd:769
 msgid "E   jack in: rewrite the Ledger's contract"
 msgstr "E   接続：Ledger の契約を書き換える"
 
-#: story/ledger.gd:759
+#: story/ledger.gd:769
 msgid "E   read the amended contract"
 msgstr "E   改定された契約を読む"
 
-#: story/ledger.gd:784 story/ledger.gd:838
+#: story/ledger.gd:794 story/ledger.gd:848
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: ACTIVE\n"
@@ -1756,11 +1754,11 @@ msgstr ""
 "契約 0001：有効\n"
 "廃棄物は計上項目である"
 
-#: story/ledger.gd:799
+#: story/ledger.gd:809
 msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
 msgstr "リレー 07  ·  LEDGER 所有  ·  予定外のアクセスを禁ず"
 
-#: story/ledger.gd:838
+#: story/ledger.gd:848
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: AMENDED\n"
@@ -1770,11 +1768,11 @@ msgstr ""
 "契約 0001：改定\n"
 "再生 = 資産"
 
-#: story/ledger.gd:955
+#: story/ledger.gd:965
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr "Ledger の契約が書き換わった。ドローンが種を届けてくれるようになった。（+%d 種）"
 
-#: story/ledger.gd:963
+#: story/ledger.gd:973
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr "<< LEDGER // オフレコ >>"
 
@@ -1943,98 +1941,106 @@ msgid "Lumi Levels"
 msgstr "Lumi のレベル"
 
 #: systems/collection.gd:88 ui/upgrades_screen.gd:17
-msgid "Contracts"
+msgid "Requests"
 msgstr "依頼"
 
 #: systems/collection.gd:89
 msgid "Curio Capsules"
 msgstr "珍品カプセル"
 
-#: systems/contracts.gd:241
-msgid "Contract complete: %s. Claim %d tokens at the workbench."
-msgstr "依頼達成：%s。作業台でトークン %d 枚を受け取ろう。"
+#: systems/contracts.gd:230
+msgid "%s (Builder)"
+msgstr "%s（ビルダー）"
 
-#: systems/contracts.gd:247
-msgid "A contract ran out of time. No harm done; a new one will be posted soon."
-msgstr "依頼の期限が切れた。問題なし、すぐに新しい依頼が出る。"
+#: systems/contracts.gd:232
+msgid "Builder Crate"
+msgstr "ビルダーの木箱"
 
-#: systems/contracts.gd:312
-msgid "Contract paid: +%d tokens, +%s cubes."
-msgstr "依頼の報酬：+%d トークン、+%s キューブ。"
+#: systems/contracts.gd:234
+msgid "Curio Capsule"
+msgstr "珍品カプセル"
 
-#: systems/contracts.gd:323
+#: systems/contracts.gd:236
+msgid "%s robot part"
+msgstr "%s ロボットパーツ"
+
+#: systems/contracts.gd:282
+msgid "Request complete: %s. Claim it at the workbench."
+msgstr "依頼達成：%s。作業台で受け取ろう。"
+
+#: systems/contracts.gd:288
+msgid "A request ran out of time. No harm done; a new one will be posted soon."
+msgstr "依頼の時間切れ。問題なし。すぐに新しい依頼が来る。"
+
+#: systems/contracts.gd:368
+msgid "Request done: %s."
+msgstr "依頼完了：%s。"
+
+#: systems/contracts.gd:410
+msgid "Requests reward: %s. Equip it on the Requests tab."
+msgstr "依頼の報酬：%s。依頼タブで装備しよう。"
+
+#: systems/contracts.gd:413
+msgid "Requests reward: %s. Fit it in the Builder tab."
+msgstr "依頼の報酬：%s。ビルダータブで取り付けよう。"
+
+#: systems/contracts.gd:417 systems/contracts.gd:427
+msgid "Requests reward: %s."
+msgstr "依頼の報酬：%s。"
+
+#: systems/contracts.gd:435
 msgid "Unknown item"
 msgstr "不明なアイテム"
 
-#: systems/contracts.gd:338
-msgid "%s fitted to the whole fleet."
-msgstr "%s をフリート全体に取り付けた。"
+#: systems/contracts.gd:448
+msgid "Unlocks after %d requests"
+msgstr "依頼 %d 件で解放"
 
-#: systems/contracts.gd:344
-msgid "Printed: %s."
-msgstr "プリント完了：%s。"
+#: systems/contracts.gd:449
+msgid "Locked"
+msgstr "ロック中"
 
-#: systems/contracts.gd:347
-msgid "+%d seeds."
-msgstr "+%d 種。"
+#: systems/cradle_mode.gd:241
+msgid "Heirloom unlocked: %s, level %d. It travels with Lumi to every world."
+msgstr "家宝を解放：%s、レベル %d。Lumi といっしょにどの世界へも旅をする。"
 
-#: systems/contracts.gd:353
-msgid "+%d Maker Fragments (%d)."
-msgstr "+%d メイカーのかけら（%d）。"
-
-#: systems/contracts.gd:359
-msgid "Printed: %s. Fit it in the Builder tab."
-msgstr "プリント完了：%s。ビルダータブで取り付けよう。"
-
-#: systems/contracts.gd:369
-msgid "Unlocks with planting"
-msgstr "植えると解放"
-
-#: systems/contracts.gd:371
-msgid "Collection complete"
-msgstr "コレクション完成"
-
-#: systems/contracts.gd:375
-msgid "Needs %d tokens"
-msgstr "トークン %d 枚が必要"
-
-#: systems/cradle_mode.gd:289
+#: systems/cradle_mode.gd:291 systems/cradle_mode.gd:295
 msgid "Fully grown"
 msgstr "最大レベル"
 
-#: systems/cradle_mode.gd:291
-msgid "Needs %d Starseeds"
-msgstr "スターシードが %d 必要"
+#: systems/cradle_mode.gd:296
+msgid "Unlocks with Ark milestones (next: %s, at %d restoration)"
+msgstr "アークのマイルストーンで解放（次：%s、復興度 %d）"
 
-#: systems/cradle_mode.gd:305
+#: systems/cradle_mode.gd:309
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr "家宝：%s、レベル %d。Lumi といっしょにどの世界へも旅をする。"
 
-#: systems/decor.gd:121
+#: systems/decor.gd:117
 msgid "Needs %d Collection finds (%d so far)"
 msgstr "コレクションの発見が %d 必要（いまは %d）"
 
-#: systems/decor.gd:179
+#: systems/decor.gd:173
 msgid "Too close to the base machines"
 msgstr "基地の機械に近すぎる"
 
-#: systems/decor.gd:182
+#: systems/decor.gd:176
 msgid "Outside the district"
 msgstr "地区の外"
 
-#: systems/decor.gd:184
+#: systems/decor.gd:178
 msgid "That's water"
 msgstr "そこは水だよ"
 
-#: systems/decor.gd:188
+#: systems/decor.gd:182
 msgid "Frozen in"
 msgstr "凍っている"
 
-#: systems/decor.gd:190
+#: systems/decor.gd:184
 msgid "A building is in the way"
 msgstr "建物がじゃまをしている"
 
-#: systems/decor.gd:192
+#: systems/decor.gd:186
 msgid "Something is already here"
 msgstr "ここにはもう何か置いてある"
 
@@ -2058,205 +2064,167 @@ msgstr "デザイン：%s"
 msgid "CRADLE · SUPPLY"
 msgstr "CRADLE号 · 補給"
 
-#: systems/events.gd:436
+#: systems/events.gd:438
 msgid "STREAK x%d  +%d%%"
 msgstr "コンボ x%d  +%d%%"
 
-#: systems/events.gd:476 systems/lumi_level.gd:215 ui/goals_panel.gd:245
+#: systems/events.gd:478 ui/goals_panel.gd:245
 msgid "+%s cubes"
 msgstr "+%s キューブ"
 
-#: systems/events.gd:488 systems/l10n_fmt.gd:29
-msgid "+%d data"
-msgstr "+%d データ"
-
-#: systems/events.gd:506 systems/l10n_fmt.gd:23 systems/lumi_level.gd:236
-msgid "+%d token"
-msgid_plural "+%d tokens"
-msgstr[0] "+%d トークン"
-
-#: systems/events.gd:632
+#: systems/events.gd:624
 msgid "%d pieces of junk left around the crate"
 msgstr "箱のまわりにガラクタが残り %d 個"
 
-#: systems/events.gd:657
+#: systems/events.gd:649
 msgid "Supply crate opened: %s"
 msgstr "補給箱を開けた：%s"
 
-#: systems/events.gd:659
+#: systems/events.gd:651
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "補給箱のビーコンが時間切れになり、ドローンが引き上げていった。また来るよ。"
 
-#: systems/events.gd:706
+#: systems/events.gd:698
 msgid "%d pieces grabbed at 3x"
 msgstr "3倍で %d 個ゲット"
 
-#: systems/events.gd:711
+#: systems/events.gd:703
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "ラッシュが終わった。3倍の価値で %d 個ゲット。ベールにすると支払われる。"
 
-#: systems/events.gd:711
+#: systems/events.gd:703
 msgid "The surge faded. Next time!"
 msgstr "ラッシュが終わった。また次回！"
 
-#: systems/events.gd:759
+#: systems/events.gd:751
 msgid "Every plant is drinking"
 msgstr "すべての植物が水を飲んでいる"
 
-#: systems/events.gd:769
+#: systems/events.gd:761
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "雨が去っていく。大地が吸い込んだ：%s"
 
-#: systems/events.gd:790
+#: systems/events.gd:782
 msgid "E   fix %s's hiccup"
 msgstr "E   %s のしゃっくりを治す"
 
-#: systems/events.gd:817
+#: systems/events.gd:809
 msgid "%s is %d m away"
 msgstr "%s まで %d m"
 
-#: systems/events.gd:819
+#: systems/events.gd:811
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "%s はひとりでしゃっくりが止まった。ちょっと恥ずかしそう。"
 
-#: systems/events.gd:833
+#: systems/events.gd:825
 msgid "%s is fixed and back to work. %s"
 msgstr "%s は修理されて仕事に戻った。%s"
 
-#: systems/events.gd:886
+#: systems/events.gd:878
 msgid "Wildlife Visit: %s"
 msgstr "生き物がやってきた：%s"
 
-#: systems/events.gd:887
+#: systems/events.gd:879
 msgid "E   take a photo of the %s"
 msgstr "E   %s の写真を撮る"
 
-#: systems/events.gd:918
+#: systems/events.gd:910
 msgid "%s, %d m away"
 msgstr "%s、%d m 先"
 
-#: systems/events.gd:921
+#: systems/events.gd:913
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "%s はどこかへ行ってしまった。どこか緑のある場所にまた現れるよ。"
 
-#: systems/events.gd:951
+#: systems/events.gd:943
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "パシャ！%s がコレクションに入った。%s"
 
-#: systems/events.gd:951
+#: systems/events.gd:943
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "パシャ！%s のすてきな写真をもう一枚。%s"
 
-#: systems/events.gd:1001
+#: systems/events.gd:993
 msgid "Signal %d%%"
 msgstr "シグナル %d%%"
 
-#: systems/events.gd:1005
+#: systems/events.gd:997
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "あれがシグナルの正体：レアパーツが入った隠し場所。%s"
 
-#: systems/events.gd:1007
+#: systems/events.gd:999
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "シグナルが消えた。パーツはまだ下にある。探知機が見つけてくれる。"
 
-#: systems/events.gd:1073
+#: systems/events.gd:1065
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "監査   あなた %d  :  %d ドローン"
 
-#: systems/events.gd:1074
+#: systems/events.gd:1066
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "あなた %d  :  %d ドローン   ·   残り %d"
 
-#: systems/events.gd:1111
+#: systems/events.gd:1103
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "監査に勝利、%d 対 %d！Ledger が「承認」のスタンプを押した。%s"
 
-#: systems/events.gd:1115
+#: systems/events.gd:1107
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "監査はドローンの勝ち、%d 対 %d。それでもチップを置いていった：+%s キューブ。"
 
-#: systems/l10n_fmt.gd:17
+#: systems/l10n_fmt.gd:21
 msgid "+%d cube"
 msgid_plural "+%d cubes"
 msgstr[0] "+%d キューブ"
 
-#: systems/l10n_fmt.gd:19
+#: systems/l10n_fmt.gd:23
 msgid "+%d seed"
 msgid_plural "+%d seeds"
 msgstr[0] "+%d 種"
 
-#: systems/l10n_fmt.gd:21
-msgid "+%d trinket"
-msgid_plural "+%d trinkets"
-msgstr[0] "+%d 小物"
-
 #: systems/l10n_fmt.gd:25
-msgid "+%d bolt"
-msgid_plural "+%d bolts"
-msgstr[0] "+%d ボルト"
-
-#: systems/l10n_fmt.gd:27
 msgid "+%d part"
 msgid_plural "+%d parts"
 msgstr[0] "+%d パーツ"
 
-#: systems/l10n_fmt.gd:49
+#: systems/l10n_fmt.gd:48
 msgid "%s cube"
 msgid_plural "%s cubes"
 msgstr[0] "%s キューブ"
 
-#: systems/l10n_fmt.gd:51
+#: systems/l10n_fmt.gd:50
 msgid "%s seed"
 msgid_plural "%s seeds"
 msgstr[0] "%s 種"
 
-#: systems/l10n_fmt.gd:53
-msgid "%s trinket"
-msgid_plural "%s trinkets"
-msgstr[0] "%s 小物"
-
-#: systems/l10n_fmt.gd:55
-msgid "%s token"
-msgid_plural "%s tokens"
-msgstr[0] "%s トークン"
-
-#: systems/l10n_fmt.gd:57
-msgid "%s bolt"
-msgid_plural "%s bolts"
-msgstr[0] "%s ボルト"
-
-#: systems/l10n_fmt.gd:59
+#: systems/l10n_fmt.gd:52
 msgid "%s part"
 msgid_plural "%s parts"
 msgstr[0] "%s パーツ"
 
-#: systems/l10n_fmt.gd:61
-msgid "%s data"
-msgstr "%s データ"
-
 #. a part's name. {rarity} is an adjective (Rusty, Polished, Rare...), {part} a part type
-#: systems/l10n_fmt.gd:86
+#: systems/l10n_fmt.gd:79
 msgctxt "part name"
 msgid "{rarity} {part}"
 msgstr "{rarity}{part}"
 
 #. research effect, e.g. "+20% scoop width". {stat} is a stat name.
-#: systems/l10n_fmt.gd:96
+#: systems/l10n_fmt.gd:89
 msgid "+{amount}% {stat}"
 msgstr "{stat} +{amount}%"
 
 #. research effect, e.g. "+2 tank". {stat} is a stat name.
-#: systems/l10n_fmt.gd:98
+#: systems/l10n_fmt.gd:91
 msgid "+{amount} {stat}"
 msgstr "{stat} +{amount}"
 
 #. research effect for one robot model, e.g. "+10% Scoopie speed".
-#: systems/l10n_fmt.gd:101
+#: systems/l10n_fmt.gd:94
 msgid "+{amount}% {robot} {stat}"
 msgstr "{robot} の{stat} +{amount}%"
 
 #. research effect for one robot model, e.g. "+1 Drip tank".
-#: systems/l10n_fmt.gd:103
+#: systems/l10n_fmt.gd:96
 msgid "+{amount} {robot} {stat}"
 msgstr "{robot} の{stat} +{amount}"
 
@@ -2265,8 +2233,8 @@ msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "アークブリッジは Cradle号が帰ってきたら開く。"
 
 #: systems/late_director.gd:128
-msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
-msgstr "Cradleモード：アークの種子庫には、ほかの世界のための種がある。ポーズ > アークブリッジで確認して、スターシードで家宝を買ったり、新しい世界に種をまいたりしよう。ガーデンモード（H）も使えるよ。"
+msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."
+msgstr "クレイドルモード：アークの種子庫には、ほかの世界のための種がある。ポーズ > アークブリッジで、それと復興で解放した家宝を見たり、新しい世界に種をまいたりできる。ガーデンモード（H）も開いている。"
 
 #: systems/profile_slots.gd:48 ui/world_picker.gd:138
 msgid "Profile %d"
@@ -2324,10 +2292,6 @@ msgstr "基地レベル %d が必要"
 msgid "Queue is full"
 msgstr "予約がいっぱい"
 
-#: systems/research.gd:194
-msgid "Not enough data"
-msgstr "データが足りない"
-
 #: systems/research.gd:324 ui/codex_screen.gd:763
 msgid "%ds"
 msgstr "%d秒"
@@ -2361,8 +2325,8 @@ msgid "scoop speed"
 msgstr "スコップの速さ"
 
 #: systems/research.gd:383
-msgid "data gained"
-msgstr "データ獲得量"
+msgid "field-note cubes"
+msgstr "フィールドノートのキューブ"
 
 #: systems/research.gd:383
 msgid "research speed"
@@ -2412,81 +2376,60 @@ msgstr "%sの種を解放"
 msgid "Unlocks: %s"
 msgstr "解放：%s"
 
-#: systems/research.gd:455
-msgid "Field data logged. Spend Data on Research at the workbench (Research tab)."
-msgstr "フィールドデータを記録。作業台（研究タブ）でデータを研究に使おう。"
-
-#: systems/research.gd:474
+#: systems/research.gd:481
 msgid "While you were away, research finished: %s."
 msgstr "留守のあいだに研究が完了：%s。"
 
-#: systems/research.gd:497
+#: systems/research.gd:504
 msgid "Research complete: %s. %s"
 msgstr "研究完了：%s。%s"
 
-#: systems/robot_builder.gd:255
+#: systems/robot_builder.gd:261
 msgid "Wrong slot"
 msgstr "スロットが違う"
 
-#: systems/robot_builder.gd:257
+#: systems/robot_builder.gd:263
 msgid "Doesn't fit a %s"
 msgstr "%s には合わない"
 
-#: systems/robot_builder.gd:259
+#: systems/robot_builder.gd:265
 msgid "None in the parts bin"
 msgstr "パーツ箱にない"
 
-#: systems/robot_builder.gd:290
+#: systems/robot_builder.gd:296
 msgid "Names need at least 2 letters"
 msgstr "名前は2文字以上必要"
 
-#: systems/robot_builder.gd:292
+#: systems/robot_builder.gd:298
 msgid "Another robot is already called %s"
 msgstr "ほかのロボットがすでに %s という名前"
 
-#: systems/robot_builder.gd:343
+#: systems/robot_builder.gd:349
 msgid "Can't be crafted"
 msgstr "作れない"
 
-#: systems/robot_builder.gd:347
+#: systems/robot_builder.gd:353
 msgid "Research %s"
 msgstr "研究 %s"
 
-#: systems/robot_builder.gd:349
-msgid "Needs %d Maker Fragments (%d)"
-msgstr "メイカーのかけらが %d 個必要（%d）"
-
-#: systems/robot_builder.gd:354
+#: systems/robot_builder.gd:358
 msgid "Needs a %s%s"
 msgstr "%s%s が必要"
 
-#: systems/robot_builder.gd:356 systems/robot_builder.gd:437
-msgid "Needs %d bolts"
-msgstr "ボルトが %d 個必要"
-
-#: systems/robot_builder.gd:368
-msgid "Haggle's stall · %s cubes + %d bolts"
-msgstr "Haggle の屋台 · %s キューブ + %d ボルト"
-
-#: systems/robot_builder.gd:370
-msgid "Token shop · ◆ %d"
-msgstr "トークンショップ · ◆ %d"
+#: systems/robot_builder.gd:372
+msgid "Haggle's stall · %s"
+msgstr "Haggle の屋台 · %s"
 
 #: systems/robot_builder.gd:374
-msgid "%d Maker Fragments"
-msgstr "メイカーのかけら %d 個"
-
-#: systems/robot_builder.gd:376
-msgid "%d bolts"
-msgstr "ボルト %d 個"
+msgid "Requests reward · %d requests"
+msgstr "依頼の報酬 · 依頼 %d 件"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: systems/robot_builder.gd:382 ui/ark_bridge.gd:262 ui/main_menu.gd:452
-#: ui/profile_picker.gd:133
+#: systems/robot_builder.gd:384 ui/main_menu.gd:452 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s キューブ"
 
-#: systems/robot_builder.gd:383
+#: systems/robot_builder.gd:385
 msgid "Craft · %s"
 msgstr "作る · %s"
 
@@ -2495,26 +2438,26 @@ msgid "Not in Haggle's stall right now"
 msgstr "いまは Haggle の屋台にない"
 
 #: systems/robot_builder.gd:459
-msgid "Contract token shop"
-msgstr "依頼トークンショップ"
+msgid "Requests reward (%d of %d requests)"
+msgstr "依頼の報酬（%d / %d 件）"
 
-#: systems/robot_builder.gd:551
+#: systems/robot_builder.gd:550
 msgid "Haggle: \"First bot? Treads on the house. And a plant, bots like plants.\" (Workbench > Builder)"
 msgstr "Haggle：「はじめてのボット？キャタピラはサービスだ。それと植物もひとつ。ボットは植物が好きなんだ」（作業台 > ビルダー）"
 
-#: systems/robot_builder.gd:561
-msgid "A Maker Fragment was tucked inside it. (%d)"
-msgstr "中にメイカーのかけらが入っていた。（%d）"
+#: systems/robot_builder.gd:560
+msgid "A Maker Fragment was tucked inside it: +%d parts."
+msgstr "中にメーカーの欠片が入っていた：+%d パーツ。"
 
-#: systems/robot_builder.gd:593
+#: systems/robot_builder.gd:592
 msgid "%s spotted something green and lucky: a Lucky Clover!"
 msgstr "%s が緑で縁起のいいものを見つけた：幸運のクローバー！"
 
-#: systems/robot_builder.gd:596
-msgid "%s spotted a Maker Fragment glinting in the junk. (%d)"
-msgstr "%s がガラクタの中で光るメイカーのかけらを見つけた。（%d）"
+#: systems/robot_builder.gd:595
+msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
+msgstr "%s がガラクタの中で光るメーカーの欠片を見つけた：+%d パーツ。"
 
-#: systems/robot_builder.gd:604
+#: systems/robot_builder.gd:603
 msgid "%s spotted a %s."
 msgstr "%s が見つけた：%s。"
 
@@ -2554,9 +2497,9 @@ msgstr "アークブリッジ"
 msgid "The vault holds seeds for every world in the system. Take what Lumi learned somewhere new; nothing here is ever undone."
 msgstr "種子庫には、この星系のすべての世界のための種がある。Lumi が学んだことを新しい場所へ持っていこう。ここで育てたものが消えることはないよ。"
 
-#: ui/ark_bridge.gd:107 ui/ark_bridge.gd:304
-msgid "%d Starseeds"
-msgstr "スターシード %d"
+#: ui/ark_bridge.gd:107
+msgid "Restoration %d"
+msgstr "復興度 %d"
 
 #: ui/ark_bridge.gd:110
 msgid "+%d banked from %s"
@@ -2619,33 +2562,33 @@ msgstr "まずは Cradle号が帰ってこないと。"
 msgid "Launch"
 msgstr "発射"
 
-#: ui/ark_bridge.gd:264
-msgid "%d Data"
-msgstr "データ %d"
-
-#: ui/ark_bridge.gd:266
+#: ui/ark_bridge.gd:265
 msgid "%d seeds"
 msgstr "種 %d"
 
-#: ui/ark_bridge.gd:268
+#: ui/ark_bridge.gd:267
 msgid "robots waiting: %d"
 msgstr "待っているロボット：%d"
 
-#: ui/ark_bridge.gd:270
+#: ui/ark_bridge.gd:269
 msgid "research tier %d known"
 msgstr "研究ティア %d まで習得済み"
 
-#: ui/ark_bridge.gd:272
+#: ui/ark_bridge.gd:271
 msgid "Starting kit: just Lumi. Heirlooms add to it."
 msgstr "スタート装備：Lumi だけ。家宝で増やせる。"
 
-#: ui/ark_bridge.gd:273
+#: ui/ark_bridge.gd:272
 msgid "Starting kit: %s"
 msgstr "スタート装備：%s"
 
-#: ui/ark_bridge.gd:301 ui/settings_panel.gd:509
+#: ui/ark_bridge.gd:300 ui/settings_panel.gd:509
 msgid "Full"
 msgstr "フル"
+
+#: ui/ark_bridge.gd:303
+msgid "Milestone"
+msgstr "マイルストーン"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
@@ -2791,8 +2734,8 @@ msgid "none saved"
 msgstr "保存なし"
 
 #: ui/builder_panel.gd:393
-msgid "Parts bin %d   ·   Maker Fragments %d   ·   Bolts %s"
-msgstr "パーツ箱 %d   ·   メイカーのかけら %d   ·   ボルト %s"
+msgid "Builder bin %d   ·   Parts %s"
+msgstr "ビルダーの木箱 %d   ·   パーツ %s"
 
 #: ui/builder_panel.gd:397
 msgid "Haggle's stall: %s  (new stock in %d min)"
@@ -2851,7 +2794,7 @@ msgstr "コレクション"
 msgid "CODEX"
 msgstr "図鑑"
 
-#: ui/codex_screen.gd:87 ui/upgrades_screen.gd:77
+#: ui/codex_screen.gd:87 ui/upgrades_screen.gd:92
 msgid "Close  [%s]"
 msgstr "閉じる  [%s]"
 
@@ -2914,12 +2857,12 @@ msgid "Hint: animals come back as the ground heals. Photograph them in photo mod
 msgstr "ヒント：地面が癒えると動物が戻ってくる。フォトモード（P）で撮影しよう。"
 
 #: ui/codex_screen.gd:553
-msgid "Hint: complete %d contracts at the workbench."
-msgstr "ヒント：作業台で依頼を %d 件達成しよう。"
+msgid "Hint: finish %d requests (Requests tab at the workbench)."
+msgstr "ヒント：依頼を %d 件こなそう（作業台の依頼タブ）。"
 
 #: ui/codex_screen.gd:554
-msgid "Hint: Curio Capsules, in the workbench token shop."
-msgstr "ヒント：作業台のトークンショップにある珍品カプセル。"
+msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
+msgstr "ヒント：珍品カプセルは、作業台の依頼の報酬トラックにある。"
 
 #: ui/codex_screen.gd:555
 msgid "Hint: keep scooping without stopping until the streak meter is full."
@@ -3030,8 +2973,8 @@ msgid "Upgrades bought"
 msgstr "購入したアップグレード"
 
 #: ui/codex_screen.gd:694
-msgid "Data earned"
-msgstr "獲得データ"
+msgid "Field notes logged"
+msgstr "記録したフィールドノート"
 
 #: ui/codex_screen.gd:695
 msgid "Research done"
@@ -3154,8 +3097,8 @@ msgid "Upgrade > %s"
 msgstr "アップグレード > %s"
 
 #: ui/command_view.gd:780
-msgid "%s cubes, %s bolts, %s Control Core. %s"
-msgstr "%s キューブ、%s ボルト、%sコントロールコア。%s"
+msgid "%s cubes, %s parts, %s Control Core. %s"
+msgstr "%s キューブ、%s パーツ、%s コントロールコア。%s"
 
 #: ui/command_view.gd:789
 msgid "  parts %d/%d · %s"
@@ -3226,73 +3169,85 @@ msgstr "ロボット %d 台"
 msgid "%d / %d hexes clean"
 msgstr "きれいなヘックス %d / %d"
 
-#: ui/contracts_panel.gd:25
-msgid "CONTRACTS"
+#: ui/contracts_panel.gd:27
+msgid "REQUESTS"
 msgstr "依頼"
 
-#: ui/contracts_panel.gd:28
-msgid "Optional jobs with a timer. Finish in time for tokens; nothing is lost if one runs out."
-msgstr "制限時間つきの任意の仕事。時間内に終えるとトークンがもらえる。期限が切れても失うものはない。"
+#: ui/contracts_panel.gd:30
+msgid "Short optional jobs and world events. Each pays cubes or parts; nothing is lost if one runs out."
+msgstr "短い任意の仕事とワールドイベント。どれもキューブかパーツがもらえる。時間切れでも何も失わない。"
 
-#: ui/contracts_panel.gd:42
-msgid "TOKEN SHOP"
-msgstr "トークンショップ"
+#: ui/contracts_panel.gd:47
+msgid "REWARD TRACK"
+msgstr "報酬トラック"
 
-#: ui/contracts_panel.gd:81
-msgid "◆  %d tokens"
-msgstr "◆  %d トークン"
+#: ui/contracts_panel.gd:86
+msgid "%d done"
+msgstr "%d 件達成"
 
-#: ui/contracts_panel.gd:82
+#: ui/contracts_panel.gd:89
+msgid "LIVE  ·  %s  ·  %s  ·  %s left"
+msgstr "ライブ  ·  %s  ·  %s  ·  残り %s"
+
+#: ui/contracts_panel.gd:92
 msgid "Collection  %d / %d   ·   see the Codex (K)"
 msgstr "コレクション  %d / %d   ·   図鑑（K）を見よう"
 
-#: ui/contracts_panel.gd:130
-msgid "A new contract is being posted."
+#: ui/contracts_panel.gd:140
+msgid "A new request is being posted."
 msgstr "新しい依頼を掲示中。"
 
-#: ui/contracts_panel.gd:141
-msgid "Reward  ◆ %d tokens  +  cubes"
-msgstr "報酬  ◆ %d トークン  +  キューブ"
+#: ui/contracts_panel.gd:151
+msgid "Pays  %s"
+msgstr "報酬  %s"
 
-#: ui/contracts_panel.gd:163
+#: ui/contracts_panel.gd:173
 msgid "Accept  (%s)"
 msgstr "受ける（%s）"
 
-#: ui/contracts_panel.gd:172
+#: ui/contracts_panel.gd:182
 msgid "Pass"
 msgstr "見送る"
 
-#: ui/contracts_panel.gd:182
+#: ui/contracts_panel.gd:192
 msgid "Working on it"
 msgstr "作業中"
 
-#: ui/contracts_panel.gd:188
-msgid "Claim  ◆ %d"
-msgstr "受け取る  ◆ %d"
+#: ui/contracts_panel.gd:198
+msgid "Claim  %s"
+msgstr "受け取る  %s"
 
-#: ui/contracts_panel.gd:228
+#: ui/contracts_panel.gd:238
 msgid "Next posting in %s"
 msgstr "次の掲示まで %s"
 
-#: ui/contracts_panel.gd:230
+#: ui/contracts_panel.gd:240
 msgid "Time limit %s once accepted   ·   offer open %s"
 msgstr "受注後の制限時間 %s   ·   受付 %s"
 
-#: ui/contracts_panel.gd:241
+#: ui/contracts_panel.gd:251
 msgid "Time left %s"
 msgstr "残り時間 %s"
 
-#: ui/contracts_panel.gd:241
-msgid "Finished. Claim your tokens!"
-msgstr "完了！トークンを受け取ろう！"
+#: ui/contracts_panel.gd:251
+msgid "Finished. Claim it!"
+msgstr "完了。受け取ろう！"
 
-#: ui/contracts_panel.gd:264
+#: ui/contracts_panel.gd:275
+msgid "After %d requests"
+msgstr "依頼 %d 件のあと"
+
+#: ui/contracts_panel.gd:277
 msgid "Equipped  (press to remove)"
 msgstr "装備中（押して外す）"
 
-#: ui/contracts_panel.gd:264
-msgid "Owned  ·  press to equip"
-msgstr "所持  ·  押して装備"
+#: ui/contracts_panel.gd:277
+msgid "Unlocked  ·  press to equip"
+msgstr "解放済み  ·  押して装備"
+
+#: ui/contracts_panel.gd:279 ui/cosmetics_panel.gd:129
+msgid "Unlocked"
+msgstr "解放済み"
 
 #: ui/core_meter.gd:22
 msgid "BLOOM CORE"
@@ -3313,10 +3268,6 @@ msgstr "見た目だけ（ボーナスなし）"
 #: ui/cosmetics_panel.gd:129 ui/cosmetics_panel.gd:160
 msgid "Wearing"
 msgstr "着用中"
-
-#: ui/cosmetics_panel.gd:129
-msgid "Unlocked"
-msgstr "解放済み"
 
 #: ui/cosmetics_panel.gd:129
 msgid "Locked  %d%%"
@@ -3370,42 +3321,6 @@ msgstr "遊んでくれてありがとう。"
 msgid "Lumi is still out there, planting. The Seed Ark is open."
 msgstr "Lumi はいまもどこかで植え続けている。シードアークは開いている。"
 
-#: ui/currency_cluster.gd:10
-msgid "SHEET METAL"
-msgstr "金属板"
-
-#: ui/currency_cluster.gd:10
-msgid "PLASTIC"
-msgstr "プラスチック"
-
-#: ui/currency_cluster.gd:10
-msgid "GLASS"
-msgstr "ガラス"
-
-#: ui/currency_cluster.gd:11
-msgid "DATA"
-msgstr "データ"
-
-#: ui/currency_cluster.gd:11
-msgid "TOKENS"
-msgstr "トークン"
-
-#: ui/currency_cluster.gd:11
-msgid "SEEDS"
-msgstr "種"
-
-#: ui/currency_cluster.gd:11
-msgid "COMPOST"
-msgstr "コンポスト"
-
-#: ui/currency_cluster.gd:11
-msgid "BOLTS"
-msgstr "ボルト"
-
-#: ui/currency_cluster.gd:11 ui/robot_card.gd:40
-msgid "PARTS"
-msgstr "パーツ"
-
 #: ui/design_toast.gd:58
 msgid "NEW DESIGN UNLOCKED"
 msgstr "新しいデザインを解放"
@@ -3427,12 +3342,12 @@ msgid "STREAK"
 msgstr "コンボ"
 
 #: ui/event_hud.gd:192
-msgid "CONTRACT READY  ·  claim it at the workbench"
-msgstr "依頼達成  ·  作業台で受け取ろう"
+msgid "REQUEST READY  ·  claim it at the workbench"
+msgstr "依頼完了  ·  作業台で受け取ろう"
 
 #: ui/event_hud.gd:192
-msgid "%d CONTRACTS READY  ·  claim them at the workbench"
-msgstr "依頼 %d 件達成  ·  作業台で受け取ろう"
+msgid "%d REQUESTS READY  ·  claim them at the workbench"
+msgstr "依頼 %d 件完了  ·  作業台で受け取ろう"
 
 #: ui/frontier_rockets.gd:11
 msgid "FRONTIERS"
@@ -3574,35 +3489,15 @@ msgstr "基地"
 msgid "Build Signal Jammer"
 msgstr "シグナルジャマーを建てる"
 
-#: ui/hub_panel.gd:82
-msgid "cubes"
-msgstr "キューブ"
-
-#: ui/hub_panel.gd:82
-msgid "sheet metal"
-msgstr "金属板"
-
-#: ui/hub_panel.gd:82
-msgid "plastic stock"
-msgstr "プラスチック在庫"
-
-#: ui/hub_panel.gd:82
-msgid "glass"
-msgstr "ガラス"
-
-#: ui/hub_panel.gd:82
-msgid "bolts"
-msgstr "ボルト"
-
-#: ui/hub_panel.gd:87
+#: ui/hub_panel.gd:89
 msgid " (have %s)"
 msgstr " （所持 %s）"
 
-#: ui/hub_panel.gd:94
-msgid "Sheet metal %s    Plastic stock %s    Glass %s"
-msgstr "金属板 %s    プラスチック %s    ガラス %s"
-
 #: ui/hub_panel.gd:96
+msgid "Parts %s"
+msgstr "パーツ %s"
+
+#: ui/hub_panel.gd:98
 msgid ""
 "Level %d   ·   %s\n"
 "%s   Bales sell for +%d%%."
@@ -3610,11 +3505,11 @@ msgstr ""
 "レベル %d   ·   %s\n"
 "%s   ベールが +%d%% で売れる。"
 
-#: ui/hub_panel.gd:99
+#: ui/hub_panel.gd:101
 msgid "Fully built."
 msgstr "すべて建設済み。"
 
-#: ui/hub_panel.gd:102
+#: ui/hub_panel.gd:104
 msgid ""
 "Next: %s. %s\n"
 "Needs %s"
@@ -3622,15 +3517,15 @@ msgstr ""
 "次：%s。%s\n"
 "必要：%s"
 
-#: ui/hub_panel.gd:103 ui/stations_panel.gd:98
+#: ui/hub_panel.gd:105 ui/stations_panel.gd:98
 msgid "Build %s"
 msgstr "%s を建てる"
 
-#: ui/hub_panel.gd:108
+#: ui/hub_panel.gd:110
 msgid "Continue in the full game"
 msgstr "続きは製品版で"
 
-#: ui/hub_panel.gd:115
+#: ui/hub_panel.gd:117
 msgid ""
 "\n"
 "Requires hub level %d."
@@ -3638,7 +3533,7 @@ msgstr ""
 "\n"
 "基地レベル %d が必要。"
 
-#: ui/hub_panel.gd:117
+#: ui/hub_panel.gd:119
 msgid ""
 "\n"
 "All built (max)."
@@ -3646,7 +3541,7 @@ msgstr ""
 "\n"
 "すべて建設済み（最大）。"
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:122
 msgid ""
 "%s   ·   %d / %d built\n"
 "%s%s"
@@ -3654,11 +3549,11 @@ msgstr ""
 "%s   ·   %d / %d 建設済み\n"
 "%s%s"
 
-#: ui/hub_panel.gd:121
+#: ui/hub_panel.gd:123
 msgid "Air Scrubbers maxed"
 msgstr "空気清浄機は最大"
 
-#: ui/hub_panel.gd:121
+#: ui/hub_panel.gd:123
 msgid "Build Air Scrubber"
 msgstr "空気清浄機を建てる"
 
@@ -4273,16 +4168,16 @@ msgid "Queued  ·  %s"
 msgstr "予約中  ·  %s"
 
 #: ui/research_node_card.gd:184 ui/research_panel.gd:203
-msgid "%s data  ·  %s"
-msgstr "%s データ  ·  %s"
+msgid "%s  ·  %s"
+msgstr "%s  ·  %s"
 
-#: ui/research_panel.gd:34
-msgid "FIELD DATA"
-msgstr "フィールドデータ"
+#: ui/research_panel.gd:34 data/currencies.json:currencies[cubes].short
+msgid "CUBES"
+msgstr "キューブ"
 
 #: ui/research_panel.gd:41
-msgid "Clean hexes, grow blooms, read shards and let robots work."
-msgstr "ヘックスを片づけ、花を咲かせ、破片を読み、ロボットに働いてもらおう。"
+msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
+msgstr "研究はキューブと実時間がかかる。プレイ中も留守中も進む。"
 
 #: ui/research_panel.gd:60
 msgid "RESEARCHING"
@@ -4321,8 +4216,12 @@ msgid "Press to queue"
 msgstr "押して予約"
 
 #: ui/research_panel.gd:214
-msgid "%s cancelled. Data refunded."
-msgstr "%s をキャンセル。データを返却しました。"
+msgid "%s cancelled. Cubes refunded."
+msgstr "%s を中止。キューブを返却。"
+
+#: ui/robot_card.gd:40 data/currencies.json:currencies[parts].short
+msgid "PARTS"
+msgstr "パーツ"
 
 #: ui/robot_card.gd:68
 msgid "%s   ·   %s   ·   %d built"
@@ -4361,8 +4260,8 @@ msgid "Next: %s  ·  x%.1f work speed  ·  %s look"
 msgstr "次：%s  ·  作業速度 x%.1f  ·  %s の外見"
 
 #: ui/robot_card.gd:93
-msgid "Needs %s cubes, %s bolts and a %s Control Core.  %s"
-msgstr "%s キューブ、%s ボルト、%sコントロールコアが必要。  %s"
+msgid "Needs %s cubes, %s parts and a %s Control Core.  %s"
+msgstr "%s キューブ、%s パーツ、%s のコントロールコアが必要。  %s"
 
 #: ui/robot_card.gd:95
 msgid "Upgrade fleet to %s"
@@ -4733,8 +4632,8 @@ msgid "Auto-route: %s"
 msgstr "自動ルート：%s"
 
 #: ui/stations_panel.gd:104
-msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Bolts %s"
-msgstr "リサイクルしたベール %d   ·   処分したガラクタ %s kg   ·   ボルト %s"
+msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s"
+msgstr "リサイクルしたベール %d   ·   破壊したガラクタ %s kg   ·   パーツ %s"
 
 #: ui/trade_panel.gd:23
 msgid "HAGGLE'S PARTS TRADE"
@@ -4745,8 +4644,8 @@ msgid "\"Everything's original. Mostly. Three of yours for one of mine, no quest
 msgstr "「ぜんぶ純正だよ。だいたいはね。そっちの3つとこっちの1つ、詮索なし、ちょっとだけ詮索あり」"
 
 #: ui/trade_panel.gd:71
-msgid "Bolts  %s      Parts in storage  %d"
-msgstr "ボルト  %s      保管中のパーツ  %d"
+msgid "Parts  %s      Robot parts in storage  %d"
+msgstr "パーツ  %s      在庫のロボットパーツ  %d"
 
 #: ui/trade_panel.gd:83
 msgid "Haggle: \"Funny thing, I just happened to find a %s. For you, half price.\""
@@ -4777,8 +4676,8 @@ msgid "Buy Worn  %s"
 msgstr "使い古しを買う  %s"
 
 #: ui/trade_panel.gd:112
-msgid "Scrap %d spare Rusty parts  ->  +%d bolts"
-msgstr "サビた予備パーツ %d 個を解体  ->  +%d ボルト"
+msgid "Scrap %d spare Rusty robot parts  ->  %s"
+msgstr "余った錆びたロボットパーツ %d 個を解体  ->  %s"
 
 #: ui/trade_panel.gd:122
 msgid "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab"
@@ -4791,10 +4690,10 @@ msgstr "Haggle：「%s。大事にしてやってくれ」"
 #: ui/trade_panel.gd:145
 msgid ""
 "%s  (own %d)\n"
-"%s cubes + %d bolts"
+"%s"
 msgstr ""
-"%s（所持 %d）\n"
-"%s キューブ + %d ボルト"
+"%s  （所持 %d）\n"
+"%s"
 
 #: ui/trade_panel.gd:171
 msgid "Swap 3 spares"
@@ -4880,11 +4779,11 @@ msgstr "見た目"
 msgid "Builder"
 msgstr "ビルダー"
 
-#: ui/upgrades_screen.gd:69
+#: ui/upgrades_screen.gd:71
 msgid "UPGRADES"
 msgstr "アップグレード"
 
-#: ui/upgrades_screen.gd:88
+#: ui/upgrades_screen.gd:103
 msgid "%s (soon)"
 msgstr "%s（近日）"
 
@@ -5273,8 +5172,8 @@ msgid "Data Hoarder"
 msgstr "データ収集家"
 
 #: data/achievements.json:achievements[data_500].desc
-msgid "Collect 500 field data."
-msgstr "フィールドデータを500集める。"
+msgid "Log 500 field notes."
+msgstr "フィールドノートを 500 件記録する。"
 
 #: data/achievements.json:achievements[distance_1k].name
 msgid "Long Way Round"
@@ -5589,8 +5488,8 @@ msgid "Family Heirloom"
 msgstr "一族の家宝"
 
 #: data/achievements.json:achievements[late_heirloom_1].desc
-msgid "Buy an Heirloom."
-msgstr "家宝を買う。"
+msgid "Unlock an Heirloom."
+msgstr "家宝を解放する。"
 
 #: data/achievements.json:achievements[late_heirloom_20].name
 msgid "Treasured"
@@ -5601,12 +5500,12 @@ msgid "Grow Heirlooms to 20 levels in all."
 msgstr "家宝のレベルを合計20にする。"
 
 #: data/achievements.json:achievements[late_starseeds_100].name
-msgid "Starseed Saver"
-msgstr "スターシード貯金"
+msgid "World Mender"
+msgstr "世界の修復者"
 
 #: data/achievements.json:achievements[late_starseeds_100].desc
-msgid "Earn 100 Starseeds across your worlds."
-msgstr "すべての世界で合計100スターシードを手に入れる。"
+msgid "Reach 100 restoration across your worlds."
+msgstr "すべての世界で復興度 100 に到達する。"
 
 #: data/achievements.json:achievements[late_decor_1].name
 msgid "Home Touches"
@@ -6709,8 +6608,8 @@ msgid "Data Cache"
 msgstr "データキャッシュ"
 
 #: data/cradle.json:heirlooms[data_cache].desc
-msgid "Each new world starts with 60 research Data per level."
-msgstr "新しい世界ではレベルごとに60の研究データを持って始まる。"
+msgid "Each new world starts with 600 extra cubes for research per level."
+msgstr "新しい世界はレベルごとに研究用のキューブ 600 を追加で持って始まる。"
 
 #: data/cradle.json:heirlooms[old_crew].name
 msgid "Old Crew"
@@ -6823,6 +6722,35 @@ msgstr "サビの世界"
 #: data/cradle.json:world_types[rust_world].desc
 msgid "Old industry from pole to pole: rustlands and sprawl."
 msgstr "極から極まで古い工業地帯。サビの大地と広がる街。"
+
+#: data/currencies.json:currencies[cubes].name
+msgid "Cubes"
+msgstr "キューブ"
+
+#: data/currencies.json:currencies[cubes].desc
+msgid "The main money. Sell bales at the scale. Pays for upgrades, robots, base levels, research, rockets and decorations."
+msgstr "メインのお金。はかりでベールを売ろう。アップグレード、ロボット、拠点レベル、研究、ロケット、飾りに使う。"
+
+#: data/currencies.json:currencies[parts].name data/hub.json:materials.metal.name data/hub.json:materials.plastic.name
+#: data/hub.json:materials.glass.name
+msgid "Parts"
+msgstr "パーツ"
+
+#: data/currencies.json:currencies[parts].desc
+msgid "Robot parts and building stock salvaged from junk, the recycler and Haggle's scrap bin. Pays for robots, the Builder, base levels, stations, rocket stages and outpost repairs."
+msgstr "ガラクタ、リサイクラー、Haggle のスクラップ箱から集めたロボットパーツと建材。ロボット、ビルダー、拠点レベル、設備、ロケットの段、前哨基地の修理に使う。"
+
+#: data/currencies.json:currencies[seeds].name
+msgid "Seeds"
+msgstr "種"
+
+#: data/currencies.json:currencies[seeds].short
+msgid "SEEDS"
+msgstr "種"
+
+#: data/currencies.json:currencies[seeds].desc
+msgid "For planting. The compost press turns paper, card and spent blooms into seeds."
+msgstr "植えるためのもの。コンポストプレスが紙、段ボール、咲き終わった花を種に変える。"
 
 #: data/decor.json:types[path].name
 msgid "Stone Path"
@@ -8164,14 +8092,6 @@ msgstr "埋まったパーツを %d 個掘り出す"
 msgid "Reach a tier %d cleaning streak"
 msgstr "清掃コンボでティア %d に到達"
 
-#: data/events.json:contracts.templates[events].text
-msgid "Handle %d world events"
-msgstr "ワールドイベントを %d 回こなす"
-
-#: data/events.json:contracts.templates[events].text_1
-msgid "Handle a world event"
-msgstr "ワールドイベントをこなす"
-
 #: data/events.json:contracts.templates[plant].text
 msgid "Plant %d sprouts"
 msgstr "新芽を %d 本植える"
@@ -8188,109 +8108,37 @@ msgstr "ヘックスをあと %d 個維持状態にする"
 msgid "Get one more hex to Sustained"
 msgstr "ヘックスをあと1つ維持状態にする"
 
-#: data/events.json:shop[livery_neon].name
+#: data/events.json:liveries[livery_neon].name
 msgid "Neon Underglow"
 msgstr "ネオンアンダーグロー"
 
-#: data/events.json:shop[livery_neon].desc
+#: data/events.json:liveries[livery_neon].desc
 msgid "A cyan glow ring under every robot in the fleet."
 msgstr "フリートの全ロボットの下にシアンの光の輪。"
 
-#: data/events.json:shop[livery_sunset].name
+#: data/events.json:liveries[livery_sunset].name
 msgid "Sunset Underglow"
 msgstr "サンセットアンダーグロー"
 
-#: data/events.json:shop[livery_sunset].desc
+#: data/events.json:liveries[livery_sunset].desc
 msgid "Warm orange underglow for the whole crew."
 msgstr "クルー全員に暖かなオレンジのアンダーグロー。"
 
-#: data/events.json:shop[livery_pennant].name
+#: data/events.json:liveries[livery_pennant].name
 msgid "Crew Pennants"
 msgstr "クルーのペナント"
 
-#: data/events.json:shop[livery_pennant].desc
+#: data/events.json:liveries[livery_pennant].desc
 msgid "Every robot flies a little Greenfall pennant."
 msgstr "どのロボットも小さな Greenfall のペナントをかかげる。"
 
-#: data/events.json:shop[livery_halo].name
+#: data/events.json:liveries[livery_halo].name
 msgid "Holo Halos"
 msgstr "ホロ天使の輪"
 
-#: data/events.json:shop[livery_halo].desc
+#: data/events.json:liveries[livery_halo].desc
 msgid "A slowly turning hologram halo over each robot. Very smug."
 msgstr "各ロボットの上でゆっくり回るホログラムの輪。とても得意げ。"
-
-#: data/events.json:shop[part_vintage].name
-msgid "Vintage Blueprint Part"
-msgstr "ヴィンテージ設計図パーツ"
-
-#: data/events.json:shop[part_vintage].desc
-msgid "A random Vintage robot part, freshly printed."
-msgstr "ランダムなヴィンテージのロボットパーツ。プリントしたて。"
-
-#: data/events.json:shop[part_legendary].name
-msgid "Legendary Blueprint Part"
-msgstr "レジェンダリー設計図パーツ"
-
-#: data/events.json:shop[part_legendary].desc
-msgid "A Maker-Made Legendary part. The good stuff."
-msgstr "メイカー製のレジェンダリーパーツ。いいやつ。"
-
-#: data/events.json:shop[seed_crate].name
-msgid "Seed Crate"
-msgstr "種の木箱"
-
-#: data/events.json:shop[seed_crate].desc
-msgid "25 seeds in a crate that smells of summer."
-msgstr "夏の香りがする木箱に入った種25粒。"
-
-#: data/events.json:shop[curio_capsule].name
-msgid "Curio Capsule"
-msgstr "珍品カプセル"
-
-#: data/events.json:shop[curio_capsule].desc
-msgid "A sealed capsule with a collectible inside you haven't got yet."
-msgstr "まだ持っていないコレクションアイテムが入った密封カプセル。"
-
-#: data/events.json:shop[bp_fine_sieve].name
-msgid "Fine Sieve (Builder)"
-msgstr "細かいふるい（ビルダー）"
-
-#: data/events.json:shop[bp_fine_sieve].desc
-msgid "Cleaner tool: cleaner cubes, slower scooping."
-msgstr "清掃ツール：キューブがきれいに、すくうのは遅く。"
-
-#: data/events.json:shop[bp_jet_nozzle].name
-msgid "Jet Nozzle (Builder)"
-msgstr "ジェットノズル（ビルダー）"
-
-#: data/events.json:shop[bp_jet_nozzle].desc
-msgid "Waterer tool: quicker watering, narrower spray."
-msgstr "水やりツール：水やりが速く、散水は狭く。"
-
-#: data/events.json:shop[bp_propeller_cap].name
-msgid "Propeller Cap (Builder)"
-msgstr "プロペラキャップ（ビルダー）"
-
-#: data/events.json:shop[bp_propeller_cap].desc
-msgid "A topper that spins when its robot hurries."
-msgstr "ロボットが急ぐとくるくる回る頭飾り。"
-
-#: data/events.json:shop[bp_crate].name
-msgid "Builder Crate"
-msgstr "ビルダーの木箱"
-
-#: data/events.json:shop[bp_crate].desc
-msgid "A random robot builder part you don't have yet."
-msgstr "まだ持っていないランダムなビルダーパーツ。"
-
-#: data/events.json:shop[bp_fragments].name
-msgid "Maker Fragments x2"
-msgstr "メイカーのかけら x2"
-
-#: data/events.json:shop[bp_fragments].desc
-msgid "Two shards of Maker alloy for the Maker set."
-msgstr "メイカーセット用のメイカー合金のかけら2つ。"
 
 #: data/events.json:trinkets[brass_compass].name
 msgid "Brass Compass"
@@ -9445,8 +9293,8 @@ msgid "Place a decoration (H)"
 msgstr "飾りを置く（H）"
 
 #: data/goals.json:goals[late_heirloom_1].text
-msgid "Buy an Heirloom"
-msgstr "家宝を買う"
+msgid "Unlock an Heirloom"
+msgstr "家宝を解放する"
 
 #: data/goals.json:goals[late_garden_10].text
 msgid "Place 10 decorations"
@@ -9516,18 +9364,6 @@ msgstr "繁栄"
 msgid "Wildlife has moved in"
 msgstr "生き物が住みついた"
 
-#: data/hub.json:materials.metal.name
-msgid "Sheet Metal"
-msgstr "金属板"
-
-#: data/hub.json:materials.plastic.name
-msgid "Plastic Stock"
-msgstr "プラスチック在庫"
-
-#: data/hub.json:materials.glass.name data/junk.json:types[glass].name
-msgid "Glass"
-msgstr "ガラス"
-
 #: data/hub.json:levels[0].name
 msgid "Lean-to"
 msgstr "差しかけ小屋"
@@ -9583,6 +9419,10 @@ msgstr "金属くず"
 #: data/junk.json:types[plastic].name
 msgid "Plastic"
 msgstr "プラスチック"
+
+#: data/junk.json:types[glass].name
+msgid "Glass"
+msgstr "ガラス"
 
 #: data/junk.json:types[rubber].name
 msgid "Rubber"
@@ -10927,8 +10767,8 @@ msgid "A hydraulic baling press dropped at the cleaning frontier. Cleaner robots
 msgstr "清掃の最前線に設置する油圧ベールプレス。清掃ロボはその場でベールにせず、ここにホッパーの中身を空ける。運搬係のために密度の高いベールを作る。"
 
 #: data/stations.json:recycler.desc
-msgid "Shredder drums and a little smelter. Bales go in and never come back: out come bolts and clean building stock. Every bale burnt clean helps the sky."
-msgstr "粉砕ドラムと小さな溶解炉。ベールは入ったきり戻ってこない：出てくるのはボルトときれいな建材。きれいに燃やしたベール一つひとつが空を助ける。"
+msgid "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky."
+msgstr "シュレッダードラムと小さな溶鉱炉。ベールは入ったら二度と戻らない。出てくるのはパーツときれいな建材。きれいに燃やしたベールは空のためになる。"
 
 #: data/upgrades.json:upgrades[compartment_size].name
 msgid "Compartment Size"
@@ -11023,8 +10863,8 @@ msgid "Recycler Yield"
 msgstr "リサイクラー収率"
 
 #: data/upgrades.json:upgrades[recycler_yield].desc
-msgid "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
-msgstr "鋭い粉砕刃と高温の炉。ベール1個あたりのボルトと建材が増える。"
+msgid "Sharper shredder teeth and a hotter smelter. More parts per bale."
+msgstr "よく切れるシュレッダーの刃と、より熱い溶鉱炉。ベール1つあたりのパーツが増える。"
 
 #: data/upgrades.json:upgrades[laser_reach].name
 msgid "Laser Reach"
@@ -12391,8 +12231,8 @@ msgid "The Cradle's seed vault has a lot more in it than one planet's worth. The
 msgstr "Cradle号の種子庫には、ひとつの星のぶんよりずっとたくさんの種がある。外にはほかの世界があるんだよ、Lumi。荒れ果てて、待っている世界が。"
 
 #: data/wren_lines.json:cradle_mode
-msgid "Heirlooms, Starseeds, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."
-msgstr "家宝に、スターシードに、世界がいっぱいの地図。Verdance は緑のまま。わたしたちは学んだことを新しい場所へ持っていくだけ。"
+msgid "Heirlooms, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."
+msgstr "家宝、世界の地図まるごと。Verdance は緑のまま。学んだことを別の場所へ持っていくだけ。"
 
 #: data/wren_lines.json:new_world
 msgid "...new ground... new junk..."
@@ -12537,6 +12377,341 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
+#~ msgstr "Cradleモード：アークの種子庫には、ほかの世界のための種がある。ポーズ > アークブリッジで確認して、スターシードで家宝を買ったり、新しい世界に種をまいたりしよう。ガーデンモード（H）も使えるよ。"
+
+#~ msgid "%d Starseeds"
+#~ msgstr "スターシード %d"
+
+#~ msgid "Hint: Curio Capsules, in the workbench token shop."
+#~ msgstr "ヒント：作業台のトークンショップにある珍品カプセル。"
+
+#~ msgid "Data earned"
+#~ msgstr "獲得データ"
+
+#~ msgid "Not enough materials."
+#~ msgstr "素材が足りません。"
+
+#~ msgid "+%d bolts"
+#~ msgstr "+%d ボルト"
+
+#~ msgid "Not enough materials"
+#~ msgstr "素材が足りません"
+
+#~ msgid ""
+#~ "COMPOST PRESS  Lv %d\n"
+#~ "compost %s  →  seeds"
+#~ msgstr ""
+#~ "コンポストプレス  Lv %d\n"
+#~ "コンポスト %s  →  種"
+
+#~ msgid "Not enough bolts (scrap spare parts at Haggle's)"
+#~ msgstr "ボルトが足りない（Haggle の店で予備パーツを解体しよう）"
+
+#~ msgid "<< INTERCEPT // LEDGER PROMOTIONS // %d OF %d >>"
+#~ msgstr "<< 傍受 // LEDGER キャンペーン // %d / %d >>"
+
+#~ msgid "Contracts"
+#~ msgstr "依頼"
+
+#~ msgid "Contract complete: %s. Claim %d tokens at the workbench."
+#~ msgstr "依頼達成：%s。作業台でトークン %d 枚を受け取ろう。"
+
+#~ msgid "A contract ran out of time. No harm done; a new one will be posted soon."
+#~ msgstr "依頼の期限が切れた。問題なし、すぐに新しい依頼が出る。"
+
+#~ msgid "Contract paid: +%d tokens, +%s cubes."
+#~ msgstr "依頼の報酬：+%d トークン、+%s キューブ。"
+
+#~ msgid "%s fitted to the whole fleet."
+#~ msgstr "%s をフリート全体に取り付けた。"
+
+#~ msgid "Printed: %s."
+#~ msgstr "プリント完了：%s。"
+
+#~ msgid "+%d seeds."
+#~ msgstr "+%d 種。"
+
+#~ msgid "+%d Maker Fragments (%d)."
+#~ msgstr "+%d メイカーのかけら（%d）。"
+
+#~ msgid "Printed: %s. Fit it in the Builder tab."
+#~ msgstr "プリント完了：%s。ビルダータブで取り付けよう。"
+
+#~ msgid "Unlocks with planting"
+#~ msgstr "植えると解放"
+
+#~ msgid "Collection complete"
+#~ msgstr "コレクション完成"
+
+#~ msgid "Needs %d tokens"
+#~ msgstr "トークン %d 枚が必要"
+
+#~ msgid "Needs %d Starseeds"
+#~ msgstr "スターシードが %d 必要"
+
+#~ msgid "+%d data"
+#~ msgstr "+%d データ"
+
+#~ msgid "+%d token"
+#~ msgstr[0] "+%d トークン"
+
+#~ msgid "+%d trinket"
+#~ msgstr[0] "+%d 小物"
+
+#~ msgid "+%d bolt"
+#~ msgstr[0] "+%d ボルト"
+
+#~ msgid "%s trinket"
+#~ msgstr[0] "%s 小物"
+
+#~ msgid "%s token"
+#~ msgstr[0] "%s トークン"
+
+#~ msgid "%s bolt"
+#~ msgstr[0] "%s ボルト"
+
+#~ msgid "%s data"
+#~ msgstr "%s データ"
+
+#~ msgid "Not enough data"
+#~ msgstr "データが足りない"
+
+#~ msgid "data gained"
+#~ msgstr "データ獲得量"
+
+#~ msgid "Field data logged. Spend Data on Research at the workbench (Research tab)."
+#~ msgstr "フィールドデータを記録。作業台（研究タブ）でデータを研究に使おう。"
+
+#~ msgid "Needs %d Maker Fragments (%d)"
+#~ msgstr "メイカーのかけらが %d 個必要（%d）"
+
+#~ msgid "Needs %d bolts"
+#~ msgstr "ボルトが %d 個必要"
+
+#~ msgid "Haggle's stall · %s cubes + %d bolts"
+#~ msgstr "Haggle の屋台 · %s キューブ + %d ボルト"
+
+#~ msgid "Token shop · ◆ %d"
+#~ msgstr "トークンショップ · ◆ %d"
+
+#~ msgid "%d Maker Fragments"
+#~ msgstr "メイカーのかけら %d 個"
+
+#~ msgid "%d bolts"
+#~ msgstr "ボルト %d 個"
+
+#~ msgid "Contract token shop"
+#~ msgstr "依頼トークンショップ"
+
+#~ msgid "A Maker Fragment was tucked inside it. (%d)"
+#~ msgstr "中にメイカーのかけらが入っていた。（%d）"
+
+#~ msgid "%s spotted a Maker Fragment glinting in the junk. (%d)"
+#~ msgstr "%s がガラクタの中で光るメイカーのかけらを見つけた。（%d）"
+
+#~ msgid "%d Data"
+#~ msgstr "データ %d"
+
+#~ msgid "Parts bin %d   ·   Maker Fragments %d   ·   Bolts %s"
+#~ msgstr "パーツ箱 %d   ·   メイカーのかけら %d   ·   ボルト %s"
+
+#~ msgid "Hint: complete %d contracts at the workbench."
+#~ msgstr "ヒント：作業台で依頼を %d 件達成しよう。"
+
+#~ msgid "%s cubes, %s bolts, %s Control Core. %s"
+#~ msgstr "%s キューブ、%s ボルト、%sコントロールコア。%s"
+
+#~ msgid "CONTRACTS"
+#~ msgstr "依頼"
+
+#~ msgid "Optional jobs with a timer. Finish in time for tokens; nothing is lost if one runs out."
+#~ msgstr "制限時間つきの任意の仕事。時間内に終えるとトークンがもらえる。期限が切れても失うものはない。"
+
+#~ msgid "TOKEN SHOP"
+#~ msgstr "トークンショップ"
+
+#~ msgid "◆  %d tokens"
+#~ msgstr "◆  %d トークン"
+
+#~ msgid "A new contract is being posted."
+#~ msgstr "新しい依頼を掲示中。"
+
+#~ msgid "Reward  ◆ %d tokens  +  cubes"
+#~ msgstr "報酬  ◆ %d トークン  +  キューブ"
+
+#~ msgid "Claim  ◆ %d"
+#~ msgstr "受け取る  ◆ %d"
+
+#~ msgid "Finished. Claim your tokens!"
+#~ msgstr "完了！トークンを受け取ろう！"
+
+#~ msgid "Owned  ·  press to equip"
+#~ msgstr "所持  ·  押して装備"
+
+#~ msgid "SHEET METAL"
+#~ msgstr "金属板"
+
+#~ msgid "PLASTIC"
+#~ msgstr "プラスチック"
+
+#~ msgid "GLASS"
+#~ msgstr "ガラス"
+
+#~ msgid "DATA"
+#~ msgstr "データ"
+
+#~ msgid "TOKENS"
+#~ msgstr "トークン"
+
+#~ msgid "COMPOST"
+#~ msgstr "コンポスト"
+
+#~ msgid "BOLTS"
+#~ msgstr "ボルト"
+
+#~ msgid "CONTRACT READY  ·  claim it at the workbench"
+#~ msgstr "依頼達成  ·  作業台で受け取ろう"
+
+#~ msgid "%d CONTRACTS READY  ·  claim them at the workbench"
+#~ msgstr "依頼 %d 件達成  ·  作業台で受け取ろう"
+
+#~ msgid "cubes"
+#~ msgstr "キューブ"
+
+#~ msgid "sheet metal"
+#~ msgstr "金属板"
+
+#~ msgid "plastic stock"
+#~ msgstr "プラスチック在庫"
+
+#~ msgid "glass"
+#~ msgstr "ガラス"
+
+#~ msgid "bolts"
+#~ msgstr "ボルト"
+
+#~ msgid "Sheet metal %s    Plastic stock %s    Glass %s"
+#~ msgstr "金属板 %s    プラスチック %s    ガラス %s"
+
+#~ msgid "%s data  ·  %s"
+#~ msgstr "%s データ  ·  %s"
+
+#~ msgid "FIELD DATA"
+#~ msgstr "フィールドデータ"
+
+#~ msgid "Clean hexes, grow blooms, read shards and let robots work."
+#~ msgstr "ヘックスを片づけ、花を咲かせ、破片を読み、ロボットに働いてもらおう。"
+
+#~ msgid "%s cancelled. Data refunded."
+#~ msgstr "%s をキャンセル。データを返却しました。"
+
+#~ msgid "Needs %s cubes, %s bolts and a %s Control Core.  %s"
+#~ msgstr "%s キューブ、%s ボルト、%sコントロールコアが必要。  %s"
+
+#~ msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Bolts %s"
+#~ msgstr "リサイクルしたベール %d   ·   処分したガラクタ %s kg   ·   ボルト %s"
+
+#~ msgid "Bolts  %s      Parts in storage  %d"
+#~ msgstr "ボルト  %s      保管中のパーツ  %d"
+
+#~ msgid "Scrap %d spare Rusty parts  ->  +%d bolts"
+#~ msgstr "サビた予備パーツ %d 個を解体  ->  +%d ボルト"
+
+#~ msgid ""
+#~ "%s  (own %d)\n"
+#~ "%s cubes + %d bolts"
+#~ msgstr ""
+#~ "%s（所持 %d）\n"
+#~ "%s キューブ + %d ボルト"
+
+#~ msgid "Collect 500 field data."
+#~ msgstr "フィールドデータを500集める。"
+
+#~ msgid "Buy an Heirloom."
+#~ msgstr "家宝を買う。"
+
+#~ msgid "Starseed Saver"
+#~ msgstr "スターシード貯金"
+
+#~ msgid "Earn 100 Starseeds across your worlds."
+#~ msgstr "すべての世界で合計100スターシードを手に入れる。"
+
+#~ msgid "Each new world starts with 60 research Data per level."
+#~ msgstr "新しい世界ではレベルごとに60の研究データを持って始まる。"
+
+#~ msgid "Handle %d world events"
+#~ msgstr "ワールドイベントを %d 回こなす"
+
+#~ msgid "Handle a world event"
+#~ msgstr "ワールドイベントをこなす"
+
+#~ msgid "Vintage Blueprint Part"
+#~ msgstr "ヴィンテージ設計図パーツ"
+
+#~ msgid "A random Vintage robot part, freshly printed."
+#~ msgstr "ランダムなヴィンテージのロボットパーツ。プリントしたて。"
+
+#~ msgid "Legendary Blueprint Part"
+#~ msgstr "レジェンダリー設計図パーツ"
+
+#~ msgid "A Maker-Made Legendary part. The good stuff."
+#~ msgstr "メイカー製のレジェンダリーパーツ。いいやつ。"
+
+#~ msgid "Seed Crate"
+#~ msgstr "種の木箱"
+
+#~ msgid "25 seeds in a crate that smells of summer."
+#~ msgstr "夏の香りがする木箱に入った種25粒。"
+
+#~ msgid "A sealed capsule with a collectible inside you haven't got yet."
+#~ msgstr "まだ持っていないコレクションアイテムが入った密封カプセル。"
+
+#~ msgid "Fine Sieve (Builder)"
+#~ msgstr "細かいふるい（ビルダー）"
+
+#~ msgid "Cleaner tool: cleaner cubes, slower scooping."
+#~ msgstr "清掃ツール：キューブがきれいに、すくうのは遅く。"
+
+#~ msgid "Jet Nozzle (Builder)"
+#~ msgstr "ジェットノズル（ビルダー）"
+
+#~ msgid "Waterer tool: quicker watering, narrower spray."
+#~ msgstr "水やりツール：水やりが速く、散水は狭く。"
+
+#~ msgid "Propeller Cap (Builder)"
+#~ msgstr "プロペラキャップ（ビルダー）"
+
+#~ msgid "A topper that spins when its robot hurries."
+#~ msgstr "ロボットが急ぐとくるくる回る頭飾り。"
+
+#~ msgid "A random robot builder part you don't have yet."
+#~ msgstr "まだ持っていないランダムなビルダーパーツ。"
+
+#~ msgid "Maker Fragments x2"
+#~ msgstr "メイカーのかけら x2"
+
+#~ msgid "Two shards of Maker alloy for the Maker set."
+#~ msgstr "メイカーセット用のメイカー合金のかけら2つ。"
+
+#~ msgid "Buy an Heirloom"
+#~ msgstr "家宝を買う"
+
+#~ msgid "Sheet Metal"
+#~ msgstr "金属板"
+
+#~ msgid "Plastic Stock"
+#~ msgstr "プラスチック在庫"
+
+#~ msgid "Shredder drums and a little smelter. Bales go in and never come back: out come bolts and clean building stock. Every bale burnt clean helps the sky."
+#~ msgstr "粉砕ドラムと小さな溶解炉。ベールは入ったきり戻ってこない：出てくるのはボルトときれいな建材。きれいに燃やしたベール一つひとつが空を助ける。"
+
+#~ msgid "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
+#~ msgstr "鋭い粉砕刃と高温の炉。ベール1個あたりのボルトと建材が増える。"
+
+#~ msgid "Heirlooms, Starseeds, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."
+#~ msgstr "家宝に、スターシードに、世界がいっぱいの地図。Verdance は緑のまま。わたしたちは学んだことを新しい場所へ持っていくだけ。"
 
 #~ msgid "Salvaged: %s %s"
 #~ msgstr "回収：%s %s"

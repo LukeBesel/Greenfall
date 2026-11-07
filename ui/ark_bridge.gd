@@ -104,7 +104,7 @@ func _rebuild(gain: int = 0) -> void:
 	tb.add_child(intro)
 	var seeds := VBoxContainer.new()
 	head.add_child(seeds)
-	_seeds_label = UITheme.label(tr("%d Starseeds") % int(CradleMode.starseeds()), 24, UITheme.GOLD)
+	_seeds_label = UITheme.label(tr("Restoration %d") % int(CradleMode.profile.get("starseeds_total", 0.0)), 24, UITheme.GOLD)  # [money] a score, not a currency
 	_seeds_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	seeds.add_child(_seeds_label)
 	_banked_label = UITheme.label(tr("+%d banked from %s") % [gain, CradleMode.world_name()] if gain > 0 else tr("Earn more from Seed Ark waves and restoration"), 12, UITheme.GREEN if gain > 0 else UITheme.MUTED)
@@ -258,10 +258,9 @@ func _new_world_row() -> Control:
 
 static func _kit_text(kit: Dictionary) -> String:
 	var bits: Array[String] = []
-	if float(kit["cubes"]) > 0.0:
-		bits.append(TranslationServer.translate("%s cubes") % Settings.fmt(BigNum.from_float(float(kit["cubes"]))))
-	if float(kit["data"]) > 0.0:
-		bits.append(TranslationServer.translate("%d Data") % int(kit["data"]))
+	var cubes: float = float(kit["cubes"]) + float(kit["data"]) * Research.note_cubes()  # [money] Data kit pays cubes
+	if cubes > 0.0:
+		bits.append(L10nFmt.amount("cubes", cubes))
 	if float(kit["seeds"]) > 0.0:
 		bits.append(TranslationServer.translate("%d seeds") % int(kit["seeds"]))
 	if not (kit["robots"] as Array).is_empty():
@@ -301,7 +300,8 @@ func _heirloom_row(h: Dictionary) -> Control:
 		b.text = tr("Full")
 		b.disabled = true
 	else:
-		b.text = tr("%d Starseeds") % CradleMode.heirloom_cost(h, lv)
+		b.text = tr("Milestone")  # [money] unlocks along the Ark milestone track, nothing to spend
+		b.tooltip_text = CradleMode.buy_block_reason(id)
 		b.disabled = CradleMode.buy_block_reason(id) != ""
 		b.pressed.connect(func() -> void:
 			if CradleMode.buy(id):

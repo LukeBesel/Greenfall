@@ -834,12 +834,14 @@ func _shopping_list() -> Dictionary:
 
 func _shop(want: Dictionary) -> void:
 	var fleet: Fleet = world.fleet
-	# 1) Research (Data only; never competes with cubes).
+	# 1) Research ([money] cubes from the research fund, see _research_ok).
 	var guard: int = 0
 	var rid: String = _research_pick()
 	while rid != "" and guard < 4:
+		var rc: float = Research.cost(rid).to_float()
 		if not Research.start(rid):
 			break
+		GameState.inc_stat("bot_research_spent", rc)
 		_progress()
 		_event("research_start", {"id": rid})
 		rid = _research_pick()
@@ -1163,6 +1165,21 @@ func _swap_spares(robot: String) -> void:
 			_event("part_swap", {"type": str(r["part_id"])})
 
 
+## [money] Research costs cubes now. The bot treats the field-note cubes (the old Data income)
+## as its research fund, like a player who spends the research share on research (so research and
+## the base levels pace as they did with Data); it also starts research when it is rich.
+func _research_ok(id: String) -> bool:
+	var c: float = Research.cost(id).to_float()
+	var fund: float = float(GameState.stats.get("notes_cubes", 0.0)) + float(GameState.stats.get("wildlife_cubes", 0.0)) - float(GameState.stats.get("bot_research_spent", 0.0))
+	return c <= fund or GameState.get_currency("cubes").to_float() > maxf(c * 4.0, _research_reserve())
+
+
+## Cubes the bot keeps for the next base level / robot before dipping into them for research.
+func _research_reserve() -> float:
+	var nxt: Dictionary = world.hub.level_def(world.hub.level + 1) if world.get("hub") != null else {}
+	return float(nxt.get("cost", {}).get("cubes", 0.0)) * 1.5 + 2000.0
+
+
 func _research_pick() -> String:
 	if not Research.active().is_empty() and Research.queue().size() >= Research.max_queue():
 		return ""
@@ -1170,7 +1187,7 @@ func _research_pick() -> String:
 	var prio: Array[String] = AutoplayCampaign.research_first(world)
 	prio.append_array(RESEARCH_PRIORITY)
 	for id: String in prio:
-		if Research.exists(id) and Research.can_start(id):
+		if Research.exists(id) and Research.can_start(id) and _research_ok(id):
 			return id
 		if id == RESEARCH_SAVE_FROM:
 			saving = true
@@ -1179,7 +1196,7 @@ func _research_pick() -> String:
 	var best: String = ""
 	var best_c: float = INF
 	for id: String in Research.ids():
-		if Research.can_start(id) and Research.cost(id).to_float() < best_c:
+		if Research.can_start(id) and _research_ok(id) and Research.cost(id).to_float() < best_c:
 			best_c = Research.cost(id).to_float()
 			best = id
 	return best
@@ -1338,17 +1355,14 @@ func _snapshot() -> void:
 			lv.append(hl.count_at_least(l))
 	var ngoals: int = world.goals.done_count() if world.get("goals") else 0
 	_log.append({"t": _now(), "pos": [snappedf(world.patch.global_position.x, 0.1), snappedf(world.patch.global_position.z, 0.1)], "escapes": _escapes, "remote_shops": _remote_shops, "cubes": snappedf(GameState.get_currency("cubes").to_float(), 1.0),
-		"rate": snappedf(GameState.income_rate(), 0.01), "earned": snappedf(BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float(), 1.0), "data": snappedf(GameState.get_currency("data").to_float(), 0.1),
+		"rate": snappedf(GameState.income_rate(), 0.01), "earned": snappedf(BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float(), 1.0), "parts_cur": snappedf(GameState.get_currency("parts").to_float(), 0.1),  # [money]
 		"seeds": snappedf(GameState.get_currency("seeds").to_float(), 0.1), "parts": GameState.parts.size(),
-		"metal": snappedf(GameState.get_currency("sheet_metal").to_float(), 0.1), "plastic": snappedf(GameState.get_currency("plastic_stock").to_float(), 0.1),
-		"glass": snappedf(GameState.get_currency("glass_cullet").to_float(), 0.1), "bolts": snappedf(GameState.get_currency("bolts").to_float(), 1.0),
 		"hexes": world.field.cleaned_count, "hex_levels": lv, "robots": types, "hub": int(world.hub.level),
 		"task": _task, "research": Research.active_id(), "upgrades": int(GameState.stats.get("upgrades_bought", 0)),
 		"bots": _robot_health(), "goals": ngoals, "stats": _stat_pick(["research_done", "plants_bloomed", "garden_stipend", "air_filtered", "robots_built", "robot_bales", "bales_recycled", "plants_planted"])})
-	print("[Autoplay] %5.1f min cubes=%d rate=%.2f/s data=%.0f seeds=%.0f parts=%d mats=%.0f/%.0f/%.0f hexes=%d lv=%s robots=%s hub=%d task=%s goals=%d research=%s pos=%s esc=%d" % [_now() / 60.0,
-		int(GameState.get_currency("cubes").to_float()), GameState.income_rate(), GameState.get_currency("data").to_float(),
-		GameState.get_currency("seeds").to_float(), GameState.parts.size(), GameState.get_currency("sheet_metal").to_float(),
-		GameState.get_currency("plastic_stock").to_float(), GameState.get_currency("glass_cullet").to_float(),
+	print("[Autoplay] %5.1f min cubes=%d rate=%.2f/s partscur=%.0f seeds=%.0f parts=%d hexes=%d lv=%s robots=%s hub=%d task=%s goals=%d research=%s pos=%s esc=%d" % [_now() / 60.0,  # [money]
+		int(GameState.get_currency("cubes").to_float()), GameState.income_rate(), GameState.get_currency("parts").to_float(),
+		GameState.get_currency("seeds").to_float(), GameState.parts.size(),
 		world.field.cleaned_count, str(lv), str(types), int(world.hub.level), _task, ngoals, Research.active_id(), str(world.patch.global_position.snappedf(0.1)), _escapes])
 
 

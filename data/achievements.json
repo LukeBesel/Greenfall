@@ -471,7 +471,7 @@
   {
    "id": "data_500",
    "name": "Data Hoarder",
-   "desc": "Collect 500 field data.",
+   "desc": "Log 500 field notes.",
    "icon": "data",
    "cond": {
     "type": "stat",
@@ -908,7 +908,7 @@
   {
    "id": "late_heirloom_1",
    "name": "Family Heirloom",
-   "desc": "Buy an Heirloom.",
+   "desc": "Unlock an Heirloom.",
    "icon": "star",
    "cond": {
     "type": "stat",
@@ -929,8 +929,8 @@
   },
   {
    "id": "late_starseeds_100",
-   "name": "Starseed Saver",
-   "desc": "Earn 100 Starseeds across your worlds.",
+   "name": "World Mender",
+   "desc": "Reach 100 restoration across your worlds.",
    "icon": "star",
    "cond": {
     "type": "stat",

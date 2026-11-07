@@ -1013,7 +1013,7 @@ func _setup_research_codex() -> void:
 	codex.closed.connect(_on_modal_closed)
 	pause_menu.codex_requested.connect(_open_codex)
 	if DevHooks.has("give-data"):
-		GameState.add_currency(Research.CURRENCY, BigNum.from_float(DevHooks.get_f("give-data", 500.0)))
+		GameState.add_currency("cubes", BigNum.from_float(DevHooks.get_f("give-data", 500.0) * Research.note_cubes()))  # [money] research costs cubes
 	if DevHooks.has("research"):
 		# --research=scoop_beam+wide_beam (researched) ; --research-start=bigger_hopper+conveyor
 		for id: String in DevHooks.get_s("research", "").split("+"):

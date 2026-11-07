@@ -160,3 +160,34 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
   "Ambience" bus that sends to SFX, so the SFX slider covers it; a slider at 0 mutes its bus.
   Track loudness is kept within about +-2 dB of the generative explore piece (tools/render_music.gd).
 - **No new save state**: planet code re-sends the theme on load; restoration comes from the planet.
+
+## Three currencies (wt/money, Nov 7)
+- **Exactly three currencies: Cubes, Parts, Seeds** (owner: "keep it extremely low like 3 or less").
+  One source of truth: `data/currencies.json` + `core/currencies.gd` (ids, names, icons, colours,
+  legacy table). GameState stores only these three.
+- **Legacy alias layer, not a hard break**: `add_currency / get_currency / spend / can_afford` accept
+  the retired ids and map them at a fixed rate (bolts x5 parts, sheet metal / plastic / glass x1
+  parts, Data x10 cubes, compost x0.25 seeds, tokens x5 parts, trinkets x150 cubes, Maker Fragments
+  x25 parts), warning once per id in debug builds, so code from parallel branches keeps working
+  through merges. `Currencies.fold()` does the same for cost/reward dictionaries.
+- **Save v2** folds old balances at the same rates; old compost goes into the compost press's hopper
+  (a machine fill level, not a currency) and Maker Fragments into Parts. Nothing earned is lost.
+- **Research costs cubes (x10 the old Data) plus real time**; the old Data sources ("field notes":
+  hexes cleaned, restored, shards, robot bales, blooms) pay those cubes instead, so research paces as
+  it did. Thriving wildlife notes are a small cube trickle (6/min per hex, capped at 300/min).
+- **Robot part items stay items** (the rarity-graded parts the recipes, tiers and the Builder use);
+  they are not a currency. In the UI they are "robot parts"; the currency is "Parts".
+- **Contracts and World Events are one Requests board.** Requests pay cubes or parts; the token shop
+  became a reward track (liveries, Builder parts, Curio Capsules, rare robot parts at 2..20 finished
+  requests; a Vintage part every 5 after). Handled world events count as finished requests.
+- **Trinkets are only Collection finds.** Decorations that cost trinkets now need Collection finds
+  (`needs_finds`); old trinket rewards pay 150 cubes each.
+- **Heirlooms are milestone unlocks** (systems/heirloom_track.gd): the banked restoration score (the
+  old Starseed total) passes the old prices in a fixed cheapest-first order. Kept self-contained
+  because the "home" helper is replacing Cradle Mode's main flow.
+- **Base 2 and 3 ask 150 / 350 parts** (were 25 metal + 15 plastic / 90 metal + 60 plastic + 30
+  glass): with one pooled currency the per-type gates vanished; those amounts arrive at about the
+  minute the metal and glass used to. Frontier research costs x25 cubes (x10 below): late cubes are
+  plentiful where Data used to be the gate.
+- **The Ledger is quieter**: one uplink line per act; coupons and quips are small notify-stack
+  entries, coupons every 12-20 min (was 4-7).

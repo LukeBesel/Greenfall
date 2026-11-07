@@ -25,7 +25,7 @@ func test_roundtrip_gamestate() -> void:
 func test_migrate_v0_float_currency() -> void:
 	var old: Dictionary = {"currencies": {"cubes": 1234.0}}
 	var m: Dictionary = SaveManager.migrate(old)
-	assert_eq(int(m["version"]), 1)
+	assert_eq(int(m["version"]), GameState.SAVE_VERSION)
 	assert_true(m["currencies"]["cubes"] is Array)
 	assert_almost_eq(BigNum.from_serialized(m["currencies"]["cubes"]).to_float(), 1234.0, 0.01)
 

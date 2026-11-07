@@ -67,7 +67,7 @@ func test_reward_schedule() -> void:
 	assert_eq(int(LumiLevel.reward_plan(se, 0.0, 0.0, false)["seeds"]), 0, "no seeds before the garden")
 	var r5: Dictionary = LumiLevel.reward_plan(5, 0.0, 0.0, false)
 	assert_eq(int(r5["parts"]), 1)
-	assert_gt(int(r5["tokens"]), 0)
+	assert_gt(int(r5["bonus_parts"]), 0, "[money] Parts every few levels (was tokens)")
 	assert_false(bool(r5["trinket"]))
 	assert_true(bool(LumiLevel.reward_plan(10, 0.0, 0.0, false)["trinket"]))
 	# Early income spikes are capped; lifetime earnings lift the cap late.
@@ -119,12 +119,18 @@ func test_currency_chip_appears_on_change() -> void:
 	var cc := CurrencyCluster.new()
 	add_child_autofree(cc)
 	cc._warm = 0.0
-	GameState.add_currency("data", BigNum.from_float(5))
+	GameState.add_currency("parts", BigNum.from_float(5))
 	assert_eq(cc.chip_count(), 1)
-	GameState.add_currency("data", BigNum.from_float(2))
+	GameState.add_currency("parts", BigNum.from_float(2))
 	assert_eq(cc.chip_count(), 1, "same currency updates its chip")
 	GameState.add_currency("cubes", BigNum.from_float(100))
 	assert_eq(cc.chip_count(), 1, "cubes have their own big readout, no chip")
+	GameState.add_currency("seeds", BigNum.from_float(3))
+	assert_eq(cc.chip_count(), 2, "[money] seeds get a chip too")
+	Currencies.warn_legacy = false
+	GameState.add_currency("bolts", BigNum.from_float(1))
+	Currencies.warn_legacy = true
+	assert_eq(cc.chip_count(), 2, "a legacy id lands on the Parts chip, no new chip")
 
 
 func test_goal_tracker_compact_and_expandable() -> void:

@@ -163,7 +163,7 @@ func test_garden_robots_wait_for_base_level_3() -> void:
 	var saved_d: Dictionary = GameState.districts.duplicate(true)
 	var saved_r: Variant = GameState.flags.get("research")
 	GameState.flags["research"] = {"done": ["salvage_logic", "soil_survey"], "queue": [], "active": {}}
-	GameState.currencies["data"] = BigNum.from_float(5000.0)
+	GameState.currencies["cubes"] = BigNum.from_float(50000.0)  # [money] research costs cubes
 	GameState.districts = {}
 	GameState.world = {"hub_level": 2}
 	assert_string_contains(Research.reason("seedling_blueprint"), "base level 3")

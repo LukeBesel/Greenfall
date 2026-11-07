@@ -31,7 +31,9 @@ func _snapshot(s: Node) -> Dictionary:
 	return {
 		"cubes": snappedf(GameState.get_currency("cubes").to_float(), 0.01),
 		"seeds": snappedf(GameState.get_currency("seeds").to_float(), 0.01),
-		"compost": snappedf(GameState.get_currency("compost").to_float(), 0.01),
+		"parts": snappedf(GameState.get_currency("parts").to_float(), 0.01),  # [money]
+		"press_hopper": snappedf(Composter.hopper(), 0.01),
+		"currency_ids": JSON.stringify(GameState.currencies.keys()),
 		"robots": types,
 		"orders": JSON.stringify(GameState.world.get("orders", {})),
 		"cleaned": s.field.cleaned_count,
@@ -51,7 +53,8 @@ func _snapshot(s: Node) -> Dictionary:
 		"tagged_cubes": _tagged_cubes(s),
 		"outposts": _outposts(s),
 		# [events] contracts board (timers excluded: they tick), tokens, collection, livery, shop.
-		"tokens": Contracts.tokens(),
+		"requests_done": Contracts.done_total(),  # [money] (was tokens)
+		"track_done": int(Contracts.state().get("track_done", 0)),
 		"contracts": JSON.stringify(Contracts.slots().map(func(c: Dictionary) -> String: return "%s:%s:%d:%d" % [c.get("state", ""), c.get("tpl", ""), int(c.get("n", 0)), int(c.get("base", 0))])),
 		"contracts_done": int(Contracts.state().get("done_total", 0)),
 		"trinkets": JSON.stringify(Collection.found_list()),
@@ -238,12 +241,11 @@ func _ready() -> void:
 		await get_tree().process_frame
 	# Build up some mid-game state.
 	GameState.add_currency("cubes", BigNum.from_float(5000))
-	GameState.add_currency("compost", BigNum.from_float(12))
+	Composter.add_hopper(12.0)  # [money] the press hopper (was the compost currency)
 	GameState.flags["seeds_unlocked"] = true
 	GameState.flags["rocket_tier"] = 3
 	GameState.add_currency("seeds", BigNum.from_float(20))
-	GameState.add_currency("sheet_metal", BigNum.from_float(200))
-	GameState.add_currency("plastic_stock", BigNum.from_float(200))
+	GameState.add_currency("parts", BigNum.from_float(400))  # [money] was sheet metal + plastic
 	# Clean three hexes by hand.
 	var cleaned: int = 0
 	for h: int in s1.field.hex_count():
@@ -297,12 +299,12 @@ func _ready() -> void:
 			bale.reparent(r, true)
 			r.carried.append(bale)
 	# [events] Tokens, an accepted contract, a finished one, collectibles and a livery.
-	GameState.add_currency(Contracts.CURRENCY, BigNum.from_float(17))
 	var cst: Dictionary = Contracts.state()
 	cst["slots"] = [Contracts.make_offer(Contracts.template("perfect_bales"), 1), Contracts.make_offer(Contracts.template("scoop"), 0), Contracts.wait_slot(500.0)]
 	Contracts.accept_slot(cst["slots"][0], 3.0)
 	cst["slots"][1]["state"] = "done"
 	cst["done_total"] = 4
+	cst["track_done"] = 4
 	Collection.grant("golden_bolt", true)
 	Collection.grant("photo_moss_deer", true)
 	Contracts.owned().append("livery_halo")
@@ -379,9 +381,51 @@ func _ready() -> void:
 		await _frontier_roundtrip(packed, kid, int(fhubs[kid]))
 	await _late_multi_world(packed)  # [late] Cradle Mode: a second world, the profile, travel both ways
 	_profiles_roundtrip()  # [worlds2] save profiles: migration into p1, profiles kept apart
+	await _old_save_migration(packed)  # [money] a v1 save with the old currencies loads into the three
 	SaveManager.delete_save()
 	print("[roundtrip] %s (%d failures)" % ["OK" if _fails == 0 else "FAILED", _fails])
 	get_tree().quit(1 if _fails > 0 else 0)
+
+
+# --- [money] Old save (v1, nine currencies) -> v2 (cubes, parts, seeds) -------------------
+
+func _old_save_migration(packed: PackedScene) -> void:
+	GameState.new_game()
+	var d: Dictionary = GameState.to_dict()
+	d["version"] = 1
+	var old: Dictionary = {"cubes": 2000.0, "seeds": 15.0, "bolts": 40.0, "sheet_metal": 120.0, "plastic_stock": 60.0,
+		"glass_cullet": 30.0, "data": 75.0, "compost": 9.0, "tokens": 11.0, "trinkets": 3.0}
+	var cur: Dictionary = {}
+	for k: String in old:
+		cur[k] = BigNum.from_float(float(old[k])).serialize()
+	d["currencies"] = cur
+	d["flags"]["builder"] = {"inv": {"treads": 1}, "fragments": 2}
+	SaveManager.write_dict(SaveManager.slot_path(), d)
+	Currencies.warn_legacy = false
+	var ok: bool = SaveManager.load_game()
+	Currencies.warn_legacy = true
+	_check("old_save_loads", true, ok)
+	_check("old_save_version", GameState.SAVE_VERSION, int(GameState.to_dict()["version"]))
+	_check("old_save_ids", JSON.stringify(["cubes", "parts", "seeds"]), JSON.stringify(_sorted_keys(GameState.currencies)))
+	_check("old_save_cubes", 2000.0 + 75.0 * 10.0 + 3.0 * 150.0, snappedf(GameState.get_currency("cubes").to_float(), 0.01))
+	_check("old_save_parts", 40.0 * 5.0 + 120.0 + 60.0 + 30.0 + 11.0 * 5.0 + 2.0 * 25.0, snappedf(GameState.get_currency("parts").to_float(), 0.01))
+	_check("old_save_seeds", 15.0, snappedf(GameState.get_currency("seeds").to_float(), 0.01))
+	_check("old_save_hopper", 9.0, snappedf(Composter.hopper(), 0.01))
+	_check("old_save_builder_inv", 1, RobotBuilder.count("treads"))
+	GameState.reload_in_memory = true
+	var s3: Node = packed.instantiate()
+	get_tree().root.add_child(s3)
+	for i: int in 10:
+		await get_tree().process_frame
+	_check("old_save_slice_runs", true, is_instance_valid(s3) and s3.is_inside_tree())
+	s3.queue_free()
+	await get_tree().process_frame
+
+
+func _sorted_keys(d: Dictionary) -> Array:
+	var k: Array = d.keys().map(func(x: Variant) -> String: return str(x))
+	k.sort()
+	return k
 
 
 # --- [late] Garden Mode and Cradle Mode ---------------------------------------------------
@@ -435,9 +479,8 @@ func _late_multi_world(packed: PackedScene) -> void:
 	SaveManager.save_game(false)  # Verdance as it is now (launch_new_world only saves with a live tree)
 	var verdance_cubes: float = GameState.get_currency("cubes").to_float()
 	var verdance_hub: int = GameState.current_hub
-	CradleMode.profile["starseeds"] = 200.0
-	for id: String in ["old_crew", "head_start", "archivist", "green_thumb"]:
-		CradleMode.buy(id)
+	for id: String in ["old_crew", "head_start", "archivist", "green_thumb"]:  # [money] milestone unlocks, set directly
+		(CradleMode.profile["heirlooms"] as Dictionary)[id] = 1
 	var w: Dictionary = CradleMode.launch_new_world(null, 8)
 	_check("late_new_world_slot", 8, SaveManager.slot)
 	var s3: Node = packed.instantiate()
@@ -473,12 +516,14 @@ func _late_multi_world(packed: PackedScene) -> void:
 	await get_tree().process_frame
 	# The profile on disk comes back as it was.
 	var prof: String = JSON.stringify(CradleMode.to_dict())
+	var hl_before: int = CradleMode.heirloom_total()  # [money] 4 set + the milestone track's unlocks on banking
 	CradleMode.profile = {}
 	CradleMode.load_profile()
 	_check("late_profile_roundtrip", str(JSON.parse_string(prof)), str(JSON.parse_string(JSON.stringify(CradleMode.to_dict()))))
 	_check("late_profile_worlds", 2, CradleMode.worlds().size())
 	_check("worlds2_profile_stamped", true, float(CradleMode.profile.get("saved_unix", 0.0)) > 1.0e9)  # [worlds2] Steam Cloud newest-wins
-	_check("late_profile_heirlooms", 4, CradleMode.heirloom_total())
+	_check("late_profile_heirlooms", hl_before, CradleMode.heirloom_total())
+	_check("late_profile_heirlooms_kept", true, CradleMode.heirloom_total() >= 4)
 	# Back to Verdance: its save (slot 7) loads as it was left.
 	_check("late_switch_home", true, CradleMode.switch_world(0))
 	_check("late_home_slot", 7, SaveManager.slot)

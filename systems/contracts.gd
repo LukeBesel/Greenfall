@@ -1,16 +1,17 @@
 class_name Contracts
 extends Node
-## Contracts board (data/events.json "contracts"): three optional, timed jobs offered at the
-## workbench ("Contracts" tab). Accept one and its timer starts; finish it in time and claim
-## tokens (plus a cube bonus scaled to progress). Tokens buy liveries, blueprint parts, seed
-## crates and Curio Capsules in the token shop. Nothing is lost on failure: the slot just cools
-## down and a new offer arrives. State lives in GameState.flags["contracts"]:
-##   {"slots": [slot, ...], "done_total": int}
-##   slot = {state: offer|active|done|wait, tpl, n, time_s, tokens, tier, offer_left, left, base, peak, wait}
+## [money] The Requests board (workbench "Requests" tab, data/events.json "contracts"): contracts
+## and world events on one board. Three optional, timed requests are offered; accept one and its
+## timer starts; finish it in time and claim Cubes or Parts (each template says which). A world
+## event in progress shows on the board too, and every claimed request or handled world event
+## counts toward the reward track (liveries, Builder parts, Curio Capsules, rare robot parts),
+## which replaced the token shop. Nothing is lost on failure: the slot just cools down and a new
+## offer arrives. State lives in GameState.flags["contracts"]:
+##   {"slots": [slot, ...], "done_total": int, "events_seen": float, "track_done": int}
+##   slot = {state: offer|active|done|wait, tpl, n, time_s, pay, parts, income_s, tier, offer_left, left, base, peak, wait}
 ## Timers count play time (they only tick while the game runs). The static helpers are pure on
 ## the state dictionary so the tests can drive them.
 
-const CURRENCY: String = "tokens"
 const PATH: String = "res://data/events.json"
 
 static var _cfg: Dictionary = {}
@@ -27,10 +28,15 @@ static func cfg() -> Dictionary:
 	return _cfg
 
 
+## Fleet liveries (data/events.json "liveries"; unlocked by the reward track).
 static func shop() -> Array:
 	if _shop.is_empty():
-		_shop = Economy.read_json(PATH).get("shop", [])
+		_shop = Economy.read_json(PATH).get("liveries", [])
 	return _shop
+
+
+static func track() -> Array:
+	return cfg().get("track", [])
 
 
 static func shop_item(id: String) -> Dictionary:
@@ -97,7 +103,9 @@ static func make_offer(tpl: Dictionary, tier: int) -> Dictionary:
 	return {
 		"state": "offer", "tpl": str(tpl["id"]), "tier": tier,
 		"n": int(_at(tpl.get("n", [1]), tier)), "time_s": float(_at(tpl.get("time_s", [600]), tier)),
-		"tokens": int(tpl.get("tokens", 3)) + tier,
+		"pay": str(tpl.get("pay", "cubes")),  # [money] cubes or parts
+		"parts": int(_at(tpl.get("parts", [40]), tier)),
+		"income_s": float(_at(tpl.get("income_s", [90]), tier)),
 		"offer_left": float(cfg().get("offer_life_s", 1200)),
 		"left": 0.0, "base": 0.0, "peak": 0.0, "wait": 0.0,
 	}
@@ -193,8 +201,40 @@ static func count_state(kind: String) -> int:
 	return n
 
 
-static func tokens() -> int:
-	return int(round(GameState.get_currency(CURRENCY).to_float()))
+## Requests finished so far (claimed requests + handled world events): the reward track's counter.
+static func done_total() -> int:
+	return int(state().get("done_total", 0))
+
+
+## "+120 parts" / "+1.4K cubes" for a slot (cubes scale with income, so the shown value is a guess).
+static func pay_text(slot: Dictionary) -> String:
+	if str(slot.get("pay", "cubes")) == "parts":
+		return L10nFmt.amount("parts", float(slot.get("parts", 0)), true)
+	return L10nFmt.amount("cubes", WorldEvents.progress_cubes(float(slot.get("income_s", 90.0))), true)
+
+
+## The next reward-track step not reached yet ({} after the last), for the board's header.
+static func next_track_step(done: int) -> Dictionary:
+	for t: Dictionary in track():
+		if int(t.get("n", 0)) > done:
+			return t
+	return {}
+
+
+## Display name of a track step.
+static func track_name(t: Dictionary) -> String:
+	match str(t.get("kind", "")):
+		"livery":
+			return TranslationServer.translate(str(shop_item(str(t.get("id", ""))).get("name", "")))
+		"builder":
+			return TranslationServer.translate("%s (Builder)") % TranslationServer.translate(str(RobotBuilder.part(str(t.get("id", ""))).get("name", "")))
+		"builder_crate":
+			return TranslationServer.translate("Builder Crate")
+		"capsule":
+			return TranslationServer.translate("Curio Capsule")
+		"part":
+			return TranslationServer.translate("%s robot part") % TranslationServer.translate(str(Economy.rarity(int(t.get("rarity", 3))).get("name", "")))
+	return "?"
 
 
 static func owned() -> Array:
@@ -234,17 +274,30 @@ func _process(delta: float) -> void:
 		return
 	var dt: float = _t
 	_t = 0.0
+	_count_events()
 	for e: Dictionary in step(state(), dt, live_value, new_offer):
 		var s: Dictionary = slots()[int(e["i"])]
 		match str(e["kind"]):
 			"done":
-				EventBus.toast.emit(tr("Contract complete: %s. Claim %d tokens at the workbench.") % [text_of(s), int(s.get("tokens", 0))], "story")
+				EventBus.toast.emit(tr("Request complete: %s. Claim it at the workbench.") % text_of(s), "info")
 				Audio.play("chime", 1.2, -4.0)
 				Audio.play("coin", 1.3, -8.0)
 				if world.get("wren") != null:
 					world.wren.say("contract_done", 0.6)
 			"failed":
-				EventBus.toast.emit(tr("A contract ran out of time. No harm done; a new one will be posted soon."), "info")
+				EventBus.toast.emit(tr("A request ran out of time. No harm done; a new one will be posted soon."), "info")
+
+
+## [money] Handled world events count as finished requests (the board shows them live).
+func _count_events() -> void:
+	var st: Dictionary = state()
+	var ev: float = float(GameState.stats.get("ev_events_done", 0.0))
+	if not st.has("events_seen"):
+		st["events_seen"] = ev
+	var n: int = int(ev - float(st["events_seen"]))
+	if n > 0:
+		st["events_seen"] = ev
+		count_done(n)
 
 
 ## The board is open in the workbench: keep timers running so the panel stays live.
@@ -292,85 +345,105 @@ func decline(i: int) -> void:
 	Audio.play("click", 0.9, -6.0)
 
 
-## Pays out a finished contract. Returns the tokens paid (0 if not claimable).
-func claim(i: int) -> int:
+## Pays out a finished request (Cubes or Parts). Returns the amount paid (0 if not claimable).
+func claim(i: int) -> float:
 	var arr: Array = slots()
 	if i < 0 or i >= arr.size() or str(arr[i].get("state", "")) != "done":
-		return 0
+		return 0.0
 	var s: Dictionary = arr[i]
-	var tok: int = int(s.get("tokens", 0))
-	GameState.add_currency(CURRENCY, BigNum.from_float(tok))
-	var cubes: float = WorldEvents.progress_cubes(60.0 + 20.0 * int(s.get("tier", 0)))
-	GameState.add_currency("cubes", BigNum.from_float(cubes))
-	var st: Dictionary = state()
-	st["done_total"] = int(st.get("done_total", 0)) + 1
+	var paid: float
+	var txt: String
+	if str(s.get("pay", "cubes")) == "parts":
+		paid = float(s.get("parts", 40))
+		GameState.add_currency("parts", BigNum.from_float(paid))
+		txt = L10nFmt.amount("parts", paid, true)
+	else:
+		paid = WorldEvents.progress_cubes(float(s.get("income_s", 60.0 + 20.0 * int(s.get("tier", 0)))))
+		GameState.add_currency("cubes", BigNum.from_float(paid))
+		txt = L10nFmt.amount("cubes", paid, true)
 	GameState.inc_stat("contracts_done")
 	var cd: Array = cfg().get("cooldown_s", [60, 120])
 	arr[i] = wait_slot(rng.randf_range(float(cd[0]), float(cd[1])))
-	Audio.play("fanfare", 1.1, -6.0)
 	Audio.play("coin", 1.0, -4.0)
-	EventBus.toast.emit(tr("Contract paid: +%d tokens, +%s cubes.") % [tok, Settings.fmt(BigNum.from_float(cubes))], "story")
+	EventBus.toast.emit(tr("Request done: %s.") % txt, "info")
+	count_done(1)
+	return paid
+
+
+## One more finished request (a claimed contract or a handled world event): Collection milestones
+## and the reward track.
+func count_done(n: int) -> void:
+	var st: Dictionary = state()
+	st["done_total"] = int(st.get("done_total", 0)) + n
 	for t: Dictionary in Collection.defs():
 		if str(t.get("source", "")) == "contracts" and int(st["done_total"]) >= int(t.get("milestone", 999)):
 			Collection.grant(str(t["id"]))
-	return tok
+	grant_track(st)
 
 
-## Token shop. Returns "" on success or a short reason.
+## Grants every reward-track step reached and not granted yet (and the repeat Vintage part).
+func grant_track(st: Dictionary) -> void:
+	var done: int = int(st.get("done_total", 0))
+	var granted: int = int(st.get("track_done", 0))
+	var last_n: int = 0
+	for t: Dictionary in track():
+		var n: int = int(t.get("n", 0))
+		last_n = maxi(last_n, n)
+		if n > granted and n <= done:
+			_grant_step(t)
+	var every: int = maxi(int(cfg().get("repeat_every", 5)), 1)
+	@warning_ignore("integer_division")
+	var reps_before: int = maxi(0, granted - last_n) / every
+	@warning_ignore("integer_division")
+	var reps_now: int = maxi(0, done - last_n) / every
+	for k: int in reps_now - reps_before:
+		_grant_step({"kind": "part", "rarity": 3})
+	st["track_done"] = maxi(granted, done)
+
+
+func _grant_step(t: Dictionary) -> void:
+	match str(t.get("kind", "")):
+		"livery":
+			var id: String = str(t.get("id", ""))
+			if not (id in owned()):
+				owned().append(id)
+			EventBus.toast.emit(tr("Requests reward: %s. Equip it on the Requests tab.") % track_name(t), "story")
+		"builder":
+			RobotBuilder.add_part(str(t.get("id", "")))
+			EventBus.toast.emit(tr("Requests reward: %s. Fit it in the Builder tab.") % track_name(t), "story")
+		"builder_crate":
+			var pid: String = RobotBuilder.roll_unowned(rng)
+			RobotBuilder.add_part(pid)
+			EventBus.toast.emit(tr("Requests reward: %s.") % tr(str(RobotBuilder.part(pid).get("name", pid))), "story")
+		"capsule":
+			var cid: String = Collection.roll("capsule", rng.randf())
+			if cid != "":
+				Collection.grant(cid)
+		"part":
+			var ty: int = rng.randi() % maxi(Economy.parts.get("types", [1]).size(), 1)
+			var r: int = int(t.get("rarity", 3))
+			GameState.parts.append({"type": ty, "rarity": r})
+			EventBus.part_found.emit(ty, r)
+			EventBus.toast.emit(tr("Requests reward: %s.") % L10nFmt.part_name(r, ty), "story")
+	Audio.play("fanfare", 1.1, -8.0)
+
+
+## Equips (or takes off) an unlocked livery. Returns "" on success or a short reason.
 func buy(item_id: String) -> String:
 	var it: Dictionary = shop_item(item_id)
 	if it.is_empty():
 		return tr("Unknown item")
-	var kind: String = str(it.get("kind", ""))
-	var have: Array = owned()
-	if kind == "livery" and item_id in have:
-		GameState.flags["livery"] = "" if str(GameState.flags.get("livery", "")) == item_id else item_id
-		Audio.play("click", 1.2, -6.0)
-		return ""
-	var why: String = block_reason(item_id)
-	if why != "":
-		return why
-	GameState.spend(CURRENCY, BigNum.from_float(float(it.get("cost", 0))))
-	match kind:
-		"livery":
-			have.append(item_id)
-			GameState.flags["livery"] = item_id
-			EventBus.toast.emit(tr("%s fitted to the whole fleet.") % tr(str(it["name"])), "story")
-		"part":
-			var t: int = rng.randi() % maxi(Economy.parts.get("types", [1]).size(), 1)
-			var r: int = int(it.get("rarity", 3))
-			GameState.parts.append({"type": t, "rarity": r})
-			EventBus.part_found.emit(t, r)
-			EventBus.toast.emit(tr("Printed: %s.") % L10nFmt.part_name(r, t), "story")
-		"seeds":
-			GameState.add_currency("seeds", BigNum.from_float(float(it.get("amount", 20))))
-			EventBus.toast.emit(tr("+%d seeds.") % int(it.get("amount", 20)), "hint")
-		"capsule":
-			Collection.grant(Collection.roll("capsule", rng.randf()))
-		"builder":  # [drones] robot builder parts and Maker Fragments
-			if it.has("fragments"):
-				RobotBuilder.add_fragments(int(it["fragments"]))
-				EventBus.toast.emit(tr("+%d Maker Fragments (%d).") % [int(it["fragments"]), RobotBuilder.fragments()], "story")
-			else:
-				var pid: String = str(it.get("part", ""))
-				if pid == "":
-					pid = RobotBuilder.roll_unowned(rng)
-				RobotBuilder.add_part(pid)
-				EventBus.toast.emit(tr("Printed: %s. Fit it in the Builder tab.") % tr(str(RobotBuilder.part(pid).get("name", pid))), "story")
-	GameState.inc_stat("tokens_spent", float(it.get("cost", 0)))
-	Audio.play("buy", 1.0, -2.0)
+	if not (item_id in owned()):
+		return block_reason(item_id)
+	GameState.flags["livery"] = "" if str(GameState.flags.get("livery", "")) == item_id else item_id
+	Audio.play("click", 1.2, -6.0)
 	return ""
 
 
 static func block_reason(item_id: String) -> String:
-	var it: Dictionary = shop_item(item_id)
-	var kind: String = str(it.get("kind", ""))
-	if kind == "seeds" and not GameState.flags.get("seeds_unlocked", false):
-		return TranslationServer.translate("Unlocks with planting")
-	if kind == "capsule" and Collection.unfound("capsule").is_empty():
-		return TranslationServer.translate("Collection complete")
-	if kind == "livery" and item_id in owned():
+	if item_id in owned():
 		return ""
-	if tokens() < int(it.get("cost", 0)):
-		return TranslationServer.translate("Needs %d tokens") % int(it.get("cost", 0))
-	return ""
+	for t: Dictionary in track():
+		if str(t.get("id", "")) == item_id:
+			return TranslationServer.translate("Unlocks after %d requests") % int(t.get("n", 0))
+	return TranslationServer.translate("Locked")

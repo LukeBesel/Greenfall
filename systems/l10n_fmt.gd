@@ -10,55 +10,46 @@ static func _t(msg: String, ctx: String = "") -> String:
 	return TranslationServer.translate(msg, ctx)
 
 
-## "+N <currency>" for a reward dictionary key (cubes, seeds, trinkets, tokens, bolts, data, parts).
+## "+N <currency>" for a reward dictionary key. [money] Only cubes, parts and seeds exist; a legacy
+## id (bolts, data, ...) is shown as the currency it pays now, converted at its rate.
 static func reward(currency: String, n: int) -> String:
-	match currency:
+	var c: String = Currencies.canonical(currency)
+	if c != currency:
+		n = int(round(n * Currencies.rate(currency)))
+	match c:
 		"cubes":
 			return TranslationServer.translate_plural("+%d cube", "+%d cubes", n) % n
 		"seeds":
 			return TranslationServer.translate_plural("+%d seed", "+%d seeds", n) % n
-		"trinkets":
-			return TranslationServer.translate_plural("+%d trinket", "+%d trinkets", n) % n
-		"tokens":
-			return TranslationServer.translate_plural("+%d token", "+%d tokens", n) % n
-		"bolts":
-			return TranslationServer.translate_plural("+%d bolt", "+%d bolts", n) % n
 		"parts":
 			return TranslationServer.translate_plural("+%d part", "+%d parts", n) % n
-		"data":
-			return TranslationServer.translate("+%d data") % n
 	return "+%d %s" % [n, currency]
 
 
 ## Currencies amount() has its own counted pattern for.
-const COUNTED: Array[String] = ["cubes", "seeds", "trinkets", "tokens", "bolts", "parts", "data"]
+const COUNTED: Array[String] = ["cubes", "seeds", "parts"]  # [money]
 
 
 static func has_count(currency: String) -> bool:
-	return currency in COUNTED
+	return Currencies.canonical(currency) in COUNTED
 
 
 ## "<amount> <currency>" for a big formatted amount ("1.2K cubes", "1 seed"); `plus` prefixes "+".
-## Other currency ids (hub materials) fall back to "<amount> <translated id>".
+## [money] Legacy ids are converted to the currency they pay now.
 static func amount(currency: String, value: float, plus: bool = false) -> String:
+	var c: String = Currencies.canonical(currency)
+	if c != currency:
+		value *= Currencies.rate(currency)
 	var txt: String = Settings.fmt(BigNum.from_float(value))
 	var n: int = int(clampf(round(value), 0.0, 1.0e9))
 	var out: String
-	match currency:
+	match c:
 		"cubes":
 			out = TranslationServer.translate_plural("%s cube", "%s cubes", n) % txt
 		"seeds":
 			out = TranslationServer.translate_plural("%s seed", "%s seeds", n) % txt
-		"trinkets":
-			out = TranslationServer.translate_plural("%s trinket", "%s trinkets", n) % txt
-		"tokens":
-			out = TranslationServer.translate_plural("%s token", "%s tokens", n) % txt
-		"bolts":
-			out = TranslationServer.translate_plural("%s bolt", "%s bolts", n) % txt
 		"parts":
 			out = TranslationServer.translate_plural("%s part", "%s parts", n) % txt
-		"data":
-			out = TranslationServer.translate("%s data") % txt
 		_:
 			out = "%s %s" % [txt, _t(currency.replace("_", " "))]
 	return ("+" + out) if plus else out
@@ -67,8 +58,10 @@ static func amount(currency: String, value: float, plus: bool = false) -> String
 ## Every entry of a reward dictionary ({cubes: 25, trinkets: 1}) as "+25 cubes  +1 trinket".
 static func rewards(rew: Dictionary, sep: String = "  ") -> String:
 	var bits: Array[String] = []
-	for k: String in rew:
-		bits.append(reward(k, int(rew[k])))
+	var f: Dictionary = Currencies.fold(rew)  # [money] legacy keys folded into the three
+	for k: String in Currencies.IDS:
+		if float(f.get(k, 0.0)) > 0.0:
+			bits.append(reward(k, int(round(float(f[k])))))
 	return sep.join(bits)
 
 

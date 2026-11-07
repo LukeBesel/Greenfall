@@ -133,7 +133,7 @@ func test_dropped_state_survives_save_and_load() -> void:
 
 func test_jammer_needs_drones_scales_and_persists_per_district() -> void:
 	var lg := _new_ledger()
-	for k: String in ["cubes", "sheet_metal", "glass_cullet"]:
+	for k: String in Currencies.IDS:  # [money]
 		GameState.add_currency(k, BigNum.from_float(1.0e7))
 	assert_false(lg.jammer_visible())
 	assert_false(lg.build_jammer(), "nothing to jam before act 2")
@@ -257,8 +257,7 @@ func test_finding_an_egg_rewards_once() -> void:
 	assert_true(EasterEggs.is_found("vending"))
 	assert_eq(watcher, ["vending"])
 	assert_almost_eq(float(GameState.stats.get("eggs_found", 0.0)) - before, 1.0, 0.001)
-	assert_almost_eq(GameState.get_currency("cubes").to_float(), 150.0, 0.01)
-	assert_almost_eq(GameState.get_currency("trinkets").to_float(), 1.0, 0.01)
+	assert_almost_eq(GameState.get_currency("cubes").to_float(), 300.0, 0.01, "[money] 150 cubes + the old trinket (150 cubes)")
 
 
 func test_interactables_pick_nearest_enabled() -> void:

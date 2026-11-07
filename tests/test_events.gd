@@ -5,9 +5,12 @@ extends GutTest
 var _flags: Dictionary
 var _stats: Dictionary
 var _cur: Dictionary
+var _parts: Array
 
 
 func before_each() -> void:
+	_parts = GameState.parts.duplicate(true)  # [money] the reward track prints robot parts
+	GameState.parts = []
 	_flags = GameState.flags.duplicate(true)
 	_stats = GameState.stats.duplicate(true)
 	_cur = GameState.currencies.duplicate()
@@ -20,6 +23,7 @@ func after_each() -> void:
 	GameState.flags = _flags
 	GameState.stats = _stats
 	GameState.currencies = _cur
+	GameState.parts = _parts
 
 
 # --- Director scheduling ------------------------------------------------------------------------
@@ -146,7 +150,8 @@ func test_offer_uses_tier_numbers() -> void:
 	assert_eq(o0["state"], "offer")
 	assert_eq(int(o0["n"]), int(tpl["n"][0]))
 	assert_eq(int(o3["n"]), int(tpl["n"][3]))
-	assert_true(int(o3["tokens"]) > int(o0["tokens"]), "later tiers pay a bit more")
+	assert_eq(str(o0["pay"]), "parts", "[money] clean-hex requests pay parts")
+	assert_true(int(o3["parts"]) > int(o0["parts"]), "later tiers pay a bit more")
 	assert_eq(Contracts.tier_for(0), 0)
 	assert_eq(Contracts.tier_for(500), 3)
 
@@ -205,13 +210,12 @@ func test_peak_contract_tracks_streak() -> void:
 	assert_eq(float(s["peak"]), 2.0, "peak never goes down")
 
 
-func test_contracts_and_tokens_persist() -> void:
+func test_requests_persist() -> void:
 	var st: Dictionary = Contracts.state()
 	st["slots"] = [Contracts.make_offer(Contracts.template("perfect_bales"), 1), Contracts.wait_slot(33.0)]
 	Contracts.accept_slot(st["slots"][0], 4.0)
 	st["slots"][0]["left"] = 123.5
 	st["done_total"] = 7
-	GameState.add_currency(Contracts.CURRENCY, BigNum.from_float(19))
 	Contracts.owned().append("livery_neon")
 	GameState.flags["livery"] = "livery_neon"
 	Collection.grant("golden_bolt", true)
@@ -224,38 +228,61 @@ func test_contracts_and_tokens_persist() -> void:
 	assert_eq(str(st2["slots"][0]["tpl"]), "perfect_bales")
 	assert_almost_eq(float(st2["slots"][1]["wait"]), 33.0, 0.01)
 	assert_eq(int(st2["done_total"]), 7)
-	assert_eq(Contracts.tokens(), 19)
+	assert_eq(Contracts.done_total(), 7)
 	assert_eq(Liveries.equipped(), "livery_neon")
 	assert_true("livery_neon" in Contracts.owned())
 	assert_true(Collection.has("golden_bolt"))
 
 
-func test_claim_pays_tokens_and_milestone_trinket() -> void:
+func test_claim_pays_cubes_or_parts_and_milestone_trinket() -> void:
 	var c := Contracts.new()
 	var st: Dictionary = Contracts.state()
 	var s: Dictionary = Contracts.make_offer(Contracts.template("scoop"), 0)
 	s["state"] = "done"
-	st["slots"] = [s, Contracts.make_offer(Contracts.template("scoop"), 0)]
-	assert_eq(c.claim(1), 0, "an offer can't be claimed")
-	var tok: int = c.claim(0)
-	assert_eq(tok, int(s["tokens"]))
-	assert_eq(Contracts.tokens(), tok)
+	var p: Dictionary = Contracts.make_offer(Contracts.template("dig_parts"), 0)
+	p["state"] = "done"
+	st["slots"] = [s, Contracts.make_offer(Contracts.template("scoop"), 0), p]
+	assert_eq(c.claim(1), 0.0, "an offer can't be claimed")
+	var paid: float = c.claim(0)
+	assert_true(paid >= 40.0, "a cube request pays progress-scaled cubes")
+	assert_almost_eq(GameState.get_currency("cubes").to_float(), paid, 0.01)
 	assert_eq(st["slots"][0]["state"], "wait")
-	assert_true(Collection.has("contract_pen"), "first contract unlocks its collectible")
-	assert_true(GameState.get_currency("cubes").to_float() >= 40.0, "plus a cube bonus")
+	assert_true(Collection.has("contract_pen"), "first request unlocks its collectible")
+	assert_almost_eq(c.claim(2), float(p["parts"]), 0.01)
+	assert_almost_eq(GameState.get_currency("parts").to_float(), float(p["parts"]), 0.01, "a parts request pays parts")
+	assert_eq(Contracts.done_total(), 2)
 	c.free()
 
 
-func test_shop_spends_tokens() -> void:
+func test_reward_track_unlocks_liveries_and_builder_parts() -> void:
+	# [money] The token shop is gone: liveries and Builder parts unlock by finished requests.
 	var c := Contracts.new()
-	assert_ne(Contracts.block_reason("livery_neon"), "", "can't afford with 0 tokens")
-	GameState.add_currency(Contracts.CURRENCY, BigNum.from_float(30))
+	assert_ne(Contracts.block_reason("livery_neon"), "", "locked before any request")
+	assert_ne(c.buy("livery_neon"), "")
+	c.count_done(2)
+	assert_true("livery_neon" in Contracts.owned(), "2 requests unlock Neon Underglow")
 	assert_eq(c.buy("livery_neon"), "")
-	assert_eq(Contracts.tokens(), 30 - int(Contracts.shop_item("livery_neon")["cost"]))
 	assert_eq(Liveries.equipped(), "livery_neon")
-	assert_eq(c.buy("livery_neon"), "", "owned livery toggles for free")
+	assert_eq(c.buy("livery_neon"), "", "an unlocked livery toggles")
 	assert_eq(Liveries.equipped(), "")
-	assert_eq(c.buy("seed_crate"), "Unlocks with planting")
+	c.count_done(1)
+	assert_eq(RobotBuilder.count("propeller_cap"), 1, "3 requests: the Propeller Cap")
+	c.count_done(0)
+	assert_eq(RobotBuilder.count("propeller_cap"), 1, "each step is granted once")
+	var before: int = GameState.parts.size()
+	c.count_done(17 + 5)  # past the last step (20): one repeat Vintage part per repeat_every
+	assert_true(GameState.parts.size() >= before + 3, "rare robot parts from the track and its repeats")
+	c.free()
+
+
+func test_world_events_count_as_requests() -> void:
+	var c := Contracts.new()
+	GameState.stats["ev_events_done"] = 4.0
+	c._count_events()
+	assert_eq(Contracts.done_total(), 0, "the first look only sets the baseline")
+	GameState.stats["ev_events_done"] = 6.0
+	c._count_events()
+	assert_eq(Contracts.done_total(), 2)
 	c.free()
 
 

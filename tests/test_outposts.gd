@@ -62,7 +62,7 @@ func _world(seed_v: int = 4471) -> FakeWorld:
 
 
 func _rich() -> void:
-	for k: String in ["cubes", "sheet_metal", "plastic_stock", "glass_cullet"]:
+	for k: String in Currencies.IDS:  # [money]
 		GameState.add_currency(k, BigNum.from_float(1.0e6))
 
 
@@ -102,7 +102,7 @@ func test_repair_needs_a_clean_hex_and_materials() -> void:
 	assert_string_starts_with(op.repair_block(0), "Clear the junk")
 	assert_string_contains(op.prompt(0), "clear its hex")
 	_clean_hex(w, 0)
-	assert_eq(op.repair_block(0), "Not enough materials.")
+	assert_eq(op.repair_block(0), "Not enough cubes or parts.")
 	assert_false(op.repair(0, false))
 	_rich()
 	var cubes0: float = GameState.get_currency("cubes").to_float()
