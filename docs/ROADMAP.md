@@ -333,6 +333,11 @@ If a session ends: commit WIP in each worktree, then resume or merge.
   relay (`Wren.say(..., stage_override)`), remembered per world save (`flags.world_story`).
 - **Steam Cloud**: `profile.save` is stamped with `saved_unix` and uploaded on every write, so newest-wins
   sync covers it with the world slots (docs/steam/README.md updated for both cloud modes).
+- **Binary sun on every planet** (owner rule; `planet/binary_sun.gd`, `art/shaders/sun_disc.gdshader`, made
+  by SkyDirector, so Verdance and frontiers too): the PhysicalSky draws the warm primary (scaled by its
+  size), the cooler companion gets its own disc with a thin halo at a fixed separation (they rise and set
+  together) and an unshadowed warm fill light. Sizes and energies come from `SolarSystem.suns_for(planet)`
+  (home's systems/solar_system.gd + data/solar_system.json) when present, else the canon defaults.
 - Steam Cloud covers every profile folder under a per-profile prefix (`p2_slot_0.save`); unprefixed cloud
   saves from older builds are adopted into profile 1.
 - Dev: `--world-mods=heavy_rain+long_nights` (shots), `--menu=profiles|worlds --sample-worlds=N` (title).
