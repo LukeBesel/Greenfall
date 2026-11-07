@@ -148,6 +148,17 @@ static func probe_camera(root: Node, reach: float = 6.0) -> void:
 		var space: PhysicsDirectSpaceState3D = cam.get_world_3d().direct_space_state
 		var q := PhysicsRayQueryParameters3D.create(o0, o0 + d0 * 400.0)
 		var hit: Dictionary = space.intersect_ray(q)
+		var sun: DirectionalLight3D = sl.get("sun") if sl else null
+		if sun == null:
+			for n: Node in root.find_children("*", "DirectionalLight3D", true, false):
+				if (n as DirectionalLight3D).visible:
+					sun = n
+					break
+		if sun:
+			var to_sun: Vector3 = sun.global_basis.z
+			var qs := PhysicsRayQueryParameters3D.create(wp + Vector3(0, 0.05, 0), wp + to_sun * 300.0)
+			var hs: Dictionary = space.intersect_ray(qs)
+			print("[camprobe] toward sun %s (shadow max %.0f m): %s" % [to_sun, sun.directional_shadow_max_distance, str((hs["collider"] as Node).get_path()) + " at " + str(hs["position"]) if not hs.is_empty() else "open sky"])
 		if not hit.is_empty():
 			print("[camprobe] physics hit %s at %s (%.1f m) normal=%s" % [(hit["collider"] as Node).get_path(), hit["position"], o0.distance_to(hit["position"]), hit["normal"]])
 	for pt: Vector2 in pts:
