@@ -1241,7 +1241,7 @@ msgstr ""
 msgid "Time played"
 msgstr ""
 
-#: steam/demo_end_screen.gd:78 ui/main_menu.gd:331
+#: steam/demo_end_screen.gd:78 ui/main_menu.gd:339
 msgid "Wishlist on Steam"
 msgstr ""
 
@@ -1257,7 +1257,7 @@ msgstr ""
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr ""
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:759 ui/main_menu.gd:427
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:759 ui/main_menu.gd:443
 msgid "%dh %02dm"
 msgstr ""
 
@@ -1969,15 +1969,15 @@ msgstr ""
 msgid "Needs %d tokens"
 msgstr ""
 
-#: systems/cradle_mode.gd:282
+#: systems/cradle_mode.gd:287
 msgid "Fully grown"
 msgstr ""
 
-#: systems/cradle_mode.gd:284
+#: systems/cradle_mode.gd:289
 msgid "Needs %d Starseeds"
 msgstr ""
 
-#: systems/cradle_mode.gd:298
+#: systems/cradle_mode.gd:303
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr ""
 
@@ -2147,11 +2147,11 @@ msgstr ""
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr ""
 
-#: systems/late_director.gd:90
+#: systems/late_director.gd:93
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr ""
 
-#: systems/late_director.gd:124
+#: systems/late_director.gd:127
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
 msgstr ""
 
@@ -2356,7 +2356,7 @@ msgid "%d bolts"
 msgstr ""
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: systems/robot_builder.gd:382 ui/ark_bridge.gd:262 ui/main_menu.gd:433
+#: systems/robot_builder.gd:382 ui/ark_bridge.gd:262 ui/main_menu.gd:449
 msgid "%s cubes"
 msgstr ""
 
@@ -2440,7 +2440,7 @@ msgstr ""
 msgid "Earn more from Seed Ark waves and restoration"
 msgstr ""
 
-#: ui/ark_bridge.gd:125
+#: ui/ark_bridge.gd:125 ui/world_picker.gd:32
 msgid "WORLDS"
 msgstr ""
 
@@ -2456,11 +2456,11 @@ msgstr ""
 msgid "Back to %s"
 msgstr ""
 
-#: ui/ark_bridge.gd:182
+#: ui/ark_bridge.gd:182 ui/world_picker.gd:89
 msgid "WORLD %d"
 msgstr ""
 
-#: ui/ark_bridge.gd:188
+#: ui/ark_bridge.gd:188 ui/world_picker.gd:115
 msgid "Not visited yet"
 msgstr ""
 
@@ -2468,7 +2468,7 @@ msgstr ""
 msgid "%s  ·  %d hexes  ·  %d ark waves  ·  %d curiosities"
 msgstr ""
 
-#: ui/ark_bridge.gd:192
+#: ui/ark_bridge.gd:192 ui/world_picker.gd:119
 msgid "restored"
 msgstr ""
 
@@ -3611,131 +3611,142 @@ msgstr ""
 msgid "◢ SIGNAL %d%%"
 msgstr ""
 
-#: ui/main_menu.gd:312
+#: ui/main_menu.gd:314
 msgid "One small robot. One very big cleanup."
 msgstr ""
 
-#: ui/main_menu.gd:314
+#: ui/main_menu.gd:316
 msgid "DEMO  ·  the first district"
 msgstr ""
 
-#: ui/main_menu.gd:326
+#: ui/main_menu.gd:328
 msgid "Continue"
 msgstr ""
 
-#: ui/main_menu.gd:328
+#. Worlds button subtitle: how many worlds, and the current one's name.
+#: ui/main_menu.gd:334
+msgid "Worlds"
+msgstr ""
+
+#. Worlds button subtitle: how many worlds, and the current one's name.
+#: ui/main_menu.gd:334
+msgid "%d worlds  ·  now on %s"
+msgstr ""
+
+#: ui/main_menu.gd:336
 msgid "New Game"
 msgstr ""
 
-#: ui/main_menu.gd:332 ui/main_menu.gd:505 ui/pause_menu.gd:59
+#: ui/main_menu.gd:340 ui/main_menu.gd:536 ui/pause_menu.gd:59
 msgid "Settings"
 msgstr ""
 
-#: ui/main_menu.gd:333 ui/main_menu.gd:505
+#: ui/main_menu.gd:341 ui/main_menu.gd:536
 msgid "Credits"
 msgstr ""
 
-#: ui/main_menu.gd:334
+#: ui/main_menu.gd:342
 msgid "Quit"
 msgstr ""
 
-#: ui/main_menu.gd:340
+#: ui/main_menu.gd:348
 msgid "Made with Godot"
 msgstr ""
 
-#: ui/main_menu.gd:427
+#: ui/main_menu.gd:443
 msgid "%dm"
 msgstr ""
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:433
+#: ui/main_menu.gd:449
 msgid "Hub %d"
 msgstr ""
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:455
 msgid "Jan"
 msgstr ""
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:455
 msgid "Feb"
 msgstr ""
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:455
 msgid "Mar"
 msgstr ""
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:455
 msgid "Apr"
 msgstr ""
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:455
 msgid "May"
 msgstr ""
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:455
 msgid "Jun"
 msgstr ""
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:455
 msgid "Jul"
 msgstr ""
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:455
 msgid "Aug"
 msgstr ""
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:455
 msgid "Sep"
 msgstr ""
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:455
 msgid "Oct"
 msgstr ""
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:455
 msgid "Nov"
 msgstr ""
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:455
 msgid "Dec"
 msgstr ""
 
-#: ui/main_menu.gd:534
+#: ui/main_menu.gd:565
 msgid "CREDITS"
 msgstr ""
 
-#: ui/main_menu.gd:549 ui/settings_panel.gd:117 ui/settings_panel.gd:145
+#: ui/main_menu.gd:580 ui/settings_panel.gd:117 ui/settings_panel.gd:145
+#: ui/world_picker.gd:53
 msgid "Back"
 msgstr ""
 
-#: ui/main_menu.gd:562
+#: ui/main_menu.gd:593
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
 "\n"
 msgstr ""
 
-#: ui/main_menu.gd:565
+#: ui/main_menu.gd:596
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr ""
 
-#: ui/main_menu.gd:583
+#: ui/main_menu.gd:614
 msgid "%s [color=#%s]by %s[/color]"
 msgstr ""
 
-#: ui/main_menu.gd:617
+#: ui/main_menu.gd:648
 msgid "START A NEW GAME?"
 msgstr ""
 
-#: ui/main_menu.gd:618
+#: ui/main_menu.gd:649
 msgid "Your current save will be erased. This can't be undone."
 msgstr ""
 
-#: ui/main_menu.gd:626
+#: ui/main_menu.gd:657
 msgid "Keep my save"
 msgstr ""
 
-#: ui/main_menu.gd:632
+#: ui/main_menu.gd:663
 msgid "Erase and start"
 msgstr ""
 
@@ -4668,6 +4679,22 @@ msgstr ""
 
 #: ui/world_banner.gd:70
 msgid "Lumi's pod is down on %s. A new world, ruined and waiting. Grow something."
+msgstr ""
+
+#: ui/world_picker.gd:33
+msgid "Every world the ark has seeded keeps its own save. Pick one to continue there."
+msgstr ""
+
+#: ui/world_picker.gd:100
+msgid "Current"
+msgstr ""
+
+#: ui/world_picker.gd:115
+msgid "Home world"
+msgstr ""
+
+#: ui/world_picker.gd:117
+msgid "%d hexes"
 msgstr ""
 
 #: water/water_view.gd:78
@@ -12030,4 +12057,124 @@ msgstr ""
 
 #: data/wren_lines.json:garden_place
 msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
+msgstr ""
+
+#: data/wren_lines.json:world_ice_moon_arrival
+msgid "Ice Moon. Minus forty at noon, and that's the warm side. Keep your treads moving, {name}."
+msgstr ""
+
+#: data/wren_lines.json:world_ice_moon_arrival
+msgid "Everything here froze where it fell. The junk too. It's a museum nobody visits."
+msgstr ""
+
+#: data/wren_lines.json:world_ice_moon_memory_1
+msgid "Memory, recovered: the ark seeded ice moons because ice keeps. Seeds, water, records. Cold is just patience with bad manners."
+msgstr ""
+
+#: data/wren_lines.json:world_ice_moon_halfway
+msgid "Halfway. The lakes under the ice are talking back. Mostly creaking. I'll take it."
+msgstr ""
+
+#: data/wren_lines.json:world_ice_moon_memory_2
+msgid "That silo out on the ice was ours. The Makers buried a spare garden in every frozen place they found, in case the warm worlds failed. They did."
+msgstr ""
+
+#: data/wren_lines.json:world_ice_moon_restored
+msgid "The ice moon is breathing. Green under a ringed sky. The Makers never saw this. I'm seeing it for them."
+msgstr ""
+
+#: data/wren_lines.json:world_desert_world_arrival
+msgid "Desert World. Dry enough that the dust has dust. Water is the whole game here."
+msgstr ""
+
+#: data/wren_lines.json:world_desert_world_arrival
+msgid "Sun, sand and one very small robot. I like our odds. Mostly."
+msgstr ""
+
+#: data/wren_lines.json:world_desert_world_memory_1
+msgid "Memory file, partial: desert worlds were seeded last. 'Hard ground, long sun, nothing to lose.' Someone wrote that in the margin. I think it was a joke."
+msgstr ""
+
+#: data/wren_lines.json:world_desert_world_halfway
+msgid "Halfway green. On a desert. If the Makers had a betting pool, someone just lost."
+msgstr ""
+
+#: data/wren_lines.json:world_desert_world_memory_2
+msgid "That tower turned sunlight into everything once. The mirrors kept falling over and nobody had time to stand them up. You do."
+msgstr ""
+
+#: data/wren_lines.json:world_desert_world_restored
+msgid "Shade, water, flowers in the sand. The sun's as hot as ever, but now it works for us."
+msgstr ""
+
+#: data/wren_lines.json:world_ocean_world_arrival
+msgid "Ocean World. More sea than land, and the land is mostly arguing with the sea. Mind the edges."
+msgstr ""
+
+#: data/wren_lines.json:world_ocean_world_arrival
+msgid "Salt in the air, salt on the junk. Don't lick anything, {name}."
+msgstr ""
+
+#: data/wren_lines.json:world_ocean_world_memory_1
+msgid "I remember the coast worlds. Officially the ark seeded them for the fish. Unofficially, the crew liked the view."
+msgstr ""
+
+#: data/wren_lines.json:world_ocean_world_halfway
+msgid "Halfway. The tide comes in on time now. The moon and I have an understanding."
+msgstr ""
+
+#: data/wren_lines.json:world_ocean_world_memory_2
+msgid "Those gates held the sea back for a century. Then nobody came to close them. You'd think the sea would be grateful. It isn't."
+msgstr ""
+
+#: data/wren_lines.json:world_ocean_world_restored
+msgid "Green to the waterline. Gulls soon, probably. I'm told they're loud. I'm ready."
+msgstr ""
+
+#: data/wren_lines.json:world_fungal_world_arrival
+msgid "Marsh World. Warm, wet and soft underfoot. Everything here wants to grow, mostly the wrong things first."
+msgstr ""
+
+#: data/wren_lines.json:world_fungal_world_arrival
+msgid "Mist on everything. If you get lost, follow the squelching. That'll be you."
+msgstr ""
+
+#: data/wren_lines.json:world_fungal_world_memory_1
+msgid "Memory, recovered: the ark seeded marsh worlds as nurseries. Wet ground forgives mistakes. The Makers needed a lot of forgiving."
+msgstr ""
+
+#: data/wren_lines.json:world_fungal_world_halfway
+msgid "Halfway. The mist lifts a little more each morning, then rolls back in to check on us."
+msgstr ""
+
+#: data/wren_lines.json:world_fungal_world_memory_2
+msgid "That cooling tower ran the whole valley once. Now it's mostly mushroom. Honestly, the mushrooms are better tenants."
+msgstr ""
+
+#: data/wren_lines.json:world_fungal_world_restored
+msgid "Clear air over the marsh. Reeds, frogs, real flowers. Soft ground, soft in the good way now."
+msgstr ""
+
+#: data/wren_lines.json:world_rust_world_arrival
+msgid "Rust World. Industry from pole to pole, and none of it switched off properly. Mind the sharp bits. All of them."
+msgstr ""
+
+#: data/wren_lines.json:world_rust_world_arrival
+msgid "The air tastes like old pennies. I don't have a tongue. I can still tell."
+msgstr ""
+
+#: data/wren_lines.json:world_rust_world_memory_1
+msgid "I remember this kind. The ark seeded rust worlds on purpose: if a garden grows in a scrapyard, it grows anywhere. You're the test, {name}. No pressure."
+msgstr ""
+
+#: data/wren_lines.json:world_rust_world_halfway
+msgid "Halfway. Less rust in the wind today. I don't have lungs, but I have standards."
+msgstr ""
+
+#: data/wren_lines.json:world_rust_world_memory_2
+msgid "That gantry broke ships for a living. Thousands of them. The ark was nearly one. I try not to hold it against the crane."
+msgstr ""
+
+#: data/wren_lines.json:world_rust_world_restored
+msgid "A rust world, green. The old cranes have flowers at their feet. It looks like an apology, finally accepted."
 msgstr ""
