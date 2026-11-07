@@ -34,6 +34,7 @@ static func of(slice: Node) -> ExtrasDirector:
 
 func _setup() -> void:
 	add_to_group("persist")
+	GameState.stats["weekly_chips"] = float(WeeklyChallenge.chip_count())  # profile-wide, mirrored for achievements
 	radio = Radio.new()
 	world.add_child(radio)
 	radio.setup(world)

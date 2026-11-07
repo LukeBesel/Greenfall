@@ -32,6 +32,10 @@ static func list() -> Array:
 	if not (v is Array):
 		v = []
 		GameState.flags["nursery"] = v
+	for r: Variant in v:  # JSON loads ints back as floats
+		if r is Dictionary and (r as Dictionary).get("tier") is float:
+			r["tier"] = int(r["tier"])
+			r["from"] = int(r.get("from", 0))
 	return v
 
 
