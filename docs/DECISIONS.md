@@ -115,3 +115,9 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
 - **Decorations refund in full** so moving costs nothing; their bonus is small and per district.
   Wildlife integration is a group hook ("decor" + metas), no dependency either way.
 
+
+## Keepsakes (wt/extras, Nov 7)
+- **One idle-gains entry point**: `Offline.simulate` (time cap, junk cap, `offline_units` bookkeeping) so the welcome card and any remote view (telescope) share one capped calculation; currency only moves in `Offline.apply`.
+- **Radio songs are MusicDirector moods** (same key and layers), so they crossfade like any mood; the override lives in Audio and is cleared when the district leaves the tree.
+- **Album pictures use a fixed camera over the base**, not the player's view, so before and after line up in the slider; the HUD never appears in them.
+- **The weekly challenge is a save slot, not a world**: `WeeklyChallenge.active` steers CradleMode's seed/mix/modifiers; it never banks Starseeds, and its record and chips sit next to the profile so they belong to the save profile, not to a world.
