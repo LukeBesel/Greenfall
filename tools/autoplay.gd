@@ -1336,6 +1336,7 @@ func write_report() -> void:
 	_report["parts_bought"] = _parts_bought
 	_report["stuck_escapes"] = _escapes
 	_report["fell_through"] = GameState.stats.get("fell_through", 0)
+	_report["cubes_fell"] = GameState.stats.get("cubes_fell", 0)  # [beat]
 	_report["remote_shops"] = _remote_shops
 	_report["parts_found"] = GameState.stats.get("parts_found", 0)
 	_report["hub_level"] = int(world.hub.level)
