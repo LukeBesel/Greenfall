@@ -174,7 +174,11 @@ func test_every_model_builds_with_a_rig() -> void:
 		assert_true(Fauna.is_rigged(m), id + " carries CUSTOM0")
 		var tris: int = (m.surface_get_arrays(0)[Mesh.ARRAY_INDEX] as PackedInt32Array).size() / 3
 		assert_between(tris, 20, 12000, id + " triangle budget")
-	assert_not_null(FaunaModels.mesh("rat"))
+	var rat: Mesh = FaunaModels.mesh("rat")
+	assert_not_null(rat)
+	var bb: AABB = rat.get_aabb()
+	gut.p("rat mesh aabb %s rigged=%s" % [str(bb), str(Fauna.is_rigged(rat))])
+	assert_gt(maxf(bb.size.x, bb.size.z), 0.05)
 
 
 func test_custom_data_packs_head_and_coat() -> void:
