@@ -68,6 +68,10 @@ func _snapshot(s: Node) -> Dictionary:
 		"fauna": _fauna(s),  # [wild]
 		# [skins] Lumi's designs: worn, unlocked, looks-only, and the model actually built with it.
 		"design": "%s %s looks_only=%s model=%s" % [Designs.current(), JSON.stringify(Designs.unlocked()), str(Designs.looks_only()), (s.patch.model as PatchModel).variant],
+		# [late] Garden Mode decorations and their charm; Cradle Mode world tag.
+		"decor": JSON.stringify(GameState.world.get("decor", {})),
+		"decor_charm": snappedf(float(GameState.world.get("decor_charm", 0.0)), 0.01),
+		"world_index": int(GameState.flags.get("world_index", 0)),
 	}
 
 
@@ -339,6 +343,7 @@ func _ready() -> void:
 	Designs.select("nova")
 	Designs.set_looks_only(true)
 	(s1.patch.model as PatchModel).set_variant("nova")
+	_late_decorate(s1, 4)  # [late] a few Garden Mode decorations
 	s1.patch.global_position = Vector3(3.0, 0.2, 5.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
 	s1.add_cube(dropped)
@@ -372,6 +377,130 @@ func _ready() -> void:
 	await get_tree().process_frame
 	for kid: String in ["frozen_port", "sunken_city", "dust_flats", "cradle_returns"]:
 		await _frontier_roundtrip(packed, kid, int(fhubs[kid]))
+	await _late_multi_world(packed)  # [late] Cradle Mode: a second world, the profile, travel both ways
 	SaveManager.delete_save()
 	print("[roundtrip] %s (%d failures)" % ["OK" if _fails == 0 else "FAILED", _fails])
 	get_tree().quit(1 if _fails > 0 else 0)
+
+
+# --- [late] Garden Mode and Cradle Mode ---------------------------------------------------
+
+## Places `n` decorations (free) on cells that accept them; returns how many went down.
+func _late_decorate(s: Node, n: int) -> int:
+	var d: LateDirector = LateDirector.of(s)
+	if d == null:
+		_check("late_director_built", true, false)
+		return 0
+	var types: Array[String] = ["bench", "fountain", "lamp", "flower_bed", "planter"]
+	var placed: int = 0
+	var f: HexField = s.field
+	for h: int in f.hex_count():
+		if placed >= n:
+			break
+		if not f.is_clean(h) or f.is_water(h):
+			continue
+		var c: Vector2i = Decor.cell_at(f.hex_center(h))
+		for k: int in 6:
+			var t: String = types[placed % types.size()]
+			if d.decor.place(t, c + Vector2i(k * 2 - 6, 1), placed % 4, false):
+				placed += 1
+				break
+	_check("late_decor_placed", true, placed > 0)
+	return placed
+
+
+func _late_snap(s: Node) -> Dictionary:
+	var types: Array = []
+	for r: Robot in (s.fleet as Fleet).robots():
+		types.append(r.type_id)
+	types.sort()
+	return {"world": CradleMode.world_name(), "seed": (s.planet as PlanetData).seed_value, "district": s.district_name,
+		"town0": str((s.planet as PlanetData).cities[0]["name"]), "cubes": snappedf(GameState.get_currency("cubes").to_float(), 0.01),
+		"robots": types, "decor": JSON.stringify(GameState.world.get("decor", {})), "world_index": int(GameState.flags.get("world_index", 0)),
+		"research": Research.done_list().size(), "slot": SaveManager.slot}
+
+
+func _late_multi_world(packed: PackedScene) -> void:
+	var keep_profile: Dictionary = CradleMode.profile.duplicate(true)
+	var keep_persist: bool = CradleMode.persist
+	CradleMode.path_override = SaveManager.save_dir().path_join("roundtrip_profile.save")
+	CradleMode.persist = true
+	CradleMode.profile = CradleMode.default_profile()
+	(CradleMode.worlds()[0] as Dictionary)["slot"] = 7  # Verdance lives in the round trip's slot
+	CradleMode.apply_current()
+	GameState.flags["bloom_finale_seen"] = true
+	GameState.stats["ark_waves"] = 3.0
+	SaveManager.save_game(false)  # Verdance as it is now (launch_new_world only saves with a live tree)
+	var verdance_cubes: float = GameState.get_currency("cubes").to_float()
+	var verdance_hub: int = GameState.current_hub
+	CradleMode.profile["starseeds"] = 200.0
+	for id: String in ["old_crew", "head_start", "archivist", "green_thumb"]:
+		CradleMode.buy(id)
+	var w: Dictionary = CradleMode.launch_new_world(null, 8)
+	_check("late_new_world_slot", 8, SaveManager.slot)
+	var s3: Node = packed.instantiate()
+	get_tree().root.add_child(s3)
+	for i: int in 20:
+		await get_tree().process_frame
+	_check("late_new_world_name", str(w["name"]), CradleMode.world_name())
+	_check("late_new_world_seed", int(w["seed"]), (s3.planet as PlanetData).seed_value)
+	_check("late_new_world_new_towns", true, str((s3.planet as PlanetData).cities[0]["name"]) != "Old Town")
+	_check("late_new_world_kit_robots", true, (s3.fleet as Fleet).robots().size() >= 1)
+	_check("late_new_world_kit_research", true, Research.done_list().size() >= 5)
+	var f3: HexField = s3.field
+	var n_clean: int = 0
+	for h: int in f3.hex_count():
+		if n_clean >= 3:
+			break
+		if f3.hex_hub[h] != 0 or f3.is_water(h) or f3.is_clean(h) or f3.hex_center(h).length() < 14.0:
+			continue
+		for pid: int in f3.hex_pieces[h]:
+			if f3.piece_alive[pid] == 1:
+				s3.collect_piece(pid)
+		n_clean += 1
+	_late_decorate(s3, 2)
+	var before: Dictionary = _late_snap(s3)
+	if not SaveManager.save_game():
+		_check("late_new_world_saved", true, false)
+	s3.queue_free()
+	await get_tree().process_frame
+	# The profile on disk comes back as it was.
+	var prof: String = JSON.stringify(CradleMode.to_dict())
+	CradleMode.profile = {}
+	CradleMode.load_profile()
+	_check("late_profile_roundtrip", str(JSON.parse_string(prof)), str(JSON.parse_string(JSON.stringify(CradleMode.to_dict()))))
+	_check("late_profile_worlds", 2, CradleMode.worlds().size())
+	_check("late_profile_heirlooms", 4, CradleMode.heirloom_total())
+	# Back to Verdance: its save (slot 7) loads as it was left.
+	_check("late_switch_home", true, CradleMode.switch_world(0))
+	_check("late_home_slot", 7, SaveManager.slot)
+	_check("late_home_name", "Verdance", str(Economy.planet["name"]))
+	_check("late_home_cubes", snappedf(verdance_cubes, 0.01), snappedf(GameState.get_currency("cubes").to_float(), 0.01))
+	_check("late_home_hub", verdance_hub, GameState.current_hub)
+	_check("late_home_district0_decor", true, JSON.stringify((GameState.districts.get(0, {}) as Dictionary).get("decor", {})).contains("bench"))
+	var s4: Node = packed.instantiate()
+	get_tree().root.add_child(s4)
+	for i: int in 10:
+		await get_tree().process_frame
+	_check("late_home_seed", 4471, (s4.planet as PlanetData).seed_value)
+	SaveManager.save_game()
+	s4.queue_free()
+	await get_tree().process_frame
+	# And out to the new world again: everything it had.
+	_check("late_switch_away", true, CradleMode.switch_world(1))
+	var s5: Node = packed.instantiate()
+	get_tree().root.add_child(s5)
+	for i: int in 20:
+		await get_tree().process_frame
+	var after: Dictionary = _late_snap(s5)
+	for k: String in before:
+		_check("late_world2_" + k, before[k], after[k])
+	s5.queue_free()
+	await get_tree().process_frame
+	SaveManager.delete_save(8)
+	DirAccess.remove_absolute(CradleMode.profile_path())
+	CradleMode.path_override = ""
+	CradleMode.persist = keep_persist
+	CradleMode.profile = keep_profile
+	SaveManager.slot = 7
+	Economy.planet["name"] = "Verdance"

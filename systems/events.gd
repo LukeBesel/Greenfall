@@ -76,12 +76,12 @@ static func pick_event(event_defs: Array, eligible: Dictionary, recent: Array, r
 			if not eligible.get(id, false) or (pass_i == 0 and id in tail):
 				continue
 			pool.append(e)
-			total += float(e.get("weight", 1.0))
+			total += float(e.get("weight", 1.0)) * CradleMode.event_weight(id)  # [late] world modifiers
 		if pool.is_empty():
 			continue
 		var x: float = clampf(r, 0.0, 0.999999) * total
 		for e: Dictionary in pool:
-			x -= float(e.get("weight", 1.0))
+			x -= float(e.get("weight", 1.0)) * CradleMode.event_weight(str(e["id"]))  # [late]
 			if x < 0.0:
 				return str(e["id"])
 		return str(pool[-1]["id"])

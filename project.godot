@@ -24,6 +24,7 @@ Audio="*res://autoload/Audio.gd"
 Story="*res://autoload/Story.gd"
 Vfx="*res://art/vfx.gd"
 DevHooks="*res://autoload/DevHooks.gd"
+CradleBoot="*res://systems/cradle_boot.gd"
 
 [debug]
 

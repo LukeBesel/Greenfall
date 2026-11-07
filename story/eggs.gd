@@ -60,12 +60,16 @@ static func district_eggs(all_ids: Array[String], all_defs: Dictionary, hub: int
 		for id: String in all_ids:
 			if bool(all_defs[id].get("starter", false)):
 				out.append(id)
+		out.append_array(EggPropsLate.new_world_eggs(all_ids, all_defs))  # [late] Cradle Mode worlds' own finds
 		return out
 	var r := RandomNumberGenerator.new()
 	r.seed = seed_v + 313
 	var general: Array[String] = []
 	var wild_ids: Array[String] = []
+	out.append_array(EggPropsLate.frontier_eggs(all_ids, all_defs, biome))  # [late] frontier-only eggs go first
 	for id: String in all_ids:
+		if str(all_defs[id].get("where", "")) in ["frontier", "new_world"]:  # [late]
+			continue
 		if str(all_defs[id].get("where", "")) == "wild":
 			wild_ids.append(id)
 		else:
@@ -210,6 +214,7 @@ func _spawn(p: Dictionary) -> void:
 
 ## Found eggs keep the change Patch made: the sock is gone, the fire is lit, the stone is on top.
 static func _show_found_state(node: Node3D, kind: String) -> void:
+	EggPropsLate.show_found_state(node, kind)  # [late]
 	match kind:
 		"clothesline", "fishing_net":
 			var prize: Node3D = node.get_node_or_null("Anim/Prize")
@@ -645,6 +650,8 @@ func _effect(e: Dictionary) -> void:
 					tw7.tween_property(anim, "rotation:z", 0.06 * (1.0 if k % 2 == 0 else -1.0) * (1.0 - k * 0.2), 0.25).set_trans(Tween.TRANS_SINE)
 				tw7.tween_property(anim, "rotation:z", 0.0, 0.3)
 			Audio.play("squeak", 0.7, -6.0)
+		_:
+			EggPropsLate.effect(self, e)  # [late] the newer curiosities
 
 
 func _duck_hint() -> String:

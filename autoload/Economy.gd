@@ -110,8 +110,8 @@ func stat(stat_id: String, levels: Variant = null) -> float:
 		else:
 			mul *= 1.0 + float(u["amount"]) * level
 	# Research bonuses (systems/research.gd) apply on top of upgrades.
-	# The worn design's small buff (systems/designs.gd) last.  [skins]
-	return Designs.apply(stat_id, Research.stat_mod(stat_id, value * mul))
+	# The worn design's small buff (systems/designs.gd) last.  [skins]  Heirlooms/world mods/decor charm  [late]
+	return Designs.apply(stat_id, CradleMode.stat_mod(stat_id, Research.stat_mod(stat_id, value * mul)))
 
 
 ## Base value of a stat before upgrades: Patch stats come from data/patch.json, dotted robot

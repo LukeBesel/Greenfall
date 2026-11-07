@@ -164,63 +164,63 @@ msgstr "方向键右"
 msgid "Share"
 msgstr "分享"
 
-#: autoload/Settings.gd:515
+#: autoload/Settings.gd:516
 msgid "LMB"
 msgstr "左键"
 
-#: autoload/Settings.gd:516
+#: autoload/Settings.gd:517
 msgid "RMB"
 msgstr "右键"
 
-#: autoload/Settings.gd:517
+#: autoload/Settings.gd:518
 msgid "MMB"
 msgstr "中键"
 
-#: autoload/Settings.gd:518
+#: autoload/Settings.gd:519
 msgid "Wheel up"
 msgstr "滚轮上"
 
-#: autoload/Settings.gd:519
+#: autoload/Settings.gd:520
 msgid "Wheel down"
 msgstr "滚轮下"
 
-#: autoload/Settings.gd:520
+#: autoload/Settings.gd:521
 msgid "Mouse %d"
 msgstr "鼠标 %d"
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:523
 msgid "Button %d"
 msgstr "按键 %d"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:528
 msgid "LS left"
 msgstr "左摇杆左"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:528
 msgid "LS right"
 msgstr "左摇杆右"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:529
 msgid "LS up"
 msgstr "左摇杆上"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:529
 msgid "LS down"
 msgstr "左摇杆下"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:530
 msgid "RS left"
 msgstr "右摇杆左"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:530
 msgid "RS right"
 msgstr "右摇杆右"
 
-#: autoload/Settings.gd:530
+#: autoload/Settings.gd:531
 msgid "RS up"
 msgstr "右摇杆上"
 
-#: autoload/Settings.gd:530
+#: autoload/Settings.gd:531
 msgid "RS down"
 msgstr "右摇杆下"
 
@@ -1133,7 +1133,7 @@ msgstr "这里不能建造"
 msgid "Not on the lake"
 msgstr "不能建在湖上"
 
-#: robots/water_net.gd:141
+#: robots/water_net.gd:141 systems/decor.gd:186
 msgid "Clean this hex first"
 msgstr "先清理这个六角格"
 
@@ -1153,63 +1153,63 @@ msgstr "水箱已放置。附近的浇水机器人会来这里补水。"
 msgid "WATER"
 msgstr "水"
 
-#: scenes/slice.gd:276
+#: scenes/slice.gd:279
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "机器人上行链路上线。按 B 打开指挥：划定区域，把队伍派到你想去的地方。"
 
-#: scenes/slice.gd:503
+#: scenes/slice.gd:506
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 上线。绽放核心 4%：绿光微弱。Cradle号中继：若有若无。种点东西吧。"
 
-#: scenes/slice.gd:800
+#: scenes/slice.gd:804
 msgid "HEX CLEAN!  +%s"
 msgstr "六角格清理完毕！  +%s"
 
-#: scenes/slice.gd:814
+#: scenes/slice.gd:818
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice.gd:816
+#: scenes/slice.gd:820
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "整个废料场都干净了。Lumi 发出一声好长好长、非常开心的哔——"
 
-#: scenes/slice.gd:823
+#: scenes/slice.gd:827
 msgid "%s is out of range: %s"
 msgstr "%s 超出范围：%s"
 
-#: scenes/slice.gd:833
+#: scenes/slice.gd:837
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "未解锁。将基地升到 5 级才能建造发射台。"
 
-#: scenes/slice.gd:836 ui/rockets_panel.gd:39
+#: scenes/slice.gd:840 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice.gd:890
+#: scenes/slice.gd:894
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陆：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:891
+#: scenes/slice.gd:895
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "火箭停在空地上，电池充满就能出发。"
 
-#: scenes/slice.gd:891
+#: scenes/slice.gd:895
 msgid "Landed on the base pad."
 msgstr "已降落在基地平台。"
 
-#: scenes/slice.gd:982
+#: scenes/slice.gd:986
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice.gd:1154
+#: scenes/slice.gd:1158
 msgid "Welcome back. The junk waited for you."
 msgstr "欢迎回来。废料一直在等你。"
 
-#: scenes/slice.gd:1171
+#: scenes/slice.gd:1175
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨 %d · %d级"
 
-#: scenes/slice.gd:1171
+#: scenes/slice.gd:1175
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
@@ -1357,47 +1357,47 @@ msgstr "那是 Cradle号。你的核心亮起时，方舟听见了。它调头�
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "绽放核心 75%：Cradle号正在回家的路上。夜里留意它划过天空。"
 
-#: story/egg_props.gd:173
+#: story/egg_props.gd:176
 msgid "SELECT  A1  ·  B4  ·  C7"
 msgstr "选择  A1  ·  B4  ·  C7"
 
-#: story/egg_props.gd:198
+#: story/egg_props.gd:201
 msgid "WE'LL BE BACK AFTER LUNCH"
 msgstr "午饭后回来"
 
-#: story/egg_props.gd:313
+#: story/egg_props.gd:316
 msgid "OPEN IN 100 YEARS"
 msgstr "100 年后开门"
 
-#: story/egg_props.gd:330
+#: story/egg_props.gd:333
 msgid "HI-SCORE"
 msgstr "最高分"
 
-#: story/egg_props.gd:331
+#: story/egg_props.gd:334
 msgid "WREN  999990"
 msgstr "WREN  999990"
 
-#: story/egg_props.gd:332
+#: story/egg_props.gd:335
 msgid "INSERT COIN"
 msgstr "请投币"
 
-#: story/egg_props.gd:335
+#: story/egg_props.gd:338
 msgid "SWEEP-O-TRON"
 msgstr "扫地大王"
 
-#: story/egg_props.gd:427
+#: story/egg_props.gd:430
 msgid "BISCUIT"
 msgstr "饼干"
 
-#: story/egg_props.gd:455
+#: story/egg_props.gd:458
 msgid "FIZZ"
 msgstr "FIZZ"
 
-#: story/egg_props.gd:601
+#: story/egg_props.gd:604
 msgid "(it is not wet)"
 msgstr "（它不是湿的）"
 
-#: story/egg_props.gd:618
+#: story/egg_props.gd:621
 msgid ""
 "THE LEDGER IS WATCHING\n"
 "(FOR SAVINGS)"
@@ -1405,7 +1405,7 @@ msgstr ""
 "LEDGER 正在关注你\n"
 "（是否节约）"
 
-#: story/egg_props.gd:696
+#: story/egg_props.gd:699
 msgid ""
 "EMPLOYEE OF\n"
 "THE MONTH\n"
@@ -1415,7 +1415,7 @@ msgstr ""
 "最佳员工\n"
 "— 方块 —"
 
-#: story/egg_props.gd:726
+#: story/egg_props.gd:729
 msgid ""
 "FORECAST\n"
 "ALWAYS RIGHT*"
@@ -1423,19 +1423,19 @@ msgstr ""
 "天气预报\n"
 "永远准确*"
 
-#: story/egg_props.gd:751
+#: story/egg_props.gd:754
 msgid "SHOW ENTRY"
 msgstr "演出入口"
 
-#: story/egg_props.gd:793
+#: story/egg_props.gd:796
 msgid "THE BUILDERS · DO NOT TIDY"
 msgstr "建造者 · 请勿整理"
 
-#: story/egg_props.gd:881
+#: story/egg_props.gd:884
 msgid "FINE"
 msgstr "罚款"
 
-#: story/egg_props.gd:958
+#: story/egg_props.gd:961
 msgid ""
 "BACK IN\n"
 "5 MINUTES"
@@ -1443,83 +1443,83 @@ msgstr ""
 "5 分钟后\n"
 "回来"
 
-#: story/eggs.gd:245
+#: story/eggs.gd:250
 msgid "Something metal surfaced in the cleared ground."
 msgstr "清理过的地面里冒出了什么金属的东西。"
 
-#: story/eggs.gd:425
+#: story/eggs.gd:430
 msgid "Gnome %d / %d"
 msgstr "地精 %d / %d"
 
-#: story/eggs.gd:433
+#: story/eggs.gd:438
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "最后一张海报指向附近某处。有个橙色的东西蜷在那儿。"
 
-#: story/eggs.gd:459
+#: story/eggs.gd:464
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "收音机轻轻地沙沙作响。上面还没有东西醒来。天黑后再来吧。"
 
-#: story/eggs.gd:460
+#: story/eggs.gd:465
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "透过望远镜：只有明亮又多尘的天空。天黑后再来吧。"
 
-#: story/eggs.gd:480
+#: story/eggs.gd:485
 msgid "SOLD OUT"
 msgstr "售罄"
 
-#: story/eggs.gd:497
+#: story/eggs.gd:502
 msgid "QUACK!"
 msgstr "嘎！"
 
-#: story/eggs.gd:515
+#: story/eggs.gd:520
 msgid "NEW CHALLENGER!"
 msgstr "新挑战者！"
 
-#: story/eggs.gd:518
+#: story/eggs.gd:523
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "游戏结束  ·  得分 12"
 
-#: story/eggs.gd:548
+#: story/eggs.gd:553
 msgid "hi, Gus"
 msgstr "嗨，Gus"
 
-#: story/eggs.gd:593
+#: story/eggs.gd:598
 msgid "CONFETTI"
 msgstr "彩纸"
 
-#: story/eggs.gd:593
+#: story/eggs.gd:598
 msgid "LIGHT JAZZ"
 msgstr "轻爵士"
 
-#: story/eggs.gd:593
+#: story/eggs.gd:598
 msgid "99% DUCKS"
 msgstr "鸭子含量 99%"
 
-#: story/eggs.gd:593
+#: story/eggs.gd:598
 msgid "SUNNY (INDOORS)"
 msgstr "晴（室内）"
 
-#: story/eggs.gd:593
+#: story/eggs.gd:598
 msgid "FOG OF NOODLES"
 msgstr "面条雾"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:603
 msgid "1ST PLACE"
 msgstr "第一名"
 
-#: story/eggs.gd:654
+#: story/eggs.gd:661
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "鸭子吱吱地说出一个秘密：“%s”可以解锁 %s 外观。"
 
-#: story/eggs.gd:655
+#: story/eggs.gd:662
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "鸭子已经把它知道的全教给你了。嘎。"
 
-#: story/eggs.gd:805
+#: story/eggs.gd:812
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "发现奇物：%s（%d / %d）   %s"
 
-#: story/eggs.gd:816
+#: story/eggs.gd:823
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "清单上的奇物全部找到了。Lumi 的收藏舱装满了回忆。"
 
@@ -1705,8 +1705,8 @@ msgstr ""
 "\n"
 "Ledger 现在站在我们这边了。干扰器只是跟着音乐哼哼。"
 
-#: story/ledger.gd:318 systems/research.gd:186 ui/hub_panel.gd:118
-#: ui/stations_panel.gd:96
+#: story/ledger.gd:318 systems/decor.gd:125 systems/research.gd:186
+#: ui/hub_panel.gd:118 ui/stations_panel.gd:96
 msgid "Needs %s"
 msgstr "需要 %s"
 
@@ -1882,7 +1882,19 @@ msgstr "荒野基地"
 msgid " · often %s"
 msgstr " · 常见于%s"
 
-#: systems/codex.gd:193 ui/codex_screen.gd:355
+#: systems/codex.gd:195 ui/codex_screen.gd:355 data/codex.json:categories[frontiers].name
+msgid "Frontiers"
+msgstr "边境"
+
+#: systems/codex.gd:195
+msgid " · %s"
+msgstr ""
+
+#: systems/codex.gd:197 ui/codex_screen.gd:355
+msgid "Other worlds"
+msgstr ""
+
+#: systems/codex.gd:198 ui/codex_screen.gd:355
 msgid "Any district"
 msgstr "任意街区"
 
@@ -1985,6 +1997,46 @@ msgstr "收藏已集齐"
 #: systems/contracts.gd:375
 msgid "Needs %d tokens"
 msgstr "需要 %d 代币"
+
+#: systems/cradle_mode.gd:282
+msgid "Fully grown"
+msgstr ""
+
+#: systems/cradle_mode.gd:284
+msgid "Needs %d Starseeds"
+msgstr ""
+
+#: systems/cradle_mode.gd:298
+msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
+msgstr ""
+
+#: systems/decor.gd:121
+msgid "Needs %d Collection finds (%d so far)"
+msgstr ""
+
+#: systems/decor.gd:179
+msgid "Too close to the base machines"
+msgstr ""
+
+#: systems/decor.gd:182
+msgid "Outside the district"
+msgstr ""
+
+#: systems/decor.gd:184
+msgid "That's water"
+msgstr ""
+
+#: systems/decor.gd:188
+msgid "Frozen in"
+msgstr ""
+
+#: systems/decor.gd:190
+msgid "A building is in the way"
+msgstr ""
+
+#: systems/decor.gd:192
+msgid "Something is already here"
+msgstr ""
 
 #: systems/designs.gd:118
 msgid "Default"
@@ -2172,6 +2224,14 @@ msgstr ""
 #. research effect for one robot model, e.g. "+1 Drip tank".
 #: systems/l10n_fmt.gd:69
 msgid "+{amount} {robot} {stat}"
+msgstr ""
+
+#: systems/late_director.gd:90
+msgid "The Ark Bridge opens once the Cradle has come home."
+msgstr ""
+
+#: systems/late_director.gd:124
+msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
 msgstr ""
 
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:255
@@ -2379,7 +2439,7 @@ msgid "%d bolts"
 msgstr "%d 个螺栓"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: systems/robot_builder.gd:382 ui/main_menu.gd:433
+#: systems/robot_builder.gd:382 ui/ark_bridge.gd:262 ui/main_menu.gd:433
 msgid "%s cubes"
 msgstr "%s 方块"
 
@@ -2438,6 +2498,111 @@ msgstr "%d 块干净的地方在等种植机器人。"
 #: ui/allocation_board.gd:77
 msgid "%d plants are thirsty and not growing."
 msgstr "%d 株植物缺水，停止生长。"
+
+#: ui/ark_bridge.gd:100
+msgid "THE CRADLE  ·  SEED VAULT DECK"
+msgstr ""
+
+#: ui/ark_bridge.gd:101
+msgid "ARK BRIDGE"
+msgstr ""
+
+#: ui/ark_bridge.gd:102
+msgid "The vault holds seeds for every world in the system. Take what Lumi learned somewhere new; nothing here is ever undone."
+msgstr ""
+
+#: ui/ark_bridge.gd:107 ui/ark_bridge.gd:304
+msgid "%d Starseeds"
+msgstr ""
+
+#: ui/ark_bridge.gd:110
+msgid "+%d banked from %s"
+msgstr ""
+
+#: ui/ark_bridge.gd:110
+msgid "Earn more from Seed Ark waves and restoration"
+msgstr ""
+
+#: ui/ark_bridge.gd:125
+msgid "WORLDS"
+msgstr ""
+
+#: ui/ark_bridge.gd:143
+msgid "HEIRLOOMS  ·  KEPT ON EVERY WORLD"
+msgstr ""
+
+#: ui/ark_bridge.gd:156
+msgid "Enter / A  choose      Esc / B  back"
+msgstr ""
+
+#: ui/ark_bridge.gd:160 ui/ark_bridge.gd:254
+msgid "Back to %s"
+msgstr ""
+
+#: ui/ark_bridge.gd:182
+msgid "WORLD %d"
+msgstr ""
+
+#: ui/ark_bridge.gd:188
+msgid "Not visited yet"
+msgstr ""
+
+#: ui/ark_bridge.gd:190
+msgid "%s  ·  %d hexes  ·  %d ark waves  ·  %d curiosities"
+msgstr ""
+
+#: ui/ark_bridge.gd:192
+msgid "restored"
+msgstr ""
+
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40
+msgid "You are here"
+msgstr "你在这里"
+
+#: ui/ark_bridge.gd:202
+msgid "Travel"
+msgstr ""
+
+#: ui/ark_bridge.gd:227
+msgid "SEED A NEW WORLD"
+msgstr ""
+
+#: ui/ark_bridge.gd:229
+msgid "The Cradle has to come home first."
+msgstr ""
+
+#: ui/ark_bridge.gd:245 ui/frontier_rockets.gd:42 ui/globe_view.gd:308
+#: ui/rockets_panel.gd:81
+msgid "Launch"
+msgstr "发射"
+
+#: ui/ark_bridge.gd:264
+msgid "%d Data"
+msgstr ""
+
+#: ui/ark_bridge.gd:266
+msgid "%d seeds"
+msgstr ""
+
+#: ui/ark_bridge.gd:268
+msgid "robots waiting: %d"
+msgstr ""
+
+#: ui/ark_bridge.gd:270
+msgid "research tier %d known"
+msgstr ""
+
+#: ui/ark_bridge.gd:272
+msgid "Starting kit: just Lumi. Heirlooms add to it."
+msgstr ""
+
+#: ui/ark_bridge.gd:273
+msgid "Starting kit: %s"
+msgstr ""
+
+#: ui/ark_bridge.gd:301 ui/settings_panel.gd:509
+msgid "Full"
+msgstr "完整"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
@@ -3231,10 +3396,6 @@ msgid "FRONTIERS"
 msgstr "边境"
 
 #: ui/frontier_rockets.gd:40
-msgid "You are here"
-msgstr "你在这里"
-
-#: ui/frontier_rockets.gd:40
 msgid "Base level %d"
 msgstr "基地等级 %d"
 
@@ -3242,9 +3403,29 @@ msgstr "基地等级 %d"
 msgid "Unexplored  ·  bales sell x%d here"
 msgstr "未探索  ·  这里捆包售价 x%d"
 
-#: ui/frontier_rockets.gd:42 ui/globe_view.gd:308 ui/rockets_panel.gd:81
-msgid "Launch"
-msgstr "发射"
+#: ui/garden_placer.gd:117
+msgid "Garden Mode opens when this base reaches level 5, or once the Cradle comes home."
+msgstr ""
+
+#: ui/garden_placer.gd:229
+msgid "charm +%.1f"
+msgstr ""
+
+#: ui/garden_placer.gd:232
+msgid "%s here: %s to pick it up"
+msgstr ""
+
+#: ui/garden_placer.gd:235
+msgid "GARDEN MODE   ·   Charm %.1f   ·   +%.1f%% plant growth here"
+msgstr ""
+
+#: ui/garden_placer.gd:236
+msgid "[%s] place   [%s] rotate   [%s / %s] item   [%s] pick up   [%s] done"
+msgstr ""
+
+#: ui/garden_placer.gd:291
+msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
+msgstr ""
 
 #: ui/globe_view.gd:118
 msgid "Survey"
@@ -3499,6 +3680,14 @@ msgstr "%s   放下捆包"
 msgid "%s   workbench"
 msgstr "%s   工作台"
 
+#: ui/late_menu.gd:9
+msgid "Garden Mode  [%s]"
+msgstr ""
+
+#: ui/late_menu.gd:15
+msgid "Ark Bridge"
+msgstr ""
+
 #: ui/lens_overlay.gd:61
 msgid ""
 "LM-1  OPTICAL   %s\n"
@@ -3537,11 +3726,11 @@ msgstr "继续"
 msgid "New Game"
 msgstr "新游戏"
 
-#: ui/main_menu.gd:332 ui/main_menu.gd:504 ui/pause_menu.gd:58
+#: ui/main_menu.gd:332 ui/main_menu.gd:505 ui/pause_menu.gd:59
 msgid "Settings"
 msgstr "设置"
 
-#: ui/main_menu.gd:333 ui/main_menu.gd:504
+#: ui/main_menu.gd:333 ui/main_menu.gd:505
 msgid "Credits"
 msgstr "制作人员"
 
@@ -3610,15 +3799,15 @@ msgstr "11月"
 msgid "Dec"
 msgstr "12月"
 
-#: ui/main_menu.gd:533
+#: ui/main_menu.gd:534
 msgid "CREDITS"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:548 ui/settings_panel.gd:117 ui/settings_panel.gd:145
+#: ui/main_menu.gd:549 ui/settings_panel.gd:117 ui/settings_panel.gd:145
 msgid "Back"
 msgstr "返回"
 
-#: ui/main_menu.gd:561
+#: ui/main_menu.gd:562
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -3628,27 +3817,27 @@ msgstr ""
 "代码、程序化网格、合成音频和文字均为 Greenfall 原创。\n"
 "\n"
 
-#: ui/main_menu.gd:564
+#: ui/main_menu.gd:565
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "第三方资源：CC0，Poly Haven（polyhaven.com）。"
 
-#: ui/main_menu.gd:582
+#: ui/main_menu.gd:583
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]作者：%s[/color]"
 
-#: ui/main_menu.gd:616
+#: ui/main_menu.gd:617
 msgid "START A NEW GAME?"
 msgstr "开始新游戏？"
 
-#: ui/main_menu.gd:617
+#: ui/main_menu.gd:618
 msgid "Your current save will be erased. This can't be undone."
 msgstr "你当前的存档将被删除。此操作无法撤销。"
 
-#: ui/main_menu.gd:625
+#: ui/main_menu.gd:626
 msgid "Keep my save"
 msgstr "保留存档"
 
-#: ui/main_menu.gd:631
+#: ui/main_menu.gd:632
 msgid "Erase and start"
 msgstr "删除并开始"
 
@@ -3668,19 +3857,19 @@ msgstr "图鉴  [%s]"
 msgid "Photo mode  [%s]"
 msgstr "拍照模式  [%s]"
 
-#: ui/pause_menu.gd:60
+#: ui/pause_menu.gd:61
 msgid "Save game"
 msgstr "保存游戏"
 
-#: ui/pause_menu.gd:62
+#: ui/pause_menu.gd:63
 msgid "Saved."
 msgstr "已保存。"
 
-#: ui/pause_menu.gd:63
+#: ui/pause_menu.gd:64
 msgid "Quit to title"
 msgstr "返回标题"
 
-#: ui/pause_menu.gd:64
+#: ui/pause_menu.gd:65
 msgid "Quit to desktop"
 msgstr "退出到桌面"
 
@@ -4348,10 +4537,6 @@ msgid "HUD"
 msgstr "HUD"
 
 #: ui/settings_panel.gd:509
-msgid "Full"
-msgstr "完整"
-
-#: ui/settings_panel.gd:509
 msgid "Minimal"
 msgstr "精简"
 
@@ -4578,6 +4763,14 @@ msgstr "升级"
 #: ui/upgrades_screen.gd:88
 msgid "%s (soon)"
 msgstr "%s（即将推出）"
+
+#: ui/world_banner.gd:37
+msgid "SEED MISSION  ·  WORLD %d"
+msgstr ""
+
+#: ui/world_banner.gd:70
+msgid "Lumi's pod is down on %s. A new world, ruined and waiting. Grow something."
+msgstr ""
 
 #: water/water_view.gd:78
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
@@ -4831,7 +5024,7 @@ msgstr "第一颗种子"
 msgid "Find the first seed."
 msgstr "找到第一颗种子。"
 
-#: data/achievements.json:achievements[plant_1].name
+#: data/achievements.json:achievements[plant_1].name data/cradle.json:heirlooms[green_thumb].name
 msgid "Green Thumb"
 msgstr "绿手指"
 
@@ -5023,7 +5216,7 @@ msgstr "好奇宝宝"
 msgid "Find 5 curiosities."
 msgstr "找到 5 件奇物。"
 
-#: data/achievements.json:achievements[curio_15].name
+#: data/achievements.json:achievements[curio_15].name data/achievements.json:achievements[late_eggs_40].name
 msgid "Cabinet of Curiosities"
 msgstr "珍奇柜"
 
@@ -5219,6 +5412,98 @@ msgstr ""
 msgid "Photograph 6 different animals in photo mode."
 msgstr ""
 
+#: data/achievements.json:achievements[late_bridge].name
+msgid "On the Bridge"
+msgstr ""
+
+#: data/achievements.json:achievements[late_bridge].desc
+msgid "Open the Ark Bridge after the Cradle comes home."
+msgstr ""
+
+#: data/achievements.json:achievements[late_world_1].name
+msgid "Seed Mission"
+msgstr ""
+
+#: data/achievements.json:achievements[late_world_1].desc
+msgid "Seed a new world from the Cradle's vault."
+msgstr ""
+
+#: data/achievements.json:achievements[late_world_3].name
+msgid "Gardener of Worlds"
+msgstr ""
+
+#: data/achievements.json:achievements[late_world_3].desc
+msgid "Seed three new worlds."
+msgstr ""
+
+#: data/achievements.json:achievements[late_heirloom_1].name
+msgid "Family Heirloom"
+msgstr ""
+
+#: data/achievements.json:achievements[late_heirloom_1].desc
+msgid "Buy an Heirloom."
+msgstr ""
+
+#: data/achievements.json:achievements[late_heirloom_20].name
+msgid "Treasured"
+msgstr ""
+
+#: data/achievements.json:achievements[late_heirloom_20].desc
+msgid "Grow Heirlooms to 20 levels in all."
+msgstr ""
+
+#: data/achievements.json:achievements[late_starseeds_100].name
+msgid "Starseed Saver"
+msgstr ""
+
+#: data/achievements.json:achievements[late_starseeds_100].desc
+msgid "Earn 100 Starseeds across your worlds."
+msgstr ""
+
+#: data/achievements.json:achievements[late_decor_1].name
+msgid "Home Touches"
+msgstr ""
+
+#: data/achievements.json:achievements[late_decor_1].desc
+msgid "Place a decoration in Garden Mode."
+msgstr ""
+
+#: data/achievements.json:achievements[late_decor_25].name
+msgid "Landscaper"
+msgstr ""
+
+#: data/achievements.json:achievements[late_decor_25].desc
+msgid "Place 25 decorations."
+msgstr ""
+
+#: data/achievements.json:achievements[late_decor_all].name
+msgid "Full Catalogue"
+msgstr ""
+
+#: data/achievements.json:achievements[late_decor_all].desc
+msgid "Place every kind of decoration at least once."
+msgstr ""
+
+#: data/achievements.json:achievements[late_charm_25].name
+msgid "Picture Perfect"
+msgstr ""
+
+#: data/achievements.json:achievements[late_charm_25].desc
+msgid "Reach 25 charm in one district."
+msgstr ""
+
+#: data/achievements.json:achievements[late_eggs_40].desc
+msgid "Find 40 curiosities."
+msgstr ""
+
+#: data/achievements.json:achievements[late_older_pod].name data/eggs.json:eggs[older_pod].name
+msgid "Not the First"
+msgstr ""
+
+#: data/achievements.json:achievements[late_older_pod].desc
+msgid "Find the older seed pod on a new world."
+msgstr ""
+
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
 msgstr "Verdance 上任意地方的 25 个繁茂六角格。"
@@ -5270,10 +5555,6 @@ msgstr "地标"
 #: data/codex.json:categories[animals].name
 msgid "Animals"
 msgstr ""
-
-#: data/codex.json:categories[frontiers].name
-msgid "Frontiers"
-msgstr "边境"
 
 #: data/codex.json:junk.metal.hint
 msgid "Rusty, clanky, everywhere."
@@ -6223,6 +6504,258 @@ msgstr ""
 msgid "White cranes circle high over the landing city on slow wingbeats. The ark's seed vault carried their eggs; this is the first flock to fly free."
 msgstr ""
 
+#: data/cradle.json:heirlooms[green_thumb].desc
+msgid "Plants grow 8% faster per level, on every world."
+msgstr ""
+
+#: data/cradle.json:heirlooms[deep_hopper].name
+msgid "Deep Hopper"
+msgstr ""
+
+#: data/cradle.json:heirlooms[deep_hopper].desc
+msgid "Lumi's hopper holds 10% more per level."
+msgstr ""
+
+#: data/cradle.json:heirlooms[quick_beam].name
+msgid "Quick Beam"
+msgstr ""
+
+#: data/cradle.json:heirlooms[quick_beam].desc
+msgid "Scoop 8% faster per level."
+msgstr ""
+
+#: data/cradle.json:heirlooms[traders_eye].name
+msgid "Trader's Eye"
+msgstr ""
+
+#: data/cradle.json:heirlooms[traders_eye].desc
+msgid "Bales sell for 10% more per level."
+msgstr ""
+
+#: data/cradle.json:heirlooms[swift_treads].name
+msgid "Swift Treads"
+msgstr ""
+
+#: data/cradle.json:heirlooms[swift_treads].desc
+msgid "Lumi moves 5% faster per level."
+msgstr ""
+
+#: data/cradle.json:heirlooms[seed_vault].name
+msgid "Seed Vault"
+msgstr ""
+
+#: data/cradle.json:heirlooms[seed_vault].desc
+msgid "8% more seeds per bloom per level; each new world starts with 40 seeds per level in the pod (ready for when Lumi finds that world's seed tin)."
+msgstr ""
+
+#: data/cradle.json:heirlooms[head_start].name
+msgid "Head Start"
+msgstr ""
+
+#: data/cradle.json:heirlooms[head_start].desc
+msgid "Each new world starts with 1,500 cubes per level."
+msgstr ""
+
+#: data/cradle.json:heirlooms[data_cache].name
+msgid "Data Cache"
+msgstr ""
+
+#: data/cradle.json:heirlooms[data_cache].desc
+msgid "Each new world starts with 60 research Data per level."
+msgstr ""
+
+#: data/cradle.json:heirlooms[old_crew].name
+msgid "Old Crew"
+msgstr ""
+
+#: data/cradle.json:heirlooms[old_crew].desc
+msgid "Robots wait at the landing site: a Scoopie at level 1, a Haul Bug at 2, another Scoopie at 3."
+msgstr ""
+
+#: data/cradle.json:heirlooms[archivist].name
+msgid "Archivist"
+msgstr ""
+
+#: data/cradle.json:heirlooms[archivist].desc
+msgid "Research notes travel with Lumi: level 1 knows every first-tier node, level 2 the second tier too."
+msgstr ""
+
+#: data/cradle.json:modifiers[heavy_rain].name
+msgid "Heavy Rain"
+msgstr ""
+
+#: data/cradle.json:modifiers[heavy_rain].desc
+msgid "Rain showers come four times as often and plants grow 15% faster."
+msgstr ""
+
+#: data/cradle.json:modifiers[long_nights].name
+msgid "Long Nights"
+msgstr ""
+
+#: data/cradle.json:modifiers[long_nights].desc
+msgid "Nights last twice as long. The night shift pays: bales sell for 10% more."
+msgstr ""
+
+#: data/cradle.json:modifiers[rich_salvage].name
+msgid "Rich Salvage"
+msgstr ""
+
+#: data/cradle.json:modifiers[rich_salvage].desc
+msgid "The junk here is better stuff: bales sell for 30% more, but the hopper fills 10% sooner."
+msgstr ""
+
+#: data/cradle.json:modifiers[thin_soil].name
+msgid "Thin Soil"
+msgstr ""
+
+#: data/cradle.json:modifiers[thin_soil].desc
+msgid "Plants grow 15% slower, but every bloom gives 25% more seeds."
+msgstr ""
+
+#: data/cradle.json:modifiers[tailwinds].name
+msgid "Tailwinds"
+msgstr ""
+
+#: data/cradle.json:modifiers[tailwinds].desc
+msgid "Steady winds: Lumi moves 10% faster and supply drops come twice as often."
+msgstr ""
+
+#: data/cradle.json:modifiers[wild_bloom].name
+msgid "Wild Bloom"
+msgstr ""
+
+#: data/cradle.json:modifiers[wild_bloom].desc
+msgid "Wildflowers want to come back: 30% more seeds per bloom, more wildlife visits."
+msgstr ""
+
+#: data/cradle.json:modifiers[heavy_junk].name
+msgid "Heavy Junk"
+msgstr ""
+
+#: data/cradle.json:modifiers[heavy_junk].desc
+msgid "Dense, heavy scrap: scooping is 10% slower, bales sell for 20% more."
+msgstr ""
+
+#: data/cradle.json:world_types[ice_moon].name
+msgid "Ice Moon"
+msgstr ""
+
+#: data/cradle.json:world_types[ice_moon].desc
+msgid "Frozen most of the way to the equator; lakes under the ice."
+msgstr ""
+
+#: data/cradle.json:world_types[desert_world].name
+msgid "Desert World"
+msgstr ""
+
+#: data/cradle.json:world_types[desert_world].desc
+msgid "Dunes and dry salt pans; the few lakes matter."
+msgstr ""
+
+#: data/cradle.json:world_types[ocean_world].name
+msgid "Ocean World"
+msgstr ""
+
+#: data/cradle.json:world_types[ocean_world].desc
+msgid "Mostly sea, with towns on small islands and long coasts."
+msgstr ""
+
+#: data/cradle.json:world_types[fungal_world].name
+msgid "Marsh World"
+msgstr ""
+
+#: data/cradle.json:world_types[fungal_world].desc
+msgid "Warm, wet and soft underfoot: fungal marsh everywhere."
+msgstr ""
+
+#: data/cradle.json:world_types[rust_world].name
+msgid "Rust World"
+msgstr ""
+
+#: data/cradle.json:world_types[rust_world].desc
+msgid "Old industry from pole to pole: rustlands and sprawl."
+msgstr ""
+
+#: data/decor.json:types[path].name
+msgid "Stone Path"
+msgstr ""
+
+#: data/decor.json:types[path].desc
+msgid "Flat stepping stones. Paths join everything up."
+msgstr ""
+
+#: data/decor.json:types[flower_bed].name
+msgid "Flower Bed"
+msgstr ""
+
+#: data/decor.json:types[flower_bed].desc
+msgid "A low bed of mixed flowers. Bees and butterflies approve."
+msgstr ""
+
+#: data/decor.json:types[planter].name
+msgid "Planter"
+msgstr ""
+
+#: data/decor.json:types[planter].desc
+msgid "A white hex planter with a small shrub, like the ones the future city grows."
+msgstr ""
+
+#: data/decor.json:types[bench].name
+msgid "Bench"
+msgstr ""
+
+#: data/decor.json:types[bench].desc
+msgid "Wood slats on cast feet. Cats like to sleep on it."
+msgstr ""
+
+#: data/decor.json:types[lamp].name
+msgid "Garden Lamp"
+msgstr ""
+
+#: data/decor.json:types[lamp].desc
+msgid "A slim lamp with a warm glow after dark."
+msgstr ""
+
+#: data/decor.json:types[bird_bath].name
+msgid "Bird Bath"
+msgstr ""
+
+#: data/decor.json:types[bird_bath].desc
+msgid "A stone basin of clean water."
+msgstr ""
+
+#: data/decor.json:types[fountain].name
+msgid "Fountain"
+msgstr ""
+
+#: data/decor.json:types[fountain].desc
+msgid "A tiered fountain, running again. Deer come to drink at dawn."
+msgstr ""
+
+#: data/decor.json:types[statue].name
+msgid "Maker Statue"
+msgstr ""
+
+#: data/decor.json:types[statue].desc
+msgid "A stone figure of one of the Makers, holding a watering can."
+msgstr ""
+
+#: data/decor.json:types[lumi_sculpture].name
+msgid "Lumi Sculpture"
+msgstr ""
+
+#: data/decor.json:types[lumi_sculpture].desc
+msgid "A topiary-and-brass sculpture of Lumi holding up a seedling. Very modest."
+msgstr ""
+
+#: data/decor.json:types[wren_kite].name
+msgid "WREN Wind Kite"
+msgstr ""
+
+#: data/decor.json:types[wren_kite].desc
+msgid "A kite shaped like WREN's bird, tethered to a post and always flying."
+msgstr ""
+
 #: data/designs.json:designs[aurora].tagline
 msgid "Baseline / Explorer"
 msgstr ""
@@ -7004,6 +7537,295 @@ msgstr "一台孤零零立在田野里的台钻，旁边有块手写牌子：5 �
 #: data/eggs.json:eggs[back_in_five].toast
 msgid "BACK IN 5 MINUTES. Lumi waits five minutes. Nobody comes. Lumi leaves a shiny bolt on the table, for luck."
 msgstr "5 分钟后回来。Lumi 等了五分钟。没人来。Lumi 在桌上留下一颗闪亮的螺栓，图个好运。"
+
+#: data/eggs.json:eggs[sand_piano].name
+msgid "The Sand Piano"
+msgstr ""
+
+#: data/eggs.json:eggs[sand_piano].prompt
+msgid "E   press a key"
+msgstr ""
+
+#: data/eggs.json:eggs[sand_piano].hint
+msgid "In the Dust Flats: something with eighty-eight teeth, half under a dune."
+msgstr ""
+
+#: data/eggs.json:eggs[sand_piano].lore
+msgid "An upright piano, buried to the keys in a dune. Nobody knows how it got this far out. The sand has tuned it to a key that doesn't exist."
+msgstr ""
+
+#: data/eggs.json:eggs[sand_piano].toast
+msgid "Lumi presses one key. A single wobbly note rolls across the flats, and somewhere a dune answers."
+msgstr ""
+
+#: data/eggs.json:eggs[snow_bot].name
+msgid "Snowbot"
+msgstr ""
+
+#: data/eggs.json:eggs[snow_bot].prompt
+msgid "E   straighten its scarf"
+msgstr ""
+
+#: data/eggs.json:eggs[snow_bot].hint
+msgid "In the Frozen Port: a snowman with a robot inside. Or a robot with a snowman outside."
+msgstr ""
+
+#: data/eggs.json:eggs[snow_bot].lore
+msgid "The port crews built a snowman around a dead loader robot every winter, for luck. This one has stood for three hundred winters. The scarf is new-ish."
+msgstr ""
+
+#: data/eggs.json:eggs[snow_bot].toast
+msgid "Lumi straightens the snowbot's scarf. Its old lamp eyes flicker once, as if to say thanks."
+msgstr ""
+
+#: data/eggs.json:eggs[bottle_message].name
+msgid "Message in a Bottle"
+msgstr ""
+
+#: data/eggs.json:eggs[bottle_message].prompt
+msgid "E   uncork the bottle"
+msgstr ""
+
+#: data/eggs.json:eggs[bottle_message].hint
+msgid "In the Sunken City: the flood left something sealed. Clean the ground and look."
+msgstr ""
+
+#: data/eggs.json:eggs[bottle_message].lore
+msgid "A green bottle, corked and waxed, left by someone who stayed in the Sunken City while the water came up."
+msgstr ""
+
+#: data/eggs.json:eggs[bottle_message].toast
+msgid "A message in a bottle, still dry inside."
+msgstr ""
+
+#: data/eggs.json:eggs[bottle_message].doc.title
+msgid "To whoever drains this"
+msgstr ""
+
+#: data/eggs.json:eggs[bottle_message].doc.body
+msgid ""
+"The water is at the second-floor windows now. Most people went up to the Cradle. Some of us stayed, because somebody has to remember where the streets were.\n"
+"\n"
+"The pumps are fine, by the way. They only need someone to clean the intakes. Ask for Dot at the pump house; if Dot is not there, the big red lever goes DOWN, not up. Ignore the sign.\n"
+"\n"
+"If you are reading this, the water went down. Good. Plant something where the bakery was. It always smelled nice there.\n"
+"\n"
+"— R., who stayed"
+msgstr ""
+
+#: data/eggs.json:eggs[welcome_home].name
+msgid "Welcome Home"
+msgstr ""
+
+#: data/eggs.json:eggs[welcome_home].hint
+msgid "At Cradle Returns: the ground crews made a sign. It took them three hundred years to get the spelling right."
+msgstr ""
+
+#: data/eggs.json:eggs[welcome_home].lore
+msgid "A hand-painted banner on two poles at the edge of the old landing field. The ground crews kept repainting it for every generation of the ark that never came back. Until now."
+msgstr ""
+
+#: data/eggs.json:eggs[welcome_home].toast
+msgid "WELCOME HOME, CRADLE. Someone has crossed out the earlier spellings very neatly."
+msgstr ""
+
+#: data/eggs.json:eggs[crossword].name
+msgid "The Unfinished Crossword"
+msgstr ""
+
+#: data/eggs.json:eggs[crossword].prompt
+msgid "E   read the crossword"
+msgstr ""
+
+#: data/eggs.json:eggs[crossword].hint
+msgid "A folded newspaper and a pen, left on a crate. One clue to go."
+msgstr ""
+
+#: data/eggs.json:eggs[crossword].lore
+msgid "The last edition of the morning paper, folded open at the crossword. Every clue is filled in except one."
+msgstr ""
+
+#: data/eggs.json:eggs[crossword].toast
+msgid "The last crossword clue: 'What grows back if you let it (5)'. Lumi writes it in."
+msgstr ""
+
+#: data/eggs.json:eggs[crossword].doc.title
+msgid "The Morning Ledger · Puzzle page"
+msgstr ""
+
+#: data/eggs.json:eggs[crossword].doc.body
+msgid ""
+"ACROSS\n"
+"1. Rubbish, but bigger (4) — JUNK\n"
+"4. It runs on the hour, then stops for good (5) — CLOCK\n"
+"7. What the robots were for (8) — CLEANING\n"
+"9. Last thing anyone saw of the Cradle (5) — LIGHT\n"
+"\n"
+"DOWN\n"
+"2. 'Kept for later', said the Ledger (6) — PAUSED\n"
+"3. What grows back if you let it (5) — G R E E N\n"
+"\n"
+"(The last answer is in a different pen. The letters are very careful, like a robot wrote them.)"
+msgstr ""
+
+#: data/eggs.json:eggs[hopscotch].name
+msgid "Hopscotch"
+msgstr ""
+
+#: data/eggs.json:eggs[hopscotch].hint
+msgid "Chalk squares on a clean bit of pavement, still faintly there."
+msgstr ""
+
+#: data/eggs.json:eggs[hopscotch].lore
+msgid "A chalk hopscotch grid, drawn so many times on the same spot that it soaked into the stone. A pebble still sits on square seven."
+msgstr ""
+
+#: data/eggs.json:eggs[hopscotch].toast
+msgid "Lumi hops the hopscotch. The hover bowl counts as one foot. It's a personal best."
+msgstr ""
+
+#: data/eggs.json:eggs[balloon].name
+msgid "The Last Balloon"
+msgstr ""
+
+#: data/eggs.json:eggs[balloon].prompt
+msgid "E   untie the balloon"
+msgstr ""
+
+#: data/eggs.json:eggs[balloon].hint
+msgid "Something red is still holding its breath, tied to a post."
+msgstr ""
+
+#: data/eggs.json:eggs[balloon].lore
+msgid "A red balloon tied to a sign post. It should have gone flat centuries ago. It hasn't. It's waiting for something."
+msgstr ""
+
+#: data/eggs.json:eggs[balloon].toast
+msgid "Lumi unties the balloon. It drifts up, slowly, toward where the Cradle would be."
+msgstr ""
+
+#: data/eggs.json:eggs[mailbox].name
+msgid "Return to Sender"
+msgstr ""
+
+#: data/eggs.json:eggs[mailbox].prompt
+msgid "E   check the mail"
+msgstr ""
+
+#: data/eggs.json:eggs[mailbox].hint
+msgid "A mailbox so full the flap won't shut."
+msgstr ""
+
+#: data/eggs.json:eggs[mailbox].lore
+msgid "A street mailbox stuffed with letters that never went out. The post stopped the week the Ledger 'paused' everything."
+msgstr ""
+
+#: data/eggs.json:eggs[mailbox].toast
+msgid "One letter on top is addressed to 'The Robot Who Cleans Up'. It's for Lumi."
+msgstr ""
+
+#: data/eggs.json:eggs[mailbox].doc.title
+msgid "To: The Robot Who Cleans Up"
+msgstr ""
+
+#: data/eggs.json:eggs[mailbox].doc.body
+msgid ""
+"Dear robot,\n"
+"\n"
+"Mum says the cleaning robots will come back when the paperwork is sorted. I don't know what paperwork is but it sounds very slow.\n"
+"\n"
+"When you get here, the street with the blue door is ours. The flower box is mine. It has a tomato in it (it is not a flower but it is allowed).\n"
+"\n"
+"Please water it. Also please don't scoop the cat. He is orange and he is not junk, even when he sits on junk.\n"
+"\n"
+"Thank you for cleaning up,\n"
+"Pip (age 7)"
+msgstr ""
+
+#: data/eggs.json:eggs[bonsai].name
+msgid "The Patient Tree"
+msgstr ""
+
+#: data/eggs.json:eggs[bonsai].hint
+msgid "Someone kept one very small tree alive for a very long time."
+msgstr ""
+
+#: data/eggs.json:eggs[bonsai].lore
+msgid "A bonsai on a little stand, three hundred years old and about thirty centimetres tall. A care robot watered it until its battery ran out; the rain did the rest."
+msgstr ""
+
+#: data/eggs.json:eggs[bonsai].toast
+msgid "A tiny, ancient tree. It has been waiting patiently, which is what it does best."
+msgstr ""
+
+#: data/eggs.json:eggs[listening_dish].name
+msgid "Listening Dish"
+msgstr ""
+
+#: data/eggs.json:eggs[listening_dish].prompt
+msgid "E   turn the dish"
+msgstr ""
+
+#: data/eggs.json:eggs[listening_dish].hint
+msgid "In the wild: a small dish aimed at the sky, still listening."
+msgstr ""
+
+#: data/eggs.json:eggs[listening_dish].lore
+msgid "A homemade satellite dish on a tripod, pointed at the sky. A note taped to it says 'KEEP LISTENING. THEY SAID THEY'D CALL.'"
+msgstr ""
+
+#: data/eggs.json:eggs[listening_dish].toast
+msgid "Lumi turns the dish a few degrees. For a second there's a faint carrier tone: the Cradle's beacon, three hundred years late and right on time."
+msgstr ""
+
+#: data/eggs.json:eggs[older_pod].prompt
+msgid "E   open the old pod"
+msgstr ""
+
+#: data/eggs.json:eggs[older_pod].hint
+msgid "On a new world: a seed pod much older than Lumi's, grown over."
+msgstr ""
+
+#: data/eggs.json:eggs[older_pod].lore
+msgid "A seed pod from the Cradle, much older than Lumi's, half buried and overgrown. Someone tried this world long before. The flight log is still readable."
+msgstr ""
+
+#: data/eggs.json:eggs[older_pod].toast
+msgid "An older pod from the Cradle. Somebody got here first, a long time ago."
+msgstr ""
+
+#: data/eggs.json:eggs[older_pod].doc.title
+msgid "Pod log · seed-keeper unit SK-0"
+msgstr ""
+
+#: data/eggs.json:eggs[older_pod].doc.body
+msgid ""
+"Day 1. Landed. Nothing here is green. Planted the first tray anyway.\n"
+"\n"
+"Day 40. The junk is heavier than at home. The rain is kind.\n"
+"\n"
+"Day 212. Battery low. Tray 3 is flowering. I think it will be fine without me now.\n"
+"\n"
+"If another seed-keeper comes: start by the water. The ground remembers more than it looks like it does.\n"
+"\n"
+"— SK-0"
+msgstr ""
+
+#: data/eggs.json:eggs[heirloom_tin].name
+msgid "The Heirloom Tin"
+msgstr ""
+
+#: data/eggs.json:eggs[heirloom_tin].hint
+msgid "On a new world: something from home fell out of Lumi's pod."
+msgstr ""
+
+#: data/eggs.json:eggs[heirloom_tin].lore
+msgid "A seed tin from Verdance, the same kind as the one in the old greenhouse. Lumi packed it with soil from the first garden before leaving. It came open on landing."
+msgstr ""
+
+#: data/eggs.json:eggs[heirloom_tin].toast
+msgid "Lumi's tin of Verdance soil. A little bit of home, already spilled on new ground. Good."
+msgstr ""
 
 #: data/events.json:events[supply_drop].name
 msgid "Supply Drop"
@@ -8428,6 +9250,54 @@ msgstr "种下一波种子方舟"
 #: data/goals.json:goals[ark_3].text
 msgid "Plant three Seed Ark waves"
 msgstr "种下三波种子方舟"
+
+#: data/goals.json:goals[late_bridge].text
+msgid "Open the Ark Bridge"
+msgstr ""
+
+#: data/goals.json:goals[late_garden_1].text
+msgid "Place a decoration (H)"
+msgstr ""
+
+#: data/goals.json:goals[late_heirloom_1].text
+msgid "Buy an Heirloom"
+msgstr ""
+
+#: data/goals.json:goals[late_garden_10].text
+msgid "Place 10 decorations"
+msgstr ""
+
+#: data/goals.json:goals[late_garden_kinds].text
+msgid "Place 5 kinds of decoration"
+msgstr ""
+
+#: data/goals.json:goals[late_ark_5].text
+msgid "Plant five Seed Ark waves"
+msgstr ""
+
+#: data/goals.json:goals[late_eggs_30].text
+msgid "Find 30 curiosities"
+msgstr ""
+
+#: data/goals.json:goals[late_world_1].text
+msgid "Seed a new world"
+msgstr ""
+
+#: data/goals.json:goals[late_charm_20].text
+msgid "Reach 20 charm in one district"
+msgstr ""
+
+#: data/goals.json:goals[late_heirloom_10].text
+msgid "Grow Heirlooms to 10 levels"
+msgstr ""
+
+#: data/goals.json:goals[late_world_2].text
+msgid "Seed a second new world"
+msgstr ""
+
+#: data/goals.json:goals[late_eggs_38].text
+msgid "Find 38 curiosities"
+msgstr ""
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -11182,6 +12052,186 @@ msgstr "你的核心电量低。种点东西，Lumi。什么都行。绿光就�
 #: data/wren_lines.json:low_core
 msgid "Running a little dim. A few blooms will fix that."
 msgstr "有点暗了。开几朵花就好了。"
+
+#: data/wren_lines.json:egg_sand_piano
+msgid "...music... out here?..."
+msgstr ""
+
+#: data/wren_lines.json:egg_sand_piano
+msgid "A piano. In the desert. I have so many questions and none of them will be answered."
+msgstr ""
+
+#: data/wren_lines.json:egg_sand_piano
+msgid "It's out of tune in a way that sounds deliberate now. Like the dunes learned a song."
+msgstr ""
+
+#: data/wren_lines.json:egg_snow_bot
+msgid "...someone dressed it... for the cold..."
+msgstr ""
+
+#: data/wren_lines.json:egg_snow_bot
+msgid "They built snowmen around the old loaders for luck. I think it worked, a bit. It's still standing."
+msgstr ""
+
+#: data/wren_lines.json:egg_snow_bot
+msgid "Every winter, a new scarf. Someone kept that up for a very long time."
+msgstr ""
+
+#: data/wren_lines.json:egg_bottle_message
+msgid "...a letter... from before the water..."
+msgstr ""
+
+#: data/wren_lines.json:egg_bottle_message
+msgid "Somebody stayed to remember where the streets were. We should plant where the bakery was."
+msgstr ""
+
+#: data/wren_lines.json:egg_bottle_message
+msgid "Red lever goes down, not up. Noted. Thank you, R."
+msgstr ""
+
+#: data/wren_lines.json:egg_welcome_home
+msgid "...welcome... home..."
+msgstr ""
+
+#: data/wren_lines.json:egg_welcome_home
+msgid "They kept repainting it. Three hundred years of 'welcome home' for a ship that hadn't come yet."
+msgstr ""
+
+#: data/wren_lines.json:egg_welcome_home
+msgid "We came, though. Tell them we came."
+msgstr ""
+
+#: data/wren_lines.json:egg_crossword
+msgid "...a puzzle... one left..."
+msgstr ""
+
+#: data/wren_lines.json:egg_crossword
+msgid "Five letters, what grows back if you let it. You got it on the first try."
+msgstr ""
+
+#: data/wren_lines.json:egg_crossword
+msgid "The Ledger set the crossword. Of course the Ledger set the crossword."
+msgstr ""
+
+#: data/wren_lines.json:egg_hopscotch
+msgid "...hop... hop..."
+msgstr ""
+
+#: data/wren_lines.json:egg_hopscotch
+msgid "One, two, three... I'm counting the hover bowl as a foot. Don't tell anyone."
+msgstr ""
+
+#: data/wren_lines.json:egg_hopscotch
+msgid "Square seven still has the pebble on it. Somebody was winning."
+msgstr ""
+
+#: data/wren_lines.json:egg_balloon
+msgid "...up... it went up..."
+msgstr ""
+
+#: data/wren_lines.json:egg_balloon
+msgid "It's heading for the Cradle. I'll tell the bridge to watch for a red balloon."
+msgstr ""
+
+#: data/wren_lines.json:egg_balloon
+msgid "Three hundred years holding its breath. It earned the trip."
+msgstr ""
+
+#: data/wren_lines.json:egg_mailbox
+msgid "...a letter... for you..."
+msgstr ""
+
+#: data/wren_lines.json:egg_mailbox
+msgid "'Please don't scoop the cat.' Excellent advice. Still valid."
+msgstr ""
+
+#: data/wren_lines.json:egg_mailbox
+msgid "The blue door, the flower box, the tomato that counts as a flower. Let's find it."
+msgstr ""
+
+#: data/wren_lines.json:egg_bonsai
+msgid "...small... old... patient..."
+msgstr ""
+
+#: data/wren_lines.json:egg_bonsai
+msgid "Three hundred years old and thirty centimetres tall. It took its time. Good for it."
+msgstr ""
+
+#: data/wren_lines.json:egg_bonsai
+msgid "It looks like it's been expecting you. Trees are like that."
+msgstr ""
+
+#: data/wren_lines.json:egg_listening_dish
+msgid "...a signal... faint..."
+msgstr ""
+
+#: data/wren_lines.json:egg_listening_dish
+msgid "That tone. That's the Cradle's beacon. Somebody out here kept listening the whole time."
+msgstr ""
+
+#: data/wren_lines.json:egg_listening_dish
+msgid "'They said they'd call.' We did. Late, but we did."
+msgstr ""
+
+#: data/wren_lines.json:egg_older_pod
+msgid "...another pod... older..."
+msgstr ""
+
+#: data/wren_lines.json:egg_older_pod
+msgid "SK-0. A seed-keeper before you. I didn't know there were any. The Cradle never told me."
+msgstr ""
+
+#: data/wren_lines.json:egg_older_pod
+msgid "'Start by the water.' Good advice, from someone who knew."
+msgstr ""
+
+#: data/wren_lines.json:egg_heirloom_tin
+msgid "...soil... from home..."
+msgstr ""
+
+#: data/wren_lines.json:egg_heirloom_tin
+msgid "A bit of the first garden, already spilled on new ground. That's how it starts."
+msgstr ""
+
+#: data/wren_lines.json:egg_heirloom_tin
+msgid "Verdance soil on another world. The Makers would have liked that."
+msgstr ""
+
+#: data/wren_lines.json:cradle_mode
+msgid "...the vault... other worlds..."
+msgstr ""
+
+#: data/wren_lines.json:cradle_mode
+msgid "The Cradle's seed vault has a lot more in it than one planet's worth. There are other worlds out here, Lumi. Ruined ones. Waiting."
+msgstr ""
+
+#: data/wren_lines.json:cradle_mode
+msgid "Heirlooms, Starseeds, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."
+msgstr ""
+
+#: data/wren_lines.json:new_world
+msgid "...new ground... new junk..."
+msgstr ""
+
+#: data/wren_lines.json:new_world
+msgid "New world, new sky. Same job. You're better at it than you were the first time."
+msgstr ""
+
+#: data/wren_lines.json:new_world
+msgid "Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."
+msgstr ""
+
+#: data/wren_lines.json:garden_place
+msgid "...pretty..."
+msgstr ""
+
+#: data/wren_lines.json:garden_place
+msgid "You're decorating. I approve. The cats are going to approve more."
+msgstr ""
+
+#: data/wren_lines.json:garden_place
+msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
+msgstr ""
 
 #~ msgid "Printed: %s %s."
 #~ msgstr "已打印：%s %s。"
