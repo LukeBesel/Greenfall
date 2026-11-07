@@ -30,7 +30,7 @@
     {"id": "Barrel_01", "count": 3}
   ],
   "ground_tint": [0.8, 0.9, 1.0, 0.6],
-  "grass_tint": [0.62, 0.8, 0.5],
+  "grass_tint": [0.48, 0.7, 0.42],
   "coat": [0.86, 0.94, 1.0, 0.45],
   "hills": [1.3, 1.4, 1.55],
   "horizon": ["old_drill_press", "small_lpg_tank", "Barrel_01"]

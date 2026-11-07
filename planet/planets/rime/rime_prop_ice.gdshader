@@ -44,8 +44,8 @@ void fragment() {
 	float top = smoothstep(0.55, 0.9, n.y + (b - 0.5) * 0.3) * snow_top;
 	col = mix(col, frost, top);
 	ALBEDO = col * (0.92 + 0.12 * b);
-	ROUGHNESS = mix(0.07 + crack * 0.2, 0.6, top);
-	SPECULAR = 0.65;
+	ROUGHNESS = mix(0.2 + crack * 0.2, 0.6, top);
+	SPECULAR = 0.5;
 	// Fake light scattering through thick ice: a little of the deep colour shines back.
 	EMISSION = ice_deep * 0.05 * (1.0 - fres) + glow_col * glow * (1.0 - fres) * (0.4 + 0.6 * a);
 }

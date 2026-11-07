@@ -1197,9 +1197,9 @@ func _setup_sky() -> void:
 	_sky_mat.set_shader_parameter("stars_day", float(sk.get("stars_day", 0.55)))
 	var gd: Vector3 = _v3(sk.get("giant_dir", [-0.38, 0.17, -0.91])).normalized()
 	_sky_mat.set_shader_parameter("giant_dir", gd)
-	_sky_mat.set_shader_parameter("giant_r", sin(deg_to_rad(float(sk.get("giant_radius_deg", 19.0)))))
+	_sky_mat.set_shader_parameter("giant_r", sin(deg_to_rad(float(sk.get("giant_radius_deg", 15.0)))))
 	var tilt: float = deg_to_rad(float(sk.get("ring_tilt_deg", 0.0)))
-	_sky_mat.set_shader_parameter("giant_pole", Basis(Vector3(gd.z, 0, -gd.x).normalized(), tilt) * Basis(gd, 0.35) * Vector3.UP)
+	_sky_mat.set_shader_parameter("giant_pole", Basis(Vector3(gd.z, 0, -gd.x).normalized(), tilt) * Basis(gd, 0.25) * Vector3.UP)
 	var a: Dictionary = suns["a"]
 	var b: Dictionary = suns["b"]
 	_sky_mat.set_shader_parameter("sun_a_col", a["color"])
