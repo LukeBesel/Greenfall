@@ -482,7 +482,7 @@ static func _change_scene(tree: SceneTree) -> void:
 		tree.current_scene.process_mode = Node.PROCESS_MODE_DISABLED
 	# Deferred: callers can be deep inside the old scene's physics step (the autoplay bot is),
 	# and the old scene leaves the tree as soon as the change runs.
-	tree.change_scene_to_file.call_deferred("res://scenes/slice.tscn")
+	(tree.root.get_node("/root/Loader") as LoadingScreen).goto.call_deferred("res://scenes/slice.tscn")  # [intro2] loading screen
 
 
 ## [worlds2] Title screen world picker: make world `i` the current one without changing scenes, so

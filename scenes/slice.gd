@@ -924,7 +924,7 @@ func travel_to(to_hub: int) -> void:
 	GameState.reload_in_memory = true
 	SaveManager.save_game(false)
 	get_tree().paused = false
-	get_tree().reload_current_scene()
+	Loader.reload()  # [intro2] loading screen
 
 
 ## Salvaged building materials from scooped junk (data/hub.json "materials").

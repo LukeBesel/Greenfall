@@ -22,6 +22,7 @@ var world: Node
 var running: bool = false
 ## True from _finish() until the fade-out has handed the camera and controls back.
 var ending: bool = false
+var _waiting: bool = false
 
 var _cam: Camera3D
 var _prev_cam: Camera3D
@@ -188,6 +189,13 @@ static func lines() -> Dictionary:
 
 
 func play() -> void:
+	# [intro2] Start once the loading screen has gone (its black cover stays up meanwhile).
+	var ld: LoadingScreen = get_node_or_null("/root/Loader") as LoadingScreen
+	if ld and ld.busy():
+		_waiting = true
+		_set_player_enabled(false)
+		await ld.wait_done()
+		_waiting = false
 	running = true
 	var patch: Node3D = world.patch
 	_set_player_enabled(false)
@@ -905,7 +913,7 @@ func _report_subtitles() -> void:
 
 ## The intro (or its fade-out) still owns the camera and controls.
 func busy() -> bool:
-	return running or ending
+	return running or ending or _waiting
 
 
 func _set_player_enabled(on: bool) -> void:
