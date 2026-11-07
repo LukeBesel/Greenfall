@@ -247,6 +247,7 @@ func _build_halo(head: Node3D) -> void:
 
 func _build_medkit(h: Node3D) -> void:
 	h.rotation = Vector3(0.0, PI * 0.5, 0.0)
+	h.scale = Vector3.ONE * 1.15
 	var body := _paint(Color(0.93, 0.92, 0.89), 17.0)
 	_mesh(h, _box(Vector3(0.13, 0.09, 0.055)), body, Vector3(0, -0.035, 0))
 	_mesh(h, _box(Vector3(0.05, 0.016, 0.02)), _mat("dark", body), Vector3(0, 0.017, 0))
@@ -258,6 +259,7 @@ func _build_medkit(h: Node3D) -> void:
 
 func _build_can(h: Node3D) -> void:
 	h.rotation = Vector3(0.0, PI * 0.5, 0.0)
+	h.scale = Vector3.ONE * 1.4
 	var body := _paint(LumiStyle.col(style, "accent"), 19.0)
 	var dark: Material = _mat("dark", body)
 	_mesh(h, _cyl(0.04, 0.046, 0.085, 20), body, Vector3(0, -0.06, 0))
@@ -379,7 +381,7 @@ func _process(delta: float) -> void:
 				_comp_glow.albedo_color.a = 0.35 + 0.3 * (0.5 + 0.5 * sin(_t * 2.3 + _seed))
 		"drone":
 			# Hovers at the right shoulder, a little behind, lagging and facing where Lumi faces.
-			var target: Vector3 = c + b * Vector3(0.58, 0.22 + sin(_t * 2.1) * 0.03, 0.22)
+			var target: Vector3 = c + b * Vector3(0.46, 0.2 + sin(_t * 2.1) * 0.03, 0.18)
 			var k: float = clampf(delta * 3.5, 0.0, 1.0)
 			var p: Vector3 = _comp.global_position.lerp(target, k)
 			if p.distance_to(target) > 3.0:
