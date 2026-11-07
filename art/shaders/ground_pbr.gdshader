@@ -252,6 +252,15 @@ void fragment() {
 		grass.alb *= grass_tint;
 		m = mixm(mixm(m, soil, smoothstep(0.0, 0.15, life)), grass, g);
 	}
+	if (frontier_fx.w > 0.001 && life > 0.001 && !is_road) {
+		// [planet-rime] Alpine moss, not lawn: rust-red cushions among the green and frost that
+		// lingers in the hollows.
+		float red = smoothstep(0.58, 0.78, fbm(p * 0.27 + 61.0)) * life;
+		m.alb = mix(m.alb, m.alb * vec3(1.35, 0.8, 0.62), red * 0.6);
+		float fz = smoothstep(0.64, 0.82, fbm(p * 0.13 + 51.0)) * frontier_fx.w * 0.75;
+		m.alb = mix(m.alb, vec3(0.9, 0.94, 1.0) * (0.92 + 0.08 * n1), fz);
+		m.arm.g = mix(m.arm.g, 0.45, fz);
+	}
 	if (is_hub > 0.75 || is_yard) {
 		m = base;
 	}

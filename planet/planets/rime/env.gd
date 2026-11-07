@@ -595,6 +595,7 @@ func _build_borehole() -> void:
 	var always := Batch.new()
 	var ruin := Batch.new()
 	var up := Batch.new()
+	var midb := Batch.new()
 	var fut := Batch.new()
 	var segs: int = 56
 	for i: int in segs:
@@ -634,8 +635,8 @@ func _build_borehole() -> void:
 		var base: Vector3 = c + ax * sgn * (br + 9.0)
 		base.y = ground_y(base.x, base.z)
 		var top: Vector3 = c + ax * sgn * (br + 2.0) + Vector3(0, rim_y + tower_h, 0)
-		for b: Batch in [ruin, up]:
-			var m: Material = _mat("rust") if b == ruin else (_mat("ledger"))
+		for b: Batch in [ruin, midb, fut]:
+			var m: Material = _mat("rust") if b == ruin else (_mat("ledger") if b == midb else _mat("white"))
 			for s2: float in [-1.0, 1.0]:
 				_beam(b, base + side * s2 * 7.0, top + side * s2 * 1.5, 1.1, m)
 				_beam(b, base + side * s2 * 7.0 - ax * sgn * 6.0, top + side * s2 * 1.5, 0.8, m)
@@ -649,16 +650,18 @@ func _build_borehole() -> void:
 	var t0: Vector3 = c - ax * (br + 2.0) + Vector3(0, rim_y + tower_h - 2.0, 0)
 	var t1: Vector3 = c + ax * (br + 2.0) + Vector3(0, rim_y + tower_h - 2.0, 0)
 	# Intact bridge (mid and up): a box truss, the hoist block and drill string.
-	for s2: float in [-1.0, 1.0]:
-		_beam(up, t0 + side * s2 * 1.6, t1 + side * s2 * 1.6, 0.9, _mat("ledger"))
-		_beam(up, t0 + side * s2 * 1.6 + Vector3(0, -3.5, 0), t1 + side * s2 * 1.6 + Vector3(0, -3.5, 0), 0.7, _mat("ledger"))
-	for k: int in 14:
-		var f: float = float(k) / 13.0
-		var pk: Vector3 = t0.lerp(t1, f)
-		_beam(up, pk + side * 1.6, pk + side * 1.6 + Vector3(0, -3.5, 0), 0.4, _mat("ledger"))
-		_beam(up, pk - side * 1.6, pk - side * 1.6 + Vector3(0, -3.5, 0), 0.4, _mat("ledger"))
-	_boxp(up, c + Vector3(0, rim_y + tower_h - 7.5, 0), Vector3(5.0, 4.5, 5.0), _mat("steel"))
-	up.add(ProcMesh.cyl(0.9, 0.9, 60.0, 12), Transform3D(Basis(), c + Vector3(0, rim_y + tower_h - 40.0, 0)), _mat("steel"))
+	for b: Batch in [midb, fut]:
+		var m: Material = _mat("ledger") if b == midb else _mat("white")
+		for s2: float in [-1.0, 1.0]:
+			_beam(b, t0 + side * s2 * 1.6, t1 + side * s2 * 1.6, 0.9, m)
+			_beam(b, t0 + side * s2 * 1.6 + Vector3(0, -3.5, 0), t1 + side * s2 * 1.6 + Vector3(0, -3.5, 0), 0.7, m)
+		for k: int in 14:
+			var f: float = float(k) / 13.0
+			var pk: Vector3 = t0.lerp(t1, f)
+			_beam(b, pk + side * 1.6, pk + side * 1.6 + Vector3(0, -3.5, 0), 0.4, m)
+			_beam(b, pk - side * 1.6, pk - side * 1.6 + Vector3(0, -3.5, 0), 0.4, m)
+		_boxp(b, c + Vector3(0, rim_y + tower_h - 7.5, 0), Vector3(5.0, 4.5, 5.0), _mat("steel") if b == midb else m)
+		b.add(ProcMesh.cyl(0.9, 0.9, 60.0, 12), Transform3D(Basis(), c + Vector3(0, rim_y + tower_h - 40.0, 0)), _mat("steel") if b == midb else m)
 	# Broken bridge halves hanging into the hole.
 	for sgn: float in [-1.0, 1.0]:
 		var root: Vector3 = c - ax * sgn * (br + 2.0) + Vector3(0, rim_y + tower_h - 2.0, 0)
@@ -685,6 +688,7 @@ func _build_borehole() -> void:
 	always.flush(_groups["always"])
 	ruin.flush(_groups["ruin"])
 	up.flush(_groups["up"])
+	midb.flush(_groups["mid"])
 	fut.flush(_groups["future"])
 	# Floating ice shards held in the updraft above the hole (the moon's gravity is weak).
 	_shards = MultiMesh.new()
