@@ -120,7 +120,7 @@ func _move(delta: float) -> void:
 	var speed: float = stat("move_speed") * (0.55 if input.scoop_held() and wish.length() > 0.1 else 1.0)
 	# Wading: Patch can't swim yet. Shallow lake water slows him and splashes.
 	var here: int = world.field.hex_at(global_position) if world and world.field else -1
-	if here >= 0 and world.field.is_water(here):
+	if here >= 0 and world.field.is_water(here) and not world.has_meta("hover_water"):  # [planet-tidewell] floats over water there
 		speed *= 0.45
 		if Vector2(velocity.x, velocity.z).length() > 0.5 and randf() < 0.15:
 			Vfx.burst("soil", global_position + Vector3(0, 0.15, 0), Color(0.6, 0.7, 0.75, 0.7), 0.3)

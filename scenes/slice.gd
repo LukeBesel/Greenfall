@@ -105,6 +105,17 @@ func _ready() -> void:
 	var is_city: bool = planet.city[anchor_cell] >= 0
 	district_name = str(planet.cities[planet.city[anchor_cell]]["name"]) if is_city else PlanetData.BIOMES[planet.biome[anchor_cell]].capitalize().replace("_", " ")
 	var fk: Dictionary = Frontiers.field_params(planet, hub_index)  # [biomes] frontier district?
+	# [planet-tidewell] dev: --planet-env=<id> builds this district as that planet (data/planets.json
+	# "district" params + its env script's prepare / field_water / post_generate / apply hooks).
+	var penv: Dictionary = {}
+	var penv_s: Script = null
+	if DevHooks.has("planet-env"):
+		penv = (Economy.read_json("res://data/planets.json") as Dictionary).get(DevHooks.get_s("planet-env", ""), {})
+		if not penv.is_empty() and ResourceLoader.exists(str(penv.get("env", ""))):
+			penv_s = load(str(penv["env"]))
+			fk = penv.get("district", {})
+			if penv_s.has_method("prepare"):
+				penv_s.call("prepare", penv)
 	var f_radius: int = int(fk.get("radius", cfg.get("radius", 9)))
 	if not fk.is_empty():
 		district_name = str(fk.get("name", district_name))
@@ -133,12 +144,16 @@ func _ready() -> void:
 	if not fk.is_empty():  # [biomes] the frontier's own harbour / flood replaces planet lakes
 		field.water_ids = Frontiers.water_ids_for(fk, f_radius, float(cfg.get("hex_size", 3.2)))
 		field.float_mult = float(fk.get("float_mult", 1.0))
+	if penv_s and penv_s.has_method("field_water"):  # [planet-tidewell]
+		field.water_ids = penv_s.call("field_water", field, penv)
 	# Older saves were generated with straight hex borders; keep their piece layout identical.
 	if loaded and GameState.world.has("field"):
 		field.natural_borders = bool((GameState.world["field"] as Dictionary).get("natural_borders", false))
 	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
 	if not fk.is_empty():
 		Frontiers.toughen(field, float(fk.get("vol_mult", 1.0)))
+	if penv_s and penv_s.has_method("post_generate"):  # [planet-tidewell]
+		penv_s.call("post_generate", field, penv)
 	field.place_landmarks(Economy.landmarks_for(field.biome))
 	field.bury_parts(Economy.parts)
 	if loaded and GameState.world.has("field"):
@@ -146,7 +161,7 @@ func _ready() -> void:
 			push_warning("Saved field didn't match this field; starting the field fresh.")
 	loaded = loaded and GameState.world.has("field")
 	_map_slice_to_planet()
-	if not fk.is_empty():  # [biomes] ice locks, drained streets, base start level: before the views
+	if not fk.is_empty() and penv.is_empty():  # [biomes] ice locks, drained streets, base start level: before the views  [planet-tidewell] not for planet envs
 		frontier = FrontierDistrict.new()
 		frontier.name = "Frontier"
 		add_child(frontier)
@@ -494,6 +509,8 @@ func _ready() -> void:
 	# [beat] (Bloom connects EventBus.cradle_district_complete itself: a lambda here outlived the scene)
 	if frontier:  # [biomes] frontier mechanics and visuals, once the scene is built
 		frontier.setup()
+	if penv_s:  # [planet-tidewell] the planet's environment art, once the scene is built
+		penv_s.call("apply", self, field, penv)
 	core_charge = CoreCharge.new()  # Lumi's Bloom Core charge + its story beats (story/core_charge.gd)
 	core_charge.name = "CoreCharge"
 	core_charge.world = self
