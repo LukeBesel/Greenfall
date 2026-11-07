@@ -6,7 +6,7 @@ render_mode unshaded, cull_back, shadows_disabled, fog_disabled;
 
 #include "res://art/shaders/planet_lib.gdshaderinc"
 
-uniform float bump = 0.05;
+uniform float bump = 0.085;
 varying vec3 o_p;
 varying vec3 w_n;
 varying vec3 w_p;
@@ -61,6 +61,8 @@ void fragment() {
 	vec3 sea_ok = mix(vec3(0.03, 0.2, 0.28), vec3(0.006, 0.035, 0.12), sqrt(depth));
 	vec3 sea = mix(sea_ruin, sea_ok, ocean_r);
 
+	// relief in the colour too: valleys a touch darker, ridge crests catching dust/light
+	land_col *= mix(0.78, 1.12, smoothstep(0.0, 0.45, h + 0.4 * mtn));
 	vec3 albedo = mix(sea, land_col, land);
 	// --- polar caps
 	float cap = smoothstep(0.8, 0.88, lat + 0.07 * (n1 - 0.5) * 2.0);
@@ -74,7 +76,7 @@ void fragment() {
 	vec3 col = albedo * (lit + vec3(0.012, 0.014, 0.02));
 	// sun glints on open water (dimmer through the smog)
 	vec3 nw = normalize(mat3(MODEL_MATRIX) * pl_grad_normal(p, pl_noised(p * 60.0).yzw, 0.0007));
-	col += (pl_spec2(ng, nw, v, 220.0, mix(0.04, 0.12, ocean_r)) + pl_spec2(ng, nw, v, 24.0, mix(0.02, 0.05, ocean_r))) * (1.0 - land) * (1.0 - cap);
+	col += (pl_spec2(ng, nw, v, 220.0, mix(0.025, 0.06, ocean_r)) + pl_spec2(ng, nw, v, 24.0, mix(0.02, 0.05, ocean_r))) * (1.0 - land) * (1.0 - cap);
 	// night side: scattered junk fires when ruined, warm city lights on restored coasts
 	float day = pl_daylight(ng);
 	float fires = smoothstep(0.86, 0.97, pl_noise(p * 70.0 + 4.0)) * land * (1.0 - mask) * (1.0 - cap);

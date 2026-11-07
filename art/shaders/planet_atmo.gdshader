@@ -12,7 +12,7 @@ uniform vec3 col_ruin = vec3(0.6, 0.45, 0.32);
 uniform vec3 col_ok = vec3(0.35, 0.6, 1.0);
 uniform float strength_ruin = 0.8;
 uniform float strength_ok = 1.0;
-uniform float thickness = 0.06;  // shell radius = planet radius * (1 + thickness)
+uniform float thickness = 0.06;  // the shell mesh radius is (1 + thickness) x the planet node scale
 uniform float falloff = 0.32;  // of the thickness
 varying vec3 w_p;
 
@@ -28,7 +28,7 @@ float sun_glow(vec3 nx, vec3 dir, vec3 l) {
 
 void fragment() {
 	vec3 center = MODEL_MATRIX[3].xyz;
-	float rr = length(MODEL_MATRIX[0].xyz) / (1.0 + thickness);
+	float rr = length(MODEL_MATRIX[0].xyz);  // the shell mesh has (1 + thickness) baked in
 	vec3 cam = CAMERA_POSITION_WORLD;
 	vec3 dir = normalize(w_p - cam);
 	float t = dot(center - cam, dir);
