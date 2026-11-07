@@ -19,7 +19,7 @@ uniform float shell = 0.0;
 uniform bool baked = false;  // vendor models: the vertex colour is the albedo (no coat masks)
 uniform float fur_len = 0.007;
 uniform float density = 900.0;
-uniform float sheen = 0.35;
+uniform float sheen = 0.12;
 
 varying vec4 vc;
 varying vec3 lp;
@@ -63,8 +63,7 @@ void fragment() {
 		SPECULAR = 0.25;
 		RIM = sheen;
 		RIM_TINT = 0.7;
-		BACKLIGHT = alb0 * 0.3;
-		EMISSION = alb0 * pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), 2.5) * 0.06;
+		BACKLIGHT = alb0 * 0.1;
 	} else {
 	float t = mix(1.1, 0.3, white_amt);
 	float white = smoothstep(t - 0.12, t + 0.12, vc.r);
@@ -90,7 +89,7 @@ void fragment() {
 	float fres = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), 2.5);
 	RIM = sheen;
 	RIM_TINT = 0.7;
-	BACKLIGHT = alb * 0.35;
-	EMISSION = alb * fres * 0.06;
+	BACKLIGHT = alb * 0.1;
+	ALBEDO = alb * (1.0 - 0.12 * fres);
 	}
 }
