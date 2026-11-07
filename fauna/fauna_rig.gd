@@ -11,7 +11,7 @@ const DIR: String = "res://art/models/fauna/%s.glb"
 const SHELLS: int = 6
 const SHELL_RANGE: float = 9.0
 ## Target overall height (metres, rest pose incl. ears/antlers) for vendor models; 0 = as built.
-const HEIGHT: Dictionary = {"cat": 0.0, "deer": 1.22, "stag": 1.55, "fox": 0.5}
+const HEIGHT: Dictionary = {"cat": 0.0, "deer": 1.22, "stag": 1.55, "fox": 0.5, "fennec": 0.36, "arctic_fox": 0.42}
 
 ## Cat coats (index = Animal.coat): ginger tabby, black tuxedo, grey tabby, brown tabby,
 ## cream, calico.

@@ -562,8 +562,8 @@ func _spawn(key: String, e: Dictionary) -> bool:
 			a.t = _rng.randf_range(1.0, 4.0)
 			if a.kind == "deer":
 				_attach_rig(a, "stag" if hash(a.key) % 3 == 0 else "deer")
-			elif sid == "fox":
-				_attach_rig(a, "fox")
+			elif sid in ["fox", "fennec", "arctic_fox"]:
+				_attach_rig(a, sid)
 	animals.append(a)
 	return true
 
