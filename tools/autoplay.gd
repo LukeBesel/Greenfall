@@ -733,6 +733,12 @@ func _campaign(_p: Patch) -> void:
 			_mark("%s_growing50_s" % kid)
 		if int(world.hub.level) >= 5:
 			_mark("%s_base5_s" % kid)
+	for b: Variant in CoreCharge.beats_done():
+		_mark("core_%d_s" % int(b))
+	if GameState.flags.get("seeds_unlocked", false):
+		_mark("seed_tin_s")
+	if Research.has("pollinator_survey"):
+		_mark("garden_takes_off_s")
 	if GameState.flags.get("cradle_returned", false):
 		_mark("cradle_complete_s")
 	if GameState.flags.get("bloom_finale_seen", false):
