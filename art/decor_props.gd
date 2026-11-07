@@ -97,9 +97,7 @@ static func path() -> Node3D:
 	var tones: Array[Color] = [Color(0.8, 0.78, 0.73), Color(0.72, 0.7, 0.66)]
 	parts.append(ProcMesh.part(ProcMesh.rounded_box(Vector3(0.52, 0.06, 0.44), 0.03, 2), ProcMesh.xf(Vector3(-0.17, 0.03, -0.2), Vector3(0, 8, 0)), tones[0]))
 	parts.append(ProcMesh.part(ProcMesh.rounded_box(Vector3(0.46, 0.06, 0.42), 0.03, 2), ProcMesh.xf(Vector3(0.19, 0.03, 0.22), Vector3(0, -11, 0)), tones[1]))
-	var mi := EggProps.mesh(ProcMesh.merge(parts), stone(Color.WHITE))
-	(mi.material_override as StandardMaterial3D).vertex_color_use_as_albedo = true
-	n.add_child(mi)
+	n.add_child(EggProps.mesh(ProcMesh.merge(parts), EggProps.vc(0.9)))
 	return n
 
 
@@ -220,23 +218,31 @@ static func statue() -> Node3D:
 	return n
 
 
-## Topiary Lumi holding up a seedling: clipped box body, domed head, brass eyes and antenna.
+## Lumi in white stone holding up a seedling: domed head, thin teal eye light, brass antenna,
+## on a hex plinth inside a clipped box-hedge ring.
 static func lumi_sculpture() -> Node3D:
 	var n := Node3D.new()
-	var s: StandardMaterial3D = stone(Color(0.84, 0.83, 0.8))
-	var hedge: StandardMaterial3D = leaves(Color(0.26, 0.44, 0.2))
+	var s: StandardMaterial3D = stone(Color(0.8, 0.79, 0.76))
+	var marble: StandardMaterial3D = paint(Color(0.92, 0.91, 0.88), 0.3)
 	var brass: StandardMaterial3D = Mats.metal("brass")
-	n.add_child(EggProps.mesh(ProcMesh.cyl(0.9, 0.95, 0.3, 6), s, Vector3(0, 0.15, 0)))
-	n.add_child(EggProps.mesh(ProcMesh.cyl(0.91, 0.91, 0.012, 6), Mats.lamp(Color(0.6, 1.0, 0.85), 0.8), Vector3(0, 0.28, 0)))
-	n.add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(0.9, 0.85, 0.75), 0.22, 4), hedge, Vector3(0, 0.78, 0)))
-	n.add_child(EggProps.mesh(ProcMesh.hemisphere(0.48, 18, 8), hedge, Vector3(0, 1.2, 0)))
+	var hedge: StandardMaterial3D = leaves(Color(0.24, 0.4, 0.2))
+	n.add_child(EggProps.mesh(ProcMesh.torus(0.72, 0.98, 24, 8), hedge, Vector3(0, 0.16, 0), Vector3.ZERO, Vector3(1, 1.6, 1)))
+	n.add_child(EggProps.mesh(ProcMesh.cyl(0.62, 0.66, 0.5, 6), s, Vector3(0, 0.25, 0)))
+	n.add_child(EggProps.mesh(ProcMesh.cyl(0.63, 0.63, 0.012, 6), Mats.lamp(Color(0.6, 1.0, 0.85), 0.7), Vector3(0, 0.46, 0)))
+	var body := Node3D.new()
+	body.position = Vector3(0, 0.5, 0)
+	n.add_child(body)
+	body.add_child(EggProps.mesh(ProcMesh.cyl(0.26, 0.2, 0.1, 20), marble, Vector3(0, 0.08, 0)))
+	body.add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(0.62, 0.5, 0.5), 0.16, 4), marble, Vector3(0, 0.42, 0)))
+	body.add_child(EggProps.mesh(ProcMesh.hemisphere(0.36, 22, 8), marble, Vector3(0, 0.67, 0)))
 	for sx: float in [-1.0, 1.0]:
-		n.add_child(EggProps.mesh(ProcMesh.cyl(0.11, 0.11, 0.04, 16), brass, Vector3(sx * 0.18, 1.42, 0.4), Vector3(90, 0, 0)))
-		n.add_child(EggProps.mesh(ProcMesh.capsule(0.09, 0.5), hedge, Vector3(sx * 0.52, 1.05, 0.12), Vector3(-50, 0, sx * -20)))
-	n.add_child(EggProps.mesh(ProcMesh.cyl(0.015, 0.015, 0.35, 6), brass, Vector3(0, 1.82, 0)))
-	n.add_child(EggProps.mesh(ProcMesh.sphere(0.07, 12, 6), brass, Vector3(0, 2.02, 0)))
-	_vendor(n, "pine_sapling_small", 0.35, Vector3(0, 1.32, 0.62))
-	EggProps.collider(n, Vector3(1.0, 2.0, 1.0), Vector3(0, 1.0, 0))
+		body.add_child(EggProps.mesh(ProcMesh.cyl(0.075, 0.075, 0.02, 16), Mats.lamp(Color(0.45, 0.95, 0.9), 0.9), Vector3(sx * 0.13, 0.8, 0.31), Vector3(80, 0, 0), Vector3(0.8, 1, 1.25)))
+		body.add_child(EggProps.mesh(ProcMesh.capsule(0.06, 0.42), marble, Vector3(sx * 0.36, 0.55, 0.12), Vector3(-55, 0, sx * -12)))
+	body.add_child(EggProps.mesh(ProcMesh.cyl(0.012, 0.012, 0.22, 6), brass, Vector3(0, 1.12, 0)))
+	body.add_child(EggProps.mesh(ProcMesh.sphere(0.05, 12, 6), brass, Vector3(0, 1.25, 0)))
+	body.add_child(EggProps.mesh(ProcMesh.cyl(0.09, 0.07, 0.08, 12), marble, Vector3(0, 0.78, 0.48)))
+	_vendor(body, "pine_sapling_small", 0.3, Vector3(0, 0.8, 0.48))
+	EggProps.collider(n, Vector3(1.2, 1.9, 1.2), Vector3(0, 0.95, 0))
 	return n
 
 

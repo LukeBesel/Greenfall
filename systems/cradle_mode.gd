@@ -37,12 +37,20 @@ static func boot() -> void:
 	else:
 		profile = default_profile()
 	apply_current()
-	if DevHooks.has("world"):  # dev: --world=N plays the profile's world N (made on the fly if new)
+	if DevHooks.has("heirlooms"):  # dev: --heirlooms=id:lv+id:lv
+		for spec: String in DevHooks.get_s("heirlooms", "").split("+", false):
+			(profile["heirlooms"] as Dictionary)[spec.get_slice(":", 0)] = int(spec.get_slice(":", 1))
+	if DevHooks.has("world"):  # dev: --world=N starts on the profile's world N (a new one lands fresh, with its kit)
 		var wi: int = int(DevHooks.get_f("world", 0.0))
+		var made: bool = false
 		while worlds().size() <= wi:
 			_add_world()
+			made = true
 		profile["current"] = wi
+		profile["unlocked"] = true
 		apply_current()
+		if made or DevHooks.has("fresh"):
+			prepare_new_world_state({})
 
 
 # --- Profile ---------------------------------------------------------------------------
@@ -154,6 +162,15 @@ static func has_modifier(id: String) -> bool:
 static func apply_current() -> void:
 	SaveManager.slot = int(current_world().get("slot", 0))
 	Economy.planet["name"] = world_name()
+
+
+## A new world's ground look on the district's FieldView (data/cradle.json world_types
+## ground_layers / fx, the same knobs the frontiers use). Call before FieldView.setup.
+static func dress_view(view: FieldView) -> void:
+	var t: Dictionary = WorldGen.world_type(str(current_world().get("type", "")))
+	view.layer_swap = t.get("ground_layers", {})
+	var fx: Array = t.get("fx", [0, 0, 0, 0])
+	view.ground_fx = Vector4(float(fx[0]), float(fx[1]), float(fx[2]), float(fx[3]))
 
 
 ## Cradle Mode is open once any world's finale has played.

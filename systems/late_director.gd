@@ -8,7 +8,8 @@ extends Node
 ##                        Seed Ark open, base 5) so Cradle Mode and Garden Mode are available
 ##   --open=ark           open the Ark Bridge;  --open=garden[=type] opens Garden Mode
 ##   --garden             Garden Mode unlocked here;  --decor-sample places a small garden near the base
-##   --starseeds=N        add N Starseeds to the profile;  --heirlooms=id:lv+id:lv sets Heirloom levels
+##   --starseeds=N        add N Starseeds to the profile;  --heirlooms=id:lv+id:lv sets Heirloom levels (at boot)
+##   --world=N            start on Cradle Mode world N (systems/cradle_mode.gd boot; new worlds land fresh)
 ##   --new-world          seed a new world right away (with --save-dir for staged runs)
 ##   --sample-worlds=N    shots: N visited worlds in the profile (no saves)
 ##   --garden-cam=x,z,yaw,dist,pitch  fixed camera for Garden shots
@@ -38,9 +39,6 @@ func _setup() -> void:
 		dev_post_finale()
 	if DevHooks.has("starseeds"):
 		CradleMode.profile["starseeds"] = CradleMode.starseeds() + DevHooks.get_f("starseeds", 100.0)
-	if DevHooks.has("heirlooms"):
-		for spec: String in DevHooks.get_s("heirlooms", "").split("+", false):
-			(CradleMode.profile["heirlooms"] as Dictionary)[spec.get_slice(":", 0)] = int(spec.get_slice(":", 1))
 	if DevHooks.has("sample-worlds") and CradleMode.worlds().size() < 2:  # shots: a profile with some history
 		for i: int in int(DevHooks.get_f("sample-worlds", 2.0)):
 			var sw: Dictionary = CradleMode._add_world()
@@ -65,6 +63,9 @@ func _setup() -> void:
 	_world_look.call_deferred()
 	if DevHooks.has("decor-sample"):
 		_decor_sample.call_deferred()
+	if DevHooks.has("late-save-after"):  # dev: write the save S seconds in (prepared states for shots)
+		get_tree().create_timer(DevHooks.get_f("late-save-after", 20.0)).timeout.connect(func() -> void:
+			print("[late] saved: %s" % str(SaveManager.save_game())))
 	var op: String = DevHooks.get_s("open", "")
 	if op == "ark":
 		(func() -> void: bridge.open_bridge()).call_deferred()
@@ -235,7 +236,7 @@ func _decor_sample() -> void:
 	var plan: Array = sample_plan()
 	var placed: int = 0
 	for p: Array in plan:
-		if decor.place(str(p[0]), Vector2i(int(p[1]), int(p[2])), int(p[3]), false):
+		if decor.place(str(p[0]), Vector2i(int(p[1]), int(p[2])), int(p[3]), false, false):
 			placed += 1
 	print("[late] decor sample: %d / %d placed, charm %.1f" % [placed, plan.size(), decor.charm()])
 

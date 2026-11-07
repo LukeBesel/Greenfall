@@ -25,10 +25,10 @@
     {"id": "heavy_junk", "name": "Heavy Junk", "desc": "Dense, heavy scrap: scooping is 10% slower, bales sell for 20% more.", "stats": {"scoop_rate": 0.9, "cube_value_mult": 1.2}}
   ],
   "world_types": [
-    {"id": "ice_moon", "name": "Ice Moon", "desc": "Frozen most of the way to the equator; lakes under the ice.", "mix": {"water_fraction": 0.3, "city_count": 18, "frost_lat": 0.42, "dust_m": -0.6, "marsh_m": 0.55}, "coat": [0.92, 0.95, 1.0, 0.55, 0.12, 0.6]},
-    {"id": "desert_world", "name": "Desert World", "desc": "Dunes and dry salt pans; the few lakes matter.", "mix": {"water_fraction": 0.1, "city_count": 20, "frost_lat": 0.92, "dust_m": 0.15, "dust_lat": 0.85, "marsh_m": 0.7}, "coat": [0.84, 0.7, 0.5, 0.6, 0.2, 0.95]},
-    {"id": "ocean_world", "name": "Ocean World", "desc": "Mostly sea, with towns on small islands and long coasts.", "mix": {"water_fraction": 0.55, "city_count": 14, "frost_lat": 0.85, "dust_m": -0.45, "marsh_m": 0.25}},
-    {"id": "fungal_world", "name": "Marsh World", "desc": "Warm, wet and soft underfoot: fungal marsh everywhere.", "mix": {"water_fraction": 0.28, "city_count": 22, "frost_lat": 0.88, "dust_m": -0.55, "marsh_m": -0.1}, "coat": [0.34, 0.36, 0.28, 0.45, 0.3, 0.7]},
+    {"id": "ice_moon", "name": "Ice Moon", "desc": "Frozen most of the way to the equator; lakes under the ice.", "mix": {"water_fraction": 0.3, "city_count": 18, "frost_lat": 0.42, "dust_m": -0.6, "marsh_m": 0.55}, "coat": [0.92, 0.95, 1.0, 0.75, 0.15, 0.6], "ground_layers": {"4": "snow_02", "5": "snow_02", "6": "snow_02"}, "fx": [0, 0.7, 0, 0]},
+    {"id": "desert_world", "name": "Desert World", "desc": "Dunes and dry salt pans; the few lakes matter.", "mix": {"water_fraction": 0.1, "city_count": 20, "frost_lat": 0.92, "dust_m": 0.15, "dust_lat": 0.85, "marsh_m": 0.7}, "coat": [0.84, 0.7, 0.5, 0.7, 0.25, 0.95], "ground_layers": {"4": "sand_01", "5": "mud_cracked_dry_03", "6": "sand_01"}, "fx": [0.5, 0, 0, 0]},
+    {"id": "ocean_world", "name": "Ocean World", "desc": "Mostly sea, with towns on small islands and long coasts.", "mix": {"water_fraction": 0.55, "city_count": 14, "frost_lat": 0.85, "dust_m": -0.45, "marsh_m": 0.25}, "ground_layers": {"4": "damp_sand", "6": "damp_sand"}, "fx": [0, 0, 0.3, 0]},
+    {"id": "fungal_world", "name": "Marsh World", "desc": "Warm, wet and soft underfoot: fungal marsh everywhere.", "mix": {"water_fraction": 0.28, "city_count": 22, "frost_lat": 0.88, "dust_m": -0.55, "marsh_m": -0.1}, "coat": [0.34, 0.36, 0.28, 0.45, 0.3, 0.7], "ground_layers": {"4": "damp_sand", "5": "brown_mud_dry"}, "fx": [0, 0, 0.5, 0]},
     {"id": "rust_world", "name": "Rust World", "desc": "Old industry from pole to pole: rustlands and sprawl.", "mix": {"water_fraction": 0.2, "city_count": 28, "frost_lat": 0.86, "dust_m": -0.4, "marsh_m": 0.5}}
   ],
   "name_parts": {

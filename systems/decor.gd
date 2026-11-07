@@ -198,7 +198,7 @@ func item_at(cell: Vector2i) -> int:
 
 
 ## Buys and places a decoration. Returns false (nothing spent) if it can't go there.
-func place(type_id: String, cell: Vector2i, rot: int, pay: bool = true) -> bool:
+func place(type_id: String, cell: Vector2i, rot: int, pay: bool = true, fx: bool = true) -> bool:
 	if place_block_reason(type_id, cell, rot) != "":
 		return false
 	if pay:
@@ -207,7 +207,7 @@ func place(type_id: String, cell: Vector2i, rot: int, pay: bool = true) -> bool:
 		var c: Dictionary = cost(type_id)
 		for k: String in c:
 			GameState.spend(k, BigNum.from_float(float(c[k])))
-	_add({"t": type_id, "x": cell.x, "z": cell.y, "r": rot % 4}, true)
+	_add({"t": type_id, "x": cell.x, "z": cell.y, "r": rot % 4}, fx)
 	GameState.inc_stat("decor_placed")
 	var kinds: Array = GameState.flags.get("decor_kinds", [])
 	if not (type_id in kinds):

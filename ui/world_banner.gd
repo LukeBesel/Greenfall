@@ -59,7 +59,7 @@ func _build(w: Dictionary) -> void:
 	var kit := UITheme.label(ArkBridge._kit_text(CradleMode.start_kit(CradleMode.profile.get("heirlooms", {}))), 13, UITheme.GREEN)
 	kit.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(kit)
-	root.modulate.a = 0.0
+	root.modulate.a = 1.0 if DevHooks.has("banner-hold") else 0.0  # shots: already up
 	var tw := create_tween()
 	tw.tween_interval(1.0)
 	tw.tween_property(root, "modulate:a", 1.0, 0.8)

@@ -158,6 +158,8 @@ func _ready() -> void:
 		var gfx: Array = fk.get("fx", [0, 0, 0, 0])
 		view.ground_fx = Vector4(float(gfx[0]), float(gfx[1]), float(gfx[2]), float(gfx[3]))
 		view.skip_horizon = true  # [biomes2] FrontierView builds the terrain and skyline
+	elif CradleMode.current_index() > 0:  # [late] another world's ground (snow on an ice moon, sand on a desert world)
+		CradleMode.dress_view(view)
 	view.setup(field)
 	water = WaterView.new()
 	water.name = "Water"
