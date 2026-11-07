@@ -3485,1690 +3485,1694 @@ msgstr "图鉴  [%s]"
 
 #: ui/pause_menu.gd:55
 msgid "Photo mode  [%s]"
-msgstr ""
+msgstr "拍照模式  [%s]"
 
 #: ui/pause_menu.gd:60
 msgid "Save game"
-msgstr ""
+msgstr "保存游戏"
 
 #: ui/pause_menu.gd:62
 msgid "Saved."
-msgstr ""
+msgstr "已保存。"
 
 #: ui/pause_menu.gd:63
 msgid "Quit to title"
-msgstr ""
+msgstr "返回标题"
 
 #: ui/pause_menu.gd:64
 msgid "Quit to desktop"
-msgstr ""
+msgstr "退出到桌面"
 
 #: ui/photo_filters.gd:11
 msgid "Natural"
-msgstr ""
+msgstr "自然"
 
 #: ui/photo_filters.gd:12
 msgid "Golden Hour"
-msgstr ""
+msgstr "黄金时刻"
 
 #: ui/photo_filters.gd:14
 msgid "Dawn Mist"
-msgstr ""
+msgstr "晨雾"
 
 #: ui/photo_filters.gd:16
 msgid "Neon Night"
-msgstr ""
+msgstr "霓虹之夜"
 
 #: ui/photo_filters.gd:18
 msgid "Film"
-msgstr ""
+msgstr "胶片"
 
 #: ui/photo_filters.gd:20
 msgid "Mono"
-msgstr ""
+msgstr "黑白"
 
 #: ui/photo_filters.gd:22
 msgid "Holo Blue"
-msgstr ""
+msgstr "全息蓝"
 
 #: ui/photo_filters.gd:24
 msgid "Bloom"
-msgstr ""
+msgstr "柔光"
 
 #: ui/photo_mode.gd:26
 msgid "Live"
-msgstr ""
+msgstr "实时"
 
 #: ui/photo_mode.gd:26
 msgid "Haze"
-msgstr ""
+msgstr "薄霾"
 
 #: ui/photo_mode.gd:26
 msgid "Mist"
-msgstr ""
+msgstr "雾气"
 
 #: ui/photo_mode.gd:27
 msgid "1x  (window)"
-msgstr ""
+msgstr "1x（窗口）"
 
 #: ui/photo_mode.gd:27
 msgid "2x  (supersampled)"
-msgstr ""
+msgstr "2x（超采样）"
 
 #: ui/photo_mode.gd:28
 msgid "Orbit Lumi"
-msgstr ""
+msgstr "环绕 Lumi"
 
 #: ui/photo_mode.gd:28
 msgid "Free fly"
-msgstr ""
+msgstr "自由飞行"
 
 #: ui/photo_mode.gd:116
 msgid "Photo mode isn't available during a rocket flight."
-msgstr ""
+msgstr "火箭飞行期间无法使用拍照模式。"
 
 #: ui/photo_mode.gd:119 ui/photo_mode.gd:122 ui/photo_mode.gd:125
 #: ui/photo_mode.gd:131
 msgid "Photo mode isn't available during a cinematic."
-msgstr ""
+msgstr "过场动画期间无法使用拍照模式。"
 
 #: ui/photo_mode.gd:367 ui/photo_mode.gd:419 ui/settings_panel.gd:317
 msgid "Camera"
-msgstr ""
+msgstr "相机"
 
 #: ui/photo_mode.gd:368
 msgid "Mode"
-msgstr ""
+msgstr "模式"
 
 #: ui/photo_mode.gd:369 ui/settings_panel.gd:325
 msgid "Field of view"
-msgstr ""
+msgstr "视野"
 
 #: ui/photo_mode.gd:370
 msgid "Roll"
-msgstr ""
+msgstr "翻滚"
 
 #: ui/photo_mode.gd:371
 msgid "Distance"
-msgstr ""
+msgstr "距离"
 
 #: ui/photo_mode.gd:372
 msgid "Height"
-msgstr ""
+msgstr "高度"
 
 #: ui/photo_mode.gd:373
 msgid "Reset camera"
-msgstr ""
+msgstr "重置相机"
 
 #: ui/photo_mode.gd:374 ui/photo_mode.gd:419
 msgid "Lens"
-msgstr ""
+msgstr "镜头"
 
 #: ui/photo_mode.gd:375
 msgid "Auto-focus Lumi"
-msgstr ""
+msgstr "自动对焦 Lumi"
 
 #: ui/photo_mode.gd:376
 msgid "Focus distance"
-msgstr ""
+msgstr "对焦距离"
 
 #: ui/photo_mode.gd:377
 msgid "Blur"
-msgstr ""
+msgstr "模糊"
 
 #: ui/photo_mode.gd:377 ui/photo_panel.gd:240 ui/photo_panel.gd:242
 #: ui/photo_panel.gd:280 ui/settings_panel.gd:615
 msgid "Off"
-msgstr ""
+msgstr "关"
 
 #: ui/photo_mode.gd:378
 msgid "Exposure"
-msgstr ""
+msgstr "曝光"
 
 #: ui/photo_mode.gd:378
 msgid "%+.1f EV"
-msgstr ""
+msgstr "%+.1f EV"
 
 #: ui/photo_mode.gd:379 ui/photo_mode.gd:419
 msgid "Look"
-msgstr ""
+msgstr "风格"
 
 #: ui/photo_mode.gd:380
 msgid "Filter"
-msgstr ""
+msgstr "滤镜"
 
 #: ui/photo_mode.gd:381
 msgid "Contrast"
-msgstr ""
+msgstr "对比度"
 
 #: ui/photo_mode.gd:382
 msgid "Saturation"
-msgstr ""
+msgstr "饱和度"
 
 #: ui/photo_mode.gd:383
 msgid "Warmth"
-msgstr ""
+msgstr "色温"
 
 #: ui/photo_mode.gd:384
 msgid "Vignette"
-msgstr ""
+msgstr "暗角"
 
 #: ui/photo_mode.gd:385
 msgid "Grain"
-msgstr ""
+msgstr "颗粒"
 
 #: ui/photo_mode.gd:386 ui/photo_mode.gd:419
 msgid "World"
-msgstr ""
+msgstr "世界"
 
 #: ui/photo_mode.gd:387
 msgid "Set time of day"
-msgstr ""
+msgstr "设定时间"
 
 #: ui/photo_mode.gd:388
 msgid "Time"
-msgstr ""
+msgstr "时间"
 
 #: ui/photo_mode.gd:391
 msgid "Weather"
-msgstr ""
+msgstr "天气"
 
 #: ui/photo_mode.gd:392 ui/photo_mode.gd:419 ui/upgrades_screen.gd:10
 msgid "Lumi"
-msgstr ""
+msgstr "Lumi"
 
 #: ui/photo_mode.gd:393
 msgid "Pose"
-msgstr ""
+msgstr "姿势"
 
 #: ui/photo_mode.gd:394
 msgid "Eyes"
-msgstr ""
+msgstr "眼睛"
 
 #: ui/photo_mode.gd:395
 msgid "Turn"
-msgstr ""
+msgstr "转身"
 
 #: ui/photo_mode.gd:396
 msgid "Show robots"
-msgstr ""
+msgstr "显示机器人"
 
 #: ui/photo_mode.gd:397 ui/photo_mode.gd:419
 msgid "Frame"
-msgstr ""
+msgstr "画框"
 
 #: ui/photo_mode.gd:398
 msgid "Hide HUD"
-msgstr ""
+msgstr "隐藏 HUD"
 
 #: ui/photo_mode.gd:399
 msgid "Rule of thirds"
-msgstr ""
+msgstr "三分法构图"
 
 #: ui/photo_mode.gd:400
 msgid "Letterbox 2.39:1"
-msgstr ""
+msgstr "宽银幕 2.39:1"
 
 #: ui/photo_mode.gd:401
 msgid "Greenfall stamp"
-msgstr ""
+msgstr "Greenfall 印章"
 
 #: ui/photo_mode.gd:402
 msgid "Resolution"
-msgstr ""
+msgstr "分辨率"
 
 #: ui/photo_mode.gd:851
 msgid "Couldn't capture the photo."
-msgstr ""
+msgstr "无法拍摄照片。"
 
 #: ui/photo_mode.gd:860
 msgid "Couldn't save the photo (%s)."
-msgstr ""
+msgstr "无法保存照片（%s）。"
 
 #: ui/photo_mode.gd:873
 msgid "Saved  %s  (%dx%d)"
-msgstr ""
+msgstr "已保存  %s  （%dx%d）"
 
 #: ui/photo_panel.gd:57
 msgid "CAPTURE  ·  LM-1 LENS"
-msgstr ""
+msgstr "拍摄  ·  LM-1 镜头"
 
 #: ui/photo_panel.gd:58
 msgid "PHOTO MODE"
-msgstr ""
+msgstr "拍照模式"
 
 #: ui/photo_panel.gd:88
 msgid "Capture"
-msgstr ""
+msgstr "拍摄"
 
 #: ui/photo_panel.gd:97
 msgid "Exit"
-msgstr ""
+msgstr "退出"
 
 #: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
 #: ui/settings_panel.gd:615
 msgid "On"
-msgstr ""
+msgstr "开"
 
 #: ui/photo_panel.gd:318
 msgid "RS orbit · LT/RT distance · LB/RB zoom · D-pad roll/height · X capture · Y hide panel · View orbit/free · B exit"
-msgstr ""
+msgstr "右摇杆 环绕 · LT/RT 距离 · LB/RB 缩放 · 方向键 翻滚/高度 · X 拍摄 · Y 隐藏面板 · 视图键 环绕/自由 · B 退出"
 
 #: ui/photo_panel.gd:319
 msgid "PHOTO MODE   Y"
-msgstr ""
+msgstr "拍照模式   Y"
 
 #: ui/photo_panel.gd:321
 msgid "Drag orbit/look · Wheel distance · WASD move · R/F height · Q/E roll · Z/X zoom · C capture · Tab hide panel · H hide UI · Esc exit"
-msgstr ""
+msgstr "拖动 环绕/观察 · 滚轮 距离 · WASD 移动 · R/F 高度 · Q/E 翻滚 · Z/X 缩放 · C 拍摄 · Tab 隐藏面板 · H 隐藏界面 · Esc 退出"
 
 #: ui/photo_panel.gd:322
 msgid "PHOTO MODE   Tab"
-msgstr ""
+msgstr "拍照模式   Tab"
 
 #: ui/research_node_card.gd:175 ui/research_panel.gd:194
 msgid "Researched"
-msgstr ""
+msgstr "已研究"
 
 #: ui/research_node_card.gd:178 ui/research_panel.gd:197
 msgid "%s left"
-msgstr ""
+msgstr "剩余 %s"
 
 #: ui/research_node_card.gd:181
 msgid "Queued  ·  %s"
-msgstr ""
+msgstr "排队中  ·  %s"
 
 #: ui/research_node_card.gd:184 ui/research_panel.gd:203
 msgid "%s data  ·  %s"
-msgstr ""
+msgstr "%s 数据  ·  %s"
 
 #: ui/research_panel.gd:34
 msgid "FIELD DATA"
-msgstr ""
+msgstr "野外数据"
 
 #: ui/research_panel.gd:41
 msgid "Clean hexes, grow blooms, read shards and let robots work."
-msgstr ""
+msgstr "清理六角格、种出花朵、阅读碎片，再让机器人干活。"
 
 #: ui/research_panel.gd:60
 msgid "RESEARCHING"
-msgstr ""
+msgstr "研究中"
 
 #: ui/research_panel.gd:163
 msgid "Nothing yet"
-msgstr ""
+msgstr "暂无"
 
 #: ui/research_panel.gd:164
 msgid "Pick a glowing card below"
-msgstr ""
+msgstr "从下方选一张发光的卡片"
 
 #: ui/research_panel.gd:169
 msgid "%s left  ·  %d%%"
-msgstr ""
+msgstr "剩余 %s  ·  %d%%"
 
 #: ui/research_panel.gd:175
 msgid "Queue: empty  (%d slots)"
-msgstr ""
+msgstr "队列：空（%d 个位置）"
 
 #: ui/research_panel.gd:198 ui/research_panel.gd:201
 msgid "Press again to cancel (refund)"
-msgstr ""
+msgstr "再按一次取消（返还）"
 
 #: ui/research_panel.gd:200
 msgid "Queued #%d"
-msgstr ""
+msgstr "排队第 %d 位"
 
 #: ui/research_panel.gd:205
 msgid "Press to research"
-msgstr ""
+msgstr "按下开始研究"
 
 #: ui/research_panel.gd:205
 msgid "Press to queue"
-msgstr ""
+msgstr "按下加入队列"
 
 #: ui/research_panel.gd:214
 msgid "%s cancelled. Data refunded."
-msgstr ""
+msgstr "%s 已取消。数据已返还。"
 
 #: ui/robot_card.gd:68
 msgid "%s   ·   %s   ·   %d built"
-msgstr ""
+msgstr "%s   ·   %s   ·   已建 %d"
 
 #: ui/robot_card.gd:73
 msgid "Crew: %d / %d  (hub level %d: +%d per level)"
-msgstr ""
+msgstr "队伍：%d / %d（基地等级 %d：每级 +%d）"
 
 #: ui/robot_card.gd:77
 msgid ""
 "\n"
 "Water Tanks: %d / %d placed · next %s cubes (Command view: Place refill tank)"
 msgstr ""
+"\n"
+"水箱：已放置 %d / %d · 下一个 %s 方块（指挥视图：放置补水箱）"
 
 #: ui/robot_card.gd:79
 msgid "Build   %s cubes"
-msgstr ""
+msgstr "建造   %s 方块"
 
 #: ui/robot_card.gd:79
 msgid "Build   (%s)"
-msgstr ""
+msgstr "建造   （%s）"
 
 #: ui/robot_card.gd:83
 msgid "Locked  ·  research %s"
-msgstr ""
+msgstr "未解锁  ·  研究 %s"
 
 #: ui/robot_card.gd:87
 msgid "Fleet tier: %s (max)"
-msgstr ""
+msgstr "机队等级：%s（满级）"
 
 #: ui/robot_card.gd:92
 msgid "Next: %s  ·  x%.1f work speed  ·  %s look"
-msgstr ""
+msgstr "下一级：%s  ·  x%.1f 工作速度  ·  %s 外观"
 
 #: ui/robot_card.gd:93
 msgid "Needs %s cubes, %s bolts and a %s Control Core.  %s"
-msgstr ""
+msgstr "需要 %s 方块、%s 螺栓和一个%s控制核心。  %s"
 
 #: ui/robot_card.gd:95
 msgid "Upgrade fleet to %s"
-msgstr ""
+msgstr "机队升级到 %s"
 
 #: ui/robot_card.gd:118
 msgid "□  %s  ·  missing  (detector, or salvage from electronics junk)"
-msgstr ""
+msgstr "□  %s  ·  缺少（用探测器，或从电子废料中回收）"
 
 #: ui/rockets_panel.gd:38
 msgid "Cells charged and ready. Pick a base to fly to."
-msgstr ""
+msgstr "电池已充满。选择要飞往的基地。"
 
 #: ui/rockets_panel.gd:45
 msgid "Not built yet"
-msgstr ""
+msgstr "尚未建造"
 
 #: ui/rockets_panel.gd:46
 msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Hub tab."
-msgstr ""
+msgstr "发射台需要 5 级基地（你的是 %d 级）。在“基地”页升级基地。"
 
 #: ui/rockets_panel.gd:48
 msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
-msgstr ""
+msgstr "飞往 Verdance 其他地方的火箭在完整版中。试玩版只在第一个街区。"
 
 #: ui/rockets_panel.gd:57
 msgid "NEARBY BASES"
-msgstr ""
+msgstr "附近的基地"
 
 #: ui/rockets_panel.gd:79
 msgid "%d sectors away  ·  %s"
-msgstr ""
+msgstr "相隔 %d 个扇区  ·  %s"
 
 #: ui/rockets_panel.gd:101
 msgid "ROCKET"
-msgstr ""
+msgstr "火箭"
 
 #: ui/rockets_panel.gd:106
 msgid "Top tier: warp hops, no recharge."
-msgstr ""
+msgstr "最高等级：跃迁跳跃，无需充能。"
 
 #: ui/rockets_panel.gd:119
 msgid "Upgrade to %s"
-msgstr ""
+msgstr "升级到 %s"
 
 #: ui/rockets_panel.gd:136
 msgid "Countdown %ds  ·  Flight %.1fs  ·  Recharge %s  ·  Cargo pods x%.1f every %ds"
-msgstr ""
+msgstr "倒计时 %d秒  ·  飞行 %.1f秒  ·  充能 %s  ·  货运舱 x%.1f 每 %d秒"
 
 #: ui/rockets_panel.gd:140
 msgid "  ·  WARP"
-msgstr ""
+msgstr "  ·  跃迁"
 
 #: ui/settings_panel.gd:11
 msgid "Audio"
-msgstr ""
+msgstr "音频"
 
 #: ui/settings_panel.gd:11
 msgid "Graphics"
-msgstr ""
+msgstr "画面"
 
 #: ui/settings_panel.gd:11
 msgid "Controls"
-msgstr ""
+msgstr "操作"
 
 #: ui/settings_panel.gd:11
 msgid "Gameplay"
-msgstr ""
+msgstr "游戏"
 
 #: ui/settings_panel.gd:11
 msgid "Accessibility"
-msgstr ""
+msgstr "辅助功能"
 
 #: ui/settings_panel.gd:58
 msgid "SETTINGS"
-msgstr ""
+msgstr "设置"
 
 #: ui/settings_panel.gd:61
 msgid "{ui_tab_prev}{ui_tab_next}  switch tabs     {ui_cancel}  back"
-msgstr ""
+msgstr "{ui_tab_prev}{ui_tab_next}  切换页面     {ui_cancel}  返回"
 
 #: ui/settings_panel.gd:112
 msgid "Changes are saved automatically."
-msgstr ""
+msgstr "更改会自动保存。"
 
 #: ui/settings_panel.gd:234
 msgid "Volume"
-msgstr ""
+msgstr "音量"
 
 #: ui/settings_panel.gd:241
 msgid "Sound effects"
-msgstr ""
+msgstr "音效"
 
 #: ui/settings_panel.gd:248
 msgid "Rendering"
-msgstr ""
+msgstr "渲染"
 
 #: ui/settings_panel.gd:249
 msgid "Low drops GI and fog; Ultra adds reflections."
-msgstr ""
+msgstr "低：关闭全局光照和雾；超高：增加反射。"
 
 #: ui/settings_panel.gd:250
 msgid "This renderer always uses the Low preset."
-msgstr ""
+msgstr "此渲染器始终使用“低”预设。"
 
 #: ui/settings_panel.gd:252
 msgid "Detected: %s for %s. "
-msgstr ""
+msgstr "检测到：%s，适用于 %s。"
 
 #: ui/settings_panel.gd:253
 msgid "Your choice (hardware: %s). "
-msgstr ""
+msgstr "你的选择（硬件：%s）。"
 
 #: ui/settings_panel.gd:254
 msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
-msgstr ""
+msgstr "低：关闭全局光照、雾和阴影细节；超高：增加反射。"
 
 #: ui/settings_panel.gd:255
 msgid "Quality preset"
-msgstr ""
+msgstr "画质预设"
 
 #: ui/settings_panel.gd:262
 msgid "Renderer"
-msgstr ""
+msgstr "渲染器"
 
 #: ui/settings_panel.gd:262
 msgid "Standard (Forward+)"
-msgstr ""
+msgstr "标准（Forward+）"
 
 #: ui/settings_panel.gd:262
 msgid "Light (Mobile)"
-msgstr ""
+msgstr "轻量（Mobile）"
 
 #: ui/settings_panel.gd:264
 msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
-msgstr ""
+msgstr "轻量适合较旧的集成显卡。重启游戏后生效（当前：%s）。"
 
 #: ui/settings_panel.gd:270
 msgid "Render scale"
-msgstr ""
+msgstr "渲染缩放"
 
 #: ui/settings_panel.gd:272
 msgid "Lower renders 3D at a smaller size; the interface stays sharp."
-msgstr ""
+msgstr "调低会以较小尺寸渲染 3D；界面保持清晰。"
 
 #: ui/settings_panel.gd:273
 msgid "Display"
-msgstr ""
+msgstr "显示"
 
 #: ui/settings_panel.gd:274
 msgid "Fullscreen"
-msgstr ""
+msgstr "全屏"
 
 #: ui/settings_panel.gd:277
 msgid "V-Sync"
-msgstr ""
+msgstr "垂直同步"
 
 #: ui/settings_panel.gd:283 ui/settings_panel.gd:312
 msgid "Bindings"
-msgstr ""
+msgstr "按键绑定"
 
 #: ui/settings_panel.gd:286
 msgid "ACTION   (select a binding to rebind it)"
-msgstr ""
+msgstr "操作   （选择一个绑定来重新设置）"
 
 #: ui/settings_panel.gd:289
 msgid "KEYBOARD / MOUSE"
-msgstr ""
+msgstr "键盘 / 鼠标"
 
 #: ui/settings_panel.gd:289
 msgid "CONTROLLER"
-msgstr ""
+msgstr "手柄"
 
 #: ui/settings_panel.gd:305
 msgid "Reset to defaults"
-msgstr ""
+msgstr "恢复默认"
 
 #: ui/settings_panel.gd:312
 msgid "Restore every key and controller binding."
-msgstr ""
+msgstr "恢复所有键盘和手柄绑定。"
 
 #: ui/settings_panel.gd:314
 msgid "Button prompts"
-msgstr ""
+msgstr "按键图标"
 
 #: ui/settings_panel.gd:316
 msgid "Controller art: Automatic follows the connected pad."
-msgstr ""
+msgstr "手柄图标：“自动”会跟随已连接的手柄。"
 
 #: ui/settings_panel.gd:318
 msgid "Mouse sensitivity"
-msgstr ""
+msgstr "鼠标灵敏度"
 
 #: ui/settings_panel.gd:321
 msgid "Stick look speed"
-msgstr ""
+msgstr "摇杆视角速度"
 
 #: ui/settings_panel.gd:324
 msgid "Invert look Y"
-msgstr ""
+msgstr "反转 Y 轴视角"
 
 #: ui/settings_panel.gd:328
 msgid "Mouse smoothing"
-msgstr ""
+msgstr "鼠标平滑"
 
 #: ui/settings_panel.gd:329
 msgid "Eases mouse look over a few frames."
-msgstr ""
+msgstr "在几帧内平滑鼠标视角。"
 
 #: ui/settings_panel.gd:330
 msgid "Scooping"
-msgstr ""
+msgstr "铲取"
 
 #: ui/settings_panel.gd:331
 msgid "Scoop button"
-msgstr ""
+msgstr "铲取按键"
 
 #: ui/settings_panel.gd:331
 msgid "Hold"
-msgstr ""
+msgstr "按住"
 
 #: ui/settings_panel.gd:331
 msgid "Toggle"
-msgstr ""
+msgstr "切换"
 
 #: ui/settings_panel.gd:372
 msgid "press a button…"
-msgstr ""
+msgstr "请按一个按钮…"
 
 #: ui/settings_panel.gd:372
 msgid "press a key…"
-msgstr ""
+msgstr "请按一个键…"
 
 #: ui/settings_panel.gd:404
 msgid "Conflict: %s is used by both %s and %s."
-msgstr ""
+msgstr "冲突：%s 同时被 %s 和 %s 使用。"
 
 #: ui/settings_panel.gd:492 ui/settings_panel.gd:495
 msgid "Language"
-msgstr ""
+msgstr "语言"
 
 #: ui/settings_panel.gd:494
 msgid "System default"
-msgstr ""
+msgstr "跟随系统"
 
 #: ui/settings_panel.gd:498
 msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
-msgstr ""
+msgstr "菜单、HUD、字幕和剧情文本。Pseudo 用于测试翻译。"
 
 #: ui/settings_panel.gd:499
 msgid "Comfort"
-msgstr ""
+msgstr "舒适度"
 
 #: ui/settings_panel.gd:500
 msgid "Camera shake"
-msgstr ""
+msgstr "镜头晃动"
 
 #: ui/settings_panel.gd:502
 msgid "Reduced motion"
-msgstr ""
+msgstr "减少动态效果"
 
 #: ui/settings_panel.gd:503
 msgid "Calmer camera and fewer bouncy effects."
-msgstr ""
+msgstr "更平稳的镜头，更少的弹跳效果。"
 
 #: ui/settings_panel.gd:504 ui/settings_panel.gd:514
 msgid "Interface"
-msgstr ""
+msgstr "界面"
 
 #: ui/settings_panel.gd:505
 msgid "Number format"
-msgstr ""
+msgstr "数字格式"
 
 #: ui/settings_panel.gd:505
 msgid "Short (1.2K)"
-msgstr ""
+msgstr "简写（1.2K）"
 
 #: ui/settings_panel.gd:505
 msgid "Scientific (1.2e3)"
-msgstr ""
+msgstr "科学计数（1.2e3）"
 
 #: ui/settings_panel.gd:505
 msgid "Engineering (1.2e3)"
-msgstr ""
+msgstr "工程计数（1.2e3）"
 
 #: ui/settings_panel.gd:507
 msgid "Best-value tags"
-msgstr ""
+msgstr "性价比标签"
 
 #: ui/settings_panel.gd:508
 msgid "Tag the affordable upgrade that gives the most per cube."
-msgstr ""
+msgstr "标出买得起且每方块收益最高的升级。"
 
 #: ui/settings_panel.gd:509
 msgid "HUD"
-msgstr ""
+msgstr "HUD"
 
 #: ui/settings_panel.gd:509
 msgid "Full"
-msgstr ""
+msgstr "完整"
 
 #: ui/settings_panel.gd:509
 msgid "Minimal"
-msgstr ""
+msgstr "精简"
 
 #: ui/settings_panel.gd:509
 msgid "Hidden"
-msgstr ""
+msgstr "隐藏"
 
 #: ui/settings_panel.gd:510
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
-msgstr ""
+msgstr "精简：几秒后淡出额外信息。隐藏：只保留提示和消息。"
 
 #: ui/settings_panel.gd:520
 msgid "Interface scale"
-msgstr ""
+msgstr "界面缩放"
 
 #: ui/settings_panel.gd:522
 msgid "Size of menus, HUD and subtitles."
-msgstr ""
+msgstr "菜单、HUD 和字幕的大小。"
 
 #: ui/settings_panel.gd:523
 msgid "Colour-blind palette"
-msgstr ""
+msgstr "色盲配色"
 
 #: ui/settings_panel.gd:524
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
-msgstr ""
+msgstr "对六角格进度、料斗计量条和零件稀有度使用 Okabe-Ito 配色。"
 
 #: ui/settings_panel.gd:525 ui/settings_panel.gd:526
 msgid "Subtitles"
-msgstr ""
+msgstr "字幕"
 
 #: ui/settings_panel.gd:527
 msgid "WREN and Ledger lines."
-msgstr ""
+msgstr "WREN 和 Ledger 的台词。"
 
 #: ui/settings_panel.gd:528
 msgid "Subtitle size"
-msgstr ""
+msgstr "字幕大小"
 
 #: ui/settings_panel.gd:528
 msgid "Small"
-msgstr ""
+msgstr "小"
 
 #: ui/settings_panel.gd:528
 msgid "Large"
-msgstr ""
+msgstr "大"
 
 #: ui/settings_panel.gd:530
 msgid "Subtitle background"
-msgstr ""
+msgstr "字幕背景"
 
 #: ui/settings_panel.gd:531
 msgid "A solid backdrop behind subtitle text."
-msgstr ""
+msgstr "在字幕文字后加一层实色背景。"
 
 #: ui/stations_panel.gd:15
 msgid "BALE AUTOMATION  &  RECYCLING"
-msgstr ""
+msgstr "捆包自动化  &  回收"
 
 #: ui/stations_panel.gd:30
 msgid "Move to frontier"
-msgstr ""
+msgstr "移到边境"
 
 #: ui/stations_panel.gd:98
 msgid "%s built"
-msgstr ""
+msgstr "已建 %s"
 
 #: ui/stations_panel.gd:103
 msgid "Auto-route: %s"
-msgstr ""
+msgstr "自动路线：%s"
 
 #: ui/stations_panel.gd:104
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Bolts %s"
-msgstr ""
+msgstr "已回收捆包 %d   ·   已销毁废料 %s 千克   ·   螺栓 %s"
 
 #: ui/trade_panel.gd:23
 msgid "HAGGLE'S PARTS TRADE"
-msgstr ""
+msgstr "HAGGLE 的零件交易"
 
 #: ui/trade_panel.gd:25
 msgid "\"Everything's original. Mostly. Three of yours for one of mine, no questions, some questions.\""
-msgstr ""
+msgstr "“全是原装的。大部分吧。你的三个换我的一个，不问问题，问几个问题。”"
 
 #: ui/trade_panel.gd:71
 msgid "Bolts  %s      Parts in storage  %d"
-msgstr ""
+msgstr "螺栓  %s      库存零件  %d"
 
 #: ui/trade_panel.gd:83
 msgid "Haggle: \"Funny thing, I just happened to find a %s. For you, half price.\""
-msgstr ""
+msgstr "Haggle：“真巧，我刚好捡到一个%s。给你，半价。”"
 
 #: ui/trade_panel.gd:91
 msgid "Trades away: %s"
-msgstr ""
+msgstr "换出：%s"
 
 #: ui/trade_panel.gd:93
 msgid "Needs 3 spare parts (Control Cores needed for a Mk tier are never traded)."
-msgstr ""
+msgstr "需要 3 个备用零件（升级 Mk 等级所需的控制核心永远不会被换走）。"
 
 #: ui/trade_panel.gd:98
 msgid "   (needed)"
-msgstr ""
+msgstr "   （需要）"
 
 #: ui/trade_panel.gd:100
 msgid "own %d"
-msgstr ""
+msgstr "拥有 %d"
 
 #: ui/trade_panel.gd:103
 msgid "Buy Rusty  %s"
-msgstr ""
+msgstr "买生锈的  %s"
 
 #: ui/trade_panel.gd:106
 msgid "Buy Worn  %s"
-msgstr ""
+msgstr "买磨损的  %s"
 
 #: ui/trade_panel.gd:112
 msgid "Scrap %d spare Rusty parts  ->  +%d bolts"
-msgstr ""
+msgstr "拆解 %d 个生锈的备用零件  ->  +%d 螺栓"
 
 #: ui/trade_panel.gd:122
 msgid "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab"
-msgstr ""
+msgstr "组装零件  ·  %d 分钟后上新  ·  在“组装”页装上"
 
 #: ui/trade_panel.gd:137
 msgid "Haggle: \"%s. Treat it nicely.\""
-msgstr ""
+msgstr "Haggle：“%s。好好待它。”"
 
 #: ui/trade_panel.gd:145
 msgid ""
 "%s  (own %d)\n"
 "%s cubes + %d bolts"
 msgstr ""
+"%s（拥有 %d）\n"
+"%s 方块 + %d 螺栓"
 
 #: ui/trade_panel.gd:171
 msgid "Swap 3 spares"
-msgstr ""
+msgstr "换 3 个备件"
 
 #: ui/upgrade_card.gd:54
 msgid "Lv 0"
-msgstr ""
+msgstr "0 级"
 
 #: ui/upgrade_card.gd:56
 msgid "BEST VALUE"
-msgstr ""
+msgstr "最划算"
 
 #: ui/upgrade_card.gd:85
 msgid "Buy"
-msgstr ""
+msgstr "购买"
 
 #: ui/upgrade_card.gd:87 ui/upgrade_card.gd:208
 msgid "Max"
-msgstr ""
+msgstr "满级"
 
 #: ui/upgrade_card.gd:177
 msgid "Lv %d%s"
-msgstr ""
+msgstr "%d 级%s"
 
 #: ui/upgrade_card.gd:185
 msgid "%s Lv %d"
-msgstr ""
+msgstr "%s %d 级"
 
 #: ui/upgrade_card.gd:186
 msgid "Requires %s"
-msgstr ""
+msgstr "需要%s"
 
 #: ui/upgrade_card.gd:189
 msgid "%s%s  (max)"
-msgstr ""
+msgstr "%s%s（满级）"
 
 #: ui/upgrade_card.gd:192
 msgid "Off  →  On"
-msgstr ""
+msgstr "关  →  开"
 
 #: ui/upgrade_card.gd:199
 msgid "MAX"
-msgstr ""
+msgstr "满级"
 
 #: ui/upgrade_card.gd:208
 msgid "Max (%d)"
-msgstr ""
+msgstr "满级（%d）"
 
 #: ui/upgrade_card.gd:214
 msgid "in about %s"
-msgstr ""
+msgstr "大约 %s后"
 
 #: ui/upgrade_card.gd:214
 msgid "earn more cubes"
-msgstr ""
+msgstr "赚更多方块"
 
 #: ui/upgrade_card.gd:219
 msgid "Where it comes from:  %s"
-msgstr ""
+msgstr "来源：  %s"
 
 #: ui/upgrades_screen.gd:11
 msgid "Bots"
-msgstr ""
+msgstr "机器人"
 
 #: ui/upgrades_screen.gd:12
 msgid "Trade"
-msgstr ""
+msgstr "交易"
 
 #: ui/upgrades_screen.gd:13
 msgid "Hub"
-msgstr ""
+msgstr "基地"
 
 #: ui/upgrades_screen.gd:14
 msgid "Research"
-msgstr ""
+msgstr "研究"
 
 #: ui/upgrades_screen.gd:15
 msgid "Rockets"
-msgstr ""
+msgstr "火箭"
 
 #: ui/upgrades_screen.gd:16
 msgid "Cosmetics"
-msgstr ""
+msgstr "装扮"
 
 #: ui/upgrades_screen.gd:18
 msgid "Builder"
-msgstr ""
+msgstr "组装"
 
 #: ui/upgrades_screen.gd:68
 msgid "UPGRADES"
-msgstr ""
+msgstr "升级"
 
 #: ui/upgrades_screen.gd:87
 msgid "%s (soon)"
-msgstr ""
+msgstr "%s（即将推出）"
 
 #: water/water_view.gd:71
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
-msgstr ""
+msgstr "这水……我能看见底了。Lumi，下面有东西在动。"
 
 #: data/achievements.json:achievements[first_scoop].name
 msgid "First Scoop"
-msgstr ""
+msgstr "第一铲"
 
 #: data/achievements.json:achievements[first_scoop].desc
 msgid "Scoop your first piece of junk."
-msgstr ""
+msgstr "铲起你的第一块废料。"
 
 #: data/achievements.json:achievements[hex_1].name
 msgid "Clean Slate"
-msgstr ""
+msgstr "一干二净"
 
 #: data/achievements.json:achievements[hex_1].desc
 msgid "Clean your first hex."
-msgstr ""
+msgstr "清理你的第一个六角格。"
 
 #: data/achievements.json:achievements[hex_10].name
 msgid "Tidy Ten"
-msgstr ""
+msgstr "十全十美"
 
 #: data/achievements.json:achievements[hex_10].desc
 msgid "Clean 10 hexes."
-msgstr ""
+msgstr "清理 10 个六角格。"
 
 #: data/achievements.json:achievements[hex_50].name
 msgid "Half a Hundred"
-msgstr ""
+msgstr "半百"
 
 #: data/achievements.json:achievements[hex_50].desc
 msgid "Clean 50 hexes."
-msgstr ""
+msgstr "清理 50 个六角格。"
 
 #: data/achievements.json:achievements[hex_100].name
 msgid "Century of Hexes"
-msgstr ""
+msgstr "百格达成"
 
 #: data/achievements.json:achievements[hex_100].desc
 msgid "Clean 100 hexes."
-msgstr ""
+msgstr "清理 100 个六角格。"
 
 #: data/achievements.json:achievements[hex_250].name
 msgid "The Whole Yard"
-msgstr ""
+msgstr "整个院子"
 
 #: data/achievements.json:achievements[hex_250].desc
 msgid "Clean 250 hexes."
-msgstr ""
+msgstr "清理 250 个六角格。"
 
 #: data/achievements.json:achievements[cube_1].name
 msgid "Bale Begins"
-msgstr ""
+msgstr "初次打包"
 
 #: data/achievements.json:achievements[cube_1].desc
 msgid "Press your first bale."
-msgstr ""
+msgstr "压制你的第一个捆包。"
 
 #: data/achievements.json:achievements[cube_100].name
 msgid "Bale Baron"
-msgstr ""
+msgstr "捆包大亨"
 
 #: data/achievements.json:achievements[cube_100].desc
 msgid "Press 100 bales."
-msgstr ""
+msgstr "压制 100 个捆包。"
 
 #: data/achievements.json:achievements[cube_1000].name
 msgid "Mountain of Bales"
-msgstr ""
+msgstr "捆包山"
 
 #: data/achievements.json:achievements[cube_1000].desc
 msgid "Press 1,000 bales."
-msgstr ""
+msgstr "压制 1,000 个捆包。"
 
 #: data/achievements.json:achievements[pure_10].name
 msgid "Pure Intentions"
-msgstr ""
+msgstr "纯粹的心意"
 
 #: data/achievements.json:achievements[pure_10].desc
 msgid "Press 10 pure bales (one kind of junk only)."
-msgstr ""
+msgstr "压制 10 个纯净捆包（只含一种废料）。"
 
 #: data/achievements.json:achievements[perfect_1].name
 msgid "Just Right"
-msgstr ""
+msgstr "刚刚好"
 
 #: data/achievements.json:achievements[perfect_1].desc
 msgid "Press a perfect bale."
-msgstr ""
+msgstr "压制一个完美捆包。"
 
 #: data/achievements.json:achievements[perfect_50].name
 msgid "Perfectionist"
-msgstr ""
+msgstr "完美主义者"
 
 #: data/achievements.json:achievements[perfect_50].desc
 msgid "Press 50 perfect bales."
-msgstr ""
+msgstr "压制 50 个完美捆包。"
 
 #: data/achievements.json:achievements[lumpy_10].name
 msgid "Lumpy but Loved"
-msgstr ""
+msgstr "不平整也可爱"
 
 #: data/achievements.json:achievements[lumpy_10].desc
 msgid "Press 10 lumpy bales. They still count."
-msgstr ""
+msgstr "压制 10 个不平整的捆包。它们也算数。"
 
 #: data/achievements.json:achievements[earn_1k].name
 msgid "Pocket Change"
-msgstr ""
+msgstr "零花钱"
 
 #: data/achievements.json:achievements[earn_1k].desc
 msgid "Earn 1,000 cubes in total."
-msgstr ""
+msgstr "总共赚到 1,000 方块。"
 
 #: data/achievements.json:achievements[earn_100k].name
 msgid "Junk Tycoon"
-msgstr ""
+msgstr "废料大亨"
 
 #: data/achievements.json:achievements[earn_100k].desc
 msgid "Earn 100,000 cubes in total."
-msgstr ""
+msgstr "总共赚到 100,000 方块。"
 
 #: data/achievements.json:achievements[earn_1m].name
 msgid "Million-Cube Planet"
-msgstr ""
+msgstr "百万方块星球"
 
 #: data/achievements.json:achievements[earn_1m].desc
 msgid "Earn 1,000,000 cubes in total."
-msgstr ""
+msgstr "总共赚到 1,000,000 方块。"
 
 #: data/achievements.json:achievements[kg_metal].name
 msgid "Heavy Metal"
-msgstr ""
+msgstr "重金属"
 
 #: data/achievements.json:achievements[kg_metal].desc
 msgid "Clear 500 kg of scrap metal."
-msgstr ""
+msgstr "清理 500 千克废金属。"
 
 #: data/achievements.json:achievements[kg_plastic].name
 msgid "Plastic Purge"
-msgstr ""
+msgstr "塑料大扫除"
 
 #: data/achievements.json:achievements[kg_plastic].desc
 msgid "Clear 200 kg of plastic."
-msgstr ""
+msgstr "清理 200 千克塑料。"
 
 #: data/achievements.json:achievements[kg_glass].name
 msgid "Glass Act"
-msgstr ""
+msgstr "玻璃心"
 
 #: data/achievements.json:achievements[kg_glass].desc
 msgid "Clear 200 kg of glass."
-msgstr ""
+msgstr "清理 200 千克玻璃。"
 
 #: data/achievements.json:achievements[kg_rubber].name
 msgid "Bounce Back"
-msgstr ""
+msgstr "弹回来"
 
 #: data/achievements.json:achievements[kg_rubber].desc
 msgid "Clear 150 kg of rubber."
-msgstr ""
+msgstr "清理 150 千克橡胶。"
 
 #: data/achievements.json:achievements[kg_electronics].name
 msgid "Circuit Breaker"
-msgstr ""
+msgstr "断路器"
 
 #: data/achievements.json:achievements[kg_electronics].desc
 msgid "Clear 100 kg of electronics."
-msgstr ""
+msgstr "清理 100 千克电子垃圾。"
 
 #: data/achievements.json:achievements[kg_paper].name
 msgid "Paper Trail"
-msgstr ""
+msgstr "纸上谈兵"
 
 #: data/achievements.json:achievements[kg_paper].desc
 msgid "Clear 100 kg of paper and fabric."
-msgstr ""
+msgstr "清理 100 千克纸张和布料。"
 
 #: data/achievements.json:achievements[kg_total].name
 msgid "A Tonne of Fun"
-msgstr ""
+msgstr "一吨的快乐"
 
 #: data/achievements.json:achievements[kg_total].desc
 msgid "Clear 1,000 kg of junk."
-msgstr ""
+msgstr "清理 1,000 千克废料。"
 
 #: data/achievements.json:achievements[kg_10t].name
 msgid "Ten Tonnes Lighter"
-msgstr ""
+msgstr "轻了十吨"
 
 #: data/achievements.json:achievements[kg_10t].desc
 msgid "Clear 10,000 kg of junk."
-msgstr ""
+msgstr "清理 10,000 千克废料。"
 
 #: data/achievements.json:achievements[upgrade_1].name
 msgid "Tinkerer"
-msgstr ""
+msgstr "小修理匠"
 
 #: data/achievements.json:achievements[upgrade_1].desc
 msgid "Buy your first upgrade."
-msgstr ""
+msgstr "购买你的第一个升级。"
 
 #: data/achievements.json:achievements[upgrade_50].name
 msgid "Fully Kitted"
-msgstr ""
+msgstr "全副武装"
 
 #: data/achievements.json:achievements[upgrade_50].desc
 msgid "Buy 50 upgrade levels."
-msgstr ""
+msgstr "购买 50 级升级。"
 
 #: data/achievements.json:achievements[robot_1].name
 msgid "Not Alone"
-msgstr ""
+msgstr "不再孤单"
 
 #: data/achievements.json:achievements[robot_1].desc
 msgid "Build your first robot."
-msgstr ""
+msgstr "建造你的第一台机器人。"
 
 #: data/achievements.json:achievements[robot_5].name
 msgid "Little Crew"
-msgstr ""
+msgstr "小小队伍"
 
 #: data/achievements.json:achievements[robot_5].desc
 msgid "Build 5 robots."
-msgstr ""
+msgstr "建造 5 台机器人。"
 
 #: data/achievements.json:achievements[robot_15].name
 msgid "Fleet Commander"
-msgstr ""
+msgstr "机队指挥官"
 
 #: data/achievements.json:achievements[robot_15].desc
 msgid "Build 15 robots."
-msgstr ""
+msgstr "建造 15 台机器人。"
 
 #: data/achievements.json:achievements[robot_types].name
 msgid "Whole Family"
-msgstr ""
+msgstr "全家福"
 
 #: data/achievements.json:achievements[robot_types].desc
 msgid "Build every kind of robot."
-msgstr ""
+msgstr "建造每一种机器人。"
 
 #: data/achievements.json:achievements[seed].name
 msgid "The First Seed"
-msgstr ""
+msgstr "第一颗种子"
 
 #: data/achievements.json:achievements[seed].desc
 msgid "Find the first seed."
-msgstr ""
+msgstr "找到第一颗种子。"
 
 #: data/achievements.json:achievements[plant_1].name
 msgid "Green Thumb"
-msgstr ""
+msgstr "绿手指"
 
 #: data/achievements.json:achievements[plant_1].desc
 msgid "Plant a seed."
-msgstr ""
+msgstr "种下一颗种子。"
 
 #: data/achievements.json:achievements[plant_100].name
 msgid "Gardener"
-msgstr ""
+msgstr "园丁"
 
 #: data/achievements.json:achievements[plant_100].desc
 msgid "Plant 100 seeds."
-msgstr ""
+msgstr "种下 100 颗种子。"
 
 #: data/achievements.json:achievements[bloom_50].name
 msgid "In Bloom"
-msgstr ""
+msgstr "花开了"
 
 #: data/achievements.json:achievements[bloom_50].desc
 msgid "See 50 plants bloom."
-msgstr ""
+msgstr "看到 50 株植物开花。"
 
 #: data/achievements.json:achievements[restored_1].name
 msgid "Alive Again"
-msgstr ""
+msgstr "重获新生"
 
 #: data/achievements.json:achievements[restored_1].desc
 msgid "Fully restore a hex."
-msgstr ""
+msgstr "完全恢复一个六角格。"
 
 #: data/achievements.json:achievements[restored_25].name
 msgid "Meadowmaker"
-msgstr ""
+msgstr "草地制造者"
 
 #: data/achievements.json:achievements[restored_25].desc
 msgid "Fully restore 25 hexes."
-msgstr ""
+msgstr "完全恢复 25 个六角格。"
 
 #: data/achievements.json:achievements[shard_1].name
 msgid "Memory Keeper"
-msgstr ""
+msgstr "记忆守护者"
 
 #: data/achievements.json:achievements[shard_1].desc
 msgid "Read a memory shard."
-msgstr ""
+msgstr "阅读一块记忆碎片。"
 
 #: data/achievements.json:achievements[shard_all].name
 msgid "Every Story"
-msgstr ""
+msgstr "每一个故事"
 
 #: data/achievements.json:achievements[shard_all].desc
 msgid "Read all eight memory shards."
-msgstr ""
+msgstr "阅读全部八块记忆碎片。"
 
 #: data/achievements.json:achievements[research_1].name data/robot_parts.json:traits[curious].name
 msgid "Curious"
-msgstr ""
+msgstr "好奇心"
 
 #: data/achievements.json:achievements[research_1].desc
 msgid "Finish your first research."
-msgstr ""
+msgstr "完成你的第一项研究。"
 
 #: data/achievements.json:achievements[research_10].name
 msgid "Lab Coat"
-msgstr ""
+msgstr "白大褂"
 
 #: data/achievements.json:achievements[research_10].desc
 msgid "Finish 10 research projects."
-msgstr ""
+msgstr "完成 10 项研究。"
 
 #: data/achievements.json:achievements[research_all].name
 msgid "Know-It-All"
-msgstr ""
+msgstr "万事通"
 
 #: data/achievements.json:achievements[research_all].desc
 msgid "Finish every research project."
-msgstr ""
+msgstr "完成所有研究。"
 
 #: data/achievements.json:achievements[tractor].name
 msgid "Beam Me Up"
-msgstr ""
+msgstr "传送我吧"
 
 #: data/achievements.json:achievements[tractor].desc
 msgid "Research the Tractor Beam."
-msgstr ""
+msgstr "研究牵引光束。"
 
 #: data/achievements.json:achievements[rocket_cargo].name
 msgid "Special Delivery"
-msgstr ""
+msgstr "特快专递"
 
 #: data/achievements.json:achievements[rocket_cargo].desc
 msgid "Research Rocket Cargo."
-msgstr ""
+msgstr "研究火箭货运。"
 
 #: data/achievements.json:achievements[data_500].name
 msgid "Data Hoarder"
-msgstr ""
+msgstr "数据囤积者"
 
 #: data/achievements.json:achievements[data_500].desc
 msgid "Collect 500 field data."
-msgstr ""
+msgstr "收集 500 野外数据。"
 
 #: data/achievements.json:achievements[distance_1k].name
 msgid "Long Way Round"
-msgstr ""
+msgstr "绕远路"
 
 #: data/achievements.json:achievements[distance_1k].desc
 msgid "Roll 1 km."
-msgstr ""
+msgstr "行驶 1 公里。"
 
 #: data/achievements.json:achievements[distance_10k].name
 msgid "Marathon Treads"
-msgstr ""
+msgstr "马拉松履带"
 
 #: data/achievements.json:achievements[distance_10k].desc
 msgid "Roll 10 km."
-msgstr ""
+msgstr "行驶 10 公里。"
 
 #: data/achievements.json:achievements[time_1h].name
 msgid "Settling In"
-msgstr ""
+msgstr "安顿下来"
 
 #: data/achievements.json:achievements[time_1h].desc
 msgid "Spend an hour on the planet."
-msgstr ""
+msgstr "在星球上度过一小时。"
 
 #: data/achievements.json:achievements[hub_2].name
 msgid "Home Improvements"
-msgstr ""
+msgstr "家居改造"
 
 #: data/achievements.json:achievements[hub_2].desc
 msgid "Upgrade the hub."
-msgstr ""
+msgstr "升级基地。"
 
 #: data/achievements.json:achievements[hub_5].name
 msgid "Hub Sweet Hub"
-msgstr ""
+msgstr "基地甜蜜的家"
 
 #: data/achievements.json:achievements[hub_5].desc
 msgid "Reach hub level 5."
-msgstr ""
+msgstr "基地达到 5 级。"
 
 #: data/achievements.json:achievements[parts_10].name
 msgid "Magpie"
-msgstr ""
+msgstr "喜鹊"
 
 #: data/achievements.json:achievements[parts_10].desc
 msgid "Dig up 10 robot parts."
-msgstr ""
+msgstr "挖出 10 个机器人零件。"
 
 #: data/achievements.json:achievements[air].name
 msgid "Breath of Fresh Air"
-msgstr ""
+msgstr "一口新鲜空气"
 
 #: data/achievements.json:achievements[air].desc
 msgid "Filter 500 units of dusty air."
-msgstr ""
+msgstr "过滤 500 单位的灰尘空气。"
 
 #: data/achievements.json:achievements[codex_20].name
 msgid "Naturalist"
-msgstr ""
+msgstr "博物学家"
 
 #: data/achievements.json:achievements[codex_20].desc
 msgid "Fill in 20 codex entries."
-msgstr ""
+msgstr "填写 20 条图鉴条目。"
 
 #: data/achievements.json:achievements[landmarks_all].name
 msgid "Sightseer"
-msgstr ""
+msgstr "观光客"
 
 #: data/achievements.json:achievements[landmarks_all].desc
 msgid "Visit every kind of landmark."
-msgstr ""
+msgstr "参观每一种地标。"
 
 #: data/achievements.json:achievements[ach_25].name
 msgid "Overachiever"
-msgstr ""
+msgstr "超额完成"
 
 #: data/achievements.json:achievements[ach_25].desc
 msgid "Unlock 25 achievements."
-msgstr ""
+msgstr "解锁 25 个成就。"
 
 #: data/achievements.json:achievements[curio_5].name
 msgid "Nosy Parker"
-msgstr ""
+msgstr "好奇宝宝"
 
 #: data/achievements.json:achievements[curio_5].desc
 msgid "Find 5 curiosities."
-msgstr ""
+msgstr "找到 5 件奇物。"
 
 #: data/achievements.json:achievements[curio_15].name
 msgid "Cabinet of Curiosities"
-msgstr ""
+msgstr "珍奇柜"
 
 #: data/achievements.json:achievements[curio_15].desc
 msgid "Find 15 curiosities."
-msgstr ""
+msgstr "找到 15 件奇物。"
 
 #: data/achievements.json:achievements[curio_all].name
 msgid "Every Last Secret"
-msgstr ""
+msgstr "最后一个秘密"
 
 #: data/achievements.json:achievements[curio_all].desc
 msgid "Find all 29 curiosities on Verdance."
-msgstr ""
+msgstr "找到 Verdance 上全部 29 件奇物。"
 
 #: data/achievements.json:achievements[wild_curio].name
 msgid "Off the Beaten Path"
-msgstr ""
+msgstr "人迹罕至"
 
 #: data/achievements.json:achievements[wild_curio].desc
 msgid "Find a curiosity that only lives in the wilderness."
-msgstr ""
+msgstr "找到一件只在荒野出现的奇物。"
 
 #: data/achievements.json:achievements[wild_curio_all].name
 msgid "Wild at Heart"
-msgstr ""
+msgstr "心向荒野"
 
 #: data/achievements.json:achievements[wild_curio_all].desc
 msgid "Find all six wilderness curiosities."
-msgstr ""
+msgstr "找到全部六件荒野奇物。"
 
 #: data/achievements.json:achievements[biome_1].name
 msgid "Off-Road"
-msgstr ""
+msgstr "越野"
 
 #: data/achievements.json:achievements[biome_1].desc
 msgid "Land at a wilderness base."
-msgstr ""
+msgstr "降落在一座荒野基地。"
 
 #: data/achievements.json:achievements[biome_3].name
 msgid "Postcards From Verdance"
-msgstr ""
+msgstr "来自 Verdance 的明信片"
 
 #: data/achievements.json:achievements[biome_3].desc
 msgid "Visit wilderness bases in three different biomes."
-msgstr ""
+msgstr "参观三种不同生物群系中的荒野基地。"
 
 #: data/achievements.json:achievements[campfire].name
 msgid "Sit a While"
-msgstr ""
+msgstr "坐一会儿"
 
 #: data/achievements.json:achievements[campfire].desc
 msgid "Rekindle the last campfire."
-msgstr ""
+msgstr "重新点燃最后一堆篝火。"
 
 #: data/achievements.json:achievements[bloom_meadow].name data/bloom.json:milestones[first_meadow].name
 msgid "First Meadow"
-msgstr ""
+msgstr "第一片草地"
 
 #: data/achievements.json:achievements[bloom_meadow].desc
 msgid "Reach 25 Thriving hexes across Verdance."
-msgstr ""
+msgstr "在 Verdance 上达成 25 个繁茂的六角格。"
 
 #: data/achievements.json:achievements[bloom_district].name data/bloom.json:milestones[thriving_district].name
 msgid "A District in Bloom"
-msgstr ""
+msgstr "繁花街区"
 
 #: data/achievements.json:achievements[bloom_district].desc
 msgid "Bring one district to 60% Thriving."
-msgstr ""
+msgstr "让一个街区达到 60% 繁茂。"
 
 #: data/achievements.json:achievements[bloom_verdance].name data/bloom.json:milestones[verdance_bloom].name
 msgid "Verdance Bloom"
-msgstr ""
+msgstr "Verdance 绽放"
 
 #: data/achievements.json:achievements[bloom_verdance].desc
 msgid "Bring the Cradle home: three districts in bloom, or 1% of the planet reclaimed."
-msgstr ""
+msgstr "迎 Cradle号回家：三个街区繁花盛开，或收复星球的 1%。"
 
 #: data/achievements.json:achievements[bloom_evergreen].name data/bloom.json:milestones[evergreen].name
 msgid "Evergreen"
-msgstr ""
+msgstr "四季常青"
 
 #: data/achievements.json:achievements[bloom_evergreen].desc
 msgid "Twelve districts in bloom, or 3% of the planet reclaimed."
-msgstr ""
+msgstr "十二个街区繁花盛开，或收复星球的 3%。"
 
 #: data/achievements.json:achievements[ark_1].name
 msgid "Seed Ark"
-msgstr ""
+msgstr "种子方舟"
 
 #: data/achievements.json:achievements[ark_1].desc
 msgid "Complete a Seed Ark wave."
-msgstr ""
+msgstr "完成一波种子方舟。"
 
 #: data/achievements.json:achievements[ark_10].name
 msgid "Tender of Worlds"
-msgstr ""
+msgstr "世界的守护者"
 
 #: data/achievements.json:achievements[ark_10].desc
 msgid "Complete 10 Seed Ark waves."
-msgstr ""
+msgstr "完成 10 波种子方舟。"
 
 #: data/achievements.json:achievements[outpost_1].name
 msgid "Frontier Scale"
-msgstr ""
+msgstr "边境磅秤"
 
 #: data/achievements.json:achievements[outpost_1].desc
 msgid "Repair a ruined outpost."
-msgstr ""
+msgstr "修复一座破败的前哨站。"
 
 #: data/achievements.json:achievements[outpost_3].name
 msgid "Outpost Network"
-msgstr ""
+msgstr "前哨网络"
 
 #: data/achievements.json:achievements[outpost_3].desc
 msgid "Repair 3 outposts."
-msgstr ""
+msgstr "修复 3 座前哨站。"
 
 #: data/achievements.json:achievements[outpost_charge].name
 msgid "Pit Stop"
-msgstr ""
+msgstr "进站加油"
 
 #: data/achievements.json:achievements[outpost_charge].desc
 msgid "Build a recharge pad at an outpost."
-msgstr ""
+msgstr "在前哨站建造一座充能平台。"
 
 #: data/achievements.json:achievements[builder_mix].name
 msgid "Mix and Match"
-msgstr ""
+msgstr "混搭达人"
 
 #: data/achievements.json:achievements[builder_mix].desc
 msgid "Build a robot with all five custom parts."
-msgstr ""
+msgstr "建造一台装满五个定制零件的机器人。"
 
 #: data/achievements.json:achievements[builder_maker].name
 msgid "As the Makers Made It"
-msgstr ""
+msgstr "如造物者所造"
 
 #: data/achievements.json:achievements[builder_maker].desc
 msgid "Fit the full Maker set (shell, optic and glider) on one robot."
-msgstr ""
+msgstr "为一台机器人装上完整的造物者套装（外壳、光学镜和滑翔翼）。"
 
 #: data/achievements.json:achievements[builder_hats].name
 msgid "Hat Rack"
-msgstr ""
+msgstr "帽子架"
 
 #: data/achievements.json:achievements[builder_hats].desc
 msgid "Collect 5 different robot toppers."
-msgstr ""
+msgstr "收集 5 种不同的机器人头饰。"
 
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
-msgstr ""
+msgstr "Verdance 上任意地方的 25 个繁茂六角格。"
 
 #: data/bloom.json:milestones[thriving_district].desc
 msgid "One district with 60% of its land Thriving."
-msgstr ""
+msgstr "一个街区 60% 的土地繁茂。"
 
 #: data/bloom.json:milestones[green_shoots].name
 msgid "Green Shoots"
-msgstr ""
+msgstr "新绿萌芽"
 
 #: data/bloom.json:milestones[green_shoots].desc
 msgid "Reclaim 0.25% of the planet, as the hologram counts it."
-msgstr ""
+msgstr "按全息图统计，收复星球的 0.25%。"
 
 #: data/bloom.json:milestones[verdance_bloom].desc
 msgid "The Cradle Returns landing pad is alive (or 2% of the planet reclaimed). Lumi's Bloom Core is full and the Cradle comes home."
-msgstr ""
+msgstr "“Cradle号归来”着陆平台焕发生机（或收复星球的 2%）。Lumi 的绽放核心充满，Cradle号回家了。"
 
 #: data/bloom.json:milestones[wide_bloom].name
 msgid "Wide Bloom"
-msgstr ""
+msgstr "遍地花开"
 
 #: data/bloom.json:milestones[wide_bloom].desc
 msgid "Six districts in bloom, or 3% of the planet reclaimed."
-msgstr ""
+msgstr "六个街区繁花盛开，或收复星球的 3%。"
 
 #: data/bloom.json:milestones[evergreen].desc
 msgid "Twelve districts in bloom, or 5% of the planet reclaimed."
-msgstr ""
+msgstr "十二个街区繁花盛开，或收复星球的 5%。"
 
 #: data/codex.json:categories[junk].name data/hex_levels.json:levels[0].name
 msgid "Junk"
-msgstr ""
+msgstr "废料"
 
 #: data/codex.json:categories[plants].name
 msgid "Plants"
-msgstr ""
+msgstr "植物"
 
 #: data/codex.json:categories[shards].name
 msgid "Memory Shards"
-msgstr ""
+msgstr "记忆碎片"
 
 #: data/codex.json:categories[landmarks].name
 msgid "Landmarks"
-msgstr ""
+msgstr "地标"
 
 #: data/codex.json:categories[frontiers].name
 msgid "Frontiers"
-msgstr ""
+msgstr "边境"
 
 #: data/codex.json:junk.metal.hint
 msgid "Rusty, clanky, everywhere."
-msgstr ""
+msgstr "生锈、哐当作响、到处都是。"
 
 #: data/codex.json:junk.metal.desc
 msgid "Cans, tins and bent brackets. Most of it was made to last, and it did. Pressed into bales, it can be rolled and stamped into something useful again."
-msgstr ""
+msgstr "罐头、铁盒和弯掉的支架。大多数东西都是为了耐用而造的，也确实很耐用。压成捆包后，就能重新轧制冲压成有用的东西。"
 
 #: data/codex.json:junk.plastic.hint
 msgid "Bright colours that never faded."
-msgstr ""
+msgstr "从未褪色的鲜艳颜色。"
 
 #: data/codex.json:junk.plastic.desc
 msgid "Bottles, crates and the occasional chair. It outlived the people who bought it. It weighs almost nothing, and still the ground under it stayed bare."
-msgstr ""
+msgstr "瓶子、箱子，偶尔还有一把椅子。它比买下它的人活得更久。它几乎没有重量，可它下面的地面依然寸草不生。"
 
 #: data/codex.json:junk.glass.hint
 msgid "It glints in the dust."
-msgstr ""
+msgstr "它在尘土中闪闪发光。"
 
 #: data/codex.json:junk.glass.desc
 msgid "Jugs and wine bottles, a few still corked. Sorted by colour, glass melts down beautifully. Lumi likes how the light comes through it."
-msgstr ""
+msgstr "水壶和酒瓶，有几个还塞着软木塞。按颜色分好，玻璃熔得很漂亮。Lumi 喜欢光透过它的样子。"
 
 #: data/codex.json:junk.rubber.hint
 msgid "Squeaky. Bouncy. Sad."
-msgstr ""
+msgstr "吱吱响。弹弹的。有点忧伤。"
 
 #: data/codex.json:junk.rubber.desc
 msgid "Tyres, boots and one very patient rubber duck. Rubber holds water, and water holds mosquitoes. Clearing it makes room for frogs."
-msgstr ""
+msgstr "轮胎、靴子，还有一只非常有耐心的橡皮鸭。橡胶会积水，积水会招蚊子。清掉它，青蛙就有地方住了。"
 
 #: data/codex.json:junk.electronics.hint
 msgid "It might still remember something."
-msgstr ""
+msgstr "它也许还记得些什么。"
 
 #: data/codex.json:junk.electronics.desc
 msgid "Laptops, radios and televisions with nothing left to say. Inside are tiny useful parts. Lumi keeps the good ones for new friends."
-msgstr ""
+msgstr "笔记本电脑、收音机和再也无话可说的电视机。里面有很多有用的小零件。Lumi 会把好的留给新朋友。"
 
 #: data/codex.json:junk.paper.hint
 msgid "Soft, and slowly going back to soil."
-msgstr ""
+msgstr "软软的，正慢慢变回泥土。"
 
 #: data/codex.json:junk.paper.desc
 msgid "Cardboard boxes, bags and old gloves. Paper is the one kind of junk that is already trying to become soil. Lumi helps it along."
-msgstr ""
+msgstr "纸箱、袋子和旧手套。纸是唯一一种已经在努力变回泥土的废料。Lumi 帮它一把。"
 
 #: data/codex.json:plants.grass.name
 msgid "Meadow Grass"
-msgstr ""
+msgstr "草甸草"
 
 #: data/codex.json:plants.grass.hint
 msgid "Plant your first seeds."
-msgstr ""
+msgstr "种下你的第一批种子。"
 
 #: data/codex.json:plants.grass.desc
 msgid "The first thing to come back, always. Its roots knit the loose dust together so other plants have something to hold on to."
-msgstr ""
+msgstr "永远是第一个回来的。它的根把松散的尘土编织在一起，让其他植物有地方扎根。"
 
 #: data/codex.json:plants.grass2.name
 msgid "Tufted Grass"
-msgstr ""
+msgstr "丛生草"
 
 #: data/codex.json:plants.grass2.hint
 msgid "Keep planting."
-msgstr ""
+msgstr "继续种吧。"
 
 #: data/codex.json:plants.grass2.desc
 msgid "A slightly scruffier cousin. It grows in clumps, and small beetles like to live between them."
-msgstr ""
+msgstr "一位稍微乱糟糟的表亲。它成丛生长，小甲虫喜欢住在草丛之间。"
 
 #: data/codex.json:plants.celandine.name
 msgid "Celandine"
-msgstr ""
+msgstr "白屈菜"
 
 #: data/codex.json:plants.celandine.hint
 msgid "A little yellow star."
-msgstr ""
+msgstr "一颗小小的黄色星星。"
 
 #: data/codex.json:plants.celandine.desc
 msgid "Glossy yellow petals that open in the sun and close when clouds pass. Bees find it before they find anything else."
-msgstr ""
+msgstr "有光泽的黄色花瓣，晴天开放，云飘过时合拢。蜜蜂总是先找到它。"
 
 #: data/codex.json:plants.gazania.name
 msgid "Gazania"
-msgstr ""
+msgstr "勋章菊"
 
 #: data/codex.json:plants.gazania.hint
 msgid "Bold stripes, big smile."
-msgstr ""
+msgstr "条纹醒目，笑容灿烂。"
 
 #: data/codex.json:plants.gazania.desc
 msgid "A tough little sun-lover with striped petals. It does not mind poor soil. It seems to enjoy proving people wrong."
-msgstr ""
+msgstr "一株坚韧的小小喜阳植物，花瓣带条纹。它不介意贫瘠的土壤。它似乎很享受证明别人看错了。"
 
 #: data/codex.json:plants.heliophila.name
 msgid "Heliophila"
-msgstr ""
+msgstr "喜光花"
 
 #: data/codex.json:plants.heliophila.hint
 msgid "The first flower you ever saw here."
-msgstr ""
+msgstr "你在这里见到的第一朵花。"
 
 #: data/codex.json:plants.heliophila.desc
 msgid "Small blue flowers that turn to follow the light. One grew beside a crushed can before anyone helped it. That is where this all began."
-msgstr ""
+msgstr "追着光转动的蓝色小花。在任何人帮助之前，有一朵就长在一个压扁的罐头旁边。一切就是从那里开始的。"
 
 #: data/codex.json:plants.dandelion.name
 msgid "Dandelion"
-msgstr ""
+msgstr "蒲公英"
 
 #: data/codex.json:plants.dandelion.hint
 msgid "Make a wish."
-msgstr ""
+msgstr "许个愿吧。"
 
 #: data/codex.json:plants.dandelion.desc
 msgid "Golden today, a puff of wishes tomorrow. Each seed rides the wind to a new patch of clean ground. It plants itself, if you let it."
-msgstr ""
+msgstr "今天金灿灿，明天就是一团愿望。每颗种子都乘着风飞向一片新的干净土地。只要你允许，它会自己种下自己。"
 
 #: data/codex.json:plants.fern.name
 msgid "Fern"
-msgstr ""
+msgstr "蕨"
 
 #: data/codex.json:plants.fern.hint
 msgid "Shade-lover."
