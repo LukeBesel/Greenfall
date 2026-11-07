@@ -416,7 +416,7 @@ msgstr "WARP"
 msgid "LIFT OFF"
 msgstr "ABHEBEN"
 
-#: automation/rocket.gd:778 story/cine.gd:68
+#: automation/rocket.gd:789 story/cine.gd:68
 msgid "Space / Esc  skip"
 msgstr "Leertaste / Esc  überspringen"
 
@@ -1164,55 +1164,55 @@ msgstr "Roboter-Uplink aktiv. Drück B für das Kommando: Zonen malen und Crews 
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 aktiv. Blütenkern 4%: grünes Licht schwach. Cradle-Relais: kaum. Lass etwas wachsen."
 
-#: scenes/slice.gd:805
+#: scenes/slice.gd:814
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXFELD SAUBER!  +%s"
 
-#: scenes/slice.gd:819
+#: scenes/slice.gd:828
 msgid "Milestone: %d hexes clean!"
 msgstr "Meilenstein: %d Hexfelder sauber!"
 
-#: scenes/slice.gd:821
+#: scenes/slice.gd:830
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "Der ganze Schrottplatz ist sauber. Lumi piept ein sehr langes, sehr glückliches Piepen."
 
-#: scenes/slice.gd:828
+#: scenes/slice.gd:837
 msgid "%s is out of range: %s"
 msgstr "%s ist außer Reichweite: %s"
 
-#: scenes/slice.gd:838
+#: scenes/slice.gd:847
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Gesperrt. Bring deine Basis auf Stufe 5, um die Startrampe zu bauen."
 
-#: scenes/slice.gd:841 ui/rockets_panel.gd:39
+#: scenes/slice.gd:850 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Energiezellen laden: %s. Raketen-Upgrades füllen sie schneller."
 
-#: scenes/slice.gd:895
+#: scenes/slice.gd:904
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Landung: %s. Basis %d von %d. %s"
 
-#: scenes/slice.gd:896
+#: scenes/slice.gd:905
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "Die Rakete parkt auf dem Platz, bereit, sobald die Zellen voll sind."
 
-#: scenes/slice.gd:896
+#: scenes/slice.gd:905
 msgid "Landed on the base pad."
 msgstr "Auf der Basisplattform gelandet."
 
-#: scenes/slice.gd:987
+#: scenes/slice.gd:996
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Upgrades brauchen eine Werkbank. Zurück zur Basis."
 
-#: scenes/slice.gd:1155
+#: scenes/slice.gd:1164
 msgid "Welcome back. The junk waited for you."
 msgstr "Willkommen zurück. Der Schrott hat auf dich gewartet."
 
-#: scenes/slice.gd:1172
+#: scenes/slice.gd:1181
 msgid "OUTPOST %d · Lv%d"
 msgstr "AUSSENPOSTEN %d · St%d"
 
-#: scenes/slice.gd:1172
+#: scenes/slice.gd:1181
 msgid "OUTPOST %d · RUIN"
 msgstr "AUSSENPOSTEN %d · RUINE"
 
@@ -1578,59 +1578,59 @@ msgstr "...Es ist grün. Lumi, es ist wirklich grün."
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "Halte ihn feucht. Samen sind hier draußen selten, aber jede Blüte gibt einen zurück, dazu ein bisschen grünes Licht für deinen Kern. So fängt es an."
 
-#: story/intro.gd:281
+#: story/intro.gd:282
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr "Vor dreihundert Jahren verließen die letzten Samen Verdance an Bord der Arche Cradle."
 
-#: story/intro.gd:299
+#: story/intro.gd:300
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr "Lumi, der kleine Samenhüter der Arche, sang den Setzlingen jede Nacht etwas vor."
 
-#: story/intro.gd:312
+#: story/intro.gd:313
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr "Summst du schon wieder, Lumi? Sie können dich nicht hören, weißt du. ...Sie wachsen aber schneller, wenn du es tust."
 
-#: story/intro.gd:331
+#: story/intro.gd:332
 msgid "Then, one night, the sky came apart."
 msgstr "Dann, eines Nachts, zerbrach der Himmel."
 
-#: story/intro.gd:363
+#: story/intro.gd:364
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr "Hüllenbruch in der Tresorbucht! Lumi, lass die Schalen, raus da!"
 
-#: story/intro.gd:426
+#: story/intro.gd:427
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr "Lumi— halt durch— ich kann sie nicht wenden— halt durch—"
 
-#: story/intro.gd:439
+#: story/intro.gd:440
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "Die Arche konnte nicht umkehren. Die Kapsel fiel tagelang."
 
-#: story/intro.gd:611
+#: story/intro.gd:612
 msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
 msgstr "...Lumi? ...Lumi. Das Relais hält kaum, aber ich hab dich. Du bist gelandet. Du bist auf Verdance."
 
-#: story/intro.gd:618
+#: story/intro.gd:619
 msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
 msgstr "Dein Kern läuft mit grünem Licht, dem Leuchten, das Lebendiges abgibt. Da unten ist nichts Grünes mehr. Deshalb verblasst du."
 
-#: story/intro.gd:621
+#: story/intro.gd:622
 msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
 msgstr "Also machen wir welches. Räum den Boden auf, pflanz die Setzlinge. Jede Blüte nährt deinen Kern."
 
-#: story/intro.gd:628
+#: story/intro.gd:629
 msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
 msgstr "Füll deinen Blütenkern. Bau eine Startrampe. Dann fliegst du heim zu uns. ...Eine Gießkanne nach der anderen."
 
-#: story/intro.gd:691
+#: story/intro.gd:692
 msgid "%s  skip"
 msgstr "%s  überspringen"
 
-#: story/intro.gd:691
+#: story/intro.gd:692
 msgid "Space / Esc"
 msgstr "Leertaste / Esc"
 
-#: story/intro.gd:732
+#: story/intro.gd:733
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "GRÜNES LICHT  ·  NICHTS ERKANNT"
 
@@ -2580,15 +2580,15 @@ msgstr "%s summt den Setzlingen etwas vor. Der Ruhestand steht ihm."
 msgid "%s points proudly at a new bud."
 msgstr "%s zeigt stolz auf eine neue Knospe."
 
-#: systems/extras/radio.gd:135
+#: systems/extras/radio.gd:165
 msgid "E   Radio: %s"
 msgstr "E   Radio: %s"
 
-#: systems/extras/radio.gd:135
+#: systems/extras/radio.gd:165
 msgid "mood music"
 msgstr "Stimmungsmusik"
 
-#: systems/extras/radio.gd:161
+#: systems/extras/radio.gd:193
 msgid "New song on the radio: %s"
 msgstr "Neues Lied im Radio: %s"
 
@@ -3692,8 +3692,8 @@ msgid "NOW PLAYING"
 msgstr "LÄUFT GERADE"
 
 #: ui/extras_panel.gd:205
-msgid "Your pick plays everywhere until you switch back to the mood music."
-msgstr "Deine Wahl läuft überall, bis du zur Stimmungsmusik zurückschaltest."
+msgid "Your pick loops everywhere until you switch back to the mood music. A restored planet plays its restored version."
+msgstr "Deine Wahl läuft in Schleife überall, bis du zur Stimmungsmusik zurückschaltest. Ein wiederhergestellter Planet spielt seine wiederhergestellte Fassung."
 
 #: ui/extras_panel.gd:206
 msgid "Back to mood music"
@@ -9276,7 +9276,7 @@ msgstr "Verdiene 1.000 Würfel"
 msgid "Finish a research project"
 msgstr "Schließ ein Forschungsprojekt ab"
 
-#: data/goals.json:goals[hex_5].text data/radio.json:songs[lantern_hours].hint
+#: data/goals.json:goals[hex_5].text
 msgid "Clean 5 hexes"
 msgstr "Räum 5 Hexfelder"
 
@@ -9320,7 +9320,7 @@ msgstr "Bau 20 Upgrades ein"
 msgid "Robots press 20 bales"
 msgstr "Roboter pressen 20 Ballen"
 
-#: data/goals.json:goals[hex_10].text
+#: data/goals.json:goals[hex_10].text data/radio.json:songs[verdance_sweep].hint
 msgid "Clean 10 hexes"
 msgstr "10 Hexfelder räumen"
 
@@ -9404,7 +9404,7 @@ msgstr "Recycle 5 Ballen"
 msgid "Get a hex to Growing"
 msgstr "Bring ein Hexfeld auf Wachsend"
 
-#: data/goals.json:goals[hex_20].text data/radio.json:songs[rust_lullaby].hint
+#: data/goals.json:goals[hex_20].text
 msgid "Clean 20 hexes"
 msgstr "Räum 20 Hexfelder"
 
@@ -9832,7 +9832,7 @@ msgstr "Pflanze fünf Wellen der Saatarche"
 msgid "Find 30 curiosities"
 msgstr "Finde 30 Kuriositäten"
 
-#: data/goals.json:goals[late_world_1].text data/radio.json:songs[starseed_serenade].hint
+#: data/goals.json:goals[late_world_1].text
 msgid "Seed a new world"
 msgstr "Besäe eine neue Welt"
 
@@ -10256,137 +10256,109 @@ msgstr "Sensormodul"
 msgid "Special Module"
 msgstr "Spezialmodul"
 
-#: data/radio.json:songs[first_light].name
-msgid "First Light"
-msgstr "Erstes Licht"
+#: data/radio.json:songs[verdance_sprout].desc
+msgid "Kalimba and bells, the first green on Verdance."
+msgstr "Kalimba und Glocken, das erste Grün auf Verdance."
 
-#: data/radio.json:songs[first_light].desc
-msgid "The tune Lumi hums on a dusty morning."
-msgstr "Die Melodie, die Lumi an einem staubigen Morgen summt."
+#: data/radio.json:songs[verdance_sweep].desc
+msgid "Marimba and a four-on-the-floor kick: cleaning music."
+msgstr "Marimba und ein durchgehender Bass-Kick: Aufräummusik."
 
-#: data/radio.json:songs[workbench_waltz].name
-msgid "Workbench Waltz"
-msgstr "Werkbank-Walzer"
+#: data/radio.json:songs[ochre_sunbaked].desc
+msgid "A sunny marimba hook over a lute ostinato."
+msgstr "Ein sonniges Marimba-Motiv über einem Lauten-Ostinato."
 
-#: data/radio.json:songs[workbench_waltz].desc
-msgid "Cozy chords for tinkering at the bench."
-msgstr "Gemütliche Akkorde zum Basteln an der Werkbank."
+#: data/radio.json:songs[ochre_sunbaked].hint
+msgid "Land on Ochre"
+msgstr "Lande auf Ochre"
 
-#: data/radio.json:songs[hopeful_static].name
-msgid "Hopeful Static"
-msgstr "Hoffnungsvolles Rauschen"
+#: data/radio.json:songs[ochre_caravan].desc
+msgid "A winding pluck line over a loping frame drum."
+msgstr "Eine verschlungene Zupflinie über einer gemächlichen Rahmentrommel."
 
-#: data/radio.json:songs[hopeful_static].desc
-msgid "What the radio picked up the night Lumi landed."
-msgstr "Was das Radio in der Nacht von Lumis Landung empfing."
+#: data/radio.json:songs[ochre_caravan].hint
+msgid "A base on Ochre at level 3"
+msgstr "Eine Basis auf Ochre auf Stufe 3"
 
-#: data/radio.json:songs[lantern_hours].name
-msgid "Lantern Hours"
-msgstr "Laternenstunden"
+#: data/radio.json:songs[ochre_mirage].desc
+msgid "Kalimba and bells shimmering in the heat."
+msgstr "Kalimba und Glocken, flirrend in der Hitze."
 
-#: data/radio.json:songs[lantern_hours].desc
-msgid "Night music, slow and a little blue."
-msgstr "Nachtmusik, langsam und ein wenig blau."
+#: data/radio.json:songs[ochre_mirage].hint
+msgid "A base on Ochre at level 5"
+msgstr "Eine Basis auf Ochre auf Stufe 5"
 
-#: data/radio.json:songs[rust_lullaby].name
-msgid "Rust Lullaby"
-msgstr "Rost-Wiegenlied"
+#: data/radio.json:songs[tidewell_tradewinds].desc
+msgid "Steel pans skipping over the waves."
+msgstr "Steel Pans, die über die Wellen hüpfen."
 
-#: data/radio.json:songs[rust_lullaby].desc
-msgid "A music box found in a scrapyard, still in tune."
-msgstr "Eine Spieldose vom Schrottplatz, immer noch gestimmt."
+#: data/radio.json:songs[tidewell_tradewinds].hint
+msgid "Land on Tidewell"
+msgstr "Lande auf Tidewell"
 
-#: data/radio.json:songs[sprout_shuffle].name
-msgid "Sprout Shuffle"
-msgstr "Spross-Shuffle"
+#: data/radio.json:songs[tidewell_tidepools].desc
+msgid "A harp melody over rolling arpeggios."
+msgstr "Eine Harfenmelodie über wogenden Arpeggien."
 
-#: data/radio.json:songs[sprout_shuffle].desc
-msgid "Bouncy and green. The seedlings like this one."
-msgstr "Hüpfend und grün. Die Setzlinge mögen dieses hier."
+#: data/radio.json:songs[tidewell_tidepools].hint
+msgid "A base on Tidewell at level 3"
+msgstr "Eine Basis auf Tidewell auf Stufe 3"
 
-#: data/radio.json:songs[sprout_shuffle].hint
-msgid "Grow 10 plants to bloom"
-msgstr "Lass 10 Pflanzen erblühen"
+#: data/radio.json:songs[tidewell_skipper].desc
+msgid "A bouncy marimba shuffle."
+msgstr "Ein hüpfender Marimba-Shuffle."
 
-#: data/radio.json:songs[old_town_rooftops].name
-msgid "Old Town Rooftops"
-msgstr "Dächer der Altstadt"
+#: data/radio.json:songs[tidewell_skipper].hint
+msgid "A base on Tidewell at level 5"
+msgstr "Eine Basis auf Tidewell auf Stufe 5"
 
-#: data/radio.json:songs[old_town_rooftops].desc
-msgid "Evening jazz over the mended roofs."
-msgstr "Abendlicher Jazz über den geflickten Dächern."
+#: data/radio.json:songs[rime_hoarfrost].desc
+msgid "Glass bells that slowly gather warmth."
+msgstr "Glasglocken, die langsam Wärme sammeln."
 
-#: data/radio.json:songs[old_town_rooftops].hint
-msgid "Raise a base to level 3"
-msgstr "Bring eine Basis auf Stufe 3"
+#: data/radio.json:songs[rime_hoarfrost].hint
+msgid "Land on Rime"
+msgstr "Lande auf Rime"
 
-#: data/radio.json:songs[greenline_express].name
-msgid "Greenline Express"
-msgstr "Grünlinien-Express"
+#: data/radio.json:songs[rime_aurora].desc
+msgid "Piano doubled by glass under the northern lights."
+msgstr "Klavier, gedoppelt von Glas, unter dem Nordlicht."
 
-#: data/radio.json:songs[greenline_express].desc
-msgid "A quick groove for a district that runs itself."
-msgstr "Ein flotter Groove für ein Viertel, das von selbst läuft."
+#: data/radio.json:songs[rime_aurora].hint
+msgid "A base on Rime at level 5"
+msgstr "Eine Basis auf Rime auf Stufe 5"
 
-#: data/radio.json:songs[greenline_express].hint
-msgid "Raise a base to level 5"
-msgstr "Bring eine Basis auf Stufe 5"
+#: data/radio.json:songs[anvil_foundry].desc
+msgid "A dark, groovy forge that learns to hope."
+msgstr "Eine dunkle, groovige Schmiede, die Hoffnung lernt."
 
-#: data/radio.json:songs[far_shore].name
-msgid "Far Shore"
-msgstr "Fernes Ufer"
+#: data/radio.json:songs[anvil_foundry].hint
+msgid "Land on Anvil"
+msgstr "Lande auf Anvil"
 
-#: data/radio.json:songs[far_shore].desc
-msgid "Wide and airy, for the next district over the hill."
-msgstr "Weit und luftig, für das nächste Viertel hinterm Hügel."
+#: data/radio.json:songs[anvil_ash].desc
+msgid "An eerie choir over brass and embers."
+msgstr "Ein unheimlicher Chor über Blech und Glut."
 
-#: data/radio.json:songs[far_shore].hint
-msgid "Visit a second district"
-msgstr "Besuch ein zweites Viertel"
+#: data/radio.json:songs[anvil_ash].hint
+msgid "A base on Anvil at level 3"
+msgstr "Eine Basis auf Anvil auf Stufe 3"
 
-#: data/radio.json:songs[homeward].name
-msgid "Homeward"
-msgstr "Heimwärts"
+#: data/radio.json:songs[anvil_engine].desc
+msgid "Sub bass and metal hits, the furnaces running clean."
+msgstr "Subbass und Metallschläge, die Öfen laufen sauber."
 
-#: data/radio.json:songs[homeward].desc
-msgid "The swelling theme from Lumi's long fall."
-msgstr "Das anschwellende Thema von Lumis langem Fall."
+#: data/radio.json:songs[anvil_engine].hint
+msgid "A base on Anvil at level 5"
+msgstr "Eine Basis auf Anvil auf Stufe 5"
 
-#: data/radio.json:songs[homeward].hint
-msgid "Raise three bases to level 5"
-msgstr "Bring drei Basen auf Stufe 5"
+#: data/radio.json:songs[homecoming].desc
+msgid "The ark's theme, for the journey home."
+msgstr "Das Thema der Arche, für die Reise nach Hause."
 
-#: data/radio.json:songs[verdance_in_bloom].name
-msgid "Verdance in Bloom"
-msgstr "Verdance in Blüte"
-
-#: data/radio.json:songs[verdance_in_bloom].desc
-msgid "The whole planet in flower, in four chords."
-msgstr "Der ganze Planet in Blüte, in vier Akkorden."
-
-#: data/radio.json:songs[verdance_in_bloom].hint
+#: data/radio.json:songs[homecoming].hint
 msgid "Bring the Cradle home"
 msgstr "Hol die Cradle nach Hause"
-
-#: data/radio.json:songs[cradle_choir].name
-msgid "Cradle Choir"
-msgstr "Cradle-Chor"
-
-#: data/radio.json:songs[cradle_choir].desc
-msgid "The ark's garden deck, remembered in slow swells."
-msgstr "Das Gartendeck der Arche, erinnert in langsamen Wellen."
-
-#: data/radio.json:songs[cradle_choir].hint
-msgid "See the Cradle finale"
-msgstr "Sieh das Cradle-Finale"
-
-#: data/radio.json:songs[starseed_serenade].name
-msgid "Starseed Serenade"
-msgstr "Sternsaat-Serenade"
-
-#: data/radio.json:songs[starseed_serenade].desc
-msgid "A new world on the horizon, lydian and bright."
-msgstr "Eine neue Welt am Horizont, lydisch und hell."
 
 #: data/research.json:branches[robotics].name
 msgid "Robotics"
@@ -12961,6 +12933,105 @@ msgstr "Du dekorierst. Gefällt mir. Den Katzen wird es noch besser gefallen."
 #: data/wren_lines.json:garden_place
 msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
 msgstr "Eine Bank, eine Lampe, ein Brunnen. Langsam sieht es nach einem Ort aus, an den Menschen gern zurückkämen."
+
+#~ msgid "Your pick plays everywhere until you switch back to the mood music."
+#~ msgstr "Deine Wahl läuft überall, bis du zur Stimmungsmusik zurückschaltest."
+
+#~ msgid "First Light"
+#~ msgstr "Erstes Licht"
+
+#~ msgid "The tune Lumi hums on a dusty morning."
+#~ msgstr "Die Melodie, die Lumi an einem staubigen Morgen summt."
+
+#~ msgid "Workbench Waltz"
+#~ msgstr "Werkbank-Walzer"
+
+#~ msgid "Cozy chords for tinkering at the bench."
+#~ msgstr "Gemütliche Akkorde zum Basteln an der Werkbank."
+
+#~ msgid "Hopeful Static"
+#~ msgstr "Hoffnungsvolles Rauschen"
+
+#~ msgid "What the radio picked up the night Lumi landed."
+#~ msgstr "Was das Radio in der Nacht von Lumis Landung empfing."
+
+#~ msgid "Lantern Hours"
+#~ msgstr "Laternenstunden"
+
+#~ msgid "Night music, slow and a little blue."
+#~ msgstr "Nachtmusik, langsam und ein wenig blau."
+
+#~ msgid "Rust Lullaby"
+#~ msgstr "Rost-Wiegenlied"
+
+#~ msgid "A music box found in a scrapyard, still in tune."
+#~ msgstr "Eine Spieldose vom Schrottplatz, immer noch gestimmt."
+
+#~ msgid "Sprout Shuffle"
+#~ msgstr "Spross-Shuffle"
+
+#~ msgid "Bouncy and green. The seedlings like this one."
+#~ msgstr "Hüpfend und grün. Die Setzlinge mögen dieses hier."
+
+#~ msgid "Grow 10 plants to bloom"
+#~ msgstr "Lass 10 Pflanzen erblühen"
+
+#~ msgid "Old Town Rooftops"
+#~ msgstr "Dächer der Altstadt"
+
+#~ msgid "Evening jazz over the mended roofs."
+#~ msgstr "Abendlicher Jazz über den geflickten Dächern."
+
+#~ msgid "Raise a base to level 3"
+#~ msgstr "Bring eine Basis auf Stufe 3"
+
+#~ msgid "Greenline Express"
+#~ msgstr "Grünlinien-Express"
+
+#~ msgid "A quick groove for a district that runs itself."
+#~ msgstr "Ein flotter Groove für ein Viertel, das von selbst läuft."
+
+#~ msgid "Raise a base to level 5"
+#~ msgstr "Bring eine Basis auf Stufe 5"
+
+#~ msgid "Far Shore"
+#~ msgstr "Fernes Ufer"
+
+#~ msgid "Wide and airy, for the next district over the hill."
+#~ msgstr "Weit und luftig, für das nächste Viertel hinterm Hügel."
+
+#~ msgid "Visit a second district"
+#~ msgstr "Besuch ein zweites Viertel"
+
+#~ msgid "Homeward"
+#~ msgstr "Heimwärts"
+
+#~ msgid "The swelling theme from Lumi's long fall."
+#~ msgstr "Das anschwellende Thema von Lumis langem Fall."
+
+#~ msgid "Raise three bases to level 5"
+#~ msgstr "Bring drei Basen auf Stufe 5"
+
+#~ msgid "Verdance in Bloom"
+#~ msgstr "Verdance in Blüte"
+
+#~ msgid "The whole planet in flower, in four chords."
+#~ msgstr "Der ganze Planet in Blüte, in vier Akkorden."
+
+#~ msgid "Cradle Choir"
+#~ msgstr "Cradle-Chor"
+
+#~ msgid "The ark's garden deck, remembered in slow swells."
+#~ msgstr "Das Gartendeck der Arche, erinnert in langsamen Wellen."
+
+#~ msgid "See the Cradle finale"
+#~ msgstr "Sieh das Cradle-Finale"
+
+#~ msgid "Starseed Serenade"
+#~ msgstr "Sternsaat-Serenade"
+
+#~ msgid "A new world on the horizon, lydian and bright."
+#~ msgstr "Eine neue Welt am Horizont, lydisch und hell."
 
 #~ msgid "Retire an old robot to the nursery garden"
 #~ msgstr "Schick einen alten Roboter in Rente in den Gärtnereigarten"

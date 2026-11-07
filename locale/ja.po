@@ -416,7 +416,7 @@ msgstr "ワープ"
 msgid "LIFT OFF"
 msgstr "リフトオフ"
 
-#: automation/rocket.gd:778 story/cine.gd:68
+#: automation/rocket.gd:789 story/cine.gd:68
 msgid "Space / Esc  skip"
 msgstr "Space / Esc  スキップ"
 
@@ -1161,55 +1161,55 @@ msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーン�
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 起動。ブルームコア 4%：緑の光 微弱。Cradle号リレー：かすか。何かを育てよう。"
 
-#: scenes/slice.gd:805
+#: scenes/slice.gd:814
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
-#: scenes/slice.gd:819
+#: scenes/slice.gd:828
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice.gd:821
+#: scenes/slice.gd:830
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
 
-#: scenes/slice.gd:828
+#: scenes/slice.gd:837
 msgid "%s is out of range: %s"
 msgstr "%s は範囲外：%s"
 
-#: scenes/slice.gd:838
+#: scenes/slice.gd:847
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:841 ui/rockets_panel.gd:39
+#: scenes/slice.gd:850 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:895
+#: scenes/slice.gd:904
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陸：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:896
+#: scenes/slice.gd:905
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
 
-#: scenes/slice.gd:896
+#: scenes/slice.gd:905
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:987
+#: scenes/slice.gd:996
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice.gd:1155
+#: scenes/slice.gd:1164
 msgid "Welcome back. The junk waited for you."
 msgstr "おかえり。ガラクタが待っていたよ。"
 
-#: scenes/slice.gd:1172
+#: scenes/slice.gd:1181
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:1172
+#: scenes/slice.gd:1181
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
@@ -1575,59 +1575,59 @@ msgstr "……緑だ。Lumi、ほんとうに緑だよ。"
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "水を切らさないでね。ここでは種は貴重だけど、花が咲くたびにひとつ返ってくるし、きみのコアにも小さな緑の光が届く。こうやって始まるんだ。"
 
-#: story/intro.gd:281
+#: story/intro.gd:282
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr "三百年前、最後の種はアーク Cradle号に乗って Verdance を去った。"
 
-#: story/intro.gd:299
+#: story/intro.gd:300
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr "アークの小さなシードキーパー Lumi は、毎晩苗たちに歌を歌っていた。"
 
-#: story/intro.gd:312
+#: story/intro.gd:313
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr "また鼻歌かい、Lumi？聞こえてないんだよ。……でも、君が歌うと育つのが速いんだよね。"
 
-#: story/intro.gd:331
+#: story/intro.gd:332
 msgid "Then, one night, the sky came apart."
 msgstr "そして、ある夜、空が裂けた。"
 
-#: story/intro.gd:363
+#: story/intro.gd:364
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr "保管庫ベイで船体破損！Lumi、トレイはいいから、離れて！"
 
-#: story/intro.gd:426
+#: story/intro.gd:427
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr "Lumi——がんばって——向きを変えられない——がんばって——"
 
-#: story/intro.gd:439
+#: story/intro.gd:440
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "アークは引き返せなかった。ポッドは何日も落ち続けた。"
 
-#: story/intro.gd:611
+#: story/intro.gd:612
 msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
 msgstr "……Lumi？……Lumi。リレーはぎりぎりだけど、つながった。着陸したんだね。そこは Verdance だよ。"
 
-#: story/intro.gd:618
+#: story/intro.gd:619
 msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
 msgstr "君のコアは緑の光で動いている。生き物が放つ輝きだ。下にはもう緑が残っていない。だから君は弱っているんだ。"
 
-#: story/intro.gd:621
+#: story/intro.gd:622
 msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
 msgstr "だから作ろう。地面を片づけて、その苗を植えて。花が咲くたびにコアが満たされる。"
 
-#: story/intro.gd:628
+#: story/intro.gd:629
 msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
 msgstr "ブルームコアを満たして。発射場を建て直して。そしたら私たちのところへ飛んで帰っておいで。……じょうろ一杯ずつね。"
 
-#: story/intro.gd:691
+#: story/intro.gd:692
 msgid "%s  skip"
 msgstr "%s  スキップ"
 
-#: story/intro.gd:691
+#: story/intro.gd:692
 msgid "Space / Esc"
 msgstr "Space / Esc"
 
-#: story/intro.gd:732
+#: story/intro.gd:733
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "緑の光  ·  検知なし"
 
@@ -2565,15 +2565,15 @@ msgstr "%s は苗に鼻歌を聞かせている。引退生活が似合う。"
 msgid "%s points proudly at a new bud."
 msgstr "%s は新しいつぼみを得意げに指さす。"
 
-#: systems/extras/radio.gd:135
+#: systems/extras/radio.gd:165
 msgid "E   Radio: %s"
 msgstr "E   ラジオ：%s"
 
-#: systems/extras/radio.gd:135
+#: systems/extras/radio.gd:165
 msgid "mood music"
 msgstr "ムード音楽"
 
-#: systems/extras/radio.gd:161
+#: systems/extras/radio.gd:193
 msgid "New song on the radio: %s"
 msgstr "ラジオに新しい曲：%s"
 
@@ -3675,8 +3675,8 @@ msgid "NOW PLAYING"
 msgstr "再生中"
 
 #: ui/extras_panel.gd:205
-msgid "Your pick plays everywhere until you switch back to the mood music."
-msgstr "ムード音楽に戻すまで、選んだ曲がどこでも流れる。"
+msgid "Your pick loops everywhere until you switch back to the mood music. A restored planet plays its restored version."
+msgstr "ムード音楽に戻すまで、選んだ曲がどこでもループで流れる。復元した惑星では復元版が流れる。"
 
 #: ui/extras_panel.gd:206
 msgid "Back to mood music"
@@ -9259,7 +9259,7 @@ msgstr "1,000キューブ稼ぐ"
 msgid "Finish a research project"
 msgstr "研究を1件完了する"
 
-#: data/goals.json:goals[hex_5].text data/radio.json:songs[lantern_hours].hint
+#: data/goals.json:goals[hex_5].text
 msgid "Clean 5 hexes"
 msgstr "ヘックスを5個片づける"
 
@@ -9303,7 +9303,7 @@ msgstr "アップグレードを20個取り付ける"
 msgid "Robots press 20 bales"
 msgstr "ロボットがベールを20個圧縮"
 
-#: data/goals.json:goals[hex_10].text
+#: data/goals.json:goals[hex_10].text data/radio.json:songs[verdance_sweep].hint
 msgid "Clean 10 hexes"
 msgstr "ヘックスを10個片づける"
 
@@ -9387,7 +9387,7 @@ msgstr "ベールを5個リサイクルする"
 msgid "Get a hex to Growing"
 msgstr "ヘックスを「成長中」にする"
 
-#: data/goals.json:goals[hex_20].text data/radio.json:songs[rust_lullaby].hint
+#: data/goals.json:goals[hex_20].text
 msgid "Clean 20 hexes"
 msgstr "ヘックスを20個片づける"
 
@@ -9815,7 +9815,7 @@ msgstr "シードアークのウェーブを5回植える"
 msgid "Find 30 curiosities"
 msgstr "珍品を30個見つける"
 
-#: data/goals.json:goals[late_world_1].text data/radio.json:songs[starseed_serenade].hint
+#: data/goals.json:goals[late_world_1].text
 msgid "Seed a new world"
 msgstr "新しい世界に種をまく"
 
@@ -10239,137 +10239,109 @@ msgstr "センサーモジュール"
 msgid "Special Module"
 msgstr "特殊モジュール"
 
-#: data/radio.json:songs[first_light].name
-msgid "First Light"
-msgstr "はじまりの光"
+#: data/radio.json:songs[verdance_sprout].desc
+msgid "Kalimba and bells, the first green on Verdance."
+msgstr "カリンバとベル、Verdance に芽生えた最初の緑。"
 
-#: data/radio.json:songs[first_light].desc
-msgid "The tune Lumi hums on a dusty morning."
-msgstr "ほこりっぽい朝に Lumi が口ずさむ曲。"
+#: data/radio.json:songs[verdance_sweep].desc
+msgid "Marimba and a four-on-the-floor kick: cleaning music."
+msgstr "マリンバと四つ打ちのキック：お掃除ミュージック。"
 
-#: data/radio.json:songs[workbench_waltz].name
-msgid "Workbench Waltz"
-msgstr "作業台のワルツ"
+#: data/radio.json:songs[ochre_sunbaked].desc
+msgid "A sunny marimba hook over a lute ostinato."
+msgstr "リュートのオスティナートに乗る、陽気なマリンバのフック。"
 
-#: data/radio.json:songs[workbench_waltz].desc
-msgid "Cozy chords for tinkering at the bench."
-msgstr "作業台でいじくるための心地よい和音。"
+#: data/radio.json:songs[ochre_sunbaked].hint
+msgid "Land on Ochre"
+msgstr "Ochre に着陸する"
 
-#: data/radio.json:songs[hopeful_static].name
-msgid "Hopeful Static"
-msgstr "希望のノイズ"
+#: data/radio.json:songs[ochre_caravan].desc
+msgid "A winding pluck line over a loping frame drum."
+msgstr "のんびりしたフレームドラムに、うねる撥弦のライン。"
 
-#: data/radio.json:songs[hopeful_static].desc
-msgid "What the radio picked up the night Lumi landed."
-msgstr "Lumi が着陸した夜にラジオが拾った音。"
+#: data/radio.json:songs[ochre_caravan].hint
+msgid "A base on Ochre at level 3"
+msgstr "Ochre の基地をレベル 3 にする"
 
-#: data/radio.json:songs[lantern_hours].name
-msgid "Lantern Hours"
-msgstr "ランタンの時間"
+#: data/radio.json:songs[ochre_mirage].desc
+msgid "Kalimba and bells shimmering in the heat."
+msgstr "熱気にゆらめくカリンバとベル。"
 
-#: data/radio.json:songs[lantern_hours].desc
-msgid "Night music, slow and a little blue."
-msgstr "ゆっくりで少しブルーな夜の音楽。"
+#: data/radio.json:songs[ochre_mirage].hint
+msgid "A base on Ochre at level 5"
+msgstr "Ochre の基地をレベル 5 にする"
 
-#: data/radio.json:songs[rust_lullaby].name
-msgid "Rust Lullaby"
-msgstr "さびの子守歌"
+#: data/radio.json:songs[tidewell_tradewinds].desc
+msgid "Steel pans skipping over the waves."
+msgstr "波の上を跳ねるスティールパン。"
 
-#: data/radio.json:songs[rust_lullaby].desc
-msgid "A music box found in a scrapyard, still in tune."
-msgstr "スクラップ置き場で見つけたオルゴール。まだ音は合っている。"
+#: data/radio.json:songs[tidewell_tradewinds].hint
+msgid "Land on Tidewell"
+msgstr "Tidewell に着陸する"
 
-#: data/radio.json:songs[sprout_shuffle].name
-msgid "Sprout Shuffle"
-msgstr "芽吹きシャッフル"
+#: data/radio.json:songs[tidewell_tidepools].desc
+msgid "A harp melody over rolling arpeggios."
+msgstr "うねるアルペジオに乗るハープのメロディ。"
 
-#: data/radio.json:songs[sprout_shuffle].desc
-msgid "Bouncy and green. The seedlings like this one."
-msgstr "はずんで緑色。苗たちはこの曲が好き。"
+#: data/radio.json:songs[tidewell_tidepools].hint
+msgid "A base on Tidewell at level 3"
+msgstr "Tidewell の基地をレベル 3 にする"
 
-#: data/radio.json:songs[sprout_shuffle].hint
-msgid "Grow 10 plants to bloom"
-msgstr "植物を 10 本咲かせる"
+#: data/radio.json:songs[tidewell_skipper].desc
+msgid "A bouncy marimba shuffle."
+msgstr "はずむマリンバのシャッフル。"
 
-#: data/radio.json:songs[old_town_rooftops].name
-msgid "Old Town Rooftops"
-msgstr "旧市街の屋根"
+#: data/radio.json:songs[tidewell_skipper].hint
+msgid "A base on Tidewell at level 5"
+msgstr "Tidewell の基地をレベル 5 にする"
 
-#: data/radio.json:songs[old_town_rooftops].desc
-msgid "Evening jazz over the mended roofs."
-msgstr "直した屋根の上に流れる夕暮れのジャズ。"
+#: data/radio.json:songs[rime_hoarfrost].desc
+msgid "Glass bells that slowly gather warmth."
+msgstr "少しずつぬくもりを帯びるガラスのベル。"
 
-#: data/radio.json:songs[old_town_rooftops].hint
-msgid "Raise a base to level 3"
-msgstr "基地をレベル 3 にする"
+#: data/radio.json:songs[rime_hoarfrost].hint
+msgid "Land on Rime"
+msgstr "Rime に着陸する"
 
-#: data/radio.json:songs[greenline_express].name
-msgid "Greenline Express"
-msgstr "グリーンライン急行"
+#: data/radio.json:songs[rime_aurora].desc
+msgid "Piano doubled by glass under the northern lights."
+msgstr "オーロラの下、ガラスの音を重ねたピアノ。"
 
-#: data/radio.json:songs[greenline_express].desc
-msgid "A quick groove for a district that runs itself."
-msgstr "ひとりでに回る地区のための軽快なグルーヴ。"
+#: data/radio.json:songs[rime_aurora].hint
+msgid "A base on Rime at level 5"
+msgstr "Rime の基地をレベル 5 にする"
 
-#: data/radio.json:songs[greenline_express].hint
-msgid "Raise a base to level 5"
-msgstr "基地をレベル 5 にする"
+#: data/radio.json:songs[anvil_foundry].desc
+msgid "A dark, groovy forge that learns to hope."
+msgstr "希望を知っていく、暗くてグルーヴィーな鍛冶場。"
 
-#: data/radio.json:songs[far_shore].name
-msgid "Far Shore"
-msgstr "遠い岸辺"
+#: data/radio.json:songs[anvil_foundry].hint
+msgid "Land on Anvil"
+msgstr "Anvil に着陸する"
 
-#: data/radio.json:songs[far_shore].desc
-msgid "Wide and airy, for the next district over the hill."
-msgstr "丘の向こうの次の地区へ、広くて軽やか。"
+#: data/radio.json:songs[anvil_ash].desc
+msgid "An eerie choir over brass and embers."
+msgstr "金管と残り火に乗る不気味な合唱。"
 
-#: data/radio.json:songs[far_shore].hint
-msgid "Visit a second district"
-msgstr "2 つ目の地区を訪れる"
+#: data/radio.json:songs[anvil_ash].hint
+msgid "A base on Anvil at level 3"
+msgstr "Anvil の基地をレベル 3 にする"
 
-#: data/radio.json:songs[homeward].name
-msgid "Homeward"
-msgstr "帰り道"
+#: data/radio.json:songs[anvil_engine].desc
+msgid "Sub bass and metal hits, the furnaces running clean."
+msgstr "重低音と金属音、炉はきれいに動いている。"
 
-#: data/radio.json:songs[homeward].desc
-msgid "The swelling theme from Lumi's long fall."
-msgstr "Lumi の長い落下の、高まっていくテーマ。"
+#: data/radio.json:songs[anvil_engine].hint
+msgid "A base on Anvil at level 5"
+msgstr "Anvil の基地をレベル 5 にする"
 
-#: data/radio.json:songs[homeward].hint
-msgid "Raise three bases to level 5"
-msgstr "基地を 3 つレベル 5 にする"
+#: data/radio.json:songs[homecoming].desc
+msgid "The ark's theme, for the journey home."
+msgstr "箱舟のテーマ、家へ帰る旅のために。"
 
-#: data/radio.json:songs[verdance_in_bloom].name
-msgid "Verdance in Bloom"
-msgstr "花ざかりの Verdance"
-
-#: data/radio.json:songs[verdance_in_bloom].desc
-msgid "The whole planet in flower, in four chords."
-msgstr "惑星じゅうが花ざかり、4 つの和音で。"
-
-#: data/radio.json:songs[verdance_in_bloom].hint
+#: data/radio.json:songs[homecoming].hint
 msgid "Bring the Cradle home"
 msgstr "Cradle を連れ帰る"
-
-#: data/radio.json:songs[cradle_choir].name
-msgid "Cradle Choir"
-msgstr "Cradle の合唱"
-
-#: data/radio.json:songs[cradle_choir].desc
-msgid "The ark's garden deck, remembered in slow swells."
-msgstr "箱舟の庭園デッキを、ゆるやかなうねりで思い出す。"
-
-#: data/radio.json:songs[cradle_choir].hint
-msgid "See the Cradle finale"
-msgstr "Cradle のフィナーレを見る"
-
-#: data/radio.json:songs[starseed_serenade].name
-msgid "Starseed Serenade"
-msgstr "スターシードのセレナーデ"
-
-#: data/radio.json:songs[starseed_serenade].desc
-msgid "A new world on the horizon, lydian and bright."
-msgstr "地平線の新しい世界、リディアンで明るく。"
 
 #: data/research.json:branches[robotics].name
 msgid "Robotics"
@@ -12944,6 +12916,105 @@ msgstr "飾りつけしてるんだ。いいと思う。ネコたちはもっと
 #: data/wren_lines.json:garden_place
 msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
 msgstr "ベンチに、ランプに、噴水。人が帰ってきたくなる場所に見えてきた。"
+
+#~ msgid "Your pick plays everywhere until you switch back to the mood music."
+#~ msgstr "ムード音楽に戻すまで、選んだ曲がどこでも流れる。"
+
+#~ msgid "First Light"
+#~ msgstr "はじまりの光"
+
+#~ msgid "The tune Lumi hums on a dusty morning."
+#~ msgstr "ほこりっぽい朝に Lumi が口ずさむ曲。"
+
+#~ msgid "Workbench Waltz"
+#~ msgstr "作業台のワルツ"
+
+#~ msgid "Cozy chords for tinkering at the bench."
+#~ msgstr "作業台でいじくるための心地よい和音。"
+
+#~ msgid "Hopeful Static"
+#~ msgstr "希望のノイズ"
+
+#~ msgid "What the radio picked up the night Lumi landed."
+#~ msgstr "Lumi が着陸した夜にラジオが拾った音。"
+
+#~ msgid "Lantern Hours"
+#~ msgstr "ランタンの時間"
+
+#~ msgid "Night music, slow and a little blue."
+#~ msgstr "ゆっくりで少しブルーな夜の音楽。"
+
+#~ msgid "Rust Lullaby"
+#~ msgstr "さびの子守歌"
+
+#~ msgid "A music box found in a scrapyard, still in tune."
+#~ msgstr "スクラップ置き場で見つけたオルゴール。まだ音は合っている。"
+
+#~ msgid "Sprout Shuffle"
+#~ msgstr "芽吹きシャッフル"
+
+#~ msgid "Bouncy and green. The seedlings like this one."
+#~ msgstr "はずんで緑色。苗たちはこの曲が好き。"
+
+#~ msgid "Grow 10 plants to bloom"
+#~ msgstr "植物を 10 本咲かせる"
+
+#~ msgid "Old Town Rooftops"
+#~ msgstr "旧市街の屋根"
+
+#~ msgid "Evening jazz over the mended roofs."
+#~ msgstr "直した屋根の上に流れる夕暮れのジャズ。"
+
+#~ msgid "Raise a base to level 3"
+#~ msgstr "基地をレベル 3 にする"
+
+#~ msgid "Greenline Express"
+#~ msgstr "グリーンライン急行"
+
+#~ msgid "A quick groove for a district that runs itself."
+#~ msgstr "ひとりでに回る地区のための軽快なグルーヴ。"
+
+#~ msgid "Raise a base to level 5"
+#~ msgstr "基地をレベル 5 にする"
+
+#~ msgid "Far Shore"
+#~ msgstr "遠い岸辺"
+
+#~ msgid "Wide and airy, for the next district over the hill."
+#~ msgstr "丘の向こうの次の地区へ、広くて軽やか。"
+
+#~ msgid "Visit a second district"
+#~ msgstr "2 つ目の地区を訪れる"
+
+#~ msgid "Homeward"
+#~ msgstr "帰り道"
+
+#~ msgid "The swelling theme from Lumi's long fall."
+#~ msgstr "Lumi の長い落下の、高まっていくテーマ。"
+
+#~ msgid "Raise three bases to level 5"
+#~ msgstr "基地を 3 つレベル 5 にする"
+
+#~ msgid "Verdance in Bloom"
+#~ msgstr "花ざかりの Verdance"
+
+#~ msgid "The whole planet in flower, in four chords."
+#~ msgstr "惑星じゅうが花ざかり、4 つの和音で。"
+
+#~ msgid "Cradle Choir"
+#~ msgstr "Cradle の合唱"
+
+#~ msgid "The ark's garden deck, remembered in slow swells."
+#~ msgstr "箱舟の庭園デッキを、ゆるやかなうねりで思い出す。"
+
+#~ msgid "See the Cradle finale"
+#~ msgstr "Cradle のフィナーレを見る"
+
+#~ msgid "Starseed Serenade"
+#~ msgstr "スターシードのセレナーデ"
+
+#~ msgid "A new world on the horizon, lydian and bright."
+#~ msgstr "地平線の新しい世界、リディアンで明るく。"
 
 #~ msgid "Retire an old robot to the nursery garden"
 #~ msgstr "古いロボットを苗床ガーデンで引退させる"

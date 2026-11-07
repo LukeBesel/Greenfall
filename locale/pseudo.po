@@ -413,7 +413,7 @@ msgstr "[ŴÀŔÞ ~]"
 msgid "LIFT OFF"
 msgstr "[ĻÎFŢ ÔFF ~]"
 
-#: automation/rocket.gd:778 story/cine.gd:68
+#: automation/rocket.gd:789 story/cine.gd:68
 msgid "Space / Esc  skip"
 msgstr "[Šþàçé / Éšç  šķîþ ~~~]"
 
@@ -1161,55 +1161,55 @@ msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: 
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "[ĻM-1 ôñļîñé. Bļôôm Çôŕé 4%: ĝŕééñ ļîĝĥţ ļôŵ. Çŕàðļé ŕéļàý: ƒàîñţ. Ĝŕôŵ šôméţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:805
+#: scenes/slice.gd:814
 msgid "HEX CLEAN!  +%s"
 msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 
-#: scenes/slice.gd:819
+#: scenes/slice.gd:828
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice.gd:821
+#: scenes/slice.gd:830
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "[Ţĥé ŵĥôļé Ĵûñķýàŕð îš çļéàñ. Ļûmî bééþš à véŕý ļôñĝ, véŕý ĥàþþý bééþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:828
+#: scenes/slice.gd:837
 msgid "%s is out of range: %s"
 msgstr "[%s îš ôûţ ôƒ ŕàñĝé: %s ~~~~~]"
 
-#: scenes/slice.gd:838
+#: scenes/slice.gd:847
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ 5 ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:841 ui/rockets_panel.gd:39
+#: scenes/slice.gd:850 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "[Éñéŕĝý çéļļš ŕéçĥàŕĝîñĝ: %s. Ŕôçķéţ ûþĝŕàðéš ŕéƒîļļ ţĥém ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:895
+#: scenes/slice.gd:904
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "[Ţôûçĥðôŵñ: %s. Ĥûb %d ôƒ %d. %s ~~~~~~~~]"
 
-#: scenes/slice.gd:896
+#: scenes/slice.gd:905
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "[Ţĥé ŕôçķéţ îš þàŕķéð ôñ ţĥé ļôţ, ŕéàðý ŵĥéñ îţš çéļļš ŕéƒîļļ. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:896
+#: scenes/slice.gd:905
 msgid "Landed on the base pad."
 msgstr "[Ļàñðéð ôñ ţĥé bàšé þàð. ~~~~~]"
 
-#: scenes/slice.gd:987
+#: scenes/slice.gd:996
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1155
+#: scenes/slice.gd:1164
 msgid "Welcome back. The junk waited for you."
 msgstr "[Ŵéļçômé bàçķ. Ţĥé ĵûñķ ŵàîţéð ƒôŕ ýôû. ~~~~~~~~~~]"
 
-#: scenes/slice.gd:1172
+#: scenes/slice.gd:1181
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:1172
+#: scenes/slice.gd:1181
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
@@ -1575,59 +1575,59 @@ msgstr "[...Îţ'š ĝŕééñ. Ļûmî, îţ'š àçţûàļļý ĝŕééñ. ~~
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "[Ķééþ îţ ŵàţéŕéð. Šééðš àŕé ŕàŕé ôûţ ĥéŕé, bûţ évéŕý bļôôm ĝîvéš ôñé bàçķ, àñð à ļîţţļé ĝŕééñ ļîĝĥţ ƒôŕ ýôûŕ çôŕé. Ţĥîš îš ĥôŵ îţ šţàŕţš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:281
+#: story/intro.gd:282
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr "[Ţĥŕéé ĥûñðŕéð ýéàŕš àĝô, ţĥé ļàšţ šééðš ļéƒţ Véŕðàñçé àbôàŕð ţĥé àŕķ Çŕàðļé. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:299
+#: story/intro.gd:300
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr "[Ļûmî, ţĥé àŕķ'š ļîţţļé šééð-ķééþéŕ, šàñĝ ţô ţĥé šééðļîñĝš évéŕý ñîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:312
+#: story/intro.gd:313
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr "[Ĥûmmîñĝ àĝàîñ, Ļûmî? Ţĥéý çàñ'ţ ĥéàŕ ýôû, ýôû ķñôŵ. ...Ţĥéý ðô ĝŕôŵ ƒàšţéŕ ŵĥéñ ýôû ðô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:331
+#: story/intro.gd:332
 msgid "Then, one night, the sky came apart."
 msgstr "[Ţĥéñ, ôñé ñîĝĥţ, ţĥé šķý çàmé àþàŕţ. ~~~~~~~~~~]"
 
-#: story/intro.gd:363
+#: story/intro.gd:364
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr "[Ĥûļļ bŕéàçĥ îñ ţĥé vàûļţ bàý! Ļûmî, ļéàvé ţĥé ţŕàýš, ĝéţ çļéàŕ! ~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:426
+#: story/intro.gd:427
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr "[Ļûmî— ĥôļð ôñ— Î çàñ'ţ ţûŕñ ĥéŕ àŕôûñð— ĥôļð ôñ— ~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:439
+#: story/intro.gd:440
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "[Ţĥé àŕķ çôûļð ñôţ ţûŕñ bàçķ. Ţĥé þôð ƒéļļ ƒôŕ ðàýš. ~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:611
+#: story/intro.gd:612
 msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
 msgstr "[...Ļûmî? ...Ļûmî. Ţĥé ŕéļàý'š bàŕéļý ĥôļðîñĝ, bûţ Î'vé ĝôţ ýôû. Ýôû'ŕé ðôŵñ. Ýôû'ŕé ôñ Véŕðàñçé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:618
+#: story/intro.gd:619
 msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
 msgstr "[Ýôûŕ çôŕé ŕûñš ôñ ĝŕééñ ļîĝĥţ, ţĥé ĝļôŵ ļîvîñĝ ţĥîñĝš ĝîvé ôƒƒ. Ţĥéŕé'š ñô ĝŕééñ ļéƒţ ðôŵñ ţĥéŕé. Ţĥàţ'š ŵĥý ýôû'ŕé ƒàðîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:621
+#: story/intro.gd:622
 msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
 msgstr "[Šô ŵé màķé šômé. Çļéàñ ţĥé ĝŕôûñð, þļàñţ ţĥôšé šééðļîñĝš. Évéŕý bļôôm ƒééðš ýôûŕ çôŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:628
+#: story/intro.gd:629
 msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
 msgstr "[Fîļļ ýôûŕ Bļôôm Çôŕé. Ŕébûîļð à ļàûñçĥ šîţé. Ţĥéñ ýôû ƒļý ĥômé ţô ûš. ...Ôñé çàñ àţ à ţîmé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:691
+#: story/intro.gd:692
 msgid "%s  skip"
 msgstr "[%s  šķîþ ~]"
 
-#: story/intro.gd:691
+#: story/intro.gd:692
 msgid "Space / Esc"
 msgstr "[Šþàçé / Éšç ~]"
 
-#: story/intro.gd:732
+#: story/intro.gd:733
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "[ĜŔÉÉÑ ĻÎĜĤŢ  ·  ÑÔÑÉ ÐÉŢÉÇŢÉÐ ~~~~~~~]"
 
@@ -2577,15 +2577,15 @@ msgstr "[%s ĥûmš ţô ţĥé šééðļîñĝš. Ŕéţîŕéméñţ šûîţ
 msgid "%s points proudly at a new bud."
 msgstr "[%s þôîñţš þŕôûðļý àţ à ñéŵ bûð. ~~~~~~~~]"
 
-#: systems/extras/radio.gd:135
+#: systems/extras/radio.gd:165
 msgid "E   Radio: %s"
 msgstr "E   [Ŕàðîô: %s ~]"
 
-#: systems/extras/radio.gd:135
+#: systems/extras/radio.gd:165
 msgid "mood music"
 msgstr "[môôð mûšîç ~]"
 
-#: systems/extras/radio.gd:161
+#: systems/extras/radio.gd:193
 msgid "New song on the radio: %s"
 msgstr "[Ñéŵ šôñĝ ôñ ţĥé ŕàðîô: %s ~~~~~~]"
 
@@ -3689,8 +3689,8 @@ msgid "NOW PLAYING"
 msgstr "[ÑÔŴ ÞĻÀÝÎÑĜ ~]"
 
 #: ui/extras_panel.gd:205
-msgid "Your pick plays everywhere until you switch back to the mood music."
-msgstr "[Ýôûŕ þîçķ þļàýš évéŕýŵĥéŕé ûñţîļ ýôû šŵîţçĥ bàçķ ţô ţĥé môôð mûšîç. ~~~~~~~~~~~~~~~~~~~~]"
+msgid "Your pick loops everywhere until you switch back to the mood music. A restored planet plays its restored version."
+msgstr "[Ýôûŕ þîçķ ļôôþš évéŕýŵĥéŕé ûñţîļ ýôû šŵîţçĥ bàçķ ţô ţĥé môôð mûšîç. À ŕéšţôŕéð þļàñéţ þļàýš îţš ŕéšţôŕéð véŕšîôñ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/extras_panel.gd:206
 msgid "Back to mood music"
@@ -9273,7 +9273,7 @@ msgstr "[Éàŕñ 1,000 çûbéš ~~~]"
 msgid "Finish a research project"
 msgstr "[Fîñîšĥ à ŕéšéàŕçĥ þŕôĵéçţ ~~~~~~]"
 
-#: data/goals.json:goals[hex_5].text data/radio.json:songs[lantern_hours].hint
+#: data/goals.json:goals[hex_5].text
 msgid "Clean 5 hexes"
 msgstr "[Çļéàñ 5 ĥéxéš ~~]"
 
@@ -9317,7 +9317,7 @@ msgstr "[Îñšţàļļ 20 ûþĝŕàðéš ~~~~]"
 msgid "Robots press 20 bales"
 msgstr "[Ŕôbôţš þŕéšš 20 bàļéš ~~~~]"
 
-#: data/goals.json:goals[hex_10].text
+#: data/goals.json:goals[hex_10].text data/radio.json:songs[verdance_sweep].hint
 msgid "Clean 10 hexes"
 msgstr "[Çļéàñ 10 ĥéxéš ~~]"
 
@@ -9401,7 +9401,7 @@ msgstr "[Ŕéçýçļé 5 bàļéš ~~]"
 msgid "Get a hex to Growing"
 msgstr "[Ĝéţ à ĥéx ţô Ĝŕôŵîñĝ ~~~~]"
 
-#: data/goals.json:goals[hex_20].text data/radio.json:songs[rust_lullaby].hint
+#: data/goals.json:goals[hex_20].text
 msgid "Clean 20 hexes"
 msgstr "[Çļéàñ 20 ĥéxéš ~~]"
 
@@ -9829,7 +9829,7 @@ msgstr "[Þļàñţ ƒîvé Šééð Àŕķ ŵàvéš ~~~~~~]"
 msgid "Find 30 curiosities"
 msgstr "[Fîñð 30 çûŕîôšîţîéš ~~~~]"
 
-#: data/goals.json:goals[late_world_1].text data/radio.json:songs[starseed_serenade].hint
+#: data/goals.json:goals[late_world_1].text
 msgid "Seed a new world"
 msgstr "[Šééð à ñéŵ ŵôŕļð ~~~]"
 
@@ -10253,137 +10253,109 @@ msgstr "[Šéñšôŕ Môðûļé ~~]"
 msgid "Special Module"
 msgstr "[Šþéçîàļ Môðûļé ~~]"
 
-#: data/radio.json:songs[first_light].name
-msgid "First Light"
-msgstr "[Fîŕšţ Ļîĝĥţ ~]"
+#: data/radio.json:songs[verdance_sprout].desc
+msgid "Kalimba and bells, the first green on Verdance."
+msgstr "[Ķàļîmbà àñð béļļš, ţĥé ƒîŕšţ ĝŕééñ ôñ Véŕðàñçé. ~~~~~~~~~~~~~]"
 
-#: data/radio.json:songs[first_light].desc
-msgid "The tune Lumi hums on a dusty morning."
-msgstr "[Ţĥé ţûñé Ļûmî ĥûmš ôñ à ðûšţý môŕñîñĝ. ~~~~~~~~~~]"
+#: data/radio.json:songs[verdance_sweep].desc
+msgid "Marimba and a four-on-the-floor kick: cleaning music."
+msgstr "[Màŕîmbà àñð à ƒôûŕ-ôñ-ţĥé-ƒļôôŕ ķîçķ: çļéàñîñĝ mûšîç. ~~~~~~~~~~~~~~~~]"
 
-#: data/radio.json:songs[workbench_waltz].name
-msgid "Workbench Waltz"
-msgstr "[Ŵôŕķbéñçĥ Ŵàļţž ~~]"
+#: data/radio.json:songs[ochre_sunbaked].desc
+msgid "A sunny marimba hook over a lute ostinato."
+msgstr "[À šûññý màŕîmbà ĥôôķ ôvéŕ à ļûţé ôšţîñàţô. ~~~~~~~~~~~~]"
 
-#: data/radio.json:songs[workbench_waltz].desc
-msgid "Cozy chords for tinkering at the bench."
-msgstr "[Çôžý çĥôŕðš ƒôŕ ţîñķéŕîñĝ àţ ţĥé béñçĥ. ~~~~~~~~~~~]"
+#: data/radio.json:songs[ochre_sunbaked].hint
+msgid "Land on Ochre"
+msgstr "[Ļàñð ôñ Ôçĥŕé ~~]"
 
-#: data/radio.json:songs[hopeful_static].name
-msgid "Hopeful Static"
-msgstr "[Ĥôþéƒûļ Šţàţîç ~~]"
+#: data/radio.json:songs[ochre_caravan].desc
+msgid "A winding pluck line over a loping frame drum."
+msgstr "[À ŵîñðîñĝ þļûçķ ļîñé ôvéŕ à ļôþîñĝ ƒŕàmé ðŕûm. ~~~~~~~~~~~~~]"
 
-#: data/radio.json:songs[hopeful_static].desc
-msgid "What the radio picked up the night Lumi landed."
-msgstr "[Ŵĥàţ ţĥé ŕàðîô þîçķéð ûþ ţĥé ñîĝĥţ Ļûmî ļàñðéð. ~~~~~~~~~~~~~]"
+#: data/radio.json:songs[ochre_caravan].hint
+msgid "A base on Ochre at level 3"
+msgstr "[À bàšé ôñ Ôçĥŕé àţ ļévéļ 3 ~~~~~~]"
 
-#: data/radio.json:songs[lantern_hours].name
-msgid "Lantern Hours"
-msgstr "[Ļàñţéŕñ Ĥôûŕš ~~]"
+#: data/radio.json:songs[ochre_mirage].desc
+msgid "Kalimba and bells shimmering in the heat."
+msgstr "[Ķàļîmbà àñð béļļš šĥîmméŕîñĝ îñ ţĥé ĥéàţ. ~~~~~~~~~~~]"
 
-#: data/radio.json:songs[lantern_hours].desc
-msgid "Night music, slow and a little blue."
-msgstr "[Ñîĝĥţ mûšîç, šļôŵ àñð à ļîţţļé bļûé. ~~~~~~~~~~]"
+#: data/radio.json:songs[ochre_mirage].hint
+msgid "A base on Ochre at level 5"
+msgstr "[À bàšé ôñ Ôçĥŕé àţ ļévéļ 5 ~~~~~~]"
 
-#: data/radio.json:songs[rust_lullaby].name
-msgid "Rust Lullaby"
-msgstr "[Ŕûšţ Ļûļļàbý ~]"
+#: data/radio.json:songs[tidewell_tradewinds].desc
+msgid "Steel pans skipping over the waves."
+msgstr "[Šţééļ þàñš šķîþþîñĝ ôvéŕ ţĥé ŵàvéš. ~~~~~~~~~]"
 
-#: data/radio.json:songs[rust_lullaby].desc
-msgid "A music box found in a scrapyard, still in tune."
-msgstr "[À mûšîç bôx ƒôûñð îñ à šçŕàþýàŕð, šţîļļ îñ ţûñé. ~~~~~~~~~~~~~~]"
+#: data/radio.json:songs[tidewell_tradewinds].hint
+msgid "Land on Tidewell"
+msgstr "[Ļàñð ôñ Ţîðéŵéļļ ~~~]"
 
-#: data/radio.json:songs[sprout_shuffle].name
-msgid "Sprout Shuffle"
-msgstr "[Šþŕôûţ Šĥûƒƒļé ~~]"
+#: data/radio.json:songs[tidewell_tidepools].desc
+msgid "A harp melody over rolling arpeggios."
+msgstr "[À ĥàŕþ méļôðý ôvéŕ ŕôļļîñĝ àŕþéĝĝîôš. ~~~~~~~~~~]"
 
-#: data/radio.json:songs[sprout_shuffle].desc
-msgid "Bouncy and green. The seedlings like this one."
-msgstr "[Bôûñçý àñð ĝŕééñ. Ţĥé šééðļîñĝš ļîķé ţĥîš ôñé. ~~~~~~~~~~~~~]"
+#: data/radio.json:songs[tidewell_tidepools].hint
+msgid "A base on Tidewell at level 3"
+msgstr "[À bàšé ôñ Ţîðéŵéļļ àţ ļévéļ 3 ~~~~~~~]"
 
-#: data/radio.json:songs[sprout_shuffle].hint
-msgid "Grow 10 plants to bloom"
-msgstr "[Ĝŕôŵ 10 þļàñţš ţô bļôôm ~~~~~]"
+#: data/radio.json:songs[tidewell_skipper].desc
+msgid "A bouncy marimba shuffle."
+msgstr "[À bôûñçý màŕîmbà šĥûƒƒļé. ~~~~~~]"
 
-#: data/radio.json:songs[old_town_rooftops].name
-msgid "Old Town Rooftops"
-msgstr "[Ôļð Ţôŵñ Ŕôôƒţôþš ~~~]"
+#: data/radio.json:songs[tidewell_skipper].hint
+msgid "A base on Tidewell at level 5"
+msgstr "[À bàšé ôñ Ţîðéŵéļļ àţ ļévéļ 5 ~~~~~~~]"
 
-#: data/radio.json:songs[old_town_rooftops].desc
-msgid "Evening jazz over the mended roofs."
-msgstr "[Évéñîñĝ ĵàžž ôvéŕ ţĥé méñðéð ŕôôƒš. ~~~~~~~~~]"
+#: data/radio.json:songs[rime_hoarfrost].desc
+msgid "Glass bells that slowly gather warmth."
+msgstr "[Ĝļàšš béļļš ţĥàţ šļôŵļý ĝàţĥéŕ ŵàŕmţĥ. ~~~~~~~~~~]"
 
-#: data/radio.json:songs[old_town_rooftops].hint
-msgid "Raise a base to level 3"
-msgstr "[Ŕàîšé à bàšé ţô ļévéļ 3 ~~~~~]"
+#: data/radio.json:songs[rime_hoarfrost].hint
+msgid "Land on Rime"
+msgstr "[Ļàñð ôñ Ŕîmé ~]"
 
-#: data/radio.json:songs[greenline_express].name
-msgid "Greenline Express"
-msgstr "[Ĝŕééñļîñé Éxþŕéšš ~~~]"
+#: data/radio.json:songs[rime_aurora].desc
+msgid "Piano doubled by glass under the northern lights."
+msgstr "[Þîàñô ðôûbļéð bý ĝļàšš ûñðéŕ ţĥé ñôŕţĥéŕñ ļîĝĥţš. ~~~~~~~~~~~~~~]"
 
-#: data/radio.json:songs[greenline_express].desc
-msgid "A quick groove for a district that runs itself."
-msgstr "[À qûîçķ ĝŕôôvé ƒôŕ à ðîšţŕîçţ ţĥàţ ŕûñš îţšéļƒ. ~~~~~~~~~~~~~]"
+#: data/radio.json:songs[rime_aurora].hint
+msgid "A base on Rime at level 5"
+msgstr "[À bàšé ôñ Ŕîmé àţ ļévéļ 5 ~~~~~~]"
 
-#: data/radio.json:songs[greenline_express].hint
-msgid "Raise a base to level 5"
-msgstr "[Ŕàîšé à bàšé ţô ļévéļ 5 ~~~~~]"
+#: data/radio.json:songs[anvil_foundry].desc
+msgid "A dark, groovy forge that learns to hope."
+msgstr "[À ðàŕķ, ĝŕôôvý ƒôŕĝé ţĥàţ ļéàŕñš ţô ĥôþé. ~~~~~~~~~~~]"
 
-#: data/radio.json:songs[far_shore].name
-msgid "Far Shore"
-msgstr "[Fàŕ Šĥôŕé ~]"
+#: data/radio.json:songs[anvil_foundry].hint
+msgid "Land on Anvil"
+msgstr "[Ļàñð ôñ Àñvîļ ~~]"
 
-#: data/radio.json:songs[far_shore].desc
-msgid "Wide and airy, for the next district over the hill."
-msgstr "[Ŵîðé àñð àîŕý, ƒôŕ ţĥé ñéxţ ðîšţŕîçţ ôvéŕ ţĥé ĥîļļ. ~~~~~~~~~~~~~~~]"
+#: data/radio.json:songs[anvil_ash].desc
+msgid "An eerie choir over brass and embers."
+msgstr "[Àñ ééŕîé çĥôîŕ ôvéŕ bŕàšš àñð émbéŕš. ~~~~~~~~~~]"
 
-#: data/radio.json:songs[far_shore].hint
-msgid "Visit a second district"
-msgstr "[Vîšîţ à šéçôñð ðîšţŕîçţ ~~~~~]"
+#: data/radio.json:songs[anvil_ash].hint
+msgid "A base on Anvil at level 3"
+msgstr "[À bàšé ôñ Àñvîļ àţ ļévéļ 3 ~~~~~~]"
 
-#: data/radio.json:songs[homeward].name
-msgid "Homeward"
-msgstr "[Ĥôméŵàŕð ~]"
+#: data/radio.json:songs[anvil_engine].desc
+msgid "Sub bass and metal hits, the furnaces running clean."
+msgstr "[Šûb bàšš àñð méţàļ ĥîţš, ţĥé ƒûŕñàçéš ŕûññîñĝ çļéàñ. ~~~~~~~~~~~~~~~]"
 
-#: data/radio.json:songs[homeward].desc
-msgid "The swelling theme from Lumi's long fall."
-msgstr "[Ţĥé šŵéļļîñĝ ţĥémé ƒŕôm Ļûmî'š ļôñĝ ƒàļļ. ~~~~~~~~~~~]"
+#: data/radio.json:songs[anvil_engine].hint
+msgid "A base on Anvil at level 5"
+msgstr "[À bàšé ôñ Àñvîļ àţ ļévéļ 5 ~~~~~~]"
 
-#: data/radio.json:songs[homeward].hint
-msgid "Raise three bases to level 5"
-msgstr "[Ŕàîšé ţĥŕéé bàšéš ţô ļévéļ 5 ~~~~~~~]"
+#: data/radio.json:songs[homecoming].desc
+msgid "The ark's theme, for the journey home."
+msgstr "[Ţĥé àŕķ'š ţĥémé, ƒôŕ ţĥé ĵôûŕñéý ĥômé. ~~~~~~~~~~]"
 
-#: data/radio.json:songs[verdance_in_bloom].name
-msgid "Verdance in Bloom"
-msgstr "[Véŕðàñçé îñ Bļôôm ~~~]"
-
-#: data/radio.json:songs[verdance_in_bloom].desc
-msgid "The whole planet in flower, in four chords."
-msgstr "[Ţĥé ŵĥôļé þļàñéţ îñ ƒļôŵéŕ, îñ ƒôûŕ çĥôŕðš. ~~~~~~~~~~~~]"
-
-#: data/radio.json:songs[verdance_in_bloom].hint
+#: data/radio.json:songs[homecoming].hint
 msgid "Bring the Cradle home"
 msgstr "[Bŕîñĝ ţĥé Çŕàðļé ĥômé ~~~~]"
-
-#: data/radio.json:songs[cradle_choir].name
-msgid "Cradle Choir"
-msgstr "[Çŕàðļé Çĥôîŕ ~]"
-
-#: data/radio.json:songs[cradle_choir].desc
-msgid "The ark's garden deck, remembered in slow swells."
-msgstr "[Ţĥé àŕķ'š ĝàŕðéñ ðéçķ, ŕémémbéŕéð îñ šļôŵ šŵéļļš. ~~~~~~~~~~~~~~]"
-
-#: data/radio.json:songs[cradle_choir].hint
-msgid "See the Cradle finale"
-msgstr "[Šéé ţĥé Çŕàðļé ƒîñàļé ~~~~]"
-
-#: data/radio.json:songs[starseed_serenade].name
-msgid "Starseed Serenade"
-msgstr "[Šţàŕšééð Šéŕéñàðé ~~~]"
-
-#: data/radio.json:songs[starseed_serenade].desc
-msgid "A new world on the horizon, lydian and bright."
-msgstr "[À ñéŵ ŵôŕļð ôñ ţĥé ĥôŕîžôñ, ļýðîàñ àñð bŕîĝĥţ. ~~~~~~~~~~~~~]"
 
 #: data/research.json:branches[robotics].name
 msgid "Robotics"
