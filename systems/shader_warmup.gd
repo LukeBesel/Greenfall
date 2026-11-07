@@ -19,7 +19,8 @@ var _started: bool = false
 
 func start(scene: Node) -> void:
 	_started = true
-	_need = 1 if DisplayServer.get_name() == "headless" else FRAMES
+	# Headless runs and screenshot tooling (software Vulkan, slow frames) need just one pass.
+	_need = 1 if DisplayServer.get_name() == "headless" or DevHooks.has("shot") else FRAMES
 	var by_vp: Dictionary = {}  # Viewport -> Array[Material]
 	var seen: Dictionary = {}
 	for n: Node in scene.find_children("*", "GeometryInstance3D", true, false):

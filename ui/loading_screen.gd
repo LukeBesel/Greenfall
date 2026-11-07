@@ -28,6 +28,8 @@ const CREAM := Color(0.95, 0.92, 0.85)
 const BAR_W: float = 560.0
 const PIECES: int = 15
 const MIN_SHOW_S: float = 1.1
+const LUMI_SCALE: float = 1.6
+const PIECE_SCALE: float = 1.35
 
 var active: bool = false
 ## Displayed (smoothed) progress 0..1 and the target it eases toward.
@@ -224,8 +226,9 @@ func _process(delta: float) -> void:
 	_canvas.queue_redraw()
 
 
+## Headless runs and screenshot tooling skip the minimum show time.
 func _headless() -> bool:
-	return DisplayServer.get_name() == "headless"
+	return DisplayServer.get_name() == "headless" or DevHooks.has("shot")
 
 
 # --- The bar and Pixel Lumi -------------------------------------------------------------
@@ -251,14 +254,14 @@ func _bar_rect() -> Rect2:
 func _lumi_pos() -> Vector2:
 	var r: Rect2 = _bar_rect()
 	var x: float = r.position.x + r.size.x * shown
-	return Vector2(x, r.position.y - 46.0 + sin(_t * 3.2) * 4.0)
+	return Vector2(x, r.position.y - 62.0 + sin(_t * 3.2) * 5.0)
 
 
 func _update_lumi(dt: float) -> void:
 	var r: Rect2 = _bar_rect()
 	var lx: float = r.position.x + r.size.x * shown
 	for p: Dictionary in _pieces:
-		if not p["taken"] and r.position.x + r.size.x * float(p["u"]) <= lx + 14.0:
+		if not p["taken"] and r.position.x + r.size.x * float(p["u"]) <= lx + 26.0:
 			p["taken"] = true
 			_flying.append({"from": Vector2(r.position.x + r.size.x * float(p["u"]), r.position.y - 9.0), "k": 0.0, "piece": p})
 	var i: int = _flying.size() - 1
@@ -301,7 +304,7 @@ func _draw_bar() -> void:
 	var lp: Vector2 = _lumi_pos()
 	for f: Dictionary in _flying:
 		var k: float = float(f["k"])
-		var to: Vector2 = lp + Vector2(-6, -6)
+		var to: Vector2 = lp + Vector2(-30, -2)
 		var pos: Vector2 = (f["from"] as Vector2).lerp(to, k) + Vector2(0, -sin(k * PI) * 26.0)
 		_draw_piece(c, pos, f["piece"], 1.0 - k * 0.8)
 	_draw_lumi(c, lp)
@@ -320,7 +323,7 @@ func _round_rect(c: Control, r: Rect2, col: Color) -> void:
 
 func _draw_piece(c: Control, at: Vector2, p: Dictionary, s: float) -> void:
 	var col: Color = p["col"]
-	c.draw_set_transform(at, float(p["rot"]), Vector2(s, s))
+	c.draw_set_transform(at, float(p["rot"]), Vector2(s, s) * PIECE_SCALE)
 	match int(p["kind"]):
 		0:  # can
 			c.draw_rect(Rect2(-4, -7, 8, 12), col)
@@ -347,8 +350,8 @@ func _draw_lumi(c: Control, at: Vector2) -> void:
 	# Hover glow on the bar below.
 	var r: Rect2 = _bar_rect()
 	for k: int in 4:
-		c.draw_circle(Vector2(at.x, r.position.y - 3.0), 16.0 - k * 3.5, Color(GLOW, 0.05 + k * 0.03))
-	c.draw_set_transform(at, tilt, Vector2.ONE)
+		c.draw_circle(Vector2(at.x, r.position.y - 3.0), 22.0 - k * 5.0, Color(GLOW, 0.05 + k * 0.03))
+	c.draw_set_transform(at, tilt, Vector2(LUMI_SCALE, LUMI_SCALE))
 	# Thruster wisp.
 	c.draw_circle(Vector2(0, 21), 5.0, Color(GLOW, 0.35))
 	c.draw_circle(Vector2(0, 21), 2.5, Color(1.0, 0.8, 0.85, 0.8))
