@@ -69,3 +69,10 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
 - **"System default" only picks complete languages** (`Settings.SYSTEM_LOCALES`, English for now): the de/es samples are opt-in so a German OS never gets a half-German game.
 - **Pseudo-locale is generated, Latin-1/Extended-A only** — renders in every shipped font, so a tofu box in pseudo means a real font gap, not a pseudo artefact; the leading `E   ` of interaction prompts is kept because the HUD swaps it for the key glyph.
 - **World signage stays English** (shop signs, robot decals): it is part of the art, like painted text on a prop.
+
+## Wildlife (wt/wild)
+- **Procedural animals, not downloaded ones**: Poly Haven has one CC0 animal that fits (street_rat, used for rats); other CC0 sources were not reachable from the sandbox or not consistent in style. Soft ellipsoid/limb models with vertex colours match the toy-like props and stay cheap; one mesh per pose (cat standing/sitting/curled, bird perched/flying).
+- **Rig in the vertex shader**: per-vertex pivot + part id (CUSTOM0) and per-instance custom data (phase, gait, packed head yaw/pitch, packed coat + tail) let one MultiMesh per model animate legs, heads, tails and wings with no skeletons or nodes.
+- **Animals are pure visuals**: no colliders, no navigation; standing spots and wander targets (plus their midpoint) are checked against live junk pieces, mounds and building footprints. Robots and Lumi pass through them.
+- **The plan is stateless**: counts come from hex levels, biome, lake cleanliness and time of day, seeded per district/hex/species, so nothing about the animals needs saving except player-facing progress (sightings, photos, the adopted cat).
+- **Sightings need the animal in view and near Lumi**; photo credit needs the animal in the photo camera's frustum at >= ~4% of the frame height (no occlusion test).
