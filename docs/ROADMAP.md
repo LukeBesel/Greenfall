@@ -314,19 +314,33 @@ If a session ends: commit WIP in each worktree, then resume or merge.
   crane; ruined parts until base 3, thin trim lights from base 3, mended from base 4). Modifiers show:
   Long Nights darkens nights (`SkyDirector.night_dark`), Heavy Rain doubles yard puddles, wets the junk
   and thickens the fog, Rich Salvage gives the junk a metallic shine. Verdance is untouched.
-- **Title screen world picker** (`ui/world_picker.gd`, a "Worlds" entry under Continue once there are two
-  worlds): type icon, name, type and modifiers, play time; pick one to continue there
-  (`CradleMode.select_world`; an unplayed world lands fresh with its kit). Pad friendly. Continue's
-  subtitle names the current world.
-- **WREN per world** (`systems/world_story.gd`, `data/wren_lines.json` `world_<type>_<beat>`): arrival,
-  two memory notes on why the ark seeded worlds like this one, halfway and restored, clear over the ark's
+- **Save profiles** (3 slots, `user://saves/p1..p3`; `SaveManager.profile_slot/profile_dir/set_profile/
+  delete_profile`, `systems/profile_slots.gd`): each has its own worlds, Heirlooms and progress; settings
+  are shared. Pre-profile saves move into p1 on first start (`SaveManager.migrate_to_profiles`).
+  Title > Profiles (`ui/profile_picker.gd`): per slot name, play time, planets, current planet and
+  district, Bloom %, cubes / seeds / parts; Continue (then the planet list, `ui/world_picker.gd`, when
+  the profile has more than one), New (confirm), Rename, Delete (confirm). Pad focus grid; cancel backs
+  out. `CradleMode.select_world` points Continue at a planet (an unplayed one lands fresh).
+- **Planet hook for the fixed solar system**: `WorldLook.planet_id()` (a world record's "planet"/"look"
+  key), `data/world_looks.json` "planets" maps planet ids onto look types (with overrides), and when
+  `data/planets.json` lists a planet with an env script (default `planet/planets/<id>/env.gd`),
+  `WorldLookView` instances it and calls `apply(world, field, kind)` (kind city | wild | frontier;
+  optional `set_progress(progress, hub_level)`); the env then owns the art (no generic landmark or sky
+  body unless the look says keep_landmark / keep_sky_body); grade, tint and weathering stay data-driven.
+- **WREN per world** (`systems/world_story.gd`, `data/wren_lines.json` `world_<planet or type>_<beat>`):
+  arrival, two memory notes revealing what the Ledger did to that world (strip-mined, pumped dry,
+  dredged, poisoned, its ships broken), halfway and restored, clear over the ark's
   relay (`Wren.say(..., stage_override)`), remembered per world save (`flags.world_story`).
 - **Steam Cloud**: `profile.save` is stamped with `saved_unix` and uploaded on every write, so newest-wins
   sync covers it with the world slots (docs/steam/README.md updated for both cloud modes).
-- Dev: `--world-mods=heavy_rain+long_nights` (shots), `--menu=worlds --sample-worlds=N` (title picker).
-- Tests: `tests/test_world_look.gd` (look selection, modifiers, easing, landmarks, sky bodies, WREN
-  beats and lines, picker focus and selection, profile cloud sync); round trip checks the world look,
-  the WREN thread and the profile stamp.
+- Steam Cloud covers every profile folder under a per-profile prefix (`p2_slot_0.save`); unprefixed cloud
+  saves from older builds are adopted into profile 1.
+- Dev: `--world-mods=heavy_rain+long_nights` (shots), `--menu=profiles|worlds --sample-worlds=N` (title).
+- Tests: `tests/test_world_look.gd` (look selection, planet mapping and env hook, modifiers, easing,
+  landmarks, sky bodies, WREN beats and lines, picker focus and selection, profile cloud stamp) and
+  `tests/test_profiles.gd` (migration, isolation, New/Delete/Rename, summaries, focus grid, cloud
+  prefixes); round trip checks the world look, the WREN thread, the profile stamp, migration into p1
+  and two profiles kept apart.
 - Next: wildlife and plants per world type (snow hares, dune lizards); per-world music tint; the world
   picker could show a small render of each world.
 

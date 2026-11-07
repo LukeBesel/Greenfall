@@ -119,6 +119,11 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
   their own grade and landmarks; the sky body and Long Nights carry over. Verdance gets no look at all.
 - **WREN is clear on new worlds**: she speaks over the ark's relay, so world-thread lines use signal
   stage 2 from the first line instead of the campaign's glitched stage 0.
+- **Save profiles are folders** (`user://saves/p1..p3`): SaveManager.save_dir() is the active profile's
+  folder, so CradleMode, slots and every system stay unchanged; the Steam Cloud names carry the profile
+  as a prefix. Settings are shared across profiles.
+- **Planets own their art, the look stays data**: a planet with an env script in data/planets.json
+  draws its own landmarks and sky; the generic look keeps grade, tint and weathering.
 - **The profile syncs like a save**: it carries `saved_unix` so the Steam Cloud newest-wins rule applies
   to it unchanged; the SteamService autoload syncs before CradleBoot reads it.
 - **Decorations refund in full** so moving costs nothing; their bonus is small and per district.

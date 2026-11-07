@@ -131,7 +131,8 @@ hooks instead of played through.
   cooling tower gone to shelf fungi), Rust World (rust-red dusty sky, a shattered moon, corroded city, a
   ship-breaking gantry). The weather eases as the base is restored; trim lights come on at base 3.
   WREN tells each world's thread: arrival, two memories, halfway, restored.
-- **Title screen > Worlds** (once there are two worlds): pick any world and continue there.
+- **Title screen > Profiles**: three save profiles (own worlds, Heirlooms, progress); Continue a profile,
+  then pick a planet when it has several; New, Rename, Delete. Old saves are profile 1.
 - **Garden Mode** (H, or Pause > Garden Mode; after the finale or with this base at level 5): place
   decorations on clean ground. Each district's charm speeds its plants up a little (up to 8%).
 - Goals after the Seed Ark: open the Ark Bridge, place a decoration, buy an Heirloom, 10 decorations, 5
