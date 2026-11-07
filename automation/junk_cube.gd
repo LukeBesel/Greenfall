@@ -56,6 +56,12 @@ func _ready() -> void:
 	_mat.set_shader_parameter("mix_b", 0.0 if info.get("pure", false) else 0.35)
 	_mat.set_shader_parameter("mix_c", 0.0 if info.get("pure", false) else 0.18)
 	_mat.set_shader_parameter("perfect", 1.0 if info.get("perfect", false) else 0.0)
+	# [world2] Labels in the dominant junk's accent colour; bare-metal glints only where metal went in.
+	var dom: String = str(info.get("dominant", ""))
+	var jt: Dictionary = Economy.junk_types.get(dom, {})
+	if jt.has("flecks"):
+		_mat.set_shader_parameter("fleck", Color.html(str(jt["flecks"])))
+	_mat.set_shader_parameter("metal_share", 0.35 if dom == "metal" else (0.18 if dom == "electronics" else 0.08))
 	_mat.set_shader_parameter("seed", randf() * 100.0)
 	_mat.set_shader_parameter("detail_nrm", AssetLib.tex("rubble", "nor_gl"))
 	_visual.material_override = _mat

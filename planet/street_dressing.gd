@@ -1731,6 +1731,7 @@ func _col(pos: Vector3, size: Vector3, b: Basis = Basis()) -> void:
 		return  # never block junk
 	if _lm_body == null:
 		_lm_body = StaticBody3D.new()
+		_lm_body.collision_layer = PhysLayers.PROP  # [world2]
 		_cur.add_child(_lm_body)
 	var cs := CollisionShape3D.new()
 	var bs := BoxShape3D.new()
