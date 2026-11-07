@@ -231,6 +231,7 @@ func play() -> void:
 		world.hud.visible = false
 	if world.get("music") != null:
 		world.music.set_cinematic(true)
+	Audio.music_sting("motif")  # [sound] the Greenfall motif; the Homecoming ending quotes it
 	_build_overlay()
 	_drop_cover()  # [first]
 	_prev_cam = get_viewport().get_camera_3d()

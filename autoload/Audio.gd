@@ -4,7 +4,13 @@ extends Node
 ##
 ## Music: a generative, layered ambient score (audio/music_director.gd, instruments from
 ## audio/music_synth.gd) on the "Music" bus. Drive it with `set_music_mood()` ("explore",
-## "night", "base", "cinematic", "menu"), `set_music_intensity(0..1)` and `music_sting(name)`.
+## "night", "base", "cinematic", "menu", "homecoming"), `set_music_intensity(0..1)` and `music_sting(name)`.
+##
+## [sound] Planets: `set_planet_theme(id)` re-voices the score and swaps the ambience bed for a
+## solar-system planet ("verdance", "ochre", "tidewell", "rime", "anvil"); `set_restoration(0..1)`
+## blooms both from ruined to restored. `hold_theme()` / `release_theme()` let the radio preview
+## a theme without fighting the planet. `duck(seconds)` dips music and ambience under WREN lines.
+## See docs/AUDIO.md.
 
 const RATE: int = 22050
 const PENTATONIC: Array[int] = [0, 2, 4, 7, 9, 12, 14, 16, 19, 21, 24]
@@ -19,6 +25,16 @@ var _loop_players: Dictionary = {}  # name -> AudioStreamPlayer
 const MusicSynth := preload("res://audio/music_synth.gd")
 const MusicDirector := preload("res://audio/music_director.gd")
 const MusicVoices := preload("res://audio/music_voices.gd")
+const PlanetSynth := preload("res://audio/planet_synth.gd")  # [sound]
+const PlanetThemes := preload("res://audio/planet_themes.gd")  # [sound]
+const MusicTracks := preload("res://audio/music_tracks.gd")  # [sound]
+const AmbienceBeds := preload("res://audio/ambience.gd")  # [sound]
+const AmbienceSynth := preload("res://audio/ambience_synth.gd")  # [sound]
+## [sound] Mix: how far music / ambience dip while WREN speaks, and the attack / release times.
+const DUCK_MUSIC_DB: float = -7.0
+const DUCK_AMB_DB: float = -4.5
+const DUCK_ATTACK_S: float = 0.25
+const DUCK_RELEASE_S: float = 0.9
 
 ## When false the score fades out (stingers still play; they are feedback).
 var music_enabled: bool = true
@@ -26,6 +42,14 @@ var _music: RefCounted  # MusicDirector
 var _music_voices: Node
 var _music_lpf: AudioEffectLowPassFilter
 var _music_last_us: int = 0
+var _music_samples: Dictionary = {}
+var _ambience: Node  # [sound] audio/ambience.gd
+var _theme_world: String = "verdance"  # [sound] what the planet asked for
+var _resto_world: float = 0.0
+var _hold_id: String = ""  # [sound] radio preview (wins over the world while set)
+var _hold_resto: float = 0.0
+var _duck_until_us: int = 0
+var _duck: float = 0.0  # 0..1, smoothed
 
 
 func _ready() -> void:
@@ -39,12 +63,17 @@ func _ready() -> void:
 		add_child(p)
 		_players.append(p)
 	var music_samples: Dictionary = MusicSynth.build_all()
+	music_samples.merge(PlanetSynth.build("groove", music_samples))  # [sound] Verdance's upbeat tracks
+	_music_samples = music_samples
 	_music_voices = MusicVoices.new()
 	_music_voices.name = "MusicVoices"
 	add_child(_music_voices)
-	_music_voices.call("setup", music_samples, "Music", 48)
+	_music_voices.call("setup", music_samples, "Music", 56)  # [sound] 56: room for the restoration bloom
 	_music = MusicDirector.new(music_samples, _music_voices)
 	_music_last_us = Time.get_ticks_usec()
+	_ambience = AmbienceBeds.new()
+	_ambience.name = "Ambience"
+	add_child(_ambience)
 	apply_volumes()
 
 
@@ -57,12 +86,18 @@ func _exit_tree() -> void:
 
 
 func _setup_buses() -> void:
-	for bus_name: String in ["Music", "SFX"]:
+	for bus_name: String in ["Music", "SFX", "Ambience"]:
 		if AudioServer.get_bus_index(bus_name) == -1:
 			AudioServer.add_bus()
 			var idx: int = AudioServer.bus_count - 1
 			AudioServer.set_bus_name(idx, bus_name)
-			AudioServer.set_bus_send(idx, "Master")
+			# [sound] Ambience feeds SFX, so the SFX slider (and its reverb) covers it.
+			AudioServer.set_bus_send(idx, "SFX" if bus_name == "Ambience" else "Master")
+	# [sound] A safety limiter on Master: many SFX at once must never clip.
+	if AudioServer.get_bus_effect_count(0) == 0:
+		var mlim := AudioEffectHardLimiter.new()
+		mlim.ceiling_db = -0.5
+		AudioServer.add_bus_effect(0, mlim)
 	var sfx: int = AudioServer.get_bus_index("SFX")
 	if AudioServer.get_bus_effect_count(sfx) == 0:
 		var rev := AudioEffectReverb.new()
@@ -93,9 +128,31 @@ func _setup_buses() -> void:
 
 
 func apply_volumes() -> void:
-	AudioServer.set_bus_volume_db(0, linear_to_db(Settings.master_volume))
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(Settings.sfx_volume))
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(Settings.music_volume))
+	# [sound] A slider at 0 mutes its bus (linear_to_db(0) is -inf); the duck rides on top.
+	_set_bus_level(0, Settings.master_volume, 0.0)
+	_set_bus_level(AudioServer.get_bus_index("SFX"), Settings.sfx_volume, 0.0)
+	_set_bus_level(AudioServer.get_bus_index("Music"), Settings.music_volume, DUCK_MUSIC_DB * _duck)
+	_set_bus_level(AudioServer.get_bus_index("Ambience"), 1.0, DUCK_AMB_DB * _duck)
+
+
+func _set_bus_level(idx: int, linear: float, offset_db: float) -> void:
+	if idx < 0:
+		return
+	var v: float = clampf(linear, 0.0, 1.0)
+	AudioServer.set_bus_mute(idx, v <= 0.0001)
+	AudioServer.set_bus_volume_db(idx, maxf(-80.0, linear_to_db(maxf(v, 0.0001))) + offset_db)
+
+
+## [sound] Dips music (and the ambience bed) for `seconds`, e.g. while a WREN line types out.
+## Overlapping calls extend the duck; it eases back in after.
+func duck(seconds: float) -> void:
+	if is_nan(seconds) or seconds <= 0.0:
+		return
+	_duck_until_us = maxi(_duck_until_us, Time.get_ticks_usec() + int(minf(seconds, 30.0) * 1000000.0))
+
+
+func get_duck() -> float:
+	return _duck
 
 
 # --- Playback -----------------------------------------------------------------
@@ -141,6 +198,10 @@ func loop(sound: String, level: float, pitch: float = 1.0) -> void:
 			p.stop()
 		return
 	if p == null:
+		if not _loops.has(sound) and sound == "hover_spray":  # [sound] Lumi over water (Tidewell)
+			var rng := RandomNumberGenerator.new()
+			rng.seed = 2323
+			_loops[sound] = _wav(AmbienceSynth.spray(rng), true)
 		if not _loops.has(sound):
 			return
 		p = AudioStreamPlayer.new()
@@ -152,6 +213,11 @@ func loop(sound: String, level: float, pitch: float = 1.0) -> void:
 	p.pitch_scale = pitch
 	if not p.playing:
 		p.play()
+
+
+## [sound] The streams registered under `sound` (empty if none). Used by the ambience beds.
+func streams_of(sound: String) -> Array:
+	return _sounds.get(sound, [])
 
 
 func override(sound: String, streams: Array) -> void:
@@ -175,11 +241,135 @@ func set_music_intensity(x: float) -> void:
 ## harmony and tempo switch on the next bar line.
 func set_music_mood(mood: String) -> void:
 	if _music:
+		if mood == "homecoming":
+			_ensure_instruments("homecoming")  # [sound] the ending's choir
 		_music.call("set_mood", mood)
 
 
 func get_music_mood() -> String:
 	return str(_music.get("mood")) if _music else ""
+
+
+# --- Planets [sound] ----------------------------------------------------------
+
+## Planet theme for music and ambience: "verdance" (default), "ochre", "tidewell", "rime",
+## "anvil". Unknown ids are ignored (returns false). The first call for a planet synthesizes its
+## instruments and ambience (~0.1-0.3 s), so call it while the planet loads.
+func set_planet_theme(id: String) -> bool:
+	if not PlanetThemes.has(id):
+		return false
+	_theme_world = id
+	if _hold_id == "":
+		_apply_theme(id, _resto_world)
+	return true
+
+
+func get_planet_theme() -> String:
+	return str(_music.get("theme")) if _music else _theme_world
+
+
+## How restored the current planet is, 0..1: the theme blooms fuller and warmer, and the ambience
+## swaps wind and groans for birds, insects and water. MusicHooks feeds this from the planet.
+func set_restoration(x: float) -> void:
+	if is_nan(x):
+		return
+	_resto_world = clampf(x, 0.0, 1.0)
+	if _hold_id == "":
+		_apply_resto(_resto_world)
+
+
+func get_restoration() -> float:
+	return float(_music.get("restoration")) if _music else _resto_world
+
+
+## For the radio: plays planet theme `id` at `restoration` until release_theme(), whatever the
+## planet sets meanwhile (that is remembered and restored on release). Unknown ids are ignored.
+func hold_theme(id: String, restoration: float = 1.0) -> bool:
+	if not PlanetThemes.has(id) or is_nan(restoration):
+		return false
+	_hold_id = id
+	_hold_resto = clampf(restoration, 0.0, 1.0)
+	_apply_theme(id, _hold_resto)
+	return true
+
+
+func release_theme() -> void:
+	if _hold_id == "":
+		return
+	_hold_id = ""
+	_apply_theme(_theme_world, _resto_world)
+
+
+## Busy play (cleaning, building) nudges the score toward its upbeat tracks. MusicHooks calls it.
+func music_activity(amount: float) -> void:
+	if _music:
+		_music.call("pulse_activity", amount)
+
+
+## For the radio: loops composed track `id` (see music_track_ids()) with no gaps until
+## stop_track(). Unknown ids are ignored (returns false).
+func play_track(id: String) -> bool:
+	if _music == null or not MusicTracks.TRACKS.has(id):
+		return false
+	var planet: String = str(MusicTracks.TRACKS[id]["planet"])
+	_ensure_instruments(planet if planet != "" else "homecoming")
+	return bool(_music.call("play_track", id))
+
+
+func stop_track() -> void:
+	if _music:
+		_music.call("stop_track")
+
+
+## The composed track playing now ("" for a generative piece or a silence gap).
+func get_music_track() -> String:
+	return "" if _music == null or bool(_music.call("in_gap")) else str(_music.call("current_track"))
+
+
+## Composed track ids, all or for one planet ("verdance", "ochre", ...; "" = all).
+func music_track_ids(planet: String = "") -> Array[String]:
+	var out: Array[String] = []
+	for id: String in MusicTracks.TRACKS:
+		if planet == "" or str(MusicTracks.TRACKS[id]["planet"]) == planet:
+			out.append(id)
+	return out
+
+
+## The display title of a track (English data; tr() it at display time). "" if unknown.
+func music_track_title(id: String) -> String:
+	return str(MusicTracks.TRACKS[id]["title"]) if MusicTracks.TRACKS.has(id) else ""
+
+
+func planet_theme_ids() -> Array[String]:
+	return PlanetThemes.IDS.duplicate()
+
+
+func _apply_theme(id: String, resto: float) -> void:
+	if _music == null:
+		return
+	_ensure_instruments(id)
+	_music.call("set_theme", id)
+	if _ambience:
+		_ambience.call("set_planet", id)
+	_apply_resto(resto)
+
+
+## Builds instrument group `group` (a planet id, "groove" or "homecoming") if any is missing.
+func _ensure_instruments(group: String) -> void:
+	for n: String in PlanetSynth.NEEDS.get(group, []):
+		if not _music_samples.has(n):
+			var extra: Dictionary = PlanetSynth.build(group, _music_samples)
+			_music_samples.merge(extra)
+			if _music_voices:
+				_music_voices.call("add_samples", extra)
+			return
+
+
+func _apply_resto(x: float) -> void:
+	if _music:
+		_music.call("set_restoration", x)
+	if _ambience:
+		_ambience.call("set_restoration", x)
 
 
 func get_music_intensity() -> float:
@@ -204,6 +394,11 @@ func _process(_delta: float) -> void:
 	_music.call("update", dt)
 	if _music_lpf:
 		_music_lpf.cutoff_hz = float(_music.get("lpf_cutoff"))
+	# [sound] Voice ducking: ease toward the target, touching the buses only while it moves.
+	var want: float = 1.0 if now < _duck_until_us else 0.0
+	if want != _duck:
+		_duck = move_toward(_duck, want, dt / (DUCK_ATTACK_S if want > _duck else DUCK_RELEASE_S))
+		apply_volumes()
 
 
 # --- Synthesis ----------------------------------------------------------------
