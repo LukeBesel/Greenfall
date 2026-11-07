@@ -10,6 +10,7 @@ extends Node
 ##   --garden             Garden Mode unlocked here;  --decor-sample places a small garden near the base
 ##   --starseeds=N        add N Starseeds to the profile;  --heirlooms=id:lv+id:lv sets Heirloom levels
 ##   --new-world          seed a new world right away (with --save-dir for staged runs)
+##   --sample-worlds=N    shots: N visited worlds in the profile (no saves)
 ##   --garden-cam=x,z,yaw,dist,pitch  fixed camera for Garden shots
 
 var world: Node
@@ -40,6 +41,12 @@ func _setup() -> void:
 	if DevHooks.has("heirlooms"):
 		for spec: String in DevHooks.get_s("heirlooms", "").split("+", false):
 			(CradleMode.profile["heirlooms"] as Dictionary)[spec.get_slice(":", 0)] = int(spec.get_slice(":", 1))
+	if DevHooks.has("sample-worlds") and CradleMode.worlds().size() < 2:  # shots: a profile with some history
+		for i: int in int(DevHooks.get_f("sample-worlds", 2.0)):
+			var sw: Dictionary = CradleMode._add_world()
+			sw["stats"] = {"time_played": 3600.0 * (5.5 - i * 2.0), "hexes_cleaned": 380 - i * 150, "ark_waves": 4 - i * 3, "eggs": 31 - i * 12}
+			sw["finale"] = i == 0
+		CradleMode.profile["current"] = 0
 	CradleMode.mirror_stats()
 	decor = Decor.new()
 	world.add_child(decor)

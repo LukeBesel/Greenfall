@@ -223,3 +223,18 @@ func test_profile_round_trips_through_its_dict() -> void:
 	assert_eq(int(back["worlds"][1]["seed"]), int(CradleMode.worlds()[1]["seed"]))
 	assert_eq(CradleMode.from_dict({})["worlds"].size(), 1, "an empty file is just Verdance")
 	assert_eq(int(CradleMode.from_dict({"current": 9, "worlds": [{"index": 0, "seed": 4471, "slot": 0}]})["current"]), 0, "current is clamped")
+
+
+func test_new_world_landing_town_is_dry() -> void:
+	for i: int in [1, 3]:  # ice moon, ocean world
+		var w: Dictionary = WorldGen.make(i)
+		var p := PlanetData.new(int(w["seed"]), 6, 10.0)
+		p.mix = w["mix"]
+		p.generate()
+		var wet: int = 0
+		var cells: Array[int] = p.cells_within(p.hubs[0], 6)
+		for c: int in cells:
+			if p.state[c] == PlanetData.State.WATER:
+				wet += 1
+		assert_lt(float(wet) / cells.size(), 0.2, "%s lands in a dry town (%d / %d wet)" % [w["type"], wet, cells.size()])
+		assert_true(p.city[p.hubs[0]] >= 0, "hub 0 is a town")

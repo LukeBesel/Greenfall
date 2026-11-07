@@ -50,6 +50,8 @@ func open_bridge() -> void:
 	create_tween().tween_property(_root, "modulate:a", 1.0, 0.2)
 	get_tree().paused = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if world and world.get("hud") != null:
+		world.hud.visible = false
 	EventBus.ui_modal_changed.emit(true)
 	GameState.inc_stat("ark_bridge_opened")
 	if _first:
@@ -63,6 +65,8 @@ func close_bridge() -> void:
 	is_open = false
 	_root.visible = false
 	get_tree().paused = false
+	if world and world.get("hud") != null:
+		world.hud.visible = true
 	EventBus.ui_modal_changed.emit(false)
 	closed.emit()
 	if world and world.has_method("_on_modal_closed"):
@@ -95,7 +99,9 @@ func _rebuild(gain: int = 0) -> void:
 	head.add_child(tb)
 	tb.add_child(UITheme.label(tr("THE CRADLE  ·  SEED VAULT DECK"), 11, Color(0.4, 0.75, 1.0)))
 	tb.add_child(UITheme.label(tr("ARK BRIDGE"), 30, Color.WHITE))
-	tb.add_child(UITheme.label(tr("The vault holds seeds for every world in the system. Take what Lumi learned somewhere new; nothing here is ever undone."), 13, UITheme.MUTED))
+	var intro := UITheme.label(tr("The vault holds seeds for every world in the system. Take what Lumi learned somewhere new; nothing here is ever undone."), 13, UITheme.MUTED)
+	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	tb.add_child(intro)
 	var seeds := VBoxContainer.new()
 	head.add_child(seeds)
 	_seeds_label = UITheme.label(tr("%d Starseeds") % int(CradleMode.starseeds()), 24, UITheme.GOLD)
@@ -112,7 +118,8 @@ func _rebuild(gain: int = 0) -> void:
 	# Worlds
 	var wl := VBoxContainer.new()
 	wl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	wl.size_flags_stretch_ratio = 1.15
+	wl.size_flags_stretch_ratio = 1.25
+	wl.custom_minimum_size = Vector2(420, 0)
 	wl.add_theme_constant_override("separation", 8)
 	cols.add_child(wl)
 	wl.add_child(UITheme.label(tr("WORLDS"), 13, UITheme.MUTED))
@@ -124,12 +131,13 @@ func _rebuild(gain: int = 0) -> void:
 	_worlds_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_worlds_box.add_theme_constant_override("separation", 8)
 	ws.add_child(_worlds_box)
+	_worlds_box.add_child(_new_world_row())
 	for i: int in CradleMode.worlds().size():
 		_worlds_box.add_child(_world_row(i))
-	_worlds_box.add_child(_new_world_row())
 	# Heirlooms
 	var hl := VBoxContainer.new()
 	hl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hl.custom_minimum_size = Vector2(340, 0)
 	hl.add_theme_constant_override("separation", 8)
 	cols.add_child(hl)
 	hl.add_child(UITheme.label(tr("HEIRLOOMS  ·  KEPT ON EVERY WORLD"), 13, UITheme.MUTED))
@@ -173,14 +181,18 @@ func _world_row(i: int) -> Control:
 	hb.add_child(vb)
 	var title: String = "%s   %s" % [tr("WORLD %d") % (i + 1), str(w.get("name", "?")).to_upper()]
 	vb.add_child(UITheme.label(title, 17, Color.WHITE))
-	vb.add_child(UITheme.label(WorldGen.describe(w), 12, Color(0.4, 0.75, 1.0)))
+	var wd := UITheme.label(WorldGen.describe(w), 12, Color(0.4, 0.75, 1.0))
+	wd.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vb.add_child(wd)
 	var st: Dictionary = w.get("stats", {})
 	var line: String = tr("Not visited yet")
 	if not st.is_empty():
-		line = tr("%s played  ·  %d hexes cleaned  ·  %d Seed Ark waves  ·  %d curiosities") % [_hours(float(st.get("time_played", 0.0))), int(st.get("hexes_cleaned", 0)), int(st.get("ark_waves", 0)), int(st.get("eggs", 0))]
+		line = tr("%s  ·  %d hexes  ·  %d ark waves  ·  %d curiosities") % [_hours(float(st.get("time_played", 0.0))), int(st.get("hexes_cleaned", 0)), int(st.get("ark_waves", 0)), int(st.get("eggs", 0))]
 		if bool(w.get("finale", false)):
-			line += "  ·  " + tr("the Cradle came home")
-	vb.add_child(UITheme.label(line, 12, UITheme.MUTED))
+			line += "  ·  " + tr("restored")
+	var stl := UITheme.label(line, 12, UITheme.MUTED)
+	stl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vb.add_child(stl)
 	var b := Button.new()
 	b.custom_minimum_size = Vector2(150, 40)
 	if here:
@@ -216,7 +228,9 @@ func _new_world_row() -> Control:
 	if not CradleMode.unlocked():
 		vb.add_child(UITheme.label(tr("The Cradle has to come home first."), 12, UITheme.MUTED))
 		return pc
-	vb.add_child(UITheme.label("%s  ·  %s" % [str(w["name"]), WorldGen.describe(w)], 12, Color(0.4, 0.75, 1.0)))
+	var dl := UITheme.label("%s  ·  %s" % [str(w["name"]), WorldGen.describe(w)], 12, Color(0.4, 0.75, 1.0))
+	dl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vb.add_child(dl)
 	var mods: Array[String] = []
 	for id: Variant in w["modifiers"]:
 		mods.append(tr(str(WorldGen.modifier(str(id)).get("desc", ""))))
@@ -224,7 +238,9 @@ func _new_world_row() -> Control:
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	vb.add_child(l)
 	var kit: Dictionary = CradleMode.start_kit(CradleMode.profile.get("heirlooms", {}))
-	vb.add_child(UITheme.label(_kit_text(kit), 12, UITheme.GREEN))
+	var kl := UITheme.label(_kit_text(kit), 12, UITheme.GREEN)
+	kl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vb.add_child(kl)
 	var b := Button.new()
 	b.text = tr("Launch")
 	b.custom_minimum_size = Vector2(150, 40)
@@ -249,7 +265,7 @@ static func _kit_text(kit: Dictionary) -> String:
 	if bool(kit["seeds_unlocked"]):
 		bits.append(TranslationServer.translate("%d seeds") % int(kit["seeds"]))
 	if not (kit["robots"] as Array).is_empty():
-		bits.append(TranslationServer.translate("%d robots") % (kit["robots"] as Array).size())
+		bits.append(TranslationServer.translate("robots waiting: %d") % (kit["robots"] as Array).size())
 	if int(kit["research_tier"]) > 0:
 		bits.append(TranslationServer.translate("research tier %d known") % int(kit["research_tier"]))
 	if bits.is_empty():

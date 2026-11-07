@@ -132,6 +132,8 @@ func _place_cities(count: int) -> void:
 		var capital: bool = cities.size() == count - 1
 		var rings: int = 14 if capital else rng.randi_range(5, 9)
 		cities.append({"name": "Old Capital" if capital else names[cities.size() % names.size()], "cell": c, "rings": rings, "capital": capital})
+	if not mix.is_empty():  # [late] other worlds: the landing town is the driest one (a full district to work)
+		_driest_city_first()
 	for ci: int in cities.size():
 		var cd: Dictionary = cities[ci]
 		var b: int = BIOMES.find("old_capital") if cd["capital"] else BIOMES.find("sprawl")
@@ -141,6 +143,30 @@ func _place_cities(count: int) -> void:
 			city[cell] = ci
 			if b == BIOMES.find("old_capital") or biome[cell] != BIOMES.find("neon_coast"):
 				biome[cell] = b
+
+
+## [late] Moves the town with the least water within a district's reach to the front (hub 0);
+## names stay in order, so the landing town keeps the first name.
+func _driest_city_first() -> void:
+	var best: int = 0
+	var best_wet: int = 1 << 30
+	for ci: int in cities.size():
+		if bool(cities[ci]["capital"]):
+			continue
+		var wet: int = 0
+		for c: int in cells_within(int(cities[ci]["cell"]), 6):
+			if state[c] == State.WATER:
+				wet += 1
+		if wet < best_wet:
+			best_wet = wet
+			best = ci
+	if best != 0:
+		var a: Dictionary = cities[0]
+		var b: Dictionary = cities[best]
+		for k: String in ["cell", "rings"]:
+			var tmp: Variant = a[k]
+			a[k] = b[k]
+			b[k] = tmp
 
 
 func _place_hubs() -> void:
