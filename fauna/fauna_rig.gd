@@ -220,7 +220,7 @@ static func _invisible() -> Material:
 func set_coat(c: Dictionary) -> void:
 	var vals: Dictionary = {"coat_base": c.get("base", Color(0.86, 0.52, 0.24)), "coat_stripe": c.get("stripe", Color(0.5, 0.25, 0.1)),
 		"coat_patch": c.get("patch", Color(0.1, 0.1, 0.1)), "stripe_amt": float(c.get("stripe_amt", 1.0)), "white_amt": float(c.get("white_amt", 0.5)),
-		"patch_amt": float(c.get("patch_amt", 0.0)), "iris": c.get("iris", Color(0.7, 0.65, 0.2)), "pupil_w": float(c.get("pupil_w", 0.55))}
+		"patch_amt": float(c.get("patch_amt", 0.0)), "iris": c.get("iris", Color(0.7, 0.65, 0.2)), "pupil_w": float(c.get("pupil_w", 0.62))}
 	for m: ShaderMaterial in _own:
 		for k: String in vals:
 			m.set_shader_parameter(k, vals[k])
@@ -230,6 +230,10 @@ var _closed: float = -1.0
 
 
 func set_eyes_closed(v: float) -> void:
+	_want_closed = v
+
+
+func _apply_closed(v: float) -> void:
 	if v == _closed:
 		return
 	_closed = v
@@ -256,9 +260,19 @@ func look(yaw: float, pitch: float) -> void:
 
 
 ## Advances the animation, then turns the head (in model space, about its own pivot).
+var _blink_t: float = randf_range(1.0, 4.0)
+var _want_closed: float = 0.0
+
+
 func advance(dt: float) -> void:
 	if anim:
 		anim.advance(dt)
+	# Blink now and then (the eye shader draws the closed lid for a few frames).
+	_blink_t -= dt
+	var blink: float = 1.0 if _blink_t < 0.0 else 0.0
+	if _blink_t < -0.13:
+		_blink_t = randf_range(2.5, 6.0)
+	_apply_closed(maxf(_want_closed, blink))
 	if skel and _head >= 0 and (absf(_look.x) > 0.01 or absf(_look.y) > 0.01):
 		var par: int = skel.get_bone_parent(_head)
 		var g: Transform3D = skel.get_bone_global_pose(_head)

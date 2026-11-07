@@ -5,15 +5,18 @@ shader_type spatial;
 render_mode specular_schlick_ggx;
 
 uniform vec3 iris : source_color = vec3(0.65, 0.68, 0.18);
-uniform float pupil_w = 0.42;   // 1 = round, smaller = slit
-uniform float pupil_r = 0.42;   // pupil size (cute = big)
+uniform float pupil_w = 0.62;   // 1 = round, smaller = slit (a soft, wide cat pupil reads cute)
+uniform float pupil_r = 0.52;   // pupil size (cute = big)
 uniform float eye_closed = 0.0;
 uniform vec3 coat_base : source_color = vec3(0.86, 0.52, 0.24);
 
 void fragment() {
 	vec2 d = (UV - vec2(0.5)) * 2.0;
 	float r = length(d);
-	vec3 col = iris * (1.15 - 0.45 * smoothstep(0.35, 0.95, r));
+	// Iris with depth: brighter round the pupil, radial fibres, a dark limbal ring.
+	float ang = atan(d.y, d.x);
+	float fib = 0.85 + 0.15 * sin(ang * 23.0 + sin(ang * 7.0) * 2.0) * smoothstep(0.2, 0.7, r);
+	vec3 col = iris * fib * (1.2 - 0.55 * smoothstep(0.35, 0.95, r));
 	col = mix(col, iris * 1.35, smoothstep(0.5, 0.0, r) * 0.35);
 	col = mix(col, vec3(0.03, 0.025, 0.02), smoothstep(0.8, 0.98, r));
 	vec2 pd = vec2(d.x / max(pupil_w, 0.05), d.y);
