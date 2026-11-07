@@ -73,17 +73,26 @@ func add(mesh: Mesh, xf: Transform3D, col: Color, tint: float = 0.0, gloss: floa
 		var pv: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
 		var pn: PackedVector3Array = arr[Mesh.ARRAY_NORMAL]
 		var pi: Variant = arr[Mesh.ARRAY_INDEX]
+		# [fauna2] Sculpted parts carry their own colours (alpha = coat mask) and glossy surfaces.
+		var pc: PackedColorArray = arr[Mesh.ARRAY_COLOR] if arr[Mesh.ARRAY_COLOR] != null else PackedColorArray()
+		var sm: Material = mesh.surface_get_material(s)
+		var sgloss: float = 1.0 if sm and sm.resource_name == "Gloss" else gloss
 		var base: int = _v.size()
 		for k: int in pv.size():
 			var wp: Vector3 = xf * pv[k]
 			_v.append(wp)
 			_n.append((bn * (pn[k] if k < pn.size() else Vector3.UP)).normalized())
-			if vary > 0.0 and gloss < 0.5:
+			var vcol: Color = col
+			var vt: float = tint
+			if k < pc.size():
+				vcol = Color(pc[k].r, pc[k].g, pc[k].b, 1.0)
+				vt = pc[k].a
+			if vary > 0.0 and sgloss < 0.5:
 				var m: float = 1.0 + vary * _mottle(wp)
-				_c.append(Color(col.r * m, col.g * m, col.b * m, col.a))
+				_c.append(Color(vcol.r * m, vcol.g * m, vcol.b * m, vcol.a))
 			else:
-				_c.append(col)
-			_uv.append(Vector2(tint, gloss))
+				_c.append(vcol)
+			_uv.append(Vector2(vt, sgloss))
 			_cu.append_array([pivot.x, pivot.y, pivot.z, float(part)])
 			_cu2.append_array([pivot2.x, pivot2.y, pivot2.z, 0.0])
 		if pi == null:

@@ -17,8 +17,8 @@ const NOSE := Color(0.08, 0.06, 0.06)
 static func mesh(id: String) -> Mesh:
 	if _cache.has(id):
 		return _cache[id]
-	var m: Mesh = null
-	match id:
+	var m: Mesh = sculpted(id)
+	match (id if m == null else ""):
 		"cat": m = cat_stand()
 		"cat_sit": m = cat_sit()
 		"cat_curl": m = cat_curl()
@@ -44,6 +44,56 @@ static func mesh(id: String) -> Mesh:
 		m = cat_stand()
 	_cache[id] = m
 	return m
+
+
+## [fauna2] Sculpted animals: art/models/fauna/<species>_parts.glb (built in Blender by
+## art/models/fauna/build_small.py) holds a "stand" and a "fly" pose, each a set of smooth parts
+## named after their rig part (BODY, HEAD, TAIL, WING_L, WINGTIP_L__WING_L = outer wing whose
+## second pivot is WING_L's origin...). Each part's origin is its pivot. They are assembled here
+## into one rigged ArrayMesh for the MultiMesh path, so they animate like the procedural ones.
+const PARTS: String = "res://art/models/fauna/%s_parts.glb"
+const PART_IDS: Dictionary = {"BODY": 0, "LEG_FL": 1, "LEG_FR": 2, "LEG_BL": 3, "LEG_BR": 4, "HEAD": 5, "TAIL": 6,
+	"WING_L": 7, "WING_R": 8, "FLEX": 9, "WINGTIP_L": 10, "WINGTIP_R": 11, "HIND": 12, "FRONT": 13}
+
+
+static func sculpted(id: String) -> Mesh:
+	var sp: String = id.trim_suffix("_fly")
+	var pose: String = "fly" if id.ends_with("_fly") else "stand"
+	if not ResourceLoader.exists(PARTS % sp):
+		return null
+	var scn: PackedScene = load(PARTS % sp)
+	var root: Node = scn.instantiate()
+	var pose_n: Node = root.find_child(pose, true, false)
+	if pose_n == null:
+		root.free()
+		return null
+	var b := FaunaMesh.new()
+	b.vary = 0.04
+	var origins: Dictionary = {}
+	var nodes: Array = pose_n.find_children("*", "MeshInstance3D", true, false)
+	for n: Node in nodes:
+		origins[str(n.name).get_slice("__", 0)] = _rel_xf(n as Node3D, pose_n).origin
+	for n: Node in nodes:
+		var mi := n as MeshInstance3D
+		var nm: String = str(mi.name)
+		var key: String = nm.get_slice("__", 0).rstrip("0123456789")
+		var part: int = int(PART_IDS.get(key.trim_suffix("_"), 0))
+		var xf: Transform3D = _rel_xf(mi, pose_n)
+		var piv2: Vector3 = origins.get(nm.get_slice("__", 1), Vector3.ZERO) if "__" in nm else Vector3.ZERO
+		b.rig(part, xf.origin, piv2)
+		b.add(mi.mesh, xf, Color.WHITE, 0.0, 0.0)
+	root.free()
+	return b.commit()
+
+
+static func _rel_xf(n: Node3D, root: Node) -> Transform3D:
+	var t := Transform3D.IDENTITY
+	var c: Node = n
+	while c != null and c != root:
+		if c is Node3D:
+			t = (c as Node3D).transform * t
+		c = c.get_parent()
+	return t
 
 
 # --- Cat --------------------------------------------------------------------------------------
