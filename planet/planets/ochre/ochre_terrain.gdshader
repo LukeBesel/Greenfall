@@ -166,7 +166,7 @@ void fragment() {
 			farm = mix(farm, mix(bench_c, leaf * vec3(0.7, 0.9, 0.55), 0.35 * smoothstep(0.5, 0.7, n3)), crest);
 			// Field bench: only a green verge, the play field ground takes over.
 			float big = step(0.17, lvl) * (1.0 - step(0.19, lvl));
-			farm = mix(farm, mix(bench_c, leaf * vec3(0.75, 0.95, 0.5), 0.55 * smoothstep(0.4, 0.65, n2)), big);
+			farm = mix(farm, mix(bench_c, leaf * vec3(0.72, 0.92, 0.5), 0.8 * smoothstep(0.3, 0.55, n2 + n1 * 0.3)), big);
 			alb = mix(alb, farm, g);
 			float chan = smoothstep(0.84, 0.86, across) * (1.0 - smoothstep(0.92, 0.94, across)) * (1.0 - big);
 			wet = chan * g;
@@ -180,11 +180,6 @@ void fragment() {
 			vec3 leaf = two_scale(tex_leaf, wpos.xy + wpos.zy, 0.35) * vec3(0.8, 1.0, 0.6);
 			alb = mix(alb, leaf, vine * g * 0.9);
 		}
-	}
-	// The plateau: scrub creeps back near the rim once the pit is green.
-	if (restore > 0.4 && pit < 0.5) {
-		float sc = smoothstep(0.62, 0.7, n3 + n2 * 0.3) * smoothstep(0.4, 1.0, restore) * (1.0 - pan);
-		alb = mix(alb, vec3(0.42, 0.45, 0.24) * (0.8 + 0.4 * n1), sc * 0.7);
 	}
 	if (wet > 0.001) {
 		float rip = fbm(vec2(UV.x * 0.6 - time_s * 0.8, UV.y * 2.0));
