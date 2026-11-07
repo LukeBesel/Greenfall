@@ -1717,10 +1717,20 @@ func _dev_look() -> void:
 			pm.call("set_happy", 1.0)
 	var cam: Node = world.get("cam")
 	if cam:
+		# Frame the animal (and Lumi beside it) with the rig's own camera, held still.
 		var yaw_off: float = float(parts[3]) if parts.size() > 3 else 0.6
-		cam.set("yaw", base_yaw + PI + yaw_off)
-		cam.set("distance", float(parts[1]) if parts.size() > 1 else 3.2)
-		cam.set("pitch", float(parts[2]) if parts.size() > 2 else -0.22)
-		if cam.has_method("snap"):
-			cam.call("snap")
+		var dist: float = float(parts[1]) if parts.size() > 1 else 3.2
+		var pitch: float = float(parts[2]) if parts.size() > 2 else -0.22
+		var c3: Camera3D = cam.get("camera") as Camera3D
+		if c3:
+			cam.set_process(false)
+			cam.set_physics_process(false)
+			var focus: Vector3 = a.pos.lerp(patch.global_position, 0.3 if a.kind != "school" else 0.0) + Vector3(0, 0.3 * a.size if a.kind != "school" else 0.0, 0)
+			if a.kind in ["deer", "heron"]:
+				focus.y += 0.35
+			var yw: float = base_yaw + PI + yaw_off
+			var back := Vector3(sin(yw), 0, cos(yw))
+			var eye: Vector3 = focus + back * dist * cos(pitch) + Vector3(0, -sin(pitch) * dist, 0)
+			c3.global_transform = Transform3D(Basis.looking_at(focus - eye, Vector3.UP), eye)
+			c3.fov = DevHooks.get_f("fauna-fov", 50.0)
 	print("[fauna] look: %s at %s, Lumi at %s" % [sid, str(a.pos), str(patch.global_position)])
