@@ -11,3 +11,4 @@
 __pycache__/
 /screenshots/**/*.wav
 /screenshots/**/*.ogg
+/screenshots/**/*.mp3
