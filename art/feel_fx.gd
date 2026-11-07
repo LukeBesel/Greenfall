@@ -188,7 +188,7 @@ func _on_hex_cleaned(hid: int, center: Vector3, _bonus: BigNum) -> void:
 ## --first-demo=bale|sale|robot|reveal fires the moment so it peaks at --shot-delay. Leads are
 ## game seconds; DevHooks counts wall time, so they are divided by the time scale (software
 ## renders run a few frames a minute: pair with --time-scale=0.1 so the moment spans frames).
-const DEMO_LEAD: Dictionary = {"bale": 0.6, "sale": 1.1, "robot": 0.5, "reveal": 0.45}
+const DEMO_LEAD: Dictionary = {"bale": 1.25, "sale": 1.1, "robot": 0.5, "reveal": 0.45}
 
 
 func _demo_tick() -> void:

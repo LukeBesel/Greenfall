@@ -71,15 +71,20 @@ static func _material(billboard: bool) -> StandardMaterial3D:
 	return m
 
 
-## A flat downward chevron in the XY plane (billboarded by the material).
+## A flat downward chevron in the XY plane (billboarded by the material): two arm quads.
 static func _chevron_mesh() -> ArrayMesh:
-	var pts := PackedVector2Array([Vector2(-0.17, 0.12), Vector2(-0.1, 0.12), Vector2(0.0, 0.02),
-		Vector2(0.1, 0.12), Vector2(0.17, 0.12), Vector2(0.0, -0.08)])
-	var idx: PackedInt32Array = Geometry2D.triangulate_polygon(pts)
+	var k: float = 1.4
+	var tris: Array[Vector2] = []
+	for sx: float in [-1.0, 1.0]:
+		var a := Vector2(0.17 * sx, 0.12) * k
+		var b := Vector2(0.09 * sx, 0.12) * k
+		var c := Vector2(0.0, 0.03) * k
+		var d := Vector2(0.0, -0.06) * k
+		tris.append_array([a, b, c, a, c, d])
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	for i: int in idx:
-		st.add_vertex(Vector3(pts[i].x, pts[i].y, 0.0))
+	for v: Vector2 in tris:
+		st.add_vertex(Vector3(v.x, v.y, 0.0))
 	return st.commit()
 
 
