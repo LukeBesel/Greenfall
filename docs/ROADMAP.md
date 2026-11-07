@@ -13,7 +13,7 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - [x] M8 Content/meta: Codex, 54 achievements, stats, cosmetics (6 colourways).
 - [~] M9 Balance: mid-game autoplay bot (robots, research, Command zones, garden, base levels) and a 2-hour pass: first robot ~6 min, planting ~20, Sustained ~23, base 3 ~38, base 5 ~75 (district done); see docs/BALANCE.md. Re-run after merging Laser Reach / Multi-Lock.
 - [~] M10 Polish: title screen, settings, music score, QA pass (40 fixes in flight); Windows/Linux/macOS builds from CI.
-- [~] M11 Post-game: Verdance Bloom milestones, Cradle finale (the true ending, then end credits), endless Seed Ark waves (no Cradle Mode worlds yet). Whole game playable New Game -> Cradle -> Seed Ark; see docs/WALKTHROUGH.md.
+- [x] M11 Post-game: Verdance Bloom milestones, Cradle finale (the true ending, then end credits), endless Seed Ark waves, Cradle Mode (new worlds, Starseeds, Heirlooms, world modifiers, Ark Bridge), Garden Mode decorating. Whole game playable New Game -> Cradle -> Seed Ark -> new worlds; see docs/WALKTHROUGH.md.
 
 ## Next steps for a new session
 0. Owner-side Steam/Apple setup: see docs/steam/README.md (app id, depots, signing). Website: enable Pages, fill website/config.js.
@@ -22,8 +22,8 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 1. Play-test feedback from the owner (docs/PLAYTEST.md); fix what they hit first.
 2. macOS: universal build works (ETC2/ASTC import enabled). For Steam: sign and notarize with the owner's Apple Developer account.
 3. Longer balance: run `--autoplay --time-scale=8 --quit-after=600` and check goals keep a next step within 1-3 minutes past the first hour.
-4. More districts content: aim 40 eggs (29 now); more biome props (nets, satellites) if Poly Haven gets them; per-biome plants/wildlife.
-5. Post-game (M11): Cradle Mode (other worlds + Heirlooms), Garden Mode decorating; tune Bloom thresholds after play-testing.
+4. More districts content: 41 eggs now; more biome props (nets, satellites) if Poly Haven gets them; per-biome plants/wildlife.
+5. Post-game (M11): done (wt/late). Next: per-world story threads with WREN, wildlife using the decor hook, tune Starseed income and Bloom thresholds after play-testing.
 
 ## Update: future layer (wt/future)
 - Done: `planet/future_layer.gd` (FutureLayer, built by `scenes/slice.gd`): the district builds up into a glowing, clean future city as it is restored. Pure `FutureLayer.plan()` from seed + hex levels + hub level + cleaned share (no save data); a handful of MultiMeshes (unshaded emissive + env glow), a few Label3D texts, no lights.
@@ -200,3 +200,40 @@ If a session ends: commit WIP in each worktree, then resume or merge.
   screenshots/autoplay_milestones_NAME.json; stuck-robot census.
 - Next: re-measure the first hour after merging the first-seed pacing (first helper); tune frontier
   costs (Frozen Port went quickly once upgrades were maxed); Data is in surplus after the Dust Flats.
+
+## Update: late game and post-game (wt/late)
+- **Cradle Mode** (prestige / New Game+): `systems/cradle_mode.gd` (static `CradleMode`, booted by the
+  `CradleBoot` autoload before any save is read), `systems/world_gen.gd`, `data/cradle.json`.
+  - A profile (`user://saves/profile.save`) holds the worlds, the current world, Starseeds and Heirlooms.
+    Each world has its own save slot: Verdance stays slot 0 and is always one Travel away.
+  - New worlds: fresh planet seed, one of five world types (Ice Moon, Desert World, Ocean World, Marsh
+    World, Rust World: biome thresholds, water share, town count and town names via `PlanetData.mix`),
+    two modifiers each (Heavy Rain, Long Nights, Rich Salvage, Thin Soil, Tailwinds, Wild Bloom, Heavy
+    Junk), their own ground look and a landing town chosen to be dry. They start ruined, with the
+    Heirloom kit, an arrival card (`ui/world_banner.gd`) and the restart checklist.
+  - Starseeds come from a world's Seed Ark waves, Bloom milestones, Thriving hexes, the Cradle and
+    level-5 bases; banked on the Ark Bridge and when leaving (each world only pays what is new).
+  - 10 Heirlooms (stat multipliers through `Economy.stat` -> `CradleMode.stat_mod`, or a starting kit:
+    cubes, Data, seeds, waiting robots, known research).
+  - **Ark Bridge** (`ui/ark_bridge.gd`, Pause > Ark Bridge after the finale): world list with travel,
+    "Seed a new world" with a preview, Heirloom shop. Pad friendly.
+- **Garden Mode** (`systems/decor.gd`, `art/decor_props.gd`, `ui/garden_placer.gd`, `data/decor.json`):
+  H or Pause > Garden Mode, after the finale or at base level 5. 10 decorations (path, flower bed,
+  planter, bench, lamp, bird bath, fountain, Maker statue, Lumi sculpture, WREN kite) on a 1 m grid on
+  clean ground; place / rotate / cycle / pick up (refunded, so moving is free). Charm raises that
+  district's plant growth (0.4% per point, max 8%). Wildlife hook: group "decor", metas `decor_type`
+  and `decor_wildlife`; `Decor.liked_by(tree, kind)`.
+- **Easter eggs 29 -> 41**: four frontier-only (Sand Piano, Snowbot, Message in a Bottle, Welcome
+  Home), five general (Crossword, Hopscotch, Last Balloon, Return to Sender, Patient Tree), one wild
+  (Listening Dish), two on new worlds only (Not the First, Heirloom Tin). `story/egg_props_late.gd`;
+  Codex Curiosities gains Frontiers / Other worlds groups; WREN lines for each.
+- Goals: 12 appended after the Seed Ark (156 total). Achievements: 12 more (86).
+- Dev: `--post-finale`, `--world=N`, `--heirlooms=id:lv+...`, `--starseeds=N`, `--sample-worlds=N`,
+  `--open=ark|garden`, `--garden-type/--garden-cell/--garden-cam`, `--decor-sample`, `--new-world[=S]`,
+  `--no-banner`, `--late-save-after=S` (systems/late_director.gd). Autoplay: `tools/autoplay_late.gd`
+  decorates, buys Heirlooms and seeds a new world, then marks `w2_*` milestones.
+- Tests: `tests/test_cradle_mode.gd`, `tests/test_decor.gd`, `tests/test_late_eggs.gd`; save round trip
+  covers decor, a second world, the profile and travel both ways.
+- Next: per-world WREN story beats; a title-screen world picker; Steam Cloud for profile.save; a
+  stronger visual identity per world type (sky tint, skyline); wildlife reacting to decor (wt/wild).
+
