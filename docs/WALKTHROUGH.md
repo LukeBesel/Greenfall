@@ -3,7 +3,22 @@
 The critical path from a fresh save to the true ending (the Cradle comes home) and the post-game
 Seed Ark loop, with every gate and what opens it. Times are **game time** from the autoplay bot
 (`tools/autoplay.gd` + `tools/autoplay_campaign.gd`, see "Measuring" at the end); a first-time
-human player is typically 1.5-2.5x slower, which puts the whole game at roughly **15-25 hours**.
+human player is typically 2-3x slower, which puts the whole game at roughly **15-22 hours**.
+
+**Measured full run** (bot, game time; New Game -> Cradle -> Seed Ark, 7 continued `--save-dir`
+stages, 16x; screenshots/autoplay_report.json `campaign_full_run_min`):
+
+| Stage | Bot time | Duration |
+|---|---|---|
+| Old Town to first launch (final pacing re-run) | 0:00-1:14 | 74 min (full run: 102 with the older pacing) |
+| Second district (Harbor Row) to base 5 + launch | 1:42-3:00 | 78 min |
+| Dust Flats (base 5 at 4:14, 50% Growing at 4:42) | 3:00-5:08 | 128 min |
+| Frozen Port (base 5 at 5:40) | 5:09-5:45 | 36 min |
+| Sunken City (3 pump stages, base 5 at 6:48) | 5:46-7:05 | 80 min |
+| Cradle Returns (pad, 70% Growing) to finale | 7:06-7:59 | 53 min |
+| Finale + credits, then Seed Ark wave 1 | 7:59-8:01 | |
+
+Longest stretch without a goal in the final first-district run: 13 min (waiting on Drip research).
 
 `[bot]` marks the measured bot time; `[est]` is an estimate where the stage was jumped with dev
 hooks instead of played through.
@@ -32,10 +47,11 @@ hooks instead of played through.
   water with tool 3 (refill in the yard).
 - On purpose, the garden is slow here: few seeds, slow growth, hand watering. Cleaning drives
   progress and the goal chain (hexes 10-30, upgrades, bales, recycler, base 3).
-- Seedling Blueprint (240 Data) arrives ~0:45-0:55 [bot], Drip Blueprint (280 Data) ~0:55-1:05.
+- Seedling Blueprint (160 Data) and Drip Blueprint (200 Data) need a level-3 base (Depot Station,
+  ~0:43 [bot]): Seedling ~0:49, Drip ~1:03 [bot].
 
 ## 4. The garden takes off (~1:00-1:30)
-- **Pollinator Survey** (Botany, 240 Data after Wild Mint): +75% plant growth, +60% seeds per
+- **Pollinator Survey** (Botany, 200 Data after Wild Mint, base 3; ~1:10 [bot]): +75% plant growth, +60% seeds per
   bloom. With Seedlings planting and Drips watering, hexes go Planted > Growing > Sustained > Thriving
   in minutes. The goal chain pays out a run of garden goals here ("the garden takes off").
 - Sustain is done by watering robots (Drip, Multibot on water) plus Water Tanks; never sprinklers.
@@ -45,7 +61,7 @@ hooks instead of played through.
 
 ## 5. Old Town base levels 3-5 and the rocket (1:00-1:45)
 - Base 3: 12k cubes + 90 metal / 60 plastic / 30 glass. Base 4: 28k + 100 plastic / 40 glass.
-  Base 5: 30k + 80 plastic / 30 glass. Measured: base 3 ~1:06, base 4 ~1:26, base 5 ~1:42 [bot].
+  Base 5: 30k + 80 plastic / 30 glass. Measured: base 3 ~0:43, base 4 ~1:09, base 5 ~1:14 [bot].
 - Base 5 builds the launch pad and the Mk I rocket. "Launch the rocket onward" (globe, M).
   Rocket cells recharge 5 min after each launch (Mk II-IV faster; Mk IV warps).
 
