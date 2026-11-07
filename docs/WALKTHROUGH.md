@@ -108,7 +108,7 @@ hooks instead of played through.
 | Sunken City | Pump Works + 4 bases L5 + Frozen L3 | | autoplay / dev jump |
 | Cradle | Ark Beacon + 3 frontier bases L5 + 50% Growing each | | dev jump + test |
 | Finale | Cradle complete | | save round trip (also mid-cinematic) |
-| Goals | 132 goals; every type/key checked by tests/test_beat.gd | | test |
+| Goals | 144 goals; every type/key checked by tests/test_beat.gd | | test |
 
 Dead ends found and fixed while mapping this (see docs/BALANCE.md "Whole game"):
 - The finale could play early in an ordinary district (three districts in bloom), leaving the Cradle
