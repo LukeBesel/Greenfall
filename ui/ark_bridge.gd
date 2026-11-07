@@ -262,7 +262,7 @@ static func _kit_text(kit: Dictionary) -> String:
 		bits.append(TranslationServer.translate("%s cubes") % Settings.fmt(BigNum.from_float(float(kit["cubes"]))))
 	if float(kit["data"]) > 0.0:
 		bits.append(TranslationServer.translate("%d Data") % int(kit["data"]))
-	if bool(kit["seeds_unlocked"]):
+	if float(kit["seeds"]) > 0.0:
 		bits.append(TranslationServer.translate("%d seeds") % int(kit["seeds"]))
 	if not (kit["robots"] as Array).is_empty():
 		bits.append(TranslationServer.translate("robots waiting: %d") % (kit["robots"] as Array).size())

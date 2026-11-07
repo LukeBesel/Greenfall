@@ -153,63 +153,63 @@ msgstr "[Ð-þàð ŕîĝĥţ ~]"
 msgid "Share"
 msgstr "[Šĥàŕé ~]"
 
-#: autoload/Settings.gd:497
+#: autoload/Settings.gd:498
 msgid "LMB"
 msgstr "[ĻMB ~]"
 
-#: autoload/Settings.gd:498
+#: autoload/Settings.gd:499
 msgid "RMB"
 msgstr "[ŔMB ~]"
 
-#: autoload/Settings.gd:499
+#: autoload/Settings.gd:500
 msgid "MMB"
 msgstr "[MMB ~]"
 
-#: autoload/Settings.gd:500
+#: autoload/Settings.gd:501
 msgid "Wheel up"
 msgstr "[Ŵĥééļ ûþ ~]"
 
-#: autoload/Settings.gd:501
+#: autoload/Settings.gd:502
 msgid "Wheel down"
 msgstr "[Ŵĥééļ ðôŵñ ~]"
 
-#: autoload/Settings.gd:502
+#: autoload/Settings.gd:503
 msgid "Mouse %d"
 msgstr "[Môûšé %d ~]"
 
-#: autoload/Settings.gd:504
+#: autoload/Settings.gd:505
 msgid "Button %d"
 msgstr "[Bûţţôñ %d ~]"
 
-#: autoload/Settings.gd:509
+#: autoload/Settings.gd:510
 msgid "LS left"
 msgstr "[ĻŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:509
+#: autoload/Settings.gd:510
 msgid "LS right"
 msgstr "[ĻŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:510
+#: autoload/Settings.gd:511
 msgid "LS up"
 msgstr "[ĻŠ ûþ ~]"
 
-#: autoload/Settings.gd:510
+#: autoload/Settings.gd:511
 msgid "LS down"
 msgstr "[ĻŠ ðôŵñ ~]"
 
-#: autoload/Settings.gd:511
+#: autoload/Settings.gd:512
 msgid "RS left"
 msgstr "[ŔŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:511
+#: autoload/Settings.gd:512
 msgid "RS right"
 msgstr "[ŔŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:512
+#: autoload/Settings.gd:513
 msgid "RS up"
 msgstr "[ŔŠ ûþ ~]"
 
-#: autoload/Settings.gd:512
+#: autoload/Settings.gd:513
 msgid "RS down"
 msgstr "[ŔŠ ðôŵñ ~]"
 
@@ -1101,7 +1101,7 @@ msgstr "[Çàñ'ţ bûîļð ĥéŕé ~~~]"
 msgid "Not on the lake"
 msgstr "[Ñôţ ôñ ţĥé ļàķé ~~]"
 
-#: robots/water_net.gd:141
+#: robots/water_net.gd:141 systems/decor.gd:186
 msgid "Clean this hex first"
 msgstr "[Çļéàñ ţĥîš ĥéx ƒîŕšţ ~~~~]"
 
@@ -1121,63 +1121,63 @@ msgstr "[Ŵàţéŕ Ţàñķ þļàçéð. Ŵàţéŕéŕš ñéàŕbý ŵîļļ
 msgid "WATER"
 msgstr "[ŴÀŢÉŔ ~]"
 
-#: scenes/slice.gd:275
+#: scenes/slice.gd:278
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: þàîñţ žôñéš àñð šéñð çŕéŵš ŵĥéŕé ýôû ŵàñţ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:491
+#: scenes/slice.gd:494
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "[ĻM-1 ôñļîñé. Bļôôm Çôŕé 4%: ĝŕééñ ļîĝĥţ ļôŵ. Çŕàðļé ŕéļàý: ƒàîñţ. Ĝŕôŵ šôméţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:782
+#: scenes/slice.gd:786
 msgid "HEX CLEAN!  +%s"
 msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 
-#: scenes/slice.gd:796
+#: scenes/slice.gd:800
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice.gd:798
+#: scenes/slice.gd:802
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "[Ţĥé ŵĥôļé Ĵûñķýàŕð îš çļéàñ. Ļûmî bééþš à véŕý ļôñĝ, véŕý ĥàþþý bééþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:805
+#: scenes/slice.gd:809
 msgid "%s is out of range: %s"
 msgstr "[%s îš ôûţ ôƒ ŕàñĝé: %s ~~~~~]"
 
-#: scenes/slice.gd:815
+#: scenes/slice.gd:819
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ 5 ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:818 ui/rockets_panel.gd:39
+#: scenes/slice.gd:822 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "[Éñéŕĝý çéļļš ŕéçĥàŕĝîñĝ: %s. Ŕôçķéţ ûþĝŕàðéš ŕéƒîļļ ţĥém ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:872
+#: scenes/slice.gd:876
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "[Ţôûçĥðôŵñ: %s. Ĥûb %d ôƒ %d. %s ~~~~~~~~]"
 
-#: scenes/slice.gd:873
+#: scenes/slice.gd:877
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "[Ţĥé ŕôçķéţ îš þàŕķéð ôñ ţĥé ļôţ, ŕéàðý ŵĥéñ îţš çéļļš ŕéƒîļļ. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:873
+#: scenes/slice.gd:877
 msgid "Landed on the base pad."
 msgstr "[Ļàñðéð ôñ ţĥé bàšé þàð. ~~~~~]"
 
-#: scenes/slice.gd:964
+#: scenes/slice.gd:968
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1136
+#: scenes/slice.gd:1140
 msgid "Welcome back. The junk waited for you."
 msgstr "[Ŵéļçômé bàçķ. Ţĥé ĵûñķ ŵàîţéð ƒôŕ ýôû. ~~~~~~~~~~]"
 
-#: scenes/slice.gd:1153
+#: scenes/slice.gd:1157
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:1153
+#: scenes/slice.gd:1157
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
@@ -1325,47 +1325,47 @@ msgstr "[Ţĥàţ'š ţĥé Çŕàðļé. Ŵĥéñ ýôûŕ çôŕé ļîţ ûþ
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "[Bļôôm Çôŕé 75%: ţĥé Çŕàðļé îš ôñ îţš ŵàý ĥômé. Ļôôķ ƒôŕ îţ çŕôššîñĝ ţĥé ñîĝĥţ šķý. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/egg_props.gd:173
+#: story/egg_props.gd:176
 msgid "SELECT  A1  ·  B4  ·  C7"
 msgstr "[ŠÉĻÉÇŢ  À1  ·  B4  ·  Ç7 ~~~~~]"
 
-#: story/egg_props.gd:198
+#: story/egg_props.gd:201
 msgid "WE'LL BE BACK AFTER LUNCH"
 msgstr "[ŴÉ'ĻĻ BÉ BÀÇĶ ÀFŢÉŔ ĻÛÑÇĤ ~~~~~~]"
 
-#: story/egg_props.gd:313
+#: story/egg_props.gd:316
 msgid "OPEN IN 100 YEARS"
 msgstr "[ÔÞÉÑ ÎÑ 100 ÝÉÀŔŠ ~~~]"
 
-#: story/egg_props.gd:330
+#: story/egg_props.gd:333
 msgid "HI-SCORE"
 msgstr "[ĤÎ-ŠÇÔŔÉ ~]"
 
-#: story/egg_props.gd:331
+#: story/egg_props.gd:334
 msgid "WREN  999990"
 msgstr "[ŴŔÉÑ  999990 ~]"
 
-#: story/egg_props.gd:332
+#: story/egg_props.gd:335
 msgid "INSERT COIN"
 msgstr "[ÎÑŠÉŔŢ ÇÔÎÑ ~]"
 
-#: story/egg_props.gd:335
+#: story/egg_props.gd:338
 msgid "SWEEP-O-TRON"
 msgstr "[ŠŴÉÉÞ-Ô-ŢŔÔÑ ~]"
 
-#: story/egg_props.gd:427
+#: story/egg_props.gd:430
 msgid "BISCUIT"
 msgstr "[BÎŠÇÛÎŢ ~]"
 
-#: story/egg_props.gd:455
+#: story/egg_props.gd:458
 msgid "FIZZ"
 msgstr "[FÎŽŽ ~]"
 
-#: story/egg_props.gd:601
+#: story/egg_props.gd:604
 msgid "(it is not wet)"
 msgstr "[(îţ îš ñôţ ŵéţ) ~~]"
 
-#: story/egg_props.gd:618
+#: story/egg_props.gd:621
 msgid ""
 "THE LEDGER IS WATCHING\n"
 "(FOR SAVINGS)"
@@ -1373,7 +1373,7 @@ msgstr ""
 "[ŢĤÉ ĻÉÐĜÉŔ ÎŠ ŴÀŢÇĤÎÑĜ\n"
 "(FÔŔ ŠÀVÎÑĜŠ) ~~~~~~~~~~]"
 
-#: story/egg_props.gd:696
+#: story/egg_props.gd:699
 msgid ""
 "EMPLOYEE OF\n"
 "THE MONTH\n"
@@ -1383,7 +1383,7 @@ msgstr ""
 "ŢĤÉ MÔÑŢĤ\n"
 "— ÇÛBÉ — ~~~~~~~]"
 
-#: story/egg_props.gd:726
+#: story/egg_props.gd:729
 msgid ""
 "FORECAST\n"
 "ALWAYS RIGHT*"
@@ -1391,19 +1391,19 @@ msgstr ""
 "[FÔŔÉÇÀŠŢ\n"
 "ÀĻŴÀÝŠ ŔÎĜĤŢ* ~~~~~]"
 
-#: story/egg_props.gd:751
+#: story/egg_props.gd:754
 msgid "SHOW ENTRY"
 msgstr "[ŠĤÔŴ ÉÑŢŔÝ ~]"
 
-#: story/egg_props.gd:793
+#: story/egg_props.gd:796
 msgid "THE BUILDERS · DO NOT TIDY"
 msgstr "[ŢĤÉ BÛÎĻÐÉŔŠ · ÐÔ ÑÔŢ ŢÎÐÝ ~~~~~~]"
 
-#: story/egg_props.gd:881
+#: story/egg_props.gd:884
 msgid "FINE"
 msgstr "[FÎÑÉ ~]"
 
-#: story/egg_props.gd:958
+#: story/egg_props.gd:961
 msgid ""
 "BACK IN\n"
 "5 MINUTES"
@@ -1411,83 +1411,83 @@ msgstr ""
 "[BÀÇĶ ÎÑ\n"
 "5 MÎÑÛŢÉŠ ~~~]"
 
-#: story/eggs.gd:245
+#: story/eggs.gd:250
 msgid "Something metal surfaced in the cleared ground."
 msgstr "[Šôméţĥîñĝ méţàļ šûŕƒàçéð îñ ţĥé çļéàŕéð ĝŕôûñð. ~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:425
+#: story/eggs.gd:430
 msgid "Gnome %d / %d"
 msgstr "[Ĝñômé %d / %d ~~]"
 
-#: story/eggs.gd:433
+#: story/eggs.gd:438
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "[Ţĥé ļàšţ þôšţéŕ þôîñţš šôméŵĥéŕé çļôšé. Šôméţĥîñĝ ôŕàñĝé îš çûŕļéð ûþ ñéàŕbý. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:459
+#: story/eggs.gd:464
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "[Ţĥé ŕàðîô ĥîššéš qûîéţļý. Ñôţĥîñĝ ûþ ţĥéŕé îš àŵàķé ýéţ. Çômé bàçķ àƒţéŕ ðàŕķ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:460
+#: story/eggs.gd:465
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "[Ţĥŕôûĝĥ ţĥé ţéļéšçôþé: ĵûšţ à bŕîĝĥţ, ðûšţý šķý. Çômé bàçķ àƒţéŕ ðàŕķ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:480
+#: story/eggs.gd:485
 msgid "SOLD OUT"
 msgstr "[ŠÔĻÐ ÔÛŢ ~]"
 
-#: story/eggs.gd:497
+#: story/eggs.gd:502
 msgid "QUACK!"
 msgstr "[QÛÀÇĶ! ~]"
 
-#: story/eggs.gd:515
+#: story/eggs.gd:520
 msgid "NEW CHALLENGER!"
 msgstr "[ÑÉŴ ÇĤÀĻĻÉÑĜÉŔ! ~~]"
 
-#: story/eggs.gd:518
+#: story/eggs.gd:523
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "[ĜÀMÉ ÔVÉŔ  ·  ŠÇÔŔÉ 12 ~~~~~]"
 
-#: story/eggs.gd:548
+#: story/eggs.gd:553
 msgid "hi, Gus"
 msgstr "[ĥî, Ĝûš ~]"
 
-#: story/eggs.gd:593
+#: story/eggs.gd:598
 msgid "CONFETTI"
 msgstr "[ÇÔÑFÉŢŢÎ ~]"
 
-#: story/eggs.gd:593
+#: story/eggs.gd:598
 msgid "LIGHT JAZZ"
 msgstr "[ĻÎĜĤŢ ĴÀŽŽ ~]"
 
-#: story/eggs.gd:593
+#: story/eggs.gd:598
 msgid "99% DUCKS"
 msgstr "[99% ÐÛÇĶŠ ~]"
 
-#: story/eggs.gd:593
+#: story/eggs.gd:598
 msgid "SUNNY (INDOORS)"
 msgstr "[ŠÛÑÑÝ (ÎÑÐÔÔŔŠ) ~~]"
 
-#: story/eggs.gd:593
+#: story/eggs.gd:598
 msgid "FOG OF NOODLES"
 msgstr "[FÔĜ ÔF ÑÔÔÐĻÉŠ ~~]"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:603
 msgid "1ST PLACE"
 msgstr "[1ŠŢ ÞĻÀÇÉ ~]"
 
-#: story/eggs.gd:654
+#: story/eggs.gd:661
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "[Ţĥé ðûçķ šqûéàķš à šéçŕéţ: \"%s\" ûñļôçķš ţĥé %s ðéšîĝñ. ~~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:655
+#: story/eggs.gd:662
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "[Ţĥé ðûçķ ĥàš ţàûĝĥţ ýôû évéŕýţĥîñĝ îţ ķñôŵš. Qûàçķ. ~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:805
+#: story/eggs.gd:812
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "[Çûŕîôšîţý ƒôûñð: %s  (%d / %d)   %s ~~~~~~~~~]"
 
-#: story/eggs.gd:816
+#: story/eggs.gd:823
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "[Évéŕý çûŕîôšîţý ôñ ţĥé ļîšţ, ƒôûñð. Ļûmî'š çôļļéçţîôñ çômþàŕţméñţ îš véŕý ƒûļļ ôƒ mémôŕîéš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -1635,8 +1635,8 @@ msgstr ""
 "[\n"
 "Ţĥé Ļéðĝéŕ îš ôñ ôûŕ šîðé ñôŵ. Ţĥé ĵàmméŕš ĵûšţ ĥûm àļôñĝ ţô ţĥé mûšîç. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:305 systems/research.gd:186 ui/hub_panel.gd:118
-#: ui/stations_panel.gd:96
+#: story/ledger.gd:305 systems/decor.gd:125 systems/research.gd:186
+#: ui/hub_panel.gd:118 ui/stations_panel.gd:96
 msgid "Needs %s"
 msgstr "[Ñééðš %s ~]"
 
@@ -1812,7 +1812,19 @@ msgstr "[Ŵîļðéŕñéšš bàšéš ~~~]"
 msgid " · often %s"
 msgstr " [· ôƒţéñ %s ~]"
 
-#: systems/codex.gd:189 ui/codex_screen.gd:349
+#: systems/codex.gd:191 ui/codex_screen.gd:349 data/codex.json:categories[frontiers].name
+msgid "Frontiers"
+msgstr "[Fŕôñţîéŕš ~]"
+
+#: systems/codex.gd:191
+msgid " · %s"
+msgstr " [· %s]"
+
+#: systems/codex.gd:193 ui/codex_screen.gd:349
+msgid "Other worlds"
+msgstr "[Ôţĥéŕ ŵôŕļðš ~]"
+
+#: systems/codex.gd:194 ui/codex_screen.gd:349
 msgid "Any district"
 msgstr "[Àñý ðîšţŕîçţ ~]"
 
@@ -1911,6 +1923,46 @@ msgstr "[Çôļļéçţîôñ çômþļéţé ~~~~]"
 #: systems/contracts.gd:375
 msgid "Needs %d tokens"
 msgstr "[Ñééðš %d ţôķéñš ~~]"
+
+#: systems/cradle_mode.gd:282
+msgid "Fully grown"
+msgstr "[Fûļļý ĝŕôŵñ ~]"
+
+#: systems/cradle_mode.gd:284
+msgid "Needs %d Starseeds"
+msgstr "[Ñééðš %d Šţàŕšééðš ~~~]"
+
+#: systems/cradle_mode.gd:298
+msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
+msgstr "[Ĥéîŕļôôm: %s, ļévéļ %d. Îţ ţŕàvéļš ŵîţĥ Ļûmî ţô évéŕý ŵôŕļð. ~~~~~~~~~~~~~~~~~~]"
+
+#: systems/decor.gd:121
+msgid "Needs %d Collection finds (%d so far)"
+msgstr "[Ñééðš %d Çôļļéçţîôñ ƒîñðš (%d šô ƒàŕ) ~~~~~~~~~~]"
+
+#: systems/decor.gd:179
+msgid "Too close to the base machines"
+msgstr "[Ţôô çļôšé ţô ţĥé bàšé màçĥîñéš ~~~~~~~]"
+
+#: systems/decor.gd:182
+msgid "Outside the district"
+msgstr "[Ôûţšîðé ţĥé ðîšţŕîçţ ~~~~]"
+
+#: systems/decor.gd:184
+msgid "That's water"
+msgstr "[Ţĥàţ'š ŵàţéŕ ~]"
+
+#: systems/decor.gd:188
+msgid "Frozen in"
+msgstr "[Fŕôžéñ îñ ~]"
+
+#: systems/decor.gd:190
+msgid "A building is in the way"
+msgstr "[À bûîļðîñĝ îš îñ ţĥé ŵàý ~~~~~]"
+
+#: systems/decor.gd:192
+msgid "Something is already here"
+msgstr "[Šôméţĥîñĝ îš àļŕéàðý ĥéŕé ~~~~~~]"
 
 #: systems/event_props.gd:153
 msgid "CRADLE · SUPPLY"
@@ -2033,6 +2085,14 @@ msgstr "[Àûðîţ ŵôñ, %d ţô %d! Ţĥé Ļéðĝéŕ šţàmþš îţ À�
 #: systems/events.gd:1115
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "[Ţĥé ðŕôñé ŵôñ ţĥé àûðîţ, %d ţô %d. Îţ ļéƒţ à ţîþ àñýŵàý: +%s çûbéš. ~~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/late_director.gd:90
+msgid "The Ark Bridge opens once the Cradle has come home."
+msgstr "[Ţĥé Àŕķ Bŕîðĝé ôþéñš ôñçé ţĥé Çŕàðļé ĥàš çômé ĥômé. ~~~~~~~~~~~~~~~]"
+
+#: systems/late_director.gd:124
+msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
+msgstr "[Çŕàðļé Môðé: ţĥé àŕķ'š šééð vàûļţ ĥôļðš šééðš ƒôŕ ôţĥéŕ ŵôŕļðš. Þàûšé > Àŕķ Bŕîðĝé ţô šéé ţĥém, šþéñð Šţàŕšééðš ôñ Ĥéîŕļôômš, ôŕ šééð à ñéŵ ŵôŕļð. Ĝàŕðéñ Môðé (Ĥ) îš ôþéñ ţôô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:255
 msgid "Low"
@@ -2235,7 +2295,7 @@ msgid "%d bolts"
 msgstr "[%d bôļţš ~]"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: systems/robot_builder.gd:382 ui/main_menu.gd:432
+#: systems/robot_builder.gd:382 ui/ark_bridge.gd:262 ui/main_menu.gd:432
 msgid "%s cubes"
 msgstr "[%s çûbéš ~]"
 
@@ -2294,6 +2354,111 @@ msgstr "[%d çļéàñ šþôţš àŕé ŵàîţîñĝ ƒôŕ þļàñţéŕš.
 #: ui/allocation_board.gd:77
 msgid "%d plants are thirsty and not growing."
 msgstr "[%d þļàñţš àŕé ţĥîŕšţý àñð ñôţ ĝŕôŵîñĝ. ~~~~~~~~~~]"
+
+#: ui/ark_bridge.gd:100
+msgid "THE CRADLE  ·  SEED VAULT DECK"
+msgstr "[ŢĤÉ ÇŔÀÐĻÉ  ·  ŠÉÉÐ VÀÛĻŢ ÐÉÇĶ ~~~~~~~]"
+
+#: ui/ark_bridge.gd:101
+msgid "ARK BRIDGE"
+msgstr "[ÀŔĶ BŔÎÐĜÉ ~]"
+
+#: ui/ark_bridge.gd:102
+msgid "The vault holds seeds for every world in the system. Take what Lumi learned somewhere new; nothing here is ever undone."
+msgstr "[Ţĥé vàûļţ ĥôļðš šééðš ƒôŕ évéŕý ŵôŕļð îñ ţĥé šýšţém. Ţàķé ŵĥàţ Ļûmî ļéàŕñéð šôméŵĥéŕé ñéŵ; ñôţĥîñĝ ĥéŕé îš évéŕ ûñðôñé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/ark_bridge.gd:107 ui/ark_bridge.gd:304
+msgid "%d Starseeds"
+msgstr "[%d Šţàŕšééðš ~]"
+
+#: ui/ark_bridge.gd:110
+msgid "+%d banked from %s"
+msgstr "[+%d bàñķéð ƒŕôm %s ~~~]"
+
+#: ui/ark_bridge.gd:110
+msgid "Earn more from Seed Ark waves and restoration"
+msgstr "[Éàŕñ môŕé ƒŕôm Šééð Àŕķ ŵàvéš àñð ŕéšţôŕàţîôñ ~~~~~~~~~~~~~]"
+
+#: ui/ark_bridge.gd:125
+msgid "WORLDS"
+msgstr "[ŴÔŔĻÐŠ ~]"
+
+#: ui/ark_bridge.gd:143
+msgid "HEIRLOOMS  ·  KEPT ON EVERY WORLD"
+msgstr "[ĤÉÎŔĻÔÔMŠ  ·  ĶÉÞŢ ÔÑ ÉVÉŔÝ ŴÔŔĻÐ ~~~~~~~~~]"
+
+#: ui/ark_bridge.gd:156
+msgid "Enter / A  choose      Esc / B  back"
+msgstr "[Éñţéŕ / À  çĥôôšé      Éšç / B  bàçķ ~~~~~~~~~~]"
+
+#: ui/ark_bridge.gd:160 ui/ark_bridge.gd:254
+msgid "Back to %s"
+msgstr "[Bàçķ ţô %s ~]"
+
+#: ui/ark_bridge.gd:182
+msgid "WORLD %d"
+msgstr "[ŴÔŔĻÐ %d ~]"
+
+#: ui/ark_bridge.gd:188
+msgid "Not visited yet"
+msgstr "[Ñôţ vîšîţéð ýéţ ~~]"
+
+#: ui/ark_bridge.gd:190
+msgid "%s  ·  %d hexes  ·  %d ark waves  ·  %d curiosities"
+msgstr "[%s  ·  %d ĥéxéš  ·  %d àŕķ ŵàvéš  ·  %d çûŕîôšîţîéš ~~~~~~~~~~~~~~~]"
+
+#: ui/ark_bridge.gd:192
+msgid "restored"
+msgstr "[ŕéšţôŕéð ~]"
+
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:39
+msgid "You are here"
+msgstr "[Ýôû àŕé ĥéŕé ~]"
+
+#: ui/ark_bridge.gd:202
+msgid "Travel"
+msgstr "[Ţŕàvéļ ~]"
+
+#: ui/ark_bridge.gd:227
+msgid "SEED A NEW WORLD"
+msgstr "[ŠÉÉÐ À ÑÉŴ ŴÔŔĻÐ ~~~]"
+
+#: ui/ark_bridge.gd:229
+msgid "The Cradle has to come home first."
+msgstr "[Ţĥé Çŕàðļé ĥàš ţô çômé ĥômé ƒîŕšţ. ~~~~~~~~~]"
+
+#: ui/ark_bridge.gd:245 ui/frontier_rockets.gd:41 ui/globe_view.gd:311
+#: ui/rockets_panel.gd:81
+msgid "Launch"
+msgstr "[Ļàûñçĥ ~]"
+
+#: ui/ark_bridge.gd:264
+msgid "%d Data"
+msgstr "[%d Ðàţà ~]"
+
+#: ui/ark_bridge.gd:266
+msgid "%d seeds"
+msgstr "[%d šééðš ~]"
+
+#: ui/ark_bridge.gd:268
+msgid "robots waiting: %d"
+msgstr "[ŕôbôţš ŵàîţîñĝ: %d ~~~]"
+
+#: ui/ark_bridge.gd:270
+msgid "research tier %d known"
+msgstr "[ŕéšéàŕçĥ ţîéŕ %d ķñôŵñ ~~~~~]"
+
+#: ui/ark_bridge.gd:272
+msgid "Starting kit: just Lumi. Heirlooms add to it."
+msgstr "[Šţàŕţîñĝ ķîţ: ĵûšţ Ļûmî. Ĥéîŕļôômš àðð ţô îţ. ~~~~~~~~~~~~~]"
+
+#: ui/ark_bridge.gd:273
+msgid "Starting kit: %s"
+msgstr "[Šţàŕţîñĝ ķîţ: %s ~~~]"
+
+#: ui/ark_bridge.gd:301 ui/settings_panel.gd:509
+msgid "Full"
+msgstr "[Fûļļ ~]"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
@@ -3065,10 +3230,6 @@ msgid "FRONTIERS"
 msgstr "[FŔÔÑŢÎÉŔŠ ~]"
 
 #: ui/frontier_rockets.gd:39
-msgid "You are here"
-msgstr "[Ýôû àŕé ĥéŕé ~]"
-
-#: ui/frontier_rockets.gd:39
 msgid "Base level %d"
 msgstr "[Bàšé ļévéļ %d ~~]"
 
@@ -3076,9 +3237,29 @@ msgstr "[Bàšé ļévéļ %d ~~]"
 msgid "Unexplored  ·  bales sell x%d here"
 msgstr "[Ûñéxþļôŕéð  ·  bàļéš šéļļ x%d ĥéŕé ~~~~~~~~~]"
 
-#: ui/frontier_rockets.gd:41 ui/globe_view.gd:311 ui/rockets_panel.gd:81
-msgid "Launch"
-msgstr "[Ļàûñçĥ ~]"
+#: ui/garden_placer.gd:117
+msgid "Garden Mode opens when this base reaches level 5, or once the Cradle comes home."
+msgstr "[Ĝàŕðéñ Môðé ôþéñš ŵĥéñ ţĥîš bàšé ŕéàçĥéš ļévéļ 5, ôŕ ôñçé ţĥé Çŕàðļé çôméš ĥômé. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/garden_placer.gd:229
+msgid "charm +%.1f"
+msgstr "[çĥàŕm +%.1f ~]"
+
+#: ui/garden_placer.gd:232
+msgid "%s here: %s to pick it up"
+msgstr "[%s ĥéŕé: %s ţô þîçķ îţ ûþ ~~~~~~]"
+
+#: ui/garden_placer.gd:235
+msgid "GARDEN MODE   ·   Charm %.1f   ·   +%.1f%% plant growth here"
+msgstr "[ĜÀŔÐÉÑ MÔÐÉ   ·   Çĥàŕm %.1f   ·   +%.1f%% þļàñţ ĝŕôŵţĥ ĥéŕé ~~~~~~~~~~~~~~~~~~]"
+
+#: ui/garden_placer.gd:236
+msgid "[%s] place   [%s] rotate   [%s / %s] item   [%s] pick up   [%s] done"
+msgstr "[[%s] þļàçé   [%s] ŕôţàţé   [%s / %s] îţém   [%s] þîçķ ûþ   [%s] ðôñé ~~~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/garden_placer.gd:291
+msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
+msgstr "[Þîçķéð ûþ: %s. Þûţ îţ ðôŵñ šôméŵĥéŕé éļšé, ôŕ ļéàvé îţ îñ šţôŕàĝé. ~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/globe_view.gd:119
 msgid "Survey"
@@ -3321,6 +3502,14 @@ msgstr "[%s   šéţ bàļé ðôŵñ ~~~]"
 msgid "%s   workbench"
 msgstr "[%s   ŵôŕķbéñçĥ ~~]"
 
+#: ui/late_menu.gd:9
+msgid "Garden Mode  [%s]"
+msgstr "[Ĝàŕðéñ Môðé  [%s] ~~~]"
+
+#: ui/late_menu.gd:15
+msgid "Ark Bridge"
+msgstr "[Àŕķ Bŕîðĝé ~]"
+
 #: ui/lens_overlay.gd:61
 msgid ""
 "LM-1  OPTICAL   %s\n"
@@ -3359,11 +3548,11 @@ msgstr "[Çôñţîñûé ~]"
 msgid "New Game"
 msgstr "[Ñéŵ Ĝàmé ~]"
 
-#: ui/main_menu.gd:332 ui/main_menu.gd:503 ui/pause_menu.gd:58
+#: ui/main_menu.gd:332 ui/main_menu.gd:504 ui/pause_menu.gd:59
 msgid "Settings"
 msgstr "[Šéţţîñĝš ~]"
 
-#: ui/main_menu.gd:333 ui/main_menu.gd:503
+#: ui/main_menu.gd:333 ui/main_menu.gd:504
 msgid "Credits"
 msgstr "[Çŕéðîţš ~]"
 
@@ -3432,15 +3621,15 @@ msgstr "[Ñôv ~]"
 msgid "Dec"
 msgstr "[Ðéç ~]"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:533
 msgid "CREDITS"
 msgstr "[ÇŔÉÐÎŢŠ ~]"
 
-#: ui/main_menu.gd:547 ui/settings_panel.gd:117 ui/settings_panel.gd:145
+#: ui/main_menu.gd:548 ui/settings_panel.gd:117 ui/settings_panel.gd:145
 msgid "Back"
 msgstr "[Bàçķ ~]"
 
-#: ui/main_menu.gd:560
+#: ui/main_menu.gd:561
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -3451,27 +3640,27 @@ msgstr ""
 "\n"
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/main_menu.gd:563
+#: ui/main_menu.gd:564
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "[Ţĥîŕð-þàŕţý àššéţš: ÇÇ0, Þôļý Ĥàvéñ (þôļýĥàvéñ.çôm). ~~~~~~~~~~~~~~~]"
 
-#: ui/main_menu.gd:581
+#: ui/main_menu.gd:582
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "[%s [color=#%s]bý %s[/color] ~~~~~~]"
 
-#: ui/main_menu.gd:615
+#: ui/main_menu.gd:616
 msgid "START A NEW GAME?"
 msgstr "[ŠŢÀŔŢ À ÑÉŴ ĜÀMÉ? ~~~]"
 
-#: ui/main_menu.gd:616
+#: ui/main_menu.gd:617
 msgid "Your current save will be erased. This can't be undone."
 msgstr "[Ýôûŕ çûŕŕéñţ šàvé ŵîļļ bé éŕàšéð. Ţĥîš çàñ'ţ bé ûñðôñé. ~~~~~~~~~~~~~~~~]"
 
-#: ui/main_menu.gd:624
+#: ui/main_menu.gd:625
 msgid "Keep my save"
 msgstr "[Ķééþ mý šàvé ~]"
 
-#: ui/main_menu.gd:630
+#: ui/main_menu.gd:631
 msgid "Erase and start"
 msgstr "[Éŕàšé àñð šţàŕţ ~~]"
 
@@ -3491,19 +3680,19 @@ msgstr "[Çôðéx  [%s] ~]"
 msgid "Photo mode  [%s]"
 msgstr "[Þĥôţô môðé  [%s] ~~~]"
 
-#: ui/pause_menu.gd:60
+#: ui/pause_menu.gd:61
 msgid "Save game"
 msgstr "[Šàvé ĝàmé ~]"
 
-#: ui/pause_menu.gd:62
+#: ui/pause_menu.gd:63
 msgid "Saved."
 msgstr "[Šàvéð. ~]"
 
-#: ui/pause_menu.gd:63
+#: ui/pause_menu.gd:64
 msgid "Quit to title"
 msgstr "[Qûîţ ţô ţîţļé ~~]"
 
-#: ui/pause_menu.gd:64
+#: ui/pause_menu.gd:65
 msgid "Quit to desktop"
 msgstr "[Qûîţ ţô ðéšķţôþ ~~]"
 
@@ -4171,10 +4360,6 @@ msgid "HUD"
 msgstr "[ĤÛÐ ~]"
 
 #: ui/settings_panel.gd:509
-msgid "Full"
-msgstr "[Fûļļ ~]"
-
-#: ui/settings_panel.gd:509
 msgid "Minimal"
 msgstr "[Mîñîmàļ ~]"
 
@@ -4405,6 +4590,14 @@ msgstr "[ÛÞĜŔÀÐÉŠ ~]"
 #: ui/upgrades_screen.gd:87
 msgid "%s (soon)"
 msgstr "[%s (šôôñ) ~]"
+
+#: ui/world_banner.gd:37
+msgid "SEED MISSION  ·  WORLD %d"
+msgstr "[ŠÉÉÐ MÎŠŠÎÔÑ  ·  ŴÔŔĻÐ %d ~~~~~~]"
+
+#: ui/world_banner.gd:70
+msgid "Lumi's pod is down on %s. A new world, ruined and waiting. Grow something."
+msgstr "[Ļûmî'š þôð îš ðôŵñ ôñ %s. À ñéŵ ŵôŕļð, ŕûîñéð àñð ŵàîţîñĝ. Ĝŕôŵ šôméţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: water/water_view.gd:71
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
@@ -4658,7 +4851,7 @@ msgstr "[Ţĥé Fîŕšţ Šééð ~~]"
 msgid "Find the first seed."
 msgstr "[Fîñð ţĥé ƒîŕšţ šééð. ~~~~]"
 
-#: data/achievements.json:achievements[plant_1].name
+#: data/achievements.json:achievements[plant_1].name data/cradle.json:heirlooms[green_thumb].name
 msgid "Green Thumb"
 msgstr "[Ĝŕééñ Ţĥûmb ~]"
 
@@ -4850,7 +5043,7 @@ msgstr "[Ñôšý Þàŕķéŕ ~]"
 msgid "Find 5 curiosities."
 msgstr "[Fîñð 5 çûŕîôšîţîéš. ~~~~]"
 
-#: data/achievements.json:achievements[curio_15].name
+#: data/achievements.json:achievements[curio_15].name data/achievements.json:achievements[late_eggs_40].name
 msgid "Cabinet of Curiosities"
 msgstr "[Çàbîñéţ ôƒ Çûŕîôšîţîéš ~~~~~]"
 
@@ -5002,6 +5195,98 @@ msgstr "[Ĥàţ Ŕàçķ ~]"
 msgid "Collect 5 different robot toppers."
 msgstr "[Çôļļéçţ 5 ðîƒƒéŕéñţ ŕôbôţ ţôþþéŕš. ~~~~~~~~~]"
 
+#: data/achievements.json:achievements[late_bridge].name
+msgid "On the Bridge"
+msgstr "[Ôñ ţĥé Bŕîðĝé ~~]"
+
+#: data/achievements.json:achievements[late_bridge].desc
+msgid "Open the Ark Bridge after the Cradle comes home."
+msgstr "[Ôþéñ ţĥé Àŕķ Bŕîðĝé àƒţéŕ ţĥé Çŕàðļé çôméš ĥômé. ~~~~~~~~~~~~~~]"
+
+#: data/achievements.json:achievements[late_world_1].name
+msgid "Seed Mission"
+msgstr "[Šééð Mîššîôñ ~]"
+
+#: data/achievements.json:achievements[late_world_1].desc
+msgid "Seed a new world from the Cradle's vault."
+msgstr "[Šééð à ñéŵ ŵôŕļð ƒŕôm ţĥé Çŕàðļé'š vàûļţ. ~~~~~~~~~~~]"
+
+#: data/achievements.json:achievements[late_world_3].name
+msgid "Gardener of Worlds"
+msgstr "[Ĝàŕðéñéŕ ôƒ Ŵôŕļðš ~~~]"
+
+#: data/achievements.json:achievements[late_world_3].desc
+msgid "Seed three new worlds."
+msgstr "[Šééð ţĥŕéé ñéŵ ŵôŕļðš. ~~~~~]"
+
+#: data/achievements.json:achievements[late_heirloom_1].name
+msgid "Family Heirloom"
+msgstr "[Fàmîļý Ĥéîŕļôôm ~~]"
+
+#: data/achievements.json:achievements[late_heirloom_1].desc
+msgid "Buy an Heirloom."
+msgstr "[Bûý àñ Ĥéîŕļôôm. ~~~]"
+
+#: data/achievements.json:achievements[late_heirloom_20].name
+msgid "Treasured"
+msgstr "[Ţŕéàšûŕéð ~]"
+
+#: data/achievements.json:achievements[late_heirloom_20].desc
+msgid "Grow Heirlooms to 20 levels in all."
+msgstr "[Ĝŕôŵ Ĥéîŕļôômš ţô 20 ļévéļš îñ àļļ. ~~~~~~~~~]"
+
+#: data/achievements.json:achievements[late_starseeds_100].name
+msgid "Starseed Saver"
+msgstr "[Šţàŕšééð Šàvéŕ ~~]"
+
+#: data/achievements.json:achievements[late_starseeds_100].desc
+msgid "Earn 100 Starseeds across your worlds."
+msgstr "[Éàŕñ 100 Šţàŕšééðš àçŕôšš ýôûŕ ŵôŕļðš. ~~~~~~~~~~]"
+
+#: data/achievements.json:achievements[late_decor_1].name
+msgid "Home Touches"
+msgstr "[Ĥômé Ţôûçĥéš ~]"
+
+#: data/achievements.json:achievements[late_decor_1].desc
+msgid "Place a decoration in Garden Mode."
+msgstr "[Þļàçé à ðéçôŕàţîôñ îñ Ĝàŕðéñ Môðé. ~~~~~~~~~]"
+
+#: data/achievements.json:achievements[late_decor_25].name
+msgid "Landscaper"
+msgstr "[Ļàñðšçàþéŕ ~]"
+
+#: data/achievements.json:achievements[late_decor_25].desc
+msgid "Place 25 decorations."
+msgstr "[Þļàçé 25 ðéçôŕàţîôñš. ~~~~]"
+
+#: data/achievements.json:achievements[late_decor_all].name
+msgid "Full Catalogue"
+msgstr "[Fûļļ Çàţàļôĝûé ~~]"
+
+#: data/achievements.json:achievements[late_decor_all].desc
+msgid "Place every kind of decoration at least once."
+msgstr "[Þļàçé évéŕý ķîñð ôƒ ðéçôŕàţîôñ àţ ļéàšţ ôñçé. ~~~~~~~~~~~~~]"
+
+#: data/achievements.json:achievements[late_charm_25].name
+msgid "Picture Perfect"
+msgstr "[Þîçţûŕé Þéŕƒéçţ ~~]"
+
+#: data/achievements.json:achievements[late_charm_25].desc
+msgid "Reach 25 charm in one district."
+msgstr "[Ŕéàçĥ 25 çĥàŕm îñ ôñé ðîšţŕîçţ. ~~~~~~~~]"
+
+#: data/achievements.json:achievements[late_eggs_40].desc
+msgid "Find 40 curiosities."
+msgstr "[Fîñð 40 çûŕîôšîţîéš. ~~~~]"
+
+#: data/achievements.json:achievements[late_older_pod].name data/eggs.json:eggs[older_pod].name
+msgid "Not the First"
+msgstr "[Ñôţ ţĥé Fîŕšţ ~~]"
+
+#: data/achievements.json:achievements[late_older_pod].desc
+msgid "Find the older seed pod on a new world."
+msgstr "[Fîñð ţĥé ôļðéŕ šééð þôð ôñ à ñéŵ ŵôŕļð. ~~~~~~~~~~~]"
+
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
 msgstr "[25 Ţĥŕîvîñĝ ĥéxéš àñýŵĥéŕé ôñ Véŕðàñçé. ~~~~~~~~~~~]"
@@ -5049,10 +5334,6 @@ msgstr "[Mémôŕý Šĥàŕðš ~~]"
 #: data/codex.json:categories[landmarks].name
 msgid "Landmarks"
 msgstr "[Ļàñðmàŕķš ~]"
-
-#: data/codex.json:categories[frontiers].name
-msgid "Frontiers"
-msgstr "[Fŕôñţîéŕš ~]"
 
 #: data/codex.json:junk.metal.hint
 msgid "Rusty, clanky, everywhere."
@@ -5750,6 +6031,258 @@ msgstr "[Fîñð îţ îñ Çŕàðļé Ŕéţûŕñš. ~~~~~~]"
 msgid "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Sustained before the ark will trust it."
 msgstr "[À ŕîñĝ ôƒ ĥéxéš îñ ƒŕôñţ ôƒ ţĥé bàšé ŵĥéŕé ţĥé Çŕàðļé ŵîļļ šéţ ðôŵñ. Îţ ĥàš ţô bé çļéàñ àñð Šûšţàîñéð béƒôŕé ţĥé àŕķ ŵîļļ ţŕûšţ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
+#: data/cradle.json:heirlooms[green_thumb].desc
+msgid "Plants grow 8% faster per level, on every world."
+msgstr "[Þļàñţš ĝŕôŵ 8% fàšţéŕ þéŕ ļévéļ, ôñ évéŕý ŵôŕļð. ~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:heirlooms[deep_hopper].name
+msgid "Deep Hopper"
+msgstr "[Ðééþ Ĥôþþéŕ ~]"
+
+#: data/cradle.json:heirlooms[deep_hopper].desc
+msgid "Lumi's hopper holds 10% more per level."
+msgstr "[Ļûmî'š ĥôþþéŕ ĥôļðš 10% môŕé þéŕ ļévéļ. ~~~~~~~~~~~]"
+
+#: data/cradle.json:heirlooms[quick_beam].name
+msgid "Quick Beam"
+msgstr "[Qûîçķ Béàm ~]"
+
+#: data/cradle.json:heirlooms[quick_beam].desc
+msgid "Scoop 8% faster per level."
+msgstr "[Šçôôþ 8% fàšţéŕ þéŕ ļévéļ. ~~~~~~]"
+
+#: data/cradle.json:heirlooms[traders_eye].name
+msgid "Trader's Eye"
+msgstr "[Ţŕàðéŕ'š Éýé ~]"
+
+#: data/cradle.json:heirlooms[traders_eye].desc
+msgid "Bales sell for 10% more per level."
+msgstr "[Bàļéš šéļļ ƒôŕ 10% môŕé þéŕ ļévéļ. ~~~~~~~~~]"
+
+#: data/cradle.json:heirlooms[swift_treads].name
+msgid "Swift Treads"
+msgstr "[Šŵîƒţ Ţŕéàðš ~]"
+
+#: data/cradle.json:heirlooms[swift_treads].desc
+msgid "Lumi moves 5% faster per level."
+msgstr "[Ļûmî môvéš 5% fàšţéŕ þéŕ ļévéļ. ~~~~~~~~]"
+
+#: data/cradle.json:heirlooms[seed_vault].name
+msgid "Seed Vault"
+msgstr "[Šééð Vàûļţ ~]"
+
+#: data/cradle.json:heirlooms[seed_vault].desc
+msgid "8% more seeds per bloom per level; each new world starts with 40 seeds per level and the seed tin already found."
+msgstr "[8% môŕé šééðš þéŕ bļôôm þéŕ ļévéļ; éàçĥ ñéŵ ŵôŕļð šţàŕţš ŵîţĥ 40 šééðš þéŕ ļévéļ àñð ţĥé šééð ţîñ àļŕéàðý ƒôûñð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:heirlooms[head_start].name
+msgid "Head Start"
+msgstr "[Ĥéàð Šţàŕţ ~]"
+
+#: data/cradle.json:heirlooms[head_start].desc
+msgid "Each new world starts with 1,500 cubes per level."
+msgstr "[Éàçĥ ñéŵ ŵôŕļð šţàŕţš ŵîţĥ 1,500 çûbéš þéŕ ļévéļ. ~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:heirlooms[data_cache].name
+msgid "Data Cache"
+msgstr "[Ðàţà Çàçĥé ~]"
+
+#: data/cradle.json:heirlooms[data_cache].desc
+msgid "Each new world starts with 60 research Data per level."
+msgstr "[Éàçĥ ñéŵ ŵôŕļð šţàŕţš ŵîţĥ 60 ŕéšéàŕçĥ Ðàţà þéŕ ļévéļ. ~~~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:heirlooms[old_crew].name
+msgid "Old Crew"
+msgstr "[Ôļð Çŕéŵ ~]"
+
+#: data/cradle.json:heirlooms[old_crew].desc
+msgid "Robots wait at the landing site: a Scoopie at level 1, a Haul Bug at 2, another Scoopie at 3."
+msgstr "[Ŕôbôţš ŵàîţ àţ ţĥé ļàñðîñĝ šîţé: à Šçôôþîé àţ ļévéļ 1, à Ĥàûļ Bûĝ àţ 2, àñôţĥéŕ Šçôôþîé àţ 3. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:heirlooms[archivist].name
+msgid "Archivist"
+msgstr "[Àŕçĥîvîšţ ~]"
+
+#: data/cradle.json:heirlooms[archivist].desc
+msgid "Research notes travel with Lumi: level 1 knows every first-tier node, level 2 the second tier too."
+msgstr "[Ŕéšéàŕçĥ ñôţéš ţŕàvéļ ŵîţĥ Ļûmî: ļévéļ 1 ķñôŵš évéŕý ƒîŕšţ-ţîéŕ ñôðé, ļévéļ 2 ţĥé šéçôñð ţîéŕ ţôô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:modifiers[heavy_rain].name
+msgid "Heavy Rain"
+msgstr "[Ĥéàvý Ŕàîñ ~]"
+
+#: data/cradle.json:modifiers[heavy_rain].desc
+msgid "Rain showers come four times as often and plants grow 15% faster."
+msgstr "[Ŕàîñ šĥôŵéŕš çômé ƒôûŕ ţîméš àš ôƒţéñ àñð þļàñţš ĝŕôŵ 15% fàšţéŕ. ~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:modifiers[long_nights].name
+msgid "Long Nights"
+msgstr "[Ļôñĝ Ñîĝĥţš ~]"
+
+#: data/cradle.json:modifiers[long_nights].desc
+msgid "Nights last twice as long. The night shift pays: bales sell for 10% more."
+msgstr "[Ñîĝĥţš ļàšţ ţŵîçé àš ļôñĝ. Ţĥé ñîĝĥţ šĥîƒţ þàýš: bàļéš šéļļ ƒôŕ 10% môŕé. ~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:modifiers[rich_salvage].name
+msgid "Rich Salvage"
+msgstr "[Ŕîçĥ Šàļvàĝé ~]"
+
+#: data/cradle.json:modifiers[rich_salvage].desc
+msgid "The junk here is better stuff: bales sell for 30% more, but the hopper fills 10% sooner."
+msgstr "[Ţĥé ĵûñķ ĥéŕé îš béţţéŕ šţûƒƒ: bàļéš šéļļ ƒôŕ 30% môŕé, bûţ ţĥé ĥôþþéŕ ƒîļļš 10% sôôñéŕ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:modifiers[thin_soil].name
+msgid "Thin Soil"
+msgstr "[Ţĥîñ Šôîļ ~]"
+
+#: data/cradle.json:modifiers[thin_soil].desc
+msgid "Plants grow 15% slower, but every bloom gives 25% more seeds."
+msgstr "[Þļàñţš ĝŕôŵ 15% sļôŵéŕ, bûţ évéŕý bļôôm ĝîvéš 25% môŕé šééðš. ~~~~~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:modifiers[tailwinds].name
+msgid "Tailwinds"
+msgstr "[Ţàîļŵîñðš ~]"
+
+#: data/cradle.json:modifiers[tailwinds].desc
+msgid "Steady winds: Lumi moves 10% faster and supply drops come twice as often."
+msgstr "[Šţéàðý ŵîñðš: Ļûmî môvéš 10% fàšţéŕ àñð šûþþļý ðŕôþš çômé ţŵîçé àš ôƒţéñ. ~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:modifiers[wild_bloom].name
+msgid "Wild Bloom"
+msgstr "[Ŵîļð Bļôôm ~]"
+
+#: data/cradle.json:modifiers[wild_bloom].desc
+msgid "Wildflowers want to come back: 30% more seeds per bloom, more wildlife visits."
+msgstr "[Ŵîļðƒļôŵéŕš ŵàñţ ţô çômé bàçķ: 30% môŕé šééðš þéŕ bļôôm, môŕé ŵîļðļîƒé vîšîţš. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:modifiers[heavy_junk].name
+msgid "Heavy Junk"
+msgstr "[Ĥéàvý Ĵûñķ ~]"
+
+#: data/cradle.json:modifiers[heavy_junk].desc
+msgid "Dense, heavy scrap: scooping is 10% slower, bales sell for 20% more."
+msgstr "[Ðéñšé, ĥéàvý šçŕàþ: šçôôþîñĝ îš 10% sļôŵéŕ, bàļéš šéļļ ƒôŕ 20% môŕé. ~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:world_types[ice_moon].name
+msgid "Ice Moon"
+msgstr "[Îçé Môôñ ~]"
+
+#: data/cradle.json:world_types[ice_moon].desc
+msgid "Frozen most of the way to the equator; lakes under the ice."
+msgstr "[Fŕôžéñ môšţ ôƒ ţĥé ŵàý ţô ţĥé éqûàţôŕ; ļàķéš ûñðéŕ ţĥé îçé. ~~~~~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:world_types[desert_world].name
+msgid "Desert World"
+msgstr "[Ðéšéŕţ Ŵôŕļð ~]"
+
+#: data/cradle.json:world_types[desert_world].desc
+msgid "Dunes and dry salt pans; the few lakes matter."
+msgstr "[Ðûñéš àñð ðŕý šàļţ þàñš; ţĥé ƒéŵ ļàķéš màţţéŕ. ~~~~~~~~~~~~~]"
+
+#: data/cradle.json:world_types[ocean_world].name
+msgid "Ocean World"
+msgstr "[Ôçéàñ Ŵôŕļð ~]"
+
+#: data/cradle.json:world_types[ocean_world].desc
+msgid "Mostly sea, with towns on small islands and long coasts."
+msgstr "[Môšţļý šéà, ŵîţĥ ţôŵñš ôñ šmàļļ îšļàñðš àñð ļôñĝ çôàšţš. ~~~~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:world_types[fungal_world].name
+msgid "Marsh World"
+msgstr "[Màŕšĥ Ŵôŕļð ~]"
+
+#: data/cradle.json:world_types[fungal_world].desc
+msgid "Warm, wet and soft underfoot: fungal marsh everywhere."
+msgstr "[Ŵàŕm, ŵéţ àñð šôƒţ ûñðéŕƒôôţ: ƒûñĝàļ màŕšĥ évéŕýŵĥéŕé. ~~~~~~~~~~~~~~~~]"
+
+#: data/cradle.json:world_types[rust_world].name
+msgid "Rust World"
+msgstr "[Ŕûšţ Ŵôŕļð ~]"
+
+#: data/cradle.json:world_types[rust_world].desc
+msgid "Old industry from pole to pole: rustlands and sprawl."
+msgstr "[Ôļð îñðûšţŕý ƒŕôm þôļé ţô þôļé: ŕûšţļàñðš àñð šþŕàŵļ. ~~~~~~~~~~~~~~~~]"
+
+#: data/decor.json:types[path].name
+msgid "Stone Path"
+msgstr "[Šţôñé Þàţĥ ~]"
+
+#: data/decor.json:types[path].desc
+msgid "Flat stepping stones. Paths join everything up."
+msgstr "[Fļàţ šţéþþîñĝ šţôñéš. Þàţĥš ĵôîñ évéŕýţĥîñĝ ûþ. ~~~~~~~~~~~~~]"
+
+#: data/decor.json:types[flower_bed].name
+msgid "Flower Bed"
+msgstr "[Fļôŵéŕ Béð ~]"
+
+#: data/decor.json:types[flower_bed].desc
+msgid "A low bed of mixed flowers. Bees and butterflies approve."
+msgstr "[À ļôŵ béð ôƒ mîxéð ƒļôŵéŕš. Bééš àñð bûţţéŕƒļîéš àþþŕôvé. ~~~~~~~~~~~~~~~~~]"
+
+#: data/decor.json:types[planter].name
+msgid "Planter"
+msgstr "[Þļàñţéŕ ~]"
+
+#: data/decor.json:types[planter].desc
+msgid "A white hex planter with a small shrub, like the ones the future city grows."
+msgstr "[À ŵĥîţé ĥéx þļàñţéŕ ŵîţĥ à šmàļļ šĥŕûb, ļîķé ţĥé ôñéš ţĥé ƒûţûŕé çîţý ĝŕôŵš. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/decor.json:types[bench].name
+msgid "Bench"
+msgstr "[Béñçĥ ~]"
+
+#: data/decor.json:types[bench].desc
+msgid "Wood slats on cast feet. Cats like to sleep on it."
+msgstr "[Ŵôôð šļàţš ôñ çàšţ ƒééţ. Çàţš ļîķé ţô šļééþ ôñ îţ. ~~~~~~~~~~~~~~~]"
+
+#: data/decor.json:types[lamp].name
+msgid "Garden Lamp"
+msgstr "[Ĝàŕðéñ Ļàmþ ~]"
+
+#: data/decor.json:types[lamp].desc
+msgid "A slim lamp with a warm glow after dark."
+msgstr "[À šļîm ļàmþ ŵîţĥ à ŵàŕm ĝļôŵ àƒţéŕ ðàŕķ. ~~~~~~~~~~~]"
+
+#: data/decor.json:types[bird_bath].name
+msgid "Bird Bath"
+msgstr "[Bîŕð Bàţĥ ~]"
+
+#: data/decor.json:types[bird_bath].desc
+msgid "A stone basin of clean water."
+msgstr "[À šţôñé bàšîñ ôƒ çļéàñ ŵàţéŕ. ~~~~~~~]"
+
+#: data/decor.json:types[fountain].name
+msgid "Fountain"
+msgstr "[Fôûñţàîñ ~]"
+
+#: data/decor.json:types[fountain].desc
+msgid "A tiered fountain, running again. Deer come to drink at dawn."
+msgstr "[À ţîéŕéð ƒôûñţàîñ, ŕûññîñĝ àĝàîñ. Ðééŕ çômé ţô ðŕîñķ àţ ðàŵñ. ~~~~~~~~~~~~~~~~~~]"
+
+#: data/decor.json:types[statue].name
+msgid "Maker Statue"
+msgstr "[Màķéŕ Šţàţûé ~]"
+
+#: data/decor.json:types[statue].desc
+msgid "A stone figure of one of the Makers, holding a watering can."
+msgstr "[À šţôñé ƒîĝûŕé ôƒ ôñé ôƒ ţĥé Màķéŕš, ĥôļðîñĝ à ŵàţéŕîñĝ çàñ. ~~~~~~~~~~~~~~~~~~]"
+
+#: data/decor.json:types[lumi_sculpture].name
+msgid "Lumi Sculpture"
+msgstr "[Ļûmî Šçûļþţûŕé ~~]"
+
+#: data/decor.json:types[lumi_sculpture].desc
+msgid "A topiary-and-brass sculpture of Lumi holding up a seedling. Very modest."
+msgstr "[À ţôþîàŕý-àñð-bŕàšš šçûļþţûŕé ôƒ Ļûmî ĥôļðîñĝ ûþ à šééðļîñĝ. Véŕý môðéšţ. ~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/decor.json:types[wren_kite].name
+msgid "WREN Wind Kite"
+msgstr "[ŴŔÉÑ Ŵîñð Ķîţé ~~]"
+
+#: data/decor.json:types[wren_kite].desc
+msgid "A kite shaped like WREN's bird, tethered to a post and always flying."
+msgstr "[À ķîţé šĥàþéð ļîķé ŴŔÉÑ'š bîŕð, ţéţĥéŕéð ţô à þôšţ àñð àļŵàýš ƒļýîñĝ. ~~~~~~~~~~~~~~~~~~~~~]"
+
 #: data/eggs.json:eggs[duck].name
 msgid "Duck on Duty"
 msgstr "[Ðûçķ ôñ Ðûţý ~]"
@@ -6403,6 +6936,332 @@ msgstr "[À ðŕîļļ þŕéšš àļôñé îñ à ƒîéļð ŵîţĥ à ĥà
 #: data/eggs.json:eggs[back_in_five].toast
 msgid "BACK IN 5 MINUTES. Lumi waits five minutes. Nobody comes. Lumi leaves a shiny bolt on the table, for luck."
 msgstr "[BÀÇĶ ÎÑ 5 MÎÑÛŢÉŠ. Ļûmî ŵàîţš ƒîvé mîñûţéš. Ñôbôðý çôméš. Ļûmî ļéàvéš à šĥîñý bôļţ ôñ ţĥé ţàbļé, ƒôŕ ļûçķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[sand_piano].name
+msgid "The Sand Piano"
+msgstr "[Ţĥé Šàñð Þîàñô ~~]"
+
+#: data/eggs.json:eggs[sand_piano].prompt
+msgid "E   press a key"
+msgstr "E   [þŕéšš à ķéý ~]"
+
+#: data/eggs.json:eggs[sand_piano].hint
+msgid "In the Dust Flats: something with eighty-eight teeth, half under a dune."
+msgstr "[Îñ ţĥé Ðûšţ Fļàţš: šôméţĥîñĝ ŵîţĥ éîĝĥţý-éîĝĥţ ţééţĥ, ĥàļƒ ûñðéŕ à ðûñé. ~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[sand_piano].lore
+msgid "An upright piano, buried to the keys in a dune. Nobody knows how it got this far out. The sand has tuned it to a key that doesn't exist."
+msgstr "[Àñ ûþŕîĝĥţ þîàñô, bûŕîéð ţô ţĥé ķéýš îñ à ðûñé. Ñôbôðý ķñôŵš ĥôŵ îţ ĝôţ ţĥîš ƒàŕ ôûţ. Ţĥé šàñð ĥàš ţûñéð îţ ţô à ķéý ţĥàţ ðôéšñ'ţ éxîšţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[sand_piano].toast
+msgid "Lumi presses one key. A single wobbly note rolls across the flats, and somewhere a dune answers."
+msgstr "[Ļûmî þŕéššéš ôñé ķéý. À šîñĝļé ŵôbbļý ñôţé ŕôļļš àçŕôšš ţĥé ƒļàţš, àñð šôméŵĥéŕé à ðûñé àñšŵéŕš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[snow_bot].name
+msgid "Snowbot"
+msgstr "[Šñôŵbôţ ~]"
+
+#: data/eggs.json:eggs[snow_bot].prompt
+msgid "E   straighten its scarf"
+msgstr "E   [šţŕàîĝĥţéñ îţš šçàŕƒ ~~~~]"
+
+#: data/eggs.json:eggs[snow_bot].hint
+msgid "In the Frozen Port: a snowman with a robot inside. Or a robot with a snowman outside."
+msgstr "[Îñ ţĥé Fŕôžéñ Þôŕţ: à šñôŵmàñ ŵîţĥ à ŕôbôţ îñšîðé. Ôŕ à ŕôbôţ ŵîţĥ à šñôŵmàñ ôûţšîðé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[snow_bot].lore
+msgid "The port crews built a snowman around a dead loader robot every winter, for luck. This one has stood for three hundred winters. The scarf is new-ish."
+msgstr "[Ţĥé þôŕţ çŕéŵš bûîļţ à šñôŵmàñ àŕôûñð à ðéàð ļôàðéŕ ŕôbôţ évéŕý ŵîñţéŕ, ƒôŕ ļûçķ. Ţĥîš ôñé ĥàš šţôôð ƒôŕ ţĥŕéé ĥûñðŕéð ŵîñţéŕš. Ţĥé šçàŕƒ îš ñéŵ-îšĥ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[snow_bot].toast
+msgid "Lumi straightens the snowbot's scarf. Its old lamp eyes flicker once, as if to say thanks."
+msgstr "[Ļûmî šţŕàîĝĥţéñš ţĥé šñôŵbôţ'š šçàŕƒ. Îţš ôļð ļàmþ éýéš ƒļîçķéŕ ôñçé, àš îƒ ţô šàý ţĥàñķš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[bottle_message].name
+msgid "Message in a Bottle"
+msgstr "[Méššàĝé îñ à Bôţţļé ~~~~]"
+
+#: data/eggs.json:eggs[bottle_message].prompt
+msgid "E   uncork the bottle"
+msgstr "E   [ûñçôŕķ ţĥé bôţţļé ~~~]"
+
+#: data/eggs.json:eggs[bottle_message].hint
+msgid "In the Sunken City: the flood left something sealed. Clean the ground and look."
+msgstr "[Îñ ţĥé Šûñķéñ Çîţý: ţĥé ƒļôôð ļéƒţ šôméţĥîñĝ šéàļéð. Çļéàñ ţĥé ĝŕôûñð àñð ļôôķ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[bottle_message].lore
+msgid "A green bottle, corked and waxed, left by someone who stayed in the Sunken City while the water came up."
+msgstr "[À ĝŕééñ bôţţļé, çôŕķéð àñð ŵàxéð, ļéƒţ bý šôméôñé ŵĥô šţàýéð îñ ţĥé Šûñķéñ Çîţý ŵĥîļé ţĥé ŵàţéŕ çàmé ûþ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[bottle_message].toast
+msgid "A message in a bottle, still dry inside."
+msgstr "[À méššàĝé îñ à bôţţļé, šţîļļ ðŕý îñšîðé. ~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[bottle_message].doc.title
+msgid "To whoever drains this"
+msgstr "[Ţô ŵĥôévéŕ ðŕàîñš ţĥîš ~~~~~]"
+
+#: data/eggs.json:eggs[bottle_message].doc.body
+msgid ""
+"The water is at the second-floor windows now. Most people went up to the Cradle. Some of us stayed, because somebody has to remember where the streets were.\n"
+"\n"
+"The pumps are fine, by the way. They only need someone to clean the intakes. Ask for Dot at the pump house; if Dot is not there, the big red lever goes DOWN, not up. Ignore the sign.\n"
+"\n"
+"If you are reading this, the water went down. Good. Plant something where the bakery was. It always smelled nice there.\n"
+"\n"
+"— R., who stayed"
+msgstr ""
+"[Ţĥé ŵàţéŕ îš àţ ţĥé šéçôñð-ƒļôôŕ ŵîñðôŵš ñôŵ. Môšţ þéôþļé ŵéñţ ûþ ţô ţĥé Çŕàðļé. Šômé ôƒ ûš šţàýéð, béçàûšé šômébôðý ĥàš ţô ŕémémbéŕ ŵĥéŕé ţĥé šţŕééţš ŵéŕé.\n"
+"\n"
+"Ţĥé þûmþš àŕé ƒîñé, bý ţĥé ŵàý. Ţĥéý ôñļý ñééð šôméôñé ţô çļéàñ ţĥé îñţàķéš. Àšķ ƒôŕ Ðôţ àţ ţĥé þûmþ ĥôûšé; îƒ Ðôţ îš ñôţ ţĥéŕé, ţĥé bîĝ ŕéð ļévéŕ ĝôéš ÐÔŴÑ, ñôţ ûþ. Îĝñôŕé ţĥé šîĝñ.\n"
+"\n"
+"Îƒ ýôû àŕé ŕéàðîñĝ ţĥîš, ţĥé ŵàţéŕ ŵéñţ ðôŵñ. Ĝôôð. Þļàñţ šôméţĥîñĝ ŵĥéŕé ţĥé bàķéŕý ŵàš. Îţ àļŵàýš šméļļéð ñîçé ţĥéŕé.\n"
+"\n"
+"— Ŕ., ŵĥô šţàýéð ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[welcome_home].name
+msgid "Welcome Home"
+msgstr "[Ŵéļçômé Ĥômé ~]"
+
+#: data/eggs.json:eggs[welcome_home].hint
+msgid "At Cradle Returns: the ground crews made a sign. It took them three hundred years to get the spelling right."
+msgstr "[Àţ Çŕàðļé Ŕéţûŕñš: ţĥé ĝŕôûñð çŕéŵš màðé à šîĝñ. Îţ ţôôķ ţĥém ţĥŕéé ĥûñðŕéð ýéàŕš ţô ĝéţ ţĥé šþéļļîñĝ ŕîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[welcome_home].lore
+msgid "A hand-painted banner on two poles at the edge of the old landing field. The ground crews kept repainting it for every generation of the ark that never came back. Until now."
+msgstr "[À ĥàñð-þàîñţéð bàññéŕ ôñ ţŵô þôļéš àţ ţĥé éðĝé ôƒ ţĥé ôļð ļàñðîñĝ ƒîéļð. Ţĥé ĝŕôûñð çŕéŵš ķéþţ ŕéþàîñţîñĝ îţ ƒôŕ évéŕý ĝéñéŕàţîôñ ôƒ ţĥé àŕķ ţĥàţ ñévéŕ çàmé bàçķ. Ûñţîļ ñôŵ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[welcome_home].toast
+msgid "WELCOME HOME, CRADLE. Someone has crossed out the earlier spellings very neatly."
+msgstr "[ŴÉĻÇÔMÉ ĤÔMÉ, ÇŔÀÐĻÉ. Šôméôñé ĥàš çŕôššéð ôûţ ţĥé éàŕļîéŕ šþéļļîñĝš véŕý ñéàţļý. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[crossword].name
+msgid "The Unfinished Crossword"
+msgstr "[Ţĥé Ûñƒîñîšĥéð Çŕôššŵôŕð ~~~~~]"
+
+#: data/eggs.json:eggs[crossword].prompt
+msgid "E   read the crossword"
+msgstr "E   [ŕéàð ţĥé çŕôššŵôŕð ~~~]"
+
+#: data/eggs.json:eggs[crossword].hint
+msgid "A folded newspaper and a pen, left on a crate. One clue to go."
+msgstr "[À ƒôļðéð ñéŵšþàþéŕ àñð à þéñ, ļéƒţ ôñ à çŕàţé. Ôñé çļûé ţô ĝô. ~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[crossword].lore
+msgid "The last edition of the morning paper, folded open at the crossword. Every clue is filled in except one."
+msgstr "[Ţĥé ļàšţ éðîţîôñ ôƒ ţĥé môŕñîñĝ þàþéŕ, ƒôļðéð ôþéñ àţ ţĥé çŕôššŵôŕð. Évéŕý çļûé îš ƒîļļéð îñ éxçéþţ ôñé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[crossword].toast
+msgid "The last crossword clue: 'What grows back if you let it (5)'. Lumi writes it in."
+msgstr "[Ţĥé ļàšţ çŕôššŵôŕð çļûé: 'Ŵĥàţ ĝŕôŵš bàçķ îƒ ýôû ļéţ îţ (5)'. Ļûmî ŵŕîţéš îţ îñ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[crossword].doc.title
+msgid "The Morning Ledger · Puzzle page"
+msgstr "[Ţĥé Môŕñîñĝ Ļéðĝéŕ · Þûžžļé þàĝé ~~~~~~~~]"
+
+#: data/eggs.json:eggs[crossword].doc.body
+msgid ""
+"ACROSS\n"
+"1. Rubbish, but bigger (4) — JUNK\n"
+"4. It runs on the hour, then stops for good (5) — CLOCK\n"
+"7. What the robots were for (8) — CLEANING\n"
+"9. Last thing anyone saw of the Cradle (5) — LIGHT\n"
+"\n"
+"DOWN\n"
+"2. 'Kept for later', said the Ledger (6) — PAUSED\n"
+"3. What grows back if you let it (5) — G R E E N\n"
+"\n"
+"(The last answer is in a different pen. The letters are very careful, like a robot wrote them.)"
+msgstr ""
+"[ÀÇŔÔŠŠ\n"
+"1. Ŕûbbîšĥ, bûţ bîĝĝéŕ (4) — ĴÛÑĶ\n"
+"4. Îţ ŕûñš ôñ ţĥé ĥôûŕ, ţĥéñ šţôþš ƒôŕ ĝôôð (5) — ÇĻÔÇĶ\n"
+"7. Ŵĥàţ ţĥé ŕôbôţš ŵéŕé ƒôŕ (8) — ÇĻÉÀÑÎÑĜ\n"
+"9. Ļàšţ ţĥîñĝ àñýôñé šàŵ ôƒ ţĥé Çŕàðļé (5) — ĻÎĜĤŢ\n"
+"\n"
+"ÐÔŴÑ\n"
+"2. 'Ķéþţ ƒôŕ ļàţéŕ', šàîð ţĥé Ļéðĝéŕ (6) — ÞÀÛŠÉÐ\n"
+"3. Ŵĥàţ ĝŕôŵš bàçķ îƒ ýôû ļéţ îţ (5) — Ĝ Ŕ É É Ñ\n"
+"\n"
+"(Ţĥé ļàšţ àñšŵéŕ îš îñ à ðîƒƒéŕéñţ þéñ. Ţĥé ļéţţéŕš àŕé véŕý çàŕéƒûļ, ļîķé à ŕôbôţ ŵŕôţé ţĥém.) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[hopscotch].name
+msgid "Hopscotch"
+msgstr "[Ĥôþšçôţçĥ ~]"
+
+#: data/eggs.json:eggs[hopscotch].hint
+msgid "Chalk squares on a clean bit of pavement, still faintly there."
+msgstr "[Çĥàļķ šqûàŕéš ôñ à çļéàñ bîţ ôƒ þàvéméñţ, šţîļļ ƒàîñţļý ţĥéŕé. ~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[hopscotch].lore
+msgid "A chalk hopscotch grid, drawn so many times on the same spot that it soaked into the stone. A pebble still sits on square seven."
+msgstr "[À çĥàļķ ĥôþšçôţçĥ ĝŕîð, ðŕàŵñ šô màñý ţîméš ôñ ţĥé šàmé šþôţ ţĥàţ îţ šôàķéð îñţô ţĥé šţôñé. À þébbļé šţîļļ šîţš ôñ šqûàŕé šévéñ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[hopscotch].toast
+msgid "Lumi hops the hopscotch. The hover bowl counts as one foot. It's a personal best."
+msgstr "[Ļûmî ĥôþš ţĥé ĥôþšçôţçĥ. Ţĥé ĥôvéŕ bôŵļ çôûñţš àš ôñé ƒôôţ. Îţ'š à þéŕšôñàļ béšţ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[balloon].name
+msgid "The Last Balloon"
+msgstr "[Ţĥé Ļàšţ Bàļļôôñ ~~~]"
+
+#: data/eggs.json:eggs[balloon].prompt
+msgid "E   untie the balloon"
+msgstr "E   [ûñţîé ţĥé bàļļôôñ ~~~]"
+
+#: data/eggs.json:eggs[balloon].hint
+msgid "Something red is still holding its breath, tied to a post."
+msgstr "[Šôméţĥîñĝ ŕéð îš šţîļļ ĥôļðîñĝ îţš bŕéàţĥ, ţîéð ţô à þôšţ. ~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[balloon].lore
+msgid "A red balloon tied to a sign post. It should have gone flat centuries ago. It hasn't. It's waiting for something."
+msgstr "[À ŕéð bàļļôôñ ţîéð ţô à šîĝñ þôšţ. Îţ šĥôûļð ĥàvé ĝôñé ƒļàţ çéñţûŕîéš àĝô. Îţ ĥàšñ'ţ. Îţ'š ŵàîţîñĝ ƒôŕ šôméţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[balloon].toast
+msgid "Lumi unties the balloon. It drifts up, slowly, toward where the Cradle would be."
+msgstr "[Ļûmî ûñţîéš ţĥé bàļļôôñ. Îţ ðŕîƒţš ûþ, šļôŵļý, ţôŵàŕð ŵĥéŕé ţĥé Çŕàðļé ŵôûļð bé. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[mailbox].name
+msgid "Return to Sender"
+msgstr "[Ŕéţûŕñ ţô Šéñðéŕ ~~~]"
+
+#: data/eggs.json:eggs[mailbox].prompt
+msgid "E   check the mail"
+msgstr "E   [çĥéçķ ţĥé màîļ ~~]"
+
+#: data/eggs.json:eggs[mailbox].hint
+msgid "A mailbox so full the flap won't shut."
+msgstr "[À màîļbôx šô ƒûļļ ţĥé ƒļàþ ŵôñ'ţ šĥûţ. ~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[mailbox].lore
+msgid "A street mailbox stuffed with letters that never went out. The post stopped the week the Ledger 'paused' everything."
+msgstr "[À šţŕééţ màîļbôx šţûƒƒéð ŵîţĥ ļéţţéŕš ţĥàţ ñévéŕ ŵéñţ ôûţ. Ţĥé þôšţ šţôþþéð ţĥé ŵééķ ţĥé Ļéðĝéŕ 'þàûšéð' évéŕýţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[mailbox].toast
+msgid "One letter on top is addressed to 'The Robot Who Cleans Up'. It's for Lumi."
+msgstr "[Ôñé ļéţţéŕ ôñ ţôþ îš àððŕéššéð ţô 'Ţĥé Ŕôbôţ Ŵĥô Çļéàñš Ûþ'. Îţ'š ƒôŕ Ļûmî. ~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[mailbox].doc.title
+msgid "To: The Robot Who Cleans Up"
+msgstr "[Ţô: Ţĥé Ŕôbôţ Ŵĥô Çļéàñš Ûþ ~~~~~~]"
+
+#: data/eggs.json:eggs[mailbox].doc.body
+msgid ""
+"Dear robot,\n"
+"\n"
+"Mum says the cleaning robots will come back when the paperwork is sorted. I don't know what paperwork is but it sounds very slow.\n"
+"\n"
+"When you get here, the street with the blue door is ours. The flower box is mine. It has a tomato in it (it is not a flower but it is allowed).\n"
+"\n"
+"Please water it. Also please don't scoop the cat. He is orange and he is not junk, even when he sits on junk.\n"
+"\n"
+"Thank you for cleaning up,\n"
+"Pip (age 7)"
+msgstr ""
+"[Ðéàŕ ŕôbôţ,\n"
+"\n"
+"Mûm šàýš ţĥé çļéàñîñĝ ŕôbôţš ŵîļļ çômé bàçķ ŵĥéñ ţĥé þàþéŕŵôŕķ îš šôŕţéð. Î ðôñ'ţ ķñôŵ ŵĥàţ þàþéŕŵôŕķ îš bûţ îţ šôûñðš véŕý šļôŵ.\n"
+"\n"
+"Ŵĥéñ ýôû ĝéţ ĥéŕé, ţĥé šţŕééţ ŵîţĥ ţĥé bļûé ðôôŕ îš ôûŕš. Ţĥé ƒļôŵéŕ bôx îš mîñé. Îţ ĥàš à ţômàţô îñ îţ (îţ îš ñôţ à ƒļôŵéŕ bûţ îţ îš àļļôŵéð).\n"
+"\n"
+"Þļéàšé ŵàţéŕ îţ. Àļšô þļéàšé ðôñ'ţ šçôôþ ţĥé çàţ. Ĥé îš ôŕàñĝé àñð ĥé îš ñôţ ĵûñķ, évéñ ŵĥéñ ĥé šîţš ôñ ĵûñķ.\n"
+"\n"
+"Ţĥàñķ ýôû ƒôŕ çļéàñîñĝ ûþ,\n"
+"Þîþ (àĝé 7) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[bonsai].name
+msgid "The Patient Tree"
+msgstr "[Ţĥé Þàţîéñţ Ţŕéé ~~~]"
+
+#: data/eggs.json:eggs[bonsai].hint
+msgid "Someone kept one very small tree alive for a very long time."
+msgstr "[Šôméôñé ķéþţ ôñé véŕý šmàļļ ţŕéé àļîvé ƒôŕ à véŕý ļôñĝ ţîmé. ~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[bonsai].lore
+msgid "A bonsai on a little stand, three hundred years old and about thirty centimetres tall. A care robot watered it until its battery ran out; the rain did the rest."
+msgstr "[À bôñšàî ôñ à ļîţţļé šţàñð, ţĥŕéé ĥûñðŕéð ýéàŕš ôļð àñð àbôûţ ţĥîŕţý çéñţîméţŕéš ţàļļ. À çàŕé ŕôbôţ ŵàţéŕéð îţ ûñţîļ îţš bàţţéŕý ŕàñ ôûţ; ţĥé ŕàîñ ðîð ţĥé ŕéšţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[bonsai].toast
+msgid "A tiny, ancient tree. It has been waiting patiently, which is what it does best."
+msgstr "[À ţîñý, àñçîéñţ ţŕéé. Îţ ĥàš bééñ ŵàîţîñĝ þàţîéñţļý, ŵĥîçĥ îš ŵĥàţ îţ ðôéš béšţ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[listening_dish].name
+msgid "Listening Dish"
+msgstr "[Ļîšţéñîñĝ Ðîšĥ ~~]"
+
+#: data/eggs.json:eggs[listening_dish].prompt
+msgid "E   turn the dish"
+msgstr "E   [ţûŕñ ţĥé ðîšĥ ~~]"
+
+#: data/eggs.json:eggs[listening_dish].hint
+msgid "In the wild: a small dish aimed at the sky, still listening."
+msgstr "[Îñ ţĥé ŵîļð: à šmàļļ ðîšĥ àîméð àţ ţĥé šķý, šţîļļ ļîšţéñîñĝ. ~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[listening_dish].lore
+msgid "A homemade satellite dish on a tripod, pointed at the sky. A note taped to it says 'KEEP LISTENING. THEY SAID THEY'D CALL.'"
+msgstr "[À ĥômémàðé šàţéļļîţé ðîšĥ ôñ à ţŕîþôð, þôîñţéð àţ ţĥé šķý. À ñôţé ţàþéð ţô îţ šàýš 'ĶÉÉÞ ĻÎŠŢÉÑÎÑĜ. ŢĤÉÝ ŠÀÎÐ ŢĤÉÝ'Ð ÇÀĻĻ.' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[listening_dish].toast
+msgid "Lumi turns the dish a few degrees. For a second there's a faint carrier tone: the Cradle's beacon, three hundred years late and right on time."
+msgstr "[Ļûmî ţûŕñš ţĥé ðîšĥ à ƒéŵ ðéĝŕééš. Fôŕ à šéçôñð ţĥéŕé'š à ƒàîñţ çàŕŕîéŕ ţôñé: ţĥé Çŕàðļé'š béàçôñ, ţĥŕéé ĥûñðŕéð ýéàŕš ļàţé àñð ŕîĝĥţ ôñ ţîmé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[older_pod].prompt
+msgid "E   open the old pod"
+msgstr "E   [ôþéñ ţĥé ôļð þôð ~~~]"
+
+#: data/eggs.json:eggs[older_pod].hint
+msgid "On a new world: a seed pod much older than Lumi's, grown over."
+msgstr "[Ôñ à ñéŵ ŵôŕļð: à šééð þôð mûçĥ ôļðéŕ ţĥàñ Ļûmî'š, ĝŕôŵñ ôvéŕ. ~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[older_pod].lore
+msgid "A seed pod from the Cradle, much older than Lumi's, half buried and overgrown. Someone tried this world long before. The flight log is still readable."
+msgstr "[À šééð þôð ƒŕôm ţĥé Çŕàðļé, mûçĥ ôļðéŕ ţĥàñ Ļûmî'š, ĥàļƒ bûŕîéð àñð ôvéŕĝŕôŵñ. Šôméôñé ţŕîéð ţĥîš ŵôŕļð ļôñĝ béƒôŕé. Ţĥé ƒļîĝĥţ ļôĝ îš šţîļļ ŕéàðàbļé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[older_pod].toast
+msgid "An older pod from the Cradle. Somebody got here first, a long time ago."
+msgstr "[Àñ ôļðéŕ þôð ƒŕôm ţĥé Çŕàðļé. Šômébôðý ĝôţ ĥéŕé ƒîŕšţ, à ļôñĝ ţîmé àĝô. ~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[older_pod].doc.title
+msgid "Pod log · seed-keeper unit SK-0"
+msgstr "[Þôð ļôĝ · šééð-ķééþéŕ ûñîţ ŠĶ-0 ~~~~~~~~]"
+
+#: data/eggs.json:eggs[older_pod].doc.body
+msgid ""
+"Day 1. Landed. Nothing here is green. Planted the first tray anyway.\n"
+"\n"
+"Day 40. The junk is heavier than at home. The rain is kind.\n"
+"\n"
+"Day 212. Battery low. Tray 3 is flowering. I think it will be fine without me now.\n"
+"\n"
+"If another seed-keeper comes: start by the water. The ground remembers more than it looks like it does.\n"
+"\n"
+"— SK-0"
+msgstr ""
+"[Ðàý 1. Ļàñðéð. Ñôţĥîñĝ ĥéŕé îš ĝŕééñ. Þļàñţéð ţĥé ƒîŕšţ ţŕàý àñýŵàý.\n"
+"\n"
+"Ðàý 40. Ţĥé ĵûñķ îš ĥéàvîéŕ ţĥàñ àţ ĥômé. Ţĥé ŕàîñ îš ķîñð.\n"
+"\n"
+"Ðàý 212. Bàţţéŕý ļôŵ. Ţŕàý 3 îš ƒļôŵéŕîñĝ. Î ţĥîñķ îţ ŵîļļ bé ƒîñé ŵîţĥôûţ mé ñôŵ.\n"
+"\n"
+"Îƒ àñôţĥéŕ šééð-ķééþéŕ çôméš: šţàŕţ bý ţĥé ŵàţéŕ. Ţĥé ĝŕôûñð ŕémémbéŕš môŕé ţĥàñ îţ ļôôķš ļîķé îţ ðôéš.\n"
+"\n"
+"— ŠĶ-0 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[heirloom_tin].name
+msgid "The Heirloom Tin"
+msgstr "[Ţĥé Ĥéîŕļôôm Ţîñ ~~~]"
+
+#: data/eggs.json:eggs[heirloom_tin].hint
+msgid "On a new world: something from home fell out of Lumi's pod."
+msgstr "[Ôñ à ñéŵ ŵôŕļð: šôméţĥîñĝ ƒŕôm ĥômé ƒéļļ ôûţ ôƒ Ļûmî'š þôð. ~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[heirloom_tin].lore
+msgid "A seed tin from Verdance, the same kind as the one in the old greenhouse. Lumi packed it with soil from the first garden before leaving. It came open on landing."
+msgstr "[À šééð ţîñ ƒŕôm Véŕðàñçé, ţĥé šàmé ķîñð àš ţĥé ôñé îñ ţĥé ôļð ĝŕééñĥôûšé. Ļûmî þàçķéð îţ ŵîţĥ šôîļ ƒŕôm ţĥé ƒîŕšţ ĝàŕðéñ béƒôŕé ļéàvîñĝ. Îţ çàmé ôþéñ ôñ ļàñðîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[heirloom_tin].toast
+msgid "Lumi's tin of Verdance soil. A little bit of home, already spilled on new ground. Good."
+msgstr "[Ļûmî'š ţîñ ôƒ Véŕðàñçé šôîļ. À ļîţţļé bîţ ôƒ ĥômé, àļŕéàðý šþîļļéð ôñ ñéŵ ĝŕôûñð. Ĝôôð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/events.json:events[supply_drop].name
 msgid "Supply Drop"
@@ -7647,6 +8506,54 @@ msgstr "[Þļàñţ à Šééð Àŕķ ŵàvé ~~~~]"
 #: data/goals.json:goals[ark_3].text
 msgid "Plant three Seed Ark waves"
 msgstr "[Þļàñţ ţĥŕéé Šééð Àŕķ ŵàvéš ~~~~~~]"
+
+#: data/goals.json:goals[late_bridge].text
+msgid "Open the Ark Bridge"
+msgstr "[Ôþéñ ţĥé Àŕķ Bŕîðĝé ~~~~]"
+
+#: data/goals.json:goals[late_garden_1].text
+msgid "Place a decoration (H)"
+msgstr "[Þļàçé à ðéçôŕàţîôñ (Ĥ) ~~~~~]"
+
+#: data/goals.json:goals[late_heirloom_1].text
+msgid "Buy an Heirloom"
+msgstr "[Bûý àñ Ĥéîŕļôôm ~~]"
+
+#: data/goals.json:goals[late_garden_10].text
+msgid "Place 10 decorations"
+msgstr "[Þļàçé 10 ðéçôŕàţîôñš ~~~~]"
+
+#: data/goals.json:goals[late_garden_kinds].text
+msgid "Place 5 kinds of decoration"
+msgstr "[Þļàçé 5 ķîñðš ôƒ ðéçôŕàţîôñ ~~~~~~]"
+
+#: data/goals.json:goals[late_ark_5].text
+msgid "Plant five Seed Ark waves"
+msgstr "[Þļàñţ ƒîvé Šééð Àŕķ ŵàvéš ~~~~~~]"
+
+#: data/goals.json:goals[late_eggs_30].text
+msgid "Find 30 curiosities"
+msgstr "[Fîñð 30 çûŕîôšîţîéš ~~~~]"
+
+#: data/goals.json:goals[late_world_1].text
+msgid "Seed a new world"
+msgstr "[Šééð à ñéŵ ŵôŕļð ~~~]"
+
+#: data/goals.json:goals[late_charm_20].text
+msgid "Reach 20 charm in one district"
+msgstr "[Ŕéàçĥ 20 çĥàŕm îñ ôñé ðîšţŕîçţ ~~~~~~~]"
+
+#: data/goals.json:goals[late_heirloom_10].text
+msgid "Grow Heirlooms to 10 levels"
+msgstr "[Ĝŕôŵ Ĥéîŕļôômš ţô 10 ļévéļš ~~~~~~]"
+
+#: data/goals.json:goals[late_world_2].text
+msgid "Seed a second new world"
+msgstr "[Šééð à šéçôñð ñéŵ ŵôŕļð ~~~~~]"
+
+#: data/goals.json:goals[late_eggs_38].text
+msgid "Find 38 curiosities"
+msgstr "[Fîñð 38 çûŕîôšîţîéš ~~~~]"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -10401,3 +11308,183 @@ msgstr "[Ýôûŕ çôŕé'š ļôŵ. Þļàñţ šôméţĥîñĝ, Ļûmî. À�
 #: data/wren_lines.json:low_core
 msgid "Running a little dim. A few blooms will fix that."
 msgstr "[Ŕûññîñĝ à ļîţţļé ðîm. À ƒéŵ bļôômš ŵîļļ ƒîx ţĥàţ. ~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_sand_piano
+msgid "...music... out here?..."
+msgstr "[...mûšîç... ôûţ ĥéŕé?... ~~~~~]"
+
+#: data/wren_lines.json:egg_sand_piano
+msgid "A piano. In the desert. I have so many questions and none of them will be answered."
+msgstr "[À þîàñô. Îñ ţĥé ðéšéŕţ. Î ĥàvé šô màñý qûéšţîôñš àñð ñôñé ôƒ ţĥém ŵîļļ bé àñšŵéŕéð. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_sand_piano
+msgid "It's out of tune in a way that sounds deliberate now. Like the dunes learned a song."
+msgstr "[Îţ'š ôûţ ôƒ ţûñé îñ à ŵàý ţĥàţ šôûñðš ðéļîbéŕàţé ñôŵ. Ļîķé ţĥé ðûñéš ļéàŕñéð à šôñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_snow_bot
+msgid "...someone dressed it... for the cold..."
+msgstr "[...šôméôñé ðŕéššéð îţ... ƒôŕ ţĥé çôļð... ~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_snow_bot
+msgid "They built snowmen around the old loaders for luck. I think it worked, a bit. It's still standing."
+msgstr "[Ţĥéý bûîļţ šñôŵméñ àŕôûñð ţĥé ôļð ļôàðéŕš ƒôŕ ļûçķ. Î ţĥîñķ îţ ŵôŕķéð, à bîţ. Îţ'š šţîļļ šţàñðîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_snow_bot
+msgid "Every winter, a new scarf. Someone kept that up for a very long time."
+msgstr "[Évéŕý ŵîñţéŕ, à ñéŵ šçàŕƒ. Šôméôñé ķéþţ ţĥàţ ûþ ƒôŕ à véŕý ļôñĝ ţîmé. ~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_bottle_message
+msgid "...a letter... from before the water..."
+msgstr "[...à ļéţţéŕ... ƒŕôm béƒôŕé ţĥé ŵàţéŕ... ~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_bottle_message
+msgid "Somebody stayed to remember where the streets were. We should plant where the bakery was."
+msgstr "[Šômébôðý šţàýéð ţô ŕémémbéŕ ŵĥéŕé ţĥé šţŕééţš ŵéŕé. Ŵé šĥôûļð þļàñţ ŵĥéŕé ţĥé bàķéŕý ŵàš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_bottle_message
+msgid "Red lever goes down, not up. Noted. Thank you, R."
+msgstr "[Ŕéð ļévéŕ ĝôéš ðôŵñ, ñôţ ûþ. Ñôţéð. Ţĥàñķ ýôû, Ŕ. ~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_welcome_home
+msgid "...welcome... home..."
+msgstr "[...ŵéļçômé... ĥômé... ~~~~]"
+
+#: data/wren_lines.json:egg_welcome_home
+msgid "They kept repainting it. Three hundred years of 'welcome home' for a ship that hadn't come yet."
+msgstr "[Ţĥéý ķéþţ ŕéþàîñţîñĝ îţ. Ţĥŕéé ĥûñðŕéð ýéàŕš ôƒ 'ŵéļçômé ĥômé' ƒôŕ à šĥîþ ţĥàţ ĥàðñ'ţ çômé ýéţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_welcome_home
+msgid "We came, though. Tell them we came."
+msgstr "[Ŵé çàmé, ţĥôûĝĥ. Ţéļļ ţĥém ŵé çàmé. ~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_crossword
+msgid "...a puzzle... one left..."
+msgstr "[...à þûžžļé... ôñé ļéƒţ... ~~~~~~]"
+
+#: data/wren_lines.json:egg_crossword
+msgid "Five letters, what grows back if you let it. You got it on the first try."
+msgstr "[Fîvé ļéţţéŕš, ŵĥàţ ĝŕôŵš bàçķ îƒ ýôû ļéţ îţ. Ýôû ĝôţ îţ ôñ ţĥé ƒîŕšţ ţŕý. ~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_crossword
+msgid "The Ledger set the crossword. Of course the Ledger set the crossword."
+msgstr "[Ţĥé Ļéðĝéŕ šéţ ţĥé çŕôššŵôŕð. Ôƒ çôûŕšé ţĥé Ļéðĝéŕ šéţ ţĥé çŕôššŵôŕð. ~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_hopscotch
+msgid "...hop... hop..."
+msgstr "[...ĥôþ... ĥôþ... ~~~]"
+
+#: data/wren_lines.json:egg_hopscotch
+msgid "One, two, three... I'm counting the hover bowl as a foot. Don't tell anyone."
+msgstr "[Ôñé, ţŵô, ţĥŕéé... Î'm çôûñţîñĝ ţĥé ĥôvéŕ bôŵļ àš à ƒôôţ. Ðôñ'ţ ţéļļ àñýôñé. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_hopscotch
+msgid "Square seven still has the pebble on it. Somebody was winning."
+msgstr "[Šqûàŕé šévéñ šţîļļ ĥàš ţĥé þébbļé ôñ îţ. Šômébôðý ŵàš ŵîññîñĝ. ~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_balloon
+msgid "...up... it went up..."
+msgstr "[...ûþ... îţ ŵéñţ ûþ... ~~~~~]"
+
+#: data/wren_lines.json:egg_balloon
+msgid "It's heading for the Cradle. I'll tell the bridge to watch for a red balloon."
+msgstr "[Îţ'š ĥéàðîñĝ ƒôŕ ţĥé Çŕàðļé. Î'ļļ ţéļļ ţĥé bŕîðĝé ţô ŵàţçĥ ƒôŕ à ŕéð bàļļôôñ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_balloon
+msgid "Three hundred years holding its breath. It earned the trip."
+msgstr "[Ţĥŕéé ĥûñðŕéð ýéàŕš ĥôļðîñĝ îţš bŕéàţĥ. Îţ éàŕñéð ţĥé ţŕîþ. ~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_mailbox
+msgid "...a letter... for you..."
+msgstr "[...à ļéţţéŕ... ƒôŕ ýôû... ~~~~~~]"
+
+#: data/wren_lines.json:egg_mailbox
+msgid "'Please don't scoop the cat.' Excellent advice. Still valid."
+msgstr "['Þļéàšé ðôñ'ţ šçôôþ ţĥé çàţ.' Éxçéļļéñţ àðvîçé. Šţîļļ vàļîð. ~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_mailbox
+msgid "The blue door, the flower box, the tomato that counts as a flower. Let's find it."
+msgstr "[Ţĥé bļûé ðôôŕ, ţĥé ƒļôŵéŕ bôx, ţĥé ţômàţô ţĥàţ çôûñţš àš à ƒļôŵéŕ. Ļéţ'š ƒîñð îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_bonsai
+msgid "...small... old... patient..."
+msgstr "[...šmàļļ... ôļð... þàţîéñţ... ~~~~~~~]"
+
+#: data/wren_lines.json:egg_bonsai
+msgid "Three hundred years old and thirty centimetres tall. It took its time. Good for it."
+msgstr "[Ţĥŕéé ĥûñðŕéð ýéàŕš ôļð àñð ţĥîŕţý çéñţîméţŕéš ţàļļ. Îţ ţôôķ îţš ţîmé. Ĝôôð ƒôŕ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_bonsai
+msgid "It looks like it's been expecting you. Trees are like that."
+msgstr "[Îţ ļôôķš ļîķé îţ'š bééñ éxþéçţîñĝ ýôû. Ţŕééš àŕé ļîķé ţĥàţ. ~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_listening_dish
+msgid "...a signal... faint..."
+msgstr "[...à šîĝñàļ... ƒàîñţ... ~~~~~]"
+
+#: data/wren_lines.json:egg_listening_dish
+msgid "That tone. That's the Cradle's beacon. Somebody out here kept listening the whole time."
+msgstr "[Ţĥàţ ţôñé. Ţĥàţ'š ţĥé Çŕàðļé'š béàçôñ. Šômébôðý ôûţ ĥéŕé ķéþţ ļîšţéñîñĝ ţĥé ŵĥôļé ţîmé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_listening_dish
+msgid "'They said they'd call.' We did. Late, but we did."
+msgstr "['Ţĥéý šàîð ţĥéý'ð çàļļ.' Ŵé ðîð. Ļàţé, bûţ ŵé ðîð. ~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_older_pod
+msgid "...another pod... older..."
+msgstr "[...àñôţĥéŕ þôð... ôļðéŕ... ~~~~~~]"
+
+#: data/wren_lines.json:egg_older_pod
+msgid "SK-0. A seed-keeper before you. I didn't know there were any. The Cradle never told me."
+msgstr "[ŠĶ-0. À šééð-ķééþéŕ béƒôŕé ýôû. Î ðîðñ'ţ ķñôŵ ţĥéŕé ŵéŕé àñý. Ţĥé Çŕàðļé ñévéŕ ţôļð mé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_older_pod
+msgid "'Start by the water.' Good advice, from someone who knew."
+msgstr "['Šţàŕţ bý ţĥé ŵàţéŕ.' Ĝôôð àðvîçé, ƒŕôm šôméôñé ŵĥô ķñéŵ. ~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_heirloom_tin
+msgid "...soil... from home..."
+msgstr "[...šôîļ... ƒŕôm ĥômé... ~~~~~]"
+
+#: data/wren_lines.json:egg_heirloom_tin
+msgid "A bit of the first garden, already spilled on new ground. That's how it starts."
+msgstr "[À bîţ ôƒ ţĥé ƒîŕšţ ĝàŕðéñ, àļŕéàðý šþîļļéð ôñ ñéŵ ĝŕôûñð. Ţĥàţ'š ĥôŵ îţ šţàŕţš. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_heirloom_tin
+msgid "Verdance soil on another world. The Makers would have liked that."
+msgstr "[Véŕðàñçé šôîļ ôñ àñôţĥéŕ ŵôŕļð. Ţĥé Màķéŕš ŵôûļð ĥàvé ļîķéð ţĥàţ. ~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:cradle_mode
+msgid "...the vault... other worlds..."
+msgstr "[...ţĥé vàûļţ... ôţĥéŕ ŵôŕļðš... ~~~~~~~~]"
+
+#: data/wren_lines.json:cradle_mode
+msgid "The Cradle's seed vault has a lot more in it than one planet's worth. There are other worlds out here, Lumi. Ruined ones. Waiting."
+msgstr "[Ţĥé Çŕàðļé'š šééð vàûļţ ĥàš à ļôţ môŕé îñ îţ ţĥàñ ôñé þļàñéţ'š ŵôŕţĥ. Ţĥéŕé àŕé ôţĥéŕ ŵôŕļðš ôûţ ĥéŕé, Ļûmî. Ŕûîñéð ôñéš. Ŵàîţîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:cradle_mode
+msgid "Heirlooms, Starseeds, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."
+msgstr "[Ĥéîŕļôômš, Šţàŕšééðš, à ŵĥôļé màþ ôƒ ŵôŕļðš. Véŕðàñçé šţàýš ĝŕééñ; ŵé ĵûšţ ţàķé ŵĥàţ ŵé ļéàŕñéð šôméŵĥéŕé ñéŵ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:new_world
+msgid "...new ground... new junk..."
+msgstr "[...ñéŵ ĝŕôûñð... ñéŵ ĵûñķ... ~~~~~~~]"
+
+#: data/wren_lines.json:new_world
+msgid "New world, new sky. Same job. You're better at it than you were the first time."
+msgstr "[Ñéŵ ŵôŕļð, ñéŵ šķý. Šàmé ĵôb. Ýôû'ŕé béţţéŕ àţ îţ ţĥàñ ýôû ŵéŕé ţĥé ƒîŕšţ ţîmé. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:new_world
+msgid "Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."
+msgstr "[Ļôôķ àţ ţĥàţ. Ŕûîñéð, ðûšţý, ñôbôðý'š þļàñţéð àñýţĥîñĝ îñ çéñţûŕîéš. Ýôû ķñôŵ ŵĥàţ ţô ðô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:garden_place
+msgid "...pretty..."
+msgstr "[...þŕéţţý... ~]"
+
+#: data/wren_lines.json:garden_place
+msgid "You're decorating. I approve. The cats are going to approve more."
+msgstr "[Ýôû'ŕé ðéçôŕàţîñĝ. Î àþþŕôvé. Ţĥé çàţš àŕé ĝôîñĝ ţô àþþŕôvé môŕé. ~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:garden_place
+msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
+msgstr "[À béñçĥ, à ļàmþ, à ƒôûñţàîñ. Îţ'š šţàŕţîñĝ ţô ļôôķ ļîķé šôméŵĥéŕé þéôþļé ŵôûļð ŵàñţ ţô çômé bàçķ ţô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"

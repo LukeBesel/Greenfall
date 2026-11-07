@@ -401,6 +401,7 @@ static func prepare_new_world_state(carry: Dictionary) -> void:
 		GameState.add_currency(Research.CURRENCY, BigNum.from_float(float(kit["data"])))
 	if bool(kit["seeds_unlocked"]):
 		GameState.flags["seeds_unlocked"] = true
+	if float(kit["seeds"]) > 0.0:
 		GameState.add_currency("seeds", BigNum.from_float(float(kit["seeds"])))
 	if not (kit["robots"] as Array).is_empty():
 		GameState.flags["late_start_robots"] = (kit["robots"] as Array).duplicate()

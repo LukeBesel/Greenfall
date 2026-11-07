@@ -93,11 +93,8 @@ static func _vendor(n: Node3D, id: String, h: float, pos: Vector3, yaw: float = 
 ## Two flat stepping stones per cell, a little uneven.
 static func path() -> Node3D:
 	var n := Node3D.new()
-	var parts: Array = []
-	var tones: Array[Color] = [Color(0.8, 0.78, 0.73), Color(0.72, 0.7, 0.66)]
-	parts.append(ProcMesh.part(ProcMesh.rounded_box(Vector3(0.52, 0.06, 0.44), 0.03, 2), ProcMesh.xf(Vector3(-0.17, 0.03, -0.2), Vector3(0, 8, 0)), tones[0]))
-	parts.append(ProcMesh.part(ProcMesh.rounded_box(Vector3(0.46, 0.06, 0.42), 0.03, 2), ProcMesh.xf(Vector3(0.19, 0.03, 0.22), Vector3(0, -11, 0)), tones[1]))
-	n.add_child(EggProps.mesh(ProcMesh.merge(parts), EggProps.vc(0.9)))
+	n.add_child(EggProps.mesh(ProcMesh.box(Vector3(0.52, 0.07, 0.44)), stone(Color(0.86, 0.84, 0.79)), Vector3(-0.17, 0.035, -0.2), Vector3(0, 8, 0)))
+	n.add_child(EggProps.mesh(ProcMesh.box(Vector3(0.46, 0.07, 0.42)), stone(Color(0.8, 0.78, 0.74)), Vector3(0.19, 0.035, 0.22), Vector3(0, -11, 0)))
 	return n
 
 
@@ -199,8 +196,8 @@ static func fountain() -> Node3D:
 ## A Maker on a plinth, watering can in hand.
 static func statue() -> Node3D:
 	var n := Node3D.new()
-	var s: StandardMaterial3D = stone(Color(0.8, 0.79, 0.76))
-	var fig: StandardMaterial3D = stone(Color(0.7, 0.71, 0.7))
+	var s: StandardMaterial3D = stone(Color(0.86, 0.85, 0.82))
+	var fig: StandardMaterial3D = paint(Color(0.88, 0.87, 0.84), 0.35)
 	n.add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(1.1, 0.6, 1.1), 0.04, 2), s, Vector3(0, 0.3, 0)))
 	n.add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(1.25, 0.1, 1.25), 0.03, 2), s, Vector3(0, 0.05, 0)))
 	var b := Node3D.new()
@@ -226,7 +223,9 @@ static func lumi_sculpture() -> Node3D:
 	var marble: StandardMaterial3D = paint(Color(0.92, 0.91, 0.88), 0.3)
 	var brass: StandardMaterial3D = Mats.metal("brass")
 	var hedge: StandardMaterial3D = leaves(Color(0.24, 0.4, 0.2))
-	n.add_child(EggProps.mesh(ProcMesh.torus(0.72, 0.98, 24, 8), hedge, Vector3(0, 0.16, 0), Vector3.ZERO, Vector3(1, 1.6, 1)))
+	for k: int in 9:  # a ring of clipped box balls round the plinth
+		var a: float = TAU * (k + 0.5) / 9.0
+		n.add_child(EggProps.mesh(ProcMesh.sphere(0.2, 12, 6), hedge, Vector3(cos(a) * 0.86, 0.17, sin(a) * 0.86), Vector3.ZERO, Vector3(1.0, 0.85, 1.0)))
 	n.add_child(EggProps.mesh(ProcMesh.cyl(0.62, 0.66, 0.5, 6), s, Vector3(0, 0.25, 0)))
 	n.add_child(EggProps.mesh(ProcMesh.cyl(0.63, 0.63, 0.012, 6), Mats.lamp(Color(0.6, 1.0, 0.85), 0.7), Vector3(0, 0.46, 0)))
 	var body := Node3D.new()
