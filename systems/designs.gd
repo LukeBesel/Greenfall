@@ -168,7 +168,7 @@ static func buff_text(id: String) -> String:
 
 ## Multiplier the worn design adds to a stat (1.0 when it doesn't touch it or looks only is on).
 static func mult(stat_id: String) -> float:
-	if looks_only() or GameState.flags.is_empty():
+	if looks_only():
 		return 1.0
 	var b: Dictionary = buff(current())
 	var s: String = str(b.get("stat", ""))

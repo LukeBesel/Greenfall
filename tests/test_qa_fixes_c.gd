@@ -114,8 +114,9 @@ func test_stat_breakdown_base_for_robot_stats() -> void:
 
 func test_detector_range_is_a_real_stat() -> void:
 	assert_eq(str(Economy.upgrade_defs["detector_range"]["stat"]), "detector_range")
-	assert_almost_eq(Economy.stat("detector_range", {}), 16.0, 0.001)
-	assert_almost_eq(Economy.stat("detector_range", {"detector_range": 1}), 20.0, 0.001)
+	var dm: float = Designs.mult("detector_range")  # [skins] the worn design's small bonus (Aurora: detector)
+	assert_almost_eq(Economy.stat("detector_range", {}), 16.0 * dm, 0.001)
+	assert_almost_eq(Economy.stat("detector_range", {"detector_range": 1}), 20.0 * dm, 0.001)
 
 
 func test_goal_titles_fit_goals_card() -> void:

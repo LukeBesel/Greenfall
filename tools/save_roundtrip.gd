@@ -65,6 +65,8 @@ func _snapshot(s: Node) -> Dictionary:
 		"builder_fragments": RobotBuilder.fragments(),
 		"builder_presets": JSON.stringify(RobotBuilder.st().get("presets", {})),
 		"builds": _builds(f),
+		# [skins] Lumi's designs: worn, unlocked, looks-only, and the model actually built with it.
+		"design": "%s %s looks_only=%s model=%s" % [Designs.current(), JSON.stringify(Designs.unlocked()), str(Designs.looks_only()), (s.patch.model as PatchModel).variant],
 	}
 
 
@@ -309,6 +311,11 @@ func _ready() -> void:
 		elif r.type_id == "drip":
 			r.trait_id = "sleepy"
 			RobotBuilder.equip(r, "tool", "mist_sprayer")
+	# [skins] Unlock two designs, wear Nova, turn bonuses off.
+	Designs.unlocked().append_array(["bolt", "nova"])
+	Designs.select("nova")
+	Designs.set_looks_only(true)
+	(s1.patch.model as PatchModel).set_variant("nova")
 	s1.patch.global_position = Vector3(3.0, 0.2, 5.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
 	s1.add_cube(dropped)
