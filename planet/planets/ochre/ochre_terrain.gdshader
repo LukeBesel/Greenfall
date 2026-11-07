@@ -120,7 +120,7 @@ void fragment() {
 	vec3 grav = two_scale(tex_bench, p, 0.22);
 	vec3 bench_c = mix(grav * vec3(1.05, 0.78, 0.62), c_terra * (0.8 + 0.5 * dot(grav, vec3(0.33))), 0.55 + 0.3 * n2);
 	vec3 sand = two_scale(tex_sand, p, 0.12) * vec3(1.0, 0.72, 0.46);
-	bench_c = mix(bench_c, sand, smoothstep(0.6, 0.95, across) * 0.35 * pit + (1.0 - pit) * (0.55 + 0.35 * n2));
+	bench_c = mix(bench_c, sand, smoothstep(0.6, 0.95, across) * 0.35 * pit + (1.0 - pit) * (0.78 + 0.12 * n1));
 	float wallness = smoothstep(0.35, 0.6, slope + (n2 - 0.5) * 0.15);
 	vec3 alb = mix(bench_c, wall_c, wallness);
 	float rough = mix(0.93, 0.88, wallness);

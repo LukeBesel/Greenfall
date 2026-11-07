@@ -17,8 +17,8 @@ void vertex() {
 }
 
 void fragment() {
-	ALBEDO = COLOR.rgb * tint;
+	ALBEDO = pow(COLOR.rgb, vec3(2.2)) * tint;
 	ROUGHNESS = rough;
 	SPECULAR = 0.35;
-	BACKLIGHT = vec3(0.25, 0.3, 0.1) * COLOR.a;
+	BACKLIGHT = vec3(0.08, 0.1, 0.03) * COLOR.a;
 }

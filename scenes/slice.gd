@@ -138,6 +138,7 @@ func _ready() -> void:
 		field.biome = str(penv["junk_biome"])
 		field.biome_set = Economy.biome_set(field.biome)
 		field.water_ids = {}
+		field.set_meta("planet_env", str(penv.get("id", "")))
 	# Older saves were generated with straight hex borders; keep their piece layout identical.
 	if loaded and GameState.world.has("field"):
 		field.natural_borders = bool((GameState.world["field"] as Dictionary).get("natural_borders", false))
