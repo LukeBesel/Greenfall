@@ -22,6 +22,8 @@ var _shown: float = 0.0
 var _bump: float = 0.0
 var _since_cash: float = 99.0
 var _warm: float = 1.5
+## [first] Cubes still flying into the counter (ui/coin_flight.gd); the readout counts up as they land.
+var in_flight: float = 0.0
 
 
 func _ready() -> void:
@@ -110,6 +112,8 @@ func _process(delta: float) -> void:
 	_warm = maxf(0.0, _warm - delta)
 	var cubes: BigNum = GameState.get_currency("cubes")
 	var target: float = cubes.to_float()
+	if in_flight > 0.0:  # [first]
+		target = maxf(_shown if _shown < target else 0.0, target - in_flight)
 	if target < 1.0e9:
 		_shown = lerpf(_shown, target, clampf(delta * 8.0, 0.0, 1.0))
 		if absf(_shown - target) < 0.5:
@@ -143,3 +147,15 @@ func _process(delta: float) -> void:
 ## Number of visible chips (tests).
 func chip_count() -> int:
 	return _chip_map.size()
+
+
+## [first] Screen point the flying coins aim at (the cube icon).
+func icon_center() -> Vector2:
+	return _icon.get_global_rect().get_center()
+
+
+## [first] One flying coin arrived: release its share and give the icon a pop.
+func land(amount: float) -> void:
+	in_flight = maxf(0.0, in_flight - amount)
+	_bump = 1.0
+	_since_cash = 0.0

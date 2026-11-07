@@ -13,7 +13,7 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - [x] M8 Content/meta: Codex, 54 achievements, stats, cosmetics (6 colourways).
 - [~] M9 Balance: mid-game autoplay bot (robots, research, Command zones, garden, base levels) and a 2-hour pass: first robot ~6 min, planting ~20, Sustained ~23, base 3 ~38, base 5 ~75 (district done); see docs/BALANCE.md. Re-run after merging Laser Reach / Multi-Lock.
 - [~] M10 Polish: title screen, settings, music score, QA pass (40 fixes in flight); Windows/Linux/macOS builds from CI.
-- [~] M11 Post-game: Verdance Bloom milestones, Cradle finale, endless Seed Ark waves (no Cradle Mode worlds yet).
+- [~] M11 Post-game: Verdance Bloom milestones, Cradle finale (the true ending, then end credits), endless Seed Ark waves (no Cradle Mode worlds yet). Whole game playable New Game -> Cradle -> Seed Ark; see docs/WALKTHROUGH.md.
 
 ## Next steps for a new session
 0. Owner-side Steam/Apple setup: see docs/steam/README.md (app id, depots, signing). Website: enable Pages, fill website/config.js.
@@ -188,3 +188,48 @@ Known: Godot exits with code 134 after some headless runs (engine cleanup at qui
 - Not translated: 3D world signage (street_dressing shop signs, robot decals), proper names (districts, robot names), dev/log text.
 - Next: real translations (DE, FR, ES, PT-BR, ZH-CN, JA, KO, RU), CJK fallback font, a pseudo-locale layout pass on every screen with screenshots, `extract_strings.py --check` in CI.
 
+
+## In progress (Nov 7, 2026): deep dive
+Wave 1 helpers (worktrees /home/user/gf-wt/<name>, branches wt/<name>):
+- beat: full game beatable end to end (autoplay to the Cradle finale), bug hunt, docs/WALKTHROUGH.md, credits
+- wild: wildlife (cats, birds, rats, rabbits, deer, foxes, fish, ducks, frogs, frontier animals), Collection hooks
+- first: first-hour polish (tutorial panel, juice, pacing)
+- vqa: visual QA sweep (docs/VISUAL_QA.md) and the known visual leftovers
+Trailer notes (owner): feature some of the cooler Lumi designs (Bolt, Sprout, Pixel, Nova, Patch) in the trailer, e.g. a quick design-swap montage.
+Wave 2 (after merging wave 1): late-game Cradle Mode / Garden Mode + eggs, real translations (de/fr/es/pt-BR/zh/ja drafts), code health (exit crash 134, split scenes/slice.gd), trailer capture. Then merge the PR into main.
+If a session ends: commit WIP in each worktree, then resume or merge.
+## Update: whole game, beatable end to end (wt/beat)
+- docs/WALKTHROUGH.md: the critical path with gates and measured times (fresh save -> Old Town ->
+  second district -> Dust Flats -> Frozen Port -> Sunken City -> Cradle Returns -> finale -> credits ->
+  Seed Ark).
+- The Cradle is the true ending (Verdance Bloom = cradle_returned); finale replays if interrupted;
+  end credits roll (ui/credits_roll.gd, docs/CREDITS.md, skippable). Bloom Core charge follows the
+  campaign. Goal chain 144 goals to the Seed Ark. Garden ramp at ~1 h (base 3 + Pollinator Survey).
+- Autoplay plays the whole game: rocket travel, heaters/greenhouses/thaw, skimmers, Cradle pad; staged
+  runs with --save-dir / --stop-at / --game-minutes / --no-travel; milestones in
+  screenshots/autoplay_milestones_NAME.json; stuck-robot census.
+- Next: re-measure the first hour after merging the first-seed pacing (first helper); tune frontier
+  costs (Frozen Port went quickly once upgrades were maxed); Data is in surplus after the Dust Flats.
+
+## Update: first-hour polish (wt/first)
+- Done: restart checklist rewritten (`story/tutorial.gd`): six steps, one thing each (scoop, press, pick up,
+  scale, workbench, finish the hex), shown as a compact glass card (`ui/checklist_card.gd`, inside the goal
+  column; step dots, amber key glyphs, a hairline progress bar) that ticks green per step and fades out after
+  "Lumi is back on the job". Goal rows stay hidden while it runs. In-world pointer (`story/tutorial_marker.gd`):
+  an amber chevron and ground ring on the nearest junk, Lumi's hopper, the bale, the scale or the workbench,
+  plus an edge arrow when off screen; the hex step points at the nearest remaining piece. The first-seed hints
+  reuse the card (plant, then water).
+- Done: juice (`art/feel_fx.gd`, new Vfx `sweep`/`pillar`, new sounds confirm/thunk/tick/sweep in Audio):
+  gentle one-octave scoop combo ladder (`Audio.play_ladder`); bale press squash and stretch + thunk + small
+  shake (CameraRig honours Reduced motion) and the bale pops out squashed; sale cubes fly from the scale into
+  the counter, which counts up as they land (`ui/coin_flight.gd`, `CurrencyCluster.in_flight`); upgrade
+  two-note confirm and Lumi shows off the install after closing the bench; first-robot rollout (light beam,
+  rings, spring-in, "NEW CREWMATE"); hex reveal dust/glint sweep riding the ground ripple, extra chord and
+  sweep on the first hex.
+- Done: no HUD/world flash between the title fade and the intro (black cover until the intro overlay is up);
+  gameplay camera snapped behind Lumi under the intro's fade-out.
+- Done: early pacing and the scarce seed trickle: see docs/BALANCE.md "First hour".
+- Dev: `--tutorial-step=N`; `--first-demo=bale|sale|robot|reveal` (optionally `--demo-lead=S`) freezes the moment at
+  its peak for screenshots. Tests: `tests/test_first_hour.gd`.
+- Next: the autoplay bot never uses the Builder (stalls on `builder_1`); the HUD context line under the
+  prompt gets long over outposts (hex level + next + outpost note) and sits close to the level bar.

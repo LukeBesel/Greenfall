@@ -7,6 +7,13 @@ extends RefCounted
 ## GameState.flags "rocket_tier" and "rocket_ready_unix" (when the cells are full again).
 
 static var _data: Dictionary = {}
+## [beat] The autoplay bot drives this from the game clock so a time-scaled run recharges at
+## game speed (like Research.now_override); < 0 means the system clock.
+static var now_override: float = -1.0
+
+
+static func _clock() -> float:
+	return now_override if now_override >= 0.0 else Time.get_unix_time_from_system()
 
 
 static func data() -> Dictionary:
@@ -68,13 +75,19 @@ static func recharge_left() -> float:
 	if DevHooks.has("auto-launch"):
 		return 0.0
 	var at: float = float(GameState.flags.get("rocket_ready_unix", 0.0))
-	return maxf(0.0, at - Time.get_unix_time_from_system())
+	# [beat] Never more than a full recharge (clock set back, or a save from another clock): restart
+	# the countdown from now instead of waiting for the old timestamp.
+	var full: float = float(def().get("recharge_s", 0.0))
+	if at - _clock() > full:
+		at = _clock() + full
+		GameState.flags["rocket_ready_unix"] = at
+	return maxf(0.0, at - _clock())
 
 
 static func mark_launched() -> void:
 	var r: float = float(def().get("recharge_s", 0.0))
 	if r > 0.0:
-		GameState.flags["rocket_ready_unix"] = Time.get_unix_time_from_system() + r
+		GameState.flags["rocket_ready_unix"] = _clock() + r
 	else:
 		GameState.flags.erase("rocket_ready_unix")
 

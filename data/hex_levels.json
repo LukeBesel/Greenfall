@@ -1,18 +1,18 @@
 {
-  "_doc": "Hex levels for every non-hub land hex. 0 Junk -> 1 Clean -> 2 Planted -> 3 Growing -> 4 Sustained -> 5 Thriving. Levels never drop. planted_min_frac = share of a hex's plant slots that must be planted for Planted. growing_life = garden hex_life for Growing. Sustained: while Growing, the planted slots must have water > 0 for sustain_ratio of the last sustain_window_s seconds (sampled every sample_s); watering robots (Drip, Multibot on water) keep this up. Thriving: Sustained, every planted slot in bloom, hex_life >= thriving_life, and still watered. reward = one-off currencies on reaching the level. bonus = small permanent bonus per hex at that level (grow_pct: faster plant growth, seed_pct: more seeds from blooms), summed over hexes and capped by bonus_caps; cubes_per_min = a garden stipend in cubes per minute (Sustained/Thriving hexes keep paying after the junk is gone).",
+  "_doc": "Hex levels for every non-hub land hex. 0 Junk -> 1 Clean -> 2 Planted -> 3 Growing -> 4 Sustained -> 5 Thriving. Levels never drop. planted_min_frac = share of a hex's plant slots that must be planted for Planted. growing_life = garden hex_life for Growing. Sustained: while Growing, the planted slots must have water > 0 for sustain_ratio of the last sustain_window_s seconds (sampled every sample_s); watering robots (Drip, Multibot on water) keep this up. Thriving: Sustained, every planted slot in bloom, hex_life >= thriving_life, and still watered. reward = one-off currencies on reaching the level. bonus = small permanent bonus per hex at that level (grow_pct: faster plant growth, seed_pct: more seeds from blooms), summed over hexes and capped by bonus_caps; cubes_per_min = a garden stipend in cubes per minute (Sustained/Thriving hexes keep paying after the junk is gone); data_per_min = research Data from wildlife notes on Thriving hexes (so research keeps moving in a finished district).",
   "planted_min_frac": 0.25,
   "growing_life": 0.35,
   "thriving_life": 0.8,
   "sustain_window_s": 180,
   "sustain_ratio": 0.8,
   "sample_s": 1.0,
-  "bonus_caps": {"grow_pct": 1.0, "seed_pct": 1.0, "cubes_per_min": 400},
+  "bonus_caps": {"grow_pct": 1.0, "seed_pct": 1.0, "cubes_per_min": 900, "data_per_min": 30},
   "levels": [
     {"level": 0, "name": "Junk", "hint": "Clear every piece of junk"},
     {"level": 1, "name": "Clean", "hint": "Plant seeds here (tool 2)", "reward": {"cubes": 25}, "bonus": {}},
-    {"level": 2, "name": "Planted", "hint": "Water the sprouts so they grow", "reward": {"cubes": 60, "seeds": 2}, "bonus": {"grow_pct": 0.002}},
-    {"level": 3, "name": "Growing", "hint": "Keep it watered for 3 min (Drip robots)", "reward": {"cubes": 120, "seeds": 3}, "bonus": {"grow_pct": 0.003}},
-    {"level": 4, "name": "Sustained", "hint": "Bring every plant to bloom", "reward": {"cubes": 150, "seeds": 5, "data": 10}, "bonus": {"grow_pct": 0.004, "seed_pct": 0.005, "cubes_per_min": 5}},
-    {"level": 5, "name": "Thriving", "hint": "Wildlife has moved in", "reward": {"cubes": 400, "seeds": 8, "data": 20}, "bonus": {"grow_pct": 0.006, "seed_pct": 0.01, "cubes_per_min": 10}}
+    {"level": 2, "name": "Planted", "hint": "Water the sprouts so they grow", "reward": {"cubes": 60}, "bonus": {"grow_pct": 0.002}},
+    {"level": 3, "name": "Growing", "hint": "Keep it watered for 3 min (Drip robots)", "reward": {"cubes": 120, "seeds": 1}, "bonus": {"grow_pct": 0.003}},
+    {"level": 4, "name": "Sustained", "hint": "Bring every plant to bloom", "reward": {"cubes": 150, "seeds": 2, "data": 10}, "bonus": {"grow_pct": 0.004, "seed_pct": 0.005, "cubes_per_min": 8}},
+    {"level": 5, "name": "Thriving", "hint": "Wildlife has moved in", "reward": {"cubes": 400, "seeds": 4, "data": 20}, "bonus": {"grow_pct": 0.006, "seed_pct": 0.01, "cubes_per_min": 20, "data_per_min": 0.6}}
   ]
 }

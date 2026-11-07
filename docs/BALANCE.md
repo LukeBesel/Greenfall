@@ -354,3 +354,91 @@ volume x junk value x the frontier's `value_mult`, before Pure/Perfect bonuses a
   mechanics, expect roughly 2.5-3.5 h per frontier to base 5 and 50% Growing, and 3-5 h for the Cradle pad
   and 70% Growing: about 12-16 h of long tail. The autoplay bot cannot fly rockets or place heaters yet, so
   these need a play-test; tune `pieces_mult`, `value_mult`, `cost_mult` and the storm/ice numbers first.
+
+## Whole game and the garden ramp (wt/beat, Nov 7)
+
+Owner's curve: one special seed at ~10-15 min (story), seeds scarce and growth slow while cleaning
+drives progress until ~1 h, then "the garden takes off". The early part (first seed, the trickle) is
+tuned by the first-seed helper; this section is the 1 h+ ramp and everything after it.
+
+**The ramp (data):**
+- New stats `plant_growth` and `seed_yield` (data/patch.json, base 1.0) multiply garden growth and
+  seeds per bloom (plants/garden.gd). Research raises them: **Pollinator Survey** +75% growth / +60%
+  seeds (the "takes off" node, 240 Data after Wild Mint), Hedgerows +25% growth, Evergreen Saplings
+  +30% seeds.
+- Seedling Blueprint 60 -> 160 Data, Drip Blueprint 100 -> 200 Data (now after Big Tanks), Pollinator
+  Survey 160 -> 200, and all three need a level-3 base (`min_base_level`, research.json): planters and
+  watering bots arrive around the hour mark instead of ~20-30 min, for any research order.
+- Goal chain after "Plant 5 seeds": cleaning, bales, recycler, skimmer, hexes 20-30, base 3 carry
+  minutes 15-60; the garden goals (Seedling, Drip, Pollinator Survey, 25/60/100 plants, Sustained,
+  Thriving) follow as one run of rewards ("the garden takes off").
+- Bloom Core: the 25% beat now lands with the garden ramp; 50% in the Dust Flats; 75% around the
+  Sunken City / Cradle arrival; 100% is the Cradle finale (story/core_charge.gd `campaign_progress`:
+  bases at 5, frontiers visited, frontier bases levelled and Growing, the Cradle pad and district).
+
+**Walls removed:**
+- Old Town stalled ~100 min at base 3-5 once its junk was gone: income fell to the 400 cubes/min
+  stipend cap and research stopped (no Data source left). Now Sustained/Thriving pay 8/20 cubes/min
+  (cap 900), Thriving hexes add 0.6 Data/min (wildlife notes, cap 30/min), base 4 costs 28k (was 35k).
+- Research goals 20/24/26 moved after the rocket (Old Town's Data can't reach 20 nodes).
+- Builder goals moved after the rocket (optional tinkering walled the chain for ~50 min).
+- The 100-goal chain ended at "Clean 100 hexes": no goals for the whole late game. Now 144 goals:
+  second district, each frontier (visit, storms, heaters/thaw, greenhouses, pumps, base levels,
+  Growing), the Cradle (pad, district, Call the Cradle home) and the Seed Ark (1 and 3 waves). New goal
+  types: research, bases_l5, frontier_base, frontier_growing (story/goals.gd).
+- Rocket recharge used the wall clock: a 16x autoplay waited ~80 game-minutes per trip. The bot now
+  drives `RocketTiers.now_override` from the game clock (players are unaffected; recharge is also
+  clamped to one full cycle, so a clock change can't strand the rocket).
+
+**Measured (autoplay, game time; see docs/WALKTHROUGH.md for the full step list):**
+| Milestone | Before | After |
+|---|---|---|
+| Seed tin | 31 min | (first-seed helper) |
+| Seedling robot | 32 min | 49 min (base 3 at 43) |
+| Drip robot | 34 min | 63 min |
+| Pollinator Survey ("takes off") | n/a | 70 min |
+| Old Town base 5 / first launch | >200 min (stipend wall) | 74 min |
+| Second district base 5 | | +78 min |
+| Dust Flats / Frozen Port / Sunken City / Cradle | | 128 / 36 / 80 / 53 min |
+| New Game to the Cradle finale | not reachable without dev hooks | ~7.5-8 h bot (~15-22 h human) |
+
+## First hour (wt/first, Nov 7)
+
+Owner direction: the first hour is cleaning, robots, upgrades and base levels; planting starts as a
+story hook (one Maker seed, ~min 10-15) and stays a slow, scarce side track until the ~60-min ramp
+(owned by the "beat" pass: plant_growth / seed_yield stats, Pollinator Survey, Seedling/Drip gates,
+goals after `plant_5`, compost press yield).
+
+Measured with `--fresh --autoplay --time-scale=4` (same seed; game minutes). The bot plays fast and
+ignores the tutorial order, so a first-time player is roughly 2-3x slower on the first three marks.
+
+| Milestone | Before | After | Target |
+|---|---|---|---|
+| First bale | 0.29 | 0.29 | < 1 |
+| First sale | 0.36 | 0.36 | < 2 |
+| First upgrade | 0.33 (before the first sale) | 0.36 (after the sale) | ~3 for a player |
+| First hex clean | 1.3 | 1.3 | |
+| First robot (Scoopie) | 6.0 | 4.7-6 (parts luck) | 6-8 |
+| Seed tin found (first seed) | ~23 | ~12 | 10-15 |
+| First hex Planted | 24.2 | 14-16 | (was 15-20) |
+| Seeds in stock at 20 / 30 / 40 min | 0 / 109 / 296 | 11 / 29 / 60 | a trickle |
+| Seeds at 60 min | 741 | 366 | ramp after 60 (beat) |
+
+Goals keep completing every 1-4 min through ~33 min; after that the bot stalls on `builder_1` (it never
+uses the Builder), which is a bot gap, not a game gap: a player sees "Fit a part in the Builder".
+
+Data changes (early-game values only):
+- `goals.json`: Scoop 15 pays 10 (was 15), first bale 10 (was 20), so the first upgrade needs the first
+  sale (earn, then spend). "Find the seed tin" pays no seeds (was 5). `plant_5` (id kept for saves and
+  the chain split) is now "Plant the Maker seed", target 1, +1 seed.
+- `plants.json`: `first_seed` at 7 clean hexes (was 17) and gives 1 seed (was 15). Base meadow species
+  grow at half speed (`grow_s` x2) and yield 60% of their seeds per bloom, so beat's growth/seed stats
+  have room to make the garden take off. New `seed_finds`: 0.6% per scooped piece (x2.5 for paper),
+  at most one per 60 s, only after the tin (`plants/seed_finds.gd`).
+- `hex_levels.json`: Planted pays no seeds (was 2, it refunded the seeds that planted it), Growing 1 (3),
+  Sustained 2 (5), Thriving 4 (8). **Flag for beat**: the last two also matter after 60 min.
+- `lumi_level.json`: seeds every 3rd level, 2 + level/10 (was every 2nd, 4 + level/10). **Flag for beat.**
+- `events.json`: event seed rewards about halved (Supply Drop 2-5, Rain 1-3, Wildlife 2-6). **Flag.**
+- Code: the dormant compost press (before the first sprout) only heaps up 8 compost, so its first output
+  is two seeds, not an hour of paper (`plants/composter.gd` DORMANT_CAP).
+- Tried and reverted: Scoopie 1200-1350 (first robot ~8 min, but the second-Scoopie goal stalled 10 min).

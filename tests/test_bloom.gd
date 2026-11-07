@@ -57,14 +57,18 @@ func test_milestones_unlock_in_order_and_pay_once() -> void:
 	assert_almost_eq(cubes, 1500.0 + 4000.0, 0.01)
 	assert_eq(Bloom.check(some), [] as Array[String], "never twice")
 	assert_almost_eq(GameState.get_currency("cubes").to_float(), cubes, 0.01)
-	# Either condition is enough: 1% of the planet wakes the Cradle without three districts.
+	# [beat] Three districts in bloom no longer end the game: the Verdance Bloom (the finale) is
+	# the Cradle path, or 2% of the planet.
+	var three: Dictionary = {"thriving_hexes": 90, "thriving_districts": 3, "planet_pct": 1.05}
+	var got3: Array[String] = Bloom.check(three)
+	assert_true("green_shoots" in got3)
+	assert_false("verdance_bloom" in got3, "no early finale from three thriving districts")
+	var cradle: Dictionary = {"thriving_hexes": 90, "thriving_districts": 3, "planet_pct": 1.05, "cradle_returned": 1.0}
+	assert_true("verdance_bloom" in Bloom.check(cradle))
 	var pct: Dictionary = {"thriving_hexes": 30, "thriving_districts": 1, "planet_pct": 1.05}
-	var got2: Array[String] = Bloom.check(pct)
-	assert_true("verdance_bloom" in got2)
-	assert_true("green_shoots" in got2)
-	assert_false("wide_bloom" in got2)
+	assert_false("wide_bloom" in Bloom.check(pct))
 	var ms: Dictionary = Bloom.milestones().filter(func(m: Dictionary) -> bool: return m["id"] == "wide_bloom")[0]
-	assert_almost_eq(Bloom.progress(ms, pct), 0.525, 0.001)
+	assert_almost_eq(Bloom.progress(ms, pct), 0.35, 0.001)
 
 
 func test_seed_ark_locked_until_bloom_then_endless_waves() -> void:

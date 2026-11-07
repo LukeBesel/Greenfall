@@ -92,7 +92,32 @@ func value_of(i: int) -> float:
 			return 1.0 if GameState.flags.get(key, false) else 0.0
 		"districts":
 			return float(GameState.districts.size())
+		# [beat] late-game goals (frontiers, the Cradle)
+		"research":
+			return 1.0 if Research.has(key) else 0.0
+		"bases_l5":
+			return float(Frontiers.bases_at_level(5))
+		"frontier_base":
+			var fh: Dictionary = _frontier_hubs()
+			return float(Frontiers.base_level(int(fh[key]))) if fh.has(key) else 0.0
+		"frontier_growing":
+			var fh2: Dictionary = _frontier_hubs()
+			var worst: float = 1.0
+			for fid: String in ["dust_flats", "frozen_port", "sunken_city"]:
+				var hi: int = int(fh2.get(fid, -1))
+				var gf: float = Frontiers.growing_frac(hi) if hi >= 0 else 0.0
+				var fr: Variant = world.get("frontier") if world else null
+				if hi == GameState.current_hub and fr is FrontierDistrict:
+					gf = (fr as FrontierDistrict).growing_frac
+				worst = minf(worst, gf)
+			return worst
 	return 0.0
+
+
+## [beat] Frontier kind id -> hub index (empty before the planet is built).
+func _frontier_hubs() -> Dictionary:
+	var pl: Variant = world.get("planet") if world else null
+	return (pl as PlanetData).frontier_hubs if pl is PlanetData else {}
 
 
 ## Distinct hexes painted into any Command zone (crew or single robot) in this district.

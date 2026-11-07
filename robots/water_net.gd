@@ -84,7 +84,8 @@ func refill_points() -> Array[Dictionary]:
 
 
 ## Closest usable refill point to `from`. Lake points are moved to the near shore of the lake hex.
-func nearest_refill(from: Vector3) -> Dictionary:
+## avoid: points a robot couldn't reach ([beat]); skipped unless nothing else is left.
+func nearest_refill(from: Vector3, avoid: Array = []) -> Dictionary:
 	var best: Dictionary = {}
 	var best_d: float = INF
 	for p: Dictionary in refill_points():
@@ -95,6 +96,10 @@ func nearest_refill(from: Vector3) -> Dictionary:
 				pos += d0.normalized() * world.field.hex_size * 0.55
 			p["pos"] = pos
 		var d: float = Vector2(pos.x - from.x, pos.z - from.z).length()
+		for q: Variant in avoid:
+			if (q as Vector3).distance_to(pos) < 2.0:
+				d += 100000.0
+				break
 		if d < best_d:
 			best_d = d
 			best = p

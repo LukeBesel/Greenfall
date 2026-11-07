@@ -10,6 +10,15 @@ var slot: int = 0
 ## Dev hooks and tests can turn saving off so runs don't touch the player's save.
 var enabled: bool = true
 var _timer: float = 0.0
+## [beat] Dev: `--save-dir=NAME` keeps saves in user://saves_NAME and saves even with --fresh
+## (staged autoplay runs chain through it without touching the player's save).
+var dev_dir: String = ""
+
+
+func _init() -> void:
+	for a: String in OS.get_cmdline_user_args():
+		if a.begins_with("--save-dir="):
+			dev_dir = a.get_slice("=", 1).validate_filename()
 
 
 func _ready() -> void:
@@ -20,6 +29,8 @@ func _ready() -> void:
 
 ## [steam] The demo keeps its saves apart (Demo.SAVE_DIR) so a full-game save never opens in it.
 func save_dir() -> String:
+	if dev_dir != "":  # [beat]
+		return "user://saves_" + dev_dir
 	return Demo.SAVE_DIR if Demo.is_demo() else SAVE_DIR
 
 
@@ -54,13 +65,18 @@ func slot_path(s: int = -1) -> String:
 
 
 func has_save(s: int = -1) -> bool:
-	return FileAccess.file_exists(slot_path(s))
+	return FileAccess.file_exists(slot_path(s)) or FileAccess.file_exists(slot_path(s) + ".tmp")
 
 
 func save_game(gather: bool = true) -> bool:
-	if not enabled or not is_inside_tree():
+	if not (enabled or dev_dir != "") or not is_inside_tree():  # [beat] --save-dir saves even with --fresh
 		return false
 	if gather:
+		# [beat] Not mid-launch: Lumi is on the lift with the cells already spent; the last autosave
+		# (or the save travel_to writes on arrival) is the consistent one.
+		var sc: Node = get_tree().current_scene
+		if sc and sc.get("launching") == true:
+			return false
 		get_tree().call_group("persist", "persist_save")
 	var ok: bool = write_dict(slot_path(), GameState.to_dict())
 	if ok:
@@ -73,6 +89,9 @@ func load_game() -> bool:
 	if not has_save():
 		return false
 	var d: Dictionary = read_dict(slot_path())
+	if d.is_empty():
+		# [beat] A crash between removing the old save and renaming the new one leaves only the .tmp.
+		d = read_dict(slot_path() + ".tmp")
 	if d.is_empty():
 		return false
 	GameState.from_dict(migrate(d))

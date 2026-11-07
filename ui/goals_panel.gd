@@ -16,9 +16,7 @@ var hud: Node
 var expanded: bool = false
 var _goals: Goals
 var _head: Label
-var _check: VBoxContainer
-var _check_cap: Label
-var _check_text: Label
+var checklist: ChecklistCard  # [first] restart checklist card (was right-aligned text)
 var _rows: Array[Dictionary] = []
 var _idle: float = 0.0
 var _last_sig: String = ""
@@ -29,19 +27,9 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	custom_minimum_size = Vector2(W, 0)
 	add_theme_constant_override("separation", 8)
-	# Restart checklist block (tutorial).
-	_check = VBoxContainer.new()
-	_check.add_theme_constant_override("separation", 1)
-	_check.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(_check)
-	_check_cap = _cap("")
-	_check.add_child(_check_cap)
-	_check_text = UITheme.label("", 14, UITheme.CREAM)
-	_check_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_check_text.autowrap_mode = TextServer.AUTOWRAP_WORD
-	_check_text.custom_minimum_size = Vector2(W, 0)
-	_check.add_child(_check_text)
-	_check.visible = false
+	# Restart checklist card (tutorial; also borrowed for one-off "next step" hints).
+	checklist = ChecklistCard.new()
+	add_child(checklist)
 	_head = _cap("")
 	add_child(_head)
 	for k: int in 3:
@@ -82,21 +70,16 @@ func _make_row() -> Dictionary:
 ## Restart checklist text (EventBus.tutorial_changed); "" hides it with a fade.
 func set_checklist(text: String) -> void:
 	_idle = 0.0
-	if text == "":
-		if _check.visible:
-			var tw := _check.create_tween()
-			tw.tween_property(_check, "modulate:a", 0.0, 0.6)
-			tw.tween_callback(func() -> void: _check.visible = false)
-		return
-	var step: int = int(GameState.flags.get("tutorial_step", 0))
-	var n: int = Tutorial.STEPS.size()
-	_check_cap.text = ("R E S T A R T   C H E C K L I S T    %d / %d" % [mini(step + 1, n), n]) if step < n else "N E X T   S T E P"
-	var was: String = _check_text.text
-	_check_text.text = text
-	if not _check.visible or _check.modulate.a < 0.99 or _strip_count(was) != _strip_count(text):
-		_check.visible = true
-		_check.modulate.a = 0.0
-		_check.create_tween().tween_property(_check, "modulate:a", 1.0, 0.4)
+	if checklist.tutorial == null:
+		var w: Node = hud.get("world") if hud else null
+		checklist.tutorial = (w.get("tutorial") as Tutorial) if w else null
+	checklist.set_text(text)
+
+
+## [first] While the restart checklist runs, the goal rows stay out of the way (one instruction at a
+## time); they fade in once it is done.
+func _checklist_running() -> bool:
+	return checklist.tutorial != null and not checklist.tutorial.done()
 
 
 ## Step text without its "  3/8" counter (so counting up doesn't re-fade the block).
@@ -137,7 +120,7 @@ func _process(delta: float) -> void:
 	var sig: String = ""
 	for k: int in _rows.size():
 		var r: Dictionary = _rows[k]
-		(r["wrap"] as Control).visible = k < show_n and int(r["goal"]) >= 0
+		(r["wrap"] as Control).visible = k < show_n and int(r["goal"]) >= 0 and (expanded or not _checklist_running())
 		if r["busy"]:
 			continue
 		var gi: int = r["goal"]
