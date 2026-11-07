@@ -5,7 +5,8 @@ extends CanvasLayer
 ## fades back into the game, which keeps going (the Seed Ark loop). Skippable any time with
 ## Esc / Space / Enter / click / pad A or B; the game is paused underneath while it rolls.
 ## Plays once per save after the finale (flags.credits_seen); the title screen keeps its own
-## Credits page. Dev: --credits plays it a few seconds after the district loads.
+## Credits page. Dev: --credits[=S] plays it S seconds after the district loads; --credits-hold[=PX]
+## freezes it PX pixels in (screenshots).
 
 signal finished
 
@@ -69,6 +70,8 @@ func _layout() -> void:
 	_col.reset_size()
 	_col.position = Vector2((vp.x - w) * 0.5, vp.y + 20.0)
 	_scroll_end = -_col.size.y - 20.0
+	if DevHooks.has("credits-hold"):  # screenshots: hold the roll at this many px scrolled
+		_col.position.y = vp.y * 0.18 - DevHooks.get_f("credits-hold", 0.0)
 
 
 func _line(kind: String, text: String) -> Control:
@@ -161,7 +164,7 @@ func _process(delta: float) -> void:
 		return
 	var dt: float = delta / maxf(Engine.time_scale, 0.001)  # real seconds, even in fast autoplay runs
 	_t += dt
-	if _t > FADE_S:
+	if _t > FADE_S and not DevHooks.has("credits-hold"):
 		_col.position.y -= SPEED * dt * (6.0 if DevHooks.has("autoplay") else 1.0)
 	if _scroll_end < 0.0 and _col.position.y <= _scroll_end:
 		skip()
