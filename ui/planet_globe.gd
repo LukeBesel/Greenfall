@@ -294,7 +294,7 @@ func _clear() -> void:
 	for c: Node in get_children():
 		if c == _tilt:
 			remove_child(c)
-			c.queue_free()
+			c.free()
 	_tilt = null
 	_mats.clear()
 	_ring_mats.clear()

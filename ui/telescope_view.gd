@@ -392,6 +392,7 @@ func _build_orrery() -> void:
 	var pair := Node3D.new()
 	pair.name = "Pair"
 	_orrery.add_child(pair)
+	var sun_nodes: Array[Node3D] = []  # [globes] the globes are lit from these
 	for k: int in 2:
 		var s: Dictionary = a if k == 0 else b
 		var n := MeshInstance3D.new()
@@ -399,6 +400,7 @@ func _build_orrery() -> void:
 		n.material_override = _glow_mat(s["color"], 2.2 if k == 0 else 1.6)
 		n.position = Vector3(-1.4, 0, 0) if k == 0 else Vector3(3.6, 0, 0)
 		pair.add_child(n)
+		sun_nodes.append(n)
 		_halo(n, s["color"], 11.0 * float(s["size"]))
 		var l := OmniLight3D.new()
 		l.light_color = s["color"]
@@ -421,18 +423,16 @@ func _build_orrery() -> void:
 		pivot.rotation.y = float(i) * 2.1 + 0.4
 		pivot.set_meta("speed", 0.05 / pow(maxf(float(en["orbit_au"]), 0.2), 1.5))
 		_orrery.add_child(pivot)
-		var p := MeshInstance3D.new()
+		# [globes] Procedural planet globes (relief, clouds, rim, rings) lit by the two suns.
 		var pr: float = 1.0 + 0.25 * float(i % 3)
-		p.mesh = ProcMesh.sphere(pr, 24, 12)
-		var pm := StandardMaterial3D.new()
-		pm.albedo_color = en["color"]
-		pm.roughness = 0.8
-		if bool(en["visited"]) or bool(en["here"]):
-			pm.emission_enabled = true
-			pm.emission = (en["color"] as Color) * 0.15
-		p.material_override = pm
+		var p := PlanetGlobe.new()
+		p.radius = pr
+		p.max_lod = 2 if Settings.quality >= 2 else 1
 		p.position = Vector3(r, 0, 0)
 		pivot.add_child(p)
+		p.setup(str(en["id"]), _globe_restoration(en), en["color"])
+		if sun_nodes.size() == 2:
+			p.track_suns(sun_nodes[0], sun_nodes[1])
 		var lab := Label3D.new()
 		lab.text = tr(str(en["name"])).to_upper()
 		lab.font_size = 40
@@ -453,6 +453,16 @@ func _build_orrery() -> void:
 	_sel_ring.material_override = _glow_mat(Color(0.6, 0.9, 1.0), 1.6)
 	_orrery.add_child(_sel_ring)
 	_sel_ring.visible = false
+
+
+## [globes] How restored a world's globe looks: the live planet for the one you stand on, else
+## its saved district share (a district is only part of the planet, so it counts half).
+func _globe_restoration(en: Dictionary) -> float:
+	if bool(en.get("here", false)) and world and world.get("planet") != null and world.planet.has_method("restored_fraction"):
+		return clampf(float(world.planet.restored_fraction()), 0.0, 1.0)
+	if bool(en.get("visited", false)):
+		return clampf(float(RemoteProgress.snapshot(en["world"]).get("share", 0.0)) * 0.5, 0.0, 1.0)
+	return 0.0
 
 
 func _select(i: int) -> void:

@@ -191,3 +191,44 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
   plentiful where Data used to be the gate.
 - **The Ledger is quieter**: one uplink line per act; coupons and quips are small notify-stack
   entries, coupons every 12-20 min (was 4-7).
+
+## Planet globes (wt/globes, Nov 7)
+- **One reusable component for every planet seen from space**: `ui/planet_globe.gd` (`PlanetGlobe`,
+  a Node3D). `PlanetGlobe.new()`, `add_child`, `.setup(planet_id, restoration)`, later
+  `.set_restoration(f)`. Optional: `.radius` (the node itself is never scaled, so labels/markers
+  parented to it keep their size), `.track_suns(node_a, node_b)` (light from two sun nodes in the
+  same world, re-aimed every frame), `.set_sun_dirs(a, b)`, `.set_sun_colors(a, b)`, `.max_lod`,
+  `.set_lod(n)`, `.spin_scale`. Unknown ids get a generic rocky world tinted by the optional
+  third `setup()` argument.
+- **Procedural, unshaded shaders with their own binary-sun lighting** (`art/shaders/planet_*.gdshader`,
+  shared maths in `planet_lib.gdshaderinc`): 3D value noise with analytic derivatives, so the
+  domain-warped FBM / ridged / eroded FBM heights give real relief normals in one pass; the
+  non-smooth features (canyons, terraces, cracks, dunes) bump through screen-space derivatives.
+  The globe sets two sun directions and colours itself (SolarSystem.suns_for when present, else
+  data/solar_system.json, else the canon), so it looks the same in any 3D view whatever lights it
+  has. With no host directions the key light comes from the upper left of the active camera and
+  the companion sits the planet's sun separation (canon 14 degrees) beside it. Energies fall off
+  with orbit distance at half strength (a UI view: Rime still reads, Ochre doesn't blow out).
+- **Looks**: Verdance rust-brown junk continents turning green in spreading patches, murky seas
+  clearing to blue, smog clouds turning white, dusty rim turning blue; Ochre dunes, stratified
+  canyon networks, a giant terraced strip mine, dust ring + drifting grains; Tidewell island
+  chains, reef shelves, three storm spirals, a glint per sun; Rime cracked glassy ice plates with
+  glowing blue faults and lineae, polar caps, an orbiting ring of instanced ice spikes; Anvil rust
+  highlands, ridged ranges, a great rift, craters, thin lava/foundry seams, a fire ring of embers
+  and ash (thin, subtle). Rings and debris are MultiMeshes; motes are billboard quads.
+- **LOD**: by screen radius (under 48 px: 4 octaves, 40x20 spheres, 35% of the debris; under 190 px:
+  6 octaves; else 8). The telescope caps at 1 below the High preset.
+- **How "home" should use it in `ui/system_map.gd`** (not edited here; it lives on wt/home): replace
+  each planet's sphere mesh + material with
+  `var g := PlanetGlobe.new(); g.radius = <current sphere radius>; parent.add_child(g); g.setup(id, pct)`
+  where `pct` is 0..1 restoration (the current world: `world.planet.restored_fraction()`; others:
+  their saved share). If the map has sun nodes, call `g.track_suns(sun_a_node, sun_b_node)` so
+  each planet is lit from the real suns (otherwise it lights itself from the camera). Call
+  `g.set_restoration(pct)` when the value changes; don't rebuild. Keep picking/hover on the globe
+  node (add an Area3D child of radius `g.radius` if the map ray-picks meshes). Rings reach 2.5-3x
+  the radius on Ochre/Rime/Anvil, so leave orbit spacing for them. Remove the map's own planet
+  lights if they were only there for the spheres.
+- Not done: the Homecoming / Cradle Answers space shots (`story/space_stage.gd`) keep their
+  near-orbit planet shader: they frame a planet thousands of units wide from low orbit, which
+  needs a different detail scale than a globe; a later pass can drop a `PlanetGlobe` with
+  `radius = PLANET_R` there behind a check.
