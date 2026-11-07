@@ -429,19 +429,19 @@ msgstr "[MĶ ÎÎÎ ~]"
 msgid "MK IV"
 msgstr "[MĶ ÎV ~]"
 
-#: automation/rocket_tiers.gd:44
+#: automation/rocket_tiers.gd:51
 msgid "Top tier"
 msgstr "[Ţôþ ţîéŕ ~]"
 
-#: automation/rocket_tiers.gd:47
+#: automation/rocket_tiers.gd:54
 msgid "Needs the Rocket Cargo research"
 msgstr "[Ñééðš ţĥé Ŕôçķéţ Çàŕĝô ŕéšéàŕçĥ ~~~~~~~~]"
 
-#: automation/rocket_tiers.gd:49
+#: automation/rocket_tiers.gd:56
 msgid "Not enough materials"
 msgstr "[Ñôţ éñôûĝĥ màţéŕîàļš ~~~~]"
 
-#: automation/rocket_tiers.gd:62
+#: automation/rocket_tiers.gd:69
 msgid "Rocket upgraded: %s."
 msgstr "[Ŕôçķéţ ûþĝŕàðéð: %s. ~~~~]"
 
@@ -740,31 +740,31 @@ msgstr ""
 "[ÇÔMÞÔŠŢ ÞŔÉŠŠ  Ļv %d\n"
 "çômþôšţ %s  →  šééðš ~~~~~~~~~~~]"
 
-#: plants/garden.gd:253
+#: plants/garden.gd:256
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "[À ĥéx îš ƒûļļý ŕéšţôŕéð. Šôméţĥîñĝ šmàļļ îš àļŕéàðý ļîvîñĝ îñ îţ. ~~~~~~~~~~~~~~~~~~~~]"
 
-#: plants/hex_levels.gd:89
+#: plants/hex_levels.gd:90
 msgid "HEX  LV %d  %s"
 msgstr "[ĤÉX  ĻV %d  %s ~~]"
 
-#: plants/hex_levels.gd:92
+#: plants/hex_levels.gd:93
 msgid "      SUSTAIN  %d%%"
 msgstr "      [ŠÛŠŢÀÎÑ  %d%% ~~~~]"
 
-#: plants/hex_levels.gd:94
+#: plants/hex_levels.gd:95
 msgid "      THIRSTY"
 msgstr "      [ŢĤÎŔŠŢÝ ~~]"
 
-#: plants/hex_levels.gd:96
+#: plants/hex_levels.gd:97
 msgid "      next: %s"
 msgstr "      [ñéxţ: %s ~~]"
 
-#: plants/hex_levels.gd:242
+#: plants/hex_levels.gd:253
 msgid "HEX LV %d  %s"
 msgstr "[ĤÉX ĻV %d  %s ~~]"
 
-#: plants/hex_levels.gd:249
+#: plants/hex_levels.gd:260
 msgid "Hex Lv %d  %s.   %s"
 msgstr "[Ĥéx Ļv %d  %s.   %s ~~~~]"
 
@@ -1021,7 +1021,7 @@ msgstr "[ŕéƒîļļîñĝ àţ %s (%d%%) ~~~~~]"
 msgid "base barrel"
 msgstr "[bàšé bàŕŕéļ ~]"
 
-#: robots/robot.gd:259 systems/research.gd:379
+#: robots/robot.gd:259 systems/research.gd:383
 msgid "tank"
 msgstr "[ţàñķ ~]"
 
@@ -1121,63 +1121,63 @@ msgstr "[Ŵàţéŕ Ţàñķ þļàçéð. Ŵàţéŕéŕš ñéàŕbý ŵîļļ
 msgid "WATER"
 msgstr "[ŴÀŢÉŔ ~]"
 
-#: scenes/slice.gd:271
+#: scenes/slice.gd:275
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: þàîñţ žôñéš àñð šéñð çŕéŵš ŵĥéŕé ýôû ŵàñţ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:487
+#: scenes/slice.gd:491
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "[ĻM-1 ôñļîñé. Bļôôm Çôŕé 4%: ĝŕééñ ļîĝĥţ ļôŵ. Çŕàðļé ŕéļàý: ƒàîñţ. Ĝŕôŵ šôméţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:778
+#: scenes/slice.gd:782
 msgid "HEX CLEAN!  +%s"
 msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 
-#: scenes/slice.gd:792
+#: scenes/slice.gd:796
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice.gd:794
+#: scenes/slice.gd:798
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "[Ţĥé ŵĥôļé Ĵûñķýàŕð îš çļéàñ. Ļûmî bééþš à véŕý ļôñĝ, véŕý ĥàþþý bééþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:801
+#: scenes/slice.gd:805
 msgid "%s is out of range: %s"
 msgstr "[%s îš ôûţ ôƒ ŕàñĝé: %s ~~~~~]"
 
-#: scenes/slice.gd:811
+#: scenes/slice.gd:815
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ 5 ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:814 ui/rockets_panel.gd:39
+#: scenes/slice.gd:818 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "[Éñéŕĝý çéļļš ŕéçĥàŕĝîñĝ: %s. Ŕôçķéţ ûþĝŕàðéš ŕéƒîļļ ţĥém ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:868
+#: scenes/slice.gd:872
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "[Ţôûçĥðôŵñ: %s. Ĥûb %d ôƒ %d. %s ~~~~~~~~]"
 
-#: scenes/slice.gd:869
+#: scenes/slice.gd:873
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "[Ţĥé ŕôçķéţ îš þàŕķéð ôñ ţĥé ļôţ, ŕéàðý ŵĥéñ îţš çéļļš ŕéƒîļļ. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:869
+#: scenes/slice.gd:873
 msgid "Landed on the base pad."
 msgstr "[Ļàñðéð ôñ ţĥé bàšé þàð. ~~~~~]"
 
-#: scenes/slice.gd:960
+#: scenes/slice.gd:964
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1128
+#: scenes/slice.gd:1136
 msgid "Welcome back. The junk waited for you."
 msgstr "[Ŵéļçômé bàçķ. Ţĥé ĵûñķ ŵàîţéð ƒôŕ ýôû. ~~~~~~~~~~]"
 
-#: scenes/slice.gd:1145
+#: scenes/slice.gd:1153
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:1145
+#: scenes/slice.gd:1153
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
@@ -1269,59 +1269,59 @@ msgstr "[Ţĥé šééð bàýš àŕé ôþéñ. Fŕôm ñôŵ ôñ évéŕý b
 msgid "Nothing is waiting to end, {name}. Nobody is keeping score. We're home. We just keep planting."
 msgstr "[Ñôţĥîñĝ îš ŵàîţîñĝ ţô éñð, {name}. Ñôbôðý îš ķééþîñĝ šçôŕé. Ŵé'ŕé ĥômé. Ŵé ĵûšţ ķééþ þļàñţîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/bloom_finale.gd:137
+#: story/bloom_finale.gd:150
 msgid "The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram (M)."
 msgstr "[Ţĥé Çŕàðļé îš ĥômé. Ţĥé Šééð Àŕķ îš ôþéñ: évéŕý bļôôm ôñ Véŕðàñçé çôûñţš ţôŵàŕð ţĥé ñéxţ ŵàvé. Þŕôĝŕéšš šĥôŵš ôñ ţĥé ĥôļôĝŕàm (M). ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:179
+#: story/core_charge.gd:203
 msgid "Bloom Core 100%. Lumi's core is full of green light."
 msgstr "[Bļôôm Çôŕé 100%. Ļûmî'š çôŕé îš ƒûļļ ôƒ ĝŕééñ ļîĝĥţ. ~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:204
+#: story/core_charge.gd:228
 msgid "Bloom Core  25%"
 msgstr "[Bļôôm Çôŕé  25% ~~]"
 
-#: story/core_charge.gd:205
+#: story/core_charge.gd:229
 msgid "There. The relay just locked on. Lumi, I can hear you properly now. Clear as the old days."
 msgstr "[Ţĥéŕé. Ţĥé ŕéļàý ĵûšţ ļôçķéð ôñ. Ļûmî, Î çàñ ĥéàŕ ýôû þŕôþéŕļý ñôŵ. Çļéàŕ àš ţĥé ôļð ðàýš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:225
+#: story/core_charge.gd:249
 msgid "A memory  ·  the garden deck of the Cradle"
 msgstr "[À mémôŕý  ·  ţĥé ĝàŕðéñ ðéçķ ôƒ ţĥé Çŕàðļé ~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:233
+#: story/core_charge.gd:260
 msgid "Remember the garden deck? You watered every bed twice, just to be sure."
 msgstr "[Ŕémémbéŕ ţĥé ĝàŕðéñ ðéçķ? Ýôû ŵàţéŕéð évéŕý béð ţŵîçé, ĵûšţ ţô bé šûŕé. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:236
+#: story/core_charge.gd:263
 msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
 msgstr "[Évéŕý þàţçĥ ýôû ĝŕôŵ ðôŵñ ţĥéŕé îš ôñé môŕé béð ļîķé ţĥéšé. Ýôû'ŕé ñôţ ļôšţ, Ļûmî. Ýôû'ŕé ŕéþļàñţîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:240
+#: story/core_charge.gd:267
 msgid "Bloom Core 25%: WREN's signal is clear now."
 msgstr "[Bļôôm Çôŕé 25%: ŴŔÉÑ'š šîĝñàļ îš çļéàŕ ñôŵ. ~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:257
+#: story/core_charge.gd:284
 msgid "Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."
 msgstr "[Bļôôm Çôŕé 50%: Ļûmî'š ĝļôŵ îš bàçķ, bŕîĝĥţéŕ ţĥàñ îţ ĥàš bééñ îñ ýéàŕš. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:259
+#: story/core_charge.gd:286
 msgid "Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."
 msgstr "[Ĥàļƒ çĥàŕĝéð. Ýôû'ŕé ĝļôŵîñĝ, Ļûmî. Þŕôþéŕļý ĝļôŵîñĝ. Î'ð ƒôŕĝôţţéñ ýôû çôûļð bé ţĥîš bŕîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:292
+#: story/core_charge.gd:319
 msgid "That night..."
 msgstr "[Ţĥàţ ñîĝĥţ... ~~]"
 
-#: story/core_charge.gd:313
+#: story/core_charge.gd:343
 msgid "Lumi, look up. That light. West to east, steady, not twinkling."
 msgstr "[Ļûmî, ļôôķ ûþ. Ţĥàţ ļîĝĥţ. Ŵéšţ ţô éàšţ, šţéàðý, ñôţ ţŵîñķļîñĝ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:318
+#: story/core_charge.gd:348
 msgid "That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."
 msgstr "[Ţĥàţ'š ţĥé Çŕàðļé. Ŵĥéñ ýôûŕ çôŕé ļîţ ûþ, ţĥé àŕķ ĥéàŕð îţ. Šĥé ţûŕñéð àŕôûñð. Ŵé'ŕé çômîñĝ bàçķ ƒôŕ ýôû. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:328
+#: story/core_charge.gd:358
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "[Bļôôm Çôŕé 75%: ţĥé Çŕàðļé îš ôñ îţš ŵàý ĥômé. Ļôôķ ƒôŕ îţ çŕôššîñĝ ţĥé ñîĝĥţ šķý. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -1776,23 +1776,23 @@ msgstr "[Çôðéx: %d ñéŵ éñţŕîéš. ~~~~~]"
 msgid "Codex entry: %s"
 msgstr "[Çôðéx éñţŕý: %s ~~]"
 
-#: systems/bloom.gd:168
+#: systems/bloom.gd:169
 msgid "Verdance Bloom %d / %d  ·  next: %s"
 msgstr "[Véŕðàñçé Bļôôm %d / %d  ·  ñéxţ: %s ~~~~~~~~~]"
 
-#: systems/bloom.gd:170
+#: systems/bloom.gd:171
 msgid "Seed Ark wave %d  ·  %d / %d blooms planet-wide"
 msgstr "[Šééð Àŕķ ŵàvé %d  ·  %d / %d bļôômš þļàñéţ-ŵîðé ~~~~~~~~~~~~~]"
 
-#: systems/bloom.gd:198
+#: systems/bloom.gd:208
 msgid "Wilderness: %s. New ground, new junk, new colours under it."
 msgstr "[Ŵîļðéŕñéšš: %s. Ñéŵ ĝŕôûñð, ñéŵ ĵûñķ, ñéŵ çôļôûŕš ûñðéŕ îţ. ~~~~~~~~~~~~~~~~~~]"
 
-#: systems/bloom.gd:240
+#: systems/bloom.gd:257
 msgid "Seed Ark wave %d planted across Verdance. The Cradle drops a gift. Next wave: %d blooms."
 msgstr "[Šééð Àŕķ ŵàvé %d þļàñţéð àçŕôšš Véŕðàñçé. Ţĥé Çŕàðļé ðŕôþš à ĝîƒţ. Ñéxţ ŵàvé: %d bļôômš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/bloom.gd:251
+#: systems/bloom.gd:268
 msgid "Verdance Bloom: %s. %s"
 msgstr "[Véŕðàñçé Bļôôm: %s. %s ~~~~~]"
 
@@ -2074,95 +2074,107 @@ msgstr "[Ŕéšéàŕçĥîñĝ ñôŵ ~~]"
 msgid "Already queued"
 msgstr "[Àļŕéàðý qûéûéð ~~]"
 
-#: systems/research.gd:188
+#: systems/research.gd:190
+msgid "Needs base level %d"
+msgstr "[Ñééðš bàšé ļévéļ %d ~~~~]"
+
+#: systems/research.gd:192
 msgid "Queue is full"
 msgstr "[Qûéûé îš ƒûļļ ~~]"
 
-#: systems/research.gd:190
+#: systems/research.gd:194
 msgid "Not enough data"
 msgstr "[Ñôţ éñôûĝĥ ðàţà ~~]"
 
-#: systems/research.gd:319 ui/codex_screen.gd:754
+#: systems/research.gd:323 ui/codex_screen.gd:754
 msgid "%ds"
 msgstr "[%dš ~]"
 
-#: systems/research.gd:376
+#: systems/research.gd:380
 msgid "scoop reach"
 msgstr "[šçôôþ ŕéàçĥ ~]"
 
-#: systems/research.gd:376
+#: systems/research.gd:380
 msgid "scoop width"
 msgstr "[šçôôþ ŵîðţĥ ~]"
 
-#: systems/research.gd:376
+#: systems/research.gd:380
 msgid "compartment size"
 msgstr "[çômþàŕţméñţ šîžé ~~~]"
 
-#: systems/research.gd:377
+#: systems/research.gd:381
 msgid "bale value"
 msgstr "[bàļé vàļûé ~]"
 
-#: systems/research.gd:377
+#: systems/research.gd:381
 msgid "magnet radius"
 msgstr "[màĝñéţ ŕàðîûš ~~]"
 
-#: systems/research.gd:377
+#: systems/research.gd:381
 msgid "scoop speed"
 msgstr "[šçôôþ šþééð ~]"
 
-#: systems/research.gd:378
+#: systems/research.gd:382
 msgid "data gained"
 msgstr "[ðàţà ĝàîñéð ~]"
 
-#: systems/research.gd:378
+#: systems/research.gd:382
 msgid "research speed"
 msgstr "[ŕéšéàŕçĥ šþééð ~~]"
 
-#: systems/research.gd:378
+#: systems/research.gd:382
 msgid "lake clarity"
 msgstr "[ļàķé çļàŕîţý ~]"
 
-#: systems/research.gd:379
+#: systems/research.gd:383
 msgid "speed"
 msgstr "[šþééð ~]"
 
-#: systems/research.gd:379
+#: systems/research.gd:383
 msgid "work rate"
 msgstr "[ŵôŕķ ŕàţé ~]"
 
-#: systems/research.gd:379
+#: systems/research.gd:383
 msgid "range"
 msgstr "[ŕàñĝé ~]"
 
-#: systems/research.gd:380
+#: systems/research.gd:384
 msgid "bale quality"
 msgstr "[bàļé qûàļîţý ~]"
 
-#: systems/research.gd:380
+#: systems/research.gd:384
 msgid "carry"
 msgstr "[çàŕŕý ~]"
 
-#: systems/research.gd:401
+#: systems/research.gd:385
+msgid "plant growth"
+msgstr "[þļàñţ ĝŕôŵţĥ ~]"
+
+#: systems/research.gd:385
+msgid "seeds per bloom"
+msgstr "[šééðš þéŕ bļôôm ~~]"
+
+#: systems/research.gd:406
 msgid "Unlocks the %s robot"
 msgstr "[Ûñļôçķš ţĥé %s ŕôbôţ ~~~~]"
 
-#: systems/research.gd:403
+#: systems/research.gd:408
 msgid "Unlocks %s seeds"
 msgstr "[Ûñļôçķš %s šééðš ~~~]"
 
-#: systems/research.gd:405
+#: systems/research.gd:410
 msgid "Unlocks: %s"
 msgstr "[Ûñļôçķš: %s ~]"
 
-#: systems/research.gd:449
+#: systems/research.gd:454
 msgid "Field data logged. Spend Data on Research at the workbench (Research tab)."
 msgstr "[Fîéļð ðàţà ļôĝĝéð. Šþéñð Ðàţà ôñ Ŕéšéàŕçĥ àţ ţĥé ŵôŕķbéñçĥ (Ŕéšéàŕçĥ ţàb). ~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/research.gd:468
+#: systems/research.gd:473
 msgid "While you were away, research finished: %s."
 msgstr "[Ŵĥîļé ýôû ŵéŕé àŵàý, ŕéšéàŕçĥ ƒîñîšĥéð: %s. ~~~~~~~~~~~~]"
 
-#: systems/research.gd:491
+#: systems/research.gd:496
 msgid "Research complete: %s. %s"
 msgstr "[Ŕéšéàŕçĥ çômþļéţé: %s. %s ~~~~~~]"
 
@@ -2959,6 +2971,38 @@ msgstr "   [(ŵéàŕîñĝ) ~]"
 #: ui/cosmetics_panel.gd:61
 msgid "Locked: %s"
 msgstr "[Ļôçķéð: %s ~]"
+
+#: ui/credits_roll.gd:49
+msgid "Esc  Skip"
+msgstr "[Éšç  Šķîþ ~]"
+
+#: ui/credits_roll.gd:106
+msgid "The Cradle is home."
+msgstr "[Ţĥé Çŕàðļé îš ĥômé. ~~~~]"
+
+#: ui/credits_roll.gd:141
+msgid "MADE WITH LOVE AND JUNK"
+msgstr "[MÀÐÉ ŴÎŢĤ ĻÔVÉ ÀÑÐ ĴÛÑĶ ~~~~~]"
+
+#: ui/credits_roll.gd:142
+msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
+msgstr "[Çôðé, þŕôçéðûŕàļ méšĥéš, šýñţĥéšîžéð mûšîç àñð šôûñð, àñð ŵŕîţîñĝ àŕé ôŕîĝîñàļ ţô Ĝŕééñƒàļļ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/credits_roll.gd:143
+msgid "Built with the Godot Engine."
+msgstr "[Bûîļţ ŵîţĥ ţĥé Ĝôðôţ Éñĝîñé. ~~~~~~~]"
+
+#: ui/credits_roll.gd:146
+msgid "MODELS AND TEXTURES FROM POLY HAVEN"
+msgstr "[MÔÐÉĻŠ ÀÑÐ ŢÉXŢÛŔÉŠ FŔÔM ÞÔĻÝ ĤÀVÉÑ ~~~~~~~~~]"
+
+#: ui/credits_roll.gd:156
+msgid "Thank you for playing."
+msgstr "[Ţĥàñķ ýôû ƒôŕ þļàýîñĝ. ~~~~~]"
+
+#: ui/credits_roll.gd:157
+msgid "Lumi is still out there, planting. The Seed Ark is open."
+msgstr "[Ļûmî îš šţîļļ ôûţ ţĥéŕé, þļàñţîñĝ. Ţĥé Šééð Àŕķ îš ôþéñ. ~~~~~~~~~~~~~~~~~]"
 
 #: ui/currency_cluster.gd:10
 msgid "SHEET METAL"
@@ -4890,7 +4934,7 @@ msgstr "[Bŕîñĝ ţĥé Çŕàðļé ĥômé: ţĥŕéé ðîšţŕîçţš î
 msgid "Evergreen"
 msgstr "[Évéŕĝŕééñ ~]"
 
-#: data/achievements.json:achievements[bloom_evergreen].desc data/bloom.json:milestones[evergreen].desc
+#: data/achievements.json:achievements[bloom_evergreen].desc
 msgid "Twelve districts in bloom, or 3% of the planet reclaimed."
 msgstr "[Ţŵéļvé ðîšţŕîçţš îñ bļôôm, ôŕ 3% oƒ ţĥé þļàñéţ ŕéçļàîméð. ~~~~~~~~~~~~~~~~~]"
 
@@ -4975,16 +5019,20 @@ msgid "Reclaim 0.25% of the planet, as the hologram counts it."
 msgstr "[Ŕéçļàîm 0.25% oƒ ţĥé þļàñéţ, àš ţĥé ĥôļôĝŕàm çôûñţš îţ. ~~~~~~~~~~~~~~~~]"
 
 #: data/bloom.json:milestones[verdance_bloom].desc
-msgid "Three districts in bloom, or 1% of the planet reclaimed. Lumi's Bloom Core is full and the Cradle comes home."
-msgstr "[Ţĥŕéé ðîšţŕîçţš îñ bļôôm, ôŕ 1% oƒ ţĥé þļàñéţ ŕéçļàîméð. Ļûmî'š Bļôôm Çôŕé îš ƒûļļ àñð ţĥé Çŕàðļé çôméš ĥômé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "The Cradle Returns landing pad is alive (or 2% of the planet reclaimed). Lumi's Bloom Core is full and the Cradle comes home."
+msgstr "[Ţĥé Çŕàðļé Ŕéţûŕñš ļàñðîñĝ þàð îš àļîvé (ôŕ 2% oƒ ţĥé þļàñéţ ŕéçļàîméð). Ļûmî'š Bļôôm Çôŕé îš ƒûļļ àñð ţĥé Çŕàðļé çôméš ĥômé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/bloom.json:milestones[wide_bloom].name
 msgid "Wide Bloom"
 msgstr "[Ŵîðé Bļôôm ~]"
 
 #: data/bloom.json:milestones[wide_bloom].desc
-msgid "Six districts in bloom, or 2% of the planet reclaimed."
-msgstr "[Šîx ðîšţŕîçţš îñ bļôôm, ôŕ 2% oƒ ţĥé þļàñéţ ŕéçļàîméð. ~~~~~~~~~~~~~~~~]"
+msgid "Six districts in bloom, or 3% of the planet reclaimed."
+msgstr "[Šîx ðîšţŕîçţš îñ bļôôm, ôŕ 3% oƒ ţĥé þļàñéţ ŕéçļàîméð. ~~~~~~~~~~~~~~~~]"
+
+#: data/bloom.json:milestones[evergreen].desc
+msgid "Twelve districts in bloom, or 5% of the planet reclaimed."
+msgstr "[Ţŵéļvé ðîšţŕîçţš îñ bļôôm, ôŕ 5% oƒ ţĥé þļàñéţ ŕéçļàîméð. ~~~~~~~~~~~~~~~~~]"
 
 #: data/codex.json:categories[junk].name data/hex_levels.json:levels[0].name
 msgid "Junk"
@@ -7176,45 +7224,101 @@ msgstr "[Þļàñţ 5 šééðš ~~]"
 msgid "Get a hex to Planted"
 msgstr "[Ĝéţ à ĥéx ţô Þļàñţéð ~~~~]"
 
+#: data/goals.json:goals[earn_10k].text
+msgid "Earn 10,000 cubes"
+msgstr "[Éàŕñ 10,000 çûbéš ~~~]"
+
 #: data/goals.json:goals[bloom_5].text
 msgid "Grow 5 flowers to bloom"
 msgstr "[Ĝŕôŵ 5 ƒļôŵéŕš ţô bļôôm ~~~~~]"
-
-#: data/goals.json:goals[hexlv_3].text
-msgid "Get a hex to Growing"
-msgstr "[Ĝéţ à ĥéx ţô Ĝŕôŵîñĝ ~~~~]"
-
-#: data/goals.json:goals[seedling_1].text
-msgid "Build a Seedling planter"
-msgstr "[Bûîļð à Šééðļîñĝ þļàñţéŕ ~~~~~]"
-
-#: data/goals.json:goals[plant_25].text
-msgid "Plant 25 seeds"
-msgstr "[Þļàñţ 25 šééðš ~~]"
 
 #: data/goals.json:goals[shards_2].text
 msgid "Read 2 memory shards"
 msgstr "[Ŕéàð 2 mémôŕý šĥàŕðš ~~~~]"
 
-#: data/goals.json:goals[bloom_25].text
-msgid "Grow 25 flowers to bloom"
-msgstr "[Ĝŕôŵ 25 ƒļôŵéŕš ţô bļôôm ~~~~~]"
+#: data/goals.json:goals[zone_6].text
+msgid "Zone 6 hexes for your crews"
+msgstr "[Žôñé 6 ĥéxéš ƒôŕ ýôûŕ çŕéŵš ~~~~~~]"
+
+#: data/goals.json:goals[hex_17].text
+msgid "Clean 17 hexes"
+msgstr "[Çļéàñ 17 ĥéxéš ~~]"
 
 #: data/goals.json:goals[research_8].text
 msgid "Finish 8 research projects"
 msgstr "[Fîñîšĥ 8 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
 
+#: data/goals.json:goals[bales_100].text
+msgid "Robots press 100 bales"
+msgstr "[Ŕôbôţš þŕéšš 100 bàļéš ~~~~~]"
+
+#: data/goals.json:goals[recycle_5].text
+msgid "Recycle 5 bales"
+msgstr "[Ŕéçýçļé 5 bàļéš ~~]"
+
+#: data/goals.json:goals[hexlv_3].text
+msgid "Get a hex to Growing"
+msgstr "[Ĝéţ à ĥéx ţô Ĝŕôŵîñĝ ~~~~]"
+
+#: data/goals.json:goals[hex_20].text
+msgid "Clean 20 hexes"
+msgstr "[Çļéàñ 20 ĥéxéš ~~]"
+
+#: data/goals.json:goals[skimmer_1].text
+msgid "Build a Skimmer for the lake"
+msgstr "[Bûîļð à Šķîmméŕ ƒôŕ ţĥé ļàķé ~~~~~~~]"
+
+#: data/goals.json:goals[research_12].text
+msgid "Finish 12 research projects"
+msgstr "[Fîñîšĥ 12 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
+
+#: data/goals.json:goals[hex_25].text
+msgid "Clean 25 hexes"
+msgstr "[Çļéàñ 25 ĥéxéš ~~]"
+
+#: data/goals.json:goals[earn_50k].text
+msgid "Earn 50,000 cubes"
+msgstr "[Éàŕñ 50,000 çûbéš ~~~]"
+
+#: data/goals.json:goals[hex_28].text
+msgid "Clean 28 hexes"
+msgstr "[Çļéàñ 28 ĥéxéš ~~]"
+
+#: data/goals.json:goals[upgrades_40].text
+msgid "Install 40 upgrades"
+msgstr "[Îñšţàļļ 40 ûþĝŕàðéš ~~~~]"
+
+#: data/goals.json:goals[seedling_1].text
+msgid "Build a Seedling planter"
+msgstr "[Bûîļð à Šééðļîñĝ þļàñţéŕ ~~~~~]"
+
+#: data/goals.json:goals[hex_30].text
+msgid "Clean 30 hexes (lake too)"
+msgstr "[Çļéàñ 30 ĥéxéš (ļàķé ţôô) ~~~~~~]"
+
+#: data/goals.json:goals[base_3].text
+msgid "Upgrade the base to level 3"
+msgstr "[Ûþĝŕàðé ţĥé bàšé ţô ļévéļ 3 ~~~~~~]"
+
+#: data/goals.json:goals[plant_25].text
+msgid "Plant 25 seeds"
+msgstr "[Þļàñţ 25 šééðš ~~]"
+
 #: data/goals.json:goals[drip_1].text
 msgid "Build a Drip watering robot"
 msgstr "[Bûîļð à Ðŕîþ ŵàţéŕîñĝ ŕôbôţ ~~~~~~]"
 
+#: data/goals.json:goals[pollinator].text
+msgid "Research Pollinator Survey"
+msgstr "[Ŕéšéàŕçĥ Þôļļîñàţôŕ Šûŕvéý ~~~~~~]"
+
+#: data/goals.json:goals[bloom_25].text
+msgid "Grow 25 flowers to bloom"
+msgstr "[Ĝŕôŵ 25 ƒļôŵéŕš ţô bļôôm ~~~~~]"
+
 #: data/goals.json:goals[tank_1].text
 msgid "Place a Water Tank"
 msgstr "[Þļàçé à Ŵàţéŕ Ţàñķ ~~~]"
-
-#: data/goals.json:goals[earn_10k].text
-msgid "Earn 10,000 cubes"
-msgstr "[Éàŕñ 10,000 çûbéš ~~~]"
 
 #: data/goals.json:goals[plant_60].text
 msgid "Plant 60 seeds"
@@ -7224,33 +7328,17 @@ msgstr "[Þļàñţ 60 šééðš ~~]"
 msgid "Run 2 Drip robots"
 msgstr "[Ŕûñ 2 Ðŕîþ ŕôbôţš ~~~]"
 
-#: data/goals.json:goals[zone_6].text
-msgid "Zone 6 hexes for your crews"
-msgstr "[Žôñé 6 ĥéxéš ƒôŕ ýôûŕ çŕéŵš ~~~~~~]"
-
-#: data/goals.json:goals[bales_100].text
-msgid "Robots press 100 bales"
-msgstr "[Ŕôbôţš þŕéšš 100 bàļéš ~~~~~]"
-
-#: data/goals.json:goals[hex_17].text
-msgid "Clean 17 hexes"
-msgstr "[Çļéàñ 17 ĥéxéš ~~]"
+#: data/goals.json:goals[hexlv_4].text
+msgid "Get a hex to Sustained"
+msgstr "[Ĝéţ à ĥéx ţô Šûšţàîñéð ~~~~~]"
 
 #: data/goals.json:goals[drip_4].text
 msgid "Run 4 Drip robots"
 msgstr "[Ŕûñ 4 Ðŕîþ ŕôbôţš ~~~]"
 
-#: data/goals.json:goals[hexlv_4].text
-msgid "Get a hex to Sustained"
-msgstr "[Ĝéţ à ĥéx ţô Šûšţàîñéð ~~~~~]"
-
 #: data/goals.json:goals[hexlv_4x3].text
 msgid "Get 3 hexes to Sustained"
 msgstr "[Ĝéţ 3 ĥéxéš ţô Šûšţàîñéð ~~~~~]"
-
-#: data/goals.json:goals[hex_20].text
-msgid "Clean 20 hexes"
-msgstr "[Çļéàñ 20 ĥéxéš ~~]"
 
 #: data/goals.json:goals[hexlv_5].text
 msgid "Get a hex to Thriving"
@@ -7260,42 +7348,6 @@ msgstr "[Ĝéţ à ĥéx ţô Ţĥŕîvîñĝ ~~~~]"
 msgid "Get 5 hexes to Sustained"
 msgstr "[Ĝéţ 5 ĥéxéš ţô Šûšţàîñéð ~~~~~]"
 
-#: data/goals.json:goals[research_12].text
-msgid "Finish 12 research projects"
-msgstr "[Fîñîšĥ 12 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
-
-#: data/goals.json:goals[recycle_5].text
-msgid "Recycle 5 bales"
-msgstr "[Ŕéçýçļé 5 bàļéš ~~]"
-
-#: data/goals.json:goals[builder_full].text
-msgid "Fully custom-build a robot"
-msgstr "[Fûļļý çûšţôm-bûîļð à ŕôbôţ ~~~~~~]"
-
-#: data/goals.json:goals[builder_preset].text
-msgid "Save a crew build preset"
-msgstr "[Šàvé à çŕéŵ bûîļð þŕéšéţ ~~~~~]"
-
-#: data/goals.json:goals[skimmer_1].text
-msgid "Build a Skimmer for the lake"
-msgstr "[Bûîļð à Šķîmméŕ ƒôŕ ţĥé ļàķé ~~~~~~~]"
-
-#: data/goals.json:goals[hexlv_5x3].text
-msgid "Get 3 hexes to Thriving"
-msgstr "[Ĝéţ 3 ĥéxéš ţô Ţĥŕîvîñĝ ~~~~~]"
-
-#: data/goals.json:goals[hex_25].text
-msgid "Clean 25 hexes"
-msgstr "[Çļéàñ 25 ĥéxéš ~~]"
-
-#: data/goals.json:goals[hexlv_4x8].text
-msgid "Get 8 hexes to Sustained"
-msgstr "[Ĝéţ 8 ĥéxéš ţô Šûšţàîñéð ~~~~~]"
-
-#: data/goals.json:goals[hex_28].text
-msgid "Clean 28 hexes"
-msgstr "[Çļéàñ 28 ĥéxéš ~~]"
-
 #: data/goals.json:goals[plant_100].text
 msgid "Plant 100 seeds"
 msgstr "[Þļàñţ 100 šééðš ~~]"
@@ -7304,25 +7356,17 @@ msgstr "[Þļàñţ 100 šééðš ~~]"
 msgid "Build 15 robots"
 msgstr "[Bûîļð 15 ŕôbôţš ~~]"
 
-#: data/goals.json:goals[hex_30].text
-msgid "Clean 30 hexes (lake too)"
-msgstr "[Çļéàñ 30 ĥéxéš (ļàķé ţôô) ~~~~~~]"
+#: data/goals.json:goals[hexlv_5x3].text
+msgid "Get 3 hexes to Thriving"
+msgstr "[Ĝéţ 3 ĥéxéš ţô Ţĥŕîvîñĝ ~~~~~]"
 
-#: data/goals.json:goals[earn_50k].text
-msgid "Earn 50,000 cubes"
-msgstr "[Éàŕñ 50,000 çûbéš ~~~]"
+#: data/goals.json:goals[hexlv_4x8].text
+msgid "Get 8 hexes to Sustained"
+msgstr "[Ĝéţ 8 ĥéxéš ţô Šûšţàîñéð ~~~~~]"
 
 #: data/goals.json:goals[earn_75k].text
 msgid "Earn 75,000 cubes"
 msgstr "[Éàŕñ 75,000 çûbéš ~~~]"
-
-#: data/goals.json:goals[research_20].text
-msgid "Finish 20 research projects"
-msgstr "[Fîñîšĥ 20 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
-
-#: data/goals.json:goals[base_3].text
-msgid "Upgrade the base to level 3"
-msgstr "[Ûþĝŕàðé ţĥé bàšé ţô ļévéļ 3 ~~~~~~]"
 
 #: data/goals.json:goals[bloom_300].text
 msgid "Grow 300 flowers to bloom"
@@ -7331,10 +7375,6 @@ msgstr "[Ĝŕôŵ 300 ƒļôŵéŕš ţô bļôôm ~~~~~~]"
 #: data/goals.json:goals[stipend_2k].text
 msgid "Garden stipend: 2,000 cubes"
 msgstr "[Ĝàŕðéñ šţîþéñð: 2,000 çûbéš ~~~~~~]"
-
-#: data/goals.json:goals[upgrades_40].text
-msgid "Install 40 upgrades"
-msgstr "[Îñšţàļļ 40 ûþĝŕàðéš ~~~~]"
 
 #: data/goals.json:goals[hexlv_5x8].text
 msgid "Get 8 hexes to Thriving"
@@ -7355,14 +7395,6 @@ msgstr "[Ĝéţ 15 ĥéxéš ţô Šûšţàîñéð ~~~~~~]"
 #: data/goals.json:goals[hexlv_5x15].text
 msgid "Get 15 hexes to Thriving"
 msgstr "[Ĝéţ 15 ĥéxéš ţô Ţĥŕîvîñĝ ~~~~~]"
-
-#: data/goals.json:goals[research_24].text
-msgid "Finish 24 research projects"
-msgstr "[Fîñîšĥ 24 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
-
-#: data/goals.json:goals[multibot_1].text
-msgid "Build a Multibot"
-msgstr "[Bûîļð à Mûļţîbôţ ~~~]"
 
 #: data/goals.json:goals[hexlv_4x20].text
 msgid "Get 20 hexes to Sustained"
@@ -7392,10 +7424,6 @@ msgstr "[Fîļţéŕ 1,000 m3 ôƒ àîŕ ~~~~~]"
 msgid "Garden stipend: 7,500 cubes"
 msgstr "[Ĝàŕðéñ šţîþéñð: 7,500 çûbéš ~~~~~~]"
 
-#: data/goals.json:goals[research_26].text
-msgid "Finish 26 research projects"
-msgstr "[Fîñîšĥ 26 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
-
 #: data/goals.json:goals[stipend_10k].text
 msgid "Garden stipend: 10,000 cubes"
 msgstr "[Ĝàŕðéñ šţîþéñð: 10,000 çûbéš ~~~~~~~]"
@@ -7412,6 +7440,26 @@ msgstr "[Ûþĝŕàðé ţĥé bàšé ţô ļévéļ 5 ~~~~~~]"
 msgid "Launch the rocket onward"
 msgstr "[Ļàûñçĥ ţĥé ŕôçķéţ ôñŵàŕð ~~~~~]"
 
+#: data/goals.json:goals[builder_full].text
+msgid "Fully custom-build a robot"
+msgstr "[Fûļļý çûšţôm-bûîļð à ŕôbôţ ~~~~~~]"
+
+#: data/goals.json:goals[builder_preset].text
+msgid "Save a crew build preset"
+msgstr "[Šàvé à çŕéŵ bûîļð þŕéšéţ ~~~~~]"
+
+#: data/goals.json:goals[research_20].text
+msgid "Finish 20 research projects"
+msgstr "[Fîñîšĥ 20 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
+
+#: data/goals.json:goals[multibot_1].text
+msgid "Build a Multibot"
+msgstr "[Bûîļð à Mûļţîbôţ ~~~]"
+
+#: data/goals.json:goals[tier_1].text
+msgid "Upgrade a robot type to Mk II"
+msgstr "[Ûþĝŕàðé à ŕôbôţ ţýþé ţô Mķ ÎÎ ~~~~~~~]"
+
 #: data/goals.json:goals[stipend_20k].text
 msgid "Garden stipend: 20,000 cubes"
 msgstr "[Ĝàŕðéñ šţîþéñð: 20,000 çûbéš ~~~~~~~]"
@@ -7420,13 +7468,185 @@ msgstr "[Ĝàŕðéñ šţîþéñð: 20,000 çûbéš ~~~~~~~]"
 msgid "Earn 150,000 cubes"
 msgstr "[Éàŕñ 150,000 çûbéš ~~~]"
 
-#: data/goals.json:goals[tier_1].text
-msgid "Upgrade a robot type to Mk II"
-msgstr "[Ûþĝŕàðé à ŕôbôţ ţýþé ţô Mķ ÎÎ ~~~~~~~]"
+#: data/goals.json:goals[base2_3].text
+msgid "Fix up the new base to level 3"
+msgstr "[Fîx ûþ ţĥé ñéŵ bàšé ţô ļévéļ 3 ~~~~~~~]"
+
+#: data/goals.json:goals[hex_50].text
+msgid "Clean 50 hexes"
+msgstr "[Çļéàñ 50 ĥéxéš ~~]"
+
+#: data/goals.json:goals[bloom_800].text
+msgid "Grow 800 flowers to bloom"
+msgstr "[Ĝŕôŵ 800 ƒļôŵéŕš ţô bļôôm ~~~~~~]"
+
+#: data/goals.json:goals[restored_40].text
+msgid "Fully restore 40 hexes"
+msgstr "[Fûļļý ŕéšţôŕé 40 ĥéxéš ~~~~~]"
+
+#: data/goals.json:goals[base2_4].text
+msgid "New base to level 4"
+msgstr "[Ñéŵ bàšé ţô ļévéļ 4 ~~~~]"
+
+#: data/goals.json:goals[base5_2].text
+msgid "Get a second base to level 5"
+msgstr "[Ĝéţ à šéçôñð bàšé ţô ļévéļ 5 ~~~~~~~]"
+
+#: data/goals.json:goals[research_dunes].text
+msgid "Research Dune Charts"
+msgstr "[Ŕéšéàŕçĥ Ðûñé Çĥàŕţš ~~~~]"
+
+#: data/goals.json:goals[visit_dust].text
+msgid "Fly to the Dust Flats"
+msgstr "[Fļý ţô ţĥé Ðûšţ Fļàţš ~~~~]"
+
+#: data/goals.json:goals[research_24].text
+msgid "Finish 24 research projects"
+msgstr "[Fîñîšĥ 24 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
+
+#: data/goals.json:goals[storm_1].text
+msgid "Ride out a sandstorm"
+msgstr "[Ŕîðé ôûţ à šàñðšţôŕm ~~~~]"
+
+#: data/goals.json:goals[dust_base3].text
+msgid "Dust Flats base to level 3"
+msgstr "[Ðûšţ Fļàţš bàšé ţô ļévéļ 3 ~~~~~~]"
+
+#: data/goals.json:goals[dust_grow15].text data/goals.json:goals[frozen_grow15].text data/goals.json:goals[sunken_grow15].text
+msgid "Get 15 hexes Growing here"
+msgstr "[Ĝéţ 15 ĥéxéš Ĝŕôŵîñĝ ĥéŕé ~~~~~~]"
+
+#: data/goals.json:goals[hex_80].text
+msgid "Clean 80 hexes"
+msgstr "[Çļéàñ 80 ĥéxéš ~~]"
+
+#: data/goals.json:goals[storm_3].text
+msgid "Ride out 3 sandstorms"
+msgstr "[Ŕîðé ôûţ 3 šàñðšţôŕmš ~~~~]"
+
+#: data/goals.json:goals[dust_base4].text
+msgid "Dust Flats base to level 4"
+msgstr "[Ðûšţ Fļàţš bàšé ţô ļévéļ 4 ~~~~~~]"
 
 #: data/goals.json:goals[hex_100].text
 msgid "Clean 100 hexes"
 msgstr "[Çļéàñ 100 ĥéxéš ~~]"
+
+#: data/goals.json:goals[research_lance].text
+msgid "Research Thermal Lance"
+msgstr "[Ŕéšéàŕçĥ Ţĥéŕmàļ Ļàñçé ~~~~~]"
+
+#: data/goals.json:goals[dust_base5].text
+msgid "Dust Flats base to level 5"
+msgstr "[Ðûšţ Fļàţš bàšé ţô ļévéļ 5 ~~~~~~]"
+
+#: data/goals.json:goals[base5_3].text
+msgid "Get three bases to level 5"
+msgstr "[Ĝéţ ţĥŕéé bàšéš ţô ļévéļ 5 ~~~~~~]"
+
+#: data/goals.json:goals[visit_frozen].text
+msgid "Fly to the Frozen Port"
+msgstr "[Fļý ţô ţĥé Fŕôžéñ Þôŕţ ~~~~~]"
+
+#: data/goals.json:goals[research_26].text
+msgid "Finish 26 research projects"
+msgstr "[Fîñîšĥ 26 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
+
+#: data/goals.json:goals[heater_1].text
+msgid "Light a heater on the ice"
+msgstr "[Ļîĝĥţ à ĥéàţéŕ ôñ ţĥé îçé ~~~~~~]"
+
+#: data/goals.json:goals[thaw_10].text
+msgid "Thaw 10 hexes"
+msgstr "[Ţĥàŵ 10 ĥéxéš ~~]"
+
+#: data/goals.json:goals[greenhouse_1].text
+msgid "Build a greenhouse"
+msgstr "[Bûîļð à ĝŕééñĥôûšé ~~~]"
+
+#: data/goals.json:goals[frozen_base3].text
+msgid "Frozen Port base to level 3"
+msgstr "[Fŕôžéñ Þôŕţ bàšé ţô ļévéļ 3 ~~~~~~]"
+
+#: data/goals.json:goals[thaw_30].text
+msgid "Thaw 30 hexes"
+msgstr "[Ţĥàŵ 30 ĥéxéš ~~]"
+
+#: data/goals.json:goals[frozen_base4].text
+msgid "Frozen Port base to level 4"
+msgstr "[Fŕôžéñ Þôŕţ bàšé ţô ļévéļ 4 ~~~~~~]"
+
+#: data/goals.json:goals[hex_130].text
+msgid "Clean 130 hexes"
+msgstr "[Çļéàñ 130 ĥéxéš ~~]"
+
+#: data/goals.json:goals[research_pumps].text
+msgid "Research Pump Works"
+msgstr "[Ŕéšéàŕçĥ Þûmþ Ŵôŕķš ~~~~]"
+
+#: data/goals.json:goals[frozen_base5].text
+msgid "Frozen Port base to level 5"
+msgstr "[Fŕôžéñ Þôŕţ bàšé ţô ļévéļ 5 ~~~~~~]"
+
+#: data/goals.json:goals[base5_4].text
+msgid "Get four bases to level 5"
+msgstr "[Ĝéţ ƒôûŕ bàšéš ţô ļévéļ 5 ~~~~~~]"
+
+#: data/goals.json:goals[visit_sunken].text
+msgid "Fly to the Sunken City"
+msgstr "[Fļý ţô ţĥé Šûñķéñ Çîţý ~~~~~]"
+
+#: data/goals.json:goals[drain_1].text
+msgid "Run the old pumps"
+msgstr "[Ŕûñ ţĥé ôļð þûmþš ~~~]"
+
+#: data/goals.json:goals[sunken_base3].text
+msgid "Sunken City base to level 3"
+msgstr "[Šûñķéñ Çîţý bàšé ţô ļévéļ 3 ~~~~~~]"
+
+#: data/goals.json:goals[drain_3].text
+msgid "Drain the Sunken City"
+msgstr "[Ðŕàîñ ţĥé Šûñķéñ Çîţý ~~~~]"
+
+#: data/goals.json:goals[sunken_base4].text
+msgid "Sunken City base to level 4"
+msgstr "[Šûñķéñ Çîţý bàšé ţô ļévéļ 4 ~~~~~~]"
+
+#: data/goals.json:goals[sunken_base5].text
+msgid "Sunken City base to level 5"
+msgstr "[Šûñķéñ Çîţý bàšé ţô ļévéļ 5 ~~~~~~]"
+
+#: data/goals.json:goals[frontiers_growing].text
+msgid "Every frontier 50% Growing"
+msgstr "[Évéŕý ƒŕôñţîéŕ 50% Gŕôŵîñĝ ~~~~~~]"
+
+#: data/goals.json:goals[research_beacon].text
+msgid "Research the Ark Beacon"
+msgstr "[Ŕéšéàŕçĥ ţĥé Àŕķ Béàçôñ ~~~~~]"
+
+#: data/goals.json:goals[visit_cradle].text
+msgid "Fly to Cradle Returns"
+msgstr "[Fļý ţô Çŕàðļé Ŕéţûŕñš ~~~~]"
+
+#: data/goals.json:goals[cradle_pad].text
+msgid "Clean the Cradle landing pad"
+msgstr "[Çļéàñ ţĥé Çŕàðļé ļàñðîñĝ þàð ~~~~~~~]"
+
+#: data/goals.json:goals[cradle_grow25].text
+msgid "Get 25 hexes Growing here"
+msgstr "[Ĝéţ 25 ĥéxéš Ĝŕôŵîñĝ ĥéŕé ~~~~~~]"
+
+#: data/goals.json:goals[cradle_home].text
+msgid "Call the Cradle home"
+msgstr "[Çàļļ ţĥé Çŕàðļé ĥômé ~~~~]"
+
+#: data/goals.json:goals[ark_1].text
+msgid "Plant a Seed Ark wave"
+msgstr "[Þļàñţ à Šééð Àŕķ ŵàvé ~~~~]"
+
+#: data/goals.json:goals[ark_3].text
+msgid "Plant three Seed Ark waves"
+msgstr "[Þļàñţ ţĥŕéé Šééð Àŕķ ŵàvéš ~~~~~~]"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -7973,24 +8193,24 @@ msgid "Pollinator Survey"
 msgstr "[Þôļļîñàţôŕ Šûŕvéý ~~~]"
 
 #: data/research.json:nodes[pollinator_survey].desc
-msgid "Count the visitors. Seedlings learn where flowers want to be."
-msgstr "[Çôûñţ ţĥé vîšîţôŕš. Šééðļîñĝš ļéàŕñ ŵĥéŕé ƒļôŵéŕš ŵàñţ ţô bé. ~~~~~~~~~~~~~~~~~~]"
+msgid "Count the visitors. The bees are back: every plant grows much faster, blooms drop more seeds, and Seedlings learn where flowers want to be."
+msgstr "[Çôûñţ ţĥé vîšîţôŕš. Ţĥé bééš àŕé bàçķ: évéŕý þļàñţ ĝŕôŵš mûçĥ ƒàšţéŕ, bļôômš ðŕôþ môŕé šééðš, àñð Šééðļîñĝš ļéàŕñ ŵĥéŕé ƒļôŵéŕš ŵàñţ ţô bé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/research.json:nodes[hedgerows].name
 msgid "Hedgerows"
 msgstr "[Ĥéðĝéŕôŵš ~]"
 
 #: data/research.json:nodes[hedgerows].desc
-msgid "Dense little hedges. Birds will need somewhere to sit."
-msgstr "[Ðéñšé ļîţţļé ĥéðĝéš. Bîŕðš ŵîļļ ñééð šôméŵĥéŕé ţô šîţ. ~~~~~~~~~~~~~~~~]"
+msgid "Dense little hedges. Birds will need somewhere to sit. Gardens grow a little faster again."
+msgstr "[Ðéñšé ļîţţļé ĥéðĝéš. Bîŕðš ŵîļļ ñééð šôméŵĥéŕé ţô šîţ. Ĝàŕðéñš ĝŕôŵ à ļîţţļé ƒàšţéŕ àĝàîñ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/research.json:nodes[evergreens].name
 msgid "Evergreen Saplings"
 msgstr "[Évéŕĝŕééñ Šàþļîñĝš ~~~]"
 
 #: data/research.json:nodes[evergreens].desc
-msgid "Tiny pines. In a hundred years, a forest."
-msgstr "[Ţîñý þîñéš. Îñ à ĥûñðŕéð ýéàŕš, à ƒôŕéšţ. ~~~~~~~~~~~]"
+msgid "Tiny pines. In a hundred years, a forest. Blooms drop more seeds."
+msgstr "[Ţîñý þîñéš. Îñ à ĥûñðŕéð ýéàŕš, à ƒôŕéšţ. Bļôômš ðŕôþ môŕé šééðš. ~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/research.json:nodes[water_testing].name
 msgid "Water Testing"

@@ -156,3 +156,19 @@ func test_rocket_recharge_survives_a_clock_change() -> void:
 	assert_eq(RocketTiers.recharge_left(), 0.0, "it counts down instead of sticking at full")
 	RocketTiers.now_override = saved
 	GameState.flags.erase("rocket_ready_unix")
+
+
+func test_garden_robots_wait_for_base_level_3() -> void:
+	var saved_w: Dictionary = GameState.world.duplicate(true)
+	var saved_d: Dictionary = GameState.districts.duplicate(true)
+	var saved_r: Variant = GameState.flags.get("research")
+	GameState.flags["research"] = {"done": ["salvage_logic", "soil_survey"], "queue": [], "active": {}}
+	GameState.currencies["data"] = BigNum.from_float(5000.0)
+	GameState.districts = {}
+	GameState.world = {"hub_level": 2}
+	assert_string_contains(Research.reason("seedling_blueprint"), "base level 3")
+	GameState.world = {"hub_level": 3}
+	assert_eq(Research.reason("seedling_blueprint"), "")
+	GameState.world = saved_w
+	GameState.districts = saved_d
+	GameState.flags["research"] = saved_r
