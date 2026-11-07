@@ -141,8 +141,8 @@ static func entries(md_path: String = "res://docs/CREDITS.md") -> Array:
 			tail.append(["head", line.substr(3).to_upper()])
 		elif in_tail and line != "":
 			tail.append(["small", line])
-		elif not in_tail and line != "" and not line.begins_with("#") and not line.begins_with("Regenerated"):
-			intro.append(line.replace("(https://polyhaven.com)", "").strip_edges())
+		elif not in_tail and line != "" and not line.begins_with("#") and not line.begins_with("|") and not line.begins_with("Regenerated"):
+			intro.append(line.replace(" (https://polyhaven.com)", "").strip_edges())
 	out.append(["head", TranslationServer.translate("MADE WITH LOVE AND JUNK")])
 	out.append(["name", TranslationServer.translate("Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall.")])
 	out.append(["small", TranslationServer.translate("Built with the Godot Engine.")])

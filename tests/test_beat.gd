@@ -172,3 +172,9 @@ func test_garden_robots_wait_for_base_level_3() -> void:
 	GameState.world = saved_w
 	GameState.districts = saved_d
 	GameState.flags["research"] = saved_r
+
+
+func test_credits_roll_has_no_markdown_table_rows() -> void:
+	for r: Array in CreditsRoll.entries():
+		assert_false(str(r[1]).begins_with("|"), "no raw table rows: %s" % r[1])
+		assert_false(str(r[1]).contains("https://"), "no raw links")
