@@ -43,6 +43,7 @@ var _future_bits: Array[Node3D] = []
 var _plants: Array = []       # [MultiMesh, PackedFloat32Array of sorted levels]
 var _sail_mats: Array[ShaderMaterial] = []
 var _devils: Array[CPUParticles3D] = []
+var _fall_mat: ShaderMaterial
 var _grit: CPUParticles3D
 var _fluff: CPUParticles3D
 var _keep_out: Array = []     # [Vector2 xz, radius] for plant placement
@@ -103,6 +104,7 @@ func build() -> void:
 	_build_trucks()
 	_build_sails()
 	_build_ruin_junk()
+	_build_falls()
 	_build_plants()
 	_build_fx()
 	for n: Node in find_children("WheelFuture", "Node3D", true, false):
@@ -320,7 +322,7 @@ func _grade(_delta: float) -> void:
 	var amb: Dictionary = kind.get("ambient", {})
 	env.ambient_light_energy *= float(amb.get("energy", 1.15))
 	# Shader clocks and night.
-	for m: ShaderMaterial in [_terrain_mat, _water_mat, _shimmer_mat, OchreProps.foliage_mat()]:
+	for m: ShaderMaterial in [_terrain_mat, _water_mat, _shimmer_mat, _fall_mat, OchreProps.foliage_mat()]:
 		if m:
 			m.set_shader_parameter("time_s", _t)
 	if _terrain_mat:
@@ -880,6 +882,41 @@ func _build_ruin_junk() -> void:
 		mmi.multimesh = mm
 		mmi.visibility_range_end = 260.0
 		(_groups["ruin"] as Node3D).add_child(mmi)
+
+
+## Futuristic: water spills from the terrace channels down the walls below at a few spots.
+func _build_falls() -> void:
+	_fall_mat = ShaderMaterial.new()
+	_fall_mat.shader = preload("res://planet/planets/ochre/ochre_fall.gdshader")
+	var st := _new_st()
+	var walls: Array = []
+	for b: Array in pit.bands:
+		if bool(b[4]) and float(b[0]) > OchrePit.FIELD_OUT - 1.0:
+			walls.append(b)
+	for wi: int in walls.size():
+		var b: Array = walls[wi]
+		for n: int in 3:
+			var th: float = TAU * (float(n) / 3.0 + float(wi) * 0.137) - PI
+			if _on_ramp(th, float(b[0])) or _on_ramp(th, float(b[1]) + 2.0):
+				continue
+			var sq: float = OchrePit.squash(th)
+			var hw: float = 1.3 / (float(b[0]) * sq)
+			var rows: Array = []
+			for k: int in 7:
+				var f: float = float(k) / 6.0
+				var rho: float = lerpf(float(b[1]) + 0.4, float(b[0]) - 0.6, f)
+				var y: float = float(pit.profile(rho + 0.6)[0]) + 0.15
+				var l: Vector2 = pit.world_at(th - hw, rho - 0.5)
+				var r: Vector2 = pit.world_at(th + hw, rho - 0.5)
+				rows.append([Vector3(l.x, y, l.y), Vector3(r.x, y, r.y), f])
+			for k: int in 6:
+				var a: Array = rows[k]
+				var c: Array = rows[k + 1]
+				for e: Array in [[a[0], 0.0, a[2]], [a[1], 1.0, a[2]], [c[1], 1.0, c[2]], [a[0], 0.0, a[2]], [c[1], 1.0, c[2]], [c[0], 0.0, c[2]]]:
+					st.set_uv(Vector2(e[1], e[2]))
+					st.set_normal(Vector3.UP)
+					st.add_vertex(e[0])
+	_flush_st(st, _fall_mat, _groups["future"])
 
 
 # --- Plants (restoration) -----------------------------------------------------------------------------
