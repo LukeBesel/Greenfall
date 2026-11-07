@@ -54,6 +54,7 @@ func test_goal_titles_fit_goals_card() -> void:
 
 
 func test_upgrades_screen_tab_closes_and_focus_follows_tabs() -> void:
+	GameState.flags["bench_tabs"] = ["patch", "bots", "hub", "research", "rockets", "contracts", "locker"]  # [ui2] all tabs open
 	var scr := UpgradesScreen.new()
 	add_child_autofree(scr)
 	scr._set_tab("patch")
@@ -68,9 +69,9 @@ func test_upgrades_screen_tab_closes_and_focus_follows_tabs() -> void:
 	if owner_:
 		assert_false(owner_.is_queued_for_deletion())
 		assert_true(scr._grid.is_ancestor_of(owner_), "focus is inside the hub panel")
-	# Active tab highlighted in gold.
-	assert_eq(scr._tab_buttons[2].get_theme_color("font_color"), UITheme.GOLD)
-	assert_eq(scr._tab_buttons[0].get_theme_color("font_color"), UITheme.CREAM)
+	# Active tab lit ([ui2] holo), the others quiet.
+	assert_eq(scr._tab_buttons[2].get_theme_color("font_color"), BenchKit.HOLO.lightened(0.5))
+	assert_eq(scr._tab_buttons[0].get_theme_color("font_color"), UITheme.MUTED)
 	# RB from Bots goes to the next tab on screen (Hub), per TABS order.
 	scr._tab = "bots"
 	var ev := InputEventAction.new()

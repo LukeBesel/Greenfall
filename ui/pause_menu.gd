@@ -1,6 +1,7 @@
 class_name PauseMenu
 extends CanvasLayer
 ## Pause menu. Pauses the tree while open. Settings live in the shared SettingsPanel.
+## [ui2] Resume, Codex, Photo mode, (Garden / Ark when open), Keepsakes, Settings, Quit (saves, then title).
 
 signal closed
 signal codex_requested
@@ -33,12 +34,12 @@ func _ready() -> void:
 	_menu = center
 	var panel := PanelContainer.new()
 	panel.custom_minimum_size = Vector2(380, 0)
-	panel.add_theme_stylebox_override("panel", UITheme.box(Color(0.06, 0.065, 0.07, 0.88), UITheme.RUST, 1, 6, 22))
+	panel.add_theme_stylebox_override("panel", BenchKit.holo(Color(BenchKit.HOLO, 0.5), Color(0.02, 0.035, 0.045, 0.88), 1.0, 12, 22))  # [ui2] holo
 	center.add_child(panel)
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 10)
 	panel.add_child(vb)
-	var title := UITheme.label(tr("PAUSED"), 32, UITheme.GOLD)
+	var title := UITheme.label(tr("PAUSED"), 28, BenchKit.HOLO)  # [ui2]
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(title)
 	var gap := Control.new()
@@ -56,15 +57,19 @@ func _ready() -> void:
 		close_menu()
 		photo_requested.emit()))
 	buttons.append_array(LateMenu.add_buttons(self, vb, _button))  # [late] Garden Mode, Ark Bridge
+	# [ui2] Keepsakes = the Codex Collection tab (Lumi Level keepsakes, finds, capsules).
+	buttons.append(_button(vb, tr("Keepsakes"), func() -> void:
+		close_menu()
+		var cx: Node = get_parent().get("codex") if get_parent() else null
+		if cx and cx.has_method("open_screen"):
+			cx.call("open_screen", "collection")
+		else:
+			codex_requested.emit()))
 	_settings_btn = _button(vb, tr("Settings"), _open_settings)
 	buttons.append(_settings_btn)
-	buttons.append(_button(vb, tr("Save game"), func() -> void:
-		if SaveManager.save_game():
-			EventBus.toast.emit(tr("Saved."), "info")))
-	buttons.append(_button(vb, tr("Quit to title"), _quit_to_title))
-	buttons.append(_button(vb, tr("Quit to desktop"), func() -> void:
-		SaveManager.save_game()
-		get_tree().quit()))
+	# [ui2] No Save button: the game autosaves every minute and on quit. Quit saves and goes to
+	# the title screen (Quit to desktop lives on the title screen).
+	buttons.append(_button(vb, tr("Quit"), _quit_to_title))
 	for i: int in buttons.size():
 		var b: Button = buttons[i]
 		b.focus_neighbor_top = b.get_path_to(buttons[wrapi(i - 1, 0, buttons.size())])
@@ -81,8 +86,9 @@ func _ready() -> void:
 func _button(parent: Control, text: String, cb: Callable) -> Button:
 	var b := Button.new()
 	b.text = text
-	b.custom_minimum_size = Vector2(0, 48)
+	b.custom_minimum_size = Vector2(0, 46)
 	b.add_theme_font_size_override("font_size", 17)
+	BenchKit.style_action(b, BenchKit.HOLO)  # [ui2]
 	b.pressed.connect(func() -> void:
 		Audio.play("click", 1.0, -6.0)
 		cb.call())

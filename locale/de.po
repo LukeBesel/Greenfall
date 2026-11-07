@@ -28,7 +28,7 @@ msgstr "Basis (Mk I, vor Stufe und Teile-Seltenheit)"
 msgid "Base"
 msgstr "Basis"
 
-#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:185
+#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:187
 msgid "%s Lv %d"
 msgstr "%s St %d"
 
@@ -96,7 +96,7 @@ msgstr "Globuskarte"
 msgid "Lens view"
 msgstr "Linsenansicht"
 
-#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:50
+#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:51
 msgid "Codex"
 msgstr "Kodex"
 
@@ -432,7 +432,7 @@ msgstr "MK III"
 msgid "MK IV"
 msgstr "MK IV"
 
-#: automation/rocket_tiers.gd:51 ui/robot_card.gd:180
+#: automation/rocket_tiers.gd:51 ui/robot_card.gd:251
 msgid "Top tier"
 msgstr "Höchste Stufe"
 
@@ -513,7 +513,7 @@ msgid "E   look through the telescope"
 msgstr "E   durchs Teleskop schauen"
 
 #: core/offline.gd:55 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: ui/globe_view.gd:455 ui/upgrade_card.gd:257
+#: ui/globe_view.gd:455 ui/upgrade_card.gd:254
 msgid "%d min"
 msgstr "%d Min."
 
@@ -989,24 +989,24 @@ msgstr "Gesperrt · Forschung %s"
 msgid "Crew full (%d/%d): upgrade the hub"
 msgstr "Crew voll (%d/%d): Basis verbessern"
 
-#: robots/fleet.gd:139 robots/fleet.gd:211
+#: robots/fleet.gd:139 robots/fleet.gd:214
 msgid "Not enough parts"
 msgstr "Nicht genug Teile"
 
-#: robots/fleet.gd:141 robots/fleet.gd:213 robots/water_net.gd:149
+#: robots/fleet.gd:141 robots/fleet.gd:216 robots/water_net.gd:149
 #: systems/research.gd:194 systems/robot_builder.gd:349 systems/robot_builder.gd:401
 msgid "Not enough cubes"
 msgstr "Nicht genug Würfel"
 
-#: robots/fleet.gd:176
+#: robots/fleet.gd:179
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr "%s %s zusammengebaut. Er schaut sich um und legt los.%s"
 
-#: robots/fleet.gd:176
+#: robots/fleet.gd:179
 msgid " Seems %s."
 msgstr " Wirkt %s."
 
-#: robots/fleet.gd:232
+#: robots/fleet.gd:235
 msgid "%s fleet upgraded to %s."
 msgstr "%s-Flotte verbessert auf %s."
 
@@ -2256,19 +2256,20 @@ msgstr ""
 msgid "%d:%02d h"
 msgstr ""
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:255
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
 msgid "Low"
 msgstr "Niedrig"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:255 ui/settings_panel.gd:528
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
+#: ui/settings_panel.gd:584
 msgid "Medium"
 msgstr "Mittel"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:255
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
 msgid "High"
 msgstr "Hoch"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:255
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
 msgid "Ultra"
 msgstr "Ultra"
 
@@ -2597,13 +2598,17 @@ msgstr "Startausrüstung: nur Lumi. Erbstücke legen etwas drauf."
 msgid "Starting kit: %s"
 msgstr "Startausrüstung: %s"
 
-#: ui/ark_bridge.gd:300 ui/settings_panel.gd:509
+#: ui/ark_bridge.gd:300 ui/settings_panel.gd:565
 msgid "Full"
 msgstr "Voll"
 
 #: ui/ark_bridge.gd:303
 msgid "Milestone"
 msgstr ""
+
+#: ui/bench_kit.gd:163 ui/upgrade_card.gd:217
+msgid "need %s"
+msgstr "fehlt %s"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
@@ -2804,7 +2809,7 @@ msgstr "Sammlung"
 msgid "CODEX"
 msgstr "KODEX"
 
-#: ui/codex_screen.gd:87 ui/upgrades_screen.gd:115
+#: ui/codex_screen.gd:87 ui/upgrades_screen.gd:164
 msgid "Close  [%s]"
 msgstr "Schließen  [%s]"
 
@@ -3440,97 +3445,97 @@ msgstr "+%d EP"
 msgid "CORE %d%%"
 msgstr "KERN %d%%"
 
-#: ui/hub_panel.gd:53
+#: ui/hub_panel.gd:56
 msgid "What you get"
 msgstr "Das bekommst du"
 
-#: ui/hub_panel.gd:61
+#: ui/hub_panel.gd:64
 msgid "Upgrade"
 msgstr "Ausbauen"
 
-#: ui/hub_panel.gd:81 ui/hub_panel.gd:223
+#: ui/hub_panel.gd:91 ui/hub_panel.gd:233
 msgid "Build Air Scrubber"
 msgstr "Luftwäscher bauen"
 
-#: ui/hub_panel.gd:109
+#: ui/hub_panel.gd:119
 msgid "Build Signal Jammer"
 msgstr "Störsender bauen"
 
-#: ui/hub_panel.gd:148
+#: ui/hub_panel.gd:158
 msgid " (have %s)"
 msgstr " (vorhanden: %s)"
 
-#: ui/hub_panel.gd:161
+#: ui/hub_panel.gd:171
 msgid "Bales sell for +%d%% (now +%d%%)"
 msgstr "Ballen bringen +%d%% (jetzt +%d%%)"
 
-#: ui/hub_panel.gd:164
+#: ui/hub_panel.gd:174
 msgid "+%d robot spots in every crew"
 msgstr "+%d Roboterplätze in jeder Crew"
 
-#: ui/hub_panel.gd:167
+#: ui/hub_panel.gd:177
 msgid "Air Scrubbers: clear the dusty sky"
 msgstr "Luftwäscher: klären den staubigen Himmel"
 
-#: ui/hub_panel.gd:172
+#: ui/hub_panel.gd:182
 msgid "Unlocks the %s"
 msgstr "Schaltet %s frei"
 
-#: ui/hub_panel.gd:174
+#: ui/hub_panel.gd:184
 msgid "Opens the Locker: style Lumi and your robots"
 msgstr "Öffnet den Spind: gestalte Lumi und deine Roboter"
 
-#: ui/hub_panel.gd:176
+#: ui/hub_panel.gd:186
 msgid "A launch pad: rockets to the next district"
 msgstr "Eine Startrampe: Raketen ins nächste Viertel"
 
-#: ui/hub_panel.gd:187
+#: ui/hub_panel.gd:197
 msgid "Now: level %d, %s. Bales sell for +%d%%."
 msgstr "Jetzt: Stufe %d, %s. Ballen bringen +%d%%."
 
-#: ui/hub_panel.gd:189
+#: ui/hub_panel.gd:199
 msgid "Hub level %d  ·  fully built"
 msgstr "Hub-Stufe %d  ·  fertig ausgebaut"
 
-#: ui/hub_panel.gd:192
+#: ui/hub_panel.gd:202
 msgid "Every hub level is built."
 msgstr "Alle Hub-Stufen sind gebaut."
 
-#: ui/hub_panel.gd:194
+#: ui/hub_panel.gd:204
 msgid "Fully built"
 msgstr "Fertig ausgebaut"
 
-#: ui/hub_panel.gd:197
+#: ui/hub_panel.gd:207
 msgid "Next: hub level %d"
 msgstr "Als Nächstes: Hub-Stufe %d"
 
-#: ui/hub_panel.gd:204
+#: ui/hub_panel.gd:214
 msgid "Upgrade to level %d"
 msgstr "Auf Stufe %d ausbauen"
 
-#: ui/hub_panel.gd:204
+#: ui/hub_panel.gd:214
 msgid "Not enough yet"
 msgstr "Noch nicht genug"
 
-#: ui/hub_panel.gd:208
+#: ui/hub_panel.gd:218
 msgid "Continue in the full game"
 msgstr "Weiter im vollen Spiel"
 
-#: ui/hub_panel.gd:217
+#: ui/hub_panel.gd:227
 msgid "Opens at hub level %d."
 msgstr "Öffnet bei Hub-Stufe %d."
 
-#: ui/hub_panel.gd:219
+#: ui/hub_panel.gd:229
 msgid "All built."
 msgstr "Alle gebaut."
 
-#: ui/hub_panel.gd:222
+#: ui/hub_panel.gd:232
 msgid ""
 "%s   %d / %d\n"
 "%s"
 msgstr ""
 
-#: ui/hub_panel.gd:223
+#: ui/hub_panel.gd:233
 msgid "All built"
 msgstr "Alle gebaut"
 
@@ -3675,7 +3680,7 @@ msgstr ""
 msgid "New Game"
 msgstr "Neues Spiel"
 
-#: ui/main_menu.gd:341 ui/main_menu.gd:539 ui/pause_menu.gd:59
+#: ui/main_menu.gd:341 ui/main_menu.gd:539 ui/pause_menu.gd:68
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -3683,7 +3688,7 @@ msgstr "Einstellungen"
 msgid "Credits"
 msgstr "Mitwirkende"
 
-#: ui/main_menu.gd:343
+#: ui/main_menu.gd:343 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "Beenden"
 
@@ -3757,8 +3762,8 @@ msgstr "Dez."
 msgid "CREDITS"
 msgstr "MITWIRKENDE"
 
-#: ui/main_menu.gd:583 ui/profile_picker.gd:49 ui/settings_panel.gd:117
-#: ui/settings_panel.gd:145 ui/world_picker.gd:53
+#: ui/main_menu.gd:583 ui/profile_picker.gd:49 ui/settings_panel.gd:116
+#: ui/settings_panel.gd:141 ui/world_picker.gd:53
 msgid "Back"
 msgstr "Zurück"
 
@@ -3796,37 +3801,25 @@ msgstr "Spielstand behalten"
 msgid "Erase and start"
 msgstr "Löschen und starten"
 
-#: ui/pause_menu.gd:41
+#: ui/pause_menu.gd:42
 msgid "PAUSED"
 msgstr "PAUSE"
 
-#: ui/pause_menu.gd:48
+#: ui/pause_menu.gd:49
 msgid "Resume"
 msgstr "Fortsetzen"
 
-#: ui/pause_menu.gd:53
+#: ui/pause_menu.gd:54
 msgid "Codex  [%s]"
 msgstr "Kodex  [%s]"
 
-#: ui/pause_menu.gd:55
+#: ui/pause_menu.gd:56
 msgid "Photo mode  [%s]"
 msgstr "Fotomodus  [%s]"
 
 #: ui/pause_menu.gd:61
-msgid "Save game"
-msgstr "Spiel speichern"
-
-#: ui/pause_menu.gd:63
-msgid "Saved."
-msgstr "Gespeichert."
-
-#: ui/pause_menu.gd:64
-msgid "Quit to title"
-msgstr "Zum Titelbildschirm"
-
-#: ui/pause_menu.gd:65
-msgid "Quit to desktop"
-msgstr "Zum Desktop beenden"
+msgid "Keepsakes"
+msgstr "Andenken"
 
 #: ui/photo_filters.gd:11
 msgid "Natural"
@@ -3897,7 +3890,7 @@ msgstr "Der Fotomodus ist während eines Raketenflugs nicht verfügbar."
 msgid "Photo mode isn't available during a cinematic."
 msgstr "Der Fotomodus ist während einer Zwischensequenz nicht verfügbar."
 
-#: ui/photo_mode.gd:367 ui/photo_mode.gd:420 ui/settings_panel.gd:317
+#: ui/photo_mode.gd:367 ui/photo_mode.gd:420 ui/settings_panel.gd:373
 msgid "Camera"
 msgstr "Kamera"
 
@@ -3905,7 +3898,7 @@ msgstr "Kamera"
 msgid "Mode"
 msgstr "Modus"
 
-#: ui/photo_mode.gd:369 ui/settings_panel.gd:325
+#: ui/photo_mode.gd:369 ui/settings_panel.gd:381
 msgid "Field of view"
 msgstr "Sichtfeld"
 
@@ -3942,7 +3935,7 @@ msgid "Blur"
 msgstr "Unschärfe"
 
 #: ui/photo_mode.gd:377 ui/photo_panel.gd:240 ui/photo_panel.gd:242
-#: ui/photo_panel.gd:280 ui/settings_panel.gd:615
+#: ui/photo_panel.gd:280 ui/settings_panel.gd:671
 msgid "Off"
 msgstr "Aus"
 
@@ -4067,7 +4060,7 @@ msgid "Exit"
 msgstr "Beenden"
 
 #: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
-#: ui/settings_panel.gd:615
+#: ui/settings_panel.gd:671
 msgid "On"
 msgstr "An"
 
@@ -4227,51 +4220,71 @@ msgstr "Drücken zum Einreihen"
 msgid "%s cancelled. Cubes refunded."
 msgstr ""
 
-#: ui/robot_card.gd:75
+#: ui/robot_card.gd:78
 msgid "Crew"
 msgstr "Crew"
 
-#: ui/robot_card.gd:87
+#: ui/robot_card.gd:90
 msgid "Tier"
 msgstr "Stufe"
 
-#: ui/robot_card.gd:107 ui/robot_card.gd:173
+#: ui/robot_card.gd:110 ui/robot_card.gd:244
 msgid "Build"
 msgstr "Bauen"
 
-#: ui/robot_card.gd:133
+#: ui/robot_card.gd:130
+msgid "Fleet upgrades"
+msgstr "Flotten-Upgrades"
+
+#: ui/robot_card.gd:145
 msgid "Open Research"
 msgstr "Forschung öffnen"
 
-#: ui/robot_card.gd:154
+#: ui/robot_card.gd:187
+msgid "Lv %d  ·  %s%s (max)"
+msgstr ""
+
+#: ui/robot_card.gd:188 ui/upgrade_card.gd:87 ui/upgrade_card.gd:211
+msgid "Max"
+msgstr "Max."
+
+#: ui/robot_card.gd:194
+msgid "+  %s cubes"
+msgstr ""
+
+#: ui/robot_card.gd:196
+msgid "Need %s more cubes"
+msgstr "Es fehlen %s Würfel"
+
+#: ui/robot_card.gd:222
 msgid "Unlock with research: %s"
 msgstr "Freischalten durch Forschung: %s"
 
-#: ui/robot_card.gd:164
+#: ui/robot_card.gd:232
 msgid "%d built  ·  full: more spots with hub levels"
 msgstr "%d gebaut  ·  voll: mehr Plätze mit Hub-Stufen"
 
-#: ui/robot_card.gd:164
+#: ui/robot_card.gd:232
 msgid "%d built  ·  %d free"
 msgstr "%d gebaut  ·  %d frei"
 
-#: ui/robot_card.gd:168
+#: ui/robot_card.gd:236
 msgid "Water Tanks %d / %d  ·  place them from the Command view"
 msgstr "Wassertanks %d / %d  ·  in der Kommandoansicht aufstellen"
 
-#: ui/robot_card.gd:173
+#: ui/robot_card.gd:244
 msgid "Build first"
 msgstr "Ersten bauen"
 
-#: ui/robot_card.gd:179
+#: ui/robot_card.gd:250
 msgid "top tier"
 msgstr "höchste Stufe"
 
-#: ui/robot_card.gd:185
+#: ui/robot_card.gd:256
 msgid "next: x%s work speed"
 msgstr "nächste: x%s Arbeitstempo"
 
-#: ui/robot_card.gd:186 ui/rockets_panel.gd:119
+#: ui/robot_card.gd:257 ui/rockets_panel.gd:119
 msgid "Upgrade to %s"
 msgstr "Verbessern auf %s"
 
@@ -4315,303 +4328,315 @@ msgstr "Countdown %ds  ·  Flug %.1fs  ·  Aufladen %s  ·  Frachtkapseln x%.1f 
 msgid "  ·  WARP"
 msgstr "  ·  WARP"
 
-#: ui/settings_panel.gd:11
+#: ui/settings_panel.gd:12 ui/settings_panel.gd:221
+msgid "Basics"
+msgstr "Grundlagen"
+
+#: ui/settings_panel.gd:12
 msgid "Audio"
 msgstr "Audio"
 
-#: ui/settings_panel.gd:11
+#: ui/settings_panel.gd:12
 msgid "Graphics"
 msgstr "Grafik"
 
-#: ui/settings_panel.gd:11
+#: ui/settings_panel.gd:12
 msgid "Controls"
 msgstr "Steuerung"
 
-#: ui/settings_panel.gd:11
+#: ui/settings_panel.gd:12
 msgid "Gameplay"
 msgstr "Spiel"
 
-#: ui/settings_panel.gd:11
+#: ui/settings_panel.gd:12
 msgid "Accessibility"
 msgstr "Barrierefreiheit"
 
-#: ui/settings_panel.gd:58
+#: ui/settings_panel.gd:61
 msgid "SETTINGS"
 msgstr "EINSTELLUNGEN"
 
-#: ui/settings_panel.gd:61
+#: ui/settings_panel.gd:64
 msgid "{ui_tab_prev}{ui_tab_next}  switch tabs     {ui_cancel}  back"
 msgstr "{ui_tab_prev}{ui_tab_next}  Reiter wechseln     {ui_cancel}  zurück"
 
-#: ui/settings_panel.gd:112
+#: ui/settings_panel.gd:111
 msgid "Changes are saved automatically."
 msgstr "Änderungen werden automatisch gespeichert."
 
-#: ui/settings_panel.gd:234
-msgid "Volume"
-msgstr "Lautstärke"
-
-#: ui/settings_panel.gd:241
-msgid "Sound effects"
-msgstr "Soundeffekte"
-
-#: ui/settings_panel.gd:248
-msgid "Rendering"
-msgstr "Darstellung"
-
-#: ui/settings_panel.gd:249
-msgid "Low drops GI and fog; Ultra adds reflections."
-msgstr "Niedrig verzichtet auf GI und Nebel; Ultra fügt Spiegelungen hinzu."
-
-#: ui/settings_panel.gd:250
-msgid "This renderer always uses the Low preset."
-msgstr "Dieser Renderer nutzt immer die Voreinstellung Niedrig."
-
-#: ui/settings_panel.gd:252
-msgid "Detected: %s for %s. "
-msgstr "Erkannt: %s für %s."
-
-#: ui/settings_panel.gd:253
-msgid "Your choice (hardware: %s). "
-msgstr "Deine Wahl (Hardware: %s)."
-
-#: ui/settings_panel.gd:254
-msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
-msgstr "Niedrig verzichtet auf GI, Nebel und Schattendetails; Ultra fügt Spiegelungen hinzu."
-
-#: ui/settings_panel.gd:255
+#: ui/settings_panel.gd:228 ui/settings_panel.gd:311
 msgid "Quality preset"
 msgstr "Qualitätsstufe"
 
-#: ui/settings_panel.gd:262
-msgid "Renderer"
-msgstr "Renderer"
-
-#: ui/settings_panel.gd:262
-msgid "Standard (Forward+)"
-msgstr "Standard (Forward+)"
-
-#: ui/settings_panel.gd:262
-msgid "Light (Mobile)"
-msgstr "Leicht (Mobile)"
-
-#: ui/settings_panel.gd:264
-msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
-msgstr "Leicht passt zu älterer integrierter Grafik. Wirkt nach einem Neustart des Spiels (aktuell: %s)."
-
-#: ui/settings_panel.gd:270
-msgid "Render scale"
-msgstr "Renderskalierung"
-
-#: ui/settings_panel.gd:272
-msgid "Lower renders 3D at a smaller size; the interface stays sharp."
-msgstr "Kleiner rendert 3D in geringerer Größe; die Oberfläche bleibt scharf."
-
-#: ui/settings_panel.gd:273
-msgid "Display"
-msgstr "Anzeige"
-
-#: ui/settings_panel.gd:274
+#: ui/settings_panel.gd:231 ui/settings_panel.gd:330
 msgid "Fullscreen"
 msgstr "Vollbild"
 
-#: ui/settings_panel.gd:277
-msgid "V-Sync"
-msgstr "V-Sync"
-
-#: ui/settings_panel.gd:283 ui/settings_panel.gd:312
-msgid "Bindings"
-msgstr "Belegung"
-
-#: ui/settings_panel.gd:286
-msgid "ACTION   (select a binding to rebind it)"
-msgstr "AKTION   (Belegung wählen, um sie zu ändern)"
-
-#: ui/settings_panel.gd:289
-msgid "KEYBOARD / MOUSE"
-msgstr "TASTATUR / MAUS"
-
-#: ui/settings_panel.gd:289
-msgid "CONTROLLER"
-msgstr "CONTROLLER"
-
-#: ui/settings_panel.gd:305
-msgid "Reset to defaults"
-msgstr "Standard wiederherstellen"
-
-#: ui/settings_panel.gd:312
-msgid "Restore every key and controller binding."
-msgstr "Alle Tasten- und Controller-Belegungen zurücksetzen."
-
-#: ui/settings_panel.gd:314
-msgid "Button prompts"
-msgstr "Tastensymbole"
-
-#: ui/settings_panel.gd:316
-msgid "Controller art: Automatic follows the connected pad."
-msgstr "Controller-Grafik: Automatisch folgt dem verbundenen Pad."
-
-#: ui/settings_panel.gd:318
+#: ui/settings_panel.gd:234 ui/settings_panel.gd:374
 msgid "Mouse sensitivity"
 msgstr "Mausempfindlichkeit"
 
-#: ui/settings_panel.gd:321
-msgid "Stick look speed"
-msgstr "Stick-Blicktempo"
-
-#: ui/settings_panel.gd:324
-msgid "Invert look Y"
-msgstr "Blick Y umkehren"
-
-#: ui/settings_panel.gd:328
-msgid "Mouse smoothing"
-msgstr "Mausglättung"
-
-#: ui/settings_panel.gd:329
-msgid "Eases mouse look over a few frames."
-msgstr "Glättet die Mausbewegung über einige Frames."
-
-#: ui/settings_panel.gd:330
-msgid "Scooping"
-msgstr "Schaufeln"
-
-#: ui/settings_panel.gd:331
-msgid "Scoop button"
-msgstr "Schaufeltaste"
-
-#: ui/settings_panel.gd:331
-msgid "Hold"
-msgstr "Halten"
-
-#: ui/settings_panel.gd:331
-msgid "Toggle"
-msgstr "Umschalten"
-
-#: ui/settings_panel.gd:372
-msgid "press a button…"
-msgstr "Taste am Controller drücken…"
-
-#: ui/settings_panel.gd:372
-msgid "press a key…"
-msgstr "Taste drücken…"
-
-#: ui/settings_panel.gd:404
-msgid "Conflict: %s is used by both %s and %s."
-msgstr "Konflikt: %s ist sowohl für %s als auch für %s belegt."
-
-#: ui/settings_panel.gd:492 ui/settings_panel.gd:495
-msgid "Language"
-msgstr "Sprache"
-
-#: ui/settings_panel.gd:494
+#: ui/settings_panel.gd:238 ui/settings_panel.gd:550
 msgid "System default"
 msgstr "Systemstandard"
 
-#: ui/settings_panel.gd:498
+#: ui/settings_panel.gd:239 ui/settings_panel.gd:548 ui/settings_panel.gd:551
+msgid "Language"
+msgstr "Sprache"
+
+#: ui/settings_panel.gd:244
+msgid "More settings  (sound, graphics, controls, accessibility)"
+msgstr "Mehr Einstellungen  (Ton, Grafik, Steuerung, Barrierefreiheit)"
+
+#: ui/settings_panel.gd:250
+msgid "Everything else"
+msgstr "Alles andere"
+
+#: ui/settings_panel.gd:290
+msgid "Volume"
+msgstr "Lautstärke"
+
+#: ui/settings_panel.gd:297
+msgid "Sound effects"
+msgstr "Soundeffekte"
+
+#: ui/settings_panel.gd:304
+msgid "Rendering"
+msgstr "Darstellung"
+
+#: ui/settings_panel.gd:305
+msgid "Low drops GI and fog; Ultra adds reflections."
+msgstr "Niedrig verzichtet auf GI und Nebel; Ultra fügt Spiegelungen hinzu."
+
+#: ui/settings_panel.gd:306
+msgid "This renderer always uses the Low preset."
+msgstr "Dieser Renderer nutzt immer die Voreinstellung Niedrig."
+
+#: ui/settings_panel.gd:308
+msgid "Detected: %s for %s. "
+msgstr "Erkannt: %s für %s."
+
+#: ui/settings_panel.gd:309
+msgid "Your choice (hardware: %s). "
+msgstr "Deine Wahl (Hardware: %s)."
+
+#: ui/settings_panel.gd:310
+msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
+msgstr "Niedrig verzichtet auf GI, Nebel und Schattendetails; Ultra fügt Spiegelungen hinzu."
+
+#: ui/settings_panel.gd:318
+msgid "Renderer"
+msgstr "Renderer"
+
+#: ui/settings_panel.gd:318
+msgid "Standard (Forward+)"
+msgstr "Standard (Forward+)"
+
+#: ui/settings_panel.gd:318
+msgid "Light (Mobile)"
+msgstr "Leicht (Mobile)"
+
+#: ui/settings_panel.gd:320
+msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
+msgstr "Leicht passt zu älterer integrierter Grafik. Wirkt nach einem Neustart des Spiels (aktuell: %s)."
+
+#: ui/settings_panel.gd:326
+msgid "Render scale"
+msgstr "Renderskalierung"
+
+#: ui/settings_panel.gd:328
+msgid "Lower renders 3D at a smaller size; the interface stays sharp."
+msgstr "Kleiner rendert 3D in geringerer Größe; die Oberfläche bleibt scharf."
+
+#: ui/settings_panel.gd:329
+msgid "Display"
+msgstr "Anzeige"
+
+#: ui/settings_panel.gd:333
+msgid "V-Sync"
+msgstr "V-Sync"
+
+#: ui/settings_panel.gd:339 ui/settings_panel.gd:368
+msgid "Bindings"
+msgstr "Belegung"
+
+#: ui/settings_panel.gd:342
+msgid "ACTION   (select a binding to rebind it)"
+msgstr "AKTION   (Belegung wählen, um sie zu ändern)"
+
+#: ui/settings_panel.gd:345
+msgid "KEYBOARD / MOUSE"
+msgstr "TASTATUR / MAUS"
+
+#: ui/settings_panel.gd:345
+msgid "CONTROLLER"
+msgstr "CONTROLLER"
+
+#: ui/settings_panel.gd:361
+msgid "Reset to defaults"
+msgstr "Standard wiederherstellen"
+
+#: ui/settings_panel.gd:368
+msgid "Restore every key and controller binding."
+msgstr "Alle Tasten- und Controller-Belegungen zurücksetzen."
+
+#: ui/settings_panel.gd:370
+msgid "Button prompts"
+msgstr "Tastensymbole"
+
+#: ui/settings_panel.gd:372
+msgid "Controller art: Automatic follows the connected pad."
+msgstr "Controller-Grafik: Automatisch folgt dem verbundenen Pad."
+
+#: ui/settings_panel.gd:377
+msgid "Stick look speed"
+msgstr "Stick-Blicktempo"
+
+#: ui/settings_panel.gd:380
+msgid "Invert look Y"
+msgstr "Blick Y umkehren"
+
+#: ui/settings_panel.gd:384
+msgid "Mouse smoothing"
+msgstr "Mausglättung"
+
+#: ui/settings_panel.gd:385
+msgid "Eases mouse look over a few frames."
+msgstr "Glättet die Mausbewegung über einige Frames."
+
+#: ui/settings_panel.gd:386
+msgid "Scooping"
+msgstr "Schaufeln"
+
+#: ui/settings_panel.gd:387
+msgid "Scoop button"
+msgstr "Schaufeltaste"
+
+#: ui/settings_panel.gd:387
+msgid "Hold"
+msgstr "Halten"
+
+#: ui/settings_panel.gd:387
+msgid "Toggle"
+msgstr "Umschalten"
+
+#: ui/settings_panel.gd:428
+msgid "press a button…"
+msgstr "Taste am Controller drücken…"
+
+#: ui/settings_panel.gd:428
+msgid "press a key…"
+msgstr "Taste drücken…"
+
+#: ui/settings_panel.gd:460
+msgid "Conflict: %s is used by both %s and %s."
+msgstr "Konflikt: %s ist sowohl für %s als auch für %s belegt."
+
+#: ui/settings_panel.gd:554
 msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
 msgstr "Menüs, HUD, Untertitel und Story-Texte. Pseudo dient zum Testen von Übersetzungen."
 
-#: ui/settings_panel.gd:499
+#: ui/settings_panel.gd:555
 msgid "Comfort"
 msgstr "Komfort"
 
-#: ui/settings_panel.gd:500
+#: ui/settings_panel.gd:556
 msgid "Camera shake"
 msgstr "Kamerawackeln"
 
-#: ui/settings_panel.gd:502
+#: ui/settings_panel.gd:558
 msgid "Reduced motion"
 msgstr "Weniger Bewegung"
 
-#: ui/settings_panel.gd:503
+#: ui/settings_panel.gd:559
 msgid "Calmer camera and fewer bouncy effects."
 msgstr "Ruhigere Kamera und weniger hüpfende Effekte."
 
-#: ui/settings_panel.gd:504 ui/settings_panel.gd:514
+#: ui/settings_panel.gd:560 ui/settings_panel.gd:570
 msgid "Interface"
 msgstr "Oberfläche"
 
-#: ui/settings_panel.gd:505
+#: ui/settings_panel.gd:561
 msgid "Number format"
 msgstr "Zahlenformat"
 
-#: ui/settings_panel.gd:505
+#: ui/settings_panel.gd:561
 msgid "Short (1.2K)"
 msgstr "Kurz (1,2K)"
 
-#: ui/settings_panel.gd:505
+#: ui/settings_panel.gd:561
 msgid "Scientific (1.2e3)"
 msgstr "Wissenschaftlich (1,2e3)"
 
-#: ui/settings_panel.gd:505
+#: ui/settings_panel.gd:561
 msgid "Engineering (1.2e3)"
 msgstr "Technisch (1,2e3)"
 
-#: ui/settings_panel.gd:507
+#: ui/settings_panel.gd:563
 msgid "Best-value tags"
 msgstr "Preis-Leistungs-Hinweise"
 
-#: ui/settings_panel.gd:508
+#: ui/settings_panel.gd:564
 msgid "Tag the affordable upgrade that gives the most per cube."
 msgstr "Markiert das bezahlbare Upgrade, das pro Würfel am meisten bringt."
 
-#: ui/settings_panel.gd:509
+#: ui/settings_panel.gd:565
 msgid "HUD"
 msgstr "HUD"
 
-#: ui/settings_panel.gd:509
+#: ui/settings_panel.gd:565
 msgid "Minimal"
 msgstr "Minimal"
 
-#: ui/settings_panel.gd:509
+#: ui/settings_panel.gd:565
 msgid "Hidden"
 msgstr "Aus"
 
-#: ui/settings_panel.gd:510
+#: ui/settings_panel.gd:566
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "Minimal blendet Extras nach ein paar Sekunden aus. Aus zeigt nur Hinweise und Nachrichten."
 
-#: ui/settings_panel.gd:520
+#: ui/settings_panel.gd:576
 msgid "Interface scale"
 msgstr "Oberflächengröße"
 
-#: ui/settings_panel.gd:522
+#: ui/settings_panel.gd:578
 msgid "Size of menus, HUD and subtitles."
 msgstr "Größe von Menüs, HUD und Untertiteln."
 
-#: ui/settings_panel.gd:523
+#: ui/settings_panel.gd:579
 msgid "Colour-blind palette"
 msgstr "Farbenblind-Palette"
 
-#: ui/settings_panel.gd:524
+#: ui/settings_panel.gd:580
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "Okabe-Ito-Farben für Hexfeld-Fortschritt, Trichteranzeige und Teile-Seltenheit."
 
-#: ui/settings_panel.gd:525 ui/settings_panel.gd:526
+#: ui/settings_panel.gd:581 ui/settings_panel.gd:582
 msgid "Subtitles"
 msgstr "Untertitel"
 
-#: ui/settings_panel.gd:527
+#: ui/settings_panel.gd:583
 msgid "WREN and Ledger lines."
 msgstr "Sätze von WREN und dem Ledger."
 
-#: ui/settings_panel.gd:528
+#: ui/settings_panel.gd:584
 msgid "Subtitle size"
 msgstr "Untertitelgröße"
 
-#: ui/settings_panel.gd:528
+#: ui/settings_panel.gd:584
 msgid "Small"
 msgstr "Klein"
 
-#: ui/settings_panel.gd:528
+#: ui/settings_panel.gd:584
 msgid "Large"
 msgstr "Groß"
 
-#: ui/settings_panel.gd:530
+#: ui/settings_panel.gd:586
 msgid "Subtitle background"
 msgstr "Untertitel-Hintergrund"
 
-#: ui/settings_panel.gd:531
+#: ui/settings_panel.gd:587
 msgid "A solid backdrop behind subtitle text."
 msgstr "Ein fester Hintergrund hinter dem Untertiteltext."
 
@@ -4813,43 +4838,35 @@ msgstr "BESTER WERT"
 msgid "Buy"
 msgstr "Kaufen"
 
-#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:208
-msgid "Max"
-msgstr "Max."
-
-#: ui/upgrade_card.gd:177
+#: ui/upgrade_card.gd:179
 msgid "Lv %d%s"
 msgstr "St %d%s"
 
-#: ui/upgrade_card.gd:186
+#: ui/upgrade_card.gd:188
 msgid "Requires %s"
 msgstr "Benötigt %s"
 
-#: ui/upgrade_card.gd:189
+#: ui/upgrade_card.gd:191
 msgid "%s%s  (max)"
 msgstr "%s%s  (max.)"
 
-#: ui/upgrade_card.gd:192
+#: ui/upgrade_card.gd:194
 msgid "Off  →  On"
 msgstr "Aus  →  An"
 
-#: ui/upgrade_card.gd:199
+#: ui/upgrade_card.gd:201
 msgid "MAX"
 msgstr "MAX."
 
-#: ui/upgrade_card.gd:208
+#: ui/upgrade_card.gd:211
 msgid "Max (%d)"
 msgstr "Max. (%d)"
 
-#: ui/upgrade_card.gd:214
-msgid "in about %s"
-msgstr "in etwa %s"
+#: ui/upgrade_card.gd:217
+msgid "need %s · ~%s"
+msgstr "fehlt %s · ~%s"
 
-#: ui/upgrade_card.gd:214
-msgid "earn more cubes"
-msgstr "mehr Würfel verdienen"
-
-#: ui/upgrade_card.gd:219
+#: ui/upgrade_card.gd:222
 msgid "Where it comes from:  %s"
 msgstr "Woher es kommt:  %s"
 
@@ -4873,11 +4890,11 @@ msgstr "Raketen"
 msgid "Locker"
 msgstr "Spind"
 
-#: ui/upgrades_screen.gd:96
+#: ui/upgrades_screen.gd:142
 msgid "WORKBENCH"
 msgstr "WERKBANK"
 
-#: ui/upgrades_screen.gd:177
+#: ui/upgrades_screen.gd:227
 msgid "Not open yet. Keep playing."
 msgstr "Noch nicht offen. Spiel weiter."
 
@@ -12523,6 +12540,24 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "Save game"
+#~ msgstr "Spiel speichern"
+
+#~ msgid "Saved."
+#~ msgstr "Gespeichert."
+
+#~ msgid "Quit to title"
+#~ msgstr "Zum Titelbildschirm"
+
+#~ msgid "Quit to desktop"
+#~ msgstr "Zum Desktop beenden"
+
+#~ msgid "in about %s"
+#~ msgstr "in etwa %s"
+
+#~ msgid "earn more cubes"
+#~ msgstr "mehr Würfel verdienen"
 
 #~ msgid "Missing %d part"
 #~ msgstr[0] "%d Teil fehlt"

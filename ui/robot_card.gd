@@ -47,7 +47,7 @@ func _ready() -> void:
 	custom_minimum_size = Vector2(420, 0)
 	var role: String = str(Economy.robots[type_id].get("role", "clean"))
 	_col = RobotBuilder.CREW_COLORS.get(role, UITheme.GOLD)
-	add_theme_stylebox_override("panel", UITheme.box(BenchKit.CARD_BG, Color(1, 1, 1, 0.1), 1, 12, 16))
+	add_theme_stylebox_override("panel", BenchKit.holo())
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 10)
 	add_child(vb)
@@ -164,6 +164,7 @@ func _add_up_row(uid: String) -> void:
 	var b := Button.new()
 	b.custom_minimum_size = Vector2(118, 38)
 	b.add_theme_font_size_override("font_size", BenchKit.SMALL_SIZE + 1)
+	BenchKit.style_action(b, BenchKit.OK)
 	b.pressed.connect(func() -> void:
 		if Economy.buy_upgrade(uid, 1) > 0:
 			Audio.play("buy", 1.1, -4.0)
@@ -189,8 +190,10 @@ func _refresh_ups() -> void:
 		else:
 			(r["val"] as Label).text = "Lv %d%s  ·  %s → %s%s" % [lv, ("/%d" % mx) if mx > 0 else "", _num(now), _num(Economy.stat_with_upgrade_level(uid, lv + 1)), unit]
 			var cost: BigNum = Economy.upgrade_cost(uid)
+			var can: bool = Economy.is_unlocked(uid) and GameState.can_afford("cubes", cost)
 			b.text = tr("+  %s cubes") % Settings.fmt(cost)
-			b.disabled = not (Economy.is_unlocked(uid) and GameState.can_afford("cubes", cost))
+			b.disabled = not can
+			b.tooltip_text = "" if can else tr("Need %s more cubes") % Settings.fmt(cost.sub(GameState.get_currency("cubes")))
 
 
 static func _num(v: float) -> String:
@@ -219,7 +222,7 @@ func refresh() -> void:
 		_lock_lbl.text = tr("Unlock with research: %s") % tr(str(Research.def(Research.robot_requirement(type_id)).get("name", "?")))
 		_why.visible = false
 		_extra.visible = false
-		add_theme_stylebox_override("panel", UITheme.box(BenchKit.CARD_BG, Color(1, 1, 1, 0.08), 1, 12, 16))
+		add_theme_stylebox_override("panel", BenchKit.holo(Color(1, 1, 1, 0.08), BenchKit.CARD_BG, 0.0))
 		return
 	# Crew spots: robots in this type's crew vs the cap (a multibot can join any crew with room).
 	var crew: String = Fleet.crew_of_type(type_id)
@@ -256,16 +259,12 @@ func refresh() -> void:
 		_tier_btn.disabled = not tier_ok
 		_tier_cost.set_cost({"cubes": (req["cost"] as BigNum).to_float(), "parts": (req["parts"] as BigNum).to_float()})
 		_tier_btn.tooltip_text = "" if tier_ok or n == 0 else str(req["reason"])
-	if tier_ok:
-		UITheme.orange_button(_tier_btn)
-	else:
-		for st: String in ["normal", "hover", "pressed", "disabled"]:
-			_tier_btn.remove_theme_stylebox_override(st)
+	BenchKit.style_action(_tier_btn, BenchKit.OK if tier_ok else BenchKit.HOLO)
 	# One short line on what blocks the Build (crew full, short of parts / cubes).
 	_why.text = why
 	_why.visible = why != ""
 	var ready: bool = why == "" or tier_ok
-	add_theme_stylebox_override("panel", UITheme.box(BenchKit.CARD_BG, Color(_col, 0.55) if ready else Color(1, 1, 1, 0.1), 2 if ready else 1, 12, 16))
+	add_theme_stylebox_override("panel", BenchKit.holo(Color(BenchKit.OK, 0.6) if ready else Color(BenchKit.HOLO, 0.22), BenchKit.CARD_BG, 0.9 if ready else 0.3))
 
 
 func _on_build() -> void:

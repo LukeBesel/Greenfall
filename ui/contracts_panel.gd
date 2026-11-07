@@ -108,7 +108,7 @@ func _rebuild() -> void:
 		var st: String = str(s.get("state", "wait"))
 		var done: bool = st == "done"
 		var pc := PanelContainer.new()
-		pc.add_theme_stylebox_override("panel", UITheme.box(BenchKit.CARD_BG, Color(UITheme.GREEN, 0.7) if done else Color(1, 1, 1, 0.1), 2 if done else 1, 10, 14))
+		pc.add_theme_stylebox_override("panel", BenchKit.holo(Color(BenchKit.OK, 0.7) if done else Color(BenchKit.HOLO, 0.22), BenchKit.CARD_BG, 0.9 if done else 0.3, 10, 12))
 		_rows.add_child(pc)
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 16)

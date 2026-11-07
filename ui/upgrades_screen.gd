@@ -43,6 +43,52 @@ static func tab_open(id: String) -> bool:
 	var g: Variant = _gates.get(id)
 	return not (g is Callable and (g as Callable).is_valid()) or bool((g as Callable).call())
 
+
+## [ui2] data/workbench.json: when each tab appears (any condition). Opened tabs stay open.
+static var _tab_cfg: Dictionary = {}
+
+
+static func tab_conditions(id: String) -> Array:
+	if _tab_cfg.is_empty():
+		_tab_cfg = Economy.read_json("res://data/workbench.json").get("tabs", {})
+	return _tab_cfg.get(id, [["always"]])
+
+
+static func _cond_ok(c: Array, w: Node) -> bool:
+	match str(c[0]):
+		"always":
+			return true
+		"earned":
+			return BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float() >= float(c[1])
+		"stat":
+			var v: Variant = GameState.stats.get(str(c[1]), 0.0)
+			return (v is float or v is int) and float(v) >= float(c[2])
+		"hub_level":
+			var lv: int = int(GameState.world.get("hub_level", 1))
+			if w and w.get("hub") != null:
+				lv = maxi(lv, int(w.hub.level))
+			return lv >= int(c[1]) or Achievements.best_hub_level() >= int(c[1])
+		"flag":
+			return bool(GameState.flags.get(str(c[1]), false))
+	return false
+
+
+## [ui2] Whether a tab is shown at all: a code gate (set_tab_gate) if one is set, else the data.
+static func tab_visible(id: String, w: Node = null) -> bool:
+	if DevHooks.has("bench-all"):
+		return true
+	if _gates.has(id):
+		return tab_open(id)
+	var seen: Array = GameState.flags.get("bench_tabs", [])
+	if id in seen:
+		return true
+	for c: Variant in tab_conditions(id):
+		if c is Array and _cond_ok(c, w):
+			seen.append(id)
+			GameState.flags["bench_tabs"] = seen
+			return true
+	return false
+
 var is_open: bool = false
 var _root: Control
 var _grid: GridContainer
@@ -76,7 +122,7 @@ func _ready() -> void:
 	_root.theme = UITheme.get_theme()
 	add_child(_root)
 	var dim := ColorRect.new()
-	dim.color = Color(0.02, 0.025, 0.03, 0.62)
+	dim.color = Color(0.01, 0.02, 0.03, 0.5)
 	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_root.add_child(dim)
 	var mc := MarginContainer.new()
@@ -85,7 +131,7 @@ func _ready() -> void:
 		mc.add_theme_constant_override(side, 36)
 	_root.add_child(mc)
 	var panel := PanelContainer.new()
-	panel.add_theme_stylebox_override("panel", UITheme.box(Color(0.075, 0.08, 0.09, 0.96), Color(1, 1, 1, 0.1), 1, 10, 18))
+	panel.add_theme_stylebox_override("panel", BenchKit.holo(Color(BenchKit.HOLO, 0.5), Color(0.02, 0.035, 0.045, 0.9), 1.0, 12, 18))  # [ui2] glass + thin glowing frame
 	mc.add_child(panel)
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 12)
@@ -93,7 +139,10 @@ func _ready() -> void:
 	var header := HBoxContainer.new()
 	vb.add_child(header)
 	header.add_theme_constant_override("separation", 8)
-	header.add_child(UITheme.label(tr("WORKBENCH"), 34, UITheme.GOLD))
+	var wt: Label = UITheme.label(tr("WORKBENCH"), 26, BenchKit.HOLO)
+	wt.add_theme_constant_override("outline_size", 0)
+	wt.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	header.add_child(wt)
 	var sp := Control.new()
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(sp)
@@ -113,7 +162,8 @@ func _ready() -> void:
 		header.add_child(gap)
 	var close := Button.new()
 	Settings.bind_text(close, func() -> String: return tr("Close  [%s]") % Settings.glyph("open_upgrades"))  # [deck]
-	close.custom_minimum_size = Vector2(150, 48)
+	close.custom_minimum_size = Vector2(150, 44)
+	BenchKit.style_action(close, BenchKit.HOLO)
 	close.pressed.connect(close_screen)
 	_close_btn = close
 	header.add_child(close)
@@ -258,11 +308,13 @@ func _style_tabs() -> void:
 		var on: bool = TABS[i]["id"] == _tab
 		var b: Button = _tab_buttons[i]
 		var tid: String = str(TABS[i]["id"])
-		var open: bool = tab_open(tid) and (tid != "locker" or LockerPanel.is_open_for(fleet.world if fleet else null))  # [ui2] gated tabs read as locked
-		b.tooltip_text = tr(str(TABS[i]["name"])) if open else str(_gate_hints.get(str(TABS[i]["id"]), ""))
-		b.modulate = Color.WHITE if open or on else Color(1, 1, 1, 0.55)
-		b.add_theme_stylebox_override("normal", UITheme.box(Color(0.2, 0.15, 0.07, 0.9) if on else UITheme.TEAL, UITheme.GOLD if on else UITheme.RUST, 1, 6, 8))
-		b.add_theme_color_override("font_color", UITheme.GOLD if on else UITheme.CREAM)
+		b.visible = on or tab_visible(tid, fleet.world if fleet else null)  # [ui2] tabs appear once they are open
+		b.tooltip_text = tr(str(TABS[i]["name"]))
+		# [ui2] Holo tabs: the active one is a lit glass pill, the rest are quiet text.
+		b.add_theme_stylebox_override("normal", BenchKit.holo(Color(BenchKit.HOLO, 0.8), Color(0.1, 0.25, 0.32, 0.55), 1.0, 8, 8) if on else BenchKit.holo(Color(BenchKit.HOLO, 0.12), Color(0, 0, 0, 0.2), 0.0, 8, 8))
+		b.add_theme_stylebox_override("hover", BenchKit.holo(Color(BenchKit.HOLO, 0.5), Color(0.08, 0.18, 0.22, 0.5), 0.6, 8, 8))
+		b.add_theme_color_override("font_color", BenchKit.HOLO.lightened(0.5) if on else UITheme.MUTED)
+		b.add_theme_color_override("font_hover_color", Color.WHITE)
 
 
 ## Gives controller/keyboard players a focused control on every tab. The old tab's children are
@@ -367,7 +419,8 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev"):
 		var order: Array[String] = []
 		for t: Dictionary in TABS:
-			order.append(str(t["id"]))
+			if str(t["id"]) == _tab or tab_visible(str(t["id"]), fleet.world if fleet else null):  # [ui2] skip hidden tabs
+				order.append(str(t["id"]))
 		var i: int = maxi(0, order.find(_tab))
 		_set_tab(order[(i + (1 if event.is_action_pressed("ui_tab_next") else order.size() - 1)) % order.size()])
 		get_viewport().set_input_as_handled()

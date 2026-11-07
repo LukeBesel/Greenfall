@@ -191,3 +191,37 @@ func test_hub_gains_list_the_next_level() -> void:
 	var g: Array[String] = HubPanel.level_gains(h, LockerPanel.HUB_LEVEL)
 	assert_true(g.any(func(s: String) -> bool: return "Locker" in s), "the Locker level says so")
 	assert_true(g.any(func(s: String) -> bool: return "sell" in s))
+
+
+func test_tabs_appear_once_open_and_stay() -> void:
+	GameState.flags.erase("bench_tabs")
+	assert_true(UpgradesScreen.tab_visible("patch"))
+	assert_false(UpgradesScreen.tab_visible("bots"), "hidden on a fresh game")
+	assert_false(UpgradesScreen.tab_visible("locker"))
+	GameState.stats["robots_built"] = 1.0
+	assert_true(UpgradesScreen.tab_visible("bots"))
+	GameState.stats["robots_built"] = 0.0
+	assert_true(UpgradesScreen.tab_visible("bots"), "an opened tab stays open")
+	GameState.world["hub_level"] = LockerPanel.HUB_LEVEL
+	assert_true(UpgradesScreen.tab_visible("locker"))
+
+
+func test_pause_menu_has_no_save_button() -> void:
+	var pm := PauseMenu.new()
+	add_child_autofree(pm)
+	var texts: Array[String] = []
+	for b: Node in pm.find_children("*", "Button", true, false):
+		texts.append((b as Button).text)
+	assert_false(texts.has("Save game"))
+	assert_true(texts.has("Quit"))
+	assert_true(texts.has("Keepsakes"))
+
+
+func test_settings_start_simple() -> void:
+	var sp := SettingsPanel.new()
+	add_child_autofree(sp)
+	assert_eq(SettingsPanel.TABS[0], "Basics")
+	assert_true(sp._tab_buttons[0].visible)
+	assert_false(sp._tab_buttons[1].visible, "the full tabs hide behind More settings")
+	sp.select_tab(2)
+	assert_true(sp._tab_buttons[2].visible)

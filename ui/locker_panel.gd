@@ -174,7 +174,7 @@ func _style_list() -> void:
 	for b: Button in _who_btns:
 		var on: bool = str(b.get_meta("who")) == _who
 		var col: Color = b.get_meta("col")
-		b.add_theme_stylebox_override("normal", UITheme.box(Color(col.r * 0.16 + 0.03, col.g * 0.16 + 0.03, col.b * 0.16 + 0.03, 0.95) if on else UITheme.TEAL, col if on else Color(col, 0.22), 2 if on else 1, 8, 10))
+		b.add_theme_stylebox_override("normal", BenchKit.holo(col if on else Color(col, 0.22), Color(col.r * 0.16, col.g * 0.16, col.b * 0.16, 0.8) if on else BenchKit.CARD_BG, 0.9 if on else 0.0, 8, 10))
 		b.add_theme_color_override("font_color", Color.WHITE if on else UITheme.CREAM)
 
 

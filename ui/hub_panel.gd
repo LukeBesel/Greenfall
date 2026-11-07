@@ -32,7 +32,7 @@ func _ready() -> void:
 	add_theme_constant_override("separation", 16)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	# --- The next level: one clear card ---------------------------------------------------
-	var hc: Array = BenchKit.card(Color(UITheme.GOLD, 0.6), 500)
+	var hc: Array = BenchKit.card(Color(BenchKit.HOLO, 0.4), 500)
 	_hero = hc[0]
 	_hero.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_hero.size_flags_stretch_ratio = 1.1
@@ -43,10 +43,10 @@ func _ready() -> void:
 	var lr := HBoxContainer.new()
 	lr.add_theme_constant_override("separation", 12)
 	hv.add_child(lr)
-	_lv_lbl = BenchKit.caps("", UITheme.GOLD)
+	_lv_lbl = BenchKit.caps("", BenchKit.HOLO)
 	_lv_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	lr.add_child(_lv_lbl)
-	_lv_pips = BenchKit.Pips.new(5, true, UITheme.GOLD)
+	_lv_pips = BenchKit.Pips.new(5, true, BenchKit.HOLO)
 	lr.add_child(_lv_pips)
 	_name = UITheme.label("", 32, Color.WHITE)
 	_name.add_theme_constant_override("outline_size", 0)
@@ -217,7 +217,7 @@ func refresh() -> void:
 			_desc.text = Demo.base_cap_text()
 			_btn.text = tr("Continue in the full game")
 			_btn.disabled = false
-		BenchKit.set_accent(_hero, Color(UITheme.GOLD, 0.85 if not _btn.disabled else 0.35))
+		BenchKit.set_accent(_hero, Color(BenchKit.OK, 0.8) if not _btn.disabled else Color(BenchKit.HOLO, 0.3))
 	# Air Scrubbers.
 	var sd: Dictionary = hub.scrubber_def()
 	var locked: bool = hub.level < int(sd.get("requires_level", 2))
