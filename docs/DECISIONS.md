@@ -69,3 +69,21 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
 - **"System default" only picks complete languages** (`Settings.SYSTEM_LOCALES`, English for now): the de/es samples are opt-in so a German OS never gets a half-German game.
 - **Pseudo-locale is generated, Latin-1/Extended-A only** — renders in every shipped font, so a tofu box in pseudo means a real font gap, not a pseudo artefact; the leading `E   ` of interaction prompts is kept because the HUD swaps it for the key glyph.
 - **World signage stays English** (shop signs, robot decals): it is part of the art, like painted text on a prop.
+
+## Whole game (wt/beat, Nov 7)
+- **The Cradle is the true ending.** The Verdance Bloom milestone (finale, Bloom Core 100%, Seed Ark)
+  is met by `cradle_returned` (or 2% of the planet), no longer by "three districts in bloom": that
+  path could play the finale early in an ordinary district, after which the Cradle Returns frontier
+  ended in a dud, and the Cradle path never opened the Seed Ark.
+- **The finale is only "seen" once it has played through** (`flags.bloom_finale_seen` set at the end);
+  quitting mid-cinematic replays it on the next load. The end credits (ui/credits_roll.gd, built from
+  docs/CREDITS.md, skippable) roll once after the first finale; the game then simply carries on.
+- **Bloom Core charge follows the critical path** (`CoreCharge.campaign_progress`): bases at 5,
+  frontiers visited / levelled / Growing, the Cradle pad and district. 100% only at the Cradle.
+- **Garden ramp at ~1 h** through research (Seedling/Drip blueprints dearer, Pollinator Survey adds
+  `plant_growth` / `seed_yield`), not through timers: a player who researches botany early gets it early.
+- **Finished districts keep paying** (stipend cap 900/min, Thriving hexes give a little Data), so the
+  late base levels and research never stall for good.
+- **Goal chain covers the whole game** (144 goals): new types research / bases_l5 / frontier_base /
+  frontier_growing. District-relative goals (hex_level, hub_level) are placed where the player is in
+  the district they mean.
