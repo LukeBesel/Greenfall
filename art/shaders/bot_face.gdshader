@@ -23,8 +23,8 @@ uniform float eye_radius = 0.52;
 // [hero] Eye shape for the character builder: 0 crescent C (Aurora), 1 round, 2 happy arcs,
 // 3 visor bar (one rounded bar across both eyes), 4 heart. Blink/happy/wink work on every shape.
 uniform int eye_shape = 0;
-uniform float pupil_radius = 0.64;  // dark centre radius (in eye radii)
-uniform vec2 pupil_offset = vec2(-0.22, 0.2); // dark centre offset (in eye radii; -x = viewer's right)
+uniform float pupil_radius = 0.7;   // dark centre radius (in eye radii)
+uniform vec2 pupil_offset = vec2(-0.25, 0.245); // reaches just past the rim: the C opens at the upper right // dark centre offset (in eye radii; -x = viewer's right)
 
 varying vec3 lp;
 varying vec3 ln;
@@ -64,7 +64,8 @@ vec4 eye(vec2 p, vec2 c, float R, float bl, float hp) {
 	float on_c = step(0.04, c_open);
 	float core = disc * (1.0 - pupil) * on_c;
 	float shade = clamp(1.0 - (r - (Rp - length(pc))) / max(R - Rp + length(pc), 0.01), 0.0, 1.0);
-	float halo = exp(-max(r - R, 0.0) * max(r - R, 0.0) * 160.0) * (1.0 - disc) * 0.5 * on_c;
+	// Soft glow just outside the crescent only (never inside the dark centre or across the C's opening).
+	float halo = exp(-max(r - R, 0.0) * max(r - R, 0.0) * 160.0) * (1.0 - disc) * (1.0 - pupil) * 0.5 * on_c;
 	float glint = 1.0 - smoothstep(0.085 * R, 0.13 * R, length(d - pc - vec2(-0.3, 0.34) * Rp));
 	glint *= (eye_shape == 0 ? pupil * disc : 0.0) * step(0.3, c_open);
 	if (eye_shape == 1 || eye_shape == 4) {

@@ -720,6 +720,7 @@ scene.world = bpy.data.worlds.new("w") if scene.world is None else scene.world
 scene.world.light_settings.distance = 0.2
 ao = {}
 HERO_OBJS_NAMES = set(o.name for o in HERO_OBJS)
+SHELLS = ("head", "body", "hatch")
 
 
 def bake_ao(targets, hidden):
@@ -757,6 +758,8 @@ for o in objs:
 	for i, d in enumerate(data):
 		c = cur[i]
 		edge = sstep(22.0, 75.0, c)
+		if o.name in SHELLS:
+			edge = min(1.0, edge + 0.55 * sstep(4.0, 16.0, c))  # wear on the big rounded corners too
 		cav = sstep(6.0, 30.0, -c)
 		occ = a[i] if a else 1.0
 		# Joint wear (alpha, 1 = none): armour and shell close to a joint pivot chip more.

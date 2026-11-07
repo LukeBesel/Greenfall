@@ -36,7 +36,7 @@ func _ready() -> void:
 	var sm := ProceduralSkyMaterial.new()
 	if portrait:
 		sm.sky_top_color = Color(0.1, 0.06, 0.04)
-		sm.sky_horizon_color = Color(0.62, 0.34, 0.16)
+		sm.sky_horizon_color = Color(0.5, 0.27, 0.13)
 		sm.ground_horizon_color = Color(0.42, 0.24, 0.12)
 		sm.ground_bottom_color = Color(0.06, 0.04, 0.03)
 		sm.sun_angle_max = 30.0
@@ -61,7 +61,7 @@ func _ready() -> void:
 	if portrait:
 		env.fog_enabled = true
 		env.fog_light_color = Color(0.55, 0.32, 0.16)
-		env.fog_density = 0.035
+		env.fog_density = 0.022
 		env.fog_sky_affect = 0.0
 	var we := WorldEnvironment.new()
 	we.environment = env
@@ -121,8 +121,8 @@ func _ready() -> void:
 	if portrait:
 		_cam.fov = 30.0
 		var a: float = deg_to_rad(38.0)
-		var d: float = 2.35
-		_shots = [[Vector3(sin(a) * d, 1.05, -cos(a) * d), Vector3(-0.12, 0.66, -0.05)]]
+		var d: float = 2.6
+		_shots = [[Vector3(sin(a) * d, 1.08, -cos(a) * d), Vector3(-0.16, 0.7, -0.05)]]
 		var cam_attr := CameraAttributesPractical.new()
 		cam_attr.dof_blur_far_enabled = true
 		cam_attr.dof_blur_far_distance = 4.0
@@ -157,14 +157,14 @@ func _build_can_and_lasers() -> void:
 	for k: int in 3:
 		var m := MeshInstance3D.new()
 		var c := CylinderMesh.new()
-		c.top_radius = 0.004
-		c.bottom_radius = 0.004
+		c.top_radius = 0.0022
+		c.bottom_radius = 0.0035
 		c.height = 1.0
 		c.radial_segments = 6
 		m.mesh = c
 		var mat := StandardMaterial3D.new()
 		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		mat.albedo_color = glow.lightened(0.4)
+		mat.albedo_color = glow.lightened(0.25)
 		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 		mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
 		mat.albedo_color.a = 0.8
@@ -174,8 +174,8 @@ func _build_can_and_lasers() -> void:
 		_lasers.append(m)
 	var l := OmniLight3D.new()
 	l.light_color = glow
-	l.light_energy = 0.8
-	l.omni_range = 0.6
+	l.light_energy = 0.5
+	l.omni_range = 0.35
 	l.name = "ClawLight"
 	add_child(l)
 
@@ -190,7 +190,7 @@ func _pose() -> void:
 		return
 	# Left arm raised and reaching toward the can (the portrait's beam arm), claws open.
 	var arm: Node3D = _model.get("_arm_l")
-	arm.rotation = Vector3(-1.05, 0.25, 0.55)
+	arm.rotation = Vector3(-1.1, -0.2, -0.75)
 	var el: Node3D = arm.get_meta("elbow")
 	el.rotation = Vector3(-0.2, 0.0, 0.0)
 	for f: Node3D in _model.get("_claws"):
