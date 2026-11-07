@@ -123,9 +123,11 @@ static func frontier_finished(fid: String, hi: int) -> bool:
 
 ## This district has nothing left on the critical path.
 static func district_done(world: Node) -> bool:
+	var kid: String = frontier_kid(world)
+	if kid == "cradle_returns":
+		return GameState.flags.get("cradle_returned", false)
 	if int(world.hub.level) < 5:
 		return false
-	var kid: String = frontier_kid(world)
 	if kid == "":
 		return true
 	if kid == "cradle_returns":
