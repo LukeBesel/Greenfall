@@ -14,6 +14,13 @@ uniform float clarity = 0.0;
 uniform float ice = 0.0;          // 1 = frozen sea ice
 uniform float half_plane_x = -99999.0;
 uniform float fade_far = 420.0;
+uniform float mirror = 0.0;      // [biomes2] flatter waves, glossier (sky reflections)
+// [biomes2] Natural borders: where the flood meets the field is found at the same warped position
+// as water.gdshader (and the junk), so the two surfaces meet seamlessly along a wandering line.
+uniform sampler2D warp_tex : filter_linear;
+uniform float warp_size = 280.0;
+uniform float warp_amp = 0.0;
+uniform float wave_scale = 1.0;  // match water.gdshader's ripple size where the two meet
 
 varying vec3 wpos;
 const float SQRT3 = 1.7320508;
@@ -46,17 +53,18 @@ void vertex() {
 void fragment() {
 	vec2 p = wpos.xz;
 	if (p.x < half_plane_x) { discard; }
-	vec2 qr = vec2((SQRT3 / 3.0 * p.x - p.y / 3.0) / hex_size, (2.0 / 3.0 * p.y) / hex_size);
+	vec2 pw = p + texture(warp_tex, p / warp_size + 0.5).rg * warp_amp;
+	vec2 qr = vec2((SQRT3 / 3.0 * pw.x - pw.y / 3.0) / hex_size, (2.0 / 3.0 * pw.y) / hex_size);
 	vec2 ax = hex_round(qr);
 	float hd = (abs(ax.x) + abs(ax.y) + abs(ax.x + ax.y)) * 0.5;
 	if (hd <= float(grid_radius)) { discard; }
-	vec2 uv1 = p * 0.05 + vec2(TIME * 0.006, TIME * 0.004);
-	vec2 uv2 = p * 0.083 - vec2(TIME * 0.005, -TIME * 0.003);
+	vec2 uv1 = p * 0.05 * wave_scale + vec2(TIME * 0.006, TIME * 0.004) * wave_scale;
+	vec2 uv2 = p * 0.075 * wave_scale - vec2(TIME * 0.005, -TIME * 0.003) * wave_scale;
 	vec3 n = mix(texture(wave_nrm, uv1).rgb, texture(wave_nrm, uv2).rgb, 0.5);
 	vec4 w = mix(murky, clear, clarity);
-	vec3 alb = w.rgb + vec3(0.03, 0.0, 0.04) * sin(p.x * 0.05 + p.y * 0.04 + TIME * 0.1) * (1.0 - clarity);
+	vec3 alb = w.rgb + vec3(0.03, 0.0, 0.04) * sin(p.x * 0.05 + p.y * 0.04 + TIME * 0.1) * (1.0 - clarity) * (1.0 - mirror);
 	float a = w.a;
-	float rough = mix(0.14, 0.05, clarity);
+	float rough = mix(0.14, 0.05, clarity) * (1.0 - 0.6 * mirror);
 	// Sea ice: pale, cracked plates with snow in the seams.
 	if (ice > 0.001) {
 		float plate = vnoise(p * 0.07) * 0.6 + vnoise(p * 0.21) * 0.4;
@@ -68,6 +76,8 @@ void fragment() {
 		rough = mix(rough, 0.32 - 0.2 * plate, ice);
 		n = mix(n, texture(ice_nrm, p * 0.12).rgb, ice);
 	}
+	float fres = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), 4.0);
+	a = mix(a, 1.0, fres * mirror * (1.0 - ice));
 	float far = smoothstep(fade_far * 0.7, fade_far, length(p));
 	ALBEDO = alb;
 	ALPHA = a * (1.0 - far);
@@ -75,5 +85,5 @@ void fragment() {
 	METALLIC = 0.0;
 	SPECULAR = mix(0.7, 0.45, ice);
 	NORMAL_MAP = n;
-	NORMAL_MAP_DEPTH = mix(0.5, 0.35, ice);
+	NORMAL_MAP_DEPTH = mix(0.5 * (1.0 - 0.6 * mirror), 0.35, ice);
 }
