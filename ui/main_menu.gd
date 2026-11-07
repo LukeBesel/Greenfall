@@ -22,8 +22,8 @@ var _confirm: Control
 var _confirm_no: Button
 var _continue: Button
 var _new_game: Button
-var _worlds_btn: Button  # [worlds2]
-var _picker: WorldPicker  # [worlds2]
+var _profiles_btn: Button  # [worlds2] save profiles, then worlds (ui/profile_picker.gd)
+var _picker: ProfilePicker  # [worlds2]
 var _leaving: bool = false
 var _save: Dictionary = {}
 ## Intro fade start (wall clock: the first frames can be very slow while shaders compile, and
@@ -329,10 +329,11 @@ func _build_ui() -> void:
 		buttons.append(_continue)
 	if DevHooks.has("sample-worlds"):  # [worlds2] shots: a profile with some history
 		WorldPicker.dev_sample(int(DevHooks.get_f("sample-worlds", 4.0)))
-	if CradleMode.worlds().size() > 1:  # [worlds2] the world picker (ui/world_picker.gd)
-		# TRANSLATORS: Worlds button subtitle: how many worlds, and the current one's name.
-		_worlds_btn = _menu_button(tr("Worlds"), _open_worlds, tr("%d worlds  ·  now on %s") % [CradleMode.worlds().size(), CradleMode.world_name()])
-		buttons.append(_worlds_btn)
+	# [worlds2] Save profiles (and each profile's worlds).
+	var pname: String = ProfileSlots.display_name(CradleMode.profile, SaveManager.profile_slot)
+	# TRANSLATORS: Profiles button subtitle: the active save profile's name and its number of worlds.
+	_profiles_btn = _menu_button(tr("Profiles"), _open_profiles, tr("%s  ·  %s") % [pname, tr_n("%d world", "%d worlds", CradleMode.worlds().size()) % CradleMode.worlds().size()])
+	buttons.append(_profiles_btn)
 	_new_game = _menu_button(tr("New Game"), _on_new_game)
 	buttons.append(_new_game)
 	if Demo.is_demo():  # [steam]
@@ -352,11 +353,10 @@ func _build_ui() -> void:
 	_ui.add_child(_settings)
 	_build_credits()
 	_build_confirm()
-	if _worlds_btn:  # [worlds2]
-		_picker = WorldPicker.new()
-		_picker.picked.connect(_on_world_picked)
-		_picker.closed.connect(_on_sub_closed.bind(4))
-		_ui.add_child(_picker)
+	_picker = ProfilePicker.new()  # [worlds2]
+	_picker.go.connect(func() -> void: _go(true))
+	_picker.closed.connect(_on_profiles_closed)
+	_ui.add_child(_picker)
 
 	_fade = ColorRect.new()
 	_fade.color = Color(0.02, 0.02, 0.03, 1.0)
@@ -373,9 +373,12 @@ func _build_ui() -> void:
 			_settings.select_tab(int(DevHooks.get_f("tab", 0.0)))
 		"credits": _open_credits.call_deferred()
 		"confirm": _on_new_game.call_deferred()
-		"worlds":  # [worlds2]
-			if _worlds_btn:
-				_open_worlds.call_deferred()
+		"profiles":  # [worlds2]
+			_open_profiles.call_deferred()
+		"worlds":  # [worlds2] profile, then its worlds
+			(func() -> void:
+				_open_profiles()
+				_picker._continue(SaveManager.profile_slot)).call_deferred()
 
 
 func _title_font() -> FontVariation:
@@ -496,17 +499,17 @@ func _go(fade: bool) -> void:
 		get_tree().change_scene_to_file(GAME_SCENE)
 
 
-## [worlds2] The world picker: choose which Cradle Mode world Continue goes to.
-func _open_worlds() -> void:
+## [worlds2] Save profiles: pick a profile (and then a world), start over in one, rename or delete.
+func _open_profiles() -> void:
 	_main.process_mode = Node.PROCESS_MODE_DISABLED
 	_picker.open_picker()
 
 
-func _on_world_picked(i: int) -> void:
-	if not CradleMode.select_world(i):
+func _on_profiles_closed(changed: bool) -> void:
+	if changed:  # another profile is active now: rebuild the menu (Continue, summaries)
+		get_tree().reload_current_scene()
 		return
-	print("[worlds2] title: continue on world %d %s" % [i, CradleMode.world_name()])
-	_go(true)
+	_on_sub_closed(4)
 
 
 func _open_settings() -> void:
@@ -530,7 +533,7 @@ func _on_sub_closed(which: int) -> void:
 	_confirm.visible = false
 	_main.process_mode = Node.PROCESS_MODE_INHERIT
 	_main.visible = true
-	var target: Button = _new_game if which != 4 or _worlds_btn == null else _worlds_btn  # [worlds2]
+	var target: Button = _new_game if which != 4 else _profiles_btn  # [worlds2]
 	for c: Node in _menu_box.get_children():
 		var b: Button = c as Button
 		if b and ((which == 1 and b.text == tr("Credits").to_upper()) or (which == 2 and b.text == tr("Settings").to_upper())):

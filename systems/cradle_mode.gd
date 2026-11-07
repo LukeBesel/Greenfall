@@ -99,6 +99,8 @@ static func from_dict(d: Dictionary) -> Dictionary:
 		p[k] = float(d.get(k, 0.0))
 	p["unlocked"] = bool(d.get("unlocked", false))
 	p["saved_unix"] = float(d.get("saved_unix", 0.0))  # [worlds2]
+	if d.has("name"):  # [worlds2] the save profile's name (systems/profile_slots.gd)
+		p["name"] = str(d["name"])
 	p["current"] = int(d.get("current", 0))
 	var hl: Dictionary = {}
 	for k: Variant in (d.get("heirlooms", {}) as Dictionary):
@@ -500,10 +502,23 @@ static func select_world(i: int) -> bool:
 	return true
 
 
+## [worlds2] After SaveManager.set_profile: read that save profile's Cradle profile and point the
+## save slot at its current world.
+static func reload_for_profile() -> void:
+	if persist:
+		load_profile()
+	else:
+		profile = default_profile()
+	apply_current()
+
+
 ## Title screen New Game: every world is erased and the profile starts over.
 static func reset_all() -> void:
 	for w: Dictionary in worlds():
 		SaveManager.delete_save(int(w.get("slot", 0)))
+	var keep_name: Variant = _p().get("name")  # [worlds2] the save profile keeps its name
 	profile = default_profile()
+	if keep_name != null:
+		profile["name"] = keep_name
 	save_profile()
 	apply_current()

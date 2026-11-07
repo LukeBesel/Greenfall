@@ -46,6 +46,7 @@ func _setup() -> void:
 			sw["finale"] = i == 0
 		CradleMode.profile["current"] = 0
 	CradleMode.mirror_stats()
+	GameState.flags["last_district"] = str(world.get("district_name"))  # [worlds2] save profile summary
 	decor = Decor.new()
 	world.add_child(decor)
 	decor.setup(world)

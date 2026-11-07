@@ -131,6 +131,11 @@ static func dev_sample(n: int) -> void:
 	(CradleMode.worlds()[0] as Dictionary)["finale"] = true
 	CradleMode.profile["current"] = mini(2, CradleMode.worlds().size() - 1)
 	CradleMode.profile["unlocked"] = true
+	CradleMode.profile["name"] = "Mira"
+	# [worlds2] The other save profiles in the shot: one short game, one empty slot.
+	ProfileSlots.dev_summaries[2] = {"empty": false, "name": "Weekend run", "time_s": 2.4 * 3600.0, "worlds": 1, "world": "Verdance",
+		"district": "Old Town", "bloom_pct": 25, "saved_unix": 0.0}
+	ProfileSlots.dev_summaries[3] = {"empty": true, "name": TranslationServer.translate("Profile %d") % 3}
 
 
 func _chain() -> void:
