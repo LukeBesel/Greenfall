@@ -235,6 +235,8 @@ func build(p_world: Node, p_field: HexField, p_kind: Dictionary) -> void:
 	add_child(hover)
 	hover.setup(world)
 	_spawn_fish()
+	_open_camera()
+	_dev_cam.call_deferred()
 	world.set_meta("hover_water", true)  # Lumi floats over water here (player/patch.gd: no wading slowdown)
 	if world.get("hub") != null:
 		world.hub.level_changed.connect(func(l: int) -> void:
@@ -271,6 +273,42 @@ func _process(delta: float) -> void:
 
 func _measure() -> void:
 	pass
+
+
+## Open sea to the horizon: a long far plane, and the far blur only far out.
+func _open_camera() -> void:
+	var rig: Node = world.get("cam")
+	var cam: Camera3D = rig.get("camera") if rig else null
+	if cam == null:
+		return
+	cam.far = 2600.0
+	var attrs: CameraAttributesPractical = cam.attributes as CameraAttributesPractical
+	if attrs:
+		attrs.dof_blur_far_distance = 300.0
+		attrs.dof_blur_far_transition = 500.0
+		attrs.dof_blur_amount = 0.03
+
+
+## Dev: --tide-cam=dist,pitch,yaw[,fov] for landscape screenshots (like --frontier-cam).
+func _dev_cam() -> void:
+	if not DevHooks.has("tide-cam"):
+		return
+	var c: PackedStringArray = DevHooks.get_s("tide-cam", "30,-0.3,0").split(",")
+	var cam: Node = world.get("cam")
+	if cam == null:
+		return
+	cam.set("max_distance", maxf(float(cam.get("max_distance")), float(c[0])))
+	cam.set("distance", float(c[0]))
+	cam.set("pitch", float(c[1]) if c.size() > 1 else -0.3)
+	if c.size() > 2:
+		cam.set("yaw", float(c[2]))
+	var arm: Variant = cam.get("_arm")
+	if arm is SpringArm3D:
+		(arm as SpringArm3D).collision_mask = 0
+	if c.size() > 3:
+		Settings.fov = float(c[3])
+		(cam.get("camera") as Camera3D).fov = Settings.fov
+	cam.call("snap")
 
 
 ## 0 ruined .. 1 restored: cleaned share of the district and the base level.
