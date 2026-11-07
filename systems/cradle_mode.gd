@@ -418,9 +418,7 @@ static func launch_new_world(tree: SceneTree = null, slot: int = -1) -> Dictiona
 	prepare_new_world_state(carry)
 	save_profile()
 	print("[cradle] new world %d: %s seed=%d type=%s mods=%s slot=%d" % [int(w["index"]), w["name"], int(w["seed"]), w["type"], str(w["modifiers"]), int(w["slot"])])
-	if tree:
-		tree.paused = false
-		tree.change_scene_to_file("res://scenes/slice.tscn")
+	_change_scene(tree)
 	return w
 
 
@@ -442,10 +440,20 @@ static func switch_world(i: int, tree: SceneTree = null) -> bool:
 	else:
 		prepare_new_world_state(carry)
 	mirror_stats()
-	if tree:
-		tree.paused = false
-		tree.change_scene_to_file("res://scenes/slice.tscn")
+	_change_scene(tree)
 	return true
+
+
+## Leaves the district: its nodes stop processing first (no stray physics frames on old state).
+static func _change_scene(tree: SceneTree) -> void:
+	if tree == null:
+		return
+	tree.paused = false
+	if tree.current_scene:
+		tree.current_scene.process_mode = Node.PROCESS_MODE_DISABLED
+	# Deferred: callers can be deep inside the old scene's physics step (the autoplay bot is),
+	# and the old scene leaves the tree as soon as the change runs.
+	tree.change_scene_to_file.call_deferred("res://scenes/slice.tscn")
 
 
 ## Title screen New Game: every world is erased and the profile starts over.

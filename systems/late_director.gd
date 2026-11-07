@@ -92,6 +92,17 @@ func open_garden() -> bool:
 	return placer.open()
 
 
+## A cinematic or story beat owns the screen (don't leave the world now).
+func story_busy() -> bool:
+	if BloomFinale.playing:
+		return true
+	var cc: Variant = world.get("core_charge")
+	if cc is CoreCharge and bool((cc as CoreCharge).get("_busy")):
+		return true
+	var intro: Variant = world.get("intro")
+	return intro is Intro and (intro as Intro).busy()
+
+
 func _process(delta: float) -> void:
 	_t += delta
 	if _t < 2.0:
@@ -119,6 +130,21 @@ func dev_post_finale() -> void:
 	GameState.flags["credits_seen"] = true
 	GameState.flags["intro_done"] = true
 	GameState.flags["seeds_unlocked"] = true
+	GameState.flags["tutorial_step"] = 999  # the opening chores, the Ledger and WREN's memory: long done
+	GameState.flags["ledger_act"] = 4
+	GameState.flags["ledger_resolved"] = true
+	GameState.flags["wren_awake"] = true
+	GameState.flags["first_sprout"] = true
+	if world.get("tutorial") != null:
+		world.tutorial.set("step", 999)
+	if world.get("ledger") != null:
+		world.ledger.set("act", 4)
+	if world.get("planet") != null:
+		var pl: PlanetData = world.planet
+		for c: int in pl.cells_within(pl.hubs[0], 4):
+			pl.mark_clean(c)
+	GameState.flags["core_charge"] = 1.0  # the Bloom Core beats played on the way (no replays now)
+	GameState.flags["core_beats"] = [25, 50, 75, 100]
 	Bloom.ark_state()
 	GameState.stats["ark_waves"] = maxf(float(GameState.stats.get("ark_waves", 0.0)), DevHooks.get_f("ark-waves", 3.0))
 	GameState.stats["time_played"] = maxf(float(GameState.stats.get("time_played", 0.0)), 8.0 * 3600.0)
@@ -127,11 +153,15 @@ func dev_post_finale() -> void:
 	GameState.add_currency("cubes", BigNum.from_float(DevHooks.get_f("post-cubes", 400000.0)))
 	GameState.add_currency("trinkets", BigNum.from_float(12))
 	GameState.add_currency("seeds", BigNum.from_float(300))
-	if world.get("hub") != null and world.hub.has_method("set_level"):
-		world.hub.set_level(5)
+	if world.get("hub") != null and int(world.hub.level) < 5:  # the base as the campaign left it
+		for l: int in range(int(world.hub.level) + 1, 6):
+			world.hub.call("_build_level", l, false)
+		world.hub.level = 5
+		world.hub.level_changed.emit(5)
 	for k: int in 3:  # districts done on the way (summaries count toward Starseeds)
 		if not GameState.districts.has(k + 1):
 			GameState.districts[k + 1] = {"hub_level": 5, "bloom_summary": {"thriving": 140, "land": 230}}
+	dev_clean_near.call_deferred(int(DevHooks.get_f("post-clean", 12.0)))
 	print("[late] post-finale state: Verdance won, %d Seed Ark waves" % int(GameState.stats["ark_waves"]))
 
 
@@ -176,20 +206,25 @@ func _world_look() -> void:
 	world.view.set_junk_overlay(m)
 
 
-## Dev: a small finished garden near the base (shots and the autoplay check).
-func _decor_sample() -> void:
+## Dev: cleans the n land hexes nearest the base (a district the campaign already worked).
+func dev_clean_near(n: int) -> void:
 	var f: HexField = world.field
 	var cleaned: int = 0
 	var order: Array = range(f.hex_count()).filter(func(h: int) -> bool: return f.hex_hub[h] == 0 and not f.is_water(h))
 	order.sort_custom(func(a: int, b: int) -> bool: return f.hex_center(a).length() < f.hex_center(b).length())
 	for h: int in order:
-		if cleaned >= int(DevHooks.get_f("decor-hexes", 8.0)):
+		if cleaned >= n:
 			break
 		if not f.is_clean(h):
 			for pid: int in f.hex_pieces[h]:
 				if f.piece_alive[pid] == 1:
 					world.collect_piece(pid)
 		cleaned += 1
+
+
+## Dev: a small finished garden near the base (shots and the autoplay check).
+func _decor_sample() -> void:
+	dev_clean_near(int(DevHooks.get_f("decor-hexes", 8.0)))
 	var plan: Array = sample_plan()
 	var placed: int = 0
 	for p: Array in plan:

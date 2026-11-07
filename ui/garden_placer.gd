@@ -136,6 +136,8 @@ func open() -> bool:
 	world.cam.distance = 8.5
 	world.cam.pitch = -0.62
 	_root.visible = true
+	if world.get("hud") != null:
+		world.hud.visible = false  # a clean view of the garden: only the placement panel
 	_update_cell(true)
 	Audio.play("click", 1.1, -6.0)
 	EventBus.ui_modal_changed.emit(true)
@@ -160,6 +162,8 @@ func close() -> void:
 	world.cam.pitch = _cam_pitch
 	if world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = true
+	if world.get("hud") != null:
+		world.hud.visible = true
 	EventBus.ui_modal_changed.emit(false)
 	closed.emit()
 

@@ -747,6 +747,11 @@ func _campaign(_p: Patch) -> void:
 		_mark("finale_done_s")
 	if int(GameState.stats.get("ark_waves", 0)) > 0:
 		_mark("ark_wave_1_s")
+	var late: String = AutoplayLate.step(world)  # [late] post-game: decorate, Heirlooms, seed a new world
+	if late != "":
+		_event("late", {"what": late})
+		if late == "seed new world":
+			return
 	if _now() < 30.0 or DevHooks.has("no-travel"):
 		return  # settle in after landing
 	var to: int = AutoplayCampaign.next_hub(world)
