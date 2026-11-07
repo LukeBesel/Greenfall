@@ -322,7 +322,7 @@ msgstr "先清理周围的废料（%d%% / %d%%）。"
 
 #: automation/outposts.gd:318 automation/outposts.gd:333 automation/stations.gd:117
 msgid "Not enough cubes or parts."
-msgstr ""
+msgstr "方块或零件不足。"
 
 #: automation/outposts.gd:327
 msgid "Repair it first."
@@ -442,7 +442,7 @@ msgstr "需要研究“火箭货运”"
 
 #: automation/rocket_tiers.gd:56
 msgid "Not enough cubes or parts"
-msgstr ""
+msgstr "方块或零件不足"
 
 #: automation/rocket_tiers.gd:69
 msgid "Rocket upgraded: %s."
@@ -759,6 +759,8 @@ msgid ""
 "COMPOST PRESS  Lv %d\n"
 "hopper %d%%  →  seeds"
 msgstr ""
+"堆肥压机  等级 %d\n"
+"料斗 %d%%  →  种子"
 
 #: plants/garden.gd:256
 msgid "A hex is fully restored. Something small is already living in it."
@@ -993,7 +995,7 @@ msgstr "需要%s控制核心"
 
 #: robots/fleet.gd:264
 msgid "Not enough parts (scrap spares at Haggle's or run the recycler)"
-msgstr ""
+msgstr "零件不足（在 Haggle 那里拆掉多余零件，或开动回收炉）"
 
 #: robots/fleet.gd:284
 msgid "%s fleet upgraded to %s."
@@ -1636,7 +1638,7 @@ msgstr "WREN 追踪到了 Ledger 的中继站：在基地的%s。找找那个红
 
 #: story/ledger.gd:182
 msgid "Ledger: %s"
-msgstr ""
+msgstr "Ledger：%s"
 
 #. compass directions fill "%s of the hub" / "%s of you" ("north of you").
 #: story/ledger.gd:204
@@ -1940,7 +1942,7 @@ msgstr "Lumi 等级"
 
 #: systems/collection.gd:88 ui/upgrades_screen.gd:17
 msgid "Requests"
-msgstr ""
+msgstr "委托"
 
 #: systems/collection.gd:89
 msgid "Curio Capsules"
@@ -1948,7 +1950,7 @@ msgstr "奇物胶囊"
 
 #: systems/contracts.gd:230
 msgid "%s (Builder)"
-msgstr ""
+msgstr "%s（组装）"
 
 #: systems/contracts.gd:232
 msgid "Builder Crate"
@@ -1960,31 +1962,31 @@ msgstr "奇物胶囊"
 
 #: systems/contracts.gd:236
 msgid "%s robot part"
-msgstr ""
+msgstr "%s 机器人零件"
 
 #: systems/contracts.gd:282
 msgid "Request complete: %s. Claim it at the workbench."
-msgstr ""
+msgstr "委托完成：%s。到工作台领取。"
 
 #: systems/contracts.gd:288
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
-msgstr ""
+msgstr "一个委托超时了。没关系，很快会有新的。"
 
 #: systems/contracts.gd:368
 msgid "Request done: %s."
-msgstr ""
+msgstr "委托已领取：%s。"
 
 #: systems/contracts.gd:410
 msgid "Requests reward: %s. Equip it on the Requests tab."
-msgstr ""
+msgstr "委托奖励：%s。在委托标签页装备。"
 
 #: systems/contracts.gd:413
 msgid "Requests reward: %s. Fit it in the Builder tab."
-msgstr ""
+msgstr "委托奖励：%s。在组装标签页安装。"
 
 #: systems/contracts.gd:417 systems/contracts.gd:427
 msgid "Requests reward: %s."
-msgstr ""
+msgstr "委托奖励：%s。"
 
 #: systems/contracts.gd:435
 msgid "Unknown item"
@@ -1992,15 +1994,15 @@ msgstr "未知物品"
 
 #: systems/contracts.gd:448
 msgid "Unlocks after %d requests"
-msgstr ""
+msgstr "完成 %d 个委托后解锁"
 
 #: systems/contracts.gd:449
 msgid "Locked"
-msgstr ""
+msgstr "未解锁"
 
 #: systems/cradle_mode.gd:234
 msgid "Heirloom unlocked: %s, level %d. It travels with Lumi to every world."
-msgstr ""
+msgstr "传家宝已解锁：%s，等级 %d。它会随 Lumi 去往每个世界。"
 
 #: systems/cradle_mode.gd:284 systems/cradle_mode.gd:288
 msgid "Fully grown"
@@ -2008,7 +2010,7 @@ msgstr "已满级"
 
 #: systems/cradle_mode.gd:289
 msgid "Unlocks with Ark milestones (next: %s, at %d restoration)"
-msgstr ""
+msgstr "随方舟里程碑解锁（下一个：%s，需要复原度 %d）"
 
 #: systems/cradle_mode.gd:302
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
@@ -2231,8 +2233,8 @@ msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "Cradle号回家之后，方舟舰桥才会开放。"
 
 #: systems/late_director.gd:124
-msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
-msgstr "Cradle 模式：方舟的种子库里存着其他世界的种子。打开 暂停 > 方舟舰桥 查看，用星种购买传家宝，或者播种一个新世界。花园模式（H）也已开放。"
+msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."
+msgstr "摇篮模式：方舟的种子库里存着给其他世界的种子。暂停 > 方舟舰桥可以查看它们和你的复原度解锁的传家宝，或者播种一个新世界。花园模式（H）也已开放。"
 
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:255
 msgid "Low"
@@ -2316,7 +2318,7 @@ msgstr "铲子速度"
 
 #: systems/research.gd:383
 msgid "field-note cubes"
-msgstr ""
+msgstr "野外笔记方块"
 
 #: systems/research.gd:383
 msgid "research speed"
@@ -2408,11 +2410,11 @@ msgstr "需要%s%s"
 
 #: systems/robot_builder.gd:372
 msgid "Haggle's stall · %s"
-msgstr ""
+msgstr "Haggle 的摊位 · %s"
 
 #: systems/robot_builder.gd:374
 msgid "Requests reward · %d requests"
-msgstr ""
+msgstr "委托奖励 · %d 个委托"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
 #: systems/robot_builder.gd:384 ui/main_menu.gd:433
@@ -2429,7 +2431,7 @@ msgstr "Haggle 的摊位现在没货"
 
 #: systems/robot_builder.gd:459
 msgid "Requests reward (%d of %d requests)"
-msgstr ""
+msgstr "委托奖励（%d / %d 个委托）"
 
 #: systems/robot_builder.gd:550
 msgid "Haggle: \"First bot? Treads on the house. And a plant, bots like plants.\" (Workbench > Builder)"
@@ -2437,7 +2439,7 @@ msgstr "Haggle：“第一台机器人？履带算我送的。再加一盆植物
 
 #: systems/robot_builder.gd:560
 msgid "A Maker Fragment was tucked inside it: +%d parts."
-msgstr ""
+msgstr "里面藏着一块创造者碎片：+%d 零件。"
 
 #: systems/robot_builder.gd:592
 msgid "%s spotted something green and lucky: a Lucky Clover!"
@@ -2445,7 +2447,7 @@ msgstr "%s 发现了一样又绿又幸运的东西：幸运草！"
 
 #: systems/robot_builder.gd:595
 msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
-msgstr ""
+msgstr "%s 在垃圾里发现了一块闪光的创造者碎片：+%d 零件。"
 
 #: systems/robot_builder.gd:603
 msgid "%s spotted a %s."
@@ -2489,7 +2491,7 @@ msgstr "种子库里存着这个星系每个世界的种子。把 Lumi 学到的
 
 #: ui/ark_bridge.gd:107
 msgid "Restoration %d"
-msgstr ""
+msgstr "复原度 %d"
 
 #: ui/ark_bridge.gd:110
 msgid "+%d banked from %s"
@@ -2577,8 +2579,8 @@ msgid "Full"
 msgstr "完整"
 
 #: ui/ark_bridge.gd:303
-msgid "%d Starseeds"
-msgstr "%d 星种"
+msgid "Milestone"
+msgstr "里程碑"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
@@ -2725,7 +2727,7 @@ msgstr "未保存"
 
 #: ui/builder_panel.gd:393
 msgid "Builder bin %d   ·   Parts %s"
-msgstr ""
+msgstr "组装零件箱 %d   ·   零件 %s"
 
 #: ui/builder_panel.gd:397
 msgid "Haggle's stall: %s  (new stock in %d min)"
@@ -2848,11 +2850,11 @@ msgstr "提示：大地恢复后，动物就会回来。用拍照模式（P）�
 
 #: ui/codex_screen.gd:553
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
-msgstr ""
+msgstr "提示：完成 %d 个委托（工作台的委托标签页）。"
 
 #: ui/codex_screen.gd:554
-msgid "Hint: Curio Capsules, in the workbench token shop."
-msgstr "提示：奇物胶囊，在工作台的代币商店里。"
+msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
+msgstr "提示：奇物胶囊在工作台委托的奖励轨道上。"
 
 #: ui/codex_screen.gd:555
 msgid "Hint: keep scooping without stopping until the streak meter is full."
@@ -2963,8 +2965,8 @@ msgid "Upgrades bought"
 msgstr "购买的升级"
 
 #: ui/codex_screen.gd:694
-msgid "Data earned"
-msgstr "获得的数据"
+msgid "Field notes logged"
+msgstr "已记录的野外笔记"
 
 #: ui/codex_screen.gd:695
 msgid "Research done"
@@ -3088,7 +3090,7 @@ msgstr "升级 > %s"
 
 #: ui/command_view.gd:780
 msgid "%s cubes, %s parts, %s Control Core. %s"
-msgstr ""
+msgstr "%s 方块，%s 零件，%s 控制核心。%s"
 
 #: ui/command_view.gd:789
 msgid "  parts %d/%d · %s"
@@ -3161,23 +3163,23 @@ msgstr "%d / %d 个六角格已清理"
 
 #: ui/contracts_panel.gd:27
 msgid "REQUESTS"
-msgstr ""
+msgstr "委托"
 
 #: ui/contracts_panel.gd:30
 msgid "Short optional jobs and world events. Each pays cubes or parts; nothing is lost if one runs out."
-msgstr ""
+msgstr "简短的可选任务和世界事件。每个都支付方块或零件；超时也不会损失什么。"
 
 #: ui/contracts_panel.gd:47
 msgid "REWARD TRACK"
-msgstr ""
+msgstr "奖励轨道"
 
 #: ui/contracts_panel.gd:86
 msgid "%d done"
-msgstr ""
+msgstr "已完成 %d"
 
 #: ui/contracts_panel.gd:89
 msgid "LIVE  ·  %s  ·  %s  ·  %s left"
-msgstr ""
+msgstr "进行中  ·  %s  ·  %s  ·  剩余 %s"
 
 #: ui/contracts_panel.gd:92
 msgid "Collection  %d / %d   ·   see the Codex (K)"
@@ -3185,11 +3187,11 @@ msgstr "收藏  %d / %d   ·   见图鉴（K）"
 
 #: ui/contracts_panel.gd:140
 msgid "A new request is being posted."
-msgstr ""
+msgstr "正在发布新的委托。"
 
 #: ui/contracts_panel.gd:151
 msgid "Pays  %s"
-msgstr ""
+msgstr "报酬  %s"
 
 #: ui/contracts_panel.gd:173
 msgid "Accept  (%s)"
@@ -3205,7 +3207,7 @@ msgstr "进行中"
 
 #: ui/contracts_panel.gd:198
 msgid "Claim  %s"
-msgstr ""
+msgstr "领取  %s"
 
 #: ui/contracts_panel.gd:238
 msgid "Next posting in %s"
@@ -3221,11 +3223,11 @@ msgstr "剩余时间 %s"
 
 #: ui/contracts_panel.gd:251
 msgid "Finished. Claim it!"
-msgstr ""
+msgstr "完成了，去领取！"
 
 #: ui/contracts_panel.gd:275
 msgid "After %d requests"
-msgstr ""
+msgstr "完成 %d 个委托后"
 
 #: ui/contracts_panel.gd:277
 msgid "Equipped  (press to remove)"
@@ -3233,7 +3235,7 @@ msgstr "已装备（按下卸下）"
 
 #: ui/contracts_panel.gd:277
 msgid "Unlocked  ·  press to equip"
-msgstr ""
+msgstr "已解锁  ·  按下装备"
 
 #: ui/contracts_panel.gd:279 ui/cosmetics_panel.gd:129
 msgid "Unlocked"
@@ -3333,11 +3335,11 @@ msgstr "连击"
 
 #: ui/event_hud.gd:192
 msgid "REQUEST READY  ·  claim it at the workbench"
-msgstr ""
+msgstr "委托已就绪  ·  到工作台领取"
 
 #: ui/event_hud.gd:192
 msgid "%d REQUESTS READY  ·  claim them at the workbench"
-msgstr ""
+msgstr "%d 个委托已就绪  ·  到工作台领取"
 
 #: ui/frontier_rockets.gd:11
 msgid "FRONTIERS"
@@ -3485,7 +3487,7 @@ msgstr " （现有 %s）"
 
 #: ui/hub_panel.gd:96
 msgid "Parts %s"
-msgstr ""
+msgstr "零件 %s"
 
 #: ui/hub_panel.gd:98
 msgid ""
@@ -4078,15 +4080,15 @@ msgstr "排队中  ·  %s"
 
 #: ui/research_node_card.gd:184 ui/research_panel.gd:203
 msgid "%s  ·  %s"
-msgstr ""
+msgstr "%s  ·  %s"
 
 #: ui/research_panel.gd:34 data/currencies.json:currencies[cubes].short
 msgid "CUBES"
-msgstr ""
+msgstr "方块"
 
 #: ui/research_panel.gd:41
 msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
-msgstr ""
+msgstr "研究需要方块和真实时间。无论你在玩还是离开，它都会继续。"
 
 #: ui/research_panel.gd:60
 msgid "RESEARCHING"
@@ -4126,7 +4128,7 @@ msgstr "按下加入队列"
 
 #: ui/research_panel.gd:214
 msgid "%s cancelled. Cubes refunded."
-msgstr ""
+msgstr "%s 已取消。方块已退还。"
 
 #: ui/robot_card.gd:40 data/currencies.json:currencies[parts].short
 msgid "PARTS"
@@ -4170,7 +4172,7 @@ msgstr "下一级：%s  ·  x%.1f 工作速度  ·  %s 外观"
 
 #: ui/robot_card.gd:93
 msgid "Needs %s cubes, %s parts and a %s Control Core.  %s"
-msgstr ""
+msgstr "需要 %s 方块、%s 零件和一个%s控制核心。  %s"
 
 #: ui/robot_card.gd:95
 msgid "Upgrade fleet to %s"
@@ -4542,7 +4544,7 @@ msgstr "自动路线：%s"
 
 #: ui/stations_panel.gd:104
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s"
-msgstr ""
+msgstr "已回收草捆 %d   ·   已销毁垃圾 %s kg   ·   零件 %s"
 
 #: ui/trade_panel.gd:23
 msgid "HAGGLE'S PARTS TRADE"
@@ -4554,7 +4556,7 @@ msgstr "“全是原装的。大部分吧。你的三个换我的一个，不问
 
 #: ui/trade_panel.gd:71
 msgid "Parts  %s      Robot parts in storage  %d"
-msgstr ""
+msgstr "零件  %s      库存机器人零件  %d"
 
 #: ui/trade_panel.gd:83
 msgid "Haggle: \"Funny thing, I just happened to find a %s. For you, half price.\""
@@ -4586,7 +4588,7 @@ msgstr "买磨损的  %s"
 
 #: ui/trade_panel.gd:112
 msgid "Scrap %d spare Rusty robot parts  ->  %s"
-msgstr ""
+msgstr "拆掉 %d 个多余的生锈机器人零件  ->  %s"
 
 #: ui/trade_panel.gd:122
 msgid "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab"
@@ -4601,6 +4603,8 @@ msgid ""
 "%s  (own %d)\n"
 "%s"
 msgstr ""
+"%s  （拥有 %d）\n"
+"%s"
 
 #: ui/trade_panel.gd:171
 msgid "Swap 3 spares"
@@ -5056,7 +5060,7 @@ msgstr "数据囤积者"
 
 #: data/achievements.json:achievements[data_500].desc
 msgid "Log 500 field notes."
-msgstr ""
+msgstr "记录 500 条野外笔记。"
 
 #: data/achievements.json:achievements[distance_1k].name
 msgid "Long Way Round"
@@ -5372,7 +5376,7 @@ msgstr "祖传之宝"
 
 #: data/achievements.json:achievements[late_heirloom_1].desc
 msgid "Unlock an Heirloom."
-msgstr ""
+msgstr "解锁一件传家宝。"
 
 #: data/achievements.json:achievements[late_heirloom_20].name
 msgid "Treasured"
@@ -5384,11 +5388,11 @@ msgstr "传家宝总等级达到 20。"
 
 #: data/achievements.json:achievements[late_starseeds_100].name
 msgid "World Mender"
-msgstr ""
+msgstr "世界修补者"
 
 #: data/achievements.json:achievements[late_starseeds_100].desc
 msgid "Reach 100 restoration across your worlds."
-msgstr ""
+msgstr "在你的所有世界中达到 100 复原度。"
 
 #: data/achievements.json:achievements[late_decor_1].name
 msgid "Home Touches"
@@ -6492,7 +6496,7 @@ msgstr "数据缓存"
 
 #: data/cradle.json:heirlooms[data_cache].desc
 msgid "Each new world starts with 600 extra cubes for research per level."
-msgstr ""
+msgstr "每个新世界每级额外带着 600 方块用于研究。"
 
 #: data/cradle.json:heirlooms[old_crew].name
 msgid "Old Crew"
@@ -6608,24 +6612,24 @@ msgstr "从南极到北极遍布旧工业：锈蚀之地与蔓延的城区。"
 
 #: data/currencies.json:currencies[cubes].name
 msgid "Cubes"
-msgstr ""
+msgstr "方块"
 
 #: data/currencies.json:currencies[cubes].desc
 msgid "The main money. Sell bales at the scale. Pays for upgrades, robots, base levels, research, rockets and decorations."
-msgstr ""
+msgstr "主要货币。在磅秤上卖草捆。用于升级、机器人、基地等级、研究、火箭和装饰。"
 
 #: data/currencies.json:currencies[parts].name data/hub.json:materials.metal.name data/hub.json:materials.plastic.name
 #: data/hub.json:materials.glass.name
 msgid "Parts"
-msgstr ""
+msgstr "零件"
 
 #: data/currencies.json:currencies[parts].desc
 msgid "Robot parts and building stock salvaged from junk, the recycler and Haggle's scrap bin. Pays for robots, the Builder, base levels, stations, rocket stages and outpost repairs."
-msgstr ""
+msgstr "从垃圾、回收炉和 Haggle 的废料箱里回收的机器人零件和建材。用于机器人、组装、基地等级、设施、火箭级段和前哨维修。"
 
 #: data/currencies.json:currencies[seeds].name
 msgid "Seeds"
-msgstr ""
+msgstr "种子"
 
 #: data/currencies.json:currencies[seeds].short
 msgid "SEEDS"
@@ -6633,7 +6637,7 @@ msgstr "种子"
 
 #: data/currencies.json:currencies[seeds].desc
 msgid "For planting. The compost press turns paper, card and spent blooms into seeds."
-msgstr ""
+msgstr "用来种植。堆肥压机把纸、纸板和凋谢的花变成种子。"
 
 #: data/decor.json:types[path].name
 msgid "Stone Path"
@@ -9177,7 +9181,7 @@ msgstr "放置一件装饰（H）"
 
 #: data/goals.json:goals[late_heirloom_1].text
 msgid "Unlock an Heirloom"
-msgstr ""
+msgstr "解锁一件传家宝"
 
 #: data/goals.json:goals[late_garden_10].text
 msgid "Place 10 decorations"
@@ -10651,7 +10655,7 @@ msgstr "一台投放到清理前线的液压打包机。清洁机器人不再就
 
 #: data/stations.json:recycler.desc
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky."
-msgstr ""
+msgstr "粉碎滚筒和一座小熔炉。草捆进去就再也不会回来：出来的是零件和干净的建材。每烧干净一个草捆，天空就好一点。"
 
 #: data/upgrades.json:upgrades[compartment_size].name
 msgid "Compartment Size"
@@ -10747,7 +10751,7 @@ msgstr "回收炉产出"
 
 #: data/upgrades.json:upgrades[recycler_yield].desc
 msgid "Sharper shredder teeth and a hotter smelter. More parts per bale."
-msgstr ""
+msgstr "更锋利的粉碎齿和更热的熔炉。每个草捆产出更多零件。"
 
 #: data/upgrades.json:upgrades[laser_reach].name
 msgid "Laser Reach"
@@ -12115,7 +12119,7 @@ msgstr "Cradle号的种子库里装的，远不止一个星球的份。外面还
 
 #: data/wren_lines.json:cradle_mode
 msgid "Heirlooms, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."
-msgstr ""
+msgstr "传家宝，一整张世界地图。Verdance 依然葱绿；我们只是把学到的带去别处。"
 
 #: data/wren_lines.json:new_world
 msgid "...new ground... new junk..."
@@ -12141,6 +12145,18 @@ msgstr "你在装饰呀。我赞成。猫咪们会更赞成。"
 msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
 msgstr "一张长椅，一盏灯，一座喷泉。这里开始像一个人们会想回来的地方了。"
 
+#~ msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
+#~ msgstr "Cradle 模式：方舟的种子库里存着其他世界的种子。打开 暂停 > 方舟舰桥 查看，用星种购买传家宝，或者播种一个新世界。花园模式（H）也已开放。"
+
+#~ msgid "%d Starseeds"
+#~ msgstr "%d 星种"
+
+#~ msgid "Hint: Curio Capsules, in the workbench token shop."
+#~ msgstr "提示：奇物胶囊，在工作台的代币商店里。"
+
+#~ msgid "Data earned"
+#~ msgstr "获得的数据"
+
 #~ msgid "Not enough materials."
 #~ msgstr "材料不足。"
 
@@ -12151,11 +12167,11 @@ msgstr "一张长椅，一盏灯，一座喷泉。这里开始像一个人们会
 #~ msgstr "材料不足"
 
 #~ msgid ""
-"COMPOST PRESS  Lv %d\n"
-"compost %s  →  seeds"
+#~ "COMPOST PRESS  Lv %d\n"
+#~ "compost %s  →  seeds"
 #~ msgstr ""
-"堆肥压制机  %d 级\n"
-"堆肥 %s  →  种子"
+#~ "堆肥压制机  %d 级\n"
+#~ "堆肥 %s  →  种子"
 
 #~ msgid "Not enough bolts (scrap spare parts at Haggle's)"
 #~ msgstr "螺栓不足（去 Haggle 那里拆解备用零件）"
@@ -12371,11 +12387,11 @@ msgstr "一张长椅，一盏灯，一座喷泉。这里开始像一个人们会
 #~ msgstr "拆解 %d 个生锈的备用零件  ->  +%d 螺栓"
 
 #~ msgid ""
-"%s  (own %d)\n"
-"%s cubes + %d bolts"
+#~ "%s  (own %d)\n"
+#~ "%s cubes + %d bolts"
 #~ msgstr ""
-"%s（拥有 %d）\n"
-"%s 方块 + %d 螺栓"
+#~ "%s（拥有 %d）\n"
+#~ "%s 方块 + %d 螺栓"
 
 #~ msgid "Collect 500 field data."
 #~ msgstr "收集 500 野外数据。"

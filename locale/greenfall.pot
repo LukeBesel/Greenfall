@@ -2214,7 +2214,7 @@ msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr ""
 
 #: systems/late_director.gd:124
-msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
+msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."
 msgstr ""
 
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:255
@@ -2560,7 +2560,7 @@ msgid "Full"
 msgstr ""
 
 #: ui/ark_bridge.gd:303
-msgid "%d Starseeds"
+msgid "Milestone"
 msgstr ""
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
@@ -2830,7 +2830,7 @@ msgid "Hint: finish %d requests (Requests tab at the workbench)."
 msgstr ""
 
 #: ui/codex_screen.gd:554
-msgid "Hint: Curio Capsules, in the workbench token shop."
+msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
 msgstr ""
 
 #: ui/codex_screen.gd:555
@@ -2942,7 +2942,7 @@ msgid "Upgrades bought"
 msgstr ""
 
 #: ui/codex_screen.gd:694
-msgid "Data earned"
+msgid "Field notes logged"
 msgstr ""
 
 #: ui/codex_screen.gd:695

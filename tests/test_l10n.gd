@@ -69,7 +69,7 @@ func test_pseudo_translates_code_and_data_strings() -> void:
 	assert_true(tr(first).begins_with("["), "goal text translated: %s" % tr(first))
 	# Formatted strings keep working.
 	assert_true((tr("Hub %d") % 3).contains("3"))
-	var many: String = tr_n("+%d token", "+%d tokens", 5) % 5
+	var many: String = tr_n("+%d part", "+%d parts", 5) % 5  # [money] tokens are gone
 	assert_true(many.begins_with("[") and many.contains("5"), many)
 	# A WREN line keeps its {name} placeholder.
 	var wl: Dictionary = Economy.read_json("res://data/wren_lines.json")
@@ -156,13 +156,13 @@ func test_full_translations_complete() -> void:
 		assert_eq(prompt, [] as Array[String], "%s keeps the E prompt prefix" % l)
 		TranslationServer.set_locale(l)
 		for n: int in [0, 1, 2, 5, 21]:
-			var s: String = tr_n("+%d token", "+%d tokens", n) % n
-			assert_true(s.contains(str(n)) and s != "+%d tokens" % n, "%s plural n=%d: %s" % [l, n, s])
+			var s: String = tr_n("+%d part", "+%d parts", n) % n  # [money]
+			assert_true(s.contains(str(n)) and s != "+%d parts" % n, "%s plural n=%d: %s" % [l, n, s])
 	TranslationServer.set_locale("de")
 	assert_eq(tr_n("Missing %d part", "Missing %d parts", 1) % 1, "1 Teil fehlt")
 	assert_eq(tr_n("Missing %d part", "Missing %d parts", 3) % 3, "3 Teile fehlen")
 	TranslationServer.set_locale("fr")  # French: 0 and 1 are singular
-	assert_eq(tr_n("+%d token", "+%d tokens", 0) % 0, "+0 jeton")
+	assert_eq(tr_n("+%d part", "+%d parts", 0) % 0, "+0 pièce")
 
 
 ## [i18n] With a CJK locale active, the UI and Ledger fonts render every character its .po uses.

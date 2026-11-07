@@ -2239,8 +2239,8 @@ msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "[Ţĥé Àŕķ Bŕîðĝé ôþéñš ôñçé ţĥé Çŕàðļé ĥàš çômé ĥômé. ~~~~~~~~~~~~~~~]"
 
 #: systems/late_director.gd:124
-msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
-msgstr "[Çŕàðļé Môðé: ţĥé àŕķ'š šééð vàûļţ ĥôļðš šééðš ƒôŕ ôţĥéŕ ŵôŕļðš. Þàûšé > Àŕķ Bŕîðĝé ţô šéé ţĥém, šþéñð Šţàŕšééðš ôñ Ĥéîŕļôômš, ôŕ šééð à ñéŵ ŵôŕļð. Ĝàŕðéñ Môðé (Ĥ) îš ôþéñ ţôô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."
+msgstr "[Çŕàðļé Môðé: ţĥé àŕķ'š šééð vàûļţ ĥôļðš šééðš ƒôŕ ôţĥéŕ ŵôŕļðš. Þàûšé > Àŕķ Bŕîðĝé ţô šéé ţĥém àñð ţĥé Ĥéîŕļôômš ýôûŕ ŕéšţôŕàţîôñ ĥàš ûñļôçķéð, ôŕ šééð à ñéŵ ŵôŕļð. Ĝàŕðéñ Môðé (Ĥ) îš ôþéñ ţôô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:255
 msgid "Low"
@@ -2585,8 +2585,8 @@ msgid "Full"
 msgstr "[Fûļļ ~]"
 
 #: ui/ark_bridge.gd:303
-msgid "%d Starseeds"
-msgstr "[%d Šţàŕšééðš ~]"
+msgid "Milestone"
+msgstr "[Mîļéšţôñé ~]"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
@@ -2860,8 +2860,8 @@ msgid "Hint: finish %d requests (Requests tab at the workbench)."
 msgstr "[Ĥîñţ: ƒîñîšĥ %d ŕéqûéšţš (Ŕéqûéšţš ţàb àţ ţĥé ŵôŕķbéñçĥ). ~~~~~~~~~~~~~~~~~]"
 
 #: ui/codex_screen.gd:554
-msgid "Hint: Curio Capsules, in the workbench token shop."
-msgstr "[Ĥîñţ: Çûŕîô Çàþšûļéš, îñ ţĥé ŵôŕķbéñçĥ ţôķéñ šĥôþ. ~~~~~~~~~~~~~~~]"
+msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
+msgstr "[Ĥîñţ: Çûŕîô Çàþšûļéš, ôñ ţĥé Ŕéqûéšţš ŕéŵàŕð ţŕàçķ àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/codex_screen.gd:555
 msgid "Hint: keep scooping without stopping until the streak meter is full."
@@ -2972,8 +2972,8 @@ msgid "Upgrades bought"
 msgstr "[Ûþĝŕàðéš bôûĝĥţ ~~]"
 
 #: ui/codex_screen.gd:694
-msgid "Data earned"
-msgstr "[Ðàţà éàŕñéð ~]"
+msgid "Field notes logged"
+msgstr "[Fîéļð ñôţéš ļôĝĝéð ~~~]"
 
 #: ui/codex_screen.gd:695
 msgid "Research done"
