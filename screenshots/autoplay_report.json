@@ -21,26 +21,26 @@
       1.4
     ]
   ],
-  "cubes": 670.304366015326,
+  "cubes": 620.003233954307,
   "cubes_fell": 0,
-  "cubes_made": 6.0,
+  "cubes_made": 5.0,
   "dead_gaps_min": [],
   "district": "Old Town",
-  "earned_total": 1300.27936601533,
+  "earned_total": 1249.97823395431,
   "fell_through": 0,
   "first_cashin_s": 21.6,
   "first_cube_s": 17.4,
   "first_hex_s": 81.0,
   "first_hexlv_1_s": 81.2,
   "first_upgrade_s": 21.9,
-  "game_time_min": 3.1,
-  "game_time_s": 188.8,
+  "game_time_min": 3.2,
+  "game_time_s": 192.3,
   "goal_gaps_min": [],
   "goals_done": 8,
   "goals_total": 158,
   "hexes_cleaned": 2,
   "hub_level": 1,
-  "ignored_pieces": 2,
+  "ignored_pieces": 4,
   "junk_hexes": 33,
   "log": [
     {
@@ -97,8 +97,8 @@
       "parts": 2,
       "parts_cur": 12.2,
       "pos": [
-        -5.6,
-        -0.4
+        -5.8,
+        -0.3
       ],
       "rate": 12.44,
       "remote_shops": 0,
@@ -153,12 +153,12 @@
       "hexes": 1,
       "hub": 1,
       "parts": 4,
-      "parts_cur": 17.9,
+      "parts_cur": 17.3,
       "pos": [
-        -9.9,
-        7.7
+        -8.6,
+        7.8
       ],
-      "rate": 8.66,
+      "rate": 8.68,
       "remote_shops": 0,
       "research": "",
       "robots": {},
@@ -178,14 +178,8 @@
       "upgrades": 9
     },
     {
-      "event": "upgrade",
-      "id": "scoop_width",
-      "level": 3,
-      "t": 159.3
-    },
-    {
       "bots": {},
-      "cubes": 620.0,
+      "cubes": 722.0,
       "earned": 1250.0,
       "escapes": 0,
       "goals": 8,
@@ -198,13 +192,13 @@
       ],
       "hexes": 2,
       "hub": 1,
-      "parts": 6,
-      "parts_cur": 19.6,
+      "parts": 4,
+      "parts_cur": 19.2,
       "pos": [
-        -6.8,
-        -14.9
+        -21.9,
+        -4.4
       ],
-      "rate": 7.0,
+      "rate": 17.36,
       "remote_shops": 0,
       "research": "",
       "robots": {},
@@ -220,8 +214,14 @@
         "robots_built": 0.0
       },
       "t": 180.3,
-      "task": "clean",
-      "upgrades": 10
+      "task": "bench",
+      "upgrades": 9
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_width",
+      "level": 3,
+      "t": 183.1
     }
   ],
   "next_goals": [
@@ -230,13 +230,13 @@
     "hex_3"
   ],
   "parts_bought": 0,
-  "parts_found": 6.0,
-  "perfect_cubes": 6.0,
+  "parts_found": 4.0,
+  "perfect_cubes": 5.0,
   "remote_shops": 0,
   "research_done": [],
-  "research_idle_max_s": 188.0,
-  "research_idle_s": 188.0,
-  "research_starved_s": 188.0,
+  "research_idle_max_s": 191.0,
+  "research_idle_s": 191.0,
+  "research_starved_s": 191.0,
   "robots": {},
   "stuck_escapes": 0,
   "stuck_robots": {},
@@ -271,13 +271,13 @@
       "id": "cash_1",
       "kind": "goal",
       "n": 3,
-      "t": 21.9
+      "t": 21.8
     },
     {
       "id": "upgrade_1",
       "kind": "goal",
       "n": 4,
-      "t": 22.6
+      "t": 22.5
     },
     {
       "id": "perfect_1",
@@ -295,20 +295,20 @@
       "id": "compartment_3",
       "kind": "goal",
       "n": 7,
-      "t": 39.1
+      "t": 39.0
     },
     {
       "kind": "part",
       "rarity": 1,
       "stored": 3,
-      "t": 73.3,
+      "t": 73.4,
       "type": 6
     },
     {
       "kind": "part",
       "rarity": 1,
       "stored": 4,
-      "t": 76.8,
+      "t": 76.9,
       "type": 3
     },
     {
@@ -318,42 +318,28 @@
       "t": 81.0
     },
     {
+      "id": "hex_1",
+      "kind": "goal",
+      "n": 8,
+      "t": 81.2
+    },
+    {
       "hex": 1,
       "kind": "hex_level",
       "level": 1,
       "t": 81.2
     },
     {
-      "id": "hex_1",
-      "kind": "goal",
-      "n": 8,
-      "t": 81.3
-    },
-    {
       "hex": 6,
       "kind": "hex_clean",
       "n": 2,
-      "t": 155.5
+      "t": 179.4
     },
     {
       "hex": 6,
       "kind": "hex_level",
       "level": 1,
-      "t": 156.2
-    },
-    {
-      "kind": "part",
-      "rarity": 1,
-      "stored": 5,
-      "t": 174.4,
-      "type": 4
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 6,
-      "t": 177.7,
-      "type": 4
+      "t": 180.2
     }
   ],
   "upgrades": {
