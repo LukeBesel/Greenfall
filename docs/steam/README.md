@@ -11,7 +11,7 @@ what is left for you, in order, and where each piece lives.
 | Achievements mirrored to Steam (set + store), 14 lifetime stats | `data/achievements.json`, `data/steam.json` |
 | Steamworks lists to type in | `docs/steam/achievements.csv`, `docs/steam/stats.csv` (regenerate: `python3 tools/steam/export_steam_csv.py`) |
 | Achievement icons, 256x256, unlocked and locked | `/home/user/Greenfall/screenshots/steam/achievement_icons/` (regenerate: `tools/steam/capsules.tscn -- --icons`) |
-| Steam Cloud through Remote Storage, newest save wins | `steam/steam_cloud.gd`, hooks in `autoload/SaveManager.gd` |
+| Steam Cloud through Remote Storage, newest save wins (world slots and the Cradle Mode profile) | `steam/steam_cloud.gd`, hooks in `autoload/SaveManager.gd` and `systems/cradle_mode.gd` (save_profile) |
 | Demo build (first district, base level 2 cap, no rockets, end screen with Wishlist) | `steam/demo.gd`, `steam/demo_end_screen.gd`, export presets `* Demo` |
 | CI builds of the full game and the demo for Windows, Linux, macOS | `.github/workflows/build.yml` |
 | Store capsules, library art, screenshots | `/home/user/Greenfall/screenshots/steam/` (not in git); recipes in `docs/steam/TRAILER.md` |
@@ -76,13 +76,19 @@ App Admin > *Stats & Achievements*:
 Pick one option in `project.godot` (`greenfall/steam/cloud_mode`).
 
 **A. `remote_storage` (default; the code is in place).** Every save is also written to Steam Cloud through
-the Steam API. On start, each slot is compared with its cloud copy and the save with the newest internal
-save time wins; on a tie the local one stays. A local save replaced by a newer cloud copy is kept as
-`slot_N.save.local_bak`. Steamworks: App Admin > *Steam Cloud* > *Byte quota per user* **50 MB**,
-*Number of files per user* **20**, then Publish.
+the Steam API: the world slots (`slot_N.save`, one per Cradle Mode world) **and the profile
+(`profile.save`: the world list, Starseeds, Heirlooms)**, which `CradleMode.save_profile` uploads each time
+it is written. On start, each file is compared with its cloud copy and the one with the newest internal
+save time (`saved_unix`, stamped into slots and the profile) wins; on a tie the local one stays. A local
+file replaced by a newer cloud copy is kept as `<name>.save.local_bak`. The cloud sync runs in the
+SteamService autoload, before CradleBoot reads the profile, so a newer profile from another PC is the one
+the game starts with. Steamworks: App Admin > *Steam Cloud* > *Byte quota per user* **50 MB**,
+*Number of files per user* **20** (each Cradle Mode world is one slot file, plus `profile.save`; 20 allows
+18 worlds plus slack, raise it if players seed more), then Publish.
 
 **B. `auto_cloud` (no code; Steam syncs the folder).** Set `cloud_mode="auto_cloud"`, then in *Steam Cloud* >
-*Root paths* add (pattern `*.save`, not recursive):
+*Root paths* add (pattern `*.save`, not recursive; it covers both `slot_N.save` and `profile.save`, so do
+not narrow it to `slot_*.save`: a world slot without its profile would load as the wrong world):
 
 | OS | Root | Subdirectory |
 |---|---|---|
