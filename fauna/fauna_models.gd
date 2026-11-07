@@ -193,7 +193,7 @@ static func rabbit() -> Mesh:
 ## Foxes (red, fennec, arctic). p: ears (scale), len (body scale), fur, belly, socks, tip, fluff.
 static func fox(p: Dictionary) -> Mesh:
 	var b := FaunaMesh.new()
-	var fur: Color = p.get("fur", Color(0.82, 0.42, 0.16))
+	var fur: Color = p.get("fur", Color(0.8, 0.5, 0.3))
 	var belly: Color = p.get("belly", Color(0.95, 0.92, 0.86))
 	var socks: Color = p.get("socks", Color(0.16, 0.11, 0.09))
 	var tip: Color = p.get("tip", WHITE)
@@ -234,9 +234,9 @@ static func fox(p: Dictionary) -> Mesh:
 
 static func deer(stag: bool) -> Mesh:
 	var b := FaunaMesh.new()
-	var fur := Color(0.58, 0.4, 0.24)
-	var dark := Color(0.25, 0.18, 0.12)
-	var pale := Color(0.92, 0.88, 0.8)
+	var fur := Color(0.6, 0.47, 0.36)
+	var dark := Color(0.25, 0.2, 0.16)
+	var pale := Color(0.93, 0.9, 0.84)
 	b.ell(Vector3(0, 0.74, 0.02), Vector3(0.16, 0.2, 0.42), fur, 0.0)
 	b.ell(Vector3(0, 0.76, -0.27), Vector3(0.16, 0.22, 0.18), fur, 0.0)
 	b.ell(Vector3(0, 0.76, 0.29), Vector3(0.165, 0.21, 0.17), fur, 0.0)
