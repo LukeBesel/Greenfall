@@ -408,7 +408,8 @@ func _ground() -> void:
 	var wv: Node = world.get("water")
 	var wm: Variant = wv.get("_mat") if wv else null
 	if wm is ShaderMaterial:
-		(wm as ShaderMaterial).set_shader_parameter("murky_col", Vector3(0.3, 0.12, 0.06))
+		(wm as ShaderMaterial).set_shader_parameter("murky_col", Vector3(0.13, 0.055, 0.03))
+		(wm as ShaderMaterial).set_shader_parameter("sheen_amt", 0.3)
 		(wm as ShaderMaterial).set_shader_parameter("clear_col", Vector3(0.09, 0.36, 0.38))
 		(wm as ShaderMaterial).set_shader_parameter("alpha_mc", Vector2(0.97, 0.8))
 

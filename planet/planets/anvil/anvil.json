@@ -6,36 +6,28 @@
   "models": {
    "metal": [
     {
-     "id": "barrel_03",
+     "id": "Barrel_01",
      "vol": 2.4,
      "w": 1.5,
      "lie": 0.7
     },
     {
-     "id": "Barrel_01",
-     "vol": 2.4,
-     "w": 1.0,
-     "lie": 0.7
-    },
-    {
      "id": "tire_pump",
      "vol": 0.8,
-     "w": 0.8,
+     "w": 1.0,
      "lie": 0.6
+    },
+    {
+     "id": "barrel_03",
+     "vol": 2.4,
+     "w": 0.35,
+     "lie": 0.7
     },
     {
      "id": "rusted_wheel_rim_02",
      "vol": 2.2,
      "w": 0.4,
      "lie": 0.9
-    }
-   ],
-   "plastic": [
-    {
-     "id": "barrel_03",
-     "vol": 2.4,
-     "w": 1.0,
-     "lie": 0.7
     }
    ],
    "paper": [
