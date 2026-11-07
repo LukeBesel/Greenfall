@@ -179,3 +179,12 @@ Known: Godot exits with code 134 after some headless runs (engine cleanup at qui
 - Not translated: 3D world signage (street_dressing shop signs, robot decals), proper names (districts, robot names), dev/log text.
 - Next: real translations (DE, FR, ES, PT-BR, ZH-CN, JA, KO, RU), CJK fallback font, a pseudo-locale layout pass on every screen with screenshots, `extract_strings.py --check` in CI.
 
+
+## In progress (Nov 7, 2026): deep dive
+Wave 1 helpers (worktrees /home/user/gf-wt/<name>, branches wt/<name>):
+- beat: full game beatable end to end (autoplay to the Cradle finale), bug hunt, docs/WALKTHROUGH.md, credits
+- wild: wildlife (cats, birds, rats, rabbits, deer, foxes, fish, ducks, frogs, frontier animals), Collection hooks
+- first: first-hour polish (tutorial panel, juice, pacing)
+- vqa: visual QA sweep (docs/VISUAL_QA.md) and the known visual leftovers
+Wave 2 (after merging wave 1): late-game Cradle Mode / Garden Mode + eggs, real translations (de/fr/es/pt-BR/zh/ja drafts), code health (exit crash 134, split scenes/slice.gd), trailer capture. Then merge the PR into main.
+If a session ends: commit WIP in each worktree, then resume or merge.
