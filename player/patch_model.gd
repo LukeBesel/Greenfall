@@ -394,7 +394,7 @@ func _build_accessories(v: Dictionary) -> void:
 			"butterfly":
 				_bfly = Node3D.new()
 				_bfly.top_level = true
-				_bfly.scale = Vector3.ONE * 1.5
+				_bfly.scale = Vector3.ONE * 2.2
 				add_child(_bfly)
 				_part(_bfly, "acc_bfly_body")
 				for side: float in [-1.0, 1.0]:
@@ -433,7 +433,7 @@ func _moss_mat() -> StandardMaterial3D:
 
 func _wing_mat(glow: Color) -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
-	m.albedo_color = Color(1.0, 0.72, 0.42, 0.9).lerp(glow, 0.25)
+	m.albedo_color = Color(1.0, 0.62, 0.25, 0.92).lerp(glow, 0.2)
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	m.cull_mode = BaseMaterial3D.CULL_DISABLED
 	m.emission_enabled = true
@@ -488,7 +488,7 @@ func _update_accessories(delta: float) -> void:
 		var pos: Vector3 = c + basis_m * off
 		var vel := Vector3(-sin(a), 0.0, cos(a) * 0.75)
 		var heading: Vector3 = (basis_m * vel).normalized()
-		_bfly.global_transform = Transform3D(Basis.looking_at(heading, Vector3.UP).rotated(heading, sin(_t * 2.0) * 0.2).scaled(Vector3.ONE * 1.5), pos)
+		_bfly.global_transform = Transform3D(Basis.looking_at(heading, Vector3.UP).rotated(heading, sin(_t * 2.0) * 0.2).scaled(Vector3.ONE * 2.2), pos)
 		var flap: float = sin(_t * 17.0) * 0.85 + 0.35
 		for h: Node3D in _bfly_wings:
 			h.rotation.z = flap * float(h.get_meta("side", 1.0))
