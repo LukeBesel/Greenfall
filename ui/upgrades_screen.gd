@@ -84,7 +84,8 @@ func _ready() -> void:
 		b.text = t["name"] if live else "%s (soon)" % t["name"]
 		b.disabled = not live
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
-		b.custom_minimum_size = Vector2(120, 44)
+		b.custom_minimum_size = Vector2(88, 44)  # [deck] 8 tabs fit 1280x800 at 110% interface scale
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.focus_mode = Control.FOCUS_NONE
 		tabs.add_child(b)
 		_tab_buttons.append(b)
@@ -171,6 +172,7 @@ func _populate() -> void:
 		card.bought.connect(func(_i: String, _n: int) -> void: _refresh_all())
 		_grid.add_child(card)
 		_cards.append(card)
+	_relayout.call_deferred()  # [deck] again once the cards' minimum widths are known
 
 
 func _set_tab(id: String) -> void:
@@ -263,7 +265,12 @@ func _relayout() -> void:
 		_grid.columns = 1
 		return
 	var w: float = _root.size.x - 110.0
-	_grid.columns = clampi(int(w / 350.0), 1, 4)
+	# [deck] Never more columns than the widest card allows (no clipping at 1280x800 / 110%).
+	var min_w: float = 350.0
+	for c: Node in _grid.get_children():
+		if c is Control and not c.is_queued_for_deletion():
+			min_w = maxf(min_w, (c as Control).get_combined_minimum_size().x + 14.0)
+	_grid.columns = clampi(int(w / min_w), 1, 4)
 
 
 func open_screen() -> void:
