@@ -14,9 +14,9 @@ const BONUS_CAP: float = 0.06
 ## A robot can retire at Mk I-II, or after this long in service (play time).
 const OLD_S: float = 3600.0
 const LOW_TIER: int = 1
-const SIZE := Vector2(6.0, 4.0)
+const SIZE := Vector2(5.0, 3.4)
 ## Places tried for the garden, nearest first (base yard edge; the hub ground is always clean).
-const SPOTS: Array[Vector3] = [Vector3(1.6, 0, 8.6), Vector3(-1.8, 0, 9.4), Vector3(9.0, 0, 4.0), Vector3(-9.2, 0, -3.0), Vector3(3.0, 0, -9.5)]
+const SPOTS: Array[Vector3] = [Vector3(-1.3, 0, 6.0), Vector3(1.6, 0, 8.6), Vector3(-1.8, 0, 9.4), Vector3(9.0, 0, 4.0), Vector3(-9.2, 0, -3.0), Vector3(3.0, 0, -9.5)]
 
 var world: Node
 var center := Vector3.ZERO
@@ -171,7 +171,7 @@ func _build_garden() -> void:
 	for x: float in [-hx, hx]:
 		add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(0.12, 0.18, SIZE.y), 0.02, 2), kerb, Vector3(x, 0.09, 0)))
 	# Flower beds the caretakers tend.
-	for p: Vector3 in [Vector3(-1.6, 0, -0.9), Vector3(1.4, 0, -0.9), Vector3(-0.2, 0, 0.8)]:
+	for p: Vector3 in [Vector3(-1.25, 0, -0.85), Vector3(1.25, 0, -0.85), Vector3(-0.4, 0, 0.75)]:
 		var bed: Node3D = DecorProps.flower_bed()
 		bed.position = p
 		add_child(bed)
@@ -200,7 +200,7 @@ func rebuild() -> void:
 		k.nursery = self
 		k.seed_v = float(i) * 1.37
 		add_child(k)
-		k.position = Vector3(randf_range(-2.0, 2.0), 0, randf_range(-1.2, 1.4))
+		k.position = Vector3(randf_range(-1.8, 1.8), 0, randf_range(-1.0, 1.2))
 		keepers.append(k)
 		if world.get("interactables") != null:
 			var kk: Caretaker = k
@@ -294,7 +294,7 @@ class Caretaker extends Node3D:
 	func _pick_target() -> void:
 		var beds: Array[Vector3] = nursery.bed_points()
 		if beds.is_empty() or randf() < 0.3:
-			_target = Vector3(randf_range(-2.4, 2.4), 0, randf_range(-1.4, 1.5))
+			_target = Vector3(randf_range(-2.0, 2.0), 0, randf_range(-1.2, 1.3))
 			_state = "walk"
 		else:
 			var b: Vector3 = beds[randi() % beds.size()]
