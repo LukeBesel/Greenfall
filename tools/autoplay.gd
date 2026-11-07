@@ -968,6 +968,10 @@ func _essential(type_id: String) -> bool:
 			return _drips() < (world.hex_levels.count_at_least(2) if world.get("hex_levels") else 0)
 		"skimmer":
 			return _lake_dirty()
+		"scoopie":  # [beat] a small cleaning crew is worth more than saving a few minutes for the base
+			return fleet.count("scoopie") < 3 and _land_left_frac() > 0.2
+		"haulbug":
+			return fleet.count("haulbug") * 2 < fleet.count("scoopie")
 	return false
 
 
