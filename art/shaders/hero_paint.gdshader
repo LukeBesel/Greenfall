@@ -100,7 +100,7 @@ void fragment() {
 	float fine = fbm3(q * 4.0 + 3.0);
 	// Paint chips: noise everywhere, much stronger on convex edges.
 	float joint = 1.0 - vcol.a;
-	float chip_n = big * 0.55 + fine * 0.45 + 0.08 - edge * edge_wear * 1.05 - joint * 0.4;
+	float chip_n = big * 0.4 + fine * 0.6 + 0.08 - edge * edge_wear * 1.05 - joint * 0.4;
 	float paint = smoothstep(1.0 - paint_coverage - 0.03, 1.0 - paint_coverage + 0.03, chip_n);
 	// Small dark specks / pits in the paint (like the concept's speckled shell).
 	float sp = smoothstep(0.76, 0.88, n3(opos * 110.0 + seed * 5.0)) * clamp(smoothstep(0.45, 0.75, fbm3(q * 0.8 + 5.0)) + edge * 0.6, 0.0, 1.0);

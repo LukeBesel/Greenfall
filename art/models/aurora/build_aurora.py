@@ -761,7 +761,7 @@ for o in objs:
 		c = cur[i]
 		edge = sstep(22.0, 75.0, c)
 		if o.name in SHELLS:
-			edge = min(1.0, edge + 0.8 * sstep(3.0, 13.0, c))  # wear on the big rounded corners too
+			edge = min(1.0, edge + 0.5 * sstep(4.0, 14.0, c))  # wear on the big rounded corners too
 		cav = sstep(6.0, 30.0, -c)
 		occ = a[i] if a else 1.0
 		# Joint wear (alpha, 1 = none): armour and shell close to a joint pivot chip more.

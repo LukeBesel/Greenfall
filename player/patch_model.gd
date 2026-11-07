@@ -244,6 +244,8 @@ func _build() -> void:
 		"thruster": _ring_mat,
 		"thruster_core": Mats.lamp(glow.lightened(0.4), 5.0),
 	}
+	# [hero] The chest plate stays readable: lighter edge wear than the shell.
+	(_mats["plate"] as ShaderMaterial).set_shader_parameter("edge_wear", 0.25)
 	_face_mat = ShaderMaterial.new()
 	_face_mat.shader = preload("res://art/shaders/bot_face.gdshader")
 	_face_mat.set_shader_parameter("eye_color", glow)
