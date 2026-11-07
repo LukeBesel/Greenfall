@@ -125,8 +125,11 @@ void fragment() {
 	float rim = 1.0 - smoothstep(0.0, 0.3, e);
 	float frost = smoothstep(0.38, 0.72, fbm(p * 0.33) + s.x * 0.2 - rim * 0.3);
 	float drift = smoothstep(0.55, 0.75, fbm(vec2(p.x * 0.6 + p.y * 0.4, p.y * 0.12) * 0.5 + 3.0));
-	float cr = 1.0 - smoothstep(0.0, 0.05, cracks(p * 0.38));
-	float cr2 = 1.0 - smoothstep(0.0, 0.03, cracks(p * 1.25 + 9.0));
+	// [vqa] Cracks wander (noise-warped Voronoi) and stay faint: straight cell edges read as a
+	// polygon grid drawn over the ice.
+	vec2 cw = vec2(fbm(p * 0.21 + 3.0), fbm(p * 0.21 + 41.0)) - 0.5;
+	float cr = (1.0 - smoothstep(0.0, 0.04, cracks(p * 0.38 + cw * 1.6))) * 0.55;
+	float cr2 = (1.0 - smoothstep(0.0, 0.025, cracks(p * 1.25 + 9.0 + cw * 3.0))) * 0.45;
 	vec3 deep = vec3(0.24, 0.42, 0.52);
 	vec3 clear = vec3(0.62, 0.78, 0.86);
 	vec3 snow = vec3(0.93, 0.96, 1.0);

@@ -11,6 +11,8 @@ extends Node
 ## Prints "[pad] <screen>: OK | <problems>" per screen and "[pad] RESULT pass|fail".
 ## `--audit-shots=DIR` (rendered runs) also saves a screenshot of every screen into DIR, which
 ## makes it a one-process UI tour for checking layouts at a given resolution (e.g. 1280x800).
+## [vqa] Headless: add --audit-size=1280x800 (and --ui-scale=1.0/1.1) for real screen bounds; text
+## sticking out of its panel is reported as "overflow".
 
 var _fails: int = 0
 var _checked: int = 0
@@ -47,7 +49,13 @@ func _press_pad(button: JoyButton) -> void:
 
 
 func _run() -> void:
+	# [vqa] Headless has no real window (its visible rect is a bogus square): --audit-size=WxH sets
+	# the root viewport so the clipping / overflow checks see a real screen (1280x720, 1280x800...).
+	if DevHooks.has("audit-size"):
+		var wh: PackedStringArray = DevHooks.get_s("audit-size", "1280x720").split("x")
+		get_tree().root.size = Vector2i(int(wh[0]), int(wh[1]))
 	await _frames(20)
+	print("[pad] screen %s (interface scale %.2f)" % [get_tree().root.get_visible_rect().size, Settings.ui_scale])
 	Settings.last_input_pad = true
 	Settings.input_device_changed.emit(true)  # prompts switch to pad glyphs
 	var scene: Node = get_tree().current_scene
@@ -215,9 +223,58 @@ func _check(label: String, root: Control, focus_optional: bool = false) -> void:
 		if in_scroll or c.mouse_filter == Control.MOUSE_FILTER_IGNORE and not (c is Label or c is Button):
 			continue
 		if not vr.encloses(c.get_global_rect()) and (c is Button or c is Label or c is PanelContainer):
-			clipped.append(_name(c))
+			clipped.append(_name(c) + ("@%s" % c.get_global_rect() if c is PanelContainer else ""))
 	if not clipped.is_empty():
 		problems.append("%d clipped: %s" % [clipped.size(), ", ".join(clipped.slice(0, 5))])
+		if DevHooks.has("audit-why"):  # [vqa] which child sets the width: the widest minimum-size chain
+			for n: Node in root.find_children("*", "PanelContainer", true, false):
+				var pc: Control = n as Control
+				if pc.is_visible_in_tree() and not vr.encloses(pc.get_global_rect()):
+					var cur: Control = pc
+					var chain: Array[String] = []
+					while cur and chain.size() < 14:
+						chain.append("%s %d" % [_name(cur), int(cur.get_combined_minimum_size().x)])
+						var best: Control = null
+						for ch: Node in cur.get_children():
+							if ch is Control and (ch as Control).visible and (best == null or (ch as Control).get_combined_minimum_size().x > best.get_combined_minimum_size().x):
+								best = ch as Control
+						cur = best
+					print("[pad]   why: ", " > ".join(chain))
+					break
+	# [vqa] Text overflow (long German / pseudo strings): a label or button sticking out of the
+	# panel that holds it, or a clipped button whose text no longer fits.
+	var over: Array[String] = []
+	var trunc: Array[String] = []  # ellipsized on purpose: reported, not a failure
+	for n: Node in root.find_children("*", "Control", true, false):
+		var c: Control = n as Control
+		if not (c is Label or c is Button or c is RichTextLabel) or not c.is_visible_in_tree() or c.size == Vector2.ZERO:
+			continue
+		var panel: Control = null
+		var q: Node = c.get_parent()
+		var scrolled: bool = false
+		while q and q != root:
+			if q is ScrollContainer:
+				scrolled = true
+			if q is PanelContainer or q is Panel:
+				panel = q as Control
+				break
+			q = q.get_parent()
+		if panel and not scrolled and panel.is_visible_in_tree() and not panel.get_global_rect().grow(2.0).encloses(c.get_global_rect()):
+			over.append(_name(c))
+		elif c is Button and (c as Button).clip_text and (c as Button).text != "":
+			var b: Button = c
+			var font: Font = b.get_theme_font("font")
+			var fs: int = b.get_theme_font_size("font_size")
+			var widest: float = 0.0
+			for line: String in b.text.split("\n"):
+				widest = maxf(widest, font.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x if font else 0.0)
+			var pad: float = b.get_theme_stylebox("normal").get_minimum_size().x if b.get_theme_stylebox("normal") else 0.0
+			if widest + pad > b.size.x + 2.0:
+				trunc.append(_name(c))
+	if not over.is_empty():
+		problems.append("%d overflow: %s" % [over.size(), ", ".join(over.slice(0, 6))])
+	if not trunc.is_empty():
+		print("[pad] %s: note %d truncated with an ellipsis: %s" % [label, trunc.size(), ", ".join(trunc.slice(0, 6))])
 	if problems.is_empty():
 		print("[pad] %s: OK (%d focus stops)" % [label, all.size()])
 	else:

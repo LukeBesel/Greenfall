@@ -84,6 +84,18 @@ void fragment() {
 	mb = max(mb, 1.0 - smoothstep(low_y - low_soft, low_y + low_soft, wpos.y + (n2 - 0.5) * low_soft * 1.5));
 	vec3 a = two_scale(tex_a, p, scale_a) * tint_a;
 	vec3 b = two_scale(tex_b, p, scale_b) * tint_b;
+	// [vqa] Steep faces (mountains, dune lee sides) were textured straight down from above and
+	// smeared into vertical streaks: blend in side projections there (triplanar).
+	vec3 tw = pow(abs(n), vec3(4.0));
+	tw /= (tw.x + tw.y + tw.z);
+	if (tw.y < 0.97) {
+		vec3 ax_a = two_scale(tex_a, wpos.zy, scale_a) * tint_a;
+		vec3 az_a = two_scale(tex_a, wpos.xy, scale_a) * tint_a;
+		vec3 ax_b = two_scale(tex_b, wpos.zy, scale_b) * tint_b;
+		vec3 az_b = two_scale(tex_b, wpos.xy, scale_b) * tint_b;
+		a = a * tw.y + ax_a * tw.x + az_a * tw.z;
+		b = b * tw.y + ax_b * tw.x + az_b * tw.z;
+	}
 	vec3 alb = mix(a, b, mb);
 	if (biome_tint.a > 0.001) {
 		float lum = dot(alb, vec3(0.3, 0.55, 0.15));

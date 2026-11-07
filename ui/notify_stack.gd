@@ -5,8 +5,10 @@ extends VBoxContainer
 ## that row ("x2") instead of stacking. Each row is a thin coloured accent line plus text; no box.
 
 const MAX: int = 3
+## [vqa] The stack never shows more than about this many text lines: older rows fade out early.
+const MAX_LINES: int = 3
 const WIDTH: float = 300.0
-const LIFE: Dictionary = {"info": 4.0, "hint": 5.5, "story": 6.0, "goal": 4.5, "level": 4.5}
+const LIFE: Dictionary = {"info": 3.0, "hint": 4.2, "story": 4.8, "goal": 3.4, "level": 3.4}  # [vqa] shorter
 
 var _rows: Array[Dictionary] = []
 
@@ -51,7 +53,8 @@ func push(text: String, kind: String = "info") -> void:
 	var l := UITheme.label(text, 14, UITheme.CREAM)
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD
 	l.custom_minimum_size = Vector2(WIDTH - 12.0, 0)
-	l.max_lines_visible = 3
+	l.max_lines_visible = 2  # [vqa]
+	l.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	row.add_child(l)
 	row.modulate.a = 0.0
 	add_child(row)
@@ -64,6 +67,13 @@ func push(text: String, kind: String = "info") -> void:
 
 
 func _process(delta: float) -> void:
+	# [vqa] Line budget: while the rows wrap to more than MAX_LINES lines, the oldest fades out now.
+	var lines: int = 0
+	for r: Dictionary in _rows:
+		if is_instance_valid(r["label"]):
+			lines += mini((r["label"] as Label).get_line_count(), 2)
+	if lines > MAX_LINES and _rows.size() > 1:
+		_rows[0]["left"] = minf(float(_rows[0]["left"]), 0.35)
 	for i: int in range(_rows.size() - 1, -1, -1):
 		var r: Dictionary = _rows[i]
 		var n: Control = r["node"]

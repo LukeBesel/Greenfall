@@ -400,19 +400,19 @@ msgstr "粉碎  ·  熔炼  ·  永久清除"
 msgid "HAND FEED"
 msgstr "手动投料"
 
-#: automation/rocket.gd:205
+#: automation/rocket.gd:206
 msgid "IGNITION"
 msgstr "点火"
 
-#: automation/rocket.gd:252
+#: automation/rocket.gd:253
 msgid "WARP"
 msgstr "跃迁"
 
-#: automation/rocket.gd:252
+#: automation/rocket.gd:253
 msgid "LIFT OFF"
 msgstr "升空"
 
-#: automation/rocket.gd:756 story/cine.gd:68
+#: automation/rocket.gd:778 story/cine.gd:68
 msgid "Space / Esc  skip"
 msgstr "空格 / Esc  跳过"
 
@@ -513,100 +513,100 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: planet/frontier_district.gd:275
+#: planet/frontier_district.gd:279
 msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
 msgstr "沙暴将至。裸露的干净地面会被掩埋；种了植物或有遮挡的六角格能挺住。"
 
-#: planet/frontier_district.gd:339
+#: planet/frontier_district.gd:343
 msgid "The sandstorm buried %d hex again. Sustained hexes shelter their neighbours."
 msgid_plural "The sandstorm buried %d hexes again. Sustained hexes shelter their neighbours."
 msgstr[0] "沙暴又掩埋了 %d 个六角格。稳定的六角格能庇护邻格。"
 
-#: planet/frontier_district.gd:339
+#: planet/frontier_district.gd:343
 msgid "The storm blew over. Everything held."
 msgstr "沙暴过去了。一切都挺住了。"
 
-#: planet/frontier_district.gd:387
+#: planet/frontier_district.gd:391
 msgid "The ice let go. The junk underneath is just junk again."
 msgstr "冰层松开了。底下的废料又只是废料了。"
 
-#: planet/frontier_district.gd:478
+#: planet/frontier_district.gd:482
 msgid "E   Light a heater on this ice · %s cubes"
 msgstr "E   在这片冰上点燃加热器 · %s 方块"
 
-#: planet/frontier_district.gd:480
+#: planet/frontier_district.gd:484
 msgid "E   Build a greenhouse on this hex · %s cubes"
 msgstr "E   在这个六角格建温室 · %s 方块"
 
-#: planet/frontier_district.gd:490
+#: planet/frontier_district.gd:494
 msgid "Not enough cubes for a heater."
 msgstr "方块不够，建不了加热器。"
 
-#: planet/frontier_district.gd:490
+#: planet/frontier_district.gd:494
 msgid "Heater limit reached. Move on to the next ice once these have done their work."
 msgstr "加热器已达上限。等这些完成工作后，再去下一片冰。"
 
-#: planet/frontier_district.gd:494
+#: planet/frontier_district.gd:498
 msgid "Not enough cubes for a greenhouse."
 msgstr "方块不够，建不了温室。"
 
-#: planet/frontier_district.gd:526
+#: planet/frontier_district.gd:530
 msgid "The old pumps are running. The water drops and a ring of streets comes back up, with a lot of stranded junk."
 msgstr "老水泵运转起来了。水位下降，一圈街道重新露出水面，上面满是搁浅的废料。"
 
-#: planet/frontier_district.gd:547
+#: planet/frontier_district.gd:551
 msgid "The landing pad is clean. Now plant it and keep it Sustained."
 msgstr "着陆平台干净了。现在种上植物，让它保持稳定。"
 
-#: planet/frontier_district.gd:563
+#: planet/frontier_district.gd:567
 msgid "The landing pad is alive and the beacon is lit. The Cradle has answered. It is coming home."
 msgstr "着陆平台焕发生机，信标亮了。Cradle号回应了。它要回家了。"
 
-#: planet/frontier_district.gd:598
+#: planet/frontier_district.gd:602
 msgid "Sandstorm blowing"
 msgstr "沙暴正在肆虐"
 
-#: planet/frontier_district.gd:601
+#: planet/frontier_district.gd:605
 msgid "Next sandstorm  %d:%02d"
 msgstr "下一场沙暴  %d:%02d"
 
-#: planet/frontier_district.gd:602
+#: planet/frontier_district.gd:606
 msgid "Well dry: Drips refill at tanks"
 msgstr "井已干涸：Drip 去水箱补水"
 
-#: planet/frontier_district.gd:608
+#: planet/frontier_district.gd:612
 msgid "%d hexes iced  ·  %d heaters"
 msgstr "%d 个六角格结冰  ·  %d 台加热器"
 
-#: planet/frontier_district.gd:609
+#: planet/frontier_district.gd:613
 msgid "Greenhouses %d%s"
 msgstr "温室 %d%s"
 
-#: planet/frontier_district.gd:609
+#: planet/frontier_district.gd:613
 msgid "  ·  cold-hardy seeds"
 msgstr "  ·  耐寒种子"
 
-#: planet/frontier_district.gd:613
+#: planet/frontier_district.gd:617
 msgid "Water down: all streets above water"
 msgstr "水位已降：所有街道露出水面"
 
-#: planet/frontier_district.gd:615
+#: planet/frontier_district.gd:619
 msgid "Pumps: ring %d skimmed %d%% / %d%%"
 msgstr "水泵：第 %d 圈已清理 %d%% / %d%%"
 
-#: planet/frontier_district.gd:616
+#: planet/frontier_district.gd:620
 msgid "Water level %d / %d"
 msgstr "水位 %d / %d"
 
-#: planet/frontier_district.gd:619
+#: planet/frontier_district.gd:623
 msgid "The Cradle is coming home"
 msgstr "Cradle号正在回家"
 
-#: planet/frontier_district.gd:621
+#: planet/frontier_district.gd:625
 msgid "Pad clean %d%%  ·  Sustained %d%%"
 msgstr "平台清洁 %d%%  ·  稳定 %d%%"
 
-#: planet/frontier_district.gd:622
+#: planet/frontier_district.gd:626
 msgid "District Growing %d%% / %d%%"
 msgstr "街区生长中 %d%% / %d%%"
 
@@ -1137,55 +1137,55 @@ msgstr "机器人上行链路上线。按 B 打开指挥：划定区域，把队
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 上线。绽放核心 4%：绿光微弱。Cradle号中继：若有若无。种点东西吧。"
 
-#: scenes/slice.gd:792
+#: scenes/slice.gd:796
 msgid "HEX CLEAN!  +%s"
 msgstr "六角格清理完毕！  +%s"
 
-#: scenes/slice.gd:806
+#: scenes/slice.gd:810
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice.gd:808
+#: scenes/slice.gd:812
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "整个废料场都干净了。Lumi 发出一声好长好长、非常开心的哔——"
 
-#: scenes/slice.gd:815
+#: scenes/slice.gd:819
 msgid "%s is out of range: %s"
 msgstr "%s 超出范围：%s"
 
-#: scenes/slice.gd:825
+#: scenes/slice.gd:829
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "未解锁。将基地升到 5 级才能建造发射台。"
 
-#: scenes/slice.gd:828 ui/rockets_panel.gd:39
+#: scenes/slice.gd:832 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice.gd:882
+#: scenes/slice.gd:886
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陆：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:883
+#: scenes/slice.gd:887
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "火箭停在空地上，电池充满就能出发。"
 
-#: scenes/slice.gd:883
+#: scenes/slice.gd:887
 msgid "Landed on the base pad."
 msgstr "已降落在基地平台。"
 
-#: scenes/slice.gd:974
+#: scenes/slice.gd:978
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice.gd:1146
+#: scenes/slice.gd:1150
 msgid "Welcome back. The junk waited for you."
 msgstr "欢迎回来。废料一直在等你。"
 
-#: scenes/slice.gd:1163
+#: scenes/slice.gd:1167
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨 %d · %d级"
 
-#: scenes/slice.gd:1163
+#: scenes/slice.gd:1167
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
@@ -1209,7 +1209,7 @@ msgstr "你的基地已经成长到试玩版的极限。"
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "在完整版中，Lumi 会把基地建到 5 级，种满整片街区直到繁茂，让它们成长为明亮的未来城市，还会乘火箭飞往星球上的数十座基地。你的试玩进度会被保留。"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:660
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:666
 msgid "Hexes cleaned"
 msgstr "已清理六角格"
 
@@ -1217,11 +1217,11 @@ msgstr "已清理六角格"
 msgid "Bales made"
 msgstr "已制作捆包"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:675
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:681
 msgid "Robots built"
 msgstr "已建造机器人"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:683
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:689
 msgid "Time played"
 msgstr "游戏时长"
 
@@ -1241,7 +1241,7 @@ msgstr "标题画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:752 ui/main_menu.gd:427
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:758 ui/main_menu.gd:427
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
 
@@ -1810,7 +1810,7 @@ msgstr ""
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "已解锁 %d 个成就。在图鉴（K）里查看。"
 
-#: systems/achievements.gd:146 ui/notify_stack.gd:22
+#: systems/achievements.gd:146 ui/notify_stack.gd:24
 msgid "Achievement: %s. %s"
 msgstr "成就：%s。%s"
 
@@ -1846,11 +1846,11 @@ msgstr "Verdance 绽放：%s。%s"
 msgid "Somewhere under the junk."
 msgstr "在废料底下的某个地方。"
 
-#: systems/codex.gd:184 ui/codex_screen.gd:349
+#: systems/codex.gd:184 ui/codex_screen.gd:355
 msgid "Old Town"
 msgstr "老城区"
 
-#: systems/codex.gd:188 ui/codex_screen.gd:349
+#: systems/codex.gd:188 ui/codex_screen.gd:355
 msgid "Wilderness bases"
 msgstr "荒野基地"
 
@@ -1858,7 +1858,7 @@ msgstr "荒野基地"
 msgid " · often %s"
 msgstr " · 常见于%s"
 
-#: systems/codex.gd:189 ui/codex_screen.gd:349
+#: systems/codex.gd:189 ui/codex_screen.gd:355
 msgid "Any district"
 msgstr "任意街区"
 
@@ -2147,7 +2147,7 @@ msgstr "队列已满"
 msgid "Not enough data"
 msgstr "数据不足"
 
-#: systems/research.gd:324 ui/codex_screen.gd:756
+#: systems/research.gd:324 ui/codex_screen.gd:762
 msgid "%ds"
 msgstr "%d秒"
 
@@ -2410,7 +2410,7 @@ msgstr "喷洒范围"
 msgid "Refill"
 msgstr "补水"
 
-#: ui/builder_panel.gd:21 ui/command_view.gd:1204 ui/command_view.gd:1207
+#: ui/builder_panel.gd:21 ui/command_view.gd:1207 ui/command_view.gd:1210
 #: data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "清理"
@@ -2540,7 +2540,7 @@ msgstr ""
 msgid "RESTART CHECKLIST  ·  DONE"
 msgstr ""
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:689
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:695
 msgid "Achievements"
 msgstr "成就"
 
@@ -2560,23 +2560,23 @@ msgstr "收藏"
 msgid "CODEX"
 msgstr "图鉴"
 
-#: ui/codex_screen.gd:84 ui/upgrades_screen.gd:77
+#: ui/codex_screen.gd:87 ui/upgrades_screen.gd:77
 msgid "Close  [%s]"
 msgstr "关闭  [%s]"
 
-#: ui/codex_screen.gd:100
+#: ui/codex_screen.gd:106
 msgid "   {ui_tab_prev}{ui_tab_next}  switch tabs"
 msgstr "   {ui_tab_prev}{ui_tab_next}  切换页面"
 
-#: ui/codex_screen.gd:183
+#: ui/codex_screen.gd:189
 msgid "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements"
 msgstr "条目 %d / %d   ·   奇物 %d / %d   ·   收藏品 %d / %d   ·   成就 %d / %d"
 
-#: ui/codex_screen.gd:309 ui/codex_screen.gd:429 ui/codex_screen.gd:537
+#: ui/codex_screen.gd:315 ui/codex_screen.gd:435 ui/codex_screen.gd:543
 msgid "Not found yet"
 msgstr "尚未发现"
 
-#: ui/codex_screen.gd:313
+#: ui/codex_screen.gd:319
 msgid ""
 "\n"
 "\n"
@@ -2586,179 +2586,179 @@ msgstr ""
 "\n"
 "已清理：%s"
 
-#: ui/codex_screen.gd:338
+#: ui/codex_screen.gd:344
 msgid "CURIOSITIES"
 msgstr "奇物"
 
-#: ui/codex_screen.gd:339 ui/codex_screen.gd:460
+#: ui/codex_screen.gd:345 ui/codex_screen.gd:466
 msgid "%d / %d found"
 msgstr "已找到 %d / %d"
 
-#: ui/codex_screen.gd:433
+#: ui/codex_screen.gd:439
 msgid "Found  ·  %s"
 msgstr "已找到  ·  %s"
 
-#: ui/codex_screen.gd:436
+#: ui/codex_screen.gd:442
 msgid "Parts found: %d / %d"
 msgstr "已找到零件：%d / %d"
 
-#: ui/codex_screen.gd:437
+#: ui/codex_screen.gd:443
 msgid "Reward: a small surprise"
 msgstr "奖励：一个小惊喜"
 
-#: ui/codex_screen.gd:459
+#: ui/codex_screen.gd:465
 msgid "COLLECTION"
 msgstr "收藏"
 
-#: ui/codex_screen.gd:540
+#: ui/codex_screen.gd:546
 msgid "In your collection"
 msgstr "已收藏"
 
-#: ui/codex_screen.gd:545
+#: ui/codex_screen.gd:551
 msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
 msgstr "提示：一位害羞的访客会来到稳定和繁茂的六角格。带上相机。"
 
-#: ui/codex_screen.gd:546
+#: ui/codex_screen.gd:552
 msgid "Hint: complete %d contracts at the workbench."
 msgstr "提示：在工作台完成 %d 个委托。"
 
-#: ui/codex_screen.gd:547
+#: ui/codex_screen.gd:553
 msgid "Hint: Curio Capsules, in the workbench token shop."
 msgstr "提示：奇物胶囊，在工作台的代币商店里。"
 
-#: ui/codex_screen.gd:548
+#: ui/codex_screen.gd:554
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "提示：不停地铲，直到连击条满。"
 
-#: ui/codex_screen.gd:549
+#: ui/codex_screen.gd:555
 msgid "Hint: turns up during %s."
 msgstr "提示：在%s期间出现。"
 
-#: ui/codex_screen.gd:618
+#: ui/codex_screen.gd:624
 msgid "Unlocked  ·  %s"
 msgstr "已解锁  ·  %s"
 
-#: ui/codex_screen.gd:657
+#: ui/codex_screen.gd:663
 msgid "Total"
 msgstr "总计"
 
-#: ui/codex_screen.gd:658
+#: ui/codex_screen.gd:664
 msgid "Junk removed"
 msgstr "清除的废料"
 
-#: ui/codex_screen.gd:658
+#: ui/codex_screen.gd:664
 msgid "by type"
 msgstr "按种类"
 
-#: ui/codex_screen.gd:659 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:665 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "清理"
 
-#: ui/codex_screen.gd:661
+#: ui/codex_screen.gd:667
 msgid "Hexes restored"
 msgstr "恢复的六角格"
 
-#: ui/codex_screen.gd:662
+#: ui/codex_screen.gd:668
 msgid "Bales pressed"
 msgstr "压制的捆包"
 
-#: ui/codex_screen.gd:663
+#: ui/codex_screen.gd:669
 msgid "Pure bales"
 msgstr "纯净捆包"
 
-#: ui/codex_screen.gd:664
+#: ui/codex_screen.gd:670
 msgid "Perfect bales"
 msgstr "完美捆包"
 
-#: ui/codex_screen.gd:665
+#: ui/codex_screen.gd:671
 msgid "Lumpy bales"
 msgstr "不平整捆包"
 
-#: ui/codex_screen.gd:666
+#: ui/codex_screen.gd:672
 msgid "Bales cashed in"
 msgstr "兑现的捆包"
 
-#: ui/codex_screen.gd:667
+#: ui/codex_screen.gd:673
 msgid "Cubes earned"
 msgstr "赚到的方块"
 
-#: ui/codex_screen.gd:669 ui/globe_view.gd:135 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:675 ui/globe_view.gd:135 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "种植"
 
-#: ui/codex_screen.gd:670
+#: ui/codex_screen.gd:676
 msgid "Seeds planted"
 msgstr "播下的种子"
 
-#: ui/codex_screen.gd:671
+#: ui/codex_screen.gd:677
 msgid "Plants bloomed"
 msgstr "开花的植物"
 
-#: ui/codex_screen.gd:672
+#: ui/codex_screen.gd:678
 msgid "Air filtered"
 msgstr "过滤的空气"
 
-#: ui/codex_screen.gd:674 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:680 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "机器人"
 
-#: ui/codex_screen.gd:676
+#: ui/codex_screen.gd:682
 msgid "Bales by robots"
 msgstr "机器人打的捆包"
 
-#: ui/codex_screen.gd:677
+#: ui/codex_screen.gd:683
 msgid "Parts dug up"
 msgstr "挖出的零件"
 
-#: ui/codex_screen.gd:679
+#: ui/codex_screen.gd:685
 msgid "Exploring"
 msgstr "探索"
 
-#: ui/codex_screen.gd:680
+#: ui/codex_screen.gd:686
 msgid "Distance rolled"
 msgstr "行驶距离"
 
-#: ui/codex_screen.gd:681
+#: ui/codex_screen.gd:687
 msgid "Memory shards read"
 msgstr "读过的记忆碎片"
 
-#: ui/codex_screen.gd:682
+#: ui/codex_screen.gd:688
 msgid "Codex entries"
 msgstr "图鉴条目"
 
-#: ui/codex_screen.gd:685
+#: ui/codex_screen.gd:691
 msgid "Progress"
 msgstr "进度"
 
-#: ui/codex_screen.gd:686
+#: ui/codex_screen.gd:692
 msgid "Upgrades bought"
 msgstr "购买的升级"
 
-#: ui/codex_screen.gd:687
+#: ui/codex_screen.gd:693
 msgid "Data earned"
 msgstr "获得的数据"
 
-#: ui/codex_screen.gd:688
+#: ui/codex_screen.gd:694
 msgid "Research done"
 msgstr "完成的研究"
 
-#: ui/codex_screen.gd:690
+#: ui/codex_screen.gd:696
 msgid "Best hub level"
 msgstr "最高基地等级"
 
-#: ui/codex_screen.gd:740
+#: ui/codex_screen.gd:746
 msgid "%s kg"
 msgstr "%s 千克"
 
-#: ui/codex_screen.gd:741
+#: ui/codex_screen.gd:747
 msgid "%.1f kg"
 msgstr "%.1f 千克"
 
-#: ui/codex_screen.gd:745
+#: ui/codex_screen.gd:751
 msgid "%.2f km"
 msgstr "%.2f 公里"
 
-#: ui/codex_screen.gd:755
+#: ui/codex_screen.gd:761
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
 
@@ -2818,116 +2818,116 @@ msgstr "回来停在基地。"
 msgid "[p]{@dpad}  panel      {@move}  move      {pad:#0}  mark      {pad:#2}  unmark      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  back[/p][k]Left drag  mark      Right drag  unmark      {@move} / middle drag  move      Wheel  zoom      {kbd:open_command}  back[/k]"
 msgstr "[p]{@dpad}  面板      {@move}  移动      {pad:#0}  标记      {pad:#2}  取消标记      {pad:zoom_out}{pad:zoom_in}  缩放      {pad:ui_cancel}  返回[/p][k]左键拖动  标记      右键拖动  取消标记      {@move} / 中键拖动  移动      滚轮  缩放      {kbd:open_command}  返回[/k]"
 
-#: ui/command_view.gd:230
+#: ui/command_view.gd:231
 msgid "COMMAND"
 msgstr "指挥"
 
-#: ui/command_view.gd:267
+#: ui/command_view.gd:268
 msgid "Mark around me"
 msgstr "标记我周围"
 
-#: ui/command_view.gd:280 ui/photo_mode.gd:26
+#: ui/command_view.gd:281 ui/photo_mode.gd:26
 msgid "Clear"
 msgstr "清除"
 
-#: ui/command_view.gd:305
+#: ui/command_view.gd:306
 msgid "CREWS"
 msgstr "队伍"
 
-#: ui/command_view.gd:591
+#: ui/command_view.gd:594
 msgid "Following the %s orders. Mark hexes or pick a mode to give it its own."
 msgstr "正在执行%s的命令。标记六角格或选择模式来给它单独下令。"
 
-#: ui/command_view.gd:600
+#: ui/command_view.gd:603
 msgid "No orders yet: roaming the district. Drag on the ground to mark where to work."
 msgstr "还没有命令：在街区里巡游。在地面上拖动来标记工作区域。"
 
-#: ui/command_view.gd:643
+#: ui/command_view.gd:646
 msgid "No robots yet. Build one at the workbench."
 msgstr "还没有机器人。去工作台造一台吧。"
 
-#: ui/command_view.gd:770
+#: ui/command_view.gd:773
 msgid "Build %s  %s"
 msgstr "建造 %s  %s"
 
-#: ui/command_view.gd:775
+#: ui/command_view.gd:778
 msgid "Max tier"
 msgstr "最高等级"
 
-#: ui/command_view.gd:775
+#: ui/command_view.gd:778
 msgid "Upgrade > %s"
 msgstr "升级 > %s"
 
-#: ui/command_view.gd:777
+#: ui/command_view.gd:780
 msgid "%s cubes, %s bolts, %s Control Core. %s"
 msgstr "%s 方块，%s 螺栓，%s控制核心。%s"
 
-#: ui/command_view.gd:786
+#: ui/command_view.gd:789
 msgid "  parts %d/%d · %s"
 msgstr "  零件 %d/%d · %s"
 
-#: ui/command_view.gd:786
+#: ui/command_view.gd:789
 msgid "build at the workbench"
 msgstr "在工作台建造"
 
-#: ui/command_view.gd:793
+#: ui/command_view.gd:796
 msgid "Place refill tank here  %s  (%d/%d)"
 msgstr "在此放置补水箱  %s  （%d/%d）"
 
-#: ui/command_view.gd:795
+#: ui/command_view.gd:798
 msgid "A Water Tank at your hex. Waterers refill at the nearest one."
 msgstr "你所在六角格的水箱。浇水机器人会去最近的水箱补水。"
 
-#: ui/command_view.gd:1052
+#: ui/command_view.gd:1055
 msgid "%s · %d HEX"
 msgid_plural "%s · %d HEXES"
 msgstr[0] "%s · %d 个六角格"
 
-#: ui/command_view.gd:1088
+#: ui/command_view.gd:1091
 msgid "BASE"
 msgstr "基地"
 
-#: ui/command_view.gd:1095
+#: ui/command_view.gd:1098
 msgid "YOU"
 msgstr "你"
 
-#: ui/command_view.gd:1195
+#: ui/command_view.gd:1198
 msgid "HEX %d"
 msgstr "六角格 %d"
 
-#: ui/command_view.gd:1199
+#: ui/command_view.gd:1202
 msgid "BASE YARD"
 msgstr "基地院子"
 
-#: ui/command_view.gd:1200
+#: ui/command_view.gd:1203
 msgid "Home ground, always clean"
 msgstr "家园，永远干净"
 
-#: ui/command_view.gd:1202
+#: ui/command_view.gd:1205
 msgid "LAKE HEX %d"
 msgstr "湖面六角格 %d"
 
-#: ui/command_view.gd:1204
+#: ui/command_view.gd:1207
 msgid "Floating junk  %d%% left"
 msgstr "漂浮废料  剩余 %d%%"
 
-#: ui/command_view.gd:1210
+#: ui/command_view.gd:1213
 msgid "Junk  %d%% left"
 msgstr "废料  剩余 %d%%"
 
-#: ui/command_view.gd:1216
+#: ui/command_view.gd:1219
 msgid "Level %d · %s"
 msgstr "等级 %d · %s"
 
-#: ui/command_view.gd:1218
+#: ui/command_view.gd:1221
 msgid "In %s zone"
 msgstr "在%s区域"
 
-#: ui/command_view.gd:1270
+#: ui/command_view.gd:1274
 msgid "%d robots"
 msgstr "%d 台机器人"
 
-#: ui/command_view.gd:1273
+#: ui/command_view.gd:1277
 msgid "%d / %d hexes clean"
 msgstr "%d / %d 个六角格已清理"
 
@@ -2935,67 +2935,67 @@ msgstr "%d / %d 个六角格已清理"
 msgid "CONTRACTS"
 msgstr "委托"
 
-#: ui/contracts_panel.gd:26
+#: ui/contracts_panel.gd:28
 msgid "Optional jobs with a timer. Finish in time for tokens; nothing is lost if one runs out."
 msgstr "限时的可选任务。按时完成可得代币；超时也不会有任何损失。"
 
-#: ui/contracts_panel.gd:39
+#: ui/contracts_panel.gd:42
 msgid "TOKEN SHOP"
 msgstr "代币商店"
 
-#: ui/contracts_panel.gd:78
+#: ui/contracts_panel.gd:81
 msgid "◈  %d tokens"
 msgstr "◈  %d 代币"
 
-#: ui/contracts_panel.gd:79
+#: ui/contracts_panel.gd:82
 msgid "Collection  %d / %d   ·   see the Codex (K)"
 msgstr "收藏  %d / %d   ·   见图鉴（K）"
 
-#: ui/contracts_panel.gd:127
+#: ui/contracts_panel.gd:130
 msgid "A new contract is being posted."
 msgstr "新委托正在发布。"
 
-#: ui/contracts_panel.gd:137
+#: ui/contracts_panel.gd:141
 msgid "Reward  ◈ %d tokens  +  cubes"
 msgstr "奖励  ◈ %d 代币  +  方块"
 
-#: ui/contracts_panel.gd:159
+#: ui/contracts_panel.gd:163
 msgid "Accept  (%s)"
 msgstr "接受（%s）"
 
-#: ui/contracts_panel.gd:168
+#: ui/contracts_panel.gd:172
 msgid "Pass"
 msgstr "放弃"
 
-#: ui/contracts_panel.gd:178
+#: ui/contracts_panel.gd:182
 msgid "Working on it"
 msgstr "进行中"
 
-#: ui/contracts_panel.gd:184
+#: ui/contracts_panel.gd:188
 msgid "Claim  ◈ %d"
 msgstr "领取  ◈ %d"
 
-#: ui/contracts_panel.gd:209
+#: ui/contracts_panel.gd:228
 msgid "Next posting in %s"
 msgstr "下次发布：%s后"
 
-#: ui/contracts_panel.gd:211
+#: ui/contracts_panel.gd:230
 msgid "Time limit %s once accepted   ·   offer open %s"
 msgstr "接受后限时 %s   ·   开放 %s"
 
-#: ui/contracts_panel.gd:222
+#: ui/contracts_panel.gd:241
 msgid "Time left %s"
 msgstr "剩余时间 %s"
 
-#: ui/contracts_panel.gd:222
+#: ui/contracts_panel.gd:241
 msgid "Finished. Claim your tokens!"
 msgstr "完成了。领取你的代币吧！"
 
-#: ui/contracts_panel.gd:245
+#: ui/contracts_panel.gd:264
 msgid "Equipped  (press to remove)"
 msgstr "已装备（按下卸下）"
 
-#: ui/contracts_panel.gd:245
+#: ui/contracts_panel.gd:264
 msgid "Owned  ·  press to equip"
 msgstr "已拥有  ·  按下装备"
 
@@ -3359,44 +3359,56 @@ msgstr "Lumi 达到了 %d 级%s"
 msgid "OLD TOWN   0%"
 msgstr "老城区   0%"
 
-#: ui/hud.gd:292
-msgid "CARRYING %d/%d"
-msgstr "携带 %d/%d"
-
-#: ui/hud.gd:296
+#: ui/hud.gd:303
 msgid "HEX  %d%% CLEAR"
 msgstr "六角格  已清理 %d%%"
 
-#: ui/hud.gd:296
+#: ui/hud.gd:308
+msgid "CARRYING %d/%d"
+msgstr "携带 %d/%d"
+
+#: ui/hud.gd:330
 msgid "HEX  CLEAR"
 msgstr "六角格  已清理"
 
-#: ui/hud.gd:331
+#: ui/hud.gd:334
+msgid "HEX  %s"
+msgstr ""
+
+#: ui/hud.gd:337
+msgid "  SUSTAIN %d%%"
+msgstr ""
+
+#: ui/hud.gd:339
+msgid "  THIRSTY"
+msgstr ""
+
+#: ui/hud.gd:354
 msgid "%s  map      %s  command      %s  lens      %s  goals"
 msgstr "%s  地图      %s  指挥      %s  透镜      %s  目标"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:349
+#: ui/hud.gd:372
 msgid "%s   pick up bale"
 msgstr "%s   拿起捆包"
 
-#: ui/hud.gd:350
+#: ui/hud.gd:373
 msgid "%s   dig up part"
 msgstr "%s   挖出零件"
 
-#: ui/hud.gd:351
+#: ui/hud.gd:374
 msgid "%s   read memory shard"
 msgstr "%s   阅读记忆碎片"
 
-#: ui/hud.gd:352
+#: ui/hud.gd:375
 msgid "%s   pick up the seed tin"
 msgstr "%s   拿起种子罐"
 
-#: ui/hud.gd:353
+#: ui/hud.gd:376
 msgid "%s   set bale down"
 msgstr "%s   放下捆包"
 
-#: ui/hud.gd:354
+#: ui/hud.gd:377
 msgid "%s   workbench"
 msgstr "%s   工作台"
 
@@ -4484,7 +4496,7 @@ msgstr "升级"
 msgid "%s (soon)"
 msgstr "%s（即将推出）"
 
-#: water/water_view.gd:71
+#: water/water_view.gd:78
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "这水……我能看见底了。Lumi，下面有东西在动。"
 

@@ -400,19 +400,19 @@ msgstr "TRITURAR  ·  FUNDIR  ·  ADIÓS PARA SIEMPRE"
 msgid "HAND FEED"
 msgstr "A MANO"
 
-#: automation/rocket.gd:205
+#: automation/rocket.gd:206
 msgid "IGNITION"
 msgstr "IGNICIÓN"
 
-#: automation/rocket.gd:252
+#: automation/rocket.gd:253
 msgid "WARP"
 msgstr "SALTO"
 
-#: automation/rocket.gd:252
+#: automation/rocket.gd:253
 msgid "LIFT OFF"
 msgstr "DESPEGUE"
 
-#: automation/rocket.gd:756 story/cine.gd:68
+#: automation/rocket.gd:778 story/cine.gd:68
 msgid "Space / Esc  skip"
 msgstr "Espacio / Esc  saltar"
 
@@ -513,101 +513,101 @@ msgstr "Pacas por valor de %s se amontonaron en la base sin nadie que las llevar
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Los depuradores filtraron el aire todo el rato. Está un poco más limpio."
 
-#: planet/frontier_district.gd:275
+#: planet/frontier_district.gd:279
 msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
 msgstr "Tormenta de arena en el horizonte. El suelo limpio y desnudo quedará enterrado; los hexágonos plantados y protegidos aguantan."
 
-#: planet/frontier_district.gd:339
+#: planet/frontier_district.gd:343
 msgid "The sandstorm buried %d hex again. Sustained hexes shelter their neighbours."
 msgid_plural "The sandstorm buried %d hexes again. Sustained hexes shelter their neighbours."
 msgstr[0] "La tormenta volvió a enterrar %d hexágono. Los hexágonos sostenidos protegen a sus vecinos."
 msgstr[1] "La tormenta volvió a enterrar %d hexágonos. Los hexágonos sostenidos protegen a sus vecinos."
 
-#: planet/frontier_district.gd:339
+#: planet/frontier_district.gd:343
 msgid "The storm blew over. Everything held."
 msgstr "La tormenta ha pasado. Todo aguantó."
 
-#: planet/frontier_district.gd:387
+#: planet/frontier_district.gd:391
 msgid "The ice let go. The junk underneath is just junk again."
 msgstr "El hielo se soltó. La chatarra de debajo vuelve a ser solo chatarra."
 
-#: planet/frontier_district.gd:478
+#: planet/frontier_district.gd:482
 msgid "E   Light a heater on this ice · %s cubes"
 msgstr "E   Encender un calefactor en este hielo · %s cubos"
 
-#: planet/frontier_district.gd:480
+#: planet/frontier_district.gd:484
 msgid "E   Build a greenhouse on this hex · %s cubes"
 msgstr "E   Construir un invernadero en este hexágono · %s cubos"
 
-#: planet/frontier_district.gd:490
+#: planet/frontier_district.gd:494
 msgid "Not enough cubes for a heater."
 msgstr "No hay cubos suficientes para un calefactor."
 
-#: planet/frontier_district.gd:490
+#: planet/frontier_district.gd:494
 msgid "Heater limit reached. Move on to the next ice once these have done their work."
 msgstr "Límite de calefactores alcanzado. Pasa al siguiente hielo cuando estos terminen su trabajo."
 
-#: planet/frontier_district.gd:494
+#: planet/frontier_district.gd:498
 msgid "Not enough cubes for a greenhouse."
 msgstr "No hay cubos suficientes para un invernadero."
 
-#: planet/frontier_district.gd:526
+#: planet/frontier_district.gd:530
 msgid "The old pumps are running. The water drops and a ring of streets comes back up, with a lot of stranded junk."
 msgstr "Las viejas bombas funcionan. El agua baja y vuelve a aparecer un anillo de calles, lleno de chatarra varada."
 
-#: planet/frontier_district.gd:547
+#: planet/frontier_district.gd:551
 msgid "The landing pad is clean. Now plant it and keep it Sustained."
 msgstr "La plataforma de aterrizaje está limpia. Ahora plántala y mantenla sostenida."
 
-#: planet/frontier_district.gd:563
+#: planet/frontier_district.gd:567
 msgid "The landing pad is alive and the beacon is lit. The Cradle has answered. It is coming home."
 msgstr "La plataforma está viva y la baliza encendida. El Cradle ha respondido. Vuelve a casa."
 
-#: planet/frontier_district.gd:598
+#: planet/frontier_district.gd:602
 msgid "Sandstorm blowing"
 msgstr "Tormenta de arena activa"
 
-#: planet/frontier_district.gd:601
+#: planet/frontier_district.gd:605
 msgid "Next sandstorm  %d:%02d"
 msgstr "Próxima tormenta  %d:%02d"
 
-#: planet/frontier_district.gd:602
+#: planet/frontier_district.gd:606
 msgid "Well dry: Drips refill at tanks"
 msgstr "Pozo seco: los Drips recargan en tanques"
 
-#: planet/frontier_district.gd:608
+#: planet/frontier_district.gd:612
 msgid "%d hexes iced  ·  %d heaters"
 msgstr "%d hexágonos helados  ·  %d calefactores"
 
-#: planet/frontier_district.gd:609
+#: planet/frontier_district.gd:613
 msgid "Greenhouses %d%s"
 msgstr "Invernaderos %d%s"
 
-#: planet/frontier_district.gd:609
+#: planet/frontier_district.gd:613
 msgid "  ·  cold-hardy seeds"
 msgstr "  ·  semillas resistentes al frío"
 
-#: planet/frontier_district.gd:613
+#: planet/frontier_district.gd:617
 msgid "Water down: all streets above water"
 msgstr "Agua baja: todas las calles fuera del agua"
 
-#: planet/frontier_district.gd:615
+#: planet/frontier_district.gd:619
 msgid "Pumps: ring %d skimmed %d%% / %d%%"
 msgstr "Bombas: anillo %d limpio %d%% / %d%%"
 
-#: planet/frontier_district.gd:616
+#: planet/frontier_district.gd:620
 msgid "Water level %d / %d"
 msgstr "Nivel del agua %d / %d"
 
-#: planet/frontier_district.gd:619
+#: planet/frontier_district.gd:623
 msgid "The Cradle is coming home"
 msgstr "El Cradle vuelve a casa"
 
-#: planet/frontier_district.gd:621
+#: planet/frontier_district.gd:625
 msgid "Pad clean %d%%  ·  Sustained %d%%"
 msgstr "Plataforma limpia %d%%  ·  Sostenido %d%%"
 
-#: planet/frontier_district.gd:622
+#: planet/frontier_district.gd:626
 msgid "District Growing %d%% / %d%%"
 msgstr "Distrito creciendo %d%% / %d%%"
 
@@ -1140,55 +1140,55 @@ msgstr "Enlace de robots en línea. Pulsa B para el mando: pinta zonas y manda e
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 en línea. Núcleo Floral 4%: luz verde baja. Relé del Cradle: débil. Haz crecer algo."
 
-#: scenes/slice.gd:792
+#: scenes/slice.gd:796
 msgid "HEX CLEAN!  +%s"
 msgstr "¡HEXÁGONO LIMPIO!  +%s"
 
-#: scenes/slice.gd:806
+#: scenes/slice.gd:810
 msgid "Milestone: %d hexes clean!"
 msgstr "Hito: ¡%d hexágonos limpios!"
 
-#: scenes/slice.gd:808
+#: scenes/slice.gd:812
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "Todo el desguace está limpio. Lumi emite un pitido muy largo y muy feliz."
 
-#: scenes/slice.gd:815
+#: scenes/slice.gd:819
 msgid "%s is out of range: %s"
 msgstr "%s está fuera de alcance: %s"
 
-#: scenes/slice.gd:825
+#: scenes/slice.gd:829
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Bloqueado. Sube tu base a nivel 5 para construir la plataforma de lanzamiento."
 
-#: scenes/slice.gd:828 ui/rockets_panel.gd:39
+#: scenes/slice.gd:832 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Celdas de energía recargando: %s. Las mejoras del cohete las recargan más rápido."
 
-#: scenes/slice.gd:882
+#: scenes/slice.gd:886
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Aterrizaje: %s. Base %d de %d. %s"
 
-#: scenes/slice.gd:883
+#: scenes/slice.gd:887
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "El cohete está aparcado en el solar, listo cuando se recarguen sus celdas."
 
-#: scenes/slice.gd:883
+#: scenes/slice.gd:887
 msgid "Landed on the base pad."
 msgstr "Aterrizaje en la plataforma de la base."
 
-#: scenes/slice.gd:974
+#: scenes/slice.gd:978
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Las mejoras necesitan un banco de trabajo. Vuelve a la base."
 
-#: scenes/slice.gd:1146
+#: scenes/slice.gd:1150
 msgid "Welcome back. The junk waited for you."
 msgstr "Bienvenido de nuevo. La chatarra te ha esperado."
 
-#: scenes/slice.gd:1163
+#: scenes/slice.gd:1167
 msgid "OUTPOST %d · Lv%d"
 msgstr "PUESTO %d · Nv%d"
 
-#: scenes/slice.gd:1163
+#: scenes/slice.gd:1167
 msgid "OUTPOST %d · RUIN"
 msgstr "PUESTO %d · RUINA"
 
@@ -1212,7 +1212,7 @@ msgstr "Tu base ha crecido hasta donde llega la demo."
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "En el juego completo, Lumi sube la base hasta el nivel 5, planta distritos enteros hasta que prosperan, los convierte en una brillante ciudad del futuro y vuela en cohete a decenas de bases por todo el planeta. Tu progreso de la demo se conserva."
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:660
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:666
 msgid "Hexes cleaned"
 msgstr "Hexágonos limpiados"
 
@@ -1220,11 +1220,11 @@ msgstr "Hexágonos limpiados"
 msgid "Bales made"
 msgstr "Pacas hechas"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:675
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:681
 msgid "Robots built"
 msgstr "Robots construidos"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:683
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:689
 msgid "Time played"
 msgstr "Tiempo jugado"
 
@@ -1244,7 +1244,7 @@ msgstr "Pantalla de título"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "Seguir jugando: el primer distrito sigue abierto, con la base a nivel %d."
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:752 ui/main_menu.gd:427
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:758 ui/main_menu.gd:427
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
@@ -1813,7 +1813,7 @@ msgstr ""
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "%d logros desbloqueados. Míralos en el Códice (K)."
 
-#: systems/achievements.gd:146 ui/notify_stack.gd:22
+#: systems/achievements.gd:146 ui/notify_stack.gd:24
 msgid "Achievement: %s. %s"
 msgstr "Logro: %s. %s"
 
@@ -1849,11 +1849,11 @@ msgstr "Floración de Verdance: %s. %s"
 msgid "Somewhere under the junk."
 msgstr "En algún lugar bajo la chatarra."
 
-#: systems/codex.gd:184 ui/codex_screen.gd:349
+#: systems/codex.gd:184 ui/codex_screen.gd:355
 msgid "Old Town"
 msgstr "Casco Antiguo"
 
-#: systems/codex.gd:188 ui/codex_screen.gd:349
+#: systems/codex.gd:188 ui/codex_screen.gd:355
 msgid "Wilderness bases"
 msgstr "Bases salvajes"
 
@@ -1861,7 +1861,7 @@ msgstr "Bases salvajes"
 msgid " · often %s"
 msgstr " · a menudo %s"
 
-#: systems/codex.gd:189 ui/codex_screen.gd:349
+#: systems/codex.gd:189 ui/codex_screen.gd:355
 msgid "Any district"
 msgstr "Cualquier distrito"
 
@@ -2151,7 +2151,7 @@ msgstr "La cola está llena"
 msgid "Not enough data"
 msgstr "No hay datos suficientes"
 
-#: systems/research.gd:324 ui/codex_screen.gd:756
+#: systems/research.gd:324 ui/codex_screen.gd:762
 msgid "%ds"
 msgstr "%d s"
 
@@ -2414,7 +2414,7 @@ msgstr "Alcance de riego"
 msgid "Refill"
 msgstr "Recarga"
 
-#: ui/builder_panel.gd:21 ui/command_view.gd:1204 ui/command_view.gd:1207
+#: ui/builder_panel.gd:21 ui/command_view.gd:1207 ui/command_view.gd:1210
 #: data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "Limpiar"
@@ -2545,7 +2545,7 @@ msgstr ""
 msgid "RESTART CHECKLIST  ·  DONE"
 msgstr ""
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:689
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:695
 msgid "Achievements"
 msgstr "Logros"
 
@@ -2565,23 +2565,23 @@ msgstr "Colección"
 msgid "CODEX"
 msgstr "CÓDICE"
 
-#: ui/codex_screen.gd:84 ui/upgrades_screen.gd:77
+#: ui/codex_screen.gd:87 ui/upgrades_screen.gd:77
 msgid "Close  [%s]"
 msgstr "Cerrar  [%s]"
 
-#: ui/codex_screen.gd:100
+#: ui/codex_screen.gd:106
 msgid "   {ui_tab_prev}{ui_tab_next}  switch tabs"
 msgstr "   {ui_tab_prev}{ui_tab_next}  cambiar de pestaña"
 
-#: ui/codex_screen.gd:183
+#: ui/codex_screen.gd:189
 msgid "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements"
 msgstr "%d / %d entradas   ·   %d / %d curiosidades   ·   %d / %d coleccionables   ·   %d / %d logros"
 
-#: ui/codex_screen.gd:309 ui/codex_screen.gd:429 ui/codex_screen.gd:537
+#: ui/codex_screen.gd:315 ui/codex_screen.gd:435 ui/codex_screen.gd:543
 msgid "Not found yet"
 msgstr "Aún no encontrado"
 
-#: ui/codex_screen.gd:313
+#: ui/codex_screen.gd:319
 msgid ""
 "\n"
 "\n"
@@ -2591,179 +2591,179 @@ msgstr ""
 "\n"
 "Limpiado hasta ahora: %s"
 
-#: ui/codex_screen.gd:338
+#: ui/codex_screen.gd:344
 msgid "CURIOSITIES"
 msgstr "CURIOSIDADES"
 
-#: ui/codex_screen.gd:339 ui/codex_screen.gd:460
+#: ui/codex_screen.gd:345 ui/codex_screen.gd:466
 msgid "%d / %d found"
 msgstr "%d / %d encontradas"
 
-#: ui/codex_screen.gd:433
+#: ui/codex_screen.gd:439
 msgid "Found  ·  %s"
 msgstr "Encontrado  ·  %s"
 
-#: ui/codex_screen.gd:436
+#: ui/codex_screen.gd:442
 msgid "Parts found: %d / %d"
 msgstr "Piezas encontradas: %d / %d"
 
-#: ui/codex_screen.gd:437
+#: ui/codex_screen.gd:443
 msgid "Reward: a small surprise"
 msgstr "Recompensa: una pequeña sorpresa"
 
-#: ui/codex_screen.gd:459
+#: ui/codex_screen.gd:465
 msgid "COLLECTION"
 msgstr "COLECCIÓN"
 
-#: ui/codex_screen.gd:540
+#: ui/codex_screen.gd:546
 msgid "In your collection"
 msgstr "En tu colección"
 
-#: ui/codex_screen.gd:545
+#: ui/codex_screen.gd:551
 msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
 msgstr "Pista: un visitante tímido acude a los hexágonos sostenidos y prósperos. Lleva una cámara."
 
-#: ui/codex_screen.gd:546
+#: ui/codex_screen.gd:552
 msgid "Hint: complete %d contracts at the workbench."
 msgstr "Pista: completa %d contratos en el banco de trabajo."
 
-#: ui/codex_screen.gd:547
+#: ui/codex_screen.gd:553
 msgid "Hint: Curio Capsules, in the workbench token shop."
 msgstr "Pista: cápsulas de curiosidades, en la tienda de fichas del banco de trabajo."
 
-#: ui/codex_screen.gd:548
+#: ui/codex_screen.gd:554
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "Pista: sigue recogiendo sin parar hasta llenar el medidor de racha."
 
-#: ui/codex_screen.gd:549
+#: ui/codex_screen.gd:555
 msgid "Hint: turns up during %s."
 msgstr "Pista: aparece durante: %s."
 
-#: ui/codex_screen.gd:618
+#: ui/codex_screen.gd:624
 msgid "Unlocked  ·  %s"
 msgstr "Desbloqueado  ·  %s"
 
-#: ui/codex_screen.gd:657
+#: ui/codex_screen.gd:663
 msgid "Total"
 msgstr "Total"
 
-#: ui/codex_screen.gd:658
+#: ui/codex_screen.gd:664
 msgid "Junk removed"
 msgstr "Chatarra retirada"
 
-#: ui/codex_screen.gd:658
+#: ui/codex_screen.gd:664
 msgid "by type"
 msgstr "por tipo"
 
-#: ui/codex_screen.gd:659 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:665 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "Limpieza"
 
-#: ui/codex_screen.gd:661
+#: ui/codex_screen.gd:667
 msgid "Hexes restored"
 msgstr "Hexágonos restaurados"
 
-#: ui/codex_screen.gd:662
+#: ui/codex_screen.gd:668
 msgid "Bales pressed"
 msgstr "Pacas prensadas"
 
-#: ui/codex_screen.gd:663
+#: ui/codex_screen.gd:669
 msgid "Pure bales"
 msgstr "Pacas puras"
 
-#: ui/codex_screen.gd:664
+#: ui/codex_screen.gd:670
 msgid "Perfect bales"
 msgstr "Pacas perfectas"
 
-#: ui/codex_screen.gd:665
+#: ui/codex_screen.gd:671
 msgid "Lumpy bales"
 msgstr "Pacas grumosas"
 
-#: ui/codex_screen.gd:666
+#: ui/codex_screen.gd:672
 msgid "Bales cashed in"
 msgstr "Pacas cobradas"
 
-#: ui/codex_screen.gd:667
+#: ui/codex_screen.gd:673
 msgid "Cubes earned"
 msgstr "Cubos ganados"
 
-#: ui/codex_screen.gd:669 ui/globe_view.gd:135 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:675 ui/globe_view.gd:135 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "Cultivo"
 
-#: ui/codex_screen.gd:670
+#: ui/codex_screen.gd:676
 msgid "Seeds planted"
 msgstr "Semillas plantadas"
 
-#: ui/codex_screen.gd:671
+#: ui/codex_screen.gd:677
 msgid "Plants bloomed"
 msgstr "Plantas florecidas"
 
-#: ui/codex_screen.gd:672
+#: ui/codex_screen.gd:678
 msgid "Air filtered"
 msgstr "Aire filtrado"
 
-#: ui/codex_screen.gd:674 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:680 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "Robots"
 
-#: ui/codex_screen.gd:676
+#: ui/codex_screen.gd:682
 msgid "Bales by robots"
 msgstr "Pacas de robots"
 
-#: ui/codex_screen.gd:677
+#: ui/codex_screen.gd:683
 msgid "Parts dug up"
 msgstr "Piezas desenterradas"
 
-#: ui/codex_screen.gd:679
+#: ui/codex_screen.gd:685
 msgid "Exploring"
 msgstr "Exploración"
 
-#: ui/codex_screen.gd:680
+#: ui/codex_screen.gd:686
 msgid "Distance rolled"
 msgstr "Distancia recorrida"
 
-#: ui/codex_screen.gd:681
+#: ui/codex_screen.gd:687
 msgid "Memory shards read"
 msgstr "Fragmentos de memoria leídos"
 
-#: ui/codex_screen.gd:682
+#: ui/codex_screen.gd:688
 msgid "Codex entries"
 msgstr "Entradas del Códice"
 
-#: ui/codex_screen.gd:685
+#: ui/codex_screen.gd:691
 msgid "Progress"
 msgstr "Progreso"
 
-#: ui/codex_screen.gd:686
+#: ui/codex_screen.gd:692
 msgid "Upgrades bought"
 msgstr "Mejoras compradas"
 
-#: ui/codex_screen.gd:687
+#: ui/codex_screen.gd:693
 msgid "Data earned"
 msgstr "Datos obtenidos"
 
-#: ui/codex_screen.gd:688
+#: ui/codex_screen.gd:694
 msgid "Research done"
 msgstr "Investigaciones hechas"
 
-#: ui/codex_screen.gd:690
+#: ui/codex_screen.gd:696
 msgid "Best hub level"
 msgstr "Mejor nivel de base"
 
-#: ui/codex_screen.gd:740
+#: ui/codex_screen.gd:746
 msgid "%s kg"
 msgstr "%s kg"
 
-#: ui/codex_screen.gd:741
+#: ui/codex_screen.gd:747
 msgid "%.1f kg"
 msgstr "%.1f kg"
 
-#: ui/codex_screen.gd:745
+#: ui/codex_screen.gd:751
 msgid "%.2f km"
 msgstr "%.2f km"
 
-#: ui/codex_screen.gd:755
+#: ui/codex_screen.gd:761
 msgid "%dm %02ds"
 msgstr "%dm %02ds"
 
@@ -2823,117 +2823,117 @@ msgstr "Vuelve y aparca en la base."
 msgid "[p]{@dpad}  panel      {@move}  move      {pad:#0}  mark      {pad:#2}  unmark      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  back[/p][k]Left drag  mark      Right drag  unmark      {@move} / middle drag  move      Wheel  zoom      {kbd:open_command}  back[/k]"
 msgstr "[p]{@dpad}  panel      {@move}  mover      {pad:#0}  marcar      {pad:#2}  desmarcar      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  volver[/p][k]Arrastrar izq.  marcar      Arrastrar der.  desmarcar      {@move} / arrastrar central  mover      Rueda  zoom      {kbd:open_command}  volver[/k]"
 
-#: ui/command_view.gd:230
+#: ui/command_view.gd:231
 msgid "COMMAND"
 msgstr "MANDO"
 
-#: ui/command_view.gd:267
+#: ui/command_view.gd:268
 msgid "Mark around me"
 msgstr "Marcar a mi alrededor"
 
-#: ui/command_view.gd:280 ui/photo_mode.gd:26
+#: ui/command_view.gd:281 ui/photo_mode.gd:26
 msgid "Clear"
 msgstr "Borrar"
 
-#: ui/command_view.gd:305
+#: ui/command_view.gd:306
 msgid "CREWS"
 msgstr "EQUIPOS"
 
-#: ui/command_view.gd:591
+#: ui/command_view.gd:594
 msgid "Following the %s orders. Mark hexes or pick a mode to give it its own."
 msgstr "Sigue las órdenes de %s. Marca hexágonos o elige un modo para darle las suyas."
 
-#: ui/command_view.gd:600
+#: ui/command_view.gd:603
 msgid "No orders yet: roaming the district. Drag on the ground to mark where to work."
 msgstr "Aún sin órdenes: recorre el distrito. Arrastra sobre el suelo para marcar dónde trabajar."
 
-#: ui/command_view.gd:643
+#: ui/command_view.gd:646
 msgid "No robots yet. Build one at the workbench."
 msgstr "Aún no hay robots. Construye uno en el banco de trabajo."
 
-#: ui/command_view.gd:770
+#: ui/command_view.gd:773
 msgid "Build %s  %s"
 msgstr "Construir %s  %s"
 
-#: ui/command_view.gd:775
+#: ui/command_view.gd:778
 msgid "Max tier"
 msgstr "Nivel máximo"
 
-#: ui/command_view.gd:775
+#: ui/command_view.gd:778
 msgid "Upgrade > %s"
 msgstr "Mejorar > %s"
 
-#: ui/command_view.gd:777
+#: ui/command_view.gd:780
 msgid "%s cubes, %s bolts, %s Control Core. %s"
 msgstr "%s cubos, %s tornillos, núcleo de control %s. %s"
 
-#: ui/command_view.gd:786
+#: ui/command_view.gd:789
 msgid "  parts %d/%d · %s"
 msgstr "  piezas %d/%d · %s"
 
-#: ui/command_view.gd:786
+#: ui/command_view.gd:789
 msgid "build at the workbench"
 msgstr "se construye en el banco de trabajo"
 
-#: ui/command_view.gd:793
+#: ui/command_view.gd:796
 msgid "Place refill tank here  %s  (%d/%d)"
 msgstr "Poner tanque de recarga aquí  %s  (%d/%d)"
 
-#: ui/command_view.gd:795
+#: ui/command_view.gd:798
 msgid "A Water Tank at your hex. Waterers refill at the nearest one."
 msgstr "Un tanque de agua en tu hexágono. Los regadores recargan en el más cercano."
 
-#: ui/command_view.gd:1052
+#: ui/command_view.gd:1055
 msgid "%s · %d HEX"
 msgid_plural "%s · %d HEXES"
 msgstr[0] "%s · %d HEX"
 msgstr[1] "%s · %d HEX"
 
-#: ui/command_view.gd:1088
+#: ui/command_view.gd:1091
 msgid "BASE"
 msgstr "BASE"
 
-#: ui/command_view.gd:1095
+#: ui/command_view.gd:1098
 msgid "YOU"
 msgstr "TÚ"
 
-#: ui/command_view.gd:1195
+#: ui/command_view.gd:1198
 msgid "HEX %d"
 msgstr "HEX %d"
 
-#: ui/command_view.gd:1199
+#: ui/command_view.gd:1202
 msgid "BASE YARD"
 msgstr "PATIO DE LA BASE"
 
-#: ui/command_view.gd:1200
+#: ui/command_view.gd:1203
 msgid "Home ground, always clean"
 msgstr "Terreno propio, siempre limpio"
 
-#: ui/command_view.gd:1202
+#: ui/command_view.gd:1205
 msgid "LAKE HEX %d"
 msgstr "HEX DEL LAGO %d"
 
-#: ui/command_view.gd:1204
+#: ui/command_view.gd:1207
 msgid "Floating junk  %d%% left"
 msgstr "Chatarra flotante  queda %d%%"
 
-#: ui/command_view.gd:1210
+#: ui/command_view.gd:1213
 msgid "Junk  %d%% left"
 msgstr "Chatarra  queda %d%%"
 
-#: ui/command_view.gd:1216
+#: ui/command_view.gd:1219
 msgid "Level %d · %s"
 msgstr "Nivel %d · %s"
 
-#: ui/command_view.gd:1218
+#: ui/command_view.gd:1221
 msgid "In %s zone"
 msgstr "En zona %s"
 
-#: ui/command_view.gd:1270
+#: ui/command_view.gd:1274
 msgid "%d robots"
 msgstr "%d robots"
 
-#: ui/command_view.gd:1273
+#: ui/command_view.gd:1277
 msgid "%d / %d hexes clean"
 msgstr "%d / %d hexágonos limpios"
 
@@ -2941,67 +2941,67 @@ msgstr "%d / %d hexágonos limpios"
 msgid "CONTRACTS"
 msgstr "CONTRATOS"
 
-#: ui/contracts_panel.gd:26
+#: ui/contracts_panel.gd:28
 msgid "Optional jobs with a timer. Finish in time for tokens; nothing is lost if one runs out."
 msgstr "Trabajos opcionales con tiempo límite. Termina a tiempo para ganar fichas; no pierdes nada si uno se agota."
 
-#: ui/contracts_panel.gd:39
+#: ui/contracts_panel.gd:42
 msgid "TOKEN SHOP"
 msgstr "TIENDA DE FICHAS"
 
-#: ui/contracts_panel.gd:78
+#: ui/contracts_panel.gd:81
 msgid "◈  %d tokens"
 msgstr "◈  %d fichas"
 
-#: ui/contracts_panel.gd:79
+#: ui/contracts_panel.gd:82
 msgid "Collection  %d / %d   ·   see the Codex (K)"
 msgstr "Colección  %d / %d   ·   ver el Códice (K)"
 
-#: ui/contracts_panel.gd:127
+#: ui/contracts_panel.gd:130
 msgid "A new contract is being posted."
 msgstr "Se está publicando un contrato nuevo."
 
-#: ui/contracts_panel.gd:137
+#: ui/contracts_panel.gd:141
 msgid "Reward  ◈ %d tokens  +  cubes"
 msgstr "Recompensa  ◈ %d fichas  +  cubos"
 
-#: ui/contracts_panel.gd:159
+#: ui/contracts_panel.gd:163
 msgid "Accept  (%s)"
 msgstr "Aceptar  (%s)"
 
-#: ui/contracts_panel.gd:168
+#: ui/contracts_panel.gd:172
 msgid "Pass"
 msgstr "Pasar"
 
-#: ui/contracts_panel.gd:178
+#: ui/contracts_panel.gd:182
 msgid "Working on it"
 msgstr "En ello"
 
-#: ui/contracts_panel.gd:184
+#: ui/contracts_panel.gd:188
 msgid "Claim  ◈ %d"
 msgstr "Reclamar  ◈ %d"
 
-#: ui/contracts_panel.gd:209
+#: ui/contracts_panel.gd:228
 msgid "Next posting in %s"
 msgstr "Próximo anuncio en %s"
 
-#: ui/contracts_panel.gd:211
+#: ui/contracts_panel.gd:230
 msgid "Time limit %s once accepted   ·   offer open %s"
 msgstr "Tiempo límite %s al aceptar   ·   oferta abierta %s"
 
-#: ui/contracts_panel.gd:222
+#: ui/contracts_panel.gd:241
 msgid "Time left %s"
 msgstr "Tiempo restante %s"
 
-#: ui/contracts_panel.gd:222
+#: ui/contracts_panel.gd:241
 msgid "Finished. Claim your tokens!"
 msgstr "Terminado. ¡Reclama tus fichas!"
 
-#: ui/contracts_panel.gd:245
+#: ui/contracts_panel.gd:264
 msgid "Equipped  (press to remove)"
 msgstr "Equipado  (pulsa para quitar)"
 
-#: ui/contracts_panel.gd:245
+#: ui/contracts_panel.gd:264
 msgid "Owned  ·  press to equip"
 msgstr "En propiedad  ·  pulsa para equipar"
 
@@ -3365,44 +3365,56 @@ msgstr "Lumi ha llegado al nivel %d%s"
 msgid "OLD TOWN   0%"
 msgstr "CASCO ANTIGUO   0%"
 
-#: ui/hud.gd:292
-msgid "CARRYING %d/%d"
-msgstr "CARGA %d/%d"
-
-#: ui/hud.gd:296
+#: ui/hud.gd:303
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% LIMPIO"
 
-#: ui/hud.gd:296
+#: ui/hud.gd:308
+msgid "CARRYING %d/%d"
+msgstr "CARGA %d/%d"
+
+#: ui/hud.gd:330
 msgid "HEX  CLEAR"
 msgstr "HEX  LIMPIO"
 
-#: ui/hud.gd:331
+#: ui/hud.gd:334
+msgid "HEX  %s"
+msgstr ""
+
+#: ui/hud.gd:337
+msgid "  SUSTAIN %d%%"
+msgstr ""
+
+#: ui/hud.gd:339
+msgid "  THIRSTY"
+msgstr ""
+
+#: ui/hud.gd:354
 msgid "%s  map      %s  command      %s  lens      %s  goals"
 msgstr "%s  mapa      %s  mando      %s  lente      %s  objetivos"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:349
+#: ui/hud.gd:372
 msgid "%s   pick up bale"
 msgstr "%s   coger paca"
 
-#: ui/hud.gd:350
+#: ui/hud.gd:373
 msgid "%s   dig up part"
 msgstr "%s   desenterrar pieza"
 
-#: ui/hud.gd:351
+#: ui/hud.gd:374
 msgid "%s   read memory shard"
 msgstr "%s   leer fragmento de memoria"
 
-#: ui/hud.gd:352
+#: ui/hud.gd:375
 msgid "%s   pick up the seed tin"
 msgstr "%s   coger la lata de semillas"
 
-#: ui/hud.gd:353
+#: ui/hud.gd:376
 msgid "%s   set bale down"
 msgstr "%s   dejar paca"
 
-#: ui/hud.gd:354
+#: ui/hud.gd:377
 msgid "%s   workbench"
 msgstr "%s   banco de trabajo"
 
@@ -4490,7 +4502,7 @@ msgstr "MEJORAS"
 msgid "%s (soon)"
 msgstr "%s (pronto)"
 
-#: water/water_view.gd:71
+#: water/water_view.gd:78
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "El agua... veo el fondo. Lumi, algo se mueve ahí abajo."
 

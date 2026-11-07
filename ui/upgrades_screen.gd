@@ -90,6 +90,9 @@ func _ready() -> void:
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
 		b.custom_minimum_size = Vector2(88, 44)  # [deck] 8 tabs fit 1280x800 at 110% interface scale
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		b.clip_text = true  # [vqa] long German / pseudo tab names shrink with an ellipsis, never widen the panel
+		b.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		b.tooltip_text = b.text
 		b.focus_mode = Control.FOCUS_NONE
 		tabs.add_child(b)
 		_tab_buttons.append(b)

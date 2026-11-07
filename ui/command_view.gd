@@ -109,6 +109,7 @@ var _pad_paint: int = 0  # 1 while A is held on the map, -1 while X is held
 var _reticle_hex: int = -1
 var _reticle: Control
 var _keys: PromptLabel
+var _ranges := RangeBoost.new()  # [vqa]
 var _last_focus_id: Array = []  # [meta key, value] of the panel control that had focus
 
 
@@ -499,6 +500,7 @@ func open_view() -> void:
 	_look = _focus
 	_cam.global_position = _cam_pos
 	_cam.current = true
+	_ranges.boost(world as Node, ZOOM_MAX + 160.0)  # [vqa] junk/gardens stay drawn when zoomed out
 	if _sel_bot and world.fleet.find_robot(_sel_key) == null:
 		_sel_key = "clean"
 		_sel_bot = false
@@ -519,6 +521,7 @@ func close_view() -> void:
 	if fo and _root.is_ancestor_of(fo):
 		fo.release_focus()
 	_root.visible = false
+	_ranges.restore()  # [vqa]
 	if _prev_cam and is_instance_valid(_prev_cam):
 		_prev_cam.current = true
 	if world.get("hud") != null:
@@ -1233,6 +1236,7 @@ func _update_tooltip() -> void:
 # --- Frame ----------------------------------------------------------------------------------
 
 func _process(delta: float) -> void:
+	_fit_keys()
 	if not is_open:
 		return
 	# WASD pans the camera.
@@ -1385,6 +1389,20 @@ func _set_pad(on: bool) -> void:
 	if _reticle:
 		_reticle.visible = on and is_open
 	pass  # [deck] _keys (PromptLabel) follows Settings.last_input_pad by itself
+
+
+## [vqa] The key strip is one line of glyphs and words: in long languages it scales down to fit the
+## screen instead of running off both edges.
+func _fit_keys() -> void:
+	var kp: Control = _keys.get_parent() as Control if _keys else null
+	if kp == null or not kp.is_visible_in_tree():
+		return
+	var w: float = kp.get_combined_minimum_size().x
+	var avail: float = get_viewport().get_visible_rect().size.x - 32.0
+	var k: float = minf(1.0, avail / maxf(w, 1.0))
+	if not is_equal_approx(kp.scale.x, k):
+		kp.pivot_offset = Vector2(w * 0.5, kp.size.y)
+		kp.scale = Vector2(k, k)
 
 
 ## Runs before the GUI: tracks the input device and drives the map with the pad.

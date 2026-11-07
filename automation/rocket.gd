@@ -44,6 +44,7 @@ var _siren_next: float = 0.0
 var _land_to := Vector3.ZERO
 var _flight_s: float = 5.0
 var _hidden: Array[Node] = []
+var _clutter: Array[Node3D] = []  # [vqa] yard dressing hidden during the close launch shots
 # Timeline marks (seconds of sequence time), set per tier in launch().
 var _t0: float = 3.8     # countdown starts
 var _ig: float = 8.8     # ignition
@@ -281,22 +282,28 @@ func _launch_camera(t: float, dt: float) -> void:
 		fov = 55.0
 	elif t < _t0:
 		# Boarding: from the tower's side, watching Aurora ride up and cross the gangway.
-		pos = o + Vector3(-8.5, 4.2, -2.0).lerp(Vector3(-7.6, 6.0, -3.0), (t - 1.7) / (_t0 - 1.7))
+		# [vqa] Pulled back and round so the tower no longer fills a third of the frame.
+		pos = o + Vector3(-9.6, 4.6, 0.8).lerp(Vector3(-8.8, 6.2, 0.2), (t - 1.7) / (_t0 - 1.7))
 		look = (world.patch.global_position if world.patch.visible else _hatch_world()) + Vector3(0, 0.3, 0)
-		fov = 52.0
+		fov = 40.0
 	elif t < _ig - 0.7:
 		# Countdown: low front-left, rocket, beacons and the holo numbers.
-		pos = o + Vector3(6.2, 1.3, 3.7).lerp(Vector3(5.4, 1.6, 3.5), (t - _t0) / maxf(_ig - 0.7 - _t0, 0.1))
+		# [vqa] The pad stands 4 m behind the yard's back fence (sign, fence, festoon wires, lamps,
+		# holo boards): the close cameras look across the open lot east of the pad (+x, a little
+		# behind it), so the yard stays out of frame and the service tower stands clear.
+		pos = o + Vector3(9.2, 1.3, -1.2).lerp(Vector3(8.4, 1.6, -1.0), (t - _t0) / maxf(_ig - 0.7 - _t0, 0.1))
 		look = o + Vector3(-0.6, 5.0, 0)
 		fov = 58.0
 	elif t < _lo + 0.9:
 		# Ignition: close and low by the engine, the plume and the billows.
-		pos = o + Vector3(5.0, 3.8, 12.5).lerp(Vector3(5.4, 3.4, 11.0), (t - (_ig - 0.7)) / (_lo + 1.6 - _ig))
-		look = o + Vector3(0, 2.6, 0)
-		fov = 58.0
+		# Side profile from the lot east of the pad, long lens: the tower stands clear to one side.
+		pos = o + Vector3(13.0, 2.7, -2.6).lerp(Vector3(12.0, 2.5, -2.3), (t - (_ig - 0.7)) / (_lo + 1.6 - _ig))
+		look = o + Vector3(0, 3.0, 0)
+		fov = 40.0
 	elif t < _lo + 4.5:
 		# Lift-off: low, looking up as it climbs.
-		pos = o + Vector3(8.5, 1.0, 3.8)
+		# High and wide enough to stay clear of the ground-hugging vapour ring.
+		pos = o + Vector3(9.5, 2.6, -12.5)
 		look = mp + Vector3(0, 3.0, 0)
 	else:
 		# Climb: wide from the base, the vapour column and the arc to a dot.
@@ -305,6 +312,10 @@ func _launch_camera(t: float, dt: float) -> void:
 		look = (mp + Vector3(0, 2.0, 0)).lerp(o + Vector3(0, 6.0, 0), 0.28)
 		fov = lerpf(58.0, 46.0, smoothstep(_lo + 4.5, _end, t))
 	_cam.fov = fov
+	var close: bool = t >= 1.7 and t < _lo + 4.5
+	for n: Node3D in _clutter:
+		if is_instance_valid(n):
+			n.visible = not close
 	_place_cam(pos, look, dt)
 
 
@@ -506,6 +517,13 @@ func _begin(mode: String) -> void:
 			if (n as Node3D).visible:
 				(n as Node3D).visible = false
 				_hidden.append(n)
+	# [vqa] Yard dressing, future-city props and easter eggs crowd the pad from every close angle
+	# (sign, fence, wires, lamp pylons, holo boards): they hide for the close shots (hard cuts) and
+	# show again in the establishing and climb shots.
+	_clutter.clear()
+	for nm: String in ["StreetDressing", "FutureLayer", "EasterEggs"]:
+		for n: Node in world.find_children(nm, "Node3D", true, false):
+			_clutter.append(n as Node3D)
 	_build_fx()
 	_build_ui()
 
@@ -529,6 +547,10 @@ func _cinematic_env() -> Environment:
 
 func _end_cinematic() -> void:
 	world.launching = false
+	for n: Node3D in _clutter:
+		if is_instance_valid(n):
+			n.visible = true
+	_clutter.clear()
 	for n: Node in _hidden:
 		if is_instance_valid(n):
 			(n as Node3D).visible = true
@@ -727,7 +749,7 @@ func _build_fx() -> void:
 	_count.outline_modulate = Color(0.0, 0.25, 0.45, 0.6)
 	_count.shaded = false
 	_count.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	_count.position = Vector3(-3.4, _base_y + 5.6, 1.6)
+	_count.position = Vector3(0.4, _base_y + 6.2, 3.6)  # [vqa] beside the rocket as the side cameras see it, not behind its nose
 	_count.visible = false
 	add_child(_count)
 
