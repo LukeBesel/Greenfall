@@ -44,6 +44,7 @@ var _siren_next: float = 0.0
 var _land_to := Vector3.ZERO
 var _flight_s: float = 5.0
 var _hidden: Array[Node] = []
+var _clutter: Array[Node3D] = []  # [vqa] yard dressing hidden during the close launch shots
 # Timeline marks (seconds of sequence time), set per tier in launch().
 var _t0: float = 3.8     # countdown starts
 var _ig: float = 8.8     # ignition
@@ -311,6 +312,10 @@ func _launch_camera(t: float, dt: float) -> void:
 		look = (mp + Vector3(0, 2.0, 0)).lerp(o + Vector3(0, 6.0, 0), 0.28)
 		fov = lerpf(58.0, 46.0, smoothstep(_lo + 4.5, _end, t))
 	_cam.fov = fov
+	var close: bool = t >= 1.7 and t < _lo + 4.5
+	for n: Node3D in _clutter:
+		if is_instance_valid(n):
+			n.visible = not close
 	_place_cam(pos, look, dt)
 
 
@@ -512,6 +517,13 @@ func _begin(mode: String) -> void:
 			if (n as Node3D).visible:
 				(n as Node3D).visible = false
 				_hidden.append(n)
+	# [vqa] Yard dressing, future-city props and easter eggs crowd the pad from every close angle
+	# (sign, fence, wires, lamp pylons, holo boards): they hide for the close shots (hard cuts) and
+	# show again in the establishing and climb shots.
+	_clutter.clear()
+	for nm: String in ["StreetDressing", "FutureLayer", "EasterEggs"]:
+		for n: Node in world.find_children(nm, "Node3D", true, false):
+			_clutter.append(n as Node3D)
 	_build_fx()
 	_build_ui()
 
@@ -535,6 +547,10 @@ func _cinematic_env() -> Environment:
 
 func _end_cinematic() -> void:
 	world.launching = false
+	for n: Node3D in _clutter:
+		if is_instance_valid(n):
+			n.visible = true
+	_clutter.clear()
 	for n: Node in _hidden:
 		if is_instance_valid(n):
 			(n as Node3D).visible = true
