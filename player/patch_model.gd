@@ -8,14 +8,19 @@ extends Node3D
 ## bowl with a bright thruster ring instead of legs. Worn, dusty paint. Colorways are unlockable designs ("aurora" is
 ## the default look). Faces -Z. Base (hover ring) near y=0.
 
+# Unlockable designs (owner's concept sheet; gameplay side in systems/designs.gd + data/designs.json).
+# paint / trim / accent: hero_paint colours; glow: eyes, ear rings, hover ring, chest light and
+# pickup lasers; lamp: the small accent lights (cheeks, chest tabs); coverage/grime: wear; moss and
+# stripes: hero_paint extras; acc: add-ons from designs.glb (+ "antenna" from aurora.glb) and
+# procedural extras (holo, butterfly, case); icon: chest screen icon; happy: resting smile (0..1).
 # l10n:begin
 const VARIANTS: Dictionary = {
-	"aurora": {"name": "Aurora", "paint": Color(0.9, 0.88, 0.83), "trim": Color(0.36, 0.38, 0.42), "glow": Color(0.3, 0.88, 1.0), "accent": Color(1.0, 0.5, 0.12), "icon": "recycle"},
-	"bolt": {"name": "Bolt", "paint": Color(0.95, 0.72, 0.12), "trim": Color(0.3, 0.27, 0.22), "glow": Color(1.0, 0.72, 0.2), "accent": Color(0.25, 0.22, 0.18), "icon": "recycle"},
-	"sprout": {"name": "Sprout", "paint": Color(0.5, 0.56, 0.24), "trim": Color(0.3, 0.32, 0.2), "glow": Color(0.55, 1.0, 0.35), "accent": Color(0.85, 0.7, 0.3), "icon": "leaf", "leaf": true},
-	"pixel": {"name": "Pixel", "paint": Color(0.85, 0.2, 0.18), "trim": Color(0.92, 0.9, 0.86), "glow": Color(1.0, 0.35, 0.5), "accent": Color(0.92, 0.9, 0.86), "icon": "recycle", "ears": "round"},
-	"nova": {"name": "Nova", "paint": Color(0.26, 0.24, 0.3), "trim": Color(0.15, 0.14, 0.18), "glow": Color(0.72, 0.4, 1.0), "accent": Color(0.72, 0.4, 1.0), "icon": "recycle", "ears": "cat"},
-	"patch": {"name": "Patch", "paint": Color(0.92, 0.9, 0.86), "trim": Color(0.35, 0.36, 0.38), "glow": Color(1.0, 0.7, 0.25), "accent": Color(1.0, 0.5, 0.15), "icon": "plus"},
+	"aurora": {"name": "Aurora", "paint": Color(0.9, 0.88, 0.83), "trim": Color(0.36, 0.38, 0.42), "glow": Color(0.3, 0.88, 1.0), "accent": Color(1.0, 0.5, 0.12), "lamp": Color(1.0, 0.55, 0.15), "icon": "recycle", "acc": ["antenna"]},
+	"bolt": {"name": "Bolt", "paint": Color(0.95, 0.7, 0.1), "trim": Color(0.32, 0.29, 0.24), "glow": Color(1.0, 0.68, 0.18), "accent": Color(0.95, 0.72, 0.12), "lamp": Color(1.0, 0.6, 0.12), "icon": "recycle", "coverage": 0.8, "grime": 0.85, "stripes": 1.0, "acc": ["antenna", "acc_pad_r", "acc_pad_l", "gear"]},
+	"sprout": {"name": "Sprout", "paint": Color(0.47, 0.53, 0.23), "trim": Color(0.33, 0.35, 0.22), "glow": Color(0.52, 1.0, 0.36), "accent": Color(0.86, 0.62, 0.22), "lamp": Color(0.6, 1.0, 0.35), "icon": "leaf", "grime": 0.7, "moss": 0.6, "acc": ["acc_sprout"]},
+	"pixel": {"name": "Pixel", "paint": Color(0.8, 0.15, 0.14), "trim": Color(0.6, 0.12, 0.12), "glow": Color(1.0, 0.33, 0.5), "accent": Color(0.93, 0.91, 0.88), "lamp": Color(1.0, 0.4, 0.55), "icon": "recycle", "happy": 0.85, "acc": ["acc_pixel", "butterfly"]},
+	"nova": {"name": "Nova", "paint": Color(0.25, 0.245, 0.28), "trim": Color(0.16, 0.15, 0.19), "glow": Color(0.7, 0.4, 1.0), "accent": Color(0.4, 0.38, 0.45), "lamp": Color(0.72, 0.42, 1.0), "icon": "recycle", "metal": 0.35, "acc": ["acc_catears", "holo"]},
+	"patch": {"name": "Patch", "paint": Color(0.92, 0.9, 0.86), "trim": Color(0.35, 0.36, 0.38), "glow": Color(1.0, 0.7, 0.26), "accent": Color(1.0, 0.48, 0.12), "lamp": Color(1.0, 0.55, 0.15), "icon": "cross", "acc": ["antenna", "acc_toolbox", "case"]},
 }
 # l10n:end
 
@@ -76,8 +81,16 @@ var _hold: float = 0.0
 var core_glow: float = 1.0
 
 
+## Set before adding to the tree to build a given design (previews) instead of the worn one.
+var preview_variant: String = ""
+
+
+static func glow_of(id: String) -> Color:
+	return (VARIANTS.get(id, VARIANTS["aurora"]) as Dictionary)["glow"]
+
+
 func _ready() -> void:
-	variant = str(GameState.flags.get("patch_skin", "aurora"))
+	variant = preview_variant if preview_variant != "" else str(GameState.flags.get("patch_skin", "aurora"))
 	if not VARIANTS.has(variant):
 		variant = "aurora"
 	_build()
@@ -93,10 +106,14 @@ func set_variant(v: String) -> void:
 	for c: Node in get_children():
 		c.free()
 	_claws.clear()
+	_idle_t = 0.0
+	_prop_amt = 0.0
 	_build()
 
 
 const MODEL_PATH := "res://art/models/aurora/aurora.glb"
+## Design add-ons (same build script): shoulder pads, sprout, cat ears, toolbox, case, gear, ...
+const DESIGNS_PATH := "res://art/models/aurora/designs.glb"
 const HERO_PAINT := preload("res://art/shaders/hero_paint.gdshader")
 ## Visual layer bit the hero's meshes also sit on, so his own key light only lights him.
 const HERO_LAYER := 2
@@ -109,12 +126,15 @@ var _paint_mats: Array[ShaderMaterial] = []
 static func _load_parts() -> void:
 	if not _parts.is_empty():
 		return
-	var scene: PackedScene = load(MODEL_PATH)
-	var inst: Node = scene.instantiate()
-	for n: Node in inst.find_children("*", "MeshInstance3D", true, false):
-		var mi: MeshInstance3D = n
-		_parts[str(mi.name)] = {"mesh": mi.mesh, "pos": mi.position}
-	inst.free()
+	for path: String in [MODEL_PATH, DESIGNS_PATH]:
+		var scene: PackedScene = load(path)
+		if scene == null:
+			continue
+		var inst: Node = scene.instantiate()
+		for n: Node in inst.find_children("*", "MeshInstance3D", true, false):
+			var mi: MeshInstance3D = n
+			_parts[str(mi.name)] = {"mesh": mi.mesh, "pos": mi.position}
+		inst.free()
 
 
 static func _pivot(part: String) -> Vector3:
@@ -182,14 +202,21 @@ func _build() -> void:
 	_paint_mats.clear()
 	_ring_mat = Mats.lamp(glow, 4.5)
 	var screen := Mats.glass(Color(0.02, 0.03, 0.04, 1.0), 0.08)
+	var cover: float = float(v.get("coverage", 0.9))
+	var lamp_c: Color = v.get("lamp", accent_c)
 	_mats = {
-		"paint": _paint((v["paint"] as Color).darkened(0.04), 3.0, 0.9),
-		"trim": _paint((v["trim"] as Color).darkened(0.45), 7.0, 0.9, 0.35, 0.4),
-		"accent": _paint(accent_c, 11.0, 0.86),
+		"paint": _paint((v["paint"] as Color).darkened(0.04), 3.0, cover, float(v.get("metal", 0.0)), 0.42 - float(v.get("metal", 0.0)) * 0.3),
+		"trim": _paint((v["trim"] as Color).darkened(0.45), 7.0, cover, 0.35, 0.4),
+		"accent": _paint(accent_c, 11.0, cover - 0.04),
 		"dark": _paint(Color(0.17, 0.175, 0.19), 5.0, 0.75, 0.6, 0.38),
 		"steel": Mats.metal("steel"),
 		"glow": Mats.lamp(glow, 3.2),
-		"lamp_accent": Mats.lamp(accent_c, 2.4),
+		"lamp_accent": Mats.lamp(lamp_c, 2.4),
+		# Design add-on materials (designs.glb).
+		"rust": _paint(Color(0.42, 0.36, 0.3), 13.0, 0.45, 0.5, 0.5),
+		"leaf": _leaf_mat(),
+		"moss": _moss_mat(),
+		"wing": _wing_mat(glow),
 		"screen": screen,
 		"thruster": _ring_mat,
 		"thruster_core": Mats.lamp(glow.lightened(0.4), 5.0),
@@ -197,6 +224,11 @@ func _build() -> void:
 	_face_mat = ShaderMaterial.new()
 	_face_mat.shader = preload("res://art/shaders/bot_face.gdshader")
 	_face_mat.set_shader_parameter("eye_color", glow)
+	for m: ShaderMaterial in _paint_mats:
+		m.set_shader_parameter("grime", float(v.get("grime", 0.6)))
+		m.set_shader_parameter("moss", float(v.get("moss", 0.0)))
+	if float(v.get("stripes", 0.0)) > 0.0:
+		(_mats["accent"] as ShaderMaterial).set_shader_parameter("stripes", float(v["stripes"]))
 	_face_mat.set_shader_parameter("half_width", 0.29)
 	_face_mat.set_shader_parameter("half_height", 0.17)
 	_mats["face"] = _face_mat
@@ -232,8 +264,13 @@ func _build() -> void:
 	fill.position = Vector3(-0.5, 1.1, -1.0)  # soft front fill for the face and chest
 	_float.add_child(fill)
 	var icon: String = str(v.get("icon", "recycle"))
+	_icon = null
+	_icon_mesh = null
+	if icon == "leaf" or icon == "cross":
+		_icon_mesh = _part(_float, "acc_icon_" + icon, _pivot("acc_icon_" + icon))
 	var icon_l := Label3D.new()
-	icon_l.text = "+" if icon == "plus" else ("❦" if icon == "leaf" else "♻")
+	icon_l.visible = _icon_mesh == null
+	icon_l.text = "♻"
 	icon_l.font_size = 64
 	icon_l.pixel_size = 0.0013
 	icon_l.modulate = glow.lightened(0.3)
@@ -263,26 +300,7 @@ func _build() -> void:
 	_part(_head, "head")
 	_part(_head, "visor", _pivot("visor") - _pivot("head"))
 	call_deferred("_find_sun")
-	# Variant extras.
-	var trim: Material = _mats["trim"]
-	if v.get("leaf", false):
-		var sprout := Node3D.new()
-		sprout.position = Vector3(-0.12, 0.48, -0.02)
-		_head.add_child(sprout)
-		var leaf_mat := StandardMaterial3D.new()
-		leaf_mat.albedo_color = Color(0.35, 0.75, 0.25)
-		leaf_mat.roughness = 0.5
-		_mi(sprout, ProcMesh.cyl(0.008, 0.01, 0.12, 6), leaf_mat, Vector3(0, 0.06, 0))
-		_mi(sprout, ProcMesh.sphere(0.05, 10, 5), leaf_mat, Vector3(0.04, 0.13, 0), Vector3(0, 0, -30), Vector3(1.4, 0.25, 0.8))
-		_mi(sprout, ProcMesh.sphere(0.04, 10, 5), leaf_mat, Vector3(-0.035, 0.11, 0), Vector3(0, 0, 30), Vector3(1.4, 0.25, 0.8))
-	match str(v.get("ears", "")):
-		"cat":
-			for x: float in [-0.22, 0.22]:
-				_mi(_head, ProcMesh.cyl(0.0, 0.09, 0.16, 4), trim, Vector3(x, 0.5, 0.02), Vector3(0, 45, signf(x) * -12))
-				_mi(_head, ProcMesh.cyl(0.0, 0.055, 0.11, 4), Mats.lamp(glow, 2.0), Vector3(x, 0.49, 0.0), Vector3(0, 45, signf(x) * -12))
-		"round":
-			for x: float in [-0.24, 0.24]:
-				_mi(_head, ProcMesh.hemisphere(0.09, 14, 5), trim, Vector3(x, 0.46, 0.02), Vector3(0, 0, signf(x) * -25))
+	_build_accessories(v)
 	# Tractor beam from the right claw: a cone of scrolling energy rings (tractor_beam shader)
 	# that stretches to whatever is being picked up. The twin lasers and arcs are PickupFx.
 	_beam = MeshInstance3D.new()
@@ -303,6 +321,176 @@ func _build() -> void:
 	_beam.top_level = true
 	_beam.visible = false
 	add_child(_beam)
+
+
+# --- Design add-ons -----------------------------------------------------------------------------
+
+var _icon_mesh: MeshInstance3D
+var _sprout: Node3D
+## Props that come and go: Nova's holo screen (right claw), Patch's carry case (left claw).
+var _holo: MeshInstance3D
+var _holo_mat: ShaderMaterial
+var _case: Node3D
+var _gear: Node3D
+var _bfly: Node3D
+var _bfly_wings: Array[Node3D] = []
+var _idle_t: float = 0.0
+var _prop_amt: float = 0.0
+var _happy_bias: float = 0.0
+
+
+func _build_accessories(v: Dictionary) -> void:
+	_sprout = null
+	_holo = null
+	_case = null
+	_gear = null
+	_bfly = null
+	_bfly_wings.clear()
+	_happy_bias = clampf((float(v.get("happy", 0.5)) - 0.5) * 2.0, 0.0, 1.0)
+	var head_p: Vector3 = _pivot("head")
+	for a: String in v.get("acc", []):
+		match a:
+			"antenna", "acc_catears", "acc_pixel":
+				_part(_head, a, _pivot(a) - head_p)
+			"acc_sprout":
+				_sprout = Node3D.new()
+				_sprout.position = _pivot(a) - head_p
+				_head.add_child(_sprout)
+				_part(_sprout, a)
+			"acc_pad_r", "acc_pad_l":
+				_part(_arm_r if a.ends_with("_r") else _arm_l, a)
+				# Heavier stance: the padded shoulders sit a touch wider.
+				(_arm_r if a.ends_with("_r") else _arm_l).position.x += 0.012 * (1.0 if a.ends_with("_r") else -1.0)
+			"acc_toolbox":
+				_part(_float, a, _pivot(a))
+			"gear":
+				# A spare gear gripped in the left claw by its rim, standing on edge.
+				var wrist: Node3D = _arm_l.get_meta("wrist")
+				_gear = Node3D.new()
+				_gear.position = Vector3(0.0, -0.055, -0.115)
+				_gear.rotation = Vector3(0.25, PI * 0.5, 0.0)
+				wrist.add_child(_gear)
+				_part(_gear, "acc_gear")
+			"case":
+				_case = Node3D.new()
+				_case.top_level = true
+				_case.visible = false
+				add_child(_case)
+				_part(_case, "acc_case")
+			"holo":
+				_holo = MeshInstance3D.new()
+				var q := QuadMesh.new()
+				q.size = Vector2(0.34, 0.24)
+				_holo.mesh = q
+				_holo_mat = ShaderMaterial.new()
+				_holo_mat.shader = preload("res://art/shaders/holo_panel.gdshader")
+				_holo_mat.set_shader_parameter("col", v["glow"])
+				_holo.material_override = _holo_mat
+				_holo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+				_holo.top_level = true
+				_holo.visible = false
+				_holo.layers = 1 | HERO_LAYER
+				add_child(_holo)
+			"butterfly":
+				_bfly = Node3D.new()
+				_bfly.top_level = true
+				add_child(_bfly)
+				_part(_bfly, "acc_bfly_body")
+				for side: float in [-1.0, 1.0]:
+					var hinge := Node3D.new()
+					hinge.scale = Vector3(side, 1.0, 1.0)
+					hinge.set_meta("side", side)
+					_bfly.add_child(hinge)
+					var w: MeshInstance3D = _part(hinge, "acc_wing")
+					w.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+					_bfly_wings.append(hinge)
+
+
+func _leaf_mat() -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.albedo_color = Color(0.3, 0.6, 0.18)
+	m.roughness = 0.38
+	m.metallic_specular = 0.6
+	m.backlight_enabled = true
+	m.backlight = Color(0.35, 0.55, 0.1)
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	m.rim_enabled = true
+	m.rim = 0.25
+	return m
+
+
+func _moss_mat() -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.albedo_color = Color(0.25, 0.36, 0.11)
+	m.roughness = 0.95
+	m.vertex_color_use_as_albedo = false
+	m.rim_enabled = true
+	m.rim = 0.5
+	m.rim_tint = 0.6
+	return m
+
+
+func _wing_mat(glow: Color) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.albedo_color = Color(1.0, 0.72, 0.42, 0.9).lerp(glow, 0.25)
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	m.emission_enabled = true
+	m.emission = Color(1.0, 0.6, 0.35).lerp(glow, 0.4)
+	m.emission_energy_multiplier = 0.6
+	m.roughness = 0.5
+	return m
+
+
+## Idle-only props and the companion: Nova's holo screen, Patch's case, Pixel's butterfly.
+func _update_accessories(delta: float) -> void:
+	var busy: bool = _scoop_amt > 0.05 or _beam_target != null or holding or sleeping
+	_idle_t = 0.0 if busy else _idle_t + delta
+	if _sprout:
+		_sprout.rotation = Vector3(sin(_t * 1.3) * 0.05 - _lean.x * 0.6, 0.0, sin(_t * 1.7 + 0.5) * 0.07 - _lean.y * 0.6)
+	# Props show after a few idle seconds and stay a while (then a short break: "occasionally").
+	var want: bool = _idle_t > 2.5 and fmod(_idle_t - 2.5, 26.0) < 18.0
+	_prop_amt = move_toward(_prop_amt, 1.0 if want else 0.0, delta * (2.5 if want else 6.0))
+	if _holo:
+		_holo.visible = _prop_amt > 0.01
+		if _holo.visible:
+			var e: float = _prop_amt * _prop_amt * (3.0 - 2.0 * _prop_amt)
+			var b: Basis = _float.global_transform.basis
+			var fwd: Vector3 = -b.z
+			var side: Vector3 = b.x
+			var p: Vector3 = claw_point() + fwd * 0.14 + side * 0.12 + Vector3.UP * (0.16 + sin(_t * 1.4) * 0.008)
+			var face_dir: Vector3 = (fwd * 0.55 + side * 0.85).normalized()
+			_holo.global_transform = Transform3D(Basis.looking_at(-face_dir, Vector3.UP).scaled(Vector3(e, e, 1.0)), p)
+			_holo_mat.set_shader_parameter("amt", e)
+			_holo_mat.set_shader_parameter("t_now", _t)
+	if _case:
+		_case.visible = _prop_amt > 0.5 and _beam_target == null
+		if _case.visible:
+			var wrist: Node3D = _arm_l.get_meta("wrist")
+			_case.global_transform = Transform3D(_float.global_transform.basis.rotated(Vector3.UP, 0.0), wrist.to_global(Vector3(0, -0.01, -0.07)))
+	if _case or _holo:
+		# Carry pose: left arm (case) or right arm (holo) a little out and forward.
+		var e2: float = _prop_amt * _prop_amt * (3.0 - 2.0 * _prop_amt)
+		if _case:
+			_arm_l.rotation.x = lerpf(_arm_l.rotation.x, 0.12, e2)
+			_arm_l.rotation.z = lerpf(_arm_l.rotation.z, -0.18, e2)
+		if _holo:
+			_arm_r.rotation.x = lerpf(_arm_r.rotation.x, -0.75 + sin(_t * 1.1) * 0.03, e2)
+			_arm_r.rotation.z = lerpf(_arm_r.rotation.z, 0.2, e2)
+	if _bfly:
+		var c: Vector3 = _head.global_position
+		var a: float = _t * 0.55
+		var r: float = 0.58 + sin(_t * 0.37) * 0.08
+		# Orbits above and beside the head, never in front of the visor.
+		var off := Vector3(cos(a) * r, 0.42 + sin(_t * 1.9) * 0.06 + sin(_t * 0.6) * 0.05, sin(a) * r * 0.75 + 0.12)
+		var basis_m: Basis = global_transform.basis
+		var pos: Vector3 = c + basis_m * off
+		var vel := Vector3(-sin(a), 0.0, cos(a) * 0.75)
+		var heading: Vector3 = (basis_m * vel).normalized()
+		_bfly.global_transform = Transform3D(Basis.looking_at(heading, Vector3.UP).rotated(heading, sin(_t * 2.0) * 0.2), pos)
+		var flap: float = sin(_t * 17.0) * 0.85 + 0.35
+		for h: Node3D in _bfly_wings:
+			h.rotation.z = flap * float(h.get_meta("side", 1.0))
 
 
 func _build_arm(side: float) -> Node3D:
@@ -373,6 +561,7 @@ func _process(delta: float) -> void:
 		f.rotation = Vector3(-dir.y, dir.x, 0) * open * 0.6
 	_update_beam(delta)
 	_update_hopper(delta)
+	_update_accessories(delta)
 	# Press: the body compresses slightly while baling.
 	_root.scale = Vector3(1.0 + _press * 0.04, 1.0 - _press * 0.06, 1.0 + _press * 0.04)
 	if _shudder > 0.0:
@@ -394,7 +583,7 @@ func _process(delta: float) -> void:
 		_blink = 1.0
 	_blink = maxf(0.0, _blink - delta * 7.0)
 	_face_mat.set_shader_parameter("look", _look)
-	_face_mat.set_shader_parameter("happy", clampf((_happy - 0.6) * 2.5, 0.0, 1.0))
+	_face_mat.set_shader_parameter("happy", clampf((_happy - 0.6) * 2.5 + _happy_bias * (1.0 - _eye_flash), 0.0, 1.0))
 	_face_mat.set_shader_parameter("blink", 0.9 if sleeping else _blink)
 	_eye_flash = maxf(0.0, _eye_flash - delta * 6.0)
 	_face_mat.set_shader_parameter("energy", 1.2 * minf(core_glow, 1.0) if sleeping else 4.0 * core_glow + _flash * 2.0 + _eye_flash * 3.0)
@@ -451,6 +640,8 @@ func _update_hopper(delta: float) -> void:
 	if _icon:
 		_icon.modulate = _icon_color.lerp(Color(1.6, 1.8, 1.9), p * 0.8)
 		_icon.scale = Vector3.ONE * (1.0 + p * 0.18)
+	if _icon_mesh:
+		_icon_mesh.scale = Vector3.ONE * (1.0 + p * 0.18)
 
 
 func _update_beam(delta: float) -> void:

@@ -131,6 +131,7 @@ func _process(delta: float) -> void:
 	_t = 0.0
 	var found: Array[String] = Codex.scan(world)
 	var got: Array[String] = check_all()
+	Designs.check_unlocks(_first)  # [skins] Lumi's unlockable designs (quiet on the first check after loading)
 	if _first:
 		_first = false
 		if got.size() > 3:

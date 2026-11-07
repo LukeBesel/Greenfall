@@ -22,6 +22,11 @@ uniform float seed = 0.0;
 uniform float ao_strength = 1.0;
 uniform vec4 rim_color : source_color = vec4(0.62, 0.85, 1.0, 1.0);
 uniform float rim_strength = 0.12;
+// [skins] Design looks: moss patches (Sprout) and hazard stripes (Bolt), both off by default.
+uniform float moss : hint_range(0.0, 1.0) = 0.0;
+uniform vec4 moss_color : source_color = vec4(0.27, 0.38, 0.12, 1.0);
+uniform float stripes : hint_range(0.0, 1.0) = 0.0;
+uniform vec4 stripe_color : source_color = vec4(0.08, 0.075, 0.07, 1.0);
 uniform vec3 sun_dir = vec3(-0.5, 0.6, 0.6);   // world direction TOWARD the sun
 uniform sampler2D metal_alb : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D metal_nrm : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
@@ -112,6 +117,9 @@ void fragment() {
 	// Rust/dirt streaks running down the sides.
 	float streak = smoothstep(0.55, 0.85, n3(vec3(opos.x * 24.0, opos.y * 2.5, opos.z * 24.0) + seed)) * (1.0 - smoothstep(-0.3, 0.6, onrm.y));
 	pc = mix(pc, pc * vec3(0.62, 0.5, 0.4), streak * grime * 0.6);
+	// [skins] Hazard chevrons painted across the part (worn with the paint).
+	float stp = step(0.5, fract((opos.x + opos.y * 0.9 - opos.z * 0.4) * 11.0 + seed * 0.37));
+	pc = mix(pc, stripe_color.rgb * mix(0.9, 1.1, fine), stp * stripes);
 	vec3 alb = mix(bare_alb, pc, paint);
 	vec3 nrm = mix(bare_nrm, mix(vec3(0.5, 0.5, 1.0), m_nrm, 0.18), paint);
 	float rough = mix(bare_rough, paint_roughness + fine * 0.15, paint);
@@ -129,6 +137,15 @@ void fragment() {
 	alb = mix(alb, vec3(0.6, 0.53, 0.45), d * 0.7);
 	rough = mix(rough, 0.95, d);
 
+	// [skins] Moss: soft green cushions on top faces, in cavities and along seams.
+	if (moss > 0.0) {
+		float mz = fbm3(q * 1.15 + 31.0) + smoothstep(-0.1, 0.9, onrm.y) * 0.32 + cav * 0.35 + (1.0 - ao) * 0.2;
+		float mm = smoothstep(0.78, 0.92, mz + moss * 0.25) * moss;
+		vec3 mc = moss_color.rgb * mix(0.65, 1.25, fbm3(q * 7.0 + 2.0)) * mix(vec3(1.0), vec3(1.15, 1.1, 0.7), fine * 0.6);
+		alb = mix(alb, mc, mm);
+		rough = mix(rough, 0.92, mm);
+		metal = mix(metal, 0.0, mm);
+	}
 	ALBEDO = alb;
 	NORMAL_MAP = nrm;
 	ROUGHNESS = clamp(rough, 0.15, 1.0);

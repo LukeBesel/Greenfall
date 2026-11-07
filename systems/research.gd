@@ -160,7 +160,7 @@ static func cost(id: String) -> BigNum:
 
 ## Real seconds to research, after research-speed bonuses.
 static func duration(id: String) -> float:
-	return float(def(id).get("time_s", 60)) / maxf(stat_mod("research_speed", 1.0), 0.1)
+	return float(def(id).get("time_s", 60)) / maxf(Designs.apply("research_speed", stat_mod("research_speed", 1.0)), 0.1)  # [skins] design buff
 
 
 static func can_start(id: String) -> bool:

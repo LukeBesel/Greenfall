@@ -649,9 +649,9 @@ func _effect(e: Dictionary) -> void:
 
 func _duck_hint() -> String:
 	var have: Array = GameState.flags.get("skins_unlocked", ["aurora"])
-	for sid: String in CosmeticsPanel.UNLOCKS:
+	for sid: String in Designs.ids():  # [skins]
 		if not (sid in have) and PatchModel.VARIANTS.has(sid):
-			return tr("The duck squeaks a secret: \"%s\" unlocks the %s design.") % [CosmeticsPanel.UNLOCKS[sid], tr(str(PatchModel.VARIANTS[sid]["name"]))]
+			return tr("The duck squeaks a secret: \"%s\" unlocks the %s design.") % [Designs.unlock_text(sid), tr(str(PatchModel.VARIANTS[sid]["name"]))]
 	return tr("The duck has taught you everything it knows. Quack.")
 
 

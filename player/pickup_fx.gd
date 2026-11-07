@@ -266,9 +266,14 @@ func _rand_dir() -> Vector3:
 	return Vector3(_rng.randf_range(-1, 1), _rng.randf_range(-1, 1), _rng.randf_range(-1, 1)).normalized()
 
 
+## Laser colour: the worn design's glow (cyan for Aurora).  [skins]
+func _glow() -> Color:
+	return PatchModel.glow_of(model.variant) if model else CYAN
+
+
 func _draw_slot(s: Slot) -> void:
 	var u: float = s.t / s.dur
-	var glow: Color = CYAN
+	var glow: Color = _glow()
 	# Reticle on the ground: snaps in from 1.9x in ~0.07 s, spins, then fades as the piece leaves.
 	var ret_in: float = clampf(s.t / 0.07, 0.0, 1.0)
 	var ret_a: float = ret_in * (1.0 - smoothstep(0.3, 0.5, u))
@@ -297,8 +302,8 @@ func _draw_slot(s: Slot) -> void:
 			var off: Vector3 = side * cos(ang) + upv * sin(ang)
 			var start: Vector3 = claw + off * 0.025
 			var end: Vector3 = tgt + off * spread * 0.4
-			_ribbon(start, end, 0.012, Color(CYAN, 0.3 * las * flick))
-			_ribbon(start, end, 0.0045, Color(0.92, 1.0, 1.0, 1.0 * las * flick))
+			_ribbon(start, end, 0.012, Color(glow, 0.3 * las * flick))
+			_ribbon(start, end, 0.0045, Color(glow.lerp(Color.WHITE, 0.8), 1.0 * las * flick))
 		var dust: int = 0
 		for i: int in dust:
 			var f: float = fmod(float(i) / dust + s.t * 2.6 + s.phase, 1.0)
@@ -314,8 +319,8 @@ func _draw_slot(s: Slot) -> void:
 			for i: int in ARC_PTS - 1:
 				var p0: Vector3 = s.pos + s.arcs[a * ARC_PTS + i]
 				var p1: Vector3 = s.pos + s.arcs[a * ARC_PTS + i + 1]
-				_ribbon(p0, p1, 0.03, Color(0.55, 0.85, 1.0, 0.6 * arc_a))
-				_ribbon(p0, p1, 0.008, Color(0.9, 1.0, 1.0, 1.0 * arc_a))
+				_ribbon(p0, p1, 0.03, Color(glow.lerp(Color.WHITE, 0.3), 0.6 * arc_a))
+				_ribbon(p0, p1, 0.008, Color(glow.lerp(Color.WHITE, 0.85), 1.0 * arc_a))
 	# Compression flash: a hot bead where the piece collapses.
 	var cu: float = clampf((u - 0.55) / 0.15, 0.0, 1.0) * (1.0 - smoothstep(0.72, 0.8, u))
 	if false:
@@ -356,9 +361,10 @@ func _draw_slot(s: Slot) -> void:
 
 func _laser(e: Vector3, target: Vector3, reach: float, w: float, a: float) -> void:
 	var hit: Vector3 = e.lerp(target, reach)
-	_ribbon(e, hit, w * 5.0, Color(CYAN, 0.32 * a))
-	_ribbon(e, hit, w, Color(0.85, 1.0, 1.0, 0.95 * a))
-	_sprite(e, 0.07, Color(CYAN, 0.8 * a))
+	var glow: Color = _glow()
+	_ribbon(e, hit, w * 5.0, Color(glow, 0.32 * a))
+	_ribbon(e, hit, w, Color(glow.lerp(Color.WHITE, 0.8), 0.95 * a))
+	_sprite(e, 0.07, Color(glow, 0.8 * a))
 
 
 # --- Geometry helpers (one shared additive surface) ----------------------------------

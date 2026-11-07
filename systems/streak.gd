@@ -63,7 +63,7 @@ func add_scoop(n: float = 1.0) -> int:
 ## Advances time. Returns true if the tier dropped.
 func tick(dt: float) -> bool:
 	since_scoop += dt
-	if since_scoop <= grace_s or points <= 0.0:
+	if since_scoop <= grace_s * Designs.mult("streak_grace") or points <= 0.0:  # [skins] Pixel design buff
 		return false
 	var before: int = tier()
 	points = maxf(0.0, points - drain_per_s * dt)
