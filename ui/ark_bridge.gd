@@ -258,10 +258,9 @@ func _new_world_row() -> Control:
 
 static func _kit_text(kit: Dictionary) -> String:
 	var bits: Array[String] = []
-	if float(kit["cubes"]) > 0.0:
-		bits.append(TranslationServer.translate("%s cubes") % Settings.fmt(BigNum.from_float(float(kit["cubes"]))))
-	if float(kit["data"]) > 0.0:
-		bits.append(TranslationServer.translate("%d Data") % int(kit["data"]))
+	var cubes: float = float(kit["cubes"]) + float(kit["data"]) * Research.note_cubes()  # [money] Data kit pays cubes
+	if cubes > 0.0:
+		bits.append(L10nFmt.amount("cubes", cubes))
 	if float(kit["seeds"]) > 0.0:
 		bits.append(TranslationServer.translate("%d seeds") % int(kit["seeds"]))
 	if not (kit["robots"] as Array).is_empty():

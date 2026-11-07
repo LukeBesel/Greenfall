@@ -238,7 +238,7 @@ func _level_up(hid: int, from: int, to: int) -> void:
 
 static func reward_text(reward: Dictionary) -> String:
 	var parts: Array[String] = []
-	for k: String in ["cubes", "seeds", "data"]:
+	for k: String in Currencies.IDS:  # [money]
 		if float(reward.get(k, 0.0)) > 0.0:
 			parts.append(L10nFmt.amount(k, float(reward[k]), true))  # [i18n2]
 	return "  ".join(parts)
