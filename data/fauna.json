@@ -4,7 +4,7 @@
   "spawn_radius": 55.0,
   "despawn_radius": 70.0,
   "species": [
-    {"id": "cat", "name": "Stray Cat", "kind": "cat", "regions": ["city"], "where": "land", "levels": [1, 5], "hub_ok": true, "junk": false, "time": "any", "per_hex": [1, 1], "chance": 0.3, "cap": 4, "scale": 1.0,
+    {"id": "cat", "name": "Stray Cat", "kind": "cat", "regions": ["city"], "where": "land", "levels": [1, 5], "hub_ok": true, "junk": false, "time": "any", "per_hex": [1, 1], "chance": 0.3, "cap": 4, "scale": 1.15,
       "coats": ["#e08a3c", "#2a2624", "#8d8d92", "#b58a62", "#f0ece4", "#5b4636"]},
     {"id": "pigeon", "name": "Pigeon", "kind": "bird", "regions": ["city"], "where": "land", "levels": [1, 4], "hub_ok": true, "junk": false, "time": "day", "per_hex": [3, 7], "chance": 0.45, "cap": 18, "scale": 1.0,
       "coats": ["#ffffff"]},

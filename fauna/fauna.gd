@@ -1649,6 +1649,8 @@ func _dev_look() -> void:
 	if a.kind == "cat":
 		a.yaw = atan2(-(lp.x - a.pos.x), -(lp.z - a.pos.z))
 	a.hold = true
+	if DevHooks.has("fauna-coat"):
+		a.coat = int(DevHooks.get_f("fauna-coat", 0.0))
 	var pose: String = DevHooks.get_s("fauna-pose", "")
 	match pose:
 		"sit": a.state = St.SIT
