@@ -537,6 +537,7 @@ func bind_text(ctl: Control, make: Callable) -> void:
 				input_device_changed.disconnect(cbs[1])
 			if changed.is_connected(cbs[0]):
 				changed.disconnect(cbs[0])
+			cbs.clear()  # [health] break the lambda <-> array cycle so both are freed
 			return
 		c.set("text", make.call())
 	var on_dev: Callable = func(_pad: bool) -> void: apply.call()
@@ -545,6 +546,24 @@ func bind_text(ctl: Control, make: Callable) -> void:
 	apply.call()
 	input_device_changed.connect(on_dev)
 	changed.connect(apply)
+	_text_binds = _text_binds.filter(func(a: Array) -> bool: return not a.is_empty())  # [health]
+	_text_binds.append(cbs)
+
+
+## [health] Bindings still alive at quit: their callables and arrays reference each other, so they
+## are cleared here or they (and every script their lambdas came from) leak at exit.
+var _text_binds: Array[Array] = []
+
+
+func _exit_tree() -> void:
+	for cbs: Array in _text_binds:
+		for cb: Callable in cbs:
+			if input_device_changed.is_connected(cb):
+				input_device_changed.disconnect(cb)
+			if changed.is_connected(cb):
+				changed.disconnect(cb)
+		cbs.clear()
+	_text_binds.clear()
 
 
 ## Window mode, vsync and 3D render scale. No-op for the window parts when headless.

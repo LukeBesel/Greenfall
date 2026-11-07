@@ -754,8 +754,10 @@ static func _dist(m: float) -> String:
 static func _time(s: float) -> String:
 	var n: int = int(s)
 	if n >= 3600:
+		@warning_ignore("integer_division")
 		return TranslationServer.translate("%dh %02dm") % [n / 3600, (n % 3600) / 60]
 	if n >= 60:
+		@warning_ignore("integer_division")
 		return TranslationServer.translate("%dm %02ds") % [n / 60, n % 60]
 	return TranslationServer.translate("%ds") % n
 

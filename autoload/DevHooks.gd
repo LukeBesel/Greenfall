@@ -39,6 +39,8 @@ extends Node
 ##   --event-every=S    next random event in S seconds (ignores the min-hexes gate)
 ##   --streak=N         start with N cleaning-streak points (30 per tier)
 ##   --tokens=N         start with N contract tokens; --trinkets=N grants N collectibles; --livery=ID equips one
+##   [skins] --design=ID wear a design (unlocks it); --designs-all; --design-unlock=ID plays its unlock card
+##           after --design-unlock-at=S s (systems/designs.gd)
 ##   --pad-audit        [deck] open every screen pad-only and check focus reachability + B to close
 ##   --scene-stats[=S]  [deck] print a geometry census (tools/scene_stats.gd) after S s (headless ok)
 ##   --tab=contracts    with --open=upgrades: the contracts board and token shop (--contracts-sample fills it)

@@ -127,9 +127,9 @@ static func zone_hex_count() -> int:
 	for kind: String in ["groups", "bots"]:
 		var d: Dictionary = o.get(kind, {})
 		for k: Variant in d:
-			var ord: Variant = d[k]
-			if ord is Dictionary:
-				for h: Variant in (ord as Dictionary).get("zone", []):
+			var ord_: Variant = d[k]
+			if ord_ is Dictionary:
+				for h: Variant in (ord_ as Dictionary).get("zone", []):
 					seen[int(h)] = true
 	return seen.size()
 

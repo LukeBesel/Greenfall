@@ -48,6 +48,14 @@ func _ready() -> void:
 	apply_volumes()
 
 
+func _exit_tree() -> void:
+	StorySfx.finish_pending()  # [health] an unwaited WorkerThreadPool task crashes the engine at exit
+	# [health] Players stopped on exit only hand their playbacks to the mixer thread for deletion;
+	# give it a few mix steps so playbacks and streams aren't leaked at quit. Autoloads exit after
+	# the scene, so this runs once, at quit, after every scene player has stopped.
+	OS.delay_msec(150)
+
+
 func _setup_buses() -> void:
 	for bus_name: String in ["Music", "SFX"]:
 		if AudioServer.get_bus_index(bus_name) == -1:
@@ -200,7 +208,7 @@ func _process(_delta: float) -> void:
 
 # --- Synthesis ----------------------------------------------------------------
 
-func _wav(samples: PackedFloat32Array, loop: bool = false) -> AudioStreamWAV:
+func _wav(samples: PackedFloat32Array, loop_: bool = false) -> AudioStreamWAV:
 	var data := PackedByteArray()
 	data.resize(samples.size() * 2)
 	for i: int in samples.size():
@@ -210,7 +218,7 @@ func _wav(samples: PackedFloat32Array, loop: bool = false) -> AudioStreamWAV:
 	w.mix_rate = RATE
 	w.stereo = false
 	w.data = data
-	if loop:
+	if loop_:
 		w.loop_mode = AudioStreamWAV.LOOP_FORWARD
 		w.loop_begin = 0
 		w.loop_end = samples.size()
@@ -225,6 +233,7 @@ func _buf(seconds: float) -> PackedFloat32Array:
 
 ## Fades the first and last few ms to avoid clicks.
 func _declick(b: PackedFloat32Array) -> PackedFloat32Array:
+	@warning_ignore("integer_division")
 	var n: int = mini(int(0.004 * RATE), b.size() / 2)
 	for i: int in n:
 		var g: float = float(i) / n
@@ -447,11 +456,11 @@ func _generate_all() -> void:
 	for v: int in 4:
 		var b := _buf(0.5)
 		var ph: float = 0.0
-		var notes: int = 2 + v
+		var notes_: int = 2 + v
 		for i: int in b.size():
 			var t: float = float(i) / RATE
-			var k: int = int(t / 0.5 * notes)
-			var lt: float = fmod(t, 0.5 / notes) / (0.5 / notes)
+			var k: int = int(t / 0.5 * notes_)
+			var lt: float = fmod(t, 0.5 / notes_) / (0.5 / notes_)
 			var f: float = 2600.0 + 900.0 * sin(TAU * lt) + 300.0 * k + 200.0 * v
 			ph += TAU * f / RATE
 			b[i] = sin(ph) * sin(PI * lt) * 0.18

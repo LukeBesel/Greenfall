@@ -67,7 +67,6 @@ func _apply() -> void:
 	# Sun path: rises at 0.25, sets at 0.75; kept high at midday (max elevation ~70 deg).
 	var day_t: float = (time_of_day - 0.25) / 0.5
 	var elev: float = sin(clampf(day_t, 0.0, 1.0) * PI) * 70.0
-	var is_day: bool = day_t > 0.0 and day_t < 1.0
 	sun.rotation_degrees = Vector3(-maxf(elev, -10.0), -30.0 + day_t * 60.0, 0.0)
 	var sun_up: float = smoothstep(0.0, 12.0, elev)
 	sun.light_energy = 3.0 * sun_up
@@ -100,7 +99,7 @@ func _apply() -> void:
 
 
 ## [biomes] Blend the frontier grade over the computed sky and fog; then the storm on top.
-func _apply_grade(sun_up: float) -> void:
+func _apply_grade(_sun_up: float) -> void:
 	var a: float = clampf(grade_amt, 0.0, 1.0)
 	if not grade.is_empty():
 		var fog: Color = _col(grade.get("fog", []), env.fog_light_color)

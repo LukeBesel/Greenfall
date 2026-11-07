@@ -436,9 +436,10 @@ func _beam_mesh() -> MeshInstance3D:
 	mi.mesh = c
 	var mat := StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mat.albedo_color = Color(0.7, 0.95, 1.0)
+	var g: Color = PatchModel.glow_of(model.variant) if model else Color(0.3, 0.88, 1.0)  # [skins] design glow
+	mat.albedo_color = g.lerp(Color.WHITE, 0.6)
 	mat.emission_enabled = true
-	mat.emission = Color(0.3, 0.88, 1.0)
+	mat.emission = g
 	mat.emission_energy_multiplier = 3.0
 	mi.material_override = mat
 	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -456,13 +457,13 @@ func _beam_mesh() -> MeshInstance3D:
 
 func _place_beam(mi: MeshInstance3D, a: Vector3, b: Vector3) -> void:
 	var d: Vector3 = b - a
-	var len: float = maxf(d.length(), 0.05)
-	var y: Vector3 = d / len
+	var len_: float = maxf(d.length(), 0.05)
+	var y: Vector3 = d / len_
 	var x: Vector3 = y.cross(Vector3.UP if absf(y.y) < 0.95 else Vector3.RIGHT).normalized()
 	var z: Vector3 = x.cross(y)
-	mi.global_transform = Transform3D(Basis(x, -y * len, z), a + d * 0.5)
+	mi.global_transform = Transform3D(Basis(x, -y * len_, z), a + d * 0.5)
 	# Keep the end dot round despite the stretched beam.
-	(mi.get_child(0) as Node3D).scale = Vector3(1.0, 1.0 / len, 1.0)
+	(mi.get_child(0) as Node3D).scale = Vector3(1.0, 1.0 / len_, 1.0)
 
 
 func _make_sprout() -> Node3D:

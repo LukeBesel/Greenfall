@@ -601,6 +601,7 @@ func card_text() -> String:
 			if storm_phase == 2:
 				lines.append(tr("Sandstorm blowing"))
 			else:
+				@warning_ignore("integer_division")
 				lines.append(tr("Next sandstorm  %d:%02d") % [int(storm_t) / 60, int(storm_t) % 60])
 			lines.append(tr("Well dry: Drips refill at tanks"))
 		"frozen_port":

@@ -7,9 +7,9 @@ extends Node
 var _fails: int = 0
 
 
-func _check(name: String, a: Variant, b: Variant) -> void:
+func _check(name_: String, a: Variant, b: Variant) -> void:
 	var ok: bool = str(a) == str(b)
-	print("[roundtrip] %s %s: %s -> %s" % ["PASS" if ok else "FAIL", name, str(a), str(b)])
+	print("[roundtrip] %s %s: %s -> %s" % ["PASS" if ok else "FAIL", name_, str(a), str(b)])
 	if not ok:
 		_fails += 1
 
@@ -65,6 +65,8 @@ func _snapshot(s: Node) -> Dictionary:
 		"builder_fragments": RobotBuilder.fragments(),
 		"builder_presets": JSON.stringify(RobotBuilder.st().get("presets", {})),
 		"builds": _builds(f),
+		# [skins] Lumi's designs: worn, unlocked, looks-only, and the model actually built with it.
+		"design": "%s %s looks_only=%s model=%s" % [Designs.current(), JSON.stringify(Designs.unlocked()), str(Designs.looks_only()), (s.patch.model as PatchModel).variant],
 	}
 
 
@@ -146,7 +148,7 @@ func _frontier_roundtrip(packed: PackedScene, kid: String, hub_i: int) -> void:
 	GameState.add_currency("seeds", BigNum.from_float(30))
 	match kid:
 		"frozen_port":
-			var iced: Array = range(fd.ice.size()).filter(func(h: int) -> bool: return fd.ice[h] > 0.0)
+			var iced: Array = range(fd.ice.size()).filter(func(h_: int) -> bool: return fd.ice[h_] > 0.0)
 			fd._place_heater(int(iced[0]), true)
 			fd._place_heater(int(iced[1]), true)
 			fd._thaw_step(30.0)
@@ -309,6 +311,11 @@ func _ready() -> void:
 		elif r.type_id == "drip":
 			r.trait_id = "sleepy"
 			RobotBuilder.equip(r, "tool", "mist_sprayer")
+	# [skins] Unlock two designs, wear Nova, turn bonuses off.
+	Designs.unlocked().append_array(["bolt", "nova"])
+	Designs.select("nova")
+	Designs.set_looks_only(true)
+	(s1.patch.model as PatchModel).set_variant("nova")
 	s1.patch.global_position = Vector3(3.0, 0.2, 5.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
 	s1.add_cube(dropped)

@@ -180,6 +180,7 @@ func stat_values() -> Dictionary:
 	for s: Dictionary in _stats:
 		var v: Variant = GameState.stats.get(str(s["key"]), 0.0)
 		var f: float = (float(v) if (v is float or v is int) else 0.0) * float(s.get("scale", 1.0))
+		@warning_ignore("incompatible_ternary")
 		out[str(s["api"])] = int(floor(f)) if str(s.get("type", "INT")) == "INT" else f
 	return out
 

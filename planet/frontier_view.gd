@@ -39,7 +39,6 @@ var _flood: MeshInstance3D
 var _flood_mat: ShaderMaterial
 var _sink: float = 0.0
 var _rotors: Array[Node3D] = []
-var _pad_ring: MeshInstance3D
 var _pad_mat: StandardMaterial3D
 var _pylon_lamps: Array[MeshInstance3D] = []
 var _beams: Node3D
@@ -329,11 +328,11 @@ static func _xf(pos: Vector3, rot_deg: Vector3 = Vector3.ZERO, scl: Vector3 = Ve
 ## A transform for a box `size` from a to b (thin beams, struts, cables).
 static func _beam_xf(a: Vector3, b: Vector3, thick: float) -> Transform3D:
 	var d: Vector3 = b - a
-	var len: float = d.length()
-	var y: Vector3 = d / maxf(len, 0.0001)
+	var len_: float = d.length()
+	var y: Vector3 = d / maxf(len_, 0.0001)
 	var x: Vector3 = y.cross(Vector3.UP if absf(y.y) < 0.95 else Vector3.RIGHT).normalized()
 	var z: Vector3 = x.cross(y).normalized()
-	return Transform3D(Basis(x * thick, y * len, z * thick), (a + b) * 0.5)
+	return Transform3D(Basis(x * thick, y * len_, z * thick), (a + b) * 0.5)
 
 
 var _unit_box: BoxMesh
@@ -543,6 +542,7 @@ func _build_terrain(look: Dictionary) -> void:
 	var gt: Array = field.biome_set.get("ground_tint", [])
 	if gt.size() >= 4 and not look.has("biome_tint"):
 		_terrain_mat.set_shader_parameter("biome_tint", Vector4(float(gt[0]), float(gt[1]), float(gt[2]), float(gt[3])))
+	@warning_ignore("integer_division")
 	var per: int = na / sectors
 	for sct: int in sectors:
 		var st := SurfaceTool.new()
@@ -615,9 +615,9 @@ func _build_desert() -> void:
 		_model("covered_car", p, yaw, 1.0, null, Vector3(_rng.randf_range(-0.15, 0.15), 0, _rng.randf_range(-0.2, 0.2)), coat)
 		_drift(always, p + Vector3(-1.2, 0.3, -0.8), 0.6, _rng.randf_range(3.5, 5.0), _rng.randf_range(0.9, 1.4))
 	for i: int in 10:
-		var q: Vector3 = _polar(_rng.randf() * TAU, e + _rng.randf_range(4.0, 60.0))
-		q.y = _gy(q)
-		_model("dead_quiver_trunk", q, _rng.randf() * TAU, _rng.randf_range(1.6, 2.6))
+		var q_: Vector3 = _polar(_rng.randf() * TAU, e + _rng.randf_range(4.0, 60.0))
+		q_.y = _gy(q_)
+		_model("dead_quiver_trunk", q_, _rng.randf() * TAU, _rng.randf_range(1.6, 2.6))
 	for i: int in 12:
 		var q2: Vector3 = _polar(_rng.randf() * TAU, e + _rng.randf_range(2.0, 40.0))
 		q2.y = _gy(q2) - 0.3
@@ -731,7 +731,7 @@ func _solar_farm(c: Vector3, yaw: float) -> void:
 	var ruin := Batch.new()
 	var up := Batch.new()
 	var fut := Batch.new()
-	var basis := Basis(Vector3.UP, yaw)
+	var basis_ := Basis(Vector3.UP, yaw)
 	var rows: int = 4
 	var cols: int = 9
 	var pw: float = 2.0
@@ -739,7 +739,7 @@ func _solar_farm(c: Vector3, yaw: float) -> void:
 	for r: int in rows:
 		for k: int in cols:
 			var local := Vector3((k - cols * 0.5) * (pw + 0.25), 0, (r - rows * 0.5) * 4.2)
-			var p: Vector3 = c + basis * local
+			var p: Vector3 = c + basis_ * local
 			# Restored: posts, a tilted panel in an aluminium frame, facing south (+z after yaw).
 			var tilt := Basis(Vector3.UP, yaw) * Basis(Vector3.RIGHT, deg_to_rad(-28.0))
 			_add_box(up, p + Vector3(0, 0.55, 0), Vector3(0.08, 1.1, 0.08), _mat("alu"))
@@ -758,7 +758,7 @@ func _solar_farm(c: Vector3, yaw: float) -> void:
 			ruin.add(_box(), Transform3D((rt * Basis.from_scale(Vector3(pw, 0.05, ph))), p + Vector3(0, y, 0)), _mat("panel_dusty"))
 	# Inverter cabinets at the row ends.
 	for r: int in rows:
-		var p2: Vector3 = c + basis * Vector3(-(cols * 0.5 + 1.2) * (pw + 0.25), 0, (r - rows * 0.5) * 4.2)
+		var p2: Vector3 = c + basis_ * Vector3(-(cols * 0.5 + 1.2) * (pw + 0.25), 0, (r - rows * 0.5) * 4.2)
 		_add_box(up, p2 + Vector3(0, 0.7, 0), Vector3(0.9, 1.4, 0.6), _mat("white"))
 		_add_box(fut, p2 + Vector3(0, 1.0, 0.31), Vector3(0.5, 0.03, 0.01), _mat("line"))
 		_add_box(ruin, p2 + Vector3(0, 0.6, 0), Vector3(0.9, 1.2, 0.6), _paint(Color(0.7, 0.68, 0.6), 0.4, 0.8), Vector3(0, 0, _rng.randf_range(-15, 15)))
@@ -772,15 +772,15 @@ func _solar_farm(c: Vector3, yaw: float) -> void:
 func _big_solar(c: Vector3, yaw: float) -> void:
 	var ruin := Batch.new()
 	var up := Batch.new()
-	var basis := Basis(Vector3.UP, yaw)
+	var basis_ := Basis(Vector3.UP, yaw)
 	var tl: float = 9.0
 	var tw: float = 3.0
 	for r: int in 15:
 		for k: int in 17:
 			var local := Vector3((k - 8) * (tl + 1.0), 0, (r - 7) * 7.2)
-			var p: Vector3 = c + basis * local
+			var p: Vector3 = c + basis_ * local
 			p.y = _gy(p)
-			var tilt := basis * Basis(Vector3.RIGHT, deg_to_rad(-24.0))
+			var tilt := basis_ * Basis(Vector3.RIGHT, deg_to_rad(-24.0))
 			_add_box(up, p + Vector3(0, 0.75, 0), Vector3(0.14, 1.5, 0.14), _mat("alu"))
 			up.add(_box(), Transform3D((tilt * Basis.from_scale(Vector3(tl, 0.06, tw))), p + Vector3(0, 1.6, 0)), _mat("panel"))
 			up.add(_box(), Transform3D((tilt * Basis.from_scale(Vector3(tl + 0.1, 0.04, tw + 0.1))), p + Vector3(0, 1.57, 0)), _mat("alu"))
@@ -792,7 +792,7 @@ func _big_solar(c: Vector3, yaw: float) -> void:
 			_add_box(ruin, p + Vector3(0, 0.7, 0), Vector3(0.14, 1.4, 0.14), _mat("alu"))
 			ruin.add(_box(), Transform3D((rt * Basis.from_scale(Vector3(tl, 0.06, tw))), p + Vector3(0, 1.5 + slump * 0.01, 0)), _mat("panel_dusty"))
 		# A long sand drift along each row in the ruin.
-		var rp: Vector3 = c + basis * Vector3(0, 0, (r - 7) * 7.2 + 1.6)
+		var rp: Vector3 = c + basis_ * Vector3(0, 0, (r - 7) * 7.2 + 1.6)
 		rp.y = _gy(rp)
 		var m := SphereMesh.new()
 		m.radius = 1.0
@@ -800,7 +800,7 @@ func _big_solar(c: Vector3, yaw: float) -> void:
 		m.is_hemisphere = true
 		m.radial_segments = 16
 		m.rings = 4
-		ruin.add(m, Transform3D((basis * Basis.from_scale(Vector3(80.0 + _rng.randf_range(-10.0, 10.0), 0.7, 1.6))), rp - Vector3(0, 0.15, 0)), _terrain_mat)
+		ruin.add(m, Transform3D((basis_ * Basis.from_scale(Vector3(80.0 + _rng.randf_range(-10.0, 10.0), 0.7, 1.6))), rp - Vector3(0, 0.15, 0)), _terrain_mat)
 	ruin.flush(_groups["ruin"])
 	up.flush(_groups["up"])
 
@@ -1003,20 +1003,20 @@ func _container_block(c: Vector3, yaw: float, palette: Array[Color]) -> void:
 	var up := Batch.new()
 	var fut := Batch.new()
 	var sz := Vector3(6.06, 2.59, 2.44)
-	var basis := Basis(Vector3.UP, yaw)
+	var basis_ := Basis(Vector3.UP, yaw)
 	for r: int in 3:
 		for k: int in 4:
 			var height: int = _rng.randi_range(1, 4)
 			var local := Vector3((k - 1.5) * (sz.x + 0.4), 0, (r - 1) * (sz.z + 0.3))
-			var p: Vector3 = c + basis * local
+			var p: Vector3 = c + basis_ * local
 			for lv: int in height:
 				var col: Color = palette[_rng.randi() % palette.size()]
 				var y: float = sz.y * (lv + 0.5)
-				up.add(_box(), Transform3D((basis * Basis.from_scale(sz)), p + Vector3(0, y, 0)), _corr(col))
+				up.add(_box(), Transform3D((basis_ * Basis.from_scale(sz)), p + Vector3(0, y, 0)), _corr(col))
 				if lv == height - 1:
-					fut.add(_box(), Transform3D((basis * Basis.from_scale(Vector3(sz.x, 0.04, 0.04))), p + Vector3(0, y + sz.y * 0.5, sz.z * 0.5)), _mat("line"))
+					fut.add(_box(), Transform3D((basis_ * Basis.from_scale(Vector3(sz.x, 0.04, 0.04))), p + Vector3(0, y + sz.y * 0.5, sz.z * 0.5)), _mat("line"))
 					# Still frozen at levels 2-3: a snow cap on every stack.
-					mid.add(_box(), Transform3D((basis * Basis.from_scale(Vector3(sz.x * 0.97, 0.22, sz.z * 0.94))), p + Vector3(0, y + sz.y * 0.5 + 0.1, 0)), _mat("snow"))
+					mid.add(_box(), Transform3D((basis_ * Basis.from_scale(Vector3(sz.x * 0.97, 0.22, sz.z * 0.94))), p + Vector3(0, y + sz.y * 0.5 + 0.1, 0)), _mat("snow"))
 				# Ruin: the stacks slumped, tipped and capped with snow.
 				if lv > 1 and _rng.randf() < 0.5:
 					continue
@@ -1266,21 +1266,21 @@ func _pump_house(p: Vector3, yaw: float) -> void:
 	var ruin := Batch.new()
 	var up := Batch.new()
 	var fut := Batch.new()
-	var basis := Basis(Vector3.UP, yaw)
+	var basis_ := Basis(Vector3.UP, yaw)
 	var vs: Array = [[ruin, _paint(Color(0.45, 0.42, 0.38), 0.35, 0.9, 3)], [up, _paint(Color(0.2, 0.42, 0.55), 0.95, 0.25, 4)]]
 	for v: Array in vs:
 		var b: Batch = v[0]
 		var m: Material = v[1]
-		b.add(_box(), Transform3D((basis * Basis.from_scale(Vector3(7.0, 5.0, 5.0))), p + Vector3(0, 2.5, 0)), _mat("concrete"))
-		b.add(_box(), Transform3D((basis * Basis.from_scale(Vector3(7.4, 0.4, 5.4))), p + Vector3(0, 5.2, 0)), m)
+		b.add(_box(), Transform3D((basis_ * Basis.from_scale(Vector3(7.0, 5.0, 5.0))), p + Vector3(0, 2.5, 0)), _mat("concrete"))
+		b.add(_box(), Transform3D((basis_ * Basis.from_scale(Vector3(7.4, 0.4, 5.4))), p + Vector3(0, 5.2, 0)), m)
 		for k: int in 2:
-			var off: Vector3 = basis * Vector3(-1.6 + k * 3.2, 0, 3.2)
-			b.add(ProcMesh.cyl(0.8, 0.8, 9.0, 18), Transform3D(basis * Basis(Vector3.RIGHT, PI * 0.5), p + off + Vector3(0, 1.4, 3.6)), m)
-			b.add(ProcMesh.torus(0.78, 0.98, 18, 6), Transform3D(basis * Basis(Vector3.RIGHT, PI * 0.5), p + off + Vector3(0, 1.4, 0.4)), _mat("dark"))
+			var off: Vector3 = basis_ * Vector3(-1.6 + k * 3.2, 0, 3.2)
+			b.add(ProcMesh.cyl(0.8, 0.8, 9.0, 18), Transform3D(basis_ * Basis(Vector3.RIGHT, PI * 0.5), p + off + Vector3(0, 1.4, 3.6)), m)
+			b.add(ProcMesh.torus(0.78, 0.98, 18, 6), Transform3D(basis_ * Basis(Vector3.RIGHT, PI * 0.5), p + off + Vector3(0, 1.4, 0.4)), _mat("dark"))
 	for k: int in 2:
-		_pumps_fx.append(p + basis * Vector3(-1.6 + k * 3.2, 1.4, 12.5))
-	fut.add(_box(), Transform3D((basis * Basis.from_scale(Vector3(7.1, 0.05, 0.05))), p + Vector3(0, 4.2, 0) + basis * Vector3(0, 0, -2.53)), _mat("line"))
-	fut.add(_box(), Transform3D((basis * Basis.from_scale(Vector3(7.6, 0.6, 5.6))), p + Vector3(0, 5.4, 0)), _mat("white"))
+		_pumps_fx.append(p + basis_ * Vector3(-1.6 + k * 3.2, 1.4, 12.5))
+	fut.add(_box(), Transform3D((basis_ * Basis.from_scale(Vector3(7.1, 0.05, 0.05))), p + Vector3(0, 4.2, 0) + basis_ * Vector3(0, 0, -2.53)), _mat("line"))
+	fut.add(_box(), Transform3D((basis_ * Basis.from_scale(Vector3(7.6, 0.6, 5.6))), p + Vector3(0, 5.4, 0)), _mat("white"))
 	ruin.flush(_groups["ruin"])
 	up.flush(_groups["up"])
 	fut.flush(_groups["future"])
@@ -1421,7 +1421,7 @@ static func _glass_wall(sides: int, rx: float, rz: float, h: float, y0: float) -
 
 ## The launch city's apron around the field: a clean paved ring with planters, slim lamp posts
 ## and one faint light inlay. Ground crews kept it swept.
-func _build_plaza(e: float) -> void:
+func _build_plaza(_e: float) -> void:
 	var b := Batch.new()
 	var paving: Material = AssetLib.pbr_material("concrete_pavement", 0.12, Color(0.98, 1.03, 1.13), true)  # [vqa] cool pale stone, not tan
 	var r0: float = _r_in - 1.0
@@ -1450,7 +1450,7 @@ func _build_plaza(e: float) -> void:
 
 ## The launch city skyline: slender towers of dark glass behind white fins and floor bands, with
 ## setbacks, crowns and the odd spire, rising behind the pad; low white pavilions between.
-func _build_skyline_cradle(e: float) -> void:
+func _build_skyline_cradle(_e: float) -> void:
 	var b := Batch.new()
 	var curtain: Material = _mat("curtain")  # [vqa]
 	var trim: Material = _mat("trim")

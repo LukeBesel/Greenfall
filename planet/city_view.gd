@@ -73,7 +73,7 @@ func _pick(kit: String, prefix: String) -> String:
 	return names[_rng.randi() % names.size()]
 
 
-func _place(block: Vector2i, kit: String, piece: String, xf: Transform3D) -> void:
+func _place(_block: Vector2i, kit: String, piece: String, xf: Transform3D) -> void:
 	if piece == "" or not (_kit[kit] as Dictionary).has(piece):
 		return
 	# [deck] One MultiMesh per kit piece for the whole detail ring (was one per block per piece).
@@ -199,10 +199,10 @@ func _build_sidewalks(r: Rect2, detailed: bool = true) -> void:
 			[outer.position, Vector2(outer.position.x, outer.end.y)], [Vector2(outer.end.x, outer.position.y), outer.end]]:
 		var a: Vector2 = e[0]
 		var bb: Vector2 = e[1]
-		var len: float = a.distance_to(bb)
+		var len_: float = a.distance_to(bb)
 		var mid: Vector2 = (a + bb) * 0.5
 		var horiz: bool = absf(a.y - bb.y) < 0.01
-		curb_parts.append(ProcMesh.part(ProcMesh.box(Vector3(len, h + 0.02, 0.22) if horiz else Vector3(0.22, h + 0.02, len)),
+		curb_parts.append(ProcMesh.part(ProcMesh.box(Vector3(len_, h + 0.02, 0.22) if horiz else Vector3(0.22, h + 0.02, len_)),
 			ProcMesh.xf(Vector3(mid.x, h * 0.5 - 0.005, mid.y))))
 	_static.merge(ProcMesh.merge(curb_parts), Transform3D.IDENTITY, _curb_mat, true, Vector3(r.get_center().x, 0, r.get_center().y))  # [deck]
 
@@ -233,7 +233,7 @@ func _build_building(block: Vector2i, bd: Dictionary) -> void:
 	# Kit modules span local x in [-3, 0] and face local +Z. Build a basis: local +X = along, +Z = face.
 	var bx := Vector3(along.x, 0, along.y)
 	var bz := Vector3(face.x, 0, face.y)
-	var basis := Basis(bx, Vector3.UP, bz)
+	var basis_ := Basis(bx, Vector3.UP, bz)
 	var ruin_from: int = floors
 	if bd.get("ruined", false):
 		ruin_from = maxi(1, floors - _rng.randi_range(1, 3))
@@ -242,7 +242,7 @@ func _build_building(block: Vector2i, bd: Dictionary) -> void:
 		var o2: Vector2 = origin + along * (i + 1) * BAY
 		for f: int in bay_floors:
 			var o := Vector3(o2.x, f * FLOOR_H, o2.y)
-			var xf := Transform3D(basis, o)
+			var xf := Transform3D(basis_, o)
 			var opening: String
 			if f == 0:
 				opening = ["door_centered_large", "door_centered_small", "door_offset_small", "window_centered_large", "window_centered_double"][_rng.randi() % 5] if kit == APT \
@@ -260,10 +260,10 @@ func _build_building(block: Vector2i, bd: Dictionary) -> void:
 				if _rng.randf() > 0.12:
 					_place(block, kit, _pick(kit, opening + "_"), xf)
 			if f > 0 and f == bay_floors - 1:
-				_place(block, kit, _pick(kit, "crown_standard_standard_"), Transform3D(basis, o + Vector3(0, FLOOR_H, 0)))
+				_place(block, kit, _pick(kit, "crown_standard_standard_"), Transform3D(basis_, o + Vector3(0, FLOOR_H, 0)))
 			elif f < bay_floors - 1 and (f == 0 or _rng.randf() < 0.3):
-				_place(block, kit, _pick(kit, "cornice_standard_standard_") if kit == APT else _pick(kit, "cornice02_standard_standard_"), Transform3D(basis, o + Vector3(0, FLOOR_H, 0)))
-		_place(block, kit, _pick(kit, "base_standard_"), Transform3D(basis, Vector3(o2.x, 0, o2.y)))
+				_place(block, kit, _pick(kit, "cornice_standard_standard_") if kit == APT else _pick(kit, "cornice02_standard_standard_"), Transform3D(basis_, o + Vector3(0, FLOOR_H, 0)))
+		_place(block, kit, _pick(kit, "base_standard_"), Transform3D(basis_, Vector3(o2.x, 0, o2.y)))
 	# Interior/back mass, set just behind the facade so windows read as dark rooms.
 	var inset: float = 0.35
 	var mass_r: Rect2 = r
@@ -291,7 +291,7 @@ func _build_building(block: Vector2i, bd: Dictionary) -> void:
 		var bay: int = _rng.randi_range(0, maxi(bays - 2, 0))
 		var o2: Vector2 = origin + along * (bay + 1.5) * BAY + face * 0.7
 		for f: int in range(1, floors):
-			_static.instance(AssetLib.lite(_fire_escape_mesh("modular_fire_escape_platform_middle"), 800), Transform3D(basis, Vector3(o2.x, f * FLOOR_H, o2.y)))  # [deck]
+			_static.instance(AssetLib.lite(_fire_escape_mesh("modular_fire_escape_platform_middle"), 800), Transform3D(basis_, Vector3(o2.x, f * FLOOR_H, o2.y)))  # [deck]
 	# Collision for the whole building footprint.
 	var body := StaticBody3D.new()
 	var cs := CollisionShape3D.new()
@@ -337,9 +337,9 @@ func _build_fence(r: Rect2, partial: bool) -> void:
 			var p: Vector2 = a.lerp(bb, float(k) / n)
 			parts.append(ProcMesh.part(ProcMesh.cyl(0.03, 0.03, 1.8, 6), ProcMesh.xf(Vector3(p.x, 0.9, p.y), Vector3(_rng.randf_range(-4, 4), 0, _rng.randf_range(-4, 4)))))
 		var mid: Vector2 = (a + bb) * 0.5
-		var len: float = a.distance_to(bb)
+		var len_: float = a.distance_to(bb)
 		var horiz: bool = absf(a.y - bb.y) < 0.01
-		parts.append(ProcMesh.part(ProcMesh.cyl(0.02, 0.02, len, 6), ProcMesh.xf(Vector3(mid.x, 1.78, mid.y), Vector3(0, 0, 90) if horiz else Vector3(90, 0, 0))))
+		parts.append(ProcMesh.part(ProcMesh.cyl(0.02, 0.02, len_, 6), ProcMesh.xf(Vector3(mid.x, 1.78, mid.y), Vector3(0, 0, 90) if horiz else Vector3(90, 0, 0))))
 	_static.merge(ProcMesh.merge(parts), Transform3D.IDENTITY, mat, true, Vector3(r.get_center().x, 0, r.get_center().y))  # [deck]
 
 

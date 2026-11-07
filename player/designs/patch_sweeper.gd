@@ -111,8 +111,8 @@ func _ready() -> void:
 
 # ---------------------------------------------------------------- helpers
 
-func _paint(color: Color, coverage: float, rust: float, seed: float, grime: float = 0.5, floor_y: float = 0.0) -> ShaderMaterial:
-	var m: ShaderMaterial = Mats.worn_paint(color, coverage, rust, seed, grime)
+func _paint(color: Color, coverage: float, rust: float, seed_: float, grime: float = 0.5, floor_y: float = 0.0) -> ShaderMaterial:
+	var m: ShaderMaterial = Mats.worn_paint(color, coverage, rust, seed_, grime)
 	m.set_shader_parameter("grime_floor", floor_y)
 	m.set_shader_parameter("grime_height", 0.45)
 	m.set_meta("cov", coverage)
@@ -296,15 +296,15 @@ func _chevron_mesh(w: float, h: float, stripe: float) -> ArrayMesh:
 	return st.commit()
 
 
-func _chevrons(parent: Node3D, w: float, h: float, xf: Transform3D, seed: float) -> void:
+func _chevrons(parent: Node3D, w: float, h: float, xf: Transform3D, seed_: float) -> void:
 	var back := MeshInstance3D.new()
 	back.mesh = ProcMesh.merge([ProcMesh.part(ProcMesh.box(Vector3(w, h, 0.002)), Transform3D(Basis.IDENTITY, Vector3(0, 0, 0.0015)))])
-	back.material_override = _paint(YELLOW.lightened(0.08), 0.75, 0.5, seed + 0.5, 0.5, -0.6)
+	back.material_override = _paint(YELLOW.lightened(0.08), 0.75, 0.5, seed_ + 0.5, 0.5, -0.6)
 	back.transform = xf
 	parent.add_child(back)
 	var chev := MeshInstance3D.new()
 	chev.mesh = _chevron_mesh(w, h, h * 0.55)
-	chev.material_override = _paint(BLACK, 0.7, 0.5, seed, 0.6, -0.6)
+	chev.material_override = _paint(BLACK, 0.7, 0.5, seed_, 0.6, -0.6)
 	chev.transform = xf
 	parent.add_child(chev)
 
@@ -402,17 +402,17 @@ func _build_chassis() -> void:
 			_bake_many(_rig, [_tube(0.026, top - dir * 0.012, top + dir * 0.01, 12)], Mats.rubber())
 			_bake(_rig, ProcMesh.cyl(0.014, 0.014, 0.05, 8), steel, _x(bot, Vector3(0, 0, 90)))   # lower eye
 			# Coil spring wound around the damper between two perches.
-			var basis := Basis(Quaternion(Vector3.UP, dir))
+			var basis_ := Basis(Quaternion(Vector3.UP, dir))
 			var coil: Array = []
 			var turns: float = 5.5
 			var segs: int = 66
 			var c0: Vector3 = bot + dir * 0.05
 			var length: float = c0.distance_to(top - dir * 0.03)
-			var prev: Vector3 = c0 + basis * Vector3(0.03, 0, 0)
+			var prev: Vector3 = c0 + basis_ * Vector3(0.03, 0, 0)
 			for i: int in range(1, segs + 1):
 				var u: float = float(i) / segs
 				var a: float = u * turns * TAU
-				var p: Vector3 = c0 + basis * Vector3(cos(a) * 0.03, u * length, sin(a) * 0.03)
+				var p: Vector3 = c0 + basis_ * Vector3(cos(a) * 0.03, u * length, sin(a) * 0.03)
 				coil.append(_tube(0.0055, prev, p, 6))
 				prev = p
 			coil.append(_tube(0.037, c0 - dir * 0.006, c0 + dir * 0.002, 12))

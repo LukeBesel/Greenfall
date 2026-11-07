@@ -164,8 +164,8 @@ func _build() -> void:
 		for i: int in items.size():
 			var it: Array = items[i]
 			var hid: int = it[2]
-			var visible: bool = field.hex_clean[hid] == 0 and float(it[5]) >= field.removed_fraction(hid) * 0.9
-			mm.set_instance_transform(i, it[0] if visible else _hidden())
+			var visible_: bool = field.hex_clean[hid] == 0 and float(it[5]) >= field.removed_fraction(hid) * 0.9
+			mm.set_instance_transform(i, it[0] if visible_ else _hidden())
 			if mm.use_colors:
 				mm.set_instance_color(i, it[1])
 			var cell := Vector2i(floori(float(it[3]) / CELL), floori(float(it[4]) / CELL))

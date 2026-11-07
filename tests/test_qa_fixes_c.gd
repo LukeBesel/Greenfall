@@ -114,8 +114,9 @@ func test_stat_breakdown_base_for_robot_stats() -> void:
 
 func test_detector_range_is_a_real_stat() -> void:
 	assert_eq(str(Economy.upgrade_defs["detector_range"]["stat"]), "detector_range")
-	assert_almost_eq(Economy.stat("detector_range", {}), 16.0, 0.001)
-	assert_almost_eq(Economy.stat("detector_range", {"detector_range": 1}), 20.0, 0.001)
+	var dm: float = Designs.mult("detector_range")  # [skins] the worn design's small bonus (Aurora: detector)
+	assert_almost_eq(Economy.stat("detector_range", {}), 16.0 * dm, 0.001)
+	assert_almost_eq(Economy.stat("detector_range", {"detector_range": 1}), 20.0 * dm, 0.001)
 
 
 func test_goal_titles_fit_goals_card() -> void:
@@ -135,15 +136,15 @@ func test_upgrades_screen_tab_closes_and_focus_follows_tabs() -> void:
 	scr._set_tab("patch")
 	scr.open_screen()
 	await wait_physics_frames(3)
-	var owner: Control = scr.get_viewport().gui_get_focus_owner()
-	assert_not_null(owner, "a control is focused when the screen opens")
+	var owner_: Control = scr.get_viewport().gui_get_focus_owner()
+	assert_not_null(owner_, "a control is focused when the screen opens")
 	scr._set_tab("trade")
 	await wait_physics_frames(3)
-	owner = scr.get_viewport().gui_get_focus_owner()
-	assert_not_null(owner, "a control is focused after switching to Trade")
-	if owner:
-		assert_false(owner.is_queued_for_deletion())
-		assert_true(scr._grid.is_ancestor_of(owner), "focus is inside the trade panel")
+	owner_ = scr.get_viewport().gui_get_focus_owner()
+	assert_not_null(owner_, "a control is focused after switching to Trade")
+	if owner_:
+		assert_false(owner_.is_queued_for_deletion())
+		assert_true(scr._grid.is_ancestor_of(owner_), "focus is inside the trade panel")
 	# Active tab highlighted in gold.
 	assert_eq(scr._tab_buttons[2].get_theme_color("font_color"), UITheme.GOLD)
 	assert_eq(scr._tab_buttons[0].get_theme_color("font_color"), UITheme.CREAM)

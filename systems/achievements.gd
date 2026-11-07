@@ -122,6 +122,7 @@ func _ready() -> void:
 	EventBus.hex_restored.connect(func(_h: int) -> void: GameState.inc_stat("hexes_restored"))
 	EventBus.research_completed.connect(func(_id: String) -> void: _t = 1.0)
 	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: _t = maxf(_t, 0.7))
+	Designs.dev_hooks(world)  # [skins] --design / --designs-all / --design-unlock
 
 
 func _process(delta: float) -> void:
@@ -131,6 +132,7 @@ func _process(delta: float) -> void:
 	_t = 0.0
 	var found: Array[String] = Codex.scan(world)
 	var got: Array[String] = check_all()
+	Designs.check_unlocks(_first)  # [skins] Lumi's unlockable designs (quiet on the first check after loading)
 	if _first:
 		_first = false
 		if got.size() > 3:

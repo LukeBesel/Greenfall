@@ -108,8 +108,8 @@ func _ready() -> void:
 
 # ---------------------------------------------------------------- helpers
 
-func _paint(color: Color, coverage: float, rust: float, seed: float, grime: float = 0.5, floor_y: float = 0.0) -> ShaderMaterial:
-	var m: ShaderMaterial = Mats.worn_paint(color, coverage, rust, seed, grime)
+func _paint(color: Color, coverage: float, rust: float, seed_: float, grime: float = 0.5, floor_y: float = 0.0) -> ShaderMaterial:
+	var m: ShaderMaterial = Mats.worn_paint(color, coverage, rust, seed_, grime)
 	m.set_shader_parameter("grime_floor", floor_y)
 	m.set_shader_parameter("grime_height", 0.35)
 	m.set_shader_parameter("fade", 0.2)
@@ -173,7 +173,7 @@ func _bolts(parent: Node3D, points: Array, normal: Vector3, size: float = 0.009)
 
 
 ## Thin slab whose plan outline follows the body's rounded corners (rounded box squashed in Y).
-func _slab(w: float, h: float, d: float, plan_r: float) -> Transform3D:
+func _slab(_w: float, h: float, _d: float, plan_r: float) -> Transform3D:
 	return Transform3D(Basis.from_scale(Vector3(1, h / (plan_r * 2.0), 1)), Vector3.ZERO)
 
 
@@ -336,12 +336,12 @@ func _build_intake() -> void:
 	_bake(f, ProcMesh.box(Vector3(0.28, 0.016, 0.016)), steel, _x(Vector3(0, 0.045, -0.035)))
 	_bolts(f, [Vector3(-0.15, 0.045, -0.032), Vector3(0.15, 0.045, -0.032)], Vector3(0, 0, -1), 0.008)
 	# Scoop lip below the mouth: a small sloped tray like a chin.
-	var tr: Array = []
-	tr.append(ProcMesh.part(ProcMesh.box(Vector3(0.34, 0.016, 0.13)), _x(Vector3(0, 0.29, -0.33), Vector3(-12, 0, 0))))
+	var tr_: Array = []
+	tr_.append(ProcMesh.part(ProcMesh.box(Vector3(0.34, 0.016, 0.13)), _x(Vector3(0, 0.29, -0.33), Vector3(-12, 0, 0))))
 	for s: float in [-1.0, 1.0]:
-		tr.append(ProcMesh.part(ProcMesh.box(Vector3(0.016, 0.05, 0.13)), _x(Vector3(0.17 * s, 0.31, -0.33), Vector3(-12, 0, 0))))
-	tr.append(ProcMesh.part(ProcMesh.cyl(0.012, 0.012, 0.35, 10), _x(Vector3(0, 0.305, -0.395), Vector3(0, 0, 90))))
-	_bake_many(_body, tr, _paint(MUSTARD, 0.6, 0.65, 12.0, 0.7))
+		tr_.append(ProcMesh.part(ProcMesh.box(Vector3(0.016, 0.05, 0.13)), _x(Vector3(0.17 * s, 0.31, -0.33), Vector3(-12, 0, 0))))
+	tr_.append(ProcMesh.part(ProcMesh.cyl(0.012, 0.012, 0.35, 10), _x(Vector3(0, 0.305, -0.395), Vector3(0, 0, 90))))
+	_bake_many(_body, tr_, _paint(MUSTARD, 0.6, 0.65, 12.0, 0.7))
 	_bake(_body, ProcMesh.box(Vector3(0.34, 0.02, 0.03)), steel, _x(Vector3(0, 0.28, -0.39)))   # wear strip
 
 

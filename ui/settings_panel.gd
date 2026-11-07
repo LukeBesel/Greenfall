@@ -586,14 +586,14 @@ func _value_button() -> Button:
 func _cycler(p: VBoxContainer, text: String, options: Array, index: int, cb: Callable, hint: String = "") -> void:
 	var b: Button = _value_button()
 	var state: Array[int] = [clampi(index, 0, options.size() - 1)]
-	var show: Callable = func() -> void: b.text = "‹   %s   ›" % options[state[0]]
+	var show_: Callable = func() -> void: b.text = "‹   %s   ›" % options[state[0]]
 	var step: Callable = func(d: int) -> void:
 		state[0] = wrapi(state[0] + d, 0, options.size())
-		show.call()
+		show_.call()
 		cb.call(state[0])
 		Settings.save_settings()
 		Audio.play("click", 1.0 + 0.05 * d, -8.0)
-	show.call()
+	show_.call()
 	b.pressed.connect(func() -> void: step.call(1))
 	b.gui_input.connect(func(e: InputEvent) -> void:
 		if e.is_action_pressed("ui_left"):
@@ -612,10 +612,10 @@ func _toggle(p: VBoxContainer, text: String, value: bool, cb: Callable, hint: St
 	var on_box: StyleBoxFlat = UITheme.box(Color(0.22, 0.15, 0.05, 0.92), UITheme.GOLD, 1, 2, 8)
 	b.add_theme_stylebox_override("pressed", on_box)
 	b.add_theme_color_override("font_pressed_color", UITheme.GOLD)
-	var show: Callable = func(v: bool) -> void: b.text = tr("On") if v else tr("Off")
-	show.call(value)
+	var show_: Callable = func(v: bool) -> void: b.text = tr("On") if v else tr("Off")
+	show_.call(value)
 	b.toggled.connect(func(v: bool) -> void:
-		show.call(v)
+		show_.call(v)
 		cb.call(v)
 		Settings.save_settings()
 		Audio.play("click", 1.1 if v else 0.9, -8.0))

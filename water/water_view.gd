@@ -69,7 +69,7 @@ func _process(_delta: float) -> void:
 				_new_jump(fish)
 
 
-func _on_clean(hid: int, pos: Vector3, _bonus: BigNum) -> void:
+func _on_clean(hid: int, _pos: Vector3, _bonus: BigNum) -> void:
 	if not world.field.is_water(hid):
 		return
 	Audio.play("chime", 0.6, -2.0)

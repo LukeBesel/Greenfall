@@ -483,12 +483,13 @@ func _build() -> void:
 	add_child(warn)
 	# Hazard chevrons on the skid front.
 	for i3: int in 6:
+		var st_pos := Vector3(-1.15 + 0.09 + i3 * 0.19, 0.07, 0.86)
+		if absf(st_pos.x) < 0.55:
+			continue  # [health] skip before creating: a skipped MeshInstance3D leaked
 		var st := MeshInstance3D.new()
 		st.mesh = ProcMesh.box(Vector3(0.18, 0.1, 0.012))
 		st.material_override = yellow if i3 % 2 == 0 else Mats.worn_paint(Color(0.07, 0.07, 0.07), 0.9, 0.3, 75.0, 0.5)
-		st.position = Vector3(-1.15 + 0.09 + i3 * 0.19, 0.07, 0.86)
-		if absf(st.position.x) < 0.55:
-			continue
+		st.position = st_pos
 		add_child(st)
 	# Collision: columns, back, crosshead and the power pack (chamber and ramp stay open).
 	var sb := StaticBody3D.new()

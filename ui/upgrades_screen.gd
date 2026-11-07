@@ -28,6 +28,7 @@ var _tab_buttons: Array[Button] = []
 var _tab: String = "patch"
 var _refresh_t: float = 0.0
 var _trade_t: float = 0.0
+var _cosmetics: CosmeticsPanel  # [skins] design picker (focus its worn card first)
 var _close_btn: Button
 var _robot_cards: Array[RobotCard] = []
 var fleet: Fleet
@@ -140,6 +141,7 @@ func _populate() -> void:
 		var cp := CosmeticsPanel.new()
 		cp.world = fleet.world if fleet else null
 		_grid.add_child(cp)
+		_cosmetics = cp  # [skins]
 		return
 	if _tab == "hub":
 		_grid.columns = 1
@@ -225,6 +227,8 @@ func _focus_default() -> void:
 		target = _robot_cards[0].first_button()
 	elif _tab == "trade" and is_instance_valid(_trade):
 		target = _trade.first_button()
+	elif _tab == "cosmetics" and is_instance_valid(_cosmetics) and not _cosmetics.is_queued_for_deletion():  # [skins]
+		target = _cosmetics.first_button()
 	if target == null or not _focusable(target, true):
 		target = _first_focusable(_grid, false)
 	if target == null:

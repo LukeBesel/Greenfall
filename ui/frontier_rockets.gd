@@ -36,6 +36,7 @@ static func add_section(panel: Control, world: Node, pad_ready: bool) -> void:
 				vb.add_child(UITheme.label(line, 12, UITheme.GREEN if line.begins_with("✓") else UITheme.MUTED))
 		else:
 			var lvl: int = Frontiers.base_level(hub_i)
+			@warning_ignore("incompatible_ternary")
 			vb.add_child(UITheme.label(TranslationServer.translate("You are here") if here else (TranslationServer.translate("Base level %d") % lvl if lvl > 0 else TranslationServer.translate("Unexplored  ·  bales sell x%d here") % int(float(d.get("value_mult", 1.0)))), 12, UITheme.GREEN))
 		var b := Button.new()
 		b.text = TranslationServer.translate("Launch")
