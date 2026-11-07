@@ -1447,8 +1447,6 @@ func _build_plaza(e: float) -> void:
 ## setbacks, crowns and the odd spire, rising behind the pad; low white pavilions between.
 func _build_skyline_cradle(e: float) -> void:
 	var b := Batch.new()
-	var white: Material = _mat("white")
-	var glass: Material = _mat("tower_glass")
 	var curtain: Material = _mat("curtain")  # [vqa]
 	var trim: Material = _mat("trim")
 	var placed: Array[Vector2] = []
@@ -1474,8 +1472,10 @@ func _build_skyline_cradle(e: float) -> void:
 		var yaw: float = _rng.randf() * TAU
 		var bs := Basis(Vector3.UP, yaw)
 		var is_round: bool = _rng.randf() < 0.4
-		_add_box(b, p + Vector3(0, 4.0, 0), Vector3(w * 1.9, 8.0, w * 1.7), white, Vector3(0, rad_to_deg(yaw), 0))
-		_add_box(b, p + Vector3(0, 6.0, 0), Vector3(w * 1.92, 1.2, w * 1.72), glass, Vector3(0, rad_to_deg(yaw), 0))
+		# [vqa] Podium: a satin plinth, a glass lobby storey and a slim slab (was a white box).
+		_add_box(b, p + Vector3(0, 0.6, 0), Vector3(w * 1.9, 1.2, w * 1.7), trim, Vector3(0, rad_to_deg(yaw), 0))
+		b.add(_glass_wall(4, w * 0.93, w * 0.83, 6.4, 1.2), Transform3D(bs, p + Vector3(0, 1.2, 0)), curtain)
+		_add_box(b, p + Vector3(0, 7.8, 0), Vector3(w * 1.94, 0.6, w * 1.74), trim, Vector3(0, rad_to_deg(yaw), 0))
 		# [vqa] Sleek curtain walls (tower_glass.gdshader): one glass skin per tier, slim satin
 		# corner trims and a thin slab at each setback, instead of white fins and floor bands.
 		var y: float = 8.0
@@ -1523,9 +1523,12 @@ func _build_skyline_cradle(e: float) -> void:
 		var lw: float = _rng.randf_range(14.0, 34.0)
 		var lh: float = _rng.randf_range(6.0, 16.0)
 		var ly: float = rad_to_deg(ang2) + 90.0
-		_add_box(b, p2 + Vector3(0, lh * 0.5, 0), Vector3(lw, lh, lw * 0.6), white, Vector3(0, ly, 0))
-		_add_box(b, p2 + Vector3(0, lh * 0.55, 0), Vector3(lw + 0.1, lh * 0.35, lw * 0.6 + 0.1), glass, Vector3(0, ly, 0))
-		_add_box(b, p2 + Vector3(0, lh + 0.05, 0), Vector3(lw * 0.9, 0.12, lw * 0.52), _mat("green"), Vector3(0, ly, 0))
+		# [vqa] Glass pavilion: curtain walls between a satin plinth and a thin roof slab, green roof.
+		var pb := Basis(Vector3.UP, deg_to_rad(ly))
+		_add_box(b, p2 + Vector3(0, 0.4, 0), Vector3(lw + 0.4, 0.8, lw * 0.6 + 0.4), trim, Vector3(0, ly, 0))
+		b.add(_glass_wall(4, lw * 0.5 - 0.2, lw * 0.3 - 0.2, lh - 1.3, 0.8), Transform3D(pb, p2 + Vector3(0, 0.8, 0)), curtain)
+		_add_box(b, p2 + Vector3(0, lh - 0.25, 0), Vector3(lw + 0.6, 0.5, lw * 0.6 + 0.6), trim, Vector3(0, ly, 0))
+		_add_box(b, p2 + Vector3(0, lh + 0.02, 0), Vector3(lw * 0.9, 0.08, lw * 0.52), _mat("green"), Vector3(0, ly, 0))
 	b.flush(_groups["always"])
 
 
