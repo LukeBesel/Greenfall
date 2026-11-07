@@ -221,10 +221,10 @@ func _build() -> void:
 	# Vapour: billows out of the flame trench (both sides), a ground-hugging ring from under the
 	# deck at ignition, and steam jets during the countdown.
 	for side: float in [-1.0, 1.0]:
-		var v := _vapour(Vector3(side, 0.05, 0), 10, 3.6)
+		var v := _vapour(Vector3(side, 0.05, 0), 12, 3.8)
 		v.position = Vector3(side * 2.6, TOP_Y - 0.5, 0)
 		_vents.append(v)
-	var ground := _vapour(Vector3(1, 0, 0), 16, 4.0)
+	var ground := _vapour(Vector3(1, 0, 0), 18, 4.2)
 	ground.position = Vector3(0, 0.5, 0)
 	ground.spread = 180.0
 	ground.flatness = 0.92
@@ -355,7 +355,7 @@ func _vapour(dir: Vector3, amount: int, size: float) -> CPUParticles3D:
 	p.scale_amount_min = 0.8
 	p.scale_amount_max = 1.25
 	p.scale_amount_curve = _grow_curve(0.45, 1.3, 1.9)
-	p.color_ramp = _fade_ramp(0.62)
+	p.color_ramp = _fade_ramp(0.75)
 	var q := QuadMesh.new()
 	q.size = Vector2(size, size)
 	q.material = vapour_material()
