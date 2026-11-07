@@ -235,9 +235,10 @@ func set_level(l: int, animate: bool) -> void:
 	level = clampi(l, 1, 5)
 	var k: int = 0
 	for nm: String in _layers:
-		var node: Node3D = _layers[nm]
-		if not is_instance_valid(node):
+		var nv: Variant = _layers[nm]  # [beat] a freed layer can't be assigned to a typed var
+		if not is_instance_valid(nv):
 			continue
+		var node: Node3D = nv
 		var r: Vector2i = _layer_range(nm)
 		var want: bool = level >= r.x and level <= r.y
 		if want == node.visible:
@@ -301,8 +302,11 @@ func _apply_surface(animate: bool) -> void:
 func _process(delta: float) -> void:
 	_t += delta
 	for i: int in _hover.size():
-		var h: Node3D = _hover[i]
-		if not is_instance_valid(h) or not h.is_visible_in_tree():
+		var hv: Variant = _hover[i]  # [beat] may sit under a freed ruin layer
+		if not is_instance_valid(hv):
+			continue
+		var h: Node3D = hv
+		if not h.is_visible_in_tree():
 			continue
 		var base: Vector3 = h.get_meta("base")
 		if h.has_meta("orbit"):
