@@ -49,6 +49,7 @@ func _press_pad(button: JoyButton) -> void:
 func _run() -> void:
 	await _frames(20)
 	Settings.last_input_pad = true
+	Settings.input_device_changed.emit(true)  # prompts switch to pad glyphs
 	var scene: Node = get_tree().current_scene
 	if scene and scene.has_method("open_upgrades"):
 		await _audit_game(scene)
