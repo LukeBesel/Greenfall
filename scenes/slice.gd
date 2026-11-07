@@ -476,7 +476,7 @@ func _ready() -> void:
 	bloom.world = self
 	add_child(bloom)
 	# Cradle Returns complete -> the ark comes home (the finale plays once per save).
-	EventBus.cradle_district_complete.connect(func(_h: int) -> void: bloom.play_finale(), CONNECT_ONE_SHOT)
+	# [beat] (Bloom connects EventBus.cradle_district_complete itself: a lambda here outlived the scene)
 	if frontier:  # [biomes] frontier mechanics and visuals, once the scene is built
 		frontier.setup()
 	core_charge = CoreCharge.new()  # Lumi's Bloom Core charge + its story beats (story/core_charge.gd)
@@ -1125,7 +1125,11 @@ func _restore_world(from_memory: bool = false) -> void:
 		for h: int in field.hex_count():
 			if not field.is_clean(h):
 				junk_left += field.hex_left[h]
+		# [beat] Junk already "baled offline" stays on the field (geometry isn't advanced), so it must not
+		# pay again on the next reopen: count it against what is left.
+		junk_left = maxf(0.0, junk_left - float(GameState.world.get("offline_units", 0.0)))
 		var res: Dictionary = Offline.compute(GameState.world.get("robots", []), hub.scrubbers if hub else 0, float(sd.get("filter_per_s", 1.0)), away, junk_left)
+		GameState.world["offline_units"] = float(GameState.world.get("offline_units", 0.0)) + float(res["units"])
 		Offline.apply(res)
 		if float(res["units"]) > 0.0 or float(res["air"]) > 0.0:
 			get_tree().create_timer(2.0).timeout.connect(func() -> void: EventBus.toast.emit(Offline.summary_text(res), "story"))

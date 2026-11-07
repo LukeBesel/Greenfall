@@ -32,7 +32,28 @@ func test_bloom_progress_uses_thriving_hexes() -> void:
 	assert_eq(CoreCharge.bloom_progress({}), 0.0)
 	var half: float = CoreCharge.bloom_progress({"thriving_hexes": 207, "thriving_districts": 0, "planet_pct": 0.0})
 	assert_almost_eq(half, 0.5, 0.01)
-	assert_eq(CoreCharge.bloom_progress({"thriving_hexes": 0, "thriving_districts": 3, "planet_pct": 0.0}), 1.0)
+	# [beat] Three thriving districts are no longer the finale; the Cradle path is.
+	assert_lt(CoreCharge.bloom_progress({"thriving_hexes": 0, "thriving_districts": 3, "planet_pct": 0.0}), 1.0)
+	assert_eq(CoreCharge.bloom_progress({"cradle_returned": 1.0}), 1.0)
+	assert_almost_eq(CoreCharge.bloom_progress({"campaign": 0.4}), 0.4, 0.001)
+
+
+func test_campaign_progress_steps_along_the_cradle_path() -> void:
+	var fh: Dictionary = {"dust_flats": 50, "frozen_port": 51, "sunken_city": 52, "cradle_returns": 53}
+	var saved: Dictionary = GameState.flags.duplicate(true)
+	var saved_d: Dictionary = GameState.districts.duplicate(true)
+	GameState.flags.erase("cradle_returned")
+	for k: String in ["dust_flats", "frozen_port", "sunken_city", "cradle_returns"]:
+		GameState.flags.erase("frontier_seen_" + k)
+	var p0: float = CoreCharge.campaign_progress(fh)
+	GameState.flags["frontier_seen_dust_flats"] = true
+	GameState.districts[50] = {"hub_level": 5, "frontier": {"growing_frac": 0.5}}
+	var p1: float = CoreCharge.campaign_progress(fh)
+	assert_gt(p1 - p0, 0.21, "a finished frontier is worth about a fifth of the path")
+	GameState.flags["cradle_returned"] = true
+	assert_eq(CoreCharge.campaign_progress(fh), 1.0)
+	GameState.flags = saved
+	GameState.districts = saved_d
 
 
 func test_store_never_drops_and_records_beats_once() -> void:

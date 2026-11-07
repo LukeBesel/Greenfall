@@ -56,6 +56,7 @@ static func park_ark(parent: Node, center: Vector3) -> CradleShip:
 
 func play() -> void:
 	playing = true
+	print("[finale] the Cradle comes home")
 	_letterbox = CanvasLayer.new()
 	_letterbox.layer = 25
 	add_child(_letterbox)
@@ -105,6 +106,9 @@ func play() -> void:
 	var t: float = 0.0
 	var waved: bool = false
 	while t < total:
+		if get_tree().paused:  # [beat] the pause menu holds the scene
+			await get_tree().process_frame
+			continue
 		t += get_process_delta_time()
 		if t >= next_line and line_i < LINES.size():
 			var l: Array = LINES[line_i]
@@ -133,7 +137,16 @@ func play() -> void:
 				model.holding = fmod(t, 0.8) < 0.4
 		await get_tree().process_frame
 	_restore()
+	GameState.flags["bloom_finale_seen"] = true  # [beat] only once it has played through
 	Audio.music_sting("level_up")
+	# [beat] The end credits roll once, after the first finale; then the game simply carries on.
+	if not GameState.flags.get("credits_seen", false):
+		GameState.flags["credits_seen"] = true
+		await get_tree().create_timer(1.5).timeout
+		var roll: CreditsRoll = CreditsRoll.play(world)
+		print("[finale] credits rolling")
+		await roll.finished
+		print("[finale] credits done; the game goes on")
 	EventBus.toast.emit(tr("The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram (M)."), "story")
 	await get_tree().create_timer(1.0).timeout
 	queue_free()

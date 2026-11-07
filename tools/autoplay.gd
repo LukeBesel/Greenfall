@@ -21,10 +21,13 @@ const AT_BASE_R: float = 7.5
 const GAP_S: float = 180.0
 const SNAPSHOT_S: float = 60.0
 ## Research order a planner would follow: unlock the planting/watering robots first.
-const RESEARCH_PRIORITY: Array[String] = ["salvage_logic", "soil_survey", "seedling_blueprint", "water_testing",
-	"drip_blueprint", "field_notebook", "scoop_beam", "conveyor", "wide_beam", "auto_baler", "recycler", "bigger_hopper",
-	"auto_sort", "haul_routes", "big_tanks", "hardy_weeds", "spray_heads", "bale_tuning",
-	"multibot_blueprint", "wild_mint", "silt_filters", "pollinator_survey", "field_magnet", "pump_lines", "hedgerows"]
+const RESEARCH_PRIORITY: Array[String] = ["salvage_logic", "soil_survey", "water_testing", "field_notebook", "scoop_beam",
+	"hardy_weeds", "seedling_blueprint", "big_tanks", "drip_blueprint", "wild_mint", "pollinator_survey", "conveyor", "wide_beam",
+	"auto_baler", "recycler", "bigger_hopper", "auto_sort", "haul_routes", "spray_heads", "bale_tuning", "multibot_blueprint",
+	"rocket_cargo", "silt_filters", "pump_lines", "irrigation", "dune_charts", "field_magnet", "tractor_beam", "dew_condensers",
+	"thermal_lance", "pump_works", "ark_beacon", "hedgerows", "evergreens", "dune_fences", "cold_hardy_seeds", "heat_pumps"]
+## [beat] From here on the bot saves Data for the next priority node instead of spending it on side nodes.
+const RESEARCH_SAVE_FROM: String = "rocket_cargo"
 
 var world: Node
 var _move := Vector3.ZERO
@@ -73,35 +76,54 @@ var _bench_fails: int = 0
 var _remote_shops: int = 0
 var _skip_shard: Dictionary = {}
 var _shard_t: Dictionary = {}
+var _stopping: bool = false
+var _start_t: float = 0.0
 
 
 func _init(p_world: Node) -> void:
 	world = p_world
+	_start_t = float(GameState.stats.get("time_played", 0.0))
 	Research.now_override = 1000.0
-	EventBus.cube_made.connect(func(_i: Dictionary) -> void: _mark("first_cube_s"))
-	EventBus.cube_cashed.connect(func(_v: BigNum, _p: Vector3) -> void: _mark("first_cashin_s"))
-	EventBus.upgrade_bought.connect(func(id: String, lv: int) -> void:
+	_hook(EventBus.cube_made, func(_i: Dictionary) -> void: _mark("first_cube_s"))
+	_hook(EventBus.cube_cashed, func(_v: BigNum, _p: Vector3) -> void: _mark("first_cashin_s"))
+	_hook(EventBus.upgrade_bought, func(id: String, lv: int) -> void:
 		_mark("first_upgrade_s")
 		_progress()
 		_log.append({"t": _now(), "event": "upgrade", "id": id, "level": lv}))
-	EventBus.hex_cleaned.connect(func(h: int, _p: Vector3, _b: BigNum) -> void:
+	_hook(EventBus.hex_cleaned, func(h: int, _p: Vector3, _b: BigNum) -> void:
 		_mark("first_hex_s")
 		_event("hex_clean", {"hex": h, "n": world.field.cleaned_count}))
-	EventBus.hex_level_changed.connect(func(h: int, lv: int) -> void:
+	_hook(EventBus.hex_level_changed, func(h: int, lv: int) -> void:
 		_mark("first_hexlv_%d_s" % lv)
 		_event("hex_level", {"hex": h, "level": lv}))
-	EventBus.robot_built.connect(func(n: String) -> void:
+	_hook(EventBus.robot_built, func(n: String) -> void:
 		_mark("first_robot_s")
 		_progress()
 		var r: Robot = world.fleet.find_robot(n) if world.fleet else null
 		var tid: String = r.type_id if r else "?"
 		_mark("first_%s_s" % tid)
 		_event("robot", {"type": tid, "name": n, "fleet": world.fleet.robots().size() if world.fleet else 0}))
-	EventBus.research_completed.connect(func(id: String) -> void:
+	_hook(EventBus.research_completed, func(id: String) -> void:
 		_mark("first_research_s")
 		_event("research", {"id": id}))
-	EventBus.part_found.connect(func(t: int, r: int) -> void: _event("part", {"type": t, "rarity": r, "stored": GameState.parts.size()}))
+	_hook(EventBus.part_found, func(t: int, r: int) -> void: _event("part", {"type": t, "rarity": r, "stored": GameState.parts.size()}))
 	world.tree_exiting.connect(write_report)
+	world.tree_exiting.connect(_unhook)  # [beat] rocket travel reloads the scene: drop the old bot's hooks
+
+
+var _hooks: Array = []
+
+
+func _hook(sig: Signal, f: Callable) -> void:
+	sig.connect(f)
+	_hooks.append([sig, f])
+
+
+func _unhook() -> void:
+	for h: Array in _hooks:
+		if (h[0] as Signal).is_connected(h[1]):
+			(h[0] as Signal).disconnect(h[1])
+	_hooks.clear()
 
 
 func _now() -> float:
@@ -112,6 +134,17 @@ func _mark(key: String) -> void:
 	if not _report.has(key):
 		_report[key] = _now()
 		print("[Autoplay] %s at %.1fs" % [key, _report[key]])
+		AutoplayCampaign.mark(key, _now())
+		if DevHooks.get_s("stop-at", "") == key:
+			_stop_run("stop-at " + key)
+
+
+## Ends a staged run: save (with --save-dir), write the report, quit.
+func _stop_run(why: String) -> void:
+	print("[Autoplay] stopping: %s at %.1f min" % [why, _now() / 60.0])
+	SaveManager.save_game()
+	write_report()
+	world.get_tree().quit()
 
 
 func _event(kind: String, data: Dictionary = {}) -> void:
@@ -188,6 +221,11 @@ func update(delta: float) -> void:
 		return
 	_dt = delta
 	Research.now_override = 1000.0 + float(GameState.stats.get("time_played", 0.0))
+	RocketTiers.now_override = 1000.0 + float(GameState.stats.get("time_played", 0.0))  # [beat]
+	if DevHooks.has("game-minutes") and _now() >= DevHooks.get_f("game-minutes", 60.0) * 60.0 and not _stopping:
+		_stopping = true
+		_stop_run("game-minutes")
+		return
 	_hook_goals()
 	if DevHooks.has("probe") and not _report.has("probed"):
 		_report["probed"] = true
@@ -404,10 +442,14 @@ func _land(h: int) -> bool:
 func _hex_planted(g: Garden, h: int) -> Vector2i:
 	var planted: int = 0
 	var ids: PackedInt32Array = g.hex_slots.get(h, PackedInt32Array())
+	var total: int = 0
 	for s: int in ids:
 		if g.slot_species[s] >= 0:
 			planted += 1
-	return Vector2i(planted, ids.size())
+			total += 1
+		elif g.plantable(s):
+			total += 1  # [beat] frontier rules (cold, flood): only slots that can take a seed
+	return Vector2i(planted, total)
 
 
 ## The hex to plant: keep filling the one already started, else the clean hex nearest the base.
@@ -418,13 +460,14 @@ func _pick_plant_hex(g: Garden) -> int:
 			return _plant_hex
 	var best: int = -1
 	var best_s: float = INF
+	var pad: Array[int] = AutoplayCampaign.pad_hexes(world)
 	for h: int in world.field.hex_count():
 		if not _land(h) or not world.field.is_clean(h):
 			continue
 		var pc: Vector2i = _hex_planted(g, h)
 		if pc.y == 0 or pc.x >= pc.y:
 			continue
-		var s: float = world.field.hex_center(h).length() - (100.0 if pc.x > 0 else 0.0)
+		var s: float = world.field.hex_center(h).length() - (100.0 if pc.x > 0 else 0.0) - (500.0 if h in pad else 0.0)
 		if s < best_s:
 			best_s = s
 			best = h
@@ -505,7 +548,7 @@ func _do_garden(p: Patch) -> bool:
 			var best: int = -1
 			var best_d: float = INF
 			for s: int in g.hex_slots[h]:
-				if g.slot_species[s] >= 0 or _ignore_piece.has(-10 - s):
+				if g.slot_species[s] >= 0 or _ignore_piece.has(-10 - s) or not g.plantable(s):
 					continue
 				var d2: float = g.slot_pos[s].distance_to(p.global_position)
 				if d2 < best_d:
@@ -535,7 +578,7 @@ func _pick_focus(p: Patch) -> int:
 	var best: int = -1
 	var best_s: float = INF
 	for h: int in f.hex_count():
-		if not _land(h) or f.is_clean(h) or _skip_hex.has(h):
+		if not _land(h) or f.is_clean(h) or _skip_hex.has(h) or f.locked.has(h):
 			continue
 		var c: Vector3 = f.hex_center(h)
 		var s: float = c.length() + 0.6 * c.distance_to(p.global_position) - 25.0 * f.removed_fraction(h)
@@ -561,6 +604,8 @@ func _do_clean(p: Patch) -> void:
 		return  # wait for in-flight pieces to land
 	var field: HexField = world.field
 	var h: int = _pick_focus(p)
+	if h < 0 and _thaw_ice(p):
+		return
 	if h < 0:
 		_set_task("idle")
 		if not p.compartment.is_empty():
@@ -599,6 +644,31 @@ func _do_clean(p: Patch) -> void:
 	_last_pos = p.global_position
 
 
+## [beat] Frozen Port: nothing loose left to clean, so stand at the nearest iced hex and hold the
+## beam on it (it thaws; heaters do the rest).
+func _thaw_ice(p: Patch) -> bool:
+	var f: HexField = world.field
+	var best: int = -1
+	var best_d: float = INF
+	for h: Variant in f.locked:
+		var d: float = f.hex_center(int(h)).distance_to(p.global_position)
+		if d < best_d:
+			best_d = d
+			best = int(h)
+	if best < 0:
+		return false
+	_set_task("thaw")
+	var c: Vector3 = f.hex_center(best)
+	var to_c: Vector3 = c - p.global_position
+	to_c.y = 0.0
+	if to_c.length() > f.hex_size * 0.6:
+		_go(p, c, f.hex_size * 0.5)
+	else:
+		_move = to_c.normalized() * 0.05
+	_scoop = true
+	return true
+
+
 func _nearest_piece_in(p: Patch, h: int) -> int:
 	var field: HexField = world.field
 	var best: int = -1
@@ -633,6 +703,7 @@ func _nearest_loose(p: Patch) -> JunkCube:
 
 func _manage(p: Patch) -> void:
 	_paint_zones()
+	_campaign(p)
 	if world.get("hub") != null and int(world.hub.level) != _hub_level_seen:
 		_hub_level_seen = int(world.hub.level)
 		_mark("base_%d_s" % _hub_level_seen)
@@ -646,6 +717,48 @@ func _manage(p: Patch) -> void:
 		return
 	_last_bench_t = _now()
 	_shop(want)
+
+
+## [beat] The whole-game layer: frontier chores and rocket trips (tools/autoplay_campaign.gd).
+func _campaign(_p: Patch) -> void:
+	if bool(world.get("launching")):
+		return
+	var chore: String = AutoplayCampaign.frontier_chores(world)
+	if chore != "":
+		_progress()
+		_event("frontier", {"what": chore})
+	var kid: String = AutoplayCampaign.frontier_kid(world)
+	if kid != "":
+		_mark("arrive_%s_s" % kid)
+		var fr: FrontierDistrict = world.get("frontier")
+		if fr and fr.growing_frac >= 0.5:
+			_mark("%s_growing50_s" % kid)
+		if int(world.hub.level) >= 5:
+			_mark("%s_base5_s" % kid)
+	for b: Variant in CoreCharge.beats_done():
+		_mark("core_%d_s" % int(b))
+	if GameState.flags.get("seeds_unlocked", false):
+		_mark("seed_tin_s")
+	if Research.has("pollinator_survey"):
+		_mark("garden_takes_off_s")
+	if GameState.flags.get("cradle_returned", false):
+		_mark("cradle_complete_s")
+	if GameState.flags.get("bloom_finale_seen", false):
+		_mark("finale_done_s")
+	if int(GameState.stats.get("ark_waves", 0)) > 0:
+		_mark("ark_wave_1_s")
+	if _now() < 30.0 or DevHooks.has("no-travel"):
+		return  # settle in after landing
+	var to: int = AutoplayCampaign.next_hub(world)
+	if to >= 0 and world.rocket_status() == "" and p_ok(_p):
+		_event("launch", {"from": int(world.hub_index), "to": to, "kind": world.planet.frontier_kind(to)})
+		AutoplayCampaign.mark("launch_%d_s" % GameState.districts.size(), _now())
+		world._launch(to)
+
+
+## Not carrying, not pressing a bale: a calm moment to board.
+func p_ok(p: Patch) -> bool:
+	return p.carried.is_empty() and p._cubing <= 0.0
 
 
 ## What a player would want to do at the bench right now. trip = worth walking back for.
@@ -721,6 +834,12 @@ func _shop(want: Dictionary) -> void:
 			if fleet.upgrade_tier(t):
 				_progress()
 				_event("tier", {"type": t, "tier": fleet.tier_of(t)})
+	# 3b) [beat] The Builder tab, when a builder goal is up.
+	if _stat_goal("builder_parts_fitted") or _stat_goal("builder_full_custom") or _stat_goal("builder_presets"):
+		var tk: String = AutoplayCampaign.tinker(world)
+		if tk != "":
+			_progress()
+			_event("builder", {"what": tk})
 	# 4) Base level (logged by _manage on the next tick).
 	world.hub.upgrade()
 	# 5) Stations once researched.
@@ -857,6 +976,10 @@ func _essential(type_id: String) -> bool:
 			return _drips() < (world.hex_levels.count_at_least(2) if world.get("hex_levels") else 0)
 		"skimmer":
 			return _lake_dirty()
+		"scoopie":  # [beat] a small cleaning crew is worth more than saving a few minutes for the base
+			return fleet.count("scoopie") < 3 and _land_left_frac() > 0.2
+		"haulbug":
+			return fleet.count("haulbug") * 2 < fleet.count("scoopie")
 	return false
 
 
@@ -913,6 +1036,8 @@ func _next_robot() -> String:
 	# Nearly all land junk gone: no more cleaners or haulers (the lake still wants a Skimmer).
 	var late: bool = _land_left_frac() < 0.12
 	var saving: bool = not _hub_need().is_empty() and not _hub_mats_short()
+	if AutoplayCampaign.frontier_kid(world) == "sunken_city" and _lake_dirty() and fleet.count("skimmer") < 14:
+		order.append("skimmer")  # [beat] the flooded city is skimmed, not scooped
 	if seeds_on and _drips() < maxi(1, gardens):
 		order.append("drip")
 	if scoop == 0:
@@ -1010,9 +1135,16 @@ func _swap_spares(robot: String) -> void:
 func _research_pick() -> String:
 	if not Research.active().is_empty() and Research.queue().size() >= Research.max_queue():
 		return ""
-	for id: String in RESEARCH_PRIORITY:
+	var saving: bool = false
+	var prio: Array[String] = AutoplayCampaign.research_first(world)
+	prio.append_array(RESEARCH_PRIORITY)
+	for id: String in prio:
 		if Research.exists(id) and Research.can_start(id):
 			return id
+		if id == RESEARCH_SAVE_FROM:
+			saving = true
+		if saving and Research.exists(id) and Research.status(id) == "available":
+			return ""  # [beat] critical-path node open but not affordable yet: save Data for it
 	var best: String = ""
 	var best_c: float = INF
 	for id: String in Research.ids():
@@ -1119,11 +1251,10 @@ func _place_tanks() -> void:
 			continue
 		var c: Vector3 = f.hex_center(h)
 		var near: Dictionary = wn.nearest_refill(c)
-		if near.is_empty():
-			continue
-		var np: Vector3 = near["pos"]
-		if Vector2(np.x - c.x, np.z - c.z).length() < 14.0:
-			continue
+		if not near.is_empty():  # [beat] no refill point at all (Dust Flats dry well): place one
+			var np: Vector3 = near["pos"]
+			if Vector2(np.x - c.x, np.z - c.z).length() < 14.0:
+				continue
 		if wn.tank_cost().to_float() * 2.0 > GameState.get_currency("cubes").to_float():
 			return
 		for off: Vector3 in [Vector3.ZERO, Vector3(2, 0, 0), Vector3(-2, 0, 0), Vector3(0, 0, 2), Vector3(0, 0, -2), Vector3(3, 0, 3)]:
@@ -1134,6 +1265,34 @@ func _place_tanks() -> void:
 
 
 # --- Report ---------------------------------------------------------------------------
+
+## [beat] Robots that report busy work but haven't moved for three snapshots (3 game-min).
+var _bot_pos: Dictionary = {}
+var _bot_still: Dictionary = {}
+var _stuck_bots: Dictionary = {}
+
+
+func _robot_health() -> Dictionary:
+	var counts: Dictionary = {}
+	var fl: Fleet = world.fleet
+	if fl == null:
+		return counts
+	var re := RegEx.create_from_string("[0-9]+")
+	for r: Robot in fl.robots():
+		var st: String = re.sub(r.status_text(), "#", true)
+		counts[st] = int(counts.get(st, 0)) + 1
+		var busy: bool = not (st.begins_with("idle") or st.begins_with("parked") or st.begins_with("waiting") or st.contains("nothing left") or st.contains("is clean") or st.contains("out of seeds") or st.contains("zone clean") or st.begins_with("looking for"))
+		var last: Vector3 = _bot_pos.get(r.robot_name, Vector3.INF)
+		if busy and last != Vector3.INF and last.distance_to(r.global_position) < 0.5:
+			_bot_still[r.robot_name] = int(_bot_still.get(r.robot_name, 0)) + 1
+			if int(_bot_still[r.robot_name]) >= 3 and not _stuck_bots.has(r.robot_name):
+				_stuck_bots[r.robot_name] = "%s %s at %s" % [r.type_id, st, str(r.global_position.snappedf(0.1))]
+				print("[Autoplay] STUCK robot %s: %s" % [r.robot_name, _stuck_bots[r.robot_name]])
+		else:
+			_bot_still[r.robot_name] = 0
+		_bot_pos[r.robot_name] = r.global_position
+	return counts
+
 
 func _snapshot() -> void:
 	var fl: Fleet = world.fleet
@@ -1154,7 +1313,7 @@ func _snapshot() -> void:
 		"glass": snappedf(GameState.get_currency("glass_cullet").to_float(), 0.1), "bolts": snappedf(GameState.get_currency("bolts").to_float(), 1.0),
 		"hexes": world.field.cleaned_count, "hex_levels": lv, "robots": types, "hub": int(world.hub.level),
 		"task": _task, "research": Research.active_id(), "upgrades": int(GameState.stats.get("upgrades_bought", 0)),
-		"goals": ngoals, "stats": _stat_pick(["research_done", "plants_bloomed", "garden_stipend", "air_filtered", "robots_built", "robot_bales", "bales_recycled", "plants_planted"])})
+		"bots": _robot_health(), "goals": ngoals, "stats": _stat_pick(["research_done", "plants_bloomed", "garden_stipend", "air_filtered", "robots_built", "robot_bales", "bales_recycled", "plants_planted"])})
 	print("[Autoplay] %5.1f min cubes=%d rate=%.2f/s data=%.0f seeds=%.0f parts=%d mats=%.0f/%.0f/%.0f hexes=%d lv=%s robots=%s hub=%d task=%s goals=%d research=%s pos=%s esc=%d" % [_now() / 60.0,
 		int(GameState.get_currency("cubes").to_float()), GameState.income_rate(), GameState.get_currency("data").to_float(),
 		GameState.get_currency("seeds").to_float(), GameState.parts.size(), GameState.get_currency("sheet_metal").to_float(),
@@ -1171,7 +1330,7 @@ func _stat_pick(keys: Array) -> Dictionary:
 
 func _gaps(times: Array[float], end_t: float) -> Array:
 	var out: Array = []
-	var prev: float = 0.0
+	var prev: float = _start_t  # [beat] this scene's start (continued saves and rocket trips)
 	var ts: Array[float] = times.duplicate()
 	ts.sort()
 	ts.append(end_t)
@@ -1207,6 +1366,8 @@ func write_report() -> void:
 	_report["parts_bought"] = _parts_bought
 	_report["stuck_escapes"] = _escapes
 	_report["fell_through"] = GameState.stats.get("fell_through", 0)
+	_report["cubes_fell"] = GameState.stats.get("cubes_fell", 0)  # [beat]
+	_report["stuck_robots"] = _stuck_bots
 	_report["remote_shops"] = _remote_shops
 	_report["parts_found"] = GameState.stats.get("parts_found", 0)
 	_report["hub_level"] = int(world.hub.level)
@@ -1223,6 +1384,8 @@ func write_report() -> void:
 	_report["timeline"] = _timeline
 	_report["log"] = _log
 	_report["ignored_pieces"] = _ignore_piece.size()
+	_report["campaign_min"] = AutoplayCampaign.timeline_min()  # [beat] milestones across stages
+	_report["district"] = str(world.get("district_name"))
 	var path: String = ProjectSettings.globalize_path("res://screenshots/autoplay_report.json")
 	var f := FileAccess.open(path, FileAccess.WRITE)
 	if f:

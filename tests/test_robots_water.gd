@@ -253,6 +253,9 @@ func test_skimmer_works_the_lake_and_finds_shore() -> void:
 	var sh: int = w.field.hex_at(shore)
 	assert_true(sh >= 0 and not w.field.is_water(sh), "bales go on land")
 	assert_true(w.field.hexes_near(w.field.hex_center(LAKE), 1).has(sh), "right next to the lake")
+	# [beat] A blocked shore point is avoided next time (skimmers no longer circle one forever).
+	var other: Vector3 = Robot.shore_point(w.field, w.field.hex_center(LAKE), [shore])
+	assert_gt(other.distance_to(shore), 3.9, "another bit of shore")
 
 
 func test_idle_status_and_park() -> void:
