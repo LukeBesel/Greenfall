@@ -74,9 +74,11 @@ static func state() -> Dictionary:
 		v = {}
 		p["homeward"] = v
 	var s: Dictionary = v
-	for k: String in ["pct", "beats", "relics"]:
-		if not s.has(k):
-			s[k] = {} if k == "pct" else []
+	if not s.has("drive"):  # same shape as a loaded profile (sanitize), so saves round-trip exactly
+		var full: Dictionary = sanitize(s)
+		for k: String in full:
+			if not s.has(k):
+				s[k] = full[k]
 	return s
 
 
@@ -92,6 +94,7 @@ static func sanitize(d: Variant) -> Dictionary:
 		for x: Variant in src.get(k, []):
 			(out[k] as Array).append(str(x))
 	out["drive"] = int(src.get("drive", 0))
+	out["rocket_tier"] = int(src.get("rocket_tier", 1))
 	out["picks"] = int(src.get("picks", 0))
 	for k: String in ["answered", "launched", "done"]:
 		out[k] = bool(src.get(k, false))

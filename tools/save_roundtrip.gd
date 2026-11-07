@@ -211,7 +211,8 @@ func _frontier_roundtrip(packed: PackedScene, kid: String, hub_i: int) -> void:
 		_check("frontier_%s_%s" % [kid, k], before[k], after[k])
 	if kid == "cradle_returns":  # [beat] quit mid-finale: it plays again after loading, and the Seed Ark opens
 		await get_tree().create_timer(4.0).timeout
-		_check("cradle_finale_replays_after_load", true, BloomFinale.playing or bool(GameState.flags.get("bloom_finale_seen", false)))
+		# [home] before the home launch the Cradle Returns finale is "The Cradle Answers" (it replays too)
+		_check("cradle_finale_replays_after_load", true, BloomFinale.playing or CradleAnswers.playing or Homeward.answered() or bool(GameState.flags.get("bloom_finale_seen", false)))
 		_check("cradle_opens_seed_ark", true, Bloom.ark_unlocked())
 	s2.queue_free()
 	await get_tree().process_frame
@@ -378,6 +379,7 @@ func _ready() -> void:
 	for kid: String in ["frozen_port", "sunken_city", "dust_flats", "cradle_returns"]:
 		await _frontier_roundtrip(packed, kid, int(fhubs[kid]))
 	await _late_multi_world(packed)  # [late] Cradle Mode: a second world, the profile, travel both ways
+	_homeward_roundtrip()  # [home] the system campaign's profile state
 	SaveManager.delete_save()
 	print("[roundtrip] %s (%d failures)" % ["OK" if _fails == 0 else "FAILED", _fails])
 	get_tree().quit(1 if _fails > 0 else 0)
@@ -504,3 +506,49 @@ func _late_multi_world(packed: PackedScene) -> void:
 	CradleMode.profile = keep_profile
 	SaveManager.slot = 7
 	Economy.planet["name"] = "Verdance"
+
+
+# --- [home] Homeward: the system campaign lives in the profile ---------------------------------
+
+func _homeward_roundtrip() -> void:
+	var keep_profile: Dictionary = CradleMode.profile.duplicate(true)
+	var keep_persist: bool = CradleMode.persist
+	var keep_slot: int = SaveManager.slot
+	CradleMode.path_override = SaveManager.save_dir().path_join("roundtrip_homeward.save")
+	CradleMode.persist = true
+	CradleMode.profile = CradleMode.default_profile()
+	var hs: Dictionary = Homeward.state()
+	hs["answered"] = true
+	hs["drive"] = 6
+	hs["picks"] = 2
+	hs["rocket_tier"] = 4
+	(hs["pct"] as Dictionary)["verdance"] = 1.0
+	(hs["pct"] as Dictionary)["ochre"] = 1.0
+	(hs["pct"] as Dictionary)["tidewell"] = 0.62
+	hs["relics"] = ["ochre_glass"]
+	hs["beats"] = ["ochre_arrive", "ochre_half", "ochre_restored"]
+	var w: Dictionary = Homeward.make_planet_world(2)
+	CradleMode.save_profile()
+	var before: String = JSON.stringify(CradleMode.to_dict())
+	CradleMode.profile = {}
+	CradleMode.load_profile()
+	_check("home_profile_roundtrip", str(JSON.parse_string(before)), str(JSON.parse_string(JSON.stringify(CradleMode.to_dict()))))
+	_check("home_answered", true, Homeward.answered())
+	_check("home_drive", 6, Homeward.drive())
+	_check("home_picks", 2, Homeward.picks())
+	_check("home_relics", ["ochre_glass"], Homeward.relics())
+	_check("home_beat", true, Homeward.beat_done("ochre_half"))
+	_check("home_pct_tidewell", 0.62, snappedf(Homeward.stored_pct(2), 0.01))
+	_check("home_system_pct", snappedf((1.0 + 1.0 + 0.62) / 5.0, 0.001), snappedf(Homeward.system_pct(), 0.001))
+	_check("home_planet_world", 1, Homeward.world_of(2))
+	CradleMode.profile["current"] = Homeward.world_of(2)
+	_check("home_planet_current", 2, Homeward.current_planet())
+	_check("home_planet_name", "Tidewell", CradleMode.world_name())
+	_check("home_planet_seed", int(Homeward.planet_def(2)["seed"]), CradleMode.world_seed())
+	_check("home_planet_type_mix", JSON.stringify(WorldGen.world_type("ocean_world").get("mix", {}).get("water_fraction")), JSON.stringify(CradleMode.planet_mix().get("water_fraction")))
+	_check("home_planet_slot", int(w["slot"]), int(CradleMode.current_world()["slot"]))
+	DirAccess.remove_absolute(CradleMode.profile_path())
+	CradleMode.path_override = ""
+	CradleMode.persist = keep_persist
+	CradleMode.profile = keep_profile
+	SaveManager.slot = keep_slot

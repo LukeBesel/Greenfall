@@ -101,11 +101,36 @@ hooks instead of played through.
   every pad hex to Sustained; get 70% of the district Growing.
 - Then `FrontierDistrict.complete()` fires `EventBus.cradle_district_complete` once. That sets
   `flags.cradle_returned`, which is the **Verdance Bloom** milestone (data/bloom.json): the Bloom Core
-  hits 100% and `Bloom.play_finale()` plays the ark-landing cinematic (story/bloom_finale.gd).
-- After the finale the **end credits** roll once (ui/credits_roll.gd, built from docs/CREDITS.md;
-  any key skips). The title screen's Credits page shows them any time.
+  hits 100% and `Bloom.play_finale()` runs. [home] Before the ending this is **"The Cradle Answers"**
+  (story/cradle_answers.gd): the ark comes but won't land; its Makers sleep aboard until the whole system
+  lives. The Seed Ark loop opens; the Homeward campaign starts (section 10b).
 - Bloom Core beats along the way (story/core_charge.gd): 25% ~Old Town garden, 50% ~Dust Flats,
   75% ~arriving at Sunken City / the Cradle, 100% = the finale.
+
+## 10b. Homeward: the other four planets and the ending (wt/home)
+- **Solar map**: M > Solar system (or Pause > Solar system): a 3D orrery of the binary star and its five
+  worlds with each planet's restoration and the drive it needs. Build the drive there.
+- **Mk V Orbital** (2.5M cubes, 300 parts; after the Cradle answers) reaches Ochre and Tidewell; **Mk VI
+  Interplanetary** (1.2M cubes, 500 parts; one relic) reaches Rime and Anvil. Each planet also needs its
+  chart: the previous planet at 50%. Launch from the map: the rocket's launch, the flight on the map, the
+  arrival on the new planet (rocket parked on the ground, so you can always fly back).
+- **Each planet** restores like Verdance (its own save, districts, bases, district hops) and is done at
+  100%: 0.5 x Thriving hexes / target + 0.3 x bases at level 5 / target + 0.2 x the landing district's
+  Thriving share / 60%. Targets: Ochre 110 / 1, Tidewell 140 / 2, Rime 160 / 2, Anvil 200 / 3. Arrival
+  memo, half-way intercept (also the next planet's chart), restored note; a relic and an Heirloom pick.
+- Twists (data/homeward.json + world types): Ochre desert, Tailwinds + Rich Salvage (short); Tidewell
+  ocean, Heavy Rain + Wild Bloom; Rime ice moon, Long Nights + Thin Soil; Anvil rust world, Heavy Junk +
+  Long Nights (the hardest, the Ledger's head office).
+- **The ending**: all five at 100% -> fly back to Verdance, hop to Cradle Returns, build **Mk VII
+  Homeward** there (8M cubes, 2,000 parts, all four relics): the launch complex goes up around the pad.
+  E at the yellow-fenced bed beside it plants the last seed; E again (or the map's Launch home) launches.
+  **Homecoming** (story/homecoming.gd): the climb out of a green Verdance, the Cradle wakes and takes
+  the rocket in, Lumi returns the seedling tray to the vault, then the ark finale over Verdance and the
+  **end credits** (once). The game carries on; Cradle Mode's random worlds ("beyond the system") open.
+- Dev: `--cradle-answered`, `--drive=N`, `--planet-restore[=S]`, `--system-done`, `--home-ready`,
+  `--fly-planet=N[,S]`, `--cradle-answers[=S]`, `--homecoming[=S]`, `--open=system`.
+  Autoplay to the ending: `godot --headless --path . -- --fresh --frontier=cradle_returns
+  --frontier-done=3 --autoplay --home-ff=20 --time-scale=4 --quit-after=900` (home_* milestones).
 
 ## 11. Post-game: the Seed Ark loop
 - The ark stays parked over the district; the game carries on. Every bloom anywhere counts toward the
@@ -114,6 +139,9 @@ hooks instead of played through.
   3% / 5% of the planet. Rocket Mk II-IV, contracts, the Collection, eggs and achievements stay open.
 
 ## 12. Cradle Mode and Garden Mode (post-game, wt/late)
+[home] Since Homeward, random Cradle Mode worlds are the post-game "beyond the system" mode (after
+Homecoming); the Ark Bridge opens earlier for Heirloom picks (one per restored planet).
+
 - **Ark Bridge** (Pause > Ark Bridge; a story toast and WREN point to it after the finale). Opening it
   banks the Starseeds Verdance has earned: 4 per Seed Ark wave, 6 per Bloom milestone, 1.5 x sqrt(Thriving
   hexes), 20 for the Cradle, 3 per level-5 base (a full campaign is roughly 80-110).

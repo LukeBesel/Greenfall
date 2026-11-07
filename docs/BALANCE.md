@@ -458,3 +458,17 @@ Data changes (early-game values only):
 - **Garden charm**: +0.4% plant growth per charm point in that district, capped at +8% (charm 20;
   the fountain is 4, a bench 1.5, a path 0.2). Decorations refund in full when picked up.
 
+
+## Homeward pacing (wt/home, Nov 7)
+Owner target: the whole campaign 25-40 h for a human, every planet shorter than Verdance with its own twist.
+- Verdance to "The Cradle Answers": ~15-22 h human (unchanged, see above).
+- The four planets start from the Heirloom kit and the carried rocket tier (warp hops from the start) and
+  have smaller restoration targets (data/homeward.json): Ochre 110 Thriving + 1 base 5 (~2-2.5 h),
+  Tidewell 140 + 2 (~2.5-3 h), Rime 160 + 2 with Long Nights and Thin Soil (~3-3.5 h), Anvil 200 + 3
+  with Heavy Junk (~3.5-4.5 h): ~11-13.5 h, so ~27-36 h in all. *(assumption: scaled from the new-world
+  opening measured in wt/late, base 4 at ~55-80 game min; not measured end to end yet)*
+- Drive costs: Mk V 2.5M cubes + 300 parts is paid on Verdance late game (a Cradle-era stipend covers it in
+  well under an hour); Mk VI 1.2M + 500 parts on Ochre or Tidewell, around their base 5; Mk VII 8M + 2,000
+  parts back on Verdance after the system is restored (the Seed Ark gifts and four planets of stipends).
+  Parts map to bolts until the money pass lands.
+- Each restored planet: a relic and one Heirloom pick (four picks over the campaign, so later planets speed up).
