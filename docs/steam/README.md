@@ -76,19 +76,26 @@ App Admin > *Stats & Achievements*:
 Pick one option in `project.godot` (`greenfall/steam/cloud_mode`).
 
 **A. `remote_storage` (default; the code is in place).** Every save is also written to Steam Cloud through
-the Steam API: the world slots (`slot_N.save`, one per Cradle Mode world) **and the profile
-(`profile.save`: the world list, Starseeds, Heirlooms)**, which `CradleMode.save_profile` uploads each time
-it is written. On start, each file is compared with its cloud copy and the one with the newest internal
-save time (`saved_unix`, stamped into slots and the profile) wins; on a tie the local one stays. A local
-file replaced by a newer cloud copy is kept as `<name>.save.local_bak`. The cloud sync runs in the
-SteamService autoload, before CradleBoot reads the profile, so a newer profile from another PC is the one
-the game starts with. Steamworks: App Admin > *Steam Cloud* > *Byte quota per user* **50 MB**,
-*Number of files per user* **20** (each Cradle Mode world is one slot file, plus `profile.save`; 20 allows
-18 worlds plus slack, raise it if players seed more), then Publish.
+the Steam API: for each of the three **save profiles** (`user://saves/p1`, `p2`, `p3`) its world slots
+(`slot_N.save`, one per world/planet) and its `profile.save` (the world list, Heirlooms, the profile's
+name). Steam Cloud has one flat namespace, so each file is stored under its profile's prefix
+(`p2_slot_0.save`, `p1_profile.save`; `SteamCloud.cloud_name`). `CradleMode.save_profile` uploads the
+profile each time it is written; `SaveManager.save_game` uploads the slot. On start, SteamService syncs
+every profile folder with its prefix: per file, the copy with the newest internal save time
+(`saved_unix`, stamped into slots and profiles) wins; on a tie the local one stays; a local file replaced
+by a newer cloud copy is kept as `<name>.save.local_bak`. Cloud files from before profiles (no prefix)
+are adopted into profile 1 once (`SteamCloud.adopt_legacy`). Locally, saves from before profiles move
+into `p1` on the first start (`SaveManager.migrate_to_profiles`). The sync runs in the SteamService
+autoload, before CradleBoot reads the profile. Which profile was used last (`profiles.cfg`) stays per
+machine. Steamworks: App Admin > *Steam Cloud* > *Byte quota per user* **50 MB**,
+*Number of files per user* **60** (three profiles, each with a `profile.save` and one slot file per
+world; 60 leaves room for about 19 worlds per profile), then Publish.
 
 **B. `auto_cloud` (no code; Steam syncs the folder).** Set `cloud_mode="auto_cloud"`, then in *Steam Cloud* >
-*Root paths* add (pattern `*.save`, not recursive; it covers both `slot_N.save` and `profile.save`, so do
-not narrow it to `slot_*.save`: a world slot without its profile would load as the wrong world):
+*Root paths* add one entry per save profile (pattern `*.save`, not recursive), with the Subdirectory below
+plus `/p1`, `/p2` and `/p3` (three rows per OS; `*.save` covers both `slot_N.save` and `profile.save`, so do
+not narrow it to `slot_*.save`: a world slot without its profile would load as the wrong world). Older
+builds kept saves directly in the Subdirectory; the game moves them into `p1` itself:
 
 | OS | Root | Subdirectory |
 |---|---|---|
@@ -96,14 +103,14 @@ not narrow it to `slot_*.save`: a world slot without its profile would load as t
 | macOS | `MacAppSupport` | `Godot/app_userdata/Greenfall/saves` |
 | Linux / Steam Deck | `LinuxXdgDataHome` | `godot/app_userdata/Greenfall/saves` |
 
-For the demo app use the same roots with `saves_demo` in place of `saves`. Auto-Cloud resolves conflicts
+For the demo app use the same roots with `saves_demo` in place of `saves` (the demo's saves are in `saves_demo/p1`; the full game imports them into `saves/p1`). Auto-Cloud resolves conflicts
 with Steam's own "which copy do you want" dialog.
 
 Either way the save files are Cloud friendly already: one compressed, platform-neutral file per slot, so
 Windows to Steam Deck works. Do not turn on both A and B for the same app.
 
 The demo keeps its saves in `user://saves_demo`. On the first start of the full game, a demo save is copied
-into `user://saves` (only when that slot is empty), so demo progress carries over.
+into `user://saves/p1` (only when that slot is empty), so demo progress carries over.
 
 ## 5. Builds and depots
 

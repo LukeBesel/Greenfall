@@ -1245,7 +1245,7 @@ msgstr "[Ŕôbôţš bûîļţ ~]"
 msgid "Time played"
 msgstr "[Ţîmé þļàýéð ~]"
 
-#: steam/demo_end_screen.gd:78 ui/main_menu.gd:339
+#: steam/demo_end_screen.gd:78 ui/main_menu.gd:340
 msgid "Wishlist on Steam"
 msgstr "[Ŵîšĥļîšţ ôñ Šţéàm ~~~]"
 
@@ -1261,7 +1261,7 @@ msgstr "[Ţîţļé šçŕééñ ~]"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "[Ķééþ þļàýîñĝ: ţĥé ƒîŕšţ ðîšţŕîçţ šţàýš ôþéñ, àţ bàšé ļévéļ %d. ~~~~~~~~~~~~~~~~~~~]"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:759 ui/main_menu.gd:443
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:759 ui/main_menu.gd:446
 msgid "%dh %02dm"
 msgstr "[%dĥ %02dm ~]"
 
@@ -1994,15 +1994,15 @@ msgstr "[Çôļļéçţîôñ çômþļéţé ~~~~]"
 msgid "Needs %d tokens"
 msgstr "[Ñééðš %d ţôķéñš ~~]"
 
-#: systems/cradle_mode.gd:287
+#: systems/cradle_mode.gd:289
 msgid "Fully grown"
 msgstr "[Fûļļý ĝŕôŵñ ~]"
 
-#: systems/cradle_mode.gd:289
+#: systems/cradle_mode.gd:291
 msgid "Needs %d Starseeds"
 msgstr "[Ñééðš %d Šţàŕšééðš ~~~]"
 
-#: systems/cradle_mode.gd:303
+#: systems/cradle_mode.gd:305
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr "[Ĥéîŕļôôm: %s, ļévéļ %d. Îţ ţŕàvéļš ŵîţĥ Ļûmî ţô évéŕý ŵôŕļð. ~~~~~~~~~~~~~~~~~~]"
 
@@ -2172,13 +2172,21 @@ msgstr "[Àûðîţ ŵôñ, %d ţô %d! Ţĥé Ļéðĝéŕ šţàmþš îţ À�
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "[Ţĥé ðŕôñé ŵôñ ţĥé àûðîţ, %d ţô %d. Îţ ļéƒţ à ţîþ àñýŵàý: +%s çûbéš. ~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/late_director.gd:93
+#: systems/late_director.gd:94
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "[Ţĥé Àŕķ Bŕîðĝé ôþéñš ôñçé ţĥé Çŕàðļé ĥàš çômé ĥômé. ~~~~~~~~~~~~~~~]"
 
-#: systems/late_director.gd:127
+#: systems/late_director.gd:128
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
 msgstr "[Çŕàðļé Môðé: ţĥé àŕķ'š šééð vàûļţ ĥôļðš šééðš ƒôŕ ôţĥéŕ ŵôŕļðš. Þàûšé > Àŕķ Bŕîðĝé ţô šéé ţĥém, šþéñð Šţàŕšééðš ôñ Ĥéîŕļôômš, ôŕ šééð à ñéŵ ŵôŕļð. Ĝàŕðéñ Môðé (Ĥ) îš ôþéñ ţôô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/profile_slots.gd:48 ui/world_picker.gd:138
+msgid "Profile %d"
+msgstr "[Þŕôƒîļé %d ~]"
+
+#: systems/profile_slots.gd:106
+msgid "%d:%02d h"
+msgstr "[%d:%02d ĥ ~]"
 
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:255
 msgid "Low"
@@ -2381,7 +2389,8 @@ msgid "%d bolts"
 msgstr "[%d bôļţš ~]"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: systems/robot_builder.gd:382 ui/ark_bridge.gd:262 ui/main_menu.gd:449
+#: systems/robot_builder.gd:382 ui/ark_bridge.gd:262 ui/main_menu.gd:452
+#: ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "[%s çûbéš ~]"
 
@@ -2465,7 +2474,7 @@ msgstr "[+%d bàñķéð ƒŕôm %s ~~~]"
 msgid "Earn more from Seed Ark waves and restoration"
 msgstr "[Éàŕñ môŕé ƒŕôm Šééð Àŕķ ŵàvéš àñð ŕéšţôŕàţîôñ ~~~~~~~~~~~~~]"
 
-#: ui/ark_bridge.gd:125 ui/world_picker.gd:32
+#: ui/ark_bridge.gd:125
 msgid "WORLDS"
 msgstr "[ŴÔŔĻÐŠ ~]"
 
@@ -2481,7 +2490,7 @@ msgstr "[Éñţéŕ / À  çĥôôšé      Éšç / B  bàçķ ~~~~~~~~~~]"
 msgid "Back to %s"
 msgstr "[Bàçķ ţô %s ~]"
 
-#: ui/ark_bridge.gd:182 ui/world_picker.gd:89
+#: ui/ark_bridge.gd:182
 msgid "WORLD %d"
 msgstr "[ŴÔŔĻÐ %d ~]"
 
@@ -3662,107 +3671,102 @@ msgstr "[Ôñé šmàļļ ŕôbôţ. Ôñé véŕý bîĝ çļéàñûþ. ~~~~~~
 msgid "DEMO  ·  the first district"
 msgstr "[ÐÉMÔ  ·  ţĥé ƒîŕšţ ðîšţŕîçţ ~~~~~~]"
 
-#: ui/main_menu.gd:328
+#: ui/main_menu.gd:328 ui/profile_picker.gd:110
 msgid "Continue"
 msgstr "[Çôñţîñûé ~]"
 
-#. Worlds button subtitle: how many worlds, and the current one's name.
-#: ui/main_menu.gd:334
-msgid "Worlds"
-msgstr "[Ŵôŕļðš ~]"
+#. Profiles button subtitle: the active save profile's name and its number of planets.
+#: ui/main_menu.gd:335
+msgid "Profiles"
+msgstr "[Þŕôƒîļéš ~]"
 
-#. Worlds button subtitle: how many worlds, and the current one's name.
-#: ui/main_menu.gd:334
-msgid "%d worlds  ·  now on %s"
-msgstr "[%d ŵôŕļðš  ·  ñôŵ ôñ %s ~~~~~]"
-
-#: ui/main_menu.gd:336
+#: ui/main_menu.gd:337
 msgid "New Game"
 msgstr "[Ñéŵ Ĝàmé ~]"
 
-#: ui/main_menu.gd:340 ui/main_menu.gd:536 ui/pause_menu.gd:59
+#: ui/main_menu.gd:341 ui/main_menu.gd:539 ui/pause_menu.gd:59
 msgid "Settings"
 msgstr "[Šéţţîñĝš ~]"
 
-#: ui/main_menu.gd:341 ui/main_menu.gd:536
+#: ui/main_menu.gd:342 ui/main_menu.gd:539
 msgid "Credits"
 msgstr "[Çŕéðîţš ~]"
 
-#: ui/main_menu.gd:342
+#: ui/main_menu.gd:343
 msgid "Quit"
 msgstr "[Qûîţ ~]"
 
-#: ui/main_menu.gd:348
+#: ui/main_menu.gd:349
 msgid "Made with Godot"
 msgstr "[Màðé ŵîţĥ Ĝôðôţ ~~]"
 
-#: ui/main_menu.gd:443
+#: ui/main_menu.gd:446
 msgid "%dm"
 msgstr "[%dm ~]"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:449
+#: ui/main_menu.gd:452
 msgid "Hub %d"
 msgstr "[Ĥûb %d ~]"
 
-#: ui/main_menu.gd:455
+#: ui/main_menu.gd:458
 msgid "Jan"
 msgstr "[Ĵàñ ~]"
 
-#: ui/main_menu.gd:455
+#: ui/main_menu.gd:458
 msgid "Feb"
 msgstr "[Féb ~]"
 
-#: ui/main_menu.gd:455
+#: ui/main_menu.gd:458
 msgid "Mar"
 msgstr "[Màŕ ~]"
 
-#: ui/main_menu.gd:455
+#: ui/main_menu.gd:458
 msgid "Apr"
 msgstr "[Àþŕ ~]"
 
-#: ui/main_menu.gd:455
+#: ui/main_menu.gd:458
 msgid "May"
 msgstr "[Màý ~]"
 
-#: ui/main_menu.gd:455
+#: ui/main_menu.gd:458
 msgid "Jun"
 msgstr "[Ĵûñ ~]"
 
-#: ui/main_menu.gd:455
+#: ui/main_menu.gd:458
 msgid "Jul"
 msgstr "[Ĵûļ ~]"
 
-#: ui/main_menu.gd:455
+#: ui/main_menu.gd:458
 msgid "Aug"
 msgstr "[Àûĝ ~]"
 
-#: ui/main_menu.gd:455
+#: ui/main_menu.gd:458
 msgid "Sep"
 msgstr "[Šéþ ~]"
 
-#: ui/main_menu.gd:455
+#: ui/main_menu.gd:458
 msgid "Oct"
 msgstr "[Ôçţ ~]"
 
-#: ui/main_menu.gd:455
+#: ui/main_menu.gd:458
 msgid "Nov"
 msgstr "[Ñôv ~]"
 
-#: ui/main_menu.gd:455
+#: ui/main_menu.gd:458
 msgid "Dec"
 msgstr "[Ðéç ~]"
 
-#: ui/main_menu.gd:565
+#: ui/main_menu.gd:568
 msgid "CREDITS"
 msgstr "[ÇŔÉÐÎŢŠ ~]"
 
-#: ui/main_menu.gd:580 ui/settings_panel.gd:117 ui/settings_panel.gd:145
-#: ui/world_picker.gd:53
+#: ui/main_menu.gd:583 ui/profile_picker.gd:49 ui/settings_panel.gd:117
+#: ui/settings_panel.gd:145 ui/world_picker.gd:53
 msgid "Back"
 msgstr "[Bàçķ ~]"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:596
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -3773,27 +3777,27 @@ msgstr ""
 "\n"
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/main_menu.gd:596
+#: ui/main_menu.gd:599
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "[Ţĥîŕð-þàŕţý àššéţš: ÇÇ0, Þôļý Ĥàvéñ (þôļýĥàvéñ.çôm). ~~~~~~~~~~~~~~~]"
 
-#: ui/main_menu.gd:614
+#: ui/main_menu.gd:617
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "[%s [color=#%s]bý %s[/color] ~~~~~~]"
 
-#: ui/main_menu.gd:648
+#: ui/main_menu.gd:651
 msgid "START A NEW GAME?"
 msgstr "[ŠŢÀŔŢ À ÑÉŴ ĜÀMÉ? ~~~]"
 
-#: ui/main_menu.gd:649
+#: ui/main_menu.gd:652
 msgid "Your current save will be erased. This can't be undone."
 msgstr "[Ýôûŕ çûŕŕéñţ šàvé ŵîļļ bé éŕàšéð. Ţĥîš çàñ'ţ bé ûñðôñé. ~~~~~~~~~~~~~~~~]"
 
-#: ui/main_menu.gd:657
+#: ui/main_menu.gd:660
 msgid "Keep my save"
 msgstr "[Ķééþ mý šàvé ~]"
 
-#: ui/main_menu.gd:663
+#: ui/main_menu.gd:666 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "[Éŕàšé àñð šţàŕţ ~~]"
 
@@ -4091,6 +4095,82 @@ msgstr "[Ðŕàĝ ôŕbîţ/ļôôķ · Ŵĥééļ ðîšţàñçé · ŴÀŠÐ 
 #: ui/photo_panel.gd:322
 msgid "PHOTO MODE   Tab"
 msgstr "[ÞĤÔŢÔ MÔÐÉ   Ţàb ~~~]"
+
+#: ui/profile_picker.gd:38
+msgid "SAVE PROFILES"
+msgstr "[ŠÀVÉ ÞŔÔFÎĻÉŠ ~~]"
+
+#: ui/profile_picker.gd:39
+msgid "Each profile has its own worlds, Heirlooms and progress. Settings are shared."
+msgstr "[Éàçĥ þŕôƒîļé ĥàš îţš ôŵñ ŵôŕļðš, Ĥéîŕļôômš àñð þŕôĝŕéšš. Šéţţîñĝš àŕé šĥàŕéð. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/profile_picker.gd:97
+msgid "ACTIVE"
+msgstr "[ÀÇŢÎVÉ ~]"
+
+#: ui/profile_picker.gd:111
+msgid "New"
+msgstr "[Ñéŵ ~]"
+
+#: ui/profile_picker.gd:112
+msgid "Rename"
+msgstr "[Ŕéñàmé ~]"
+
+#: ui/profile_picker.gd:114 ui/profile_picker.gd:233
+msgid "Delete"
+msgstr "[Ðéļéţé ~]"
+
+#: ui/profile_picker.gd:122
+msgid "Empty slot"
+msgstr "[Émþţý šļôţ ~]"
+
+#. Save profile summary: play time, number of planets, the current planet's name.
+#: ui/profile_picker.gd:125
+msgid "%s  ·  %s  ·  on %s"
+msgstr "[%s  ·  %s  ·  ôñ %s ~~~~]"
+
+#: ui/profile_picker.gd:126
+msgid "%d planet"
+msgid_plural "%d planets"
+msgstr[0] "[%d þļàñéţ ~]"
+msgstr[1] "[%d þļàñéţš ~]"
+
+#. Save profile summary: how far the Bloom (restoration milestones) has come.
+#: ui/profile_picker.gd:131
+msgid "Bloom %d%%"
+msgstr "[Bļôôm %d%% ~]"
+
+#: ui/profile_picker.gd:134
+msgid "%s seeds"
+msgstr "[%s šééðš ~]"
+
+#: ui/profile_picker.gd:211
+msgid "START OVER IN %s?"
+msgstr "[ŠŢÀŔŢ ÔVÉŔ ÎÑ %s? ~~~]"
+
+#: ui/profile_picker.gd:212
+msgid "Every world, Heirloom and Starseed in this profile will be erased. The other profiles stay as they are."
+msgstr "[Évéŕý ŵôŕļð, Ĥéîŕļôôm àñð Šţàŕšééð îñ ţĥîš þŕôƒîļé ŵîļļ bé éŕàšéð. Ţĥé ôţĥéŕ þŕôƒîļéš šţàý àš ţĥéý àŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/profile_picker.gd:231
+msgid "DELETE %s?"
+msgstr "[ÐÉĻÉŢÉ %s? ~]"
+
+#: ui/profile_picker.gd:232
+msgid "This profile's worlds and progress will be erased. This can't be undone."
+msgstr "[Ţĥîš þŕôƒîļé'š ŵôŕļðš àñð þŕôĝŕéšš ŵîļļ bé éŕàšéð. Ţĥîš çàñ'ţ bé ûñðôñé. ~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/profile_picker.gd:238
+msgid "RENAME PROFILE"
+msgstr "[ŔÉÑÀMÉ ÞŔÔFÎĻÉ ~~]"
+
+#: ui/profile_picker.gd:252 ui/profile_picker.gd:269
+msgid "Cancel"
+msgstr "[Çàñçéļ ~]"
+
+#: ui/profile_picker.gd:252
+msgid "Save"
+msgstr "[Šàvé ~]"
 
 #: ui/research_node_card.gd:175 ui/research_panel.gd:194
 msgid "Researched"
@@ -4732,9 +4812,17 @@ msgstr "[ŠÉÉÐ MÎŠŠÎÔÑ  ·  ŴÔŔĻÐ %d ~~~~~~]"
 msgid "Lumi's pod is down on %s. A new world, ruined and waiting. Grow something."
 msgstr "[Ļûmî'š þôð îš ðôŵñ ôñ %s. À ñéŵ ŵôŕļð, ŕûîñéð àñð ŵàîţîñĝ. Ĝŕôŵ šôméţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
+#: ui/world_picker.gd:32
+msgid "PLANETS"
+msgstr "[ÞĻÀÑÉŢŠ ~]"
+
 #: ui/world_picker.gd:33
-msgid "Every world the ark has seeded keeps its own save. Pick one to continue there."
-msgstr "[Évéŕý ŵôŕļð ţĥé àŕķ ĥàš šééðéð ķééþš îţš ôŵñ šàvé. Þîçķ ôñé ţô çôñţîñûé ţĥéŕé. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Every planet keeps its own save. Pick one to continue there."
+msgstr "[Évéŕý þļàñéţ ķééþš îţš ôŵñ šàvé. Þîçķ ôñé ţô çôñţîñûé ţĥéŕé. ~~~~~~~~~~~~~~~~~~]"
+
+#: ui/world_picker.gd:89
+msgid "PLANET %d"
+msgstr "[ÞĻÀÑÉŢ %d ~]"
 
 #: ui/world_picker.gd:100
 msgid "Current"
@@ -12247,121 +12335,121 @@ msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people 
 msgstr "[À béñçĥ, à ļàmþ, à ƒôûñţàîñ. Îţ'š šţàŕţîñĝ ţô ļôôķ ļîķé šôméŵĥéŕé þéôþļé ŵôûļð ŵàñţ ţô çômé bàçķ ţô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_ice_moon_arrival
-msgid "Ice Moon. Minus forty at noon, and that's the warm side. Keep your treads moving, {name}."
-msgstr "[Îçé Môôñ. Mîñûš ƒôŕţý àţ ñôôñ, àñð ţĥàţ'š ţĥé ŵàŕm šîðé. Ķééþ ýôûŕ ţŕéàðš môvîñĝ, {name}. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "An ice moon. The Ledger ran its cold storage out here. Cold keeps things, {name}. Including evidence."
+msgstr "[Àñ îçé môôñ. Ţĥé Ļéðĝéŕ ŕàñ îţš çôļð šţôŕàĝé ôûţ ĥéŕé. Çôļð ķééþš ţĥîñĝš, {name}. Îñçļûðîñĝ évîðéñçé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_ice_moon_arrival
-msgid "Everything here froze where it fell. The junk too. It's a museum nobody visits."
-msgstr "[Évéŕýţĥîñĝ ĥéŕé ƒŕôžé ŵĥéŕé îţ ƒéļļ. Ţĥé ĵûñķ ţôô. Îţ'š à mûšéûm ñôbôðý vîšîţš. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Everything froze where they dropped it. Even the junk looks like it's waiting for a refund."
+msgstr "[Évéŕýţĥîñĝ ƒŕôžé ŵĥéŕé ţĥéý ðŕôþþéð îţ. Évéñ ţĥé ĵûñķ ļôôķš ļîķé îţ'š ŵàîţîñĝ ƒôŕ à ŕéƒûñð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_ice_moon_memory_1
-msgid "Memory, recovered: the ark seeded ice moons because ice keeps. Seeds, water, records. Cold is just patience with bad manners."
-msgstr "[Mémôŕý, ŕéçôvéŕéð: ţĥé àŕķ šééðéð îçé môôñš béçàûšé îçé ķééþš. Šééðš, ŵàţéŕ, ŕéçôŕðš. Çôļð îš ĵûšţ þàţîéñçé ŵîţĥ bàð màññéŕš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Ledger ice-haul manifests, still in the silo's memory. They melted this moon's lakes for coolant and shipped the water off-world. The trash, they left right here."
+msgstr "[Ļéðĝéŕ îçé-ĥàûļ màñîƒéšţš, šţîļļ îñ ţĥé šîļô'š mémôŕý. Ţĥéý méļţéð ţĥîš môôñ'š ļàķéš ƒôŕ çôôļàñţ àñð šĥîþþéð ţĥé ŵàţéŕ ôƒƒ-ŵôŕļð. Ţĥé ţŕàšĥ, ţĥéý ļéƒţ ŕîĝĥţ ĥéŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_ice_moon_halfway
-msgid "Halfway. The lakes under the ice are talking back. Mostly creaking. I'll take it."
-msgstr "[Ĥàļƒŵàý. Ţĥé ļàķéš ûñðéŕ ţĥé îçé àŕé ţàļķîñĝ bàçķ. Môšţļý çŕéàķîñĝ. Î'ļļ ţàķé îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Halfway. The lakes under the ice are filling again. The Ledger never budgeted for things coming back."
+msgstr "[Ĥàļƒŵàý. Ţĥé ļàķéš ûñðéŕ ţĥé îçé àŕé ƒîļļîñĝ àĝàîñ. Ţĥé Ļéðĝéŕ ñévéŕ bûðĝéţéð ƒôŕ ţĥîñĝš çômîñĝ bàçķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_ice_moon_memory_2
-msgid "That silo out on the ice was ours. The Makers buried a spare garden in every frozen place they found, in case the warm worlds failed. They did."
-msgstr "[Ţĥàţ šîļô ôûţ ôñ ţĥé îçé ŵàš ôûŕš. Ţĥé Màķéŕš bûŕîéð à šþàŕé ĝàŕðéñ îñ évéŕý ƒŕôžéñ þļàçé ţĥéý ƒôûñð, îñ çàšé ţĥé ŵàŕm ŵôŕļðš ƒàîļéð. Ţĥéý ðîð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "That silo was a seed vault before the Ledger made it a depot. Someone kept seeds hidden in the bottom tier anyway. I'd have liked to meet them."
+msgstr "[Ţĥàţ šîļô ŵàš à šééð vàûļţ béƒôŕé ţĥé Ļéðĝéŕ màðé îţ à ðéþôţ. Šôméôñé ķéþţ šééðš ĥîððéñ îñ ţĥé bôţţôm ţîéŕ àñýŵàý. Î'ð ĥàvé ļîķéð ţô mééţ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_ice_moon_restored
-msgid "The ice moon is breathing. Green under a ringed sky. The Makers never saw this. I'm seeing it for them."
-msgstr "[Ţĥé îçé môôñ îš bŕéàţĥîñĝ. Ĝŕééñ ûñðéŕ à ŕîñĝéð šķý. Ţĥé Màķéŕš ñévéŕ šàŵ ţĥîš. Î'm šééîñĝ îţ ƒôŕ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Green under a ringed sky. The Ledger wrote this moon off as a loss. It was wrong about that too."
+msgstr "[Ĝŕééñ ûñðéŕ à ŕîñĝéð šķý. Ţĥé Ļéðĝéŕ ŵŕôţé ţĥîš môôñ ôƒƒ àš à ļôšš. Îţ ŵàš ŵŕôñĝ àbôûţ ţĥàţ ţôô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_desert_world_arrival
-msgid "Desert World. Dry enough that the dust has dust. Water is the whole game here."
-msgstr "[Ðéšéŕţ Ŵôŕļð. Ðŕý éñôûĝĥ ţĥàţ ţĥé ðûšţ ĥàš ðûšţ. Ŵàţéŕ îš ţĥé ŵĥôļé ĝàmé ĥéŕé. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "A desert world. It wasn't always one. The Ledger pumped its aquifers dry and sold the water by the litre."
+msgstr "[À ðéšéŕţ ŵôŕļð. Îţ ŵàšñ'ţ àļŵàýš ôñé. Ţĥé Ļéðĝéŕ þûmþéð îţš àqûîƒéŕš ðŕý àñð šôļð ţĥé ŵàţéŕ bý ţĥé ļîţŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_desert_world_arrival
 msgid "Sun, sand and one very small robot. I like our odds. Mostly."
 msgstr "[Šûñ, šàñð àñð ôñé véŕý šmàļļ ŕôbôţ. Î ļîķé ôûŕ ôððš. Môšţļý. ~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_desert_world_memory_1
-msgid "Memory file, partial: desert worlds were seeded last. 'Hard ground, long sun, nothing to lose.' Someone wrote that in the margin. I think it was a joke."
-msgstr "[Mémôŕý ƒîļé, þàŕţîàļ: ðéšéŕţ ŵôŕļðš ŵéŕé šééðéð ļàšţ. 'Ĥàŕð ĝŕôûñð, ļôñĝ šûñ, ñôţĥîñĝ ţô ļôšé.' Šôméôñé ŵŕôţé ţĥàţ îñ ţĥé màŕĝîñ. Î ţĥîñķ îţ ŵàš à ĵôķé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Ledger survey file, partial: 'Remaining yield negligible. Recommend abandonment in place.' In place. That's their phrase for leaving the mess."
+msgstr "[Ļéðĝéŕ šûŕvéý ƒîļé, þàŕţîàļ: 'Ŕémàîñîñĝ ýîéļð ñéĝļîĝîbļé. Ŕéçômméñð àbàñðôñméñţ îñ þļàçé.' Îñ þļàçé. Ţĥàţ'š ţĥéîŕ þĥŕàšé ƒôŕ ļéàvîñĝ ţĥé méšš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_desert_world_halfway
-msgid "Halfway green. On a desert. If the Makers had a betting pool, someone just lost."
-msgstr "[Ĥàļƒŵàý ĝŕééñ. Ôñ à ðéšéŕţ. Îƒ ţĥé Màķéŕš ĥàð à béţţîñĝ þôôļ, šôméôñé ĵûšţ ļôšţ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Halfway green, on a planet they filed as 'negligible'. I'm keeping a list of their mistakes. It's getting long."
+msgstr "[Ĥàļƒŵàý ĝŕééñ, ôñ à þļàñéţ ţĥéý ƒîļéð àš 'ñéĝļîĝîbļé'. Î'm ķééþîñĝ à ļîšţ ôƒ ţĥéîŕ mîšţàķéš. Îţ'š ĝéţţîñĝ ļôñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_desert_world_memory_2
-msgid "That tower turned sunlight into everything once. The mirrors kept falling over and nobody had time to stand them up. You do."
-msgstr "[Ţĥàţ ţôŵéŕ ţûŕñéð šûñļîĝĥţ îñţô évéŕýţĥîñĝ ôñçé. Ţĥé mîŕŕôŕš ķéþţ ƒàļļîñĝ ôvéŕ àñð ñôbôðý ĥàð ţîmé ţô šţàñð ţĥém ûþ. Ýôû ðô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "That solar tower powered the pumps. When the water ran out they stopped paying for the mirrors, and they fell over one by one. You're standing them back up."
+msgstr "[Ţĥàţ šôļàŕ ţôŵéŕ þôŵéŕéð ţĥé þûmþš. Ŵĥéñ ţĥé ŵàţéŕ ŕàñ ôûţ ţĥéý šţôþþéð þàýîñĝ ƒôŕ ţĥé mîŕŕôŕš, àñð ţĥéý ƒéļļ ôvéŕ ôñé bý ôñé. Ýôû'ŕé šţàñðîñĝ ţĥém bàçķ ûþ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_desert_world_restored
-msgid "Shade, water, flowers in the sand. The sun's as hot as ever, but now it works for us."
-msgstr "[Šĥàðé, ŵàţéŕ, ƒļôŵéŕš îñ ţĥé šàñð. Ţĥé šûñ'š àš ĥôţ àš évéŕ, bûţ ñôŵ îţ ŵôŕķš ƒôŕ ûš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Shade, water, flowers in the sand. 'Negligible', they said. I'm framing that word."
+msgstr "[Šĥàðé, ŵàţéŕ, ƒļôŵéŕš îñ ţĥé šàñð. 'Ñéĝļîĝîbļé', ţĥéý šàîð. Î'm ƒŕàmîñĝ ţĥàţ ŵôŕð. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_ocean_world_arrival
-msgid "Ocean World. More sea than land, and the land is mostly arguing with the sea. Mind the edges."
-msgstr "[Ôçéàñ Ŵôŕļð. Môŕé šéà ţĥàñ ļàñð, àñð ţĥé ļàñð îš môšţļý àŕĝûîñĝ ŵîţĥ ţĥé šéà. Mîñð ţĥé éðĝéš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "An ocean world. The Ledger dredged its sea floor for metals and dumped the tailings along every coast. Mind the edges."
+msgstr "[Àñ ôçéàñ ŵôŕļð. Ţĥé Ļéðĝéŕ ðŕéðĝéð îţš šéà ƒļôôŕ ƒôŕ méţàļš àñð ðûmþéð ţĥé ţàîļîñĝš àļôñĝ évéŕý çôàšţ. Mîñð ţĥé éðĝéš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_ocean_world_arrival
 msgid "Salt in the air, salt on the junk. Don't lick anything, {name}."
 msgstr "[Šàļţ îñ ţĥé àîŕ, šàļţ ôñ ţĥé ĵûñķ. Ðôñ'ţ ļîçķ àñýţĥîñĝ, {name}. ~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_ocean_world_memory_1
-msgid "I remember the coast worlds. Officially the ark seeded them for the fish. Unofficially, the crew liked the view."
-msgstr "[Î ŕémémbéŕ ţĥé çôàšţ ŵôŕļðš. Ôƒƒîçîàļļý ţĥé àŕķ šééðéð ţĥém ƒôŕ ţĥé ƒîšĥ. Ûñôƒƒîçîàļļý, ţĥé çŕéŵ ļîķéð ţĥé vîéŵ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "I found the dumping schedule. Every tide for forty years. They called it 'coastal storage'. The sea called it something else."
+msgstr "[Î ƒôûñð ţĥé ðûmþîñĝ šçĥéðûļé. Évéŕý ţîðé ƒôŕ ƒôŕţý ýéàŕš. Ţĥéý çàļļéð îţ 'çôàšţàļ šţôŕàĝé'. Ţĥé šéà çàļļéð îţ šôméţĥîñĝ éļšé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_ocean_world_halfway
-msgid "Halfway. The tide comes in on time now. The moon and I have an understanding."
-msgstr "[Ĥàļƒŵàý. Ţĥé ţîðé çôméš îñ ôñ ţîmé ñôŵ. Ţĥé môôñ àñð Î ĥàvé àñ ûñðéŕšţàñðîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Halfway. The water's clearing. The fish are cautiously reconsidering."
+msgstr "[Ĥàļƒŵàý. Ţĥé ŵàţéŕ'š çļéàŕîñĝ. Ţĥé ƒîšĥ àŕé çàûţîôûšļý ŕéçôñšîðéŕîñĝ. ~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_ocean_world_memory_2
-msgid "Those gates held the sea back for a century. Then nobody came to close them. You'd think the sea would be grateful. It isn't."
-msgstr "[Ţĥôšé ĝàţéš ĥéļð ţĥé šéà bàçķ ƒôŕ à çéñţûŕý. Ţĥéñ ñôbôðý çàmé ţô çļôšé ţĥém. Ýôû'ð ţĥîñķ ţĥé šéà ŵôûļð bé ĝŕàţéƒûļ. Îţ îšñ'ţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Those surge gates kept the Ledger's dredging yards dry. When they left, nobody closed them, and the sea took the yards back. Fair."
+msgstr "[Ţĥôšé šûŕĝé ĝàţéš ķéþţ ţĥé Ļéðĝéŕ'š ðŕéðĝîñĝ ýàŕðš ðŕý. Ŵĥéñ ţĥéý ļéƒţ, ñôbôðý çļôšéð ţĥém, àñð ţĥé šéà ţôôķ ţĥé ýàŕðš bàçķ. Fàîŕ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_ocean_world_restored
-msgid "Green to the waterline. Gulls soon, probably. I'm told they're loud. I'm ready."
-msgstr "[Ĝŕééñ ţô ţĥé ŵàţéŕļîñé. Ĝûļļš šôôñ, þŕôbàbļý. Î'm ţôļð ţĥéý'ŕé ļôûð. Î'm ŕéàðý. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Green to the waterline, clear water past it. 'Coastal storage' is just coast again."
+msgstr "[Ĝŕééñ ţô ţĥé ŵàţéŕļîñé, çļéàŕ ŵàţéŕ þàšţ îţ. 'Çôàšţàļ šţôŕàĝé' îš ĵûšţ çôàšţ àĝàîñ. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_fungal_world_arrival
-msgid "Marsh World. Warm, wet and soft underfoot. Everything here wants to grow, mostly the wrong things first."
-msgstr "[Màŕšĥ Ŵôŕļð. Ŵàŕm, ŵéţ àñð šôƒţ ûñðéŕƒôôţ. Évéŕýţĥîñĝ ĥéŕé ŵàñţš ţô ĝŕôŵ, môšţļý ţĥé ŵŕôñĝ ţĥîñĝš ƒîŕšţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "A marsh world. The Ledger's chemical works drained into these valleys for a century. Everything grows here, mostly the wrong things first."
+msgstr "[À màŕšĥ ŵôŕļð. Ţĥé Ļéðĝéŕ'š çĥémîçàļ ŵôŕķš ðŕàîñéð îñţô ţĥéšé vàļļéýš ƒôŕ à çéñţûŕý. Évéŕýţĥîñĝ ĝŕôŵš ĥéŕé, môšţļý ţĥé ŵŕôñĝ ţĥîñĝš ƒîŕšţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_fungal_world_arrival
 msgid "Mist on everything. If you get lost, follow the squelching. That'll be you."
 msgstr "[Mîšţ ôñ évéŕýţĥîñĝ. Îƒ ýôû ĝéţ ļôšţ, ƒôļļôŵ ţĥé šqûéļçĥîñĝ. Ţĥàţ'ļļ bé ýôû. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_fungal_world_memory_1
-msgid "Memory, recovered: the ark seeded marsh worlds as nurseries. Wet ground forgives mistakes. The Makers needed a lot of forgiving."
-msgstr "[Mémôŕý, ŕéçôvéŕéð: ţĥé àŕķ šééðéð màŕšĥ ŵôŕļðš àš ñûŕšéŕîéš. Ŵéţ ĝŕôûñð ƒôŕĝîvéš mîšţàķéš. Ţĥé Màķéŕš ñééðéð à ļôţ ôƒ ƒôŕĝîvîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Ledger compliance report: 'Runoff within acceptable limits.' Acceptable to whom, I'd like to ask. The frogs weren't consulted."
+msgstr "[Ļéðĝéŕ çômþļîàñçé ŕéþôŕţ: 'Ŕûñôƒƒ ŵîţĥîñ àççéþţàbļé ļîmîţš.' Àççéþţàbļé ţô ŵĥôm, Î'ð ļîķé ţô àšķ. Ţĥé ƒŕôĝš ŵéŕéñ'ţ çôñšûļţéð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_fungal_world_halfway
-msgid "Halfway. The mist lifts a little more each morning, then rolls back in to check on us."
-msgstr "[Ĥàļƒŵàý. Ţĥé mîšţ ļîƒţš à ļîţţļé môŕé éàçĥ môŕñîñĝ, ţĥéñ ŕôļļš bàçķ îñ ţô çĥéçķ ôñ ûš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Halfway. The mist smells less like a laboratory every morning. Progress has a smell. It's mud."
+msgstr "[Ĥàļƒŵàý. Ţĥé mîšţ šméļļš ļéšš ļîķé à ļàbôŕàţôŕý évéŕý môŕñîñĝ. Þŕôĝŕéšš ĥàš à šméļļ. Îţ'š mûð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_fungal_world_memory_2
-msgid "That cooling tower ran the whole valley once. Now it's mostly mushroom. Honestly, the mushrooms are better tenants."
-msgstr "[Ţĥàţ çôôļîñĝ ţôŵéŕ ŕàñ ţĥé ŵĥôļé vàļļéý ôñçé. Ñôŵ îţ'š môšţļý mûšĥŕôôm. Ĥôñéšţļý, ţĥé mûšĥŕôômš àŕé béţţéŕ ţéñàñţš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "That cooling tower ran the chemical works. The fungi moved in after the Ledger moved out. They've been cleaning up longer than we have. Respect."
+msgstr "[Ţĥàţ çôôļîñĝ ţôŵéŕ ŕàñ ţĥé çĥémîçàļ ŵôŕķš. Ţĥé ƒûñĝî môvéð îñ àƒţéŕ ţĥé Ļéðĝéŕ môvéð ôûţ. Ţĥéý'vé bééñ çļéàñîñĝ ûþ ļôñĝéŕ ţĥàñ ŵé ĥàvé. Ŕéšþéçţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_fungal_world_restored
-msgid "Clear air over the marsh. Reeds, frogs, real flowers. Soft ground, soft in the good way now."
-msgstr "[Çļéàŕ àîŕ ôvéŕ ţĥé màŕšĥ. Ŕééðš, ƒŕôĝš, ŕéàļ ƒļôŵéŕš. Šôƒţ ĝŕôûñð, šôƒţ îñ ţĥé ĝôôð ŵàý ñôŵ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Clear air over the marsh. Reeds, frogs, real flowers. The runoff is just rain now."
+msgstr "[Çļéàŕ àîŕ ôvéŕ ţĥé màŕšĥ. Ŕééðš, ƒŕôĝš, ŕéàļ ƒļôŵéŕš. Ţĥé ŕûñôƒƒ îš ĵûšţ ŕàîñ ñôŵ. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_rust_world_arrival
-msgid "Rust World. Industry from pole to pole, and none of it switched off properly. Mind the sharp bits. All of them."
-msgstr "[Ŕûšţ Ŵôŕļð. Îñðûšţŕý ƒŕôm þôļé ţô þôļé, àñð ñôñé ôƒ îţ šŵîţçĥéð ôƒƒ þŕôþéŕļý. Mîñð ţĥé šĥàŕþ bîţš. Àļļ ôƒ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "A rust world. This is where the Ledger broke its own ships. Pole to pole, and nothing switched off properly."
+msgstr "[À ŕûšţ ŵôŕļð. Ţĥîš îš ŵĥéŕé ţĥé Ļéðĝéŕ bŕôķé îţš ôŵñ šĥîþš. Þôļé ţô þôļé, àñð ñôţĥîñĝ šŵîţçĥéð ôƒƒ þŕôþéŕļý. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_rust_world_arrival
 msgid "The air tastes like old pennies. I don't have a tongue. I can still tell."
 msgstr "[Ţĥé àîŕ ţàšţéš ļîķé ôļð þéññîéš. Î ðôñ'ţ ĥàvé à ţôñĝûé. Î çàñ šţîļļ ţéļļ. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_rust_world_memory_1
-msgid "I remember this kind. The ark seeded rust worlds on purpose: if a garden grows in a scrapyard, it grows anywhere. You're the test, {name}. No pressure."
-msgstr "[Î ŕémémbéŕ ţĥîš ķîñð. Ţĥé àŕķ šééðéð ŕûšţ ŵôŕļðš ôñ þûŕþôšé: îƒ à ĝàŕðéñ ĝŕôŵš îñ à šçŕàþýàŕð, îţ ĝŕôŵš àñýŵĥéŕé. Ýôû'ŕé ţĥé ţéšţ, {name}. Ñô þŕéššûŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "The Ledger's ledgers, literally: the tonnage stripped from every planet in the system, filed here. They kept perfect books on how they ruined everything."
+msgstr "[Ţĥé Ļéðĝéŕ'š ļéðĝéŕš, ļîţéŕàļļý: ţĥé ţôññàĝé šţŕîþþéð ƒŕôm évéŕý þļàñéţ îñ ţĥé šýšţém, ƒîļéð ĥéŕé. Ţĥéý ķéþţ þéŕƒéçţ bôôķš ôñ ĥôŵ ţĥéý ŕûîñéð évéŕýţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_rust_world_halfway
-msgid "Halfway. Less rust in the wind today. I don't have lungs, but I have standards."
-msgstr "[Ĥàļƒŵàý. Ļéšš ŕûšţ îñ ţĥé ŵîñð ţôðàý. Î ðôñ'ţ ĥàvé ļûñĝš, bûţ Î ĥàvé šţàñðàŕðš. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Halfway. Less rust in the wind. I don't have lungs, but I have standards."
+msgstr "[Ĥàļƒŵàý. Ļéšš ŕûšţ îñ ţĥé ŵîñð. Î ðôñ'ţ ĥàvé ļûñĝš, bûţ Î ĥàvé šţàñðàŕðš. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_rust_world_memory_2
-msgid "That gantry broke ships for a living. Thousands of them. The ark was nearly one. I try not to hold it against the crane."
-msgstr "[Ţĥàţ ĝàñţŕý bŕôķé šĥîþš ƒôŕ à ļîvîñĝ. Ţĥôûšàñðš ôƒ ţĥém. Ţĥé àŕķ ŵàš ñéàŕļý ôñé. Î ţŕý ñôţ ţô ĥôļð îţ àĝàîñšţ ţĥé çŕàñé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "That gantry scrapped the Ledger's fleet when the money ran out. The ark was on the list. Someone took it off. I think about that a lot."
+msgstr "[Ţĥàţ ĝàñţŕý šçŕàþþéð ţĥé Ļéðĝéŕ'š ƒļééţ ŵĥéñ ţĥé môñéý ŕàñ ôûţ. Ţĥé àŕķ ŵàš ôñ ţĥé ļîšţ. Šôméôñé ţôôķ îţ ôƒƒ. Î ţĥîñķ àbôûţ ţĥàţ à ļôţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:world_rust_world_restored
-msgid "A rust world, green. The old cranes have flowers at their feet. It looks like an apology, finally accepted."
-msgstr "[À ŕûšţ ŵôŕļð, ĝŕééñ. Ţĥé ôļð çŕàñéš ĥàvé ƒļôŵéŕš àţ ţĥéîŕ ƒééţ. Îţ ļôôķš ļîķé àñ àþôļôĝý, ƒîñàļļý àççéþţéð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
+msgstr "[À ŕûšţ ŵôŕļð, ĝŕééñ. Ţĥé ôļð çŕàñéš ĥàvé ƒļôŵéŕš àţ ţĥéîŕ ƒééţ. Ţĥé bôôķš àŕé çļôšéð, {name}. Ŵé bàļàñçéð ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
