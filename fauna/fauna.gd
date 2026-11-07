@@ -1311,8 +1311,9 @@ func _hold_pose(a: Animal, dt: float) -> void:
 		St.SOAR:
 			_update_soar(a, dt)
 		St.SWIM:
-			if a.kind == "school":
-				_update_school(a, dt)
+			# Held: the school stays in frame and just swims on the spot.
+			a.phase += dt * 7.0
+			a.gait = 0.35
 		_:
 			pass
 	if a.kind == "swarm":
