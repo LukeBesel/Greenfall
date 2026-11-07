@@ -13,7 +13,7 @@
         "core"
       ],
       "cost": 1100,
-      "parts": 110,
+      "parts": 70,
       "stats": {
         "speed": 1.6,
         "scoop_rate": 1.4,
@@ -74,7 +74,7 @@
         "battery"
       ],
       "cost": 400,
-      "parts": 60,
+      "parts": 40,
       "stats": {
         "speed": 2.8,
         "carry": 2.0
@@ -115,7 +115,7 @@
         "hopper"
       ],
       "cost": 700,
-      "parts": 90,
+      "parts": 60,
       "stats": {
         "speed": 1.5,
         "work_rate": 0.8
@@ -156,7 +156,7 @@
         "battery"
       ],
       "cost": 700,
-      "parts": 90,
+      "parts": 60,
       "stats": {
         "speed": 1.7,
         "work_rate": 1.0,
@@ -219,7 +219,7 @@
         "battery"
       ],
       "cost": 800,
-      "parts": 100,
+      "parts": 60,
       "stats": {
         "speed": 1.8,
         "scoop_rate": 1.5,
@@ -273,7 +273,7 @@
         "module"
       ],
       "cost": 1600,
-      "parts": 200,
+      "parts": 140,
       "stats": {
         "speed": 1.6,
         "scoop_rate": 1.0,

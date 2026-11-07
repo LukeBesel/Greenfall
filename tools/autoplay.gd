@@ -857,7 +857,7 @@ func _shop(want: Dictionary) -> void:
 		var spare: float = GameState.get_currency("cubes").to_float() - float(want.get("robot_cost", 0.0))
 		var must: bool = _robot_goal(robot) or _essential(robot)
 		var ok: bool = hub_save <= 0.0 or spare >= hub_save or must
-		ok = ok and (must or _mats_spare({"parts": fleet.build_parts(robot).to_float()}, false))
+		ok = ok and (must or hub_save <= 0.0 or _mats_spare({"parts": fleet.build_parts(robot).to_float()}, false))
 		if ok and fleet.can_build(robot):
 			var at: Vector3 = world.upgrades.build_at.call() if world.upgrades.build_at.is_valid() else BENCH_STAND
 			fleet.build(robot, at)

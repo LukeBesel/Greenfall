@@ -194,7 +194,7 @@ func spawn(type_id: String, tier: int, at: Vector3, bonus: float, rname: String)
 
 ## [ui2] Parts for each Mk step (Mk II, III, IV). The Restored+ Control Core used to be the gate
 ## (a rare find); these keep Mk tiers about as far apart as they were.
-const TIER_PARTS: Array[float] = [300.0, 900.0, 2500.0]
+const TIER_PARTS: Array[float] = [200.0, 700.0, 2000.0]
 
 
 ## Next tier requirements for a type: {cost: BigNum (cubes), parts: BigNum, ok: bool, reason: String}
