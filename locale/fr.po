@@ -819,11 +819,11 @@ msgstr "Une vieille graine sèche, encore scellée dans son enveloppe. La ferrai
 
 #: player/detector.gd:83
 msgid "BURIED PART  %s  ·  %.1f m"
-msgstr ""
+msgstr "PIÈCE ENTERRÉE  %s  ·  %.1f m"
 
 #: player/detector.gd:86
 msgid "BURIED PART  ·  SIGNAL %d%%"
-msgstr ""
+msgstr "PIÈCE ENTERRÉE  ·  SIGNAL %d%%"
 
 #: player/patch.gd:106
 msgid "Lumi rattles back up into the yard. That was odd."
@@ -1817,17 +1817,17 @@ msgstr "ligne %04d   somme de contrôle %s"
 msgid "MISMATCH"
 msgstr "ÉCART"
 
-#: story/objectives.gd:218
+#: story/objectives.gd:224
 msgid "Objective complete  ·  %s"
-msgstr ""
+msgstr "Objectif atteint  ·  %s"
 
-#: story/objectives.gd:319
+#: story/objectives.gd:325
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
-msgstr ""
+msgstr "Tu entends ces bips ? Ton détecteur a trouvé une pièce de robot enterrée tout près. Plus il bipe vite, plus tu es proche."
 
-#: story/objectives.gd:320
+#: story/objectives.gd:326
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
-msgstr ""
+msgstr "PIÈCE ENTERRÉE : avance vers elle jusqu'au signal maximal, puis déterre-la."
 
 #: story/shards.gd:56
 msgid "Something surfaced in the cleared ground. A memory shard."
@@ -2003,11 +2003,11 @@ msgstr ""
 
 #: systems/contracts.gd:323
 msgid "New at the workbench: the Requests board. Small jobs, real rewards."
-msgstr ""
+msgstr "Nouveau à l'établi : le tableau des demandes. Petits boulots, vraies récompenses."
 
 #: systems/contracts.gd:326
 msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
-msgstr ""
+msgstr "Le relais capte enfin les vieux ordres de travail du Cradle. Ils sont sur le tableau des demandes, à l'établi."
 
 #: systems/contracts.gd:411
 msgid "Request done: %s."
@@ -3677,11 +3677,11 @@ msgstr "%s   établi"
 
 #: ui/key_hints.gd:20
 msgid "press bale"
-msgstr ""
+msgstr "presser un ballot"
 
 #: ui/key_hints.gd:107
 msgid "tools"
-msgstr ""
+msgstr "outils"
 
 #: ui/late_menu.gd:9
 msgid "Garden Mode  [%s]"
@@ -3711,7 +3711,7 @@ msgstr "BALLE PRÊTE"
 
 #: ui/lens_overlay.gd:67
 msgid "◢ BURIED PART %d%%"
-msgstr ""
+msgstr "◢ PIÈCE ENTERRÉE %d%%"
 
 #: ui/main_menu.gd:314
 msgid "One small robot. One very big cleanup."
@@ -3852,7 +3852,7 @@ msgstr "Effacer et commencer"
 
 #: ui/objective_card.gd:46
 msgid "OBJECTIVE"
-msgstr ""
+msgstr "OBJECTIF"
 
 #: ui/pause_menu.gd:42
 msgid "PAUSED"
@@ -9916,91 +9916,91 @@ msgstr ""
 
 #: data/objectives.json:brief.lines
 msgid "Your pod's dead, Lumi, and so is the relay. But the old base recycler still works."
-msgstr ""
+msgstr "Ta capsule est morte, Lumi, et le relais aussi. Mais le vieux recycleur de la base marche encore."
 
 #: data/objectives.json:brief.lines
 msgid "Junk pressed into cubes powers it. Power rebuilds the base and builds you robot helpers."
-msgstr ""
+msgstr "Les déchets pressés en cubes l'alimentent. L'énergie reconstruit la base et te fabrique des robots assistants."
 
 #: data/objectives.json:brief.lines
 msgid "And every bit of green you bring back charges your Bloom Core. Fill it, and you can call the Cradle."
-msgstr ""
+msgstr "Et chaque brin de vert que tu ramènes charge ton Cœur floral. Rempli, il te permettra d'appeler le Cradle."
 
 #: data/objectives.json:brief.lines
 msgid "Three bales should wake the base. Let's start there."
-msgstr ""
+msgstr "Trois ballots devraient réveiller la base. Commençons par là."
 
 #: data/objectives.json:objectives[power].text
 msgid "Power the base: sell 3 bales"
-msgstr ""
+msgstr "Alimente la base : vends 3 ballots"
 
 #: data/objectives.json:objectives[power].desc
 msgid "Cubes feed the recycler. Its power wakes the base."
-msgstr ""
+msgstr "Les cubes nourrissent le recycleur. Son énergie réveille la base."
 
 #: data/objectives.json:objectives[hex].text
 msgid "Clean a hex"
-msgstr ""
+msgstr "Nettoie un hex"
 
 #: data/objectives.json:objectives[hex].desc
 msgid "Clean ground is where green can grow again."
-msgstr ""
+msgstr "Sur un sol propre, le vert peut repousser."
 
 #: data/objectives.json:objectives[robot].text
 msgid "Build your first robot"
-msgstr ""
+msgstr "Construis ton premier robot"
 
 #: data/objectives.json:objectives[robot].desc
 msgid "A helper keeps cleaning while you work."
-msgstr ""
+msgstr "Un assistant continue de nettoyer pendant que tu travailles."
 
 #: data/objectives.json:objectives[robot].lines
 msgid "The base has power! Enough to build you a helper. Try the Bots tab at the workbench."
-msgstr ""
+msgstr "La base a du courant ! Assez pour te construire un assistant. Essaie l'onglet Bots à l'établi."
 
 #: data/objectives.json:objectives[zone].text
 msgid "Send your robot to work"
-msgstr ""
+msgstr "Envoie ton robot au travail"
 
 #: data/objectives.json:objectives[zone].desc
 msgid "Press B and paint the hexes it should clean."
-msgstr ""
+msgstr "Appuie sur B et peins les hex qu'il doit nettoyer."
 
 #: data/objectives.json:objectives[haul].desc
 msgid "It carries bales to the scale for you."
-msgstr ""
+msgstr "Il porte les ballots jusqu'à la balance pour toi."
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base: level 2"
-msgstr ""
+msgstr "Reconstruis la base : niveau 2"
 
 #: data/objectives.json:objectives[base2].desc
 msgid "A bigger base runs more robots."
-msgstr ""
+msgstr "Une base plus grande fait tourner plus de robots."
 
 #: data/objectives.json:objectives[base2].lines
 msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
-msgstr ""
+msgstr "Le hub peut grandir. Reconstruis-le depuis l'onglet Base à l'établi."
 
 #: data/objectives.json:objectives[seed].text
 msgid "Plant the first seed"
-msgstr ""
+msgstr "Plante la première graine"
 
 #: data/objectives.json:objectives[seed].desc
 msgid "Living green charges your Bloom Core."
-msgstr ""
+msgstr "Le vert vivant charge ton Cœur floral."
 
 #: data/objectives.json:objectives[seed].hint
 msgid "Keep clearing ground. WREN is listening for seeds."
-msgstr ""
+msgstr "Continue de dégager le sol. WREN guette des graines."
 
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base: level 3"
-msgstr ""
+msgstr "Reconstruis la base : niveau 3"
 
 #: data/objectives.json:objectives[base3].desc
 msgid "Level 3 opens the Requests board."
-msgstr ""
+msgstr "Le niveau 3 ouvre le tableau des demandes."
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"
