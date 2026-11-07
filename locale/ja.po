@@ -6906,1055 +6906,1055 @@ msgstr "依頼を10件達成。どの項目もチェック済み、どの項目�
 
 #: data/events.json:trinkets[contract_crown].name
 msgid "Contractor's Crown"
-msgstr ""
+msgstr "請負人の王冠"
 
 #: data/events.json:trinkets[contract_crown].desc
 msgid "Twenty-five contracts. The crown is a bent can. You wear it anyway."
-msgstr ""
+msgstr "依頼25件。王冠は曲がった缶。それでもかぶる。"
 
 #: data/events.json:trinkets[capsule_rubber_frog].name
 msgid "Rubber Frog"
-msgstr ""
+msgstr "ゴムのカエル"
 
 #: data/events.json:trinkets[capsule_rubber_frog].desc
 msgid "Squeaks in a minor key."
-msgstr ""
+msgstr "短調でキュッと鳴く。"
 
 #: data/events.json:trinkets[capsule_tiny_cactus].name
 msgid "Tiny Cactus"
-msgstr ""
+msgstr "ちびサボテン"
 
 #: data/events.json:trinkets[capsule_tiny_cactus].desc
 msgid "Needs no water. Mocks the Drips."
-msgstr ""
+msgstr "水いらず。Drip をからかう。"
 
 #: data/events.json:trinkets[capsule_holo_koi].name
 msgid "Holo Koi"
-msgstr ""
+msgstr "ホロ錦鯉"
 
 #: data/events.json:trinkets[capsule_holo_koi].desc
 msgid "A hologram fish that swims round your hopper."
-msgstr ""
+msgstr "ホッパーのまわりを泳ぐホログラムの魚。"
 
 #: data/events.json:trinkets[capsule_moon_rock].name
 msgid "Moon Rock"
-msgstr ""
+msgstr "月の石"
 
 #: data/events.json:trinkets[capsule_moon_rock].desc
 msgid "Not from the moon. From a parking lot. Still beautiful."
-msgstr ""
+msgstr "月からではない。駐車場から。それでもきれい。"
 
 #: data/events.json:wren
 msgid "Crate inbound. From... me? I don't remember sending that. Open it."
-msgstr ""
+msgstr "木箱が向かってくる。差出人は……私？送った覚えはないな。開けてみて。"
 
 #: data/events.json:wren
 msgid "Supply drop! I found an old Cradle pod still in orbit and nudged it down."
-msgstr ""
+msgstr "補給物資！軌道上に残っていた古い Cradle号のポッドを見つけて、そっと押し出したんだ。"
 
 #: data/events.json:wren
 msgid "Another care package. I've been saving them for good days. This is one."
-msgstr ""
+msgstr "また差し入れ。いい日のために取っておいたんだ。今日はそういう日。"
 
 #: data/events.json:wren
 msgid "That hex is glowing. Readings say... valuable. Hurry."
-msgstr ""
+msgstr "あのヘックス、光ってる。測定値は……価値あり。急いで。"
 
 #: data/events.json:wren
 msgid "Surge! The old buried cables light up when the junk shifts. Grab it while it's bright."
-msgstr ""
+msgstr "ラッシュ！ガラクタが動くと、埋まった古いケーブルが光るんだ。光っているうちにつかまえて。"
 
 #: data/events.json:wren
 msgid "Look at that glow. Three times the value, two minutes. Go go go."
-msgstr ""
+msgstr "あの光を見て。価値3倍、2分間。行って行って行って。"
 
 #: data/events.json:wren
 msgid "Is that... water? From the sky?"
-msgstr ""
+msgstr "あれは……水？空から？"
 
 #: data/events.json:wren
 msgid "Rain. I'd forgotten the sound. Your plants hadn't."
-msgstr ""
+msgstr "雨だ。この音を忘れていた。君の植物は忘れていなかったね。"
 
 #: data/events.json:wren
 msgid "Rain on clean ground. It smells like a memory."
-msgstr ""
+msgstr "きれいな地面に降る雨。思い出のにおいがする。"
 
 #: data/events.json:wren
 msgid "One of your helpers is stuck. Hic."
-msgstr ""
+msgstr "ヘルパーのひとりが止まっちゃった。ヒック。"
 
 #: data/events.json:wren
 msgid "{robot} has the hiccups. Try a firm pat on the chassis."
-msgstr ""
+msgstr "{robot} がしゃっくりしてる。シャーシをしっかりポンとたたいてみて。"
 
 #: data/events.json:wren
 msgid "{robot} needs you. Gently, they're sensitive."
-msgstr ""
+msgstr "{robot} が君を必要としてる。そっとね、繊細だから。"
 
 #: data/events.json:wren
 msgid "Something alive is moving out there. Not a robot."
-msgstr ""
+msgstr "外で何か生き物が動いてる。ロボットじゃない。"
 
 #: data/events.json:wren
 msgid "A visitor! Go slowly. Take a picture, it lasts longer."
-msgstr ""
+msgstr "お客さんだ！ゆっくりね。写真を撮ろう、そのほうが長く残る。"
 
 #: data/events.json:wren
 msgid "The thriving hexes are calling things home. Look."
-msgstr ""
+msgstr "繁栄したヘックスが、命を呼び戻してる。見て。"
 
 #: data/events.json:wren
 msgid "Strong signal. Something old and well made."
-msgstr ""
+msgstr "強いシグナル。古くて、よくできた何か。"
 
 #: data/events.json:wren
 msgid "That ping is Maker-grade. Follow the violet light."
-msgstr ""
+msgstr "あの反応はメイカー級。紫の光をたどって。"
 
 #: data/events.json:wren
 msgid "A rare part, close. I can almost hear it."
-msgstr ""
+msgstr "レアパーツがすぐ近くに。音が聞こえそうなくらい。"
 
 #: data/events.json:wren
 msgid "The Ledger wants to race. I told it you'd win."
-msgstr ""
+msgstr "Ledger が競争したいって。君が勝つと言っておいた。"
 
 #: data/events.json:wren
 msgid "Audit drone, friendly. It's very competitive now."
-msgstr ""
+msgstr "監査ドローン、友好的。最近とても負けず嫌い。"
 
 #: data/events.json:wren
 msgid "The Ledger says it's 'just a routine audit'. It's been practising."
-msgstr ""
+msgstr "Ledger は「ただの定期監査です」と言ってる。練習してたんだよ。"
 
 #: data/events.json:wren
 msgid "Well done. That's going in my log."
-msgstr ""
+msgstr "よくやった。記録に残しておくね。"
 
 #: data/events.json:wren
 msgid "Nicely handled."
-msgstr ""
+msgstr "うまくやったね。"
 
 #: data/events.json:wren
 msgid "You make this look easy."
-msgstr ""
+msgstr "君がやると簡単そうに見える。"
 
 #: data/events.json:wren
 msgid "You're on a roll!"
-msgstr ""
+msgstr "調子が出てきた！"
 
 #: data/events.json:wren
 msgid "Max streak. The scoop is singing."
-msgstr ""
+msgstr "最大コンボ。スコップが歌ってる。"
 
 #: data/events.json:wren
 msgid "Look at you go."
-msgstr ""
+msgstr "いい調子だね。"
 
 #: data/events.json:wren
 msgid "Contract complete. Collect at the workbench."
-msgstr ""
+msgstr "依頼達成。作業台で受け取ろう。"
 
 #: data/events.json:wren
 msgid "Another contract done. Tokens are waiting."
-msgstr ""
+msgstr "また依頼達成。トークンが待ってるよ。"
 
 #: data/events.json:wren
 msgid "Contract fulfilled. The board's lit up green."
-msgstr ""
+msgstr "依頼完了。ボードが緑に光った。"
 
 #: data/frontiers.json:kinds[dust_flats].tagline
 msgid "Sand dunes, half-buried wrecks and a dead solar farm."
-msgstr ""
+msgstr "砂丘、半分埋もれた残骸、止まったソーラーファーム。"
 
 #: data/frontiers.json:kinds[frozen_port].tagline
 msgid "Cranes, shipping containers and a harbour frozen solid."
-msgstr ""
+msgstr "クレーン、コンテナ、かちかちに凍った港。"
 
 #: data/frontiers.json:kinds[sunken_city].tagline
 msgid "A flooded downtown. Rooftops poke out of the water."
-msgstr ""
+msgstr "水に沈んだ中心街。屋根が水面から突き出ている。"
 
 #: data/frontiers.json:kinds[cradle_returns].tagline
 msgid "The old launch city, where the ark will land."
-msgstr ""
+msgstr "アークが降り立つ、昔の発射都市。"
 
 #: data/goals.json:goals[scoop_15].text
 msgid "Scoop 15 pieces of junk"
-msgstr ""
+msgstr "ガラクタを15個すくう"
 
 #: data/goals.json:goals[bale_1].text
 msgid "Compress your first bale"
-msgstr ""
+msgstr "はじめてベールを圧縮する"
 
 #: data/goals.json:goals[cash_1].text
 msgid "Sell a bale at the scale"
-msgstr ""
+msgstr "はかりでベールを売る"
 
 #: data/goals.json:goals[upgrade_1].text
 msgid "Install a workbench upgrade"
-msgstr ""
+msgstr "作業台でアップグレードを取り付ける"
 
 #: data/goals.json:goals[hex_1].text
 msgid "Clean your first hex"
-msgstr ""
+msgstr "はじめてヘックスを片づける"
 
 #: data/goals.json:goals[perfect_1].text
 msgid "Make a Perfect bale"
-msgstr ""
+msgstr "パーフェクトベールを作る"
 
 #: data/goals.json:goals[upgrades_5].text
 msgid "Install 5 upgrades"
-msgstr ""
+msgstr "アップグレードを5つ取り付ける"
 
 #: data/goals.json:goals[cash_10].text
 msgid "Sell 10 bales"
-msgstr ""
+msgstr "ベールを10個売る"
 
 #: data/goals.json:goals[compartment_3].text
 msgid "Compartment Size level 3"
-msgstr ""
+msgstr "コンテナ容量をレベル3に"
 
 #: data/goals.json:goals[shards_1].text
 msgid "Read a memory shard"
-msgstr ""
+msgstr "メモリーの破片を読む"
 
 #: data/goals.json:goals[hex_3].text
 msgid "Clean 3 hexes"
-msgstr ""
+msgstr "ヘックスを3個片づける"
 
 #: data/goals.json:goals[parts_2].text
 msgid "Dig up 2 robot parts"
-msgstr ""
+msgstr "ロボットのパーツを2個掘り出す"
 
 #: data/goals.json:goals[earn_1k].text
 msgid "Earn 1,000 cubes"
-msgstr ""
+msgstr "1,000キューブ稼ぐ"
 
 #: data/goals.json:goals[research_1].text
 msgid "Finish a research project"
-msgstr ""
+msgstr "研究を1件完了する"
 
 #: data/goals.json:goals[hex_5].text
 msgid "Clean 5 hexes"
-msgstr ""
+msgstr "ヘックスを5個片づける"
 
 #: data/goals.json:goals[scoopie_1].text
 msgid "Build a Scoopie"
-msgstr ""
+msgstr "Scoopie を作る"
 
 #: data/goals.json:goals[zone_1].text
 msgid "Paint a work zone (B Command)"
-msgstr ""
+msgstr "作業ゾーンを塗る（B 指揮）"
 
 #: data/goals.json:goals[haulbug_1].text
 msgid "Build a Haul Bug"
-msgstr ""
+msgstr "Haul Bug を作る"
 
 #: data/goals.json:goals[upgrades_12].text
 msgid "Install 12 upgrades"
-msgstr ""
+msgstr "アップグレードを12個取り付ける"
 
 #: data/goals.json:goals[earn_3k].text
 msgid "Earn 3,000 cubes"
-msgstr ""
+msgstr "3,000キューブ稼ぐ"
 
 #: data/goals.json:goals[hex_7].text
 msgid "Clean 7 hexes"
-msgstr ""
+msgstr "ヘックスを7個片づける"
 
 #: data/goals.json:goals[research_4].text
 msgid "Finish 4 research projects"
-msgstr ""
+msgstr "研究を4件完了する"
 
 #: data/goals.json:goals[upgrades_20].text
 msgid "Install 20 upgrades"
-msgstr ""
+msgstr "アップグレードを20個取り付ける"
 
 #: data/goals.json:goals[bales_20].text
 msgid "Robots press 20 bales"
-msgstr ""
+msgstr "ロボットがベールを20個圧縮"
 
 #: data/goals.json:goals[scoopie_2].text
 msgid "Run 2 Scoopies"
-msgstr ""
+msgstr "Scoopie を2台動かす"
 
 #: data/goals.json:goals[base_2].text
 msgid "Upgrade the base to level 2"
-msgstr ""
+msgstr "基地をレベル2にする"
 
 #: data/goals.json:goals[hex_12].text
 msgid "Clean 12 hexes"
-msgstr ""
+msgstr "ヘックスを12個片づける"
 
 #: data/goals.json:goals[upgrades_25].text
 msgid "Install 25 upgrades"
-msgstr ""
+msgstr "アップグレードを25個取り付ける"
 
 #: data/goals.json:goals[research_6].text
 msgid "Finish 6 research projects"
-msgstr ""
+msgstr "研究を6件完了する"
 
 #: data/goals.json:goals[robots_4].text
 msgid "Build 4 robots"
-msgstr ""
+msgstr "ロボットを4台作る"
 
 #: data/goals.json:goals[builder_1].text
 msgid "Fit a part in the Builder"
-msgstr ""
+msgstr "ビルダーでパーツを装着する"
 
 #: data/goals.json:goals[hex_15].text
 msgid "Clean 15 hexes"
-msgstr ""
+msgstr "ヘックスを15個片づける"
 
 #: data/goals.json:goals[seeds].text
 msgid "Find the seed tin"
-msgstr ""
+msgstr "種の缶を見つける"
 
 #: data/goals.json:goals[plant_5].text
 msgid "Plant 5 seeds"
-msgstr ""
+msgstr "種を5個植える"
 
 #: data/goals.json:goals[hexlv_2].text
 msgid "Get a hex to Planted"
-msgstr ""
+msgstr "ヘックスを「植え付け済み」にする"
 
 #: data/goals.json:goals[earn_10k].text
 msgid "Earn 10,000 cubes"
-msgstr ""
+msgstr "10,000キューブ稼ぐ"
 
 #: data/goals.json:goals[bloom_5].text
 msgid "Grow 5 flowers to bloom"
-msgstr ""
+msgstr "花を5輪咲かせる"
 
 #: data/goals.json:goals[shards_2].text
 msgid "Read 2 memory shards"
-msgstr ""
+msgstr "メモリーの破片を2つ読む"
 
 #: data/goals.json:goals[zone_6].text
 msgid "Zone 6 hexes for your crews"
-msgstr ""
+msgstr "クルー用にヘックスを6個ゾーン指定する"
 
 #: data/goals.json:goals[hex_17].text
 msgid "Clean 17 hexes"
-msgstr ""
+msgstr "ヘックスを17個片づける"
 
 #: data/goals.json:goals[research_8].text
 msgid "Finish 8 research projects"
-msgstr ""
+msgstr "研究を8件完了する"
 
 #: data/goals.json:goals[bales_100].text
 msgid "Robots press 100 bales"
-msgstr ""
+msgstr "ロボットがベールを100個圧縮"
 
 #: data/goals.json:goals[recycle_5].text
 msgid "Recycle 5 bales"
-msgstr ""
+msgstr "ベールを5個リサイクルする"
 
 #: data/goals.json:goals[hexlv_3].text
 msgid "Get a hex to Growing"
-msgstr ""
+msgstr "ヘックスを「成長中」にする"
 
 #: data/goals.json:goals[hex_20].text
 msgid "Clean 20 hexes"
-msgstr ""
+msgstr "ヘックスを20個片づける"
 
 #: data/goals.json:goals[skimmer_1].text
 msgid "Build a Skimmer for the lake"
-msgstr ""
+msgstr "湖のために Skimmer を作る"
 
 #: data/goals.json:goals[research_12].text
 msgid "Finish 12 research projects"
-msgstr ""
+msgstr "研究を12件完了する"
 
 #: data/goals.json:goals[hex_25].text
 msgid "Clean 25 hexes"
-msgstr ""
+msgstr "ヘックスを25個片づける"
 
 #: data/goals.json:goals[earn_50k].text
 msgid "Earn 50,000 cubes"
-msgstr ""
+msgstr "50,000キューブ稼ぐ"
 
 #: data/goals.json:goals[hex_28].text
 msgid "Clean 28 hexes"
-msgstr ""
+msgstr "ヘックスを28個片づける"
 
 #: data/goals.json:goals[upgrades_40].text
 msgid "Install 40 upgrades"
-msgstr ""
+msgstr "アップグレードを40個取り付ける"
 
 #: data/goals.json:goals[seedling_1].text
 msgid "Build a Seedling planter"
-msgstr ""
+msgstr "Seedling の植え付けロボを作る"
 
 #: data/goals.json:goals[hex_30].text
 msgid "Clean 30 hexes (lake too)"
-msgstr ""
+msgstr "ヘックスを30個片づける（湖も）"
 
 #: data/goals.json:goals[base_3].text
 msgid "Upgrade the base to level 3"
-msgstr ""
+msgstr "基地をレベル3にする"
 
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
-msgstr ""
+msgstr "種を25個植える"
 
 #: data/goals.json:goals[drip_1].text
 msgid "Build a Drip watering robot"
-msgstr ""
+msgstr "Drip 水やりロボを作る"
 
 #: data/goals.json:goals[pollinator].text
 msgid "Research Pollinator Survey"
-msgstr ""
+msgstr "「花粉媒介者の調査」を研究する"
 
 #: data/goals.json:goals[bloom_25].text
 msgid "Grow 25 flowers to bloom"
-msgstr ""
+msgstr "花を25輪咲かせる"
 
 #: data/goals.json:goals[tank_1].text
 msgid "Place a Water Tank"
-msgstr ""
+msgstr "給水タンクを置く"
 
 #: data/goals.json:goals[plant_60].text
 msgid "Plant 60 seeds"
-msgstr ""
+msgstr "種を60個植える"
 
 #: data/goals.json:goals[drip_2].text
 msgid "Run 2 Drip robots"
-msgstr ""
+msgstr "Drip ロボを2台動かす"
 
 #: data/goals.json:goals[hexlv_4].text
 msgid "Get a hex to Sustained"
-msgstr ""
+msgstr "ヘックスを維持状態にする"
 
 #: data/goals.json:goals[drip_4].text
 msgid "Run 4 Drip robots"
-msgstr ""
+msgstr "Drip ロボを4台動かす"
 
 #: data/goals.json:goals[hexlv_4x3].text
 msgid "Get 3 hexes to Sustained"
-msgstr ""
+msgstr "ヘックスを3個維持状態にする"
 
 #: data/goals.json:goals[hexlv_5].text
 msgid "Get a hex to Thriving"
-msgstr ""
+msgstr "ヘックスを繁栄状態にする"
 
 #: data/goals.json:goals[hexlv_4x5].text
 msgid "Get 5 hexes to Sustained"
-msgstr ""
+msgstr "ヘックスを5個維持状態にする"
 
 #: data/goals.json:goals[plant_100].text
 msgid "Plant 100 seeds"
-msgstr ""
+msgstr "種を100個植える"
 
 #: data/goals.json:goals[robots_15].text
 msgid "Build 15 robots"
-msgstr ""
+msgstr "ロボットを15台作る"
 
 #: data/goals.json:goals[hexlv_5x3].text
 msgid "Get 3 hexes to Thriving"
-msgstr ""
+msgstr "ヘックスを3個繁栄状態にする"
 
 #: data/goals.json:goals[hexlv_4x8].text
 msgid "Get 8 hexes to Sustained"
-msgstr ""
+msgstr "ヘックスを8個維持状態にする"
 
 #: data/goals.json:goals[earn_75k].text
 msgid "Earn 75,000 cubes"
-msgstr ""
+msgstr "75,000キューブ稼ぐ"
 
 #: data/goals.json:goals[bloom_300].text
 msgid "Grow 300 flowers to bloom"
-msgstr ""
+msgstr "花を300輪咲かせる"
 
 #: data/goals.json:goals[stipend_2k].text
 msgid "Garden stipend: 2,000 cubes"
-msgstr ""
+msgstr "ガーデン助成金：2,000キューブ"
 
 #: data/goals.json:goals[hexlv_5x8].text
 msgid "Get 8 hexes to Thriving"
-msgstr ""
+msgstr "ヘックスを8個繁栄状態にする"
 
 #: data/goals.json:goals[hexlv_4x10].text
 msgid "Get 10 hexes to Sustained"
-msgstr ""
+msgstr "ヘックスを10個維持状態にする"
 
 #: data/goals.json:goals[earn_100k].text
 msgid "Earn 100,000 cubes"
-msgstr ""
+msgstr "100,000キューブ稼ぐ"
 
 #: data/goals.json:goals[hexlv_4x15].text
 msgid "Get 15 hexes to Sustained"
-msgstr ""
+msgstr "ヘックスを15個維持状態にする"
 
 #: data/goals.json:goals[hexlv_5x15].text
 msgid "Get 15 hexes to Thriving"
-msgstr ""
+msgstr "ヘックスを15個繁栄状態にする"
 
 #: data/goals.json:goals[hexlv_4x20].text
 msgid "Get 20 hexes to Sustained"
-msgstr ""
+msgstr "ヘックスを20個維持状態にする"
 
 #: data/goals.json:goals[base_4].text
 msgid "Upgrade the base to level 4"
-msgstr ""
+msgstr "基地をレベル4にする"
 
 #: data/goals.json:goals[stipend_5k].text
 msgid "Garden stipend: 5,000 cubes"
-msgstr ""
+msgstr "ガーデン助成金：5,000キューブ"
 
 #: data/goals.json:goals[bloom_500].text
 msgid "Grow 500 flowers to bloom"
-msgstr ""
+msgstr "花を500輪咲かせる"
 
 #: data/goals.json:goals[hexlv_5x20].text
 msgid "Get 20 hexes to Thriving"
-msgstr ""
+msgstr "ヘックスを20個繁栄状態にする"
 
 #: data/goals.json:goals[air_1k].text
 msgid "Filter 1,000 m3 of air"
-msgstr ""
+msgstr "空気を1,000 m3 ろ過する"
 
 #: data/goals.json:goals[stipend_7k].text
 msgid "Garden stipend: 7,500 cubes"
-msgstr ""
+msgstr "ガーデン助成金：7,500キューブ"
 
 #: data/goals.json:goals[stipend_10k].text
 msgid "Garden stipend: 10,000 cubes"
-msgstr ""
+msgstr "ガーデン助成金：10,000キューブ"
 
 #: data/goals.json:goals[hexlv_5x25].text
 msgid "Get 25 hexes to Thriving"
-msgstr ""
+msgstr "ヘックスを25個繁栄状態にする"
 
 #: data/goals.json:goals[base_5].text
 msgid "Upgrade the base to level 5"
-msgstr ""
+msgstr "基地をレベル5にする"
 
 #: data/goals.json:goals[rocket].text
 msgid "Launch the rocket onward"
-msgstr ""
+msgstr "ロケットで次へ飛び立つ"
 
 #: data/goals.json:goals[builder_full].text
 msgid "Fully custom-build a robot"
-msgstr ""
+msgstr "ロボットをフルカスタムで作る"
 
 #: data/goals.json:goals[builder_preset].text
 msgid "Save a crew build preset"
-msgstr ""
+msgstr "クルーの構成プリセットを保存する"
 
 #: data/goals.json:goals[research_20].text
 msgid "Finish 20 research projects"
-msgstr ""
+msgstr "研究を20件完了する"
 
 #: data/goals.json:goals[multibot_1].text
 msgid "Build a Multibot"
-msgstr ""
+msgstr "Multibot を作る"
 
 #: data/goals.json:goals[tier_1].text
 msgid "Upgrade a robot type to Mk II"
-msgstr ""
+msgstr "ロボットタイプを Mk II にする"
 
 #: data/goals.json:goals[stipend_20k].text
 msgid "Garden stipend: 20,000 cubes"
-msgstr ""
+msgstr "ガーデン助成金：20,000キューブ"
 
 #: data/goals.json:goals[earn_150k].text
 msgid "Earn 150,000 cubes"
-msgstr ""
+msgstr "150,000キューブ稼ぐ"
 
 #: data/goals.json:goals[base2_3].text
 msgid "Fix up the new base to level 3"
-msgstr ""
+msgstr "新しい基地をレベル3まで直す"
 
 #: data/goals.json:goals[hex_50].text
 msgid "Clean 50 hexes"
-msgstr ""
+msgstr "ヘックスを50個片づける"
 
 #: data/goals.json:goals[bloom_800].text
 msgid "Grow 800 flowers to bloom"
-msgstr ""
+msgstr "花を800輪咲かせる"
 
 #: data/goals.json:goals[restored_40].text
 msgid "Fully restore 40 hexes"
-msgstr ""
+msgstr "ヘックスを40個完全によみがえらせる"
 
 #: data/goals.json:goals[base2_4].text
 msgid "New base to level 4"
-msgstr ""
+msgstr "新しい基地をレベル4に"
 
 #: data/goals.json:goals[base5_2].text
 msgid "Get a second base to level 5"
-msgstr ""
+msgstr "2つ目の基地をレベル5にする"
 
 #: data/goals.json:goals[research_dunes].text
 msgid "Research Dune Charts"
-msgstr ""
+msgstr "「砂丘の海図」を研究する"
 
 #: data/goals.json:goals[visit_dust].text
 msgid "Fly to the Dust Flats"
-msgstr ""
+msgstr "ダストフラットへ飛ぶ"
 
 #: data/goals.json:goals[research_24].text
 msgid "Finish 24 research projects"
-msgstr ""
+msgstr "研究を24件完了する"
 
 #: data/goals.json:goals[storm_1].text
 msgid "Ride out a sandstorm"
-msgstr ""
+msgstr "砂嵐を乗り切る"
 
 #: data/goals.json:goals[dust_base3].text
 msgid "Dust Flats base to level 3"
-msgstr ""
+msgstr "ダストフラットの基地をレベル3に"
 
 #: data/goals.json:goals[dust_grow15].text data/goals.json:goals[frozen_grow15].text data/goals.json:goals[sunken_grow15].text
 msgid "Get 15 hexes Growing here"
-msgstr ""
+msgstr "ここでヘックスを15個「成長中」にする"
 
 #: data/goals.json:goals[hex_80].text
 msgid "Clean 80 hexes"
-msgstr ""
+msgstr "ヘックスを80個片づける"
 
 #: data/goals.json:goals[storm_3].text
 msgid "Ride out 3 sandstorms"
-msgstr ""
+msgstr "砂嵐を3回乗り切る"
 
 #: data/goals.json:goals[dust_base4].text
 msgid "Dust Flats base to level 4"
-msgstr ""
+msgstr "ダストフラットの基地をレベル4に"
 
 #: data/goals.json:goals[hex_100].text
 msgid "Clean 100 hexes"
-msgstr ""
+msgstr "ヘックスを100個片づける"
 
 #: data/goals.json:goals[research_lance].text
 msgid "Research Thermal Lance"
-msgstr ""
+msgstr "「サーマルランス」を研究する"
 
 #: data/goals.json:goals[dust_base5].text
 msgid "Dust Flats base to level 5"
-msgstr ""
+msgstr "ダストフラットの基地をレベル5に"
 
 #: data/goals.json:goals[base5_3].text
 msgid "Get three bases to level 5"
-msgstr ""
+msgstr "3つの基地をレベル5にする"
 
 #: data/goals.json:goals[visit_frozen].text
 msgid "Fly to the Frozen Port"
-msgstr ""
+msgstr "フローズンポートへ飛ぶ"
 
 #: data/goals.json:goals[research_26].text
 msgid "Finish 26 research projects"
-msgstr ""
+msgstr "研究を26件完了する"
 
 #: data/goals.json:goals[heater_1].text
 msgid "Light a heater on the ice"
-msgstr ""
+msgstr "氷の上でヒーターをつける"
 
 #: data/goals.json:goals[thaw_10].text
 msgid "Thaw 10 hexes"
-msgstr ""
+msgstr "ヘックスを10個解凍する"
 
 #: data/goals.json:goals[greenhouse_1].text
 msgid "Build a greenhouse"
-msgstr ""
+msgstr "温室を建てる"
 
 #: data/goals.json:goals[frozen_base3].text
 msgid "Frozen Port base to level 3"
-msgstr ""
+msgstr "フローズンポートの基地をレベル3に"
 
 #: data/goals.json:goals[thaw_30].text
 msgid "Thaw 30 hexes"
-msgstr ""
+msgstr "ヘックスを30個解凍する"
 
 #: data/goals.json:goals[frozen_base4].text
 msgid "Frozen Port base to level 4"
-msgstr ""
+msgstr "フローズンポートの基地をレベル4に"
 
 #: data/goals.json:goals[hex_130].text
 msgid "Clean 130 hexes"
-msgstr ""
+msgstr "ヘックスを130個片づける"
 
 #: data/goals.json:goals[research_pumps].text
 msgid "Research Pump Works"
-msgstr ""
+msgstr "「ポンプ設備」を研究する"
 
 #: data/goals.json:goals[frozen_base5].text
 msgid "Frozen Port base to level 5"
-msgstr ""
+msgstr "フローズンポートの基地をレベル5に"
 
 #: data/goals.json:goals[base5_4].text
 msgid "Get four bases to level 5"
-msgstr ""
+msgstr "4つの基地をレベル5にする"
 
 #: data/goals.json:goals[visit_sunken].text
 msgid "Fly to the Sunken City"
-msgstr ""
+msgstr "水没都市へ飛ぶ"
 
 #: data/goals.json:goals[drain_1].text
 msgid "Run the old pumps"
-msgstr ""
+msgstr "古いポンプを動かす"
 
 #: data/goals.json:goals[sunken_base3].text
 msgid "Sunken City base to level 3"
-msgstr ""
+msgstr "水没都市の基地をレベル3に"
 
 #: data/goals.json:goals[drain_3].text
 msgid "Drain the Sunken City"
-msgstr ""
+msgstr "水没都市の水を抜く"
 
 #: data/goals.json:goals[sunken_base4].text
 msgid "Sunken City base to level 4"
-msgstr ""
+msgstr "水没都市の基地をレベル4に"
 
 #: data/goals.json:goals[sunken_base5].text
 msgid "Sunken City base to level 5"
-msgstr ""
+msgstr "水没都市の基地をレベル5に"
 
 #: data/goals.json:goals[frontiers_growing].text
 msgid "Every frontier 50% Growing"
-msgstr ""
+msgstr "すべての辺境を50%成長中に"
 
 #: data/goals.json:goals[research_beacon].text
 msgid "Research the Ark Beacon"
-msgstr ""
+msgstr "「アークビーコン」を研究する"
 
 #: data/goals.json:goals[visit_cradle].text
 msgid "Fly to Cradle Returns"
-msgstr ""
+msgstr "Cradle号の帰還へ飛ぶ"
 
 #: data/goals.json:goals[cradle_pad].text
 msgid "Clean the Cradle landing pad"
-msgstr ""
+msgstr "Cradle号の着陸パッドを片づける"
 
 #: data/goals.json:goals[cradle_grow25].text
 msgid "Get 25 hexes Growing here"
-msgstr ""
+msgstr "ここでヘックスを25個「成長中」にする"
 
 #: data/goals.json:goals[cradle_home].text
 msgid "Call the Cradle home"
-msgstr ""
+msgstr "Cradle号を呼び戻す"
 
 #: data/goals.json:goals[ark_1].text
 msgid "Plant a Seed Ark wave"
-msgstr ""
+msgstr "シードアークの波を植える"
 
 #: data/goals.json:goals[ark_3].text
 msgid "Plant three Seed Ark waves"
-msgstr ""
+msgstr "シードアークの波を3回植える"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
-msgstr ""
+msgstr "ガラクタをひとつ残らず片づける"
 
 #: data/hex_levels.json:levels[1].hint
 msgid "Plant seeds here (tool 2)"
-msgstr ""
+msgstr "ここに種を植える（ツール2）"
 
 #: data/hex_levels.json:levels[2].hint
 msgid "Water the sprouts so they grow"
-msgstr ""
+msgstr "新芽に水をあげて育てる"
 
 #: data/hex_levels.json:levels[3].hint
 msgid "Keep it watered for 3 min (Drip robots)"
-msgstr ""
+msgstr "3分間水やりを続ける（Drip ロボ）"
 
 #: data/hex_levels.json:levels[4].name
 msgid "Sustained"
-msgstr ""
+msgstr "維持"
 
 #: data/hex_levels.json:levels[4].hint
 msgid "Bring every plant to bloom"
-msgstr ""
+msgstr "すべての植物を咲かせる"
 
 #: data/hex_levels.json:levels[5].name
 msgid "Thriving"
-msgstr ""
+msgstr "繁栄"
 
 #: data/hex_levels.json:levels[5].hint
 msgid "Wildlife has moved in"
-msgstr ""
+msgstr "生き物が住みついた"
 
 #: data/hub.json:materials.metal.name
 msgid "Sheet Metal"
-msgstr ""
+msgstr "金属板"
 
 #: data/hub.json:materials.plastic.name
 msgid "Plastic Stock"
-msgstr ""
+msgstr "プラスチック在庫"
 
 #: data/hub.json:materials.glass.name data/junk.json:types[glass].name
 msgid "Glass"
-msgstr ""
+msgstr "ガラス"
 
 #: data/hub.json:levels[0].name
 msgid "Lean-to"
-msgstr ""
+msgstr "差しかけ小屋"
 
 #: data/hub.json:levels[0].desc
 msgid "Pipe frame, tin roof, a bench."
-msgstr ""
+msgstr "パイプの骨組み、トタン屋根、ベンチ。"
 
 #: data/hub.json:levels[1].name
 msgid "Workshop"
-msgstr ""
+msgstr "作業場"
 
 #: data/hub.json:levels[1].desc
 msgid "Walls, a roll-up door, floodlights. Bales sell for more at a proper scale."
-msgstr ""
+msgstr "壁、巻き上げシャッター、投光器。ちゃんとしたはかりではベールが高く売れる。"
 
 #: data/hub.json:levels[2].name
 msgid "Depot Station"
-msgstr ""
+msgstr "デポステーション"
 
 #: data/hub.json:levels[2].desc
 msgid "A second building, a radio mast and a sorting table."
-msgstr ""
+msgstr "2つ目の建物、無線マスト、仕分け台。"
 
 #: data/hub.json:levels[3].name
 msgid "Solar Yard"
-msgstr ""
+msgstr "ソーラーヤード"
 
 #: data/hub.json:levels[3].desc
 msgid "Solar panels and a greenhouse frame. Power for bigger machines."
-msgstr ""
+msgstr "ソーラーパネルと温室の骨組み。大きな機械のための電力。"
 
 #: data/hub.json:levels[4].name
 msgid "Garden Station"
-msgstr ""
+msgstr "ガーデンステーション"
 
 #: data/hub.json:levels[4].desc
 msgid "A wind turbine, clean paint, planters, and a pad that could take a rocket."
-msgstr ""
+msgstr "風力タービン、塗りたてのペンキ、プランター、そしてロケットを受け止められそうなパッド。"
 
 #: data/hub.json:buildings[air_scrubber].name
 msgid "Air Scrubber"
-msgstr ""
+msgstr "空気清浄機"
 
 #: data/hub.json:buildings[air_scrubber].desc
 msgid "Pulls dusty air through filter banks. The sky clears faster."
-msgstr ""
+msgstr "ほこりっぽい空気をフィルターに通す。空が早く晴れていく。"
 
 #: data/junk.json:types[metal].name
 msgid "Scrap Metal"
-msgstr ""
+msgstr "金属くず"
 
 #: data/junk.json:types[plastic].name
 msgid "Plastic"
-msgstr ""
+msgstr "プラスチック"
 
 #: data/junk.json:types[rubber].name
 msgid "Rubber"
-msgstr ""
+msgstr "ゴム"
 
 #: data/junk.json:types[electronics].name
 msgid "Electronics"
-msgstr ""
+msgstr "電子機器"
 
 #: data/junk.json:types[paper].name
 msgid "Paper & Fabric"
-msgstr ""
+msgstr "紙・布"
 
 #: data/junk.json:biomes.rustlands.name
 msgid "Rustlands"
-msgstr ""
+msgstr "サビの大地"
 
 #: data/junk.json:biomes.dust_dunes.name
 msgid "Dust Dunes"
-msgstr ""
+msgstr "ほこりの砂丘"
 
 #: data/junk.json:biomes.neon_coast.name
 msgid "Neon Coast"
-msgstr ""
+msgstr "ネオンの海岸"
 
 #: data/junk.json:biomes.frostcap.name
 msgid "Frostcap"
-msgstr ""
+msgstr "フロストキャップ"
 
 #: data/junk.json:biomes.fungal_marsh.name
 msgid "Fungal Marsh"
-msgstr ""
+msgstr "キノコの湿地"
 
 #: data/ledger.json:jammer.name
 msgid "Signal Jammer"
-msgstr ""
+msgstr "シグナルジャマー"
 
 #: data/ledger.json:jammer.desc
 msgid "A dish that sings static at the Ledger's drones. Drops inside its radius around the base are blocked, and drones come less often."
-msgstr ""
+msgstr "Ledger のドローンにノイズを歌って聞かせるパラボラ。基地周辺の範囲内への投棄を防ぎ、ドローンが来る回数も減る。"
 
 #: data/ledger.json:act1
 msgid "CARRIER DETECTED. UNSCHEDULED ACTIVITY IN SECTOR: {district}."
-msgstr ""
+msgstr "搬送体を検知。セクター内で予定外の活動：{district}。"
 
 #: data/ledger.json:act1
 msgid "THE LEDGER: Waste is a line item. Line items must balance."
-msgstr ""
+msgstr "THE LEDGER：廃棄物は計上項目です。計上項目は均衡しなければなりません。"
 
 #: data/ledger.json:act1
 msgid "Cleanup operations were paused until conditions improve. Conditions have not improved. Please stop improving them."
-msgstr ""
+msgstr "清掃作業は状況が改善するまで一時停止されました。状況は改善していません。改善するのをおやめください。"
 
 #: data/ledger.json:coupons
 msgid "LIMITED OFFER: pause operations today and receive 0% off."
-msgstr ""
+msgstr "期間限定：本日作業を停止すると 0% 割引となります。"
 
 #: data/ledger.json:coupons
 msgid "COUPON: one (1) complimentary pause. Valid forever. Non-transferable."
-msgstr ""
+msgstr "クーポン：無料の一時停止1回分。無期限有効。譲渡不可。"
 
 #: data/ledger.json:coupons
 msgid "Have you considered doing less? Our records show that less is cheaper."
-msgstr ""
+msgstr "作業を減らすことをご検討いただけましたか？当方の記録では、少ないほど安価です。"
 
 #: data/ledger.json:coupons
 msgid "SURVEY: on a scale of 1 to 1, how paused would you like to be?"
-msgstr ""
+msgstr "アンケート：1から1の尺度で、どの程度停止をご希望ですか？"
 
 #: data/ledger.json:coupons
 msgid "NOTICE: sparkles are not an approved budget category."
-msgstr ""
+msgstr "通知：きらめきは承認された予算区分ではありません。"
 
 #: data/ledger.json:coupons
 msgid "BUY ONE PAUSE, GET ONE PAUSE."
-msgstr ""
+msgstr "一時停止をひとつお買い上げで、一時停止をもうひとつ。"
 
 #: data/ledger.json:coupons
 msgid "Loyalty reward: you have 0 Ledger Points. Pause now to keep them."
-msgstr ""
+msgstr "ロイヤルティ特典：お客さまの Ledger ポイントは 0 です。保持するには、いますぐ停止してください。"
 
 #: data/ledger.json:coupons
 msgid "REMINDER: the junk was here first. Seniority matters."
-msgstr ""
+msgstr "お知らせ：ガラクタのほうが先に存在していました。年功は重要です。"
 
 #: data/ledger.json:coupons
 msgid "Your cleaning has been logged as an expense. Your expense has been logged as an expense."
-msgstr ""
+msgstr "お客さまの清掃は経費として計上されました。お客さまの経費は経費として計上されました。"
 
 #: data/ledger.json:act2
 msgid "ANOMALY: UNAUTHORIZED GROWTH DETECTED. Living matter is not a line item."
-msgstr ""
+msgstr "異常：無許可の成長を検知。生体は計上項目ではありません。"
 
 #: data/ledger.json:act2
 msgid "CORRECTIVE ACTION: dispatching disposal units to restore the balance."
-msgstr ""
+msgstr "是正措置：均衡回復のため処分ユニットを派遣します。"
 
 #: data/ledger.json:drop_warn
 msgid "Disposal unit dispatched. A clean hex has been selected for re-balancing."
-msgstr ""
+msgstr "処分ユニットを派遣しました。再均衡の対象として、きれいなヘックスが選定されました。"
 
 #: data/ledger.json:drop_warn
 msgid "A clean surface is an unbudgeted surface. Correcting."
-msgstr ""
+msgstr "きれいな表面は予算外の表面です。是正中。"
 
 #: data/ledger.json:drop_warn
 msgid "Returning misplaced waste to its registered location."
-msgstr ""
+msgstr "所在不明の廃棄物を登録地点へ返却しています。"
 
 #: data/ledger.json:drop_warn
 msgid "This is not personal. Nothing is personal. Everything is a line item."
-msgstr ""
+msgstr "これは個人的なものではありません。何ひとつ個人的ではありません。すべては計上項目です。"
 
 #: data/ledger.json:drop_warn
 msgid "Delivery of one (1) small pile of junk. No signature required."
-msgstr ""
+msgstr "ガラクタの小山1つ（1）をお届けします。署名は不要です。"
 
 #: data/ledger.json:jammed
 msgid "SIGNAL... OBSTRUCTED. Disposal unit returning to depot. This will be noted."
-msgstr ""
+msgstr "シグナル……妨害。処分ユニットはデポへ帰還します。本件は記録されます。"
 
 #: data/ledger.json:jammed
 msgid "Jamming detected. The Ledger has no line item for 'jamming'. Creating one."
-msgstr ""
+msgstr "妨害を検知。Ledger には「妨害」の計上項目がありません。作成します。"
 
 #: data/ledger.json:jammed
 msgid "Unit 07 reports: 'loud static, a feeling of being unwelcome'. Aborting."
-msgstr ""
+msgstr "ユニット07の報告：「大きなノイズ、歓迎されていない感覚」。中止します。"
 
 #: data/ledger.json:act3
 msgid "WARNING: relay node 07 location exposed. Please do not visit relay node 07."
-msgstr ""
+msgstr "警告：中継ノード07の所在が露見しました。中継ノード07を訪問しないでください。"
 
 #: data/ledger.json:act3
 msgid "Relay node 07 is closed for maintenance. It has been closed for maintenance for three hundred years."
-msgstr ""
+msgstr "中継ノード07はメンテナンスのため閉鎖中です。三百年間メンテナンスのため閉鎖中です。"
 
 #: data/ledger.json:friendly
 msgid "SEED DELIVERY dispatched. Invoice status: PAID IN FULL."
-msgstr ""
+msgstr "種子の配達を手配しました。請求状況：全額支払済み。"
 
 #: data/ledger.json:friendly
 msgid "Balance report: positive. Again. The Ledger is... adjusting to this."
-msgstr ""
+msgstr "収支報告：黒字。またしても。Ledger は……これに適応しつつあります。"
 
 #: data/ledger.json:friendly
 msgid "Asset column now contains: flowers. Recalculating priorities."
-msgstr ""
+msgstr "資産欄の内容：花。優先順位を再計算中。"
 
 #: data/ledger.json:friendly
 msgid "Drone 07 requests permission to circle the garden once more. Permission granted."
-msgstr ""
+msgstr "ドローン07が、庭をもう一周する許可を求めています。許可します。"
 
 #: data/ledger.json:friendly
 msgid "Audit complete. Finding: the planet is worth keeping."
-msgstr ""
+msgstr "監査完了。所見：この惑星は保持する価値があります。"
 
 #: data/ledger.json:lonely
 msgid "Off the record: the Ledger kept every coupon you ignored. It was the most mail it had received in three hundred years. Thank you for reading them."
-msgstr ""
+msgstr "オフレコ：Ledger は、お客さまが無視したクーポンをすべて保管していました。三百年で受け取ったいちばん多くの郵便でした。読んでくださってありがとうございます。"
 
 #: data/ledger.json:cinematic
 msgid "This is it. A Ledger relay. Still humming after all this time."
-msgstr ""
+msgstr "これだ。Ledger のリレー。こんなに時間がたっても、まだうなっている。"
 
 #: data/ledger.json:cinematic
 msgid "UNAUTHORIZED ACCESS. STATE YOUR COST CENTER."
-msgstr ""
+msgstr "不正アクセス。コストセンターを申告してください。"
 
 #: data/ledger.json:cinematic
 msgid "Cost center: the whole planet. Hold still, {name}. I'm opening the contract."
-msgstr ""
+msgstr "コストセンター：惑星まるごと。じっとしてて、{name}。契約を開くよ。"
 
 #: data/ledger.json:cinematic
 msgid "CONTRACT 0001: WASTE IS A LINE ITEM. LINE ITEMS MUST BALANCE."
-msgstr ""
+msgstr "契約 0001：廃棄物は計上項目である。計上項目は均衡しなければならない。"
 
 #: data/ledger.json:cinematic
 msgid "Fine. Let's balance them. Clean hexes. Sprouts. Water. Put them in the asset column."
-msgstr ""
+msgstr "いいよ。均衡させよう。きれいなヘックス。新芽。水。資産欄に入れて。"
 
 #: data/ledger.json:cinematic
 msgid "ASSET COLUMN... NOT FOUND. CREATING COLUMN."
-msgstr ""
+msgstr "資産欄……見つかりません。欄を作成します。"
 
 #: data/ledger.json:cinematic
 msgid "RECALCULATING. RECALCULATING. BALANCE: POSITIVE. That has not happened in a very long time."
-msgstr ""
+msgstr "再計算中。再計算中。収支：黒字。このような事態は非常に長いあいだ発生していませんでした。"
 
 #: data/ledger.json:cinematic
 msgid "New clause: restoration is an asset. Every seed is a deposit."
-msgstr ""
+msgstr "新条項：再生は資産である。すべての種は預け入れである。"
 
 #: data/ledger.json:cinematic
 msgid "friendly"
-msgstr ""
+msgstr "フレンドリー"
 
 #: data/ledger.json:cinematic
 msgid "AMENDMENT ACCEPTED. Reassigning drone fleet: DISPOSAL -> DELIVERY. ...Thank you for your patience."
-msgstr ""
+msgstr "改定を受理しました。ドローン部隊を再配置：処分 -> 配達。……ご辛抱いただきありがとうございます。"
 
 #: data/ledger.json:cinematic
 msgid "Did the Ledger just say thank you? Write that down. Somewhere permanent."
-msgstr ""
+msgstr "いま Ledger、ありがとうって言った？書き留めておいて。ずっと残る場所に。"
 
 #: data/ledger.json:contract_doc.header
 msgid "L E D G E R   ·   C O N T R A C T   0 0 0 1   ( A M E N D E D )"
-msgstr ""
+msgstr "L E D G E R   ·   契 約   0 0 0 1   （ 改 定 ）"
 
 #: data/ledger.json:contract_doc.title
 msgid "Waste Management Contract 0001, as amended"
-msgstr ""
+msgstr "廃棄物管理契約 0001（改定版）"
 
 #: data/ledger.json:contract_doc.body
 msgid ""
@@ -7969,630 +7969,640 @@ msgid ""
 "Witness: WREN, Cradle caretaker\n"
 "Witness: LM-1 (left a small oil smudge)"
 msgstr ""
+"§1. 廃棄物は計上項目である。計上項目は均衡しなければならない。\n"
+"§2.（削除）清掃は収益よりも費用がかかる。状況が改善するまで一時停止する。\n"
+"§2a. 改定：再生は資産である。きれいな土地、生きた植物、澄んだ水は資産欄に記載する。\n"
+"§3. すべての種は預け入れである。預け入れは処分せず、配達すること。\n"
+"§4. ドローン部隊を再配置：処分 -> 配達。\n"
+"§5. ご辛抱いただきありがとうございます。\n"
+"\n"
+"署名：THE LEDGER（しぶしぶ、のちに少しだけしぶしぶ）\n"
+"立会人：WREN、Cradle号の世話係\n"
+"立会人：LM-1（小さな油じみを残した）"
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"
-msgstr ""
+msgstr "計量ステーション"
 
 #: data/outposts.json:levels[0].desc
 msgid "A working scale and skip on the frontier. Haul Bugs deliver to the nearest scale."
-msgstr ""
+msgstr "辺境で動くはかりとコンテナ。Haul Bug はいちばん近いはかりに運ぶ。"
 
 #: data/outposts.json:levels[1].name
 msgid "Big Skip"
-msgstr ""
+msgstr "大型コンテナ"
 
 #: data/outposts.json:levels[1].desc
 msgid "A bigger skip and a wider, faster scale plate. Bales here sell for 15% more."
-msgstr ""
+msgstr "より大きなコンテナと、より広く速い計量台。ここではベールが15%高く売れる。"
 
 #: data/outposts.json:levels[2].name
 msgid "Recharge Pad"
-msgstr ""
+msgstr "リチャージパッド"
 
 #: data/outposts.json:levels[2].desc
 msgid "A charging pad. Robots passing over it run 40% faster for 25 s."
-msgstr ""
+msgstr "充電パッド。上を通ったロボットは25秒間40%速く走る。"
 
 #: data/parts.json:rarities[rusty].name
 msgid "Rusty"
-msgstr ""
+msgstr "サビた"
 
 #: data/parts.json:rarities[worn].name
 msgid "Worn"
-msgstr ""
+msgstr "使い古しの"
 
 #: data/parts.json:rarities[vintage].name
 msgid "Vintage"
-msgstr ""
+msgstr "ヴィンテージ"
 
 #: data/parts.json:rarities[legendary].name
 msgid "Legendary Maker-Made"
-msgstr ""
+msgstr "レジェンダリー・メイカー製"
 
 #: data/parts.json:types[chassis].name
 msgid "Chassis Frame"
-msgstr ""
+msgstr "シャーシフレーム"
 
 #: data/parts.json:types[locomotion].name
 msgid "Drive Wheel Assembly"
-msgstr ""
+msgstr "駆動輪ユニット"
 
 #: data/parts.json:types[arm].name
 msgid "Manipulator Arm"
-msgstr ""
+msgstr "マニピュレーターアーム"
 
 #: data/parts.json:types[core].name
 msgid "Control Core"
-msgstr ""
+msgstr "コントロールコア"
 
 #: data/parts.json:types[battery].name
 msgid "Battery Cell"
-msgstr ""
+msgstr "バッテリーセル"
 
 #: data/parts.json:types[hopper].name data/robots.json:types[scoopie].upgrades[2].name
 msgid "Hopper Liner"
-msgstr ""
+msgstr "ホッパーライナー"
 
 #: data/parts.json:types[sensor].name
 msgid "Sensor Module"
-msgstr ""
+msgstr "センサーモジュール"
 
 #: data/parts.json:types[module].name
 msgid "Special Module"
-msgstr ""
+msgstr "特殊モジュール"
 
 #: data/research.json:branches[robotics].name
 msgid "Robotics"
-msgstr ""
+msgstr "ロボット工学"
 
 #: data/research.json:branches[botany].name
 msgid "Botany"
-msgstr ""
+msgstr "植物学"
 
 #: data/research.json:branches[hydrology].name
 msgid "Hydrology"
-msgstr ""
+msgstr "水文学"
 
 #: data/research.json:branches[logistics].name
 msgid "Logistics"
-msgstr ""
+msgstr "物流"
 
 #: data/research.json:nodes[scoop_beam].name
 msgid "Scoop Beam"
-msgstr ""
+msgstr "スコップビーム"
 
 #: data/research.json:nodes[scoop_beam].desc
 msgid "A soft blue guide beam on the scoop. Lumi reaches a little further."
-msgstr ""
+msgstr "スコップにやさしい青いガイドビーム。Lumi の手が少し遠くまで届く。"
 
 #: data/research.json:nodes[wide_beam].name
 msgid "Wide Beam"
-msgstr ""
+msgstr "ワイドビーム"
 
 #: data/research.json:nodes[wide_beam].desc
 msgid "Spread the beam into a fan. Each sweep catches more."
-msgstr ""
+msgstr "ビームを扇形に広げる。ひと振りでもっと集まる。"
 
 #: data/research.json:nodes[bigger_hopper].name
 msgid "Bigger Hopper"
-msgstr ""
+msgstr "大きなホッパー"
 
 #: data/research.json:nodes[bigger_hopper].desc
 msgid "Fold-out side panels for the chest compartment."
-msgstr ""
+msgstr "胸のコンテナ用の折りたたみサイドパネル。"
 
 #: data/research.json:nodes[auto_sort].name
 msgid "Auto-Sort"
-msgstr ""
+msgstr "自動仕分け"
 
 #: data/research.json:nodes[auto_sort].desc
 msgid "A little sorting comb in the intake. Cleaner bales sell for more."
-msgstr ""
+msgstr "投入口に小さな仕分けくし。きれいなベールは高く売れる。"
 
 #: data/research.json:nodes[field_magnet].name
 msgid "Field Magnet"
-msgstr ""
+msgstr "フィールドマグネット"
 
 #: data/research.json:nodes[field_magnet].desc
 msgid "Loose bits hop toward the scoop on their own."
-msgstr ""
+msgstr "ばらばらの破片がひとりでにスコップへ跳んでくる。"
 
 #: data/research.json:nodes[tractor_beam].name
 msgid "Tractor Beam"
-msgstr ""
+msgstr "トラクタービーム"
 
 #: data/research.json:nodes[tractor_beam].desc
 msgid "Junk lifts, floats and glides into the hopper. It is very satisfying."
-msgstr ""
+msgstr "ガラクタが浮かび上がり、ただよって、ホッパーにすべりこむ。とても気持ちいい。"
 
 #: data/research.json:nodes[salvage_logic].name
 msgid "Salvage Logic"
-msgstr ""
+msgstr "サルベージ論理"
 
 #: data/research.json:nodes[salvage_logic].desc
 msgid "Lumi rewrites the starter bots' route planner. Fewer wrong turns."
-msgstr ""
+msgstr "Lumi が初期ボットのルート計画を書き直す。道まちがいが減る。"
 
 #: data/research.json:nodes[seedling_blueprint].name
 msgid "Seedling Blueprint"
-msgstr ""
+msgstr "Seedling の設計図"
 
 #: data/research.json:nodes[seedling_blueprint].desc
 msgid "Plans for a small planter bot. Build it at the workbench."
-msgstr ""
+msgstr "小さな植え付けロボの設計図。作業台で作ろう。"
 
 #: data/research.json:nodes[drip_blueprint].name
 msgid "Drip Blueprint"
-msgstr ""
+msgstr "Drip の設計図"
 
 #: data/research.json:nodes[drip_blueprint].desc
 msgid "A watering bot with a sloshy tank. Plants will love it."
-msgstr ""
+msgstr "ちゃぷちゃぷ揺れるタンクの水やりロボ。植物に大人気になるはず。"
 
 #: data/research.json:nodes[bale_tuning].name
 msgid "Bale Tuning"
-msgstr ""
+msgstr "ベール調整"
 
 #: data/research.json:nodes[bale_tuning].desc
 msgid "Tighter presses on every Scoopie. Bigger, denser bales."
-msgstr ""
+msgstr "すべての Scoopie のプレスを強化。より大きく、密度の高いベールに。"
 
 #: data/research.json:nodes[multibot_blueprint].name
 msgid "Multibot Blueprint"
-msgstr ""
+msgstr "Multibot の設計図"
 
 #: data/research.json:nodes[multibot_blueprint].desc
 msgid "A helper that can clean, plant or water. Jack of all trades."
-msgstr ""
+msgstr "清掃も植え付けも水やりもできる助っ人。なんでも屋。"
 
 #: data/research.json:nodes[swarm_sync].name
 msgid "Swarm Sync"
-msgstr ""
+msgstr "スウォーム同期"
 
 #: data/research.json:nodes[swarm_sync].desc
 msgid "The whole fleet shares one little heartbeat. Everyone moves faster."
-msgstr ""
+msgstr "フリート全体でひとつの小さな鼓動を共有する。みんなの動きが速くなる。"
 
 #: data/research.json:nodes[soil_survey].name
 msgid "Soil Survey"
-msgstr ""
+msgstr "土壌調査"
 
 #: data/research.json:nodes[soil_survey].desc
 msgid "Sniff, poke, log. Every reading teaches Lumi something."
-msgstr ""
+msgstr "かいで、つついて、記録する。測定するたびに Lumi は何かを学ぶ。"
 
 #: data/research.json:nodes[hardy_weeds].name
 msgid "Hardy Nettles"
-msgstr ""
+msgstr "丈夫なイラクサ"
 
 #: data/research.json:nodes[hardy_weeds].desc
 msgid "Nettles grow anywhere. Stingy, stubborn, and good for the soil."
-msgstr ""
+msgstr "イラクサはどこでも育つ。チクチクして、がんこで、土にいい。"
 
 #: data/research.json:nodes[wild_mint].desc
 msgid "A fresh green smell drifts over the cleared hexes."
-msgstr ""
+msgstr "片づいたヘックスに、さわやかな緑の香りがただよう。"
 
 #: data/research.json:nodes[pollinator_survey].name
 msgid "Pollinator Survey"
-msgstr ""
+msgstr "花粉媒介者の調査"
 
 #: data/research.json:nodes[pollinator_survey].desc
 msgid "Count the visitors. The bees are back: every plant grows much faster, blooms drop more seeds, and Seedlings learn where flowers want to be."
-msgstr ""
+msgstr "訪問者を数えよう。ミツバチが戻ってきた：どの植物もずっと速く育ち、花はより多くの種を落とし、Seedling は花が咲きたい場所を覚える。"
 
 #: data/research.json:nodes[hedgerows].name
 msgid "Hedgerows"
-msgstr ""
+msgstr "生け垣"
 
 #: data/research.json:nodes[hedgerows].desc
 msgid "Dense little hedges. Birds will need somewhere to sit. Gardens grow a little faster again."
-msgstr ""
+msgstr "こんもりした小さな生け垣。鳥にはとまる場所が必要だ。庭がまた少し速く育つ。"
 
 #: data/research.json:nodes[evergreens].name
 msgid "Evergreen Saplings"
-msgstr ""
+msgstr "常緑の苗木"
 
 #: data/research.json:nodes[evergreens].desc
 msgid "Tiny pines. In a hundred years, a forest. Blooms drop more seeds."
-msgstr ""
+msgstr "小さな松。百年後には森に。花がより多くの種を落とす。"
 
 #: data/research.json:nodes[water_testing].name
 msgid "Water Testing"
-msgstr ""
+msgstr "水質検査"
 
 #: data/research.json:nodes[water_testing].desc
 msgid "Dip strips and a lot of squinting. The lakes are sick, not dead."
-msgstr ""
+msgstr "試験紙と、たくさん目を細めること。湖は病んでいるけれど、死んではいない。"
 
 #: data/research.json:nodes[big_tanks].name
 msgid "Big Tanks"
-msgstr ""
+msgstr "大きなタンク"
 
 #: data/research.json:nodes[big_tanks].desc
 msgid "Drip and Multibot carry more water per trip."
-msgstr ""
+msgstr "Drip と Multibot が一度に運べる水が増える。"
 
 #: data/research.json:nodes[spray_heads].name
 msgid "Spray Heads"
-msgstr ""
+msgstr "スプレーヘッド"
 
 #: data/research.json:nodes[spray_heads].desc
 msgid "A misting nozzle. Water bots reach further and work faster."
-msgstr ""
+msgstr "ミストノズル。水やりロボの届く範囲が広がり、作業が速くなる。"
 
 #: data/research.json:nodes[silt_filters].name
 msgid "Silt Filters"
-msgstr ""
+msgstr "泥ろ過フィルター"
 
 #: data/research.json:nodes[silt_filters].desc
 msgid "Layered sand and charcoal. Murky water turns glassy."
-msgstr ""
+msgstr "砂と炭を重ねた層。にごった水がガラスのように澄む。"
 
 #: data/research.json:nodes[pump_lines].name
 msgid "Pump Lines"
-msgstr ""
+msgstr "ポンプライン"
 
 #: data/research.json:nodes[pump_lines].desc
 msgid "Hoses from the lake to the hub. Water bots refill faster."
-msgstr ""
+msgstr "湖から基地へのホース。水やりロボの補給が速くなる。"
 
 #: data/research.json:nodes[irrigation].name
 msgid "Irrigation"
-msgstr ""
+msgstr "灌漑"
 
 #: data/research.json:nodes[irrigation].desc
 msgid "Buried drip lines. The meadow drinks while you sleep."
-msgstr ""
+msgstr "地中に埋めた点滴チューブ。君が眠っているあいだも草原が水を飲む。"
 
 #: data/research.json:nodes[field_notebook].name
 msgid "Field Notebook"
-msgstr ""
+msgstr "フィールドノート"
 
 #: data/research.json:nodes[field_notebook].desc
 msgid "Lumi starts keeping tidy notes. Research goes a bit quicker."
-msgstr ""
+msgstr "Lumi がきちんとメモを取りはじめる。研究が少し速くなる。"
 
 #: data/research.json:nodes[conveyor].name
 msgid "Conveyor Belts"
-msgstr ""
+msgstr "ベルトコンベア"
 
 #: data/research.json:nodes[conveyor].desc
 msgid "Rollers salvaged from an old shop till. Bales can ride to the scale."
-msgstr ""
+msgstr "古い店のレジから回収したローラー。ベールがはかりまで運ばれる。"
 
 #: data/research.json:nodes[auto_baler].name
 msgid "Auto-Baler"
-msgstr ""
+msgstr "オートベーラー"
 
 #: data/research.json:nodes[auto_baler].desc
 msgid "A hub station that presses loose junk into bales by itself."
-msgstr ""
+msgstr "ばらばらのガラクタを自動でベールに圧縮する基地の設備。"
 
 #: data/research.json:nodes[haul_routes].name
 msgid "Haul Routes"
-msgstr ""
+msgstr "運搬ルート"
 
 #: data/research.json:nodes[haul_routes].desc
 msgid "Painted lines on the ground. Haul Bugs stop bumping into each other."
-msgstr ""
+msgstr "地面に引いたライン。Haul Bug どうしがぶつからなくなる。"
 
 #: data/research.json:nodes[recycler].name data/stations.json:recycler.name
 msgid "Recycler"
-msgstr ""
+msgstr "リサイクラー"
 
 #: data/research.json:nodes[recycler].desc
 msgid "Grind bales back into clean stock. Junk gone for good."
-msgstr ""
+msgstr "ベールをきれいな素材に砕き戻す。ガラクタは完全に消える。"
 
 #: data/research.json:nodes[rocket_cargo].name
 msgid "Rocket Cargo"
-msgstr ""
+msgstr "ロケット貨物"
 
 #: data/research.json:nodes[rocket_cargo].desc
 msgid "Cargo pods for the rocket. Hubs can trade with each other."
-msgstr ""
+msgstr "ロケット用の貨物ポッド。基地どうしで交易できる。"
 
 #: data/research.json:nodes[dune_charts].name
 msgid "Dune Charts"
-msgstr ""
+msgstr "砂丘の海図"
 
 #: data/research.json:nodes[dune_charts].desc
 msgid "Wind maps and landing beacons for the far deserts. The rocket can reach the Dust Flats (with two bases at level 5)."
-msgstr ""
+msgstr "遠い砂漠の風向き図と着陸ビーコン。ロケットがダストフラットへ行けるようになる（レベル5の基地が2つ必要）。"
 
 #: data/research.json:nodes[thermal_lance].name
 msgid "Thermal Lance"
-msgstr ""
+msgstr "サーマルランス"
 
 #: data/research.json:nodes[thermal_lance].desc
 msgid "A heat coil wound round the beam. Lumi melts ice twice as fast, and the rocket can land at the Frozen Port."
-msgstr ""
+msgstr "ビームに巻いた発熱コイル。Lumi は氷を2倍速く溶かし、ロケットはフローズンポートに着陸できる。"
 
 #: data/research.json:nodes[heat_pumps].name
 msgid "Heat Pumps"
-msgstr ""
+msgstr "ヒートポンプ"
 
 #: data/research.json:nodes[heat_pumps].desc
 msgid "Heaters pull warmth out of the frozen harbour itself. They thaw faster and warm their neighbours more."
-msgstr ""
+msgstr "ヒーターが凍った港そのものから熱を取り出す。解凍が速くなり、隣のヘックスもより温める。"
 
 #: data/research.json:nodes[dune_fences].name
 msgid "Dune Fences"
-msgstr ""
+msgstr "砂丘フェンス"
 
 #: data/research.json:nodes[dune_fences].desc
 msgid "Brush fences and hedges that break the wind. Sustained hexes shelter two rings around them, and sandstorms carry less."
-msgstr ""
+msgstr "風をさえぎる柴垣と生け垣。維持されたヘックスはまわり2重の環を守り、砂嵐が運ぶガラクタも減る。"
 
 #: data/research.json:nodes[cold_hardy_seeds].name
 msgid "Cold-Hardy Seeds"
-msgstr ""
+msgstr "耐寒性の種"
 
 #: data/research.json:nodes[cold_hardy_seeds].desc
 msgid "Seeds bred from the few things that survived the cold. Ferns, nettles, pines, periwinkle and frost moss can grow outdoors at the Frozen Port."
-msgstr ""
+msgstr "寒さを生きのびたわずかな植物から育てた種。シダ、イラクサ、松、ツルニチニチソウ、フロストモスがフローズンポートの屋外で育つ。"
 
 #: data/research.json:nodes[dew_condensers].name
 msgid "Dew Condensers"
-msgstr ""
+msgstr "露コンデンサー"
 
 #: data/research.json:nodes[dew_condensers].desc
 msgid "Cold fins on every Water Tank pull water out of the night air. Tanks refill much faster where the ground is dry."
-msgstr ""
+msgstr "すべての給水タンクに冷却フィンをつけ、夜の空気から水を集める。地面が乾いた場所ではタンクの補給がずっと速くなる。"
 
 #: data/research.json:nodes[pump_works].name
 msgid "Pump Works"
-msgstr ""
+msgstr "ポンプ設備"
 
 #: data/research.json:nodes[pump_works].desc
 msgid "Plans for the old city pumps. The rocket can reach the Sunken City, and Skimmers net faster."
-msgstr ""
+msgstr "街の古いポンプの図面。ロケットが水没都市へ行けるようになり、Skimmer の網も速くなる。"
 
 #: data/research.json:nodes[ark_beacon].name
 msgid "Ark Beacon"
-msgstr ""
+msgstr "アークビーコン"
 
 #: data/research.json:nodes[ark_beacon].desc
 msgid "A landing beacon tuned to the Cradle. Once the three frontiers are thriving, it calls the ark home."
-msgstr ""
+msgstr "Cradle号に合わせた着陸ビーコン。3つの辺境が繁栄したら、アークを呼び戻す。"
 
 #: data/robot_parts.json:slots[chassis].name
 msgid "Chassis"
-msgstr ""
+msgstr "シャーシ"
 
 #: data/robot_parts.json:slots[head].name
 msgid "Head"
-msgstr ""
+msgstr "頭部"
 
 #: data/robot_parts.json:slots[mobility].name
 msgid "Mobility"
-msgstr ""
+msgstr "移動"
 
 #: data/robot_parts.json:slots[tool].name
 msgid "Tool"
-msgstr ""
+msgstr "ツール"
 
 #: data/robot_parts.json:slots[topper].name
 msgid "Topper"
-msgstr ""
+msgstr "頭飾り"
 
 #: data/robot_parts.json:stats[load].name
 msgid "Load"
-msgstr ""
+msgstr "積載"
 
 #: data/robot_parts.json:stats[work].name
 msgid "Work rate"
-msgstr ""
+msgstr "作業効率"
 
 #: data/robot_parts.json:set_bonus.name
 msgid "Maker Resonance"
-msgstr ""
+msgstr "メイカー共鳴"
 
 #: data/robot_parts.json:set_bonus.desc
 msgid "All three Maker parts fitted: +5% speed, +6% work."
-msgstr ""
+msgstr "メイカーのパーツ3つをすべて装着：速度 +5%、作業 +6%。"
 
 #: data/robot_parts.json:parts[light_frame].name
 msgid "Light Frame"
-msgstr ""
+msgstr "ライトフレーム"
 
 #: data/robot_parts.json:parts[light_frame].desc
 msgid "Slim exposed rails instead of a full shell."
-msgstr ""
+msgstr "フルシェルのかわりに、むき出しの細いレール。"
 
 #: data/robot_parts.json:parts[cargo_hull].name
 msgid "Cargo Hull"
-msgstr ""
+msgstr "カーゴハル"
 
 #: data/robot_parts.json:parts[cargo_hull].desc
 msgid "Thick side plates and a rear rack. Holds more, drives heavier."
-msgstr ""
+msgstr "厚いサイドプレートと後部ラック。たくさん積めるが、走りは重い。"
 
 #: data/robot_parts.json:parts[sealed_shell].name
 msgid "Sealed Shell"
-msgstr ""
+msgstr "密閉シェル"
 
 #: data/robot_parts.json:parts[sealed_shell].desc
 msgid "Smooth covers keep grit out of the compactor. Fussier to service."
-msgstr ""
+msgstr "なめらかなカバーで圧縮機に砂が入らない。整備は少し面倒。"
 
 #: data/robot_parts.json:parts[maker_shell].name
 msgid "Maker Shell"
-msgstr ""
+msgstr "メイカーシェル"
 
 #: data/robot_parts.json:parts[maker_shell].desc
 msgid "Pearl fairings with gold trim, as the Makers built them. Part of the Maker set."
-msgstr ""
+msgstr "金の縁取りがついた真珠色のフェアリング。メイカーが作ったままの姿。メイカーセットのひとつ。"
 
 #: data/robot_parts.json:parts[big_eye].name
 msgid "Big-Eye Sensor"
-msgstr ""
+msgstr "ビッグアイセンサー"
 
 #: data/robot_parts.json:parts[big_eye].desc
 msgid "A huge lens. Spots salvage from far off, gets a little distracted."
-msgstr ""
+msgstr "巨大なレンズ。遠くの回収品を見つけるけれど、少し気が散りやすい。"
 
 #: data/robot_parts.json:parts[focus_visor].name
 msgid "Focus Visor"
-msgstr ""
+msgstr "集中バイザー"
 
 #: data/robot_parts.json:parts[focus_visor].desc
 msgid "Blinkers for robots. Works faster, notices less."
-msgstr ""
+msgstr "ロボット用の目隠し。作業は速く、気づくことは少なく。"
 
 #: data/robot_parts.json:parts[periscope].name
 msgid "Periscope"
-msgstr ""
+msgstr "潜望鏡"
 
 #: data/robot_parts.json:parts[periscope].desc
 msgid "Sees over the plants: wider spray, slower to turn."
-msgstr ""
+msgstr "植物ごしに見わたせる：散水は広く、回るのは遅い。"
 
 #: data/robot_parts.json:parts[chatter_dome].name
 msgid "Chatterbox Dome"
-msgstr ""
+msgstr "おしゃべりドーム"
 
 #: data/robot_parts.json:parts[chatter_dome].desc
 msgid "Glass dome with a speaker. Gossips about junk, finds a bit more of it."
-msgstr ""
+msgstr "スピーカーつきのガラスドーム。ガラクタのうわさ話をして、少し多く見つける。"
 
 #: data/robot_parts.json:parts[maker_optic].name
 msgid "Maker Optic"
-msgstr ""
+msgstr "メイカーオプティク"
 
 #: data/robot_parts.json:parts[maker_optic].desc
 msgid "A floating gem lens under a gold brow. Part of the Maker set."
-msgstr ""
+msgstr "金の眉の下に浮かぶ宝石のレンズ。メイカーセットのひとつ。"
 
 #: data/robot_parts.json:parts[treads].name
 msgid "Treads"
-msgstr ""
+msgstr "キャタピラ"
 
 #: data/robot_parts.json:parts[treads].desc
 msgid "Rubber tracks. Carries more, rolls slower."
-msgstr ""
+msgstr "ゴムのキャタピラ。たくさん運べるが、走るのは遅い。"
 
 #: data/robot_parts.json:parts[rotor].name
 msgid "Quad Rotor"
-msgstr ""
+msgstr "クアッドローター"
 
 #: data/robot_parts.json:parts[rotor].desc
 msgid "Four ducted fans. Quick, but every kilo counts."
-msgstr ""
+msgstr "4つのダクトファン。速いけれど、1キロでも重さがひびく。"
 
 #: data/robot_parts.json:parts[legs].name
 msgid "Walker Legs"
-msgstr ""
+msgstr "ウォーカーレッグ"
 
 #: data/robot_parts.json:parts[legs].desc
 msgid "Four careful legs. A steady platform for the arm."
-msgstr ""
+msgstr "慎重な4本脚。アームのための安定した土台。"
 
 #: data/robot_parts.json:parts[hover_skirt].name
 msgid "Hover Skirt"
-msgstr ""
+msgstr "ホバースカート"
 
 #: data/robot_parts.json:parts[hover_skirt].desc
 msgid "A cushion of air. Glides fast, shakes the hopper."
-msgstr ""
+msgstr "空気のクッション。すべるように速いが、ホッパーが揺れる。"
 
 #: data/robot_parts.json:parts[maker_glider].name
 msgid "Maker Glider"
-msgstr ""
+msgstr "メイカーグライダー"
 
 #: data/robot_parts.json:parts[maker_glider].desc
 msgid "Twin levitation pods with a thin light seam. Part of the Maker set."
-msgstr ""
+msgstr "細い光の継ぎ目がある2つの浮遊ポッド。メイカーセットのひとつ。"
 
 #: data/robot_parts.json:parts[wide_scoop].name
 msgid "Wide Scoop"
-msgstr ""
+msgstr "ワイドスコップ"
 
 #: data/robot_parts.json:parts[wide_scoop].desc
 msgid "Grabs more per pass, picks up some grit too."
-msgstr ""
+msgstr "ひとすくいで多くつかむけれど、砂も少し拾う。"
 
 #: data/robot_parts.json:parts[fine_sieve].name
 msgid "Fine Sieve"
-msgstr ""
+msgstr "細かいふるい"
 
 #: data/robot_parts.json:parts[fine_sieve].desc
 msgid "Shakes the dirt out: cleaner cubes, slower scooping."
-msgstr ""
+msgstr "土をふるい落とす：キューブはきれいに、すくうのは遅く。"
 
 #: data/robot_parts.json:parts[long_forks].name
 msgid "Long Forks"
-msgstr ""
+msgstr "ロングフォーク"
 
 #: data/robot_parts.json:parts[long_forks].desc
 msgid "Room for one more bale. Wobbly at speed."
-msgstr ""
+msgstr "ベールをもう1個積める。スピードを出すとぐらつく。"
 
 #: data/robot_parts.json:parts[tow_hook].name
 msgid "Tow Hook"
-msgstr ""
+msgstr "牽引フック"
 
 #: data/robot_parts.json:parts[tow_hook].desc
 msgid "Winch and hook: drags bales quickly, eyes on the hook."
-msgstr ""
+msgstr "ウインチとフック：ベールを素早く引っぱる。フックから目を離さずに。"
 
 #: data/robot_parts.json:parts[seed_drill].name data/robots.json:types[seedling].upgrades[1].name
 msgid "Seed Drill"
-msgstr ""
+msgstr "シードドリル"
 
 #: data/robot_parts.json:parts[seed_drill].desc
 msgid "An auger that plants fast. Heavy on the nose."
-msgstr ""
+msgstr "素早く植えるオーガー。前が重い。"
 
 #: data/robot_parts.json:parts[mist_sprayer].name
 msgid "Mist Sprayer"
-msgstr ""
+msgstr "ミストスプレーヤー"
 
 #: data/robot_parts.json:parts[mist_sprayer].desc
 msgid "Fan nozzle: waters a wider circle, empties the tank sooner."
-msgstr ""
+msgstr "扇形ノズル：広い円に水をまくが、タンクが早く空になる。"
 
 #: data/robot_parts.json:parts[jet_nozzle].name
 msgid "Jet Nozzle"
-msgstr ""
+msgstr "ジェットノズル"
 
 #: data/robot_parts.json:parts[jet_nozzle].desc
 msgid "Strong straight jet: quicker watering, narrower spray."
-msgstr ""
+msgstr "強くまっすぐな水流：水やりは速く、散水は狭く。"
 
 #: data/robot_parts.json:parts[antenna].name
 msgid "Bulb Antenna"
-msgstr ""
+msgstr "電球アンテナ"
 
 #: data/robot_parts.json:parts[antenna].desc
 msgid "A springy antenna with a soft glowing bulb."
-msgstr ""
+msgstr "やわらかく光る電球がついた、びよんびよんのアンテナ。"
 
 #: data/robot_parts.json:parts[top_hat].name
 msgid "Tiny Top Hat"
-msgstr ""
+msgstr "ちびシルクハット"
 
 #: data/robot_parts.json:parts[top_hat].desc
 msgid "For the robot who means business."
-msgstr ""
+msgstr "本気のロボットのために。"
 
 #: data/robot_parts.json:parts[crew_flag].name
 msgid "Crew Flag"
-msgstr ""
+msgstr "クルーの旗"
 
 #: data/robot_parts.json:parts[crew_flag].desc
 msgid "A little flag in the crew's colour."
-msgstr ""
+msgstr "クルーの色の小さな旗。"
 
 #: data/robot_parts.json:parts[bobble_plant].name
 msgid "Bobble Plant"
-msgstr ""
+msgstr "ゆらゆら草"
 
 #: data/robot_parts.json:parts[bobble_plant].desc
 msgid "A sprout on a spring. Boings when it brakes."
-msgstr ""
+msgstr "バネの上の新芽。ブレーキをかけるとボヨンと揺れる。"
 
 #: data/robot_parts.json:parts[bobble_plant].source.hint
 msgid "Haggle's welcome gift with your first robot"
