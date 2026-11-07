@@ -7,6 +7,7 @@ extends Node
 ##   --extras=radio|album|nursery|weekly   open the Keepsakes panel on that tab (after --extras-at=S s)
 ##   --extras-welcome[=H]   fake an H-hour break (default 3) and show the welcome-back card
 ##   --album-snap=before+m50+thriving+base5   take those album pictures now (after --album-at=S s)
+##   --album-adopt          list album pictures already on disk for this slot (staged shots with --save-dir)
 ##   --nursery-sample=N     N retired caretakers in the nursery;  --radio-all unlocks every song
 ##   --radio-play=ID        play a song;  --weekly starts this week's challenge
 ##   --extras-cam=x,z,yaw,dist,pitch   fixed camera (shots); --extras-nohud hides the HUD
@@ -46,6 +47,8 @@ func _setup() -> void:
 	album = PhotoAlbum.new()
 	add_child(album)
 	album.setup(world)
+	if DevHooks.has("album-adopt"):  # shots: pick up pictures a previous --save-dir run left on disk
+		album.dev_adopt()
 	panel = ExtrasPanel.new()
 	panel.name = "ExtrasPanel"
 	panel.world = world

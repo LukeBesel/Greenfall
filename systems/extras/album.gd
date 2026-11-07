@@ -321,3 +321,14 @@ func dev_snap(kinds: Array) -> void:
 		WorkerThreadPool.wait_for_task_completion(id)
 	_tasks.clear()
 	print("[album] dev snap %s -> %s" % [str(kinds), dir()])
+
+
+## Dev / shots: register this district's pictures that are already on disk (a previous run).
+func dev_adopt() -> void:
+	var hub: int = GameState.current_hub
+	for k: String in ["before"] + MILESTONES:
+		var p: String = dir().path_join("h%d_%s.jpg" % [hub, k])
+		if FileAccess.file_exists(p):
+			entry(hub)[k] = p
+			entry(hub)["name"] = str(world.get("district_name"))
+	print("[album] adopted %s" % str(entry(hub)))
