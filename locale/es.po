@@ -508,101 +508,101 @@ msgstr ""
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr ""
 
-#: planet/frontier_district.gd:268
+#: planet/frontier_district.gd:275
 msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
 msgstr ""
 
-#: planet/frontier_district.gd:332
+#: planet/frontier_district.gd:339
 msgid "The sandstorm buried %d hex again. Sustained hexes shelter their neighbours."
 msgid_plural "The sandstorm buried %d hexes again. Sustained hexes shelter their neighbours."
 msgstr[0] ""
 msgstr[1] ""
 
-#: planet/frontier_district.gd:332
+#: planet/frontier_district.gd:339
 msgid "The storm blew over. Everything held."
 msgstr ""
 
-#: planet/frontier_district.gd:380
+#: planet/frontier_district.gd:387
 msgid "The ice let go. The junk underneath is just junk again."
 msgstr ""
 
-#: planet/frontier_district.gd:471
+#: planet/frontier_district.gd:478
 msgid "E   Light a heater on this ice · %s cubes"
 msgstr ""
 
-#: planet/frontier_district.gd:473
+#: planet/frontier_district.gd:480
 msgid "E   Build a greenhouse on this hex · %s cubes"
 msgstr ""
 
-#: planet/frontier_district.gd:483
+#: planet/frontier_district.gd:490
 msgid "Not enough cubes for a heater."
 msgstr ""
 
-#: planet/frontier_district.gd:483
+#: planet/frontier_district.gd:490
 msgid "Heater limit reached. Move on to the next ice once these have done their work."
 msgstr ""
 
-#: planet/frontier_district.gd:487
+#: planet/frontier_district.gd:494
 msgid "Not enough cubes for a greenhouse."
 msgstr ""
 
-#: planet/frontier_district.gd:519
+#: planet/frontier_district.gd:526
 msgid "The old pumps are running. The water drops and a ring of streets comes back up, with a lot of stranded junk."
 msgstr ""
 
-#: planet/frontier_district.gd:540
+#: planet/frontier_district.gd:547
 msgid "The landing pad is clean. Now plant it and keep it Sustained."
 msgstr ""
 
-#: planet/frontier_district.gd:556
+#: planet/frontier_district.gd:563
 msgid "The landing pad is alive and the beacon is lit. The Cradle has answered. It is coming home."
 msgstr ""
 
-#: planet/frontier_district.gd:591
+#: planet/frontier_district.gd:598
 msgid "Sandstorm blowing"
 msgstr ""
 
-#: planet/frontier_district.gd:593
+#: planet/frontier_district.gd:600
 msgid "Next sandstorm  %d:%02d"
 msgstr ""
 
-#: planet/frontier_district.gd:594
+#: planet/frontier_district.gd:601
 msgid "Well dry: Drips refill at tanks"
 msgstr ""
 
-#: planet/frontier_district.gd:600
+#: planet/frontier_district.gd:607
 msgid "%d hexes iced  ·  %d heaters"
 msgstr ""
 
-#: planet/frontier_district.gd:601
+#: planet/frontier_district.gd:608
 msgid "Greenhouses %d%s"
 msgstr ""
 
-#: planet/frontier_district.gd:601
+#: planet/frontier_district.gd:608
 msgid "  ·  cold-hardy seeds"
 msgstr ""
 
-#: planet/frontier_district.gd:605
+#: planet/frontier_district.gd:612
 msgid "Water down: all streets above water"
 msgstr ""
 
-#: planet/frontier_district.gd:607
+#: planet/frontier_district.gd:614
 msgid "Pumps: ring %d skimmed %d%% / %d%%"
 msgstr ""
 
-#: planet/frontier_district.gd:608
+#: planet/frontier_district.gd:615
 msgid "Water level %d / %d"
 msgstr ""
 
-#: planet/frontier_district.gd:611
+#: planet/frontier_district.gd:618
 msgid "The Cradle is coming home"
 msgstr ""
 
-#: planet/frontier_district.gd:613
+#: planet/frontier_district.gd:620
 msgid "Pad clean %d%%  ·  Sustained %d%%"
 msgstr ""
 
-#: planet/frontier_district.gd:614
+#: planet/frontier_district.gd:621
 msgid "District Growing %d%% / %d%%"
 msgstr ""
 
@@ -940,7 +940,7 @@ msgid_plural "Missing %d parts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: robots/fleet.gd:190 robots/fleet.gd:262 robots/water_net.gd:144
+#: robots/fleet.gd:190 robots/fleet.gd:262 robots/water_net.gd:149
 #: systems/robot_builder.gd:358 systems/robot_builder.gd:435 ui/robot_card.gd:79
 msgid "Not enough cubes"
 msgstr ""
@@ -965,153 +965,153 @@ msgstr ""
 msgid "%s fleet upgraded to %s."
 msgstr ""
 
-#: robots/robot.gd:243
+#: robots/robot.gd:246
 msgid "parked at hub"
 msgstr ""
 
-#: robots/robot.gd:243
+#: robots/robot.gd:246
 msgid "returning to hub"
 msgstr ""
 
-#: robots/robot.gd:245
+#: robots/robot.gd:248
 msgid "idle · %s"
 msgstr ""
 
-#: robots/robot.gd:245
+#: robots/robot.gd:248
 msgid "idle"
 msgstr ""
 
-#: robots/robot.gd:250
+#: robots/robot.gd:253
 msgid "hauling %d bale"
 msgid_plural "hauling %d bales"
 msgstr[0] ""
 msgstr[1] ""
 
-#: robots/robot.gd:252
+#: robots/robot.gd:255
 msgid "fetching a bale"
 msgstr ""
 
-#: robots/robot.gd:252 robots/robot.gd:866
+#: robots/robot.gd:255 robots/robot.gd:901
 msgid "waiting for bales"
 msgstr ""
 
-#: robots/robot.gd:255 robots/robot.gd:557
+#: robots/robot.gd:258 robots/robot.gd:571
 msgid "out of seeds"
 msgstr ""
 
-#: robots/robot.gd:256
+#: robots/robot.gd:259
 msgid "planting"
 msgstr ""
 
-#: robots/robot.gd:256
+#: robots/robot.gd:259
 msgid "looking for soil"
 msgstr ""
 
-#: robots/robot.gd:259
+#: robots/robot.gd:262
 msgid "refilling at %s (%d%%)"
 msgstr ""
 
-#: robots/robot.gd:259
+#: robots/robot.gd:262
 msgid "base barrel"
 msgstr ""
 
-#: robots/robot.gd:259 systems/research.gd:383
+#: robots/robot.gd:262 systems/research.gd:383
 msgid "tank"
 msgstr ""
 
-#: robots/robot.gd:259
+#: robots/robot.gd:262
 msgid "lake"
 msgstr ""
 
-#: robots/robot.gd:260
+#: robots/robot.gd:263
 msgid "watering · tank %d%%"
 msgstr ""
 
-#: robots/robot.gd:260
+#: robots/robot.gd:263
 msgid "looking for thirsty plants"
 msgstr ""
 
-#: robots/robot.gd:263
+#: robots/robot.gd:266
 msgid "taking a bale to shore"
 msgstr ""
 
-#: robots/robot.gd:265
+#: robots/robot.gd:268
 msgid "skimming lake hex %d (%d%%)"
 msgstr ""
 
-#: robots/robot.gd:266 robots/robot.gd:749
+#: robots/robot.gd:269 robots/robot.gd:764
 msgid "lake is clean"
 msgstr ""
 
-#: robots/robot.gd:269
+#: robots/robot.gd:272
 msgid "cleaning hex %d (%d%%)"
 msgstr ""
 
-#: robots/robot.gd:270
+#: robots/robot.gd:273
 msgid "zone clean, waiting"
 msgstr ""
 
-#: robots/robot.gd:270 robots/robot.gd:416
+#: robots/robot.gd:273 robots/robot.gd:425
 msgid "nothing left to clean"
 msgstr ""
 
-#: robots/robot.gd:416 robots/robot.gd:749
+#: robots/robot.gd:425 robots/robot.gd:764
 msgid "zone clean"
 msgstr ""
 
-#: robots/robot.gd:555
+#: robots/robot.gd:569
 msgid "seeds locked"
 msgstr ""
 
-#: robots/robot.gd:561 robots/robot.gd:565
+#: robots/robot.gd:575 robots/robot.gd:579
 msgid "no empty soil"
 msgstr ""
 
-#: robots/robot.gd:594
+#: robots/robot.gd:608
 msgid "no garden"
 msgstr ""
 
-#: robots/robot.gd:608
+#: robots/robot.gd:622
 msgid "everything watered"
 msgstr ""
 
-#: robots/robot.gd:704
+#: robots/robot.gd:718
 msgid "no water source"
 msgstr ""
 
-#: robots/water_net.gd:126
+#: robots/water_net.gd:131
 msgid "No world"
 msgstr ""
 
-#: robots/water_net.gd:130
+#: robots/water_net.gd:135
 msgid "Tank limit reached"
 msgstr ""
 
-#: robots/water_net.gd:132
+#: robots/water_net.gd:137
 msgid "Can't build here"
 msgstr ""
 
-#: robots/water_net.gd:134
+#: robots/water_net.gd:139
 msgid "Not on the lake"
 msgstr ""
 
-#: robots/water_net.gd:136
+#: robots/water_net.gd:141
 msgid "Clean this hex first"
 msgstr ""
 
-#: robots/water_net.gd:139
+#: robots/water_net.gd:144
 msgid "Too close to the base barrel"
 msgstr ""
 
-#: robots/water_net.gd:142
+#: robots/water_net.gd:147
 msgid "Too close to another tank"
 msgstr ""
 
-#: robots/water_net.gd:154
+#: robots/water_net.gd:159
 msgid "Water Tank placed. Waterers nearby will refill here."
 msgstr ""
 
-#: robots/water_net.gd:287 ui/hotbar.gd:28
+#: robots/water_net.gd:292 ui/hotbar.gd:28
 msgid "WATER"
 msgstr ""
 
@@ -2940,35 +2940,35 @@ msgstr ""
 msgid "Locked: %s"
 msgstr ""
 
-#: ui/credits_roll.gd:49
+#: ui/credits_roll.gd:52
 msgid "Esc  Skip"
 msgstr ""
 
-#: ui/credits_roll.gd:106
+#: ui/credits_roll.gd:111
 msgid "The Cradle is home."
 msgstr ""
 
-#: ui/credits_roll.gd:141
+#: ui/credits_roll.gd:146
 msgid "MADE WITH LOVE AND JUNK"
 msgstr ""
 
-#: ui/credits_roll.gd:142
+#: ui/credits_roll.gd:147
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr ""
 
-#: ui/credits_roll.gd:143
+#: ui/credits_roll.gd:148
 msgid "Built with the Godot Engine."
 msgstr ""
 
-#: ui/credits_roll.gd:146
+#: ui/credits_roll.gd:151
 msgid "MODELS AND TEXTURES FROM POLY HAVEN"
 msgstr ""
 
-#: ui/credits_roll.gd:156
+#: ui/credits_roll.gd:161
 msgid "Thank you for playing."
 msgstr ""
 
-#: ui/credits_roll.gd:157
+#: ui/credits_roll.gd:162
 msgid "Lumi is still out there, planting. The Seed Ark is open."
 msgstr ""
 
