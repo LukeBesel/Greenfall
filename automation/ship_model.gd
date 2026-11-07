@@ -86,6 +86,27 @@ static func extent(t: int) -> Vector2:
 	return Vector2(length, half_span)
 
 
+## A ready-built ship at the player's current look (or `t`), for the solar-system map, the
+## Homecoming cinematic and other displays. `engines` 0..1 lights the main engines.
+## Scale it with ShipTiers.scale_of(ship.tier) for true size relative to the pad.
+static func for_display(t: int = -1, engines: float = 0.0) -> ShipModel:
+	var m := ShipModel.new()
+	m.build(ShipTiers.look() if t < 1 else t)
+	m.set_legs(0.0 if engines > 0.0 else 1.0)
+	m.plume.power = engines
+	return m
+
+
+## Turns `n` so a ship parented to it flies nose first along `dir` (the ship's nose is +Z).
+static func face_along(n: Node3D, dir: Vector3, up: Vector3 = Vector3.UP) -> void:
+	if dir.length() < 0.0001:
+		return
+	var z: Vector3 = dir.normalized()
+	var u: Vector3 = up if absf(z.dot(up)) < 0.98 else Vector3.BACK
+	var x: Vector3 = u.cross(z).normalized()
+	n.basis = Basis(x, z.cross(x), z).scaled(n.basis.get_scale())
+
+
 func build(p_tier: int) -> void:
 	tier = clampi(p_tier, 1, ShipTiers.MAX_LOOK)
 	_load()

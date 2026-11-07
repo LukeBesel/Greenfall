@@ -272,21 +272,19 @@ msgstr "基地已升级：%s。"
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "空气净化器启动。风扇伴着一声悠长、满是灰尘的叹息转了起来。"
 
-#: automation/launch_pad.gd:83
+#: automation/launch_pad.gd:115
 msgid "PAD 01"
 msgstr "平台 01"
 
-#: automation/launch_pad.gd:213 ui/rockets_panel.gd:35
-msgid "LAUNCH PAD"
-msgstr "发射台"
+#: automation/launch_pad.gd:231
+msgid "LANDING PAD"
+msgstr ""
 
-#: automation/launch_pad.gd:264
+#: automation/launch_pad.gd:294
 msgid ""
-"LAUNCH PAD\n"
+"LANDING PAD\n"
 "BASE LEVEL 5"
 msgstr ""
-"发射台\n"
-"基地等级 5"
 
 #: automation/outpost.gd:478
 msgid "SCALE"
@@ -400,37 +398,21 @@ msgstr "粉碎  ·  熔炼  ·  永久清除"
 msgid "HAND FEED"
 msgstr "手动投料"
 
-#: automation/rocket.gd:206
+#: automation/rocket.gd:266
 msgid "IGNITION"
 msgstr "点火"
 
-#: automation/rocket.gd:253
-msgid "WARP"
-msgstr "跃迁"
-
-#: automation/rocket.gd:253
+#: automation/rocket.gd:318
 msgid "LIFT OFF"
 msgstr "升空"
 
-#: automation/rocket.gd:789 story/cine.gd:68
+#: automation/rocket.gd:323
+msgid "WARP"
+msgstr "跃迁"
+
+#: automation/rocket.gd:885 story/cine.gd:68
 msgid "Space / Esc  skip"
 msgstr "空格 / Esc  跳过"
-
-#: automation/rocket_model.gd:95
-msgid "MK I"
-msgstr "MK I"
-
-#: automation/rocket_model.gd:95
-msgid "MK II"
-msgstr "MK II"
-
-#: automation/rocket_model.gd:95
-msgid "MK III"
-msgstr "MK III"
-
-#: automation/rocket_model.gd:95
-msgid "MK IV"
-msgstr "MK IV"
 
 #: automation/rocket_tiers.gd:51
 msgid "Top tier"
@@ -4304,6 +4286,10 @@ msgstr "机队升级到 %s"
 #: ui/robot_card.gd:118
 msgid "□  %s  ·  missing  (detector, or salvage from electronics junk)"
 msgstr "□  %s  ·  缺少（用探测器，或从电子废料中回收）"
+
+#: ui/rockets_panel.gd:35
+msgid "LAUNCH PAD"
+msgstr "发射台"
 
 #: ui/rockets_panel.gd:38
 msgid "Cells charged and ready. Pick a base to fly to."
@@ -10725,32 +10711,32 @@ msgid "Mk I Cradle"
 msgstr "Mk I Cradle"
 
 #: data/rockets.json:tiers[0].desc
-msgid "Pearl hull, three swept fins, one cyan engine."
-msgstr "珍珠色船体，三片后掠鳍，一台青色引擎。"
+msgid "A compact one-seat glider: pearl hull, swept wings, twin engines and lift fans for vertical take-off."
+msgstr ""
 
 #: data/rockets.json:tiers[1].name
 msgid "Mk II Glide"
 msgstr "Mk II Glide"
 
 #: data/rockets.json:tiers[1].desc
-msgid "A hover ring stabilises the climb: shorter countdown, faster flight, cells refill twice as fast. Cargo pods carry 50% more."
-msgstr "悬浮环让爬升更稳：倒计时更短，飞行更快，电池充能速度翻倍。货运舱多装 50%。"
+msgid "Wing extensions steady the climb: shorter countdown, faster flight, cells refill twice as fast. Cargo pods carry 50% more."
+msgstr ""
 
 #: data/rockets.json:tiers[2].name
 msgid "Mk III Halo"
 msgstr "Mk III Halo"
 
 #: data/rockets.json:tiers[2].desc
-msgid "Twin side boosters and a second ring. Cells refill in a minute; cargo pods carry 2.5x, more often."
-msgstr "双侧助推器加第二个环。电池一分钟充满；货运舱装载 2.5 倍，频率更高。"
+msgid "Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry 2.5x, more often."
+msgstr ""
 
 #: data/rockets.json:tiers[3].name
 msgid "Mk IV Aurora Warp"
 msgstr "Mk IV Aurora Warp"
 
 #: data/rockets.json:tiers[3].desc
-msgid "Energy fins and a warp core: instant hops with no recharge. Cargo pods carry 4x, every 30 s."
-msgstr "能量鳍和跃迁核心：瞬间跳跃，无需充能。货运舱装载 4 倍，每 30 秒一次。"
+msgid "Landing gear, cargo pods and a warp core: instant hops with no recharge. Cargo pods carry 4x, every 30 s."
+msgstr ""
 
 #: data/shards.json:shards[back_soon].kind
 msgid "sign"
@@ -12623,6 +12609,37 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid ""
+#~ "LAUNCH PAD\n"
+#~ "BASE LEVEL 5"
+#~ msgstr ""
+#~ "发射台\n"
+#~ "基地等级 5"
+
+#~ msgid "MK I"
+#~ msgstr "MK I"
+
+#~ msgid "MK II"
+#~ msgstr "MK II"
+
+#~ msgid "MK III"
+#~ msgstr "MK III"
+
+#~ msgid "MK IV"
+#~ msgstr "MK IV"
+
+#~ msgid "Pearl hull, three swept fins, one cyan engine."
+#~ msgstr "珍珠色船体，三片后掠鳍，一台青色引擎。"
+
+#~ msgid "A hover ring stabilises the climb: shorter countdown, faster flight, cells refill twice as fast. Cargo pods carry 50% more."
+#~ msgstr "悬浮环让爬升更稳：倒计时更短，飞行更快，电池充能速度翻倍。货运舱多装 50%。"
+
+#~ msgid "Twin side boosters and a second ring. Cells refill in a minute; cargo pods carry 2.5x, more often."
+#~ msgstr "双侧助推器加第二个环。电池一分钟充满；货运舱装载 2.5 倍，频率更高。"
+
+#~ msgid "Energy fins and a warp core: instant hops with no recharge. Cargo pods carry 4x, every 30 s."
+#~ msgstr "能量鳍和跃迁核心：瞬间跳跃，无需充能。货运舱装载 4 倍，每 30 秒一次。"
 
 #~ msgid "+%d bolts"
 #~ msgstr "+%d 螺栓"

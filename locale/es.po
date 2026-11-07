@@ -272,21 +272,19 @@ msgstr "Base mejorada: %s."
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "Depurador de aire en marcha. Los ventiladores arrancan con un largo suspiro polvoriento."
 
-#: automation/launch_pad.gd:83
+#: automation/launch_pad.gd:115
 msgid "PAD 01"
 msgstr "PLATAFORMA 01"
 
-#: automation/launch_pad.gd:213 ui/rockets_panel.gd:35
-msgid "LAUNCH PAD"
-msgstr "PLATAFORMA DE LANZAMIENTO"
+#: automation/launch_pad.gd:231
+msgid "LANDING PAD"
+msgstr ""
 
-#: automation/launch_pad.gd:264
+#: automation/launch_pad.gd:294
 msgid ""
-"LAUNCH PAD\n"
+"LANDING PAD\n"
 "BASE LEVEL 5"
 msgstr ""
-"PLATAFORMA DE LANZAMIENTO\n"
-"BASE NIVEL 5"
 
 #: automation/outpost.gd:478
 msgid "SCALE"
@@ -400,37 +398,21 @@ msgstr "TRITURAR  ·  FUNDIR  ·  ADIÓS PARA SIEMPRE"
 msgid "HAND FEED"
 msgstr "A MANO"
 
-#: automation/rocket.gd:206
+#: automation/rocket.gd:266
 msgid "IGNITION"
 msgstr "IGNICIÓN"
 
-#: automation/rocket.gd:253
-msgid "WARP"
-msgstr "SALTO"
-
-#: automation/rocket.gd:253
+#: automation/rocket.gd:318
 msgid "LIFT OFF"
 msgstr "DESPEGUE"
 
-#: automation/rocket.gd:789 story/cine.gd:68
+#: automation/rocket.gd:323
+msgid "WARP"
+msgstr "SALTO"
+
+#: automation/rocket.gd:885 story/cine.gd:68
 msgid "Space / Esc  skip"
 msgstr "Espacio / Esc  saltar"
-
-#: automation/rocket_model.gd:95
-msgid "MK I"
-msgstr "MK I"
-
-#: automation/rocket_model.gd:95
-msgid "MK II"
-msgstr "MK II"
-
-#: automation/rocket_model.gd:95
-msgid "MK III"
-msgstr "MK III"
-
-#: automation/rocket_model.gd:95
-msgid "MK IV"
-msgstr "MK IV"
 
 #: automation/rocket_tiers.gd:51
 msgid "Top tier"
@@ -4316,6 +4298,10 @@ msgstr "Mejorar flota a %s"
 #: ui/robot_card.gd:118
 msgid "□  %s  ·  missing  (detector, or salvage from electronics junk)"
 msgstr "□  %s  ·  falta  (detector, o rescátalo de chatarra electrónica)"
+
+#: ui/rockets_panel.gd:35
+msgid "LAUNCH PAD"
+msgstr "PLATAFORMA DE LANZAMIENTO"
 
 #: ui/rockets_panel.gd:38
 msgid "Cells charged and ready. Pick a base to fly to."
@@ -10737,32 +10723,32 @@ msgid "Mk I Cradle"
 msgstr "Mk I Cradle"
 
 #: data/rockets.json:tiers[0].desc
-msgid "Pearl hull, three swept fins, one cyan engine."
-msgstr "Casco nacarado, tres aletas en flecha, un motor cian."
+msgid "A compact one-seat glider: pearl hull, swept wings, twin engines and lift fans for vertical take-off."
+msgstr ""
 
 #: data/rockets.json:tiers[1].name
 msgid "Mk II Glide"
 msgstr "Mk II Glide"
 
 #: data/rockets.json:tiers[1].desc
-msgid "A hover ring stabilises the climb: shorter countdown, faster flight, cells refill twice as fast. Cargo pods carry 50% more."
-msgstr "Un anillo de levitación estabiliza el ascenso: cuenta atrás más corta, vuelo más rápido, las celdas se recargan el doble de rápido. Las cápsulas de carga llevan un 50% más."
+msgid "Wing extensions steady the climb: shorter countdown, faster flight, cells refill twice as fast. Cargo pods carry 50% more."
+msgstr ""
 
 #: data/rockets.json:tiers[2].name
 msgid "Mk III Halo"
 msgstr "Mk III Halo"
 
 #: data/rockets.json:tiers[2].desc
-msgid "Twin side boosters and a second ring. Cells refill in a minute; cargo pods carry 2.5x, more often."
-msgstr "Dos propulsores laterales y un segundo anillo. Las celdas se recargan en un minuto; las cápsulas llevan 2,5x, más a menudo."
+msgid "Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry 2.5x, more often."
+msgstr ""
 
 #: data/rockets.json:tiers[3].name
 msgid "Mk IV Aurora Warp"
 msgstr "Mk IV Aurora Warp"
 
 #: data/rockets.json:tiers[3].desc
-msgid "Energy fins and a warp core: instant hops with no recharge. Cargo pods carry 4x, every 30 s."
-msgstr "Aletas de energía y un núcleo de salto: saltos instantáneos sin recarga. Las cápsulas llevan 4x, cada 30 s."
+msgid "Landing gear, cargo pods and a warp core: instant hops with no recharge. Cargo pods carry 4x, every 30 s."
+msgstr ""
 
 #: data/shards.json:shards[back_soon].kind
 msgid "sign"
@@ -12635,6 +12621,37 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid ""
+#~ "LAUNCH PAD\n"
+#~ "BASE LEVEL 5"
+#~ msgstr ""
+#~ "PLATAFORMA DE LANZAMIENTO\n"
+#~ "BASE NIVEL 5"
+
+#~ msgid "MK I"
+#~ msgstr "MK I"
+
+#~ msgid "MK II"
+#~ msgstr "MK II"
+
+#~ msgid "MK III"
+#~ msgstr "MK III"
+
+#~ msgid "MK IV"
+#~ msgstr "MK IV"
+
+#~ msgid "Pearl hull, three swept fins, one cyan engine."
+#~ msgstr "Casco nacarado, tres aletas en flecha, un motor cian."
+
+#~ msgid "A hover ring stabilises the climb: shorter countdown, faster flight, cells refill twice as fast. Cargo pods carry 50% more."
+#~ msgstr "Un anillo de levitación estabiliza el ascenso: cuenta atrás más corta, vuelo más rápido, las celdas se recargan el doble de rápido. Las cápsulas de carga llevan un 50% más."
+
+#~ msgid "Twin side boosters and a second ring. Cells refill in a minute; cargo pods carry 2.5x, more often."
+#~ msgstr "Dos propulsores laterales y un segundo anillo. Las celdas se recargan en un minuto; las cápsulas llevan 2,5x, más a menudo."
+
+#~ msgid "Energy fins and a warp core: instant hops with no recharge. Cargo pods carry 4x, every 30 s."
+#~ msgstr "Aletas de energía y un núcleo de salto: saltos instantáneos sin recarga. Las cápsulas llevan 4x, cada 30 s."
 
 #~ msgid "+%d bolts"
 #~ msgstr "+%d tornillos"

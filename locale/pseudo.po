@@ -269,20 +269,20 @@ msgstr "[Ĥûb ûþĝŕàðéð: %s. ~~~]"
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "[Àîŕ Šçŕûbbéŕ ôñļîñé. Ţĥé ƒàñš šþîñ ûþ ŵîţĥ à ļôñĝ, ðûšţý šîĝĥ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: automation/launch_pad.gd:83
+#: automation/launch_pad.gd:115
 msgid "PAD 01"
 msgstr "[ÞÀÐ 01 ~]"
 
-#: automation/launch_pad.gd:213 ui/rockets_panel.gd:35
-msgid "LAUNCH PAD"
-msgstr "[ĻÀÛÑÇĤ ÞÀÐ ~]"
+#: automation/launch_pad.gd:231
+msgid "LANDING PAD"
+msgstr "[ĻÀÑÐÎÑĜ ÞÀÐ ~]"
 
-#: automation/launch_pad.gd:264
+#: automation/launch_pad.gd:294
 msgid ""
-"LAUNCH PAD\n"
+"LANDING PAD\n"
 "BASE LEVEL 5"
 msgstr ""
-"[ĻÀÛÑÇĤ ÞÀÐ\n"
+"[ĻÀÑÐÎÑĜ ÞÀÐ\n"
 "BÀŠÉ ĻÉVÉĻ 5 ~~~~~]"
 
 #: automation/outpost.gd:478
@@ -397,37 +397,21 @@ msgstr "[ŠĤŔÉÐ  ·  ŠMÉĻŢ  ·  ĜÔÑÉ FÔŔ ĜÔÔÐ ~~~~~~~~~]"
 msgid "HAND FEED"
 msgstr "[ĤÀÑÐ FÉÉÐ ~]"
 
-#: automation/rocket.gd:206
+#: automation/rocket.gd:266
 msgid "IGNITION"
 msgstr "[ÎĜÑÎŢÎÔÑ ~]"
 
-#: automation/rocket.gd:253
-msgid "WARP"
-msgstr "[ŴÀŔÞ ~]"
-
-#: automation/rocket.gd:253
+#: automation/rocket.gd:318
 msgid "LIFT OFF"
 msgstr "[ĻÎFŢ ÔFF ~]"
 
-#: automation/rocket.gd:789 story/cine.gd:68
+#: automation/rocket.gd:323
+msgid "WARP"
+msgstr "[ŴÀŔÞ ~]"
+
+#: automation/rocket.gd:885 story/cine.gd:68
 msgid "Space / Esc  skip"
 msgstr "[Šþàçé / Éšç  šķîþ ~~~]"
-
-#: automation/rocket_model.gd:95
-msgid "MK I"
-msgstr "[MĶ Î ~]"
-
-#: automation/rocket_model.gd:95
-msgid "MK II"
-msgstr "[MĶ ÎÎ ~]"
-
-#: automation/rocket_model.gd:95
-msgid "MK III"
-msgstr "[MĶ ÎÎÎ ~]"
-
-#: automation/rocket_model.gd:95
-msgid "MK IV"
-msgstr "[MĶ ÎV ~]"
 
 #: automation/rocket_tiers.gd:51
 msgid "Top tier"
@@ -4315,6 +4299,10 @@ msgstr "[Ûþĝŕàðé ƒļééţ ţô %s ~~~~]"
 #: ui/robot_card.gd:118
 msgid "□  %s  ·  missing  (detector, or salvage from electronics junk)"
 msgstr "[□  %s  ·  mîššîñĝ  (ðéţéçţôŕ, ôŕ šàļvàĝé ƒŕôm éļéçţŕôñîçš ĵûñķ) ~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/rockets_panel.gd:35
+msgid "LAUNCH PAD"
+msgstr "[ĻÀÛÑÇĤ ÞÀÐ ~]"
 
 #: ui/rockets_panel.gd:38
 msgid "Cells charged and ready. Pick a base to fly to."
@@ -10738,32 +10726,32 @@ msgid "Mk I Cradle"
 msgstr "[Mķ Î Çŕàðļé ~]"
 
 #: data/rockets.json:tiers[0].desc
-msgid "Pearl hull, three swept fins, one cyan engine."
-msgstr "[Þéàŕļ ĥûļļ, ţĥŕéé šŵéþţ ƒîñš, ôñé çýàñ éñĝîñé. ~~~~~~~~~~~~~]"
+msgid "A compact one-seat glider: pearl hull, swept wings, twin engines and lift fans for vertical take-off."
+msgstr "[À çômþàçţ ôñé-šéàţ ĝļîðéŕ: þéàŕļ ĥûļļ, šŵéþţ ŵîñĝš, ţŵîñ éñĝîñéš àñð ļîƒţ ƒàñš ƒôŕ véŕţîçàļ ţàķé-ôƒƒ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/rockets.json:tiers[1].name
 msgid "Mk II Glide"
 msgstr "[Mķ ÎÎ Ĝļîðé ~]"
 
 #: data/rockets.json:tiers[1].desc
-msgid "A hover ring stabilises the climb: shorter countdown, faster flight, cells refill twice as fast. Cargo pods carry 50% more."
-msgstr "[À ĥôvéŕ ŕîñĝ šţàbîļîšéš ţĥé çļîmb: šĥôŕţéŕ çôûñţðôŵñ, ƒàšţéŕ ƒļîĝĥţ, çéļļš ŕéƒîļļ ţŵîçé àš ƒàšţ. Çàŕĝô þôðš çàŕŕý 50% môŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Wing extensions steady the climb: shorter countdown, faster flight, cells refill twice as fast. Cargo pods carry 50% more."
+msgstr "[Ŵîñĝ éxţéñšîôñš šţéàðý ţĥé çļîmb: šĥôŕţéŕ çôûñţðôŵñ, ƒàšţéŕ ƒļîĝĥţ, çéļļš ŕéƒîļļ ţŵîçé àš ƒàšţ. Çàŕĝô þôðš çàŕŕý 50% môŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/rockets.json:tiers[2].name
 msgid "Mk III Halo"
 msgstr "[Mķ ÎÎÎ Ĥàļô ~]"
 
 #: data/rockets.json:tiers[2].desc
-msgid "Twin side boosters and a second ring. Cells refill in a minute; cargo pods carry 2.5x, more often."
-msgstr "[Ţŵîñ šîðé bôôšţéŕš àñð à šéçôñð ŕîñĝ. Çéļļš ŕéƒîļļ îñ à mîñûţé; çàŕĝô þôðš çàŕŕý 2.5x, môŕé ôƒţéñ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry 2.5x, more often."
+msgstr "[Bîĝĝéŕ éñĝîñéš àñð à ñéŵ çàñôþý. Çéļļš ŕéƒîļļ îñ à mîñûţé; çàŕĝô þôðš çàŕŕý 2.5x, môŕé ôƒţéñ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/rockets.json:tiers[3].name
 msgid "Mk IV Aurora Warp"
 msgstr "[Mķ ÎV Àûŕôŕà Ŵàŕþ ~~~]"
 
 #: data/rockets.json:tiers[3].desc
-msgid "Energy fins and a warp core: instant hops with no recharge. Cargo pods carry 4x, every 30 s."
-msgstr "[Éñéŕĝý ƒîñš àñð à ŵàŕþ çôŕé: îñšţàñţ ĥôþš ŵîţĥ ñô ŕéçĥàŕĝé. Çàŕĝô þôðš çàŕŕý 4x, évéŕý 30 š. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Landing gear, cargo pods and a warp core: instant hops with no recharge. Cargo pods carry 4x, every 30 s."
+msgstr "[Ļàñðîñĝ ĝéàŕ, çàŕĝô þôðš àñð à ŵàŕþ çôŕé: îñšţàñţ ĥôþš ŵîţĥ ñô ŕéçĥàŕĝé. Çàŕĝô þôðš çàŕŕý 4x, évéŕý 30 š. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/shards.json:shards[back_soon].kind
 msgid "sign"
