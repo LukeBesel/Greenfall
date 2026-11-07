@@ -189,7 +189,7 @@ func _on_hex_cleaned(hid: int, center: Vector3, _bonus: BigNum) -> void:
 ## fired ~40 s (wall) before --shot-delay and the game clock freezes at its peak (Engine.time_scale
 ## = 0); the shot then captures that instant. Pair with --time-scale=0.05 so the freeze lands within
 ## a fraction of a game second of the peak.
-const DEMO_PEAK: Dictionary = {"bale": 1.3, "sale": 0.78, "robot": 0.5, "reveal": 0.45}
+const DEMO_PEAK: Dictionary = {"bale": 1.3, "sale": 0.78, "robot": 0.42, "reveal": 0.45}
 
 var _demo_setup: bool = false
 
@@ -211,7 +211,7 @@ func _demo_tick() -> void:
 			world.add_cube(cube)
 			cube.global_position = (world.depot as Node3D).global_position + Vector3(0.0, 0.3, 0.0)
 		"robot":
-			var at: Vector3 = p.global_position + p.forward() * 2.6 + p.global_transform.basis.x * 1.6
+			var at: Vector3 = p.global_position + p.forward() * 2.0 + p.global_transform.basis.x * 1.1
 			var r: Robot = world.fleet.spawn("scoopie", 0, at, 0.0, "Tin-15")
 			GameState.inc_stat("robots_built")
 			EventBus.robot_built.emit(r.robot_name)

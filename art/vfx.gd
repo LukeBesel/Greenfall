@@ -320,12 +320,12 @@ func sweep(center: Vector3, max_r: float, speed: float, color: Color, glints: bo
 		tw.tween_callback(p.queue_free)
 
 
-## [first] A thin soft column of light that rises, holds and fades (arrivals: the first robot).
+## [first] A thin, tapered column of light that rises, holds and fades (arrivals: the first robot).
 func pillar(pos: Vector3, color: Color, height: float = 6.0, duration: float = 1.6) -> void:
 	var mi := MeshInstance3D.new()
 	var c := CylinderMesh.new()
-	c.top_radius = 0.32
-	c.bottom_radius = 0.5
+	c.top_radius = 0.12
+	c.bottom_radius = 0.42
 	c.height = 1.0
 	c.cap_top = false
 	c.cap_bottom = false
@@ -335,16 +335,6 @@ func pillar(pos: Vector3, color: Color, height: float = 6.0, duration: float = 1
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	m.cull_mode = BaseMaterial3D.CULL_DISABLED
 	m.albedo_color = Color(color.lerp(Color.WHITE, 0.35), 0.0)
-	var g := Gradient.new()
-	g.set_color(0, Color(1, 1, 1, 1))
-	g.set_color(1, Color(1, 1, 1, 0))
-	var gt := GradientTexture2D.new()
-	gt.gradient = g
-	gt.fill_from = Vector2(0, 1)
-	gt.fill_to = Vector2(0, 0)
-	gt.width = 4
-	gt.height = 64
-	m.albedo_texture = gt
 	c.material = m
 	mi.mesh = c
 	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -355,7 +345,7 @@ func pillar(pos: Vector3, color: Color, height: float = 6.0, duration: float = 1
 	tw.tween_method(func(t: float) -> void:
 		mi.scale = Vector3(1.0 - 0.3 * t, maxf(0.01, height * t), 1.0 - 0.3 * t)
 		mi.global_position = pos + Vector3(0, height * t * 0.5, 0)
-		m.albedo_color.a = 0.6 * t, 0.0, 1.0, duration * 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		m.albedo_color.a = 0.42 * t, 0.0, 1.0, duration * 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tw.tween_interval(duration * 0.25)
 	tw.tween_property(m, "albedo_color:a", 0.0, duration * 0.45)
 	tw.tween_callback(mi.queue_free)
