@@ -1774,6 +1774,22 @@ func _dev_look() -> void:
 			var yw: float = base_yaw + PI + yaw_off
 			var back := Vector3(sin(yw), 0, cos(yw))
 			var eye: Vector3 = focus + back * dist * cos(pitch) + Vector3(0, -sin(pitch) * dist, 0)
+			# Keep the shot out of buildings: turn around the subject until the view is clear.
+			var lay: CityLayout = world.field.layout
+			if lay and not lay.wild:
+				for k: int in 16:
+					var yk: float = yw + (k + 1) / 2 * 0.4 * (1.0 if k % 2 == 0 else -1.0)
+					var bk := Vector3(sin(yk), 0, cos(yk))
+					var ek: Vector3 = focus + bk * dist * cos(pitch) + Vector3(0, -sin(pitch) * dist, 0)
+					var clear: bool = true
+					for t: int in 12:
+						var q: Vector3 = focus.lerp(ek, (t + 1) / 12.0)
+						if q.y < 16.0 and lay.surface_at(q.x, q.z) == CityLayout.Surface.BUILDING:
+							clear = false
+							break
+					if clear:
+						eye = ek
+						break
 			c3.global_transform = Transform3D(Basis.looking_at(focus - eye, Vector3.UP), eye)
 			c3.fov = DevHooks.get_f("fauna-fov", 50.0)
 	if DevHooks.has("fauna-debug"):
