@@ -9,6 +9,14 @@ uniform int grid_radius = 3;
 uniform float hex_size = 10.0;
 uniform float time_now = 0.0;
 uniform float clarity_bonus = 0.0;  // research (silt filters, irrigation)
+// [biomes2] Look overrides (the Sunken City's deep flood): dirty / clear colours, opacity and
+// roughness, and a mirror amount that flattens the waves so the sky reflects.
+uniform vec3 murky_col = vec3(0.16, 0.17, 0.14);
+uniform vec3 clear_col = vec3(0.08, 0.42, 0.46);
+uniform vec2 alpha_mc = vec2(0.94, 0.42);
+uniform vec2 rough_mc = vec2(0.18, 0.04);
+uniform float mirror = 0.0;
+uniform float sheen_amt = 1.0;
 
 varying vec3 wpos;
 const float SQRT3 = 1.7320508;
@@ -45,16 +53,16 @@ void fragment() {
 	vec2 uv1 = p * 0.18 + vec2(TIME * 0.02, TIME * 0.013);
 	vec2 uv2 = p * 0.27 - vec2(TIME * 0.017, -TIME * 0.011);
 	vec3 n = mix(texture(wave_nrm, uv1).rgb, texture(wave_nrm, uv2).rgb, 0.5);
-	vec3 murky = vec3(0.16, 0.17, 0.14) + vec3(0.06, 0.0, 0.08) * sin(p.x * 0.3 + p.y * 0.2 + TIME * 0.2);
-	vec3 clear = vec3(0.08, 0.42, 0.46);
+	vec3 murky = murky_col + vec3(0.06, 0.0, 0.08) * sin(p.x * 0.3 + p.y * 0.2 + TIME * 0.2) * sheen_amt;
+	vec3 clear = clear_col;
 	ALBEDO = mix(murky, clear, clarity);
-	ALPHA = mix(0.94, 0.42, clarity);
-	ROUGHNESS = mix(0.18, 0.04, clarity);
+	ALPHA = mix(alpha_mc.x, alpha_mc.y, clarity);
+	ROUGHNESS = mix(rough_mc.x, rough_mc.y, clarity);
 	METALLIC = 0.0;
 	SPECULAR = 0.7;
 	NORMAL_MAP = n;
-	NORMAL_MAP_DEPTH = mix(0.4, 0.8, clarity);
+	NORMAL_MAP_DEPTH = mix(0.4, 0.8, clarity) * (1.0 - 0.65 * mirror);
 	// Oily rainbow sheen on dirty water.
 	float sheen = (1.0 - clarity) * smoothstep(0.6, 0.9, sin(p.x * 0.7 + p.y * 0.9 + TIME * 0.3) * 0.5 + 0.5);
-	EMISSION = vec3(0.12, 0.06, 0.16) * sheen * 0.3;
+	EMISSION = vec3(0.12, 0.06, 0.16) * sheen * 0.3 * sheen_amt;
 }

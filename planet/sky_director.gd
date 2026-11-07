@@ -113,6 +113,28 @@ func _apply_grade(sun_up: float) -> void:
 		sky_mat.mie_color = sky_mat.mie_color.lerp(_col(grade.get("mie", []), sky_mat.mie_color), sk)
 		env.adjustment_saturation *= lerpf(1.0, float(grade.get("sat", 1.0)), a)
 		env.tonemap_exposure *= lerpf(1.0, float(grade.get("exposure", 1.0)), a)
+		# [biomes2] Absolute haze targets (clearer air than the planet's dusty default), a sun
+		# tint, and optional low-lying height fog (the Sunken City's mist over the water). These
+		# hold as the district is restored (the planet haze only lowers them further).
+		var keep: float = clampf(grade_amt + 0.6, 0.0, 1.0)
+		if grade.has("fog_density"):
+			env.fog_density = minf(env.fog_density, lerpf(env.fog_density, float(grade["fog_density"]), keep))
+		if grade.has("vol_density"):
+			env.volumetric_fog_density = minf(env.volumetric_fog_density, lerpf(env.volumetric_fog_density, float(grade["vol_density"]), keep))
+		if grade.has("turbidity"):
+			sky_mat.turbidity = lerpf(sky_mat.turbidity, float(grade["turbidity"]), keep)
+			sky_mat.mie_coefficient = lerpf(sky_mat.mie_coefficient, 0.0035, keep)
+		if grade.has("fog_sky"):
+			env.fog_sky_affect = float(grade["fog_sky"])
+			env.volumetric_fog_sky_affect = float(grade["fog_sky"]) * 0.6
+		if grade.has("contrast"):
+			env.adjustment_contrast = float(grade["contrast"])
+		if grade.has("sun"):
+			sun.light_color = sun.light_color.lerp(_col(grade["sun"], sun.light_color), 0.6 * keep)
+		var hf: Array = grade.get("height_fog", [])
+		if hf.size() >= 2:
+			env.fog_height = float(hf[0])
+			env.fog_height_density = float(hf[1]) * keep
 	if storm > 0.0:
 		var st: float = clampf(storm, 0.0, 1.0)
 		var dust := Color(0.78, 0.6, 0.4)

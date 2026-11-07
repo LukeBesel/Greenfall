@@ -12,8 +12,11 @@ extends Node3D
 ##   Cradle Returns a ring of white towers with green terraces (kept by ground crews), launch
 ##                  gantries, the landing pad's light ring and pylons, and the ark in the sky
 ## Static geometry is merged per material (Batch) so each layer is a handful of draw calls.
+## [biomes2] Each kind also gets a heightfield terrain from the field edge to the horizon
+## (art/shaders/terrain.gdshader: dunes, snowfields and mountains, drowned headlands, lawns and
+## hills); the FieldView ground stops at its inner edge. Props beyond the edge sit on it (_gy).
 
-const CYAN := Color(0.45, 0.92, 1.0)
+const CYAN := Color(0.62, 0.9, 1.0)
 const WARM := Color(1.0, 0.62, 0.3)
 
 var district: FrontierDistrict
@@ -46,6 +49,17 @@ var _cradle: Dictionary = {}
 var _pumps_fx: Array[Vector3] = []
 var _t: float = 0.0
 var _rng := RandomNumberGenerator.new()
+# [biomes2] Terrain
+var _r_in: float = 0.0
+var _quay_x: float = 99999.0
+var _n1 := FastNoiseLite.new()
+var _n2 := FastNoiseLite.new()
+var _n3 := FastNoiseLite.new()
+var _terrain_mat: ShaderMaterial
+var _farm_c := Vector2(99999, 99999)
+var _farm_yaw: float = 0.0
+var _farm_half := Vector2(95.0, 60.0)
+var _snow: CPUParticles3D
 
 
 ## Merges primitive meshes per material into one ArrayMesh each.
@@ -78,6 +92,16 @@ func build() -> void:
 	kid = district.kid
 	_rng.seed = field.seed_value + 5150
 	level = int(world.hub.level) if world.get("hub") != null else 1
+	_r_in = _edge() + 2.0
+	_open_camera()
+	_quay_x = _edge() - 4.0 if kid == "frozen_port" else 99999.0
+	for k: int in 3:
+		var nz: FastNoiseLite = [_n1, _n2, _n3][k]
+		nz.seed = field.seed_value + 71 * (k + 1)
+		nz.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+		nz.fractal_type = FastNoiseLite.FRACTAL_FBM
+		nz.fractal_octaves = 3
+		nz.frequency = [0.004, 0.011, 0.0022][k]
 	for g: String in ["always", "ruin", "mid", "up", "future"]:
 		var n := Node3D.new()
 		n.name = g.capitalize()
@@ -117,6 +141,8 @@ func set_level(l: int, animate: bool) -> void:
 
 func set_restore(r: float) -> void:
 	restore = r
+	if _terrain_mat:
+		_terrain_mat.set_shader_parameter("restore", r)
 
 
 func _process(delta: float) -> void:
@@ -129,6 +155,11 @@ func _process(delta: float) -> void:
 		if p:
 			_storm.global_position = p.global_position + Vector3(-18.0, 3.0, 0.0)
 		_storm.emitting = _storm_amt > 0.08
+	if _snow:
+		var pp: Node3D = world.get("patch")
+		if pp:
+			_snow.global_position = pp.global_position + Vector3(0, 16.0, 0)
+		_snow.emitting = level < 4
 	for hid: int in _heaters:
 		var hn: Node3D = _heaters[hid]
 		if is_instance_valid(hn):
@@ -179,8 +210,25 @@ func _mat(key: String) -> Material:
 			l.albedo_color = CYAN
 			l.emission_enabled = true
 			l.emission = CYAN
-			l.emission_energy_multiplier = 1.6
+			l.emission_energy_multiplier = 1.0
 			m = l
+		"line_soft":
+			# [biomes2] A faint seam of light (the Cradle's towers and apron): visible, never neon.
+			var ls := StandardMaterial3D.new()
+			ls.albedo_color = Color(0.86, 0.95, 1.0)
+			ls.emission_enabled = true
+			ls.emission = Color(0.7, 0.9, 1.0)
+			ls.emission_energy_multiplier = 0.55
+			ls.roughness = 0.3
+			m = ls
+		"tower_glass":
+			# Opaque dark curtain-wall glass that mirrors the sky.
+			var tg := StandardMaterial3D.new()
+			tg.albedo_color = Color(0.1, 0.14, 0.18)
+			tg.metallic = 0.75
+			tg.roughness = 0.07
+			tg.metallic_specular = 0.7
+			m = tg
 		"warm":
 			m = Mats.lamp(WARM, 2.0)
 		"steel":
@@ -214,19 +262,8 @@ func _mat(key: String) -> Material:
 		"snow":
 			m = AssetLib.pbr_material("snow_02", 0.3, Color(1, 1, 1), true)
 		"ice":
-			var i := StandardMaterial3D.new()
-			i.albedo_color = Color(1, 1, 1, 1)
-			i.vertex_color_use_as_albedo = true
-			i.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-			i.roughness = 0.07
-			i.metallic = 0.05
-			i.rim_enabled = true
-			i.rim = 0.4
-			i.normal_enabled = true
-			i.normal_texture = AssetLib.tex("snow_02", "nor_gl")
-			i.normal_scale = 0.35
-			i.uv1_triplanar = true
-			i.uv1_scale = Vector3.ONE * 0.25
+			var i := ShaderMaterial.new()
+			i.shader = preload("res://art/shaders/ice_slab.gdshader")
 			m = i
 		"green":
 			var gr := StandardMaterial3D.new()
@@ -282,7 +319,9 @@ func _box() -> BoxMesh:
 
 
 func _add_box(b: Batch, pos: Vector3, size: Vector3, mat: Material, rot_deg: Vector3 = Vector3.ZERO) -> void:
-	b.add(_box(), _xf(pos, rot_deg, size), mat)
+	# [biomes2] Scale in the box's own axes (Basis.scaled() is a parent-space scale and skews
+	# rotated boxes).
+	b.add(_box(), Transform3D(Basis.from_euler(rot_deg * (PI / 180.0)) * Basis.from_scale(size), pos), mat)
 
 
 func _add_beam(b: Batch, a: Vector3, c: Vector3, thick: float, mat: Material) -> void:
@@ -294,7 +333,7 @@ func _model(id: String, pos: Vector3, yaw: float, scl: float = 1.0, parent: Node
 		return null
 	var mi := MeshInstance3D.new()
 	mi.mesh = AssetLib.model_mesh(id) if id == "dutch_ship_medium" else AssetLib.model_mesh_lite(id, 6000)  # the ship loses its rigging when decimated
-	mi.transform = Transform3D(Basis.from_euler(Vector3(tilt.x, yaw, tilt.z)).scaled(Vector3.ONE * scl), pos)
+	mi.transform = Transform3D((Basis.from_euler(Vector3(tilt.x, yaw, tilt.z)) * Basis.from_scale(Vector3.ONE * scl)), pos)
 	if overlay:
 		mi.material_overlay = overlay
 	(parent if parent else _groups["always"]).add_child(mi)
@@ -358,43 +397,227 @@ func _flood_plane(ice: float, half_x: float, y: float) -> MeshInstance3D:
 	return mi
 
 
+## Frontiers are wide open: see the terrain to the horizon, and keep the far blur for the far
+## distance (the default 55 m lens blur makes a landscape look like a miniature).
+func _open_camera() -> void:
+	var rig: Node = world.get("cam")
+	var cam: Camera3D = rig.get("camera") if rig else null
+	if cam == null:
+		return
+	cam.far = 2200.0
+	var attrs: CameraAttributesPractical = cam.attributes as CameraAttributesPractical
+	if attrs:
+		attrs.dof_blur_far_distance = 260.0
+		attrs.dof_blur_far_transition = 400.0
+		attrs.dof_blur_amount = 0.03
+
+
+# --- Terrain (biomes2) -----------------------------------------------------------------------
+
+## Terrain height at world x, z (beyond the field; 0 or a little below at its inner edge).
+func _terrain_h(x: float, z: float) -> float:
+	var r: float = sqrt(x * x + z * z)
+	var t: float = r - _r_in
+	match kid:
+		"dust_flats":
+			return _dune_h(x, z, t)
+		"frozen_port":
+			return _snow_h(x, z, t)
+		"sunken_city":
+			return _drowned_h(x, z, t)
+		"cradle_returns":
+			return _plain_h(x, z, t)
+	return 0.0
+
+
+## Ground height for props: the terrain beyond the field edge, 0 on the field.
+func _gy(p: Vector3) -> float:
+	if Vector2(p.x, p.z).length() < _r_in + 3.0:
+		return 0.0
+	return maxf(_terrain_h(p.x, p.z), -0.04)
+
+
+static func _smooth(a: float, b: float, x: float) -> float:
+	var t: float = clampf((x - a) / (b - a), 0.0, 1.0)
+	return t * t * (3.0 - 2.0 * t)
+
+
+## 0..1 inside the (soft-edged) flat pad the far solar farm stands on.
+func _farm_mask(x: float, z: float) -> float:
+	var d := Vector2(x, z) - _farm_c
+	var l: Vector2 = d.rotated(-_farm_yaw)
+	var ex: float = absf(l.x) - _farm_half.x
+	var ez: float = absf(l.y) - _farm_half.y
+	return 1.0 - _smooth(0.0, 35.0, maxf(ex, ez))
+
+
+## Transverse dunes: long crests across the wind with a gentle windward slope and a steep lee
+## face, crest heights varying along their length, big draa swells further out, and a flat
+## crusted pan where the solar farm stands.
+func _dune_h(x: float, z: float, t: float) -> float:
+	var ramp: float = _smooth(5.0, 70.0, t)
+	if ramp <= 0.0:
+		return -0.04
+	var warp: float = _n1.get_noise_2d(x, z) * 70.0
+	var u: float = (x * 0.83 + z * 0.56 + warp) / 68.0
+	var f: float = u - floorf(u)
+	var prof: float = _smooth(0.0, 0.78, f) if f < 0.78 else 1.0 - _smooth(0.78, 1.0, f) * 0.92
+	prof = prof * prof * (1.4 - 0.4 * prof)
+	var along: float = 0.45 + 0.55 * (_n2.get_noise_2d(x * 0.7, z * 0.7) * 0.5 + 0.5)
+	var amp: float = lerpf(4.0, 24.0, clampf(t / 300.0, 0.0, 1.0)) * along
+	var draa: float = (_n3.get_noise_2d(x, z) * 0.5 + 0.5) * 34.0 * _smooth(60.0, 420.0, t)
+	var h: float = 0.6 + prof * amp + draa
+	h = lerpf(h, 0.35 + draa * 0.3, _farm_mask(x, z))
+	return lerpf(-0.04, h, ramp)
+
+
+## Snowfields: low drifts near the port, rolling white hills inland (west), and ridged mountains
+## on the horizon all round; the harbour side (east of the quay) drops under the sea ice.
+func _snow_h(x: float, z: float, t: float) -> float:
+	var ramp: float = _smooth(10.0, 110.0, t)
+	var hills: float = (_n1.get_noise_2d(x, z) * 0.5 + 0.5) * lerpf(1.5, 26.0, clampf(t / 420.0, 0.0, 1.0))
+	var drift: float = (_n2.get_noise_2d(x, z) * 0.5 + 0.5) * 1.6
+	var ridge: float = 1.0 - absf(_n3.get_noise_2d(x * 1.3, z * 1.3))
+	var mount: float = pow(ridge, 3.0) * 120.0 * _smooth(330.0, 620.0, t)
+	var land_h: float = 0.4 + drift + hills * ramp + mount
+	var land: float = 1.0 - _smooth(_quay_x - 6.0, _quay_x + 2.0, x)
+	var sea_h: float = -3.0 + mount * _smooth(420.0, 700.0, t) * 1.1
+	var h: float = lerpf(sea_h, land_h, land)
+	return lerpf(-0.04, h, _smooth(2.0, 14.0, t))
+
+
+## The Sunken City sits in a drowned bay: seabed under the flood, misty headlands far out.
+func _drowned_h(x: float, z: float, t: float) -> float:
+	var isl: float = _smooth(0.05, 0.55, _n1.get_noise_2d(x * 0.8, z * 0.8)) * _smooth(330.0, 560.0, t)
+	var hill: float = (_n2.get_noise_2d(x, z) * 0.5 + 0.5) * 40.0 + 12.0
+	return lerpf(-6.0, hill, isl) if t > 3.0 else -0.04
+
+
+## The Cradle's plain: a flat paved apron, then mown lawns with low rolls and green hills far out.
+func _plain_h(x: float, z: float, t: float) -> float:
+	var roll: float = (_n2.get_noise_2d(x, z) * 0.5 + 0.5) * 3.0 * _smooth(60.0, 260.0, t)
+	var hills: float = pow(_n1.get_noise_2d(x, z) * 0.5 + 0.5, 1.6) * 70.0 * _smooth(330.0, 650.0, t)
+	return -0.04 + roll + hills
+
+
+## Builds the heightfield ring from the field edge to the horizon, in sectors for culling.
+func _build_terrain(look: Dictionary) -> void:
+	var r_out: float = 1300.0
+	var nr: int = 96
+	var na: int = 320
+	var sectors: int = 8
+	var rs := PackedFloat32Array()
+	for i: int in nr:
+		var f: float = float(i) / float(nr - 1)
+		rs.append(_r_in - 2.0 + (r_out - _r_in) * pow(f, 2.1))
+	_terrain_mat = ShaderMaterial.new()
+	_terrain_mat.shader = preload("res://art/shaders/terrain.gdshader")
+	var a_id: String = str(look.get("a", "sand_01"))
+	var b_id: String = str(look.get("b", a_id))
+	_terrain_mat.set_shader_parameter("tex_a", AssetLib.tex(a_id, "diff"))
+	_terrain_mat.set_shader_parameter("nrm_a", AssetLib.tex(a_id, "nor_gl"))
+	_terrain_mat.set_shader_parameter("tex_b", AssetLib.tex(b_id, "diff"))
+	_terrain_mat.set_shader_parameter("nrm_b", AssetLib.tex(b_id, "nor_gl"))
+	_terrain_mat.set_shader_parameter("tex_g", AssetLib.tex("leafy_grass", "diff"))
+	for k: String in look:
+		if k in ["a", "b"]:
+			continue
+		var v: Variant = look[k]
+		_terrain_mat.set_shader_parameter(k, Vector3(v.r, v.g, v.b) if v is Color else v)
+	_terrain_mat.set_shader_parameter("restore", restore)
+	var gt: Array = field.biome_set.get("ground_tint", [])
+	if gt.size() >= 4 and not look.has("biome_tint"):
+		_terrain_mat.set_shader_parameter("biome_tint", Vector4(float(gt[0]), float(gt[1]), float(gt[2]), float(gt[3])))
+	var per: int = na / sectors
+	for sct: int in sectors:
+		var st := SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		for j: int in per + 1:
+			var ang: float = TAU * float(sct * per + j) / float(na)
+			var c: float = cos(ang)
+			var sn: float = sin(ang)
+			for i: int in nr:
+				var x: float = c * rs[i]
+				var z: float = sn * rs[i]
+				st.add_vertex(Vector3(x, _terrain_h(x, z), z))
+		for j: int in per:
+			for i: int in nr - 1:
+				var a: int = j * nr + i
+				var b: int = (j + 1) * nr + i
+				for idx: int in [a, a + 1, b, b, a + 1, b + 1]:
+					st.add_index(idx)
+		st.generate_normals()
+		var mi := MeshInstance3D.new()
+		mi.name = "Terrain%d" % sct
+		mi.mesh = st.commit()
+		mi.material_override = _terrain_mat
+		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+		add_child(mi)
+	var gm: ShaderMaterial = world.view.ground_material if world.get("view") != null else null
+	if gm:
+		gm.set_shader_parameter("clip_r", _r_in + 3.0)
+
+
+## A low wind-blown sand drift against a wreck (terrain material, so it melts into the dunes).
+func _drift(b: Batch, p: Vector3, yaw: float, w: float, h: float) -> void:
+	var m := SphereMesh.new()
+	m.radius = 1.0
+	m.height = 1.0
+	m.is_hemisphere = true
+	m.radial_segments = 20
+	m.rings = 6
+	b.add(m, Transform3D((Basis(Vector3.UP, yaw) * Basis.from_scale(Vector3(w, h, w * 0.55))), p + Vector3(0, -h * 0.25, 0)), _terrain_mat)
+
+
 # --- Dust Flats ------------------------------------------------------------------------------
 
 func _build_desert() -> void:
 	var e: float = _edge()
+	# The big solar farm stands on a flat crusted pan to the north-west, in full view.
+	_farm_yaw = 0.35
+	var fc: Vector3 = _polar(-2.05, _r_in + 175.0)
+	_farm_c = Vector2(fc.x, fc.z)
+	_build_terrain({"a": "sand_01", "b": "mud_cracked_dry_03", "tint_a": Color(1.0, 0.95, 0.88), "tint_b": Color(0.95, 0.9, 0.84),
+		"scale_a": 0.16, "scale_b": 0.07, "rough_a": 0.92, "rough_b": 0.95, "low_y": 1.1, "low_soft": 0.6,
+		"ripple": 1.0, "green_amt": 0.4, "tint_g": Color(0.62, 0.68, 0.36), "macro": 0.14})
 	var always := Batch.new()
 	var coat: Material = _coat(Color(0.9, 0.74, 0.5, 0.55))
-	# Long dunes beyond the field, crests across the wind.
-	var dune := SphereMesh.new()
-	dune.radius = 1.0
-	dune.height = 1.0
-	dune.is_hemisphere = true
-	dune.radial_segments = 32
-	dune.rings = 10
-	for i: int in 30:
-		var ang: float = TAU * i / 30.0 + _rng.randf_range(-0.08, 0.08)
-		var dist: float = e + _rng.randf_range(26.0, 100.0)
-		var w: float = _rng.randf_range(18.0, 34.0)
-		always.add(dune, Transform3D(Basis(Vector3.UP, 0.6 + _rng.randf_range(-0.2, 0.2)).scaled(Vector3(w, _rng.randf_range(3.0, 9.0) * (1.0 + (dist - e) / 120.0), w * 0.38)), _polar(ang, dist, -0.6)), _mat("sand"))
-	always.flush(_groups["always"])
 	# A trading ship, half-buried in the sand, listing hard. The flats were a sea once.
-	var ship: MeshInstance3D = _model("dutch_ship_medium", _polar(-1.95, e + 12.0, -1.6), 0.9, 1.0, null, Vector3(0.0, 0, 0.22), coat)
+	var sp: Vector3 = _polar(-1.95, e + 16.0)
+	sp.y = _gy(sp) - 2.2
+	var ship: MeshInstance3D = _model("dutch_ship_medium", sp, 0.9, 1.0, null, Vector3(0.0, 0, 0.22), coat)
 	if ship:
 		ship.rotation = Vector3(0.05, 0.9, 0.24)
-	# Cars and drums buried to the windows near the edge, quiver trunks and rocks.
-	for i: int in 7:
-		var p: Vector3 = _polar(_rng.randf() * TAU, e + _rng.randf_range(3.0, 14.0), -_rng.randf_range(0.45, 0.8))
-		_model("covered_car", p, _rng.randf() * TAU, 1.0, null, Vector3(_rng.randf_range(-0.15, 0.15), 0, _rng.randf_range(-0.2, 0.2)), coat)
+		_drift(always, sp + Vector3(0, 1.2, 0), 0.9, 26.0, 3.2)
+		_drift(always, sp + Vector3(4.0, 1.0, 6.0), 0.5, 14.0, 2.6)
+	# Cars and drums buried to the windows near the edge and out on the dunes, each with its
+	# drift piled on the windward side; quiver trunks and rocks.
+	for i: int in 14:
+		var p: Vector3 = _polar(_rng.randf() * TAU, e + _rng.randf_range(4.0, 70.0))
+		p.y = _gy(p) - _rng.randf_range(0.45, 0.8)
+		var yaw: float = _rng.randf() * TAU
+		_model("covered_car", p, yaw, 1.0, null, Vector3(_rng.randf_range(-0.15, 0.15), 0, _rng.randf_range(-0.2, 0.2)), coat)
+		_drift(always, p + Vector3(-1.2, 0.3, -0.8), 0.6, _rng.randf_range(3.5, 5.0), _rng.randf_range(0.9, 1.4))
 	for i: int in 10:
-		_model("dead_quiver_trunk", _polar(_rng.randf() * TAU, e + _rng.randf_range(4.0, 40.0)), _rng.randf() * TAU, _rng.randf_range(1.6, 2.6))
+		var q: Vector3 = _polar(_rng.randf() * TAU, e + _rng.randf_range(4.0, 60.0))
+		q.y = _gy(q)
+		_model("dead_quiver_trunk", q, _rng.randf() * TAU, _rng.randf_range(1.6, 2.6))
 	for i: int in 12:
-		_model("namaqualand_rocks_01", _polar(_rng.randf() * TAU, e + _rng.randf_range(2.0, 30.0)), _rng.randf() * TAU, _rng.randf_range(2.0, 4.0))
-	# The solar farm: three blocks of panel rows.
-	for f: Array in [[-1.55, e + 10.0], [-2.45, e + 16.0], [2.6, e + 14.0]]:
+		var q2: Vector3 = _polar(_rng.randf() * TAU, e + _rng.randf_range(2.0, 40.0))
+		q2.y = _gy(q2) - 0.3
+		_model("namaqualand_rocks_01", q2, _rng.randf() * TAU, _rng.randf_range(2.0, 4.0))
+	always.flush(_groups["always"])
+	# The solar farm: two small blocks by the field edge and the big array on the pan.
+	for f: Array in [[-1.55, e + 10.0], [2.6, e + 14.0]]:
 		_solar_farm(_polar(float(f[0]), float(f[1])), float(f[0]) + PI * 0.5)
+	_big_solar(fc, _farm_yaw)
+	# A dead power line marching off over the dunes toward the farm.
+	_power_line(_polar(-1.2, e + 8.0), fc + Vector3(60.0, 0, 70.0), 7)
 	# Futuristic: tall white wind turbines on the far dunes.
-	for a: float in [-1.4, -1.75, -0.95, 2.2]:
-		_turbine(_polar(a, e + 85.0 + _rng.randf_range(-8.0, 12.0), 2.0))
+	for a: float in [-1.4, -0.95, -0.55, 2.2, 2.7]:
+		var tp: Vector3 = _polar(a, e + 150.0 + _rng.randf_range(-20.0, 40.0))
+		tp.y = _gy(tp)
+		_turbine(tp)
 	# Sandstorm particles (follow Lumi, blow from the west).
 	_storm = CPUParticles3D.new()
 	_storm.amount = 700
@@ -462,11 +685,11 @@ func _solar_farm(c: Vector3, yaw: float) -> void:
 			# Restored: posts, a tilted panel in an aluminium frame, facing south (+z after yaw).
 			var tilt := Basis(Vector3.UP, yaw) * Basis(Vector3.RIGHT, deg_to_rad(-28.0))
 			_add_box(up, p + Vector3(0, 0.55, 0), Vector3(0.08, 1.1, 0.08), _mat("alu"))
-			up.add(_box(), Transform3D(tilt.scaled(Vector3(pw, 0.05, ph)), p + Vector3(0, 1.15, 0)), _mat("panel"))
-			up.add(_box(), Transform3D(tilt.scaled(Vector3(pw + 0.06, 0.035, ph + 0.06)), p + Vector3(0, 1.13, 0)), _mat("alu"))
+			up.add(_box(), Transform3D((tilt * Basis.from_scale(Vector3(pw, 0.05, ph))), p + Vector3(0, 1.15, 0)), _mat("panel"))
+			up.add(_box(), Transform3D((tilt * Basis.from_scale(Vector3(pw + 0.06, 0.035, ph + 0.06))), p + Vector3(0, 1.13, 0)), _mat("alu"))
 			# Future: one thin light line along the top edge of every panel.
 			var top: Vector3 = p + Vector3(0, 1.15, 0) + tilt * Vector3(0, 0.03, -ph * 0.5)
-			fut.add(_box(), Transform3D(Basis(Vector3.UP, yaw).scaled(Vector3(pw, 0.025, 0.025)), top), _mat("line"))
+			fut.add(_box(), Transform3D((Basis(Vector3.UP, yaw) * Basis.from_scale(Vector3(pw, 0.025, 0.025))), top), _mat("line"))
 			# Ruin: some panels gone, the rest dusty, cracked off their posts at odd angles.
 			if _rng.randf() < 0.22:
 				continue
@@ -474,7 +697,7 @@ func _solar_farm(c: Vector3, yaw: float) -> void:
 			var rt := Basis(Vector3.UP, yaw + _rng.randf_range(-0.3, 0.3)) * Basis(Vector3.RIGHT, deg_to_rad(_rng.randf_range(-70.0, -5.0) if not fallen else _rng.randf_range(-8.0, 8.0))) * Basis(Vector3.FORWARD, _rng.randf_range(-0.25, 0.25))
 			var y: float = 1.1 if not fallen else 0.12
 			_add_box(ruin, p + Vector3(0, 0.45, 0), Vector3(0.08, 0.9 * _rng.randf_range(0.5, 1.0), 0.08), _mat("alu"), Vector3(_rng.randf_range(-12, 12), 0, _rng.randf_range(-12, 12)))
-			ruin.add(_box(), Transform3D(rt.scaled(Vector3(pw, 0.05, ph)), p + Vector3(0, y, 0)), _mat("panel_dusty"))
+			ruin.add(_box(), Transform3D((rt * Basis.from_scale(Vector3(pw, 0.05, ph))), p + Vector3(0, y, 0)), _mat("panel_dusty"))
 	# Inverter cabinets at the row ends.
 	for r: int in rows:
 		var p2: Vector3 = c + basis * Vector3(-(cols * 0.5 + 1.2) * (pw + 0.25), 0, (r - rows * 0.5) * 4.2)
@@ -484,6 +707,94 @@ func _solar_farm(c: Vector3, yaw: float) -> void:
 	ruin.flush(_groups["ruin"])
 	up.flush(_groups["up"])
 	fut.flush(_groups["future"], false)
+
+
+## The big solar farm on the pan: rows of single-axis tracker tables. Ruin: dusty panels, many
+## missing or slumped, sand drifted along the rows. Restored: clean dark glass in bright frames.
+func _big_solar(c: Vector3, yaw: float) -> void:
+	var ruin := Batch.new()
+	var up := Batch.new()
+	var basis := Basis(Vector3.UP, yaw)
+	var tl: float = 9.0
+	var tw: float = 3.0
+	for r: int in 15:
+		for k: int in 17:
+			var local := Vector3((k - 8) * (tl + 1.0), 0, (r - 7) * 7.2)
+			var p: Vector3 = c + basis * local
+			p.y = _gy(p)
+			var tilt := basis * Basis(Vector3.RIGHT, deg_to_rad(-24.0))
+			_add_box(up, p + Vector3(0, 0.75, 0), Vector3(0.14, 1.5, 0.14), _mat("alu"))
+			up.add(_box(), Transform3D((tilt * Basis.from_scale(Vector3(tl, 0.06, tw))), p + Vector3(0, 1.6, 0)), _mat("panel"))
+			up.add(_box(), Transform3D((tilt * Basis.from_scale(Vector3(tl + 0.1, 0.04, tw + 0.1))), p + Vector3(0, 1.57, 0)), _mat("alu"))
+			if _rng.randf() < 0.3:
+				_add_box(ruin, p + Vector3(0, 0.6, 0), Vector3(0.14, 1.2, 0.14), _mat("alu"), Vector3(_rng.randf_range(-15, 15), 0, _rng.randf_range(-15, 15)))
+				continue
+			var slump: float = _rng.randf_range(-8.0, 8.0) if _rng.randf() < 0.7 else _rng.randf_range(-60.0, -35.0)
+			var rt := Basis(Vector3.UP, yaw + _rng.randf_range(-0.08, 0.08)) * Basis(Vector3.RIGHT, deg_to_rad(-24.0 + slump)) * Basis(Vector3.FORWARD, _rng.randf_range(-0.06, 0.06))
+			_add_box(ruin, p + Vector3(0, 0.7, 0), Vector3(0.14, 1.4, 0.14), _mat("alu"))
+			ruin.add(_box(), Transform3D((rt * Basis.from_scale(Vector3(tl, 0.06, tw))), p + Vector3(0, 1.5 + slump * 0.01, 0)), _mat("panel_dusty"))
+		# A long sand drift along each row in the ruin.
+		var rp: Vector3 = c + basis * Vector3(0, 0, (r - 7) * 7.2 + 1.6)
+		rp.y = _gy(rp)
+		var m := SphereMesh.new()
+		m.radius = 1.0
+		m.height = 1.0
+		m.is_hemisphere = true
+		m.radial_segments = 16
+		m.rings = 4
+		ruin.add(m, Transform3D((basis * Basis.from_scale(Vector3(80.0 + _rng.randf_range(-10.0, 10.0), 0.7, 1.6))), rp - Vector3(0, 0.15, 0)), _terrain_mat)
+	ruin.flush(_groups["ruin"])
+	up.flush(_groups["up"])
+
+
+## A line of lattice pylons from a toward b: leaning and broken (ruin), upright with cables (up).
+func _power_line(a: Vector3, b: Vector3, n: int) -> void:
+	var ruin := Batch.new()
+	var up := Batch.new()
+	var rust: Material = _paint(Color(0.5, 0.38, 0.3), 0.2, 0.95, 21)
+	var tops: Array[Vector3] = []
+	var dir: Vector3 = (b - a).normalized()
+	var yaw: float = atan2(dir.x, dir.z)
+	for i: int in n:
+		var p: Vector3 = a.lerp(b, float(i) / float(n - 1))
+		p.y = _gy(p) - 0.6
+		var h: float = 24.0
+		for v: int in 2:
+			var bt: Batch = [ruin, up][v]
+			var m: Material = rust if v == 0 else _mat("steel")
+			var lean := Basis()
+			if v == 0:
+				lean = Basis(Vector3.RIGHT, _rng.randf_range(-0.12, 0.12)) * Basis(Vector3.FORWARD, _rng.randf_range(-0.12, 0.12))
+				if i == 2:
+					lean = Basis(Vector3.FORWARD, 1.35)
+			var xf := Transform3D(Basis(Vector3.UP, yaw) * lean, p)
+			var legs: Array[Vector3] = [Vector3(-1, 0, -1), Vector3(1, 0, -1), Vector3(1, 0, 1), Vector3(-1, 0, 1)]
+			for k: int in 4:
+				var l0: Vector3 = legs[k] * 3.0
+				var l1: Vector3 = legs[k] * 0.7 + Vector3(0, h, 0)
+				_add_beam(bt, xf * l0, xf * l1, 0.28, m)
+				var n0: Vector3 = legs[(k + 1) % 4]
+				for y: float in [0.25, 0.5, 0.75]:
+					var pa: Vector3 = (legs[k] * lerpf(3.0, 0.7, y)) + Vector3(0, h * y, 0)
+					var pb: Vector3 = (n0 * lerpf(3.0, 0.7, y + 0.25)) + Vector3(0, h * (y + 0.25), 0)
+					_add_beam(bt, xf * pa, xf * pb, 0.12, m)
+			for arm: float in [h * 0.78, h * 0.95]:
+				_add_beam(bt, xf * Vector3(-5.5, arm, 0), xf * Vector3(5.5, arm, 0), 0.32, m)
+			if v == 1:
+				tops.append(xf * Vector3(5.2, h * 0.78 - 0.8, 0))
+				tops.append(xf * Vector3(-5.2, h * 0.78 - 0.8, 0))
+	# Cables sag between the restored pylons.
+	for i: int in tops.size() - 2:
+		var c0: Vector3 = tops[i]
+		var c1: Vector3 = tops[i + 2]
+		var prev: Vector3 = c0
+		for s: int in range(1, 9):
+			var t: float = float(s) / 8.0
+			var q: Vector3 = c0.lerp(c1, t) - Vector3(0, sin(t * PI) * 3.0, 0)
+			_add_beam(up, prev, q, 0.05, _mat("dark"))
+			prev = q
+	ruin.flush(_groups["ruin"])
+	up.flush(_groups["up"])
 
 
 func _turbine(base: Vector3) -> void:
@@ -510,7 +821,10 @@ func _turbine(base: Vector3) -> void:
 
 func _build_port() -> void:
 	var e: float = _edge()
-	var quay_x: float = e - 4.0
+	var quay_x: float = _quay_x
+	_build_terrain({"a": "snow_02", "b": "dry_ground_rocks", "tint_a": Color(0.96, 0.98, 1.03), "tint_b": Color(0.62, 0.66, 0.72),
+		"scale_a": 0.12, "scale_b": 0.05, "rough_a": 0.62, "rough_b": 0.9, "slope_lo": 0.42, "slope_hi": 0.62,
+		"sparkle": 1.0, "green_amt": 0.5, "tint_g": Color(0.5, 0.62, 0.42), "macro": 0.08})
 	# Sea ice on the harbour side (ruin and mid), open water once the port is futuristic.
 	var ice_plane: MeshInstance3D = _flood_plane(1.0, quay_x, 0.08)
 	ice_plane.reparent(_groups["ruin"])
@@ -518,26 +832,62 @@ func _build_port() -> void:
 	mid_ice.reparent(_groups["mid"])
 	var open: MeshInstance3D = _flood_plane(0.0, quay_x, 0.05)
 	_flood_mat.set_shader_parameter("clarity", 0.8)
+	_flood_mat.set_shader_parameter("mirror", 0.5)
 	open.reparent(_groups["future"])
 	_flood_mat = null
-	# The quay wall along the harbour edge.
+	# The quay wall along the harbour edge, bollards and a snowbank along its back.
 	var always := Batch.new()
-	_add_box(always, Vector3(quay_x - 2.0, -0.6, -40.0), Vector3(4.0, 1.4, 200.0), _mat("concrete"))
-	for z: float in range(-130, 60, 9):
+	_add_box(always, Vector3(quay_x - 2.0, -0.6, -40.0), Vector3(4.0, 1.4, 240.0), _mat("concrete"))
+	for z: float in range(-150, 80, 9):
 		always.add(ProcMesh.cyl(0.25, 0.3, 0.6, 10), _xf(Vector3(quay_x - 0.6, 0.35, z)), _mat("dark"))
 	always.flush(_groups["always"])
-	# Ship-to-shore cranes on the quay, booms out over the harbour.
-	var zs: Array[float] = [-70.0, -38.0, -6.0]
+	# Ship-to-shore cranes along the quay, booms out over the harbour.
+	var zs: Array[float] = [-118.0, -86.0, -54.0, -22.0, 10.0]
 	for i: int in zs.size():
 		_crane(Vector3(quay_x - 6.0, 0, zs[i]), i)
-	# Container yard: stacks to the west and north.
-	var palette: Array[Color] = [Color(0.15, 0.32, 0.55), Color(0.62, 0.15, 0.12), Color(0.18, 0.42, 0.28), Color(0.85, 0.45, 0.12), Color(0.55, 0.55, 0.55), Color(0.8, 0.7, 0.2)]
-	for blk: Array in [[-2.6, e + 14.0], [-2.1, e + 18.0], [-1.65, e + 16.0], [2.4, e + 16.0]]:
-		_container_block(_polar(float(blk[0]), float(blk[1])), float(blk[0]) + PI * 0.5, palette)
+	# A coaster frozen fast in the harbour ice, snow on her decks.
+	var snowcoat: Material = _coat(Color(0.93, 0.96, 1.0, 0.6))
+	var ship: MeshInstance3D = _model("dutch_ship_medium", Vector3(quay_x + 48.0, -1.4, -70.0), 0.2, 1.0, _groups["always"], Vector3.ZERO, snowcoat)
+	if ship:
+		ship.rotation = Vector3(0.04, 1.75, -0.05)
+	# Container yard: stacks to the west and north, and two more lines behind the quay.
+	var palette: Array[Color] = [Color(0.2, 0.32, 0.45), Color(0.58, 0.18, 0.14), Color(0.22, 0.38, 0.3), Color(0.78, 0.44, 0.16), Color(0.52, 0.52, 0.5), Color(0.72, 0.62, 0.24), Color(0.85, 0.85, 0.82)]
+	for blk: Array in [[-2.6, e + 14.0], [-2.1, e + 18.0], [-1.65, e + 16.0], [2.4, e + 16.0], [-1.25, e + 22.0], [-0.95, e + 18.0]]:
+		var bc: Vector3 = _polar(float(blk[0]), float(blk[1]))
+		if bc.x > quay_x - 18.0:
+			bc.x = quay_x - 18.0
+		bc.y = _gy(bc)
+		_container_block(bc, float(blk[0]) + PI * 0.5, palette)
 	# Snowy junk heaps and gas bottles out on the ice.
 	for i: int in 8:
 		_model("small_lpg_tank", _polar(_rng.randf_range(-2.8, -0.6), e + _rng.randf_range(3.0, 12.0)), _rng.randf() * TAU, 1.6, null, Vector3(1.4 if _rng.randf() < 0.5 else 0.0, 0, 0))
 	_build_ice_slabs()
+	# Light snow drifting down around Lumi.
+	_snow = CPUParticles3D.new()
+	_snow.amount = 600
+	_snow.lifetime = 7.0
+	_snow.preprocess = 7.0
+	_snow.emission_shape = CPUParticles3D.EMISSION_SHAPE_BOX
+	_snow.emission_box_extents = Vector3(30.0, 1.0, 30.0)
+	_snow.direction = Vector3(0.3, -1.0, 0.1)
+	_snow.spread = 15.0
+	_snow.gravity = Vector3(0.0, -0.6, 0.0)
+	_snow.initial_velocity_min = 1.2
+	_snow.initial_velocity_max = 2.0
+	_snow.scale_amount_min = 0.04
+	_snow.scale_amount_max = 0.09
+	_snow.local_coords = false
+	var q := QuadMesh.new()
+	q.size = Vector2(1.0, 1.0)
+	var sm := StandardMaterial3D.new()
+	sm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	sm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	sm.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	sm.albedo_texture = _soft_dot()
+	sm.albedo_color = Color(1, 1, 1, 0.85)
+	q.material = sm
+	_snow.mesh = q
+	add_child(_snow)
 
 
 func _crane(base: Vector3, idx: int) -> void:
@@ -591,6 +941,7 @@ func _crane(base: Vector3, idx: int) -> void:
 
 func _container_block(c: Vector3, yaw: float, palette: Array[Color]) -> void:
 	var ruin := Batch.new()
+	var mid := Batch.new()
 	var up := Batch.new()
 	var fut := Batch.new()
 	var sz := Vector3(6.06, 2.59, 2.44)
@@ -603,9 +954,11 @@ func _container_block(c: Vector3, yaw: float, palette: Array[Color]) -> void:
 			for lv: int in height:
 				var col: Color = palette[_rng.randi() % palette.size()]
 				var y: float = sz.y * (lv + 0.5)
-				up.add(_box(), Transform3D(basis.scaled(sz), p + Vector3(0, y, 0)), _corr(col))
+				up.add(_box(), Transform3D((basis * Basis.from_scale(sz)), p + Vector3(0, y, 0)), _corr(col))
 				if lv == height - 1:
-					fut.add(_box(), Transform3D(basis.scaled(Vector3(sz.x, 0.04, 0.04)), p + Vector3(0, y + sz.y * 0.5, sz.z * 0.5)), _mat("line"))
+					fut.add(_box(), Transform3D((basis * Basis.from_scale(Vector3(sz.x, 0.04, 0.04))), p + Vector3(0, y + sz.y * 0.5, sz.z * 0.5)), _mat("line"))
+					# Still frozen at levels 2-3: a snow cap on every stack.
+					mid.add(_box(), Transform3D((basis * Basis.from_scale(Vector3(sz.x * 0.97, 0.22, sz.z * 0.94))), p + Vector3(0, y + sz.y * 0.5 + 0.1, 0)), _mat("snow"))
 				# Ruin: the stacks slumped, tipped and capped with snow.
 				if lv > 1 and _rng.randf() < 0.5:
 					continue
@@ -614,10 +967,11 @@ func _container_block(c: Vector3, yaw: float, palette: Array[Color]) -> void:
 				if lv == 0 and _rng.randf() < 0.18:
 					rb = rb * Basis(Vector3.FORWARD, PI * 0.5)
 					ry = sz.z * 0.5
-				ruin.add(_box(), Transform3D(rb.scaled(sz), p + Vector3(_rng.randf_range(-0.6, 0.6), ry, _rng.randf_range(-0.6, 0.6))), _corr(col.lerp(Color(0.45, 0.33, 0.25), 0.55)))
+				ruin.add(_box(), Transform3D((rb * Basis.from_scale(sz)), p + Vector3(_rng.randf_range(-0.6, 0.6), ry, _rng.randf_range(-0.6, 0.6))), _corr(col.lerp(Color(0.45, 0.33, 0.25), 0.55)))
 				if lv == height - 1 or lv == 1:
-					ruin.add(_box(), Transform3D(rb.scaled(Vector3(sz.x * 0.95, 0.25, sz.z * 0.9)), p + Vector3(0, ry + sz.y * 0.5 + 0.1, 0)), _mat("snow"))
+					ruin.add(_box(), Transform3D((rb * Basis.from_scale(Vector3(sz.x * 0.95, 0.25, sz.z * 0.9))), p + Vector3(0, ry + sz.y * 0.5 + 0.1, 0)), _mat("snow"))
 	ruin.flush(_groups["ruin"])
+	mid.flush(_groups["mid"])
 	up.flush(_groups["up"])
 	fut.flush(_groups["future"], false)
 
@@ -656,7 +1010,7 @@ func set_ice(h: int, v: float) -> void:
 	var c: Vector3 = field.hex_center(h)
 	var hgt: float = 0.18 + 0.5 * v
 	_ice_mm.set_instance_transform(i, Transform3D(Basis().scaled(Vector3(1.0, hgt, 1.0)), c + Vector3(0, HexField.WATER_Y * 0.5 if field.is_water(h) else -0.02, 0)))
-	_ice_mm.set_instance_color(i, Color(0.78, 0.88, 0.96, 0.42 + 0.3 * v))
+	_ice_mm.set_instance_color(i, Color(0.9, 0.96, 1.0, clampf(v, 0.0, 1.0)))
 
 
 func add_heater(h: int, animate: bool) -> void:
@@ -744,7 +1098,17 @@ func add_greenhouse(h: int, animate: bool) -> void:
 func _build_sunken() -> void:
 	var e: float = _edge()
 	var fl: Dictionary = district.kind.get("flood", {})
+	_build_terrain({"a": "damp_sand", "b": "dry_ground_rocks", "tint_a": Color(0.62, 0.68, 0.62), "tint_b": Color(0.6, 0.66, 0.64),
+		"scale_a": 0.1, "scale_b": 0.05, "slope_lo": 0.3, "slope_hi": 0.5, "rough_a": 0.8, "rough_b": 0.9,
+		"green_amt": 0.85, "tint_g": Color(0.45, 0.6, 0.42), "macro": 0.1, "biome_tint": Vector4.ZERO})
+	_terrain_mat.set_shader_parameter("restore", maxf(restore, 0.55))  # the far headlands are always green
 	_flood = _flood_plane(0.0, -99999.0, float(fl.get("sea_y", 0.12)))
+	# Deep, still flood water: dark teal-green that mirrors the sky, not a murky lake.
+	_flood_mat.set_shader_parameter("murky", Color(0.07, 0.13, 0.13, 0.97))
+	_flood_mat.set_shader_parameter("clear", Color(0.06, 0.22, 0.24, 0.85))
+	_flood_mat.set_shader_parameter("mirror", 0.75)
+	_flood_mat.set_shader_parameter("fade_far", 1200.0)
+	_tune_field_water()
 	_sink = Frontiers.sink_for(district.drained, fl)
 	_apply_sink()
 	_apply_flood_level(false)
@@ -761,6 +1125,20 @@ func _build_sunken() -> void:
 		_pump_house(_polar(a, e + 3.0), a + PI * 0.5)
 
 
+## The field's own water hexes (WaterView) get the same deep flood look.
+func _tune_field_water() -> void:
+	var wv: Node = world.get("water")
+	var wm: ShaderMaterial = wv.get("_mat") if wv else null
+	if wm == null:
+		return
+	wm.set_shader_parameter("murky_col", Vector3(0.07, 0.13, 0.13))
+	wm.set_shader_parameter("clear_col", Vector3(0.06, 0.26, 0.28))
+	wm.set_shader_parameter("alpha_mc", Vector2(0.97, 0.7))
+	wm.set_shader_parameter("rough_mc", Vector2(0.05, 0.02))
+	wm.set_shader_parameter("mirror", 0.75)
+	wm.set_shader_parameter("sheen_amt", 0.35)
+
+
 func _pump_house(p: Vector3, yaw: float) -> void:
 	var ruin := Batch.new()
 	var up := Batch.new()
@@ -770,16 +1148,16 @@ func _pump_house(p: Vector3, yaw: float) -> void:
 	for v: Array in vs:
 		var b: Batch = v[0]
 		var m: Material = v[1]
-		b.add(_box(), Transform3D(basis.scaled(Vector3(7.0, 5.0, 5.0)), p + Vector3(0, 2.5, 0)), _mat("concrete"))
-		b.add(_box(), Transform3D(basis.scaled(Vector3(7.4, 0.4, 5.4)), p + Vector3(0, 5.2, 0)), m)
+		b.add(_box(), Transform3D((basis * Basis.from_scale(Vector3(7.0, 5.0, 5.0))), p + Vector3(0, 2.5, 0)), _mat("concrete"))
+		b.add(_box(), Transform3D((basis * Basis.from_scale(Vector3(7.4, 0.4, 5.4))), p + Vector3(0, 5.2, 0)), m)
 		for k: int in 2:
 			var off: Vector3 = basis * Vector3(-1.6 + k * 3.2, 0, 3.2)
 			b.add(ProcMesh.cyl(0.8, 0.8, 9.0, 18), Transform3D(basis * Basis(Vector3.RIGHT, PI * 0.5), p + off + Vector3(0, 1.4, 3.6)), m)
 			b.add(ProcMesh.torus(0.78, 0.98, 18, 6), Transform3D(basis * Basis(Vector3.RIGHT, PI * 0.5), p + off + Vector3(0, 1.4, 0.4)), _mat("dark"))
 	for k: int in 2:
 		_pumps_fx.append(p + basis * Vector3(-1.6 + k * 3.2, 1.4, 12.5))
-	fut.add(_box(), Transform3D(basis.scaled(Vector3(7.1, 0.05, 0.05)), p + Vector3(0, 4.2, 0) + basis * Vector3(0, 0, -2.53)), _mat("line"))
-	fut.add(_box(), Transform3D(basis.scaled(Vector3(7.6, 0.6, 5.6)), p + Vector3(0, 5.4, 0)), _mat("white"))
+	fut.add(_box(), Transform3D((basis * Basis.from_scale(Vector3(7.1, 0.05, 0.05))), p + Vector3(0, 4.2, 0) + basis * Vector3(0, 0, -2.53)), _mat("line"))
+	fut.add(_box(), Transform3D((basis * Basis.from_scale(Vector3(7.6, 0.6, 5.6))), p + Vector3(0, 5.4, 0)), _mat("white"))
 	ruin.flush(_groups["ruin"])
 	up.flush(_groups["up"])
 	fut.flush(_groups["future"])
@@ -830,39 +1208,153 @@ func on_drained(hexes: Array[int], animate: bool) -> void:
 
 func _build_cradle() -> void:
 	var e: float = _edge()
-	var always := Batch.new()
-	var fut := Batch.new()
-	# The launch city: slender white hex towers with green terraces and thin vertical light lines.
-	for i: int in 18:
-		var ang: float = TAU * i / 18.0 + _rng.randf_range(-0.1, 0.1)
-		var dist: float = e + _rng.randf_range(28.0, 95.0)
-		var h: float = _rng.randf_range(24.0, 78.0)
-		var r: float = _rng.randf_range(3.5, 7.0)
-		var p: Vector3 = _polar(ang, dist)
-		var yaw: float = _rng.randf() * TAU
-		always.add(ProcMesh.cyl(r * 0.92, r, h, 6), Transform3D(Basis(Vector3.UP, yaw), p + Vector3(0, h * 0.5, 0)), _mat("white"))
-		always.add(ProcMesh.cyl(r * 0.94, r * 0.94, h * 0.9, 6), Transform3D(Basis(Vector3.UP, yaw), p + Vector3(0, h * 0.47, 0)), _mat("glass_dark"))
-		for t: float in [0.3, 0.55, 0.8]:
-			var ty: float = h * t
-			always.add(ProcMesh.cyl(r * 1.35, r * 1.35, 0.5, 6), Transform3D(Basis(Vector3.UP, yaw), p + Vector3(0, ty, 0)), _mat("white"))
-			always.add(ProcMesh.cyl(r * 1.25, r * 1.25, 0.6, 6), Transform3D(Basis(Vector3.UP, yaw), p + Vector3(0, ty + 0.5, 0)), _mat("green"))
-		for k: int in 3:
-			var a: float = yaw + TAU * k / 3.0
-			always.add(_box(), Transform3D(Basis(), p + Vector3(cos(a) * r * 0.95, h * 0.5, sin(a) * r * 0.95)).scaled_local(Vector3(0.06, h * 0.96, 0.06)), _mat("line"))
-	for i: int in 26:
-		var p2: Vector3 = _polar(_rng.randf() * TAU, e + _rng.randf_range(6.0, 30.0))
-		_model(["shrub_02", "shrub_01", "pine_sapling_small"][i % 3], p2, _rng.randf() * TAU, _rng.randf_range(2.0, 3.5))
-	always.flush(_groups["always"])
-	fut.flush(_groups["future"])
+	_build_terrain({"a": "sparse_grass", "b": "leafy_grass", "tint_a": Color(0.78, 0.9, 0.62), "tint_b": Color(0.72, 0.85, 0.6),
+		"scale_a": 0.12, "scale_b": 0.06, "slope_lo": 0.08, "slope_hi": 0.3, "rough_a": 0.9, "rough_b": 0.9,
+		"green_amt": 0.6, "tint_g": Color(0.6, 0.78, 0.48), "macro": 0.12, "biome_tint": Vector4.ZERO})
+	_build_plaza(e)
+	_build_skyline_cradle(e)
 	# Launch gantries behind the pad: rusty lattice (ruin) or white (restored).
 	var pad: Dictionary = district.kind.get("pad", {})
 	var pc: Array = pad.get("center", [0, -3])
 	var pad_c: Vector3 = field.hex_center(int(field.axial_to_id.get(Vector2i(int(pc[0]), int(pc[1])), 0)))
 	for g: Vector3 in [pad_c + Vector3(-14.0, 0, -e * 0.9), pad_c + Vector3(16.0, 0, -e * 0.95)]:
-		g.z = minf(g.z, -e - 8.0)
+		g.z = minf(g.z, -e - 14.0)
+		g.y = _gy(g)
 		_gantry(g)
 	_build_pad(pad_c)
 	_build_ark(pad_c)
+
+
+## A flat ring sector (top, inner and outer faces) from radius r1 to r2, angles a0..a1, h tall.
+static func _arc_mesh(r1: float, r2: float, a0: float, a1: float, h: float, segs: int) -> ArrayMesh:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for k: int in segs:
+		var t0: float = lerpf(a0, a1, float(k) / segs)
+		var t1: float = lerpf(a0, a1, float(k + 1) / segs)
+		var d0 := Vector3(cos(t0), 0, sin(t0))
+		var d1 := Vector3(cos(t1), 0, sin(t1))
+		var up := Vector3(0, h, 0)
+		for tri: Array in [[d0 * r1 + up, d1 * r2 + up, d0 * r2 + up], [d0 * r1 + up, d1 * r1 + up, d1 * r2 + up],
+				[d0 * r2, d0 * r2 + up, d1 * r2 + up], [d0 * r2, d1 * r2 + up, d1 * r2],
+				[d0 * r1, d1 * r1 + up, d0 * r1 + up], [d0 * r1, d1 * r1, d1 * r1 + up]]:
+			for v: Vector3 in tri:
+				st.add_vertex(v)
+	st.generate_normals()
+	return st.commit()
+
+
+## The launch city's apron around the field: a clean paved ring with planters, slim lamp posts
+## and one faint light inlay. Ground crews kept it swept.
+func _build_plaza(e: float) -> void:
+	var b := Batch.new()
+	var paving: Material = AssetLib.pbr_material("concrete_pavement", 0.12, Color(0.9, 0.9, 0.88), true)
+	var r0: float = _r_in - 1.0
+	var r1: float = _r_in + 30.0
+	for k: int in 8:
+		b.add(_arc_mesh(r0, r1, TAU * k / 8.0, TAU * (k + 1) / 8.0, 0.03, 24), Transform3D.IDENTITY, paving)
+	b.add(ProcMesh.torus(r1 - 2.06, r1 - 1.94, 160, 3), Transform3D(Basis().scaled(Vector3(1, 0.04, 1)), Vector3(0, 0.05, 0)), _mat("line_soft"))
+	var mb := MeshBatch.new()
+	var shrub: Mesh = AssetLib.model_mesh_lite("shrub_01", 1500) if AssetLib.has_model("shrub_01") else null
+	var n: int = 44
+	for k: int in n:
+		var a: float = TAU * (k + 0.5) / n
+		var p: Vector3 = _polar(a, _r_in + 14.0)
+		b.add(ProcMesh.cyl(1.5, 1.4, 0.7, 20), _xf(p + Vector3(0, 0.35, 0)), _mat("white"))
+		b.add(ProcMesh.cyl(1.35, 1.35, 0.05, 20), _xf(p + Vector3(0, 0.7, 0)), _mat("green"))
+		if shrub:
+			mb.instance(shrub, Transform3D((Basis(Vector3.UP, a * 3.0) * Basis.from_scale(Vector3.ONE * 1.4)), p + Vector3(0, 0.66, 0)))
+		if k % 2 == 0:
+			var lp: Vector3 = _polar(a + PI / n, _r_in + 24.0)
+			b.add(ProcMesh.cyl(0.08, 0.12, 7.0, 8), _xf(lp + Vector3(0, 3.5, 0)), _mat("white"))
+			_add_box(b, lp + Vector3(0, 7.05, 0), Vector3(0.9, 0.1, 0.25), _mat("white"), Vector3(0, -rad_to_deg(a), 0))
+			_add_box(b, lp + Vector3(0, 6.98, 0), Vector3(0.7, 0.03, 0.12), _mat("line_soft"), Vector3(0, -rad_to_deg(a), 0))
+	b.flush(_groups["always"])
+	mb.flush(_groups["always"])
+
+
+## The launch city skyline: slender towers of dark glass behind white fins and floor bands, with
+## setbacks, crowns and the odd spire, rising behind the pad; low white pavilions between.
+func _build_skyline_cradle(e: float) -> void:
+	var b := Batch.new()
+	var white: Material = _mat("white")
+	var glass: Material = _mat("tower_glass")
+	var placed: Array[Vector2] = []
+	var tries: int = 0
+	while placed.size() < 34 and tries < 400:
+		tries += 1
+		var back: bool = placed.size() < 24
+		var ang: float = -PI * 0.5 + _rng.randf_range(-1.75, 1.75) if back else _rng.randf() * TAU
+		var dist: float = _r_in + _rng.randf_range(85.0, 330.0) + (0.0 if back else 90.0)
+		var p: Vector3 = _polar(ang, dist)
+		var xz := Vector2(p.x, p.z)
+		var ok: bool = true
+		for q: Vector2 in placed:
+			if q.distance_to(xz) < 46.0:
+				ok = false
+				break
+		if not ok:
+			continue
+		placed.append(xz)
+		p.y = _gy(p) - 0.5
+		var h: float = _rng.randf_range(55.0, 175.0) * (1.0 if back else 0.7)
+		var w: float = _rng.randf_range(15.0, 26.0)
+		var yaw: float = _rng.randf() * TAU
+		var bs := Basis(Vector3.UP, yaw)
+		var is_round: bool = _rng.randf() < 0.4
+		_add_box(b, p + Vector3(0, 4.0, 0), Vector3(w * 1.9, 8.0, w * 1.7), white, Vector3(0, rad_to_deg(yaw), 0))
+		_add_box(b, p + Vector3(0, 6.0, 0), Vector3(w * 1.92, 1.2, w * 1.72), glass, Vector3(0, rad_to_deg(yaw), 0))
+		var y: float = 8.0
+		var cw: float = w
+		var tiers: int = 1 + (_rng.randi() % 3 if h > 90.0 else 0)
+		for t: int in tiers:
+			var th: float = (h - 8.0) / tiers
+			var mid: Vector3 = p + Vector3(0, y + th * 0.5, 0)
+			if is_round:
+				b.add(ProcMesh.cyl(cw * 0.5, cw * 0.5, th, 32), Transform3D(bs, mid), glass)
+				for f: int in 10:
+					var fa: float = TAU * f / 10.0
+					b.add(_box(), Transform3D((Basis(Vector3.UP, -fa) * Basis.from_scale(Vector3(1.4, th, 0.45))), mid + Vector3(cos(fa), 0, sin(fa)) * cw * 0.5), white)
+				var fy: float = 0.0
+				while fy < th - 2.0:
+					fy += 12.0
+					b.add(ProcMesh.cyl(cw * 0.5 + 0.35, cw * 0.5 + 0.35, 0.6, 32), Transform3D(bs, p + Vector3(0, y + fy, 0)), white)
+			else:
+				var d: float = cw * 0.78
+				_add_box(b, mid, Vector3(cw, th, d), glass, Vector3(0, rad_to_deg(yaw), 0))
+				for cx: float in [-0.5, -0.17, 0.17, 0.5]:
+					for cz: float in [-0.5, 0.5]:
+						b.add(_box(), Transform3D((bs * Basis.from_scale(Vector3(0.9 if absf(cx) > 0.4 else 0.4, th, 0.9))), mid + bs * Vector3(cx * cw, 0, cz * d)), white)
+				var fy2: float = 0.0
+				while fy2 < th - 2.0:
+					fy2 += 12.0
+					b.add(_box(), Transform3D((bs * Basis.from_scale(Vector3(cw + 0.6, 0.6, d + 0.6))), p + Vector3(0, y + fy2, 0)), white)
+			y += th
+			cw *= _rng.randf_range(0.72, 0.85)
+		# Crown: a white cap with one faint light band; some get a spire.
+		b.add(ProcMesh.cyl(cw * 0.62, cw * 0.62, 1.6, 24) if is_round else _box(), Transform3D(bs, p + Vector3(0, y + 0.8, 0)) if is_round else Transform3D((bs * Basis.from_scale(Vector3(cw * 1.08, 1.6, cw * 0.86))), p + Vector3(0, y + 0.8, 0)), white)
+		b.add(ProcMesh.torus(cw * 0.55, cw * 0.58, 32, 3), Transform3D(Basis().scaled(Vector3(1, 0.3, 1)), p + Vector3(0, y - 0.6, 0)), _mat("line_soft"))
+		if _rng.randf() < 0.35:
+			var sh: float = _rng.randf_range(12.0, 30.0)
+			b.add(ProcMesh.cyl(0.15, 0.7, sh, 8), _xf(p + Vector3(0, y + 1.6 + sh * 0.5, 0)), white)
+	# Low pavilions and hangars between the towers.
+	for i: int in 40:
+		var ang2: float = -PI * 0.5 + _rng.randf_range(-2.2, 2.2)
+		var p2: Vector3 = _polar(ang2, _r_in + _rng.randf_range(45.0, 260.0))
+		var near: bool = false
+		for q: Vector2 in placed:
+			if q.distance_to(Vector2(p2.x, p2.z)) < 30.0:
+				near = true
+		if near:
+			continue
+		p2.y = _gy(p2) - 0.3
+		var lw: float = _rng.randf_range(14.0, 34.0)
+		var lh: float = _rng.randf_range(6.0, 16.0)
+		var ly: float = rad_to_deg(ang2) + 90.0
+		_add_box(b, p2 + Vector3(0, lh * 0.5, 0), Vector3(lw, lh, lw * 0.6), white, Vector3(0, ly, 0))
+		_add_box(b, p2 + Vector3(0, lh * 0.55, 0), Vector3(lw + 0.1, lh * 0.35, lw * 0.6 + 0.1), glass, Vector3(0, ly, 0))
+		_add_box(b, p2 + Vector3(0, lh + 0.05, 0), Vector3(lw * 0.9, 0.12, lw * 0.52), _mat("green"), Vector3(0, ly, 0))
+	b.flush(_groups["always"])
 
 
 func _gantry(base: Vector3) -> void:
@@ -906,11 +1398,32 @@ func _build_pad(c: Vector3) -> void:
 	for k: int in 12:
 		var a: float = TAU * k / 12.0
 		var p: Vector3 = c + Vector3(cos(a), 0, sin(a)) * ring_r * 0.78
-		b.add(_box(), Transform3D(Basis(Vector3.UP, -a).scaled(Vector3(1.4, 0.02, 0.08)), p + Vector3(0, 0.06, 0)), _pad_mat)
+		b.add(_box(), Transform3D((Basis(Vector3.UP, -a) * Basis.from_scale(Vector3(1.4, 0.02, 0.08))), p + Vector3(0, 0.06, 0)), _pad_mat)
 	var root := Node3D.new()
 	root.name = "Pad"
 	add_child(root)
 	b.flush(root, false)
+	# [biomes2] The landing ring itself: a broad, flush ring of white composite plates in 16
+	# segments (thin dark joints between them), a faint seam of light on its inner edge, and four
+	# tall slender masts. Flush with the ground so it never blocks Lumi or the robots.
+	var ring := Batch.new()
+	var r1: float = ring_r + 0.9
+	var r2: float = ring_r + 4.6
+	var gap: float = 0.012
+	for k: int in 16:
+		var a0: float = TAU * k / 16.0 + gap
+		var a1: float = TAU * (k + 1) / 16.0 - gap
+		ring.add(_arc_mesh(r1, r2, a0, a1, 0.05, 8), Transform3D(Basis(), c + Vector3(0, 0.0, 0)), _mat("white"))
+		var am: float = (a0 + a1) * 0.5
+		_add_box(ring, c + Vector3(cos(am), 0, sin(am)) * (r2 - 0.9) + Vector3(0, 0.06, 0), Vector3(0.12, 0.01, 1.2), _mat("dark"), Vector3(0, -rad_to_deg(am), 0))
+	ring.add(ProcMesh.torus(r1 + 0.06, r1 + 0.18, 128, 3), Transform3D(Basis().scaled(Vector3(1, 0.04, 1)), c + Vector3(0, 0.07, 0)), _mat("line_soft"))
+	ring.add(ProcMesh.torus(r2 + 1.2, r2 + 1.32, 128, 3), Transform3D(Basis().scaled(Vector3(1, 0.04, 1)), c + Vector3(0, 0.04, 0)), _mat("line_soft"))
+	for k: int in 4:
+		var ma: float = TAU * k / 4.0 + PI * 0.25
+		var mp: Vector3 = c + Vector3(cos(ma), 0, sin(ma)) * (r2 + 2.4)
+		ring.add(ProcMesh.cyl(0.14, 0.32, 16.0, 12), _xf(mp + Vector3(0, 8.0, 0)), _mat("white"))
+		ring.add(ProcMesh.cyl(0.36, 0.36, 0.5, 12), _xf(mp + Vector3(0, 15.6, 0)), _mat("line_soft"))
+	ring.flush(root)
 	var pyl := Batch.new()
 	for k: int in 6:
 		var a: float = deg_to_rad(30.0 + 60.0 * k)

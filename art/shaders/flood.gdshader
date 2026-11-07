@@ -14,6 +14,7 @@ uniform float clarity = 0.0;
 uniform float ice = 0.0;          // 1 = frozen sea ice
 uniform float half_plane_x = -99999.0;
 uniform float fade_far = 420.0;
+uniform float mirror = 0.0;      // [biomes2] flatter waves, glossier (sky reflections)
 
 varying vec3 wpos;
 const float SQRT3 = 1.7320508;
@@ -56,7 +57,7 @@ void fragment() {
 	vec4 w = mix(murky, clear, clarity);
 	vec3 alb = w.rgb + vec3(0.03, 0.0, 0.04) * sin(p.x * 0.05 + p.y * 0.04 + TIME * 0.1) * (1.0 - clarity);
 	float a = w.a;
-	float rough = mix(0.14, 0.05, clarity);
+	float rough = mix(0.14, 0.05, clarity) * (1.0 - 0.6 * mirror);
 	// Sea ice: pale, cracked plates with snow in the seams.
 	if (ice > 0.001) {
 		float plate = vnoise(p * 0.07) * 0.6 + vnoise(p * 0.21) * 0.4;
@@ -75,5 +76,5 @@ void fragment() {
 	METALLIC = 0.0;
 	SPECULAR = mix(0.7, 0.45, ice);
 	NORMAL_MAP = n;
-	NORMAL_MAP_DEPTH = mix(0.5, 0.35, ice);
+	NORMAL_MAP_DEPTH = mix(0.5 * (1.0 - 0.6 * mirror), 0.35, ice);
 }

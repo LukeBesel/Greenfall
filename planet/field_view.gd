@@ -16,6 +16,9 @@ var ground_material: ShaderMaterial
 ## (x sand ripples, y frost, z wet silt). Set before setup().
 var layer_swap: Dictionary = {}
 var ground_fx := Vector4.ZERO
+## [biomes2] Frontiers build their own terrain and silhouettes (planet/frontier_view.gd): no
+## hemisphere hills or horizon wrecks here.
+var skip_horizon: bool = false
 
 var field: HexField
 var clock: float = 0.0
@@ -384,7 +387,7 @@ func _apply_biome() -> void:
 	_ground_mat.set_shader_parameter("biome_tint", Vector4(float(gt[0]), float(gt[1]), float(gt[2]), float(gt[3])))
 	var gr: Array = b.get("grass_tint", [1, 1, 1])
 	_ground_mat.set_shader_parameter("grass_tint", Vector3(float(gr[0]), float(gr[1]), float(gr[2])))
-	if layout == null or layout.wild:
+	if (layout == null or layout.wild) and not skip_horizon:
 		_build_horizon()
 
 

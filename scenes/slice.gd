@@ -153,6 +153,7 @@ func _ready() -> void:
 		view.layer_swap = fk.get("ground_layers", {})
 		var gfx: Array = fk.get("fx", [0, 0, 0, 0])
 		view.ground_fx = Vector4(float(gfx[0]), float(gfx[1]), float(gfx[2]), float(gfx[3]))
+		view.skip_horizon = true  # [biomes2] FrontierView builds the terrain and skyline
 	view.setup(field)
 	water = WaterView.new()
 	water.name = "Water"

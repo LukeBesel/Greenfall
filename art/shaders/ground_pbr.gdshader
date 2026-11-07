@@ -24,6 +24,8 @@ uniform vec4 biome_tint = vec4(1.0, 1.0, 1.0, 0.0);
 uniform vec3 grass_tint = vec3(1.0);
 // [biomes] Frontier ground extras: x = wind-rippled sand, y = frost/snow, z = wet silt, w unused.
 uniform vec4 frontier_fx = vec4(0.0);
+// [biomes2] Frontiers: the ground stops here and the terrain mesh (frontier_view.gd) takes over.
+uniform float clip_r = 0.0;
 
 varying vec3 wpos;
 const float SQRT3 = 1.7320508;
@@ -91,6 +93,9 @@ void vertex() {
 
 void fragment() {
 	vec2 p = wpos.xz;
+	if (clip_r > 0.0 && length(p) > clip_r) {
+		discard;
+	}
 	vec4 lay = texture(layout_tex, p / layout_size + 0.5);
 	float surf = lay.r;
 	bool is_road = surf > 0.15 && surf < 0.35;
@@ -178,15 +183,19 @@ void fragment() {
 		float ph = dot(p, vec2(0.83, 0.56)) * 2.6 + fbm(p * 0.18) * 7.0;
 		float crest = sin(ph);
 		float amt = frontier_fx.x * (0.6 + 0.4 * smoothstep(0.3, 0.7, n2));
-		m.alb *= 1.0 + crest * 0.06 * amt;
-		m.nrm.x = clamp(m.nrm.x + cos(ph) * 0.12 * amt, 0.0, 1.0);
+		m.alb *= 1.0 + crest * 0.08 * amt;
+		m.nrm.x = clamp(m.nrm.x + cos(ph) * 0.2 * amt, 0.0, 1.0);
 		m.alb = mix(m.alb, m.alb * vec3(1.05, 0.98, 0.9), amt * 0.4);
+		// [biomes2] Wind-scoured streaks: long darker lanes of coarse grit between paler drifts.
+		vec2 ws = vec2(dot(p, vec2(0.83, 0.56)), dot(p, vec2(-0.56, 0.83)));
+		float streak = fbm(vec2(ws.x * 0.012, ws.y * 0.05) + 5.0);
+		m.alb *= mix(0.9, 1.06, smoothstep(0.3, 0.7, streak) * amt + (1.0 - amt) * 0.6);
 	}
 	if (frontier_fx.y > 0.001 && !is_yard) {
 		// Frost and old snow: patchy, heavier on dirty ground and in hollows, thin on clean.
 		float fr = smoothstep(0.32, 0.62, fbm(p * 0.21 + 17.0) + n3 * 0.25) * frontier_fx.y;
-		fr *= mix(1.0, 0.45, reveal);
-		vec3 snow = vec3(0.86, 0.9, 0.96) * (0.92 + 0.08 * n1);
+		fr *= mix(1.0, 0.7, reveal);
+		vec3 snow = vec3(0.88, 0.92, 0.98) * (0.92 + 0.08 * n1);
 		m.alb = mix(m.alb, snow, fr * 0.85);
 		m.arm.g = mix(m.arm.g, 0.42, fr);
 		m.nrm = mix(m.nrm, vec3(0.5, 0.5, 1.0), fr * 0.6);

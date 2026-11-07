@@ -13,6 +13,9 @@ var field: HexField
 var layout: CityLayout
 ## [biomes] Frontier districts are bigger; thinner litter keeps the instance count in budget.
 var density_mult: float = 1.0
+## [biomes2] Frontier districts: litter fades toward the biome's dust colour (sand, frost, silt)
+## and the brightest wrappers are rarer, so the ground cover reads as weathered, not confetti.
+var _dust := Color(0, 0, 0, 0)
 
 var _mms: Array[MultiMesh] = []
 ## Per hex: Array of [mm_index, slot, x, z, threshold]
@@ -26,6 +29,9 @@ func setup(p_field: HexField) -> void:
 	field = p_field
 	layout = field.layout
 	_rng.seed = field.seed_value + 4242
+	var coat: Array = field.biome_set.get("coat", [])
+	if Frontiers.is_frontier_biome(field.biome) and coat.size() >= 3:
+		_dust = Color(float(coat[0]), float(coat[1]), float(coat[2]), 1.0)
 	_build_meshes()
 	_build()
 
@@ -95,6 +101,10 @@ func _litter_color() -> Color:
 	# Fade, grime and dust.
 	c = c.lerp(Color(c.get_luminance(), c.get_luminance(), c.get_luminance()), _rng.randf_range(0.1, 0.4))
 	c = c.darkened(_rng.randf_range(0.05, 0.4))
+	if _dust.a > 0.0:
+		var l: float = c.get_luminance()
+		c = c.lerp(Color(l, l, l), 0.35).lerp(_dust * Color(0.8, 0.8, 0.8, 1.0), _rng.randf_range(0.3, 0.6))
+		return c
 	return c.lerp(Color(0.48, 0.43, 0.37), _rng.randf_range(0.0, 0.35))
 
 
