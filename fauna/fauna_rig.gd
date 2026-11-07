@@ -10,6 +10,8 @@ extends Node3D
 const DIR: String = "res://art/models/fauna/%s.glb"
 const SHELLS: int = 6
 const SHELL_RANGE: float = 9.0
+## Render layer for animals (bit 19), so Lumi's cyan hover light can leave them out.
+const LAYER: int = 1 << 18
 ## Target overall height (metres, rest pose incl. ears/antlers) for vendor models; 0 = as built.
 const HEIGHT: Dictionary = {"cat": 0.0, "deer": 1.22, "stag": 1.55, "fox": 0.5, "fennec": 0.36, "arctic_fox": 0.42}
 
@@ -92,6 +94,7 @@ func _wire(root: Node) -> void:
 			var a: Animation = anim.get_animation(an)
 			a.loop_mode = Animation.LOOP_NONE if str(an) in ["Stretch"] else Animation.LOOP_LINEAR
 	for mi: MeshInstance3D in meshes.duplicate():
+		mi.layers = 1 | LAYER
 		for s: int in mi.mesh.get_surface_count():
 			var m: Material = mi.mesh.surface_get_material(s)
 			var nm: String = m.resource_name if m else ""
@@ -117,6 +120,7 @@ func _wire(root: Node) -> void:
 			sh.skeleton = sh.get_path_to(skel) if skel else NodePath()
 			sh.transform = mi.transform
 			sh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			sh.layers = 1 | LAYER
 			sh.visibility_range_end = SHELL_RANGE
 			for s3: int in mi.mesh.get_surface_count():
 				if s3 == fur_s:

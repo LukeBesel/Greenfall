@@ -1729,6 +1729,7 @@ func _batch(model: String) -> MultiMeshInstance3D:
 	mi.name = "Fauna_" + model
 	mi.multimesh = mm
 	mi.custom_aabb = AABB(Vector3(-500, -20, -500), Vector3(1000, 120, 1000))
+	mi.layers = 1 | FaunaRig.LAYER  # [fauna2] out of Lumi's hover light
 	if is_rigged(mm.mesh):
 		var mat := ShaderMaterial.new()
 		mat.shader = preload("res://art/shaders/fauna.gdshader")

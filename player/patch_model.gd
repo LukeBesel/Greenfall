@@ -249,6 +249,7 @@ func _build() -> void:
 	hover_light.omni_range = 1.5
 	hover_light.position = Vector3(0, 0.02, 0)
 	hover_light.shadow_enabled = false
+	hover_light.light_cull_mask = 0xFFFFF & ~(1 << 18)  # [fauna2] not on animals (FaunaRig.LAYER): no cyan cats
 	_float.add_child(hover_light)
 	# His own soft key light (only lights his meshes) so he reads against the busy world.
 	var key := OmniLight3D.new()

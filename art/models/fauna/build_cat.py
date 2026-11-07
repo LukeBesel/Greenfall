@@ -85,7 +85,7 @@ for x in (-1, 1):
 		bmesh.ops.solidify(bm, geom=bm.faces[:], thickness=0.0015)
 		return bm
 	up = shell(lambda c: c.z > -0.05)
-	bmesh.ops.transform(up, matrix=Euler((math.radians(52), 0, 0)).to_matrix().to_4x4(), verts=up.verts)  # open: rolled up and back
+	bmesh.ops.transform(up, matrix=Euler((math.radians(72), 0, 0)).to_matrix().to_4x4(), verts=up.verts)  # open: rolled up and back
 	bmesh.ops.translate(up, vec=ec, verts=up.verts)
 	lid = fb.mesh_obj("Lid%d" % x, up, FUR)
 	fb.bind_rigid(lid, "lid.L" if x > 0 else "lid.R")
@@ -273,7 +273,7 @@ for name, n, amp, bob in (("Walk", 27, 1.0, 0.004), ("Trot", 15, 1.35, 0.01)):
 	A.done()
 
 SIT = {
-	"hips": (40, 0, 0), "chest": (-6, 0, 0), "neck": (-10, 0, 0), "head": (2, 0, 0),
+	"hips": (40, 0, 0), "chest": (-6, 0, 0), "neck": (-26, 0, 0), "head": (-14, 0, 0),
 	"upperarm.L": (-38, 0, 0), "upperarm.R": (-38, 0, 0), "fpaw.L": (4, 0, 0), "fpaw.R": (4, 0, 0),
 	"thigh.L": (62, 0, 0), "thigh.R": (62, 0, 0), "shin.L": (-125, 0, 0), "shin.R": (-125, 0, 0), "foot.L": (58, 0, 0), "foot.R": (58, 0, 0),
 	"hpaw.L": (-20, 0, 0), "hpaw.R": (-20, 0, 0),
@@ -286,7 +286,7 @@ for f in range(1, 92, 15):
 	t = (f - 1) / 90.0
 	p = dict(SIT)
 	p["tail4"] = (8 * math.sin(t * math.tau), 0, 30)
-	p["head"] = (2, 0, 10 * math.sin(t * math.tau))
+	p["head"] = (-14, 0, 10 * math.sin(t * math.tau))
 	A.key(f, p, locs=SIT_LOC)
 A.done()
 
@@ -307,12 +307,12 @@ A.action("Pet", 60)
 for f in range(1, 62, 5):
 	t = (f - 1) / 60.0
 	p = dict(SIT)
-	p["head"] = (14, 18 + 6 * math.sin(t * math.tau * 2), 0)
-	p["neck"] = (8, 0, 0)
+	p["head"] = (-4, 18 + 6 * math.sin(t * math.tau * 2), 0)
+	p["neck"] = (-14, 0, 0)
 	p["ear.L"] = (-25, 0, 0)
 	p["ear.R"] = (-25, 0, 0)
-	p["lid.L"] = (-80, 0, 0)  # blissful squint
-	p["lid.R"] = (-80, 0, 0)
+	p["lid.L"] = (-100, 0, 0)  # blissful squint
+	p["lid.R"] = (-100, 0, 0)
 	p["tail0"] = (55, 0, 0)
 	p["tail3"] = (25, 0, 0)
 	p["tail4"] = (30, 0, 25 * math.sin(t * math.tau * 2))
@@ -325,7 +325,7 @@ SLEEP = {
 	"upperarm.L": (-70, 0, 0), "upperarm.R": (-70, 0, 0), "forearm.L": (125, 0, 0), "forearm.R": (125, 0, 0), "fpaw.L": (30, 0, 0), "fpaw.R": (30, 0, 0),
 	"thigh.L": (75, 0, 0), "thigh.R": (75, 0, 0), "shin.L": (-120, 0, 0), "shin.R": (-120, 0, 0), "foot.L": (60, 0, 0), "foot.R": (60, 0, 0),
 	"tail0": (-15, 0, 45), "tail1": (0, 0, 38), "tail2": (0, 0, 38), "tail3": (0, 0, 32), "tail4": (0, 0, 25),
-	"ear.L": (-10, 0, 0), "ear.R": (-10, 0, 0), "lid.L": (-95, 0, 0), "lid.R": (-95, 0, 0),
+	"ear.L": (-10, 0, 0), "ear.R": (-10, 0, 0), "lid.L": (-115, 0, 0), "lid.R": (-115, 0, 0),
 }
 A.action("Sleep", 90)
 for f in range(1, 92, 15):
