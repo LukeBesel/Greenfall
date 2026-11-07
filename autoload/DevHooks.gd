@@ -37,6 +37,8 @@ extends Node
 ##   --event-every=S    next random event in S seconds (ignores the min-hexes gate)
 ##   --streak=N         start with N cleaning-streak points (30 per tier)
 ##   --tokens=N         start with N contract tokens; --trinkets=N grants N collectibles; --livery=ID equips one
+##   --pad-audit        [deck] open every screen pad-only and check focus reachability + B to close
+##   --scene-stats[=S]  [deck] print a geometry census (tools/scene_stats.gd) after S s (headless ok)
 ##   --tab=contracts    with --open=upgrades: the contracts board and token shop (--contracts-sample fills it)
 
 var args: Dictionary = {}
@@ -47,6 +49,7 @@ var _start_ms: int = Time.get_ticks_msec()
 var _frames: int = 0
 var _perf_frames: int = 0
 var _perf_wall: float = 0.0
+var _stats_done: bool = false  # [deck]
 
 
 func _ready() -> void:
@@ -66,6 +69,8 @@ func _ready() -> void:
 		Settings.colorblind = true
 	if has("time-scale"):
 		Engine.time_scale = float(args["time-scale"])
+	if has("pad-audit"):  # [deck] controller-only screen audit (tools/pad_audit.gd)
+		add_child(PadAudit.new())
 	if not args.is_empty():
 		print("[DevHooks] args: ", args)
 
@@ -104,6 +109,9 @@ func _process(delta: float) -> void:
 			_perf_t = 0.0
 			_perf_wall = _elapsed
 			_perf_frames = 0
+	if has("scene-stats") and _elapsed >= get_f("scene-stats", 4.0) and not _stats_done:  # [deck] geometry census
+		_stats_done = true
+		SceneStats.print_census(get_tree().current_scene)
 	if has("quit-after") and _elapsed >= get_f("quit-after", 5.0):
 		print("[DevHooks] quitting after %.1fs" % _elapsed)
 		if has("report"):

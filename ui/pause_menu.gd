@@ -46,9 +46,11 @@ func _ready() -> void:
 	var buttons: Array[Button] = []
 	_first = _button(vb, "Resume", close_menu)
 	buttons.append(_first)
-	buttons.append(_button(vb, "Codex  [K]", func() -> void:
+	var codex_btn: Button = _button(vb, "Codex", func() -> void:
 		close_menu()
-		codex_requested.emit()))
+		codex_requested.emit())
+	Settings.bind_text(codex_btn, func() -> String: return "Codex  [%s]" % Settings.glyph("open_codex"))  # [deck]
+	buttons.append(codex_btn)
 	_settings_btn = _button(vb, "Settings", _open_settings)
 	buttons.append(_settings_btn)
 	buttons.append(_button(vb, "Save game", func() -> void:

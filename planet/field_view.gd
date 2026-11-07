@@ -22,6 +22,10 @@ var _state_tex: ImageTexture
 var _piece_mm := PackedInt32Array()  # pid -> index into _mms
 var _piece_slot := PackedInt32Array()  # pid -> instance index
 var _mms: Array[MultiMesh] = []
+## [deck] Junk MultiMeshes whose pieces are all gone are hidden (no empty draw calls late game).
+var _mmis: Array[MultiMeshInstance3D] = []
+var _mm_live := PackedInt32Array()
+var _piece_shown := PackedByteArray()
 var _dirty_tex: bool = false
 var _life_img: Image
 var _life_tex: ImageTexture
@@ -166,12 +170,13 @@ func _build_junk() -> void:
 		groups[key] = arr
 	_piece_mm.resize(field.piece_count())
 	_piece_slot.resize(field.piece_count())
+	_piece_shown.resize(field.piece_count())
 	for key: String in groups:
 		var pids: PackedInt32Array = groups[key]
 		var model: String = key.split("|")[1]
 		var mm := MultiMesh.new()
 		mm.transform_format = MultiMesh.TRANSFORM_3D
-		mm.mesh = AssetLib.model_mesh_lite(model, 700)
+		mm.mesh = AssetLib.model_mesh_lite(model, [320, 500, 700, 700][clampi(Settings.quality, 0, 3)])  # [deck] lighter junk on Low/Medium
 		mm.instance_count = pids.size()
 		var idx: int = _mms.size()
 		for i: int in pids.size():
@@ -179,6 +184,7 @@ func _build_junk() -> void:
 			_piece_mm[pid] = idx
 			_piece_slot[pid] = i
 			mm.set_instance_transform(i, piece_transform(pid) if field.piece_alive[pid] == 1 else _hidden())
+			_piece_shown[pid] = 1 if field.piece_alive[pid] == 1 else 0
 		_mms.append(mm)
 		var mmi := MultiMeshInstance3D.new()
 		mmi.name = "Junk_" + key.replace("|", "_").replace(",", "_")
@@ -188,6 +194,12 @@ func _build_junk() -> void:
 		var vol: float = field.piece_vol[pids[0]]
 		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if vol >= 1.2 else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(mmi)
+		_mmis.append(mmi)
+		var live: int = 0
+		for pid: int in pids:
+			live += _piece_shown[pid]
+		_mm_live.append(live)
+		mmi.visible = live > 0
 
 
 static func _mound_mesh() -> ArrayMesh:
@@ -263,11 +275,22 @@ func _hidden() -> Transform3D:
 
 func hide_piece(pid: int) -> void:
 	_mms[_piece_mm[pid]].set_instance_transform(_piece_slot[pid], _hidden())
+	_set_shown(pid, false)
 
 
 func move_piece(pid: int, pos: Vector3) -> void:
 	field.piece_pos[pid] = pos
 	_mms[_piece_mm[pid]].set_instance_transform(_piece_slot[pid], piece_transform(pid))
+	_set_shown(pid, true)
+
+
+func _set_shown(pid: int, on: bool) -> void:
+	if pid >= _piece_shown.size() or (_piece_shown[pid] == 1) == on:
+		return
+	_piece_shown[pid] = 1 if on else 0
+	var k: int = _piece_mm[pid]
+	_mm_live[k] += 1 if on else -1
+	_mmis[k].visible = _mm_live[k] > 0
 
 
 # --- Hex state --------------------------------------------------------------------

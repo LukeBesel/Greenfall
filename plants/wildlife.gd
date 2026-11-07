@@ -11,6 +11,8 @@ var _flies: Array[Dictionary] = []
 var _birds: Array[Dictionary] = []
 var _song_t: float = 0.0
 var _wing_mesh: ArrayMesh
+var _wings: MultiMeshInstance3D  # [deck]
+var _bird_mat: StandardMaterial3D
 
 
 func setup() -> void:
@@ -33,49 +35,68 @@ func _make_wing() -> ArrayMesh:
 func _on_restored(hid: int) -> void:
 	var c: Vector3 = world.field.hex_center(hid)
 	for i: int in MAX_BUTTERFLIES_PER_HEX:
-		var node := Node3D.new()
-		add_child(node)
-		var mat := StandardMaterial3D.new()
-		mat.albedo_color = BUTTERFLY_COLORS[randi() % BUTTERFLY_COLORS.size()]
-		mat.cull_mode = BaseMaterial3D.CULL_DISABLED
-		mat.roughness = 0.6
-		var wings: Array[MeshInstance3D] = []
-		for side: float in [-1.0, 1.0]:
-			var w := MeshInstance3D.new()
-			w.mesh = _wing_mesh
-			w.material_override = mat
-			w.scale = Vector3(side, 1, 1)
-			node.add_child(w)
-			wings.append(w)
-		node.position = c + Vector3(randf_range(-6, 6), randf_range(0.4, 1.2), randf_range(-6, 6))
-		_flies.append({"node": node, "wings": wings, "home": c, "target": node.position, "phase": randf() * TAU})
+		var pos: Vector3 = c + Vector3(randf_range(-6, 6), randf_range(0.4, 1.2), randf_range(-6, 6))
+		_flies.append({"pos": pos, "basis": Basis.IDENTITY, "home": c, "target": pos, "phase": randf() * TAU,
+			"col": BUTTERFLY_COLORS[randi() % BUTTERFLY_COLORS.size()]})
+	_sync_wings()
 	if _birds.size() < 8 and randf() < 0.6:
 		var bird := MeshInstance3D.new()
 		bird.mesh = _wing_mesh
-		var bm := StandardMaterial3D.new()
-		bm.albedo_color = Color(0.15, 0.15, 0.18)
-		bm.cull_mode = BaseMaterial3D.CULL_DISABLED
-		bird.material_override = bm
+		if _bird_mat == null:
+			_bird_mat = StandardMaterial3D.new()
+			_bird_mat.albedo_color = Color(0.15, 0.15, 0.18)
+			_bird_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+		bird.material_override = _bird_mat
 		bird.scale = Vector3(6, 6, 6)
 		add_child(bird)
 		_birds.append({"node": bird, "center": c, "r": randf_range(12, 25), "h": randf_range(14, 22), "a": randf() * TAU, "s": randf_range(0.25, 0.4)})
 
 
+## [deck] All butterfly wings are one MultiMesh (two instances per butterfly, colour per
+## instance): one draw instead of two nodes and a material per butterfly.
+func _sync_wings() -> void:
+	if _wings == null:
+		var mat := StandardMaterial3D.new()
+		mat.vertex_color_use_as_albedo = true
+		mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+		mat.roughness = 0.6
+		var mm := MultiMesh.new()
+		mm.transform_format = MultiMesh.TRANSFORM_3D
+		mm.use_colors = true
+		mm.mesh = _wing_mesh
+		_wings = MultiMeshInstance3D.new()
+		_wings.name = "Butterflies"
+		_wings.multimesh = mm
+		_wings.material_override = mat
+		add_child(_wings)
+	var mmw: MultiMesh = _wings.multimesh
+	if mmw.instance_count != _flies.size() * 2:
+		mmw.instance_count = _flies.size() * 2
+		for k: int in _flies.size():
+			mmw.set_instance_color(k * 2, _flies[k]["col"])
+			mmw.set_instance_color(k * 2 + 1, _flies[k]["col"])
+	_wings.custom_aabb = AABB(Vector3(-400, -20, -400), Vector3(800, 80, 800))
+
+
 func _process(delta: float) -> void:
 	var t: float = Time.get_ticks_msec() * 0.001
-	for f: Dictionary in _flies:
-		var n: Node3D = f["node"]
+	var mmw: MultiMesh = _wings.multimesh if _wings else null
+	for k: int in _flies.size():
+		var f: Dictionary = _flies[k]
+		var pos: Vector3 = f["pos"]
 		var target: Vector3 = f["target"]
-		if n.position.distance_to(target) < 0.3:
+		if pos.distance_to(target) < 0.3:
 			var home: Vector3 = f["home"]
 			f["target"] = home + Vector3(randf_range(-7, 7), randf_range(0.3, 1.4), randf_range(-7, 7))
-		var dir: Vector3 = (target - n.position).normalized()
-		n.position += (dir * 1.1 + Vector3(0, sin(t * 6.0 + float(f["phase"])) * 0.6, 0)) * delta
-		n.look_at(n.position + Vector3(dir.x, 0, dir.z) + Vector3(0.001, 0, 0), Vector3.UP)
+		var dir: Vector3 = (target - pos).normalized()
+		pos += (dir * 1.1 + Vector3(0, sin(t * 6.0 + float(f["phase"])) * 0.6, 0)) * delta
+		f["pos"] = pos
+		var fwd := Vector3(dir.x, 0, dir.z) + Vector3(0.001, 0, 0)
+		var b: Basis = Basis.looking_at(fwd, Vector3.UP)
 		var flap: float = sin(t * 28.0 + float(f["phase"])) * 1.1
-		var wings: Array = f["wings"]
-		(wings[0] as MeshInstance3D).rotation.z = flap
-		(wings[1] as MeshInstance3D).rotation.z = -flap
+		if mmw:
+			mmw.set_instance_transform(k * 2, Transform3D(b * Basis(Vector3.BACK, flap) * Basis.from_scale(Vector3(-1, 1, 1)), pos))
+			mmw.set_instance_transform(k * 2 + 1, Transform3D(b * Basis(Vector3.BACK, -flap), pos))
 	for b: Dictionary in _birds:
 		b["a"] = float(b["a"]) + delta * float(b["s"])
 		var c: Vector3 = b["center"]

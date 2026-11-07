@@ -77,8 +77,8 @@ func _process(delta: float) -> void:
 		return
 	if input_enabled:
 		var look: Vector2 = Input.get_vector("look_left", "look_right", "look_up", "look_down")
-		yaw -= look.x * 2.6 * delta
-		pitch -= look.y * 1.8 * delta * (-1.0 if Settings.invert_y else 1.0)
+		yaw -= look.x * 2.6 * delta * Settings.stick_sensitivity  # [deck]
+		pitch -= look.y * 1.8 * delta * Settings.stick_sensitivity * (-1.0 if Settings.invert_y else 1.0)
 	if _look_pending != Vector2.ZERO:
 		var take: Vector2 = _look_pending * clampf(delta * 18.0, 0.0, 1.0) if Settings.mouse_smoothing else _look_pending
 		yaw -= take.x

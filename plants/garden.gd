@@ -21,7 +21,11 @@ var slot_yaw := PackedFloat32Array()
 var hex_slots: Dictionary = {}  # hex id -> PackedInt32Array of slot ids
 var hex_life: Dictionary = {}   # hex id -> float 0..1
 
-var _mms: Dictionary = {}  # "hex|species" -> MultiMeshInstance3D
+var _mms: Dictionary = {}  # "chunk|species" -> MultiMeshInstance3D
+## [deck] Plants batch per CHUNK-metre ground square and species (was per hex: ~2 plants per
+## draw). chunk key -> slot count (instance capacity of each species' MultiMesh there).
+const CHUNK: float = 72.0
+var _chunk_cap: Dictionary = {}
 var _slot_inst: Dictionary = {}  # slot -> [key, index]
 var _tick: float = 0.0
 
@@ -35,6 +39,9 @@ func setup() -> void:
 	for id: int in field.hex_count():
 		if field.hex_hub[id] == 0 and not field.is_water(id):
 			_make_slots(id)
+	for i: int in slot_pos.size():
+		var ck: Vector2i = _chunk_of(i)
+		_chunk_cap[ck] = int(_chunk_cap.get(ck, 0)) + 1
 	_load()
 
 
@@ -215,14 +222,19 @@ func _slot_xf(s: int) -> Transform3D:
 	return Transform3D(b, slot_pos[s])
 
 
+func _chunk_of(s: int) -> Vector2i:
+	return Vector2i(floori(slot_pos[s].x / CHUNK), floori(slot_pos[s].z / CHUNK))
+
+
 func _update_inst(s: int) -> void:
-	var key: String = "%d|%d" % [slot_hex[s], slot_species[s]]
+	var ck: Vector2i = _chunk_of(s)
+	var key: String = "%d,%d|%d" % [ck.x, ck.y, slot_species[s]]
 	if not _slot_inst.has(s):
 		if not _mms.has(key):
 			var mm := MultiMesh.new()
 			mm.transform_format = MultiMesh.TRANSFORM_3D
 			mm.mesh = AssetLib.model_mesh_lite(str(species[slot_species[s]]["model"]), 1500)
-			mm.instance_count = (hex_slots[slot_hex[s]] as PackedInt32Array).size()
+			mm.instance_count = int(_chunk_cap.get(ck, 1))
 			mm.visible_instance_count = 0
 			var mmi := MultiMeshInstance3D.new()
 			mmi.multimesh = mm

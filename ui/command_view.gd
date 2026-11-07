@@ -100,11 +100,13 @@ var map_markers: Dictionary = {}
 # the map, where the hex under the screen-centre reticle is painted with A and erased with X.
 const PAD_KEYS: String = "D-pad  panel      Left stick  move      A  mark      X  unmark      LB / RB  zoom      B  back"
 const MOUSE_KEYS: String = "Left drag  mark      Right drag  unmark      WASD / middle drag  move      Wheel  zoom      B  back"
+## [deck] The live prompt line (glyphs follow the device and pad family).
+const KEYS_TEMPLATE: String = "[p]{@dpad}  panel      {@move}  move      {pad:#0}  mark      {pad:#2}  unmark      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  back[/p][k]Left drag  mark      Right drag  unmark      {@move} / middle drag  move      Wheel  zoom      {kbd:open_command}  back[/k]"
 var _using_pad: bool = false
 var _pad_paint: int = 0  # 1 while A is held on the map, -1 while X is held
 var _reticle_hex: int = -1
 var _reticle: Control
-var _keys: Label
+var _keys: PromptLabel
 var _last_focus_id: Array = []  # [meta key, value] of the panel control that had focus
 
 
@@ -360,7 +362,7 @@ func _ready() -> void:
 	keys_panel.offset_bottom = -14
 	keys_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(keys_panel)
-	_keys = UITheme.label(MOUSE_KEYS, 13, UITheme.MUTED)
+	_keys = PromptLabel.new(KEYS_TEMPLATE, 13)
 	keys_panel.add_child(_keys)
 	# Hover tooltip.
 	_tip = PanelContainer.new()
@@ -1380,8 +1382,7 @@ func _set_pad(on: bool) -> void:
 		_pad_paint = 0
 	if _reticle:
 		_reticle.visible = on and is_open
-	if _keys:
-		_keys.text = PAD_KEYS if on else MOUSE_KEYS
+	pass  # [deck] _keys (PromptLabel) follows Settings.last_input_pad by itself
 
 
 ## Runs before the GUI: tracks the input device and drives the map with the pad.

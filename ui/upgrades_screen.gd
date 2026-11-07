@@ -70,7 +70,7 @@ func _ready() -> void:
 	_currency = UITheme.label("0", 32, UITheme.GOLD)
 	header.add_child(_currency)
 	var close := Button.new()
-	close.text = "Close  [Tab]"
+	Settings.bind_text(close, func() -> String: return "Close  [%s]" % Settings.glyph("open_upgrades"))  # [deck]
 	close.custom_minimum_size = Vector2(150, 48)
 	close.pressed.connect(close_screen)
 	_close_btn = close
@@ -84,14 +84,17 @@ func _ready() -> void:
 		b.text = t["name"] if live else "%s (soon)" % t["name"]
 		b.disabled = not live
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
-		b.custom_minimum_size = Vector2(120, 44)
+		b.custom_minimum_size = Vector2(88, 44)  # [deck] 8 tabs fit 1280x800 at 110% interface scale
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.focus_mode = Control.FOCUS_NONE
 		tabs.add_child(b)
 		_tab_buttons.append(b)
 	_style_tabs()
+	tabs.add_child(PromptLabel.new("  {ui_tab_prev}{ui_tab_next}", 13))  # [deck] tab-switch glyphs
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.follow_focus = true  # [deck] D-pad focus scrolls the grid
 	vb.add_child(scroll)
 	_grid = GridContainer.new()
 	_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -169,6 +172,7 @@ func _populate() -> void:
 		card.bought.connect(func(_i: String, _n: int) -> void: _refresh_all())
 		_grid.add_child(card)
 		_cards.append(card)
+	_relayout.call_deferred()  # [deck] again once the cards' minimum widths are known
 
 
 func _set_tab(id: String) -> void:
@@ -197,6 +201,7 @@ func _style_tabs() -> void:
 func _focus_default() -> void:
 	if not is_open:
 		return
+	_wire_focus()
 	if _tab == "research":
 		if is_instance_valid(_research) and not _research.is_queued_for_deletion():
 			_research.focus_first()
@@ -216,6 +221,22 @@ func _focus_default() -> void:
 		target = _close_btn
 	if target:
 		target.grab_focus()
+
+
+## [deck] Card grids get explicit D-pad neighbours (Godot's search misses other cards).
+var _focus_sig: String = ""
+
+
+func _wire_focus() -> void:
+	if not _tab in ["patch", "bots", "hub"]:
+		return
+	var sig: String = FocusGrid.signature(_grid) + "|%d" % _grid.columns
+	if sig != _focus_sig:
+		_focus_sig = sig
+		FocusGrid.wire(_grid, _close_btn)
+		var first: Control = FocusGrid._focusables(_grid)[0] if not FocusGrid._focusables(_grid).is_empty() else null
+		if first:
+			_close_btn.focus_neighbor_bottom = _close_btn.get_path_to(first)
 
 
 func _focusable(c: Control, allow_disabled: bool) -> bool:
@@ -244,7 +265,12 @@ func _relayout() -> void:
 		_grid.columns = 1
 		return
 	var w: float = _root.size.x - 110.0
-	_grid.columns = clampi(int(w / 350.0), 1, 4)
+	# [deck] Never more columns than the widest card allows (no clipping at 1280x800 / 110%).
+	var min_w: float = 350.0
+	for c: Node in _grid.get_children():
+		if c is Control and not c.is_queued_for_deletion():
+			min_w = maxf(min_w, (c as Control).get_combined_minimum_size().x + 14.0)
+	_grid.columns = clampi(int(w / min_w), 1, 4)
 
 
 func open_screen() -> void:
@@ -304,6 +330,7 @@ func _process(delta: float) -> void:
 	if _refresh_t <= 0.0:
 		_refresh_t = 0.25
 		_refresh_all()
+		_wire_focus()
 	_trade_t -= delta
 	if _trade_t <= 0.0:
 		_trade_t = 0.5

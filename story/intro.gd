@@ -308,7 +308,8 @@ func _build_overlay() -> void:
 	_sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_sub.modulate.a = 0.0
 	root.add_child(_sub)
-	_skip = UITheme.label("Space / Esc  skip", 12, Color(1, 1, 1, 0.45))
+	_skip = UITheme.label("", 12, Color(1, 1, 1, 0.45))
+	Settings.bind_text(_skip, func() -> String: return "%s  skip" % ("Space / Esc" if not Settings.last_input_pad else Settings.glyph("ui_accept")))  # [deck]
 	_skip.set_anchors_preset(Control.PRESET_TOP_RIGHT)
 	_skip.offset_left = -170
 	_skip.offset_top = 24
