@@ -21,26 +21,26 @@
       1.4
     ]
   ],
-  "cubes": 544.38801820318,
+  "cubes": 670.304366015326,
   "cubes_fell": 0,
-  "cubes_made": 7.0,
+  "cubes_made": 6.0,
   "dead_gaps_min": [],
   "district": "Old Town",
-  "earned_total": 1071.96301820318,
+  "earned_total": 1300.27936601533,
   "fell_through": 0,
   "first_cashin_s": 21.6,
   "first_cube_s": 17.4,
-  "first_hex_s": 82.4,
-  "first_hexlv_1_s": 83.2,
+  "first_hex_s": 81.0,
+  "first_hexlv_1_s": 81.2,
   "first_upgrade_s": 21.9,
-  "game_time_min": 3.0,
-  "game_time_s": 181.6,
+  "game_time_min": 3.1,
+  "game_time_s": 188.8,
   "goal_gaps_min": [],
   "goals_done": 8,
   "goals_total": 158,
   "hexes_cleaned": 2,
   "hub_level": 1,
-  "ignored_pieces": 1,
+  "ignored_pieces": 2,
   "junk_hexes": 33,
   "log": [
     {
@@ -80,13 +80,10 @@
       "t": 38.5
     },
     {
-      "bolts": 0.0,
       "bots": {},
       "cubes": 265.0,
-      "data": 0.0,
       "earned": 567.0,
       "escapes": 0,
-      "glass": 5.5,
       "goals": 7,
       "hex_levels": [
         0,
@@ -97,14 +94,13 @@
       ],
       "hexes": 0,
       "hub": 1,
-      "metal": 2.4,
       "parts": 2,
-      "plastic": 4.3,
+      "parts_cur": 12.2,
       "pos": [
-        -5.8,
-        -0.3
+        -5.6,
+        -0.4
       ],
-      "rate": 12.6,
+      "rate": 12.44,
       "remote_shops": 0,
       "research": "",
       "robots": {},
@@ -127,16 +123,25 @@
       "event": "upgrade",
       "id": "scoop_speed",
       "level": 1,
-      "t": 97.3
+      "t": 91.1
     },
     {
-      "bolts": 0.0,
+      "event": "upgrade",
+      "id": "tread_speed",
+      "level": 2,
+      "t": 98.4
+    },
+    {
+      "event": "upgrade",
+      "id": "carry_stack",
+      "level": 1,
+      "t": 100.4
+    },
+    {
       "bots": {},
-      "cubes": 531.0,
-      "data": 10.0,
-      "earned": 904.0,
+      "cubes": 549.0,
+      "earned": 1076.0,
       "escapes": 0,
-      "glass": 6.6,
       "goals": 8,
       "hex_levels": [
         1,
@@ -147,14 +152,13 @@
       ],
       "hexes": 1,
       "hub": 1,
-      "metal": 3.4,
       "parts": 4,
-      "plastic": 7.1,
+      "parts_cur": 17.9,
       "pos": [
-        -15.6,
-        5.6
+        -9.9,
+        7.7
       ],
-      "rate": 5.73,
+      "rate": 8.66,
       "remote_shops": 0,
       "research": "",
       "robots": {},
@@ -170,29 +174,20 @@
         "robots_built": 0.0
       },
       "t": 120.3,
-      "task": "bench",
-      "upgrades": 7
+      "task": "clean",
+      "upgrades": 9
     },
     {
       "event": "upgrade",
-      "id": "tread_speed",
-      "level": 2,
-      "t": 122.1
+      "id": "scoop_width",
+      "level": 3,
+      "t": 159.3
     },
     {
-      "event": "upgrade",
-      "id": "carry_stack",
-      "level": 1,
-      "t": 156.2
-    },
-    {
-      "bolts": 0.0,
       "bots": {},
-      "cubes": 544.0,
-      "data": 20.0,
-      "earned": 1072.0,
+      "cubes": 620.0,
+      "earned": 1250.0,
       "escapes": 0,
-      "glass": 6.8,
       "goals": 8,
       "hex_levels": [
         2,
@@ -203,14 +198,13 @@
       ],
       "hexes": 2,
       "hub": 1,
-      "metal": 6.8,
       "parts": 6,
-      "plastic": 11.3,
+      "parts_cur": 19.6,
       "pos": [
-        0.8,
-        -5.9
+        -6.8,
+        -14.9
       ],
-      "rate": 3.89,
+      "rate": 7.0,
       "remote_shops": 0,
       "research": "",
       "robots": {},
@@ -226,8 +220,8 @@
         "robots_built": 0.0
       },
       "t": 180.3,
-      "task": "deliver",
-      "upgrades": 9
+      "task": "clean",
+      "upgrades": 10
     }
   ],
   "next_goals": [
@@ -237,12 +231,12 @@
   ],
   "parts_bought": 0,
   "parts_found": 6.0,
-  "perfect_cubes": 7.0,
+  "perfect_cubes": 6.0,
   "remote_shops": 0,
   "research_done": [],
-  "research_idle_max_s": 181.0,
-  "research_idle_s": 181.0,
-  "research_starved_s": 181.0,
+  "research_idle_max_s": 188.0,
+  "research_idle_s": 188.0,
+  "research_starved_s": 188.0,
   "robots": {},
   "stuck_escapes": 0,
   "stuck_robots": {},
@@ -265,100 +259,100 @@
       "id": "scoop_15",
       "kind": "goal",
       "n": 1,
-      "t": 15.3
+      "t": 14.7
     },
     {
       "id": "bale_1",
       "kind": "goal",
       "n": 2,
-      "t": 17.6
+      "t": 17.5
     },
     {
       "id": "cash_1",
       "kind": "goal",
       "n": 3,
-      "t": 22.0
+      "t": 21.9
     },
     {
       "id": "upgrade_1",
       "kind": "goal",
       "n": 4,
-      "t": 22.7
+      "t": 22.6
     },
     {
       "id": "perfect_1",
       "kind": "goal",
       "n": 5,
-      "t": 23.4
+      "t": 23.3
     },
     {
       "id": "upgrades_5",
       "kind": "goal",
       "n": 6,
-      "t": 37.9
+      "t": 37.6
     },
     {
       "id": "compartment_3",
       "kind": "goal",
       "n": 7,
-      "t": 38.6
+      "t": 39.1
     },
     {
       "kind": "part",
       "rarity": 1,
       "stored": 3,
-      "t": 74.8,
+      "t": 73.3,
       "type": 6
     },
     {
       "kind": "part",
       "rarity": 1,
       "stored": 4,
-      "t": 78.3,
+      "t": 76.8,
       "type": 3
     },
     {
       "hex": 1,
       "kind": "hex_clean",
       "n": 1,
-      "t": 82.4
-    },
-    {
-      "id": "hex_1",
-      "kind": "goal",
-      "n": 8,
-      "t": 82.4
+      "t": 81.0
     },
     {
       "hex": 1,
       "kind": "hex_level",
       "level": 1,
-      "t": 83.2
+      "t": 81.2
+    },
+    {
+      "id": "hex_1",
+      "kind": "goal",
+      "n": 8,
+      "t": 81.3
     },
     {
       "hex": 6,
       "kind": "hex_clean",
       "n": 2,
-      "t": 145.6
+      "t": 155.5
     },
     {
       "hex": 6,
       "kind": "hex_level",
       "level": 1,
-      "t": 146.2
+      "t": 156.2
     },
     {
       "kind": "part",
       "rarity": 1,
       "stored": 5,
-      "t": 162.3,
+      "t": 174.4,
       "type": 4
     },
     {
       "kind": "part",
       "rarity": 0,
       "stored": 6,
-      "t": 165.6,
+      "t": 177.7,
       "type": 4
     }
   ],
@@ -366,7 +360,7 @@
     "carry_stack": 1,
     "compartment_size": 3,
     "scoop_speed": 1,
-    "scoop_width": 2,
+    "scoop_width": 3,
     "tread_speed": 2
   }
 }
