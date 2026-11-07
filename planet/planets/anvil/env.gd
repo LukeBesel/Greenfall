@@ -540,7 +540,7 @@ func _build_plants() -> void:
 		var d: Dictionary = defs[k]
 		if not AssetLib.has_model(str(d["id"])):
 			continue
-		var mesh: Mesh = tinted_mesh(str(d["id"]), col(d.get("tint"), Color.WHITE), 900)
+		var mesh: Mesh = tinted_mesh(str(d["id"]), col(d.get("tint"), Color.WHITE), [260, 400, 600, 800][clampi(Settings.quality, 0, 3)])
 		if mesh == null:
 			continue
 		var n: int = int(float(d.get("count", 100)) * mult)
@@ -565,7 +565,7 @@ func _build_plants() -> void:
 		var mmi := MultiMeshInstance3D.new()
 		mmi.name = "Plants_" + str(d["id"])
 		mmi.multimesh = mm
-		mmi.visibility_range_end = 170.0
+		mmi.visibility_range_end = 150.0
 		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(mmi)
 		_plants.append(mmi)
