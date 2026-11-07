@@ -109,6 +109,12 @@ static func drive() -> int:
 	return int(state().get("drive", 0))
 
 
+## The rocket's interplanetary drive tier for the ship model's look: 0 (district hops only, Mk I-IV
+## look from RocketTiers), 5 Orbital, 6 Interplanetary, 7 Homeward. Stable API for the "ship" helper.
+static func drive_tier() -> int:
+	return drive()
+
+
 static func answered() -> bool:
 	return bool(state().get("answered", false))
 
