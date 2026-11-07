@@ -44,7 +44,7 @@ Note: headless runs have no window, so without `--audit-size` the audit measured
 | View | Command | Look for | Status |
 |---|---|---|---|
 | Start view, hub levels 1-5 | `DELAY=60 tools/shot.sh NAME --hub-level=N` | junk inside the shack, floating props, yard seams | todo |
-| Future layer 1-5 | `--future=N --hub-level=5` | thick glow lines, straight hex borders | fixed (code): glow thinned globally |
+| Future layer 1-5 | `--future=N --hub-level=5 --time=0.8` | thick glow lines, straight hex borders | fixed: yard lines thin at dusk (future=5); open: at hub level 5 the spawn camera has a large dark object right in front of the lens (bottom sixth of the screen) - a level-5 yard prop without camera collision |
 | Night | `--time=0.0` (0.25 dawn, 0.75 dusk) | fog banding, lamp glow | todo |
 | Lake district shoreline | a district with water hexes (`--hub=N`) | hex-straight shoreline | fixed (code): warped shoreline |
 
