@@ -330,8 +330,15 @@ func _ground() -> void:
 	var cm := ShaderMaterial.new()
 	cm.shader = preload("res://planet/planets/anvil/anvil_coat.gdshader")
 	cm.set_shader_parameter("dust", Color(jt.r, jt.g, jt.b))
-	cm.set_shader_parameter("top_amt", 0.55 + jt.a * 0.4)
+	cm.set_shader_parameter("top_amt", 0.6 + jt.a * 0.4)
+	cm.set_shader_parameter("film", 0.55)
 	v.set_junk_overlay(cm)
+	# Lakes: iron-red mine drainage while murky, clearing to teal.
+	var wv: Node = world.get("water")
+	var wm: Variant = wv.get("_mat") if wv else null
+	if wm is ShaderMaterial:
+		(wm as ShaderMaterial).set_shader_parameter("murky_col", Vector3(0.3, 0.12, 0.06))
+		(wm as ShaderMaterial).set_shader_parameter("clear_col", Vector3(0.09, 0.36, 0.38))
 
 
 ## Anvil's land: rolling dust plains, layered mesas past ~110 m, a canyon to the west, flat
@@ -656,7 +663,7 @@ func _build_particles() -> void:
 	_haze.gravity = Vector3.ZERO
 	_haze.scale_amount_min = 14.0
 	_haze.scale_amount_max = 26.0
-	_haze.color_ramp = _fade_ramp(0.09)
+	_haze.color_ramp = _fade_ramp(0.06)
 	add_child(_haze)
 	_motes = CPUParticles3D.new()
 	_motes.name = "SeedMotes"
@@ -736,6 +743,9 @@ func _place_moons() -> void:
 func _process(delta: float) -> void:
 	_t += delta
 	_tick += delta
+	if has_meta("nohud"):
+		for c: Node in get_tree().root.find_children("*", "CanvasLayer", true, false):
+			(c as CanvasLayer).visible = false
 	if _tick >= 2.0:
 		_tick = 0.0
 		_refresh()
@@ -798,6 +808,8 @@ func _apply_restore() -> void:
 
 ## --planet-cam=dist,pitch,yaw[,fov] for landscape shots.
 func _dev_hooks() -> void:
+	if DevHooks.has("planet-nohud"):  # clean landscape shots: hide every overlay (see _process)
+		set_meta("nohud", true)
 	if DevHooks.has("planet-cam"):
 		var c: PackedStringArray = DevHooks.get_s("planet-cam", "30,-0.3,0").split(",")
 		var cam: CameraRig = world.get("cam")
