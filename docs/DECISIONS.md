@@ -191,3 +191,9 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
   plentiful where Data used to be the gate.
 - **The Ledger is quieter**: one uplink line per act; coupons and quips are small notify-stack
   entries, coupons every 12-20 min (was 4-7).
+- **One subtitle line, reading-time rule** (intro2, owner playtest #1): every story/WREN/Ledger line goes
+  through `ui/subtitles.gd`: one line at a time at the bottom, 55 ms per character + 1.2 s (min 2.5 s).
+  Readable words never scramble while up (a ~150 ms glitch on appearance only); heavy glitching is
+  reserved for spans marked `[glitch]`/`[REDACTED]`/`█` (owner: "heavy glitches on what is redacted").
+- **Every scene load goes through the loading screen** (`Loader.goto`), with a shader warm-up pass; the
+  default clear colour is near-black so nothing ever flashes purple.

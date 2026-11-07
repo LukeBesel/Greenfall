@@ -423,6 +423,7 @@ func _build_engines(hull: StandardMaterial3D, trim: StandardMaterial3D, accent: 
 	_plume.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	_plume.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
 	_plume.cull_mode = BaseMaterial3D.CULL_DISABLED
+	_plume.albedo_texture = EscapePod._soft_tex()
 	_plume.albedo_color = Color(0.45, 0.85, 1.0, 0.1)
 	_plume.disable_fog = true
 	var flat := Vector3(PI * 0.5, 0, 0)
@@ -450,14 +451,10 @@ func _build_engines(hull: StandardMaterial3D, trim: StandardMaterial3D, accent: 
 		_add(cm, bm, spots[i] + Vector3(0, 0, 16.3 + ln * 0.5), flat)
 		_add(ProcMesh.torus(r1 - 0.06, r1 + 0.06, 32, 4), hull, spots[i] + Vector3(0, 0, 16.3 + ln), flat)
 		_add(ProcMesh.cyl(r0 * 0.95, r0 * 0.95, 0.05, 24), _engine, spots[i] + Vector3(0, 0, 16.4), flat)
-		var pm := CylinderMesh.new()
-		pm.top_radius = 0.05
-		pm.bottom_radius = r1 * 0.8
-		pm.height = ln * 2.6
-		pm.radial_segments = 20
-		pm.cap_top = false
-		pm.cap_bottom = false
-		_add(pm, _plume, spots[i] + Vector3(0, 0, 16.3 + ln + ln * 1.3), flat).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		# A faint heat shimmer instead of solid plumes: a soft additive disc just past each bell.
+		var pm := QuadMesh.new()
+		pm.size = Vector2(r1 * 2.6, r1 * 2.6)
+		_add(pm, _plume, spots[i] + Vector3(0, 0, 16.3 + ln + 0.15), Vector3(0, PI, 0)).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
 
 ## The cargo-pod rack under the keel: six small pearl pods with tangerine collars.
@@ -534,7 +531,7 @@ func _process(delta: float) -> void:
 	_glow.emission = CYAN.lerp(ALARM, a * (0.55 + 0.45 * pulse))
 	_glow.emission_energy_multiplier = 2.6 + a * pulse * 3.0
 	_engine.emission_energy_multiplier = 6.0 * thrust + sin(_t * 23.0) * 0.3
-	_plume.albedo_color.a = 0.09 * clampf(thrust, 0.0, 1.5) + sin(_t * 31.0) * 0.008
+	_plume.albedo_color.a = 0.35 * clampf(thrust, 0.0, 1.5) + sin(_t * 31.0) * 0.02
 	_vault.emission_energy_multiplier = 0.9 + sin(_t * 1.3) * 0.15
 	_vault_light.light_color = Color(0.55, 1.0, 0.7).lerp(ALARM, a * pulse)
 	_nav.emission_energy_multiplier = 4.0 if fmod(_t, 1.6) < 0.12 else 0.4

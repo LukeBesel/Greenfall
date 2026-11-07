@@ -420,6 +420,7 @@ func _phase_storm() -> void:
 		ark.position = Vector3(0, 0, 0)
 		ark.create_tween().tween_property(ark, "position", Vector3(34, 0, 0), 9.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 		st.pod.visible = true
+		ark.release_pod(2)
 		st.pod.global_position = ark.pod_world(2) + Vector3(0, -1.0, 0)
 		st.pod.rotation = Vector3(0.3, 0.0, 0.2)
 		st.aim(Vector3(-8, -14, 26), st.pod.global_position, 48.0), 0.15)
