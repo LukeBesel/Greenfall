@@ -96,6 +96,9 @@ var _look_done: bool = false
 var age: float = 0.0  # seconds since setup (game time)
 var _heart_mesh: Mesh
 var _heart_mat: StandardMaterial3D
+var space := FaunaSpace.new()  # [fauna2] prop occupancy grid (rebuilt now and then)
+var _space_t: float = 0.0
+var _cyl := CylinderShape3D.new()
 
 
 func setup(p_world: Node) -> void:
@@ -293,7 +296,8 @@ func find_spot(sid: String, h: int, near: Vector3 = Vector3.INF, spread: float =
 			# Open water only: kerbs and lots in a city lake hex sit above the water line.
 			if f.is_water(ph) and f.is_clean(ph) and f.hex_at(p + Vector3(0.6, 0, 0)) == ph and f.hex_at(p - Vector3(0.6, 0, 0)) == ph \
 					and open_water(p) and open_water(p + Vector3(0.8, 0, 0)) and open_water(p - Vector3(0.8, 0, 0)) \
-					and open_water(p + Vector3(0, 0, 0.8)) and open_water(p - Vector3(0, 0, 0.8)):
+					and open_water(p + Vector3(0, 0, 0.8)) and open_water(p - Vector3(0, 0, 0.8)) \
+					and FaunaSpace.spaced_ok(p, FaunaSpace.radius_of(sid, str(d.get("kind", ""))), _others(null)):
 				return Vector3(p.x, HexField.WATER_Y, p.z)
 			continue
 		if f.is_water(ph):
@@ -301,6 +305,8 @@ func find_spot(sid: String, h: int, near: Vector3 = Vector3.INF, spread: float =
 		if near == Vector3.INF and ph != h:
 			continue
 		if not FaunaRules.spot_ok(f, p, 0.45 if not junk_ok else 0.3, junk_ok) or near_outpost(p):
+			continue
+		if not spot_free(p, sid, str(d.get("kind", "")), null, 1.1):
 			continue
 		if where == "shore":
 			# Frogs, herons and seals stand at the water's edge.
@@ -343,6 +349,106 @@ func near_outpost(p: Vector3) -> bool:
 		if is_instance_valid(o) and Vector2(o.global_position.x - p.x, o.global_position.z - p.z).length() < 7.5:
 			return true
 	return false
+
+
+# --- [fauna2] Spacing: animals never overlap each other or the street furniture ----------------
+
+## Is p free for this animal: off fences / the yard (cats may use it), clear of props (the
+## occupancy grid and anything with a collider) and of every other grounded animal?
+## me: the animal asking (skipped), or null for a new one.
+func spot_free(p: Vector3, sid: String, kind: String, me: Animal = null, size: float = 1.0) -> bool:
+	var r: float = FaunaSpace.radius_of(sid, kind) * size
+	if world.field.layout and not FaunaSpace.layout_ok(world.field.layout, p, 0.6, kind == "cat"):
+		return false
+	if _props_blocked(p, r):
+		return false
+	return FaunaSpace.spaced_ok(p, r, _others(me))
+
+
+## Props only (grid + colliders), for animals already standing somewhere.
+func _props_blocked(p: Vector3, r: float) -> bool:
+	_ensure_space()
+	if space.blocked(p, r + 0.12):
+		return true
+	return not _phys_clear(p, r + 0.05)
+
+
+func _ensure_space() -> void:
+	if _space_t > 0.0 and not space.cells.is_empty():
+		return
+	_space_t = 30.0
+	space = FaunaSpace.new()
+	var skip: Array = [self]
+	for nm: String in ["patch", "garden", "hud", "photo", "intro", "globe", "command", "pause_menu", "codex", "upgrades"]:
+		var nd: Variant = world.get(nm)
+		if nd is Node:
+			skip.append(nd)
+	var cr: Variant = world.get("_cubes_root")
+	if cr is Node:
+		skip.append(cr)
+	var t0: int = Time.get_ticks_usec()
+	var n: int = space.scan(world, skip)
+	if DevHooks.has("fauna-debug") or DevHooks.has("fauna-report"):
+		print("[fauna] space: %d props, %d cells, %.1f ms" % [n, space.cells.size(), (Time.get_ticks_usec() - t0) / 1000.0])
+		if DevHooks.has("fauna-debug"):
+			var ks: Array = space.by_node.keys()
+			ks.sort_custom(func(x: String, y: String) -> bool: return int(space.by_node[x]) > int(space.by_node[y]))
+			for k: String in ks.slice(0, 40):
+				print("[fauna]   ", k, " ", space.by_node[k])
+
+
+## Physics: nothing on the static layer (buildings, hydrants, boxes, fences with colliders,
+## outpost walls, crates) between knee and head height.
+func _phys_clear(p: Vector3, r: float) -> bool:
+	if not is_inside_tree():
+		return true
+	var w3: World3D = get_world_3d()
+	if w3 == null or w3.direct_space_state == null:
+		return true
+	_cyl.radius = maxf(r, 0.08)
+	_cyl.height = 1.0
+	var q := PhysicsShapeQueryParameters3D.new()
+	q.shape = _cyl
+	q.transform = Transform3D(Basis.IDENTITY, Vector3(p.x, p.y + 0.8, p.z))
+	q.collision_mask = 1
+	return w3.direct_space_state.intersect_shape(q, 1).is_empty()
+
+
+## Grounded animals as Vector4(x, z, radius, 0): where they stand and where they're heading.
+func _others(me: Animal) -> Array:
+	var out: Array = []
+	for o: Animal in animals:
+		if o == me or not _grounded(o):
+			continue
+		var r: float = FaunaSpace.radius_of(o.sp, o.kind) * o.size
+		out.append(Vector4(o.pos.x, o.pos.z, r, 0.0))
+		if o.target.distance_squared_to(o.pos) > 0.01 and o.target != Vector3.INF:
+			out.append(Vector4(o.target.x, o.target.z, r, 0.0))
+	return out
+
+
+func _grounded(o: Animal) -> bool:
+	if o.kind in ["school", "swarm", "soarer"] or o.state in [St.FLY, St.SOAR, St.LEAVE] or o.hex == -1:
+		return false
+	return true
+
+
+## Nudges a grounded animal out of any other it walked into (cheap: a few dozen animals).
+func _separate(a: Animal) -> void:
+	if not _grounded(a):
+		return
+	var ra: float = FaunaSpace.radius_of(a.sp, a.kind) * a.size
+	for o: Animal in animals:
+		if o == a or not _grounded(o) or (o.kind == "swim") != (a.kind == "swim"):
+			continue
+		var d := Vector2(a.pos.x - o.pos.x, a.pos.z - o.pos.z)
+		var m: float = ra + FaunaSpace.radius_of(o.sp, o.kind) * o.size
+		var l: float = d.length()
+		if l < m:
+			var push: Vector2 = (d / l if l > 0.001 else Vector2(1, 0)) * (m - l) * 0.5
+			var np := Vector3(a.pos.x + push.x, a.pos.y, a.pos.z + push.y)
+			if a.kind == "swim" or not _props_blocked(np, ra * 0.8):
+				a.pos = np
 
 
 func _spawn(key: String, e: Dictionary) -> bool:
@@ -506,7 +612,7 @@ func _build_warm_spots() -> void:
 		var w: Vector3 = _warm[i]
 		w.y = _ground_y(w)
 		_warm[i] = w
-		if not FaunaRules.spot_ok(f, w, 0.4):
+		if not FaunaRules.spot_ok(f, w, 0.4) or (is_inside_tree() and _props_blocked(w, 0.3)):  # [fauna2]
 			_warm.remove_at(i)
 
 
@@ -528,6 +634,7 @@ func _process(delta: float) -> void:
 		_cooldown[k] = float(_cooldown[k]) - delta
 		if float(_cooldown[k]) <= 0.0:
 			_cooldown.erase(k)
+	_space_t -= delta
 	_plan_t -= delta
 	if _plan_t <= 0.0:
 		_plan_t = 2.5
@@ -622,7 +729,7 @@ func _flee_target(a: Animal, dist: float) -> Vector3:
 	for k: int in 7:
 		var ang: float = (k + 1) / 2 * 0.5 * (1.0 if k % 2 == 0 else -1.0)
 		var p: Vector3 = a.pos + away.rotated(Vector3.UP, ang) * dist
-		if FaunaRules.spot_ok(world.field, p, 0.35, junk_ok) and (a.kind != "rat" or world.field.hex_at(p) >= 0):
+		if FaunaRules.spot_ok(world.field, p, 0.35, junk_ok) and (a.kind != "rat" or world.field.hex_at(p) >= 0) and spot_free(p, a.sp, a.kind, a, a.size):
 			p.y = _ground_y(p)
 			return p
 	return a.pos + away * 1.5
@@ -633,7 +740,8 @@ func _wander_target(a: Animal, r: float) -> Vector3:
 	for k: int in 6:
 		var p: Vector3 = a.home + Vector3(_rng.randf_range(-r, r), 0, _rng.randf_range(-r, r))
 		var mid: Vector3 = (p + a.pos) * 0.5
-		if FaunaRules.spot_ok(world.field, p, 0.35, junk_ok) and FaunaRules.spot_ok(world.field, mid, 0.25, junk_ok) and not near_outpost(p):
+		if FaunaRules.spot_ok(world.field, p, 0.35, junk_ok) and FaunaRules.spot_ok(world.field, mid, 0.25, junk_ok) and not near_outpost(p) \
+				and spot_free(p, a.sp, a.kind, a, a.size) and not space.blocked(mid, FaunaSpace.radius_of(a.sp, a.kind) * 0.7 * a.size):
 			p.y = _ground_y(p)
 			return p
 	return a.pos
@@ -654,9 +762,11 @@ func _update(a: Animal, dt: float) -> void:
 	if a.check_t <= 0.0:
 		a.check_t = 1.0 + _rng.randf()
 		if a.kind in ["quad", "deer", "hopper", "cat", "lizard", "frog", "seal", "heron"] or (a.kind == "bird" and a.state != St.FLY and a.state != St.SOAR):
-			if not FaunaRules.spot_ok(world.field, a.pos, 0.2, false):
+			if not FaunaRules.spot_ok(world.field, a.pos, 0.2, false) or _props_blocked(a.pos, FaunaSpace.radius_of(a.sp, a.kind) * a.size * 0.8):
 				a.target = _wander_target(a, 4.0)
 				a.state = St.WALK
+	if a.kind != "school" and a.kind != "swarm":
+		_separate(a)  # [fauna2]
 	match a.kind:
 		"cat": _update_cat(a, dt)
 		"bird", "heron": _update_bird(a, dt)
@@ -932,7 +1042,7 @@ func _take_off(a: Animal, scared: bool) -> void:
 	for k: int in 8:
 		var p: Vector3 = a.pos + away.rotated(Vector3.UP, _rng.randf_range(-0.9, 0.9)) * dist
 		var h: int = f.hex_at(p)
-		if h >= 0 and (f.is_clean(h) or f.hex_hub[h] != 0) and FaunaRules.spot_ok(f, p, 0.4):
+		if h >= 0 and (f.is_clean(h) or f.hex_hub[h] != 0) and FaunaRules.spot_ok(f, p, 0.4) and spot_free(p, a.sp, a.kind, a, a.size):
 			p.y = _ground_y(p)
 			land = p
 			break
@@ -949,7 +1059,7 @@ func _take_off(a: Animal, scared: bool) -> void:
 			if o != a and o.sp == a.sp and o.state != St.FLY and o.state != St.LEAVE and o.state != St.SOAR and o.pos.distance_to(a.pos) < 6.0:
 				o.state = St.FLY
 				o.target = land + Vector3(_rng.randf_range(-1.2, 1.2), 0, _rng.randf_range(-1.2, 1.2))
-				if not FaunaRules.spot_ok(f, o.target, 0.3):
+				if not FaunaRules.spot_ok(f, o.target, 0.3) or not spot_free(o.target, o.sp, o.kind, o, o.size):
 					o.target = land
 				o.target.y = _ground_y(o.target)
 				o.alt = 1.0
