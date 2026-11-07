@@ -66,10 +66,10 @@ func _ready() -> void:
 	_label = Label3D.new()
 	_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	_label.no_depth_test = true
-	_label.fixed_size = false
+	_label.fixed_size = true  # a steady ~24 px at 720p however far the camera is
 	_label.font = UITheme.font()
 	_label.font_size = 64
-	_label.pixel_size = 0.005
+	_label.pixel_size = 0.0008
 	_label.outline_size = 14
 	_label.outline_modulate = Color(0, 0, 0, 0.55)
 	_label.modulate = Color(0.85, 0.97, 1.0)
