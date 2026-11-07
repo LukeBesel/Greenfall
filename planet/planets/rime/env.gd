@@ -1125,10 +1125,11 @@ func _build_air() -> void:
 	_dust.gravity = Vector3(0.05, -0.08, 0.0)
 	_dust.initial_velocity_min = 0.2
 	_dust.initial_velocity_max = 0.6
-	_dust.scale_amount_min = 0.025
-	_dust.scale_amount_max = 0.06
+	_dust.scale_amount_min = 0.5
+	_dust.scale_amount_max = 1.2
 	_dust.local_coords = false
 	var q := QuadMesh.new()
+	q.size = Vector2(0.035, 0.035)
 	var sm := StandardMaterial3D.new()
 	sm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	sm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
@@ -1144,7 +1145,7 @@ func _build_air() -> void:
 	tx.width = 32
 	tx.height = 32
 	sm.albedo_texture = tx
-	sm.albedo_color = Color(0.9, 0.96, 1.0, 0.8)
+	sm.albedo_color = Color(0.85, 0.93, 1.0, 0.7)
 	q.material = sm
 	_dust.mesh = q
 	add_child(_dust)
