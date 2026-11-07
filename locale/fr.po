@@ -260,7 +260,7 @@ msgstr "VERS LA  BALANCE  ◀"
 msgid "BALE  FEED"
 msgstr "ENTRÉE BALLES"
 
-#: automation/depot.gd:114
+#: automation/depot.gd:121
 msgid "SCRAP  INTAKE  ·  WEIGH HERE"
 msgstr "DÉPÔT FERRAILLE  ·  PESÉE ICI"
 
@@ -276,11 +276,11 @@ msgstr "Épurateur d'air en marche. Les ventilateurs démarrent avec un long sou
 msgid "PAD 01"
 msgstr "PLOT 01"
 
-#: automation/launch_pad.gd:213 ui/rockets_panel.gd:35
+#: automation/launch_pad.gd:220 ui/rockets_panel.gd:35
 msgid "LAUNCH PAD"
 msgstr "PAS DE TIR"
 
-#: automation/launch_pad.gd:264
+#: automation/launch_pad.gd:271
 msgid ""
 "LAUNCH PAD\n"
 "BASE LEVEL 5"
@@ -288,23 +288,23 @@ msgstr ""
 "PAS DE TIR\n"
 "BASE NIVEAU 5"
 
-#: automation/outpost.gd:478
+#: automation/outpost.gd:485
 msgid "SCALE"
 msgstr "BALANCE"
 
-#: automation/outpost.gd:489
+#: automation/outpost.gd:496
 msgid "OUTPOST %d%s"
 msgstr "AVANT-POSTE %d%s"
 
-#: automation/outpost.gd:489
+#: automation/outpost.gd:496
 msgid "  ·  BIG SKIP"
 msgstr "  ·  GRANDE BENNE"
 
-#: automation/outpost.gd:604
+#: automation/outpost.gd:611
 msgid "OUTPOST %d  ·  ONLINE"
 msgstr "AVANT-POSTE %d  ·  EN LIGNE"
 
-#: automation/outpost.gd:638
+#: automation/outpost.gd:645
 msgid "RECHARGE"
 msgstr "RECHARGE"
 
@@ -553,6 +553,10 @@ msgstr "Nouvelle observation : %s. Elle est maintenant dans le Codex."
 msgid "Snap! A %s for your Collection."
 msgstr "Clic ! Une photo (%s) pour ta Collection."
 
+#: planet/far_junk.gd:170
+msgid "Past the survey line the junk runs too deep to start on. One district at a time: clean this one, then the rockets take us to the next."
+msgstr ""
+
 #: planet/frontier_district.gd:279
 msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
 msgstr "Tempête de sable à l'horizon. Le sol propre et nu sera enseveli ; les hexagones plantés et abrités tiendront."
@@ -743,31 +747,31 @@ msgstr "ENSEMBLE, FLEURISSONS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUMIÈRE  EAU  VIE"
 
-#: plants/composter.gd:74
+#: plants/composter.gd:75
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   presse à compost  ·  en sommeil jusqu'à ce que quelque chose pousse"
 
-#: plants/composter.gd:76
+#: plants/composter.gd:77
 msgid "E   compost press  ·  Lv %d (max)"
 msgstr "E   presse à compost  ·  Niv %d (max)"
 
-#: plants/composter.gd:77
+#: plants/composter.gd:78
 msgid "E   upgrade compost press to Lv %d  ·  %s cubes"
 msgstr "E   presse à compost au Niv %d  ·  %s cubes"
 
-#: plants/composter.gd:82
+#: plants/composter.gd:83
 msgid "The press is cold. Grow something first: it runs on what plants leave behind."
 msgstr "La presse est froide. Fais d'abord pousser quelque chose : elle tourne avec ce que laissent les plantes."
 
-#: plants/composter.gd:88
+#: plants/composter.gd:89
 msgid "Not enough cubes to upgrade the press."
 msgstr "Pas assez de cubes pour améliorer la presse."
 
-#: plants/composter.gd:97
+#: plants/composter.gd:98
 msgid "Compost press Lv %d: %.0f s cycles, %.1f seeds each."
 msgstr "Presse à compost Niv %d : cycles de %.0f s, %.1f graines chacun."
 
-#: plants/composter.gd:151
+#: plants/composter.gd:152
 msgid ""
 "COMPOST PRESS\n"
 "dormant"
@@ -775,7 +779,7 @@ msgstr ""
 "PRESSE À COMPOST\n"
 "en sommeil"
 
-#: plants/composter.gd:153
+#: plants/composter.gd:154
 msgid ""
 "COMPOST PRESS  Lv %d\n"
 "hopper %d%%  →  seeds"
@@ -1171,63 +1175,63 @@ msgstr "Réservoir posé. Les arroseurs proches viendront s'y remplir."
 msgid "WATER"
 msgstr "EAU"
 
-#: scenes/slice.gd:281
+#: scenes/slice.gd:290
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Liaison robots en ligne. Appuie sur B pour la vue commande : peins des zones et envoie les équipes où tu veux."
 
-#: scenes/slice.gd:508
+#: scenes/slice.gd:517
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 en ligne. Cœur floral 4% : lumière verte faible. Relais du Cradle : à peine. Fais pousser quelque chose."
 
-#: scenes/slice.gd:819
+#: scenes/slice.gd:844
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXAGONE PROPRE !  +%s"
 
-#: scenes/slice.gd:833
+#: scenes/slice.gd:858
 msgid "Milestone: %d hexes clean!"
 msgstr "Étape : %d hexagones propres !"
 
-#: scenes/slice.gd:835
+#: scenes/slice.gd:860
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "Toute la casse est propre. Lumi émet un très long bip très heureux."
 
-#: scenes/slice.gd:842
+#: scenes/slice.gd:867
 msgid "%s is out of range: %s"
 msgstr "%s est hors de portée : %s"
 
-#: scenes/slice.gd:852
+#: scenes/slice.gd:877
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Verrouillé. Monte ta base au niveau 5 pour construire le pas de tir."
 
-#: scenes/slice.gd:855 ui/rockets_panel.gd:39
+#: scenes/slice.gd:880 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Cellules d'énergie en recharge : %s. Les améliorations de fusée les remplissent plus vite."
 
-#: scenes/slice.gd:909
+#: scenes/slice.gd:934
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Atterrissage : %s. Base %d sur %d. %s"
 
-#: scenes/slice.gd:910
+#: scenes/slice.gd:935
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "La fusée est garée sur le terrain, prête dès que ses cellules seront pleines."
 
-#: scenes/slice.gd:910
+#: scenes/slice.gd:935
 msgid "Landed on the base pad."
 msgstr "Posé sur le plot de la base."
 
-#: scenes/slice.gd:1001
+#: scenes/slice.gd:1026
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Les améliorations demandent un établi. Retourne à la base."
 
-#: scenes/slice.gd:1173
+#: scenes/slice.gd:1198
 msgid "Welcome back. The junk waited for you."
 msgstr "Bon retour. La ferraille t'a attendu."
 
-#: scenes/slice.gd:1190
+#: scenes/slice.gd:1215
 msgid "OUTPOST %d · Lv%d"
 msgstr "AVANT-POSTE %d · Niv%d"
 
-#: scenes/slice.gd:1190
+#: scenes/slice.gd:1215
 msgid "OUTPOST %d · RUIN"
 msgstr "AVANT-POSTE %d · RUINE"
 
@@ -1461,83 +1465,83 @@ msgstr ""
 "DE RETOUR\n"
 "DANS 5 MINUTES"
 
-#: story/eggs.gd:250
+#: story/eggs.gd:252
 msgid "Something metal surfaced in the cleared ground."
 msgstr "Quelque chose de métallique a émergé du sol dégagé."
 
-#: story/eggs.gd:430
+#: story/eggs.gd:433
 msgid "Gnome %d / %d"
 msgstr "Nain %d / %d"
 
-#: story/eggs.gd:438
+#: story/eggs.gd:441
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "La dernière affiche indique un endroit tout proche. Quelque chose d'orange est roulé en boule pas loin."
 
-#: story/eggs.gd:464
+#: story/eggs.gd:467
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "La radio grésille doucement. Rien n'est encore réveillé là-haut. Reviens à la nuit tombée."
 
-#: story/eggs.gd:465
+#: story/eggs.gd:468
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "Au télescope : juste un ciel clair et poussiéreux. Reviens à la nuit tombée."
 
-#: story/eggs.gd:485
+#: story/eggs.gd:488
 msgid "SOLD OUT"
 msgstr "ÉPUISÉ"
 
-#: story/eggs.gd:502
+#: story/eggs.gd:505
 msgid "QUACK!"
 msgstr "COIN !"
 
-#: story/eggs.gd:520
+#: story/eggs.gd:523
 msgid "NEW CHALLENGER!"
 msgstr "NOUVEAU CHALLENGER !"
 
-#: story/eggs.gd:523
+#: story/eggs.gd:526
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "GAME OVER  ·  SCORE 12"
 
-#: story/eggs.gd:553
+#: story/eggs.gd:556
 msgid "hi, Gus"
 msgstr "salut, Gus"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:601
 msgid "CONFETTI"
 msgstr "CONFETTIS"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:601
 msgid "LIGHT JAZZ"
 msgstr "JAZZ DOUX"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:601
 msgid "99% DUCKS"
 msgstr "CANARDS : 99%"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:601
 msgid "SUNNY (INDOORS)"
 msgstr "ENSOLEILLÉ (DEDANS)"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:601
 msgid "FOG OF NOODLES"
 msgstr "BROUILLARD DE NOUILLES"
 
-#: story/eggs.gd:603
+#: story/eggs.gd:606
 msgid "1ST PLACE"
 msgstr "1RE PLACE"
 
-#: story/eggs.gd:661
+#: story/eggs.gd:664
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "Le canard couine un secret : « %s » débloque le design %s."
 
-#: story/eggs.gd:662
+#: story/eggs.gd:665
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "Le canard t'a appris tout ce qu'il sait. Coin."
 
-#: story/eggs.gd:812
+#: story/eggs.gd:815
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "Curiosité trouvée : %s  (%d / %d)   %s"
 
-#: story/eggs.gd:823
+#: story/eggs.gd:826
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "Toutes les curiosités de la liste sont trouvées. Le compartiment de collection de Lumi déborde de souvenirs."
 
@@ -1573,79 +1577,79 @@ msgstr "Ce quelqu'un, c'est toi. Petit. Têtu. Sur quatre pour cent de batterie.
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr "Trouve un sol propre. Creuse. Dépose-la. Tasse. Et ensuite – c'est important – arrose."
 
-#: story/first_seed.gd:120
+#: story/first_seed.gd:126
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi. Je capte un signal. Vert, faible, à l'est de la base. Une vieille serre. Va voir."
 
-#: story/first_seed.gd:130
+#: story/first_seed.gd:136
 msgid "{tool_water}  then hold  {scoop}  to water it"
 msgstr "{tool_water}  puis maintiens  {scoop}  pour arroser"
 
-#: story/first_seed.gd:156
+#: story/first_seed.gd:162
 msgid "Hold  {scoop}  on clean ground to plant the seed"
 msgstr "Maintiens  {scoop}  sur un sol propre pour planter la graine"
 
-#: story/first_seed.gd:225
+#: story/first_seed.gd:231
 msgid "...It's green. Lumi, it's actually green."
 msgstr "...C'est vert. Lumi, c'est vraiment vert."
 
-#: story/first_seed.gd:227
+#: story/first_seed.gd:233
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "Garde-la bien arrosée. Les graines sont rares par ici, mais chaque floraison en rend une, et un peu de lumière verte pour ton cœur. C'est comme ça que tout commence."
 
-#: story/intro.gd:282
+#: story/intro.gd:284
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr "Il y a trois cents ans, les dernières graines ont quitté Verdance à bord de l'arche Cradle."
 
-#: story/intro.gd:300
+#: story/intro.gd:302
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr "Lumi, le petit gardien des graines de l'arche, chantait pour les semis chaque nuit."
 
-#: story/intro.gd:313
+#: story/intro.gd:315
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr "Tu fredonnes encore, Lumi ? Ils ne t'entendent pas, tu sais. ...Ils poussent plus vite quand tu le fais, cela dit."
 
-#: story/intro.gd:332
+#: story/intro.gd:334
 msgid "Then, one night, the sky came apart."
 msgstr "Puis, une nuit, le ciel s'est déchiré."
 
-#: story/intro.gd:364
+#: story/intro.gd:366
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr "Brèche dans la coque de la chambre forte ! Lumi, laisse les plateaux, éloigne-toi !"
 
-#: story/intro.gd:427
+#: story/intro.gd:429
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr "Lumi— tiens bon— je n'arrive pas à faire demi-tour— tiens bon—"
 
-#: story/intro.gd:440
+#: story/intro.gd:442
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "L'arche ne pouvait pas faire demi-tour. La capsule est tombée pendant des jours."
 
-#: story/intro.gd:612
+#: story/intro.gd:614
 msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
 msgstr "...Lumi ? ...Lumi. Le relais tient à peine, mais je te capte. Tu as atterri. Tu es sur Verdance."
 
-#: story/intro.gd:619
+#: story/intro.gd:621
 msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
 msgstr "Ton cœur fonctionne à la lumière verte, la lueur des êtres vivants. Il n'y a plus de vert là en bas. C'est pour ça que tu faiblis."
 
-#: story/intro.gd:622
+#: story/intro.gd:624
 msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
 msgstr "Alors on va en faire. Nettoie le sol, plante ces semis. Chaque fleur nourrit ton cœur."
 
-#: story/intro.gd:629
+#: story/intro.gd:631
 msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
 msgstr "Remplis ton cœur floral. Reconstruis un pas de tir. Ensuite tu rentres vers nous en volant. ...Un arrosoir à la fois."
 
-#: story/intro.gd:692
+#: story/intro.gd:694
 msgid "%s  skip"
 msgstr "%s  passer"
 
-#: story/intro.gd:692
+#: story/intro.gd:694
 msgid "Space / Esc"
 msgstr "Espace / Échap"
 
-#: story/intro.gd:733
+#: story/intro.gd:735
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "LUMIÈRE VERTE  ·  RIEN DÉTECTÉ"
 
