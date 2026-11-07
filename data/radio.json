@@ -1,0 +1,18 @@
+{
+  "_doc": "[extras] Songs on the base radio (systems/extras/radio.gd). mood: a MusicDirector mood (audio/music_director.gd MOODS); the song_* moods are radio arrangements. cond: when the song unlocks, the same condition types as data/achievements.json plus 'districts_l5' (bases at level 5) and 'districts' (districts visited); no cond = on the radio from the start. hint: shown while locked. Unlocks persist in GameState.flags.radio.unlocked.",
+  "songs": [
+    {"id": "first_light", "name": "First Light", "desc": "The tune Lumi hums on a dusty morning.", "mood": "explore"},
+    {"id": "workbench_waltz", "name": "Workbench Waltz", "desc": "Cozy chords for tinkering at the bench.", "mood": "base"},
+    {"id": "hopeful_static", "name": "Hopeful Static", "desc": "What the radio picked up the night Lumi landed.", "mood": "menu"},
+    {"id": "lantern_hours", "name": "Lantern Hours", "desc": "Night music, slow and a little blue.", "mood": "night", "hint": "Clean 5 hexes", "cond": {"type": "stat", "key": "hexes_cleaned", "target": 5}},
+    {"id": "rust_lullaby", "name": "Rust Lullaby", "desc": "A music box found in a scrapyard, still in tune.", "mood": "song_rust_lullaby", "hint": "Clean 20 hexes", "cond": {"type": "stat", "key": "hexes_cleaned", "target": 20}},
+    {"id": "sprout_shuffle", "name": "Sprout Shuffle", "desc": "Bouncy and green. The seedlings like this one.", "mood": "song_sprout_shuffle", "hint": "Grow 10 plants to bloom", "cond": {"type": "stat", "key": "plants_bloomed", "target": 10}},
+    {"id": "old_town_rooftops", "name": "Old Town Rooftops", "desc": "Evening jazz over the mended roofs.", "mood": "song_rooftops", "hint": "Raise a base to level 3", "cond": {"type": "hub_level", "target": 3}},
+    {"id": "greenline_express", "name": "Greenline Express", "desc": "A quick groove for a district that runs itself.", "mood": "song_greenline", "hint": "Raise a base to level 5", "cond": {"type": "districts_l5", "target": 1}},
+    {"id": "far_shore", "name": "Far Shore", "desc": "Wide and airy, for the next district over the hill.", "mood": "song_far_shore", "hint": "Visit a second district", "cond": {"type": "districts", "target": 2}},
+    {"id": "homeward", "name": "Homeward", "desc": "The swelling theme from Lumi's long fall.", "mood": "cinematic", "hint": "Raise three bases to level 5", "cond": {"type": "districts_l5", "target": 3}},
+    {"id": "verdance_in_bloom", "name": "Verdance in Bloom", "desc": "The whole planet in flower, in four chords.", "mood": "song_bloom", "hint": "Bring the Cradle home", "cond": {"type": "flag", "key": "cradle_returned", "target": 1}},
+    {"id": "cradle_choir", "name": "Cradle Choir", "desc": "The ark's garden deck, remembered in slow swells.", "mood": "song_cradle_choir", "hint": "See the Cradle finale", "cond": {"type": "flag", "key": "bloom_finale_seen", "target": 1}},
+    {"id": "starseed_serenade", "name": "Starseed Serenade", "desc": "A new world on the horizon, lydian and bright.", "mood": "song_starseed", "hint": "Seed a new world", "cond": {"type": "stat", "key": "worlds_seeded", "target": 1}}
+  ]
+}

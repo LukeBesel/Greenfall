@@ -174,11 +174,32 @@ func set_music_intensity(x: float) -> void:
 ## "explore" (default), "night", "base", "cinematic", "menu". The mix crossfades over ~4 s;
 ## harmony and tempo switch on the next bar line.
 func set_music_mood(mood: String) -> void:
-	if _music:
+	_requested_mood = mood  # [extras]
+	if _music and (music_override == "" or mood == "cinematic"):  # [extras] a radio song holds (cinematics still play)
 		_music.call("set_mood", mood)
+	elif _music and str(_music.get("mood")) != music_override:
+		_music.call("set_mood", music_override)
 
 
 func get_music_mood() -> String:
+	if music_override != "":  # [extras] callers compare against the mood they asked for
+		return _requested_mood
+	return str(_music.get("mood")) if _music else ""
+
+
+## [extras] A radio song (systems/extras/radio.gd) overrides the mood music until cleared with "".
+var music_override: String = ""
+var _requested_mood: String = "explore"
+
+
+func set_music_override(song_mood: String) -> void:
+	music_override = song_mood
+	if _music:
+		_music.call("set_mood", song_mood if song_mood != "" else _requested_mood)
+
+
+## [extras] The mood or song actually playing.
+func playing_mood() -> String:
 	return str(_music.get("mood")) if _music else ""
 
 

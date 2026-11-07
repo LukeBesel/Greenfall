@@ -27,7 +27,7 @@ static func refresh(menu: Node) -> void:
 	if g == null or a == null:
 		return
 	g.visible = Decor.unlocked()
-	a.visible = CradleMode.unlocked()
+	a.visible = CradleMode.unlocked() and not WeeklyChallenge.active  # [extras] no world travel from the challenge
 	var vb: Node = g.get_parent()
 	var list: Array[Button] = []
 	for c: Node in vb.get_children():

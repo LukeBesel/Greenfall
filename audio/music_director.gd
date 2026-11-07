@@ -64,6 +64,64 @@ const MOODS: Dictionary = {
 		"voice": "kalimba", "mel_lo": 62, "mel_hi": 78, "density": 0.45, "bright": 0.5,
 		"pad_attack": 3.0, "lpf": 5000.0, "intensity": 0.45, "tacet": 0.25, "swell": false,
 	},
+	# [extras] Radio songs (systems/extras/radio.gd, data/radio.json): arrangements the player picks
+	# on the base radio. Same key and layers as the moods, so they crossfade in like any mood.
+	"song_rust_lullaby": {  # vi7 - V sus4 - IVmaj7 - I: slow kalimba, a music box in a scrapyard
+		"bpm": 58.0,
+		"prog": [[9, [0, 3, 7, 10]], [7, [0, 5, 7, 10]], [5, [0, 4, 7, 11]], [0, [0, 4, 7, 14]]],
+		"mix": {"pad": 1.0, "air": 1.1, "bass": 0.7, "melody": 1.0, "bell": 1.2, "shaker": 0.0, "kick": 0.0},
+		"voice": "kalimba", "mel_lo": 64, "mel_hi": 81, "density": 0.4, "bright": 0.4,
+		"pad_attack": 3.0, "lpf": 3800.0, "intensity": 0.45, "tacet": 0.3, "swell": false,
+	},
+	"song_sprout_shuffle": {  # I - IVmaj7 - ii7 - V7: bright and bouncy
+		"bpm": 92.0,
+		"prog": [[0, [0, 4, 7, 14]], [5, [0, 4, 7, 11]], [2, [0, 3, 7, 10]], [7, [0, 4, 7, 10]]],
+		"mix": {"pad": 0.8, "air": 0.4, "bass": 1.1, "melody": 1.1, "bell": 0.7, "shaker": 1.2, "kick": 1.0},
+		"voice": "piano", "mel_lo": 64, "mel_hi": 81, "density": 0.75, "bright": 0.7,
+		"pad_attack": 1.8, "lpf": 6800.0, "intensity": 0.82, "tacet": 0.1, "swell": false,
+	},
+	"song_rooftops": {  # ii9 - V sus4 - Imaj7 - vi7: late-evening jazz over the roofs
+		"bpm": 78.0,
+		"prog": [[2, [0, 3, 7, 10, 14]], [7, [0, 5, 7, 10]], [0, [0, 4, 7, 11]], [9, [0, 3, 7, 10]]],
+		"mix": {"pad": 1.0, "air": 0.6, "bass": 1.2, "melody": 1.0, "bell": 0.6, "shaker": 0.9, "kick": 0.6},
+		"voice": "piano", "mel_lo": 62, "mel_hi": 79, "density": 0.6, "bright": 0.55,
+		"pad_attack": 2.2, "lpf": 5200.0, "intensity": 0.7, "tacet": 0.15, "swell": false,
+	},
+	"song_greenline": {  # I - iii7 - IVmaj7 - V sus4: a quick kalimba groove, the trains are running
+		"bpm": 100.0,
+		"prog": [[0, [0, 4, 7, 11]], [4, [0, 3, 7, 10]], [5, [0, 4, 7, 11]], [7, [0, 5, 7, 10]]],
+		"mix": {"pad": 0.9, "air": 0.5, "bass": 1.1, "melody": 1.1, "bell": 0.9, "shaker": 1.1, "kick": 1.1},
+		"voice": "kalimba", "mel_lo": 66, "mel_hi": 83, "density": 0.8, "bright": 0.75,
+		"pad_attack": 1.6, "lpf": 7000.0, "intensity": 0.9, "tacet": 0.1, "swell": false,
+	},
+	"song_far_shore": {  # IVmaj7 - I add9 - V sus4 - vi9: wide and airy, the next district over the hill
+		"bpm": 64.0,
+		"prog": [[5, [0, 4, 7, 11]], [0, [0, 4, 7, 14]], [7, [0, 5, 7, 10]], [9, [0, 3, 7, 10, 14]]],
+		"mix": {"pad": 1.2, "air": 1.4, "bass": 0.9, "melody": 0.9, "bell": 1.0, "shaker": 0.4, "kick": 0.0},
+		"voice": "kalimba", "mel_lo": 62, "mel_hi": 79, "density": 0.45, "bright": 0.6,
+		"pad_attack": 3.2, "lpf": 4600.0, "intensity": 0.55, "tacet": 0.25, "swell": false,
+	},
+	"song_bloom": {  # I add9 - vi7 - IVmaj7 - V sus4: the whole planet in flower
+		"bpm": 84.0,
+		"prog": [[0, [0, 4, 7, 14]], [9, [0, 3, 7, 10]], [5, [0, 4, 7, 11]], [7, [0, 5, 7, 10]]],
+		"mix": {"pad": 1.2, "air": 0.8, "bass": 1.0, "melody": 1.1, "bell": 1.1, "shaker": 1.0, "kick": 0.8},
+		"voice": "piano", "mel_lo": 64, "mel_hi": 83, "density": 0.65, "bright": 0.85,
+		"pad_attack": 2.4, "lpf": 7500.0, "intensity": 0.85, "tacet": 0.12, "swell": false,
+	},
+	"song_starseed": {  # Imaj7 - II (lydian lift) - IVmaj7 - I: a new world on the horizon
+		"bpm": 70.0,
+		"prog": [[0, [0, 4, 7, 11]], [2, [0, 4, 7, 14]], [5, [0, 4, 7, 11]], [0, [0, 4, 7, 14]]],
+		"mix": {"pad": 1.3, "air": 1.0, "bass": 0.9, "melody": 0.9, "bell": 1.4, "shaker": 0.5, "kick": 0.3},
+		"voice": "piano", "mel_lo": 66, "mel_hi": 84, "density": 0.5, "bright": 0.9,
+		"pad_attack": 3.0, "lpf": 7800.0, "intensity": 0.62, "tacet": 0.2, "swell": true,
+	},
+	"song_cradle_choir": {  # vi7 - IVmaj7 - I add9 - V sus4, slow swells: the ark comes home
+		"bpm": 52.0,
+		"prog": [[9, [0, 3, 7, 10]], [5, [0, 4, 7, 11]], [0, [0, 4, 7, 14]], [7, [0, 5, 7, 10]]],
+		"mix": {"pad": 1.7, "air": 0.7, "bass": 1.1, "melody": 0.8, "bell": 1.3, "shaker": 0.0, "kick": 0.0},
+		"voice": "piano", "mel_lo": 64, "mel_hi": 81, "density": 0.35, "bright": 0.8,
+		"pad_attack": 4.5, "lpf": 7200.0, "intensity": 0.7, "tacet": 0.12, "swell": true,
+	},
 }
 
 # 16-step rhythms ("x" = onset). Calls open a phrase; answers close it with a held note.

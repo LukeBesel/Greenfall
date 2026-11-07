@@ -516,6 +516,7 @@ func _ready() -> void:
 		if not loaded:
 			wake.call()
 	LateDirector.attach(self)  # [late] Garden Mode, Ark Bridge, Cradle Mode worlds (systems/late_director.gd)
+	ExtrasDirector.attach(self)  # [extras] radio, nursery, album, welcome back, Seed of the Week (systems/extras/)
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -1153,8 +1154,7 @@ func _restore_world(from_memory: bool = false) -> void:
 		var res: Dictionary = Offline.compute(GameState.world.get("robots", []), hub.scrubbers if hub else 0, float(sd.get("filter_per_s", 1.0)), away, junk_left)
 		GameState.world["offline_units"] = float(GameState.world.get("offline_units", 0.0)) + float(res["units"])
 		Offline.apply(res)
-		if float(res["units"]) > 0.0 or float(res["air"]) > 0.0:
-			get_tree().create_timer(2.0).timeout.connect(func() -> void: EventBus.toast.emit(Offline.summary_text(res), "story"))
+		WelcomeBack.offer(res, away)  # [extras] the welcome-back card (systems/extras/welcome_back.gd) replaces the summary toast
 	EventBus.toast.emit(tr("Welcome back. The junk waited for you."), "info")
 
 
