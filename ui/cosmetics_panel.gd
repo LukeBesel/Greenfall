@@ -57,6 +57,9 @@ func refresh() -> void:
 		var v: Dictionary = PatchModel.VARIANTS[id]
 		var b := Button.new()
 		b.custom_minimum_size = Vector2(200, 64)
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL  # [vqa] long names ellipsize, never widen the workbench
+		b.clip_text = true
+		b.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		var unlocked: bool = id in have
 		b.text = "%s%s\n%s" % [tr(str(v["name"])), tr("   (wearing)") if id == current else "", "" if unlocked else tr("Locked: %s") % tr(str(UNLOCKS.get(id, "")))]
 		b.disabled = not unlocked

@@ -23,10 +23,13 @@ func _ready() -> void:
 	head.add_theme_constant_override("separation", 14)
 	add_child(head)
 	head.add_child(UITheme.label(tr("CONTRACTS"), 20, UITheme.CREAM))
-	head.add_child(UITheme.label(tr("Optional jobs with a timer. Finish in time for tokens; nothing is lost if one runs out."), 13, UITheme.MUTED))
-	var sp := Control.new()
-	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	head.add_child(sp)
+	# [vqa] The blurb wraps instead of setting the workbench's minimum width (it pushed the panel
+	# off a 1280x720 screen, more so in German).
+	var blurb: Label = UITheme.label(tr("Optional jobs with a timer. Finish in time for tokens; nothing is lost if one runs out."), 13, UITheme.MUTED)
+	blurb.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	blurb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	blurb.custom_minimum_size.x = 200
+	head.add_child(blurb)
 	_tokens = UITheme.label("", 22, TOKEN_COLOR)
 	head.add_child(_tokens)
 	_slots_row = HBoxContainer.new()
@@ -128,6 +131,7 @@ func _rebuild_slots() -> void:
 			vb.add_child(l)
 			refs["timer"] = UITheme.label("", 14, UITheme.MUTED)
 			vb.add_child(refs["timer"])
+			_wrap_card(vb)
 			_slot_labels.append(refs)
 			continue
 		var title := UITheme.label(Contracts.text_of(s), 19, UITheme.CREAM)
@@ -190,7 +194,22 @@ func _rebuild_slots() -> void:
 							Vfx.burst("confetti", world.patch.global_position + Vector3(0, 1.5, 0), Color.WHITE, 0.5)
 						refresh(true))
 				row.add_child(cl)
+		_wrap_card(vb)
 		_slot_labels.append(refs)
+
+
+## [vqa] Card labels wrap (timer and reward lines in long languages set the card, and so the
+## workbench, wider than the screen) and its buttons shrink with ellipses.
+static func _wrap_card(vb: Control) -> void:
+	for n: Node in vb.find_children("*", "Label", true, false):
+		(n as Label).autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		(n as Label).custom_minimum_size.x = 0
+	for n: Node in vb.find_children("*", "Button", true, false):
+		var bt: Button = n
+		bt.clip_text = true
+		bt.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		bt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		bt.custom_minimum_size.x = minf(bt.custom_minimum_size.x, 80.0)
 
 
 func _tick_labels() -> void:

@@ -76,6 +76,9 @@ func _ready() -> void:
 	header.add_child(UITheme.label(tr("CODEX"), 32, UITheme.GOLD))
 	_summary = UITheme.label("", 14, UITheme.MUTED)
 	_summary.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_summary.size_flags_horizontal = Control.SIZE_EXPAND_FILL  # [vqa] wraps in long languages
+	_summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_summary.custom_minimum_size.x = 160
 	header.add_child(_summary)
 	var sp := Control.new()
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -92,7 +95,10 @@ func _ready() -> void:
 	for t: Dictionary in TABS:
 		var b := Button.new()
 		b.text = tr(str(t["name"]))
-		b.custom_minimum_size = Vector2(150, 42)
+		b.custom_minimum_size = Vector2(124, 42)  # [vqa] was 150: five tabs + the prompt overflowed the Deck at 110%
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		b.clip_text = true
+		b.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		b.focus_mode = Control.FOCUS_NONE
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
 		tabs.add_child(b)

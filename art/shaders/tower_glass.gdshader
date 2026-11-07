@@ -6,8 +6,8 @@ shader_type spatial;
 // flat sheet) and the odd lit office at night. No white grid, no glow lines.
 render_mode cull_back, diffuse_burley, specular_schlick_ggx;
 
-uniform vec3 glass_col : source_color = vec3(0.26, 0.38, 0.45);
-uniform vec3 spandrel_col : source_color = vec3(0.10, 0.14, 0.17);
+uniform vec3 glass_col : source_color = vec3(0.36, 0.5, 0.6);
+uniform vec3 spandrel_col : source_color = vec3(0.16, 0.2, 0.24);
 uniform vec3 mullion_col : source_color = vec3(0.66, 0.69, 0.72);
 uniform float panel_w = 1.6;
 uniform float floor_h = 3.8;

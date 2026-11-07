@@ -1233,6 +1233,7 @@ func _update_tooltip() -> void:
 # --- Frame ----------------------------------------------------------------------------------
 
 func _process(delta: float) -> void:
+	_fit_keys()
 	if not is_open:
 		return
 	# WASD pans the camera.
@@ -1385,6 +1386,20 @@ func _set_pad(on: bool) -> void:
 	if _reticle:
 		_reticle.visible = on and is_open
 	pass  # [deck] _keys (PromptLabel) follows Settings.last_input_pad by itself
+
+
+## [vqa] The key strip is one line of glyphs and words: in long languages it scales down to fit the
+## screen instead of running off both edges.
+func _fit_keys() -> void:
+	var kp: Control = _keys.get_parent() as Control if _keys else null
+	if kp == null or not kp.is_visible_in_tree():
+		return
+	var w: float = kp.get_combined_minimum_size().x
+	var avail: float = get_viewport().get_visible_rect().size.x - 32.0
+	var k: float = minf(1.0, avail / maxf(w, 1.0))
+	if not is_equal_approx(kp.scale.x, k):
+		kp.pivot_offset = Vector2(w * 0.5, kp.size.y)
+		kp.scale = Vector2(k, k)
 
 
 ## Runs before the GUI: tracks the input device and drives the map with the pad.

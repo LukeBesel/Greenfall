@@ -140,7 +140,7 @@ func _dev_hooks() -> void:
 		set_meta("nohud", true)
 	if DevHooks.has("frontier-done"):  # Cradle: fire the completion hook now (screenshots / story tests)
 		get_tree().create_timer(DevHooks.get_f("frontier-done", 3.0)).timeout.connect(complete)
-	if DevHooks.has("frontier-cam"):  # --frontier-cam=dist,pitch,yaw (landscape screenshots)
+	if DevHooks.has("frontier-cam"):  # --frontier-cam=dist,pitch,yaw[,fov] (landscape screenshots)
 		var c: PackedStringArray = DevHooks.get_s("frontier-cam", "30,-0.3,0").split(",")
 		var cam: CameraRig = world.cam
 		cam.max_distance = maxf(cam.max_distance, float(c[0]))
@@ -148,6 +148,9 @@ func _dev_hooks() -> void:
 		cam.pitch = float(c[1]) if c.size() > 1 else -0.3
 		cam.yaw = float(c[2]) if c.size() > 2 else cam.yaw
 		(cam.get("_arm") as SpringArm3D).collision_mask = 0  # [vqa] the yard sign/fence pulled the arm in
+		if c.size() > 3:  # [vqa] 4th value: field of view (a narrow lens keeps the towers upright)
+			Settings.fov = float(c[3])
+			cam.camera.fov = Settings.fov
 		cam.snap()
 	if DevHooks.has("storm"):  # --storm[=S]: a sandstorm S seconds after start (warning skipped)
 		storm_t = DevHooks.get_f("storm", 3.0)

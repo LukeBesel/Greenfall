@@ -1320,9 +1320,12 @@ func on_drained(hexes: Array[int], animate: bool) -> void:
 
 func _build_cradle() -> void:
 	var e: float = _edge()
-	_build_terrain({"a": "leafy_grass", "b": "leafy_grass", "tint_a": Color(0.33, 0.62, 0.31), "tint_b": Color(0.29, 0.55, 0.29),
+	_build_terrain({"a": "leafy_grass", "b": "leafy_grass", "tint_a": Color(1.0, 1.0, 1.0), "tint_b": Color(0.93, 0.95, 0.93),
 		"scale_a": 0.12, "scale_b": 0.06, "slope_lo": 0.08, "slope_hi": 0.3, "rough_a": 0.9, "rough_b": 0.9,
-		"green_amt": 0.6, "tint_g": Color(0.42, 0.66, 0.36), "macro": 0.12, "biome_tint": Vector4.ZERO})  # [vqa] lush, not olive
+		"green_amt": 0.6, "tint_g": Color(0.3, 0.6, 0.72), "macro": 0.12,
+		# [vqa] Lush lawn green: the grass texture is yellow-green, so a plain multiply stayed olive;
+		# biome_tint recolours its luminance instead.
+		"biome_tint": Vector4(0.2, 0.43, 0.21, 0.85)})
 	_build_plaza(e)
 	_build_skyline_cradle(e)
 	# Launch gantries behind the pad: rusty lattice (ruin) or white (restored).
@@ -1350,9 +1353,12 @@ static func _arc_mesh(r1: float, r2: float, a0: float, a1: float, h: float, segs
 		for tri: Array in [[d0 * r1 + up, d1 * r2 + up, d0 * r2 + up], [d0 * r1 + up, d1 * r1 + up, d1 * r2 + up],
 				[d0 * r2, d0 * r2 + up, d1 * r2 + up], [d0 * r2, d1 * r2 + up, d1 * r2],
 				[d0 * r1, d1 * r1 + up, d0 * r1 + up], [d0 * r1, d1 * r1, d1 * r1 + up]]:
+			# [vqa] Flat normals per face: generate_normals() smoothed the 30 m wide top faces into
+			# the inner/outer walls, shading half the apron dark (the "dark gap" by the field).
+			var fn: Vector3 = (tri[1] - tri[0]).cross(tri[2] - tri[0]).normalized()
+			st.set_normal(fn)
 			for v: Vector3 in [tri[0], tri[2], tri[1]]:  # Godot's front faces wind clockwise
 				st.add_vertex(v)
-	st.generate_normals()
 	return st.commit()
 
 
