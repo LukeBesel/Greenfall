@@ -243,7 +243,9 @@ func build() -> void:
 	set_level(level, false)
 	if world.get("hub") != null:
 		world.hub.level_changed.connect(func(l: int) -> void: set_level(l, true))
+	_dev_hooks()
 	_dev_hooks.call_deferred()
+	_update_light()
 	var meshes: int = find_children("*", "MeshInstance3D", true, false).size()
 	print("[rime] env built in %d ms: level %d, %d mesh nodes, %d pads" % [Time.get_ticks_msec() - t0, level, meshes, _pads.size()])
 
@@ -1308,6 +1310,9 @@ func _apply_restore() -> void:
 ## Dev: --rime-cam=dist,pitch,yaw[,fov] (landscape shots), --rime-nohud, --rime-restore=R (holds
 ## the restoration at R, 0..1, instead of reading the hex levels).
 func _dev_hooks() -> void:
+	if DevHooks.has("rime-nohud"):
+		for c: Node in get_tree().root.find_children("*", "CanvasLayer", true, false):
+			(c as CanvasLayer).visible = false
 	if DevHooks.has("rime-restore"):
 		_forced_restore = clampf(DevHooks.get_f("rime-restore", 1.0), 0.0, 1.0)
 		set_restore(_forced_restore)
