@@ -13,14 +13,14 @@ var back: Button
 
 
 func _ready() -> void:
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	visible = false
 	var dim := ColorRect.new()
 	dim.color = Color(0.02, 0.02, 0.03, 0.62)
-	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(dim)
 	var center := CenterContainer.new()
-	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(center)
 	var pc := PanelContainer.new()
 	pc.custom_minimum_size = Vector2(620, 0)
@@ -73,7 +73,7 @@ func _row(i: int) -> Button:
 	b.add_theme_stylebox_override("focus", hover)
 	b.add_theme_stylebox_override("pressed", hover)
 	var hb := HBoxContainer.new()
-	hb.set_anchors_preset(Control.PRESET_FULL_RECT)
+	hb.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	hb.offset_left = 12
 	hb.offset_right = -12
 	hb.add_theme_constant_override("separation", 14)

@@ -19,14 +19,14 @@ var _focus_after: Vector2i = Vector2i(-1, 0)
 
 
 func _ready() -> void:
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	visible = false
 	var dim := ColorRect.new()
 	dim.color = Color(0.02, 0.02, 0.03, 0.62)
-	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(dim)
 	var center := CenterContainer.new()
-	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(center)
 	var pc := PanelContainer.new()
 	pc.custom_minimum_size = Vector2(700, 0)
@@ -272,14 +272,14 @@ func _confirm(title: String, msg: String, yes_text: String, yes: Callable, back_
 
 func _dialog_box(title: String) -> VBoxContainer:
 	_dialog = Control.new()
-	_dialog.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_dialog.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(_dialog)
 	var dim := ColorRect.new()
 	dim.color = Color(0.02, 0.02, 0.03, 0.55)
-	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_dialog.add_child(dim)
 	var center := CenterContainer.new()
-	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_dialog.add_child(center)
 	var pc := PanelContainer.new()
 	pc.add_theme_stylebox_override("panel", UITheme.box(Color(0.06, 0.065, 0.07, 0.97), UITheme.GOLD, 1, 6, 22))
