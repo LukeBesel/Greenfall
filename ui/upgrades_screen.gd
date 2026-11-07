@@ -14,7 +14,7 @@ const TABS: Array[Dictionary] = [
 	{"id": "research", "name": "Research"},
 	{"id": "rockets", "name": "Rockets"},
 	{"id": "cosmetics", "name": "Cosmetics"},
-	{"id": "contracts", "name": "Contracts"},
+	{"id": "contracts", "name": "Requests"},  # [money] contracts + world events
 	{"id": "builder", "name": "Builder"},  # [drones] robot builder
 ]
 # l10n:end

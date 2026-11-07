@@ -15,7 +15,7 @@
   "jammer": {
     "id": "signal_jammer", "name": "Signal Jammer",
     "desc": "A dish that sings static at the Ledger's drones. Drops inside its radius around the base are blocked, and drones come less often.",
-    "max": 3, "cost": {"cubes": 900, "sheet_metal": 30, "glass_cullet": 12}, "growth": 2.2,
+    "max": 3, "cost": {"cubes": 900, "parts": 42}, "growth": 2.2,
     "radius": [22.0, 34.0, 48.0], "rarer_per_jammer": 0.35
   },
   "resolve_reward": {"seeds": 25, "trinkets": 3},

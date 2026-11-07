@@ -48,18 +48,11 @@ func sell_mult() -> float:
 
 
 static func can_pay(cost: Dictionary, mult: float = 1.0) -> bool:
-	for k: String in cost:
-		if not GameState.can_afford(k, BigNum.from_float(float(cost[k]) * mult)):
-			return false
-	return true
+	return GameState.can_afford_all(cost, mult)  # [money] legacy keys folded into the three
 
 
 static func pay(cost: Dictionary, mult: float = 1.0) -> bool:
-	if not can_pay(cost, mult):
-		return false
-	for k: String in cost:
-		GameState.spend(k, BigNum.from_float(float(cost[k]) * mult))
-	return true
+	return GameState.spend_all(cost, mult)  # [money]
 
 
 func upgrade() -> bool:

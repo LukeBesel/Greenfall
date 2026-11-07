@@ -85,7 +85,7 @@ static func source_name(source: String) -> String:
 		"ledger_audit": return TranslationServer.translate("Ledger Audits")
 		"streak": return TranslationServer.translate("Cleaning Streaks")
 		"lumi_level": return TranslationServer.translate("Lumi Levels")  # [hud]
-		"contracts": return TranslationServer.translate("Contracts")
+		"contracts": return TranslationServer.translate("Requests")
 		"capsule": return TranslationServer.translate("Curio Capsules")
 	return source.capitalize()
 

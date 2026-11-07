@@ -128,11 +128,7 @@ static func cost_text(cost: Dictionary, mult: float = 1.0) -> String:
 
 ## "1.2K cubes" / "40 parts" / "3 seeds" (whole units, rounded up so a cost is never under-read).
 static func amount_text(id: String, v: float) -> String:
-	var n: String = Settings.fmt(BigNum.from_float(ceilf(v - 0.0001)))
-	match canonical(id):
-		PARTS: return TranslationServer.translate("%s parts") % n
-		SEEDS: return TranslationServer.translate("%s seeds") % n
-	return TranslationServer.translate("%s cubes") % n
+	return L10nFmt.amount(id, ceilf(v - 0.0001))
 
 
 ## Save migration: folds a serialized currencies dict ({id: [mantissa, exp]}) into the three.
