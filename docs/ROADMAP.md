@@ -179,3 +179,26 @@ Known: Godot exits with code 134 after some headless runs (engine cleanup at qui
 - Not translated: 3D world signage (street_dressing shop signs, robot decals), proper names (districts, robot names), dev/log text.
 - Next: real translations (DE, FR, ES, PT-BR, ZH-CN, JA, KO, RU), CJK fallback font, a pseudo-locale layout pass on every screen with screenshots, `extract_strings.py --check` in CI.
 
+
+## Update: first-hour polish (wt/first)
+- Done: restart checklist rewritten (`story/tutorial.gd`): six steps, one thing each (scoop, press, pick up,
+  scale, workbench, finish the hex), shown as a compact glass card (`ui/checklist_card.gd`, inside the goal
+  column; step dots, amber key glyphs, a hairline progress bar) that ticks green per step and fades out after
+  "Lumi is back on the job". Goal rows stay hidden while it runs. In-world pointer (`story/tutorial_marker.gd`):
+  an amber chevron and ground ring on the nearest junk, Lumi's hopper, the bale, the scale or the workbench,
+  plus an edge arrow when off screen; the hex step points at the nearest remaining piece. The first-seed hints
+  reuse the card (plant, then water).
+- Done: juice (`art/feel_fx.gd`, new Vfx `sweep`/`pillar`, new sounds confirm/thunk/tick/sweep in Audio):
+  gentle one-octave scoop combo ladder (`Audio.play_ladder`); bale press squash and stretch + thunk + small
+  shake (CameraRig honours Reduced motion) and the bale pops out squashed; sale cubes fly from the scale into
+  the counter, which counts up as they land (`ui/coin_flight.gd`, `CurrencyCluster.in_flight`); upgrade
+  two-note confirm and Lumi shows off the install after closing the bench; first-robot rollout (light beam,
+  rings, spring-in, "NEW CREWMATE"); hex reveal dust/glint sweep riding the ground ripple, extra chord and
+  sweep on the first hex.
+- Done: no HUD/world flash between the title fade and the intro (black cover until the intro overlay is up);
+  gameplay camera snapped behind Lumi under the intro's fade-out.
+- Done: early pacing and the scarce seed trickle: see docs/BALANCE.md "First hour".
+- Dev: `--tutorial-step=N`; `--first-demo=bale|sale|robot|reveal --time-scale=0.05` freezes the moment at its
+  peak for screenshots. Tests: `tests/test_first_hour.gd`.
+- Next: the autoplay bot never uses the Builder (stalls on `builder_1`); the HUD context line under the
+  prompt gets long over outposts (hex level + next + outpost note) and sits close to the level bar.
