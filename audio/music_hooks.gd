@@ -3,6 +3,8 @@ extends Node
 ## Drives the procedural score from game state: mood (explore / base / night / cinematic),
 ## intensity from how healed the planet and district are, and stingers on key events.
 
+## [sound] Story moods the hooks never override; whoever set one ends it with set_music_mood().
+const STICKY_MOODS: Array[String] = ["homecoming"]
 const BASE_ENTER: float = 9.0
 const BASE_LEAVE: float = 13.0
 
@@ -51,7 +53,7 @@ func _process(delta: float) -> void:
 		var tod: float = world.sky_director.time_of_day
 		if tod < 0.22 or tod > 0.8:
 			mood = "night"
-	if Audio.get_music_mood() != mood:
+	if Audio.get_music_mood() != mood and not STICKY_MOODS.has(Audio.get_music_mood()):
 		Audio.set_music_mood(mood)
 	_update_intensity()
 
@@ -63,5 +65,6 @@ func _update_intensity() -> void:
 	if world.get("field") != null and world.field.junk_hex_count > 0:
 		district = float(world.field.junk_hexes_cleaned()) / float(world.field.junk_hex_count)
 	var planet: float = world.planet.restored_fraction() if world.get("planet") != null else 0.0
+	Audio.set_restoration(planet)  # [sound] planet themes and ambience bloom with it
 	var robots: float = minf(1.0, float(world.fleet.robots().size()) / 12.0) if world.get("fleet") != null else 0.0
 	Audio.set_music_intensity(clampf(0.12 + 0.45 * district + 0.25 * robots + 0.6 * planet, 0.0, 1.0))
