@@ -80,9 +80,9 @@ void fragment() {
 	// --- Ice: glassy, deep blue where thick, milky where it is fractured -----------------
 	float depth = smoothstep(0.25, 0.75, n1 + (n2 - 0.5) * 0.4);
 	vec3 ice = mix(ice_col, ice_deep, depth * 0.55 + crev * 0.4);
-	float fr1 = fracture(p * 0.045, 0.018);
-	float fr2 = fracture(p * 0.19 + 3.0, 0.022) * (1.0 - smoothstep(30.0, 140.0, dist));
-	ice = mix(ice, vec3(0.86, 0.93, 1.0), fr1 * 0.55 + fr2 * 0.35);
+	float fr1 = fracture(p * 0.045, 0.009);
+	float fr2 = fracture(p * 0.19 + 3.0, 0.012) * (1.0 - smoothstep(30.0, 140.0, dist));
+	ice = mix(ice, vec3(0.8, 0.9, 1.0), fr1 * 0.38 + fr2 * 0.25);
 	// Trapped bubbles and dust in the ice.
 	ice *= 0.92 + 0.12 * n3;
 	float ice_rough = 0.06 + 0.12 * fr1 + 0.1 * n3;

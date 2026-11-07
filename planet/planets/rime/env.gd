@@ -364,7 +364,7 @@ func _hm(x: float, z: float) -> Array:
 		h = lerpf(h, _bore_y, flat)
 		a[1] = float(a[1]) * (1.0 - flat)
 		a[3] = float(a[3]) * (1.0 - flat)
-		var berm: float = 6.5 * exp(-pow((maxf(db, _bore.z) - _bore.z - 6.0) / 8.0, 2.0))
+		var berm: float = 3.0 * exp(-pow((maxf(db, _bore.z) - _bore.z - 7.0) / 7.0, 2.0))
 		h += berm
 	a[0] = h
 	return a
