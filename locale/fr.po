@@ -991,7 +991,7 @@ msgstr "Équipe complète (%d/%d) : améliore la base"
 
 #: robots/fleet.gd:139 robots/fleet.gd:211
 msgid "Not enough parts"
-msgstr ""
+msgstr "Pas assez de pièces"
 
 #: robots/fleet.gd:141 robots/fleet.gd:213 robots/water_net.gd:149
 #: systems/research.gd:194 systems/robot_builder.gd:349 systems/robot_builder.gd:401
@@ -1960,7 +1960,7 @@ msgstr "Capsules à curiosités"
 
 #: systems/contracts.gd:237
 msgid "%s (robot style)"
-msgstr ""
+msgstr "%s (style de robot)"
 
 #: systems/contracts.gd:239
 msgid "Builder Crate"
@@ -1984,11 +1984,11 @@ msgstr ""
 
 #: systems/contracts.gd:417
 msgid "Requests reward: %s. Paint your fleet with it in the Locker."
-msgstr ""
+msgstr "Récompense de commandes : %s. Peins ta flotte avec dans le Casier."
 
 #: systems/contracts.gd:420
 msgid "Requests reward: %s. Fit it in the Locker."
-msgstr ""
+msgstr "Récompense de commandes : %s. Installe-la dans le Casier."
 
 #: systems/contracts.gd:424 systems/contracts.gd:433
 msgid "Requests reward: %s."
@@ -2422,7 +2422,7 @@ msgstr "Incompatible avec : %s"
 
 #: systems/robot_builder.gd:265
 msgid "Not unlocked yet"
-msgstr ""
+msgstr "Pas encore débloqué"
 
 #: systems/robot_builder.gd:294
 msgid "Names need at least 2 letters"
@@ -2442,7 +2442,7 @@ msgstr "Recherche %s"
 
 #: systems/robot_builder.gd:358 systems/robot_builder.gd:363
 msgid "Unlock · %s"
-msgstr ""
+msgstr "Débloquer · %s"
 
 #: systems/robot_builder.gd:360
 msgid "Requests reward · %d requests"
@@ -2450,7 +2450,7 @@ msgstr ""
 
 #: systems/robot_builder.gd:398
 msgid "Can't be bought"
-msgstr ""
+msgstr "Ne s'achète pas"
 
 #: systems/robot_builder.gd:425
 msgid "Requests reward (%d of %d requests)"
@@ -2458,7 +2458,7 @@ msgstr ""
 
 #: systems/robot_builder.gd:516
 msgid "Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d."
-msgstr ""
+msgstr "Ton premier robot est arrivé avec des chenilles et une plante à ressort. Personnalise-le dans le Casier quand la base atteint le niveau %d."
 
 #: systems/robot_builder.gd:526
 msgid "A Maker Fragment was tucked inside it: +%d parts."
@@ -2474,7 +2474,7 @@ msgstr ""
 
 #: systems/robot_builder.gd:568
 msgid "%s spotted a %s: %s."
-msgstr ""
+msgstr "%s a repéré : %s, %s."
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -2720,11 +2720,11 @@ msgstr "   (installé)"
 
 #: ui/builder_panel.gd:358
 msgid "Unlocked  ·  press to fit"
-msgstr ""
+msgstr "Débloqué  ·  appuie pour installer"
 
 #: ui/builder_panel.gd:367
 msgid "  ·  press to unlock + fit"
-msgstr ""
+msgstr "  ·  appuie pour débloquer et installer"
 
 #: ui/builder_panel.gd:369
 msgid "  (Maker set)"
@@ -2748,7 +2748,7 @@ msgstr "aucun enregistré"
 
 #: ui/builder_panel.gd:401
 msgid "%d styles unlocked   ·   Parts %s"
-msgstr ""
+msgstr "%d styles débloqués   ·   Pièces %s"
 
 #: ui/builder_panel.gd:423
 msgid "Stock part: no changes. The %s look of this robot type."
@@ -3108,7 +3108,7 @@ msgstr "Améliorer > %s"
 
 #: ui/command_view.gd:784
 msgid "ready"
-msgstr ""
+msgstr "prêt"
 
 #: ui/command_view.gd:784
 msgid "build at the workbench"
@@ -3179,30 +3179,30 @@ msgstr "%d / %d hexagones propres"
 #: ui/contracts_panel.gd:75
 msgid "%d done"
 msgid_plural "%d done"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d terminée"
+msgstr[1] "%d terminées"
 
 #: ui/contracts_panel.gd:80
 msgid "Live now:  %s  ·  %s  ·  %s left"
-msgstr ""
+msgstr "En cours :  %s  ·  %s  ·  encore %s"
 
 #: ui/contracts_panel.gd:83
 msgid "Every reward unlocked. Each %d more requests pay a Vintage part's worth of parts."
-msgstr ""
+msgstr "Toutes les récompenses sont débloquées. Tous les %d commandes de plus rapportent la valeur d'une pièce Vintage."
 
 #: ui/contracts_panel.gd:86
 msgid "Next unlock in %d request:  %s"
 msgid_plural "Next unlock in %d requests:  %s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Prochain déblocage dans %d commande :  %s"
+msgstr[1] "Prochain déblocage dans %d commandes :  %s"
 
 #: ui/contracts_panel.gd:117
 msgid "A new request is on its way"
-msgstr ""
+msgstr "Une nouvelle commande arrive"
 
 #: ui/contracts_panel.gd:143
 msgid "Claim"
-msgstr ""
+msgstr "Récupérer"
 
 #: ui/core_meter.gd:22
 msgid "BLOOM CORE"
@@ -3442,11 +3442,11 @@ msgstr "CŒUR %d%%"
 
 #: ui/hub_panel.gd:53
 msgid "What you get"
-msgstr ""
+msgstr "Ce que tu obtiens"
 
 #: ui/hub_panel.gd:61
 msgid "Upgrade"
-msgstr ""
+msgstr "Améliorer"
 
 #: ui/hub_panel.gd:81 ui/hub_panel.gd:223
 msgid "Build Air Scrubber"
@@ -3462,55 +3462,55 @@ msgstr " (tu as %s)"
 
 #: ui/hub_panel.gd:161
 msgid "Bales sell for +%d%% (now +%d%%)"
-msgstr ""
+msgstr "Les balles se vendent +%d%% (actuellement +%d%%)"
 
 #: ui/hub_panel.gd:164
 msgid "+%d robot spots in every crew"
-msgstr ""
+msgstr "+%d places de robot dans chaque équipe"
 
 #: ui/hub_panel.gd:167
 msgid "Air Scrubbers: clear the dusty sky"
-msgstr ""
+msgstr "Épurateurs d'air : dégagent le ciel poussiéreux"
 
 #: ui/hub_panel.gd:172
 msgid "Unlocks the %s"
-msgstr ""
+msgstr "Débloque : %s"
 
 #: ui/hub_panel.gd:174
 msgid "Opens the Locker: style Lumi and your robots"
-msgstr ""
+msgstr "Ouvre le Casier : personnalise Lumi et tes robots"
 
 #: ui/hub_panel.gd:176
 msgid "A launch pad: rockets to the next district"
-msgstr ""
+msgstr "Un pas de tir : des fusées vers le quartier suivant"
 
 #: ui/hub_panel.gd:187
 msgid "Now: level %d, %s. Bales sell for +%d%%."
-msgstr ""
+msgstr "Actuellement : niveau %d, %s. Les balles se vendent +%d%%."
 
 #: ui/hub_panel.gd:189
 msgid "Hub level %d  ·  fully built"
-msgstr ""
+msgstr "Base niveau %d  ·  terminée"
 
 #: ui/hub_panel.gd:192
 msgid "Every hub level is built."
-msgstr ""
+msgstr "Tous les niveaux de la base sont construits."
 
 #: ui/hub_panel.gd:194
 msgid "Fully built"
-msgstr ""
+msgstr "Terminée"
 
 #: ui/hub_panel.gd:197
 msgid "Next: hub level %d"
-msgstr ""
+msgstr "Suivant : base niveau %d"
 
 #: ui/hub_panel.gd:204
 msgid "Upgrade to level %d"
-msgstr ""
+msgstr "Passer au niveau %d"
 
 #: ui/hub_panel.gd:204
 msgid "Not enough yet"
-msgstr ""
+msgstr "Pas encore assez"
 
 #: ui/hub_panel.gd:208
 msgid "Continue in the full game"
@@ -3518,11 +3518,11 @@ msgstr "Suite dans le jeu complet"
 
 #: ui/hub_panel.gd:217
 msgid "Opens at hub level %d."
-msgstr ""
+msgstr "S'ouvre au niveau %d de la base."
 
 #: ui/hub_panel.gd:219
 msgid "All built."
-msgstr ""
+msgstr "Tous construits."
 
 #: ui/hub_panel.gd:222
 msgid ""
@@ -3532,7 +3532,7 @@ msgstr ""
 
 #: ui/hub_panel.gd:223
 msgid "All built"
-msgstr ""
+msgstr "Tous construits"
 
 #: ui/hud.gd:74
 msgid "Lumi reached level %d%s"
@@ -3627,23 +3627,23 @@ msgstr "◢ SIGNAL %d%%"
 
 #: ui/locker_panel.gd:68
 msgid "Editing"
-msgstr ""
+msgstr "En édition"
 
 #: ui/locker_panel.gd:79
 msgid "Fleet paint"
-msgstr ""
+msgstr "Peinture de flotte"
 
 #: ui/locker_panel.gd:104
 msgid "The Locker"
-msgstr ""
+msgstr "Le Casier"
 
 #: ui/locker_panel.gd:105
 msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play."
-msgstr ""
+msgstr "Personnalise Lumi et chaque robot : couleurs, yeux, coiffes, accessoires, peinture de flotte. De nouvelles pièces se débloquent en jouant."
 
 #: ui/locker_panel.gd:115
 msgid "Opens at hub level %d (now %d). Upgrade the hub in the Hub tab."
-msgstr ""
+msgstr "S'ouvre au niveau %d de la base (actuellement %d). Améliore la base dans l'onglet Base."
 
 #: ui/locker_panel.gd:150 ui/photo_mode.gd:393 ui/photo_mode.gd:420
 #: ui/upgrades_screen.gd:13
@@ -3652,7 +3652,7 @@ msgstr "Lumi"
 
 #: ui/locker_panel.gd:150
 msgid "You"
-msgstr ""
+msgstr "Toi"
 
 #: ui/main_menu.gd:314
 msgid "One small robot. One very big cleanup."
@@ -4229,47 +4229,47 @@ msgstr ""
 
 #: ui/robot_card.gd:75
 msgid "Crew"
-msgstr ""
+msgstr "Équipe"
 
 #: ui/robot_card.gd:87
 msgid "Tier"
-msgstr ""
+msgstr "Niveau"
 
 #: ui/robot_card.gd:107 ui/robot_card.gd:173
 msgid "Build"
-msgstr ""
+msgstr "Construire"
 
 #: ui/robot_card.gd:133
 msgid "Open Research"
-msgstr ""
+msgstr "Ouvrir la Recherche"
 
 #: ui/robot_card.gd:154
 msgid "Unlock with research: %s"
-msgstr ""
+msgstr "Se débloque par la recherche : %s"
 
 #: ui/robot_card.gd:164
 msgid "%d built  ·  full: more spots with hub levels"
-msgstr ""
+msgstr "%d construits  ·  complet : plus de places avec les niveaux de base"
 
 #: ui/robot_card.gd:164
 msgid "%d built  ·  %d free"
-msgstr ""
+msgstr "%d construits  ·  %d libres"
 
 #: ui/robot_card.gd:168
 msgid "Water Tanks %d / %d  ·  place them from the Command view"
-msgstr ""
+msgstr "Réservoirs d'eau %d / %d  ·  à placer depuis la vue Commande"
 
 #: ui/robot_card.gd:173
 msgid "Build first"
-msgstr ""
+msgstr "Construire le premier"
 
 #: ui/robot_card.gd:179
 msgid "top tier"
-msgstr ""
+msgstr "niveau max"
 
 #: ui/robot_card.gd:185
 msgid "next: x%s work speed"
-msgstr ""
+msgstr "suivant : vitesse de travail x%s"
 
 #: ui/robot_card.gd:186 ui/rockets_panel.gd:119
 msgid "Upgrade to %s"
@@ -4871,15 +4871,15 @@ msgstr "Fusées"
 
 #: ui/upgrades_screen.gd:19
 msgid "Locker"
-msgstr ""
+msgstr "Casier"
 
 #: ui/upgrades_screen.gd:96
 msgid "WORKBENCH"
-msgstr ""
+msgstr "ÉTABLI"
 
 #: ui/upgrades_screen.gd:177
 msgid "Not open yet. Keep playing."
-msgstr ""
+msgstr "Pas encore ouvert. Continue à jouer."
 
 #: ui/world_banner.gd:37
 msgid "SEED MISSION  ·  WORLD %d"
@@ -5491,7 +5491,7 @@ msgstr "Mix et assortis"
 
 #: data/achievements.json:achievements[builder_mix].desc
 msgid "Style a robot with all five custom parts in the Locker."
-msgstr ""
+msgstr "Personnalise un robot avec les cinq pièces dans le Casier."
 
 #: data/achievements.json:achievements[builder_maker].name
 msgid "As the Makers Made It"
@@ -9052,7 +9052,7 @@ msgstr "Monte la base au niveau 3"
 
 #: data/goals.json:goals[builder_1].text
 msgid "Style a robot in the Locker"
-msgstr ""
+msgstr "Personnalise un robot au Casier"
 
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
@@ -10224,7 +10224,7 @@ msgstr "Coque cargo"
 
 #: data/robot_parts.json:parts[cargo_hull].desc
 msgid "Thick side plates and a rear rack."
-msgstr ""
+msgstr "Épaisses plaques latérales et un porte-bagages arrière."
 
 #: data/robot_parts.json:parts[sealed_shell].name
 msgid "Sealed Shell"
@@ -10232,7 +10232,7 @@ msgstr "Coque étanche"
 
 #: data/robot_parts.json:parts[sealed_shell].desc
 msgid "Smooth covers, neat seams, no grit."
-msgstr ""
+msgstr "Capots lisses, joints nets, pas de poussière."
 
 #: data/robot_parts.json:parts[maker_shell].name
 msgid "Maker Shell"
@@ -10248,7 +10248,7 @@ msgstr "Capteur grand œil"
 
 #: data/robot_parts.json:parts[big_eye].desc
 msgid "A huge lens on a stalk."
-msgstr ""
+msgstr "Une énorme lentille sur une tige."
 
 #: data/robot_parts.json:parts[focus_visor].name
 msgid "Focus Visor"
@@ -10256,7 +10256,7 @@ msgstr "Visière de concentration"
 
 #: data/robot_parts.json:parts[focus_visor].desc
 msgid "Blinkers for robots."
-msgstr ""
+msgstr "Des œillères pour robots."
 
 #: data/robot_parts.json:parts[periscope].name
 msgid "Periscope"
@@ -10264,7 +10264,7 @@ msgstr "Périscope"
 
 #: data/robot_parts.json:parts[periscope].desc
 msgid "Sees over the plants. Mostly."
-msgstr ""
+msgstr "Voit par-dessus les plantes. Presque toujours."
 
 #: data/robot_parts.json:parts[chatter_dome].name
 msgid "Chatterbox Dome"
@@ -10272,7 +10272,7 @@ msgstr "Dôme bavard"
 
 #: data/robot_parts.json:parts[chatter_dome].desc
 msgid "Glass dome with a little speaker."
-msgstr ""
+msgstr "Dôme de verre avec un petit haut-parleur."
 
 #: data/robot_parts.json:parts[maker_optic].name
 msgid "Maker Optic"
@@ -10288,7 +10288,7 @@ msgstr "Chenilles"
 
 #: data/robot_parts.json:parts[treads].desc
 msgid "Rubber tracks."
-msgstr ""
+msgstr "Chenilles en caoutchouc."
 
 #: data/robot_parts.json:parts[rotor].name
 msgid "Quad Rotor"
@@ -10296,7 +10296,7 @@ msgstr "Quadrirotor"
 
 #: data/robot_parts.json:parts[rotor].desc
 msgid "Four ducted fans."
-msgstr ""
+msgstr "Quatre hélices carénées."
 
 #: data/robot_parts.json:parts[legs].name
 msgid "Walker Legs"
@@ -10304,7 +10304,7 @@ msgstr "Pattes de marcheur"
 
 #: data/robot_parts.json:parts[legs].desc
 msgid "Four careful legs."
-msgstr ""
+msgstr "Quatre pattes prudentes."
 
 #: data/robot_parts.json:parts[hover_skirt].name
 msgid "Hover Skirt"
@@ -10312,7 +10312,7 @@ msgstr "Jupe à coussin d'air"
 
 #: data/robot_parts.json:parts[hover_skirt].desc
 msgid "A cushion of air and a soft glow underneath."
-msgstr ""
+msgstr "Un coussin d'air et une douce lueur dessous."
 
 #: data/robot_parts.json:parts[maker_glider].name
 msgid "Maker Glider"
@@ -10328,7 +10328,7 @@ msgstr "Pelle large"
 
 #: data/robot_parts.json:parts[wide_scoop].desc
 msgid "A big, wide scoop."
-msgstr ""
+msgstr "Une grande pelle large."
 
 #: data/robot_parts.json:parts[fine_sieve].name
 msgid "Fine Sieve"
@@ -10336,7 +10336,7 @@ msgstr "Tamis fin"
 
 #: data/robot_parts.json:parts[fine_sieve].desc
 msgid "A sieve that shakes out the dirt."
-msgstr ""
+msgstr "Un tamis qui secoue la terre."
 
 #: data/robot_parts.json:parts[long_forks].name
 msgid "Long Forks"
@@ -10344,7 +10344,7 @@ msgstr "Longues fourches"
 
 #: data/robot_parts.json:parts[long_forks].desc
 msgid "Extra-long forks."
-msgstr ""
+msgstr "Fourches extra-longues."
 
 #: data/robot_parts.json:parts[tow_hook].name
 msgid "Tow Hook"
@@ -10352,7 +10352,7 @@ msgstr "Crochet de remorquage"
 
 #: data/robot_parts.json:parts[tow_hook].desc
 msgid "Winch and hook."
-msgstr ""
+msgstr "Treuil et crochet."
 
 #: data/robot_parts.json:parts[seed_drill].name data/robots.json:types[seedling].upgrades[1].name
 msgid "Seed Drill"
@@ -10360,7 +10360,7 @@ msgstr "Semoir"
 
 #: data/robot_parts.json:parts[seed_drill].desc
 msgid "An auger nose."
-msgstr ""
+msgstr "Un nez en tarière."
 
 #: data/robot_parts.json:parts[mist_sprayer].name
 msgid "Mist Sprayer"
@@ -10368,7 +10368,7 @@ msgstr "Brumisateur"
 
 #: data/robot_parts.json:parts[mist_sprayer].desc
 msgid "A fan nozzle."
-msgstr ""
+msgstr "Une buse en éventail."
 
 #: data/robot_parts.json:parts[jet_nozzle].name
 msgid "Jet Nozzle"
@@ -10376,7 +10376,7 @@ msgstr "Buse à jet"
 
 #: data/robot_parts.json:parts[jet_nozzle].desc
 msgid "A strong, straight jet nozzle."
-msgstr ""
+msgstr "Une buse à jet droit et puissant."
 
 #: data/robot_parts.json:parts[antenna].name
 msgid "Bulb Antenna"
@@ -10412,7 +10412,7 @@ msgstr "Une pousse sur un ressort. Fait boing quand il freine."
 
 #: data/robot_parts.json:parts[bobble_plant].source.hint
 msgid "Comes with your first robot"
-msgstr ""
+msgstr "Livré avec ton premier robot"
 
 #: data/robot_parts.json:parts[traffic_cone].name
 msgid "Traffic Cone"
@@ -11226,7 +11226,7 @@ msgstr "Chaque hexagone allumé sur cette carte est à toi. J'ai compté. Deux f
 
 #: data/wren_lines.json:first_robot_hint
 msgid "With enough parts, the workbench can put a helper together. Bots tab, one button."
-msgstr ""
+msgstr "Avec assez de pièces, l'établi peut assembler un assistant. Onglet Bots, un bouton."
 
 #: data/wren_lines.json:first_robot_hint
 msgid "Electronics junk sometimes hides parts. So does the ground, if you listen for it."
