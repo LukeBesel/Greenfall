@@ -847,12 +847,12 @@ msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
 #: player/patch.gd:470
-msgid "Salvaged: %s %s"
-msgstr "回収：%s %s"
+msgid "Salvaged: %s"
+msgstr "回収：%s"
 
 #: player/patch.gd:500
-msgid "Recovered: %s %s"
-msgstr "発見：%s %s"
+msgid "Recovered: %s"
+msgstr "発見：%s"
 
 #: player/patch_model.gd:18 data/designs.json:designs[aurora].name
 msgid "Aurora"
@@ -1706,7 +1706,7 @@ msgstr ""
 "Ledger はもう私たちの味方。ジャマーは音楽に合わせてハミングしているだけ。"
 
 #: story/ledger.gd:318 systems/decor.gd:125 systems/research.gd:186
-#: ui/hub_panel.gd:118 ui/stations_panel.gd:96
+#: ui/hub_panel.gd:119 ui/stations_panel.gd:96
 msgid "Needs %s"
 msgstr "%s が必要"
 
@@ -2200,29 +2200,63 @@ msgid "+%d part"
 msgid_plural "+%d parts"
 msgstr[0] "+%d パーツ"
 
+#: systems/l10n_fmt.gd:49
+msgid "%s cube"
+msgid_plural "%s cubes"
+msgstr[0] "%s キューブ"
+
+#: systems/l10n_fmt.gd:51
+msgid "%s seed"
+msgid_plural "%s seeds"
+msgstr[0] "%s 種"
+
+#: systems/l10n_fmt.gd:53
+msgid "%s trinket"
+msgid_plural "%s trinkets"
+msgstr[0] "%s 小物"
+
+#: systems/l10n_fmt.gd:55
+msgid "%s token"
+msgid_plural "%s tokens"
+msgstr[0] "%s トークン"
+
+#: systems/l10n_fmt.gd:57
+msgid "%s bolt"
+msgid_plural "%s bolts"
+msgstr[0] "%s ボルト"
+
+#: systems/l10n_fmt.gd:59
+msgid "%s part"
+msgid_plural "%s parts"
+msgstr[0] "%s パーツ"
+
+#: systems/l10n_fmt.gd:61
+msgid "%s data"
+msgstr "%s データ"
+
 #. a part's name. {rarity} is an adjective (Rusty, Polished, Rare...), {part} a part type
-#: systems/l10n_fmt.gd:52
+#: systems/l10n_fmt.gd:86
 msgctxt "part name"
 msgid "{rarity} {part}"
 msgstr "{rarity}{part}"
 
 #. research effect, e.g. "+20% scoop width". {stat} is a stat name.
-#: systems/l10n_fmt.gd:62
+#: systems/l10n_fmt.gd:96
 msgid "+{amount}% {stat}"
 msgstr "{stat} +{amount}%"
 
 #. research effect, e.g. "+2 tank". {stat} is a stat name.
-#: systems/l10n_fmt.gd:64
+#: systems/l10n_fmt.gd:98
 msgid "+{amount} {stat}"
 msgstr "{stat} +{amount}"
 
 #. research effect for one robot model, e.g. "+10% Scoopie speed".
-#: systems/l10n_fmt.gd:67
+#: systems/l10n_fmt.gd:101
 msgid "+{amount}% {robot} {stat}"
 msgstr "{robot} の{stat} +{amount}%"
 
 #. research effect for one robot model, e.g. "+1 Drip tank".
-#: systems/l10n_fmt.gd:69
+#: systems/l10n_fmt.gd:103
 msgid "+{amount} {robot} {stat}"
 msgstr "{robot} の{stat} +{amount}"
 
@@ -3551,15 +3585,15 @@ msgstr "ガラス"
 msgid "bolts"
 msgstr "ボルト"
 
-#: ui/hub_panel.gd:86
+#: ui/hub_panel.gd:87
 msgid " (have %s)"
 msgstr " （所持 %s）"
 
-#: ui/hub_panel.gd:93
+#: ui/hub_panel.gd:94
 msgid "Sheet metal %s    Plastic stock %s    Glass %s"
 msgstr "金属板 %s    プラスチック %s    ガラス %s"
 
-#: ui/hub_panel.gd:95
+#: ui/hub_panel.gd:96
 msgid ""
 "Level %d   ·   %s\n"
 "%s   Bales sell for +%d%%."
@@ -3567,11 +3601,11 @@ msgstr ""
 "レベル %d   ·   %s\n"
 "%s   ベールが +%d%% で売れる。"
 
-#: ui/hub_panel.gd:98
+#: ui/hub_panel.gd:99
 msgid "Fully built."
 msgstr "すべて建設済み。"
 
-#: ui/hub_panel.gd:101
+#: ui/hub_panel.gd:102
 msgid ""
 "Next: %s. %s\n"
 "Needs %s"
@@ -3579,15 +3613,15 @@ msgstr ""
 "次：%s。%s\n"
 "必要：%s"
 
-#: ui/hub_panel.gd:102 ui/stations_panel.gd:98
+#: ui/hub_panel.gd:103 ui/stations_panel.gd:98
 msgid "Build %s"
 msgstr "%s を建てる"
 
-#: ui/hub_panel.gd:107
+#: ui/hub_panel.gd:108
 msgid "Continue in the full game"
 msgstr "続きは製品版で"
 
-#: ui/hub_panel.gd:114
+#: ui/hub_panel.gd:115
 msgid ""
 "\n"
 "Requires hub level %d."
@@ -3595,7 +3629,7 @@ msgstr ""
 "\n"
 "基地レベル %d が必要。"
 
-#: ui/hub_panel.gd:116
+#: ui/hub_panel.gd:117
 msgid ""
 "\n"
 "All built (max)."
@@ -3603,7 +3637,7 @@ msgstr ""
 "\n"
 "すべて建設済み（最大）。"
 
-#: ui/hub_panel.gd:119
+#: ui/hub_panel.gd:120
 msgid ""
 "%s   ·   %d / %d built\n"
 "%s%s"
@@ -3611,11 +3645,11 @@ msgstr ""
 "%s   ·   %d / %d 建設済み\n"
 "%s%s"
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:121
 msgid "Air Scrubbers maxed"
 msgstr "空気清浄機は最大"
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:121
 msgid "Build Air Scrubber"
 msgstr "空気清浄機を建てる"
 
@@ -12269,6 +12303,12 @@ msgstr "飾りつけしてるんだ。いいと思う。ネコたちはもっと
 #: data/wren_lines.json:garden_place
 msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
 msgstr "ベンチに、ランプに、噴水。人が帰ってきたくなる場所に見えてきた。"
+
+#~ msgid "Salvaged: %s %s"
+#~ msgstr "回収：%s %s"
+
+#~ msgid "Recovered: %s %s"
+#~ msgstr "発見：%s %s"
 
 #~ msgid "Printed: %s %s."
 #~ msgstr "プリント完了：%s %s。"

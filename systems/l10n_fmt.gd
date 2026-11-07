@@ -30,6 +30,40 @@ static func reward(currency: String, n: int) -> String:
 	return "+%d %s" % [n, currency]
 
 
+## Currencies amount() has its own counted pattern for.
+const COUNTED: Array[String] = ["cubes", "seeds", "trinkets", "tokens", "bolts", "parts", "data"]
+
+
+static func has_count(currency: String) -> bool:
+	return currency in COUNTED
+
+
+## "<amount> <currency>" for a big formatted amount ("1.2K cubes", "1 seed"); `plus` prefixes "+".
+## Other currency ids (hub materials) fall back to "<amount> <translated id>".
+static func amount(currency: String, value: float, plus: bool = false) -> String:
+	var txt: String = Settings.fmt(BigNum.from_float(value))
+	var n: int = int(clampf(round(value), 0.0, 1.0e9))
+	var out: String
+	match currency:
+		"cubes":
+			out = TranslationServer.translate_plural("%s cube", "%s cubes", n) % txt
+		"seeds":
+			out = TranslationServer.translate_plural("%s seed", "%s seeds", n) % txt
+		"trinkets":
+			out = TranslationServer.translate_plural("%s trinket", "%s trinkets", n) % txt
+		"tokens":
+			out = TranslationServer.translate_plural("%s token", "%s tokens", n) % txt
+		"bolts":
+			out = TranslationServer.translate_plural("%s bolt", "%s bolts", n) % txt
+		"parts":
+			out = TranslationServer.translate_plural("%s part", "%s parts", n) % txt
+		"data":
+			out = TranslationServer.translate("%s data") % txt
+		_:
+			out = "%s %s" % [txt, _t(currency.replace("_", " "))]
+	return ("+" + out) if plus else out
+
+
 ## Every entry of a reward dictionary ({cubes: 25, trinkets: 1}) as "+25 cubes  +1 trinket".
 static func rewards(rew: Dictionary, sep: String = "  ") -> String:
 	var bits: Array[String] = []

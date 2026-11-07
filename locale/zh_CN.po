@@ -847,12 +847,12 @@ msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
 #: player/patch.gd:470
-msgid "Salvaged: %s %s"
-msgstr "回收：%s %s"
+msgid "Salvaged: %s"
+msgstr "回收：%s"
 
 #: player/patch.gd:500
-msgid "Recovered: %s %s"
-msgstr "找回：%s %s"
+msgid "Recovered: %s"
+msgstr "找回：%s"
 
 #: player/patch_model.gd:18 data/designs.json:designs[aurora].name
 msgid "Aurora"
@@ -1706,7 +1706,7 @@ msgstr ""
 "Ledger 现在站在我们这边了。干扰器只是跟着音乐哼哼。"
 
 #: story/ledger.gd:318 systems/decor.gd:125 systems/research.gd:186
-#: ui/hub_panel.gd:118 ui/stations_panel.gd:96
+#: ui/hub_panel.gd:119 ui/stations_panel.gd:96
 msgid "Needs %s"
 msgstr "需要 %s"
 
@@ -2200,29 +2200,63 @@ msgid "+%d part"
 msgid_plural "+%d parts"
 msgstr[0] "+%d 零件"
 
+#: systems/l10n_fmt.gd:49
+msgid "%s cube"
+msgid_plural "%s cubes"
+msgstr[0] "%s 方块"
+
+#: systems/l10n_fmt.gd:51
+msgid "%s seed"
+msgid_plural "%s seeds"
+msgstr[0] "%s 种子"
+
+#: systems/l10n_fmt.gd:53
+msgid "%s trinket"
+msgid_plural "%s trinkets"
+msgstr[0] "%s 件小玩意"
+
+#: systems/l10n_fmt.gd:55
+msgid "%s token"
+msgid_plural "%s tokens"
+msgstr[0] "%s 代币"
+
+#: systems/l10n_fmt.gd:57
+msgid "%s bolt"
+msgid_plural "%s bolts"
+msgstr[0] "%s 螺栓"
+
+#: systems/l10n_fmt.gd:59
+msgid "%s part"
+msgid_plural "%s parts"
+msgstr[0] "%s 零件"
+
+#: systems/l10n_fmt.gd:61
+msgid "%s data"
+msgstr "%s 数据"
+
 #. a part's name. {rarity} is an adjective (Rusty, Polished, Rare...), {part} a part type
-#: systems/l10n_fmt.gd:52
+#: systems/l10n_fmt.gd:86
 msgctxt "part name"
 msgid "{rarity} {part}"
 msgstr "{rarity}{part}"
 
 #. research effect, e.g. "+20% scoop width". {stat} is a stat name.
-#: systems/l10n_fmt.gd:62
+#: systems/l10n_fmt.gd:96
 msgid "+{amount}% {stat}"
 msgstr "{stat} +{amount}%"
 
 #. research effect, e.g. "+2 tank". {stat} is a stat name.
-#: systems/l10n_fmt.gd:64
+#: systems/l10n_fmt.gd:98
 msgid "+{amount} {stat}"
 msgstr "{stat} +{amount}"
 
 #. research effect for one robot model, e.g. "+10% Scoopie speed".
-#: systems/l10n_fmt.gd:67
+#: systems/l10n_fmt.gd:101
 msgid "+{amount}% {robot} {stat}"
 msgstr "{robot} {stat} +{amount}%"
 
 #. research effect for one robot model, e.g. "+1 Drip tank".
-#: systems/l10n_fmt.gd:69
+#: systems/l10n_fmt.gd:103
 msgid "+{amount} {robot} {stat}"
 msgstr "{robot} {stat} +{amount}"
 
@@ -3551,15 +3585,15 @@ msgstr "玻璃"
 msgid "bolts"
 msgstr "螺栓"
 
-#: ui/hub_panel.gd:86
+#: ui/hub_panel.gd:87
 msgid " (have %s)"
 msgstr " （现有 %s）"
 
-#: ui/hub_panel.gd:93
+#: ui/hub_panel.gd:94
 msgid "Sheet metal %s    Plastic stock %s    Glass %s"
 msgstr "金属板 %s    塑料 %s    玻璃 %s"
 
-#: ui/hub_panel.gd:95
+#: ui/hub_panel.gd:96
 msgid ""
 "Level %d   ·   %s\n"
 "%s   Bales sell for +%d%%."
@@ -3567,11 +3601,11 @@ msgstr ""
 "等级 %d   ·   %s\n"
 "%s   捆包售价 +%d%%。"
 
-#: ui/hub_panel.gd:98
+#: ui/hub_panel.gd:99
 msgid "Fully built."
 msgstr "已全部建成。"
 
-#: ui/hub_panel.gd:101
+#: ui/hub_panel.gd:102
 msgid ""
 "Next: %s. %s\n"
 "Needs %s"
@@ -3579,15 +3613,15 @@ msgstr ""
 "下一级：%s。%s\n"
 "需要 %s"
 
-#: ui/hub_panel.gd:102 ui/stations_panel.gd:98
+#: ui/hub_panel.gd:103 ui/stations_panel.gd:98
 msgid "Build %s"
 msgstr "建造%s"
 
-#: ui/hub_panel.gd:107
+#: ui/hub_panel.gd:108
 msgid "Continue in the full game"
 msgstr "在完整版中继续"
 
-#: ui/hub_panel.gd:114
+#: ui/hub_panel.gd:115
 msgid ""
 "\n"
 "Requires hub level %d."
@@ -3595,7 +3629,7 @@ msgstr ""
 "\n"
 "需要基地等级 %d。"
 
-#: ui/hub_panel.gd:116
+#: ui/hub_panel.gd:117
 msgid ""
 "\n"
 "All built (max)."
@@ -3603,7 +3637,7 @@ msgstr ""
 "\n"
 "已全部建成（满级）。"
 
-#: ui/hub_panel.gd:119
+#: ui/hub_panel.gd:120
 msgid ""
 "%s   ·   %d / %d built\n"
 "%s%s"
@@ -3611,11 +3645,11 @@ msgstr ""
 "%s   ·   已建 %d / %d\n"
 "%s%s"
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:121
 msgid "Air Scrubbers maxed"
 msgstr "空气净化器已满级"
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:121
 msgid "Build Air Scrubber"
 msgstr "建造空气净化器"
 
@@ -12269,6 +12303,12 @@ msgstr "你在装饰呀。我赞成。猫咪们会更赞成。"
 #: data/wren_lines.json:garden_place
 msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
 msgstr "一张长椅，一盏灯，一座喷泉。这里开始像一个人们会想回来的地方了。"
+
+#~ msgid "Salvaged: %s %s"
+#~ msgstr "回收：%s %s"
+
+#~ msgid "Recovered: %s %s"
+#~ msgstr "找回：%s %s"
 
 #~ msgid "Printed: %s %s."
 #~ msgstr "已打印：%s %s。"

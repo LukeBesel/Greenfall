@@ -848,12 +848,12 @@ msgid "  (streak +%d%%)"
 msgstr "  (Serie +%d%%)"
 
 #: player/patch.gd:470
-msgid "Salvaged: %s %s"
-msgstr "Geborgen: %s %s"
+msgid "Salvaged: %s"
+msgstr "Geborgen: %s"
 
 #: player/patch.gd:500
-msgid "Recovered: %s %s"
-msgstr "Gefunden: %s %s"
+msgid "Recovered: %s"
+msgstr "Gefunden: %s"
 
 #: player/patch_model.gd:18 data/designs.json:designs[aurora].name
 msgid "Aurora"
@@ -1709,7 +1709,7 @@ msgstr ""
 "Der Ledger ist jetzt auf unserer Seite. Die Störsender summen einfach zur Musik mit."
 
 #: story/ledger.gd:318 systems/decor.gd:125 systems/research.gd:186
-#: ui/hub_panel.gd:118 ui/stations_panel.gd:96
+#: ui/hub_panel.gd:119 ui/stations_panel.gd:96
 msgid "Needs %s"
 msgstr "Benötigt %s"
 
@@ -2209,29 +2209,69 @@ msgid_plural "+%d parts"
 msgstr[0] "+%d Teil"
 msgstr[1] "+%d Teile"
 
+#: systems/l10n_fmt.gd:49
+msgid "%s cube"
+msgid_plural "%s cubes"
+msgstr[0] "%s Würfel"
+msgstr[1] "%s Würfel"
+
+#: systems/l10n_fmt.gd:51
+msgid "%s seed"
+msgid_plural "%s seeds"
+msgstr[0] "%s Samen"
+msgstr[1] "%s Samen"
+
+#: systems/l10n_fmt.gd:53
+msgid "%s trinket"
+msgid_plural "%s trinkets"
+msgstr[0] "%s Fundstück"
+msgstr[1] "%s Fundstücke"
+
+#: systems/l10n_fmt.gd:55
+msgid "%s token"
+msgid_plural "%s tokens"
+msgstr[0] "%s Marke"
+msgstr[1] "%s Marken"
+
+#: systems/l10n_fmt.gd:57
+msgid "%s bolt"
+msgid_plural "%s bolts"
+msgstr[0] "%s Schraube"
+msgstr[1] "%s Schrauben"
+
+#: systems/l10n_fmt.gd:59
+msgid "%s part"
+msgid_plural "%s parts"
+msgstr[0] "%s Teil"
+msgstr[1] "%s Teile"
+
+#: systems/l10n_fmt.gd:61
+msgid "%s data"
+msgstr "%s Daten"
+
 #. a part's name. {rarity} is an adjective (Rusty, Polished, Rare...), {part} a part type
-#: systems/l10n_fmt.gd:52
+#: systems/l10n_fmt.gd:86
 msgctxt "part name"
 msgid "{rarity} {part}"
 msgstr "{rarity} {part}"
 
 #. research effect, e.g. "+20% scoop width". {stat} is a stat name.
-#: systems/l10n_fmt.gd:62
+#: systems/l10n_fmt.gd:96
 msgid "+{amount}% {stat}"
 msgstr "+{amount} % {stat}"
 
 #. research effect, e.g. "+2 tank". {stat} is a stat name.
-#: systems/l10n_fmt.gd:64
+#: systems/l10n_fmt.gd:98
 msgid "+{amount} {stat}"
 msgstr "+{amount} {stat}"
 
 #. research effect for one robot model, e.g. "+10% Scoopie speed".
-#: systems/l10n_fmt.gd:67
+#: systems/l10n_fmt.gd:101
 msgid "+{amount}% {robot} {stat}"
 msgstr "+{amount} % {stat} ({robot})"
 
 #. research effect for one robot model, e.g. "+1 Drip tank".
-#: systems/l10n_fmt.gd:69
+#: systems/l10n_fmt.gd:103
 msgid "+{amount} {robot} {stat}"
 msgstr "+{amount} {stat} ({robot})"
 
@@ -3562,15 +3602,15 @@ msgstr "Glas"
 msgid "bolts"
 msgstr "Schrauben"
 
-#: ui/hub_panel.gd:86
+#: ui/hub_panel.gd:87
 msgid " (have %s)"
 msgstr " (vorhanden: %s)"
 
-#: ui/hub_panel.gd:93
+#: ui/hub_panel.gd:94
 msgid "Sheet metal %s    Plastic stock %s    Glass %s"
 msgstr "Blech %s    Plastik %s    Glas %s"
 
-#: ui/hub_panel.gd:95
+#: ui/hub_panel.gd:96
 msgid ""
 "Level %d   ·   %s\n"
 "%s   Bales sell for +%d%%."
@@ -3578,11 +3618,11 @@ msgstr ""
 "Stufe %d   ·   %s\n"
 "%s   Ballen bringen +%d%%."
 
-#: ui/hub_panel.gd:98
+#: ui/hub_panel.gd:99
 msgid "Fully built."
 msgstr "Komplett gebaut."
 
-#: ui/hub_panel.gd:101
+#: ui/hub_panel.gd:102
 msgid ""
 "Next: %s. %s\n"
 "Needs %s"
@@ -3590,15 +3630,15 @@ msgstr ""
 "Nächste: %s. %s\n"
 "Benötigt %s"
 
-#: ui/hub_panel.gd:102 ui/stations_panel.gd:98
+#: ui/hub_panel.gd:103 ui/stations_panel.gd:98
 msgid "Build %s"
 msgstr "%s bauen"
 
-#: ui/hub_panel.gd:107
+#: ui/hub_panel.gd:108
 msgid "Continue in the full game"
 msgstr "Weiter im vollen Spiel"
 
-#: ui/hub_panel.gd:114
+#: ui/hub_panel.gd:115
 msgid ""
 "\n"
 "Requires hub level %d."
@@ -3606,7 +3646,7 @@ msgstr ""
 "\n"
 "Benötigt Basisstufe %d."
 
-#: ui/hub_panel.gd:116
+#: ui/hub_panel.gd:117
 msgid ""
 "\n"
 "All built (max)."
@@ -3614,7 +3654,7 @@ msgstr ""
 "\n"
 "Alles gebaut (max.)."
 
-#: ui/hub_panel.gd:119
+#: ui/hub_panel.gd:120
 msgid ""
 "%s   ·   %d / %d built\n"
 "%s%s"
@@ -3622,11 +3662,11 @@ msgstr ""
 "%s   ·   %d / %d gebaut\n"
 "%s%s"
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:121
 msgid "Air Scrubbers maxed"
 msgstr "Luftwäscher maximal"
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:121
 msgid "Build Air Scrubber"
 msgstr "Luftwäscher bauen"
 
@@ -12280,6 +12320,12 @@ msgstr "Du dekorierst. Gefällt mir. Den Katzen wird es noch besser gefallen."
 #: data/wren_lines.json:garden_place
 msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
 msgstr "Eine Bank, eine Lampe, ein Brunnen. Langsam sieht es nach einem Ort aus, an den Menschen gern zurückkämen."
+
+#~ msgid "Salvaged: %s %s"
+#~ msgstr "Geborgen: %s %s"
+
+#~ msgid "Recovered: %s %s"
+#~ msgstr "Gefunden: %s %s"
 
 #~ msgid "Printed: %s %s."
 #~ msgstr "Gedruckt: %s %s."

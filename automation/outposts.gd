@@ -398,7 +398,7 @@ static func cost_text(cost: Dictionary) -> String:
 		names[str(mats[k]["id"])] = TranslationServer.translate(str(mats[k]["name"])).to_lower()
 	var parts: Array[String] = []
 	for k: String in cost:
-		parts.append("%s %s" % [Settings.fmt(BigNum.from_float(float(cost[k]))), names.get(k, k)])
+		parts.append(L10nFmt.amount(k, float(cost[k])) if L10nFmt.has_count(k) else "%s %s" % [Settings.fmt(BigNum.from_float(float(cost[k]))), names.get(k, k)])  # [i18n2]
 	return " · ".join(parts)
 
 

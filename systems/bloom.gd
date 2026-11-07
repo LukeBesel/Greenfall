@@ -111,7 +111,7 @@ static func _pay(reward: Dictionary, mult: float) -> String:
 	for k: String in reward:
 		var amt: float = round(float(reward[k]) * mult)
 		GameState.add_currency(k, BigNum.from_float(amt))
-		bits.append("+%s %s" % [Settings.fmt(BigNum.from_float(amt)), k])
+		bits.append(L10nFmt.amount(k, amt, true))  # [i18n2]
 	return "  ".join(bits)
 
 
@@ -279,7 +279,7 @@ func _celebrate(id: String) -> void:
 static func _reward_text(r: Dictionary) -> String:
 	var bits: Array[String] = []
 	for k: String in r:
-		bits.append("+%s %s" % [Settings.fmt(BigNum.from_float(float(r[k]))), k])
+		bits.append(L10nFmt.amount(k, float(r[k]), true))  # [i18n2]
 	return "  ".join(bits)
 
 

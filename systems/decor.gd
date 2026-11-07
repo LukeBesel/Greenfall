@@ -107,7 +107,7 @@ static func cost_text(type_id: String) -> String:
 	var bits: Array[String] = []
 	var c: Dictionary = cost(type_id)
 	for k: String in c:
-		bits.append("%s %s" % [Settings.fmt(BigNum.from_float(float(c[k]))), TranslationServer.translate(k)])
+		bits.append(L10nFmt.amount(k, float(c[k])) if L10nFmt.has_count(k) else "%s %s" % [Settings.fmt(BigNum.from_float(float(c[k]))), TranslationServer.translate(k)])  # [i18n2]
 	return "  ".join(bits)
 
 

@@ -841,11 +841,11 @@ msgid "  (streak +%d%%)"
 msgstr ""
 
 #: player/patch.gd:470
-msgid "Salvaged: %s %s"
+msgid "Salvaged: %s"
 msgstr ""
 
 #: player/patch.gd:500
-msgid "Recovered: %s %s"
+msgid "Recovered: %s"
 msgstr ""
 
 #: player/patch_model.gd:18 data/designs.json:designs[aurora].name
@@ -1687,7 +1687,7 @@ msgid ""
 msgstr ""
 
 #: story/ledger.gd:318 systems/decor.gd:125 systems/research.gd:186
-#: ui/hub_panel.gd:118 ui/stations_panel.gd:96
+#: ui/hub_panel.gd:119 ui/stations_panel.gd:96
 msgid "Needs %s"
 msgstr ""
 
@@ -2181,29 +2181,69 @@ msgid_plural "+%d parts"
 msgstr[0] ""
 msgstr[1] ""
 
+#: systems/l10n_fmt.gd:49
+msgid "%s cube"
+msgid_plural "%s cubes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:51
+msgid "%s seed"
+msgid_plural "%s seeds"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:53
+msgid "%s trinket"
+msgid_plural "%s trinkets"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:55
+msgid "%s token"
+msgid_plural "%s tokens"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:57
+msgid "%s bolt"
+msgid_plural "%s bolts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:59
+msgid "%s part"
+msgid_plural "%s parts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:61
+msgid "%s data"
+msgstr ""
+
 #. a part's name. {rarity} is an adjective (Rusty, Polished, Rare...), {part} a part type
-#: systems/l10n_fmt.gd:52
+#: systems/l10n_fmt.gd:86
 msgctxt "part name"
 msgid "{rarity} {part}"
 msgstr ""
 
 #. research effect, e.g. "+20% scoop width". {stat} is a stat name.
-#: systems/l10n_fmt.gd:62
+#: systems/l10n_fmt.gd:96
 msgid "+{amount}% {stat}"
 msgstr ""
 
 #. research effect, e.g. "+2 tank". {stat} is a stat name.
-#: systems/l10n_fmt.gd:64
+#: systems/l10n_fmt.gd:98
 msgid "+{amount} {stat}"
 msgstr ""
 
 #. research effect for one robot model, e.g. "+10% Scoopie speed".
-#: systems/l10n_fmt.gd:67
+#: systems/l10n_fmt.gd:101
 msgid "+{amount}% {robot} {stat}"
 msgstr ""
 
 #. research effect for one robot model, e.g. "+1 Drip tank".
-#: systems/l10n_fmt.gd:69
+#: systems/l10n_fmt.gd:103
 msgid "+{amount} {robot} {stat}"
 msgstr ""
 
@@ -3529,61 +3569,61 @@ msgstr ""
 msgid "bolts"
 msgstr ""
 
-#: ui/hub_panel.gd:86
+#: ui/hub_panel.gd:87
 msgid " (have %s)"
 msgstr ""
 
-#: ui/hub_panel.gd:93
+#: ui/hub_panel.gd:94
 msgid "Sheet metal %s    Plastic stock %s    Glass %s"
 msgstr ""
 
-#: ui/hub_panel.gd:95
+#: ui/hub_panel.gd:96
 msgid ""
 "Level %d   ·   %s\n"
 "%s   Bales sell for +%d%%."
 msgstr ""
 
-#: ui/hub_panel.gd:98
+#: ui/hub_panel.gd:99
 msgid "Fully built."
 msgstr ""
 
-#: ui/hub_panel.gd:101
+#: ui/hub_panel.gd:102
 msgid ""
 "Next: %s. %s\n"
 "Needs %s"
 msgstr ""
 
-#: ui/hub_panel.gd:102 ui/stations_panel.gd:98
+#: ui/hub_panel.gd:103 ui/stations_panel.gd:98
 msgid "Build %s"
 msgstr ""
 
-#: ui/hub_panel.gd:107
+#: ui/hub_panel.gd:108
 msgid "Continue in the full game"
 msgstr ""
 
-#: ui/hub_panel.gd:114
+#: ui/hub_panel.gd:115
 msgid ""
 "\n"
 "Requires hub level %d."
 msgstr ""
 
-#: ui/hub_panel.gd:116
+#: ui/hub_panel.gd:117
 msgid ""
 "\n"
 "All built (max)."
 msgstr ""
 
-#: ui/hub_panel.gd:119
+#: ui/hub_panel.gd:120
 msgid ""
 "%s   ·   %d / %d built\n"
 "%s%s"
 msgstr ""
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:121
 msgid "Air Scrubbers maxed"
 msgstr ""
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:121
 msgid "Build Air Scrubber"
 msgstr ""
 

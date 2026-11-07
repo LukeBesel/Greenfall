@@ -33,6 +33,16 @@ func test_reward_suffixes_translate() -> void:
 	assert_eq(L10nFmt.reward("cubes", 25), "+25 キューブ")
 
 
+func test_big_amounts() -> void:
+	TranslationServer.set_locale("en")
+	assert_eq(L10nFmt.amount("seeds", 1.0, true), "+1 seed")
+	assert_eq(L10nFmt.amount("cubes", 40.0), "40 cubes")
+	assert_true(L10nFmt.amount("sheet_metal", 3.0).ends_with("sheet metal"), L10nFmt.amount("sheet_metal", 3.0))
+	TranslationServer.set_locale("de")
+	assert_eq(L10nFmt.amount("bolts", 1.0, true), "+1 Schraube")
+	assert_eq(L10nFmt.amount("data", 5.0, true), "+5 Daten")
+
+
 func test_part_name_word_order() -> void:
 	TranslationServer.set_locale("en")
 	assert_eq(L10nFmt.part_name(0, 0), "Rusty Chassis Frame")
