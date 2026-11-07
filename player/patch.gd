@@ -292,8 +292,12 @@ func _handle_scoop(delta: float) -> void:
 		var pid: int = world.field.find_scoop_target(scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"))
 		if pid < 0:
 			break
+		var extra: PackedInt32Array = world.field.cluster_extra(pid)  # [world2] gen-2 junk is finer: grab the little cluster
 		_take_piece(pid)
 		took += 1
+		for e: int in extra:
+			if world.field.piece_alive[e] == 1 and compartment.can_accept(cap):
+				_take_piece(e)
 	if took > 0:
 		_scoop_timer = 1.0 / maxf(stat("scoop_rate"), 0.5)
 

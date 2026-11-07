@@ -22,6 +22,9 @@ var junk_gen: int = 2
 const GEN2_RING1: float = 1.0   # v1: 0.45 (the fast first hex now comes from smaller pieces)
 const GEN2_ROAD_MID: float = 1.0  # v1: 0.22 (mid-road was nearly bare)
 const GEN2_REACH: float = 2.0   # sample square, in hex sizes (v1: 1.0): reaches across a blocked hex
+## [world2] Per hex: how many extra nearby pieces one pickup takes along (gen 2 pieces are smaller,
+## so a beam grabs a small cluster and cleaning and income pace as with gen 1). Not saved.
+var hex_cluster := PackedByteArray()
 var _warp_noise: FastNoiseLite
 var clean_threshold: float = 0.99
 
@@ -155,6 +158,8 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 	hex_water.resize(n)
 	hex_pieces.clear()
 	hex_piles.clear()
+	hex_cluster = PackedByteArray()
+	hex_cluster.resize(n)
 	for i: int in n:
 		hex_pieces.append(PackedInt32Array())
 		hex_piles.append([])
@@ -209,6 +214,7 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 			var af: float = owned_area_factor(id)
 			count = int(round(count * af))
 			vol_scale /= af
+			hex_cluster[id] = clampi(int(round(1.0 / vol_scale)) - 1, 0, 3)
 		var piles: Array = []
 		if btype == CityLayout.Block.LANDFILL:
 			count = int(count * 2.2)
@@ -568,6 +574,28 @@ func hexes_near(pos: Vector3, ring: int = 1) -> Array[int]:
 			var id: int = int(axial_to_id.get(a + Vector2i(dq, dr), -1))
 			if id >= 0:
 				out.append(id)
+	return out
+
+
+## [world2] The extra pieces one pickup of `pid` takes along (its own hex's cluster size, nearest
+## first, within 1.2 m). Empty on gen-1 fields.
+func cluster_extra(pid: int) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	var h: int = piece_hex[pid]
+	var n: int = int(hex_cluster[h]) if h < hex_cluster.size() else 0
+	if n <= 0:
+		return out
+	var p: Vector3 = piece_pos[pid]
+	var cand: Array = []
+	for q: int in hex_pieces[h]:
+		if q == pid or piece_alive[q] == 0:
+			continue
+		var d: float = piece_pos[q].distance_squared_to(p)
+		if d < 1.44:
+			cand.append([d, q])
+	cand.sort_custom(func(a: Array, b: Array) -> bool: return a[0] < b[0])
+	for k: int in mini(n, cand.size()):
+		out.append(int(cand[k][1]))
 	return out
 
 
