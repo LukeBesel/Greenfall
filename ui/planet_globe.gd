@@ -571,7 +571,7 @@ func _sync() -> void:
 		var cam: Camera3D = get_viewport().get_camera_3d() if is_inside_tree() and get_viewport() else null
 		var bx: Basis = cam.global_transform.basis if cam else Basis()
 		# Key light from the upper left of the view, a little behind the planet's limb.
-		_dir_a = (bx * Vector3(-0.82, 0.34, 0.46)).normalized()
+		_dir_a = (bx * Vector3(-0.88, 0.32, 0.36)).normalized()
 		_dir_b = _dir_a.rotated((bx * Vector3.UP).normalized(), deg_to_rad(_sep_deg)).normalized()
 	var rw: float = radius * (global_transform.basis.get_scale().x if is_inside_tree() else 1.0)
 	for m: ShaderMaterial in _mats:

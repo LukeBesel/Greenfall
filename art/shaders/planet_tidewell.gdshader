@@ -59,9 +59,9 @@ void fragment() {
 	vec3 col = albedo * (lit + vec3(0.01, 0.014, 0.022));
 	// rippled sea: a broad sheen and a tight glint per sun
 	vec3 ripple = pl_noised(p * 70.0 + vec3(0.0, TIME * 0.05, 0.0)).yzw + pl_noised(p * 190.0).yzw * 0.5;
-	vec3 nw = normalize(mat3(MODEL_MATRIX) * pl_grad_normal(p, ripple, 0.0035));
+	vec3 nw = normalize(mat3(MODEL_MATRIX) * pl_grad_normal(p, ripple, 0.0007));
 	float wet = (1.0 - land) * (1.0 - cap);
-	col += (pl_spec2(ng, nw, v, 22.0, 0.08) + pl_spec2(ng, nw, v, 420.0, 0.22)) * wet * mix(0.55, 1.0, ocean_r);
+	col += (pl_spec2(ng, nw, v, 22.0, 0.08) + pl_spec2(ng, nw, v, 420.0, 0.12)) * wet * mix(0.55, 1.0, ocean_r);
 	float day = pl_daylight(ng);
 	float town = smoothstep(0.78, 0.92, pl_noise(p * 120.0)) * land * smoothstep(0.0, 0.05, ih) * (1.0 - smoothstep(0.1, 0.2, ih));
 	col += vec3(1.0, 0.78, 0.5) * town * 0.4 * ocean_r * (1.0 - day);

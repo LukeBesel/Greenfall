@@ -55,7 +55,8 @@ void fragment() {
 	// the strip mine
 	float front = dot(p, normalize(mine_dir));
 	vec2 xy = pl_tangent_xy(p, normalize(mine_dir));
-	float e = length(vec2(xy.x, xy.y * 1.5)) + 0.03 * (pl_noise(p * 16.0) - 0.5) + 0.015 * (pl_noise(p * 45.0) - 0.5);
+	xy += vec2(0.05, -0.03) * (pl_fbm(p * 5.0 + 3.0, 3) - 0.5) * 4.0;
+	float e = length(vec2(xy.x * 0.9 + xy.y * 0.25, xy.y * 1.7)) + 0.07 * (pl_fbm(p * 7.0 + 1.0, 3) - 0.5) + 0.015 * (pl_noise(p * 45.0) - 0.5);
 	float inside = clamp(1.0 - e / mine_radius, 0.0, 1.0) * step(0.0, front);
 	float steps = 9.0;
 	float tt = inside * steps;
@@ -81,8 +82,8 @@ void fragment() {
 	albedo = mix(albedo, vec3(0.88, 0.82, 0.68), salt);
 	vec3 floor_c = vec3(0.34, 0.15, 0.08);
 	albedo = mix(albedo, floor_c, max(canyon, canyon2 * 0.8));
-	vec3 bench = mix(vec3(0.62, 0.56, 0.47), vec3(0.5, 0.44, 0.38), pl_noise(p * 60.0));
-	vec3 mine_c = mix(bench, vec3(0.3, 0.26, 0.23), riser);
+	vec3 bench = mix(vec3(0.56, 0.44, 0.31), vec3(0.44, 0.35, 0.26), pl_noise(p * 60.0) * 0.6 + floor(tt) / steps * 0.4);
+	vec3 mine_c = mix(bench, vec3(0.34, 0.25, 0.18), riser * 0.8);
 	mine_c = mix(mine_c, vec3(0.17, 0.15, 0.14), pit);
 	albedo = mix(albedo, mine_c, in_mine);
 	albedo = mix(albedo, vec3(0.74, 0.62, 0.48), spoil * 0.7);

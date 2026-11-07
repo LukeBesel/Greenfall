@@ -33,11 +33,12 @@ void fragment() {
 
 	// the great rift: a band along a great circle, wandering, on one face of the world
 	vec3 k = normalize(vec3(0.25, 0.92, -0.3));
-	float g = dot(p, k) + 0.07 * (pl_fbm(p * 4.0 + 2.0, 4) - 0.5);
+	float g = dot(p, k) + 0.16 * (pl_fbm(p * 2.2 + 2.0, 4) - 0.5) + 0.03 * (pl_fbm(p * 9.0, 3) - 0.5);
+	float rw = 0.6 + 0.8 * pl_fbm(p * 3.0 + 11.0, 3);
 	float arc = smoothstep(0.05, 0.55, dot(p, normalize(vec3(0.85, 0.0, 0.5))));
 	float wg = max(fwidth(g), 0.004);
-	float rift = (1.0 - smoothstep(0.006, 0.024 + wg, abs(g))) * arc;
-	float rift_wall = (1.0 - smoothstep(0.015, 0.05, abs(g))) * arc;
+	float rift = (1.0 - smoothstep(0.006 * rw, 0.026 * rw + wg, abs(g))) * arc;
+	float rift_wall = (1.0 - smoothstep(0.015 * rw, 0.055 * rw, abs(g))) * arc;
 	// side canyons: iso-lines of a warped field near the rift and in the highlands
 	float cf = pl_fbm(p * 5.0 + wv * 1.6 + 8.0, min(oct, 5));
 	float side = (1.0 - smoothstep(0.0, max(fwidth(cf) * 1.4, 0.012), abs(cf - 0.5))) * high * 0.8;

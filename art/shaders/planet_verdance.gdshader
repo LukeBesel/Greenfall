@@ -73,8 +73,8 @@ void fragment() {
 	vec3 lit = pl_light2(ng, nb, 0.1, 0.7);
 	vec3 col = albedo * (lit + vec3(0.012, 0.014, 0.02));
 	// sun glints on open water (dimmer through the smog)
-	vec3 nw = normalize(mat3(MODEL_MATRIX) * pl_grad_normal(p, pl_noised(p * 60.0).yzw, 0.004));
-	col += pl_spec2(ng, nw, v, 160.0, mix(0.1, 0.28, ocean_r)) * (1.0 - land) * (1.0 - cap);
+	vec3 nw = normalize(mat3(MODEL_MATRIX) * pl_grad_normal(p, pl_noised(p * 60.0).yzw, 0.0007));
+	col += (pl_spec2(ng, nw, v, 220.0, mix(0.04, 0.12, ocean_r)) + pl_spec2(ng, nw, v, 24.0, mix(0.02, 0.05, ocean_r))) * (1.0 - land) * (1.0 - cap);
 	// night side: scattered junk fires when ruined, warm city lights on restored coasts
 	float day = pl_daylight(ng);
 	float fires = smoothstep(0.86, 0.97, pl_noise(p * 70.0 + 4.0)) * land * (1.0 - mask) * (1.0 - cap);

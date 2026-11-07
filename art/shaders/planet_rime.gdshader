@@ -25,7 +25,7 @@ void fragment() {
 	int oct = octaves;
 	vec3 wv = pl_warp(p * 2.4 + seed, min(oct, 3)) * 0.55;
 	vec4 b = pl_fbmd(p * 2.0 + seed, oct, 0.5, 0.0);
-	vec3 c1 = pl_cells(p * 3.4 + wv + seed);
+	vec3 c1 = pl_cells(p * 2.7 + wv + seed);
 	float e1 = c1.y - c1.x;
 	float w1 = max(fwidth(e1) * 1.0, 0.014);
 	float fault = 1.0 - smoothstep(0.0, w1, e1);
@@ -74,7 +74,7 @@ void fragment() {
 	// luminous: faults and lineae glow faintly from within (stronger on the night side)
 	float day = pl_daylight(ng);
 	vec3 glow = mix(vec3(0.12, 0.42, 1.0), vec3(0.2, 0.85, 0.9), restoration);
-	col += glow * (fault * 0.1 + lin * 0.05 + crack2 * 0.03) * crackk * (0.35 + 0.65 * (1.0 - day));
+	col += glow * (fault * 0.16 + lin * 0.07 + crack2 * 0.03) * crackk * (0.35 + 0.65 * (1.0 - day));
 	col += albedo * vec3(0.03, 0.045, 0.07) * (1.0 - day);  // soft inner light, never pitch black
 	float fr = 1.0 - clamp(dot(ng, v), 0.0, 1.0);
 	col = mix(col, vec3(0.7, 0.85, 1.0) * (lit + 0.04), pow(fr, 3.2) * 0.35);
