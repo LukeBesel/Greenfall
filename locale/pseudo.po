@@ -93,7 +93,7 @@ msgstr "[Ĝļôbé màþ ~]"
 msgid "Lens view"
 msgstr "[Ļéñš vîéŵ ~]"
 
-#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:50
+#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:51
 msgid "Codex"
 msgstr "[Çôðéx ~]"
 
@@ -816,13 +816,13 @@ msgstr "[+1 ŠÉÉÐ ~]"
 msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
 msgstr "[À ðŕý ôļð šééð, šţîļļ šéàļéð îñ îţš ĥûšķ. Ĵûñķ ĥîðéš à ƒéŵ ôƒ ţĥéšé. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: player/detector.gd:77
-msgid "SIGNAL  %s  ·  %.1f m"
-msgstr "[ŠÎĜÑÀĻ  %s  ·  %.1f m ~~~~]"
+#: player/detector.gd:83
+msgid "BURIED PART  %s  ·  %.1f m"
+msgstr "[BÛŔÎÉÐ ÞÀŔŢ  %s  ·  %.1f m ~~~~~~]"
 
-#: player/detector.gd:80
-msgid "SIGNAL  %d%%"
-msgstr "[ŠÎĜÑÀĻ  %d%% ~]"
+#: player/detector.gd:86
+msgid "BURIED PART  ·  SIGNAL %d%%"
+msgstr "[BÛŔÎÉÐ ÞÀŔŢ  ·  ŠÎĜÑÀĻ %d%% ~~~~~~]"
 
 #: player/patch.gd:106
 msgid "Lumi rattles back up into the yard. That was odd."
@@ -1170,63 +1170,63 @@ msgstr "[Ŵàţéŕ Ţàñķ þļàçéð. Ŵàţéŕéŕš ñéàŕbý ŵîļļ
 msgid "WATER"
 msgstr "[ŴÀŢÉŔ ~]"
 
-#: scenes/slice.gd:281
+#: scenes/slice.gd:282
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: þàîñţ žôñéš àñð šéñð çŕéŵš ŵĥéŕé ýôû ŵàñţ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:508
+#: scenes/slice.gd:509
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "[ĻM-1 ôñļîñé. Bļôôm Çôŕé 4%: ĝŕééñ ļîĝĥţ ļôŵ. Çŕàðļé ŕéļàý: ƒàîñţ. Ĝŕôŵ šôméţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:819
+#: scenes/slice.gd:823
 msgid "HEX CLEAN!  +%s"
 msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 
-#: scenes/slice.gd:833
+#: scenes/slice.gd:837
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice.gd:835
+#: scenes/slice.gd:839
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "[Ţĥé ŵĥôļé Ĵûñķýàŕð îš çļéàñ. Ļûmî bééþš à véŕý ļôñĝ, véŕý ĥàþþý bééþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:842
+#: scenes/slice.gd:846
 msgid "%s is out of range: %s"
 msgstr "[%s îš ôûţ ôƒ ŕàñĝé: %s ~~~~~]"
 
-#: scenes/slice.gd:852
+#: scenes/slice.gd:856
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ 5 ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:855 ui/rockets_panel.gd:39
+#: scenes/slice.gd:859 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "[Éñéŕĝý çéļļš ŕéçĥàŕĝîñĝ: %s. Ŕôçķéţ ûþĝŕàðéš ŕéƒîļļ ţĥém ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:909
+#: scenes/slice.gd:913
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "[Ţôûçĥðôŵñ: %s. Ĥûb %d ôƒ %d. %s ~~~~~~~~]"
 
-#: scenes/slice.gd:910
+#: scenes/slice.gd:914
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "[Ţĥé ŕôçķéţ îš þàŕķéð ôñ ţĥé ļôţ, ŕéàðý ŵĥéñ îţš çéļļš ŕéƒîļļ. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:910
+#: scenes/slice.gd:914
 msgid "Landed on the base pad."
 msgstr "[Ļàñðéð ôñ ţĥé bàšé þàð. ~~~~~]"
 
-#: scenes/slice.gd:1001
+#: scenes/slice.gd:1010
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1173
+#: scenes/slice.gd:1181
 msgid "Welcome back. The junk waited for you."
 msgstr "[Ŵéļçômé bàçķ. Ţĥé ĵûñķ ŵàîţéð ƒôŕ ýôû. ~~~~~~~~~~]"
 
-#: scenes/slice.gd:1190
+#: scenes/slice.gd:1198
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:1190
+#: scenes/slice.gd:1198
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
@@ -1816,6 +1816,18 @@ msgstr "[ļîñé îţém %04d   çĥéçķšûm %s ~~~~~~~]"
 msgid "MISMATCH"
 msgstr "[MÎŠMÀŢÇĤ ~]"
 
+#: story/objectives.gd:218
+msgid "Objective complete  ·  %s"
+msgstr "[Ôbĵéçţîvé çômþļéţé  ·  %s ~~~~~~]"
+
+#: story/objectives.gd:319
+msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
+msgstr "[Ĥéàŕ ţĥàţ bééþîñĝ? Ýôûŕ ðéţéçţôŕ'š ƒôûñð à ŕôbôţ þàŕţ bûŕîéð ñéàŕbý. Ţĥé ƒàšţéŕ îţ bééþš, ţĥé çļôšéŕ ýôû àŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: story/objectives.gd:320
+msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
+msgstr "[BÛŔÎÉÐ ÞÀŔŢ: ŵàļķ ţôŵàŕð îţ ûñţîļ ţĥé ŕéàðîñĝ þéàķš, ţĥéñ ðîĝ îţ ûþ. ~~~~~~~~~~~~~~~~~~~~~]"
+
 #: story/shards.gd:56
 msgid "Something surfaced in the cleared ground. A memory shard."
 msgstr "[Šôméţĥîñĝ šûŕƒàçéð îñ ţĥé çļéàŕéð ĝŕôûñð. À mémôŕý šĥàŕð. ~~~~~~~~~~~~~~~~~]"
@@ -1840,11 +1852,7 @@ msgstr "[Çàŕŕý îţ ôñţô ţĥé šçàļé ~~~~~]"
 msgid "{interact}  at the workbench to upgrade"
 msgstr "[{interact}  àţ ţĥé ŵôŕķbéñçĥ ţô ûþĝŕàðé ~~~~~~~~~~~]"
 
-#: story/tutorial.gd:15
-msgid "Clean this hex completely"
-msgstr "[Çļéàñ ţĥîš ĥéx çômþļéţéļý ~~~~~~]"
-
-#: story/tutorial.gd:17
+#: story/tutorial.gd:18
 msgid "Lumi is back on the job"
 msgstr "[Ļûmî îš bàçķ ôñ ţĥé ĵôb ~~~~~]"
 
@@ -1984,39 +1992,47 @@ msgstr "[Çûŕîô Çàþšûļé ~~]"
 msgid "%s robot part"
 msgstr "[%s ŕôbôţ þàŕţ ~~]"
 
-#: systems/contracts.gd:282
+#: systems/contracts.gd:309
 msgid "Request complete: %s. Claim it at the workbench."
 msgstr "[Ŕéqûéšţ çômþļéţé: %s. Çļàîm îţ àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~]"
 
-#: systems/contracts.gd:288
+#: systems/contracts.gd:315
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
 msgstr "[À ŕéqûéšţ ŕàñ ôûţ ôƒ ţîmé. Ñô ĥàŕm ðôñé; à ñéŵ ôñé ŵîļļ bé þôšţéð šôôñ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/contracts.gd:368
+#: systems/contracts.gd:323
+msgid "New at the workbench: the Requests board. Small jobs, real rewards."
+msgstr "[Ñéŵ àţ ţĥé ŵôŕķbéñçĥ: ţĥé Ŕéqûéšţš bôàŕð. Šmàļļ ĵôbš, ŕéàļ ŕéŵàŕðš. ~~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/contracts.gd:326
+msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
+msgstr "[Ţĥé ŕéļàý'š šţŕôñĝ éñôûĝĥ ñôŵ ţô ĥéàŕ ţĥé Çŕàðļé'š ôļð ŵôŕķ ôŕðéŕš. Ţĥéý'ŕé ôñ ţĥé Ŕéqûéšţš bôàŕð àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/contracts.gd:411
 msgid "Request done: %s."
 msgstr "[Ŕéqûéšţ ðôñé: %s. ~~~]"
 
-#: systems/contracts.gd:410
+#: systems/contracts.gd:453
 msgid "Requests reward: %s. Equip it on the Requests tab."
 msgstr "[Ŕéqûéšţš ŕéŵàŕð: %s. Éqûîþ îţ ôñ ţĥé Ŕéqûéšţš ţàb. ~~~~~~~~~~~~~~~]"
 
-#: systems/contracts.gd:413
+#: systems/contracts.gd:456
 msgid "Requests reward: %s. Fit it in the Builder tab."
 msgstr "[Ŕéqûéšţš ŕéŵàŕð: %s. Fîţ îţ îñ ţĥé Bûîļðéŕ ţàb. ~~~~~~~~~~~~~]"
 
-#: systems/contracts.gd:417 systems/contracts.gd:427
+#: systems/contracts.gd:460 systems/contracts.gd:470
 msgid "Requests reward: %s."
 msgstr "[Ŕéqûéšţš ŕéŵàŕð: %s. ~~~~]"
 
-#: systems/contracts.gd:435
+#: systems/contracts.gd:478
 msgid "Unknown item"
 msgstr "[Ûñķñôŵñ îţém ~]"
 
-#: systems/contracts.gd:448
+#: systems/contracts.gd:491
 msgid "Unlocks after %d requests"
 msgstr "[Ûñļôçķš àƒţéŕ %d ŕéqûéšţš ~~~~~~]"
 
-#: systems/contracts.gd:449
+#: systems/contracts.gd:492
 msgid "Locked"
 msgstr "[Ļôçķéð ~]"
 
@@ -2088,7 +2104,7 @@ msgstr "[ÇŔÀÐĻÉ · ŠÛÞÞĻÝ ~~]"
 msgid "STREAK x%d  +%d%%"
 msgstr "[ŠŢŔÉÀĶ x%d  +%d%% ~~~]"
 
-#: systems/events.gd:478 ui/goals_panel.gd:245
+#: systems/events.gd:478 ui/goals_panel.gd:258
 msgid "+%s cubes"
 msgstr "[+%s çûbéš ~]"
 
@@ -3497,15 +3513,15 @@ msgstr "   [·   ÔÛŢÐÀŢÉÐ ~~]"
 msgid "Re-survey      %s cubes"
 msgstr "[Ŕé-šûŕvéý      %s çûbéš ~~~~~]"
 
-#: ui/goals_panel.gd:194
+#: ui/goals_panel.gd:207 ui/objective_card.gd:112
 msgid "DONE"
 msgstr "[ÐÔÑÉ ~]"
 
-#: ui/goals_panel.gd:218
+#: ui/goals_panel.gd:231
 msgid "Goal complete  ·  %s%s"
 msgstr "[Ĝôàļ çômþļéţé  ·  %s%s ~~~~~]"
 
-#: ui/goals_panel.gd:245
+#: ui/goals_panel.gd:258
 msgid "+%s seeds"
 msgstr "[+%s šééðš ~]"
 
@@ -3601,66 +3617,70 @@ msgstr "[Àîŕ Šçŕûbbéŕš màxéð ~~~~]"
 msgid "Build Air Scrubber"
 msgstr "[Bûîļð Àîŕ Šçŕûbbéŕ ~~~]"
 
-#: ui/hud.gd:74
+#: ui/hud.gd:76
 msgid "Lumi reached level %d%s"
 msgstr "[Ļûmî ŕéàçĥéð ļévéļ %d%s ~~~~~]"
 
-#: ui/hud.gd:159
+#: ui/hud.gd:161
 msgid "OLD TOWN   0%"
 msgstr "[ÔĻÐ ŢÔŴÑ   0% ~~]"
 
-#: ui/hud.gd:303
+#: ui/hud.gd:309
 msgid "HEX  %d%% CLEAR"
 msgstr "[ĤÉX  %d%% ÇĻÉÀŔ ~~]"
 
-#: ui/hud.gd:308
+#: ui/hud.gd:314
 msgid "CARRYING %d/%d"
 msgstr "[ÇÀŔŔÝÎÑĜ %d/%d ~~]"
 
-#: ui/hud.gd:330
+#: ui/hud.gd:336
 msgid "HEX  CLEAR"
 msgstr "[ĤÉX  ÇĻÉÀŔ ~]"
 
-#: ui/hud.gd:334
+#: ui/hud.gd:340
 msgid "HEX  %s"
 msgstr "[ĤÉX  %s ~]"
 
-#: ui/hud.gd:337
+#: ui/hud.gd:343
 msgid "  SUSTAIN %d%%"
 msgstr "  [ŠÛŠŢÀÎÑ %d%% ~~]"
 
-#: ui/hud.gd:339
+#: ui/hud.gd:345
 msgid "  THIRSTY"
 msgstr "  [ŢĤÎŔŠŢÝ ~]"
 
-#: ui/hud.gd:354
-msgid "%s  map      %s  command      %s  lens      %s  goals"
-msgstr "[%s  màþ      %s  çômmàñð      %s  ļéñš      %s  ĝôàļš ~~~~~~~~~~~~~~~~]"
-
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:372
+#: ui/hud.gd:370
 msgid "%s   pick up bale"
 msgstr "[%s   þîçķ ûþ bàļé ~~~]"
 
-#: ui/hud.gd:373
+#: ui/hud.gd:371
 msgid "%s   dig up part"
 msgstr "[%s   ðîĝ ûþ þàŕţ ~~~]"
 
-#: ui/hud.gd:374
+#: ui/hud.gd:372
 msgid "%s   read memory shard"
 msgstr "[%s   ŕéàð mémôŕý šĥàŕð ~~~~~]"
 
-#: ui/hud.gd:375
+#: ui/hud.gd:373
 msgid "%s   pick up the seed tin"
 msgstr "[%s   þîçķ ûþ ţĥé šééð ţîñ ~~~~~~]"
 
-#: ui/hud.gd:376
+#: ui/hud.gd:374
 msgid "%s   set bale down"
 msgstr "[%s   šéţ bàļé ðôŵñ ~~~]"
 
-#: ui/hud.gd:377
+#: ui/hud.gd:375
 msgid "%s   workbench"
 msgstr "[%s   ŵôŕķbéñçĥ ~~]"
+
+#: ui/key_hints.gd:20
+msgid "press bale"
+msgstr "[þŕéšš bàļé ~]"
+
+#: ui/key_hints.gd:107
+msgid "tools"
+msgstr "[ţôôļš ~]"
 
 #: ui/late_menu.gd:9
 msgid "Garden Mode  [%s]"
@@ -3689,8 +3709,8 @@ msgid "BALE READY"
 msgstr "[BÀĻÉ ŔÉÀÐÝ ~]"
 
 #: ui/lens_overlay.gd:67
-msgid "◢ SIGNAL %d%%"
-msgstr "[◢ ŠÎĜÑÀĻ %d%% ~~]"
+msgid "◢ BURIED PART %d%%"
+msgstr "[◢ BÛŔÎÉÐ ÞÀŔŢ %d%% ~~~]"
 
 #: ui/main_menu.gd:314
 msgid "One small robot. One very big cleanup."
@@ -3713,7 +3733,7 @@ msgstr "[Þŕôƒîļéš ~]"
 msgid "New Game"
 msgstr "[Ñéŵ Ĝàmé ~]"
 
-#: ui/main_menu.gd:341 ui/main_menu.gd:539 ui/pause_menu.gd:59
+#: ui/main_menu.gd:341 ui/main_menu.gd:539 ui/pause_menu.gd:60
 msgid "Settings"
 msgstr "[Šéţţîñĝš ~]"
 
@@ -3829,35 +3849,39 @@ msgstr "[Ķééþ mý šàvé ~]"
 msgid "Erase and start"
 msgstr "[Éŕàšé àñð šţàŕţ ~~]"
 
-#: ui/pause_menu.gd:41
+#: ui/objective_card.gd:46
+msgid "OBJECTIVE"
+msgstr "[ÔBĴÉÇŢÎVÉ ~]"
+
+#: ui/pause_menu.gd:42
 msgid "PAUSED"
 msgstr "[ÞÀÛŠÉÐ ~]"
 
-#: ui/pause_menu.gd:48
+#: ui/pause_menu.gd:49
 msgid "Resume"
 msgstr "[Ŕéšûmé ~]"
 
-#: ui/pause_menu.gd:53
+#: ui/pause_menu.gd:54
 msgid "Codex  [%s]"
 msgstr "[Çôðéx  [%s] ~]"
 
-#: ui/pause_menu.gd:55
+#: ui/pause_menu.gd:56
 msgid "Photo mode  [%s]"
 msgstr "[Þĥôţô môðé  [%s] ~~~]"
 
-#: ui/pause_menu.gd:61
+#: ui/pause_menu.gd:62
 msgid "Save game"
 msgstr "[Šàvé ĝàmé ~]"
 
-#: ui/pause_menu.gd:63
+#: ui/pause_menu.gd:64
 msgid "Saved."
 msgstr "[Šàvéð. ~]"
 
-#: ui/pause_menu.gd:64
+#: ui/pause_menu.gd:65
 msgid "Quit to title"
 msgstr "[Qûîţ ţô ţîţļé ~~]"
 
-#: ui/pause_menu.gd:65
+#: ui/pause_menu.gd:66
 msgid "Quit to desktop"
 msgstr "[Qûîţ ţô ðéšķţôþ ~~]"
 
@@ -9007,7 +9031,7 @@ msgstr "[Bûîļð à Šçôôþîé ~~]"
 msgid "Paint a work zone (B Command)"
 msgstr "[Þàîñţ à ŵôŕķ žôñé (B Çômmàñð) ~~~~~~~]"
 
-#: data/goals.json:goals[haulbug_1].text
+#: data/goals.json:goals[haulbug_1].text data/objectives.json:objectives[haul].text
 msgid "Build a Haul Bug"
 msgstr "[Bûîļð à Ĥàûļ Bûĝ ~~~]"
 
@@ -9890,6 +9914,94 @@ msgstr ""
 "Šîĝñéð: ŢĤÉ ĻÉÐĜÉŔ (ŕéļûçţàñţļý, ţĥéñ ļéšš ŕéļûçţàñţļý)\n"
 "Ŵîţñéšš: ŴŔÉÑ, Çŕàðļé çàŕéţàķéŕ\n"
 "Ŵîţñéšš: ĻM-1 (ļéƒţ à šmàļļ ôîļ šmûðĝé) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:brief.lines
+msgid "Your pod's dead, Lumi, and so is the relay. But the old base recycler still works."
+msgstr "[Ýôûŕ þôð'š ðéàð, Ļûmî, àñð šô îš ţĥé ŕéļàý. Bûţ ţĥé ôļð bàšé ŕéçýçļéŕ šţîļļ ŵôŕķš. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:brief.lines
+msgid "Junk pressed into cubes powers it. Power rebuilds the base and builds you robot helpers."
+msgstr "[Ĵûñķ þŕéššéð îñţô çûbéš þôŵéŕš îţ. Þôŵéŕ ŕébûîļðš ţĥé bàšé àñð bûîļðš ýôû ŕôbôţ ĥéļþéŕš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:brief.lines
+msgid "And every bit of green you bring back charges your Bloom Core. Fill it, and you can call the Cradle."
+msgstr "[Àñð évéŕý bîţ ôƒ ĝŕééñ ýôû bŕîñĝ bàçķ çĥàŕĝéš ýôûŕ Bļôôm Çôŕé. Fîļļ îţ, àñð ýôû çàñ çàļļ ţĥé Çŕàðļé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:brief.lines
+msgid "Three bales should wake the base. Let's start there."
+msgstr "[Ţĥŕéé bàļéš šĥôûļð ŵàķé ţĥé bàšé. Ļéţ'š šţàŕţ ţĥéŕé. ~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[power].text
+msgid "Power the base: sell 3 bales"
+msgstr "[Þôŵéŕ ţĥé bàšé: šéļļ 3 bàļéš ~~~~~~~]"
+
+#: data/objectives.json:objectives[power].desc
+msgid "Cubes feed the recycler. Its power wakes the base."
+msgstr "[Çûbéš ƒééð ţĥé ŕéçýçļéŕ. Îţš þôŵéŕ ŵàķéš ţĥé bàšé. ~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[hex].text
+msgid "Clean a hex"
+msgstr "[Çļéàñ à ĥéx ~]"
+
+#: data/objectives.json:objectives[hex].desc
+msgid "Clean ground is where green can grow again."
+msgstr "[Çļéàñ ĝŕôûñð îš ŵĥéŕé ĝŕééñ çàñ ĝŕôŵ àĝàîñ. ~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[robot].text
+msgid "Build your first robot"
+msgstr "[Bûîļð ýôûŕ ƒîŕšţ ŕôbôţ ~~~~~]"
+
+#: data/objectives.json:objectives[robot].desc
+msgid "A helper keeps cleaning while you work."
+msgstr "[À ĥéļþéŕ ķééþš çļéàñîñĝ ŵĥîļé ýôû ŵôŕķ. ~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[robot].lines
+msgid "The base has power! Enough to build you a helper. Try the Bots tab at the workbench."
+msgstr "[Ţĥé bàšé ĥàš þôŵéŕ! Éñôûĝĥ ţô bûîļð ýôû à ĥéļþéŕ. Ţŕý ţĥé Bôţš ţàb àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[zone].text
+msgid "Send your robot to work"
+msgstr "[Šéñð ýôûŕ ŕôbôţ ţô ŵôŕķ ~~~~~]"
+
+#: data/objectives.json:objectives[zone].desc
+msgid "Press B and paint the hexes it should clean."
+msgstr "[Þŕéšš B àñð þàîñţ ţĥé ĥéxéš îţ šĥôûļð çļéàñ. ~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[haul].desc
+msgid "It carries bales to the scale for you."
+msgstr "[Îţ çàŕŕîéš bàļéš ţô ţĥé šçàļé ƒôŕ ýôû. ~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[base2].text
+msgid "Rebuild the base: level 2"
+msgstr "[Ŕébûîļð ţĥé bàšé: ļévéļ 2 ~~~~~~]"
+
+#: data/objectives.json:objectives[base2].desc
+msgid "A bigger base runs more robots."
+msgstr "[À bîĝĝéŕ bàšé ŕûñš môŕé ŕôbôţš. ~~~~~~~~]"
+
+#: data/objectives.json:objectives[base2].lines
+msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
+msgstr "[Ţĥé ĥûb çàñ ĝŕôŵ ñôŵ. Ŕébûîļð îţ ƒŕôm ţĥé Ĥûb ţàb àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[seed].text
+msgid "Plant the first seed"
+msgstr "[Þļàñţ ţĥé ƒîŕšţ šééð ~~~~]"
+
+#: data/objectives.json:objectives[seed].desc
+msgid "Living green charges your Bloom Core."
+msgstr "[Ļîvîñĝ ĝŕééñ çĥàŕĝéš ýôûŕ Bļôôm Çôŕé. ~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[seed].hint
+msgid "Keep clearing ground. WREN is listening for seeds."
+msgstr "[Ķééþ çļéàŕîñĝ ĝŕôûñð. ŴŔÉÑ îš ļîšţéñîñĝ ƒôŕ šééðš. ~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[base3].text
+msgid "Rebuild the base: level 3"
+msgstr "[Ŕébûîļð ţĥé bàšé: ļévéļ 3 ~~~~~~]"
+
+#: data/objectives.json:objectives[base3].desc
+msgid "Level 3 opens the Requests board."
+msgstr "[Ļévéļ 3 ôþéñš ţĥé Ŕéqûéšţš bôàŕð. ~~~~~~~~~]"
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"
@@ -11140,10 +11252,6 @@ msgstr "[Mûļţî-Ļôçķ ~]"
 #: data/upgrades.json:upgrades[multi_lock].desc
 msgid "Extra targeting lasers: lift several pieces at once."
 msgstr "[Éxţŕà ţàŕĝéţîñĝ ļàšéŕš: ļîƒţ šévéŕàļ þîéçéš àţ ôñçé. ~~~~~~~~~~~~~~~]"
-
-#: data/wren_lines.json:wake
-msgid "...carrier... Lumi? Relay at four percent. It's WREN. Hello. Hello. I'm still here."
-msgstr "[...çàŕŕîéŕ... Ļûmî? Ŕéļàý àţ ƒôûŕ þéŕçéñţ. Îţ'š ŴŔÉÑ. Ĥéļļô. Ĥéļļô. Î'm šţîļļ ĥéŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:wake
 msgid "...that ground you just cleared... the relay got stronger. Hello again. Do that again. Please."

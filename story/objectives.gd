@@ -30,6 +30,7 @@ var outline: ObjectiveHex
 var marker: TutorialMarker
 var _t: float = 0.0
 var _hold: float = 0.0
+var _dev_cleaned: bool = false
 
 
 func _ready() -> void:
@@ -41,6 +42,8 @@ func _ready() -> void:
 		step = clampi(int(DevHooks.get_f("objective", 0.0)), 0, chain.size())
 		GameState.flags["objective_step"] = step
 		GameState.flags["onboard_brief"] = true
+	if DevHooks.has("near-part"):  # dev: start a few metres from a buried part (signal shots)
+		_dev_near_part.call_deferred()
 	outline = ObjectiveHex.new()
 	outline.world = world
 	add_child(outline)
@@ -199,6 +202,9 @@ func _process(delta: float) -> void:
 		return
 	if def.get("hex", false):
 		_set_hex(_pick_hex())
+		if DevHooks.has("objective-clean") and target_hex >= 0 and not _dev_cleaned:  # dev: part-clean it
+			_dev_cleaned = true
+			_dev_clean(clampf(DevHooks.get_f("objective-clean", 0.4), 0.0, 0.95))
 		_point_at_last()
 	else:
 		_set_hex(-1)
@@ -318,3 +324,33 @@ func _explain_signal() -> void:
 	if w:
 		w.speak(tr("Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."), 1)
 	EventBus.toast.emit(tr("BURIED PART: walk toward it until the reading peaks, then dig it up."), "hint")
+
+
+# --- Dev ---------------------------------------------------------------------------------------
+
+func _dev_clean(frac: float) -> void:
+	var f: HexField = world.field
+	var pids: PackedInt32Array = f.hex_pieces[target_hex]
+	var n: int = int(pids.size() * frac)
+	for k: int in n:
+		if f.piece_alive[pids[k]] == 1 and world.has_method("collect_piece"):
+			world.call("collect_piece", pids[k])
+
+
+func _dev_near_part() -> void:
+	var f: HexField = world.field
+	var p: Patch = world.patch
+	var best: int = -1
+	var bd: float = INF
+	for i: int in f.part_pos.size():
+		if f.part_found[i] == 0:
+			var d: float = f.part_pos[i].distance_to(p.global_position)
+			if d < bd:
+				bd = d
+				best = i
+	if best >= 0:
+		var to: Vector3 = f.part_pos[best]
+		var dir: Vector3 = (p.global_position - to) * Vector3(1, 0, 1)
+		dir = dir.normalized() if dir.length() > 0.1 else Vector3.BACK
+		p.global_position = Vector3(to.x, p.global_position.y, to.z) + dir * 6.0
+		p.look_at(Vector3(to.x, p.global_position.y, to.z), Vector3.UP)

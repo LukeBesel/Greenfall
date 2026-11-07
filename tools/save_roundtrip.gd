@@ -314,9 +314,9 @@ func _ready() -> void:
 	Contracts.owned().append("livery_halo")
 	GameState.flags["livery"] = "livery_halo"
 	WorldEvents.persist_state()["recent"] = ["supply_drop", "rain_shower"]
-	# [onboard] Past the brief, on the "Build a Haul Bug" objective, detector explained, board open.
+	# [onboard] Past the brief, on the "Rebuild the base: level 2" objective, detector explained, board open.
 	GameState.flags["onboard_brief"] = true
-	GameState.flags["objective_step"] = 4
+	GameState.flags["objective_step"] = 5
 	GameState.flags["signal_explained"] = true
 	GameState.flags["requests_unlocked"] = true
 	# [hud] Some Lumi XP across a couple of levels.

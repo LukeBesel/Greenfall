@@ -120,6 +120,8 @@ func _process(delta: float) -> void:
 	if mode == Mode.PAUSE:
 		return
 	_peek = maxf(0.0, _peek - delta)
+	if DevHooks.has("hints-full"):  # dev: the held-Tab list (shots)
+		_peek = 1.0
 	if Input.is_action_pressed("open_upgrades") and not _bench_or_modal():
 		_peek = maxf(_peek, 0.3)
 	var peeking: bool = _peek > 0.0

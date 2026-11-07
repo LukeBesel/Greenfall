@@ -43,6 +43,7 @@ extends Node
 ##           after --design-unlock-at=S s (systems/designs.gd)
 ##   --pad-audit        [deck] open every screen pad-only and check focus reachability + B to close
 ##   --scene-stats[=S]  [deck] print a geometry census (tools/scene_stats.gd) after S s (headless ok)
+##   --objective=N --objective-clean=F --near-part --hints-full --requests-unlocked --detector-on  [onboard] story objectives (shots)
 ##   --tab=contracts    with --open=upgrades: the Requests board and its reward track [money] (--contracts-sample fills it)
 ##   [hud] --lumi-level=N start at Lumi Level N; --lumi-xp=N grant N XP; --lumi-levelup=S level up S s after start
 ##         (holds the level-up moment for screenshots); --tool=plant|water; --hud-pad (pad glyphs);

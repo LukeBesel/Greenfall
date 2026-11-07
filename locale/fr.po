@@ -96,7 +96,7 @@ msgstr "Globe"
 msgid "Lens view"
 msgstr "Vue lentille"
 
-#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:50
+#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:51
 msgid "Codex"
 msgstr "Codex"
 
@@ -817,13 +817,13 @@ msgstr "+1 GRAINE"
 msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
 msgstr "Une vieille graine sèche, encore scellée dans son enveloppe. La ferraille en cache quelques-unes."
 
-#: player/detector.gd:77
-msgid "SIGNAL  %s  ·  %.1f m"
-msgstr "SIGNAL  %s  ·  %.1f m"
+#: player/detector.gd:83
+msgid "BURIED PART  %s  ·  %.1f m"
+msgstr ""
 
-#: player/detector.gd:80
-msgid "SIGNAL  %d%%"
-msgstr "SIGNAL  %d%%"
+#: player/detector.gd:86
+msgid "BURIED PART  ·  SIGNAL %d%%"
+msgstr ""
 
 #: player/patch.gd:106
 msgid "Lumi rattles back up into the yard. That was odd."
@@ -1171,63 +1171,63 @@ msgstr "Réservoir posé. Les arroseurs proches viendront s'y remplir."
 msgid "WATER"
 msgstr "EAU"
 
-#: scenes/slice.gd:281
+#: scenes/slice.gd:282
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Liaison robots en ligne. Appuie sur B pour la vue commande : peins des zones et envoie les équipes où tu veux."
 
-#: scenes/slice.gd:508
+#: scenes/slice.gd:509
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 en ligne. Cœur floral 4% : lumière verte faible. Relais du Cradle : à peine. Fais pousser quelque chose."
 
-#: scenes/slice.gd:819
+#: scenes/slice.gd:823
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXAGONE PROPRE !  +%s"
 
-#: scenes/slice.gd:833
+#: scenes/slice.gd:837
 msgid "Milestone: %d hexes clean!"
 msgstr "Étape : %d hexagones propres !"
 
-#: scenes/slice.gd:835
+#: scenes/slice.gd:839
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "Toute la casse est propre. Lumi émet un très long bip très heureux."
 
-#: scenes/slice.gd:842
+#: scenes/slice.gd:846
 msgid "%s is out of range: %s"
 msgstr "%s est hors de portée : %s"
 
-#: scenes/slice.gd:852
+#: scenes/slice.gd:856
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Verrouillé. Monte ta base au niveau 5 pour construire le pas de tir."
 
-#: scenes/slice.gd:855 ui/rockets_panel.gd:39
+#: scenes/slice.gd:859 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Cellules d'énergie en recharge : %s. Les améliorations de fusée les remplissent plus vite."
 
-#: scenes/slice.gd:909
+#: scenes/slice.gd:913
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Atterrissage : %s. Base %d sur %d. %s"
 
-#: scenes/slice.gd:910
+#: scenes/slice.gd:914
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "La fusée est garée sur le terrain, prête dès que ses cellules seront pleines."
 
-#: scenes/slice.gd:910
+#: scenes/slice.gd:914
 msgid "Landed on the base pad."
 msgstr "Posé sur le plot de la base."
 
-#: scenes/slice.gd:1001
+#: scenes/slice.gd:1010
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Les améliorations demandent un établi. Retourne à la base."
 
-#: scenes/slice.gd:1173
+#: scenes/slice.gd:1181
 msgid "Welcome back. The junk waited for you."
 msgstr "Bon retour. La ferraille t'a attendu."
 
-#: scenes/slice.gd:1190
+#: scenes/slice.gd:1198
 msgid "OUTPOST %d · Lv%d"
 msgstr "AVANT-POSTE %d · Niv%d"
 
-#: scenes/slice.gd:1190
+#: scenes/slice.gd:1198
 msgid "OUTPOST %d · RUIN"
 msgstr "AVANT-POSTE %d · RUINE"
 
@@ -1817,6 +1817,18 @@ msgstr "ligne %04d   somme de contrôle %s"
 msgid "MISMATCH"
 msgstr "ÉCART"
 
+#: story/objectives.gd:218
+msgid "Objective complete  ·  %s"
+msgstr ""
+
+#: story/objectives.gd:319
+msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
+msgstr ""
+
+#: story/objectives.gd:320
+msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
+msgstr ""
+
 #: story/shards.gd:56
 msgid "Something surfaced in the cleared ground. A memory shard."
 msgstr "Quelque chose a émergé du sol dégagé. Un éclat de mémoire."
@@ -1841,11 +1853,7 @@ msgstr "Porte-la sur la balance"
 msgid "{interact}  at the workbench to upgrade"
 msgstr "{interact}  à l'établi pour améliorer"
 
-#: story/tutorial.gd:15
-msgid "Clean this hex completely"
-msgstr "Nettoie entièrement cet hexagone"
-
-#: story/tutorial.gd:17
+#: story/tutorial.gd:18
 msgid "Lumi is back on the job"
 msgstr "Lumi reprend du service"
 
@@ -1985,39 +1993,47 @@ msgstr "Capsule à curiosités"
 msgid "%s robot part"
 msgstr ""
 
-#: systems/contracts.gd:282
+#: systems/contracts.gd:309
 msgid "Request complete: %s. Claim it at the workbench."
 msgstr ""
 
-#: systems/contracts.gd:288
+#: systems/contracts.gd:315
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
 msgstr ""
 
-#: systems/contracts.gd:368
+#: systems/contracts.gd:323
+msgid "New at the workbench: the Requests board. Small jobs, real rewards."
+msgstr ""
+
+#: systems/contracts.gd:326
+msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
+msgstr ""
+
+#: systems/contracts.gd:411
 msgid "Request done: %s."
 msgstr ""
 
-#: systems/contracts.gd:410
+#: systems/contracts.gd:453
 msgid "Requests reward: %s. Equip it on the Requests tab."
 msgstr ""
 
-#: systems/contracts.gd:413
+#: systems/contracts.gd:456
 msgid "Requests reward: %s. Fit it in the Builder tab."
 msgstr ""
 
-#: systems/contracts.gd:417 systems/contracts.gd:427
+#: systems/contracts.gd:460 systems/contracts.gd:470
 msgid "Requests reward: %s."
 msgstr ""
 
-#: systems/contracts.gd:435
+#: systems/contracts.gd:478
 msgid "Unknown item"
 msgstr "Objet inconnu"
 
-#: systems/contracts.gd:448
+#: systems/contracts.gd:491
 msgid "Unlocks after %d requests"
 msgstr ""
 
-#: systems/contracts.gd:449
+#: systems/contracts.gd:492
 msgid "Locked"
 msgstr ""
 
@@ -2089,7 +2105,7 @@ msgstr "CRADLE · RAVITAILLEMENT"
 msgid "STREAK x%d  +%d%%"
 msgstr "SÉRIE x%d  +%d%%"
 
-#: systems/events.gd:478 ui/goals_panel.gd:245
+#: systems/events.gd:478 ui/goals_panel.gd:258
 msgid "+%s cubes"
 msgstr "+%s cubes"
 
@@ -3498,15 +3514,15 @@ msgstr "   ·   PÉRIMÉ"
 msgid "Re-survey      %s cubes"
 msgstr "Nouveau relevé      %s cubes"
 
-#: ui/goals_panel.gd:194
+#: ui/goals_panel.gd:207 ui/objective_card.gd:112
 msgid "DONE"
 msgstr "FAIT"
 
-#: ui/goals_panel.gd:218
+#: ui/goals_panel.gd:231
 msgid "Goal complete  ·  %s%s"
 msgstr "Objectif atteint  ·  %s%s"
 
-#: ui/goals_panel.gd:245
+#: ui/goals_panel.gd:258
 msgid "+%s seeds"
 msgstr "+%s graines"
 
@@ -3602,66 +3618,70 @@ msgstr "Épurateurs au max"
 msgid "Build Air Scrubber"
 msgstr "Construire un épurateur"
 
-#: ui/hud.gd:74
+#: ui/hud.gd:76
 msgid "Lumi reached level %d%s"
 msgstr "Lumi a atteint le niveau %d%s"
 
-#: ui/hud.gd:159
+#: ui/hud.gd:161
 msgid "OLD TOWN   0%"
 msgstr "VIEILLE VILLE   0%"
 
-#: ui/hud.gd:303
+#: ui/hud.gd:309
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% PROPRE"
 
-#: ui/hud.gd:308
+#: ui/hud.gd:314
 msgid "CARRYING %d/%d"
 msgstr "CHARGE %d/%d"
 
-#: ui/hud.gd:330
+#: ui/hud.gd:336
 msgid "HEX  CLEAR"
 msgstr "HEX  PROPRE"
 
-#: ui/hud.gd:334
+#: ui/hud.gd:340
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:337
+#: ui/hud.gd:343
 msgid "  SUSTAIN %d%%"
 msgstr "  DURABLE %d%%"
 
-#: ui/hud.gd:339
+#: ui/hud.gd:345
 msgid "  THIRSTY"
 msgstr "  ASSOIFFÉ"
 
-#: ui/hud.gd:354
-msgid "%s  map      %s  command      %s  lens      %s  goals"
-msgstr "%s  carte      %s  commande      %s  lentille      %s  objectifs"
-
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:372
+#: ui/hud.gd:370
 msgid "%s   pick up bale"
 msgstr "%s   ramasser la balle"
 
-#: ui/hud.gd:373
+#: ui/hud.gd:371
 msgid "%s   dig up part"
 msgstr "%s   déterrer la pièce"
 
-#: ui/hud.gd:374
+#: ui/hud.gd:372
 msgid "%s   read memory shard"
 msgstr "%s   lire l'éclat de mémoire"
 
-#: ui/hud.gd:375
+#: ui/hud.gd:373
 msgid "%s   pick up the seed tin"
 msgstr "%s   ramasser la boîte à graines"
 
-#: ui/hud.gd:376
+#: ui/hud.gd:374
 msgid "%s   set bale down"
 msgstr "%s   poser la balle"
 
-#: ui/hud.gd:377
+#: ui/hud.gd:375
 msgid "%s   workbench"
 msgstr "%s   établi"
+
+#: ui/key_hints.gd:20
+msgid "press bale"
+msgstr ""
+
+#: ui/key_hints.gd:107
+msgid "tools"
+msgstr ""
 
 #: ui/late_menu.gd:9
 msgid "Garden Mode  [%s]"
@@ -3690,8 +3710,8 @@ msgid "BALE READY"
 msgstr "BALLE PRÊTE"
 
 #: ui/lens_overlay.gd:67
-msgid "◢ SIGNAL %d%%"
-msgstr "◢ SIGNAL %d%%"
+msgid "◢ BURIED PART %d%%"
+msgstr ""
 
 #: ui/main_menu.gd:314
 msgid "One small robot. One very big cleanup."
@@ -3714,7 +3734,7 @@ msgstr ""
 msgid "New Game"
 msgstr "Nouvelle partie"
 
-#: ui/main_menu.gd:341 ui/main_menu.gd:539 ui/pause_menu.gd:59
+#: ui/main_menu.gd:341 ui/main_menu.gd:539 ui/pause_menu.gd:60
 msgid "Settings"
 msgstr "Paramètres"
 
@@ -3830,35 +3850,39 @@ msgstr "Garder ma sauvegarde"
 msgid "Erase and start"
 msgstr "Effacer et commencer"
 
-#: ui/pause_menu.gd:41
+#: ui/objective_card.gd:46
+msgid "OBJECTIVE"
+msgstr ""
+
+#: ui/pause_menu.gd:42
 msgid "PAUSED"
 msgstr "PAUSE"
 
-#: ui/pause_menu.gd:48
+#: ui/pause_menu.gd:49
 msgid "Resume"
 msgstr "Reprendre"
 
-#: ui/pause_menu.gd:53
+#: ui/pause_menu.gd:54
 msgid "Codex  [%s]"
 msgstr "Codex  [%s]"
 
-#: ui/pause_menu.gd:55
+#: ui/pause_menu.gd:56
 msgid "Photo mode  [%s]"
 msgstr "Mode photo  [%s]"
 
-#: ui/pause_menu.gd:61
+#: ui/pause_menu.gd:62
 msgid "Save game"
 msgstr "Sauvegarder"
 
-#: ui/pause_menu.gd:63
+#: ui/pause_menu.gd:64
 msgid "Saved."
 msgstr "Sauvegardé."
 
-#: ui/pause_menu.gd:64
+#: ui/pause_menu.gd:65
 msgid "Quit to title"
 msgstr "Retour au titre"
 
-#: ui/pause_menu.gd:65
+#: ui/pause_menu.gd:66
 msgid "Quit to desktop"
 msgstr "Quitter vers le bureau"
 
@@ -9006,7 +9030,7 @@ msgstr "Construis un Scoopie"
 msgid "Paint a work zone (B Command)"
 msgstr "Peins une zone de travail (B Commande)"
 
-#: data/goals.json:goals[haulbug_1].text
+#: data/goals.json:goals[haulbug_1].text data/objectives.json:objectives[haul].text
 msgid "Build a Haul Bug"
 msgstr "Construis un Haul Bug"
 
@@ -9889,6 +9913,94 @@ msgstr ""
 "Signé : LE LEDGER (à contrecœur, puis moins à contrecœur)\n"
 "Témoin : WREN, gardienne du Cradle\n"
 "Témoin : LM-1 (a laissé une petite trace d'huile)"
+
+#: data/objectives.json:brief.lines
+msgid "Your pod's dead, Lumi, and so is the relay. But the old base recycler still works."
+msgstr ""
+
+#: data/objectives.json:brief.lines
+msgid "Junk pressed into cubes powers it. Power rebuilds the base and builds you robot helpers."
+msgstr ""
+
+#: data/objectives.json:brief.lines
+msgid "And every bit of green you bring back charges your Bloom Core. Fill it, and you can call the Cradle."
+msgstr ""
+
+#: data/objectives.json:brief.lines
+msgid "Three bales should wake the base. Let's start there."
+msgstr ""
+
+#: data/objectives.json:objectives[power].text
+msgid "Power the base: sell 3 bales"
+msgstr ""
+
+#: data/objectives.json:objectives[power].desc
+msgid "Cubes feed the recycler. Its power wakes the base."
+msgstr ""
+
+#: data/objectives.json:objectives[hex].text
+msgid "Clean a hex"
+msgstr ""
+
+#: data/objectives.json:objectives[hex].desc
+msgid "Clean ground is where green can grow again."
+msgstr ""
+
+#: data/objectives.json:objectives[robot].text
+msgid "Build your first robot"
+msgstr ""
+
+#: data/objectives.json:objectives[robot].desc
+msgid "A helper keeps cleaning while you work."
+msgstr ""
+
+#: data/objectives.json:objectives[robot].lines
+msgid "The base has power! Enough to build you a helper. Try the Bots tab at the workbench."
+msgstr ""
+
+#: data/objectives.json:objectives[zone].text
+msgid "Send your robot to work"
+msgstr ""
+
+#: data/objectives.json:objectives[zone].desc
+msgid "Press B and paint the hexes it should clean."
+msgstr ""
+
+#: data/objectives.json:objectives[haul].desc
+msgid "It carries bales to the scale for you."
+msgstr ""
+
+#: data/objectives.json:objectives[base2].text
+msgid "Rebuild the base: level 2"
+msgstr ""
+
+#: data/objectives.json:objectives[base2].desc
+msgid "A bigger base runs more robots."
+msgstr ""
+
+#: data/objectives.json:objectives[base2].lines
+msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
+msgstr ""
+
+#: data/objectives.json:objectives[seed].text
+msgid "Plant the first seed"
+msgstr ""
+
+#: data/objectives.json:objectives[seed].desc
+msgid "Living green charges your Bloom Core."
+msgstr ""
+
+#: data/objectives.json:objectives[seed].hint
+msgid "Keep clearing ground. WREN is listening for seeds."
+msgstr ""
+
+#: data/objectives.json:objectives[base3].text
+msgid "Rebuild the base: level 3"
+msgstr ""
+
+#: data/objectives.json:objectives[base3].desc
+msgid "Level 3 opens the Requests board."
+msgstr ""
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"
@@ -11139,10 +11251,6 @@ msgstr "Multi-verrouillage"
 #: data/upgrades.json:upgrades[multi_lock].desc
 msgid "Extra targeting lasers: lift several pieces at once."
 msgstr "Des lasers de visée en plus : soulève plusieurs morceaux à la fois."
-
-#: data/wren_lines.json:wake
-msgid "...carrier... Lumi? Relay at four percent. It's WREN. Hello. Hello. I'm still here."
-msgstr "...porteur... Lumi ? Relais à quatre pour cent. C'est WREN. Allô. Allô. Je suis toujours là."
 
 #: data/wren_lines.json:wake
 msgid "...that ground you just cleared... the relay got stronger. Hello again. Do that again. Please."
@@ -12635,6 +12743,24 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "SIGNAL  %s  ·  %.1f m"
+#~ msgstr "SIGNAL  %s  ·  %.1f m"
+
+#~ msgid "SIGNAL  %d%%"
+#~ msgstr "SIGNAL  %d%%"
+
+#~ msgid "Clean this hex completely"
+#~ msgstr "Nettoie entièrement cet hexagone"
+
+#~ msgid "%s  map      %s  command      %s  lens      %s  goals"
+#~ msgstr "%s  carte      %s  commande      %s  lentille      %s  objectifs"
+
+#~ msgid "◢ SIGNAL %d%%"
+#~ msgstr "◢ SIGNAL %d%%"
+
+#~ msgid "...carrier... Lumi? Relay at four percent. It's WREN. Hello. Hello. I'm still here."
+#~ msgstr "...porteur... Lumi ? Relais à quatre pour cent. C'est WREN. Allô. Allô. Je suis toujours là."
 
 #~ msgid "+%d bolts"
 #~ msgstr "+%d boulons"
