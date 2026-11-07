@@ -106,6 +106,9 @@ func play() -> void:
 	var t: float = 0.0
 	var waved: bool = false
 	while t < total:
+		if get_tree().paused:  # [beat] the pause menu holds the scene
+			await get_tree().process_frame
+			continue
 		t += get_process_delta_time()
 		if t >= next_line and line_i < LINES.size():
 			var l: Array = LINES[line_i]

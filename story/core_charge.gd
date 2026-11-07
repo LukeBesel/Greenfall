@@ -250,6 +250,9 @@ func _beat_memory() -> void:
 	var t: float = 0.0
 	var said: int = 0
 	while t < 10.5 and not c.skipped:
+		if get_tree().paused:  # [beat] the pause menu holds the scene
+			await get_tree().process_frame
+			continue
 		t += get_process_delta_time()
 		lumi.beam_at(g + Vector3(0.1 + sin(t * 0.8) * 0.3, 0.1, 0.3))
 		if t > 1.0 and said == 0:
@@ -325,6 +328,9 @@ func _beat_ark_star() -> void:
 	var dur: float = 14.0
 	var said: int = 0
 	while t < dur and not c.skipped:
+		if get_tree().paused:  # [beat] the pause menu holds the scene
+			await get_tree().process_frame
+			continue
 		t += get_process_delta_time()
 		var k: float = clampf((t - 1.5) / (dur - 2.0), 0.0, 1.0)
 		var dir: Vector3 = (f + r * lerpf(-0.75, 0.75, k) + u * (0.18 + 0.12 * sin(k * PI))).normalized()
