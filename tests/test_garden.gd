@@ -65,10 +65,14 @@ func test_plant_water_grow() -> void:
 	g._tick = 100.0
 	g._process(0.0)
 	assert_eq(g.slot_stage[slot], 0)
-	g.water(slot, 300.0)
-	for i: int in 20:
+	# The species is picked at random and the slowest stage takes up to ~6 min at early-game
+	# growth speed, so keep it watered long enough for any species to reach its first stage.
+	for i: int in 120:
+		g.water(slot, 60.0)
 		g._tick = 10.0
 		g._process(0.0)
+		if g.slot_stage[slot] > 0:
+			break
 	assert_gt(g.slot_stage[slot], 0)
 	assert_gt(float(w.view.lives.get(hid, 0.0)), 0.0)
 
