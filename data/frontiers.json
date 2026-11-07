@@ -38,7 +38,7 @@
       "litter_mult": 0.4,
       "ground_layers": {"4": "snow_02", "5": "snow_02", "6": "snow_02"},
       "fx": [0.0, 1.0, 0.0, 0.0],
-      "grade": {"fog": [0.78, 0.87, 1.0], "fog_amt": 0.65, "fog_mult": 0.7, "rayleigh": [0.3, 0.54, 1.0], "mie": [0.88, 0.94, 1.0], "sky_amt": 0.65, "sat": 0.92, "exposure": 0.94, "fog_density": 0.0005, "vol_density": 0.0009, "turbidity": 2.8, "fog_sky": 0.12, "aerial": 0.6, "contrast": 1.08, "sun": [0.94, 0.97, 1.0]},
+      "grade": {"fog": [0.74, 0.85, 1.0], "fog_amt": 0.6, "fog_mult": 0.6, "rayleigh": [0.2, 0.46, 1.0], "mie": [0.92, 0.95, 1.0], "sky_amt": 0.8, "sat": 1.0, "exposure": 0.98, "fog_density": 0.00035, "vol_density": 0.0007, "turbidity": 2.1, "mie_coef": 0.0016, "fog_sky": 0.05, "aerial": 0.5, "contrast": 1.08, "sun": [0.96, 0.98, 1.0]},
       "unlock": {"research": "thermal_lance", "bases_l5": 3, "frontier": "dust_flats", "frontier_level": 3},
       "ice": {"ring1_frac": 0.5, "frac": 0.85, "harbour_x": 14.0, "heater_cost": 90, "heater_growth": 1.32, "heater_max": 16, "thaw_s": 80, "spread_mult": 0.22, "beam_thaw_s": 240, "pump_mult": 1.6, "greenhouse_cost": 450, "greenhouse_growth": 1.25, "greenhouse_grow": 0.25},
       "native_mult": 1.0

@@ -238,6 +238,18 @@ func _mat(key: String) -> Material:
 			tg.roughness = 0.12
 			tg.metallic_specular = 0.7
 			m = tg
+		"curtain":
+			# [vqa] Premium curtain-wall glass (metres in UV, see _glass_wall).
+			var cg := ShaderMaterial.new()
+			cg.shader = preload("res://art/shaders/tower_glass.gdshader")
+			m = cg
+		"trim":
+			# [vqa] Satin pearl-white aluminium for corner trims, slabs and crowns.
+			var tr_m := StandardMaterial3D.new()
+			tr_m.albedo_color = Color(0.82, 0.84, 0.87)
+			tr_m.metallic = 0.55
+			tr_m.roughness = 0.3
+			m = tr_m
 		"warm":
 			m = Mats.lamp(WARM, 2.0)
 		"steel":
@@ -494,8 +506,9 @@ func _plain_h(x: float, z: float, t: float) -> float:
 ## Builds the heightfield ring from the field edge to the horizon, in sectors for culling.
 func _build_terrain(look: Dictionary) -> void:
 	var r_out: float = 1300.0
-	var nr: int = 96
-	var na: int = 320
+	# [vqa] Mountain ranges need a finer mesh than dunes and lawns (low-poly far peaks).
+	var nr: int = int(look.get("rings", 96))
+	var na: int = int(look.get("spokes", 320))
 	var sectors: int = 8
 	var rs := PackedFloat32Array()
 	for i: int in nr:
@@ -511,7 +524,7 @@ func _build_terrain(look: Dictionary) -> void:
 	_terrain_mat.set_shader_parameter("nrm_b", AssetLib.tex(b_id, "nor_gl"))
 	_terrain_mat.set_shader_parameter("tex_g", AssetLib.tex("leafy_grass", "diff"))
 	for k: String in look:
-		if k in ["a", "b"]:
+		if k in ["a", "b", "rings", "spokes"]:
 			continue
 		var v: Variant = look[k]
 		_terrain_mat.set_shader_parameter(k, Vector3(v.r, v.g, v.b) if v is Color else v)
@@ -858,7 +871,7 @@ func _build_port() -> void:
 	var quay_x: float = _quay_x
 	_build_terrain({"a": "snow_02", "b": "dry_ground_rocks", "tint_a": Color(0.96, 0.98, 1.03), "tint_b": Color(0.62, 0.66, 0.72),
 		"scale_a": 0.12, "scale_b": 0.05, "rough_a": 0.62, "rough_b": 0.9, "slope_lo": 0.42, "slope_hi": 0.62,
-		"sparkle": 1.0, "green_amt": 0.5, "tint_g": Color(0.5, 0.62, 0.42), "macro": 0.08})
+		"sparkle": 1.0, "green_amt": 0.5, "tint_g": Color(0.5, 0.62, 0.42), "macro": 0.08, "rings": 160, "spokes": 640})
 	# Sea ice on the harbour side (ruin and mid), open water once the port is futuristic.
 	var ice_plane: MeshInstance3D = _flood_plane(1.0, quay_x, 0.08)
 	ice_plane.reparent(_groups["ruin"])
@@ -1307,9 +1320,9 @@ func on_drained(hexes: Array[int], animate: bool) -> void:
 
 func _build_cradle() -> void:
 	var e: float = _edge()
-	_build_terrain({"a": "leafy_grass", "b": "leafy_grass", "tint_a": Color(0.46, 0.74, 0.36), "tint_b": Color(0.4, 0.66, 0.32),
+	_build_terrain({"a": "leafy_grass", "b": "leafy_grass", "tint_a": Color(0.33, 0.62, 0.31), "tint_b": Color(0.29, 0.55, 0.29),
 		"scale_a": 0.12, "scale_b": 0.06, "slope_lo": 0.08, "slope_hi": 0.3, "rough_a": 0.9, "rough_b": 0.9,
-		"green_amt": 0.6, "tint_g": Color(0.6, 0.78, 0.48), "macro": 0.12, "biome_tint": Vector4.ZERO})
+		"green_amt": 0.6, "tint_g": Color(0.42, 0.66, 0.36), "macro": 0.12, "biome_tint": Vector4.ZERO})  # [vqa] lush, not olive
 	_build_plaza(e)
 	_build_skyline_cradle(e)
 	# Launch gantries behind the pad: rusty lattice (ruin) or white (restored).
@@ -1343,11 +1356,57 @@ static func _arc_mesh(r1: float, r2: float, a0: float, a1: float, h: float, segs
 	return st.commit()
 
 
+## [vqa] Outer walls of a box (sides = 4, half extents rx, rz) or a round tower (sides > 4, radius
+## rx) from 0 to h, with metres in UV (x around the facade, y = y0 + height) and tangents, for
+## tower_glass.gdshader. Faces point outward (checked per triangle against the wall normal).
+static func _glass_wall(sides: int, rx: float, rz: float, h: float, y0: float) -> ArrayMesh:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var pts: Array[Vector3] = []
+	var nrm: Array[Vector3] = []
+	if sides == 4:
+		pts = [Vector3(-rx, 0, -rz), Vector3(rx, 0, -rz), Vector3(rx, 0, rz), Vector3(-rx, 0, rz)]
+	else:
+		for k: int in sides:
+			var a: float = TAU * k / sides
+			pts.append(Vector3(cos(a) * rx, 0, sin(a) * rx))
+	var u: float = 0.0
+	for k: int in pts.size():
+		var p0: Vector3 = pts[k]
+		var p1: Vector3 = pts[(k + 1) % pts.size()]
+		var len: float = p0.distance_to(p1)
+		var mid: Vector3 = (p0 + p1) * 0.5
+		var n0: Vector3 = (Vector3(mid.x, 0, mid.z).normalized()) if sides == 4 else p0.normalized()
+		var n1: Vector3 = n0 if sides == 4 else p1.normalized()
+		if sides == 4:
+			n0 = (p1 - p0).cross(Vector3.UP).normalized()
+			if n0.dot(mid) < 0.0:
+				n0 = -n0
+			n1 = n0
+		var up := Vector3(0, h, 0)
+		var quad: Array = [[p0, n0, Vector2(u, y0)], [p1, n1, Vector2(u + len, y0)], [p1 + up, n1, Vector2(u + len, y0 + h)], [p0 + up, n0, Vector2(u, y0 + h)]]
+		for tri: Array in [[0, 1, 2], [0, 2, 3]]:
+			var a0: Vector3 = quad[tri[0]][0]
+			var a1: Vector3 = quad[tri[1]][0]
+			var a2: Vector3 = quad[tri[2]][0]
+			var order: Array = tri
+			# Godot's front faces wind clockwise: the right-hand normal must point inward.
+			if (a1 - a0).cross(a2 - a0).dot(n0 + n1) > 0.0:
+				order = [tri[0], tri[2], tri[1]]
+			for i: int in order:
+				st.set_normal(quad[i][1])
+				st.set_uv(quad[i][2])
+				st.add_vertex(quad[i][0])
+		u += len
+	st.generate_tangents()
+	return st.commit()
+
+
 ## The launch city's apron around the field: a clean paved ring with planters, slim lamp posts
 ## and one faint light inlay. Ground crews kept it swept.
 func _build_plaza(e: float) -> void:
 	var b := Batch.new()
-	var paving: Material = AssetLib.pbr_material("concrete_pavement", 0.12, Color(1.08, 1.08, 1.1), true)
+	var paving: Material = AssetLib.pbr_material("concrete_pavement", 0.12, Color(0.98, 1.03, 1.13), true)  # [vqa] cool pale stone, not tan
 	var r0: float = _r_in - 1.0
 	var r1: float = _r_in + 30.0
 	for k: int in 8:
@@ -1378,6 +1437,8 @@ func _build_skyline_cradle(e: float) -> void:
 	var b := Batch.new()
 	var white: Material = _mat("white")
 	var glass: Material = _mat("tower_glass")
+	var curtain: Material = _mat("curtain")  # [vqa]
+	var trim: Material = _mat("trim")
 	var placed: Array[Vector2] = []
 	var tries: int = 0
 	while placed.size() < 34 and tries < 400:
@@ -1403,39 +1464,39 @@ func _build_skyline_cradle(e: float) -> void:
 		var is_round: bool = _rng.randf() < 0.4
 		_add_box(b, p + Vector3(0, 4.0, 0), Vector3(w * 1.9, 8.0, w * 1.7), white, Vector3(0, rad_to_deg(yaw), 0))
 		_add_box(b, p + Vector3(0, 6.0, 0), Vector3(w * 1.92, 1.2, w * 1.72), glass, Vector3(0, rad_to_deg(yaw), 0))
+		# [vqa] Sleek curtain walls (tower_glass.gdshader): one glass skin per tier, slim satin
+		# corner trims and a thin slab at each setback, instead of white fins and floor bands.
 		var y: float = 8.0
 		var cw: float = w
 		var tiers: int = 1 + (_rng.randi() % 3 if h > 90.0 else 0)
 		for t: int in tiers:
 			var th: float = (h - 8.0) / tiers
-			var mid: Vector3 = p + Vector3(0, y + th * 0.5, 0)
+			var base_t: Vector3 = p + Vector3(0, y, 0)
 			if is_round:
-				b.add(ProcMesh.cyl(cw * 0.5, cw * 0.5, th, 32), Transform3D(bs, mid), glass)
-				for f: int in 10:
-					var fa: float = TAU * f / 10.0
-					b.add(_box(), Transform3D((Basis(Vector3.UP, -fa) * Basis.from_scale(Vector3(1.4, th, 0.45))), mid + Vector3(cos(fa), 0, sin(fa)) * cw * 0.5), white)
-				var fy: float = 0.0
-				while fy < th - 2.0:
-					fy += 12.0
-					b.add(ProcMesh.cyl(cw * 0.5 + 0.35, cw * 0.5 + 0.35, 0.6, 32), Transform3D(bs, p + Vector3(0, y + fy, 0)), white)
+				b.add(_glass_wall(40, cw * 0.5, cw * 0.5, th, y), Transform3D(bs, base_t), curtain)
 			else:
 				var d: float = cw * 0.78
-				_add_box(b, mid, Vector3(cw, th, d), glass, Vector3(0, rad_to_deg(yaw), 0))
-				for cx: float in [-0.5, -0.17, 0.17, 0.5]:
+				b.add(_glass_wall(4, cw * 0.5, d * 0.5, th, y), Transform3D(bs, base_t), curtain)
+				for cx: float in [-0.5, 0.5]:
 					for cz: float in [-0.5, 0.5]:
-						b.add(_box(), Transform3D((bs * Basis.from_scale(Vector3(0.9 if absf(cx) > 0.4 else 0.4, th, 0.9))), mid + bs * Vector3(cx * cw, 0, cz * d)), white)
-				var fy2: float = 0.0
-				while fy2 < th - 2.0:
-					fy2 += 12.0
-					b.add(_box(), Transform3D((bs * Basis.from_scale(Vector3(cw + 0.6, 0.6, d + 0.6))), p + Vector3(0, y + fy2, 0)), white)
+						b.add(_box(), Transform3D((bs * Basis.from_scale(Vector3(0.32, th, 0.32))), base_t + bs * Vector3(cx * cw, th * 0.5, cz * d)), trim)
+			if t > 0:
+				# Setback terrace: a thin satin slab where the tier steps in.
+				var sl: Mesh = ProcMesh.cyl(cw * 0.5 + 0.25, cw * 0.5 + 0.25, 0.35, 40) if is_round else _box()
+				var sx: Transform3D = Transform3D(bs, base_t) if is_round else Transform3D((bs * Basis.from_scale(Vector3(cw + 0.5, 0.35, cw * 0.78 + 0.5))), base_t)
+				b.add(sl, sx, trim)
 			y += th
 			cw *= _rng.randf_range(0.72, 0.85)
-		# Crown: a white cap with one faint light band; some get a spire.
-		b.add(ProcMesh.cyl(cw * 0.62, cw * 0.62, 1.6, 24) if is_round else _box(), Transform3D(bs, p + Vector3(0, y + 0.8, 0)) if is_round else Transform3D((bs * Basis.from_scale(Vector3(cw * 1.08, 1.6, cw * 0.86))), p + Vector3(0, y + 0.8, 0)), white)
-		b.add(ProcMesh.torus(cw * 0.55, cw * 0.58, 32, 3), Transform3D(Basis().scaled(Vector3(1, 0.3, 1)), p + Vector3(0, y - 0.6, 0)), _mat("line_soft"))
+		# Crown: a slim satin cap with one faint light seam; some get a spire.
+		var top: Vector3 = p + Vector3(0, y, 0)
+		if is_round:
+			b.add(ProcMesh.cyl(cw * 0.56, cw * 0.56, 0.9, 40), Transform3D(bs, top + Vector3(0, 0.45, 0)), trim)
+		else:
+			b.add(_box(), Transform3D((bs * Basis.from_scale(Vector3(cw * 1.04, 0.9, cw * 0.82))), top + Vector3(0, 0.45, 0)), trim)
+		b.add(ProcMesh.torus(cw * 0.5, cw * 0.52, 32, 3), Transform3D(Basis().scaled(Vector3(1, 0.15, 1)), top + Vector3(0, -0.35, 0)), _mat("line_soft"))
 		if _rng.randf() < 0.35:
 			var sh: float = _rng.randf_range(12.0, 30.0)
-			b.add(ProcMesh.cyl(0.15, 0.7, sh, 8), _xf(p + Vector3(0, y + 1.6 + sh * 0.5, 0)), white)
+			b.add(ProcMesh.cyl(0.12, 0.5, sh, 8), _xf(top + Vector3(0, 0.9 + sh * 0.5, 0)), trim)
 	# Low pavilions and hangars between the towers.
 	for i: int in 40:
 		var ang2: float = -PI * 0.5 + _rng.randf_range(-2.2, 2.2)

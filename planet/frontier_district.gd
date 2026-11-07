@@ -147,6 +147,7 @@ func _dev_hooks() -> void:
 		cam.distance = float(c[0])
 		cam.pitch = float(c[1]) if c.size() > 1 else -0.3
 		cam.yaw = float(c[2]) if c.size() > 2 else cam.yaw
+		(cam.get("_arm") as SpringArm3D).collision_mask = 0  # [vqa] the yard sign/fence pulled the arm in
 		cam.snap()
 	if DevHooks.has("storm"):  # --storm[=S]: a sandstorm S seconds after start (warning skipped)
 		storm_t = DevHooks.get_f("storm", 3.0)

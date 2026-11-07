@@ -26,6 +26,8 @@ uniform float warp_amp = 0.0;
 uniform float frozen = 0.0;
 uniform sampler2D ice_nrm : hint_normal, filter_linear_mipmap, repeat_enable;
 
+#include "res://art/shaders/water_light.gdshaderinc"
+
 varying vec3 wpos;
 const float SQRT3 = 1.7320508;
 

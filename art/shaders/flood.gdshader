@@ -22,6 +22,8 @@ uniform float warp_size = 280.0;
 uniform float warp_amp = 0.0;
 uniform float wave_scale = 1.0;  // match water.gdshader's ripple size where the two meet
 
+#include "res://art/shaders/water_light.gdshaderinc"
+
 varying vec3 wpos;
 const float SQRT3 = 1.7320508;
 
