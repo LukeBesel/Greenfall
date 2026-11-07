@@ -9,7 +9,7 @@ extends Node3D
 const CYAN := Color(0.5, 0.88, 1.0)
 const GREEN := Color(0.55, 1.0, 0.7)
 const STEP_M: float = 0.25  ## contour grid spacing
-const WIDTH_M: float = 0.18  ## the ribbon (the bright core in the shader is ~1/4 of it)
+const WIDTH_M: float = 0.22  ## the ribbon (the bright core in the shader is ~1/4 of it)
 const WASH_M: float = 0.7  ## the inner wash band
 const LIFT_M: float = 0.045
 const MIN_LOOP_M: float = 2.0  ## drop warp islands smaller than this
@@ -20,7 +20,7 @@ shader_type spatial;
 render_mode unshaded, blend_add, depth_draw_never, cull_disabled, shadows_disabled, fog_disabled;
 uniform vec4 tint : source_color = vec4(0.5, 0.88, 1.0, 1.0);
 uniform float alpha = 1.0;
-uniform float energy = 1.25;
+uniform float energy = 2.1;
 uniform float run = 1.0;
 void fragment() {
 	float a;
@@ -31,7 +31,7 @@ void fragment() {
 		float runner = pow(0.5 + 0.5 * sin(UV.x * 0.55 - TIME * 1.6), 14.0) * run;
 		a = (core + halo) * (0.72 + 0.6 * runner);
 	} else {
-		a = pow(1.0 - UV.y, 2.2) * 0.07;
+		a = pow(1.0 - UV.y, 2.2) * 0.05;
 	}
 	ALBEDO = tint.rgb * energy;
 	ALPHA = clamp(a * alpha, 0.0, 1.0);
