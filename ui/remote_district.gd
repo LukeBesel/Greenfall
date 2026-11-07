@@ -211,6 +211,9 @@ func _bake_ground() -> ImageTexture:
 			var d: float = Vector2(wp.x, wp.z).length()
 			c = c.lerp(palette["far"], clampf((d - r_out * 0.62) / (r_out * 0.5), 0.0, 1.0))
 			img.set_pixel(x, y, c)
+	# Soften the per-pixel state steps into natural edges (down, then up again with cubic filtering).
+	img.resize(res / 3, res / 3, Image.INTERPOLATE_CUBIC)
+	img.resize(res * 2, res * 2, Image.INTERPOLATE_CUBIC)
 	img.generate_mipmaps()
 	return ImageTexture.create_from_image(img)
 
@@ -390,6 +393,9 @@ func _build_bots() -> void:
 		if role == "any" or role == "skim":
 			role = "clean"
 		var start := Vector3(_rng.randf_range(-6, 6), 0, _rng.randf_range(-6, 6))
+		var front: Array[int] = _junk_order()
+		if role == "clean" and not front.is_empty():
+			start = _random_in(front[_rng.randi() % mini(front.size(), 3)], 0.6)  # already at the junk front
 		vis.position = start
 		var b: Dictionary = {"node": vis, "role": role, "state": "think", "t": _rng.randf() * 2.0, "target": start, "carry": null, "hex": -1}
 		if role == "water":

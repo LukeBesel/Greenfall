@@ -582,7 +582,7 @@ func _show_remote(i: int) -> void:
 	_focus = _front_point()
 	_focus_goal = _focus
 	_look_i = 1
-	_dist = 50.0
+	_dist = 62.0
 	_cam.fov = 24.0
 	_title.text = tr("TELESCOPE  ·  %s") % tr(str(en["name"])).to_upper()
 	_button(tr("◀ Look"), func() -> void: _cycle_look(-1), 120.0)
@@ -605,7 +605,7 @@ func _front_point() -> Vector3:
 	var j: Array[int] = district._junk_order()
 	if j.is_empty():
 		return Vector3(0, 0, 4)
-	return district.center_of(j[0]) * 0.85
+	return district.center_of(j[0]) * 0.7
 
 
 func _look_points() -> Array[Vector3]:
