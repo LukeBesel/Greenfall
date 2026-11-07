@@ -75,7 +75,7 @@ func save_game(gather: bool = true) -> bool:
 		# [beat] Not mid-launch: Lumi is on the lift with the cells already spent; the last autosave
 		# (or the save travel_to writes on arrival) is the consistent one.
 		var sc: Node = get_tree().current_scene
-		if sc and bool(sc.get("launching")):
+		if sc and sc.get("launching") == true:
 			return false
 		get_tree().call_group("persist", "persist_save")
 	var ok: bool = write_dict(slot_path(), GameState.to_dict())
