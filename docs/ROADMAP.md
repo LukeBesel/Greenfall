@@ -17,13 +17,22 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 
 ## Next steps for a new session
 0. Owner-side Steam/Apple setup: see docs/steam/README.md (app id, depots, signing). Website: enable Pages, fill website/config.js.
-0b. Visual follow-ups: Cradle Returns overview (paving tone, lawns, towers lean stylised), Sunken City near-camera shadows,
-    Frozen Port far mountains; rocket ignition camera still shows the yard sign/fence.
+0b. Visual QA: see docs/VISUAL_QA.md (render checklist with dev-hook commands and status); its "todo" rows are the next sweep.
 1. Play-test feedback from the owner (docs/PLAYTEST.md); fix what they hit first.
 2. macOS: universal build works (ETC2/ASTC import enabled). For Steam: sign and notarize with the owner's Apple Developer account.
 3. Longer balance: run `--autoplay --time-scale=8 --quit-after=600` and check goals keep a next step within 1-3 minutes past the first hour.
 4. More districts content: aim 40 eggs (29 now); more biome props (nets, satellites) if Poly Haven gets them; per-biome plants/wildlife.
 5. Post-game (M11): Cradle Mode (other worlds + Heirlooms), Garden Mode decorating; tune Bloom thresholds after play-testing.
+
+## Update: visual QA pass (wt/vqa)
+- Done: Cradle Returns towers are premium curtain-wall glass (`art/shaders/tower_glass.gdshader`: metres-in-UV panel grid, hair-thin satin mullions, spandrels, per-panel tint/tilt, a few lit offices at night) with satin trims instead of white fins and floor bands; glass podiums and pavilions; the apron's dark band was smoothed normals across 30 m faces (`_arc_mesh` now flat); pale cool paving; lush lawn green via biome_tint.
+- Done: water (`art/shaders/water_light.gdshaderinc`, used by water + flood): sun shadows keep 30% of their strength on diffuse and sheen, so near-camera shadow slabs on the Sunken City flood are gone (diagnosed with a noon render).
+- Done: Frozen Port terrain mesh 160x640 for the mountain ring, rounded ridges with a finer octave, triplanar texturing on steep faces (also fixes vertical streaks on dune lee faces), faint noise-warped ice cracks (the Voronoi crack net read as a polygon grid), deeper clear polar sky.
+- Done: rocket launch cameras moved to the open lot beyond the pad (no yard sign, fence, lamps, wires or holo boards in front); lift-off camera out of the vapour ring; tighter boarding framing.
+- Done: global glow thin and subtle (glow levels 2-4 only, bloom 0.015, HDR threshold 1.15); natural (warped) lake shorelines in every district; Command view lifts visibility ranges while open (`ui/range_boost.gd`) so junk chunks and gardens no longer vanish when zoomed out.
+- Done: UI at 1280x720, 1280x800 @110% and 1920x1080 in en/de/pseudo: wrapping contract cards and blurbs, ellipsized workbench and codex tabs, wrapping cosmetics buttons, Command key strip scales to fit. `--pad-audit` gains `--audit-size=WxH` (headless had a bogus square screen, so earlier clipping passes were meaningless), text-overflow and truncation checks, `--audit-why`.
+- Dev: `--frontier-cam=dist,pitch,yaw,fov` (spring arm no longer collides with the yard).
+- Next: the "todo" rows in docs/VISUAL_QA.md (starter district hub levels 1-5, future layer 1-5, night/fog, Dust Flats, restored frontiers, photo mode, lens view, rocket arrival, robots vs walls); frontier junk is ~20M triangles at High (15k bulky pieces, no distance LOD) and is the biggest frontier perf item.
 
 ## Update: future layer (wt/future)
 - Done: `planet/future_layer.gd` (FutureLayer, built by `scenes/slice.gd`): the district builds up into a glowing, clean future city as it is restored. Pure `FutureLayer.plan()` from seed + hex levels + hub level + cleaned share (no save data); a handful of MultiMeshes (unshaded emissive + env glow), a few Label3D texts, no lights.
