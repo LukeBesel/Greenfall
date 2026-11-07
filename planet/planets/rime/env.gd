@@ -1241,7 +1241,6 @@ func _setup_sky() -> void:
 	_sky_mat.set_shader_parameter("sun_b_size", b["size"])
 	_sky_mat.set_shader_parameter("sun_b_amt", clampf(float(b["energy"]) / maxf(float(a["energy"]), 0.01), 0.05, 1.0))
 	env.sky.sky_material = _sky_mat
-	env.sky.radiance_size = Sky.RADIANCE_SIZE_128
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 	var amb: Dictionary = kind.get("ambient", {})
 	env.ambient_light_sky_contribution = float(amb.get("sky_contribution", 0.4))
