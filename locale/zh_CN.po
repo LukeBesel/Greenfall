@@ -513,23 +513,31 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: fauna/fauna.gd:1211
+#: fauna/fauna.gd:1469
 msgid "E   pet %s"
 msgstr ""
 
-#: fauna/fauna.gd:1212
+#: fauna/fauna.gd:1470
 msgid "E   pet the cat"
 msgstr ""
 
-#: fauna/fauna.gd:1261
+#: fauna/fauna.gd:1528
+msgid "E   scatter crumbs for the birds"
+msgstr ""
+
+#: fauna/fauna.gd:1576
+msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
+msgstr ""
+
+#: fauna/fauna.gd:1632
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr ""
 
-#: fauna/fauna.gd:1574
+#: fauna/fauna.gd:1951
 msgid "New sighting: %s. It's in the Codex now."
 msgstr ""
 
-#: fauna/fauna.gd:1642
+#: fauna/fauna.gd:2019
 msgid "Snap! A %s for your Collection."
 msgstr ""
 
@@ -7357,6 +7365,14 @@ msgstr "照片：天鹅绒野兔"
 #: data/events.json:trinkets[photo_velvet_hare].desc
 msgid "Soft as a whisper, quick as a rumour. The photo is a little blurry. Worth it."
 msgstr "柔得像耳语，快得像谣言。照片有点糊。但值得。"
+
+#: data/events.json:trinkets[crumb_bag].name
+msgid "Crumb Bag"
+msgstr ""
+
+#: data/events.json:trinkets[crumb_bag].desc
+msgid "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
+msgstr ""
 
 #: data/events.json:trinkets[pic_cat].name
 msgid "Photo: Stray Cat"

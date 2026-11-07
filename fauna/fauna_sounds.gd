@@ -217,9 +217,10 @@ static func flutter(rng: RandomNumberGenerator, rate: float) -> PackedFloat32Arr
 	for i: int in b.size():
 		var t: float = float(i) / RATE
 		var n: float = rng.randf_range(-1.0, 1.0)
-		lp += (n - lp) * 0.35
-		var beat: float = pow(0.5 + 0.5 * sin(TAU * 14.0 * rate * t + sin(TAU * 3.0 * t)), 4.0)
-		b[i] = lp * beat * 0.4 * (1.0 - smoothstep(0.3, 0.9, t)) * smoothstep(0.0, 0.03, t)
+		# [fauna2] Softer: darker noise, fewer and rounder wingbeats that slow and fade.
+		lp += (n - lp) * 0.12
+		var beat: float = pow(0.5 + 0.5 * sin(TAU * 9.0 * rate * t * (1.0 - 0.3 * t)), 2.0)
+		b[i] = lp * beat * 0.3 * (1.0 - smoothstep(0.25, 0.9, t)) * smoothstep(0.0, 0.05, t)
 	return b
 
 

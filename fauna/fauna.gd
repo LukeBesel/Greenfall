@@ -68,6 +68,7 @@ class Animal:
 	var perch: bool = false  # [fauna2] landing on / sitting on a perch up high
 	var rig: FaunaRig  # [fauna2] skinned model (cats), else drawn in a MultiMesh
 	var rig_prev: Vector3 = Vector3.INF
+	var fed_t: float = 0.0  # [fauna2] coming to / pecking at crumbs: not shy of Lumi meanwhile
 
 var world: Node
 var animals: Array[Animal] = []
@@ -127,6 +128,7 @@ func setup(p_world: Node) -> void:
 	add_child(ambience)
 	ambience.setup(regs)
 	_build_warm_spots()
+	_setup_feeding()
 	EventBus.hex_level_changed.connect(func(_h: int, _l: int) -> void: _plan_t = minf(_plan_t, 0.4))
 	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: _plan_t = minf(_plan_t, 0.4))
 	var ph: Node = world.get("photo")
@@ -728,6 +730,7 @@ func _process(delta: float) -> void:
 		if float(_cooldown[k]) <= 0.0:
 			_cooldown.erase(k)
 	_space_t -= delta
+	_feed_tick(delta)
 	_plan_t -= delta
 	if _plan_t <= 0.0:
 		_plan_t = 2.5
@@ -810,6 +813,8 @@ func _relax_head(a: Animal, dt: float) -> void:
 
 ## Lumi is close (or rushing at it): a reason to bolt.
 func _scared(a: Animal, r: float) -> bool:
+	if a.fed_t > 0.0:
+		return false
 	var d: float = Vector2(a.pos.x - _lumi_pos.x, a.pos.z - _lumi_pos.z).length()
 	return d < r or (_lumi_speed > 3.0 and d < r * 1.9)
 
@@ -842,6 +847,7 @@ func _wander_target(a: Animal, r: float) -> Vector3:
 
 func _update(a: Animal, dt: float) -> void:
 	a.t -= dt
+	a.fed_t = maxf(0.0, a.fed_t - dt)
 	a.sound_t -= dt
 	# Dev: hold a posed animal still for screenshots.
 	if a.hold:
@@ -1193,7 +1199,7 @@ func _take_off(a: Animal, scared: bool) -> void:
 	a.alt = 1.0 if scared else 0.6
 	a.vel = away * 2.0 + Vector3(0, 3.5, 0)
 	if scared:
-		_sound_at("flutter", a.pos, -6.0)
+		_sound_at("flutter", a.pos, -13.0)
 		# The flock goes together.
 		for o: Animal in animals:
 			if o != a and o.sp == a.sp and o.state != St.FLY and o.state != St.LEAVE and o.state != St.SOAR and o.pos.distance_to(a.pos) < 6.0:
@@ -1297,7 +1303,7 @@ func _update_swim(a: Animal, dt: float) -> void:
 	if _scared(a, 3.0) and a.state != St.FLEE:
 		if duck and _lumi_speed > 3.0 and _rng.randf() < 0.5:
 			_sound_at("quack", a.pos, -6.0)
-			_sound_at("flutter", a.pos, -8.0)
+			_sound_at("flutter", a.pos, -14.0)
 			a.vel = Vector3(0, 3.0, 0)
 		a.state = St.FLEE
 		a.t = 3.0
@@ -1306,7 +1312,8 @@ func _update_swim(a: Animal, dt: float) -> void:
 		a.target = a.pos + away.normalized() * 3.5
 	var to: Vector3 = a.target - a.pos
 	to.y = 0.0
-	if not f.is_water(f.hex_at(a.target)) or not open_water(a.target) or to.length() < 0.3 or a.t < -10.0:
+	var at_crumbs: bool = a.fed_t > 0.0 and f.is_water(f.hex_at(a.target)) and open_water(a.target)  # [fauna2]
+	if not at_crumbs and (not f.is_water(f.hex_at(a.target)) or not open_water(a.target) or to.length() < 0.3 or a.t < -10.0):
 		var nt: Vector3 = find_spot(a.sp, a.hex) if a.hex >= 0 else a.pos
 		a.target = nt if nt != Vector3.INF else a.pos
 		a.t = 0.0
@@ -1496,6 +1503,117 @@ func pet(a: Animal) -> void:
 	mark_seen("cat")
 	if a.pets >= 3 and not a.named and adopted_cat().is_empty():
 		adopt(a)
+
+
+# --- [fauna2] Feeding the birds -----------------------------------------------------------------
+
+const FEEDABLE: Array[String] = ["pigeon", "sparrow", "duck"]
+const FEED_REACH: float = 3.2
+var _feed_anchor: Node3D
+var _feed_target: Animal
+var _feed_cool: float = 0.0
+var _feed_scan: float = 0.0
+
+
+## Near pigeons, sparrows or ducks, E scatters a handful of crumbs (free): the flock comes in
+## and pecks, a happy chirp. Counts as befriending wildlife (Pixel design) and gives the Crumb
+## Bag trinket the first time.
+func _setup_feeding() -> void:
+	_feed_anchor = Node3D.new()
+	_feed_anchor.name = "FeedAnchor"
+	add_child(_feed_anchor)
+	_feed_anchor.global_position = Vector3(0, -1000, 0)
+	var ints: Node = world.get("interactables")
+	if ints:
+		ints.call("register", _feed_anchor, FEED_REACH, func() -> String: return tr("E   scatter crumbs for the birds"), feed, func() -> bool: return _feed_target != null and _feed_cool <= 0.0)
+
+
+func _feed_tick(delta: float) -> void:
+	_feed_cool -= delta
+	_feed_scan -= delta
+	if _feed_scan > 0.0 or _feed_anchor == null:
+		return
+	_feed_scan = 0.25
+	_feed_target = feed_candidate(_lumi_pos)
+	_feed_anchor.global_position = _feed_target.pos if _feed_target else Vector3(0, -1000, 0)
+
+
+## The nearest bird that can be fed from where Lumi is (on the ground or on the water, not up a
+## lamp post or in the air), or null.
+func feed_candidate(from: Vector3) -> Animal:
+	var best: Animal = null
+	var bd: float = FEED_REACH + 1.5
+	for a: Animal in animals:
+		if not (a.sp in FEEDABLE) or a.state in [St.FLY, St.SOAR, St.LEAVE, St.PERCH]:
+			continue
+		var d: float = Vector2(a.pos.x - from.x, a.pos.z - from.z).length()
+		if d < bd:
+			bd = d
+			best = a
+	return best
+
+
+func feed() -> void:
+	if _feed_target == null or _feed_cool > 0.0:
+		return
+	_feed_cool = 4.0
+	var t: Animal = _feed_target
+	var to: Vector3 = t.pos - _lumi_pos
+	to.y = 0.0
+	var spot: Vector3 = _lumi_pos + (to.normalized() if to.length() > 0.1 else Vector3.FORWARD) * minf(1.3, to.length())
+	if t.kind == "swim":
+		spot = t.pos.lerp(spot, 0.4)
+		spot.y = t.pos.y
+	else:
+		spot.y = _ground_y(spot)
+	Vfx.burst("bits", spot + Vector3(0, 0.25, 0), Color(0.86, 0.72, 0.45), 0.8)
+	var n: int = feed_flock(t.sp, spot)
+	Audio.play("chirp", 1.1, -7.0, 0.1)
+	GameState.inc_stat("wildlife_fed")
+	GameState.inc_stat("wildlife_petted")  # befriending any animal counts for the Pixel design
+	mark_seen(t.sp)
+	if Collection.grant("crumb_bag", true):
+		EventBus.toast.emit(tr("The birds have decided you're all right. Crumb Bag added to your Collection."), "story")
+	var pm: Node = world.patch.get("model") if world.get("patch") else null
+	if pm:
+		if pm.has_method("look_toward"):
+			pm.call("look_toward", spot)
+		if pm.has_method("set_happy"):
+			pm.call("set_happy", 1.0)
+	if DevHooks.has("fauna-debug"):
+		print("[fauna] fed %d %s" % [n, t.sp])
+
+
+## Sends every bird of the species within 14 m to peck round spot. Returns how many came.
+func feed_flock(sid: String, spot: Vector3) -> int:
+	var n: int = 0
+	var k: int = 0
+	for a: Animal in animals:
+		if a.sp != sid or a.state == St.LEAVE or a.pos.distance_to(spot) > 14.0:
+			continue
+		var ang: float = TAU * float(k) / 7.0 + _rng.randf() * 0.5
+		var r: float = 0.35 + 0.18 * float(k % 3)
+		var tp: Vector3 = spot + Vector3(cos(ang), 0, sin(ang)) * r
+		k += 1
+		a.fed_t = 9.0
+		a.perch = false
+		a.home = tp
+		if a.kind == "swim":
+			tp.y = a.pos.y
+			a.target = tp
+			a.state = St.SWIM
+			a.t = 0.0
+		else:
+			tp.y = _ground_y(tp)
+			a.target = tp
+			if a.state == St.PERCH or a.pos.distance_to(tp) > 4.0:
+				a.state = St.FLY
+				a.alt = 0.6
+				a.vel = Vector3(0, 2.5, 0)
+			else:
+				a.state = St.WALK
+		n += 1
+	return n
 
 
 func adopted_cat() -> Dictionary:
@@ -1907,7 +2025,32 @@ func record_photo(sid: String) -> bool:
 
 
 ## A one-shot animal sound, quieter with distance from the camera.
+## [fauna2] Bird sounds are occasional, not constant: each category has one shared cooldown
+## (a flock's wings at most every ~2 s, one bird call every 7-16 s, twice as rare at night), so
+## dozens of birds never stack up or steal each other's voices mid-sound.
+const SND_CAT: Dictionary = {"flutter": "flutter", "song": "call", "coo": "call", "chirp": "call", "gull": "gull", "quack": "quack", "heron": "call"}
+const SND_GAP: Dictionary = {"flutter": Vector2(1.8, 3.0), "call": Vector2(7.0, 16.0), "gull": Vector2(9.0, 18.0), "quack": Vector2(6.0, 14.0)}
+var _snd_next: Dictionary = {}
+
+
+static func sound_gap(cat: String, night: float, r: float) -> float:
+	var g: Vector2 = SND_GAP.get(cat, Vector2(0.0, 0.0))
+	return lerpf(g.x, g.y, r) * (1.0 + clampf(night, 0.0, 1.0))
+
+
+func _sound_ok(sound: String) -> bool:
+	var cat: String = str(SND_CAT.get(sound, ""))
+	if cat == "":
+		return true
+	if age < float(_snd_next.get(cat, -1.0)):
+		return false
+	_snd_next[cat] = age + sound_gap(cat, _night, _rng.randf())
+	return true
+
+
 func _sound_at(sound: String, p: Vector3, db: float) -> void:
+	if not _sound_ok(sound):
+		return
 	var d: float = (_cam.global_position if _cam else _lumi_pos).distance_to(p)
 	var att: float = -20.0 * log(maxf(d, 2.0) / 2.0) / log(10.0)
 	if db + att < -40.0:

@@ -194,3 +194,50 @@ func test_lumi_pets_with_a_reach_and_tilt() -> void:
 	pm._pet_env(1.0)
 	assert_false(pm.is_petting())
 	pm.free()
+
+
+func test_bird_sounds_are_occasional() -> void:
+	var day: float = Fauna.sound_gap("call", 0.0, 0.0)
+	assert_gte(day, 7.0, "one bird call every 7 s at most")
+	assert_almost_eq(Fauna.sound_gap("call", 1.0, 0.0), day * 2.0, 0.01, "rarer at night")
+	assert_gte(Fauna.sound_gap("flutter", 0.0, 0.0), 1.5, "wings never stack up")
+	assert_eq(Fauna.sound_gap("meow", 0.0, 0.5), 0.0, "other sounds aren't gated")
+
+
+func test_feeding_brings_the_flock() -> void:
+	var w := FakeWorld.new()
+	w.field = HexField.new(1, 10.0, 3)
+	add_child_autofree(w)
+	var fa := Fauna.new()
+	fa.world = w
+	w.add_child(fa)
+	fa.set_process(false)
+	var birds: Array = []
+	for k: int in 4:
+		var b := Fauna.Animal.new()
+		b.sp = "pigeon"
+		b.kind = "bird"
+		b.hex = 0
+		b.state = Fauna.St.PECK
+		b.pos = Vector3(2.0 + k * 0.5, 0, 1.0)
+		b.target = b.pos
+		fa.animals.append(b)
+		birds.append(b)
+	birds[3].state = Fauna.St.PERCH
+	birds[3].perch = true
+	birds[3].pos.y = 5.0
+	var cat := Fauna.Animal.new()
+	cat.sp = "cat"
+	cat.kind = "cat"
+	cat.pos = Vector3(1, 0, 1)
+	fa.animals.append(cat)
+	assert_eq(fa.feed_candidate(Vector3(1.0, 0, 1.0)), birds[0], "the nearest bird on the ground")
+	assert_null(fa.feed_candidate(Vector3(30, 0, 30)), "no birds near")
+	var n: int = fa.feed_flock("pigeon", Vector3(1.5, 0, 1.0))
+	assert_eq(n, 4)
+	for b: Fauna.Animal in birds:
+		assert_gt(b.fed_t, 0.0)
+		assert_lt(Vector2(b.target.x - 1.5, b.target.z - 1.0).length(), 1.0, "pecking round the crumbs")
+	assert_eq(birds[3].state, Fauna.St.FLY, "the one on the lamp post flies down")
+	assert_false(birds[3].perch)
+	assert_false(fa._scared(birds[0], 5.0), "not shy while eating")

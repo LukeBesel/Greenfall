@@ -510,23 +510,31 @@ msgstr "[Bàļéš ŵôŕţĥ %s ŵéŕé šţàçķéð àţ ţĥé ĥûb ŵî�
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "[Ţĥé šçŕûbbéŕš ƒîļţéŕéð ţĥé àîŕ ţĥé ŵĥôļé ţîmé. Îţ'š à ļîţţļé çļéàŕéŕ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: fauna/fauna.gd:1211
+#: fauna/fauna.gd:1469
 msgid "E   pet %s"
 msgstr "E   [þéţ %s ~]"
 
-#: fauna/fauna.gd:1212
+#: fauna/fauna.gd:1470
 msgid "E   pet the cat"
 msgstr "E   [þéţ ţĥé çàţ ~]"
 
-#: fauna/fauna.gd:1261
+#: fauna/fauna.gd:1528
+msgid "E   scatter crumbs for the birds"
+msgstr "E   [šçàţţéŕ çŕûmbš ƒôŕ ţĥé bîŕðš ~~~~~~~]"
+
+#: fauna/fauna.gd:1576
+msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
+msgstr "[Ţĥé bîŕðš ĥàvé ðéçîðéð ýôû'ŕé àļļ ŕîĝĥţ. Çŕûmb Bàĝ àððéð ţô ýôûŕ Çôļļéçţîôñ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: fauna/fauna.gd:1632
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "[Ţĥé çàţ ĥàš ðéçîðéð ýôû'ŕé ĥéŕš. Mééţ %s. Šĥé ļîvéš àţ ţĥîš bàšé ñôŵ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: fauna/fauna.gd:1574
+#: fauna/fauna.gd:1951
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "[Ñéŵ šîĝĥţîñĝ: %s. Îţ'š îñ ţĥé Çôðéx ñôŵ. ~~~~~~~~~~~]"
 
-#: fauna/fauna.gd:1642
+#: fauna/fauna.gd:2019
 msgid "Snap! A %s for your Collection."
 msgstr "[Šñàþ! À %s ƒôŕ ýôûŕ Çôļļéçţîôñ. ~~~~~~~~]"
 
@@ -7361,6 +7369,14 @@ msgstr "[Þĥôţô: Véļvéţ Ĥàŕé ~~~]"
 #: data/events.json:trinkets[photo_velvet_hare].desc
 msgid "Soft as a whisper, quick as a rumour. The photo is a little blurry. Worth it."
 msgstr "[Šôƒţ àš à ŵĥîšþéŕ, qûîçķ àš à ŕûmôûŕ. Ţĥé þĥôţô îš à ļîţţļé bļûŕŕý. Ŵôŕţĥ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[crumb_bag].name
+msgid "Crumb Bag"
+msgstr "[Çŕûmb Bàĝ ~]"
+
+#: data/events.json:trinkets[crumb_bag].desc
+msgid "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
+msgstr "[À þàþéŕ bàĝ ôƒ çŕûmbš àñð šééð ĥûšķš. Ţĥé þîĝéôñš ķñôŵ ţĥé šôûñð ôƒ îţ ñôŵ. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/events.json:trinkets[pic_cat].name
 msgid "Photo: Stray Cat"
