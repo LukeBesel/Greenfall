@@ -82,8 +82,8 @@ static func _r_at(profile: Array[Vector2], z: float) -> float:
 ## Emits a triangle facing along its normals (Godot's front faces wind clockwise).
 static func _tri(st: SurfaceTool, p: Array[Vector3], n: Array[Vector3], uv: Array[Vector2]) -> void:
 	var g: Vector3 = (p[1] - p[0]).cross(p[2] - p[0])
-	var order: Array[int] = [0, 1, 2] if g.dot(n[0] + n[1] + n[2]) < 0.0 else [0, 2, 1]
-	for k: int in order:
+	var flip: bool = g.dot(n[0] + n[1] + n[2]) >= 0.0
+	for k: int in ([0, 2, 1] if flip else [0, 1, 2]):
 		st.set_normal(n[k])
 		st.set_uv(uv[k])
 		st.add_vertex(p[k])
