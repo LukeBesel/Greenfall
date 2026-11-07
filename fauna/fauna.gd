@@ -22,7 +22,9 @@ extends Node3D
 ## default 0), --fauna-lakes cleans every lake, --fauna-pose=sit|groom|sleep|pet|graze|fly holds a pose, --fauna-dense spawns on
 ## every qualifying hex, --fauna-report[=S] prints the census.
 
-enum St { IDLE, WALK, GRAZE, SIT, GROOM, SLEEP, FOLLOW, FLEE, FLY, PECK, PET, BASK, SWIM, SOAR, LEAVE }
+enum St { IDLE, WALK, GRAZE, SIT, GROOM, SLEEP, FOLLOW, FLEE, FLY, PECK, PET, BASK, SWIM, SOAR, LEAVE, PERCH }
+## [fauna2] Share of each species that likes a perch (lamp posts, roof crowns, trees) over the ground.
+const PERCH_LIKE: Dictionary = {"songbird": 0.6, "sparrow": 0.3, "pigeon": 0.3, "gull": 0.25}
 
 const CAT_NAMES: Array[String] = ["Biscuit", "Pixel", "Mochi", "Rivet", "Clover", "Sprocket", "Juniper", "Nimbus", "Pepper", "Tofu"]
 const UPDATE_FAR: float = 32.0
@@ -63,6 +65,7 @@ class Animal:
 	var check_t: float = 0.0
 	var seen: bool = false
 	var hold: bool = false
+	var perch: bool = false  # [fauna2] landing on / sitting on a perch up high
 
 var world: Node
 var animals: Array[Animal] = []
@@ -99,6 +102,7 @@ var _heart_mat: StandardMaterial3D
 var space := FaunaSpace.new()  # [fauna2] prop occupancy grid (rebuilt now and then)
 var _space_t: float = 0.0
 var _cyl := CylinderShape3D.new()
+var ambience: FaunaAmbience
 
 
 func setup(p_world: Node) -> void:
@@ -116,6 +120,9 @@ func setup(p_world: Node) -> void:
 	_crickets.stream = FaunaSounds.crickets_loop()
 	_crickets.volume_db = -80.0
 	add_child(_crickets)
+	ambience = FaunaAmbience.new()  # [fauna2] frontier soundscapes
+	add_child(ambience)
+	ambience.setup(regs)
 	_build_warm_spots()
 	EventBus.hex_level_changed.connect(func(_h: int, _l: int) -> void: _plan_t = minf(_plan_t, 0.4))
 	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: _plan_t = minf(_plan_t, 0.4))
@@ -428,7 +435,7 @@ func _others(me: Animal) -> Array:
 
 
 func _grounded(o: Animal) -> bool:
-	if o.kind in ["school", "swarm", "soarer"] or o.state in [St.FLY, St.SOAR, St.LEAVE] or o.hex == -1:
+	if o.kind in ["school", "swarm", "soarer"] or o.state in [St.FLY, St.SOAR, St.LEAVE, St.PERCH] or o.hex == -1:
 		return false
 	return true
 
@@ -484,6 +491,12 @@ func _spawn(key: String, e: Dictionary) -> bool:
 			p = find_spot(sid, a.hex, anc, 1.6)
 			if p == Vector3.INF:
 				p = anc
+			# [fauna2] Some sit up on a lamp post, a roof edge or a tree instead.
+			if p != Vector3.INF and _rng.randf() < float(PERCH_LIKE.get(sid, 0.0)):
+				var pr: Vector3 = _pick_perch(p, 16.0)
+				if pr != Vector3.INF:
+					p = pr
+					a.perch = true
 	else:
 		p = find_spot(sid, a.hex)
 	if p == Vector3.INF:
@@ -515,7 +528,7 @@ func _spawn(key: String, e: Dictionary) -> bool:
 		"swim":
 			a.state = St.SWIM
 		"bird":
-			a.state = St.PECK
+			a.state = St.PERCH if a.perch else St.PECK
 			var soar: int = int(d.get("soar", 0))
 			if soar > 0 and int(key.get_slice("|", 2)) < 1 and _count_state(sid, St.SOAR) < soar:
 				a.state = St.SOAR
@@ -761,7 +774,7 @@ func _update(a: Animal, dt: float) -> void:
 	a.check_t -= dt
 	if a.check_t <= 0.0:
 		a.check_t = 1.0 + _rng.randf()
-		if a.kind in ["quad", "deer", "hopper", "cat", "lizard", "frog", "seal", "heron"] or (a.kind == "bird" and a.state != St.FLY and a.state != St.SOAR):
+		if a.kind in ["quad", "deer", "hopper", "cat", "lizard", "frog", "seal", "heron"] or (a.kind == "bird" and a.state != St.FLY and a.state != St.SOAR and a.state != St.PERCH):
 			if not FaunaRules.spot_ok(world.field, a.pos, 0.2, false) or _props_blocked(a.pos, FaunaSpace.radius_of(a.sp, a.kind) * a.size * 0.8):
 				a.target = _wander_target(a, 4.0)
 				a.state = St.WALK
@@ -975,11 +988,14 @@ func _update_bird(a: Animal, dt: float) -> void:
 			a.roll = lerpf(a.roll, clampf(wrapf(atan2(-a.vel.x, -a.vel.z) - a.yaw, -PI, PI) * 2.0, -0.6, 0.6), dt * 3.0)
 			if hd < 0.4 and absf(a.pos.y - a.target.y) < 0.4:
 				a.pos = a.target
-				a.state = St.PECK
+				a.state = St.PERCH if a.perch else St.PECK
 				a.alt = 0.0
 				a.roll = 0.0
 				a.home = a.pos
 				a.t = _rng.randf_range(1.0, 3.0)
+		return
+	if a.state == St.PERCH:
+		_update_perch(a, dt)
 		return
 	# On the ground.
 	var scare: float = 3.2 if a.sp == "pigeon" else (4.2 if heron else 3.6)
@@ -1032,6 +1048,43 @@ func _update_bird(a: Animal, dt: float) -> void:
 			_sound_at("gull", a.pos, -10.0)
 
 
+## [fauna2] Up on a perch: look about, sing, now and then drop to the ground or hop to another.
+func _update_perch(a: Animal, dt: float) -> void:
+	a.gait = 0.0
+	a.phase += dt * 2.0
+	var high: float = a.pos.y - _ground_y(a.pos)
+	if high < 2.2 and _scared(a, 2.6):
+		_take_off(a, true)
+		return
+	a.head_yaw = sin(Time.get_ticks_msec() * 0.0016 + a.phase * 3.0) * 0.9
+	a.head_pitch = lerpf(a.head_pitch, -0.15 + sin(Time.get_ticks_msec() * 0.0011 + a.phase) * 0.2, dt * 3.0)
+	a.tail = 0.15
+	if a.sound_t <= 0.0:
+		a.sound_t = _rng.randf_range(3.0, 8.0)
+		var dl: float = _lumi_dist(a)
+		if a.sp == "songbird" and dl < 30.0:
+			_sound_at("song", a.pos, -8.0)
+		elif a.sp == "sparrow" and dl < 16.0 and _rng.randf() < 0.6:
+			_sound_at("chirp", a.pos, -11.0)
+		elif a.sp == "pigeon" and dl < 14.0 and _rng.randf() < 0.4:
+			_sound_at("coo", a.pos, -11.0)
+	if a.t <= 0.0:
+		a.t = _rng.randf_range(6.0, 16.0)
+		if _rng.randf() < 0.3:
+			_take_off(a, false)
+
+
+## A free perch near p (not one another bird sits on or is heading to), or Vector3.INF.
+func _pick_perch(p: Vector3, r: float) -> Vector3:
+	_ensure_space()
+	var taken: Array = []
+	for o: Animal in animals:
+		if o.perch:
+			taken.append(o.target if o.state == St.FLY else o.pos)
+	var opts: Array[Vector3] = space.free_perches(p, r, taken)
+	return opts[_rng.randi() % opts.size()] if not opts.is_empty() else Vector3.INF
+
+
 func _take_off(a: Animal, scared: bool) -> void:
 	var away: Vector3 = a.pos - _lumi_pos
 	away.y = 0.0
@@ -1048,6 +1101,13 @@ func _take_off(a: Animal, scared: bool) -> void:
 			break
 	if land == Vector3.INF:
 		land = a.home
+	# [fauna2] Perching species often head for a lamp post or a roof edge instead.
+	a.perch = false
+	if _rng.randf() < float(PERCH_LIKE.get(a.sp, 0.0)) * (1.4 if scared else 1.0):
+		var pr: Vector3 = _pick_perch(land, 10.0)
+		if pr != Vector3.INF:
+			land = pr
+			a.perch = true
 	a.state = St.FLY
 	a.target = land
 	a.alt = 1.0 if scared else 0.6
@@ -1058,6 +1118,7 @@ func _take_off(a: Animal, scared: bool) -> void:
 		for o: Animal in animals:
 			if o != a and o.sp == a.sp and o.state != St.FLY and o.state != St.LEAVE and o.state != St.SOAR and o.pos.distance_to(a.pos) < 6.0:
 				o.state = St.FLY
+				o.perch = false
 				o.target = land + Vector3(_rng.randf_range(-1.2, 1.2), 0, _rng.randf_range(-1.2, 1.2))
 				if not FaunaRules.spot_ok(f, o.target, 0.3) or not spot_free(o.target, o.sp, o.kind, o, o.size):
 					o.target = land
@@ -1348,6 +1409,8 @@ func pet(a: Animal) -> void:
 			pm.call("look_toward", a.pos + Vector3(0, 0.2, 0))
 		if pm.has_method("set_happy"):
 			pm.call("set_happy", 1.0)
+		if pm.has_method("pet_reach"):
+			pm.call("pet_reach", 2.4)  # [fauna2]
 	GameState.inc_stat("cats_petted")
 	GameState.inc_stat("wildlife_petted")  # any animal petted (unlocks the Pixel design, systems/designs.gd)
 	mark_seen("cat")
@@ -1776,6 +1839,8 @@ func _ambience(delta: float) -> void:
 		_crickets.volume_db = linear_to_db(_cricket_vol) - 8.0
 	elif _crickets.playing:
 		_crickets.stop()
+	if ambience:
+		ambience.tick(delta, _night, _sound_at, _lumi_pos)
 
 
 # --- Dev hooks ---------------------------------------------------------------------------------
@@ -1790,7 +1855,58 @@ func _hide_hud(n: Node = null) -> void:
 			_hide_hud(c)
 
 
+## [fauna2] A camera spot looking at focus from about (yaw, dist, pitch) that is not inside or
+## behind anything: tries 16 yaws either side, then falls back to the clearest one pulled in
+## front of what blocks it.
+func _shot_eye(focus: Vector3, yaw: float, dist: float, pitch: float) -> Vector3:
+	var best := Vector3.INF
+	var best_d: float = -1.0
+	for k: int in 17:
+		var yk: float = yaw + (k + 1) / 2 * 0.37 * (1.0 if k % 2 == 1 else -1.0)
+		var bk := Vector3(sin(yk), 0, cos(yk))
+		var ek: Vector3 = focus + bk * dist * cos(pitch) + Vector3(0, -sin(pitch) * dist, 0)
+		var free: float = _view_clear(focus, ek)
+		if free >= 0.999:
+			return ek
+		if free > best_d:
+			best_d = free
+			best = ek
+	# Nothing fully clear: the clearest view, pulled in to just before the obstacle.
+	var dir: Vector3 = best - focus
+	return focus + dir * maxf(best_d - 0.6 / maxf(dir.length(), 0.01), 0.15)
+
+
+## Share (0..1) of the segment focus -> eye that is clear of colliders and building footprints.
+func _view_clear(focus: Vector3, eye: Vector3) -> float:
+	var frac: float = 1.0
+	var lay: CityLayout = world.field.layout
+	if lay and not lay.wild:
+		for t: int in 24:
+			var q: Vector3 = focus.lerp(eye, (t + 1) / 24.0)
+			if q.y < 40.0 and lay.surface_at(q.x, q.z) == CityLayout.Surface.BUILDING:
+				frac = minf(frac, t / 24.0)
+				break
+	var w3: World3D = get_world_3d()
+	if w3 and w3.direct_space_state:
+		var ss: PhysicsDirectSpaceState3D = w3.direct_space_state
+		var from: Vector3 = focus + (eye - focus).normalized() * 0.4
+		var sph := SphereShape3D.new()
+		sph.radius = 0.35
+		var q2 := PhysicsShapeQueryParameters3D.new()
+		q2.shape = sph
+		q2.transform = Transform3D(Basis.IDENTITY, from)
+		q2.motion = eye - from
+		q2.collision_mask = 1
+		var res: PackedFloat32Array = ss.cast_motion(q2)
+		if res.size() == 2 and res[0] < 1.0:
+			var dd: float = (eye - from).length()
+			frac = minf(frac, (0.4 + res[0] * dd) / maxf(0.4 + dd, 0.01))
+	return frac
+
+
 ## --fauna-look=SPECIES[,dist,pitch,yaw]: put Lumi beside the nearest one and frame both.
+## [fauna2] --fauna-look=wide[,dist,pitch,yaw]: a wide shot centred on the busiest patch of
+## animals near Lumi (he stands at its edge, watching).
 func _dev_look() -> void:
 	if age < DevHooks.get_f("fauna-look-at", 0.0):
 		return
@@ -1798,7 +1914,27 @@ func _dev_look() -> void:
 	var parts: PackedStringArray = DevHooks.get_s("fauna-look", "cat").split(",")
 	var sid: String = parts[0]
 	var best: Animal = null
+	var wide: bool = sid == "wide"
+	var wide_c := Vector3.ZERO
+	if wide:
+		# The busiest patch: the grounded animal with the most others within 9 m.
+		var best_n: int = -1
+		for a: Animal in animals:
+			if not _grounded(a) or a.pos.distance_to(_lumi_pos) > 35.0:
+				continue
+			var n: int = 0
+			var acc := Vector3.ZERO
+			for o: Animal in animals:
+				if _grounded(o) and o.pos.distance_to(a.pos) < 9.0:
+					n += 1
+					acc += o.pos
+			if n > best_n:
+				best_n = n
+				best = a
+				wide_c = acc / maxf(1.0, float(n))
 	for a: Animal in animals:
+		if wide:
+			break
 		if a.sp == sid and a.state != St.LEAVE and (best == null or a.pos.distance_to(_lumi_pos) < best.pos.distance_to(_lumi_pos)):
 			best = a
 	if best == null:
@@ -1816,6 +1952,8 @@ func _dev_look() -> void:
 	var patch: Node3D = world.patch
 	var side: float = float(parts[4]) if parts.size() > 4 else 1.0
 	var gap: float = 1.1 if a.kind == "cat" else (3.5 if a.kind in ["deer", "bird", "swim", "school"] else 2.0)
+	if wide:
+		gap = 5.0
 	if DevHooks.has("fauna-gap"):
 		gap = DevHooks.get_f("fauna-gap", gap)
 	var dir := Vector3(sin(a.yaw + 0.9 * side), 0, cos(a.yaw + 0.9 * side)) * -1.0
@@ -1857,6 +1995,8 @@ func _dev_look() -> void:
 		var pm: Node = patch.get("model")
 		if pm and pm.has_method("set_happy"):
 			pm.call("set_happy", 1.0)
+		if pm and pm.has_method("pet_reach"):
+			pm.call("pet_reach", 9999.0)  # [fauna2] hold the reach for the shot
 	var cam: Node = world.get("cam")
 	if cam:
 		# Frame the animal (and Lumi beside it) with the rig's own camera, held still.
@@ -1877,29 +2017,19 @@ func _dev_look() -> void:
 			c3.current = true
 			var lerp_k: float = DevHooks.get_f("fauna-lerp", 0.0 if a.kind in ["school", "bird", "swarm", "frog", "lizard"] else 0.3)
 			var focus: Vector3 = a.pos.lerp(patch.global_position, lerp_k) + Vector3(0, 0.3 * a.size if a.kind != "school" else 0.0, 0)
+			if wide:
+				focus = wide_c.lerp(patch.global_position, 0.25) + Vector3(0, 0.6, 0)
 			if a.kind == "bird":
 				focus.y = a.pos.y + 0.12
-			if a.kind in ["deer", "heron"]:
+			if a.kind in ["deer", "heron"] and not wide:
 				focus.y += 0.35
 			var yw: float = base_yaw + PI + yaw_off
 			var back := Vector3(sin(yw), 0, cos(yw))
 			var eye: Vector3 = focus + back * dist * cos(pitch) + Vector3(0, -sin(pitch) * dist, 0)
-			# Keep the shot out of buildings: turn around the subject until the view is clear.
-			var lay: CityLayout = world.field.layout
-			if lay and not lay.wild:
-				for k: int in 16:
-					var yk: float = yw + (k + 1) / 2 * 0.4 * (1.0 if k % 2 == 0 else -1.0)
-					var bk := Vector3(sin(yk), 0, cos(yk))
-					var ek: Vector3 = focus + bk * dist * cos(pitch) + Vector3(0, -sin(pitch) * dist, 0)
-					var clear: bool = true
-					for t: int in 12:
-						var q: Vector3 = focus.lerp(ek, (t + 1) / 12.0)
-						if q.y < 16.0 and lay.surface_at(q.x, q.z) == CityLayout.Surface.BUILDING:
-							clear = false
-							break
-					if clear:
-						eye = ek
-						break
+			# [fauna2] Never inside geometry: turn around the subject until the view is clear (ray and
+			# sphere casts against the world, plus the layout's building footprints); if no angle is
+			# clear, pull in to just in front of the nearest hit.
+			eye = _shot_eye(focus, yw, dist, pitch)
 			c3.global_transform = Transform3D(Basis.looking_at(focus - eye, Vector3.UP), eye)
 			c3.fov = DevHooks.get_f("fauna-fov", 50.0)
 	if DevHooks.has("fauna-debug"):

@@ -21,6 +21,9 @@ const SKIP_PREFIX: Array[String] = ["Weeds", "Puddles", "Flags", "Fauna", "Grass
 var cells: Dictionary = {}  # Vector2i -> 1
 var stamped: int = 0
 var by_node: Dictionary = {}  # node name -> props stamped (debug)
+## Perches for songbirds: the top of tall slim things (lamp posts, poles, trees, roof crowns).
+var perches := PackedVector3Array()
+static var _tops: Dictionary = {}  # mesh RID id -> local top point (Vector3)
 
 
 static func cell_of(x: float, z: float) -> Vector2i:
@@ -130,7 +133,10 @@ func scan(root: Node, skip: Array = []) -> int:
 				var cnt: int = mm.instance_count if mm.visible_instance_count < 0 else mini(mm.visible_instance_count, mm.instance_count)
 				var gx: Transform3D = mmi.global_transform
 				for i: int in cnt:
-					var bb: AABB = (gx * mm.get_instance_transform(i)) * aabb
+					var ixf: Transform3D = gx * mm.get_instance_transform(i)
+					var bb: AABB = ixf * aabb
+					if perch_sized(bb):
+						perches.append(ixf * top_point(mm.mesh))
 					if prop_sized(bb):
 						_stamp_bb(bb)
 						n += 1
@@ -139,6 +145,8 @@ func scan(root: Node, skip: Array = []) -> int:
 			var mi := node as MeshInstance3D
 			if mi.mesh:
 				var bb2: AABB = mi.global_transform * mi.mesh.get_aabb()
+				if perch_sized(bb2):
+					perches.append(mi.global_transform * top_point(mi.mesh))
 				if prop_sized(bb2):
 					_stamp_bb(bb2)
 					n += 1
@@ -146,6 +154,58 @@ func scan(root: Node, skip: Array = []) -> int:
 		for c: Node in node.get_children():
 			stack.append(c)
 	return n
+
+
+## Something a small bird could sit on top of: tall and slim, or a roof crown up high.
+static func perch_sized(bb: AABB) -> bool:
+	return bb.end.y >= 2.5 and bb.end.y <= 30.0 and bb.size.y >= 0.3 and maxf(bb.size.x, bb.size.z) <= PROP_MAX_SIDE
+
+
+## The middle of a mesh's highest vertices (local space): where a bird stands on it.
+static func top_point(m: Mesh) -> Vector3:
+	var k: int = m.get_rid().get_id()
+	if _tops.has(k):
+		return _tops[k]
+	var top: float = -INF
+	var verts: Array[PackedVector3Array] = []
+	for si: int in m.get_surface_count():
+		var arr: Array = m.surface_get_arrays(si)
+		var pv: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
+		verts.append(pv)
+		for v: Vector3 in pv:
+			top = maxf(top, v.y)
+	var acc := Vector3.ZERO
+	var n: int = 0
+	for pv2: PackedVector3Array in verts:
+		for v2: Vector3 in pv2:
+			if v2.y > top - 0.03:
+				acc += v2
+				n += 1
+	var out: Vector3 = acc / float(n) if n > 0 else m.get_aabb().get_center() + Vector3(0, m.get_aabb().size.y * 0.5, 0)
+	out.y = top
+	_tops[k] = out
+	return out
+
+
+## Perches within r of p (xz) that no one is using (taken: Array of Vector3), nearest first.
+func free_perches(p: Vector3, r: float, taken: Array, max_n: int = 6) -> Array[Vector3]:
+	var cand: Array = []
+	for q: Vector3 in perches:
+		var d: float = Vector2(q.x - p.x, q.z - p.z).length()
+		if d > r:
+			continue
+		var used: bool = false
+		for t: Vector3 in taken:
+			if t.distance_to(q) < 0.35:
+				used = true
+				break
+		if not used:
+			cand.append([d, q])
+	cand.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) < float(b[0]))
+	var out: Array[Vector3] = []
+	for c: Array in cand.slice(0, max_n):
+		out.append(c[1])
+	return out
 
 
 func _stamp_bb(bb: AABB) -> void:

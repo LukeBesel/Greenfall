@@ -240,3 +240,150 @@ static func crickets(rng: RandomNumberGenerator) -> PackedFloat32Array:
 			s += sin(TAU * vo.x * t) * gate
 		b[i] = s * 0.035 + rng.randf_range(-0.002, 0.002)
 	return b
+
+
+# --- [fauna2] Frontier ambience ------------------------------------------------------------------
+
+static var _loops: Dictionary = {}
+
+
+## Registers the frontier one-shots (ice creaks, heron calls) with Audio.
+static func ensure_frontier() -> void:
+	if Audio.has_sound("ice_creak"):
+		return
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 6161
+	Audio.override("ice_creak", [wav(ice_creak(rng, 0.0)), wav(ice_creak(rng, 0.25)), wav(ice_creak(rng, -0.2))])
+	Audio.override("heron", [wav(heron(rng, 0.0)), wav(heron(rng, 0.08)), wav(heron(rng, -0.06))])
+
+
+## Seamless ambience beds, made on first use: wind (desert gusts), insects (cicadas and a
+## buzz), lapping (water against stones).
+static func loop_stream(id: String) -> AudioStreamWAV:
+	if not _loops.has(id):
+		var rng := RandomNumberGenerator.new()
+		rng.seed = hash(id)
+		var b := PackedFloat32Array()
+		match id:
+			"wind": b = wind(rng)
+			"insects": b = insects(rng)
+			"lapping": b = lapping(rng)
+		_loops[id] = wav(b, true)
+	return _loops[id]
+
+
+## Makes a buffer loop seamlessly: its last `fade` seconds are crossfaded into its start and
+## then dropped.
+static func loopify(b: PackedFloat32Array, fade: float) -> PackedFloat32Array:
+	var f: int = int(fade * RATE)
+	var n: int = b.size() - f
+	var out := PackedFloat32Array()
+	out.resize(n)
+	for i: int in n:
+		out[i] = b[i]
+	for i: int in f:
+		var k: float = float(i) / f
+		out[i] = b[i] * k + b[n + i] * (1.0 - k)
+	return out
+
+
+## Desert wind: low rumbling noise with slow gusts and a faint whistle on the strong ones.
+static func wind(rng: RandomNumberGenerator) -> PackedFloat32Array:
+	var dur: float = 9.0
+	var b := _buf(dur + 1.5)
+	var lp: float = 0.0
+	var lp2: float = 0.0
+	var bp: float = 0.0
+	var bv: float = 0.0
+	for i: int in b.size():
+		var t: float = float(i) / RATE
+		var gust: float = 0.55 + 0.3 * sin(TAU * t / 4.5) + 0.15 * sin(TAU * t / 1.7 + 1.3)
+		var n: float = rng.randf_range(-1.0, 1.0)
+		var cut: float = 0.02 + 0.05 * gust
+		lp += (n - lp) * cut
+		lp2 += (lp - lp2) * cut
+		# A resonant band (~700 Hz) for the whistle.
+		var w: float = TAU * (650.0 + 120.0 * gust) / RATE
+		bv += (n - bp) * w * 0.08 - bv * 0.02
+		bp += bv * w
+		b[i] = lp2 * 0.9 * gust + bp * 0.01 * maxf(gust - 0.7, 0.0)
+	return loopify(b, 1.5)
+
+
+## Insects: a cicada drone (pulsed high buzz, swelling and fading) and a softer second voice.
+static func insects(rng: RandomNumberGenerator) -> PackedFloat32Array:
+	var dur: float = 8.0
+	var b := _buf(dur)
+	for i: int in b.size():
+		var t: float = float(i) / RATE
+		var swell: float = pow(0.5 + 0.5 * sin(TAU * t / 8.0 - PI * 0.5), 1.5)
+		var swell2: float = pow(0.5 + 0.5 * sin(TAU * t / 4.0 + 1.0), 2.0)
+		var pulse: float = pow(0.5 + 0.5 * sin(TAU * 110.0 * t), 3.0)
+		var pulse2: float = pow(0.5 + 0.5 * sin(TAU * 72.0 * t), 2.0)
+		var s: float = sin(TAU * 5200.0 * t) * pulse * swell + sin(TAU * 3800.0 * t) * pulse2 * swell2 * 0.5
+		b[i] = s * 0.03 + rng.randf_range(-0.003, 0.003)
+	return b
+
+
+## Water lapping against stones and walls: soft, irregular sloshes with the odd plip.
+static func lapping(rng: RandomNumberGenerator) -> PackedFloat32Array:
+	var dur: float = 8.0
+	var b := _buf(dur + 1.0)
+	var lp: float = 0.0
+	var lp2: float = 0.0
+	var next: float = 0.0
+	var env: float = 0.0
+	var plips: Array[Vector2] = []
+	for k: int in 5:
+		plips.append(Vector2(rng.randf_range(0.0, dur), rng.randf_range(900.0, 1600.0)))
+	for i: int in b.size():
+		var t: float = float(i) / RATE
+		if t >= next:
+			next = t + rng.randf_range(0.7, 1.8)
+			env = rng.randf_range(0.6, 1.0)
+		env *= 0.99985
+		var n: float = rng.randf_range(-1.0, 1.0)
+		lp += (n - lp) * 0.08
+		lp2 += (lp - lp2) * 0.08
+		var s: float = lp2 * env * 1.6
+		for pl: Vector2 in plips:
+			var d: float = t - pl.x
+			if d >= 0.0 and d < 0.12:
+				s += sin(TAU * pl.y * (1.0 + d * 3.0) * d) * exp(-d * 40.0) * 0.08
+		b[i] = s
+	return loopify(b, 1.0)
+
+
+## Sea ice under strain: a stick-slip groan that speeds up, then a small crack.
+static func ice_creak(rng: RandomNumberGenerator, v: float) -> PackedFloat32Array:
+	var b := _buf(1.4)
+	var ph: float = 0.0
+	var lp: float = 0.0
+	for i: int in b.size():
+		var t: float = float(i) / RATE
+		var x: float = t / 1.4
+		var f: float = (90.0 + 60.0 * x + rng.randf_range(-6.0, 6.0)) * (1.0 + v)
+		ph += TAU * f / RATE
+		var saw: float = fmod(ph / TAU, 1.0) * 2.0 - 1.0
+		var slip: float = pow(0.5 + 0.5 * sin(TAU * (14.0 + 30.0 * x) * t), 6.0)
+		var crack: float = 0.0
+		if x > 0.78 and x < 0.86:
+			crack = rng.randf_range(-1.0, 1.0) * exp(-(x - 0.78) * 60.0)
+		lp += (saw * slip - lp) * 0.3
+		b[i] = (lp * 0.5 + crack * 0.6) * sin(PI * minf(x / 0.9, 1.0)) * 0.22
+	return b
+
+
+## A grey heron's harsh "fraank": a rough low call with a noisy edge.
+static func heron(rng: RandomNumberGenerator, v: float) -> PackedFloat32Array:
+	var b := _buf(0.55)
+	var ph: float = 0.0
+	for i: int in b.size():
+		var t: float = float(i) / RATE
+		var x: float = t / 0.55
+		ph += TAU * (330.0 - 90.0 * x) * (1.0 + v) / RATE
+		var saw: float = fmod(ph / TAU, 1.0) * 2.0 - 1.0
+		var rough: float = 0.65 + 0.35 * sin(TAU * 48.0 * t)
+		var s: float = (saw * 0.6 + sin(ph * 3.0) * 0.25 + rng.randf_range(-0.3, 0.3)) * rough
+		b[i] = s * sin(PI * pow(x, 0.4)) * 0.1
+	return b
