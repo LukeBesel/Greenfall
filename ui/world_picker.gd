@@ -29,8 +29,8 @@ func _ready() -> void:
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 10)
 	pc.add_child(vb)
-	vb.add_child(UITheme.label(tr("WORLDS"), 26, UITheme.GOLD))
-	var sub := UITheme.label(tr("Every world the ark has seeded keeps its own save. Pick one to continue there."), 14, UITheme.MUTED)
+	vb.add_child(UITheme.label(tr("PLANETS"), 26, UITheme.GOLD))
+	var sub := UITheme.label(tr("Every planet keeps its own save. Pick one to continue there."), 14, UITheme.MUTED)
 	sub.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	vb.add_child(sub)
 	var scroll := ScrollContainer.new()
@@ -86,7 +86,7 @@ func _row(i: int) -> Button:
 	vb.add_theme_constant_override("separation", 1)
 	vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hb.add_child(vb)
-	var title: String = "%s   %s" % [tr("WORLD %d") % (i + 1), str(w.get("name", "?")).to_upper()]
+	var title: String = "%s   %s" % [tr("PLANET %d") % (i + 1), str(w.get("name", "?")).to_upper()]
 	var tl := UITheme.label(title, 17, Color.WHITE)
 	tl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	vb.add_child(tl)

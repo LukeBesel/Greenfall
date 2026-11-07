@@ -14,18 +14,26 @@ var landmark: WorldLandmark
 var sky_body: SkyBody
 var weather: ShaderMaterial
 var progress: float = 0.0
+## [worlds2] A planet's own environment (data/planets.json -> planet/planets/<id>/env.gd): when it
+## exists it owns the planet's art (landmarks, sky bodies, props) and this view keeps only the
+## data-driven sky grade, Long Nights, the city tint and weathering. Its entry point is
+## `apply(world, field, kind)` with kind "city" | "wild" | "frontier".
+var env_script: String = ""
+var env: Object
 var _t: float = 99.0
 var _level: int = -1
 
 
 static func attach(slice: Node) -> WorldLookView:
 	var lk: Dictionary = WorldLook.current()
-	if lk.is_empty():
+	var env: String = WorldLook.env_path(WorldLook.planet_id())
+	if lk.is_empty() and env == "":
 		return null
 	var v := WorldLookView.new()
 	v.name = "WorldLookView"
 	v.world = slice
 	v.look = lk
+	v.env_script = env
 	slice.add_child(v)
 	v._setup()
 	return v
@@ -33,12 +41,14 @@ static func attach(slice: Node) -> WorldLookView:
 
 func _setup() -> void:
 	var frontier: bool = world.get("frontier") != null
+	if env_script != "":
+		_apply_env(frontier)
 	var sd: SkyDirector = world.get("sky_director")
 	if sd:
 		sd.night_dark = float(look.get("night_dark", 0.0))
 		if not frontier:
 			sd.grade = look.get("grade", {})
-	if look.has("sky_body") and sd:
+	if look.has("sky_body") and sd and (env == null or bool(look.get("keep_sky_body", false))):
 		sky_body = SkyBody.make(look["sky_body"], sd)
 		world.add_child(sky_body)
 	if frontier:
@@ -48,7 +58,7 @@ func _setup() -> void:
 		weather = make_weather(wc)
 		_coat_city()
 	var lk: String = WorldLook.landmark(look)
-	if lk != "" and world.get("layout") != null:
+	if lk != "" and world.get("layout") != null and (env == null or bool(look.get("keep_landmark", false))):
 		var seed_v: int = CradleMode.world_seed() if not CradleMode.profile.is_empty() else 1
 		var at: Vector3 = WorldLandmark.find_spot(world.layout, world.field, seed_v + int(GameState.current_hub) * 31)
 		var yaw: float = atan2(-at.x, -at.z) + PI  # broadside toward the base
@@ -58,6 +68,23 @@ func _setup() -> void:
 			landmark.set_overlay(weather)
 		print("[worlds2] %s landmark '%s' at (%.0f, %.0f)" % [str(look.get("type", "")), lk, at.x, at.z])
 	_update()
+
+
+## Runs the planet's env script: an instance (a Node joins the district) with apply(world, field, kind).
+func _apply_env(frontier: bool) -> void:
+	var sc: Script = load(env_script) as Script
+	if sc == null:
+		push_warning("[worlds2] planet env script failed to load: %s" % env_script)
+		return
+	var lay: Variant = world.get("layout")
+	var kind: String = "frontier" if frontier else ("wild" if lay is CityLayout and (lay as CityLayout).wild else "city")
+	env = sc.new()
+	if env is Node:
+		(env as Node).name = "PlanetEnv"
+		world.add_child(env as Node)
+	if env.has_method("apply"):
+		env.call("apply", world, world.get("field"), kind)
+	print("[worlds2] planet env %s (%s)" % [env_script, kind])
 
 
 ## The weathering overlay from a look's city.weather block.
@@ -120,6 +147,8 @@ func _update() -> void:
 		sd.storm = float(look.get("dust", 0.0)) * (1.0 - progress)
 	if weather:
 		weather.set_shader_parameter("amount", WorldLook.weather_amount(progress))
+	if env and env.has_method("set_progress"):  # planet env scripts may follow restoration too
+		env.call("set_progress", progress, lv)
 	if landmark and lv != _level:
 		landmark.set_level(lv)
 	_level = lv

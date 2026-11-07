@@ -378,6 +378,7 @@ func _ready() -> void:
 	for kid: String in ["frozen_port", "sunken_city", "dust_flats", "cradle_returns"]:
 		await _frontier_roundtrip(packed, kid, int(fhubs[kid]))
 	await _late_multi_world(packed)  # [late] Cradle Mode: a second world, the profile, travel both ways
+	_profiles_roundtrip()  # [worlds2] save profiles: migration into p1, profiles kept apart
 	SaveManager.delete_save()
 	print("[roundtrip] %s (%d failures)" % ["OK" if _fails == 0 else "FAILED", _fails])
 	get_tree().quit(1 if _fails > 0 else 0)
@@ -511,3 +512,65 @@ func _late_multi_world(packed: PackedScene) -> void:
 	CradleMode.profile = keep_profile
 	SaveManager.slot = 7
 	Economy.planet["name"] = "Verdance"
+
+
+# --- [worlds2] Save profiles --------------------------------------------------------------
+
+## Old flat saves migrate into profile 1 intact; a second profile's world, profile and slot stay
+## apart from the first's; both load back as they were.
+func _profiles_roundtrip() -> void:
+	var root: String = "user://roundtrip_profiles"
+	var keep: Array = [SaveManager.dev_dir, SaveManager.profile_slot, SaveManager.slot, CradleMode.profile.duplicate(true),
+		CradleMode.persist, CradleMode.path_override, GameState.to_dict()]
+	# Migration: a pre-profile folder (one slot and a profile) moves into p1 unchanged.
+	DirAccess.make_dir_recursive_absolute(root)
+	var legacy_save: Dictionary = GameState.to_dict()
+	SaveManager.write_dict(root.path_join("slot_0.save"), legacy_save)
+	var lp: Dictionary = CradleMode.default_profile()
+	lp["starseeds"] = 21.0
+	SaveManager.write_dict(root.path_join("profile.save"), lp)
+	_check("profiles_migrated", 2, SaveManager.migrate_to_profiles(root))
+	var back: Dictionary = SaveManager.read_dict(root.path_join("p1/slot_0.save"))
+	_check("profiles_migrated_save", JSON.stringify(JSON.parse_string(JSON.stringify(legacy_save.get("currencies")))), JSON.stringify(back.get("currencies")))
+	_check("profiles_migrated_profile", 21.0, float(CradleMode.from_dict(SaveManager.read_dict(root.path_join("p1/profile.save")))["starseeds"]))
+	# Isolation through the real SaveManager / CradleMode paths, in a scratch save dir.
+	SaveManager.dev_dir = "roundtrip_profiles_live"
+	CradleMode.path_override = ""
+	CradleMode.persist = true
+	SaveManager.slot = 0
+	SaveManager.set_profile(1)
+	CradleMode.profile = CradleMode.default_profile()
+	CradleMode.profile["starseeds"] = 11.0
+	CradleMode._add_world()
+	CradleMode.save_profile()
+	GameState.flags["profile_marker"] = "one"
+	SaveManager.save_game(false)
+	SaveManager.set_profile(2)
+	CradleMode.reload_for_profile()
+	_check("profiles_p2_fresh_worlds", 1, CradleMode.worlds().size())
+	_check("profiles_p2_no_save", false, SaveManager.has_save(0))
+	CradleMode.profile["starseeds"] = 22.0
+	CradleMode.profile["name"] = "Second"
+	CradleMode.save_profile()
+	GameState.flags["profile_marker"] = "two"
+	SaveManager.save_game(false)
+	SaveManager.set_profile(1)
+	CradleMode.reload_for_profile()
+	SaveManager.load_game()
+	_check("profiles_p1_back", "one|11|2", "%s|%d|%d" % [GameState.flags.get("profile_marker"), int(CradleMode.starseeds()), CradleMode.worlds().size()])
+	SaveManager.set_profile(2)
+	CradleMode.reload_for_profile()
+	SaveManager.load_game()
+	_check("profiles_p2_back", "two|22|Second", "%s|%d|%s" % [GameState.flags.get("profile_marker"), int(CradleMode.starseeds()), ProfileSlots.summary(2)["name"]])
+	# Clean up both scratch roots.
+	for n: int in range(1, SaveManager.PROFILES + 1):
+		SaveManager.delete_profile(n)
+	for f: String in ["p1/slot_0.save", "p1/profile.save"]:
+		DirAccess.remove_absolute(root.path_join(f))
+	SaveManager.dev_dir = keep[0]
+	SaveManager.profile_slot = keep[1]
+	SaveManager.slot = keep[2]
+	CradleMode.profile = keep[3]
+	CradleMode.persist = keep[4]
+	CradleMode.path_override = keep[5]
+	GameState.from_dict(keep[6])

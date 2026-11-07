@@ -331,8 +331,8 @@ func _build_ui() -> void:
 		WorldPicker.dev_sample(int(DevHooks.get_f("sample-worlds", 4.0)))
 	# [worlds2] Save profiles (and each profile's worlds).
 	var pname: String = ProfileSlots.display_name(CradleMode.profile, SaveManager.profile_slot)
-	# TRANSLATORS: Profiles button subtitle: the active save profile's name and its number of worlds.
-	_profiles_btn = _menu_button(tr("Profiles"), _open_profiles, tr("%s  ·  %s") % [pname, tr_n("%d world", "%d worlds", CradleMode.worlds().size()) % CradleMode.worlds().size()])
+	# TRANSLATORS: Profiles button subtitle: the active save profile's name and its number of planets.
+	_profiles_btn = _menu_button(tr("Profiles"), _open_profiles, "%s  ·  %s" % [pname, tr_n("%d planet", "%d planets", CradleMode.worlds().size()) % CradleMode.worlds().size()])
 	buttons.append(_profiles_btn)
 	_new_game = _menu_button(tr("New Game"), _on_new_game)
 	buttons.append(_new_game)

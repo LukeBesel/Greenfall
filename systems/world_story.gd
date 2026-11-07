@@ -15,6 +15,8 @@ const GAP_S: float = 50.0          # never two beats close together
 
 var world: Node
 var type_id: String = ""
+## Line keys to try, most specific first: a planet's own lines ("world_<planet>_<beat>"), then its look type's.
+var keys: Array = []
 var _t: float = 0.0
 var _gap: float = 0.0
 
@@ -25,7 +27,9 @@ static func attach(slice: Node) -> WorldStory:
 	var s := WorldStory.new()
 	s.name = "WorldStory"
 	s.world = slice
-	s.type_id = str(CradleMode.current_world().get("type", ""))
+	var w: Dictionary = CradleMode.current_world()
+	s.type_id = str(w.get("type", ""))
+	s.keys = [str(w.get("look", "")), str(WorldLook.current().get("type", "")), s.type_id]  # planet id, its look, the world type
 	s._gap = FIRST_DELAY_S
 	slice.add_child(s)
 	return s
@@ -46,6 +50,14 @@ static func next_beat(prog: float, hub_level: int, finale: bool, seen: Array) ->
 ## The wren_lines.json trigger for a type and beat.
 static func trigger(wtype: String, beat: String) -> String:
 	return "world_%s_%s" % [wtype, beat]
+
+
+## The first trigger in data/wren_lines.json for these ids and this beat (pure; the last id as fallback).
+static func pick_trigger(ids: Array, beat: String, lines: Dictionary) -> String:
+	for id: Variant in ids:
+		if str(id) != "" and lines.has(trigger(str(id), beat)):
+			return trigger(str(id), beat)
+	return trigger(str(ids.back()) if not ids.is_empty() else "", beat)
 
 
 static func seen() -> Array:
@@ -74,6 +86,6 @@ func _process(delta: float) -> void:
 		return
 	seen().append(b)
 	GameState.flags["wren_awake"] = true  # she is on the ark's relay now
-	w.say(trigger(type_id, b), 1.0, true, {}, 2)
+	w.say(pick_trigger(keys, b, w.lines), 1.0, true, {}, 2)
 	print("[worlds2] WREN %s beat on %s" % [b, type_id])
 	_gap = GAP_S

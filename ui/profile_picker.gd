@@ -121,14 +121,18 @@ static func summary_text(s: Dictionary) -> Array[String]:
 	if bool(s.get("empty", true)):
 		return [TranslationServer.translate("Empty slot"), ""]
 	var w: int = int(s["worlds"])
-	# TRANSLATORS: Save profile summary: play time, number of worlds, the current world's name.
+	# TRANSLATORS: Save profile summary: play time, number of planets, the current planet's name.
 	var a: String = TranslationServer.translate("%s  ·  %s  ·  on %s") % [ProfileSlots.hours(float(s["time_s"])),
-		TranslationServer.translate_plural("%d world", "%d worlds", w) % w, str(s["world"])]
+		TranslationServer.translate_plural("%d planet", "%d planets", w) % w, str(s["world"])]
 	var parts: Array[String] = []
 	if str(s.get("district", "")) != "":
 		parts.append(str(s["district"]))
 	# TRANSLATORS: Save profile summary: how far the Bloom (restoration milestones) has come.
 	parts.append(TranslationServer.translate("Bloom %d%%") % int(s["bloom_pct"]))
+	# Only the game's three currencies: Cubes, Seeds, Parts.
+	parts.append(TranslationServer.translate("%s cubes") % Settings.fmt(BigNum.from_float(float(s.get("cubes", 0.0)))))
+	parts.append(TranslationServer.translate("%s seeds") % Settings.fmt(BigNum.from_float(float(s.get("seeds", 0.0)))))
+	parts.append(TranslationServer.translate_plural("%d part", "%d parts", int(s.get("parts", 0.0))) % int(s.get("parts", 0.0)))
 	return [a, "  ·  ".join(parts)]
 
 

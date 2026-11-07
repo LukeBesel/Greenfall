@@ -165,7 +165,8 @@ func test_summary_from_profile_and_save() -> void:
 		{"name": "Quinaris", "slot": 1, "stats": {"time_played": 999999.0}}]}
 	var ms: Array = Bloom.milestones()
 	var done: Array = [str(ms[0]["id"])] if not ms.is_empty() else []
-	var save: Dictionary = {"stats": {"time_played": 1800.0}, "flags": {"last_district": "Upton Ferry", "bloom_done": done}, "saved_unix": 77.0}
+	var save: Dictionary = {"stats": {"time_played": 1800.0}, "flags": {"last_district": "Upton Ferry", "bloom_done": done}, "saved_unix": 77.0,
+		"currencies": {"cubes": BigNum.from_float(3400).serialize(), "seeds": BigNum.from_float(120).serialize()}, "parts": [{}, {}, {}]}
 	var s: Dictionary = ProfileSlots.summary_from(prof, save, 1)
 	assert_false(s["empty"])
 	assert_eq(s["name"], "Mira")
@@ -179,6 +180,9 @@ func test_summary_from_profile_and_save() -> void:
 	var lines: Array[String] = ProfilePicker.summary_text(s)
 	assert_string_contains(lines[0], "Quinaris")
 	assert_string_contains(lines[1], "Upton Ferry")
+	assert_almost_eq(float(s["cubes"]), 3400.0, 0.01)
+	assert_almost_eq(float(s["seeds"]), 120.0, 0.01)
+	assert_eq(int(s["parts"]), 3)
 
 
 func test_rename() -> void:

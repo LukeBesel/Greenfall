@@ -33,6 +33,11 @@ static func summary_from(prof: Dictionary, save: Dictionary, n: int) -> Dictiona
 	out["district"] = str(flags.get("last_district", "")) if flags.get("last_district", "") != "<null>" else ""
 	var total: int = maxi(Bloom.milestones().size(), 1)
 	out["bloom_pct"] = int(round(100.0 * float((flags.get("bloom_done", []) as Array).size()) / float(total)))
+	# The three currencies only (Cubes, Parts, Seeds), as numbers for the card.
+	var money: Dictionary = save.get("currencies", {})
+	for k: String in ["cubes", "seeds"]:
+		out[k] = BigNum.from_serialized(money[k]).to_float() if money.has(k) else 0.0
+	out["parts"] = BigNum.from_serialized(money["parts"]).to_float() if money.has("parts") else float((save.get("parts", []) as Array).size())
 	out["saved_unix"] = maxf(float(save.get("saved_unix", 0.0)), float(prof.get("saved_unix", 0.0)))
 	return out
 

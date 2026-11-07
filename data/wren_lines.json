@@ -364,78 +364,78 @@
   "new_world": [["...new ground... new junk..."], ["New world, new sky. Same job. You're better at it than you were the first time."], ["Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."]],
   "garden_place": [["...pretty..."], ["You're decorating. I approve. The cats are going to approve more."], ["A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."]],
   "world_ice_moon_arrival": [
-    ["Ice Moon. Minus forty at noon, and that's the warm side. Keep your treads moving, {name}.", "Everything here froze where it fell. The junk too. It's a museum nobody visits."]
+    ["An ice moon. The Ledger ran its cold storage out here. Cold keeps things, {name}. Including evidence.", "Everything froze where they dropped it. Even the junk looks like it's waiting for a refund."]
   ],
   "world_ice_moon_memory_1": [
-    ["Memory, recovered: the ark seeded ice moons because ice keeps. Seeds, water, records. Cold is just patience with bad manners."]
+    ["Ledger ice-haul manifests, still in the silo's memory. They melted this moon's lakes for coolant and shipped the water off-world. The trash, they left right here."]
   ],
   "world_ice_moon_halfway": [
-    ["Halfway. The lakes under the ice are talking back. Mostly creaking. I'll take it."]
+    ["Halfway. The lakes under the ice are filling again. The Ledger never budgeted for things coming back."]
   ],
   "world_ice_moon_memory_2": [
-    ["That silo out on the ice was ours. The Makers buried a spare garden in every frozen place they found, in case the warm worlds failed. They did."]
+    ["That silo was a seed vault before the Ledger made it a depot. Someone kept seeds hidden in the bottom tier anyway. I'd have liked to meet them."]
   ],
   "world_ice_moon_restored": [
-    ["The ice moon is breathing. Green under a ringed sky. The Makers never saw this. I'm seeing it for them."]
+    ["Green under a ringed sky. The Ledger wrote this moon off as a loss. It was wrong about that too."]
   ],
   "world_desert_world_arrival": [
-    ["Desert World. Dry enough that the dust has dust. Water is the whole game here.", "Sun, sand and one very small robot. I like our odds. Mostly."]
+    ["A desert world. It wasn't always one. The Ledger pumped its aquifers dry and sold the water by the litre.", "Sun, sand and one very small robot. I like our odds. Mostly."]
   ],
   "world_desert_world_memory_1": [
-    ["Memory file, partial: desert worlds were seeded last. 'Hard ground, long sun, nothing to lose.' Someone wrote that in the margin. I think it was a joke."]
+    ["Ledger survey file, partial: 'Remaining yield negligible. Recommend abandonment in place.' In place. That's their phrase for leaving the mess."]
   ],
   "world_desert_world_halfway": [
-    ["Halfway green. On a desert. If the Makers had a betting pool, someone just lost."]
+    ["Halfway green, on a planet they filed as 'negligible'. I'm keeping a list of their mistakes. It's getting long."]
   ],
   "world_desert_world_memory_2": [
-    ["That tower turned sunlight into everything once. The mirrors kept falling over and nobody had time to stand them up. You do."]
+    ["That solar tower powered the pumps. When the water ran out they stopped paying for the mirrors, and they fell over one by one. You're standing them back up."]
   ],
   "world_desert_world_restored": [
-    ["Shade, water, flowers in the sand. The sun's as hot as ever, but now it works for us."]
+    ["Shade, water, flowers in the sand. 'Negligible', they said. I'm framing that word."]
   ],
   "world_ocean_world_arrival": [
-    ["Ocean World. More sea than land, and the land is mostly arguing with the sea. Mind the edges.", "Salt in the air, salt on the junk. Don't lick anything, {name}."]
+    ["An ocean world. The Ledger dredged its sea floor for metals and dumped the tailings along every coast. Mind the edges.", "Salt in the air, salt on the junk. Don't lick anything, {name}."]
   ],
   "world_ocean_world_memory_1": [
-    ["I remember the coast worlds. Officially the ark seeded them for the fish. Unofficially, the crew liked the view."]
+    ["I found the dumping schedule. Every tide for forty years. They called it 'coastal storage'. The sea called it something else."]
   ],
   "world_ocean_world_halfway": [
-    ["Halfway. The tide comes in on time now. The moon and I have an understanding."]
+    ["Halfway. The water's clearing. The fish are cautiously reconsidering."]
   ],
   "world_ocean_world_memory_2": [
-    ["Those gates held the sea back for a century. Then nobody came to close them. You'd think the sea would be grateful. It isn't."]
+    ["Those surge gates kept the Ledger's dredging yards dry. When they left, nobody closed them, and the sea took the yards back. Fair."]
   ],
   "world_ocean_world_restored": [
-    ["Green to the waterline. Gulls soon, probably. I'm told they're loud. I'm ready."]
+    ["Green to the waterline, clear water past it. 'Coastal storage' is just coast again."]
   ],
   "world_fungal_world_arrival": [
-    ["Marsh World. Warm, wet and soft underfoot. Everything here wants to grow, mostly the wrong things first.", "Mist on everything. If you get lost, follow the squelching. That'll be you."]
+    ["A marsh world. The Ledger's chemical works drained into these valleys for a century. Everything grows here, mostly the wrong things first.", "Mist on everything. If you get lost, follow the squelching. That'll be you."]
   ],
   "world_fungal_world_memory_1": [
-    ["Memory, recovered: the ark seeded marsh worlds as nurseries. Wet ground forgives mistakes. The Makers needed a lot of forgiving."]
+    ["Ledger compliance report: 'Runoff within acceptable limits.' Acceptable to whom, I'd like to ask. The frogs weren't consulted."]
   ],
   "world_fungal_world_halfway": [
-    ["Halfway. The mist lifts a little more each morning, then rolls back in to check on us."]
+    ["Halfway. The mist smells less like a laboratory every morning. Progress has a smell. It's mud."]
   ],
   "world_fungal_world_memory_2": [
-    ["That cooling tower ran the whole valley once. Now it's mostly mushroom. Honestly, the mushrooms are better tenants."]
+    ["That cooling tower ran the chemical works. The fungi moved in after the Ledger moved out. They've been cleaning up longer than we have. Respect."]
   ],
   "world_fungal_world_restored": [
-    ["Clear air over the marsh. Reeds, frogs, real flowers. Soft ground, soft in the good way now."]
+    ["Clear air over the marsh. Reeds, frogs, real flowers. The runoff is just rain now."]
   ],
   "world_rust_world_arrival": [
-    ["Rust World. Industry from pole to pole, and none of it switched off properly. Mind the sharp bits. All of them.", "The air tastes like old pennies. I don't have a tongue. I can still tell."]
+    ["A rust world. This is where the Ledger broke its own ships. Pole to pole, and nothing switched off properly.", "The air tastes like old pennies. I don't have a tongue. I can still tell."]
   ],
   "world_rust_world_memory_1": [
-    ["I remember this kind. The ark seeded rust worlds on purpose: if a garden grows in a scrapyard, it grows anywhere. You're the test, {name}. No pressure."]
+    ["The Ledger's ledgers, literally: the tonnage stripped from every planet in the system, filed here. They kept perfect books on how they ruined everything."]
   ],
   "world_rust_world_halfway": [
-    ["Halfway. Less rust in the wind today. I don't have lungs, but I have standards."]
+    ["Halfway. Less rust in the wind. I don't have lungs, but I have standards."]
   ],
   "world_rust_world_memory_2": [
-    ["That gantry broke ships for a living. Thousands of them. The ark was nearly one. I try not to hold it against the crane."]
+    ["That gantry scrapped the Ledger's fleet when the money ran out. The ark was on the list. Someone took it off. I think about that a lot."]
   ],
   "world_rust_world_restored": [
-    ["A rust world, green. The old cranes have flowers at their feet. It looks like an apology, finally accepted."]
+    ["A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."]
   ]
 }

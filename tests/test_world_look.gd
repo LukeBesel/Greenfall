@@ -205,6 +205,48 @@ func test_every_world_type_has_wren_lines_for_every_beat() -> void:
 			assert_false(pools.is_empty() or (pools[0] as Array).is_empty(), "%s %s" % [t["id"], b])
 
 
+func test_planet_ids_map_onto_looks_and_lines() -> void:
+	var cfg: Dictionary = WorldLook.cfg()
+	var keep: Variant = cfg.get("planets", {})
+	cfg["planets"] = {"frost_moon": "ice_moon", "scrap_belt": {"look": "rust_world", "landmark": "cryo_spire"}}
+	assert_eq(str(WorldLook.look_for_planet("frost_moon").get("type")), "ice_moon")
+	var sb: Dictionary = WorldLook.look_for_planet("scrap_belt", ["long_nights"])
+	assert_eq(str(sb["type"]), "rust_world")
+	assert_eq(WorldLook.landmark(sb), "cryo_spire", "a planet can override its type's landmark")
+	assert_gt(float(sb.get("night_dark", 0.0)), 0.0)
+	assert_eq(str(WorldLook.look_for_planet("desert_world")["type"]), "desert_world", "a look type is its own planet id")
+	assert_true(WorldLook.look_for_planet("nowhere").is_empty())
+	cfg["planets"] = keep
+	var lines: Dictionary = {"world_frost_moon_arrival": [["x"]], "world_ice_moon_arrival": [["y"]], "world_ice_moon_halfway": [["z"]]}
+	assert_eq(WorldStory.pick_trigger(["frost_moon", "ice_moon"], "arrival", lines), "world_frost_moon_arrival", "a planet's own line first")
+	assert_eq(WorldStory.pick_trigger(["frost_moon", "ice_moon"], "halfway", lines), "world_ice_moon_halfway", "then its look's")
+
+
+func test_a_planet_env_script_is_called() -> void:
+	var path: String = "user://test_planet_env.gd"
+	var f := FileAccess.open(path, FileAccess.WRITE)
+	f.store_string("extends Node\nvar got: Array = []\nfunc apply(world: Node, field: Variant, kind: String) -> void:\n\tgot = [world.name, field, kind]\n")
+	f.close()
+	var keep: Dictionary = WorldLook._planets
+	WorldLook._planets = {"testp": {"env": path, "look": "ice_moon"}}
+	CradleMode._add_world()
+	CradleMode.profile["current"] = 1
+	(CradleMode.worlds()[1] as Dictionary)["planet"] = "testp"
+	assert_eq(WorldLook.planet_id(), "testp")
+	assert_eq(str(WorldLook.current().get("type")), "ice_moon", "the registry maps the planet onto a look")
+	var slice := Node.new()
+	slice.name = "FakeSlice"
+	add_child_autofree(slice)
+	var v: WorldLookView = WorldLookView.attach(slice)
+	assert_not_null(v)
+	var env: Node = slice.get_node_or_null("PlanetEnv")
+	assert_not_null(env, "the planet's env joins the district")
+	assert_eq(str(env.get("got")), str([&"FakeSlice", null, "city"]))
+	assert_null(slice.get_node_or_null("WorldLandmark"), "the env owns the planet's art")
+	WorldLook._planets = keep
+	DirAccess.remove_absolute(path)
+
+
 func test_wren_speaks_world_lines_clearly() -> void:
 	var w := Wren.new()
 	add_child_autofree(w)
@@ -215,7 +257,7 @@ func test_wren_speaks_world_lines_clearly() -> void:
 	w._process(0.1)
 	assert_eq(got.size(), 1)
 	assert_eq(int(got[0][1]), 2, "the ark relay is clear")
-	assert_string_contains(str(got[0][0]), "scrapyard")
+	assert_string_contains(str(got[0][0]), "Ledger")
 
 
 # --- World picker ----------------------------------------------------------------------------

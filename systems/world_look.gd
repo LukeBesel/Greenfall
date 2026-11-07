@@ -55,7 +55,68 @@ static func look_for(type_id: String, mods: Array = []) -> Dictionary:
 	return out
 
 
-## The current world's look ({} on Verdance).
+## [worlds2] The look of a planet id (data/world_looks.json "planets": planet id -> look type, or
+## {"look": type, ...overrides}), so a fixed solar system can map its planets onto these looks.
+## A planet id that is itself a look type works too. {} for unknown ids.
+static func look_for_planet(planet_id: String, mods: Array = []) -> Dictionary:
+	var pl: Variant = (cfg().get("planets", {}) as Dictionary).get(planet_id, planet_id)
+	if pl is String:
+		return look_for(str(pl), mods)
+	if pl is Dictionary:
+		var out: Dictionary = look_for(str((pl as Dictionary).get("look", "")), mods)
+		if out.is_empty():
+			return out
+		for k: Variant in pl:
+			if str(k) != "look":
+				out[k] = (pl as Dictionary)[k]
+		out["planet"] = planet_id
+		return out
+	return {}
+
+
+# --- Planet registry hook (data/planets.json, planet/planets/<id>/env.gd) -------------------
+
+const PLANETS_PATH: String = "res://data/planets.json"
+static var _planets: Dictionary = {}
+
+
+## The shared planet registry as {id: entry} (accepts {"planets": [{id...}]}, {"planets": {id: {}}}
+## or a bare {id: {}} map). {} when the file does not exist.
+static func planets() -> Dictionary:
+	if _planets.is_empty() and FileAccess.file_exists(PLANETS_PATH):
+		var raw: Dictionary = Economy.read_json(PLANETS_PATH)
+		var src: Variant = raw.get("planets", raw)
+		if src is Array:
+			for e: Variant in src:
+				if e is Dictionary and (e as Dictionary).has("id"):
+					_planets[str(e["id"])] = e
+		elif src is Dictionary:
+			for k: Variant in src:
+				if not str(k).begins_with("_") and src[k] is Dictionary:
+					_planets[str(k)] = src[k]
+	return _planets
+
+
+## The current world's planet id: its record's "planet" (or "look") key; "" when it has none.
+static func planet_id() -> String:
+	if CradleMode.profile.is_empty():
+		return ""
+	var w: Dictionary = CradleMode.current_world()
+	return str(w.get("planet", w.get("look", "")))
+
+
+## A planet's environment script (its registry "env" path, else planet/planets/<id>/env.gd when
+## that file exists); "" when the planet has none and the generic look does everything.
+static func env_path(id: String) -> String:
+	if id == "":
+		return ""
+	var e: Dictionary = planets().get(id, {})
+	var p: String = str(e.get("env", "res://planet/planets/%s/env.gd" % id))
+	return p if ResourceLoader.exists(p) else ""
+
+
+## The current world's look ({} on Verdance). A world record may name its look ("look": a planet
+## id or look type); otherwise its world type is used.
 static func current() -> Dictionary:
 	if override_type != "":
 		return look_for(override_type, override_mods)
@@ -65,7 +126,13 @@ static func current() -> Dictionary:
 	var mods: Array = w.get("modifiers", [])
 	if DevHooks.has("world-mods"):  # dev (shots): --world-mods=heavy_rain+long_nights
 		mods = Array(DevHooks.get_s("world-mods", "").split("+", false))
-	return look_for(str(w.get("type", "")), mods)
+	var pid: String = str(w.get("planet", w.get("look", w.get("type", ""))))
+	var lk: Dictionary = look_for_planet(pid, mods)
+	if lk.is_empty() and planets().has(pid):  # a registry planet: its "look" type, else its world type
+		lk = look_for_planet(str((planets()[pid] as Dictionary).get("look", w.get("type", ""))), mods)
+	if not lk.is_empty() and planets().has(pid):
+		lk["planet"] = pid
+	return lk
 
 
 static func is_active() -> bool:
