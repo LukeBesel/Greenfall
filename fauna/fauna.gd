@@ -560,6 +560,10 @@ func _spawn(key: String, e: Dictionary) -> bool:
 		_:
 			a.state = St.IDLE
 			a.t = _rng.randf_range(1.0, 4.0)
+			if a.kind == "deer":
+				_attach_rig(a, "stag" if hash(a.key) % 3 == 0 else "deer")
+			elif sid == "fox":
+				_attach_rig(a, "fox")
 	animals.append(a)
 	return true
 
@@ -581,13 +585,32 @@ func _attach_rig(a: Animal, model: String) -> void:
 ## [fauna2] Poses a rigged animal from its state: the action, its speed, eyes and head look.
 func _drive_rig(a: Animal, xf: Transform3D, dt: float) -> void:
 	var r: FaunaRig = a.rig
-	r.global_transform = xf
+	r.global_transform = xf if a.kind == "cat" else Transform3D(xf.basis, Vector3(xf.origin.x, a.pos.y, xf.origin.z))  # the gallop has its own bounds
 	var spd: float = 0.0
 	if a.rig_prev != Vector3.INF and dt > 0.0001:
 		spd = Vector2(a.pos.x - a.rig_prev.x, a.pos.z - a.rig_prev.z).length() / dt
 	a.rig_prev = a.pos
 	var closed: float = 0.0
 	var look: bool = true
+	if a.kind != "cat":
+		# Deer and foxes (Quaternius actions): idle, walk, gallop, grazing.
+		match a.state:
+			St.GRAZE:
+				r.play("Eating", 1.0, 0.4)
+				look = false
+			St.FLEE:
+				r.play("Gallop", clampf(spd / (6.0 if a.kind == "deer" else 4.5), 0.6, 1.6), 0.2)
+				look = false
+			_:
+				if spd > 2.0:
+					r.play("Gallop", clampf(spd / 6.0, 0.6, 1.6), 0.25)
+				elif spd > 0.05:
+					r.play("Walk", clampf(spd / (0.55 if a.kind == "deer" else 0.7), 0.6, 1.8), 0.3)
+				else:
+					r.play("Idle", 1.0, 0.4)
+		r.look(a.head_yaw * 0.7 if look else 0.0, 0.0)
+		r.advance(dt)
+		return
 	match a.state:
 		St.SIT:
 			r.play("Sit")

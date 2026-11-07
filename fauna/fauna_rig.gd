@@ -10,6 +10,8 @@ extends Node3D
 const DIR: String = "res://art/models/fauna/%s.glb"
 const SHELLS: int = 6
 const SHELL_RANGE: float = 9.0
+## Target overall height (metres, rest pose incl. ears/antlers) for vendor models; 0 = as built.
+const HEIGHT: Dictionary = {"cat": 0.0, "deer": 1.22, "stag": 1.55, "fox": 0.5}
 
 ## Cat coats (index = Animal.coat): ginger tabby, black tuxedo, grey tabby, brown tabby,
 ## cream, calico.
@@ -47,10 +49,29 @@ static func make(p_id: String) -> FaunaRig:
 	var r := FaunaRig.new()
 	r.id = p_id
 	r.name = "Rig_" + p_id
-	var inst: Node = (_scenes[p_id] as PackedScene).instantiate()
+	var inst: Node3D = (_scenes[p_id] as PackedScene).instantiate() as Node3D
 	r.add_child(inst)
 	r._wire(inst)
+	r._fit(inst, float(HEIGHT.get(p_id, 0.0)))
 	return r
+
+
+## Scales a vendor model to its real size and turns it to face -Z (head forward).
+func _fit(inst: Node3D, height: float) -> void:
+	if height <= 0.0 or meshes.is_empty():
+		return
+	var bb := AABB()
+	var first: bool = true
+	for mi: MeshInstance3D in meshes:
+		var b: AABB = _rel(mi, inst) * mi.mesh.get_aabb()
+		bb = b if first else bb.merge(b)
+		first = false
+	var k: float = height / maxf(bb.size.y, 0.001)
+	inst.scale = Vector3.ONE * k
+	if skel and _head >= 0:
+		var hp: Vector3 = _rel(skel, inst) * skel.get_bone_global_rest(_head).origin
+		if hp.z > 0.0:
+			inst.rotation.y = PI
 
 
 func _wire(root: Node) -> void:
@@ -62,6 +83,8 @@ func _wire(root: Node) -> void:
 		meshes.append(n as MeshInstance3D)
 	if skel:
 		_head = skel.find_bone("head")
+		if _head < 0:
+			_head = skel.find_bone("Head")
 	if anim:
 		anim.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 		for an: StringName in anim.get_animation_list():
@@ -74,10 +97,12 @@ func _wire(root: Node) -> void:
 			mi.set_surface_override_material(s, _material(nm))
 		# Fur shells: a second instance of the skinned mesh with only the fur surfaces, seen near.
 		var fur_s: int = -1
+		var baked: bool = false
 		for s2: int in mi.mesh.get_surface_count():
 			var m2: Material = mi.mesh.surface_get_material(s2)
-			if m2 and m2.resource_name == "Fur":
+			if m2 and m2.resource_name in ["Fur", "FurBaked"]:
 				fur_s = s2
+				baked = m2.resource_name == "FurBaked"
 		if fur_s >= 0:
 			var sh := MeshInstance3D.new()
 			sh.mesh = mi.mesh
@@ -89,8 +114,19 @@ func _wire(root: Node) -> void:
 			sh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			sh.visibility_range_end = SHELL_RANGE
 			for s3: int in mi.mesh.get_surface_count():
-				sh.set_surface_override_material(s3, _shell_chain() if s3 == fur_s else _invisible())
+				sh.set_surface_override_material(s3, _shell_chain(baked) if s3 == fur_s else _invisible())
 			shells.append(sh)
+
+
+## n's transform relative to its ancestor root (works outside the tree).
+static func _rel(n: Node3D, root: Node3D) -> Transform3D:
+	var t := Transform3D.IDENTITY
+	var c: Node = n
+	while c != null and c != root:
+		if c is Node3D:
+			t = (c as Node3D).transform * t
+		c = c.get_parent()
+	return t
 
 
 static func _material(nm: String) -> Material:
@@ -98,10 +134,17 @@ static func _material(nm: String) -> Material:
 		return _mats[nm]
 	var m: Material
 	match nm:
-		"Fur":
+		"Fur", "FurBaked":
 			var f := ShaderMaterial.new()
 			f.shader = preload("res://art/shaders/fauna_fur.gdshader")
+			f.set_shader_parameter("baked", nm == "FurBaked")
 			m = f
+		"Gloss":
+			var g := StandardMaterial3D.new()
+			g.vertex_color_use_as_albedo = true
+			g.roughness = 0.06
+			g.clearcoat_enabled = true
+			m = g
 		"Eye":
 			var e := ShaderMaterial.new()
 			e.shader = preload("res://art/shaders/fauna_eye.gdshader")
@@ -127,22 +170,26 @@ static func _material(nm: String) -> Material:
 	return m
 
 
-static func _shell_chain() -> Material:
-	if _mats.has("_shells"):
-		return _mats["_shells"]
+static func _shell_chain(baked: bool = false) -> Material:
+	var key: String = "_shells_b" if baked else "_shells"
+	if _mats.has(key):
+		return _mats[key]
 	var first: ShaderMaterial = null
 	var prev: ShaderMaterial = null
 	for k: int in SHELLS:
 		var s := ShaderMaterial.new()
 		s.shader = preload("res://art/shaders/fauna_fur.gdshader")
 		s.set_shader_parameter("shell", float(k + 1) / SHELLS)
+		s.set_shader_parameter("baked", baked)
+		if baked:
+			s.set_shader_parameter("fur_len", 0.012)  # big animals: the shells are scaled down with the model
 		s.render_priority = k
 		if prev:
 			prev.next_pass = s
 		else:
 			first = s
 		prev = s
-	_mats["_shells"] = first
+	_mats[key] = first
 	return first
 
 

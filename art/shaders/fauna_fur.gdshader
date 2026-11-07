@@ -16,6 +16,7 @@ instance uniform float white_amt = 0.5;
 instance uniform float patch_amt = 0.0;
 
 uniform float shell = 0.0;
+uniform bool baked = false;  // vendor models: the vertex colour is the albedo (no coat masks)
 uniform float fur_len = 0.007;
 uniform float density = 900.0;
 uniform float sheen = 0.35;
@@ -47,6 +48,24 @@ void vertex() {
 }
 
 void fragment() {
+	if (baked) {
+		vec3 bc = vc.rgb;
+		float grain0 = vnoise(lp * vec3(density * 0.35, density, density * 0.35));
+		vec3 alb0 = bc * (0.9 + 0.2 * grain0);
+		if (shell > 0.0) {
+			if (hash13(floor(lp * density)) < shell * 0.95 + 0.05) {
+				discard;
+			}
+			alb0 *= mix(0.8, 1.05, shell);
+		}
+		ALBEDO = alb0;
+		ROUGHNESS = 0.85;
+		SPECULAR = 0.25;
+		RIM = sheen;
+		RIM_TINT = 0.7;
+		BACKLIGHT = alb0 * 0.3;
+		EMISSION = alb0 * pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), 2.5) * 0.06;
+	} else {
 	float t = mix(1.1, 0.3, white_amt);
 	float white = smoothstep(t - 0.12, t + 0.12, vc.r);
 	float stripe = smoothstep(0.25, 0.75, vc.g) * stripe_amt;
@@ -73,4 +92,5 @@ void fragment() {
 	RIM_TINT = 0.7;
 	BACKLIGHT = alb * 0.35;
 	EMISSION = alb * fres * 0.06;
+	}
 }
