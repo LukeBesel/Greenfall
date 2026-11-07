@@ -53,6 +53,9 @@ extends Node
 ##                      (--storm-hold keeps it blowing); --thaw-all; --frontier-heaters=N; --frontier-greenhouses=N;
 ##                      --drain=N runs the Sunken City pumps N times; --frontier-done[=S] fires the Cradle hook;
 ##                      --frontier-cam=dist,pitch,yaw and --frontier-nohud for landscape screenshots
+##   --demo             [steam] run as the Steam demo build (Demo.is_demo()); --no-steam skips Steam init
+##   --no-hud           [steam] hide HUD, toasts, subtitles and event banners (store screenshots, trailer)
+##   --demo-end[=S]     [steam] show the end-of-demo screen after S seconds
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0
@@ -84,6 +87,10 @@ func _ready() -> void:
 		Engine.time_scale = float(args["time-scale"])
 	if has("pad-audit"):  # [deck] controller-only screen audit (tools/pad_audit.gd)
 		add_child(PadAudit.new())
+	if has("no-hud"):  # [steam] store/trailer shots without HUD, toasts and subtitles
+		add_child(load("res://steam/store_shots.gd").new())
+	if has("demo-end"):  # [steam] open the end-of-demo screen after S seconds (screenshots)
+		get_tree().create_timer(get_f("demo-end", 5.0)).timeout.connect(func() -> void: Demo.show_end_screen("auto"))
 	if not args.is_empty():
 		print("[DevHooks] args: ", args)
 

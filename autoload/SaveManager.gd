@@ -14,7 +14,25 @@ var _timer: float = 0.0
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	DirAccess.make_dir_recursive_absolute(SAVE_DIR)
+	DirAccess.make_dir_recursive_absolute(save_dir())
+	import_demo_save()  # [steam]
+
+
+## [steam] The demo keeps its saves apart (Demo.SAVE_DIR) so a full-game save never opens in it.
+func save_dir() -> String:
+	return Demo.SAVE_DIR if Demo.is_demo() else SAVE_DIR
+
+
+## [steam] Full game, first run after the demo: carry the demo's slots over (never overwrites).
+func import_demo_save() -> void:
+	if Demo.is_demo() or not DirAccess.dir_exists_absolute(Demo.SAVE_DIR):
+		return
+	for nm: String in DirAccess.get_files_at(Demo.SAVE_DIR):
+		var dst: String = SAVE_DIR.path_join(nm)
+		if nm.ends_with(".save") and not FileAccess.file_exists(dst) and not FileAccess.file_exists(dst + ".demo_imported"):
+			DirAccess.copy_absolute(Demo.SAVE_DIR.path_join(nm), dst)
+			FileAccess.open(dst + ".demo_imported", FileAccess.WRITE)
+			print("[save] imported demo save ", nm)
 
 
 func _process(delta: float) -> void:
@@ -32,7 +50,7 @@ func _notification(what: int) -> void:
 
 
 func slot_path(s: int = -1) -> String:
-	return "%s/slot_%d.save" % [SAVE_DIR, slot if s < 0 else s]
+	return "%s/slot_%d.save" % [save_dir(), slot if s < 0 else s]  # [steam] save_dir()
 
 
 func has_save(s: int = -1) -> bool:
@@ -46,6 +64,7 @@ func save_game(gather: bool = true) -> bool:
 		get_tree().call_group("persist", "persist_save")
 	var ok: bool = write_dict(slot_path(), GameState.to_dict())
 	if ok:
+		SteamService.on_saved(slot_path())  # [steam] Steam Cloud upload (no-op without Steam)
 		EventBus.game_saved.emit()
 	return ok
 
@@ -64,6 +83,7 @@ func load_game() -> bool:
 func delete_save(s: int = -1) -> void:
 	if has_save(s):
 		DirAccess.remove_absolute(slot_path(s))
+		SteamService.on_deleted(slot_path(s))  # [steam]
 
 
 static func write_dict(path: String, d: Dictionary) -> bool:

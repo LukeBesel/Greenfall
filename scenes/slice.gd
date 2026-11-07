@@ -235,7 +235,7 @@ func _ready() -> void:
 	globe = GlobeView.new()
 	globe.planet = planet
 	globe.current_hub = hub_index
-	globe.rocket_ready = func() -> bool: return rocket_status() == ""
+	globe.rocket_ready = func() -> bool: return Demo.rockets_allowed() and rocket_status() == ""  # [steam] Demo
 	globe.rocket_lock_text = rocket_status
 	globe.launch_to = func(i: int) -> void: _launch(i)
 	globe.patch_cell_provider = func() -> int: return planet_cell_at(patch.global_position)
@@ -788,7 +788,7 @@ func _on_hex_clean(hid: int) -> void:
 
 
 func _launch(to_hub: int) -> void:
-	if launching:
+	if launching or Demo.block("rocket"):  # [steam] demo: first district only
 		return
 	if not Frontiers.can_launch(planet, to_hub):  # [biomes] frontier destinations unlock late
 		EventBus.toast.emit("%s is out of range: %s" % [Frontiers.kind_name(planet.frontier_kind(to_hub)), "  ".join(Frontiers.unlock_status(planet.frontier_kind(to_hub), planet.frontier_hubs)["lines"])], "info")

@@ -13,6 +13,7 @@ var scrubbers: int = 0
 var _parts: Array[Node3D] = []
 var _scrubber_nodes: Array[Node3D] = []
 var _fans: Array[Node3D] = []
+var _demo_t: float = 0.0  # [steam]
 
 
 func _ready() -> void:
@@ -63,6 +64,9 @@ static func pay(cost: Dictionary, mult: float = 1.0) -> bool:
 
 
 func upgrade() -> bool:
+	if not Demo.can_raise_base(level):  # [steam] demo cap
+		Demo.block("base")
+		return false
 	var next: Dictionary = level_def(level + 1)
 	if next.is_empty() or not pay(next.get("cost", {})):
 		return false
@@ -73,6 +77,12 @@ func upgrade() -> bool:
 	EventBus.toast.emit("Hub upgraded: %s." % next["name"], "story")
 	leveled.emit(level)
 	return true
+
+
+## [steam] Demo: at the cap and able to pay for the next level (the player has "finished" the demo).
+func demo_finished() -> bool:
+	var next: Dictionary = level_def(level + 1)
+	return Demo.is_demo() and level >= Demo.MAX_BASE_LEVEL and not next.is_empty() and can_pay(next.get("cost", {}))
 
 
 func scrubber_def() -> Dictionary:
@@ -100,6 +110,12 @@ func build_scrubber() -> bool:
 
 
 func _process(delta: float) -> void:
+	if Demo.is_demo():  # [steam] end of demo once the next base level is earned
+		_demo_t += delta
+		if _demo_t > 1.0:
+			_demo_t = 0.0
+			if demo_finished() and not GameState.flags.get("demo_end_seen", false):
+				Demo.show_end_screen("auto")
 	for f: Node3D in _fans:
 		f.rotate_object_local(Vector3.FORWARD, delta * 9.0)
 	if scrubbers > 0:

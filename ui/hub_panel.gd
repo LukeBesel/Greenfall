@@ -102,6 +102,10 @@ func refresh() -> void:
 		_btn.text = "Build %s" % nxt["name"]
 		_btn.disabled = not Hub.can_pay(nxt.get("cost", {}))
 		_btn.visible = true
+		if not Demo.can_raise_base(hub.level):  # [steam] demo cap: the button opens the end-of-demo screen
+			_next.text = Demo.base_cap_text()
+			_btn.text = "Continue in the full game"
+			_btn.disabled = false
 	var sd: Dictionary = hub.scrubber_def()
 	var locked: bool = hub.level < int(sd.get("requires_level", 2))
 	var maxed: bool = hub.scrubbers >= int(sd.get("max", 6))

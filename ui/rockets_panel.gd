@@ -15,6 +15,8 @@ func _ready() -> void:
 func _ready_to_launch() -> bool:
 	if world == null:
 		return false
+	if not Demo.rockets_allowed():  # [steam]
+		return false
 	return world.rocket_status() == "" if world.has_method("rocket_status") else ((world.hub != null and world.hub.level >= 5) or DevHooks.has("rocket"))
 
 
@@ -42,6 +44,8 @@ func refresh() -> void:
 		var lvl: int = world.hub.level if world.hub else 1
 		sv.add_child(UITheme.label("Not built yet", 20, UITheme.CREAM))
 		var l := UITheme.label("The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Hub tab." % lvl, 14, UITheme.MUTED)
+		if not Demo.rockets_allowed():  # [steam]
+			l.text = "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		sv.add_child(l)
 	var bar := ProgressBar.new()

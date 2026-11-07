@@ -310,6 +310,8 @@ func _build_ui() -> void:
 	gap.custom_minimum_size = Vector2(0, 12)
 	col.add_child(gap)
 	col.add_child(UITheme.label("One small robot. One very big cleanup.", 20, Color(0.92, 0.88, 0.8)))
+	if Demo.is_demo():  # [steam]
+		col.add_child(UITheme.label("DEMO  ·  the first district", 15, UITheme.GOLD))
 	var spacer := Control.new()
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	col.add_child(spacer)
@@ -325,6 +327,8 @@ func _build_ui() -> void:
 		buttons.append(_continue)
 	_new_game = _menu_button("New Game", _on_new_game)
 	buttons.append(_new_game)
+	if Demo.is_demo():  # [steam]
+		buttons.append(_menu_button("Wishlist on Steam", SteamService.open_store_page))
 	buttons.append(_menu_button("Settings", _open_settings))
 	buttons.append(_menu_button("Credits", _open_credits))
 	buttons.append(_menu_button("Quit", func() -> void: get_tree().quit()))
