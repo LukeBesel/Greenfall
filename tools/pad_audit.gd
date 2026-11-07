@@ -244,6 +244,7 @@ func _check(label: String, root: Control, focus_optional: bool = false) -> void:
 	# [vqa] Text overflow (long German / pseudo strings): a label or button sticking out of the
 	# panel that holds it, or a clipped button whose text no longer fits.
 	var over: Array[String] = []
+	var trunc: Array[String] = []  # ellipsized on purpose: reported, not a failure
 	for n: Node in root.find_children("*", "Control", true, false):
 		var c: Control = n as Control
 		if not (c is Label or c is Button or c is RichTextLabel) or not c.is_visible_in_tree() or c.size == Vector2.ZERO:
@@ -269,9 +270,11 @@ func _check(label: String, root: Control, focus_optional: bool = false) -> void:
 				widest = maxf(widest, font.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x if font else 0.0)
 			var pad: float = b.get_theme_stylebox("normal").get_minimum_size().x if b.get_theme_stylebox("normal") else 0.0
 			if widest + pad > b.size.x + 2.0:
-				over.append(_name(c) + " (ellipsis)")
+				trunc.append(_name(c))
 	if not over.is_empty():
 		problems.append("%d overflow: %s" % [over.size(), ", ".join(over.slice(0, 6))])
+	if not trunc.is_empty():
+		print("[pad] %s: note %d truncated with an ellipsis: %s" % [label, trunc.size(), ", ".join(trunc.slice(0, 6))])
 	if problems.is_empty():
 		print("[pad] %s: OK (%d focus stops)" % [label, all.size()])
 	else:
