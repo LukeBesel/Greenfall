@@ -185,40 +185,64 @@ func _on_hex_cleaned(hid: int, center: Vector3, _bonus: BigNum) -> void:
 
 
 # --- Dev: stage a moment for screenshots ----------------------------------------------------
-## --first-demo=bale|sale|robot|reveal fires the moment so it peaks at --shot-delay. Leads are
-## game seconds; DevHooks counts wall time, so they are divided by the time scale (software
-## renders run a few frames a minute: pair with --time-scale=0.1 so the moment spans frames).
-const DEMO_LEAD: Dictionary = {"bale": 1.25, "sale": 1.1, "robot": 0.5, "reveal": 0.45}
+## --first-demo=bale|sale|robot|reveal: software renders run a few frames a minute, so the moment is
+## fired ~40 s (wall) before --shot-delay and the game clock freezes at its peak (Engine.time_scale
+## = 0); the shot then captures that instant. Pair with --time-scale=0.05 so the freeze lands within
+## a fraction of a game second of the peak.
+const DEMO_PEAK: Dictionary = {"bale": 1.3, "sale": 0.78, "robot": 0.5, "reveal": 0.45}
+
+var _demo_setup: bool = false
 
 
 func _demo_tick() -> void:
+	var p: Patch = world.patch
+	if not _demo_setup:
+		_demo_setup = true
+		_demo_prepare(p)
 	var t: float = float(DevHooks.get("_elapsed"))
-	var ts: float = maxf(Engine.time_scale, 0.01)
-	var at: float = DevHooks.get_f("shot-delay", 10.0) - float(DEMO_LEAD.get(_demo, 0.5)) / ts
-	if _demo == "bale" and t >= at - 3.0 / ts and world.patch.compartment.is_empty():
-		var cap: float = world.patch.capacity()
-		world.patch.compartment.add("metal", cap * 0.95)
-		EventBus.compartment_changed.emit(world.patch.compartment.fill, cap)
-	if t < at:
+	if t < DevHooks.get_f("shot-delay", 60.0) - DevHooks.get_f("demo-lead", 40.0):
 		return
 	_demo_done = true
-	var p: Patch = world.patch
 	match _demo:
 		"bale":
 			p.start_cube()
 		"sale":
 			var cube: JunkCube = JunkCube.create(BigNum.from_float(84.0), {"fill": 0.95, "perfect": true, "colors": [Color(0.55, 0.5, 0.45)]})
 			world.add_cube(cube)
-			cube.global_position = (world.depot as Node3D).global_position + Vector3(0.3, 0.6, 0.2)
+			cube.global_position = (world.depot as Node3D).global_position + Vector3(0.0, 0.3, 0.0)
 		"robot":
-			var r: Robot = world.fleet.spawn("scoopie", 0, p.global_position + p.global_transform.basis.z * -3.0 + Vector3(1.2, 0, 0), 0.0, "Tin-15")
+			var at: Vector3 = p.global_position + p.forward() * 2.6 + p.global_transform.basis.x * 1.6
+			var r: Robot = world.fleet.spawn("scoopie", 0, at, 0.0, "Tin-15")
 			GameState.inc_stat("robots_built")
 			EventBus.robot_built.emit(r.robot_name)
 		"reveal":
-			var h: int = p.focus_hex()
-			var f: HexField = world.field
-			if h < 0 or f.is_clean(h):
-				h = f.hex_at(p.global_position + p.global_transform.basis.z * -4.0)
-			for pid: int in f.hex_pieces[h]:
-				if f.piece_alive[pid] != 0:
+			for pid: int in world.field.hex_pieces[_demo_hex]:
+				if world.field.piece_alive[pid] != 0:
 					world.collect_piece(pid)
+	get_tree().create_timer(float(DEMO_PEAK.get(_demo, 0.5))).timeout.connect(func() -> void:
+		Engine.time_scale = 0.0
+		print("[first] demo %s frozen at its peak" % _demo))
+
+
+var _demo_hex: int = -1
+
+
+func _demo_prepare(p: Patch) -> void:
+	match _demo:
+		"bale":
+			var cap: float = p.capacity()
+			p.compartment.add("metal", cap * 0.95)
+			EventBus.compartment_changed.emit(p.compartment.fill, cap)
+		"reveal":
+			# The hex ahead of Lumi, cleared down to its last few pieces (they go at the trigger).
+			var f: HexField = world.field
+			_demo_hex = f.hex_at(p.global_position + p.forward() * 5.0)
+			var alive: Array[int] = []
+			for pid: int in f.hex_pieces[_demo_hex]:
+				if f.piece_alive[pid] != 0:
+					alive.append(pid)
+			for k: int in alive.size() - mini(6, alive.size()):
+				world.collect_piece(alive[k])
+			world.cam.distance = DevHooks.get_f("demo-dist", 9.0)
+			world.cam.pitch = -0.62
+			world.cam.snap()

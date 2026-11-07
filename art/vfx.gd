@@ -333,9 +333,8 @@ func pillar(pos: Vector3, color: Color, height: float = 6.0, duration: float = 1
 	var m := StandardMaterial3D.new()
 	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	m.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
 	m.cull_mode = BaseMaterial3D.CULL_DISABLED
-	m.albedo_color = Color(color, 0.0)
+	m.albedo_color = Color(color.lerp(Color.WHITE, 0.35), 0.0)
 	var g := Gradient.new()
 	g.set_color(0, Color(1, 1, 1, 1))
 	g.set_color(1, Color(1, 1, 1, 0))
@@ -356,7 +355,7 @@ func pillar(pos: Vector3, color: Color, height: float = 6.0, duration: float = 1
 	tw.tween_method(func(t: float) -> void:
 		mi.scale = Vector3(1.0 - 0.3 * t, maxf(0.01, height * t), 1.0 - 0.3 * t)
 		mi.global_position = pos + Vector3(0, height * t * 0.5, 0)
-		m.albedo_color.a = 0.55 * t, 0.0, 1.0, duration * 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		m.albedo_color.a = 0.6 * t, 0.0, 1.0, duration * 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tw.tween_interval(duration * 0.25)
 	tw.tween_property(m, "albedo_color:a", 0.0, duration * 0.45)
 	tw.tween_callback(mi.queue_free)

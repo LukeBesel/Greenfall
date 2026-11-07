@@ -113,7 +113,7 @@ func _show(text: String, slide: bool) -> void:
 	_shown = 0.0
 	_refresh_progress()
 	visible = true
-	var tw := create_tween().set_parallel(true)
+	var tw := create_tween().set_ignore_time_scale(true).set_parallel(true)
 	tw.tween_property(self, "modulate:a", 1.0, 0.35)
 	if slide:
 		_text.modulate.a = 0.0
@@ -126,7 +126,7 @@ func _show(text: String, slide: bool) -> void:
 func _tick_then(next: Callable) -> void:
 	_busy = true
 	_text.text = "[color=#9edba8]%s[/color]" % _strip_bb(_current)
-	var tw := create_tween()
+	var tw := create_tween().set_ignore_time_scale(true)
 	tw.tween_method(func(t: float) -> void:
 		_flash = t
 		_bar.queue_redraw()
@@ -149,13 +149,13 @@ func _show_done() -> void:
 	_progress = -1.0
 	_bar.get_parent().visible = false
 	_dots.queue_redraw()
-	var tw := create_tween()
+	var tw := create_tween().set_ignore_time_scale(true)
 	tw.tween_interval(DONE_HOLD_S)
 	tw.tween_callback(func() -> void: _fade_out(0.9))
 
 
 func _fade_out(d: float) -> void:
-	var tw := create_tween()
+	var tw := create_tween().set_ignore_time_scale(true)
 	tw.tween_property(self, "modulate:a", 0.0, d)
 	tw.tween_callback(func() -> void:
 		if _current == "":
