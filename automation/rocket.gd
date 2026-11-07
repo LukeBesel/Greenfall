@@ -43,6 +43,7 @@ var _roar_next: float = 0.0
 var _siren_next: float = 0.0
 var _land_to := Vector3.ZERO
 var _flight_s: float = 5.0
+var _hidden: Array[Node] = []
 # Timeline marks (seconds of sequence time), set per tier in launch().
 var _t0: float = 3.8     # countdown starts
 var _ig: float = 8.8     # ignition
@@ -226,6 +227,9 @@ func _launch_step(dt: float) -> void:
 		_shake = maxf(_shake, 0.35 * (1.0 - smoothstep(_lo + 2.0, _lo + 6.0, t)))
 	if pad:
 		pad.set_clamps(smoothstep(_ig + 0.5, _ig + 1.0, t))
+	# The landing legs fold flush into the hull once clear of the pad.
+	model.set_legs(1.0 - smoothstep(_lo + 1.0, _lo + 2.2, t))
+	_once("legs_up", _lo + 1.0, func() -> void: Audio.play("servo", 0.8, -6.0))
 	_once("clamps", _ig + 0.55, func() -> void:
 		Audio.play("clunk", 0.7, -2.0)
 		Audio.play("hydraulic", 0.6, -6.0))
@@ -296,9 +300,10 @@ func _launch_camera(t: float, dt: float) -> void:
 		look = mp + Vector3(0, 3.0, 0)
 	else:
 		# Climb: wide from the base, the vapour column and the arc to a dot.
-		pos = o + Vector3(-14.0, 4.0, 34.0)
-		look = mp + Vector3(0, 2.0, 0)
-		fov = lerpf(55.0, 38.0, smoothstep(_lo + 4.5, _end, t))
+		# Low enough that the skyline stays in frame under the rising column.
+		pos = o + Vector3(-12.0, 2.5, 30.0)
+		look = (mp + Vector3(0, 2.0, 0)).lerp(o + Vector3(0, 6.0, 0), 0.28)
+		fov = lerpf(58.0, 46.0, smoothstep(_lo + 4.5, _end, t))
 	_cam.fov = fov
 	_place_cam(pos, look, dt)
 
@@ -398,6 +403,8 @@ func _arrive_step(dt: float) -> void:
 			pad.set_alarm(false)
 		if _dust:
 			_dust.emitting = false)
+	model.set_legs(smoothstep(LAND_S - 2.2, LAND_S - 0.8, t))
+	_once("legs_down", LAND_S - 2.2, func() -> void: Audio.play("servo", 0.7, -4.0))
 	if pad:
 		pad.set_clamps(1.0 - smoothstep(LAND_S, LAND_S + 0.6, t))
 		pad.set_gangway(1.0 - smoothstep(LAND_S + 0.8, LAND_S + 1.8, t))
@@ -447,6 +454,7 @@ func _finish_arrival() -> void:
 	model.position = Vector3(0, _base_y, 0)
 	model.basis = Basis().scaled(Vector3.ONE * tier_scale(tier))
 	model.plume.power = 0.0
+	model.set_legs(1.0)
 	_set_hatch(0.0)
 	_trail.emitting = false
 	_dot.visible = false
@@ -490,12 +498,41 @@ func _begin(mode: String) -> void:
 		_cam.far = 900.0
 		add_child(_cam)
 	_cam.current = true
+	_cam.environment = _cinematic_env()
+	# The yard's festoon bulbs and bunting hang across most camera angles: hide them meanwhile.
+	_hidden.clear()
+	for nm: String in ["Bulbs", "Bunting"]:
+		for n: Node in world.find_children(nm, "MultiMeshInstance3D", true, false):
+			if (n as Node3D).visible:
+				(n as Node3D).visible = false
+				_hidden.append(n)
 	_build_fx()
 	_build_ui()
 
 
+## The world's environment with the dusty haze pulled back and a touch more contrast, so the
+## rocket pops against a clear sky in the cinematic shots.
+func _cinematic_env() -> Environment:
+	var src: Environment = world.get("_env") as Environment
+	if src == null:
+		return null
+	var e: Environment = src.duplicate() as Environment
+	e.fog_density *= 0.3
+	e.fog_sky_affect = 0.1
+	e.volumetric_fog_density *= 0.25
+	e.volumetric_fog_sky_affect = 0.1
+	e.adjustment_enabled = true
+	e.adjustment_contrast = maxf(e.adjustment_contrast, 1.0) * 1.08
+	e.adjustment_saturation = maxf(e.adjustment_saturation, 1.0) * 1.06
+	return e
+
+
 func _end_cinematic() -> void:
 	world.launching = false
+	for n: Node in _hidden:
+		if is_instance_valid(n):
+			(n as Node3D).visible = true
+	_hidden.clear()
 	world.hud.visible = true
 	world.cam.target = world.patch
 	world.cam.yaw = world.patch.rotation.y
@@ -630,41 +667,21 @@ func _build_fx() -> void:
 	# Vapour trail: stays in the world as the rocket climbs (a column, then a curving ribbon).
 	_trail = CPUParticles3D.new()
 	_trail.emitting = false
-	_trail.amount = 140
+	_trail.amount = 70
 	_trail.lifetime = 7.0
 	_trail.local_coords = false
 	_trail.direction = Vector3(0, -1, 0)
-	_trail.spread = 14.0
+	_trail.spread = 12.0
 	_trail.initial_velocity_min = 2.0
-	_trail.initial_velocity_max = 5.0
+	_trail.initial_velocity_max = 4.0
 	_trail.damping_min = 1.0
 	_trail.damping_max = 2.0
 	_trail.gravity = Vector3(0.25, 0.2, 0)
-	var c := Curve.new()
-	c.max_value = 6.0  # scale grows past 1 (the default range clamps it)
-	c.add_point(Vector2(0, 0.5))
-	c.add_point(Vector2(0.3, 2.2))
-	c.add_point(Vector2(1, 4.0))
-	_trail.scale_amount_curve = c
-	var tg := Gradient.new()
-	tg.set_color(0, Color(0.92, 0.97, 1.0, 0.0))
-	tg.add_point(0.12, Color(0.92, 0.97, 1.0, 0.7))
-	tg.set_color(tg.get_point_count() - 1, Color(0.92, 0.94, 0.97, 0.0))
-	_trail.color_ramp = tg
+	_trail.scale_amount_curve = LaunchPad._grow_curve(0.5, 1.5, 2.6)
+	_trail.color_ramp = LaunchPad._fade_ramp(0.8)
 	var q := QuadMesh.new()
-	q.size = Vector2(1.6, 1.6)
-	var pm := StandardMaterial3D.new()
-	pm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	pm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	# BILLBOARD_ENABLED + keep_scale, not BILLBOARD_PARTICLES: particles not yet emitted have a zero
-	# scale, which the particle billboard ignores (they showed as a dark disc at the emitter).
-	pm.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
-	pm.billboard_keep_scale = true
-	pm.vertex_color_use_as_albedo = true
-	pm.albedo_color = Color(1.45, 1.5, 1.55)
-	pm.albedo_texture = soft
-	pm.disable_receive_shadows = true
-	q.material = pm
+	q.size = Vector2(2.6, 2.6)
+	q.material = LaunchPad.vapour_material()
 	_trail.mesh = q
 	_trail.position = Vector3(0, RocketModel.NOZZLE_Y - 3.5, 0)  # below the hot core
 	model.add_child(_trail)
@@ -673,13 +690,14 @@ func _build_fx() -> void:
 		_dust = _trail.duplicate() as CPUParticles3D
 		_dust.direction = Vector3(1, 0.1, 0)
 		_dust.spread = 180.0
-		_dust.flatness = 0.9
+		_dust.flatness = 0.92
 		_dust.initial_velocity_min = 6.0
 		_dust.initial_velocity_max = 11.0
 		_dust.damping_min = 2.5
 		_dust.damping_max = 3.5
-		_dust.lifetime = 3.0
-		_dust.amount = 80
+		_dust.lifetime = 4.0
+		_dust.amount = 22
+		_dust.gravity = Vector3(0, 0.15, 0)
 		_dust.position = Vector3(0, 0.4, 0)
 		add_child(_dust)
 	# Bright dot: a fixed-size flare that keeps the rocket visible once it is far away.

@@ -2,7 +2,7 @@ extends Node3D
 ## Quick look at the rocket, its pad and the launch effects without loading a district (fast to
 ## render on software Vulkan). Usage:
 ##   godot --path . --rendering-driver vulkan res://scenes/rocket_preview.tscn -- --rocket-tier=2 --out=screenshots/rp
-## Saves <out>_N.png: pad at rest (wide), countdown steam, ignition (low), lift-off, climb, construction hologram.
+## Saves <out>_N.png: pad at rest (wide), visor close-up, countdown steam, ignition (low), lift-off, climb, construction hologram.
 
 var _rocket: Rocket
 var _holo: LaunchPad
@@ -58,6 +58,7 @@ func _ready() -> void:
 	var hy: float = LaunchPad.TOP_Y
 	_views = [
 		["rest", Vector3(11.0, 3.4, 14.0), Vector3(0, 5.5, -1.0)],
+		["face", Vector3(2.4, 8.6, 5.2), Vector3(0, 7.6, 0)],
 		["steam", Vector3(5.8, 1.5, 3.6), Vector3(-0.6, 5.0, 0)],
 		["ignite", Vector3(6.0, 0.9, 3.8), Vector3(0, 2.0, 0)],
 		["liftoff", Vector3(8.5, 1.0, 3.8), Vector3(0, 9.0, 0)],
@@ -86,6 +87,7 @@ func _set_state(s: String) -> void:
 			m.plume.power = 0.8
 		"liftoff":
 			m.position.y = LaunchPad.TOP_Y + 6.0
+			m.set_legs(0.4)
 			m.plume.power = 1.05
 			if DevHooks.has("trail-amount"):
 				_rocket._trail.amount = int(DevHooks.get_f("trail-amount", 40))
@@ -100,6 +102,7 @@ func _set_state(s: String) -> void:
 		"climb":
 			pad.billow(false)
 			m.position = Vector3(3.0, 40.0, -2.0)
+			m.set_legs(0.0)
 			m.rotation = Vector3(0, 0, -0.3)
 			_rocket._dot.visible = true
 			(_rocket._dot.material_override as StandardMaterial3D).albedo_color.a = 0.8

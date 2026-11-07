@@ -26,7 +26,6 @@ var _chase_mat: ShaderMaterial
 var _cell_strips: Array[Node3D] = []
 var _alarm: bool = false
 var _t: float = 0.0
-var _soft_tex: GradientTexture2D
 
 const CHASE_SHADER := """
 shader_type spatial;
@@ -45,7 +44,6 @@ void fragment() {
 
 
 func _ready() -> void:
-	_soft_tex = _radial()
 	if construction:
 		_build_hologram()
 	else:
@@ -102,15 +100,17 @@ func _build() -> void:
 		_mi(self, ProcMesh.cyl(0.55, 0.6, 0.06, 6), grey, p + Vector3(0, 0.03, 0))
 		_mi(self, ProcMesh.torus(0.44, 0.465, 6, 3), glow, p + Vector3(0, 0.07, 0))
 	# Energy clamps: pylons from the deck leaning in to hold the hull; they swing out at ignition.
-	var hold_r: float = 1.62 if rocket_tier >= 3 else 1.04
+	var sc: float = _rocket_scale()
+	var hold_r: float = RocketModel.hull_r(RocketModel.CLAMP_Y) * sc + 0.02
+	var hold_y: float = RocketModel.CLAMP_Y * sc
 	for a_deg: float in RocketModel.CLAMP_ANGLES:
 		var a4: float = deg_to_rad(a_deg)
 		var dir := Vector3(cos(a4), 0, sin(a4))
 		var piv := Node3D.new()
-		piv.position = dir * 2.3 + Vector3(0, TOP_Y, 0)
+		piv.position = dir * RocketModel.CLAMP_BASE_R + Vector3(0, TOP_Y, 0)
 		piv.basis = Basis.looking_at(-dir, Vector3.UP)  # local -Z points at the rocket
 		add_child(piv)
-		var top := Vector3(0, 2.3, -(2.3 - hold_r - 0.12))
+		var top := Vector3(0, hold_y, -(RocketModel.CLAMP_BASE_R - hold_r - 0.12))
 		_mi(piv, ProcMesh.cyl(0.22, 0.28, 0.2, 16), grey, Vector3(0, 0.1, 0))
 		_rod(piv, Vector3(0, 0.15, 0), top, 0.1, white)
 		_rod(piv, Vector3(0, 0.4, 0.02), top + Vector3(0, -0.2, 0.08), 0.012, glow)
@@ -218,29 +218,30 @@ func _build() -> void:
 	sign_l.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
 	sign_l.position = tz + Vector3(0, top_y + 1.3, 0)
 	add_child(sign_l)
-	# Vapour: big billows out of the flame trench (both sides) and steam vents during countdown.
+	# Vapour: billows out of the flame trench (both sides), a ground-hugging ring from under the
+	# deck at ignition, and steam jets during the countdown.
 	for side: float in [-1.0, 1.0]:
-		var v := _vapour(Vector3(side, 0.08, 0))
+		var v := _vapour(Vector3(side, 0.05, 0), 10, 3.6)
 		v.position = Vector3(side * 2.6, TOP_Y - 0.5, 0)
 		_vents.append(v)
-
-	# Steam jets at the clamp bases and from under the deck rim during the countdown.
+	var ground := _vapour(Vector3(1, 0, 0), 16, 4.0)
+	ground.position = Vector3(0, 0.5, 0)
+	ground.spread = 180.0
+	ground.flatness = 0.92
+	ground.gravity = Vector3(0, 0.15, 0)
+	_vents.append(ground)
 	for a_deg: float in RocketModel.CLAMP_ANGLES:
 		var a6: float = deg_to_rad(a_deg)
 		var s2 := _steam_vent()
 		s2.position = Vector3(cos(a6) * 2.6, TOP_Y + 0.1, sin(a6) * 2.6)
-		s2.direction = Vector3(cos(a6) * 0.5, 1, sin(a6) * 0.5)
+		s2.direction = Vector3(cos(a6) * 0.4, 1, sin(a6) * 0.4)
 		_steam.append(s2)
 		var s3 := _steam_vent()
 		s3.position = Vector3(cos(a6 + 1.0) * 3.0, TOP_Y - 0.4, sin(a6 + 1.0) * 3.0)
-		s3.direction = Vector3(cos(a6 + 1.0), -0.3, sin(a6 + 1.0))
-		s3.initial_velocity_min = 2.0
-		s3.initial_velocity_max = 3.5
+		s3.direction = Vector3(cos(a6 + 1.0), -0.25, sin(a6 + 1.0))
+		s3.initial_velocity_min = 1.5
+		s3.initial_velocity_max = 2.5
 		_steam.append(s3)
-	var under := _vapour(Vector3(0, -1, 0))
-	under.position = Vector3(0, 0.4, 0)
-	under.spread = 80.0
-	_vents.append(under)
 
 
 func _rocket_scale() -> float:
@@ -337,34 +338,27 @@ func _beacon(p: Vector3, r: float) -> void:
 	_mi(self, ProcMesh.sphere(r, 12, 6), m, p)
 
 
-func _vapour(dir: Vector3) -> CPUParticles3D:
+## Soft billows: few, large, slow-growing puffs that erode into wisps (art/shaders/vapour_puff.gdshader).
+func _vapour(dir: Vector3, amount: int, size: float) -> CPUParticles3D:
 	var p := CPUParticles3D.new()
 	p.emitting = false
-	p.amount = 70
-	p.lifetime = 4.0
+	p.amount = amount
+	p.lifetime = 4.5
 	p.local_coords = false
 	p.direction = dir
-	p.spread = 28.0
-	p.initial_velocity_min = 7.0
-	p.initial_velocity_max = 13.0
-	p.damping_min = 2.2
+	p.spread = 22.0
+	p.initial_velocity_min = 6.0
+	p.initial_velocity_max = 10.0
+	p.damping_min = 2.4
 	p.damping_max = 3.2
-	p.gravity = Vector3(0, 0.7, 0)
+	p.gravity = Vector3(0, 0.45, 0)
 	p.scale_amount_min = 0.8
-	p.scale_amount_max = 1.4
-	var c := Curve.new()
-	c.max_value = 6.0  # scale grows past 1 (the default range clamps it)
-	c.add_point(Vector2(0, 0.5))
-	c.add_point(Vector2(0.4, 1.8))
-	c.add_point(Vector2(1, 3.0))
-	p.scale_amount_curve = c
-	var g := Gradient.new()
-	g.set_color(0, Color(0.97, 0.99, 1.0, 0.9))
-	g.set_color(1, Color(0.88, 0.92, 0.96, 0.0))
-	p.color_ramp = g
+	p.scale_amount_max = 1.25
+	p.scale_amount_curve = _grow_curve(0.45, 1.3, 1.9)
+	p.color_ramp = _fade_ramp(0.62)
 	var q := QuadMesh.new()
-	q.size = Vector2(2.2, 2.2)
-	q.material = _puff_mat()
+	q.size = Vector2(size, size)
+	q.material = vapour_material()
 	p.mesh = q
 	add_child(p)
 	return p
@@ -373,64 +367,69 @@ func _vapour(dir: Vector3) -> CPUParticles3D:
 func _steam_vent() -> CPUParticles3D:
 	var p := CPUParticles3D.new()
 	p.emitting = false
-	p.amount = 40
-	p.lifetime = 2.2
+	p.amount = 12
+	p.lifetime = 2.4
 	p.local_coords = false
 	p.direction = Vector3(0, 1, 0)
-	p.spread = 14.0
-	p.initial_velocity_min = 3.5
-	p.initial_velocity_max = 6.0
-	p.damping_min = 1.5
-	p.damping_max = 2.5
-	p.gravity = Vector3(0, 0.5, 0)
-	var c := Curve.new()
-	c.max_value = 6.0  # scale grows past 1 (the default range clamps it)
-	c.add_point(Vector2(0, 0.4))
-	c.add_point(Vector2(1, 2.5))
-	p.scale_amount_curve = c
-	var g := Gradient.new()
-	g.set_color(0, Color(1, 1, 1, 0.9))
-	g.set_color(1, Color(0.92, 0.96, 1.0, 0.0))
-	p.color_ramp = g
+	p.spread = 18.0
+	p.initial_velocity_min = 2.0
+	p.initial_velocity_max = 5.0
+	p.scale_amount_min = 0.6
+	p.scale_amount_max = 1.4
+	p.damping_min = 1.2
+	p.damping_max = 2.0
+	p.gravity = Vector3(0, 0.4, 0)
+	p.scale_amount_curve = _grow_curve(0.35, 1.3, 2.2)
+	p.color_ramp = _fade_ramp(0.6)
 	var q := QuadMesh.new()
-	q.size = Vector2(1.1, 1.1)
-	q.material = _puff_mat()
+	q.size = Vector2(1.5, 1.5)
+	q.material = vapour_material()
 	p.mesh = q
 	add_child(p)
 	return p
 
 
-func _puff_mat() -> StandardMaterial3D:
-	# Clean bright vapour: unshaded so it never reads as dark smoke against the sky.
-	var m := StandardMaterial3D.new()
-	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	# BILLBOARD_ENABLED + keep_scale, not BILLBOARD_PARTICLES: particles not yet emitted have a zero
-	# scale, which the particle billboard ignores (they showed as a dark disc at the emitter).
-	m.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
-	m.billboard_keep_scale = true
-	m.vertex_color_use_as_albedo = true
-	# Brighter than white: vapour lit by the plume must not read as grey against its glow.
-	m.albedo_color = Color(1.45, 1.5, 1.55)
-	m.albedo_texture = _soft_tex
-	m.roughness = 1.0
-	m.disable_receive_shadows = true
-	return m
+static func _grow_curve(a: float, b: float, c: float) -> Curve:
+	var cv := Curve.new()
+	cv.max_value = 6.0  # scale grows past 1 (the default range clamps it)
+	cv.add_point(Vector2(0, a))
+	cv.add_point(Vector2(0.35, b))
+	cv.add_point(Vector2(1, c))
+	return cv
 
 
-func _radial() -> GradientTexture2D:
+## Fades in fast, holds, fades out (the shader's erosion does most of the breaking up).
+static func _fade_ramp(peak: float) -> Gradient:
 	var g := Gradient.new()
-	g.set_color(0, Color(1, 1, 1, 1))
-	g.add_point(0.45, Color(1, 1, 1, 0.6))
-	g.set_color(g.get_point_count() - 1, Color(1, 1, 1, 0))
-	var t := GradientTexture2D.new()
-	t.gradient = g
-	t.fill = GradientTexture2D.FILL_RADIAL
-	t.fill_from = Vector2(0.5, 0.5)
-	t.fill_to = Vector2(1.0, 0.5)
-	t.width = 64
-	t.height = 64
-	return t
+	g.set_color(0, Color(1, 1, 1, 0.0))
+	g.add_point(0.08, Color(1, 1, 1, peak))
+	g.add_point(0.6, Color(1, 1, 1, peak * 0.7))
+	g.set_color(g.get_point_count() - 1, Color(1, 1, 1, 0.0))
+	return g
+
+
+static var _vapour_mat: ShaderMaterial
+
+
+## Shared vapour material (also used by the rocket's climb trail).
+static func vapour_material() -> ShaderMaterial:
+	if _vapour_mat == null:
+		var nz := FastNoiseLite.new()
+		nz.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+		nz.frequency = 0.02
+		nz.fractal_octaves = 4
+		nz.fractal_gain = 0.55
+		var tex := NoiseTexture2D.new()
+		tex.width = 128
+		tex.height = 128
+		tex.seamless = true
+		tex.normalize = true
+		tex.generate_mipmaps = true
+		tex.noise = nz
+		_vapour_mat = ShaderMaterial.new()
+		_vapour_mat.shader = preload("res://art/shaders/vapour_puff.gdshader")
+		_vapour_mat.set_shader_parameter("noise_tex", tex)
+	return _vapour_mat
 
 
 func _gloss(c: Color, rough: float, metal: float, coat: float) -> StandardMaterial3D:
