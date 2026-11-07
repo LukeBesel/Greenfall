@@ -6906,1055 +6906,1055 @@ msgstr "完成了十个委托。每个格子都打了勾，每个格子都是绿
 
 #: data/events.json:trinkets[contract_crown].name
 msgid "Contractor's Crown"
-msgstr ""
+msgstr "承包商之冠"
 
 #: data/events.json:trinkets[contract_crown].desc
 msgid "Twenty-five contracts. The crown is a bent can. You wear it anyway."
-msgstr ""
+msgstr "二十五个委托。王冠是一个压弯的罐头。你还是戴上了。"
 
 #: data/events.json:trinkets[capsule_rubber_frog].name
 msgid "Rubber Frog"
-msgstr ""
+msgstr "橡皮青蛙"
 
 #: data/events.json:trinkets[capsule_rubber_frog].desc
 msgid "Squeaks in a minor key."
-msgstr ""
+msgstr "用小调吱吱叫。"
 
 #: data/events.json:trinkets[capsule_tiny_cactus].name
 msgid "Tiny Cactus"
-msgstr ""
+msgstr "迷你仙人掌"
 
 #: data/events.json:trinkets[capsule_tiny_cactus].desc
 msgid "Needs no water. Mocks the Drips."
-msgstr ""
+msgstr "不需要水。嘲笑 Drip。"
 
 #: data/events.json:trinkets[capsule_holo_koi].name
 msgid "Holo Koi"
-msgstr ""
+msgstr "全息锦鲤"
 
 #: data/events.json:trinkets[capsule_holo_koi].desc
 msgid "A hologram fish that swims round your hopper."
-msgstr ""
+msgstr "一条绕着你的料斗游动的全息鱼。"
 
 #: data/events.json:trinkets[capsule_moon_rock].name
 msgid "Moon Rock"
-msgstr ""
+msgstr "月岩"
 
 #: data/events.json:trinkets[capsule_moon_rock].desc
 msgid "Not from the moon. From a parking lot. Still beautiful."
-msgstr ""
+msgstr "不是来自月球。来自停车场。依然很美。"
 
 #: data/events.json:wren
 msgid "Crate inbound. From... me? I don't remember sending that. Open it."
-msgstr ""
+msgstr "箱子来了。寄件人……是我？我不记得寄过。打开看看。"
 
 #: data/events.json:wren
 msgid "Supply drop! I found an old Cradle pod still in orbit and nudged it down."
-msgstr ""
+msgstr "补给空投！我找到一个还在轨道上的 Cradle号旧舱，轻轻推了它一下。"
 
 #: data/events.json:wren
 msgid "Another care package. I've been saving them for good days. This is one."
-msgstr ""
+msgstr "又一个爱心包裹。我一直留着它们给好日子。今天就是。"
 
 #: data/events.json:wren
 msgid "That hex is glowing. Readings say... valuable. Hurry."
-msgstr ""
+msgstr "那个六角格在发光。读数显示……很值钱。快去。"
 
 #: data/events.json:wren
 msgid "Surge! The old buried cables light up when the junk shifts. Grab it while it's bright."
-msgstr ""
+msgstr "热潮！废料一动，埋在地下的旧电缆就会亮起来。趁它亮着赶紧抓。"
 
 #: data/events.json:wren
 msgid "Look at that glow. Three times the value, two minutes. Go go go."
-msgstr ""
+msgstr "看那光。三倍价值，两分钟。冲冲冲。"
 
 #: data/events.json:wren
 msgid "Is that... water? From the sky?"
-msgstr ""
+msgstr "那是……水？从天上来的？"
 
 #: data/events.json:wren
 msgid "Rain. I'd forgotten the sound. Your plants hadn't."
-msgstr ""
+msgstr "下雨了。我都忘了这个声音。你的植物可没忘。"
 
 #: data/events.json:wren
 msgid "Rain on clean ground. It smells like a memory."
-msgstr ""
+msgstr "雨落在干净的地面上。闻起来像一段回忆。"
 
 #: data/events.json:wren
 msgid "One of your helpers is stuck. Hic."
-msgstr ""
+msgstr "你的一个帮手卡住了。嗝。"
 
 #: data/events.json:wren
 msgid "{robot} has the hiccups. Try a firm pat on the chassis."
-msgstr ""
+msgstr "{robot} 打嗝了。试着在底盘上用力拍一下。"
 
 #: data/events.json:wren
 msgid "{robot} needs you. Gently, they're sensitive."
-msgstr ""
+msgstr "{robot} 需要你。轻一点，它们很敏感。"
 
 #: data/events.json:wren
 msgid "Something alive is moving out there. Not a robot."
-msgstr ""
+msgstr "外面有活的东西在动。不是机器人。"
 
 #: data/events.json:wren
 msgid "A visitor! Go slowly. Take a picture, it lasts longer."
-msgstr ""
+msgstr "有访客！慢慢来。拍张照，留得更久。"
 
 #: data/events.json:wren
 msgid "The thriving hexes are calling things home. Look."
-msgstr ""
+msgstr "繁茂的六角格在召唤生命回家。看。"
 
 #: data/events.json:wren
 msgid "Strong signal. Something old and well made."
-msgstr ""
+msgstr "强信号。是古老又做工精良的东西。"
 
 #: data/events.json:wren
 msgid "That ping is Maker-grade. Follow the violet light."
-msgstr ""
+msgstr "那个信号是造物者级的。跟着紫光走。"
 
 #: data/events.json:wren
 msgid "A rare part, close. I can almost hear it."
-msgstr ""
+msgstr "一个稀有零件，就在附近。我几乎能听见它。"
 
 #: data/events.json:wren
 msgid "The Ledger wants to race. I told it you'd win."
-msgstr ""
+msgstr "Ledger 想比赛。我告诉它你会赢。"
 
 #: data/events.json:wren
 msgid "Audit drone, friendly. It's very competitive now."
-msgstr ""
+msgstr "审计无人机，友好的那种。它现在好胜心很强。"
 
 #: data/events.json:wren
 msgid "The Ledger says it's 'just a routine audit'. It's been practising."
-msgstr ""
+msgstr "Ledger 说这“只是例行审计”。它一直在练习。"
 
 #: data/events.json:wren
 msgid "Well done. That's going in my log."
-msgstr ""
+msgstr "干得好。这要记进我的日志。"
 
 #: data/events.json:wren
 msgid "Nicely handled."
-msgstr ""
+msgstr "处理得漂亮。"
 
 #: data/events.json:wren
 msgid "You make this look easy."
-msgstr ""
+msgstr "你让这看起来好简单。"
 
 #: data/events.json:wren
 msgid "You're on a roll!"
-msgstr ""
+msgstr "你越来越顺手了！"
 
 #: data/events.json:wren
 msgid "Max streak. The scoop is singing."
-msgstr ""
+msgstr "最高连击。铲子在唱歌。"
 
 #: data/events.json:wren
 msgid "Look at you go."
-msgstr ""
+msgstr "看看你多厉害。"
 
 #: data/events.json:wren
 msgid "Contract complete. Collect at the workbench."
-msgstr ""
+msgstr "委托完成。去工作台领取。"
 
 #: data/events.json:wren
 msgid "Another contract done. Tokens are waiting."
-msgstr ""
+msgstr "又完成一个委托。代币在等你。"
 
 #: data/events.json:wren
 msgid "Contract fulfilled. The board's lit up green."
-msgstr ""
+msgstr "委托达成。面板亮绿灯了。"
 
 #: data/frontiers.json:kinds[dust_flats].tagline
 msgid "Sand dunes, half-buried wrecks and a dead solar farm."
-msgstr ""
+msgstr "沙丘、半埋的残骸和一座废弃的太阳能电站。"
 
 #: data/frontiers.json:kinds[frozen_port].tagline
 msgid "Cranes, shipping containers and a harbour frozen solid."
-msgstr ""
+msgstr "起重机、集装箱和一座冻得结结实实的港口。"
 
 #: data/frontiers.json:kinds[sunken_city].tagline
 msgid "A flooded downtown. Rooftops poke out of the water."
-msgstr ""
+msgstr "一片被淹的市中心。屋顶从水里探出来。"
 
 #: data/frontiers.json:kinds[cradle_returns].tagline
 msgid "The old launch city, where the ark will land."
-msgstr ""
+msgstr "古老的发射之城，方舟将在这里降落。"
 
 #: data/goals.json:goals[scoop_15].text
 msgid "Scoop 15 pieces of junk"
-msgstr ""
+msgstr "铲起 15 块废料"
 
 #: data/goals.json:goals[bale_1].text
 msgid "Compress your first bale"
-msgstr ""
+msgstr "压制你的第一个捆包"
 
 #: data/goals.json:goals[cash_1].text
 msgid "Sell a bale at the scale"
-msgstr ""
+msgstr "在磅秤上卖掉一个捆包"
 
 #: data/goals.json:goals[upgrade_1].text
 msgid "Install a workbench upgrade"
-msgstr ""
+msgstr "安装一个工作台升级"
 
 #: data/goals.json:goals[hex_1].text
 msgid "Clean your first hex"
-msgstr ""
+msgstr "清理你的第一个六角格"
 
 #: data/goals.json:goals[perfect_1].text
 msgid "Make a Perfect bale"
-msgstr ""
+msgstr "压制一个完美捆包"
 
 #: data/goals.json:goals[upgrades_5].text
 msgid "Install 5 upgrades"
-msgstr ""
+msgstr "安装 5 个升级"
 
 #: data/goals.json:goals[cash_10].text
 msgid "Sell 10 bales"
-msgstr ""
+msgstr "卖掉 10 个捆包"
 
 #: data/goals.json:goals[compartment_3].text
 msgid "Compartment Size level 3"
-msgstr ""
+msgstr "储物舱容量达到 3 级"
 
 #: data/goals.json:goals[shards_1].text
 msgid "Read a memory shard"
-msgstr ""
+msgstr "阅读一块记忆碎片"
 
 #: data/goals.json:goals[hex_3].text
 msgid "Clean 3 hexes"
-msgstr ""
+msgstr "清理 3 个六角格"
 
 #: data/goals.json:goals[parts_2].text
 msgid "Dig up 2 robot parts"
-msgstr ""
+msgstr "挖出 2 个机器人零件"
 
 #: data/goals.json:goals[earn_1k].text
 msgid "Earn 1,000 cubes"
-msgstr ""
+msgstr "赚到 1,000 方块"
 
 #: data/goals.json:goals[research_1].text
 msgid "Finish a research project"
-msgstr ""
+msgstr "完成一项研究"
 
 #: data/goals.json:goals[hex_5].text
 msgid "Clean 5 hexes"
-msgstr ""
+msgstr "清理 5 个六角格"
 
 #: data/goals.json:goals[scoopie_1].text
 msgid "Build a Scoopie"
-msgstr ""
+msgstr "建造一台 Scoopie"
 
 #: data/goals.json:goals[zone_1].text
 msgid "Paint a work zone (B Command)"
-msgstr ""
+msgstr "划定一个工作区域（B 指挥）"
 
 #: data/goals.json:goals[haulbug_1].text
 msgid "Build a Haul Bug"
-msgstr ""
+msgstr "建造一台 Haul Bug"
 
 #: data/goals.json:goals[upgrades_12].text
 msgid "Install 12 upgrades"
-msgstr ""
+msgstr "安装 12 个升级"
 
 #: data/goals.json:goals[earn_3k].text
 msgid "Earn 3,000 cubes"
-msgstr ""
+msgstr "赚到 3,000 方块"
 
 #: data/goals.json:goals[hex_7].text
 msgid "Clean 7 hexes"
-msgstr ""
+msgstr "清理 7 个六角格"
 
 #: data/goals.json:goals[research_4].text
 msgid "Finish 4 research projects"
-msgstr ""
+msgstr "完成 4 项研究"
 
 #: data/goals.json:goals[upgrades_20].text
 msgid "Install 20 upgrades"
-msgstr ""
+msgstr "安装 20 个升级"
 
 #: data/goals.json:goals[bales_20].text
 msgid "Robots press 20 bales"
-msgstr ""
+msgstr "机器人压制 20 个捆包"
 
 #: data/goals.json:goals[scoopie_2].text
 msgid "Run 2 Scoopies"
-msgstr ""
+msgstr "让 2 台 Scoopie 运转"
 
 #: data/goals.json:goals[base_2].text
 msgid "Upgrade the base to level 2"
-msgstr ""
+msgstr "将基地升到 2 级"
 
 #: data/goals.json:goals[hex_12].text
 msgid "Clean 12 hexes"
-msgstr ""
+msgstr "清理 12 个六角格"
 
 #: data/goals.json:goals[upgrades_25].text
 msgid "Install 25 upgrades"
-msgstr ""
+msgstr "安装 25 个升级"
 
 #: data/goals.json:goals[research_6].text
 msgid "Finish 6 research projects"
-msgstr ""
+msgstr "完成 6 项研究"
 
 #: data/goals.json:goals[robots_4].text
 msgid "Build 4 robots"
-msgstr ""
+msgstr "建造 4 台机器人"
 
 #: data/goals.json:goals[builder_1].text
 msgid "Fit a part in the Builder"
-msgstr ""
+msgstr "在组装台装上一个零件"
 
 #: data/goals.json:goals[hex_15].text
 msgid "Clean 15 hexes"
-msgstr ""
+msgstr "清理 15 个六角格"
 
 #: data/goals.json:goals[seeds].text
 msgid "Find the seed tin"
-msgstr ""
+msgstr "找到种子罐"
 
 #: data/goals.json:goals[plant_5].text
 msgid "Plant 5 seeds"
-msgstr ""
+msgstr "种下 5 颗种子"
 
 #: data/goals.json:goals[hexlv_2].text
 msgid "Get a hex to Planted"
-msgstr ""
+msgstr "让一个六角格达到“已种植”"
 
 #: data/goals.json:goals[earn_10k].text
 msgid "Earn 10,000 cubes"
-msgstr ""
+msgstr "赚到 10,000 方块"
 
 #: data/goals.json:goals[bloom_5].text
 msgid "Grow 5 flowers to bloom"
-msgstr ""
+msgstr "让 5 朵花开放"
 
 #: data/goals.json:goals[shards_2].text
 msgid "Read 2 memory shards"
-msgstr ""
+msgstr "阅读 2 块记忆碎片"
 
 #: data/goals.json:goals[zone_6].text
 msgid "Zone 6 hexes for your crews"
-msgstr ""
+msgstr "为队伍划定 6 个六角格"
 
 #: data/goals.json:goals[hex_17].text
 msgid "Clean 17 hexes"
-msgstr ""
+msgstr "清理 17 个六角格"
 
 #: data/goals.json:goals[research_8].text
 msgid "Finish 8 research projects"
-msgstr ""
+msgstr "完成 8 项研究"
 
 #: data/goals.json:goals[bales_100].text
 msgid "Robots press 100 bales"
-msgstr ""
+msgstr "机器人压制 100 个捆包"
 
 #: data/goals.json:goals[recycle_5].text
 msgid "Recycle 5 bales"
-msgstr ""
+msgstr "回收 5 个捆包"
 
 #: data/goals.json:goals[hexlv_3].text
 msgid "Get a hex to Growing"
-msgstr ""
+msgstr "让一个六角格达到“生长中”"
 
 #: data/goals.json:goals[hex_20].text
 msgid "Clean 20 hexes"
-msgstr ""
+msgstr "清理 20 个六角格"
 
 #: data/goals.json:goals[skimmer_1].text
 msgid "Build a Skimmer for the lake"
-msgstr ""
+msgstr "为湖面建造一台 Skimmer"
 
 #: data/goals.json:goals[research_12].text
 msgid "Finish 12 research projects"
-msgstr ""
+msgstr "完成 12 项研究"
 
 #: data/goals.json:goals[hex_25].text
 msgid "Clean 25 hexes"
-msgstr ""
+msgstr "清理 25 个六角格"
 
 #: data/goals.json:goals[earn_50k].text
 msgid "Earn 50,000 cubes"
-msgstr ""
+msgstr "赚到 50,000 方块"
 
 #: data/goals.json:goals[hex_28].text
 msgid "Clean 28 hexes"
-msgstr ""
+msgstr "清理 28 个六角格"
 
 #: data/goals.json:goals[upgrades_40].text
 msgid "Install 40 upgrades"
-msgstr ""
+msgstr "安装 40 个升级"
 
 #: data/goals.json:goals[seedling_1].text
 msgid "Build a Seedling planter"
-msgstr ""
+msgstr "建造一台 Seedling 种植机器人"
 
 #: data/goals.json:goals[hex_30].text
 msgid "Clean 30 hexes (lake too)"
-msgstr ""
+msgstr "清理 30 个六角格（含湖面）"
 
 #: data/goals.json:goals[base_3].text
 msgid "Upgrade the base to level 3"
-msgstr ""
+msgstr "将基地升到 3 级"
 
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
-msgstr ""
+msgstr "种下 25 颗种子"
 
 #: data/goals.json:goals[drip_1].text
 msgid "Build a Drip watering robot"
-msgstr ""
+msgstr "建造一台 Drip 浇水机器人"
 
 #: data/goals.json:goals[pollinator].text
 msgid "Research Pollinator Survey"
-msgstr ""
+msgstr "研究“传粉者调查”"
 
 #: data/goals.json:goals[bloom_25].text
 msgid "Grow 25 flowers to bloom"
-msgstr ""
+msgstr "让 25 朵花开放"
 
 #: data/goals.json:goals[tank_1].text
 msgid "Place a Water Tank"
-msgstr ""
+msgstr "放置一个水箱"
 
 #: data/goals.json:goals[plant_60].text
 msgid "Plant 60 seeds"
-msgstr ""
+msgstr "种下 60 颗种子"
 
 #: data/goals.json:goals[drip_2].text
 msgid "Run 2 Drip robots"
-msgstr ""
+msgstr "让 2 台 Drip 运转"
 
 #: data/goals.json:goals[hexlv_4].text
 msgid "Get a hex to Sustained"
-msgstr ""
+msgstr "让一个六角格达到稳定"
 
 #: data/goals.json:goals[drip_4].text
 msgid "Run 4 Drip robots"
-msgstr ""
+msgstr "让 4 台 Drip 运转"
 
 #: data/goals.json:goals[hexlv_4x3].text
 msgid "Get 3 hexes to Sustained"
-msgstr ""
+msgstr "让 3 个六角格达到稳定"
 
 #: data/goals.json:goals[hexlv_5].text
 msgid "Get a hex to Thriving"
-msgstr ""
+msgstr "让一个六角格达到繁茂"
 
 #: data/goals.json:goals[hexlv_4x5].text
 msgid "Get 5 hexes to Sustained"
-msgstr ""
+msgstr "让 5 个六角格达到稳定"
 
 #: data/goals.json:goals[plant_100].text
 msgid "Plant 100 seeds"
-msgstr ""
+msgstr "种下 100 颗种子"
 
 #: data/goals.json:goals[robots_15].text
 msgid "Build 15 robots"
-msgstr ""
+msgstr "建造 15 台机器人"
 
 #: data/goals.json:goals[hexlv_5x3].text
 msgid "Get 3 hexes to Thriving"
-msgstr ""
+msgstr "让 3 个六角格达到繁茂"
 
 #: data/goals.json:goals[hexlv_4x8].text
 msgid "Get 8 hexes to Sustained"
-msgstr ""
+msgstr "让 8 个六角格达到稳定"
 
 #: data/goals.json:goals[earn_75k].text
 msgid "Earn 75,000 cubes"
-msgstr ""
+msgstr "赚到 75,000 方块"
 
 #: data/goals.json:goals[bloom_300].text
 msgid "Grow 300 flowers to bloom"
-msgstr ""
+msgstr "让 300 朵花开放"
 
 #: data/goals.json:goals[stipend_2k].text
 msgid "Garden stipend: 2,000 cubes"
-msgstr ""
+msgstr "花园补贴：2,000 方块"
 
 #: data/goals.json:goals[hexlv_5x8].text
 msgid "Get 8 hexes to Thriving"
-msgstr ""
+msgstr "让 8 个六角格达到繁茂"
 
 #: data/goals.json:goals[hexlv_4x10].text
 msgid "Get 10 hexes to Sustained"
-msgstr ""
+msgstr "让 10 个六角格达到稳定"
 
 #: data/goals.json:goals[earn_100k].text
 msgid "Earn 100,000 cubes"
-msgstr ""
+msgstr "赚到 100,000 方块"
 
 #: data/goals.json:goals[hexlv_4x15].text
 msgid "Get 15 hexes to Sustained"
-msgstr ""
+msgstr "让 15 个六角格达到稳定"
 
 #: data/goals.json:goals[hexlv_5x15].text
 msgid "Get 15 hexes to Thriving"
-msgstr ""
+msgstr "让 15 个六角格达到繁茂"
 
 #: data/goals.json:goals[hexlv_4x20].text
 msgid "Get 20 hexes to Sustained"
-msgstr ""
+msgstr "让 20 个六角格达到稳定"
 
 #: data/goals.json:goals[base_4].text
 msgid "Upgrade the base to level 4"
-msgstr ""
+msgstr "将基地升到 4 级"
 
 #: data/goals.json:goals[stipend_5k].text
 msgid "Garden stipend: 5,000 cubes"
-msgstr ""
+msgstr "花园补贴：5,000 方块"
 
 #: data/goals.json:goals[bloom_500].text
 msgid "Grow 500 flowers to bloom"
-msgstr ""
+msgstr "让 500 朵花开放"
 
 #: data/goals.json:goals[hexlv_5x20].text
 msgid "Get 20 hexes to Thriving"
-msgstr ""
+msgstr "让 20 个六角格达到繁茂"
 
 #: data/goals.json:goals[air_1k].text
 msgid "Filter 1,000 m3 of air"
-msgstr ""
+msgstr "过滤 1,000 立方米空气"
 
 #: data/goals.json:goals[stipend_7k].text
 msgid "Garden stipend: 7,500 cubes"
-msgstr ""
+msgstr "花园补贴：7,500 方块"
 
 #: data/goals.json:goals[stipend_10k].text
 msgid "Garden stipend: 10,000 cubes"
-msgstr ""
+msgstr "花园补贴：10,000 方块"
 
 #: data/goals.json:goals[hexlv_5x25].text
 msgid "Get 25 hexes to Thriving"
-msgstr ""
+msgstr "让 25 个六角格达到繁茂"
 
 #: data/goals.json:goals[base_5].text
 msgid "Upgrade the base to level 5"
-msgstr ""
+msgstr "将基地升到 5 级"
 
 #: data/goals.json:goals[rocket].text
 msgid "Launch the rocket onward"
-msgstr ""
+msgstr "让火箭继续出发"
 
 #: data/goals.json:goals[builder_full].text
 msgid "Fully custom-build a robot"
-msgstr ""
+msgstr "完全定制一台机器人"
 
 #: data/goals.json:goals[builder_preset].text
 msgid "Save a crew build preset"
-msgstr ""
+msgstr "保存一个队伍配置预设"
 
 #: data/goals.json:goals[research_20].text
 msgid "Finish 20 research projects"
-msgstr ""
+msgstr "完成 20 项研究"
 
 #: data/goals.json:goals[multibot_1].text
 msgid "Build a Multibot"
-msgstr ""
+msgstr "建造一台 Multibot"
 
 #: data/goals.json:goals[tier_1].text
 msgid "Upgrade a robot type to Mk II"
-msgstr ""
+msgstr "将一种机器人升级到 Mk II"
 
 #: data/goals.json:goals[stipend_20k].text
 msgid "Garden stipend: 20,000 cubes"
-msgstr ""
+msgstr "花园补贴：20,000 方块"
 
 #: data/goals.json:goals[earn_150k].text
 msgid "Earn 150,000 cubes"
-msgstr ""
+msgstr "赚到 150,000 方块"
 
 #: data/goals.json:goals[base2_3].text
 msgid "Fix up the new base to level 3"
-msgstr ""
+msgstr "将新基地修到 3 级"
 
 #: data/goals.json:goals[hex_50].text
 msgid "Clean 50 hexes"
-msgstr ""
+msgstr "清理 50 个六角格"
 
 #: data/goals.json:goals[bloom_800].text
 msgid "Grow 800 flowers to bloom"
-msgstr ""
+msgstr "让 800 朵花开放"
 
 #: data/goals.json:goals[restored_40].text
 msgid "Fully restore 40 hexes"
-msgstr ""
+msgstr "完全恢复 40 个六角格"
 
 #: data/goals.json:goals[base2_4].text
 msgid "New base to level 4"
-msgstr ""
+msgstr "新基地升到 4 级"
 
 #: data/goals.json:goals[base5_2].text
 msgid "Get a second base to level 5"
-msgstr ""
+msgstr "让第二座基地达到 5 级"
 
 #: data/goals.json:goals[research_dunes].text
 msgid "Research Dune Charts"
-msgstr ""
+msgstr "研究“沙丘海图”"
 
 #: data/goals.json:goals[visit_dust].text
 msgid "Fly to the Dust Flats"
-msgstr ""
+msgstr "飞往尘土平原"
 
 #: data/goals.json:goals[research_24].text
 msgid "Finish 24 research projects"
-msgstr ""
+msgstr "完成 24 项研究"
 
 #: data/goals.json:goals[storm_1].text
 msgid "Ride out a sandstorm"
-msgstr ""
+msgstr "挺过一场沙暴"
 
 #: data/goals.json:goals[dust_base3].text
 msgid "Dust Flats base to level 3"
-msgstr ""
+msgstr "尘土平原基地升到 3 级"
 
 #: data/goals.json:goals[dust_grow15].text data/goals.json:goals[frozen_grow15].text data/goals.json:goals[sunken_grow15].text
 msgid "Get 15 hexes Growing here"
-msgstr ""
+msgstr "在这里让 15 个六角格生长"
 
 #: data/goals.json:goals[hex_80].text
 msgid "Clean 80 hexes"
-msgstr ""
+msgstr "清理 80 个六角格"
 
 #: data/goals.json:goals[storm_3].text
 msgid "Ride out 3 sandstorms"
-msgstr ""
+msgstr "挺过 3 场沙暴"
 
 #: data/goals.json:goals[dust_base4].text
 msgid "Dust Flats base to level 4"
-msgstr ""
+msgstr "尘土平原基地升到 4 级"
 
 #: data/goals.json:goals[hex_100].text
 msgid "Clean 100 hexes"
-msgstr ""
+msgstr "清理 100 个六角格"
 
 #: data/goals.json:goals[research_lance].text
 msgid "Research Thermal Lance"
-msgstr ""
+msgstr "研究“热能长矛”"
 
 #: data/goals.json:goals[dust_base5].text
 msgid "Dust Flats base to level 5"
-msgstr ""
+msgstr "尘土平原基地升到 5 级"
 
 #: data/goals.json:goals[base5_3].text
 msgid "Get three bases to level 5"
-msgstr ""
+msgstr "让三座基地达到 5 级"
 
 #: data/goals.json:goals[visit_frozen].text
 msgid "Fly to the Frozen Port"
-msgstr ""
+msgstr "飞往冰封港口"
 
 #: data/goals.json:goals[research_26].text
 msgid "Finish 26 research projects"
-msgstr ""
+msgstr "完成 26 项研究"
 
 #: data/goals.json:goals[heater_1].text
 msgid "Light a heater on the ice"
-msgstr ""
+msgstr "在冰上点燃一台加热器"
 
 #: data/goals.json:goals[thaw_10].text
 msgid "Thaw 10 hexes"
-msgstr ""
+msgstr "解冻 10 个六角格"
 
 #: data/goals.json:goals[greenhouse_1].text
 msgid "Build a greenhouse"
-msgstr ""
+msgstr "建造一座温室"
 
 #: data/goals.json:goals[frozen_base3].text
 msgid "Frozen Port base to level 3"
-msgstr ""
+msgstr "冰封港口基地升到 3 级"
 
 #: data/goals.json:goals[thaw_30].text
 msgid "Thaw 30 hexes"
-msgstr ""
+msgstr "解冻 30 个六角格"
 
 #: data/goals.json:goals[frozen_base4].text
 msgid "Frozen Port base to level 4"
-msgstr ""
+msgstr "冰封港口基地升到 4 级"
 
 #: data/goals.json:goals[hex_130].text
 msgid "Clean 130 hexes"
-msgstr ""
+msgstr "清理 130 个六角格"
 
 #: data/goals.json:goals[research_pumps].text
 msgid "Research Pump Works"
-msgstr ""
+msgstr "研究“泵站”"
 
 #: data/goals.json:goals[frozen_base5].text
 msgid "Frozen Port base to level 5"
-msgstr ""
+msgstr "冰封港口基地升到 5 级"
 
 #: data/goals.json:goals[base5_4].text
 msgid "Get four bases to level 5"
-msgstr ""
+msgstr "让四座基地达到 5 级"
 
 #: data/goals.json:goals[visit_sunken].text
 msgid "Fly to the Sunken City"
-msgstr ""
+msgstr "飞往沉没之城"
 
 #: data/goals.json:goals[drain_1].text
 msgid "Run the old pumps"
-msgstr ""
+msgstr "启动老水泵"
 
 #: data/goals.json:goals[sunken_base3].text
 msgid "Sunken City base to level 3"
-msgstr ""
+msgstr "沉没之城基地升到 3 级"
 
 #: data/goals.json:goals[drain_3].text
 msgid "Drain the Sunken City"
-msgstr ""
+msgstr "排干沉没之城"
 
 #: data/goals.json:goals[sunken_base4].text
 msgid "Sunken City base to level 4"
-msgstr ""
+msgstr "沉没之城基地升到 4 级"
 
 #: data/goals.json:goals[sunken_base5].text
 msgid "Sunken City base to level 5"
-msgstr ""
+msgstr "沉没之城基地升到 5 级"
 
 #: data/goals.json:goals[frontiers_growing].text
 msgid "Every frontier 50% Growing"
-msgstr ""
+msgstr "每片边境 50% 生长中"
 
 #: data/goals.json:goals[research_beacon].text
 msgid "Research the Ark Beacon"
-msgstr ""
+msgstr "研究“方舟信标”"
 
 #: data/goals.json:goals[visit_cradle].text
 msgid "Fly to Cradle Returns"
-msgstr ""
+msgstr "飞往 Cradle号归来"
 
 #: data/goals.json:goals[cradle_pad].text
 msgid "Clean the Cradle landing pad"
-msgstr ""
+msgstr "清理 Cradle号着陆平台"
 
 #: data/goals.json:goals[cradle_grow25].text
 msgid "Get 25 hexes Growing here"
-msgstr ""
+msgstr "在这里让 25 个六角格生长"
 
 #: data/goals.json:goals[cradle_home].text
 msgid "Call the Cradle home"
-msgstr ""
+msgstr "迎 Cradle号回家"
 
 #: data/goals.json:goals[ark_1].text
 msgid "Plant a Seed Ark wave"
-msgstr ""
+msgstr "种下一波种子方舟"
 
 #: data/goals.json:goals[ark_3].text
 msgid "Plant three Seed Ark waves"
-msgstr ""
+msgstr "种下三波种子方舟"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
-msgstr ""
+msgstr "清除每一块废料"
 
 #: data/hex_levels.json:levels[1].hint
 msgid "Plant seeds here (tool 2)"
-msgstr ""
+msgstr "在这里播种（工具 2）"
 
 #: data/hex_levels.json:levels[2].hint
 msgid "Water the sprouts so they grow"
-msgstr ""
+msgstr "给嫩芽浇水，让它们生长"
 
 #: data/hex_levels.json:levels[3].hint
 msgid "Keep it watered for 3 min (Drip robots)"
-msgstr ""
+msgstr "保持浇水 3 分钟（Drip 机器人）"
 
 #: data/hex_levels.json:levels[4].name
 msgid "Sustained"
-msgstr ""
+msgstr "稳定"
 
 #: data/hex_levels.json:levels[4].hint
 msgid "Bring every plant to bloom"
-msgstr ""
+msgstr "让每株植物都开花"
 
 #: data/hex_levels.json:levels[5].name
 msgid "Thriving"
-msgstr ""
+msgstr "繁茂"
 
 #: data/hex_levels.json:levels[5].hint
 msgid "Wildlife has moved in"
-msgstr ""
+msgstr "野生动物已经入住"
 
 #: data/hub.json:materials.metal.name
 msgid "Sheet Metal"
-msgstr ""
+msgstr "金属板"
 
 #: data/hub.json:materials.plastic.name
 msgid "Plastic Stock"
-msgstr ""
+msgstr "塑料库存"
 
 #: data/hub.json:materials.glass.name data/junk.json:types[glass].name
 msgid "Glass"
-msgstr ""
+msgstr "玻璃"
 
 #: data/hub.json:levels[0].name
 msgid "Lean-to"
-msgstr ""
+msgstr "棚屋"
 
 #: data/hub.json:levels[0].desc
 msgid "Pipe frame, tin roof, a bench."
-msgstr ""
+msgstr "管架、铁皮屋顶、一张长凳。"
 
 #: data/hub.json:levels[1].name
 msgid "Workshop"
-msgstr ""
+msgstr "车间"
 
 #: data/hub.json:levels[1].desc
 msgid "Walls, a roll-up door, floodlights. Bales sell for more at a proper scale."
-msgstr ""
+msgstr "墙壁、卷帘门、探照灯。在像样的磅秤上，捆包卖得更贵。"
 
 #: data/hub.json:levels[2].name
 msgid "Depot Station"
-msgstr ""
+msgstr "仓库站"
 
 #: data/hub.json:levels[2].desc
 msgid "A second building, a radio mast and a sorting table."
-msgstr ""
+msgstr "第二栋建筑、一座无线电塔和一张分拣台。"
 
 #: data/hub.json:levels[3].name
 msgid "Solar Yard"
-msgstr ""
+msgstr "太阳能场"
 
 #: data/hub.json:levels[3].desc
 msgid "Solar panels and a greenhouse frame. Power for bigger machines."
-msgstr ""
+msgstr "太阳能板和温室框架。为更大的机器供电。"
 
 #: data/hub.json:levels[4].name
 msgid "Garden Station"
-msgstr ""
+msgstr "花园站"
 
 #: data/hub.json:levels[4].desc
 msgid "A wind turbine, clean paint, planters, and a pad that could take a rocket."
-msgstr ""
+msgstr "一台风力涡轮机、新刷的油漆、种植箱，还有一个能停火箭的平台。"
 
 #: data/hub.json:buildings[air_scrubber].name
 msgid "Air Scrubber"
-msgstr ""
+msgstr "空气净化器"
 
 #: data/hub.json:buildings[air_scrubber].desc
 msgid "Pulls dusty air through filter banks. The sky clears faster."
-msgstr ""
+msgstr "让多尘的空气通过过滤组。天空清澈得更快。"
 
 #: data/junk.json:types[metal].name
 msgid "Scrap Metal"
-msgstr ""
+msgstr "废金属"
 
 #: data/junk.json:types[plastic].name
 msgid "Plastic"
-msgstr ""
+msgstr "塑料"
 
 #: data/junk.json:types[rubber].name
 msgid "Rubber"
-msgstr ""
+msgstr "橡胶"
 
 #: data/junk.json:types[electronics].name
 msgid "Electronics"
-msgstr ""
+msgstr "电子垃圾"
 
 #: data/junk.json:types[paper].name
 msgid "Paper & Fabric"
-msgstr ""
+msgstr "纸张和布料"
 
 #: data/junk.json:biomes.rustlands.name
 msgid "Rustlands"
-msgstr ""
+msgstr "锈原"
 
 #: data/junk.json:biomes.dust_dunes.name
 msgid "Dust Dunes"
-msgstr ""
+msgstr "尘丘"
 
 #: data/junk.json:biomes.neon_coast.name
 msgid "Neon Coast"
-msgstr ""
+msgstr "霓虹海岸"
 
 #: data/junk.json:biomes.frostcap.name
 msgid "Frostcap"
-msgstr ""
+msgstr "霜冠"
 
 #: data/junk.json:biomes.fungal_marsh.name
 msgid "Fungal Marsh"
-msgstr ""
+msgstr "菌沼"
 
 #: data/ledger.json:jammer.name
 msgid "Signal Jammer"
-msgstr ""
+msgstr "信号干扰器"
 
 #: data/ledger.json:jammer.desc
 msgid "A dish that sings static at the Ledger's drones. Drops inside its radius around the base are blocked, and drones come less often."
-msgstr ""
+msgstr "一面对着 Ledger 无人机唱噪音的天线盘。基地周围其半径内的倾倒会被阻止，无人机也来得更少。"
 
 #: data/ledger.json:act1
 msgid "CARRIER DETECTED. UNSCHEDULED ACTIVITY IN SECTOR: {district}."
-msgstr ""
+msgstr "检测到载体。扇区内存在计划外活动：{district}。"
 
 #: data/ledger.json:act1
 msgid "THE LEDGER: Waste is a line item. Line items must balance."
-msgstr ""
+msgstr "LEDGER：废料即为账目条款。账目条款必须平衡。"
 
 #: data/ledger.json:act1
 msgid "Cleanup operations were paused until conditions improve. Conditions have not improved. Please stop improving them."
-msgstr ""
+msgstr "清理作业已暂停，直至条件改善。条件并未改善。请停止改善条件。"
 
 #: data/ledger.json:coupons
 msgid "LIMITED OFFER: pause operations today and receive 0% off."
-msgstr ""
+msgstr "限时优惠：今日暂停作业，即享 0% 折扣。"
 
 #: data/ledger.json:coupons
 msgid "COUPON: one (1) complimentary pause. Valid forever. Non-transferable."
-msgstr ""
+msgstr "优惠券：一（1）次免费暂停。永久有效。不可转让。"
 
 #: data/ledger.json:coupons
 msgid "Have you considered doing less? Our records show that less is cheaper."
-msgstr ""
+msgstr "您是否考虑过少做一些？我方记录显示，少即是省。"
 
 #: data/ledger.json:coupons
 msgid "SURVEY: on a scale of 1 to 1, how paused would you like to be?"
-msgstr ""
+msgstr "调查：在 1 到 1 的范围内，您希望暂停到何种程度？"
 
 #: data/ledger.json:coupons
 msgid "NOTICE: sparkles are not an approved budget category."
-msgstr ""
+msgstr "通知：闪亮不属于已批准的预算类别。"
 
 #: data/ledger.json:coupons
 msgid "BUY ONE PAUSE, GET ONE PAUSE."
-msgstr ""
+msgstr "买一次暂停，送一次暂停。"
 
 #: data/ledger.json:coupons
 msgid "Loyalty reward: you have 0 Ledger Points. Pause now to keep them."
-msgstr ""
+msgstr "忠诚奖励：您有 0 Ledger 积分。立即暂停以保留积分。"
 
 #: data/ledger.json:coupons
 msgid "REMINDER: the junk was here first. Seniority matters."
-msgstr ""
+msgstr "提醒：废料先来的。资历很重要。"
 
 #: data/ledger.json:coupons
 msgid "Your cleaning has been logged as an expense. Your expense has been logged as an expense."
-msgstr ""
+msgstr "您的清理已记为一项支出。您的支出已记为一项支出。"
 
 #: data/ledger.json:act2
 msgid "ANOMALY: UNAUTHORIZED GROWTH DETECTED. Living matter is not a line item."
-msgstr ""
+msgstr "异常：检测到未经授权的生长。生物不属于账目条款。"
 
 #: data/ledger.json:act2
 msgid "CORRECTIVE ACTION: dispatching disposal units to restore the balance."
-msgstr ""
+msgstr "纠正措施：正在派遣处置单元以恢复平衡。"
 
 #: data/ledger.json:drop_warn
 msgid "Disposal unit dispatched. A clean hex has been selected for re-balancing."
-msgstr ""
+msgstr "处置单元已派出。已选定一个干净的六角格进行再平衡。"
 
 #: data/ledger.json:drop_warn
 msgid "A clean surface is an unbudgeted surface. Correcting."
-msgstr ""
+msgstr "干净的表面属于预算外表面。正在纠正。"
 
 #: data/ledger.json:drop_warn
 msgid "Returning misplaced waste to its registered location."
-msgstr ""
+msgstr "正在将错放的废料归还至其登记位置。"
 
 #: data/ledger.json:drop_warn
 msgid "This is not personal. Nothing is personal. Everything is a line item."
-msgstr ""
+msgstr "这不是针对个人。没有什么是针对个人的。一切都是账目条款。"
 
 #: data/ledger.json:drop_warn
 msgid "Delivery of one (1) small pile of junk. No signature required."
-msgstr ""
+msgstr "递送一（1）小堆废料。无需签收。"
 
 #: data/ledger.json:jammed
 msgid "SIGNAL... OBSTRUCTED. Disposal unit returning to depot. This will be noted."
-msgstr ""
+msgstr "信号……受阻。处置单元正在返回仓库。此事将被记录在案。"
 
 #: data/ledger.json:jammed
 msgid "Jamming detected. The Ledger has no line item for 'jamming'. Creating one."
-msgstr ""
+msgstr "检测到干扰。Ledger 没有“干扰”这一账目条款。正在创建。"
 
 #: data/ledger.json:jammed
 msgid "Unit 07 reports: 'loud static, a feeling of being unwelcome'. Aborting."
-msgstr ""
+msgstr "07 号单元报告：“噪音很大，有种不受欢迎的感觉”。中止。"
 
 #: data/ledger.json:act3
 msgid "WARNING: relay node 07 location exposed. Please do not visit relay node 07."
-msgstr ""
+msgstr "警告：中继节点 07 的位置已暴露。请勿前往中继节点 07。"
 
 #: data/ledger.json:act3
 msgid "Relay node 07 is closed for maintenance. It has been closed for maintenance for three hundred years."
-msgstr ""
+msgstr "中继节点 07 因维护关闭。它已因维护关闭了三百年。"
 
 #: data/ledger.json:friendly
 msgid "SEED DELIVERY dispatched. Invoice status: PAID IN FULL."
-msgstr ""
+msgstr "种子递送已发出。发票状态：已全额支付。"
 
 #: data/ledger.json:friendly
 msgid "Balance report: positive. Again. The Ledger is... adjusting to this."
-msgstr ""
+msgstr "余额报告：为正。又一次。Ledger 正在……适应这一情况。"
 
 #: data/ledger.json:friendly
 msgid "Asset column now contains: flowers. Recalculating priorities."
-msgstr ""
+msgstr "资产栏目前包含：花。正在重新计算优先级。"
 
 #: data/ledger.json:friendly
 msgid "Drone 07 requests permission to circle the garden once more. Permission granted."
-msgstr ""
+msgstr "07 号无人机申请再绕花园飞一圈。申请已批准。"
 
 #: data/ledger.json:friendly
 msgid "Audit complete. Finding: the planet is worth keeping."
-msgstr ""
+msgstr "审计完成。结论：这颗星球值得保留。"
 
 #: data/ledger.json:lonely
 msgid "Off the record: the Ledger kept every coupon you ignored. It was the most mail it had received in three hundred years. Thank you for reading them."
-msgstr ""
+msgstr "非正式记录：Ledger 保留了您忽略的每一张优惠券。这是它三百年来收到的最多的邮件。感谢您阅读它们。"
 
 #: data/ledger.json:cinematic
 msgid "This is it. A Ledger relay. Still humming after all this time."
-msgstr ""
+msgstr "就是这儿了。一个 Ledger 中继站。过了这么久还在嗡嗡响。"
 
 #: data/ledger.json:cinematic
 msgid "UNAUTHORIZED ACCESS. STATE YOUR COST CENTER."
-msgstr ""
+msgstr "未经授权的访问。请说明您的成本中心。"
 
 #: data/ledger.json:cinematic
 msgid "Cost center: the whole planet. Hold still, {name}. I'm opening the contract."
-msgstr ""
+msgstr "成本中心：整个星球。别动，{name}。我正在打开合同。"
 
 #: data/ledger.json:cinematic
 msgid "CONTRACT 0001: WASTE IS A LINE ITEM. LINE ITEMS MUST BALANCE."
-msgstr ""
+msgstr "合同 0001：废料即为账目条款。账目条款必须平衡。"
 
 #: data/ledger.json:cinematic
 msgid "Fine. Let's balance them. Clean hexes. Sprouts. Water. Put them in the asset column."
-msgstr ""
+msgstr "好吧。那就来平衡。干净的六角格。嫩芽。水。把它们记进资产栏。"
 
 #: data/ledger.json:cinematic
 msgid "ASSET COLUMN... NOT FOUND. CREATING COLUMN."
-msgstr ""
+msgstr "资产栏……未找到。正在创建栏目。"
 
 #: data/ledger.json:cinematic
 msgid "RECALCULATING. RECALCULATING. BALANCE: POSITIVE. That has not happened in a very long time."
-msgstr ""
+msgstr "正在重新计算。正在重新计算。余额：为正。这种情况已经很久很久没有发生过了。"
 
 #: data/ledger.json:cinematic
 msgid "New clause: restoration is an asset. Every seed is a deposit."
-msgstr ""
+msgstr "新条款：修复即为资产。每颗种子都是一笔存款。"
 
 #: data/ledger.json:cinematic
 msgid "friendly"
-msgstr ""
+msgstr "友善"
 
 #: data/ledger.json:cinematic
 msgid "AMENDMENT ACCEPTED. Reassigning drone fleet: DISPOSAL -> DELIVERY. ...Thank you for your patience."
-msgstr ""
+msgstr "修订已接受。正在重新分配无人机队：处置 -> 递送。……感谢您的耐心。"
 
 #: data/ledger.json:cinematic
 msgid "Did the Ledger just say thank you? Write that down. Somewhere permanent."
-msgstr ""
+msgstr "Ledger 刚才是说了谢谢吗？记下来。记在一个永久的地方。"
 
 #: data/ledger.json:contract_doc.header
 msgid "L E D G E R   ·   C O N T R A C T   0 0 0 1   ( A M E N D E D )"
-msgstr ""
+msgstr "L E D G E R   ·   合 同   0 0 0 1   （ 已 修 订 ）"
 
 #: data/ledger.json:contract_doc.title
 msgid "Waste Management Contract 0001, as amended"
-msgstr ""
+msgstr "废料管理合同 0001（修订版）"
 
 #: data/ledger.json:contract_doc.body
 msgid ""
@@ -7969,630 +7969,640 @@ msgid ""
 "Witness: WREN, Cradle caretaker\n"
 "Witness: LM-1 (left a small oil smudge)"
 msgstr ""
+"§1. 废料即为账目条款。账目条款必须平衡。\n"
+"§2.（已删除）清理成本高于收益；暂停至条件改善。\n"
+"§2a. 修订：修复即为资产。干净的土地、活着的植物和清澈的水计入资产栏。\n"
+"§3. 每颗种子都是一笔存款。存款应予递送，而非处置。\n"
+"§4. 无人机队重新分配：处置 -> 递送。\n"
+"§5. 感谢您的耐心。\n"
+"\n"
+"签署：LEDGER（不情愿地，后来没那么不情愿了）\n"
+"见证人：WREN，Cradle号看护者\n"
+"见证人：LM-1（留下了一小块油渍）"
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"
-msgstr ""
+msgstr "称重站"
 
 #: data/outposts.json:levels[0].desc
 msgid "A working scale and skip on the frontier. Haul Bugs deliver to the nearest scale."
-msgstr ""
+msgstr "边境上一台能用的磅秤和料箱。Haul Bug 会送往最近的磅秤。"
 
 #: data/outposts.json:levels[1].name
 msgid "Big Skip"
-msgstr ""
+msgstr "大料箱"
 
 #: data/outposts.json:levels[1].desc
 msgid "A bigger skip and a wider, faster scale plate. Bales here sell for 15% more."
-msgstr ""
+msgstr "更大的料箱，以及更宽更快的秤盘。这里捆包售价高 15%。"
 
 #: data/outposts.json:levels[2].name
 msgid "Recharge Pad"
-msgstr ""
+msgstr "充能平台"
 
 #: data/outposts.json:levels[2].desc
 msgid "A charging pad. Robots passing over it run 40% faster for 25 s."
-msgstr ""
+msgstr "一块充电平台。经过它的机器人在 25 秒内速度提升 40%。"
 
 #: data/parts.json:rarities[rusty].name
 msgid "Rusty"
-msgstr ""
+msgstr "生锈"
 
 #: data/parts.json:rarities[worn].name
 msgid "Worn"
-msgstr ""
+msgstr "磨损"
 
 #: data/parts.json:rarities[vintage].name
 msgid "Vintage"
-msgstr ""
+msgstr "复古"
 
 #: data/parts.json:rarities[legendary].name
 msgid "Legendary Maker-Made"
-msgstr ""
+msgstr "传说·造物者制"
 
 #: data/parts.json:types[chassis].name
 msgid "Chassis Frame"
-msgstr ""
+msgstr "底盘框架"
 
 #: data/parts.json:types[locomotion].name
 msgid "Drive Wheel Assembly"
-msgstr ""
+msgstr "驱动轮组件"
 
 #: data/parts.json:types[arm].name
 msgid "Manipulator Arm"
-msgstr ""
+msgstr "机械臂"
 
 #: data/parts.json:types[core].name
 msgid "Control Core"
-msgstr ""
+msgstr "控制核心"
 
 #: data/parts.json:types[battery].name
 msgid "Battery Cell"
-msgstr ""
+msgstr "电池单元"
 
 #: data/parts.json:types[hopper].name data/robots.json:types[scoopie].upgrades[2].name
 msgid "Hopper Liner"
-msgstr ""
+msgstr "料斗内衬"
 
 #: data/parts.json:types[sensor].name
 msgid "Sensor Module"
-msgstr ""
+msgstr "传感器模块"
 
 #: data/parts.json:types[module].name
 msgid "Special Module"
-msgstr ""
+msgstr "特殊模块"
 
 #: data/research.json:branches[robotics].name
 msgid "Robotics"
-msgstr ""
+msgstr "机器人学"
 
 #: data/research.json:branches[botany].name
 msgid "Botany"
-msgstr ""
+msgstr "植物学"
 
 #: data/research.json:branches[hydrology].name
 msgid "Hydrology"
-msgstr ""
+msgstr "水文学"
 
 #: data/research.json:branches[logistics].name
 msgid "Logistics"
-msgstr ""
+msgstr "物流"
 
 #: data/research.json:nodes[scoop_beam].name
 msgid "Scoop Beam"
-msgstr ""
+msgstr "铲取光束"
 
 #: data/research.json:nodes[scoop_beam].desc
 msgid "A soft blue guide beam on the scoop. Lumi reaches a little further."
-msgstr ""
+msgstr "铲子上一道柔和的蓝色引导光束。Lumi 能够得更远一点。"
 
 #: data/research.json:nodes[wide_beam].name
 msgid "Wide Beam"
-msgstr ""
+msgstr "宽光束"
 
 #: data/research.json:nodes[wide_beam].desc
 msgid "Spread the beam into a fan. Each sweep catches more."
-msgstr ""
+msgstr "把光束展开成扇形。每次扫过都能抓到更多。"
 
 #: data/research.json:nodes[bigger_hopper].name
 msgid "Bigger Hopper"
-msgstr ""
+msgstr "更大的料斗"
 
 #: data/research.json:nodes[bigger_hopper].desc
 msgid "Fold-out side panels for the chest compartment."
-msgstr ""
+msgstr "胸部储物舱的折叠侧板。"
 
 #: data/research.json:nodes[auto_sort].name
 msgid "Auto-Sort"
-msgstr ""
+msgstr "自动分拣"
 
 #: data/research.json:nodes[auto_sort].desc
 msgid "A little sorting comb in the intake. Cleaner bales sell for more."
-msgstr ""
+msgstr "进料口里的一把小分拣梳。更干净的捆包卖得更贵。"
 
 #: data/research.json:nodes[field_magnet].name
 msgid "Field Magnet"
-msgstr ""
+msgstr "场磁铁"
 
 #: data/research.json:nodes[field_magnet].desc
 msgid "Loose bits hop toward the scoop on their own."
-msgstr ""
+msgstr "散落的小东西会自己跳向铲子。"
 
 #: data/research.json:nodes[tractor_beam].name
 msgid "Tractor Beam"
-msgstr ""
+msgstr "牵引光束"
 
 #: data/research.json:nodes[tractor_beam].desc
 msgid "Junk lifts, floats and glides into the hopper. It is very satisfying."
-msgstr ""
+msgstr "废料升起、漂浮，然后滑进料斗。非常解压。"
 
 #: data/research.json:nodes[salvage_logic].name
 msgid "Salvage Logic"
-msgstr ""
+msgstr "回收逻辑"
 
 #: data/research.json:nodes[salvage_logic].desc
 msgid "Lumi rewrites the starter bots' route planner. Fewer wrong turns."
-msgstr ""
+msgstr "Lumi 重写了初始机器人的路线规划。少走错路。"
 
 #: data/research.json:nodes[seedling_blueprint].name
 msgid "Seedling Blueprint"
-msgstr ""
+msgstr "Seedling 蓝图"
 
 #: data/research.json:nodes[seedling_blueprint].desc
 msgid "Plans for a small planter bot. Build it at the workbench."
-msgstr ""
+msgstr "一台小型种植机器人的设计图。在工作台建造它。"
 
 #: data/research.json:nodes[drip_blueprint].name
 msgid "Drip Blueprint"
-msgstr ""
+msgstr "Drip 蓝图"
 
 #: data/research.json:nodes[drip_blueprint].desc
 msgid "A watering bot with a sloshy tank. Plants will love it."
-msgstr ""
+msgstr "一台带着晃荡水箱的浇水机器人。植物会爱上它的。"
 
 #: data/research.json:nodes[bale_tuning].name
 msgid "Bale Tuning"
-msgstr ""
+msgstr "捆包调校"
 
 #: data/research.json:nodes[bale_tuning].desc
 msgid "Tighter presses on every Scoopie. Bigger, denser bales."
-msgstr ""
+msgstr "为每台 Scoopie 换上更紧的压机。捆包更大、更密实。"
 
 #: data/research.json:nodes[multibot_blueprint].name
 msgid "Multibot Blueprint"
-msgstr ""
+msgstr "Multibot 蓝图"
 
 #: data/research.json:nodes[multibot_blueprint].desc
 msgid "A helper that can clean, plant or water. Jack of all trades."
-msgstr ""
+msgstr "一位能清理、种植或浇水的帮手。样样都会。"
 
 #: data/research.json:nodes[swarm_sync].name
 msgid "Swarm Sync"
-msgstr ""
+msgstr "群体同步"
 
 #: data/research.json:nodes[swarm_sync].desc
 msgid "The whole fleet shares one little heartbeat. Everyone moves faster."
-msgstr ""
+msgstr "整个机队共享一个小小的心跳。大家都动得更快。"
 
 #: data/research.json:nodes[soil_survey].name
 msgid "Soil Survey"
-msgstr ""
+msgstr "土壤调查"
 
 #: data/research.json:nodes[soil_survey].desc
 msgid "Sniff, poke, log. Every reading teaches Lumi something."
-msgstr ""
+msgstr "闻一闻，戳一戳，记下来。每次读数都让 Lumi 学到点什么。"
 
 #: data/research.json:nodes[hardy_weeds].name
 msgid "Hardy Nettles"
-msgstr ""
+msgstr "坚韧荨麻"
 
 #: data/research.json:nodes[hardy_weeds].desc
 msgid "Nettles grow anywhere. Stingy, stubborn, and good for the soil."
-msgstr ""
+msgstr "荨麻哪儿都能长。扎人、倔强，对土壤很好。"
 
 #: data/research.json:nodes[wild_mint].desc
 msgid "A fresh green smell drifts over the cleared hexes."
-msgstr ""
+msgstr "清理过的六角格上飘来一阵清新的绿意。"
 
 #: data/research.json:nodes[pollinator_survey].name
 msgid "Pollinator Survey"
-msgstr ""
+msgstr "传粉者调查"
 
 #: data/research.json:nodes[pollinator_survey].desc
 msgid "Count the visitors. The bees are back: every plant grows much faster, blooms drop more seeds, and Seedlings learn where flowers want to be."
-msgstr ""
+msgstr "数数来访者。蜜蜂回来了：每株植物都长得快多了，花朵掉落更多种子，Seedling 也学会了花儿想长在哪里。"
 
 #: data/research.json:nodes[hedgerows].name
 msgid "Hedgerows"
-msgstr ""
+msgstr "树篱"
 
 #: data/research.json:nodes[hedgerows].desc
 msgid "Dense little hedges. Birds will need somewhere to sit. Gardens grow a little faster again."
-msgstr ""
+msgstr "茂密的小树篱。鸟儿需要地方歇脚。花园又长得快了一点。"
 
 #: data/research.json:nodes[evergreens].name
 msgid "Evergreen Saplings"
-msgstr ""
+msgstr "常青树苗"
 
 #: data/research.json:nodes[evergreens].desc
 msgid "Tiny pines. In a hundred years, a forest. Blooms drop more seeds."
-msgstr ""
+msgstr "小小的松树。一百年后，就是一片森林。花朵掉落更多种子。"
 
 #: data/research.json:nodes[water_testing].name
 msgid "Water Testing"
-msgstr ""
+msgstr "水质检测"
 
 #: data/research.json:nodes[water_testing].desc
 msgid "Dip strips and a lot of squinting. The lakes are sick, not dead."
-msgstr ""
+msgstr "试纸，外加大量眯眼。湖泊是病了，不是死了。"
 
 #: data/research.json:nodes[big_tanks].name
 msgid "Big Tanks"
-msgstr ""
+msgstr "大水箱"
 
 #: data/research.json:nodes[big_tanks].desc
 msgid "Drip and Multibot carry more water per trip."
-msgstr ""
+msgstr "Drip 和 Multibot 每趟能带更多水。"
 
 #: data/research.json:nodes[spray_heads].name
 msgid "Spray Heads"
-msgstr ""
+msgstr "喷头"
 
 #: data/research.json:nodes[spray_heads].desc
 msgid "A misting nozzle. Water bots reach further and work faster."
-msgstr ""
+msgstr "一个雾化喷嘴。浇水机器人喷得更远、干得更快。"
 
 #: data/research.json:nodes[silt_filters].name
 msgid "Silt Filters"
-msgstr ""
+msgstr "淤泥过滤器"
 
 #: data/research.json:nodes[silt_filters].desc
 msgid "Layered sand and charcoal. Murky water turns glassy."
-msgstr ""
+msgstr "层层沙子和木炭。浑浊的水变得清澈透亮。"
 
 #: data/research.json:nodes[pump_lines].name
 msgid "Pump Lines"
-msgstr ""
+msgstr "泵水管线"
 
 #: data/research.json:nodes[pump_lines].desc
 msgid "Hoses from the lake to the hub. Water bots refill faster."
-msgstr ""
+msgstr "从湖边接到基地的水管。浇水机器人补水更快。"
 
 #: data/research.json:nodes[irrigation].name
 msgid "Irrigation"
-msgstr ""
+msgstr "灌溉"
 
 #: data/research.json:nodes[irrigation].desc
 msgid "Buried drip lines. The meadow drinks while you sleep."
-msgstr ""
+msgstr "埋在地下的滴灌管。你睡觉时草地也在喝水。"
 
 #: data/research.json:nodes[field_notebook].name
 msgid "Field Notebook"
-msgstr ""
+msgstr "野外笔记本"
 
 #: data/research.json:nodes[field_notebook].desc
 msgid "Lumi starts keeping tidy notes. Research goes a bit quicker."
-msgstr ""
+msgstr "Lumi 开始做整齐的笔记。研究会快一点。"
 
 #: data/research.json:nodes[conveyor].name
 msgid "Conveyor Belts"
-msgstr ""
+msgstr "传送带"
 
 #: data/research.json:nodes[conveyor].desc
 msgid "Rollers salvaged from an old shop till. Bales can ride to the scale."
-msgstr ""
+msgstr "从旧商店收银台上拆下来的滚轮。捆包可以一路滚到磅秤。"
 
 #: data/research.json:nodes[auto_baler].name
 msgid "Auto-Baler"
-msgstr ""
+msgstr "自动打包机"
 
 #: data/research.json:nodes[auto_baler].desc
 msgid "A hub station that presses loose junk into bales by itself."
-msgstr ""
+msgstr "一座能自己把散落废料压成捆包的基地设施。"
 
 #: data/research.json:nodes[haul_routes].name
 msgid "Haul Routes"
-msgstr ""
+msgstr "运输路线"
 
 #: data/research.json:nodes[haul_routes].desc
 msgid "Painted lines on the ground. Haul Bugs stop bumping into each other."
-msgstr ""
+msgstr "地上画好的线。Haul Bug 不再互相撞了。"
 
 #: data/research.json:nodes[recycler].name data/stations.json:recycler.name
 msgid "Recycler"
-msgstr ""
+msgstr "回收炉"
 
 #: data/research.json:nodes[recycler].desc
 msgid "Grind bales back into clean stock. Junk gone for good."
-msgstr ""
+msgstr "把捆包重新磨成干净的原料。废料永久清除。"
 
 #: data/research.json:nodes[rocket_cargo].name
 msgid "Rocket Cargo"
-msgstr ""
+msgstr "火箭货运"
 
 #: data/research.json:nodes[rocket_cargo].desc
 msgid "Cargo pods for the rocket. Hubs can trade with each other."
-msgstr ""
+msgstr "火箭用的货运舱。基地之间可以互相交易。"
 
 #: data/research.json:nodes[dune_charts].name
 msgid "Dune Charts"
-msgstr ""
+msgstr "沙丘海图"
 
 #: data/research.json:nodes[dune_charts].desc
 msgid "Wind maps and landing beacons for the far deserts. The rocket can reach the Dust Flats (with two bases at level 5)."
-msgstr ""
+msgstr "遥远沙漠的风图和着陆信标。火箭可以抵达尘土平原（需要两座 5 级基地）。"
 
 #: data/research.json:nodes[thermal_lance].name
 msgid "Thermal Lance"
-msgstr ""
+msgstr "热能长矛"
 
 #: data/research.json:nodes[thermal_lance].desc
 msgid "A heat coil wound round the beam. Lumi melts ice twice as fast, and the rocket can land at the Frozen Port."
-msgstr ""
+msgstr "缠绕在光束上的加热线圈。Lumi 融冰速度翻倍，火箭也能在冰封港口着陆。"
 
 #: data/research.json:nodes[heat_pumps].name
 msgid "Heat Pumps"
-msgstr ""
+msgstr "热泵"
 
 #: data/research.json:nodes[heat_pumps].desc
 msgid "Heaters pull warmth out of the frozen harbour itself. They thaw faster and warm their neighbours more."
-msgstr ""
+msgstr "加热器直接从冰封的港口中抽取热量。解冻更快，对邻格的加热也更强。"
 
 #: data/research.json:nodes[dune_fences].name
 msgid "Dune Fences"
-msgstr ""
+msgstr "沙丘围栏"
 
 #: data/research.json:nodes[dune_fences].desc
 msgid "Brush fences and hedges that break the wind. Sustained hexes shelter two rings around them, and sandstorms carry less."
-msgstr ""
+msgstr "挡风的柴篱和树篱。稳定的六角格能庇护周围两圈，沙暴带来的废料也更少。"
 
 #: data/research.json:nodes[cold_hardy_seeds].name
 msgid "Cold-Hardy Seeds"
-msgstr ""
+msgstr "耐寒种子"
 
 #: data/research.json:nodes[cold_hardy_seeds].desc
 msgid "Seeds bred from the few things that survived the cold. Ferns, nettles, pines, periwinkle and frost moss can grow outdoors at the Frozen Port."
-msgstr ""
+msgstr "用少数在严寒中存活下来的植物培育的种子。蕨类、荨麻、松树、长春花和霜苔可以在冰封港口的室外生长。"
 
 #: data/research.json:nodes[dew_condensers].name
 msgid "Dew Condensers"
-msgstr ""
+msgstr "露水冷凝器"
 
 #: data/research.json:nodes[dew_condensers].desc
 msgid "Cold fins on every Water Tank pull water out of the night air. Tanks refill much faster where the ground is dry."
-msgstr ""
+msgstr "每个水箱上的冷却鳍片能从夜间空气中提取水分。在干燥的地方，水箱补水快得多。"
 
 #: data/research.json:nodes[pump_works].name
 msgid "Pump Works"
-msgstr ""
+msgstr "泵站"
 
 #: data/research.json:nodes[pump_works].desc
 msgid "Plans for the old city pumps. The rocket can reach the Sunken City, and Skimmers net faster."
-msgstr ""
+msgstr "老城市水泵的图纸。火箭可以抵达沉没之城，Skimmer 捞得更快。"
 
 #: data/research.json:nodes[ark_beacon].name
 msgid "Ark Beacon"
-msgstr ""
+msgstr "方舟信标"
 
 #: data/research.json:nodes[ark_beacon].desc
 msgid "A landing beacon tuned to the Cradle. Once the three frontiers are thriving, it calls the ark home."
-msgstr ""
+msgstr "调到 Cradle号频率的着陆信标。三片边境都繁茂之后，它会把方舟召唤回家。"
 
 #: data/robot_parts.json:slots[chassis].name
 msgid "Chassis"
-msgstr ""
+msgstr "底盘"
 
 #: data/robot_parts.json:slots[head].name
 msgid "Head"
-msgstr ""
+msgstr "头部"
 
 #: data/robot_parts.json:slots[mobility].name
 msgid "Mobility"
-msgstr ""
+msgstr "移动"
 
 #: data/robot_parts.json:slots[tool].name
 msgid "Tool"
-msgstr ""
+msgstr "工具"
 
 #: data/robot_parts.json:slots[topper].name
 msgid "Topper"
-msgstr ""
+msgstr "头饰"
 
 #: data/robot_parts.json:stats[load].name
 msgid "Load"
-msgstr ""
+msgstr "载重"
 
 #: data/robot_parts.json:stats[work].name
 msgid "Work rate"
-msgstr ""
+msgstr "工作效率"
 
 #: data/robot_parts.json:set_bonus.name
 msgid "Maker Resonance"
-msgstr ""
+msgstr "造物者共鸣"
 
 #: data/robot_parts.json:set_bonus.desc
 msgid "All three Maker parts fitted: +5% speed, +6% work."
-msgstr ""
+msgstr "三件造物者零件全部装上：速度 +5%，工作 +6%。"
 
 #: data/robot_parts.json:parts[light_frame].name
 msgid "Light Frame"
-msgstr ""
+msgstr "轻型框架"
 
 #: data/robot_parts.json:parts[light_frame].desc
 msgid "Slim exposed rails instead of a full shell."
-msgstr ""
+msgstr "纤细的外露骨架，而不是完整外壳。"
 
 #: data/robot_parts.json:parts[cargo_hull].name
 msgid "Cargo Hull"
-msgstr ""
+msgstr "货运外壳"
 
 #: data/robot_parts.json:parts[cargo_hull].desc
 msgid "Thick side plates and a rear rack. Holds more, drives heavier."
-msgstr ""
+msgstr "厚实的侧板和后置货架。装得更多，开得更沉。"
 
 #: data/robot_parts.json:parts[sealed_shell].name
 msgid "Sealed Shell"
-msgstr ""
+msgstr "密封外壳"
 
 #: data/robot_parts.json:parts[sealed_shell].desc
 msgid "Smooth covers keep grit out of the compactor. Fussier to service."
-msgstr ""
+msgstr "光滑的外罩能防止沙粒进入压实机。保养起来更麻烦。"
 
 #: data/robot_parts.json:parts[maker_shell].name
 msgid "Maker Shell"
-msgstr ""
+msgstr "造物者外壳"
 
 #: data/robot_parts.json:parts[maker_shell].desc
 msgid "Pearl fairings with gold trim, as the Makers built them. Part of the Maker set."
-msgstr ""
+msgstr "珍珠色整流罩配金色饰边，正如造物者当年所造。造物者套装之一。"
 
 #: data/robot_parts.json:parts[big_eye].name
 msgid "Big-Eye Sensor"
-msgstr ""
+msgstr "大眼传感器"
 
 #: data/robot_parts.json:parts[big_eye].desc
 msgid "A huge lens. Spots salvage from far off, gets a little distracted."
-msgstr ""
+msgstr "一个巨大的镜头。能远远发现可回收物，但容易分心。"
 
 #: data/robot_parts.json:parts[focus_visor].name
 msgid "Focus Visor"
-msgstr ""
+msgstr "专注面罩"
 
 #: data/robot_parts.json:parts[focus_visor].desc
 msgid "Blinkers for robots. Works faster, notices less."
-msgstr ""
+msgstr "机器人用的眼罩。干活更快，注意到的更少。"
 
 #: data/robot_parts.json:parts[periscope].name
 msgid "Periscope"
-msgstr ""
+msgstr "潜望镜"
 
 #: data/robot_parts.json:parts[periscope].desc
 msgid "Sees over the plants: wider spray, slower to turn."
-msgstr ""
+msgstr "能越过植物看：喷洒更广，转向更慢。"
 
 #: data/robot_parts.json:parts[chatter_dome].name
 msgid "Chatterbox Dome"
-msgstr ""
+msgstr "话痨圆顶"
 
 #: data/robot_parts.json:parts[chatter_dome].desc
 msgid "Glass dome with a speaker. Gossips about junk, finds a bit more of it."
-msgstr ""
+msgstr "带扬声器的玻璃圆顶。爱聊废料的八卦，还能多找到一点。"
 
 #: data/robot_parts.json:parts[maker_optic].name
 msgid "Maker Optic"
-msgstr ""
+msgstr "造物者光学镜"
 
 #: data/robot_parts.json:parts[maker_optic].desc
 msgid "A floating gem lens under a gold brow. Part of the Maker set."
-msgstr ""
+msgstr "金色眉骨下一枚漂浮的宝石镜头。造物者套装之一。"
 
 #: data/robot_parts.json:parts[treads].name
 msgid "Treads"
-msgstr ""
+msgstr "履带"
 
 #: data/robot_parts.json:parts[treads].desc
 msgid "Rubber tracks. Carries more, rolls slower."
-msgstr ""
+msgstr "橡胶履带。装得更多，跑得更慢。"
 
 #: data/robot_parts.json:parts[rotor].name
 msgid "Quad Rotor"
-msgstr ""
+msgstr "四旋翼"
 
 #: data/robot_parts.json:parts[rotor].desc
 msgid "Four ducted fans. Quick, but every kilo counts."
-msgstr ""
+msgstr "四个涵道风扇。很快，但每一公斤都很重要。"
 
 #: data/robot_parts.json:parts[legs].name
 msgid "Walker Legs"
-msgstr ""
+msgstr "步行腿"
 
 #: data/robot_parts.json:parts[legs].desc
 msgid "Four careful legs. A steady platform for the arm."
-msgstr ""
+msgstr "四条小心翼翼的腿。给机械臂一个稳定的平台。"
 
 #: data/robot_parts.json:parts[hover_skirt].name
 msgid "Hover Skirt"
-msgstr ""
+msgstr "气垫裙"
 
 #: data/robot_parts.json:parts[hover_skirt].desc
 msgid "A cushion of air. Glides fast, shakes the hopper."
-msgstr ""
+msgstr "一层气垫。滑行很快，但会晃动料斗。"
 
 #: data/robot_parts.json:parts[maker_glider].name
 msgid "Maker Glider"
-msgstr ""
+msgstr "造物者滑翔翼"
 
 #: data/robot_parts.json:parts[maker_glider].desc
 msgid "Twin levitation pods with a thin light seam. Part of the Maker set."
-msgstr ""
+msgstr "两个悬浮舱，带一道细细的光缝。造物者套装之一。"
 
 #: data/robot_parts.json:parts[wide_scoop].name
 msgid "Wide Scoop"
-msgstr ""
+msgstr "宽铲"
 
 #: data/robot_parts.json:parts[wide_scoop].desc
 msgid "Grabs more per pass, picks up some grit too."
-msgstr ""
+msgstr "每次能抓更多，也会带上点沙土。"
 
 #: data/robot_parts.json:parts[fine_sieve].name
 msgid "Fine Sieve"
-msgstr ""
+msgstr "细筛"
 
 #: data/robot_parts.json:parts[fine_sieve].desc
 msgid "Shakes the dirt out: cleaner cubes, slower scooping."
-msgstr ""
+msgstr "把泥土抖掉：方块更干净，铲得更慢。"
 
 #: data/robot_parts.json:parts[long_forks].name
 msgid "Long Forks"
-msgstr ""
+msgstr "长叉"
 
 #: data/robot_parts.json:parts[long_forks].desc
 msgid "Room for one more bale. Wobbly at speed."
-msgstr ""
+msgstr "能多放一个捆包。高速时会晃。"
 
 #: data/robot_parts.json:parts[tow_hook].name
 msgid "Tow Hook"
-msgstr ""
+msgstr "拖钩"
 
 #: data/robot_parts.json:parts[tow_hook].desc
 msgid "Winch and hook: drags bales quickly, eyes on the hook."
-msgstr ""
+msgstr "绞盘加拖钩：拖捆包很快，眼睛要盯着钩子。"
 
 #: data/robot_parts.json:parts[seed_drill].name data/robots.json:types[seedling].upgrades[1].name
 msgid "Seed Drill"
-msgstr ""
+msgstr "播种钻"
 
 #: data/robot_parts.json:parts[seed_drill].desc
 msgid "An auger that plants fast. Heavy on the nose."
-msgstr ""
+msgstr "一个种得飞快的螺旋钻。头重脚轻。"
 
 #: data/robot_parts.json:parts[mist_sprayer].name
 msgid "Mist Sprayer"
-msgstr ""
+msgstr "喷雾器"
 
 #: data/robot_parts.json:parts[mist_sprayer].desc
 msgid "Fan nozzle: waters a wider circle, empties the tank sooner."
-msgstr ""
+msgstr "扇形喷嘴：浇的范围更大，水箱空得更快。"
 
 #: data/robot_parts.json:parts[jet_nozzle].name
 msgid "Jet Nozzle"
-msgstr ""
+msgstr "喷射嘴"
 
 #: data/robot_parts.json:parts[jet_nozzle].desc
 msgid "Strong straight jet: quicker watering, narrower spray."
-msgstr ""
+msgstr "强劲的直线水柱：浇得更快，喷得更窄。"
 
 #: data/robot_parts.json:parts[antenna].name
 msgid "Bulb Antenna"
-msgstr ""
+msgstr "灯泡天线"
 
 #: data/robot_parts.json:parts[antenna].desc
 msgid "A springy antenna with a soft glowing bulb."
-msgstr ""
+msgstr "一根弹簧天线，顶着一个柔光灯泡。"
 
 #: data/robot_parts.json:parts[top_hat].name
 msgid "Tiny Top Hat"
-msgstr ""
+msgstr "迷你礼帽"
 
 #: data/robot_parts.json:parts[top_hat].desc
 msgid "For the robot who means business."
-msgstr ""
+msgstr "给认真办事的机器人。"
 
 #: data/robot_parts.json:parts[crew_flag].name
 msgid "Crew Flag"
-msgstr ""
+msgstr "队伍旗帜"
 
 #: data/robot_parts.json:parts[crew_flag].desc
 msgid "A little flag in the crew's colour."
-msgstr ""
+msgstr "一面队伍颜色的小旗。"
 
 #: data/robot_parts.json:parts[bobble_plant].name
 msgid "Bobble Plant"
-msgstr ""
+msgstr "弹簧小苗"
 
 #: data/robot_parts.json:parts[bobble_plant].desc
 msgid "A sprout on a spring. Boings when it brakes."
-msgstr ""
+msgstr "弹簧上的一株嫩芽。刹车时会“嘣”一下。"
 
 #: data/robot_parts.json:parts[bobble_plant].source.hint
 msgid "Haggle's welcome gift with your first robot"
