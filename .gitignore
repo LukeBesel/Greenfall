@@ -5,3 +5,6 @@
 *.tmp
 *.log
 /build/
+/screenshots/**/*.png
+/screenshots/**/*.jpg
+/screenshots/**/*.webp
