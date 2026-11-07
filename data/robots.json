@@ -1,5 +1,5 @@
 {
-  "_doc": "Robot types. requires_research = research node id needed before the type can be built (absent = unlocked from the start). [ui2] parts = Parts for the first robot of the type (with cost in cubes; both grow x1.35 per robot owned). recipe = flavour only now (the part types a robot is made of; nothing is consumed). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = unused since [ui2] (Mk steps cost cubes + Fleet.TIER_PARTS). Fleet upgrades apply to every robot of the type.",
+  "_doc": "Robot types. requires_research = research node id needed before the type can be built (absent = unlocked from the start). [ui2] parts = Parts for the first robot of the type (with cost in cubes; cubes grow x1.35 and parts x1.2 per robot owned). recipe = flavour only now (the part types a robot is made of; nothing is consumed). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = unused since [ui2] (Mk steps cost cubes + Fleet.TIER_PARTS). Fleet upgrades apply to every robot of the type.",
   "types": [
     {
       "id": "scoopie",
@@ -115,7 +115,7 @@
         "hopper"
       ],
       "cost": 700,
-      "parts": 60,
+      "parts": 45,
       "stats": {
         "speed": 1.5,
         "work_rate": 0.8
@@ -156,7 +156,7 @@
         "battery"
       ],
       "cost": 700,
-      "parts": 60,
+      "parts": 45,
       "stats": {
         "speed": 1.7,
         "work_rate": 1.0,

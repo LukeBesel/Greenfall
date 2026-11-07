@@ -863,7 +863,7 @@ func _shop(want: Dictionary) -> void:
 			fleet.build(robot, at)
 	for t: String in Economy.robot_order:
 		var treq: Dictionary = fleet.tier_requirements(t)
-		var keep_cubes: float = float(want.get("hub_save", 0.0))  # [ui2] a tier waits for the base like a robot does
+		var keep_cubes: float = float(want.get("hub_save", 0.0)) * 0.5  # [ui2] a tier keeps half the base's cubes
 		if fleet.count(t) > 0 and treq.get("ok", false) and _mats_spare({"parts": (treq["parts"] as BigNum).to_float()}, false) \
 				and GameState.get_currency("cubes").to_float() - (treq["cost"] as BigNum).to_float() >= keep_cubes:
 			if fleet.upgrade_tier(t):

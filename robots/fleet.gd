@@ -147,10 +147,13 @@ func build_cost(type_id: String) -> BigNum:
 	return BigNum.from_float(base * pow(1.35, count(type_id)))
 
 
-## [ui2] Parts for the next robot of a type (data/robots.json "parts"; grows like the cube cost).
+## [ui2] Parts for the next robot of a type (data/robots.json "parts"; x1.2 per robot owned).
+const PARTS_GROWTH: float = 1.2
+
+
 func build_parts(type_id: String) -> BigNum:
 	var base: float = float(Economy.robots[type_id].get("parts", 30))
-	return BigNum.from_float(ceilf(base * pow(1.35, count(type_id))))
+	return BigNum.from_float(ceilf(base * pow(PARTS_GROWTH, count(type_id))))
 
 
 func can_build(type_id: String) -> bool:

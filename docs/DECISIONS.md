@@ -196,8 +196,9 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
 ## Simpler workbench (wt/ui2, Nov 7)
 - **One parts**: robot part items became Parts at the rarity's old scrap value (10/25/60/150/450).
   Keeping the rarity roll keeps the detector exciting (a Legendary find is a big Parts payout).
-- **Build cost = cubes + Parts** (Scoopie 70, Haul Bug 40, Seedling/Drip/Skimmer 60, Multibot 140,
-  x1.35 per robot owned like the cubes). Mk steps: cubes as before + 200 / 700 / 2000 Parts; the rare
+- **Build cost = cubes + Parts** (Scoopie 70, Haul Bug 40, Seedling/Drip 45, Skimmer 60, Multibot
+  140; cubes x1.35 and Parts x1.2 per robot owned: a garden needs many Drips, and Haggle no longer
+  sells the missing parts for cubes). Mk steps: cubes as before + 200 / 700 / 2000 Parts; the rare
   Restored+ Control Core used to be the gate. Tuned with the autoplay so robots and base levels
   (which also want Parts) arrive about when they did. No rarity bonus any more.
 - **No trading**: Haggle's trade, scrap and swap are gone; Haggle survives only as a name in data
