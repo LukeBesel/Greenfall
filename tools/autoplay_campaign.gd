@@ -47,8 +47,8 @@ static func mark(key: String, t: float) -> void:
 
 static func _write() -> void:
 	var fp: String = ProjectSettings.globalize_path(path())
-	DirAccess.make_dir_recursive_absolute(path.get_base_dir())
-	var f := FileAccess.open(path, FileAccess.WRITE)
+	DirAccess.make_dir_recursive_absolute(fp.get_base_dir())
+	var f := FileAccess.open(fp, FileAccess.WRITE)
 	if f:
 		f.store_string(JSON.stringify(marks, "  ", false))
 
