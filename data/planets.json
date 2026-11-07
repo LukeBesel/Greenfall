@@ -14,7 +14,7 @@
       "layout": "wild",
       "radius": 4,
       "pieces_mult": 0.9,
-      "float_mult": 2.6,
+      "float_mult": 2.0,
       "vol_mult": 1.35,
       "value_mult": 6.0,
       "cost_mult": 6.0,

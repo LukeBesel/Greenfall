@@ -153,7 +153,9 @@ static func post_generate(f: HexField, _kind: Dictionary) -> void:
 		r.seed = hash([f.seed_value, id, 991])
 		for pid: int in f.hex_pieces[id]:
 			var tid: String = Economy.junk_ids[f.piece_type[pid]] if f.piece_type[pid] < Economy.junk_ids.size() else ""
-			if r.randf() < float(cfg.get("swap", 0.5)) and pools.has(tid):
+			# plastic_crate_01's lite mesh does not decimate (10k tris): never float thousands of them.
+			var force: bool = f.piece_model[pid] in (cfg.get("never", []) as Array)
+			if (force or r.randf() < float(cfg.get("swap", 0.5))) and pools.has(tid):
 				var pool: Array = pools[tid]
 				var m: String = str(pool[r.randi() % pool.size()])
 				if AssetLib.has_model(m):
@@ -236,7 +238,9 @@ func build(p_world: Node, p_field: HexField, p_kind: Dictionary) -> void:
 	hover.setup(world)
 	_spawn_fish()
 	_open_camera()
-	_dev_cam.call_deferred()
+	if DevHooks.has("tide-cam"):  # after the landing / intro placement settles
+		for d: float in [1.0, 3.0, 6.0]:
+			get_tree().create_timer(d, false).timeout.connect(_dev_cam)
 	world.set_meta("hover_water", true)  # Lumi floats over water here (player/patch.gd: no wading slowdown)
 	if world.get("hub") != null:
 		world.hub.level_changed.connect(func(l: int) -> void:
@@ -309,6 +313,9 @@ func _dev_cam() -> void:
 		Settings.fov = float(c[3])
 		(cam.get("camera") as Camera3D).fov = Settings.fov
 	cam.call("snap")
+	var hud: Variant = world.get("hud")
+	if hud is CanvasItem:
+		(hud as CanvasItem).visible = false
 
 
 ## 0 ruined .. 1 restored: cleaned share of the district and the base level.
@@ -669,7 +676,7 @@ func _dress_islands() -> void:
 			p.y = bed_at(p.x, p.z).x
 			if p.y > SEA_Y:
 				pts.append(Transform3D(Basis(Vector3.UP, _rng.randf() * TAU).rotated(Vector3.RIGHT, _rng.randf_range(-0.4, 0.4)), p))
-	_scatter_models(["Barrel_01", "old_tyre", "plastic_crate_01", "lifebuoy", "plastic_jerrycan"], pts, _groups["ruin"], 260.0)
+	_scatter_models(["Barrel_01", "old_tyre", "wooden_crate_02", "lifebuoy", "plastic_jerrycan"], pts, _groups["ruin"], 260.0)
 
 
 func _scatter_models(ids: Array, xfs: Array[Transform3D], parent: Node3D, vis_end: float) -> void:
@@ -1013,7 +1020,7 @@ func _build_barge() -> void:
 		var a: float = _rng.randf() * TAU
 		var d: float = _rng.randf_range(8.0, 34.0)
 		pts.append(Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), Vector3(p.x + cos(a) * d, SEA_Y - 0.12, p.z + sin(a) * d)))
-	_scatter_models(["Barrel_01", "plastic_crate_01", "wooden_crate_02", "plastic_jerrycan", "lifebuoy"], pts, _groups["ruin"], 220.0)
+	_scatter_models(["Barrel_01", "bleach_bottle", "wooden_crate_02", "plastic_jerrycan", "lifebuoy"], pts, _groups["ruin"], 220.0)
 
 
 ## Tops of drowned towers: concrete shafts out of the water with dark window bands, broken
@@ -1249,7 +1256,7 @@ func _build_flotsam() -> void:
 		var p: Vector3 = _sea_spot(_field_edge + 3.0, 230.0, 1.0)
 		p.y = SEA_Y - 0.1
 		pts.append(Transform3D(Basis(Vector3.UP, _rng.randf() * TAU).rotated(Vector3.RIGHT, _rng.randf_range(-0.3, 0.3)), p))
-	_scatter_models(["plastic_bottle_gallon", "Barrel_01", "plastic_crate_01", "lifebuoy", "wooden_crate_02", "trashbag", "old_tyre"], pts, _groups["ruin"], 170.0)
+	_scatter_models(["plastic_bottle_gallon", "Barrel_01", "multi_cleaner_bottle", "lifebuoy", "wooden_crate_02", "trashbag", "old_tyre"], pts, _groups["ruin"], 170.0)
 
 
 ## Trash rafts: a tangle of ghost net and scum under each raft cluster on a dirty water hex
