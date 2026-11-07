@@ -324,18 +324,18 @@ func _build_view() -> void:
 	_sv.add_child(_cam)
 	_cam.current = true
 	_grade = ColorRect.new()
-	_grade.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_grade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_grade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_grade_mat = ShaderMaterial.new()
 	_grade_mat.shader = preload("res://art/shaders/photo_grade.gdshader")
 	_grade.material = _grade_mat
 	_sv.add_child(_grade)
 	_logo = LogoStamp.new()
-	_logo.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_logo.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_logo.visible = false
 	_sv.add_child(_logo)
 	_view = TextureRect.new()
-	_view.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_view.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_view.stretch_mode = TextureRect.STRETCH_SCALE
 	_view.texture = _sv.get_texture()
@@ -345,17 +345,17 @@ func _build_view() -> void:
 
 func _build_ui() -> void:
 	_ui = Control.new()
-	_ui.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_ui.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_ui.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_ui.theme = UITheme.get_theme()
 	add_child(_ui)
 	_overlay = ThirdsOverlay.new()
-	_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_overlay.visible = false
 	_ui.add_child(_overlay)
 	_flash = ColorRect.new()
-	_flash.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_flash.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_flash.color = Color(1, 1, 1, 0)
 	_flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_ui.add_child(_flash)
