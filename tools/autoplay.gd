@@ -1036,7 +1036,7 @@ func _next_robot() -> String:
 	# Nearly all land junk gone: no more cleaners or haulers (the lake still wants a Skimmer).
 	var late: bool = _land_left_frac() < 0.12
 	var saving: bool = not _hub_need().is_empty() and not _hub_mats_short()
-	if AutoplayCampaign.frontier_kid(world) == "sunken_city" and _lake_dirty() and fleet.count("skimmer") < 2 + scoop:
+	if AutoplayCampaign.frontier_kid(world) == "sunken_city" and _lake_dirty() and fleet.count("skimmer") < 14:
 		order.append("skimmer")  # [beat] the flooded city is skimmed, not scooped
 	if seeds_on and _drips() < maxi(1, gardens):
 		order.append("drip")
