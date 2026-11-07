@@ -1731,10 +1731,18 @@ func _dev_look() -> void:
 		var yaw_off: float = float(parts[3]) if parts.size() > 3 else 0.6
 		var dist: float = float(parts[1]) if parts.size() > 1 else 3.2
 		var pitch: float = float(parts[2]) if parts.size() > 2 else -0.22
-		var c3: Camera3D = cam.get("camera") as Camera3D
-		if c3:
-			cam.set_process(false)
-			cam.set_physics_process(false)
+		var rc: Camera3D = cam.get("camera") as Camera3D
+		if rc:
+			# Our own camera, so nothing that steers the rig can move the shot.
+			var c3 := Camera3D.new()
+			c3.name = "FaunaShotCam"
+			c3.top_level = true
+			c3.attributes = rc.attributes
+			c3.environment = rc.environment
+			c3.near = 0.05
+			c3.far = rc.far
+			add_child(c3)
+			c3.current = true
 			var focus: Vector3 = a.pos.lerp(patch.global_position, 0.3 if a.kind != "school" else 0.0) + Vector3(0, 0.3 * a.size if a.kind != "school" else 0.0, 0)
 			if a.kind in ["deer", "heron"]:
 				focus.y += 0.35
