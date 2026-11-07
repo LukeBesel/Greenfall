@@ -726,6 +726,14 @@ msgstr "いっしょに咲こう"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  いのち"
 
+#: planet/planets/tidewell/env.gd:962
+msgid "LEDGER  DREDGE %02d"
+msgstr ""
+
+#: planet/planets/tidewell/env.gd:1006
+msgid "LEDGER MINING  ORE BARGE 3"
+msgstr ""
+
 #: plants/composter.gd:61
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   コンポストプレス  ·  何かが育つまで休止中"
@@ -1153,63 +1161,63 @@ msgstr "給水タンクを設置。近くの水やりロボはここで補給す
 msgid "WATER"
 msgstr "水"
 
-#: scenes/slice.gd:279
+#: scenes/slice.gd:294
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーンを塗って、好きな場所にクルーを送ろう。"
 
-#: scenes/slice.gd:506
+#: scenes/slice.gd:523
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 起動。ブルームコア 4%：緑の光 微弱。Cradle号リレー：かすか。何かを育てよう。"
 
-#: scenes/slice.gd:804
+#: scenes/slice.gd:821
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
-#: scenes/slice.gd:818
+#: scenes/slice.gd:835
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice.gd:820
+#: scenes/slice.gd:837
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
 
-#: scenes/slice.gd:827
+#: scenes/slice.gd:844
 msgid "%s is out of range: %s"
 msgstr "%s は範囲外：%s"
 
-#: scenes/slice.gd:837
+#: scenes/slice.gd:854
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:840 ui/rockets_panel.gd:39
+#: scenes/slice.gd:857 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:894
+#: scenes/slice.gd:911
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陸：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:895
+#: scenes/slice.gd:912
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
 
-#: scenes/slice.gd:895
+#: scenes/slice.gd:912
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:986
+#: scenes/slice.gd:1003
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice.gd:1158
+#: scenes/slice.gd:1175
 msgid "Welcome back. The junk waited for you."
 msgstr "おかえり。ガラクタが待っていたよ。"
 
-#: scenes/slice.gd:1175
+#: scenes/slice.gd:1192
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:1175
+#: scenes/slice.gd:1192
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
@@ -9777,6 +9785,14 @@ msgstr "センサーモジュール"
 #: data/parts.json:types[module].name
 msgid "Special Module"
 msgstr "特殊モジュール"
+
+#: data/planets.json:tidewell.name data/planets.json:tidewell.district.name
+msgid "Tidewell"
+msgstr ""
+
+#: data/planets.json:tidewell.tagline
+msgid "An ocean world. The Ledger's dredging rigs still stand in the shallows."
+msgstr ""
 
 #: data/research.json:branches[robotics].name
 msgid "Robotics"

@@ -727,6 +727,14 @@ msgstr "JUNTOS FLORESCEMOS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUZ  ÁGUA  VIDA"
 
+#: planet/planets/tidewell/env.gd:962
+msgid "LEDGER  DREDGE %02d"
+msgstr ""
+
+#: planet/planets/tidewell/env.gd:1006
+msgid "LEDGER MINING  ORE BARGE 3"
+msgstr ""
+
 #: plants/composter.gd:61
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   prensa de composto  ·  parada até algo crescer"
@@ -1156,63 +1164,63 @@ msgstr "Tanque de água colocado. Regadores próximos vão reabastecer aqui."
 msgid "WATER"
 msgstr "ÁGUA"
 
-#: scenes/slice.gd:279
+#: scenes/slice.gd:294
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Link dos robôs online. Aperte B para o Comando: pinte zonas e mande equipes para onde quiser."
 
-#: scenes/slice.gd:506
+#: scenes/slice.gd:523
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 online. Núcleo Floral 4%: luz verde fraca. Relé da Cradle: quase nada. Faça algo crescer."
 
-#: scenes/slice.gd:804
+#: scenes/slice.gd:821
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXÁGONO LIMPO!  +%s"
 
-#: scenes/slice.gd:818
+#: scenes/slice.gd:835
 msgid "Milestone: %d hexes clean!"
 msgstr "Marco: %d hexágonos limpos!"
 
-#: scenes/slice.gd:820
+#: scenes/slice.gd:837
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "O ferro-velho inteiro está limpo. Lumi solta um bipe muito longo e muito feliz."
 
-#: scenes/slice.gd:827
+#: scenes/slice.gd:844
 msgid "%s is out of range: %s"
 msgstr "%s está fora de alcance: %s"
 
-#: scenes/slice.gd:837
+#: scenes/slice.gd:854
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Bloqueado. Leve sua base ao nível 5 para construir a plataforma de lançamento."
 
-#: scenes/slice.gd:840 ui/rockets_panel.gd:39
+#: scenes/slice.gd:857 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Células de energia recarregando: %s. Melhorias do foguete recarregam mais rápido."
 
-#: scenes/slice.gd:894
+#: scenes/slice.gd:911
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Pouso: %s. Base %d de %d. %s"
 
-#: scenes/slice.gd:895
+#: scenes/slice.gd:912
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "O foguete está estacionado no pátio, pronto quando as células recarregarem."
 
-#: scenes/slice.gd:895
+#: scenes/slice.gd:912
 msgid "Landed on the base pad."
 msgstr "Pousou na plataforma da base."
 
-#: scenes/slice.gd:986
+#: scenes/slice.gd:1003
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Melhorias precisam de uma bancada. Volte para a base."
 
-#: scenes/slice.gd:1158
+#: scenes/slice.gd:1175
 msgid "Welcome back. The junk waited for you."
 msgstr "Bem-vindo de volta. A sucata esperou por você."
 
-#: scenes/slice.gd:1175
+#: scenes/slice.gd:1192
 msgid "OUTPOST %d · Lv%d"
 msgstr "POSTO %d · Nv%d"
 
-#: scenes/slice.gd:1175
+#: scenes/slice.gd:1192
 msgid "OUTPOST %d · RUIN"
 msgstr "POSTO %d · RUÍNA"
 
@@ -9794,6 +9802,14 @@ msgstr "Módulo sensor"
 #: data/parts.json:types[module].name
 msgid "Special Module"
 msgstr "Módulo especial"
+
+#: data/planets.json:tidewell.name data/planets.json:tidewell.district.name
+msgid "Tidewell"
+msgstr ""
+
+#: data/planets.json:tidewell.tagline
+msgid "An ocean world. The Ledger's dredging rigs still stand in the shallows."
+msgstr ""
 
 #: data/research.json:branches[robotics].name
 msgid "Robotics"

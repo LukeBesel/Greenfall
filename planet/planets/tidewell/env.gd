@@ -959,7 +959,7 @@ func _build_rigs() -> void:
 		_cyl(always, xf.call(cr), xf.call(cr + Vector3(0, 5.0, 0)), 0.9, _mat("rust"))
 		_cyl(always, xf.call(cr + Vector3(0, 5.0, 0)), xf.call(cr + Vector3(-14.0, 11.0, 6.0)), 0.35, _mat("rust"))
 		# Ledger stencil on the deckhouse.
-		var lbl: Label3D = Mats.stencil("LEDGER  DREDGE %02d" % (7 + i * 4), 64, Color(0.92, 0.88, 0.78, 0.8))
+		var lbl: Label3D = Mats.stencil(tr("LEDGER  DREDGE %02d") % (7 + i * 4), 64, Color(0.92, 0.88, 0.78, 0.8))
 		lbl.pixel_size = 0.03
 		lbl.global_transform = Transform3D(basis, xf.call(house_c + Vector3(0, 1.3, 3.56)))
 		_groups["always"].add_child(lbl)
@@ -1003,7 +1003,7 @@ func _build_barge() -> void:
 	b.add(bx, Transform3D(_ls(basis, Vector3(8.1, 1.0, 4.0)), xf.call(Vector3(0, 7.0, -22.0))), _mat("window"))
 	_cyl(b, xf.call(Vector3(2.0, 8.5, -23.0)), xf.call(Vector3(2.0, 13.0, -23.0)), 0.5, _mat("rust_red"))
 	b.flush(_groups["always"])
-	var lbl: Label3D = Mats.stencil("LEDGER MINING  ORE BARGE 3", 72, Color(0.9, 0.86, 0.76, 0.75))
+	var lbl: Label3D = Mats.stencil(tr("LEDGER MINING  ORE BARGE 3"), 72, Color(0.9, 0.86, 0.76, 0.75))
 	lbl.pixel_size = 0.035
 	lbl.global_transform = Transform3D(basis * Basis(Vector3.UP, PI * 0.5), xf.call(Vector3(6.06, 0.6, 2.0)))
 	_groups["always"].add_child(lbl)
