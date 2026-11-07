@@ -13,6 +13,15 @@ var seed_value: int
 ## ground shader samples from border_warp_tex), so where junk ends wanders instead of tracing hex
 ## edges. Saves made before this keep the straight test (their piece ids must stay the same).
 var natural_borders: bool = true
+## [world2] Junk generation rules. 2 (new games): the whole district reads covered (owner playtest:
+## "empty streets right by the start"): the hexes next to the hub are nearly full, mid-road junk is
+## much less sparse, and the streets inside building-blocked hexes and the strip of hub hex outside
+## the yard belong to the nearest junk hex (owner_hex). Each hex keeps v1's total volume (pieces
+## are smaller), so bales, cubes and hex flips pace as before. 1: older saves (ids must not change).
+var junk_gen: int = 2
+const GEN2_RING1: float = 1.0   # v1: 0.45 (the fast first hex now comes from smaller pieces)
+const GEN2_ROAD_MID: float = 1.0  # v1: 0.22 (mid-road was nearly bare)
+const GEN2_REACH: float = 2.0   # sample square, in hex sizes (v1: 1.0): reaches across a blocked hex
 var _warp_noise: FastNoiseLite
 var clean_threshold: float = 0.99
 
@@ -158,10 +167,15 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 	var by_id: Dictionary = {}
 	for i: int in junk_types.size():
 		by_id[str(junk_types[i]["id"])] = i
+	# [world2] Classify every hex first (owner_hex looks at the neighbours). No RNG: v1 unchanged.
+	for id: int in n:
+		var k0: int = _hex_kind(hex_center(id))
+		hex_hub[id] = 1 if k0 == HEX_HUB else (2 if k0 == HEX_BLOCKED and not water_ids.has(id) else 0)
 	for id: int in n:
 		var center: Vector3 = hex_center(id)
 		var kind: int = _hex_kind(center)
 		if water_ids.has(id) and kind != HEX_HUB:
+			hex_hub[id] = 0
 			hex_water[id] = 1
 			junk_hex_count += 1
 			_generate_floating(id, rng, by_id)
@@ -181,9 +195,20 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 		# Each hex leans toward one junk type so Pure Cubes are a reachable skill goal.
 		var theme: int = _weighted(rng, weights, wsum)
 		var count: int = int(round(lerpf(pieces_per_hex.x, pieces_per_hex.y, t_dist))) + rng.randi_range(-2, 3)
+		var gen2: bool = junk_gen >= 2
+		var vol_scale: float = 1.0
 		# Hexes next to the hub are lighter so the first hex flip comes within a few minutes.
 		if dist <= 1:
-			count = int(count * 0.45)
+			count = int(count * (GEN2_RING1 if gen2 else 0.45))
+			if gen2:
+				vol_scale = 0.45 / GEN2_RING1  # [world2] same hex volume, more (smaller) pieces
+		var reach: float = GEN2_REACH if gen2 else 1.0
+		if gen2:
+			# [world2] Same density over the larger area this hex owns (streets of blocked hexes,
+			# the hub strip): more pieces, each smaller, so the hex's total volume stays v1's.
+			var af: float = owned_area_factor(id)
+			count = int(round(count * af))
+			vol_scale /= af
 		var piles: Array = []
 		if btype == CityLayout.Block.LANDFILL:
 			count = int(count * 2.2)
@@ -195,18 +220,21 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 		hex_piles[id] = piles
 		var placed: int = 0
 		var attempts: int = 0
-		while placed < count and attempts < count * 12:
+		while placed < count and attempts < count * (40 if gen2 else 12):
 			attempts += 1
 			var pos: Vector3
-			var in_pile: bool = not piles.is_empty() and rng.randf() < 0.85
+			var in_pile: bool = not piles.is_empty() and rng.randf() < (0.6 if gen2 else 0.85)  # [world2] the ground between heaps is junk too
 			if in_pile:
 				var pile: Vector4 = piles[rng.randi() % piles.size()]
 				var ang: float = rng.randf() * TAU
 				var rr: float = sqrt(rng.randf()) * pile.z
 				pos = Vector3(pile.x + cos(ang) * rr, 0.0, pile.y + sin(ang) * rr)
 			else:
-				pos = center + Vector3(rng.randf_range(-1.0, 1.0), 0.0, rng.randf_range(-1.0, 1.0)) * hex_size
-			if (hex_at(pos + border_warp(pos)) if natural_borders else hex_at(pos)) != id:
+				pos = center + Vector3(rng.randf_range(-1.0, 1.0), 0.0, rng.randf_range(-1.0, 1.0)) * hex_size * reach
+			if gen2:
+				if owner_hex(pos) != id:
+					continue
+			elif (hex_at(pos + border_warp(pos)) if natural_borders else hex_at(pos)) != id:
 				continue
 			var surf: int = layout.surface_at(pos.x, pos.z) if layout else CityLayout.Surface.LOT
 			if surf == CityLayout.Surface.BUILDING or surf == CityLayout.Surface.YARD:
@@ -214,7 +242,7 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 			# Litter collects in gutters; mid-road stays sparser.
 			if surf == CityLayout.Surface.ROAD and not in_pile:
 				var cd: float = layout.curb_distance(pos.x, pos.z)
-				if rng.randf() > (1.0 if cd < 1.3 else 0.22):
+				if rng.randf() > (1.0 if cd < 1.3 else (GEN2_ROAD_MID if gen2 else 0.22)):
 					continue
 			var type_idx: int = theme if rng.randf() < 0.35 else _weighted(rng, weights, wsum)
 			if surf == CityLayout.Surface.SIDEWALK and rng.randf() < 0.45:
@@ -230,7 +258,7 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 				var bm: Dictionary = biome_model(mdl, str(t["id"]), id, piece_pos.size())
 				swapped = bm != mdl
 				mdl = bm
-			var vol: float = float(mdl.get("vol", 1.0)) * rng.randf_range(0.85, 1.15)
+			var vol: float = float(mdl.get("vol", 1.0)) * rng.randf_range(0.85, 1.15) * vol_scale
 			var pid: int = piece_pos.size()
 			pos.y = layout.height_at(pos.x, pos.z) if layout else 0.0
 			piece_pos.append(pos)
@@ -259,6 +287,56 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 const HEX_JUNK: int = 0
 const HEX_HUB: int = 1
 const HEX_BLOCKED: int = 2
+
+
+## [world2] Which junk hex a ground point belongs to (junk_gen 2, also the litter carpet): the
+## hex under its natural (warped) border; points of the hub hex outside the yard and of
+## building-blocked hexes go to the nearest neighbouring junk hex, so no street is left bare.
+## -1 outside the field, or with no junk hex around.
+func owner_hex(p: Vector3) -> int:
+	var h: int = hex_at(p + border_warp(p)) if natural_borders else hex_at(p)
+	if h < 0:
+		return -1
+	if hex_hub.size() > h and hex_hub[h] == 0:
+		return h
+	var best: int = -1
+	var bd: float = INF
+	for o: Vector2i in Hex.DIRECTIONS:
+		var nb: int = int(axial_to_id.get(hex_axial[h] + o, -1))
+		if nb < 0 or hex_hub[nb] != 0 or water_ids.has(nb):
+			continue
+		var d: float = hex_center(nb).distance_squared_to(Vector3(p.x, 0.0, p.z))
+		if d < bd:
+			bd = d
+			best = nb
+	return best
+
+
+## [world2] Usable ground a junk hex owns under owner_hex (gen 2) over what v1 placed it on (its
+## own warped hex), by a fixed-seed Monte Carlo over the sample squares. >= 1.
+func owned_area_factor(id: int) -> float:
+	var r := RandomNumberGenerator.new()
+	r.seed = hash([seed_value, id, 7177])
+	var c: Vector3 = hex_center(id)
+	var n1: int = 0
+	var n2: int = 0
+	for k: int in 400:
+		var p1: Vector3 = c + Vector3(r.randf_range(-1.0, 1.0), 0.0, r.randf_range(-1.0, 1.0)) * hex_size
+		if (hex_at(p1 + border_warp(p1)) if natural_borders else hex_at(p1)) == id and _usable(p1):
+			n1 += 1
+		var p2: Vector3 = c + Vector3(r.randf_range(-1.0, 1.0), 0.0, r.randf_range(-1.0, 1.0)) * hex_size * GEN2_REACH
+		if owner_hex(p2) == id and _usable(p2):
+			n2 += 1
+	if n1 == 0:
+		return 1.0
+	return maxf(1.0, (float(n2) * GEN2_REACH * GEN2_REACH) / float(n1))
+
+
+func _usable(p: Vector3) -> bool:
+	if layout == null:
+		return true
+	var s: int = layout.surface_at(p.x, p.z)
+	return s != CityLayout.Surface.BUILDING and s != CityLayout.Surface.YARD
 
 
 ## Floating junk on a lake hex: light things that float, scattered across the surface.
@@ -561,7 +639,7 @@ func junk_hexes_cleaned() -> int:
 
 func to_dict() -> Dictionary:
 	return {
-		"seed": seed_value, "radius": radius, "natural_borders": natural_borders,
+		"seed": seed_value, "radius": radius, "natural_borders": natural_borders, "junk_gen": junk_gen,
 		"alive": Marshalls.raw_to_base64(piece_alive),
 		"clean": Marshalls.raw_to_base64(hex_clean),
 		"parts_found": Marshalls.raw_to_base64(part_found) if not part_found.is_empty() else "",

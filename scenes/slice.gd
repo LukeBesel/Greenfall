@@ -108,6 +108,8 @@ func _ready() -> void:
 	district_name = str(planet.cities[planet.city[anchor_cell]]["name"]) if is_city else PlanetData.BIOMES[planet.biome[anchor_cell]].capitalize().replace("_", " ")
 	var fk: Dictionary = Frontiers.field_params(planet, hub_index)  # [biomes] frontier district?
 	var f_radius: int = int(fk.get("radius", cfg.get("radius", 9)))
+	if fk.is_empty() and loaded and GameState.world.has("field") and int((GameState.world["field"] as Dictionary).get("junk_gen", 1)) < 2:
+		f_radius = int((GameState.world["field"] as Dictionary).get("radius", 3))  # [world2] pre-gen-2 saves keep their radius-3 field
 	if not fk.is_empty():
 		district_name = str(fk.get("name", district_name))
 	layout = CityLayout.new(seed_v, 150.0, (not is_city) if fk.is_empty() else str(fk.get("layout", "wild")) != "city")
@@ -138,6 +140,7 @@ func _ready() -> void:
 	# Older saves were generated with straight hex borders; keep their piece layout identical.
 	if loaded and GameState.world.has("field"):
 		field.natural_borders = bool((GameState.world["field"] as Dictionary).get("natural_borders", false))
+		field.junk_gen = int((GameState.world["field"] as Dictionary).get("junk_gen", 1))  # [world2] older saves keep v1 junk
 	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
 	if not fk.is_empty():
 		Frontiers.toughen(field, float(fk.get("vol_mult", 1.0)))
@@ -173,6 +176,12 @@ func _ready() -> void:
 	add_child(litter)
 	litter.density_mult = float(fk.get("litter_mult", 1.0))  # [biomes]
 	litter.setup(field)
+	if fk.is_empty():  # [world2] the world past the field stays covered (frontiers have their own terrain)
+		var far := FarJunk.new()
+		far.name = "FarJunk"
+		far.world = self
+		add_child(far)
+		far.build(field)
 	city = CityView.new()
 	city.name = "City"
 	add_child(city)

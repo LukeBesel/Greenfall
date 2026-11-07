@@ -124,16 +124,20 @@ func _build() -> void:
 			mult = 2.2
 		elif btype == CityLayout.Block.VACANT:
 			mult = 0.8
-		var n: int = int(area * DENSITY * mult * density_mult)  # [biomes]
+		# [world2] The carpet follows HexField.owner_hex: natural (warped) borders, and the streets of
+		# building-blocked hexes and the hub hex outside the yard belong to a neighbouring junk hex, so
+		# no street is bare and it all clears with that hex. Sampled over the larger square it owns.
+		var reach: float = HexField.GEN2_REACH
+		var n: int = int(area * DENSITY * mult * density_mult * reach * reach)  # [biomes]
 		var a: Vector2i = field.hex_axial[id]
 		for k: int in n:
-			var p := Vector3(c.x + _rng.randf_range(-1, 1) * field.hex_size, 0, c.z + _rng.randf_range(-1, 1) * field.hex_size)
-			if field.hex_at(p) != id:
+			var p := Vector3(c.x + _rng.randf_range(-1, 1) * field.hex_size * reach, 0, c.z + _rng.randf_range(-1, 1) * field.hex_size * reach)
+			if field.owner_hex(p) != id:
 				continue
 			var surf: int = layout.surface_at(p.x, p.z) if layout else 0
 			if surf == CityLayout.Surface.BUILDING or surf == CityLayout.Surface.YARD:
 				continue
-			if surf == CityLayout.Surface.ROAD and layout.curb_distance(p.x, p.z) > 1.5 and _rng.randf() < 0.45:
+			if surf == CityLayout.Surface.ROAD and layout.curb_distance(p.x, p.z) > 1.5 and _rng.randf() < 0.15:  # [world2] was 0.45: mid-road reads covered too
 				continue
 			# Layered carpet: later pieces sit on top of earlier ones so the ground disappears.
 			var layer: float = float(k) / float(n)
@@ -214,9 +218,9 @@ func sweep(pos: Vector3, radius: float) -> int:
 	var c1 := Vector2i(floori((pos.x + radius) / CELL), floori((pos.z + radius) / CELL))
 	var hexes: Dictionary = {}
 	for o: Vector3 in [Vector3.ZERO, Vector3(radius, 0, 0), Vector3(-radius, 0, 0), Vector3(0, 0, radius), Vector3(0, 0, -radius)]:
-		var h: int = field.hex_at(pos + o)
-		if h >= 0:
-			hexes[h] = true
+		for h: int in [field.hex_at(pos + o), field.owner_hex(pos + o)]:  # [world2] carpet owner may differ
+			if h >= 0 and h < _by_hex.size():
+				hexes[h] = true
 	for hid: int in hexes:
 		var bins: Dictionary = _by_hex[hid]
 		for cx: int in range(c0.x, c1.x + 1):
