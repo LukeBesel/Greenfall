@@ -1,9 +1,10 @@
 class_name Composter
 extends Node3D
 ## Compost press at the base: the seed economy.
-## Compost comes from paper/cardboard junk (anyone who picks it up) and from every flower that
-## blooms. The press turns compost into seed packets on a timer; E at the press upgrades it
-## (faster cycles, better yield). Dormant until the first sprout has grown.
+## [money] It turns organic junk straight into Seeds: paper/cardboard junk (anyone who picks it up)
+## and every flower that blooms go into the press's hopper (GameState.flags.press_hopper, a
+## machine fill level, not a currency), and the press makes seed packets from it on a timer.
+## E at the press upgrades it (faster cycles, better yield). Dormant until the first sprout.
 
 const POS := Vector3(-5.8, 0.0, 6.4)
 const RANGE: float = 2.6
@@ -19,7 +20,19 @@ var _steam_t: float = 0.0
 var _press_head: Node3D
 
 
-const DORMANT_CAP: float = 8.0  # [first] compost heap limit while the press is dormant
+const DORMANT_CAP: float = 8.0  # [first] hopper limit while the press is dormant
+const HOPPER_CAP: float = 2000.0  # [money] the hopper only holds so much organic matter
+
+
+## [money] Organic matter waiting in the press (global, like the old compost currency).
+static func hopper() -> float:
+	return float(GameState.flags.get("press_hopper", 0.0))
+
+
+static func add_hopper(v: float) -> void:
+	var h: float = hopper()
+	# A migrated old compost heap may sit above the cap; it only stops new matter coming in.
+	GameState.flags["press_hopper"] = maxf(0.0, minf(h + v, maxf(h, HOPPER_CAP)))
 
 func _ready() -> void:
 	add_to_group("persist")
@@ -90,9 +103,9 @@ func on_salvage(type_id: String, vol: float) -> void:
 	if type_id == "paper":
 		# [first] Before the first sprout the press is dormant: only a small heap builds up, so its
 		# first output is a couple of seeds rather than a flood from an hour of paper.
-		if not active() and GameState.get_currency("compost").to_float() >= DORMANT_CAP:
+		if not active() and hopper() >= DORMANT_CAP:
 			return
-		GameState.add_currency("compost", BigNum.from_float(vol * 0.6))
+		add_hopper(vol * 0.6)
 
 
 func _process(delta: float) -> void:
@@ -101,13 +114,13 @@ func _process(delta: float) -> void:
 	if _last_blooms < 0.0:
 		_last_blooms = blooms
 	elif blooms > _last_blooms:
-		GameState.add_currency("compost", BigNum.from_float((blooms - _last_blooms) * 1.5))
+		add_hopper((blooms - _last_blooms) * 1.5)
 		_last_blooms = blooms
 	var on: bool = active()
 	_lamp.emission = Color(0.5, 1.0, 0.4) if on else Color(0.35, 0.2, 0.1)
 	if not on:
 		return
-	var have: bool = GameState.can_afford("compost", BigNum.from_float(compost_per_cycle()))
+	var have: bool = hopper() >= compost_per_cycle()
 	if have:
 		_cycle_t += delta
 		_drum.rotation.z += delta * 1.6
@@ -119,7 +132,7 @@ func _process(delta: float) -> void:
 	_press_head.position.y = 1.15 - 0.25 * smoothstep(0.85, 1.0, k)
 	if _cycle_t >= cycle_seconds():
 		_cycle_t = 0.0
-		GameState.spend("compost", BigNum.from_float(compost_per_cycle()))
+		add_hopper(-compost_per_cycle())
 		var n: float = seeds_per_cycle()
 		GameState.add_currency("seeds", BigNum.from_float(n))
 		GameState.inc_stat("seeds_pressed", n)
@@ -137,7 +150,7 @@ func _refresh_label() -> void:
 	if not active():
 		_label.text = tr("COMPOST PRESS\ndormant")
 		return
-	_label.text = tr("COMPOST PRESS  Lv %d\ncompost %s  →  seeds") % [level, Settings.fmt(GameState.get_currency("compost"))]
+	_label.text = tr("COMPOST PRESS  Lv %d\nhopper %d%%  →  seeds") % [level, int(round(100.0 * hopper() / HOPPER_CAP))]
 
 
 func _build() -> void:

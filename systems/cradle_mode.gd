@@ -398,7 +398,7 @@ static func prepare_new_world_state(carry: Dictionary) -> void:
 	if float(kit["cubes"]) > 0.0:
 		GameState.add_currency("cubes", BigNum.from_float(float(kit["cubes"])))
 	if float(kit["data"]) > 0.0:
-		GameState.add_currency(Research.CURRENCY, BigNum.from_float(float(kit["data"])))
+		GameState.add_currency("cubes", BigNum.from_float(float(kit["data"]) * Research.note_cubes()))  # [money] old Data kit, paid in cubes
 	if bool(kit["seeds_unlocked"]):
 		GameState.flags["seeds_unlocked"] = true
 	if float(kit["seeds"]) > 0.0:

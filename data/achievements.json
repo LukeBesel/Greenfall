@@ -471,7 +471,7 @@
   {
    "id": "data_500",
    "name": "Data Hoarder",
-   "desc": "Collect 500 field data.",
+   "desc": "Log 500 field notes.",
    "icon": "data",
    "cond": {
     "type": "stat",

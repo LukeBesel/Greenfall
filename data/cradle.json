@@ -11,7 +11,7 @@
     {"id": "swift_treads", "name": "Swift Treads", "desc": "Lumi moves 5% faster per level.", "icon": "gear", "cost": 6, "cost_growth": 1.5, "max": 4, "effect": "stat", "stat": "move_speed", "per_level": 0.05},
     {"id": "seed_vault", "name": "Seed Vault", "desc": "8% more seeds per bloom per level; each new world starts with 40 seeds per level in the pod (ready for when Lumi finds that world's seed tin).", "icon": "seed", "cost": 10, "cost_growth": 1.6, "max": 4, "effect": "stat", "stat": "seed_yield", "per_level": 0.08, "start": {"seeds": 40}},
     {"id": "head_start", "name": "Head Start", "desc": "Each new world starts with 1,500 cubes per level.", "icon": "cube", "cost": 5, "cost_growth": 1.45, "max": 5, "effect": "start", "start": {"cubes": 1500}},
-    {"id": "data_cache", "name": "Data Cache", "desc": "Each new world starts with 60 research Data per level.", "icon": "star", "cost": 6, "cost_growth": 1.5, "max": 5, "effect": "start", "start": {"data": 60}},
+    {"id": "data_cache", "name": "Data Cache", "desc": "Each new world starts with 600 extra cubes for research per level.", "icon": "star", "cost": 6, "cost_growth": 1.5, "max": 5, "effect": "start", "start": {"data": 60}},
     {"id": "old_crew", "name": "Old Crew", "desc": "Robots wait at the landing site: a Scoopie at level 1, a Haul Bug at 2, another Scoopie at 3.", "icon": "bot", "cost": 15, "cost_growth": 1.8, "max": 3, "effect": "start", "start": {"robots": ["scoopie", "haulbug", "scoopie"]}},
     {"id": "archivist", "name": "Archivist", "desc": "Research notes travel with Lumi: level 1 knows every first-tier node, level 2 the second tier too.", "icon": "star", "cost": 14, "cost_growth": 2.0, "max": 2, "effect": "start", "start": {"research_tier": 1}}
   ],
