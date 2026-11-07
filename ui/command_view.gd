@@ -109,6 +109,7 @@ var _pad_paint: int = 0  # 1 while A is held on the map, -1 while X is held
 var _reticle_hex: int = -1
 var _reticle: Control
 var _keys: PromptLabel
+var _ranges := RangeBoost.new()  # [vqa]
 var _last_focus_id: Array = []  # [meta key, value] of the panel control that had focus
 
 
@@ -499,6 +500,7 @@ func open_view() -> void:
 	_look = _focus
 	_cam.global_position = _cam_pos
 	_cam.current = true
+	_ranges.boost(world as Node, ZOOM_MAX + 160.0)  # [vqa] junk/gardens stay drawn when zoomed out
 	if _sel_bot and world.fleet.find_robot(_sel_key) == null:
 		_sel_key = "clean"
 		_sel_bot = false
@@ -519,6 +521,7 @@ func close_view() -> void:
 	if fo and _root.is_ancestor_of(fo):
 		fo.release_focus()
 	_root.visible = false
+	_ranges.restore()  # [vqa]
 	if _prev_cam and is_instance_valid(_prev_cam):
 		_prev_cam.current = true
 	if world.get("hud") != null:

@@ -22,6 +22,13 @@ func setup() -> void:
 	_mat.set_shader_parameter("wave_nrm", AssetLib.tex("rubble", "nor_gl"))
 	_mat.set_shader_parameter("grid_radius", f.radius)
 	_mat.set_shader_parameter("hex_size", f.hex_size)
+	# [vqa] Natural shorelines everywhere (not only frontiers): the lake edge and its lakebed use the
+	# same noise-warped border as the ground and the junk, so no straight hex lines at the water.
+	var gm: ShaderMaterial = world.view.ground_material if world.view.get("ground_material") != null else null
+	if gm and f.natural_borders:
+		for k: String in ["warp_tex", "warp_size", "warp_amp"]:
+			_mat.set_shader_parameter(k, gm.get_shader_parameter(k))
+		gm.set_shader_parameter("lake_warp", 1.0)
 	var plane := PlaneMesh.new()
 	var ext: float = (f.radius * 2 + 2) * f.hex_size * 1.8
 	plane.size = Vector2(ext, ext)

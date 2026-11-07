@@ -526,9 +526,13 @@ func _build_environment() -> void:
 	env.tonemap_mode = Environment.TONE_MAPPER_AGX
 	env.tonemap_exposure = 1.3
 	env.glow_enabled = true
-	env.glow_intensity = 0.55
-	env.glow_bloom = 0.07
-	env.glow_hdr_threshold = 0.95
+	# [vqa] Thin, subtle glow (owner: "futuristic but not that Tron like"): only the small blur
+	# levels, no wide level-5 halo, no bloom of sunlit white surfaces (threshold above them).
+	env.glow_intensity = 0.5
+	env.glow_bloom = 0.015
+	env.glow_hdr_threshold = 1.15
+	for gl: int in 7:
+		env.set_glow_level(gl, [0.0, 0.6, 0.8, 0.5, 0.0, 0.0, 0.0][gl])
 	env.ssao_enabled = true
 	env.ssao_radius = 1.0
 	env.ssao_intensity = 1.6
