@@ -2,7 +2,7 @@ class_name PatchModel
 extends Node3D
 ## The player's robot, Lumi (LM-1): the ark's seed-keeper bot, fallen back to Verdance.
 ## Matches the owner's concept sheet: a big wide rounded head with a glossy black visor and thick
-## glowing "C" eyes, round ear lenses with glow rings, a curved antenna ending in an orange fin,
+## glowing "C" eyes, vented ear side-pods with a thin glow stripe and an antenna stub, a curved antenna ending in an orange fin,
 ## orange accents, a compact torso with an orange-framed chest screen and glowing waist slots,
 ## segmented arms with three-finger claws (the right one projects a tractor beam), and a hover
 ## bowl with a bright thruster ring instead of legs. Worn, dusty paint. Colorways are unlockable designs ("aurora" is
