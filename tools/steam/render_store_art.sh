@@ -46,7 +46,7 @@ if [ "$WHAT" = all ] || [ "$WHAT" = shots ]; then
   render store_02_baling 1920x1080 "" 150 --no-hud --stations=all --stations-demo --stations-pose=0.6 --spawn-pos=-3.0,0.2 --spawn-yaw=0.96 --cam=close --time=0.45
   render store_03_crew 1920x1080 "" 150 --no-hud --robots=scoopie:2@3,haulbug:2@2,drip:1@1,seedling:1@1 --freeze-robots --cam=front --unlock-seeds --stations=all --time=0.45
   render store_04_command 1920x1080 "" 150 --robots=scoopie:3@1,haulbug:2,drip:1 --order=clean:priority:far --open=command --time=0.45
-  render store_05_planting 1920x1080 "" 150 --no-hud --future=3 --spawn-pos=16,22 --spawn-yaw=-1.5708 --cam=side --cam-pitch=-0.08 --time=0.45 --robots=seedling:2@2,drip:1@2
+  render store_05_planting 1920x1080 "" 150 --no-hud --future=4 --spawn-hex=8 --cam=wide --time=0.45 --robots=seedling:2@2,drip:1@2
   render store_06_future_city 1920x1080 "" 150 --no-hud --future=5 --spawn-pos=16,22 --spawn-yaw=-1.5708 --cam=side --cam-pitch=-0.08 --time=0.45
   render store_07_future_dusk 1920x1080 "" 150 --no-hud --future=5 --spawn-pos=16,22 --spawn-yaw=-1.5708 --cam=side --cam-pitch=-0.08 --time=0.76
   render store_08_hologram_map 1920x1080 "" 150 --open=globe --time=0.4
