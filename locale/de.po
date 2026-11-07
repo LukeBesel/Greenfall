@@ -9589,8 +9589,8 @@ msgid "Upgrade the base to level 5"
 msgstr "Verbessere die Basis auf Stufe 5"
 
 #: data/goals.json:goals[extras_retire].text
-msgid "Retire an old robot to the nursery garden"
-msgstr "Schick einen alten Roboter in Rente in den Gärtnereigarten"
+msgid "Retire a robot to the nursery"
+msgstr "Schick einen Roboter in die Gärtnerei"
 
 #: data/goals.json:goals[rocket].text
 msgid "Launch the rocket onward"
@@ -12961,6 +12961,9 @@ msgstr "Du dekorierst. Gefällt mir. Den Katzen wird es noch besser gefallen."
 #: data/wren_lines.json:garden_place
 msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
 msgstr "Eine Bank, eine Lampe, ein Brunnen. Langsam sieht es nach einem Ort aus, an den Menschen gern zurückkämen."
+
+#~ msgid "Retire an old robot to the nursery garden"
+#~ msgstr "Schick einen alten Roboter in Rente in den Gärtnereigarten"
 
 #~ msgid "Salvaged: %s %s"
 #~ msgstr "Geborgen: %s %s"

@@ -9572,8 +9572,8 @@ msgid "Upgrade the base to level 5"
 msgstr "基地をレベル5にする"
 
 #: data/goals.json:goals[extras_retire].text
-msgid "Retire an old robot to the nursery garden"
-msgstr "古いロボットを苗床ガーデンで引退させる"
+msgid "Retire a robot to the nursery"
+msgstr "ロボットを苗床で引退させる"
 
 #: data/goals.json:goals[rocket].text
 msgid "Launch the rocket onward"
@@ -12944,6 +12944,9 @@ msgstr "飾りつけしてるんだ。いいと思う。ネコたちはもっと
 #: data/wren_lines.json:garden_place
 msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
 msgstr "ベンチに、ランプに、噴水。人が帰ってきたくなる場所に見えてきた。"
+
+#~ msgid "Retire an old robot to the nursery garden"
+#~ msgstr "古いロボットを苗床ガーデンで引退させる"
 
 #~ msgid "Salvaged: %s %s"
 #~ msgstr "回収：%s %s"

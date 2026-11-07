@@ -9474,7 +9474,7 @@ msgid "Upgrade the base to level 5"
 msgstr ""
 
 #: data/goals.json:goals[extras_retire].text
-msgid "Retire an old robot to the nursery garden"
+msgid "Retire a robot to the nursery"
 msgstr ""
 
 #: data/goals.json:goals[rocket].text
