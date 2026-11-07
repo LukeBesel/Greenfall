@@ -530,15 +530,17 @@ for sx in (-1, 1):
 		body_parts.append(screw((sx * 0.15, y, TD * 0.5), (0, 0, 1), r=0.007))
 # Compact rounded underside: a white pod rounding in to a dark base with ONE recessed hover ring.
 body_parts.append(lathe("pod", [(0.0, 0.29), (0.2, 0.29), (0.212, 0.272), (0.212, 0.245), (0.2, 0.215), (0.178, 0.188), (0.15, 0.17), (0.0, 0.17)], "paint", segs=56))
-body_parts.append(lathe("pod_base", [(0.0, 0.18), (0.152, 0.18), (0.14, 0.158), (0.125, 0.135), (0.112, 0.122), (0.104, 0.121), (0.102, 0.128),
-	(0.098, 0.13), (0.072, 0.13), (0.068, 0.128), (0.066, 0.121), (0.06, 0.12), (0.0, 0.122)], "trim", segs=56))
+# The hover ring sits in a notch round the base's lower outer edge: seen from the side as one thin
+# recessed glow line, from below as a ring.
+body_parts.append(lathe("pod_base", [(0.0, 0.18), (0.152, 0.18), (0.143, 0.16), (0.132, 0.146), (0.113, 0.143), (0.108, 0.133),
+	(0.112, 0.122), (0.1, 0.113), (0.04, 0.11), (0.0, 0.111)], "trim", segs=56))
 body_parts.append(torus("pod_seam", 0.152, 0.006, (0, 0.175, 0), "dark", major=56, minor=6))
 for k in range(6):
 	a = 2 * math.pi * (k + 0.5) / 6
 	body_parts.append(screw((math.cos(a) * 0.132, 0.145, math.sin(a) * 0.132), (math.cos(a), -0.8, math.sin(a)), r=0.006))
 body = join("body", body_parts)
-thruster = torus("thruster", 0.085, 0.0095, (0, 0.124, 0), "thruster", major=56, minor=10)
-core = cyl("thruster_core", 0.03, 0.006, (0, 0.122, 0), "thruster_core", verts=24)
+thruster = torus("thruster", 0.117, 0.0075, (0, 0.132, 0), "thruster", major=64, minor=10)
+core = cyl("thruster_core", 0.028, 0.006, (0, 0.108, 0), "thruster_core", verts=24)
 thruster = join("thruster", [thruster, core])
 
 # Recycling icon for the chest plate (its own part so other icons can replace it).
@@ -759,7 +761,7 @@ for o in objs:
 		c = cur[i]
 		edge = sstep(22.0, 75.0, c)
 		if o.name in SHELLS:
-			edge = min(1.0, edge + 0.55 * sstep(4.0, 16.0, c))  # wear on the big rounded corners too
+			edge = min(1.0, edge + 0.8 * sstep(3.0, 13.0, c))  # wear on the big rounded corners too
 		cav = sstep(6.0, 30.0, -c)
 		occ = a[i] if a else 1.0
 		# Joint wear (alpha, 1 = none): armour and shell close to a joint pivot chip more.

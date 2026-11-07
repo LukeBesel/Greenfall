@@ -53,6 +53,7 @@ vec4 eye(vec2 p, vec2 c, float R, float bl, float hp) {
 	float Rp = pupil_radius * R;
 	float rp = length(d - pc);
 	float pupil = 1.0 - smoothstep(Rp - aa, Rp + aa, rp);
+	pupil *= smoothstep(0.12, 0.35, c_open);  // nearly shut: one clean lid line, no dark core
 	if (eye_shape == 1) {
 		pupil = 0.0;  // round: one solid disc
 	} else if (eye_shape == 4) {

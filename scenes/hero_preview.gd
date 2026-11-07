@@ -63,6 +63,9 @@ func _ready() -> void:
 		env.fog_light_color = Color(0.55, 0.32, 0.16)
 		env.fog_density = 0.022
 		env.fog_sky_affect = 0.0
+	if not portrait:
+		env.background_mode = Environment.BG_COLOR  # plain dark studio backdrop; the sky still lights/reflects
+		env.background_color = Color(0.07, 0.065, 0.065)
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
