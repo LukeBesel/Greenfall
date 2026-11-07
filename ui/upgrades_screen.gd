@@ -93,6 +93,7 @@ func _ready() -> void:
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.follow_focus = true  # [deck] D-pad focus scrolls the grid
 	vb.add_child(scroll)
 	_grid = GridContainer.new()
 	_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -198,6 +199,7 @@ func _style_tabs() -> void:
 func _focus_default() -> void:
 	if not is_open:
 		return
+	_wire_focus()
 	if _tab == "research":
 		if is_instance_valid(_research) and not _research.is_queued_for_deletion():
 			_research.focus_first()
@@ -217,6 +219,22 @@ func _focus_default() -> void:
 		target = _close_btn
 	if target:
 		target.grab_focus()
+
+
+## [deck] Card grids get explicit D-pad neighbours (Godot's search misses other cards).
+var _focus_sig: String = ""
+
+
+func _wire_focus() -> void:
+	if not _tab in ["patch", "bots", "hub"]:
+		return
+	var sig: String = FocusGrid.signature(_grid) + "|%d" % _grid.columns
+	if sig != _focus_sig:
+		_focus_sig = sig
+		FocusGrid.wire(_grid, _close_btn)
+		var first: Control = FocusGrid._focusables(_grid)[0] if not FocusGrid._focusables(_grid).is_empty() else null
+		if first:
+			_close_btn.focus_neighbor_bottom = _close_btn.get_path_to(first)
 
 
 func _focusable(c: Control, allow_disabled: bool) -> bool:
@@ -305,6 +323,7 @@ func _process(delta: float) -> void:
 	if _refresh_t <= 0.0:
 		_refresh_t = 0.25
 		_refresh_all()
+		_wire_focus()
 	_trade_t -= delta
 	if _trade_t <= 0.0:
 		_trade_t = 0.5
