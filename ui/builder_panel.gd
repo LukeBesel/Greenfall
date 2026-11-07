@@ -7,7 +7,7 @@ extends HBoxContainer
 ## Every control is a focusable Button / LineEdit, so a gamepad walks the whole panel with the
 ## d-pad and A; LB/RB still switch tabs.
 
-const PREVIEW_SIZE := Vector2i(400, 200)
+const PREVIEW_SIZE := Vector2i(360, 190)
 const BAD := Color(1.0, 0.55, 0.45)
 const ROLE_STATS: Dictionary = {
 	"clean": [["speed", "Speed", " m/s"], ["scoop_rate", "Scoop rate", "/s"], ["capacity", "Hopper", ""], ["efficiency", "Cube quality", "x"], ["scan", "Scan", "%"]],
@@ -53,7 +53,7 @@ var _dev_done: bool = false
 func _ready() -> void:
 	add_theme_constant_override("separation", 14)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	custom_minimum_size = Vector2(0, 470)
+	custom_minimum_size = Vector2(0, 455)
 	_build_left()
 	_build_mid()
 	_build_right()
@@ -82,30 +82,30 @@ func _column(title: String, width: float) -> VBoxContainer:
 	pc.add_theme_stylebox_override("panel", UITheme.box(UITheme.CARD_BG, Color(1, 1, 1, 0.07), 1, 8, 12))
 	pc.custom_minimum_size = Vector2(width, 0)
 	add_child(pc)
+	var sc := ScrollContainer.new()
+	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	sc.follow_focus = true
+	pc.add_child(sc)
 	var vb := VBoxContainer.new()
+	vb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	vb.add_theme_constant_override("separation", 6)
-	pc.add_child(vb)
+	sc.add_child(vb)
 	if title != "":
 		vb.add_child(UITheme.label(title, 12, Color(0.4, 0.75, 1.0)))
 	return vb
 
 
 func _build_left() -> void:
-	var vb: VBoxContainer = _column("YOUR ROBOTS", 236)
-	var sc := ScrollContainer.new()
-	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	sc.follow_focus = true
-	vb.add_child(sc)
+	var vb: VBoxContainer = _column("YOUR ROBOTS", 214)
 	_robot_list = VBoxContainer.new()
 	_robot_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_robot_list.add_theme_constant_override("separation", 5)
-	sc.add_child(_robot_list)
+	vb.add_child(_robot_list)
 
 
 func _build_mid() -> void:
-	_mid = _column("", 420)
-	_mid.get_parent().size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_mid = _column("", 380)
+	_mid.get_parent().get_parent().size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_title = UITheme.label("", 21, Color.WHITE)
 	_mid.add_child(_title)
 	var svc := SubViewportContainer.new()
@@ -126,7 +126,7 @@ func _build_mid() -> void:
 	_mid.add_child(nr)
 	_name_edit = LineEdit.new()
 	_name_edit.max_length = 16
-	_name_edit.custom_minimum_size = Vector2(170, 38)
+	_name_edit.custom_minimum_size = Vector2(150, 36)
 	_name_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_name_edit.add_theme_stylebox_override("normal", UITheme.box(Color(0.04, 0.045, 0.05, 0.95), Color(1, 1, 1, 0.1), 1, 4, 8))
 	_name_edit.add_theme_stylebox_override("focus", UITheme.box(Color(0, 0, 0, 0), UITheme.GOLD, 1, 4, 8))
@@ -203,7 +203,7 @@ func _build_stage() -> void:
 
 
 func _build_right() -> void:
-	_right = _column("PART SLOTS", 380)
+	_right = _column("PART SLOTS", 350)
 	for s: String in RobotBuilder.SLOTS:
 		var b := Button.new()
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -216,16 +216,10 @@ func _build_right() -> void:
 		_right.add_child(b)
 		_slot_btns[s] = b
 	_right.add_child(UITheme.label("PARTS THAT FIT", 12, Color(0.4, 0.75, 1.0)))
-	var sc := ScrollContainer.new()
-	sc.custom_minimum_size = Vector2(0, 110)
-	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	sc.follow_focus = true
-	_right.add_child(sc)
 	_opts = VBoxContainer.new()
 	_opts.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_opts.add_theme_constant_override("separation", 4)
-	sc.add_child(_opts)
+	_right.add_child(_opts)
 	_info = UITheme.label("", 13, UITheme.MUTED)
 	_info.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_info.custom_minimum_size = Vector2(0, 36)
@@ -262,7 +256,8 @@ func _rebuild_robot_list() -> void:
 		var b := Button.new()
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.custom_minimum_size = Vector2(0, 52)
-		b.add_theme_font_size_override("font_size", 14)
+		b.clip_text = true
+		b.add_theme_font_size_override("font_size", 13)
 		b.set_meta("robot", r)
 		b.pressed.connect(func() -> void: _select(r))
 		b.focus_entered.connect(func() -> void: _select(r))
@@ -289,7 +284,7 @@ func _refresh_all() -> void:
 	_empty.visible = not has
 	for n: Control in [_name_edit.get_parent(), _trait, _stats]:
 		n.visible = has
-	_right.get_parent().visible = has
+	_right.get_parent().get_parent().visible = has
 	if not has:
 		_title.text = "ROBOT BUILDER"
 		_show_preview({}, true)
@@ -334,7 +329,8 @@ func _rebuild_options() -> void:
 		var b := Button.new()
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.custom_minimum_size = Vector2(0, 40)
-		b.add_theme_font_size_override("font_size", 14)
+		b.clip_text = true
+		b.add_theme_font_size_override("font_size", 13)
 		var line2: String = ""
 		var col: Color = UITheme.CREAM
 		if id == "":
