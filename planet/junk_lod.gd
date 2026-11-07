@@ -26,6 +26,7 @@ var _far_pids: Array[PackedInt32Array] = []
 var _group := PackedInt32Array()  # pid -> group
 var _where := PackedByteArray()  # pid -> 0 hidden, 1 near, 2 far
 var _slot := PackedInt32Array()  # pid -> index in its buffer
+var _xf: Array[Transform3D] = []  # pid -> current transform (CPU copy: reading MultiMesh back can stall)
 var _hex_near := PackedByteArray()  # hex -> 1 near
 var _t: float = 0.0
 var _forced: bool = false
@@ -41,6 +42,7 @@ func _init(p_field: HexField, quality: int) -> void:
 	_group.resize(n)
 	_where.resize(n)
 	_slot.resize(n)
+	_xf.resize(n)
 	_hex_near.resize(field.hex_count())
 	_hex_near.fill(1)  # until the first camera update everything counts as near (no pop on load)
 
@@ -94,6 +96,7 @@ func is_shown(pid: int) -> bool:
 ## Shows a piece at xf (or moves it there).
 func show_piece(pid: int, xf: Transform3D) -> void:
 	var want: int = 1 if _hex_near[field.piece_hex[pid]] == 1 else 2
+	_xf[pid] = xf
 	if _where[pid] == want:
 		(near_mm if want == 1 else far_mm)[_group[pid]].set_instance_transform(_slot[pid], xf)
 		return
@@ -140,7 +143,7 @@ func _remove(pid: int) -> void:
 		var moved: int = list[last]
 		list[i] = moved
 		_slot[moved] = i
-		mm.set_instance_transform(i, mm.get_instance_transform(last))
+		mm.set_instance_transform(i, _xf[moved])
 	mm.set_instance_transform(last, HIDDEN)
 	list.resize(last)
 	mm.visible_instance_count = last
@@ -154,7 +157,7 @@ func _remove(pid: int) -> void:
 
 
 func _current_xf(pid: int) -> Transform3D:
-	return (near_mm if _where[pid] == 1 else far_mm)[_group[pid]].get_instance_transform(_slot[pid])
+	return _xf[pid]
 
 
 ## Re-sorts hexes into near / far around the camera. Cheap: one distance per hex every 0.2 s,
@@ -189,9 +192,8 @@ func update(delta: float, cam: Vector3) -> void:
 		flips += 1
 		for pid: int in field.hex_pieces[h]:
 			if _where[pid] != 0:
-				var xf: Transform3D = _current_xf(pid)
 				_remove(pid)
-				_append(pid, 1 if now == 1 else 2, xf)
+				_append(pid, 1 if now == 1 else 2, _xf[pid])
 	if DevHooks.has("lod-debug"):
 		print("[lod] cam=%s flips=%d maxd=%.0f counts=%s id=%d" % [cam, flips, maxd, counts(), get_instance_id()])
 

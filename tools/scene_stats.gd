@@ -89,6 +89,8 @@ static func _tris(m: Mesh) -> int:
 
 
 static func print_census(root: Node, shadow_splits: int = 1) -> void:
+	if OS.get_environment("CAM_PROBE") != "":
+		probe_camera(root)
 	for fv: Node in root.find_children("*", "FieldView", true, false):  # [vqa2] junk LOD split
 		if (fv as FieldView).lod:
 			var c2: Vector2i = (fv as FieldView).lod.counts()
@@ -106,3 +108,33 @@ static func print_census(root: Node, shadow_splits: int = 1) -> void:
 	var t: Dictionary = c["total"]
 	print("[stats] TOTAL nodes=%d meshes=%d multimeshes=%d mm_instances=%d labels=%d surfaces=%d shadow_surfaces=%d materials=%d est_draws=%d tris=%d" % [
 		t["nodes"], t["meshes"], t["multimeshes"], t["mm_instances"], t["labels"], t["surfaces"], t["shadow_surfaces"], t["materials"], t["est_draws"], t["tris"]])
+
+
+## [vqa2] What sits right in front of the play camera: casts rays through the bottom band and the
+## centre of the screen and lists visible geometry whose world AABB they cross within `reach` m.
+## `CAM_PROBE=1` with `--scene-stats` prints it (headless works).
+static func probe_camera(root: Node, reach: float = 6.0) -> void:
+	var cam: Camera3D = root.get_viewport().get_camera_3d()
+	if cam == null:
+		print("[camprobe] no camera")
+		return
+	var vs: Vector2 = root.get_viewport().get_visible_rect().size
+	print("[camprobe] cam=%s fwd=%s near=%.2f" % [cam.global_position, -cam.global_basis.z, cam.near])
+	var hits: Dictionary = {}
+	for fy: float in [0.5, 0.8, 0.9, 0.97]:
+		for fx: float in [0.1, 0.3, 0.5, 0.7, 0.9]:
+			var o: Vector3 = cam.project_ray_origin(vs * Vector2(fx, fy))
+			var d: Vector3 = cam.project_ray_normal(vs * Vector2(fx, fy))
+			for n: Node in root.find_children("*", "GeometryInstance3D", true, false):
+				var g: GeometryInstance3D = n as GeometryInstance3D
+				if not g.is_visible_in_tree() or g is MultiMeshInstance3D:
+					continue
+				var box: AABB = g.global_transform * g.get_aabb()
+				var hit: Variant = box.intersects_segment(o, o + d * reach)
+				if hit != null or box.has_point(o):
+					var dist: float = 0.0 if hit == null else o.distance_to(hit)
+					var k: String = str(g.get_path())
+					if not hits.has(k) or float(hits[k][0]) > dist:
+						hits[k] = [dist, fy, box.size]
+	for k: String in hits:
+		print("[camprobe] %.2f m (row %.2f) size=%s %s" % [hits[k][0], hits[k][1], hits[k][2], k])

@@ -524,6 +524,10 @@ func _begin(mode: String) -> void:
 	for nm: String in ["StreetDressing", "FutureLayer", "EasterEggs"]:
 		for n: Node in world.find_children(nm, "Node3D", true, false):
 			_clutter.append(n as Node3D)
+	# [vqa2] The hub's own street lamp (slice.gd ruin bits) stood mid-ground in the ignition shot.
+	var bits: Variant = world.get("_ruin_bits")
+	if bits is Dictionary and (bits as Dictionary).get("street_lamp") is Node3D:
+		_clutter.append((bits as Dictionary)["street_lamp"])
 	_build_fx()
 	_build_ui()
 
