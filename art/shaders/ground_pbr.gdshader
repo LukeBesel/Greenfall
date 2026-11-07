@@ -30,6 +30,8 @@ uniform vec3 grass_tint = vec3(1.0);
 uniform vec4 frontier_fx = vec4(0.0);
 // [biomes2] Frontiers: the ground stops here and the terrain mesh (frontier_view.gd) takes over.
 uniform float clip_r = 0.0;
+// [biomes2] Frontiers: the lakebed follows the warped (natural) shoreline like water.gdshader.
+uniform float lake_warp = 0.0;
 
 varying vec3 wpos;
 const float SQRT3 = 1.7320508;
@@ -97,7 +99,8 @@ void vertex() {
 
 void fragment() {
 	vec2 p = wpos.xz;
-	if (clip_r > 0.0 && length(p) > clip_r) {
+	// The seam wanders (fbm) so the field never reads as a disc set into the land.
+	if (clip_r > 0.0 && length(p) > clip_r + (fbm(p * 0.035) - 0.5) * 16.0 + (fbm(p * 0.21 + 7.0) - 0.5) * 3.0) {
 		discard;
 	}
 	vec4 lay = texture(layout_tex, p / layout_size + 0.5);
@@ -136,6 +139,10 @@ void fragment() {
 	if (inside) {
 		// Hub/lake flag stays on the true hex (the yard slab and lake water are hex-shaped meshes).
 		is_hub = texture(state_tex, (ax + vec2(float(grid_radius)) + 0.5) / size).a;
+	}
+	if (lake_warp > 0.5 && is_hub < 0.75) {
+		float wl = inside_s ? texture(state_tex, (ax_s + vec2(float(grid_radius)) + 0.5) / size).a : 0.0;
+		is_hub = (wl > 0.4 && wl < 0.6) ? wl : 0.0;
 	}
 	if (inside_s) {
 		vec4 st = texture(state_tex, (ax_s + vec2(float(grid_radius)) + 0.5) / size);

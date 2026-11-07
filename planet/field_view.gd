@@ -216,6 +216,12 @@ func _build_junk() -> void:
 		mmi.visible = live > 0
 
 
+## [biomes2] Frontiers: a weathering overlay (art/shaders/junk_coat.gdshader) on every junk piece.
+func set_junk_overlay(m: Material) -> void:
+	for mmi: MultiMeshInstance3D in _mmis:
+		mmi.material_overlay = m
+
+
 static func _mound_mesh() -> ArrayMesh:
 	# Lumpy compacted-debris mound: a hemisphere pushed around by noise, unit radius and height.
 	var noise := FastNoiseLite.new()

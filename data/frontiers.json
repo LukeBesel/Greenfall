@@ -1,5 +1,5 @@
 {
-  "_doc": "Late-game frontier districts (planet/frontiers.gd, planet/frontier_district.gd, planet/frontier_view.gd). Each kind gets one extra hub on the planet (appended after the ordinary hubs, so old hub indices never move) and is reached by rocket once its unlock is met. radius: hex rings of the district field (ordinary districts use 3). pieces_mult / vol_mult: more and bulkier junk per hex; float_mult: more floating junk per water hex. value_mult: bales sell for this much more here (Depot.sell_factor). cost_mult: hub level cube costs (materials unchanged, they are finite). litter_mult: ground-cover litter density (perf). ground_layers: FieldView ground texture swaps (layer index -> Poly Haven texture id). fx: ground shader extras [sand ripples, frost, wet silt, unused]. grade: sky/fog colour grade (planet/sky_director.gd; fog_density / vol_density / turbidity are absolute clear-air targets, height_fog [y, density] low mist, sun a light tint). unlock: research node, number of bases at level 5, and an earlier frontier's base level. start_hub_level: the base starts here (the Cradle's launch city was kept by ground crews).",
+  "_doc": "Late-game frontier districts (planet/frontiers.gd, planet/frontier_district.gd, planet/frontier_view.gd). Each kind gets one extra hub on the planet (appended after the ordinary hubs, so old hub indices never move) and is reached by rocket once its unlock is met. radius: hex rings of the district field (ordinary districts use 3). pieces_mult / vol_mult: more and bulkier junk per hex; float_mult: more floating junk per water hex. value_mult: bales sell for this much more here (Depot.sell_factor). cost_mult: hub level cube costs (materials unchanged, they are finite). litter_mult: ground-cover litter density (perf). ground_layers: FieldView ground texture swaps (layer index -> Poly Haven texture id). fx: ground shader extras [sand ripples, frost, wet silt, unused]. grade: sky/fog colour grade (planet/sky_director.gd; fog_density / vol_density / turbidity are absolute clear-air targets, height_fog [y, density] low mist, sun a light tint, aerial the fog_aerial_perspective amount, mie_coef the sky haze). unlock: research node, number of bases at level 5, and an earlier frontier's base level. start_hub_level: the base starts here (the Cradle's launch city was kept by ground crews).",
   "kinds": [
     {
       "id": "dust_flats",
@@ -15,8 +15,8 @@
       "cost_mult": 4.0,
       "litter_mult": 0.3,
       "ground_layers": {"4": "sand_01", "5": "mud_cracked_dry_03", "6": "sand_01"},
-      "fx": [1.0, 0.0, 0.0, 0.0],
-      "grade": {"fog": [1.0, 0.84, 0.64], "fog_amt": 0.55, "fog_mult": 0.6, "rayleigh": [0.24, 0.48, 0.98], "mie": [1.0, 0.86, 0.66], "sky_amt": 0.6, "sat": 1.0, "exposure": 1.0, "fog_density": 0.0009, "vol_density": 0.0012, "turbidity": 3.6, "fog_sky": 0.25, "contrast": 1.1, "sun": [1.0, 0.86, 0.68]},
+      "fx": [0.6, 0.0, 0.0, 0.0],
+      "grade": {"fog": [1.0, 0.84, 0.64], "fog_amt": 0.55, "fog_mult": 0.6, "rayleigh": [0.24, 0.48, 0.98], "mie": [1.0, 0.86, 0.66], "sky_amt": 0.6, "sat": 1.0, "exposure": 1.0, "fog_density": 0.00045, "vol_density": 0.0007, "turbidity": 3.2, "fog_sky": 0.12, "aerial": 0.55, "contrast": 1.1, "sun": [1.0, 0.86, 0.68]},
       "unlock": {"research": "dune_charts", "bases_l5": 2},
       "storm": {"first_s": 150, "every_s": [300, 480], "warn_s": 18, "len_s": 24, "hexes": [2, 6], "per_cleaned": 10, "frac": 0.07, "min_pieces": 8, "max_pieces": 40, "shelter_level": 4, "shelter_ring": 1, "fences_ring": 2, "fences_cut": 0.4},
       "water": {"barrel_dry": true, "tank_regen_mult": 0.3, "condenser_mult": 2.5, "plant_drain_mult": 1.5},
@@ -38,7 +38,7 @@
       "litter_mult": 0.4,
       "ground_layers": {"4": "snow_02", "5": "snow_02", "6": "snow_02"},
       "fx": [0.0, 1.0, 0.0, 0.0],
-      "grade": {"fog": [0.78, 0.87, 1.0], "fog_amt": 0.65, "fog_mult": 0.7, "rayleigh": [0.3, 0.54, 1.0], "mie": [0.88, 0.94, 1.0], "sky_amt": 0.65, "sat": 0.92, "exposure": 0.94, "fog_density": 0.0011, "vol_density": 0.0016, "turbidity": 3.2, "fog_sky": 0.3, "contrast": 1.08, "sun": [0.94, 0.97, 1.0]},
+      "grade": {"fog": [0.78, 0.87, 1.0], "fog_amt": 0.65, "fog_mult": 0.7, "rayleigh": [0.3, 0.54, 1.0], "mie": [0.88, 0.94, 1.0], "sky_amt": 0.65, "sat": 0.92, "exposure": 0.94, "fog_density": 0.0005, "vol_density": 0.0009, "turbidity": 2.8, "fog_sky": 0.12, "aerial": 0.6, "contrast": 1.08, "sun": [0.94, 0.97, 1.0]},
       "unlock": {"research": "thermal_lance", "bases_l5": 3, "frontier": "dust_flats", "frontier_level": 3},
       "ice": {"ring1_frac": 0.5, "frac": 0.85, "harbour_x": 14.0, "heater_cost": 90, "heater_growth": 1.32, "heater_max": 16, "thaw_s": 80, "spread_mult": 0.22, "beam_thaw_s": 240, "pump_mult": 1.6, "greenhouse_cost": 450, "greenhouse_growth": 1.25, "greenhouse_grow": 0.25},
       "native_mult": 1.0
@@ -59,7 +59,7 @@
       "litter_mult": 0.5,
       "ground_layers": {"4": "damp_sand", "5": "brown_mud_dry", "6": "damp_sand"},
       "fx": [0.0, 0.0, 0.75, 0.0],
-      "grade": {"fog": [0.6, 0.78, 0.78], "fog_amt": 0.7, "fog_mult": 0.9, "rayleigh": [0.26, 0.5, 0.82], "mie": [0.82, 0.92, 0.92], "sky_amt": 0.6, "sat": 0.95, "exposure": 0.98, "fog_density": 0.0016, "vol_density": 0.0028, "turbidity": 4.2, "fog_sky": 0.45, "contrast": 1.08, "sun": [0.96, 0.98, 0.95], "height_fog": [2.5, 0.035]},
+      "grade": {"fog": [0.6, 0.78, 0.78], "fog_amt": 0.7, "fog_mult": 0.9, "rayleigh": [0.26, 0.5, 0.82], "mie": [0.82, 0.92, 0.92], "sky_amt": 0.6, "sat": 0.95, "exposure": 0.98, "fog_density": 0.0008, "vol_density": 0.0014, "turbidity": 3.4, "fog_sky": 0.2, "aerial": 0.5, "contrast": 1.08, "sun": [0.96, 0.98, 0.95], "height_fog": [1.5, 0.015]},
       "unlock": {"research": "pump_works", "bases_l5": 4, "frontier": "frozen_port", "frontier_level": 3},
       "flood": {"dry_ring": 1, "stages": 3, "drain_at": 0.8, "silt_frac": 0.3, "sink_m": 7.5, "sea_y": 0.12},
       "native_mult": 0.5
@@ -80,7 +80,7 @@
       "start_hub_level": 3,
       "ground_layers": {"4": "concrete_pavement", "5": "sparse_grass"},
       "fx": [0.0, 0.0, 0.0, 0.0],
-      "grade": {"fog": [0.8, 0.88, 1.0], "fog_amt": 0.45, "fog_mult": 0.5, "rayleigh": [0.2, 0.46, 1.0], "mie": [1.0, 0.95, 0.88], "sky_amt": 0.65, "sat": 1.05, "exposure": 1.02, "fog_density": 0.0006, "vol_density": 0.0008, "turbidity": 2.8, "fog_sky": 0.2, "contrast": 1.08, "sun": [1.0, 0.97, 0.92]},
+      "grade": {"fog": [0.8, 0.88, 1.0], "fog_amt": 0.45, "fog_mult": 0.5, "rayleigh": [0.2, 0.46, 1.0], "mie": [1.0, 0.95, 0.88], "sky_amt": 0.65, "sat": 1.05, "exposure": 1.02, "fog_density": 0.00035, "vol_density": 0.0006, "turbidity": 2.6, "fog_sky": 0.1, "aerial": 0.55, "contrast": 1.08, "sun": [1.0, 0.97, 0.92]},
       "unlock": {"research": "ark_beacon", "frontiers_l5": 3, "frontier_growing": 0.5},
       "pad": {"center": [0, -3], "ring": 1, "level": 4},
       "complete": {"level": 3, "frac": 0.7},

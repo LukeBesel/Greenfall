@@ -135,12 +135,12 @@
       "horizon": ["small_lpg_tank", "Barrel_01", "ocean_buoy", "wooden_crate_02", "old_military_compressor"]},
     "sunken_city": {"name": "Sunken City", "swap": 0.35,
       "models": {
-        "metal": [{"id": "barrel_03", "vol": 2.4, "w": 1.0, "lie": 0.8}, {"id": "metal_trash_can", "vol": 2.0, "w": 0.8, "lie": 0.8}],
+        "metal": [{"id": "Barrel_01", "vol": 2.4, "w": 0.5, "lie": 0.8}, {"id": "metal_trash_can", "vol": 2.0, "w": 0.8, "lie": 0.8}],
         "plastic": [{"id": "plastic_crate_01", "vol": 2.0, "w": 1.5, "lie": 0.3}, {"id": "plastic_jerrycan", "vol": 2.4, "w": 0.6, "lie": 0.5}],
         "rubber": [{"id": "lifebuoy", "vol": 1.2, "w": 1.5, "lie": 0.95}, {"id": "rubber_boots", "vol": 0.9, "w": 1.0, "lie": 0.6}],
         "paper": [{"id": "wooden_crate_02", "vol": 2.0, "w": 1.5, "lie": 0.25}]
       },
-      "shore_swap": 0.6, "shore": {"rubber": [{"id": "lifebuoy", "vol": 1.2, "w": 2.0, "lie": 0.95}, {"id": "rubber_duck_toy", "vol": 0.2, "w": 1.0, "lie": 0.3}], "plastic": [{"id": "plastic_crate_01", "vol": 2.0, "w": 1.0, "lie": 0.3}], "metal": [{"id": "barrel_03", "vol": 2.4, "w": 1.0, "lie": 0.8}]},
+      "shore_swap": 0.6, "shore": {"rubber": [{"id": "lifebuoy", "vol": 1.2, "w": 2.0, "lie": 0.95}, {"id": "rubber_duck_toy", "vol": 0.2, "w": 1.0, "lie": 0.3}], "plastic": [{"id": "plastic_crate_01", "vol": 2.0, "w": 1.0, "lie": 0.3}], "metal": [{"id": "metal_trash_can", "vol": 2.4, "w": 1.0, "lie": 0.8}]},
       "landmarks": [{"id": "ocean_buoy", "count": 4}, {"id": "covered_car", "count": 3}, {"id": "metal_trash_can", "count": 3}, {"id": "concrete_road_barrier", "count": 3}],
       "ground_tint": [0.62, 0.6, 0.52, 0.45], "grass_tint": [0.85, 1.05, 0.88], "coat": [0.35, 0.4, 0.32, 0.35], "hills": [0.75, 0.8, 0.78],
       "horizon": ["ocean_buoy", "wooden_crate_02", "lifebuoy", "Barrel_01"]},

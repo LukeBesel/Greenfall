@@ -123,10 +123,13 @@ func _apply_grade(sun_up: float) -> void:
 			env.volumetric_fog_density = minf(env.volumetric_fog_density, lerpf(env.volumetric_fog_density, float(grade["vol_density"]), keep))
 		if grade.has("turbidity"):
 			sky_mat.turbidity = lerpf(sky_mat.turbidity, float(grade["turbidity"]), keep)
-			sky_mat.mie_coefficient = lerpf(sky_mat.mie_coefficient, 0.0035, keep)
+			sky_mat.mie_coefficient = lerpf(sky_mat.mie_coefficient, float(grade.get("mie_coef", 0.0028)), keep)
 		if grade.has("fog_sky"):
 			env.fog_sky_affect = float(grade["fog_sky"])
 			env.volumetric_fog_sky_affect = float(grade["fog_sky"]) * 0.6
+		# Aerial perspective: distant land takes the sky's own colour (blue over the dunes, cold
+		# over the ice) instead of a flat grey wash, the way clear air looks.
+		env.fog_aerial_perspective = float(grade.get("aerial", 0.0)) * keep
 		if grade.has("contrast"):
 			env.adjustment_contrast = float(grade["contrast"])
 		if grade.has("sun"):

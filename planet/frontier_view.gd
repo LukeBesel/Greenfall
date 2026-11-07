@@ -28,9 +28,9 @@ var restore: float = 0.0
 
 var _groups: Dictionary = {}       # name -> Node3D
 var _mats: Dictionary = {}
-var _hex_mesh: ArrayMesh
-var _ice_mm: MultiMesh
-var _ice_slot: Dictionary = {}     # hex id -> instance index
+var _ice_img: Image               # per hex: R ice 0..1, G water (ice_slab.gdshader)
+var _ice_tex: ImageTexture
+var _ice_dirty: bool = false
 var _heaters: Dictionary = {}      # hex id -> Node3D
 var _greenhouses: Dictionary = {}  # hex id -> Node3D
 var _storm: CPUParticles3D
@@ -116,6 +116,8 @@ func build() -> void:
 			_build_sunken()
 		"cradle_returns":
 			_build_cradle()
+	_setup_field_water()
+	_weather_junk()
 	set_level(level, false)
 	var counts: Array[String] = []
 	for g: String in _groups:
@@ -137,6 +139,10 @@ func set_level(l: int, animate: bool) -> void:
 			node.scale = Vector3(1, 0.02, 1)
 			node.create_tween().tween_property(node, "scale", Vector3.ONE, 1.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		node.visible = want
+	# The harbour's water hexes stay sea ice until the port is futuristic (like the flood plane).
+	var wm: ShaderMaterial = _water_mat()
+	if wm and kid == "frozen_port":
+		wm.set_shader_parameter("frozen", 1.0 if level < 4 else 0.0)
 
 
 func set_restore(r: float) -> void:
@@ -147,6 +153,9 @@ func set_restore(r: float) -> void:
 
 func _process(delta: float) -> void:
 	_t += delta
+	if _ice_dirty:
+		_ice_dirty = false
+		_ice_tex.update(_ice_img)
 	for r: Node3D in _rotors:
 		if is_instance_valid(r) and r.is_visible_in_tree():
 			r.rotate_object_local(Vector3.FORWARD, delta * 0.9)
@@ -224,9 +233,9 @@ func _mat(key: String) -> Material:
 		"tower_glass":
 			# Opaque dark curtain-wall glass that mirrors the sky.
 			var tg := StandardMaterial3D.new()
-			tg.albedo_color = Color(0.1, 0.14, 0.18)
-			tg.metallic = 0.75
-			tg.roughness = 0.07
+			tg.albedo_color = Color(0.3, 0.4, 0.48)
+			tg.metallic = 0.6
+			tg.roughness = 0.12
 			tg.metallic_specular = 0.7
 			m = tg
 		"warm":
@@ -349,33 +358,6 @@ static func _polar(ang: float, dist: float, y: float = 0.0) -> Vector3:
 	return Vector3(cos(ang) * dist, y, sin(ang) * dist)
 
 
-func _hex_prism() -> ArrayMesh:
-	if _hex_mesh:
-		return _hex_mesh
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var r: float = field.hex_size * 0.985
-	var c: Array[Vector3] = []
-	for k: int in 6:
-		var a: float = deg_to_rad(30.0 + 60.0 * k)
-		c.append(Vector3(cos(a) * r, 0, sin(a) * r))
-	for k: int in 6:
-		var a0: Vector3 = c[k]
-		var a1: Vector3 = c[(k + 1) % 6]
-		st.add_vertex(Vector3(0, 1, 0))
-		st.add_vertex(a1 + Vector3(0, 1, 0))
-		st.add_vertex(a0 + Vector3(0, 1, 0))
-		st.add_vertex(a0)
-		st.add_vertex(a0 + Vector3(0, 1, 0))
-		st.add_vertex(a1 + Vector3(0, 1, 0))
-		st.add_vertex(a0)
-		st.add_vertex(a1 + Vector3(0, 1, 0))
-		st.add_vertex(a1)
-	st.generate_normals()
-	_hex_mesh = st.commit()
-	return _hex_mesh
-
-
 func _flood_plane(ice: float, half_x: float, y: float) -> MeshInstance3D:
 	_flood_mat = ShaderMaterial.new()
 	_flood_mat.shader = preload("res://art/shaders/flood.gdshader")
@@ -386,6 +368,7 @@ func _flood_plane(ice: float, half_x: float, y: float) -> MeshInstance3D:
 	_flood_mat.set_shader_parameter("ice", ice)
 	_flood_mat.set_shader_parameter("half_plane_x", half_x)
 	_flood_mat.set_shader_parameter("fade_far", 650.0)
+	_share_warp(_flood_mat)
 	var pm := PlaneMesh.new()
 	pm.size = Vector2(1400, 1400)
 	pm.material = _flood_mat
@@ -418,16 +401,21 @@ func _open_camera() -> void:
 func _terrain_h(x: float, z: float) -> float:
 	var r: float = sqrt(x * x + z * z)
 	var t: float = r - _r_in
+	var h: float = 0.0
 	match kid:
 		"dust_flats":
-			return _dune_h(x, z, t)
+			h = _dune_h(x, z, t)
 		"frozen_port":
-			return _snow_h(x, z, t)
+			h = _snow_h(x, z, t)
 		"sunken_city":
-			return _drowned_h(x, z, t)
+			h = _drowned_h(x, z, t)
 		"cradle_returns":
-			return _plain_h(x, z, t)
-	return 0.0
+			h = _plain_h(x, z, t)
+	# Under the field ground's wandering edge (ground_pbr clip_r) the terrain tucks a little lower
+	# so the two never z-fight.
+	if t < 0.0:
+		h = minf(h, -0.04 - 0.3 * _smooth(0.0, 8.0, -t))
+	return h
 
 
 ## Ground height for props: the terrain beyond the field edge, 0 on the field.
@@ -490,7 +478,10 @@ func _snow_h(x: float, z: float, t: float) -> float:
 func _drowned_h(x: float, z: float, t: float) -> float:
 	var isl: float = _smooth(0.05, 0.55, _n1.get_noise_2d(x * 0.8, z * 0.8)) * _smooth(330.0, 560.0, t)
 	var hill: float = (_n2.get_noise_2d(x, z) * 0.5 + 0.5) * 40.0 + 12.0
-	return lerpf(-6.0, hill, isl) if t > 3.0 else -0.04
+	# The old sea wall: past the field ground's wandering edge the bed drops away, along a line
+	# that wanders too (seen once the pumps have lowered the water).
+	var wall: float = 15.0 + (_n2.get_noise_2d(x * 1.7, z * 1.7) + 1.0) * 5.0
+	return lerpf(lerpf(-0.04, -6.0, _smooth(wall, wall + 6.0, t)), hill, isl)
 
 
 ## The Cradle's plain: a flat paved apron, then mown lawns with low rolls and green hills far out.
@@ -509,7 +500,7 @@ func _build_terrain(look: Dictionary) -> void:
 	var rs := PackedFloat32Array()
 	for i: int in nr:
 		var f: float = float(i) / float(nr - 1)
-		rs.append(_r_in - 2.0 + (r_out - _r_in) * pow(f, 2.1))
+		rs.append(_r_in - 9.0 + (r_out - _r_in + 9.0) * pow(f, 2.1))
 	_terrain_mat = ShaderMaterial.new()
 	_terrain_mat.shader = preload("res://art/shaders/terrain.gdshader")
 	var a_id: String = str(look.get("a", "sand_01"))
@@ -555,7 +546,8 @@ func _build_terrain(look: Dictionary) -> void:
 		add_child(mi)
 	var gm: ShaderMaterial = world.view.ground_material if world.get("view") != null else null
 	if gm:
-		gm.set_shader_parameter("clip_r", _r_in + 3.0)
+		# The Cradle's paved apron (to _r_in + 30) hides the ground's wandering edge under it.
+		gm.set_shader_parameter("clip_r", _r_in + (14.0 if kid == "cradle_returns" else 3.0))
 
 
 ## A low wind-blown sand drift against a wreck (terrain material, so it melts into the dunes).
@@ -607,6 +599,7 @@ func _build_desert() -> void:
 		q2.y = _gy(q2) - 0.3
 		_model("namaqualand_rocks_01", q2, _rng.randf() * TAU, _rng.randf_range(2.0, 4.0))
 	always.flush(_groups["always"])
+	_desert_wrecks(e)
 	# The solar farm: two small blocks by the field edge and the big array on the pan.
 	for f: Array in [[-1.55, e + 10.0], [2.6, e + 14.0]]:
 		_solar_farm(_polar(float(f[0]), float(f[1])), float(f[0]) + PI * 0.5)
@@ -645,6 +638,47 @@ func _build_desert() -> void:
 	_storm.color = Color(0.82, 0.66, 0.45, 0.22)
 	_storm.emitting = false
 	add_child(_storm)
+
+
+## Big wrecks the dunes are swallowing: rusted shipping containers buried at angles, a tanker
+## truck sunk to its axles, and a toppled water tower. Sand drifts bank up on their windward sides.
+func _desert_wrecks(e: float) -> void:
+	var b := Batch.new()
+	var rust: Material = AssetLib.pbr_material("rusty_metal_02", 0.25, Color(0.86, 0.72, 0.6), true)
+	var rust2: Material = AssetLib.pbr_material("rusty_painted_metal", 0.3, Color(0.85, 0.8, 0.72), true)
+	var cols: Array[Color] = [Color(0.62, 0.36, 0.26), Color(0.5, 0.46, 0.38), Color(0.36, 0.42, 0.44), Color(0.66, 0.54, 0.36)]
+	for i: int in 7:
+		var ang: float = -2.4 + i * 0.62 + _rng.randf_range(-0.15, 0.15)
+		var p: Vector3 = _polar(ang, e + _rng.randf_range(22.0, 85.0))
+		var yaw: float = _rng.randf() * TAU
+		var sink: float = _rng.randf_range(0.6, 1.5)
+		var tilt := Vector3(_rng.randf_range(-9.0, 9.0), rad_to_deg(yaw), _rng.randf_range(-14.0, 14.0))
+		p.y = _gy(p) + 1.3 - sink
+		_add_box(b, p, Vector3(12.2, 2.6, 2.44), _corr(cols[i % cols.size()].darkened(0.15)), tilt)
+		if i % 3 == 0:  # a second box tipped against the first
+			_add_box(b, p + Basis.from_euler(tilt * (PI / 180.0)) * Vector3(2.0, 2.2, 0.4), Vector3(6.06, 2.6, 2.44), _corr(cols[(i + 1) % cols.size()].darkened(0.2)), tilt + Vector3(0, 35.0, 18.0))
+		_drift(b, p + Vector3(-2.5, -0.6, -1.0), yaw + 0.3, 9.0, 1.8)
+	# Tanker truck, sunk to the axles, nose down into a dune.
+	var tp: Vector3 = _polar(-0.35, e + 32.0)
+	tp.y = _gy(tp) - 0.5
+	var tb := Basis(Vector3.UP, 0.7) * Basis(Vector3.RIGHT, 0.06)
+	b.add(ProcMesh.cyl(1.25, 1.25, 9.0, 20), Transform3D(tb * Basis(Vector3.FORWARD, PI * 0.5), tp + tb * Vector3(-1.5, 1.9, 0)), rust2)
+	_add_box(b, tp + tb * Vector3(4.6, 1.5, 0), Vector3(2.4, 2.6, 2.5), rust, Vector3(3.4, 40.1, 0))
+	_add_box(b, tp + tb * Vector3(0.5, 0.55, 0), Vector3(12.0, 0.4, 1.4), _mat("dark"))
+	for k: int in 3:
+		for sd: float in [-1.15, 1.15]:
+			b.add(ProcMesh.torus(0.3, 0.55, 14, 8), Transform3D(tb * Basis(Vector3.RIGHT, PI * 0.5), tp + tb * Vector3(-4.5 + k * 3.8, 0.4, sd)), _mat("dark"))
+	_drift(b, tp + Vector3(1.0, -0.2, 2.0), 0.7, 12.0, 1.6)
+	# A water tower that fell over long ago: the tank on its side, legs sticking out of the sand.
+	var wp: Vector3 = _polar(2.2, e + 60.0)
+	wp.y = _gy(wp)
+	b.add(ProcMesh.cyl(4.0, 4.0, 7.0, 24), Transform3D(Basis(Vector3.UP, 0.4) * Basis(Vector3.FORWARD, PI * 0.5 - 0.1), wp + Vector3(0, 2.6, 0)), rust2)
+	for k: int in 4:
+		var a: float = 0.4 + k * 0.5
+		var base: Vector3 = wp + Vector3(cos(0.4), 0, -sin(0.4)) * 5.0 + Vector3(0, 0.2, 0) + Vector3(-sin(0.4), 0, -cos(0.4)) * (k - 1.5) * 1.6
+		_add_beam(b, base, base + Vector3(cos(a) * 13.0, 2.5 + k * 0.6, -sin(a) * 13.0), 0.35, rust)
+	_drift(b, wp + Vector3(-3.0, 0.0, 1.0), 0.4, 11.0, 2.4)
+	b.flush(_groups["always"])
 
 
 func _soft_dot() -> GradientTexture2D:
@@ -897,7 +931,7 @@ func _crane(base: Vector3, idx: int) -> void:
 	var h: float = 26.0
 	var gauge: float = 14.0  # leg spacing along x
 	var span: float = 12.0   # along z
-	var cols: Array[Material] = [_paint(Color(0.86, 0.42, 0.12), 0.95, 0.25, idx), _paint(Color(0.55, 0.38, 0.28), 0.25, 0.95, idx), _mat("white")]
+	var cols: Array[Material] = [_paint(Color(0.9, 0.36, 0.08), 0.95, 0.25, idx), _paint(Color(0.72, 0.28, 0.1), 0.6, 0.75, idx), _mat("white")]
 	for v: int in 3:
 		var b: Batch = [mid, ruin, fut][v]
 		var m: Material = cols[v]
@@ -976,41 +1010,57 @@ func _container_block(c: Vector3, yaw: float, palette: Array[Color]) -> void:
 	fut.flush(_groups["future"], false)
 
 
+## [biomes2] The ice: one dense plane over the field whose shader (ice_slab.gdshader) reads the
+## per-hex ice at the natural-border warp, so sheets end in wandering margins, not hex edges.
 func _build_ice_slabs() -> void:
-	_ice_mm = MultiMesh.new()
-	_ice_mm.transform_format = MultiMesh.TRANSFORM_3D
-	_ice_mm.use_colors = true
-	_ice_mm.mesh = _hex_prism()
-	var ids: Array[int] = []
+	var size: int = field.radius * 2 + 1
+	_ice_img = Image.create(size, size, false, Image.FORMAT_RGF)
 	for h: int in district.ice.size():
-		if field.hex_hub[h] == 0:
-			ids.append(h)
-	_ice_mm.instance_count = ids.size()
-	for i: int in ids.size():
-		_ice_slot[ids[i]] = i
-		set_ice(ids[i], district.ice[ids[i]])
-	var mmi := MultiMeshInstance3D.new()
-	mmi.multimesh = _ice_mm
-	mmi.material_override = _mat("ice")
-	mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	add_child(mmi)
+		var a: Vector2i = field.hex_axial[h]
+		var v: float = float(district.ice[h]) if field.hex_hub[h] == 0 else 0.0
+		_ice_img.set_pixel(a.x + field.radius, a.y + field.radius, Color(clampf(v, 0.0, 1.0), 1.0 if field.is_water(h) else 0.0, 0.0))
+	_ice_tex = ImageTexture.create_from_image(_ice_img)
+	var m: ShaderMaterial = _mat("ice")
+	m.set_shader_parameter("ice_n", _ice_tex)
+	m.set_shader_parameter("ice_l", _ice_tex)
+	m.set_shader_parameter("grid_radius", field.radius)
+	m.set_shader_parameter("hex_size", field.hex_size)
+	m.set_shader_parameter("water_y", HexField.WATER_Y)
+	_share_warp(m)
+	var ext: float = (field.radius * 2 + 2) * field.hex_size * Hex.SQRT3
+	var pm := PlaneMesh.new()
+	pm.size = Vector2(ext, ext)
+	var sub: int = int(ext / 0.6)
+	pm.subdivide_width = sub
+	pm.subdivide_depth = sub
+	pm.custom_aabb = AABB(Vector3(-ext * 0.5, -1.0, -ext * 0.5), Vector3(ext, 3.0, ext))
+	var mi := MeshInstance3D.new()
+	mi.name = "IceSheet"
+	mi.mesh = pm
+	mi.material_override = m
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(mi)
 	for h: Variant in district.heaters:
 		add_heater(int(h), false)
 	for h: Variant in district.greenhouses:
 		add_greenhouse(int(h), false)
 
 
+## Copies the field ground's natural-border warp (FieldView) onto a frontier shader.
+func _share_warp(m: ShaderMaterial) -> void:
+	var gm: ShaderMaterial = world.view.ground_material if world.get("view") != null else null
+	if gm == null:
+		return
+	for k: String in ["warp_tex", "warp_size", "warp_amp"]:
+		m.set_shader_parameter(k, gm.get_shader_parameter(k))
+
+
 func set_ice(h: int, v: float) -> void:
-	if _ice_mm == null or not _ice_slot.has(h):
+	if _ice_img == null or h < 0 or h >= field.hex_count() or field.hex_hub[h] != 0:
 		return
-	var i: int = _ice_slot[h]
-	if v <= 0.0:
-		_ice_mm.set_instance_transform(i, Transform3D(Basis().scaled(Vector3.ZERO), Vector3(0, -50, 0)))
-		return
-	var c: Vector3 = field.hex_center(h)
-	var hgt: float = 0.18 + 0.5 * v
-	_ice_mm.set_instance_transform(i, Transform3D(Basis().scaled(Vector3(1.0, hgt, 1.0)), c + Vector3(0, HexField.WATER_Y * 0.5 if field.is_water(h) else -0.02, 0)))
-	_ice_mm.set_instance_color(i, Color(0.9, 0.96, 1.0, clampf(v, 0.0, 1.0)))
+	var a: Vector2i = field.hex_axial[h]
+	_ice_img.set_pixel(a.x + field.radius, a.y + field.radius, Color(clampf(v, 0.0, 1.0), 1.0 if field.is_water(h) else 0.0, 0.0))
+	_ice_dirty = true
 
 
 func add_heater(h: int, animate: bool) -> void:
@@ -1104,9 +1154,10 @@ func _build_sunken() -> void:
 	_terrain_mat.set_shader_parameter("restore", maxf(restore, 0.55))  # the far headlands are always green
 	_flood = _flood_plane(0.0, -99999.0, float(fl.get("sea_y", 0.12)))
 	# Deep, still flood water: dark teal-green that mirrors the sky, not a murky lake.
-	_flood_mat.set_shader_parameter("murky", Color(0.07, 0.13, 0.13, 0.97))
-	_flood_mat.set_shader_parameter("clear", Color(0.06, 0.22, 0.24, 0.85))
+	_flood_mat.set_shader_parameter("murky", Color(0.05, 0.1, 0.1, 0.97))
+	_flood_mat.set_shader_parameter("clear", Color(0.05, 0.2, 0.22, 0.85))
 	_flood_mat.set_shader_parameter("mirror", 0.75)
+	_flood_mat.set_shader_parameter("wave_scale", 3.6)
 	_flood_mat.set_shader_parameter("fade_far", 1200.0)
 	_tune_field_water()
 	_sink = Frontiers.sink_for(district.drained, fl)
@@ -1125,18 +1176,66 @@ func _build_sunken() -> void:
 		_pump_house(_polar(a, e + 3.0), a + PI * 0.5)
 
 
-## The field's own water hexes (WaterView) get the same deep flood look.
-func _tune_field_water() -> void:
+func _water_mat() -> ShaderMaterial:
 	var wv: Node = world.get("water")
-	var wm: ShaderMaterial = wv.get("_mat") if wv else null
+	return wv.get("_mat") if wv else null
+
+
+## Natural borders for the field's water hexes: the shoreline (water.gdshader) and the lakebed
+## under it (ground_pbr lake_warp) follow the same warp as the junk, the ice and the flood.
+func _setup_field_water() -> void:
+	var wm: ShaderMaterial = _water_mat()
 	if wm == null:
 		return
-	wm.set_shader_parameter("murky_col", Vector3(0.07, 0.13, 0.13))
-	wm.set_shader_parameter("clear_col", Vector3(0.06, 0.26, 0.28))
-	wm.set_shader_parameter("alpha_mc", Vector2(0.97, 0.7))
-	wm.set_shader_parameter("rough_mc", Vector2(0.05, 0.02))
+	_share_warp(wm)
+	wm.set_shader_parameter("ice_nrm", AssetLib.tex("snow_02", "nor_gl"))
+	var gm: ShaderMaterial = world.view.ground_material if world.get("view") != null else null
+	if gm:
+		gm.set_shader_parameter("lake_warp", 1.0)
+	# Screen-space reflections on High+ where a frontier is mostly water (the flooded towers
+	# mirror in the streets); Ultra already has them everywhere.
+	var sd: Node = world.get("sky_director")
+	if kid == "sunken_city" and sd and sd.get("env") and Settings.quality >= Settings.Quality.HIGH and RenderingServer.get_current_rendering_method() == "forward_plus":
+		var env: Environment = sd.env
+		env.ssr_enabled = true
+		env.ssr_max_steps = 48
+		env.ssr_fade_in = 0.1
+		env.ssr_depth_tolerance = 0.4
+
+
+## Weathers the junk: sand drifts on it in the Dust Flats, frost and snow in the port, a film of
+## dried silt in the Sunken City, a light film of grime in the Cradle (its junk is newer).
+func _weather_junk() -> void:
+	var looks: Dictionary = {
+		"dust_flats": [Color(0.84, 0.7, 0.5), 0.85, 0.3, 0.95],
+		"frozen_port": [Color(0.94, 0.96, 1.0), 0.95, 0.18, 0.55],
+		"sunken_city": [Color(0.34, 0.35, 0.29), 0.6, 0.42, 0.6],
+		"cradle_returns": [Color(0.66, 0.66, 0.64), 0.35, 0.18, 0.9],
+	}
+	if not looks.has(kid) or world.get("view") == null or not world.view.has_method("set_junk_overlay"):
+		return
+	var l: Array = looks[kid]
+	var m := ShaderMaterial.new()
+	m.shader = preload("res://art/shaders/junk_coat.gdshader")
+	m.set_shader_parameter("coat", l[0])
+	m.set_shader_parameter("top_amt", l[1])
+	m.set_shader_parameter("film", l[2])
+	m.set_shader_parameter("roughness", l[3])
+	world.view.set_junk_overlay(m)
+
+
+## The field's own water hexes (WaterView) get the same deep flood look.
+func _tune_field_water() -> void:
+	var wm: ShaderMaterial = _water_mat()
+	if wm == null:
+		return
+	# Same numbers as the flood plane (flood.gdshader with mirror 0.75): colour, opacity, gloss.
+	wm.set_shader_parameter("murky_col", Vector3(0.05, 0.1, 0.1))
+	wm.set_shader_parameter("clear_col", Vector3(0.05, 0.2, 0.22))
+	wm.set_shader_parameter("alpha_mc", Vector2(0.97, 0.85))
+	wm.set_shader_parameter("rough_mc", Vector2(0.077, 0.0275))
 	wm.set_shader_parameter("mirror", 0.75)
-	wm.set_shader_parameter("sheen_amt", 0.35)
+	wm.set_shader_parameter("sheen_amt", 0.0)
 
 
 func _pump_house(p: Vector3, yaw: float) -> void:
@@ -1208,7 +1307,7 @@ func on_drained(hexes: Array[int], animate: bool) -> void:
 
 func _build_cradle() -> void:
 	var e: float = _edge()
-	_build_terrain({"a": "sparse_grass", "b": "leafy_grass", "tint_a": Color(0.78, 0.9, 0.62), "tint_b": Color(0.72, 0.85, 0.6),
+	_build_terrain({"a": "leafy_grass", "b": "leafy_grass", "tint_a": Color(0.46, 0.74, 0.36), "tint_b": Color(0.4, 0.66, 0.32),
 		"scale_a": 0.12, "scale_b": 0.06, "slope_lo": 0.08, "slope_hi": 0.3, "rough_a": 0.9, "rough_b": 0.9,
 		"green_amt": 0.6, "tint_g": Color(0.6, 0.78, 0.48), "macro": 0.12, "biome_tint": Vector4.ZERO})
 	_build_plaza(e)
@@ -1238,7 +1337,7 @@ static func _arc_mesh(r1: float, r2: float, a0: float, a1: float, h: float, segs
 		for tri: Array in [[d0 * r1 + up, d1 * r2 + up, d0 * r2 + up], [d0 * r1 + up, d1 * r1 + up, d1 * r2 + up],
 				[d0 * r2, d0 * r2 + up, d1 * r2 + up], [d0 * r2, d1 * r2 + up, d1 * r2],
 				[d0 * r1, d1 * r1 + up, d0 * r1 + up], [d0 * r1, d1 * r1, d1 * r1 + up]]:
-			for v: Vector3 in tri:
+			for v: Vector3 in [tri[0], tri[2], tri[1]]:  # Godot's front faces wind clockwise
 				st.add_vertex(v)
 	st.generate_normals()
 	return st.commit()
@@ -1248,7 +1347,7 @@ static func _arc_mesh(r1: float, r2: float, a0: float, a1: float, h: float, segs
 ## and one faint light inlay. Ground crews kept it swept.
 func _build_plaza(e: float) -> void:
 	var b := Batch.new()
-	var paving: Material = AssetLib.pbr_material("concrete_pavement", 0.12, Color(0.9, 0.9, 0.88), true)
+	var paving: Material = AssetLib.pbr_material("concrete_pavement", 0.12, Color(1.08, 1.08, 1.1), true)
 	var r0: float = _r_in - 1.0
 	var r1: float = _r_in + 30.0
 	for k: int in 8:
@@ -1285,12 +1384,12 @@ func _build_skyline_cradle(e: float) -> void:
 		tries += 1
 		var back: bool = placed.size() < 24
 		var ang: float = -PI * 0.5 + _rng.randf_range(-1.75, 1.75) if back else _rng.randf() * TAU
-		var dist: float = _r_in + _rng.randf_range(85.0, 330.0) + (0.0 if back else 90.0)
+		var dist: float = _r_in + _rng.randf_range(150.0, 430.0) + (0.0 if back else 90.0)
 		var p: Vector3 = _polar(ang, dist)
 		var xz := Vector2(p.x, p.z)
 		var ok: bool = true
 		for q: Vector2 in placed:
-			if q.distance_to(xz) < 46.0:
+			if q.distance_to(xz) < 58.0:
 				ok = false
 				break
 		if not ok:
@@ -1340,7 +1439,7 @@ func _build_skyline_cradle(e: float) -> void:
 	# Low pavilions and hangars between the towers.
 	for i: int in 40:
 		var ang2: float = -PI * 0.5 + _rng.randf_range(-2.2, 2.2)
-		var p2: Vector3 = _polar(ang2, _r_in + _rng.randf_range(45.0, 260.0))
+		var p2: Vector3 = _polar(ang2, _r_in + _rng.randf_range(80.0, 320.0))
 		var near: bool = false
 		for q: Vector2 in placed:
 			if q.distance_to(Vector2(p2.x, p2.z)) < 30.0:
@@ -1418,11 +1517,20 @@ func _build_pad(c: Vector3) -> void:
 		_add_box(ring, c + Vector3(cos(am), 0, sin(am)) * (r2 - 0.9) + Vector3(0, 0.06, 0), Vector3(0.12, 0.01, 1.2), _mat("dark"), Vector3(0, -rad_to_deg(am), 0))
 	ring.add(ProcMesh.torus(r1 + 0.06, r1 + 0.18, 128, 3), Transform3D(Basis().scaled(Vector3(1, 0.04, 1)), c + Vector3(0, 0.07, 0)), _mat("line_soft"))
 	ring.add(ProcMesh.torus(r2 + 1.2, r2 + 1.32, 128, 3), Transform3D(Basis().scaled(Vector3(1, 0.04, 1)), c + Vector3(0, 0.04, 0)), _mat("line_soft"))
-	for k: int in 4:
-		var ma: float = TAU * k / 4.0 + PI * 0.25
-		var mp: Vector3 = c + Vector3(cos(ma), 0, sin(ma)) * (r2 + 2.4)
-		ring.add(ProcMesh.cyl(0.14, 0.32, 16.0, 12), _xf(mp + Vector3(0, 8.0, 0)), _mat("white"))
-		ring.add(ProcMesh.cyl(0.36, 0.36, 0.5, 12), _xf(mp + Vector3(0, 15.6, 0)), _mat("line_soft"))
+	# The docking halo: a slim white ring held high on six masts, the shape the ark comes down
+	# into. Overhead, so it never blocks Lumi or the robots; one faint seam of light underneath.
+	var halo_r: float = r2 + 2.4
+	var halo_y: float = 19.0
+	for k: int in 6:
+		var ma: float = TAU * k / 6.0 + PI / 6.0
+		var mp: Vector3 = c + Vector3(cos(ma), 0, sin(ma)) * halo_r
+		mp.y = 0.0
+		ring.add(ProcMesh.cyl(0.16, 0.38, halo_y, 14), _xf(mp + Vector3(0, halo_y * 0.5, 0)), _mat("white"))
+		ring.add(ProcMesh.cyl(0.55, 0.7, 0.4, 14), _xf(mp + Vector3(0, 0.2, 0)), _mat("white"))
+		# A slender strut leaning in from each mast to the halo's inner edge.
+		_add_beam(ring, mp + Vector3(0, halo_y * 0.62, 0), c + Vector3(cos(ma), 0, sin(ma)) * (halo_r - 2.2) + Vector3(0, halo_y - 0.4, 0), 0.16, _mat("white"))
+	ring.add(ProcMesh.torus(halo_r - 1.1, halo_r + 1.1, 160, 10), Transform3D(Basis().scaled(Vector3(1, 0.32, 1)), c + Vector3(0, halo_y, 0)), _mat("white"))
+	ring.add(ProcMesh.torus(halo_r - 0.95, halo_r - 0.85, 160, 3), Transform3D(Basis().scaled(Vector3(1, 0.05, 1)), c + Vector3(0, halo_y - 0.36, 0)), _mat("line_soft"))
 	ring.flush(root)
 	var pyl := Batch.new()
 	for k: int in 6:
