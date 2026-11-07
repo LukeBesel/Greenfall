@@ -1376,21 +1376,29 @@ func _batch(model: String) -> MultiMeshInstance3D:
 	return mi
 
 
+var _pend: Dictionary = {}  # model -> [PackedFloat32Array-free list of [xf, custom]] for this frame
+
+
 func _put(model: String, xf: Transform3D, custom: Color) -> void:
-	var mi: MultiMeshInstance3D = _batch(model)
-	var mm: MultiMesh = mi.multimesh
-	var n: int = int(_counts.get(model, 0))
-	if n >= mm.instance_count:
-		var keep: Array = []
-		for k: int in n:
-			keep.append([mm.get_instance_transform(k), mm.get_instance_custom_data(k)])
-		mm.instance_count = mm.instance_count * 2
-		for k: int in n:
-			mm.set_instance_transform(k, keep[k][0])
-			mm.set_instance_custom_data(k, keep[k][1])
-	mm.set_instance_transform(n, xf)
-	mm.set_instance_custom_data(n, custom)
-	_counts[model] = n + 1
+	if not _pend.has(model):
+		_pend[model] = []
+	(_pend[model] as Array).append([xf, custom])
+	_counts[model] = int(_counts.get(model, 0)) + 1
+
+
+## Writes this frame's instances. Capacity grows first (which clears the buffer), then every
+## instance is written, so nothing is ever read back from the GPU.
+func _flush_batches() -> void:
+	for model: String in _pend:
+		var list: Array = _pend[model]
+		var mm: MultiMesh = _batch(model).multimesh
+		if list.size() > mm.instance_count:
+			mm.visible_instance_count = -1
+			mm.instance_count = nearest_po2(list.size())
+		for k: int in list.size():
+			mm.set_instance_transform(k, list[k][0])
+			mm.set_instance_custom_data(k, list[k][1])
+		list.clear()
 
 
 ## Procedural meshes carry the rig (CUSTOM0); the vendor rat keeps its own materials.
@@ -1448,11 +1456,22 @@ func _draw_all() -> void:
 				if model == "rat" and not is_rigged(FaunaModels.mesh("rat")):
 					xf = Transform3D(xf.basis * _rat_fix(), xf.origin)
 				_put(model, xf, pack_custom(a.phase, a.gait, a.head_yaw, a.head_pitch, a.coat, a.tail))
+	_flush_batches()
 	for model: String in _batches:
 		var mm: MultiMesh = (_batches[model] as MultiMeshInstance3D).multimesh
 		mm.visible_instance_count = int(_counts.get(model, 0))
 	if _glow:
 		_glow.multimesh.visible_instance_count = _glow_n
+	if DevHooks.has("fauna-debug") and (_frame % 60 == 1 or _frame == 5):
+		print("[fauna] drawn ", _counts)
+		var vc: Camera3D = get_viewport().get_camera_3d()
+		if vc and _batches.has("fish"):
+			var mmf: MultiMesh = (_batches["fish"] as MultiMeshInstance3D).multimesh
+			var inview: int = 0
+			for k: int in mmf.visible_instance_count:
+				if vc.is_position_in_frustum(mmf.get_instance_transform(k).origin):
+					inview += 1
+			print("[fauna] cam ", vc.name, " at ", vc.global_position, " fish in view ", inview, " first ", mmf.get_instance_transform(0).origin)
 
 
 var _rat_basis: Basis = Basis.IDENTITY
