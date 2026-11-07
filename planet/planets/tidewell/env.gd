@@ -238,7 +238,8 @@ func build(p_world: Node, p_field: HexField, p_kind: Dictionary) -> void:
 	hover.setup(world)
 	_spawn_fish()
 	_open_camera()
-	if DevHooks.has("tide-cam"):  # after the landing / intro placement settles
+	if DevHooks.has("tide-cam"):  # now, and again after the landing / intro placement settles
+		_dev_cam.call_deferred()
 		for d: float in [1.0, 3.0, 6.0]:
 			get_tree().create_timer(d, false).timeout.connect(_dev_cam)
 	world.set_meta("hover_water", true)  # Lumi floats over water here (player/patch.gd: no wading slowdown)
@@ -449,7 +450,7 @@ func bed_at(x: float, z: float) -> Vector2:
 ## Near map: the field (warped land hexes are dry ground, water hexes a shallow lagoon) and the
 ## sea round it; far map: the archipelago to the horizon. R = height, G = reef.
 func _bake(size: float, res: int, with_field: bool) -> ImageTexture:
-	var img := Image.create(res, res, false, Image.FORMAT_RGF)
+	var img := Image.create(res, res, false, Image.FORMAT_RGH)  # half float: linear filtering everywhere (RG32F is not filterable on some GPUs)
 	for y: int in res:
 		for x: int in res:
 			var wx: float = (float(x) + 0.5) / res * size - size * 0.5
