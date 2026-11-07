@@ -98,6 +98,7 @@ func _ready() -> void:
 		GameState.switch_hub(int(planet.frontier_hubs.get(DevHooks.get_s("frontier", "dust_flats"), 0)))
 		if DevHooks.has("hub-level"):
 			GameState.world["hub_level"] = clampi(int(DevHooks.get_f("hub-level", 1.0)), 1, 5)
+	var penv: Dictionary = PlanetEnvs.dev_prepare(planet, loaded)  # [planet-ochre] --planet-env=<id> (planet/planets/planet_envs.gd)
 	hub_index = clampi(GameState.current_hub, 0, planet.hubs.size() - 1)
 	anchor_cell = planet.hubs[hub_index]
 	# Each hub's district has its own deterministic seed; city hubs get streets, others are wild.
@@ -133,6 +134,10 @@ func _ready() -> void:
 	if not fk.is_empty():  # [biomes] the frontier's own harbour / flood replaces planet lakes
 		field.water_ids = Frontiers.water_ids_for(fk, f_radius, float(cfg.get("hex_size", 3.2)))
 		field.float_mult = float(fk.get("float_mult", 1.0))
+	if penv.has("junk_biome"):  # [planet-ochre] the planet env's junk, no planet lakes
+		field.biome = str(penv["junk_biome"])
+		field.biome_set = Economy.biome_set(field.biome)
+		field.water_ids = {}
 	# Older saves were generated with straight hex borders; keep their piece layout identical.
 	if loaded and GameState.world.has("field"):
 		field.natural_borders = bool((GameState.world["field"] as Dictionary).get("natural_borders", false))
@@ -161,6 +166,8 @@ func _ready() -> void:
 		view.skip_horizon = true  # [biomes2] FrontierView builds the terrain and skyline
 	elif CradleMode.current_index() > 0:  # [late] another world's ground (snow on an ice moon, sand on a desert world)
 		CradleMode.dress_view(view)
+	if not penv.is_empty():  # [planet-ochre] the planet env builds the landscape
+		view.skip_horizon = true
 	view.setup(field)
 	water = WaterView.new()
 	water.name = "Water"
@@ -516,6 +523,8 @@ func _ready() -> void:
 		if not loaded:
 			wake.call()
 	LateDirector.attach(self)  # [late] Garden Mode, Ark Bridge, Cradle Mode worlds (systems/late_director.gd)
+	if not penv.is_empty():  # [planet-ochre]
+		PlanetEnvs.apply(self, penv)
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
