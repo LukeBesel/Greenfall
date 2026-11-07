@@ -30,9 +30,12 @@ func _init() -> void:
 	var t0: int = Time.get_ticks_msec()
 	var only: String = ""
 	var out_dir: String = ""
+	var reverb: bool = false  # [sound] --reverb: approximate the Music bus reverb (previews)
 	for a: String in OS.get_cmdline_user_args():
 		if a.begins_with("--only="):
 			only = a.get_slice("=", 1)
+		if a == "--reverb":
+			reverb = true
 		if a.begins_with("--out="):
 			out_dir = a.get_slice("=", 1)
 	var samples: Dictionary = Synth.build_all()
@@ -88,6 +91,8 @@ func _init() -> void:
 			buf.append_array(mixer.mix(BLOCK, d.lpf_cutoff))
 			max_voices = maxi(max_voices, mixer.voice_count())
 			pos += BLOCK
+		if reverb:
+			buf = _reverb(buf)
 		var peak: float = 0.0
 		var sq: float = 0.0
 		var bad: int = 0
@@ -109,3 +114,43 @@ func _init() -> void:
 			path = out_dir.path_join("music_%s.wav" % sname)
 		Synth.to_wav(buf).save_to_wav(path if path.begins_with("/") else ProjectSettings.globalize_path(path))
 	quit()
+
+
+
+## [sound] A small Schroeder reverb (4 damped combs + 2 allpasses, 40 ms predelay, ~22% wet)
+## standing in for the Music bus's AudioEffectReverb, so offline previews sound like the game.
+static func _reverb(x: PackedFloat32Array) -> PackedFloat32Array:
+	var lens: Array[int] = [558, 594, 638, 678, 278, 220]  # 4 combs, then 2 allpasses
+	var off: PackedInt32Array = PackedInt32Array()
+	var total: int = 0
+	for n: int in lens:
+		off.append(total)
+		total += n
+	var line := PackedFloat32Array()  # one flat buffer: packed arrays copy on assignment
+	line.resize(total)
+	var pos: PackedInt32Array = PackedInt32Array([0, 0, 0, 0, 0, 0])
+	var damp: PackedFloat32Array = PackedFloat32Array([0.0, 0.0, 0.0, 0.0])
+	var pre: int = int(0.04 * RATE)
+	var out := PackedFloat32Array()
+	out.resize(x.size())
+	var hp: float = 0.0
+	for i: int in x.size():
+		var inp: float = x[i - pre] if i >= pre else 0.0
+		hp += (inp - hp) * 0.15  # the bus reverb's hipass: keep the low end dry
+		inp = (inp - hp) * 0.25
+		var acc: float = 0.0
+		for k: int in 4:
+			var j: int = off[k] + pos[k]
+			var y: float = line[j]
+			damp[k] = y * 0.6 + damp[k] * 0.4
+			line[j] = inp + damp[k] * 0.82
+			pos[k] = (pos[k] + 1) % lens[k]
+			acc += y
+		for k: int in range(4, 6):
+			var j: int = off[k] + pos[k]
+			var bo: float = line[j]
+			line[j] = acc + bo * 0.5
+			pos[k] = (pos[k] + 1) % lens[k]
+			acc = bo - acc
+		out[i] = x[i] + acc * 0.22
+	return out
