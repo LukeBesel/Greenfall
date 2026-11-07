@@ -1,18 +1,19 @@
 {
-  "_doc": "[extras] Songs on the base radio (systems/extras/radio.gd). mood: a MusicDirector mood (audio/music_director.gd MOODS); the song_* moods are radio arrangements. cond: when the song unlocks, the same condition types as data/achievements.json plus 'districts_l5' (bases at level 5) and 'districts' (districts visited); no cond = on the radio from the start. hint: shown while locked. Unlocks persist in GameState.flags.radio.unlocked.",
+  "_doc": "[extras] Songs on the base radio (systems/extras/radio.gd). id: a composed track (audio/music_tracks.gd, played with Audio.play_track; the title comes from Audio.music_track_title, and a restored planet plays its restored variant). cond: when it unlocks, the condition types of data/achievements.json plus 'districts_l5' (bases at level 5), 'districts' (districts visited), 'planet_seen' (key: planet theme id, heard on that planet) and 'planet_level' (key: planet; best base level reached on that planet). No cond = on the radio from the start. hint: shown while locked. Unlocks persist in GameState.flags.radio.unlocked.",
   "songs": [
-    {"id": "first_light", "name": "First Light", "desc": "The tune Lumi hums on a dusty morning.", "mood": "explore"},
-    {"id": "workbench_waltz", "name": "Workbench Waltz", "desc": "Cozy chords for tinkering at the bench.", "mood": "base"},
-    {"id": "hopeful_static", "name": "Hopeful Static", "desc": "What the radio picked up the night Lumi landed.", "mood": "menu"},
-    {"id": "lantern_hours", "name": "Lantern Hours", "desc": "Night music, slow and a little blue.", "mood": "night", "hint": "Clean 5 hexes", "cond": {"type": "stat", "key": "hexes_cleaned", "target": 5}},
-    {"id": "rust_lullaby", "name": "Rust Lullaby", "desc": "A music box found in a scrapyard, still in tune.", "mood": "song_rust_lullaby", "hint": "Clean 20 hexes", "cond": {"type": "stat", "key": "hexes_cleaned", "target": 20}},
-    {"id": "sprout_shuffle", "name": "Sprout Shuffle", "desc": "Bouncy and green. The seedlings like this one.", "mood": "song_sprout_shuffle", "hint": "Grow 10 plants to bloom", "cond": {"type": "stat", "key": "plants_bloomed", "target": 10}},
-    {"id": "old_town_rooftops", "name": "Old Town Rooftops", "desc": "Evening jazz over the mended roofs.", "mood": "song_rooftops", "hint": "Raise a base to level 3", "cond": {"type": "hub_level", "target": 3}},
-    {"id": "greenline_express", "name": "Greenline Express", "desc": "A quick groove for a district that runs itself.", "mood": "song_greenline", "hint": "Raise a base to level 5", "cond": {"type": "districts_l5", "target": 1}},
-    {"id": "far_shore", "name": "Far Shore", "desc": "Wide and airy, for the next district over the hill.", "mood": "song_far_shore", "hint": "Visit a second district", "cond": {"type": "districts", "target": 2}},
-    {"id": "homeward", "name": "Homeward", "desc": "The swelling theme from Lumi's long fall.", "mood": "cinematic", "hint": "Raise three bases to level 5", "cond": {"type": "districts_l5", "target": 3}},
-    {"id": "verdance_in_bloom", "name": "Verdance in Bloom", "desc": "The whole planet in flower, in four chords.", "mood": "song_bloom", "hint": "Bring the Cradle home", "cond": {"type": "flag", "key": "cradle_returned", "target": 1}},
-    {"id": "cradle_choir", "name": "Cradle Choir", "desc": "The ark's garden deck, remembered in slow swells.", "mood": "song_cradle_choir", "hint": "See the Cradle finale", "cond": {"type": "flag", "key": "bloom_finale_seen", "target": 1}},
-    {"id": "starseed_serenade", "name": "Starseed Serenade", "desc": "A new world on the horizon, lydian and bright.", "mood": "song_starseed", "hint": "Seed a new world", "cond": {"type": "stat", "key": "worlds_seeded", "target": 1}}
+    {"id": "verdance_sprout", "desc": "Kalimba and bells, the first green on Verdance."},
+    {"id": "verdance_sweep", "desc": "Marimba and a four-on-the-floor kick: cleaning music.", "hint": "Clean 10 hexes", "cond": {"type": "stat", "key": "hexes_cleaned", "target": 10}},
+    {"id": "ochre_sunbaked", "desc": "A sunny marimba hook over a lute ostinato.", "hint": "Land on Ochre", "cond": {"type": "planet_seen", "key": "ochre", "target": 1}},
+    {"id": "ochre_caravan", "desc": "A winding pluck line over a loping frame drum.", "hint": "A base on Ochre at level 3", "cond": {"type": "planet_level", "key": "ochre", "target": 3}},
+    {"id": "ochre_mirage", "desc": "Kalimba and bells shimmering in the heat.", "hint": "A base on Ochre at level 5", "cond": {"type": "planet_level", "key": "ochre", "target": 5}},
+    {"id": "tidewell_tradewinds", "desc": "Steel pans skipping over the waves.", "hint": "Land on Tidewell", "cond": {"type": "planet_seen", "key": "tidewell", "target": 1}},
+    {"id": "tidewell_tidepools", "desc": "A harp melody over rolling arpeggios.", "hint": "A base on Tidewell at level 3", "cond": {"type": "planet_level", "key": "tidewell", "target": 3}},
+    {"id": "tidewell_skipper", "desc": "A bouncy marimba shuffle.", "hint": "A base on Tidewell at level 5", "cond": {"type": "planet_level", "key": "tidewell", "target": 5}},
+    {"id": "rime_hoarfrost", "desc": "Glass bells that slowly gather warmth.", "hint": "Land on Rime", "cond": {"type": "planet_seen", "key": "rime", "target": 1}},
+    {"id": "rime_aurora", "desc": "Piano doubled by glass under the northern lights.", "hint": "A base on Rime at level 5", "cond": {"type": "planet_level", "key": "rime", "target": 5}},
+    {"id": "anvil_foundry", "desc": "A dark, groovy forge that learns to hope.", "hint": "Land on Anvil", "cond": {"type": "planet_seen", "key": "anvil", "target": 1}},
+    {"id": "anvil_ash", "desc": "An eerie choir over brass and embers.", "hint": "A base on Anvil at level 3", "cond": {"type": "planet_level", "key": "anvil", "target": 3}},
+    {"id": "anvil_engine", "desc": "Sub bass and metal hits, the furnaces running clean.", "hint": "A base on Anvil at level 5", "cond": {"type": "planet_level", "key": "anvil", "target": 5}},
+    {"id": "homecoming", "desc": "The ark's theme, for the journey home.", "hint": "Bring the Cradle home", "cond": {"type": "flag", "key": "cradle_returned", "target": 1}}
   ]
 }

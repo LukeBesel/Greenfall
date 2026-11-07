@@ -38,42 +38,42 @@ func after_each() -> void:
 	DirAccess.remove_absolute(WeeklyChallenge.path_override)
 	WeeklyChallenge.path_override = ""
 	WeeklyChallenge.reset_cache()
-	Audio.set_music_override("")
+	Audio.stop_track()
 
 
 # --- Radio ----------------------------------------------------------------------------------
 
-func test_every_song_has_a_mood_the_score_knows() -> void:
-	var moods: Dictionary = preload("res://audio/music_director.gd").MOODS
+func test_every_song_is_a_track_the_score_knows() -> void:
+	var ids: Array[String] = Audio.music_track_ids()
 	assert_gte(Radio.songs().size(), 10)
 	for s: Dictionary in Radio.songs():
-		assert_true(moods.has(str(s["mood"])), "mood %s" % s["mood"])
-		assert_ne(str(s.get("name", "")), "")
+		assert_has(ids, str(s["id"]))
+		assert_ne(Radio.title(str(s["id"])), str(s["id"]), "has a title")
 
 
 func test_songs_unlock_with_progress() -> void:
-	assert_true(Radio.is_unlocked("first_light"), "starter songs are on from the start")
-	assert_false(Radio.is_unlocked("rust_lullaby"))
-	assert_false(Radio.play("rust_lullaby"), "locked songs don't play")
-	GameState.stats["hexes_cleaned"] = 25.0
-	var got: Array[String] = Radio.check_unlocks()
-	assert_has(got, "lantern_hours")
-	assert_has(got, "rust_lullaby")
+	assert_true(Radio.is_unlocked("verdance_sprout"), "starter song is on from the start")
+	assert_false(Radio.is_unlocked("verdance_sweep"))
+	assert_false(Radio.play("verdance_sweep"), "locked songs don't play")
+	GameState.stats["hexes_cleaned"] = 12.0
+	assert_has(Radio.check_unlocks(), "verdance_sweep")
 	assert_true(Radio.check_unlocks().is_empty(), "each song unlocks once")
-	GameState.world["hub_level"] = 5
-	assert_has(Radio.check_unlocks(), "greenline_express")
+	Radio.note_planet("ochre", 1)
+	var got: Array[String] = Radio.check_unlocks()
+	assert_has(got, "ochre_sunbaked", "landing on a planet unlocks its first track")
+	assert_false(got.has("ochre_caravan"))
+	Radio.note_planet("ochre", 5)
+	got = Radio.check_unlocks()
+	assert_has(got, "ochre_caravan")
+	assert_has(got, "ochre_mirage", "restoring a base there unlocks the rest")
+	Radio.note_planet("ochre", 2)
+	assert_eq(int(Radio.planets()["ochre"]), 5, "the best level is kept")
 
 
-func test_playing_a_song_overrides_the_mood_until_reset() -> void:
-	GameState.stats["hexes_cleaned"] = 25.0
-	Radio.check_unlocks()
-	assert_true(Radio.play("rust_lullaby"))
-	assert_eq(Audio.music_override, "song_rust_lullaby")
-	Audio.set_music_mood("night")
-	assert_eq(Audio.music_override, "song_rust_lullaby", "mood changes don't interrupt the song")
-	assert_eq(Audio.get_music_mood(), "night", "MusicHooks sees the mood it asked for")
+func test_playing_a_song_holds_until_reset() -> void:
+	assert_true(Radio.play("verdance_sprout"))
+	assert_eq(Radio.playing(), "verdance_sprout")
 	Radio.play("")
-	assert_eq(Audio.music_override, "")
 	assert_eq(Radio.playing(), "")
 
 

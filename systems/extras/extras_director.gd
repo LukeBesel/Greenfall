@@ -60,7 +60,7 @@ func _setup() -> void:
 			if s.has("cond") and not (str(s["id"]) in (Radio.st()["unlocked"] as Array)):
 				(Radio.st()["unlocked"] as Array).append(str(s["id"]))
 	if DevHooks.has("radio-play"):
-		Radio.play(DevHooks.get_s("radio-play", "rust_lullaby"))
+		Radio.play(DevHooks.get_s("radio-play", "verdance_sweep"))
 	if DevHooks.has("extras-welcome"):
 		var h: float = DevHooks.get_f("extras-welcome", 3.0)
 		var bots: Array = GameState.world.get("robots", [])

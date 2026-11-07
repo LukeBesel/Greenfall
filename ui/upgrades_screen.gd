@@ -95,6 +95,12 @@ func _ready() -> void:
 		b.tooltip_text = b.text
 		b.focus_mode = Control.FOCUS_NONE
 		tabs.add_child(b)
+		# [vqa2] Share the row by how long each name is (short "Hub" gives room to a long
+		# "Research"), so long translations fit before any of them needs the ellipsis.
+		var fnt: Font = b.get_theme_font("font")
+		var fsz: int = b.get_theme_font_size("font_size")
+		if fnt:
+			b.size_flags_stretch_ratio = maxf(1.0, (fnt.get_string_size(b.text, HORIZONTAL_ALIGNMENT_LEFT, -1, fsz).x + 24.0) / 88.0)
 		_tab_buttons.append(b)
 	_style_tabs()
 	tabs.add_child(PromptLabel.new("  {ui_tab_prev}{ui_tab_next}", 13))  # [deck] tab-switch glyphs

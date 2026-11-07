@@ -1,10 +1,11 @@
 class_name Radio
 extends Node3D
-## [extras] The base radio: a little valve radio on the workbench that plays the procedural score's
-## moods and the radio arrangements (audio/music_director.gd MOODS "song_*"). Songs unlock as
-## districts and planets are restored (data/radio.json), with a small toast. Picking a song
-## overrides the mood music (Audio.set_music_override) until "Back to mood music".
-## State: GameState.flags.radio = {unlocked: [song ids], song: "" (playing) }. Pure rules are
+## [extras] The base radio: a little valve radio on the workbench that plays the score's composed
+## planet tracks (audio/music_tracks.gd via Audio.play_track; a restored planet plays the track's
+## restored variant). Songs unlock as districts and planets are restored (data/radio.json), with a
+## small toast. Picking a song loops it with no gaps until "Back to mood music" (Audio.stop_track).
+## State: GameState.flags.radio = {unlocked: [track ids], song: "" (playing), planets: {theme id:
+## best base level seen there}}. Pure rules are
 ## static (tests, the save round trip); the live node is the prop, its interactable and the
 ## unlock check.
 
@@ -63,8 +64,34 @@ static func districts_l5() -> int:
 	return n
 
 
+## Display title of a song (English; tr() it where shown).
+static func title(id: String) -> String:
+	var t: String = Audio.music_track_title(id) if Audio.has_method("music_track_title") else ""
+	return t if t != "" else id
+
+
+static func planets() -> Dictionary:
+	if not (st().get("planets") is Dictionary):
+		st()["planets"] = {}
+	var p: Dictionary = st()["planets"]
+	for k: Variant in p:  # JSON loads ints back as floats
+		p[k] = int(p[k])
+	return p
+
+
+## Notes the planet whose music is playing and the best base level reached there.
+static func note_planet(theme: String, hub_level: int) -> void:
+	if theme == "":
+		return
+	planets()[theme] = maxi(int(planets().get(theme, 0)), hub_level)
+
+
 static func cond_value(c: Dictionary) -> float:
 	match str(c.get("type", "")):
+		"planet_seen":
+			return 1.0 if planets().has(str(c.get("key", ""))) else 0.0
+		"planet_level":
+			return float(planets().get(str(c.get("key", "")), 0))
 		"districts_l5":
 			return float(districts_l5())
 		"districts":
@@ -112,7 +139,10 @@ static func play(id: String) -> bool:
 	if id != "" and not is_unlocked(id):
 		return false
 	st()["song"] = id
-	Audio.set_music_override(str(song(id).get("mood", "")) if id != "" else "")
+	if id != "":
+		Audio.play_track(id)
+	else:
+		Audio.stop_track()
 	if id != "":
 		GameState.inc_stat("radio_plays")
 	return true
@@ -132,17 +162,18 @@ func setup(p_world: Node) -> void:
 	anchor.global_position = REACH_AT
 	if world.get("interactables") != null:
 		(world.interactables as Interactables).register(anchor, REACH,
-			func() -> String: return tr("E   Radio: %s") % (tr(str(song(playing()).get("name", ""))) if playing() != "" else tr("mood music")),
+			func() -> String: return tr("E   Radio: %s") % (tr(title(playing())) if playing() != "" else tr("mood music")),
 			func() -> void: ExtrasPanel.open_for(world, "radio"))
 	# Quietly catch up on songs earned before this build (no toast burst on load).
+	_note_here()
 	check_unlocks()
 	if playing() != "" and is_unlocked(playing()):
-		Audio.set_music_override(str(song(playing()).get("mood", "")))
+		Audio.play_track(playing())
 
 
 func _exit_tree() -> void:
 	# Leaving the district (title screen, travel): the next scene sets its own music.
-	Audio.set_music_override("")
+	Audio.stop_track()
 
 
 func _process(delta: float) -> void:
@@ -157,9 +188,15 @@ func _process(delta: float) -> void:
 	if _check_t < 2.0:
 		return
 	_check_t = 0.0
+	_note_here()
 	for id: String in check_unlocks():
-		EventBus.toast.emit(tr("New song on the radio: %s") % tr(str(song(id).get("name", id))), "info")
+		EventBus.toast.emit(tr("New song on the radio: %s") % tr(title(id)), "info")
 		Audio.play("chime", 1.3, -8.0)
+
+
+func _note_here() -> void:
+	var hb: Variant = world.get("hub") if world else null
+	note_planet(Audio.get_planet_theme(), (hb as Hub).level if hb is Hub else int(GameState.world.get("hub_level", 1)))
 
 
 func _build() -> void:

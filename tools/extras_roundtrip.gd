@@ -8,8 +8,9 @@ extends RefCounted
 ## Builds some keepsake state in the live district `s`.
 static func setup(s: Node) -> void:
 	GameState.stats["hexes_cleaned"] = maxf(float(GameState.stats.get("hexes_cleaned", 0.0)), 22.0)
+	Radio.note_planet("ochre", 3)
 	Radio.check_unlocks()
-	Radio.play("rust_lullaby")
+	Radio.play("ochre_caravan")
 	var e: Dictionary = PhotoAlbum.entry(GameState.current_hub)
 	e["name"] = "Old Town"
 	e["before"] = PhotoAlbum.dir().path_join("h0_before.jpg")
@@ -25,10 +26,11 @@ static func setup(s: Node) -> void:
 
 
 static func snap(s: Node) -> Dictionary:
+	Radio.planets()  # normalise JSON floats
 	var nu: Nursery = Nursery.of(s)
 	return {
 		"radio": JSON.stringify(Radio.st()),
-		"radio_override": Audio.music_override,
+		"radio_track": Audio.get_music_track() if Audio.get_music_track() != "" else Radio.playing(),
 		"album": JSON.stringify(PhotoAlbum.st()),
 		"nursery": JSON.stringify(Nursery.list()),
 		"nursery_live": nu.keepers.size() if nu else -1,

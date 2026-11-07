@@ -189,20 +189,20 @@ func _build_radio() -> void:
 	for s: Dictionary in Radio.songs():
 		var id: String = str(s["id"])
 		var ok: bool = Radio.is_unlocked(id)
-		var txt: String = ("%s%s\n%s" % ["▶  " if id == cur else "", tr(str(s["name"])), tr(str(s.get("desc", "")))]) if ok \
+		var txt: String = ("%s%s\n%s" % ["▶  " if id == cur else "", tr(Radio.title(id)), tr(str(s.get("desc", "")))]) if ok \
 			else ("? ? ?\n%s" % (tr("Unlocks: %s") % tr(str(s.get("hint", "")))))
 		var b: Button = _btn(left, txt, func() -> void:
 			if Radio.play(id):
-				EventBus.toast.emit(tr("Now playing: %s") % tr(str(s["name"])), "info")
+				EventBus.toast.emit(tr("Now playing: %s") % tr(Radio.title(id)), "info")
 			_rebuild(), 56)
 		b.add_theme_color_override("font_color", UITheme.GOLD if id == cur else (UITheme.CREAM if ok else UITheme.MUTED))
 		if id == cur:
 			_first = b
 	var right: VBoxContainer = _col(0, tr("NOW PLAYING"))
 	if cur != "":
-		right.add_child(UITheme.label(tr(str(Radio.song(cur).get("name", ""))), 26, Color.WHITE))
+		right.add_child(UITheme.label(tr(Radio.title(cur)), 26, Color.WHITE))
 		right.add_child(_wrap(tr(str(Radio.song(cur).get("desc", ""))), 15, UITheme.MUTED))
-		right.add_child(_wrap(tr("Your pick plays everywhere until you switch back to the mood music."), 13, UITheme.MUTED))
+		right.add_child(_wrap(tr("Your pick loops everywhere until you switch back to the mood music. A restored planet plays its restored version."), 13, UITheme.MUTED))
 		var back: Button = _btn(right, tr("Back to mood music"), func() -> void:
 			Radio.play("")
 			EventBus.toast.emit(tr("The radio hands the music back to the day."), "info")

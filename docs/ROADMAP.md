@@ -59,6 +59,11 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
   - Dev: `--fauna-look=SPECIES[,dist,pitch,yaw]` (puts Lumi next to one, frames it with its own held camera, hides the HUD and particle bursts, skips Bloom Core beat cinematics; the subject holds still unless `--fauna-free`; `--fauna-gap=M`, `--fauna-coat=N`, `--fauna-lerp`, `--fauna-fov`), `--fauna-pose=sit|groom|sleep|pet|graze|fly`, `--fauna-dense`, `--fauna-lakes` (clean every lake), `--fauna-report[=S]`, `--fauna-debug`. Tests: `tests/test_fauna.gd`.
 - Next: per-animal occlusion for photo credit; songbirds perching on trees/roofs; cat pet animation on Lumi's side (hand reach); more frontier ambience (seal colony sounds, desert insects at night).
 
+## Update: visual QA pass 2 (wt/vqa2)
+- Done: frontier junk distance LOD (`planet/junk_lod.gd`): near/far MultiMeshes per junk group, the near look unchanged, far meshes welded + simplified (the 10k-triangle plastic crate whose importer LODs stall drops to 124), packed `visible_instance_count` buffers. Medium spawn views: Sunken City 97.6 M -> 18.9 M primitives, Frozen Port 131 M -> 25.4 M (docs/PERFORMANCE.md). `--no-junk-lod` for A/B.
+- Done: level-4 solar row moved from under the spawn camera to the yard's front-right (collider); hub street lamp hidden in the close rocket shots and given a pole collider; rocket arrival touchdown camera in the open lot with yard dressing hidden; day sky no longer shows the star texture as orange dots (SkyDirector fades it with the sun); holo board text no longer mirrored from behind; workbench tabs share the row by name length (pseudo fits); frontier coat on debris mounds.
+- Checked: Dust Flats, restored Sunken City / Frozen Port, starter yard at levels 1/3/5, night, photo mode, lens view, rocket arrival, robots against walls (docs/VISUAL_QA.md).
+- Open: Sunken City dark patches under the rim buildings (diagnosis in docs/VISUAL_QA.md); Frozen Port restored: far glass spires look like flat blue columns over the mountains, a soft white haze band near the rim; junk LOD adds ~10-30% draw calls (merge far surfaces next).
 ## Update: code health, part 1 (wt/health)
 - Done: the exit crash (code 134) is fixed. Its cause was an unwaited `WorkerThreadPool` task (the `StorySfx` music-box prewarm), whose lambda freed its GDScript after scripting had shut down. `Audio._exit_tree()` now waits for it. Exit leaks are fixed too: the `Settings.bind_text` lambda cycle, the auto-baler chevron meshes, the GlobeView stray label, and stopped audio playbacks. The round trip and autoplay now exit 0.
 - Done: `tools/check_exit.sh` (run by `tools/run_tests.sh` and the CI build workflow; `SKIP_ROUNDTRIP=1` skips it) and `tools/warnings_audit.sh`. The GDScript warning count went from 263 to 0.
@@ -329,3 +334,15 @@ it to die under its trash; each planet reveals more. The game ends when every pl
 Verdance, builds a big launch base, gives the rocket a final "Homeward" upgrade, plants the last seed and launches
 home (reusing the launch sequence, ark finale and space stage), then credits. Random Cradle Mode worlds become
 optional post-game. Owner: wt/home (progression, story, ending) + wt/worlds2 (planet looks, 3 save profiles).
+Binary star canon (owner): one solar system with TWO suns seen from every planet (warm yellow-white primary,
+smaller orange-red companion), sized/lit by orbit distance (Ochre closest, then Verdance, Tidewell, Anvil, Rime
+farthest). Source of truth: data/solar_system.json + systems/solar_system.gd (wt/home). Travel UI: a 3D
+solar-system orrery that zooms into a planet's globe to pick the hub (wt/home).
+- Audio (wt/sound): done. Per-planet music (`Audio.set_planet_theme(id)`, `Audio.set_restoration(0..1)`):
+  2-3 composed tracks per planet with motifs, grooves and restored variants (`audio/music_tracks.gd`),
+  two upbeat Verdance cleaning tracks, rotation with silence gaps, activity-driven energy; planet
+  ambience beds with restored layers (`audio/ambience.gd`); the "homecoming" mood (Greenfall motif,
+  first heard as the intro sting); WREN ducking, Master limiter, Ambience bus under SFX; radio API
+  `Audio.play_track(id)` / `stop_track()`. See docs/AUDIO.md. Needs wiring on the planet branches:
+  call `set_planet_theme` on planet load, `set_music_mood("homecoming")` in the ending, and
+  `Audio.loop("hover_spray", x)` while Lumi hovers over water. Next: owner listening pass.
