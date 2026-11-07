@@ -4101,8 +4101,8 @@ msgid "SAVE PROFILES"
 msgstr "[ŠÀVÉ ÞŔÔFÎĻÉŠ ~~]"
 
 #: ui/profile_picker.gd:39
-msgid "Each profile has its own worlds, Heirlooms and progress. Settings are shared."
-msgstr "[Éàçĥ þŕôƒîļé ĥàš îţš ôŵñ ŵôŕļðš, Ĥéîŕļôômš àñð þŕôĝŕéšš. Šéţţîñĝš àŕé šĥàŕéð. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Each profile has its own planets and progress. Settings are shared."
+msgstr "[Éàçĥ þŕôƒîļé ĥàš îţš ôŵñ þļàñéţš àñð þŕôĝŕéšš. Šéţţîñĝš àŕé šĥàŕéð. ~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/profile_picker.gd:97
 msgid "ACTIVE"

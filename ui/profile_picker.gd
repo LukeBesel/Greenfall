@@ -36,7 +36,7 @@ func _ready() -> void:
 	vb.add_theme_constant_override("separation", 10)
 	pc.add_child(vb)
 	vb.add_child(UITheme.label(tr("SAVE PROFILES"), 26, UITheme.GOLD))
-	var sub := UITheme.label(tr("Each profile has its own worlds, Heirlooms and progress. Settings are shared."), 14, UITheme.MUTED)
+	var sub := UITheme.label(tr("Each profile has its own planets and progress. Settings are shared."), 14, UITheme.MUTED)
 	sub.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	vb.add_child(sub)
 	_list = VBoxContainer.new()
