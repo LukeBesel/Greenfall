@@ -21,7 +21,9 @@ static func _font(path: String) -> Font:
 
 ## CJK fallbacks in priority order for `locale` (Japanese first for "ja", Chinese first otherwise).
 static func fonts_for(locale: String) -> Array[Font]:
-	var paths: Array[String] = [FONT_JP, FONT_SC] if locale.begins_with("ja") else [FONT_SC, FONT_JP]
+	var paths: Array[String] = [FONT_SC, FONT_JP]
+	if locale.begins_with("ja"):
+		paths.reverse()
 	var out: Array[Font] = []
 	for p: String in paths:
 		var f: Font = _font(p)
