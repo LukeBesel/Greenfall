@@ -111,6 +111,7 @@ static func from_dict(d: Dictionary) -> Dictionary:
 		ws = p["worlds"]
 	p["worlds"] = ws
 	p["current"] = clampi(int(p["current"]), 0, ws.size() - 1)
+	p["homeward"] = Homeward.sanitize(d.get("homeward", {}))  # [home] the system campaign (systems/homeward.gd)
 	return p
 
 
@@ -135,7 +136,7 @@ static func current_world() -> Dictionary:
 ## The world record with its generated mix (towns etc. are recomputed, not stored).
 static func current_full() -> Dictionary:
 	var w: Dictionary = current_world()
-	return WorldGen.make(int(w.get("index", 0)), int(w.get("seed", WorldGen.VERDANCE_SEED)))
+	return WorldGen.make(int(w.get("index", 0)), int(w.get("seed", WorldGen.VERDANCE_SEED)), str(w.get("type", "")) if w.has("planet") else "")  # [home] fixed planets keep their type
 
 
 static func world_seed() -> int:
@@ -280,6 +281,8 @@ static func buy_block_reason(id: String) -> String:
 	var lv: int = heirloom_level(id)
 	if lv >= int(d.get("max", 5)):
 		return TranslationServer.translate("Fully grown")
+	if Homeward.picks() > 0:  # [home] a restored planet's Heirloom pick
+		return ""
 	if starseeds() + 0.0001 < heirloom_cost(d, lv):
 		return TranslationServer.translate("Needs %d Starseeds") % heirloom_cost(d, lv)
 	return ""
@@ -290,7 +293,8 @@ static func buy(id: String) -> bool:
 		return false
 	var d: Dictionary = heirloom_def(id)
 	var lv: int = heirloom_level(id)
-	_p()["starseeds"] = starseeds() - heirloom_cost(d, lv)
+	if not Homeward.use_pick():  # [home] picks first
+		_p()["starseeds"] = starseeds() - heirloom_cost(d, lv)
 	(_p()["heirlooms"] as Dictionary)[id] = lv + 1
 	GameState.inc_stat("heirlooms_bought")
 	mirror_stats()

@@ -37,6 +37,7 @@ func setup(p_env: Environment, p_sun: DirectionalLight3D) -> void:
 	add_child(moon)
 	sky_mat.night_sky = _star_texture()
 	time_of_day = float(GameState.flags.get("time_of_day", 0.32))
+	BinarySun.attach(self)  # [home] the companion sun (data/solar_system.json)
 
 
 static func _star_texture() -> ImageTexture:

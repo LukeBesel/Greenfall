@@ -54,6 +54,10 @@ static func entries() -> Array[Dictionary]:
 	var fr: Dictionary = c.get("frontiers", {})
 	for fid: String in fr:
 		_add("frontiers", fid, TranslationServer.translate(str(fr[fid].get("name", fid.capitalize()))), fr[fid])
+	# [home] Homeward: the system campaign (unlocked by story/cradle_answers.gd, systems/homeward_director.gd).
+	var hw: Dictionary = c.get("homeward", {})
+	for hid: String in hw:
+		_add("homeward", hid, TranslationServer.translate(str(hw[hid].get("name", hid.capitalize()))), hw[hid])
 	# [wild] Animals (unlocked on first sighting by fauna/fauna.gd).
 	var an: Dictionary = c.get("animals", {})
 	for aid: String in an:

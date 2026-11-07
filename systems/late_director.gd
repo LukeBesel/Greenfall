@@ -54,6 +54,7 @@ func _setup() -> void:
 	placer.world = world
 	placer.decor = decor
 	world.add_child(placer)
+	HomewardDirector.attach(world)  # [home] the system campaign (systems/homeward_director.gd)
 	bridge = ArkBridge.new()
 	bridge.name = "ArkBridge"
 	bridge.world = world
@@ -86,7 +87,7 @@ func _setup() -> void:
 
 ## Opens the Ark Bridge (pause menu, autoplay). False while it is still locked.
 func open_bridge() -> bool:
-	if not CradleMode.unlocked():
+	if not (CradleMode.unlocked() or Homeward.answered()):  # [home] Heirloom picks open with the Cradle's answer
 		EventBus.toast.emit(tr("The Ark Bridge opens once the Cradle has come home."), "info")
 		return false
 	if world.patch.input is PlayerInput:

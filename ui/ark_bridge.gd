@@ -198,6 +198,9 @@ func _world_row(i: int) -> Control:
 	if here:
 		b.text = tr("You are here")
 		b.disabled = true
+	elif not CradleMode.unlocked() and Homeward.answered():  # [home] system planets: by rocket, until the ending
+		b.text = tr("By rocket")
+		b.disabled = true
 	else:
 		b.text = tr("Travel")
 		b.pressed.connect(func() -> void:
@@ -301,7 +304,7 @@ func _heirloom_row(h: Dictionary) -> Control:
 		b.text = tr("Full")
 		b.disabled = true
 	else:
-		b.text = tr("%d Starseeds") % CradleMode.heirloom_cost(h, lv)
+		b.text = tr("Take  (%d picks)") % Homeward.picks() if Homeward.picks() > 0 else tr("%d Starseeds") % CradleMode.heirloom_cost(h, lv)  # [home]
 		b.disabled = CradleMode.buy_block_reason(id) != ""
 		b.pressed.connect(func() -> void:
 			if CradleMode.buy(id):

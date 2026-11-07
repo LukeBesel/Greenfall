@@ -65,7 +65,7 @@ static func companion_dir(primary: Vector3, sep_deg: float, sep_angle_deg: float
 	var up: Vector3 = side.cross(a).normalized()
 	var ang: float = deg_to_rad(sep_angle_deg)
 	var tangent: Vector3 = (side * cos(ang) + up * sin(ang)).normalized()
-	return a.rotated(a.cross(tangent).normalized(), -deg_to_rad(sep_deg)).normalized()
+	return a.rotated(a.cross(tangent).normalized(), deg_to_rad(sep_deg)).normalized()
 
 
 ## What to render for planet `id` (see the class doc).

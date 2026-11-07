@@ -41,7 +41,7 @@ static func modifier(id: String) -> Dictionary:
 ## A full world record: {index, seed, name, type, mix, modifiers}. `index` 0 is Verdance.
 ## World types cycle so the first four new worlds are all different; modifiers are two
 ## distinct picks from the seed.
-static func make(index: int, seed_v: int = -1) -> Dictionary:
+static func make(index: int, seed_v: int = -1, type_id: String = "") -> Dictionary:  # [home] type_id: a fixed planet's type
 	if seed_v < 0:
 		seed_v = seed_for(index)
 	if index <= 0:
@@ -50,6 +50,8 @@ static func make(index: int, seed_v: int = -1) -> Dictionary:
 	r.seed = seed_v
 	var types: Array = cfg().get("world_types", [])
 	var t: Dictionary = types[(index - 1) % types.size()] if not types.is_empty() else {}
+	if type_id != "" and not world_type(type_id).is_empty():  # [home]
+		t = world_type(type_id)
 	var mix: Dictionary = (t.get("mix", {}) as Dictionary).duplicate(true)
 	mix["city_names"] = city_names(r)
 	return {"index": index, "seed": seed_v, "name": world_name(r), "type": str(t.get("id", "rust_world")),
