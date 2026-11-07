@@ -854,7 +854,7 @@ msgstr "回収：%s"
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
-#: player/patch_model.gd:18 data/designs.json:designs[aurora].name
+#: player/patch_model.gd:18 data/designs.json:designs[aurora].name data/radio.json:songs[rime_aurora].name
 msgid "Aurora"
 msgstr "Aurora"
 
@@ -10239,13 +10239,25 @@ msgstr "センサーモジュール"
 msgid "Special Module"
 msgstr "特殊モジュール"
 
+#: data/radio.json:songs[verdance_sprout].name
+msgid "Sprout Step"
+msgstr "芽吹きステップ"
+
 #: data/radio.json:songs[verdance_sprout].desc
 msgid "Kalimba and bells, the first green on Verdance."
 msgstr "カリンバとベル、Verdance に芽生えた最初の緑。"
 
+#: data/radio.json:songs[verdance_sweep].name
+msgid "Clean Sweep"
+msgstr "大そうじ"
+
 #: data/radio.json:songs[verdance_sweep].desc
 msgid "Marimba and a four-on-the-floor kick: cleaning music."
 msgstr "マリンバと四つ打ちのキック：お掃除ミュージック。"
+
+#: data/radio.json:songs[ochre_sunbaked].name
+msgid "Sunbaked"
+msgstr "日焼けの午後"
 
 #: data/radio.json:songs[ochre_sunbaked].desc
 msgid "A sunny marimba hook over a lute ostinato."
@@ -10255,6 +10267,10 @@ msgstr "リュートのオスティナートに乗る、陽気なマリンバの
 msgid "Land on Ochre"
 msgstr "Ochre に着陸する"
 
+#: data/radio.json:songs[ochre_caravan].name
+msgid "Dune Caravan"
+msgstr "砂丘キャラバン"
+
 #: data/radio.json:songs[ochre_caravan].desc
 msgid "A winding pluck line over a loping frame drum."
 msgstr "のんびりしたフレームドラムに、うねる撥弦のライン。"
@@ -10262,6 +10278,10 @@ msgstr "のんびりしたフレームドラムに、うねる撥弦のライン
 #: data/radio.json:songs[ochre_caravan].hint
 msgid "A base on Ochre at level 3"
 msgstr "Ochre の基地をレベル 3 にする"
+
+#: data/radio.json:songs[ochre_mirage].name
+msgid "Mirage"
+msgstr "蜃気楼"
 
 #: data/radio.json:songs[ochre_mirage].desc
 msgid "Kalimba and bells shimmering in the heat."
@@ -10271,6 +10291,10 @@ msgstr "熱気にゆらめくカリンバとベル。"
 msgid "A base on Ochre at level 5"
 msgstr "Ochre の基地をレベル 5 にする"
 
+#: data/radio.json:songs[tidewell_tradewinds].name
+msgid "Tradewinds"
+msgstr "貿易風"
+
 #: data/radio.json:songs[tidewell_tradewinds].desc
 msgid "Steel pans skipping over the waves."
 msgstr "波の上を跳ねるスティールパン。"
@@ -10278,6 +10302,10 @@ msgstr "波の上を跳ねるスティールパン。"
 #: data/radio.json:songs[tidewell_tradewinds].hint
 msgid "Land on Tidewell"
 msgstr "Tidewell に着陸する"
+
+#: data/radio.json:songs[tidewell_tidepools].name
+msgid "Tidepools"
+msgstr "潮だまり"
 
 #: data/radio.json:songs[tidewell_tidepools].desc
 msgid "A harp melody over rolling arpeggios."
@@ -10287,6 +10315,10 @@ msgstr "うねるアルペジオに乗るハープのメロディ。"
 msgid "A base on Tidewell at level 3"
 msgstr "Tidewell の基地をレベル 3 にする"
 
+#: data/radio.json:songs[tidewell_skipper].name
+msgid "Skipping Stones"
+msgstr "水切り"
+
 #: data/radio.json:songs[tidewell_skipper].desc
 msgid "A bouncy marimba shuffle."
 msgstr "はずむマリンバのシャッフル。"
@@ -10294,6 +10326,10 @@ msgstr "はずむマリンバのシャッフル。"
 #: data/radio.json:songs[tidewell_skipper].hint
 msgid "A base on Tidewell at level 5"
 msgstr "Tidewell の基地をレベル 5 にする"
+
+#: data/radio.json:songs[rime_hoarfrost].name
+msgid "Hoarfrost"
+msgstr "霜の花"
 
 #: data/radio.json:songs[rime_hoarfrost].desc
 msgid "Glass bells that slowly gather warmth."
@@ -10311,6 +10347,10 @@ msgstr "オーロラの下、ガラスの音を重ねたピアノ。"
 msgid "A base on Rime at level 5"
 msgstr "Rime の基地をレベル 5 にする"
 
+#: data/radio.json:songs[anvil_foundry].name
+msgid "Foundry Heart"
+msgstr "鋳造所の心臓"
+
 #: data/radio.json:songs[anvil_foundry].desc
 msgid "A dark, groovy forge that learns to hope."
 msgstr "希望を知っていく、暗くてグルーヴィーな鍛冶場。"
@@ -10318,6 +10358,10 @@ msgstr "希望を知っていく、暗くてグルーヴィーな鍛冶場。"
 #: data/radio.json:songs[anvil_foundry].hint
 msgid "Land on Anvil"
 msgstr "Anvil に着陸する"
+
+#: data/radio.json:songs[anvil_ash].name
+msgid "Ash Choir"
+msgstr "灰の合唱"
 
 #: data/radio.json:songs[anvil_ash].desc
 msgid "An eerie choir over brass and embers."
@@ -10327,6 +10371,10 @@ msgstr "金管と残り火に乗る不気味な合唱。"
 msgid "A base on Anvil at level 3"
 msgstr "Anvil の基地をレベル 3 にする"
 
+#: data/radio.json:songs[anvil_engine].name
+msgid "Red Engine"
+msgstr "赤いエンジン"
+
 #: data/radio.json:songs[anvil_engine].desc
 msgid "Sub bass and metal hits, the furnaces running clean."
 msgstr "重低音と金属音、炉はきれいに動いている。"
@@ -10334,6 +10382,10 @@ msgstr "重低音と金属音、炉はきれいに動いている。"
 #: data/radio.json:songs[anvil_engine].hint
 msgid "A base on Anvil at level 5"
 msgstr "Anvil の基地をレベル 5 にする"
+
+#: data/radio.json:songs[homecoming].name
+msgid "Homecoming"
+msgstr "帰郷"
 
 #: data/radio.json:songs[homecoming].desc
 msgid "The ark's theme, for the journey home."

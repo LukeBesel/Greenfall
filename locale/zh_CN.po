@@ -854,7 +854,7 @@ msgstr "回收：%s"
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
-#: player/patch_model.gd:18 data/designs.json:designs[aurora].name
+#: player/patch_model.gd:18 data/designs.json:designs[aurora].name data/radio.json:songs[rime_aurora].name
 msgid "Aurora"
 msgstr "Aurora"
 
@@ -10239,13 +10239,25 @@ msgstr "传感器模块"
 msgid "Special Module"
 msgstr "特殊模块"
 
+#: data/radio.json:songs[verdance_sprout].name
+msgid "Sprout Step"
+msgstr "新芽步伐"
+
 #: data/radio.json:songs[verdance_sprout].desc
 msgid "Kalimba and bells, the first green on Verdance."
 msgstr "卡林巴和铃声，Verdance 上的第一抹绿。"
 
+#: data/radio.json:songs[verdance_sweep].name
+msgid "Clean Sweep"
+msgstr "大扫除"
+
 #: data/radio.json:songs[verdance_sweep].desc
 msgid "Marimba and a four-on-the-floor kick: cleaning music."
 msgstr "马林巴配上四拍底鼓：清理时的音乐。"
+
+#: data/radio.json:songs[ochre_sunbaked].name
+msgid "Sunbaked"
+msgstr "烈日炙烤"
 
 #: data/radio.json:songs[ochre_sunbaked].desc
 msgid "A sunny marimba hook over a lute ostinato."
@@ -10255,6 +10267,10 @@ msgstr "鲁特琴固定音型上的明快马林巴动机。"
 msgid "Land on Ochre"
 msgstr "登陆 Ochre"
 
+#: data/radio.json:songs[ochre_caravan].name
+msgid "Dune Caravan"
+msgstr "沙丘驼队"
+
 #: data/radio.json:songs[ochre_caravan].desc
 msgid "A winding pluck line over a loping frame drum."
 msgstr "悠然的框鼓上蜿蜒的拨弦旋律。"
@@ -10262,6 +10278,10 @@ msgstr "悠然的框鼓上蜿蜒的拨弦旋律。"
 #: data/radio.json:songs[ochre_caravan].hint
 msgid "A base on Ochre at level 3"
 msgstr "Ochre 上一个基地达到 3 级"
+
+#: data/radio.json:songs[ochre_mirage].name
+msgid "Mirage"
+msgstr "海市蜃楼"
 
 #: data/radio.json:songs[ochre_mirage].desc
 msgid "Kalimba and bells shimmering in the heat."
@@ -10271,6 +10291,10 @@ msgstr "在热浪中闪烁的卡林巴和铃声。"
 msgid "A base on Ochre at level 5"
 msgstr "Ochre 上一个基地达到 5 级"
 
+#: data/radio.json:songs[tidewell_tradewinds].name
+msgid "Tradewinds"
+msgstr "信风"
+
 #: data/radio.json:songs[tidewell_tradewinds].desc
 msgid "Steel pans skipping over the waves."
 msgstr "在浪花上跳跃的钢鼓。"
@@ -10278,6 +10302,10 @@ msgstr "在浪花上跳跃的钢鼓。"
 #: data/radio.json:songs[tidewell_tradewinds].hint
 msgid "Land on Tidewell"
 msgstr "登陆 Tidewell"
+
+#: data/radio.json:songs[tidewell_tidepools].name
+msgid "Tidepools"
+msgstr "潮汐池"
 
 #: data/radio.json:songs[tidewell_tidepools].desc
 msgid "A harp melody over rolling arpeggios."
@@ -10287,6 +10315,10 @@ msgstr "起伏琶音上的竖琴旋律。"
 msgid "A base on Tidewell at level 3"
 msgstr "Tidewell 上一个基地达到 3 级"
 
+#: data/radio.json:songs[tidewell_skipper].name
+msgid "Skipping Stones"
+msgstr "打水漂"
+
 #: data/radio.json:songs[tidewell_skipper].desc
 msgid "A bouncy marimba shuffle."
 msgstr "跳跃的马林巴拖曳节奏。"
@@ -10294,6 +10326,10 @@ msgstr "跳跃的马林巴拖曳节奏。"
 #: data/radio.json:songs[tidewell_skipper].hint
 msgid "A base on Tidewell at level 5"
 msgstr "Tidewell 上一个基地达到 5 级"
+
+#: data/radio.json:songs[rime_hoarfrost].name
+msgid "Hoarfrost"
+msgstr "白霜"
 
 #: data/radio.json:songs[rime_hoarfrost].desc
 msgid "Glass bells that slowly gather warmth."
@@ -10311,6 +10347,10 @@ msgstr "极光下由玻璃声叠奏的钢琴。"
 msgid "A base on Rime at level 5"
 msgstr "Rime 上一个基地达到 5 级"
 
+#: data/radio.json:songs[anvil_foundry].name
+msgid "Foundry Heart"
+msgstr "熔炉之心"
+
 #: data/radio.json:songs[anvil_foundry].desc
 msgid "A dark, groovy forge that learns to hope."
 msgstr "一座学会希望的幽暗律动熔炉。"
@@ -10318,6 +10358,10 @@ msgstr "一座学会希望的幽暗律动熔炉。"
 #: data/radio.json:songs[anvil_foundry].hint
 msgid "Land on Anvil"
 msgstr "登陆 Anvil"
+
+#: data/radio.json:songs[anvil_ash].name
+msgid "Ash Choir"
+msgstr "灰烬合唱"
 
 #: data/radio.json:songs[anvil_ash].desc
 msgid "An eerie choir over brass and embers."
@@ -10327,6 +10371,10 @@ msgstr "铜管与余烬上的诡异合唱。"
 msgid "A base on Anvil at level 3"
 msgstr "Anvil 上一个基地达到 3 级"
 
+#: data/radio.json:songs[anvil_engine].name
+msgid "Red Engine"
+msgstr "红色引擎"
+
 #: data/radio.json:songs[anvil_engine].desc
 msgid "Sub bass and metal hits, the furnaces running clean."
 msgstr "超低音与金属敲击，熔炉运转得干干净净。"
@@ -10334,6 +10382,10 @@ msgstr "超低音与金属敲击，熔炉运转得干干净净。"
 #: data/radio.json:songs[anvil_engine].hint
 msgid "A base on Anvil at level 5"
 msgstr "Anvil 上一个基地达到 5 级"
+
+#: data/radio.json:songs[homecoming].name
+msgid "Homecoming"
+msgstr "归乡"
 
 #: data/radio.json:songs[homecoming].desc
 msgid "The ark's theme, for the journey home."

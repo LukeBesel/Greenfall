@@ -1,19 +1,19 @@
 {
-  "_doc": "[extras] Songs on the base radio (systems/extras/radio.gd). id: a composed track (audio/music_tracks.gd, played with Audio.play_track; the title comes from Audio.music_track_title, and a restored planet plays its restored variant). cond: when it unlocks, the condition types of data/achievements.json plus 'districts_l5' (bases at level 5), 'districts' (districts visited), 'planet_seen' (key: planet theme id, heard on that planet) and 'planet_level' (key: planet; best base level reached on that planet). No cond = on the radio from the start. hint: shown while locked. Unlocks persist in GameState.flags.radio.unlocked.",
+  "_doc": "[extras] Songs on the base radio (systems/extras/radio.gd). id: a composed track (audio/music_tracks.gd, played with Audio.play_track; name: its title as in Audio.music_track_title, kept here so it gets extracted and translated; a restored planet plays its restored variant). cond: when it unlocks, the condition types of data/achievements.json plus 'districts_l5' (bases at level 5), 'districts' (districts visited), 'planet_seen' (key: planet theme id, heard on that planet) and 'planet_level' (key: planet; best base level reached on that planet). No cond = on the radio from the start. hint: shown while locked. Unlocks persist in GameState.flags.radio.unlocked.",
   "songs": [
-    {"id": "verdance_sprout", "desc": "Kalimba and bells, the first green on Verdance."},
-    {"id": "verdance_sweep", "desc": "Marimba and a four-on-the-floor kick: cleaning music.", "hint": "Clean 10 hexes", "cond": {"type": "stat", "key": "hexes_cleaned", "target": 10}},
-    {"id": "ochre_sunbaked", "desc": "A sunny marimba hook over a lute ostinato.", "hint": "Land on Ochre", "cond": {"type": "planet_seen", "key": "ochre", "target": 1}},
-    {"id": "ochre_caravan", "desc": "A winding pluck line over a loping frame drum.", "hint": "A base on Ochre at level 3", "cond": {"type": "planet_level", "key": "ochre", "target": 3}},
-    {"id": "ochre_mirage", "desc": "Kalimba and bells shimmering in the heat.", "hint": "A base on Ochre at level 5", "cond": {"type": "planet_level", "key": "ochre", "target": 5}},
-    {"id": "tidewell_tradewinds", "desc": "Steel pans skipping over the waves.", "hint": "Land on Tidewell", "cond": {"type": "planet_seen", "key": "tidewell", "target": 1}},
-    {"id": "tidewell_tidepools", "desc": "A harp melody over rolling arpeggios.", "hint": "A base on Tidewell at level 3", "cond": {"type": "planet_level", "key": "tidewell", "target": 3}},
-    {"id": "tidewell_skipper", "desc": "A bouncy marimba shuffle.", "hint": "A base on Tidewell at level 5", "cond": {"type": "planet_level", "key": "tidewell", "target": 5}},
-    {"id": "rime_hoarfrost", "desc": "Glass bells that slowly gather warmth.", "hint": "Land on Rime", "cond": {"type": "planet_seen", "key": "rime", "target": 1}},
-    {"id": "rime_aurora", "desc": "Piano doubled by glass under the northern lights.", "hint": "A base on Rime at level 5", "cond": {"type": "planet_level", "key": "rime", "target": 5}},
-    {"id": "anvil_foundry", "desc": "A dark, groovy forge that learns to hope.", "hint": "Land on Anvil", "cond": {"type": "planet_seen", "key": "anvil", "target": 1}},
-    {"id": "anvil_ash", "desc": "An eerie choir over brass and embers.", "hint": "A base on Anvil at level 3", "cond": {"type": "planet_level", "key": "anvil", "target": 3}},
-    {"id": "anvil_engine", "desc": "Sub bass and metal hits, the furnaces running clean.", "hint": "A base on Anvil at level 5", "cond": {"type": "planet_level", "key": "anvil", "target": 5}},
-    {"id": "homecoming", "desc": "The ark's theme, for the journey home.", "hint": "Bring the Cradle home", "cond": {"type": "flag", "key": "cradle_returned", "target": 1}}
+    {"id": "verdance_sprout", "name": "Sprout Step", "desc": "Kalimba and bells, the first green on Verdance."},
+    {"id": "verdance_sweep", "name": "Clean Sweep", "desc": "Marimba and a four-on-the-floor kick: cleaning music.", "hint": "Clean 10 hexes", "cond": {"type": "stat", "key": "hexes_cleaned", "target": 10}},
+    {"id": "ochre_sunbaked", "name": "Sunbaked", "desc": "A sunny marimba hook over a lute ostinato.", "hint": "Land on Ochre", "cond": {"type": "planet_seen", "key": "ochre", "target": 1}},
+    {"id": "ochre_caravan", "name": "Dune Caravan", "desc": "A winding pluck line over a loping frame drum.", "hint": "A base on Ochre at level 3", "cond": {"type": "planet_level", "key": "ochre", "target": 3}},
+    {"id": "ochre_mirage", "name": "Mirage", "desc": "Kalimba and bells shimmering in the heat.", "hint": "A base on Ochre at level 5", "cond": {"type": "planet_level", "key": "ochre", "target": 5}},
+    {"id": "tidewell_tradewinds", "name": "Tradewinds", "desc": "Steel pans skipping over the waves.", "hint": "Land on Tidewell", "cond": {"type": "planet_seen", "key": "tidewell", "target": 1}},
+    {"id": "tidewell_tidepools", "name": "Tidepools", "desc": "A harp melody over rolling arpeggios.", "hint": "A base on Tidewell at level 3", "cond": {"type": "planet_level", "key": "tidewell", "target": 3}},
+    {"id": "tidewell_skipper", "name": "Skipping Stones", "desc": "A bouncy marimba shuffle.", "hint": "A base on Tidewell at level 5", "cond": {"type": "planet_level", "key": "tidewell", "target": 5}},
+    {"id": "rime_hoarfrost", "name": "Hoarfrost", "desc": "Glass bells that slowly gather warmth.", "hint": "Land on Rime", "cond": {"type": "planet_seen", "key": "rime", "target": 1}},
+    {"id": "rime_aurora", "name": "Aurora", "desc": "Piano doubled by glass under the northern lights.", "hint": "A base on Rime at level 5", "cond": {"type": "planet_level", "key": "rime", "target": 5}},
+    {"id": "anvil_foundry", "name": "Foundry Heart", "desc": "A dark, groovy forge that learns to hope.", "hint": "Land on Anvil", "cond": {"type": "planet_seen", "key": "anvil", "target": 1}},
+    {"id": "anvil_ash", "name": "Ash Choir", "desc": "An eerie choir over brass and embers.", "hint": "A base on Anvil at level 3", "cond": {"type": "planet_level", "key": "anvil", "target": 3}},
+    {"id": "anvil_engine", "name": "Red Engine", "desc": "Sub bass and metal hits, the furnaces running clean.", "hint": "A base on Anvil at level 5", "cond": {"type": "planet_level", "key": "anvil", "target": 5}},
+    {"id": "homecoming", "name": "Homecoming", "desc": "The ark's theme, for the journey home.", "hint": "Bring the Cradle home", "cond": {"type": "flag", "key": "cradle_returned", "target": 1}}
   ]
 }

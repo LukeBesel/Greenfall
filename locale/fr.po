@@ -855,7 +855,7 @@ msgstr "Récupéré : %s"
 msgid "Recovered: %s"
 msgstr "Retrouvé : %s"
 
-#: player/patch_model.gd:18 data/designs.json:designs[aurora].name
+#: player/patch_model.gd:18 data/designs.json:designs[aurora].name data/radio.json:songs[rime_aurora].name
 msgid "Aurora"
 msgstr "Aurora"
 
@@ -10256,13 +10256,25 @@ msgstr "Module capteur"
 msgid "Special Module"
 msgstr "Module spécial"
 
+#: data/radio.json:songs[verdance_sprout].name
+msgid "Sprout Step"
+msgstr "Pas de pousse"
+
 #: data/radio.json:songs[verdance_sprout].desc
 msgid "Kalimba and bells, the first green on Verdance."
 msgstr "Kalimba et cloches, le premier vert sur Verdance."
 
+#: data/radio.json:songs[verdance_sweep].name
+msgid "Clean Sweep"
+msgstr "Grand ménage"
+
 #: data/radio.json:songs[verdance_sweep].desc
 msgid "Marimba and a four-on-the-floor kick: cleaning music."
 msgstr "Marimba et grosse caisse sur chaque temps : de la musique pour nettoyer."
+
+#: data/radio.json:songs[ochre_sunbaked].name
+msgid "Sunbaked"
+msgstr "Brûlé de soleil"
 
 #: data/radio.json:songs[ochre_sunbaked].desc
 msgid "A sunny marimba hook over a lute ostinato."
@@ -10272,6 +10284,10 @@ msgstr "Un motif de marimba ensoleillé sur un ostinato de luth."
 msgid "Land on Ochre"
 msgstr "Atterris sur Ochre"
 
+#: data/radio.json:songs[ochre_caravan].name
+msgid "Dune Caravan"
+msgstr "Caravane des dunes"
+
 #: data/radio.json:songs[ochre_caravan].desc
 msgid "A winding pluck line over a loping frame drum."
 msgstr "Une ligne pincée sinueuse sur un tambour sur cadre nonchalant."
@@ -10279,6 +10295,10 @@ msgstr "Une ligne pincée sinueuse sur un tambour sur cadre nonchalant."
 #: data/radio.json:songs[ochre_caravan].hint
 msgid "A base on Ochre at level 3"
 msgstr "Une base sur Ochre au niveau 3"
+
+#: data/radio.json:songs[ochre_mirage].name
+msgid "Mirage"
+msgstr "Mirage"
 
 #: data/radio.json:songs[ochre_mirage].desc
 msgid "Kalimba and bells shimmering in the heat."
@@ -10288,6 +10308,10 @@ msgstr "Kalimba et cloches qui miroitent dans la chaleur."
 msgid "A base on Ochre at level 5"
 msgstr "Une base sur Ochre au niveau 5"
 
+#: data/radio.json:songs[tidewell_tradewinds].name
+msgid "Tradewinds"
+msgstr "Alizés"
+
 #: data/radio.json:songs[tidewell_tradewinds].desc
 msgid "Steel pans skipping over the waves."
 msgstr "Des steel drums qui sautillent sur les vagues."
@@ -10295,6 +10319,10 @@ msgstr "Des steel drums qui sautillent sur les vagues."
 #: data/radio.json:songs[tidewell_tradewinds].hint
 msgid "Land on Tidewell"
 msgstr "Atterris sur Tidewell"
+
+#: data/radio.json:songs[tidewell_tidepools].name
+msgid "Tidepools"
+msgstr "Flaques de marée"
 
 #: data/radio.json:songs[tidewell_tidepools].desc
 msgid "A harp melody over rolling arpeggios."
@@ -10304,6 +10332,10 @@ msgstr "Une mélodie de harpe sur des arpèges ondulants."
 msgid "A base on Tidewell at level 3"
 msgstr "Une base sur Tidewell au niveau 3"
 
+#: data/radio.json:songs[tidewell_skipper].name
+msgid "Skipping Stones"
+msgstr "Ricochets"
+
 #: data/radio.json:songs[tidewell_skipper].desc
 msgid "A bouncy marimba shuffle."
 msgstr "Un shuffle de marimba plein de rebond."
@@ -10311,6 +10343,10 @@ msgstr "Un shuffle de marimba plein de rebond."
 #: data/radio.json:songs[tidewell_skipper].hint
 msgid "A base on Tidewell at level 5"
 msgstr "Une base sur Tidewell au niveau 5"
+
+#: data/radio.json:songs[rime_hoarfrost].name
+msgid "Hoarfrost"
+msgstr "Givre"
 
 #: data/radio.json:songs[rime_hoarfrost].desc
 msgid "Glass bells that slowly gather warmth."
@@ -10328,6 +10364,10 @@ msgstr "Du piano doublé de verre sous les aurores boréales."
 msgid "A base on Rime at level 5"
 msgstr "Une base sur Rime au niveau 5"
 
+#: data/radio.json:songs[anvil_foundry].name
+msgid "Foundry Heart"
+msgstr "Cœur de fonderie"
+
 #: data/radio.json:songs[anvil_foundry].desc
 msgid "A dark, groovy forge that learns to hope."
 msgstr "Une forge sombre et groovy qui apprend l'espoir."
@@ -10335,6 +10375,10 @@ msgstr "Une forge sombre et groovy qui apprend l'espoir."
 #: data/radio.json:songs[anvil_foundry].hint
 msgid "Land on Anvil"
 msgstr "Atterris sur Anvil"
+
+#: data/radio.json:songs[anvil_ash].name
+msgid "Ash Choir"
+msgstr "Chœur de cendres"
 
 #: data/radio.json:songs[anvil_ash].desc
 msgid "An eerie choir over brass and embers."
@@ -10344,6 +10388,10 @@ msgstr "Un chœur étrange sur des cuivres et des braises."
 msgid "A base on Anvil at level 3"
 msgstr "Une base sur Anvil au niveau 3"
 
+#: data/radio.json:songs[anvil_engine].name
+msgid "Red Engine"
+msgstr "Moteur rouge"
+
 #: data/radio.json:songs[anvil_engine].desc
 msgid "Sub bass and metal hits, the furnaces running clean."
 msgstr "Basses profondes et coups de métal, les fourneaux tournent propre."
@@ -10351,6 +10399,10 @@ msgstr "Basses profondes et coups de métal, les fourneaux tournent propre."
 #: data/radio.json:songs[anvil_engine].hint
 msgid "A base on Anvil at level 5"
 msgstr "Une base sur Anvil au niveau 5"
+
+#: data/radio.json:songs[homecoming].name
+msgid "Homecoming"
+msgstr "Retour au foyer"
 
 #: data/radio.json:songs[homecoming].desc
 msgid "The ark's theme, for the journey home."
