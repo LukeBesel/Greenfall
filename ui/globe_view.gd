@@ -28,7 +28,6 @@ var _pivot: Node3D
 var _globe: MeshInstance3D
 var _marker: MeshInstance3D
 var _cam: Camera3D
-var _stats: Label
 var _age: Label
 var _ark: Label
 var _resurvey: Button
@@ -139,8 +138,6 @@ func _ready() -> void:
 		var r: HBoxContainer = UITheme.stat_row(k[1], k[2])
 		r.name = k[0]
 		_rows.add_child(r)
-	_stats = UITheme.label("", 1)
-	_stats.visible = false
 	_age = UITheme.label("", 13, UITheme.GOLD)
 	b1.add_child(_age)
 	_ark = UITheme.label("", 13, Color(0.6, 1.0, 0.55))  # [bloom] Seed Ark / Verdance Bloom line
