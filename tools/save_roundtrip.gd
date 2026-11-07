@@ -509,11 +509,13 @@ func _late_multi_world(packed: PackedScene) -> void:
 	await get_tree().process_frame
 	# The profile on disk comes back as it was.
 	var prof: String = JSON.stringify(CradleMode.to_dict())
+	var hl_before: int = CradleMode.heirloom_total()  # [money] 4 set + the milestone track's unlocks on banking
 	CradleMode.profile = {}
 	CradleMode.load_profile()
 	_check("late_profile_roundtrip", str(JSON.parse_string(prof)), str(JSON.parse_string(JSON.stringify(CradleMode.to_dict()))))
 	_check("late_profile_worlds", 2, CradleMode.worlds().size())
-	_check("late_profile_heirlooms", 4, CradleMode.heirloom_total())
+	_check("late_profile_heirlooms", hl_before, CradleMode.heirloom_total())
+	_check("late_profile_heirlooms_kept", true, CradleMode.heirloom_total() >= 4)
 	# Back to Verdance: its save (slot 7) loads as it was left.
 	_check("late_switch_home", true, CradleMode.switch_world(0))
 	_check("late_home_slot", 7, SaveManager.slot)
