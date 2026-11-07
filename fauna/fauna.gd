@@ -257,6 +257,13 @@ func _ground_y(p: Vector3) -> float:
 	return clampf(lay.height_at(p.x, p.z), 0.0, 0.3) if lay else 0.0
 
 
+## Visible lake surface: in city districts a lake hex's kerbs and lots sit above the water line,
+## so only its road area shows open water.
+func open_water(p: Vector3) -> bool:
+	var lay: CityLayout = world.field.layout
+	return lay == null or lay.wild or lay.surface_at(p.x, p.z) == CityLayout.Surface.ROAD
+
+
 func _in_view(p: Vector3) -> bool:
 	return _cam != null and _cam.is_position_in_frustum(p) and _cam.global_position.distance_to(p) < 30.0
 
@@ -282,7 +289,10 @@ func find_spot(sid: String, h: int, near: Vector3 = Vector3.INF, spread: float =
 		if ph < 0:
 			continue
 		if where == "water":
-			if f.is_water(ph) and f.is_clean(ph) and f.hex_at(p + Vector3(0.6, 0, 0)) == ph and f.hex_at(p - Vector3(0.6, 0, 0)) == ph:
+			# Open water only: kerbs and lots in a city lake hex sit above the water line.
+			if f.is_water(ph) and f.is_clean(ph) and f.hex_at(p + Vector3(0.6, 0, 0)) == ph and f.hex_at(p - Vector3(0.6, 0, 0)) == ph \
+					and open_water(p) and open_water(p + Vector3(0.8, 0, 0)) and open_water(p - Vector3(0.8, 0, 0)) \
+					and open_water(p + Vector3(0, 0, 0.8)) and open_water(p - Vector3(0, 0, 0.8)):
 				return Vector3(p.x, HexField.WATER_Y, p.z)
 			continue
 		if f.is_water(ph):
@@ -983,10 +993,10 @@ func _update_school(a: Animal, dt: float) -> void:
 		a.state = St.SWIM
 		a.t = 0.0
 		var nt: Vector3 = find_spot(a.sp, a.hex) if a.hex >= 0 else a.pos
-		a.target = nt if nt != Vector3.INF else f.hex_center(a.hex)
-	var h: int = f.hex_at(a.pos + to.normalized() * 0.8)
-	if not f.is_water(h):
-		a.target = f.hex_center(a.hex)
+		a.target = nt if nt != Vector3.INF else a.home
+	var ahead: Vector3 = a.pos + to.normalized() * 0.8
+	if not f.is_water(f.hex_at(ahead)) or not open_water(ahead):
+		a.target = a.home
 		to = a.target - a.pos
 		to.y = 0.0
 	if to.length() > 0.01:
@@ -1044,7 +1054,7 @@ func _update_swim(a: Animal, dt: float) -> void:
 		a.target = a.pos + away.normalized() * 3.5
 	var to: Vector3 = a.target - a.pos
 	to.y = 0.0
-	if not f.is_water(f.hex_at(a.target)) or to.length() < 0.3 or a.t < -10.0:
+	if not f.is_water(f.hex_at(a.target)) or not open_water(a.target) or to.length() < 0.3 or a.t < -10.0:
 		var nt: Vector3 = find_spot(a.sp, a.hex) if a.hex >= 0 else a.pos
 		a.target = nt if nt != Vector3.INF else a.pos
 		a.t = 0.0
@@ -1410,7 +1420,7 @@ func _draw_all() -> void:
 					var wob := Vector3(sin(now * 0.9 + ph) * 0.25, 0, cos(now * 0.7 + ph * 1.3) * 0.2)
 					var fy: float = a.yaw + sin(now * 1.3 + ph) * 0.25
 					var p: Vector3 = a.pos + b * (off + wob)
-					if not world.field.is_water(world.field.hex_at(p)):
+					if not world.field.is_water(world.field.hex_at(p)) or not open_water(p):
 						continue
 					_put("fish", Transform3D(Basis(Vector3.UP, fy).scaled(Vector3.ONE * s * (0.8 + 0.25 * fmod(ph, 1.0))), p), pack_custom(a.phase + ph, a.gait, 0.0, 0.0, a.coat, 0.0))
 			"swarm":
@@ -1733,4 +1743,9 @@ func _dev_look() -> void:
 			var eye: Vector3 = focus + back * dist * cos(pitch) + Vector3(0, -sin(pitch) * dist, 0)
 			c3.global_transform = Transform3D(Basis.looking_at(focus - eye, Vector3.UP), eye)
 			c3.fov = DevHooks.get_f("fauna-fov", 50.0)
-	print("[fauna] look: %s at %s, Lumi at %s" % [sid, str(a.pos), str(patch.global_position)])
+	if DevHooks.has("fauna-debug"):
+		var hx: int = world.field.hex_at(a.pos)
+		var ax: Vector2i = world.field.hex_axial[hx]
+		var img: Image = world.view.get("_state_img")
+		print("[fauna] state px ", img.get_pixel(ax.x + world.field.radius, ax.y + world.field.radius), " axial ", ax, " center ", world.field.hex_center(hx))
+	print("[fauna] look: %s at %s, Lumi at %s (hex %d water=%s clean=%s)" % [sid, str(a.pos), str(patch.global_position), world.field.hex_at(a.pos), str(world.field.is_water(world.field.hex_at(a.pos))), str(world.field.is_clean(world.field.hex_at(a.pos)))])
