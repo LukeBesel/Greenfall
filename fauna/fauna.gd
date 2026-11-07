@@ -131,7 +131,7 @@ func setup(p_world: Node) -> void:
 				fl.cleaned_count += 1
 			if fl.is_water(h):
 				world.view.refresh_hex(h, false)
-	if DevHooks.has("fauna-look") and not DevHooks.has("core-beat"):
+	if (DevHooks.has("fauna-look") or DevHooks.has("fauna-dense")) and not DevHooks.has("core-beat"):
 		# Shots: --future previews would otherwise trigger the Bloom Core story beats (cinematics).
 		var beats: Array = CoreCharge.beats_done()
 		for b: int in [25, 50, 75]:
