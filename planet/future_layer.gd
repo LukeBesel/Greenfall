@@ -499,7 +499,7 @@ static func _plan_hub(p: Dictionary, hub_level: int) -> void:
 	var hh: float = CityLayout.YARD_HALF - 0.35
 	var cs: Array[Vector3] = [Vector3(-hh, y0, -hh), Vector3(hh, y0, -hh), Vector3(hh, y0, hh), Vector3(-hh, y0, hh)]
 	for e: int in 4:
-		_add(p, "line", seg_xf(cs[e], cs[(e + 1) % 4], 0.03, 0.12), CYAN, K_PULSE, 2.6, _key(40, e))
+		_add(p, "line", seg_xf(cs[e], cs[(e + 1) % 4], 0.012, 0.025), CYAN, K_CALM, 1.1, _key(40, e))  # thin and quiet
 	if hub_level >= 3:
 		var masts: Array = [0, 2] if hub_level < 5 else [0, 1, 2, 3]
 		for m: int in masts:

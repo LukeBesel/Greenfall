@@ -123,10 +123,10 @@ void fragment() {
 	NORMAL_MAP = mix(nrm, vec3(0.5, 0.5, 1.0), clamp(pa * is_paint * 0.6 + dm * 0.7, 0.0, 1.0));
 	NORMAL_MAP_DEPTH = 1.0;
 	if (glow > 0.0) {
-		float strip = smoothstep(0.07, 0.02, abs(max(abs(w.x), abs(w.y)) - (half_size - 0.95)));
+		float strip = smoothstep(0.035, 0.01, abs(max(abs(w.x), abs(w.y)) - (half_size - 0.95)));  // a hairline
 		float pulse = 0.75 + 0.25 * sin(TIME * 1.6 - length(w) * 0.6);
 		float seam = joint * (1.0 - asphalt * 0.7) * pulse;
-		EMISSION = glow_col * glow * (seam * 1.6 + strip * 3.0) * (1.0 - dm * 0.8);
-		ALBEDO = mix(ALBEDO, glow_col, strip * 0.6);
+		EMISSION = glow_col * glow * (seam * 0.3 + strip * 1.4) * (1.0 - dm * 0.8);  // subtle, not a neon grid
+		ALBEDO = mix(ALBEDO, glow_col, strip * 0.3);
 	}
 }

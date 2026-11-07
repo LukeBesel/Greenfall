@@ -2518,9 +2518,9 @@ func _build_guide_lights() -> void:
 	var z: float = 0.8
 	var i: int = 0
 	while z < 7.9:
-		for x: float in [-1.1, 1.1]:
-			_tubes.box(Transform3D(Basis(), Vector3(x, 0.02, z)), Vector3(0.09, 0.02, 0.14), CYAN if i % 4 != 0 else _accent, Vector2(15.0 + i * 0.37, 0.0))
-		z += 0.9
+		for x: float in [-1.1, 1.1]:  # small, sparse studs (rows of big ones read as thick lines)
+			_tubes.box(Transform3D(Basis(), Vector3(x, 0.015, z)), Vector3(0.05, 0.012, 0.05), CYAN, Vector2(15.0 + i * 0.37, 0.0))
+		z += 1.8
 		i += 1
 	var pad := Vector3(-7.0, 0.03, 6.5)
 	_tubes.ring(pad, Vector3.RIGHT, Vector3.BACK, 1.9, 32, 0.025, CYAN, Vector2(16.0, 0.0))
