@@ -30,7 +30,7 @@ const CFG: Dictionary = {
 	"tidewell": {"seed": 5.9, "tilt": 0.3, "spin": 0.06, "au": 1.55,
 		"clouds": {"col_ruin": Color(0.72, 0.74, 0.74), "col_ok": Color(0.97, 0.98, 1.0), "cover_ruin": 0.42, "cover_ok": 0.38, "opacity_ruin": 0.8, "opacity_ok": 0.92, "scale": 2.3, "band": 0.45, "storms": 3, "swirl": 0.8, "storm_size": 0.34},
 		"atmo": {"col_ruin": Color(0.42, 0.58, 0.8), "col_ok": Color(0.3, 0.56, 1.0), "strength_ruin": 0.55, "strength_ok": 0.65, "thickness": 0.07}},
-	"anvil": {"seed": 8.2, "tilt": 0.44, "spin": 0.04, "au": 2.4,
+	"anvil": {"seed": 8.2, "face": -1.3, "tilt": 0.44, "spin": 0.04, "au": 2.4,
 		"clouds": {"col_ruin": Color(0.55, 0.36, 0.26), "col_ok": Color(0.85, 0.78, 0.72), "cover_ruin": 0.22, "cover_ok": 0.2, "opacity_ruin": 0.4, "opacity_ok": 0.5, "scale": 1.6, "band": 0.8, "storms": 0, "sharp": 0.2},
 		"atmo": {"col_ruin": Color(0.85, 0.42, 0.25), "col_ok": Color(0.75, 0.55, 0.45), "strength_ruin": 0.4, "strength_ok": 0.45, "thickness": 0.05},
 		"ring": "fire"},
