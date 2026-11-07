@@ -73,6 +73,7 @@ func open_view(pick: int = -1) -> void:
 	_root.modulate.a = 0.0
 	create_tween().tween_property(_root, "modulate:a", 1.0, 0.35)
 	get_tree().paused = true
+	get_tree().root.disable_3d = true  # the district behind the eyepiece needn't render
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if world and world.get("hud") != null:
 		world.hud.visible = false
@@ -100,6 +101,7 @@ func close_view() -> void:
 	for c: Node in _root.get_children():
 		c.queue_free()
 	district = null
+	get_tree().root.disable_3d = false
 	get_tree().paused = false
 	if world and world.get("hud") != null:
 		world.hud.visible = true

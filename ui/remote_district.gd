@@ -264,7 +264,7 @@ func _build_base() -> void:
 		m.position = (b[0] as Vector3) + Vector3(0, size.y * 0.5, 0)
 		add_child(m)
 		var strip := MeshInstance3D.new()
-		strip.mesh = ProcMesh.box(Vector3(size.x * 0.98, 0.04, size.z * 0.98 + 0.02))
+		strip.mesh = ProcMesh.box(Vector3(size.x + 0.03, 0.035, size.z + 0.03))
 		strip.material_override = glow
 		strip.position = (b[0] as Vector3) + Vector3(0, size.y * 0.82, 0)
 		add_child(strip)
@@ -333,7 +333,7 @@ func _refresh_piles() -> void:
 
 
 func _build_sprouts() -> void:
-	var cone := ProcMesh.cyl(0.0, 0.45, 1.1, 5)
+	var cone := ProcMesh.sphere(0.5, 7, 4)
 	_sprout_mm = MultiMesh.new()
 	_sprout_mm.transform_format = MultiMesh.TRANSFORM_3D
 	_sprout_mm.use_colors = true
@@ -346,13 +346,13 @@ func _build_sprouts() -> void:
 		for j: int in 26:
 			var a: float = _rng.randf() * TAU
 			var r: float = sqrt(_rng.randf()) * HEX_SIZE * 0.8
-			var s: float = _rng.randf_range(0.5, 1.4)
-			spots.append(Transform3D(Basis().scaled(Vector3(s, s * _rng.randf_range(0.7, 1.6), s)), c + Vector3(cos(a) * r, s * 0.5, sin(a) * r)))
+			var s: float = _rng.randf_range(0.45, 1.1)
+			spots.append(Transform3D(Basis().scaled(Vector3(s, s * _rng.randf_range(0.45, 0.8), s)), c + Vector3(cos(a) * r, s * 0.18, sin(a) * r)))
 	_sprout_mm.instance_count = spots.size() + 60
 	for k: int in _sprout_mm.instance_count:
 		if k < spots.size():
 			_sprout_mm.set_instance_transform(k, spots[k])
-			_sprout_mm.set_instance_color(k, (palette["green"] as Color).lerp(Color(0.2, 0.42, 0.18), _rng.randf()).lightened(_rng.randf() * 0.15))
+			_sprout_mm.set_instance_color(k, (palette["green"] as Color).lerp(Color(0.16, 0.34, 0.14), _rng.randf()).darkened(_rng.randf() * 0.15))
 		else:
 			_sprout_mm.set_instance_transform(k, Transform3D(Basis().scaled(Vector3.ONE * 0.001), Vector3(0, -5, 0)))
 	sprouts = spots.size()
@@ -368,7 +368,7 @@ func _build_sprouts() -> void:
 func _add_sprout(p: Vector3) -> void:
 	if sprouts >= _sprout_mm.instance_count:
 		return
-	_sprout_mm.set_instance_transform(sprouts, Transform3D(Basis().scaled(Vector3(0.5, 0.6, 0.5)), p + Vector3(0, 0.3, 0)))
+	_sprout_mm.set_instance_transform(sprouts, Transform3D(Basis().scaled(Vector3(0.45, 0.3, 0.45)), p + Vector3(0, 0.08, 0)))
 	_sprout_mm.set_instance_color(sprouts, Color(0.42, 0.68, 0.32))
 	sprouts += 1
 

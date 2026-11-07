@@ -215,7 +215,7 @@ static func make_sample() -> void:
 	var robots: Array = [{"type": "scoopie", "tier": 2}, {"type": "scoopie", "tier": 1}, {"type": "scoopie", "tier": 2},
 		{"type": "haulbug", "tier": 1}, {"type": "haulbug", "tier": 2}, {"type": "drip", "tier": 1}, {"type": "seedling", "tier": 1}]
 	var w: Dictionary = {"index": 90, "name": "Tidewell", "type": "ocean_world", "slot": -1, "planet_id": "tidewell"}
-	var snap: Dictionary = snapshot_from_save({"saved_unix": Time.get_unix_time_from_system() - 3.2 * 3600.0, "current_hub": 0,
+	var snap: Dictionary = snapshot_from_save({"saved_unix": Time.get_unix_time_from_system() - 0.4 * 3600.0, "current_hub": 0,
 		"world": {"hub_level": 4, "robots": robots, "field": {"radius": radius, "clean": Marshalls.raw_to_base64(clean)},
 		"hex_levels": {"levels": Marshalls.raw_to_base64(levels)}}, "flags": {"ledger_act": 2}}, w)
 	sample = {"world": w, "snap": snap}
