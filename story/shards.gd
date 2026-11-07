@@ -20,11 +20,9 @@ func setup() -> void:
 	# Act 1 shards near the hub first; deterministic shuffle by distance + noise.
 	candidates.sort_custom(func(a: int, b: int) -> bool:
 		return world.field.hex_center(a).length() + rng.randf() * 0.0 < world.field.hex_center(b).length())
-	var k: int = 0
 	for i: int in docs.size():
 		var pick: int = mini(1 + i * 3 + rng.randi_range(0, 2), candidates.size() - 1)
 		_placed[candidates[pick]] = i
-		k += 1
 	EventBus.hex_cleaned.connect(func(hid: int, _p: Vector3, _b: BigNum) -> void: _reveal(hid, true))
 	for hid: int in _placed:
 		if world.field.is_clean(hid):

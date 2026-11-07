@@ -319,6 +319,7 @@ func _ready() -> void:
 				GameState.upgrades[spec.get_slice(":", 0)] = int(spec.get_slice(":", 1))
 	if DevHooks.has("give-parts"):
 		for k: int in int(DevHooks.get_f("give-parts", 8.0)):
+			@warning_ignore("integer_division")  # [health]
 			GameState.parts.append({"type": k % 8, "rarity": mini(k / 8, 4)})
 	if DevHooks.has("clean-hexes"):
 		# --clean-hexes=N  pre-clean the N land hexes nearest the base (to test planters/waterers).
@@ -347,6 +348,7 @@ func _ready() -> void:
 		# --order=clean:stay:far  (role:mode:hex ids separated by '+', or 'far' = farthest junk hex)
 		var spec_o: PackedStringArray = DevHooks.get_s("order", "").split(":")
 		var hexes: Array = []
+		@warning_ignore("incompatible_ternary")  # [health]
 		for t: String in spec_o[2].split("+") if spec_o.size() > 2 else []:
 			if t == "far":
 				var far_h: int = -1
@@ -912,10 +914,10 @@ func add_cube(cube: JunkCube) -> void:
 	_cubes_root.add_child(cube)
 
 
-func _hitstop(duration: float, scale: float) -> void:
+func _hitstop(duration: float, scale_: float) -> void:
 	if Settings.reduced_motion:
 		return
-	Engine.time_scale = scale * (float(DevHooks.get_f("time-scale", 1.0)))
+	Engine.time_scale = scale_ * (float(DevHooks.get_f("time-scale", 1.0)))
 	get_tree().create_timer(duration, true, false, true).timeout.connect(func() -> void:
 		Engine.time_scale = DevHooks.get_f("time-scale", 1.0))
 

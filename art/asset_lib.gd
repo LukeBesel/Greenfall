@@ -8,7 +8,6 @@ const MODEL_DIR: String = "res://art/vendor/polyhaven/models/%s/%s_1k.gltf"
 const TEX_DIR: String = "res://art/vendor/polyhaven/textures/%s/%s_%s_1k.jpg"
 
 static var _meshes: Dictionary = {}
-static var _offsets: Dictionary = {}
 static var _aabbs: Dictionary = {}
 
 
@@ -47,10 +46,12 @@ static func lite(full: Mesh, max_tris: int) -> Mesh:
 	for s: int in full.get_surface_count():
 		var arrays: Array = full.surface_get_arrays(s)
 		var idx_full: PackedInt32Array = arrays[Mesh.ARRAY_INDEX] if arrays[Mesh.ARRAY_INDEX] != null else PackedInt32Array()
+		@warning_ignore("integer_division")
 		total_full += idx_full.size() / 3
 		var best: PackedInt32Array = idx_full
 		var surf: Dictionary = RenderingServer.mesh_get_surface(full.get_rid(), s)
 		var vcount: int = (arrays[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()
+		@warning_ignore("integer_division")
 		var budget: int = max_tris * 3 / maxi(full.get_surface_count(), 1)
 		var lods: Array = surf.get("lods", [])
 		if best.size() > budget and lods.is_empty():
@@ -67,6 +68,7 @@ static func lite(full: Mesh, max_tris: int) -> Mesh:
 			for lod: Dictionary in lods:
 				var data: PackedByteArray = lod.get("index_data", PackedByteArray())
 				var wide: bool = vcount > 65535
+				@warning_ignore("integer_division")
 				var n: int = data.size() / (4 if wide else 2)
 				if n <= 0:
 					continue
@@ -80,6 +82,7 @@ static func lite(full: Mesh, max_tris: int) -> Mesh:
 		arrays[Mesh.ARRAY_INDEX] = best
 		arrays[Mesh.ARRAY_BONES] = null
 		arrays[Mesh.ARRAY_WEIGHTS] = null
+		@warning_ignore("integer_division")
 		total_lite += best.size() / 3
 		out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 		out.surface_set_material(s, full.surface_get_material(s))

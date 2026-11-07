@@ -25,6 +25,12 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 4. More districts content: aim 40 eggs (29 now); more biome props (nets, satellites) if Poly Haven gets them; per-biome plants/wildlife.
 5. Post-game (M11): Cradle Mode (other worlds + Heirlooms), Garden Mode decorating; tune Bloom thresholds after play-testing.
 
+## Update: code health, part 1 (wt/health)
+- Done: the exit crash (code 134) is fixed. Its cause was an unwaited `WorkerThreadPool` task (the `StorySfx` music-box prewarm), whose lambda freed its GDScript after scripting had shut down. `Audio._exit_tree()` now waits for it. Exit leaks are fixed too: the `Settings.bind_text` lambda cycle, the auto-baler chevron meshes, the GlobeView stray label, and stopped audio playbacks. The round trip and autoplay now exit 0.
+- Done: `tools/check_exit.sh` (run by `tools/run_tests.sh` and the CI build workflow; `SKIP_ROUNDTRIP=1` skips it) and `tools/warnings_audit.sh`. The GDScript warning count went from 263 to 0.
+- Done: perf. `Economy.stat()` indexes upgrades by stat, so robots' per-frame stat calls no longer scan every upgrade.
+- Next (part 2): split `scenes/slice.gd` per `docs/ARCHITECTURE.md` section 4 once the parallel helpers have merged. Remaining perf candidates are in section 5.
+
 ## Update: future layer (wt/future)
 - Done: `planet/future_layer.gd` (FutureLayer, built by `scenes/slice.gd`): the district builds up into a glowing, clean future city as it is restored. Pure `FutureLayer.plan()` from seed + hex levels + hub level + cleaned share (no save data); a handful of MultiMeshes (unshaded emissive + env glow), a few Label3D texts, no lights.
   - Per hex level: Clean = light seams inside the hex edges; Planted/Growing = circuit traces, white hex planters with glowing rims around plant slots, drifting seed-lanterns; Sustained = holo way-signs (icons) on white posts, floating light orbs, Tron lanes on the roads beside it; Thriving = magenta seam accents, light strips on nearby building corners/rooflines/floor bands, glass sky-terraces on street faces, tall holo banners, holo billboards and road gates with friendly messages, sidewalk light pylons, hover platforms with light bridges, floating halo rings, drones.

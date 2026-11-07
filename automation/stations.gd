@@ -367,6 +367,7 @@ func _restore_held(list: Array) -> void:
 	for cd: Dictionary in list:
 		var c: JunkCube = JunkCube.from_dict(cd)
 		var base: Vector3 = conveyor.hopper_pos() if conveyor else Vector3(1.5, 0, 1.5)
+		@warning_ignore("integer_division")
 		add_loose(c, base + Vector3(-0.5 + (i % 3) * 0.5, 0.5 + (i / 3) * 0.6, -0.4 + (i % 2) * 0.6))
 		i += 1
 

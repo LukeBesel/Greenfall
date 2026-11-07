@@ -179,6 +179,7 @@ func _process(delta: float) -> void:
 		if s.t < s.dur * 0.62 and (newest == null or s.seq > newest.seq):
 			newest = s
 	if model and (newest or _beam_on):
+		@warning_ignore("incompatible_ternary")
 		model.beam_at(newest.pos if newest else null, newest.big if newest else false)
 	_beam_on = newest != null
 	# Soft continuous hum while anything is in the beam.
@@ -323,6 +324,7 @@ func _draw_slot(s: Slot) -> void:
 	# Light stream: motes spiral from the burst point into the chest hopper.
 	if false and s.streamed and model:
 		var chest: Vector3 = model.chest_world()
+		@warning_ignore("integer_division")
 		var n: int = (MAX_MOTES if s.big else 9) / (2 if _low else 1)
 		var along: Vector3 = chest - s.burst_pos
 		var side: Vector3 = along.cross(Vector3.UP)

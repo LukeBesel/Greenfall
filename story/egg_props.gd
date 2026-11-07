@@ -449,9 +449,9 @@ static func vending() -> Node3D:
 	var shelf := mesh(ProcMesh.merge(cans), vc(0.3, 0.5))
 	shelf.name = "Shelf"
 	n.add_child(shelf)
-	var sign := mesh(ProcMesh.box(Vector3(0.86, 0.22, 0.02)), Mats.lamp(Color(1.0, 0.9, 0.75), 1.2), Vector3(0, 1.9 - 0.12, 0.41))
-	sign.name = "Screen"
-	n.add_child(sign)
+	var sign_ := mesh(ProcMesh.box(Vector3(0.86, 0.22, 0.02)), Mats.lamp(Color(1.0, 0.9, 0.75), 1.2), Vector3(0, 1.9 - 0.12, 0.41))
+	sign_.name = "Screen"
+	n.add_child(sign_)
 	n.add_child(label(TranslationServer.translate("FIZZ"), 54, Color(0.75, 0.12, 0.1), Vector3(0, 1.78, 0.425)))
 	n.add_child(mesh(ProcMesh.box(Vector3(0.18, 0.5, 0.03)), Mats.metal("steel"), Vector3(0.34, 1.2, 0.41)))
 	n.add_child(mesh(ProcMesh.box(Vector3(0.05, 0.02, 0.01)), Mats.lamp(Color(0.2, 1.0, 0.3), 1.5), Vector3(0.34, 1.35, 0.43)))
@@ -949,13 +949,13 @@ static func drill_press() -> Node3D:
 	var n := Node3D.new()
 	n.add_child(model("old_drill_press", Vector3.ZERO, 0.0, 1.0))
 	var a: AABB = AssetLib.model_aabb("old_drill_press")
-	var sign := Node3D.new()
-	sign.name = "Sign"
-	sign.position = Vector3(a.end.x + 0.45, 0, 0.3)
-	n.add_child(sign)
-	sign.add_child(mesh(ProcMesh.box(Vector3(0.05, 1.0, 0.05)), _wood(), Vector3(0, 0.5, 0)))
-	sign.add_child(mesh(ProcMesh.box(Vector3(0.55, 0.32, 0.02)), Mats.worn_paint(Color(0.93, 0.9, 0.8), 0.9, 0.1, 141.0, 0.5), Vector3(0, 0.95, 0.035)))
-	sign.add_child(label(TranslationServer.translate("BACK IN\n5 MINUTES"), 22, Color(0.15, 0.12, 0.1), Vector3(0, 0.95, 0.047)))
+	var sign_ := Node3D.new()
+	sign_.name = "Sign"
+	sign_.position = Vector3(a.end.x + 0.45, 0, 0.3)
+	n.add_child(sign_)
+	sign_.add_child(mesh(ProcMesh.box(Vector3(0.05, 1.0, 0.05)), _wood(), Vector3(0, 0.5, 0)))
+	sign_.add_child(mesh(ProcMesh.box(Vector3(0.55, 0.32, 0.02)), Mats.worn_paint(Color(0.93, 0.9, 0.8), 0.9, 0.1, 141.0, 0.5), Vector3(0, 0.95, 0.035)))
+	sign_.add_child(label(TranslationServer.translate("BACK IN\n5 MINUTES"), 22, Color(0.15, 0.12, 0.1), Vector3(0, 0.95, 0.047)))
 	var bolt := mesh(ProcMesh.cyl(0.025, 0.025, 0.06, 6), Mats.metal("chrome"), Vector3(a.get_center().x, a.end.y * 0.55, a.get_center().z + 0.1))
 	bolt.name = "Bolt"
 	bolt.visible = false

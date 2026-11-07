@@ -213,6 +213,7 @@ func _update_banner() -> void:
 	_b_hint.text = tr(str(a.get("hint", "")))
 	_b_prog.text = str(a.get("progress", ""))
 	var left: float = maxf(float(a.get("left", 0.0)), 0.0)
+	@warning_ignore("integer_division")
 	_b_time.text = "%d:%02d" % [int(left) / 60, int(left) % 60]
 	_b_time.add_theme_color_override("font_color", UITheme.CREAM if left > 20.0 else Color(1.0, 0.55, 0.35))
 

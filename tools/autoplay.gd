@@ -66,7 +66,6 @@ var _parts_bought: int = 0
 var _water_target: int = -1
 var _dig_target: int = -1
 var _stall_check_t: float = 0.0
-var _stall_piece: int = -1
 var _escape_t: float = 0.0
 var _escape_dir := Vector3.ZERO
 var _watch_pos := Vector3.ZERO
@@ -506,6 +505,7 @@ func _thirsty_slot(g: Garden, p: Patch) -> int:
 		if sc < best_score:
 			best_score = sc
 			best = s
+	@warning_ignore("integer_division")
 	if drips > 0 and (_pick_focus(p) >= 0 or dry < maxi(4, planted / 5)):
 		return -1  # the Drips have it in hand (Patch keeps cleaning while there is junk)
 	return best

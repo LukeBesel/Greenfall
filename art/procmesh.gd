@@ -52,21 +52,21 @@ static func merge(parts: Array) -> ArrayMesh:
 	var norms := PackedVector3Array()
 	var cols := PackedColorArray()
 	var idxs := PackedInt32Array()
-	for part: Dictionary in parts:
-		var mesh: Mesh = part["mesh"]
-		var xf: Transform3D = part.get("xform", Transform3D.IDENTITY)
-		var col: Color = part.get("color", Color.WHITE)
-		var basis_n: Basis = xf.basis.inverse().transposed()
+	for part_: Dictionary in parts:
+		var mesh: Mesh = part_["mesh"]
+		var xf_: Transform3D = part_.get("xform", Transform3D.IDENTITY)
+		var col: Color = part_.get("color", Color.WHITE)
+		var basis_n: Basis = xf_.basis.inverse().transposed()
 		for s: int in mesh.get_surface_count():
 			var arr: Array = mesh.surface_get_arrays(s)
 			var pv: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
 			var pn: PackedVector3Array = arr[Mesh.ARRAY_NORMAL]
 			var pi: PackedInt32Array = arr[Mesh.ARRAY_INDEX] if arr[Mesh.ARRAY_INDEX] != null else PackedInt32Array()
 			var pc: Variant = arr[Mesh.ARRAY_COLOR]
-			var use_src_col: bool = part.get("keep_colors", false) and pc != null
+			var use_src_col: bool = part_.get("keep_colors", false) and pc != null
 			var base: int = verts.size()
 			for i: int in pv.size():
-				verts.append(xf * pv[i])
+				verts.append(xf_ * pv[i])
 				norms.append((basis_n * pn[i]).normalized() if pn.size() > i else Vector3.UP)
 				cols.append((pc as PackedColorArray)[i] if use_src_col else col)
 			if pi.is_empty():
@@ -145,10 +145,10 @@ static func xf(pos: Vector3, rot_deg: Vector3 = Vector3.ZERO, scl: Vector3 = Vec
 	return Transform3D(b, pos)
 
 
-static func toon_material(color: Color, rust: float = 0.0, seed: float = 0.0) -> ShaderMaterial:
+static func toon_material(color: Color, rust: float = 0.0, seed_: float = 0.0) -> ShaderMaterial:
 	var m := ShaderMaterial.new()
 	m.shader = preload("res://art/shaders/toon.gdshader")
 	m.set_shader_parameter("albedo", color)
 	m.set_shader_parameter("rust_amount", rust)
-	m.set_shader_parameter("rust_seed", seed)
+	m.set_shader_parameter("rust_seed", seed_)
 	return m

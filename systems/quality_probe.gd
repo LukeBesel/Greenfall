@@ -15,7 +15,6 @@ var _scene: Node
 var _phase: int = 0  # 0 waiting for the game scene, 1 settling, 2 sampling
 var _t0: int = 0
 var _frames: int = 0
-var _worst_ms: float = 0.0
 var _last_ms: int = 0
 
 

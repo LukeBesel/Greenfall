@@ -36,17 +36,17 @@ static func cfg() -> Dictionary:
 
 
 ## XP needed to go from `level` to `level + 1`.
-static func need(level: int, c: Dictionary = {}) -> int:
+static func need(level_: int, c: Dictionary = {}) -> int:
 	var cv: Dictionary = (c if not c.is_empty() else cfg()).get("curve", {})
 	var base: float = float(cv.get("base", 90.0))
 	var pw: float = float(cv.get("power", 1.6))
-	return maxi(1, int(round(base * pow(float(maxi(level, 1)), pw))))
+	return maxi(1, int(round(base * pow(float(maxi(level_, 1)), pw))))
 
 
 ## Lifetime XP needed to reach `level` from level 1.
-static func total_to(level: int, c: Dictionary = {}) -> int:
+static func total_to(level_: int, c: Dictionary = {}) -> int:
 	var t: int = 0
-	for l: int in range(1, maxi(level, 1)):
+	for l: int in range(1, maxi(level_, 1)):
 		t += need(l, c)
 	return t
 
@@ -77,26 +77,29 @@ static func apply_xp(st: Dictionary, amount: int, c: Dictionary = {}) -> Array[i
 ## The reward plan for reaching `level` (no side effects): {cubes, seeds, parts, part_rarity,
 ## tokens, trinket(bool)}. `income_cubes` is the progress-scaled cube amount for one level
 ## (about cube_secs of income); `earned` is lifetime cubes earned (lifts the cap late game).
-static func reward_plan(level: int, income_cubes: float, earned: float, seeds_unlocked: bool, c: Dictionary = {}) -> Dictionary:
+static func reward_plan(level_: int, income_cubes: float, earned: float, seeds_unlocked: bool, c: Dictionary = {}) -> Dictionary:
 	var rw: Dictionary = (c if not c.is_empty() else cfg()).get("reward", {})
 	# Progress-scaled cubes, floored per level and capped so early income spikes don't flood.
-	var floor_c: float = float(rw.get("min_cubes_per_level", 15)) * level
-	var cap_c: float = maxf(float(rw.get("cap_cubes_base", 30)) * pow(float(level), 1.5), earned * float(rw.get("cap_earned_frac", 0.004)))
+	var floor_c: float = float(rw.get("min_cubes_per_level", 15)) * level_
+	var cap_c: float = maxf(float(rw.get("cap_cubes_base", 30)) * pow(float(level_), 1.5), earned * float(rw.get("cap_earned_frac", 0.004)))
 	var out: Dictionary = {"cubes": round(clampf(income_cubes, floor_c, maxf(cap_c, floor_c))),
 		"seeds": 0, "parts": 0, "part_rarity": 0, "tokens": 0, "trinket": false}
 	var se: int = int(rw.get("seeds_every", 2))
-	if seeds_unlocked and se > 0 and level % se == 0:
-		out["seeds"] = int(rw.get("seeds", 4)) + level / 10
+	if seeds_unlocked and se > 0 and level_ % se == 0:
+		@warning_ignore("integer_division")
+		out["seeds"] = int(rw.get("seeds", 4)) + level_ / 10
 	var pe: int = int(rw.get("part_every", 5))
-	if pe > 0 and level % pe == 0:
+	if pe > 0 and level_ % pe == 0:
 		out["parts"] = 1
 		# Common early, then Uncommon/Rare/Vintage as Lumi grows (rarity index into parts.json).
-		out["part_rarity"] = clampi(level / 15, 0, 3)
+		@warning_ignore("integer_division")
+		out["part_rarity"] = clampi(level_ / 15, 0, 3)
 	var te: int = int(rw.get("token_every", 5))
-	if te > 0 and level % te == 0:
-		out["tokens"] = int(rw.get("tokens", 1)) + int(rw.get("tokens_per_10_levels", 1)) * (level / 10)
+	if te > 0 and level_ % te == 0:
+		@warning_ignore("integer_division")
+		out["tokens"] = int(rw.get("tokens", 1)) + int(rw.get("tokens_per_10_levels", 1)) * (level_ / 10)
 	var ke: int = int(rw.get("trinket_every", 10))
-	if ke > 0 and level % ke == 0:
+	if ke > 0 and level_ % ke == 0:
 		out["trinket"] = true
 	return out
 

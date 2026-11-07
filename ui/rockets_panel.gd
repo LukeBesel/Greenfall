@@ -26,7 +26,7 @@ func refresh() -> void:
 	if world == null or world.get("planet") == null:
 		return
 	var planet: PlanetData = world.planet
-	var ready: bool = _ready_to_launch()
+	var ready_: bool = _ready_to_launch()
 	var status := PanelContainer.new()
 	status.add_theme_stylebox_override("panel", UITheme.box(UITheme.PLUM_LIGHT, UITheme.RUST, 1, 6, 14))
 	add_child(status)
@@ -34,7 +34,7 @@ func refresh() -> void:
 	status.add_child(sv)
 	sv.add_child(UITheme.label(tr("LAUNCH PAD"), 13, UITheme.MUTED))
 	var why: String = world.rocket_status() if world.has_method("rocket_status") else ""
-	if ready:
+	if ready_:
 		sv.add_child(UITheme.label(tr("Cells charged and ready. Pick a base to fly to."), 20, UITheme.GREEN))
 	elif why.begins_with(tr("Energy cells recharging: %s. Rocket upgrades refill them faster.").get_slice("%", 0)):  # [l10n]
 		var lr := UITheme.label(why, 18, UITheme.GOLD)
@@ -80,13 +80,13 @@ func refresh() -> void:
 		var b := Button.new()
 		b.text = tr("Launch")
 		b.custom_minimum_size = Vector2(110, 38)
-		b.disabled = not ready
+		b.disabled = not ready_
 		b.pressed.connect(func() -> void:
 			if world.upgrades:
 				world.upgrades.close_screen()
 			world._launch(i))
 		hb.add_child(b)
-	FrontierRockets.add_section(self, world, ready)  # [biomes] late-game frontier destinations
+	FrontierRockets.add_section(self, world, ready_)  # [biomes] late-game frontier destinations
 
 
 ## Current rocket tier with its travel stats, and the next tier's upgrade.

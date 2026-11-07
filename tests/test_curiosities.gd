@@ -120,6 +120,7 @@ func test_biome_junk_keeps_piece_count_and_types() -> void:
 		assert_eq(dunes.piece_pos[pid], plain.piece_pos[pid])
 		if dunes.piece_model[pid] != plain.piece_model[pid]:
 			changed += 1
+	@warning_ignore("integer_division")
 	assert_gt(changed, plain.piece_count() / 10, "the dunes look different")
 	# A saved plain field still applies to the biome field.
 	assert_true(dunes.apply_dict(plain.to_dict()))

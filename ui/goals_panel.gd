@@ -47,23 +47,23 @@ static func _cap(t: String) -> Label:
 
 
 func _make_row() -> Dictionary:
-	var wrap := VBoxContainer.new()
-	wrap.add_theme_constant_override("separation", 3)
-	wrap.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(wrap)
+	var wrap_ := VBoxContainer.new()
+	wrap_.add_theme_constant_override("separation", 3)
+	wrap_.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(wrap_)
 	var title := UITheme.label("", 14, UITheme.CREAM)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	title.clip_text = true
 	title.custom_minimum_size = Vector2(W, 0)
-	wrap.add_child(title)
+	wrap_.add_child(title)
 	var line := Control.new()
 	line.custom_minimum_size = Vector2(W, 12)
 	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	wrap.add_child(line)
-	var r: Dictionary = {"wrap": wrap, "title": title, "line": line, "goal": -1, "shown": 0.0, "flash": 0.0, "busy": false}
+	wrap_.add_child(line)
+	var r: Dictionary = {"wrap": wrap_, "title": title, "line": line, "goal": -1, "shown": 0.0, "flash": 0.0, "busy": false}
 	line.draw.connect(func() -> void: _draw_line(r))
-	wrap.visible = false
+	wrap_.visible = false
 	return r
 
 
@@ -158,9 +158,9 @@ func _next_free() -> int:
 func _assign(r: Dictionary, gi: int, animate: bool) -> void:
 	r["goal"] = gi
 	r["flash"] = 0.0
-	var wrap: Control = r["wrap"]
+	var wrap_: Control = r["wrap"]
 	if gi < 0:
-		wrap.visible = false
+		wrap_.visible = false
 		return
 	r["shown"] = _goals.progress(gi)
 	var title: Label = r["title"]
@@ -168,12 +168,12 @@ func _assign(r: Dictionary, gi: int, animate: bool) -> void:
 	title.add_theme_color_override("font_color", UITheme.CREAM)
 	if animate:
 		r["busy"] = true
-		wrap.modulate.a = 0.0
-		var tw := wrap.create_tween()
-		tw.tween_property(wrap, "modulate:a", 1.0, 0.45)
+		wrap_.modulate.a = 0.0
+		var tw := wrap_.create_tween()
+		tw.tween_property(wrap_, "modulate:a", 1.0, 0.45)
 		tw.tween_callback(func() -> void: r["busy"] = false)
 	else:
-		wrap.modulate.a = 1.0
+		wrap_.modulate.a = 1.0
 
 
 func _draw_line(r: Dictionary) -> void:
@@ -225,14 +225,14 @@ func _on_completed(gi: int) -> void:
 
 func _celebrate(r: Dictionary) -> void:
 	r["busy"] = true
-	var wrap: Control = r["wrap"]
+	var wrap_: Control = r["wrap"]
 	(r["title"] as Label).add_theme_color_override("font_color", UITheme.GREEN)
-	var tw := wrap.create_tween()
+	var tw := wrap_.create_tween()
 	tw.tween_method(func(t: float) -> void:
 		r["flash"] = t
 		(r["line"] as Control).queue_redraw(), 0.0, 1.0, 0.25)
 	tw.tween_interval(1.1)
-	tw.tween_property(wrap, "modulate:a", 0.0, 0.35)
+	tw.tween_property(wrap_, "modulate:a", 0.0, 0.35)
 	tw.tween_callback(func() -> void:
 		r["busy"] = false
 		_assign(r, _next_free(), true))

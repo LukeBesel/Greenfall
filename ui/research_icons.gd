@@ -112,8 +112,8 @@ static func draw(ci: CanvasItem, kind: String, c: Vector2, r: float, col: Color,
 				var a0: float = TAU * k / 3.0 - PI * 0.5
 				ci.draw_arc(c, r * 0.6, a0 + 0.25, a0 + TAU / 3.0 - 0.25, 10, col, w * 1.3, true)
 				var tip: Vector2 = c + Vector2(cos(a0 + TAU / 3.0 - 0.25), sin(a0 + TAU / 3.0 - 0.25)) * r * 0.6
-				var tan := Vector2(-sin(a0 + TAU / 3.0 - 0.25), cos(a0 + TAU / 3.0 - 0.25))
-				ci.draw_colored_polygon(PackedVector2Array([tip + tan * r * 0.2, tip + (tip - c).normalized() * r * 0.16, tip - (tip - c).normalized() * r * 0.16]), col)
+				var tan_ := Vector2(-sin(a0 + TAU / 3.0 - 0.25), cos(a0 + TAU / 3.0 - 0.25))
+				ci.draw_colored_polygon(PackedVector2Array([tip + tan_ * r * 0.2, tip + (tip - c).normalized() * r * 0.16, tip - (tip - c).normalized() * r * 0.16]), col)
 		"rocket":
 			ci.draw_colored_polygon(PackedVector2Array([c + Vector2(0, -r * 0.85), c + Vector2(r * 0.28, -r * 0.35), c + Vector2(r * 0.28, r * 0.4), c + Vector2(-r * 0.28, r * 0.4), c + Vector2(-r * 0.28, -r * 0.35)]), col)
 			ci.draw_colored_polygon(PackedVector2Array([c + Vector2(-r * 0.28, r * 0.05), c + Vector2(-r * 0.55, r * 0.55), c + Vector2(-r * 0.28, r * 0.4)]), Color(col, 0.7))

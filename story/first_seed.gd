@@ -186,7 +186,6 @@ func _cinematic() -> void:
 	var start_yaw: float = cam.yaw
 	var dist0: float = cam.distance
 	cam.distance = 3.4
-	var t: float = 0.0
 	var total: float = _total_time()
 	var tw2 := create_tween()
 	tw2.tween_method(func(v: float) -> void:
@@ -195,7 +194,6 @@ func _cinematic() -> void:
 	for l: Array in LINES:
 		world.wren.line_started.emit(str(l[0]), 1)
 		await get_tree().create_timer(float(l[1])).timeout
-		t += float(l[1])
 	for i: int in _bars.size():
 		var r: ColorRect = _bars[i]
 		var tw := create_tween()

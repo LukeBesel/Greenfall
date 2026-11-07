@@ -335,22 +335,22 @@ func _mobility(id: String) -> void:
 				r = 0.07
 			var y: float = ground + r
 			for sx: float in [-1.0, 1.0]:
-				var tr := _node(self, Vector3(sx * x, y, (z0 + z1) * 0.5))
-				var len: float = (z1 - z0) + r * 2.0
-				_mi(tr, ProcMesh.capsule(r, len), Mats.rubber(Color(0.07, 0.07, 0.075)), Vector3.ZERO, Vector3(90, 0, 0), Vector3(0.05 / r, 1, 1))
-				var n_cleat: int = int(len / 0.07)
+				var tr_ := _node(self, Vector3(sx * x, y, (z0 + z1) * 0.5))
+				var len_: float = (z1 - z0) + r * 2.0
+				_mi(tr_, ProcMesh.capsule(r, len_), Mats.rubber(Color(0.07, 0.07, 0.075)), Vector3.ZERO, Vector3(90, 0, 0), Vector3(0.05 / r, 1, 1))
+				var n_cleat: int = int(len_ / 0.07)
 				for i: int in n_cleat:
-					var zz: float = -len * 0.5 + r + (len - 2.0 * r) * float(i) / maxf(n_cleat - 1, 1)
-					_mi(tr, ProcMesh.box(Vector3(0.1, 0.014, 0.025)), Mats.rubber(Color(0.11, 0.11, 0.115)), Vector3(0, r - 0.002, zz))
-					_mi(tr, ProcMesh.box(Vector3(0.1, 0.014, 0.025)), Mats.rubber(Color(0.11, 0.11, 0.115)), Vector3(0, -r + 0.002, zz))
-				for zz: float in [-(len * 0.5 - r), (len * 0.5 - r)]:
-					var sp := _node(tr, Vector3(sx * 0.051, 0, zz))
+					var zz: float = -len_ * 0.5 + r + (len_ - 2.0 * r) * float(i) / maxf(n_cleat - 1, 1)
+					_mi(tr_, ProcMesh.box(Vector3(0.1, 0.014, 0.025)), Mats.rubber(Color(0.11, 0.11, 0.115)), Vector3(0, r - 0.002, zz))
+					_mi(tr_, ProcMesh.box(Vector3(0.1, 0.014, 0.025)), Mats.rubber(Color(0.11, 0.11, 0.115)), Vector3(0, -r + 0.002, zz))
+				for zz: float in [-(len_ * 0.5 - r), (len_ * 0.5 - r)]:
+					var sp := _node(tr_, Vector3(sx * 0.051, 0, zz))
 					sp.set_meta("r", r)
 					_rollers.append(sp)
 					_mi(sp, ProcMesh.cyl(r * 0.7, r * 0.7, 0.012, 16), _white() if _sleek else _shell(Color(0.95, 0.72, 0.2)), Vector3.ZERO, Vector3(0, 0, 90))
 					_mi(sp, ProcMesh.box(Vector3(0.014, r * 1.2, 0.02)), _dark(), Vector3.ZERO)
-				_mi(tr, _rbox(Vector3(0.012, r * 0.9, len - r * 2.2), 0.005, 1), _white() if _sleek else _shell(Color(0.95, 0.72, 0.2)), Vector3(sx * 0.052, 0, 0))
-				_mi(tr, ProcMesh.box(Vector3(0.004, 0.008, len - r * 2.6)), _line(_accent()), Vector3(sx * 0.06, r * 0.25, 0))
+				_mi(tr_, _rbox(Vector3(0.012, r * 0.9, len_ - r * 2.2), 0.005, 1), _white() if _sleek else _shell(Color(0.95, 0.72, 0.2)), Vector3(sx * 0.052, 0, 0))
+				_mi(tr_, ProcMesh.box(Vector3(0.004, 0.008, len_ - r * 2.6)), _line(_accent()), Vector3(sx * 0.06, r * 0.25, 0))
 		"rotor":
 			lift = 0.16
 			var arm_y: float = lerpf(_lo.y, _hi.y, 0.62)

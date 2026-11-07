@@ -22,9 +22,7 @@ var carried: Array[JunkCube] = []
 
 var _target_piece: int = -1
 var _target_bale: JunkCube
-var _work_t: float = 0.0
 var _busy: float = 0.0
-var _repath_t: float = 0.0
 var _detour_t: float = 0.0
 var _detour := Vector3.ZERO
 var _progress_pos := Vector3.ZERO
@@ -108,10 +106,13 @@ func rebuild_visual() -> void:
 	RobotBuilder.on_visual_rebuilt(self)  # [drones] part meshes, name tag, personality
 
 
+const _WATER_TIER_STATS: Array[String] = ["tank", "refill_rate"]  # [health] no per-call array
+
+
 func stat(s: String) -> float:
 	var v: float = Economy.robot_stat(type_id, s, tier, rarity_bonus)
 	# Water gear also improves with the Mk tier (Economy scales the work stats).
-	if s in ["tank", "refill_rate"]:
+	if s in _WATER_TIER_STATS:
 		v *= _tier_mult()
 	elif s == "spray_radius":
 		v *= sqrt(_tier_mult())
@@ -144,7 +145,7 @@ func _physics_process(delta: float) -> void:
 			var col: KinematicCollision3D = get_last_slide_collision()
 			if col and col.get_collider() is Node:
 				var cn: Node = col.get_collider()
-				print("[trace] hit %s (%s) parent=%s at %s" % [cn.name, cn.get_class(), cn.get_parent().name if cn.get_parent() else "-", str(col.get_position())])
+				print("[trace] hit %s (%s) parent=%s at %s" % [cn.name, cn.get_class(), str(cn.get_parent().name) if cn.get_parent() else "-", str(col.get_position())])
 			print("[trace] %s pos=%s hex=%d work=%d piece=%d ppos=%s busy=%.1f hop=%.1f/%.1f pend=%.1f stall=%.1f move=%s | %s" % [robot_name, str(global_position.snapped(Vector3.ONE * 0.1)), world.field.hex_at(global_position), work_hex, _target_piece, str(world.field.piece_pos[_target_piece].snapped(Vector3.ONE * 0.1)) if _target_piece >= 0 else "-", _busy, hopper.fill, stat("capacity"), hopper.pending, _stall_t, str(move.snapped(Vector3.ONE * 0.1)), status_text()])
 	if _idling:
 		log_stats["idle_s"] = float(log_stats["idle_s"]) + delta
@@ -288,6 +289,7 @@ func _t(s: String) -> String:
 
 func _park_pos() -> Vector3:
 	var i: int = get_index()
+	@warning_ignore("integer_division")
 	return world.depot.global_position + Vector3(-3.0 + float(i % 6) * 1.2, 0, 4.0 + float(i / 6) * 1.2)
 
 

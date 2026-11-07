@@ -28,7 +28,6 @@ var _pivot: Node3D
 var _globe: MeshInstance3D
 var _marker: MeshInstance3D
 var _cam: Camera3D
-var _stats: Label
 var _age: Label
 var _ark: Label
 var _resurvey: Button
@@ -139,8 +138,6 @@ func _ready() -> void:
 		var r: HBoxContainer = UITheme.stat_row(k[1], k[2])
 		r.name = k[0]
 		_rows.add_child(r)
-	_stats = UITheme.label("", 1)
-	_stats.visible = false
 	_age = UITheme.label("", 13, UITheme.GOLD)
 	b1.add_child(_age)
 	_ark = UITheme.label("", 13, Color(0.6, 1.0, 0.55))  # [bloom] Seed Ark / Verdance Bloom line
@@ -284,8 +281,8 @@ func _focus_first() -> void:
 func _refresh_hubs() -> void:
 	for c: Node in _hub_list.get_children():
 		c.queue_free()
-	var ready: bool = rocket_ready.call()
-	if not ready:
+	var ready_: bool = rocket_ready.call()
+	if not ready_:
 		var l := UITheme.label(str(rocket_lock_text.call()), 13, UITheme.MUTED)
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		_hub_list.add_child(l)
@@ -309,7 +306,7 @@ func _refresh_hubs() -> void:
 		hb.add_child(vb)
 		var b := Button.new()
 		b.text = tr("Launch")
-		b.disabled = not ready
+		b.disabled = not ready_
 		_holo_button(b)
 		b.pressed.connect(func() -> void:
 			close_view()

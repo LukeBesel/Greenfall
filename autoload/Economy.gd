@@ -74,6 +74,21 @@ func load_data() -> void:
 			d["icon"] = "speed"
 			upgrade_defs[uid] = d
 			upgrade_order.append(uid)
+	_index_upgrades()
+
+
+## [health] stat id -> upgrade ids in upgrade_order order, so stat() doesn't scan every upgrade
+## (robots call it each physics frame). Rebuilt whenever the tables are loaded.
+var _by_stat: Dictionary = {}
+
+
+func _index_upgrades() -> void:
+	_by_stat.clear()
+	for uid: String in upgrade_order:
+		var sid: String = str(upgrade_defs[uid]["stat"])
+		if not _by_stat.has(sid):
+			_by_stat[sid] = [] as Array[String]
+		(_by_stat[sid] as Array[String]).append(uid)
 
 
 # --- Stats --------------------------------------------------------------------
@@ -83,10 +98,10 @@ func stat(stat_id: String, levels: Variant = null) -> float:
 	var lv: Dictionary = levels if levels is Dictionary else GameState.upgrades
 	var value: float = base_stat(stat_id)
 	var mul: float = 1.0
-	for uid: String in upgrade_order:
+	if _by_stat.is_empty() and not upgrade_order.is_empty():  # [health] tables filled by hand (tests)
+		_index_upgrades()
+	for uid: String in _by_stat.get(stat_id, []):
 		var u: Dictionary = upgrade_defs[uid]
-		if u["stat"] != stat_id:
-			continue
 		var level: int = int(lv.get(uid, 0))
 		if level <= 0:
 			continue
@@ -269,9 +284,12 @@ func part_type(idx: int) -> Dictionary:
 
 
 ## A robot's effective stat: fleet upgrades x tier multiplier x part-rarity bonus.
+const _TIER_STATS: Array[String] = ["speed", "scoop_rate", "capacity", "efficiency"]  # [health] no per-call array
+
+
 func robot_stat(type_id: String, stat_id: String, tier: int = 0, rarity_bonus: float = 0.0) -> float:
-	var v: float = stat("%s.%s" % [type_id, stat_id])
-	if stat_id in ["speed", "scoop_rate", "capacity", "efficiency"]:
+	var v: float = stat(type_id + "." + stat_id)
+	if stat_id in _TIER_STATS:
 		v *= float(robot_tiers[clampi(tier, 0, robot_tiers.size() - 1)].get("mult", 1.0)) if not robot_tiers.is_empty() else 1.0
 	return v * (1.0 + rarity_bonus)
 

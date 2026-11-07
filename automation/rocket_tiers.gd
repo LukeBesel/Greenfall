@@ -94,4 +94,5 @@ static func mark_launched() -> void:
 
 static func fmt_time(s: float) -> String:
 	var n: int = int(ceil(s))
+	@warning_ignore("integer_division")
 	return "%d:%02d" % [n / 60, n % 60]

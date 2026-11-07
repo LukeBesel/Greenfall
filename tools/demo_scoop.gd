@@ -37,11 +37,11 @@ func update(_delta: float) -> void:
 
 
 ## Puts Patch beside the junk nearest to `near`, facing it.
-static func place(world: Node, patch: Patch, near: Vector3) -> void:
-	var pid: int = world.field.nearest_alive(near)
+static func place(world_: Node, patch: Patch, near: Vector3) -> void:
+	var pid: int = world_.field.nearest_alive(near)
 	if pid < 0:
 		return
-	var piece: Vector3 = world.field.piece_pos[pid]
+	var piece: Vector3 = world_.field.piece_pos[pid]
 	var dir: Vector3 = piece - near
 	dir.y = 0.0
 	dir = dir.normalized() if dir.length() > 0.01 else Vector3.FORWARD

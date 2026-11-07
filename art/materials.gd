@@ -6,13 +6,13 @@ static var _cache: Dictionary = {}
 
 
 ## Worn painted metal (paint over rust over steel). Works on meshes without UVs.
-static func worn_paint(paint: Color, coverage: float = 0.7, rust: float = 0.5, seed: float = 0.0, grime: float = 0.5) -> ShaderMaterial:
+static func worn_paint(paint: Color, coverage: float = 0.7, rust: float = 0.5, seed_: float = 0.0, grime: float = 0.5) -> ShaderMaterial:
 	var m := ShaderMaterial.new()
 	m.shader = preload("res://art/shaders/worn_metal.gdshader")
 	m.set_shader_parameter("paint_color", paint)
 	m.set_shader_parameter("paint_coverage", coverage)
 	m.set_shader_parameter("rust_amount", rust)
-	m.set_shader_parameter("seed", seed)
+	m.set_shader_parameter("seed", seed_)
 	m.set_shader_parameter("grime", grime)
 	m.set_shader_parameter("metal_alb", AssetLib.tex("metal_plate", "diff"))
 	m.set_shader_parameter("metal_nrm", AssetLib.tex("metal_plate", "nor_gl"))

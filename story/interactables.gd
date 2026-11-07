@@ -8,8 +8,8 @@ var _items: Array[Dictionary] = []
 
 
 ## Registers an interactable (prompt: String or Callable -> String). Returns the entry so the caller can tweak/remove it later.
-func register(anchor: Node3D, radius: float, prompt: Variant, on_use: Callable, enabled: Callable = Callable()) -> Dictionary:
-	var e: Dictionary = {"node": anchor, "r": radius, "prompt": prompt, "use": on_use, "enabled": enabled}
+func register(anchor: Node3D, radius: float, prompt_: Variant, on_use: Callable, enabled: Callable = Callable()) -> Dictionary:
+	var e: Dictionary = {"node": anchor, "r": radius, "prompt": prompt_, "use": on_use, "enabled": enabled}
 	_items.append(e)
 	return e
 

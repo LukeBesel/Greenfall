@@ -211,6 +211,7 @@ static func _suffix(group: int) -> String:
 	# After Dc: aa, ab, ... zz, then fall back to e-notation-like marker.
 	var idx: int = group - SHORT_SUFFIXES.size()
 	if idx < 26 * 26:
+		@warning_ignore("integer_division")
 		var a: int = idx / 26
 		var b: int = idx % 26
 		return String.chr(97 + a) + String.chr(97 + b)

@@ -82,6 +82,7 @@ static func _tris(m: Mesh) -> int:
 	var t: int = 0
 	for s: int in m.get_surface_count():
 		var arr: Array = m.surface_get_arrays(s)
+		@warning_ignore("integer_division")
 		t += ((arr[Mesh.ARRAY_INDEX] as PackedInt32Array).size() if arr[Mesh.ARRAY_INDEX] != null else (arr[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()) / 3
 	_tri_cache[id] = t
 	return t
