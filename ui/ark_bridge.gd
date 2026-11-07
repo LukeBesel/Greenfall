@@ -300,7 +300,8 @@ func _heirloom_row(h: Dictionary) -> Control:
 		b.text = tr("Full")
 		b.disabled = true
 	else:
-		b.text = tr("%d Starseeds") % CradleMode.heirloom_cost(h, lv)
+		b.text = tr("Milestone")  # [money] unlocks along the Ark milestone track, nothing to spend
+		b.tooltip_text = CradleMode.buy_block_reason(id)
 		b.disabled = CradleMode.buy_block_reason(id) != ""
 		b.pressed.connect(func() -> void:
 			if CradleMode.buy(id):
