@@ -97,7 +97,8 @@ func test_serialization_round_trip() -> void:
 
 func test_unlock_gating() -> void:
 	assert_true(LumiStyle.option_unlocked("head", "fin"))
-	assert_true(LumiStyle.option_unlocked("eye_shape", "round"))
+	assert_true(LumiStyle.option_unlocked("eye_shape", "crescent"))
+	assert_false(LumiStyle.option_unlocked("eye_shape", "round"), "round eyes come with Lumi Level 3")
 	assert_false(LumiStyle.option_unlocked("head", "catears"))
 	assert_false(LumiStyle.swatch_unlocked("violet"))
 	GameState.flags["skins_unlocked"] = ["aurora", "nova"]
@@ -263,3 +264,23 @@ func test_builder_opens_and_wears() -> void:
 	b._done()
 	await wait_frames(1)
 	assert_true(LumiStyle.same(LumiStyle.current(), want))
+
+
+func test_builder_embeds_as_a_control() -> void:
+	# The Locker hosts it: LumiBuilder.new() + world, added to any container.
+	GameState.flags["skins_unlocked"] = ["aurora", "pixel"]
+	var box := VBoxContainer.new()
+	box.size = Vector2(1280, 720)
+	add_child_autofree(box)
+	var b := LumiBuilder.new()
+	box.add_child(b)
+	await wait_frames(2)
+	assert_false(b.standalone)
+	b._set_value("head", "wings")
+	b._process(0.2)
+	var got: Array = []
+	b.worn.connect(func() -> void: got.append(1))
+	b._done()
+	assert_eq(got.size(), 1, "worn signal")
+	assert_true(is_instance_valid(b), "embedded builder stays open")
+	assert_eq(LumiStyle.current()["head"], "wings")

@@ -1213,95 +1213,6 @@ msgstr "AVANT-POSTE %d · Niv%d"
 msgid "OUTPOST %d · RUIN"
 msgstr "AVANT-POSTE %d · RUINE"
 
-#: scenes/style_lineup.gd:9
-msgid "Stargazer"
-msgstr ""
-
-#: scenes/style_lineup.gd:10
-msgid "round"
-msgstr ""
-
-#: scenes/style_lineup.gd:10
-msgid "halo"
-msgstr ""
-
-#: scenes/style_lineup.gd:10 scenes/style_lineup.gd:14
-msgid "heart"
-msgstr ""
-
-#: scenes/style_lineup.gd:10 scenes/style_lineup.gd:12 scenes/style_lineup.gd:14
-#: scenes/style_lineup.gd:16
-msgid "none"
-msgstr ""
-
-#: scenes/style_lineup.gd:10
-msgid "firefly"
-msgstr ""
-
-#: scenes/style_lineup.gd:11 data/achievements.json:achievements[plant_100].name
-msgid "Gardener"
-msgstr "Jardinier"
-
-#: scenes/style_lineup.gd:12
-msgid "happy"
-msgstr ""
-
-#: scenes/style_lineup.gd:12
-msgid "sprout"
-msgstr ""
-
-#: scenes/style_lineup.gd:12
-msgid "leaf"
-msgstr ""
-
-#: scenes/style_lineup.gd:12
-msgid "butterfly"
-msgstr ""
-
-#: scenes/style_lineup.gd:13
-msgid "Field Medic"
-msgstr ""
-
-#: scenes/style_lineup.gd:14
-msgid "catears"
-msgstr ""
-
-#: scenes/style_lineup.gd:14
-msgid "cross"
-msgstr ""
-
-#: scenes/style_lineup.gd:14
-msgid "medkit"
-msgstr ""
-
-#: scenes/style_lineup.gd:14
-msgid "drone"
-msgstr ""
-
-#: scenes/style_lineup.gd:15
-msgid "Racer"
-msgstr ""
-
-#: scenes/style_lineup.gd:16
-msgid "bar"
-msgstr ""
-
-#: scenes/style_lineup.gd:16
-msgid "antenna"
-msgstr ""
-
-#: scenes/style_lineup.gd:16
-msgid "recycle"
-msgstr ""
-
-#: scenes/style_lineup.gd:16
-msgid "gear"
-msgstr ""
-
-#: scenes/style_lineup.gd:16
-msgid "pads"
-msgstr ""
-
 #: steam/demo.gd:73
 msgid "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of Verdance."
 msgstr "Le niveau de base %d est le sommet de la démo. Le jeu complet monte jusqu'au niveau 5, puis lance des fusées vers le reste de Verdance."
@@ -2334,15 +2245,19 @@ msgstr "Le Pont de l'Arche s'ouvre une fois le Cradle rentré au port."
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."
 msgstr "Mode Berceau : la réserve de graines de l'arche garde des graines pour d'autres mondes. Pause > Pont de l'Arche pour les voir avec les héritages que ta restauration a débloqués, ou ensemencer un nouveau monde. Le mode Jardin (H) est ouvert aussi."
 
-#: systems/lumi_style.gd:391
+#: systems/lumi_style.gd:398
 msgid "Unlock the %s design"
 msgstr "Débloquez le design %s"
 
-#: systems/lumi_style.gd:394
+#: systems/lumi_style.gd:400
+msgid "Reach Lumi Level %d"
+msgstr "Atteignez le niveau Lumi %d"
+
+#: systems/lumi_style.gd:403
 msgid "Achievement: %s"
 msgstr "Succès : %s"
 
-#: systems/lumi_style.gd:398
+#: systems/lumi_style.gd:407
 msgid "Buy for %s"
 msgstr "Acheter pour %s"
 
@@ -3175,7 +3090,7 @@ msgstr "COMMANDE"
 msgid "Mark around me"
 msgstr "Marquer autour de moi"
 
-#: ui/command_view.gd:281 ui/lumi_builder.gd:560 ui/photo_mode.gd:26
+#: ui/command_view.gd:281 ui/lumi_builder.gd:583 ui/photo_mode.gd:26
 msgid "Clear"
 msgstr "Effacer"
 
@@ -3373,7 +3288,7 @@ msgstr "CŒUR FLORAL   %d%%"
 msgid "DESIGNS"
 msgstr "DESIGNS"
 
-#: ui/cosmetics_panel.gd:39 ui/lumi_builder.gd:515
+#: ui/cosmetics_panel.gd:39 ui/lumi_builder.gd:538
 msgid "Looks only (no bonuses)"
 msgstr "Apparence seulement (aucun bonus)"
 
@@ -3389,11 +3304,11 @@ msgstr "Porté"
 msgid "Locked  %d%%"
 msgstr "Verrouillé  %d%%"
 
-#: ui/cosmetics_panel.gd:171 ui/lumi_builder.gd:620
+#: ui/cosmetics_panel.gd:171 ui/lumi_builder.gd:643
 msgid "Bonus: %s"
 msgstr "Bonus : %s"
 
-#: ui/cosmetics_panel.gd:171 ui/lumi_builder.gd:620
+#: ui/cosmetics_panel.gd:171 ui/lumi_builder.gd:643
 msgid "(off: looks only)"
 msgstr "(désactivé : apparence seulement)"
 
@@ -3405,8 +3320,8 @@ msgstr "Look perso avec ce bonus"
 msgid "Unlocked. Press to wear."
 msgstr "Débloqué. Appuie pour le porter."
 
-#: ui/cosmetics_panel.gd:179 ui/lumi_builder.gd:351 ui/lumi_builder.gd:468
-#: ui/lumi_builder.gd:506 ui/lumi_builder.gd:574 ui/lumi_builder.gd:575
+#: ui/cosmetics_panel.gd:179 ui/lumi_builder.gd:374 ui/lumi_builder.gd:491
+#: ui/lumi_builder.gd:529 ui/lumi_builder.gd:597 ui/lumi_builder.gd:598
 msgid "Locked: %s"
 msgstr "Verrouillé : %s"
 
@@ -3769,119 +3684,123 @@ msgstr "BALLE PRÊTE"
 msgid "◢ SIGNAL %d%%"
 msgstr "◢ SIGNAL %d%%"
 
-#: ui/lumi_builder.gd:87
+#: ui/lumi_builder.gd:110
 msgid "CHARACTER BUILDER"
 msgstr "ÉDITEUR DE PERSONNAGE"
 
-#: ui/lumi_builder.gd:122
+#: ui/lumi_builder.gd:145
 msgid "Drag to turn  ·  Wheel to zoom"
 msgstr "Glisser pour tourner  ·  Molette pour zoomer"
 
-#: ui/lumi_builder.gd:159
+#: ui/lumi_builder.gd:182
 msgid "Randomize"
 msgstr "Aléatoire"
 
-#: ui/lumi_builder.gd:160
+#: ui/lumi_builder.gd:183
 msgid "Reset to preset"
 msgstr "Revenir au modèle"
 
-#: ui/lumi_builder.gd:161
+#: ui/lumi_builder.gd:184
 msgid "Test laser"
 msgstr "Tester le laser"
 
-#: ui/lumi_builder.gd:165 ui/profile_picker.gd:252 ui/profile_picker.gd:269
+#: ui/lumi_builder.gd:188 ui/profile_picker.gd:252 ui/profile_picker.gd:269
 msgid "Cancel"
 msgstr "Annuler"
 
-#: ui/lumi_builder.gd:166
+#: ui/lumi_builder.gd:189
 msgid "Done"
 msgstr "Terminé"
 
-#: ui/lumi_builder.gd:182 ui/lumi_builder.gd:294
+#: ui/lumi_builder.gd:189
+msgid "Wear look"
+msgstr "Porter ce look"
+
+#: ui/lumi_builder.gd:205 ui/lumi_builder.gd:317
 msgid "Presets"
 msgstr "Modèles"
 
-#: ui/lumi_builder.gd:193
+#: ui/lumi_builder.gd:216
 msgid "Saved"
 msgstr "Enregistrés"
 
-#: ui/lumi_builder.gd:197 ui/lumi_builder.gd:298
+#: ui/lumi_builder.gd:220 ui/lumi_builder.gd:321
 msgid "Saved looks"
 msgstr "Looks enregistrés"
 
-#: ui/lumi_builder.gd:347
+#: ui/lumi_builder.gd:370
 msgid "A design's full look. Every slot can be changed afterwards."
 msgstr "Le look complet d'un design. Chaque emplacement peut être modifié ensuite."
 
-#: ui/lumi_builder.gd:367
+#: ui/lumi_builder.gd:390
 msgid "Custom colour"
 msgstr "Couleur perso"
 
-#: ui/lumi_builder.gd:412 data/style_parts.json:advanced.name
+#: ui/lumi_builder.gd:435 data/style_parts.json:advanced.name
 msgid "Advanced colour picker"
 msgstr "Sélecteur de couleur avancé"
 
-#: ui/lumi_builder.gd:422
+#: ui/lumi_builder.gd:445
 msgid "Advanced (hue, saturation, brightness)"
 msgstr "Avancé (teinte, saturation, luminosité)"
 
-#: ui/lumi_builder.gd:431
+#: ui/lumi_builder.gd:454
 msgid "Hue"
 msgstr "Teinte"
 
-#: ui/lumi_builder.gd:431 ui/photo_mode.gd:382
+#: ui/lumi_builder.gd:454 ui/photo_mode.gd:382
 msgid "Saturation"
 msgstr "Saturation"
 
-#: ui/lumi_builder.gd:431
+#: ui/lumi_builder.gd:454
 msgid "Brightness"
 msgstr "Luminosité"
 
-#: ui/lumi_builder.gd:468
+#: ui/lumi_builder.gd:491
 msgid "Equipped"
 msgstr "Équipé"
 
-#: ui/lumi_builder.gd:484
+#: ui/lumi_builder.gd:507
 msgid "How weathered the paint looks: fresh from the ark, or three hundred years of dust."
 msgstr "L'usure de la peinture : tout juste sortie de l'arche, ou trois cents ans de poussière."
 
-#: ui/lumi_builder.gd:487
+#: ui/lumi_builder.gd:510
 msgid "Fresh"
 msgstr "Neuf"
 
-#: ui/lumi_builder.gd:496
+#: ui/lumi_builder.gd:519
 msgid "Weathered"
 msgstr "Usé"
 
-#: ui/lumi_builder.gd:502
+#: ui/lumi_builder.gd:525
 msgid "A custom look can use the bonus of any design you have unlocked."
 msgstr "Un look perso peut utiliser le bonus de n'importe quel design débloqué."
 
-#: ui/lumi_builder.gd:526
+#: ui/lumi_builder.gd:549
 msgid "Keep up to %d looks. Load one to edit it, then press Done to wear it."
 msgstr "Gardez jusqu'à %d looks. Chargez-en un pour le modifier, puis Terminé pour le porter."
 
-#: ui/lumi_builder.gd:531 ui/lumi_builder.gd:555
+#: ui/lumi_builder.gd:554 ui/lumi_builder.gd:578
 msgid "Look %d"
 msgstr "Look %d"
 
-#: ui/lumi_builder.gd:539
+#: ui/lumi_builder.gd:562
 msgid "Empty"
 msgstr "Vide"
 
-#: ui/lumi_builder.gd:544 data/robot_parts.json:stats[load].name
+#: ui/lumi_builder.gd:567 data/robot_parts.json:stats[load].name
 msgid "Load"
 msgstr "Charge"
 
-#: ui/lumi_builder.gd:552
+#: ui/lumi_builder.gd:575
 msgid "Save here"
 msgstr "Enregistrer ici"
 
-#: ui/lumi_builder.gd:622
+#: ui/lumi_builder.gd:645
 msgid "Unsaved changes"
 msgstr "Modifications non enregistrées"
 
-#: ui/lumi_builder.gd:638
+#: ui/lumi_builder.gd:661
 msgid "Part of this look is still locked."
 msgstr "Une partie de ce look est encore verrouillée."
 
@@ -5308,6 +5227,10 @@ msgstr "Main verte"
 #: data/achievements.json:achievements[plant_1].desc
 msgid "Plant a seed."
 msgstr "Plante une graine."
+
+#: data/achievements.json:achievements[plant_100].name
+msgid "Gardener"
+msgstr "Jardinier"
 
 #: data/achievements.json:achievements[plant_100].desc
 msgid "Plant 100 seeds."
@@ -11109,6 +11032,14 @@ msgstr "Aileron"
 msgid "Antenna"
 msgstr "Antenne"
 
+#: data/style_parts.json:options.head[antenna].unlock.cond.unit data/style_parts.json:swatches[mint].unlock.cond.unit
+msgid "hub level"
+msgstr "niveau de base"
+
+#: data/style_parts.json:options.head[antenna].unlock.text
+msgid "Upgrade a hub to level 2"
+msgstr "Améliorez une base au niveau 2"
+
 #: data/style_parts.json:options.head[sprout].name
 msgid "Sprout leaf"
 msgstr "Pousse"
@@ -11212,6 +11143,10 @@ msgstr "Ciel"
 #: data/style_parts.json:swatches[mint].name
 msgid "Mint"
 msgstr "Menthe"
+
+#: data/style_parts.json:swatches[mint].unlock.text
+msgid "Upgrade a hub to level 3"
+msgstr "Améliorez une base au niveau 3"
 
 #: data/style_parts.json:swatches[hazard].name
 msgid "Hazard yellow"

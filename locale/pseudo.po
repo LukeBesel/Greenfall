@@ -2242,15 +2242,19 @@ msgstr "[Ţĥé Àŕķ Bŕîðĝé ôþéñš ôñçé ţĥé Çŕàðļé ĥà�
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."
 msgstr "[Çŕàðļé Môðé: ţĥé àŕķ'š šééð vàûļţ ĥôļðš šééðš ƒôŕ ôţĥéŕ ŵôŕļðš. Þàûšé > Àŕķ Bŕîðĝé ţô šéé ţĥém àñð ţĥé Ĥéîŕļôômš ýôûŕ ŕéšţôŕàţîôñ ĥàš ûñļôçķéð, ôŕ šééð à ñéŵ ŵôŕļð. Ĝàŕðéñ Môðé (Ĥ) îš ôþéñ ţôô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/lumi_style.gd:391
+#: systems/lumi_style.gd:398
 msgid "Unlock the %s design"
 msgstr "[Ûñļôçķ ţĥé %s ðéšîĝñ ~~~~]"
 
-#: systems/lumi_style.gd:394
+#: systems/lumi_style.gd:400
+msgid "Reach Lumi Level %d"
+msgstr "[Ŕéàçĥ Ļûmî Ļévéļ %d ~~~~]"
+
+#: systems/lumi_style.gd:403
 msgid "Achievement: %s"
 msgstr "[Àçĥîévéméñţ: %s ~~]"
 
-#: systems/lumi_style.gd:398
+#: systems/lumi_style.gd:407
 msgid "Buy for %s"
 msgstr "[Bûý ƒôŕ %s ~]"
 
@@ -3083,7 +3087,7 @@ msgstr "[ÇÔMMÀÑÐ ~]"
 msgid "Mark around me"
 msgstr "[Màŕķ àŕôûñð mé ~~]"
 
-#: ui/command_view.gd:281 ui/lumi_builder.gd:560 ui/photo_mode.gd:26
+#: ui/command_view.gd:281 ui/lumi_builder.gd:583 ui/photo_mode.gd:26
 msgid "Clear"
 msgstr "[Çļéàŕ ~]"
 
@@ -3281,7 +3285,7 @@ msgstr "[BĻÔÔM ÇÔŔÉ   %d%% ~~~]"
 msgid "DESIGNS"
 msgstr "[ÐÉŠÎĜÑŠ ~]"
 
-#: ui/cosmetics_panel.gd:39 ui/lumi_builder.gd:515
+#: ui/cosmetics_panel.gd:39 ui/lumi_builder.gd:538
 msgid "Looks only (no bonuses)"
 msgstr "[Ļôôķš ôñļý (ñô bôñûšéš) ~~~~~]"
 
@@ -3297,11 +3301,11 @@ msgstr "[Ŵéàŕîñĝ ~]"
 msgid "Locked  %d%%"
 msgstr "[Ļôçķéð  %d%% ~]"
 
-#: ui/cosmetics_panel.gd:171 ui/lumi_builder.gd:620
+#: ui/cosmetics_panel.gd:171 ui/lumi_builder.gd:643
 msgid "Bonus: %s"
 msgstr "[Bôñûš: %s ~]"
 
-#: ui/cosmetics_panel.gd:171 ui/lumi_builder.gd:620
+#: ui/cosmetics_panel.gd:171 ui/lumi_builder.gd:643
 msgid "(off: looks only)"
 msgstr "[(ôƒƒ: ļôôķš ôñļý) ~~~]"
 
@@ -3313,8 +3317,8 @@ msgstr "[Ŵéàŕîñĝ à çûšţôm ļôôķ ŵîţĥ ţĥîš bôñûš ~~~~
 msgid "Unlocked. Press to wear."
 msgstr "[Ûñļôçķéð. Þŕéšš ţô ŵéàŕ. ~~~~~]"
 
-#: ui/cosmetics_panel.gd:179 ui/lumi_builder.gd:351 ui/lumi_builder.gd:468
-#: ui/lumi_builder.gd:506 ui/lumi_builder.gd:574 ui/lumi_builder.gd:575
+#: ui/cosmetics_panel.gd:179 ui/lumi_builder.gd:374 ui/lumi_builder.gd:491
+#: ui/lumi_builder.gd:529 ui/lumi_builder.gd:597 ui/lumi_builder.gd:598
 msgid "Locked: %s"
 msgstr "[Ļôçķéð: %s ~]"
 
@@ -3677,119 +3681,123 @@ msgstr "[BÀĻÉ ŔÉÀÐÝ ~]"
 msgid "◢ SIGNAL %d%%"
 msgstr "[◢ ŠÎĜÑÀĻ %d%% ~~]"
 
-#: ui/lumi_builder.gd:87
+#: ui/lumi_builder.gd:110
 msgid "CHARACTER BUILDER"
 msgstr "[ÇĤÀŔÀÇŢÉŔ BÛÎĻÐÉŔ ~~~]"
 
-#: ui/lumi_builder.gd:122
+#: ui/lumi_builder.gd:145
 msgid "Drag to turn  ·  Wheel to zoom"
 msgstr "[Ðŕàĝ ţô ţûŕñ  ·  Ŵĥééļ ţô žôôm ~~~~~~~]"
 
-#: ui/lumi_builder.gd:159
+#: ui/lumi_builder.gd:182
 msgid "Randomize"
 msgstr "[Ŕàñðômîžé ~]"
 
-#: ui/lumi_builder.gd:160
+#: ui/lumi_builder.gd:183
 msgid "Reset to preset"
 msgstr "[Ŕéšéţ ţô þŕéšéţ ~~]"
 
-#: ui/lumi_builder.gd:161
+#: ui/lumi_builder.gd:184
 msgid "Test laser"
 msgstr "[Ţéšţ ļàšéŕ ~]"
 
-#: ui/lumi_builder.gd:165 ui/profile_picker.gd:252 ui/profile_picker.gd:269
+#: ui/lumi_builder.gd:188 ui/profile_picker.gd:252 ui/profile_picker.gd:269
 msgid "Cancel"
 msgstr "[Çàñçéļ ~]"
 
-#: ui/lumi_builder.gd:166
+#: ui/lumi_builder.gd:189
 msgid "Done"
 msgstr "[Ðôñé ~]"
 
-#: ui/lumi_builder.gd:182 ui/lumi_builder.gd:294
+#: ui/lumi_builder.gd:189
+msgid "Wear look"
+msgstr "[Ŵéàŕ ļôôķ ~]"
+
+#: ui/lumi_builder.gd:205 ui/lumi_builder.gd:317
 msgid "Presets"
 msgstr "[Þŕéšéţš ~]"
 
-#: ui/lumi_builder.gd:193
+#: ui/lumi_builder.gd:216
 msgid "Saved"
 msgstr "[Šàvéð ~]"
 
-#: ui/lumi_builder.gd:197 ui/lumi_builder.gd:298
+#: ui/lumi_builder.gd:220 ui/lumi_builder.gd:321
 msgid "Saved looks"
 msgstr "[Šàvéð ļôôķš ~]"
 
-#: ui/lumi_builder.gd:347
+#: ui/lumi_builder.gd:370
 msgid "A design's full look. Every slot can be changed afterwards."
 msgstr "[À ðéšîĝñ'š ƒûļļ ļôôķ. Évéŕý šļôţ çàñ bé çĥàñĝéð àƒţéŕŵàŕðš. ~~~~~~~~~~~~~~~~~~]"
 
-#: ui/lumi_builder.gd:367
+#: ui/lumi_builder.gd:390
 msgid "Custom colour"
 msgstr "[Çûšţôm çôļôûŕ ~~]"
 
-#: ui/lumi_builder.gd:412 data/style_parts.json:advanced.name
+#: ui/lumi_builder.gd:435 data/style_parts.json:advanced.name
 msgid "Advanced colour picker"
 msgstr "[Àðvàñçéð çôļôûŕ þîçķéŕ ~~~~~]"
 
-#: ui/lumi_builder.gd:422
+#: ui/lumi_builder.gd:445
 msgid "Advanced (hue, saturation, brightness)"
 msgstr "[Àðvàñçéð (ĥûé, šàţûŕàţîôñ, bŕîĝĥţñéšš) ~~~~~~~~~~]"
 
-#: ui/lumi_builder.gd:431
+#: ui/lumi_builder.gd:454
 msgid "Hue"
 msgstr "[Ĥûé ~]"
 
-#: ui/lumi_builder.gd:431 ui/photo_mode.gd:382
+#: ui/lumi_builder.gd:454 ui/photo_mode.gd:382
 msgid "Saturation"
 msgstr "[Šàţûŕàţîôñ ~]"
 
-#: ui/lumi_builder.gd:431
+#: ui/lumi_builder.gd:454
 msgid "Brightness"
 msgstr "[Bŕîĝĥţñéšš ~]"
 
-#: ui/lumi_builder.gd:468
+#: ui/lumi_builder.gd:491
 msgid "Equipped"
 msgstr "[Éqûîþþéð ~]"
 
-#: ui/lumi_builder.gd:484
+#: ui/lumi_builder.gd:507
 msgid "How weathered the paint looks: fresh from the ark, or three hundred years of dust."
 msgstr "[Ĥôŵ ŵéàţĥéŕéð ţĥé þàîñţ ļôôķš: ƒŕéšĥ ƒŕôm ţĥé àŕķ, ôŕ ţĥŕéé ĥûñðŕéð ýéàŕš ôƒ ðûšţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/lumi_builder.gd:487
+#: ui/lumi_builder.gd:510
 msgid "Fresh"
 msgstr "[Fŕéšĥ ~]"
 
-#: ui/lumi_builder.gd:496
+#: ui/lumi_builder.gd:519
 msgid "Weathered"
 msgstr "[Ŵéàţĥéŕéð ~]"
 
-#: ui/lumi_builder.gd:502
+#: ui/lumi_builder.gd:525
 msgid "A custom look can use the bonus of any design you have unlocked."
 msgstr "[À çûšţôm ļôôķ çàñ ûšé ţĥé bôñûš ôƒ àñý ðéšîĝñ ýôû ĥàvé ûñļôçķéð. ~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/lumi_builder.gd:526
+#: ui/lumi_builder.gd:549
 msgid "Keep up to %d looks. Load one to edit it, then press Done to wear it."
 msgstr "[Ķééþ ûþ ţô %d ļôôķš. Ļôàð ôñé ţô éðîţ îţ, ţĥéñ þŕéšš Ðôñé ţô ŵéàŕ îţ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/lumi_builder.gd:531 ui/lumi_builder.gd:555
+#: ui/lumi_builder.gd:554 ui/lumi_builder.gd:578
 msgid "Look %d"
 msgstr "[Ļôôķ %d ~]"
 
-#: ui/lumi_builder.gd:539
+#: ui/lumi_builder.gd:562
 msgid "Empty"
 msgstr "[Émþţý ~]"
 
-#: ui/lumi_builder.gd:544 data/robot_parts.json:stats[load].name
+#: ui/lumi_builder.gd:567 data/robot_parts.json:stats[load].name
 msgid "Load"
 msgstr "[Ļôàð ~]"
 
-#: ui/lumi_builder.gd:552
+#: ui/lumi_builder.gd:575
 msgid "Save here"
 msgstr "[Šàvé ĥéŕé ~]"
 
-#: ui/lumi_builder.gd:622
+#: ui/lumi_builder.gd:645
 msgid "Unsaved changes"
 msgstr "[Ûñšàvéð çĥàñĝéš ~~]"
 
-#: ui/lumi_builder.gd:638
+#: ui/lumi_builder.gd:661
 msgid "Part of this look is still locked."
 msgstr "[Þàŕţ ôƒ ţĥîš ļôôķ îš šţîļļ ļôçķéð. ~~~~~~~~~]"
 
@@ -11021,6 +11029,14 @@ msgstr "[Fîñ ~]"
 msgid "Antenna"
 msgstr "[Àñţéññà ~]"
 
+#: data/style_parts.json:options.head[antenna].unlock.cond.unit data/style_parts.json:swatches[mint].unlock.cond.unit
+msgid "hub level"
+msgstr "[ĥûb ļévéļ ~]"
+
+#: data/style_parts.json:options.head[antenna].unlock.text
+msgid "Upgrade a hub to level 2"
+msgstr "[Ûþĝŕàðé à ĥûb ţô ļévéļ 2 ~~~~~]"
+
 #: data/style_parts.json:options.head[sprout].name
 msgid "Sprout leaf"
 msgstr "[Šþŕôûţ ļéàƒ ~]"
@@ -11124,6 +11140,10 @@ msgstr "[Šķý ~]"
 #: data/style_parts.json:swatches[mint].name
 msgid "Mint"
 msgstr "[Mîñţ ~]"
+
+#: data/style_parts.json:swatches[mint].unlock.text
+msgid "Upgrade a hub to level 3"
+msgstr "[Ûþĝŕàðé à ĥûb ţô ļévéļ 3 ~~~~~]"
 
 #: data/style_parts.json:swatches[hazard].name
 msgid "Hazard yellow"

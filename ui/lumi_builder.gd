@@ -1,5 +1,5 @@
 class_name LumiBuilder
-extends CanvasLayer
+extends Control
 ## [style] Character Builder: a full-screen editor for Lumi's look (systems/lumi_style.gd).
 ## Left: slot list (presets, colours, face, add-ons, lights, bonus, saved looks). Middle: a big
 ## turntable (LumiPreview: drag / right stick turns, wheel / triggers zoom, demo laser). Right:
@@ -7,8 +7,20 @@ extends CanvasLayer
 ## the locked ones, wear slider, bonus picker, 5 saved looks). Footer: Randomize (Y), Reset to
 ## preset, Test laser (X), Cancel, Done (wears the look). LB / RB step through the slots;
 ## B / Esc = Done. Opened from the workbench Cosmetics tab (or --lumi-builder).
+##
+## Self-contained Control, two ways to host it:
+##   Embedded (the Locker):  var b := LumiBuilder.new(); b.world = world; container.add_child(b)
+##       Fills its parent (size flags expand), no backdrop, no Esc / LB / RB capture (the host owns
+##       those); "Done" becomes "Wear look" and the builder stays open. Emits `worn` and `closed`
+##       (Cancel = revert the edit to the worn look).
+##   Overlay:  LumiBuilder.open(world, parent) -> wraps it in its own CanvasLayer (layer 40) with a
+##       backdrop; Esc / B = Done, LB / RB step slots; frees itself on close.
 
 signal closed
+signal worn
+
+## Overlay mode (set by open()): backdrop, input capture, Done closes.
+var standalone: bool = false
 
 const SIDE_W: float = 236.0
 const EDIT_W: float = 400.0
@@ -39,15 +51,25 @@ var _first_editor: Control
 
 
 static func open(w: Node, parent: Node) -> LumiBuilder:
+	var cl := CanvasLayer.new()
+	cl.layer = 40
+	cl.process_mode = Node.PROCESS_MODE_ALWAYS
 	var b := LumiBuilder.new()
 	b.world = w
-	parent.add_child(b)
+	b.standalone = true
+	b.set_anchors_preset(Control.PRESET_FULL_RECT)
+	cl.add_child(b)
+	parent.add_child(cl)
+	b.closed.connect(cl.queue_free)
 	return b
 
 
 func _ready() -> void:
-	layer = 40
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	size_flags_vertical = Control.SIZE_EXPAND_FILL
+	if not standalone:
+		custom_minimum_size = Vector2(1000, 560)
 	_rng.randomize()
 	edit = LumiStyle.current()
 	_orig = edit.duplicate(true)
@@ -67,16 +89,17 @@ func _build() -> void:
 	_root.mouse_filter = Control.MOUSE_FILTER_STOP
 	_root.theme = UITheme.get_theme()
 	add_child(_root)
-	var bg := ColorRect.new()
-	bg.color = Color(0.018, 0.02, 0.026, 0.96)
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_root.add_child(bg)
+	if standalone:
+		var bg := ColorRect.new()
+		bg.color = Color(0.018, 0.02, 0.026, 0.96)
+		bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+		_root.add_child(bg)
 	var mc := MarginContainer.new()
 	mc.set_anchors_preset(Control.PRESET_FULL_RECT)
 	for k: String in ["margin_left", "margin_right"]:
-		mc.add_theme_constant_override(k, 28)
+		mc.add_theme_constant_override(k, 28 if standalone else 0)
 	for k: String in ["margin_top", "margin_bottom"]:
-		mc.add_theme_constant_override(k, 18)
+		mc.add_theme_constant_override(k, 18 if standalone else 0)
 	_root.add_child(mc)
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 12)
@@ -163,7 +186,7 @@ func _build() -> void:
 	sp2.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	foot.add_child(sp2)
 	foot.add_child(_foot_btn(tr("Cancel"), "", _cancel))
-	_done_btn = _foot_btn(tr("Done"), "B", _done)
+	_done_btn = _foot_btn(tr("Done"), "B", _done) if standalone else _foot_btn(tr("Wear look"), "", _done)
 	UITheme.orange_button(_done_btn)
 	foot.add_child(_done_btn)
 
@@ -645,11 +668,22 @@ func _done() -> void:
 		if p is Node3D:
 			Vfx.burst("sparkle", (p as Node3D).global_position + Vector3(0, 0.8, 0), LumiStyle.col(edit, "glow"))
 		Audio.play("buy", 1.2, -4.0)
-	_close()
+	worn.emit()
+	if standalone:
+		_close()
+	else:
+		_orig = LumiStyle.current()
+		_update_status()
 
 
 func _cancel() -> void:
-	_close()
+	if standalone:
+		_close()
+		return
+	_set_style(LumiStyle.current())
+	_dirty = true
+	_build_editor()
+	closed.emit()
 
 
 func _close() -> void:
@@ -658,6 +692,19 @@ func _close() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if not is_visible_in_tree():
+		return
+	if not standalone:
+		# Hosted: the Locker owns Esc and LB / RB; only the pad shortcuts are ours.
+		if event is InputEventJoypadButton and (event as InputEventJoypadButton).pressed:
+			var jb2: InputEventJoypadButton = event
+			if jb2.button_index == JOY_BUTTON_Y:
+				_randomize()
+				get_viewport().set_input_as_handled()
+			elif jb2.button_index == JOY_BUTTON_X:
+				_preview.demo_beam()
+				get_viewport().set_input_as_handled()
+		return
 	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause"):
 		_done()
 		get_viewport().set_input_as_handled()

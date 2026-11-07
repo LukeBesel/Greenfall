@@ -26,6 +26,9 @@ extends RefCounted
 ## the model's variant > that variant's preset.
 ## State (GameState.flags, in the save): lumi_style (the worn style), lumi_looks (up to 5 saved
 ## looks, each a style with a "name"), style_bought (ids bought with cubes/parts/seeds).
+## Unlock sources trickle in across the whole game: free starters, Lumi Level, hub level, the six
+## designs (their parts and colours), Collection finds, Requests, achievements (early to late), and
+## a few cosmetic buys for parts / seeds.
 
 const PATH: String = "res://data/style_parts.json"
 const MAX_LOOKS: int = 5
@@ -352,6 +355,8 @@ static func unlock_met(u: Dictionary, key: String = "") -> bool:
 		return true
 	if u.has("design"):
 		return Designs.is_unlocked(str(u["design"]))
+	if u.has("lumi_level"):
+		return LumiLevel.level() >= int(u["lumi_level"])
 	if u.has("achievement"):
 		return Achievements.is_unlocked(str(u["achievement"]))
 	if u.has("cond"):
@@ -368,6 +373,8 @@ static func unlock_progress(u: Dictionary, key: String = "") -> float:
 		return 1.0
 	if u.has("design"):
 		return Designs.progress(str(u["design"]))
+	if u.has("lumi_level"):
+		return clampf(float(LumiLevel.level()) / maxf(float(u["lumi_level"]), 1.0), 0.0, 1.0)
 	if u.has("achievement"):
 		return Achievements.progress(str(u["achievement"]))
 	if u.has("cond"):
@@ -389,6 +396,8 @@ static func unlock_text(u: Dictionary) -> String:
 	if u.has("design"):
 		var dn: String = TranslationServer.translate(str(Designs.def(str(u["design"])).get("name", u["design"])))
 		return TranslationServer.translate("Unlock the %s design") % dn
+	if u.has("lumi_level"):
+		return TranslationServer.translate("Reach Lumi Level %d") % int(u["lumi_level"])
 	if u.has("achievement"):
 		var an: String = TranslationServer.translate(str(Achievements.def(str(u["achievement"])).get("name", u["achievement"])))
 		return TranslationServer.translate("Achievement: %s") % an

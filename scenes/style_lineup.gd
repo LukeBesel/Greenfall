@@ -4,7 +4,6 @@ extends Node3D
 ##   godot --path . --rendering-driver vulkan res://scenes/style_lineup.tscn -- --fresh --out=screenshots/style_lineup
 ## Writes <out>_0.png (front 3/4, with names), <out>_1.png (faces close-up), <out>_2.png (back 3/4).
 
-# l10n:begin
 const LOOKS: Array[Dictionary] = [
 	{"name": "Stargazer", "paint": "#1b2233", "trim": "#5c6169", "accent": "#ffd34d", "side": "#ffd34d", "eyes": "#ffd34d", "glow": "#ffd34d", "hover": "#7fb8ff", "laser": "#ffd34d",
 		"eye_shape": "round", "head": "halo", "chest": "heart", "held": "none", "shoulders": "none", "companion": "firefly", "pattern": "plain", "wear": 0.2},
@@ -15,7 +14,6 @@ const LOOKS: Array[Dictionary] = [
 	{"name": "Racer", "paint": "#3d63ff", "trim": "#292630", "accent": "#ff801f", "side": "#ff801f", "eyes": "#4de0ff", "glow": "#4de0ff", "hover": "#ff801f", "laser": "#ff801f",
 		"eye_shape": "bar", "head": "antenna", "chest": "recycle", "held": "gear", "shoulders": "pads", "companion": "none", "pattern": "stripes", "wear": 0.65},
 ]
-# l10n:end
 
 var _cam: Camera3D
 var _views: Array = []
@@ -87,7 +85,7 @@ func _ready() -> void:
 		add_child(m)
 		m.set_happy(0.6)
 		var l := Label3D.new()
-		l.text = tr(str(LOOKS[k]["name"])).to_upper()
+		l.text = str(LOOKS[k]["name"]).to_upper()  # dev render: English names
 		l.pixel_size = 0.0022
 		l.font_size = 30
 		l.modulate = LumiStyle.col(st, "glow").lightened(0.3)
