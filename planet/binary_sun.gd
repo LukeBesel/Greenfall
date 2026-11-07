@@ -9,7 +9,7 @@ extends Node
 var sky: SkyDirector
 var light: DirectionalLight3D
 var disc: MeshInstance3D
-var _mat: StandardMaterial3D
+var _mat: ShaderMaterial
 var _suns: Dictionary = {}
 var _base_disk: float = 1.0
 
@@ -33,14 +33,9 @@ func _ready() -> void:
 	var q := QuadMesh.new()
 	q.size = Vector2.ONE
 	disc.mesh = q
-	_mat = StandardMaterial3D.new()
-	_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	_mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
-	_mat.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
-	_mat.disable_fog = true
-	_mat.disable_receive_shadows = true
-	_mat.albedo_texture = _disc_tex()
+	_mat = ShaderMaterial.new()
+	_mat.shader = _disc_shader()
+	_mat.set_shader_parameter("tex", _disc_tex())
 	_mat.render_priority = -10
 	disc.material_override = _mat
 	disc.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -69,6 +64,27 @@ func _suns_cam() -> void:
 	cam.current = true
 	if w.get("hud") != null:
 		w.hud.visible = false
+
+
+static func _disc_shader() -> Shader:
+	var sh := Shader.new()
+	sh.code = """shader_type spatial;
+render_mode unshaded, blend_add, depth_draw_never, fog_disabled, shadows_disabled;
+uniform sampler2D tex : source_color, filter_linear;
+uniform vec4 tint : source_color = vec4(1.0, 0.62, 0.38, 1.0);
+uniform float energy = 4.0;
+void vertex() {
+	MODELVIEW_MATRIX = VIEW_MATRIX * mat4(INV_VIEW_MATRIX[0], INV_VIEW_MATRIX[1], INV_VIEW_MATRIX[2], MODEL_MATRIX[3]);
+	MODELVIEW_MATRIX = MODELVIEW_MATRIX * mat4(vec4(length(MODEL_MATRIX[0].xyz), 0.0, 0.0, 0.0), vec4(0.0, length(MODEL_MATRIX[1].xyz), 0.0, 0.0), vec4(0.0, 0.0, length(MODEL_MATRIX[2].xyz), 0.0), vec4(0.0, 0.0, 0.0, 1.0));
+}
+void fragment() {
+	vec4 t = texture(tex, UV);
+	float core = smoothstep(0.75, 0.95, t.a);
+	ALBEDO = tint.rgb * t.a * tint.a * mix(0.6, energy, core);
+	ALPHA = 1.0;
+}
+"""
+	return sh
 
 
 ## A bright core with a soft, thin halo (the owner: subtle glow).
@@ -117,4 +133,6 @@ func _process(_delta: float) -> void:
 	var core: float = 2.0 * dist * tan(ang * 0.5)
 	disc.scale = Vector3.ONE * core * 6.0
 	var c: Color = b["color"]
-	_mat.albedo_color = Color(c.r * 1.4, c.g * 1.25, c.b * 1.1, clampf(up_k + 0.25, 0.0, 1.0) * (0.85 if sun.visible else 0.45))
+	_mat.set_shader_parameter("tint", Color(c.r, c.g, c.b, clampf(up_k + 0.25, 0.0, 1.0) * (1.0 if sun.visible else 0.5)))
+	# HDR core so the disc reads through the dusty haze (the halo stays faint: thin glow).
+	_mat.set_shader_parameter("energy", 2.5 + 3.5 * float(sky.haze) if sky else 4.0)
