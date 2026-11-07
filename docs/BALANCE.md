@@ -366,8 +366,9 @@ tuned by the first-seed helper; this section is the 1 h+ ramp and everything aft
   seeds per bloom (plants/garden.gd). Research raises them: **Pollinator Survey** +75% growth / +60%
   seeds (the "takes off" node, 240 Data after Wild Mint), Hedgerows +25% growth, Evergreen Saplings
   +30% seeds.
-- Seedling Blueprint 60 -> 240 Data, Drip Blueprint 100 -> 280 Data (now after Big Tanks), Pollinator
-  Survey 160 -> 240: planters and watering bots arrive around the hour mark instead of ~20-30 min.
+- Seedling Blueprint 60 -> 160 Data, Drip Blueprint 100 -> 200 Data (now after Big Tanks), Pollinator
+  Survey 160 -> 200, and all three need a level-3 base (`min_base_level`, research.json): planters and
+  watering bots arrive around the hour mark instead of ~20-30 min, for any research order.
 - Goal chain after "Plant 5 seeds": cleaning, bales, recycler, skimmer, hexes 20-30, base 3 carry
   minutes 15-60; the garden goals (Seedling, Drip, Pollinator Survey, 25/60/100 plants, Sustained,
   Thriving) follow as one run of rewards ("the garden takes off").
@@ -393,9 +394,10 @@ tuned by the first-seed helper; this section is the 1 h+ ramp and everything aft
 | Milestone | Before | After |
 |---|---|---|
 | Seed tin | 31 min | (first-seed helper) |
-| Seedling robot | 32 min | ~45-55 min |
-| Drip robot | 34 min | ~60-70 min |
-| Pollinator Survey ("takes off") | n/a | ~75-80 min |
-| Old Town base 5 / first launch | >200 min (stipend wall) | 102 min |
-| Second district base 5 | | 152 min |
-| Dust Flats arrive / base 5 | | 180 / 254 min |
+| Seedling robot | 32 min | 49 min (base 3 at 43) |
+| Drip robot | 34 min | 63 min |
+| Pollinator Survey ("takes off") | n/a | 70 min |
+| Old Town base 5 / first launch | >200 min (stipend wall) | 74 min |
+| Second district base 5 | | +78 min |
+| Dust Flats / Frozen Port / Sunken City / Cradle | | 128 / 36 / 80 / 53 min |
+| New Game to the Cradle finale | not reachable without dev hooks | ~7.5-8 h bot (~15-22 h human) |
