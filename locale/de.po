@@ -17,15 +17,15 @@ msgstr ""
 msgid "Every %s in the fleet."
 msgstr ""
 
-#: autoload/Economy.gd:112
+#: autoload/Economy.gd:128
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr ""
 
-#: autoload/Economy.gd:112
+#: autoload/Economy.gd:128
 msgid "Base"
 msgstr ""
 
-#: autoload/Economy.gd:280 data/robots.json:tiers[0].name
+#: autoload/Economy.gd:300 data/robots.json:tiers[0].name
 msgid "Mk I"
 msgstr ""
 
@@ -217,19 +217,19 @@ msgstr ""
 msgid "RS down"
 msgstr ""
 
-#: autoload/Story.gd:24
+#: autoload/Story.gd:23
 msgid "Perfect bale: filled right to the gold line."
 msgstr ""
 
-#: autoload/Story.gd:26
+#: autoload/Story.gd:25
 msgid "Pure bale: one kind of junk is worth double."
 msgstr ""
 
-#: autoload/Story.gd:30
+#: autoload/Story.gd:29
 msgid "A whole hex is clean! The ground remembers its colors."
 msgstr ""
 
-#: autoload/Story.gd:34
+#: autoload/Story.gd:33
 msgid "Upgraded! Lumi feels a little less creaky."
 msgstr ""
 
@@ -253,15 +253,15 @@ msgstr ""
 msgid "BALE  FEED"
 msgstr ""
 
-#: automation/depot.gd:115
+#: automation/depot.gd:114
 msgid "SCRAP  INTAKE  ·  WEIGH HERE"
 msgstr ""
 
-#: automation/hub.gd:77
+#: automation/hub.gd:76
 msgid "Hub upgraded: %s."
 msgstr ""
 
-#: automation/hub.gd:108
+#: automation/hub.gd:107
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr ""
 
@@ -279,99 +279,99 @@ msgid ""
 "BASE LEVEL 5"
 msgstr ""
 
-#: automation/outpost.gd:477
+#: automation/outpost.gd:478
 msgid "SCALE"
 msgstr ""
 
-#: automation/outpost.gd:488
+#: automation/outpost.gd:489
 msgid "OUTPOST %d%s"
 msgstr ""
 
-#: automation/outpost.gd:488
+#: automation/outpost.gd:489
 msgid "  ·  BIG SKIP"
 msgstr ""
 
-#: automation/outpost.gd:603
+#: automation/outpost.gd:604
 msgid "OUTPOST %d  ·  ONLINE"
 msgstr ""
 
-#: automation/outpost.gd:637
+#: automation/outpost.gd:638
 msgid "RECHARGE"
 msgstr ""
 
-#: automation/outposts.gd:307 automation/outposts.gd:321
+#: automation/outposts.gd:310 automation/outposts.gd:324
 msgid "No outpost."
 msgstr ""
 
-#: automation/outposts.gd:309
+#: automation/outposts.gd:312
 msgid "Already repaired."
 msgstr ""
 
-#: automation/outposts.gd:313
+#: automation/outposts.gd:316
 msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr ""
 
-#: automation/outposts.gd:315 automation/outposts.gd:330 automation/stations.gd:117
+#: automation/outposts.gd:318 automation/outposts.gd:333 automation/stations.gd:117
 msgid "Not enough materials."
 msgstr ""
 
-#: automation/outposts.gd:324
+#: automation/outposts.gd:327
 msgid "Repair it first."
 msgstr ""
 
-#: automation/outposts.gd:326
+#: automation/outposts.gd:329
 msgid "Fully upgraded."
 msgstr ""
 
-#: automation/outposts.gd:347
+#: automation/outposts.gd:350
 msgid "Outpost %d repaired: a working scale on the frontier. Haul Bugs deliver to the nearest scale now."
 msgstr ""
 
-#: automation/outposts.gd:348
+#: automation/outposts.gd:351
 msgid "OUTPOST ONLINE"
 msgstr ""
 
-#: automation/outposts.gd:370
+#: automation/outposts.gd:373
 msgid "Outpost %d upgraded: %s. %s"
 msgstr ""
 
-#: automation/outposts.gd:406
+#: automation/outposts.gd:409
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr ""
 
-#: automation/outposts.gd:407
+#: automation/outposts.gd:410
 msgid "E   Repair outpost · %s%s"
 msgstr ""
 
-#: automation/outposts.gd:407 automation/outposts.gd:410
+#: automation/outposts.gd:410 automation/outposts.gd:413
 msgid "  (need more)"
 msgstr ""
 
-#: automation/outposts.gd:409
+#: automation/outposts.gd:412
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr ""
 
-#: automation/outposts.gd:410
+#: automation/outposts.gd:413
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr ""
 
-#: automation/outposts.gd:420
+#: automation/outposts.gd:423
 msgid "Outpost %d: %s"
 msgstr ""
 
-#: automation/outposts.gd:427
+#: automation/outposts.gd:430
 msgid "Outpost %d upgrade: %s"
 msgstr ""
 
-#: automation/outposts.gd:430
+#: automation/outposts.gd:433
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr ""
 
-#: automation/outposts.gd:533
+#: automation/outposts.gd:536
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr ""
 
-#: automation/outposts.gd:534
+#: automation/outposts.gd:537
 msgid "OUTPOST %d  %s"
 msgstr ""
 
@@ -383,15 +383,15 @@ msgstr ""
 msgid "GONE FOR GOOD  -%d kg"
 msgstr ""
 
-#: automation/recycler.gd:284
+#: automation/recycler.gd:285
 msgid "RECYCLER"
 msgstr ""
 
-#: automation/recycler.gd:287
+#: automation/recycler.gd:288
 msgid "SHRED  ·  SMELT  ·  GONE FOR GOOD"
 msgstr ""
 
-#: automation/recycler.gd:440
+#: automation/recycler.gd:441
 msgid "HAND FEED"
 msgstr ""
 
@@ -487,7 +487,7 @@ msgstr ""
 msgid "Every %dth bale to the recycler"
 msgstr ""
 
-#: core/offline.gd:55 steam/demo_end_screen.gd:123 ui/globe_view.gd:458
+#: core/offline.gd:55 steam/demo_end_screen.gd:124 ui/globe_view.gd:455
 #: ui/upgrade_card.gd:257
 msgid "%d min"
 msgstr ""
@@ -562,47 +562,47 @@ msgstr ""
 msgid "Sandstorm blowing"
 msgstr ""
 
-#: planet/frontier_district.gd:600
+#: planet/frontier_district.gd:601
 msgid "Next sandstorm  %d:%02d"
 msgstr ""
 
-#: planet/frontier_district.gd:601
+#: planet/frontier_district.gd:602
 msgid "Well dry: Drips refill at tanks"
 msgstr ""
 
-#: planet/frontier_district.gd:607
+#: planet/frontier_district.gd:608
 msgid "%d hexes iced  ·  %d heaters"
 msgstr ""
 
-#: planet/frontier_district.gd:608
+#: planet/frontier_district.gd:609
 msgid "Greenhouses %d%s"
 msgstr ""
 
-#: planet/frontier_district.gd:608
+#: planet/frontier_district.gd:609
 msgid "  ·  cold-hardy seeds"
 msgstr ""
 
-#: planet/frontier_district.gd:612
+#: planet/frontier_district.gd:613
 msgid "Water down: all streets above water"
 msgstr ""
 
-#: planet/frontier_district.gd:614
+#: planet/frontier_district.gd:615
 msgid "Pumps: ring %d skimmed %d%% / %d%%"
 msgstr ""
 
-#: planet/frontier_district.gd:615
+#: planet/frontier_district.gd:616
 msgid "Water level %d / %d"
 msgstr ""
 
-#: planet/frontier_district.gd:618
+#: planet/frontier_district.gd:619
 msgid "The Cradle is coming home"
 msgstr ""
 
-#: planet/frontier_district.gd:620
+#: planet/frontier_district.gd:621
 msgid "Pad clean %d%%  ·  Sustained %d%%"
 msgstr ""
 
-#: planet/frontier_district.gd:621
+#: planet/frontier_district.gd:622
 msgid "District Growing %d%% / %d%%"
 msgstr ""
 
@@ -770,11 +770,11 @@ msgstr ""
 msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
 msgstr ""
 
-#: player/detector.gd:78
+#: player/detector.gd:77
 msgid "SIGNAL  %s  ·  %.1f m"
 msgstr ""
 
-#: player/detector.gd:81
+#: player/detector.gd:80
 msgid "SIGNAL  %d%%"
 msgstr ""
 
@@ -822,27 +822,27 @@ msgstr ""
 msgid "Recovered: %s %s"
 msgstr ""
 
-#: player/patch_model.gd:13
+#: player/patch_model.gd:18 data/designs.json:designs[aurora].name
 msgid "Aurora"
 msgstr ""
 
-#: player/patch_model.gd:14
+#: player/patch_model.gd:19 data/designs.json:designs[bolt].name
 msgid "Bolt"
 msgstr ""
 
-#: player/patch_model.gd:15
+#: player/patch_model.gd:20 data/designs.json:designs[sprout].name
 msgid "Sprout"
 msgstr ""
 
-#: player/patch_model.gd:16
+#: player/patch_model.gd:21 data/designs.json:designs[pixel].name
 msgid "Pixel"
 msgstr ""
 
-#: player/patch_model.gd:17
+#: player/patch_model.gd:22 data/designs.json:designs[nova].name
 msgid "Nova"
 msgstr ""
 
-#: player/patch_model.gd:18
+#: player/patch_model.gd:23 data/designs.json:designs[patch].name
 msgid "Patch"
 msgstr ""
 
@@ -973,117 +973,117 @@ msgstr ""
 msgid "%s fleet upgraded to %s."
 msgstr ""
 
-#: robots/robot.gd:246
+#: robots/robot.gd:247
 msgid "parked at hub"
 msgstr ""
 
-#: robots/robot.gd:246
+#: robots/robot.gd:247
 msgid "returning to hub"
 msgstr ""
 
-#: robots/robot.gd:248
+#: robots/robot.gd:249
 msgid "idle · %s"
 msgstr ""
 
-#: robots/robot.gd:248
+#: robots/robot.gd:249
 msgid "idle"
 msgstr ""
 
-#: robots/robot.gd:253
+#: robots/robot.gd:254
 msgid "hauling %d bale"
 msgid_plural "hauling %d bales"
 msgstr[0] ""
 msgstr[1] ""
 
-#: robots/robot.gd:255
+#: robots/robot.gd:256
 msgid "fetching a bale"
 msgstr ""
 
-#: robots/robot.gd:255 robots/robot.gd:901
+#: robots/robot.gd:256 robots/robot.gd:903
 msgid "waiting for bales"
 msgstr ""
 
-#: robots/robot.gd:258 robots/robot.gd:571
+#: robots/robot.gd:259 robots/robot.gd:573
 msgid "out of seeds"
 msgstr ""
 
-#: robots/robot.gd:259
+#: robots/robot.gd:260
 msgid "planting"
 msgstr ""
 
-#: robots/robot.gd:259
+#: robots/robot.gd:260
 msgid "looking for soil"
 msgstr ""
 
-#: robots/robot.gd:262
+#: robots/robot.gd:263
 msgid "refilling at %s (%d%%)"
 msgstr ""
 
-#: robots/robot.gd:262
+#: robots/robot.gd:263
 msgid "base barrel"
 msgstr ""
 
-#: robots/robot.gd:262 systems/research.gd:383
+#: robots/robot.gd:263 systems/research.gd:384
 msgid "tank"
 msgstr ""
 
-#: robots/robot.gd:262
+#: robots/robot.gd:263
 msgid "lake"
 msgstr ""
 
-#: robots/robot.gd:263
+#: robots/robot.gd:264
 msgid "watering · tank %d%%"
 msgstr ""
 
-#: robots/robot.gd:263
+#: robots/robot.gd:264
 msgid "looking for thirsty plants"
 msgstr ""
 
-#: robots/robot.gd:266
+#: robots/robot.gd:267
 msgid "taking a bale to shore"
 msgstr ""
 
-#: robots/robot.gd:268
+#: robots/robot.gd:269
 msgid "skimming lake hex %d (%d%%)"
 msgstr ""
 
-#: robots/robot.gd:269 robots/robot.gd:764
+#: robots/robot.gd:270 robots/robot.gd:766
 msgid "lake is clean"
 msgstr ""
 
-#: robots/robot.gd:272
+#: robots/robot.gd:273
 msgid "cleaning hex %d (%d%%)"
 msgstr ""
 
-#: robots/robot.gd:273
+#: robots/robot.gd:274
 msgid "zone clean, waiting"
 msgstr ""
 
-#: robots/robot.gd:273 robots/robot.gd:425
+#: robots/robot.gd:274 robots/robot.gd:427
 msgid "nothing left to clean"
 msgstr ""
 
-#: robots/robot.gd:425 robots/robot.gd:764
+#: robots/robot.gd:427 robots/robot.gd:766
 msgid "zone clean"
 msgstr ""
 
-#: robots/robot.gd:569
+#: robots/robot.gd:571
 msgid "seeds locked"
 msgstr ""
 
-#: robots/robot.gd:575 robots/robot.gd:579
+#: robots/robot.gd:577 robots/robot.gd:581
 msgid "no empty soil"
 msgstr ""
 
-#: robots/robot.gd:608
+#: robots/robot.gd:610
 msgid "no garden"
 msgstr ""
 
-#: robots/robot.gd:622
+#: robots/robot.gd:624
 msgid "everything watered"
 msgstr ""
 
-#: robots/robot.gd:718
+#: robots/robot.gd:720
 msgid "no water source"
 msgstr ""
 
@@ -1127,59 +1127,59 @@ msgstr ""
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr ""
 
-#: scenes/slice.gd:497
+#: scenes/slice.gd:499
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr ""
 
-#: scenes/slice.gd:790
+#: scenes/slice.gd:792
 msgid "HEX CLEAN!  +%s"
 msgstr ""
 
-#: scenes/slice.gd:804
+#: scenes/slice.gd:806
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
-#: scenes/slice.gd:806
+#: scenes/slice.gd:808
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr ""
 
-#: scenes/slice.gd:813
+#: scenes/slice.gd:815
 msgid "%s is out of range: %s"
 msgstr ""
 
-#: scenes/slice.gd:823
+#: scenes/slice.gd:825
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr ""
 
-#: scenes/slice.gd:826 ui/rockets_panel.gd:39
+#: scenes/slice.gd:828 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr ""
 
-#: scenes/slice.gd:880
+#: scenes/slice.gd:882
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr ""
 
-#: scenes/slice.gd:881
+#: scenes/slice.gd:883
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr ""
 
-#: scenes/slice.gd:881
+#: scenes/slice.gd:883
 msgid "Landed on the base pad."
 msgstr ""
 
-#: scenes/slice.gd:972
+#: scenes/slice.gd:974
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
-#: scenes/slice.gd:1144
+#: scenes/slice.gd:1146
 msgid "Welcome back. The junk waited for you."
 msgstr ""
 
-#: scenes/slice.gd:1161
+#: scenes/slice.gd:1163
 msgid "OUTPOST %d · Lv%d"
 msgstr ""
 
-#: scenes/slice.gd:1161
+#: scenes/slice.gd:1163
 msgid "OUTPOST %d · RUIN"
 msgstr ""
 
@@ -1235,7 +1235,7 @@ msgstr ""
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr ""
 
-#: steam/demo_end_screen.gd:123 ui/codex_screen.gd:751 ui/main_menu.gd:426
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:752 ui/main_menu.gd:427
 msgid "%dh %02dm"
 msgstr ""
 
@@ -1528,11 +1528,11 @@ msgstr ""
 msgid "Hold  {scoop}  on clean ground to plant the seed"
 msgstr ""
 
-#: story/first_seed.gd:227
+#: story/first_seed.gd:225
 msgid "...It's green. Lumi, it's actually green."
 msgstr ""
 
-#: story/first_seed.gd:229
+#: story/first_seed.gd:227
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr ""
 
@@ -1655,7 +1655,7 @@ msgstr ""
 msgid "SEEDS · PAID IN FULL"
 msgstr ""
 
-#: story/ledger.gd:676 systems/events.gd:484 systems/lumi_level.gd:215
+#: story/ledger.gd:676 systems/events.gd:484 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr ""
 
@@ -1713,7 +1713,7 @@ msgstr ""
 msgid "MISMATCH"
 msgstr ""
 
-#: story/shards.gd:58
+#: story/shards.gd:56
 msgid "Something surfaced in the cleared ground. A memory shard."
 msgstr ""
 
@@ -1745,19 +1745,19 @@ msgstr ""
 msgid "Lumi is back on the job"
 msgstr ""
 
-#: systems/achievements.gd:137
+#: systems/achievements.gd:139
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr ""
 
-#: systems/achievements.gd:144 ui/notify_stack.gd:22
+#: systems/achievements.gd:146 ui/notify_stack.gd:22
 msgid "Achievement: %s. %s"
 msgstr ""
 
-#: systems/achievements.gd:147
+#: systems/achievements.gd:149
 msgid "Codex: %d new entries."
 msgstr ""
 
-#: systems/achievements.gd:150
+#: systems/achievements.gd:152
 msgid "Codex entry: %s"
 msgstr ""
 
@@ -1897,7 +1897,23 @@ msgstr ""
 msgid "Needs %d tokens"
 msgstr ""
 
-#: systems/event_props.gd:153
+#: systems/designs.gd:118
+msgid "Default"
+msgstr ""
+
+#: systems/designs.gd:137
+msgid "Best fleet: %s"
+msgstr ""
+
+#: systems/designs.gd:154
+msgid "New design unlocked: %s. Wear it from the workbench (Cosmetics)."
+msgstr ""
+
+#: systems/designs.gd:193
+msgid "Design: %s"
+msgstr ""
+
+#: systems/event_props.gd:154
 msgid "CRADLE · SUPPLY"
 msgstr ""
 
@@ -1905,7 +1921,7 @@ msgstr ""
 msgid "STREAK x%d  +%d%%"
 msgstr ""
 
-#: systems/events.gd:476 systems/lumi_level.gd:212 ui/goals_panel.gd:245
+#: systems/events.gd:476 systems/lumi_level.gd:215 ui/goals_panel.gd:245
 msgid "+%s cubes"
 msgstr ""
 
@@ -1913,7 +1929,7 @@ msgstr ""
 msgid "+%d data"
 msgstr ""
 
-#: systems/events.gd:506 systems/lumi_level.gd:233
+#: systems/events.gd:506 systems/lumi_level.gd:236
 msgid "+%d token"
 msgid_plural "+%d tokens"
 msgstr[0] ""
@@ -2035,11 +2051,11 @@ msgstr ""
 msgid "Ultra"
 msgstr ""
 
-#: systems/quality_probe.gd:72
+#: systems/quality_probe.gd:71
 msgid "stepped down after a frame-rate check"
 msgstr ""
 
-#: systems/quality_probe.gd:75
+#: systems/quality_probe.gd:74
 msgid "Graphics set to %s to keep things smooth. You can change it in Settings."
 msgstr ""
 
@@ -2071,95 +2087,95 @@ msgstr ""
 msgid "Not enough data"
 msgstr ""
 
-#: systems/research.gd:323 ui/codex_screen.gd:754
+#: systems/research.gd:324 ui/codex_screen.gd:756
 msgid "%ds"
 msgstr ""
 
-#: systems/research.gd:380
+#: systems/research.gd:381
 msgid "scoop reach"
 msgstr ""
 
-#: systems/research.gd:380
+#: systems/research.gd:381
 msgid "scoop width"
 msgstr ""
 
-#: systems/research.gd:380
+#: systems/research.gd:381
 msgid "compartment size"
 msgstr ""
 
-#: systems/research.gd:381
+#: systems/research.gd:382
 msgid "bale value"
 msgstr ""
 
-#: systems/research.gd:381
+#: systems/research.gd:382
 msgid "magnet radius"
 msgstr ""
 
-#: systems/research.gd:381
+#: systems/research.gd:382
 msgid "scoop speed"
 msgstr ""
 
-#: systems/research.gd:382
+#: systems/research.gd:383
 msgid "data gained"
 msgstr ""
 
-#: systems/research.gd:382
+#: systems/research.gd:383
 msgid "research speed"
 msgstr ""
 
-#: systems/research.gd:382
+#: systems/research.gd:383
 msgid "lake clarity"
 msgstr ""
 
-#: systems/research.gd:383
+#: systems/research.gd:384
 msgid "speed"
 msgstr ""
 
-#: systems/research.gd:383
+#: systems/research.gd:384
 msgid "work rate"
 msgstr ""
 
-#: systems/research.gd:383
+#: systems/research.gd:384
 msgid "range"
 msgstr ""
 
-#: systems/research.gd:384
+#: systems/research.gd:385
 msgid "bale quality"
 msgstr ""
 
-#: systems/research.gd:384
+#: systems/research.gd:385
 msgid "carry"
 msgstr ""
 
-#: systems/research.gd:385
+#: systems/research.gd:386
 msgid "plant growth"
 msgstr ""
 
-#: systems/research.gd:385
+#: systems/research.gd:386
 msgid "seeds per bloom"
 msgstr ""
 
-#: systems/research.gd:406
+#: systems/research.gd:407
 msgid "Unlocks the %s robot"
 msgstr ""
 
-#: systems/research.gd:408
+#: systems/research.gd:409
 msgid "Unlocks %s seeds"
 msgstr ""
 
-#: systems/research.gd:410
+#: systems/research.gd:411
 msgid "Unlocks: %s"
 msgstr ""
 
-#: systems/research.gd:454
+#: systems/research.gd:455
 msgid "Field data logged. Spend Data on Research at the workbench (Research tab)."
 msgstr ""
 
-#: systems/research.gd:473
+#: systems/research.gd:474
 msgid "While you were away, research finished: %s."
 msgstr ""
 
-#: systems/research.gd:496
+#: systems/research.gd:497
 msgid "Research complete: %s. %s"
 msgstr ""
 
@@ -2220,7 +2236,7 @@ msgid "%d bolts"
 msgstr ""
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: systems/robot_builder.gd:382 ui/main_menu.gd:432
+#: systems/robot_builder.gd:382 ui/main_menu.gd:433
 msgid "%s cubes"
 msgstr "%s Würfel"
 
@@ -2483,7 +2499,7 @@ msgstr ""
 msgid "CODEX"
 msgstr ""
 
-#: ui/codex_screen.gd:84 ui/upgrades_screen.gd:76
+#: ui/codex_screen.gd:84 ui/upgrades_screen.gd:77
 msgid "Close  [%s]"
 msgstr ""
 
@@ -2602,7 +2618,7 @@ msgstr ""
 msgid "Cubes earned"
 msgstr ""
 
-#: ui/codex_screen.gd:669 ui/globe_view.gd:136 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:669 ui/globe_view.gd:135 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr ""
 
@@ -2678,7 +2694,7 @@ msgstr ""
 msgid "%.2f km"
 msgstr ""
 
-#: ui/codex_screen.gd:753
+#: ui/codex_screen.gd:755
 msgid "%dm %02ds"
 msgstr ""
 
@@ -2872,51 +2888,51 @@ msgstr ""
 msgid "Collection  %d / %d   ·   see the Codex (K)"
 msgstr ""
 
-#: ui/contracts_panel.gd:126
+#: ui/contracts_panel.gd:127
 msgid "A new contract is being posted."
 msgstr ""
 
-#: ui/contracts_panel.gd:136
+#: ui/contracts_panel.gd:137
 msgid "Reward  ◈ %d tokens  +  cubes"
 msgstr ""
 
-#: ui/contracts_panel.gd:158
+#: ui/contracts_panel.gd:159
 msgid "Accept  (%s)"
 msgstr ""
 
-#: ui/contracts_panel.gd:167
+#: ui/contracts_panel.gd:168
 msgid "Pass"
 msgstr ""
 
-#: ui/contracts_panel.gd:177
+#: ui/contracts_panel.gd:178
 msgid "Working on it"
 msgstr ""
 
-#: ui/contracts_panel.gd:183
+#: ui/contracts_panel.gd:184
 msgid "Claim  ◈ %d"
 msgstr ""
 
-#: ui/contracts_panel.gd:208
+#: ui/contracts_panel.gd:209
 msgid "Next posting in %s"
 msgstr ""
 
-#: ui/contracts_panel.gd:210
+#: ui/contracts_panel.gd:211
 msgid "Time limit %s once accepted   ·   offer open %s"
 msgstr ""
 
-#: ui/contracts_panel.gd:221
+#: ui/contracts_panel.gd:222
 msgid "Time left %s"
 msgstr ""
 
-#: ui/contracts_panel.gd:221
+#: ui/contracts_panel.gd:222
 msgid "Finished. Claim your tokens!"
 msgstr ""
 
-#: ui/contracts_panel.gd:244
+#: ui/contracts_panel.gd:245
 msgid "Equipped  (press to remove)"
 msgstr ""
 
-#: ui/contracts_panel.gd:244
+#: ui/contracts_panel.gd:245
 msgid "Owned  ·  press to equip"
 msgstr ""
 
@@ -2928,43 +2944,39 @@ msgstr ""
 msgid "BLOOM CORE   %d%%"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:7
-msgid "Default"
-msgstr ""
-
-#: ui/cosmetics_panel.gd:8 data/goals.json:goals[hex_10].text
-msgid "Clean 10 hexes"
-msgstr ""
-
-#: ui/cosmetics_panel.gd:9
-msgid "Build 3 robots"
-msgstr ""
-
-#: ui/cosmetics_panel.gd:10
-msgid "Grow your first sprout"
-msgstr ""
-
-#: ui/cosmetics_panel.gd:11
-msgid "Read 4 memory shards"
-msgstr ""
-
-#: ui/cosmetics_panel.gd:12
-msgid "Upgrade any robot fleet to Mk III"
-msgstr ""
-
-#: ui/cosmetics_panel.gd:22
+#: ui/cosmetics_panel.gd:34
 msgid "DESIGNS"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:36
-msgid "New design unlocked: %s. Try it at the workbench."
+#: ui/cosmetics_panel.gd:38
+msgid "Looks only (no bonuses)"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:61
-msgid "   (wearing)"
+#: ui/cosmetics_panel.gd:129 ui/cosmetics_panel.gd:160
+msgid "Wearing"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:61
+#: ui/cosmetics_panel.gd:129
+msgid "Unlocked"
+msgstr ""
+
+#: ui/cosmetics_panel.gd:129
+msgid "Locked  %d%%"
+msgstr ""
+
+#: ui/cosmetics_panel.gd:156
+msgid "Bonus: %s"
+msgstr ""
+
+#: ui/cosmetics_panel.gd:156
+msgid "(off: looks only)"
+msgstr ""
+
+#: ui/cosmetics_panel.gd:162
+msgid "Unlocked. Press to wear."
+msgstr ""
+
+#: ui/cosmetics_panel.gd:164
 msgid "Locked: %s"
 msgstr ""
 
@@ -3036,6 +3048,14 @@ msgstr ""
 msgid "PARTS"
 msgstr ""
 
+#: ui/design_toast.gd:58
+msgid "NEW DESIGN UNLOCKED"
+msgstr ""
+
+#: ui/design_toast.gd:66
+msgid "Wear it at the workbench: Cosmetics"
+msgstr ""
+
 #: ui/document_view.gd:45
 msgid "{interact}  [k]/ Esc  [/k]close"
 msgstr ""
@@ -3060,87 +3080,87 @@ msgstr ""
 msgid "FRONTIERS"
 msgstr ""
 
-#: ui/frontier_rockets.gd:39
+#: ui/frontier_rockets.gd:40
 msgid "You are here"
 msgstr ""
 
-#: ui/frontier_rockets.gd:39
+#: ui/frontier_rockets.gd:40
 msgid "Base level %d"
 msgstr ""
 
-#: ui/frontier_rockets.gd:39
+#: ui/frontier_rockets.gd:40
 msgid "Unexplored  ·  bales sell x%d here"
 msgstr ""
 
-#: ui/frontier_rockets.gd:41 ui/globe_view.gd:311 ui/rockets_panel.gd:81
+#: ui/frontier_rockets.gd:42 ui/globe_view.gd:308 ui/rockets_panel.gd:81
 msgid "Launch"
 msgstr ""
 
-#: ui/globe_view.gd:119
+#: ui/globe_view.gd:118
 msgid "Survey"
 msgstr ""
 
-#: ui/globe_view.gd:119
+#: ui/globe_view.gd:118
 msgid "Verdance  ·  hand-held projection"
 msgstr ""
 
-#: ui/globe_view.gd:135
+#: ui/globe_view.gd:134
 msgid "Not cleaned yet"
 msgstr ""
 
-#: ui/globe_view.gd:135
+#: ui/globe_view.gd:134
 msgid "Cleaned"
 msgstr ""
 
-#: ui/globe_view.gd:136 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:135 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr ""
 
-#: ui/globe_view.gd:137 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:136 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr ""
 
-#: ui/globe_view.gd:137
+#: ui/globe_view.gd:136
 msgid "Cities"
 msgstr ""
 
-#: ui/globe_view.gd:138
+#: ui/globe_view.gd:137
 msgid "Bases"
 msgstr ""
 
-#: ui/globe_view.gd:160
+#: ui/globe_view.gd:157
 msgid "Rocket"
 msgstr ""
 
-#: ui/globe_view.gd:160
+#: ui/globe_view.gd:157
 msgid "Travel between bases"
 msgstr ""
 
-#: ui/globe_view.gd:173
+#: ui/globe_view.gd:170
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr ""
 
-#: ui/globe_view.gd:308
+#: ui/globe_view.gd:305
 msgid "%d sectors away"
 msgstr ""
 
-#: ui/globe_view.gd:430
+#: ui/globe_view.gd:427
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr ""
 
-#: ui/globe_view.gd:437
+#: ui/globe_view.gd:434
 msgid "%s HEXES CLEAN"
 msgstr ""
 
-#: ui/globe_view.gd:439
+#: ui/globe_view.gd:436
 msgid "Surveyed %s ago%s"
 msgstr ""
 
-#: ui/globe_view.gd:439
+#: ui/globe_view.gd:436
 msgid "   ·   OUTDATED"
 msgstr ""
 
-#: ui/globe_view.gd:440
+#: ui/globe_view.gd:437
 msgid "Re-survey      %s cubes"
 msgstr ""
 
@@ -3342,11 +3362,11 @@ msgstr "Weiter"
 msgid "New Game"
 msgstr "Neues Spiel"
 
-#: ui/main_menu.gd:332 ui/main_menu.gd:503 ui/pause_menu.gd:58
+#: ui/main_menu.gd:332 ui/main_menu.gd:504 ui/pause_menu.gd:58
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ui/main_menu.gd:333 ui/main_menu.gd:503
+#: ui/main_menu.gd:333 ui/main_menu.gd:504
 msgid "Credits"
 msgstr "Mitwirkende"
 
@@ -3358,99 +3378,99 @@ msgstr "Beenden"
 msgid "Made with Godot"
 msgstr "Erstellt mit Godot"
 
-#: ui/main_menu.gd:426
+#: ui/main_menu.gd:427
 msgid "%dm"
 msgstr ""
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:432
+#: ui/main_menu.gd:433
 msgid "Hub %d"
 msgstr "Basis %d"
 
-#: ui/main_menu.gd:436
+#: ui/main_menu.gd:437
 msgid "Jan"
 msgstr "Jan."
 
-#: ui/main_menu.gd:436
+#: ui/main_menu.gd:437
 msgid "Feb"
 msgstr "Feb."
 
-#: ui/main_menu.gd:436
+#: ui/main_menu.gd:437
 msgid "Mar"
 msgstr "März"
 
-#: ui/main_menu.gd:436
+#: ui/main_menu.gd:437
 msgid "Apr"
 msgstr "Apr."
 
-#: ui/main_menu.gd:436
+#: ui/main_menu.gd:437
 msgid "May"
 msgstr "Mai"
 
-#: ui/main_menu.gd:436
+#: ui/main_menu.gd:437
 msgid "Jun"
 msgstr "Juni"
 
-#: ui/main_menu.gd:436
+#: ui/main_menu.gd:437
 msgid "Jul"
 msgstr "Juli"
 
-#: ui/main_menu.gd:436
+#: ui/main_menu.gd:437
 msgid "Aug"
 msgstr "Aug."
 
-#: ui/main_menu.gd:436
+#: ui/main_menu.gd:437
 msgid "Sep"
 msgstr "Sep."
 
-#: ui/main_menu.gd:436
+#: ui/main_menu.gd:437
 msgid "Oct"
 msgstr "Okt."
 
-#: ui/main_menu.gd:436
+#: ui/main_menu.gd:437
 msgid "Nov"
 msgstr "Nov."
 
-#: ui/main_menu.gd:436
+#: ui/main_menu.gd:437
 msgid "Dec"
 msgstr "Dez."
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:533
 msgid "CREDITS"
 msgstr "MITWIRKENDE"
 
-#: ui/main_menu.gd:547 ui/settings_panel.gd:117 ui/settings_panel.gd:145
+#: ui/main_menu.gd:548 ui/settings_panel.gd:117 ui/settings_panel.gd:145
 msgid "Back"
 msgstr "Zurück"
 
-#: ui/main_menu.gd:560
+#: ui/main_menu.gd:561
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
 "\n"
 msgstr ""
 
-#: ui/main_menu.gd:563
+#: ui/main_menu.gd:564
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr ""
 
-#: ui/main_menu.gd:581
+#: ui/main_menu.gd:582
 msgid "%s [color=#%s]by %s[/color]"
 msgstr ""
 
-#: ui/main_menu.gd:615
+#: ui/main_menu.gd:616
 msgid "START A NEW GAME?"
 msgstr "NEUES SPIEL STARTEN?"
 
-#: ui/main_menu.gd:616
+#: ui/main_menu.gd:617
 msgid "Your current save will be erased. This can't be undone."
 msgstr "Dein aktueller Spielstand wird gelöscht. Das lässt sich nicht rückgängig machen."
 
-#: ui/main_menu.gd:624
+#: ui/main_menu.gd:625
 msgid "Keep my save"
 msgstr "Spielstand behalten"
 
-#: ui/main_menu.gd:630
+#: ui/main_menu.gd:631
 msgid "Erase and start"
 msgstr "Löschen und starten"
 
@@ -3555,7 +3575,7 @@ msgstr ""
 msgid "Photo mode isn't available during a cinematic."
 msgstr ""
 
-#: ui/photo_mode.gd:367 ui/photo_mode.gd:419 ui/settings_panel.gd:317
+#: ui/photo_mode.gd:367 ui/photo_mode.gd:420 ui/settings_panel.gd:317
 msgid "Camera"
 msgstr ""
 
@@ -3583,7 +3603,7 @@ msgstr ""
 msgid "Reset camera"
 msgstr ""
 
-#: ui/photo_mode.gd:374 ui/photo_mode.gd:419
+#: ui/photo_mode.gd:374 ui/photo_mode.gd:420
 msgid "Lens"
 msgstr ""
 
@@ -3612,7 +3632,7 @@ msgstr ""
 msgid "%+.1f EV"
 msgstr ""
 
-#: ui/photo_mode.gd:379 ui/photo_mode.gd:419
+#: ui/photo_mode.gd:379 ui/photo_mode.gd:420
 msgid "Look"
 msgstr ""
 
@@ -3640,7 +3660,7 @@ msgstr ""
 msgid "Grain"
 msgstr ""
 
-#: ui/photo_mode.gd:386 ui/photo_mode.gd:419
+#: ui/photo_mode.gd:386 ui/photo_mode.gd:420
 msgid "World"
 msgstr ""
 
@@ -3652,63 +3672,63 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
-#: ui/photo_mode.gd:391
+#: ui/photo_mode.gd:392
 msgid "Weather"
 msgstr ""
 
-#: ui/photo_mode.gd:392 ui/photo_mode.gd:419 ui/upgrades_screen.gd:10
+#: ui/photo_mode.gd:393 ui/photo_mode.gd:420 ui/upgrades_screen.gd:10
 msgid "Lumi"
 msgstr ""
 
-#: ui/photo_mode.gd:393
+#: ui/photo_mode.gd:394
 msgid "Pose"
 msgstr ""
 
-#: ui/photo_mode.gd:394
+#: ui/photo_mode.gd:395
 msgid "Eyes"
 msgstr ""
 
-#: ui/photo_mode.gd:395
+#: ui/photo_mode.gd:396
 msgid "Turn"
 msgstr ""
 
-#: ui/photo_mode.gd:396
+#: ui/photo_mode.gd:397
 msgid "Show robots"
 msgstr ""
 
-#: ui/photo_mode.gd:397 ui/photo_mode.gd:419
+#: ui/photo_mode.gd:398 ui/photo_mode.gd:420
 msgid "Frame"
 msgstr ""
 
-#: ui/photo_mode.gd:398
+#: ui/photo_mode.gd:399
 msgid "Hide HUD"
 msgstr ""
 
-#: ui/photo_mode.gd:399
+#: ui/photo_mode.gd:400
 msgid "Rule of thirds"
 msgstr ""
 
-#: ui/photo_mode.gd:400
+#: ui/photo_mode.gd:401
 msgid "Letterbox 2.39:1"
 msgstr ""
 
-#: ui/photo_mode.gd:401
+#: ui/photo_mode.gd:402
 msgid "Greenfall stamp"
 msgstr ""
 
-#: ui/photo_mode.gd:402
+#: ui/photo_mode.gd:403
 msgid "Resolution"
 msgstr ""
 
-#: ui/photo_mode.gd:851
+#: ui/photo_mode.gd:852
 msgid "Couldn't capture the photo."
 msgstr ""
 
-#: ui/photo_mode.gd:860
+#: ui/photo_mode.gd:861
 msgid "Couldn't save the photo (%s)."
 msgstr ""
 
-#: ui/photo_mode.gd:873
+#: ui/photo_mode.gd:874
 msgid "Saved  %s  (%dx%d)"
 msgstr ""
 
@@ -4373,11 +4393,11 @@ msgstr ""
 msgid "Builder"
 msgstr ""
 
-#: ui/upgrades_screen.gd:68
+#: ui/upgrades_screen.gd:69
 msgid "UPGRADES"
 msgstr ""
 
-#: ui/upgrades_screen.gd:87
+#: ui/upgrades_screen.gd:88
 msgid "%s (soon)"
 msgstr ""
 
@@ -5723,6 +5743,134 @@ msgstr ""
 
 #: data/codex.json:frontiers.ark_pad.desc
 msgid "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Sustained before the ark will trust it."
+msgstr ""
+
+#: data/designs.json:designs[aurora].tagline
+msgid "Baseline / Explorer"
+msgstr ""
+
+#: data/designs.json:designs[aurora].desc
+msgid "The seed-keeper fresh from the ark: pearl paint, cyan eyes, an orange fin."
+msgstr ""
+
+#: data/designs.json:designs[aurora].buff.text
+msgid "+8% detector range"
+msgstr ""
+
+#: data/designs.json:designs[bolt].tagline
+msgid "Industrial / Tough"
+msgstr ""
+
+#: data/designs.json:designs[bolt].desc
+msgid "Hazard-yellow plating, heavy shoulder pads and a spare gear for luck."
+msgstr ""
+
+#: data/designs.json:designs[bolt].buff.text
+msgid "+5% bale value"
+msgstr ""
+
+#: data/designs.json:designs[bolt].unlock.text
+msgid "Press 50 bales or build 5 robots"
+msgstr ""
+
+#: data/designs.json:designs[bolt].unlock.any[0].unit
+msgid "bales"
+msgstr ""
+
+#: data/designs.json:designs[bolt].unlock.any[1].unit
+msgid "robots"
+msgstr ""
+
+#: data/designs.json:designs[sprout].tagline
+msgid "Eco / Restoration"
+msgstr ""
+
+#: data/designs.json:designs[sprout].desc
+msgid "Moss-green and growing a seedling of its own."
+msgstr ""
+
+#: data/designs.json:designs[sprout].buff.text
+msgid "+8% plant growth"
+msgstr ""
+
+#: data/designs.json:designs[sprout].unlock.text
+msgid "Grow 20 plants to bloom"
+msgstr ""
+
+#: data/designs.json:designs[sprout].unlock.any[0].unit
+msgid "blooms"
+msgstr ""
+
+#: data/designs.json:designs[pixel].tagline
+msgid "Friendly / Cheerful"
+msgstr ""
+
+#: data/designs.json:designs[pixel].desc
+msgid "Red and white, all smiles, with a butterfly that won't leave."
+msgstr ""
+
+#: data/designs.json:designs[pixel].buff.text
+msgid "+10% cleaning streak time"
+msgstr ""
+
+#: data/designs.json:designs[pixel].unlock.text
+msgid "Pet 5 animals or find 5 Collection trinkets"
+msgstr ""
+
+#: data/designs.json:designs[pixel].unlock.any[0].unit
+msgid "animals"
+msgstr ""
+
+#: data/designs.json:designs[pixel].unlock.any[1].unit
+msgid "cats"
+msgstr ""
+
+#: data/designs.json:designs[pixel].unlock.any[2].unit
+msgid "trinkets"
+msgstr ""
+
+#: data/designs.json:designs[nova].tagline
+msgid "Analyst / Tech"
+msgstr ""
+
+#: data/designs.json:designs[nova].desc
+msgid "Gunmetal, violet light and a holo screen always open."
+msgstr ""
+
+#: data/designs.json:designs[nova].buff.text
+msgid "+8% research speed"
+msgstr ""
+
+#: data/designs.json:designs[nova].unlock.text
+msgid "Finish 10 research projects"
+msgstr ""
+
+#: data/designs.json:designs[nova].unlock.any[0].unit
+msgid "projects"
+msgstr ""
+
+#: data/designs.json:designs[patch].tagline
+msgid "Utility / Support"
+msgstr ""
+
+#: data/designs.json:designs[patch].desc
+msgid "Medic cross, tool box, and a case of spares for any bot in need."
+msgstr ""
+
+#: data/designs.json:designs[patch].buff.text
+msgid "+6% robot work speed"
+msgstr ""
+
+#: data/designs.json:designs[patch].unlock.text
+msgid "Repair an outpost or upgrade a robot fleet to Mk III"
+msgstr ""
+
+#: data/designs.json:designs[patch].unlock.any[0].unit
+msgid "outposts"
+msgstr ""
+
+#: data/designs.json:designs[patch].unlock.any[1].unit
+msgid "Mk"
 msgstr ""
 
 #: data/eggs.json:eggs[duck].name
@@ -7128,6 +7276,10 @@ msgstr ""
 
 #: data/goals.json:goals[bales_20].text
 msgid "Robots press 20 bales"
+msgstr ""
+
+#: data/goals.json:goals[hex_10].text
+msgid "Clean 10 hexes"
 msgstr ""
 
 #: data/goals.json:goals[scoopie_2].text

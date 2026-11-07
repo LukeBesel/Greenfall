@@ -436,9 +436,10 @@ func _beam_mesh() -> MeshInstance3D:
 	mi.mesh = c
 	var mat := StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mat.albedo_color = Color(0.7, 0.95, 1.0)
+	var g: Color = PatchModel.glow_of(model.variant) if model else Color(0.3, 0.88, 1.0)  # [skins] design glow
+	mat.albedo_color = g.lerp(Color.WHITE, 0.6)
 	mat.emission_enabled = true
-	mat.emission = Color(0.3, 0.88, 1.0)
+	mat.emission = g
 	mat.emission_energy_multiplier = 3.0
 	mi.material_override = mat
 	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF

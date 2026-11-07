@@ -110,7 +110,8 @@ func stat(stat_id: String, levels: Variant = null) -> float:
 		else:
 			mul *= 1.0 + float(u["amount"]) * level
 	# Research bonuses (systems/research.gd) apply on top of upgrades.
-	return Research.stat_mod(stat_id, value * mul)
+	# The worn design's small buff (systems/designs.gd) last.  [skins]
+	return Designs.apply(stat_id, Research.stat_mod(stat_id, value * mul))
 
 
 ## Base value of a stat before upgrades: Patch stats come from data/patch.json, dotted robot
@@ -136,6 +137,7 @@ func stat_breakdown(stat_id: String) -> Array[Dictionary]:
 		else:
 			out.append({"source": "%s Lv %d" % [tr(str(u["name"])), level], "text": "x%.2f" % (1.0 + float(u["amount"]) * level)})
 	out.append_array(Research.breakdown(stat_id))
+	out.append_array(Designs.breakdown(stat_id))  # [skins]
 	return out
 
 

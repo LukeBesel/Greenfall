@@ -10,7 +10,7 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - [x] M5 Grow + sustain: planting, watering robots, refill tanks, hex levels Clean > Planted > Growing > Sustained > Thriving, compost press (seeds), wildlife.
 - [x] M6 Water: lakes, skimmer robots, clarity (research), clean-lake refills.
 - [x] M7 Automation + progression: conveyor feeder, auto-baler, recycler, research tree (30 nodes, Data currency), goals chain (50), base levels, rockets tab.
-- [x] M8 Content/meta: Codex, 54 achievements, stats, cosmetics (6 colourways).
+- [x] M8 Content/meta: Codex, 54 achievements, stats, cosmetics (6 unlockable Lumi designs with add-ons and slight buffs).
 - [~] M9 Balance: mid-game autoplay bot (robots, research, Command zones, garden, base levels) and a 2-hour pass: first robot ~6 min, planting ~20, Sustained ~23, base 3 ~38, base 5 ~75 (district done); see docs/BALANCE.md. Re-run after merging Laser Reach / Multi-Lock.
 - [~] M10 Polish: title screen, settings, music score, QA pass (40 fixes in flight); Windows/Linux/macOS builds from CI.
 - [~] M11 Post-game: Verdance Bloom milestones, Cradle finale (the true ending, then end credits), endless Seed Ark waves (no Cradle Mode worlds yet). Whole game playable New Game -> Cradle -> Seed Ark; see docs/WALKTHROUGH.md.
@@ -30,6 +30,12 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - Done: `tools/check_exit.sh` (run by `tools/run_tests.sh` and the CI build workflow; `SKIP_ROUNDTRIP=1` skips it) and `tools/warnings_audit.sh`. The GDScript warning count went from 263 to 0.
 - Done: perf. `Economy.stat()` indexes upgrades by stat, so robots' per-frame stat calls no longer scan every upgrade.
 - Next (part 2): split `scenes/slice.gd` per `docs/ARCHITECTURE.md` section 4 once the parallel helpers have merged. Remaining perf candidates are in section 5.
+## Update: Lumi designs (wt/skins)
+- Done: six unlockable designs from the owner's concept sheet (`data/designs.json`, `systems/designs.gd`, looks in `PatchModel.VARIANTS`). Aurora (default, +8% detector range), Bolt (hazard-yellow, chevron stripes, shoulder pads, gear in the left claw; 50 bales or 5 robots; +5% bale value), Sprout (olive with moss patches, seedling on the crown, leaf chest icon; 20 blooms; +8% plant growth), Pixel (red/white, wing fins, heart ear lenses, resting ^^ eyes, butterfly companion; 5 animals petted or 5 trinkets; +10% streak time), Nova (gunmetal, cat-ear fins with violet glow, idle holo screen; 10 research; +8% research speed), Patch (white/orange, medic cross, hip toolbox, carry case when idle; repair an outpost or a Mk III fleet; +6% robot work speed).
+  - Add-ons are Blender-modelled in `art/models/aurora/build_aurora.py` (exported to `designs.glb`, baked AO/edge wear like the hero; the antenna is now its own part). `hero_paint.gdshader` gained `moss` and `stripes`. Eye/ear/hover/chest/pickup-laser colour follow the design glow.
+  - Workbench Cosmetics tab is a picker: spinning 3D preview (`ui/design_preview.gd`), name, tagline, bonus, unlock condition with progress, "Looks only (no bonuses)". Unlock card toast (`ui/design_toast.gd`). Buffs go through `Economy.stat` (+ research duration, streak grace) and show in stat breakdowns.
+  - Dev: `--design=ID`, `--designs-all`, `--design-unlock=ID`; lineup render `scenes/design_lineup.tscn -- --out=...`. Test: `tests/test_designs.gd`; save round trip checks the design.
+  - Pixel's "animals petted" reads `stats.wildlife_petted` / `cats_petted`; until the wildlife helper writes one of those, trinkets unlock it.
 
 ## Update: future layer (wt/future)
 - Done: `planet/future_layer.gd` (FutureLayer, built by `scenes/slice.gd`): the district builds up into a glowing, clean future city as it is restored. Pure `FutureLayer.plan()` from seed + hex levels + hub level + cleaned share (no save data); a handful of MultiMeshes (unshaded emissive + env glow), a few Label3D texts, no lights.

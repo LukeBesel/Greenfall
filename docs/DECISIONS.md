@@ -87,3 +87,8 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
 - **Goal chain covers the whole game** (144 goals): new types research / bases_l5 / frontier_base /
   frontier_growing. District-relative goals (hex_level, hub_level) are placed where the player is in
   the district they mean.
+
+## Lumi designs (wt/skins, Nov 7)
+- **Designs are data + one model**: one PatchModel body with per-design paint/glow and add-on parts from a second GLB (`designs.glb`) built by the same Blender script, so every design shares the hero's rig, animation and quality. Add-ons bake AO against the hero alone (the hero bakes without them), so the default look is unchanged.
+- **Buffs are slight and optional**: 5-10% on one themed stat, applied last in `Economy.stat` (after research), shown in the stat breakdown; "Looks only" turns them all off (per save, `flags.designs_looks_only`). Aurora's +8% detector range is on by default.
+- **Unlock conditions are any-of achievement conditions** (`Achievements.value_of` + `fleet_tier`), checked by the Achievements tick; old saves keep their earlier unlocks (`flags.skins_unlocked`).
