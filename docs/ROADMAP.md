@@ -13,7 +13,7 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - [x] M8 Content/meta: Codex, 54 achievements, stats, cosmetics (6 colourways).
 - [~] M9 Balance: mid-game autoplay bot (robots, research, Command zones, garden, base levels) and a 2-hour pass: first robot ~6 min, planting ~20, Sustained ~23, base 3 ~38, base 5 ~75 (district done); see docs/BALANCE.md. Re-run after merging Laser Reach / Multi-Lock.
 - [~] M10 Polish: title screen, settings, music score, QA pass (40 fixes in flight); Windows/Linux/macOS builds from CI.
-- [~] M11 Post-game: Verdance Bloom milestones, Cradle finale, endless Seed Ark waves (no Cradle Mode worlds yet).
+- [~] M11 Post-game: Verdance Bloom milestones, Cradle finale (the true ending, then end credits), endless Seed Ark waves (no Cradle Mode worlds yet). Whole game playable New Game -> Cradle -> Seed Ark; see docs/WALKTHROUGH.md.
 
 ## Next steps for a new session
 0. Owner-side Steam/Apple setup: see docs/steam/README.md (app id, depots, signing). Website: enable Pages, fill website/config.js.
@@ -179,3 +179,16 @@ Known: Godot exits with code 134 after some headless runs (engine cleanup at qui
 - Not translated: 3D world signage (street_dressing shop signs, robot decals), proper names (districts, robot names), dev/log text.
 - Next: real translations (DE, FR, ES, PT-BR, ZH-CN, JA, KO, RU), CJK fallback font, a pseudo-locale layout pass on every screen with screenshots, `extract_strings.py --check` in CI.
 
+
+## Update: whole game, beatable end to end (wt/beat)
+- docs/WALKTHROUGH.md: the critical path with gates and measured times (fresh save -> Old Town ->
+  second district -> Dust Flats -> Frozen Port -> Sunken City -> Cradle Returns -> finale -> credits ->
+  Seed Ark).
+- The Cradle is the true ending (Verdance Bloom = cradle_returned); finale replays if interrupted;
+  end credits roll (ui/credits_roll.gd, docs/CREDITS.md, skippable). Bloom Core charge follows the
+  campaign. Goal chain 144 goals to the Seed Ark. Garden ramp at ~1 h (base 3 + Pollinator Survey).
+- Autoplay plays the whole game: rocket travel, heaters/greenhouses/thaw, skimmers, Cradle pad; staged
+  runs with --save-dir / --stop-at / --game-minutes / --no-travel; milestones in
+  screenshots/autoplay_milestones_NAME.json; stuck-robot census.
+- Next: re-measure the first hour after merging the first-seed pacing (first helper); tune frontier
+  costs (Frozen Port went quickly once upgrades were maxed); Data is in surplus after the Dust Flats.
