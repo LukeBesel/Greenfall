@@ -8,7 +8,7 @@ render_mode unshaded, cull_back, shadows_disabled, fog_disabled;
 
 #include "res://art/shaders/planet_lib.gdshaderinc"
 
-uniform float bump = 0.035;
+uniform float bump = 0.06;
 uniform float feature_bump = 1.0;
 uniform vec3 mine_dir = vec3(0.42, 0.3, 0.86);
 uniform float mine_radius = 0.33;

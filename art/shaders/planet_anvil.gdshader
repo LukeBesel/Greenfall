@@ -7,7 +7,7 @@ render_mode unshaded, cull_back, shadows_disabled, fog_disabled;
 
 #include "res://art/shaders/planet_lib.gdshaderinc"
 
-uniform float bump = 0.045;
+uniform float bump = 0.08;
 uniform float feature_bump = 1.0;
 uniform vec3 tint = vec3(1.0, 1.0, 1.0);  // generic rocky worlds reuse this shader
 uniform float seams = 1.0;
@@ -32,7 +32,7 @@ void fragment() {
 	float n1 = pl_fbm(p * 9.0 + 3.0, min(oct, 5));
 
 	// the great rift: a band along a great circle, wandering, on one face of the world
-	vec3 k = normalize(vec3(0.25, 0.92, -0.3));
+	vec3 k = normalize(vec3(0.62, 0.62, -0.45));
 	float g = dot(p, k) + 0.16 * (pl_fbm(p * 2.2 + 2.0, 4) - 0.5) + 0.03 * (pl_fbm(p * 9.0, 3) - 0.5);
 	float rw = 0.6 + 0.8 * pl_fbm(p * 3.0 + 11.0, 3);
 	float arc = smoothstep(0.05, 0.55, dot(p, normalize(vec3(0.85, 0.0, 0.5))));

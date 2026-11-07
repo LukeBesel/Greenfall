@@ -22,7 +22,7 @@ void fragment() {
 	int oct = octaves;
 	vec3 q = p * 1.45 + vec3(seed, seed * 0.7, -seed);
 	vec3 wv = pl_warp(q * 1.3, min(oct, 4)) * 1.1;
-	vec4 c = pl_fbmd(q + wv, oct, 0.5, 0.0);
+	vec4 c = pl_fbmd(q + wv, oct, 0.5, 0.6);
 	float h = c.x - 0.02;
 	vec4 m = pl_ridged(p * 3.1 + wv * 1.6 + seed * 1.3, max(oct - 2, 2));
 	float inland = smoothstep(0.02, 0.22, h);

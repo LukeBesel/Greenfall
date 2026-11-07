@@ -13,7 +13,7 @@ uniform vec3 col_ok = vec3(0.35, 0.6, 1.0);
 uniform float strength_ruin = 0.8;
 uniform float strength_ok = 1.0;
 uniform float thickness = 0.06;  // the shell mesh radius is (1 + thickness) x the planet node scale
-uniform float falloff = 0.32;  // of the thickness
+uniform float falloff = 0.22;  // of the thickness
 varying vec3 w_p;
 
 void vertex() {
