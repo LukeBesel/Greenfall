@@ -1,0 +1,15 @@
+api_name,type,display_name,set_by,increment_only,default,game_key
+HEXES_CLEANED,INT,Hexes cleaned,Client,yes,0,hexes_cleaned
+HEXES_RESTORED,INT,Hexes restored,Client,yes,0,hexes_restored
+CUBES_MADE,INT,Bales made,Client,yes,0,cubes_made
+PERFECT_CUBES,INT,Perfect bales,Client,yes,0,perfect_cubes
+ROBOTS_BUILT,INT,Robots built,Client,yes,0,robots_built
+UPGRADES_BOUGHT,INT,Upgrades bought,Client,yes,0,upgrades_bought
+PLANTS_PLANTED,INT,Plants planted,Client,yes,0,plants_planted
+PLANTS_BLOOMED,INT,Plants bloomed,Client,yes,0,plants_bloomed
+SHARDS_FOUND,INT,Memory shards found,Client,yes,0,shards_found
+EGGS_FOUND,INT,Curiosities found,Client,yes,0,eggs_found
+OUTPOSTS_REPAIRED,INT,Outposts repaired,Client,yes,0,outposts_repaired
+ARK_WAVES,INT,Seed Ark waves,Client,yes,0,ark_waves
+DISTANCE_M,FLOAT,Distance driven (m),Client,yes,0,distance_m
+MINUTES_PLAYED,INT,Minutes played,Client,yes,0,time_played

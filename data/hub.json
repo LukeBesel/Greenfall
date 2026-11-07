@@ -1,0 +1,14 @@
+{
+  "_doc": "Hub levels and hub buildings. Materials are salvaged while scooping (per compartment unit of that junk type). Costs: cubes + materials. Materials are finite in a district (junk runs out), so level 4-5 and Air Scrubbers ask only for cubes plus what a district reliably yields; cubes keep coming from the garden stipend (hex_levels.json).",
+  "materials": {"metal": {"id": "sheet_metal", "name": "Sheet Metal", "per_unit": 0.3}, "plastic": {"id": "plastic_stock", "name": "Plastic Stock", "per_unit": 0.12}, "glass": {"id": "glass_cullet", "name": "Glass", "per_unit": 0.15}},
+  "levels": [
+    {"level": 1, "name": "Lean-to", "desc": "Pipe frame, tin roof, a bench.", "cost": {}},
+    {"level": 2, "name": "Workshop", "desc": "Walls, a roll-up door, floodlights. Bales sell for more at a proper scale.", "cost": {"cubes": 1500, "sheet_metal": 25, "plastic_stock": 15}, "bonus": {"sell_mult": 0.1}},
+    {"level": 3, "name": "Depot Station", "desc": "A second building, a radio mast and a sorting table.", "cost": {"cubes": 12000, "sheet_metal": 90, "plastic_stock": 60, "glass_cullet": 30}, "bonus": {"sell_mult": 0.2}},
+    {"level": 4, "name": "Solar Yard", "desc": "Solar panels and a greenhouse frame. Power for bigger machines.", "cost": {"cubes": 28000, "plastic_stock": 100, "glass_cullet": 40}, "bonus": {"sell_mult": 0.35}},
+    {"level": 5, "name": "Garden Station", "desc": "A wind turbine, clean paint, planters, and a pad that could take a rocket.", "cost": {"cubes": 30000, "plastic_stock": 80, "glass_cullet": 30}, "bonus": {"sell_mult": 0.5}}
+  ],
+  "buildings": [
+    {"id": "air_scrubber", "name": "Air Scrubber", "desc": "Pulls dusty air through filter banks. The sky clears faster.", "requires_level": 2, "cost": {"cubes": 1200}, "growth": 1.8, "max": 6, "filter_per_s": 1.0}
+  ]
+}

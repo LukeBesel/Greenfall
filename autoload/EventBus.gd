@@ -1,0 +1,54 @@
+extends Node
+## Global signal hub. Gameplay emits; UI, audio, story, stats listen.
+
+@warning_ignore_start("unused_signal")
+# Junk and cubes
+signal junk_scooped(type_id: String, world_pos: Vector3)
+signal compartment_changed(fill: float, capacity: float)
+signal cube_made(cube_info: Dictionary)
+signal cube_cashed(value: BigNum, world_pos: Vector3)
+signal currency_changed(currency: String, amount: BigNum)
+
+# World
+signal hex_cleaned(hex_id: int, world_pos: Vector3, bonus: BigNum)
+signal field_progress_changed(cleaned: int, total: int)
+signal hex_restored(hex_id: int)
+signal hex_level_changed(hex_id: int, level: int)
+signal tool_changed(tool: int)
+
+# Progression
+signal upgrade_bought(upgrade_id: String, new_level: int)
+signal milestone_reached(milestone_id: String)
+signal toast(text: String, kind: String)
+signal tutorial_changed(text: String)
+signal robot_built(robot_name: String)
+signal part_found(part_type: int, rarity: int)
+
+# Feel
+signal shake_requested(strength: float)
+signal hitstop_requested(duration: float, time_scale: float)
+
+# Sim / meta
+signal sim_tick(dt: float)
+signal game_loaded()
+signal game_saved()
+signal ui_modal_changed(open: bool)
+
+# Story: easter eggs and the Ledger arc
+signal easter_egg_found(egg_id: String)
+signal ledger_event(kind: String, data: Dictionary)
+@warning_ignore_restore("unused_signal")
+
+# Research / codex / achievements
+@warning_ignore_start("unused_signal")
+signal research_completed(research_id: String)
+signal achievement_unlocked(achievement_id: String)
+signal codex_unlocked(entry_key: String)
+@warning_ignore_restore("unused_signal")
+
+# [biomes] Frontier districts. cradle_district_complete fires once per save when the Cradle Returns
+# landing pad is clean and Sustained and the district is Growing enough (planet/frontier_district.gd).
+# It is the hook for the ark finale (story/*): see docs/DECISIONS.md.
+@warning_ignore_start("unused_signal")
+signal cradle_district_complete(hub_index: int)
+@warning_ignore_restore("unused_signal")

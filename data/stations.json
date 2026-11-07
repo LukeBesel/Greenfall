@@ -1,0 +1,33 @@
+{
+  "_doc": "Bale automation and recycling stations at the base (automation/stations.gd). Costs: cubes + materials, paid once. Upgrades live in upgrades.json (tab hub): belt_speed, baler_speed, recycler_yield (bases in patch.json).",
+  "conveyor": {
+    "name": "Conveyor Feeder",
+    "desc": "A hopper pad and a powered belt into the scale. Drop bales on the pad; haulers use it when it is closer.",
+    "cost": {"cubes": 250, "sheet_metal": 12},
+    "belt_speed": 1.1,
+    "gap": 0.75
+  },
+  "auto_baler": {
+    "name": "Auto-baler",
+    "desc": "A hydraulic baling press dropped at the cleaning frontier. Cleaner robots tip their hoppers into it instead of baling on the spot; it presses denser bales for the haulers.",
+    "cost": {"cubes": 900, "sheet_metal": 20, "plastic_stock": 10},
+    "relocate_cost": {"cubes": 40},
+    "bale_capacity": 14.0,
+    "press_time": 5.0,
+    "store_max": 70.0,
+    "value_mult": 0.85,
+    "service_range": 34.0,
+    "output_limit": 6
+  },
+  "recycler": {
+    "name": "Recycler",
+    "desc": "Shredder drums and a little smelter. Bales go in and never come back: out come bolts and clean building stock. Every bale burnt clean helps the sky.",
+    "requires_level": 2,
+    "cost": {"cubes": 1500, "sheet_metal": 25, "plastic_stock": 20},
+    "process_time": 3.2,
+    "bolts_per_bale": 2.0,
+    "material_mult": 4.0,
+    "cube_mult": 0.25,
+    "air_per_bale": 30.0
+  }
+}

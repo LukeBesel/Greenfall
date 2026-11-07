@@ -1,0 +1,30 @@
+{
+  "_doc": "Lumi's base stats before upgrades. plant_growth / seed_yield: garden-wide multipliers on plant growth speed and seeds per bloom (research raises them: the ~1 h garden ramp, docs/BALANCE.md).",
+  "stats": {
+    "capacity": 30.0,
+    "scoop_width": 1.4,
+    "scoop_reach": 2.4,
+    "pickup_count": 1.0,
+    "scoop_rate": 8.0,
+    "move_speed": 4.6,
+    "carry_stack": 1,
+    "cube_value_mult": 1.0,
+    "auto_compactor": 0,
+    "magnet_radius": 0.0,
+    "belt_speed": 1.0,
+    "baler_speed": 1.0,
+    "recycler_yield": 1.0,
+    "detector_range": 16.0,
+    "plant_growth": 1.0,
+    "seed_yield": 1.0
+  },
+  "cube": {
+    "pure_mult": 2.0,
+    "perfect_mult": 1.5,
+    "lumpy_mult": 0.8,
+    "perfect_band": [
+      0.9,
+      1.0
+    ]
+  }
+}

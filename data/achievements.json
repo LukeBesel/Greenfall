@@ -1,0 +1,810 @@
+{
+ "_doc": "Achievements. cond.type: stat (GameState.stats[key] >= target), junk_kg (kg removed of junk type key, * = all), cubes_earned (lifetime cubes), flag (GameState.flags[key] truthy), research (count researched), research_id (key researched), codex (entries unlocked in category key, * = all), hub_level (best hub level), achievements (count unlocked), list (size of the Array in GameState.flags[key]). Checked about once a second; unlocks persist in GameState.flags.achievements.",
+ "achievements": [
+  {
+   "id": "first_scoop",
+   "name": "First Scoop",
+   "desc": "Scoop your first piece of junk.",
+   "icon": "scoop",
+   "cond": {
+    "type": "junk_kg",
+    "target": 0.1,
+    "key": "*"
+   }
+  },
+  {
+   "id": "hex_1",
+   "name": "Clean Slate",
+   "desc": "Clean your first hex.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "hexes_cleaned"
+   }
+  },
+  {
+   "id": "hex_10",
+   "name": "Tidy Ten",
+   "desc": "Clean 10 hexes.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 10,
+    "key": "hexes_cleaned"
+   }
+  },
+  {
+   "id": "hex_50",
+   "name": "Half a Hundred",
+   "desc": "Clean 50 hexes.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 50,
+    "key": "hexes_cleaned"
+   }
+  },
+  {
+   "id": "hex_100",
+   "name": "Century of Hexes",
+   "desc": "Clean 100 hexes.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 100,
+    "key": "hexes_cleaned"
+   }
+  },
+  {
+   "id": "hex_250",
+   "name": "The Whole Yard",
+   "desc": "Clean 250 hexes.",
+   "icon": "trophy",
+   "cond": {
+    "type": "stat",
+    "target": 250,
+    "key": "hexes_cleaned"
+   }
+  },
+  {
+   "id": "cube_1",
+   "name": "Bale Begins",
+   "desc": "Press your first bale.",
+   "icon": "press",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "cubes_made"
+   }
+  },
+  {
+   "id": "cube_100",
+   "name": "Bale Baron",
+   "desc": "Press 100 bales.",
+   "icon": "press",
+   "cond": {
+    "type": "stat",
+    "target": 100,
+    "key": "cubes_made"
+   }
+  },
+  {
+   "id": "cube_1000",
+   "name": "Mountain of Bales",
+   "desc": "Press 1,000 bales.",
+   "icon": "trophy",
+   "cond": {
+    "type": "stat",
+    "target": 1000,
+    "key": "cubes_made"
+   }
+  },
+  {
+   "id": "pure_10",
+   "name": "Pure Intentions",
+   "desc": "Press 10 pure bales (one kind of junk only).",
+   "icon": "sort",
+   "cond": {
+    "type": "stat",
+    "target": 10,
+    "key": "pure_cubes"
+   }
+  },
+  {
+   "id": "perfect_1",
+   "name": "Just Right",
+   "desc": "Press a perfect bale.",
+   "icon": "check",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "perfect_cubes"
+   }
+  },
+  {
+   "id": "perfect_50",
+   "name": "Perfectionist",
+   "desc": "Press 50 perfect bales.",
+   "icon": "check",
+   "cond": {
+    "type": "stat",
+    "target": 50,
+    "key": "perfect_cubes"
+   }
+  },
+  {
+   "id": "lumpy_10",
+   "name": "Lumpy but Loved",
+   "desc": "Press 10 lumpy bales. They still count.",
+   "icon": "junk",
+   "cond": {
+    "type": "stat",
+    "target": 10,
+    "key": "lumpy_cubes"
+   }
+  },
+  {
+   "id": "earn_1k",
+   "name": "Pocket Change",
+   "desc": "Earn 1,000 cubes in total.",
+   "icon": "data",
+   "cond": {
+    "type": "cubes_earned",
+    "target": 1000
+   }
+  },
+  {
+   "id": "earn_100k",
+   "name": "Junk Tycoon",
+   "desc": "Earn 100,000 cubes in total.",
+   "icon": "data",
+   "cond": {
+    "type": "cubes_earned",
+    "target": 100000
+   }
+  },
+  {
+   "id": "earn_1m",
+   "name": "Million-Cube Planet",
+   "desc": "Earn 1,000,000 cubes in total.",
+   "icon": "trophy",
+   "cond": {
+    "type": "cubes_earned",
+    "target": 1000000
+   }
+  },
+  {
+   "id": "kg_metal",
+   "name": "Heavy Metal",
+   "desc": "Clear 500 kg of scrap metal.",
+   "icon": "magnet",
+   "cond": {
+    "type": "junk_kg",
+    "target": 500,
+    "key": "metal"
+   }
+  },
+  {
+   "id": "kg_plastic",
+   "name": "Plastic Purge",
+   "desc": "Clear 200 kg of plastic.",
+   "icon": "recycle",
+   "cond": {
+    "type": "junk_kg",
+    "target": 200,
+    "key": "plastic"
+   }
+  },
+  {
+   "id": "kg_glass",
+   "name": "Glass Act",
+   "desc": "Clear 200 kg of glass.",
+   "icon": "drop",
+   "cond": {
+    "type": "junk_kg",
+    "target": 200,
+    "key": "glass"
+   }
+  },
+  {
+   "id": "kg_rubber",
+   "name": "Bounce Back",
+   "desc": "Clear 150 kg of rubber.",
+   "icon": "junk",
+   "cond": {
+    "type": "junk_kg",
+    "target": 150,
+    "key": "rubber"
+   }
+  },
+  {
+   "id": "kg_electronics",
+   "name": "Circuit Breaker",
+   "desc": "Clear 100 kg of electronics.",
+   "icon": "chip",
+   "cond": {
+    "type": "junk_kg",
+    "target": 100,
+    "key": "electronics"
+   }
+  },
+  {
+   "id": "kg_paper",
+   "name": "Paper Trail",
+   "desc": "Clear 100 kg of paper and fabric.",
+   "icon": "book",
+   "cond": {
+    "type": "junk_kg",
+    "target": 100,
+    "key": "paper"
+   }
+  },
+  {
+   "id": "kg_total",
+   "name": "A Tonne of Fun",
+   "desc": "Clear 1,000 kg of junk.",
+   "icon": "hopper",
+   "cond": {
+    "type": "junk_kg",
+    "target": 1000,
+    "key": "*"
+   }
+  },
+  {
+   "id": "kg_10t",
+   "name": "Ten Tonnes Lighter",
+   "desc": "Clear 10,000 kg of junk.",
+   "icon": "trophy",
+   "cond": {
+    "type": "junk_kg",
+    "target": 10000,
+    "key": "*"
+   }
+  },
+  {
+   "id": "upgrade_1",
+   "name": "Tinkerer",
+   "desc": "Buy your first upgrade.",
+   "icon": "gear",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "upgrades_bought"
+   }
+  },
+  {
+   "id": "upgrade_50",
+   "name": "Fully Kitted",
+   "desc": "Buy 50 upgrade levels.",
+   "icon": "gear",
+   "cond": {
+    "type": "stat",
+    "target": 50,
+    "key": "upgrades_bought"
+   }
+  },
+  {
+   "id": "robot_1",
+   "name": "Not Alone",
+   "desc": "Build your first robot.",
+   "icon": "bot",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "robots_built"
+   }
+  },
+  {
+   "id": "robot_5",
+   "name": "Little Crew",
+   "desc": "Build 5 robots.",
+   "icon": "bot",
+   "cond": {
+    "type": "stat",
+    "target": 5,
+    "key": "robots_built"
+   }
+  },
+  {
+   "id": "robot_15",
+   "name": "Fleet Commander",
+   "desc": "Build 15 robots.",
+   "icon": "swarm",
+   "cond": {
+    "type": "stat",
+    "target": 15,
+    "key": "robots_built"
+   }
+  },
+  {
+   "id": "robot_types",
+   "name": "Whole Family",
+   "desc": "Build every kind of robot.",
+   "icon": "swarm",
+   "cond": {
+    "type": "codex",
+    "target": 5,
+    "key": "robots"
+   }
+  },
+  {
+   "id": "seed",
+   "name": "The First Seed",
+   "desc": "Find the first seed.",
+   "icon": "sprout",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "seeds_unlocked"
+   }
+  },
+  {
+   "id": "plant_1",
+   "name": "Green Thumb",
+   "desc": "Plant a seed.",
+   "icon": "sprout",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "plants_planted"
+   }
+  },
+  {
+   "id": "plant_100",
+   "name": "Gardener",
+   "desc": "Plant 100 seeds.",
+   "icon": "leaf",
+   "cond": {
+    "type": "stat",
+    "target": 100,
+    "key": "plants_planted"
+   }
+  },
+  {
+   "id": "bloom_50",
+   "name": "In Bloom",
+   "desc": "See 50 plants bloom.",
+   "icon": "flower",
+   "cond": {
+    "type": "stat",
+    "target": 50,
+    "key": "plants_bloomed"
+   }
+  },
+  {
+   "id": "restored_1",
+   "name": "Alive Again",
+   "desc": "Fully restore a hex.",
+   "icon": "tree",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "hexes_restored"
+   }
+  },
+  {
+   "id": "restored_25",
+   "name": "Meadowmaker",
+   "desc": "Fully restore 25 hexes.",
+   "icon": "tree",
+   "cond": {
+    "type": "stat",
+    "target": 25,
+    "key": "hexes_restored"
+   }
+  },
+  {
+   "id": "shard_1",
+   "name": "Memory Keeper",
+   "desc": "Read a memory shard.",
+   "icon": "book",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "shards_found"
+   }
+  },
+  {
+   "id": "shard_all",
+   "name": "Every Story",
+   "desc": "Read all eight memory shards.",
+   "icon": "book",
+   "cond": {
+    "type": "codex",
+    "target": 8,
+    "key": "shards"
+   }
+  },
+  {
+   "id": "research_1",
+   "name": "Curious",
+   "desc": "Finish your first research.",
+   "icon": "data",
+   "cond": {
+    "type": "research",
+    "target": 1
+   }
+  },
+  {
+   "id": "research_10",
+   "name": "Lab Coat",
+   "desc": "Finish 10 research projects.",
+   "icon": "data",
+   "cond": {
+    "type": "research",
+    "target": 10
+   }
+  },
+  {
+   "id": "research_all",
+   "name": "Know-It-All",
+   "desc": "Finish every research project.",
+   "icon": "trophy",
+   "cond": {
+    "type": "research",
+    "target": 30
+   }
+  },
+  {
+   "id": "tractor",
+   "name": "Beam Me Up",
+   "desc": "Research the Tractor Beam.",
+   "icon": "tractor",
+   "cond": {
+    "type": "research_id",
+    "target": 1,
+    "key": "tractor_beam"
+   }
+  },
+  {
+   "id": "rocket_cargo",
+   "name": "Special Delivery",
+   "desc": "Research Rocket Cargo.",
+   "icon": "rocket",
+   "cond": {
+    "type": "research_id",
+    "target": 1,
+    "key": "rocket_cargo"
+   }
+  },
+  {
+   "id": "data_500",
+   "name": "Data Hoarder",
+   "desc": "Collect 500 field data.",
+   "icon": "data",
+   "cond": {
+    "type": "stat",
+    "target": 500,
+    "key": "data_earned"
+   }
+  },
+  {
+   "id": "distance_1k",
+   "name": "Long Way Round",
+   "desc": "Roll 1 km.",
+   "icon": "map",
+   "cond": {
+    "type": "stat",
+    "target": 1000,
+    "key": "distance_m"
+   }
+  },
+  {
+   "id": "distance_10k",
+   "name": "Marathon Treads",
+   "desc": "Roll 10 km.",
+   "icon": "map",
+   "cond": {
+    "type": "stat",
+    "target": 10000,
+    "key": "distance_m"
+   }
+  },
+  {
+   "id": "time_1h",
+   "name": "Settling In",
+   "desc": "Spend an hour on the planet.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 3600,
+    "key": "time_played"
+   }
+  },
+  {
+   "id": "hub_2",
+   "name": "Home Improvements",
+   "desc": "Upgrade the hub.",
+   "icon": "gear",
+   "cond": {
+    "type": "hub_level",
+    "target": 2
+   }
+  },
+  {
+   "id": "hub_5",
+   "name": "Hub Sweet Hub",
+   "desc": "Reach hub level 5.",
+   "icon": "rocket",
+   "cond": {
+    "type": "hub_level",
+    "target": 5
+   }
+  },
+  {
+   "id": "parts_10",
+   "name": "Magpie",
+   "desc": "Dig up 10 robot parts.",
+   "icon": "chip",
+   "cond": {
+    "type": "stat",
+    "target": 10,
+    "key": "parts_found"
+   }
+  },
+  {
+   "id": "air",
+   "name": "Breath of Fresh Air",
+   "desc": "Filter 500 units of dusty air.",
+   "icon": "wave",
+   "cond": {
+    "type": "stat",
+    "target": 500,
+    "key": "air_filtered"
+   }
+  },
+  {
+   "id": "codex_20",
+   "name": "Naturalist",
+   "desc": "Fill in 20 codex entries.",
+   "icon": "book",
+   "cond": {
+    "type": "codex",
+    "target": 20,
+    "key": "*"
+   }
+  },
+  {
+   "id": "landmarks_all",
+   "name": "Sightseer",
+   "desc": "Visit every kind of landmark.",
+   "icon": "map",
+   "cond": {
+    "type": "codex",
+    "target": 9,
+    "key": "landmarks"
+   }
+  },
+  {
+   "id": "ach_25",
+   "name": "Overachiever",
+   "desc": "Unlock 25 achievements.",
+   "icon": "trophy",
+   "cond": {
+    "type": "achievements",
+    "target": 25
+   }
+  },
+  {
+   "id": "curio_5",
+   "name": "Nosy Parker",
+   "desc": "Find 5 curiosities.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 5,
+    "key": "eggs_found"
+   }
+  },
+  {
+   "id": "curio_15",
+   "name": "Cabinet of Curiosities",
+   "desc": "Find 15 curiosities.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 15,
+    "key": "eggs_found"
+   }
+  },
+  {
+   "id": "curio_all",
+   "name": "Every Last Secret",
+   "desc": "Find all 29 curiosities on Verdance.",
+   "icon": "trophy",
+   "cond": {
+    "type": "stat",
+    "target": 29,
+    "key": "eggs_found"
+   }
+  },
+  {
+   "id": "wild_curio",
+   "name": "Off the Beaten Path",
+   "desc": "Find a curiosity that only lives in the wilderness.",
+   "icon": "map",
+   "cond": {
+    "type": "list",
+    "target": 1,
+    "key": "eggs_wild"
+   }
+  },
+  {
+   "id": "wild_curio_all",
+   "name": "Wild at Heart",
+   "desc": "Find all six wilderness curiosities.",
+   "icon": "map",
+   "cond": {
+    "type": "list",
+    "target": 6,
+    "key": "eggs_wild"
+   }
+  },
+  {
+   "id": "biome_1",
+   "name": "Off-Road",
+   "desc": "Land at a wilderness base.",
+   "icon": "rocket",
+   "cond": {
+    "type": "list",
+    "target": 1,
+    "key": "biomes_visited"
+   }
+  },
+  {
+   "id": "biome_3",
+   "name": "Postcards From Verdance",
+   "desc": "Visit wilderness bases in three different biomes.",
+   "icon": "rocket",
+   "cond": {
+    "type": "list",
+    "target": 3,
+    "key": "biomes_visited"
+   }
+  },
+  {
+   "id": "campfire",
+   "name": "Sit a While",
+   "desc": "Rekindle the last campfire.",
+   "icon": "flower",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "egg_campfire"
+   }
+  },
+  {
+   "id": "bloom_meadow",
+   "name": "First Meadow",
+   "desc": "Reach 25 Thriving hexes across Verdance.",
+   "icon": "flower",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "bloom_first_meadow"
+   }
+  },
+  {
+   "id": "bloom_district",
+   "name": "A District in Bloom",
+   "desc": "Bring one district to 60% Thriving.",
+   "icon": "tree",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "bloom_thriving_district"
+   }
+  },
+  {
+   "id": "bloom_verdance",
+   "name": "Verdance Bloom",
+   "desc": "Bring the Cradle home: three districts in bloom, or 1% of the planet reclaimed.",
+   "icon": "tree",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "bloom_verdance_bloom"
+   }
+  },
+  {
+   "id": "bloom_evergreen",
+   "name": "Evergreen",
+   "desc": "Twelve districts in bloom, or 3% of the planet reclaimed.",
+   "icon": "leaf",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "bloom_evergreen"
+   }
+  },
+  {
+   "id": "ark_1",
+   "name": "Seed Ark",
+   "desc": "Complete a Seed Ark wave.",
+   "icon": "sprout",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "ark_waves"
+   }
+  },
+  {
+   "id": "ark_10",
+   "name": "Tender of Worlds",
+   "desc": "Complete 10 Seed Ark waves.",
+   "icon": "sprout",
+   "cond": {
+    "type": "stat",
+    "target": 10,
+    "key": "ark_waves"
+   }
+  },
+  {
+   "id": "outpost_1",
+   "name": "Frontier Scale",
+   "desc": "Repair a ruined outpost.",
+   "icon": "map",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "outposts_repaired"
+   }
+  },
+  {
+   "id": "outpost_3",
+   "name": "Outpost Network",
+   "desc": "Repair 3 outposts.",
+   "icon": "map",
+   "cond": {
+    "type": "stat",
+    "target": 3,
+    "key": "outposts_repaired"
+   }
+  },
+  {
+   "id": "outpost_charge",
+   "name": "Pit Stop",
+   "desc": "Build a recharge pad at an outpost.",
+   "icon": "gear",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "outpost_pads"
+   }
+  },
+  {
+   "id": "builder_mix",
+   "name": "Mix and Match",
+   "desc": "Build a robot with all five custom parts.",
+   "icon": "bot",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "builder_full_custom"
+   }
+  },
+  {
+   "id": "builder_maker",
+   "name": "As the Makers Made It",
+   "desc": "Fit the full Maker set (shell, optic and glider) on one robot.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "builder_maker_set"
+   }
+  },
+  {
+   "id": "builder_hats",
+   "name": "Hat Rack",
+   "desc": "Collect 5 different robot toppers.",
+   "icon": "trophy",
+   "cond": {
+    "type": "stat",
+    "target": 5,
+    "key": "builder_toppers"
+   }
+  }
+ ]
+}

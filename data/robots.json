@@ -1,0 +1,342 @@
+{
+  "_doc": "Robot types. requires_research = research node id needed before the type can be built (absent = unlocked from the start). recipe = part type ids needed to build one (any rarity; higher rarity adds +5% per rarity step to the robot's stats). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = rarity index of a Control Core consumed to reach the tier. Fleet upgrades apply to every robot of the type.",
+  "types": [
+    {
+      "id": "scoopie",
+      "name": "Scoopie",
+      "role": "clean",
+      "desc": "Small cleaner. Picks junk in its hex and leaves bales behind.",
+      "recipe": [
+        "chassis",
+        "locomotion",
+        "arm",
+        "core"
+      ],
+      "cost": 1100,
+      "stats": {
+        "speed": 1.6,
+        "scoop_rate": 1.4,
+        "capacity": 12.0,
+        "efficiency": 0.6
+      },
+      "upgrades": [
+        {
+          "stat": "speed",
+          "name": "Drive Motors",
+          "mode": "mul_pct",
+          "amount": 0.12,
+          "base_cost": 90,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": " m/s"
+        },
+        {
+          "stat": "scoop_rate",
+          "name": "Arm Servos",
+          "mode": "mul_pct",
+          "amount": 0.15,
+          "base_cost": 110,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": "/s"
+        },
+        {
+          "stat": "capacity",
+          "name": "Hopper Liner",
+          "mode": "add",
+          "amount": 3.0,
+          "base_cost": 130,
+          "growth": 1.65,
+          "max_level": 15,
+          "unit": ""
+        },
+        {
+          "stat": "efficiency",
+          "name": "Compactor Tune",
+          "mode": "mul_pct",
+          "amount": 0.1,
+          "base_cost": 160,
+          "growth": 1.7,
+          "max_level": 20,
+          "unit": "x"
+        }
+      ]
+    },
+    {
+      "id": "haulbug",
+      "name": "Haul Bug",
+      "role": "haul",
+      "desc": "Fork cart. Carries loose bales to the scale.",
+      "recipe": [
+        "chassis",
+        "locomotion",
+        "battery"
+      ],
+      "cost": 400,
+      "stats": {
+        "speed": 2.8,
+        "carry": 2.0
+      },
+      "upgrades": [
+        {
+          "stat": "speed",
+          "name": "Drive Motors",
+          "mode": "mul_pct",
+          "amount": 0.12,
+          "base_cost": 100,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": " m/s"
+        },
+        {
+          "stat": "carry",
+          "name": "Longer Forks",
+          "mode": "add",
+          "amount": 1.0,
+          "base_cost": 250,
+          "growth": 2.0,
+          "max_level": 5,
+          "unit": ""
+        }
+      ]
+    },
+    {
+      "id": "seedling",
+      "requires_research": "seedling_blueprint",
+      "name": "Seedling",
+      "role": "plant",
+      "desc": "Plants seeds in clean ground. Uses your seed stock.",
+      "recipe": [
+        "chassis",
+        "locomotion",
+        "arm",
+        "hopper"
+      ],
+      "cost": 700,
+      "stats": {
+        "speed": 1.5,
+        "work_rate": 0.8
+      },
+      "upgrades": [
+        {
+          "stat": "speed",
+          "name": "Drive Motors",
+          "mode": "mul_pct",
+          "amount": 0.12,
+          "base_cost": 200,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": " m/s"
+        },
+        {
+          "stat": "work_rate",
+          "name": "Seed Drill",
+          "mode": "mul_pct",
+          "amount": 0.15,
+          "base_cost": 260,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": "/s"
+        }
+      ]
+    },
+    {
+      "id": "drip",
+      "requires_research": "drip_blueprint",
+      "name": "Drip",
+      "role": "water",
+      "desc": "Waters the thirstiest plants in its zone with a spray arc. Refills at the base barrel, a Water Tank or a clean lake.",
+      "recipe": [
+        "chassis",
+        "locomotion",
+        "hopper",
+        "battery"
+      ],
+      "cost": 700,
+      "stats": {
+        "speed": 1.7,
+        "work_rate": 1.0,
+        "tank": 26.0,
+        "spray_radius": 1.3,
+        "refill_rate": 5.0
+      },
+      "upgrades": [
+        {
+          "stat": "speed",
+          "name": "Drive Motors",
+          "mode": "mul_pct",
+          "amount": 0.12,
+          "base_cost": 200,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": " m/s"
+        },
+        {
+          "stat": "tank",
+          "name": "Bigger Tank",
+          "mode": "add",
+          "amount": 8.0,
+          "base_cost": 240,
+          "growth": 1.65,
+          "max_level": 15,
+          "unit": ""
+        },
+        {
+          "stat": "spray_radius",
+          "name": "Wide Nozzle",
+          "mode": "add",
+          "amount": 0.3,
+          "base_cost": 300,
+          "growth": 1.8,
+          "max_level": 8,
+          "unit": " m"
+        },
+        {
+          "stat": "refill_rate",
+          "name": "Fast Pump",
+          "mode": "mul_pct",
+          "amount": 0.25,
+          "base_cost": 220,
+          "growth": 1.6,
+          "max_level": 12,
+          "unit": "/s"
+        }
+      ]
+    },
+    {
+      "id": "skimmer",
+      "name": "Skimmer",
+      "role": "skim",
+      "desc": "Hover pontoon bot with a net arm. Skims floating junk off the lake and leaves bales on the shore for haulers.",
+      "recipe": [
+        "chassis",
+        "locomotion",
+        "arm",
+        "battery"
+      ],
+      "cost": 800,
+      "stats": {
+        "speed": 1.8,
+        "scoop_rate": 1.5,
+        "capacity": 14.0,
+        "efficiency": 0.6
+      },
+      "upgrades": [
+        {
+          "stat": "speed",
+          "name": "Hover Fans",
+          "mode": "mul_pct",
+          "amount": 0.12,
+          "base_cost": 220,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": " m/s"
+        },
+        {
+          "stat": "scoop_rate",
+          "name": "Net Winch",
+          "mode": "mul_pct",
+          "amount": 0.15,
+          "base_cost": 260,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": "/s"
+        },
+        {
+          "stat": "capacity",
+          "name": "Bigger Net",
+          "mode": "add",
+          "amount": 3.0,
+          "base_cost": 280,
+          "growth": 1.65,
+          "max_level": 15,
+          "unit": ""
+        }
+      ]
+    },
+    {
+      "id": "multibot",
+      "requires_research": "multibot_blueprint",
+      "name": "Multibot",
+      "role": "any",
+      "desc": "General helper. Assign it to Clean, Plant or Water on the Allocation Board. Slower than a specialist.",
+      "recipe": [
+        "chassis",
+        "locomotion",
+        "arm",
+        "core",
+        "module"
+      ],
+      "cost": 1600,
+      "stats": {
+        "speed": 1.6,
+        "scoop_rate": 1.0,
+        "capacity": 10.0,
+        "efficiency": 0.5,
+        "work_rate": 0.6,
+        "tank": 14.0,
+        "carry": 1.0
+      },
+      "upgrades": [
+        {
+          "stat": "speed",
+          "name": "Drive Motors",
+          "mode": "mul_pct",
+          "amount": 0.12,
+          "base_cost": 300,
+          "growth": 1.6,
+          "max_level": 15,
+          "unit": " m/s"
+        }
+      ]
+    }
+  ],
+  "tiers": [
+    {
+      "name": "Mk I",
+      "look": "salvage",
+      "mult": 1.0,
+      "cost_mult": 0,
+      "requires_core_rarity": -1
+    },
+    {
+      "name": "Mk II",
+      "look": "restored",
+      "mult": 1.5,
+      "cost_mult": 6,
+      "requires_core_rarity": 2
+    },
+    {
+      "name": "Mk III",
+      "look": "modern",
+      "mult": 2.4,
+      "cost_mult": 30,
+      "requires_core_rarity": 3
+    },
+    {
+      "name": "Mk IV",
+      "look": "hover",
+      "mult": 4.0,
+      "cost_mult": 150,
+      "requires_core_rarity": 4
+    }
+  ],
+  "part_drop": {
+    "electronics": 0.06,
+    "metal": 0.012
+  },
+  "crew_cap": {
+    "_doc": "Max robots per crew (role) = base + per_level * hub level.",
+    "base": 1,
+    "per_level": 2
+  },
+  "water_tank": {
+    "_doc": "Placeable refill station for Drip robots. cost in cubes grows per tank; holds `capacity` water and refills itself at `regen` per second (rain catcher + condenser).",
+    "cost": 150,
+    "growth": 1.7,
+    "max": 6,
+    "capacity": 80.0,
+    "regen": 1.2,
+    "min_spacing": 4.0
+  }
+}

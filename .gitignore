@@ -1,0 +1,11 @@
+.godot/
+/screenshots/*.png
+/screenshots/*.avi
+/builds/
+*.tmp
+*.log
+/build/
+/screenshots/**/*.png
+/screenshots/**/*.jpg
+/screenshots/**/*.webp
+__pycache__/

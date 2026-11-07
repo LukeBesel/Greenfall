@@ -1,0 +1,92 @@
+{
+  "_doc": "Codex entries. Each category's keys match ids in junk.json / plants.json / robots.json / shards.json / junk.json landmarks. Entries unlock when found: junk = first scooped, plants = first planted, robots = first built, shards = read, landmarks = Lumi rolls near one. kg_per_unit converts compartment units of junk to kilograms for the Stats tab.",
+  "categories": [
+    {"id": "junk", "name": "Junk", "icon": "junk"},
+    {"id": "plants", "name": "Plants", "icon": "flower"},
+    {"id": "robots", "name": "Robots", "icon": "bot"},
+    {"id": "shards", "name": "Memory Shards", "icon": "book"},
+    {"id": "landmarks", "name": "Landmarks", "icon": "map"},
+    {"id": "frontiers", "name": "Frontiers", "icon": "map"}
+  ],
+  "junk": {
+    "metal": {"kg_per_unit": 2.4, "hint": "Rusty, clanky, everywhere.", "desc": "Cans, tins and bent brackets. Most of it was made to last, and it did. Pressed into bales, it can be rolled and stamped into something useful again."},
+    "plastic": {"kg_per_unit": 0.6, "hint": "Bright colours that never faded.", "desc": "Bottles, crates and the occasional chair. It outlived the people who bought it. It weighs almost nothing, and still the ground under it stayed bare."},
+    "glass": {"kg_per_unit": 1.8, "hint": "It glints in the dust.", "desc": "Jugs and wine bottles, a few still corked. Sorted by colour, glass melts down beautifully. Lumi likes how the light comes through it."},
+    "rubber": {"kg_per_unit": 1.5, "hint": "Squeaky. Bouncy. Sad.", "desc": "Tyres, boots and one very patient rubber duck. Rubber holds water, and water holds mosquitoes. Clearing it makes room for frogs."},
+    "electronics": {"kg_per_unit": 1.2, "hint": "It might still remember something.", "desc": "Laptops, radios and televisions with nothing left to say. Inside are tiny useful parts. Lumi keeps the good ones for new friends."},
+    "paper": {"kg_per_unit": 0.4, "hint": "Soft, and slowly going back to soil.", "desc": "Cardboard boxes, bags and old gloves. Paper is the one kind of junk that is already trying to become soil. Lumi helps it along."}
+  },
+  "plants": {
+    "grass": {"name": "Meadow Grass", "hint": "Plant your first seeds.", "desc": "The first thing to come back, always. Its roots knit the loose dust together so other plants have something to hold on to."},
+    "grass2": {"name": "Tufted Grass", "hint": "Keep planting.", "desc": "A slightly scruffier cousin. It grows in clumps, and small beetles like to live between them."},
+    "celandine": {"name": "Celandine", "hint": "A little yellow star.", "desc": "Glossy yellow petals that open in the sun and close when clouds pass. Bees find it before they find anything else."},
+    "gazania": {"name": "Gazania", "hint": "Bold stripes, big smile.", "desc": "A tough little sun-lover with striped petals. It does not mind poor soil. It seems to enjoy proving people wrong."},
+    "heliophila": {"name": "Heliophila", "hint": "The first flower you ever saw here.", "desc": "Small blue flowers that turn to follow the light. One grew beside a crushed can before anyone helped it. That is where this all began."},
+    "dandelion": {"name": "Dandelion", "hint": "Make a wish.", "desc": "Golden today, a puff of wishes tomorrow. Each seed rides the wind to a new patch of clean ground. It plants itself, if you let it."},
+    "fern": {"name": "Fern", "hint": "Shade-lover.", "desc": "Fronds that unroll like slow fireworks. Ferns are very old. They have come back from worse than this."},
+    "shrub": {"name": "Shrub", "hint": "Something bigger.", "desc": "A low woody bush. Birds will notice it before you do. Shrubs are how a meadow starts thinking about becoming a wood."},
+    "nettle": {"name": "Nettle", "hint": "Needs Hardy Nettles research.", "desc": "Stingy, stubborn and wonderful. Nettles pull nutrients up from deep down, and caterpillars adore them."},
+    "mint": {"name": "Wild Mint", "hint": "Needs Wild Mint research.", "desc": "Crush a leaf and the whole hex smells fresh. Mint spreads quickly. Nobody minds."},
+    "hedge": {"name": "Hedgerow", "hint": "Needs Hedgerows research.", "desc": "A dense green wall, alive with small rustlings. Hedges are highways for hedgehogs, and hotels for wrens."},
+    "pine": {"name": "Pine Sapling", "hint": "Needs Evergreen Saplings research.", "desc": "Knee-high today. In a hundred years, a forest that smells of resin and rain. Lumi plants it carefully, for whoever comes after."},
+    "iceplant": {"name": "Crystalline Iceplant", "hint": "Plant in the Dust Flats.", "desc": "A desert succulent whose leaves are covered in tiny glassy blisters that store water. It glitters at noon and needs almost nothing to drink."},
+    "rooibos": {"name": "Wild Rooibos", "hint": "Plant in the Dust Flats.", "desc": "A needle-leafed bush that turns rusty red in the heat. Its roots go down further than you would believe. It holds the sand in place."},
+    "ursinia": {"name": "Ursinia", "hint": "Plant in the Dust Flats.", "desc": "A bright orange desert daisy. After the first rain in years, whole slopes of them opened at once, and the Cradle's old cameras saw it from orbit."},
+    "periwinkle": {"name": "Periwinkle", "hint": "A cold-hardy seed for the Frozen Port.", "desc": "An evergreen groundcover with violet flowers. It keeps its leaves under snow and simply carries on in spring."},
+    "frost_moss": {"name": "Frost Moss", "hint": "A cold-hardy seed for the Frozen Port.", "desc": "A tight green cushion that grows on cold stone. It is slow, but it survives what nothing else does, and it makes soil where there was none."},
+    "reed": {"name": "Marsh Reed", "hint": "Plant on the drained streets of the Sunken City.", "desc": "Tall reeds that drink the silt dry and filter the last of the floodwater. Little birds sit on them and complain about the wind."},
+    "marsh_mint": {"name": "Marsh Mint", "hint": "Plant in the Sunken City.", "desc": "Mint that does not mind wet feet. The drained streets smell of it on warm evenings."}
+  },
+  "robots": {
+    "scoopie": {"hint": "Build one at the workbench.", "desc": "A small, earnest cleaner with one scoop arm and a lot of enthusiasm. It hums when it finds a good pile."},
+    "haulbug": {"hint": "Build one at the workbench.", "desc": "A fork cart that never complains. It carries loose bales to the scale and parks itself neatly afterwards."},
+    "seedling": {"hint": "Research the Seedling Blueprint.", "desc": "A planter bot with a seed hopper on its back. It pats every seed into the soil, twice, just to be sure."},
+    "drip": {"hint": "Research the Drip Blueprint.", "desc": "A watering bot with a sloshy tank. It makes a little happy gurgle when a plant drinks."},
+    "multibot": {"hint": "Research the Multibot Blueprint.", "desc": "A helper that can clean, plant or water. Not the fastest at anything, but always where it is needed."},
+    "skimmer": {"hint": "Build a Skimmer.", "desc": "A little raft robot with a net and a rubber duck for luck. It drifts across the lakes fishing out bottles, and leaves neat bales on the shore."}
+  },
+  "shards": {
+    "back_soon": {"desc": "A hand-lettered sign from a bakery. Marta promised to be back soon."},
+    "kid_drawing": {"desc": "A crayon drawing, folded small enough to fit a pocket."},
+    "gardener_list": {"desc": "Someone's to-do list for a garden. Half the items are ticked."},
+    "receipt": {"desc": "A till receipt from the last ordinary day."},
+    "maint_log": {"desc": "A maintenance log for a unit that looked a lot like Lumi."},
+    "ledger_memo": {"desc": "An office memo about the evacuation. Very polite. Very tired."},
+    "voicemail": {"desc": "A voicemail transcript. Someone was calling to say they were safe."},
+    "poster": {"desc": "A faded safety poster. The smiling robot on it is waving."}
+  },
+  "landmarks": {
+    "covered_car": {"name": "Covered Car", "hint": "Under a tarp, waiting.", "desc": "Somebody covered it carefully before they left, as if they meant to come back for it. The tarp has held for a very long time."},
+    "concrete_road_barrier": {"name": "Road Barrier", "hint": "Grey and heavy.", "desc": "Once it told traffic where to go. Now moss is slowly telling it where to stay."},
+    "exterior_aircon_unit": {"name": "Air Conditioner", "hint": "It used to hum.", "desc": "An old outdoor unit with a rusted fan. Small birds have started nesting behind the grille."},
+    "electric_stove": {"name": "Abandoned Stove", "hint": "A kitchen, without the kitchen.", "desc": "Someone carried it this far and then set it down. Its oven door still opens with a cheerful squeak."},
+    "Barrel_01": {"name": "Old Barrel", "hint": "Dented and rusty.", "desc": "Empty now, thankfully. Turned on its side it makes a decent shelter for a fox."},
+    "metal_trash_can": {"name": "Trash Can", "hint": "The irony is not lost on Lumi.", "desc": "The one place junk was supposed to go. Lumi salutes it every time he passes."},
+    "propane_tank": {"name": "Propane Tank", "hint": "Handle with care.", "desc": "Long since empty and safe. Someone painted a flower on the side, a long time ago."},
+    "plastic_monobloc_chair_01": {"name": "Plastic Chair", "hint": "Somebody sat here.", "desc": "The most common chair in the world. It faces the horizon, as if someone liked to watch the sunset from here."},
+    "dead_tree_trunk": {"name": "Old Tree Trunk", "hint": "It used to be tall.", "desc": "A tree that did not make it. But there are tiny green shoots at its base, and beetles inside, and it is not as dead as it looks."},
+    "old_drill_press": {"name": "Drill Press", "hint": "Out in the rust plains.", "desc": "A workshop drill press standing alone in a field. The workshop around it is long gone; the press stayed exactly where it was told."},
+    "old_military_compressor": {"name": "Field Compressor", "hint": "Out where the wild bases are.", "desc": "A wheeled air compressor, its gauges frozen at 'enough'. It pumped up the tyres of a whole fleet of cleanup carts once."},
+    "tree_stump_01": {"name": "Tree Stump", "hint": "Where a forest used to be.", "desc": "Cut, not fallen. The rings count back further than the Ledger. Moss has started a quiet negotiation with the bark."},
+    "ocean_buoy": {"name": "Washed-up Buoy", "hint": "On a far coast.", "desc": "A channel buoy that drifted inland on a storm tide and never found its way back. Its lamp still blinks, once an hour, out of habit."},
+    "wooden_crate_02": {"name": "Cargo Crate", "hint": "Near the shore, or the dunes.", "desc": "A slatted crate stencilled CRADLE SUPPLY: FRAGILE. Packed for the ark's launch three hundred years ago, and left behind in the rush. Empty. Whatever was inside was planted somewhere, a long time ago."},
+    "barrel_03": {"name": "Sand-Blasted Drum", "hint": "Where the wind carries sand.", "desc": "Centuries of wind have polished this drum down to bare, shining metal. In the dunes even the junk gets buffed."},
+    "dead_quiver_trunk": {"name": "Dead Quiver Tree", "hint": "Out in the Dust Flats.", "desc": "A desert tree that stored water in its trunk until there was none left to store. It still stands, bleached silver, pointing at the sky."},
+    "namaqualand_rocks_01": {"name": "Desert Rocks", "hint": "Scattered over the Dust Flats.", "desc": "Wind-polished stones. Lumi swears one of them looks like WREN's logo. WREN says it does not."},
+    "small_lpg_tank": {"name": "Gas Bottle", "hint": "Frozen into the port yard.", "desc": "A small gas bottle with a frozen valve. The harbour heaters once ran on these. Now they run on Lumi."},
+    "portable_generator": {"name": "Field Generator", "hint": "Near the Cradle's old launch field.", "desc": "A ground-crew generator, still labelled LAUNCH SUPPORT. It powered the floodlights on the night the Cradle left."},
+    "utility_box_01": {"name": "Launch Utility Box", "hint": "Near the Cradle's old launch field.", "desc": "A junction box for the launch field's lights. Someone wrote GOOD LUCK on the door in marker pen, three hundred years ago."},
+    "concrete_road_barrier_02": {"name": "Blast Barrier", "hint": "Around the landing pad.", "desc": "Barriers that kept the crowd back from the pad. The crowd has been gone a long time. The barriers took their job very seriously."}
+  },
+  "frontiers": {
+    "dust_flats": {"name": "Dust Flats", "hint": "Research Dune Charts and fly there.", "desc": "Old salt flats where a solar farm once powered half a continent. Sandstorms roll in every few minutes and bury cleaned ground again; Sustained hexes shelter their neighbours. The well is dry: Drips need Water Tanks."},
+    "frozen_port": {"name": "Frozen Port", "hint": "Research the Thermal Lance and fly there.", "desc": "A container harbour frozen solid. Junk is locked in ice until it is thawed: Lumi's beam melts it slowly, heaters melt it fast and warm the hexes around them. Plants need a greenhouse, or Cold-Hardy Seeds."},
+    "sunken_city": {"name": "Sunken City", "hint": "Research Pump Works and fly there.", "desc": "A downtown that went under when the sea walls failed. Skimmers net the floating junk; once most of a ring is clean, the old pumps run and the water drops, revealing streets full of stranded debris."},
+    "cradle_returns": {"name": "Cradle Returns", "hint": "Restore all three frontiers and research the Ark Beacon.", "desc": "The launch city the Cradle left from. Its towers were kept by ground crews, but the landing field is buried. Clean and green the pad, and the ark can come home."},
+    "sandstorm": {"name": "Sandstorms", "hint": "Wait for the wind in the Dust Flats.", "desc": "The wind picks up junk from the open flats and drops it on clean ground. Planted hexes are never touched, and Sustained hexes break the wind for every hex next to them."},
+    "thaw": {"name": "Thawing", "hint": "Melt the ice in the Frozen Port.", "desc": "Hold the beam on ice and it slowly melts. A heater thaws a whole hex in about a minute and keeps warming the hexes around it."},
+    "greenhouse": {"name": "Greenhouses", "hint": "Build one in the Frozen Port.", "desc": "A glass hex over clean ground. Anything grows inside, a quarter faster than outdoors."},
+    "pumps": {"name": "The Old Pumps", "hint": "Clean the water in the Sunken City.", "desc": "The city's flood pumps still work. They only needed the drains cleared. Every time they run, a ring of streets comes back out of the water."},
+    "ark_pad": {"name": "The Landing Pad", "hint": "Find it in Cradle Returns.", "desc": "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Sustained before the ark will trust it."}
+  }
+}
