@@ -165,6 +165,13 @@ static func migrate_v2(d: Dictionary) -> Dictionary:
 		if not cur.has(id):
 			cur[id] = BigNum.zero().serialize()
 	d["currencies"] = cur
+	# Contracts are Requests now: the "Handle world events" contract is gone (events count directly).
+	var cs: Variant = flags.get("contracts")
+	if cs is Dictionary and (cs as Dictionary).get("slots") is Array:
+		var slots: Array = cs["slots"]
+		for i: int in slots.size():
+			if slots[i] is Dictionary and str((slots[i] as Dictionary).get("tpl", "")) == "events":
+				slots[i] = {"state": "wait", "wait": 30.0}
 	flags["money_migrated"] = true
 	d["flags"] = flags
 	return d

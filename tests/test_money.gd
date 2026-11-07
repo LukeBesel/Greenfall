@@ -94,7 +94,7 @@ func test_migrate_v1_save_to_three_currencies() -> void:
 		"plastic_stock": BigNum.from_float(20).serialize(), "glass_cullet": BigNum.from_float(5).serialize(),
 		"data": BigNum.from_float(45).serialize(), "compost": BigNum.from_float(12).serialize(),
 		"tokens": BigNum.from_float(6).serialize(), "trinkets": BigNum.from_float(2).serialize()},
-		"flags": {"builder": {"fragments": 3, "inv": {}}}}
+		"flags": {"builder": {"fragments": 3, "inv": {}}, "contracts": {"slots": [{"state": "active", "tpl": "events", "tokens": 5}], "done_total": 3}}}
 	var m: Dictionary = SaveManager.migrate(old)
 	assert_eq(int(m["version"]), GameState.SAVE_VERSION)
 	var cur: Dictionary = m["currencies"]
@@ -107,6 +107,8 @@ func test_migrate_v1_save_to_three_currencies() -> void:
 	assert_almost_eq(seeds, 7.0, 0.01, "compost is not turned into seeds")
 	assert_almost_eq(float(m["flags"]["press_hopper"]), 12.0, 0.01, "compost goes into the press hopper")
 	assert_eq(int(m["flags"]["builder"]["fragments"]), 0)
+	assert_eq(str(m["flags"]["contracts"]["slots"][0]["state"]), "wait", "the retired events contract is cleared")
+	assert_eq(int(m["flags"]["contracts"]["done_total"]), 3, "finished contracts count toward the Requests track")
 	GameState.from_dict(m)
 	assert_almost_eq(_f("parts"), parts, 0.01)
 	assert_almost_eq(Composter.hopper(), 12.0, 0.01)
