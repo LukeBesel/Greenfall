@@ -575,3 +575,38 @@ calls it and scales the result; nothing is duplicated.
   here into more cubes there. It is a nudge you can watch, not an income source.
 - **Telescope unlock:** base level 4, or the Observatory Optics research (Robotics tier 6, 500 Data). Cost
   6000 cubes + 40 parts (bolts until the money rework adds a parts currency). Tests: `tests/test_remote_progress.gd`.
+
+## World2: the district reads covered (wt/world2, Nov 7)
+
+Owner: "the only clear areas should be what you or bots pick up." Junk gen 2 (new games; saves without
+`junk_gen` keep gen 1 and radius 3): Old Town's field is radius 4 (55 junk hexes, was 33), no mid-road
+sparsity, a full ring around the base, 40% of landfill junk between the heaps, and the streets of
+building-blocked hexes plus the hub hex outside the yard belong to the nearest junk hex. Every hex keeps
+gen 1's junk volume: pieces are smaller (`vol_scale`), and one pickup (Lumi's beam or a robot's scoop)
+takes the nearby little cluster along (`HexField.hex_cluster`, ~1/vol_scale pieces), so bales, cubes and
+hex flips pace as before. Past the field, `planet/far_junk.gd` lays static junk and paper to 125 m.
+
+Generation (seed 4471): 13.2k pieces / 13.3k volume (radius 3, gen 1) -> 25.7k pieces / 21.9k volume
+(radius 4, gen 2). Coverage (a piece within 1 m of open ground, `tests/test_junk_coverage.gd`): roads
+56% -> 92%, the ring around the base 38-59% -> 86-90%, nothing bare (> 3 m from junk).
+
+First-30-min autoplay (`--fresh --autoplay --time-scale=8 --quit-after=300`, game minutes, before ->
+after; the after bot first detoured to dig a buried part, hence the late first bale):
+
+| Milestone | Before | After |
+|---|---|---|
+| First bale / sale / upgrade | 0.3 / 0.4 / 0.4 | 1.3 / 1.6 / 1.4 |
+| First hex clean | 1.1 | 2.8 |
+| First research done | 5.3 | 5.8 |
+| First robot (Scoopie) | 6.4 | 6.0 |
+| First Haul Bug | 6.9 | 6.0 |
+| Seed tin | 13.9 | 11.4 |
+| Base level 2 | 13.0 | 16.9 |
+| First hex Sustained (lv 4) | 18.2 | 16.5 |
+| First hex Thriving (lv 5) | 25.1 | 24.9 |
+| First Skimmer | 25.2 | 15.6 |
+| At ~36 min: hexes clean / goals / earned | 22 / 49 / 42.5k (38 min) | 21 / 48 / 38.6k |
+
+Without the cluster pickup (volume kept, more pickups) the same run was 15-35% slower (base 2 at 18,
+first Thriving at 34.5); with gen-2 counts but no volume scaling the economy would run ahead instead.
+Solid props add bot "stuck escapes" (6 -> 31 in the run; the bot steers straight): no robot got stuck.
