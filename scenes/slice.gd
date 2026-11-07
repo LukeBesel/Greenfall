@@ -678,6 +678,15 @@ func _build_board() -> void:
 	sl.mesh = AssetLib.model_mesh("street_lamp_01")
 	sl.position = Vector3(4.2, 0, -3.0)
 	add_child(sl)
+	var pole := StaticBody3D.new()  # [vqa2] the camera arm (and Lumi, robots) stop at the pole
+	var pcs := CollisionShape3D.new()
+	var pcy := CylinderShape3D.new()
+	pcy.radius = 0.16
+	pcy.height = 3.6
+	pcs.shape = pcy
+	pcs.position = Vector3(0, 1.8, 0)
+	pole.add_child(pcs)
+	sl.add_child(pole)
 	var light := SpotLight3D.new()
 	light.light_color = Color(1.0, 0.82, 0.6)
 	light.light_energy = 3.0
