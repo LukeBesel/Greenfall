@@ -225,7 +225,9 @@ func _render() -> Image:
 	var vp := SubViewport.new()
 	vp.size = SHOT_SIZE
 	vp.world_3d = world.get_viewport().find_world_3d()
-	vp.msaa_3d = Viewport.MSAA_2X
+	vp.msaa_3d = Viewport.MSAA_DISABLED
+	vp.use_taa = false
+	vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA
 	vp.render_target_update_mode = SubViewport.UPDATE_ONCE
 	var cam := Camera3D.new()
 	cam.fov = 58.0
@@ -237,6 +239,7 @@ func _render() -> Image:
 		e2.ssr_enabled = false
 		e2.ssil_enabled = false
 		e2.volumetric_fog_enabled = false
+		e2.ssao_enabled = false
 		cam.environment = e2
 	vp.add_child(cam)
 	add_child(vp)
