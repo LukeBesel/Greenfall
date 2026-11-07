@@ -82,7 +82,7 @@ static func suits(d: Dictionary, ctx: Dictionary, regs: Array, night: bool) -> b
 	if where == "water":
 		if not bool(ctx.get("water", false)) or not bool(ctx.get("clean", false)):
 			return false
-		return int(ctx.get("near_level", 0)) >= int(d.get("near_level", 0))
+		return not d.has("near_level") or int(ctx.get("near_level", 0)) >= int(d["near_level"])
 	if bool(ctx.get("water", false)):
 		return false
 	if bool(ctx.get("locked", false)) and not bool(d.get("ice_ok", false)):

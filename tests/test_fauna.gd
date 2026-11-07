@@ -92,7 +92,7 @@ func test_water_animals_need_a_clean_lake() -> void:
 
 
 func test_frontier_biomes_have_their_own_animals() -> void:
-	assert_eq(FaunaRules.regions(""), ["city"] as Array[String])
+	assert_eq(str(FaunaRules.regions("")), str(["city"]))
 	assert_true("wild_dust" in FaunaRules.regions("dust_dunes"))
 	var dust: Array = FaunaRules.regions("dust_flats")
 	assert_true(FaunaRules.suits(FaunaRules.def("lizard"), _ctx(1), dust, false))
