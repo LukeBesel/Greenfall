@@ -11,6 +11,12 @@ extends RefCounted
 
 const PATH: String = "res://screenshots/autoplay_milestones.json"
 
+
+## One file per --save-dir stage chain, so parallel runs don't overwrite each other.
+static func path() -> String:
+	var d: String = DevHooks.get_s("save-dir", "")
+	return PATH if d == "" else PATH.replace(".json", "_%s.json" % d.validate_filename())
+
 static var marks: Dictionary = {}
 static var _loaded: bool = false
 
@@ -23,7 +29,7 @@ static func _load() -> void:
 		marks = {}
 		_write()
 		return
-	var f := FileAccess.open(ProjectSettings.globalize_path(PATH), FileAccess.READ)
+	var f := FileAccess.open(ProjectSettings.globalize_path(path()), FileAccess.READ)
 	if f:
 		var v: Variant = JSON.parse_string(f.get_as_text())
 		if v is Dictionary:
@@ -40,7 +46,7 @@ static func mark(key: String, t: float) -> void:
 
 
 static func _write() -> void:
-	var path: String = ProjectSettings.globalize_path(PATH)
+	var fp: String = ProjectSettings.globalize_path(path())
 	DirAccess.make_dir_recursive_absolute(path.get_base_dir())
 	var f := FileAccess.open(path, FileAccess.WRITE)
 	if f:
