@@ -269,8 +269,8 @@ func _build() -> void:
 	_part(_float, "thruster")
 	var hover_light := OmniLight3D.new()
 	hover_light.light_color = glow
-	hover_light.light_energy = 1.6
-	hover_light.omni_range = 1.5
+	hover_light.light_energy = 0.7  # [hero] tight glow: light the ground, not the whole bot
+	hover_light.omni_range = 0.9
 	hover_light.position = Vector3(0, 0.02, 0)
 	hover_light.shadow_enabled = false
 	_float.add_child(hover_light)

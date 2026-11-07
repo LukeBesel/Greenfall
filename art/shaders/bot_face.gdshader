@@ -23,8 +23,8 @@ uniform float eye_radius = 0.52;
 // [hero] Eye shape for the character builder: 0 crescent C (Aurora), 1 round, 2 happy arcs,
 // 3 visor bar (one rounded bar across both eyes), 4 heart. Blink/happy/wink work on every shape.
 uniform int eye_shape = 0;
-uniform float pupil_radius = 0.6;   // dark centre radius (in eye radii)
-uniform vec2 pupil_offset = vec2(-0.3, 0.26); // dark centre offset (in eye radii; -x = viewer's right)
+uniform float pupil_radius = 0.64;  // dark centre radius (in eye radii)
+uniform vec2 pupil_offset = vec2(-0.22, 0.2); // dark centre offset (in eye radii; -x = viewer's right)
 
 varying vec3 lp;
 varying vec3 ln;

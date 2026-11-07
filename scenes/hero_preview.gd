@@ -68,15 +68,15 @@ func _ready() -> void:
 	add_child(we)
 	# Warm side key (from the viewer's left, a little behind), a warm back rim and a cool soft fill.
 	var key := DirectionalLight3D.new()
-	key.light_color = Color(1.0, 0.68, 0.42)
-	key.light_energy = 2.6
+	key.light_color = Color(1.0, 0.68, 0.42) if portrait else Color(1.0, 0.86, 0.74)
+	key.light_energy = 2.6 if portrait else 1.7
 	key.shadow_enabled = true
 	key.directional_shadow_max_distance = 12.0
 	add_child(key)
 	key.look_at_from_position(Vector3(3.0, 2.2, 0.7), Vector3.ZERO, Vector3.UP)
 	var rim := DirectionalLight3D.new()
 	rim.light_color = Color(1.0, 0.6, 0.32) if portrait else Color(0.7, 0.85, 1.0)
-	rim.light_energy = 1.6
+	rim.light_energy = 1.6 if portrait else 0.8
 	rim.light_specular = 1.2
 	add_child(rim)
 	rim.look_at_from_position(Vector3(-1.5, 1.8, 3.0), Vector3.ZERO, Vector3.UP)
@@ -135,10 +135,10 @@ func _ready() -> void:
 		for k: int in BLINK_PHASES.size():
 			_shots.append([Vector3(0.35, 1.0, -2.6), Vector3(0, 0.84, 0)])
 	else:
-		_cam.fov = 17.0
+		_cam.fov = 22.0
 		var d2: float = 4.6
 		var h: float = 0.92
-		var tgt := Vector3(0, 0.66, 0)
+		var tgt := Vector3(0, 0.62, 0)
 		for deg: float in [0.0, 40.0, 90.0, 140.0, 180.0]:
 			var r: float = deg_to_rad(deg)
 			_shots.append([Vector3(sin(r) * d2, h, -cos(r) * d2), tgt])

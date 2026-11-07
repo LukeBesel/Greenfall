@@ -22,7 +22,7 @@ uniform float tex_scale = 2.4;
 uniform float seed = 0.0;
 uniform float ao_strength = 1.0;
 uniform vec4 rim_color : source_color = vec4(0.62, 0.85, 1.0, 1.0);
-uniform float rim_strength = 0.12;
+uniform float rim_strength = 0.07;
 // [skins] Design looks: moss patches (Sprout) and hazard stripes (Bolt), both off by default.
 uniform float moss : hint_range(0.0, 1.0) = 0.0;
 uniform vec4 moss_color : source_color = vec4(0.27, 0.38, 0.12, 1.0);
@@ -100,7 +100,7 @@ void fragment() {
 	float fine = fbm3(q * 4.0 + 3.0);
 	// Paint chips: noise everywhere, much stronger on convex edges.
 	float joint = 1.0 - vcol.a;
-	float chip_n = big * 0.55 + fine * 0.45 + 0.12 - edge * edge_wear * 0.8 - joint * 0.35;
+	float chip_n = big * 0.55 + fine * 0.45 + 0.08 - edge * edge_wear * 1.05 - joint * 0.4;
 	float paint = smoothstep(1.0 - paint_coverage - 0.03, 1.0 - paint_coverage + 0.03, chip_n);
 	// Small dark specks / pits in the paint (like the concept's speckled shell).
 	float sp = smoothstep(0.8, 0.9, n3(opos * 110.0 + seed * 5.0)) * clamp(smoothstep(0.45, 0.75, fbm3(q * 0.8 + 5.0)) + edge * 0.6, 0.0, 1.0);

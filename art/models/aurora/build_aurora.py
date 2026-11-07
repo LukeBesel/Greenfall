@@ -499,7 +499,7 @@ for s in (-1, 1):
 groove(upper, (0.6, 0.4, 0.008), (0, TY, 0.1), depth=0.008)
 body_parts.append(upper)
 # Dark mechanical band between torso and the underside (a visible gap).
-body_parts.append(rbox("waist_gap", (0.44, 0.04, 0.34), (0, 0.285, 0.0), 0.016, "dark", sub=1))
+body_parts.append(rbox("waist_gap", (0.4, 0.04, 0.3), (0, 0.285, 0.0), 0.016, "dark", sub=1))
 # Raised metal chest plate with an inset border, four screws and the recycling icon.
 PL_C = Vector((0, 0.42, -TD * 0.5 - 0.012))
 plate = rbox("chest_plate", (0.255, 0.18, 0.04), PL_C, 0.016, "plate", segs=3, sub=1)
@@ -756,7 +756,7 @@ for o in objs:
 	piv = PARTS.get(o.name, None)
 	for i, d in enumerate(data):
 		c = cur[i]
-		edge = sstep(9.0, 38.0, c)
+		edge = sstep(22.0, 75.0, c)
 		cav = sstep(6.0, 30.0, -c)
 		occ = a[i] if a else 1.0
 		# Joint wear (alpha, 1 = none): armour and shell close to a joint pivot chip more.
@@ -766,6 +766,10 @@ for o in objs:
 			for J in JOINTS:
 				j = max(j, sstep(0.11, 0.035, (p - J).length))
 		d.color = (occ, edge, cav, 1.0 - 0.8 * j)
+	if o.name in ("head", "body", "arm_elbow_r"):
+		cs = [d.color for d in data]
+		n = max(len(cs), 1)
+		print("mask", o.name, "edge>0.5 %.2f" % (sum(1 for c in cs if c[1] > 0.5) / n), "cav>0.5 %.2f" % (sum(1 for c in cs if c[2] > 0.5) / n), "ao<0.7 %.2f" % (sum(1 for c in cs if c[0] < 0.7) / n), "curv pct", sorted(cur)[int(n * 0.1)], sorted(cur)[int(n * 0.5)], sorted(cur)[int(n * 0.9)])
 
 # ---------------------------------------------------------------- pivots, UVs, axis conversion, export
 TO_BLENDER = Matrix(((1, 0, 0, 0), (0, 0, -1, 0), (0, 1, 0, 0), (0, 0, 0, 1)))  # Godot (x,y,z) -> Blender (x,-z,y)
