@@ -40,6 +40,12 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
   frontier goals); land at a chosen district on another planet (its PlanetData isn't generated until
   visited); pace the four planets end to end with the bot without --home-ff; a Lumi design for the
   ending; worlds2's world picker should honour `Homeward` planets (records with "planet").
+## Update: planet globes (wt/globes, Nov 7)
+- Done: `ui/planet_globe.gd` (`PlanetGlobe.new()`, `.setup(id, restoration)`, `.set_restoration(f)`), a Node3D for any 3D view, with procedural shaders `art/shaders/planet_{verdance,ochre,tidewell,rime,anvil}.gdshader` (+ `planet_lib.gdshaderinc`, `planet_clouds`, `planet_atmo`, `planet_ring`, `planet_motes`, `planet_shard`): real relief normals from analytic-derivative FBM, night side, soft terminator, atmosphere rim, clouds/storm spirals, binary-sun lighting (both suns, companion warm), restoration blends, MultiMesh rings (Ochre dust ring, Rime ice-spike ring, Anvil fire ring), LOD by screen size. See docs/DECISIONS.md "Planet globes".
+- Done: the telescope orrery uses it (`[globes]` in ui/telescope_view.gd; globes lit from the orrery's sun nodes).
+- Dev: `res://tools/globe_shots.tscn` renders the close-ups, the lineup and Verdance 0/100% (`--globe-only=ID|lineup|verdance_rest`); `-- --globe-check` is the headless check. Tests: tests/test_planet_globe.gd.
+- Next: "home" swaps `ui/system_map.gd`'s spheres for `PlanetGlobe` (instructions in DECISIONS); optionally `story/space_stage.gd`'s cinematic planet.
+
 ## Update: three currencies (wt/money, Nov 7)
 - Done: exactly three currencies, Cubes / Parts / Seeds, from one source of truth (`data/currencies.json`, `core/currencies.gd`). Retired ids (bolts, sheet metal, plastic, glass, Data, compost, tokens, trinkets, Maker Fragments; Starseeds in the profile) are a legacy alias layer in `GameState.add_currency/get_currency/spend/can_afford` (fixed rates, one debug warning per id); `Currencies.fold()` for cost dicts, `GameState.can_afford_all/spend_all/add_all`. Every caller and data file uses the new ids (test_money checks the data files).
 - Done: save v2 (`SaveManager.migrate_v2`): old balances fold at the same rates; compost goes into the compost press hopper; Maker Fragments become Parts. Round trip has an old-save case.
