@@ -1,5 +1,5 @@
 {
-  "_doc": "Post-game (M11): Verdance Bloom milestones and the Seed Ark loop (systems/bloom.gd). A milestone unlocks when ANY of its conditions is met. Condition types: thriving_hexes (Thriving hexes summed over every district), thriving_districts (districts with at least thriving_district_ratio of their land hexes Thriving), planet_pct (percent of the planet's land cells reclaimed, as on the hologram). finale: plays the Cradle cinematic (story/bloom_finale.gd) once. The Seed Ark opens after its unlock milestone: every bloom anywhere counts toward the next wave; wave n needs round(base * growth^n) blooms and pays reward * reward_growth^n. Nothing ever resets or is taken away.",
+  "_doc": "Post-game (M11): Verdance Bloom milestones and the Seed Ark loop (systems/bloom.gd). A milestone unlocks when ANY of its conditions is met. Condition types: thriving_hexes (Thriving hexes summed over every district), thriving_districts (districts with at least thriving_district_ratio of their land hexes Thriving), planet_pct (percent of the planet's land cells reclaimed, as on the hologram), cradle_returned (1 once the Cradle Returns frontier is complete: flags.cradle_returned). The Verdance Bloom is the true ending: the Cradle path, so the finale never plays early in an ordinary district. finale: plays the Cradle cinematic (story/bloom_finale.gd) once. The Seed Ark opens after its unlock milestone: every bloom anywhere counts toward the next wave; wave n needs round(base * growth^n) blooms and pays reward * reward_growth^n. Nothing ever resets or is taken away.",
   "thriving_district_ratio": 0.6,
   "default_land_hexes": 230,
   "milestones": [
@@ -9,13 +9,13 @@
      "any": [{"type": "thriving_districts", "target": 1}], "reward": {"cubes": 4000, "seeds": 60, "trinkets": 4}},
     {"id": "green_shoots", "name": "Green Shoots", "desc": "Reclaim 0.25% of the planet, as the hologram counts it.",
      "any": [{"type": "planet_pct", "target": 0.25}, {"type": "thriving_hexes", "target": 150}], "reward": {"cubes": 6000, "seeds": 80, "trinkets": 4}},
-    {"id": "verdance_bloom", "name": "Verdance Bloom", "desc": "Three districts in bloom, or 1% of the planet reclaimed. Lumi's Bloom Core is full and the Cradle comes home.",
-     "any": [{"type": "thriving_districts", "target": 3}, {"type": "planet_pct", "target": 1.0}], "finale": true,
+    {"id": "verdance_bloom", "name": "Verdance Bloom", "desc": "The Cradle Returns landing pad is alive (or 2% of the planet reclaimed). Lumi's Bloom Core is full and the Cradle comes home.",
+     "any": [{"type": "cradle_returned", "target": 1}, {"type": "planet_pct", "target": 2.0}], "finale": true,
      "reward": {"cubes": 20000, "seeds": 200, "trinkets": 10}},
-    {"id": "wide_bloom", "name": "Wide Bloom", "desc": "Six districts in bloom, or 2% of the planet reclaimed.",
-     "any": [{"type": "thriving_districts", "target": 6}, {"type": "planet_pct", "target": 2.0}], "reward": {"cubes": 60000, "seeds": 400, "trinkets": 12}},
-    {"id": "evergreen", "name": "Evergreen", "desc": "Twelve districts in bloom, or 3% of the planet reclaimed.",
-     "any": [{"type": "thriving_districts", "target": 12}, {"type": "planet_pct", "target": 3.0}], "reward": {"cubes": 250000, "seeds": 1000, "trinkets": 20}}
+    {"id": "wide_bloom", "name": "Wide Bloom", "desc": "Six districts in bloom, or 3% of the planet reclaimed.",
+     "any": [{"type": "thriving_districts", "target": 6}, {"type": "planet_pct", "target": 3.0}], "reward": {"cubes": 60000, "seeds": 400, "trinkets": 12}},
+    {"id": "evergreen", "name": "Evergreen", "desc": "Twelve districts in bloom, or 5% of the planet reclaimed.",
+     "any": [{"type": "thriving_districts", "target": 12}, {"type": "planet_pct", "target": 5.0}], "reward": {"cubes": 250000, "seeds": 1000, "trinkets": 20}}
   ],
   "seed_ark": {"unlock": "verdance_bloom", "base": 120, "growth": 1.5, "reward_growth": 1.35,
     "reward": {"cubes": 5000, "seeds": 80, "trinkets": 2}}

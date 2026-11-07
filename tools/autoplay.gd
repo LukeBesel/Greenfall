@@ -21,10 +21,13 @@ const AT_BASE_R: float = 7.5
 const GAP_S: float = 180.0
 const SNAPSHOT_S: float = 60.0
 ## Research order a planner would follow: unlock the planting/watering robots first.
-const RESEARCH_PRIORITY: Array[String] = ["salvage_logic", "soil_survey", "seedling_blueprint", "water_testing",
-	"drip_blueprint", "field_notebook", "scoop_beam", "conveyor", "wide_beam", "auto_baler", "recycler", "bigger_hopper",
-	"auto_sort", "haul_routes", "big_tanks", "hardy_weeds", "spray_heads", "bale_tuning",
-	"multibot_blueprint", "wild_mint", "silt_filters", "pollinator_survey", "field_magnet", "pump_lines", "hedgerows"]
+const RESEARCH_PRIORITY: Array[String] = ["salvage_logic", "soil_survey", "water_testing", "field_notebook", "scoop_beam",
+	"hardy_weeds", "seedling_blueprint", "big_tanks", "drip_blueprint", "wild_mint", "pollinator_survey", "conveyor", "wide_beam",
+	"auto_baler", "recycler", "bigger_hopper", "auto_sort", "haul_routes", "spray_heads", "bale_tuning", "multibot_blueprint",
+	"rocket_cargo", "silt_filters", "pump_lines", "irrigation", "dune_charts", "field_magnet", "tractor_beam", "dew_condensers",
+	"thermal_lance", "pump_works", "ark_beacon", "hedgerows", "evergreens", "dune_fences", "cold_hardy_seeds", "heat_pumps"]
+## [beat] From here on the bot saves Data for the next priority node instead of spending it on side nodes.
+const RESEARCH_SAVE_FROM: String = "rocket_cargo"
 
 var world: Node
 var _move := Vector3.ZERO
@@ -737,6 +740,12 @@ func _shop(want: Dictionary) -> void:
 			if fleet.upgrade_tier(t):
 				_progress()
 				_event("tier", {"type": t, "tier": fleet.tier_of(t)})
+	# 3b) [beat] The Builder tab, when a builder goal is up.
+	if _stat_goal("builder_parts_fitted") or _stat_goal("builder_full_custom") or _stat_goal("builder_presets"):
+		var tk: String = AutoplayCampaign.tinker(world)
+		if tk != "":
+			_progress()
+			_event("builder", {"what": tk})
 	# 4) Base level (logged by _manage on the next tick).
 	world.hub.upgrade()
 	# 5) Stations once researched.
@@ -1026,9 +1035,14 @@ func _swap_spares(robot: String) -> void:
 func _research_pick() -> String:
 	if not Research.active().is_empty() and Research.queue().size() >= Research.max_queue():
 		return ""
+	var saving: bool = false
 	for id: String in RESEARCH_PRIORITY:
 		if Research.exists(id) and Research.can_start(id):
 			return id
+		if id == RESEARCH_SAVE_FROM:
+			saving = true
+		if saving and Research.exists(id) and Research.status(id) == "available":
+			return ""  # [beat] critical-path node open but not affordable yet: save Data for it
 	var best: String = ""
 	var best_c: float = INF
 	for id: String in Research.ids():

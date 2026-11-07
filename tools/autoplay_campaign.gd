@@ -56,3 +56,152 @@ static func timeline_min() -> Array:
 	for k: Variant in keys:
 		out.append([str(k), snappedf(float(marks[k]) / 60.0, 0.1)])
 	return out
+
+
+# --- Robot builder (the builder goals) --------------------------------------------------------
+
+## A player tinkering at the Builder tab: fit one robot slot by slot with parts from the bin or
+## cheap crafts (bolts + a stored part), then save that crew's build as a preset. Returns what
+## happened ("" = nothing).
+static func tinker(world: Node) -> String:
+	var fleet: Fleet = world.get("fleet")
+	if fleet == null or fleet.robots().is_empty():
+		return ""
+	var r: Robot = null
+	for rb: Robot in fleet.robots():
+		if r == null or rb.build.size() > r.build.size():
+			r = rb
+	if RobotBuilder.is_full_custom(r.build):
+		if RobotBuilder.preset(r.role()).is_empty():
+			RobotBuilder.save_preset(r.role(), r.build)
+			return "preset %s" % r.role()
+		return ""
+	for slot: String in RobotBuilder.SLOTS:
+		if str(r.build.get(slot, "")) != "":
+			continue
+		var best: String = ""
+		for p: Dictionary in RobotBuilder.parts_for_slot(slot):
+			var id: String = str(p["id"])
+			if not RobotBuilder.fits(id, r.type_id):
+				continue
+			if RobotBuilder.count(id) > 0:
+				best = id
+				break
+			if best == "" and RobotBuilder.craftable(id) and RobotBuilder.craft_block_reason(id) == "":
+				best = id
+		if best == "":
+			continue
+		if RobotBuilder.count(best) <= 0 and not RobotBuilder.craft(best):
+			continue
+		if RobotBuilder.equip(r, slot, best) == "":
+			return "fit %s on %s" % [best, r.robot_name]
+	return ""
+
+
+# --- Where to fly next ----------------------------------------------------------------------
+
+const FRONTIER_ORDER: Array[String] = ["dust_flats", "frozen_port", "sunken_city", "cradle_returns"]
+
+
+static func frontier_kid(world: Node) -> String:
+	return Frontiers.world_kind(world)
+
+
+## A frontier is finished for the critical path: base 5 and half its land Growing (the Cradle:
+## its completion hook has fired).
+static func frontier_finished(fid: String, hi: int) -> bool:
+	if fid == "cradle_returns":
+		return GameState.flags.get("cradle_returned", false)
+	return Frontiers.base_level(hi) >= 5 and Frontiers.growing_frac(hi) >= 0.5
+
+
+## This district has nothing left on the critical path.
+static func district_done(world: Node) -> bool:
+	if int(world.hub.level) < 5:
+		return false
+	var kid: String = frontier_kid(world)
+	if kid == "":
+		return true
+	if kid == "cradle_returns":
+		return GameState.flags.get("cradle_returned", false)
+	var fr: FrontierDistrict = world.get("frontier")
+	return fr != null and fr.growing_frac >= 0.5
+
+
+## The hub to fly to now, or -1 (stay). Frontiers in unlock order first; else the next ordinary
+## district whose base is below level 5 (more level-5 bases open the frontiers).
+static func next_hub(world: Node) -> int:
+	if not district_done(world):
+		return -1
+	var planet: PlanetData = world.planet
+	var here: int = int(world.hub_index)
+	for fid: String in FRONTIER_ORDER:
+		if not planet.frontier_hubs.has(fid):
+			continue
+		var hi: int = int(planet.frontier_hubs[fid])
+		if frontier_finished(fid, hi):
+			continue
+		if Frontiers.can_launch(planet, hi):
+			return hi if hi != here else -1
+		break  # the next frontier is still locked: build more bases meanwhile
+	if GameState.flags.get("cradle_returned", false):
+		return -1  # post-game: stay and keep planting (Seed Ark)
+	for i: int in planet.base_hub_count:
+		if i != here and Frontiers.base_level(i) < 5:
+			return i
+	return -1
+
+
+# --- Frontier chores (called every second from AutoplayBot._manage) -------------------------
+
+## Heaters on the ice nearest the base (spread out so their warmth covers more), a few early
+## greenhouses until Cold-Hardy Seeds. Returns an event line or "".
+static func frontier_chores(world: Node) -> String:
+	var fr: FrontierDistrict = world.get("frontier")
+	if fr == null:
+		return ""
+	var f: HexField = world.field
+	var cubes: float = GameState.get_currency("cubes").to_float()
+	if fr.kid == "frozen_port":
+		var ice_cfg: Dictionary = fr.kind.get("ice", {})
+		if fr.heaters.size() < int(ice_cfg.get("heater_max", 16)) and cubes > fr.heater_cost().to_float() * 1.5:
+			var best: int = -1
+			var best_s: float = INF
+			for h: int in fr.ice.size():
+				if fr.ice[h] <= 0.0 or h in fr.heaters or f.hex_hub[h] != 0:
+					continue
+				var s: float = f.hex_center(h).length()
+				for hh: Variant in fr.heaters:
+					if Hex.distance(f.hex_axial[int(hh)], f.hex_axial[h]) <= 1:
+						s += 60.0  # next to a heater already: it gets the spread
+				if s < best_s:
+					best_s = s
+					best = h
+			if best >= 0 and fr._place_heater(best, true):
+				return "heater hex %d (%d)" % [best, fr.heaters.size()]
+		if not Research.has("cold_hardy_seeds") and GameState.flags.get("seeds_unlocked", false) and fr.greenhouses.size() < 8 \
+				and cubes > fr.greenhouse_cost().to_float() * 2.0:
+			for h: int in f.hex_count():
+				if f.hex_hub[h] == 0 and not f.is_water(h) and f.is_clean(h) and fr.ice[h] <= 0.0 and not (h in fr.greenhouses):
+					if fr._build_greenhouse(h, true):
+						return "greenhouse hex %d (%d)" % [h, fr.greenhouses.size()]
+					break
+	return ""
+
+
+## Research to pull forward in this district (frontier needs).
+static func research_first(world: Node) -> Array[String]:
+	match frontier_kid(world):
+		"frozen_port":
+			return ["hedgerows", "evergreens", "dune_fences", "cold_hardy_seeds", "heat_pumps"]
+		"dust_flats":
+			return ["dew_condensers", "hedgerows", "evergreens", "dune_fences"]
+	return []
+
+
+## Cradle pad hexes (plant and sustain these first), else [].
+static func pad_hexes(world: Node) -> Array[int]:
+	var fr: FrontierDistrict = world.get("frontier")
+	if fr == null or fr.kid != "cradle_returns":
+		return []
+	return Frontiers.pad_hexes(world.field, fr.kind.get("pad", {}))

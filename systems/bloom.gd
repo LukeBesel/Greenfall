@@ -175,6 +175,12 @@ static func globe_line() -> String:
 func _ready() -> void:
 	add_to_group("persist")
 	_visit_biome.call_deferred()
+	# [beat] The Verdance Bloom is done but the finale never finished (quit mid-cinematic, or an
+	# older save): play it again at the next quiet moment.
+	if is_done("verdance_bloom") and not GameState.flags.get("bloom_finale_seen", false):
+		_finale_pending = true
+	if DevHooks.has("credits"):  # [beat] --credits[=S]: roll the end credits S seconds in
+		get_tree().create_timer(DevHooks.get_f("credits", 3.0)).timeout.connect(func() -> void: CreditsRoll.play(world))
 	if DevHooks.has("bloom-finale"):
 		(func() -> void: play_finale(true)).call_deferred()
 
@@ -221,7 +227,14 @@ func measure_now() -> Dictionary:
 	if not seen_current:
 		sums.append(district_summary(GameState.world))
 	var frac: float = world.planet.restored_fraction() if world and world.get("planet") != null else 0.0
-	return measure(sums, frac)
+	var m: Dictionary = measure(sums, frac)
+	# [beat] The true ending runs through the Cradle Returns frontier (data/bloom.json).
+	m["cradle_returned"] = 1.0 if GameState.flags.get("cradle_returned", false) else 0.0
+	if world and world.get("frontier") != null:
+		(world.frontier as FrontierDistrict).persist_save()  # live frontier summary for the campaign
+	if world and world.get("planet") != null:
+		m["campaign"] = CoreCharge.campaign_progress((world.planet as PlanetData).frontier_hubs)
+	return m
 
 
 func _process(delta: float) -> void:
@@ -271,12 +284,28 @@ func play_finale(force: bool = false) -> void:
 	if GameState.flags.get("bloom_finale_seen", false) and not force:
 		_finale_pending = false
 		return
-	if world == null or (world.has_method("any_modal_open") and world.any_modal_open()) or bool(world.get("launching")):
+	if BloomFinale.playing:
+		_finale_pending = false
+		return
+	if world == null or (world.has_method("any_modal_open") and world.any_modal_open()) or bool(world.get("launching")) or _busy_story():
 		_finale_pending = true
 		return
 	_finale_pending = false
-	GameState.flags["bloom_finale_seen"] = true
+	# [beat] bloom_finale_seen is set when the cinematic ends (BloomFinale), so quitting halfway
+	# replays it on the next load instead of losing the ending.
 	var f := BloomFinale.new()
 	f.world = world
 	world.add_child(f)
 	f.play()
+
+
+## [beat] Another cinematic owns the screen (intro, first seed, a Bloom Core beat).
+func _busy_story() -> bool:
+	var intro: Variant = world.get("intro")
+	if intro is Intro and (intro as Intro).busy():
+		return true
+	var fs: Variant = world.get("first_seed")
+	if fs is FirstSeed and bool((fs as FirstSeed).get("_active")):
+		return true
+	var cc: Variant = world.get("core_charge")
+	return cc is CoreCharge and bool((cc as CoreCharge).get("_busy"))

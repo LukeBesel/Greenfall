@@ -378,6 +378,7 @@ const STAT_NAMES: Dictionary = {
 	"data_gain": "data gained", "research_speed": "research speed", "lake_clarity": "lake clarity",
 	"speed": "speed", "work_rate": "work rate", "tank": "tank", "range": "range",
 	"efficiency": "bale quality", "carry": "carry",
+	"plant_growth": "plant growth", "seed_yield": "seeds per bloom",
 }
 # l10n:end
 

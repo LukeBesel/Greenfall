@@ -21,6 +21,7 @@ var _ring_n: Dictionary = {}  # hex id -> samples filled
 var _ring_sum: Dictionary = {}  # hex id -> sum of samples in the ring
 var _bonus: Dictionary = {}
 var _tick: float = 0.0
+var _data_acc: float = 0.0  # [beat]
 var _stipend_acc: float = 0.0
 ## False in unit tests / catch-up: level-ups pay out and count but skip vfx/audio/toasts.
 var celebrate: bool = true
@@ -129,6 +130,16 @@ func _sample_all() -> void:
 ## "cubes_per_min", summed over hexes and capped like the other bonuses). It keeps a district whose
 ## junk is all gone moving toward the next base level instead of stalling.
 func _pay_stipend(dt: float) -> void:
+	# [beat] Thriving hexes also log wildlife notes: a trickle of research Data, so research never
+	# stalls for good in a district whose junk is gone.
+	var data_min: float = bonus("data_per_min")
+	if data_min > 0.0:
+		_data_acc += data_min * dt / 60.0
+		if _data_acc >= 1.0:
+			var wd: float = floorf(_data_acc)
+			_data_acc -= wd
+			GameState.add_currency("data", BigNum.from_float(wd))
+			GameState.inc_stat("wildlife_data", wd)
 	var per_min: float = bonus("cubes_per_min")
 	if per_min <= 0.0:
 		return

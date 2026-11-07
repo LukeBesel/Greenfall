@@ -57,7 +57,31 @@ static func bloom_progress(m: Dictionary) -> float:
 	var p: float = Bloom.progress(ms, m) if not ms.is_empty() else 0.0
 	var per_district: float = float(Bloom.cfg().get("thriving_district_ratio", 0.6)) * float(Bloom.cfg().get("default_land_hexes", 230))
 	var need: float = 3.0 * per_district
+	p = maxf(p, float(m.get("campaign", 0.0)))  # [beat] steps along the Cradle path
 	return clampf(maxf(p, float(m.get("thriving_hexes", 0)) / maxf(need, 1.0)), 0.0, 1.0)
+
+
+## [beat] 0..1 along the critical path to the Cradle: bases at level 5 (2 open the Dust Flats),
+## each of the three frontiers visited, its base levelled and half its land Growing, then the
+## Cradle Returns visited, its pad clean and the district Growing. Reaches ~0.72 on arriving at
+## the Cradle (the 75% beat) and 1.0 only when the Cradle is complete (also the Verdance Bloom).
+static func campaign_progress(frontier_hubs: Dictionary) -> float:
+	var p: float = 0.03 * mini(Frontiers.bases_at_level(5), 2)
+	for fid: String in ["dust_flats", "frozen_port", "sunken_city"]:
+		if not frontier_hubs.has(fid) or not GameState.flags.get("frontier_seen_" + fid, false):
+			continue
+		var hi: int = int(frontier_hubs[fid])
+		p += 0.08
+		p += 0.08 * clampf((Frontiers.base_level(hi) - 1) / 4.0, 0.0, 1.0)
+		p += 0.06 * clampf(Frontiers.growing_frac(hi) / 0.5, 0.0, 1.0)
+	if frontier_hubs.has("cradle_returns") and GameState.flags.get("frontier_seen_cradle_returns", false):
+		p += 0.1
+		if GameState.flags.get("cradle_pad_clean", false):
+			p += 0.08
+		p += 0.14 * clampf(Frontiers.growing_frac(int(frontier_hubs["cradle_returns"])) / 0.7, 0.0, 1.0)
+	if GameState.flags.get("cradle_returned", false):
+		return 1.0
+	return clampf(p, 0.0, 0.98)
 
 
 static func stored() -> float:

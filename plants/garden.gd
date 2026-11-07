@@ -202,6 +202,9 @@ func _process(delta: float) -> void:
 	var hl: HexLevels = world.get("hex_levels") as HexLevels
 	var grow_mult: float = 1.0 + (hl.bonus("grow_pct") if hl else 0.0)
 	var seed_mult: float = 1.0 + (hl.bonus("seed_pct") if hl else 0.0)
+	# [beat] The garden ramp (~1 h in): research such as Pollinator Survey raises these.
+	grow_mult *= maxf(Economy.stat("plant_growth"), 0.1)
+	seed_mult *= maxf(Economy.stat("seed_yield"), 0.1)
 	for s: int in slot_species.size():
 		if slot_species[s] < 0:
 			continue
