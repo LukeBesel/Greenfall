@@ -140,7 +140,9 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
 - **Heirlooms are milestone unlocks** (systems/heirloom_track.gd): the banked restoration score (the
   old Starseed total) passes the old prices in a fixed cheapest-first order. Kept self-contained
   because the "home" helper is replacing Cradle Mode's main flow.
-- **Base 3 asks 300 parts** (was 90 metal + 60 plastic + 30 glass): with one pooled currency the
-  per-type glass gate vanished, and 300 parts arrive at about the same minute the glass used to.
+- **Base 2 and 3 ask 150 / 350 parts** (were 25 metal + 15 plastic / 90 metal + 60 plastic + 30
+  glass): with one pooled currency the per-type gates vanished; those amounts arrive at about the
+  minute the metal and glass used to. Frontier research costs x25 cubes (x10 below): late cubes are
+  plentiful where Data used to be the gate.
 - **The Ledger is quieter**: one uplink line per act; coupons and quips are small notify-stack
   entries, coupons every 12-20 min (was 4-7).
