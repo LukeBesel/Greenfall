@@ -304,10 +304,10 @@ static func deer(stag: bool) -> Mesh:
 	b.ell(Vector3(0, 0.865, 0.425), Vector3(0.028, 0.045, 0.022), fur, 1.0, Vector3(-25, 0, 0))
 	# Neck and head (HEAD pivots at the withers so grazing lowers the whole neck).
 	b.rig(M.HEAD, Vector3(0, 0.9, -0.3))
-	b.chain([Vector3(0, 0.84, -0.3), Vector3(0, 0.98, -0.4), Vector3(0, 1.1, -0.47), Vector3(0, 1.17, -0.51)], [0.105, 0.078, 0.062, 0.056], fur, 1.0, 12)
-	b.ell(Vector3(0, 0.95, -0.425), Vector3(0.058, 0.1, 0.055), belly, 0.4, Vector3(-35, 0, 0))
-	b.ell(Vector3(0, 1.065, -0.5), Vector3(0.042, 0.04, 0.03), pale, 0.0, Vector3(-30, 0, 0))  # white gorget
-	var c := Vector3(0, 1.2, -0.55)
+	b.chain([Vector3(0, 0.84, -0.3), Vector3(0, 0.95, -0.42), Vector3(0, 1.04, -0.51), Vector3(0, 1.09, -0.56)], [0.11, 0.08, 0.064, 0.058], fur, 1.0, 12)
+	b.ell(Vector3(0, 0.92, -0.44), Vector3(0.058, 0.09, 0.055), belly, 0.4, Vector3(-45, 0, 0))
+	b.ell(Vector3(0, 1.0, -0.545), Vector3(0.042, 0.04, 0.03), pale, 0.0, Vector3(-40, 0, 0))  # white gorget
+	var c := Vector3(0, 1.12, -0.6)
 	b.ell(c, Vector3(0.064, 0.066, 0.082), fur, 1.0, Vector3(-15, 0, 0), 14, 9)
 	b.ell(c + Vector3(0, -0.03, -0.06), Vector3(0.048, 0.044, 0.06), fur, 1.0, Vector3(-25, 0, 0))
 	b.limb(c + Vector3(0, -0.018, -0.05), c + Vector3(0, -0.06, -0.155), 0.048, 0.031, fur, 1.0, 12)
@@ -563,7 +563,7 @@ static func bird(id: String, flying: bool) -> Mesh:
 	var legh: float = float(p["legh"]) if not flying else 0.0
 	var neckl: float = float(p["neckl"])
 	var tilt: float = float(p.get("tilt", -10.0)) if not flying else 0.0
-	var by: float = 0.075 * s + legh
+	var by: float = 0.062 * s + legh * (0.55 if legh < 0.2 else 0.9)
 	var bc := Vector3(0, by, 0)
 	var tb := Basis.from_euler(Vector3(deg_to_rad(tilt), 0, 0))  # body pitch (perched: chest up)
 	var at := func(v: Vector3) -> Vector3: return bc + tb * (v * s)
