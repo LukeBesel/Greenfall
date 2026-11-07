@@ -1210,6 +1210,95 @@ msgstr "前哨基地 %d · Lv%d"
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
+#: scenes/style_lineup.gd:9
+msgid "Stargazer"
+msgstr ""
+
+#: scenes/style_lineup.gd:10
+msgid "round"
+msgstr ""
+
+#: scenes/style_lineup.gd:10
+msgid "halo"
+msgstr ""
+
+#: scenes/style_lineup.gd:10 scenes/style_lineup.gd:14
+msgid "heart"
+msgstr ""
+
+#: scenes/style_lineup.gd:10 scenes/style_lineup.gd:12 scenes/style_lineup.gd:14
+#: scenes/style_lineup.gd:16
+msgid "none"
+msgstr ""
+
+#: scenes/style_lineup.gd:10
+msgid "firefly"
+msgstr ""
+
+#: scenes/style_lineup.gd:11 data/achievements.json:achievements[plant_100].name
+msgid "Gardener"
+msgstr "庭師"
+
+#: scenes/style_lineup.gd:12
+msgid "happy"
+msgstr ""
+
+#: scenes/style_lineup.gd:12
+msgid "sprout"
+msgstr ""
+
+#: scenes/style_lineup.gd:12
+msgid "leaf"
+msgstr ""
+
+#: scenes/style_lineup.gd:12
+msgid "butterfly"
+msgstr ""
+
+#: scenes/style_lineup.gd:13
+msgid "Field Medic"
+msgstr ""
+
+#: scenes/style_lineup.gd:14
+msgid "catears"
+msgstr ""
+
+#: scenes/style_lineup.gd:14
+msgid "cross"
+msgstr ""
+
+#: scenes/style_lineup.gd:14
+msgid "medkit"
+msgstr ""
+
+#: scenes/style_lineup.gd:14
+msgid "drone"
+msgstr ""
+
+#: scenes/style_lineup.gd:15
+msgid "Racer"
+msgstr ""
+
+#: scenes/style_lineup.gd:16
+msgid "bar"
+msgstr ""
+
+#: scenes/style_lineup.gd:16
+msgid "antenna"
+msgstr ""
+
+#: scenes/style_lineup.gd:16
+msgid "recycle"
+msgstr ""
+
+#: scenes/style_lineup.gd:16
+msgid "gear"
+msgstr ""
+
+#: scenes/style_lineup.gd:16
+msgid "pads"
+msgstr ""
+
 #: steam/demo.gd:73
 msgid "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of Verdance."
 msgstr "体験版は基地レベル %d までです。製品版ではレベル5まで上げて、ロケットで Verdance の各地へ飛び立てます。"
@@ -2238,15 +2327,15 @@ msgstr "クレイドルモード：アークの種子庫には、ほかの世界
 
 #: systems/lumi_style.gd:391
 msgid "Unlock the %s design"
-msgstr ""
+msgstr "デザイン「%s」を解放"
 
 #: systems/lumi_style.gd:394
 msgid "Achievement: %s"
-msgstr ""
+msgstr "実績：%s"
 
 #: systems/lumi_style.gd:398
 msgid "Buy for %s"
-msgstr ""
+msgstr "%sで購入"
 
 #: systems/profile_slots.gd:48 ui/world_picker.gd:138
 msgid "Profile %d"
@@ -3279,7 +3368,7 @@ msgstr "見た目だけ（ボーナスなし）"
 
 #: ui/cosmetics_panel.gd:48
 msgid "Character Builder"
-msgstr ""
+msgstr "キャラクターエディター"
 
 #: ui/cosmetics_panel.gd:144 ui/cosmetics_panel.gd:175
 msgid "Wearing"
@@ -3299,7 +3388,7 @@ msgstr "（オフ：見た目だけ）"
 
 #: ui/cosmetics_panel.gd:175
 msgid "Wearing a custom look with this bonus"
-msgstr ""
+msgstr "この補正でカスタム外見を着用中"
 
 #: ui/cosmetics_panel.gd:177
 msgid "Unlocked. Press to wear."
@@ -3671,63 +3760,63 @@ msgstr "◢ シグナル %d%%"
 
 #: ui/lumi_builder.gd:87
 msgid "CHARACTER BUILDER"
-msgstr ""
+msgstr "キャラクターエディター"
 
 #: ui/lumi_builder.gd:122
 msgid "Drag to turn  ·  Wheel to zoom"
-msgstr ""
+msgstr "ドラッグで回転  ·  ホイールでズーム"
 
 #: ui/lumi_builder.gd:159
 msgid "Randomize"
-msgstr ""
+msgstr "ランダム"
 
 #: ui/lumi_builder.gd:160
 msgid "Reset to preset"
-msgstr ""
+msgstr "プリセットに戻す"
 
 #: ui/lumi_builder.gd:161
 msgid "Test laser"
-msgstr ""
+msgstr "レーザーをテスト"
 
 #: ui/lumi_builder.gd:165 ui/profile_picker.gd:252 ui/profile_picker.gd:269
 msgid "Cancel"
-msgstr ""
+msgstr "キャンセル"
 
 #: ui/lumi_builder.gd:166
 msgid "Done"
-msgstr ""
+msgstr "完了"
 
 #: ui/lumi_builder.gd:182 ui/lumi_builder.gd:294
 msgid "Presets"
-msgstr ""
+msgstr "プリセット"
 
 #: ui/lumi_builder.gd:193
 msgid "Saved"
-msgstr ""
+msgstr "保存済み"
 
 #: ui/lumi_builder.gd:197 ui/lumi_builder.gd:298
 msgid "Saved looks"
-msgstr ""
+msgstr "保存した外見"
 
 #: ui/lumi_builder.gd:347
 msgid "A design's full look. Every slot can be changed afterwards."
-msgstr ""
+msgstr "デザインの外見一式。あとで各スロットを変更できます。"
 
 #: ui/lumi_builder.gd:367
 msgid "Custom colour"
-msgstr ""
+msgstr "カスタムカラー"
 
 #: ui/lumi_builder.gd:412 data/style_parts.json:advanced.name
 msgid "Advanced colour picker"
-msgstr ""
+msgstr "詳細カラーピッカー"
 
 #: ui/lumi_builder.gd:422
 msgid "Advanced (hue, saturation, brightness)"
-msgstr ""
+msgstr "詳細（色相・彩度・明るさ）"
 
 #: ui/lumi_builder.gd:431
 msgid "Hue"
-msgstr ""
+msgstr "色相"
 
 #: ui/lumi_builder.gd:431 ui/photo_mode.gd:382
 msgid "Saturation"
@@ -3735,39 +3824,39 @@ msgstr "彩度"
 
 #: ui/lumi_builder.gd:431
 msgid "Brightness"
-msgstr ""
+msgstr "明るさ"
 
 #: ui/lumi_builder.gd:468
 msgid "Equipped"
-msgstr ""
+msgstr "装備中"
 
 #: ui/lumi_builder.gd:484
 msgid "How weathered the paint looks: fresh from the ark, or three hundred years of dust."
-msgstr ""
+msgstr "塗装の傷み具合：箱舟から出たばかりか、三百年分のほこりか。"
 
 #: ui/lumi_builder.gd:487
 msgid "Fresh"
-msgstr ""
+msgstr "新品"
 
 #: ui/lumi_builder.gd:496
 msgid "Weathered"
-msgstr ""
+msgstr "使い込み"
 
 #: ui/lumi_builder.gd:502
 msgid "A custom look can use the bonus of any design you have unlocked."
-msgstr ""
+msgstr "カスタム外見は、解放済みのどのデザインの補正でも使えます。"
 
 #: ui/lumi_builder.gd:526
 msgid "Keep up to %d looks. Load one to edit it, then press Done to wear it."
-msgstr ""
+msgstr "外見は%d個まで保存できます。読み込んで編集し、「完了」で着用します。"
 
 #: ui/lumi_builder.gd:531 ui/lumi_builder.gd:555
 msgid "Look %d"
-msgstr ""
+msgstr "外見%d"
 
 #: ui/lumi_builder.gd:539
 msgid "Empty"
-msgstr ""
+msgstr "空き"
 
 #: ui/lumi_builder.gd:544 data/robot_parts.json:stats[load].name
 msgid "Load"
@@ -3775,15 +3864,15 @@ msgstr "積載"
 
 #: ui/lumi_builder.gd:552
 msgid "Save here"
-msgstr ""
+msgstr "ここに保存"
 
 #: ui/lumi_builder.gd:622
 msgid "Unsaved changes"
-msgstr ""
+msgstr "未保存の変更"
 
 #: ui/lumi_builder.gd:638
 msgid "Part of this look is still locked."
-msgstr ""
+msgstr "この外見の一部はまだロック中です。"
 
 #: ui/main_menu.gd:315
 msgid "One small robot. One very big cleanup."
@@ -5207,10 +5296,6 @@ msgstr "緑の手"
 #: data/achievements.json:achievements[plant_1].desc
 msgid "Plant a seed."
 msgstr "種を植える。"
-
-#: data/achievements.json:achievements[plant_100].name
-msgid "Gardener"
-msgstr "庭師"
 
 #: data/achievements.json:achievements[plant_100].desc
 msgid "Plant 100 seeds."
@@ -10897,336 +10982,336 @@ msgstr "シュレッダードラムと小さな溶鉱炉。ベールは入った
 
 #: data/style_parts.json:slots[paint].name
 msgid "Paint"
-msgstr ""
+msgstr "塗装"
 
 #: data/style_parts.json:slots[trim].name
 msgid "Trim"
-msgstr ""
+msgstr "トリム"
 
 #: data/style_parts.json:slots[accent].name
 msgid "Accent"
-msgstr ""
+msgstr "アクセント"
 
 #: data/style_parts.json:slots[side].name
 msgid "Side modules"
-msgstr ""
+msgstr "サイドモジュール"
 
 #: data/style_parts.json:slots[wear].name
 msgid "Wear"
-msgstr ""
+msgstr "使用感"
 
 #: data/style_parts.json:slots[pattern].name
 msgid "Pattern"
-msgstr ""
+msgstr "模様"
 
 #: data/style_parts.json:slots[eyes].name
 msgid "Eye colour"
-msgstr ""
+msgstr "目の色"
 
 #: data/style_parts.json:slots[glow].name
 msgid "Light strips"
-msgstr ""
+msgstr "ライトライン"
 
 #: data/style_parts.json:slots[head].name
 msgid "Head piece"
-msgstr ""
+msgstr "頭パーツ"
 
 #: data/style_parts.json:slots[chest].name
 msgid "Chest icon"
-msgstr ""
+msgstr "胸のアイコン"
 
 #: data/style_parts.json:slots[shoulders].name
 msgid "Shoulders"
-msgstr ""
+msgstr "肩"
 
 #: data/style_parts.json:slots[held].name
 msgid "Held item"
-msgstr ""
+msgstr "持ち物"
 
 #: data/style_parts.json:slots[companion].name
 msgid "Companion"
-msgstr ""
+msgstr "おとも"
 
 #: data/style_parts.json:slots[hover].name
 msgid "Hover glow"
-msgstr ""
+msgstr "ホバーの光"
 
 #: data/style_parts.json:slots[laser].name
 msgid "Pickup laser"
-msgstr ""
+msgstr "回収レーザー"
 
 #: data/style_parts.json:slots[bonus].name
 msgid "Bonus"
-msgstr ""
+msgstr "補正"
 
 #: data/style_parts.json:options.pattern[plain].name
 msgid "Plain"
-msgstr ""
+msgstr "無地"
 
 #: data/style_parts.json:options.pattern[stripes].name
 msgid "Hazard stripes"
-msgstr ""
+msgstr "警告ストライプ"
 
 #: data/style_parts.json:options.pattern[moss].name
 msgid "Moss patches"
-msgstr ""
+msgstr "苔のパッチ"
 
 #: data/style_parts.json:options.eye_shape[crescent].name
 msgid "Crescent"
-msgstr ""
+msgstr "三日月"
 
 #: data/style_parts.json:options.eye_shape[round].name
 msgid "Round"
-msgstr ""
+msgstr "まる"
 
 #: data/style_parts.json:options.eye_shape[happy].name
 msgid "Happy arcs"
-msgstr ""
+msgstr "にっこり"
 
 #: data/style_parts.json:options.eye_shape[bar].name
 msgid "Visor bar"
-msgstr ""
+msgstr "バイザーバー"
 
 #: data/style_parts.json:options.eye_shape[heart].name
 msgid "Hearts"
-msgstr ""
+msgstr "ハート"
 
 #: data/style_parts.json:options.eye_shape[heart].unlock.cond.unit data/style_parts.json:swatches[seaglass].unlock.cond.unit data/style_parts.json:swatches[coral].unlock.cond.unit
 msgid "finds"
-msgstr ""
+msgstr "個の発見"
 
 #: data/style_parts.json:options.eye_shape[heart].unlock.text
 msgid "Find 8 Collection trinkets"
-msgstr ""
+msgstr "コレクションの小物を8個見つける"
 
 #: data/style_parts.json:options.head[none].name data/style_parts.json:options.shoulders[none].name data/style_parts.json:options.held[none].name
 #: data/style_parts.json:options.companion[none].name
 msgid "None"
-msgstr ""
+msgstr "なし"
 
 #: data/style_parts.json:options.head[fin].name
 msgid "Fin"
-msgstr ""
+msgstr "フィン"
 
 #: data/style_parts.json:options.head[antenna].name
 msgid "Antenna"
-msgstr ""
+msgstr "アンテナ"
 
 #: data/style_parts.json:options.head[sprout].name
 msgid "Sprout leaf"
-msgstr ""
+msgstr "若葉"
 
 #: data/style_parts.json:options.head[catears].name
 msgid "Cat ears"
-msgstr ""
+msgstr "ネコ耳"
 
 #: data/style_parts.json:options.head[wings].name
 msgid "Wing fins"
-msgstr ""
+msgstr "翼フィン"
 
 #: data/style_parts.json:options.head[halo].name
 msgid "Halo"
-msgstr ""
+msgstr "天使の輪"
 
 #: data/style_parts.json:options.chest[recycle].name
 msgid "Recycle"
-msgstr ""
+msgstr "リサイクル"
 
 #: data/style_parts.json:options.chest[leaf].name
 msgid "Leaf"
-msgstr ""
+msgstr "葉っぱ"
 
 #: data/style_parts.json:options.chest[cross].name
 msgid "Medic cross"
-msgstr ""
+msgstr "救護十字"
 
 #: data/style_parts.json:options.chest[heart].name
 msgid "Heart"
-msgstr ""
+msgstr "ハート"
 
 #: data/style_parts.json:options.shoulders[pads].name
 msgid "Shoulder pads"
-msgstr ""
+msgstr "ショルダーパッド"
 
 #: data/style_parts.json:options.held[gear].name
 msgid "Spare gear"
-msgstr ""
+msgstr "予備の歯車"
 
 #: data/style_parts.json:options.held[medkit].name
 msgid "Med kit"
-msgstr ""
+msgstr "救急キット"
 
 #: data/style_parts.json:options.held[toolbox].name
 msgid "Toolbox"
-msgstr ""
+msgstr "工具箱"
 
 #: data/style_parts.json:options.held[watering_can].name
 msgid "Watering can"
-msgstr ""
+msgstr "じょうろ"
 
 #: data/style_parts.json:options.held[holo].name
 msgid "Holo screen"
-msgstr ""
+msgstr "ホロ画面"
 
 #: data/style_parts.json:options.companion[butterfly].name
 msgid "Butterfly"
-msgstr ""
+msgstr "チョウ"
 
 #: data/style_parts.json:options.companion[firefly].unlock.cond.unit data/style_parts.json:swatches[royal].unlock.cond.unit data/style_parts.json:swatches[lilac].unlock.cond.unit
 msgid "requests"
-msgstr ""
+msgstr "件の依頼"
 
 #: data/style_parts.json:options.companion[firefly].unlock.text
 msgid "Finish 3 Requests"
-msgstr ""
+msgstr "依頼を3件達成する"
 
 #: data/style_parts.json:options.companion[drone].name
 msgid "Tiny drone"
-msgstr ""
+msgstr "ちびドローン"
 
 #: data/style_parts.json:swatches[pearl].name
 msgid "Pearl"
-msgstr ""
+msgstr "パール"
 
 #: data/style_parts.json:swatches[white].name
 msgid "Chalk"
-msgstr ""
+msgstr "チョーク"
 
 #: data/style_parts.json:swatches[graphite].name
 msgid "Graphite"
-msgstr ""
+msgstr "グラファイト"
 
 #: data/style_parts.json:swatches[slate].name
 msgid "Slate"
-msgstr ""
+msgstr "スレート"
 
 #: data/style_parts.json:swatches[cyan].name
 msgid "Cyan"
-msgstr ""
+msgstr "シアン"
 
 #: data/style_parts.json:swatches[orange].name
 msgid "Orange"
-msgstr ""
+msgstr "オレンジ"
 
 #: data/style_parts.json:swatches[sky].name
 msgid "Sky"
-msgstr ""
+msgstr "スカイ"
 
 #: data/style_parts.json:swatches[mint].name
 msgid "Mint"
-msgstr ""
+msgstr "ミント"
 
 #: data/style_parts.json:swatches[hazard].name
 msgid "Hazard yellow"
-msgstr ""
+msgstr "警告イエロー"
 
 #: data/style_parts.json:swatches[soot].name
 msgid "Soot"
-msgstr ""
+msgstr "すす"
 
 #: data/style_parts.json:swatches[amber].name
 msgid "Amber"
-msgstr ""
+msgstr "アンバー"
 
 #: data/style_parts.json:swatches[olive].name
 msgid "Olive"
-msgstr ""
+msgstr "オリーブ"
 
 #: data/style_parts.json:swatches[bark].name
 msgid "Bark"
-msgstr ""
+msgstr "樹皮"
 
 #: data/style_parts.json:swatches[leaf].name
 msgid "Leaf green"
-msgstr ""
+msgstr "リーフグリーン"
 
 #: data/style_parts.json:swatches[honey].name
 msgid "Honey"
-msgstr ""
+msgstr "ハニー"
 
 #: data/style_parts.json:swatches[cherry].name
 msgid "Cherry"
-msgstr ""
+msgstr "チェリー"
 
 #: data/style_parts.json:swatches[pink].name
 msgid "Pink"
-msgstr ""
+msgstr "ピンク"
 
 #: data/style_parts.json:swatches[cream].name
 msgid "Cream"
-msgstr ""
+msgstr "クリーム"
 
 #: data/style_parts.json:swatches[gunmetal].name
 msgid "Gunmetal"
-msgstr ""
+msgstr "ガンメタル"
 
 #: data/style_parts.json:swatches[ink].name
 msgid "Ink"
-msgstr ""
+msgstr "インク"
 
 #: data/style_parts.json:swatches[violet].name
 msgid "Violet"
-msgstr ""
+msgstr "バイオレット"
 
 #: data/style_parts.json:swatches[ivory].name
 msgid "Ivory"
-msgstr ""
+msgstr "アイボリー"
 
 #: data/style_parts.json:swatches[sunset].name
 msgid "Sunset"
-msgstr ""
+msgstr "サンセット"
 
 #: data/style_parts.json:swatches[seaglass].name
 msgid "Sea glass"
-msgstr ""
+msgstr "シーグラス"
 
 #: data/style_parts.json:swatches[seaglass].unlock.text
 msgid "Find 4 Collection trinkets"
-msgstr ""
+msgstr "コレクションの小物を4個見つける"
 
 #: data/style_parts.json:swatches[coral].name
 msgid "Coral"
-msgstr ""
+msgstr "コーラル"
 
 #: data/style_parts.json:swatches[coral].unlock.text
 msgid "Find 12 Collection trinkets"
-msgstr ""
+msgstr "コレクションの小物を12個見つける"
 
 #: data/style_parts.json:swatches[royal].name
 msgid "Royal blue"
-msgstr ""
+msgstr "ロイヤルブルー"
 
 #: data/style_parts.json:swatches[royal].unlock.text
 msgid "Finish 5 Requests"
-msgstr ""
+msgstr "依頼を5件達成する"
 
 #: data/style_parts.json:swatches[lilac].name
 msgid "Lilac"
-msgstr ""
+msgstr "ライラック"
 
 #: data/style_parts.json:swatches[lilac].unlock.text
 msgid "Finish 15 Requests"
-msgstr ""
+msgstr "依頼を15件達成する"
 
 #: data/style_parts.json:swatches[gold].name
 msgid "Gold"
-msgstr ""
+msgstr "ゴールド"
 
 #: data/style_parts.json:swatches[bloom].name
 msgid "Bloom green"
-msgstr ""
+msgstr "ブルームグリーン"
 
 #: data/style_parts.json:swatches[midnight].name
 msgid "Midnight"
-msgstr ""
+msgstr "ミッドナイト"
 
 #: data/style_parts.json:swatches[copper].name
 msgid "Copper"
-msgstr ""
+msgstr "カッパー"
 
 #: data/style_parts.json:swatches[rosegold].name
 msgid "Rose gold"
-msgstr ""
+msgstr "ローズゴールド"
 
 #: data/upgrades.json:upgrades[compartment_size].name
 msgid "Compartment Size"

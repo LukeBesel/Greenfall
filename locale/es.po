@@ -1213,6 +1213,95 @@ msgstr "PUESTO %d · Nv%d"
 msgid "OUTPOST %d · RUIN"
 msgstr "PUESTO %d · RUINA"
 
+#: scenes/style_lineup.gd:9
+msgid "Stargazer"
+msgstr ""
+
+#: scenes/style_lineup.gd:10
+msgid "round"
+msgstr ""
+
+#: scenes/style_lineup.gd:10
+msgid "halo"
+msgstr ""
+
+#: scenes/style_lineup.gd:10 scenes/style_lineup.gd:14
+msgid "heart"
+msgstr ""
+
+#: scenes/style_lineup.gd:10 scenes/style_lineup.gd:12 scenes/style_lineup.gd:14
+#: scenes/style_lineup.gd:16
+msgid "none"
+msgstr ""
+
+#: scenes/style_lineup.gd:10
+msgid "firefly"
+msgstr ""
+
+#: scenes/style_lineup.gd:11 data/achievements.json:achievements[plant_100].name
+msgid "Gardener"
+msgstr "Jardinero"
+
+#: scenes/style_lineup.gd:12
+msgid "happy"
+msgstr ""
+
+#: scenes/style_lineup.gd:12
+msgid "sprout"
+msgstr ""
+
+#: scenes/style_lineup.gd:12
+msgid "leaf"
+msgstr ""
+
+#: scenes/style_lineup.gd:12
+msgid "butterfly"
+msgstr ""
+
+#: scenes/style_lineup.gd:13
+msgid "Field Medic"
+msgstr ""
+
+#: scenes/style_lineup.gd:14
+msgid "catears"
+msgstr ""
+
+#: scenes/style_lineup.gd:14
+msgid "cross"
+msgstr ""
+
+#: scenes/style_lineup.gd:14
+msgid "medkit"
+msgstr ""
+
+#: scenes/style_lineup.gd:14
+msgid "drone"
+msgstr ""
+
+#: scenes/style_lineup.gd:15
+msgid "Racer"
+msgstr ""
+
+#: scenes/style_lineup.gd:16
+msgid "bar"
+msgstr ""
+
+#: scenes/style_lineup.gd:16
+msgid "antenna"
+msgstr ""
+
+#: scenes/style_lineup.gd:16
+msgid "recycle"
+msgstr ""
+
+#: scenes/style_lineup.gd:16
+msgid "gear"
+msgstr ""
+
+#: scenes/style_lineup.gd:16
+msgid "pads"
+msgstr ""
+
 #: steam/demo.gd:73
 msgid "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of Verdance."
 msgstr "El nivel de base %d es el tope de la demo. El juego completo llega hasta el nivel 5 y luego lanza cohetes al resto de Verdance."
@@ -2247,15 +2336,15 @@ msgstr "Modo Cuna: el banco de semillas del arca guarda semillas para otros mund
 
 #: systems/lumi_style.gd:391
 msgid "Unlock the %s design"
-msgstr ""
+msgstr "Desbloquea el diseño %s"
 
 #: systems/lumi_style.gd:394
 msgid "Achievement: %s"
-msgstr ""
+msgstr "Logro: %s"
 
 #: systems/lumi_style.gd:398
 msgid "Buy for %s"
-msgstr ""
+msgstr "Comprar por %s"
 
 #: systems/profile_slots.gd:48 ui/world_picker.gd:138
 msgid "Profile %d"
@@ -3290,7 +3379,7 @@ msgstr "Solo estética (sin bonificaciones)"
 
 #: ui/cosmetics_panel.gd:48
 msgid "Character Builder"
-msgstr ""
+msgstr "Editor de personaje"
 
 #: ui/cosmetics_panel.gd:144 ui/cosmetics_panel.gd:175
 msgid "Wearing"
@@ -3310,7 +3399,7 @@ msgstr "(desactivado: solo estética)"
 
 #: ui/cosmetics_panel.gd:175
 msgid "Wearing a custom look with this bonus"
-msgstr ""
+msgstr "Aspecto propio con este bonus"
 
 #: ui/cosmetics_panel.gd:177
 msgid "Unlocked. Press to wear."
@@ -3682,63 +3771,63 @@ msgstr "◢ SEÑAL %d%%"
 
 #: ui/lumi_builder.gd:87
 msgid "CHARACTER BUILDER"
-msgstr ""
+msgstr "EDITOR DE PERSONAJE"
 
 #: ui/lumi_builder.gd:122
 msgid "Drag to turn  ·  Wheel to zoom"
-msgstr ""
+msgstr "Arrastra para girar  ·  Rueda para zoom"
 
 #: ui/lumi_builder.gd:159
 msgid "Randomize"
-msgstr ""
+msgstr "Aleatorio"
 
 #: ui/lumi_builder.gd:160
 msgid "Reset to preset"
-msgstr ""
+msgstr "Volver al preajuste"
 
 #: ui/lumi_builder.gd:161
 msgid "Test laser"
-msgstr ""
+msgstr "Probar láser"
 
 #: ui/lumi_builder.gd:165 ui/profile_picker.gd:252 ui/profile_picker.gd:269
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: ui/lumi_builder.gd:166
 msgid "Done"
-msgstr ""
+msgstr "Listo"
 
 #: ui/lumi_builder.gd:182 ui/lumi_builder.gd:294
 msgid "Presets"
-msgstr ""
+msgstr "Preajustes"
 
 #: ui/lumi_builder.gd:193
 msgid "Saved"
-msgstr ""
+msgstr "Guardados"
 
 #: ui/lumi_builder.gd:197 ui/lumi_builder.gd:298
 msgid "Saved looks"
-msgstr ""
+msgstr "Aspectos guardados"
 
 #: ui/lumi_builder.gd:347
 msgid "A design's full look. Every slot can be changed afterwards."
-msgstr ""
+msgstr "El aspecto completo de un diseño. Luego puedes cambiar cada ranura."
 
 #: ui/lumi_builder.gd:367
 msgid "Custom colour"
-msgstr ""
+msgstr "Color propio"
 
 #: ui/lumi_builder.gd:412 data/style_parts.json:advanced.name
 msgid "Advanced colour picker"
-msgstr ""
+msgstr "Selector de color avanzado"
 
 #: ui/lumi_builder.gd:422
 msgid "Advanced (hue, saturation, brightness)"
-msgstr ""
+msgstr "Avanzado (tono, saturación, brillo)"
 
 #: ui/lumi_builder.gd:431
 msgid "Hue"
-msgstr ""
+msgstr "Tono"
 
 #: ui/lumi_builder.gd:431 ui/photo_mode.gd:382
 msgid "Saturation"
@@ -3746,39 +3835,39 @@ msgstr "Saturación"
 
 #: ui/lumi_builder.gd:431
 msgid "Brightness"
-msgstr ""
+msgstr "Brillo"
 
 #: ui/lumi_builder.gd:468
 msgid "Equipped"
-msgstr ""
+msgstr "Equipado"
 
 #: ui/lumi_builder.gd:484
 msgid "How weathered the paint looks: fresh from the ark, or three hundred years of dust."
-msgstr ""
+msgstr "Lo gastada que se ve la pintura: recién salida del arca o trescientos años de polvo."
 
 #: ui/lumi_builder.gd:487
 msgid "Fresh"
-msgstr ""
+msgstr "Nuevo"
 
 #: ui/lumi_builder.gd:496
 msgid "Weathered"
-msgstr ""
+msgstr "Gastado"
 
 #: ui/lumi_builder.gd:502
 msgid "A custom look can use the bonus of any design you have unlocked."
-msgstr ""
+msgstr "Un aspecto propio puede usar el bonus de cualquier diseño desbloqueado."
 
 #: ui/lumi_builder.gd:526
 msgid "Keep up to %d looks. Load one to edit it, then press Done to wear it."
-msgstr ""
+msgstr "Guarda hasta %d aspectos. Carga uno para editarlo y pulsa Listo para llevarlo."
 
 #: ui/lumi_builder.gd:531 ui/lumi_builder.gd:555
 msgid "Look %d"
-msgstr ""
+msgstr "Aspecto %d"
 
 #: ui/lumi_builder.gd:539
 msgid "Empty"
-msgstr ""
+msgstr "Vacío"
 
 #: ui/lumi_builder.gd:544 data/robot_parts.json:stats[load].name
 msgid "Load"
@@ -3786,15 +3875,15 @@ msgstr "Carga"
 
 #: ui/lumi_builder.gd:552
 msgid "Save here"
-msgstr ""
+msgstr "Guardar aquí"
 
 #: ui/lumi_builder.gd:622
 msgid "Unsaved changes"
-msgstr ""
+msgstr "Cambios sin guardar"
 
 #: ui/lumi_builder.gd:638
 msgid "Part of this look is still locked."
-msgstr ""
+msgstr "Parte de este aspecto sigue bloqueada."
 
 #: ui/main_menu.gd:315
 msgid "One small robot. One very big cleanup."
@@ -5219,10 +5308,6 @@ msgstr "Mano verde"
 #: data/achievements.json:achievements[plant_1].desc
 msgid "Plant a seed."
 msgstr "Planta una semilla."
-
-#: data/achievements.json:achievements[plant_100].name
-msgid "Gardener"
-msgstr "Jardinero"
 
 #: data/achievements.json:achievements[plant_100].desc
 msgid "Plant 100 seeds."
@@ -10909,336 +10994,336 @@ msgstr "Tambores trituradores y un pequeño horno. Los fardos entran y nunca vue
 
 #: data/style_parts.json:slots[paint].name
 msgid "Paint"
-msgstr ""
+msgstr "Pintura"
 
 #: data/style_parts.json:slots[trim].name
 msgid "Trim"
-msgstr ""
+msgstr "Molduras"
 
 #: data/style_parts.json:slots[accent].name
 msgid "Accent"
-msgstr ""
+msgstr "Acento"
 
 #: data/style_parts.json:slots[side].name
 msgid "Side modules"
-msgstr ""
+msgstr "Módulos laterales"
 
 #: data/style_parts.json:slots[wear].name
 msgid "Wear"
-msgstr ""
+msgstr "Desgaste"
 
 #: data/style_parts.json:slots[pattern].name
 msgid "Pattern"
-msgstr ""
+msgstr "Patrón"
 
 #: data/style_parts.json:slots[eyes].name
 msgid "Eye colour"
-msgstr ""
+msgstr "Color de ojos"
 
 #: data/style_parts.json:slots[glow].name
 msgid "Light strips"
-msgstr ""
+msgstr "Tiras de luz"
 
 #: data/style_parts.json:slots[head].name
 msgid "Head piece"
-msgstr ""
+msgstr "Pieza de cabeza"
 
 #: data/style_parts.json:slots[chest].name
 msgid "Chest icon"
-msgstr ""
+msgstr "Icono del pecho"
 
 #: data/style_parts.json:slots[shoulders].name
 msgid "Shoulders"
-msgstr ""
+msgstr "Hombros"
 
 #: data/style_parts.json:slots[held].name
 msgid "Held item"
-msgstr ""
+msgstr "Objeto en mano"
 
 #: data/style_parts.json:slots[companion].name
 msgid "Companion"
-msgstr ""
+msgstr "Compañero"
 
 #: data/style_parts.json:slots[hover].name
 msgid "Hover glow"
-msgstr ""
+msgstr "Brillo de levitación"
 
 #: data/style_parts.json:slots[laser].name
 msgid "Pickup laser"
-msgstr ""
+msgstr "Láser de recogida"
 
 #: data/style_parts.json:slots[bonus].name
 msgid "Bonus"
-msgstr ""
+msgstr "Bonus"
 
 #: data/style_parts.json:options.pattern[plain].name
 msgid "Plain"
-msgstr ""
+msgstr "Liso"
 
 #: data/style_parts.json:options.pattern[stripes].name
 msgid "Hazard stripes"
-msgstr ""
+msgstr "Franjas de peligro"
 
 #: data/style_parts.json:options.pattern[moss].name
 msgid "Moss patches"
-msgstr ""
+msgstr "Manchas de musgo"
 
 #: data/style_parts.json:options.eye_shape[crescent].name
 msgid "Crescent"
-msgstr ""
+msgstr "Media luna"
 
 #: data/style_parts.json:options.eye_shape[round].name
 msgid "Round"
-msgstr ""
+msgstr "Redondos"
 
 #: data/style_parts.json:options.eye_shape[happy].name
 msgid "Happy arcs"
-msgstr ""
+msgstr "Arcos felices"
 
 #: data/style_parts.json:options.eye_shape[bar].name
 msgid "Visor bar"
-msgstr ""
+msgstr "Barra de visor"
 
 #: data/style_parts.json:options.eye_shape[heart].name
 msgid "Hearts"
-msgstr ""
+msgstr "Corazones"
 
 #: data/style_parts.json:options.eye_shape[heart].unlock.cond.unit data/style_parts.json:swatches[seaglass].unlock.cond.unit data/style_parts.json:swatches[coral].unlock.cond.unit
 msgid "finds"
-msgstr ""
+msgstr "hallazgos"
 
 #: data/style_parts.json:options.eye_shape[heart].unlock.text
 msgid "Find 8 Collection trinkets"
-msgstr ""
+msgstr "Encuentra 8 baratijas de la Colección"
 
 #: data/style_parts.json:options.head[none].name data/style_parts.json:options.shoulders[none].name data/style_parts.json:options.held[none].name
 #: data/style_parts.json:options.companion[none].name
 msgid "None"
-msgstr ""
+msgstr "Ninguno"
 
 #: data/style_parts.json:options.head[fin].name
 msgid "Fin"
-msgstr ""
+msgstr "Aleta"
 
 #: data/style_parts.json:options.head[antenna].name
 msgid "Antenna"
-msgstr ""
+msgstr "Antena"
 
 #: data/style_parts.json:options.head[sprout].name
 msgid "Sprout leaf"
-msgstr ""
+msgstr "Hoja de brote"
 
 #: data/style_parts.json:options.head[catears].name
 msgid "Cat ears"
-msgstr ""
+msgstr "Orejas de gato"
 
 #: data/style_parts.json:options.head[wings].name
 msgid "Wing fins"
-msgstr ""
+msgstr "Aletas de ala"
 
 #: data/style_parts.json:options.head[halo].name
 msgid "Halo"
-msgstr ""
+msgstr "Aureola"
 
 #: data/style_parts.json:options.chest[recycle].name
 msgid "Recycle"
-msgstr ""
+msgstr "Reciclaje"
 
 #: data/style_parts.json:options.chest[leaf].name
 msgid "Leaf"
-msgstr ""
+msgstr "Hoja"
 
 #: data/style_parts.json:options.chest[cross].name
 msgid "Medic cross"
-msgstr ""
+msgstr "Cruz médica"
 
 #: data/style_parts.json:options.chest[heart].name
 msgid "Heart"
-msgstr ""
+msgstr "Corazón"
 
 #: data/style_parts.json:options.shoulders[pads].name
 msgid "Shoulder pads"
-msgstr ""
+msgstr "Hombreras"
 
 #: data/style_parts.json:options.held[gear].name
 msgid "Spare gear"
-msgstr ""
+msgstr "Engranaje de repuesto"
 
 #: data/style_parts.json:options.held[medkit].name
 msgid "Med kit"
-msgstr ""
+msgstr "Botiquín"
 
 #: data/style_parts.json:options.held[toolbox].name
 msgid "Toolbox"
-msgstr ""
+msgstr "Caja de herramientas"
 
 #: data/style_parts.json:options.held[watering_can].name
 msgid "Watering can"
-msgstr ""
+msgstr "Regadera"
 
 #: data/style_parts.json:options.held[holo].name
 msgid "Holo screen"
-msgstr ""
+msgstr "Pantalla holo"
 
 #: data/style_parts.json:options.companion[butterfly].name
 msgid "Butterfly"
-msgstr ""
+msgstr "Mariposa"
 
 #: data/style_parts.json:options.companion[firefly].unlock.cond.unit data/style_parts.json:swatches[royal].unlock.cond.unit data/style_parts.json:swatches[lilac].unlock.cond.unit
 msgid "requests"
-msgstr ""
+msgstr "encargos"
 
 #: data/style_parts.json:options.companion[firefly].unlock.text
 msgid "Finish 3 Requests"
-msgstr ""
+msgstr "Completa 3 encargos"
 
 #: data/style_parts.json:options.companion[drone].name
 msgid "Tiny drone"
-msgstr ""
+msgstr "Dron diminuto"
 
 #: data/style_parts.json:swatches[pearl].name
 msgid "Pearl"
-msgstr ""
+msgstr "Perla"
 
 #: data/style_parts.json:swatches[white].name
 msgid "Chalk"
-msgstr ""
+msgstr "Tiza"
 
 #: data/style_parts.json:swatches[graphite].name
 msgid "Graphite"
-msgstr ""
+msgstr "Grafito"
 
 #: data/style_parts.json:swatches[slate].name
 msgid "Slate"
-msgstr ""
+msgstr "Pizarra"
 
 #: data/style_parts.json:swatches[cyan].name
 msgid "Cyan"
-msgstr ""
+msgstr "Cian"
 
 #: data/style_parts.json:swatches[orange].name
 msgid "Orange"
-msgstr ""
+msgstr "Naranja"
 
 #: data/style_parts.json:swatches[sky].name
 msgid "Sky"
-msgstr ""
+msgstr "Cielo"
 
 #: data/style_parts.json:swatches[mint].name
 msgid "Mint"
-msgstr ""
+msgstr "Menta"
 
 #: data/style_parts.json:swatches[hazard].name
 msgid "Hazard yellow"
-msgstr ""
+msgstr "Amarillo peligro"
 
 #: data/style_parts.json:swatches[soot].name
 msgid "Soot"
-msgstr ""
+msgstr "Hollín"
 
 #: data/style_parts.json:swatches[amber].name
 msgid "Amber"
-msgstr ""
+msgstr "Ámbar"
 
 #: data/style_parts.json:swatches[olive].name
 msgid "Olive"
-msgstr ""
+msgstr "Oliva"
 
 #: data/style_parts.json:swatches[bark].name
 msgid "Bark"
-msgstr ""
+msgstr "Corteza"
 
 #: data/style_parts.json:swatches[leaf].name
 msgid "Leaf green"
-msgstr ""
+msgstr "Verde hoja"
 
 #: data/style_parts.json:swatches[honey].name
 msgid "Honey"
-msgstr ""
+msgstr "Miel"
 
 #: data/style_parts.json:swatches[cherry].name
 msgid "Cherry"
-msgstr ""
+msgstr "Cereza"
 
 #: data/style_parts.json:swatches[pink].name
 msgid "Pink"
-msgstr ""
+msgstr "Rosa"
 
 #: data/style_parts.json:swatches[cream].name
 msgid "Cream"
-msgstr ""
+msgstr "Crema"
 
 #: data/style_parts.json:swatches[gunmetal].name
 msgid "Gunmetal"
-msgstr ""
+msgstr "Gris metal"
 
 #: data/style_parts.json:swatches[ink].name
 msgid "Ink"
-msgstr ""
+msgstr "Tinta"
 
 #: data/style_parts.json:swatches[violet].name
 msgid "Violet"
-msgstr ""
+msgstr "Violeta"
 
 #: data/style_parts.json:swatches[ivory].name
 msgid "Ivory"
-msgstr ""
+msgstr "Marfil"
 
 #: data/style_parts.json:swatches[sunset].name
 msgid "Sunset"
-msgstr ""
+msgstr "Atardecer"
 
 #: data/style_parts.json:swatches[seaglass].name
 msgid "Sea glass"
-msgstr ""
+msgstr "Vidrio marino"
 
 #: data/style_parts.json:swatches[seaglass].unlock.text
 msgid "Find 4 Collection trinkets"
-msgstr ""
+msgstr "Encuentra 4 baratijas de la Colección"
 
 #: data/style_parts.json:swatches[coral].name
 msgid "Coral"
-msgstr ""
+msgstr "Coral"
 
 #: data/style_parts.json:swatches[coral].unlock.text
 msgid "Find 12 Collection trinkets"
-msgstr ""
+msgstr "Encuentra 12 baratijas de la Colección"
 
 #: data/style_parts.json:swatches[royal].name
 msgid "Royal blue"
-msgstr ""
+msgstr "Azul real"
 
 #: data/style_parts.json:swatches[royal].unlock.text
 msgid "Finish 5 Requests"
-msgstr ""
+msgstr "Completa 5 encargos"
 
 #: data/style_parts.json:swatches[lilac].name
 msgid "Lilac"
-msgstr ""
+msgstr "Lila"
 
 #: data/style_parts.json:swatches[lilac].unlock.text
 msgid "Finish 15 Requests"
-msgstr ""
+msgstr "Completa 15 encargos"
 
 #: data/style_parts.json:swatches[gold].name
 msgid "Gold"
-msgstr ""
+msgstr "Oro"
 
 #: data/style_parts.json:swatches[bloom].name
 msgid "Bloom green"
-msgstr ""
+msgstr "Verde floración"
 
 #: data/style_parts.json:swatches[midnight].name
 msgid "Midnight"
-msgstr ""
+msgstr "Medianoche"
 
 #: data/style_parts.json:swatches[copper].name
 msgid "Copper"
-msgstr ""
+msgstr "Cobre"
 
 #: data/style_parts.json:swatches[rosegold].name
 msgid "Rose gold"
-msgstr ""
+msgstr "Oro rosa"
 
 #: data/upgrades.json:upgrades[compartment_size].name
 msgid "Compartment Size"
