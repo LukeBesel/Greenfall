@@ -10,7 +10,7 @@ extends Node3D
 ## why (the district's survey line; other districts are reached by rocket).
 
 const FAR_R: float = 125.0
-const JUNK_PER_M2: float = 0.45
+const JUNK_PER_M2: float = 0.3
 const LITTER_PER_M2: float = 4.0
 const MODELS: int = 12
 
@@ -82,7 +82,7 @@ func build(p_field: HexField) -> void:
 			var c: Color = [Color(0.8, 0.77, 0.68), Color(0.62, 0.5, 0.36), Color(0.5, 0.48, 0.45), Color(0.15, 0.15, 0.16), Color(0.7, 0.6, 0.35)][rng.randi() % 5]
 			(lgroups[q][1] as Array).append(c.lerp(Color(0.48, 0.43, 0.37), rng.randf_range(0.2, 0.5)))
 			litter += 1
-	var tris: Array[int] = [80, 120, 180, 240]
+	var tris: Array[int] = [60, 80, 100, 120]  # far and hazy: the lightest LOD
 	for key: String in groups:
 		var model: String = key.get_slice("|", 1)
 		var xfs: Array = groups[key]
