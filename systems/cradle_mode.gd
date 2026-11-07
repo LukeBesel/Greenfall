@@ -228,8 +228,10 @@ static func bank() -> int:
 	if bool(GameState.flags.get("bloom_finale_seen", false)):
 		w["finale"] = true
 		_p()["unlocked"] = true
-	_p()["starseeds"] = starseeds() + gain
 	_p()["starseeds_total"] = float(_p().get("starseeds_total", 0.0)) + gain
+	# [money] No Starseed currency: the banked score unlocks Heirloom levels (systems/heirloom_track.gd).
+	for id: String in HeirloomTrack.apply(_p(), heirloom_defs()):
+		EventBus.toast.emit(TranslationServer.translate("Heirloom unlocked: %s, level %d. It travels with Lumi to every world.") % [TranslationServer.translate(str(heirloom_def(id).get("name", id))), heirloom_level(id)], "story")
 	mirror_stats()
 	save_profile()
 	return gain
@@ -280,13 +282,15 @@ static func buy_block_reason(id: String) -> String:
 	var lv: int = heirloom_level(id)
 	if lv >= int(d.get("max", 5)):
 		return TranslationServer.translate("Fully grown")
-	if starseeds() + 0.0001 < heirloom_cost(d, lv):
-		return TranslationServer.translate("Needs %d Starseeds") % heirloom_cost(d, lv)
-	return ""
+	# [money] Heirlooms unlock along the Ark milestone track; nothing is bought.
+	var nxt: Dictionary = HeirloomTrack.next_step(float(_p().get("starseeds_total", 0.0)), heirloom_defs())
+	if nxt.is_empty():
+		return TranslationServer.translate("Fully grown")
+	return TranslationServer.translate("Unlocks with Ark milestones (next: %s, at %d restoration)") % [TranslationServer.translate(str(heirloom_def(str(nxt["id"])).get("name", ""))), int(nxt["at"])]
 
 
 static func buy(id: String) -> bool:
-	if buy_block_reason(id) != "":
+	if buy_block_reason(id) != "":  # [money] always blocked: Heirlooms are milestone unlocks (HeirloomTrack)
 		return false
 	var d: Dictionary = heirloom_def(id)
 	var lv: int = heirloom_level(id)

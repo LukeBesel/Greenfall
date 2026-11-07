@@ -104,7 +104,7 @@ func _rebuild(gain: int = 0) -> void:
 	tb.add_child(intro)
 	var seeds := VBoxContainer.new()
 	head.add_child(seeds)
-	_seeds_label = UITheme.label(tr("%d Starseeds") % int(CradleMode.starseeds()), 24, UITheme.GOLD)
+	_seeds_label = UITheme.label(tr("Restoration %d") % int(CradleMode.profile.get("starseeds_total", 0.0)), 24, UITheme.GOLD)  # [money] a score, not a currency
 	_seeds_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	seeds.add_child(_seeds_label)
 	_banked_label = UITheme.label(tr("+%d banked from %s") % [gain, CradleMode.world_name()] if gain > 0 else tr("Earn more from Seed Ark waves and restoration"), 12, UITheme.GREEN if gain > 0 else UITheme.MUTED)

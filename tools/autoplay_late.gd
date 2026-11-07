@@ -58,7 +58,7 @@ static func step(world: Node) -> String:
 	var gain: int = CradleMode.bank()
 	var bought: Array[String] = buy_heirlooms()
 	mark("heirlooms_s")
-	print("[Autoplay] late: banked %d Starseeds, bought %s, %d left" % [gain, str(bought), int(CradleMode.starseeds())])
+	print("[Autoplay] late: banked %d restoration, heirloom levels %d %s" % [gain, CradleMode.heirloom_total(), str(bought)])  # [money] milestone unlocks
 	mark("seed_world_s")
 	CradleMode.launch_new_world(world.get_tree())
 	return "seed new world"
