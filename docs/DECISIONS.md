@@ -191,3 +191,27 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
   plentiful where Data used to be the gate.
 - **The Ledger is quieter**: one uplink line per act; coupons and quips are small notify-stack
   entries, coupons every 12-20 min (was 4-7).
+- **[world2] Props are solid, on their own layer**: street furniture, yard kit, sign posts, outposts,
+  eggs, the composter, greenhouse, pod, hub additions, future-layer posts and frontier ruins collide on
+  `PhysLayers.PROP` (`planet/phys_layers.gd`). Lumi, robots and bales mask it; the camera spring arm
+  does not (thin poles would yank the camera in). Simple boxes/cylinders with shared shapes
+  (`planet/prop_colliders.gd`); merged frontier geometry gets greedy-merged column boxes. Junk that
+  spawns inside a prop is nudged to its edge at load (deterministic; only alive bits are saved).
+  Tiny clutter (pots, weeds, paint, wires, junk, litter) stays non-solid. `tools/collider_audit.gd`
+  must report 0. Robots have no navmesh; their detour/stall logic handles the new obstacles.
+- **[world2] No yard fence**: the owner walked through it and it boxed Lumi in at the start. Lot fences
+  elsewhere are broken runs with gaps, each run solid.
+- **[world2] Junk gen 2 (new games)**: the only clear ground is what Lumi or the bots picked up. No
+  mid-road sparsity, a full ring around the base, landfill junk between the heaps, and the streets of
+  building-blocked hexes plus the hub hex outside the yard belong to the nearest junk hex
+  (`HexField.owner_hex`), so they are covered and clear with it. Each hex keeps gen 1's junk volume
+  (more, smaller pieces), so bales, cubes and hex flips pace as before. Old Town's field is radius 4
+  (was 3); past the field a static, non-interactive junk layer (`planet/far_junk.gd`) keeps the planet
+  covered, and WREN explains the survey line once. Saves without `junk_gen` keep gen 1 and radius 3.
+  Frontiers stay radius 4 (now the same hex count, still denser and tougher).
+- **[world2] Bales**: collider = the drawn bale (straps included; overstuffed bales get their wider,
+  flatter box), CCD on, lifted out of anything solid after a spawn or put-down, put down short of
+  walls, and junk mounds are solid for bales only (`PhysLayers.MOUND`, `planet/mound_colliders.gd`).
+  The bale shader is explicitly opaque, with desaturated per-item chunks, labels in the dominant junk's
+  accent colour and rough, sparse metal (the pale plastic colour plus sky-mirroring metal read as a
+  transparent blue block).
