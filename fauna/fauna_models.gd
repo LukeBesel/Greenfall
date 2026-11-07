@@ -330,15 +330,15 @@ static func seal() -> Mesh:
 		b.ell(Vector3(0.09 * x, 0.04, 0.62), Vector3(0.07, 0.015, 0.1), fur.darkened(0.2), 0.8, Vector3(0, 25 * x, 0))
 	b.rig(M.FRONT, Vector3(0.15, 0.1, -0.15))
 	for x: float in [-1.0, 1.0]:
-		b.ell(Vector3(0.19 * x, 0.05, -0.15), Vector3(0.1, 0.02, 0.05), fur.darkened(0.2), 0.8, Vector3(0, -30 * x, -20 * x))
-	var c := Vector3(0, 0.33, -0.4)
-	b.rig(M.HEAD, Vector3(0, 0.25, -0.3))
-	b.ell(Vector3(0, 0.27, -0.33), Vector3(0.13, 0.12, 0.12), fur, 1.0)
-	b.ell(c, Vector3(0.11, 0.1, 0.11), fur, 1.0)
-	b.ell(c + Vector3(0, -0.03, -0.08), Vector3(0.06, 0.045, 0.05), fur.lightened(0.2), 0.6)
-	b.ell(c + Vector3(0, -0.015, -0.125), Vector3(0.018, 0.012, 0.01), NOSE, 0.0, Vector3.ZERO, 8, 4, 1.0)
+		b.ell(Vector3(0.17 * x, 0.045, -0.2), Vector3(0.08, 0.018, 0.045), fur.darkened(0.2), 0.8, Vector3(0, 40 * x, -15 * x))
+	var c := Vector3(0, 0.31, -0.52)
+	b.rig(M.HEAD, Vector3(0, 0.22, -0.32))
+	b.limb(Vector3(0, 0.2, -0.3), Vector3(0, 0.29, -0.47), 0.15, 0.1, fur, 1.0, 12)
+	b.ell(c, Vector3(0.1, 0.092, 0.11), fur, 1.0, Vector3.ZERO, 14, 8)
+	b.ell(c + Vector3(0, -0.025, -0.08), Vector3(0.055, 0.04, 0.05), fur.lightened(0.2), 0.6)
+	b.ell(c + Vector3(0, -0.012, -0.125), Vector3(0.016, 0.011, 0.009), NOSE, 0.0, Vector3.ZERO, 8, 4, 1.0)
 	for x: float in [-1.0, 1.0]:
-		b.ell(c + Vector3(0.05 * x, 0.025, -0.08), Vector3(0.022, 0.024, 0.016), EYE_DARK, 0.0, Vector3(0, 25 * x, 0), 10, 6, 1.0)
+		b.ell(c + Vector3(0.048 * x, 0.025, -0.075), Vector3(0.021, 0.023, 0.015), EYE_DARK, 0.0, Vector3(0, 25 * x, 0), 10, 6, 1.0)
 	return b.commit()
 
 
