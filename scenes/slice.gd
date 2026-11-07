@@ -126,6 +126,7 @@ func _ready() -> void:
 			field.water_ids[i] = true
 	if not fk.is_empty():  # [biomes] the frontier's own harbour / flood replaces planet lakes
 		field.water_ids = Frontiers.water_ids_for(fk, f_radius, float(cfg.get("hex_size", 3.2)))
+		field.float_mult = float(fk.get("float_mult", 1.0))
 	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
 	if not fk.is_empty():
 		Frontiers.toughen(field, float(fk.get("vol_mult", 1.0)))

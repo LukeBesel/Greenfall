@@ -38,6 +38,11 @@ extends Node
 ##   --streak=N         start with N cleaning-streak points (30 per tier)
 ##   --tokens=N         start with N contract tokens; --trinkets=N grants N collectibles; --livery=ID equips one
 ##   --tab=contracts    with --open=upgrades: the contracts board and token shop (--contracts-sample fills it)
+##   --frontier=ID      [biomes] start in a frontier district (dust_flats, frozen_port, sunken_city, cradle_returns);
+##                      --frontiers-open lets the rocket fly there without the unlocks; --storm[=S] sandstorm after S s
+##                      (--storm-hold keeps it blowing); --thaw-all; --frontier-heaters=N; --frontier-greenhouses=N;
+##                      --drain=N runs the Sunken City pumps N times; --frontier-done[=S] fires the Cradle hook;
+##                      --frontier-cam=dist,pitch,yaw and --frontier-nohud for landscape screenshots
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0

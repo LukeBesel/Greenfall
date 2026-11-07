@@ -1,5 +1,5 @@
 {
-  "_doc": "Late-game frontier districts (planet/frontiers.gd, planet/frontier_district.gd, planet/frontier_view.gd). Each kind gets one extra hub on the planet (appended after the ordinary hubs, so old hub indices never move) and is reached by rocket once its unlock is met. radius: hex rings of the district field (ordinary districts use 3). pieces_mult / vol_mult: more and bulkier junk per hex. value_mult: bales sell for this much more here (Depot.sell_factor). cost_mult: hub level cube costs (materials unchanged, they are finite). litter_mult: ground-cover litter density (perf). ground_layers: FieldView ground texture swaps (layer index -> Poly Haven texture id). fx: ground shader extras [sand ripples, frost, wet silt, unused]. grade: sky/fog colour grade (planet/sky_director.gd). unlock: research node, number of bases at level 5, and an earlier frontier's base level. start_hub_level: the base starts here (the Cradle's launch city was kept by ground crews).",
+  "_doc": "Late-game frontier districts (planet/frontiers.gd, planet/frontier_district.gd, planet/frontier_view.gd). Each kind gets one extra hub on the planet (appended after the ordinary hubs, so old hub indices never move) and is reached by rocket once its unlock is met. radius: hex rings of the district field (ordinary districts use 3). pieces_mult / vol_mult: more and bulkier junk per hex; float_mult: more floating junk per water hex. value_mult: bales sell for this much more here (Depot.sell_factor). cost_mult: hub level cube costs (materials unchanged, they are finite). litter_mult: ground-cover litter density (perf). ground_layers: FieldView ground texture swaps (layer index -> Poly Haven texture id). fx: ground shader extras [sand ripples, frost, wet silt, unused]. grade: sky/fog colour grade (planet/sky_director.gd). unlock: research node, number of bases at level 5, and an earlier frontier's base level. start_hub_level: the base starts here (the Cradle's launch city was kept by ground crews).",
   "kinds": [
     {
       "id": "dust_flats",
@@ -31,6 +31,7 @@
       "layout": "wild",
       "radius": 4,
       "pieces_mult": 1.0,
+      "float_mult": 2.0,
       "vol_mult": 1.4,
       "value_mult": 5.0,
       "cost_mult": 7.0,
@@ -51,9 +52,10 @@
       "layout": "city",
       "radius": 4,
       "pieces_mult": 1.2,
+      "float_mult": 3.2,
       "vol_mult": 1.45,
       "value_mult": 8.0,
-      "cost_mult": 11.0,
+      "cost_mult": 8.0,
       "litter_mult": 0.5,
       "ground_layers": {"4": "damp_sand", "5": "brown_mud_dry", "6": "damp_sand"},
       "fx": [0.0, 0.0, 0.75, 0.0],

@@ -93,6 +93,10 @@ func build() -> void:
 		"cradle_returns":
 			_build_cradle()
 	set_level(level, false)
+	var counts: Array[String] = []
+	for g: String in _groups:
+		counts.append("%s=%d" % [g, (_groups[g] as Node).find_children("*", "MeshInstance3D", true, false).size()])
+	print("[frontier] view %s level %d: %s" % [kid, level, " ".join(counts)])
 	if world.get("hub") != null:
 		world.hub.level_changed.connect(func(l: int) -> void: set_level(l, true))
 

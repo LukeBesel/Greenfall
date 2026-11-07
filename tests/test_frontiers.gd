@@ -53,6 +53,7 @@ func _make(kind_id: String, radius: int = 3) -> FakeWorld:
 	w.field.biome = str(k["biome"])
 	w.field.biome_set = Economy.biome_set(w.field.biome)
 	w.field.water_ids = Frontiers.water_ids_for(k, radius, 10.0)
+	w.field.float_mult = float(k.get("float_mult", 1.0))
 	w.field.generate(_types(), Vector2i(20, 30))
 	Frontiers.toughen(w.field, float(k.get("vol_mult", 1.0)))
 	w.planet = PlanetData.new(5, 3, 10.0)
