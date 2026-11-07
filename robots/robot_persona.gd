@@ -42,7 +42,7 @@ func _ready() -> void:
 	_tag.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	_tag.font_size = 30
 	_tag.outline_size = 8
-	_tag.pixel_size = 0.0036
+	_tag.pixel_size = 0.0027
 	_tag.modulate = Color(0.95, 0.95, 0.92, 0.92)
 	_tag.outline_modulate = Color(0.02, 0.03, 0.04, 0.75)
 	_tag.position = Vector3(0, TAG_Y, 0)

@@ -258,9 +258,9 @@ func _chassis(id: String) -> void:
 			var gold: Material = visual._gloss(Color(1.0, 0.78, 0.38), 0.2, 1.0, 0.0)
 			for sx: float in [-1.0, 1.0]:
 				var x: float = sx * (w + 0.03)
-				_mi(self, ProcMesh.sphere(0.5, 28, 12), pearl, Vector3(x, my, cz), Vector3.ZERO, Vector3(0.09, h * 0.62, lz * 0.95))
-				_mi(self, ProcMesh.box(Vector3(0.008, 0.008, lz * 0.8)), gold, Vector3(x + sx * 0.04, my + h * 0.08, cz))
-				_mi(self, ProcMesh.box(Vector3(0.005, 0.005, lz * 0.62)), visual._glow(Color(0.35, 0.95, 1.0), 2.2), Vector3(x + sx * 0.043, my - h * 0.04, cz))
+				_mi(self, ProcMesh.sphere(0.5, 28, 12), pearl, Vector3(x, my, cz), Vector3.ZERO, Vector3(0.07, minf(h * 0.42, 0.2), minf(lz * 0.8, 0.5)))
+				_mi(self, ProcMesh.box(Vector3(0.008, 0.008, minf(lz * 0.62, 0.38))), gold, Vector3(x + sx * 0.03, my + minf(h * 0.06, 0.04), cz))
+				_mi(self, ProcMesh.box(Vector3(0.005, 0.005, minf(lz * 0.5, 0.3))), visual._glow(Color(0.35, 0.95, 1.0), 2.2), Vector3(x + sx * 0.033, my - minf(h * 0.04, 0.025), cz))
 			_mi(self, ProcMesh.torus(0.05, 0.065, 20, 4), gold, Vector3(0, my, _lo.z - 0.01), Vector3(90, 0, 0))
 			_mi(self, ProcMesh.cyl(0.05, 0.05, 0.006, 18), visual._glow(Color(0.35, 0.95, 1.0), 2.5), Vector3(0, my, _lo.z - 0.012), Vector3(90, 0, 0))
 
