@@ -22,6 +22,7 @@ var _cap: Label
 var _bars: Array[ColorRect] = []
 var _vignette: TextureRect
 var _restored: bool = false
+var _pauser: StoryPause
 
 
 func begin() -> void:
@@ -65,9 +66,12 @@ func begin() -> void:
 	_cap.offset_bottom = -30
 	_cap.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	root.add_child(_cap)
-	var skip := UITheme.label(tr("Space / Esc  skip"), 12, Color(1, 1, 1, 0.45))
+	var skip := UITheme.label("", 12, Color(1, 1, 1, 0.45))
+	Settings.bind_text(skip, func() -> String: return StoryPause.hint())
+	_pauser = StoryPause.new()
+	_layer.add_child(_pauser)
 	skip.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	skip.offset_left = -170
+	skip.offset_left = -260
 	skip.offset_top = 24
 	root.add_child(skip)
 	_fade = ColorRect.new()
@@ -194,9 +198,13 @@ func _exit_tree() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not running or skipped:
 		return
-	if event.is_action_pressed("pause") or event.is_action_pressed("ui_accept") or event.is_action_pressed("ui_cancel") \
-			or (event is InputEventKey and (event as InputEventKey).pressed and (event as InputEventKey).keycode == KEY_SPACE):
+	# [intro2] Space / A pauses and resumes; Esc / B skips.
+	if StoryPause.is_pause_event(event):
 		get_viewport().set_input_as_handled()
+		_pauser.toggle()
+	elif StoryPause.is_skip_event(event):
+		get_viewport().set_input_as_handled()
+		_pauser.set_paused(false)
 		skipped = true
 
 

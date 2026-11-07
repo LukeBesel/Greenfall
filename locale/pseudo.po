@@ -409,7 +409,7 @@ msgstr "[ŴÀŔÞ ~]"
 msgid "LIFT OFF"
 msgstr "[ĻÎFŢ ÔFF ~]"
 
-#: automation/rocket.gd:789 story/cine.gd:68
+#: automation/rocket.gd:789
 msgid "Space / Esc  skip"
 msgstr "[Šþàçé / Éšç  šķîþ ~~~]"
 
@@ -1230,7 +1230,7 @@ msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
-#: scenes/story_preview.gd:94 ui/loading_screen.gd:141
+#: scenes/story_preview.gd:102 ui/loading_screen.gd:143
 msgid "Setting the scene"
 msgstr "[Šéţţîñĝ ţĥé šçéñé ~~~]"
 
@@ -1254,7 +1254,7 @@ msgstr "[Ýôûŕ bàšé ĥàš ĝŕôŵñ àš ƒàŕ àš ţĥé ðémô ĝô
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "[Îñ ţĥé ƒûļļ ĝàmé Ļûmî bûîļðš ţĥé bàšé ûþ ţô ļévéļ 5, þļàñţš ŵĥôļé ðîšţŕîçţš ûñţîļ ţĥéý ţĥŕîvé, ĝŕôŵš ţĥém îñţô à bŕîĝĥţ ƒûţûŕé çîţý, àñð ƒļîéš ŕôçķéţš ţô ðôžéñš ôƒ bàšéš àçŕôšš ţĥé þļàñéţ. Ýôûŕ ðémô þŕôĝŕéšš çàŕŕîéš ôvéŕ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:667
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:679
 msgid "Hexes cleaned"
 msgstr "[Ĥéxéš çļéàñéð ~~]"
 
@@ -1262,11 +1262,11 @@ msgstr "[Ĥéxéš çļéàñéð ~~]"
 msgid "Bales made"
 msgstr "[Bàļéš màðé ~]"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:682
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:694
 msgid "Robots built"
 msgstr "[Ŕôbôţš bûîļţ ~]"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:690
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:702
 msgid "Time played"
 msgstr "[Ţîmé þļàýéð ~]"
 
@@ -1286,7 +1286,7 @@ msgstr "[Ţîţļé šçŕééñ ~]"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "[Ķééþ þļàýîñĝ: ţĥé ƒîŕšţ ðîšţŕîçţ šţàýš ôþéñ, àţ bàšé ļévéļ %d. ~~~~~~~~~~~~~~~~~~~]"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:759 ui/main_menu.gd:446
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:771 ui/main_menu.gd:446
 msgid "%dh %02dm"
 msgstr "[%dĥ %02dm ~]"
 
@@ -1596,59 +1596,51 @@ msgstr "[...Îţ'š ĝŕééñ. Ļûmî, îţ'š àçţûàļļý ĝŕééñ. ~~
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "[Ķééþ îţ ŵàţéŕéð. Šééðš àŕé ŕàŕé ôûţ ĥéŕé, bûţ évéŕý bļôôm ĝîvéš ôñé bàçķ, àñð à ļîţţļé ĝŕééñ ļîĝĥţ ƒôŕ ýôûŕ çôŕé. Ţĥîš îš ĥôŵ îţ šţàŕţš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:177
+#: story/intro.gd:193
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr "[Ţĥŕéé ĥûñðŕéð ýéàŕš àĝô, ţĥé ļàšţ šééðš ļéƒţ Véŕðàñçé àbôàŕð ţĥé àŕķ Çŕàðļé. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:178
+#: story/intro.gd:194
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr "[Ļûmî, ţĥé àŕķ'š ļîţţļé šééð-ķééþéŕ, šàñĝ ţô ţĥé šééðļîñĝš évéŕý ñîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:179
+#: story/intro.gd:195
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr "[Ĥûmmîñĝ àĝàîñ, Ļûmî? Ţĥéý çàñ'ţ ĥéàŕ ýôû, ýôû ķñôŵ. ...Ţĥéý ðô ĝŕôŵ ƒàšţéŕ ŵĥéñ ýôû ðô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:180
+#: story/intro.gd:196
 msgid "Then, one night, the sky came apart."
 msgstr "[Ţĥéñ, ôñé ñîĝĥţ, ţĥé šķý çàmé àþàŕţ. ~~~~~~~~~~]"
 
-#: story/intro.gd:181
+#: story/intro.gd:197
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr "[Ĥûļļ bŕéàçĥ îñ ţĥé vàûļţ bàý! Ļûmî, ļéàvé ţĥé ţŕàýš, ĝéţ çļéàŕ! ~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:182
+#: story/intro.gd:198
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr "[Ļûmî— ĥôļð ôñ— Î çàñ'ţ ţûŕñ ĥéŕ àŕôûñð— ĥôļð ôñ— ~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:183
+#: story/intro.gd:199
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "[Ţĥé àŕķ çôûļð ñôţ ţûŕñ bàçķ. Ţĥé þôð ƒéļļ ƒôŕ ðàýš. ~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:184
+#: story/intro.gd:200
 msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
 msgstr "[...Ļûmî? ...Ļûmî. Ţĥé ŕéļàý'š bàŕéļý ĥôļðîñĝ, bûţ Î'vé ĝôţ ýôû. Ýôû'ŕé ðôŵñ. Ýôû'ŕé ôñ Véŕðàñçé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:185
+#: story/intro.gd:201
 msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
 msgstr "[Ýôûŕ çôŕé ŕûñš ôñ ĝŕééñ ļîĝĥţ, ţĥé ĝļôŵ ļîvîñĝ ţĥîñĝš ĝîvé ôƒƒ. Ţĥéŕé'š ñô ĝŕééñ ļéƒţ ðôŵñ ţĥéŕé. Ţĥàţ'š ŵĥý ýôû'ŕé ƒàðîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:186
+#: story/intro.gd:202
 msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
 msgstr "[Šô ŵé màķé šômé. Çļéàñ ţĥé ĝŕôûñð, þļàñţ ţĥôšé šééðļîñĝš. Évéŕý bļôôm ƒééðš ýôûŕ çôŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:187
+#: story/intro.gd:203
 msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
 msgstr "[Fîļļ ýôûŕ Bļôôm Çôŕé. Ŕébûîļð à ļàûñçĥ šîţé. Ţĥéñ ýôû ƒļý ĥômé ţô ûš. ...Ôñé çàñ àţ à ţîmé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:706
-msgid "%s  skip"
-msgstr "[%s  šķîþ ~]"
-
-#: story/intro.gd:706
-msgid "Space / Esc"
-msgstr "[Šþàçé / Éšç ~]"
-
-#: story/intro.gd:747
+#: story/intro.gd:798
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "[ĜŔÉÉÑ ĻÎĜĤŢ  ·  ÑÔÑÉ ÐÉŢÉÇŢÉÐ ~~~~~~~]"
 
@@ -1808,6 +1800,30 @@ msgstr "[ĻÉÐĜÉŔ  ŴMŠ-07 ~~]"
 msgid "Something surfaced in the cleared ground. A memory shard."
 msgstr "[Šôméţĥîñĝ šûŕƒàçéð îñ ţĥé çļéàŕéð ĝŕôûñð. À mémôŕý šĥàŕð. ~~~~~~~~~~~~~~~~~]"
 
+#: story/story_pause.gd:30
+msgid "Paused"
+msgstr "[Þàûšéð ~]"
+
+#: story/story_pause.gd:36
+msgid "%s  resume   ·   %s  skip"
+msgstr "[%s  ŕéšûmé   ·   %s  šķîþ ~~~~~~]"
+
+#: story/story_pause.gd:36
+msgid "Space"
+msgstr "[Šþàçé ~]"
+
+#: story/story_pause.gd:36
+msgid "Esc"
+msgstr "[Éšç ~]"
+
+#: story/story_pause.gd:45
+msgid "%s  pause   ·   %s  skip"
+msgstr "[%s  þàûšé   ·   %s  šķîþ ~~~~~]"
+
+#: story/story_pause.gd:46
+msgid "Space  pause   ·   Esc  skip"
+msgstr "[Šþàçé  þàûšé   ·   Éšç  šķîþ ~~~~~~~]"
+
 #: story/tutorial.gd:10
 msgid "Hold  {scoop}  to scoop junk"
 msgstr "[Ĥôļð  {scoop}  ţô šçôôþ ĵûñķ ~~~~~~~]"
@@ -1876,11 +1892,11 @@ msgstr "[Véŕðàñçé Bļôôm: %s. %s ~~~~~]"
 msgid "Somewhere under the junk."
 msgstr "[Šôméŵĥéŕé ûñðéŕ ţĥé ĵûñķ. ~~~~~~]"
 
-#: systems/codex.gd:192 ui/codex_screen.gd:355
+#: systems/codex.gd:192 ui/codex_screen.gd:367
 msgid "Old Town"
 msgstr "[Ôļð Ţôŵñ ~]"
 
-#: systems/codex.gd:196 ui/codex_screen.gd:355
+#: systems/codex.gd:196 ui/codex_screen.gd:367
 msgid "Wilderness bases"
 msgstr "[Ŵîļðéŕñéšš bàšéš ~~~]"
 
@@ -1888,7 +1904,7 @@ msgstr "[Ŵîļðéŕñéšš bàšéš ~~~]"
 msgid " · often %s"
 msgstr " [· ôƒţéñ %s ~]"
 
-#: systems/codex.gd:199 ui/codex_screen.gd:355 data/codex.json:categories[frontiers].name
+#: systems/codex.gd:199 ui/codex_screen.gd:367 data/codex.json:categories[frontiers].name
 msgid "Frontiers"
 msgstr "[Fŕôñţîéŕš ~]"
 
@@ -1896,11 +1912,11 @@ msgstr "[Fŕôñţîéŕš ~]"
 msgid " · %s"
 msgstr " [· %s]"
 
-#: systems/codex.gd:201 ui/codex_screen.gd:355
+#: systems/codex.gd:201 ui/codex_screen.gd:367
 msgid "Other worlds"
 msgstr "[Ôţĥéŕ ŵôŕļðš ~]"
 
-#: systems/codex.gd:202 ui/codex_screen.gd:355
+#: systems/codex.gd:202 ui/codex_screen.gd:367
 msgid "Any district"
 msgstr "[Àñý ðîšţŕîçţ ~]"
 
@@ -2322,7 +2338,7 @@ msgstr "[Ñééðš bàšé ļévéļ %d ~~~~]"
 msgid "Queue is full"
 msgstr "[Qûéûé îš ƒûļļ ~~]"
 
-#: systems/research.gd:324 ui/codex_screen.gd:763
+#: systems/research.gd:324 ui/codex_screen.gd:775
 msgid "%ds"
 msgstr "[%dš ~]"
 
@@ -2805,7 +2821,7 @@ msgstr "[ÑÉXŢ ŠŢÉÞ ~]"
 msgid "RESTART CHECKLIST  ·  DONE"
 msgstr "[ŔÉŠŢÀŔŢ ÇĤÉÇĶĻÎŠŢ  ·  ÐÔÑÉ ~~~~~~]"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:696
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:708
 msgid "Achievements"
 msgstr "[Àçĥîévéméñţš ~]"
 
@@ -2825,23 +2841,27 @@ msgstr "[Çôļļéçţîôñ ~]"
 msgid "CODEX"
 msgstr "[ÇÔÐÉX ~]"
 
-#: ui/codex_screen.gd:87 ui/upgrades_screen.gd:92
+#: ui/codex_screen.gd:88
+msgid "Watch the story"
+msgstr "[Ŵàţçĥ ţĥé šţôŕý ~~]"
+
+#: ui/codex_screen.gd:99 ui/upgrades_screen.gd:92
 msgid "Close  [%s]"
 msgstr "[Çļôšé  [%s] ~]"
 
-#: ui/codex_screen.gd:106
+#: ui/codex_screen.gd:118
 msgid "   {ui_tab_prev}{ui_tab_next}  switch tabs"
 msgstr "   [{ui_tab_prev}{ui_tab_next}  šŵîţçĥ ţàbš ~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:189
+#: ui/codex_screen.gd:201
 msgid "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements"
 msgstr "[%d / %d éñţŕîéš   ·   %d / %d çûŕîôšîţîéš   ·   %d / %d çôļļéçţîbļéš   ·   %d / %d àçĥîévéméñţš ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:315 ui/codex_screen.gd:435 ui/codex_screen.gd:543
+#: ui/codex_screen.gd:327 ui/codex_screen.gd:447 ui/codex_screen.gd:555
 msgid "Not found yet"
 msgstr "[Ñôţ ƒôûñð ýéţ ~~]"
 
-#: ui/codex_screen.gd:319
+#: ui/codex_screen.gd:331
 msgid ""
 "\n"
 "\n"
@@ -2851,183 +2871,183 @@ msgstr ""
 "\n"
 "[Çļéàŕéð šô ƒàŕ: %s ~~~~]"
 
-#: ui/codex_screen.gd:344
+#: ui/codex_screen.gd:356
 msgid "CURIOSITIES"
 msgstr "[ÇÛŔÎÔŠÎŢÎÉŠ ~]"
 
-#: ui/codex_screen.gd:345 ui/codex_screen.gd:466
+#: ui/codex_screen.gd:357 ui/codex_screen.gd:478
 msgid "%d / %d found"
 msgstr "[%d / %d ƒôûñð ~~]"
 
-#: ui/codex_screen.gd:439
+#: ui/codex_screen.gd:451
 msgid "Found  ·  %s"
 msgstr "[Fôûñð  ·  %s ~]"
 
-#: ui/codex_screen.gd:442
+#: ui/codex_screen.gd:454
 msgid "Parts found: %d / %d"
 msgstr "[Þàŕţš ƒôûñð: %d / %d ~~~~]"
 
-#: ui/codex_screen.gd:443
+#: ui/codex_screen.gd:455
 msgid "Reward: a small surprise"
 msgstr "[Ŕéŵàŕð: à šmàļļ šûŕþŕîšé ~~~~~]"
 
-#: ui/codex_screen.gd:465
+#: ui/codex_screen.gd:477
 msgid "COLLECTION"
 msgstr "[ÇÔĻĻÉÇŢÎÔÑ ~]"
 
-#: ui/codex_screen.gd:546
+#: ui/codex_screen.gd:558
 msgid "In your collection"
 msgstr "[Îñ ýôûŕ çôļļéçţîôñ ~~~]"
 
-#: ui/codex_screen.gd:551
+#: ui/codex_screen.gd:563
 msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
 msgstr "[Ĥîñţ: à šĥý vîšîţôŕ çôméš ţô Šûšţàîñéð àñð Ţĥŕîvîñĝ ĥéxéš. Bŕîñĝ à çàméŕà. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:552
+#: ui/codex_screen.gd:564
 msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
 msgstr "[Ĥîñţ: àñîmàļš çômé bàçķ àš ţĥé ĝŕôûñð ĥéàļš. Þĥôţôĝŕàþĥ ţĥém îñ þĥôţô môðé (Þ). ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:553
+#: ui/codex_screen.gd:565
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
 msgstr "[Ĥîñţ: ƒîñîšĥ %d ŕéqûéšţš (Ŕéqûéšţš ţàb àţ ţĥé ŵôŕķbéñçĥ). ~~~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:554
+#: ui/codex_screen.gd:566
 msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
 msgstr "[Ĥîñţ: Çûŕîô Çàþšûļéš, ôñ ţĥé Ŕéqûéšţš ŕéŵàŕð ţŕàçķ àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:555
+#: ui/codex_screen.gd:567
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "[Ĥîñţ: ķééþ šçôôþîñĝ ŵîţĥôûţ šţôþþîñĝ ûñţîļ ţĥé šţŕéàķ méţéŕ îš ƒûļļ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:556
+#: ui/codex_screen.gd:568
 msgid "Hint: turns up during %s."
 msgstr "[Ĥîñţ: ţûŕñš ûþ ðûŕîñĝ %s. ~~~~~~]"
 
-#: ui/codex_screen.gd:625
+#: ui/codex_screen.gd:637
 msgid "Unlocked  ·  %s"
 msgstr "[Ûñļôçķéð  ·  %s ~~]"
 
-#: ui/codex_screen.gd:664
+#: ui/codex_screen.gd:676
 msgid "Total"
 msgstr "[Ţôţàļ ~]"
 
-#: ui/codex_screen.gd:665
+#: ui/codex_screen.gd:677
 msgid "Junk removed"
 msgstr "[Ĵûñķ ŕémôvéð ~]"
 
-#: ui/codex_screen.gd:665
+#: ui/codex_screen.gd:677
 msgid "by type"
 msgstr "[bý ţýþé ~]"
 
-#: ui/codex_screen.gd:666 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:678 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "[Çļéàñîñĝ ~]"
 
-#: ui/codex_screen.gd:668
+#: ui/codex_screen.gd:680
 msgid "Hexes restored"
 msgstr "[Ĥéxéš ŕéšţôŕéð ~~]"
 
-#: ui/codex_screen.gd:669
+#: ui/codex_screen.gd:681
 msgid "Bales pressed"
 msgstr "[Bàļéš þŕéššéð ~~]"
 
-#: ui/codex_screen.gd:670
+#: ui/codex_screen.gd:682
 msgid "Pure bales"
 msgstr "[Þûŕé bàļéš ~]"
 
-#: ui/codex_screen.gd:671
+#: ui/codex_screen.gd:683
 msgid "Perfect bales"
 msgstr "[Þéŕƒéçţ bàļéš ~~]"
 
-#: ui/codex_screen.gd:672
+#: ui/codex_screen.gd:684
 msgid "Lumpy bales"
 msgstr "[Ļûmþý bàļéš ~]"
 
-#: ui/codex_screen.gd:673
+#: ui/codex_screen.gd:685
 msgid "Bales cashed in"
 msgstr "[Bàļéš çàšĥéð îñ ~~]"
 
-#: ui/codex_screen.gd:674
+#: ui/codex_screen.gd:686
 msgid "Cubes earned"
 msgstr "[Çûbéš éàŕñéð ~]"
 
-#: ui/codex_screen.gd:676 ui/globe_view.gd:135 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:688 ui/globe_view.gd:135 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "[Ĝŕôŵîñĝ ~]"
 
-#: ui/codex_screen.gd:677
+#: ui/codex_screen.gd:689
 msgid "Seeds planted"
 msgstr "[Šééðš þļàñţéð ~~]"
 
-#: ui/codex_screen.gd:678
+#: ui/codex_screen.gd:690
 msgid "Plants bloomed"
 msgstr "[Þļàñţš bļôôméð ~~]"
 
-#: ui/codex_screen.gd:679
+#: ui/codex_screen.gd:691
 msgid "Air filtered"
 msgstr "[Àîŕ ƒîļţéŕéð ~]"
 
-#: ui/codex_screen.gd:681 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:693 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "[Ŕôbôţš ~]"
 
-#: ui/codex_screen.gd:683
+#: ui/codex_screen.gd:695
 msgid "Bales by robots"
 msgstr "[Bàļéš bý ŕôbôţš ~~]"
 
-#: ui/codex_screen.gd:684
+#: ui/codex_screen.gd:696
 msgid "Parts dug up"
 msgstr "[Þàŕţš ðûĝ ûþ ~]"
 
-#: ui/codex_screen.gd:686
+#: ui/codex_screen.gd:698
 msgid "Exploring"
 msgstr "[Éxþļôŕîñĝ ~]"
 
-#: ui/codex_screen.gd:687
+#: ui/codex_screen.gd:699
 msgid "Distance rolled"
 msgstr "[Ðîšţàñçé ŕôļļéð ~~]"
 
-#: ui/codex_screen.gd:688
+#: ui/codex_screen.gd:700
 msgid "Memory shards read"
 msgstr "[Mémôŕý šĥàŕðš ŕéàð ~~~]"
 
-#: ui/codex_screen.gd:689
+#: ui/codex_screen.gd:701
 msgid "Codex entries"
 msgstr "[Çôðéx éñţŕîéš ~~]"
 
-#: ui/codex_screen.gd:692
+#: ui/codex_screen.gd:704
 msgid "Progress"
 msgstr "[Þŕôĝŕéšš ~]"
 
-#: ui/codex_screen.gd:693
+#: ui/codex_screen.gd:705
 msgid "Upgrades bought"
 msgstr "[Ûþĝŕàðéš bôûĝĥţ ~~]"
 
-#: ui/codex_screen.gd:694
+#: ui/codex_screen.gd:706
 msgid "Field notes logged"
 msgstr "[Fîéļð ñôţéš ļôĝĝéð ~~~]"
 
-#: ui/codex_screen.gd:695
+#: ui/codex_screen.gd:707
 msgid "Research done"
 msgstr "[Ŕéšéàŕçĥ ðôñé ~~]"
 
-#: ui/codex_screen.gd:697
+#: ui/codex_screen.gd:709
 msgid "Best hub level"
 msgstr "[Béšţ ĥûb ļévéļ ~~]"
 
-#: ui/codex_screen.gd:747
+#: ui/codex_screen.gd:759
 msgid "%s kg"
 msgstr "[%s ķĝ ~]"
 
-#: ui/codex_screen.gd:748
+#: ui/codex_screen.gd:760
 msgid "%.1f kg"
 msgstr "[%.1f ķĝ ~]"
 
-#: ui/codex_screen.gd:752
+#: ui/codex_screen.gd:764
 msgid "%.2f km"
 msgstr "[%.2f ķm ~]"
 
-#: ui/codex_screen.gd:762
+#: ui/codex_screen.gd:774
 msgid "%dm %02ds"
 msgstr "[%dm %02dš ~]"
 
@@ -3680,11 +3700,11 @@ msgstr "[BÀĻÉ ŔÉÀÐÝ ~]"
 msgid "◢ SIGNAL %d%%"
 msgstr "[◢ ŠÎĜÑÀĻ %d%% ~~]"
 
-#: ui/loading_screen.gd:140
+#: ui/loading_screen.gd:142
 msgid "Loading"
 msgstr "[Ļôàðîñĝ ~]"
 
-#: ui/loading_screen.gd:142
+#: ui/loading_screen.gd:144
 msgid "Warming up"
 msgstr "[Ŵàŕmîñĝ ûþ ~]"
 

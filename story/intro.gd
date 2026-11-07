@@ -40,6 +40,12 @@ var _pod: Node3D
 var _hatch: Node3D
 var _fire: Node3D
 var _site: CrashSite
+var _pauser: StoryPause
+## [intro2] Rewatching from the Codex: the world is put back exactly as it was afterwards.
+var _replay: bool = false
+var _replay_xf := Transform3D()
+var _replay_pod: Node3D
+var _replay_site: CrashSite
 var _skipped: bool = false
 var _cam_from := Transform3D()
 var _cam_to := Transform3D()
@@ -196,6 +202,41 @@ static func lines() -> Dictionary:
 		"plan": [TranslationServer.translate("So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."), "wren"],
 		"home": [TranslationServer.translate("Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."), "wren"],
 	}
+
+
+## Rewatch the whole intro from the Codex. A temporary pod plays the landing; afterwards Lumi, the
+## real crash site and the camera are restored; nothing in the save changes.
+func replay() -> void:
+	if running or ending or _waiting:
+		return
+	_replay = true
+	_skipped = false
+	_t = 0.0
+	_bars.clear()
+	_battery_cells.clear()
+	_replay_xf = world.patch.global_transform
+	_replay_pod = _pod
+	_replay_site = _site
+	if _site and is_instance_valid(_site):
+		_site.visible = false
+	_site = null
+	print("[intro] replay")
+	play()
+
+
+func _end_replay() -> void:
+	if _site and is_instance_valid(_site):
+		_site.queue_free()  # the temporary landing (its pod with it)
+	elif _pod and is_instance_valid(_pod) and _pod != _replay_pod:
+		_pod.queue_free()
+	_pod = _replay_pod
+	_site = _replay_site
+	if _site and is_instance_valid(_site):
+		_site.visible = true
+	if _pod and is_instance_valid(_pod):
+		_hatch = _pod.get_node("Hatch")
+	world.patch.global_transform = _replay_xf
+	_replay = false
 
 
 func play() -> void:
@@ -711,9 +752,11 @@ func _build_overlay() -> void:
 	_title.modulate.a = 0.0
 	root.add_child(_title)
 	_skip = UITheme.label("", 12, Color(1, 1, 1, 0.45))
-	Settings.bind_text(_skip, func() -> String: return tr("%s  skip") % (tr("Space / Esc") if not Settings.last_input_pad else Settings.glyph("ui_accept")))  # [deck]
+	Settings.bind_text(_skip, func() -> String: return StoryPause.hint())  # [deck] [intro2]
+	_pauser = StoryPause.new()
+	_layer.add_child(_pauser)
 	_skip.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	_skip.offset_left = -170
+	_skip.offset_left = -260
 	_skip.offset_top = 24
 	root.add_child(_skip)
 	_build_battery(root)
@@ -840,9 +883,15 @@ func _hold(s: float) -> bool:
 func _unhandled_input(event: InputEvent) -> void:
 	if not running or _skipped:
 		return
-	if event.is_action_pressed("pause") or event.is_action_pressed("ui_accept") or event.is_action_pressed("ui_cancel") \
-			or (event is InputEventKey and (event as InputEventKey).pressed and (event as InputEventKey).keycode == KEY_SPACE):
+	# [intro2] Space / A pauses and resumes (owner playtest #2); Esc / B skips.
+	if StoryPause.is_pause_event(event):
 		get_viewport().set_input_as_handled()
+		if _pauser:
+			_pauser.toggle()
+	elif StoryPause.is_skip_event(event):
+		get_viewport().set_input_as_handled()
+		if _pauser:
+			_pauser.set_paused(false)
 		_skipped = true
 		_finish()
 
@@ -857,9 +906,10 @@ func _finish() -> void:
 	_cam_manual = false
 	var patch: Node3D = world.patch
 	var model: PatchModel = _model()
-	place_pod()
-	if patch.global_position.distance_to(POD_POS) > 6.0 or _skipped or not patch.visible:
-		patch.global_position = Vector3(0, 0.05, 3.0)
+	if not _replay:
+		place_pod()
+		if patch.global_position.distance_to(POD_POS) > 6.0 or _skipped or not patch.visible:
+			patch.global_position = Vector3(0, 0.05, 3.0)
 	GameState.flags["intro_done"] = true
 	if _skipped:
 		_subs().clear()
@@ -868,6 +918,11 @@ func _finish() -> void:
 	tw.tween_property(_fade, "color:a", 1.0, 0.4)
 	tw.tween_callback(func() -> void:
 		ending = false
+		if _replay:
+			_end_replay()
+		if _fire and is_instance_valid(_fire):
+			_fire.queue_free()
+		_fire = null
 		_close_stage()
 		patch.visible = true
 		if model:
