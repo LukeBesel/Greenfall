@@ -65,7 +65,7 @@ void sky() {
 		float s = h31(sc);
 		float star = step(0.9965, s) * (0.4 + 0.6 * h31(sc + 7.0)) * smoothstep(0.0, 0.25, up);
 		col += vec3(0.85, 0.88, 1.0) * star * (1.0 - day) * 1.4;
-		// The two suns (the companion trails the primary along the same arc).
+		// The two suns (the companion a fixed angle from the primary).
 		if (up > -0.05) {
 			float hzb = smoothstep(-0.05, 0.05, up);
 			col += sun_disc(d, sun_a_dir, sun_a_col, sun_a_size, sun_a_energy) * hzb;

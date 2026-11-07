@@ -243,7 +243,7 @@ func _sun_a_dir() -> Vector3:
 	return sun.global_transform.basis.z.normalized()
 
 
-## The companion trails the primary along the same arc, sep_deg behind it.
+## The companion sits sep_deg from the primary, mostly across their shared arc.
 func _sun_b_dir(a: Vector3) -> Vector3:
 	var b: Dictionary = _suns["b"]
 	if b.get("dir") is Vector3:
@@ -252,10 +252,13 @@ func _sun_b_dir(a: Vector3) -> Vector3:
 	var tod: float = float(sd.get("time_of_day")) if sd else 0.4
 	var a1: Vector3 = _path_dir(tod)
 	var a2: Vector3 = _path_dir(tod + 0.004)
-	var axis: Vector3 = a1.cross(a2)
-	if axis.length() < 0.0001:
-		axis = Vector3.RIGHT
-	return a.rotated(axis.normalized(), -deg_to_rad(float(_suns.get("sep_deg", 24.0)))).normalized()
+	var n: Vector3 = a1.cross(a2)
+	var tg: Vector3 = a2 - a1
+	if n.length() < 0.0001 or tg.length() < 0.0001:
+		return a
+	# Offset mostly across the path, a little ahead: the pair rise and set within minutes.
+	var axis: Vector3 = (-n.normalized() * 0.55 - tg.normalized() * 0.85).normalized()
+	return a.rotated(axis, deg_to_rad(float(_suns.get("sep_deg", 24.0)))).normalized()
 
 
 ## SkyDirector's sun path (planet/sky_director.gd _apply) as a direction toward the sun.
