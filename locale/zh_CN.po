@@ -432,7 +432,7 @@ msgstr "MK III"
 msgid "MK IV"
 msgstr "MK IV"
 
-#: automation/rocket_tiers.gd:51
+#: automation/rocket_tiers.gd:51 ui/robot_card.gd:180
 msgid "Top tier"
 msgstr "最高等级"
 
@@ -860,11 +860,11 @@ msgstr "冲劲  %s"
 msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
-#: player/patch.gd:470
+#: player/patch.gd:469
 msgid "Salvaged: %s"
 msgstr "回收：%s"
 
-#: player/patch.gd:500
+#: player/patch.gd:498
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
@@ -980,42 +980,32 @@ msgstr "看右边"
 msgid "Look up"
 msgstr "看上面"
 
-#: robots/fleet.gd:180
+#: robots/fleet.gd:135
 msgid "Locked · research %s"
 msgstr "未解锁 · 研究 %s"
 
-#: robots/fleet.gd:182
+#: robots/fleet.gd:137
 msgid "Crew full (%d/%d): upgrade the hub"
 msgstr "队伍已满（%d/%d）：请升级基地"
 
-#: robots/fleet.gd:188
-msgid "Missing %d part"
-msgid_plural "Missing %d parts"
-msgstr[0] "缺少 %d 个零件"
+#: robots/fleet.gd:139 robots/fleet.gd:211
+msgid "Not enough parts"
+msgstr ""
 
-#: robots/fleet.gd:190 robots/fleet.gd:262 robots/water_net.gd:149
-#: systems/research.gd:194 systems/robot_builder.gd:362 systems/robot_builder.gd:435
-#: ui/robot_card.gd:79
+#: robots/fleet.gd:141 robots/fleet.gd:213 robots/water_net.gd:149
+#: systems/research.gd:194 systems/robot_builder.gd:349 systems/robot_builder.gd:401
 msgid "Not enough cubes"
 msgstr "方块不足"
 
-#: robots/fleet.gd:228
+#: robots/fleet.gd:176
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr "%s %s 组装完成。它四下看了看，就开始干活了。%s"
 
-#: robots/fleet.gd:228
+#: robots/fleet.gd:176
 msgid " Seems %s."
 msgstr " 看起来%s。"
 
-#: robots/fleet.gd:260
-msgid "Needs a %s Control Core"
-msgstr "需要%s控制核心"
-
-#: robots/fleet.gd:264
-msgid "Not enough parts (scrap spares at Haggle's or run the recycler)"
-msgstr ""
-
-#: robots/fleet.gd:284
+#: robots/fleet.gd:232
 msgid "%s fleet upgraded to %s."
 msgstr "%s机队已升级为 %s。"
 
@@ -1721,8 +1711,8 @@ msgstr ""
 "Ledger 现在站在我们这边了。干扰器只是跟着音乐哼哼。"
 
 #: story/ledger.gd:328 systems/decor.gd:119 systems/research.gd:186
-#: systems/robot_builder.gd:360 systems/robot_builder.gd:437 ui/hub_panel.gd:126
-#: ui/stations_panel.gd:96 ui/telescope_panel.gd:43
+#: systems/robot_builder.gd:347 systems/robot_builder.gd:403 ui/stations_panel.gd:96
+#: ui/telescope_panel.gd:43
 msgid "Needs %s"
 msgstr "需要 %s"
 
@@ -1958,7 +1948,7 @@ msgstr "清理连击"
 msgid "Lumi Levels"
 msgstr "Lumi 等级"
 
-#: systems/collection.gd:88 ui/upgrades_screen.gd:17
+#: systems/collection.gd:88 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:18
 msgid "Requests"
 msgstr ""
 
@@ -1966,55 +1956,51 @@ msgstr ""
 msgid "Curio Capsules"
 msgstr "奇物胶囊"
 
-#: systems/contracts.gd:230
-msgid "%s (Builder)"
+#: systems/contracts.gd:237
+msgid "%s (robot style)"
 msgstr ""
 
-#: systems/contracts.gd:232
+#: systems/contracts.gd:239
 msgid "Builder Crate"
 msgstr "组装零件箱"
 
-#: systems/contracts.gd:234
+#: systems/contracts.gd:241
 msgid "Curio Capsule"
 msgstr "奇物胶囊"
 
-#: systems/contracts.gd:236
-msgid "%s robot part"
-msgstr ""
-
-#: systems/contracts.gd:282
+#: systems/contracts.gd:289
 msgid "Request complete: %s. Claim it at the workbench."
 msgstr ""
 
-#: systems/contracts.gd:288
+#: systems/contracts.gd:295
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
 msgstr ""
 
-#: systems/contracts.gd:368
+#: systems/contracts.gd:375
 msgid "Request done: %s."
 msgstr ""
 
-#: systems/contracts.gd:410
-msgid "Requests reward: %s. Equip it on the Requests tab."
+#: systems/contracts.gd:417
+msgid "Requests reward: %s. Paint your fleet with it in the Locker."
 msgstr ""
 
-#: systems/contracts.gd:413
-msgid "Requests reward: %s. Fit it in the Builder tab."
+#: systems/contracts.gd:420
+msgid "Requests reward: %s. Fit it in the Locker."
 msgstr ""
 
-#: systems/contracts.gd:417 systems/contracts.gd:427
+#: systems/contracts.gd:424 systems/contracts.gd:433
 msgid "Requests reward: %s."
 msgstr ""
 
-#: systems/contracts.gd:435
+#: systems/contracts.gd:441
 msgid "Unknown item"
 msgstr "未知物品"
 
-#: systems/contracts.gd:448
+#: systems/contracts.gd:454
 msgid "Unlocks after %d requests"
 msgstr ""
 
-#: systems/contracts.gd:449
+#: systems/contracts.gd:455
 msgid "Locked"
 msgstr ""
 
@@ -2090,103 +2076,103 @@ msgstr "连击 x%d  +%d%%"
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
-#: systems/events.gd:624
+#: systems/events.gd:623
 msgid "%d pieces of junk left around the crate"
 msgstr "箱子周围还剩 %d 块废料"
 
-#: systems/events.gd:649
+#: systems/events.gd:648
 msgid "Supply crate opened: %s"
 msgstr "补给箱已打开：%s"
 
-#: systems/events.gd:651
+#: systems/events.gd:650
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "补给箱的信标超时了，无人机把它拉回了天上。还会再来的。"
 
-#: systems/events.gd:698
+#: systems/events.gd:697
 msgid "%d pieces grabbed at 3x"
 msgstr "以 3 倍价值抓到 %d 块"
 
-#: systems/events.gd:703
+#: systems/events.gd:702
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "热潮退去了。你以三倍价值抓到了 %d 块；打包时就会兑现。"
 
-#: systems/events.gd:703
+#: systems/events.gd:702
 msgid "The surge faded. Next time!"
 msgstr "热潮退去了。下次加油！"
 
-#: systems/events.gd:751
+#: systems/events.gd:750
 msgid "Every plant is drinking"
 msgstr "所有植物都在喝水"
 
-#: systems/events.gd:761
+#: systems/events.gd:760
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "雨移走了。大地把雨水都吸收了：%s"
 
-#: systems/events.gd:782
+#: systems/events.gd:781
 msgid "E   fix %s's hiccup"
 msgstr "E   治好 %s 的嗝"
 
-#: systems/events.gd:809
+#: systems/events.gd:808
 msgid "%s is %d m away"
 msgstr "%s 在 %d 米外"
 
-#: systems/events.gd:811
+#: systems/events.gd:810
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "%s 自己止住了嗝。看起来有点不好意思。"
 
-#: systems/events.gd:825
+#: systems/events.gd:824
 msgid "%s is fixed and back to work. %s"
 msgstr "%s 修好了，回去干活了。%s"
 
-#: systems/events.gd:878
+#: systems/events.gd:877
 msgid "Wildlife Visit: %s"
 msgstr "野生动物来访：%s"
 
-#: systems/events.gd:879
+#: systems/events.gd:878
 msgid "E   take a photo of the %s"
 msgstr "E   给%s拍张照"
 
-#: systems/events.gd:910
+#: systems/events.gd:909
 msgid "%s, %d m away"
 msgstr "%s，%d 米外"
 
-#: systems/events.gd:913
+#: systems/events.gd:912
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "%s走开了。它会在某个绿色的地方再出现。"
 
-#: systems/events.gd:943
+#: systems/events.gd:942
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "咔嚓！%s已加入你的收藏。%s"
 
-#: systems/events.gd:943
+#: systems/events.gd:942
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "咔嚓！又一张漂亮的%s照片。%s"
 
-#: systems/events.gd:993
+#: systems/events.gd:992
 msgid "Signal %d%%"
 msgstr "信号 %d%%"
 
-#: systems/events.gd:997
+#: systems/events.gd:996
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "原来是这个信号：一个藏着稀有零件的储藏点。%s"
 
-#: systems/events.gd:999
+#: systems/events.gd:998
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "信号消失了。零件还在下面；探测器会找到它的。"
 
-#: systems/events.gd:1065
+#: systems/events.gd:1064
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "审计   你 %d  :  %d 无人机"
 
-#: systems/events.gd:1066
+#: systems/events.gd:1065
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "你 %d  :  %d 无人机   ·   剩余 %d"
 
-#: systems/events.gd:1103
+#: systems/events.gd:1102
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "审计胜利，%d 比 %d！Ledger 盖上了“批准”章。%s"
 
-#: systems/events.gd:1107
+#: systems/events.gd:1106
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "无人机赢得了审计，%d 比 %d。不过它还是留了小费：+%s 方块。"
 
@@ -2427,73 +2413,60 @@ msgid "Doesn't fit a %s"
 msgstr "不适用于%s"
 
 #: systems/robot_builder.gd:265
-msgid "None in the parts bin"
-msgstr "零件箱里没有"
+msgid "Not unlocked yet"
+msgstr ""
 
-#: systems/robot_builder.gd:296
+#: systems/robot_builder.gd:294
 msgid "Names need at least 2 letters"
 msgstr "名字至少要 2 个字"
 
-#: systems/robot_builder.gd:298
+#: systems/robot_builder.gd:296
 msgid "Another robot is already called %s"
 msgstr "已经有机器人叫 %s 了"
 
-#: systems/robot_builder.gd:349
+#: systems/robot_builder.gd:341
 msgid "Can't be crafted"
 msgstr "无法制作"
 
-#: systems/robot_builder.gd:353
+#: systems/robot_builder.gd:345
 msgid "Research %s"
 msgstr "研究 %s"
 
-#: systems/robot_builder.gd:358
-msgid "Needs a %s%s"
-msgstr "需要%s%s"
-
-#: systems/robot_builder.gd:372
-msgid "Haggle's stall · %s"
+#: systems/robot_builder.gd:358 systems/robot_builder.gd:363
+msgid "Unlock · %s"
 msgstr ""
 
-#: systems/robot_builder.gd:374
+#: systems/robot_builder.gd:360
 msgid "Requests reward · %d requests"
 msgstr ""
 
-#. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: systems/robot_builder.gd:384 ui/main_menu.gd:452 ui/profile_picker.gd:133
-msgid "%s cubes"
-msgstr "%s 方块"
+#: systems/robot_builder.gd:398
+msgid "Can't be bought"
+msgstr ""
 
-#: systems/robot_builder.gd:385
-msgid "Craft · %s"
-msgstr "制作 · %s"
-
-#: systems/robot_builder.gd:432
-msgid "Not in Haggle's stall right now"
-msgstr "Haggle 的摊位现在没货"
-
-#: systems/robot_builder.gd:459
+#: systems/robot_builder.gd:425
 msgid "Requests reward (%d of %d requests)"
 msgstr ""
 
-#: systems/robot_builder.gd:550
-msgid "Haggle: \"First bot? Treads on the house. And a plant, bots like plants.\" (Workbench > Builder)"
-msgstr "Haggle：“第一台机器人？履带算我送的。再加一盆植物，机器人喜欢植物。”（工作台 > 组装）"
+#: systems/robot_builder.gd:516
+msgid "Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d."
+msgstr ""
 
-#: systems/robot_builder.gd:560
+#: systems/robot_builder.gd:526
 msgid "A Maker Fragment was tucked inside it: +%d parts."
 msgstr ""
 
-#: systems/robot_builder.gd:592
+#: systems/robot_builder.gd:558
 msgid "%s spotted something green and lucky: a Lucky Clover!"
 msgstr "%s 发现了一样又绿又幸运的东西：幸运草！"
 
-#: systems/robot_builder.gd:595
+#: systems/robot_builder.gd:561
 msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
 msgstr ""
 
-#: systems/robot_builder.gd:603
-msgid "%s spotted a %s."
-msgstr "%s 发现了%s。"
+#: systems/robot_builder.gd:568
+msgid "%s spotted a %s: %s."
+msgstr ""
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -2678,7 +2651,7 @@ msgstr "喷洒范围"
 msgid "Refill"
 msgstr "补水"
 
-#: ui/builder_panel.gd:21 ui/command_view.gd:1207 ui/command_view.gd:1210
+#: ui/builder_panel.gd:21 ui/command_view.gd:1202 ui/command_view.gd:1205
 #: data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "清理"
@@ -2699,96 +2672,90 @@ msgstr "浇水"
 msgid "Skim"
 msgstr "撇捞"
 
-#: ui/builder_panel.gd:101
+#: ui/builder_panel.gd:111
 msgid "YOUR ROBOTS"
 msgstr "你的机器人"
 
-#: ui/builder_panel.gd:141
+#: ui/builder_panel.gd:152
 msgid "New name"
 msgstr "新名字"
 
-#: ui/builder_panel.gd:153
+#: ui/builder_panel.gd:164
 msgid ""
-"No robots yet. Build one in the Bots tab, then fit it out here.\n"
-"Haggle throws in a set of treads with your first robot."
+"No robots yet. Build one in the Bots tab, then style it here.\n"
+"Your first robot comes with treads and a bobble plant."
 msgstr ""
-"还没有机器人。先在“机器人”页造一台，再来这里装配。\n"
-"Haggle 会送你第一台机器人一副履带。"
 
-#: ui/builder_panel.gd:208
+#: ui/builder_panel.gd:219
 msgid "PART SLOTS"
 msgstr "零件槽"
 
-#: ui/builder_panel.gd:220
+#: ui/builder_panel.gd:231
 msgid "PARTS THAT FIT"
 msgstr "适配零件"
 
-#: ui/builder_panel.gd:291
+#: ui/builder_panel.gd:302
 msgid "ROBOT BUILDER"
 msgstr "机器人组装台"
 
-#: ui/builder_panel.gd:303
+#: ui/builder_panel.gd:314
 msgid "Stock"
 msgstr "原装"
 
-#: ui/builder_panel.gd:339
+#: ui/builder_panel.gd:350
 msgid "Stock  ·  the %s look%s"
 msgstr "原装  ·  %s 外观%s"
 
-#: ui/builder_panel.gd:339
+#: ui/builder_panel.gd:350
 msgid "   (fitted)"
 msgstr "   （已装备）"
 
-#: ui/builder_panel.gd:347
-msgid "in the bin: %d  ·  press to fit"
-msgstr "箱中：%d  ·  按下装备"
-
-#: ui/builder_panel.gd:356
-msgid "  ·  press to get + fit"
-msgstr "  ·  按下获取并装备"
-
 #: ui/builder_panel.gd:358
+msgid "Unlocked  ·  press to fit"
+msgstr ""
+
+#: ui/builder_panel.gd:367
+msgid "  ·  press to unlock + fit"
+msgstr ""
+
+#: ui/builder_panel.gd:369
 msgid "  (Maker set)"
 msgstr "  （造物者套装）"
 
-#: ui/builder_panel.gd:378
+#: ui/builder_panel.gd:389
 msgid "Save as %s preset"
 msgstr "保存为%s预设"
 
-#: ui/builder_panel.gd:380
+#: ui/builder_panel.gd:391
 msgid "Fit preset on crew (%d)"
 msgstr "为队伍套用预设（%d）"
 
-#: ui/builder_panel.gd:386
+#: ui/builder_panel.gd:397
 msgid "%s crew preset: %s"
 msgstr "%s队伍预设：%s"
 
-#: ui/builder_panel.gd:386
+#: ui/builder_panel.gd:397
 msgid "none saved"
 msgstr "未保存"
 
-#: ui/builder_panel.gd:393
-msgid "Builder bin %d   ·   Parts %s"
+#: ui/builder_panel.gd:401
+msgid "%d styles unlocked   ·   Parts %s"
 msgstr ""
 
-#: ui/builder_panel.gd:397
-msgid "Haggle's stall: %s  (new stock in %d min)"
-msgstr "Haggle 的摊位：%s（%d 分钟后上新）"
-
-#: ui/builder_panel.gd:418
+#: ui/builder_panel.gd:423
 msgid "Stock part: no changes. The %s look of this robot type."
 msgstr "原装零件：无改动。这种机器人的%s外观。"
 
-#: ui/builder_panel.gd:564
+#: ui/builder_panel.gd:578
 msgid "Saved %s's build as the %s crew preset."
 msgstr "已将 %s 的配置保存为%s队伍预设。"
 
-#: ui/builder_panel.gd:572
+#: ui/builder_panel.gd:586
 msgid "Fitted %d part across the %s crew."
 msgid_plural "Fitted %d parts across the %s crew."
 msgstr[0] "已装配 %d 个零件到 %s 队伍。"
 
-#: ui/builder_panel.gd:572
+#: ui/builder_panel.gd:586
 msgid "Nothing to fit: the bin is short of those parts, or the crew already has them."
 msgstr "没有可装备的：零件箱里缺这些零件，或者队伍已经装上了。"
 
@@ -2828,7 +2795,7 @@ msgstr "收藏"
 msgid "CODEX"
 msgstr "图鉴"
 
-#: ui/codex_screen.gd:87 ui/upgrades_screen.gd:92
+#: ui/codex_screen.gd:87 ui/upgrades_screen.gd:115
 msgid "Close  [%s]"
 msgstr "关闭  [%s]"
 
@@ -3130,158 +3097,100 @@ msgstr "最高等级"
 msgid "Upgrade > %s"
 msgstr "升级 > %s"
 
-#: ui/command_view.gd:780
-msgid "%s cubes, %s parts, %s Control Core. %s"
+#: ui/command_view.gd:784
+msgid "ready"
 msgstr ""
 
-#: ui/command_view.gd:789
-msgid "  parts %d/%d · %s"
-msgstr "  零件 %d/%d · %s"
-
-#: ui/command_view.gd:789
+#: ui/command_view.gd:784
 msgid "build at the workbench"
 msgstr "在工作台建造"
 
-#: ui/command_view.gd:796
+#: ui/command_view.gd:791
 msgid "Place refill tank here  %s  (%d/%d)"
 msgstr "在此放置补水箱  %s  （%d/%d）"
 
-#: ui/command_view.gd:798
+#: ui/command_view.gd:793
 msgid "A Water Tank at your hex. Waterers refill at the nearest one."
 msgstr "你所在六角格的水箱。浇水机器人会去最近的水箱补水。"
 
-#: ui/command_view.gd:1055
+#: ui/command_view.gd:1050
 msgid "%s · %d HEX"
 msgid_plural "%s · %d HEXES"
 msgstr[0] "%s · %d 个六角格"
 
-#: ui/command_view.gd:1091
+#: ui/command_view.gd:1086
 msgid "BASE"
 msgstr "基地"
 
-#: ui/command_view.gd:1098
+#: ui/command_view.gd:1093
 msgid "YOU"
 msgstr "你"
 
-#: ui/command_view.gd:1198
+#: ui/command_view.gd:1193
 msgid "HEX %d"
 msgstr "六角格 %d"
 
-#: ui/command_view.gd:1202
+#: ui/command_view.gd:1197
 msgid "BASE YARD"
 msgstr "基地院子"
 
-#: ui/command_view.gd:1203
+#: ui/command_view.gd:1198
 msgid "Home ground, always clean"
 msgstr "家园，永远干净"
 
-#: ui/command_view.gd:1205
+#: ui/command_view.gd:1200
 msgid "LAKE HEX %d"
 msgstr "湖面六角格 %d"
 
-#: ui/command_view.gd:1207
+#: ui/command_view.gd:1202
 msgid "Floating junk  %d%% left"
 msgstr "漂浮废料  剩余 %d%%"
 
-#: ui/command_view.gd:1213
+#: ui/command_view.gd:1208
 msgid "Junk  %d%% left"
 msgstr "废料  剩余 %d%%"
 
-#: ui/command_view.gd:1219
+#: ui/command_view.gd:1214
 msgid "Level %d · %s"
 msgstr "等级 %d · %s"
 
-#: ui/command_view.gd:1221
+#: ui/command_view.gd:1216
 msgid "In %s zone"
 msgstr "在%s区域"
 
-#: ui/command_view.gd:1274
+#: ui/command_view.gd:1269
 msgid "%d robots"
 msgstr "%d 台机器人"
 
-#: ui/command_view.gd:1277
+#: ui/command_view.gd:1272
 msgid "%d / %d hexes clean"
 msgstr "%d / %d 个六角格已清理"
 
-#: ui/contracts_panel.gd:27
-msgid "REQUESTS"
+#: ui/contracts_panel.gd:75
+msgid "%d done"
+msgid_plural "%d done"
+msgstr[0] ""
+
+#: ui/contracts_panel.gd:80
+msgid "Live now:  %s  ·  %s  ·  %s left"
 msgstr ""
 
-#: ui/contracts_panel.gd:30
-msgid "Short optional jobs and world events. Each pays cubes or parts; nothing is lost if one runs out."
-msgstr ""
-
-#: ui/contracts_panel.gd:47
-msgid "REWARD TRACK"
+#: ui/contracts_panel.gd:83
+msgid "Every reward unlocked. Each %d more requests pay a Vintage part's worth of parts."
 msgstr ""
 
 #: ui/contracts_panel.gd:86
-msgid "%d done"
+msgid "Next unlock in %d request:  %s"
+msgid_plural "Next unlock in %d requests:  %s"
+msgstr[0] ""
+
+#: ui/contracts_panel.gd:117
+msgid "A new request is on its way"
 msgstr ""
 
-#: ui/contracts_panel.gd:89
-msgid "LIVE  ·  %s  ·  %s  ·  %s left"
+#: ui/contracts_panel.gd:143
+msgid "Claim"
 msgstr ""
-
-#: ui/contracts_panel.gd:92
-msgid "Collection  %d / %d   ·   see the Codex (K)"
-msgstr "收藏  %d / %d   ·   见图鉴（K）"
-
-#: ui/contracts_panel.gd:140
-msgid "A new request is being posted."
-msgstr ""
-
-#: ui/contracts_panel.gd:151
-msgid "Pays  %s"
-msgstr ""
-
-#: ui/contracts_panel.gd:173
-msgid "Accept  (%s)"
-msgstr "接受（%s）"
-
-#: ui/contracts_panel.gd:182
-msgid "Pass"
-msgstr "放弃"
-
-#: ui/contracts_panel.gd:192
-msgid "Working on it"
-msgstr "进行中"
-
-#: ui/contracts_panel.gd:198
-msgid "Claim  %s"
-msgstr ""
-
-#: ui/contracts_panel.gd:238
-msgid "Next posting in %s"
-msgstr "下次发布：%s后"
-
-#: ui/contracts_panel.gd:240
-msgid "Time limit %s once accepted   ·   offer open %s"
-msgstr "接受后限时 %s   ·   开放 %s"
-
-#: ui/contracts_panel.gd:251
-msgid "Time left %s"
-msgstr "剩余时间 %s"
-
-#: ui/contracts_panel.gd:251
-msgid "Finished. Claim it!"
-msgstr ""
-
-#: ui/contracts_panel.gd:275
-msgid "After %d requests"
-msgstr ""
-
-#: ui/contracts_panel.gd:277
-msgid "Equipped  (press to remove)"
-msgstr "已装备（按下卸下）"
-
-#: ui/contracts_panel.gd:277
-msgid "Unlocked  ·  press to equip"
-msgstr ""
-
-#: ui/contracts_panel.gd:279 ui/cosmetics_panel.gd:129
-msgid "Unlocked"
-msgstr "已解锁"
 
 #: ui/core_meter.gd:22
 msgid "BLOOM CORE"
@@ -3299,27 +3208,31 @@ msgstr "外观"
 msgid "Looks only (no bonuses)"
 msgstr "仅外观（无加成）"
 
-#: ui/cosmetics_panel.gd:129 ui/cosmetics_panel.gd:160
+#: ui/cosmetics_panel.gd:130 ui/cosmetics_panel.gd:161
 msgid "Wearing"
 msgstr "穿戴中"
 
-#: ui/cosmetics_panel.gd:129
+#: ui/cosmetics_panel.gd:130
+msgid "Unlocked"
+msgstr "已解锁"
+
+#: ui/cosmetics_panel.gd:130
 msgid "Locked  %d%%"
 msgstr "未解锁  %d%%"
 
-#: ui/cosmetics_panel.gd:156
+#: ui/cosmetics_panel.gd:157
 msgid "Bonus: %s"
 msgstr "加成：%s"
 
-#: ui/cosmetics_panel.gd:156
+#: ui/cosmetics_panel.gd:157
 msgid "(off: looks only)"
 msgstr "（已关闭：仅外观）"
 
-#: ui/cosmetics_panel.gd:162
+#: ui/cosmetics_panel.gd:163
 msgid "Unlocked. Press to wear."
 msgstr "已解锁。按下即可穿戴。"
 
-#: ui/cosmetics_panel.gd:164
+#: ui/cosmetics_panel.gd:165
 msgid "Locked: %s"
 msgstr "未解锁：%s"
 
@@ -3515,81 +3428,99 @@ msgstr "+%d 经验"
 msgid "CORE %d%%"
 msgstr "核心 %d%%"
 
-#: ui/hub_panel.gd:21
-msgid "HUB"
-msgstr "基地"
+#: ui/hub_panel.gd:53
+msgid "What you get"
+msgstr ""
 
-#: ui/hub_panel.gd:69
+#: ui/hub_panel.gd:61
+msgid "Upgrade"
+msgstr ""
+
+#: ui/hub_panel.gd:81 ui/hub_panel.gd:223
+msgid "Build Air Scrubber"
+msgstr "建造空气净化器"
+
+#: ui/hub_panel.gd:109
 msgid "Build Signal Jammer"
 msgstr "建造信号干扰器"
 
-#: ui/hub_panel.gd:94
+#: ui/hub_panel.gd:148
 msgid " (have %s)"
 msgstr " （现有 %s）"
 
-#: ui/hub_panel.gd:101
-msgid "Parts %s"
+#: ui/hub_panel.gd:161
+msgid "Bales sell for +%d%% (now +%d%%)"
 msgstr ""
 
-#: ui/hub_panel.gd:103
-msgid ""
-"Level %d   ·   %s\n"
-"%s   Bales sell for +%d%%."
+#: ui/hub_panel.gd:164
+msgid "+%d robot spots in every crew"
 msgstr ""
-"等级 %d   ·   %s\n"
-"%s   捆包售价 +%d%%。"
 
-#: ui/hub_panel.gd:106
-msgid "Fully built."
-msgstr "已全部建成。"
-
-#: ui/hub_panel.gd:109
-msgid ""
-"Next: %s. %s\n"
-"Needs %s"
+#: ui/hub_panel.gd:167
+msgid "Air Scrubbers: clear the dusty sky"
 msgstr ""
-"下一级：%s。%s\n"
-"需要 %s"
 
-#: ui/hub_panel.gd:110 ui/stations_panel.gd:98 ui/telescope_panel.gd:45
-msgid "Build %s"
-msgstr "建造%s"
+#: ui/hub_panel.gd:172
+msgid "Unlocks the %s"
+msgstr ""
 
-#: ui/hub_panel.gd:115
+#: ui/hub_panel.gd:174
+msgid "Opens the Locker: style Lumi and your robots"
+msgstr ""
+
+#: ui/hub_panel.gd:176
+msgid "A launch pad: rockets to the next district"
+msgstr ""
+
+#: ui/hub_panel.gd:187
+msgid "Now: level %d, %s. Bales sell for +%d%%."
+msgstr ""
+
+#: ui/hub_panel.gd:189
+msgid "Hub level %d  ·  fully built"
+msgstr ""
+
+#: ui/hub_panel.gd:192
+msgid "Every hub level is built."
+msgstr ""
+
+#: ui/hub_panel.gd:194
+msgid "Fully built"
+msgstr ""
+
+#: ui/hub_panel.gd:197
+msgid "Next: hub level %d"
+msgstr ""
+
+#: ui/hub_panel.gd:204
+msgid "Upgrade to level %d"
+msgstr ""
+
+#: ui/hub_panel.gd:204
+msgid "Not enough yet"
+msgstr ""
+
+#: ui/hub_panel.gd:208
 msgid "Continue in the full game"
 msgstr "在完整版中继续"
 
-#: ui/hub_panel.gd:122
-msgid ""
-"\n"
-"Requires hub level %d."
+#: ui/hub_panel.gd:217
+msgid "Opens at hub level %d."
 msgstr ""
-"\n"
-"需要基地等级 %d。"
 
-#: ui/hub_panel.gd:124
-msgid ""
-"\n"
-"All built (max)."
+#: ui/hub_panel.gd:219
+msgid "All built."
 msgstr ""
-"\n"
-"已全部建成（满级）。"
 
-#: ui/hub_panel.gd:127
+#: ui/hub_panel.gd:222
 msgid ""
-"%s   ·   %d / %d built\n"
-"%s%s"
+"%s   %d / %d\n"
+"%s"
 msgstr ""
-"%s   ·   已建 %d / %d\n"
-"%s%s"
 
-#: ui/hub_panel.gd:128
-msgid "Air Scrubbers maxed"
-msgstr "空气净化器已满级"
-
-#: ui/hub_panel.gd:128
-msgid "Build Air Scrubber"
-msgstr "建造空气净化器"
+#: ui/hub_panel.gd:223
+msgid "All built"
+msgstr ""
 
 #: ui/hud.gd:74
 msgid "Lumi reached level %d%s"
@@ -3682,6 +3613,35 @@ msgstr "捆包就绪"
 msgid "◢ SIGNAL %d%%"
 msgstr "◢ 信号 %d%%"
 
+#: ui/locker_panel.gd:68
+msgid "Editing"
+msgstr ""
+
+#: ui/locker_panel.gd:79
+msgid "Fleet paint"
+msgstr ""
+
+#: ui/locker_panel.gd:104
+msgid "The Locker"
+msgstr ""
+
+#: ui/locker_panel.gd:105
+msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play."
+msgstr ""
+
+#: ui/locker_panel.gd:115
+msgid "Opens at hub level %d (now %d). Upgrade the hub in the Hub tab."
+msgstr ""
+
+#: ui/locker_panel.gd:150 ui/photo_mode.gd:393 ui/photo_mode.gd:420
+#: ui/upgrades_screen.gd:13
+msgid "Lumi"
+msgstr "Lumi"
+
+#: ui/locker_panel.gd:150
+msgid "You"
+msgstr ""
+
 #: ui/main_menu.gd:314
 msgid "One small robot. One very big cleanup."
 msgstr "一个小机器人。一场超大的清扫。"
@@ -3727,6 +3687,11 @@ msgstr "%d分钟"
 #: ui/main_menu.gd:452
 msgid "Hub %d"
 msgstr "基地 %d"
+
+#. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
+#: ui/main_menu.gd:452 ui/profile_picker.gd:133
+msgid "%s cubes"
+msgstr "%s 方块"
 
 #: ui/main_menu.gd:458
 msgid "Jan"
@@ -4021,10 +3986,6 @@ msgstr "时间"
 msgid "Weather"
 msgstr "天气"
 
-#: ui/photo_mode.gd:393 ui/photo_mode.gd:420 ui/upgrades_screen.gd:10
-msgid "Lumi"
-msgstr "Lumi"
-
 #: ui/photo_mode.gd:394
 msgid "Pose"
 msgstr "姿势"
@@ -4253,57 +4214,53 @@ msgstr "按下加入队列"
 msgid "%s cancelled. Cubes refunded."
 msgstr ""
 
-#: ui/robot_card.gd:40 data/currencies.json:currencies[parts].short
-msgid "PARTS"
-msgstr "零件"
-
-#: ui/robot_card.gd:68
-msgid "%s   ·   %s   ·   %d built"
-msgstr "%s   ·   %s   ·   已建 %d"
-
-#: ui/robot_card.gd:73
-msgid "Crew: %d / %d  (hub level %d: +%d per level)"
-msgstr "队伍：%d / %d（基地等级 %d：每级 +%d）"
-
-#: ui/robot_card.gd:77
-msgid ""
-"\n"
-"Water Tanks: %d / %d placed · next %s cubes (Command view: Place refill tank)"
+#: ui/robot_card.gd:75
+msgid "Crew"
 msgstr ""
-"\n"
-"水箱：已放置 %d / %d · 下一个 %s 方块（指挥视图：放置补水箱）"
-
-#: ui/robot_card.gd:79
-msgid "Build   %s cubes"
-msgstr "建造   %s 方块"
-
-#: ui/robot_card.gd:79
-msgid "Build   (%s)"
-msgstr "建造   （%s）"
-
-#: ui/robot_card.gd:83
-msgid "Locked  ·  research %s"
-msgstr "未解锁  ·  研究 %s"
 
 #: ui/robot_card.gd:87
-msgid "Fleet tier: %s (max)"
-msgstr "机队等级：%s（满级）"
-
-#: ui/robot_card.gd:92
-msgid "Next: %s  ·  x%.1f work speed  ·  %s look"
-msgstr "下一级：%s  ·  x%.1f 工作速度  ·  %s 外观"
-
-#: ui/robot_card.gd:93
-msgid "Needs %s cubes, %s parts and a %s Control Core.  %s"
+msgid "Tier"
 msgstr ""
 
-#: ui/robot_card.gd:95
-msgid "Upgrade fleet to %s"
-msgstr "机队升级到 %s"
+#: ui/robot_card.gd:107 ui/robot_card.gd:173
+msgid "Build"
+msgstr ""
 
-#: ui/robot_card.gd:118
-msgid "□  %s  ·  missing  (detector, or salvage from electronics junk)"
-msgstr "□  %s  ·  缺少（用探测器，或从电子废料中回收）"
+#: ui/robot_card.gd:133
+msgid "Open Research"
+msgstr ""
+
+#: ui/robot_card.gd:154
+msgid "Unlock with research: %s"
+msgstr ""
+
+#: ui/robot_card.gd:164
+msgid "%d built  ·  full: more spots with hub levels"
+msgstr ""
+
+#: ui/robot_card.gd:164
+msgid "%d built  ·  %d free"
+msgstr ""
+
+#: ui/robot_card.gd:168
+msgid "Water Tanks %d / %d  ·  place them from the Command view"
+msgstr ""
+
+#: ui/robot_card.gd:173
+msgid "Build first"
+msgstr ""
+
+#: ui/robot_card.gd:179
+msgid "top tier"
+msgstr ""
+
+#: ui/robot_card.gd:185
+msgid "next: x%s work speed"
+msgstr ""
+
+#: ui/robot_card.gd:186 ui/rockets_panel.gd:119
+msgid "Upgrade to %s"
+msgstr "升级到 %s"
 
 #: ui/rockets_panel.gd:38
 msgid "Cells charged and ready. Pick a base to fly to."
@@ -4336,10 +4293,6 @@ msgstr "火箭"
 #: ui/rockets_panel.gd:106
 msgid "Top tier: warp hops, no recharge."
 msgstr "最高等级：跃迁跳跃，无需充能。"
-
-#: ui/rockets_panel.gd:119
-msgid "Upgrade to %s"
-msgstr "升级到 %s"
 
 #: ui/rockets_panel.gd:136
 msgid "Countdown %ds  ·  Flight %.1fs  ·  Recharge %s  ·  Cargo pods x%.1f every %ds"
@@ -4661,6 +4614,10 @@ msgstr "移到边境"
 msgid "%s built"
 msgstr "已建 %s"
 
+#: ui/stations_panel.gd:98 ui/telescope_panel.gd:45
+msgid "Build %s"
+msgstr "建造%s"
+
 #: ui/stations_panel.gd:103
 msgid "Auto-route: %s"
 msgstr "自动路线：%s"
@@ -4831,68 +4788,6 @@ msgstr "通过望远镜记录：%s。图鉴新条目。"
 msgid "Codex: %s"
 msgstr "图鉴：%s"
 
-#: ui/trade_panel.gd:23
-msgid "HAGGLE'S PARTS TRADE"
-msgstr "HAGGLE 的零件交易"
-
-#: ui/trade_panel.gd:25
-msgid "\"Everything's original. Mostly. Three of yours for one of mine, no questions, some questions.\""
-msgstr "“全是原装的。大部分吧。你的三个换我的一个，不问问题，问几个问题。”"
-
-#: ui/trade_panel.gd:71
-msgid "Parts  %s      Robot parts in storage  %d"
-msgstr ""
-
-#: ui/trade_panel.gd:83
-msgid "Haggle: \"Funny thing, I just happened to find a %s. For you, half price.\""
-msgstr "Haggle：“真巧，我刚好捡到一个%s。给你，半价。”"
-
-#: ui/trade_panel.gd:91
-msgid "Trades away: %s"
-msgstr "换出：%s"
-
-#: ui/trade_panel.gd:93
-msgid "Needs 3 spare parts (Control Cores needed for a Mk tier are never traded)."
-msgstr "需要 3 个备用零件（升级 Mk 等级所需的控制核心永远不会被换走）。"
-
-#: ui/trade_panel.gd:98
-msgid "   (needed)"
-msgstr "   （需要）"
-
-#: ui/trade_panel.gd:100
-msgid "own %d"
-msgstr "拥有 %d"
-
-#: ui/trade_panel.gd:103
-msgid "Buy Rusty  %s"
-msgstr "买生锈的  %s"
-
-#: ui/trade_panel.gd:106
-msgid "Buy Worn  %s"
-msgstr "买磨损的  %s"
-
-#: ui/trade_panel.gd:112
-msgid "Scrap %d spare Rusty robot parts  ->  %s"
-msgstr ""
-
-#: ui/trade_panel.gd:122
-msgid "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab"
-msgstr "组装零件  ·  %d 分钟后上新  ·  在“组装”页装上"
-
-#: ui/trade_panel.gd:137
-msgid "Haggle: \"%s. Treat it nicely.\""
-msgstr "Haggle：“%s。好好待它。”"
-
-#: ui/trade_panel.gd:145
-msgid ""
-"%s  (own %d)\n"
-"%s"
-msgstr ""
-
-#: ui/trade_panel.gd:171
-msgid "Swap 3 spares"
-msgstr "换 3 个备件"
-
 #: ui/upgrade_card.gd:54
 msgid "Lv 0"
 msgstr "0 级"
@@ -4945,41 +4840,33 @@ msgstr "赚更多方块"
 msgid "Where it comes from:  %s"
 msgstr "来源：  %s"
 
-#: ui/upgrades_screen.gd:11
+#: ui/upgrades_screen.gd:14
 msgid "Bots"
 msgstr "机器人"
 
-#: ui/upgrades_screen.gd:12
-msgid "Trade"
-msgstr "交易"
-
-#: ui/upgrades_screen.gd:13
+#: ui/upgrades_screen.gd:15
 msgid "Hub"
 msgstr "基地"
 
-#: ui/upgrades_screen.gd:14
+#: ui/upgrades_screen.gd:16
 msgid "Research"
 msgstr "研究"
 
-#: ui/upgrades_screen.gd:15
+#: ui/upgrades_screen.gd:17
 msgid "Rockets"
 msgstr "火箭"
 
-#: ui/upgrades_screen.gd:16
-msgid "Cosmetics"
-msgstr "装扮"
+#: ui/upgrades_screen.gd:19
+msgid "Locker"
+msgstr ""
 
-#: ui/upgrades_screen.gd:18
-msgid "Builder"
-msgstr "组装"
+#: ui/upgrades_screen.gd:96
+msgid "WORKBENCH"
+msgstr ""
 
-#: ui/upgrades_screen.gd:71
-msgid "UPGRADES"
-msgstr "升级"
-
-#: ui/upgrades_screen.gd:103
-msgid "%s (soon)"
-msgstr "%s（即将推出）"
+#: ui/upgrades_screen.gd:177
+msgid "Not open yet. Keep playing."
+msgstr ""
 
 #: ui/world_banner.gd:37
 msgid "SEED MISSION  ·  WORLD %d"
@@ -5590,8 +5477,8 @@ msgid "Mix and Match"
 msgstr "混搭达人"
 
 #: data/achievements.json:achievements[builder_mix].desc
-msgid "Build a robot with all five custom parts."
-msgstr "建造一台装满五个定制零件的机器人。"
+msgid "Style a robot with all five custom parts in the Locker."
+msgstr ""
 
 #: data/achievements.json:achievements[builder_maker].name
 msgid "As the Makers Made It"
@@ -6958,8 +6845,12 @@ msgstr ""
 msgid "Parts"
 msgstr ""
 
+#: data/currencies.json:currencies[parts].short
+msgid "PARTS"
+msgstr "零件"
+
 #: data/currencies.json:currencies[parts].desc
-msgid "Robot parts and building stock salvaged from junk, the recycler and Haggle's scrap bin. Pays for robots, the Builder, base levels, stations, rocket stages and outpost repairs."
+msgid "Robot parts and building stock salvaged from junk, dug up with the detector, or made by the recycler. Pays for robots and their Mk tiers, base levels, stations, Locker styles, rocket stages and outpost repairs."
 msgstr ""
 
 #: data/currencies.json:currencies[seeds].name
@@ -9054,10 +8945,6 @@ msgstr "完成 6 项研究"
 msgid "Build 4 robots"
 msgstr "建造 4 台机器人"
 
-#: data/goals.json:goals[builder_1].text
-msgid "Fit a part in the Builder"
-msgstr "在组装台装上一个零件"
-
 #: data/goals.json:goals[hex_15].text
 msgid "Clean 15 hexes"
 msgstr "清理 15 个六角格"
@@ -9149,6 +9036,10 @@ msgstr "清理 30 个六角格（含湖面）"
 #: data/goals.json:goals[base_3].text
 msgid "Upgrade the base to level 3"
 msgstr "将基地升到 3 级"
+
+#: data/goals.json:goals[builder_1].text
+msgid "Style a robot in the Locker"
+msgstr ""
 
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
@@ -9297,10 +9188,6 @@ msgstr "让火箭继续出发"
 #: data/goals.json:goals[builder_full].text
 msgid "Fully custom-build a robot"
 msgstr "完全定制一台机器人"
-
-#: data/goals.json:goals[builder_preset].text
-msgid "Save a crew build preset"
-msgstr "保存一个队伍配置预设"
 
 #: data/goals.json:goals[research_20].text
 msgid "Finish 20 research projects"
@@ -10323,16 +10210,16 @@ msgid "Cargo Hull"
 msgstr "货运外壳"
 
 #: data/robot_parts.json:parts[cargo_hull].desc
-msgid "Thick side plates and a rear rack. Holds more, drives heavier."
-msgstr "厚实的侧板和后置货架。装得更多，开得更沉。"
+msgid "Thick side plates and a rear rack."
+msgstr ""
 
 #: data/robot_parts.json:parts[sealed_shell].name
 msgid "Sealed Shell"
 msgstr "密封外壳"
 
 #: data/robot_parts.json:parts[sealed_shell].desc
-msgid "Smooth covers keep grit out of the compactor. Fussier to service."
-msgstr "光滑的外罩能防止沙粒进入压实机。保养起来更麻烦。"
+msgid "Smooth covers, neat seams, no grit."
+msgstr ""
 
 #: data/robot_parts.json:parts[maker_shell].name
 msgid "Maker Shell"
@@ -10347,32 +10234,32 @@ msgid "Big-Eye Sensor"
 msgstr "大眼传感器"
 
 #: data/robot_parts.json:parts[big_eye].desc
-msgid "A huge lens. Spots salvage from far off, gets a little distracted."
-msgstr "一个巨大的镜头。能远远发现可回收物，但容易分心。"
+msgid "A huge lens on a stalk."
+msgstr ""
 
 #: data/robot_parts.json:parts[focus_visor].name
 msgid "Focus Visor"
 msgstr "专注面罩"
 
 #: data/robot_parts.json:parts[focus_visor].desc
-msgid "Blinkers for robots. Works faster, notices less."
-msgstr "机器人用的眼罩。干活更快，注意到的更少。"
+msgid "Blinkers for robots."
+msgstr ""
 
 #: data/robot_parts.json:parts[periscope].name
 msgid "Periscope"
 msgstr "潜望镜"
 
 #: data/robot_parts.json:parts[periscope].desc
-msgid "Sees over the plants: wider spray, slower to turn."
-msgstr "能越过植物看：喷洒更广，转向更慢。"
+msgid "Sees over the plants. Mostly."
+msgstr ""
 
 #: data/robot_parts.json:parts[chatter_dome].name
 msgid "Chatterbox Dome"
 msgstr "话痨圆顶"
 
 #: data/robot_parts.json:parts[chatter_dome].desc
-msgid "Glass dome with a speaker. Gossips about junk, finds a bit more of it."
-msgstr "带扬声器的玻璃圆顶。爱聊废料的八卦，还能多找到一点。"
+msgid "Glass dome with a little speaker."
+msgstr ""
 
 #: data/robot_parts.json:parts[maker_optic].name
 msgid "Maker Optic"
@@ -10387,32 +10274,32 @@ msgid "Treads"
 msgstr "履带"
 
 #: data/robot_parts.json:parts[treads].desc
-msgid "Rubber tracks. Carries more, rolls slower."
-msgstr "橡胶履带。装得更多，跑得更慢。"
+msgid "Rubber tracks."
+msgstr ""
 
 #: data/robot_parts.json:parts[rotor].name
 msgid "Quad Rotor"
 msgstr "四旋翼"
 
 #: data/robot_parts.json:parts[rotor].desc
-msgid "Four ducted fans. Quick, but every kilo counts."
-msgstr "四个涵道风扇。很快，但每一公斤都很重要。"
+msgid "Four ducted fans."
+msgstr ""
 
 #: data/robot_parts.json:parts[legs].name
 msgid "Walker Legs"
 msgstr "步行腿"
 
 #: data/robot_parts.json:parts[legs].desc
-msgid "Four careful legs. A steady platform for the arm."
-msgstr "四条小心翼翼的腿。给机械臂一个稳定的平台。"
+msgid "Four careful legs."
+msgstr ""
 
 #: data/robot_parts.json:parts[hover_skirt].name
 msgid "Hover Skirt"
 msgstr "气垫裙"
 
 #: data/robot_parts.json:parts[hover_skirt].desc
-msgid "A cushion of air. Glides fast, shakes the hopper."
-msgstr "一层气垫。滑行很快，但会晃动料斗。"
+msgid "A cushion of air and a soft glow underneath."
+msgstr ""
 
 #: data/robot_parts.json:parts[maker_glider].name
 msgid "Maker Glider"
@@ -10427,56 +10314,56 @@ msgid "Wide Scoop"
 msgstr "宽铲"
 
 #: data/robot_parts.json:parts[wide_scoop].desc
-msgid "Grabs more per pass, picks up some grit too."
-msgstr "每次能抓更多，也会带上点沙土。"
+msgid "A big, wide scoop."
+msgstr ""
 
 #: data/robot_parts.json:parts[fine_sieve].name
 msgid "Fine Sieve"
 msgstr "细筛"
 
 #: data/robot_parts.json:parts[fine_sieve].desc
-msgid "Shakes the dirt out: cleaner cubes, slower scooping."
-msgstr "把泥土抖掉：方块更干净，铲得更慢。"
+msgid "A sieve that shakes out the dirt."
+msgstr ""
 
 #: data/robot_parts.json:parts[long_forks].name
 msgid "Long Forks"
 msgstr "长叉"
 
 #: data/robot_parts.json:parts[long_forks].desc
-msgid "Room for one more bale. Wobbly at speed."
-msgstr "能多放一个捆包。高速时会晃。"
+msgid "Extra-long forks."
+msgstr ""
 
 #: data/robot_parts.json:parts[tow_hook].name
 msgid "Tow Hook"
 msgstr "拖钩"
 
 #: data/robot_parts.json:parts[tow_hook].desc
-msgid "Winch and hook: drags bales quickly, eyes on the hook."
-msgstr "绞盘加拖钩：拖捆包很快，眼睛要盯着钩子。"
+msgid "Winch and hook."
+msgstr ""
 
 #: data/robot_parts.json:parts[seed_drill].name data/robots.json:types[seedling].upgrades[1].name
 msgid "Seed Drill"
 msgstr "播种钻"
 
 #: data/robot_parts.json:parts[seed_drill].desc
-msgid "An auger that plants fast. Heavy on the nose."
-msgstr "一个种得飞快的螺旋钻。头重脚轻。"
+msgid "An auger nose."
+msgstr ""
 
 #: data/robot_parts.json:parts[mist_sprayer].name
 msgid "Mist Sprayer"
 msgstr "喷雾器"
 
 #: data/robot_parts.json:parts[mist_sprayer].desc
-msgid "Fan nozzle: waters a wider circle, empties the tank sooner."
-msgstr "扇形喷嘴：浇的范围更大，水箱空得更快。"
+msgid "A fan nozzle."
+msgstr ""
 
 #: data/robot_parts.json:parts[jet_nozzle].name
 msgid "Jet Nozzle"
 msgstr "喷射嘴"
 
 #: data/robot_parts.json:parts[jet_nozzle].desc
-msgid "Strong straight jet: quicker watering, narrower spray."
-msgstr "强劲的直线水柱：浇得更快，喷得更窄。"
+msgid "A strong, straight jet nozzle."
+msgstr ""
 
 #: data/robot_parts.json:parts[antenna].name
 msgid "Bulb Antenna"
@@ -10511,8 +10398,8 @@ msgid "A sprout on a spring. Boings when it brakes."
 msgstr "弹簧上的一株嫩芽。刹车时会“嘣”一下。"
 
 #: data/robot_parts.json:parts[bobble_plant].source.hint
-msgid "Haggle's welcome gift with your first robot"
-msgstr "Haggle 随你第一台机器人送的见面礼"
+msgid "Comes with your first robot"
+msgstr ""
 
 #: data/robot_parts.json:parts[traffic_cone].name
 msgid "Traffic Cone"
@@ -11325,8 +11212,8 @@ msgid "Every lit hex on that map is yours. I counted. Twice."
 msgstr "地图上每一个亮起的六角格都是你的。我数过。数了两遍。"
 
 #: data/wren_lines.json:first_robot_hint
-msgid "If you find enough parts, the workbench can put a helper together. Chassis, wheels, an arm, a core."
-msgstr "如果你找到足够的零件，工作台就能组装一个帮手。底盘、轮子、一只手臂、一个核心。"
+msgid "With enough parts, the workbench can put a helper together. Bots tab, one button."
+msgstr ""
 
 #: data/wren_lines.json:first_robot_hint
 msgid "Electronics junk sometimes hides parts. So does the ground, if you listen for it."
@@ -12623,6 +12510,268 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "Missing %d part"
+#~ msgstr[0] "缺少 %d 个零件"
+
+#~ msgid "Needs a %s Control Core"
+#~ msgstr "需要%s控制核心"
+
+#~ msgid "None in the parts bin"
+#~ msgstr "零件箱里没有"
+
+#~ msgid "Needs a %s%s"
+#~ msgstr "需要%s%s"
+
+#~ msgid "Craft · %s"
+#~ msgstr "制作 · %s"
+
+#~ msgid "Not in Haggle's stall right now"
+#~ msgstr "Haggle 的摊位现在没货"
+
+#~ msgid "Haggle: \"First bot? Treads on the house. And a plant, bots like plants.\" (Workbench > Builder)"
+#~ msgstr "Haggle：“第一台机器人？履带算我送的。再加一盆植物，机器人喜欢植物。”（工作台 > 组装）"
+
+#~ msgid "%s spotted a %s."
+#~ msgstr "%s 发现了%s。"
+
+#~ msgid ""
+#~ "No robots yet. Build one in the Bots tab, then fit it out here.\n"
+#~ "Haggle throws in a set of treads with your first robot."
+#~ msgstr ""
+#~ "还没有机器人。先在“机器人”页造一台，再来这里装配。\n"
+#~ "Haggle 会送你第一台机器人一副履带。"
+
+#~ msgid "in the bin: %d  ·  press to fit"
+#~ msgstr "箱中：%d  ·  按下装备"
+
+#~ msgid "  ·  press to get + fit"
+#~ msgstr "  ·  按下获取并装备"
+
+#~ msgid "Haggle's stall: %s  (new stock in %d min)"
+#~ msgstr "Haggle 的摊位：%s（%d 分钟后上新）"
+
+#~ msgid "  parts %d/%d · %s"
+#~ msgstr "  零件 %d/%d · %s"
+
+#~ msgid "Collection  %d / %d   ·   see the Codex (K)"
+#~ msgstr "收藏  %d / %d   ·   见图鉴（K）"
+
+#~ msgid "Accept  (%s)"
+#~ msgstr "接受（%s）"
+
+#~ msgid "Pass"
+#~ msgstr "放弃"
+
+#~ msgid "Working on it"
+#~ msgstr "进行中"
+
+#~ msgid "Next posting in %s"
+#~ msgstr "下次发布：%s后"
+
+#~ msgid "Time limit %s once accepted   ·   offer open %s"
+#~ msgstr "接受后限时 %s   ·   开放 %s"
+
+#~ msgid "Time left %s"
+#~ msgstr "剩余时间 %s"
+
+#~ msgid "Equipped  (press to remove)"
+#~ msgstr "已装备（按下卸下）"
+
+#~ msgid "HUB"
+#~ msgstr "基地"
+
+#~ msgid ""
+#~ "Level %d   ·   %s\n"
+#~ "%s   Bales sell for +%d%%."
+#~ msgstr ""
+#~ "等级 %d   ·   %s\n"
+#~ "%s   捆包售价 +%d%%。"
+
+#~ msgid "Fully built."
+#~ msgstr "已全部建成。"
+
+#~ msgid ""
+#~ "Next: %s. %s\n"
+#~ "Needs %s"
+#~ msgstr ""
+#~ "下一级：%s。%s\n"
+#~ "需要 %s"
+
+#~ msgid ""
+#~ "\n"
+#~ "Requires hub level %d."
+#~ msgstr ""
+#~ "\n"
+#~ "需要基地等级 %d。"
+
+#~ msgid ""
+#~ "\n"
+#~ "All built (max)."
+#~ msgstr ""
+#~ "\n"
+#~ "已全部建成（满级）。"
+
+#~ msgid ""
+#~ "%s   ·   %d / %d built\n"
+#~ "%s%s"
+#~ msgstr ""
+#~ "%s   ·   已建 %d / %d\n"
+#~ "%s%s"
+
+#~ msgid "Air Scrubbers maxed"
+#~ msgstr "空气净化器已满级"
+
+#~ msgid "%s   ·   %s   ·   %d built"
+#~ msgstr "%s   ·   %s   ·   已建 %d"
+
+#~ msgid "Crew: %d / %d  (hub level %d: +%d per level)"
+#~ msgstr "队伍：%d / %d（基地等级 %d：每级 +%d）"
+
+#~ msgid ""
+#~ "\n"
+#~ "Water Tanks: %d / %d placed · next %s cubes (Command view: Place refill tank)"
+#~ msgstr ""
+#~ "\n"
+#~ "水箱：已放置 %d / %d · 下一个 %s 方块（指挥视图：放置补水箱）"
+
+#~ msgid "Build   %s cubes"
+#~ msgstr "建造   %s 方块"
+
+#~ msgid "Build   (%s)"
+#~ msgstr "建造   （%s）"
+
+#~ msgid "Locked  ·  research %s"
+#~ msgstr "未解锁  ·  研究 %s"
+
+#~ msgid "Fleet tier: %s (max)"
+#~ msgstr "机队等级：%s（满级）"
+
+#~ msgid "Next: %s  ·  x%.1f work speed  ·  %s look"
+#~ msgstr "下一级：%s  ·  x%.1f 工作速度  ·  %s 外观"
+
+#~ msgid "Upgrade fleet to %s"
+#~ msgstr "机队升级到 %s"
+
+#~ msgid "□  %s  ·  missing  (detector, or salvage from electronics junk)"
+#~ msgstr "□  %s  ·  缺少（用探测器，或从电子废料中回收）"
+
+#~ msgid "HAGGLE'S PARTS TRADE"
+#~ msgstr "HAGGLE 的零件交易"
+
+#~ msgid "\"Everything's original. Mostly. Three of yours for one of mine, no questions, some questions.\""
+#~ msgstr "“全是原装的。大部分吧。你的三个换我的一个，不问问题，问几个问题。”"
+
+#~ msgid "Haggle: \"Funny thing, I just happened to find a %s. For you, half price.\""
+#~ msgstr "Haggle：“真巧，我刚好捡到一个%s。给你，半价。”"
+
+#~ msgid "Trades away: %s"
+#~ msgstr "换出：%s"
+
+#~ msgid "Needs 3 spare parts (Control Cores needed for a Mk tier are never traded)."
+#~ msgstr "需要 3 个备用零件（升级 Mk 等级所需的控制核心永远不会被换走）。"
+
+#~ msgid "   (needed)"
+#~ msgstr "   （需要）"
+
+#~ msgid "own %d"
+#~ msgstr "拥有 %d"
+
+#~ msgid "Buy Rusty  %s"
+#~ msgstr "买生锈的  %s"
+
+#~ msgid "Buy Worn  %s"
+#~ msgstr "买磨损的  %s"
+
+#~ msgid "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab"
+#~ msgstr "组装零件  ·  %d 分钟后上新  ·  在“组装”页装上"
+
+#~ msgid "Haggle: \"%s. Treat it nicely.\""
+#~ msgstr "Haggle：“%s。好好待它。”"
+
+#~ msgid "Swap 3 spares"
+#~ msgstr "换 3 个备件"
+
+#~ msgid "Trade"
+#~ msgstr "交易"
+
+#~ msgid "Cosmetics"
+#~ msgstr "装扮"
+
+#~ msgid "Builder"
+#~ msgstr "组装"
+
+#~ msgid "UPGRADES"
+#~ msgstr "升级"
+
+#~ msgid "%s (soon)"
+#~ msgstr "%s（即将推出）"
+
+#~ msgid "Build a robot with all five custom parts."
+#~ msgstr "建造一台装满五个定制零件的机器人。"
+
+#~ msgid "Fit a part in the Builder"
+#~ msgstr "在组装台装上一个零件"
+
+#~ msgid "Save a crew build preset"
+#~ msgstr "保存一个队伍配置预设"
+
+#~ msgid "Thick side plates and a rear rack. Holds more, drives heavier."
+#~ msgstr "厚实的侧板和后置货架。装得更多，开得更沉。"
+
+#~ msgid "Smooth covers keep grit out of the compactor. Fussier to service."
+#~ msgstr "光滑的外罩能防止沙粒进入压实机。保养起来更麻烦。"
+
+#~ msgid "A huge lens. Spots salvage from far off, gets a little distracted."
+#~ msgstr "一个巨大的镜头。能远远发现可回收物，但容易分心。"
+
+#~ msgid "Blinkers for robots. Works faster, notices less."
+#~ msgstr "机器人用的眼罩。干活更快，注意到的更少。"
+
+#~ msgid "Sees over the plants: wider spray, slower to turn."
+#~ msgstr "能越过植物看：喷洒更广，转向更慢。"
+
+#~ msgid "Glass dome with a speaker. Gossips about junk, finds a bit more of it."
+#~ msgstr "带扬声器的玻璃圆顶。爱聊废料的八卦，还能多找到一点。"
+
+#~ msgid "Rubber tracks. Carries more, rolls slower."
+#~ msgstr "橡胶履带。装得更多，跑得更慢。"
+
+#~ msgid "Four ducted fans. Quick, but every kilo counts."
+#~ msgstr "四个涵道风扇。很快，但每一公斤都很重要。"
+
+#~ msgid "Four careful legs. A steady platform for the arm."
+#~ msgstr "四条小心翼翼的腿。给机械臂一个稳定的平台。"
+
+#~ msgid "A cushion of air. Glides fast, shakes the hopper."
+#~ msgstr "一层气垫。滑行很快，但会晃动料斗。"
+
+#~ msgid "Grabs more per pass, picks up some grit too."
+#~ msgstr "每次能抓更多，也会带上点沙土。"
+
+#~ msgid "Shakes the dirt out: cleaner cubes, slower scooping."
+#~ msgstr "把泥土抖掉：方块更干净，铲得更慢。"
+
+#~ msgid "Room for one more bale. Wobbly at speed."
+#~ msgstr "能多放一个捆包。高速时会晃。"
+
+#~ msgid "Winch and hook: drags bales quickly, eyes on the hook."
+#~ msgstr "绞盘加拖钩：拖捆包很快，眼睛要盯着钩子。"
+
+#~ msgid "An auger that plants fast. Heavy on the nose."
+#~ msgstr "一个种得飞快的螺旋钻。头重脚轻。"
+
+#~ msgid "Fan nozzle: waters a wider circle, empties the tank sooner."
+#~ msgstr "扇形喷嘴：浇的范围更大，水箱空得更快。"
+
+#~ msgid "Strong straight jet: quicker watering, narrower spray."
+#~ msgstr "强劲的直线水柱：浇得更快，喷得更窄。"
+
+#~ msgid "Haggle's welcome gift with your first robot"
+#~ msgstr "Haggle 随你第一台机器人送的见面礼"
+
+#~ msgid "If you find enough parts, the workbench can put a helper together. Chassis, wheels, an arm, a core."
+#~ msgstr "如果你找到足够的零件，工作台就能组装一个帮手。底盘、轮子、一只手臂、一个核心。"
 
 #~ msgid "+%d bolts"
 #~ msgstr "+%d 螺栓"
