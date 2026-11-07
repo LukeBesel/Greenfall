@@ -354,3 +354,44 @@ volume x junk value x the frontier's `value_mult`, before Pure/Perfect bonuses a
   mechanics, expect roughly 2.5-3.5 h per frontier to base 5 and 50% Growing, and 3-5 h for the Cradle pad
   and 70% Growing: about 12-16 h of long tail. The autoplay bot cannot fly rockets or place heaters yet, so
   these need a play-test; tune `pieces_mult`, `value_mult`, `cost_mult` and the storm/ice numbers first.
+
+## First hour (wt/first, Nov 7)
+
+Owner direction: the first hour is cleaning, robots, upgrades and base levels; planting starts as a
+story hook (one Maker seed, ~min 10-15) and stays a slow, scarce side track until the ~60-min ramp
+(owned by the "beat" pass: plant_growth / seed_yield stats, Pollinator Survey, Seedling/Drip gates,
+goals after `plant_5`, compost press yield).
+
+Measured with `--fresh --autoplay --time-scale=4` (same seed; game minutes). The bot plays fast and
+ignores the tutorial order, so a first-time player is roughly 2-3x slower on the first three marks.
+
+| Milestone | Before | After | Target |
+|---|---|---|---|
+| First bale | 0.29 | 0.29 | < 1 |
+| First sale | 0.36 | 0.36 | < 2 |
+| First upgrade | 0.33 (before the first sale) | 0.36 (after the sale) | ~3 for a player |
+| First hex clean | 1.3 | 1.3 | |
+| First robot (Scoopie) | 6.0 | 4.7-6 (parts luck) | 6-8 |
+| Seed tin found (first seed) | ~23 | ~12 | 10-15 |
+| First hex Planted | 24.2 | 14-16 | (was 15-20) |
+| Seeds in stock at 20 / 30 / 40 min | 0 / 109 / 296 | 11 / 29 / 60 | a trickle |
+| Seeds at 60 min | 741 | 366 | ramp after 60 (beat) |
+
+Goals keep completing every 1-4 min through ~33 min; after that the bot stalls on `builder_1` (it never
+uses the Builder), which is a bot gap, not a game gap: a player sees "Fit a part in the Builder".
+
+Data changes (early-game values only):
+- `goals.json`: Scoop 15 pays 10 (was 15), first bale 10 (was 20), so the first upgrade needs the first
+  sale (earn, then spend). "Find the seed tin" pays no seeds (was 5). `plant_5` (id kept for saves and
+  the chain split) is now "Plant the Maker seed", target 1, +1 seed.
+- `plants.json`: `first_seed` at 7 clean hexes (was 17) and gives 1 seed (was 15). Base meadow species
+  grow at half speed (`grow_s` x2) and yield 60% of their seeds per bloom, so beat's growth/seed stats
+  have room to make the garden take off. New `seed_finds`: 0.6% per scooped piece (x2.5 for paper),
+  at most one per 60 s, only after the tin (`plants/seed_finds.gd`).
+- `hex_levels.json`: Planted pays no seeds (was 2, it refunded the seeds that planted it), Growing 1 (3),
+  Sustained 2 (5), Thriving 4 (8). **Flag for beat**: the last two also matter after 60 min.
+- `lumi_level.json`: seeds every 3rd level, 2 + level/10 (was every 2nd, 4 + level/10). **Flag for beat.**
+- `events.json`: event seed rewards about halved (Supply Drop 2-5, Rain 1-3, Wildlife 2-6). **Flag.**
+- Code: the dormant compost press (before the first sprout) only heaps up 8 compost, so its first output
+  is two seeds, not an hour of paper (`plants/composter.gd` DORMANT_CAP).
+- Tried and reverted: Scoopie 1200-1350 (first robot ~8 min, but the second-Scoopie goal stalled 10 min).
