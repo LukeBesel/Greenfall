@@ -17,7 +17,7 @@ signal closed
 const HOLO := Color(0.45, 0.88, 1.0)
 const GOLD := Color(1.0, 0.78, 0.36)
 const AU_UNITS: float = 8.0
-const HOME_CAM := Vector3(0, 25.0, 41.0)
+const HOME_CAM := Vector3(0, 33.0, 44.0)
 
 var world: Node
 var is_open: bool = false
@@ -455,7 +455,7 @@ func _frame(to: Transform3D, dur: float) -> void:
 
 func _zoom_to(k: int) -> void:
 	_zoom_planet = k
-	_frame(_planet_frame(k, 4.6), 1.3)
+	_frame(_planet_frame(k, 6.5), 1.3)
 
 
 # --- Cards -------------------------------------------------------------------------------------
@@ -722,12 +722,12 @@ func _process(delta: float) -> void:
 		_labels[k].modulate.a = 1.0 if sel or _zoom_planet < 0 else 0.45
 	# Camera easing (follows a moving planet while zoomed).
 	if _zoom_planet >= 0 and _cam_k >= 1.0 and not _handing_over:
-		_cam_to = _planet_frame(_zoom_planet, 4.6)
+		_cam_to = _planet_frame(_zoom_planet, 6.5)
 		_cam.global_transform = _cam.global_transform.interpolate_with(_cam_to, clampf(delta * 3.0, 0.0, 1.0))
 	elif _cam_k < 1.0:
 		_cam_k = minf(1.0, _cam_k + delta / _cam_dur)
 		if _zoom_planet >= 0 and not _handing_over:
-			_cam_to = _planet_frame(_zoom_planet, 4.6)
+			_cam_to = _planet_frame(_zoom_planet, 6.5)
 		var e: float = _cam_k * _cam_k * (3.0 - 2.0 * _cam_k)
 		_cam.global_transform = _cam_from.interpolate_with(_cam_to, e)
 	else:

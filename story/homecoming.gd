@@ -48,8 +48,8 @@ func play() -> void:
 	print("[home] homecoming: the rocket rises to the Cradle")
 	Homeward.state()["launched"] = true
 	Homeward.save()
-	if Audio.has_method("set_mood"):  # [home] the sound pass's "homecoming" mood, if present
-		Audio.call("set_mood", "homecoming")
+	if Audio.has_method("set_music_mood"):  # [home] the sound pass's "homecoming" mood (docs/AUDIO.md)
+		Audio.call("set_music_mood", "homecoming")
 	_c = Cine.new()
 	_c.world = world
 	add_child(_c)
