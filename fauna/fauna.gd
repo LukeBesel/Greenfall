@@ -2064,6 +2064,8 @@ func _dev_look() -> void:
 	a.hold = true
 	if DevHooks.has("fauna-coat"):
 		a.coat = int(DevHooks.get_f("fauna-coat", 0.0))
+		if a.rig and a.kind == "cat":
+			a.rig.set_coat(FaunaRig.CAT_COATS[a.coat % FaunaRig.CAT_COATS.size()])
 	var pose: String = DevHooks.get_s("fauna-pose", "")
 	match pose:
 		"sit": a.state = St.SIT

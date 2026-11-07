@@ -34,6 +34,7 @@ var meshes: Array[MeshInstance3D] = []
 var shells: Array[MeshInstance3D] = []
 var _cur: String = ""
 var _head: int = -1
+var _own: Array[ShaderMaterial] = []  # this animal's own fur / eye / shell materials (coat, eyes)
 var _look := Vector2.ZERO  # yaw, pitch (radians; pitch > 0 looks down)
 
 
@@ -94,7 +95,11 @@ func _wire(root: Node) -> void:
 		for s: int in mi.mesh.get_surface_count():
 			var m: Material = mi.mesh.surface_get_material(s)
 			var nm: String = m.resource_name if m else ""
-			mi.set_surface_override_material(s, _material(nm))
+			var mat: Material = _material(nm)
+			if mat is ShaderMaterial:
+				mat = (mat as ShaderMaterial).duplicate()
+				_own.append(mat)
+			mi.set_surface_override_material(s, mat)
 		# Fur shells: a second instance of the skinned mesh with only the fur surfaces, seen near.
 		var fur_s: int = -1
 		var baked: bool = false
@@ -114,7 +119,15 @@ func _wire(root: Node) -> void:
 			sh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			sh.visibility_range_end = SHELL_RANGE
 			for s3: int in mi.mesh.get_surface_count():
-				sh.set_surface_override_material(s3, _shell_chain(baked) if s3 == fur_s else _invisible())
+				if s3 == fur_s:
+					var chain: ShaderMaterial = _shell_chain(baked).duplicate(true)
+					var c2: Material = chain
+					while c2 is ShaderMaterial:
+						_own.append(c2)
+						c2 = c2.next_pass
+					sh.set_surface_override_material(s3, chain)
+				else:
+					sh.set_surface_override_material(s3, _invisible())
 			shells.append(sh)
 
 
@@ -205,20 +218,23 @@ static func _invisible() -> Material:
 
 ## Per-animal coat (keys: base, stripe, stripe_amt, white_amt, patch, patch_amt, iris, pupil_w).
 func set_coat(c: Dictionary) -> void:
-	for mi: MeshInstance3D in meshes + shells:
-		mi.set_instance_shader_parameter("coat_base", c.get("base", Color(0.86, 0.52, 0.24)))
-		mi.set_instance_shader_parameter("coat_stripe", c.get("stripe", Color(0.5, 0.25, 0.1)))
-		mi.set_instance_shader_parameter("coat_patch", c.get("patch", Color(0.1, 0.1, 0.1)))
-		mi.set_instance_shader_parameter("stripe_amt", float(c.get("stripe_amt", 1.0)))
-		mi.set_instance_shader_parameter("white_amt", float(c.get("white_amt", 0.5)))
-		mi.set_instance_shader_parameter("patch_amt", float(c.get("patch_amt", 0.0)))
-		mi.set_instance_shader_parameter("iris", c.get("iris", Color(0.7, 0.65, 0.2)))
-		mi.set_instance_shader_parameter("pupil_w", float(c.get("pupil_w", 0.55)))
+	var vals: Dictionary = {"coat_base": c.get("base", Color(0.86, 0.52, 0.24)), "coat_stripe": c.get("stripe", Color(0.5, 0.25, 0.1)),
+		"coat_patch": c.get("patch", Color(0.1, 0.1, 0.1)), "stripe_amt": float(c.get("stripe_amt", 1.0)), "white_amt": float(c.get("white_amt", 0.5)),
+		"patch_amt": float(c.get("patch_amt", 0.0)), "iris": c.get("iris", Color(0.7, 0.65, 0.2)), "pupil_w": float(c.get("pupil_w", 0.55))}
+	for m: ShaderMaterial in _own:
+		for k: String in vals:
+			m.set_shader_parameter(k, vals[k])
+
+
+var _closed: float = -1.0
 
 
 func set_eyes_closed(v: float) -> void:
-	for mi: MeshInstance3D in meshes:
-		mi.set_instance_shader_parameter("eye_closed", v)
+	if v == _closed:
+		return
+	_closed = v
+	for m: ShaderMaterial in _own:
+		m.set_shader_parameter("eye_closed", v)
 
 
 ## Plays (blends to) an action; speed scales playback.

@@ -4,11 +4,11 @@ shader_type spatial;
 // catchlight. eye_closed draws a lid in the coat colour with a dark lash line (sleeping).
 render_mode specular_schlick_ggx;
 
-instance uniform vec3 iris : source_color = vec3(0.65, 0.68, 0.18);
-instance uniform float pupil_w = 0.42;   // 1 = round, smaller = slit
-instance uniform float pupil_r = 0.42;   // pupil size (cute = big)
-instance uniform float eye_closed = 0.0;
-instance uniform vec3 coat_base : source_color = vec3(0.86, 0.52, 0.24);
+uniform vec3 iris : source_color = vec3(0.65, 0.68, 0.18);
+uniform float pupil_w = 0.42;   // 1 = round, smaller = slit
+uniform float pupil_r = 0.42;   // pupil size (cute = big)
+uniform float eye_closed = 0.0;
+uniform vec3 coat_base : source_color = vec3(0.86, 0.52, 0.24);
 
 void fragment() {
 	vec2 d = (UV - vec2(0.5)) * 2.0;
