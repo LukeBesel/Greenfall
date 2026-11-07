@@ -89,6 +89,10 @@ static func _tris(m: Mesh) -> int:
 
 
 static func print_census(root: Node, shadow_splits: int = 1) -> void:
+	for fv: Node in root.find_children("*", "FieldView", true, false):  # [vqa2] junk LOD split
+		if (fv as FieldView).lod:
+			var c2: Vector2i = (fv as FieldView).lod.counts()
+			print("[stats] junk lod: near=%d far=%d radius=%.0f m id=%d" % [c2.x, c2.y, (fv as FieldView).lod.near_radius, (fv as FieldView).lod.get_instance_id()])
 	var c: Dictionary = census(root, shadow_splits)
 	var groups: Dictionary = c["groups"]
 	var keys: Array = groups.keys()
@@ -96,9 +100,9 @@ static func print_census(root: Node, shadow_splits: int = 1) -> void:
 	print("[stats] group                 nodes  meshes  mm(inst)    labels  surf  shadow  est_draws   tris")
 	for k: String in keys:
 		var r: Dictionary = groups[k]
-		if int(r["est_draws"]) < 4:
+		if int(r["est_draws"]) < 4 and int(r["tris"]) < 100000:  # [vqa2] keep heavy one-surface groups
 			continue
-		print("[stats] %-20s %6d %7d %4d(%6d) %6d %5d %7d %10d %9d" % [k.left(20), r["nodes"], r["meshes"], r["multimeshes"], r["mm_instances"], r["labels"], r["surfaces"], r["shadow_surfaces"], r["est_draws"], r["tris"]])
+		print("[stats] %-20s %6d %7d %4d(%6d) %6d %5d %7d %10d %9d" % [k.left(20 if OS.get_environment("STATS_SPLIT") == "" else 60), r["nodes"], r["meshes"], r["multimeshes"], r["mm_instances"], r["labels"], r["surfaces"], r["shadow_surfaces"], r["est_draws"], r["tris"]])
 	var t: Dictionary = c["total"]
 	print("[stats] TOTAL nodes=%d meshes=%d multimeshes=%d mm_instances=%d labels=%d surfaces=%d shadow_surfaces=%d materials=%d est_draws=%d tris=%d" % [
 		t["nodes"], t["meshes"], t["multimeshes"], t["mm_instances"], t["labels"], t["surfaces"], t["shadow_surfaces"], t["materials"], t["est_draws"], t["tris"]])
