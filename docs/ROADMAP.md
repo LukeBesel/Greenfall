@@ -318,3 +318,7 @@ it to die under its trash; each planet reveals more. The game ends when every pl
 Verdance, builds a big launch base, gives the rocket a final "Homeward" upgrade, plants the last seed and launches
 home (reusing the launch sequence, ark finale and space stage), then credits. Random Cradle Mode worlds become
 optional post-game. Owner: wt/home (progression, story, ending) + wt/worlds2 (planet looks, 3 save profiles).
+Binary star canon (owner): one solar system with TWO suns seen from every planet (warm yellow-white primary,
+smaller orange-red companion), sized/lit by orbit distance (Ochre closest, then Verdance, Tidewell, Anvil, Rime
+farthest). Source of truth: data/solar_system.json + systems/solar_system.gd (wt/home). Travel UI: a 3D
+solar-system orrery that zooms into a planet's globe to pick the hub (wt/home).
