@@ -12,7 +12,7 @@
         "arm",
         "core"
       ],
-      "cost": 1200,
+      "cost": 1100,
       "stats": {
         "speed": 1.6,
         "scoop_rate": 1.4,
