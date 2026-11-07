@@ -39,7 +39,8 @@ uniform vec3 murky_col : source_color = vec3(0.13, 0.16, 0.13);
 uniform vec3 oil_col : source_color = vec3(0.05, 0.045, 0.04);
 uniform vec3 sand_col : source_color = vec3(0.86, 0.79, 0.62);
 uniform vec4 wakes[8];             // x, z, strength 0..1, radius
-uniform vec4 fish[6];              // x, z, heading, length (0 = none)
+uniform vec4 fish[6];
+uniform int debug_view = 0;          // dev: 1 clarity, 2 depth/10, 3 state rgb              // x, z, heading, length (0 = none)
 
 #include "res://art/shaders/water_light.gdshaderinc"
 
@@ -134,6 +135,7 @@ void fragment() {
 	float r = length(p);
 	float clarity = clamp(restore, 0.0, 1.0);
 	float in_field = 0.0;
+	vec4 st_dbg = vec4(0.0);
 	float size = float(grid_radius * 2 + 1);
 	// --- Play field: per-hex state (WaterView/FieldView state texture), natural borders.
 	vec2 ax = to_axial(p);
@@ -147,6 +149,7 @@ void fragment() {
 		vec4 st = texture(state_tex, (ax + vec2(float(grid_radius)) + 0.5) / size);
 		if (st.a < 0.4 || st.a > 0.6) { discard; }  // land hex: the ground shows
 		in_field = 1.0;
+		st_dbg = st;
 		clarity = st.b > 0.5 ? 1.0 : st.r * 0.55;
 		vec2 center = vec2(hex_size * (SQRT3 * ax.x + SQRT3 * 0.5 * ax.y), hex_size * 1.5 * ax.y);
 		if (st.b > 0.5) {
@@ -274,6 +277,8 @@ void fragment() {
 	col = mix(col, foam_c, foam);
 
 	ALBEDO = col;
+	if (debug_view == 1) { ALBEDO = vec3(0.0); EMISSION = vec3(clarity, st_dbg.b, st_dbg.r); }
+	if (debug_view == 2) { ALBEDO = vec3(0.0); EMISSION = vec3(depth / 10.0, reef, clamp((time_now - st_dbg.g) / 200.0, 0.0, 1.0)); }
 	ROUGHNESS = mix(mix(0.12, 0.035, clarity), 0.02, oil) + foam * 0.5;
 	METALLIC = 0.0;
 	SPECULAR = mix(0.55, 0.7, oil) * (1.0 - foam * 0.6);
@@ -281,5 +286,5 @@ void fragment() {
 	NORMAL_MAP = tn * 0.5 + 0.5;
 	NORMAL_MAP_DEPTH = 1.0;
 	// A faint cool lift in the future stage (clean lagoons glow a touch at dusk): thin, not neon.
-	EMISSION = lagoon_col * 0.015 * future * exp(-hdepth * 0.6) * clarity;
+	if (debug_view == 0) EMISSION = lagoon_col * 0.015 * future * exp(-hdepth * 0.6) * clarity;
 }

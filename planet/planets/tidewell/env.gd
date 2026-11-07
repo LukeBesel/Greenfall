@@ -293,11 +293,13 @@ func _dev_clean_water() -> void:
 			if view:
 				view.call("hide_piece", pid)
 	for h: int in field.hex_count():
-		if field.is_water(h) and not field.is_clean(h):
+		if not field.is_water(h):
+			continue
+		if field.hex_clean[h] == 0:  # (remove_piece may already have flipped it)
 			field.hex_clean[h] = 1
 			field.cleaned_count += 1
-			if view:
-				view.call("refresh_hex", h, false)
+		if view:
+			view.call("refresh_hex", h, false)
 
 
 ## Open sea to the horizon: a long far plane, and the far blur only far out.
@@ -529,6 +531,7 @@ func _build_ocean() -> void:
 	ocean_mat.set_shader_parameter("near_size", NEAR_SIZE)
 	ocean_mat.set_shader_parameter("far_tex", _bake(FAR_SIZE, FAR_RES, false))
 	ocean_mat.set_shader_parameter("far_size", FAR_SIZE)
+	ocean_mat.set_shader_parameter("debug_view", int(DevHooks.get_f("tide-debug-view", 0.0)))
 	ocean = MeshInstance3D.new()
 	ocean.name = "Ocean"
 	ocean.mesh = _polar_mesh(2400.0)
