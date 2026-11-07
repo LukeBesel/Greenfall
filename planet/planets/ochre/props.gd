@@ -16,6 +16,7 @@ class Batch:
 		if not sts.has(key):
 			var st := SurfaceTool.new()
 			st.begin(Mesh.PRIMITIVE_TRIANGLES)
+			st.set_smooth_group(-1)
 			sts[key] = [st, mat]
 		return sts[key][0]
 
@@ -93,8 +94,8 @@ static func _mat_vc(tex_id: String, rough: float, metal: float = 0.0, tex_scale:
 
 
 static func _commit(st: SurfaceTool, mat: Material) -> ArrayMesh:
-	st.index()
 	st.generate_normals()
+	st.index()
 	var m: ArrayMesh = st.commit()
 	m.surface_set_material(0, mat)
 	return m
@@ -134,23 +135,24 @@ static func _tailings(seed_v: int) -> ArrayMesh:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
 	var st := _new_st()
+	st.set_smooth_group(-1)
 	var cols: Array[Color] = [Color(0.78, 0.55, 0.3), Color(0.62, 0.6, 0.5), Color(0.66, 0.36, 0.22), Color(0.84, 0.74, 0.5)]
 	var sph := SphereMesh.new()
-	sph.radial_segments = 8
+	sph.radial_segments = 7
 	sph.rings = 4
 	sph.radius = 1.0
 	sph.height = 2.0
-	for k: int in 5:
-		var r: float = rng.randf_range(0.14, 0.32) * (1.4 if k == 0 else 1.0)
-		var p := Vector3(rng.randf_range(-0.35, 0.35), r * 0.55, rng.randf_range(-0.3, 0.3)) if k > 0 else Vector3(0, r * 0.5, 0)
+	for k: int in 7:
+		var r: float = rng.randf_range(0.08, 0.2) * (1.5 if k == 0 else 1.0)
+		var p := Vector3(rng.randf_range(-0.3, 0.3), r * 0.5, rng.randf_range(-0.26, 0.26)) if k > 0 else Vector3(0, r * 0.45, 0)
 		var arr: Array = sph.surface_get_arrays(0)
 		var v: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
 		var idx: PackedInt32Array = arr[Mesh.ARRAY_INDEX]
 		var jit := PackedVector3Array()
 		for i: int in v.size():
 			var d: Vector3 = v[i]
-			var h: float = sin(d.x * 5.1 + k) * cos(d.z * 4.3 + seed_v) * 0.22 + sin(d.y * 7.0 + k * 2.0) * 0.12
-			jit.append(Vector3(d.x, d.y * 0.62, d.z) * (1.0 + h))
+			var h: float = sin(d.x * 5.1 + k) * cos(d.z * 4.3 + seed_v) * 0.3 + sin(d.y * 7.0 + k * 2.0) * 0.15 + rng.randf_range(-0.12, 0.12)
+			jit.append(Vector3(d.x, d.y * 0.7, d.z) * (1.0 + h))
 		var col: Color = cols[(k + seed_v) % cols.size()]
 		for i: int in idx:
 			st.set_color(col.lerp(Color(0.5, 0.45, 0.4), clampf(-jit[i].y, 0.0, 1.0) * 0.4))

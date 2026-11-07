@@ -112,10 +112,30 @@ func build() -> void:
 	set_level(level, false)
 	if world.get("hub") != null:
 		world.hub.level_changed.connect(func(l: int) -> void: set_level(l, true))
+	if DevHooks.has("ochre-cam"):
+		_dev_camera.call_deferred(DevHooks.get_s("ochre-cam", "0,60,120,0,0,-150"))
 	var counts: Array[String] = []
 	for g: String in _groups:
 		counts.append("%s=%d" % [g, (_groups[g] as Node).find_children("*", "GeometryInstance3D", true, false).size()])
 	print("[ochre] env built in %d ms, level %d restore %.2f: %s" % [Time.get_ticks_msec() - t0, level, restore, " ".join(counts)])
+
+
+## Dev: --ochre-cam=x,y,z,tx,ty,tz frames a fixed camera (overviews and landmark shots).
+func _dev_camera(spec: String) -> void:
+	var v: PackedStringArray = spec.split(",")
+	if v.size() < 6:
+		return
+	var cam := Camera3D.new()
+	cam.name = "OchreDevCam"
+	cam.far = 2600.0
+	cam.fov = DevHooks.get_f("ochre-fov", 60.0)
+	add_child(cam)
+	var rig: Node = world.get("cam")
+	var rc: Camera3D = rig.get("camera") if rig else null
+	if rc:
+		cam.attributes = rc.attributes
+	cam.look_at_from_position(Vector3(float(v[0]), float(v[1]), float(v[2])), Vector3(float(v[3]), float(v[4]), float(v[5])))
+	cam.make_current()
 
 
 ## The binary star as seen from Ochre: SolarSystem.suns_for("ochre") when it exists (home's
@@ -271,7 +291,7 @@ func _grade(_delta: float) -> void:
 		_sky_mat.set_shader_parameter("dust", dust)
 		_sky_mat.set_shader_parameter("sun_a_energy", float(_suns["a"]["energy"]) * (1.0 - dust * 0.25))
 		_sky_mat.set_shader_parameter("sun_b_energy", float(_suns["b"]["energy"]) * 2.2 * (1.0 - dust * 0.25))
-		_sky_mat.set_shader_parameter("energy", lerpf(0.9, 1.0, up_a))
+		_sky_mat.set_shader_parameter("energy", float(sky.get("energy", 0.8)) * lerpf(0.9, 1.0, up_a))
 	# Light: the primary keeps SkyDirector's dawn-to-noon colour, tinted hot gold; the companion
 	# adds a warm orange-red fill from a little behind it.
 	var sa: Dictionary = _suns["a"]
@@ -1151,3 +1171,6 @@ func _process(delta: float) -> void:
 		_fluff.global_position = p.global_position + Vector3(0, 2.5, 0)
 	_grit.emitting = level <= 2 and restore_shown < 0.45
 	_fluff.emitting = restore_shown > 0.35
+	if DevHooks.has("ochre-debug") and fmod(_t, 5.0) < delta:
+		var env: Environment = world.get("_env")
+		print("[ochre] t=%.0f fog=%.4f col=%s aerial=%.2f sky=%s sun=%s %.2f amb=%.2f" % [_t, env.fog_density, env.fog_light_color, env.fog_aerial_perspective, env.sky.sky_material, world.get("_sun").light_color, world.get("_sun").light_energy, env.ambient_light_energy])
