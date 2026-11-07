@@ -4,6 +4,7 @@ extends CanvasLayer
 
 signal closed
 signal codex_requested
+signal photo_requested  # [photo]
 
 const TITLE_SCENE: String = "res://scenes/main_menu.tscn"
 
@@ -51,6 +52,9 @@ func _ready() -> void:
 		codex_requested.emit())
 	Settings.bind_text(codex_btn, func() -> String: return "Codex  [%s]" % Settings.glyph("open_codex"))  # [deck]
 	buttons.append(codex_btn)
+	buttons.append(_button(vb, "Photo mode  [%s]" % Settings.glyph("photo_mode"), func() -> void:  # [photo]
+		close_menu()
+		photo_requested.emit()))
 	_settings_btn = _button(vb, "Settings", _open_settings)
 	buttons.append(_settings_btn)
 	buttons.append(_button(vb, "Save game", func() -> void:

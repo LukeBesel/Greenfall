@@ -19,6 +19,7 @@ const REBINDABLE: Array = [
 	["lens_view", "Lens view"], ["open_codex", "Codex"], ["pause", "Pause"],
 	["toggle_goals", "Show more goals"],  # [hud]
 	["zoom_in", "Zoom in"], ["zoom_out", "Zoom out"],
+	["photo_mode", "Photo mode"],  # [photo]
 ]
 const JOY_NAMES: Dictionary = {
 	JOY_BUTTON_A: "A", JOY_BUTTON_B: "B", JOY_BUTTON_X: "X", JOY_BUTTON_Y: "Y",
@@ -180,6 +181,7 @@ func _register_default_actions() -> void:
 		"buy_max": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],
 		"open_codex": [_key(KEY_K), _joy(JOY_BUTTON_MISC1)],
 		"toggle_goals": [_key(KEY_G), _joy(JOY_BUTTON_LEFT_STICK)],  # [hud] expand the goal tracker
+		"photo_mode": [_key(KEY_P)],  # [photo] pad: via the pause menu
 	}
 	for action: String in _defaults:
 		if not InputMap.has_action(action):
