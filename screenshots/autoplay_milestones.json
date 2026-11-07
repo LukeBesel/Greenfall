@@ -7,5 +7,16 @@
   "first_robot_s": 302.9,
   "first_scoopie_s": 302.9,
   "first_research_s": 333.2,
-  "first_haulbug_s": 341.3
+  "first_haulbug_s": 341.3,
+  "first_skimmer_s": 1296.0,
+  "base_2_s": 1332.5,
+  "first_seedling_s": 1908.2,
+  "first_hexlv_2_s": 1925.3,
+  "first_hexlv_3_s": 1975.7,
+  "first_drip_s": 2019.7,
+  "first_hexlv_4_s": 2098.8,
+  "first_hexlv_5_s": 2476.8,
+  "base_3_s": 3309.5,
+  "first_multibot_s": 3735.1,
+  "base_4_s": 7942.4
 }

@@ -423,10 +423,14 @@ func _land(h: int) -> bool:
 func _hex_planted(g: Garden, h: int) -> Vector2i:
 	var planted: int = 0
 	var ids: PackedInt32Array = g.hex_slots.get(h, PackedInt32Array())
+	var total: int = 0
 	for s: int in ids:
 		if g.slot_species[s] >= 0:
 			planted += 1
-	return Vector2i(planted, ids.size())
+			total += 1
+		elif g.plantable(s):
+			total += 1  # [beat] frontier rules (cold, flood): only slots that can take a seed
+	return Vector2i(planted, total)
 
 
 ## The hex to plant: keep filling the one already started, else the clean hex nearest the base.
@@ -437,13 +441,14 @@ func _pick_plant_hex(g: Garden) -> int:
 			return _plant_hex
 	var best: int = -1
 	var best_s: float = INF
+	var pad: Array[int] = AutoplayCampaign.pad_hexes(world)
 	for h: int in world.field.hex_count():
 		if not _land(h) or not world.field.is_clean(h):
 			continue
 		var pc: Vector2i = _hex_planted(g, h)
 		if pc.y == 0 or pc.x >= pc.y:
 			continue
-		var s: float = world.field.hex_center(h).length() - (100.0 if pc.x > 0 else 0.0)
+		var s: float = world.field.hex_center(h).length() - (100.0 if pc.x > 0 else 0.0) - (500.0 if h in pad else 0.0)
 		if s < best_s:
 			best_s = s
 			best = h
@@ -524,7 +529,7 @@ func _do_garden(p: Patch) -> bool:
 			var best: int = -1
 			var best_d: float = INF
 			for s: int in g.hex_slots[h]:
-				if g.slot_species[s] >= 0 or _ignore_piece.has(-10 - s):
+				if g.slot_species[s] >= 0 or _ignore_piece.has(-10 - s) or not g.plantable(s):
 					continue
 				var d2: float = g.slot_pos[s].distance_to(p.global_position)
 				if d2 < best_d:
@@ -554,7 +559,7 @@ func _pick_focus(p: Patch) -> int:
 	var best: int = -1
 	var best_s: float = INF
 	for h: int in f.hex_count():
-		if not _land(h) or f.is_clean(h) or _skip_hex.has(h):
+		if not _land(h) or f.is_clean(h) or _skip_hex.has(h) or f.locked.has(h):
 			continue
 		var c: Vector3 = f.hex_center(h)
 		var s: float = c.length() + 0.6 * c.distance_to(p.global_position) - 25.0 * f.removed_fraction(h)
@@ -580,6 +585,8 @@ func _do_clean(p: Patch) -> void:
 		return  # wait for in-flight pieces to land
 	var field: HexField = world.field
 	var h: int = _pick_focus(p)
+	if h < 0 and _thaw_ice(p):
+		return
 	if h < 0:
 		_set_task("idle")
 		if not p.compartment.is_empty():
@@ -618,6 +625,31 @@ func _do_clean(p: Patch) -> void:
 	_last_pos = p.global_position
 
 
+## [beat] Frozen Port: nothing loose left to clean, so stand at the nearest iced hex and hold the
+## beam on it (it thaws; heaters do the rest).
+func _thaw_ice(p: Patch) -> bool:
+	var f: HexField = world.field
+	var best: int = -1
+	var best_d: float = INF
+	for h: Variant in f.locked:
+		var d: float = f.hex_center(int(h)).distance_to(p.global_position)
+		if d < best_d:
+			best_d = d
+			best = int(h)
+	if best < 0:
+		return false
+	_set_task("thaw")
+	var c: Vector3 = f.hex_center(best)
+	var to_c: Vector3 = c - p.global_position
+	to_c.y = 0.0
+	if to_c.length() > f.hex_size * 0.6:
+		_go(p, c, f.hex_size * 0.5)
+	else:
+		_move = to_c.normalized() * 0.05
+	_scoop = true
+	return true
+
+
 func _nearest_piece_in(p: Patch, h: int) -> int:
 	var field: HexField = world.field
 	var best: int = -1
@@ -652,6 +684,7 @@ func _nearest_loose(p: Patch) -> JunkCube:
 
 func _manage(p: Patch) -> void:
 	_paint_zones()
+	_campaign(p)
 	if world.get("hub") != null and int(world.hub.level) != _hub_level_seen:
 		_hub_level_seen = int(world.hub.level)
 		_mark("base_%d_s" % _hub_level_seen)
@@ -665,6 +698,42 @@ func _manage(p: Patch) -> void:
 		return
 	_last_bench_t = _now()
 	_shop(want)
+
+
+## [beat] The whole-game layer: frontier chores and rocket trips (tools/autoplay_campaign.gd).
+func _campaign(_p: Patch) -> void:
+	if bool(world.get("launching")):
+		return
+	var chore: String = AutoplayCampaign.frontier_chores(world)
+	if chore != "":
+		_progress()
+		_event("frontier", {"what": chore})
+	var kid: String = AutoplayCampaign.frontier_kid(world)
+	if kid != "":
+		_mark("arrive_%s_s" % kid)
+		var fr: FrontierDistrict = world.get("frontier")
+		if fr and fr.growing_frac >= 0.5:
+			_mark("%s_growing50_s" % kid)
+		if int(world.hub.level) >= 5:
+			_mark("%s_base5_s" % kid)
+	if GameState.flags.get("cradle_returned", false):
+		_mark("cradle_complete_s")
+	if GameState.flags.get("bloom_finale_seen", false):
+		_mark("finale_done_s")
+	if int(GameState.stats.get("ark_waves", 0)) > 0:
+		_mark("ark_wave_1_s")
+	if _now() < 30.0 or DevHooks.has("no-travel"):
+		return  # settle in after landing
+	var to: int = AutoplayCampaign.next_hub(world)
+	if to >= 0 and world.rocket_status() == "" and p_ok(_p):
+		_event("launch", {"from": int(world.hub_index), "to": to, "kind": world.planet.frontier_kind(to)})
+		AutoplayCampaign.mark("launch_%d_s" % GameState.districts.size(), _now())
+		world._launch(to)
+
+
+## Not carrying, not pressing a bale: a calm moment to board.
+func p_ok(p: Patch) -> bool:
+	return p.carried.is_empty() and p._cubing <= 0.0
 
 
 ## What a player would want to do at the bench right now. trip = worth walking back for.
@@ -938,6 +1007,8 @@ func _next_robot() -> String:
 	# Nearly all land junk gone: no more cleaners or haulers (the lake still wants a Skimmer).
 	var late: bool = _land_left_frac() < 0.12
 	var saving: bool = not _hub_need().is_empty() and not _hub_mats_short()
+	if AutoplayCampaign.frontier_kid(world) == "sunken_city" and _lake_dirty() and fleet.count("skimmer") < 2 + scoop:
+		order.append("skimmer")  # [beat] the flooded city is skimmed, not scooped
 	if seeds_on and _drips() < maxi(1, gardens):
 		order.append("drip")
 	if scoop == 0:
@@ -1036,7 +1107,9 @@ func _research_pick() -> String:
 	if not Research.active().is_empty() and Research.queue().size() >= Research.max_queue():
 		return ""
 	var saving: bool = false
-	for id: String in RESEARCH_PRIORITY:
+	var prio: Array[String] = AutoplayCampaign.research_first(world)
+	prio.append_array(RESEARCH_PRIORITY)
+	for id: String in prio:
 		if Research.exists(id) and Research.can_start(id):
 			return id
 		if id == RESEARCH_SAVE_FROM:
@@ -1149,11 +1222,10 @@ func _place_tanks() -> void:
 			continue
 		var c: Vector3 = f.hex_center(h)
 		var near: Dictionary = wn.nearest_refill(c)
-		if near.is_empty():
-			continue
-		var np: Vector3 = near["pos"]
-		if Vector2(np.x - c.x, np.z - c.z).length() < 14.0:
-			continue
+		if not near.is_empty():  # [beat] no refill point at all (Dust Flats dry well): place one
+			var np: Vector3 = near["pos"]
+			if Vector2(np.x - c.x, np.z - c.z).length() < 14.0:
+				continue
 		if wn.tank_cost().to_float() * 2.0 > GameState.get_currency("cubes").to_float():
 			return
 		for off: Vector3 in [Vector3.ZERO, Vector3(2, 0, 0), Vector3(-2, 0, 0), Vector3(0, 0, 2), Vector3(0, 0, -2), Vector3(3, 0, 3)]:

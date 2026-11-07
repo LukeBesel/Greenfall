@@ -53,7 +53,7 @@
     {"id": "skimmer_1", "text": "Build a Skimmer for the lake", "type": "robot", "key": "skimmer", "target": 1, "reward": {"cubes": 1000}},
     {"id": "research_12", "text": "Finish 12 research projects", "type": "stat", "key": "research_done", "target": 12, "reward": {"cubes": 1000}},
     {"id": "seedling_1", "text": "Build a Seedling planter", "type": "robot", "key": "seedling", "target": 1, "reward": {"cubes": 800}},
-    {"id": "pollinator", "text": "Research Pollinator Survey (the garden takes off)", "type": "research", "key": "pollinator_survey", "target": 1, "reward": {"cubes": 800, "seeds": 20}},
+    {"id": "pollinator", "text": "Research Pollinator Survey", "type": "research", "key": "pollinator_survey", "target": 1, "reward": {"cubes": 800, "seeds": 20}},
     {"id": "plant_25", "text": "Plant 25 seeds", "type": "stat", "key": "plants_planted", "target": 25, "reward": {"cubes": 300, "seeds": 10}},
     {"id": "drip_1", "text": "Build a Drip watering robot", "type": "robot", "key": "drip", "target": 1, "reward": {"cubes": 400}},
     {"id": "bloom_25", "text": "Grow 25 flowers to bloom", "type": "stat", "key": "plants_bloomed", "target": 25, "reward": {"cubes": 600, "seeds": 10}},
