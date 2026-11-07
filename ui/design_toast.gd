@@ -89,7 +89,7 @@ func _play_next() -> void:
 	var tw: Tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tw.tween_property(_panel, "position:y", 86.0, 0.45)
 	tw.parallel().tween_property(_panel, "modulate:a", 1.0, 0.3)
-	tw.tween_interval(5.5)
+	tw.tween_interval(9999.0 if DevHooks.has("design-unlock") else 5.5)  # held for screenshots
 	tw.tween_property(_panel, "position:y", 40.0, 0.35).set_ease(Tween.EASE_IN)
 	tw.parallel().tween_property(_panel, "modulate:a", 0.0, 0.35)
 	await tw.finished

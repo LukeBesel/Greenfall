@@ -40,6 +40,6 @@ void fragment() {
 	float scan = 0.82 + 0.18 * sin(uv.y * 160.0 - t_now * 6.0);
 	float flick = 0.92 + 0.08 * sin(t_now * 37.0) * sin(t_now * 13.0);
 	float a = (frame * 0.9 + fill + ring + bars * 0.7 + lines) * scan * flick * amt;
-	ALBEDO = col.rgb * 1.6 * a;
+	ALBEDO = col.rgb * 2.2 * a;
 	ALPHA = clamp(a, 0.0, 1.0);
 }

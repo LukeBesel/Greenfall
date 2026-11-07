@@ -55,7 +55,7 @@ func _ready() -> void:
 	for k: int in ids.size():
 		var m := PatchModel.new()
 		m.preview_variant = ids[k]
-		m.position = Vector3((k - (ids.size() - 1) * 0.5) * gap, 0.0, 0.0)
+		m.position = Vector3(((ids.size() - 1) * 0.5 - k) * gap, 0.0, 0.0)  # Aurora on the left seen from the front
 		m.rotation.y = 0.35
 		add_child(m)
 		var l := Label3D.new()
@@ -65,9 +65,9 @@ func _ready() -> void:
 		l.modulate = PatchModel.glow_of(ids[k]).lightened(0.4)
 		l.outline_size = 10
 		l.outline_modulate = Color(0, 0, 0, 0.7)
-		l.position = m.position + Vector3(0, 0.02, -0.75)
-		l.rotation_degrees = Vector3(-70, 0, 0)
-		l.billboard = BaseMaterial3D.BILLBOARD_DISABLED
+		l.position = m.position + Vector3(0, 1.62, 0)
+		l.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		l.font_size = 30
 		l.set_meta("label", true)
 		add_child(l)
 	_cam = Camera3D.new()
@@ -75,8 +75,8 @@ func _ready() -> void:
 	add_child(_cam)
 	_cam.current = true
 	_views = [
-		[Vector3(1.2, 1.6, -7.6), Vector3(0, 0.6, 0)],     # front 3/4
-		[Vector3(-1.6, 1.8, 7.4), Vector3(0, 0.6, 0)],     # back 3/4
+		[Vector3(0.9, 1.35, -5.6), Vector3(0, 0.78, 0)],   # front 3/4
+		[Vector3(-1.2, 1.5, 5.6), Vector3(0, 0.7, 0)],     # back 3/4
 		[Vector3(9.5, 1.1, -1.2), Vector3(0, 0.62, 0)],    # side, down the row
 	]
 
