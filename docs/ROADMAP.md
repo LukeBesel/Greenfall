@@ -382,3 +382,6 @@ solar-system orrery that zooms into a planet's globe to pick the hub (wt/home).
 - Next: wildlife and plants per world type (snow hares, dune lizards); per-world music tint; the world
   picker could show a small render of each world.
 
+Music (owner, Nov 7): music is frozen as-is; do not spend more time composing. The owner may source different
+music later, so keep tracks swappable (Audio.play_track ids). SFX should stay satisfying (pickup, bale, sale already
+tuned in the first-hour pass); no new SFX work unless a bug.
