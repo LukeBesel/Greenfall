@@ -417,7 +417,8 @@ func _late_snap(s: Node) -> Dictionary:
 	return {"world": CradleMode.world_name(), "seed": (s.planet as PlanetData).seed_value, "district": s.district_name,
 		"town0": str((s.planet as PlanetData).cities[0]["name"]), "cubes": snappedf(GameState.get_currency("cubes").to_float(), 0.01),
 		"robots": types, "decor": JSON.stringify(GameState.world.get("decor", {})), "world_index": int(GameState.flags.get("world_index", 0)),
-		"research": Research.done_list().size(), "slot": SaveManager.slot}
+		"research": Research.done_list().size(), "slot": SaveManager.slot,
+		"world_story": JSON.stringify(GameState.flags.get("world_story", [])), "look": str(WorldLook.current().get("type", ""))}  # [worlds2]
 
 
 func _late_multi_world(packed: PackedScene) -> void:
@@ -459,6 +460,11 @@ func _late_multi_world(packed: PackedScene) -> void:
 				s3.collect_piece(pid)
 		n_clean += 1
 	_late_decorate(s3, 2)
+	# [worlds2] The world's own look is in the district, and WREN's thread persists in its save.
+	_check("worlds2_look_view", true, s3.get_node_or_null("WorldLookView") != null)
+	_check("worlds2_landmark", true, s3.get_node_or_null("WorldLandmark") != null)
+	_check("worlds2_sky_grade", false, ((s3.sky_director as SkyDirector).grade as Dictionary).is_empty())
+	GameState.flags["world_story"] = ["arrival", "memory_1"]
 	var before: Dictionary = _late_snap(s3)
 	if not SaveManager.save_game():
 		_check("late_new_world_saved", true, false)
@@ -470,6 +476,7 @@ func _late_multi_world(packed: PackedScene) -> void:
 	CradleMode.load_profile()
 	_check("late_profile_roundtrip", str(JSON.parse_string(prof)), str(JSON.parse_string(JSON.stringify(CradleMode.to_dict()))))
 	_check("late_profile_worlds", 2, CradleMode.worlds().size())
+	_check("worlds2_profile_stamped", true, float(CradleMode.profile.get("saved_unix", 0.0)) > 1.0e9)  # [worlds2] Steam Cloud newest-wins
 	_check("late_profile_heirlooms", 4, CradleMode.heirloom_total())
 	# Back to Verdance: its save (slot 7) loads as it was left.
 	_check("late_switch_home", true, CradleMode.switch_world(0))
