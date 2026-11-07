@@ -770,7 +770,7 @@ func _refresh_build() -> void:
 			for b: Node in c.get_children():
 				if b.has_meta("build_type"):
 					var t: String = str(b.get_meta("build_type"))
-					(b as Button).text = tr("Build %s  %s") % [tr(str(Economy.robots[t]["name"])), Currencies.cost_text({"cubes": f.build_cost(t).to_float(), "parts": f.build_parts(t).to_float()})]  # [ui2]
+					(b as Button).text = tr("Build %s  %s") % [tr(str(Economy.robots[t]["name"])), Settings.fmt(f.build_cost(t))]
 					(b as Button).disabled = not (at_bench and f.can_build(t))
 				elif b.has_meta("tier_type"):
 					var req: Dictionary = f.tier_requirements(str(b.get_meta("tier_type")))
@@ -781,7 +781,7 @@ func _refresh_build() -> void:
 		elif c.has_meta("build_info"):
 			var t2: String = str(c.get_meta("build_info"))
 			var why: String = f.build_block_reason(t2)
-			(c as Label).text = "  " + ((tr("ready") if why == "" else why) if at_bench else tr("build at the workbench"))  # [ui2] no part recipe
+			(c as Label).text = "  %s · %s" % [L10nFmt.amount("parts", f.build_parts(t2).to_float()), (tr("ready") if why == "" else why) if at_bench else tr("build at the workbench")]  # [ui2] Parts, no part recipe
 	if _tank_btn:
 		var net: WaterNet = f.water_net
 		if net == null:
