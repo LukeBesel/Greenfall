@@ -315,8 +315,8 @@ func _dev_cam() -> void:
 		(cam.get("camera") as Camera3D).fov = Settings.fov
 	cam.call("snap")
 	var hud: Variant = world.get("hud")
-	if hud is CanvasItem:
-		(hud as CanvasItem).visible = false
+	if hud is Object and "visible" in hud:
+		(hud as Object).set("visible", false)
 
 
 ## 0 ruined .. 1 restored: cleaned share of the district and the base level.
@@ -543,14 +543,14 @@ static func _polar_mesh(r_out: float) -> ArrayMesh:
 			st.add_vertex(Vector3(cos(a) * rs[i], 0.0, sin(a) * rs[i]))
 	for j: int in segs:
 		st.add_index(0)
-		st.add_index(1 + (j + 1) % segs)
 		st.add_index(1 + j)
+		st.add_index(1 + (j + 1) % segs)
 	for i: int in range(1, rs.size() - 1):
 		var b0: int = 1 + (i - 1) * segs
 		var b1: int = 1 + i * segs
 		for j: int in segs:
 			var j1: int = (j + 1) % segs
-			for idx: int in [b0 + j, b0 + j1, b1 + j, b1 + j, b0 + j1, b1 + j1]:
+			for idx: int in [b0 + j, b1 + j, b0 + j1, b0 + j1, b1 + j, b1 + j1]:
 				st.add_index(idx)
 	var m: ArrayMesh = st.commit()
 	m.custom_aabb = AABB(Vector3(-r_out, -2.0, -r_out), Vector3(r_out * 2.0, 4.0, r_out * 2.0))
