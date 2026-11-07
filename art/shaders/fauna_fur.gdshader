@@ -9,7 +9,7 @@ render_mode diffuse_burley, specular_schlick_ggx, cull_back;
 
 uniform vec3 coat_base : source_color = vec3(0.86, 0.52, 0.24);
 uniform vec3 coat_stripe : source_color = vec3(0.52, 0.25, 0.09);
-uniform vec3 coat_white : source_color = vec3(0.96, 0.94, 0.9);
+uniform vec3 coat_white : source_color = vec3(0.93, 0.89, 0.82);
 uniform vec3 coat_patch : source_color = vec3(0.12, 0.1, 0.09);
 uniform float stripe_amt = 1.0;
 uniform float white_amt = 0.5;
@@ -19,7 +19,7 @@ uniform float shell = 0.0;
 uniform bool baked = false;  // vendor models: the vertex colour is the albedo (no coat masks)
 uniform float fur_len = 0.007;
 uniform float density = 900.0;
-uniform float sheen = 0.12;
+uniform float sheen = 0.06;
 
 varying vec4 vc;
 varying vec3 lp;

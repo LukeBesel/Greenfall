@@ -634,7 +634,7 @@ func _drive_rig(a: Animal, xf: Transform3D, dt: float) -> void:
 			else:
 				r.play("Sit" if a.state == St.SIT else "Idle")
 	r.set_eyes_closed(closed)
-	r.look(a.head_yaw if look else 0.0, a.head_pitch * 0.6 if look else 0.0)
+	r.look(a.head_yaw if look else 0.0, clampf(a.head_pitch * 0.5, -0.12, 0.35) if look else 0.0)  # a cat looks up a little, not at the sky
 	r.advance(dt)
 
 

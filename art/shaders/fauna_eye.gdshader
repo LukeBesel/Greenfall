@@ -29,8 +29,8 @@ void fragment() {
 	col = mix(col, vec3(0.05, 0.04, 0.03), lash);
 	ALBEDO = col;
 	ROUGHNESS = mix(0.04, 0.8, closed);
-	SPECULAR = mix(0.9, 0.2, closed);
-	CLEARCOAT = 1.0 - closed;
+	SPECULAR = mix(0.6, 0.2, closed);
+	CLEARCOAT = 0.5 * (1.0 - closed);
 	CLEARCOAT_ROUGHNESS = 0.05;
 	EMISSION = vec3(1.0) * glint * 1.6 * (1.0 - closed);
 }
