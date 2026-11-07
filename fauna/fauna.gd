@@ -119,6 +119,12 @@ func setup(p_world: Node) -> void:
 	if ph and ph.has_signal("captured"):
 		ph.connect("captured", _on_photo)
 	add_to_group("fauna")
+	if DevHooks.has("fauna-look") or DevHooks.has("fauna-dense"):
+		# Screenshots: software rendering draws only a few frames, so populate right away.
+		_lumi_pos = world.patch.global_position if world.get("patch") else Vector3.ZERO
+		replan()
+		for a: Animal in animals:
+			a.fade = 1.0
 
 
 # --- Planning ----------------------------------------------------------------------------------
@@ -1569,10 +1575,21 @@ func _ambience(delta: float) -> void:
 
 # --- Dev hooks ---------------------------------------------------------------------------------
 
+func _hide_hud(n: Node = null) -> void:
+	for c: Node in (world if n == null else n).get_children():
+		if c is CanvasLayer:
+			var sc: Script = c.get_script()
+			if sc and sc.resource_path in ["res://ui/hud.gd", "res://ui/subtitles.gd", "res://ui/event_hud.gd", "res://story/ledger_uplink.gd"]:
+				(c as CanvasLayer).visible = false
+		elif c.get_child_count() > 0 and not (c is Control) and not (c is Fauna):
+			_hide_hud(c)
+
+
 ## --fauna-look=SPECIES[,dist,pitch,yaw]: put Lumi beside the nearest one and frame both.
 func _dev_look() -> void:
-	if age < DevHooks.get_f("fauna-look-at", 5.0):
+	if age < DevHooks.get_f("fauna-look-at", 0.0):
 		return
+	_hide_hud()
 	var parts: PackedStringArray = DevHooks.get_s("fauna-look", "cat").split(",")
 	var sid: String = parts[0]
 	var best: Animal = null
@@ -1580,7 +1597,7 @@ func _dev_look() -> void:
 		if a.sp == sid and a.state != St.LEAVE and (best == null or a.pos.distance_to(_lumi_pos) < best.pos.distance_to(_lumi_pos)):
 			best = a
 	if best == null:
-		if age > DevHooks.get_f("fauna-look-at", 5.0) + 20.0:
+		if age > DevHooks.get_f("fauna-look-at", 0.0) + 20.0:
 			_look_done = true
 			print("[fauna] look: no %s here (%s)" % [sid, str(census())])
 		return
