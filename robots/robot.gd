@@ -48,6 +48,8 @@ var _refill: Dictionary = {}
 var _refilling: bool = false
 var _refill_fx_t: float = 0.0
 var _shore := Vector3.INF
+var _shore_t: float = 0.0  # [beat] time spent heading for this shore point
+var _bad_shore: Array = []  # [beat] shore points this skimmer couldn't reach
 var _stall_goal := Vector3.INF
 var _stall_best: float = INF
 var _stall_t: float = 0.0
@@ -765,16 +767,30 @@ func _to_shore() -> Vector3:
 		_shore = Vector3.INF
 		return Vector3.ZERO
 	if _shore == Vector3.INF:
-		_shore = shore_point(world.field, global_position)
+		_shore = shore_point(world.field, global_position, _bad_shore)
+		_shore_t = 0.0
 	var m: Vector3 = _steer(_shore, 0.5)
+	# [beat] Blocked on the way (Sunken City rooftops, piers): after a while try another bit of
+	# shore; after several, drop the bale where it is rather than circle forever.
+	_shore_t += get_physics_process_delta_time()
+	if m != Vector3.ZERO and _shore_t > 40.0:
+		_bad_shore.append(_shore)
+		if _bad_shore.size() > 4:
+			_bad_shore.clear()
+			_make_bale()
+			_shore = Vector3.INF
+			return Vector3.ZERO
+		_shore = shore_point(world.field, global_position, _bad_shore)
+		_shore_t = 0.0
 	if m == Vector3.ZERO and hopper.pending <= 0.0:
 		_make_bale()
 		_shore = Vector3.INF
+		_bad_shore.clear()
 	return m
 
 
 ## Nearest land point just off a lake hex (not a building), for dropping bales.
-static func shore_point(field: HexField, from: Vector3) -> Vector3:
+static func shore_point(field: HexField, from: Vector3, avoid: Array = []) -> Vector3:
 	var best := Vector3.INF
 	var best_d: float = INF
 	for id: int in field.hex_count():
@@ -788,6 +804,12 @@ static func shore_point(field: HexField, from: Vector3) -> Vector3:
 			for t: float in [0.3, 0.15, 0.45, 0.0]:
 				var p: Vector3 = lc.lerp(wc, t)
 				if field.layout and field.layout.surface_at(p.x, p.z) == CityLayout.Surface.BUILDING:
+					continue
+				var near_bad: bool = false
+				for q: Variant in avoid:
+					if (q as Vector3).distance_to(p) < 4.0:
+						near_bad = true
+				if near_bad:
 					continue
 				var d: float = p.distance_squared_to(from)
 				if d < best_d:
