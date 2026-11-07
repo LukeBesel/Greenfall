@@ -130,7 +130,8 @@ func test_plan_respects_caps_and_is_stable() -> void:
 		var kind: String = str(FaunaRules.def(str(e["sp"])).get("kind", ""))
 		total += 1 if kind in ["swarm", "school"] else int(e["n"])
 	for sp: String in per:
-		assert_lte(int(per[sp]), int(FaunaRules.def(sp).get("cap", 99)), "cap for " + sp)
+		if not (str(FaunaRules.def(sp).get("kind", "")) in ["swarm", "school"]):
+			assert_lte(int(per[sp]), int(FaunaRules.def(sp).get("cap", 99)), "cap for " + sp)
 	assert_lte(total, int(FaunaRules.cfg().get("max_agents", 90)))
 	assert_true(per.has("deer") and per.has("songbird") and per.has("cat"))
 	assert_false(per.has("rat"), "no rats in a thriving district")

@@ -235,9 +235,12 @@ func _dense_plan(ctxs: Array, fd: Dictionary) -> Array:
 			if used >= cap:
 				break
 			if FaunaRules.suits(d, c, regs, _night > 0.5):
-				var n: int = mini(int((d.get("per_hex", [1, 1]) as Array)[1]), cap - used)
+				var group: bool = str(d.get("kind", "")) in ["swarm", "school"]
+				var n: int = int((d.get("per_hex", [1, 1]) as Array)[1])
+				if not group:
+					n = mini(n, cap - used)
 				out.append({"sp": d["id"], "hex": int(c["hex"]), "n": n})
-				used += n
+				used += 1 if group else n
 	return out
 
 

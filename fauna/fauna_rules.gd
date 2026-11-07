@@ -148,12 +148,15 @@ static func plan(contexts: Array, regs: Array, night: bool, district_seed: int, 
 		for ctx: Dictionary in order:
 			if used >= cap:
 				break
-			var n: int = mini(count_for(d, ctx, regs, night, district_seed, clarity), cap - used)
+			var group: bool = str(d.get("kind", "")) in ["swarm", "school"]
+			var n: int = count_for(d, ctx, regs, night, district_seed, clarity)
+			if not group:
+				n = mini(n, cap - used)
 			if n <= 0:
 				continue
 			out.append({"sp": sid, "hex": int(ctx["hex"]), "n": n})
-			used += n
-			total += n
+			used += 1 if group else n
+			total += 1 if group else n
 	# District cap: drop the farthest entries first (swarms and schools count once).
 	if total > max_total:
 		out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
