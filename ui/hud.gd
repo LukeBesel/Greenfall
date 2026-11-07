@@ -60,6 +60,9 @@ func _ready() -> void:
 	_build_scrims()
 	lumi = (world.get("lumi_level") as LumiLevel) if world else null
 	_build_top_left()
+	var coins := CoinFlight.new()  # [first] sale cubes fly into the counter
+	coins.cluster = _currency
+	_root.add_child(coins)
 	_build_top_right()
 	_build_bottom()
 	_build_notify()

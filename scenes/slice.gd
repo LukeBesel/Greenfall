@@ -435,6 +435,12 @@ func _ready() -> void:
 	tutorial = Tutorial.new()
 	tutorial.world = self
 	add_child(tutorial)
+	var feel := FeelFx.new()  # [first] core-loop juice (bale press, first robot, hex reveal)
+	feel.world = self
+	add_child(feel)
+	var finds := SeedFinds.new()  # [first] rare seeds in scooped junk (early trickle)
+	finds.world = self
+	add_child(finds)
 	_setup_research_codex()
 	var cargo := CargoPods.new()
 	cargo.world = self
@@ -491,6 +497,8 @@ func _ready() -> void:
 			Story.once("wake", tr("LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."), "story"))
 	if intro.should_play():
 		intro.finished.connect(wake)
+		hud.visible = false  # [first] no one-frame HUD/world flash before the deferred intro starts
+		intro.cover_now()
 		intro.play.call_deferred()
 	else:
 		if GameState.flags.get("intro_done", false) or not loaded:

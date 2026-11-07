@@ -11,6 +11,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
+#: art/feel_fx.gd:147
+msgid "NEW CREWMATE  ·  %s"
+msgstr ""
+
 #: autoload/Economy.gd:72
 msgid "Every %s in the fleet."
 msgstr ""
@@ -215,16 +219,12 @@ msgstr ""
 msgid "RS down"
 msgstr ""
 
-#: autoload/Story.gd:22
-msgid "Your first cube! Carry it to the Depot pad."
-msgstr ""
-
 #: autoload/Story.gd:24
-msgid "PERFECT CUBE! Filled right to the line."
+msgid "Perfect bale: filled right to the gold line."
 msgstr ""
 
 #: autoload/Story.gd:26
-msgid "A Pure Cube: one kind of junk is worth double."
+msgid "Pure bale: one kind of junk is worth double."
 msgstr ""
 
 #: autoload/Story.gd:30
@@ -700,37 +700,37 @@ msgstr ""
 msgid "LIGHT  WATER  LIFE"
 msgstr ""
 
-#: plants/composter.gd:59
+#: plants/composter.gd:61
 msgid "E   compost press  ·  dormant until something grows"
 msgstr ""
 
-#: plants/composter.gd:61
+#: plants/composter.gd:63
 msgid "E   compost press  ·  Lv %d (max)"
 msgstr ""
 
-#: plants/composter.gd:62
+#: plants/composter.gd:64
 msgid "E   upgrade compost press to Lv %d  ·  %s cubes"
 msgstr ""
 
-#: plants/composter.gd:67
+#: plants/composter.gd:69
 msgid "The press is cold. Grow something first: it runs on what plants leave behind."
 msgstr ""
 
-#: plants/composter.gd:73
+#: plants/composter.gd:75
 msgid "Not enough cubes to upgrade the press."
 msgstr ""
 
-#: plants/composter.gd:82
+#: plants/composter.gd:84
 msgid "Compost press Lv %d: %.0f s cycles, %.1f seeds each."
 msgstr ""
 
-#: plants/composter.gd:132
+#: plants/composter.gd:138
 msgid ""
 "COMPOST PRESS\n"
 "dormant"
 msgstr ""
 
-#: plants/composter.gd:134
+#: plants/composter.gd:140
 msgid ""
 "COMPOST PRESS  Lv %d\n"
 "compost %s  →  seeds"
@@ -762,6 +762,14 @@ msgstr ""
 
 #: plants/hex_levels.gd:260
 msgid "Hex Lv %d  %s.   %s"
+msgstr ""
+
+#: plants/seed_finds.gd:42
+msgid "+1 SEED"
+msgstr ""
+
+#: plants/seed_finds.gd:46
+msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
 msgstr ""
 
 #: player/detector.gd:78
@@ -1121,59 +1129,59 @@ msgstr ""
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr ""
 
-#: scenes/slice.gd:491
+#: scenes/slice.gd:497
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr ""
 
-#: scenes/slice.gd:782
+#: scenes/slice.gd:790
 msgid "HEX CLEAN!  +%s"
 msgstr ""
 
-#: scenes/slice.gd:796
+#: scenes/slice.gd:804
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
-#: scenes/slice.gd:798
+#: scenes/slice.gd:806
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr ""
 
-#: scenes/slice.gd:805
+#: scenes/slice.gd:813
 msgid "%s is out of range: %s"
 msgstr ""
 
-#: scenes/slice.gd:815
+#: scenes/slice.gd:823
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr ""
 
-#: scenes/slice.gd:818 ui/rockets_panel.gd:39
+#: scenes/slice.gd:826 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr ""
 
-#: scenes/slice.gd:872
+#: scenes/slice.gd:880
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr ""
 
-#: scenes/slice.gd:873
+#: scenes/slice.gd:881
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr ""
 
-#: scenes/slice.gd:873
+#: scenes/slice.gd:881
 msgid "Landed on the base pad."
 msgstr ""
 
-#: scenes/slice.gd:964
+#: scenes/slice.gd:972
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
-#: scenes/slice.gd:1136
+#: scenes/slice.gd:1144
 msgid "Welcome back. The junk waited for you."
 msgstr ""
 
-#: scenes/slice.gd:1153
+#: scenes/slice.gd:1161
 msgid "OUTPOST %d · Lv%d"
 msgstr ""
 
-#: scenes/slice.gd:1153
+#: scenes/slice.gd:1161
 msgid "OUTPOST %d · RUIN"
 msgstr ""
 
@@ -1510,75 +1518,79 @@ msgstr ""
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr ""
 
-#: story/first_seed.gd:119
+#: story/first_seed.gd:120
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr ""
 
-#: story/first_seed.gd:151
-msgid "Find clean ground.  Hold  {scoop}  to plant.  {tool_water}  for the watering can, hold  {scoop}  to water."
+#: story/first_seed.gd:130
+msgid "{tool_water}  then hold  {scoop}  to water it"
 msgstr ""
 
-#: story/first_seed.gd:221
+#: story/first_seed.gd:156
+msgid "Hold  {scoop}  on clean ground to plant the seed"
+msgstr ""
+
+#: story/first_seed.gd:227
 msgid "...It's green. Lumi, it's actually green."
 msgstr ""
 
-#: story/first_seed.gd:223
-msgid "Keep it watered. Plant more. Every bloom gives you seeds back, and a little green light for your core. This is how it starts."
+#: story/first_seed.gd:229
+msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr ""
 
-#: story/intro.gd:253
+#: story/intro.gd:281
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr ""
 
-#: story/intro.gd:271
+#: story/intro.gd:299
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr ""
 
-#: story/intro.gd:284
+#: story/intro.gd:312
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr ""
 
-#: story/intro.gd:303
+#: story/intro.gd:331
 msgid "Then, one night, the sky came apart."
 msgstr ""
 
-#: story/intro.gd:335
+#: story/intro.gd:363
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr ""
 
-#: story/intro.gd:398
+#: story/intro.gd:426
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr ""
 
-#: story/intro.gd:411
+#: story/intro.gd:439
 msgid "The ark could not turn back. The pod fell for days."
 msgstr ""
 
-#: story/intro.gd:583
+#: story/intro.gd:611
 msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
 msgstr ""
 
-#: story/intro.gd:590
+#: story/intro.gd:618
 msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
 msgstr ""
 
-#: story/intro.gd:593
+#: story/intro.gd:621
 msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
 msgstr ""
 
-#: story/intro.gd:600
+#: story/intro.gd:628
 msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
 msgstr ""
 
-#: story/intro.gd:663
+#: story/intro.gd:691
 msgid "%s  skip"
 msgstr ""
 
-#: story/intro.gd:663
+#: story/intro.gd:691
 msgid "Space / Esc"
 msgstr ""
 
-#: story/intro.gd:704
+#: story/intro.gd:732
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr ""
 
@@ -1707,32 +1719,32 @@ msgstr ""
 msgid "Something surfaced in the cleared ground. A memory shard."
 msgstr ""
 
-#: story/tutorial.gd:8
-msgid "Hold  {scoop}  to scoop junk into the hopper"
-msgstr ""
-
-#: story/tutorial.gd:9
-msgid "Fill the hopper near the line, then  {cube}  to compress a bale"
-msgstr ""
-
 #: story/tutorial.gd:10
-msgid "{interact}  to pick up the bale"
+msgid "Hold  {scoop}  to scoop junk"
 msgstr ""
 
 #: story/tutorial.gd:11
-msgid "Set it on the scale by the green skip"
+msgid "Press  {cube}  to press a bale"
 msgstr ""
 
 #: story/tutorial.gd:12
-msgid "Walk into the shack.  {interact}  at the workbench to install an upgrade"
+msgid "{interact}  to pick up the bale"
 msgstr ""
 
 #: story/tutorial.gd:13
-msgid "Clear this whole hex. Every last can."
+msgid "Carry it onto the scale"
 msgstr ""
 
-#: story/tutorial.gd:95
-msgid "Restart checklist complete. Lumi is back on the job."
+#: story/tutorial.gd:14
+msgid "{interact}  at the workbench to upgrade"
+msgstr ""
+
+#: story/tutorial.gd:15
+msgid "Clean this hex completely"
+msgstr ""
+
+#: story/tutorial.gd:17
+msgid "Lumi is back on the job"
 msgstr ""
 
 #: systems/achievements.gd:137
@@ -1895,7 +1907,7 @@ msgstr ""
 msgid "STREAK x%d  +%d%%"
 msgstr ""
 
-#: systems/events.gd:476 systems/lumi_level.gd:212 ui/goals_panel.gd:262
+#: systems/events.gd:476 systems/lumi_level.gd:212 ui/goals_panel.gd:245
 msgid "+%s cubes"
 msgstr ""
 
@@ -2435,6 +2447,22 @@ msgstr[1] ""
 
 #: ui/builder_panel.gd:572
 msgid "Nothing to fit: the bin is short of those parts, or the crew already has them."
+msgstr ""
+
+#: ui/checklist_card.gd:92
+msgid "RESTART"
+msgstr ""
+
+#: ui/checklist_card.gd:110
+msgid "RESTART CHECKLIST"
+msgstr ""
+
+#: ui/checklist_card.gd:110
+msgid "NEXT STEP"
+msgstr ""
+
+#: ui/checklist_card.gd:148
+msgid "RESTART CHECKLIST  ·  DONE"
 msgstr ""
 
 #: ui/codex_screen.gd:15 ui/codex_screen.gd:689
@@ -3118,15 +3146,15 @@ msgstr ""
 msgid "Re-survey      %s cubes"
 msgstr ""
 
-#: ui/goals_panel.gd:211
+#: ui/goals_panel.gd:194
 msgid "DONE"
 msgstr ""
 
-#: ui/goals_panel.gd:235
+#: ui/goals_panel.gd:218
 msgid "Goal complete  ·  %s%s"
 msgstr ""
 
-#: ui/goals_panel.gd:262
+#: ui/goals_panel.gd:245
 msgid "+%s seeds"
 msgstr ""
 
@@ -3232,52 +3260,52 @@ msgstr ""
 msgid "Build Air Scrubber"
 msgstr ""
 
-#: ui/hud.gd:71
+#: ui/hud.gd:74
 msgid "Lumi reached level %d%s"
 msgstr ""
 
-#: ui/hud.gd:156
+#: ui/hud.gd:159
 msgid "OLD TOWN   0%"
 msgstr ""
 
-#: ui/hud.gd:289
+#: ui/hud.gd:292
 msgid "CARRYING %d/%d"
 msgstr ""
 
-#: ui/hud.gd:293
+#: ui/hud.gd:296
 msgid "HEX  %d%% CLEAR"
 msgstr ""
 
-#: ui/hud.gd:293
+#: ui/hud.gd:296
 msgid "HEX  CLEAR"
 msgstr ""
 
-#: ui/hud.gd:328
+#: ui/hud.gd:331
 msgid "%s  map      %s  command      %s  lens      %s  goals"
 msgstr ""
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:346
+#: ui/hud.gd:349
 msgid "%s   pick up bale"
 msgstr ""
 
-#: ui/hud.gd:347
+#: ui/hud.gd:350
 msgid "%s   dig up part"
 msgstr ""
 
-#: ui/hud.gd:348
+#: ui/hud.gd:351
 msgid "%s   read memory shard"
 msgstr ""
 
-#: ui/hud.gd:349
+#: ui/hud.gd:352
 msgid "%s   pick up the seed tin"
 msgstr ""
 
-#: ui/hud.gd:350
+#: ui/hud.gd:353
 msgid "%s   set bale down"
 msgstr ""
 
-#: ui/hud.gd:351
+#: ui/hud.gd:354
 msgid "%s   workbench"
 msgstr ""
 
@@ -7141,7 +7169,7 @@ msgid "Find the seed tin"
 msgstr ""
 
 #: data/goals.json:goals[plant_5].text
-msgid "Plant 5 seeds"
+msgid "Plant the Maker seed"
 msgstr ""
 
 #: data/goals.json:goals[hexlv_2].text

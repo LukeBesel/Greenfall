@@ -259,3 +259,93 @@ func ring(pos: Vector3, radius: float, color: Color, duration: float = 0.6) -> v
 	tw.tween_property(mi, "scale", Vector3(radius, 0.05, radius), duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tw.tween_property(m, "albedo_color:a", 0.0, duration)
 	tw.chain().tween_callback(mi.queue_free)
+
+
+## [first] Ground-reveal sweep: a ring of soft dust (and optional glints) riding an expanding front
+## from `center` out to `max_r` at `speed` m/s, in step with the ground shader's reveal ripple.
+func sweep(center: Vector3, max_r: float, speed: float, color: Color, glints: bool = false) -> void:
+	var dur: float = maxf(0.2, max_r / maxf(speed, 0.1))
+	for layer: int in (2 if glints else 1):
+		var p := CPUParticles3D.new()
+		p.local_coords = false
+		p.one_shot = false
+		p.explosiveness = 0.0
+		var q := QuadMesh.new()
+		p.mesh = q
+		p.color_ramp = _fade_ramp()
+		p.emission_shape = CPUParticles3D.EMISSION_SHAPE_RING
+		p.emission_ring_axis = Vector3.UP
+		p.emission_ring_height = 0.05
+		p.emission_ring_radius = 0.6
+		p.emission_ring_inner_radius = 0.2
+		p.direction = Vector3(0, 1, 0)
+		var curve := Curve.new()
+		if layer == 0:
+			q.size = Vector2(0.55, 0.55)
+			q.material = _quad_material(_soft_tex, false)
+			p.amount = maxi(8, int(60.0 * Settings.particle_scale()))
+			p.lifetime = 1.1
+			p.spread = 50.0
+			p.initial_velocity_min = 0.3
+			p.initial_velocity_max = 0.9
+			p.gravity = Vector3(0, 0.15, 0)
+			p.damping_min = 1.0
+			p.damping_max = 1.6
+			p.color = color
+			curve.add_point(Vector2(0, 0.6))
+			curve.add_point(Vector2(1, 1.8))
+		else:
+			q.size = Vector2(0.12, 0.12)
+			q.material = _quad_material(_star_tex, true)
+			p.amount = maxi(6, int(40.0 * Settings.particle_scale()))
+			p.lifetime = 1.6
+			p.spread = 15.0
+			p.initial_velocity_min = 0.5
+			p.initial_velocity_max = 1.3
+			p.gravity = Vector3(0, 0.2, 0)
+			p.damping_min = 0.6
+			p.damping_max = 1.0
+			p.color = Color(1.0, 0.95, 0.75, 0.9)
+			curve.add_point(Vector2(0, 1.0))
+			curve.add_point(Vector2(1, 0.2))
+		p.scale_amount_curve = curve
+		_root.add_child(p)
+		p.global_position = center + Vector3(0, 0.08, 0)
+		p.emitting = true
+		var tw: Tween = create_tween()
+		tw.tween_property(p, "emission_ring_radius", max_r, dur).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		tw.parallel().tween_property(p, "emission_ring_inner_radius", max_r - 0.5, dur).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		tw.tween_callback(func() -> void: p.emitting = false)
+		tw.tween_interval(p.lifetime + 0.1)
+		tw.tween_callback(p.queue_free)
+
+
+## [first] A thin, tapered column of light that rises, holds and fades (arrivals: the first robot).
+func pillar(pos: Vector3, color: Color, height: float = 6.0, duration: float = 1.6) -> void:
+	var mi := MeshInstance3D.new()
+	var c := CylinderMesh.new()
+	c.top_radius = 0.12
+	c.bottom_radius = 0.42
+	c.height = 1.0
+	c.cap_top = false
+	c.cap_bottom = false
+	c.radial_segments = 24
+	var m := StandardMaterial3D.new()
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	m.albedo_color = Color(color.lerp(Color.WHITE, 0.35), 0.0)
+	c.material = m
+	mi.mesh = c
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	_root.add_child(mi)
+	mi.global_position = pos
+	mi.scale = Vector3(1, 0.01, 1)
+	var tw: Tween = create_tween()
+	tw.tween_method(func(t: float) -> void:
+		mi.scale = Vector3(1.0 - 0.3 * t, maxf(0.01, height * t), 1.0 - 0.3 * t)
+		mi.global_position = pos + Vector3(0, height * t * 0.5, 0)
+		m.albedo_color.a = 0.42 * t, 0.0, 1.0, duration * 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tw.tween_interval(duration * 0.25)
+	tw.tween_property(m, "albedo_color:a", 0.0, duration * 0.45)
+	tw.tween_callback(mi.queue_free)
