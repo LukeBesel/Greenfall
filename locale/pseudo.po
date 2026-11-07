@@ -510,6 +510,26 @@ msgstr "[Bàļéš ŵôŕţĥ %s ŵéŕé šţàçķéð àţ ţĥé ĥûb ŵî�
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "[Ţĥé šçŕûbbéŕš ƒîļţéŕéð ţĥé àîŕ ţĥé ŵĥôļé ţîmé. Îţ'š à ļîţţļé çļéàŕéŕ. ~~~~~~~~~~~~~~~~~~~~~]"
 
+#: fauna/fauna.gd:1131
+msgid "E   pet %s"
+msgstr "E   [þéţ %s ~]"
+
+#: fauna/fauna.gd:1132
+msgid "E   pet the cat"
+msgstr "E   [þéţ ţĥé çàţ ~]"
+
+#: fauna/fauna.gd:1180
+msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
+msgstr "[Ţĥé çàţ ĥàš ðéçîðéð ýôû'ŕé ĥéŕš. Mééţ %s. Šĥé ļîvéš àţ ţĥîš bàšé ñôŵ. ~~~~~~~~~~~~~~~~~~~~~]"
+
+#: fauna/fauna.gd:1473
+msgid "New sighting: %s. It's in the Codex now."
+msgstr "[Ñéŵ šîĝĥţîñĝ: %s. Îţ'š îñ ţĥé Çôðéx ñôŵ. ~~~~~~~~~~~]"
+
+#: fauna/fauna.gd:1541
+msgid "Snap! A %s for your Collection."
+msgstr "[Šñàþ! À %s ƒôŕ ýôûŕ Çôļļéçţîôñ. ~~~~~~~~]"
+
 #: planet/frontier_district.gd:268
 msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
 msgstr "[Šàñðšţôŕm ôñ ţĥé ĥôŕîžôñ. Bàŕé çļéàñ ĝŕôûñð ŵîļļ ĝéţ bûŕîéð; þļàñţéð àñð šĥéļţéŕéð ĥéxéš ĥôļð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
@@ -1121,63 +1141,63 @@ msgstr "[Ŵàţéŕ Ţàñķ þļàçéð. Ŵàţéŕéŕš ñéàŕbý ŵîļļ
 msgid "WATER"
 msgstr "[ŴÀŢÉŔ ~]"
 
-#: scenes/slice.gd:271
+#: scenes/slice.gd:276
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: þàîñţ žôñéš àñð šéñð çŕéŵš ŵĥéŕé ýôû ŵàñţ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:487
+#: scenes/slice.gd:495
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "[ĻM-1 ôñļîñé. Bļôôm Çôŕé 4%: ĝŕééñ ļîĝĥţ ļôŵ. Çŕàðļé ŕéļàý: ƒàîñţ. Ĝŕôŵ šôméţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:778
+#: scenes/slice.gd:786
 msgid "HEX CLEAN!  +%s"
 msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 
-#: scenes/slice.gd:792
+#: scenes/slice.gd:800
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice.gd:794
+#: scenes/slice.gd:802
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "[Ţĥé ŵĥôļé Ĵûñķýàŕð îš çļéàñ. Ļûmî bééþš à véŕý ļôñĝ, véŕý ĥàþþý bééþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:801
+#: scenes/slice.gd:809
 msgid "%s is out of range: %s"
 msgstr "[%s îš ôûţ ôƒ ŕàñĝé: %s ~~~~~]"
 
-#: scenes/slice.gd:811
+#: scenes/slice.gd:819
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ 5 ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:814 ui/rockets_panel.gd:39
+#: scenes/slice.gd:822 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "[Éñéŕĝý çéļļš ŕéçĥàŕĝîñĝ: %s. Ŕôçķéţ ûþĝŕàðéš ŕéƒîļļ ţĥém ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:868
+#: scenes/slice.gd:876
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "[Ţôûçĥðôŵñ: %s. Ĥûb %d ôƒ %d. %s ~~~~~~~~]"
 
-#: scenes/slice.gd:869
+#: scenes/slice.gd:877
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "[Ţĥé ŕôçķéţ îš þàŕķéð ôñ ţĥé ļôţ, ŕéàðý ŵĥéñ îţš çéļļš ŕéƒîļļ. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:869
+#: scenes/slice.gd:877
 msgid "Landed on the base pad."
 msgstr "[Ļàñðéð ôñ ţĥé bàšé þàð. ~~~~~]"
 
-#: scenes/slice.gd:960
+#: scenes/slice.gd:968
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1128
+#: scenes/slice.gd:1136
 msgid "Welcome back. The junk waited for you."
 msgstr "[Ŵéļçômé bàçķ. Ţĥé ĵûñķ ŵàîţéð ƒôŕ ýôû. ~~~~~~~~~~]"
 
-#: scenes/slice.gd:1145
+#: scenes/slice.gd:1153
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:1145
+#: scenes/slice.gd:1153
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
@@ -1201,7 +1221,7 @@ msgstr "[Ýôûŕ bàšé ĥàš ĝŕôŵñ àš ƒàŕ àš ţĥé ðémô ĝô
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "[Îñ ţĥé ƒûļļ ĝàmé Ļûmî bûîļðš ţĥé bàšé ûþ ţô ļévéļ 5, þļàñţš ŵĥôļé ðîšţŕîçţš ûñţîļ ţĥéý ţĥŕîvé, ĝŕôŵš ţĥém îñţô à bŕîĝĥţ ƒûţûŕé çîţý, àñð ƒļîéš ŕôçķéţš ţô ðôžéñš ôƒ bàšéš àçŕôšš ţĥé þļàñéţ. Ýôûŕ ðémô þŕôĝŕéšš çàŕŕîéš ôvéŕ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:660
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:661
 msgid "Hexes cleaned"
 msgstr "[Ĥéxéš çļéàñéð ~~]"
 
@@ -1209,11 +1229,11 @@ msgstr "[Ĥéxéš çļéàñéð ~~]"
 msgid "Bales made"
 msgstr "[Bàļéš màðé ~]"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:675
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:676
 msgid "Robots built"
 msgstr "[Ŕôbôţš bûîļţ ~]"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:683
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:684
 msgid "Time played"
 msgstr "[Ţîmé þļàýéð ~]"
 
@@ -1233,7 +1253,7 @@ msgstr "[Ţîţļé šçŕééñ ~]"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "[Ķééþ þļàýîñĝ: ţĥé ƒîŕšţ ðîšţŕîçţ šţàýš ôþéñ, àţ bàšé ļévéļ %d. ~~~~~~~~~~~~~~~~~~~]"
 
-#: steam/demo_end_screen.gd:123 ui/codex_screen.gd:751 ui/main_menu.gd:426
+#: steam/demo_end_screen.gd:123 ui/codex_screen.gd:752 ui/main_menu.gd:426
 msgid "%dh %02dm"
 msgstr "[%dĥ %02dm ~]"
 
@@ -1800,19 +1820,19 @@ msgstr "[Véŕðàñçé Bļôôm: %s. %s ~~~~~]"
 msgid "Somewhere under the junk."
 msgstr "[Šôméŵĥéŕé ûñðéŕ ţĥé ĵûñķ. ~~~~~~]"
 
-#: systems/codex.gd:184 ui/codex_screen.gd:349
+#: systems/codex.gd:188 ui/codex_screen.gd:349
 msgid "Old Town"
 msgstr "[Ôļð Ţôŵñ ~]"
 
-#: systems/codex.gd:188 ui/codex_screen.gd:349
+#: systems/codex.gd:192 ui/codex_screen.gd:349
 msgid "Wilderness bases"
 msgstr "[Ŵîļðéŕñéšš bàšéš ~~~]"
 
-#: systems/codex.gd:188
+#: systems/codex.gd:192
 msgid " · often %s"
 msgstr " [· ôƒţéñ %s ~]"
 
-#: systems/codex.gd:189 ui/codex_screen.gd:349
+#: systems/codex.gd:193 ui/codex_screen.gd:349
 msgid "Any district"
 msgstr "[Àñý ðîšţŕîçţ ~]"
 
@@ -1841,26 +1861,30 @@ msgid "Wildlife Photos"
 msgstr "[Ŵîļðļîƒé Þĥôţôš ~~]"
 
 #: systems/collection.gd:83
+msgid "Animal Photos"
+msgstr "[Àñîmàļ Þĥôţôš ~~]"
+
+#: systems/collection.gd:84
 msgid "Rare Part Signals"
 msgstr "[Ŕàŕé Þàŕţ Šîĝñàļš ~~~]"
 
-#: systems/collection.gd:84
+#: systems/collection.gd:85
 msgid "Ledger Audits"
 msgstr "[Ļéðĝéŕ Àûðîţš ~~]"
 
-#: systems/collection.gd:85
+#: systems/collection.gd:86
 msgid "Cleaning Streaks"
 msgstr "[Çļéàñîñĝ Šţŕéàķš ~~~]"
 
-#: systems/collection.gd:86
+#: systems/collection.gd:87
 msgid "Lumi Levels"
 msgstr "[Ļûmî Ļévéļš ~]"
 
-#: systems/collection.gd:87 ui/upgrades_screen.gd:17
+#: systems/collection.gd:88 ui/upgrades_screen.gd:17
 msgid "Contracts"
 msgstr "[Çôñţŕàçţš ~]"
 
-#: systems/collection.gd:88
+#: systems/collection.gd:89
 msgid "Curio Capsules"
 msgstr "[Çûŕîô Çàþšûļéš ~~]"
 
@@ -2082,7 +2106,7 @@ msgstr "[Qûéûé îš ƒûļļ ~~]"
 msgid "Not enough data"
 msgstr "[Ñôţ éñôûĝĥ ðàţà ~~]"
 
-#: systems/research.gd:319 ui/codex_screen.gd:754
+#: systems/research.gd:319 ui/codex_screen.gd:755
 msgid "%ds"
 msgstr "[%dš ~]"
 
@@ -2452,7 +2476,7 @@ msgstr[1] "[Fîţţéð %d þàŕţš àçŕôšš ţĥé %s çŕéŵ. ~~~~~~~~~
 msgid "Nothing to fit: the bin is short of those parts, or the crew already has them."
 msgstr "[Ñôţĥîñĝ ţô ƒîţ: ţĥé bîñ îš šĥôŕţ ôƒ ţĥôšé þàŕţš, ôŕ ţĥé çŕéŵ àļŕéàðý ĥàš ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:689
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:690
 msgid "Achievements"
 msgstr "[Àçĥîévéméñţš ~]"
 
@@ -2531,146 +2555,150 @@ msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera
 msgstr "[Ĥîñţ: à šĥý vîšîţôŕ çôméš ţô Šûšţàîñéð àñð Ţĥŕîvîñĝ ĥéxéš. Bŕîñĝ à çàméŕà. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/codex_screen.gd:546
+msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
+msgstr "[Ĥîñţ: àñîmàļš çômé bàçķ àš ţĥé ĝŕôûñð ĥéàļš. Þĥôţôĝŕàþĥ ţĥém îñ þĥôţô môðé (Þ). ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/codex_screen.gd:547
 msgid "Hint: complete %d contracts at the workbench."
 msgstr "[Ĥîñţ: çômþļéţé %d çôñţŕàçţš àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:547
+#: ui/codex_screen.gd:548
 msgid "Hint: Curio Capsules, in the workbench token shop."
 msgstr "[Ĥîñţ: Çûŕîô Çàþšûļéš, îñ ţĥé ŵôŕķbéñçĥ ţôķéñ šĥôþ. ~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:548
+#: ui/codex_screen.gd:549
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "[Ĥîñţ: ķééþ šçôôþîñĝ ŵîţĥôûţ šţôþþîñĝ ûñţîļ ţĥé šţŕéàķ méţéŕ îš ƒûļļ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:549
+#: ui/codex_screen.gd:550
 msgid "Hint: turns up during %s."
 msgstr "[Ĥîñţ: ţûŕñš ûþ ðûŕîñĝ %s. ~~~~~~]"
 
-#: ui/codex_screen.gd:618
+#: ui/codex_screen.gd:619
 msgid "Unlocked  ·  %s"
 msgstr "[Ûñļôçķéð  ·  %s ~~]"
 
-#: ui/codex_screen.gd:657
+#: ui/codex_screen.gd:658
 msgid "Total"
 msgstr "[Ţôţàļ ~]"
 
-#: ui/codex_screen.gd:658
+#: ui/codex_screen.gd:659
 msgid "Junk removed"
 msgstr "[Ĵûñķ ŕémôvéð ~]"
 
-#: ui/codex_screen.gd:658
+#: ui/codex_screen.gd:659
 msgid "by type"
 msgstr "[bý ţýþé ~]"
 
-#: ui/codex_screen.gd:659 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:660 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "[Çļéàñîñĝ ~]"
 
-#: ui/codex_screen.gd:661
+#: ui/codex_screen.gd:662
 msgid "Hexes restored"
 msgstr "[Ĥéxéš ŕéšţôŕéð ~~]"
 
-#: ui/codex_screen.gd:662
+#: ui/codex_screen.gd:663
 msgid "Bales pressed"
 msgstr "[Bàļéš þŕéššéð ~~]"
 
-#: ui/codex_screen.gd:663
+#: ui/codex_screen.gd:664
 msgid "Pure bales"
 msgstr "[Þûŕé bàļéš ~]"
 
-#: ui/codex_screen.gd:664
+#: ui/codex_screen.gd:665
 msgid "Perfect bales"
 msgstr "[Þéŕƒéçţ bàļéš ~~]"
 
-#: ui/codex_screen.gd:665
+#: ui/codex_screen.gd:666
 msgid "Lumpy bales"
 msgstr "[Ļûmþý bàļéš ~]"
 
-#: ui/codex_screen.gd:666
+#: ui/codex_screen.gd:667
 msgid "Bales cashed in"
 msgstr "[Bàļéš çàšĥéð îñ ~~]"
 
-#: ui/codex_screen.gd:667
+#: ui/codex_screen.gd:668
 msgid "Cubes earned"
 msgstr "[Çûbéš éàŕñéð ~]"
 
-#: ui/codex_screen.gd:669 ui/globe_view.gd:136 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:670 ui/globe_view.gd:136 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "[Ĝŕôŵîñĝ ~]"
 
-#: ui/codex_screen.gd:670
+#: ui/codex_screen.gd:671
 msgid "Seeds planted"
 msgstr "[Šééðš þļàñţéð ~~]"
 
-#: ui/codex_screen.gd:671
+#: ui/codex_screen.gd:672
 msgid "Plants bloomed"
 msgstr "[Þļàñţš bļôôméð ~~]"
 
-#: ui/codex_screen.gd:672
+#: ui/codex_screen.gd:673
 msgid "Air filtered"
 msgstr "[Àîŕ ƒîļţéŕéð ~]"
 
-#: ui/codex_screen.gd:674 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:675 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "[Ŕôbôţš ~]"
 
-#: ui/codex_screen.gd:676
+#: ui/codex_screen.gd:677
 msgid "Bales by robots"
 msgstr "[Bàļéš bý ŕôbôţš ~~]"
 
-#: ui/codex_screen.gd:677
+#: ui/codex_screen.gd:678
 msgid "Parts dug up"
 msgstr "[Þàŕţš ðûĝ ûþ ~]"
 
-#: ui/codex_screen.gd:679
+#: ui/codex_screen.gd:680
 msgid "Exploring"
 msgstr "[Éxþļôŕîñĝ ~]"
 
-#: ui/codex_screen.gd:680
+#: ui/codex_screen.gd:681
 msgid "Distance rolled"
 msgstr "[Ðîšţàñçé ŕôļļéð ~~]"
 
-#: ui/codex_screen.gd:681
+#: ui/codex_screen.gd:682
 msgid "Memory shards read"
 msgstr "[Mémôŕý šĥàŕðš ŕéàð ~~~]"
 
-#: ui/codex_screen.gd:682
+#: ui/codex_screen.gd:683
 msgid "Codex entries"
 msgstr "[Çôðéx éñţŕîéš ~~]"
 
-#: ui/codex_screen.gd:685
+#: ui/codex_screen.gd:686
 msgid "Progress"
 msgstr "[Þŕôĝŕéšš ~]"
 
-#: ui/codex_screen.gd:686
+#: ui/codex_screen.gd:687
 msgid "Upgrades bought"
 msgstr "[Ûþĝŕàðéš bôûĝĥţ ~~]"
 
-#: ui/codex_screen.gd:687
+#: ui/codex_screen.gd:688
 msgid "Data earned"
 msgstr "[Ðàţà éàŕñéð ~]"
 
-#: ui/codex_screen.gd:688
+#: ui/codex_screen.gd:689
 msgid "Research done"
 msgstr "[Ŕéšéàŕçĥ ðôñé ~~]"
 
-#: ui/codex_screen.gd:690
+#: ui/codex_screen.gd:691
 msgid "Best hub level"
 msgstr "[Béšţ ĥûb ļévéļ ~~]"
 
-#: ui/codex_screen.gd:740
+#: ui/codex_screen.gd:741
 msgid "%s kg"
 msgstr "[%s ķĝ ~]"
 
-#: ui/codex_screen.gd:741
+#: ui/codex_screen.gd:742
 msgid "%.1f kg"
 msgstr "[%.1f ķĝ ~]"
 
-#: ui/codex_screen.gd:745
+#: ui/codex_screen.gd:746
 msgid "%.2f km"
 msgstr "[%.2f ķm ~]"
 
-#: ui/codex_screen.gd:753
+#: ui/codex_screen.gd:754
 msgid "%dm %02ds"
 msgstr "[%dm %02dš ~]"
 
@@ -3677,15 +3705,15 @@ msgstr "[Ĝŕééñƒàļļ šţàmþ ~~]"
 msgid "Resolution"
 msgstr "[Ŕéšôļûţîôñ ~]"
 
-#: ui/photo_mode.gd:851
+#: ui/photo_mode.gd:856
 msgid "Couldn't capture the photo."
 msgstr "[Çôûļðñ'ţ çàþţûŕé ţĥé þĥôţô. ~~~~~~]"
 
-#: ui/photo_mode.gd:860
+#: ui/photo_mode.gd:865
 msgid "Couldn't save the photo (%s)."
 msgstr "[Çôûļðñ'ţ šàvé ţĥé þĥôţô (%s). ~~~~~~~]"
 
-#: ui/photo_mode.gd:873
+#: ui/photo_mode.gd:878
 msgid "Saved  %s  (%dx%d)"
 msgstr "[Šàvéð  %s  (%dx%d) ~~~]"
 
@@ -4774,7 +4802,7 @@ msgstr "[Bŕéàţĥ ôƒ Fŕéšĥ Àîŕ ~~~~]"
 msgid "Filter 500 units of dusty air."
 msgstr "[Fîļţéŕ 500 ûñîţš ôƒ ðûšţý àîŕ. ~~~~~~~]"
 
-#: data/achievements.json:achievements[codex_20].name
+#: data/achievements.json:achievements[codex_20].name data/achievements.json:achievements[naturalist].name
 msgid "Naturalist"
 msgstr "[Ñàţûŕàļîšţ ~]"
 
@@ -4958,6 +4986,50 @@ msgstr "[Ĥàţ Ŕàçķ ~]"
 msgid "Collect 5 different robot toppers."
 msgstr "[Çôļļéçţ 5 ðîƒƒéŕéñţ ŕôbôţ ţôþþéŕš. ~~~~~~~~~]"
 
+#: data/achievements.json:achievements[pet_cat].name
+msgid "A Friend in Old Town"
+msgstr "[À Fŕîéñð îñ Ôļð Ţôŵñ ~~~~]"
+
+#: data/achievements.json:achievements[pet_cat].desc
+msgid "Pet a stray cat."
+msgstr "[Þéţ à šţŕàý çàţ. ~~~]"
+
+#: data/achievements.json:achievements[adopt_cat].name
+msgid "Best Friends"
+msgstr "[Béšţ Fŕîéñðš ~]"
+
+#: data/achievements.json:achievements[adopt_cat].desc
+msgid "Pet the same cat until she adopts you."
+msgstr "[Þéţ ţĥé šàmé çàţ ûñţîļ šĥé àðôþţš ýôû. ~~~~~~~~~~]"
+
+#: data/achievements.json:achievements[spot_deer].name
+msgid "Oh, Deer"
+msgstr "[Ôĥ, Ðééŕ ~]"
+
+#: data/achievements.json:achievements[spot_deer].desc
+msgid "Spot a deer at the edge of the green."
+msgstr "[Šþôţ à ðééŕ àţ ţĥé éðĝé ôƒ ţĥé ĝŕééñ. ~~~~~~~~~~]"
+
+#: data/achievements.json:achievements[lake_fish].name
+msgid "Clear as Day"
+msgstr "[Çļéàŕ àš Ðàý ~]"
+
+#: data/achievements.json:achievements[lake_fish].desc
+msgid "See fish in a clean lake."
+msgstr "[Šéé ƒîšĥ îñ à çļéàñ ļàķé. ~~~~~~]"
+
+#: data/achievements.json:achievements[naturalist].desc
+msgid "Spot 10 different animals."
+msgstr "[Šþôţ 10 ðîƒƒéŕéñţ àñîmàļš. ~~~~~~]"
+
+#: data/achievements.json:achievements[wild_photos].name
+msgid "Wildlife Photographer"
+msgstr "[Ŵîļðļîƒé Þĥôţôĝŕàþĥéŕ ~~~~]"
+
+#: data/achievements.json:achievements[wild_photos].desc
+msgid "Photograph 6 different animals in photo mode."
+msgstr "[Þĥôţôĝŕàþĥ 6 ðîƒƒéŕéñţ àñîmàļš îñ þĥôţô môðé. ~~~~~~~~~~~~~]"
+
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
 msgstr "[25 Ţĥŕîvîñĝ ĥéxéš àñýŵĥéŕé ôñ Véŕðàñçé. ~~~~~~~~~~~]"
@@ -5001,6 +5073,10 @@ msgstr "[Mémôŕý Šĥàŕðš ~~]"
 #: data/codex.json:categories[landmarks].name
 msgid "Landmarks"
 msgstr "[Ļàñðmàŕķš ~]"
+
+#: data/codex.json:categories[animals].name
+msgid "Animals"
+msgstr "[Àñîmàļš ~]"
 
 #: data/codex.json:categories[frontiers].name
 msgid "Frontiers"
@@ -5701,6 +5777,258 @@ msgstr "[Fîñð îţ îñ Çŕàðļé Ŕéţûŕñš. ~~~~~~]"
 #: data/codex.json:frontiers.ark_pad.desc
 msgid "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Sustained before the ark will trust it."
 msgstr "[À ŕîñĝ ôƒ ĥéxéš îñ ƒŕôñţ ôƒ ţĥé bàšé ŵĥéŕé ţĥé Çŕàðļé ŵîļļ šéţ ðôŵñ. Îţ ĥàš ţô bé çļéàñ àñð Šûšţàîñéð béƒôŕé ţĥé àŕķ ŵîļļ ţŕûšţ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.cat.name data/fauna.json:species[cat].name
+msgid "Stray Cat"
+msgstr "[Šţŕàý Çàţ ~]"
+
+#: data/codex.json:animals.cat.hint
+msgid "Where: On clean city streets."
+msgstr "[Ŵĥéŕé: Ôñ çļéàñ çîţý šţŕééţš. ~~~~~~~]"
+
+#: data/codex.json:animals.cat.desc
+msgid "Old Town's cats never left. They know every warm engine block and sunny step, and they decided long ago that robots are furniture. Stop for a while and one may come over. Pet the same cat often enough and she'll move in at your base."
+msgstr "[Ôļð Ţôŵñ'š çàţš ñévéŕ ļéƒţ. Ţĥéý ķñôŵ évéŕý ŵàŕm éñĝîñé bļôçķ àñð šûññý šţéþ, àñð ţĥéý ðéçîðéð ļôñĝ àĝô ţĥàţ ŕôbôţš àŕé ƒûŕñîţûŕé. Šţôþ ƒôŕ à ŵĥîļé àñð ôñé màý çômé ôvéŕ. Þéţ ţĥé šàmé çàţ ôƒţéñ éñôûĝĥ àñð šĥé'ļļ môvé îñ àţ ýôûŕ bàšé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.pigeon.name data/fauna.json:species[pigeon].name
+msgid "Pigeon"
+msgstr "[Þîĝéôñ ~]"
+
+#: data/codex.json:animals.pigeon.hint
+msgid "Where: Clean pavement in the city."
+msgstr "[Ŵĥéŕé: Çļéàñ þàvéméñţ îñ ţĥé çîţý. ~~~~~~~~~]"
+
+#: data/codex.json:animals.pigeon.desc
+msgid "Pigeons will live anywhere people once dropped crumbs. They peck between the cracks, bob their heads as they walk and burst into the air all at once if you fly through them."
+msgstr "[Þîĝéôñš ŵîļļ ļîvé àñýŵĥéŕé þéôþļé ôñçé ðŕôþþéð çŕûmbš. Ţĥéý þéçķ béţŵééñ ţĥé çŕàçķš, bôb ţĥéîŕ ĥéàðš àš ţĥéý ŵàļķ àñð bûŕšţ îñţô ţĥé àîŕ àļļ àţ ôñçé îƒ ýôû ƒļý ţĥŕôûĝĥ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.sparrow.name data/fauna.json:species[sparrow].name
+msgid "Sparrow"
+msgstr "[Šþàŕŕôŵ ~]"
+
+#: data/codex.json:animals.sparrow.hint
+msgid "Where: Clean ground, city or wild."
+msgstr "[Ŵĥéŕé: Çļéàñ ĝŕôûñð, çîţý ôŕ ŵîļð. ~~~~~~~~~]"
+
+#: data/codex.json:animals.sparrow.desc
+msgid "Small, brown and bossy. Sparrows were the first birds to come back to swept streets, chirping from kerb to kerb."
+msgstr "[Šmàļļ, bŕôŵñ àñð bôššý. Šþàŕŕôŵš ŵéŕé ţĥé ƒîŕšţ bîŕðš ţô çômé bàçķ ţô šŵéþţ šţŕééţš, çĥîŕþîñĝ ƒŕôm ķéŕb ţô ķéŕb. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.rat.name data/fauna.json:species[rat].name
+msgid "Rat"
+msgstr "[Ŕàţ ~]"
+
+#: data/codex.json:animals.rat.hint
+msgid "Where: Wherever the junk is still piled up."
+msgstr "[Ŵĥéŕé: Ŵĥéŕévéŕ ţĥé ĵûñķ îš šţîļļ þîļéð ûþ. ~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.rat.desc
+msgid "Rats live in the gaps between the piles. They are not villains, just tenants: clean a hex and they pack up and move to the next heap."
+msgstr "[Ŕàţš ļîvé îñ ţĥé ĝàþš béţŵééñ ţĥé þîļéš. Ţĥéý àŕé ñôţ vîļļàîñš, ĵûšţ ţéñàñţš: çļéàñ à ĥéx àñð ţĥéý þàçķ ûþ àñð môvé ţô ţĥé ñéxţ ĥéàþ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.rabbit.name data/fauna.json:species[rabbit].name
+msgid "Rabbit"
+msgstr "[Ŕàbbîţ ~]"
+
+#: data/codex.json:animals.rabbit.hint
+msgid "Where: Growing hexes."
+msgstr "[Ŵĥéŕé: Ĝŕôŵîñĝ ĥéxéš. ~~~~]"
+
+#: data/codex.json:animals.rabbit.desc
+msgid "Rabbits arrive as soon as there is something green to nibble. They hop, freeze, nibble, and zig-zag away if Lumi rushes them."
+msgstr "[Ŕàbbîţš àŕŕîvé àš šôôñ àš ţĥéŕé îš šôméţĥîñĝ ĝŕééñ ţô ñîbbļé. Ţĥéý ĥôþ, ƒŕééžé, ñîbbļé, àñð žîĝ-žàĝ àŵàý îƒ Ļûmî ŕûšĥéš ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.deer.name data/fauna.json:species[deer].name
+msgid "Roe Deer"
+msgstr "[Ŕôé Ðééŕ ~]"
+
+#: data/codex.json:animals.deer.hint
+msgid "Where: The edges of Sustained ground."
+msgstr "[Ŵĥéŕé: Ţĥé éðĝéš ôƒ Šûšţàîñéð ĝŕôûñð. ~~~~~~~~~~]"
+
+#: data/codex.json:animals.deer.desc
+msgid "Shy grazers that keep to the edge of the green, where they can see what's coming. Approach slowly; rush them and they bound away in long, graceful leaps."
+msgstr "[Šĥý ĝŕàžéŕš ţĥàţ ķééþ ţô ţĥé éðĝé ôƒ ţĥé ĝŕééñ, ŵĥéŕé ţĥéý çàñ šéé ŵĥàţ'š çômîñĝ. Àþþŕôàçĥ šļôŵļý; ŕûšĥ ţĥém àñð ţĥéý bôûñð àŵàý îñ ļôñĝ, ĝŕàçéƒûļ ļéàþš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.fox.name data/fauna.json:species[fox].name
+msgid "Red Fox"
+msgstr "[Ŕéð Fôx ~]"
+
+#: data/codex.json:animals.fox.hint
+msgid "Where: Sustained and Thriving hexes."
+msgstr "[Ŵĥéŕé: Šûšţàîñéð àñð Ţĥŕîvîñĝ ĥéxéš. ~~~~~~~~~~]"
+
+#: data/codex.json:animals.fox.desc
+msgid "A fox trots along the hedges, nose down, tail out. It watches Lumi with polite interest and keeps its distance."
+msgstr "[À ƒôx ţŕôţš àļôñĝ ţĥé ĥéðĝéš, ñôšé ðôŵñ, ţàîļ ôûţ. Îţ ŵàţçĥéš Ļûmî ŵîţĥ þôļîţé îñţéŕéšţ àñð ķééþš îţš ðîšţàñçé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.bee.name data/fauna.json:species[bee].name
+msgid "Honeybee"
+msgstr "[Ĥôñéýbéé ~]"
+
+#: data/codex.json:animals.bee.hint
+msgid "Where: Flowers on Sustained hexes."
+msgstr "[Ŵĥéŕé: Fļôŵéŕš ôñ Šûšţàîñéð ĥéxéš. ~~~~~~~~~]"
+
+#: data/codex.json:animals.bee.desc
+msgid "Bees came back with the blooms. Every flower bed that stays watered gets its own little hum."
+msgstr "[Bééš çàmé bàçķ ŵîţĥ ţĥé bļôômš. Évéŕý ƒļôŵéŕ béð ţĥàţ šţàýš ŵàţéŕéð ĝéţš îţš ôŵñ ļîţţļé ĥûm. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.songbird.name data/fauna.json:species[songbird].name
+msgid "Robin"
+msgstr "[Ŕôbîñ ~]"
+
+#: data/codex.json:animals.songbird.hint
+msgid "Where: Thriving hexes, by day."
+msgstr "[Ŵĥéŕé: Ţĥŕîvîñĝ ĥéxéš, bý ðàý. ~~~~~~~]"
+
+#: data/codex.json:animals.songbird.desc
+msgid "When a hex thrives, robins move in and sing. If you hear birdsong, something here is going very right."
+msgstr "[Ŵĥéñ à ĥéx ţĥŕîvéš, ŕôbîñš môvé îñ àñð šîñĝ. Îƒ ýôû ĥéàŕ bîŕðšôñĝ, šôméţĥîñĝ ĥéŕé îš ĝôîñĝ véŕý ŕîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.firefly.name data/fauna.json:species[firefly].name
+msgid "Firefly"
+msgstr "[Fîŕéƒļý ~]"
+
+#: data/codex.json:animals.firefly.hint
+msgid "Where: Thriving hexes, at night."
+msgstr "[Ŵĥéŕé: Ţĥŕîvîñĝ ĥéxéš, àţ ñîĝĥţ. ~~~~~~~~]"
+
+#: data/codex.json:animals.firefly.desc
+msgid "Tiny green lanterns over the grass after dark. They only come where the ground is fully alive."
+msgstr "[Ţîñý ĝŕééñ ļàñţéŕñš ôvéŕ ţĥé ĝŕàšš àƒţéŕ ðàŕķ. Ţĥéý ôñļý çômé ŵĥéŕé ţĥé ĝŕôûñð îš ƒûļļý àļîvé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.fish.name data/fauna.json:species[fish].name
+msgid "Lake Fish"
+msgstr "[Ļàķé Fîšĥ ~]"
+
+#: data/codex.json:animals.fish.hint
+msgid "Where: Clean lakes."
+msgstr "[Ŵĥéŕé: Çļéàñ ļàķéš. ~~~~]"
+
+#: data/codex.json:animals.fish.desc
+msgid "Once the water clears you can see them: small silver schools turning together over the sand. Come too close and they scatter."
+msgstr "[Ôñçé ţĥé ŵàţéŕ çļéàŕš ýôû çàñ šéé ţĥém: šmàļļ šîļvéŕ šçĥôôļš ţûŕñîñĝ ţôĝéţĥéŕ ôvéŕ ţĥé šàñð. Çômé ţôô çļôšé àñð ţĥéý šçàţţéŕ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.duck.name data/fauna.json:species[duck].name
+msgid "Mallard"
+msgstr "[Màļļàŕð ~]"
+
+#: data/codex.json:animals.duck.hint
+msgid "Where: Clean lakes beside green shores."
+msgstr "[Ŵĥéŕé: Çļéàñ ļàķéš béšîðé ĝŕééñ šĥôŕéš. ~~~~~~~~~~~]"
+
+#: data/codex.json:animals.duck.desc
+msgid "Ducks paddle, dabble with their tails in the air and complain loudly about everything. A clean lake with a green shore is all they ask."
+msgstr "[Ðûçķš þàððļé, ðàbbļé ŵîţĥ ţĥéîŕ ţàîļš îñ ţĥé àîŕ àñð çômþļàîñ ļôûðļý àbôûţ évéŕýţĥîñĝ. À çļéàñ ļàķé ŵîţĥ à ĝŕééñ šĥôŕé îš àļļ ţĥéý àšķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.frog.name data/fauna.json:species[frog].name
+msgid "Green Frog"
+msgstr "[Ĝŕééñ Fŕôĝ ~]"
+
+#: data/codex.json:animals.frog.hint
+msgid "Where: Lake shores once they're planted."
+msgstr "[Ŵĥéŕé: Ļàķé šĥôŕéš ôñçé ţĥéý'ŕé þļàñţéð. ~~~~~~~~~~~]"
+
+#: data/codex.json:animals.frog.desc
+msgid "Frogs sit at the water's edge and sing in the evening. Get too close and plop: into the water they go."
+msgstr "[Fŕôĝš šîţ àţ ţĥé ŵàţéŕ'š éðĝé àñð šîñĝ îñ ţĥé évéñîñĝ. Ĝéţ ţôô çļôšé àñð þļôþ: îñţô ţĥé ŵàţéŕ ţĥéý ĝô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.lizard.name data/fauna.json:species[lizard].name
+msgid "Sand Lizard"
+msgstr "[Šàñð Ļîžàŕð ~]"
+
+#: data/codex.json:animals.lizard.hint
+msgid "Where: Clean ground in the Dust Flats."
+msgstr "[Ŵĥéŕé: Çļéàñ ĝŕôûñð îñ ţĥé Ðûšţ Fļàţš. ~~~~~~~~~~]"
+
+#: data/codex.json:animals.lizard.desc
+msgid "Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
+msgstr "[Ļîžàŕðš bàšķ ôñ šŵéþţ ĝŕôûñð béţŵééñ ţĥé šôļàŕ àŕŕàýš àñð vàñîšĥ îñ à bļîñķ ŵĥéñ à šĥàðôŵ ƒàļļš ôñ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.fennec.name data/fauna.json:species[fennec].name
+msgid "Fennec Fox"
+msgstr "[Féññéç Fôx ~]"
+
+#: data/codex.json:animals.fennec.hint
+msgid "Where: Planted ground in the Dust Flats."
+msgstr "[Ŵĥéŕé: Þļàñţéð ĝŕôûñð îñ ţĥé Ðûšţ Fļàţš. ~~~~~~~~~~~]"
+
+#: data/codex.json:animals.fennec.desc
+msgid "A tiny desert fox with enormous ears. It hears Lumi's hover fans long before it sees him."
+msgstr "[À ţîñý ðéšéŕţ ƒôx ŵîţĥ éñôŕmôûš éàŕš. Îţ ĥéàŕš Ļûmî'š ĥôvéŕ ƒàñš ļôñĝ béƒôŕé îţ šééš ĥîm. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.seal.name data/fauna.json:species[seal].name
+msgid "Harbour Seal"
+msgstr "[Ĥàŕbôûŕ Šéàļ ~]"
+
+#: data/codex.json:animals.seal.hint
+msgid "Where: The Frozen Port shoreline."
+msgstr "[Ŵĥéŕé: Ţĥé Fŕôžéñ Þôŕţ šĥôŕéļîñé. ~~~~~~~~~]"
+
+#: data/codex.json:animals.seal.desc
+msgid "Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
+msgstr "[Šéàļš ĥàûļ ôûţ ôñ ţĥé qûàý ôñçé îţ'š çļéàñ, ļôûñĝé îñ ĥéàþš, àñð ƒļôþ bàçķ ţô ţĥé ŵàţéŕ îƒ ýôû çômé ţôô çļôšé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.gull.name data/fauna.json:species[gull].name
+msgid "Herring Gull"
+msgstr "[Ĥéŕŕîñĝ Ĝûļļ ~]"
+
+#: data/codex.json:animals.gull.hint
+msgid "Where: Coasts and harbours."
+msgstr "[Ŵĥéŕé: Çôàšţš àñð ĥàŕbôûŕš. ~~~~~~]"
+
+#: data/codex.json:animals.gull.desc
+msgid "Loud, white and opportunistic. Gulls wheel over the harbour and land wherever there's a clean bit of quay."
+msgstr "[Ļôûð, ŵĥîţé àñð ôþþôŕţûñîšţîç. Ĝûļļš ŵĥééļ ôvéŕ ţĥé ĥàŕbôûŕ àñð ļàñð ŵĥéŕévéŕ ţĥéŕé'š à çļéàñ bîţ ôƒ qûàý. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.arctic_fox.name data/fauna.json:species[arctic_fox].name
+msgid "Arctic Fox"
+msgstr "[Àŕçţîç Fôx ~]"
+
+#: data/codex.json:animals.arctic_fox.hint
+msgid "Where: Planted ground at the Frozen Port."
+msgstr "[Ŵĥéŕé: Þļàñţéð ĝŕôûñð àţ ţĥé Fŕôžéñ Þôŕţ. ~~~~~~~~~~~]"
+
+#: data/codex.json:animals.arctic_fox.desc
+msgid "White as the snow it hunts on. It shows up when the greenhouses do, curious about the warm air."
+msgstr "[Ŵĥîţé àš ţĥé šñôŵ îţ ĥûñţš ôñ. Îţ šĥôŵš ûþ ŵĥéñ ţĥé ĝŕééñĥôûšéš ðô, çûŕîôûš àbôûţ ţĥé ŵàŕm àîŕ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.heron.name data/fauna.json:species[heron].name
+msgid "Grey Heron"
+msgstr "[Ĝŕéý Ĥéŕôñ ~]"
+
+#: data/codex.json:animals.heron.hint
+msgid "Where: Shallows in the Sunken City and wild lakes."
+msgstr "[Ŵĥéŕé: Šĥàļļôŵš îñ ţĥé Šûñķéñ Çîţý àñð ŵîļð ļàķéš. ~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.heron.desc
+msgid "Herons stand perfectly still at the water's edge, then strike. They lift off slowly on huge grey wings when disturbed."
+msgstr "[Ĥéŕôñš šţàñð þéŕƒéçţļý šţîļļ àţ ţĥé ŵàţéŕ'š éðĝé, ţĥéñ šţŕîķé. Ţĥéý ļîƒţ ôƒƒ šļôŵļý ôñ ĥûĝé ĝŕéý ŵîñĝš ŵĥéñ ðîšţûŕbéð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.turtle.name data/fauna.json:species[turtle].name
+msgid "Pond Turtle"
+msgstr "[Þôñð Ţûŕţļé ~]"
+
+#: data/codex.json:animals.turtle.hint
+msgid "Where: Clean water in the Sunken City."
+msgstr "[Ŵĥéŕé: Çļéàñ ŵàţéŕ îñ ţĥé Šûñķéñ Çîţý. ~~~~~~~~~~]"
+
+#: data/codex.json:animals.turtle.desc
+msgid "Turtles cruise the drowned streets with their heads up, as if they've always lived here. Maybe they have."
+msgstr "[Ţûŕţļéš çŕûîšé ţĥé ðŕôŵñéð šţŕééţš ŵîţĥ ţĥéîŕ ĥéàðš ûþ, àš îƒ ţĥéý'vé àļŵàýš ļîvéð ĥéŕé. Màýbé ţĥéý ĥàvé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/codex.json:animals.crane.name data/fauna.json:species[crane].name
+msgid "Cradle Crane"
+msgstr "[Çŕàðļé Çŕàñé ~]"
+
+#: data/codex.json:animals.crane.hint
+msgid "Where: The skies over Cradle Returns."
+msgstr "[Ŵĥéŕé: Ţĥé šķîéš ôvéŕ Çŕàðļé Ŕéţûŕñš. ~~~~~~~~~~]"
+
+#: data/codex.json:animals.crane.desc
+msgid "White cranes circle high over the landing city on slow wingbeats. The ark's seed vault carried their eggs; this is the first flock to fly free."
+msgstr "[Ŵĥîţé çŕàñéš çîŕçļé ĥîĝĥ ôvéŕ ţĥé ļàñðîñĝ çîţý ôñ šļôŵ ŵîñĝbéàţš. Ţĥé àŕķ'š šééð vàûļţ çàŕŕîéð ţĥéîŕ éĝĝš; ţĥîš îš ţĥé ƒîŕšţ ƒļôçķ ţô ƒļý ƒŕéé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/eggs.json:eggs[duck].name
 msgid "Duck on Duty"
@@ -6764,6 +7092,174 @@ msgstr "[Þĥôţô: Véļvéţ Ĥàŕé ~~~]"
 msgid "Soft as a whisper, quick as a rumour. The photo is a little blurry. Worth it."
 msgstr "[Šôƒţ àš à ŵĥîšþéŕ, qûîçķ àš à ŕûmôûŕ. Ţĥé þĥôţô îš à ļîţţļé bļûŕŕý. Ŵôŕţĥ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
+#: data/events.json:trinkets[pic_cat].name
+msgid "Photo: Stray Cat"
+msgstr "[Þĥôţô: Šţŕàý Çàţ ~~~]"
+
+#: data/events.json:trinkets[pic_cat].desc
+msgid "A photo from photo mode. Old Town's cats never left."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ôļð Ţôŵñ'š çàţš ñévéŕ ļéƒţ. ~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_pigeon].name
+msgid "Photo: Pigeon"
+msgstr "[Þĥôţô: Þîĝéôñ ~~]"
+
+#: data/events.json:trinkets[pic_pigeon].desc
+msgid "A photo from photo mode. Pigeons will live anywhere people once dropped crumbs."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Þîĝéôñš ŵîļļ ļîvé àñýŵĥéŕé þéôþļé ôñçé ðŕôþþéð çŕûmbš. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_sparrow].name
+msgid "Photo: Sparrow"
+msgstr "[Þĥôţô: Šþàŕŕôŵ ~~]"
+
+#: data/events.json:trinkets[pic_sparrow].desc
+msgid "A photo from photo mode. Small, brown and bossy."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Šmàļļ, bŕôŵñ àñð bôššý. ~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_rat].name
+msgid "Photo: Rat"
+msgstr "[Þĥôţô: Ŕàţ ~]"
+
+#: data/events.json:trinkets[pic_rat].desc
+msgid "A photo from photo mode. Rats live in the gaps between the piles."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ŕàţš ļîvé îñ ţĥé ĝàþš béţŵééñ ţĥé þîļéš. ~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_rabbit].name
+msgid "Photo: Rabbit"
+msgstr "[Þĥôţô: Ŕàbbîţ ~~]"
+
+#: data/events.json:trinkets[pic_rabbit].desc
+msgid "A photo from photo mode. Rabbits arrive as soon as there is something green to nibble."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ŕàbbîţš àŕŕîvé àš šôôñ àš ţĥéŕé îš šôméţĥîñĝ ĝŕééñ ţô ñîbbļé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_deer].name
+msgid "Photo: Roe Deer"
+msgstr "[Þĥôţô: Ŕôé Ðééŕ ~~]"
+
+#: data/events.json:trinkets[pic_deer].desc
+msgid "A photo from photo mode. Shy grazers that keep to the edge of the green, where they can see what's coming."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Šĥý ĝŕàžéŕš ţĥàţ ķééþ ţô ţĥé éðĝé ôƒ ţĥé ĝŕééñ, ŵĥéŕé ţĥéý çàñ šéé ŵĥàţ'š çômîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_fox].name
+msgid "Photo: Red Fox"
+msgstr "[Þĥôţô: Ŕéð Fôx ~~]"
+
+#: data/events.json:trinkets[pic_fox].desc
+msgid "A photo from photo mode. A fox trots along the hedges, nose down, tail out."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. À ƒôx ţŕôţš àļôñĝ ţĥé ĥéðĝéš, ñôšé ðôŵñ, ţàîļ ôûţ. ~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_bee].name
+msgid "Photo: Honeybee"
+msgstr "[Þĥôţô: Ĥôñéýbéé ~~]"
+
+#: data/events.json:trinkets[pic_bee].desc
+msgid "A photo from photo mode. Bees came back with the blooms."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Bééš çàmé bàçķ ŵîţĥ ţĥé bļôômš. ~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_songbird].name
+msgid "Photo: Robin"
+msgstr "[Þĥôţô: Ŕôbîñ ~]"
+
+#: data/events.json:trinkets[pic_songbird].desc
+msgid "A photo from photo mode. When a hex thrives, robins move in and sing."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ŵĥéñ à ĥéx ţĥŕîvéš, ŕôbîñš môvé îñ àñð šîñĝ. ~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_firefly].name
+msgid "Photo: Firefly"
+msgstr "[Þĥôţô: Fîŕéƒļý ~~]"
+
+#: data/events.json:trinkets[pic_firefly].desc
+msgid "A photo from photo mode. Tiny green lanterns over the grass after dark."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ţîñý ĝŕééñ ļàñţéŕñš ôvéŕ ţĥé ĝŕàšš àƒţéŕ ðàŕķ. ~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_fish].name
+msgid "Photo: Lake Fish"
+msgstr "[Þĥôţô: Ļàķé Fîšĥ ~~~]"
+
+#: data/events.json:trinkets[pic_fish].desc
+msgid "A photo from photo mode. Once the water clears you can see them: small silver schools turning together over the sand."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ôñçé ţĥé ŵàţéŕ çļéàŕš ýôû çàñ šéé ţĥém: šmàļļ šîļvéŕ šçĥôôļš ţûŕñîñĝ ţôĝéţĥéŕ ôvéŕ ţĥé šàñð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_duck].name
+msgid "Photo: Mallard"
+msgstr "[Þĥôţô: Màļļàŕð ~~]"
+
+#: data/events.json:trinkets[pic_duck].desc
+msgid "A photo from photo mode. Ducks paddle, dabble with their tails in the air and complain loudly about everything."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ðûçķš þàððļé, ðàbbļé ŵîţĥ ţĥéîŕ ţàîļš îñ ţĥé àîŕ àñð çômþļàîñ ļôûðļý àbôûţ évéŕýţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_frog].name
+msgid "Photo: Green Frog"
+msgstr "[Þĥôţô: Ĝŕééñ Fŕôĝ ~~~]"
+
+#: data/events.json:trinkets[pic_frog].desc
+msgid "A photo from photo mode. Frogs sit at the water's edge and sing in the evening."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Fŕôĝš šîţ àţ ţĥé ŵàţéŕ'š éðĝé àñð šîñĝ îñ ţĥé évéñîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_lizard].name
+msgid "Photo: Sand Lizard"
+msgstr "[Þĥôţô: Šàñð Ļîžàŕð ~~~]"
+
+#: data/events.json:trinkets[pic_lizard].desc
+msgid "A photo from photo mode. Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ļîžàŕðš bàšķ ôñ šŵéþţ ĝŕôûñð béţŵééñ ţĥé šôļàŕ àŕŕàýš àñð vàñîšĥ îñ à bļîñķ ŵĥéñ à šĥàðôŵ ƒàļļš ôñ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_fennec].name
+msgid "Photo: Fennec Fox"
+msgstr "[Þĥôţô: Féññéç Fôx ~~~]"
+
+#: data/events.json:trinkets[pic_fennec].desc
+msgid "A photo from photo mode. A tiny desert fox with enormous ears."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. À ţîñý ðéšéŕţ ƒôx ŵîţĥ éñôŕmôûš éàŕš. ~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_seal].name
+msgid "Photo: Harbour Seal"
+msgstr "[Þĥôţô: Ĥàŕbôûŕ Šéàļ ~~~~]"
+
+#: data/events.json:trinkets[pic_seal].desc
+msgid "A photo from photo mode. Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Šéàļš ĥàûļ ôûţ ôñ ţĥé qûàý ôñçé îţ'š çļéàñ, ļôûñĝé îñ ĥéàþš, àñð ƒļôþ bàçķ ţô ţĥé ŵàţéŕ îƒ ýôû çômé ţôô çļôšé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_gull].name
+msgid "Photo: Herring Gull"
+msgstr "[Þĥôţô: Ĥéŕŕîñĝ Ĝûļļ ~~~~]"
+
+#: data/events.json:trinkets[pic_gull].desc
+msgid "A photo from photo mode. Loud, white and opportunistic."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ļôûð, ŵĥîţé àñð ôþþôŕţûñîšţîç. ~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_arctic_fox].name
+msgid "Photo: Arctic Fox"
+msgstr "[Þĥôţô: Àŕçţîç Fôx ~~~]"
+
+#: data/events.json:trinkets[pic_arctic_fox].desc
+msgid "A photo from photo mode. White as the snow it hunts on."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ŵĥîţé àš ţĥé šñôŵ îţ ĥûñţš ôñ. ~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_heron].name
+msgid "Photo: Grey Heron"
+msgstr "[Þĥôţô: Ĝŕéý Ĥéŕôñ ~~~]"
+
+#: data/events.json:trinkets[pic_heron].desc
+msgid "A photo from photo mode. Herons stand perfectly still at the water's edge, then strike."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ĥéŕôñš šţàñð þéŕƒéçţļý šţîļļ àţ ţĥé ŵàţéŕ'š éðĝé, ţĥéñ šţŕîķé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_turtle].name
+msgid "Photo: Pond Turtle"
+msgstr "[Þĥôţô: Þôñð Ţûŕţļé ~~~]"
+
+#: data/events.json:trinkets[pic_turtle].desc
+msgid "A photo from photo mode. Turtles cruise the drowned streets with their heads up, as if they've always lived here."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ţûŕţļéš çŕûîšé ţĥé ðŕôŵñéð šţŕééţš ŵîţĥ ţĥéîŕ ĥéàðš ûþ, àš îƒ ţĥéý'vé àļŵàýš ļîvéð ĥéŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:trinkets[pic_crane].name
+msgid "Photo: Cradle Crane"
+msgstr "[Þĥôţô: Çŕàðļé Çŕàñé ~~~~]"
+
+#: data/events.json:trinkets[pic_crane].desc
+msgid "A photo from photo mode. White cranes circle high over the landing city on slow wingbeats."
+msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ŵĥîţé çŕàñéš çîŕçļé ĥîĝĥ ôvéŕ ţĥé ļàñðîñĝ çîţý ôñ šļôŵ ŵîñĝbéàţš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
 #: data/events.json:trinkets[maker_badge].name
 msgid "Maker's Badge"
 msgstr "[Màķéŕ'š Bàðĝé ~~]"
@@ -7120,6 +7616,10 @@ msgstr "[Éàŕñ 3,000 çûbéš ~~~]"
 msgid "Clean 7 hexes"
 msgstr "[Çļéàñ 7 ĥéxéš ~~]"
 
+#: data/goals.json:goals[pet_cat].text
+msgid "Pet a stray cat (stop near one, then E)"
+msgstr "[Þéţ à šţŕàý çàţ (šţôþ ñéàŕ ôñé, ţĥéñ É) ~~~~~~~~~~~]"
+
 #: data/goals.json:goals[research_4].text
 msgid "Finish 4 research projects"
 msgstr "[Fîñîšĥ 4 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
@@ -7247,6 +7747,10 @@ msgstr "[Ĝéţ à ĥéx ţô Šûšţàîñéð ~~~~~]"
 #: data/goals.json:goals[hexlv_4x3].text
 msgid "Get 3 hexes to Sustained"
 msgstr "[Ĝéţ 3 ĥéxéš ţô Šûšţàîñéð ~~~~~]"
+
+#: data/goals.json:goals[spot_deer].text
+msgid "Spot a deer at the edge of the green"
+msgstr "[Šþôţ à ðééŕ àţ ţĥé éðĝé ôƒ ţĥé ĝŕééñ ~~~~~~~~~~]"
 
 #: data/goals.json:goals[hex_20].text
 msgid "Clean 20 hexes"
