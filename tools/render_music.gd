@@ -5,6 +5,7 @@ extends SceneTree
 const Synth := preload("res://audio/music_synth.gd")
 const Director := preload("res://audio/music_director.gd")
 const Mixer := preload("res://audio/music_offline_mixer.gd")
+const PlanetSynth := preload("res://audio/planet_synth.gd")  # [sound]
 const RATE: int = 22050
 const BLOCK: int = 512
 
@@ -16,6 +17,17 @@ var scenarios: Dictionary = {
 	"cinematic": [[0.0, "mood", "cinematic"], [40.0, "sting", "robot_built"]],
 	"menu": [[0.0, "mood", "menu"], [12.0, "sting", "first_sprout"]],
 	"transitions": [[0.0, "mood", "explore"], [0.0, "int", 0.7], [15.0, "mood", "night"], [30.0, "mood", "cinematic"], [45.0, "mood", "base"], [50.0, "sting", "hex_clean"]],
+	# [sound] Planet themes, ruined then restored, and the ending.
+	"homecoming": [[0.0, "mood", "homecoming"], [0.5, "sting", "motif"]],
+	"ochre": [[0.0, "theme", "ochre"], [0.0, "int", 0.5], [20.0, "sting", "upgrade"]],
+	"ochre_restored": [[0.0, "theme", "ochre"], [0.0, "resto", 1.0], [0.0, "int", 0.85]],
+	"tidewell": [[0.0, "theme", "tidewell"], [0.0, "int", 0.5]],
+	"tidewell_restored": [[0.0, "theme", "tidewell"], [0.0, "resto", 1.0], [0.0, "int", 0.85]],
+	"rime": [[0.0, "theme", "rime"], [0.0, "int", 0.5], [30.0, "mood", "night"]],
+	"rime_restored": [[0.0, "theme", "rime"], [0.0, "resto", 1.0], [0.0, "int", 0.85]],
+	"anvil": [[0.0, "theme", "anvil"], [0.0, "int", 0.5]],
+	"anvil_restored": [[0.0, "theme", "anvil"], [0.0, "resto", 1.0], [0.0, "int", 0.85], [25.0, "mood", "base"]],
+	"anvil_bloom": [[0.0, "theme", "anvil"], [0.0, "ramp_resto", [0.0, 1.0]], [0.0, "int", 0.6]],
 }
 
 
@@ -25,15 +37,26 @@ func _init() -> void:
 		if a.begins_with("--seconds="):
 			seconds = float(a.get_slice("=", 1))
 	var t0: int = Time.get_ticks_msec()
+	var only: String = ""
+	for a: String in OS.get_cmdline_user_args():
+		if a.begins_with("--only="):
+			only = a.get_slice("=", 1)
 	var samples: Dictionary = Synth.build_all()
 	print("synth build: %d ms" % (Time.get_ticks_msec() - t0))
+	for th: String in PlanetSynth.NEEDS:  # [sound]
+		var t2: int = Time.get_ticks_msec()
+		samples.merge(PlanetSynth.build(th, samples))
+		print("planet synth %s: %d ms" % [th, Time.get_ticks_msec() - t2])
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://screenshots"))
 	for sname: String in scenarios:
+		if only != "" and not sname.begins_with(only):
+			continue
 		var t1: int = Time.get_ticks_msec()
 		var mixer = Mixer.new(samples)
 		var d = Director.new(samples, mixer, 99)
 		var events: Array = (scenarios[sname] as Array).duplicate()
 		var ramp: Array = []
+		var ramp_resto: Array = []
 		var total: int = int(seconds * RATE)
 		var buf := PackedFloat32Array()
 		var pos: int = 0
@@ -47,6 +70,11 @@ func _init() -> void:
 					"int": d.set_intensity(e[2])
 					"ramp": ramp = e[2]
 					"sting": d.sting(e[2])
+					"theme": d.set_theme(e[2])
+					"resto": d.set_restoration(e[2])
+					"ramp_resto": ramp_resto = e[2]
+			if not ramp_resto.is_empty():
+				d.set_restoration(lerpf(ramp_resto[0], ramp_resto[1], t / seconds))
 			if not ramp.is_empty():
 				d.set_intensity(lerpf(ramp[0], ramp[1], t / seconds))
 			d.update(float(BLOCK) / RATE)

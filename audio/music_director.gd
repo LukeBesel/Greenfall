@@ -10,6 +10,8 @@ extends RefCounted
 ## `set_gain(id, gain)` and `stop(id)` on `backend`. At runtime that is audio/music_voices.gd
 ## (a pool of AudioStreamPlayers); tools/render_music.gd uses audio/music_offline_mixer.gd.
 
+const Themes := preload("res://audio/planet_themes.gd")  # [sound]
+
 const KEY_ROOT: int = 50  # D3: the whole score lives in D major so moods can crossfade.
 const MAJOR: Array[int] = [0, 2, 4, 5, 7, 9, 11]
 const STEPS: int = 16  # eighth notes per chord (2 bars of 4/4)
@@ -23,9 +25,21 @@ const G_SHAKER: float = 0.03
 const G_KICK: float = 0.11
 const G_AIR: float = 0.05
 const G_STING: float = 0.12
+const G_TEX: float = 0.075  # [sound] planet texture layer (ostinato / arpeggio / twinkle / pulse)
+const G_BLOOM: float = 0.022  # [sound] warm low pad that fills in as a planet is restored
 const FADE_TIME: float = 4.0  # seconds for a layer to fade fully in or out
 
-const LAYERS: Array[String] = ["pad", "air", "bass", "melody", "bell", "shaker", "kick"]
+const LAYERS: Array[String] = ["pad", "air", "bass", "melody", "bell", "shaker", "kick", "texture"]
+## [sound] Moods a planet theme (audio/planet_themes.gd) re-voices; the rest are shared.
+const THEMED_MOODS: Array[String] = ["explore", "base", "night"]
+## [sound] The Greenfall motif (D major), first heard as the intro's opening sting ("motif") and
+## quoted in full by the "homecoming" mood: one step -> MIDI note dictionary per chord.
+const MOTIF: Array = [
+	{0: 69, 2: 74, 6: 73, 8: 71, 10: 69, 14: 66},
+	{0: 66, 2: 69, 4: 71, 8: 74, 12: 73},
+	{0: 74, 2: 79, 6: 78, 8: 76, 10: 74, 14: 71},
+	{0: 74, 4: 76, 8: 73, 12: 69},
+]
 
 # Progressions are [root offset from the key, chord intervals]. All moods share the key.
 const MOODS: Dictionary = {
@@ -64,6 +78,15 @@ const MOODS: Dictionary = {
 		"voice": "kalimba", "mel_lo": 62, "mel_hi": 78, "density": 0.45, "bright": 0.5,
 		"pad_attack": 3.0, "lpf": 5000.0, "intensity": 0.45, "tacet": 0.25, "swell": false,
 	},
+	# [sound] The Homecoming ending: I add9 - vi7 - IVmaj7 - V7 (4-3 suspension), slow and full,
+	# the melody is the Greenfall motif (MOTIF) instead of the generative line.
+	"homecoming": {
+		"bpm": 58.0,
+		"prog": [[0, [0, 4, 7, 14]], [9, [0, 3, 7, 10]], [5, [0, 4, 7, 11]], [7, [0, 4, 7, 10]]],
+		"mix": {"pad": 1.5, "air": 0.3, "bass": 1.1, "melody": 1.05, "bell": 1.2, "shaker": 0.0, "kick": 0.0},
+		"voice": "piano", "mel_lo": 62, "mel_hi": 84, "density": 1.0, "bright": 0.9,
+		"pad_attack": 4.0, "lpf": 8000.0, "intensity": 0.8, "tacet": 0.0, "swell": true, "motif": true,
+	},
 }
 
 # 16-step rhythms ("x" = onset). Calls open a phrase; answers close it with a held note.
@@ -83,6 +106,15 @@ var enabled: bool = true
 var intensity: float = 0.35
 var mood: String = "explore"  # mix targets follow this immediately
 var lpf_cutoff: float = 6500.0  # smoothed; the host applies it to the Music bus
+var theme: String = "verdance"  # [sound] planet theme (audio/planet_themes.gd)
+var restoration: float = 0.0  # [sound] 0 ruined .. 1 restored (current planet)
+
+var _active_theme: String = "verdance"  # [sound] switches with _active, on a bar line
+var _resto_hi: bool = false  # [sound] restored progression / mode (hysteresis around 0.5)
+var _target: Dictionary = {}  # [sound] resolve(mood, theme, ...): live mix targets
+var _cur: Dictionary = {}  # [sound] resolve(_active, _active_theme, ...): harmony, per chord cycle
+var _dirty: bool = true
+var _cycle: int = -1
 
 var _active: String = "explore"  # harmony / tempo follow this (switches on a bar line)
 var _eff: float = 0.35
@@ -113,6 +145,69 @@ func _init(p_samples: Dictionary, p_backend: Object, seed_value: int = 4242) -> 
 	rng.seed = seed_value
 	for l: String in LAYERS:
 		_gains[l] = 0.0
+	_cur = resolve(_active, _active_theme, restoration, _resto_hi)
+	_target = _cur
+
+
+## [sound] The effective parameters of `p_mood` voiced for planet `p_theme` at restoration `resto`
+## (numbers lerp ruined -> restored; mode / progression / voice follow `resto_hi`). Verdance, and
+## the moods every planet shares, return the plain MOODS entry plus the default instrument keys.
+static func resolve(p_mood: String, p_theme: String, resto: float, resto_hi: bool) -> Dictionary:
+	var m: Dictionary = (MOODS.get(p_mood, MOODS["explore"]) as Dictionary).duplicate(true)
+	m["key"] = KEY_ROOT
+	m["mode"] = MAJOR
+	m["pad"] = ["pad_warm", "pad_bright"]
+	m["bass"] = "bass"
+	m["bell"] = "bell"
+	m["kick"] = "kick"
+	m["texture"] = ""
+	m["tex_sample"] = ""
+	m["tex"] = 0.0
+	m["bloom"] = 0.0
+	if not m.has("motif"):
+		m["motif"] = false
+	(m["mix"] as Dictionary)["texture"] = 0.0
+	if not Themes.THEMES.has(p_theme) or not THEMED_MOODS.has(p_mood):
+		return m
+	var th: Dictionary = Themes.THEMES[p_theme]
+	var a: Dictionary = th["ruined"]
+	var b: Dictionary = th["restored"]
+	var r: float = clampf(resto, 0.0, 1.0)
+	for k: String in ["key", "pad", "bass", "bell", "kick", "texture", "tex_sample", "pad_attack"]:
+		m[k] = th[k]
+	var pick: Dictionary = b if resto_hi else a
+	for k: String in ["mode", "voice", "prog"]:
+		m[k] = pick[k]
+	for k: String in ["bpm", "density", "bright", "lpf", "tex", "bloom", "tacet"]:
+		m[k] = lerpf(float(a[k]), float(b[k]), r)
+	m["mel_lo"] = int(roundf(lerpf(float(a["mel_lo"]), float(b["mel_lo"]), r)))
+	m["mel_hi"] = maxi(int(m["mel_lo"]) + 9, int(roundf(lerpf(float(a["mel_hi"]), float(b["mel_hi"]), r))))
+	var mix: Dictionary = {}
+	for l: String in a["mix"]:
+		mix[l] = lerpf(float(a["mix"][l]), float(b["mix"][l]), r)
+	mix["texture"] = m["tex"]
+	m["mix"] = mix
+	m["intensity"] = -1.0
+	m["swell"] = false
+	m["motif"] = false
+	match p_mood:
+		"night":
+			m["bpm"] = float(m["bpm"]) * 0.85
+			m["density"] = float(m["density"]) * 0.6
+			m["bright"] = float(m["bright"]) * 0.6
+			m["lpf"] = float(m["lpf"]) * 0.6
+			m["tacet"] = minf(0.8, float(m["tacet"]) + 0.2)
+			m["pad_attack"] = float(m["pad_attack"]) + 1.0
+			mix["shaker"] = 0.0
+			mix["kick"] = 0.0
+			mix["air"] = float(mix["air"]) * 1.2
+			mix["bell"] = float(mix["bell"]) * 1.2
+			mix["texture"] = float(mix["texture"]) * 0.6
+		"base":
+			m["bpm"] = float(m["bpm"]) * 1.04
+			mix["air"] = float(mix["air"]) * 0.4
+			mix["melody"] = float(mix["melody"]) * 1.1
+	return m
 
 
 # --- Public -------------------------------------------------------------------
@@ -126,6 +221,34 @@ func set_mood(m: String) -> void:
 		push_warning("Music: unknown mood '%s'" % m)
 		return
 	mood = m
+	_dirty = true
+
+
+## [sound] Planet theme id ("verdance", "ochre", "tidewell", "rime", "anvil"). Unknown ids are
+## ignored (returns false). Harmony and tempo switch on the next bar line, like moods.
+func set_theme(id: String) -> bool:
+	if not Themes.has(id):
+		return false
+	if id != theme:
+		theme = id
+		_dirty = true
+	return true
+
+
+## [sound] 0 ruined .. 1 restored. Numbers glide; mode and progression flip past 0.55 / back
+## under 0.45, at the start of the next chord cycle.
+func set_restoration(x: float) -> void:
+	if is_nan(x):
+		return
+	x = clampf(x, 0.0, 1.0)
+	if absf(x - restoration) < 0.002:
+		return
+	restoration = x
+	if x >= 0.55:
+		_resto_hi = true
+	elif x <= 0.45:
+		_resto_hi = false
+	_dirty = true
 
 
 func sting(name: String) -> void:
@@ -133,16 +256,26 @@ func sting(name: String) -> void:
 	if tones.is_empty():
 		tones = [62, 66, 69, 74, 78, 81]
 	var t: float = _clock + 0.01
+	# [sound] On a planet, stingers speak in its lead / bell voices.
+	var lead: String = str(_cur["voice"]) if _active_theme != "verdance" else "piano"
+	var bell_s: String = str(_cur["bell"])
 	match name:
+		"motif":  # [sound] the Greenfall motif's opening phrase (the intro; homecoming quotes it)
+			var ph: Dictionary = MOTIF[0]
+			for s: int in ph:
+				_sched(t + s * 0.17, "piano", int(ph[s]), 0.75)
+			_sched(t, "bell", 81, 0.45)
+			_sched(t + 14 * 0.17, "bell", 78, 0.5)
+			_sched(t + 14 * 0.17, "bass", 38, 0.5)
 		"upgrade":
 			var seq: Array[int] = _pick_from(tones, 66, 4)
 			for k: int in seq.size():
-				_sched(t + k * 0.09, "piano", seq[k], 0.85 - 0.05 * k)
-			_sched(t + seq.size() * 0.09, "bell", seq[seq.size() - 1] + 12 if seq[seq.size() - 1] < 80 else seq[seq.size() - 1], 0.6)
+				_sched(t + k * 0.09, lead, seq[k], 0.85 - 0.05 * k)
+			_sched(t + seq.size() * 0.09, bell_s, seq[seq.size() - 1] + 12 if seq[seq.size() - 1] < 80 else seq[seq.size() - 1], 0.6)
 		"hex_clean":
 			var seq: Array[int] = _pick_from(tones, 72, 2)
-			_sched(t, "bell", seq[0], 0.55)
-			_sched(t + 0.14, "bell", seq[1], 0.6)
+			_sched(t, bell_s, seq[0], 0.55)
+			_sched(t + 0.14, bell_s, seq[1], 0.6)
 			_sched(t + 0.14, "kalimba", seq[1] - 12, 0.4)
 		"first_sprout":
 			var scale: Array[int] = _scale_in(62, 84)
@@ -150,21 +283,21 @@ func sting(name: String) -> void:
 			for k: int in 5:
 				var n: int = scale[mini(start + [0, 1, 2, 4, 5][k], scale.size() - 1)]
 				_sched(t + k * 0.15, "kalimba", n, 0.75)
-			_sched(t + 0.8, "bell", _nearest(tones, 81), 0.55)
-			_sched(t + 0.8, "piano", _nearest(tones, 69), 0.45)
+			_sched(t + 0.8, bell_s, _nearest(tones, 81), 0.55)
+			_sched(t + 0.8, lead, _nearest(tones, 69), 0.45)
 		"robot_built":
 			_sched(t, "bass", _bass_midi, 0.8)
 			var seq: Array[int] = _pick_from(tones, 62, 5)
 			for k: int in seq.size():
-				_sched(t + k * 0.065, "piano", seq[k], 0.85)
-			_sched(t + 0.4, "bell", _nearest(tones, 79), 0.6)
-			_sched(t + 0.55, "bell", _nearest(tones, 86), 0.5)
+				_sched(t + k * 0.065, lead, seq[k], 0.85)
+			_sched(t + 0.4, bell_s, _nearest(tones, 79), 0.6)
+			_sched(t + 0.55, bell_s, _nearest(tones, 86), 0.5)
 		"level_up":
 			var seq: Array[int] = _pick_from(tones, 62, 5)
 			for k: int in seq.size():
 				_sched(t + k * 0.07, "kalimba", seq[k], 0.8)
-			_sched(t + 0.35, "piano", seq[seq.size() - 1], 0.7)
-			_sched(t + 0.35, "bell", seq[seq.size() - 1] + 12 if seq[seq.size() - 1] < 79 else seq[seq.size() - 1], 0.55)
+			_sched(t + 0.35, lead, seq[seq.size() - 1], 0.7)
+			_sched(t + 0.35, bell_s, seq[seq.size() - 1] + 12 if seq[seq.size() - 1] < 79 else seq[seq.size() - 1], 0.55)
 		_:
 			push_warning("Music: unknown sting '%s'" % name)
 			return
@@ -177,21 +310,24 @@ func update(dt: float) -> void:
 	_clock += dt
 	if _chord_i < 0:
 		_next_step_at = _clock
+	if _dirty:
+		_dirty = false
+		_target = resolve(mood, theme, restoration, _resto_hi)
 	var target_int: float = intensity
-	var mi: float = float(MOODS[mood]["intensity"])
+	var mi: float = float(_target["intensity"])
 	if mi >= 0.0:
 		target_int = mi
 	_eff = move_toward(_eff, target_int, dt / FADE_TIME)
-	var mix: Dictionary = MOODS[mood]["mix"]
+	var mix: Dictionary = _target["mix"]
 	for l: String in LAYERS:
 		var target: float = float(mix[l]) * _curve(l, _eff) if enabled else 0.0
 		_gains[l] = move_toward(float(_gains[l]), target, dt / FADE_TIME * maxf(1.0, target))
-	lpf_cutoff = lerpf(lpf_cutoff, float(MOODS[mood]["lpf"]) * (0.8 + 0.2 * _eff), 1.0 - exp(-dt / 1.5))
+	lpf_cutoff = lerpf(lpf_cutoff, float(_target["lpf"]) * (0.8 + 0.2 * _eff), 1.0 - exp(-dt / 1.5))
 	# Sequencer: catch up on steps, dropping notes if we fell far behind (frame hitch).
 	while _clock >= _next_step_at:
 		var late: bool = _clock - _next_step_at > 0.12
 		_do_step(not late)
-		_next_step_at += 60.0 / float(MOODS[_active]["bpm"]) / 2.0
+		_next_step_at += 60.0 / float(_cur["bpm"]) / 2.0
 	# Scheduled sting notes.
 	var i: int = 0
 	while i < _queue.size():
@@ -216,15 +352,18 @@ func _curve(layer: String, x: float) -> float:
 		"bell": return smoothstep(0.2, 0.6, x)
 		"shaker": return smoothstep(0.55, 0.8, x)
 		"kick": return smoothstep(0.72, 0.95, x)
+		"texture": return 0.55 + 0.45 * smoothstep(0.1, 0.6, x)
 	return 0.0
 
 
 func _pitch(sample: String, midi: float) -> float:
+	if not samples.has(sample):
+		return 1.0
 	return pow(2.0, (midi - float(samples[sample]["ref"])) / 12.0)
 
 
 func _note(sample: String, midi: int, gain: float) -> void:
-	if gain < 0.002:
+	if gain < 0.002 or not samples.has(sample):
 		return
 	backend.call("start", sample, _pitch(sample, midi), gain)
 
@@ -240,9 +379,9 @@ func _update_air() -> void:
 
 
 func _update_pads(dt: float) -> void:
-	var m: Dictionary = MOODS[mood]
-	var bright: float = float(m["bright"]) * (0.6 + 0.4 * _eff)
-	var chord_len: float = STEPS * 60.0 / float(MOODS[_active]["bpm"]) / 2.0
+	var bright: float = float(_target["bright"]) * (0.6 + 0.4 * _eff)
+	var bloom: float = G_BLOOM * float(_target["bloom"])
+	var chord_len: float = STEPS * 60.0 / float(_cur["bpm"]) / 2.0
 	var breath: float = 1.0 + 0.08 * sin(_clock * TAU * 0.07)
 	var i: int = 0
 	while i < _pads.size():
@@ -255,6 +394,8 @@ func _update_pads(dt: float) -> void:
 		p["env"] = env
 		if env <= 0.0 and p["release"]:
 			for id: int in p["ids"]:
+				backend.call("stop", id)
+			for id: int in p["bloom_ids"]:
 				backend.call("stop", id)
 			_pads.remove_at(i)
 			continue
@@ -269,19 +410,31 @@ func _update_pads(dt: float) -> void:
 			var morph: float = clampf(0.5 + 0.5 * sin(_clock * TAU * 0.045 + k * 1.7), 0.0, 1.0) * bright
 			backend.call("set_gain", ids[k * 2], base * (1.0 - 0.6 * morph))
 			backend.call("set_gain", ids[k * 2 + 1], base * morph)
+		# [sound] Restoration bloom: a warm low voicing under the pad.
+		var bg: float = bloom * shaped * float(_gains["pad"]) * breath
+		for id: int in p["bloom_ids"]:
+			backend.call("set_gain", id, bg)
 		i += 1
 
 
 # --- Sequencer ----------------------------------------------------------------
 
 func _do_step(audible: bool) -> void:
-	if _step == 0 or (_step == 8 and mood != _active):
-		if mood != _active:
+	var switch: bool = mood != _active or theme != _active_theme
+	if _step == 0 or (_step == 8 and switch):
+		if switch:
 			_active = mood
+			_active_theme = theme
 			_chord_i = -1
+			_cycle = -1
 			_phrase_i = 0
 		_step = 0
-		_chord_i = (_chord_i + 1) % (MOODS[_active]["prog"] as Array).size()
+		# [sound] Re-resolve the harmony at each chord-cycle start (restoration may have moved).
+		if _chord_i < 0 or _chord_i + 1 >= (_cur["prog"] as Array).size():
+			_cur = resolve(_active, _active_theme, restoration, _resto_hi)
+			_chord_i = -1
+			_cycle += 1
+		_chord_i += 1
 		_on_chord()
 	if audible:
 		_play_step()
@@ -289,25 +442,26 @@ func _do_step(audible: bool) -> void:
 
 
 func _on_chord() -> void:
-	var m: Dictionary = MOODS[_active]
+	var m: Dictionary = _cur
+	var key: int = int(m["key"])
 	var chord: Array = (m["prog"] as Array)[_chord_i]
 	var root: int = int(chord[0])
-	_chord_root_pc = (KEY_ROOT + root) % 12
+	_chord_root_pc = (key + root) % 12
 	_chord_pcs.clear()
 	for iv: int in chord[1]:
-		var pc: int = (KEY_ROOT + root + iv) % 12
+		var pc: int = (key + root + iv) % 12
 		if not _chord_pcs.has(pc):
 			_chord_pcs.append(pc)
 	# Scale: the major key, with any chromatic chord tone replacing its neighbour.
 	_scale_pcs.clear()
-	for d: int in MAJOR:
-		_scale_pcs.append((KEY_ROOT + d) % 12)
+	for d: int in m["mode"]:
+		_scale_pcs.append((key + d) % 12)
 	for pc: int in _chord_pcs:
 		if not _scale_pcs.has(pc):
 			_scale_pcs.erase((pc + 1) % 12)
 			_scale_pcs.erase((pc + 11) % 12)
 			_scale_pcs.append(pc)
-	_bass_midi = 33 + posmod(KEY_ROOT + root - 33, 12)
+	_bass_midi = 33 + posmod(key + root - 33, 12)
 	# Pads: release the old chord, start the new one.
 	for p: Dictionary in _pads:
 		p["release"] = true
@@ -316,23 +470,33 @@ func _on_chord() -> void:
 		voicing.append(52 + posmod(pc - 52, 12))
 	voicing.append(64 + posmod(_chord_pcs[1] - 64, 12))  # open top voice (3rd / sus)
 	var ids: Array[int] = []
+	var pw: String = str(m["pad"][0]) if samples.has(str(m["pad"][0])) else "pad_warm"
+	var pb: String = str(m["pad"][1]) if samples.has(str(m["pad"][1])) else "pad_bright"
 	for n: int in voicing:
-		ids.append(backend.call("start", "pad_warm", _pitch("pad_warm", n), 0.0))
-		ids.append(backend.call("start", "pad_bright", _pitch("pad_bright", n), 0.0))
-	_pads.append({"ids": ids, "env": 0.0, "attack": float(m["pad_attack"]), "release": false, "start": _clock, "swell": bool(m["swell"])})
+		ids.append(backend.call("start", pw, _pitch(pw, n), 0.0))
+		ids.append(backend.call("start", pb, _pitch(pb, n), 0.0))
+	# [sound] Bloom voices (root, fifth, a tenth) for restored planets.
+	var bloom_ids: Array[int] = []
+	if float(m["bloom"]) > 0.02:
+		var lo: int = _bass_midi + 12
+		for n: int in [lo, lo + 7, 57 + posmod(_chord_pcs[1] - 57, 12)]:
+			bloom_ids.append(backend.call("start", "pad_warm", _pitch("pad_warm", n), 0.0))
+	_pads.append({"ids": ids, "bloom_ids": bloom_ids, "env": 0.0, "attack": float(m["pad_attack"]), "release": false, "start": _clock, "swell": bool(m["swell"])})
 	_compose_melody()
 
 
 func _play_step() -> void:
-	var m: Dictionary = MOODS[_active]
+	var m: Dictionary = _cur
 	var g: Dictionary = _gains
+	var bass_s: String = str(m["bass"])
+	var bell_s: String = str(m["bell"])
 	# Bass: root on the downbeat; a fifth and an approach note when things are livelier.
 	if _step == 0:
-		_note("bass", _bass_midi, G_BASS * float(g["bass"]))
+		_note(bass_s, _bass_midi, G_BASS * float(g["bass"]))
 	elif _step == 8 and _eff > 0.5 and rng.randf() < 0.6:
-		_note("bass", _bass_midi + (7 if _bass_midi + 7 <= 45 else -5), G_BASS * 0.7 * float(g["bass"]))
+		_note(bass_s, _bass_midi + (7 if _bass_midi + 7 <= 45 else -5), G_BASS * 0.7 * float(g["bass"]))
 	elif _step == 14 and _eff > 0.7 and rng.randf() < 0.35:
-		_note("bass", _bass_midi + (2 if rng.randf() < 0.5 else -1), G_BASS * 0.5 * float(g["bass"]))
+		_note(bass_s, _bass_midi + (2 if rng.randf() < 0.5 else -1), G_BASS * 0.5 * float(g["bass"]))
 	# Melody.
 	var ev: Variant = _mel_line[_step] if _step < _mel_line.size() else null
 	var mel_playing: bool = false
@@ -341,18 +505,18 @@ func _play_step() -> void:
 		_note(str(m["voice"]), int(e[0]), G_MEL * float(e[1]) * float(g["melody"]))
 		mel_playing = true
 		if bool(e[2]) and rng.randf() < 0.4:  # double a phrase ending with a bell
-			_note("bell", int(e[0]) + 12, G_BELL * 0.6 * float(g["bell"]))
+			_note(bell_s, int(e[0]) + 12, G_BELL * 0.6 * float(g["bell"]))
 	# Bell shimmer.
 	var bell_g: float = float(g["bell"])
 	if bell_g > 0.01:
 		if _step == 0 and bool(m["swell"]):
 			var arp: Array[int] = _chord_tones_in(74, 90)
 			for k: int in mini(4, arp.size()):
-				_sched(_clock + k * 0.32, "bell", arp[k], 0.35 * bell_g * G_BELL / G_STING)
+				_sched(_clock + k * 0.32, bell_s, arp[k], 0.35 * bell_g * G_BELL / G_STING)
 		elif _step == 0 and rng.randf() < 0.55:
-			_note("bell", _pick_bell(), G_BELL * bell_g * rng.randf_range(0.7, 1.0))
+			_note(bell_s, _pick_bell(), G_BELL * bell_g * rng.randf_range(0.7, 1.0))
 		elif not mel_playing and _step % 2 == 1 and rng.randf() < 0.05:
-			_note("bell", _pick_bell(), G_BELL * 0.6 * bell_g)
+			_note(bell_s, _pick_bell(), G_BELL * 0.6 * bell_g)
 	# Percussion.
 	var sh: float = float(g["shaker"])
 	if sh > 0.01:
@@ -363,7 +527,47 @@ func _play_step() -> void:
 	if kk > 0.01 and _step % 4 == 0:
 		var kg: Array[float] = [1.0, 0.55, 0.85, 0.55]
 		@warning_ignore("integer_division")
-		_note("kick", 69, G_KICK * kg[_step / 4] * kk)
+		_note(str(m["kick"]), 69, G_KICK * kg[_step / 4] * kk)
+	_play_texture(m, float(g["texture"]))
+
+
+## [sound] The planet's signature layer: Ochre's lute ostinato, Tidewell's rolling arpeggio, Rime's
+## glass twinkles, Anvil's low pulse (with clanks that turn to bells once the planet is restored).
+func _play_texture(m: Dictionary, tx: float) -> void:
+	if tx <= 0.01:
+		return
+	var smp: String = str(m["tex_sample"])
+	match str(m["texture"]):
+		"pluck":
+			const PAT: String = "x..x..x.x..x..x."
+			if PAT[_step] == "x":
+				var tones: Array[int] = _chord_tones_in(52, 66)
+				if not tones.is_empty():
+					var order: Array[int] = [0, 2, 1, 3, 0, 2, 1, 3]
+					var k: int = PAT.substr(0, _step).count("x")
+					_note(smp, tones[order[k % order.size()] % tones.size()], G_TEX * tx * (1.0 if _step % 8 == 0 else 0.72) * rng.randf_range(0.85, 1.0))
+		"arp":
+			var tones: Array[int] = _chord_tones_in(57, 81)
+			if not tones.is_empty():
+				var j: int = _step if _step < 8 else 15 - _step
+				var n: int = tones[int(roundf(float(j) / 7.0 * (tones.size() - 1)))]
+				_note(smp, n, G_TEX * tx * (0.9 if _step % 2 == 0 else 0.6) * rng.randf_range(0.85, 1.0))
+		"twinkle":
+			if rng.randf() < 0.09:
+				var tones: Array[int] = _chord_tones_in(81, 96)
+				if not tones.is_empty():
+					var start: int = rng.randi_range(0, tones.size() - 1)
+					for k: int in rng.randi_range(1, 3):
+						_sched(_clock + k * 0.08, smp, tones[(start + k) % tones.size()], G_TEX * tx * 0.55 / G_STING * (1.0 - 0.2 * k))
+		"pulse":
+			var acc: Array[float] = [1.0, 0.35, 0.6, 0.35]
+			if not _resto_hi or _step % 2 == 0:
+				_note(smp, _bass_midi + 12, G_TEX * tx * acc[_step % 4] * (0.8 if _resto_hi else 1.0))
+			if (_step == 6 or _step == 13) and rng.randf() < 0.6:
+				if _resto_hi:
+					_note(str(m["bell"]), _pick_bell(), G_BELL * 0.7 * tx)
+				else:
+					_note("anvil", _nearest(_chord_tones_in(50, 64), 57) if not _chord_pcs.is_empty() else 57, G_TEX * 0.55 * tx)
 
 
 func _pick_bell() -> int:
@@ -374,9 +578,17 @@ func _pick_bell() -> int:
 # --- Melody -------------------------------------------------------------------
 
 func _compose_melody() -> void:
-	var m: Dictionary = MOODS[_active]
+	var m: Dictionary = _cur
 	_mel_line.clear()
 	_mel_line.resize(STEPS)
+	if bool(m["motif"]):  # [sound] homecoming: the Greenfall motif, phrase by phrase
+		var ph: Dictionary = MOTIF[_chord_i % MOTIF.size()]
+		var keys: Array = ph.keys()
+		keys.sort()
+		for s: int in keys:
+			var last: bool = s == keys[keys.size() - 1] and _chord_i % 2 == 1
+			_mel_line[s] = [int(ph[s]), 0.95 if s % 4 == 0 else 0.8, last]
+		return
 	var rhythm: String
 	if _phrase_i == 0:
 		_tacet = rng.randf() < float(m["tacet"]) * (1.3 - _eff)
