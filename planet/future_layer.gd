@@ -1005,26 +1005,9 @@ static func apply_preview(w: Node, n: int) -> void:
 			w.litter.refresh_hex(hid)
 			planet.set_junk(w.slice_cells[hid], 0.0)
 			planet.mark_clean(w.slice_cells[hid])
-	if n >= 2 and g:
-		GameState.flags["seeds_unlocked"] = true
-		var stage: int = [0, 0, 1, 2, 3, 4][n]
+	if n >= 2 and g:  # [green] real planted slots at a stage mix for the level (plants/garden_dev.gd)
 		for hid: int in hl.levels:
-			var sl: PackedInt32Array = g.hex_slots.get(hid, PackedInt32Array())
-			var sum: float = 0.0
-			for i: int in sl.size():
-				var s: int = sl[i]
-				if n < 4 and i % 2 == 1:
-					continue
-				g.slot_species[s] = g._pick_species(s)  # [biomes] district-appropriate species (frontier natives)
-				g.slot_stage[s] = stage
-				g.slot_water[s] = float(g.species[g.slot_species[s]].get("water_s", 120))
-				g._update_inst(s)
-				sum += stage + 1.0
-			if sl.size() > 0:
-				var life: float = sum / (sl.size() * 5.0)
-				g.hex_life[hid] = life
-				w.view.set_life(hid, life)
-				planet.state[w.slice_cells[hid]] = PlanetData.State.RESTORED if life >= 0.8 else (PlanetData.State.GROWING if life >= 0.35 else PlanetData.State.PLANTED)
+			GardenDev.grow_hex(w, hid, n)
 	for hid: int in hl.levels:
 		hl.levels[hid] = maxi(int(hl.levels[hid]), n)
 	hl._recalc_bonus()

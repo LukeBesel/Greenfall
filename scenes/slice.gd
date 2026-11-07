@@ -414,6 +414,10 @@ func _ready() -> void:
 		if frontier:  # [biomes] thaw the ice / run the pumps first so the preview covers every hex
 			frontier.dev_pre_preview()
 		FutureLayer.apply_preview(self, int(DevHooks.get_f("future", 5.0)))
+	if DevHooks.has("restore"):  # [green] --restore=N[,level]: honest green-district previews
+		GardenDev.apply_restore(self)
+	if DevHooks.has("green-cam"):  # [green]
+		GardenDev.apply_cam.call_deferred(self)
 	var future := FutureLayer.new()
 	future.name = "FutureLayer"
 	add_child(future)
