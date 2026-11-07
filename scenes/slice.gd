@@ -131,6 +131,9 @@ func _ready() -> void:
 	if not fk.is_empty():  # [biomes] the frontier's own harbour / flood replaces planet lakes
 		field.water_ids = Frontiers.water_ids_for(fk, f_radius, float(cfg.get("hex_size", 3.2)))
 		field.float_mult = float(fk.get("float_mult", 1.0))
+	# Older saves were generated with straight hex borders; keep their piece layout identical.
+	if loaded and GameState.world.has("field"):
+		field.natural_borders = bool((GameState.world["field"] as Dictionary).get("natural_borders", false))
 	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
 	if not fk.is_empty():
 		Frontiers.toughen(field, float(fk.get("vol_mult", 1.0)))

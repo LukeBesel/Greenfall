@@ -1,16 +1,16 @@
 {
-  "cubes": 635.340059694365,
-  "cubes_made": 4.0,
+  "cubes": 467.180095487829,
+  "cubes_made": 5.0,
   "dead_gaps_min": [],
-  "earned_total": 1007.91505969436,
+  "earned_total": 994.755095487829,
   "fell_through": 0,
-  "first_cashin_s": 22.2,
-  "first_cube_s": 17.1,
-  "first_hex_s": 79.0,
-  "first_hexlv_1_s": 79.2,
-  "first_upgrade_s": 20.9,
+  "first_cashin_s": 21.6,
+  "first_cube_s": 17.5,
+  "first_hex_s": 75.3,
+  "first_hexlv_1_s": 75.3,
+  "first_upgrade_s": 19.9,
   "game_time_min": 2.0,
-  "game_time_s": 117.8,
+  "game_time_s": 117.1,
   "goal_gaps_min": [],
   "goals_done": 8,
   "goals_total": 99,
@@ -23,7 +23,7 @@
       "event": "upgrade",
       "id": "compartment_size",
       "level": 1,
-      "t": 20.9
+      "t": 19.9
     },
     {
       "event": "upgrade",
@@ -47,21 +47,21 @@
       "event": "upgrade",
       "id": "scoop_width",
       "level": 2,
-      "t": 25.0
+      "t": 34.3
     },
     {
       "event": "upgrade",
       "id": "compartment_size",
       "level": 3,
-      "t": 37.4
+      "t": 35.4
     },
     {
       "bolts": 0.0,
-      "cubes": 276.0,
+      "cubes": 327.0,
       "data": 0.0,
-      "earned": 578.0,
+      "earned": 630.0,
       "escapes": 0,
-      "glass": 4.1,
+      "glass": 5.6,
       "goals": 7,
       "hex_levels": [
         0,
@@ -72,14 +72,14 @@
       ],
       "hexes": 0,
       "hub": 1,
-      "metal": 2.4,
-      "parts": 4,
-      "plastic": 2.7,
+      "metal": 2.3,
+      "parts": 2,
+      "plastic": 4.2,
       "pos": [
-        -17.1,
-        16.9
+        -3.0,
+        5.4
       ],
-      "rate": 12.65,
+      "rate": 13.99,
       "remote_shops": 0,
       "research": "",
       "robots": {},
@@ -102,7 +102,19 @@
       "event": "upgrade",
       "id": "scoop_speed",
       "level": 1,
-      "t": 100.4
+      "t": 91.1
+    },
+    {
+      "event": "upgrade",
+      "id": "tread_speed",
+      "level": 2,
+      "t": 94.2
+    },
+    {
+      "event": "upgrade",
+      "id": "carry_stack",
+      "level": 1,
+      "t": 107.7
     }
   ],
   "next_goals": [
@@ -111,8 +123,8 @@
     "hex_3"
   ],
   "parts_bought": 0,
-  "parts_found": 6.0,
-  "perfect_cubes": 4.0,
+  "parts_found": 5.0,
+  "perfect_cubes": 5.0,
   "remote_shops": 0,
   "research_done": [],
   "research_idle_max_s": 117.0,
@@ -139,95 +151,89 @@
       "id": "scoop_15",
       "kind": "goal",
       "n": 1,
-      "t": 14.6
+      "t": 15.3
     },
     {
       "id": "bale_1",
       "kind": "goal",
       "n": 2,
-      "t": 17.5
+      "t": 18.2
     },
     {
       "id": "upgrade_1",
       "kind": "goal",
       "n": 3,
-      "t": 21.1
+      "t": 20.3
     },
     {
       "id": "perfect_1",
       "kind": "goal",
       "n": 4,
-      "t": 21.8
+      "t": 21.0
     },
     {
       "id": "cash_1",
       "kind": "goal",
       "n": 5,
-      "t": 22.5
+      "t": 21.8
     },
     {
       "id": "upgrades_5",
       "kind": "goal",
       "n": 6,
-      "t": 25.4
+      "t": 34.7
     },
     {
       "id": "compartment_3",
       "kind": "goal",
       "n": 7,
-      "t": 37.6
+      "t": 35.4
     },
     {
       "kind": "part",
       "rarity": 1,
       "stored": 3,
-      "t": 51.6,
+      "t": 67.9,
       "type": 6
     },
     {
       "kind": "part",
       "rarity": 1,
       "stored": 4,
-      "t": 55.1,
+      "t": 71.3,
       "type": 3
     },
     {
       "hex": 1,
       "kind": "hex_clean",
       "n": 1,
-      "t": 79.0
-    },
-    {
-      "id": "hex_1",
-      "kind": "goal",
-      "n": 8,
-      "t": 79.1
+      "t": 75.3
     },
     {
       "hex": 1,
       "kind": "hex_level",
       "level": 1,
-      "t": 79.2
+      "t": 75.3
+    },
+    {
+      "id": "hex_1",
+      "kind": "goal",
+      "n": 8,
+      "t": 75.5
     },
     {
       "kind": "part",
       "rarity": 1,
       "stored": 5,
-      "t": 90.3,
-      "type": 0
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 6,
-      "t": 94.2,
-      "type": 5
+      "t": 114.1,
+      "type": 4
     }
   ],
   "upgrades": {
+    "carry_stack": 1,
     "compartment_size": 3,
     "scoop_speed": 1,
     "scoop_width": 2,
-    "tread_speed": 1
+    "tread_speed": 2
   }
 }

@@ -118,6 +118,9 @@ func _build_ground() -> void:
 	if layout:
 		_ground_mat.set_shader_parameter("layout_tex", ImageTexture.create_from_image(layout.bake_image(extent, 0.25)))
 		_ground_mat.set_shader_parameter("layout_size", extent)
+	_ground_mat.set_shader_parameter("warp_tex", ImageTexture.create_from_image(field.border_warp_image(extent)))
+	_ground_mat.set_shader_parameter("warp_size", extent)
+	_ground_mat.set_shader_parameter("warp_amp", field.hex_size * 0.75 if field.natural_borders else 0.0)
 	ground_material = _ground_mat
 	var plane := PlaneMesh.new()
 	plane.size = Vector2(extent, extent)
