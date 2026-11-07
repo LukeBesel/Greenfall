@@ -61,6 +61,7 @@ func play() -> void:
 			await get_tree().process_frame
 			continue
 		t += get_process_delta_time()
+		HomewardDirector.shot_tick(get_process_delta_time())
 		if t >= next_line and li < LINES.size():
 			c.wren(tr(str(LINES[li][0])).format({"name": name_s}), 2)
 			if li == 2:

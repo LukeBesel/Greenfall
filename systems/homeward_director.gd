@@ -17,6 +17,8 @@ extends Node
 ##   --home-ready             Mk VII built and the last seed planted (launch home from the map)
 ##   --home-sample            shots: Verdance and Ochre restored, Tidewell half, Mk VI
 ##   --system-zoom=K          with --open=system: glide in to planet K (--system-zoom-at=S)
+##   --home-shots=T1,T2,..    screenshots of the Homeward cinematics at cinematic time T (game seconds),
+##                            saved as screenshots/<--home-shot-name>_<i>.png; quits after the last
 ##   --fly-planet=N[,S]       launch the rocket to system planet N after S seconds (no checks)
 
 const CHECK_S: float = 3.0
@@ -437,3 +439,23 @@ func _use_bed() -> void:
 			world.wren.say("home_last_seed", 1.0, true)
 		return
 	launch_home(world)
+
+
+# --- Dev: cinematic screenshots -------------------------------------------------------------------
+
+static var _shot_clock: float = 0.0
+static var _shot_i: int = 0
+
+
+## Called each frame by the Homeward cinematics with their frame delta (game time, so slow
+## software rendering still frames the same moment).
+static func shot_tick(dt: float) -> void:
+	if not DevHooks.has("home-shots"):
+		return
+	_shot_clock += dt
+	var times: PackedStringArray = DevHooks.get_s("home-shots", "").split(",", false)
+	if _shot_i < times.size() and _shot_clock >= float(times[_shot_i]):
+		DevHooks.save_viewport("screenshots/%s_%d.png" % [DevHooks.get_s("home-shot-name", "home_cine"), _shot_i])
+		_shot_i += 1
+		if _shot_i >= times.size():
+			Engine.get_main_loop().quit()

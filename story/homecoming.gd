@@ -102,6 +102,7 @@ func _run(lines: Array, f: Callable, extra: float = 0.0) -> bool:
 			continue
 		var dt: float = get_process_delta_time()
 		t += dt
+		HomewardDirector.shot_tick(dt)
 		if t >= next_line and li < lines.size():
 			_say(lines, li)
 			next_line += float(lines[li][1])
