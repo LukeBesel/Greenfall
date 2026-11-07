@@ -49,7 +49,7 @@ pointing/emulate_touch_from_mouse=false
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://locale/de.po", "res://locale/es.po", "res://locale/pseudo.po")
+locale/translations=PackedStringArray("res://locale/de.po", "res://locale/es.po", "res://locale/fr.po", "res://locale/ja.po", "res://locale/pt_BR.po", "res://locale/pseudo.po", "res://locale/zh_CN.po")
 locale/fallback="en"
 
 [physics]

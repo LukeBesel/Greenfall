@@ -156,63 +156,63 @@ msgstr "Cruceta derecha"
 msgid "Share"
 msgstr "Compartir"
 
-#: autoload/Settings.gd:497
+#: autoload/Settings.gd:515
 msgid "LMB"
 msgstr "Clic izq."
 
-#: autoload/Settings.gd:498
+#: autoload/Settings.gd:516
 msgid "RMB"
 msgstr "Clic der."
 
-#: autoload/Settings.gd:499
+#: autoload/Settings.gd:517
 msgid "MMB"
 msgstr "Clic central"
 
-#: autoload/Settings.gd:500
+#: autoload/Settings.gd:518
 msgid "Wheel up"
 msgstr "Rueda arriba"
 
-#: autoload/Settings.gd:501
+#: autoload/Settings.gd:519
 msgid "Wheel down"
 msgstr "Rueda abajo"
 
-#: autoload/Settings.gd:502
+#: autoload/Settings.gd:520
 msgid "Mouse %d"
 msgstr "Ratón %d"
 
-#: autoload/Settings.gd:504
+#: autoload/Settings.gd:522
 msgid "Button %d"
 msgstr "Botón %d"
 
-#: autoload/Settings.gd:509
+#: autoload/Settings.gd:527
 msgid "LS left"
 msgstr "JI izquierda"
 
-#: autoload/Settings.gd:509
+#: autoload/Settings.gd:527
 msgid "LS right"
 msgstr "JI derecha"
 
-#: autoload/Settings.gd:510
+#: autoload/Settings.gd:528
 msgid "LS up"
 msgstr "JI arriba"
 
-#: autoload/Settings.gd:510
+#: autoload/Settings.gd:528
 msgid "LS down"
 msgstr "JI abajo"
 
-#: autoload/Settings.gd:511
+#: autoload/Settings.gd:529
 msgid "RS left"
 msgstr "JD izquierda"
 
-#: autoload/Settings.gd:511
+#: autoload/Settings.gd:529
 msgid "RS right"
 msgstr "JD derecha"
 
-#: autoload/Settings.gd:512
+#: autoload/Settings.gd:530
 msgid "RS up"
 msgstr "JD arriba"
 
-#: autoload/Settings.gd:512
+#: autoload/Settings.gd:530
 msgid "RS down"
 msgstr "JD abajo"
 
@@ -1606,15 +1606,49 @@ msgstr "Nuevo en el banco de trabajo, pestaña Base: Inhibidor de señal. Confun
 msgid "WREN traced the Ledger's relay: %s of the hub. Look for the red beacon."
 msgstr "WREN ha rastreado el relé del Ledger: %s de la base. Busca la baliza roja."
 
-#: story/ledger.gd:245
+#. compass directions fill "%s of the hub" / "%s of you" ("north of you").
+#: story/ledger.gd:192
+msgid "north"
+msgstr "al norte"
+
+#. compass directions fill "%s of the hub" / "%s of you" ("north of you").
+#: story/ledger.gd:192
+msgid "north-east"
+msgstr "al noreste"
+
+#: story/ledger.gd:193
+msgid "east"
+msgstr "al este"
+
+#: story/ledger.gd:193
+msgid "south-east"
+msgstr "al sureste"
+
+#: story/ledger.gd:194
+msgid "south"
+msgstr "al sur"
+
+#: story/ledger.gd:194
+msgid "south-west"
+msgstr "al suroeste"
+
+#: story/ledger.gd:195
+msgid "west"
+msgstr "al oeste"
+
+#: story/ledger.gd:195
+msgid "north-west"
+msgstr "al noroeste"
+
+#: story/ledger.gd:258
 msgid "<< INTERCEPT // LEDGER PROMOTIONS // %d OF %d >>"
 msgstr "<< INTERCEPTADO // PROMOCIONES LEDGER // %d DE %d >>"
 
-#: story/ledger.gd:288
+#: story/ledger.gd:301
 msgid "Signal Jammer online. Drones within %d m of the base will get an earful of static."
 msgstr "Inhibidor en línea. Los drones a menos de %d m de la base se van a llevar una buena dosis de estática."
 
-#: story/ledger.gd:299
+#: story/ledger.gd:312
 msgid ""
 "%s   ·   %d / %d built\n"
 "%s"
@@ -1622,7 +1656,7 @@ msgstr ""
 "%s   ·   %d / %d construidos\n"
 "%s"
 
-#: story/ledger.gd:301
+#: story/ledger.gd:314
 msgid ""
 "\n"
 "Covering %d m around the base."
@@ -1630,7 +1664,7 @@ msgstr ""
 "\n"
 "Cubre %d m alrededor de la base."
 
-#: story/ledger.gd:303
+#: story/ledger.gd:316
 msgid ""
 "\n"
 "The Ledger is on our side now. The jammers just hum along to the music."
@@ -1638,48 +1672,48 @@ msgstr ""
 "\n"
 "El Ledger está de nuestro lado ahora. Los inhibidores solo tararean al ritmo de la música."
 
-#: story/ledger.gd:305 systems/research.gd:186 ui/hub_panel.gd:118
+#: story/ledger.gd:318 systems/research.gd:186 ui/hub_panel.gd:118
 #: ui/stations_panel.gd:96
 msgid "Needs %s"
 msgstr "Requiere %s"
 
-#: story/ledger.gd:470
+#: story/ledger.gd:483
 msgid "Ledger drone inbound, %s! It's heading for a clean hex."
 msgstr "¡Dron del Ledger en camino, %s! Va hacia un hexágono limpio."
 
-#: story/ledger.gd:471
+#: story/ledger.gd:484
 msgid "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground."
 msgstr "Un dron del Ledger viene a tirar chatarra en un hexágono limpio (%s de ti). No puede tocar el suelo plantado."
 
-#: story/ledger.gd:507
+#: story/ledger.gd:520
 msgid "SIGNAL JAMMED"
 msgstr "SEÑAL INHIBIDA"
 
-#: story/ledger.gd:537
+#: story/ledger.gd:550
 msgid "Target re-classified as ASSET. Aborting. ...Interesting."
 msgstr "Objetivo reclasificado como ACTIVO. Abortando. ...Interesante."
 
-#: story/ledger.gd:603
+#: story/ledger.gd:616
 msgid "The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."
 msgstr "El dron ha devuelto un poco de chatarra. Recógela o deja que tus ayudantes ordenen. Un inhibidor en la base mantiene alejados a los drones."
 
-#: story/ledger.gd:659
+#: story/ledger.gd:672
 msgid "SEEDS · PAID IN FULL"
 msgstr "SEMILLAS · PAGADO ÍNTEGRAMENTE"
 
-#: story/ledger.gd:676 systems/events.gd:484 systems/lumi_level.gd:215
+#: story/ledger.gd:689 systems/events.gd:484 systems/lumi_level.gd:215
 msgid "+%d seeds"
 msgstr "+%d semillas"
 
-#: story/ledger.gd:746
+#: story/ledger.gd:759
 msgid "E   jack in: rewrite the Ledger's contract"
 msgstr "E   conectarse: reescribir el contrato del Ledger"
 
-#: story/ledger.gd:746
+#: story/ledger.gd:759
 msgid "E   read the amended contract"
 msgstr "E   leer el contrato modificado"
 
-#: story/ledger.gd:771 story/ledger.gd:825
+#: story/ledger.gd:784 story/ledger.gd:838
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: ACTIVE\n"
@@ -1689,11 +1723,11 @@ msgstr ""
 "CONTRATO 0001: ACTIVO\n"
 "EL RESIDUO ES UNA PARTIDA"
 
-#: story/ledger.gd:786
+#: story/ledger.gd:799
 msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
 msgstr "RELÉ 07  ·  PROPIEDAD DEL LEDGER  ·  PROHIBIDO EL ACCESO NO PROGRAMADO"
 
-#: story/ledger.gd:825
+#: story/ledger.gd:838
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: AMENDED\n"
@@ -1703,11 +1737,11 @@ msgstr ""
 "CONTRATO 0001: MODIFICADO\n"
 "RESTAURACIÓN = ACTIVO"
 
-#: story/ledger.gd:942
+#: story/ledger.gd:955
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr "El contrato del Ledger está reescrito. Sus drones reparten semillas ahora. (+%d semillas)"
 
-#: story/ledger.gd:950
+#: story/ledger.gd:963
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr "<< LEDGER // EXTRAOFICIAL >>"
 

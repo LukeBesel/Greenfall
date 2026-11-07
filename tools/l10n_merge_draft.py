@@ -3,7 +3,8 @@
 
 Draft files: .l10n_work/<lang>_<chunk>.tsv, one line per string:
     NNNN<TAB>translation                     (NNNN = index in locale/greenfall.pot order)
-    NNNN<TAB>form0<TAB>form1[<TAB>form2]     (plural entries)
+    NNNN<TAB>P<TAB>form0[<TAB>form1...]       (plural entries)
+    =msgid<TAB>translation                   (keyed by English text, for strings added later)
 Escapes: \\n = newline, \\t = tab. Draft lines replace what the .po has; entries without a draft line are kept.
 
     python3 tools/l10n_merge_draft.py de fr ...   # merge + validate
@@ -96,6 +97,13 @@ def main() -> int:
                     if not line.strip():
                         continue
                     parts = line.split("\t")
+                    if parts[0].startswith("=") and len(parts) >= 2:  # keyed line: =msgid<TAB>translation
+                        k = ("", unesc(parts[0][1:]))
+                        if k in cat.entries and not cat.entries[k]["plural"]:
+                            tr[k] = unesc(parts[1])
+                        else:
+                            print("%s:%d: unknown msgid %r" % (f, ln, k[1][:50])); total_bad += 1
+                        continue
                     if not re.fullmatch(r"\d{4}", parts[0]):
                         print("%s:%d: bad line" % (f, ln)); total_bad += 1; continue
                     i = int(parts[0])

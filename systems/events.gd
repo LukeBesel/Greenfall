@@ -292,7 +292,7 @@ func start(id: String, force: bool = false) -> bool:
 		active = {}
 		return false
 	if active.get("pos") is Vector3:
-		arg = LedgerArc.compass((active["pos"] as Vector3) - world.patch.global_position)
+		arg = LedgerArc.compass_label((active["pos"] as Vector3) - world.patch.global_position)
 	if id == "robot_hiccup":
 		arg = str(active.get("robot_name", "A robot"))
 	var toast: String = tr(str(d.get("toast", d.get("name", id))))
