@@ -116,10 +116,10 @@ func _lineup() -> void:
 		_cam.look_at(Vector3(mid, 0, 0), Vector3.FORWARD)
 	else:
 		_cam.fov = 26.0
-		var d: float = w * 1.12
-		var az: float = deg_to_rad(DevHooks.get_f("az", 18.0))
-		var el: float = deg_to_rad(DevHooks.get_f("el", 17.0))
-		var tgt := Vector3(mid, 1.2, 1.0)
+		var d: float = w * 1.32
+		var az: float = deg_to_rad(DevHooks.get_f("az", 4.0))
+		var el: float = deg_to_rad(DevHooks.get_f("el", 15.0))
+		var tgt := Vector3(mid, 0.4, 2.0)
 		_cam.position = tgt + Vector3(sin(az) * cos(el), sin(el), cos(az) * cos(el)) * d
 		_cam.look_at(tgt, Vector3.UP)
 
