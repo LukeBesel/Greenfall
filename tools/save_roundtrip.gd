@@ -77,6 +77,7 @@ func _snapshot(s: Node) -> Dictionary:
 		"world_index": int(GameState.flags.get("world_index", 0)),
 		# [scope] the Telescope at this base, its sightings and use stats.
 		"telescope": "%s %s uses=%d" % [str(Telescope.of(s).built() if Telescope.of(s) else "none"), str(Codex.is_unlocked("sightings:first_light")), int(GameState.stats.get("telescope_uses", 0))],
+		"extras": JSON.stringify(ExtrasRoundtrip.snap(s)),  # [extras] radio, album, nursery
 	}
 
 
@@ -361,6 +362,7 @@ func _ready() -> void:
 		GameState.inc_stat("telescope_uses", 2.0)
 	else:
 		_check("scope_node", true, false)
+	ExtrasRoundtrip.setup(s1)  # [extras] radio song, album records, a retired caretaker
 	s1.patch.global_position = Vector3(3.0, 0.2, 5.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
 	s1.add_cube(dropped)
@@ -394,6 +396,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	for kid: String in ["frozen_port", "sunken_city", "dust_flats", "cradle_returns"]:
 		await _frontier_roundtrip(packed, kid, int(fhubs[kid]))
+	await ExtrasRoundtrip.weekly(self, packed)  # [extras] Seed of the Week in its own slot
 	await _late_multi_world(packed)  # [late] Cradle Mode: a second world, the profile, travel both ways
 	_homeward_roundtrip()  # [home] the system campaign's profile state
 	_profiles_roundtrip()  # [worlds2] save profiles: migration into p1, profiles kept apart

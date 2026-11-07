@@ -21,6 +21,8 @@ const ROLE_STATS: Dictionary = {
 const CREW_NAMES: Dictionary = {"clean": "Clean", "haul": "Haul", "plant": "Plant", "water": "Water", "skim": "Skim"}  # l10n
 
 var fleet: Fleet
+var _retire: Button  # [extras]
+var _retire_armed: String = ""  # [extras] the robot whose Retire was pressed once
 var _sel: Robot
 var _slot: String = "chassis"
 var _robot_list: VBoxContainer
@@ -144,6 +146,12 @@ func _build_mid() -> void:
 		if _sel:
 			_rename(Fleet.NAMES[randi() % Fleet.NAMES.size()] + "-%02d" % (randi() % 100)))
 	nr.add_child(reroll)
+	# [extras] Retire an old or low-tier robot to the nursery garden (systems/extras/nursery.gd).
+	_retire = Button.new()
+	_retire.text = tr("Retire")
+	_retire.custom_minimum_size = Vector2(0, 38)
+	_retire.pressed.connect(_on_retire)
+	nr.add_child(_retire)
 	_trait = UITheme.label("", 14, UITheme.GOLD)
 	_trait.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_mid.add_child(_trait)
@@ -293,6 +301,10 @@ func _refresh_all() -> void:
 		return
 	var tdef: Dictionary = RobotBuilder.trait_def(RobotBuilder.trait_of(_sel))
 	_sel_key = _key(_sel)
+	if _retire and _retire_armed != _sel.robot_name:  # [extras]
+		_retire_armed = ""
+		_retire.text = tr("Retire")
+		_retire.disabled = false
 	_title.text = "%s  ·  %s" % [tr(str(Economy.robots.get(_sel.type_id, {}).get("name", ""))).to_upper(), Economy.tier_name(_sel.tier)]
 	if not _name_edit.has_focus():
 		_name_edit.text = _sel.robot_name
@@ -571,6 +583,26 @@ func _on_apply_preset() -> void:
 	var n: int = RobotBuilder.apply_preset(fleet, _sel.role())
 	EventBus.toast.emit(tr_n("Fitted %d part across the %s crew.", "Fitted %d parts across the %s crew.", n) % [n, tr(str(CREW_NAMES.get(_sel.role(), "")))] if n > 0 else tr("Nothing to fit: the bin is short of those parts, or the crew already has them."), "hint")
 	_pv_key = ""
+	_refresh_all()
+
+
+## [extras] First press arms (the button says what it gives back), the second retires.
+func _on_retire() -> void:
+	if _sel == null or not is_instance_valid(_sel):
+		return
+	var why: String = Nursery.retire_block_reason(_sel)
+	if why != "":
+		EventBus.toast.emit(why, "info")
+		return
+	if _retire_armed != _sel.robot_name:
+		_retire_armed = _sel.robot_name
+		_retire.text = tr("Retire? +%d parts") % Nursery.refund_for(_sel.tier)
+		return
+	_retire_armed = ""
+	Nursery.retire(fleet, _sel)
+	var bots: Array[Robot] = _bots()
+	_sel = bots[0] if not bots.is_empty() else null
+	_rebuild_robot_list()
 	_refresh_all()
 
 

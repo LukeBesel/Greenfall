@@ -1091,6 +1091,13 @@
     "target": 1,
     "key": "homecoming"
    }
-  }
+  },
+    {"id": "extras_radio_6", "name": "Pirate Radio", "desc": "Unlock 6 songs on the base radio.", "icon": "wave", "cond": {"type": "stat", "key": "radio_songs", "target": 6}},
+    {"id": "extras_radio_all", "name": "Full Rotation", "desc": "Unlock every song on the base radio.", "icon": "star", "cond": {"type": "stat", "key": "radio_songs", "target": 14}},
+    {"id": "extras_album_4", "name": "Then and Now", "desc": "Collect 4 pictures in the photo album.", "icon": "map", "cond": {"type": "stat", "key": "album_shots", "target": 4}},
+    {"id": "extras_retire_1", "name": "Happy Retirement", "desc": "Retire a robot to the nursery garden.", "icon": "bot", "cond": {"type": "stat", "key": "robots_retired", "target": 1}},
+    {"id": "extras_visits_5", "name": "Garden Party", "desc": "Say hi to the nursery caretakers 5 times.", "icon": "flower", "cond": {"type": "stat", "key": "nursery_visits", "target": 5}},
+    {"id": "extras_weekly_1", "name": "Seed of the Week", "desc": "Finish a Seed of the Week challenge.", "icon": "trophy", "cond": {"type": "stat", "key": "weekly_chips", "target": 1}},
+    {"id": "extras_weekly_4", "name": "Paint Collector", "desc": "Earn 4 Seed of the Week paint chips.", "icon": "chip", "cond": {"type": "stat", "key": "weekly_chips", "target": 4}}
  ]
 }

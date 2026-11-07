@@ -522,6 +522,7 @@ func _ready() -> void:
 	scope.name = "Telescope"
 	scope.world = self
 	add_child(scope)
+	ExtrasDirector.attach(self)  # [extras] radio, nursery, album, welcome back, Seed of the Week (systems/extras/)
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -1163,13 +1164,9 @@ func _restore_world(from_memory: bool = false) -> void:
 			if not field.is_clean(h):
 				junk_left += field.hex_left[h]
 		# [beat] Junk already "baled offline" stays on the field (geometry isn't advanced), so it must not
-		# pay again on the next reopen: count it against what is left.
-		junk_left = maxf(0.0, junk_left - float(GameState.world.get("offline_units", 0.0)))
-		var res: Dictionary = Offline.compute(GameState.world.get("robots", []), hub.scrubbers if hub else 0, float(sd.get("filter_per_s", 1.0)), away, junk_left)
-		GameState.world["offline_units"] = float(GameState.world.get("offline_units", 0.0)) + float(res["units"])
-		Offline.apply(res)
-		if float(res["units"]) > 0.0 or float(res["air"]) > 0.0:
-			get_tree().create_timer(2.0).timeout.connect(func() -> void: EventBus.toast.emit(Offline.summary_text(res), "story"))
+		# pay again on the next reopen: Offline.simulate counts it against what is left. [extras]
+		var res: Dictionary = Offline.simulate(GameState.world, away, junk_left, hub.scrubbers if hub else 0, float(sd.get("filter_per_s", 1.0)))
+		WelcomeBack.offer(res, away)  # [extras] garden growth + payout card once the garden is built (systems/extras/welcome_back.gd)
 	EventBus.toast.emit(tr("Welcome back. The junk waited for you."), "info")
 
 

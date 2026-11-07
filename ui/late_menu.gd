@@ -33,7 +33,7 @@ static func refresh(menu: Node) -> void:
 	if g == null or a == null:
 		return
 	g.visible = Decor.unlocked()
-	a.visible = CradleMode.unlocked() or Homeward.answered()  # [home] Heirloom picks
+	a.visible = (CradleMode.unlocked() or Homeward.answered()) and not WeeklyChallenge.active  # [home] Heirloom picks; [extras] none in the challenge
 	var hs: Button = menu.find_child("HomeSystem", true, false) as Button
 	if hs:
 		hs.visible = Homeward.answered() and Homeward.current_planet() >= 0

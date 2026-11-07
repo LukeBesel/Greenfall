@@ -440,7 +440,7 @@ msgstr "最高等级"
 msgid "Needs the Rocket Cargo research"
 msgstr "需要研究“火箭货运”"
 
-#: automation/rocket_tiers.gd:56 systems/homeward.gd:337
+#: automation/rocket_tiers.gd:56 systems/homeward.gd:343
 msgid "Not enough cubes or parts"
 msgstr "方块或零件不足"
 
@@ -512,24 +512,24 @@ msgstr "天文台"
 msgid "E   look through the telescope"
 msgstr "E   用望远镜看"
 
-#: core/offline.gd:55 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: ui/globe_view.gd:469 ui/upgrade_card.gd:257
+#: core/offline.gd:130 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:257
 msgid "%d min"
 msgstr "%d 分钟"
 
-#: core/offline.gd:56
+#: core/offline.gd:131
 msgid "While you were away (%s):"
 msgstr "你离开期间（%s）："
 
-#: core/offline.gd:58
+#: core/offline.gd:133
 msgid "The fleet baled and delivered %s cubes."
 msgstr "机队打包并交付了 %s 个方块。"
 
-#: core/offline.gd:60
+#: core/offline.gd:135
 msgid "Bales worth %s were stacked at the hub with nobody to haul them. Lumi cashed them in. A Haul Bug would keep them moving."
 msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现了。有台 Haul Bug 就能让它们动起来。"
 
-#: core/offline.gd:62
+#: core/offline.gd:137
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
@@ -868,7 +868,7 @@ msgstr "回收：%s"
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
-#: player/patch_model.gd:18 data/designs.json:designs[aurora].name
+#: player/patch_model.gd:18 data/designs.json:designs[aurora].name data/radio.json:songs[rime_aurora].name
 msgid "Aurora"
 msgstr "Aurora"
 
@@ -980,42 +980,42 @@ msgstr "看右边"
 msgid "Look up"
 msgstr "看上面"
 
-#: robots/fleet.gd:180
+#: robots/fleet.gd:183
 msgid "Locked · research %s"
 msgstr "未解锁 · 研究 %s"
 
-#: robots/fleet.gd:182
+#: robots/fleet.gd:185
 msgid "Crew full (%d/%d): upgrade the hub"
 msgstr "队伍已满（%d/%d）：请升级基地"
 
-#: robots/fleet.gd:188
+#: robots/fleet.gd:191
 msgid "Missing %d part"
 msgid_plural "Missing %d parts"
 msgstr[0] "缺少 %d 个零件"
 
-#: robots/fleet.gd:190 robots/fleet.gd:262 robots/water_net.gd:149
+#: robots/fleet.gd:193 robots/fleet.gd:265 robots/water_net.gd:149
 #: systems/research.gd:194 systems/robot_builder.gd:362 systems/robot_builder.gd:435
 #: ui/robot_card.gd:79
 msgid "Not enough cubes"
 msgstr "方块不足"
 
-#: robots/fleet.gd:228
+#: robots/fleet.gd:231
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr "%s %s 组装完成。它四下看了看，就开始干活了。%s"
 
-#: robots/fleet.gd:228
+#: robots/fleet.gd:231
 msgid " Seems %s."
 msgstr " 看起来%s。"
 
-#: robots/fleet.gd:260
+#: robots/fleet.gd:263
 msgid "Needs a %s Control Core"
 msgstr "需要%s控制核心"
 
-#: robots/fleet.gd:264
+#: robots/fleet.gd:267
 msgid "Not enough parts (scrap spares at Haggle's or run the recycler)"
 msgstr ""
 
-#: robots/fleet.gd:284
+#: robots/fleet.gd:287
 msgid "%s fleet upgraded to %s."
 msgstr "%s机队已升级为 %s。"
 
@@ -1148,7 +1148,7 @@ msgstr "这里不能建造"
 msgid "Not on the lake"
 msgstr "不能建在湖上"
 
-#: robots/water_net.gd:141 systems/decor.gd:180
+#: robots/water_net.gd:141 systems/decor.gd:183
 msgid "Clean this hex first"
 msgstr "先清理这个六角格"
 
@@ -1176,55 +1176,55 @@ msgstr "机器人上行链路上线。按 B 打开指挥：划定区域，把队
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 上线。绽放核心 4%：绿光微弱。Cradle号中继：若有若无。种点东西吧。"
 
-#: scenes/slice.gd:819
+#: scenes/slice.gd:820
 msgid "HEX CLEAN!  +%s"
 msgstr "六角格清理完毕！  +%s"
 
-#: scenes/slice.gd:833
+#: scenes/slice.gd:834
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice.gd:835
+#: scenes/slice.gd:836
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "整个废料场都干净了。Lumi 发出一声好长好长、非常开心的哔——"
 
-#: scenes/slice.gd:842
+#: scenes/slice.gd:843
 msgid "%s is out of range: %s"
 msgstr "%s 超出范围：%s"
 
-#: scenes/slice.gd:852
+#: scenes/slice.gd:853
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "未解锁。将基地升到 5 级才能建造发射台。"
 
-#: scenes/slice.gd:855 ui/rockets_panel.gd:39
+#: scenes/slice.gd:856 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice.gd:909
+#: scenes/slice.gd:910
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陆：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:910
+#: scenes/slice.gd:911
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "火箭停在空地上，电池充满就能出发。"
 
-#: scenes/slice.gd:910
+#: scenes/slice.gd:911
 msgid "Landed on the base pad."
 msgstr "已降落在基地平台。"
 
-#: scenes/slice.gd:1001
+#: scenes/slice.gd:1002
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice.gd:1173
+#: scenes/slice.gd:1170
 msgid "Welcome back. The junk waited for you."
 msgstr "欢迎回来。废料一直在等你。"
 
-#: scenes/slice.gd:1190
+#: scenes/slice.gd:1187
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨 %d · %d级"
 
-#: scenes/slice.gd:1190
+#: scenes/slice.gd:1187
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
@@ -1667,6 +1667,7 @@ msgid "The first thing they'll see is a world that's green again. You did that. 
 msgstr "他们看到的第一样东西，会是一个重新变绿的世界。是你做到的。小小的，倔强的，完美的。"
 
 #: story/homecoming.gd:132 data/achievements.json:achievements[home_homecoming].name data/codex.json:homeward.homecoming.name
+#: data/radio.json:songs[homecoming].name
 msgid "Homecoming"
 msgstr "归乡"
 
@@ -1800,7 +1801,7 @@ msgstr ""
 "\n"
 "Ledger 现在站在我们这边了。干扰器只是跟着音乐哼哼。"
 
-#: story/ledger.gd:328 systems/decor.gd:119 systems/research.gd:186
+#: story/ledger.gd:328 systems/decor.gd:122 systems/research.gd:186
 #: systems/robot_builder.gd:360 systems/robot_builder.gd:437 ui/hub_panel.gd:126
 #: ui/stations_panel.gd:96 ui/telescope_panel.gd:43
 msgid "Needs %s"
@@ -2102,19 +2103,19 @@ msgstr ""
 msgid "Locked"
 msgstr ""
 
-#: systems/cradle_mode.gd:245
+#: systems/cradle_mode.gd:253
 msgid "Heirloom unlocked: %s, level %d. It travels with Lumi to every world."
 msgstr ""
 
-#: systems/cradle_mode.gd:295 systems/cradle_mode.gd:301
+#: systems/cradle_mode.gd:303 systems/cradle_mode.gd:309
 msgid "Fully grown"
 msgstr "已满级"
 
-#: systems/cradle_mode.gd:302
+#: systems/cradle_mode.gd:310
 msgid "Restore a planet for a pick, or unlocks with Ark milestones (next: %s, at %d restoration)"
 msgstr "恢复一个星球可获得一次选择，或随方舟里程碑解锁（下一个：%s，恢复度 %d）"
 
-#: systems/cradle_mode.gd:315
+#: systems/cradle_mode.gd:323
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr "传家宝：%s，等级 %d。它会随 Lumi 前往每一个世界。"
 
@@ -2122,27 +2123,31 @@ msgstr "传家宝：%s，等级 %d。它会随 Lumi 前往每一个世界。"
 msgid "Needs %d Collection finds (%d so far)"
 msgstr "需要 %d 件收藏品（目前 %d 件）"
 
-#: systems/decor.gd:173
+#: systems/decor.gd:120
+msgid "Needs %d Seed of the Week paint chips (%d so far)"
+msgstr "需要 %d 枚“每周种子”色片（目前 %d 枚）"
+
+#: systems/decor.gd:176
 msgid "Too close to the base machines"
 msgstr "离基地的机器太近了"
 
-#: systems/decor.gd:176
+#: systems/decor.gd:179
 msgid "Outside the district"
 msgstr "在城区之外"
 
-#: systems/decor.gd:178
+#: systems/decor.gd:181
 msgid "That's water"
 msgstr "那是水面"
 
-#: systems/decor.gd:182
+#: systems/decor.gd:185
 msgid "Frozen in"
 msgstr "被冻住了"
 
-#: systems/decor.gd:184
+#: systems/decor.gd:187
 msgid "A building is in the way"
 msgstr "有建筑挡着"
 
-#: systems/decor.gd:186
+#: systems/decor.gd:189
 msgid "Something is already here"
 msgstr "这里已经有东西了"
 
@@ -2274,35 +2279,35 @@ msgstr "审计胜利，%d 比 %d！Ledger 盖上了“批准”章。%s"
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "无人机赢得了审计，%d 比 %d。不过它还是留了小费：+%s 方块。"
 
-#: systems/homeward.gd:283
+#: systems/homeward.gd:289
 msgid "Needs the %s drive"
 msgstr "需要 %s 推进器"
 
-#: systems/homeward.gd:285
+#: systems/homeward.gd:291
 msgid "No chart yet: restore %s to %d%%"
 msgstr "还没有星图：把 %s 恢复到 %d%%"
 
-#: systems/homeward.gd:326
+#: systems/homeward.gd:332
 msgid "The Homeward rocket is built"
 msgstr "归乡火箭已建成"
 
-#: systems/homeward.gd:329
+#: systems/homeward.gd:335
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "Cradle 号得先回应（Cradle号归来）"
 
-#: systems/homeward.gd:331
+#: systems/homeward.gd:337
 msgid "Needs %d planet relics (%d)"
 msgstr "需要 %d 件星球遗物（%d）"
 
-#: systems/homeward.gd:333
+#: systems/homeward.gd:339
 msgid "Restore every planet first (%d%%)"
 msgstr "先恢复每一个星球（%d%%）"
 
-#: systems/homeward.gd:335
+#: systems/homeward.gd:341
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "在 Verdance 的 Cradle号归来建造"
 
-#: systems/homeward.gd:351
+#: systems/homeward.gd:357
 msgid "Rocket drive built: %s."
 msgstr "火箭推进器已建成：%s。"
 
@@ -2554,7 +2559,7 @@ msgstr "解锁 %s 机器人"
 msgid "Unlocks %s seeds"
 msgstr "解锁%s种子"
 
-#: systems/research.gd:411
+#: systems/research.gd:411 ui/extras_panel.gd:193
 msgid "Unlocks: %s"
 msgstr "解锁：%s"
 
@@ -2642,6 +2647,215 @@ msgstr ""
 #: systems/robot_builder.gd:603
 msgid "%s spotted a %s."
 msgstr "%s 发现了%s。"
+
+#: systems/extras/album.gd:86
+msgid "First arrival"
+msgstr "初次到达"
+
+#: systems/extras/album.gd:87
+msgid "Half clean"
+msgstr "清理过半"
+
+#: systems/extras/album.gd:88 data/hex_levels.json:levels[5].name
+msgid "Thriving"
+msgstr "繁茂"
+
+#: systems/extras/album.gd:89
+msgid "Base level 5"
+msgstr "基地 5 级"
+
+#: systems/extras/album.gd:217
+msgid "Album: an \"after\" picture of %s (%s)."
+msgstr "相册：%s 的一张“之后”照片（%s）。"
+
+#: systems/extras/nursery.gd:92
+msgid "Only Mk I-II robots retire early. %s can retire in %d min."
+msgstr "只有 Mk I-II 机器人可以提前退休。%s 还要 %d 分钟才能退休。"
+
+#: systems/extras/nursery.gd:120
+msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
+msgstr "%s 退休去了苗圃花园。+%d 零件，花儿也有了园丁。"
+
+#: systems/extras/nursery.gd:208
+msgid "E   Say hi to %s"
+msgstr "E   和 %s 打招呼"
+
+#: systems/extras/nursery.gd:266
+msgid "CARETAKER · %s"
+msgstr "园丁 · %s"
+
+#: systems/extras/nursery.gd:313
+msgid "%s beeps hello and shows Lumi the marigolds."
+msgstr "%s 哔哔地打招呼，给 Lumi 看金盏花。"
+
+#: systems/extras/nursery.gd:314
+msgid "%s is busy with the watering can, but waves anyway."
+msgstr "%s 正忙着拿洒水壶，但还是挥了挥手。"
+
+#: systems/extras/nursery.gd:315
+msgid "%s hums to the seedlings. Retirement suits it."
+msgstr "%s 对着幼苗哼歌。退休生活很适合它。"
+
+#: systems/extras/nursery.gd:316
+msgid "%s points proudly at a new bud."
+msgstr "%s 骄傲地指着一个新花苞。"
+
+#: systems/extras/radio.gd:165
+msgid "E   Radio: %s"
+msgstr "E   收音机：%s"
+
+#: systems/extras/radio.gd:165
+msgid "mood music"
+msgstr "氛围音乐"
+
+#: systems/extras/radio.gd:193
+msgid "New song on the radio: %s"
+msgstr "收音机新歌：%s"
+
+#: systems/extras/weekly.gd:113
+msgid "Not this week: %s"
+msgstr "本周不行：%s"
+
+#: systems/extras/weekly.gd:254 ui/extras_panel.gd:9 ui/extras_panel.gd:372
+#: data/achievements.json:achievements[extras_weekly_1].name
+msgid "Seed of the Week"
+msgstr "每周种子"
+
+#: systems/extras/weekly_run.gd:68
+msgid "SEED OF THE WEEK  ·  %d / %d hexes  ·  %s%s"
+msgstr "每周种子  ·  %d / %d 个六角格  ·  %s%s"
+
+#: systems/extras/weekly_run.gd:69
+msgid "  ·  done"
+msgstr "  ·  完成"
+
+#: systems/extras/weekly_run.gd:89
+msgid "Twist"
+msgstr "变化"
+
+#: systems/extras/weekly_run.gd:91
+msgid "Goal"
+msgstr "目标"
+
+#: systems/extras/weekly_run.gd:91 data/events.json:contracts.templates[clean_hexes].text
+msgid "Clean %d hexes"
+msgstr "清理 %d 个六角格"
+
+#: systems/extras/weekly_run.gd:92 ui/extras_panel.gd:376
+msgid "Seed"
+msgstr "种子"
+
+#: systems/extras/weekly_run.gd:93 systems/extras/weekly_run.gd:119
+msgid "Best"
+msgstr "最佳"
+
+#: systems/extras/weekly_run.gd:93 systems/extras/weekly_run.gd:119
+msgid "%s  ·  %d points"
+msgstr "%s  ·  %d 分"
+
+#: systems/extras/weekly_run.gd:93
+msgid "No finish yet"
+msgstr "尚未完成"
+
+#: systems/extras/weekly_run.gd:94 systems/extras/weekly_run.gd:122
+msgid "Reward"
+msgstr "奖励"
+
+#: systems/extras/weekly_run.gd:94
+msgid "A paint chip for your garden (first finish each week)"
+msgstr "为你的花园赢一枚色片（每周首次完成）"
+
+#: systems/extras/weekly_run.gd:96
+msgid "SEED OF THE WEEK"
+msgstr "每周种子"
+
+#: systems/extras/weekly_run.gd:96
+msgid "Week %d, %d"
+msgstr "第 %d 周，%d 年"
+
+#: systems/extras/weekly_run.gd:96
+msgid "Start the clock"
+msgstr "开始计时"
+
+#: systems/extras/weekly_run.gd:96 systems/extras/weekly_run.gd:123 ui/extras_panel.gd:380
+msgid "Return home"
+msgstr "回家"
+
+#: systems/extras/weekly_run.gd:104
+msgid "The clock is running. Clean %d hexes."
+msgstr "计时开始。清理 %d 个六角格。"
+
+#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:388
+msgid "Time"
+msgstr "时间"
+
+#: systems/extras/weekly_run.gd:117 systems/extras/weekly_run.gd:118
+msgid "  (new best)"
+msgstr "  （新纪录）"
+
+#: systems/extras/weekly_run.gd:118
+msgid "Score"
+msgstr "得分"
+
+#: systems/extras/weekly_run.gd:122
+msgid "New paint chip! (%d in all) Weekly decorations in Garden Mode use them."
+msgstr "新色片！（共 %d 枚）花园模式的每周装饰会用到它们。"
+
+#: systems/extras/weekly_run.gd:123
+msgid "CHALLENGE COMPLETE"
+msgstr "挑战完成"
+
+#: systems/extras/weekly_run.gd:123
+msgid "Keep exploring"
+msgstr "继续探索"
+
+#: systems/extras/welcome_back.gd:57
+msgid "%d h %d min"
+msgstr "%d 小时 %d 分钟"
+
+#: systems/extras/welcome_back.gd:69
+msgid "baled about %d bales"
+msgstr "压了大约 %d 个捆包"
+
+#: systems/extras/welcome_back.gd:71
+msgid "kept the base tidy"
+msgstr "把基地收拾得整整齐齐"
+
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:674
+msgid "Cubes earned"
+msgstr "赚到的方块"
+
+#: systems/extras/welcome_back.gd:76
+msgid "No hauler: Lumi cashed the stacked bales. A Haul Bug keeps them moving."
+msgstr "没有搬运机器人：Lumi 兑现了堆着的捆包。有 Haul Bug 才能让它们流转起来。"
+
+#: systems/extras/welcome_back.gd:78
+msgid "Plants grew"
+msgstr "植物生长"
+
+#: systems/extras/welcome_back.gd:80
+msgid "Bloomed (seeds)"
+msgstr "开花（种子）"
+
+#: systems/extras/welcome_back.gd:82
+msgid "Scrubbers cleaned the air"
+msgstr "净化器清洁了空气"
+
+#: systems/extras/welcome_back.gd:141
+msgid "WELCOME BACK"
+msgstr "欢迎回来"
+
+#: systems/extras/welcome_back.gd:142
+msgid "Away %s"
+msgstr "离开了 %s"
+
+#: systems/extras/welcome_back.gd:163
+msgid "Robots work up to %d h while you're away."
+msgstr "你不在时，机器人最多工作 %d 小时。"
+
+#: systems/extras/welcome_back.gd:166
+msgid "Back to work"
+msgstr "回去干活"
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -2856,15 +3070,19 @@ msgstr "浇水"
 msgid "Skim"
 msgstr "撇捞"
 
-#: ui/builder_panel.gd:101
+#: ui/builder_panel.gd:103
 msgid "YOUR ROBOTS"
 msgstr "你的机器人"
 
-#: ui/builder_panel.gd:141
+#: ui/builder_panel.gd:143
 msgid "New name"
 msgstr "新名字"
 
-#: ui/builder_panel.gd:153
+#: ui/builder_panel.gd:151 ui/builder_panel.gd:306
+msgid "Retire"
+msgstr "退休"
+
+#: ui/builder_panel.gd:161
 msgid ""
 "No robots yet. Build one in the Bots tab, then fit it out here.\n"
 "Haggle throws in a set of treads with your first robot."
@@ -2872,82 +3090,86 @@ msgstr ""
 "还没有机器人。先在“机器人”页造一台，再来这里装配。\n"
 "Haggle 会送你第一台机器人一副履带。"
 
-#: ui/builder_panel.gd:208
+#: ui/builder_panel.gd:216
 msgid "PART SLOTS"
 msgstr "零件槽"
 
-#: ui/builder_panel.gd:220
+#: ui/builder_panel.gd:228
 msgid "PARTS THAT FIT"
 msgstr "适配零件"
 
-#: ui/builder_panel.gd:291
+#: ui/builder_panel.gd:299
 msgid "ROBOT BUILDER"
 msgstr "机器人组装台"
 
-#: ui/builder_panel.gd:303
+#: ui/builder_panel.gd:315
 msgid "Stock"
 msgstr "原装"
 
-#: ui/builder_panel.gd:339
+#: ui/builder_panel.gd:351
 msgid "Stock  ·  the %s look%s"
 msgstr "原装  ·  %s 外观%s"
 
-#: ui/builder_panel.gd:339
+#: ui/builder_panel.gd:351
 msgid "   (fitted)"
 msgstr "   （已装备）"
 
-#: ui/builder_panel.gd:347
+#: ui/builder_panel.gd:359
 msgid "in the bin: %d  ·  press to fit"
 msgstr "箱中：%d  ·  按下装备"
 
-#: ui/builder_panel.gd:356
+#: ui/builder_panel.gd:368
 msgid "  ·  press to get + fit"
 msgstr "  ·  按下获取并装备"
 
-#: ui/builder_panel.gd:358
+#: ui/builder_panel.gd:370
 msgid "  (Maker set)"
 msgstr "  （造物者套装）"
 
-#: ui/builder_panel.gd:378
+#: ui/builder_panel.gd:390
 msgid "Save as %s preset"
 msgstr "保存为%s预设"
 
-#: ui/builder_panel.gd:380
+#: ui/builder_panel.gd:392
 msgid "Fit preset on crew (%d)"
 msgstr "为队伍套用预设（%d）"
 
-#: ui/builder_panel.gd:386
+#: ui/builder_panel.gd:398
 msgid "%s crew preset: %s"
 msgstr "%s队伍预设：%s"
 
-#: ui/builder_panel.gd:386
+#: ui/builder_panel.gd:398
 msgid "none saved"
 msgstr "未保存"
 
-#: ui/builder_panel.gd:393
+#: ui/builder_panel.gd:405
 msgid "Builder bin %d   ·   Parts %s"
 msgstr ""
 
-#: ui/builder_panel.gd:397
+#: ui/builder_panel.gd:409
 msgid "Haggle's stall: %s  (new stock in %d min)"
 msgstr "Haggle 的摊位：%s（%d 分钟后上新）"
 
-#: ui/builder_panel.gd:418
+#: ui/builder_panel.gd:430
 msgid "Stock part: no changes. The %s look of this robot type."
 msgstr "原装零件：无改动。这种机器人的%s外观。"
 
-#: ui/builder_panel.gd:564
+#: ui/builder_panel.gd:576
 msgid "Saved %s's build as the %s crew preset."
 msgstr "已将 %s 的配置保存为%s队伍预设。"
 
-#: ui/builder_panel.gd:572
+#: ui/builder_panel.gd:584
 msgid "Fitted %d part across the %s crew."
 msgid_plural "Fitted %d parts across the %s crew."
 msgstr[0] "已装配 %d 个零件到 %s 队伍。"
 
-#: ui/builder_panel.gd:572
+#: ui/builder_panel.gd:584
 msgid "Nothing to fit: the bin is short of those parts, or the crew already has them."
 msgstr "没有可装备的：零件箱里缺这些零件，或者队伍已经装上了。"
+
+#: ui/builder_panel.gd:599
+msgid "Retire? +%d parts"
+msgstr "退休？+%d 零件"
 
 #: ui/checklist_card.gd:92
 msgid "RESTART"
@@ -3106,10 +3328,6 @@ msgstr "不平整捆包"
 #: ui/codex_screen.gd:673
 msgid "Bales cashed in"
 msgstr "兑现的捆包"
-
-#: ui/codex_screen.gd:674
-msgid "Cubes earned"
-msgstr "赚到的方块"
 
 #: ui/codex_screen.gd:676 ui/globe_view.gd:138 data/hex_levels.json:levels[3].name
 msgid "Growing"
@@ -3540,6 +3758,186 @@ msgstr ""
 msgid "%d REQUESTS READY  ·  claim them at the workbench"
 msgstr ""
 
+#: ui/extras_panel.gd:9
+msgid "Radio"
+msgstr "收音机"
+
+#: ui/extras_panel.gd:9
+msgid "Album"
+msgstr "相册"
+
+#: ui/extras_panel.gd:9
+msgid "Nursery"
+msgstr "苗圃"
+
+#: ui/extras_panel.gd:58
+msgid "KEEPSAKES"
+msgstr "纪念"
+
+#: ui/extras_panel.gd:70
+msgid "%s / %s  switch tabs"
+msgstr "%s / %s  切换标签"
+
+#: ui/extras_panel.gd:187
+msgid "SONGS  ·  %d / %d"
+msgstr "歌曲  ·  %d / %d"
+
+#: ui/extras_panel.gd:196
+msgid "Now playing: %s"
+msgstr "正在播放：%s"
+
+#: ui/extras_panel.gd:201
+msgid "NOW PLAYING"
+msgstr "正在播放"
+
+#: ui/extras_panel.gd:205
+msgid "Your pick loops everywhere until you switch back to the mood music. A restored planet plays its restored version."
+msgstr "你选的歌会在各处循环播放，直到你切回氛围音乐。修复后的星球会播放修复版。"
+
+#: ui/extras_panel.gd:206
+msgid "Back to mood music"
+msgstr "切回氛围音乐"
+
+#: ui/extras_panel.gd:208
+msgid "The radio hands the music back to the day."
+msgstr "收音机把音乐还给了这一天。"
+
+#: ui/extras_panel.gd:212
+msgid "Mood music"
+msgstr "氛围音乐"
+
+#: ui/extras_panel.gd:213
+msgid "The music follows the day: the yard, the streets, the night. Pick a song to play it instead."
+msgstr "音乐跟随一天的变化：院子、街道、夜晚。选一首歌来代替它播放。"
+
+#: ui/extras_panel.gd:214
+msgid "New songs come in as districts and planets are restored."
+msgstr "随着街区和星球得到修复，会有新歌加入。"
+
+#: ui/extras_panel.gd:227
+msgid "DISTRICTS"
+msgstr "街区"
+
+#: ui/extras_panel.gd:229
+msgid "Lumi takes a picture of each district on arrival, and \"after\" pictures as it is restored."
+msgstr "Lumi 到达每个街区时会拍一张照片，修复过程中还会拍“之后”的照片。"
+
+#: ui/extras_panel.gd:233
+msgid "Before only"
+msgstr "只有之前"
+
+#: ui/extras_panel.gd:241
+msgid "PHOTOS  ·  %d"
+msgstr "照片  ·  %d"
+
+#: ui/extras_panel.gd:253
+msgid "Photo"
+msgstr "照片"
+
+#: ui/extras_panel.gd:262
+msgid "Photos you take in photo mode show up here."
+msgstr "在拍照模式中拍的照片会出现在这里。"
+
+#: ui/extras_panel.gd:266 ui/photo_panel.gd:58
+msgid "PHOTO MODE"
+msgstr "拍照模式"
+
+#: ui/extras_panel.gd:276
+msgid "No pictures yet."
+msgstr "还没有照片。"
+
+#: ui/extras_panel.gd:287
+msgid "BEFORE"
+msgstr "之前"
+
+#: ui/extras_panel.gd:306
+msgid "not yet"
+msgstr "尚未"
+
+#: ui/extras_panel.gd:316
+msgid "The \"after\" picture comes when the district is half clean."
+msgstr "街区清理过半时会拍下“之后”的照片。"
+
+#: ui/extras_panel.gd:322
+msgid "CARETAKERS  ·  %d"
+msgstr "园丁  ·  %d"
+
+#: ui/extras_panel.gd:323
+msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
+msgstr "花园加成：植物生长快 %d%%（最多 %d%%）。"
+
+#: ui/extras_panel.gd:326
+msgid "No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."
+msgstr "还没有机器人退休。老机器人或 Mk I-II 机器人可以在这里或工作台的组装中退休；它们会照料基地的苗圃花园。"
+
+#: ui/extras_panel.gd:335
+msgid "RETIRE A ROBOT"
+msgstr "让机器人退休"
+
+#: ui/extras_panel.gd:337
+msgid "Retiring gives a few parts back, and the robot keeps its name and personality in the nursery."
+msgstr "退休会返还一些零件，机器人在苗圃里保留它的名字和个性。"
+
+#: ui/extras_panel.gd:339
+msgid "No robots in this district."
+msgstr "这个街区没有机器人。"
+
+#: ui/extras_panel.gd:346
+msgid "Press again to retire (+%d parts)"
+msgstr "再按一次确认退休（+%d 零件）"
+
+#: ui/extras_panel.gd:346
+msgid "Retire  (+%d parts)"
+msgstr "退休  （+%d 零件）"
+
+#: ui/extras_panel.gd:371
+msgid "WEEK %d, %d"
+msgstr "第 %d 周，%d 年"
+
+#: ui/extras_panel.gd:373
+msgid "The same seed and twist for everyone this week. Clean %d hexes as fast as you can. It has its own save, so your world is untouched."
+msgstr "本周所有人都是同样的种子和变化。尽快清理 %d 个六角格。它有独立存档，你的世界不受影响。"
+
+#: ui/extras_panel.gd:374
+msgid "Twist: %s"
+msgstr "变化：%s"
+
+#: ui/extras_panel.gd:377
+msgid "Best time"
+msgstr "最佳时间"
+
+#: ui/extras_panel.gd:378
+msgid "Best score"
+msgstr "最高得分"
+
+#: ui/extras_panel.gd:384
+msgid "Restart this week's run"
+msgstr "重新开始本周挑战"
+
+#: ui/extras_panel.gd:388
+msgid "Resume this week's run"
+msgstr "继续本周挑战"
+
+#: ui/extras_panel.gd:388
+msgid "Start the challenge"
+msgstr "开始挑战"
+
+#: ui/extras_panel.gd:392
+msgid "PAINT CHIPS  ·  %d"
+msgstr "色片  ·  %d"
+
+#: ui/extras_panel.gd:393
+msgid "Finish a week's challenge for its paint chip. Chips unlock the weekly decorations in Garden Mode and paint them."
+msgstr "完成一周的挑战即可获得那周的色片。色片能解锁花园模式的每周装饰并为它们上色。"
+
+#: ui/extras_panel.gd:406
+msgid "No chips yet."
+msgstr "还没有色片。"
+
+#: ui/extras_panel.gd:438
+msgid "No picture yet"
+msgstr "还没有照片"
+
 #: ui/frontier_rockets.gd:11
 msgid "FRONTIERS"
 msgstr "边境"
@@ -3864,7 +4262,7 @@ msgstr ""
 msgid "New Game"
 msgstr "新游戏"
 
-#: ui/main_menu.gd:341 ui/main_menu.gd:539 ui/pause_menu.gd:59
+#: ui/main_menu.gd:341 ui/main_menu.gd:539 ui/pause_menu.gd:62
 msgid "Settings"
 msgstr "设置"
 
@@ -3996,19 +4394,23 @@ msgstr "图鉴  [%s]"
 msgid "Photo mode  [%s]"
 msgstr "拍照模式  [%s]"
 
-#: ui/pause_menu.gd:61
+#: ui/pause_menu.gd:59 data/achievements.json:achievements[home_relics].name
+msgid "Keepsakes"
+msgstr "纪念品"
+
+#: ui/pause_menu.gd:64
 msgid "Save game"
 msgstr "保存游戏"
 
-#: ui/pause_menu.gd:63
+#: ui/pause_menu.gd:66
 msgid "Saved."
 msgstr "已保存。"
 
-#: ui/pause_menu.gd:64
+#: ui/pause_menu.gd:67
 msgid "Quit to title"
 msgstr "返回标题"
 
-#: ui/pause_menu.gd:65
+#: ui/pause_menu.gd:68
 msgid "Quit to desktop"
 msgstr "退出到桌面"
 
@@ -4174,10 +4576,6 @@ msgstr "世界"
 msgid "Set time of day"
 msgstr "设定时间"
 
-#: ui/photo_mode.gd:388
-msgid "Time"
-msgstr "时间"
-
 #: ui/photo_mode.gd:392
 msgid "Weather"
 msgstr "天气"
@@ -4241,10 +4639,6 @@ msgstr "已保存  %s  （%dx%d）"
 #: ui/photo_panel.gd:57
 msgid "CAPTURE  ·  LM-1 LENS"
 msgstr "拍摄  ·  LM-1 镜头"
-
-#: ui/photo_panel.gd:58
-msgid "PHOTO MODE"
-msgstr "拍照模式"
 
 #: ui/photo_panel.gd:88
 msgid "Capture"
@@ -6046,10 +6440,6 @@ msgstr "五星皆活"
 msgid "Restore every planet in the system."
 msgstr "恢复星系里的每一个星球。"
 
-#: data/achievements.json:achievements[home_relics].name
-msgid "Keepsakes"
-msgstr "纪念品"
-
 #: data/achievements.json:achievements[home_relics].desc
 msgid "Collect all four planet relics."
 msgstr "收集全部四件星球遗物。"
@@ -6065,6 +6455,58 @@ msgstr "建造 Mk VI 星际推进器。"
 #: data/achievements.json:achievements[home_homecoming].desc
 msgid "Launch home to the Cradle."
 msgstr "发射回家，飞向 Cradle 号。"
+
+#: data/achievements.json:achievements[extras_radio_6].name
+msgid "Pirate Radio"
+msgstr "海盗电台"
+
+#: data/achievements.json:achievements[extras_radio_6].desc
+msgid "Unlock 6 songs on the base radio."
+msgstr "在基地收音机上解锁 6 首歌。"
+
+#: data/achievements.json:achievements[extras_radio_all].name
+msgid "Full Rotation"
+msgstr "全曲轮播"
+
+#: data/achievements.json:achievements[extras_radio_all].desc
+msgid "Unlock every song on the base radio."
+msgstr "解锁基地收音机上的所有歌曲。"
+
+#: data/achievements.json:achievements[extras_album_4].name
+msgid "Then and Now"
+msgstr "今昔对比"
+
+#: data/achievements.json:achievements[extras_album_4].desc
+msgid "Collect 4 pictures in the photo album."
+msgstr "在相册中收集 4 张照片。"
+
+#: data/achievements.json:achievements[extras_retire_1].name
+msgid "Happy Retirement"
+msgstr "退休快乐"
+
+#: data/achievements.json:achievements[extras_retire_1].desc
+msgid "Retire a robot to the nursery garden."
+msgstr "让一个机器人退休去苗圃花园。"
+
+#: data/achievements.json:achievements[extras_visits_5].name
+msgid "Garden Party"
+msgstr "花园派对"
+
+#: data/achievements.json:achievements[extras_visits_5].desc
+msgid "Say hi to the nursery caretakers 5 times."
+msgstr "和苗圃的园丁打招呼 5 次。"
+
+#: data/achievements.json:achievements[extras_weekly_1].desc
+msgid "Finish a Seed of the Week challenge."
+msgstr "完成一次“每周种子”挑战。"
+
+#: data/achievements.json:achievements[extras_weekly_4].name
+msgid "Paint Collector"
+msgstr "色彩收藏家"
+
+#: data/achievements.json:achievements[extras_weekly_4].desc
+msgid "Earn 4 Seed of the Week paint chips."
+msgstr "获得 4 枚“每周种子”色片。"
 
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
@@ -7116,7 +7558,7 @@ msgstr "五个世界重获生机。一枚用它们全部造成的火箭。一颗
 
 #: data/codex.json:sightings.first_light.name
 msgid "First Light"
-msgstr "初光"
+msgstr "第一缕光"
 
 #: data/codex.json:sightings.first_light.hint
 msgid "Build a Telescope and look through it."
@@ -7222,7 +7664,7 @@ msgstr "暴雨"
 msgid "Rain showers come four times as often and plants grow 15% faster."
 msgstr "阵雨频率变为四倍，植物生长加快 15%。"
 
-#: data/cradle.json:modifiers[long_nights].name
+#: data/cradle.json:modifiers[long_nights].name data/weekly.json:twists[long_nights].name
 msgid "Long Nights"
 msgstr "漫漫长夜"
 
@@ -7262,7 +7704,7 @@ msgstr "野花盛放"
 msgid "Wildflowers want to come back: 30% more seeds per bloom, more wildlife visits."
 msgstr "野花想要回来：每次开花多得 30% 种子，野生动物来访更频繁。"
 
-#: data/cradle.json:modifiers[heavy_junk].name
+#: data/cradle.json:modifiers[heavy_junk].name data/weekly.json:twists[heavy_junk].name
 msgid "Heavy Junk"
 msgstr "沉重废料"
 
@@ -7418,6 +7860,22 @@ msgstr "WREN 风筝"
 #: data/decor.json:types[wren_kite].desc
 msgid "A kite shaped like WREN's bird, tethered to a post and always flying."
 msgstr "一只做成 WREN 小鸟形状的风筝，系在柱子上，一直在天上飞。"
+
+#: data/decor.json:types[weekly_pennant].name
+msgid "Seed of the Week Pennant"
+msgstr "每周种子三角旗"
+
+#: data/decor.json:types[weekly_pennant].desc
+msgid "A tall pennant in the colour of your newest Seed of the Week paint chip."
+msgstr "一面高高的三角旗，颜色是你最新的“每周种子”色片。"
+
+#: data/decor.json:types[weekly_arch].name
+msgid "Paint Chip Arch"
+msgstr "色片拱门"
+
+#: data/decor.json:types[weekly_arch].desc
+msgid "A garden arch striped with every paint chip you have earned."
+msgstr "一座花园拱门，每一条条纹都是你赢得的一枚色片。"
 
 #: data/designs.json:designs[aurora].tagline
 msgid "Baseline / Explorer"
@@ -8659,10 +9117,6 @@ msgstr "压制 %d 个完美捆包"
 msgid "Press %d Pure bales (one junk type)"
 msgstr "压制 %d 个纯净捆包（单一废料）"
 
-#: data/events.json:contracts.templates[clean_hexes].text
-msgid "Clean %d hexes"
-msgstr "清理 %d 个六角格"
-
 #: data/events.json:contracts.templates[scoop].text
 msgid "Scoop %d pieces of junk"
 msgstr "铲起 %d 块废料"
@@ -9391,7 +9845,7 @@ msgstr "安装 20 个升级"
 msgid "Robots press 20 bales"
 msgstr "机器人压制 20 个捆包"
 
-#: data/goals.json:goals[hex_10].text
+#: data/goals.json:goals[hex_10].text data/radio.json:songs[verdance_sweep].hint
 msgid "Clean 10 hexes"
 msgstr "清理 10 个六角格"
 
@@ -9514,6 +9968,10 @@ msgstr "清理 30 个六角格（含湖面）"
 #: data/goals.json:goals[base_3].text
 msgid "Upgrade the base to level 3"
 msgstr "将基地升到 3 级"
+
+#: data/goals.json:goals[extras_radio].text
+msgid "Pick a song on the base radio"
+msgstr "在基地收音机上选一首歌"
 
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
@@ -9654,6 +10112,10 @@ msgstr "让 25 个六角格达到繁茂"
 #: data/goals.json:goals[base_5].text
 msgid "Upgrade the base to level 5"
 msgstr "将基地升到 5 级"
+
+#: data/goals.json:goals[extras_retire].text
+msgid "Retire a robot to the nursery"
+msgstr "让一个机器人退休去苗圃"
 
 #: data/goals.json:goals[rocket].text
 msgid "Launch the rocket onward"
@@ -9970,10 +10432,6 @@ msgstr "稳定"
 #: data/hex_levels.json:levels[4].hint
 msgid "Bring every plant to bloom"
 msgstr "让每株植物都开花"
-
-#: data/hex_levels.json:levels[5].name
-msgid "Thriving"
-msgstr "繁茂"
 
 #: data/hex_levels.json:levels[5].hint
 msgid "Wildlife has moved in"
@@ -10670,6 +11128,158 @@ msgstr "传感器模块"
 #: data/parts.json:types[module].name
 msgid "Special Module"
 msgstr "特殊模块"
+
+#: data/radio.json:songs[verdance_sprout].name
+msgid "Sprout Step"
+msgstr "新芽步伐"
+
+#: data/radio.json:songs[verdance_sprout].desc
+msgid "Kalimba and bells, the first green on Verdance."
+msgstr "卡林巴和铃声，Verdance 上的第一抹绿。"
+
+#: data/radio.json:songs[verdance_sweep].name
+msgid "Clean Sweep"
+msgstr "大扫除"
+
+#: data/radio.json:songs[verdance_sweep].desc
+msgid "Marimba and a four-on-the-floor kick: cleaning music."
+msgstr "马林巴配上四拍底鼓：清理时的音乐。"
+
+#: data/radio.json:songs[ochre_sunbaked].name
+msgid "Sunbaked"
+msgstr "烈日炙烤"
+
+#: data/radio.json:songs[ochre_sunbaked].desc
+msgid "A sunny marimba hook over a lute ostinato."
+msgstr "鲁特琴固定音型上的明快马林巴动机。"
+
+#: data/radio.json:songs[ochre_sunbaked].hint
+msgid "Land on Ochre"
+msgstr "登陆 Ochre"
+
+#: data/radio.json:songs[ochre_caravan].name
+msgid "Dune Caravan"
+msgstr "沙丘驼队"
+
+#: data/radio.json:songs[ochre_caravan].desc
+msgid "A winding pluck line over a loping frame drum."
+msgstr "悠然的框鼓上蜿蜒的拨弦旋律。"
+
+#: data/radio.json:songs[ochre_caravan].hint
+msgid "A base on Ochre at level 3"
+msgstr "Ochre 上一个基地达到 3 级"
+
+#: data/radio.json:songs[ochre_mirage].name
+msgid "Mirage"
+msgstr "海市蜃楼"
+
+#: data/radio.json:songs[ochre_mirage].desc
+msgid "Kalimba and bells shimmering in the heat."
+msgstr "在热浪中闪烁的卡林巴和铃声。"
+
+#: data/radio.json:songs[ochre_mirage].hint
+msgid "A base on Ochre at level 5"
+msgstr "Ochre 上一个基地达到 5 级"
+
+#: data/radio.json:songs[tidewell_tradewinds].name
+msgid "Tradewinds"
+msgstr "信风"
+
+#: data/radio.json:songs[tidewell_tradewinds].desc
+msgid "Steel pans skipping over the waves."
+msgstr "在浪花上跳跃的钢鼓。"
+
+#: data/radio.json:songs[tidewell_tradewinds].hint
+msgid "Land on Tidewell"
+msgstr "登陆 Tidewell"
+
+#: data/radio.json:songs[tidewell_tidepools].name
+msgid "Tidepools"
+msgstr "潮汐池"
+
+#: data/radio.json:songs[tidewell_tidepools].desc
+msgid "A harp melody over rolling arpeggios."
+msgstr "起伏琶音上的竖琴旋律。"
+
+#: data/radio.json:songs[tidewell_tidepools].hint
+msgid "A base on Tidewell at level 3"
+msgstr "Tidewell 上一个基地达到 3 级"
+
+#: data/radio.json:songs[tidewell_skipper].name
+msgid "Skipping Stones"
+msgstr "打水漂"
+
+#: data/radio.json:songs[tidewell_skipper].desc
+msgid "A bouncy marimba shuffle."
+msgstr "跳跃的马林巴拖曳节奏。"
+
+#: data/radio.json:songs[tidewell_skipper].hint
+msgid "A base on Tidewell at level 5"
+msgstr "Tidewell 上一个基地达到 5 级"
+
+#: data/radio.json:songs[rime_hoarfrost].name
+msgid "Hoarfrost"
+msgstr "白霜"
+
+#: data/radio.json:songs[rime_hoarfrost].desc
+msgid "Glass bells that slowly gather warmth."
+msgstr "慢慢变暖的玻璃钟声。"
+
+#: data/radio.json:songs[rime_hoarfrost].hint
+msgid "Land on Rime"
+msgstr "登陆 Rime"
+
+#: data/radio.json:songs[rime_aurora].desc
+msgid "Piano doubled by glass under the northern lights."
+msgstr "极光下由玻璃声叠奏的钢琴。"
+
+#: data/radio.json:songs[rime_aurora].hint
+msgid "A base on Rime at level 5"
+msgstr "Rime 上一个基地达到 5 级"
+
+#: data/radio.json:songs[anvil_foundry].name
+msgid "Foundry Heart"
+msgstr "熔炉之心"
+
+#: data/radio.json:songs[anvil_foundry].desc
+msgid "A dark, groovy forge that learns to hope."
+msgstr "一座学会希望的幽暗律动熔炉。"
+
+#: data/radio.json:songs[anvil_foundry].hint
+msgid "Land on Anvil"
+msgstr "登陆 Anvil"
+
+#: data/radio.json:songs[anvil_ash].name
+msgid "Ash Choir"
+msgstr "灰烬合唱"
+
+#: data/radio.json:songs[anvil_ash].desc
+msgid "An eerie choir over brass and embers."
+msgstr "铜管与余烬上的诡异合唱。"
+
+#: data/radio.json:songs[anvil_ash].hint
+msgid "A base on Anvil at level 3"
+msgstr "Anvil 上一个基地达到 3 级"
+
+#: data/radio.json:songs[anvil_engine].name
+msgid "Red Engine"
+msgstr "红色引擎"
+
+#: data/radio.json:songs[anvil_engine].desc
+msgid "Sub bass and metal hits, the furnaces running clean."
+msgstr "超低音与金属敲击，熔炉运转得干干净净。"
+
+#: data/radio.json:songs[anvil_engine].hint
+msgid "A base on Anvil at level 5"
+msgstr "Anvil 上一个基地达到 5 级"
+
+#: data/radio.json:songs[homecoming].desc
+msgid "The ark's theme, for the journey home."
+msgstr "方舟的主题曲，献给回家的旅程。"
+
+#: data/radio.json:songs[homecoming].hint
+msgid "Bring the Cradle home"
+msgstr "把 Cradle 带回家"
 
 #: data/research.json:branches[robotics].name
 msgid "Robotics"
@@ -11856,6 +12466,54 @@ msgstr "多重锁定"
 #: data/upgrades.json:upgrades[multi_lock].desc
 msgid "Extra targeting lasers: lift several pieces at once."
 msgstr "额外的瞄准激光：一次举起多件废料。"
+
+#: data/weekly.json:twists[scoopies_only].name
+msgid "Scoopies Only"
+msgstr "只有 Scoopie"
+
+#: data/weekly.json:twists[scoopies_only].desc
+msgid "Only Scoopies answer the call this week. Lumi does the hauling."
+msgstr "本周只有 Scoopie 响应召唤。搬运由 Lumi 负责。"
+
+#: data/weekly.json:twists[dry_spell].name
+msgid "Dry Spell"
+msgstr "干旱"
+
+#: data/weekly.json:twists[dry_spell].desc
+msgid "No water robots, and the soil is thin. Water the garden by hand."
+msgstr "没有浇水机器人，土壤也很贫瘠。请手动浇灌花园。"
+
+#: data/weekly.json:twists[heavy_junk].desc
+msgid "Dense scrap: scooping is slower, but bales sell for more."
+msgstr "沉重废料：铲起来更慢，但捆包卖得更贵。"
+
+#: data/weekly.json:twists[storm_week].name
+msgid "Storm Week"
+msgstr "暴雨周"
+
+#: data/weekly.json:twists[storm_week].desc
+msgid "Rain showers four times as often. Plants love it."
+msgstr "阵雨的频率是平时的四倍。植物很喜欢。"
+
+#: data/weekly.json:twists[supply_rush].name
+msgid "Supply Rush"
+msgstr "补给热潮"
+
+#: data/weekly.json:twists[supply_rush].desc
+msgid "Tailwinds: Lumi is quicker and supply drops come twice as often."
+msgstr "顺风：Lumi 更快，补给空投的频率翻倍。"
+
+#: data/weekly.json:twists[long_nights].desc
+msgid "Nights last twice as long. The night shift pays a little more."
+msgstr "夜晚时长加倍。夜班的报酬多一点。"
+
+#: data/weekly.json:twists[no_haulers].name
+msgid "No Haulers"
+msgstr "没有搬运工"
+
+#: data/weekly.json:twists[no_haulers].desc
+msgid "The Haul Bugs are on holiday. Every bale goes to the scale by hand."
+msgstr "Haul Bug 们去度假了。每个捆包都要手动送到秤上。"
 
 #: data/wren_lines.json:wake
 msgid "...carrier... Lumi? Relay at four percent. It's WREN. Hello. Hello. I'm still here."
@@ -13425,6 +14083,30 @@ msgstr ""
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
 
+#~ msgid "Not enough bolts (scrap spare parts at Haggle's)"
+#~ msgstr "螺栓不足（去 Haggle 那里拆解备用零件）"
+
+#~ msgid "+%d Maker Fragments (%d)."
+#~ msgstr "+%d 造物者碎片（%d）。"
+
+#~ msgid "Printed: %s. Fit it in the Builder tab."
+#~ msgstr "已打印：%s。在“组装”页装上它。"
+
+#~ msgid "Unlocks with planting"
+#~ msgstr "种植后解锁"
+
+#~ msgid "Collection complete"
+#~ msgstr "收藏已集齐"
+
+#~ msgid "Needs %d tokens"
+#~ msgstr "需要 %d 代币"
+
+#~ msgid "Needs %d Starseeds"
+#~ msgstr "需要 %d 星种"
+
+#~ msgid "Parts bin %d   ·   Maker Fragments %d   ·   Bolts %s"
+#~ msgstr "零件箱 %d   ·   造物者碎片 %d   ·   螺栓 %s"
+
 #~ msgid "+%d bolts"
 #~ msgstr "+%d 螺栓"
 
@@ -13437,9 +14119,6 @@ msgstr ""
 #~ msgstr ""
 #~ "堆肥压制机  %d 级\n"
 #~ "堆肥 %s  →  种子"
-
-#~ msgid "Not enough bolts (scrap spare parts at Haggle's)"
-#~ msgstr "螺栓不足（去 Haggle 那里拆解备用零件）"
 
 #~ msgid "<< INTERCEPT // LEDGER PROMOTIONS // %d OF %d >>"
 #~ msgstr "<< 截获 // LEDGER 促销 // %d / %d >>"
@@ -13464,24 +14143,6 @@ msgstr ""
 
 #~ msgid "+%d seeds."
 #~ msgstr "+%d 种子。"
-
-#~ msgid "+%d Maker Fragments (%d)."
-#~ msgstr "+%d 造物者碎片（%d）。"
-
-#~ msgid "Printed: %s. Fit it in the Builder tab."
-#~ msgstr "已打印：%s。在“组装”页装上它。"
-
-#~ msgid "Unlocks with planting"
-#~ msgstr "种植后解锁"
-
-#~ msgid "Collection complete"
-#~ msgstr "收藏已集齐"
-
-#~ msgid "Needs %d tokens"
-#~ msgstr "需要 %d 代币"
-
-#~ msgid "Needs %d Starseeds"
-#~ msgstr "需要 %d 星种"
 
 #~ msgid "+%d data"
 #~ msgstr "+%d 数据"
@@ -13551,9 +14212,6 @@ msgstr ""
 
 #~ msgid "%d Data"
 #~ msgstr "%d 数据"
-
-#~ msgid "Parts bin %d   ·   Maker Fragments %d   ·   Bolts %s"
-#~ msgstr "零件箱 %d   ·   造物者碎片 %d   ·   螺栓 %s"
 
 #~ msgid "Hint: complete %d contracts at the workbench."
 #~ msgstr "提示：在工作台完成 %d 个委托。"
@@ -13756,6 +14414,102 @@ msgstr ""
 
 #~ msgid "Heirlooms, Starseeds, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."
 #~ msgstr "传家宝、星种，还有一整张世界地图。Verdance 会一直绿下去；我们只是把学到的带到新的地方。"
+
+#~ msgid "Your pick plays everywhere until you switch back to the mood music."
+#~ msgstr "你选的歌会一直播放，直到你切回氛围音乐。"
+
+#~ msgid "The tune Lumi hums on a dusty morning."
+#~ msgstr "Lumi 在尘土飞扬的早晨哼的曲子。"
+
+#~ msgid "Workbench Waltz"
+#~ msgstr "工作台华尔兹"
+
+#~ msgid "Cozy chords for tinkering at the bench."
+#~ msgstr "在工作台边捣鼓时的温馨和弦。"
+
+#~ msgid "Hopeful Static"
+#~ msgstr "希望的杂音"
+
+#~ msgid "What the radio picked up the night Lumi landed."
+#~ msgstr "Lumi 降落那晚收音机收到的声音。"
+
+#~ msgid "Lantern Hours"
+#~ msgstr "灯笼时分"
+
+#~ msgid "Night music, slow and a little blue."
+#~ msgstr "夜晚的音乐，缓慢而略带忧郁。"
+
+#~ msgid "Rust Lullaby"
+#~ msgstr "铁锈摇篮曲"
+
+#~ msgid "A music box found in a scrapyard, still in tune."
+#~ msgstr "在废品场找到的八音盒，音还很准。"
+
+#~ msgid "Sprout Shuffle"
+#~ msgstr "新芽小步舞"
+
+#~ msgid "Bouncy and green. The seedlings like this one."
+#~ msgstr "活泼又翠绿。幼苗们喜欢这一首。"
+
+#~ msgid "Grow 10 plants to bloom"
+#~ msgstr "让 10 株植物开花"
+
+#~ msgid "Old Town Rooftops"
+#~ msgstr "老城屋顶"
+
+#~ msgid "Evening jazz over the mended roofs."
+#~ msgstr "修好的屋顶上飘着傍晚的爵士乐。"
+
+#~ msgid "Raise a base to level 3"
+#~ msgstr "把一个基地升到 3 级"
+
+#~ msgid "Greenline Express"
+#~ msgstr "绿线快车"
+
+#~ msgid "A quick groove for a district that runs itself."
+#~ msgstr "为一个自己就能运转的街区奏响的轻快律动。"
+
+#~ msgid "Raise a base to level 5"
+#~ msgstr "把一个基地升到 5 级"
+
+#~ msgid "Far Shore"
+#~ msgstr "远方的岸"
+
+#~ msgid "Wide and airy, for the next district over the hill."
+#~ msgstr "宽广而轻盈，献给山那边的下一个街区。"
+
+#~ msgid "Visit a second district"
+#~ msgstr "造访第二个街区"
+
+#~ msgid "The swelling theme from Lumi's long fall."
+#~ msgstr "Lumi 漫长坠落时那段渐强的主题。"
+
+#~ msgid "Raise three bases to level 5"
+#~ msgstr "把三个基地升到 5 级"
+
+#~ msgid "Verdance in Bloom"
+#~ msgstr "繁花 Verdance"
+
+#~ msgid "The whole planet in flower, in four chords."
+#~ msgstr "整颗星球繁花盛开，只用四个和弦。"
+
+#~ msgid "Cradle Choir"
+#~ msgstr "Cradle 合唱"
+
+#~ msgid "The ark's garden deck, remembered in slow swells."
+#~ msgstr "方舟的花园甲板，在缓慢的起伏中被回忆。"
+
+#~ msgid "See the Cradle finale"
+#~ msgstr "观看 Cradle 结局"
+
+#~ msgid "Starseed Serenade"
+#~ msgstr "星种小夜曲"
+
+#~ msgid "A new world on the horizon, lydian and bright."
+#~ msgstr "地平线上的新世界，利底亚调式，明亮动人。"
+
+#~ msgid "Retire an old robot to the nursery garden"
+#~ msgstr "让一个老机器人退休去苗圃花园"
 
 #~ msgid "Salvaged: %s %s"
 #~ msgstr "回收：%s %s"

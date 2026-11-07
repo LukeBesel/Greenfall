@@ -147,6 +147,8 @@ static func current_full() -> Dictionary:
 
 
 static func world_seed() -> int:
+	if WeeklyChallenge.active:  # [extras] Seed of the Week
+		return WeeklyChallenge.current_seed()
 	return int(current_world().get("seed", WorldGen.VERDANCE_SEED))
 
 
@@ -155,10 +157,14 @@ static func world_name() -> String:
 
 
 static func planet_mix() -> Dictionary:
+	if WeeklyChallenge.active:  # [extras]
+		return WeeklyChallenge.planet_mix()
 	return current_full().get("mix", {})
 
 
 static func modifiers() -> Array:
+	if WeeklyChallenge.active:  # [extras] the week's twist
+		return WeeklyChallenge.twist_modifiers()
 	return current_world().get("modifiers", [])
 
 
@@ -227,6 +233,8 @@ static func world_summary() -> Dictionary:
 
 ## Banks the current world's new Starseeds into the profile and archives its stats. Returns the gain.
 static func bank() -> int:
+	if WeeklyChallenge.active:  # [extras] the challenge never banks into the profile
+		return 0
 	var w: Dictionary = current_world()
 	var s: Dictionary = world_summary()
 	var gain: int = claimable(s, int(w.get("claimed", 0)))
@@ -336,8 +344,8 @@ static func mod_mult(stat_id: String, mods: Array) -> float:
 ## Economy.stat hook: Heirlooms x this world's modifiers x this district's decor charm.
 static func stat_mod(stat_id: String, value: float) -> float:
 	if profile.is_empty():
-		return value * Decor.stat_mult(stat_id)
-	return value * heirloom_mult(stat_id, _p().get("heirlooms", {})) * mod_mult(stat_id, modifiers()) * Decor.stat_mult(stat_id)
+		return value * Decor.stat_mult(stat_id) * Nursery.stat_mult(stat_id)  # [extras] nursery caretakers
+	return value * heirloom_mult(stat_id, _p().get("heirlooms", {})) * mod_mult(stat_id, modifiers()) * Decor.stat_mult(stat_id) * Nursery.stat_mult(stat_id)  # [extras]
 
 
 ## World event weight multiplier (systems/events.gd).
@@ -385,7 +393,7 @@ static func _next_slot() -> int:
 	for w: Dictionary in worlds():
 		used.append(int(w.get("slot", 0)))
 	var s: int = 0
-	while s in used or s == 7 or s == 8:  # 7/8: the save round trip's scratch slots
+	while s in used or s == 7 or s == 8 or s == WeeklyChallenge.slot():  # 7/8: the save round trip's scratch slots; [extras] the weekly slot
 		s += 1
 	return s
 
