@@ -149,7 +149,7 @@ func _build_stage() -> void:
 	var skin: String = str((_save.get("flags", {}) as Dictionary).get("patch_skin", ""))
 	if skin != "":
 		_model.set_variant(skin)
-	_model.set_happy(0.9)
+	_model.set_happy(0.55)  # [hero] signature C eyes on the title (0.9 sat mid-morph: C + ^ = "two sets of eyes")
 
 	_cam = Camera3D.new()
 	_cam.fov = 42.0
