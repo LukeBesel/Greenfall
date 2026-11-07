@@ -2,6 +2,9 @@ class_name LedgerUplink
 extends CanvasLayer
 ## Intercepted Ledger transmissions: a cold monospace terminal box, red/amber, with glitchy
 ## scrambling and jitter. Deliberately unlike WREN's soft centered subtitles.
+## [green] Minimal-HUD rules: a compact card top-left under the currencies (not a banner across the
+## top), short-lived, no footer, and hidden in Command view, photo mode, cinematics and with the HUD
+## hidden. Lines the Ledger's own cinematic shows with show_now() stay visible there.
 
 const GLITCH: String = "#%&$@/\\|=+*<>01"
 const RED := Color(1.0, 0.28, 0.2)
@@ -24,6 +27,7 @@ var _tick_t: float = 0.0
 var _friendly: bool = false
 var _base_x: float = 0.0
 var _style: StyleBoxFlat
+var _cine_line: bool = false  # [green]
 
 static var _mono: Font
 
@@ -47,14 +51,15 @@ func _ready() -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(root)
 	var mc := MarginContainer.new()
-	# Top centre: the goals panel owns the top right and WREN's subtitles sit low in the middle.
-	mc.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
-	mc.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	mc.add_theme_constant_override("margin_top", 22)
+	# [green] Top left, under the currency cluster: the goals own the top right, WREN's subtitles
+	# sit low in the middle, and the top centre stays clear.
+	mc.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	mc.add_theme_constant_override("margin_top", 64)
+	mc.add_theme_constant_override("margin_left", 18)
 	mc.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(mc)
 	_box = PanelContainer.new()
-	_box.custom_minimum_size = Vector2(440, 0)
+	_box.custom_minimum_size = Vector2(300, 0)
 	_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_style = StyleBoxFlat.new()
 	_style.bg_color = Color(0.07, 0.015, 0.012, 0.86)
@@ -63,21 +68,26 @@ func _ready() -> void:
 	_style.border_width_top = 1
 	_style.border_width_bottom = 1
 	_style.border_width_right = 1
-	_style.set_content_margin_all(12)
-	_style.content_margin_left = 16
+	_style.set_content_margin_all(7)
+	_style.content_margin_left = 10
+	_style.border_width_left = 2
+	_style.border_width_top = 0
+	_style.border_width_bottom = 0
+	_style.border_width_right = 0
 	_box.add_theme_stylebox_override("panel", _style)
 	mc.add_child(_box)
 	var vb := VBoxContainer.new()
-	vb.add_theme_constant_override("separation", 6)
+	vb.add_theme_constant_override("separation", 3)
 	vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_box.add_child(vb)
 	_header = _mk_label(11, RED)
 	vb.add_child(_header)
 	_body = _mk_label(16, AMBER)
 	_body.autowrap_mode = TextServer.AUTOWRAP_WORD
-	_body.custom_minimum_size = Vector2(408, 0)
+	_body.custom_minimum_size = Vector2(280, 0)
 	vb.add_child(_body)
 	_footer = _mk_label(11, Color(RED, 0.6))
+	_footer.visible = false  # [green] the checksum line was flavour; the card stays two lines
 	vb.add_child(_footer)
 	_scan = ColorRect.new()
 	_scan.color = Color(1.0, 0.4, 0.2, 0.08)
@@ -94,12 +104,12 @@ func _ready() -> void:
 func _apply_settings() -> void:
 	visible = Settings.subtitles_enabled
 	var sz: Array[int] = UITheme.subtitle_sizes()
-	_header.add_theme_font_size_override("font_size", sz[0] - 1)
-	_footer.add_theme_font_size_override("font_size", sz[0] - 1)
-	_body.add_theme_font_size_override("font_size", sz[1] - 3)
-	_box.custom_minimum_size.x = 440.0 * (float(sz[1]) / 19.0)
-	_body.custom_minimum_size.x = _box.custom_minimum_size.x - 32.0
-	_style.bg_color.a = 0.97 if Settings.subtitle_background else 0.86
+	_header.add_theme_font_size_override("font_size", maxi(sz[0] - 3, 12))
+	_footer.add_theme_font_size_override("font_size", maxi(sz[0] - 3, 12))
+	_body.add_theme_font_size_override("font_size", maxi(sz[1] - 6, 13))
+	_box.custom_minimum_size.x = 300.0 * (float(sz[1]) / 19.0)
+	_body.custom_minimum_size.x = _box.custom_minimum_size.x - 20.0
+	_style.bg_color.a = 0.9 if Settings.subtitle_background else 0.62
 
 
 func _mk_label(size: int, col: Color) -> Label:
@@ -126,6 +136,7 @@ func show_line(text: String, friendly: bool = false, header: String = "") -> voi
 ## Show a line immediately (cinematics), dropping anything queued. hold = seconds after typing.
 func show_now(text: String, friendly: bool = false, hold: float = -1.0) -> void:
 	_queue.clear()
+	_cine_line = true  # [green] the Ledger's own cinematic: stays visible over its letterbox
 	_start({"text": text, "friendly": friendly, "header": ""})
 	if hold >= 0.0:
 		_hold = hold
@@ -135,7 +146,7 @@ func _start(l: Dictionary) -> void:
 	_full = tr(str(l["text"])) if str(l["text"]) != "" else ""
 	_friendly = bool(l["friendly"])
 	_shown = 0.0
-	_hold = 3.2 + _full.length() * 0.045
+	_hold = 2.2 + _full.length() * 0.03  # [green] short-lived
 	_glitch_t = 0.35
 	var col: Color = GREEN if _friendly else AMBER
 	_body.add_theme_color_override("font_color", col)
@@ -143,16 +154,36 @@ func _start(l: Dictionary) -> void:
 	_header.add_theme_color_override("font_color", Color(0.4, 0.9, 0.55) if _friendly else RED)
 	_style.border_color = Color(0.4, 0.9, 0.55, 0.75) if _friendly else Color(RED, 0.75)
 	_style.bg_color = Color(0.015, 0.06, 0.03, 0.86) if _friendly else Color(0.07, 0.015, 0.012, 0.86)
-	_style.bg_color.a = 0.97 if Settings.subtitle_background else 0.86
+	_style.bg_color.a = 0.9 if Settings.subtitle_background else 0.62
 	var h: String = tr(str(l["header"])) if str(l["header"]) != "" else ""
-	_header.text = h if h != "" else (tr("<< LEDGER // CONTRACT 0001 // AMENDED >>") if _friendly else tr("<< INTERCEPT // LEDGER-NODE 07 // UNSECURED CHANNEL >>"))
+	_header.text = h if h != "" else (tr("LEDGER // AMENDED") if _friendly else tr("INTERCEPT // LEDGER"))
 	_footer.text = tr("line item %04d   checksum %s") % [randi() % 9999, "OK" if _friendly else tr("MISMATCH")]
 	_box.modulate.a = 1.0
 	if visible and Audio.has_sound("glitch"):
 		Audio.play("glitch", 1.0, -14.0 if _friendly else -9.0)
 
 
+## [green] Hidden while the player is in Command view, photo mode, a cinematic or has the HUD off.
+func _suppressed() -> bool:
+	if _cine_line:
+		return false
+	if Settings.hud_mode == Settings.HudMode.HIDDEN or DevHooks.has("no-hud"):
+		return true
+	var w: Node = get_tree().current_scene if is_inside_tree() else null
+	if w == null:
+		return false
+	for k: String in ["command", "photo"]:
+		var v: Variant = w.get(k)
+		if v is Object and is_instance_valid(v) and bool((v as Object).get("is_open")):
+			return true
+	var hud: Variant = w.get("hud")
+	return hud is CanvasLayer and is_instance_valid(hud) and not (hud as CanvasLayer).visible
+
+
 func _process(delta: float) -> void:
+	var want: bool = Settings.subtitles_enabled and not _suppressed()  # [green]
+	if visible != want:
+		visible = want
 	if _full == "":
 		if not _queue.is_empty():
 			_start(_queue.pop_front())
@@ -190,4 +221,5 @@ func _process(delta: float) -> void:
 			_box.modulate.a = maxf(0.0, _box.modulate.a - delta * 2.0)
 			if _box.modulate.a <= 0.0:
 				_full = ""
+				_cine_line = false
 				line_finished.emit()

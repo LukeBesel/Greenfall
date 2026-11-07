@@ -25,6 +25,8 @@ static func report(world: Node) -> void:
 	for key: String in g._mms:
 		var mmi: MultiMeshInstance3D = g._mms[key]
 		vis += mmi.multimesh.visible_instance_count
+	var wl: Array = range(world.field.hex_count()).filter(func(h: int) -> bool: return world.field.is_water(h))
+	print("[garden] district=%s water_hexes=%s" % [str(world.get("district_name")), str(wl)])
 	print("[garden] batches=%d visible_instances=%d" % [g._mms.size(), vis])
 	species_census(g)
 	for h: int in g.hex_life:
@@ -56,7 +58,8 @@ static func _tris(m: Mesh) -> int:
 ##                        default 4) with real planted slots at matching growth stages, life values
 ##                        and part-watered plants; --restore-bots=N Drip robots (default 2) and a
 ##                        Seedling work them. Levels below `level` ring outward (a half-green district):
-##                        --restore-ramp spreads levels 5..1 from the base out.
+##                        --restore-ramp spreads levels 5..1 from the base out; --restore=lake[,level]
+##                        does every lakeside hex (with --fauna-lakes: ducks, frogs and fish).
 ##   --green-cam=hid,dist,pitch,yaw_deg   put Lumi on hex hid and frame it (screenshots)
 
 ## Stage mix per level (weights for stages 0..4) and the share of slots planted.
@@ -136,9 +139,11 @@ static func grow_hex(w: Node, hid: int, level: int) -> void:
 ## --restore=N[,level] / --restore-ramp.
 static func apply_restore(w: Node) -> void:
 	var spec: PackedStringArray = DevHooks.get_s("restore", "7").split(",")
-	var n: int = int(spec[0])
 	var level: int = int(spec[1]) if spec.size() > 1 else 4
 	var land: Array = land_by_distance(w)
+	if spec[0] == "lake":  # every lakeside hex (ducks want a clean lake with a green shore)
+		land = land.filter(func(h: int) -> bool: return (w.field as HexField).is_shore(h))
+	var n: int = land.size() if spec[0] == "lake" else int(spec[0])
 	var ramp: bool = DevHooks.has("restore-ramp")
 	for i: int in mini(n, land.size()):
 		var lv: int = level
