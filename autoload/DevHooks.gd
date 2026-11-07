@@ -38,12 +38,12 @@ extends Node
 ##   --event-look[=M]   with --event: put Patch M m from the event, facing it (screenshots)
 ##   --event-every=S    next random event in S seconds (ignores the min-hexes gate)
 ##   --streak=N         start with N cleaning-streak points (30 per tier)
-##   --tokens=N         start with N contract tokens; --trinkets=N grants N collectibles; --livery=ID equips one
+##   --requests-done=N  N finished requests on the Requests reward track [money]; --trinkets=N grants N collectibles; --livery=ID equips one
 ##   [skins] --design=ID wear a design (unlocks it); --designs-all; --design-unlock=ID plays its unlock card
 ##           after --design-unlock-at=S s (systems/designs.gd)
 ##   --pad-audit        [deck] open every screen pad-only and check focus reachability + B to close
 ##   --scene-stats[=S]  [deck] print a geometry census (tools/scene_stats.gd) after S s (headless ok)
-##   --tab=contracts    with --open=upgrades: the contracts board and token shop (--contracts-sample fills it)
+##   --tab=contracts    with --open=upgrades: the Requests board and its reward track [money] (--contracts-sample fills it)
 ##   [hud] --lumi-level=N start at Lumi Level N; --lumi-xp=N grant N XP; --lumi-levelup=S level up S s after start
 ##         (holds the level-up moment for screenshots); --tool=plant|water; --hud-pad (pad glyphs);
 ##         --hud-mode=full|minimal|hidden; --hud-goals=expanded
