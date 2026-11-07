@@ -3,7 +3,7 @@ extends Node
 ## gameplay HUD, toasts, subtitles and event banners hidden. Full-screen views opened on purpose
 ## (Command view, hologram map, workbench) stay visible. Added by DevHooks; does nothing otherwise.
 
-const HIDE_SCRIPTS: Array[String] = ["res://ui/hud.gd", "res://ui/subtitles.gd", "res://ui/event_hud.gd"]
+const HIDE_SCRIPTS: Array[String] = ["res://ui/hud.gd", "res://ui/subtitles.gd", "res://ui/event_hud.gd", "res://story/ledger_uplink.gd"]
 
 var _t: float = 0.0
 
