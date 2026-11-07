@@ -26,6 +26,12 @@ func _ready() -> void:
 	match _view:
 		"hero":
 			_hero()
+		"pair":
+			var w2: float = _row([1, 7] as Array[int], 10.5, 32.0)
+			_frame(w2, 27.0, 26.0)
+		"lineup":
+			var w: float = _row(LINEUP, 9.6, 32.0)
+			_frame(w, 60.0, 24.0)
 		_:
 			_lineup()
 	if _out == "":
@@ -34,6 +40,9 @@ func _ready() -> void:
 
 
 func _env() -> void:
+	if _view in ["lineup", "pair"]:
+		_studio()
+		return
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
 	var sky := Sky.new()
@@ -82,6 +91,85 @@ func _env() -> void:
 	add_child(ground)
 
 
+## Dark studio for the lineup and the pair: deep blue-black, a warm key, a cool rim, glossy floor.
+func _studio() -> void:
+	var env := Environment.new()
+	env.background_mode = Environment.BG_COLOR
+	env.background_color = Color(0.025, 0.03, 0.045)
+	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	env.ambient_light_color = Color(0.32, 0.36, 0.44)
+	env.ambient_light_energy = 0.55
+	env.tonemap_mode = Environment.TONE_MAPPER_AGX
+	env.glow_enabled = true
+	env.glow_intensity = 0.55
+	env.glow_bloom = 0.05
+	env.glow_hdr_threshold = 1.0
+	env.ssao_enabled = true
+	env.ssao_intensity = 1.4
+	env.ssr_enabled = true
+	var we := WorldEnvironment.new()
+	we.environment = env
+	add_child(we)
+	var key := DirectionalLight3D.new()
+	key.rotation_degrees = Vector3(-42, 28, 0)
+	key.light_energy = 2.0
+	key.light_color = Color(1.0, 0.95, 0.88)
+	key.shadow_enabled = true
+	key.directional_shadow_max_distance = 120.0
+	add_child(key)
+	var rim := DirectionalLight3D.new()
+	rim.rotation_degrees = Vector3(-18, 200, 0)
+	rim.light_energy = 1.4
+	rim.light_color = Color(0.55, 0.8, 1.0)
+	add_child(rim)
+	var fill := DirectionalLight3D.new()
+	fill.rotation_degrees = Vector3(-10, -70, 0)
+	fill.light_energy = 0.4
+	fill.light_color = Color(0.8, 0.85, 1.0)
+	add_child(fill)
+	var ground := MeshInstance3D.new()
+	var pm := PlaneMesh.new()
+	pm.size = Vector2(400, 400)
+	var gm := StandardMaterial3D.new()
+	gm.albedo_color = Color(0.05, 0.055, 0.065)
+	gm.roughness = 0.28
+	gm.metallic = 0.2
+	pm.material = gm
+	ground.mesh = pm
+	add_child(ground)
+
+
+## Display scale: every tier at roughly the same screen size (the growth shows in the parts).
+static func _disp_scale(t: int) -> float:
+	var e: Vector2 = ShipModel.extent(t)
+	return 8.0 / maxf(e.x, e.y * 2.0) * (1.0 + 0.04 * float(t - 1))
+
+
+func _row(tiers: Array[int], spacing: float, yaw_deg: float) -> float:
+	for i: int in tiers.size():
+		var t: int = tiers[i]
+		var m := ShipModel.new()
+		add_child(m)
+		m.build(t)
+		var sc: float = _disp_scale(t)
+		m.scale = Vector3.ONE * sc
+		m.rotation.y = deg_to_rad(yaw_deg)
+		var e: Vector2 = ShipModel.extent(t)
+		var centre_z: float = (3.1 + ShipModel.front_shift(t) - e.x * 0.5) * sc
+		m.position = Vector3(i * spacing, 0, 0) - Basis(Vector3.UP, m.rotation.y) * Vector3(0, 0, centre_z)
+		var l := Label3D.new()
+		l.text = ShipTiers.mark(t)
+		l.font_size = 110
+		l.pixel_size = 0.009
+		l.modulate = Color(0.4, 1.0, 1.4)
+		l.outline_size = 0
+		l.shaded = false
+		l.rotation_degrees = Vector3(-70, 0, 0)
+		l.position = Vector3(i * spacing, 0.03, 5.6)
+		add_child(l)
+	return (tiers.size() - 1) * spacing
+
+
 func _lineup() -> void:
 	var x: float = 0.0
 	var prev_half: float = 0.0
@@ -122,6 +210,13 @@ func _lineup() -> void:
 		var tgt := Vector3(mid, 0.4, 2.0)
 		_cam.position = tgt + Vector3(sin(az) * cos(el), sin(el), cos(az) * cos(el)) * d
 		_cam.look_at(tgt, Vector3.UP)
+
+
+func _frame(w: float, dist: float, fov: float) -> void:
+	_cam.fov = fov
+	var tgt := Vector3(w * 0.5, 0.9, 0.6)
+	_cam.position = tgt + Vector3(0, dist * 0.42, dist)
+	_cam.look_at(tgt, Vector3.UP)
 
 
 func _hero() -> void:

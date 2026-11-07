@@ -39,6 +39,9 @@ var _glow_mats: Array[StandardMaterial3D] = []
 var _thruster: StandardMaterial3D
 var _lamp: StandardMaterial3D
 var _face: ShaderMaterial
+var _vault: StandardMaterial3D
+var _rotors: Array[Node3D] = []
+var _pulse_mats: Array[StandardMaterial3D] = []
 var _banners: Array[MeshInstance3D] = []
 var _ring_node: Node3D
 var _front: float = 0.0
@@ -118,6 +121,8 @@ func build(p_tier: int) -> void:
 	_skids.clear()
 	_glow_mats.clear()
 	_banners.clear()
+	_rotors.clear()
+	_pulse_mats.clear()
 	_ring_node = null
 	plume = null
 	hatch = null
@@ -158,22 +163,38 @@ func build(p_tier: int) -> void:
 	_build_face()
 	_build_marks()
 	_build_engines(want)
+	_build_tier_extras()
 	if tier >= 7:
 		_build_banners()
 	set_legs(_legs_k)
 	set_canopy(_canopy_k)
 
 
+## [ship] Per-tier finish: each Mk looks cooler, not just bigger. Mk I is a plain satin glider;
+## the panels darken to graphite, the pearl gets glossier, the metal more polished, the cyan line
+## light brighter, and Mk VII gets champagne-gold fittings.
 func _make_mats() -> void:
 	_mats.clear()
-	_mats["paint"] = _paint(PEARL, 0.3)
-	_mats["panel"] = _paint(Color(0.82, 0.83, 0.84), 0.38)
-	_mats["accent"] = _paint(ACCENT, 0.3)
+	var t: int = tier
+	var u: float = float(t - 1) / 6.0                      # 0 at Mk I .. 1 at Mk VII
+	var pearl := _paint(PEARL, lerpf(0.38, 0.16, u))
+	pearl.set_shader_parameter("pearl", lerpf(0.3, 0.95, u))
+	pearl.set_shader_parameter("flake", lerpf(0.2, 0.7, u))
+	pearl.set_shader_parameter("clearcoat_amt", lerpf(0.35, 1.0, u))
+	_mats["paint"] = pearl
+	# Accent plates: light grey (I-II), mid grey (III), graphite from IV, deep metallic graphite at VII.
+	var pc: Color = [Color(0.82, 0.83, 0.84), Color(0.82, 0.83, 0.84), Color(0.78, 0.79, 0.8), Color(0.5, 0.52, 0.55),
+		Color(0.2, 0.21, 0.24), Color(0.17, 0.18, 0.21), Color(0.15, 0.16, 0.19), Color(0.12, 0.125, 0.15)][t]
+	var panel := _paint(pc, lerpf(0.4, 0.22, u))
+	panel.set_shader_parameter("metallic", 0.05 if t < 4 else lerpf(0.3, 0.6, u))
+	panel.set_shader_parameter("seam_dark", 0.55 if t < 4 else 0.25)
+	panel.set_shader_parameter("clearcoat_amt", lerpf(0.3, 0.9, u))
+	_mats["panel"] = panel
+	_mats["accent"] = _paint(ACCENT, lerpf(0.34, 0.2, u))
 	var trim := StandardMaterial3D.new()
 	trim.albedo_color = Color(0.09, 0.1, 0.115)
-	trim.roughness = 0.4
-	trim.metallic = 0.5
-	trim.vertex_color_use_as_albedo = false
+	trim.roughness = lerpf(0.45, 0.18, u)
+	trim.metallic = lerpf(0.4, 0.9, u)
 	_mats["trim"] = trim
 	var dark := StandardMaterial3D.new()
 	dark.albedo_color = Color(0.025, 0.028, 0.035)
@@ -181,9 +202,9 @@ func _make_mats() -> void:
 	dark.metallic = 0.3
 	_mats["dark"] = dark
 	var steel := StandardMaterial3D.new()
-	steel.albedo_color = Color(0.62, 0.64, 0.68)
-	steel.roughness = 0.28
-	steel.metallic = 0.9
+	steel.albedo_color = Color(0.95, 0.8, 0.5) if t >= 7 else Color(0.62, 0.64, 0.68)
+	steel.roughness = lerpf(0.4, 0.15, u)
+	steel.metallic = 0.95
 	_mats["steel"] = steel
 	var glass := StandardMaterial3D.new()
 	glass.albedo_color = Color(0.08, 0.42, 0.55)
@@ -194,16 +215,18 @@ func _make_mats() -> void:
 	glass.clearcoat_roughness = 0.02
 	glass.emission_enabled = true
 	glass.emission = Color(0.1, 0.55, 0.7)
-	glass.emission_energy_multiplier = 0.25
+	glass.emission_energy_multiplier = lerpf(0.2, 0.55, u)
 	glass.rim_enabled = true
 	glass.rim = 0.4
 	_mats["glass"] = glass
-	_mats["glow"] = _glow(GLOW, 1.5)
+	_mats["glow"] = _glow(GLOW, glow_energy(t))
 	_lamp = Mats.lamp(Color(1.0, 0.36, 0.12), 3.0)
 	_mats["lamp"] = _lamp
 	_thruster = Mats.lamp(GLOW, 1.0)
+	_thruster.set_meta("idle", lerpf(0.6, 3.5, u))
 	_mats["thruster"] = _thruster
-	_mats["vault"] = _glow(Color(0.45, 1.0, 0.55), 1.6)
+	_vault = Mats.lamp(Color(0.45, 1.0, 0.55), 1.6)
+	_mats["vault"] = _vault
 	var vg := StandardMaterial3D.new()
 	vg.albedo_color = Color(0.75, 0.95, 0.88, 0.28)
 	vg.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
@@ -219,6 +242,11 @@ func _make_mats() -> void:
 	leaf.emission = Color(0.25, 0.7, 0.3)
 	leaf.emission_energy_multiplier = 0.3
 	_mats["leaf"] = leaf
+
+
+## Cyan line-light energy per tier (thin lines, brighter as the ship upgrades).
+static func glow_energy(t: int) -> float:
+	return [1.0, 0.9, 1.1, 1.4, 1.7, 2.0, 2.4, 2.8][clampi(t, 0, 7)]
 
 
 func _paint(c: Color, rough: float) -> ShaderMaterial:
@@ -326,6 +354,131 @@ func _build_engines(want: PackedStringArray) -> void:
 		add_child(plume)
 
 
+## [ship] Tier pieces built at runtime on top of the GLB parts: spinning lift-fan rotors (all),
+## extra cyan line lights (II+), a dorsal blade fin and nose canards (III+), landing lights (IV+),
+## engine halo rings (V+), a pulsing fold-ring light (VI+) and a seed-vault light spine (VII).
+func _build_tier_extras() -> void:
+	var t: int = tier
+	var ly: float = float(_pts.get("lift", 0.62))
+	var line: StandardMaterial3D = _mats["glow"]
+	var pearl := StandardMaterial3D.new()
+	pearl.albedo_color = PEARL
+	pearl.roughness = 0.25
+	pearl.clearcoat_enabled = true
+	pearl.clearcoat = 0.8
+	var tang := StandardMaterial3D.new()
+	tang.albedo_color = ACCENT
+	tang.roughness = 0.3
+	tang.clearcoat_enabled = true
+	# Lift-fan rotors (they spin; faster with the fans on).
+	for f: Dictionary in _pts.get("fans", []):
+		var fp: Array = f["pos"]
+		for sx: float in [1.0, -1.0]:
+			var rot := Node3D.new()
+			rot.position = Vector3(float(fp[0]) * sx, float(fp[1]) + 0.09, float(fp[2]))
+			add_child(rot)
+			for k: int in 7:
+				var a: float = TAU * k / 7.0
+				var b := _box(rot, Vector3(0.28, 0.012, 0.075), _mats["steel"], Vector3(cos(a) * 0.17, 0, sin(a) * 0.17))
+				b.rotation = Vector3(0.0, -a, 0.35)
+			_box(rot, Vector3(0.1, 0.05, 0.1), _mats["trim"], Vector3.ZERO)
+			if t >= 3:
+				var ring := MeshInstance3D.new()
+				ring.mesh = ProcMesh.torus(0.33, 0.342, 32, 3)
+				ring.material_override = line
+				ring.position = Vector3(float(fp[0]) * sx, float(fp[1]) + 0.165, float(fp[2]))
+				add_child(ring)
+			_rotors.append(rot)
+	for sx2: float in [1.0, -1.0]:
+		if t >= 2:  # trailing-edge line lights
+			_strip(Vector3(sx2 * 0.75, 1.17, -2.46), Vector3(sx2 * 3.0, 1.0, -2.6), 0.012, line)
+		if t >= 4:  # rear chine lights and landing lights under the nose
+			_strip(Vector3(sx2 * 0.865, 1.09, -2.3), Vector3(sx2 * 0.865, 1.09, -0.15), 0.012, line)
+			var ll := MeshInstance3D.new()
+			ll.mesh = ProcMesh.sphere(0.045, 10, 5)
+			ll.material_override = Mats.lamp(Color(1.0, 0.85, 0.6), 4.0)
+			ll.position = Vector3(sx2 * 0.18, 0.42 + ly, 2.4 + _front)
+			add_child(ll)
+		if t >= 3:  # nose canards
+			var poly := PackedVector2Array([Vector2(0.45, 2.55), Vector2(0.6, 2.15), Vector2(1.08, 1.78), Vector2(1.14, 1.9), Vector2(0.72, 2.4)])
+			if sx2 < 0.0:
+				var mp := PackedVector2Array()
+				for i: int in range(poly.size() - 1, -1, -1):
+					mp.append(Vector2(-poly[i].x, poly[i].y))
+				poly = mp
+			var c := MeshInstance3D.new()
+			c.mesh = RocketModel.extrude(poly, 0.035)
+			c.material_override = pearl
+			c.rotation_degrees = Vector3(90, 0, 0)
+			c.position = Vector3(0, 0.45 + ly, _front)
+			add_child(c)
+			_strip(Vector3(sx2 * 0.62, 0.47 + ly, 2.15 + _front), Vector3(sx2 * 1.08, 0.47 + ly, 1.8 + _front), 0.008, line)
+	if t >= 3:  # dorsal blade fin with a lit leading edge and a tangerine tip
+		var fin := MeshInstance3D.new()
+		fin.mesh = RocketModel.extrude(PackedVector2Array([Vector2(-2.45, 1.42), Vector2(-0.7, 1.47), Vector2(-1.15, 1.8),
+			Vector2(-2.05, 2.02), Vector2(-2.4, 1.97)]), 0.045)
+		fin.material_override = pearl
+		fin.rotation_degrees = Vector3(0, -90, 0)
+		add_child(fin)
+		var tip := MeshInstance3D.new()
+		tip.mesh = RocketModel.extrude(PackedVector2Array([Vector2(-2.05, 2.02), Vector2(-2.4, 1.97), Vector2(-2.3, 1.86), Vector2(-1.95, 1.9)]), 0.05)
+		tip.material_override = tang
+		tip.rotation_degrees = Vector3(0, -90, 0)
+		add_child(tip)
+		_strip(Vector3(0, 1.5, -0.75), Vector3(0, 1.97, -2.0), 0.009, line)
+	if t >= 5:  # halo rings on every nozzle
+		for nz: Dictionary in _pts.get("nozzles", []):
+			if not (str(nz["part"]) in ShipTiers.parts_for(t)):
+				continue
+			var p: Array = nz["pos"]
+			var h := MeshInstance3D.new()
+			var r: float = float(nz["r"]) * 1.45
+			h.mesh = ProcMesh.torus(r, r + 0.014, 24, 3)
+			h.material_override = line
+			h.rotation_degrees = Vector3(90, 0, 0)
+			h.position = Vector3(float(p[0]), float(p[1]), float(p[2]) + 0.05)
+			add_child(h)
+	if t >= 6:  # the fold ring's inner light, pulsing
+		var rl := MeshInstance3D.new()
+		rl.mesh = ProcMesh.torus(1.0, 1.012, 64, 3)
+		var pm: StandardMaterial3D = Mats.lamp(Color(0.45, 0.9, 1.0), 2.5)
+		pm.set_meta("base", 2.5)
+		_pulse_mats.append(pm)
+		rl.material_override = pm
+		rl.rotation_degrees = Vector3(90, 0, 0)
+		rl.scale = Vector3(1.4, 1.0, 0.84)
+		rl.position = Vector3(0, 0.52 + ly, -1.975)
+		add_child(rl)
+	if t >= 7:  # seed-vault light spine
+		var vm: StandardMaterial3D = Mats.lamp(Color(0.5, 1.0, 0.7), 2.5)
+		vm.set_meta("base", 2.5)
+		_pulse_mats.append(vm)
+		var top: float = 0.86 - 0.03 + 0.42 + ly + 0.02
+		_strip(Vector3(0, top, 0.15), Vector3(0, top, 2.05), 0.014, vm)
+
+
+func _box(parent: Node3D, size: Vector3, mat: Material, pos: Vector3) -> MeshInstance3D:
+	var mi := MeshInstance3D.new()
+	var bm := BoxMesh.new()
+	bm.size = size
+	mi.mesh = bm
+	mi.material_override = mat
+	mi.position = pos
+	parent.add_child(mi)
+	return mi
+
+
+## A thin light line from a to b (ship space).
+func _strip(a: Vector3, b: Vector3, w: float, mat: Material) -> MeshInstance3D:
+	var mi := _box(self, Vector3(w, w, a.distance_to(b)), mat, (a + b) * 0.5)
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	var d: Vector3 = (b - a).normalized()
+	var up: Vector3 = Vector3.UP if absf(d.y) < 0.95 else Vector3.RIGHT
+	var x: Vector3 = up.cross(d).normalized()
+	mi.basis = Basis(x, d.cross(x), d)
+	return mi
+
+
 ## Thin banners of light streaming from the Mk VII's wingtips and fins.
 func _build_banners() -> void:
 	var g := Gradient.new()
@@ -406,9 +559,16 @@ func _process(delta: float) -> void:
 		m.emission_energy_multiplier = float(m.get_meta("base")) * pulse
 	var pw: float = plume.power if plume else 0.0
 	if _thruster:
-		_thruster.emission_energy_multiplier = 1.0 + _charge * 6.0 + maxf(pw, lift) * 10.0
+		_thruster.emission_energy_multiplier = float(_thruster.get_meta("idle", 1.0)) + _charge * 6.0 + maxf(pw, lift) * 10.0
 	for bp: RocketPlume in _boosters:
 		bp.power = pw
+	var spin: float = (1.2 if tier >= 4 else 0.4) + lift * 30.0 + _charge * 6.0
+	for r: Node3D in _rotors:
+		r.rotate_y(delta * spin)
+	for pm: StandardMaterial3D in _pulse_mats:
+		pm.emission_energy_multiplier = float(pm.get_meta("base")) * (0.75 + 0.35 * sin(_t * 2.2)) * pulse
+	if _vault:
+		_vault.emission_energy_multiplier = 1.4 + 0.8 * sin(_t * 1.6)
 	for fp: RocketPlume in _fans:
 		fp.power = lift
 	for i: int in _banners.size():
