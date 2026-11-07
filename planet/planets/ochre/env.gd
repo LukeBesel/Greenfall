@@ -318,7 +318,7 @@ func _grade(_delta: float) -> void:
 		env.fog_height = float(hf[0])
 		env.fog_height_density = float(hf[1]) * (0.3 + 0.7 * dust)
 	env.volumetric_fog_albedo = env.volumetric_fog_albedo.lerp(fc, 0.7)
-	env.volumetric_fog_density = lerpf(0.006, 0.0018, clear)
+	env.volumetric_fog_density = lerpf(0.0024, 0.0008, clear)
 	env.adjustment_saturation = lerpf(1.08, 1.22, clear)
 	env.adjustment_contrast = 1.12
 	env.tonemap_exposure *= 0.88
@@ -337,6 +337,8 @@ func _grade(_delta: float) -> void:
 		if cam:
 			_shimmer.global_position = cam.global_position
 		var heat: float = up_a * lerpf(1.0, 0.45, clear) * (0.6 + 0.4 * a.y)
+		if cam and cam.global_position.y - pit.height_at(cam.global_position.x, cam.global_position.z) > 30.0:
+			heat = 0.0  # only near the ground
 		_shimmer_mat.set_shader_parameter("amount", heat)
 		_shimmer.visible = heat > 0.03
 
@@ -1214,6 +1216,8 @@ func _process(delta: float) -> void:
 		_fluff.global_position = p.global_position + Vector3(0, 2.5, 0)
 	_grit.emitting = level <= 2 and restore_shown < 0.45
 	_fluff.emitting = restore_shown > 0.35
+	if DevHooks.has("ochre-cam") and world.get("hud") != null:
+		(world.get("hud") as CanvasLayer).visible = false
 	if DevHooks.has("ochre-debug") and fmod(_t, 5.0) < delta:
 		var env: Environment = world.get("_env")
 		print("[ochre] t=%.0f fog=%.4f col=%s aerial=%.2f sky=%s sun=%s %.2f amb=%.2f" % [_t, env.fog_density, env.fog_light_color, env.fog_aerial_perspective, env.sky.sky_material, world.get("_sun").light_color, world.get("_sun").light_energy, env.ambient_light_energy])
