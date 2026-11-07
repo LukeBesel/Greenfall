@@ -25,6 +25,9 @@ var cities: Array[Dictionary] = []  # {name, cell, rings, capital}
 var hubs: Array[int] = []           # hub site cells (first = Junkyard Hub / start)
 var frontier_hubs: Dictionary = {}  # [biomes] frontier kind id -> hub index
 var base_hub_count: int = 0         # [biomes] hubs before the frontier ones
+## [late] Cradle Mode worlds (systems/world_gen.gd): biome thresholds, water share, city count and
+## city names. Empty = Verdance exactly as before.
+var mix: Dictionary = {}
 var _land: int = 0
 var _done: int = 0
 
@@ -41,6 +44,12 @@ func cell_count() -> int:
 
 
 func generate(water_fraction: float = 0.25, city_count: int = 24) -> void:
+	water_fraction = float(mix.get("water_fraction", water_fraction))  # [late]
+	city_count = int(mix.get("city_count", city_count))
+	var frost_lat: float = float(mix.get("frost_lat", 0.78))
+	var dust_m: float = float(mix.get("dust_m", -0.25))
+	var dust_lat: float = float(mix.get("dust_lat", 0.55))
+	var marsh_m: float = float(mix.get("marsh_m", 0.3))
 	var n: int = cell_count()
 	var noise := FastNoiseLite.new()
 	noise.seed = seed_value
@@ -75,11 +84,11 @@ func generate(water_fraction: float = 0.25, city_count: int = 24) -> void:
 			continue
 		state[i] = State.JUNK
 		var b: String = "rustlands"
-		if lat > 0.78:
+		if lat > frost_lat:  # [late] thresholds from the world mix
 			b = "frostcap"
-		elif m < -0.25 and lat < 0.55:
+		elif m < dust_m and lat < dust_lat:
 			b = "dust_dunes"
-		elif m > 0.3:
+		elif m > marsh_m:
 			b = "fungal_marsh"
 		biome[i] = BIOMES.find(b)
 	# Coasts become boardwalk/beach biome.
@@ -103,6 +112,10 @@ func _place_cities(count: int) -> void:
 	var names: Array[String] = ["Old Town", "Harbor Row", "Millbrook", "Ironside", "Kettle Bay", "Ashgrove", "Northgate", "Lumen Pier",
 		"Copperfield", "Stillwater", "Brakton", "Mossbank", "Redcliff", "Dunmere", "Glasswick", "Pellham",
 		"Saltmarsh", "Ferrous", "Quarry End", "Lowmeadow", "Highreach", "Tinsley", "Graybridge", "Wrenfield"]
+	if mix.get("city_names") is Array and not (mix["city_names"] as Array).is_empty():  # [late] another world's towns
+		names.clear()
+		for nm: Variant in mix["city_names"]:
+			names.append(str(nm))
 	var tries: int = 0
 	while cities.size() < count and tries < 20000:
 		tries += 1

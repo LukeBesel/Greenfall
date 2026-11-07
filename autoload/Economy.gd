@@ -95,7 +95,7 @@ func stat(stat_id: String, levels: Variant = null) -> float:
 		else:
 			mul *= 1.0 + float(u["amount"]) * level
 	# Research bonuses (systems/research.gd) apply on top of upgrades.
-	return Research.stat_mod(stat_id, value * mul)
+	return CradleMode.stat_mod(stat_id, Research.stat_mod(stat_id, value * mul))  # [late] Heirlooms, world modifiers, decor charm
 
 
 ## Base value of a stat before upgrades: Patch stats come from data/patch.json, dotted robot

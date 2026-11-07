@@ -1,0 +1,39 @@
+{
+  "_doc": "[late] Cradle Mode (post-game prestige, systems/cradle_mode.gd + systems/world_gen.gd). After the Cradle finale the ark can carry Lumi to a new world: a fresh planet seed with its own world type (biome mix), name and two modifiers. Starseeds (prestige currency, kept in the profile, not in a world save) are earned from a world's restoration and its Seed Ark waves: earned = floor(per_ark_wave * waves + per_bloom_milestone * milestones + per_sqrt_thriving * sqrt(thriving hexes) + cradle_bonus * cradle_returned + per_base_l5 * bases at level 5); a world pays only what it earned since it last banked (claimed). Heirlooms are permanent meta-upgrades bought with Starseeds: level n costs round(cost * cost_growth^n). Effects: stat (multiplies Economy.stat(stat) by 1 + per_level * level) or start (a starting kit for every new world: cubes / data / seeds / robots / research nodes). Modifiers multiply stats for that world only and may change the sky (night_speed: how fast nights pass) or world events (event_weight).",
+  "currency": "starseeds",
+  "prestige": {"per_ark_wave": 4, "per_bloom_milestone": 6, "per_sqrt_thriving": 1.5, "cradle_bonus": 20, "per_base_l5": 3},
+  "carry_flags": ["achievements", "codex", "skins_unlocked"],
+  "heirlooms": [
+    {"id": "green_thumb", "name": "Green Thumb", "desc": "Plants grow 8% faster per level, on every world.", "icon": "seed", "cost": 10, "cost_growth": 1.6, "max": 5, "effect": "stat", "stat": "plant_growth", "per_level": 0.08},
+    {"id": "deep_hopper", "name": "Deep Hopper", "desc": "Lumi's hopper holds 10% more per level.", "icon": "bot", "cost": 8, "cost_growth": 1.55, "max": 5, "effect": "stat", "stat": "capacity", "per_level": 0.1},
+    {"id": "quick_beam", "name": "Quick Beam", "desc": "Scoop 8% faster per level.", "icon": "bolt", "cost": 8, "cost_growth": 1.55, "max": 5, "effect": "stat", "stat": "scoop_rate", "per_level": 0.08},
+    {"id": "traders_eye", "name": "Trader's Eye", "desc": "Bales sell for 10% more per level.", "icon": "cube", "cost": 12, "cost_growth": 1.6, "max": 5, "effect": "stat", "stat": "cube_value_mult", "per_level": 0.1},
+    {"id": "swift_treads", "name": "Swift Treads", "desc": "Lumi moves 5% faster per level.", "icon": "gear", "cost": 6, "cost_growth": 1.5, "max": 4, "effect": "stat", "stat": "move_speed", "per_level": 0.05},
+    {"id": "seed_vault", "name": "Seed Vault", "desc": "8% more seeds per bloom per level; each new world starts with 40 seeds per level and the seed tin already found.", "icon": "seed", "cost": 10, "cost_growth": 1.6, "max": 4, "effect": "stat", "stat": "seed_yield", "per_level": 0.08, "start": {"seeds": 40, "seeds_unlocked": 1}},
+    {"id": "head_start", "name": "Head Start", "desc": "Each new world starts with 1,500 cubes per level.", "icon": "cube", "cost": 5, "cost_growth": 1.45, "max": 5, "effect": "start", "start": {"cubes": 1500}},
+    {"id": "data_cache", "name": "Data Cache", "desc": "Each new world starts with 60 research Data per level.", "icon": "star", "cost": 6, "cost_growth": 1.5, "max": 5, "effect": "start", "start": {"data": 60}},
+    {"id": "old_crew", "name": "Old Crew", "desc": "Robots wait at the landing site: a Scoopie at level 1, a Haul Bug at 2, another Scoopie at 3.", "icon": "bot", "cost": 15, "cost_growth": 1.8, "max": 3, "effect": "start", "start": {"robots": ["scoopie", "haulbug", "scoopie"]}},
+    {"id": "archivist", "name": "Archivist", "desc": "Research notes travel with Lumi: level 1 knows every first-tier node, level 2 the second tier too.", "icon": "star", "cost": 14, "cost_growth": 2.0, "max": 2, "effect": "start", "start": {"research_tier": 1}}
+  ],
+  "modifiers": [
+    {"id": "heavy_rain", "name": "Heavy Rain", "desc": "Rain showers come four times as often and plants grow 15% faster.", "stats": {"plant_growth": 1.15}, "event_weight": {"rain_shower": 4.0}, "coat": [0.4, 0.42, 0.4, 0.5, 0.35, 0.4]},
+    {"id": "long_nights", "name": "Long Nights", "desc": "Nights last twice as long. The night shift pays: bales sell for 10% more.", "stats": {"cube_value_mult": 1.1}, "night_speed": 0.5},
+    {"id": "rich_salvage", "name": "Rich Salvage", "desc": "The junk here is better stuff: bales sell for 30% more, but the hopper fills 10% sooner.", "stats": {"cube_value_mult": 1.3, "capacity": 0.9}, "event_weight": {"salvage_surge": 2.0, "rare_part_signal": 2.0}},
+    {"id": "thin_soil", "name": "Thin Soil", "desc": "Plants grow 15% slower, but every bloom gives 25% more seeds.", "stats": {"plant_growth": 0.85, "seed_yield": 1.25}},
+    {"id": "tailwinds", "name": "Tailwinds", "desc": "Steady winds: Lumi moves 10% faster and supply drops come twice as often.", "stats": {"move_speed": 1.1}, "event_weight": {"supply_drop": 2.0}},
+    {"id": "wild_bloom", "name": "Wild Bloom", "desc": "Wildflowers want to come back: 30% more seeds per bloom, more wildlife visits.", "stats": {"seed_yield": 1.3}, "event_weight": {"wildlife_visit": 3.0}},
+    {"id": "heavy_junk", "name": "Heavy Junk", "desc": "Dense, heavy scrap: scooping is 10% slower, bales sell for 20% more.", "stats": {"scoop_rate": 0.9, "cube_value_mult": 1.2}}
+  ],
+  "world_types": [
+    {"id": "ice_moon", "name": "Ice Moon", "desc": "Frozen most of the way to the equator; lakes under the ice.", "mix": {"water_fraction": 0.3, "city_count": 18, "frost_lat": 0.42, "dust_m": -0.6, "marsh_m": 0.55}, "coat": [0.92, 0.95, 1.0, 0.55, 0.12, 0.6]},
+    {"id": "desert_world", "name": "Desert World", "desc": "Dunes and dry salt pans; the few lakes matter.", "mix": {"water_fraction": 0.1, "city_count": 20, "frost_lat": 0.92, "dust_m": 0.15, "dust_lat": 0.85, "marsh_m": 0.7}, "coat": [0.84, 0.7, 0.5, 0.6, 0.2, 0.95]},
+    {"id": "ocean_world", "name": "Ocean World", "desc": "Mostly sea, with towns on small islands and long coasts.", "mix": {"water_fraction": 0.55, "city_count": 14, "frost_lat": 0.85, "dust_m": -0.45, "marsh_m": 0.25}},
+    {"id": "fungal_world", "name": "Marsh World", "desc": "Warm, wet and soft underfoot: fungal marsh everywhere.", "mix": {"water_fraction": 0.28, "city_count": 22, "frost_lat": 0.88, "dust_m": -0.55, "marsh_m": -0.1}, "coat": [0.34, 0.36, 0.28, 0.45, 0.3, 0.7]},
+    {"id": "rust_world", "name": "Rust World", "desc": "Old industry from pole to pole: rustlands and sprawl.", "mix": {"water_fraction": 0.2, "city_count": 28, "frost_lat": 0.86, "dust_m": -0.4, "marsh_m": 0.5}}
+  ],
+  "name_parts": {
+    "first": ["Kes", "Ama", "Tor", "Vel", "Ori", "Nim", "Sol", "Bri", "Cal", "Eri", "Lys", "Mar", "Pel", "Quin", "Tal", "Ys"],
+    "last": ["tra", "ra", "en", "dis", "ona", "vale", "mere", "lia", "dor", "this", "gard", "wyn", "ope", "aris"]
+  },
+  "city_names": ["First Light", "Landing", "Ashford", "Brightwater", "Calder", "Dunwick", "Elmstead", "Fairhaven", "Glenrock", "Hollow Bay", "Ironmoor", "Juniper", "Kestrel Point", "Larkspur", "Marlow", "Northwind", "Oakhurst", "Pinecrest", "Quayside", "Rosemere", "Sandmouth", "Thornbury", "Upton Ferry", "Vane", "Willowby", "Yarrow", "Zephyr Row", "Coldharbour"]
+}

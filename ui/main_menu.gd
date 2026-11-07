@@ -456,6 +456,7 @@ func _on_new_game() -> void:
 
 
 func _start_new() -> void:
+	CradleMode.reset_all()  # [late] New Game erases every Cradle Mode world and the Heirlooms too
 	SaveManager.delete_save()
 	GameState.new_game()
 	_go(true)

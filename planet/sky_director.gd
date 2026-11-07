@@ -55,7 +55,7 @@ func _process(delta: float) -> void:
 	if env == null:
 		return
 	if not frozen:
-		time_of_day = fmod(time_of_day + delta / DAY_LENGTH_S, 1.0)
+		time_of_day = fmod(time_of_day + delta / DAY_LENGTH_S * CradleMode.day_speed(time_of_day), 1.0)  # [late] Long Nights
 		GameState.flags["time_of_day"] = time_of_day
 	if world and world.get("planet") != null:
 		var target: float = 1.0 - clampf(world.planet.restored_fraction() * 8.0 + float(GameState.stats.get("air_filtered", 0.0)) * 0.0005 + clear_bonus, 0.0, 0.85)
