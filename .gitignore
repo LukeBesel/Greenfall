@@ -9,3 +9,5 @@
 /screenshots/**/*.jpg
 /screenshots/**/*.webp
 __pycache__/
+/screenshots/**/*.wav
+/screenshots/**/*.ogg
