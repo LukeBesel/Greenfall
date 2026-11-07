@@ -11150,7 +11150,7 @@ msgstr "琥珀"
 
 #: data/style_parts.json:swatches[olive].name
 msgid "Olive"
-msgstr "橄榄"
+msgstr "草绿"
 
 #: data/style_parts.json:swatches[bark].name
 msgid "Bark"
