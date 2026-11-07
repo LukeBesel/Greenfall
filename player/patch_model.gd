@@ -18,7 +18,7 @@ const VARIANTS: Dictionary = {
 	"aurora": {"name": "Aurora", "paint": Color(0.9, 0.88, 0.83), "trim": Color(0.36, 0.38, 0.42), "glow": Color(0.3, 0.88, 1.0), "accent": Color(1.0, 0.5, 0.12), "lamp": Color(1.0, 0.55, 0.15), "icon": "recycle", "acc": ["antenna"]},
 	"bolt": {"name": "Bolt", "paint": Color(0.95, 0.7, 0.1), "trim": Color(0.32, 0.29, 0.24), "glow": Color(1.0, 0.68, 0.18), "accent": Color(0.95, 0.72, 0.12), "lamp": Color(1.0, 0.6, 0.12), "icon": "recycle", "coverage": 0.8, "grime": 0.85, "stripes": 1.0, "acc": ["antenna", "acc_pad_r", "acc_pad_l", "gear"]},
 	"sprout": {"name": "Sprout", "paint": Color(0.47, 0.53, 0.23), "trim": Color(0.33, 0.35, 0.22), "glow": Color(0.52, 1.0, 0.36), "accent": Color(0.86, 0.62, 0.22), "lamp": Color(0.6, 1.0, 0.35), "icon": "leaf", "grime": 0.7, "moss": 0.6, "acc": ["acc_sprout"]},
-	"pixel": {"name": "Pixel", "paint": Color(0.8, 0.15, 0.14), "trim": Color(0.6, 0.12, 0.12), "glow": Color(1.0, 0.33, 0.5), "accent": Color(0.93, 0.91, 0.88), "lamp": Color(1.0, 0.4, 0.55), "icon": "recycle", "happy": 0.85, "acc": ["acc_pixel", "butterfly"]},
+	"pixel": {"name": "Pixel", "paint": Color(0.8, 0.15, 0.14), "trim": Color(0.6, 0.12, 0.12), "glow": Color(1.0, 0.33, 0.5), "accent": Color(0.93, 0.91, 0.88), "lamp": Color(1.0, 0.4, 0.55), "icon": "recycle", "happy": 1.0, "acc": ["acc_pixel", "butterfly"]},
 	"nova": {"name": "Nova", "paint": Color(0.25, 0.245, 0.28), "trim": Color(0.16, 0.15, 0.19), "glow": Color(0.7, 0.4, 1.0), "accent": Color(0.4, 0.38, 0.45), "lamp": Color(0.72, 0.42, 1.0), "icon": "recycle", "metal": 0.35, "acc": ["acc_catears", "holo"]},
 	"patch": {"name": "Patch", "paint": Color(0.92, 0.9, 0.86), "trim": Color(0.35, 0.36, 0.38), "glow": Color(1.0, 0.7, 0.26), "accent": Color(1.0, 0.48, 0.12), "lamp": Color(1.0, 0.55, 0.15), "icon": "cross", "acc": ["antenna", "acc_toolbox", "case"]},
 }
@@ -584,7 +584,7 @@ func _process(delta: float) -> void:
 		_blink = 1.0
 	_blink = maxf(0.0, _blink - delta * 7.0)
 	_face_mat.set_shader_parameter("look", _look)
-	_face_mat.set_shader_parameter("happy", clampf((_happy - 0.6) * 2.5 + _happy_bias * (1.0 - _eye_flash), 0.0, 1.0))
+	_face_mat.set_shader_parameter("happy", maxf(clampf((_happy - 0.6) * 2.5, 0.0, 1.0), _happy_bias * (1.0 - minf(_eye_flash * 2.0, 1.0))))
 	_face_mat.set_shader_parameter("blink", 0.9 if sleeping else _blink)
 	_eye_flash = maxf(0.0, _eye_flash - delta * 6.0)
 	_face_mat.set_shader_parameter("energy", 1.2 * minf(core_glow, 1.0) if sleeping else 4.0 * core_glow + _flash * 2.0 + _eye_flash * 3.0)
