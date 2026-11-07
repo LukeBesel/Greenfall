@@ -293,7 +293,7 @@ func _model(id: String, pos: Vector3, yaw: float, scl: float = 1.0, parent: Node
 	if not AssetLib.has_model(id):
 		return null
 	var mi := MeshInstance3D.new()
-	mi.mesh = AssetLib.model_mesh_lite(id, 6000)
+	mi.mesh = AssetLib.model_mesh(id) if id == "dutch_ship_medium" else AssetLib.model_mesh_lite(id, 6000)  # the ship loses its rigging when decimated
 	mi.transform = Transform3D(Basis.from_euler(Vector3(tilt.x, yaw, tilt.z)).scaled(Vector3.ONE * scl), pos)
 	if overlay:
 		mi.material_overlay = overlay
@@ -378,7 +378,7 @@ func _build_desert() -> void:
 		always.add(dune, Transform3D(Basis(Vector3.UP, 0.6 + _rng.randf_range(-0.2, 0.2)).scaled(Vector3(w, _rng.randf_range(3.0, 9.0) * (1.0 + (dist - e) / 120.0), w * 0.38)), _polar(ang, dist, -0.6)), _mat("sand"))
 	always.flush(_groups["always"])
 	# A trading ship, half-buried in the sand, listing hard. The flats were a sea once.
-	var ship: MeshInstance3D = _model("dutch_ship_medium", _polar(-1.95, e + 12.0, -3.2), 0.9, 1.0, null, Vector3(0.0, 0, 0.22), coat)
+	var ship: MeshInstance3D = _model("dutch_ship_medium", _polar(-1.95, e + 12.0, -1.6), 0.9, 1.0, null, Vector3(0.0, 0, 0.22), coat)
 	if ship:
 		ship.rotation = Vector3(0.05, 0.9, 0.24)
 	# Cars and drums buried to the windows near the edge, quiver trunks and rocks.
