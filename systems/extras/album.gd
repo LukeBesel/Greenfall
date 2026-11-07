@@ -21,10 +21,11 @@ const CAM_POS := Vector3(15.0, 17.0, 21.0)
 const CAM_AT := Vector3(-3.0, 0.0, -12.0)
 
 var world: Node
-var _t: float = 0.0
 var _alive_t: float = 0.0
 var _busy: bool = false
 var _tasks: Array[int] = []
+var _born_ms: int = 0
+var _next_ms: int = 0
 
 
 # --- Rules (static) ---------------------------------------------------------------------
@@ -124,6 +125,7 @@ static func load_texture(path: String) -> Texture2D:
 func setup(p_world: Node) -> void:
 	world = p_world
 	name = "PhotoAlbum"
+	_born_ms = Time.get_ticks_msec()
 	var ph: Variant = world.get("photo")
 	if ph is PhotoMode:
 		(ph as PhotoMode).captured.connect(_on_photo)
@@ -135,12 +137,13 @@ func _exit_tree() -> void:
 	_tasks.clear()
 
 
-func _process(delta: float) -> void:
-	_alive_t += delta
-	_t += delta
-	if _t < 3.0 or _busy:
+## Wall clock, not frame time: on a very slow frame rate the checks still come every 3 s.
+func _process(_delta: float) -> void:
+	var now: int = Time.get_ticks_msec()
+	_alive_t = (now - _born_ms) / 1000.0
+	if now < _next_ms or _busy:
 		return
-	_t = 0.0
+	_next_ms = now + 3000
 	_reap()
 	if not _can_shoot():
 		return

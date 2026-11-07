@@ -84,8 +84,8 @@ func _setup() -> void:
 	if DevHooks.has("weekly") and not WeeklyChallenge.active:
 		get_tree().create_timer(0.5).timeout.connect(func() -> void: WeeklyChallenge.start(get_tree()))
 	if DevHooks.has("album-snap"):
-		get_tree().create_timer(DevHooks.get_f("album-at", 8.0), false).timeout.connect(func() -> void:
-			album.dev_snap(Array(DevHooks.get_s("album-snap", "before").split("+", false))))
+		_wall_jobs.append([Time.get_ticks_msec() + int(DevHooks.get_f("album-at", 8.0) * 1000.0), func() -> void:
+			album.dev_snap(Array(DevHooks.get_s("album-snap", "before").split("+", false)))])
 	if DevHooks.has("extras"):
 		_wall_jobs.append([Time.get_ticks_msec() + int(DevHooks.get_f("extras-at", 1.0) * 1000.0), func() -> void:
 			ExtrasPanel.open_for(world, DevHooks.get_s("extras", "radio"))])
