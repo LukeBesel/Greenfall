@@ -27,6 +27,10 @@ msgstr ""
 msgid "Base"
 msgstr ""
 
+#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:185
+msgid "%s Lv %d"
+msgstr ""
+
 #: autoload/Economy.gd:300 data/robots.json:tiers[0].name
 msgid "Mk I"
 msgstr ""
@@ -1930,7 +1934,7 @@ msgid "%s fitted to the whole fleet."
 msgstr ""
 
 #: systems/contracts.gd:344
-msgid "Printed: %s %s."
+msgid "Printed: %s."
 msgstr ""
 
 #: systems/contracts.gd:347
@@ -1985,11 +1989,11 @@ msgstr ""
 msgid "+%s cubes"
 msgstr ""
 
-#: systems/events.gd:488
+#: systems/events.gd:488 systems/l10n_fmt.gd:29
 msgid "+%d data"
 msgstr ""
 
-#: systems/events.gd:506 systems/lumi_level.gd:236
+#: systems/events.gd:506 systems/l10n_fmt.gd:23 systems/lumi_level.gd:236
 msgid "+%d token"
 msgid_plural "+%d tokens"
 msgstr[0] ""
@@ -2095,6 +2099,62 @@ msgstr ""
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr ""
 
+#: systems/l10n_fmt.gd:17
+msgid "+%d cube"
+msgid_plural "+%d cubes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:19
+msgid "+%d seed"
+msgid_plural "+%d seeds"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:21
+msgid "+%d trinket"
+msgid_plural "+%d trinkets"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:25
+msgid "+%d bolt"
+msgid_plural "+%d bolts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/l10n_fmt.gd:27
+msgid "+%d part"
+msgid_plural "+%d parts"
+msgstr[0] ""
+msgstr[1] ""
+
+#. a part's name. {rarity} is an adjective (Rusty, Polished, Rare...), {part} a part type
+#: systems/l10n_fmt.gd:52
+msgctxt "part name"
+msgid "{rarity} {part}"
+msgstr ""
+
+#. research effect, e.g. "+20% scoop width". {stat} is a stat name.
+#: systems/l10n_fmt.gd:62
+msgid "+{amount}% {stat}"
+msgstr ""
+
+#. research effect, e.g. "+2 tank". {stat} is a stat name.
+#: systems/l10n_fmt.gd:64
+msgid "+{amount} {stat}"
+msgstr ""
+
+#. research effect for one robot model, e.g. "+10% Scoopie speed".
+#: systems/l10n_fmt.gd:67
+msgid "+{amount}% {robot} {stat}"
+msgstr ""
+
+#. research effect for one robot model, e.g. "+1 Drip tank".
+#: systems/l10n_fmt.gd:69
+msgid "+{amount} {robot} {stat}"
+msgstr ""
+
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:255
 msgid "Low"
 msgstr ""
@@ -2149,6 +2209,10 @@ msgstr ""
 
 #: systems/research.gd:324 ui/codex_screen.gd:763
 msgid "%ds"
+msgstr ""
+
+#: systems/research.gd:371
+msgid "Research: %s"
 msgstr ""
 
 #: systems/research.gd:381
@@ -2284,7 +2348,7 @@ msgid "Haggle's stall · %s cubes + %d bolts"
 msgstr ""
 
 #: systems/robot_builder.gd:370
-msgid "Token shop · ◈ %d"
+msgid "Token shop · ◆ %d"
 msgstr ""
 
 #: systems/robot_builder.gd:374
@@ -2329,7 +2393,7 @@ msgid "%s spotted a Maker Fragment glinting in the junk. (%d)"
 msgstr ""
 
 #: systems/robot_builder.gd:604
-msgid "%s spotted a %s %s."
+msgid "%s spotted a %s."
 msgstr ""
 
 #: ui/allocation_board.gd:13
@@ -2945,7 +3009,7 @@ msgid "TOKEN SHOP"
 msgstr ""
 
 #: ui/contracts_panel.gd:81
-msgid "◈  %d tokens"
+msgid "◆  %d tokens"
 msgstr ""
 
 #: ui/contracts_panel.gd:82
@@ -2957,7 +3021,7 @@ msgid "A new contract is being posted."
 msgstr ""
 
 #: ui/contracts_panel.gd:141
-msgid "Reward  ◈ %d tokens  +  cubes"
+msgid "Reward  ◆ %d tokens  +  cubes"
 msgstr ""
 
 #: ui/contracts_panel.gd:163
@@ -2973,7 +3037,7 @@ msgid "Working on it"
 msgstr ""
 
 #: ui/contracts_panel.gd:188
-msgid "Claim  ◈ %d"
+msgid "Claim  ◆ %d"
 msgstr ""
 
 #: ui/contracts_panel.gd:228
@@ -4403,10 +4467,6 @@ msgstr ""
 
 #: ui/upgrade_card.gd:177
 msgid "Lv %d%s"
-msgstr ""
-
-#: ui/upgrade_card.gd:185
-msgid "%s Lv %d"
 msgstr ""
 
 #: ui/upgrade_card.gd:186
@@ -7171,7 +7231,7 @@ msgid "Wind-up Tin Robot"
 msgstr ""
 
 #: data/events.json:trinkets[tin_robot].desc
-msgid "Walks three steps and falls over. Patch relates."
+msgid "Walks three steps and falls over. Lumi relates."
 msgstr ""
 
 #: data/events.json:trinkets[seed_locket].name
@@ -7251,7 +7311,7 @@ msgid "Photo: Glowtail Fox"
 msgstr ""
 
 #: data/events.json:trinkets[photo_glowtail_fox].desc
-msgid "Its tail glows when it's curious. It was very curious about Patch."
+msgid "Its tail glows when it's curious. It was very curious about Lumi."
 msgstr ""
 
 #: data/events.json:trinkets[photo_moss_deer].name

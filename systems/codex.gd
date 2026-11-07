@@ -202,7 +202,7 @@ static func curiosities() -> Array[Dictionary]:
 		var bits: Array[String] = []
 		var rew: Dictionary = e.get("reward", {})
 		for k: String in rew:
-			bits.append("+%d %s" % [int(rew[k]), k if int(rew[k]) != 1 else k.trim_suffix("s")])
+			bits.append(L10nFmt.reward(k, int(rew[k])))  # [i18n2]
 		var parts: int = int(e.get("parts", 1))
 		out.append({
 			"id": id, "name": TranslationServer.translate(str(e.get("name", id))), "found": EasterEggs.is_found(id),

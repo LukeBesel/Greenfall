@@ -80,7 +80,7 @@
   ],
   "trinkets": [
     {"id": "brass_compass", "name": "Brass Compass", "source": "supply_drop", "desc": "Points north, mostly. Came wrapped in a sock in a supply crate."},
-    {"id": "tin_robot", "name": "Wind-up Tin Robot", "source": "supply_drop", "desc": "Walks three steps and falls over. Patch relates."},
+    {"id": "tin_robot", "name": "Wind-up Tin Robot", "source": "supply_drop", "desc": "Walks three steps and falls over. Lumi relates."},
     {"id": "seed_locket", "name": "Seed Locket", "source": "supply_drop", "desc": "A locket with one seed inside instead of a photo. Someone loved gardens."},
     {"id": "snow_globe", "name": "Snow Globe", "source": "supply_drop", "desc": "A tiny city under glass, still clean. A promise, maybe."},
     {"id": "crate_stencil", "name": "Cradle Crate Stencil", "source": "supply_drop", "desc": "The stencil used to paint every supply crate. WREN asked for it back. You said no."},
@@ -90,7 +90,7 @@
     {"id": "paper_boat", "name": "Paper Boat", "source": "rain_shower", "desc": "Someone made it from a coupon. It sailed a whole puddle."},
     {"id": "lucky_spanner", "name": "Lucky Spanner", "source": "robot_hiccup", "desc": "Fixes any hiccup, if you hit the right spot. Usually the left side."},
     {"id": "hiccup_tape", "name": "Diagnostic Tape", "source": "robot_hiccup", "desc": "A printout of a robot hiccuping. It looks a lot like a song."},
-    {"id": "photo_glowtail_fox", "name": "Photo: Glowtail Fox", "source": "wildlife_visit", "animal": "glowtail_fox", "desc": "Its tail glows when it's curious. It was very curious about Patch."},
+    {"id": "photo_glowtail_fox", "name": "Photo: Glowtail Fox", "source": "wildlife_visit", "animal": "glowtail_fox", "desc": "Its tail glows when it's curious. It was very curious about Lumi."},
     {"id": "photo_moss_deer", "name": "Photo: Moss Deer", "source": "wildlife_visit", "animal": "moss_deer", "desc": "Moss grows on its antlers. Butterflies rest there like it's a tree."},
     {"id": "photo_lantern_hedgehog", "name": "Photo: Lantern Hedgehog", "source": "wildlife_visit", "animal": "lantern_hedgehog", "desc": "The tips of its spines glow amber at dusk. It ate a beetle on camera. Sorry."},
     {"id": "photo_prism_heron", "name": "Photo: Prism Heron", "source": "wildlife_visit", "animal": "prism_heron", "desc": "Its feathers split light into rainbows. It stood on one leg the whole time."},

@@ -87,7 +87,7 @@ func refresh() -> void:
 		var names: Array[String] = []
 		for i: int in take:
 			var p: Dictionary = GameState.parts[i]
-			names.append("%s %s" % [tr(str(Economy.rarity(int(p["rarity"])).get("name", "?"))), tr(str(types[int(p["type"])]["name"]))])
+			names.append(L10nFmt.part_label(tr(str(Economy.rarity(int(p["rarity"])).get("name", "?"))), tr(str(types[int(p["type"])]["name"]))))  # [i18n2]
 		swap_tip = tr("Trades away: %s") % ", ".join(names)
 	else:
 		swap_tip = tr("Needs 3 spare parts (Control Cores needed for a Mk tier are never traded).")

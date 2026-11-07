@@ -5,7 +5,12 @@ Draft files: .l10n_work/<lang>_<chunk>.tsv, one line per string:
     NNNN<TAB>translation                     (NNNN = index in locale/greenfall.pot order)
     NNNN<TAB>P<TAB>form0[<TAB>form1...]       (plural entries)
     =msgid<TAB>translation                   (keyed by English text, for strings added later)
+    =msgid<TAB>P<TAB>form0[<TAB>form1...]     (keyed plural; msgid is the singular English)
+    =ctx::msgid<TAB>...                      (keyed, with a msgctxt, when the msgid alone is ambiguous)
+    # comment lines and blank lines are ignored
 Escapes: \\n = newline, \\t = tab. Draft lines replace what the .po has; entries without a draft line are kept.
+`python3 tools/l10n_status.py --export` writes .l10n_work/todo.tsv, the untranslated strings in
+this keyed format, ready to copy to <lang>_<chunk>.tsv and translate.
 
     python3 tools/l10n_merge_draft.py de fr ...   # merge + validate
     python3 tools/l10n_merge_draft.py --check de  # validate the .po only
@@ -55,6 +60,19 @@ def problems(msgid: str, out: str) -> list[str]:
     return p
 
 
+def keyed(cat, key: str):
+    """'msgid' or 'ctx::msgid' -> catalog key, or None. A bare msgid that only exists with one
+    context resolves to it."""
+    if "::" in key:
+        ctx, msgid = key.split("::", 1)
+        if (ctx, msgid) in cat.entries:
+            return (ctx, msgid)
+    if ("", key) in cat.entries:
+        return ("", key)
+    hits = [k for k in cat.entries if k[1] == key]
+    return hits[0] if len(hits) == 1 else None
+
+
 def validate(lang: str, cat, tr: dict) -> int:
     bad = 0
     for (ctx, msgid), e in cat.entries.items():
@@ -63,7 +81,7 @@ def validate(lang: str, cat, tr: dict) -> int:
             continue
         pairs = [(msgid, v)] if isinstance(v, str) else [(e["plural"] if i else msgid, f) for i, f in enumerate(v) if f]
         if isinstance(v, list) and len(v) == 1:
-            pairs = [(e["plural"], v[0])]
+            pairs = [(e["plural"], v[0])] if v[0] else []
         for src, out in pairs:
             for pr in problems(src, out):
                 bad += 1
@@ -97,12 +115,25 @@ def main() -> int:
                     if not line.strip():
                         continue
                     parts = line.split("\t")
+                    if line.startswith("#"):
+                        continue
                     if parts[0].startswith("=") and len(parts) >= 2:  # keyed line: =msgid<TAB>translation
-                        k = ("", unesc(parts[0][1:]))
-                        if k in cat.entries and not cat.entries[k]["plural"]:
-                            tr[k] = unesc(parts[1])
+                        k = keyed(cat, unesc(parts[0][1:]))
+                        if k is None:
+                            print("%s:%d: unknown msgid %r" % (f, ln, parts[0][1:51])); total_bad += 1
+                            continue
+                        e = cat.entries[k]
+                        forms = [unesc(x) for x in (parts[2:] if len(parts) > 2 and parts[1] == "P" else parts[1:])]
+                        if e["plural"]:
+                            if len(forms) == 1:
+                                forms = forms * n_forms
+                            if len(forms) != n_forms:
+                                print("%s:%d: needs %d forms" % (f, ln, n_forms)); total_bad += 1; continue
+                            tr[k] = forms
+                        elif len(forms) != 1:
+                            print("%s:%d: tab inside a translation" % (f, ln)); total_bad += 1
                         else:
-                            print("%s:%d: unknown msgid %r" % (f, ln, k[1][:50])); total_bad += 1
+                            tr[k] = forms[0]
                         continue
                     if not re.fullmatch(r"\d{4}", parts[0]):
                         print("%s:%d: bad line" % (f, ln)); total_bad += 1; continue

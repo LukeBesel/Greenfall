@@ -174,7 +174,7 @@ func test_cjk_glyphs_render() -> void:
 			for out: String in [t.get_message(msg), t.get_plural_message(msg, "", 2)]:
 				for i: int in out.length():
 					var c: int = out.unicode_at(i)
-					if c >= 0x2E80:  # CJK blocks; symbols like ◈ are shared with English
+					if c >= 0x2E80:  # CJK blocks; symbols like ◆ are shared with English
 						chars[c] = true
 		assert_gt(chars.size(), 1000, "%s uses CJK characters" % l)
 		for f: Font in [UITheme.font(), LedgerUplink.mono_font()]:

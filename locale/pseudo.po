@@ -25,6 +25,10 @@ msgstr "[Bàšé (Mķ Î, béƒôŕé ţîéŕ àñð þàŕţ ŕàŕîţý) ~~~
 msgid "Base"
 msgstr "[Bàšé ~]"
 
+#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:185
+msgid "%s Lv %d"
+msgstr "[%s Ļv %d ~]"
+
 #: autoload/Economy.gd:300 data/robots.json:tiers[0].name
 msgid "Mk I"
 msgstr "[Mķ Î ~]"
@@ -1955,8 +1959,8 @@ msgid "%s fitted to the whole fleet."
 msgstr "[%s ƒîţţéð ţô ţĥé ŵĥôļé ƒļééţ. ~~~~~~~]"
 
 #: systems/contracts.gd:344
-msgid "Printed: %s %s."
-msgstr "[Þŕîñţéð: %s %s. ~~]"
+msgid "Printed: %s."
+msgstr "[Þŕîñţéð: %s. ~]"
 
 #: systems/contracts.gd:347
 msgid "+%d seeds."
@@ -2010,11 +2014,11 @@ msgstr "[ŠŢŔÉÀĶ x%d  +%d%% ~~~]"
 msgid "+%s cubes"
 msgstr "[+%s çûbéš ~]"
 
-#: systems/events.gd:488
+#: systems/events.gd:488 systems/l10n_fmt.gd:29
 msgid "+%d data"
 msgstr "[+%d ðàţà ~]"
 
-#: systems/events.gd:506 systems/lumi_level.gd:236
+#: systems/events.gd:506 systems/l10n_fmt.gd:23 systems/lumi_level.gd:236
 msgid "+%d token"
 msgid_plural "+%d tokens"
 msgstr[0] "[+%d ţôķéñ ~]"
@@ -2120,6 +2124,62 @@ msgstr "[Àûðîţ ŵôñ, %d ţô %d! Ţĥé Ļéðĝéŕ šţàmþš îţ À�
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "[Ţĥé ðŕôñé ŵôñ ţĥé àûðîţ, %d ţô %d. Îţ ļéƒţ à ţîþ àñýŵàý: +%s çûbéš. ~~~~~~~~~~~~~~~~~~~~]"
 
+#: systems/l10n_fmt.gd:17
+msgid "+%d cube"
+msgid_plural "+%d cubes"
+msgstr[0] "[+%d çûbé ~]"
+msgstr[1] "[+%d çûbéš ~]"
+
+#: systems/l10n_fmt.gd:19
+msgid "+%d seed"
+msgid_plural "+%d seeds"
+msgstr[0] "[+%d šééð ~]"
+msgstr[1] "[+%d šééðš ~]"
+
+#: systems/l10n_fmt.gd:21
+msgid "+%d trinket"
+msgid_plural "+%d trinkets"
+msgstr[0] "[+%d ţŕîñķéţ ~]"
+msgstr[1] "[+%d ţŕîñķéţš ~]"
+
+#: systems/l10n_fmt.gd:25
+msgid "+%d bolt"
+msgid_plural "+%d bolts"
+msgstr[0] "[+%d bôļţ ~]"
+msgstr[1] "[+%d bôļţš ~]"
+
+#: systems/l10n_fmt.gd:27
+msgid "+%d part"
+msgid_plural "+%d parts"
+msgstr[0] "[+%d þàŕţ ~]"
+msgstr[1] "[+%d þàŕţš ~]"
+
+#. a part's name. {rarity} is an adjective (Rusty, Polished, Rare...), {part} a part type
+#: systems/l10n_fmt.gd:52
+msgctxt "part name"
+msgid "{rarity} {part}"
+msgstr "[{rarity} {part}]"
+
+#. research effect, e.g. "+20% scoop width". {stat} is a stat name.
+#: systems/l10n_fmt.gd:62
+msgid "+{amount}% {stat}"
+msgstr "[+{amount}% {stat}]"
+
+#. research effect, e.g. "+2 tank". {stat} is a stat name.
+#: systems/l10n_fmt.gd:64
+msgid "+{amount} {stat}"
+msgstr "[+{amount} {stat}]"
+
+#. research effect for one robot model, e.g. "+10% Scoopie speed".
+#: systems/l10n_fmt.gd:67
+msgid "+{amount}% {robot} {stat}"
+msgstr "[+{amount}% {robot} {stat}]"
+
+#. research effect for one robot model, e.g. "+1 Drip tank".
+#: systems/l10n_fmt.gd:69
+msgid "+{amount} {robot} {stat}"
+msgstr "[+{amount} {robot} {stat}]"
+
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:255
 msgid "Low"
 msgstr "[Ļôŵ ~]"
@@ -2175,6 +2235,10 @@ msgstr "[Ñôţ éñôûĝĥ ðàţà ~~]"
 #: systems/research.gd:324 ui/codex_screen.gd:763
 msgid "%ds"
 msgstr "[%dš ~]"
+
+#: systems/research.gd:371
+msgid "Research: %s"
+msgstr "[Ŕéšéàŕçĥ: %s ~]"
 
 #: systems/research.gd:381
 msgid "scoop reach"
@@ -2309,8 +2373,8 @@ msgid "Haggle's stall · %s cubes + %d bolts"
 msgstr "[Ĥàĝĝļé'š šţàļļ · %s çûbéš + %d bôļţš ~~~~~~~~~~]"
 
 #: systems/robot_builder.gd:370
-msgid "Token shop · ◈ %d"
-msgstr "[Ţôķéñ šĥôþ · ◈ %d ~~~]"
+msgid "Token shop · ◆ %d"
+msgstr "[Ţôķéñ šĥôþ · ◆ %d ~~~]"
 
 #: systems/robot_builder.gd:374
 msgid "%d Maker Fragments"
@@ -2354,8 +2418,8 @@ msgid "%s spotted a Maker Fragment glinting in the junk. (%d)"
 msgstr "[%s šþôţţéð à Màķéŕ Fŕàĝméñţ ĝļîñţîñĝ îñ ţĥé ĵûñķ. (%d) ~~~~~~~~~~~~~~~~]"
 
 #: systems/robot_builder.gd:604
-msgid "%s spotted a %s %s."
-msgstr "[%s šþôţţéð à %s %s. ~~~~]"
+msgid "%s spotted a %s."
+msgstr "[%s šþôţţéð à %s. ~~~]"
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -2975,8 +3039,8 @@ msgid "TOKEN SHOP"
 msgstr "[ŢÔĶÉÑ ŠĤÔÞ ~]"
 
 #: ui/contracts_panel.gd:81
-msgid "◈  %d tokens"
-msgstr "[◈  %d ţôķéñš ~]"
+msgid "◆  %d tokens"
+msgstr "[◆  %d ţôķéñš ~]"
 
 #: ui/contracts_panel.gd:82
 msgid "Collection  %d / %d   ·   see the Codex (K)"
@@ -2987,8 +3051,8 @@ msgid "A new contract is being posted."
 msgstr "[À ñéŵ çôñţŕàçţ îš béîñĝ þôšţéð. ~~~~~~~~]"
 
 #: ui/contracts_panel.gd:141
-msgid "Reward  ◈ %d tokens  +  cubes"
-msgstr "[Ŕéŵàŕð  ◈ %d ţôķéñš  +  çûbéš ~~~~~~~]"
+msgid "Reward  ◆ %d tokens  +  cubes"
+msgstr "[Ŕéŵàŕð  ◆ %d ţôķéñš  +  çûbéš ~~~~~~~]"
 
 #: ui/contracts_panel.gd:163
 msgid "Accept  (%s)"
@@ -3003,8 +3067,8 @@ msgid "Working on it"
 msgstr "[Ŵôŕķîñĝ ôñ îţ ~~]"
 
 #: ui/contracts_panel.gd:188
-msgid "Claim  ◈ %d"
-msgstr "[Çļàîm  ◈ %d ~]"
+msgid "Claim  ◆ %d"
+msgstr "[Çļàîm  ◆ %d ~]"
 
 #: ui/contracts_panel.gd:228
 msgid "Next posting in %s"
@@ -4455,10 +4519,6 @@ msgstr "[Màx ~]"
 #: ui/upgrade_card.gd:177
 msgid "Lv %d%s"
 msgstr "[Ļv %d%s ~]"
-
-#: ui/upgrade_card.gd:185
-msgid "%s Lv %d"
-msgstr "[%s Ļv %d ~]"
 
 #: ui/upgrade_card.gd:186
 msgid "Requires %s"
@@ -7247,8 +7307,8 @@ msgid "Wind-up Tin Robot"
 msgstr "[Ŵîñð-ûþ Ţîñ Ŕôbôţ ~~~]"
 
 #: data/events.json:trinkets[tin_robot].desc
-msgid "Walks three steps and falls over. Patch relates."
-msgstr "[Ŵàļķš ţĥŕéé šţéþš àñð ƒàļļš ôvéŕ. Þàţçĥ ŕéļàţéš. ~~~~~~~~~~~~~~]"
+msgid "Walks three steps and falls over. Lumi relates."
+msgstr "[Ŵàļķš ţĥŕéé šţéþš àñð ƒàļļš ôvéŕ. Ļûmî ŕéļàţéš. ~~~~~~~~~~~~~]"
 
 #: data/events.json:trinkets[seed_locket].name
 msgid "Seed Locket"
@@ -7327,8 +7387,8 @@ msgid "Photo: Glowtail Fox"
 msgstr "[Þĥôţô: Ĝļôŵţàîļ Fôx ~~~~]"
 
 #: data/events.json:trinkets[photo_glowtail_fox].desc
-msgid "Its tail glows when it's curious. It was very curious about Patch."
-msgstr "[Îţš ţàîļ ĝļôŵš ŵĥéñ îţ'š çûŕîôûš. Îţ ŵàš véŕý çûŕîôûš àbôûţ Þàţçĥ. ~~~~~~~~~~~~~~~~~~~~]"
+msgid "Its tail glows when it's curious. It was very curious about Lumi."
+msgstr "[Îţš ţàîļ ĝļôŵš ŵĥéñ îţ'š çûŕîôûš. Îţ ŵàš véŕý çûŕîôûš àbôûţ Ļûmî. ~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/events.json:trinkets[photo_moss_deer].name
 msgid "Photo: Moss Deer"

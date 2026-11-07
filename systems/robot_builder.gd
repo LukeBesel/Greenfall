@@ -367,7 +367,7 @@ static func cost_text(id: String) -> String:
 		"haggle":
 			return TranslationServer.translate("Haggle's stall · %s cubes + %d bolts") % [Settings.fmt(BigNum.from_float(float(src.get("cubes", 0)))), int(src.get("bolts", 0))]
 		"token":
-			return TranslationServer.translate("Token shop · ◈ %d") % int(src.get("tokens", 0))
+			return TranslationServer.translate("Token shop · ◆ %d") % int(src.get("tokens", 0))
 		"drop":
 			return TranslationServer.translate(str(src.get("hint", "Rare find")))
 	if int(src.get("fragments", 0)) > 0:
@@ -601,7 +601,7 @@ func _salvage_find(r: Robot, sc: Dictionary) -> void:
 		_quiet = true
 		EventBus.part_found.emit(t, rar)
 		_quiet = false
-		EventBus.toast.emit(tr("%s spotted a %s %s.") % [r.robot_name, tr(str(Economy.rarity(rar).get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))], "hint")
+		EventBus.toast.emit(tr("%s spotted a %s.") % [r.robot_name, L10nFmt.part_name(rar, t)], "hint")
 	Audio.play("detector", 1.4, -10.0)
 
 

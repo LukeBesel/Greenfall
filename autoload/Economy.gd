@@ -133,9 +133,9 @@ func stat_breakdown(stat_id: String) -> Array[Dictionary]:
 		if u["stat"] != stat_id or level <= 0:
 			continue
 		if u["mode"] == "add":
-			out.append({"source": "%s Lv %d" % [tr(str(u["name"])), level], "text": "+" + _fmt_stat(float(u["amount"]) * level)})
+			out.append({"source": tr("%s Lv %d") % [tr(str(u["name"])), level], "text": "+" + _fmt_stat(float(u["amount"]) * level)})
 		else:
-			out.append({"source": "%s Lv %d" % [tr(str(u["name"])), level], "text": "x%.2f" % (1.0 + float(u["amount"]) * level)})
+			out.append({"source": tr("%s Lv %d") % [tr(str(u["name"])), level], "text": "x%.2f" % (1.0 + float(u["amount"]) * level)})
 	out.append_array(Research.breakdown(stat_id))
 	out.append_array(Designs.breakdown(stat_id))  # [skins]
 	return out

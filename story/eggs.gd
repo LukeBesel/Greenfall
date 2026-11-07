@@ -796,7 +796,7 @@ func found(id: String) -> void:
 	var bits: Array[String] = []
 	for k: String in rew:
 		GameState.add_currency(k, BigNum.from_float(float(rew[k])))
-		bits.append("+%d %s" % [int(rew[k]), k if int(rew[k]) != 1 else k.trim_suffix("s")])
+		bits.append(L10nFmt.reward(k, int(rew[k])))  # [i18n2]
 	var pos: Vector3 = world.patch.global_position + Vector3(0, 1.8, 0) if world and world.patch else Vector3.ZERO
 	Vfx.burst("confetti", pos, Color.WHITE, 0.5)
 	Audio.play("sparkle", 1.0, -4.0)

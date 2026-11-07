@@ -222,7 +222,7 @@ func _grant(lv: int) -> String:
 		var r: int = int(plan["part_rarity"])
 		GameState.parts.append({"type": t, "rarity": r})
 		EventBus.part_found.emit(t, r)
-		bits.append("+%s %s" % [tr(str(Economy.rarity(r).get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))])
+		bits.append("+" + L10nFmt.part_name(r, t))  # [i18n2]
 	var tokens: int = int(plan["tokens"])
 	if bool(plan["trinket"]):
 		var left: Array[String] = Collection.unfound("lumi_level")  # in order: L10, L20, ...
