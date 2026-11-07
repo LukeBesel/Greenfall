@@ -112,6 +112,14 @@ BIRDS = {
 		"wing": (0.66, 0.7, 0.77), "bar": (0.1, 0.1, 0.12), "tip": (0.08, 0.08, 0.1), "beak": (0.96, 0.82, 0.22), "leg": (0.95, 0.7, 0.6),
 		"eye": (0.92, 0.86, 0.45), "tail": 0.08, "tailc": (0.98, 0.98, 0.98), "legh": 0.045, "neckl": 0.02, "span": 1.0, "tilt": -6, "bars": 0,
 		"gonys": (0.85, 0.2, 0.15), "chord": 0.85},
+	"heron": {"s": 1.6, "body": (0.62, 0.65, 0.7), "breast": (0.92, 0.92, 0.92), "head": (0.96, 0.96, 0.96), "neck": (0.9, 0.9, 0.92),
+		"wing": (0.58, 0.61, 0.67), "bar": (0.2, 0.2, 0.24), "tip": (0.15, 0.15, 0.18), "beak": (0.88, 0.72, 0.3), "leg": (0.6, 0.52, 0.38),
+		"eye": (0.95, 0.88, 0.25), "tail": 0.08, "tailc": (0.58, 0.61, 0.67), "legh": 0.36, "neckl": 0.3, "span": 1.6, "tilt": -28, "bars": 0,
+		"beak_l": 0.17, "plume": (0.08, 0.08, 0.1), "chord": 1.15},
+	"crane": {"s": 1.7, "body": (0.97, 0.97, 0.96), "breast": (0.98, 0.98, 0.97), "head": (0.98, 0.98, 0.98), "neck": (0.97, 0.97, 0.96),
+		"wing": (0.96, 0.96, 0.95), "bar": (0.12, 0.12, 0.14), "tip": (0.12, 0.12, 0.14), "beak": (0.95, 0.65, 0.2), "leg": (0.2, 0.2, 0.2),
+		"eye": (0.03, 0.025, 0.02), "tail": 0.22, "tailc": (0.12, 0.12, 0.14), "legh": 0.3, "neckl": 0.3, "span": 2.2, "tilt": -10, "bars": 0,
+		"beak_l": 0.17, "crest": (0.85, 0.2, 0.2), "chord": 1.1},
 }
 
 
@@ -119,7 +127,7 @@ def bird_parts(id, p, flying):
 	s = p["s"]
 	legh = 0.0 if flying else p["legh"]
 	tilt = 0.0 if flying else p["tilt"]
-	by = 0.062 * s + legh * 0.55
+	by = 0.062 * s + legh * (0.55 if legh < 0.2 else 0.9)
 	bc = V(0, by, 0)
 	parts = []
 
@@ -164,7 +172,7 @@ def bird_parts(id, p, flying):
 		for x in (-1, 1):
 			w = fb.ellipsoid(at(0.038 * x, 0.002, 0.03), V(0.014, 0.034, 0.082) * s)
 			rot_bm(w, (-4, 0, 0), at(0.038 * x, 0.002, 0.03))
-			w2 = fb.ellipsoid(at(0.022 * x, 0.018, 0.115), V(0.011, 0.007, 0.055) * s)
+			w2 = fb.ellipsoid(at(0.022 * x, 0.018, 0.115), V(0.011, 0.007, 0.055) * s) if legh < 0.2 else fb.ellipsoid(bc + V(0.03 * x, -0.01 * s, 0.1 * s), V(0.016, 0.02, 0.06) * s)
 			parts.append(Part("BODY%d" % (x + 2), bc, [w, w2], wingc, voxel=0.0028 * s, smooth=4))
 	# Tail fan (with the pigeon's dark band).
 	tl = p["tail"]
@@ -176,14 +184,15 @@ def bird_parts(id, p, flying):
 			return rgba(p["band"])
 		return rgba(p["tailc"])
 	fan = fb.ellipsoid(at(0, 0.0, 0.085 + tl * 0.5), V(0.03 + (0.01 if flying else 0.0), 0.006, tl * 0.55) * s)
-	rot_bm(fan, (tilt * 0.4 + (0 if flying else -12), 0, 0), tp)
+	rot_bm(fan, (tilt * 0.4 + (0 if flying else (-12 if legh < 0.2 else 30)), 0, 0), tp)
 	parts.append(Part("TAIL", tp, [fan], tailc, voxel=0.0025 * s, smooth=3))
 	# Legs.
 	if not flying and legh > 0:
 		for x, nm in ((-1, "LEG_BL"), (1, "LEG_BR")):
 			hip = bc + V(0.018 * x * s, -0.03 * s, 0.005 * s)
+			foot_y = 0.004
 			foot = V(0.018 * x * s, 0.004, 0.006 * s)
-			lr = 0.0045 * s
+			lr = 0.0045 * s if legh < 0.2 else 0.0075
 			sol = [fb.capsule(hip, foot, lr, lr * 0.8, segs=8)]
 			for k in range(3):
 				a = math.radians(-28 + 28 * k)
@@ -255,12 +264,27 @@ def bird_parts(id, p, flying):
 			col = p["bib"]
 		if "face" in p and rel.z < -0.01 * s and rel.y < 0.006 * s:
 			col = p["face"]
+		if "crest" in p and rel.y > 0.018 * s:
+			col = p["crest"]
+		if "plume" in p and rel.y > 0.016 * s and abs(rel.x) < 0.012 * s:
+			col = p["plume"]
+		if "plume" in p and abs(rel.x) > 0.02 * s and rel.y > 0.0 and rel.z > -0.01 * s:
+			col = p["plume"]
 		if p.get("gloss_neck") and (co - nb.lerp(hc, 0.4)).length < 0.03 * s:
 			col = (0.42, 0.33, 0.52) if rel.x > 0 else (0.3, 0.55, 0.45)
 		return rgba(col)
-	hs = [fb.capsule(nb, hc, 0.033 * s, 0.026 * s, segs=14), fb.ellipsoid(hc, V(0.031, 0.031, 0.034) * s)]
+	if nk > 0.1 and not flying:
+		# A slender S-curved neck.
+		m1 = nb.lerp(hc, 0.4) + V(0, 0, 0.05 * s)
+		m2 = nb.lerp(hc, 0.75) + V(0, 0, -0.02 * s)
+		hs = [fb.capsule(nb, m1, 0.024 * s, 0.015 * s, segs=12), fb.capsule(m1, m2, 0.015 * s, 0.013 * s, segs=12), fb.capsule(m2, hc, 0.013 * s, 0.014 * s, segs=12),
+			fb.ellipsoid(hc, V(0.026, 0.026, 0.03) * s)]
+	elif nk > 0.1:
+		hs = [fb.capsule(nb, hc, 0.022 * s, 0.015 * s, segs=12), fb.ellipsoid(hc, V(0.026, 0.026, 0.03) * s)]
+	else:
+		hs = [fb.capsule(nb, hc, 0.033 * s, 0.026 * s, segs=14), fb.ellipsoid(hc, V(0.031, 0.031, 0.034) * s)]
 	parts.append(Part("HEAD", nb, hs, headc, voxel=0.0028 * s, smooth=6))
-	bl = 0.032 * s
+	bl = p.get("beak_l", 0.032) * s
 	bb = hc + V(0, -0.004, -0.027) * s
 	bt = bb + V(0, -0.006 * s, -bl)
 	beak = [fb.capsule(bb, bt, 0.0095 * s, 0.0015 * s, segs=10)]
@@ -506,7 +530,7 @@ def fish_parts():
 
 
 # ----------------------------------------------------------------------------------- main
-only = [x for x in opt.get("only", "pigeon,sparrow,songbird,gull,duck,rabbit,seal,fish").split(",") if x]
+only = [x for x in opt.get("only", "pigeon,sparrow,songbird,gull,heron,crane,duck,rabbit,seal,fish").split(",") if x]
 for sid in only:
 	fb.reset()
 	if sid == "duck":
@@ -529,7 +553,7 @@ for sid in only:
 				saved[o.name] = o.data.materials[0]
 				o.data.materials[0] = pv
 		fly = bpy.data.objects.get("fly") or bpy.data.objects.new("fly", None)
-		k0 = {"pigeon": 1.0, "sparrow": 0.6, "songbird": 0.6, "gull": 1.6, "duck": 1.2, "rabbit": 0.8, "seal": 3.0, "fish": 0.6}[sid]
+		k0 = {"pigeon": 1.0, "sparrow": 0.6, "songbird": 0.6, "gull": 1.6, "heron": 2.4, "crane": 2.6, "duck": 1.2, "rabbit": 0.8, "seal": 3.0, "fish": 0.6}[sid]
 		fly.location = (-0.45 * k0, 0.1 * k0, 0.12 * k0)
 		k = k0
 		fb.preview(os.path.join(opt["preview"], "s_%s.png" % sid), (0.5 * k, 0.75 * k, 0.35 * k), (-0.2 * k, 0, 0.1 * k))
