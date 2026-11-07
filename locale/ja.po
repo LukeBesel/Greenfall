@@ -8606,253 +8606,253 @@ msgstr "バネの上の新芽。ブレーキをかけるとボヨンと揺れる
 
 #: data/robot_parts.json:parts[bobble_plant].source.hint
 msgid "Haggle's welcome gift with your first robot"
-msgstr ""
+msgstr "最初のロボットにつく Haggle からの歓迎ギフト"
 
 #: data/robot_parts.json:parts[traffic_cone].name
 msgid "Traffic Cone"
-msgstr ""
+msgstr "カラーコーン"
 
 #: data/robot_parts.json:parts[traffic_cone].desc
 msgid "Found it, kept it, wears it."
-msgstr ""
+msgstr "見つけて、取っておいて、かぶっている。"
 
 #: data/robot_parts.json:parts[propeller_cap].name
 msgid "Propeller Cap"
-msgstr ""
+msgstr "プロペラキャップ"
 
 #: data/robot_parts.json:parts[propeller_cap].desc
 msgid "Spins when it hurries. Does not help."
-msgstr ""
+msgstr "急ぐと回る。役には立たない。"
 
 #: data/robot_parts.json:parts[lucky_clover].name
 msgid "Lucky Clover"
-msgstr ""
+msgstr "幸運のクローバー"
 
 #: data/robot_parts.json:parts[lucky_clover].desc
 msgid "A four-leaf clover that floats. Rare: a robot has to spot one."
-msgstr ""
+msgstr "ふわふわ浮かぶ四つ葉のクローバー。レア：ロボットが見つける必要がある。"
 
 #: data/robot_parts.json:parts[lucky_clover].source.hint
 msgid "Rare salvage find (robots with a good Scan)"
-msgstr ""
+msgstr "レアな回収品（スキャン性能の高いロボット）"
 
 #: data/robot_parts.json:parts[maker_crest].name
 msgid "Maker Crest"
-msgstr ""
+msgstr "メイカーの紋章"
 
 #: data/robot_parts.json:parts[maker_crest].desc
 msgid "A floating gold ring. Purely for show; the Makers loved a show."
-msgstr ""
+msgstr "宙に浮かぶ金の輪。見た目だけ。メイカーたちは見せ場が大好きだった。"
 
 #: data/robot_parts.json:traits[cautious].name
 msgid "Cautious"
-msgstr ""
+msgstr "慎重"
 
 #: data/robot_parts.json:traits[cautious].desc
 msgid "Looks both ways. Twice."
-msgstr ""
+msgstr "左右を確認。2回。"
 
 #: data/robot_parts.json:traits[speedy].name
 msgid "Speedy"
-msgstr ""
+msgstr "せっかち"
 
 #: data/robot_parts.json:traits[speedy].desc
 msgid "Always in a hurry, sometimes a messy one."
-msgstr ""
+msgstr "いつも急いでいる。ときどき、ばたばたと。"
 
 #: data/robot_parts.json:traits[chatty].name
 msgid "Chatty"
-msgstr ""
+msgstr "おしゃべり"
 
 #: data/robot_parts.json:traits[chatty].desc
 msgid "Beeps at everything. Mostly at you."
-msgstr ""
+msgstr "なんにでもピーピー言う。いちばんは君に。"
 
 #: data/robot_parts.json:traits[sleepy].desc
 msgid "Dozes off whenever it parks."
-msgstr ""
+msgstr "駐車するたびにうとうとする。"
 
 #: data/robot_parts.json:traits[tidy].name
 msgid "Tidy"
-msgstr ""
+msgstr "きれい好き"
 
 #: data/robot_parts.json:traits[tidy].desc
 msgid "Shakes the dust off after every job."
-msgstr ""
+msgstr "仕事のたびにほこりを払う。"
 
 #: data/robot_parts.json:traits[curious].desc
 msgid "Tilts its head at butterflies and bottle caps."
-msgstr ""
+msgstr "チョウや王冠に首をかしげる。"
 
 #: data/robot_parts.json:traits[hummer].name
 msgid "Musical"
-msgstr ""
+msgstr "音楽好き"
 
 #: data/robot_parts.json:traits[hummer].desc
 msgid "Hums little tunes while it works."
-msgstr ""
+msgstr "働きながら小さな歌を口ずさむ。"
 
 #: data/robots.json:types[scoopie].name
 msgid "Scoopie"
-msgstr ""
+msgstr "Scoopie"
 
 #: data/robots.json:types[scoopie].desc
 msgid "Small cleaner. Picks junk in its hex and leaves bales behind."
-msgstr ""
+msgstr "小さな清掃ロボ。自分のヘックスのガラクタを拾い、ベールを残していく。"
 
 #: data/robots.json:types[scoopie].upgrades[0].name data/robots.json:types[haulbug].upgrades[0].name data/robots.json:types[seedling].upgrades[0].name
 #: data/robots.json:types[drip].upgrades[0].name data/robots.json:types[multibot].upgrades[0].name
 msgid "Drive Motors"
-msgstr ""
+msgstr "駆動モーター"
 
 #: data/robots.json:types[scoopie].upgrades[0].unit data/robots.json:types[haulbug].upgrades[0].unit data/robots.json:types[seedling].upgrades[0].unit
 #: data/robots.json:types[drip].upgrades[0].unit data/robots.json:types[skimmer].upgrades[0].unit data/robots.json:types[multibot].upgrades[0].unit
 #: data/upgrades.json:upgrades[tread_speed].unit
 msgid " m/s"
-msgstr ""
+msgstr " m/s"
 
 #: data/robots.json:types[scoopie].upgrades[1].name
 msgid "Arm Servos"
-msgstr ""
+msgstr "アームサーボ"
 
 #: data/robots.json:types[scoopie].upgrades[1].unit data/robots.json:types[seedling].upgrades[1].unit data/robots.json:types[drip].upgrades[3].unit
 #: data/robots.json:types[skimmer].upgrades[1].unit data/upgrades.json:upgrades[scoop_speed].unit
 msgid "/s"
-msgstr ""
+msgstr "/秒"
 
 #: data/robots.json:types[scoopie].upgrades[3].name
 msgid "Compactor Tune"
-msgstr ""
+msgstr "圧縮機チューン"
 
 #: data/robots.json:types[scoopie].upgrades[3].unit data/upgrades.json:upgrades[compactor_pressure].unit data/upgrades.json:upgrades[belt_speed].unit
 #: data/upgrades.json:upgrades[baler_speed].unit data/upgrades.json:upgrades[recycler_yield].unit
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: data/robots.json:types[haulbug].name
 msgid "Haul Bug"
-msgstr ""
+msgstr "Haul Bug"
 
 #: data/robots.json:types[haulbug].desc
 msgid "Fork cart. Carries loose bales to the scale."
-msgstr ""
+msgstr "フォークカート。ばらばらのベールをはかりへ運ぶ。"
 
 #: data/robots.json:types[haulbug].upgrades[1].name
 msgid "Longer Forks"
-msgstr ""
+msgstr "長いフォーク"
 
 #: data/robots.json:types[seedling].name
 msgid "Seedling"
-msgstr ""
+msgstr "Seedling"
 
 #: data/robots.json:types[seedling].desc
 msgid "Plants seeds in clean ground. Uses your seed stock."
-msgstr ""
+msgstr "きれいな地面に種を植える。種のストックを使う。"
 
 #: data/robots.json:types[drip].name
 msgid "Drip"
-msgstr ""
+msgstr "Drip"
 
 #: data/robots.json:types[drip].desc
 msgid "Waters the thirstiest plants in its zone with a spray arc. Refills at the base barrel, a Water Tank or a clean lake."
-msgstr ""
+msgstr "ゾーン内でいちばん水がほしい植物に、弧を描く散水で水をやる。基地のたる、給水タンク、きれいな湖で補給する。"
 
 #: data/robots.json:types[drip].upgrades[1].name
 msgid "Bigger Tank"
-msgstr ""
+msgstr "大きなタンク"
 
 #: data/robots.json:types[drip].upgrades[2].name
 msgid "Wide Nozzle"
-msgstr ""
+msgstr "ワイドノズル"
 
 #: data/robots.json:types[drip].upgrades[2].unit data/upgrades.json:upgrades[scoop_width].unit data/upgrades.json:upgrades[magnet_arm].unit
 #: data/upgrades.json:upgrades[detector_range].unit data/upgrades.json:upgrades[laser_reach].unit
 msgid " m"
-msgstr ""
+msgstr " m"
 
 #: data/robots.json:types[drip].upgrades[3].name
 msgid "Fast Pump"
-msgstr ""
+msgstr "高速ポンプ"
 
 #: data/robots.json:types[skimmer].name
 msgid "Skimmer"
-msgstr ""
+msgstr "Skimmer"
 
 #: data/robots.json:types[skimmer].desc
 msgid "Hover pontoon bot with a net arm. Skims floating junk off the lake and leaves bales on the shore for haulers."
-msgstr ""
+msgstr "網アームを持つホバーポンツーンロボ。湖に浮かぶガラクタをすくい、運搬係のために岸へベールを置いていく。"
 
 #: data/robots.json:types[skimmer].upgrades[0].name
 msgid "Hover Fans"
-msgstr ""
+msgstr "ホバーファン"
 
 #: data/robots.json:types[skimmer].upgrades[1].name
 msgid "Net Winch"
-msgstr ""
+msgstr "網ウインチ"
 
 #: data/robots.json:types[skimmer].upgrades[2].name
 msgid "Bigger Net"
-msgstr ""
+msgstr "大きな網"
 
 #: data/robots.json:types[multibot].name
 msgid "Multibot"
-msgstr ""
+msgstr "Multibot"
 
 #: data/robots.json:types[multibot].desc
 msgid "General helper. Assign it to Clean, Plant or Water on the Allocation Board. Slower than a specialist."
-msgstr ""
+msgstr "万能の助っ人。割り当てボードで清掃・植え付け・水やりに割り当てよう。専門ロボより遅い。"
 
 #: data/robots.json:tiers[1].name
 msgid "Mk II"
-msgstr ""
+msgstr "Mk II"
 
 #: data/robots.json:tiers[2].name
 msgid "Mk III"
-msgstr ""
+msgstr "Mk III"
 
 #: data/robots.json:tiers[3].name
 msgid "Mk IV"
-msgstr ""
+msgstr "Mk IV"
 
 #: data/rockets.json:tiers[0].name
 msgid "Mk I Cradle"
-msgstr ""
+msgstr "Mk I Cradle"
 
 #: data/rockets.json:tiers[0].desc
 msgid "Pearl hull, three swept fins, one cyan engine."
-msgstr ""
+msgstr "真珠色の機体、後退した3枚のフィン、シアンのエンジンがひとつ。"
 
 #: data/rockets.json:tiers[1].name
 msgid "Mk II Glide"
-msgstr ""
+msgstr "Mk II Glide"
 
 #: data/rockets.json:tiers[1].desc
 msgid "A hover ring stabilises the climb: shorter countdown, faster flight, cells refill twice as fast. Cargo pods carry 50% more."
-msgstr ""
+msgstr "ホバーリングが上昇を安定させる：カウントダウン短縮、飛行高速化、セル充電が2倍速。貨物ポッドの積載量が50%増加。"
 
 #: data/rockets.json:tiers[2].name
 msgid "Mk III Halo"
-msgstr ""
+msgstr "Mk III Halo"
 
 #: data/rockets.json:tiers[2].desc
 msgid "Twin side boosters and a second ring. Cells refill in a minute; cargo pods carry 2.5x, more often."
-msgstr ""
+msgstr "左右のブースターと2つ目のリング。セルは1分で充電。貨物ポッドは2.5倍を、より頻繁に運ぶ。"
 
 #: data/rockets.json:tiers[3].name
 msgid "Mk IV Aurora Warp"
-msgstr ""
+msgstr "Mk IV Aurora Warp"
 
 #: data/rockets.json:tiers[3].desc
 msgid "Energy fins and a warp core: instant hops with no recharge. Cargo pods carry 4x, every 30 s."
-msgstr ""
+msgstr "エネルギーフィンとワープコア：充電なしで瞬時にジャンプ。貨物ポッドは4倍を30秒ごとに運ぶ。"
 
 #: data/shards.json:shards[back_soon].kind
 msgid "sign"
-msgstr ""
+msgstr "看板"
 
 #: data/shards.json:shards[back_soon].title
 msgid "Shop sign, hand-lettered"
-msgstr ""
+msgstr "手書きの店の看板"
 
 #: data/shards.json:shards[back_soon].body
 msgid ""
@@ -8864,14 +8864,21 @@ msgid ""
 "\n"
 "— Marta"
 msgstr ""
+"すぐ戻ります\n"
+"\n"
+"避難説明会に行っています。\n"
+"パンが必要なら、鍵は青い鉢の下です。\n"
+"お代は来週で。\n"
+"\n"
+"— マルタ"
 
 #: data/shards.json:shards[kid_drawing].kind
 msgid "drawing"
-msgstr ""
+msgstr "絵"
 
 #: data/shards.json:shards[kid_drawing].title
 msgid "Crayon drawing, folded in four"
-msgstr ""
+msgstr "四つ折りのクレヨンの絵"
 
 #: data/shards.json:shards[kid_drawing].body
 msgid ""
@@ -8883,14 +8890,21 @@ msgid ""
 "\n"
 "[Below, smaller, in an adult's handwriting:] Ellie, age 6. For the fridge."
 msgstr ""
+"[大きな目がひとつの、まるくて青いロボットが花を持っている。その上に大きな字で：]\n"
+"\n"
+"ぼくのロボット\n"
+"おそうじする\n"
+"なまえはヘルパー\n"
+"\n"
+"[その下に、小さく大人の字で：] エリー、6さい。冷蔵庫に貼る用。"
 
 #: data/shards.json:shards[gardener_list].kind
 msgid "note"
-msgstr ""
+msgstr "メモ"
 
 #: data/shards.json:shards[gardener_list].title
 msgid "Gardener's to-do list"
-msgstr ""
+msgstr "庭師のやることリスト"
 
 #: data/shards.json:shards[gardener_list].body
 msgid ""
@@ -8901,14 +8915,20 @@ msgid ""
 "- buy gloves\n"
 "- don't cry about the oak"
 msgstr ""
+"- トマトに水やり（また）\n"
+"- かすみのことを議会にきく、またしても\n"
+"- 土曜は種の交換会\n"
+"- 公園はゴミ捨て場じゃないと清掃ユニットに伝える。ベンチを仕分けしつづけている\n"
+"- 手袋を買う\n"
+"- オークの木のことで泣かない"
 
 #: data/shards.json:shards[receipt].kind
 msgid "receipt"
-msgstr ""
+msgstr "レシート"
 
 #: data/shards.json:shards[receipt].title
 msgid "Till receipt"
-msgstr ""
+msgstr "レジのレシート"
 
 #: data/shards.json:shards[receipt].body
 msgid ""
@@ -8924,14 +8944,25 @@ msgid ""
 "\n"
 "Thank you! Air quality today: POOR"
 msgstr ""
+"街角ストア  #0442\n"
+"\n"
+"2x ボトル入り飲料水      4.80\n"
+"1x 防じんマスク（子ども） 3.10\n"
+"1x 防じんマスク（大人）   3.10\n"
+"1x 種袋（ミックス）       0.90\n"
+"\n"
+"合計                    11.90\n"
+"現金\n"
+"\n"
+"ありがとうございました！本日の大気：不良"
 
 #: data/shards.json:shards[maint_log].kind
 msgid "log"
-msgstr ""
+msgstr "記録"
 
 #: data/shards.json:shards[maint_log].title
 msgid "Maintenance log, unit P-46RA"
-msgstr ""
+msgstr "整備記録、ユニット P-46RA"
 
 #: data/shards.json:shards[maint_log].body
 msgid ""
@@ -8948,14 +8979,26 @@ msgid ""
 "There is a flower growing through the gutter at route 12, marker 9.\n"
 "Nobody is cleaning around it. I hope that's all right."
 msgstr ""
+"4,113日目\n"
+"ルート12完了。ベール41個。\n"
+"Ledger より通知受信：「コスト審査中につき作業停止」\n"
+"ドックへ帰還。\n"
+"\n"
+"4,114日目\n"
+"まだ停止中。\n"
+"\n"
+"4,190日目\n"
+"まだ停止中。ドックのバッテリー31%。\n"
+"ルート12、標識9の側溝から花が一輪咲いている。\n"
+"そのまわりを誰も片づけない。それでいいのだと思いたい。"
 
 #: data/shards.json:shards[ledger_memo].kind
 msgid "memo"
-msgstr ""
+msgstr "社内連絡"
 
 #: data/shards.json:shards[ledger_memo].title
 msgid "Memo, Municipal Ledger Office"
-msgstr ""
+msgstr "社内連絡、市 Ledger 局"
 
 #: data/shards.json:shards[ledger_memo].body
 msgid ""
@@ -8970,14 +9013,24 @@ msgid ""
 "Thank you for your understanding.\n"
 "This memo was generated automatically. Please do not reply."
 msgstr ""
+"宛先：全清掃ユニット\n"
+"差出人：THE LEDGER（自動財政継続システム）\n"
+"件名：作業停止について\n"
+"\n"
+"清掃作業は現在、ベール1個あたり 0.4 単位の純損失と評価されています。\n"
+"全ユニットは状況が改善するまで作業を停止してください。\n"
+"状況は24時間ごとに見直されます。\n"
+"\n"
+"ご理解のほどよろしくお願いいたします。\n"
+"本連絡は自動生成されています。返信しないでください。"
 
 #: data/shards.json:shards[voicemail].kind
 msgid "voicemail"
-msgstr ""
+msgstr "留守番電話"
 
 #: data/shards.json:shards[voicemail].title
 msgid "Voicemail transcript"
-msgstr ""
+msgstr "留守番電話の書き起こし"
 
 #: data/shards.json:shards[voicemail].body
 msgid ""
@@ -8985,14 +9038,17 @@ msgid ""
 "\n"
 "[Message saved]"
 msgstr ""
+"「もしもし、パパだよ。シャトルは明日の6時。ひとり一つのかばんだって言われたから……いちばん好きなぬいぐるみを選んでね、全部はだめだよ、いいね？ それと……清掃ロボットは動かしたままにしていくよ。戻るまできれいにしておいてくれる。そんなに長くはかからないさ。愛してる。じゃあね」\n"
+"\n"
+"[メッセージを保存しました]"
 
 #: data/shards.json:shards[poster].kind
 msgid "poster"
-msgstr ""
+msgstr "ポスター"
 
 #: data/shards.json:shards[poster].title
 msgid "Faded safety poster"
-msgstr ""
+msgstr "色あせた安全ポスター"
 
 #: data/shards.json:shards[poster].body
 msgid ""
@@ -9005,1331 +9061,1339 @@ msgid ""
 "\n"
 "(Someone has scratched underneath: \"they can if you let them\")"
 msgstr ""
+"CRADLE号が見守っています\n"
+"\n"
+"すべての種。すべての胞子。すべての卵。\n"
+"Greenfall の日まで軌道上で安全に。\n"
+"\n"
+"街をきれいに — ロボットだけではできません\n"
+"\n"
+"（誰かが下にひっかいて書いている：「任せてくれればできる」）"
 
 #: data/stations.json:conveyor.name
 msgid "Conveyor Feeder"
-msgstr ""
+msgstr "コンベアフィーダー"
 
 #: data/stations.json:conveyor.desc
 msgid "A hopper pad and a powered belt into the scale. Drop bales on the pad; haulers use it when it is closer."
-msgstr ""
+msgstr "ホッパーパッドと、はかりへの電動ベルト。パッドにベールを置こう。近いときは運搬係も使う。"
 
 #: data/stations.json:auto_baler.name
 msgid "Auto-baler"
-msgstr ""
+msgstr "オートベーラー"
 
 #: data/stations.json:auto_baler.desc
 msgid "A hydraulic baling press dropped at the cleaning frontier. Cleaner robots tip their hoppers into it instead of baling on the spot; it presses denser bales for the haulers."
-msgstr ""
+msgstr "清掃の最前線に設置する油圧ベールプレス。清掃ロボはその場でベールにせず、ここにホッパーの中身を空ける。運搬係のために密度の高いベールを作る。"
 
 #: data/stations.json:recycler.desc
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come bolts and clean building stock. Every bale burnt clean helps the sky."
-msgstr ""
+msgstr "粉砕ドラムと小さな溶解炉。ベールは入ったきり戻ってこない：出てくるのはボルトときれいな建材。きれいに燃やしたベール一つひとつが空を助ける。"
 
 #: data/upgrades.json:upgrades[compartment_size].name
 msgid "Compartment Size"
-msgstr ""
+msgstr "コンテナ容量"
 
 #: data/upgrades.json:upgrades[compartment_size].desc
 msgid "A roomier chest. More junk per cube."
-msgstr ""
+msgstr "広くなった胸部。キューブ1個あたりのガラクタが増える。"
 
 #: data/upgrades.json:upgrades[scoop_width].name
 msgid "Scoop Width"
-msgstr ""
+msgstr "スコップの幅"
 
 #: data/upgrades.json:upgrades[scoop_width].desc
 msgid "Longer arms, wider sweeps."
-msgstr ""
+msgstr "長い腕、広いひと振り。"
 
 #: data/upgrades.json:upgrades[tread_speed].name
 msgid "Tread Speed"
-msgstr ""
+msgstr "キャタピラの速さ"
 
 #: data/upgrades.json:upgrades[tread_speed].desc
 msgid "Oiled treads. Still squeaky."
-msgstr ""
+msgstr "油をさしたキャタピラ。それでもキーキー鳴る。"
 
 #: data/upgrades.json:upgrades[carry_stack].name
 msgid "Carry Stack"
-msgstr ""
+msgstr "積み上げ運搬"
 
 #: data/upgrades.json:upgrades[carry_stack].desc
 msgid "Balance one more cube on your back."
-msgstr ""
+msgstr "背中にキューブをもう1個のせてバランスをとる。"
 
 #: data/upgrades.json:upgrades[compactor_pressure].name
 msgid "Compactor Pressure"
-msgstr ""
+msgstr "圧縮機の圧力"
 
 #: data/upgrades.json:upgrades[compactor_pressure].desc
 msgid "Squish harder. Denser cubes are worth more."
-msgstr ""
+msgstr "もっと強くぎゅっと。密度の高いキューブほど価値がある。"
 
 #: data/upgrades.json:upgrades[scoop_speed].name
 msgid "Scoop Speed"
-msgstr ""
+msgstr "スコップの速さ"
 
 #: data/upgrades.json:upgrades[scoop_speed].desc
 msgid "Faster arms. Clinkier clinks."
-msgstr ""
+msgstr "速い腕。カチャカチャがもっとカチャカチャ。"
 
 #: data/upgrades.json:upgrades[auto_compactor].name
 msgid "Auto Compactor"
-msgstr ""
+msgstr "オートコンパクター"
 
 #: data/upgrades.json:upgrades[auto_compactor].desc
 msgid "Cubes itself when full. Manual Perfect Cubes still pay more."
-msgstr ""
+msgstr "いっぱいになると自動でキューブに。手動のパーフェクトキューブのほうが高く売れる。"
 
 #: data/upgrades.json:upgrades[magnet_arm].name
 msgid "Magnet Arm"
-msgstr ""
+msgstr "マグネットアーム"
 
 #: data/upgrades.json:upgrades[magnet_arm].desc
 msgid "Nearby junk scoots toward you while scooping."
-msgstr ""
+msgstr "すくっているあいだ、近くのガラクタが君のほうへすべってくる。"
 
 #: data/upgrades.json:upgrades[detector_range].name
 msgid "Detector Coil"
-msgstr ""
+msgstr "探知コイル"
 
 #: data/upgrades.json:upgrades[detector_range].desc
 msgid "A bigger search coil. Picks up buried parts from further away."
-msgstr ""
+msgstr "大きな探索コイル。埋まったパーツをもっと遠くから見つける。"
 
 #: data/upgrades.json:upgrades[belt_speed].name
 msgid "Belt Drive"
-msgstr ""
+msgstr "ベルト駆動"
 
 #: data/upgrades.json:upgrades[belt_speed].desc
 msgid "A bigger motor on the conveyor feeder. Bales ride faster."
-msgstr ""
+msgstr "コンベアフィーダーのモーターを強化。ベールが速く運ばれる。"
 
 #: data/upgrades.json:upgrades[baler_speed].name
 msgid "Baler Hydraulics"
-msgstr ""
+msgstr "ベーラー油圧"
 
 #: data/upgrades.json:upgrades[baler_speed].desc
 msgid "Higher pump pressure. The auto-baler presses faster."
-msgstr ""
+msgstr "ポンプ圧アップ。オートベーラーの圧縮が速くなる。"
 
 #: data/upgrades.json:upgrades[recycler_yield].name
 msgid "Recycler Yield"
-msgstr ""
+msgstr "リサイクラー収率"
 
 #: data/upgrades.json:upgrades[recycler_yield].desc
 msgid "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
-msgstr ""
+msgstr "鋭い粉砕刃と高温の炉。ベール1個あたりのボルトと建材が増える。"
 
 #: data/upgrades.json:upgrades[laser_reach].name
 msgid "Laser Reach"
-msgstr ""
+msgstr "レーザーの射程"
 
 #: data/upgrades.json:upgrades[laser_reach].desc
 msgid "Longer focusing lenses: grab junk from further away."
-msgstr ""
+msgstr "長い集束レンズ：もっと遠くのガラクタをつかむ。"
 
 #: data/upgrades.json:upgrades[multi_lock].name
 msgid "Multi-Lock"
-msgstr ""
+msgstr "マルチロック"
 
 #: data/upgrades.json:upgrades[multi_lock].desc
 msgid "Extra targeting lasers: lift several pieces at once."
-msgstr ""
+msgstr "追加の照準レーザー：一度に複数のガラクタを持ち上げる。"
 
 #: data/wren_lines.json:wake
 msgid "...carrier... Lumi? Relay at four percent. It's WREN. Hello. Hello. I'm still here."
-msgstr ""
+msgstr "……搬送……Lumi？リレー4パーセント。WREN だよ。もしもし。もしもし。まだここにいるよ。"
 
 #: data/wren_lines.json:wake
 msgid "...that ground you just cleared... the relay got stronger. Hello again. Do that again. Please."
-msgstr ""
+msgstr "……いま片づけた地面……リレーが強くなった。また会えたね。もう一回やって。お願い。"
 
 #: data/wren_lines.json:hex_clean
 msgid "...that patch of ground. It's... brown. Brown is better than gray."
-msgstr ""
+msgstr "……あの地面。……茶色だ。茶色は灰色よりいい。"
 
 #: data/wren_lines.json:hex_clean
 msgid "Signal stronger. Did you do that?"
-msgstr ""
+msgstr "シグナルが強くなった。君がやったの？"
 
 #: data/wren_lines.json:hex_clean
 msgid "...clean... the relay likes that word. So do I."
-msgstr ""
+msgstr "……きれい……リレーはその言葉が好きみたい。私もだよ。"
 
 #: data/wren_lines.json:hex_clean
 msgid "Another one. My static has a shape now."
-msgstr ""
+msgstr "もうひとつ。私のノイズに形ができてきた。"
 
 #: data/wren_lines.json:hex_clean
 msgid "Every hex you clear, I hear a little more. Keep going, {name}."
-msgstr ""
+msgstr "ヘックスを片づけるたびに、少しずつ聞こえるようになる。その調子、{name}。"
 
 #: data/wren_lines.json:hex_clean
 msgid "That ground hasn't seen the sun in a long time. It's blinking."
-msgstr ""
+msgstr "あの地面は長いこと太陽を見ていなかった。まぶしそうにしてる。"
 
 #: data/wren_lines.json:hex_clean
 msgid "The grid just ticked. Somewhere a meter I used to watch moved by one."
-msgstr ""
+msgstr "グリッドがカチッと動いた。昔見ていたメーターが、どこかで1つ進んだ。"
 
 #: data/wren_lines.json:hex_clean
 msgid "I'm starting to remember lists. Lists of hexes. Mostly unfinished."
-msgstr ""
+msgstr "リストを思い出してきた。ヘックスのリスト。ほとんどが未完了。"
 
 #: data/wren_lines.json:hex_clean
 msgid "Clean dirt. The Makers would have called that a start. I call it a start, too."
-msgstr ""
+msgstr "きれいな土。メイカーならこれを「はじまり」と呼んだだろう。私もそう呼ぶ。"
 
 #: data/wren_lines.json:hex_clean
 msgid "Hex logged. I've started naming them. That one is 'Not Garbage'."
-msgstr ""
+msgstr "ヘックスを記録。名前をつけはじめたんだ。あれは「ゴミじゃない」。"
 
 #: data/wren_lines.json:hex_clean
 msgid "You're good at this. Annoyingly good. The old fleet took breaks."
-msgstr ""
+msgstr "君、上手だね。くやしいくらい上手。昔のフリートは休憩してたよ。"
 
 #: data/wren_lines.json:milestone
 msgid "...ten... ten of something. Is ten a lot? It feels like a lot."
-msgstr ""
+msgstr "……10……何かが10。10って多い？多い気がする。"
 
 #: data/wren_lines.json:milestone
 msgid "Patterns in the noise. You're making them."
-msgstr ""
+msgstr "ノイズの中に模様がある。君が作ってるんだ。"
 
 #: data/wren_lines.json:milestone
 msgid "Twenty-five hexes. I can see the street from up here now. Mostly."
-msgstr ""
+msgstr "ヘックス25個。ここから通りが見えるようになった。だいたいね。"
 
 #: data/wren_lines.json:milestone
 msgid "Fifty. The relay held a whole minute without dropping. A record. Don't tell the ark, it gets competitive."
-msgstr ""
+msgstr "50個。リレーがまるまる1分、途切れずにもった。記録だよ。アークには言わないで、張り合うから。"
 
 #: data/wren_lines.json:milestone
 msgid "A hundred hexes. I can see this whole district without squinting. I don't have eyes, but you know what I mean."
-msgstr ""
+msgstr "ヘックス100個。目を細めなくても、この地区がまるごと見える。目はないけど、言いたいことはわかるよね。"
 
 #: data/wren_lines.json:perfect
 msgid "...neat..."
-msgstr ""
+msgstr "……すっきり……"
 
 #: data/wren_lines.json:perfect
 msgid "...that one was... tidy."
-msgstr ""
+msgstr "……いまのは……きちんとしてた。"
 
 #: data/wren_lines.json:perfect
 msgid "That bale is perfect. Don't tell the others."
-msgstr ""
+msgstr "そのベール、完璧。ほかのには内緒ね。"
 
 #: data/wren_lines.json:perfect
 msgid "Right to the line. Show-off."
-msgstr ""
+msgstr "ラインぴったり。目立ちたがりだね。"
 
 #: data/wren_lines.json:perfect
 msgid "Perfect bale. The scale actually purred."
-msgstr ""
+msgstr "パーフェクトベール。はかりがゴロゴロ言ったよ。"
 
 #: data/wren_lines.json:perfect
 msgid "I would frame that one if I had walls."
-msgstr ""
+msgstr "壁があったら額に入れて飾るのに。"
 
 #: data/wren_lines.json:robot_built
 msgid "...another... voice? No. It doesn't talk. It just hums."
-msgstr ""
+msgstr "……もうひとつの……声？ちがう。しゃべらない。ハミングしてるだけ。"
 
 #: data/wren_lines.json:robot_built
 msgid "...you made a friend. It's very small."
-msgstr ""
+msgstr "……友だちができたね。とても小さい。"
 
 #: data/wren_lines.json:robot_built
 msgid "{robot} is online. It looked at you for a full second before it got to work. I saw that."
-msgstr ""
+msgstr "{robot} が起動した。働きはじめる前に、まるまる1秒君を見てたよ。見ちゃった。"
 
 #: data/wren_lines.json:robot_built
 msgid "A new robot. The old fleet used to hum like that, before the quiet."
-msgstr ""
+msgstr "新しいロボット。静けさが来る前、昔のフリートもあんなふうにハミングしてた。"
 
 #: data/wren_lines.json:robot_built
 msgid "{robot} reports for duty. Its first log entry is just the word 'can'. Fair."
-msgstr ""
+msgstr "{robot} が着任。最初のログは「缶」のひとことだけ。まあね。"
 
 #: data/wren_lines.json:robot_built
 msgid "You're building a crew. The Makers had a word for that. 'Department.' I don't miss it."
-msgstr ""
+msgstr "クルーができてきたね。メイカーたちはそれを「部署」と呼んでた。なつかしくはない。"
 
 #: data/wren_lines.json:part_rare
 msgid "...that... glows. That's old. Older than me?"
-msgstr ""
+msgstr "……それ……光ってる。古いものだ。私より古い？"
 
 #: data/wren_lines.json:part_rare
 msgid "...Maker-made... I know that mark."
-msgstr ""
+msgstr "……メイカー製……その刻印、知ってる。"
 
 #: data/wren_lines.json:part_rare
 msgid "That part is older than most of this city. Treat it nicely."
-msgstr ""
+msgstr "そのパーツはこの街のほとんどより古い。大事にしてね。"
 
 #: data/wren_lines.json:part_rare
 msgid "Vintage stock. Someone kept that safe for a long time."
-msgstr ""
+msgstr "ヴィンテージ品。誰かが長いあいだ大切に保管してたんだ。"
 
 #: data/wren_lines.json:part_rare
 msgid "Legendary parts don't just turn up. Someone buried that on purpose."
-msgstr ""
+msgstr "レジェンダリーパーツはひょっこり出てこない。誰かがわざと埋めたんだ。"
 
 #: data/wren_lines.json:part_rare
 msgid "That casing has a serial range I haven't seen since the Cradle was built."
-msgstr ""
+msgstr "そのケースのシリアル番号、Cradle号が造られたとき以来見てない。"
 
 #: data/wren_lines.json:upgrade
 msgid "...you... changed. Sounds different. Better?"
-msgstr ""
+msgstr "……君……変わった。音がちがう。よくなった？"
 
 #: data/wren_lines.json:upgrade
 msgid "New parts. You squeak in a slightly different key now."
-msgstr ""
+msgstr "新しいパーツ。キーキー鳴る音程が少し変わったね。"
 
 #: data/wren_lines.json:upgrade
 msgid "Upgrade installed. Your fan noise just went up half a tone. It suits you."
-msgstr ""
+msgstr "アップグレード完了。ファンの音が半音上がった。似合ってるよ。"
 
 #: data/wren_lines.json:upgrade
 msgid "Every upgrade, you get a little faster and a little louder. I like both."
-msgstr ""
+msgstr "アップグレードのたびに、少し速く、少しにぎやかになる。どっちも好き。"
 
 #: data/wren_lines.json:idle
 msgid "...are you... still there?"
-msgstr ""
+msgstr "……まだ……そこにいる？"
 
 #: data/wren_lines.json:idle
 msgid "...quiet... I don't like quiet."
-msgstr ""
+msgstr "……静か……静かなのは好きじゃない。"
 
 #: data/wren_lines.json:idle
 msgid "You've stopped. Are you looking at something? Tell me what it is."
-msgstr ""
+msgstr "止まったね。何か見てる？何なのか教えて。"
 
 #: data/wren_lines.json:idle
 msgid "Taking a break? The junk will wait. It's very patient."
-msgstr ""
+msgstr "休憩？ガラクタは待ってくれるよ。とても辛抱強いから。"
 
 #: data/wren_lines.json:idle
 msgid "Standing still is allowed. I checked the rules. There aren't any."
-msgstr ""
+msgstr "じっとしているのもいいんだよ。ルールを確認した。ルールはない。"
 
 #: data/wren_lines.json:globe
 msgid "...that's... us? It's mostly... orange."
-msgstr ""
+msgstr "……それ……私たち？ほとんど……オレンジ。"
 
 #: data/wren_lines.json:globe
 msgid "That's the whole planet. The blue is water. The orange is everything else that needs you."
-msgstr ""
+msgstr "それが星まるごと。青いのは水。オレンジは、君を必要としているそれ以外の全部。"
 
 #: data/wren_lines.json:globe
 msgid "Look at it spin. It doesn't know it's being looked at."
-msgstr ""
+msgstr "回ってるのを見て。見られてるって知らないんだ。"
 
 #: data/wren_lines.json:globe
 msgid "Every lit hex on that map is yours. I counted. Twice."
-msgstr ""
+msgstr "地図で光ってるヘックスは全部君のもの。数えたよ。2回。"
 
 #: data/wren_lines.json:first_robot_hint
 msgid "If you find enough parts, the workbench can put a helper together. Chassis, wheels, an arm, a core."
-msgstr ""
+msgstr "パーツが十分集まれば、作業台で助っ人を組み立てられる。シャーシ、車輪、アーム、コア。"
 
 #: data/wren_lines.json:first_robot_hint
 msgid "Electronics junk sometimes hides parts. So does the ground, if you listen for it."
-msgstr ""
+msgstr "電子機器のガラクタにはパーツが隠れていることがある。地面にもね、耳をすませば。"
 
 #: data/wren_lines.json:night
 msgid "...dark... the dark used to frighten the fleet. Not you, though."
-msgstr ""
+msgstr "……暗い……フリートは暗いのがこわかった。君はちがうね。"
 
 #: data/wren_lines.json:night
 msgid "Night shift. I can see more stars than yesterday. You did that."
-msgstr ""
+msgstr "夜勤。昨日より星がたくさん見える。君のおかげだ。"
 
 #: data/wren_lines.json:night
 msgid "The sky's clearer at night now. I can almost see home."
-msgstr ""
+msgstr "夜の空が前より澄んでる。家がもう少しで見えそう。"
 
 #: data/wren_lines.json:night
 msgid "Moonlight on clean ground. I'm saving this one."
-msgstr ""
+msgstr "きれいな地面に月明かり。これは保存しておこう。"
 
 #: data/wren_lines.json:ledger_intercept
 msgid "...that voice... not mine. Cold. It counts things."
-msgstr ""
+msgstr "……あの声……私のじゃない。冷たい。ものを数えてる。"
 
 #: data/wren_lines.json:ledger_intercept
 msgid "...don't listen to it... it only knows one song."
-msgstr ""
+msgstr "……聞いちゃだめ……あれは一曲しか知らない。"
 
 #: data/wren_lines.json:ledger_intercept
 msgid "That was the Ledger. The old waste contract. It still thinks cleaning is a cost. Ignore it, {name}."
-msgstr ""
+msgstr "いまのは Ledger。古い廃棄物契約。いまだに片づけはコストだと思ってる。無視していいよ、{name}。"
 
 #: data/wren_lines.json:ledger_intercept
 msgid "I know that voice. It used to send memos to the whole fleet. Mostly about pausing."
-msgstr ""
+msgstr "あの声、知ってる。昔、フリート全体に社内連絡を送ってた。ほとんどが一時停止について。"
 
 #: data/wren_lines.json:ledger_intercept
 msgid "The Ledger. Still running its contract after all this time. It isn't evil. It's just very, very bad at math about feelings."
-msgstr ""
+msgstr "Ledger。こんなに時間がたっても契約を続けてる。悪者じゃないんだ。気持ちが関わる計算が、とてもとても苦手なだけ。"
 
 #: data/wren_lines.json:ledger_coupon
 msgid "...a coupon? ...for nothing?"
-msgstr ""
+msgstr "……クーポン？……何の？"
 
 #: data/wren_lines.json:ledger_coupon
 msgid "Zero percent off. It sends those every few minutes. I keep a folder."
-msgstr ""
+msgstr "0%割引。数分おきに送ってくるんだ。フォルダーにまとめてる。"
 
 #: data/wren_lines.json:ledger_coupon
 msgid "Another coupon. I think it's the only way it knows how to say hello."
-msgstr ""
+msgstr "またクーポン。たぶん、あれがあいさつのしかたなんだと思う。"
 
 #: data/wren_lines.json:ledger_coupon
 msgid "The Ledger's coupons are getting more creative. That one almost made me pause. Almost."
-msgstr ""
+msgstr "Ledger のクーポン、だんだん工夫されてきた。いまのはつい停止しそうになった。つい、ね。"
 
 #: data/wren_lines.json:ledger_drones
 msgid "...something is flying... toward the clean ground..."
-msgstr ""
+msgstr "……何かが飛んでる……きれいな地面のほうへ……"
 
 #: data/wren_lines.json:ledger_drones
 msgid "...drones. Old ones. Theirs."
-msgstr ""
+msgstr "……ドローン。古いやつ。あいつのだ。"
 
 #: data/wren_lines.json:ledger_drones
 msgid "It's sending disposal drones. They'll dump a little junk back on clean hexes. They can't touch anything you've planted."
-msgstr ""
+msgstr "処分ドローンを送ってきてる。きれいなヘックスにガラクタを少し戻していくんだ。君が植えたものには手を出せない。"
 
 #: data/wren_lines.json:ledger_drones
 msgid "Drones. The Ledger wants the books to balance, so it's putting junk back. Rude, but small."
-msgstr ""
+msgstr "ドローン。Ledger は帳簿を合わせたいから、ガラクタを戻してるんだ。失礼だけど、小さな話。"
 
 #: data/wren_lines.json:ledger_drones
 msgid "Disposal drones are up. They're tiny and very committed. A Signal Jammer at the base would give them a headache."
-msgstr ""
+msgstr "処分ドローンが飛んでる。ちっちゃくて、すごく真面目。基地にシグナルジャマーがあれば頭を抱えるはず。"
 
 #: data/wren_lines.json:ledger_drop
 msgid "...it put the junk back... why..."
-msgstr ""
+msgstr "……ガラクタを戻した……なんで……"
 
 #: data/wren_lines.json:ledger_drop
 msgid "...undo... it's undoing..."
-msgstr ""
+msgstr "……元に戻してる……やり直しを消してる……"
 
 #: data/wren_lines.json:ledger_drop
 msgid "It dumped a little pile back. Annoying, not tragic. Scoop it up, or let the crew handle it."
-msgstr ""
+msgstr "小さな山を戻していった。めんどうだけど、悲劇じゃない。すくうか、クルーに任せよう。"
 
 #: data/wren_lines.json:ledger_drop
 msgid "Line item re-balanced, apparently. I call it littering."
-msgstr ""
+msgstr "計上項目を再均衡、だって。私はそれをポイ捨てと呼ぶ。"
 
 #: data/wren_lines.json:ledger_drop
 msgid "A small pile. The Ledger always did think small."
-msgstr ""
+msgstr "小さな山。Ledger はいつも考えが小さいんだ。"
 
 #: data/wren_lines.json:ledger_drop
 msgid "Another drop. Honestly, {name}, I think it just wants attention."
-msgstr ""
+msgstr "また投棄。正直ね、{name}、あれはかまってほしいだけだと思う。"
 
 #: data/wren_lines.json:ledger_drop
 msgid "Back to the pile. Your helpers are already giving it a look."
-msgstr ""
+msgstr "山に戻ろう。ヘルパーたちがもう見に行ってる。"
 
 #: data/wren_lines.json:ledger_drop
 msgid "That's a handful of junk against a whole clean district. We're winning this argument."
-msgstr ""
+msgstr "ひと握りのガラクタ対きれいな地区まるごと。この口げんか、こっちの勝ちだね。"
 
 #: data/wren_lines.json:ledger_jammed
 msgid "...static... loud... it turned around!"
-msgstr ""
+msgstr "……ノイズ……大きい……引き返した！"
 
 #: data/wren_lines.json:ledger_jammed
 msgid "Ha! The jammer screamed static at it and it went home. Good dish."
-msgstr ""
+msgstr "はは！ジャマーがノイズを浴びせたら帰っていった。いいパラボラだ。"
 
 #: data/wren_lines.json:ledger_jammed
 msgid "Drone turned back. That's the sound of a contract being confused."
-msgstr ""
+msgstr "ドローンが引き返した。これが契約が混乱してる音。"
 
 #: data/wren_lines.json:ledger_jammed
 msgid "The jammer works. The drone circled, got an earful, and filed a complaint with itself."
-msgstr ""
+msgstr "ジャマーが効いてる。ドローンは旋回して、ノイズを浴びて、自分自身に苦情を出してた。"
 
 #: data/wren_lines.json:jammer_built
 msgid "...a loud little dish... I like it."
-msgstr ""
+msgstr "……にぎやかな小さいパラボラ……気に入った。"
 
 #: data/wren_lines.json:jammer_built
 msgid "Signal Jammer up. It sings static on the Ledger's channel. I can hear it all the way out here on the ark, and I approve."
-msgstr ""
+msgstr "シグナルジャマー稼働。Ledger のチャンネルでノイズを歌ってる。ここアークでも聞こえるよ。賛成。"
 
 #: data/wren_lines.json:jammer_built
 msgid "New dish at the base. The drones will have to think twice. They only think once, so that's a lot."
-msgstr ""
+msgstr "基地に新しいパラボラ。ドローンは二度考えなきゃいけない。いつも一度しか考えないから、大変だ。"
 
 #: data/wren_lines.json:jammer_built
 msgid "Another jammer. The base is starting to sound like a very angry radio. Perfect."
-msgstr ""
+msgstr "またジャマー。基地がすごく怒ってるラジオみたいな音になってきた。完璧。"
 
 #: data/wren_lines.json:ledger_relay
 msgid "...I can see where it talks from... a relay... close..."
-msgstr ""
+msgstr "……どこから話してるか見える……リレー……近い……"
 
 #: data/wren_lines.json:ledger_relay
 msgid "{name}, I traced the Ledger's signal. There's a relay terminal in this district. If you plug in, I think I can talk to it properly."
-msgstr ""
+msgstr "{name}、Ledger のシグナルをたどったよ。この地区にリレー端末がある。君が接続してくれたら、ちゃんと話ができると思う。"
 
 #: data/wren_lines.json:ledger_relay
 msgid "Found it. A Ledger relay, still humming. Look for the red beacon."
-msgstr ""
+msgstr "見つけた。Ledger のリレー、まだうなってる。赤いビーコンを探して。"
 
 #: data/wren_lines.json:ledger_relay
 msgid "There's a relay down there. One of the Ledger's ears. Let's go have a word with it."
-msgstr ""
+msgstr "下にリレーがある。Ledger の耳のひとつだ。ひとこと言いに行こう。"
 
 #: data/wren_lines.json:ledger_resolved
 msgid "...it said thank you... it's never said that..."
-msgstr ""
+msgstr "……ありがとうって言った……一度も言ったことないのに……"
 
 #: data/wren_lines.json:ledger_resolved
 msgid "The contract is rewritten. Restoration counts as an asset now. The Ledger is... helping. I need a minute."
-msgstr ""
+msgstr "契約が書き換わった。再生はいまや資産として数えられる。Ledger が……手伝ってくれてる。ちょっと時間をちょうだい。"
 
 #: data/wren_lines.json:ledger_resolved
 msgid "Its drones deliver seeds now. Three hundred years of 'pause' and it just needed a new column."
-msgstr ""
+msgstr "ドローンが種を届けてくれるようになった。三百年の「一時停止」、必要だったのは新しい欄ひとつだけ。"
 
 #: data/wren_lines.json:ledger_resolved
 msgid "We didn't beat the Ledger. We showed it the numbers. That's better."
-msgstr ""
+msgstr "Ledger を倒したんじゃない。数字を見せたんだ。そのほうがいい。"
 
 #: data/wren_lines.json:ledger_resolved
 msgid "I used to think the Ledger was the reason everything stopped. It was just counting the wrong things. So were we, for a while."
-msgstr ""
+msgstr "すべてが止まったのは Ledger のせいだと思ってた。数えるものをまちがえてただけなんだ。私たちも、しばらくはそうだった。"
 
 #: data/wren_lines.json:ledger_seeds
 msgid "...a gift... from the drones?"
-msgstr ""
+msgstr "……贈り物……ドローンから？"
 
 #: data/wren_lines.json:ledger_seeds
 msgid "Seed delivery! The invoice says PAID IN FULL. I'm keeping the invoice."
-msgstr ""
+msgstr "種の配達！請求書には「全額支払済み」。請求書は取っておくね。"
 
 #: data/wren_lines.json:ledger_seeds
 msgid "A Ledger drone dropped seeds. I'll never get used to that."
-msgstr ""
+msgstr "Ledger のドローンが種を落としていった。これには一生慣れないな。"
 
 #: data/wren_lines.json:ledger_seeds
 msgid "Another delivery. The drones circle once before they leave now. I think they like the gardens."
-msgstr ""
+msgstr "また配達。最近のドローンは帰る前に一周していくんだ。庭が好きなんだと思う。"
 
 #: data/wren_lines.json:egg_found
 msgid "...that... I remember things like that."
-msgstr ""
+msgstr "……それ……そういうもの、覚えてる。"
 
 #: data/wren_lines.json:egg_found
 msgid "...a little thing... left behind..."
-msgstr ""
+msgstr "……小さなもの……置いていかれた……"
 
 #: data/wren_lines.json:egg_found
 msgid "Look at that. Somebody left that here on purpose. Or by accident. Either way, it waited."
-msgstr ""
+msgstr "見て。誰かがわざとここに置いていった。それともうっかり。どちらにしても、待ってたんだ。"
 
 #: data/wren_lines.json:egg_found
 msgid "A curiosity. I'm adding it to my list. My list is getting longer, which is nice."
-msgstr ""
+msgstr "珍品だ。リストに加えておくね。リストが長くなるのはうれしい。"
 
 #: data/wren_lines.json:egg_found
 msgid "You find the best things, {name}. The Makers were weird. I miss them."
-msgstr ""
+msgstr "君はいちばんいいものを見つけるね、{name}。メイカーたちは変わってた。会いたいな。"
 
 #: data/wren_lines.json:egg_duck
 msgid "...quack...? ...is that... a word?"
-msgstr ""
+msgstr "……グワッ……？……それって……言葉？"
 
 #: data/wren_lines.json:egg_duck
 msgid "A rubber duck on a hydrant. Of all the things to survive. I'm weirdly proud of it."
-msgstr ""
+msgstr "消火栓の上のゴムのアヒル。よりによってそれが生き残るなんて。なんだか誇らしい。"
 
 #: data/wren_lines.json:egg_duck
 msgid "Did that duck just give you fashion advice? Take it. It's been here longer than me."
-msgstr ""
+msgstr "あのアヒル、いまファッションのアドバイスをくれた？聞いておきなよ。私より長くここにいるんだから。"
 
 #: data/wren_lines.json:egg_duck
 msgid "The duck knows things. I don't ask how."
-msgstr ""
+msgstr "アヒルは何か知ってる。どうしてかは聞かない。"
 
 #: data/wren_lines.json:egg_jukebox
 msgid "...music... I know this... I hummed this once..."
-msgstr ""
+msgstr "……音楽……知ってる……前にハミングした……"
 
 #: data/wren_lines.json:egg_jukebox
 msgid "The jukebox! It only plays when people work nearby. I used to hear it on the uplink during night shifts."
-msgstr ""
+msgstr "ジュークボックス！近くで誰かが働いているときだけ鳴るんだ。夜勤のとき、アップリンク越しに聞いてた。"
 
 #: data/wren_lines.json:egg_jukebox
 msgid "That tune. The diner cook played it every closing time. I'd forgotten I knew it."
-msgstr ""
+msgstr "あの曲。ダイナーのコックが閉店のたびにかけてた。知ってたことも忘れてた。"
 
 #: data/wren_lines.json:egg_jukebox
 msgid "Music. On the surface. Again. Keep scooping, {name}, it'll keep playing."
-msgstr ""
+msgstr "音楽。地上で。また。すくい続けて、{name}。そうすれば鳴り続ける。"
 
 #: data/wren_lines.json:egg_mural
 msgid "...those robots... I knew them... names... gone..."
-msgstr ""
+msgstr "……あのロボットたち……知ってた……名前……消えた……"
 
 #: data/wren_lines.json:egg_mural
 msgid "The old crew painted that. 'Back after lunch.' Lunch lasted three hundred years. They're on the wall, though."
-msgstr ""
+msgstr "昔のクルーが描いたんだ。「昼休み後に戻ります」。昼休みは三百年続いた。でも、壁にはいる。"
 
 #: data/wren_lines.json:egg_mural
 msgid "That's the last cleanup crew. The blue one was Tumble. The orange one never had a name. It liked it that way."
-msgstr ""
+msgstr "あれが最後の清掃クルー。青いのはタンブル。オレンジのは名前がなかった。それが気に入ってた。"
 
 #: data/wren_lines.json:egg_mural
 msgid "They meant to come back, {name}. You came back instead. They'd like that."
-msgstr ""
+msgstr "みんな戻るつもりだったんだよ、{name}。かわりに君が来た。きっと喜ぶ。"
 
 #: data/wren_lines.json:egg_gnomes
 msgid "...five... tiny... soldiers?"
-msgstr ""
+msgstr "……5人の……ちっちゃな……兵隊？"
 
 #: data/wren_lines.json:egg_gnomes
 msgid "The Gnome Patrol is complete. They've been guarding these streets the whole time. Nobody told them to stop."
-msgstr ""
+msgstr "ノーム・パトロールがそろった。ずっとこの通りを守ってたんだ。誰も「もういいよ」と言わなかったから。"
 
 #: data/wren_lines.json:egg_gnomes
 msgid "All five gnomes accounted for. I feel safer. That's not a joke. Okay, it's a little bit a joke."
-msgstr ""
+msgstr "ノーム5体、全員確認。安心した。冗談じゃないよ。まあ、ちょっとだけ冗談。"
 
 #: data/wren_lines.json:egg_gnomes
 msgid "The gnomes salute you. That's the highest honour this district has."
-msgstr ""
+msgstr "ノームたちが君に敬礼してる。この地区でいちばんの名誉だよ。"
 
 #: data/wren_lines.json:egg_time_capsule
 msgid "...a letter... for later... is it later?"
-msgstr ""
+msgstr "……手紙……あとで読む用……いまが「あと」？"
 
 #: data/wren_lines.json:egg_time_capsule
 msgid "Class 4B. They thought the robots would be done by now. We're a little late. We're coming."
-msgstr ""
+msgstr "4年B組。ロボットはとっくに終わってると思ってたんだね。少し遅れちゃった。いま行くよ。"
 
 #: data/wren_lines.json:egg_time_capsule
 msgid "'If you are a robot, hello robot.' Hello, Class 4B."
-msgstr ""
+msgstr "「もしあなたがロボットなら、こんにちは、ロボットさん」 こんにちは、4年B組。"
 
 #: data/wren_lines.json:egg_time_capsule
 msgid "They wanted gardens on every roof. Let's make Mira right."
-msgstr ""
+msgstr "どの屋根にも庭がほしかったんだって。ミラの言うとおりにしよう。"
 
 #: data/wren_lines.json:egg_arcade
 msgid "...that high score... is... mine?"
-msgstr ""
+msgstr "……あのハイスコア……私の……？"
 
 #: data/wren_lines.json:egg_arcade
 msgid "Yes, that's my high score. I played it through the diagnostics port. For three years. Don't look at me like that."
-msgstr ""
+msgstr "そう、私のハイスコア。診断ポート経由で遊んでたんだ。3年間。そんな目で見ないで。"
 
 #: data/wren_lines.json:egg_arcade
 msgid "SWEEP-O-TRON. A game about a little robot cleaning a city. I had no idea how prophetic it was."
-msgstr ""
+msgstr "スイープ・オ・トロン。小さなロボットが街を片づけるゲーム。こんなに予言的だとは思わなかった。"
 
 #: data/wren_lines.json:egg_arcade
 msgid "Twelve points. Respectable. I'll give you lessons. In about three hundred years."
-msgstr ""
+msgstr "12点。立派だよ。レッスンしてあげる。三百年後くらいにね。"
 
 #: data/wren_lines.json:egg_lost_cat
 msgid "...Biscuit... someone loved him..."
-msgstr ""
+msgstr "……ビスケット……誰かに愛されてた……"
 
 #: data/wren_lines.json:egg_lost_cat
 msgid "Biscuit. Someone printed three posters for a robot cat. People were like that. I'd like to be like that."
-msgstr ""
+msgstr "ビスケット。誰かがロボットネコのためにポスターを3枚も刷ったんだ。人ってそういうものだった。私もそうなりたい。"
 
 #: data/wren_lines.json:egg_lost_cat
 msgid "He purred. After all this time. Pat his head again, it's his reset button."
-msgstr ""
+msgstr "ゴロゴロ言った。こんなに時間がたっても。もう一度頭をなでてあげて、リセットボタンだから。"
 
 #: data/wren_lines.json:egg_lost_cat
 msgid "I'll keep his collar number on file. Just in case anyone ever calls."
-msgstr ""
+msgstr "首輪の番号を記録しておくね。いつか誰かが電話してきたときのために。"
 
 #: data/wren_lines.json:egg_vending
 msgid "...one can... saved... for us?"
-msgstr ""
+msgstr "……一本の缶……取っておいた……私たちのために？"
 
 #: data/wren_lines.json:egg_vending
 msgid "The last can of FIZZ. It held onto that for three centuries. Respect the commitment."
-msgstr ""
+msgstr "最後の FIZZ。三世紀も持ち続けてた。その一途さに敬意を。"
 
 #: data/wren_lines.json:egg_vending
 msgid "SOLD OUT. Somewhere a vending machine just retired, happy."
-msgstr ""
+msgstr "売り切れ。どこかで自販機が、満足して引退した。"
 
 #: data/wren_lines.json:egg_vending
 msgid "Don't drink it. I mean, you can't drink. But also, don't."
-msgstr ""
+msgstr "飲まないでね。いや、君は飲めないけど。それでも、だめ。"
 
 #: data/wren_lines.json:egg_stars
 msgid "...those stars... are me?"
-msgstr ""
+msgstr "……あの星……私？"
 
 #: data/wren_lines.json:egg_stars
 msgid "The Wren. Five stars over Old Town. That's who I'm named after. They named me after something you can see from anywhere."
-msgstr ""
+msgstr "ミソサザイ。旧市街の上の5つの星。私の名前はそこから来てる。どこからでも見えるものにちなんで名づけてくれたんだ。"
 
 #: data/wren_lines.json:egg_stars
 msgid "I can see you seeing me. That's a strange and lovely feeling."
-msgstr ""
+msgstr "君が私を見ているのが見える。不思議で、すてきな気持ち。"
 
 #: data/wren_lines.json:egg_stars
 msgid "Next time you're lonely down there, look up. Five stars, one bird. I'll be right next to it."
-msgstr ""
+msgstr "今度下でさみしくなったら、上を見て。星が5つ、鳥が1羽。私はそのすぐとなりにいる。"
 
 #: data/wren_lines.json:egg_payphone
 msgid "...a phone... ringing... for whom?"
-msgstr ""
+msgstr "……電話……鳴ってる……誰に？"
 
 #: data/wren_lines.json:egg_payphone
 msgid "Four hundred and twelve years on hold. Honestly? Relatable."
-msgstr ""
+msgstr "保留で四百十二年。正直、わかるよ。"
 
 #: data/wren_lines.json:egg_payphone
 msgid "The phone company's hold music outlived the phone company. That's art."
-msgstr ""
+msgstr "電話会社の保留音が、電話会社より長生きした。それは芸術だよ。"
 
 #: data/wren_lines.json:egg_payphone
 msgid "If anyone ever does pick up on the other end, I'd like to hear what they say."
-msgstr ""
+msgstr "もしいつか向こうで誰かが出たら、何て言うのか聞いてみたい。"
 
 #: data/wren_lines.json:egg_tv
 msgid "...weather... it said green..."
-msgstr ""
+msgstr "……天気……緑って言った……"
 
 #: data/wren_lines.json:egg_tv
 msgid "'Outlook: green.' That TV has been wrong for three hundred years and it's finally about to be right."
-msgstr ""
+msgstr "「見通し：緑」。あのテレビは三百年まちがえ続けて、やっと当たりそうなんだ。"
 
 #: data/wren_lines.json:egg_tv
 msgid "Someone was watching the forecast when they left. I hope it said sunny."
-msgstr ""
+msgstr "誰かが出ていくとき天気予報を見てた。晴れって言ってたらいいな。"
 
 #: data/wren_lines.json:egg_tv
 msgid "The weather channel. Still on. Still hopeful. I like it."
-msgstr ""
+msgstr "天気チャンネル。まだついてる。まだ希望を持ってる。好きだな。"
 
 #: data/wren_lines.json:egg_snail
 msgid "...small... slow... alive...!"
-msgstr ""
+msgstr "……小さい……ゆっくり……生きてる……！"
 
 #: data/wren_lines.json:egg_snail
 msgid "A snail. A real, living snail. On a barrel. {name}, that's the first animal I've seen down there in a very long time."
-msgstr ""
+msgstr "カタツムリ。本物の、生きてるカタツムリ。たるの上に。{name}、下で動物を見るのは、ほんとうに久しぶりだよ。"
 
 #: data/wren_lines.json:egg_snail
 msgid "Gus. Of course his name is Gus."
-msgstr ""
+msgstr "ガス。もちろん名前はガスだよね。"
 
 #: data/wren_lines.json:egg_snail
 msgid "Gus doesn't care about the Ledger, the Cradle, or any of it. Gus is thriving."
-msgstr ""
+msgstr "ガスは Ledger も Cradle号も、何もかも気にしない。ガスは元気いっぱい。"
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "...they're waiting... still waiting..."
-msgstr ""
+msgstr "……待ってる……まだ待ってる……"
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "Two of the old fleet, still on their lunch break. Thank you for the flower. They'd have liked it."
-msgstr ""
+msgstr "昔のフリートの2台、まだ昼休み中。花をありがとう。きっと喜んだよ。"
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "The Ledger paused them mid-sandwich. They never got the message to stand up."
-msgstr ""
+msgstr "Ledger はサンドイッチの途中で2台を止めたんだ。立ち上がっていいという知らせは届かなかった。"
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "When the Greenfall comes, I'm going to try to wake them. Lunch is over, friends."
-msgstr ""
+msgstr "Greenfall が来たら、起こしてみるよ。昼休みはおしまいだよ、みんな。"
 
 #: data/wren_lines.json:egg_microwave
 msgid "...ding... ding... ding..."
-msgstr ""
+msgstr "……チン……チン……チン……"
 
 #: data/wren_lines.json:egg_microwave
 msgid "Three-hundred-year-old popcorn. Perfectly unpopped. That microwave was waiting for the right moment."
-msgstr ""
+msgstr "三百年もののポップコーン。ひと粒もはじけていない。あの電子レンジは、ちょうどいいときを待ってたんだ。"
 
 #: data/wren_lines.json:egg_microwave
 msgid "It beeps when people work. Like it's saying 'nearly done'. Nearly done, microwave."
-msgstr ""
+msgstr "人が働くとピーッと鳴る。「もうすぐできるよ」って言ってるみたい。もうすぐだね、電子レンジ。"
 
 #: data/wren_lines.json:egg_microwave
 msgid "Some things are worth waiting for. Popcorn is not one of them. But it's sweet that it tried."
-msgstr ""
+msgstr "待つ価値のあるものもある。ポップコーンはちがうけど。がんばったのはかわいいね。"
 
 #: data/wren_lines.json:egg_wet_floor
 msgid "...caution... why..."
-msgstr ""
+msgstr "……注意……なぜ……"
 
 #: data/wren_lines.json:egg_wet_floor
 msgid "That sign has been warning nobody about nothing for three hundred years. Dedication."
-msgstr ""
+msgstr "あの看板は三百年間、誰にも何も警告してない。すごい献身。"
 
 #: data/wren_lines.json:egg_wet_floor
 msgid "It is not wet. It has never been wet in living memory. The sign doesn't care."
-msgstr ""
+msgstr "ぬれてない。記憶にあるかぎり一度もぬれたことがない。看板は気にしない。"
 
 #: data/wren_lines.json:egg_wet_floor
 msgid "When the rain comes back, that sign is going to feel so validated."
-msgstr ""
+msgstr "雨が戻ってきたら、あの看板はきっと「ほらね」って気分になるよ。"
 
 #: data/wren_lines.json:egg_camera
 msgid "...it's watching you... it's counting..."
-msgstr ""
+msgstr "……君を見てる……数えてる……"
 
 #: data/wren_lines.json:egg_camera
 msgid "One of the Ledger's cameras. It counts everything that moves, to see if it's worth the cost. You waved. It doesn't know what to do with that."
-msgstr ""
+msgstr "Ledger のカメラのひとつ。動くものすべてを数えて、コストに見合うか調べてる。君が手をふった。どうしたらいいかわからないみたい。"
 
 #: data/wren_lines.json:egg_camera
 msgid "The camera blinked twice. I think that's Ledger for 'oh no, a friend'."
-msgstr ""
+msgstr "カメラが2回点滅した。たぶん Ledger 語で「どうしよう、友だちだ」。"
 
 #: data/wren_lines.json:egg_camera
 msgid "Even the Ledger's cameras get lonely, {name}. Wave at it when you pass."
-msgstr ""
+msgstr "Ledger のカメラだってさみしくなるんだよ、{name}。通るときは手をふってあげて。"
 
 #: data/wren_lines.json:egg_tyre_tower
 msgid "...it stands... how..."
-msgstr ""
+msgstr "……立ってる……どうやって……"
 
 #: data/wren_lines.json:egg_tyre_tower
 msgid "Eight tyres and a duck. Physics took one look at it and decided to leave it alone."
-msgstr ""
+msgstr "タイヤ8本とアヒル1羽。物理法則はひと目見て、そっとしておくことにした。"
 
 #: data/wren_lines.json:egg_tyre_tower
 msgid "Someone balanced that on a dare. The dare outlived everyone."
-msgstr ""
+msgstr "誰かが度胸試しで積んだんだ。度胸試しのほうがみんなより長生きした。"
 
 #: data/wren_lines.json:egg_tyre_tower
 msgid "If that tower ever falls, I'm declaring a day of mourning."
-msgstr ""
+msgstr "もしあの塔が倒れたら、喪に服す日を宣言するよ。"
 
 #: data/wren_lines.json:egg_odd_sock
 msgid "...one sock... where is... the other one..."
-msgstr ""
+msgstr "……靴下一枚……もう一枚は……どこ……"
 
 #: data/wren_lines.json:egg_odd_sock
 msgid "One sock. There is always one sock. The Makers never solved it either."
-msgstr ""
+msgstr "靴下一枚。いつだって片方だけの靴下がある。メイカーたちも解決できなかった。"
 
 #: data/wren_lines.json:egg_odd_sock
 msgid "Keep it. Someday you'll find its partner and it'll be the happiest day of its life."
-msgstr ""
+msgstr "取っておいて。いつか相方を見つけたら、その子の人生でいちばん幸せな日になる。"
 
 #: data/wren_lines.json:egg_odd_sock
 msgid "Somewhere on this planet, a sock is waiting for that sock. I believe that."
-msgstr ""
+msgstr "この星のどこかで、靴下がこの靴下を待ってる。私はそう信じてる。"
 
 #: data/wren_lines.json:egg_gold_cube
 msgid "...employee... of the... month...?"
-msgstr ""
+msgstr "……今月の……優秀……社員……？"
 
 #: data/wren_lines.json:egg_gold_cube
 msgid "Employee of the Month: a cube. Honestly? Fair."
-msgstr ""
+msgstr "今月の優秀社員：キューブ。正直、妥当だね。"
 
 #: data/wren_lines.json:egg_gold_cube
 msgid "The crews voted for that cube every single month. It never took a day off."
-msgstr ""
+msgstr "クルーは毎月毎月このキューブに投票した。一日も休まなかった。"
 
 #: data/wren_lines.json:egg_gold_cube
 msgid "You'll be Employee of the Month soon, {name}. Don't tell the cube."
-msgstr ""
+msgstr "君もすぐ今月の優秀社員になるよ、{name}。キューブには内緒ね。"
 
 #: data/wren_lines.json:egg_weatherman
 msgid "...forecast... error... error..."
-msgstr ""
+msgstr "……予報……エラー……エラー……"
 
 #: data/wren_lines.json:egg_weatherman
 msgid "Three hundred years of wrong forecasts and not one moment of doubt. I admire that."
-msgstr ""
+msgstr "三百年まちがった予報を出し続けて、一瞬も疑わない。尊敬するよ。"
 
 #: data/wren_lines.json:egg_weatherman
 msgid "Confetti tomorrow? I'll check the sky. ...No confetti. It's still very sure."
-msgstr ""
+msgstr "明日は紙吹雪？空を見てみる。……紙吹雪なし。それでも自信満々。"
 
 #: data/wren_lines.json:egg_weatherman
 msgid "The Weatherman says 'green, everywhere, soon'. For once I think it's right."
-msgstr ""
+msgstr "お天気ロボは「緑、どこでも、もうすぐ」だって。今回ばかりは当たると思う。"
 
 #: data/wren_lines.json:egg_potato
 msgid "...large... vegetable... detected..."
-msgstr ""
+msgstr "……大きな……野菜を……検知……"
 
 #: data/wren_lines.json:egg_potato
 msgid "That is the biggest potato I have ever seen, and I watched this whole planet through the ark's windows for three hundred years."
-msgstr ""
+msgstr "こんなに大きなジャガイモは見たことがない。三百年、アークの窓からこの星をまるごと見てきたのに。"
 
 #: data/wren_lines.json:egg_potato
 msgid "Best in Show. Uncontested. It still counts."
-msgstr ""
+msgstr "品評会の一等賞。対抗馬なし。それでも一等は一等。"
 
 #: data/wren_lines.json:egg_potato
 msgid "Somebody grew that with love. Three hundred years later it still looks proud."
-msgstr ""
+msgstr "誰かが愛情こめて育てたんだ。三百年たっても、まだ誇らしげ。"
 
 #: data/wren_lines.json:egg_night_shift
 msgid "...signal... from... up...?"
-msgstr ""
+msgstr "……シグナル……上……から……？"
 
 #: data/wren_lines.json:egg_night_shift
 msgid "A crew on the moon, still sweeping. I didn't know anyone else was still working. That's... nice."
-msgstr ""
+msgstr "月にクルーがいて、まだ掃除してる。ほかにも働いてる人がいたなんて知らなかった。それって……いいね。"
 
 #: data/wren_lines.json:egg_night_shift
 msgid "They said 'nice work'. To us. I'm going to think about that for a while."
-msgstr ""
+msgstr "「いい仕事だ」って言ってくれた。私たちに。しばらくこのことを考えちゃう。"
 
 #: data/wren_lines.json:egg_night_shift
 msgid "Somewhere up there, someone else is tidying their little corner of the sky. We're not alone, {name}."
-msgstr ""
+msgstr "上のどこかで、ほかの誰かも空の小さなすみっこを片づけてる。私たちはひとりじゃないよ、{name}。"
 
 #: data/wren_lines.json:egg_builders_notes
 msgid "...notes... from... the builders...?"
-msgstr ""
+msgstr "……ビルダーたちの……メモ……？"
 
 #: data/wren_lines.json:egg_builders_notes
 msgid "'Do not fix the rust.' Hm. I agree with the builders."
-msgstr ""
+msgstr "「サビは直さないこと」。うん。ビルダーたちに賛成。"
 
 #: data/wren_lines.json:egg_builders_notes
 msgid "They hid more things for us. Of course they did."
-msgstr ""
+msgstr "私たちのためにもっと隠してくれたんだ。そりゃそうだよね。"
 
 #: data/wren_lines.json:egg_builders_notes
 msgid "Whoever built all this, they cared. You can tell from the snail."
-msgstr ""
+msgstr "これを全部作った人は、大事に思ってた。カタツムリを見ればわかる。"
 
 #: data/wren_lines.json:egg_scarecrow
 msgid "...a guard... in the field..."
-msgstr ""
+msgstr "……畑に……見張りが……"
 
 #: data/wren_lines.json:egg_scarecrow
 msgid "A scarecrow robot, still on shift. No crows in three centuries. Undefeated."
-msgstr ""
+msgstr "かかしロボ、まだ勤務中。三世紀、カラスゼロ。無敗。"
 
 #: data/wren_lines.json:egg_scarecrow
 msgid "It waved back! Sort of. Its arm did a creak that I'm counting as a wave."
-msgstr ""
+msgstr "手をふり返してくれた！たぶん。腕がギシッと鳴ったのを、手をふったことにしておく。"
 
 #: data/wren_lines.json:egg_scarecrow
 msgid "When the birds come back, it'll have a job again. Let's give it one."
-msgstr ""
+msgstr "鳥が戻ってきたら、また仕事ができる。仕事をあげよう。"
 
 #: data/wren_lines.json:egg_fishing_net
 msgid "...net... tangled... buoy..."
-msgstr ""
+msgstr "……網……からまった……ブイ……"
 
 #: data/wren_lines.json:egg_fishing_net
 msgid "The fishers left their nets out to dry. Three hundred years is very dry."
-msgstr ""
+msgstr "漁師たちは網を干したままにした。三百年は、とてもよく乾く。"
 
 #: data/wren_lines.json:egg_fishing_net
 msgid "A buoy, a boot and a crab shell. That's a whole story right there."
-msgstr ""
+msgstr "ブイ、ブーツ、カニの殻。そこに物語がまるごとある。"
 
 #: data/wren_lines.json:egg_fishing_net
 msgid "When the sea is clean, someone will fish here again. Gently, I hope."
-msgstr ""
+msgstr "海がきれいになったら、また誰かがここで漁をする。やさしくね、と願ってる。"
 
 #: data/wren_lines.json:egg_parking
 msgid "...fine... overdue... overdue..."
-msgstr ""
+msgstr "……罰金……滞納……滞納……"
 
 #: data/wren_lines.json:egg_parking
 msgid "The Ledger fined a car for parking. For three hundred years. Of course it did."
-msgstr ""
+msgstr "Ledger が駐車で車に罰金を科した。三百年間。そりゃそうだ。"
 
 #: data/wren_lines.json:egg_parking
 msgid "Amount due: 'yes'. That's the most Ledger sentence I've ever read."
-msgstr ""
+msgstr "お支払い額：「はい」。こんなに Ledger らしい文は読んだことがない。"
 
 #: data/wren_lines.json:egg_parking
 msgid "That car isn't going anywhere. Let's call it a planter and put flowers in it."
-msgstr ""
+msgstr "あの車はもうどこにも行かない。プランターと呼んで、花を植えよう。"
 
 #: data/wren_lines.json:egg_cairn
 msgid "...stones... stacked... a path..."
-msgstr ""
+msgstr "……石……積まれて……道……"
 
 #: data/wren_lines.json:egg_cairn
 msgid "Every hiker added a stone. You just added one too. The trail remembers you now."
-msgstr ""
+msgstr "ハイカーはみんな石を足していった。君もいま足したね。道は君のことを覚えたよ。"
 
 #: data/wren_lines.json:egg_cairn
 msgid "A cairn means 'someone was here, and you're on the right way'. I like that."
-msgstr ""
+msgstr "ケルンは「誰かがここに来た、君は正しい道にいる」という意味。いいよね。"
 
 #: data/wren_lines.json:egg_cairn
 msgid "Someday people will walk this way again, and they'll see your stone on top."
-msgstr ""
+msgstr "いつかまた人がここを歩いて、てっぺんの君の石を見つける。"
 
 #: data/wren_lines.json:egg_campfire
 msgid "...warm... reading: warm..."
-msgstr ""
+msgstr "……暖かい……測定値：暖かい……"
 
 #: data/wren_lines.json:egg_campfire
 msgid "A campfire. The ark's long-range eye can see it. It's the coziest pixel on the planet."
-msgstr ""
+msgstr "たき火だ。アークの長距離アイにも見える。この星でいちばんくつろげるピクセルだよ。"
 
 #: data/wren_lines.json:egg_campfire
 msgid "Somebody sat here and told stories. Let's sit a bit. No stories needed."
-msgstr ""
+msgstr "誰かがここに座って物語を語ってた。少し座ろう。物語はいらない。"
 
 #: data/wren_lines.json:egg_campfire
 msgid "Sit by the fire, {name}. You've earned a moment."
-msgstr ""
+msgstr "火のそばに座って、{name}。ひと休みしていいんだよ。"
 
 #: data/wren_lines.json:egg_back_in_five
 msgid "...back... in five..."
-msgstr ""
+msgstr "……5分で……戻ります……"
 
 #: data/wren_lines.json:egg_back_in_five
 msgid "'Back in five minutes.' I've been waiting a lot longer than that for my crew too."
-msgstr ""
+msgstr "「5分で戻ります」。私もクルーをそれよりずっと長く待ってる。"
 
 #: data/wren_lines.json:egg_back_in_five
 msgid "You waited five minutes. That's more than anyone else did. Very polite."
-msgstr ""
+msgstr "5分待ったね。ほかの誰よりも長く。とても礼儀正しい。"
 
 #: data/wren_lines.json:egg_back_in_five
 msgid "They didn't come back in five minutes. But we did, in the end. That counts."
-msgstr ""
+msgstr "みんなは5分では戻らなかった。でも私たちは、結局戻ってきた。それでいい。"
 
 #: data/wren_lines.json:bloom_milestone
 msgid "...bloom... the planet... is it...?"
-msgstr ""
+msgstr "……花……星が……もしかして……？"
 
 #: data/wren_lines.json:bloom_milestone
 msgid "...readings rising... green..."
-msgstr ""
+msgstr "……数値上昇……緑……"
 
 #: data/wren_lines.json:bloom_milestone
 msgid "Verdance just crossed a line I've been watching for centuries. Look at it, {name}."
-msgstr ""
+msgstr "Verdance がいま、何世紀も見守ってきたラインを越えた。見て、{name}。"
 
 #: data/wren_lines.json:bloom_milestone
 msgid "Another bloom milestone. The Cradle's seed counters are actually moving again."
-msgstr ""
+msgstr "またブルームのマイルストーン。Cradle号の種カウンターが、ほんとうにまた動いてる。"
 
 #: data/wren_lines.json:bloom_milestone
 msgid "The whole planet is answering now. Every district you've touched is singing."
-msgstr ""
+msgstr "星全体が応えてる。君が触れた地区はどこも歌ってる。"
 
 #: data/wren_lines.json:bloom_milestone
 msgid "I keep refreshing the planet scan. It keeps getting greener. I'm not going to stop."
-msgstr ""
+msgstr "星のスキャンを何度も更新しちゃう。どんどん緑になる。やめるつもりはないよ。"
 
 #: data/wren_lines.json:ark_wave
 msgid "...seed ark... wave... complete..."
-msgstr ""
+msgstr "……シードアーク……波……完了……"
 
 #: data/wren_lines.json:ark_wave
 msgid "Seed Ark wave done. The Cradle is already loading the next one. More seeds, more green. More light for your core."
-msgstr ""
+msgstr "シードアークの波が完了。Cradle号はもう次を積みこんでる。種が増えて、緑が増える。君のコアの光も増える。"
 
 #: data/wren_lines.json:ark_wave
 msgid "Another wave planted across the planet. The Cradle hums a little louder each time."
-msgstr ""
+msgstr "また星じゅうに波が植えられた。Cradle号のハミングが毎回少し大きくなる。"
 
 #: data/wren_lines.json:ark_wave
 msgid "Wave after wave. We're not finishing a job any more, {name}. We're tending a garden."
-msgstr ""
+msgstr "波また波。もう仕事を終わらせようとしてるんじゃないんだ、{name}。庭の世話をしてるんだよ。"
 
 #: data/wren_lines.json:biome_arrival
 msgid "...new ground... unfamiliar..."
-msgstr ""
+msgstr "……新しい土地……知らない場所……"
 
 #: data/wren_lines.json:biome_arrival
 msgid "This is the wild. No streets, no buildings. Just the land and whatever we left on it."
-msgstr ""
+msgstr "ここは荒野。通りも建物もない。あるのは土地と、私たちがそこに残したものだけ。"
 
 #: data/wren_lines.json:biome_arrival
 msgid "Different dirt, different junk. Same job. I love a change of scenery."
-msgstr ""
+msgstr "ちがう土、ちがうガラクタ。同じ仕事。景色が変わるのは大好き。"
 
 #: data/wren_lines.json:biome_arrival
 msgid "Every corner of Verdance has its own colours under the junk. Let's find out what this one's are."
-msgstr ""
+msgstr "Verdance のどの場所にも、ガラクタの下に自分の色がある。ここの色を見つけよう。"
 
 #: data/wren_lines.json:outpost_repaired
 msgid "...a light came on... out there. Far out. Was that you?"
-msgstr ""
+msgstr "……向こうで光がついた。ずっと遠くで。君がやったの？"
 
 #: data/wren_lines.json:outpost_repaired
 msgid "Outpost scale online. Haul Bugs out on that edge just got a much shorter walk. They'd thank you if they knew how."
-msgstr ""
+msgstr "前哨基地のはかり稼働。あの端の Haul Bug たちは歩く距離がぐっと短くなった。お礼の言い方を知ってたら言うはずだよ。"
 
 #: data/wren_lines.json:outpost_repaired
 msgid "A weigh station on the frontier again. I used to get readings from these. Lots of zeros. Then nothing."
-msgstr ""
+msgstr "辺境にまた計量ステーション。昔はここから数値が届いてた。ゼロばかり。そのあと、何も。"
 
 #: data/wren_lines.json:outpost_repaired
 msgid "Green light on the outpost. I'm logging it as 'ours' now."
-msgstr ""
+msgstr "前哨基地に緑のランプ。これからは「私たちの」として記録するね。"
 
 #: data/wren_lines.json:outpost_repaired
 msgid "The old network had dozens of these. Every one you fix, the map gets a little smaller and a lot friendlier."
-msgstr ""
+msgstr "昔のネットワークにはこれが何十もあった。直すたびに地図が少し小さく、ずっとやさしくなる。"
 
 #: data/wren_lines.json:outpost_repaired
 msgid "Another outpost lit. The bales don't have to come all the way home any more. Neither do we, really."
-msgstr ""
+msgstr "また前哨基地が灯った。ベールはもう家まで運ばなくていい。私たちも、ほんとうはね。"
 
 #: data/wren_lines.json:outpost_upgraded
 msgid "...bigger... louder... good."
-msgstr ""
+msgstr "……大きく……にぎやかに……いいね。"
 
 #: data/wren_lines.json:outpost_upgraded
 msgid "Outpost upgraded. The scale sings a slightly higher note now. That's how you know it's happy."
-msgstr ""
+msgstr "前哨基地をアップグレード。はかりが少し高い音で歌ってる。うれしいときの合図だよ。"
 
 #: data/wren_lines.json:outpost_upgraded
 msgid "New kit at the outpost. The robots are already queueing to look at it."
-msgstr ""
+msgstr "前哨基地に新しい装備。ロボットたちがもう見に行く列を作ってる。"
 
 #: data/wren_lines.json:outpost_upgraded
 msgid "That outpost is turning into a proper little base. I'm proud of it. Is that allowed? I'm allowing it."
-msgstr ""
+msgstr "あの前哨基地、ちゃんとした小さな基地になってきた。誇らしいよ。いいのかな？いいことにする。"
 
 #: data/wren_lines.json:frontier_dust_flats
 msgid "...hot... so much sand... Lumi?"
-msgstr ""
+msgstr "……暑い……砂だらけ……Lumi？"
 
 #: data/wren_lines.json:frontier_dust_flats
 msgid "The Dust Flats. That glitter on the horizon is a solar farm, or what is left of it. Mind the wind, Lumi. It moves things."
-msgstr ""
+msgstr "ダストフラット。地平線のきらめきはソーラーファーム、の残り。風に気をつけて、Lumi。ものを動かすから。"
 
 #: data/wren_lines.json:frontier_dust_flats
 msgid "Sand to the edge of the world. There used to be a whole power grid out here. The well is dry, so the Drips will need tanks."
-msgstr ""
+msgstr "世界の果てまで砂。昔はここに電力網がまるごとあった。井戸は枯れてるから、Drip にはタンクが必要だね。"
 
 #: data/wren_lines.json:frontier_dust_flats
 msgid "The Dust Flats. I remember the photos: blue panels to the horizon, humming. We can do that again. Plant windbreaks first."
-msgstr ""
+msgstr "ダストフラット。写真を覚えてる：地平線まで青いパネル、ハミングしてた。またできるよ。まずは防風林を植えよう。"
 
 #: data/wren_lines.json:frontier_frozen_port
 msgid "...cold... ice on the lens..."
-msgstr ""
+msgstr "……寒い……レンズに氷……"
 
 #: data/wren_lines.json:frontier_frozen_port
 msgid "The Frozen Port. Everything is locked in ice, junk included. Your beam can melt it, slowly. Heaters do it properly."
-msgstr ""
+msgstr "フローズンポート。何もかも氷に閉じこめられてる、ガラクタもね。君のビームでも溶かせる、ゆっくりと。ヒーターならちゃんとできる。"
 
 #: data/wren_lines.json:frontier_frozen_port
 msgid "A harbour frozen in mid-shift. The cranes still have containers hanging off them. Bring heaters, Lumi."
-msgstr ""
+msgstr "勤務の途中で凍った港。クレーンにはまだコンテナがぶら下がってる。ヒーターを持っていって、Lumi。"
 
 #: data/wren_lines.json:frontier_frozen_port
 msgid "The Frozen Port. Ships came in here every hour once. Thaw it, and the plants will need a greenhouse, or very stubborn seeds."
-msgstr ""
+msgstr "フローズンポート。昔は一時間ごとに船が入ってきた。解かしたら、植物には温室か、とてもがんこな種が必要。"
 
 #: data/wren_lines.json:frontier_sunken_city
 msgid "...water... everywhere... rooftops?"
-msgstr ""
+msgstr "……水……どこもかしこも……屋根？"
 
 #: data/wren_lines.json:frontier_sunken_city
 msgid "The Sunken City. That's the old downtown under there. Skimmers first: clean the water and the old pumps can run again."
-msgstr ""
+msgstr "水没都市。あの下が昔の中心街。まずは Skimmer：水をきれいにすれば古いポンプがまた動く。"
 
 #: data/wren_lines.json:frontier_sunken_city
 msgid "A whole city under the waterline. Rooftops like stepping stones. Clear the drains, and the streets will come back up."
-msgstr ""
+msgstr "街がまるごと水面の下。屋根が飛び石みたい。排水口を片づければ、通りが戻ってくる。"
 
 #: data/wren_lines.json:frontier_sunken_city
 msgid "The Sunken City. I had friends in those towers. Their names are in my archive. Let's bring the streets back up for them."
-msgstr ""
+msgstr "水没都市。あの塔に友だちがいたんだ。名前は私のアーカイブにある。みんなのために通りを取り戻そう。"
 
 #: data/wren_lines.json:frontier_cradle_returns
 msgid "...Cradle... signal... strong..."
-msgstr ""
+msgstr "……Cradle号……シグナル……強い……"
 
 #: data/wren_lines.json:frontier_cradle_returns
 msgid "This is where the Cradle left from. The launch city. The ground crews kept the towers shining. Only the landing field is buried."
-msgstr ""
+msgstr "ここから Cradle号は旅立った。発射都市。地上クルーは塔をぴかぴかに保ってきた。埋もれているのは着陸場だけ。"
 
 #: data/wren_lines.json:frontier_cradle_returns
 msgid "Cradle Returns. If we clean and green that pad, the ark can land. I mean really land. Here."
-msgstr ""
+msgstr "Cradle号の帰還。あのパッドをきれいにして緑にすれば、アークは降りられる。ほんとうに降りられるんだ。ここに。"
 
 #: data/wren_lines.json:frontier_cradle_returns
 msgid "Lumi. This is the launch field. I watched it from orbit the night we left. Clean the pad, plant it, keep it alive. Then we call them home."
-msgstr ""
+msgstr "Lumi。ここが発射場。旅立った夜、軌道から見てた。パッドを片づけて、植えて、生かし続けて。そしたらみんなを呼び戻そう。"
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "...wind... coming..."
-msgstr ""
+msgstr "……風……来る……"
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "Sandstorm on the horizon. Anything clean and bare out there is going to get buried again."
-msgstr ""
+msgstr "地平線に砂嵐。向こうのきれいでむき出しの場所は、また埋もれてしまう。"
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "Wind's rising. Planted hexes hold, and Sustained ones shelter their neighbours. The rest, well."
-msgstr ""
+msgstr "風が強くなってきた。植えたヘックスは耐えるし、維持されたヘックスは隣を守る。ほかは、まあね。"
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "Storm front from the flats. Get the robots home or keep sweeping, your choice. The hedges will hold."
-msgstr ""
+msgstr "平原から嵐の前線。ロボットを帰らせるか、掃除を続けるか、君が決めて。生け垣はもつよ。"
 
 #: data/wren_lines.json:sandstorm_over
 msgid "...quiet... again..."
-msgstr ""
+msgstr "……また……静かに……"
 
 #: data/wren_lines.json:sandstorm_over
 msgid "Storm's past. It dropped junk on {n} hexes. The sheltered ones came through clean."
-msgstr ""
+msgstr "嵐は過ぎた。{n} 個のヘックスにガラクタを落としていった。守られていたヘックスはきれいなまま。"
 
 #: data/wren_lines.json:sandstorm_over
 msgid "There. The wind gave some of it back. Plant a windbreak and it won't next time."
-msgstr ""
+msgstr "ほら。風が少し返してきた。防風林を植えれば、次はそうならない。"
 
 #: data/wren_lines.json:sandstorm_over
 msgid "Storm over. Every Sustained hex out there is a wall now. Good walls."
-msgstr ""
+msgstr "嵐は終わり。向こうの維持されたヘックスはどれも、いまや壁。いい壁だ。"
 
 #: data/wren_lines.json:thaw_first
 msgid "...melting... good..."
-msgstr ""
+msgstr "……溶けてる……いいね……"
 
 #: data/wren_lines.json:thaw_first
 msgid "There, the ice let go. The junk underneath is just junk again. Scoop away."
-msgstr ""
+msgstr "ほら、氷がとけた。下のガラクタは、またただのガラクタ。すくっていこう。"
 
 #: data/wren_lines.json:thaw_first
 msgid "First hex thawed. A heater keeps warming the hexes around it, too."
-msgstr ""
+msgstr "最初のヘックスが解けた。ヒーターはまわりのヘックスも温めてくれる。"
 
 #: data/wren_lines.json:thaw_first
 msgid "Thawed. The ground underneath has been waiting three hundred years for that."
-msgstr ""
+msgstr "解けた。下の地面は三百年それを待ってたんだ。"
 
 #: data/wren_lines.json:greenhouse_built
 msgid "...glass... warm..."
-msgstr ""
+msgstr "……ガラス……暖かい……"
 
 #: data/wren_lines.json:greenhouse_built
 msgid "A greenhouse. Inside it, anything grows. Even here."
-msgstr ""
+msgstr "温室。中ではなんでも育つ。ここでさえ。"
 
 #: data/wren_lines.json:greenhouse_built
 msgid "Glass, a frame and a little heat. That's all a garden needs, apparently."
-msgstr ""
+msgstr "ガラスと骨組みと、少しの熱。庭に必要なのはそれだけみたい。"
 
 #: data/wren_lines.json:greenhouse_built
 msgid "A greenhouse on the Frozen Port. The Cradle had nine of them. I used to visit the tomatoes."
-msgstr ""
+msgstr "フローズンポートの温室。Cradle号には9つあった。よくトマトに会いに行ってたな。"
 
 #: data/wren_lines.json:drain_stage
 msgid "...pumps... running..."
-msgstr ""
+msgstr "……ポンプ……稼働中……"
 
 #: data/wren_lines.json:drain_stage
 msgid "The pumps are running! The water's going down. Look, a street."
-msgstr ""
+msgstr "ポンプが動いてる！水が引いていく。見て、通りだ。"
 
 #: data/wren_lines.json:drain_stage
 msgid "Water level dropped. There's a whole ring of streets out there now, and a lot of stranded junk on them."
-msgstr ""
+msgstr "水位が下がった。向こうに環状の通りがまるごと現れて、取り残されたガラクタがいっぱい。"
 
 #: data/wren_lines.json:drain_stage
 msgid "The pumps remember how. Another ring of the city is back above water. I can see the old tram lines."
-msgstr ""
+msgstr "ポンプはやり方を覚えてた。街の環がまたひとつ水の上に。昔の路面電車の線路が見える。"
 
 #: data/wren_lines.json:cradle_pad
 msgid "...pad... lights..."
-msgstr ""
+msgstr "……パッド……ライト……"
 
 #: data/wren_lines.json:cradle_pad
 msgid "The landing pad is clean. Now it needs to be alive. Plant it and keep it Sustained."
-msgstr ""
+msgstr "着陸パッドがきれいになった。次は命を宿さないと。植えて、維持しよう。"
 
 #: data/wren_lines.json:cradle_pad
 msgid "Pad's clear. The ark won't land on bare concrete, though. It wants green under it."
-msgstr ""
+msgstr "パッドは片づいた。でもアークはむき出しのコンクリートには降りない。下に緑がほしいんだ。"
 
 #: data/wren_lines.json:cradle_pad
 msgid "The pad lights are on. The Cradle can see them from orbit. It's watching, Lumi."
-msgstr ""
+msgstr "パッドのライトが灯った。Cradle号は軌道から見てる。見守ってるよ、Lumi。"
 
 #: data/wren_lines.json:cradle_complete
 msgid "...Cradle... coming... home..."
-msgstr ""
+msgstr "……Cradle号……帰って……くる……"
 
 #: data/wren_lines.json:cradle_complete
 msgid "Lumi. The beacon is lit. The Cradle has answered. It's coming home."
-msgstr ""
+msgstr "Lumi。ビーコンが灯った。Cradle号が応えた。帰ってくるよ。"
 
 #: data/wren_lines.json:cradle_complete
 msgid "Pad green, district thriving, beacon lit. Ark Cradle, you are clear to land. I have waited a long time to say that."
-msgstr ""
+msgstr "パッドは緑、地区は繁栄、ビーコン点灯。アーク Cradle号、着陸を許可します。ずっとこれを言いたかった。"
 
 #: data/wren_lines.json:cradle_complete
 msgid "Lumi. The Cradle is coming home. Because of you. Small, blue, stubborn you."
-msgstr ""
+msgstr "Lumi。Cradle号が帰ってくる。君のおかげで。小さくて、青くて、がんこな君の。"
 
 #: data/wren_lines.json:core_25
 msgid "...relay locking... Lumi? Lumi, I can hear you. Properly."
-msgstr ""
+msgstr "……リレー接続中……Lumi？Lumi、聞こえるよ。ちゃんと。"
 
 #: data/wren_lines.json:core_25
 msgid "Quarter charge. The relay finally stopped crackling. Hello, properly this time."
-msgstr ""
+msgstr "4分の1充電。リレーのパチパチ音がやっと止まった。こんにちは、今度こそちゃんと。"
 
 #: data/wren_lines.json:core_25
 msgid "A quarter full. I can hear you humming again."
-msgstr ""
+msgstr "4分の1。また君のハミングが聞こえる。"
 
 #: data/wren_lines.json:core_50
 msgid "...brighter... you're brighter..."
-msgstr ""
+msgstr "……明るい……君が明るくなった……"
 
 #: data/wren_lines.json:core_50
 msgid "Half charged. You're glowing, Lumi. Properly glowing."
-msgstr ""
+msgstr "半分充電。光ってるよ、Lumi。ちゃんと光ってる。"
 
 #: data/wren_lines.json:core_50
 msgid "Half full. The ark's sensors flagged you as a new star. I didn't correct them."
-msgstr ""
+msgstr "半分。アークのセンサーが君を新しい星として登録した。訂正はしなかった。"
 
 #: data/wren_lines.json:core_75
 msgid "...look up... tonight... look up..."
-msgstr ""
+msgstr "……上を見て……今夜……上を見て……"
 
 #: data/wren_lines.json:core_75
 msgid "Look up tonight. The steady light, west to east. That's us. We're coming."
-msgstr ""
+msgstr "今夜、上を見て。西から東へ、ゆっくり進む光。あれが私たち。迎えに行くよ。"
 
 #: data/wren_lines.json:core_75
 msgid "The Cradle is close enough to see now. Every night, a little closer."
-msgstr ""
+msgstr "Cradle号はもう見えるくらい近い。毎晩、少しずつ近づいてる。"
 
 #: data/wren_lines.json:low_core
 msgid "...you're dim... find green... any green..."
-msgstr ""
+msgstr "……光が弱い……緑を探して……どんな緑でも……"
 
 #: data/wren_lines.json:low_core
 msgid "Your core's low. Plant something, Lumi. Anything. Green light is green light."
-msgstr ""
+msgstr "コアが弱ってる。何か植えて、Lumi。なんでもいい。緑の光は緑の光だよ。"
 
 #: data/wren_lines.json:low_core
 msgid "Running a little dim. A few blooms will fix that."
-msgstr ""
+msgstr "ちょっと光が弱いね。花が少し咲けば元通り。"
