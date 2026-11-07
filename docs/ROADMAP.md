@@ -385,3 +385,12 @@ solar-system orrery that zooms into a planet's globe to pick the hub (wt/home).
 Music (owner, Nov 7): music is frozen as-is; do not spend more time composing. The owner may source different
 music later, so keep tracks swappable (Audio.play_track ids). SFX should stay satisfying (pickup, bale, sale already
 tuned in the first-hour pass); no new SFX work unless a bug.
+
+## Update: Aurora hero model rebuild, awaiting owner review (wt/hero)
+- Done: `art/models/aurora/build_aurora.py` rebuilds Lumi to the owner's Aurora portrait + turnaround: wide rounded-rectangle head (~56% of height) with a thick off-white shell and real panel grooves, ONE curved glossy black visor across nearly the whole front, round side modules (thick housing, thin dimmer cyan ring lens, steel hub with fins, screws; no pupil dot), a short swept-back fin with an amber edge (part `antenna`), compact torso tucked under the head with a raised chest plate, a modelled recycling icon (`icon_recycle`) and orange latches, short chunky arms with dark joint gaps, pistons and curved claws, a compact rounded underside with one recessed hover ring. Screws throughout. ~34k tris (+ claws), head/body collapse-decimated; Godot import makes LODs.
+- Vertex colours now carry A = 1 - joint wear; `hero_paint.gdshader` concentrates chips on edges and around joints (dark metal underneath), adds cross scratches.
+- Face (`bot_face.gdshader`): one solid crescent per eye (no inner ring/pupil halo), happy morph squashes the C shut before the ^ arc opens (fixes the owner's "two sets of eyes" on the title, where happy 0.9 parked mid-crossfade). `eye_shape` uniform: crescent, round, happy, bar, heart (`PatchModel.set_eye_shape`, VARIANTS "eyes"). Visor: the face material is on the front surface only.
+- Blinks are crisp (`PatchModel.blink_curve`: 70 ms close, 40 ms hold, 110 ms open, ~22% double blinks); sleep closes/opens eased; happy face snaps (~0.17 s) instead of parking half way.
+- Anchors for the character builder: `PatchModel.ANCHORS` / `get_anchor()`: head_top, chest_plate, hand_r, hand_l, back.
+- Not done (owner gate: "stop after Aurora for review"): the other five designs. `designs.glb` is unchanged (its add-ons are split into `designs_addons.py`, rebuilt only with DESIGNS=1) and still placed for the previous head: crown pieces (sprout, wing fins, cat ears) and Pixel's heart lenses sit a little low / off on the new head; leaf/cross chest icons are moved onto the new plate.
+- Review renders: `scenes/hero_preview.tscn` (`--view=portrait|turn|blink`), copies in `screenshots/hero/`.
