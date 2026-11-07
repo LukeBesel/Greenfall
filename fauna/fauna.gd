@@ -1762,7 +1762,10 @@ func _dev_look() -> void:
 			c3.far = rc.far
 			add_child(c3)
 			c3.current = true
-			var focus: Vector3 = a.pos.lerp(patch.global_position, 0.3 if a.kind != "school" else 0.0) + Vector3(0, 0.3 * a.size if a.kind != "school" else 0.0, 0)
+			var lerp_k: float = DevHooks.get_f("fauna-lerp", 0.0 if a.kind in ["school", "bird", "swarm", "frog", "lizard"] else 0.3)
+			var focus: Vector3 = a.pos.lerp(patch.global_position, lerp_k) + Vector3(0, 0.3 * a.size if a.kind != "school" else 0.0, 0)
+			if a.kind == "bird":
+				focus.y = a.pos.y + 0.12
 			if a.kind in ["deer", "heron"]:
 				focus.y += 0.35
 			var yw: float = base_yaw + PI + yaw_off
