@@ -31,7 +31,8 @@ var _piece_slot := PackedInt32Array()  # pid -> instance index
 var _mms: Array[MultiMesh] = []
 ## [deck] Junk MultiMeshes whose pieces are all gone are hidden (no empty draw calls late game).
 var _mmis: Array[MultiMeshInstance3D] = []
-var _mm_live := PackedInt32Array()
+## [vqa2] Junk near/far LOD; owns the junk MultiMesh buffers (_mms / _mmis are its NEAR ones).
+var lod: JunkLod
 var _piece_shown := PackedByteArray()
 var _dirty_tex: bool = false
 var _life_img: Image
@@ -58,6 +59,9 @@ func _process(delta: float) -> void:
 		_ground_mat.set_shader_parameter("time_now", clock)
 	if _dirty_tex:
 		_flush()
+	var cam: Camera3D = get_viewport().get_camera_3d() if lod else null  # [vqa2] junk LOD
+	if cam:
+		lod.update(delta, cam.global_position)
 
 
 # --- Ground -----------------------------------------------------------------------
@@ -184,41 +188,31 @@ func _build_junk() -> void:
 	_piece_mm.resize(field.piece_count())
 	_piece_slot.resize(field.piece_count())
 	_piece_shown.resize(field.piece_count())
+	lod = JunkLod.new(field, Settings.quality)  # [vqa2] near/far junk LOD (planet/junk_lod.gd)
 	for key: String in groups:
 		var pids: PackedInt32Array = groups[key]
 		var model: String = key.split("|")[1]
-		var mm := MultiMesh.new()
-		mm.transform_format = MultiMesh.TRANSFORM_3D
-		mm.mesh = AssetLib.model_mesh_lite(model, [320, 500, 700, 700][clampi(Settings.quality, 0, 3)])  # [deck] lighter junk on Low/Medium
-		mm.instance_count = pids.size()
-		var idx: int = _mms.size()
+		# Small litter doesn't cast sun shadows (SSAO grounds it); bigger items do.
+		var vol: float = field.piece_vol[pids[0]]
+		var near_mesh: Mesh = AssetLib.model_mesh_lite(model, [320, 500, 700, 700][clampi(Settings.quality, 0, 3)])  # [deck] lighter junk on Low/Medium
+		var idx: int = lod.add_group(self, "Junk_" + key.replace("|", "_").replace(",", "_"), model, near_mesh, pids, vol >= 1.2, Settings.quality)
+		_mms.append(lod.near_mm[idx])
+		_mmis.append(lod.near_mmi[idx])
 		for i: int in pids.size():
 			var pid: int = pids[i]
 			_piece_mm[pid] = idx
 			_piece_slot[pid] = i
-			mm.set_instance_transform(i, piece_transform(pid) if field.piece_alive[pid] == 1 else _hidden())
 			_piece_shown[pid] = 1 if field.piece_alive[pid] == 1 else 0
-		_mms.append(mm)
-		var mmi := MultiMeshInstance3D.new()
-		mmi.name = "Junk_" + key.replace("|", "_").replace(",", "_")
-		mmi.multimesh = mm
-		mmi.visibility_range_end = 110.0
-		# Small litter doesn't cast sun shadows (SSAO grounds it); bigger items do.
-		var vol: float = field.piece_vol[pids[0]]
-		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if vol >= 1.2 else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		add_child(mmi)
-		_mmis.append(mmi)
-		var live: int = 0
-		for pid: int in pids:
-			live += _piece_shown[pid]
-		_mm_live.append(live)
-		mmi.visible = live > 0
+			if field.piece_alive[pid] == 1:
+				lod.show_piece(pid, piece_transform(pid))
 
 
 ## [biomes2] Frontiers: a weathering overlay (art/shaders/junk_coat.gdshader) on every junk piece.
 func set_junk_overlay(m: Material) -> void:
-	for mmi: MultiMeshInstance3D in _mmis:
-		mmi.material_overlay = m
+	lod.set_overlay(m)  # [vqa2] near + far junk
+	for list: Variant in _mounds:  # [vqa2] the debris mounds too (dark rubble crescents in the dunes)
+		for mi: MeshInstance3D in list:
+			mi.material_overlay = m
 
 
 static func _mound_mesh() -> ArrayMesh:
@@ -285,7 +279,7 @@ func _update_mounds(id: int) -> void:
 func _resettle(id: int) -> void:
 	for pid: int in field.hex_pieces[id]:
 		if field.piece_alive[pid] == 1:
-			_mms[_piece_mm[pid]].set_instance_transform(_piece_slot[pid], piece_transform(pid))
+			lod.show_piece(pid, piece_transform(pid))  # [vqa2]
 
 
 func _hidden() -> Transform3D:
@@ -293,23 +287,20 @@ func _hidden() -> Transform3D:
 
 
 func hide_piece(pid: int) -> void:
-	_mms[_piece_mm[pid]].set_instance_transform(_piece_slot[pid], _hidden())
+	lod.hide_piece(pid)  # [vqa2]
 	_set_shown(pid, false)
 
 
 func move_piece(pid: int, pos: Vector3) -> void:
 	field.piece_pos[pid] = pos
-	_mms[_piece_mm[pid]].set_instance_transform(_piece_slot[pid], piece_transform(pid))
+	lod.show_piece(pid, piece_transform(pid))  # [vqa2]
 	_set_shown(pid, true)
 
 
 func _set_shown(pid: int, on: bool) -> void:
 	if pid >= _piece_shown.size() or (_piece_shown[pid] == 1) == on:
 		return
-	_piece_shown[pid] = 1 if on else 0
-	var k: int = _piece_mm[pid]
-	_mm_live[k] += 1 if on else -1
-	_mmis[k].visible = _mm_live[k] > 0
+	_piece_shown[pid] = 1 if on else 0  # [vqa2] JunkLod hides empty near/far buffers itself
 
 
 # --- Hex state --------------------------------------------------------------------

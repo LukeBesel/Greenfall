@@ -130,3 +130,34 @@ Mechanics:
 - **Travel**: the solar map's Launch (or the autoplay) runs the rocket's own launch sequence with a sentinel target (`Homeward.PLANET_BASE - k`, `HOME`); `automation/rocket.gd` hands the flight to `HomewardDirector.start_flight / travel`: the solar map shows the flight, then `Homeward.travel_to_planet` switches worlds and the rocket's arrival plays there (a new planet gets a rocket parked on the ground, so Lumi can always fly back).
 - **The solar map (ui/system_map.gd) is a 3D orrery** in its own World3D: the two suns circling, thin additive orbit lines, planets with restoration rings and labels (name, %, drive needed), two starfield shells for parallax. Selecting a planet glides the camera in; on the current planet "Choose a district" zooms in and hands over to the survey globe full screen (hubs and districts); closing the globe pulls back out. Other planets land at their last district (their PlanetData isn't generated until visited).
 - **Text**: all player-facing strings through tr(); data JSON stays English.
+
+## Planet audio (wt/sound, Nov 7)
+- **API** (all on the `Audio` autoload, all safe to call any time; unknown ids and NaN are ignored):
+  - `set_planet_theme(id) -> bool`: `"verdance"` (default), `"ochre"`, `"tidewell"`, `"rime"`, `"anvil"`.
+    Picks the planet's music track pool and its ambience bed; the first call for a planet synthesizes
+    its instruments and ambience (~0.2-0.6 s), so planet code calls it while the planet loads.
+  - `set_restoration(0..1)`: the planet's tracks switch to their restored variants past 0.55 (back
+    under 0.45; on a chord-cycle boundary) and their brightness / warm bloom lerp with it; the
+    ambience crossfades wind, groans and creaks into birds, insects and water. `MusicHooks` feeds it
+    every second from `world.planet.restored_fraction()`.
+  - `music_activity(amount)`: busy play (hexes cleaned, robots built, upgrades) favours the upbeat
+    tracks and pushes their drums; decays over about a minute. `MusicHooks` calls it.
+  - Mood `"homecoming"` (`set_music_mood`): the ending piece. It is sticky: `MusicHooks` never
+    replaces it; the ending code leaves it with another `set_music_mood()` call.
+  - Radio: `play_track(id)` loops one composed track with no gaps until `stop_track()`;
+    `music_track_ids(planet)`, `music_track_title(id)` (English; tr() at display), `get_music_track()`.
+    `hold_theme(id, restoration)` / `release_theme()` preview a whole planet (pool and bed).
+  - `duck(seconds)`: dips music -7 dB and ambience -4.5 dB; WREN's subtitles call it per line.
+  - `Audio.loop("hover_spray", level)`: Lumi hovering over water (Tidewell), built on first use.
+- **Composed tracks, not just ambient pads**: owner feedback asked for melodic, more upbeat music in
+  the spirit of a sandbox-game soundtrack (feel only, all compositions original). Each planet has a
+  rotating pool of 2-3 tracks (`audio/music_tracks.gd`) with a fixed motif re-fitted to each chord,
+  a groove and a form; pieces are separated by 8-55 s silence gaps (only the air bed plays).
+  Verdance keeps its generative score for calm moments and adds two upbeat cleaning tracks.
+- **Still synthesized at runtime**, no audio files: the new instruments (marimba, steel pan, hand
+  drums, choir pad, detuned synth, metal hits...) reuse `MusicSynth`'s pad and envelope helpers and
+  cost ~25-140 ms per planet, built lazily. Pre-rendered OGG loops were considered and not needed.
+- **Mix**: a hard limiter on Master (-0.5 dB) as well as Music (-1 dB); ambience on its own
+  "Ambience" bus that sends to SFX, so the SFX slider covers it; a slider at 0 mutes its bus.
+  Track loudness is kept within about +-2 dB of the generative explore piece (tools/render_music.gd).
+- **No new save state**: planet code re-sends the theme on load; restoration comes from the planet.

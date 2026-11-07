@@ -69,6 +69,7 @@ func show_line(text: String, stage: int) -> void:
 	_stage = stage
 	_hold = 3.0 + text.length() * 0.04
 	_box.modulate.a = 1.0
+	Audio.duck(text.length() / (38.0 if stage > 0 else 26.0) + 1.2)  # [sound] music dips under WREN
 
 
 func _process(delta: float) -> void:

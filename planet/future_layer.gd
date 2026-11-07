@@ -757,7 +757,7 @@ func _build_labels(list: Array) -> void:
 		l.modulate = Color(1.5, 1.9, 1.9)
 		l.outline_modulate = Color(col.r, col.g, col.b, 0.8)
 		l.shaded = false
-		l.double_sided = true
+		l.double_sided = false  # [vqa2] one face per side: seen from behind it read mirrored
 		l.render_priority = 2
 		l.outline_render_priority = 1
 		var w: float = float(d["w"]) * 0.86
@@ -768,11 +768,16 @@ func _build_labels(list: Array) -> void:
 		l.transform = Transform3D(xf.basis.orthonormalized(), xf.origin + xf.basis.z.normalized() * 0.04)
 		add_child(l)
 		_labels[k] = l
+		var back: Label3D = l.duplicate() as Label3D  # [vqa2] the back face, reading the right way round
+		back.transform = Transform3D(Basis(Vector3.UP, PI), Vector3(0, 0, -0.08))
+		l.add_child(back)
 		if _built and float(_known.get(k, -100.0)) >= _clock - 0.01:
 			l.modulate.a = 0.0
+			back.modulate.a = 0.0
 			var tw := l.create_tween()
 			tw.tween_interval(0.35)
 			tw.tween_property(l, "modulate:a", 1.0, 0.6)
+			tw.parallel().tween_property(back, "modulate:a", 1.0, 0.6)
 	for k: int in _labels.keys():
 		if not want.has(k):
 			(_labels[k] as Label3D).queue_free()
