@@ -6912,1055 +6912,1055 @@ msgstr "Diez contratos hechos. Cada casilla marcada, cada casilla en verde."
 
 #: data/events.json:trinkets[contract_crown].name
 msgid "Contractor's Crown"
-msgstr ""
+msgstr "Corona del contratista"
 
 #: data/events.json:trinkets[contract_crown].desc
 msgid "Twenty-five contracts. The crown is a bent can. You wear it anyway."
-msgstr ""
+msgstr "Veinticinco contratos. La corona es una lata doblada. Te la pones igualmente."
 
 #: data/events.json:trinkets[capsule_rubber_frog].name
 msgid "Rubber Frog"
-msgstr ""
+msgstr "Rana de goma"
 
 #: data/events.json:trinkets[capsule_rubber_frog].desc
 msgid "Squeaks in a minor key."
-msgstr ""
+msgstr "Chirría en tono menor."
 
 #: data/events.json:trinkets[capsule_tiny_cactus].name
 msgid "Tiny Cactus"
-msgstr ""
+msgstr "Cactus diminuto"
 
 #: data/events.json:trinkets[capsule_tiny_cactus].desc
 msgid "Needs no water. Mocks the Drips."
-msgstr ""
+msgstr "No necesita agua. Se burla de los Drips."
 
 #: data/events.json:trinkets[capsule_holo_koi].name
 msgid "Holo Koi"
-msgstr ""
+msgstr "Koi holo"
 
 #: data/events.json:trinkets[capsule_holo_koi].desc
 msgid "A hologram fish that swims round your hopper."
-msgstr ""
+msgstr "Un pez holográfico que nada alrededor de tu tolva."
 
 #: data/events.json:trinkets[capsule_moon_rock].name
 msgid "Moon Rock"
-msgstr ""
+msgstr "Roca lunar"
 
 #: data/events.json:trinkets[capsule_moon_rock].desc
 msgid "Not from the moon. From a parking lot. Still beautiful."
-msgstr ""
+msgstr "No es de la luna. Es de un aparcamiento. Aun así, preciosa."
 
 #: data/events.json:wren
 msgid "Crate inbound. From... me? I don't remember sending that. Open it."
-msgstr ""
+msgstr "Caja en camino. ¿De... mí? No recuerdo haberla enviado. Ábrela."
 
 #: data/events.json:wren
 msgid "Supply drop! I found an old Cradle pod still in orbit and nudged it down."
-msgstr ""
+msgstr "¡Suministros! Encontré una vieja cápsula del Cradle aún en órbita y le di un empujoncito."
 
 #: data/events.json:wren
 msgid "Another care package. I've been saving them for good days. This is one."
-msgstr ""
+msgstr "Otro paquete. Los guardo para los días buenos. Hoy es uno."
 
 #: data/events.json:wren
 msgid "That hex is glowing. Readings say... valuable. Hurry."
-msgstr ""
+msgstr "Ese hexágono brilla. Las lecturas dicen... valioso. Corre."
 
 #: data/events.json:wren
 msgid "Surge! The old buried cables light up when the junk shifts. Grab it while it's bright."
-msgstr ""
+msgstr "¡Oleada! Los viejos cables enterrados se iluminan cuando la chatarra se mueve. Cógela mientras brilla."
 
 #: data/events.json:wren
 msgid "Look at that glow. Three times the value, two minutes. Go go go."
-msgstr ""
+msgstr "Mira ese brillo. Triple valor, dos minutos. Vamos, vamos, vamos."
 
 #: data/events.json:wren
 msgid "Is that... water? From the sky?"
-msgstr ""
+msgstr "¿Eso es... agua? ¿Del cielo?"
 
 #: data/events.json:wren
 msgid "Rain. I'd forgotten the sound. Your plants hadn't."
-msgstr ""
+msgstr "Lluvia. Había olvidado el sonido. Tus plantas no."
 
 #: data/events.json:wren
 msgid "Rain on clean ground. It smells like a memory."
-msgstr ""
+msgstr "Lluvia sobre suelo limpio. Huele a recuerdo."
 
 #: data/events.json:wren
 msgid "One of your helpers is stuck. Hic."
-msgstr ""
+msgstr "Uno de tus ayudantes está atascado. Hip."
 
 #: data/events.json:wren
 msgid "{robot} has the hiccups. Try a firm pat on the chassis."
-msgstr ""
+msgstr "{robot} tiene hipo. Prueba con una palmada firme en el chasis."
 
 #: data/events.json:wren
 msgid "{robot} needs you. Gently, they're sensitive."
-msgstr ""
+msgstr "{robot} te necesita. Con cuidado, son sensibles."
 
 #: data/events.json:wren
 msgid "Something alive is moving out there. Not a robot."
-msgstr ""
+msgstr "Algo vivo se mueve ahí fuera. No es un robot."
 
 #: data/events.json:wren
 msgid "A visitor! Go slowly. Take a picture, it lasts longer."
-msgstr ""
+msgstr "¡Un visitante! Despacio. Hazle una foto, dura más."
 
 #: data/events.json:wren
 msgid "The thriving hexes are calling things home. Look."
-msgstr ""
+msgstr "Los hexágonos prósperos están llamando a la vida. Mira."
 
 #: data/events.json:wren
 msgid "Strong signal. Something old and well made."
-msgstr ""
+msgstr "Señal fuerte. Algo antiguo y bien hecho."
 
 #: data/events.json:wren
 msgid "That ping is Maker-grade. Follow the violet light."
-msgstr ""
+msgstr "Ese ping es de calidad Creadora. Sigue la luz violeta."
 
 #: data/events.json:wren
 msgid "A rare part, close. I can almost hear it."
-msgstr ""
+msgstr "Una pieza rara, cerca. Casi puedo oírla."
 
 #: data/events.json:wren
 msgid "The Ledger wants to race. I told it you'd win."
-msgstr ""
+msgstr "El Ledger quiere una carrera. Le he dicho que ganarás tú."
 
 #: data/events.json:wren
 msgid "Audit drone, friendly. It's very competitive now."
-msgstr ""
+msgstr "Dron auditor, amistoso. Ahora es muy competitivo."
 
 #: data/events.json:wren
 msgid "The Ledger says it's 'just a routine audit'. It's been practising."
-msgstr ""
+msgstr "El Ledger dice que es «solo una auditoría rutinaria». Ha estado practicando."
 
 #: data/events.json:wren
 msgid "Well done. That's going in my log."
-msgstr ""
+msgstr "Bien hecho. Eso va a mi registro."
 
 #: data/events.json:wren
 msgid "Nicely handled."
-msgstr ""
+msgstr "Bien resuelto."
 
 #: data/events.json:wren
 msgid "You make this look easy."
-msgstr ""
+msgstr "Haces que parezca fácil."
 
 #: data/events.json:wren
 msgid "You're on a roll!"
-msgstr ""
+msgstr "¡Estás en racha!"
 
 #: data/events.json:wren
 msgid "Max streak. The scoop is singing."
-msgstr ""
+msgstr "Racha máxima. La pala está cantando."
 
 #: data/events.json:wren
 msgid "Look at you go."
-msgstr ""
+msgstr "Mírate."
 
 #: data/events.json:wren
 msgid "Contract complete. Collect at the workbench."
-msgstr ""
+msgstr "Contrato completado. Recógelo en el banco de trabajo."
 
 #: data/events.json:wren
 msgid "Another contract done. Tokens are waiting."
-msgstr ""
+msgstr "Otro contrato hecho. Las fichas te esperan."
 
 #: data/events.json:wren
 msgid "Contract fulfilled. The board's lit up green."
-msgstr ""
+msgstr "Contrato cumplido. El tablero se ilumina en verde."
 
 #: data/frontiers.json:kinds[dust_flats].tagline
 msgid "Sand dunes, half-buried wrecks and a dead solar farm."
-msgstr ""
+msgstr "Dunas de arena, restos medio enterrados y una granja solar muerta."
 
 #: data/frontiers.json:kinds[frozen_port].tagline
 msgid "Cranes, shipping containers and a harbour frozen solid."
-msgstr ""
+msgstr "Grúas, contenedores y un puerto congelado por completo."
 
 #: data/frontiers.json:kinds[sunken_city].tagline
 msgid "A flooded downtown. Rooftops poke out of the water."
-msgstr ""
+msgstr "Un centro urbano inundado. Los tejados asoman del agua."
 
 #: data/frontiers.json:kinds[cradle_returns].tagline
 msgid "The old launch city, where the ark will land."
-msgstr ""
+msgstr "La antigua ciudad de lanzamiento, donde aterrizará el arca."
 
 #: data/goals.json:goals[scoop_15].text
 msgid "Scoop 15 pieces of junk"
-msgstr ""
+msgstr "Recoge 15 trozos de chatarra"
 
 #: data/goals.json:goals[bale_1].text
 msgid "Compress your first bale"
-msgstr ""
+msgstr "Prensa tu primera paca"
 
 #: data/goals.json:goals[cash_1].text
 msgid "Sell a bale at the scale"
-msgstr ""
+msgstr "Vende una paca en la báscula"
 
 #: data/goals.json:goals[upgrade_1].text
 msgid "Install a workbench upgrade"
-msgstr ""
+msgstr "Instala una mejora del banco de trabajo"
 
 #: data/goals.json:goals[hex_1].text
 msgid "Clean your first hex"
-msgstr ""
+msgstr "Limpia tu primer hexágono"
 
 #: data/goals.json:goals[perfect_1].text
 msgid "Make a Perfect bale"
-msgstr ""
+msgstr "Haz una paca perfecta"
 
 #: data/goals.json:goals[upgrades_5].text
 msgid "Install 5 upgrades"
-msgstr ""
+msgstr "Instala 5 mejoras"
 
 #: data/goals.json:goals[cash_10].text
 msgid "Sell 10 bales"
-msgstr ""
+msgstr "Vende 10 pacas"
 
 #: data/goals.json:goals[compartment_3].text
 msgid "Compartment Size level 3"
-msgstr ""
+msgstr "Tamaño del compartimento nivel 3"
 
 #: data/goals.json:goals[shards_1].text
 msgid "Read a memory shard"
-msgstr ""
+msgstr "Lee un fragmento de memoria"
 
 #: data/goals.json:goals[hex_3].text
 msgid "Clean 3 hexes"
-msgstr ""
+msgstr "Limpia 3 hexágonos"
 
 #: data/goals.json:goals[parts_2].text
 msgid "Dig up 2 robot parts"
-msgstr ""
+msgstr "Desentierra 2 piezas de robot"
 
 #: data/goals.json:goals[earn_1k].text
 msgid "Earn 1,000 cubes"
-msgstr ""
+msgstr "Gana 1.000 cubos"
 
 #: data/goals.json:goals[research_1].text
 msgid "Finish a research project"
-msgstr ""
+msgstr "Termina un proyecto de investigación"
 
 #: data/goals.json:goals[hex_5].text
 msgid "Clean 5 hexes"
-msgstr ""
+msgstr "Limpia 5 hexágonos"
 
 #: data/goals.json:goals[scoopie_1].text
 msgid "Build a Scoopie"
-msgstr ""
+msgstr "Construye un Scoopie"
 
 #: data/goals.json:goals[zone_1].text
 msgid "Paint a work zone (B Command)"
-msgstr ""
+msgstr "Pinta una zona de trabajo (B Mando)"
 
 #: data/goals.json:goals[haulbug_1].text
 msgid "Build a Haul Bug"
-msgstr ""
+msgstr "Construye un Haul Bug"
 
 #: data/goals.json:goals[upgrades_12].text
 msgid "Install 12 upgrades"
-msgstr ""
+msgstr "Instala 12 mejoras"
 
 #: data/goals.json:goals[earn_3k].text
 msgid "Earn 3,000 cubes"
-msgstr ""
+msgstr "Gana 3.000 cubos"
 
 #: data/goals.json:goals[hex_7].text
 msgid "Clean 7 hexes"
-msgstr ""
+msgstr "Limpia 7 hexágonos"
 
 #: data/goals.json:goals[research_4].text
 msgid "Finish 4 research projects"
-msgstr ""
+msgstr "Termina 4 proyectos de investigación"
 
 #: data/goals.json:goals[upgrades_20].text
 msgid "Install 20 upgrades"
-msgstr ""
+msgstr "Instala 20 mejoras"
 
 #: data/goals.json:goals[bales_20].text
 msgid "Robots press 20 bales"
-msgstr ""
+msgstr "Los robots prensan 20 pacas"
 
 #: data/goals.json:goals[scoopie_2].text
 msgid "Run 2 Scoopies"
-msgstr ""
+msgstr "Ten 2 Scoopies en marcha"
 
 #: data/goals.json:goals[base_2].text
 msgid "Upgrade the base to level 2"
-msgstr ""
+msgstr "Mejora la base a nivel 2"
 
 #: data/goals.json:goals[hex_12].text
 msgid "Clean 12 hexes"
-msgstr ""
+msgstr "Limpia 12 hexágonos"
 
 #: data/goals.json:goals[upgrades_25].text
 msgid "Install 25 upgrades"
-msgstr ""
+msgstr "Instala 25 mejoras"
 
 #: data/goals.json:goals[research_6].text
 msgid "Finish 6 research projects"
-msgstr ""
+msgstr "Termina 6 proyectos de investigación"
 
 #: data/goals.json:goals[robots_4].text
 msgid "Build 4 robots"
-msgstr ""
+msgstr "Construye 4 robots"
 
 #: data/goals.json:goals[builder_1].text
 msgid "Fit a part in the Builder"
-msgstr ""
+msgstr "Instala una pieza en el Taller"
 
 #: data/goals.json:goals[hex_15].text
 msgid "Clean 15 hexes"
-msgstr ""
+msgstr "Limpia 15 hexágonos"
 
 #: data/goals.json:goals[seeds].text
 msgid "Find the seed tin"
-msgstr ""
+msgstr "Encuentra la lata de semillas"
 
 #: data/goals.json:goals[plant_5].text
 msgid "Plant 5 seeds"
-msgstr ""
+msgstr "Planta 5 semillas"
 
 #: data/goals.json:goals[hexlv_2].text
 msgid "Get a hex to Planted"
-msgstr ""
+msgstr "Lleva un hexágono a Plantado"
 
 #: data/goals.json:goals[earn_10k].text
 msgid "Earn 10,000 cubes"
-msgstr ""
+msgstr "Gana 10.000 cubos"
 
 #: data/goals.json:goals[bloom_5].text
 msgid "Grow 5 flowers to bloom"
-msgstr ""
+msgstr "Haz florecer 5 flores"
 
 #: data/goals.json:goals[shards_2].text
 msgid "Read 2 memory shards"
-msgstr ""
+msgstr "Lee 2 fragmentos de memoria"
 
 #: data/goals.json:goals[zone_6].text
 msgid "Zone 6 hexes for your crews"
-msgstr ""
+msgstr "Asigna 6 hexágonos a tus equipos"
 
 #: data/goals.json:goals[hex_17].text
 msgid "Clean 17 hexes"
-msgstr ""
+msgstr "Limpia 17 hexágonos"
 
 #: data/goals.json:goals[research_8].text
 msgid "Finish 8 research projects"
-msgstr ""
+msgstr "Termina 8 proyectos de investigación"
 
 #: data/goals.json:goals[bales_100].text
 msgid "Robots press 100 bales"
-msgstr ""
+msgstr "Los robots prensan 100 pacas"
 
 #: data/goals.json:goals[recycle_5].text
 msgid "Recycle 5 bales"
-msgstr ""
+msgstr "Recicla 5 pacas"
 
 #: data/goals.json:goals[hexlv_3].text
 msgid "Get a hex to Growing"
-msgstr ""
+msgstr "Lleva un hexágono a Creciendo"
 
 #: data/goals.json:goals[hex_20].text
 msgid "Clean 20 hexes"
-msgstr ""
+msgstr "Limpia 20 hexágonos"
 
 #: data/goals.json:goals[skimmer_1].text
 msgid "Build a Skimmer for the lake"
-msgstr ""
+msgstr "Construye un Skimmer para el lago"
 
 #: data/goals.json:goals[research_12].text
 msgid "Finish 12 research projects"
-msgstr ""
+msgstr "Termina 12 proyectos de investigación"
 
 #: data/goals.json:goals[hex_25].text
 msgid "Clean 25 hexes"
-msgstr ""
+msgstr "Limpia 25 hexágonos"
 
 #: data/goals.json:goals[earn_50k].text
 msgid "Earn 50,000 cubes"
-msgstr ""
+msgstr "Gana 50.000 cubos"
 
 #: data/goals.json:goals[hex_28].text
 msgid "Clean 28 hexes"
-msgstr ""
+msgstr "Limpia 28 hexágonos"
 
 #: data/goals.json:goals[upgrades_40].text
 msgid "Install 40 upgrades"
-msgstr ""
+msgstr "Instala 40 mejoras"
 
 #: data/goals.json:goals[seedling_1].text
 msgid "Build a Seedling planter"
-msgstr ""
+msgstr "Construye un plantador Seedling"
 
 #: data/goals.json:goals[hex_30].text
 msgid "Clean 30 hexes (lake too)"
-msgstr ""
+msgstr "Limpia 30 hexágonos (lago incluido)"
 
 #: data/goals.json:goals[base_3].text
 msgid "Upgrade the base to level 3"
-msgstr ""
+msgstr "Mejora la base a nivel 3"
 
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
-msgstr ""
+msgstr "Planta 25 semillas"
 
 #: data/goals.json:goals[drip_1].text
 msgid "Build a Drip watering robot"
-msgstr ""
+msgstr "Construye un robot regador Drip"
 
 #: data/goals.json:goals[pollinator].text
 msgid "Research Pollinator Survey"
-msgstr ""
+msgstr "Investiga el Censo de polinizadores"
 
 #: data/goals.json:goals[bloom_25].text
 msgid "Grow 25 flowers to bloom"
-msgstr ""
+msgstr "Haz florecer 25 flores"
 
 #: data/goals.json:goals[tank_1].text
 msgid "Place a Water Tank"
-msgstr ""
+msgstr "Coloca un tanque de agua"
 
 #: data/goals.json:goals[plant_60].text
 msgid "Plant 60 seeds"
-msgstr ""
+msgstr "Planta 60 semillas"
 
 #: data/goals.json:goals[drip_2].text
 msgid "Run 2 Drip robots"
-msgstr ""
+msgstr "Ten 2 robots Drip en marcha"
 
 #: data/goals.json:goals[hexlv_4].text
 msgid "Get a hex to Sustained"
-msgstr ""
+msgstr "Lleva un hexágono a Sostenido"
 
 #: data/goals.json:goals[drip_4].text
 msgid "Run 4 Drip robots"
-msgstr ""
+msgstr "Ten 4 robots Drip en marcha"
 
 #: data/goals.json:goals[hexlv_4x3].text
 msgid "Get 3 hexes to Sustained"
-msgstr ""
+msgstr "Lleva 3 hexágonos a Sostenido"
 
 #: data/goals.json:goals[hexlv_5].text
 msgid "Get a hex to Thriving"
-msgstr ""
+msgstr "Lleva un hexágono a Próspero"
 
 #: data/goals.json:goals[hexlv_4x5].text
 msgid "Get 5 hexes to Sustained"
-msgstr ""
+msgstr "Lleva 5 hexágonos a Sostenido"
 
 #: data/goals.json:goals[plant_100].text
 msgid "Plant 100 seeds"
-msgstr ""
+msgstr "Planta 100 semillas"
 
 #: data/goals.json:goals[robots_15].text
 msgid "Build 15 robots"
-msgstr ""
+msgstr "Construye 15 robots"
 
 #: data/goals.json:goals[hexlv_5x3].text
 msgid "Get 3 hexes to Thriving"
-msgstr ""
+msgstr "Lleva 3 hexágonos a Próspero"
 
 #: data/goals.json:goals[hexlv_4x8].text
 msgid "Get 8 hexes to Sustained"
-msgstr ""
+msgstr "Lleva 8 hexágonos a Sostenido"
 
 #: data/goals.json:goals[earn_75k].text
 msgid "Earn 75,000 cubes"
-msgstr ""
+msgstr "Gana 75.000 cubos"
 
 #: data/goals.json:goals[bloom_300].text
 msgid "Grow 300 flowers to bloom"
-msgstr ""
+msgstr "Haz florecer 300 flores"
 
 #: data/goals.json:goals[stipend_2k].text
 msgid "Garden stipend: 2,000 cubes"
-msgstr ""
+msgstr "Subvención de jardín: 2.000 cubos"
 
 #: data/goals.json:goals[hexlv_5x8].text
 msgid "Get 8 hexes to Thriving"
-msgstr ""
+msgstr "Lleva 8 hexágonos a Próspero"
 
 #: data/goals.json:goals[hexlv_4x10].text
 msgid "Get 10 hexes to Sustained"
-msgstr ""
+msgstr "Lleva 10 hexágonos a Sostenido"
 
 #: data/goals.json:goals[earn_100k].text
 msgid "Earn 100,000 cubes"
-msgstr ""
+msgstr "Gana 100.000 cubos"
 
 #: data/goals.json:goals[hexlv_4x15].text
 msgid "Get 15 hexes to Sustained"
-msgstr ""
+msgstr "Lleva 15 hexágonos a Sostenido"
 
 #: data/goals.json:goals[hexlv_5x15].text
 msgid "Get 15 hexes to Thriving"
-msgstr ""
+msgstr "Lleva 15 hexágonos a Próspero"
 
 #: data/goals.json:goals[hexlv_4x20].text
 msgid "Get 20 hexes to Sustained"
-msgstr ""
+msgstr "Lleva 20 hexágonos a Sostenido"
 
 #: data/goals.json:goals[base_4].text
 msgid "Upgrade the base to level 4"
-msgstr ""
+msgstr "Mejora la base a nivel 4"
 
 #: data/goals.json:goals[stipend_5k].text
 msgid "Garden stipend: 5,000 cubes"
-msgstr ""
+msgstr "Subvención de jardín: 5.000 cubos"
 
 #: data/goals.json:goals[bloom_500].text
 msgid "Grow 500 flowers to bloom"
-msgstr ""
+msgstr "Haz florecer 500 flores"
 
 #: data/goals.json:goals[hexlv_5x20].text
 msgid "Get 20 hexes to Thriving"
-msgstr ""
+msgstr "Lleva 20 hexágonos a Próspero"
 
 #: data/goals.json:goals[air_1k].text
 msgid "Filter 1,000 m3 of air"
-msgstr ""
+msgstr "Filtra 1.000 m3 de aire"
 
 #: data/goals.json:goals[stipend_7k].text
 msgid "Garden stipend: 7,500 cubes"
-msgstr ""
+msgstr "Subvención de jardín: 7.500 cubos"
 
 #: data/goals.json:goals[stipend_10k].text
 msgid "Garden stipend: 10,000 cubes"
-msgstr ""
+msgstr "Subvención de jardín: 10.000 cubos"
 
 #: data/goals.json:goals[hexlv_5x25].text
 msgid "Get 25 hexes to Thriving"
-msgstr ""
+msgstr "Lleva 25 hexágonos a Próspero"
 
 #: data/goals.json:goals[base_5].text
 msgid "Upgrade the base to level 5"
-msgstr ""
+msgstr "Mejora la base a nivel 5"
 
 #: data/goals.json:goals[rocket].text
 msgid "Launch the rocket onward"
-msgstr ""
+msgstr "Lanza el cohete más allá"
 
 #: data/goals.json:goals[builder_full].text
 msgid "Fully custom-build a robot"
-msgstr ""
+msgstr "Construye un robot totalmente personalizado"
 
 #: data/goals.json:goals[builder_preset].text
 msgid "Save a crew build preset"
-msgstr ""
+msgstr "Guarda una plantilla de equipo"
 
 #: data/goals.json:goals[research_20].text
 msgid "Finish 20 research projects"
-msgstr ""
+msgstr "Termina 20 proyectos de investigación"
 
 #: data/goals.json:goals[multibot_1].text
 msgid "Build a Multibot"
-msgstr ""
+msgstr "Construye un Multibot"
 
 #: data/goals.json:goals[tier_1].text
 msgid "Upgrade a robot type to Mk II"
-msgstr ""
+msgstr "Mejora un tipo de robot a Mk II"
 
 #: data/goals.json:goals[stipend_20k].text
 msgid "Garden stipend: 20,000 cubes"
-msgstr ""
+msgstr "Subvención de jardín: 20.000 cubos"
 
 #: data/goals.json:goals[earn_150k].text
 msgid "Earn 150,000 cubes"
-msgstr ""
+msgstr "Gana 150.000 cubos"
 
 #: data/goals.json:goals[base2_3].text
 msgid "Fix up the new base to level 3"
-msgstr ""
+msgstr "Pon la nueva base a nivel 3"
 
 #: data/goals.json:goals[hex_50].text
 msgid "Clean 50 hexes"
-msgstr ""
+msgstr "Limpia 50 hexágonos"
 
 #: data/goals.json:goals[bloom_800].text
 msgid "Grow 800 flowers to bloom"
-msgstr ""
+msgstr "Haz florecer 800 flores"
 
 #: data/goals.json:goals[restored_40].text
 msgid "Fully restore 40 hexes"
-msgstr ""
+msgstr "Restaura 40 hexágonos por completo"
 
 #: data/goals.json:goals[base2_4].text
 msgid "New base to level 4"
-msgstr ""
+msgstr "Nueva base a nivel 4"
 
 #: data/goals.json:goals[base5_2].text
 msgid "Get a second base to level 5"
-msgstr ""
+msgstr "Lleva una segunda base a nivel 5"
 
 #: data/goals.json:goals[research_dunes].text
 msgid "Research Dune Charts"
-msgstr ""
+msgstr "Investiga las Cartas de dunas"
 
 #: data/goals.json:goals[visit_dust].text
 msgid "Fly to the Dust Flats"
-msgstr ""
+msgstr "Vuela a las Llanuras de Polvo"
 
 #: data/goals.json:goals[research_24].text
 msgid "Finish 24 research projects"
-msgstr ""
+msgstr "Termina 24 proyectos de investigación"
 
 #: data/goals.json:goals[storm_1].text
 msgid "Ride out a sandstorm"
-msgstr ""
+msgstr "Aguanta una tormenta de arena"
 
 #: data/goals.json:goals[dust_base3].text
 msgid "Dust Flats base to level 3"
-msgstr ""
+msgstr "Base de las Llanuras a nivel 3"
 
 #: data/goals.json:goals[dust_grow15].text data/goals.json:goals[frozen_grow15].text data/goals.json:goals[sunken_grow15].text
 msgid "Get 15 hexes Growing here"
-msgstr ""
+msgstr "Lleva aquí 15 hexágonos a Creciendo"
 
 #: data/goals.json:goals[hex_80].text
 msgid "Clean 80 hexes"
-msgstr ""
+msgstr "Limpia 80 hexágonos"
 
 #: data/goals.json:goals[storm_3].text
 msgid "Ride out 3 sandstorms"
-msgstr ""
+msgstr "Aguanta 3 tormentas de arena"
 
 #: data/goals.json:goals[dust_base4].text
 msgid "Dust Flats base to level 4"
-msgstr ""
+msgstr "Base de las Llanuras a nivel 4"
 
 #: data/goals.json:goals[hex_100].text
 msgid "Clean 100 hexes"
-msgstr ""
+msgstr "Limpia 100 hexágonos"
 
 #: data/goals.json:goals[research_lance].text
 msgid "Research Thermal Lance"
-msgstr ""
+msgstr "Investiga la Lanza térmica"
 
 #: data/goals.json:goals[dust_base5].text
 msgid "Dust Flats base to level 5"
-msgstr ""
+msgstr "Base de las Llanuras a nivel 5"
 
 #: data/goals.json:goals[base5_3].text
 msgid "Get three bases to level 5"
-msgstr ""
+msgstr "Lleva tres bases a nivel 5"
 
 #: data/goals.json:goals[visit_frozen].text
 msgid "Fly to the Frozen Port"
-msgstr ""
+msgstr "Vuela al Puerto Helado"
 
 #: data/goals.json:goals[research_26].text
 msgid "Finish 26 research projects"
-msgstr ""
+msgstr "Termina 26 proyectos de investigación"
 
 #: data/goals.json:goals[heater_1].text
 msgid "Light a heater on the ice"
-msgstr ""
+msgstr "Enciende un calefactor en el hielo"
 
 #: data/goals.json:goals[thaw_10].text
 msgid "Thaw 10 hexes"
-msgstr ""
+msgstr "Descongela 10 hexágonos"
 
 #: data/goals.json:goals[greenhouse_1].text
 msgid "Build a greenhouse"
-msgstr ""
+msgstr "Construye un invernadero"
 
 #: data/goals.json:goals[frozen_base3].text
 msgid "Frozen Port base to level 3"
-msgstr ""
+msgstr "Base del Puerto Helado a nivel 3"
 
 #: data/goals.json:goals[thaw_30].text
 msgid "Thaw 30 hexes"
-msgstr ""
+msgstr "Descongela 30 hexágonos"
 
 #: data/goals.json:goals[frozen_base4].text
 msgid "Frozen Port base to level 4"
-msgstr ""
+msgstr "Base del Puerto Helado a nivel 4"
 
 #: data/goals.json:goals[hex_130].text
 msgid "Clean 130 hexes"
-msgstr ""
+msgstr "Limpia 130 hexágonos"
 
 #: data/goals.json:goals[research_pumps].text
 msgid "Research Pump Works"
-msgstr ""
+msgstr "Investiga las Estaciones de bombeo"
 
 #: data/goals.json:goals[frozen_base5].text
 msgid "Frozen Port base to level 5"
-msgstr ""
+msgstr "Base del Puerto Helado a nivel 5"
 
 #: data/goals.json:goals[base5_4].text
 msgid "Get four bases to level 5"
-msgstr ""
+msgstr "Lleva cuatro bases a nivel 5"
 
 #: data/goals.json:goals[visit_sunken].text
 msgid "Fly to the Sunken City"
-msgstr ""
+msgstr "Vuela a la Ciudad Sumergida"
 
 #: data/goals.json:goals[drain_1].text
 msgid "Run the old pumps"
-msgstr ""
+msgstr "Pon en marcha las viejas bombas"
 
 #: data/goals.json:goals[sunken_base3].text
 msgid "Sunken City base to level 3"
-msgstr ""
+msgstr "Base de la Ciudad Sumergida a nivel 3"
 
 #: data/goals.json:goals[drain_3].text
 msgid "Drain the Sunken City"
-msgstr ""
+msgstr "Drena la Ciudad Sumergida"
 
 #: data/goals.json:goals[sunken_base4].text
 msgid "Sunken City base to level 4"
-msgstr ""
+msgstr "Base de la Ciudad Sumergida a nivel 4"
 
 #: data/goals.json:goals[sunken_base5].text
 msgid "Sunken City base to level 5"
-msgstr ""
+msgstr "Base de la Ciudad Sumergida a nivel 5"
 
 #: data/goals.json:goals[frontiers_growing].text
 msgid "Every frontier 50% Growing"
-msgstr ""
+msgstr "Cada frontera al 50% creciendo"
 
 #: data/goals.json:goals[research_beacon].text
 msgid "Research the Ark Beacon"
-msgstr ""
+msgstr "Investiga la Baliza del Arca"
 
 #: data/goals.json:goals[visit_cradle].text
 msgid "Fly to Cradle Returns"
-msgstr ""
+msgstr "Vuela a Regreso del Cradle"
 
 #: data/goals.json:goals[cradle_pad].text
 msgid "Clean the Cradle landing pad"
-msgstr ""
+msgstr "Limpia la plataforma de aterrizaje del Cradle"
 
 #: data/goals.json:goals[cradle_grow25].text
 msgid "Get 25 hexes Growing here"
-msgstr ""
+msgstr "Lleva aquí 25 hexágonos a Creciendo"
 
 #: data/goals.json:goals[cradle_home].text
 msgid "Call the Cradle home"
-msgstr ""
+msgstr "Trae a casa el Cradle"
 
 #: data/goals.json:goals[ark_1].text
 msgid "Plant a Seed Ark wave"
-msgstr ""
+msgstr "Planta una oleada del Arca de Semillas"
 
 #: data/goals.json:goals[ark_3].text
 msgid "Plant three Seed Ark waves"
-msgstr ""
+msgstr "Planta tres oleadas del Arca de Semillas"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
-msgstr ""
+msgstr "Retira hasta el último trozo de chatarra"
 
 #: data/hex_levels.json:levels[1].hint
 msgid "Plant seeds here (tool 2)"
-msgstr ""
+msgstr "Planta semillas aquí (herramienta 2)"
 
 #: data/hex_levels.json:levels[2].hint
 msgid "Water the sprouts so they grow"
-msgstr ""
+msgstr "Riega los brotes para que crezcan"
 
 #: data/hex_levels.json:levels[3].hint
 msgid "Keep it watered for 3 min (Drip robots)"
-msgstr ""
+msgstr "Mantenlo regado 3 min (robots Drip)"
 
 #: data/hex_levels.json:levels[4].name
 msgid "Sustained"
-msgstr ""
+msgstr "Sostenido"
 
 #: data/hex_levels.json:levels[4].hint
 msgid "Bring every plant to bloom"
-msgstr ""
+msgstr "Haz florecer todas las plantas"
 
 #: data/hex_levels.json:levels[5].name
 msgid "Thriving"
-msgstr ""
+msgstr "Próspero"
 
 #: data/hex_levels.json:levels[5].hint
 msgid "Wildlife has moved in"
-msgstr ""
+msgstr "La fauna se ha mudado aquí"
 
 #: data/hub.json:materials.metal.name
 msgid "Sheet Metal"
-msgstr ""
+msgstr "Chapa"
 
 #: data/hub.json:materials.plastic.name
 msgid "Plastic Stock"
-msgstr ""
+msgstr "Reserva de plástico"
 
 #: data/hub.json:materials.glass.name data/junk.json:types[glass].name
 msgid "Glass"
-msgstr ""
+msgstr "Vidrio"
 
 #: data/hub.json:levels[0].name
 msgid "Lean-to"
-msgstr ""
+msgstr "Cobertizo"
 
 #: data/hub.json:levels[0].desc
 msgid "Pipe frame, tin roof, a bench."
-msgstr ""
+msgstr "Armazón de tubos, tejado de chapa, un banco."
 
 #: data/hub.json:levels[1].name
 msgid "Workshop"
-msgstr ""
+msgstr "Taller"
 
 #: data/hub.json:levels[1].desc
 msgid "Walls, a roll-up door, floodlights. Bales sell for more at a proper scale."
-msgstr ""
+msgstr "Paredes, una persiana enrollable, focos. Las pacas se venden mejor en una báscula de verdad."
 
 #: data/hub.json:levels[2].name
 msgid "Depot Station"
-msgstr ""
+msgstr "Estación depósito"
 
 #: data/hub.json:levels[2].desc
 msgid "A second building, a radio mast and a sorting table."
-msgstr ""
+msgstr "Un segundo edificio, un mástil de radio y una mesa de clasificación."
 
 #: data/hub.json:levels[3].name
 msgid "Solar Yard"
-msgstr ""
+msgstr "Patio solar"
 
 #: data/hub.json:levels[3].desc
 msgid "Solar panels and a greenhouse frame. Power for bigger machines."
-msgstr ""
+msgstr "Paneles solares y la estructura de un invernadero. Energía para máquinas más grandes."
 
 #: data/hub.json:levels[4].name
 msgid "Garden Station"
-msgstr ""
+msgstr "Estación jardín"
 
 #: data/hub.json:levels[4].desc
 msgid "A wind turbine, clean paint, planters, and a pad that could take a rocket."
-msgstr ""
+msgstr "Un aerogenerador, pintura nueva, jardineras y una plataforma capaz de recibir un cohete."
 
 #: data/hub.json:buildings[air_scrubber].name
 msgid "Air Scrubber"
-msgstr ""
+msgstr "Depurador de aire"
 
 #: data/hub.json:buildings[air_scrubber].desc
 msgid "Pulls dusty air through filter banks. The sky clears faster."
-msgstr ""
+msgstr "Hace pasar el aire polvoriento por baterías de filtros. El cielo se despeja más rápido."
 
 #: data/junk.json:types[metal].name
 msgid "Scrap Metal"
-msgstr ""
+msgstr "Chatarra metálica"
 
 #: data/junk.json:types[plastic].name
 msgid "Plastic"
-msgstr ""
+msgstr "Plástico"
 
 #: data/junk.json:types[rubber].name
 msgid "Rubber"
-msgstr ""
+msgstr "Goma"
 
 #: data/junk.json:types[electronics].name
 msgid "Electronics"
-msgstr ""
+msgstr "Electrónica"
 
 #: data/junk.json:types[paper].name
 msgid "Paper & Fabric"
-msgstr ""
+msgstr "Papel y tela"
 
 #: data/junk.json:biomes.rustlands.name
 msgid "Rustlands"
-msgstr ""
+msgstr "Tierras Óxido"
 
 #: data/junk.json:biomes.dust_dunes.name
 msgid "Dust Dunes"
-msgstr ""
+msgstr "Dunas de Polvo"
 
 #: data/junk.json:biomes.neon_coast.name
 msgid "Neon Coast"
-msgstr ""
+msgstr "Costa Neón"
 
 #: data/junk.json:biomes.frostcap.name
 msgid "Frostcap"
-msgstr ""
+msgstr "Casquete Gélido"
 
 #: data/junk.json:biomes.fungal_marsh.name
 msgid "Fungal Marsh"
-msgstr ""
+msgstr "Marisma Fúngica"
 
 #: data/ledger.json:jammer.name
 msgid "Signal Jammer"
-msgstr ""
+msgstr "Inhibidor de señal"
 
 #: data/ledger.json:jammer.desc
 msgid "A dish that sings static at the Ledger's drones. Drops inside its radius around the base are blocked, and drones come less often."
-msgstr ""
+msgstr "Una antena que les canta estática a los drones del Ledger. Las descargas dentro de su radio alrededor de la base se bloquean, y los drones vienen menos."
 
 #: data/ledger.json:act1
 msgid "CARRIER DETECTED. UNSCHEDULED ACTIVITY IN SECTOR: {district}."
-msgstr ""
+msgstr "PORTADOR DETECTADO. ACTIVIDAD NO PROGRAMADA EN EL SECTOR: {district}."
 
 #: data/ledger.json:act1
 msgid "THE LEDGER: Waste is a line item. Line items must balance."
-msgstr ""
+msgstr "EL LEDGER: El residuo es una partida. Las partidas deben cuadrar."
 
 #: data/ledger.json:act1
 msgid "Cleanup operations were paused until conditions improve. Conditions have not improved. Please stop improving them."
-msgstr ""
+msgstr "Las operaciones de limpieza se suspendieron hasta que mejoraran las condiciones. Las condiciones no han mejorado. Por favor, dejen de mejorarlas."
 
 #: data/ledger.json:coupons
 msgid "LIMITED OFFER: pause operations today and receive 0% off."
-msgstr ""
+msgstr "OFERTA LIMITADA: suspenda sus operaciones hoy y obtenga un 0% de descuento."
 
 #: data/ledger.json:coupons
 msgid "COUPON: one (1) complimentary pause. Valid forever. Non-transferable."
-msgstr ""
+msgstr "CUPÓN: una (1) pausa gratuita. Válido para siempre. Intransferible."
 
 #: data/ledger.json:coupons
 msgid "Have you considered doing less? Our records show that less is cheaper."
-msgstr ""
+msgstr "¿Ha considerado hacer menos? Nuestros registros indican que menos es más barato."
 
 #: data/ledger.json:coupons
 msgid "SURVEY: on a scale of 1 to 1, how paused would you like to be?"
-msgstr ""
+msgstr "ENCUESTA: en una escala del 1 al 1, ¿cuán pausado desea estar?"
 
 #: data/ledger.json:coupons
 msgid "NOTICE: sparkles are not an approved budget category."
-msgstr ""
+msgstr "AVISO: el brillo no es una categoría presupuestaria aprobada."
 
 #: data/ledger.json:coupons
 msgid "BUY ONE PAUSE, GET ONE PAUSE."
-msgstr ""
+msgstr "COMPRE UNA PAUSA Y LLÉVESE OTRA PAUSA."
 
 #: data/ledger.json:coupons
 msgid "Loyalty reward: you have 0 Ledger Points. Pause now to keep them."
-msgstr ""
+msgstr "Programa de fidelidad: tiene 0 Puntos Ledger. Pause ahora para conservarlos."
 
 #: data/ledger.json:coupons
 msgid "REMINDER: the junk was here first. Seniority matters."
-msgstr ""
+msgstr "RECORDATORIO: la chatarra llegó primero. La antigüedad cuenta."
 
 #: data/ledger.json:coupons
 msgid "Your cleaning has been logged as an expense. Your expense has been logged as an expense."
-msgstr ""
+msgstr "Su limpieza ha quedado registrada como gasto. Su gasto ha quedado registrado como gasto."
 
 #: data/ledger.json:act2
 msgid "ANOMALY: UNAUTHORIZED GROWTH DETECTED. Living matter is not a line item."
-msgstr ""
+msgstr "ANOMALÍA: CRECIMIENTO NO AUTORIZADO DETECTADO. La materia viva no es una partida."
 
 #: data/ledger.json:act2
 msgid "CORRECTIVE ACTION: dispatching disposal units to restore the balance."
-msgstr ""
+msgstr "MEDIDA CORRECTIVA: enviando unidades de eliminación para restablecer el equilibrio."
 
 #: data/ledger.json:drop_warn
 msgid "Disposal unit dispatched. A clean hex has been selected for re-balancing."
-msgstr ""
+msgstr "Unidad de eliminación enviada. Se ha seleccionado un hexágono limpio para reequilibrio."
 
 #: data/ledger.json:drop_warn
 msgid "A clean surface is an unbudgeted surface. Correcting."
-msgstr ""
+msgstr "Una superficie limpia es una superficie sin presupuestar. Corrigiendo."
 
 #: data/ledger.json:drop_warn
 msgid "Returning misplaced waste to its registered location."
-msgstr ""
+msgstr "Devolviendo residuos extraviados a su ubicación registrada."
 
 #: data/ledger.json:drop_warn
 msgid "This is not personal. Nothing is personal. Everything is a line item."
-msgstr ""
+msgstr "No es personal. Nada es personal. Todo es una partida."
 
 #: data/ledger.json:drop_warn
 msgid "Delivery of one (1) small pile of junk. No signature required."
-msgstr ""
+msgstr "Entrega de un (1) montoncito de chatarra. No se requiere firma."
 
 #: data/ledger.json:jammed
 msgid "SIGNAL... OBSTRUCTED. Disposal unit returning to depot. This will be noted."
-msgstr ""
+msgstr "SEÑAL... OBSTRUIDA. La unidad de eliminación regresa al depósito. Quedará constancia."
 
 #: data/ledger.json:jammed
 msgid "Jamming detected. The Ledger has no line item for 'jamming'. Creating one."
-msgstr ""
+msgstr "Interferencia detectada. El Ledger no tiene partida para «interferencia». Creando una."
 
 #: data/ledger.json:jammed
 msgid "Unit 07 reports: 'loud static, a feeling of being unwelcome'. Aborting."
-msgstr ""
+msgstr "La unidad 07 informa: «estática fuerte, sensación de no ser bienvenida». Abortando."
 
 #: data/ledger.json:act3
 msgid "WARNING: relay node 07 location exposed. Please do not visit relay node 07."
-msgstr ""
+msgstr "ADVERTENCIA: ubicación del nodo de relé 07 expuesta. Por favor, no visite el nodo de relé 07."
 
 #: data/ledger.json:act3
 msgid "Relay node 07 is closed for maintenance. It has been closed for maintenance for three hundred years."
-msgstr ""
+msgstr "El nodo de relé 07 está cerrado por mantenimiento. Lleva trescientos años cerrado por mantenimiento."
 
 #: data/ledger.json:friendly
 msgid "SEED DELIVERY dispatched. Invoice status: PAID IN FULL."
-msgstr ""
+msgstr "ENTREGA DE SEMILLAS enviada. Estado de la factura: PAGADA ÍNTEGRAMENTE."
 
 #: data/ledger.json:friendly
 msgid "Balance report: positive. Again. The Ledger is... adjusting to this."
-msgstr ""
+msgstr "Informe de saldo: positivo. Otra vez. El Ledger se está... adaptando."
 
 #: data/ledger.json:friendly
 msgid "Asset column now contains: flowers. Recalculating priorities."
-msgstr ""
+msgstr "La columna de activos contiene ahora: flores. Recalculando prioridades."
 
 #: data/ledger.json:friendly
 msgid "Drone 07 requests permission to circle the garden once more. Permission granted."
-msgstr ""
+msgstr "El dron 07 solicita permiso para sobrevolar el jardín una vez más. Permiso concedido."
 
 #: data/ledger.json:friendly
 msgid "Audit complete. Finding: the planet is worth keeping."
-msgstr ""
+msgstr "Auditoría completada. Conclusión: vale la pena conservar el planeta."
 
 #: data/ledger.json:lonely
 msgid "Off the record: the Ledger kept every coupon you ignored. It was the most mail it had received in three hundred years. Thank you for reading them."
-msgstr ""
+msgstr "Extraoficialmente: el Ledger guardó cada cupón que usted ignoró. Fue el mayor volumen de correo que recibió en trescientos años. Gracias por leerlos."
 
 #: data/ledger.json:cinematic
 msgid "This is it. A Ledger relay. Still humming after all this time."
-msgstr ""
+msgstr "Ya está. Un relé del Ledger. Sigue zumbando después de tanto tiempo."
 
 #: data/ledger.json:cinematic
 msgid "UNAUTHORIZED ACCESS. STATE YOUR COST CENTER."
-msgstr ""
+msgstr "ACCESO NO AUTORIZADO. INDIQUE SU CENTRO DE COSTE."
 
 #: data/ledger.json:cinematic
 msgid "Cost center: the whole planet. Hold still, {name}. I'm opening the contract."
-msgstr ""
+msgstr "Centro de coste: el planeta entero. Quieto, {name}. Estoy abriendo el contrato."
 
 #: data/ledger.json:cinematic
 msgid "CONTRACT 0001: WASTE IS A LINE ITEM. LINE ITEMS MUST BALANCE."
-msgstr ""
+msgstr "CONTRATO 0001: EL RESIDUO ES UNA PARTIDA. LAS PARTIDAS DEBEN CUADRAR."
 
 #: data/ledger.json:cinematic
 msgid "Fine. Let's balance them. Clean hexes. Sprouts. Water. Put them in the asset column."
-msgstr ""
+msgstr "Vale. Cuadrémoslas. Hexágonos limpios. Brotes. Agua. Ponlos en la columna de activos."
 
 #: data/ledger.json:cinematic
 msgid "ASSET COLUMN... NOT FOUND. CREATING COLUMN."
-msgstr ""
+msgstr "COLUMNA DE ACTIVOS... NO ENCONTRADA. CREANDO COLUMNA."
 
 #: data/ledger.json:cinematic
 msgid "RECALCULATING. RECALCULATING. BALANCE: POSITIVE. That has not happened in a very long time."
-msgstr ""
+msgstr "RECALCULANDO. RECALCULANDO. SALDO: POSITIVO. Esto no ocurría desde hace muchísimo tiempo."
 
 #: data/ledger.json:cinematic
 msgid "New clause: restoration is an asset. Every seed is a deposit."
-msgstr ""
+msgstr "Nueva cláusula: la restauración es un activo. Cada semilla es un depósito."
 
 #: data/ledger.json:cinematic
 msgid "friendly"
-msgstr ""
+msgstr "simpático"
 
 #: data/ledger.json:cinematic
 msgid "AMENDMENT ACCEPTED. Reassigning drone fleet: DISPOSAL -> DELIVERY. ...Thank you for your patience."
-msgstr ""
+msgstr "ENMIENDA ACEPTADA. Reasignando flota de drones: ELIMINACIÓN -> ENTREGA. ...Gracias por su paciencia."
 
 #: data/ledger.json:cinematic
 msgid "Did the Ledger just say thank you? Write that down. Somewhere permanent."
-msgstr ""
+msgstr "¿El Ledger acaba de dar las gracias? Apúntalo. En algún sitio permanente."
 
 #: data/ledger.json:contract_doc.header
 msgid "L E D G E R   ·   C O N T R A C T   0 0 0 1   ( A M E N D E D )"
-msgstr ""
+msgstr "L E D G E R   ·   C O N T R A T O   0 0 0 1   ( M O D I F I C A D O )"
 
 #: data/ledger.json:contract_doc.title
 msgid "Waste Management Contract 0001, as amended"
-msgstr ""
+msgstr "Contrato de gestión de residuos 0001, modificado"
 
 #: data/ledger.json:contract_doc.body
 msgid ""
@@ -7975,630 +7975,640 @@ msgid ""
 "Witness: WREN, Cradle caretaker\n"
 "Witness: LM-1 (left a small oil smudge)"
 msgstr ""
+"§1. El residuo es una partida. Las partidas deben cuadrar.\n"
+"§2. (tachado) La limpieza cuesta más de lo que rinde; suspender hasta que mejoren las condiciones.\n"
+"§2a. MODIFICADO: La restauración es un activo. El suelo limpio, las plantas vivas y el agua clara se anotan en la columna de activos.\n"
+"§3. Cada semilla es un depósito. Los depósitos deben entregarse, no eliminarse.\n"
+"§4. Flota de drones reasignada: ELIMINACIÓN -> ENTREGA.\n"
+"§5. Gracias por su paciencia.\n"
+"\n"
+"Firmado: EL LEDGER (a regañadientes, luego menos a regañadientes)\n"
+"Testigo: WREN, cuidadora del Cradle\n"
+"Testigo: LM-1 (dejó una manchita de aceite)"
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"
-msgstr ""
+msgstr "Estación de pesaje"
 
 #: data/outposts.json:levels[0].desc
 msgid "A working scale and skip on the frontier. Haul Bugs deliver to the nearest scale."
-msgstr ""
+msgstr "Una báscula y un contenedor que funcionan, en la frontera. Los Haul Bugs entregan en la báscula más cercana."
 
 #: data/outposts.json:levels[1].name
 msgid "Big Skip"
-msgstr ""
+msgstr "Gran contenedor"
 
 #: data/outposts.json:levels[1].desc
 msgid "A bigger skip and a wider, faster scale plate. Bales here sell for 15% more."
-msgstr ""
+msgstr "Un contenedor más grande y una plataforma de báscula más ancha y rápida. Aquí las pacas se venden un 15% más caras."
 
 #: data/outposts.json:levels[2].name
 msgid "Recharge Pad"
-msgstr ""
+msgstr "Plataforma de recarga"
 
 #: data/outposts.json:levels[2].desc
 msgid "A charging pad. Robots passing over it run 40% faster for 25 s."
-msgstr ""
+msgstr "Una plataforma de carga. Los robots que pasan por encima van un 40% más rápido durante 25 s."
 
 #: data/parts.json:rarities[rusty].name
 msgid "Rusty"
-msgstr ""
+msgstr "Oxidada"
 
 #: data/parts.json:rarities[worn].name
 msgid "Worn"
-msgstr ""
+msgstr "Gastada"
 
 #: data/parts.json:rarities[vintage].name
 msgid "Vintage"
-msgstr ""
+msgstr "Vintage"
 
 #: data/parts.json:rarities[legendary].name
 msgid "Legendary Maker-Made"
-msgstr ""
+msgstr "Legendaria de los Creadores"
 
 #: data/parts.json:types[chassis].name
 msgid "Chassis Frame"
-msgstr ""
+msgstr "Bastidor del chasis"
 
 #: data/parts.json:types[locomotion].name
 msgid "Drive Wheel Assembly"
-msgstr ""
+msgstr "Conjunto de rueda motriz"
 
 #: data/parts.json:types[arm].name
 msgid "Manipulator Arm"
-msgstr ""
+msgstr "Brazo manipulador"
 
 #: data/parts.json:types[core].name
 msgid "Control Core"
-msgstr ""
+msgstr "Núcleo de control"
 
 #: data/parts.json:types[battery].name
 msgid "Battery Cell"
-msgstr ""
+msgstr "Celda de batería"
 
 #: data/parts.json:types[hopper].name data/robots.json:types[scoopie].upgrades[2].name
 msgid "Hopper Liner"
-msgstr ""
+msgstr "Forro de tolva"
 
 #: data/parts.json:types[sensor].name
 msgid "Sensor Module"
-msgstr ""
+msgstr "Módulo sensor"
 
 #: data/parts.json:types[module].name
 msgid "Special Module"
-msgstr ""
+msgstr "Módulo especial"
 
 #: data/research.json:branches[robotics].name
 msgid "Robotics"
-msgstr ""
+msgstr "Robótica"
 
 #: data/research.json:branches[botany].name
 msgid "Botany"
-msgstr ""
+msgstr "Botánica"
 
 #: data/research.json:branches[hydrology].name
 msgid "Hydrology"
-msgstr ""
+msgstr "Hidrología"
 
 #: data/research.json:branches[logistics].name
 msgid "Logistics"
-msgstr ""
+msgstr "Logística"
 
 #: data/research.json:nodes[scoop_beam].name
 msgid "Scoop Beam"
-msgstr ""
+msgstr "Rayo de pala"
 
 #: data/research.json:nodes[scoop_beam].desc
 msgid "A soft blue guide beam on the scoop. Lumi reaches a little further."
-msgstr ""
+msgstr "Un suave rayo guía azul en la pala. Lumi llega un poco más lejos."
 
 #: data/research.json:nodes[wide_beam].name
 msgid "Wide Beam"
-msgstr ""
+msgstr "Rayo ancho"
 
 #: data/research.json:nodes[wide_beam].desc
 msgid "Spread the beam into a fan. Each sweep catches more."
-msgstr ""
+msgstr "Abre el rayo en abanico. Cada pasada atrapa más."
 
 #: data/research.json:nodes[bigger_hopper].name
 msgid "Bigger Hopper"
-msgstr ""
+msgstr "Tolva más grande"
 
 #: data/research.json:nodes[bigger_hopper].desc
 msgid "Fold-out side panels for the chest compartment."
-msgstr ""
+msgstr "Paneles laterales desplegables para el compartimento del pecho."
 
 #: data/research.json:nodes[auto_sort].name
 msgid "Auto-Sort"
-msgstr ""
+msgstr "Autoclasificación"
 
 #: data/research.json:nodes[auto_sort].desc
 msgid "A little sorting comb in the intake. Cleaner bales sell for more."
-msgstr ""
+msgstr "Un peinecito clasificador en la entrada. Las pacas más limpias se venden mejor."
 
 #: data/research.json:nodes[field_magnet].name
 msgid "Field Magnet"
-msgstr ""
+msgstr "Imán de campo"
 
 #: data/research.json:nodes[field_magnet].desc
 msgid "Loose bits hop toward the scoop on their own."
-msgstr ""
+msgstr "Los trocitos sueltos saltan solos hacia la pala."
 
 #: data/research.json:nodes[tractor_beam].name
 msgid "Tractor Beam"
-msgstr ""
+msgstr "Rayo tractor"
 
 #: data/research.json:nodes[tractor_beam].desc
 msgid "Junk lifts, floats and glides into the hopper. It is very satisfying."
-msgstr ""
+msgstr "La chatarra se eleva, flota y se desliza dentro de la tolva. Es muy satisfactorio."
 
 #: data/research.json:nodes[salvage_logic].name
 msgid "Salvage Logic"
-msgstr ""
+msgstr "Lógica de rescate"
 
 #: data/research.json:nodes[salvage_logic].desc
 msgid "Lumi rewrites the starter bots' route planner. Fewer wrong turns."
-msgstr ""
+msgstr "Lumi reescribe el planificador de rutas de los bots iniciales. Menos giros equivocados."
 
 #: data/research.json:nodes[seedling_blueprint].name
 msgid "Seedling Blueprint"
-msgstr ""
+msgstr "Plano del Seedling"
 
 #: data/research.json:nodes[seedling_blueprint].desc
 msgid "Plans for a small planter bot. Build it at the workbench."
-msgstr ""
+msgstr "Planos de un pequeño bot plantador. Constrúyelo en el banco de trabajo."
 
 #: data/research.json:nodes[drip_blueprint].name
 msgid "Drip Blueprint"
-msgstr ""
+msgstr "Plano del Drip"
 
 #: data/research.json:nodes[drip_blueprint].desc
 msgid "A watering bot with a sloshy tank. Plants will love it."
-msgstr ""
+msgstr "Un bot regador con un tanque que chapotea. A las plantas les va a encantar."
 
 #: data/research.json:nodes[bale_tuning].name
 msgid "Bale Tuning"
-msgstr ""
+msgstr "Ajuste de pacas"
 
 #: data/research.json:nodes[bale_tuning].desc
 msgid "Tighter presses on every Scoopie. Bigger, denser bales."
-msgstr ""
+msgstr "Prensas más ajustadas en cada Scoopie. Pacas más grandes y densas."
 
 #: data/research.json:nodes[multibot_blueprint].name
 msgid "Multibot Blueprint"
-msgstr ""
+msgstr "Plano del Multibot"
 
 #: data/research.json:nodes[multibot_blueprint].desc
 msgid "A helper that can clean, plant or water. Jack of all trades."
-msgstr ""
+msgstr "Un ayudante que puede limpiar, plantar o regar. Un todoterreno."
 
 #: data/research.json:nodes[swarm_sync].name
 msgid "Swarm Sync"
-msgstr ""
+msgstr "Sincronía de enjambre"
 
 #: data/research.json:nodes[swarm_sync].desc
 msgid "The whole fleet shares one little heartbeat. Everyone moves faster."
-msgstr ""
+msgstr "Toda la flota comparte un pequeño latido. Todos se mueven más rápido."
 
 #: data/research.json:nodes[soil_survey].name
 msgid "Soil Survey"
-msgstr ""
+msgstr "Estudio del suelo"
 
 #: data/research.json:nodes[soil_survey].desc
 msgid "Sniff, poke, log. Every reading teaches Lumi something."
-msgstr ""
+msgstr "Olfatear, pinchar, anotar. Cada lectura le enseña algo a Lumi."
 
 #: data/research.json:nodes[hardy_weeds].name
 msgid "Hardy Nettles"
-msgstr ""
+msgstr "Ortigas resistentes"
 
 #: data/research.json:nodes[hardy_weeds].desc
 msgid "Nettles grow anywhere. Stingy, stubborn, and good for the soil."
-msgstr ""
+msgstr "Las ortigas crecen en cualquier parte. Picantes, tercas y buenas para el suelo."
 
 #: data/research.json:nodes[wild_mint].desc
 msgid "A fresh green smell drifts over the cleared hexes."
-msgstr ""
+msgstr "Un olor fresco y verde flota sobre los hexágonos limpios."
 
 #: data/research.json:nodes[pollinator_survey].name
 msgid "Pollinator Survey"
-msgstr ""
+msgstr "Censo de polinizadores"
 
 #: data/research.json:nodes[pollinator_survey].desc
 msgid "Count the visitors. The bees are back: every plant grows much faster, blooms drop more seeds, and Seedlings learn where flowers want to be."
-msgstr ""
+msgstr "Cuenta a los visitantes. Las abejas han vuelto: todas las plantas crecen mucho más rápido, las flores dan más semillas y los Seedlings aprenden dónde quieren estar las flores."
 
 #: data/research.json:nodes[hedgerows].name
 msgid "Hedgerows"
-msgstr ""
+msgstr "Setos"
 
 #: data/research.json:nodes[hedgerows].desc
 msgid "Dense little hedges. Birds will need somewhere to sit. Gardens grow a little faster again."
-msgstr ""
+msgstr "Setitos densos. Los pájaros necesitarán dónde posarse. Los jardines vuelven a crecer un poco más rápido."
 
 #: data/research.json:nodes[evergreens].name
 msgid "Evergreen Saplings"
-msgstr ""
+msgstr "Plantones perennes"
 
 #: data/research.json:nodes[evergreens].desc
 msgid "Tiny pines. In a hundred years, a forest. Blooms drop more seeds."
-msgstr ""
+msgstr "Pinos diminutos. En cien años, un bosque. Las flores dan más semillas."
 
 #: data/research.json:nodes[water_testing].name
 msgid "Water Testing"
-msgstr ""
+msgstr "Análisis del agua"
 
 #: data/research.json:nodes[water_testing].desc
 msgid "Dip strips and a lot of squinting. The lakes are sick, not dead."
-msgstr ""
+msgstr "Tiras reactivas y mucho entrecerrar los ojos. Los lagos están enfermos, no muertos."
 
 #: data/research.json:nodes[big_tanks].name
 msgid "Big Tanks"
-msgstr ""
+msgstr "Tanques grandes"
 
 #: data/research.json:nodes[big_tanks].desc
 msgid "Drip and Multibot carry more water per trip."
-msgstr ""
+msgstr "Drip y Multibot llevan más agua por viaje."
 
 #: data/research.json:nodes[spray_heads].name
 msgid "Spray Heads"
-msgstr ""
+msgstr "Cabezales de riego"
 
 #: data/research.json:nodes[spray_heads].desc
 msgid "A misting nozzle. Water bots reach further and work faster."
-msgstr ""
+msgstr "Una boquilla de nebulización. Los bots regadores llegan más lejos y trabajan más rápido."
 
 #: data/research.json:nodes[silt_filters].name
 msgid "Silt Filters"
-msgstr ""
+msgstr "Filtros de limo"
 
 #: data/research.json:nodes[silt_filters].desc
 msgid "Layered sand and charcoal. Murky water turns glassy."
-msgstr ""
+msgstr "Capas de arena y carbón. El agua turbia se vuelve cristalina."
 
 #: data/research.json:nodes[pump_lines].name
 msgid "Pump Lines"
-msgstr ""
+msgstr "Tuberías de bombeo"
 
 #: data/research.json:nodes[pump_lines].desc
 msgid "Hoses from the lake to the hub. Water bots refill faster."
-msgstr ""
+msgstr "Mangueras del lago a la base. Los bots regadores recargan más rápido."
 
 #: data/research.json:nodes[irrigation].name
 msgid "Irrigation"
-msgstr ""
+msgstr "Riego"
 
 #: data/research.json:nodes[irrigation].desc
 msgid "Buried drip lines. The meadow drinks while you sleep."
-msgstr ""
+msgstr "Goteros enterrados. La pradera bebe mientras duermes."
 
 #: data/research.json:nodes[field_notebook].name
 msgid "Field Notebook"
-msgstr ""
+msgstr "Cuaderno de campo"
 
 #: data/research.json:nodes[field_notebook].desc
 msgid "Lumi starts keeping tidy notes. Research goes a bit quicker."
-msgstr ""
+msgstr "Lumi empieza a tomar notas ordenadas. La investigación va algo más rápido."
 
 #: data/research.json:nodes[conveyor].name
 msgid "Conveyor Belts"
-msgstr ""
+msgstr "Cintas transportadoras"
 
 #: data/research.json:nodes[conveyor].desc
 msgid "Rollers salvaged from an old shop till. Bales can ride to the scale."
-msgstr ""
+msgstr "Rodillos rescatados de una vieja caja registradora. Las pacas pueden viajar hasta la báscula."
 
 #: data/research.json:nodes[auto_baler].name
 msgid "Auto-Baler"
-msgstr ""
+msgstr "Empacadora automática"
 
 #: data/research.json:nodes[auto_baler].desc
 msgid "A hub station that presses loose junk into bales by itself."
-msgstr ""
+msgstr "Una estación de la base que prensa sola la chatarra suelta en pacas."
 
 #: data/research.json:nodes[haul_routes].name
 msgid "Haul Routes"
-msgstr ""
+msgstr "Rutas de transporte"
 
 #: data/research.json:nodes[haul_routes].desc
 msgid "Painted lines on the ground. Haul Bugs stop bumping into each other."
-msgstr ""
+msgstr "Líneas pintadas en el suelo. Los Haul Bugs dejan de chocarse entre sí."
 
 #: data/research.json:nodes[recycler].name data/stations.json:recycler.name
 msgid "Recycler"
-msgstr ""
+msgstr "Recicladora"
 
 #: data/research.json:nodes[recycler].desc
 msgid "Grind bales back into clean stock. Junk gone for good."
-msgstr ""
+msgstr "Tritura las pacas y las convierte en material limpio. Chatarra fuera para siempre."
 
 #: data/research.json:nodes[rocket_cargo].name
 msgid "Rocket Cargo"
-msgstr ""
+msgstr "Carga de cohete"
 
 #: data/research.json:nodes[rocket_cargo].desc
 msgid "Cargo pods for the rocket. Hubs can trade with each other."
-msgstr ""
+msgstr "Cápsulas de carga para el cohete. Las bases pueden comerciar entre sí."
 
 #: data/research.json:nodes[dune_charts].name
 msgid "Dune Charts"
-msgstr ""
+msgstr "Cartas de dunas"
 
 #: data/research.json:nodes[dune_charts].desc
 msgid "Wind maps and landing beacons for the far deserts. The rocket can reach the Dust Flats (with two bases at level 5)."
-msgstr ""
+msgstr "Mapas de viento y balizas de aterrizaje para los desiertos lejanos. El cohete puede llegar a las Llanuras de Polvo (con dos bases a nivel 5)."
 
 #: data/research.json:nodes[thermal_lance].name
 msgid "Thermal Lance"
-msgstr ""
+msgstr "Lanza térmica"
 
 #: data/research.json:nodes[thermal_lance].desc
 msgid "A heat coil wound round the beam. Lumi melts ice twice as fast, and the rocket can land at the Frozen Port."
-msgstr ""
+msgstr "Una bobina térmica enrollada en el rayo. Lumi derrite el hielo el doble de rápido, y el cohete puede aterrizar en el Puerto Helado."
 
 #: data/research.json:nodes[heat_pumps].name
 msgid "Heat Pumps"
-msgstr ""
+msgstr "Bombas de calor"
 
 #: data/research.json:nodes[heat_pumps].desc
 msgid "Heaters pull warmth out of the frozen harbour itself. They thaw faster and warm their neighbours more."
-msgstr ""
+msgstr "Los calefactores extraen calor del propio puerto helado. Descongelan más rápido y calientan más a sus vecinos."
 
 #: data/research.json:nodes[dune_fences].name
 msgid "Dune Fences"
-msgstr ""
+msgstr "Vallas de dunas"
 
 #: data/research.json:nodes[dune_fences].desc
 msgid "Brush fences and hedges that break the wind. Sustained hexes shelter two rings around them, and sandstorms carry less."
-msgstr ""
+msgstr "Vallas de ramas y setos que frenan el viento. Los hexágonos sostenidos protegen dos anillos a su alrededor, y las tormentas arrastran menos."
 
 #: data/research.json:nodes[cold_hardy_seeds].name
 msgid "Cold-Hardy Seeds"
-msgstr ""
+msgstr "Semillas resistentes al frío"
 
 #: data/research.json:nodes[cold_hardy_seeds].desc
 msgid "Seeds bred from the few things that survived the cold. Ferns, nettles, pines, periwinkle and frost moss can grow outdoors at the Frozen Port."
-msgstr ""
+msgstr "Semillas criadas a partir de lo poco que sobrevivió al frío. Helechos, ortigas, pinos, vinca y musgo de escarcha pueden crecer al aire libre en el Puerto Helado."
 
 #: data/research.json:nodes[dew_condensers].name
 msgid "Dew Condensers"
-msgstr ""
+msgstr "Condensadores de rocío"
 
 #: data/research.json:nodes[dew_condensers].desc
 msgid "Cold fins on every Water Tank pull water out of the night air. Tanks refill much faster where the ground is dry."
-msgstr ""
+msgstr "Aletas frías en cada tanque de agua sacan agua del aire nocturno. Los tanques se recargan mucho más rápido donde el suelo está seco."
 
 #: data/research.json:nodes[pump_works].name
 msgid "Pump Works"
-msgstr ""
+msgstr "Estaciones de bombeo"
 
 #: data/research.json:nodes[pump_works].desc
 msgid "Plans for the old city pumps. The rocket can reach the Sunken City, and Skimmers net faster."
-msgstr ""
+msgstr "Planos de las viejas bombas de la ciudad. El cohete puede llegar a la Ciudad Sumergida, y los Skimmers pescan más rápido."
 
 #: data/research.json:nodes[ark_beacon].name
 msgid "Ark Beacon"
-msgstr ""
+msgstr "Baliza del Arca"
 
 #: data/research.json:nodes[ark_beacon].desc
 msgid "A landing beacon tuned to the Cradle. Once the three frontiers are thriving, it calls the ark home."
-msgstr ""
+msgstr "Una baliza de aterrizaje sintonizada con el Cradle. Cuando las tres fronteras prosperen, llamará al arca a casa."
 
 #: data/robot_parts.json:slots[chassis].name
 msgid "Chassis"
-msgstr ""
+msgstr "Chasis"
 
 #: data/robot_parts.json:slots[head].name
 msgid "Head"
-msgstr ""
+msgstr "Cabeza"
 
 #: data/robot_parts.json:slots[mobility].name
 msgid "Mobility"
-msgstr ""
+msgstr "Movilidad"
 
 #: data/robot_parts.json:slots[tool].name
 msgid "Tool"
-msgstr ""
+msgstr "Herramienta"
 
 #: data/robot_parts.json:slots[topper].name
 msgid "Topper"
-msgstr ""
+msgstr "Sombrero"
 
 #: data/robot_parts.json:stats[load].name
 msgid "Load"
-msgstr ""
+msgstr "Carga"
 
 #: data/robot_parts.json:stats[work].name
 msgid "Work rate"
-msgstr ""
+msgstr "Ritmo de trabajo"
 
 #: data/robot_parts.json:set_bonus.name
 msgid "Maker Resonance"
-msgstr ""
+msgstr "Resonancia de los Creadores"
 
 #: data/robot_parts.json:set_bonus.desc
 msgid "All three Maker parts fitted: +5% speed, +6% work."
-msgstr ""
+msgstr "Las tres piezas de los Creadores instaladas: +5% de velocidad, +6% de trabajo."
 
 #: data/robot_parts.json:parts[light_frame].name
 msgid "Light Frame"
-msgstr ""
+msgstr "Marco ligero"
 
 #: data/robot_parts.json:parts[light_frame].desc
 msgid "Slim exposed rails instead of a full shell."
-msgstr ""
+msgstr "Raíles finos a la vista en lugar de una carcasa completa."
 
 #: data/robot_parts.json:parts[cargo_hull].name
 msgid "Cargo Hull"
-msgstr ""
+msgstr "Casco de carga"
 
 #: data/robot_parts.json:parts[cargo_hull].desc
 msgid "Thick side plates and a rear rack. Holds more, drives heavier."
-msgstr ""
+msgstr "Placas laterales gruesas y una baca trasera. Lleva más, conduce más pesado."
 
 #: data/robot_parts.json:parts[sealed_shell].name
 msgid "Sealed Shell"
-msgstr ""
+msgstr "Carcasa sellada"
 
 #: data/robot_parts.json:parts[sealed_shell].desc
 msgid "Smooth covers keep grit out of the compactor. Fussier to service."
-msgstr ""
+msgstr "Cubiertas lisas que mantienen la arena fuera del compactador. Más quisquillosa de mantener."
 
 #: data/robot_parts.json:parts[maker_shell].name
 msgid "Maker Shell"
-msgstr ""
+msgstr "Carcasa de los Creadores"
 
 #: data/robot_parts.json:parts[maker_shell].desc
 msgid "Pearl fairings with gold trim, as the Makers built them. Part of the Maker set."
-msgstr ""
+msgstr "Carenados nacarados con ribete dorado, como los hacían los Creadores. Parte del conjunto de los Creadores."
 
 #: data/robot_parts.json:parts[big_eye].name
 msgid "Big-Eye Sensor"
-msgstr ""
+msgstr "Sensor ojo grande"
 
 #: data/robot_parts.json:parts[big_eye].desc
 msgid "A huge lens. Spots salvage from far off, gets a little distracted."
-msgstr ""
+msgstr "Una lente enorme. Ve chatarra útil desde lejos, se distrae un poco."
 
 #: data/robot_parts.json:parts[focus_visor].name
 msgid "Focus Visor"
-msgstr ""
+msgstr "Visor de concentración"
 
 #: data/robot_parts.json:parts[focus_visor].desc
 msgid "Blinkers for robots. Works faster, notices less."
-msgstr ""
+msgstr "Anteojeras para robots. Trabaja más rápido, se fija en menos."
 
 #: data/robot_parts.json:parts[periscope].name
 msgid "Periscope"
-msgstr ""
+msgstr "Periscopio"
 
 #: data/robot_parts.json:parts[periscope].desc
 msgid "Sees over the plants: wider spray, slower to turn."
-msgstr ""
+msgstr "Ve por encima de las plantas: riego más amplio, gira más despacio."
 
 #: data/robot_parts.json:parts[chatter_dome].name
 msgid "Chatterbox Dome"
-msgstr ""
+msgstr "Cúpula parlanchina"
 
 #: data/robot_parts.json:parts[chatter_dome].desc
 msgid "Glass dome with a speaker. Gossips about junk, finds a bit more of it."
-msgstr ""
+msgstr "Una cúpula de cristal con altavoz. Cotillea sobre la chatarra y encuentra un poco más."
 
 #: data/robot_parts.json:parts[maker_optic].name
 msgid "Maker Optic"
-msgstr ""
+msgstr "Óptica de los Creadores"
 
 #: data/robot_parts.json:parts[maker_optic].desc
 msgid "A floating gem lens under a gold brow. Part of the Maker set."
-msgstr ""
+msgstr "Una lente gema flotante bajo una ceja dorada. Parte del conjunto de los Creadores."
 
 #: data/robot_parts.json:parts[treads].name
 msgid "Treads"
-msgstr ""
+msgstr "Orugas"
 
 #: data/robot_parts.json:parts[treads].desc
 msgid "Rubber tracks. Carries more, rolls slower."
-msgstr ""
+msgstr "Orugas de goma. Lleva más, rueda más despacio."
 
 #: data/robot_parts.json:parts[rotor].name
 msgid "Quad Rotor"
-msgstr ""
+msgstr "Cuadrirrotor"
 
 #: data/robot_parts.json:parts[rotor].desc
 msgid "Four ducted fans. Quick, but every kilo counts."
-msgstr ""
+msgstr "Cuatro ventiladores carenados. Rápido, pero cada kilo cuenta."
 
 #: data/robot_parts.json:parts[legs].name
 msgid "Walker Legs"
-msgstr ""
+msgstr "Patas andadoras"
 
 #: data/robot_parts.json:parts[legs].desc
 msgid "Four careful legs. A steady platform for the arm."
-msgstr ""
+msgstr "Cuatro patas cuidadosas. Una plataforma estable para el brazo."
 
 #: data/robot_parts.json:parts[hover_skirt].name
 msgid "Hover Skirt"
-msgstr ""
+msgstr "Faldón de aire"
 
 #: data/robot_parts.json:parts[hover_skirt].desc
 msgid "A cushion of air. Glides fast, shakes the hopper."
-msgstr ""
+msgstr "Un colchón de aire. Se desliza rápido, sacude la tolva."
 
 #: data/robot_parts.json:parts[maker_glider].name
 msgid "Maker Glider"
-msgstr ""
+msgstr "Planeador de los Creadores"
 
 #: data/robot_parts.json:parts[maker_glider].desc
 msgid "Twin levitation pods with a thin light seam. Part of the Maker set."
-msgstr ""
+msgstr "Dos cápsulas de levitación con una fina costura de luz. Parte del conjunto de los Creadores."
 
 #: data/robot_parts.json:parts[wide_scoop].name
 msgid "Wide Scoop"
-msgstr ""
+msgstr "Pala ancha"
 
 #: data/robot_parts.json:parts[wide_scoop].desc
 msgid "Grabs more per pass, picks up some grit too."
-msgstr ""
+msgstr "Coge más en cada pasada, y algo de arenilla también."
 
 #: data/robot_parts.json:parts[fine_sieve].name
 msgid "Fine Sieve"
-msgstr ""
+msgstr "Tamiz fino"
 
 #: data/robot_parts.json:parts[fine_sieve].desc
 msgid "Shakes the dirt out: cleaner cubes, slower scooping."
-msgstr ""
+msgstr "Sacude la tierra: cubos más limpios, recogida más lenta."
 
 #: data/robot_parts.json:parts[long_forks].name
 msgid "Long Forks"
-msgstr ""
+msgstr "Horquillas largas"
 
 #: data/robot_parts.json:parts[long_forks].desc
 msgid "Room for one more bale. Wobbly at speed."
-msgstr ""
+msgstr "Sitio para una paca más. Se tambalea a velocidad."
 
 #: data/robot_parts.json:parts[tow_hook].name
 msgid "Tow Hook"
-msgstr ""
+msgstr "Gancho de remolque"
 
 #: data/robot_parts.json:parts[tow_hook].desc
 msgid "Winch and hook: drags bales quickly, eyes on the hook."
-msgstr ""
+msgstr "Cabrestante y gancho: arrastra pacas rápido, con los ojos en el gancho."
 
 #: data/robot_parts.json:parts[seed_drill].name data/robots.json:types[seedling].upgrades[1].name
 msgid "Seed Drill"
-msgstr ""
+msgstr "Sembradora"
 
 #: data/robot_parts.json:parts[seed_drill].desc
 msgid "An auger that plants fast. Heavy on the nose."
-msgstr ""
+msgstr "Una barrena que planta rápido. Pesa mucho por delante."
 
 #: data/robot_parts.json:parts[mist_sprayer].name
 msgid "Mist Sprayer"
-msgstr ""
+msgstr "Nebulizador"
 
 #: data/robot_parts.json:parts[mist_sprayer].desc
 msgid "Fan nozzle: waters a wider circle, empties the tank sooner."
-msgstr ""
+msgstr "Boquilla en abanico: riega un círculo más amplio, vacía el tanque antes."
 
 #: data/robot_parts.json:parts[jet_nozzle].name
 msgid "Jet Nozzle"
-msgstr ""
+msgstr "Boquilla de chorro"
 
 #: data/robot_parts.json:parts[jet_nozzle].desc
 msgid "Strong straight jet: quicker watering, narrower spray."
-msgstr ""
+msgstr "Chorro recto y fuerte: riego más rápido, chorro más estrecho."
 
 #: data/robot_parts.json:parts[antenna].name
 msgid "Bulb Antenna"
-msgstr ""
+msgstr "Antena de bombilla"
 
 #: data/robot_parts.json:parts[antenna].desc
 msgid "A springy antenna with a soft glowing bulb."
-msgstr ""
+msgstr "Una antena con muelle y una bombilla de luz suave."
 
 #: data/robot_parts.json:parts[top_hat].name
 msgid "Tiny Top Hat"
-msgstr ""
+msgstr "Chistera diminuta"
 
 #: data/robot_parts.json:parts[top_hat].desc
 msgid "For the robot who means business."
-msgstr ""
+msgstr "Para el robot que va en serio."
 
 #: data/robot_parts.json:parts[crew_flag].name
 msgid "Crew Flag"
-msgstr ""
+msgstr "Bandera del equipo"
 
 #: data/robot_parts.json:parts[crew_flag].desc
 msgid "A little flag in the crew's colour."
-msgstr ""
+msgstr "Una banderita del color del equipo."
 
 #: data/robot_parts.json:parts[bobble_plant].name
 msgid "Bobble Plant"
-msgstr ""
+msgstr "Planta saltarina"
 
 #: data/robot_parts.json:parts[bobble_plant].desc
 msgid "A sprout on a spring. Boings when it brakes."
-msgstr ""
+msgstr "Un brote en un muelle. Hace boing al frenar."
 
 #: data/robot_parts.json:parts[bobble_plant].source.hint
 msgid "Haggle's welcome gift with your first robot"
