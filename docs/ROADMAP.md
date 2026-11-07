@@ -16,6 +16,9 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - [~] M11 Post-game: Verdance Bloom milestones, Cradle finale, endless Seed Ark waves (no Cradle Mode worlds yet).
 
 ## Next steps for a new session
+0. Owner-side Steam/Apple setup: see docs/steam/README.md (app id, depots, signing). Website: enable Pages, fill website/config.js.
+0b. Visual follow-ups: Cradle Returns overview (paving tone, lawns, towers lean stylised), Sunken City near-camera shadows,
+    Frozen Port far mountains; rocket ignition camera still shows the yard sign/fence.
 1. Play-test feedback from the owner (docs/PLAYTEST.md); fix what they hit first.
 2. macOS: universal build works (ETC2/ASTC import enabled). For Steam: sign and notarize with the owner's Apple Developer account.
 3. Longer balance: run `--autoplay --time-scale=8 --quit-after=600` and check goals keep a next step within 1-3 minutes past the first hour.
@@ -106,17 +109,15 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - Done: Lumi Level (`systems/lumi_level.gd`, `data/lumi_level.json`): XP from scoops, bales, parts, hexes, hex levels, goals, events, achievements, research, robots, plants. `need(L) = 150 L^1.5`; rewards cubes (capped), seeds, parts, tokens, and Lumi keepsakes every 10 levels (new Collection source `lumi_level`). Thin bar with the level number above the hotbar, "+XP" ticks, restrained flash + chime. State `flags.lumi`, in the save round trip. Curve and measured pacing in docs/BALANCE.md. The Bloom Core charge stays a story meter: a tiny ring at the level bar's left end, fed by `hud.set_core_charge(f)` or a `world.core_charge` node with `shown` (story2's `ui/core_meter.gd` hook in hud.gd should be dropped on merge).
 - Done: Minimal currency top-left (`ui/currency_cluster.gd`), compact goal tracker top-right (`ui/goals_panel.gd`, G / L3 expands to 3; restart checklist in the same style), one notification stack bottom-left (`ui/notify_stack.gd`, max 3, merges repeats), contextual hex/signal/carry line above the level bar, slim event banner and small streak by the hotbar (`ui/event_hud.gd`), soft corner scrims instead of boxes. Settings > Gameplay > HUD: Full / Minimal (default, auto-fade) / Hidden. WREN subtitles moved up to clear the hotbar. Dev: `--lumi-level`, `--lumi-xp`, `--lumi-levelup`, `--tool`, `--hud-pad`, `--hud-mode`, `--hud-goals=expanded`. Tests: `tests/test_hud.gd`.
 
-## In progress (Nov 6, 2026, evening)
-Helpers working in worktrees under /home/user/gf-wt/<name>, each on a wt/<name> branch, merged into claude/kind-wright-rhxixd when done:
-- rocket: futuristic rocket, upgrade tiers with benefits, launch/arrival cinematics
-- story2: Lumi story cinematics (ark, meteor storm, pod ejection, crash), core charge beats, ark finale
-- steam: GodotSteam service (graceful fallback), Steam achievements and cloud saves, demo build, capsule art, trailer shots, docs/steam/
-- deck: Steam Deck / controller pass, auto-detected quality, fewer draw calls in future cities, docs/PERFORMANCE.md
-- drones: robot builder (part slots, personalities, Builder tab)
-- biomes: desert, frozen port, sunken city, Cradle Returns district (hooks into the ark finale)
-- photo: photo mode with Lumi poses and filters
-Next after those merge: localization (done on wt/l10n, see "Update: localization" below).
-If a session ends mid-way: check each worktree's `git log`, commit WIP, and resume or merge.
+## Merged (Nov 7, 2026)
+All helper branches are merged into claude/kind-wright-rhxixd and their worktrees removed:
+rocket (+ polish), story2, steam, deck, drones, biomes (+ biomes2 visual pass), photo, hud,
+l10n, and the website. Checks at merge: 283/283 tests, save round trip OK, every
+`--frontier=ID` and `--locale=de` run with no SCRIPT/SHADER ERROR.
+Also on main since: natural borders (ground state, greenery and junk placement follow a shared
+noise-warped border, `HexField.border_warp`; old saves keep straight borders), hex-edge light
+seams removed, thinner futuristic yard glow, the Cradle Returns completion triggers the ark finale.
+Known: Godot exits with code 134 after some headless runs (engine cleanup at quit; pre-existing).
 
 ## Update: Rocket + launch pad + launch/arrival cinematics + rocket tiers
 - Done: Futuristic rocket (`automation/rocket_model.gd`): lathed pearl hull, dark wraparound visor with Aurora-style glowing eyes, cyan seam rings, tangerine band, swept fins on landing feet, nose beacon, cyan engine. Tiers Mk I-IV (`data/rockets.json`, `automation/rocket_tiers.gd`) add hover rings, side boosters, gold trim, energy fins, a halo and a bigger plume; bought in the workbench Rockets tab. Benefits: shorter countdown and sequence, faster globe flight, faster energy-cell recharge between launches (Mk IV: none + warp), bigger and more frequent cargo pods (`automation/cargo.gd`). Tier + recharge in `GameState.flags` (`rocket_tier`, `rocket_ready_unix`), checked by the save round trip.

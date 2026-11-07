@@ -17,7 +17,10 @@ The game is playable end to end: title screen → intro cinematic → clean → 
 - **Meta**: Codex (40 entries), 54 achievements, lifetime stats, saves (versioned, compressed, autosave), offline progress, save/load round-trip tool.
 - **Audio**: synthesized SFX; layered procedural score (explore, base, night, cinematic, menu moods; intensity follows restoration; stingers).
 - **Builds**: export presets; GitHub Actions builds Windows and Linux on every push (macOS needs the ETC2/ASTC import setting).
-- **Tests**: ~90 GUT tests.
+- **Late game**: four frontier districts (Dust Flats sandstorms, Frozen Port thawing + greenhouses, Sunken City pumps, Cradle Returns landing pad -> ark finale).
+- **New in Nov 7 pass**: minimal HUD (hotbar, Lumi Level bar, Bloom Core ring), robot builder (parts, traits), photo mode, futuristic rocket Mk I-IV with cinematics, Lumi story cinematics, world events/streak/contracts/Collection, natural organic hex borders.
+- **Platforms**: Steam service (achievements, cloud saves, demo build), Steam Deck/controller pass, auto quality, localization (POT + pseudo/de/es samples), website (website/).
+- **Tests**: 283 GUT tests.
 
 ### Measured
 - Autoplay: first bale ~7 s, first sale ~11 s, first upgrade ~8 s; 2 hexes in ~7 game-min (the bot spreads across hexes; a focused player is faster).
