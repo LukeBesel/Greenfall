@@ -48,7 +48,7 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
   - Add-ons are Blender-modelled in `art/models/aurora/build_aurora.py` (exported to `designs.glb`, baked AO/edge wear like the hero; the antenna is now its own part). `hero_paint.gdshader` gained `moss` and `stripes`. Eye/ear/hover/chest/pickup-laser colour follow the design glow.
   - Workbench Cosmetics tab is a picker: spinning 3D preview (`ui/design_preview.gd`), name, tagline, bonus, unlock condition with progress, "Looks only (no bonuses)". Unlock card toast (`ui/design_toast.gd`). Buffs go through `Economy.stat` (+ research duration, streak grace) and show in stat breakdowns.
   - Dev: `--design=ID`, `--designs-all`, `--design-unlock=ID`; lineup render `scenes/design_lineup.tscn -- --out=...`. Test: `tests/test_designs.gd`; save round trip checks the design.
-  - Pixel's "animals petted" reads `stats.wildlife_petted` / `cats_petted`; until the wildlife helper writes one of those, trinkets unlock it.
+  - Pixel's "animals petted" reads `stats.wildlife_petted` / `cats_petted` (written by fauna/fauna.gd when you pet a cat).
 
 ## Update: future layer (wt/future)
 - Done: `planet/future_layer.gd` (FutureLayer, built by `scenes/slice.gd`): the district builds up into a glowing, clean future city as it is restored. Pure `FutureLayer.plan()` from seed + hex levels + hub level + cleaned share (no save data); a handful of MultiMeshes (unshaded emissive + env glow), a few Label3D texts, no lights.
