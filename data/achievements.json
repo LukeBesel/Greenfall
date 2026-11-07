@@ -1003,6 +1003,94 @@
     "target": 1,
     "key": "egg_older_pod"
    }
+  },
+  {
+   "id": "home_answered",
+   "name": "The Cradle Answers",
+   "desc": "Light the Cradle Returns beacon and hear from the ark.",
+   "icon": "rocket",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "cradle_answered"
+   }
+  },
+  {
+   "id": "home_landed",
+   "name": "Two Suns, New Ground",
+   "desc": "Land on another planet of the Verdance system.",
+   "icon": "map",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "planets_landed"
+   }
+  },
+  {
+   "id": "home_planets_2",
+   "name": "One Down",
+   "desc": "Restore a second planet.",
+   "icon": "leaf",
+   "cond": {
+    "type": "stat",
+    "target": 2,
+    "key": "planets_restored"
+   }
+  },
+  {
+   "id": "home_planets_4",
+   "name": "Most of the Way",
+   "desc": "Restore four planets.",
+   "icon": "tree",
+   "cond": {
+    "type": "stat",
+    "target": 4,
+    "key": "planets_restored"
+   }
+  },
+  {
+   "id": "home_planets_5",
+   "name": "Five Alive",
+   "desc": "Restore every planet in the system.",
+   "icon": "trophy",
+   "cond": {
+    "type": "stat",
+    "target": 5,
+    "key": "planets_restored"
+   }
+  },
+  {
+   "id": "home_relics",
+   "name": "Keepsakes",
+   "desc": "Collect all four planet relics.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 4,
+    "key": "relics_found"
+   }
+  },
+  {
+   "id": "home_drive_6",
+   "name": "Fold Space",
+   "desc": "Build the Mk VI Interplanetary drive.",
+   "icon": "rocket",
+   "cond": {
+    "type": "stat",
+    "target": 6,
+    "key": "drive_tier"
+   }
+  },
+  {
+   "id": "home_homecoming",
+   "name": "Homecoming",
+   "desc": "Launch home to the Cradle.",
+   "icon": "trophy",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "homecoming"
+   }
   }
  ]
 }

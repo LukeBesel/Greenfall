@@ -58,6 +58,10 @@ static func entries() -> Array[Dictionary]:
 	var hw: Dictionary = c.get("homeward", {})
 	for hid: String in hw:
 		_add("homeward", hid, TranslationServer.translate(str(hw[hid].get("name", hid.capitalize()))), hw[hid])
+	var hdocs: Dictionary = Homeward.cfg().get("docs", {})  # the planet memos and intercepts, read again here
+	for dk: String in hdocs:
+		var de: Dictionary = {"desc": hdocs[dk].get("body", ""), "hint": "Found on the planet it belongs to."}
+		_add("homeward", dk, TranslationServer.translate(str(hdocs[dk].get("title", dk))), de)
 	# [wild] Animals (unlocked on first sighting by fauna/fauna.gd).
 	var an: Dictionary = c.get("animals", {})
 	for aid: String in an:

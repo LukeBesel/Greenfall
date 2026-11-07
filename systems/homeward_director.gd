@@ -15,6 +15,7 @@ extends Node
 ##   --cradle-answers[=S]     play "The Cradle Answers" S seconds in
 ##   --homecoming[=S]         play the Homecoming ending S seconds in (no rocket launch needed)
 ##   --home-ready             Mk VII built and the last seed planted (launch home from the map)
+##   --fly-planet=N[,S]       launch the rocket to system planet N after S seconds (no checks)
 
 const CHECK_S: float = 3.0
 const BED_OFFSET := Vector3(7.0, 0.0, 3.0)
@@ -102,6 +103,11 @@ func _dev_hooks() -> void:
 			c.world = world
 			world.add_child(c)
 			c.play())
+	if DevHooks.has("fly-planet") and not GameState.flags.get("home_dev_flown", false):  # dev: --fly-planet=N[,S]
+		var spec: PackedStringArray = DevHooks.get_s("fly-planet", "1").split(",")
+		get_tree().create_timer(float(spec[1]) if spec.size() > 1 else 4.0, false).timeout.connect(func() -> void:
+			GameState.flags["home_dev_flown"] = true
+			_launch(world, Homeward.PLANET_BASE - int(spec[0])))
 	if DevHooks.has("homecoming"):
 		get_tree().create_timer(DevHooks.get_f("homecoming", 3.0), false).timeout.connect(func() -> void:
 			Homecoming.play_now(world))

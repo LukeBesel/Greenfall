@@ -7,7 +7,8 @@
     {"id": "shards", "name": "Memory Shards", "icon": "book"},
     {"id": "landmarks", "name": "Landmarks", "icon": "map"},
     {"id": "animals", "name": "Animals", "icon": "leaf"},
-    {"id": "frontiers", "name": "Frontiers", "icon": "map"}
+    {"id": "frontiers", "name": "Frontiers", "icon": "map"},
+    {"id": "homeward", "name": "Homeward", "icon": "map"}
   ],
   "junk": {
     "metal": {"kg_per_unit": 2.4, "hint": "Rusty, clanky, everywhere.", "desc": "Cans, tins and bent brackets. Most of it was made to last, and it did. Pressed into bales, it can be rolled and stamped into something useful again."},
@@ -112,5 +113,11 @@
     "heron": {"name": "Grey Heron", "hint": "Where: Shallows in the Sunken City and wild lakes.", "desc": "Herons stand perfectly still at the water's edge, then strike. They lift off slowly on huge grey wings when disturbed."},
     "turtle": {"name": "Pond Turtle", "hint": "Where: Clean water in the Sunken City.", "desc": "Turtles cruise the drowned streets with their heads up, as if they've always lived here. Maybe they have."},
     "crane": {"name": "Cradle Crane", "hint": "Where: The skies over Cradle Returns.", "desc": "White cranes circle high over the landing city on slow wingbeats. The ark's seed vault carried their eggs; this is the first flock to fly free."}
+  },
+  "homeward": {
+    "charter": {"name": "The Sleepers' Charter", "hint": "Light the Cradle Returns beacon.", "desc": "When the Makers left Verdance, most of them went into the long sleep in the Cradle's lower decks. Their charter was one line long: wake us when the system can feed us. Not one world. All five. The Cradle has kept that promise for three hundred years, and it will not break it for anybody, even a very persuasive small robot."},
+    "ledger_system": {"name": "The Ledger, Inc.", "hint": "Light the Cradle Returns beacon.", "desc": "The Ledger was never only Verdance's problem. It held mining rights to every world around the two suns: Ochre's sands, Tidewell's seabed, Rime's warm core, Anvil's whole crust. When the ore ran out it closed the books, kept the profits and left five planets under its trash. The audits never stopped. Nobody was left to read them."},
+    "binary_suns": {"name": "Hearth and Ember", "hint": "Open the solar-system map.", "desc": "The Verdance system has two suns: Hearth, warm and white, and Ember, its small orange companion. Every world sees both. On Ochre they are huge and hot; from Rime they are two bright points, and the stars stay out all day."},
+    "homecoming": {"name": "Homecoming", "hint": "Restore every world and launch home.", "desc": "Five worlds alive again. A rocket built from all of them. One seed planted in a bed with a yellow fence. The Cradle opened its bay for a small robot with a seedling tray, and below decks the Makers woke up to a green sky."}
   }
 }
