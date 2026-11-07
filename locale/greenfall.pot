@@ -413,7 +413,7 @@ msgstr ""
 msgid "LIFT OFF"
 msgstr ""
 
-#: automation/rocket.gd:782 story/cine.gd:68
+#: automation/rocket.gd:793 story/cine.gd:68
 msgid "Space / Esc  skip"
 msgstr ""
 
@@ -1157,55 +1157,55 @@ msgstr ""
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr ""
 
-#: scenes/slice.gd:804
+#: scenes/slice.gd:813
 msgid "HEX CLEAN!  +%s"
 msgstr ""
 
-#: scenes/slice.gd:818
+#: scenes/slice.gd:827
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
-#: scenes/slice.gd:820
+#: scenes/slice.gd:829
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr ""
 
-#: scenes/slice.gd:827
+#: scenes/slice.gd:836
 msgid "%s is out of range: %s"
 msgstr ""
 
-#: scenes/slice.gd:837
+#: scenes/slice.gd:846
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr ""
 
-#: scenes/slice.gd:840 ui/rockets_panel.gd:39
+#: scenes/slice.gd:849 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr ""
 
-#: scenes/slice.gd:894
+#: scenes/slice.gd:903
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr ""
 
-#: scenes/slice.gd:895
+#: scenes/slice.gd:904
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr ""
 
-#: scenes/slice.gd:895
+#: scenes/slice.gd:904
 msgid "Landed on the base pad."
 msgstr ""
 
-#: scenes/slice.gd:986
+#: scenes/slice.gd:995
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
-#: scenes/slice.gd:1158
+#: scenes/slice.gd:1167
 msgid "Welcome back. The junk waited for you."
 msgstr ""
 
-#: scenes/slice.gd:1175
+#: scenes/slice.gd:1184
 msgid "OUTPOST %d · Lv%d"
 msgstr ""
 
-#: scenes/slice.gd:1175
+#: scenes/slice.gd:1184
 msgid "OUTPOST %d · RUIN"
 msgstr ""
 
@@ -1389,7 +1389,7 @@ msgstr ""
 msgid "Cradle Returns  ·  the ark answers"
 msgstr ""
 
-#: story/cradle_answers.gd:80
+#: story/cradle_answers.gd:81
 msgid "The Cradle is holding orbit. Restore the whole system: the solar map is on the hologram (M). Build the Mk V Orbital drive to reach Ochre and Tidewell."
 msgstr ""
 
@@ -1638,63 +1638,63 @@ msgstr ""
 msgid "The first thing they'll see is a world that's green again. You did that. Small. Stubborn. Perfect."
 msgstr ""
 
-#: story/homecoming.gd:131 data/achievements.json:achievements[home_homecoming].name data/codex.json:homeward.homecoming.name
+#: story/homecoming.gd:132 data/achievements.json:achievements[home_homecoming].name data/codex.json:homeward.homecoming.name
 msgid "Homecoming"
 msgstr ""
 
-#: story/intro.gd:281
+#: story/intro.gd:282
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr ""
 
-#: story/intro.gd:299
+#: story/intro.gd:300
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr ""
 
-#: story/intro.gd:312
+#: story/intro.gd:313
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr ""
 
-#: story/intro.gd:331
+#: story/intro.gd:332
 msgid "Then, one night, the sky came apart."
 msgstr ""
 
-#: story/intro.gd:363
+#: story/intro.gd:364
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr ""
 
-#: story/intro.gd:426
+#: story/intro.gd:427
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr ""
 
-#: story/intro.gd:439
+#: story/intro.gd:440
 msgid "The ark could not turn back. The pod fell for days."
 msgstr ""
 
-#: story/intro.gd:611
+#: story/intro.gd:612
 msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
 msgstr ""
 
-#: story/intro.gd:618
+#: story/intro.gd:619
 msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
 msgstr ""
 
-#: story/intro.gd:621
+#: story/intro.gd:622
 msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
 msgstr ""
 
-#: story/intro.gd:628
+#: story/intro.gd:629
 msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
 msgstr ""
 
-#: story/intro.gd:691
+#: story/intro.gd:692
 msgid "%s  skip"
 msgstr ""
 
-#: story/intro.gd:691
+#: story/intro.gd:692
 msgid "Space / Esc"
 msgstr ""
 
-#: story/intro.gd:732
+#: story/intro.gd:733
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr ""
 
@@ -2271,35 +2271,35 @@ msgstr ""
 msgid "Rocket drive built: %s."
 msgstr ""
 
-#: systems/homeward_director.gd:218
+#: systems/homeward_director.gd:245
 msgid "Intercepted: %s"
 msgstr ""
 
-#: systems/homeward_director.gd:225
+#: systems/homeward_director.gd:252
 msgid "%s: %s"
 msgstr ""
 
-#: systems/homeward_director.gd:235
+#: systems/homeward_director.gd:262
 msgid "%s is restored. System: %d%%."
 msgstr ""
 
-#: systems/homeward_director.gd:238
+#: systems/homeward_director.gd:265
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr ""
 
-#: systems/homeward_director.gd:245
+#: systems/homeward_director.gd:272
 msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
 msgstr ""
 
-#: systems/homeward_director.gd:399
+#: systems/homeward_director.gd:426
 msgid "E   launch home"
 msgstr ""
 
-#: systems/homeward_director.gd:399
+#: systems/homeward_director.gd:426
 msgid "E   plant the last seed"
 msgstr ""
 
-#: systems/homeward_director.gd:410
+#: systems/homeward_director.gd:437
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr ""
 
@@ -2724,11 +2724,11 @@ msgstr ""
 msgid "%s  ·  %d hexes  ·  %d ark waves  ·  %d curiosities"
 msgstr ""
 
-#: ui/ark_bridge.gd:192 ui/system_map.gd:387 ui/system_map.gd:595
+#: ui/ark_bridge.gd:192 ui/system_map.gd:389 ui/system_map.gd:597
 msgid "restored"
 msgstr ""
 
-#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:673
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:675
 msgid "You are here"
 msgstr ""
 
@@ -2749,7 +2749,7 @@ msgid "The Cradle has to come home first."
 msgstr ""
 
 #: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:320
-#: ui/rockets_panel.gd:81 ui/system_map.gd:659
+#: ui/rockets_panel.gd:81 ui/system_map.gd:661
 msgid "Launch"
 msgstr ""
 
@@ -4776,103 +4776,103 @@ msgstr ""
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Bolts %s"
 msgstr ""
 
-#: ui/system_map.gd:385 ui/system_map.gd:595
+#: ui/system_map.gd:387 ui/system_map.gd:597
 msgid "you are here"
 msgstr ""
 
-#: ui/system_map.gd:391
+#: ui/system_map.gd:393
 msgid "needs %s"
 msgstr ""
 
-#: ui/system_map.gd:480
+#: ui/system_map.gd:482
 msgid "In flight"
 msgstr ""
 
-#: ui/system_map.gd:480
+#: ui/system_map.gd:482
 msgid "D-pad / click  pick a planet      Enter / A  choose      Esc / B  back"
 msgstr ""
 
-#: ui/system_map.gd:532
+#: ui/system_map.gd:534
 msgid "Verdance system"
 msgstr ""
 
-#: ui/system_map.gd:532
+#: ui/system_map.gd:534
 msgid "two suns  ·  five worlds  ·  system restoration"
 msgstr ""
 
-#: ui/system_map.gd:537
+#: ui/system_map.gd:539
 msgid "restored  ·  %d of %d planets"
 msgstr ""
 
-#: ui/system_map.gd:542
+#: ui/system_map.gd:544
 msgid "Relics"
 msgstr ""
 
-#: ui/system_map.gd:547
+#: ui/system_map.gd:549
 msgid "Restore %s"
 msgstr ""
 
-#: ui/system_map.gd:551
+#: ui/system_map.gd:553
 msgid "Heirloom picks waiting: %d (Pause > Ark Bridge)"
 msgstr ""
 
-#: ui/system_map.gd:552
+#: ui/system_map.gd:554
 msgid "Rocket drive"
 msgstr ""
 
-#: ui/system_map.gd:552
+#: ui/system_map.gd:554
 msgid "interplanetary  ·  carried to every planet"
 msgstr ""
 
-#: ui/system_map.gd:559
+#: ui/system_map.gd:561
 msgid "The Homeward rocket stands ready."
 msgstr ""
 
-#: ui/system_map.gd:561
+#: ui/system_map.gd:563
 msgid "Next: %s"
 msgstr ""
 
-#: ui/system_map.gd:570
+#: ui/system_map.gd:572
 msgid "Build"
 msgstr ""
 
-#: ui/system_map.gd:585
+#: ui/system_map.gd:587
 msgid "Planets"
 msgstr ""
 
-#: ui/system_map.gd:585
+#: ui/system_map.gd:587
 msgid "pick a world"
 msgstr ""
 
-#: ui/system_map.gd:595
+#: ui/system_map.gd:597
 msgid "unvisited"
 msgstr ""
 
-#: ui/system_map.gd:626
+#: ui/system_map.gd:628
 msgid "%s  ·  %.2f AU from the suns"
 msgstr ""
 
-#: ui/system_map.gd:638
+#: ui/system_map.gd:640
 msgid "Restored %d%%"
 msgstr ""
 
-#: ui/system_map.gd:640
+#: ui/system_map.gd:642
 msgid "Goal: %d Thriving hexes, %d bases at level 5, a Thriving landing district"
 msgstr ""
 
-#: ui/system_map.gd:640
+#: ui/system_map.gd:642
 msgid "Goal: the Bloom Core full (Cradle Returns)"
 msgstr ""
 
-#: ui/system_map.gd:649 data/goals.json:goals[home_launch].text
+#: ui/system_map.gd:651 data/goals.json:goals[home_launch].text
 msgid "Launch home"
 msgstr ""
 
-#: ui/system_map.gd:654
+#: ui/system_map.gd:656
 msgid "Choose a district"
 msgstr ""
 
-#: ui/system_map.gd:679
+#: ui/system_map.gd:681
 msgid "Rocket not ready"
 msgstr ""
 

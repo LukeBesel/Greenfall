@@ -416,7 +416,7 @@ msgstr "ワープ"
 msgid "LIFT OFF"
 msgstr "リフトオフ"
 
-#: automation/rocket.gd:782 story/cine.gd:68
+#: automation/rocket.gd:793 story/cine.gd:68
 msgid "Space / Esc  skip"
 msgstr "Space / Esc  スキップ"
 
@@ -1161,55 +1161,55 @@ msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーン�
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 起動。ブルームコア 4%：緑の光 微弱。Cradle号リレー：かすか。何かを育てよう。"
 
-#: scenes/slice.gd:804
+#: scenes/slice.gd:813
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
-#: scenes/slice.gd:818
+#: scenes/slice.gd:827
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice.gd:820
+#: scenes/slice.gd:829
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
 
-#: scenes/slice.gd:827
+#: scenes/slice.gd:836
 msgid "%s is out of range: %s"
 msgstr "%s は範囲外：%s"
 
-#: scenes/slice.gd:837
+#: scenes/slice.gd:846
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:840 ui/rockets_panel.gd:39
+#: scenes/slice.gd:849 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:894
+#: scenes/slice.gd:903
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陸：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:895
+#: scenes/slice.gd:904
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
 
-#: scenes/slice.gd:895
+#: scenes/slice.gd:904
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:986
+#: scenes/slice.gd:995
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice.gd:1158
+#: scenes/slice.gd:1167
 msgid "Welcome back. The junk waited for you."
 msgstr "おかえり。ガラクタが待っていたよ。"
 
-#: scenes/slice.gd:1175
+#: scenes/slice.gd:1184
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:1175
+#: scenes/slice.gd:1184
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
@@ -1393,7 +1393,7 @@ msgstr "CRADLE：了解。軌道を維持。待っているよ、小さなロボ
 msgid "Cradle Returns  ·  the ark answers"
 msgstr "Cradle号の帰還 ・ 方舟の応答"
 
-#: story/cradle_answers.gd:80
+#: story/cradle_answers.gd:81
 msgid "The Cradle is holding orbit. Restore the whole system: the solar map is on the hologram (M). Build the Mk V Orbital drive to reach Ochre and Tidewell."
 msgstr "Cradle は軌道上で待機中。星系をまるごと再生しよう。太陽系マップはホログラム（M）にある。Mk V オービタル推進を造れば Ochre と Tidewell に行ける。"
 
@@ -1651,63 +1651,63 @@ msgstr "聞こえる？　下のデッキ。扉の音。声。みんな目を覚
 msgid "The first thing they'll see is a world that's green again. You did that. Small. Stubborn. Perfect."
 msgstr "彼らが最初に見るのは、また緑になった世界。あなたがやったのよ。小さくて、頑固で、完璧。"
 
-#: story/homecoming.gd:131 data/achievements.json:achievements[home_homecoming].name data/codex.json:homeward.homecoming.name
+#: story/homecoming.gd:132 data/achievements.json:achievements[home_homecoming].name data/codex.json:homeward.homecoming.name
 msgid "Homecoming"
 msgstr "帰郷"
 
-#: story/intro.gd:281
+#: story/intro.gd:282
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr "三百年前、最後の種はアーク Cradle号に乗って Verdance を去った。"
 
-#: story/intro.gd:299
+#: story/intro.gd:300
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr "アークの小さなシードキーパー Lumi は、毎晩苗たちに歌を歌っていた。"
 
-#: story/intro.gd:312
+#: story/intro.gd:313
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr "また鼻歌かい、Lumi？聞こえてないんだよ。……でも、君が歌うと育つのが速いんだよね。"
 
-#: story/intro.gd:331
+#: story/intro.gd:332
 msgid "Then, one night, the sky came apart."
 msgstr "そして、ある夜、空が裂けた。"
 
-#: story/intro.gd:363
+#: story/intro.gd:364
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr "保管庫ベイで船体破損！Lumi、トレイはいいから、離れて！"
 
-#: story/intro.gd:426
+#: story/intro.gd:427
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr "Lumi——がんばって——向きを変えられない——がんばって——"
 
-#: story/intro.gd:439
+#: story/intro.gd:440
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "アークは引き返せなかった。ポッドは何日も落ち続けた。"
 
-#: story/intro.gd:611
+#: story/intro.gd:612
 msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
 msgstr "……Lumi？……Lumi。リレーはぎりぎりだけど、つながった。着陸したんだね。そこは Verdance だよ。"
 
-#: story/intro.gd:618
+#: story/intro.gd:619
 msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
 msgstr "君のコアは緑の光で動いている。生き物が放つ輝きだ。下にはもう緑が残っていない。だから君は弱っているんだ。"
 
-#: story/intro.gd:621
+#: story/intro.gd:622
 msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
 msgstr "だから作ろう。地面を片づけて、その苗を植えて。花が咲くたびにコアが満たされる。"
 
-#: story/intro.gd:628
+#: story/intro.gd:629
 msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
 msgstr "ブルームコアを満たして。発射場を建て直して。そしたら私たちのところへ飛んで帰っておいで。……じょうろ一杯ずつね。"
 
-#: story/intro.gd:691
+#: story/intro.gd:692
 msgid "%s  skip"
 msgstr "%s  スキップ"
 
-#: story/intro.gd:691
+#: story/intro.gd:692
 msgid "Space / Esc"
 msgstr "Space / Esc"
 
-#: story/intro.gd:732
+#: story/intro.gd:733
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "緑の光  ·  検知なし"
 
@@ -2295,35 +2295,35 @@ msgstr "キューブかパーツが足りない"
 msgid "Rocket drive built: %s."
 msgstr "ロケット推進を建造：%s。"
 
-#: systems/homeward_director.gd:218
+#: systems/homeward_director.gd:245
 msgid "Intercepted: %s"
 msgstr "傍受：%s"
 
-#: systems/homeward_director.gd:225
+#: systems/homeward_director.gd:252
 msgid "%s: %s"
 msgstr "%s：%s"
 
-#: systems/homeward_director.gd:235
+#: systems/homeward_director.gd:262
 msgid "%s is restored. System: %d%%."
 msgstr "%s が再生した。星系：%d%%。"
 
-#: systems/homeward_director.gd:238
+#: systems/homeward_director.gd:265
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "遺物：%s。家宝の選択 +1（アークブリッジ）。"
 
-#: systems/homeward_director.gd:245
+#: systems/homeward_director.gd:272
 msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
 msgstr "星系のすべての惑星が生き返った。Verdance の Cradle号の帰還に戻って、Mk VII 帰郷ロケットを造ろう。"
 
-#: systems/homeward_director.gd:399
+#: systems/homeward_director.gd:426
 msgid "E   launch home"
 msgstr "E   ふるさとへ発射"
 
-#: systems/homeward_director.gd:399
+#: systems/homeward_director.gd:426
 msgid "E   plant the last seed"
 msgstr "E   最後の種を植える"
 
-#: systems/homeward_director.gd:410
+#: systems/homeward_director.gd:437
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "最後の種が土に入った。準備は全部できた。もう一度ここで E を押すと、ふるさとへ発射する。"
 
@@ -2737,11 +2737,11 @@ msgstr "まだ訪れていない"
 msgid "%s  ·  %d hexes  ·  %d ark waves  ·  %d curiosities"
 msgstr "%s  ·  ヘックス %d  ·  アークウェーブ %d  ·  珍品 %d"
 
-#: ui/ark_bridge.gd:192 ui/system_map.gd:387 ui/system_map.gd:595
+#: ui/ark_bridge.gd:192 ui/system_map.gd:389 ui/system_map.gd:597
 msgid "restored"
 msgstr "再生済み"
 
-#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:673
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:675
 msgid "You are here"
 msgstr "現在地"
 
@@ -2762,7 +2762,7 @@ msgid "The Cradle has to come home first."
 msgstr "まずは Cradle号が帰ってこないと。"
 
 #: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:320
-#: ui/rockets_panel.gd:81 ui/system_map.gd:659
+#: ui/rockets_panel.gd:81 ui/system_map.gd:661
 msgid "Launch"
 msgstr "発射"
 
@@ -4810,103 +4810,103 @@ msgstr "自動ルート：%s"
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Bolts %s"
 msgstr "リサイクルしたベール %d   ·   処分したガラクタ %s kg   ·   ボルト %s"
 
-#: ui/system_map.gd:385 ui/system_map.gd:595
+#: ui/system_map.gd:387 ui/system_map.gd:597
 msgid "you are here"
 msgstr "現在地"
 
-#: ui/system_map.gd:391
+#: ui/system_map.gd:393
 msgid "needs %s"
 msgstr "%s が必要"
 
-#: ui/system_map.gd:480
+#: ui/system_map.gd:482
 msgid "In flight"
 msgstr "飛行中"
 
-#: ui/system_map.gd:480
+#: ui/system_map.gd:482
 msgid "D-pad / click  pick a planet      Enter / A  choose      Esc / B  back"
 msgstr "十字キー / クリック  惑星を選ぶ      Enter / A  決定      Esc / B  戻る"
 
-#: ui/system_map.gd:532
+#: ui/system_map.gd:534
 msgid "Verdance system"
 msgstr "Verdance 星系"
 
-#: ui/system_map.gd:532
+#: ui/system_map.gd:534
 msgid "two suns  ·  five worlds  ·  system restoration"
 msgstr "2つの太陽 ・ 5つの世界 ・ 星系の再生"
 
-#: ui/system_map.gd:537
+#: ui/system_map.gd:539
 msgid "restored  ·  %d of %d planets"
 msgstr "再生済み ・ %d / %d 惑星"
 
-#: ui/system_map.gd:542
+#: ui/system_map.gd:544
 msgid "Relics"
 msgstr "遺物"
 
-#: ui/system_map.gd:547
+#: ui/system_map.gd:549
 msgid "Restore %s"
 msgstr "%s を再生しよう"
 
-#: ui/system_map.gd:551
+#: ui/system_map.gd:553
 msgid "Heirloom picks waiting: %d (Pause > Ark Bridge)"
 msgstr "家宝の選択が残っている：%d（ポーズ > アークブリッジ）"
 
-#: ui/system_map.gd:552
+#: ui/system_map.gd:554
 msgid "Rocket drive"
 msgstr "ロケット推進"
 
-#: ui/system_map.gd:552
+#: ui/system_map.gd:554
 msgid "interplanetary  ·  carried to every planet"
 msgstr "惑星間 ・ どの惑星にも持っていける"
 
-#: ui/system_map.gd:559
+#: ui/system_map.gd:561
 msgid "The Homeward rocket stands ready."
 msgstr "帰郷ロケットの準備ができている。"
 
-#: ui/system_map.gd:561
+#: ui/system_map.gd:563
 msgid "Next: %s"
 msgstr "次：%s"
 
-#: ui/system_map.gd:570
+#: ui/system_map.gd:572
 msgid "Build"
 msgstr "建造"
 
-#: ui/system_map.gd:585
+#: ui/system_map.gd:587
 msgid "Planets"
 msgstr "惑星"
 
-#: ui/system_map.gd:585
+#: ui/system_map.gd:587
 msgid "pick a world"
 msgstr "世界を選ぶ"
 
-#: ui/system_map.gd:595
+#: ui/system_map.gd:597
 msgid "unvisited"
 msgstr "未訪問"
 
-#: ui/system_map.gd:626
+#: ui/system_map.gd:628
 msgid "%s  ·  %.2f AU from the suns"
 msgstr "%s ・ 太陽から %.2f AU"
 
-#: ui/system_map.gd:638
+#: ui/system_map.gd:640
 msgid "Restored %d%%"
 msgstr "再生 %d%%"
 
-#: ui/system_map.gd:640
+#: ui/system_map.gd:642
 msgid "Goal: %d Thriving hexes, %d bases at level 5, a Thriving landing district"
 msgstr "目標：繁栄ヘクス %d、レベル5の拠点 %d、繁栄した着陸地区"
 
-#: ui/system_map.gd:640
+#: ui/system_map.gd:642
 msgid "Goal: the Bloom Core full (Cradle Returns)"
 msgstr "目標：ブルームコアを満タンに（Cradle号の帰還）"
 
-#: ui/system_map.gd:649 data/goals.json:goals[home_launch].text
+#: ui/system_map.gd:651 data/goals.json:goals[home_launch].text
 msgid "Launch home"
 msgstr "ふるさとへ発射"
 
-#: ui/system_map.gd:654
+#: ui/system_map.gd:656
 msgid "Choose a district"
 msgstr "地区を選ぶ"
 
-#: ui/system_map.gd:679
+#: ui/system_map.gd:681
 msgid "Rocket not ready"
 msgstr "ロケットの準備ができていない"
 
