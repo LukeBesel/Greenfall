@@ -417,7 +417,7 @@ func _build_terrain() -> void:
 			for i: int in nr - 1:
 				var a: int = j * nr + i
 				var b: int = (j + 1) * nr + i
-				for idx: int in [a, b, a + 1, a + 1, b, b + 1]:
+				for idx: int in [a, a + 1, b, b, a + 1, b + 1]:
 					st.add_index(idx)
 		st.generate_normals()
 		var mi := MeshInstance3D.new()
