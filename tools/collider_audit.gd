@@ -19,7 +19,7 @@ const BAND_HI: float = 1.2
 const MIN_H: float = 0.5
 const MIN_W: float = 0.1
 const CELL: float = 0.5
-const MERGED: float = 4.0  # an AABB wider than this is merged geometry: rasterize it
+const MERGED: float = 1.5  # an AABB wider than this (merged geometry, arches, walls) is rasterized
 ## Node classes / names whose subtrees are never props.
 const SKIP_CLASSES: Array[String] = ["Patch", "Robot", "JunkCube", "LitterView", "Fauna", "CameraRig", "WaterView",
 	"Garden", "PickupFx", "GlobeView", "HUD", "PhotoMode", "Wildlife", "SkyDirector", "Vfx"]
@@ -46,7 +46,7 @@ static func _owner(n: Node) -> String:
 	var a: Node = n.get_parent()
 	while a and _class_of(a) == a.get_class():
 		a = a.get_parent()
-	return "%s(%s)/%s" % [_class_of(a) if a else "?", String(a.name) if a else "", String(n.name)]
+	return "%s(%s)/%s/%s" % [_class_of(a) if a else "?", String(a.name) if a else "", String(n.get_parent().name), String(n.name)]
 
 
 static func _skip(n: Node) -> bool:
@@ -141,7 +141,7 @@ static func _check_xf(n: Node, mesh: Mesh, xf: Transform3D, space: PhysicsDirect
 	var g: float = _ground(layout, c.x, c.z)
 	if Vector2(c.x, c.z).length() > radius:
 		return 0
-	if ab.position.y > g + 0.6 or ab.end.y < g + MIN_H or minf(ab.size.x, ab.size.z) < MIN_W * 0.5 or maxf(ab.size.x, ab.size.z) < MIN_W:
+	if ab.position.y > g + 0.6 or ab.end.y < g + MIN_H or ab.size.y < 0.3 or minf(ab.size.x, ab.size.z) < MIN_W * 0.5 or maxf(ab.size.x, ab.size.z) < MIN_W:
 		return 0
 	if _in_building(layout, c.x, c.z):
 		return 0
@@ -174,8 +174,11 @@ static func _check_merged(n: Node, mesh: Mesh, xf: Transform3D, space: PhysicsDi
 			continue
 		if mx.x - mn.x > 12.0 or mx.z - mn.z > 12.0:
 			continue  # a huge flat tri (slab, wall face) is never a prop
+		var big: bool = mx.x - mn.x > CELL or mx.z - mn.z > CELL
 		for cx: int in range(floori(mn.x / CELL), floori(mx.x / CELL) + 1):
 			for cz: int in range(floori(mn.z / CELL), floori(mx.z / CELL) + 1):
+				if big and _tri_dist(Vector2((cx + 0.5) * CELL, (cz + 0.5) * CELL), Vector2(a.x, a.z), Vector2(b.x, b.z), Vector2(cc.x, cc.z)) > CELL * 0.71:
+					continue  # the cell is in the triangle's bounds but not under it (a diagonal wall)
 				var k := Vector2i(cx, cz)
 				var v: Vector2 = cells.get(k, Vector2(INF, -INF))
 				cells[k] = Vector2(minf(v.x, mn.y - g), maxf(v.y, mx.y - g))
@@ -195,12 +198,26 @@ static func _check_merged(n: Node, mesh: Mesh, xf: Transform3D, space: PhysicsDi
 		var g: float = _ground(layout, cx, cz)
 		if not _covered(space, Vector3(cx, g + (BAND_LO + BAND_HI) * 0.5, cz), Vector3(CELL * 0.5, (BAND_HI - BAND_LO) * 0.5, CELL * 0.5)):
 			bad.append(Vector3(cx, g, cz))
+			if DevHooks.has("audit-debug"):
+				print("[audit]     bad cell %s y %.2f..%.2f" % [str(Vector2(cx, cz)), v.x, v.y])
 	if DevHooks.has("audit-debug") and n_checked > 0:
 		print("[audit]   checked %d bad %d" % [n_checked, bad.size()])
-	# One leak per connected group of bad cells.
-	var seen: Dictionary = {}
+	# Fringe: a bad cell next to a covered cell of the same mesh is the edge of a collider a little
+	# smaller than its prop (colliders are shrunk ~8%), not a missing one.
+	var bad_k: Dictionary = {}
 	for p: Vector3 in bad:
-		seen[Vector2i(floori(p.x / CELL), floori(p.z / CELL))] = p
+		bad_k[Vector2i(floori(p.x / CELL), floori(p.z / CELL))] = p
+	var seen: Dictionary = {}
+	for k0: Vector2i in bad_k:
+		var fringe: bool = false
+		for o: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 1), Vector2i(-1, -1), Vector2i(1, -1), Vector2i(-1, 1)]:
+			var nk: Vector2i = k0 + o
+			if cells.has(nk) and not bad_k.has(nk) and (cells[nk] as Vector2).y - maxf((cells[nk] as Vector2).x, 0.0) >= MIN_H:
+				fringe = true
+				break
+		if not fringe:
+			seen[k0] = bad_k[k0]
+	# One leak per connected group of bad cells.
 	var done: Dictionary = {}
 	for k: Vector2i in seen:
 		if done.has(k):
@@ -225,6 +242,23 @@ static func _check_merged(n: Node, mesh: Mesh, xf: Transform3D, space: PhysicsDi
 		leaks.append({"owner": _owner(n), "mesh": "merged(%d cells)" % group.size(),
 			"at": Vector3(ctr.x, 0, ctr.y).snapped(Vector3.ONE * 0.1), "size": Vector3(mx.x - mn.x, 0, mx.y - mn.y)})
 	return n_checked
+
+
+## 2D distance from p to triangle abc (0 inside).
+static func _tri_dist(p: Vector2, a: Vector2, b: Vector2, c: Vector2) -> float:
+	var d1: float = (p - a).cross(b - a)
+	var d2: float = (p - b).cross(c - b)
+	var d3: float = (p - c).cross(a - c)
+	if (d1 >= 0.0 and d2 >= 0.0 and d3 >= 0.0) or (d1 <= 0.0 and d2 <= 0.0 and d3 <= 0.0):
+		if absf((b - a).cross(c - a)) > 1e-6:
+			return 0.0
+	return minf(_seg_dist(p, a, b), minf(_seg_dist(p, b, c), _seg_dist(p, c, a)))
+
+
+static func _seg_dist(p: Vector2, a: Vector2, b: Vector2) -> float:
+	var ab: Vector2 = b - a
+	var t: float = clampf((p - a).dot(ab) / maxf(ab.length_squared(), 1e-9), 0.0, 1.0)
+	return p.distance_to(a + ab * t)
 
 
 func _ready() -> void:

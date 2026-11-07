@@ -564,10 +564,12 @@ func _build_shopfronts() -> void:
 			var cp: Vector3 = base + al3 * off2 + out3 * 0.42
 			if _rng.randf() < 0.5:
 				_crate(Transform3D(Basis.looking_at(-al3).rotated(Vector3.UP, _rng.randf_range(-0.2, 0.2)), cp + Vector3.UP * 0.16), _plastic[_rng.randi() % _plastic.size()])
+				_solid_box(Transform3D(Basis.looking_at(-al3), cp + Vector3.UP * 0.32), Vector3(0.62, 0.64, 0.44))  # [world2]
 				if _rng.randf() < 0.5:
 					_crate(Transform3D(Basis.looking_at(-al3).rotated(Vector3.UP, _rng.randf_range(-0.3, 0.3)), cp + Vector3.UP * 0.48), _plastic[_rng.randi() % _plastic.size()])
 			else:
 				_barrels.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), cp + out3 * 0.05), _plastic[_rng.randi() % _plastic.size()]])
+				_solid_cyl(cp + out3 * 0.05, 0.3, 0.95)  # [world2]
 	# Laundry hung out of upper windows on taller facades that face the hub.
 	for f: Dictionary in _facades:
 		var fa: Vector2 = f["a"]
@@ -1217,11 +1219,13 @@ func _corner_kit(kit: int, base: Vector3, out: Vector3) -> void:
 			if snow:
 				_deco.box(Transform3D(Basis(Vector3.UP, yaw), base + Vector3(0, top + n * 0.32 + 0.02, 0)), Vector3(0.62, 0.06, 0.42), SNOW)
 			_barrels.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), base + Vector3(-out.x * 1.0, 0, 0)), _plastic[1 % _plastic.size()]])
+			_solid_cyl(base + Vector3(-out.x * 1.0, 0, 0), 0.3, 0.95)  # [world2]
 		1:  # steel drums and a tarp-covered heap
 			for k: int in 3:
 				@warning_ignore("integer_division")
 				var dp: Vector3 = base + Vector3(-out.x * (0.1 + (k % 2) * 0.62), top, -out.z * (k / 2) * 0.62 - out.z * 0.1)
 				_drums.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), dp), [Color(0.55, 0.13, 0.08), Color(0.12, 0.25, 0.45), Color(0.2, 0.32, 0.18)][k]])
+				_solid_cyl(dp, 0.3, 0.9)  # [world2]
 				if snow:
 					_deco.cyl(dp + Vector3(0, 0.88, 0), dp + Vector3(0, 0.94, 0), 0.29, 0.25, SNOW, 10)
 			_tarp(Transform3D(Basis(Vector3.UP, _rng.randf_range(0.0, TAU)), base + Vector3(-out.x * 0.4, 0, -out.z * 1.5)), Vector2(1.8, 1.4), 0.75, _tarp_cols[0])
@@ -1259,6 +1263,7 @@ func _corner_kit(kit: int, base: Vector3, out: Vector3) -> void:
 			_prop("ocean_buoy", Transform3D(Basis(Vector3.UP, _rng.randf() * TAU).scaled(Vector3.ONE * 0.7), base + Vector3(0, top, 0)))
 			_prop("lifebuoy", Transform3D(Basis(Vector3.RIGHT, PI * 0.5 - 0.15).rotated(Vector3.UP, atan2(out.x, out.z)), base + Vector3(out.x * 0.55, 0.9, -out.z * 0.5)))
 			_drums.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), base + Vector3(-out.x * 1.0, 0, -out.z * 0.3)), Color(0.85, 0.85, 0.82)])
+			_solid_cyl(base + Vector3(-out.x * 1.0, 0, -out.z * 0.3), 0.3, 0.9)  # [world2]
 		12:  # dunes: sun-bleached tarp shade over jerrycans
 			_tarp_shade(base + Vector3(-out.x * 0.6, 0, -out.z * 0.6), yaw)
 			for k: int in 3:
@@ -1268,7 +1273,9 @@ func _corner_kit(kit: int, base: Vector3, out: Vector3) -> void:
 				@warning_ignore("integer_division")
 				var dp: Vector3 = base + Vector3(-out.x * (0.1 + (k % 2) * 0.62), top, -out.z * (k / 2) * 0.62)
 				_drums.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), dp), Color(0.42, 0.24, 0.14).lerp(Color(0.2, 0.22, 0.25), _rng.randf())])
+				_solid_cyl(dp, 0.3, 0.9)  # [world2]
 			_drums.append([Transform3D(Basis(Vector3.RIGHT, PI * 0.5).rotated(Vector3.UP, yaw + 0.7), base + Vector3(-out.x * 1.3, 0.3, -out.z * 1.4)), Color(0.5, 0.28, 0.14)])
+			_solid_box(Transform3D(Basis(Vector3.UP, yaw + 0.7), base + Vector3(-out.x * 1.3, 0.3, -out.z * 1.4)), Vector3(0.6, 0.6, 0.9))  # [world2]
 		14:  # marsh: lantern post and crates on a plank deck
 			for k: int in 6:
 				_deco.box(Transform3D(Basis(Vector3.UP, yaw), base + Vector3((k - 2.5) * 0.3 * -out.x, 0.04, -out.z * 0.4)), Vector3(0.26, 0.06, 1.8), Color(0.36, 0.28, 0.2, PAINT))
@@ -1298,6 +1305,7 @@ func _pallet(xf: Transform3D) -> void:
 
 ## A tarpaulin thrown over a heap: a lumpy draped grid, drooping to the ground at the edges.
 func _tarp(xf: Transform3D, size: Vector2, h: float, col: Color) -> void:
+	_solid_box(Transform3D(xf.basis.orthonormalized(), xf.origin + Vector3(0, h * 0.5, 0)), Vector3(size.x * 0.85, h, size.y * 0.85))  # [world2] the heap under it
 	col.a = FABRIC
 	var n: int = 9
 	var pts: Array = []
@@ -1327,6 +1335,7 @@ func _tarp(xf: Transform3D, size: Vector2, h: float, col: Color) -> void:
 ## Construction work light on a tripod, lamp lit, cable snaking off along the fence.
 func _work_light(base: Vector3, aim: Vector3) -> void:
 	var steel := Color(0.85, 0.65, 0.1, STEEL)  # yellow-painted steel
+	_solid_cyl(base, 0.45, 2.1)  # [world2] the tripod
 	var top: Vector3 = base + Vector3.UP * 1.9
 	for k: int in 3:
 		var a: float = TAU * k / 3.0 + 0.3

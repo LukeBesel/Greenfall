@@ -108,7 +108,7 @@ static func fit(b: StaticBody3D, root: Node3D, min_h: float = 0.35, max_w: float
 		if xf.basis.determinant() == 0.0:
 			continue
 		var wab: AABB = xf * ab
-		if wab.size.y < min_h or wab.position.y > base_y + 0.6 or maxf(wab.size.x, wab.size.z) < 0.12:
+		if wab.size.y < min_h or wab.position.y > base_y + 0.6 or maxf(wab.size.x, wab.size.z) < 0.08:
 			continue
 		if wab.size.x > max_w or wab.size.z > max_w or _see_through(mi):
 			continue
