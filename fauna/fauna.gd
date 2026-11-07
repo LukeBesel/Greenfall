@@ -269,6 +269,12 @@ func find_spot(sid: String, h: int, near: Vector3 = Vector3.INF, spread: float =
 	var junk_ok: bool = bool(d.get("junk", false))
 	var c: Vector3 = f.hex_center(h) if near == Vector3.INF else near
 	var rad: float = f.hex_size * 0.85 if spread < 0.0 else spread
+	# Grazers and rabbits like to be among the plants.
+	if near == Vector3.INF and sid in ["deer", "rabbit", "songbird", "fox"] and _rng.randf() < 0.8:
+		var ps: Vector3 = _plant_near(h)
+		if ps != Vector3.INF:
+			c = ps
+			rad = 1.6
 	var best := Vector3.INF
 	for i: int in 14:
 		var p: Vector3 = c + Vector3(_rng.randf_range(-1, 1), 0, _rng.randf_range(-1, 1)) * rad
@@ -283,7 +289,7 @@ func find_spot(sid: String, h: int, near: Vector3 = Vector3.INF, spread: float =
 			continue
 		if near == Vector3.INF and ph != h:
 			continue
-		if not FaunaRules.spot_ok(f, p, 0.45 if not junk_ok else 0.3, junk_ok):
+		if not FaunaRules.spot_ok(f, p, 0.45 if not junk_ok else 0.3, junk_ok) or near_outpost(p):
 			continue
 		if where == "shore":
 			# Frogs, herons and seals stand at the water's edge.
@@ -300,6 +306,32 @@ func find_spot(sid: String, h: int, near: Vector3 = Vector3.INF, spread: float =
 			return p
 		best = p
 	return best
+
+
+## A planted garden slot on hex h (Vector3.INF if none).
+func _plant_near(h: int) -> Vector3:
+	var g: Node = world.get("garden")
+	if g == null:
+		return Vector3.INF
+	var slots: PackedInt32Array = (g.get("hex_slots") as Dictionary).get(h, PackedInt32Array())
+	var sp_arr: PackedInt32Array = g.get("slot_species")
+	var pos_arr: PackedVector3Array = g.get("slot_pos")
+	var opts: Array[Vector3] = []
+	for s: int in slots:
+		if s < sp_arr.size() and sp_arr[s] >= 0:
+			opts.append(pos_arr[s])
+	return opts[_rng.randi() % opts.size()] if not opts.is_empty() else Vector3.INF
+
+
+## Ruined outposts are full of props: animals keep out.
+func near_outpost(p: Vector3) -> bool:
+	var op: Node = world.get("outposts")
+	if op == null:
+		return false
+	for o: Node3D in op.get("items"):
+		if is_instance_valid(o) and Vector2(o.global_position.x - p.x, o.global_position.z - p.z).length() < 7.5:
+			return true
+	return false
 
 
 func _spawn(key: String, e: Dictionary) -> bool:
@@ -590,7 +622,7 @@ func _wander_target(a: Animal, r: float) -> Vector3:
 	for k: int in 6:
 		var p: Vector3 = a.home + Vector3(_rng.randf_range(-r, r), 0, _rng.randf_range(-r, r))
 		var mid: Vector3 = (p + a.pos) * 0.5
-		if FaunaRules.spot_ok(world.field, p, 0.35, junk_ok) and FaunaRules.spot_ok(world.field, mid, 0.25, junk_ok):
+		if FaunaRules.spot_ok(world.field, p, 0.35, junk_ok) and FaunaRules.spot_ok(world.field, mid, 0.25, junk_ok) and not near_outpost(p):
 			p.y = _ground_y(p)
 			return p
 	return a.pos
