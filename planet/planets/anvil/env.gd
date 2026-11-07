@@ -209,17 +209,28 @@ func _open_camera() -> void:
 
 
 ## The grade SkyDirector blends over its day cycle (see SkyDirector._apply_grade).
-func sky_grade() -> Dictionary:
+## r = restore: the butterscotch dust sky clears toward a pale terraformed blue (planets.json
+## "restored" values) instead of fading to the default grade.
+func sky_grade(r: float = 0.0) -> Dictionary:
 	var s: Dictionary = entry.get("sky", {})
 	var f: Dictionary = entry.get("fog", {})
+	var rs: Dictionary = entry.get("restored", {})
+	var k: float = _smooth(0.1, 0.95, r)
+	var mixc := func(a: Variant, b: Variant, fb: Color) -> Array:
+		var c: Color = col(a, fb).lerp(col(b, col(a, fb)), k)
+		return [c.r, c.g, c.b]
+	var mixf := func(a: float, key: String) -> float:
+		return lerpf(a, float(rs.get(key, a)), k)
+	var hf: Array = f.get("height_fog", [3.0, 0.006])
 	var g: Dictionary = {
-		"rayleigh": s.get("rayleigh", [0.98, 0.66, 0.42]), "mie": s.get("mie", [0.62, 0.74, 0.98]),
-		"sky_amt": float(s.get("sky_amt", 0.85)), "turbidity": float(s.get("turbidity", 5.0)),
-		"mie_coef": float(s.get("mie_coef", 0.004)), "sat": float(s.get("sat", 0.95)),
+		"rayleigh": mixc.call(s.get("rayleigh"), rs.get("rayleigh"), Color(0.98, 0.66, 0.42)),
+		"mie": mixc.call(s.get("mie"), rs.get("mie"), Color(0.62, 0.74, 0.98)),
+		"sky_amt": mixf.call(float(s.get("sky_amt", 0.85)), "sky_amt"), "turbidity": mixf.call(float(s.get("turbidity", 5.0)), "turbidity"),
+		"mie_coef": float(s.get("mie_coef", 0.004)), "sat": mixf.call(float(s.get("sat", 0.95)), "sat"),
 		"exposure": float(s.get("exposure", 1.0)), "contrast": float(s.get("contrast", 1.08)),
-		"fog": f.get("color", [0.9, 0.6, 0.44]), "fog_amt": float(f.get("amt", 0.85)),
-		"fog_mult": float(f.get("mult", 1.5)), "aerial": float(f.get("aerial", 0.55)),
-		"fog_sky": float(f.get("fog_sky", 0.45)), "height_fog": f.get("height_fog", []),
+		"fog": mixc.call(f.get("color"), rs.get("fog"), Color(0.9, 0.6, 0.44)), "fog_amt": float(f.get("amt", 0.85)),
+		"fog_mult": mixf.call(float(f.get("mult", 0.9)), "fog_mult"), "aerial": float(f.get("aerial", 0.55)),
+		"fog_sky": float(f.get("fog_sky", 0.45)), "height_fog": [float(hf[0]), mixf.call(float(hf[1]), "height_fog")] if hf.size() >= 2 else [],
 	}
 	var sun: Dictionary = entry.get("sun", {})
 	if sun.has("tint"):
@@ -795,7 +806,9 @@ func _apply_restore() -> void:
 		_plants[i].multimesh.visible_instance_count = int(float(_plant_n[i]) * _smooth(0.08, 0.85, r))
 	var sd: Node = world.get("sky_director")
 	if sd:
-		sd.set("grade_amt", 1.0 - 0.7 * r)
+		sd.set("grade", sky_grade(r))
+		sd.set("grade_amt", 1.0)
+		sd.set("clear_bonus", maxf(float(sd.get("clear_bonus")), 0.85 * r))
 	# The core: ember red, dim, slowly breathing; rekindled warm white-gold as Anvil recovers.
 	var cc: Color = EMBER.lerp(CORE_WARM, _smooth(0.3, 0.9, r))
 	var breathe: float = 0.85 + 0.15 * sin(_t * 0.6)

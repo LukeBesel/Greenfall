@@ -87,11 +87,11 @@ static func make_mat(env: AnvilEnv, key: String) -> Material:
 			l.roughness = 0.3
 			return l
 		"green":
-			var gr := AssetLib.pbr_material("leafy_grass", 0.25, Color(0.55, 0.85, 0.45), true)
+			var gr := AssetLib.pbr_material("leafy_grass", 0.35, Color(0.5, 0.78, 0.4), true)
 			gr.metallic = 0.0
 			return gr
 		"redleaf":
-			var rl := AssetLib.pbr_material("leafy_grass", 0.25, Color(1.5, 0.42, 0.35), true)
+			var rl := AssetLib.pbr_material("leafy_grass", 0.35, Color(1.05, 0.3, 0.24), true)
 			rl.metallic = 0.0
 			return rl
 		"terrain":
@@ -158,7 +158,7 @@ static func _stack(env: AnvilEnv, b: Batch, fut: Batch, base: Vector3, h: float,
 		add_cyl(b, base + Vector3(0, 6.0 + y, 0), rr, rr, 1.1, rust, 28)
 		if k % 2 == 1 and y < h - 10.0:
 			# Vertical gardens: planted shells between the bands, thin light rings on them.
-			var gm: Material = env.mat("green") if (k + idx) % 3 != 0 else env.mat("redleaf")
+			var gm: Material = env.mat("green") if (k + idx) % 4 != 0 else env.mat("redleaf")
 			add_cyl(fut, base + Vector3(0, 6.0 + y + 7.0, 0), rr + 0.25, rr + 0.35, 11.5, gm, 28)
 		add_cyl(fut, base + Vector3(0, 6.0 + y + 0.75, 0), rr + 0.5, rr + 0.5, 0.14, env.mat("line"), 32)
 	# Sooted crown, lip and two galleries with railings.

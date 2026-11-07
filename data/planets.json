@@ -10,7 +10,7 @@
     "fog": {"color": [0.9, 0.6, 0.44], "amt": 0.8, "mult": 0.9, "aerial": 0.45, "fog_sky": 0.35, "height_fog": [3.0, 0.006]},
     "sun": {"elev_max_deg": 52, "energy_mult": 0.82, "tint": [1.0, 0.93, 0.84], "fallback_size": 0.72, "fallback_b_energy": 0.2, "fallback_sep_deg": 11.0},
     "ambient": {"energy_mult": 0.95},
-    "restored_sky": "grade eases to 30% at full restore: butterscotch to a pale terraformed blue with a pink horizon",
+    "restored": {"_doc": "sky/fog targets at full restore: the dust sky clears to a pale terraformed blue", "rayleigh": [0.34, 0.54, 0.98], "mie": [1.0, 0.88, 0.78], "sky_amt": 0.9, "turbidity": 3.0, "sat": 1.12, "fog": [0.88, 0.8, 0.76], "fog_mult": 0.5, "height_fog": 0.002},
     "palette": {"dust": [0.78, 0.4, 0.24], "rock": [0.52, 0.27, 0.17], "band": [0.86, 0.56, 0.38], "soot": [0.06, 0.05, 0.045], "ember": [1.0, 0.36, 0.12], "lichen": [0.44, 0.54, 0.3], "redleaf": [0.62, 0.12, 0.1], "green": [0.3, 0.52, 0.2], "line": [1.0, 0.88, 0.7]},
     "junk_tint": [0.6, 0.27, 0.14, 0.55],
     "music_mood": "anvil_foundry"
