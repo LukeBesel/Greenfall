@@ -1264,6 +1264,34 @@ func _place_tanks() -> void:
 
 # --- Report ---------------------------------------------------------------------------
 
+## [beat] Robots that report busy work but haven't moved for three snapshots (3 game-min).
+var _bot_pos: Dictionary = {}
+var _bot_still: Dictionary = {}
+var _stuck_bots: Dictionary = {}
+
+
+func _robot_health() -> Dictionary:
+	var counts: Dictionary = {}
+	var fl: Fleet = world.fleet
+	if fl == null:
+		return counts
+	var re := RegEx.create_from_string("[0-9]+")
+	for r: Robot in fl.robots():
+		var st: String = re.sub(r.status_text(), "#", true)
+		counts[st] = int(counts.get(st, 0)) + 1
+		var busy: bool = not (st.begins_with("idle") or st.begins_with("parked") or st.begins_with("waiting") or st.contains("nothing left") or st.contains("is clean") or st.contains("out of seeds") or st.contains("zone clean"))
+		var last: Vector3 = _bot_pos.get(r.robot_name, Vector3.INF)
+		if busy and last != Vector3.INF and last.distance_to(r.global_position) < 0.5:
+			_bot_still[r.robot_name] = int(_bot_still.get(r.robot_name, 0)) + 1
+			if int(_bot_still[r.robot_name]) >= 3 and not _stuck_bots.has(r.robot_name):
+				_stuck_bots[r.robot_name] = "%s %s at %s" % [r.type_id, st, str(r.global_position.snappedf(0.1))]
+				print("[Autoplay] STUCK robot %s: %s" % [r.robot_name, _stuck_bots[r.robot_name]])
+		else:
+			_bot_still[r.robot_name] = 0
+		_bot_pos[r.robot_name] = r.global_position
+	return counts
+
+
 func _snapshot() -> void:
 	var fl: Fleet = world.fleet
 	var types: Dictionary = {}
@@ -1283,7 +1311,7 @@ func _snapshot() -> void:
 		"glass": snappedf(GameState.get_currency("glass_cullet").to_float(), 0.1), "bolts": snappedf(GameState.get_currency("bolts").to_float(), 1.0),
 		"hexes": world.field.cleaned_count, "hex_levels": lv, "robots": types, "hub": int(world.hub.level),
 		"task": _task, "research": Research.active_id(), "upgrades": int(GameState.stats.get("upgrades_bought", 0)),
-		"goals": ngoals, "stats": _stat_pick(["research_done", "plants_bloomed", "garden_stipend", "air_filtered", "robots_built", "robot_bales", "bales_recycled", "plants_planted"])})
+		"bots": _robot_health(), "goals": ngoals, "stats": _stat_pick(["research_done", "plants_bloomed", "garden_stipend", "air_filtered", "robots_built", "robot_bales", "bales_recycled", "plants_planted"])})
 	print("[Autoplay] %5.1f min cubes=%d rate=%.2f/s data=%.0f seeds=%.0f parts=%d mats=%.0f/%.0f/%.0f hexes=%d lv=%s robots=%s hub=%d task=%s goals=%d research=%s pos=%s esc=%d" % [_now() / 60.0,
 		int(GameState.get_currency("cubes").to_float()), GameState.income_rate(), GameState.get_currency("data").to_float(),
 		GameState.get_currency("seeds").to_float(), GameState.parts.size(), GameState.get_currency("sheet_metal").to_float(),
@@ -1337,6 +1365,7 @@ func write_report() -> void:
 	_report["stuck_escapes"] = _escapes
 	_report["fell_through"] = GameState.stats.get("fell_through", 0)
 	_report["cubes_fell"] = GameState.stats.get("cubes_fell", 0)  # [beat]
+	_report["stuck_robots"] = _stuck_bots
 	_report["remote_shops"] = _remote_shops
 	_report["parts_found"] = GameState.stats.get("parts_found", 0)
 	_report["hub_level"] = int(world.hub.level)
