@@ -215,6 +215,8 @@ static func dev_hooks(world: Node) -> void:
 		unlocked().erase(show)
 		_dev_show = show
 		_dev_at_ms = Time.get_ticks_msec() + int(DevHooks.get_f("design-unlock-at", 4.0) * 1000.0)
+		if DevHooks.get_f("design-unlock-at", 4.0) <= 0.0:
+			_dev_tick()
 
 
 static var _dev_show: String = ""
