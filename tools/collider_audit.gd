@@ -27,7 +27,7 @@ const SKIP_NAMES: Array[String] = ["Ground", "Cubes", "Fleet", "Skyline", "Fauna
 ## Mesh / node name fragments that are clutter, light or cloth (never solid).
 const CLUTTER: Array[String] = ["weed", "puddle", "paint", "litter", "flower", "grass", "moss", "bulb", "pennant", "cloth",
 	"tube", "glow", "neon", "label", "decal", "seam", "orb", "beam", "drone", "flag", "mote", "spark", "steam", "dust",
-	"manhole", "twig", "sprout", "butterfl"]
+	"manhole", "twig", "sprout", "butterfl", "deadplant", "pots"]
 
 var _fails: int = 0
 
@@ -105,7 +105,7 @@ static func scan(root: Node, space: PhysicsDirectSpaceState3D, layout: CityLayou
 			stack.append(c)
 		if n is MeshInstance3D:
 			var mi := n as MeshInstance3D
-			if mi.mesh == null or _clutter(mi, mi.mesh):
+			if mi.mesh == null or _clutter(mi, mi.mesh) or PropColliders._see_through(mi):
 				continue
 			checked += _check_xf(mi, mi.mesh, mi.global_transform, space, layout, radius, leaks)
 		elif n is MultiMeshInstance3D:
@@ -162,26 +162,40 @@ static func _check_merged(n: Node, mesh: Mesh, xf: Transform3D, space: PhysicsDi
 	var faces: PackedVector3Array = mesh.get_faces()
 	var cells: Dictionary = {}  # Vector2i -> Vector2(min y, max y) above ground
 	for i: int in range(0, faces.size(), 3):
-		var a: Vector3 = xf * faces[i]
-		var b: Vector3 = xf * faces[i + 1]
-		var cc: Vector3 = xf * faces[i + 2]
-		var mn: Vector3 = a.min(b).min(cc)
-		var mx: Vector3 = a.max(b).max(cc)
-		if Vector2((mn.x + mx.x) * 0.5, (mn.z + mx.z) * 0.5).length() > radius:
-			continue
-		var g: float = _ground(layout, (mn.x + mx.x) * 0.5, (mn.z + mx.z) * 0.5)
-		if mx.y < g + BAND_LO or mn.y > g + BAND_HI:
-			continue
-		if mx.x - mn.x > 12.0 or mx.z - mn.z > 12.0:
-			continue  # a huge flat tri (slab, wall face) is never a prop
-		var big: bool = mx.x - mn.x > CELL or mx.z - mn.z > CELL
-		for cx: int in range(floori(mn.x / CELL), floori(mx.x / CELL) + 1):
-			for cz: int in range(floori(mn.z / CELL), floori(mx.z / CELL) + 1):
-				if big and _tri_dist(Vector2((cx + 0.5) * CELL, (cz + 0.5) * CELL), Vector2(a.x, a.z), Vector2(b.x, b.z), Vector2(cc.x, cc.z)) > CELL * 0.71:
-					continue  # the cell is in the triangle's bounds but not under it (a diagonal wall)
-				var k := Vector2i(cx, cz)
-				var v: Vector2 = cells.get(k, Vector2(INF, -INF))
-				cells[k] = Vector2(minf(v.x, mn.y - g), maxf(v.y, mx.y - g))
+		var stack: Array = [[xf * faces[i], xf * faces[i + 1], xf * faces[i + 2]]]
+		while not stack.is_empty():
+			var tri: Array = stack.pop_back()
+			var a: Vector3 = tri[0]
+			var b: Vector3 = tri[1]
+			var cc: Vector3 = tri[2]
+			var mn: Vector3 = a.min(b).min(cc)
+			var mx: Vector3 = a.max(b).max(cc)
+			if Vector2((mn.x + mx.x) * 0.5, (mn.z + mx.z) * 0.5).length() > radius:
+				continue
+			var g: float = _ground(layout, (mn.x + mx.x) * 0.5, (mn.z + mx.z) * 0.5)
+			if mx.y < g + BAND_LO or mn.y > g + BAND_HI:
+				continue
+			if mx.x - mn.x > 12.0 or mx.z - mn.z > 12.0:
+				continue  # a huge flat tri (slab, wall face) is never a prop
+			var e_max: float = maxf((b - a).length(), maxf((cc - b).length(), (a - cc).length()))
+			if e_max > 0.0 and (b - a).cross(cc - a).length() / e_max < 0.025:
+				continue  # a sliver of a wire or cable (thinner than ~2.5 cm): never solid
+			if e_max > CELL and mx.y - mn.y > 0.25 and (mx.x - mn.x > CELL or mx.z - mn.z > CELL):
+				# Sloped or upright and wider than a cell: split, so each cell sees only the height
+				# the surface has over it (a slumped roof is not a wall).
+				var ab: Vector3 = (a + b) * 0.5
+				var bc: Vector3 = (b + cc) * 0.5
+				var ca: Vector3 = (cc + a) * 0.5
+				stack.append_array([[a, ab, ca], [ab, b, bc], [ca, bc, cc], [ab, bc, ca]])
+				continue
+			var big: bool = mx.x - mn.x > CELL or mx.z - mn.z > CELL
+			for cx: int in range(floori(mn.x / CELL), floori(mx.x / CELL) + 1):
+				for cz: int in range(floori(mn.z / CELL), floori(mx.z / CELL) + 1):
+					if big and _tri_dist(Vector2((cx + 0.5) * CELL, (cz + 0.5) * CELL), Vector2(a.x, a.z), Vector2(b.x, b.z), Vector2(cc.x, cc.z)) > CELL * 0.71:
+						continue  # the cell is in the triangle's bounds but not under it (a diagonal wall)
+					var k := Vector2i(cx, cz)
+					var v: Vector2 = cells.get(k, Vector2(INF, -INF))
+					cells[k] = Vector2(minf(v.x, mn.y - g), maxf(v.y, mx.y - g))
 	var n_checked: int = 0
 	var bad: Array = []
 	if DevHooks.has("audit-debug"):

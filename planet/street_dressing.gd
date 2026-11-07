@@ -2209,6 +2209,7 @@ func _fallen_pole(base: Vector3, dir: Vector3, h: float) -> void:
 	var b := Basis(side, dir, side.cross(dir).normalized())
 	_deco.box(Transform3D(b, base + dir * h * 0.5 + Vector3(0, 0.09, 0)), Vector3(0.16, h, 0.16), wood)
 	_deco.box(Transform3D(Basis(dir, Vector3.UP, dir.cross(Vector3.UP)).rotated(dir, 0.4), base + dir * (h - 0.25) + Vector3(0, 0.2, 0)), Vector3(0.08, 0.7, 0.08), wood.darkened(0.2))
+	_solid_cyl(base + dir * (h - 0.25), 0.2, 0.55)  # [world2] the crossbar sticking up (the pole itself lies flat)
 	_deco.box(Transform3D(Basis(Vector3.UP, _rng.randf()), base + Vector3(0, 0.2, 0)), Vector3(0.2, 0.4, 0.2), wood.darkened(0.3))
 
 
@@ -2242,10 +2243,13 @@ func _build_name_sign(broken: bool) -> void:
 		_solid_box(Transform3D(Basis(), Vector3(x + sx, hgt * 0.5, z)), Vector3(0.22, hgt, 0.22))  # [world2]
 		if broken and sx > 0.0:
 			_deco.box(Transform3D(Basis(Vector3.BACK, 1.45).rotated(Vector3.UP, 0.4), Vector3(x + sx + 0.9, 0.1, z + 0.6)), Vector3(0.16, 2.2, 0.16), post)
+			_solid_box(Transform3D(Basis(Vector3.BACK, 1.45).rotated(Vector3.UP, 0.4), Vector3(x + sx + 0.9, 0.1, z + 0.6)), Vector3(0.2, 2.2, 0.2))  # [world2]
 	var board_xf := Transform3D(Basis(), Vector3(x, 2.85, z + 0.1))
 	if broken:
 		var pivot := Vector3(x - 2.4, 3.45, z + 0.1)
 		board_xf = Transform3D(Basis(Vector3.BACK, -0.62).rotated(Vector3.UP, 0.12), pivot) * Transform3D(Basis(), Vector3(2.4, -0.62, 0))
+	if broken:  # [world2] the board hangs down to the ground
+		_solid_box(Transform3D(board_xf.basis.orthonormalized(), board_xf.origin), Vector3(4.8, 1.3, 0.2))
 	var bg: Color = _sign_bg.lerp(Color(0.62, 0.6, 0.55), 0.45 if broken else 0.12)
 	bg.a = PAINT
 	_deco.box(board_xf, Vector3(4.8, 1.3, 0.08), bg)

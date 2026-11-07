@@ -634,6 +634,12 @@ func _build_board() -> void:
 	roof.position = Vector3(0, 2.3, -0.05)
 	roof.rotation_degrees = Vector3(-9, 0, 2)
 	shack.add_child(roof)
+	var roof_body := StaticBody3D.new()  # [world2] follows the roof: overhead when fixed, a slumped ramp of iron when ruined
+	roof_body.collision_layer = PhysLayers.PROP
+	var roof_cs := CollisionShape3D.new()
+	roof_cs.shape = PropColliders.box_shape(Vector3(3.6, 0.1, 2.5))
+	roof_body.add_child(roof_cs)
+	roof.add_child(roof_body)
 	var back := MeshInstance3D.new()
 	back.mesh = ProcMesh.box(Vector3(3.3, 2.3, 0.03))
 	back.material_override = iron
@@ -687,6 +693,11 @@ func _build_board() -> void:
 	cs.shape = bs
 	cs.position = Vector3(0, 1.2, -0.6)
 	sb.add_child(cs)
+	for px: float in [-1.6, 1.6]:  # [world2] the front posts
+		var pcs0 := CollisionShape3D.new()
+		pcs0.shape = PropColliders.cyl_shape(0.08, 2.1)
+		pcs0.position = Vector3(px, 1.05, 1.0)
+		sb.add_child(pcs0)
 	shack.add_child(sb)
 	# Hub dressing: a street lamp and a generator.
 	var sl := MeshInstance3D.new()

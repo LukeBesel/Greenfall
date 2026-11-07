@@ -119,12 +119,92 @@ static func fit(b: StaticBody3D, root: Node3D, min_h: float = 0.35, max_w: float
 	return n
 
 
+## Colliders for merged geometry (a whole ruin or landing pad in one mesh): the triangles under
+## `root` are rasterized into `cell`-metre columns (world space); every column whose geometry is at
+## least `min_h` tall becomes solid from its lowest to its highest point (capped at 3 m), and
+## columns with the same quantized span merge greedily into rectangles, so a structure costs a
+## handful of boxes. Wire slivers and see-through materials are ignored. Returns the box count.
+static func from_geometry(b: StaticBody3D, root: Node3D, min_h: float = 0.5, cell: float = 0.5, skip_prefix: Array = []) -> int:
+	var cols: Dictionary = {}  # Vector2i -> Vector2(min y, max y)
+	for c: Node in root.find_children("*", "MeshInstance3D", true, false):
+		var mi := c as MeshInstance3D
+		if mi.mesh == null or _see_through(mi):
+			continue
+		var skip: bool = false
+		var anc: Node = mi
+		while anc and anc != root and not skip:
+			for pre: String in skip_prefix:
+				if String(anc.name).begins_with(pre):
+					skip = true
+			anc = anc.get_parent()
+		if skip:
+			continue
+		var xf: Transform3D = mi.global_transform
+		var faces: PackedVector3Array = mi.mesh.get_faces()
+		for i: int in range(0, faces.size(), 3):
+			var a: Vector3 = xf * faces[i]
+			var bb: Vector3 = xf * faces[i + 1]
+			var cc: Vector3 = xf * faces[i + 2]
+			var e_max: float = maxf((bb - a).length(), maxf((cc - bb).length(), (a - cc).length()))
+			if e_max <= 0.0 or (bb - a).cross(cc - a).length() / e_max < 0.025 or e_max > 40.0:
+				continue
+			var mn: Vector3 = a.min(bb).min(cc)
+			var mx: Vector3 = a.max(bb).max(cc)
+			for cx: int in range(floori(mn.x / cell), floori(mx.x / cell) + 1):
+				for cz: int in range(floori(mn.z / cell), floori(mx.z / cell) + 1):
+					var k := Vector2i(cx, cz)
+					var v: Vector2 = cols.get(k, Vector2(INF, -INF))
+					cols[k] = Vector2(minf(v.x, mn.y), maxf(v.y, mx.y))
+	# Quantize spans and merge runs of equal spans into rectangles (rows first, then stack rows).
+	var by_span: Dictionary = {}  # Vector2i(bottom, top in 0.25 m) -> {Vector2i: true}
+	for k: Vector2i in cols:
+		var v: Vector2 = cols[k]
+		if v.y - v.x < min_h:
+			continue
+		var top: float = minf(v.y, v.x + 3.0)
+		var key := Vector2i(floori(v.x * 4.0), ceili(top * 4.0))
+		if not by_span.has(key):
+			by_span[key] = {}
+		(by_span[key] as Dictionary)[k] = true
+	var n: int = 0
+	for key: Vector2i in by_span:
+		var set_: Dictionary = by_span[key]
+		var keys: Array = set_.keys()
+		keys.sort_custom(func(p: Vector2i, q: Vector2i) -> bool: return p.y < q.y or (p.y == q.y and p.x < q.x))
+		var used: Dictionary = {}
+		for k0: Vector2i in keys:
+			if used.has(k0):
+				continue
+			var w: int = 1
+			while set_.has(k0 + Vector2i(w, 0)) and not used.has(k0 + Vector2i(w, 0)):
+				w += 1
+			var h: int = 1
+			var grow: bool = true
+			while grow:
+				for dx: int in w:
+					var kk: Vector2i = k0 + Vector2i(dx, h)
+					if not set_.has(kk) or used.has(kk):
+						grow = false
+						break
+				if grow:
+					h += 1
+			for dz: int in h:
+				for dx: int in w:
+					used[k0 + Vector2i(dx, dz)] = true
+			var y0: float = key.x / 4.0
+			var y1: float = key.y / 4.0
+			var ctr := Vector3((k0.x + w * 0.5) * cell, (y0 + y1) * 0.5, (k0.y + h * 0.5) * cell)
+			add_box(b, Transform3D(Basis.IDENTITY, ctr), Vector3(w * cell * 0.9, y1 - y0, h * cell * 0.9))
+			n += 1
+	return n
+
+
 ## Glass panes, holo fields and light: nothing to bump into.
 static func _see_through(mi: MeshInstance3D) -> bool:
 	var m: Material = mi.material_override if mi.material_override else (mi.mesh.surface_get_material(0) if mi.mesh.get_surface_count() > 0 else null)
 	if m is BaseMaterial3D:
 		var bm := m as BaseMaterial3D
-		return bm.transparency != BaseMaterial3D.TRANSPARENCY_DISABLED or bm.shading_mode == BaseMaterial3D.SHADING_MODE_UNSHADED
+		return bm.transparency != BaseMaterial3D.TRANSPARENCY_DISABLED or bm.shading_mode == BaseMaterial3D.SHADING_MODE_UNSHADED or bm.blend_mode != BaseMaterial3D.BLEND_MODE_MIX
 	return false
 
 
