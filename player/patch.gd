@@ -467,7 +467,7 @@ func _maybe_salvage_part(type_id: String) -> void:
 	GameState.parts.append({"type": t, "rarity": r})
 	EventBus.part_found.emit(t, r)
 	var rd: Dictionary = Economy.rarity(r)
-	EventBus.toast.emit(tr("Salvaged: %s") % L10nFmt.part_label(tr(str(rd.get("name", ""))), tr(str(Economy.part_type(t).get("name", "part"))))  # [i18n2], "hint")
+	EventBus.toast.emit(tr("Salvaged: %s") % L10nFmt.part_label(tr(str(rd.get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))), "hint")  # [i18n2]
 	Audio.play("ding", 1.3, -10.0)
 
 
@@ -497,7 +497,7 @@ func _on_part_found(idx: int) -> void:
 	if r >= 3:
 		Audio.play("fanfare", 1.0, -8.0)
 	Vfx.float_text(pos + Vector3(0, 1.4, 0), L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "Part")))), col, 0.55, 0.8)  # [i18n2]
-	EventBus.toast.emit(tr("Recovered: %s") % L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "part"))))  # [i18n2], "hint")
+	EventBus.toast.emit(tr("Recovered: %s") % L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "part")))), "hint")  # [i18n2]
 
 
 func nearest_loose_cube() -> JunkCube:
