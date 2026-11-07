@@ -122,8 +122,8 @@ static func _pivot(part: String) -> Vector3:
 	return _parts[part]["pos"]
 
 
-func _paint(c: Color, seed: float, coverage: float = 0.88, metal: float = 0.0, rough: float = 0.42) -> ShaderMaterial:
-	var m: ShaderMaterial = Mats.worn_paint(c, coverage, 0.25, seed, 0.5)
+func _paint(c: Color, seed_: float, coverage: float = 0.88, metal: float = 0.0, rough: float = 0.42) -> ShaderMaterial:
+	var m: ShaderMaterial = Mats.worn_paint(c, coverage, 0.25, seed_, 0.5)
 	m.shader = HERO_PAINT
 	m.set_shader_parameter("paint_roughness", rough)
 	m.set_shader_parameter("paint_metallic", metal)
@@ -462,15 +462,15 @@ func _update_beam(delta: float) -> void:
 	var a: Vector3 = claw_point()
 	var b: Vector3 = _beam_target
 	var d: Vector3 = b - a
-	var len: float = maxf(d.length(), 0.05)
-	var y: Vector3 = d / len
+	var len_: float = maxf(d.length(), 0.05)
+	var y: Vector3 = d / len_
 	var x: Vector3 = y.cross(Vector3.UP if absf(y.y) < 0.95 else Vector3.RIGHT).normalized()
 	var z: Vector3 = x.cross(y)
 	# Cylinder top (narrow) at the claw, wide end at the target.
 	var w: float = 1.35 if _beam_big else 1.0
-	var basis := Basis(x * w, -y * len, z * w)
-	_beam.global_transform = Transform3D(basis, a + d * 0.5)
-	_beam_mat.set_shader_parameter("beam_length", len)
+	var basis_ := Basis(x * w, -y * len_, z * w)
+	_beam.global_transform = Transform3D(basis_, a + d * 0.5)
+	_beam_mat.set_shader_parameter("beam_length", len_)
 	_beam_mat.set_shader_parameter("intensity", _beam_amt * (1.25 if _beam_big else 1.0))
 	_spark_t -= delta
 	if _spark_t <= 0.0:

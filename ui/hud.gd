@@ -116,25 +116,25 @@ func _build_scrims() -> void:
 		gt.fill_to = e[3]
 		gt.width = 128
 		gt.height = 64
-		var tr := TextureRect.new()
-		tr.texture = gt
-		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		tr.stretch_mode = TextureRect.STRETCH_SCALE
-		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		tr.set_anchors_preset(e[0])
+		var tr_ := TextureRect.new()
+		tr_.texture = gt
+		tr_.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr_.stretch_mode = TextureRect.STRETCH_SCALE
+		tr_.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		tr_.set_anchors_preset(e[0])
 		var sz: Vector2 = e[1]
 		match e[0]:
 			Control.PRESET_TOP_LEFT:
-				tr.offset_right = sz.x
-				tr.offset_bottom = sz.y
+				tr_.offset_right = sz.x
+				tr_.offset_bottom = sz.y
 			Control.PRESET_TOP_RIGHT:
-				tr.offset_left = -sz.x
-				tr.offset_bottom = sz.y
+				tr_.offset_left = -sz.x
+				tr_.offset_bottom = sz.y
 			_:
-				tr.offset_left = -sz.x * 0.5
-				tr.offset_right = sz.x * 0.5
-				tr.offset_top = -sz.y
-		_scrims.add_child(tr)
+				tr_.offset_left = -sz.x * 0.5
+				tr_.offset_right = sz.x * 0.5
+				tr_.offset_top = -sz.y
+		_scrims.add_child(tr_)
 
 
 func _build_top_left() -> void:
@@ -322,9 +322,9 @@ func _on_signal(text: String, color: Color, strength: float) -> void:
 
 func _update_hints() -> void:
 	var tutorial_on: bool = int(GameState.flags.get("tutorial_step", 0)) < Tutorial.STEPS.size()
-	var show: bool = Settings.hud_mode == Settings.HudMode.FULL or (Settings.hud_mode == Settings.HudMode.MINIMAL and tutorial_on)
-	_hints.visible = show
-	if show:
+	var show_: bool = Settings.hud_mode == Settings.HudMode.FULL or (Settings.hud_mode == Settings.HudMode.MINIMAL and tutorial_on)
+	_hints.visible = show_
+	if show_:
 		_hints.text = tr("%s  map      %s  command      %s  lens      %s  goals") % [Settings.glyph("open_globe"), Settings.glyph("open_command"), Settings.glyph("lens_view"), Settings.glyph("toggle_goals")]
 
 

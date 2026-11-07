@@ -39,11 +39,11 @@ var _star: Node3D
 
 ## Charge from the inputs. bloom_progress = 0..1 toward the Verdance Bloom. Never reaches 1.0
 ## until that milestone is actually done, so the finale and "core full" stay the same moment.
-static func compute(blooms: float, level_points: float, bloom_progress: float, bloom_done: bool) -> float:
+static func compute(blooms: float, level_points: float, bloom_progress_: float, bloom_done: bool) -> float:
 	if bloom_done:
 		return 1.0
 	var c: float = START + W_BLOOMS * clampf(blooms / BLOOMS_FULL, 0.0, 1.0) \
-		+ W_LEVELS * clampf(level_points / LEVELS_FULL, 0.0, 1.0) + W_BLOOM * clampf(bloom_progress, 0.0, 1.0)
+		+ W_LEVELS * clampf(level_points / LEVELS_FULL, 0.0, 1.0) + W_BLOOM * clampf(bloom_progress_, 0.0, 1.0)
 	return minf(c, 0.99)
 
 

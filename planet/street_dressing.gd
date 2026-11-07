@@ -575,9 +575,9 @@ func _build_shopfronts() -> void:
 			continue
 		var fl: int = _rng.randi_range(1, mini(floors - 1, 3))
 		var y: float = fl * FLOOR_H + 0.15
-		var len: float = fa.distance_to(fb)
-		var t0: float = _rng.randf_range(0.5, maxf(0.6, len * 0.4))
-		var t1: float = minf(len - 0.5, t0 + _rng.randf_range(3.5, 7.0))
+		var len_: float = fa.distance_to(fb)
+		var t0: float = _rng.randf_range(0.5, maxf(0.6, len_ * 0.4))
+		var t1: float = minf(len_ - 0.5, t0 + _rng.randf_range(3.5, 7.0))
 		var along2: Vector2 = f["along"]
 		var p0: Vector3 = _xz(fa + along2 * t0 + face2 * 0.9, y)
 		var p1: Vector3 = _xz(fa + along2 * t1 + face2 * 0.9, y)
@@ -675,7 +675,7 @@ func _neon_sign(text: String, center: Vector3, out: Vector3, h: float, col: Colo
 	var lw: float = 4.0 * s
 	var gap: float = 1.6 * s
 	var total: float = text.length() * lw + (text.length() - 1) * gap
-	var seed: float = float(_neon_count) * 1.37 + 0.3
+	var seed_: float = float(_neon_count) * 1.37 + 0.3
 	_neon_count += 1
 	var r: float = h * 0.04
 	var x0: float = -total * 0.5
@@ -690,7 +690,7 @@ func _neon_sign(text: String, center: Vector3, out: Vector3, h: float, col: Colo
 				var b2: Vector2 = poly[k + 1]
 				var a: Vector3 = center + right * (x0 + a2.x * s) + up * (a2.y * s - h * 0.5) + out * 0.09
 				var b: Vector3 = center + right * (x0 + b2.x * s) + up * (b2.y * s - h * 0.5) + out * 0.09
-				_tubes.rod(a, b, r, col, Vector2(seed, st))
+				_tubes.rod(a, b, r, col, Vector2(seed_, st))
 		x0 += lw + gap
 	var pad: float = h * 0.35
 	var bw: float = total + pad * 2.0
@@ -702,7 +702,7 @@ func _neon_sign(text: String, center: Vector3, out: Vector3, h: float, col: Colo
 		for k: int in 4:
 			var ca: Vector2 = corners[k]
 			var cb: Vector2 = corners[(k + 1) % 4]
-			_tubes.rod(center + right * ca.x + up * ca.y + out * 0.09, center + right * cb.x + up * cb.y + out * 0.09, r, fc, Vector2(seed + 0.5, 0.0))
+			_tubes.rod(center + right * ca.x + up * ca.y + out * 0.09, center + right * cb.x + up * cb.y + out * 0.09, r, fc, Vector2(seed_ + 0.5, 0.0))
 		bw += pad
 		bh += pad
 	var xf := Transform3D(Basis(right, up, out), center)
@@ -741,12 +741,12 @@ func _crate(xf: Transform3D, col: Color) -> void:
 
 # --- Murals and billboard --------------------------------------------------------------
 
-func _mural_material(variant: float, size: Vector2, seed: float) -> ShaderMaterial:
+func _mural_material(variant: float, size: Vector2, seed_: float) -> ShaderMaterial:
 	var m := ShaderMaterial.new()
 	m.shader = preload("res://art/shaders/mural.gdshader")
 	m.set_shader_parameter("variant", variant)
 	m.set_shader_parameter("size", size)
-	m.set_shader_parameter("seed", seed)
+	m.set_shader_parameter("seed", seed_)
 	m.set_shader_parameter("wall_tex", AssetLib.tex("painted_concrete", "diff"))
 	return m
 
@@ -875,12 +875,12 @@ func _build_billboard() -> void:
 # --- Lines across streets: string lights, bunting, laundry ------------------------------
 
 func _string_lights(a: Vector3, b: Vector3, sag: float, warm: bool, spacing: float = 0.55) -> void:
-	var len: float = a.distance_to(b)
-	var segs: int = maxi(6, int(len / 1.2))
+	var len_: float = a.distance_to(b)
+	var segs: int = maxi(6, int(len_ / 1.2))
 	var wire := Color(0.08, 0.08, 0.08, STEEL)
 	for i: int in segs:
 		_deco.rod(_catenary(a, b, sag, float(i) / segs), _catenary(a, b, sag, float(i + 1) / segs), 0.008, wire)
-	var n: int = int(len / spacing)
+	var n: int = int(len_ / spacing)
 	for i: int in range(1, n):
 		var t: float = float(i) / n
 		var p: Vector3 = _catenary(a, b, sag, t) - Vector3.UP * 0.07
@@ -893,11 +893,11 @@ func _string_lights(a: Vector3, b: Vector3, sag: float, warm: bool, spacing: flo
 
 
 func _bunting(a: Vector3, b: Vector3, sag: float) -> void:
-	var len: float = a.distance_to(b)
-	var segs: int = maxi(6, int(len / 1.2))
+	var len_: float = a.distance_to(b)
+	var segs: int = maxi(6, int(len_ / 1.2))
 	for i: int in segs:
 		_deco.rod(_catenary(a, b, sag, float(i) / segs), _catenary(a, b, sag, float(i + 1) / segs), 0.007, Color(0.55, 0.5, 0.42, PAINT))
-	var n: int = int(len / 0.42)
+	var n: int = int(len_ / 0.42)
 	var dir: Vector3 = (b - a).normalized()
 	var side: Vector3 = dir.cross(Vector3.UP).normalized()
 	var start: int = _rng.randi() % _pennant.size()
@@ -910,17 +910,17 @@ func _bunting(a: Vector3, b: Vector3, sag: float) -> void:
 
 
 func _laundry_line(a: Vector3, b: Vector3, sag: float) -> void:
-	var len: float = a.distance_to(b)
-	var segs: int = maxi(4, int(len / 1.0))
+	var len_: float = a.distance_to(b)
+	var segs: int = maxi(4, int(len_ / 1.0))
 	for i: int in segs:
 		_deco.rod(_catenary(a, b, sag, float(i) / segs), _catenary(a, b, sag, float(i + 1) / segs), 0.006, Color(0.75, 0.73, 0.68, PAINT))
 	var dir: Vector3 = (b - a).normalized()
 	var side: Vector3 = dir.cross(Vector3.UP).normalized()
 	var t: float = _rng.randf_range(0.3, 0.7)
-	while t < len - 0.4:
+	while t < len_ - 0.4:
 		var kind: int = _rng.randi() % 3
 		var w: float = [0.55, 0.6, 0.45][kind]
-		var p: Vector3 = _catenary(a, b, sag, (t + w * 0.5) / len)
+		var p: Vector3 = _catenary(a, b, sag, (t + w * 0.5) / len_)
 		var col: Color = LAUNDRY[_rng.randi() % LAUNDRY.size()].darkened(_rng.randf_range(0.0, 0.15))
 		(_cloth[kind] as Array).append([Transform3D(Basis(dir, Vector3.UP, side).scaled(Vector3.ONE * _rng.randf_range(0.85, 1.1)), p), col])
 		t += w + _rng.randf_range(0.08, 0.6)
@@ -1910,10 +1910,10 @@ func _crane(p: Vector3) -> void:
 	_deco.box(cw, Vector3(1.6, 1.8, 1.8), grey)
 	_deco.rod(apex, j0 + jd * 21.0, 0.03, Color(0.2, 0.2, 0.2, STEEL))
 	_deco.rod(apex, j0 - jd * 7.5, 0.03, Color(0.2, 0.2, 0.2, STEEL))
-	var tr: Vector3 = j0 + jd * 13.0 - Vector3(0, 0.7, 0)
-	_deco.box(Transform3D(Basis.looking_at(jd), tr), Vector3(0.9, 0.3, 0.9), Color(0.2, 0.2, 0.22, STEEL))
-	_deco.rod(tr, Vector3(tr.x, 7.5, tr.z), 0.02, Color(0.15, 0.15, 0.15, STEEL))
-	_deco.box(Transform3D(Basis(), Vector3(tr.x, 7.2, tr.z)), Vector3(0.5, 0.7, 0.4), Color(0.85, 0.5, 0.1, STEEL))
+	var tr_: Vector3 = j0 + jd * 13.0 - Vector3(0, 0.7, 0)
+	_deco.box(Transform3D(Basis.looking_at(jd), tr_), Vector3(0.9, 0.3, 0.9), Color(0.2, 0.2, 0.22, STEEL))
+	_deco.rod(tr_, Vector3(tr_.x, 7.5, tr_.z), 0.02, Color(0.15, 0.15, 0.15, STEEL))
+	_deco.box(Transform3D(Basis(), Vector3(tr_.x, 7.2, tr_.z)), Vector3(0.5, 0.7, 0.4), Color(0.85, 0.5, 0.1, STEEL))
 	_lm_top = apex + Vector3(0, 0.3, 0)
 
 
@@ -2168,12 +2168,12 @@ func _fallen_pole(base: Vector3, dir: Vector3, h: float) -> void:
 
 ## A dead festoon run: sagging wire, cold bulbs, one end on the ground.
 func _dead_wire(a: Vector3, b: Vector3, sag: float) -> void:
-	var len: float = a.distance_to(b)
-	var segs: int = maxi(6, int(len / 1.0))
+	var len_: float = a.distance_to(b)
+	var segs: int = maxi(6, int(len_ / 1.0))
 	var wire := Color(0.08, 0.08, 0.08, STEEL)
 	for i: int in segs:
 		_deco.rod(_catenary(a, b, sag, float(i) / segs), _catenary(a, b, sag, float(i + 1) / segs), 0.008, wire)
-	var n: int = int(len / 0.6)
+	var n: int = int(len_ / 0.6)
 	for i: int in range(1, n):
 		if _rng.randf() < 0.3:
 			continue

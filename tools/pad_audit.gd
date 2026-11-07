@@ -22,8 +22,8 @@ func _shot() -> void:
 	if not DevHooks.has("audit-shots") or _shots.is_empty() or DisplayServer.get_name() == "headless":
 		return
 	await _frames(int(DevHooks.get_f("audit-frames", 3.0)))
-	var name: String = _shots[-1].to_lower().replace("/", "_").replace(" ", "_")
-	DevHooks.save_viewport("%s/%02d_%s.png" % [DevHooks.get_s("audit-shots", "screenshots/ui_tour"), _checked, name])
+	var name_: String = _shots[-1].to_lower().replace("/", "_").replace(" ", "_")
+	DevHooks.save_viewport("%s/%02d_%s.png" % [DevHooks.get_s("audit-shots", "screenshots/ui_tour"), _checked, name_])
 
 
 func _ready() -> void:

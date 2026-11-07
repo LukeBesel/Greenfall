@@ -194,7 +194,7 @@ func _process(_delta: float) -> void:
 
 # --- Synthesis ----------------------------------------------------------------
 
-func _wav(samples: PackedFloat32Array, loop: bool = false) -> AudioStreamWAV:
+func _wav(samples: PackedFloat32Array, loop_: bool = false) -> AudioStreamWAV:
 	var data := PackedByteArray()
 	data.resize(samples.size() * 2)
 	for i: int in samples.size():
@@ -204,7 +204,7 @@ func _wav(samples: PackedFloat32Array, loop: bool = false) -> AudioStreamWAV:
 	w.mix_rate = RATE
 	w.stereo = false
 	w.data = data
-	if loop:
+	if loop_:
 		w.loop_mode = AudioStreamWAV.LOOP_FORWARD
 		w.loop_begin = 0
 		w.loop_end = samples.size()

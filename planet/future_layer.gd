@@ -133,7 +133,7 @@ static func _new_plan() -> Dictionary:
 	return p
 
 
-static func _add(p: Dictionary, ch: String, xf: Transform3D, col: Color, kind: float, en: float, key: int, seed: float = -1.0) -> void:
+static func _add(p: Dictionary, ch: String, xf: Transform3D, col: Color, kind: float, en: float, key: int, seed_: float = -1.0) -> void:
 	var c: Dictionary = p[ch]
 	# Thin, delicate light lines and small orbs (owner: thin glowing lines are fine, nothing thick).
 	if ch == "line":
@@ -145,7 +145,7 @@ static func _add(p: Dictionary, ch: String, xf: Transform3D, col: Color, kind: f
 	(c["col"] as Array).append(col)
 	# Toned down: futuristic accents are soft light, not neon (owner: "not that Tron-like").
 	var soft: float = 0.35 if ch in ["line", "seam"] else 0.55
-	(c["cus"] as Array).append(Color(_h(key) * 10.0 if seed < 0.0 else seed, kind, en * soft, 0.0))
+	(c["cus"] as Array).append(Color(_h(key) * 10.0 if seed_ < 0.0 else seed_, kind, en * soft, 0.0))
 	(c["key"] as Array).append(key)
 
 
@@ -846,10 +846,10 @@ func _update_movers() -> void:
 		var car: bool = int(m["type"]) == 1
 		var yaw: float = atan2(fwd.x, fwd.z)
 		var bs: Vector3 = (Vector3(1.1, 0.45, 2.6) if car else Vector3(0.7, 0.28, 0.7)) * maxf(f, 0.001)
-		var basis := Basis(Vector3.UP, yaw) * Basis.from_scale(bs)
+		var basis_ := Basis(Vector3.UP, yaw) * Basis.from_scale(bs)
 		var col: Color = m["col"]
 		var cus := Color(float(i) * 0.37, K_STEADY, 1.0, -100.0)
-		body.set_instance_transform(i, Transform3D(basis, pos))
+		body.set_instance_transform(i, Transform3D(basis_, pos))
 		body.set_instance_color(i, Color.WHITE)
 		body.set_instance_custom_data(i, cus)
 		var gs: Vector3 = (Vector3(1.3, 0.12, 2.8) if car else Vector3(0.75, 0.1, 0.75)) * maxf(f, 0.001)

@@ -7,8 +7,8 @@ var _fails: int = 0
 var s: Node
 
 
-func _check(name: String, ok: bool, detail: String = "") -> void:
-	print("[events-check] %s %s %s" % ["PASS" if ok else "FAIL", name, detail])
+func _check(name_: String, ok: bool, detail: String = "") -> void:
+	print("[events-check] %s %s %s" % ["PASS" if ok else "FAIL", name_, detail])
 	if not ok:
 		_fails += 1
 

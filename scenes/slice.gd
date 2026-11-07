@@ -904,10 +904,10 @@ func add_cube(cube: JunkCube) -> void:
 	_cubes_root.add_child(cube)
 
 
-func _hitstop(duration: float, scale: float) -> void:
+func _hitstop(duration: float, scale_: float) -> void:
 	if Settings.reduced_motion:
 		return
-	Engine.time_scale = scale * (float(DevHooks.get_f("time-scale", 1.0)))
+	Engine.time_scale = scale_ * (float(DevHooks.get_f("time-scale", 1.0)))
 	get_tree().create_timer(duration, true, false, true).timeout.connect(func() -> void:
 		Engine.time_scale = DevHooks.get_f("time-scale", 1.0))
 

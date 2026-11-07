@@ -7,9 +7,9 @@ extends Node
 var _fails: int = 0
 
 
-func _check(name: String, a: Variant, b: Variant) -> void:
+func _check(name_: String, a: Variant, b: Variant) -> void:
 	var ok: bool = str(a) == str(b)
-	print("[roundtrip] %s %s: %s -> %s" % ["PASS" if ok else "FAIL", name, str(a), str(b)])
+	print("[roundtrip] %s %s: %s -> %s" % ["PASS" if ok else "FAIL", name_, str(a), str(b)])
 	if not ok:
 		_fails += 1
 

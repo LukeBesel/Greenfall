@@ -122,7 +122,7 @@ func _ready() -> void:
 
 ## --- Building -------------------------------------------------------------------------------
 
-func section(name: String, open: bool = true) -> VBoxContainer:
+func section(name_: String, open: bool = true) -> VBoxContainer:
 	var hb := Button.new()
 	hb.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	hb.custom_minimum_size = Vector2(0, 30)
@@ -135,25 +135,25 @@ func section(name: String, open: bool = true) -> VBoxContainer:
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 2)
 	_body.add_child(vb)
-	_sections[name] = [hb, vb]
-	var show: Callable = func() -> void: hb.text = ("▾  " if vb.visible else "▸  ") + name.to_upper()
+	_sections[name_] = [hb, vb]
+	var show_: Callable = func() -> void: hb.text = ("▾  " if vb.visible else "▸  ") + name_.to_upper()
 	vb.visible = open
-	show.call()
+	show_.call()
 	hb.pressed.connect(func() -> void:
 		vb.visible = not vb.visible
-		show.call()
+		show_.call()
 		Audio.play("click", 1.0, -10.0))
 	if _first == null:
 		_first = hb
 	return vb
 
 
-func open_section(name: String, open: bool) -> void:
-	if _sections.has(name):
-		var vb: VBoxContainer = _sections[name][1]
+func open_section(name_: String, open: bool) -> void:
+	if _sections.has(name_):
+		var vb: VBoxContainer = _sections[name_][1]
 		vb.visible = open
-		var hb: Button = _sections[name][0]
-		hb.text = ("▾  " if open else "▸  ") + name.to_upper()
+		var hb: Button = _sections[name_][0]
+		hb.text = ("▾  " if open else "▸  ") + name_.to_upper()
 
 
 func _row(p: VBoxContainer, text: String, ctl: Control, focus_ctl: Control = null) -> void:
@@ -208,12 +208,12 @@ func cycler(p: VBoxContainer, text: String, key: String, options: Array) -> void
 	b.custom_minimum_size = Vector2(176, ROW_H)
 	b.add_theme_font_size_override("font_size", 13)
 	b.clip_text = true
-	var show: Callable = func() -> void: b.text = "‹  %s  ›" % tr(str(options[clampi(int(owner_mode.get_value(key)), 0, options.size() - 1)]))
+	var show_: Callable = func() -> void: b.text = "‹  %s  ›" % tr(str(options[clampi(int(owner_mode.get_value(key)), 0, options.size() - 1)]))
 	var step: Callable = func(d: int) -> void:
 		owner_mode.set_value(key, wrapi(int(owner_mode.get_value(key)) + d, 0, options.size()))
-		show.call()
+		show_.call()
 		Audio.play("click", 1.0 + 0.05 * d, -10.0)
-	show.call()
+	show_.call()
 	b.pressed.connect(func() -> void: step.call(1))
 	b.gui_input.connect(func(e: InputEvent) -> void:
 		if e.is_action_pressed("ui_left"):
@@ -225,7 +225,7 @@ func cycler(p: VBoxContainer, text: String, key: String, options: Array) -> void
 		elif e is InputEventMouseButton and (e as InputEventMouseButton).pressed and (e as InputEventMouseButton).button_index == MOUSE_BUTTON_RIGHT:
 			step.call(-1)
 			b.accept_event())
-	_rows[key] = {"kind": "cycler", "ctl": b, "show": show}
+	_rows[key] = {"kind": "cycler", "ctl": b, "show": show_}
 	_row(p, text, b)
 
 

@@ -17,10 +17,10 @@ func _init(p_api: Object) -> void:
 
 
 ## Pure decision: "cloud", "local" or "none" (nothing to do: both missing).
-static func pick_newer(local_exists: bool, local_saved: float, cloud_exists: bool, cloud_saved: float) -> String:
-	if not local_exists and not cloud_exists:
+static func pick_newer(local_exists: bool, local_saved: float, cloud_exists_: bool, cloud_saved: float) -> String:
+	if not local_exists and not cloud_exists_:
 		return "none"
-	if not cloud_exists:
+	if not cloud_exists_:
 		return "local"
 	if not local_exists:
 		return "cloud"

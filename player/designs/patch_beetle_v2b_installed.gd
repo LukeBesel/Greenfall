@@ -108,8 +108,8 @@ func _ready() -> void:
 
 # ---------------------------------------------------------------- helpers
 
-func _paint(color: Color, coverage: float, rust: float, seed: float, grime: float = 0.5, floor_y: float = 0.0) -> ShaderMaterial:
-	var m: ShaderMaterial = Mats.worn_paint(color, coverage, rust, seed, grime)
+func _paint(color: Color, coverage: float, rust: float, seed_: float, grime: float = 0.5, floor_y: float = 0.0) -> ShaderMaterial:
+	var m: ShaderMaterial = Mats.worn_paint(color, coverage, rust, seed_, grime)
 	m.set_shader_parameter("grime_floor", floor_y)
 	m.set_shader_parameter("grime_height", 0.3)
 	m.set_shader_parameter("fade", 0.15)

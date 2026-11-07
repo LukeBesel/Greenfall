@@ -456,13 +456,13 @@ func _beam_mesh() -> MeshInstance3D:
 
 func _place_beam(mi: MeshInstance3D, a: Vector3, b: Vector3) -> void:
 	var d: Vector3 = b - a
-	var len: float = maxf(d.length(), 0.05)
-	var y: Vector3 = d / len
+	var len_: float = maxf(d.length(), 0.05)
+	var y: Vector3 = d / len_
 	var x: Vector3 = y.cross(Vector3.UP if absf(y.y) < 0.95 else Vector3.RIGHT).normalized()
 	var z: Vector3 = x.cross(y)
-	mi.global_transform = Transform3D(Basis(x, -y * len, z), a + d * 0.5)
+	mi.global_transform = Transform3D(Basis(x, -y * len_, z), a + d * 0.5)
 	# Keep the end dot round despite the stretched beam.
-	(mi.get_child(0) as Node3D).scale = Vector3(1.0, 1.0 / len, 1.0)
+	(mi.get_child(0) as Node3D).scale = Vector3(1.0, 1.0 / len_, 1.0)
 
 
 func _make_sprout() -> Node3D:

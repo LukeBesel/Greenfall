@@ -103,8 +103,8 @@ func _ready() -> void:
 
 # ---------------------------------------------------------------- helpers
 
-func _paint(color: Color, coverage: float, rust: float, seed: float, grime: float = 0.5, floor_y: float = 0.0) -> ShaderMaterial:
-	var m: ShaderMaterial = Mats.worn_paint(color, coverage, rust, seed, grime)
+func _paint(color: Color, coverage: float, rust: float, seed_: float, grime: float = 0.5, floor_y: float = 0.0) -> ShaderMaterial:
+	var m: ShaderMaterial = Mats.worn_paint(color, coverage, rust, seed_, grime)
 	m.set_shader_parameter("grime_floor", floor_y)
 	m.set_shader_parameter("grime_height", 0.45)
 	m.set_meta("cov", coverage)
@@ -413,16 +413,16 @@ func _build_hopper() -> void:
 	_bake(_rig, ProcMesh.box(Vector3(0.6, 0.035, 0.03)), steel, _x(Vector3(0, 0.76, -0.33)))   # curtain rail
 	_bolts(_rig, [Vector3(-0.26, 0.76, -0.348), Vector3(-0.09, 0.76, -0.348), Vector3(0.09, 0.76, -0.348), Vector3(0.26, 0.76, -0.348)], Vector3(0, 0, -1), 0.01)
 	# Trough: floor sloping down into the throat, two side cheeks, front lip.
-	var tr: Array = []
-	tr.append(ProcMesh.part(ProcMesh.box(Vector3(0.6, 0.02, 0.32)), _x(Vector3(0, 0.425, -0.47), Vector3(-6, 0, 0))))
+	var tr_: Array = []
+	tr_.append(ProcMesh.part(ProcMesh.box(Vector3(0.6, 0.02, 0.32)), _x(Vector3(0, 0.425, -0.47), Vector3(-6, 0, 0))))
 	for s: float in [-1.0, 1.0]:
 		# cheek: trapezoid approximated by a box with a slanted top cap
-		tr.append(ProcMesh.part(ProcMesh.box(Vector3(0.022, 0.2, 0.36)), _x(Vector3(0.3 * s, 0.5, -0.46))))
-		tr.append(ProcMesh.part(ProcMesh.box(Vector3(0.022, 0.16, 0.2)), _x(Vector3(0.3 * s, 0.63, -0.38), Vector3(-28, 0, 0))))
-		tr.append(ProcMesh.part(ProcMesh.box(Vector3(0.034, 0.022, 0.43)), _x(Vector3(0.3 * s, 0.645, -0.43), Vector3(-24, 0, 0))))   # rolled top edge
-	tr.append(ProcMesh.part(ProcMesh.box(Vector3(0.62, 0.13, 0.022)), _x(Vector3(0, 0.47, -0.635), Vector3(-10, 0, 0))))
-	tr.append(ProcMesh.part(ProcMesh.cyl(0.016, 0.016, 0.63, 10), _x(Vector3(0, 0.535, -0.645), Vector3(0, 0, 90))))   # rolled lip
-	_bake_many(_rig, tr, yel)
+		tr_.append(ProcMesh.part(ProcMesh.box(Vector3(0.022, 0.2, 0.36)), _x(Vector3(0.3 * s, 0.5, -0.46))))
+		tr_.append(ProcMesh.part(ProcMesh.box(Vector3(0.022, 0.16, 0.2)), _x(Vector3(0.3 * s, 0.63, -0.38), Vector3(-28, 0, 0))))
+		tr_.append(ProcMesh.part(ProcMesh.box(Vector3(0.034, 0.022, 0.43)), _x(Vector3(0.3 * s, 0.645, -0.43), Vector3(-24, 0, 0))))   # rolled top edge
+	tr_.append(ProcMesh.part(ProcMesh.box(Vector3(0.62, 0.13, 0.022)), _x(Vector3(0, 0.47, -0.635), Vector3(-10, 0, 0))))
+	tr_.append(ProcMesh.part(ProcMesh.cyl(0.016, 0.016, 0.63, 10), _x(Vector3(0, 0.535, -0.645), Vector3(0, 0, 90))))   # rolled lip
+	_bake_many(_rig, tr_, yel)
 	# Hazard chevrons on the front lip.
 	var chev := MeshInstance3D.new()
 	chev.mesh = _chevron_mesh(0.58, 0.085, 0.045)

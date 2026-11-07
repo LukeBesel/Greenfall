@@ -279,32 +279,32 @@ func proxy_building(bd: Dictionary, body: Geo, det: Geo) -> void:
 	var along: Vector2 = frame[1]
 	var bays: int = maxi(1, int(round((r.size.x if absf(face.y) > 0.5 else r.size.y) / BAY)))
 	for ti: int in tiers.size():
-		var tr: Rect2 = tiers[ti][0]
+		var tr_: Rect2 = tiers[ti][0]
 		var y0: float = float(tiers[ti][1]) * FLOOR_H
 		var y1: float = float(tiers[ti][2]) * FLOOR_H
 		body.mat(K_FACADE, tint, tex, flags)
-		body.abox(_v3(tr.position, y0), Vector3(tr.size.x, y1 - y0, tr.size.y), -2, f3, F_SHOP if (shop and ti == 0) else 0)
+		body.abox(_v3(tr_.position, y0), Vector3(tr_.size.x, y1 - y0, tr_.size.y), -2, f3, F_SHOP if (shop and ti == 0) else 0)
 		# Roof surface (own material, slightly above the walls' top).
 		body.mat(K_ROOF, roof_tint, 0, roof_flags)
-		body.abox(_v3(tr.position, y1 - 0.05), Vector3(tr.size.x, 0.06, tr.size.y))
+		body.abox(_v3(tr_.position, y1 - 0.05), Vector3(tr_.size.x, 0.06, tr_.size.y))
 		# Cornice at the top of each tier.
 		if not factory or rng.randf() < 0.4:
 			var g: float = rng.randf_range(0.18, 0.32)
 			body.mat(K_COPING, COPING.darkened(rng.randf_range(0.0, 0.15)))
-			body.abox(_v3(tr.position - Vector2(g, g), y1 - 0.42), Vector3(tr.size.x + g * 2.0, 0.42, tr.size.y + g * 2.0))
+			body.abox(_v3(tr_.position - Vector2(g, g), y1 - 0.42), Vector3(tr_.size.x + g * 2.0, 0.42, tr_.size.y + g * 2.0))
 		# Parapet with coping.
-		_parapet(body, tr, y1, rng.randf_range(0.8, 1.2), tex, tint)
+		_parapet(body, tr_, y1, rng.randf_range(0.8, 1.2), tex, tint)
 		# Ruined buildings: a broken notch in the roofline instead of props.
 		if ruined and ti == tiers.size() - 1:
 			body.mat(K_DARK, Color(0.05, 0.05, 0.05))
-			var c: Vector2 = tr.get_center()
+			var c: Vector2 = tr_.get_center()
 			body.abox(_v3(c - Vector2(1.5, 1.5), y1 - 0.02), Vector3(3.0, 0.04, 3.0))
-			_junk(det, Rect2(tr.position + Vector2(1, 1), tr.size - Vector2(2, 2)), y1, rng.randi_range(3, 6), [])
+			_junk(det, Rect2(tr_.position + Vector2(1, 1), tr_.size - Vector2(2, 2)), y1, rng.randi_range(3, 6), [])
 		elif ti == tiers.size() - 1:
-			dress_roof(body, det, tr.grow(-0.6), y1, floors, factory)
+			dress_roof(body, det, tr_.grow(-0.6), y1, floors, factory)
 		else:
 			# Terrace on the setback: planters, chairs, a dead garden.
-			var terrace: Rect2 = _front_strip(tr, face, tr.size.x if absf(face.x) > 0.5 else tr.size.y)
+			var terrace: Rect2 = _front_strip(tr_, face, tr_.size.x if absf(face.x) > 0.5 else tr_.size.y)
 			_dead_garden(det, terrace.grow(-0.7), y1, rng.randi_range(2, 4))
 	# Belt course above the ground floor.
 	if not factory:

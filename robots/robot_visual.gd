@@ -1008,13 +1008,13 @@ func beam_to(world_pos: Variant) -> void:
 		return
 	var a: Vector3 = _emitter.global_position if _emitter else to_global(emitter_point)
 	var b: Vector3 = world_pos
-	var len: float = maxf(a.distance_to(b), 0.05)
+	var len_: float = maxf(a.distance_to(b), 0.05)
 	_beam.visible = true
 	var up: Vector3 = (a - b).normalized()
 	var side: Vector3 = up.cross(Vector3.FORWARD if absf(up.dot(Vector3.FORWARD)) < 0.9 else Vector3.RIGHT).normalized()
 	var w: float = 1.0 if hover else 0.45  # Mk III: a slim beam from the arm emitter
-	_beam.global_transform = Transform3D(Basis(side * w, up * len, side.cross(up) * w), (a + b) * 0.5)
-	_beam_mat.set_shader_parameter("beam_length", len)
+	_beam.global_transform = Transform3D(Basis(side * w, up * len_, side.cross(up) * w), (a + b) * 0.5)
+	_beam_mat.set_shader_parameter("beam_length", len_)
 
 
 # --- Idle life -------------------------------------------------------------------------

@@ -281,8 +281,8 @@ func _focus_first() -> void:
 func _refresh_hubs() -> void:
 	for c: Node in _hub_list.get_children():
 		c.queue_free()
-	var ready: bool = rocket_ready.call()
-	if not ready:
+	var ready_: bool = rocket_ready.call()
+	if not ready_:
 		var l := UITheme.label(str(rocket_lock_text.call()), 13, UITheme.MUTED)
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		_hub_list.add_child(l)
@@ -306,7 +306,7 @@ func _refresh_hubs() -> void:
 		hb.add_child(vb)
 		var b := Button.new()
 		b.text = tr("Launch")
-		b.disabled = not ready
+		b.disabled = not ready_
 		_holo_button(b)
 		b.pressed.connect(func() -> void:
 			close_view()
