@@ -805,6 +805,72 @@
     "target": 5,
     "key": "builder_toppers"
    }
+  },
+  {
+   "id": "pet_cat",
+   "name": "A Friend in Old Town",
+   "desc": "Pet a stray cat.",
+   "icon": "leaf",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "cats_petted"
+   }
+  },
+  {
+   "id": "adopt_cat",
+   "name": "Best Friends",
+   "desc": "Pet the same cat until she adopts you.",
+   "icon": "star",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "fauna_cat_named"
+   }
+  },
+  {
+   "id": "spot_deer",
+   "name": "Oh, Deer",
+   "desc": "Spot a deer at the edge of the green.",
+   "icon": "leaf",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "seen_deer"
+   }
+  },
+  {
+   "id": "lake_fish",
+   "name": "Clear as Day",
+   "desc": "See fish in a clean lake.",
+   "icon": "drop",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "seen_fish"
+   }
+  },
+  {
+   "id": "naturalist",
+   "name": "Naturalist",
+   "desc": "Spot 10 different animals.",
+   "icon": "book",
+   "cond": {
+    "type": "list",
+    "target": 10,
+    "key": "fauna_seen"
+   }
+  },
+  {
+   "id": "wild_photos",
+   "name": "Wildlife Photographer",
+   "desc": "Photograph 6 different animals in photo mode.",
+   "icon": "trophy",
+   "cond": {
+    "type": "list",
+    "target": 6,
+    "key": "fauna_photos"
+   }
   }
  ]
 }

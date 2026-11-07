@@ -39,6 +39,7 @@ var events: WorldEvents  # [events] world events, cleaning streak (systems/event
 var lumi_level: LumiLevel  # [hud] Lumi Level / XP (systems/lumi_level.gd), drawn by the hotbar
 var contracts: Contracts  # [events] contracts board + token shop (systems/contracts.gd)
 var photo: PhotoMode  # [photo] photo mode (ui/photo_mode.gd)
+var fauna: Fauna  # [wild] ambient animals (fauna/fauna.gd)
 var frontier: FrontierDistrict  # [biomes] late-game frontier districts (planet/frontier_district.gd)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
@@ -483,6 +484,9 @@ func _ready() -> void:
 	bloom.name = "Bloom"
 	bloom.world = self
 	add_child(bloom)
+	fauna = Fauna.new()  # [wild] animals return as hexes are restored
+	add_child(fauna)
+	fauna.setup(self)
 	# Cradle Returns complete -> the ark comes home (the finale plays once per save).
 	# [beat] (Bloom connects EventBus.cradle_district_complete itself: a lambda here outlived the scene)
 	if frontier:  # [biomes] frontier mechanics and visuals, once the scene is built

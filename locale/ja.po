@@ -513,6 +513,26 @@ msgstr "%s 相当のベールが、運ぶ者もなく基地に積まれていた
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
 
+#: fauna/fauna.gd:1211
+msgid "E   pet %s"
+msgstr ""
+
+#: fauna/fauna.gd:1212
+msgid "E   pet the cat"
+msgstr ""
+
+#: fauna/fauna.gd:1261
+msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
+msgstr ""
+
+#: fauna/fauna.gd:1574
+msgid "New sighting: %s. It's in the Codex now."
+msgstr ""
+
+#: fauna/fauna.gd:1642
+msgid "Snap! A %s for your Collection."
+msgstr ""
+
 #: planet/frontier_district.gd:279
 msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
 msgstr "地平線に砂嵐。むき出しのきれいな地面は埋もれてしまう。植えたヘックスや守られたヘックスは耐える。"
@@ -1129,63 +1149,63 @@ msgstr "給水タンクを設置。近くの水やりロボはここで補給す
 msgid "WATER"
 msgstr "水"
 
-#: scenes/slice.gd:275
+#: scenes/slice.gd:276
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーンを塗って、好きな場所にクルーを送ろう。"
 
-#: scenes/slice.gd:499
+#: scenes/slice.gd:503
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 起動。ブルームコア 4%：緑の光 微弱。Cradle号リレー：かすか。何かを育てよう。"
 
-#: scenes/slice.gd:796
+#: scenes/slice.gd:800
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
-#: scenes/slice.gd:810
+#: scenes/slice.gd:814
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice.gd:812
+#: scenes/slice.gd:816
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
 
-#: scenes/slice.gd:819
+#: scenes/slice.gd:823
 msgid "%s is out of range: %s"
 msgstr "%s は範囲外：%s"
 
-#: scenes/slice.gd:829
+#: scenes/slice.gd:833
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:832 ui/rockets_panel.gd:39
+#: scenes/slice.gd:836 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:886
+#: scenes/slice.gd:890
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陸：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:887
+#: scenes/slice.gd:891
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
 
-#: scenes/slice.gd:887
+#: scenes/slice.gd:891
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:978
+#: scenes/slice.gd:982
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice.gd:1150
+#: scenes/slice.gd:1154
 msgid "Welcome back. The junk waited for you."
 msgstr "おかえり。ガラクタが待っていたよ。"
 
-#: scenes/slice.gd:1167
+#: scenes/slice.gd:1171
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:1167
+#: scenes/slice.gd:1171
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
@@ -1209,7 +1229,7 @@ msgstr "基地は体験版で行けるところまで育った。"
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "製品版では、Lumi は基地をレベル5まで育て、地区まるごと緑で満たし、明るい未来都市へと成長させ、ロケットで星じゅうの数十の基地へ飛んでいきます。体験版の進行状況は引き継がれます。"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:666
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:667
 msgid "Hexes cleaned"
 msgstr "片づけたヘックス"
 
@@ -1217,11 +1237,11 @@ msgstr "片づけたヘックス"
 msgid "Bales made"
 msgstr "作ったベール"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:681
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:682
 msgid "Robots built"
 msgstr "作ったロボット"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:689
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:690
 msgid "Time played"
 msgstr "プレイ時間"
 
@@ -1241,7 +1261,7 @@ msgstr "タイトル画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "プレイを続ける：最初の地区は基地レベル %d のまま遊べます。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:758 ui/main_menu.gd:427
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:759 ui/main_menu.gd:427
 msgid "%dh %02dm"
 msgstr "%d時間%02d分"
 
@@ -1846,19 +1866,19 @@ msgstr "Verdance ブルーム：%s。%s"
 msgid "Somewhere under the junk."
 msgstr "ガラクタの下のどこか。"
 
-#: systems/codex.gd:184 ui/codex_screen.gd:355
+#: systems/codex.gd:188 ui/codex_screen.gd:355
 msgid "Old Town"
 msgstr "旧市街"
 
-#: systems/codex.gd:188 ui/codex_screen.gd:355
+#: systems/codex.gd:192 ui/codex_screen.gd:355
 msgid "Wilderness bases"
 msgstr "荒野の基地"
 
-#: systems/codex.gd:188
+#: systems/codex.gd:192
 msgid " · often %s"
 msgstr " · よく出る場所：%s"
 
-#: systems/codex.gd:189 ui/codex_screen.gd:355
+#: systems/codex.gd:193 ui/codex_screen.gd:355
 msgid "Any district"
 msgstr "どの地区でも"
 
@@ -1887,26 +1907,30 @@ msgid "Wildlife Photos"
 msgstr "生き物の写真"
 
 #: systems/collection.gd:83
+msgid "Animal Photos"
+msgstr ""
+
+#: systems/collection.gd:84
 msgid "Rare Part Signals"
 msgstr "レアパーツの信号"
 
-#: systems/collection.gd:84
+#: systems/collection.gd:85
 msgid "Ledger Audits"
 msgstr "Ledger の監査"
 
-#: systems/collection.gd:85
+#: systems/collection.gd:86
 msgid "Cleaning Streaks"
 msgstr "清掃コンボ"
 
-#: systems/collection.gd:86
+#: systems/collection.gd:87
 msgid "Lumi Levels"
 msgstr "Lumi のレベル"
 
-#: systems/collection.gd:87 ui/upgrades_screen.gd:17
+#: systems/collection.gd:88 ui/upgrades_screen.gd:17
 msgid "Contracts"
 msgstr "依頼"
 
-#: systems/collection.gd:88
+#: systems/collection.gd:89
 msgid "Curio Capsules"
 msgstr "珍品カプセル"
 
@@ -2147,7 +2171,7 @@ msgstr "予約がいっぱい"
 msgid "Not enough data"
 msgstr "データが足りない"
 
-#: systems/research.gd:324 ui/codex_screen.gd:762
+#: systems/research.gd:324 ui/codex_screen.gd:763
 msgid "%ds"
 msgstr "%d秒"
 
@@ -2540,7 +2564,7 @@ msgstr ""
 msgid "RESTART CHECKLIST  ·  DONE"
 msgstr ""
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:695
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:696
 msgid "Achievements"
 msgstr "実績"
 
@@ -2619,146 +2643,150 @@ msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera
 msgstr "ヒント：維持・繁栄したヘックスに、恥ずかしがりやの訪問者がやってくる。カメラを持っていこう。"
 
 #: ui/codex_screen.gd:552
+msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
+msgstr ""
+
+#: ui/codex_screen.gd:553
 msgid "Hint: complete %d contracts at the workbench."
 msgstr "ヒント：作業台で依頼を %d 件達成しよう。"
 
-#: ui/codex_screen.gd:553
+#: ui/codex_screen.gd:554
 msgid "Hint: Curio Capsules, in the workbench token shop."
 msgstr "ヒント：作業台のトークンショップにある珍品カプセル。"
 
-#: ui/codex_screen.gd:554
+#: ui/codex_screen.gd:555
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "ヒント：コンボメーターがいっぱいになるまで休まずすくい続けよう。"
 
-#: ui/codex_screen.gd:555
+#: ui/codex_screen.gd:556
 msgid "Hint: turns up during %s."
 msgstr "ヒント：%sのあいだに現れる。"
 
-#: ui/codex_screen.gd:624
+#: ui/codex_screen.gd:625
 msgid "Unlocked  ·  %s"
 msgstr "解除  ·  %s"
 
-#: ui/codex_screen.gd:663
+#: ui/codex_screen.gd:664
 msgid "Total"
 msgstr "合計"
 
-#: ui/codex_screen.gd:664
+#: ui/codex_screen.gd:665
 msgid "Junk removed"
 msgstr "取り除いたガラクタ"
 
-#: ui/codex_screen.gd:664
+#: ui/codex_screen.gd:665
 msgid "by type"
 msgstr "種類別"
 
-#: ui/codex_screen.gd:665 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:666 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "清掃"
 
-#: ui/codex_screen.gd:667
+#: ui/codex_screen.gd:668
 msgid "Hexes restored"
 msgstr "よみがえったヘックス"
 
-#: ui/codex_screen.gd:668
+#: ui/codex_screen.gd:669
 msgid "Bales pressed"
 msgstr "圧縮したベール"
 
-#: ui/codex_screen.gd:669
+#: ui/codex_screen.gd:670
 msgid "Pure bales"
 msgstr "ピュアベール"
 
-#: ui/codex_screen.gd:670
+#: ui/codex_screen.gd:671
 msgid "Perfect bales"
 msgstr "パーフェクトベール"
 
-#: ui/codex_screen.gd:671
+#: ui/codex_screen.gd:672
 msgid "Lumpy bales"
 msgstr "でこぼこベール"
 
-#: ui/codex_screen.gd:672
+#: ui/codex_screen.gd:673
 msgid "Bales cashed in"
 msgstr "換金したベール"
 
-#: ui/codex_screen.gd:673
+#: ui/codex_screen.gd:674
 msgid "Cubes earned"
 msgstr "稼いだキューブ"
 
-#: ui/codex_screen.gd:675 ui/globe_view.gd:135 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:676 ui/globe_view.gd:135 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "栽培"
 
-#: ui/codex_screen.gd:676
+#: ui/codex_screen.gd:677
 msgid "Seeds planted"
 msgstr "植えた種"
 
-#: ui/codex_screen.gd:677
+#: ui/codex_screen.gd:678
 msgid "Plants bloomed"
 msgstr "咲いた植物"
 
-#: ui/codex_screen.gd:678
+#: ui/codex_screen.gd:679
 msgid "Air filtered"
 msgstr "ろ過した空気"
 
-#: ui/codex_screen.gd:680 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:681 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "ロボット"
 
-#: ui/codex_screen.gd:682
+#: ui/codex_screen.gd:683
 msgid "Bales by robots"
 msgstr "ロボットのベール"
 
-#: ui/codex_screen.gd:683
+#: ui/codex_screen.gd:684
 msgid "Parts dug up"
 msgstr "掘り出したパーツ"
 
-#: ui/codex_screen.gd:685
+#: ui/codex_screen.gd:686
 msgid "Exploring"
 msgstr "探索"
 
-#: ui/codex_screen.gd:686
+#: ui/codex_screen.gd:687
 msgid "Distance rolled"
 msgstr "走った距離"
 
-#: ui/codex_screen.gd:687
+#: ui/codex_screen.gd:688
 msgid "Memory shards read"
 msgstr "読んだメモリーの破片"
 
-#: ui/codex_screen.gd:688
+#: ui/codex_screen.gd:689
 msgid "Codex entries"
 msgstr "図鑑の項目"
 
-#: ui/codex_screen.gd:691
+#: ui/codex_screen.gd:692
 msgid "Progress"
 msgstr "進行状況"
 
-#: ui/codex_screen.gd:692
+#: ui/codex_screen.gd:693
 msgid "Upgrades bought"
 msgstr "購入したアップグレード"
 
-#: ui/codex_screen.gd:693
+#: ui/codex_screen.gd:694
 msgid "Data earned"
 msgstr "獲得データ"
 
-#: ui/codex_screen.gd:694
+#: ui/codex_screen.gd:695
 msgid "Research done"
 msgstr "完了した研究"
 
-#: ui/codex_screen.gd:696
+#: ui/codex_screen.gd:697
 msgid "Best hub level"
 msgstr "最高基地レベル"
 
-#: ui/codex_screen.gd:746
+#: ui/codex_screen.gd:747
 msgid "%s kg"
 msgstr "%s kg"
 
-#: ui/codex_screen.gd:747
+#: ui/codex_screen.gd:748
 msgid "%.1f kg"
 msgstr "%.1f kg"
 
-#: ui/codex_screen.gd:751
+#: ui/codex_screen.gd:752
 msgid "%.2f km"
 msgstr "%.2f km"
 
-#: ui/codex_screen.gd:761
+#: ui/codex_screen.gd:762
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
 
@@ -3811,15 +3839,15 @@ msgstr "Greenfall スタンプ"
 msgid "Resolution"
 msgstr "解像度"
 
-#: ui/photo_mode.gd:852
+#: ui/photo_mode.gd:857
 msgid "Couldn't capture the photo."
 msgstr "写真を撮影できませんでした。"
 
-#: ui/photo_mode.gd:861
+#: ui/photo_mode.gd:866
 msgid "Couldn't save the photo (%s)."
 msgstr "写真を保存できませんでした（%s）。"
 
-#: ui/photo_mode.gd:874
+#: ui/photo_mode.gd:879
 msgid "Saved  %s  (%dx%d)"
 msgstr "保存しました  %s  （%dx%d）"
 
@@ -4908,7 +4936,7 @@ msgstr "新鮮な空気"
 msgid "Filter 500 units of dusty air."
 msgstr "ほこりっぽい空気を500ユニットろ過する。"
 
-#: data/achievements.json:achievements[codex_20].name
+#: data/achievements.json:achievements[codex_20].name data/achievements.json:achievements[naturalist].name
 msgid "Naturalist"
 msgstr "博物学者"
 
@@ -5092,6 +5120,50 @@ msgstr "帽子掛け"
 msgid "Collect 5 different robot toppers."
 msgstr "異なるロボットの頭飾りを5つ集める。"
 
+#: data/achievements.json:achievements[pet_cat].name
+msgid "A Friend in Old Town"
+msgstr ""
+
+#: data/achievements.json:achievements[pet_cat].desc
+msgid "Pet a stray cat."
+msgstr ""
+
+#: data/achievements.json:achievements[adopt_cat].name
+msgid "Best Friends"
+msgstr ""
+
+#: data/achievements.json:achievements[adopt_cat].desc
+msgid "Pet the same cat until she adopts you."
+msgstr ""
+
+#: data/achievements.json:achievements[spot_deer].name
+msgid "Oh, Deer"
+msgstr ""
+
+#: data/achievements.json:achievements[spot_deer].desc
+msgid "Spot a deer at the edge of the green."
+msgstr ""
+
+#: data/achievements.json:achievements[lake_fish].name
+msgid "Clear as Day"
+msgstr ""
+
+#: data/achievements.json:achievements[lake_fish].desc
+msgid "See fish in a clean lake."
+msgstr ""
+
+#: data/achievements.json:achievements[naturalist].desc
+msgid "Spot 10 different animals."
+msgstr ""
+
+#: data/achievements.json:achievements[wild_photos].name
+msgid "Wildlife Photographer"
+msgstr ""
+
+#: data/achievements.json:achievements[wild_photos].desc
+msgid "Photograph 6 different animals in photo mode."
+msgstr ""
+
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
 msgstr "Verdance のどこかで繁栄ヘックス25個。"
@@ -5139,6 +5211,10 @@ msgstr "メモリーの破片"
 #: data/codex.json:categories[landmarks].name
 msgid "Landmarks"
 msgstr "ランドマーク"
+
+#: data/codex.json:categories[animals].name
+msgid "Animals"
+msgstr ""
 
 #: data/codex.json:categories[frontiers].name
 msgid "Frontiers"
@@ -5839,6 +5915,258 @@ msgstr "Cradle号の帰還で見つけよう。"
 #: data/codex.json:frontiers.ark_pad.desc
 msgid "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Sustained before the ark will trust it."
 msgstr "Cradle号が降り立つ、基地の前のヘックスの環。アークが信頼するには、きれいで維持されている必要がある。"
+
+#: data/codex.json:animals.cat.name data/fauna.json:species[cat].name
+msgid "Stray Cat"
+msgstr ""
+
+#: data/codex.json:animals.cat.hint
+msgid "Where: On clean city streets."
+msgstr ""
+
+#: data/codex.json:animals.cat.desc
+msgid "Old Town's cats never left. They know every warm engine block and sunny step, and they decided long ago that robots are furniture. Stop for a while and one may come over. Pet the same cat often enough and she'll move in at your base."
+msgstr ""
+
+#: data/codex.json:animals.pigeon.name data/fauna.json:species[pigeon].name
+msgid "Pigeon"
+msgstr ""
+
+#: data/codex.json:animals.pigeon.hint
+msgid "Where: Clean pavement in the city."
+msgstr ""
+
+#: data/codex.json:animals.pigeon.desc
+msgid "Pigeons will live anywhere people once dropped crumbs. They peck between the cracks, bob their heads as they walk and burst into the air all at once if you fly through them."
+msgstr ""
+
+#: data/codex.json:animals.sparrow.name data/fauna.json:species[sparrow].name
+msgid "Sparrow"
+msgstr ""
+
+#: data/codex.json:animals.sparrow.hint
+msgid "Where: Clean ground, city or wild."
+msgstr ""
+
+#: data/codex.json:animals.sparrow.desc
+msgid "Small, brown and bossy. Sparrows were the first birds to come back to swept streets, chirping from kerb to kerb."
+msgstr ""
+
+#: data/codex.json:animals.rat.name data/fauna.json:species[rat].name
+msgid "Rat"
+msgstr ""
+
+#: data/codex.json:animals.rat.hint
+msgid "Where: Wherever the junk is still piled up."
+msgstr ""
+
+#: data/codex.json:animals.rat.desc
+msgid "Rats live in the gaps between the piles. They are not villains, just tenants: clean a hex and they pack up and move to the next heap."
+msgstr ""
+
+#: data/codex.json:animals.rabbit.name data/fauna.json:species[rabbit].name
+msgid "Rabbit"
+msgstr ""
+
+#: data/codex.json:animals.rabbit.hint
+msgid "Where: Growing hexes."
+msgstr ""
+
+#: data/codex.json:animals.rabbit.desc
+msgid "Rabbits arrive as soon as there is something green to nibble. They hop, freeze, nibble, and zig-zag away if Lumi rushes them."
+msgstr ""
+
+#: data/codex.json:animals.deer.name data/fauna.json:species[deer].name
+msgid "Roe Deer"
+msgstr ""
+
+#: data/codex.json:animals.deer.hint
+msgid "Where: The edges of Sustained ground."
+msgstr ""
+
+#: data/codex.json:animals.deer.desc
+msgid "Shy grazers that keep to the edge of the green, where they can see what's coming. Approach slowly; rush them and they bound away in long, graceful leaps."
+msgstr ""
+
+#: data/codex.json:animals.fox.name data/fauna.json:species[fox].name
+msgid "Red Fox"
+msgstr ""
+
+#: data/codex.json:animals.fox.hint
+msgid "Where: Sustained and Thriving hexes."
+msgstr ""
+
+#: data/codex.json:animals.fox.desc
+msgid "A fox trots along the hedges, nose down, tail out. It watches Lumi with polite interest and keeps its distance."
+msgstr ""
+
+#: data/codex.json:animals.bee.name data/fauna.json:species[bee].name
+msgid "Honeybee"
+msgstr ""
+
+#: data/codex.json:animals.bee.hint
+msgid "Where: Flowers on Sustained hexes."
+msgstr ""
+
+#: data/codex.json:animals.bee.desc
+msgid "Bees came back with the blooms. Every flower bed that stays watered gets its own little hum."
+msgstr ""
+
+#: data/codex.json:animals.songbird.name data/fauna.json:species[songbird].name
+msgid "Robin"
+msgstr ""
+
+#: data/codex.json:animals.songbird.hint
+msgid "Where: Thriving hexes, by day."
+msgstr ""
+
+#: data/codex.json:animals.songbird.desc
+msgid "When a hex thrives, robins move in and sing. If you hear birdsong, something here is going very right."
+msgstr ""
+
+#: data/codex.json:animals.firefly.name data/fauna.json:species[firefly].name
+msgid "Firefly"
+msgstr ""
+
+#: data/codex.json:animals.firefly.hint
+msgid "Where: Thriving hexes, at night."
+msgstr ""
+
+#: data/codex.json:animals.firefly.desc
+msgid "Tiny green lanterns over the grass after dark. They only come where the ground is fully alive."
+msgstr ""
+
+#: data/codex.json:animals.fish.name data/fauna.json:species[fish].name
+msgid "Lake Fish"
+msgstr ""
+
+#: data/codex.json:animals.fish.hint
+msgid "Where: Clean lakes."
+msgstr ""
+
+#: data/codex.json:animals.fish.desc
+msgid "Once the water clears you can see them: small silver schools turning together over the sand. Come too close and they scatter."
+msgstr ""
+
+#: data/codex.json:animals.duck.name data/fauna.json:species[duck].name
+msgid "Mallard"
+msgstr ""
+
+#: data/codex.json:animals.duck.hint
+msgid "Where: Clean lakes beside green shores."
+msgstr ""
+
+#: data/codex.json:animals.duck.desc
+msgid "Ducks paddle, dabble with their tails in the air and complain loudly about everything. A clean lake with a green shore is all they ask."
+msgstr ""
+
+#: data/codex.json:animals.frog.name data/fauna.json:species[frog].name
+msgid "Green Frog"
+msgstr ""
+
+#: data/codex.json:animals.frog.hint
+msgid "Where: Lake shores once they're planted."
+msgstr ""
+
+#: data/codex.json:animals.frog.desc
+msgid "Frogs sit at the water's edge and sing in the evening. Get too close and plop: into the water they go."
+msgstr ""
+
+#: data/codex.json:animals.lizard.name data/fauna.json:species[lizard].name
+msgid "Sand Lizard"
+msgstr ""
+
+#: data/codex.json:animals.lizard.hint
+msgid "Where: Clean ground in the Dust Flats."
+msgstr ""
+
+#: data/codex.json:animals.lizard.desc
+msgid "Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
+msgstr ""
+
+#: data/codex.json:animals.fennec.name data/fauna.json:species[fennec].name
+msgid "Fennec Fox"
+msgstr ""
+
+#: data/codex.json:animals.fennec.hint
+msgid "Where: Planted ground in the Dust Flats."
+msgstr ""
+
+#: data/codex.json:animals.fennec.desc
+msgid "A tiny desert fox with enormous ears. It hears Lumi's hover fans long before it sees him."
+msgstr ""
+
+#: data/codex.json:animals.seal.name data/fauna.json:species[seal].name
+msgid "Harbour Seal"
+msgstr ""
+
+#: data/codex.json:animals.seal.hint
+msgid "Where: The Frozen Port shoreline."
+msgstr ""
+
+#: data/codex.json:animals.seal.desc
+msgid "Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
+msgstr ""
+
+#: data/codex.json:animals.gull.name data/fauna.json:species[gull].name
+msgid "Herring Gull"
+msgstr ""
+
+#: data/codex.json:animals.gull.hint
+msgid "Where: Coasts and harbours."
+msgstr ""
+
+#: data/codex.json:animals.gull.desc
+msgid "Loud, white and opportunistic. Gulls wheel over the harbour and land wherever there's a clean bit of quay."
+msgstr ""
+
+#: data/codex.json:animals.arctic_fox.name data/fauna.json:species[arctic_fox].name
+msgid "Arctic Fox"
+msgstr ""
+
+#: data/codex.json:animals.arctic_fox.hint
+msgid "Where: Planted ground at the Frozen Port."
+msgstr ""
+
+#: data/codex.json:animals.arctic_fox.desc
+msgid "White as the snow it hunts on. It shows up when the greenhouses do, curious about the warm air."
+msgstr ""
+
+#: data/codex.json:animals.heron.name data/fauna.json:species[heron].name
+msgid "Grey Heron"
+msgstr ""
+
+#: data/codex.json:animals.heron.hint
+msgid "Where: Shallows in the Sunken City and wild lakes."
+msgstr ""
+
+#: data/codex.json:animals.heron.desc
+msgid "Herons stand perfectly still at the water's edge, then strike. They lift off slowly on huge grey wings when disturbed."
+msgstr ""
+
+#: data/codex.json:animals.turtle.name data/fauna.json:species[turtle].name
+msgid "Pond Turtle"
+msgstr ""
+
+#: data/codex.json:animals.turtle.hint
+msgid "Where: Clean water in the Sunken City."
+msgstr ""
+
+#: data/codex.json:animals.turtle.desc
+msgid "Turtles cruise the drowned streets with their heads up, as if they've always lived here. Maybe they have."
+msgstr ""
+
+#: data/codex.json:animals.crane.name data/fauna.json:species[crane].name
+msgid "Cradle Crane"
+msgstr ""
+
+#: data/codex.json:animals.crane.hint
+msgid "Where: The skies over Cradle Returns."
+msgstr ""
+
+#: data/codex.json:animals.crane.desc
+msgid "White cranes circle high over the landing city on slow wingbeats. The ark's seed vault carried their eggs; this is the first flock to fly free."
+msgstr ""
 
 #: data/designs.json:designs[aurora].tagline
 msgid "Baseline / Explorer"
@@ -7030,6 +7358,174 @@ msgstr "写真：ビロードウサギ"
 msgid "Soft as a whisper, quick as a rumour. The photo is a little blurry. Worth it."
 msgstr "ささやきのようにやわらかく、うわさのように速い。写真は少しブレている。それでも撮る価値はあった。"
 
+#: data/events.json:trinkets[pic_cat].name
+msgid "Photo: Stray Cat"
+msgstr ""
+
+#: data/events.json:trinkets[pic_cat].desc
+msgid "A photo from photo mode. Old Town's cats never left."
+msgstr ""
+
+#: data/events.json:trinkets[pic_pigeon].name
+msgid "Photo: Pigeon"
+msgstr ""
+
+#: data/events.json:trinkets[pic_pigeon].desc
+msgid "A photo from photo mode. Pigeons will live anywhere people once dropped crumbs."
+msgstr ""
+
+#: data/events.json:trinkets[pic_sparrow].name
+msgid "Photo: Sparrow"
+msgstr ""
+
+#: data/events.json:trinkets[pic_sparrow].desc
+msgid "A photo from photo mode. Small, brown and bossy."
+msgstr ""
+
+#: data/events.json:trinkets[pic_rat].name
+msgid "Photo: Rat"
+msgstr ""
+
+#: data/events.json:trinkets[pic_rat].desc
+msgid "A photo from photo mode. Rats live in the gaps between the piles."
+msgstr ""
+
+#: data/events.json:trinkets[pic_rabbit].name
+msgid "Photo: Rabbit"
+msgstr ""
+
+#: data/events.json:trinkets[pic_rabbit].desc
+msgid "A photo from photo mode. Rabbits arrive as soon as there is something green to nibble."
+msgstr ""
+
+#: data/events.json:trinkets[pic_deer].name
+msgid "Photo: Roe Deer"
+msgstr ""
+
+#: data/events.json:trinkets[pic_deer].desc
+msgid "A photo from photo mode. Shy grazers that keep to the edge of the green, where they can see what's coming."
+msgstr ""
+
+#: data/events.json:trinkets[pic_fox].name
+msgid "Photo: Red Fox"
+msgstr ""
+
+#: data/events.json:trinkets[pic_fox].desc
+msgid "A photo from photo mode. A fox trots along the hedges, nose down, tail out."
+msgstr ""
+
+#: data/events.json:trinkets[pic_bee].name
+msgid "Photo: Honeybee"
+msgstr ""
+
+#: data/events.json:trinkets[pic_bee].desc
+msgid "A photo from photo mode. Bees came back with the blooms."
+msgstr ""
+
+#: data/events.json:trinkets[pic_songbird].name
+msgid "Photo: Robin"
+msgstr ""
+
+#: data/events.json:trinkets[pic_songbird].desc
+msgid "A photo from photo mode. When a hex thrives, robins move in and sing."
+msgstr ""
+
+#: data/events.json:trinkets[pic_firefly].name
+msgid "Photo: Firefly"
+msgstr ""
+
+#: data/events.json:trinkets[pic_firefly].desc
+msgid "A photo from photo mode. Tiny green lanterns over the grass after dark."
+msgstr ""
+
+#: data/events.json:trinkets[pic_fish].name
+msgid "Photo: Lake Fish"
+msgstr ""
+
+#: data/events.json:trinkets[pic_fish].desc
+msgid "A photo from photo mode. Once the water clears you can see them: small silver schools turning together over the sand."
+msgstr ""
+
+#: data/events.json:trinkets[pic_duck].name
+msgid "Photo: Mallard"
+msgstr ""
+
+#: data/events.json:trinkets[pic_duck].desc
+msgid "A photo from photo mode. Ducks paddle, dabble with their tails in the air and complain loudly about everything."
+msgstr ""
+
+#: data/events.json:trinkets[pic_frog].name
+msgid "Photo: Green Frog"
+msgstr ""
+
+#: data/events.json:trinkets[pic_frog].desc
+msgid "A photo from photo mode. Frogs sit at the water's edge and sing in the evening."
+msgstr ""
+
+#: data/events.json:trinkets[pic_lizard].name
+msgid "Photo: Sand Lizard"
+msgstr ""
+
+#: data/events.json:trinkets[pic_lizard].desc
+msgid "A photo from photo mode. Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
+msgstr ""
+
+#: data/events.json:trinkets[pic_fennec].name
+msgid "Photo: Fennec Fox"
+msgstr ""
+
+#: data/events.json:trinkets[pic_fennec].desc
+msgid "A photo from photo mode. A tiny desert fox with enormous ears."
+msgstr ""
+
+#: data/events.json:trinkets[pic_seal].name
+msgid "Photo: Harbour Seal"
+msgstr ""
+
+#: data/events.json:trinkets[pic_seal].desc
+msgid "A photo from photo mode. Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
+msgstr ""
+
+#: data/events.json:trinkets[pic_gull].name
+msgid "Photo: Herring Gull"
+msgstr ""
+
+#: data/events.json:trinkets[pic_gull].desc
+msgid "A photo from photo mode. Loud, white and opportunistic."
+msgstr ""
+
+#: data/events.json:trinkets[pic_arctic_fox].name
+msgid "Photo: Arctic Fox"
+msgstr ""
+
+#: data/events.json:trinkets[pic_arctic_fox].desc
+msgid "A photo from photo mode. White as the snow it hunts on."
+msgstr ""
+
+#: data/events.json:trinkets[pic_heron].name
+msgid "Photo: Grey Heron"
+msgstr ""
+
+#: data/events.json:trinkets[pic_heron].desc
+msgid "A photo from photo mode. Herons stand perfectly still at the water's edge, then strike."
+msgstr ""
+
+#: data/events.json:trinkets[pic_turtle].name
+msgid "Photo: Pond Turtle"
+msgstr ""
+
+#: data/events.json:trinkets[pic_turtle].desc
+msgid "A photo from photo mode. Turtles cruise the drowned streets with their heads up, as if they've always lived here."
+msgstr ""
+
+#: data/events.json:trinkets[pic_crane].name
+msgid "Photo: Cradle Crane"
+msgstr ""
+
+#: data/events.json:trinkets[pic_crane].desc
+msgid "A photo from photo mode. White cranes circle high over the landing city on slow wingbeats."
+msgstr ""
+
 #: data/events.json:trinkets[maker_badge].name
 msgid "Maker's Badge"
 msgstr "メイカーのバッジ"
@@ -7386,6 +7882,10 @@ msgstr "3,000キューブ稼ぐ"
 msgid "Clean 7 hexes"
 msgstr "ヘックスを7個片づける"
 
+#: data/goals.json:goals[pet_cat].text
+msgid "Pet a stray cat"
+msgstr ""
+
 #: data/goals.json:goals[research_4].text
 msgid "Finish 4 research projects"
 msgstr "研究を4件完了する"
@@ -7561,6 +8061,10 @@ msgstr "Drip ロボを4台動かす"
 #: data/goals.json:goals[hexlv_4x3].text
 msgid "Get 3 hexes to Sustained"
 msgstr "ヘックスを3個維持状態にする"
+
+#: data/goals.json:goals[spot_deer].text
+msgid "Spot a deer"
+msgstr ""
 
 #: data/goals.json:goals[hexlv_5].text
 msgid "Get a hex to Thriving"

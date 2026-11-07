@@ -19,7 +19,7 @@ func after_each() -> void:
 
 func _all_code() -> String:
 	var out: String = ""
-	for dir: String in ["res://autoload", "res://automation", "res://planet", "res://plants", "res://robots", "res://story", "res://systems", "res://ui", "res://player", "res://scenes", "res://core", "res://water"]:
+	for dir: String in ["res://autoload", "res://automation", "res://planet", "res://plants", "res://robots", "res://story", "res://systems", "res://ui", "res://player", "res://scenes", "res://core", "res://water", "res://fauna"]:  # [wild] fauna
 		var da := DirAccess.open(dir)
 		if da == null:
 			continue

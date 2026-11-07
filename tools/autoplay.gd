@@ -254,7 +254,7 @@ func update(delta: float) -> void:
 		_escape_t -= delta
 		_move = _escape_dir
 		return
-	if not (_do_tin(p) or _do_bench(p) or _do_shard(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_garden(p)):
+	if not (_do_tin(p) or _do_bench(p) or _do_shard(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_garden(p)):
 		_do_clean(p)
 	_watch_stuck(p, delta)
 
@@ -366,6 +366,32 @@ func _do_shard(p: Patch) -> bool:
 		world.get_tree().create_timer(0.8, true).timeout.connect(func() -> void:
 			if world.doc_view and world.doc_view.is_open:
 				world.doc_view.close_doc())
+	return true
+
+
+var _pet_t: float = 0.0
+
+
+## [wild] Pet a stray cat once (the "Pet a stray cat" goal), like a person would when one is near.
+func _do_pet(p: Patch) -> bool:
+	if float(GameState.stats.get("cats_petted", 0.0)) >= 1.0 or _pet_t > 30.0 or not p.carried.is_empty():
+		return false
+	var fa: Fauna = world.get("fauna") as Fauna
+	if fa == null:
+		return false
+	var best: Fauna.Animal = null
+	for a: Fauna.Animal in fa.animals:
+		if a.kind == "cat" and a.state != Fauna.St.LEAVE and a.pos.distance_to(p.global_position) < 15.0:
+			if best == null or a.pos.distance_to(p.global_position) < best.pos.distance_to(p.global_position):
+				best = a
+	if best == null:
+		return false
+	_pet_t += _dt
+	_set_task("pet")
+	_go(p, best.pos, 1.0)
+	if best.pos.distance_to(p.global_position) < 1.6 and _cooldown <= 0.0 and p.nearest_loose_cube() == null:
+		_interact = true
+		_cooldown = 1.0
 	return true
 
 

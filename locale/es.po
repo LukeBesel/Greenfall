@@ -513,6 +513,26 @@ msgstr "Pacas por valor de %s se amontonaron en la base sin nadie que las llevar
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Los depuradores filtraron el aire todo el rato. Está un poco más limpio."
 
+#: fauna/fauna.gd:1211
+msgid "E   pet %s"
+msgstr ""
+
+#: fauna/fauna.gd:1212
+msgid "E   pet the cat"
+msgstr ""
+
+#: fauna/fauna.gd:1261
+msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
+msgstr ""
+
+#: fauna/fauna.gd:1574
+msgid "New sighting: %s. It's in the Codex now."
+msgstr ""
+
+#: fauna/fauna.gd:1642
+msgid "Snap! A %s for your Collection."
+msgstr ""
+
 #: planet/frontier_district.gd:279
 msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
 msgstr "Tormenta de arena en el horizonte. El suelo limpio y desnudo quedará enterrado; los hexágonos plantados y protegidos aguantan."
@@ -1132,63 +1152,63 @@ msgstr "Tanque de agua colocado. Los regadores cercanos recargarán aquí."
 msgid "WATER"
 msgstr "AGUA"
 
-#: scenes/slice.gd:275
+#: scenes/slice.gd:276
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Enlace de robots en línea. Pulsa B para el mando: pinta zonas y manda equipos donde quieras."
 
-#: scenes/slice.gd:499
+#: scenes/slice.gd:503
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 en línea. Núcleo Floral 4%: luz verde baja. Relé del Cradle: débil. Haz crecer algo."
 
-#: scenes/slice.gd:796
+#: scenes/slice.gd:800
 msgid "HEX CLEAN!  +%s"
 msgstr "¡HEXÁGONO LIMPIO!  +%s"
 
-#: scenes/slice.gd:810
+#: scenes/slice.gd:814
 msgid "Milestone: %d hexes clean!"
 msgstr "Hito: ¡%d hexágonos limpios!"
 
-#: scenes/slice.gd:812
+#: scenes/slice.gd:816
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "Todo el desguace está limpio. Lumi emite un pitido muy largo y muy feliz."
 
-#: scenes/slice.gd:819
+#: scenes/slice.gd:823
 msgid "%s is out of range: %s"
 msgstr "%s está fuera de alcance: %s"
 
-#: scenes/slice.gd:829
+#: scenes/slice.gd:833
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Bloqueado. Sube tu base a nivel 5 para construir la plataforma de lanzamiento."
 
-#: scenes/slice.gd:832 ui/rockets_panel.gd:39
+#: scenes/slice.gd:836 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Celdas de energía recargando: %s. Las mejoras del cohete las recargan más rápido."
 
-#: scenes/slice.gd:886
+#: scenes/slice.gd:890
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Aterrizaje: %s. Base %d de %d. %s"
 
-#: scenes/slice.gd:887
+#: scenes/slice.gd:891
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "El cohete está aparcado en el solar, listo cuando se recarguen sus celdas."
 
-#: scenes/slice.gd:887
+#: scenes/slice.gd:891
 msgid "Landed on the base pad."
 msgstr "Aterrizaje en la plataforma de la base."
 
-#: scenes/slice.gd:978
+#: scenes/slice.gd:982
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Las mejoras necesitan un banco de trabajo. Vuelve a la base."
 
-#: scenes/slice.gd:1150
+#: scenes/slice.gd:1154
 msgid "Welcome back. The junk waited for you."
 msgstr "Bienvenido de nuevo. La chatarra te ha esperado."
 
-#: scenes/slice.gd:1167
+#: scenes/slice.gd:1171
 msgid "OUTPOST %d · Lv%d"
 msgstr "PUESTO %d · Nv%d"
 
-#: scenes/slice.gd:1167
+#: scenes/slice.gd:1171
 msgid "OUTPOST %d · RUIN"
 msgstr "PUESTO %d · RUINA"
 
@@ -1212,7 +1232,7 @@ msgstr "Tu base ha crecido hasta donde llega la demo."
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "En el juego completo, Lumi sube la base hasta el nivel 5, planta distritos enteros hasta que prosperan, los convierte en una brillante ciudad del futuro y vuela en cohete a decenas de bases por todo el planeta. Tu progreso de la demo se conserva."
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:666
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:667
 msgid "Hexes cleaned"
 msgstr "Hexágonos limpiados"
 
@@ -1220,11 +1240,11 @@ msgstr "Hexágonos limpiados"
 msgid "Bales made"
 msgstr "Pacas hechas"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:681
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:682
 msgid "Robots built"
 msgstr "Robots construidos"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:689
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:690
 msgid "Time played"
 msgstr "Tiempo jugado"
 
@@ -1244,7 +1264,7 @@ msgstr "Pantalla de título"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "Seguir jugando: el primer distrito sigue abierto, con la base a nivel %d."
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:758 ui/main_menu.gd:427
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:759 ui/main_menu.gd:427
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
@@ -1849,19 +1869,19 @@ msgstr "Floración de Verdance: %s. %s"
 msgid "Somewhere under the junk."
 msgstr "En algún lugar bajo la chatarra."
 
-#: systems/codex.gd:184 ui/codex_screen.gd:355
+#: systems/codex.gd:188 ui/codex_screen.gd:355
 msgid "Old Town"
 msgstr "Casco Antiguo"
 
-#: systems/codex.gd:188 ui/codex_screen.gd:355
+#: systems/codex.gd:192 ui/codex_screen.gd:355
 msgid "Wilderness bases"
 msgstr "Bases salvajes"
 
-#: systems/codex.gd:188
+#: systems/codex.gd:192
 msgid " · often %s"
 msgstr " · a menudo %s"
 
-#: systems/codex.gd:189 ui/codex_screen.gd:355
+#: systems/codex.gd:193 ui/codex_screen.gd:355
 msgid "Any district"
 msgstr "Cualquier distrito"
 
@@ -1890,26 +1910,30 @@ msgid "Wildlife Photos"
 msgstr "Fotos de fauna"
 
 #: systems/collection.gd:83
+msgid "Animal Photos"
+msgstr ""
+
+#: systems/collection.gd:84
 msgid "Rare Part Signals"
 msgstr "Señales de piezas raras"
 
-#: systems/collection.gd:84
+#: systems/collection.gd:85
 msgid "Ledger Audits"
 msgstr "Auditorías del Ledger"
 
-#: systems/collection.gd:85
+#: systems/collection.gd:86
 msgid "Cleaning Streaks"
 msgstr "Rachas de limpieza"
 
-#: systems/collection.gd:86
+#: systems/collection.gd:87
 msgid "Lumi Levels"
 msgstr "Niveles de Lumi"
 
-#: systems/collection.gd:87 ui/upgrades_screen.gd:17
+#: systems/collection.gd:88 ui/upgrades_screen.gd:17
 msgid "Contracts"
 msgstr "Contratos"
 
-#: systems/collection.gd:88
+#: systems/collection.gd:89
 msgid "Curio Capsules"
 msgstr "Cápsulas de curiosidades"
 
@@ -2151,7 +2175,7 @@ msgstr "La cola está llena"
 msgid "Not enough data"
 msgstr "No hay datos suficientes"
 
-#: systems/research.gd:324 ui/codex_screen.gd:762
+#: systems/research.gd:324 ui/codex_screen.gd:763
 msgid "%ds"
 msgstr "%d s"
 
@@ -2545,7 +2569,7 @@ msgstr ""
 msgid "RESTART CHECKLIST  ·  DONE"
 msgstr ""
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:695
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:696
 msgid "Achievements"
 msgstr "Logros"
 
@@ -2624,146 +2648,150 @@ msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera
 msgstr "Pista: un visitante tímido acude a los hexágonos sostenidos y prósperos. Lleva una cámara."
 
 #: ui/codex_screen.gd:552
+msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
+msgstr ""
+
+#: ui/codex_screen.gd:553
 msgid "Hint: complete %d contracts at the workbench."
 msgstr "Pista: completa %d contratos en el banco de trabajo."
 
-#: ui/codex_screen.gd:553
+#: ui/codex_screen.gd:554
 msgid "Hint: Curio Capsules, in the workbench token shop."
 msgstr "Pista: cápsulas de curiosidades, en la tienda de fichas del banco de trabajo."
 
-#: ui/codex_screen.gd:554
+#: ui/codex_screen.gd:555
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "Pista: sigue recogiendo sin parar hasta llenar el medidor de racha."
 
-#: ui/codex_screen.gd:555
+#: ui/codex_screen.gd:556
 msgid "Hint: turns up during %s."
 msgstr "Pista: aparece durante: %s."
 
-#: ui/codex_screen.gd:624
+#: ui/codex_screen.gd:625
 msgid "Unlocked  ·  %s"
 msgstr "Desbloqueado  ·  %s"
 
-#: ui/codex_screen.gd:663
+#: ui/codex_screen.gd:664
 msgid "Total"
 msgstr "Total"
 
-#: ui/codex_screen.gd:664
+#: ui/codex_screen.gd:665
 msgid "Junk removed"
 msgstr "Chatarra retirada"
 
-#: ui/codex_screen.gd:664
+#: ui/codex_screen.gd:665
 msgid "by type"
 msgstr "por tipo"
 
-#: ui/codex_screen.gd:665 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:666 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "Limpieza"
 
-#: ui/codex_screen.gd:667
+#: ui/codex_screen.gd:668
 msgid "Hexes restored"
 msgstr "Hexágonos restaurados"
 
-#: ui/codex_screen.gd:668
+#: ui/codex_screen.gd:669
 msgid "Bales pressed"
 msgstr "Pacas prensadas"
 
-#: ui/codex_screen.gd:669
+#: ui/codex_screen.gd:670
 msgid "Pure bales"
 msgstr "Pacas puras"
 
-#: ui/codex_screen.gd:670
+#: ui/codex_screen.gd:671
 msgid "Perfect bales"
 msgstr "Pacas perfectas"
 
-#: ui/codex_screen.gd:671
+#: ui/codex_screen.gd:672
 msgid "Lumpy bales"
 msgstr "Pacas grumosas"
 
-#: ui/codex_screen.gd:672
+#: ui/codex_screen.gd:673
 msgid "Bales cashed in"
 msgstr "Pacas cobradas"
 
-#: ui/codex_screen.gd:673
+#: ui/codex_screen.gd:674
 msgid "Cubes earned"
 msgstr "Cubos ganados"
 
-#: ui/codex_screen.gd:675 ui/globe_view.gd:135 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:676 ui/globe_view.gd:135 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "Cultivo"
 
-#: ui/codex_screen.gd:676
+#: ui/codex_screen.gd:677
 msgid "Seeds planted"
 msgstr "Semillas plantadas"
 
-#: ui/codex_screen.gd:677
+#: ui/codex_screen.gd:678
 msgid "Plants bloomed"
 msgstr "Plantas florecidas"
 
-#: ui/codex_screen.gd:678
+#: ui/codex_screen.gd:679
 msgid "Air filtered"
 msgstr "Aire filtrado"
 
-#: ui/codex_screen.gd:680 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:681 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "Robots"
 
-#: ui/codex_screen.gd:682
+#: ui/codex_screen.gd:683
 msgid "Bales by robots"
 msgstr "Pacas de robots"
 
-#: ui/codex_screen.gd:683
+#: ui/codex_screen.gd:684
 msgid "Parts dug up"
 msgstr "Piezas desenterradas"
 
-#: ui/codex_screen.gd:685
+#: ui/codex_screen.gd:686
 msgid "Exploring"
 msgstr "Exploración"
 
-#: ui/codex_screen.gd:686
+#: ui/codex_screen.gd:687
 msgid "Distance rolled"
 msgstr "Distancia recorrida"
 
-#: ui/codex_screen.gd:687
+#: ui/codex_screen.gd:688
 msgid "Memory shards read"
 msgstr "Fragmentos de memoria leídos"
 
-#: ui/codex_screen.gd:688
+#: ui/codex_screen.gd:689
 msgid "Codex entries"
 msgstr "Entradas del Códice"
 
-#: ui/codex_screen.gd:691
+#: ui/codex_screen.gd:692
 msgid "Progress"
 msgstr "Progreso"
 
-#: ui/codex_screen.gd:692
+#: ui/codex_screen.gd:693
 msgid "Upgrades bought"
 msgstr "Mejoras compradas"
 
-#: ui/codex_screen.gd:693
+#: ui/codex_screen.gd:694
 msgid "Data earned"
 msgstr "Datos obtenidos"
 
-#: ui/codex_screen.gd:694
+#: ui/codex_screen.gd:695
 msgid "Research done"
 msgstr "Investigaciones hechas"
 
-#: ui/codex_screen.gd:696
+#: ui/codex_screen.gd:697
 msgid "Best hub level"
 msgstr "Mejor nivel de base"
 
-#: ui/codex_screen.gd:746
+#: ui/codex_screen.gd:747
 msgid "%s kg"
 msgstr "%s kg"
 
-#: ui/codex_screen.gd:747
+#: ui/codex_screen.gd:748
 msgid "%.1f kg"
 msgstr "%.1f kg"
 
-#: ui/codex_screen.gd:751
+#: ui/codex_screen.gd:752
 msgid "%.2f km"
 msgstr "%.2f km"
 
-#: ui/codex_screen.gd:761
+#: ui/codex_screen.gd:762
 msgid "%dm %02ds"
 msgstr "%dm %02ds"
 
@@ -3817,15 +3845,15 @@ msgstr "Sello de Greenfall"
 msgid "Resolution"
 msgstr "Resolución"
 
-#: ui/photo_mode.gd:852
+#: ui/photo_mode.gd:857
 msgid "Couldn't capture the photo."
 msgstr "No se pudo tomar la foto."
 
-#: ui/photo_mode.gd:861
+#: ui/photo_mode.gd:866
 msgid "Couldn't save the photo (%s)."
 msgstr "No se pudo guardar la foto (%s)."
 
-#: ui/photo_mode.gd:874
+#: ui/photo_mode.gd:879
 msgid "Saved  %s  (%dx%d)"
 msgstr "Guardada  %s  (%dx%d)"
 
@@ -4914,7 +4942,7 @@ msgstr "Una bocanada de aire fresco"
 msgid "Filter 500 units of dusty air."
 msgstr "Filtra 500 unidades de aire polvoriento."
 
-#: data/achievements.json:achievements[codex_20].name
+#: data/achievements.json:achievements[codex_20].name data/achievements.json:achievements[naturalist].name
 msgid "Naturalist"
 msgstr "Naturalista"
 
@@ -5098,6 +5126,50 @@ msgstr "Perchero"
 msgid "Collect 5 different robot toppers."
 msgstr "Colecciona 5 sombreros de robot distintos."
 
+#: data/achievements.json:achievements[pet_cat].name
+msgid "A Friend in Old Town"
+msgstr ""
+
+#: data/achievements.json:achievements[pet_cat].desc
+msgid "Pet a stray cat."
+msgstr ""
+
+#: data/achievements.json:achievements[adopt_cat].name
+msgid "Best Friends"
+msgstr ""
+
+#: data/achievements.json:achievements[adopt_cat].desc
+msgid "Pet the same cat until she adopts you."
+msgstr ""
+
+#: data/achievements.json:achievements[spot_deer].name
+msgid "Oh, Deer"
+msgstr ""
+
+#: data/achievements.json:achievements[spot_deer].desc
+msgid "Spot a deer at the edge of the green."
+msgstr ""
+
+#: data/achievements.json:achievements[lake_fish].name
+msgid "Clear as Day"
+msgstr ""
+
+#: data/achievements.json:achievements[lake_fish].desc
+msgid "See fish in a clean lake."
+msgstr ""
+
+#: data/achievements.json:achievements[naturalist].desc
+msgid "Spot 10 different animals."
+msgstr ""
+
+#: data/achievements.json:achievements[wild_photos].name
+msgid "Wildlife Photographer"
+msgstr ""
+
+#: data/achievements.json:achievements[wild_photos].desc
+msgid "Photograph 6 different animals in photo mode."
+msgstr ""
+
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
 msgstr "25 hexágonos prósperos en cualquier lugar de Verdance."
@@ -5145,6 +5217,10 @@ msgstr "Fragmentos de memoria"
 #: data/codex.json:categories[landmarks].name
 msgid "Landmarks"
 msgstr "Monumentos"
+
+#: data/codex.json:categories[animals].name
+msgid "Animals"
+msgstr ""
 
 #: data/codex.json:categories[frontiers].name
 msgid "Frontiers"
@@ -5845,6 +5921,258 @@ msgstr "Encuéntrala en Regreso del Cradle."
 #: data/codex.json:frontiers.ark_pad.desc
 msgid "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Sustained before the ark will trust it."
 msgstr "Un anillo de hexágonos frente a la base donde se posará el Cradle. Tiene que estar limpio y sostenido antes de que el arca se fíe de él."
+
+#: data/codex.json:animals.cat.name data/fauna.json:species[cat].name
+msgid "Stray Cat"
+msgstr ""
+
+#: data/codex.json:animals.cat.hint
+msgid "Where: On clean city streets."
+msgstr ""
+
+#: data/codex.json:animals.cat.desc
+msgid "Old Town's cats never left. They know every warm engine block and sunny step, and they decided long ago that robots are furniture. Stop for a while and one may come over. Pet the same cat often enough and she'll move in at your base."
+msgstr ""
+
+#: data/codex.json:animals.pigeon.name data/fauna.json:species[pigeon].name
+msgid "Pigeon"
+msgstr ""
+
+#: data/codex.json:animals.pigeon.hint
+msgid "Where: Clean pavement in the city."
+msgstr ""
+
+#: data/codex.json:animals.pigeon.desc
+msgid "Pigeons will live anywhere people once dropped crumbs. They peck between the cracks, bob their heads as they walk and burst into the air all at once if you fly through them."
+msgstr ""
+
+#: data/codex.json:animals.sparrow.name data/fauna.json:species[sparrow].name
+msgid "Sparrow"
+msgstr ""
+
+#: data/codex.json:animals.sparrow.hint
+msgid "Where: Clean ground, city or wild."
+msgstr ""
+
+#: data/codex.json:animals.sparrow.desc
+msgid "Small, brown and bossy. Sparrows were the first birds to come back to swept streets, chirping from kerb to kerb."
+msgstr ""
+
+#: data/codex.json:animals.rat.name data/fauna.json:species[rat].name
+msgid "Rat"
+msgstr ""
+
+#: data/codex.json:animals.rat.hint
+msgid "Where: Wherever the junk is still piled up."
+msgstr ""
+
+#: data/codex.json:animals.rat.desc
+msgid "Rats live in the gaps between the piles. They are not villains, just tenants: clean a hex and they pack up and move to the next heap."
+msgstr ""
+
+#: data/codex.json:animals.rabbit.name data/fauna.json:species[rabbit].name
+msgid "Rabbit"
+msgstr ""
+
+#: data/codex.json:animals.rabbit.hint
+msgid "Where: Growing hexes."
+msgstr ""
+
+#: data/codex.json:animals.rabbit.desc
+msgid "Rabbits arrive as soon as there is something green to nibble. They hop, freeze, nibble, and zig-zag away if Lumi rushes them."
+msgstr ""
+
+#: data/codex.json:animals.deer.name data/fauna.json:species[deer].name
+msgid "Roe Deer"
+msgstr ""
+
+#: data/codex.json:animals.deer.hint
+msgid "Where: The edges of Sustained ground."
+msgstr ""
+
+#: data/codex.json:animals.deer.desc
+msgid "Shy grazers that keep to the edge of the green, where they can see what's coming. Approach slowly; rush them and they bound away in long, graceful leaps."
+msgstr ""
+
+#: data/codex.json:animals.fox.name data/fauna.json:species[fox].name
+msgid "Red Fox"
+msgstr ""
+
+#: data/codex.json:animals.fox.hint
+msgid "Where: Sustained and Thriving hexes."
+msgstr ""
+
+#: data/codex.json:animals.fox.desc
+msgid "A fox trots along the hedges, nose down, tail out. It watches Lumi with polite interest and keeps its distance."
+msgstr ""
+
+#: data/codex.json:animals.bee.name data/fauna.json:species[bee].name
+msgid "Honeybee"
+msgstr ""
+
+#: data/codex.json:animals.bee.hint
+msgid "Where: Flowers on Sustained hexes."
+msgstr ""
+
+#: data/codex.json:animals.bee.desc
+msgid "Bees came back with the blooms. Every flower bed that stays watered gets its own little hum."
+msgstr ""
+
+#: data/codex.json:animals.songbird.name data/fauna.json:species[songbird].name
+msgid "Robin"
+msgstr ""
+
+#: data/codex.json:animals.songbird.hint
+msgid "Where: Thriving hexes, by day."
+msgstr ""
+
+#: data/codex.json:animals.songbird.desc
+msgid "When a hex thrives, robins move in and sing. If you hear birdsong, something here is going very right."
+msgstr ""
+
+#: data/codex.json:animals.firefly.name data/fauna.json:species[firefly].name
+msgid "Firefly"
+msgstr ""
+
+#: data/codex.json:animals.firefly.hint
+msgid "Where: Thriving hexes, at night."
+msgstr ""
+
+#: data/codex.json:animals.firefly.desc
+msgid "Tiny green lanterns over the grass after dark. They only come where the ground is fully alive."
+msgstr ""
+
+#: data/codex.json:animals.fish.name data/fauna.json:species[fish].name
+msgid "Lake Fish"
+msgstr ""
+
+#: data/codex.json:animals.fish.hint
+msgid "Where: Clean lakes."
+msgstr ""
+
+#: data/codex.json:animals.fish.desc
+msgid "Once the water clears you can see them: small silver schools turning together over the sand. Come too close and they scatter."
+msgstr ""
+
+#: data/codex.json:animals.duck.name data/fauna.json:species[duck].name
+msgid "Mallard"
+msgstr ""
+
+#: data/codex.json:animals.duck.hint
+msgid "Where: Clean lakes beside green shores."
+msgstr ""
+
+#: data/codex.json:animals.duck.desc
+msgid "Ducks paddle, dabble with their tails in the air and complain loudly about everything. A clean lake with a green shore is all they ask."
+msgstr ""
+
+#: data/codex.json:animals.frog.name data/fauna.json:species[frog].name
+msgid "Green Frog"
+msgstr ""
+
+#: data/codex.json:animals.frog.hint
+msgid "Where: Lake shores once they're planted."
+msgstr ""
+
+#: data/codex.json:animals.frog.desc
+msgid "Frogs sit at the water's edge and sing in the evening. Get too close and plop: into the water they go."
+msgstr ""
+
+#: data/codex.json:animals.lizard.name data/fauna.json:species[lizard].name
+msgid "Sand Lizard"
+msgstr ""
+
+#: data/codex.json:animals.lizard.hint
+msgid "Where: Clean ground in the Dust Flats."
+msgstr ""
+
+#: data/codex.json:animals.lizard.desc
+msgid "Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
+msgstr ""
+
+#: data/codex.json:animals.fennec.name data/fauna.json:species[fennec].name
+msgid "Fennec Fox"
+msgstr ""
+
+#: data/codex.json:animals.fennec.hint
+msgid "Where: Planted ground in the Dust Flats."
+msgstr ""
+
+#: data/codex.json:animals.fennec.desc
+msgid "A tiny desert fox with enormous ears. It hears Lumi's hover fans long before it sees him."
+msgstr ""
+
+#: data/codex.json:animals.seal.name data/fauna.json:species[seal].name
+msgid "Harbour Seal"
+msgstr ""
+
+#: data/codex.json:animals.seal.hint
+msgid "Where: The Frozen Port shoreline."
+msgstr ""
+
+#: data/codex.json:animals.seal.desc
+msgid "Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
+msgstr ""
+
+#: data/codex.json:animals.gull.name data/fauna.json:species[gull].name
+msgid "Herring Gull"
+msgstr ""
+
+#: data/codex.json:animals.gull.hint
+msgid "Where: Coasts and harbours."
+msgstr ""
+
+#: data/codex.json:animals.gull.desc
+msgid "Loud, white and opportunistic. Gulls wheel over the harbour and land wherever there's a clean bit of quay."
+msgstr ""
+
+#: data/codex.json:animals.arctic_fox.name data/fauna.json:species[arctic_fox].name
+msgid "Arctic Fox"
+msgstr ""
+
+#: data/codex.json:animals.arctic_fox.hint
+msgid "Where: Planted ground at the Frozen Port."
+msgstr ""
+
+#: data/codex.json:animals.arctic_fox.desc
+msgid "White as the snow it hunts on. It shows up when the greenhouses do, curious about the warm air."
+msgstr ""
+
+#: data/codex.json:animals.heron.name data/fauna.json:species[heron].name
+msgid "Grey Heron"
+msgstr ""
+
+#: data/codex.json:animals.heron.hint
+msgid "Where: Shallows in the Sunken City and wild lakes."
+msgstr ""
+
+#: data/codex.json:animals.heron.desc
+msgid "Herons stand perfectly still at the water's edge, then strike. They lift off slowly on huge grey wings when disturbed."
+msgstr ""
+
+#: data/codex.json:animals.turtle.name data/fauna.json:species[turtle].name
+msgid "Pond Turtle"
+msgstr ""
+
+#: data/codex.json:animals.turtle.hint
+msgid "Where: Clean water in the Sunken City."
+msgstr ""
+
+#: data/codex.json:animals.turtle.desc
+msgid "Turtles cruise the drowned streets with their heads up, as if they've always lived here. Maybe they have."
+msgstr ""
+
+#: data/codex.json:animals.crane.name data/fauna.json:species[crane].name
+msgid "Cradle Crane"
+msgstr ""
+
+#: data/codex.json:animals.crane.hint
+msgid "Where: The skies over Cradle Returns."
+msgstr ""
+
+#: data/codex.json:animals.crane.desc
+msgid "White cranes circle high over the landing city on slow wingbeats. The ark's seed vault carried their eggs; this is the first flock to fly free."
+msgstr ""
 
 #: data/designs.json:designs[aurora].tagline
 msgid "Baseline / Explorer"
@@ -7036,6 +7364,174 @@ msgstr "Foto: liebre de terciopelo"
 msgid "Soft as a whisper, quick as a rumour. The photo is a little blurry. Worth it."
 msgstr "Suave como un susurro, rápida como un rumor. La foto ha salido un poco movida. Mereció la pena."
 
+#: data/events.json:trinkets[pic_cat].name
+msgid "Photo: Stray Cat"
+msgstr ""
+
+#: data/events.json:trinkets[pic_cat].desc
+msgid "A photo from photo mode. Old Town's cats never left."
+msgstr ""
+
+#: data/events.json:trinkets[pic_pigeon].name
+msgid "Photo: Pigeon"
+msgstr ""
+
+#: data/events.json:trinkets[pic_pigeon].desc
+msgid "A photo from photo mode. Pigeons will live anywhere people once dropped crumbs."
+msgstr ""
+
+#: data/events.json:trinkets[pic_sparrow].name
+msgid "Photo: Sparrow"
+msgstr ""
+
+#: data/events.json:trinkets[pic_sparrow].desc
+msgid "A photo from photo mode. Small, brown and bossy."
+msgstr ""
+
+#: data/events.json:trinkets[pic_rat].name
+msgid "Photo: Rat"
+msgstr ""
+
+#: data/events.json:trinkets[pic_rat].desc
+msgid "A photo from photo mode. Rats live in the gaps between the piles."
+msgstr ""
+
+#: data/events.json:trinkets[pic_rabbit].name
+msgid "Photo: Rabbit"
+msgstr ""
+
+#: data/events.json:trinkets[pic_rabbit].desc
+msgid "A photo from photo mode. Rabbits arrive as soon as there is something green to nibble."
+msgstr ""
+
+#: data/events.json:trinkets[pic_deer].name
+msgid "Photo: Roe Deer"
+msgstr ""
+
+#: data/events.json:trinkets[pic_deer].desc
+msgid "A photo from photo mode. Shy grazers that keep to the edge of the green, where they can see what's coming."
+msgstr ""
+
+#: data/events.json:trinkets[pic_fox].name
+msgid "Photo: Red Fox"
+msgstr ""
+
+#: data/events.json:trinkets[pic_fox].desc
+msgid "A photo from photo mode. A fox trots along the hedges, nose down, tail out."
+msgstr ""
+
+#: data/events.json:trinkets[pic_bee].name
+msgid "Photo: Honeybee"
+msgstr ""
+
+#: data/events.json:trinkets[pic_bee].desc
+msgid "A photo from photo mode. Bees came back with the blooms."
+msgstr ""
+
+#: data/events.json:trinkets[pic_songbird].name
+msgid "Photo: Robin"
+msgstr ""
+
+#: data/events.json:trinkets[pic_songbird].desc
+msgid "A photo from photo mode. When a hex thrives, robins move in and sing."
+msgstr ""
+
+#: data/events.json:trinkets[pic_firefly].name
+msgid "Photo: Firefly"
+msgstr ""
+
+#: data/events.json:trinkets[pic_firefly].desc
+msgid "A photo from photo mode. Tiny green lanterns over the grass after dark."
+msgstr ""
+
+#: data/events.json:trinkets[pic_fish].name
+msgid "Photo: Lake Fish"
+msgstr ""
+
+#: data/events.json:trinkets[pic_fish].desc
+msgid "A photo from photo mode. Once the water clears you can see them: small silver schools turning together over the sand."
+msgstr ""
+
+#: data/events.json:trinkets[pic_duck].name
+msgid "Photo: Mallard"
+msgstr ""
+
+#: data/events.json:trinkets[pic_duck].desc
+msgid "A photo from photo mode. Ducks paddle, dabble with their tails in the air and complain loudly about everything."
+msgstr ""
+
+#: data/events.json:trinkets[pic_frog].name
+msgid "Photo: Green Frog"
+msgstr ""
+
+#: data/events.json:trinkets[pic_frog].desc
+msgid "A photo from photo mode. Frogs sit at the water's edge and sing in the evening."
+msgstr ""
+
+#: data/events.json:trinkets[pic_lizard].name
+msgid "Photo: Sand Lizard"
+msgstr ""
+
+#: data/events.json:trinkets[pic_lizard].desc
+msgid "A photo from photo mode. Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
+msgstr ""
+
+#: data/events.json:trinkets[pic_fennec].name
+msgid "Photo: Fennec Fox"
+msgstr ""
+
+#: data/events.json:trinkets[pic_fennec].desc
+msgid "A photo from photo mode. A tiny desert fox with enormous ears."
+msgstr ""
+
+#: data/events.json:trinkets[pic_seal].name
+msgid "Photo: Harbour Seal"
+msgstr ""
+
+#: data/events.json:trinkets[pic_seal].desc
+msgid "A photo from photo mode. Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
+msgstr ""
+
+#: data/events.json:trinkets[pic_gull].name
+msgid "Photo: Herring Gull"
+msgstr ""
+
+#: data/events.json:trinkets[pic_gull].desc
+msgid "A photo from photo mode. Loud, white and opportunistic."
+msgstr ""
+
+#: data/events.json:trinkets[pic_arctic_fox].name
+msgid "Photo: Arctic Fox"
+msgstr ""
+
+#: data/events.json:trinkets[pic_arctic_fox].desc
+msgid "A photo from photo mode. White as the snow it hunts on."
+msgstr ""
+
+#: data/events.json:trinkets[pic_heron].name
+msgid "Photo: Grey Heron"
+msgstr ""
+
+#: data/events.json:trinkets[pic_heron].desc
+msgid "A photo from photo mode. Herons stand perfectly still at the water's edge, then strike."
+msgstr ""
+
+#: data/events.json:trinkets[pic_turtle].name
+msgid "Photo: Pond Turtle"
+msgstr ""
+
+#: data/events.json:trinkets[pic_turtle].desc
+msgid "A photo from photo mode. Turtles cruise the drowned streets with their heads up, as if they've always lived here."
+msgstr ""
+
+#: data/events.json:trinkets[pic_crane].name
+msgid "Photo: Cradle Crane"
+msgstr ""
+
+#: data/events.json:trinkets[pic_crane].desc
+msgid "A photo from photo mode. White cranes circle high over the landing city on slow wingbeats."
+msgstr ""
+
 #: data/events.json:trinkets[maker_badge].name
 msgid "Maker's Badge"
 msgstr "Insignia de los Creadores"
@@ -7392,6 +7888,10 @@ msgstr "Gana 3.000 cubos"
 msgid "Clean 7 hexes"
 msgstr "Limpia 7 hexágonos"
 
+#: data/goals.json:goals[pet_cat].text
+msgid "Pet a stray cat"
+msgstr ""
+
 #: data/goals.json:goals[research_4].text
 msgid "Finish 4 research projects"
 msgstr "Termina 4 proyectos de investigación"
@@ -7567,6 +8067,10 @@ msgstr "Ten 4 robots Drip en marcha"
 #: data/goals.json:goals[hexlv_4x3].text
 msgid "Get 3 hexes to Sustained"
 msgstr "Lleva 3 hexágonos a Sostenido"
+
+#: data/goals.json:goals[spot_deer].text
+msgid "Spot a deer"
+msgstr ""
 
 #: data/goals.json:goals[hexlv_5].text
 msgid "Get a hex to Thriving"

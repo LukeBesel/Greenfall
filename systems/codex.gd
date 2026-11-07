@@ -54,6 +54,10 @@ static func entries() -> Array[Dictionary]:
 	var fr: Dictionary = c.get("frontiers", {})
 	for fid: String in fr:
 		_add("frontiers", fid, TranslationServer.translate(str(fr[fid].get("name", fid.capitalize()))), fr[fid])
+	# [wild] Animals (unlocked on first sighting by fauna/fauna.gd).
+	var an: Dictionary = c.get("animals", {})
+	for aid: String in an:
+		_add("animals", aid, TranslationServer.translate(str(an[aid].get("name", aid.capitalize()))), an[aid])
 	return _entries
 
 
