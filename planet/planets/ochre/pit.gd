@@ -113,7 +113,7 @@ func sample(th: float, rho: float) -> Array:
 			y += n2.get_noise_2d(w.x * 2.0, w.y * 2.0) * 0.6
 	else:
 		var t: float = rho - RIM_RHO
-		var und: float = (n1.get_noise_2d(w.x, w.y) * 0.5 + 0.5) * 9.0 * smoothstep(0.0, 120.0, t)
+		var und: float = (n1.get_noise_2d(w.x, w.y) * 0.5 + 0.5) * 18.0 * smoothstep(0.0, 160.0, t)
 		# Tailings heaps: long flat-topped spoil dumps just beyond the rim.
 		var heap: float = smoothstep(0.15, 0.45, n3.get_noise_2d(w.x * 2.2, w.y * 2.2)) * 16.0
 		heap *= smoothstep(12.0, 40.0, t) * (1.0 - smoothstep(110.0, 190.0, t))

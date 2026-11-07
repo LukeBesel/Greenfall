@@ -83,10 +83,10 @@ vec3 two_scale(sampler2D t, vec2 p, float s) {
 vec3 strata(vec3 w) {
 	float u = w.y * 0.16 + w.x * 0.0035 - w.z * 0.002 + (fbm(w.xz * 0.004) - 0.5) * 1.6;
 	float k = fract(u / 5.0) * 5.0;
-	vec3 c = c_ochre;
+	vec3 c = c_ochre * 1.05;
 	c = mix(c, c_terra, smoothstep(0.8, 1.05, k) - smoothstep(1.9, 2.15, k));
 	c = mix(c, c_cream, smoothstep(2.15, 2.3, k) - smoothstep(2.6, 2.75, k));
-	c = mix(c, c_plum, smoothstep(3.0, 3.2, k) - smoothstep(3.55, 3.75, k));
+	c = mix(c, c_plum * 0.9, smoothstep(3.0, 3.2, k) - smoothstep(3.55, 3.75, k));
 	c = mix(c, c_terra * 1.1, smoothstep(3.75, 3.9, k) - smoothstep(4.5, 4.7, k));
 	float thin = smoothstep(0.03, 0.0, abs(fract(u * 1.7) - 0.5) - 0.44);
 	return mix(c, c_cream * 1.05, thin * 0.5);
@@ -115,23 +115,23 @@ void fragment() {
 	vec3 rock = two_scale(tex_wall, wpos.zy, 0.07) * tw.x + two_scale(tex_wall, wpos.xy, 0.07) * tw.z + two_scale(tex_wall, p, 0.07) * tw.y;
 	float rl = dot(rock, vec3(0.33));
 	vec3 st = strata(wpos);
-	vec3 wall_c = st * (0.55 + rl * 1.1);
+	vec3 wall_c = st * (0.5 + rl * 0.6);
 	// Benches: red gravel and haul dust, ochre sand drifting against the toe.
 	vec3 grav = two_scale(tex_bench, p, 0.22);
-	vec3 bench_c = mix(grav * vec3(1.08, 0.92, 0.8), c_ochre * (0.75 + 0.4 * dot(grav, vec3(0.33))), 0.45 + 0.25 * n2);
-	vec3 sand = two_scale(tex_sand, p, 0.12) * vec3(1.12, 0.88, 0.62);
-	bench_c = mix(bench_c, sand, smoothstep(0.55, 0.95, across) * 0.6 * pit + (1.0 - pit) * 0.85);
+	vec3 bench_c = mix(grav * vec3(1.05, 0.78, 0.62), c_terra * (0.8 + 0.5 * dot(grav, vec3(0.33))), 0.55 + 0.3 * n2);
+	vec3 sand = two_scale(tex_sand, p, 0.12) * vec3(1.0, 0.72, 0.46);
+	bench_c = mix(bench_c, sand, smoothstep(0.6, 0.95, across) * 0.35 * pit + (1.0 - pit) * (0.55 + 0.35 * n2));
 	float wallness = smoothstep(0.35, 0.6, slope + (n2 - 0.5) * 0.15);
 	vec3 alb = mix(bench_c, wall_c, wallness);
 	float rough = mix(0.93, 0.88, wallness);
 	// Plateau salt pans (flat ground beyond the rim) and the dried floor of the pit.
 	float flatness = 1.0 - smoothstep(0.05, 0.14, slope);
-	float pan = smoothstep(0.56, 0.62, fbm(p * 0.0026 + 3.0)) * (1.0 - pit) * flatness;
+	float pan = smoothstep(0.62, 0.67, fbm(p * 0.0026 + 3.0)) * (1.0 - pit) * flatness;
 	pan = max(pan, (1.0 - step(0.02, lvl)) * flat_b * pit * (1.0 - restore * 1.4));
 	if (pan > 0.001) {
 		float cr = cells(p * 0.55);
 		vec3 crack = two_scale(tex_crack, p, 0.18);
-		vec3 salt = c_salt * (0.86 + 0.2 * dot(crack, vec3(0.33)));
+		vec3 salt = c_salt * (0.72 + 0.2 * dot(crack, vec3(0.33)));
 		salt *= mix(0.78, 1.0, smoothstep(0.02, 0.09, cr));
 		alb = mix(alb, salt, clamp(pan, 0.0, 1.0));
 		rough = mix(rough, 0.75, pan);
@@ -196,7 +196,7 @@ void fragment() {
 		float seam = smoothstep(0.012, 0.0, abs(across - 0.03)) * (1.0 - smoothstep(60.0, 420.0, dist) * 0.6);
 		em += c_line * seam * mix(0.35, 1.2, night) * clamp(stage - 3.5, 0.0, 1.0);
 	}
-	alb *= mix(0.86, 1.06, n1);
+	alb *= mix(0.78, 1.08, n1);
 	// Normal detail: rock on walls, gravel on benches (faded with distance).
 	float nk = 0.55 * (1.0 - smoothstep(50.0, 240.0, dist));
 	vec3 tn = (texture(nrm_wall, (tw.x > tw.z ? wpos.zy : wpos.xy) * 0.07).rgb * 2.0 - 1.0) * wallness

@@ -315,6 +315,8 @@ func _grade(_delta: float) -> void:
 	env.volumetric_fog_albedo = env.volumetric_fog_albedo.lerp(fc, 0.7)
 	env.volumetric_fog_density = lerpf(0.006, 0.0018, clear)
 	env.adjustment_saturation = lerpf(1.08, 1.22, clear)
+	env.adjustment_contrast = 1.12
+	env.tonemap_exposure *= 0.88
 	var amb: Dictionary = kind.get("ambient", {})
 	env.ambient_light_energy *= float(amb.get("energy", 1.15))
 	# Shader clocks and night.
@@ -437,12 +439,12 @@ func _build_mesas() -> void:
 	var spokes: int = 44
 	# Profile: [height fraction, radius fraction, flat]: talus apron, cliff, ledge, upper cliff, cap.
 	var prof: Array = [[-0.06, 1.75, 0.0], [0.1, 1.3, 0.0], [0.2, 1.06, 0.0], [0.52, 1.0, 0.0], [0.56, 0.86, 1.0], [0.6, 0.8, 0.0], [0.93, 0.76, 0.0], [1.0, 0.7, 1.0], [1.0, 0.0, 1.0]]
-	while placed.size() < 15 and tries < 400:
+	while placed.size() < 24 and tries < 600:
 		tries += 1
 		var ang: float = _rng.randf() * TAU
-		var dist: float = _rng.randf_range(560.0, 1350.0)
+		var dist: float = _rng.randf_range(500.0, 1400.0)
 		var c := Vector2(cos(ang), sin(ang)) * dist
-		var rad: float = _rng.randf_range(38.0, 120.0) * (1.0 + dist / 2400.0)
+		var rad: float = _rng.randf_range(45.0, 140.0) * (1.0 + dist / 2000.0)
 		var pp: Vector2 = pit.polar_of(c.x, c.y)
 		if pp.y < OchrePit.RIM_RHO + rad * 1.9 / OchrePit.squash(pp.x) + 25.0:
 			continue
@@ -454,7 +456,7 @@ func _build_mesas() -> void:
 		if not ok:
 			continue
 		placed.append(Vector3(c.x, c.y, rad))
-		var hgt: float = _rng.randf_range(55.0, 150.0) * (0.8 + rad / 200.0)
+		var hgt: float = _rng.randf_range(70.0, 170.0) * (0.8 + rad / 220.0)
 		var y0: float = pit.height_at(c.x, c.y) - 3.0
 		var lobes: float = _rng.randf_range(2.0, 4.0)
 		var ph: float = _rng.randf() * TAU
@@ -527,6 +529,7 @@ func _build_ramps() -> void:
 	road.uv1_scale = Vector3.ONE * 0.18
 	road.vertex_color_use_as_albedo = true
 	road.roughness = 0.95
+	road.albedo_color = Color(1.7, 1.45, 1.25)
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var road_c := Color(0.95, 0.72, 0.52)
@@ -646,7 +649,7 @@ func _machine_mats() -> Dictionary:
 func _frame(xz: Vector2, fwd: Vector2, sink: float = 0.0) -> Transform3D:
 	var x := Vector3(fwd.x, 0, fwd.y).normalized()
 	var z: Vector3 = x.cross(Vector3.UP).normalized()
-	return Transform3D(Basis(x, Vector3.UP, z), Vector3(xz.x, pit.height_at(xz.x, xz.y) - sink, xz.y))
+	return Transform3D(Basis(x, Vector3.UP, z) * Basis.from_scale(Vector3.ONE * 1.3), Vector3(xz.x, pit.height_at(xz.x, xz.y) - sink, xz.y))
 
 
 func _build_excavators() -> void:
