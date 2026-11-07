@@ -227,7 +227,7 @@ func _populate() -> void:
 			_grid.add_child(ab)
 			_alloc = ab
 	for id: String in Economy.upgrade_order:
-		if str(Economy.upgrade_defs[id].get("tab", "patch")) != _tab:
+		if str(Economy.upgrade_defs[id].get("tab", "patch")) != _tab or _tab == "bots":  # [ui2] bot upgrades live on their RobotCard
 			continue
 		var card := UpgradeCard.new(id)
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL

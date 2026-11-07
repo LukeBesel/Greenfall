@@ -2,7 +2,8 @@ class_name RobotCard
 extends PanelContainer
 ## [ui2] Bots tab card for one robot type, built like the Lumi cards: role icon, name, one line
 ## of what it does, its spots (crew spots filled / free, Mk steps) and two big buttons:
-## Build (Parts + cubes) and Upgrade to the next Mk (Parts + cubes). A type that still needs
+## Build (Parts + cubes) and Upgrade to the next Mk (Parts + cubes), then its fleet upgrades as
+## one-line spots (level, now -> next, a buy button with the cube cost). A type that still needs
 ## research shows one Unlock line and a button to the Research tab.
 
 signal goto_tab(id: String)
@@ -32,6 +33,8 @@ var _lock_row: VBoxContainer
 var _lock_lbl: Label
 var _lock_btn: Button
 var _col: Color
+var _ups: VBoxContainer
+var _up_rows: Array[Dictionary] = []
 
 
 func _init(p_type: String, p_fleet: Fleet, p_build_at: Callable) -> void:
@@ -120,6 +123,15 @@ func _ready() -> void:
 	_tier_cost = BenchKit.CostRow.new(20, 18)
 	_tier_cost.alignment = BoxContainer.ALIGNMENT_CENTER
 	tcol.add_child(_tier_cost)
+	# Fleet upgrades of this type (Economy "bots" tab upgrades), one row each.
+	_ups = VBoxContainer.new()
+	_ups.add_theme_constant_override("separation", 6)
+	vb.add_child(_ups)
+	_ups.add_child(BenchKit.caps(tr("Fleet upgrades")))
+	for uid: String in Economy.upgrade_order:
+		if str(Economy.upgrade_defs[uid].get("robot", "")) == type_id:
+			_add_up_row(uid)
+	_ups.visible = not _up_rows.is_empty()
 	_why = UITheme.label("", BenchKit.SMALL_SIZE, BenchKit.SHORT)
 	_why.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_why.custom_minimum_size.x = 100
@@ -136,6 +148,57 @@ func _ready() -> void:
 	refresh()
 
 
+func _add_up_row(uid: String) -> void:
+	var u: Dictionary = Economy.upgrade_defs[uid]
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 10)
+	_ups.add_child(row)
+	var nm: Label = UITheme.label(tr(str(Economy.robots[type_id].get("upgrades", [{}]).filter(func(x: Dictionary) -> bool: return "%s.%s" % [type_id, x.get("stat", "")] == str(u["stat"]))[0].get("name", uid))), BenchKit.SMALL_SIZE + 1, UITheme.CREAM)
+	nm.custom_minimum_size = Vector2(130, 0)
+	nm.clip_text = true
+	row.add_child(nm)
+	var val: Label = UITheme.label("", BenchKit.SMALL_SIZE, UITheme.GREEN)
+	val.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	val.clip_text = true
+	row.add_child(val)
+	var b := Button.new()
+	b.custom_minimum_size = Vector2(118, 38)
+	b.add_theme_font_size_override("font_size", BenchKit.SMALL_SIZE + 1)
+	b.pressed.connect(func() -> void:
+		if Economy.buy_upgrade(uid, 1) > 0:
+			Audio.play("buy", 1.1, -4.0)
+		else:
+			Audio.play("buzz", 1.2, -8.0)
+		refresh())
+	row.add_child(b)
+	_up_rows.append({"id": uid, "val": val, "btn": b})
+
+
+func _refresh_ups() -> void:
+	for r: Dictionary in _up_rows:
+		var uid: String = r["id"]
+		var lv: int = GameState.level_of(uid)
+		var mx: int = Economy.upgrade_max(uid)
+		var unit: String = tr(str(Economy.upgrade_defs[uid].get("unit", "")))
+		var now: float = Economy.stat_with_upgrade_level(uid, lv)
+		var b: Button = r["btn"]
+		if Economy.is_maxed(uid):
+			(r["val"] as Label).text = tr("Lv %d  ·  %s%s (max)") % [lv, _num(now), unit]
+			b.text = tr("Max")
+			b.disabled = true
+		else:
+			(r["val"] as Label).text = "Lv %d%s  ·  %s → %s%s" % [lv, ("/%d" % mx) if mx > 0 else "", _num(now), _num(Economy.stat_with_upgrade_level(uid, lv + 1)), unit]
+			var cost: BigNum = Economy.upgrade_cost(uid)
+			b.text = tr("+  %s cubes") % Settings.fmt(cost)
+			b.disabled = not (Economy.is_unlocked(uid) and GameState.can_afford("cubes", cost))
+
+
+static func _num(v: float) -> String:
+	if absf(v - round(v)) < 0.005:
+		return str(int(round(v)))
+	return "%.2f" % v
+
+
 func first_button() -> Button:
 	return _build if _actions.visible else _lock_btn
 
@@ -149,6 +212,8 @@ func refresh() -> void:
 	_actions.visible = not locked
 	_lock_row.visible = locked
 	_tier_lbl.visible = not locked
+	if locked:
+		_ups.visible = false
 	modulate = Color(1, 1, 1, 0.72) if locked else Color.WHITE
 	if locked:
 		_lock_lbl.text = tr("Unlock with research: %s") % tr(str(Research.def(Research.robot_requirement(type_id)).get("name", "?")))
@@ -169,6 +234,9 @@ func refresh() -> void:
 		_extra.visible = true
 	else:
 		_extra.visible = false
+	_ups.visible = not _up_rows.is_empty() and n > 0
+	if _ups.visible:
+		_refresh_ups()
 	var why: String = fleet.build_block_reason(type_id)
 	_build.text = tr("Build") if n > 0 else tr("Build first")
 	_build.disabled = why != ""

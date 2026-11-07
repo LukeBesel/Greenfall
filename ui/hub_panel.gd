@@ -4,6 +4,9 @@ extends HBoxContainer
 ## gives you, the cost in Parts and cubes, a big Upgrade button, the level spots). Right: the
 ## smaller things built at the hub (Air Scrubbers, bale stations, the Telescope, the Jammer).
 
+## Height of the scrolling side column (fits the workbench at 1280x800 and 110% UI scale).
+const SIDE_H: float = 460.0
+
 var hub: Hub
 var _lv_pips: BenchKit.Pips
 var _lv_lbl: Label
@@ -66,10 +69,17 @@ func _ready() -> void:
 	_now = BenchKit.body("", UITheme.MUTED, BenchKit.SMALL_SIZE)
 	hv.add_child(_now)
 	# --- Built at the hub -----------------------------------------------------------------
+	# The side column scrolls on its own, so the level card always stays in view.
+	var side_sc := ScrollContainer.new()
+	side_sc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	side_sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	side_sc.custom_minimum_size = Vector2(0, SIDE_H)
+	side_sc.follow_focus = true
+	add_child(side_sc)
 	var side := VBoxContainer.new()
 	side.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	side.add_theme_constant_override("separation", 14)
-	add_child(side)
+	side_sc.add_child(side)
 	var sc: Array = BenchKit.card()
 	side.add_child(sc[0])
 	var sv: VBoxContainer = sc[1]
