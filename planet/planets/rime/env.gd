@@ -208,6 +208,7 @@ static func _norm_suns(src: Dictionary, size_k: float, energy_k: float) -> Dicti
 
 func build() -> void:
 	process_priority = 50  # after SkyDirector: our sky, fog and light win
+	var t0: int = Time.get_ticks_msec()
 	_rng.seed = field.seed_value + 9091
 	level = int(world.hub.level) if world.get("hub") != null else 1
 	_r_in = field.hex_size * (float(field.radius) + 0.55) * Hex.SQRT3 + 2.0
@@ -242,8 +243,9 @@ func build() -> void:
 	set_level(level, false)
 	if world.get("hub") != null:
 		world.hub.level_changed.connect(func(l: int) -> void: set_level(l, true))
+	_dev_hooks.call_deferred()
 	var meshes: int = find_children("*", "MeshInstance3D", true, false).size()
-	print("[rime] env built: level %d, %d mesh nodes, %d pads" % [level, meshes, _pads.size()])
+	print("[rime] env built in %d ms: level %d, %d mesh nodes, %d pads" % [Time.get_ticks_msec() - t0, level, meshes, _pads.size()])
 
 
 var _derricks: Array[Vector3] = []   # x, z, height
@@ -1303,10 +1305,40 @@ func _apply_restore() -> void:
 		(_mats["junk_coat"] as ShaderMaterial).set_shader_parameter("top_amt", lerpf(0.95, 0.55, w))
 
 
+## Dev: --rime-cam=dist,pitch,yaw[,fov] (landscape shots), --rime-nohud, --rime-restore=R (holds
+## the restoration at R, 0..1, instead of reading the hex levels).
+func _dev_hooks() -> void:
+	if DevHooks.has("rime-restore"):
+		_forced_restore = clampf(DevHooks.get_f("rime-restore", 1.0), 0.0, 1.0)
+		set_restore(_forced_restore)
+	var cam: Node = world.get("cam")
+	if DevHooks.has("rime-cam") and cam:
+		var c: PackedStringArray = DevHooks.get_s("rime-cam", "30,-0.3,0").split(",")
+		cam.set("max_distance", maxf(float(cam.get("max_distance")), float(c[0])))
+		cam.set("distance", float(c[0]))
+		cam.set("pitch", float(c[1]) if c.size() > 1 else -0.3)
+		if c.size() > 2:
+			cam.set("yaw", float(c[2]))
+		var arm: SpringArm3D = cam.get("_arm") as SpringArm3D
+		if arm:
+			arm.collision_mask = 0
+		if c.size() > 3:
+			Settings.fov = float(c[3])
+			(cam.get("camera") as Camera3D).fov = Settings.fov
+		if cam.has_method("snap"):
+			cam.call("snap")
+
+
+var _forced_restore: float = -1.0
+
+
 func _process(delta: float) -> void:
 	_t += delta
 	_slow += delta
-	if _slow >= 2.0:
+	if DevHooks.has("rime-nohud"):
+		for c: Node in get_tree().root.find_children("*", "CanvasLayer", true, false):
+			(c as CanvasLayer).visible = false
+	if _slow >= 2.0 and _forced_restore < 0.0:
 		_slow = 0.0
 		var hl: Node = world.get("hex_levels")
 		if hl != null and hl.get("levels") is Dictionary:
