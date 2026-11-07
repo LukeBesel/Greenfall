@@ -55,6 +55,16 @@ func _ready() -> void:
 	cam.set("pitch", -0.32)
 	if cam.has_method("snap"):
 		cam.call("snap")
+	if DevHooks.get_s("bale-shot", "") == "carry":  # Lumi holding one bale, seen from behind-left
+		await get_tree().create_timer(2.0).timeout
+		p.global_position = Vector3(0.0, 0.2, 2.0)
+		p.rotation.y = 0.0
+		(p as Patch).pick_up(cubes[2])
+		cam.set("yaw", 0.6)
+		cam.set("distance", 3.4)
+		cam.set("pitch", -0.2)
+		if cam.has_method("snap"):
+			cam.call("snap")
 	await get_tree().create_timer(3.0).timeout
 	for c: JunkCube in cubes:
 		print("[bale-shot] bale at %s size %.2f sleeping=%s colors=%s" % [str(c.global_position.snapped(Vector3.ONE * 0.01)), c.size, str(c.sleeping), str(c.info.get("colors", []))])
