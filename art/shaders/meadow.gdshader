@@ -89,9 +89,9 @@ void vertex() {
 	NORMAL = normalize(mix(NORMAL, vec3(0.0, 1.0, 0.0), 0.65));
 	// Colours.
 	float hue = INSTANCE_CUSTOM.y;
-	vec3 deep = vec3(0.06, 0.17, 0.03);
-	vec3 fresh = vec3(0.2, 0.42, 0.07);
-	vec3 sun = vec3(0.36, 0.48, 0.1);
+	vec3 deep = vec3(0.045, 0.14, 0.025);
+	vec3 fresh = vec3(0.12, 0.3, 0.05);
+	vec3 sun = vec3(0.24, 0.38, 0.07);
 	vec3 base = mix(deep, fresh, hue);
 	vec3 tip = mix(fresh, sun, hue * 0.7 + 0.15);
 	if (kind == 2) {
@@ -117,5 +117,5 @@ void fragment() {
 	SPECULAR = 0.25;
 	AO = mix(0.55, 1.0, v_tip);
 	AO_LIGHT_AFFECT = 0.5;
-	BACKLIGHT = v_col * 0.6;
+	BACKLIGHT = v_col * 0.35;
 }

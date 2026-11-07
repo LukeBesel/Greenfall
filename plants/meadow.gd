@@ -13,7 +13,7 @@ extends Node3D
 const CHUNK: float = 24.0
 ## Grid spacing (m) per quality preset: Low, Medium, High, Ultra.
 const GRASS_STEP: Array[float] = [0.95, 0.8, 0.62, 0.52]
-const FLOWER_STEP: Array[float] = [1.7, 1.45, 1.2, 1.05]
+const FLOWER_STEP: Array[float] = [1.4, 1.15, 0.95, 0.85]
 const ROW_GAP: float = 0.8
 const SPROUT_STEP: Array[float] = [0.9, 0.75, 0.6, 0.55]
 const THRIVE_MODELS: Array = [
@@ -67,7 +67,7 @@ func _build() -> void:
 				_add_thriving(hid)
 		EventBus.hex_level_changed.connect(_on_level)
 	_place_kind(0, _tuft_mesh(), GRASS_STEP[q], 0.55, gm, rng)
-	_place_kind(1, _flower_mesh(), FLOWER_STEP[q], 0.5, gm, rng)
+	_place_kind(1, _flower_mesh(), FLOWER_STEP[q], 0.55, gm, rng)
 	_place_sprouts(_sprout_mesh(), SPROUT_STEP[q], gm, rng)
 	print("[meadow] %s in %d ms" % [census(), Time.get_ticks_msec() - t0])
 
@@ -352,7 +352,7 @@ static func _flower_mesh() -> ArrayMesh:
 		var lean: float = rng.randf_range(0.05, 0.18)
 		_blade(st, base, out, h, 0.018, lean, Color.BLACK)
 		var top: Vector3 = base + out * lean + Vector3(0.0, h, 0.0)
-		var r: float = rng.randf_range(0.12, 0.17)
+		var r: float = rng.randf_range(0.2, 0.27)
 		var tilt: Basis = Basis(out.cross(Vector3.UP).normalized(), -0.35)
 		for k: int in 5:
 			var pa: float = TAU * k / 5.0

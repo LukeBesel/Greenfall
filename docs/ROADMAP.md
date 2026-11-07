@@ -319,7 +319,7 @@ If a session ends: commit WIP in each worktree, then resume or merge.
 - Ground: grass recoloured to rich greens (`grass_mat`), tilled rows, restored streets get clean
   grey asphalt, grass verges from the kerbs and moss in cracks. Life texture is RGBA8 (filterable
   everywhere) and uploads once per frame.
-- Garden plants: one variant per slot (`plants/plant_parts.gd`), `plant_scale` 1.8 in plants.json.
+- Garden plants: one variant per slot (`plants/plant_parts.gd`), `plant_scale` 1.4 in plants.json.
   Butterflies 1.8x.
 - Dev: `--restore=N[,level]` / `--restore-ramp` / `--restore=lake[,level]` (real planted slots,
   life, part-watered plants, Drips + a Seedling), `--green-cam=hid,dist,pitch,yaw`,
