@@ -10,14 +10,14 @@ extends Node
 
 const Synth := preload("res://audio/ambience_synth.gd")
 const BUS: String = "Ambience"
-const LOOP_DB: float = -17.0  # a loop at weight 1.0
+const LOOP_DB: float = -14.0  # a loop at weight 1.0 (loops are levelled to -20 dBFS RMS)
 const FADE_S: float = 3.0  # crossfade time for planet / restoration changes
 
 ## loops: id -> [ruined, restored] weight. events: [sound, min_s, max_s, db, pitch_lo, pitch_hi,
 ## ruined, restored] (the weight is the chance an event fires when its timer comes up).
 const BEDS: Dictionary = {
 	"ochre": {
-		"loops": {"wind_warm": [1.0, 0.55], "heat_buzz": [0.45, 0.18], "cicadas": [0.0, 0.5]},
+		"loops": {"wind_warm": [1.0, 0.55], "heat_buzz": [0.3, 0.12], "cicadas": [0.0, 0.5]},
 		"events": [["whoosh", 8.0, 18.0, -15.0, 0.35, 0.5, 1.0, 0.4], ["song", 5.0, 12.0, -19.0, 0.9, 1.1, 0.0, 1.0],
 			["chirp", 4.0, 9.0, -21.0, 0.9, 1.15, 0.0, 0.8]],
 	},
@@ -127,23 +127,12 @@ func _ensure_loop(lid: String) -> void:
 static func _loop_stream(lid: String) -> AudioStream:
 	if _loop_cache.has(lid):
 		return _loop_cache[lid]
-	var rng := RandomNumberGenerator.new()
-	rng.seed = hash(lid) & 0x7FFFFFFF
-	var pcm: PackedFloat32Array
-	match lid:
-		"wind_warm": pcm = Synth.wind(rng, 9.0, 0.35, 0.0, 0.35)
-		"wind_sea": pcm = Synth.wind(rng, 8.0, 0.5, 0.0, 0.0)
-		"wind_eerie": pcm = Synth.wind(rng, 11.0, 0.22, 640.0, 0.0)
-		"wind_dust": pcm = Synth.wind(rng, 9.0, 0.18, 0.0, 1.0)
-		"heat_buzz": pcm = Synth.heat_buzz(rng)
-		"waves": pcm = Synth.waves(rng)
-		"water": pcm = Synth.water(rng)
-		"cicadas": pcm = Synth.cicadas(rng)
-		"crickets":
-			_loop_cache[lid] = FaunaSounds.crickets_loop()
-			return _loop_cache[lid]
-		_:
-			return null
+	if lid == "crickets":
+		_loop_cache[lid] = FaunaSounds.crickets_loop()
+		return _loop_cache[lid]
+	var pcm: PackedFloat32Array = Synth.loop_pcm(lid)
+	if pcm.is_empty():
+		return null
 	_loop_cache[lid] = Synth.MusicSynth.to_wav(pcm, true)
 	return _loop_cache[lid]
 

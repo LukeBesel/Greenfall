@@ -7,6 +7,47 @@ const MusicSynth := preload("res://audio/music_synth.gd")
 const RATE: int = 22050
 
 
+## The bed loop `lid` (empty for unknown ids). Seeded per id, so it is the same every run.
+static func loop_pcm(lid: String) -> PackedFloat32Array:
+	return _level(_loop_raw(lid))
+
+
+static func _loop_raw(lid: String) -> PackedFloat32Array:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(lid) & 0x7FFFFFFF
+	match lid:
+		"wind_warm": return wind(rng, 9.0, 0.35, 0.0, 0.35)
+		"wind_sea": return wind(rng, 8.0, 0.5, 0.0, 0.0)
+		"wind_eerie": return wind(rng, 8.0, 0.22, 640.0, 0.0)
+		"wind_dust": return wind(rng, 9.0, 0.18, 0.0, 1.0)
+		"heat_buzz": return heat_buzz(rng)
+		"waves": return waves(rng)
+		"water": return water(rng)
+		"cicadas": return cicadas(rng)
+	return PackedFloat32Array()
+
+
+## Loudness match for bed loops: scale to `rms_db` RMS, then soft-knee anything over 0.7 so
+## sparse spikes (grit, bubbles) can't clip. Bed weights then set the relative levels.
+static func _level(b: PackedFloat32Array, rms_db: float = -20.0) -> PackedFloat32Array:
+	if b.is_empty():
+		return b
+	var sq: float = 0.0
+	for i: int in b.size():
+		sq += b[i] * b[i]
+	var rms: float = sqrt(sq / b.size())
+	if rms <= 0.0:
+		return b
+	var g: float = db_to_linear(rms_db) / rms
+	for i: int in b.size():
+		var x: float = b[i] * g
+		var ax: float = absf(x)
+		if ax > 0.7:
+			x = signf(x) * (0.7 + 0.25 * tanh((ax - 0.7) / 0.25))
+		b[i] = x
+	return b
+
+
 static func _buf(seconds: float) -> PackedFloat32Array:
 	var b := PackedFloat32Array()
 	b.resize(int(seconds * RATE))
