@@ -20,8 +20,7 @@ const THRIVE_MODELS: Array = [
 	# [model, count per hex, scale min, scale max, needs open lot]
 	["shrub_02", 3, 0.75, 1.05, true],
 	["pine_sapling_small", 2, 1.5, 2.1, true],
-	["fern_02", 4, 1.6, 2.2, false],
-	["shrub_01", 2, 1.3, 1.7, false],
+	["fern_02", 4, 1.1, 1.5, false],
 ]
 
 var world: Node
@@ -105,6 +104,14 @@ func _surface_ok(x: float, z: float) -> int:
 			return 2
 		CityLayout.Surface.SIDEWALK:
 			return 1
+		CityLayout.Surface.ROAD:
+			# Grass verges along the kerbs of restored streets (ground_pbr draws the same verge).
+			var off: int = 0
+			for i: int in 8:
+				var a: float = TAU * i / 8.0
+				if layout.surface_at(x + cos(a) * 2.2, z + sin(a) * 2.2) != CityLayout.Surface.ROAD:
+					off += 1
+			return 3 if off >= 2 else 0
 	return 0
 
 
@@ -150,6 +157,8 @@ func _place_kind(kind: int, mesh: Mesh, step: float, height: float, gm: ShaderMa
 				continue
 			if ok == 1:
 				rank = 0.55 + rank * 0.45  # sidewalks: only a fringe, late
+			elif ok == 3:
+				rank = 0.4 + rank * 0.6  # kerb verges: once the hex is well established
 			p.y = layout.height_at(p.x, p.z) if layout else 0.0
 			_bucket(buckets, p, Transform3D(Basis(Vector3.UP, yaw), p), Color(rank, hue, pick, sz))
 	_emit(buckets, mesh, _material(kind, height, gm), kind)
@@ -237,7 +246,7 @@ func _add_thriving(hid: int) -> void:
 			if _hex_of(p) != hid:
 				continue
 			var ok: int = _surface_ok(p.x, p.z)
-			if ok == 0 or (bool(spec[4]) and (ok != 2 or not _open_lot(p, 1.4))):
+			if ok == 0 or ok == 3 or (bool(spec[4]) and (ok != 2 or not _open_lot(p, 1.4))):
 				continue
 			var near: bool = false
 			for q: Vector3 in placed:
@@ -302,11 +311,11 @@ static func _tuft_mesh() -> ArrayMesh:
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 77
-	for b: int in 11:
-		var a: float = TAU * b / 11.0 + rng.randf_range(-0.3, 0.3)
+	for b: int in 16:
+		var a: float = TAU * b / 16.0 + rng.randf_range(-0.3, 0.3)
 		var out := Vector3(cos(a), 0.0, sin(a))
-		var base: Vector3 = out * rng.randf_range(0.0, 0.16)
-		_blade(st, base, out, rng.randf_range(0.55, 1.0), rng.randf_range(0.035, 0.06), rng.randf_range(0.15, 0.5), Color.BLACK)
+		var base: Vector3 = out * rng.randf_range(0.0, 0.32)
+		_blade(st, base, out, rng.randf_range(0.5, 1.0), rng.randf_range(0.05, 0.085), rng.randf_range(0.2, 0.6), Color.BLACK)
 	st.generate_normals()
 	return st.commit()
 

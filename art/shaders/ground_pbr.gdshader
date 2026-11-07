@@ -93,6 +93,23 @@ Mat mixm(Mat a, Mat b, float t) {
 	return m;
 }
 
+// [green] Living sward: the photo grass textures recoloured into rich greens (on their own they
+// read dry and brown), lighter and patchier while young, deep and even when lush.
+Mat grass_mat(vec2 p, float life) {
+	Mat grass = mixm(samp(8, p, 3.0), samp(9, p, 3.5), 0.5 + 0.3 * smoothstep(0.35, 0.8, life));
+	float gl = dot(grass.alb, vec3(0.3, 0.59, 0.11));
+	float hn = fbm(p * 0.09 + 50.0);
+	vec3 deep = vec3(0.07, 0.17, 0.035);
+	vec3 fresh = vec3(0.16, 0.3, 0.05);
+	vec3 sunlit = vec3(0.27, 0.34, 0.07);
+	vec3 green = mix(deep, fresh, smoothstep(0.3, 0.7, hn));
+	green = mix(green, sunlit, smoothstep(0.62, 0.85, fbm(p * 0.33 + 9.0)) * 0.55);
+	green = mix(green * vec3(1.2, 1.15, 1.0), green, smoothstep(0.4, 0.95, life));
+	grass.alb = mix(green * clamp(gl / 0.32, 0.55, 1.5), grass.alb * 0.6, 0.12) * grass_tint;
+	grass.arm.g = clamp(grass.arm.g, 0.75, 1.0);
+	return grass;
+}
+
 void vertex() {
 	wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
@@ -249,27 +266,25 @@ void fragment() {
 		soil.alb = vec3(0.13, 0.085, 0.055) * (0.6 + 0.8 * sl) * mix(1.0, 0.72, (1.0 - smoothstep(-0.9, -0.2, rows)) * till);
 		soil.nrm = vec3(clamp(0.5 + cos(dot(p, vec2(-rdir.y, rdir.x)) * 6.2832 / 0.8) * 0.3 * till, 0.0, 1.0), 0.5, 1.0);
 		soil.arm = vec3(0.85, 0.92, 0.0);
-		Mat grass = mixm(samp(8, p, 3.0), samp(9, p, 3.5), 0.5 + 0.3 * smoothstep(0.35, 0.8, life));
-		float gl = dot(grass.alb, vec3(0.3, 0.59, 0.11));
-		float hn = fbm(p * 0.09 + 50.0);
-		vec3 deep = vec3(0.07, 0.17, 0.035);
-		vec3 fresh = vec3(0.16, 0.3, 0.05);
-		vec3 sunlit = vec3(0.27, 0.34, 0.07);
-		vec3 green = mix(deep, fresh, smoothstep(0.3, 0.7, hn));
-		green = mix(green, sunlit, smoothstep(0.62, 0.85, fbm(p * 0.33 + 9.0)) * 0.55);
-		// Young grass is lighter and patchier; lush grass deep and even.
-		green = mix(green * vec3(1.2, 1.15, 1.0), green, smoothstep(0.4, 0.95, life));
-		grass.alb = mix(green * clamp(gl / 0.32, 0.55, 1.5), grass.alb * 0.6, 0.12) * grass_tint;
-		grass.arm.g = clamp(grass.arm.g, 0.75, 1.0);
+		Mat grass = grass_mat(p, life);
 		Mat ground = mixm(m, soil, smoothstep(0.0, 0.08, life) * (is_walk ? 0.25 : 1.0));
 		m = mixm(ground, grass, g * (is_walk ? 0.6 : 1.0));
-	} else if (life > 0.5 && is_road) {
-		// Thriving streets: moss and grass creep out of the cracks and along the kerbs.
-		float crack = smoothstep(0.66, 0.74, fbm(p * 1.9 + 21.0)) + lay.b * 0.9;
-		float creep = clamp(crack, 0.0, 1.0) * smoothstep(0.5, 1.0, life) * 0.85;
-		Mat moss = samp(9, p, 2.0);
-		moss.alb = vec3(0.09, 0.2, 0.04) * clamp(dot(moss.alb, vec3(0.3, 0.59, 0.11)) / 0.32, 0.6, 1.4) * grass_tint;
-		m = mixm(m, moss, creep);
+	} else if (life > 0.2 && is_road) {
+		// Restored streets: the asphalt is swept to a cleaner grey, grass verges grow in from the
+		// kerbs (wider as the hex thrives) and moss creeps out of the cracks. The middle stays road.
+		float lum = dot(m.alb, vec3(0.3, 0.59, 0.11));
+		m.alb = mix(m.alb, vec3(lum) * vec3(0.93, 0.96, 1.0), 0.55 * smoothstep(0.2, 0.7, life));
+		float vr = mix(1.2, 3.4, smoothstep(0.35, 1.0, life));
+		float edge = 0.0;
+		for (int i = 0; i < 8; i++) {
+			float a = float(i) * 0.7854;
+			float sr = texture(layout_tex, (p + vec2(cos(a), sin(a)) * vr) / layout_size + 0.5).r;
+			edge += (sr > 0.15 && sr < 0.35) ? 0.0 : 1.0;
+		}
+		edge /= 8.0;
+		float verge = smoothstep(0.08, 0.3, edge + (fbm(p * 0.7 + 13.0) - 0.5) * 0.25) * smoothstep(0.3, 0.75, life);
+		float crack = smoothstep(0.66, 0.74, fbm(p * 1.9 + 21.0)) * smoothstep(0.5, 1.0, life) * 0.8;
+		m = mixm(m, grass_mat(p, life), clamp(max(verge, crack), 0.0, 1.0));
 	}
 	if (is_hub > 0.75 || is_yard) {
 		m = base;
