@@ -511,12 +511,12 @@ func _build_pit() -> void:
 			var rr: float = lerpf(r0, r1, float(i) / float(nr - 1))
 			var x: float = pit_c.x + cos(ang) * rr
 			var z: float = pit_c.z + sin(ang) * rr
-			st.add_vertex(Vector3(x, _bowl_h(rr, ang), z))
+			st.add_vertex(Vector3(x, bowl_h(rr, ang), z))
 	for j: int in na:
 		for i: int in nr - 1:
 			var a: int = j * nr + i
 			var b: int = (j + 1) * nr + i
-			for idx: int in [a, b, a + 1, b, b + 1, a + 1]:
+			for idx: int in [a, a + 1, b, b, a + 1, b + 1]:
 				st.add_index(idx)
 	st.generate_normals()
 	var bowl := MeshInstance3D.new()
@@ -559,7 +559,7 @@ func _build_pit() -> void:
 
 
 ## Bench heights: flat rim berm, then six stepped benches down to the shaft mouth.
-func _bowl_h(rr: float, ang: float) -> float:
+func bowl_h(rr: float, ang: float) -> float:
 	if rr >= PIT_R:
 		var berm: float = (1.0 - absf((rr - PIT_R - 5.0) / 5.0)) if rr < PIT_R + 10.0 else 0.0
 		return RIM_Y + 0.15 + maxf(berm, 0.0) * 1.4

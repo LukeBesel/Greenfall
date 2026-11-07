@@ -282,14 +282,23 @@ static func _headframe(env: AnvilEnv, b: Batch, fut: Batch) -> void:
 	var tops: Array[Vector3] = []
 	for sgn: float in [-1.0, 1.0]:
 		var foot: Vector3 = c + side * sgn * (r0 + 14.0)
-		foot.y = AnvilEnv.RIM_Y - AnvilEnv.PIT_DEPTH / 6.0 * 1.0
+		foot.y = 0.0
 		var top: Vector3 = c + side * sgn * (r0 * 0.55) + Vector3(0, hgt, 0)
 		tops.append(top)
 		var fw: Vector3 = side.cross(Vector3.UP)
 		var legs: Array[Vector3] = [foot + fw * 9.0 + side * sgn * 6.0, foot - fw * 9.0 + side * sgn * 6.0, foot + fw * 9.0 - side * sgn * 6.0, foot - fw * 9.0 - side * sgn * 6.0]
+		for li: int in legs.size():
+			# Each leg stands on its own bench (sunk a little so none floats on a bench edge).
+			var lp: Vector3 = legs[li]
+			var dv := Vector2(lp.x - c.x, lp.z - c.z)
+			lp.y = env.bowl_h(dv.length(), atan2(dv.y, dv.x)) - 1.5
+			legs[li] = lp
+		foot.y = (legs[0].y + legs[1].y + legs[2].y + legs[3].y) * 0.25
+		top.y = foot.y + hgt
+		tops[tops.size() - 1] = top
 		for lg: Vector3 in legs:
 			add_beam(b, lg, top + (lg - foot) * 0.25, 1.1, rust)
-			add_box(b, lg, Vector3(4, 2, 4), env.mat("concrete"))
+			add_box(b, lg + Vector3(0, 1.0, 0), Vector3(4, 4, 4), env.mat("concrete"))
 		for k: int in 7:
 			var t: float = float(k + 1) / 8.0
 			var ring: Array[Vector3] = []
