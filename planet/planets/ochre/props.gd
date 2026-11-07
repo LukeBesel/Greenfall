@@ -201,9 +201,9 @@ static func _drill_rod() -> ArrayMesh:
 ## A Ledger ore-sample crate: plank sides, steel corner straps, a faded amber band.
 static func _crate(open: bool) -> ArrayMesh:
 	var st := _new_st()
-	var wood := Color(0.62, 0.45, 0.3)
+	var wood := Color(0.46, 0.36, 0.27)
 	var dark := Color(0.32, 0.3, 0.28)
-	var amber := Color(0.86, 0.6, 0.14)
+	var amber := Color(0.7, 0.5, 0.14)
 	var s := Vector3(1.0, 0.62, 0.66)
 	for i: int in 3:
 		var y: float = 0.11 + i * 0.2
@@ -242,8 +242,8 @@ static func _sack() -> ArrayMesh:
 	sph.rings = 5
 	sph.radius = 0.3
 	sph.height = 0.5
-	put(st, sph, _xf(Vector3(0, 0.22, 0), Vector3.ZERO, Vector3(1.0, 1.0, 0.8)), Color(0.85, 0.76, 0.6))
-	put(st, ProcMesh.cyl(0.04, 0.1, 0.16, 8), _xf(Vector3(0, 0.5, 0)), Color(0.8, 0.7, 0.55))
+	put(st, sph, _xf(Vector3(0, 0.2, 0), Vector3.ZERO, Vector3(1.1, 0.85, 0.85)), Color(0.58, 0.47, 0.34))
+	put(st, ProcMesh.cyl(0.04, 0.1, 0.16, 8), _xf(Vector3(0, 0.43, 0)), Color(0.52, 0.42, 0.3))
 	put(st, unit_box(), _xf(Vector3(0, 0.25, 0.23), Vector3.ZERO, Vector3(0.3, 0.12, 0.02)), Color(0.75, 0.5, 0.2))
 	return _commit(st, _cached_mat("canvas", func() -> Material: return _mat_vc("polystyrene", 0.95, 0.0, 2.0)))
 
