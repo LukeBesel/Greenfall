@@ -19,7 +19,7 @@ import extract_strings as ex  # noqa: E402
 
 ROOT = ex.ROOT
 WORK = os.path.join(ROOT, ".l10n_work")
-SPEC = re.compile(r"%%|%[-+ 0#]*(?:\d+|\*)?(?:\.\d+)?[sdifxXoceEgGvc]")
+SPEC = re.compile(r"%%|%[-+0]*(?:\d+|\*)?(?:\.\d+)?[sdcoxXfv]")
 BRACE = re.compile(r"\{[^{}\s]*\}")
 TAG = re.compile(r"\[/?[a-z_]+(?:=[^\]]*)?\]")
 

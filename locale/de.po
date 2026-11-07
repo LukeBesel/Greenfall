@@ -3511,604 +3511,606 @@ msgstr "Zum Desktop beenden"
 
 #: ui/photo_filters.gd:11
 msgid "Natural"
-msgstr ""
+msgstr "Natürlich"
 
 #: ui/photo_filters.gd:12
 msgid "Golden Hour"
-msgstr ""
+msgstr "Goldene Stunde"
 
 #: ui/photo_filters.gd:14
 msgid "Dawn Mist"
-msgstr ""
+msgstr "Morgennebel"
 
 #: ui/photo_filters.gd:16
 msgid "Neon Night"
-msgstr ""
+msgstr "Neon-Nacht"
 
 #: ui/photo_filters.gd:18
 msgid "Film"
-msgstr ""
+msgstr "Film"
 
 #: ui/photo_filters.gd:20
 msgid "Mono"
-msgstr ""
+msgstr "Mono"
 
 #: ui/photo_filters.gd:22
 msgid "Holo Blue"
-msgstr ""
+msgstr "Holo-Blau"
 
 #: ui/photo_filters.gd:24
 msgid "Bloom"
-msgstr ""
+msgstr "Glühen"
 
 #: ui/photo_mode.gd:26
 msgid "Live"
-msgstr ""
+msgstr "Live"
 
 #: ui/photo_mode.gd:26
 msgid "Haze"
-msgstr ""
+msgstr "Dunst"
 
 #: ui/photo_mode.gd:26
 msgid "Mist"
-msgstr ""
+msgstr "Nebel"
 
 #: ui/photo_mode.gd:27
 msgid "1x  (window)"
-msgstr ""
+msgstr "1x  (Fenster)"
 
 #: ui/photo_mode.gd:27
 msgid "2x  (supersampled)"
-msgstr ""
+msgstr "2x  (Supersampling)"
 
 #: ui/photo_mode.gd:28
 msgid "Orbit Lumi"
-msgstr ""
+msgstr "Lumi umkreisen"
 
 #: ui/photo_mode.gd:28
 msgid "Free fly"
-msgstr ""
+msgstr "Freier Flug"
 
 #: ui/photo_mode.gd:116
 msgid "Photo mode isn't available during a rocket flight."
-msgstr ""
+msgstr "Der Fotomodus ist während eines Raketenflugs nicht verfügbar."
 
 #: ui/photo_mode.gd:119 ui/photo_mode.gd:122 ui/photo_mode.gd:125
 #: ui/photo_mode.gd:131
 msgid "Photo mode isn't available during a cinematic."
-msgstr ""
+msgstr "Der Fotomodus ist während einer Zwischensequenz nicht verfügbar."
 
 #: ui/photo_mode.gd:367 ui/photo_mode.gd:419 ui/settings_panel.gd:317
 msgid "Camera"
-msgstr ""
+msgstr "Kamera"
 
 #: ui/photo_mode.gd:368
 msgid "Mode"
-msgstr ""
+msgstr "Modus"
 
 #: ui/photo_mode.gd:369 ui/settings_panel.gd:325
 msgid "Field of view"
-msgstr ""
+msgstr "Sichtfeld"
 
 #: ui/photo_mode.gd:370
 msgid "Roll"
-msgstr ""
+msgstr "Neigung"
 
 #: ui/photo_mode.gd:371
 msgid "Distance"
-msgstr ""
+msgstr "Abstand"
 
 #: ui/photo_mode.gd:372
 msgid "Height"
-msgstr ""
+msgstr "Höhe"
 
 #: ui/photo_mode.gd:373
 msgid "Reset camera"
-msgstr ""
+msgstr "Kamera zurücksetzen"
 
 #: ui/photo_mode.gd:374 ui/photo_mode.gd:419
 msgid "Lens"
-msgstr ""
+msgstr "Linse"
 
 #: ui/photo_mode.gd:375
 msgid "Auto-focus Lumi"
-msgstr ""
+msgstr "Autofokus auf Lumi"
 
 #: ui/photo_mode.gd:376
 msgid "Focus distance"
-msgstr ""
+msgstr "Fokusabstand"
 
 #: ui/photo_mode.gd:377
 msgid "Blur"
-msgstr ""
+msgstr "Unschärfe"
 
 #: ui/photo_mode.gd:377 ui/photo_panel.gd:240 ui/photo_panel.gd:242
 #: ui/photo_panel.gd:280 ui/settings_panel.gd:615
 msgid "Off"
-msgstr ""
+msgstr "Aus"
 
 #: ui/photo_mode.gd:378
 msgid "Exposure"
-msgstr ""
+msgstr "Belichtung"
 
 #: ui/photo_mode.gd:378
 msgid "%+.1f EV"
-msgstr ""
+msgstr "%+.1f EV"
 
 #: ui/photo_mode.gd:379 ui/photo_mode.gd:419
 msgid "Look"
-msgstr ""
+msgstr "Look"
 
 #: ui/photo_mode.gd:380
 msgid "Filter"
-msgstr ""
+msgstr "Filter"
 
 #: ui/photo_mode.gd:381
 msgid "Contrast"
-msgstr ""
+msgstr "Kontrast"
 
 #: ui/photo_mode.gd:382
 msgid "Saturation"
-msgstr ""
+msgstr "Sättigung"
 
 #: ui/photo_mode.gd:383
 msgid "Warmth"
-msgstr ""
+msgstr "Wärme"
 
 #: ui/photo_mode.gd:384
 msgid "Vignette"
-msgstr ""
+msgstr "Vignette"
 
 #: ui/photo_mode.gd:385
 msgid "Grain"
-msgstr ""
+msgstr "Körnung"
 
 #: ui/photo_mode.gd:386 ui/photo_mode.gd:419
 msgid "World"
-msgstr ""
+msgstr "Welt"
 
 #: ui/photo_mode.gd:387
 msgid "Set time of day"
-msgstr ""
+msgstr "Tageszeit festlegen"
 
 #: ui/photo_mode.gd:388
 msgid "Time"
-msgstr ""
+msgstr "Zeit"
 
 #: ui/photo_mode.gd:391
 msgid "Weather"
-msgstr ""
+msgstr "Wetter"
 
 #: ui/photo_mode.gd:392 ui/photo_mode.gd:419 ui/upgrades_screen.gd:10
 msgid "Lumi"
-msgstr ""
+msgstr "Lumi"
 
 #: ui/photo_mode.gd:393
 msgid "Pose"
-msgstr ""
+msgstr "Pose"
 
 #: ui/photo_mode.gd:394
 msgid "Eyes"
-msgstr ""
+msgstr "Augen"
 
 #: ui/photo_mode.gd:395
 msgid "Turn"
-msgstr ""
+msgstr "Drehen"
 
 #: ui/photo_mode.gd:396
 msgid "Show robots"
-msgstr ""
+msgstr "Roboter zeigen"
 
 #: ui/photo_mode.gd:397 ui/photo_mode.gd:419
 msgid "Frame"
-msgstr ""
+msgstr "Rahmen"
 
 #: ui/photo_mode.gd:398
 msgid "Hide HUD"
-msgstr ""
+msgstr "HUD ausblenden"
 
 #: ui/photo_mode.gd:399
 msgid "Rule of thirds"
-msgstr ""
+msgstr "Drittelregel"
 
 #: ui/photo_mode.gd:400
 msgid "Letterbox 2.39:1"
-msgstr ""
+msgstr "Letterbox 2.39:1"
 
 #: ui/photo_mode.gd:401
 msgid "Greenfall stamp"
-msgstr ""
+msgstr "Greenfall-Stempel"
 
 #: ui/photo_mode.gd:402
 msgid "Resolution"
-msgstr ""
+msgstr "Auflösung"
 
 #: ui/photo_mode.gd:851
 msgid "Couldn't capture the photo."
-msgstr ""
+msgstr "Das Foto konnte nicht aufgenommen werden."
 
 #: ui/photo_mode.gd:860
 msgid "Couldn't save the photo (%s)."
-msgstr ""
+msgstr "Das Foto konnte nicht gespeichert werden (%s)."
 
 #: ui/photo_mode.gd:873
 msgid "Saved  %s  (%dx%d)"
-msgstr ""
+msgstr "Gespeichert  %s  (%dx%d)"
 
 #: ui/photo_panel.gd:57
 msgid "CAPTURE  ·  LM-1 LENS"
-msgstr ""
+msgstr "AUFNAHME  ·  LM-1-LINSE"
 
 #: ui/photo_panel.gd:58
 msgid "PHOTO MODE"
-msgstr ""
+msgstr "FOTOMODUS"
 
 #: ui/photo_panel.gd:88
 msgid "Capture"
-msgstr ""
+msgstr "Auslösen"
 
 #: ui/photo_panel.gd:97
 msgid "Exit"
-msgstr ""
+msgstr "Beenden"
 
 #: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
 #: ui/settings_panel.gd:615
 msgid "On"
-msgstr ""
+msgstr "An"
 
 #: ui/photo_panel.gd:318
 msgid "RS orbit · LT/RT distance · LB/RB zoom · D-pad roll/height · X capture · Y hide panel · View orbit/free · B exit"
-msgstr ""
+msgstr "RS kreisen · LT/RT Abstand · LB/RB Zoom · Steuerkreuz Neigung/Höhe · X auslösen · Y Panel aus · Ansicht kreisen/frei · B beenden"
 
 #: ui/photo_panel.gd:319
 msgid "PHOTO MODE   Y"
-msgstr ""
+msgstr "FOTOMODUS   Y"
 
 #: ui/photo_panel.gd:321
 msgid "Drag orbit/look · Wheel distance · WASD move · R/F height · Q/E roll · Z/X zoom · C capture · Tab hide panel · H hide UI · Esc exit"
-msgstr ""
+msgstr "Ziehen kreisen/schauen · Rad Abstand · WASD bewegen · R/F Höhe · Q/E Neigung · Z/X Zoom · C auslösen · Tab Panel aus · H UI aus · Esc beenden"
 
 #: ui/photo_panel.gd:322
 msgid "PHOTO MODE   Tab"
-msgstr ""
+msgstr "FOTOMODUS   Tab"
 
 #: ui/research_node_card.gd:175 ui/research_panel.gd:194
 msgid "Researched"
-msgstr ""
+msgstr "Erforscht"
 
 #: ui/research_node_card.gd:178 ui/research_panel.gd:197
 msgid "%s left"
-msgstr ""
+msgstr "noch %s"
 
 #: ui/research_node_card.gd:181
 msgid "Queued  ·  %s"
-msgstr ""
+msgstr "In Warteschlange  ·  %s"
 
 #: ui/research_node_card.gd:184 ui/research_panel.gd:203
 msgid "%s data  ·  %s"
-msgstr ""
+msgstr "%s Daten  ·  %s"
 
 #: ui/research_panel.gd:34
 msgid "FIELD DATA"
-msgstr ""
+msgstr "FELDDATEN"
 
 #: ui/research_panel.gd:41
 msgid "Clean hexes, grow blooms, read shards and let robots work."
-msgstr ""
+msgstr "Räum Hexfelder, lass Blüten wachsen, lies Splitter und lass Roboter arbeiten."
 
 #: ui/research_panel.gd:60
 msgid "RESEARCHING"
-msgstr ""
+msgstr "FORSCHUNG LÄUFT"
 
 #: ui/research_panel.gd:163
 msgid "Nothing yet"
-msgstr ""
+msgstr "Noch nichts"
 
 #: ui/research_panel.gd:164
 msgid "Pick a glowing card below"
-msgstr ""
+msgstr "Wähl unten eine leuchtende Karte"
 
 #: ui/research_panel.gd:169
 msgid "%s left  ·  %d%%"
-msgstr ""
+msgstr "noch %s  ·  %d%%"
 
 #: ui/research_panel.gd:175
 msgid "Queue: empty  (%d slots)"
-msgstr ""
+msgstr "Warteschlange: leer  (%d Plätze)"
 
 #: ui/research_panel.gd:198 ui/research_panel.gd:201
 msgid "Press again to cancel (refund)"
-msgstr ""
+msgstr "Nochmal drücken zum Abbrechen (Erstattung)"
 
 #: ui/research_panel.gd:200
 msgid "Queued #%d"
-msgstr ""
+msgstr "In Warteschlange #%d"
 
 #: ui/research_panel.gd:205
 msgid "Press to research"
-msgstr ""
+msgstr "Drücken zum Erforschen"
 
 #: ui/research_panel.gd:205
 msgid "Press to queue"
-msgstr ""
+msgstr "Drücken zum Einreihen"
 
 #: ui/research_panel.gd:214
 msgid "%s cancelled. Data refunded."
-msgstr ""
+msgstr "%s abgebrochen. Daten erstattet."
 
 #: ui/robot_card.gd:68
 msgid "%s   ·   %s   ·   %d built"
-msgstr ""
+msgstr "%s   ·   %s   ·   %d gebaut"
 
 #: ui/robot_card.gd:73
 msgid "Crew: %d / %d  (hub level %d: +%d per level)"
-msgstr ""
+msgstr "Crew: %d / %d  (Basisstufe %d: +%d pro Stufe)"
 
 #: ui/robot_card.gd:77
 msgid ""
 "\n"
 "Water Tanks: %d / %d placed · next %s cubes (Command view: Place refill tank)"
 msgstr ""
+"\n"
+"Wassertanks: %d / %d gesetzt · nächster %s Würfel (Kommandoansicht: Nachfülltank setzen)"
 
 #: ui/robot_card.gd:79
 msgid "Build   %s cubes"
-msgstr ""
+msgstr "Bauen   %s Würfel"
 
 #: ui/robot_card.gd:79
 msgid "Build   (%s)"
-msgstr ""
+msgstr "Bauen   (%s)"
 
 #: ui/robot_card.gd:83
 msgid "Locked  ·  research %s"
-msgstr ""
+msgstr "Gesperrt  ·  Forschung %s"
 
 #: ui/robot_card.gd:87
 msgid "Fleet tier: %s (max)"
-msgstr ""
+msgstr "Flottenstufe: %s (max.)"
 
 #: ui/robot_card.gd:92
 msgid "Next: %s  ·  x%.1f work speed  ·  %s look"
-msgstr ""
+msgstr "Nächste: %s  ·  x%.1f Arbeitstempo  ·  %s-Look"
 
 #: ui/robot_card.gd:93
 msgid "Needs %s cubes, %s bolts and a %s Control Core.  %s"
-msgstr ""
+msgstr "Benötigt %s Würfel, %s Schrauben und einen %s-Steuerkern.  %s"
 
 #: ui/robot_card.gd:95
 msgid "Upgrade fleet to %s"
-msgstr ""
+msgstr "Flotte verbessern auf %s"
 
 #: ui/robot_card.gd:118
 msgid "□  %s  ·  missing  (detector, or salvage from electronics junk)"
-msgstr ""
+msgstr "□  %s  ·  fehlt  (Detektor oder aus Elektronikschrott bergen)"
 
 #: ui/rockets_panel.gd:38
 msgid "Cells charged and ready. Pick a base to fly to."
-msgstr ""
+msgstr "Zellen geladen und bereit. Wähl eine Basis als Ziel."
 
 #: ui/rockets_panel.gd:45
 msgid "Not built yet"
-msgstr ""
+msgstr "Noch nicht gebaut"
 
 #: ui/rockets_panel.gd:46
 msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Hub tab."
-msgstr ""
+msgstr "Die Startrampe gibt es ab einer Basis der Stufe 5 (deine ist Stufe %d). Verbessere die Basis im Reiter Basis."
 
 #: ui/rockets_panel.gd:48
 msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
-msgstr ""
+msgstr "Raketen zum Rest von Verdance gibt es im vollen Spiel. Die Demo bleibt im ersten Bezirk."
 
 #: ui/rockets_panel.gd:57
 msgid "NEARBY BASES"
-msgstr ""
+msgstr "BASEN IN DER NÄHE"
 
 #: ui/rockets_panel.gd:79
 msgid "%d sectors away  ·  %s"
-msgstr ""
+msgstr "%d Sektoren entfernt  ·  %s"
 
 #: ui/rockets_panel.gd:101
 msgid "ROCKET"
-msgstr ""
+msgstr "RAKETE"
 
 #: ui/rockets_panel.gd:106
 msgid "Top tier: warp hops, no recharge."
-msgstr ""
+msgstr "Höchste Stufe: Warp-Sprünge, kein Aufladen."
 
 #: ui/rockets_panel.gd:119
 msgid "Upgrade to %s"
-msgstr ""
+msgstr "Verbessern auf %s"
 
 #: ui/rockets_panel.gd:136
 msgid "Countdown %ds  ·  Flight %.1fs  ·  Recharge %s  ·  Cargo pods x%.1f every %ds"
-msgstr ""
+msgstr "Countdown %ds  ·  Flug %.1fs  ·  Aufladen %s  ·  Frachtkapseln x%.1f alle %ds"
 
 #: ui/rockets_panel.gd:140
 msgid "  ·  WARP"
-msgstr ""
+msgstr "  ·  WARP"
 
 #: ui/settings_panel.gd:11
 msgid "Audio"
-msgstr ""
+msgstr "Audio"
 
 #: ui/settings_panel.gd:11
 msgid "Graphics"
-msgstr ""
+msgstr "Grafik"
 
 #: ui/settings_panel.gd:11
 msgid "Controls"
-msgstr ""
+msgstr "Steuerung"
 
 #: ui/settings_panel.gd:11
 msgid "Gameplay"
-msgstr ""
+msgstr "Spiel"
 
 #: ui/settings_panel.gd:11
 msgid "Accessibility"
-msgstr ""
+msgstr "Barrierefreiheit"
 
 #: ui/settings_panel.gd:58
 msgid "SETTINGS"
-msgstr ""
+msgstr "EINSTELLUNGEN"
 
 #: ui/settings_panel.gd:61
 msgid "{ui_tab_prev}{ui_tab_next}  switch tabs     {ui_cancel}  back"
-msgstr ""
+msgstr "{ui_tab_prev}{ui_tab_next}  Reiter wechseln     {ui_cancel}  zurück"
 
 #: ui/settings_panel.gd:112
 msgid "Changes are saved automatically."
-msgstr ""
+msgstr "Änderungen werden automatisch gespeichert."
 
 #: ui/settings_panel.gd:234
 msgid "Volume"
-msgstr ""
+msgstr "Lautstärke"
 
 #: ui/settings_panel.gd:241
 msgid "Sound effects"
-msgstr ""
+msgstr "Soundeffekte"
 
 #: ui/settings_panel.gd:248
 msgid "Rendering"
-msgstr ""
+msgstr "Darstellung"
 
 #: ui/settings_panel.gd:249
 msgid "Low drops GI and fog; Ultra adds reflections."
-msgstr ""
+msgstr "Niedrig verzichtet auf GI und Nebel; Ultra fügt Spiegelungen hinzu."
 
 #: ui/settings_panel.gd:250
 msgid "This renderer always uses the Low preset."
-msgstr ""
+msgstr "Dieser Renderer nutzt immer die Voreinstellung Niedrig."
 
 #: ui/settings_panel.gd:252
 msgid "Detected: %s for %s. "
-msgstr ""
+msgstr "Erkannt: %s für %s."
 
 #: ui/settings_panel.gd:253
 msgid "Your choice (hardware: %s). "
-msgstr ""
+msgstr "Deine Wahl (Hardware: %s)."
 
 #: ui/settings_panel.gd:254
 msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
-msgstr ""
+msgstr "Niedrig verzichtet auf GI, Nebel und Schattendetails; Ultra fügt Spiegelungen hinzu."
 
 #: ui/settings_panel.gd:255
 msgid "Quality preset"
-msgstr ""
+msgstr "Qualitätsstufe"
 
 #: ui/settings_panel.gd:262
 msgid "Renderer"
-msgstr ""
+msgstr "Renderer"
 
 #: ui/settings_panel.gd:262
 msgid "Standard (Forward+)"
-msgstr ""
+msgstr "Standard (Forward+)"
 
 #: ui/settings_panel.gd:262
 msgid "Light (Mobile)"
-msgstr ""
+msgstr "Leicht (Mobile)"
 
 #: ui/settings_panel.gd:264
 msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
-msgstr ""
+msgstr "Leicht passt zu älterer integrierter Grafik. Wirkt nach einem Neustart des Spiels (aktuell: %s)."
 
 #: ui/settings_panel.gd:270
 msgid "Render scale"
-msgstr ""
+msgstr "Renderskalierung"
 
 #: ui/settings_panel.gd:272
 msgid "Lower renders 3D at a smaller size; the interface stays sharp."
-msgstr ""
+msgstr "Kleiner rendert 3D in geringerer Größe; die Oberfläche bleibt scharf."
 
 #: ui/settings_panel.gd:273
 msgid "Display"
-msgstr ""
+msgstr "Anzeige"
 
 #: ui/settings_panel.gd:274
 msgid "Fullscreen"
-msgstr ""
+msgstr "Vollbild"
 
 #: ui/settings_panel.gd:277
 msgid "V-Sync"
-msgstr ""
+msgstr "V-Sync"
 
 #: ui/settings_panel.gd:283 ui/settings_panel.gd:312
 msgid "Bindings"
-msgstr ""
+msgstr "Belegung"
 
 #: ui/settings_panel.gd:286
 msgid "ACTION   (select a binding to rebind it)"
-msgstr ""
+msgstr "AKTION   (Belegung wählen, um sie zu ändern)"
 
 #: ui/settings_panel.gd:289
 msgid "KEYBOARD / MOUSE"
-msgstr ""
+msgstr "TASTATUR / MAUS"
 
 #: ui/settings_panel.gd:289
 msgid "CONTROLLER"
-msgstr ""
+msgstr "CONTROLLER"
 
 #: ui/settings_panel.gd:305
 msgid "Reset to defaults"
-msgstr ""
+msgstr "Standard wiederherstellen"
 
 #: ui/settings_panel.gd:312
 msgid "Restore every key and controller binding."
-msgstr ""
+msgstr "Alle Tasten- und Controller-Belegungen zurücksetzen."
 
 #: ui/settings_panel.gd:314
 msgid "Button prompts"
-msgstr ""
+msgstr "Tastensymbole"
 
 #: ui/settings_panel.gd:316
 msgid "Controller art: Automatic follows the connected pad."
-msgstr ""
+msgstr "Controller-Grafik: Automatisch folgt dem verbundenen Pad."
 
 #: ui/settings_panel.gd:318
 msgid "Mouse sensitivity"
-msgstr ""
+msgstr "Mausempfindlichkeit"
 
 #: ui/settings_panel.gd:321
 msgid "Stick look speed"
-msgstr ""
+msgstr "Stick-Blicktempo"
 
 #: ui/settings_panel.gd:324
 msgid "Invert look Y"
-msgstr ""
+msgstr "Blick Y umkehren"
 
 #: ui/settings_panel.gd:328
 msgid "Mouse smoothing"
-msgstr ""
+msgstr "Mausglättung"
 
 #: ui/settings_panel.gd:329
 msgid "Eases mouse look over a few frames."
-msgstr ""
+msgstr "Glättet die Mausbewegung über einige Frames."
 
 #: ui/settings_panel.gd:330
 msgid "Scooping"
-msgstr ""
+msgstr "Schaufeln"
 
 #: ui/settings_panel.gd:331
 msgid "Scoop button"
-msgstr ""
+msgstr "Schaufeltaste"
 
 #: ui/settings_panel.gd:331
 msgid "Hold"
-msgstr ""
+msgstr "Halten"
 
 #: ui/settings_panel.gd:331
 msgid "Toggle"
-msgstr ""
+msgstr "Umschalten"
 
 #: ui/settings_panel.gd:372
 msgid "press a button…"
-msgstr ""
+msgstr "Taste am Controller drücken…"
 
 #: ui/settings_panel.gd:372
 msgid "press a key…"
-msgstr ""
+msgstr "Taste drücken…"
 
 #: ui/settings_panel.gd:404
 msgid "Conflict: %s is used by both %s and %s."
-msgstr ""
+msgstr "Konflikt: %s ist sowohl für %s als auch für %s belegt."
 
 #: ui/settings_panel.gd:492 ui/settings_panel.gd:495
 msgid "Language"
@@ -4120,1061 +4122,1063 @@ msgstr "Systemstandard"
 
 #: ui/settings_panel.gd:498
 msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
-msgstr ""
+msgstr "Menüs, HUD, Untertitel und Story-Texte. Pseudo dient zum Testen von Übersetzungen."
 
 #: ui/settings_panel.gd:499
 msgid "Comfort"
-msgstr ""
+msgstr "Komfort"
 
 #: ui/settings_panel.gd:500
 msgid "Camera shake"
-msgstr ""
+msgstr "Kamerawackeln"
 
 #: ui/settings_panel.gd:502
 msgid "Reduced motion"
-msgstr ""
+msgstr "Weniger Bewegung"
 
 #: ui/settings_panel.gd:503
 msgid "Calmer camera and fewer bouncy effects."
-msgstr ""
+msgstr "Ruhigere Kamera und weniger hüpfende Effekte."
 
 #: ui/settings_panel.gd:504 ui/settings_panel.gd:514
 msgid "Interface"
-msgstr ""
+msgstr "Oberfläche"
 
 #: ui/settings_panel.gd:505
 msgid "Number format"
-msgstr ""
+msgstr "Zahlenformat"
 
 #: ui/settings_panel.gd:505
 msgid "Short (1.2K)"
-msgstr ""
+msgstr "Kurz (1,2K)"
 
 #: ui/settings_panel.gd:505
 msgid "Scientific (1.2e3)"
-msgstr ""
+msgstr "Wissenschaftlich (1,2e3)"
 
 #: ui/settings_panel.gd:505
 msgid "Engineering (1.2e3)"
-msgstr ""
+msgstr "Technisch (1,2e3)"
 
 #: ui/settings_panel.gd:507
 msgid "Best-value tags"
-msgstr ""
+msgstr "Preis-Leistungs-Hinweise"
 
 #: ui/settings_panel.gd:508
 msgid "Tag the affordable upgrade that gives the most per cube."
-msgstr ""
+msgstr "Markiert das bezahlbare Upgrade, das pro Würfel am meisten bringt."
 
 #: ui/settings_panel.gd:509
 msgid "HUD"
-msgstr ""
+msgstr "HUD"
 
 #: ui/settings_panel.gd:509
 msgid "Full"
-msgstr ""
+msgstr "Voll"
 
 #: ui/settings_panel.gd:509
 msgid "Minimal"
-msgstr ""
+msgstr "Minimal"
 
 #: ui/settings_panel.gd:509
 msgid "Hidden"
-msgstr ""
+msgstr "Aus"
 
 #: ui/settings_panel.gd:510
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
-msgstr ""
+msgstr "Minimal blendet Extras nach ein paar Sekunden aus. Aus zeigt nur Hinweise und Nachrichten."
 
 #: ui/settings_panel.gd:520
 msgid "Interface scale"
-msgstr ""
+msgstr "Oberflächengröße"
 
 #: ui/settings_panel.gd:522
 msgid "Size of menus, HUD and subtitles."
-msgstr ""
+msgstr "Größe von Menüs, HUD und Untertiteln."
 
 #: ui/settings_panel.gd:523
 msgid "Colour-blind palette"
-msgstr ""
+msgstr "Farbenblind-Palette"
 
 #: ui/settings_panel.gd:524
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
-msgstr ""
+msgstr "Okabe-Ito-Farben für Hexfeld-Fortschritt, Trichteranzeige und Teile-Seltenheit."
 
 #: ui/settings_panel.gd:525 ui/settings_panel.gd:526
 msgid "Subtitles"
-msgstr ""
+msgstr "Untertitel"
 
 #: ui/settings_panel.gd:527
 msgid "WREN and Ledger lines."
-msgstr ""
+msgstr "Sätze von WREN und dem Ledger."
 
 #: ui/settings_panel.gd:528
 msgid "Subtitle size"
-msgstr ""
+msgstr "Untertitelgröße"
 
 #: ui/settings_panel.gd:528
 msgid "Small"
-msgstr ""
+msgstr "Klein"
 
 #: ui/settings_panel.gd:528
 msgid "Large"
-msgstr ""
+msgstr "Groß"
 
 #: ui/settings_panel.gd:530
 msgid "Subtitle background"
-msgstr ""
+msgstr "Untertitel-Hintergrund"
 
 #: ui/settings_panel.gd:531
 msgid "A solid backdrop behind subtitle text."
-msgstr ""
+msgstr "Ein fester Hintergrund hinter dem Untertiteltext."
 
 #: ui/stations_panel.gd:15
 msgid "BALE AUTOMATION  &  RECYCLING"
-msgstr ""
+msgstr "BALLEN-AUTOMATIK  &  RECYCLING"
 
 #: ui/stations_panel.gd:30
 msgid "Move to frontier"
-msgstr ""
+msgstr "An die Grenze versetzen"
 
 #: ui/stations_panel.gd:98
 msgid "%s built"
-msgstr ""
+msgstr "%s gebaut"
 
 #: ui/stations_panel.gd:103
 msgid "Auto-route: %s"
-msgstr ""
+msgstr "Auto-Route: %s"
 
 #: ui/stations_panel.gd:104
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Bolts %s"
-msgstr ""
+msgstr "Ballen recycelt %d   ·   Schrott vernichtet %s kg   ·   Schrauben %s"
 
 #: ui/trade_panel.gd:23
 msgid "HAGGLE'S PARTS TRADE"
-msgstr ""
+msgstr "HAGGLES TEILEHANDEL"
 
 #: ui/trade_panel.gd:25
 msgid "\"Everything's original. Mostly. Three of yours for one of mine, no questions, some questions.\""
-msgstr ""
+msgstr "„Alles original. Größtenteils. Drei von deinen für eins von meinen, keine Fragen, ein paar Fragen.“"
 
 #: ui/trade_panel.gd:71
 msgid "Bolts  %s      Parts in storage  %d"
-msgstr ""
+msgstr "Schrauben  %s      Teile im Lager  %d"
 
 #: ui/trade_panel.gd:83
 msgid "Haggle: \"Funny thing, I just happened to find a %s. For you, half price.\""
-msgstr ""
+msgstr "Haggle: „Komische Sache, ich hab da zufällig ein %s gefunden. Für dich zum halben Preis.“"
 
 #: ui/trade_panel.gd:91
 msgid "Trades away: %s"
-msgstr ""
+msgstr "Tauscht weg: %s"
 
 #: ui/trade_panel.gd:93
 msgid "Needs 3 spare parts (Control Cores needed for a Mk tier are never traded)."
-msgstr ""
+msgstr "Benötigt 3 Ersatzteile (Steuerkerne, die für eine Mk-Stufe gebraucht werden, werden nie getauscht)."
 
 #: ui/trade_panel.gd:98
 msgid "   (needed)"
-msgstr ""
+msgstr "   (benötigt)"
 
 #: ui/trade_panel.gd:100
 msgid "own %d"
-msgstr ""
+msgstr "%d im Besitz"
 
 #: ui/trade_panel.gd:103
 msgid "Buy Rusty  %s"
-msgstr ""
+msgstr "Rostig kaufen  %s"
 
 #: ui/trade_panel.gd:106
 msgid "Buy Worn  %s"
-msgstr ""
+msgstr "Abgenutzt kaufen  %s"
 
 #: ui/trade_panel.gd:112
 msgid "Scrap %d spare Rusty parts  ->  +%d bolts"
-msgstr ""
+msgstr "%d rostige Ersatzteile verschrotten  ->  +%d Schrauben"
 
 #: ui/trade_panel.gd:122
 msgid "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab"
-msgstr ""
+msgstr "BAUKASTEN-TEILE  ·  neue Ware in %d Min.  ·  im Reiter Baukasten montieren"
 
 #: ui/trade_panel.gd:137
 msgid "Haggle: \"%s. Treat it nicely.\""
-msgstr ""
+msgstr "Haggle: „%s. Sei nett dazu.“"
 
 #: ui/trade_panel.gd:145
 msgid ""
 "%s  (own %d)\n"
 "%s cubes + %d bolts"
 msgstr ""
+"%s  (%d im Besitz)\n"
+"%s Würfel + %d Schrauben"
 
 #: ui/trade_panel.gd:171
 msgid "Swap 3 spares"
-msgstr ""
+msgstr "3 Ersatzteile tauschen"
 
 #: ui/upgrade_card.gd:54
 msgid "Lv 0"
-msgstr ""
+msgstr "St 0"
 
 #: ui/upgrade_card.gd:56
 msgid "BEST VALUE"
-msgstr ""
+msgstr "BESTER WERT"
 
 #: ui/upgrade_card.gd:85
 msgid "Buy"
-msgstr ""
+msgstr "Kaufen"
 
 #: ui/upgrade_card.gd:87 ui/upgrade_card.gd:208
 msgid "Max"
-msgstr ""
+msgstr "Max."
 
 #: ui/upgrade_card.gd:177
 msgid "Lv %d%s"
-msgstr ""
+msgstr "St %d%s"
 
 #: ui/upgrade_card.gd:185
 msgid "%s Lv %d"
-msgstr ""
+msgstr "%s St %d"
 
 #: ui/upgrade_card.gd:186
 msgid "Requires %s"
-msgstr ""
+msgstr "Benötigt %s"
 
 #: ui/upgrade_card.gd:189
 msgid "%s%s  (max)"
-msgstr ""
+msgstr "%s%s  (max.)"
 
 #: ui/upgrade_card.gd:192
 msgid "Off  →  On"
-msgstr ""
+msgstr "Aus  →  An"
 
 #: ui/upgrade_card.gd:199
 msgid "MAX"
-msgstr ""
+msgstr "MAX."
 
 #: ui/upgrade_card.gd:208
 msgid "Max (%d)"
-msgstr ""
+msgstr "Max. (%d)"
 
 #: ui/upgrade_card.gd:214
 msgid "in about %s"
-msgstr ""
+msgstr "in etwa %s"
 
 #: ui/upgrade_card.gd:214
 msgid "earn more cubes"
-msgstr ""
+msgstr "mehr Würfel verdienen"
 
 #: ui/upgrade_card.gd:219
 msgid "Where it comes from:  %s"
-msgstr ""
+msgstr "Woher es kommt:  %s"
 
 #: ui/upgrades_screen.gd:11
 msgid "Bots"
-msgstr ""
+msgstr "Bots"
 
 #: ui/upgrades_screen.gd:12
 msgid "Trade"
-msgstr ""
+msgstr "Handel"
 
 #: ui/upgrades_screen.gd:13
 msgid "Hub"
-msgstr ""
+msgstr "Basis"
 
 #: ui/upgrades_screen.gd:14
 msgid "Research"
-msgstr ""
+msgstr "Forschung"
 
 #: ui/upgrades_screen.gd:15
 msgid "Rockets"
-msgstr ""
+msgstr "Raketen"
 
 #: ui/upgrades_screen.gd:16
 msgid "Cosmetics"
-msgstr ""
+msgstr "Kosmetik"
 
 #: ui/upgrades_screen.gd:18
 msgid "Builder"
-msgstr ""
+msgstr "Baukasten"
 
 #: ui/upgrades_screen.gd:68
 msgid "UPGRADES"
-msgstr ""
+msgstr "UPGRADES"
 
 #: ui/upgrades_screen.gd:87
 msgid "%s (soon)"
-msgstr ""
+msgstr "%s (bald)"
 
 #: water/water_view.gd:71
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
-msgstr ""
+msgstr "Das Wasser... ich kann den Grund sehen. Lumi, da unten bewegt sich etwas."
 
 #: data/achievements.json:achievements[first_scoop].name
 msgid "First Scoop"
-msgstr ""
+msgstr "Erste Schaufel"
 
 #: data/achievements.json:achievements[first_scoop].desc
 msgid "Scoop your first piece of junk."
-msgstr ""
+msgstr "Schaufel dein erstes Stück Schrott."
 
 #: data/achievements.json:achievements[hex_1].name
 msgid "Clean Slate"
-msgstr ""
+msgstr "Weiße Weste"
 
 #: data/achievements.json:achievements[hex_1].desc
 msgid "Clean your first hex."
-msgstr ""
+msgstr "Räum dein erstes Hexfeld."
 
 #: data/achievements.json:achievements[hex_10].name
 msgid "Tidy Ten"
-msgstr ""
+msgstr "Sauber zehn"
 
 #: data/achievements.json:achievements[hex_10].desc
 msgid "Clean 10 hexes."
-msgstr ""
+msgstr "Räum 10 Hexfelder."
 
 #: data/achievements.json:achievements[hex_50].name
 msgid "Half a Hundred"
-msgstr ""
+msgstr "Ein halbes Hundert"
 
 #: data/achievements.json:achievements[hex_50].desc
 msgid "Clean 50 hexes."
-msgstr ""
+msgstr "Räum 50 Hexfelder."
 
 #: data/achievements.json:achievements[hex_100].name
 msgid "Century of Hexes"
-msgstr ""
+msgstr "Hundert Hexfelder"
 
 #: data/achievements.json:achievements[hex_100].desc
 msgid "Clean 100 hexes."
-msgstr ""
+msgstr "Räum 100 Hexfelder."
 
 #: data/achievements.json:achievements[hex_250].name
 msgid "The Whole Yard"
-msgstr ""
+msgstr "Der ganze Hof"
 
 #: data/achievements.json:achievements[hex_250].desc
 msgid "Clean 250 hexes."
-msgstr ""
+msgstr "Räum 250 Hexfelder."
 
 #: data/achievements.json:achievements[cube_1].name
 msgid "Bale Begins"
-msgstr ""
+msgstr "Ballen-Beginn"
 
 #: data/achievements.json:achievements[cube_1].desc
 msgid "Press your first bale."
-msgstr ""
+msgstr "Press deinen ersten Ballen."
 
 #: data/achievements.json:achievements[cube_100].name
 msgid "Bale Baron"
-msgstr ""
+msgstr "Ballen-Baron"
 
 #: data/achievements.json:achievements[cube_100].desc
 msgid "Press 100 bales."
-msgstr ""
+msgstr "Press 100 Ballen."
 
 #: data/achievements.json:achievements[cube_1000].name
 msgid "Mountain of Bales"
-msgstr ""
+msgstr "Ballenberg"
 
 #: data/achievements.json:achievements[cube_1000].desc
 msgid "Press 1,000 bales."
-msgstr ""
+msgstr "Press 1.000 Ballen."
 
 #: data/achievements.json:achievements[pure_10].name
 msgid "Pure Intentions"
-msgstr ""
+msgstr "Reine Absichten"
 
 #: data/achievements.json:achievements[pure_10].desc
 msgid "Press 10 pure bales (one kind of junk only)."
-msgstr ""
+msgstr "Press 10 reine Ballen (nur eine Schrottsorte)."
 
 #: data/achievements.json:achievements[perfect_1].name
 msgid "Just Right"
-msgstr ""
+msgstr "Genau richtig"
 
 #: data/achievements.json:achievements[perfect_1].desc
 msgid "Press a perfect bale."
-msgstr ""
+msgstr "Press einen perfekten Ballen."
 
 #: data/achievements.json:achievements[perfect_50].name
 msgid "Perfectionist"
-msgstr ""
+msgstr "Perfektionist"
 
 #: data/achievements.json:achievements[perfect_50].desc
 msgid "Press 50 perfect bales."
-msgstr ""
+msgstr "Press 50 perfekte Ballen."
 
 #: data/achievements.json:achievements[lumpy_10].name
 msgid "Lumpy but Loved"
-msgstr ""
+msgstr "Klumpig, aber geliebt"
 
 #: data/achievements.json:achievements[lumpy_10].desc
 msgid "Press 10 lumpy bales. They still count."
-msgstr ""
+msgstr "Press 10 klumpige Ballen. Die zählen auch."
 
 #: data/achievements.json:achievements[earn_1k].name
 msgid "Pocket Change"
-msgstr ""
+msgstr "Kleingeld"
 
 #: data/achievements.json:achievements[earn_1k].desc
 msgid "Earn 1,000 cubes in total."
-msgstr ""
+msgstr "Verdiene insgesamt 1.000 Würfel."
 
 #: data/achievements.json:achievements[earn_100k].name
 msgid "Junk Tycoon"
-msgstr ""
+msgstr "Schrottmogul"
 
 #: data/achievements.json:achievements[earn_100k].desc
 msgid "Earn 100,000 cubes in total."
-msgstr ""
+msgstr "Verdiene insgesamt 100.000 Würfel."
 
 #: data/achievements.json:achievements[earn_1m].name
 msgid "Million-Cube Planet"
-msgstr ""
+msgstr "Millionen-Würfel-Planet"
 
 #: data/achievements.json:achievements[earn_1m].desc
 msgid "Earn 1,000,000 cubes in total."
-msgstr ""
+msgstr "Verdiene insgesamt 1.000.000 Würfel."
 
 #: data/achievements.json:achievements[kg_metal].name
 msgid "Heavy Metal"
-msgstr ""
+msgstr "Heavy Metal"
 
 #: data/achievements.json:achievements[kg_metal].desc
 msgid "Clear 500 kg of scrap metal."
-msgstr ""
+msgstr "Räum 500 kg Altmetall weg."
 
 #: data/achievements.json:achievements[kg_plastic].name
 msgid "Plastic Purge"
-msgstr ""
+msgstr "Plastik-Putz"
 
 #: data/achievements.json:achievements[kg_plastic].desc
 msgid "Clear 200 kg of plastic."
-msgstr ""
+msgstr "Räum 200 kg Plastik weg."
 
 #: data/achievements.json:achievements[kg_glass].name
 msgid "Glass Act"
-msgstr ""
+msgstr "Glasklar"
 
 #: data/achievements.json:achievements[kg_glass].desc
 msgid "Clear 200 kg of glass."
-msgstr ""
+msgstr "Räum 200 kg Glas weg."
 
 #: data/achievements.json:achievements[kg_rubber].name
 msgid "Bounce Back"
-msgstr ""
+msgstr "Zurückgefedert"
 
 #: data/achievements.json:achievements[kg_rubber].desc
 msgid "Clear 150 kg of rubber."
-msgstr ""
+msgstr "Räum 150 kg Gummi weg."
 
 #: data/achievements.json:achievements[kg_electronics].name
 msgid "Circuit Breaker"
-msgstr ""
+msgstr "Kurzschluss"
 
 #: data/achievements.json:achievements[kg_electronics].desc
 msgid "Clear 100 kg of electronics."
-msgstr ""
+msgstr "Räum 100 kg Elektronik weg."
 
 #: data/achievements.json:achievements[kg_paper].name
 msgid "Paper Trail"
-msgstr ""
+msgstr "Papierkram"
 
 #: data/achievements.json:achievements[kg_paper].desc
 msgid "Clear 100 kg of paper and fabric."
-msgstr ""
+msgstr "Räum 100 kg Papier und Stoff weg."
 
 #: data/achievements.json:achievements[kg_total].name
 msgid "A Tonne of Fun"
-msgstr ""
+msgstr "Eine Tonne Spaß"
 
 #: data/achievements.json:achievements[kg_total].desc
 msgid "Clear 1,000 kg of junk."
-msgstr ""
+msgstr "Räum 1.000 kg Schrott weg."
 
 #: data/achievements.json:achievements[kg_10t].name
 msgid "Ten Tonnes Lighter"
-msgstr ""
+msgstr "Zehn Tonnen leichter"
 
 #: data/achievements.json:achievements[kg_10t].desc
 msgid "Clear 10,000 kg of junk."
-msgstr ""
+msgstr "Räum 10.000 kg Schrott weg."
 
 #: data/achievements.json:achievements[upgrade_1].name
 msgid "Tinkerer"
-msgstr ""
+msgstr "Bastler"
 
 #: data/achievements.json:achievements[upgrade_1].desc
 msgid "Buy your first upgrade."
-msgstr ""
+msgstr "Kauf dein erstes Upgrade."
 
 #: data/achievements.json:achievements[upgrade_50].name
 msgid "Fully Kitted"
-msgstr ""
+msgstr "Voll ausgerüstet"
 
 #: data/achievements.json:achievements[upgrade_50].desc
 msgid "Buy 50 upgrade levels."
-msgstr ""
+msgstr "Kauf 50 Upgrade-Stufen."
 
 #: data/achievements.json:achievements[robot_1].name
 msgid "Not Alone"
-msgstr ""
+msgstr "Nicht allein"
 
 #: data/achievements.json:achievements[robot_1].desc
 msgid "Build your first robot."
-msgstr ""
+msgstr "Bau deinen ersten Roboter."
 
 #: data/achievements.json:achievements[robot_5].name
 msgid "Little Crew"
-msgstr ""
+msgstr "Kleine Crew"
 
 #: data/achievements.json:achievements[robot_5].desc
 msgid "Build 5 robots."
-msgstr ""
+msgstr "Bau 5 Roboter."
 
 #: data/achievements.json:achievements[robot_15].name
 msgid "Fleet Commander"
-msgstr ""
+msgstr "Flottenkommandant"
 
 #: data/achievements.json:achievements[robot_15].desc
 msgid "Build 15 robots."
-msgstr ""
+msgstr "Bau 15 Roboter."
 
 #: data/achievements.json:achievements[robot_types].name
 msgid "Whole Family"
-msgstr ""
+msgstr "Die ganze Familie"
 
 #: data/achievements.json:achievements[robot_types].desc
 msgid "Build every kind of robot."
-msgstr ""
+msgstr "Bau jede Roboterart."
 
 #: data/achievements.json:achievements[seed].name
 msgid "The First Seed"
-msgstr ""
+msgstr "Der erste Samen"
 
 #: data/achievements.json:achievements[seed].desc
 msgid "Find the first seed."
-msgstr ""
+msgstr "Finde den ersten Samen."
 
 #: data/achievements.json:achievements[plant_1].name
 msgid "Green Thumb"
-msgstr ""
+msgstr "Grüner Daumen"
 
 #: data/achievements.json:achievements[plant_1].desc
 msgid "Plant a seed."
-msgstr ""
+msgstr "Pflanz einen Samen."
 
 #: data/achievements.json:achievements[plant_100].name
 msgid "Gardener"
-msgstr ""
+msgstr "Gärtner"
 
 #: data/achievements.json:achievements[plant_100].desc
 msgid "Plant 100 seeds."
-msgstr ""
+msgstr "Pflanz 100 Samen."
 
 #: data/achievements.json:achievements[bloom_50].name
 msgid "In Bloom"
-msgstr ""
+msgstr "In voller Blüte"
 
 #: data/achievements.json:achievements[bloom_50].desc
 msgid "See 50 plants bloom."
-msgstr ""
+msgstr "Sieh 50 Pflanzen erblühen."
 
 #: data/achievements.json:achievements[restored_1].name
 msgid "Alive Again"
-msgstr ""
+msgstr "Wieder lebendig"
 
 #: data/achievements.json:achievements[restored_1].desc
 msgid "Fully restore a hex."
-msgstr ""
+msgstr "Stell ein Hexfeld vollständig wieder her."
 
 #: data/achievements.json:achievements[restored_25].name
 msgid "Meadowmaker"
-msgstr ""
+msgstr "Wiesenmacher"
 
 #: data/achievements.json:achievements[restored_25].desc
 msgid "Fully restore 25 hexes."
-msgstr ""
+msgstr "Stell 25 Hexfelder vollständig wieder her."
 
 #: data/achievements.json:achievements[shard_1].name
 msgid "Memory Keeper"
-msgstr ""
+msgstr "Erinnerungshüter"
 
 #: data/achievements.json:achievements[shard_1].desc
 msgid "Read a memory shard."
-msgstr ""
+msgstr "Lies einen Erinnerungssplitter."
 
 #: data/achievements.json:achievements[shard_all].name
 msgid "Every Story"
-msgstr ""
+msgstr "Jede Geschichte"
 
 #: data/achievements.json:achievements[shard_all].desc
 msgid "Read all eight memory shards."
-msgstr ""
+msgstr "Lies alle acht Erinnerungssplitter."
 
 #: data/achievements.json:achievements[research_1].name data/robot_parts.json:traits[curious].name
 msgid "Curious"
-msgstr ""
+msgstr "Neugierig"
 
 #: data/achievements.json:achievements[research_1].desc
 msgid "Finish your first research."
-msgstr ""
+msgstr "Schließ deine erste Forschung ab."
 
 #: data/achievements.json:achievements[research_10].name
 msgid "Lab Coat"
-msgstr ""
+msgstr "Laborkittel"
 
 #: data/achievements.json:achievements[research_10].desc
 msgid "Finish 10 research projects."
-msgstr ""
+msgstr "Schließ 10 Forschungsprojekte ab."
 
 #: data/achievements.json:achievements[research_all].name
 msgid "Know-It-All"
-msgstr ""
+msgstr "Besserwisser"
 
 #: data/achievements.json:achievements[research_all].desc
 msgid "Finish every research project."
-msgstr ""
+msgstr "Schließ jedes Forschungsprojekt ab."
 
 #: data/achievements.json:achievements[tractor].name
 msgid "Beam Me Up"
-msgstr ""
+msgstr "Beam me up"
 
 #: data/achievements.json:achievements[tractor].desc
 msgid "Research the Tractor Beam."
-msgstr ""
+msgstr "Erforsche den Traktorstrahl."
 
 #: data/achievements.json:achievements[rocket_cargo].name
 msgid "Special Delivery"
-msgstr ""
+msgstr "Expresslieferung"
 
 #: data/achievements.json:achievements[rocket_cargo].desc
 msgid "Research Rocket Cargo."
-msgstr ""
+msgstr "Erforsche Raketenfracht."
 
 #: data/achievements.json:achievements[data_500].name
 msgid "Data Hoarder"
-msgstr ""
+msgstr "Datensammler"
 
 #: data/achievements.json:achievements[data_500].desc
 msgid "Collect 500 field data."
-msgstr ""
+msgstr "Sammle 500 Felddaten."
 
 #: data/achievements.json:achievements[distance_1k].name
 msgid "Long Way Round"
-msgstr ""
+msgstr "Der lange Weg"
 
 #: data/achievements.json:achievements[distance_1k].desc
 msgid "Roll 1 km."
-msgstr ""
+msgstr "Roll 1 km."
 
 #: data/achievements.json:achievements[distance_10k].name
 msgid "Marathon Treads"
-msgstr ""
+msgstr "Marathon-Ketten"
 
 #: data/achievements.json:achievements[distance_10k].desc
 msgid "Roll 10 km."
-msgstr ""
+msgstr "Roll 10 km."
 
 #: data/achievements.json:achievements[time_1h].name
 msgid "Settling In"
-msgstr ""
+msgstr "Eingelebt"
 
 #: data/achievements.json:achievements[time_1h].desc
 msgid "Spend an hour on the planet."
-msgstr ""
+msgstr "Verbring eine Stunde auf dem Planeten."
 
 #: data/achievements.json:achievements[hub_2].name
 msgid "Home Improvements"
-msgstr ""
+msgstr "Heimwerker"
 
 #: data/achievements.json:achievements[hub_2].desc
 msgid "Upgrade the hub."
-msgstr ""
+msgstr "Verbessere die Basis."
 
 #: data/achievements.json:achievements[hub_5].name
 msgid "Hub Sweet Hub"
-msgstr ""
+msgstr "Trautes Heim"
 
 #: data/achievements.json:achievements[hub_5].desc
 msgid "Reach hub level 5."
-msgstr ""
+msgstr "Erreiche Basisstufe 5."
 
 #: data/achievements.json:achievements[parts_10].name
 msgid "Magpie"
-msgstr ""
+msgstr "Elster"
 
 #: data/achievements.json:achievements[parts_10].desc
 msgid "Dig up 10 robot parts."
-msgstr ""
+msgstr "Grab 10 Roboterteile aus."
 
 #: data/achievements.json:achievements[air].name
 msgid "Breath of Fresh Air"
-msgstr ""
+msgstr "Frischer Wind"
 
 #: data/achievements.json:achievements[air].desc
 msgid "Filter 500 units of dusty air."
-msgstr ""
+msgstr "Filtere 500 Einheiten staubige Luft."
 
 #: data/achievements.json:achievements[codex_20].name
 msgid "Naturalist"
-msgstr ""
+msgstr "Naturforscher"
 
 #: data/achievements.json:achievements[codex_20].desc
 msgid "Fill in 20 codex entries."
-msgstr ""
+msgstr "Füll 20 Kodex-Einträge."
 
 #: data/achievements.json:achievements[landmarks_all].name
 msgid "Sightseer"
-msgstr ""
+msgstr "Sightseeing"
 
 #: data/achievements.json:achievements[landmarks_all].desc
 msgid "Visit every kind of landmark."
-msgstr ""
+msgstr "Besuch jede Art von Wahrzeichen."
 
 #: data/achievements.json:achievements[ach_25].name
 msgid "Overachiever"
-msgstr ""
+msgstr "Überflieger"
 
 #: data/achievements.json:achievements[ach_25].desc
 msgid "Unlock 25 achievements."
-msgstr ""
+msgstr "Schalte 25 Erfolge frei."
 
 #: data/achievements.json:achievements[curio_5].name
 msgid "Nosy Parker"
-msgstr ""
+msgstr "Neugiernase"
 
 #: data/achievements.json:achievements[curio_5].desc
 msgid "Find 5 curiosities."
-msgstr ""
+msgstr "Finde 5 Kuriositäten."
 
 #: data/achievements.json:achievements[curio_15].name
 msgid "Cabinet of Curiosities"
-msgstr ""
+msgstr "Wunderkammer"
 
 #: data/achievements.json:achievements[curio_15].desc
 msgid "Find 15 curiosities."
-msgstr ""
+msgstr "Finde 15 Kuriositäten."
 
 #: data/achievements.json:achievements[curio_all].name
 msgid "Every Last Secret"
-msgstr ""
+msgstr "Jedes letzte Geheimnis"
 
 #: data/achievements.json:achievements[curio_all].desc
 msgid "Find all 29 curiosities on Verdance."
-msgstr ""
+msgstr "Finde alle 29 Kuriositäten auf Verdance."
 
 #: data/achievements.json:achievements[wild_curio].name
 msgid "Off the Beaten Path"
-msgstr ""
+msgstr "Abseits der Pfade"
 
 #: data/achievements.json:achievements[wild_curio].desc
 msgid "Find a curiosity that only lives in the wilderness."
-msgstr ""
+msgstr "Finde eine Kuriosität, die es nur in der Wildnis gibt."
 
 #: data/achievements.json:achievements[wild_curio_all].name
 msgid "Wild at Heart"
-msgstr ""
+msgstr "Wild im Herzen"
 
 #: data/achievements.json:achievements[wild_curio_all].desc
 msgid "Find all six wilderness curiosities."
-msgstr ""
+msgstr "Finde alle sechs Wildnis-Kuriositäten."
 
 #: data/achievements.json:achievements[biome_1].name
 msgid "Off-Road"
-msgstr ""
+msgstr "Offroad"
 
 #: data/achievements.json:achievements[biome_1].desc
 msgid "Land at a wilderness base."
-msgstr ""
+msgstr "Lande an einer Wildnis-Basis."
 
 #: data/achievements.json:achievements[biome_3].name
 msgid "Postcards From Verdance"
-msgstr ""
+msgstr "Postkarten aus Verdance"
 
 #: data/achievements.json:achievements[biome_3].desc
 msgid "Visit wilderness bases in three different biomes."
-msgstr ""
+msgstr "Besuch Wildnis-Basen in drei verschiedenen Biomen."
 
 #: data/achievements.json:achievements[campfire].name
 msgid "Sit a While"
-msgstr ""
+msgstr "Setz dich ein Weilchen"
 
 #: data/achievements.json:achievements[campfire].desc
 msgid "Rekindle the last campfire."
-msgstr ""
+msgstr "Entfache das letzte Lagerfeuer neu."
 
 #: data/achievements.json:achievements[bloom_meadow].name data/bloom.json:milestones[first_meadow].name
 msgid "First Meadow"
-msgstr ""
+msgstr "Erste Wiese"
 
 #: data/achievements.json:achievements[bloom_meadow].desc
 msgid "Reach 25 Thriving hexes across Verdance."
-msgstr ""
+msgstr "Erreiche 25 blühende Hexfelder auf Verdance."
 
 #: data/achievements.json:achievements[bloom_district].name data/bloom.json:milestones[thriving_district].name
 msgid "A District in Bloom"
-msgstr ""
+msgstr "Ein Bezirk in Blüte"
 
 #: data/achievements.json:achievements[bloom_district].desc
 msgid "Bring one district to 60% Thriving."
-msgstr ""
+msgstr "Bring einen Bezirk auf 60% blühend."
 
 #: data/achievements.json:achievements[bloom_verdance].name data/bloom.json:milestones[verdance_bloom].name
 msgid "Verdance Bloom"
-msgstr ""
+msgstr "Verdance-Blüte"
 
 #: data/achievements.json:achievements[bloom_verdance].desc
 msgid "Bring the Cradle home: three districts in bloom, or 1% of the planet reclaimed."
-msgstr ""
+msgstr "Hol die Cradle heim: drei Bezirke in Blüte oder 1% des Planeten zurückgewonnen."
 
 #: data/achievements.json:achievements[bloom_evergreen].name data/bloom.json:milestones[evergreen].name
 msgid "Evergreen"
-msgstr ""
+msgstr "Immergrün"
 
 #: data/achievements.json:achievements[bloom_evergreen].desc
 msgid "Twelve districts in bloom, or 3% of the planet reclaimed."
-msgstr ""
+msgstr "Zwölf Bezirke in Blüte oder 3% des Planeten zurückgewonnen."
 
 #: data/achievements.json:achievements[ark_1].name
 msgid "Seed Ark"
-msgstr ""
+msgstr "Saatarche"
 
 #: data/achievements.json:achievements[ark_1].desc
 msgid "Complete a Seed Ark wave."
-msgstr ""
+msgstr "Schließ eine Welle der Saatarche ab."
 
 #: data/achievements.json:achievements[ark_10].name
 msgid "Tender of Worlds"
-msgstr ""
+msgstr "Hüter der Welten"
 
 #: data/achievements.json:achievements[ark_10].desc
 msgid "Complete 10 Seed Ark waves."
-msgstr ""
+msgstr "Schließ 10 Wellen der Saatarche ab."
 
 #: data/achievements.json:achievements[outpost_1].name
 msgid "Frontier Scale"
-msgstr ""
+msgstr "Grenz-Waage"
 
 #: data/achievements.json:achievements[outpost_1].desc
 msgid "Repair a ruined outpost."
-msgstr ""
+msgstr "Repariere einen verfallenen Außenposten."
 
 #: data/achievements.json:achievements[outpost_3].name
 msgid "Outpost Network"
-msgstr ""
+msgstr "Außenposten-Netz"
 
 #: data/achievements.json:achievements[outpost_3].desc
 msgid "Repair 3 outposts."
-msgstr ""
+msgstr "Repariere 3 Außenposten."
 
 #: data/achievements.json:achievements[outpost_charge].name
 msgid "Pit Stop"
-msgstr ""
+msgstr "Boxenstopp"
 
 #: data/achievements.json:achievements[outpost_charge].desc
 msgid "Build a recharge pad at an outpost."
-msgstr ""
+msgstr "Bau eine Ladeplattform an einem Außenposten."
 
 #: data/achievements.json:achievements[builder_mix].name
 msgid "Mix and Match"
-msgstr ""
+msgstr "Bunt gemischt"
 
 #: data/achievements.json:achievements[builder_mix].desc
 msgid "Build a robot with all five custom parts."
-msgstr ""
+msgstr "Bau einen Roboter mit allen fünf Sonderteilen."
 
 #: data/achievements.json:achievements[builder_maker].name
 msgid "As the Makers Made It"
-msgstr ""
+msgstr "Wie die Erbauer ihn schufen"
 
 #: data/achievements.json:achievements[builder_maker].desc
 msgid "Fit the full Maker set (shell, optic and glider) on one robot."
-msgstr ""
+msgstr "Montier das komplette Erbauer-Set (Hülle, Optik und Gleiter) an einem Roboter."
 
 #: data/achievements.json:achievements[builder_hats].name
 msgid "Hat Rack"
-msgstr ""
+msgstr "Hutständer"
 
 #: data/achievements.json:achievements[builder_hats].desc
 msgid "Collect 5 different robot toppers."
-msgstr ""
+msgstr "Sammle 5 verschiedene Roboter-Aufsätze."
 
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
-msgstr ""
+msgstr "25 blühende Hexfelder irgendwo auf Verdance."
 
 #: data/bloom.json:milestones[thriving_district].desc
 msgid "One district with 60% of its land Thriving."
-msgstr ""
+msgstr "Ein Bezirk mit 60% blühendem Land."
 
 #: data/bloom.json:milestones[green_shoots].name
 msgid "Green Shoots"
-msgstr ""
+msgstr "Erste Triebe"
 
 #: data/bloom.json:milestones[green_shoots].desc
 msgid "Reclaim 0.25% of the planet, as the hologram counts it."
-msgstr ""
+msgstr "Gewinne 0,25% des Planeten zurück, laut Hologramm."
 
 #: data/bloom.json:milestones[verdance_bloom].desc
 msgid "The Cradle Returns landing pad is alive (or 2% of the planet reclaimed). Lumi's Bloom Core is full and the Cradle comes home."
-msgstr ""
+msgstr "Die Landeplattform „Cradle-Rückkehr“ lebt (oder 2% des Planeten sind zurückgewonnen). Lumis Blütenkern ist voll, und die Cradle kommt nach Hause."
 
 #: data/bloom.json:milestones[wide_bloom].name
 msgid "Wide Bloom"
-msgstr ""
+msgstr "Weite Blüte"
 
 #: data/bloom.json:milestones[wide_bloom].desc
 msgid "Six districts in bloom, or 3% of the planet reclaimed."
-msgstr ""
+msgstr "Sechs Bezirke in Blüte oder 3% des Planeten zurückgewonnen."
 
 #: data/bloom.json:milestones[evergreen].desc
 msgid "Twelve districts in bloom, or 5% of the planet reclaimed."
-msgstr ""
+msgstr "Zwölf Bezirke in Blüte oder 5% des Planeten zurückgewonnen."
 
 #: data/codex.json:categories[junk].name data/hex_levels.json:levels[0].name
 msgid "Junk"
-msgstr ""
+msgstr "Schrott"
 
 #: data/codex.json:categories[plants].name
 msgid "Plants"
-msgstr ""
+msgstr "Pflanzen"
 
 #: data/codex.json:categories[shards].name
 msgid "Memory Shards"
-msgstr ""
+msgstr "Erinnerungssplitter"
 
 #: data/codex.json:categories[landmarks].name
 msgid "Landmarks"
-msgstr ""
+msgstr "Wahrzeichen"
 
 #: data/codex.json:categories[frontiers].name
 msgid "Frontiers"
-msgstr ""
+msgstr "Grenzgebiete"
 
 #: data/codex.json:junk.metal.hint
 msgid "Rusty, clanky, everywhere."
-msgstr ""
+msgstr "Rostig, klapprig, überall."
 
 #: data/codex.json:junk.metal.desc
 msgid "Cans, tins and bent brackets. Most of it was made to last, and it did. Pressed into bales, it can be rolled and stamped into something useful again."
-msgstr ""
+msgstr "Dosen, Büchsen und verbogene Halterungen. Das meiste wurde für die Ewigkeit gebaut, und es hat gehalten. Zu Ballen gepresst, lässt es sich wieder zu etwas Nützlichem walzen und stanzen."
 
 #: data/codex.json:junk.plastic.hint
 msgid "Bright colours that never faded."
-msgstr ""
+msgstr "Bunte Farben, die nie verblasst sind."
 
 #: data/codex.json:junk.plastic.desc
 msgid "Bottles, crates and the occasional chair. It outlived the people who bought it. It weighs almost nothing, and still the ground under it stayed bare."
-msgstr ""
+msgstr "Flaschen, Kisten und ab und zu ein Stuhl. Es hat die Leute überlebt, die es gekauft haben. Es wiegt fast nichts, und trotzdem blieb der Boden darunter kahl."
 
 #: data/codex.json:junk.glass.hint
 msgid "It glints in the dust."
-msgstr ""
+msgstr "Es glitzert im Staub."
 
 #: data/codex.json:junk.glass.desc
 msgid "Jugs and wine bottles, a few still corked. Sorted by colour, glass melts down beautifully. Lumi likes how the light comes through it."
-msgstr ""
+msgstr "Krüge und Weinflaschen, ein paar noch verkorkt. Nach Farben sortiert, schmilzt Glas wunderbar ein. Lumi mag, wie das Licht hindurchscheint."
 
 #: data/codex.json:junk.rubber.hint
 msgid "Squeaky. Bouncy. Sad."
-msgstr ""
+msgstr "Quietschig. Federnd. Traurig."
 
 #: data/codex.json:junk.rubber.desc
 msgid "Tyres, boots and one very patient rubber duck. Rubber holds water, and water holds mosquitoes. Clearing it makes room for frogs."
-msgstr ""
+msgstr "Reifen, Stiefel und eine sehr geduldige Quietscheente. Gummi hält Wasser, und Wasser hält Mücken. Wer es wegräumt, macht Platz für Frösche."
 
 #: data/codex.json:junk.electronics.hint
 msgid "It might still remember something."
-msgstr ""
+msgstr "Vielleicht erinnert es sich noch an etwas."
 
 #: data/codex.json:junk.electronics.desc
 msgid "Laptops, radios and televisions with nothing left to say. Inside are tiny useful parts. Lumi keeps the good ones for new friends."
-msgstr ""
+msgstr "Laptops, Radios und Fernseher, die nichts mehr zu sagen haben. Darin stecken winzige nützliche Teile. Lumi hebt die guten für neue Freunde auf."
 
 #: data/codex.json:junk.paper.hint
 msgid "Soft, and slowly going back to soil."
-msgstr ""
+msgstr "Weich, und langsam wird es wieder zu Erde."
 
 #: data/codex.json:junk.paper.desc
 msgid "Cardboard boxes, bags and old gloves. Paper is the one kind of junk that is already trying to become soil. Lumi helps it along."
-msgstr ""
+msgstr "Pappkartons, Tüten und alte Handschuhe. Papier ist die einzige Schrottsorte, die schon selbst versucht, zu Erde zu werden. Lumi hilft ein bisschen nach."
 
 #: data/codex.json:plants.grass.name
 msgid "Meadow Grass"
-msgstr ""
+msgstr "Wiesengras"
 
 #: data/codex.json:plants.grass.hint
 msgid "Plant your first seeds."
-msgstr ""
+msgstr "Pflanz deine ersten Samen."
 
 #: data/codex.json:plants.grass.desc
 msgid "The first thing to come back, always. Its roots knit the loose dust together so other plants have something to hold on to."
-msgstr ""
+msgstr "Das, was immer zuerst zurückkommt. Seine Wurzeln verweben den losen Staub, damit andere Pflanzen etwas zum Festhalten haben."
 
 #: data/codex.json:plants.grass2.name
 msgid "Tufted Grass"
-msgstr ""
+msgstr "Büschelgras"
 
 #: data/codex.json:plants.grass2.hint
 msgid "Keep planting."
-msgstr ""
+msgstr "Pflanz weiter."
 
 #: data/codex.json:plants.grass2.desc
 msgid "A slightly scruffier cousin. It grows in clumps, and small beetles like to live between them."
-msgstr ""
+msgstr "Ein etwas struppigerer Cousin. Es wächst in Horsten, und kleine Käfer wohnen gern dazwischen."
 
 #: data/codex.json:plants.celandine.name
 msgid "Celandine"
-msgstr ""
+msgstr "Scharbockskraut"
 
 #: data/codex.json:plants.celandine.hint
 msgid "A little yellow star."
-msgstr ""
+msgstr "Ein kleiner gelber Stern."
 
 #: data/codex.json:plants.celandine.desc
 msgid "Glossy yellow petals that open in the sun and close when clouds pass. Bees find it before they find anything else."
-msgstr ""
+msgstr "Glänzende gelbe Blütenblätter, die sich in der Sonne öffnen und schließen, wenn Wolken vorbeiziehen. Bienen finden es vor allem anderen."
 
 #: data/codex.json:plants.gazania.name
 msgid "Gazania"
-msgstr ""
+msgstr "Gazanie"
 
 #: data/codex.json:plants.gazania.hint
 msgid "Bold stripes, big smile."
-msgstr ""
+msgstr "Kräftige Streifen, breites Lächeln."
 
 #: data/codex.json:plants.gazania.desc
 msgid "A tough little sun-lover with striped petals. It does not mind poor soil. It seems to enjoy proving people wrong."
-msgstr ""
+msgstr "Ein zäher kleiner Sonnenanbeter mit gestreiften Blüten. Magerer Boden macht ihm nichts aus. Es scheint ihm Spaß zu machen, alle zu widerlegen."
 
 #: data/codex.json:plants.heliophila.name
 msgid "Heliophila"
-msgstr ""
+msgstr "Heliophila"
 
 #: data/codex.json:plants.heliophila.hint
 msgid "The first flower you ever saw here."
-msgstr ""
+msgstr "Die erste Blume, die du hier je gesehen hast."
 
 #: data/codex.json:plants.heliophila.desc
 msgid "Small blue flowers that turn to follow the light. One grew beside a crushed can before anyone helped it. That is where this all began."
-msgstr ""
+msgstr "Kleine blaue Blüten, die sich nach dem Licht drehen. Eine wuchs neben einer zerdrückten Dose, bevor ihr irgendwer half. Dort hat alles angefangen."
 
 #: data/codex.json:plants.dandelion.name
 msgid "Dandelion"
-msgstr ""
+msgstr "Löwenzahn"
 
 #: data/codex.json:plants.dandelion.hint
 msgid "Make a wish."
-msgstr ""
+msgstr "Wünsch dir was."
 
 #: data/codex.json:plants.dandelion.desc
 msgid "Golden today, a puff of wishes tomorrow. Each seed rides the wind to a new patch of clean ground. It plants itself, if you let it."
-msgstr ""
+msgstr "Heute golden, morgen ein Bausch voller Wünsche. Jeder Samen reitet mit dem Wind zu einem neuen Fleck sauberen Bodens. Er pflanzt sich selbst, wenn du ihn lässt."
 
 #: data/codex.json:plants.fern.name
 msgid "Fern"
-msgstr ""
+msgstr "Farn"
 
 #: data/codex.json:plants.fern.hint
 msgid "Shade-lover."
