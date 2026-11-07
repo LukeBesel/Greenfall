@@ -331,7 +331,7 @@ func _short_level(h: int) -> String:
 	var l: int = int(hl.level_of(h))
 	if l < 0:
 		return ""
-	var s: String = str(hl.level_name(l)).to_upper()
+	var s: String = tr("HEX  %s") % str(hl.level_name(l)).to_upper()
 	if l == 3 or (l == 4 and not hl.sustained_now(h)):
 		if hl._ring_n.has(h) and hl.watered_ratio(h) >= float(hl.cfg.get("sustain_ratio", 0.9)):
 			s += tr("  SUSTAIN %d%%") % int(hl.sustain_progress(h) * 100.0)
