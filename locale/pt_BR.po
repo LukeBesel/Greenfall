@@ -2245,19 +2245,19 @@ msgstr "A Ponte da Arca se abre quando a Cradle voltar para casa."
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."
 msgstr "Modo Berço: o cofre de sementes da arca guarda sementes para outros mundos. Pausa > Ponte da Arca para vê-los e as relíquias que sua restauração liberou, ou semear um mundo novo. O Modo Jardim (H) também está aberto."
 
-#: systems/lumi_style.gd:398
+#: systems/lumi_style.gd:400
 msgid "Unlock the %s design"
 msgstr "Desbloqueie o visual %s"
 
-#: systems/lumi_style.gd:400
+#: systems/lumi_style.gd:402
 msgid "Reach Lumi Level %d"
 msgstr "Alcance o nível Lumi %d"
 
-#: systems/lumi_style.gd:403
+#: systems/lumi_style.gd:405
 msgid "Achievement: %s"
 msgstr "Conquista: %s"
 
-#: systems/lumi_style.gd:407
+#: systems/lumi_style.gd:409
 msgid "Buy for %s"
 msgstr "Comprar por %s"
 
@@ -3090,7 +3090,7 @@ msgstr "COMANDO"
 msgid "Mark around me"
 msgstr "Marcar ao meu redor"
 
-#: ui/command_view.gd:281 ui/lumi_builder.gd:583 ui/photo_mode.gd:26
+#: ui/command_view.gd:281 ui/lumi_builder.gd:584 ui/photo_mode.gd:26
 msgid "Clear"
 msgstr "Limpar"
 
@@ -3288,7 +3288,7 @@ msgstr "NÚCLEO FLORAL   %d%%"
 msgid "DESIGNS"
 msgstr "DESIGNS"
 
-#: ui/cosmetics_panel.gd:39 ui/lumi_builder.gd:538
+#: ui/cosmetics_panel.gd:39 ui/lumi_builder.gd:539
 msgid "Looks only (no bonuses)"
 msgstr "Só visual (sem bônus)"
 
@@ -3296,7 +3296,7 @@ msgstr "Só visual (sem bônus)"
 msgid "Character Builder"
 msgstr "Editor de personagem"
 
-#: ui/cosmetics_panel.gd:144 ui/cosmetics_panel.gd:175
+#: ui/cosmetics_panel.gd:144 ui/cosmetics_panel.gd:177
 msgid "Wearing"
 msgstr "Em uso"
 
@@ -3304,24 +3304,24 @@ msgstr "Em uso"
 msgid "Locked  %d%%"
 msgstr "Bloqueado  %d%%"
 
-#: ui/cosmetics_panel.gd:171 ui/lumi_builder.gd:643
+#: ui/cosmetics_panel.gd:174 ui/lumi_builder.gd:644
 msgid "Bonus: %s"
 msgstr "Bônus: %s"
 
-#: ui/cosmetics_panel.gd:171 ui/lumi_builder.gd:643
+#: ui/cosmetics_panel.gd:174 ui/lumi_builder.gd:644
 msgid "(off: looks only)"
 msgstr "(desligado: só visual)"
 
-#: ui/cosmetics_panel.gd:175
+#: ui/cosmetics_panel.gd:177
 msgid "Wearing a custom look with this bonus"
 msgstr "Visual próprio com este bônus"
 
-#: ui/cosmetics_panel.gd:177
+#: ui/cosmetics_panel.gd:179
 msgid "Unlocked. Press to wear."
 msgstr "Desbloqueado. Aperte para usar."
 
-#: ui/cosmetics_panel.gd:179 ui/lumi_builder.gd:374 ui/lumi_builder.gd:491
-#: ui/lumi_builder.gd:529 ui/lumi_builder.gd:597 ui/lumi_builder.gd:598
+#: ui/cosmetics_panel.gd:181 ui/lumi_builder.gd:375 ui/lumi_builder.gd:492
+#: ui/lumi_builder.gd:530 ui/lumi_builder.gd:598 ui/lumi_builder.gd:599
 msgid "Locked: %s"
 msgstr "Bloqueado: %s"
 
@@ -3684,123 +3684,123 @@ msgstr "FARDO PRONTO"
 msgid "◢ SIGNAL %d%%"
 msgstr "◢ SINAL %d%%"
 
-#: ui/lumi_builder.gd:110
+#: ui/lumi_builder.gd:111
 msgid "CHARACTER BUILDER"
 msgstr "EDITOR DE PERSONAGEM"
 
-#: ui/lumi_builder.gd:145
+#: ui/lumi_builder.gd:146
 msgid "Drag to turn  ·  Wheel to zoom"
 msgstr "Arraste para girar  ·  Roda para zoom"
 
-#: ui/lumi_builder.gd:182
+#: ui/lumi_builder.gd:183
 msgid "Randomize"
 msgstr "Aleatório"
 
-#: ui/lumi_builder.gd:183
+#: ui/lumi_builder.gd:184
 msgid "Reset to preset"
 msgstr "Voltar à predefinição"
 
-#: ui/lumi_builder.gd:184
+#: ui/lumi_builder.gd:185
 msgid "Test laser"
 msgstr "Testar laser"
 
-#: ui/lumi_builder.gd:188 ui/profile_picker.gd:252 ui/profile_picker.gd:269
+#: ui/lumi_builder.gd:189 ui/profile_picker.gd:252 ui/profile_picker.gd:269
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ui/lumi_builder.gd:189
+#: ui/lumi_builder.gd:190
 msgid "Done"
 msgstr "Pronto"
 
-#: ui/lumi_builder.gd:189
+#: ui/lumi_builder.gd:190
 msgid "Wear look"
 msgstr "Usar visual"
 
-#: ui/lumi_builder.gd:205 ui/lumi_builder.gd:317
+#: ui/lumi_builder.gd:206 ui/lumi_builder.gd:318
 msgid "Presets"
 msgstr "Predefinições"
 
-#: ui/lumi_builder.gd:216
+#: ui/lumi_builder.gd:217
 msgid "Saved"
 msgstr "Salvos"
 
-#: ui/lumi_builder.gd:220 ui/lumi_builder.gd:321
+#: ui/lumi_builder.gd:221 ui/lumi_builder.gd:322
 msgid "Saved looks"
 msgstr "Visuais salvos"
 
-#: ui/lumi_builder.gd:370
+#: ui/lumi_builder.gd:371
 msgid "A design's full look. Every slot can be changed afterwards."
 msgstr "O visual completo de um modelo. Depois dá para mudar cada espaço."
 
-#: ui/lumi_builder.gd:390
+#: ui/lumi_builder.gd:391
 msgid "Custom colour"
 msgstr "Cor própria"
 
-#: ui/lumi_builder.gd:435 data/style_parts.json:advanced.name
+#: ui/lumi_builder.gd:436 data/style_parts.json:advanced.name
 msgid "Advanced colour picker"
 msgstr "Seletor de cor avançado"
 
-#: ui/lumi_builder.gd:445
+#: ui/lumi_builder.gd:446
 msgid "Advanced (hue, saturation, brightness)"
 msgstr "Avançado (matiz, saturação, brilho)"
 
-#: ui/lumi_builder.gd:454
+#: ui/lumi_builder.gd:455
 msgid "Hue"
 msgstr "Matiz"
 
-#: ui/lumi_builder.gd:454 ui/photo_mode.gd:382
+#: ui/lumi_builder.gd:455 ui/photo_mode.gd:382
 msgid "Saturation"
 msgstr "Saturação"
 
-#: ui/lumi_builder.gd:454
+#: ui/lumi_builder.gd:455
 msgid "Brightness"
 msgstr "Brilho"
 
-#: ui/lumi_builder.gd:491
+#: ui/lumi_builder.gd:492
 msgid "Equipped"
 msgstr "Equipado"
 
-#: ui/lumi_builder.gd:507
+#: ui/lumi_builder.gd:508
 msgid "How weathered the paint looks: fresh from the ark, or three hundred years of dust."
 msgstr "O quanto a pintura parece gasta: recém-saída da arca ou trezentos anos de poeira."
 
-#: ui/lumi_builder.gd:510
+#: ui/lumi_builder.gd:511
 msgid "Fresh"
 msgstr "Novo"
 
-#: ui/lumi_builder.gd:519
+#: ui/lumi_builder.gd:520
 msgid "Weathered"
 msgstr "Desgastado"
 
-#: ui/lumi_builder.gd:525
+#: ui/lumi_builder.gd:526
 msgid "A custom look can use the bonus of any design you have unlocked."
 msgstr "Um visual próprio pode usar o bônus de qualquer modelo desbloqueado."
 
-#: ui/lumi_builder.gd:549
+#: ui/lumi_builder.gd:550
 msgid "Keep up to %d looks. Load one to edit it, then press Done to wear it."
 msgstr "Guarde até %d visuais. Carregue um para editar e aperte Pronto para usar."
 
-#: ui/lumi_builder.gd:554 ui/lumi_builder.gd:578
+#: ui/lumi_builder.gd:555 ui/lumi_builder.gd:579
 msgid "Look %d"
 msgstr "Visual %d"
 
-#: ui/lumi_builder.gd:562
+#: ui/lumi_builder.gd:563
 msgid "Empty"
 msgstr "Vazio"
 
-#: ui/lumi_builder.gd:567 data/robot_parts.json:stats[load].name
+#: ui/lumi_builder.gd:568 data/robot_parts.json:stats[load].name
 msgid "Load"
 msgstr "Carga"
 
-#: ui/lumi_builder.gd:575
+#: ui/lumi_builder.gd:576
 msgid "Save here"
 msgstr "Salvar aqui"
 
-#: ui/lumi_builder.gd:645
+#: ui/lumi_builder.gd:646
 msgid "Unsaved changes"
 msgstr "Alterações não salvas"
 
-#: ui/lumi_builder.gd:661
+#: ui/lumi_builder.gd:662
 msgid "Part of this look is still locked."
 msgstr "Parte deste visual ainda está bloqueada."
 

@@ -8,6 +8,9 @@ extends Control
 ## preset, Test laser (X), Cancel, Done (wears the look). LB / RB step through the slots;
 ## B / Esc = Done. Opened from the workbench Cosmetics tab (or --lumi-builder).
 ##
+## Locked presets, parts, swatches and bonuses show only "???" and how to unlock them (owner).
+## Other dressable bots plug into the Locker through CosmeticTargets (systems/cosmetic_targets.gd).
+##
 ## Self-contained Control, two ways to host it:
 ##   Embedded (the Locker):  var b := LumiBuilder.new(); b.world = world; container.add_child(b)
 ##       Fills its parent (size flags expand), no backdrop, no Esc / LB / RB capture (the host owns
@@ -368,10 +371,10 @@ func _build_presets() -> void:
 	_note(tr("A design's full look. Every slot can be changed afterwards."))
 	for id: String in LumiStyle.preset_ids():
 		var unlocked: bool = Designs.is_unlocked(id)
-		var nm: String = tr(str(Designs.def(id).get("name", id)))
+		var nm: String = tr(str(Designs.def(id).get("name", id))) if unlocked else tr(LumiStyle.LOCKED_NAME)
 		var sub: String = tr(str(Designs.def(id).get("tagline", ""))) if unlocked else (tr("Locked: %s") % Designs.unlock_text(id))
-		var on: bool = LumiStyle.same(edit, LumiStyle.preset(id))
-		var b := _row_btn(nm, sub, PatchModel.glow_of(id), on, not unlocked)
+		var on: bool = unlocked and LumiStyle.same(edit, LumiStyle.preset(id))
+		var b := _row_btn(nm, sub, PatchModel.glow_of(id) if unlocked else UITheme.MUTED, on, not unlocked)
 		b.pressed.connect(func() -> void:
 			if not Designs.is_unlocked(id):
 				_locked_feedback(Designs.unlock_text(id), Designs.progress(id))
@@ -399,21 +402,21 @@ func _build_colors() -> void:
 		var b := Button.new()
 		b.custom_minimum_size = Vector2(44, 44)
 		b.focus_mode = Control.FOCUS_ALL
-		b.tooltip_text = tr(str(s.get("name", id)))
+		b.tooltip_text = tr(str(s.get("name", id))) if unlocked else tr(LumiStyle.LOCKED_NAME)
 		for st: String in ["normal", "hover", "pressed", "focus"]:
 			var lit: bool = st in ["hover", "focus"]
-			var sb := UITheme.box(c if unlocked else Color(c, 0.22), Color.WHITE if on else (Color(1, 1, 1, 0.75) if lit else Color(1, 1, 1, 0.1)), 3 if on else (2 if lit else 1), 22, 0)
+			var sb := UITheme.box(c if unlocked else Color(0.12, 0.125, 0.14), Color.WHITE if on else (Color(1, 1, 1, 0.75) if lit else Color(1, 1, 1, 0.1)), 3 if on else (2 if lit else 1), 22, 0)
 			b.add_theme_stylebox_override(st, sb)
 		if not unlocked:
-			b.text = "·"
-			b.add_theme_color_override("font_color", Color(1, 1, 1, 0.6))
+			b.text = "?"
+			b.add_theme_color_override("font_color", Color(1, 1, 1, 0.45))
 		grid.add_child(b)
 		if _first_editor == null or on:
 			_first_editor = b
 		var u: Dictionary = s.get("unlock", {})
 		var key: String = LumiStyle.key_of("swatch", id)
 		b.focus_entered.connect(func() -> void:
-			name_l.text = tr(str(s.get("name", id)))
+			name_l.text = tr(str(s.get("name", id))) if LumiStyle.swatch_unlocked(id) else tr(LumiStyle.LOCKED_NAME)
 			_info.text = "" if LumiStyle.swatch_unlocked(id) else _lock_line(LumiStyle.unlock_text(u), LumiStyle.unlock_progress(u, key)))
 		b.mouse_entered.connect(func() -> void: b.grab_focus())
 		b.pressed.connect(func() -> void:
@@ -487,7 +490,7 @@ func _build_parts() -> void:
 		var u: Dictionary = o.get("unlock", {})
 		var key: String = LumiStyle.key_of(_slot, id)
 		var sub: String = tr("Equipped") if on else ("" if unlocked else (tr("Locked: %s") % LumiStyle.unlock_text(u)))
-		var b := _row_btn(tr(str(o.get("name", id))), sub, LumiStyle.col(edit, "glow"), on, not unlocked)
+		var b := _row_btn(tr(str(o.get("name", id))) if unlocked else tr(LumiStyle.LOCKED_NAME), sub, LumiStyle.col(edit, "glow") if unlocked else UITheme.MUTED, on, not unlocked)
 		b.focus_entered.connect(func() -> void:
 			_info.text = "" if LumiStyle.option_unlocked(_slot, id) else _lock_line(LumiStyle.unlock_text(u), LumiStyle.unlock_progress(u, key)))
 		b.pressed.connect(func() -> void:
@@ -525,7 +528,7 @@ func _build_bonus() -> void:
 		var unlocked: bool = Designs.is_unlocked(id)
 		var on: bool = str(edit["bonus"]) == id
 		var sub: String = Designs.buff_text(id) if unlocked else (tr("Locked: %s") % Designs.unlock_text(id))
-		var b := _row_btn(tr(str(Designs.def(id).get("name", id))), sub, PatchModel.glow_of(id), on, not unlocked)
+		var b := _row_btn(tr(str(Designs.def(id).get("name", id))) if unlocked else tr(LumiStyle.LOCKED_NAME), sub, PatchModel.glow_of(id) if unlocked else UITheme.MUTED, on, not unlocked)
 		b.pressed.connect(func() -> void:
 			if not Designs.is_unlocked(id):
 				_locked_feedback(Designs.unlock_text(id), Designs.progress(id))

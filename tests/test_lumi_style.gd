@@ -284,3 +284,40 @@ func test_builder_embeds_as_a_control() -> void:
 	assert_eq(got.size(), 1, "worn signal")
 	assert_true(is_instance_valid(b), "embedded builder stays open")
 	assert_eq(LumiStyle.current()["head"], "wings")
+
+
+func test_cosmetic_targets_registry() -> void:
+	assert_true(CosmeticTargets.has("lumi"))
+	assert_eq(CosmeticTargets.all()[0]["id"], "lumi")
+	var ed: Control = CosmeticTargets.make_editor("lumi", null)
+	assert_true(ed is LumiBuilder)
+	ed.free()
+	var met: Array = [false]
+	assert_false(CosmeticTargets.register("bad", {"name": "Bad"}), "needs an editor")
+	assert_true(CosmeticTargets.register("test_buddy", {"name": "Buddy", "order": 20,
+		"editor": func(_w: Node) -> Control: return Control.new(),
+		"unlocked": func() -> bool: return met[0], "hint": "Meet the light-bot"}))
+	assert_eq(CosmeticTargets.all().size(), 2)
+	assert_eq(CosmeticTargets.display_name("test_buddy"), "???", "locked target is ???")
+	assert_null(CosmeticTargets.make_editor("test_buddy", null))
+	met[0] = true
+	assert_eq(CosmeticTargets.display_name("test_buddy"), "Buddy")
+	var c: Control = CosmeticTargets.make_editor("test_buddy", null)
+	assert_not_null(c)
+	c.free()
+	CosmeticTargets.unregister("test_buddy")
+	assert_false(CosmeticTargets.has("test_buddy"))
+
+
+func test_locked_design_is_a_silhouette() -> void:
+	var p := DesignPreview.new(Vector2i(64, 64))
+	add_child_autofree(p)
+	p.show_design("nova", true)
+	var m: PatchModel = p._model
+	assert_true(m.has_meta("lumi_silhouette"))
+	for n: Node in m.find_children("*", "MeshInstance3D", true, false):
+		assert_not_null((n as MeshInstance3D).material_override, "every mesh is flat")
+	for n: Node in m.find_children("*", "Light3D", true, false):
+		assert_false((n as Light3D).visible)
+	p.show_design("aurora", false)
+	assert_false(p._model.has_meta("lumi_silhouette"), "a rebuild clears it")

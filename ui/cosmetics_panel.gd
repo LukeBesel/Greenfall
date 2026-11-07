@@ -139,10 +139,10 @@ func refresh() -> void:
 	var current: String = Designs.current()
 	for id: String in _cards:
 		var b: Button = _cards[id]
-		var glow: Color = PatchModel.glow_of(id)
 		var unlocked: bool = Designs.is_unlocked(id)
+		var glow: Color = PatchModel.glow_of(id) if unlocked else Color(0.45, 0.46, 0.5)  # [style] locked: no hint of its colours
 		var line2: String = tr("Wearing") if id == current else (tr("Unlocked") if unlocked else tr("Locked  %d%%") % int(Designs.progress(id) * 100.0))
-		b.text = "%s\n%s" % [tr(str(Designs.def(id).get("name", id))), line2]
+		b.text = "%s\n%s" % [tr(str(Designs.def(id).get("name", id))) if unlocked else tr(LumiStyle.LOCKED_NAME), line2]  # [style]
 		var bg := Color(0.08, 0.085, 0.1, 0.95) if unlocked else Color(0.05, 0.05, 0.06, 0.9)
 		for st: String in ["normal", "hover", "pressed", "focus", "disabled"]:
 			var lit: bool = st in ["focus", "hover"] or id == current
@@ -161,16 +161,18 @@ func _show(id: String, force: bool = false) -> void:
 		return
 	_shown = id
 	var d: Dictionary = Designs.def(id)
-	var glow: Color = PatchModel.glow_of(id)
-	_preview.show_design(id)
-	_name.text = tr(str(d.get("name", id))).to_upper()
+	var unlocked: bool = Designs.is_unlocked(id)
+	# [style] Owner: a locked design is a silhouette and "???" with only the unlock hint.
+	var glow: Color = PatchModel.glow_of(id) if unlocked else Color(0.6, 0.62, 0.66)
+	_preview.show_design(id, not unlocked)
+	_name.text = tr(str(d.get("name", id))).to_upper() if unlocked else tr(LumiStyle.LOCKED_NAME)
 	_name.add_theme_color_override("font_color", glow.lightened(0.45))
-	_tag.text = tr(str(d.get("tagline", "")))
-	_desc.text = tr(str(d.get("desc", "")))
+	_tag.text = tr(str(d.get("tagline", ""))) if unlocked else ""
+	_desc.text = tr(str(d.get("desc", ""))) if unlocked else ""
 	var bt: String = Designs.buff_text(id)
+	_buff.visible = unlocked
 	_buff.text = (tr("Bonus: %s") % bt) + ("  " + tr("(off: looks only)") if Designs.looks_only() else "")
 	_buff.add_theme_color_override("font_color", UITheme.MUTED if Designs.looks_only() else UITheme.GREEN)
-	var unlocked: bool = Designs.is_unlocked(id)
 	if id == Designs.current():
 		_state.text = tr("Wearing") if LumiStyle.is_preset(LumiStyle.current()) else tr("Wearing a custom look with this bonus")  # [style]
 	elif unlocked:

@@ -38,6 +38,8 @@ const PART_SLOTS: Array[String] = ["pattern", "eye_shape", "head", "chest", "sho
 ## Native (PatchModel) eye looks; any other shape is drawn by the overlay (art/shaders/lumi_eyes).
 const NATIVE_EYES: Array[String] = ["crescent", "happy"]
 const OVERLAY_SHAPES: Dictionary = {"round": 1, "bar": 2, "heart": 3}
+## Owner: locked designs and parts are never shown, only "???" and a hint of how to unlock them.
+const LOCKED_NAME: String = "???"
 
 static var _data: Dictionary = {}
 ## Dev (--lumi-parts-all / --lumi-random): every unlock met for this run.
@@ -573,6 +575,8 @@ static func variant_for(model: Node, base: Dictionary) -> Dictionary:
 ## Hook at the end of PatchModel._build: everything VARIANTS cannot say.
 static func after_build(model: Node) -> void:
 	var s: Dictionary = model.get_meta("lumi_style_live") if model.has_meta("lumi_style_live") else style_for_model(model)
+	if model.has_meta("lumi_silhouette"):
+		model.remove_meta("lumi_silhouette")  # a rebuild has fresh materials
 	model.set_meta("lumi_laser", col(s, "laser"))
 	model.set_meta("lumi_eyes", col(s, "eyes"))
 	model.set_meta("lumi_glow", col(s, "glow"))
@@ -681,6 +685,23 @@ static func refresh_player(world: Node) -> void:
 	var m: Variant = (world.get("patch") as Node).get("model")
 	if m is Node and (m as Node).has_method("set_variant"):
 		(m as Node).call("set_variant", Designs.current())
+
+
+## A flat dark shape of the model (locked designs in previews): no colours, lights, eyes or icon.
+static func silhouette(model: Node) -> void:
+	if model == null:
+		return
+	var m := StandardMaterial3D.new()
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	m.albedo_color = Color(0.17, 0.18, 0.21)
+	for n: Node in model.find_children("*", "MeshInstance3D", true, false):
+		(n as MeshInstance3D).material_override = m
+		(n as MeshInstance3D).material_overlay = null
+	for n: Node in model.find_children("*", "Light3D", true, false):
+		(n as Light3D).visible = false
+	for n: Node in model.find_children("*", "Label3D", true, false):
+		(n as Label3D).visible = false
+	model.set_meta("lumi_silhouette", true)
 
 
 ## Colour helpers for other systems (photo mode, pickup FX): the model's live style colours.

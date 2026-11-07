@@ -2217,19 +2217,19 @@ msgstr ""
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."
 msgstr ""
 
-#: systems/lumi_style.gd:398
+#: systems/lumi_style.gd:400
 msgid "Unlock the %s design"
 msgstr ""
 
-#: systems/lumi_style.gd:400
+#: systems/lumi_style.gd:402
 msgid "Reach Lumi Level %d"
 msgstr ""
 
-#: systems/lumi_style.gd:403
+#: systems/lumi_style.gd:405
 msgid "Achievement: %s"
 msgstr ""
 
-#: systems/lumi_style.gd:407
+#: systems/lumi_style.gd:409
 msgid "Buy for %s"
 msgstr ""
 
@@ -3057,7 +3057,7 @@ msgstr ""
 msgid "Mark around me"
 msgstr ""
 
-#: ui/command_view.gd:281 ui/lumi_builder.gd:583 ui/photo_mode.gd:26
+#: ui/command_view.gd:281 ui/lumi_builder.gd:584 ui/photo_mode.gd:26
 msgid "Clear"
 msgstr ""
 
@@ -3255,7 +3255,7 @@ msgstr ""
 msgid "DESIGNS"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:39 ui/lumi_builder.gd:538
+#: ui/cosmetics_panel.gd:39 ui/lumi_builder.gd:539
 msgid "Looks only (no bonuses)"
 msgstr ""
 
@@ -3263,7 +3263,7 @@ msgstr ""
 msgid "Character Builder"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:144 ui/cosmetics_panel.gd:175
+#: ui/cosmetics_panel.gd:144 ui/cosmetics_panel.gd:177
 msgid "Wearing"
 msgstr ""
 
@@ -3271,24 +3271,24 @@ msgstr ""
 msgid "Locked  %d%%"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:171 ui/lumi_builder.gd:643
+#: ui/cosmetics_panel.gd:174 ui/lumi_builder.gd:644
 msgid "Bonus: %s"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:171 ui/lumi_builder.gd:643
+#: ui/cosmetics_panel.gd:174 ui/lumi_builder.gd:644
 msgid "(off: looks only)"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:175
+#: ui/cosmetics_panel.gd:177
 msgid "Wearing a custom look with this bonus"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:177
+#: ui/cosmetics_panel.gd:179
 msgid "Unlocked. Press to wear."
 msgstr ""
 
-#: ui/cosmetics_panel.gd:179 ui/lumi_builder.gd:374 ui/lumi_builder.gd:491
-#: ui/lumi_builder.gd:529 ui/lumi_builder.gd:597 ui/lumi_builder.gd:598
+#: ui/cosmetics_panel.gd:181 ui/lumi_builder.gd:375 ui/lumi_builder.gd:492
+#: ui/lumi_builder.gd:530 ui/lumi_builder.gd:598 ui/lumi_builder.gd:599
 msgid "Locked: %s"
 msgstr ""
 
@@ -3638,123 +3638,123 @@ msgstr ""
 msgid "◢ SIGNAL %d%%"
 msgstr ""
 
-#: ui/lumi_builder.gd:110
+#: ui/lumi_builder.gd:111
 msgid "CHARACTER BUILDER"
 msgstr ""
 
-#: ui/lumi_builder.gd:145
+#: ui/lumi_builder.gd:146
 msgid "Drag to turn  ·  Wheel to zoom"
 msgstr ""
 
-#: ui/lumi_builder.gd:182
+#: ui/lumi_builder.gd:183
 msgid "Randomize"
 msgstr ""
 
-#: ui/lumi_builder.gd:183
+#: ui/lumi_builder.gd:184
 msgid "Reset to preset"
 msgstr ""
 
-#: ui/lumi_builder.gd:184
+#: ui/lumi_builder.gd:185
 msgid "Test laser"
 msgstr ""
 
-#: ui/lumi_builder.gd:188 ui/profile_picker.gd:252 ui/profile_picker.gd:269
+#: ui/lumi_builder.gd:189 ui/profile_picker.gd:252 ui/profile_picker.gd:269
 msgid "Cancel"
 msgstr ""
 
-#: ui/lumi_builder.gd:189
+#: ui/lumi_builder.gd:190
 msgid "Done"
 msgstr ""
 
-#: ui/lumi_builder.gd:189
+#: ui/lumi_builder.gd:190
 msgid "Wear look"
 msgstr ""
 
-#: ui/lumi_builder.gd:205 ui/lumi_builder.gd:317
+#: ui/lumi_builder.gd:206 ui/lumi_builder.gd:318
 msgid "Presets"
 msgstr ""
 
-#: ui/lumi_builder.gd:216
+#: ui/lumi_builder.gd:217
 msgid "Saved"
 msgstr ""
 
-#: ui/lumi_builder.gd:220 ui/lumi_builder.gd:321
+#: ui/lumi_builder.gd:221 ui/lumi_builder.gd:322
 msgid "Saved looks"
 msgstr ""
 
-#: ui/lumi_builder.gd:370
+#: ui/lumi_builder.gd:371
 msgid "A design's full look. Every slot can be changed afterwards."
 msgstr ""
 
-#: ui/lumi_builder.gd:390
+#: ui/lumi_builder.gd:391
 msgid "Custom colour"
 msgstr ""
 
-#: ui/lumi_builder.gd:435 data/style_parts.json:advanced.name
+#: ui/lumi_builder.gd:436 data/style_parts.json:advanced.name
 msgid "Advanced colour picker"
 msgstr ""
 
-#: ui/lumi_builder.gd:445
+#: ui/lumi_builder.gd:446
 msgid "Advanced (hue, saturation, brightness)"
 msgstr ""
 
-#: ui/lumi_builder.gd:454
+#: ui/lumi_builder.gd:455
 msgid "Hue"
 msgstr ""
 
-#: ui/lumi_builder.gd:454 ui/photo_mode.gd:382
+#: ui/lumi_builder.gd:455 ui/photo_mode.gd:382
 msgid "Saturation"
 msgstr ""
 
-#: ui/lumi_builder.gd:454
+#: ui/lumi_builder.gd:455
 msgid "Brightness"
 msgstr ""
 
-#: ui/lumi_builder.gd:491
+#: ui/lumi_builder.gd:492
 msgid "Equipped"
 msgstr ""
 
-#: ui/lumi_builder.gd:507
+#: ui/lumi_builder.gd:508
 msgid "How weathered the paint looks: fresh from the ark, or three hundred years of dust."
 msgstr ""
 
-#: ui/lumi_builder.gd:510
+#: ui/lumi_builder.gd:511
 msgid "Fresh"
 msgstr ""
 
-#: ui/lumi_builder.gd:519
+#: ui/lumi_builder.gd:520
 msgid "Weathered"
 msgstr ""
 
-#: ui/lumi_builder.gd:525
+#: ui/lumi_builder.gd:526
 msgid "A custom look can use the bonus of any design you have unlocked."
 msgstr ""
 
-#: ui/lumi_builder.gd:549
+#: ui/lumi_builder.gd:550
 msgid "Keep up to %d looks. Load one to edit it, then press Done to wear it."
 msgstr ""
 
-#: ui/lumi_builder.gd:554 ui/lumi_builder.gd:578
+#: ui/lumi_builder.gd:555 ui/lumi_builder.gd:579
 msgid "Look %d"
 msgstr ""
 
-#: ui/lumi_builder.gd:562
+#: ui/lumi_builder.gd:563
 msgid "Empty"
 msgstr ""
 
-#: ui/lumi_builder.gd:567 data/robot_parts.json:stats[load].name
+#: ui/lumi_builder.gd:568 data/robot_parts.json:stats[load].name
 msgid "Load"
 msgstr ""
 
-#: ui/lumi_builder.gd:575
+#: ui/lumi_builder.gd:576
 msgid "Save here"
 msgstr ""
 
-#: ui/lumi_builder.gd:645
+#: ui/lumi_builder.gd:646
 msgid "Unsaved changes"
 msgstr ""
 
-#: ui/lumi_builder.gd:661
+#: ui/lumi_builder.gd:662
 msgid "Part of this look is still locked."
 msgstr ""
 
