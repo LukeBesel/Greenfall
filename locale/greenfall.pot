@@ -318,6 +318,7 @@ msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr ""
 
 #: automation/outposts.gd:318 automation/outposts.gd:333 automation/stations.gd:117
+#: automation/telescope.gd:104 ui/telescope_panel.gd:40
 msgid "Not enough materials."
 msgstr ""
 
@@ -449,7 +450,7 @@ msgstr ""
 msgid "Rocket upgraded: %s."
 msgstr ""
 
-#: automation/stations.gd:108 ui/stations_panel.gd:92
+#: automation/stations.gd:108 automation/telescope.gd:98 ui/stations_panel.gd:92
 msgid "Built."
 msgstr ""
 
@@ -493,8 +494,24 @@ msgstr ""
 msgid "Every %dth bale to the recycler"
 msgstr ""
 
-#: core/offline.gd:55 steam/demo_end_screen.gd:124 ui/globe_view.gd:455
-#: ui/upgrade_card.gd:257
+#: automation/telescope.gd:102
+msgid "Requires hub level %d or research: %s."
+msgstr ""
+
+#: automation/telescope.gd:115
+msgid "Telescope built. Walk up to it and press E to look across the system."
+msgstr ""
+
+#: automation/telescope.gd:254 ui/telescope_panel.gd:11
+msgid "OBSERVATORY"
+msgstr ""
+
+#: automation/telescope.gd:302 data/eggs.json:eggs[stars].prompt
+msgid "E   look through the telescope"
+msgstr ""
+
+#: core/offline.gd:55 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
+#: ui/globe_view.gd:455 ui/upgrade_card.gd:257
 msgid "%d min"
 msgstr ""
 
@@ -1149,63 +1166,63 @@ msgstr ""
 msgid "WATER"
 msgstr ""
 
-#: scenes/slice.gd:279
+#: scenes/slice.gd:281
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr ""
 
-#: scenes/slice.gd:506
+#: scenes/slice.gd:508
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr ""
 
-#: scenes/slice.gd:804
+#: scenes/slice.gd:810
 msgid "HEX CLEAN!  +%s"
 msgstr ""
 
-#: scenes/slice.gd:818
+#: scenes/slice.gd:824
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
-#: scenes/slice.gd:820
+#: scenes/slice.gd:826
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr ""
 
-#: scenes/slice.gd:827
+#: scenes/slice.gd:833
 msgid "%s is out of range: %s"
 msgstr ""
 
-#: scenes/slice.gd:837
+#: scenes/slice.gd:843
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr ""
 
-#: scenes/slice.gd:840 ui/rockets_panel.gd:39
+#: scenes/slice.gd:846 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr ""
 
-#: scenes/slice.gd:894
+#: scenes/slice.gd:900
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr ""
 
-#: scenes/slice.gd:895
+#: scenes/slice.gd:901
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr ""
 
-#: scenes/slice.gd:895
+#: scenes/slice.gd:901
 msgid "Landed on the base pad."
 msgstr ""
 
-#: scenes/slice.gd:986
+#: scenes/slice.gd:992
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
-#: scenes/slice.gd:1158
+#: scenes/slice.gd:1164
 msgid "Welcome back. The junk waited for you."
 msgstr ""
 
-#: scenes/slice.gd:1175
+#: scenes/slice.gd:1181
 msgid "OUTPOST %d · Lv%d"
 msgstr ""
 
-#: scenes/slice.gd:1175
+#: scenes/slice.gd:1181
 msgid "OUTPOST %d · RUIN"
 msgstr ""
 
@@ -1687,7 +1704,7 @@ msgid ""
 msgstr ""
 
 #: story/ledger.gd:318 systems/decor.gd:125 systems/research.gd:186
-#: ui/hub_panel.gd:119 ui/stations_panel.gd:96
+#: ui/hub_panel.gd:124 ui/stations_panel.gd:96 ui/telescope_panel.gd:43
 msgid "Needs %s"
 msgstr ""
 
@@ -1845,31 +1862,31 @@ msgstr ""
 msgid "Somewhere under the junk."
 msgstr ""
 
-#: systems/codex.gd:188 ui/codex_screen.gd:355
+#: systems/codex.gd:192 ui/codex_screen.gd:355
 msgid "Old Town"
 msgstr ""
 
-#: systems/codex.gd:192 ui/codex_screen.gd:355
+#: systems/codex.gd:196 ui/codex_screen.gd:355
 msgid "Wilderness bases"
 msgstr ""
 
-#: systems/codex.gd:192
+#: systems/codex.gd:196
 msgid " · often %s"
 msgstr ""
 
-#: systems/codex.gd:195 ui/codex_screen.gd:355 data/codex.json:categories[frontiers].name
+#: systems/codex.gd:199 ui/codex_screen.gd:355 data/codex.json:categories[frontiers].name
 msgid "Frontiers"
 msgstr ""
 
-#: systems/codex.gd:195
+#: systems/codex.gd:199
 msgid " · %s"
 msgstr ""
 
-#: systems/codex.gd:197 ui/codex_screen.gd:355
+#: systems/codex.gd:201 ui/codex_screen.gd:355
 msgid "Other worlds"
 msgstr ""
 
-#: systems/codex.gd:198 ui/codex_screen.gd:355
+#: systems/codex.gd:202 ui/codex_screen.gd:355
 msgid "Any district"
 msgstr ""
 
@@ -2277,6 +2294,22 @@ msgstr ""
 
 #: systems/quality_probe.gd:74
 msgid "Graphics set to %s to keep things smooth. You can change it in Settings."
+msgstr ""
+
+#: systems/remote_progress.gd:290
+msgid "While you were away (%s), the crew here kept at it at a steady remote pace: %s cubes."
+msgstr ""
+
+#: systems/remote_progress.gd:304
+msgid "No world in view."
+msgstr ""
+
+#: systems/remote_progress.gd:306
+msgid "A care package is already on its way."
+msgstr ""
+
+#: systems/remote_progress.gd:308
+msgid "Needs %s cubes."
 msgstr ""
 
 #: systems/research.gd:173
@@ -3541,89 +3574,89 @@ msgstr ""
 msgid "CORE %d%%"
 msgstr ""
 
-#: ui/hub_panel.gd:20
+#: ui/hub_panel.gd:21
 msgid "HUB"
 msgstr ""
 
-#: ui/hub_panel.gd:64
+#: ui/hub_panel.gd:69
 msgid "Build Signal Jammer"
 msgstr ""
 
-#: ui/hub_panel.gd:82
+#: ui/hub_panel.gd:87
 msgid "cubes"
 msgstr ""
 
-#: ui/hub_panel.gd:82
+#: ui/hub_panel.gd:87
 msgid "sheet metal"
 msgstr ""
 
-#: ui/hub_panel.gd:82
+#: ui/hub_panel.gd:87
 msgid "plastic stock"
 msgstr ""
 
-#: ui/hub_panel.gd:82
+#: ui/hub_panel.gd:87
 msgid "glass"
 msgstr ""
 
-#: ui/hub_panel.gd:82
+#: ui/hub_panel.gd:87
 msgid "bolts"
 msgstr ""
 
-#: ui/hub_panel.gd:87
+#: ui/hub_panel.gd:92
 msgid " (have %s)"
 msgstr ""
 
-#: ui/hub_panel.gd:94
+#: ui/hub_panel.gd:99
 msgid "Sheet metal %s    Plastic stock %s    Glass %s"
 msgstr ""
 
-#: ui/hub_panel.gd:96
+#: ui/hub_panel.gd:101
 msgid ""
 "Level %d   ·   %s\n"
 "%s   Bales sell for +%d%%."
 msgstr ""
 
-#: ui/hub_panel.gd:99
+#: ui/hub_panel.gd:104
 msgid "Fully built."
 msgstr ""
 
-#: ui/hub_panel.gd:102
+#: ui/hub_panel.gd:107
 msgid ""
 "Next: %s. %s\n"
 "Needs %s"
 msgstr ""
 
-#: ui/hub_panel.gd:103 ui/stations_panel.gd:98
+#: ui/hub_panel.gd:108 ui/stations_panel.gd:98 ui/telescope_panel.gd:45
 msgid "Build %s"
 msgstr ""
 
-#: ui/hub_panel.gd:108
+#: ui/hub_panel.gd:113
 msgid "Continue in the full game"
 msgstr ""
 
-#: ui/hub_panel.gd:115
+#: ui/hub_panel.gd:120
 msgid ""
 "\n"
 "Requires hub level %d."
 msgstr ""
 
-#: ui/hub_panel.gd:117
+#: ui/hub_panel.gd:122
 msgid ""
 "\n"
 "All built (max)."
 msgstr ""
 
-#: ui/hub_panel.gd:120
+#: ui/hub_panel.gd:125
 msgid ""
 "%s   ·   %d / %d built\n"
 "%s%s"
 msgstr ""
 
-#: ui/hub_panel.gd:121
+#: ui/hub_panel.gd:126
 msgid "Air Scrubbers maxed"
 msgstr ""
 
-#: ui/hub_panel.gd:121
+#: ui/hub_panel.gd:126
 msgid "Build Air Scrubber"
 msgstr ""
 
@@ -4600,7 +4633,7 @@ msgstr ""
 msgid "Move to frontier"
 msgstr ""
 
-#: ui/stations_panel.gd:98
+#: ui/stations_panel.gd:98 ui/telescope_panel.gd:45
 msgid "%s built"
 msgstr ""
 
@@ -4610,6 +4643,151 @@ msgstr ""
 
 #: ui/stations_panel.gd:104
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Bolts %s"
+msgstr ""
+
+#: ui/telescope_panel.gd:39
+msgid "Built. Walk up to it and press E."
+msgstr ""
+
+#: ui/telescope_view.gd:81
+msgid "Codex: First Light"
+msgstr ""
+
+#: ui/telescope_view.gd:361
+msgid "TELESCOPE  ·  SYSTEM VIEW"
+msgstr ""
+
+#: ui/telescope_view.gd:367
+msgid "%s (here)"
+msgstr ""
+
+#: ui/telescope_view.gd:369
+msgid "%s  ·  not visited"
+msgstr ""
+
+#: ui/telescope_view.gd:376
+msgid "Close"
+msgstr ""
+
+#: ui/telescope_view.gd:379
+msgid ""
+"Two suns, one system.\n"
+"Worlds visited: %d"
+msgstr ""
+
+#: ui/telescope_view.gd:381
+msgid "Pick a world you've visited to watch its crew. The one you stand on can't see itself."
+msgstr ""
+
+#: ui/telescope_view.gd:381
+msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
+msgstr ""
+
+#: ui/telescope_view.gd:464
+msgid ""
+"%s\n"
+"District %d%% clean · %d robots\n"
+"Last visit %s"
+msgstr ""
+
+#: ui/telescope_view.gd:466
+msgid ""
+"%s\n"
+"You are here."
+msgstr ""
+
+#: ui/telescope_view.gd:468
+msgid ""
+"%s\n"
+"Not visited yet."
+msgstr ""
+
+#: ui/telescope_view.gd:475
+msgid "You stand on %s."
+msgstr ""
+
+#: ui/telescope_view.gd:475
+msgid "%s: nobody of yours down there yet."
+msgstr ""
+
+#: ui/telescope_view.gd:489
+msgid "unknown"
+msgstr ""
+
+#: ui/telescope_view.gd:492
+msgid "%d min ago"
+msgstr ""
+
+#: ui/telescope_view.gd:494
+msgid "%.1f h ago"
+msgstr ""
+
+#: ui/telescope_view.gd:495
+msgid "%d days ago"
+msgstr ""
+
+#: ui/telescope_view.gd:585
+msgid "TELESCOPE  ·  %s"
+msgstr ""
+
+#: ui/telescope_view.gd:586
+msgid "◀ Look"
+msgstr ""
+
+#: ui/telescope_view.gd:587
+msgid "Look ▶"
+msgstr ""
+
+#: ui/telescope_view.gd:589
+msgid "Back to system"
+msgstr ""
+
+#: ui/telescope_view.gd:590
+msgid "Right stick or drag: turn and zoom.  Hold something in the reticle to log it."
+msgstr ""
+
+#: ui/telescope_view.gd:636
+msgid ""
+"PLANET     %s\n"
+"DISTRICT   %.2f%% clean\n"
+"ROBOTS     %d active of %d\n"
+"LAST VISIT %s"
+msgstr ""
+
+#: ui/telescope_view.gd:639
+msgid ""
+"\n"
+"CARE PACKAGE  %d:%02d left"
+msgstr ""
+
+#: ui/telescope_view.gd:640
+msgid ""
+"Remote pace (%d%% of offline)\n"
+"Waiting for you: %s cubes%s"
+msgstr ""
+
+#: ui/telescope_view.gd:643
+msgid "Send a care package (%s cubes)"
+msgstr ""
+
+#: ui/telescope_view.gd:657
+msgid "Care package away. The crew on %s works at double speed for %d minutes."
+msgstr ""
+
+#: ui/telescope_view.gd:735
+msgid "Ledger wreck"
+msgstr ""
+
+#: ui/telescope_view.gd:735
+msgid "Deer"
+msgstr ""
+
+#: ui/telescope_view.gd:736
+msgid "Logged through the telescope: %s. New Codex entry."
+msgstr ""
+
+#: ui/telescope_view.gd:737
+msgid "Codex: %s"
 msgstr ""
 
 #: ui/trade_panel.gd:23
@@ -5552,6 +5730,10 @@ msgstr ""
 
 #: data/codex.json:categories[animals].name
 msgid "Animals"
+msgstr ""
+
+#: data/codex.json:categories[sightings].name
+msgid "Sightings"
 msgstr ""
 
 #: data/codex.json:junk.metal.hint
@@ -6502,6 +6684,30 @@ msgstr ""
 msgid "White cranes circle high over the landing city on slow wingbeats. The ark's seed vault carried their eggs; this is the first flock to fly free."
 msgstr ""
 
+#: data/codex.json:sightings.first_light.name
+msgid "First Light"
+msgstr ""
+
+#: data/codex.json:sightings.first_light.hint
+msgid "Build a Telescope and look through it."
+msgstr ""
+
+#: data/codex.json:sightings.first_light.desc
+msgid "The first look across the system from your own observatory. Two suns, a handful of worlds, and somewhere down there, your crews still at work."
+msgstr ""
+
+#: data/codex.json:sightings.ledger_wreck.name
+msgid "Ledger Wreck"
+msgstr ""
+
+#: data/codex.json:sightings.ledger_wreck.hint
+msgid "Through the telescope, on a world where the Ledger's drones came down."
+msgstr ""
+
+#: data/codex.json:sightings.ledger_wreck.desc
+msgid "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."
+msgstr ""
+
 #: data/cradle.json:heirlooms[green_thumb].desc
 msgid "Plants grow 8% faster per level, on every world."
 msgstr ""
@@ -7084,10 +7290,6 @@ msgstr ""
 
 #: data/eggs.json:eggs[stars].name
 msgid "WREN's Constellation"
-msgstr ""
-
-#: data/eggs.json:eggs[stars].prompt
-msgid "E   look through the telescope"
 msgstr ""
 
 #: data/eggs.json:eggs[stars].lore
@@ -9922,6 +10124,14 @@ msgstr ""
 msgid "Cargo pods for the rocket. Hubs can trade with each other."
 msgstr ""
 
+#: data/research.json:nodes[observatory].name
+msgid "Observatory Optics"
+msgstr ""
+
+#: data/research.json:nodes[observatory].desc
+msgid "Ground lenses from an old planetarium and a crew telemetry link. Any base can build a Telescope (without it, from base level 4) and watch the crews on other worlds."
+msgstr ""
+
 #: data/research.json:nodes[dune_charts].name
 msgid "Dune Charts"
 msgstr ""
@@ -10642,6 +10852,26 @@ msgstr ""
 
 #: data/stations.json:recycler.desc
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come bolts and clean building stock. Every bale burnt clean helps the sky."
+msgstr ""
+
+#: data/telescope.json:planets_default[ochre].name
+msgid "Ochre"
+msgstr ""
+
+#: data/telescope.json:planets_default[verdance].name
+msgid "Verdance"
+msgstr ""
+
+#: data/telescope.json:planets_default[tidewell].name
+msgid "Tidewell"
+msgstr ""
+
+#: data/telescope.json:planets_default[anvil].name
+msgid "Anvil"
+msgstr ""
+
+#: data/telescope.json:planets_default[rime].name
+msgid "Rime"
 msgstr ""
 
 #: data/upgrades.json:upgrades[compartment_size].name
