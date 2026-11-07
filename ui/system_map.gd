@@ -16,8 +16,8 @@ signal closed
 
 const HOLO := Color(0.45, 0.88, 1.0)
 const GOLD := Color(1.0, 0.78, 0.36)
-const AU_UNITS: float = 9.0
-const HOME_CAM := Vector3(0, 19.0, 33.0)
+const AU_UNITS: float = 8.0
+const HOME_CAM := Vector3(0, 25.0, 41.0)
 
 var world: Node
 var is_open: bool = false
@@ -73,6 +73,7 @@ func open_map(from_planet: bool = false) -> void:
 		return
 	is_open = true
 	selected = clampi(Homeward.current_planet(), 0, Homeward.planets().size() - 1)
+	get_viewport().disable_3d = true  # the district behind is fully covered: don't render it
 	_build()
 	_root.visible = true
 	_root.modulate.a = 0.0
@@ -101,6 +102,7 @@ func close_map(keep_paused: bool = false) -> void:
 	is_open = false
 	_root.visible = false
 	_teardown()
+	get_viewport().disable_3d = false
 	if keep_paused:
 		return
 	get_tree().paused = false
@@ -244,7 +246,7 @@ func _sun(col: Color, r: float, energy: float) -> Node3D:
 	n.add_child(core)
 	var halo := MeshInstance3D.new()
 	var q := QuadMesh.new()
-	q.size = Vector2.ONE * r * 7.0
+	q.size = Vector2.ONE * r * 5.0
 	halo.mesh = q
 	var hm := StandardMaterial3D.new()
 	hm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
@@ -270,8 +272,8 @@ func _build_suns() -> void:
 	var c: Dictionary = SolarSystem.cfg()
 	var ca: Color = SolarSystem._col((c.get("star_a", {}) as Dictionary).get("color"), Color(1.0, 0.95, 0.85))
 	var cb: Color = SolarSystem._col((c.get("star_b", {}) as Dictionary).get("color"), Color(1.0, 0.62, 0.38))
-	_sun_a = _sun(ca, 1.25, 3.2)
-	_sun_b = _sun(cb, 0.62, 2.6)
+	_sun_a = _sun(ca, 1.25, 2.6)
+	_sun_b = _sun(cb, 0.62, 3.0)
 
 
 func _planet_color(k: int) -> Color:
@@ -306,7 +308,7 @@ func _build_planet(k: int) -> void:
 	var pct: float = Homeward.stored_pct(k)
 	var here: bool = k == Homeward.current_planet()
 	var open: bool = here or Homeward.can_reach(k) or Homeward.world_of(k) >= 0
-	var radius: float = 0.55 + float(d.get("orbit", 1.0)) * 0.08
+	var radius: float = 0.85 + float(d.get("orbit", 1.0)) * 0.1
 	# Orbit line.
 	var im := ImmediateMesh.new()
 	im.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
@@ -374,9 +376,9 @@ func _build_planet(k: int) -> void:
 	var lab := Label3D.new()
 	lab.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	lab.fixed_size = true
-	lab.pixel_size = 0.0011
-	lab.font_size = 30
-	lab.outline_size = 8
+	lab.pixel_size = 0.0008
+	lab.font_size = 26
+	lab.outline_size = 7
 	lab.outline_modulate = Color(0, 0.02, 0.05, 0.8)
 	lab.no_depth_test = true
 	lab.position = Vector3(0, radius * 2.0 + 0.3, 0)
@@ -388,7 +390,7 @@ func _build_planet(k: int) -> void:
 	elif open:
 		tag = "%d%%" % int(floor(pct * 100.0 + 0.0001))
 	else:
-		tag = "🔒 " + tr("needs %s") % tr(str(Homeward.drive_def(int(d.get("nav", 5))).get("name", "")))
+		tag = tr("needs %s") % tr(str(Homeward.drive_def(int(d.get("nav", 5))).get("name", "")))
 	lab.text = "%s\n%s" % [Homeward.planet_name(k).to_upper(), tag]
 	lab.modulate = Color.WHITE if open else Color(0.75, 0.8, 0.85, 0.8)
 	p.add_child(lab)
@@ -453,7 +455,7 @@ func _frame(to: Transform3D, dur: float) -> void:
 
 func _zoom_to(k: int) -> void:
 	_zoom_planet = k
-	_frame(_planet_frame(k, 3.4), 1.3)
+	_frame(_planet_frame(k, 4.6), 1.3)
 
 
 # --- Cards -------------------------------------------------------------------------------------
@@ -711,7 +713,7 @@ func _process(delta: float) -> void:
 	# The two suns circle their common centre; planets ride their orbits and spin.
 	var sa: float = _t * 0.35
 	_sun_a.position = Vector3(cos(sa), 0, sin(sa)) * 0.55
-	_sun_b.position = -Vector3(cos(sa), 0, sin(sa)) * 1.9
+	_sun_b.position = -Vector3(cos(sa), 0, sin(sa)) * 3.4
 	for k: int in _planets.size():
 		_planets[k].position = _planet_pos(k)
 		_planets[k].get_child(0).rotation.y = _t * 0.2
@@ -720,12 +722,12 @@ func _process(delta: float) -> void:
 		_labels[k].modulate.a = 1.0 if sel or _zoom_planet < 0 else 0.45
 	# Camera easing (follows a moving planet while zoomed).
 	if _zoom_planet >= 0 and _cam_k >= 1.0 and not _handing_over:
-		_cam_to = _planet_frame(_zoom_planet, 3.4)
+		_cam_to = _planet_frame(_zoom_planet, 4.6)
 		_cam.global_transform = _cam.global_transform.interpolate_with(_cam_to, clampf(delta * 3.0, 0.0, 1.0))
 	elif _cam_k < 1.0:
 		_cam_k = minf(1.0, _cam_k + delta / _cam_dur)
 		if _zoom_planet >= 0 and not _handing_over:
-			_cam_to = _planet_frame(_zoom_planet, 3.4)
+			_cam_to = _planet_frame(_zoom_planet, 4.6)
 		var e: float = _cam_k * _cam_k * (3.0 - 2.0 * _cam_k)
 		_cam.global_transform = _cam_from.interpolate_with(_cam_to, e)
 	else:
