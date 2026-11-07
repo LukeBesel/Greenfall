@@ -7,7 +7,7 @@ extends HBoxContainer
 ## Every control is a focusable Button / LineEdit, so a gamepad walks the whole panel with the
 ## d-pad and A; LB/RB still switch tabs.
 
-const PREVIEW_SIZE := Vector2i(400, 262)
+const PREVIEW_SIZE := Vector2i(400, 200)
 const BAD := Color(1.0, 0.55, 0.45)
 const ROLE_STATS: Dictionary = {
 	"clean": [["speed", "Speed", " m/s"], ["scoop_rate", "Scoop rate", "/s"], ["capacity", "Hopper", ""], ["efficiency", "Cube quality", "x"], ["scan", "Scan", "%"]],
@@ -180,9 +180,9 @@ func _build_stage() -> void:
 	rim.light_color = Color(0.6, 0.8, 1.0)
 	_vp.add_child(rim)
 	var floor_m := StandardMaterial3D.new()
-	floor_m.albedo_color = Color(0.1, 0.11, 0.125)
-	floor_m.roughness = 0.35
-	floor_m.metallic = 0.3
+	floor_m.albedo_color = Color(0.045, 0.05, 0.058)
+	floor_m.roughness = 0.75
+	floor_m.metallic = 0.0
 	var disc := MeshInstance3D.new()
 	disc.mesh = ProcMesh.cyl(1.05, 1.1, 0.06, 48)
 	disc.material_override = floor_m
@@ -207,8 +207,8 @@ func _build_right() -> void:
 	for s: String in RobotBuilder.SLOTS:
 		var b := Button.new()
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		b.custom_minimum_size = Vector2(0, 34)
-		b.add_theme_font_size_override("font_size", 15)
+		b.custom_minimum_size = Vector2(0, 30)
+		b.add_theme_font_size_override("font_size", 14)
 		b.pressed.connect(func() -> void:
 			_set_slot(s)
 			_focus_option(0))
@@ -217,7 +217,7 @@ func _build_right() -> void:
 		_slot_btns[s] = b
 	_right.add_child(UITheme.label("PARTS THAT FIT", 12, Color(0.4, 0.75, 1.0)))
 	var sc := ScrollContainer.new()
-	sc.custom_minimum_size = Vector2(0, 150)
+	sc.custom_minimum_size = Vector2(0, 110)
 	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	sc.follow_focus = true
@@ -494,6 +494,14 @@ func _process(delta: float) -> void:
 	if _pv:
 		_pv.animate(0.0, false, delta)
 	_bin_t -= delta
+	if _bin_t <= 0.0 and fleet and fleet.robots().size() != _robot_btns.size():
+		# Robots built or restored while the panel exists.
+		if _sel == null or not is_instance_valid(_sel):
+			var bl: Array[Robot] = _bots()
+			_sel = bl[0] if not bl.is_empty() else null
+		_pv_key = ""
+		_rebuild_robot_list()
+		_refresh_all()
 	if _bin_t <= 0.0 and _sel:
 		_bin_t = 1.0
 		_refresh_bin()
