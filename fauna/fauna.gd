@@ -1545,7 +1545,7 @@ func _batch(model: String) -> MultiMeshInstance3D:
 			mat.set_shader_parameter("fur_rim", 0.12)
 			mat.set_shader_parameter("roughness_base", 0.5)
 		mi.material_override = mat
-	if model in ["bee", "fish", "frog", "lizard", "sparrow", "songbird"]:
+	if model in ["bee", "frog", "lizard", "sparrow", "songbird"]:  # [fauna2] fish shadow on the lakebed
 		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(mi)
 	_batches[model] = mi
