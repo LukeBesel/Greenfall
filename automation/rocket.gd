@@ -749,7 +749,7 @@ func _build_fx() -> void:
 	_count.outline_modulate = Color(0.0, 0.25, 0.45, 0.6)
 	_count.shaded = false
 	_count.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	_count.position = Vector3(-3.4, _base_y + 5.6, 1.6)
+	_count.position = Vector3(0.4, _base_y + 6.2, 3.6)  # [vqa] beside the rocket as the side cameras see it, not behind its nose
 	_count.visible = false
 	add_child(_count)
 
