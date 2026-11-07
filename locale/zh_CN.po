@@ -499,15 +499,15 @@ msgstr "每 %d 个捆包送 1 个去回收炉"
 
 #: automation/telescope.gd:102
 msgid "Requires hub level %d or research: %s."
-msgstr ""
+msgstr "需要基地等级 %d 或研究：%s。"
 
 #: automation/telescope.gd:115
 msgid "Telescope built. Walk up to it and press E to look across the system."
-msgstr ""
+msgstr "望远镜已建成。走过去按 E，眺望整个星系。"
 
 #: automation/telescope.gd:254 ui/telescope_panel.gd:11
 msgid "OBSERVATORY"
-msgstr ""
+msgstr "天文台"
 
 #: automation/telescope.gd:302 data/eggs.json:eggs[stars].prompt
 msgid "E   look through the telescope"
@@ -2311,19 +2311,19 @@ msgstr "画质已设为%s，以保持流畅。你可以在设置中更改。"
 
 #: systems/remote_progress.gd:290
 msgid "While you were away (%s), the crew here kept at it at a steady remote pace: %s cubes."
-msgstr ""
+msgstr "你离开的这段时间（%s），这里的机器人队伍以远程节奏稳稳地干着活：%s 方块。"
 
 #: systems/remote_progress.gd:304
 msgid "No world in view."
-msgstr ""
+msgstr "视野中没有世界。"
 
 #: systems/remote_progress.gd:306
 msgid "A care package is already on its way."
-msgstr ""
+msgstr "补给包已经在路上了。"
 
 #: systems/remote_progress.gd:308
 msgid "Needs %s cubes."
-msgstr ""
+msgstr "需要 %s 方块。"
 
 #: systems/research.gd:173
 msgid "Unknown research"
@@ -4681,148 +4681,165 @@ msgstr "已回收捆包 %d   ·   已销毁废料 %s 千克   ·   螺栓 %s"
 
 #: ui/telescope_panel.gd:39
 msgid "Built. Walk up to it and press E."
-msgstr ""
+msgstr "已建成。走过去按 E。"
 
-#: ui/telescope_view.gd:81
+#: ui/telescope_view.gd:82
 msgid "Codex: First Light"
-msgstr ""
+msgstr "图鉴：初光"
 
-#: ui/telescope_view.gd:361
+#: ui/telescope_view.gd:363
 msgid "TELESCOPE  ·  SYSTEM VIEW"
-msgstr ""
-
-#: ui/telescope_view.gd:367
-msgid "%s (here)"
-msgstr ""
+msgstr "望远镜  ·  星系视图"
 
 #: ui/telescope_view.gd:369
+msgid "%s (here)"
+msgstr "%s（此处）"
+
+#: ui/telescope_view.gd:371
 msgid "%s  ·  not visited"
-msgstr ""
+msgstr "%s  ·  未造访"
 
-#: ui/telescope_view.gd:376
+#: ui/telescope_view.gd:378
 msgid "Close"
-msgstr ""
+msgstr "关闭"
 
-#: ui/telescope_view.gd:379
+#: ui/telescope_view.gd:381
 msgid ""
 "Two suns, one system.\n"
 "Worlds visited: %d"
 msgstr ""
+"两颗太阳，一个星系。\n"
+"已造访的世界：%d"
 
-#: ui/telescope_view.gd:381
+#: ui/telescope_view.gd:383
 msgid "Pick a world you've visited to watch its crew. The one you stand on can't see itself."
-msgstr ""
+msgstr "选择一个你造访过的世界，观看那里的队伍。你脚下的世界看不到它自己。"
 
-#: ui/telescope_view.gd:381
+#: ui/telescope_view.gd:383
 msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
-msgstr ""
+msgstr "还没有造访过其他世界。先在方舟舰桥播种或造访另一个世界，再回来看看。"
 
-#: ui/telescope_view.gd:464
+#: ui/telescope_view.gd:466
 msgid ""
 "%s\n"
 "District %d%% clean · %d robots\n"
 "Last visit %s"
 msgstr ""
-
-#: ui/telescope_view.gd:466
-msgid ""
 "%s\n"
-"You are here."
-msgstr ""
+"街区 %d%% 已清理 · %d 台机器人\n"
+"上次造访 %s"
 
 #: ui/telescope_view.gd:468
 msgid ""
 "%s\n"
+"You are here."
+msgstr ""
+"%s\n"
+"你在这里。"
+
+#: ui/telescope_view.gd:470
+msgid ""
+"%s\n"
 "Not visited yet."
 msgstr ""
+"%s\n"
+"尚未造访。"
 
-#: ui/telescope_view.gd:475
+#: ui/telescope_view.gd:477
 msgid "You stand on %s."
-msgstr ""
+msgstr "你正站在 %s 上。"
 
-#: ui/telescope_view.gd:475
+#: ui/telescope_view.gd:477
 msgid "%s: nobody of yours down there yet."
-msgstr ""
+msgstr "%s：那里还没有你的队伍。"
 
-#: ui/telescope_view.gd:489
+#: ui/telescope_view.gd:491
 msgid "unknown"
-msgstr ""
-
-#: ui/telescope_view.gd:492
-msgid "%d min ago"
-msgstr ""
+msgstr "未知"
 
 #: ui/telescope_view.gd:494
+msgid "%d min ago"
+msgstr "%d 分钟前"
+
+#: ui/telescope_view.gd:496
 msgid "%.1f h ago"
-msgstr ""
+msgstr "%.1f 小时前"
 
-#: ui/telescope_view.gd:495
+#: ui/telescope_view.gd:497
 msgid "%d days ago"
-msgstr ""
-
-#: ui/telescope_view.gd:585
-msgid "TELESCOPE  ·  %s"
-msgstr ""
-
-#: ui/telescope_view.gd:586
-msgid "◀ Look"
-msgstr ""
+msgstr "%d 天前"
 
 #: ui/telescope_view.gd:587
-msgid "Look ▶"
-msgstr ""
+msgid "TELESCOPE  ·  %s"
+msgstr "望远镜  ·  %s"
+
+#: ui/telescope_view.gd:588
+msgid "◀ Look"
+msgstr "◀ 观察"
 
 #: ui/telescope_view.gd:589
+msgid "Look ▶"
+msgstr "观察 ▶"
+
+#: ui/telescope_view.gd:591
 msgid "Back to system"
-msgstr ""
+msgstr "返回星系"
 
-#: ui/telescope_view.gd:590
+#: ui/telescope_view.gd:592
 msgid "Right stick or drag: turn and zoom.  Hold something in the reticle to log it."
-msgstr ""
+msgstr "右摇杆或拖动：旋转和缩放。  把目标保持在准星中即可记录。"
 
-#: ui/telescope_view.gd:636
+#: ui/telescope_view.gd:638
 msgid ""
 "PLANET     %s\n"
 "DISTRICT   %.2f%% clean\n"
 "ROBOTS     %d active of %d\n"
 "LAST VISIT %s"
 msgstr ""
+"行星     %s\n"
+"街区     %.2f%% 已清理\n"
+"机器人   %d / %d 台在工作\n"
+"上次造访 %s"
 
-#: ui/telescope_view.gd:639
+#: ui/telescope_view.gd:641
 msgid ""
 "\n"
 "CARE PACKAGE  %d:%02d left"
 msgstr ""
+"\n"
+"补给包  剩余 %d:%02d"
 
-#: ui/telescope_view.gd:640
+#: ui/telescope_view.gd:642
 msgid ""
 "Remote pace (%d%% of offline)\n"
 "Waiting for you: %s cubes%s"
 msgstr ""
+"远程节奏（离线的 %d%%）\n"
+"等你来取：%s 方块%s"
 
-#: ui/telescope_view.gd:643
+#: ui/telescope_view.gd:645
 msgid "Send a care package (%s cubes)"
-msgstr ""
+msgstr "发送补给包（%s 方块）"
 
-#: ui/telescope_view.gd:657
+#: ui/telescope_view.gd:659
 msgid "Care package away. The crew on %s works at double speed for %d minutes."
-msgstr ""
-
-#: ui/telescope_view.gd:735
-msgid "Ledger wreck"
-msgstr ""
-
-#: ui/telescope_view.gd:735
-msgid "Deer"
-msgstr ""
-
-#: ui/telescope_view.gd:736
-msgid "Logged through the telescope: %s. New Codex entry."
-msgstr ""
+msgstr "补给包已发出。%s 上的队伍将以双倍速度工作 %d 分钟。"
 
 #: ui/telescope_view.gd:737
+msgid "Ledger wreck"
+msgstr "Ledger 残骸"
+
+#: ui/telescope_view.gd:737
+msgid "Deer"
+msgstr "鹿"
+
+#: ui/telescope_view.gd:738
+msgid "Logged through the telescope: %s. New Codex entry."
+msgstr "通过望远镜记录：%s。图鉴新条目。"
+
+#: ui/telescope_view.gd:739
 msgid "Codex: %s"
-msgstr ""
+msgstr "图鉴：%s"
 
 #: ui/trade_panel.gd:23
 msgid "HAGGLE'S PARTS TRADE"
@@ -5770,7 +5787,7 @@ msgstr "动物"
 
 #: data/codex.json:categories[sightings].name
 msgid "Sightings"
-msgstr ""
+msgstr "目击"
 
 #: data/codex.json:junk.metal.hint
 msgid "Rusty, clanky, everywhere."
@@ -6722,27 +6739,27 @@ msgstr "白鹤扇着缓慢的翅膀，在着陆之城的高空盘旋。方舟的
 
 #: data/codex.json:sightings.first_light.name
 msgid "First Light"
-msgstr ""
+msgstr "初光"
 
 #: data/codex.json:sightings.first_light.hint
 msgid "Build a Telescope and look through it."
-msgstr ""
+msgstr "建造一座望远镜，透过它看一看。"
 
 #: data/codex.json:sightings.first_light.desc
 msgid "The first look across the system from your own observatory. Two suns, a handful of worlds, and somewhere down there, your crews still at work."
-msgstr ""
+msgstr "从你自己的天文台第一次眺望星系。两颗太阳，几个世界，而在下面某处，你的队伍仍在工作。"
 
 #: data/codex.json:sightings.ledger_wreck.name
 msgid "Ledger Wreck"
-msgstr ""
+msgstr "Ledger 残骸"
 
 #: data/codex.json:sightings.ledger_wreck.hint
 msgid "Through the telescope, on a world where the Ledger's drones came down."
-msgstr ""
+msgstr "透过望远镜，在 Ledger 的无人机坠落过的世界上。"
 
 #: data/codex.json:sightings.ledger_wreck.desc
 msgid "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."
-msgstr ""
+msgstr "一架再也没能回家的倾倒无人机，一头扎进另一个世界的垃圾堆里。它的红眼睛还在闪。哪怕隔着这么远，它看起来也很难为情。"
 
 #: data/cradle.json:heirlooms[green_thumb].desc
 msgid "Plants grow 8% faster per level, on every world."
@@ -10234,11 +10251,11 @@ msgstr "火箭用的货运舱。基地之间可以互相交易。"
 
 #: data/research.json:nodes[observatory].name
 msgid "Observatory Optics"
-msgstr ""
+msgstr "天文台光学"
 
 #: data/research.json:nodes[observatory].desc
 msgid "Ground lenses from an old planetarium and a crew telemetry link. Any base can build a Telescope (without it, from base level 4) and watch the crews on other worlds."
-msgstr ""
+msgstr "来自旧天文馆的研磨镜片，加上与队伍的遥测链路。任何基地都能建造望远镜（没有此研究则需基地等级 4），观看其他世界上的队伍。"
 
 #: data/research.json:nodes[dune_charts].name
 msgid "Dune Charts"
@@ -11028,23 +11045,23 @@ msgstr "粉碎滚筒和一座小熔炉。捆包进去就再也回不来：出来
 
 #: data/telescope.json:planets_default[ochre].name
 msgid "Ochre"
-msgstr ""
+msgstr "Ochre"
 
 #: data/telescope.json:planets_default[verdance].name
 msgid "Verdance"
-msgstr ""
+msgstr "Verdance"
 
 #: data/telescope.json:planets_default[tidewell].name
 msgid "Tidewell"
-msgstr ""
+msgstr "Tidewell"
 
 #: data/telescope.json:planets_default[anvil].name
 msgid "Anvil"
-msgstr ""
+msgstr "Anvil"
 
 #: data/telescope.json:planets_default[rime].name
 msgid "Rime"
-msgstr ""
+msgstr "Rime"
 
 #: data/upgrades.json:upgrades[compartment_size].name
 msgid "Compartment Size"
