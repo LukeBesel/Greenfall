@@ -764,6 +764,18 @@ func _process(delta: float) -> void:
 	_ambience(delta)
 	if not _look_done and DevHooks.has("fauna-look"):
 		_dev_look()
+	if DevHooks.has("fauna-callcount"):  # [fauna2] dev: bird calls per real minute
+		var now_s: float = Time.get_ticks_msec() * 0.001
+		if not has_meta("cc_t0"):
+			set_meta("cc_t0", now_s)
+			set_meta("cc_n0", calls_played)
+		elif now_s - float(get_meta("cc_t0")) >= 60.0:
+			var birds: int = 0
+			for b: Animal in animals:
+				birds += 1 if b.kind in ["bird", "heron", "swim"] else 0
+			print("[fauna] bird calls: %d in the last minute (%d birds/ducks, night %.1f)" % [calls_played - int(get_meta("cc_n0")), birds, _night])
+			set_meta("cc_t0", now_s)
+			set_meta("cc_n0", calls_played)
 	if DevHooks.has("fauna-report") and not has_meta("reported"):
 		if age > DevHooks.get_f("fauna-report", 8.0):
 			set_meta("reported", true)
@@ -2030,8 +2042,24 @@ func record_photo(sid: String) -> bool:
 ## (a flock's wings at most every ~2 s, one bird call every 7-16 s, twice as rare at night), so
 ## dozens of birds never stack up or steal each other's voices mid-sound.
 const SND_CAT: Dictionary = {"flutter": "flutter", "song": "call", "coo": "call", "chirp": "call", "gull": "gull", "quack": "quack", "heron": "call"}
-const SND_GAP: Dictionary = {"flutter": Vector2(1.8, 3.0), "call": Vector2(7.0, 16.0), "gull": Vector2(9.0, 18.0), "quack": Vector2(6.0, 14.0)}
+const SND_GAP: Dictionary = {"flutter": Vector2(1.8, 3.0), "call": Vector2(20.0, 60.0), "gull": Vector2(20.0, 60.0), "quack": Vector2(15.0, 40.0)}
+## Bird calls only when a bird is this close to the listener.
+const CALL_NEAR: float = 18.0
 var _snd_next: Dictionary = {}
+## One clock for every bird call in the game (Fauna and the older plants/wildlife.gd birds), so
+## calls never pile up however many birds there are. calls_played counts them (tests, reports).
+static var _call_next_s: float = -1.0
+static var calls_played: int = 0
+
+
+## May a bird call play now? Shares one global gap (20-60 s, twice as long at night).
+static func bird_call_ok(night: float = 0.0) -> bool:
+	var now: float = Time.get_ticks_msec() * 0.001  # real seconds: what the player hears
+	if now < _call_next_s:
+		return false
+	_call_next_s = now + sound_gap("call", night, randf())
+	calls_played += 1
+	return true
 
 
 static func sound_gap(cat: String, night: float, r: float) -> float:
@@ -2039,9 +2067,16 @@ static func sound_gap(cat: String, night: float, r: float) -> float:
 	return lerpf(g.x, g.y, r) * (1.0 + clampf(night, 0.0, 1.0))
 
 
-func _sound_ok(sound: String) -> bool:
+func _sound_ok(sound: String, p: Vector3 = Vector3.INF) -> bool:
 	var cat: String = str(SND_CAT.get(sound, ""))
 	if cat == "":
+		return true
+	if cat in ["call", "gull", "quack"]:
+		var lis: Vector3 = _cam.global_position if _cam else _lumi_pos
+		if p != Vector3.INF and Vector2(p.x - lis.x, p.z - lis.z).length() > CALL_NEAR:
+			return false
+		if not bird_call_ok(_night):
+			return false
 		return true
 	if age < float(_snd_next.get(cat, -1.0)):
 		return false
@@ -2050,8 +2085,10 @@ func _sound_ok(sound: String) -> bool:
 
 
 func _sound_at(sound: String, p: Vector3, db: float) -> void:
-	if not _sound_ok(sound):
+	if not _sound_ok(sound, p):
 		return
+	if str(SND_CAT.get(sound, "")) in ["call", "gull", "quack"]:
+		db -= 3.0 + 5.0 * _night  # short, soft calls; quieter at night
 	var d: float = (_cam.global_position if _cam else _lumi_pos).distance_to(p)
 	var att: float = -20.0 * log(maxf(d, 2.0) / 2.0) / log(10.0)
 	if db + att < -40.0:

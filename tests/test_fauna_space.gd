@@ -198,10 +198,15 @@ func test_lumi_pets_with_a_reach_and_tilt() -> void:
 
 func test_bird_sounds_are_occasional() -> void:
 	var day: float = Fauna.sound_gap("call", 0.0, 0.0)
-	assert_gte(day, 7.0, "one bird call every 7 s at most")
+	assert_gte(day, 20.0, "one bird call every 20 s at most")
+	assert_lte(Fauna.sound_gap("call", 0.0, 1.0), 60.0)
 	assert_almost_eq(Fauna.sound_gap("call", 1.0, 0.0), day * 2.0, 0.01, "rarer at night")
 	assert_gte(Fauna.sound_gap("flutter", 0.0, 0.0), 1.5, "wings never stack up")
 	assert_eq(Fauna.sound_gap("meow", 0.0, 0.5), 0.0, "other sounds aren't gated")
+	Fauna._call_next_s = -1.0
+	assert_true(Fauna.bird_call_ok(), "a call when it's been quiet")
+	for k: int in 50:
+		assert_false(Fauna.bird_call_ok(), "then silence, however many birds ask")
 
 
 func test_feeding_brings_the_flock() -> void:

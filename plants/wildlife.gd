@@ -127,5 +127,7 @@ func _process(delta: float) -> void:
 	if not _birds.is_empty():
 		_song_t -= delta
 		if _song_t <= 0.0:
-			_song_t = randf_range(1.5, 6.0) / sqrt(float(_birds.size()))
-			Audio.play("bird", randf_range(0.85, 1.25), -16.0, 0.0)
+			# [fauna2] Occasional, not constant: shares the global bird-call clock (Fauna.bird_call_ok).
+			_song_t = randf_range(20.0, 60.0)
+			if Fauna.bird_call_ok():
+				Audio.play("bird", randf_range(0.85, 1.25), -20.0, 0.0)
