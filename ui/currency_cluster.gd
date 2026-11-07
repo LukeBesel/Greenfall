@@ -109,6 +109,8 @@ func _process(delta: float) -> void:
 			_demo_t = 2.5
 			GameState.add_currency("parts", BigNum.from_float(24))
 			GameState.add_currency("seeds", BigNum.from_float(2))
+		for c: Dictionary in _chip_map.values():  # software rendering runs at ~1 fps: keep them up
+			c["left"] = CHIP_LIFE + 30.0
 	var cubes: BigNum = GameState.get_currency("cubes")
 	var target: float = cubes.to_float()
 	if in_flight > 0.0:  # [first]
