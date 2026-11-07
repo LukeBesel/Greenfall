@@ -13,7 +13,7 @@ extends Control
 ##       Fills its parent (size flags expand), no backdrop, no Esc / LB / RB capture (the host owns
 ##       those); "Done" becomes "Wear look" and the builder stays open. Emits `worn` and `closed`
 ##       (Cancel = revert the edit to the worn look).
-##   Overlay:  LumiBuilder.open(world, parent) -> wraps it in its own CanvasLayer (layer 40) with a
+##   Overlay:  LumiBuilder.open(world, parent) -> wraps it in its own CanvasLayer (layer 100) with a
 ##       backdrop; Esc / B = Done, LB / RB step slots; frees itself on close.
 
 signal closed
