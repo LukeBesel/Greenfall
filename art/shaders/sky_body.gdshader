@@ -90,7 +90,7 @@ void fragment() {
 		}
 	}
 	// Daylight washes it pale and softer; at night it reads clearly.
-	float wash = mix(0.35, 1.0, 1.0 - day);
+	float wash = mix(0.5, 1.0, 1.0 - day);
 	ALBEDO = mix(vec3(0.75, 0.82, 0.92) * 0.9, col, wash) * mix(1.0, 0.85, day);
-	ALPHA = clamp(a * opacity * mix(0.55, 1.0, 1.0 - day) * mix(1.0, 0.2 + 0.8 * litv, day), 0.0, 1.0);
+	ALPHA = clamp(a * opacity * mix(0.72, 1.0, 1.0 - day) * mix(1.0, 0.2 + 0.8 * litv, day), 0.0, 1.0);
 }
