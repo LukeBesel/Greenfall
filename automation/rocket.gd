@@ -284,23 +284,24 @@ func _launch_camera(t: float, dt: float) -> void:
 		# [vqa] Pulled back and round so the tower no longer fills a third of the frame.
 		pos = o + Vector3(-9.6, 4.6, 0.8).lerp(Vector3(-8.8, 6.2, 0.2), (t - 1.7) / (_t0 - 1.7))
 		look = (world.patch.global_position if world.patch.visible else _hatch_world()) + Vector3(0, 0.3, 0)
-		fov = 50.0
+		fov = 40.0
 	elif t < _ig - 0.7:
 		# Countdown: low front-left, rocket, beacons and the holo numbers.
-		# [vqa] The pad stands 4 m behind the yard's back fence (sign, fence, festoon wires): every
-		# close camera stays on the pad's side of it (z offset <= +0.5), so nothing in the yard can
-		# come between the lens and the rocket.
-		pos = o + Vector3(6.4, 1.4, -0.6).lerp(Vector3(5.6, 1.7, -0.2), (t - _t0) / maxf(_ig - 0.7 - _t0, 0.1))
+		# [vqa] The pad stands 4 m behind the yard's back fence (sign, fence, festoon wires, lamps,
+		# holo boards): the close cameras look from the open lot beyond the pad (negative z, a
+		# diagonal that misses the service tower), so the yard is only ever background.
+		pos = o + Vector3(5.6, 1.5, -7.4).lerp(Vector3(5.0, 1.8, -6.8), (t - _t0) / maxf(_ig - 0.7 - _t0, 0.1))
 		look = o + Vector3(-0.6, 5.0, 0)
 		fov = 58.0
 	elif t < _lo + 0.9:
 		# Ignition: close and low by the engine, the plume and the billows.
-		pos = o + Vector3(10.5, 3.2, -2.8).lerp(Vector3(9.4, 2.9, -2.2), (t - (_ig - 0.7)) / (_lo + 1.6 - _ig))
+		pos = o + Vector3(7.4, 3.0, -10.0).lerp(Vector3(6.6, 2.8, -9.0), (t - (_ig - 0.7)) / (_lo + 1.6 - _ig))
 		look = o + Vector3(0, 2.8, 0)
 		fov = 52.0
 	elif t < _lo + 4.5:
 		# Lift-off: low, looking up as it climbs.
-		pos = o + Vector3(8.0, 1.0, -1.6)
+		# High and wide enough to stay clear of the ground-hugging vapour ring.
+		pos = o + Vector3(9.5, 2.6, -12.5)
 		look = mp + Vector3(0, 3.0, 0)
 	else:
 		# Climb: wide from the base, the vapour column and the arc to a dot.
