@@ -1,31 +1,53 @@
 class_name HUD
 extends CanvasLayer
-## Minimal industrial HUD. Thin type, hairline bars, one amber accent, no icons.
-## Top-left: Cubes + rate. Top-right: restoration (district, planet). Bottom-center: hopper fill
-## gauge with the Perfect band, context prompt, detector readout. Bottom-left: message log.
+## In-game HUD. Sleek and sparse: thin type, hairlines, soft glass, no heavy boxes.
+##   top-left      main currency (Cubes) with a count-up and rate; other currencies as brief chips
+##                 (ui/currency_cluster.gd)
+##   top-right     district line (fades when unchanged) and the compact goal tracker with the
+##                 restart checklist (ui/goals_panel.gd; G / L3 expands)
+##   bottom-centre hotbar with the Lumi Level bar above and the hopper gauge below (ui/hotbar.gd);
+##                 above it the interact prompt and a contextual readout (hex %, part signal,
+##                 carried bales) that only shows while relevant
+##   bottom-left   one notification stack for toasts, achievements and story lines (ui/notify_stack.gd)
+##   bottom-right  key hints (Full mode, or during the restart checklist)
+## Settings.hud_mode: FULL (no auto-fade), MINIMAL (default: extras fade after a few seconds without
+## change), HIDDEN (only prompts and notifications).
+## Public API kept for callers: show_toast(text, kind), visible, patch, world. New: notify(),
+## set_core_charge(f) (Bloom Core ring by the level bar), hotbar, goals.
+
+const FADE_AFTER_S: float = 6.0
+const CONTEXT_HOLD_S: float = 3.0
 
 var patch: Patch
 var world: Node
 
+var hotbar: Hotbar
+var goals: GoalsPanel
+var lumi: LumiLevel
+
 var _root: Control
-var _cubes_label: Label
-var _rate_label: Label
+var _currency: CurrencyCluster
+var _district: VBoxContainer
 var _field_label: Label
-var _field_bar: ProgressBar
+var _field_bar: Control
+var _field_frac: float = 0.0
 var _planet_label: Label
-var _meter: CompartmentMeter
-var _meter_label: Label
 var _prompt: Label
-var _carry_label: Label
-var _hex_label: Label
-var _signal_label: Label
-var _toasts: VBoxContainer
-var _shown_cubes: float = 0.0
-var _bump: float = 0.0
-var _task_label: Label
-var _task_caption: Label
-var _tool_label: Label
-var _goals_panel: GoalsPanel
+var _context: Label
+var _notify: NotifyStack
+var _hints: Label
+var _goals_panel: GoalsPanel  # legacy name (same node as `goals`)
+var _district_sig: String = ""
+var _district_idle: float = 0.0
+var _context_sig: String = ""
+var _context_idle: float = 99.0
+var _signal_text: String = ""
+var _signal_color: Color = Color.WHITE
+var _signal_strength: float = 0.0
+var _top_left: MarginContainer
+var _top_right: MarginContainer
+var _bottom: Control
+var _scrims: Control
 
 
 func _ready() -> void:
@@ -35,16 +57,20 @@ func _ready() -> void:
 	_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.theme = UITheme.get_theme()
 	add_child(_root)
+	_build_scrims()
+	lumi = (world.get("lumi_level") as LumiLevel) if world else null
 	_build_top_left()
 	_build_top_right()
 	_build_bottom()
-	_build_toasts()
-	_goals_panel = GoalsPanel.new()
-	_goals_panel.hud = self
-	_root.add_child(_goals_panel)
+	_build_notify()
+	_build_hints()
 	EventBus.compartment_changed.connect(_on_compartment)
 	EventBus.toast.connect(show_toast)
-	EventBus.cube_cashed.connect(func(_v: BigNum, _p: Vector3) -> void: _bump = 1.0)
+	if lumi:
+		lumi.leveled.connect(func(lv: int, rw: String) -> void:
+			notify("Lumi reached level %d%s" % [lv, ("  ·  " + rw) if rw != "" else ""], "level"))
+	Settings.changed.connect(_apply_mode)
+	_apply_mode()
 
 
 func _margin(preset: Control.LayoutPreset, m: int = 22) -> MarginContainer:
@@ -65,161 +91,238 @@ func _margin(preset: Control.LayoutPreset, m: int = 22) -> MarginContainer:
 	return mc
 
 
-static func _caption(text: String) -> Label:
-	return UITheme.label(text, 12, UITheme.MUTED)
+## Soft dark radial scrims behind the corners and the hotbar (no boxes) so thin text and lines
+## read over bright litter and sky.
+func _build_scrims() -> void:
+	_scrims = Control.new()
+	_scrims.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_scrims.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_root.add_child(_scrims)
+	var spec: Array = [
+		# [anchor, size, gradient centre (UV), gradient edge (UV)]
+		[Control.PRESET_TOP_LEFT, Vector2(460, 220), Vector2(0, 0), Vector2(1, 0)],
+		[Control.PRESET_TOP_RIGHT, Vector2(520, 300), Vector2(1, 0), Vector2(0, 0)],
+		[Control.PRESET_CENTER_BOTTOM, Vector2(760, 380), Vector2(0.5, 1), Vector2(1, 1)],
+	]
+	for e: Array in spec:
+		var g := Gradient.new()
+		g.set_color(0, Color(0, 0, 0, 0.42))
+		g.set_color(1, Color(0, 0, 0, 0.0))
+		g.add_point(0.5, Color(0, 0, 0, 0.2))
+		var gt := GradientTexture2D.new()
+		gt.gradient = g
+		gt.fill = GradientTexture2D.FILL_RADIAL
+		gt.fill_from = e[2]
+		gt.fill_to = e[3]
+		gt.width = 128
+		gt.height = 64
+		var tr := TextureRect.new()
+		tr.texture = gt
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr.stretch_mode = TextureRect.STRETCH_SCALE
+		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		tr.set_anchors_preset(e[0])
+		var sz: Vector2 = e[1]
+		match e[0]:
+			Control.PRESET_TOP_LEFT:
+				tr.offset_right = sz.x
+				tr.offset_bottom = sz.y
+			Control.PRESET_TOP_RIGHT:
+				tr.offset_left = -sz.x
+				tr.offset_bottom = sz.y
+			_:
+				tr.offset_left = -sz.x * 0.5
+				tr.offset_right = sz.x * 0.5
+				tr.offset_top = -sz.y
+		_scrims.add_child(tr)
 
 
 func _build_top_left() -> void:
-	var mc: MarginContainer = _margin(Control.PRESET_TOP_LEFT)
-	# Dark glass card so the text reads over bright litter and sky (matches the goals card).
-	var card := PanelContainer.new()
-	card.add_theme_stylebox_override("panel", UITheme.box(UITheme.PLUM, UITheme.RUST, 1, 6, 12))
-	card.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	mc.add_child(card)
-	var vb := VBoxContainer.new()
-	vb.add_theme_constant_override("separation", -2)
-	card.add_child(vb)
-	_rate_label = _caption("C U B E S")
-	vb.add_child(_rate_label)
-	_cubes_label = UITheme.label("0", 38, UITheme.CREAM)
-	vb.add_child(_cubes_label)
-	var gap := Control.new()
-	gap.custom_minimum_size = Vector2(0, 14)
-	vb.add_child(gap)
-	_task_caption = _caption("")
-	vb.add_child(_task_caption)
-	_task_label = UITheme.label("", 16, UITheme.CREAM)
-	_task_label.autowrap_mode = TextServer.AUTOWRAP_WORD
-	_task_label.custom_minimum_size = Vector2(360, 0)
-	vb.add_child(_task_label)
-	EventBus.tutorial_changed.connect(_on_task)
+	_top_left = _margin(Control.PRESET_TOP_LEFT)
+	_currency = CurrencyCluster.new()
+	_top_left.add_child(_currency)
 
 
 func _build_top_right() -> void:
-	var mc: MarginContainer = _margin(Control.PRESET_TOP_RIGHT)
+	_top_right = _margin(Control.PRESET_TOP_RIGHT)
 	var vb := VBoxContainer.new()
-	vb.custom_minimum_size = Vector2(230, 0)
-	vb.add_theme_constant_override("separation", 3)
-	mc.add_child(vb)
-	_field_label = UITheme.label("OLD TOWN  0.0%", 15, UITheme.CREAM)
+	vb.add_theme_constant_override("separation", 16)
+	vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_top_right.add_child(vb)
+	_district = VBoxContainer.new()
+	_district.add_theme_constant_override("separation", 3)
+	_district.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	vb.add_child(_district)
+	_field_label = UITheme.label("OLD TOWN   0%", 13, UITheme.CREAM)
 	_field_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	vb.add_child(_field_label)
-	_field_bar = ProgressBar.new()
-	_field_bar.custom_minimum_size = Vector2(0, 3)
-	_field_bar.show_percentage = false
-	_field_bar.max_value = 1.0
-	vb.add_child(_field_bar)
-	_planet_label = _caption("VERDANCE  0.0000%")
+	_district.add_child(_field_label)
+	_field_bar = Control.new()
+	_field_bar.custom_minimum_size = Vector2(GoalsPanel.W, 3)
+	_field_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_field_bar.draw.connect(func() -> void:
+		var w: float = 120.0
+		var x0: float = _field_bar.size.x - w
+		_field_bar.draw_rect(Rect2(x0, 0, w, 2), Color(1, 1, 1, 0.14))
+		_field_bar.draw_rect(Rect2(x0, 0, w * _field_frac, 2), UITheme.GREEN))
+	_district.add_child(_field_bar)
+	_planet_label = UITheme.label("", 12, UITheme.MUTED)
 	_planet_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	vb.add_child(_planet_label)
+	_district.add_child(_planet_label)
+	goals = GoalsPanel.new()
+	goals.hud = self
+	vb.add_child(goals)
+	_goals_panel = goals
 
 
 func _build_bottom() -> void:
-	var mc: MarginContainer = _margin(Control.PRESET_CENTER_BOTTOM, 26)
+	_bottom = Control.new()
+	_bottom.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_bottom.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_root.add_child(_bottom)
+	hotbar = Hotbar.new()
+	hotbar.patch = patch
+	hotbar.world = world
+	hotbar.lumi = lumi
+	hotbar.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	var sz := Vector2(Hotbar.LEVEL_W + 260.0, 150.0)
+	hotbar.offset_left = -sz.x * 0.5
+	hotbar.offset_right = sz.x * 0.5
+	hotbar.offset_top = -sz.y - 8.0
+	hotbar.offset_bottom = -8.0
+	_bottom.add_child(hotbar)
+	# Prompt and contextual readout, just above the level bar.
+	var mc: MarginContainer = _margin(Control.PRESET_CENTER_BOTTOM, 0)
+	mc.add_theme_constant_override("margin_bottom", 130)
 	var vb := VBoxContainer.new()
 	vb.alignment = BoxContainer.ALIGNMENT_END
-	vb.add_theme_constant_override("separation", 5)
+	vb.add_theme_constant_override("separation", 2)
+	vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	mc.add_child(vb)
-	_signal_label = UITheme.label("", 15, Color(1, 0.35, 0.3))
-	_signal_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	vb.add_child(_signal_label)
 	_prompt = UITheme.label("", 16, UITheme.CREAM)
 	_prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(_prompt)
-	# Tool / seeds / compost / water readout gets its own centred line so the hopper row stays
-	# narrow and clear of the bottom-left toast log at 1280x720.
-	_tool_label = _caption("")
-	_tool_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_tool_label.visible = false
-	vb.add_child(_tool_label)
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 10)
-	vb.add_child(row)
-	row.add_child(_caption("HOPPER"))
-	var sp := Control.new()
-	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_child(sp)
-	_carry_label = _caption("")
-	row.add_child(_carry_label)
-	_meter_label = _caption("0.0 / 10")
-	row.add_child(_meter_label)
-	_meter = CompartmentMeter.new()
-	vb.add_child(_meter)
-	_hex_label = _caption("")
-	_hex_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	vb.add_child(_hex_label)
+	_context = UITheme.label("", 13, UITheme.MUTED)
+	_context.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_context.custom_minimum_size = Vector2(420, 0)
+	_context.modulate.a = 0.0
+	vb.add_child(_context)
 
 
-func _build_toasts() -> void:
+func _build_notify() -> void:
 	var mc: MarginContainer = _margin(Control.PRESET_BOTTOM_LEFT)
-	_toasts = VBoxContainer.new()
-	_toasts.custom_minimum_size = Vector2(340, 0)
-	_toasts.alignment = BoxContainer.ALIGNMENT_END
-	_toasts.add_theme_constant_override("separation", 4)
-	_toasts.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	mc.add_child(_toasts)
+	_notify = NotifyStack.new()
+	mc.add_child(_notify)
+
+
+func _build_hints() -> void:
+	var mc: MarginContainer = _margin(Control.PRESET_BOTTOM_RIGHT)
+	_hints = UITheme.label("", 12, Color(UITheme.MUTED, 0.9))
+	_hints.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	mc.add_child(_hints)
+
+
+func _apply_mode() -> void:
+	var hidden: bool = Settings.hud_mode == Settings.HudMode.HIDDEN
+	_top_left.visible = not hidden
+	_scrims.visible = not hidden
+	_top_right.visible = not hidden
+	hotbar.visible = not hidden
+	_context.visible = not hidden
 
 
 func _on_compartment(fill: float, cap: float) -> void:
-	_meter.set_values(fill, cap)
+	hotbar.set_hopper(fill, cap)
 
+
+# --- Public API ----------------------------------------------------------------------------
+
+func show_toast(text: String, kind: String = "info") -> void:
+	_notify.push(text, kind)
+
+
+func notify(text: String, kind: String = "info") -> void:
+	_notify.push(text, kind)
+
+
+## Bloom Core charge 0..1, drawn as a tiny ring at the left end of the level bar.
+func set_core_charge(f: float) -> void:
+	hotbar.set_core_charge(f)
+
+
+# --- Frame ---------------------------------------------------------------------------------
 
 func _process(delta: float) -> void:
-	var cubes: BigNum = GameState.get_currency("cubes")
-	var target: float = cubes.to_float()
-	if target < 1.0e9:
-		_shown_cubes = lerpf(_shown_cubes, target, clampf(delta * 10.0, 0.0, 1.0))
-		if absf(_shown_cubes - target) < 0.5:
-			_shown_cubes = target
-		_cubes_label.text = Settings.fmt(BigNum.from_float(round(_shown_cubes)))
-	else:
-		_cubes_label.text = Settings.fmt(cubes)
-	var rate: float = GameState.income_rate()
-	_rate_label.text = "C U B E S" + (("    +%s / s" % Settings.fmt(BigNum.from_float(rate))) if rate > 0.0 else "")
-	_bump = maxf(0.0, _bump - delta * 3.0)
-	_cubes_label.add_theme_color_override("font_color", UITheme.CREAM.lerp(UITheme.GOLD, _bump))
+	var minimal: bool = Settings.hud_mode == Settings.HudMode.MINIMAL
 	if world and world.field:
 		var f: HexField = world.field
 		var pct: float = float(f.cleaned_count) / maxf(f.junk_hex_count, 1)
-		_field_label.text = "%s   %.1f%%" % [str(world.district_name).to_upper(), pct * 100.0]
-		_field_bar.value = pct
+		_field_frac = pct
+		_field_label.text = "%s   %d%%" % [str(world.district_name).to_upper(), int(floor(pct * 100.0))]
 		var pl: PlanetData = world.planet if world.get("planet") != null else null
 		var frac: float = pl.restored_fraction() if pl else 0.0
-		_planet_label.text = "%s   %s%%      %s  map" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(frac * 100.0), Settings.glyph("open_globe")]
+		_planet_label.text = "%s   %s%%" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(frac * 100.0)]
+		_field_bar.queue_redraw()
+		var sig: String = _field_label.text + _planet_label.text
+		if sig != _district_sig:
+			_district_sig = sig
+			_district_idle = 0.0
+	_district_idle += delta
+	var dwant: float = 1.0 if not minimal or _district_idle < FADE_AFTER_S else 0.0
+	_district.modulate.a = move_toward(_district.modulate.a, dwant, delta * (3.0 if dwant > 0.0 else 0.6))
 	if patch:
 		if patch.detector and not patch.detector.readout_changed.is_connected(_on_signal):
 			patch.detector.readout_changed.connect(_on_signal)
-		_meter_label.text = "%.1f / %.0f" % [patch.compartment.fill, patch.capacity()]
-		if GameState.flags.get("seeds_unlocked", false):
-			var names: Array[String] = ["SCOOP", "PLANT", "WATER"]
-			_tool_label.visible = true
-			_tool_label.text = "%s   %s    SEEDS %s    COMPOST %s    WATER %d/%d" % [_tool_keys(), names[patch.tool], Settings.fmt(GameState.get_currency("seeds")), Settings.fmt(GameState.get_currency("compost")), int(patch.water), int(patch.water_cap())]
-		_meter.set_values(patch.compartment.fill, patch.capacity())
-		_meter.band = Economy.cube_rules.get("perfect_band", [0.9, 1.0])
-		var cap: int = patch.carry_cap()
-		_carry_label.text = ("CARRYING %d/%d    " % [patch.carried.size(), cap]) if not patch.carried.is_empty() else ""
+		hotbar.set_hopper(patch.compartment.fill, patch.capacity())
 		_prompt.text = _prompt_text(patch.prompt)
-		var h: int = patch.focus_hex()
-		if h >= 0 and world.field.hex_hub[h] == 0:
-			_hex_label.text = ("HEX  %d%% CLEAR" % int(floor(world.field.removed_fraction(h) * 100.0))) if not world.field.is_clean(h) else (world.hex_levels.describe(h) if world.get("hex_levels") else "HEX  CLEAR")
-			var op: Variant = world.get("outposts")  # [outposts] note the outpost on this hex
-			if op is Outposts and (op as Outposts).hex_note(h) != "":
-				_hex_label.text += "\n" + (op as Outposts).hex_note(h)
-		else:
-			_hex_label.text = ""
+		_update_context(delta, minimal)
+	_update_hints()
 
 
-func _on_task(text: String) -> void:
-	_task_caption.text = "R E S T A R T   C H E C K L I S T" if text != "" else ""
-	_task_label.text = text
-	_task_label.modulate.a = 0.0
-	create_tween().tween_property(_task_label, "modulate:a", 1.0, 0.4)
+## Hex %, part signal and carried bales in one quiet line that only shows while relevant:
+## for a few seconds after it changes (scooping, a level-up), or while a part signal is strong.
+func _update_context(delta: float, minimal: bool) -> void:
+	var bits: Array[String] = []
+	if not patch.carried.is_empty():
+		bits.append("CARRYING %d/%d" % [patch.carried.size(), patch.carry_cap()])
+	var h: int = patch.focus_hex()
+	var hex_text: String = ""
+	if h >= 0 and world and world.field.hex_hub[h] == 0:
+		hex_text = ("HEX  %d%% CLEAR" % int(floor(world.field.removed_fraction(h) * 100.0))) if not world.field.is_clean(h) else (world.hex_levels.describe(h) if world.get("hex_levels") else "HEX  CLEAR")
+		var op: Variant = world.get("outposts")  # [outposts] note the outpost on this hex
+		if op is Outposts and (op as Outposts).hex_note(h) != "":
+			hex_text += "   ·   " + (op as Outposts).hex_note(h)
+	if hex_text != "":
+		bits.append(hex_text)
+	var strong: bool = _signal_text != "" and (_signal_strength >= 0.5 or not minimal)
+	if strong:
+		bits.append(_signal_text)
+	var text: String = "    ·    ".join(bits)
+	# Only a change of the hex/carry part counts as "new"; the signal shows while it is strong.
+	var sig: String = hex_text + str(patch.carried.size())
+	if sig != _context_sig:
+		_context_sig = sig
+		_context_idle = 0.0
+	_context_idle += delta
+	_context.text = text
+	_context.add_theme_color_override("font_color", _signal_color if strong and hex_text == "" else UITheme.MUTED)
+	var want: float = 1.0 if (not minimal or _context_idle < CONTEXT_HOLD_S or strong or not patch.carried.is_empty()) and text != "" else 0.0
+	if hotbar.celebrating():
+		want = 0.0
+	_context.modulate.a = move_toward(_context.modulate.a, want, delta * (4.0 if want > 0.0 else 1.2))
 
 
 func _on_signal(text: String, color: Color, strength: float) -> void:
-	_signal_label.text = text
-	_signal_label.add_theme_color_override("font_color", color)
-	_signal_label.modulate.a = 0.5 + strength * 0.5
+	_signal_text = text
+	_signal_color = color
+	_signal_strength = strength
+
+
+func _update_hints() -> void:
+	var tutorial_on: bool = int(GameState.flags.get("tutorial_step", 0)) < Tutorial.STEPS.size()
+	var show: bool = Settings.hud_mode == Settings.HudMode.FULL or (Settings.hud_mode == Settings.HudMode.MINIMAL and tutorial_on)
+	_hints.visible = show
+	if show:
+		_hints.text = "%s  map      %s  command      %s  lens      %s  goals" % [Settings.glyph("open_globe"), Settings.glyph("open_command"), Settings.glyph("lens_view"), Settings.glyph("toggle_goals")]
 
 
 func _fmt_small_pct(p: float) -> String:
@@ -245,34 +348,3 @@ func _prompt_text(kind: String) -> String:
 	if kind.begins_with("E "):
 		return g + kind.substr(1)
 	return ""
-
-
-## Tool-switch keys for the tool readout ("1 2 3" on keyboard, "D-pad" on a controller).
-func _tool_keys() -> String:
-	if Settings.last_input_pad:
-		return "D-PAD"
-	return "%s %s %s" % [Settings.glyph("tool_scoop"), Settings.glyph("tool_plant"), Settings.glyph("tool_water")]
-
-
-func show_toast(text: String, kind: String = "info") -> void:
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 8)
-	var bar := ColorRect.new()
-	bar.custom_minimum_size = Vector2(2, 0)
-	bar.color = UITheme.GOLD if kind == "story" else (UITheme.GREEN if kind == "hint" else UITheme.MUTED)
-	row.add_child(bar)
-	var l := UITheme.label(text, 15)
-	l.autowrap_mode = TextServer.AUTOWRAP_WORD
-	l.custom_minimum_size = Vector2(320, 0)
-	row.add_child(l)
-	row.modulate.a = 0.0
-	_toasts.add_child(row)
-	while _toasts.get_child_count() > 4:
-		var old: Node = _toasts.get_child(0)
-		_toasts.remove_child(old)
-		old.queue_free()
-	var tw := row.create_tween()
-	tw.tween_property(row, "modulate:a", 1.0, 0.3)
-	tw.tween_interval(6.0)
-	tw.tween_property(row, "modulate:a", 0.0, 0.8)
-	tw.tween_callback(row.queue_free)

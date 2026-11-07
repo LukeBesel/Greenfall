@@ -1,106 +1,127 @@
 class_name GoalsPanel
-extends PanelContainer
-## Compact goals tracker for the HUD (top-right, under the district readout). One slate glass
-## card with three rows: goal text, hairline progress bar, count and reward. On completion the
-## row flashes amber, the reward counts up, then it slides out and the next goal slides in.
+extends VBoxContainer
+## Compact goal tracker (top-right, under the district line). No card: right-aligned text over a
+## hairline progress line. Shows the current goal; the toggle_goals key (G / L3) expands it to
+## the next three with their rewards. The restart checklist (tutorial steps) uses the same style
+## above the goal and fades away once the tutorial is done. A finished goal flashes green, sends
+## an elegant toast to the notification stack, then the next one fades in.
+## In Minimal HUD mode the tracker dims after a few seconds without progress.
 
-const W: float = 300.0
-const PAD: int = 10
-const ROW_W: float = W - PAD * 2
-const ROW_H: float = 46.0
+const W: float = 280.0
+const ROW_W: float = W  ## titles must fit (tests/test_qa_fixes_c.gd)
+const CYAN := Color(0.55, 0.9, 1.0)
+const DIM_AFTER_S: float = 6.0
 
 var hud: Node
-var _count_label: Label
-var _rows: Array[Dictionary] = []
-var _style_idle: StyleBoxFlat
-var _style_done: StyleBoxFlat
+var expanded: bool = false
 var _goals: Goals
-var _list: VBoxContainer
+var _head: Label
+var _check: VBoxContainer
+var _check_cap: Label
+var _check_text: Label
+var _rows: Array[Dictionary] = []
+var _idle: float = 0.0
+var _last_sig: String = ""
+var _alpha: float = 1.0
 
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	grow_horizontal = Control.GROW_DIRECTION_BEGIN
-	offset_left = -W - 22.0
-	offset_right = -22.0
-	offset_top = 96.0
 	custom_minimum_size = Vector2(W, 0)
-	add_theme_stylebox_override("panel", UITheme.box(Color(0.055, 0.06, 0.065, 0.74), UITheme.RUST, 1, 3, PAD))
-	_style_idle = UITheme.box(Color(1, 1, 1, 0.035), Color(0, 0, 0, 0), 0, 2, 0)
-	_style_done = UITheme.box(Color(1.0, 0.7, 0.26, 0.16), UITheme.GOLD, 1, 2, 0)
-	_list = VBoxContainer.new()
-	_list.add_theme_constant_override("separation", 4)
-	_list.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(_list)
-	var head := HBoxContainer.new()
-	head.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_list.add_child(head)
-	var cap := UITheme.label("G O A L S", 12, UITheme.MUTED)
-	cap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	head.add_child(cap)
-	_count_label = UITheme.label("", 12, UITheme.MUTED)
-	head.add_child(_count_label)
+	add_theme_constant_override("separation", 8)
+	# Restart checklist block (tutorial).
+	_check = VBoxContainer.new()
+	_check.add_theme_constant_override("separation", 1)
+	_check.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_check)
+	_check_cap = _cap("")
+	_check.add_child(_check_cap)
+	_check_text = UITheme.label("", 14, UITheme.CREAM)
+	_check_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_check_text.autowrap_mode = TextServer.AUTOWRAP_WORD
+	_check_text.custom_minimum_size = Vector2(W, 0)
+	_check.add_child(_check_text)
+	_check.visible = false
+	_head = _cap("")
+	add_child(_head)
 	for k: int in 3:
 		_rows.append(_make_row())
+	EventBus.tutorial_changed.connect(set_checklist)
+	if DevHooks.get_s("hud-goals", "") == "expanded":
+		expanded = true
 	visible = false
 
 
+static func _cap(t: String) -> Label:
+	var l := UITheme.label(t, 12, UITheme.MUTED)
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	return l
+
+
 func _make_row() -> Dictionary:
-	var wrap := Control.new()
-	wrap.custom_minimum_size = Vector2(ROW_W, ROW_H)
-	wrap.clip_contents = true
+	var wrap := VBoxContainer.new()
+	wrap.add_theme_constant_override("separation", 3)
 	wrap.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_list.add_child(wrap)
-	var card := PanelContainer.new()
-	card.add_theme_stylebox_override("panel", _style_idle)
-	card.size = Vector2(ROW_W, ROW_H)
-	card.custom_minimum_size = Vector2(ROW_W, ROW_H)
-	card.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	wrap.add_child(card)
-	var hb := HBoxContainer.new()
-	hb.add_theme_constant_override("separation", 0)
-	card.add_child(hb)
-	var accent := ColorRect.new()
-	accent.custom_minimum_size = Vector2(2, 0)
-	accent.color = UITheme.GOLD
-	hb.add_child(accent)
-	var mc := MarginContainer.new()
-	mc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	for side: String in ["margin_left", "margin_right"]:
-		mc.add_theme_constant_override(side, 10)
-	mc.add_theme_constant_override("margin_top", 5)
-	mc.add_theme_constant_override("margin_bottom", 5)
-	hb.add_child(mc)
-	var vb := VBoxContainer.new()
-	vb.add_theme_constant_override("separation", 5)
-	mc.add_child(vb)
-	var title := UITheme.label("", 15, UITheme.CREAM)
+	add_child(wrap)
+	var title := UITheme.label("", 14, UITheme.CREAM)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	title.clip_text = true
-	vb.add_child(title)
-	var line := HBoxContainer.new()
-	line.add_theme_constant_override("separation", 8)
-	vb.add_child(line)
-	var bar := ProgressBar.new()
-	bar.custom_minimum_size = Vector2(0, 3)
-	bar.show_percentage = false
-	bar.max_value = 1.0
-	bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	bar.add_theme_stylebox_override("background", UITheme.box(Color(1, 1, 1, 0.16), Color(0, 0, 0, 0), 0, 1, 0))
-	line.add_child(bar)
-	var count := UITheme.label("", 12, UITheme.MUTED)
-	line.add_child(count)
-	var reward := UITheme.label("", 12, UITheme.GOLD)
-	reward.custom_minimum_size = Vector2(96, 0)
-	reward.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	line.add_child(reward)
-	return {"wrap": wrap, "card": card, "accent": accent, "title": title, "bar": bar, "count": count,
-		"reward": reward, "goal": -1, "busy": false}
+	title.custom_minimum_size = Vector2(W, 0)
+	wrap.add_child(title)
+	var line := Control.new()
+	line.custom_minimum_size = Vector2(W, 12)
+	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	wrap.add_child(line)
+	var r: Dictionary = {"wrap": wrap, "title": title, "line": line, "goal": -1, "shown": 0.0, "flash": 0.0, "busy": false}
+	line.draw.connect(func() -> void: _draw_line(r))
+	wrap.visible = false
+	return r
 
 
-func _process(_delta: float) -> void:
+## Restart checklist text (EventBus.tutorial_changed); "" hides it with a fade.
+func set_checklist(text: String) -> void:
+	_idle = 0.0
+	if text == "":
+		if _check.visible:
+			var tw := _check.create_tween()
+			tw.tween_property(_check, "modulate:a", 0.0, 0.6)
+			tw.tween_callback(func() -> void: _check.visible = false)
+		return
+	var step: int = int(GameState.flags.get("tutorial_step", 0))
+	var n: int = Tutorial.STEPS.size()
+	_check_cap.text = ("R E S T A R T   C H E C K L I S T    %d / %d" % [mini(step + 1, n), n]) if step < n else "N E X T   S T E P"
+	var was: String = _check_text.text
+	_check_text.text = text
+	if not _check.visible or _check.modulate.a < 0.99 or _strip_count(was) != _strip_count(text):
+		_check.visible = true
+		_check.modulate.a = 0.0
+		_check.create_tween().tween_property(_check, "modulate:a", 1.0, 0.4)
+
+
+## Step text without its "  3/8" counter (so counting up doesn't re-fade the block).
+static func _strip_count(t: String) -> String:
+	var i: int = t.rfind("   ")
+	return t.substr(0, i) if i > 0 and t.substr(i).strip_edges().contains("/") else t
+
+
+func toggle() -> void:
+	expanded = not expanded
+	_idle = 0.0
+	Audio.play("click", 1.1 if expanded else 0.95, -12.0)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not is_visible_in_tree() or not event.is_action_pressed("toggle_goals"):
+		return
+	var w: Node = hud.get("world") if hud else null
+	if w and w.has_method("any_modal_open") and bool(w.call("any_modal_open")):
+		return
+	toggle()
+	get_viewport().set_input_as_handled()
+
+
+func _process(delta: float) -> void:
 	if _goals == null:
 		var w: Node = hud.get("world") if hud else null
 		_goals = (w.get("goals") as Goals) if w else null
@@ -110,17 +131,34 @@ func _process(_delta: float) -> void:
 		visible = true
 	var total: int = _goals.chain.size()
 	var done: int = _goals.done_count()
-	_count_label.text = "%d / %d" % [done, total] if done < total else "ALL DONE"
-	for r: Dictionary in _rows:
+	var show_n: int = 3 if expanded else 1
+	_head.visible = expanded
+	_head.text = ("G O A L S    %d / %d" % [done, total]) if done < total else "A L L   G O A L S   D O N E"
+	var sig: String = ""
+	for k: int in _rows.size():
+		var r: Dictionary = _rows[k]
+		(r["wrap"] as Control).visible = k < show_n and int(r["goal"]) >= 0
 		if r["busy"]:
 			continue
 		var gi: int = r["goal"]
 		if gi < 0 or _goals.is_done(gi):
 			var nxt: int = _next_free()
 			if nxt != gi:
-				_assign(r, nxt, gi >= 0 or nxt >= 0)
+				_assign(r, nxt, gi >= 0)
 			continue
-		_refresh(r)
+		r["shown"] = lerpf(float(r["shown"]), _goals.progress(gi), clampf(delta * 6.0, 0.0, 1.0))
+		sig += "%d:%.3f," % [gi, _goals.progress(gi)]
+		(r["line"] as Control).queue_redraw()
+	# Minimal: dim after a few seconds without progress.
+	if sig != _last_sig:
+		_last_sig = sig
+		_idle = 0.0
+	_idle += delta
+	var want: float = 1.0
+	if Settings.hud_mode == Settings.HudMode.MINIMAL and not expanded and _idle > DIM_AFTER_S:
+		want = 0.5
+	_alpha = move_toward(_alpha, want, delta * (3.0 if want > _alpha else 0.5))
+	modulate.a = _alpha
 
 
 ## First current goal no row is showing.
@@ -136,72 +174,88 @@ func _next_free() -> int:
 
 func _assign(r: Dictionary, gi: int, animate: bool) -> void:
 	r["goal"] = gi
-	var card: PanelContainer = r["card"]
+	r["flash"] = 0.0
 	var wrap: Control = r["wrap"]
-	wrap.visible = gi >= 0
 	if gi < 0:
+		wrap.visible = false
 		return
-	card.add_theme_stylebox_override("panel", _style_idle)
-	(r["accent"] as ColorRect).color = UITheme.GOLD
-	(r["title"] as Label).text = str(_goals.chain[gi].get("text", ""))
-	(r["title"] as Label).add_theme_color_override("font_color", UITheme.CREAM)
-	(r["reward"] as Label).text = _reward_text(_goals.reward_of(gi), 1.0)
-	_refresh(r)
+	r["shown"] = _goals.progress(gi)
+	var title: Label = r["title"]
+	title.text = str(_goals.chain[gi].get("text", ""))
+	title.add_theme_color_override("font_color", UITheme.CREAM)
 	if animate:
 		r["busy"] = true
-		card.position.x = ROW_W + 12.0
-		card.modulate.a = 0.0
-		var tw := card.create_tween().set_parallel(true)
-		tw.tween_property(card, "position:x", 0.0, 0.45).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-		tw.tween_property(card, "modulate:a", 1.0, 0.3)
-		tw.chain().tween_callback(func() -> void: r["busy"] = false)
+		wrap.modulate.a = 0.0
+		var tw := wrap.create_tween()
+		tw.tween_property(wrap, "modulate:a", 1.0, 0.45)
+		tw.tween_callback(func() -> void: r["busy"] = false)
 	else:
-		card.position.x = 0.0
-		card.modulate = Color.WHITE
+		wrap.modulate.a = 1.0
 
 
-func _refresh(r: Dictionary) -> void:
+func _draw_line(r: Dictionary) -> void:
+	var line: Control = r["line"]
 	var gi: int = r["goal"]
-	var bar: ProgressBar = r["bar"]
-	bar.value = lerpf(bar.value, _goals.progress(gi), 0.25)
+	if _goals == null or gi < 0:
+		return
+	var w: float = line.size.x
+	var y: float = 3.0
+	var f: float = clampf(float(r["shown"]), 0.0, 1.0)
+	var fl: float = float(r["flash"])
+	var col: Color = CYAN.lerp(UITheme.GREEN, fl)
+	var font: Font = UITheme.font()
 	var tgt: float = _goals.target_of(gi)
 	var v: float = minf(_goals.value_of(gi), tgt)
-	(r["count"] as Label).text = ("%s/%s" % [_n(floorf(v)), _n(tgt)]) if tgt > 1.0 else ""
+	var txt: String = ("%s / %s" % [_n(floorf(v)), _n(tgt)]) if tgt > 1.0 else ""
+	if fl > 0.0:
+		txt = "DONE"
+	var lw: float = 150.0 if expanded else 120.0
+	var x0: float = w - lw
+	line.draw_rect(Rect2(x0, y, lw, 2.0), Color(1, 1, 1, 0.14))
+	line.draw_rect(Rect2(x0, y, lw * (1.0 if fl > 0.0 else f), 2.0), col)
+	var tx: float = x0 - 8.0
+	if txt != "":
+		var tw: float = font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, 12).x
+		tx -= tw
+		line.draw_string_outline(font, Vector2(tx, y + 8.0), txt, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, 4, Color(0, 0, 0, 0.4))
+		line.draw_string(font, Vector2(tx, y + 8.0), txt, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, UITheme.GREEN if fl > 0.0 else UITheme.MUTED)
+		tx -= 12.0
+	if expanded:
+		var rw: String = reward_text(_goals.reward_of(gi), 1.0)
+		if rw != "":
+			var w2: float = font.get_string_size(rw, HORIZONTAL_ALIGNMENT_LEFT, -1, 12).x
+			line.draw_string_outline(font, Vector2(tx - w2, y + 8.0), rw, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, 4, Color(0, 0, 0, 0.4))
+			line.draw_string(font, Vector2(tx - w2, y + 8.0), rw, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color(UITheme.GOLD, 0.9))
 
 
 func _on_completed(gi: int) -> void:
+	_idle = 0.0
+	var reward: String = reward_text(_goals.reward_of(gi), 1.0)
+	if hud and hud.has_method("notify"):
+		hud.call("notify", "Goal complete  ·  %s%s" % [str(_goals.chain[gi].get("text", "")), ("    " + reward) if reward != "" else ""], "goal")
+	Audio.play("ding", 1.35, -12.0)
 	for r: Dictionary in _rows:
 		if int(r["goal"]) == gi:
-			_celebrate(r, gi)
+			_celebrate(r)
 			return
 
 
-func _celebrate(r: Dictionary, gi: int) -> void:
+func _celebrate(r: Dictionary) -> void:
 	r["busy"] = true
-	var card: PanelContainer = r["card"]
-	var reward: Dictionary = _goals.reward_of(gi)
-	card.add_theme_stylebox_override("panel", _style_done)
-	(r["accent"] as ColorRect).color = UITheme.GREEN
-	(r["title"] as Label).add_theme_color_override("font_color", UITheme.GOLD)
-	(r["bar"] as ProgressBar).value = 1.0
-	(r["count"] as Label).text = "DONE"
-	var rl: Label = r["reward"]
-	card.pivot_offset = Vector2(ROW_W, ROW_H) * 0.5
-	var tw := card.create_tween()
-	tw.tween_property(card, "modulate", Color(1.7, 1.45, 1.0), 0.08)
-	tw.parallel().tween_property(card, "scale", Vector2(1.03, 1.03), 0.08)
-	tw.tween_property(card, "modulate", Color.WHITE, 0.45)
-	tw.parallel().tween_property(card, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tw.parallel().tween_method(func(t: float) -> void: rl.text = _reward_text(reward, t), 0.0, 1.0, 0.8).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tw.tween_interval(0.9)
-	tw.tween_property(card, "position:x", -ROW_W - 12.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	tw.parallel().tween_property(card, "modulate:a", 0.0, 0.3)
+	var wrap: Control = r["wrap"]
+	(r["title"] as Label).add_theme_color_override("font_color", UITheme.GREEN)
+	var tw := wrap.create_tween()
+	tw.tween_method(func(t: float) -> void:
+		r["flash"] = t
+		(r["line"] as Control).queue_redraw(), 0.0, 1.0, 0.25)
+	tw.tween_interval(1.1)
+	tw.tween_property(wrap, "modulate:a", 0.0, 0.35)
 	tw.tween_callback(func() -> void:
 		r["busy"] = false
 		_assign(r, _next_free(), true))
 
 
-static func _reward_text(reward: Dictionary, t: float) -> String:
+static func reward_text(reward: Dictionary, t: float) -> String:
 	var parts: Array[String] = []
 	for k: String in ["cubes", "seeds"]:
 		if float(reward.get(k, 0.0)) > 0.0:
@@ -211,3 +265,12 @@ static func _reward_text(reward: Dictionary, t: float) -> String:
 
 static func _n(v: float) -> String:
 	return Settings.fmt(BigNum.from_float(v))
+
+
+## Number of goal rows on screen (tests).
+func visible_rows() -> int:
+	var n: int = 0
+	for r: Dictionary in _rows:
+		if (r["wrap"] as Control).visible:
+			n += 1
+	return n

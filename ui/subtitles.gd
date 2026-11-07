@@ -27,7 +27,7 @@ func _ready() -> void:
 	mc.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
 	mc.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	mc.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	mc.add_theme_constant_override("margin_bottom", 150)
+	mc.add_theme_constant_override("margin_bottom", 182)  # [hud] clear of the hotbar, level bar and prompt
 	mc.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(mc)
 	# Optional backdrop (Settings.subtitle_background); transparent otherwise.

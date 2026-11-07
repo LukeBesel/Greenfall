@@ -248,6 +248,38 @@ through the ground near the base and he fell forever; he is now put back in the 
    (seeds can't loop); recycler pays 0.25x cube value plus materials (no loop); Haggle's buy/swap/scrap has no
    path back to cubes; the auto-baler presses at 0.85x.
 
+## Lumi Level (Lumi XP)
+
+A light, always-on level shown as the thin bar above the hotbar (`systems/lumi_level.gd`,
+`data/lumi_level.json`). XP comes from everything: scoop 1 per piece, bale pressed 3, bale sold 4 (robot
+deliveries count), part dug 12, hex cleaned 25, hex level-up 15 x (level - 1), goal 20 + 1 per chain index,
+world event handled 50 (missed 10), achievement 15, research 20, upgrade 3, robot built 8, plant 2, bloom 2.
+
+Curve: XP from level L to L+1 is `need(L) = round(150 * L^1.5)`.
+
+| Level | XP to next | Lifetime XP to reach the next level |
+|---|---|---|
+| 1 | 150 | 150 |
+| 2 | 424 | 574 |
+| 3 | 779 | 1,353 |
+| 5 | 1,677 | 4,230 |
+| 10 | 4,743 | 21,400 |
+| 15 | 8,714 | 56,709 |
+| 20 | 13,416 | 114,117 |
+| 30 | 24,648 | 308,189 |
+
+Rewards per level: cubes = about 30 s of current income, floored at 15 x L and capped at
+max(30 x L^1.5, 0.4% of lifetime cubes) so early income spikes can't flood the economy; seeds every 2nd
+level once the garden is open (4 + L/10); every 5th level a robot part (Common, then better rarities every
+15 levels) and tokens (1 + L/10); every 10th level a Lumi keepsake for the Collection (5 in order, then 3
+tokens). Level-up: thin flash along the bar, "LEVEL N" and the reward line, one soft chime.
+
+Measured with the autoplay bot (`--autoplay --time-scale=8`, game minutes): level 2 at 0.3 (the first
+goals pay XP), 3 at 1.5, 4 at 4.5, 5 at 7.2, 6 at 11.9, 7 at 19.1, 8 at 25.5, 9 at 33.5, 10 at 41.8, 11 at 61.9
+(still 11 at 90 min, when the land is clean and XP comes from the garden, events and research). Early levels
+come every 1-5 minutes, then every 6-8, then 20+: the grind is the late game. The bot ignores most world
+events, so a human levels a little faster.
+
 ## Formulas (current)
 
 - Upgrade cost: `base_cost * growth^level` (data/upgrades.json; robots' fleet upgrades in robots.json).

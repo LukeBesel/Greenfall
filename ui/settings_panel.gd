@@ -474,6 +474,8 @@ func _build_gameplay(p: VBoxContainer) -> void:
 		func(i: int) -> void: Settings.number_format = i)
 	_toggle(p, "Best-value tags", Settings.best_value_tags, func(v: bool) -> void: Settings.best_value_tags = v,
 		"Tag the affordable upgrade that gives the most per cube.")
+	_cycler(p, "HUD", ["Full", "Minimal", "Hidden"], Settings.hud_mode, func(i: int) -> void:  # [hud]
+		Settings.hud_mode = i, "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages.")
 
 
 func _build_access(p: VBoxContainer) -> void:

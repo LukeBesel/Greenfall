@@ -36,7 +36,8 @@ Every push to this branch builds the game automatically on GitHub.
 | Press a bale | Right mouse / C | X |
 | Pick up / interact | E | A |
 | Drop | Q | B |
-| Tools: scoop / plant / water | 1 / 2 / 3 | D-pad |
+| Tools: scoop / plant / water | 1 / 2 / 3, or mouse wheel (Ctrl + wheel zooms) | D-pad, or LB / RB (hold to zoom) |
+| More goals | G | Left stick click |
 | Upgrades (at the workbench) | Tab or U | Y |
 | Command robots | B | D-pad down |
 | Survey hologram (planet map) | M | Back / Select |

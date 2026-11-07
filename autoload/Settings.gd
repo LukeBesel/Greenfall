@@ -17,6 +17,7 @@ const REBINDABLE: Array = [
 	["tool_scoop", "Tool: scoop"], ["tool_plant", "Tool: plant"], ["tool_water", "Tool: water"],
 	["open_upgrades", "Upgrades"], ["open_command", "Command view"], ["open_globe", "Globe map"],
 	["lens_view", "Lens view"], ["open_codex", "Codex"], ["pause", "Pause"],
+	["toggle_goals", "Show more goals"],  # [hud]
 	["zoom_in", "Zoom in"], ["zoom_out", "Zoom out"],
 ]
 const JOY_NAMES: Dictionary = {
@@ -61,6 +62,10 @@ var music_volume: float = 0.55
 var mouse_sensitivity: float = 0.0035
 var invert_y: bool = false
 var best_value_tags: bool = true
+## [hud] In-game HUD density: FULL (everything, no auto-fade), MINIMAL (default: non-essential
+## elements fade after a few seconds without change), HIDDEN (only prompts and notifications).
+enum HudMode { FULL, MINIMAL, HIDDEN }
+var hud_mode: int = HudMode.MINIMAL
 enum Quality { LOW, MEDIUM, HIGH, ULTRA }
 var quality: int = Quality.HIGH
 var fullscreen: bool = false
@@ -174,6 +179,7 @@ func _register_default_actions() -> void:
 		"ui_tab_prev": [_key(KEY_Q), _joy(JOY_BUTTON_LEFT_SHOULDER)],
 		"buy_max": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],
 		"open_codex": [_key(KEY_K), _joy(JOY_BUTTON_MISC1)],
+		"toggle_goals": [_key(KEY_G), _joy(JOY_BUTTON_LEFT_STICK)],  # [hud] expand the goal tracker
 	}
 	for action: String in _defaults:
 		if not InputMap.has_action(action):
@@ -219,6 +225,7 @@ func save_settings() -> void:
 	cfg.set_value("audio", "sfx", sfx_volume)
 	cfg.set_value("audio", "music", music_volume)
 	cfg.set_value("ui", "best_value_tags", best_value_tags)
+	cfg.set_value("ui", "hud_mode", hud_mode)  # [hud]
 	cfg.set_value("display", "quality", quality)
 	cfg.set_value("display", "fullscreen", fullscreen)
 	cfg.set_value("display", "vsync", vsync)
@@ -267,6 +274,7 @@ func load_settings() -> void:
 	sfx_volume = float(cfg.get_value("audio", "sfx", sfx_volume))
 	music_volume = float(cfg.get_value("audio", "music", music_volume))
 	best_value_tags = bool(cfg.get_value("ui", "best_value_tags", best_value_tags))
+	hud_mode = clampi(int(cfg.get_value("ui", "hud_mode", hud_mode)), 0, 2)  # [hud]
 	quality = int(cfg.get_value("display", "quality", quality))
 	fullscreen = bool(cfg.get_value("display", "fullscreen", fullscreen))
 	vsync = bool(cfg.get_value("display", "vsync", vsync))

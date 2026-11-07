@@ -36,6 +36,7 @@ var eggs: EasterEggs
 var ledger: LedgerArc
 var outposts: Outposts  # [outposts] ruined frontier depots (automation/outposts.gd)
 var events: WorldEvents  # [events] world events, cleaning streak (systems/events.gd)
+var lumi_level: LumiLevel  # [hud] Lumi Level / XP (systems/lumi_level.gd), drawn by the hotbar
 var contracts: Contracts  # [events] contracts board + token shop (systems/contracts.gd)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
@@ -187,6 +188,10 @@ func _ready() -> void:
 	cam.target = patch
 	cam.yaw = 0.0
 	patch.cam_yaw_provider = func() -> float: return cam.yaw
+	lumi_level = LumiLevel.new()  # [hud]
+	lumi_level.name = "LumiLevel"
+	lumi_level.world = self
+	add_child(lumi_level)
 	hud = HUD.new()
 	hud.patch = patch
 	hud.world = self

@@ -40,6 +40,9 @@ extends Node
 ##   --pad-audit        [deck] open every screen pad-only and check focus reachability + B to close
 ##   --scene-stats[=S]  [deck] print a geometry census (tools/scene_stats.gd) after S s (headless ok)
 ##   --tab=contracts    with --open=upgrades: the contracts board and token shop (--contracts-sample fills it)
+##   [hud] --lumi-level=N start at Lumi Level N; --lumi-xp=N grant N XP; --lumi-levelup=S level up S s after start
+##         (holds the level-up moment for screenshots); --tool=plant|water; --hud-pad (pad glyphs);
+##         --hud-mode=full|minimal|hidden; --hud-goals=expanded
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0

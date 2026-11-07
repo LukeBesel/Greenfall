@@ -56,6 +56,8 @@ func _snapshot(s: Node) -> Dictionary:
 		"livery": Liveries.equipped(),
 		"shop_owned": JSON.stringify(Contracts.owned()),
 		"events_recent": JSON.stringify(WorldEvents.persist_state().get("recent", [])),
+		# [hud] Lumi Level (level, XP into it, lifetime XP).
+		"lumi": "L%d xp%d total%d" % [int(LumiLevel.state()["level"]), int(LumiLevel.state()["xp"]), int(LumiLevel.state()["total"])],
 	}
 
 
@@ -169,6 +171,9 @@ func _ready() -> void:
 	Contracts.owned().append("livery_halo")
 	GameState.flags["livery"] = "livery_halo"
 	WorldEvents.persist_state()["recent"] = ["supply_drop", "rain_shower"]
+	# [hud] Some Lumi XP across a couple of levels.
+	if s1.get("lumi_level") != null:
+		s1.lumi_level.add("dev", LumiLevel.need(1) + LumiLevel.need(2) + 37)
 	s1.patch.global_position = Vector3(3.0, 0.2, 5.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
 	s1.add_cube(dropped)
