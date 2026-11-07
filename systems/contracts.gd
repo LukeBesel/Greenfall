@@ -347,6 +347,16 @@ func buy(item_id: String) -> String:
 			EventBus.toast.emit("+%d seeds." % int(it.get("amount", 20)), "hint")
 		"capsule":
 			Collection.grant(Collection.roll("capsule", rng.randf()))
+		"builder":  # [drones] robot builder parts and Maker Fragments
+			if it.has("fragments"):
+				RobotBuilder.add_fragments(int(it["fragments"]))
+				EventBus.toast.emit("+%d Maker Fragments (%d)." % [int(it["fragments"]), RobotBuilder.fragments()], "story")
+			else:
+				var pid: String = str(it.get("part", ""))
+				if pid == "":
+					pid = RobotBuilder.roll_unowned(rng)
+				RobotBuilder.add_part(pid)
+				EventBus.toast.emit("Printed: %s. Fit it in the Builder tab." % str(RobotBuilder.part(pid).get("name", pid)), "story")
 	GameState.inc_stat("tokens_spent", float(it.get("cost", 0)))
 	Audio.play("buy", 1.0, -2.0)
 	return ""

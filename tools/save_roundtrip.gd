@@ -58,7 +58,34 @@ func _snapshot(s: Node) -> Dictionary:
 		"events_recent": JSON.stringify(WorldEvents.persist_state().get("recent", [])),
 		# [hud] Lumi Level (level, XP into it, lifetime XP).
 		"lumi": "L%d xp%d total%d" % [int(LumiLevel.state()["level"]), int(LumiLevel.state()["xp"]), int(LumiLevel.state()["total"])],
+		# [drones] robot builder: parts bin, fragments, presets, per-robot builds, traits and names.
+		"builder_inv": JSON.stringify(_sorted(RobotBuilder.inv())),
+		"builder_fragments": RobotBuilder.fragments(),
+		"builder_presets": JSON.stringify(RobotBuilder.st().get("presets", {})),
+		"builds": _builds(f),
 	}
+
+
+## [drones] "name:trait:slot=part,..." per robot, sorted.
+func _builds(f: Fleet) -> Array:
+	var out: Array = []
+	for r: Robot in f.robots():
+		var bits: Array = []
+		for k: String in RobotBuilder.SLOTS:
+			if r.build.has(k):
+				bits.append("%s=%s" % [k, r.build[k]])
+		out.append("%s:%s:%s:%.3f" % [r.robot_name, r.trait_id, ",".join(bits), r.stat("speed")])
+	out.sort()
+	return out
+
+
+func _sorted(d: Dictionary) -> Dictionary:
+	var keys: Array = d.keys()
+	keys.sort()
+	var out: Dictionary = {}
+	for k: Variant in keys:
+		out[k] = int(d[k])
+	return out
 
 
 ## [outposts] Live outpost levels (and whether each repaired one has a working scale).
@@ -174,6 +201,23 @@ func _ready() -> void:
 	# [hud] Some Lumi XP across a couple of levels.
 	if s1.get("lumi_level") != null:
 		s1.lumi_level.add("dev", LumiLevel.need(1) + LumiLevel.need(2) + 37)
+	# [drones] Builder: parts in the bin, fragments, builds on two robots (one renamed), a preset.
+	for id: String in ["treads", "big_eye", "rotor", "long_forks", "top_hat", "mist_sprayer"]:
+		RobotBuilder.add_part(id, 2)
+	RobotBuilder.add_fragments(3)
+	for r: Robot in s1.fleet.robots():
+		if r.type_id == "scoopie":
+			RobotBuilder.equip(r, "mobility", "treads")
+			RobotBuilder.equip(r, "head", "big_eye")
+			RobotBuilder.equip(r, "topper", "top_hat")
+			RobotBuilder.save_preset("clean", r.build)
+			RobotBuilder.rename(s1.fleet, r, "Bobbin-42")
+		elif r.type_id == "haulbug":
+			RobotBuilder.equip(r, "tool", "long_forks")
+			RobotBuilder.equip(r, "mobility", "rotor")
+		elif r.type_id == "drip":
+			r.trait_id = "sleepy"
+			RobotBuilder.equip(r, "tool", "mist_sprayer")
 	s1.patch.global_position = Vector3(3.0, 0.2, 5.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
 	s1.add_cube(dropped)

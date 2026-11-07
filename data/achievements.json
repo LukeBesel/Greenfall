@@ -772,6 +772,39 @@
     "target": 1,
     "key": "outpost_pads"
    }
+  },
+  {
+   "id": "builder_mix",
+   "name": "Mix and Match",
+   "desc": "Build a robot with all five custom parts.",
+   "icon": "bot",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "builder_full_custom"
+   }
+  },
+  {
+   "id": "builder_maker",
+   "name": "As the Makers Made It",
+   "desc": "Fit the full Maker set (shell, optic and glider) on one robot.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "builder_maker_set"
+   }
+  },
+  {
+   "id": "builder_hats",
+   "name": "Hat Rack",
+   "desc": "Collect 5 different robot toppers.",
+   "icon": "trophy",
+   "cond": {
+    "type": "stat",
+    "target": 5,
+    "key": "builder_toppers"
+   }
   }
  ]
 }

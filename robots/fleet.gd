@@ -224,7 +224,8 @@ func build(type_id: String, at: Vector3) -> Robot:
 		r.job = crew  # start in a crew that has room
 	GameState.inc_stat("robots_built")
 	EventBus.robot_built.emit(r.robot_name)
-	EventBus.toast.emit("%s %s assembled. It looks around, then gets to work." % [Economy.robots[type_id]["name"], r.robot_name], "story")
+	var quirk: String = str(RobotBuilder.trait_def(RobotBuilder.trait_of(r)).get("name", "")).to_lower()  # [drones] personality
+	EventBus.toast.emit("%s %s assembled. It looks around, then gets to work.%s" % [Economy.robots[type_id]["name"], r.robot_name, (" Seems %s." % quirk) if quirk != "" else ""], "story")
 	return r
 
 
@@ -468,3 +469,5 @@ func restore() -> void:
 		r.work_hex = int(d.get("hex", -1))
 		r.job = str(d.get("job", "clean"))
 		r.hopper.from_dict(d.get("hopper", {}))
+		r.trait_id = str(d.get("trait", ""))  # [drones] builder parts + personality
+		RobotBuilder.set_build(r, d.get("build", {}))

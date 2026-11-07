@@ -45,6 +45,9 @@ extends Node
 ##         --hud-mode=full|minimal|hidden; --hud-goals=expanded
 ##   --photo[=S]        [photo] open photo mode after S s; --photo-seq="pose=wave|filter=golden;..." captures each
 ##                      entry (--photo-first/--photo-every=S, --photo-open=lumi,look, --photo-copy=DIR); see ui/photo_mode.gd
+##   --builder-sample   [drones] stocked builder parts bin; --builder-demo showcase builds on the robots;
+##                      --builder-shot fixed camera (--bshot-cam=x,y,z --bshot-at=x,y,z --bshot-fov --bshot-nohud --bshot-lumi);
+##                      --tab=builder [--builder-robot=N --builder-slot=ID --builder-opt=N] focuses a part
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0
