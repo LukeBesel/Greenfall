@@ -112,6 +112,15 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
   across worlds, not across profiles). Achievements, Codex and skins carry into new worlds.
 - **Each world keeps its own story beats** (seed tin, Ledger, finale): Seed Vault adds seeds but does
   not skip the tin (skipping it pulled the bot into hand-watering and made worlds slower).
+- **A world's look is data, applied after the district is built** (wt/worlds2): `data/world_looks.json`
+  per world type, read by CityView / StreetDressing for tints at build time and by `WorldLookView` for
+  sky, sky body, weathering overlay and landmark. The grade and weathering ease with the base level or
+  field progress but never fully go (a restored Ice Moon is still an ice moon). Frontier districts keep
+  their own grade and landmarks; the sky body and Long Nights carry over. Verdance gets no look at all.
+- **WREN is clear on new worlds**: she speaks over the ark's relay, so world-thread lines use signal
+  stage 2 from the first line instead of the campaign's glitched stage 0.
+- **The profile syncs like a save**: it carries `saved_unix` so the Steam Cloud newest-wins rule applies
+  to it unchanged; the SteamService autoload syncs before CradleBoot reads it.
 - **Decorations refund in full** so moving costs nothing; their bonus is small and per district.
   Wildlife integration is a group hook ("decor" + metas), no dependency either way.
 

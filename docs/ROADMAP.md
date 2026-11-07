@@ -302,3 +302,31 @@ If a session ends: commit WIP in each worktree, then resume or merge.
 - Next: per-world WREN story beats; a title-screen world picker; Steam Cloud for profile.save; a
   stronger visual identity per world type (sky tint, skyline); wildlife reacting to decor (wt/wild).
 
+## Update: each world its own look, story and save sync (wt/worlds2)
+- **World looks** (`systems/world_look.gd`, `data/world_looks.json`, `planet/world_look_view.gd`): each
+  Cradle Mode world type has its own sky grade (over the planet haze, easing off as the district is
+  restored but keeping its identity), a sky body (`planet/sky_body.gd`, `art/shaders/sky_body.gdshader`:
+  a ringed gas giant over the Ice Moon, twin moons over the Desert, a big tide moon over the Ocean, a
+  shattered moon with a debris ring over the Rust World; the Marsh mist hides the sky), a city tint and
+  weathering overlay (`art/shaders/world_weather.gdshader`: frosted, sun-bleached, coastal, overgrown,
+  corroded), yard dressing (drift colour, bleached cloth, puddles) and a landmark
+  (`planet/world_landmark.gd`: seed silo, solar tower, surge barrier, overgrown cooling tower, gantry
+  crane; ruined parts until base 3, thin trim lights from base 3, mended from base 4). Modifiers show:
+  Long Nights darkens nights (`SkyDirector.night_dark`), Heavy Rain doubles yard puddles, wets the junk
+  and thickens the fog, Rich Salvage gives the junk a metallic shine. Verdance is untouched.
+- **Title screen world picker** (`ui/world_picker.gd`, a "Worlds" entry under Continue once there are two
+  worlds): type icon, name, type and modifiers, play time; pick one to continue there
+  (`CradleMode.select_world`; an unplayed world lands fresh with its kit). Pad friendly. Continue's
+  subtitle names the current world.
+- **WREN per world** (`systems/world_story.gd`, `data/wren_lines.json` `world_<type>_<beat>`): arrival,
+  two memory notes on why the ark seeded worlds like this one, halfway and restored, clear over the ark's
+  relay (`Wren.say(..., stage_override)`), remembered per world save (`flags.world_story`).
+- **Steam Cloud**: `profile.save` is stamped with `saved_unix` and uploaded on every write, so newest-wins
+  sync covers it with the world slots (docs/steam/README.md updated for both cloud modes).
+- Dev: `--world-mods=heavy_rain+long_nights` (shots), `--menu=worlds --sample-worlds=N` (title picker).
+- Tests: `tests/test_world_look.gd` (look selection, modifiers, easing, landmarks, sky bodies, WREN
+  beats and lines, picker focus and selection, profile cloud sync); round trip checks the world look,
+  the WREN thread and the profile stamp.
+- Next: wildlife and plants per world type (snow hares, dune lizards); per-world music tint; the world
+  picker could show a small render of each world.
+
