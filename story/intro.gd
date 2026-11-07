@@ -10,8 +10,8 @@ extends Node
 ##   D. The crash beside the old shack, the hatch drops, Lumi drifts out nearly flat: eyes and
 ##      core flicker, a battery readout appears, and WREN explains green light and the plan.
 ## Phases A-C play in a SpaceStage (its own little 3D world); D plays in the game world.
-## The pod stays in the world afterwards as a landmark. Dev: --intro-from=0..4 starts at a phase
-## (3 = the city chase, 4 = the crash).
+## The pod stays in the world afterwards as a landmark. Dev: --intro-from=0..5 starts at a phase
+## (3 = the city chase, 4 = the crash, 5 = the wake-up).
 
 signal finished
 
@@ -251,7 +251,7 @@ func _phase_ark() -> void:
 	if await _hold(1.4):
 		return
 	_show_title("GREENFALL", "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle.")
-	if await _hold(4.2):
+	if await _hold(3.8):
 		return
 	_hide_title()
 	if await _hold(0.9):
@@ -272,7 +272,7 @@ func _phase_ark() -> void:
 	var hum_t: float = 0.0
 	var next_note: float = 0.0
 	var said: bool = false
-	while hum_t < 5.6 and not _skipped:
+	while hum_t < 4.8 and not _skipped:
 		hum_t += get_process_delta_time()
 		if hum_t >= next_note:
 			next_note += 0.55
@@ -381,7 +381,7 @@ func _phase_storm() -> void:
 	var t: float = 0.0
 	var start: Vector3 = st.pod.global_position
 	var said: bool = false
-	while t < 4.6 and not _skipped:
+	while t < 4.0 and not _skipped:
 		var dt: float = get_process_delta_time()
 		t += dt
 		st.pod.global_position = start + Vector3(-2.6 * t, -3.2 * t - 0.4 * t * t, 1.6 * t)
@@ -392,7 +392,7 @@ func _phase_storm() -> void:
 			st.puff(ark.pod_world(2), Vector3(randf_range(-2, 2), -3.0, randf_range(-1, 1)), Color(0.9, 0.93, 0.97, 0.4), 0.8)
 		# The camera hangs back and lets the pod fall past while the ark recedes.
 		var look: Vector3 = st.pod.global_position.lerp(ark.global_position, clampf((t - 2.5) / 3.0, 0.0, 0.55))
-		st.aim(Vector3(-6, -12, 22).lerp(Vector3(-10, -22, 26), t / 4.6), look, lerpf(48.0, 56.0, t / 4.6))
+		st.aim(Vector3(-6, -12, 22).lerp(Vector3(-10, -22, 26), t / 4.0), look, lerpf(48.0, 56.0, t / 4.0))
 		if t > 0.8 and not said:
 			said = true
 			_wren("Lumi— hold on— I can't turn her around— hold on—", WREN_GLITCH)
@@ -422,7 +422,7 @@ func _phase_fall() -> void:
 	var vel := Vector3(8.0, -10.0, -6.0)
 	var dir: Vector3 = vel.normalized()
 	var t: float = 0.0
-	while t < 4.6 and not _skipped:
+	while t < 4.0 and not _skipped:
 		var dt: float = get_process_delta_time()
 		t += dt
 		var pos: Vector3 = p0 + vel * t
@@ -489,6 +489,23 @@ func _phase_landing() -> void:
 	_cam_manual = false
 	if _skipped:
 		return
+	if DevHooks.get_f("intro-from", 0.0) >= 5.0:
+		# Dev: straight to the wake-up.
+		_pod.global_position = land
+		_pod.rotation = Vector3(0, 0.5, 0)
+		_fire.queue_free()
+		_fire = null
+		_hatch.rotation.x = -1.45
+		var o_from: Vector3 = _pod.global_transform * Vector3(0, 0.3, -0.3)
+		var o_to: Vector3 = _pod.global_transform * Vector3(0, 0.05, -2.2)
+		o_to.y = _ground(o_to) + 0.05
+		patch.visible = true
+		patch.global_position = o_to
+		patch.look_at(o_to + (o_to - o_from) * Vector3(1, 0, 1), Vector3.UP)
+		if model:
+			model.core_glow = 0.15
+		await _wake(o_from, o_to)
+		return
 	_pod.global_position = land
 	_pod.rotation = Vector3(0, 0.5, 0)
 	_fire.queue_free()
@@ -503,8 +520,8 @@ func _phase_landing() -> void:
 	if await _hold(1.4):
 		return
 	# Close on the hatch: steam, it drops open, Lumi drifts out nearly powerless.
-	var front: Vector3 = _pod.global_transform * Vector3(0, 0.8, -3.2)
-	_shot(front + Vector3(0.6, 0.6, 0.0), land + Vector3(0, 1.0, 0), front + Vector3(0.3, 0.2, 0.6), land + Vector3(0, 0.8, 0), 5.0)
+	var front: Vector3 = _pod.global_transform * Vector3(0.9, 1.0, -4.8)
+	_shot(front + Vector3(0, 0.4, 0), land + Vector3(0, 1.0, 0), front, land + Vector3(0, 0.7, 0), 5.0)
 	if await _hold(0.6):
 		return
 	for i: int in 4:
@@ -524,10 +541,16 @@ func _phase_landing() -> void:
 	# Patch faces -Z: look along the drift so Lumi floats out face first.
 	patch.look_at(patch.global_position + (out_to - out_from) * Vector3(1, 0, 1), Vector3.UP)
 	if model:
-		model.core_glow = 0.25
+		model.core_glow = 0.15
 	create_tween().tween_property(patch, "global_position", out_to, 2.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	if await _hold(2.2):
 		return
+	await _wake(out_from, out_to)
+
+
+## The low-battery wake: eyes stutter on dim, the battery readout, WREN explains the plan.
+func _wake(out_from: Vector3, out_to: Vector3) -> void:
+	var model: PatchModel = _model()
 	# Face close-up: the eyes stutter on, dim. The core is nearly empty.
 	var fwd: Vector3 = (out_to - out_from).normalized()
 	var face_cam: Vector3 = out_to + fwd * 1.6 + Vector3(0.3, 0.75, 0)
@@ -558,14 +581,14 @@ func _phase_landing() -> void:
 	if model:
 		model.look_toward(out_to + Vector3(3, 1, 2))
 	_wren("...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance.", WREN_GLITCH)
-	if await _hold(4.4):
+	if await _hold(4.0):
 		return
 	if model:
 		model.look_toward(null)
 	# Pull back so the battery readout and Lumi share the frame.
 	_shot(_cam.global_position, out_to + Vector3(0, 0.7, 0), out_to + fwd * 3.2 + Vector3(1.4, 1.5, 0.6), out_to + Vector3(0, 0.6, 0), 12.0)
 	_wren("Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading.", WREN_GLITCH)
-	if await _hold(5.6):
+	if await _hold(5.0):
 		return
 	_wren("So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core.", 1)
 	if model:
@@ -575,7 +598,7 @@ func _phase_landing() -> void:
 	if await _hold(4.2):
 		return
 	_wren("Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time.", 1)
-	await _hold(4.6)
+	await _hold(4.0)
 
 
 # --- Overlay ------------------------------------------------------------------------------
@@ -774,7 +797,7 @@ func _process(delta: float) -> void:
 	# Low battery: the core and eyes stutter, the readout blinks.
 	if _flicker > 0.0:
 		var model: PatchModel = _model()
-		var g: float = 0.3 + 0.15 * sin(_t * 3.0) - (0.2 if randf() < 0.08 else 0.0)
+		var g: float = 0.22 + 0.12 * sin(_t * 3.0) - (0.15 if randf() < 0.08 else 0.0)
 		if model:
 			model.core_glow = maxf(0.05, g)
 		var on: bool = fmod(_t, 1.0) < 0.6
@@ -843,7 +866,7 @@ func _finish() -> void:
 		_battery.visible = false
 		if not modal:
 			_set_player_enabled(true)
-		print("[intro] finished (skipped=%s, input restored=%s)" % [_skipped, not modal]))
+		print("[intro] finished after %.1fs (skipped=%s, input restored=%s)" % [_t, _skipped, not modal]))
 	tw.tween_property(_fade, "color:a", 0.0, 0.8)
 	tw.tween_callback(func() -> void:
 		_layer.queue_free()

@@ -111,7 +111,10 @@ func _ready() -> void:
 		(func() -> void: BloomFinale.park_ark(world, Vector3(0, 0, 3))).call_deferred()
 	if DevHooks.has("core-beat"):
 		var b: int = int(DevHooks.get_f("core-beat", 25.0))
-		get_tree().create_timer(DevHooks.get_f("core-beat-delay", 3.0)).timeout.connect(func() -> void: _play(b))
+		_busy = true  # hold the regular queue so the requested beat plays first
+		get_tree().create_timer(DevHooks.get_f("core-beat-delay", 3.0)).timeout.connect(func() -> void:
+			_busy = false
+			_play(b))
 
 
 func _model() -> PatchModel:
@@ -189,7 +192,11 @@ func _beat_memory() -> void:
 	c.begin()
 	var p: Vector3 = (world.patch as Node3D).global_position
 	var model: PatchModel = _model()
-	c.cam.global_transform = Transform3D(Basis(), p + Vector3(2.2, 1.3, 2.6)).looking_at(p + Vector3(0, 0.8, 0), Vector3.UP)
+	var front: Vector3 = -(world.patch as Node3D).global_transform.basis.z
+	front.y = 0.0
+	front = front.normalized() if front.length() > 0.1 else Vector3.FORWARD
+	var side: Vector3 = front.cross(Vector3.UP).normalized()
+	c.cam.global_transform = Transform3D(Basis(), p + front * 2.6 + side * 0.9 + Vector3(0, 1.2, 0)).looking_at(p + Vector3(0, 0.8, 0), Vector3.UP)
 	if model:
 		model.flash()
 		model.set_happy(1.0)
