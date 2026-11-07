@@ -216,13 +216,19 @@ static func _plan_hex(p: Dictionary, fld: HexField, lay: CityLayout, hid: int, l
 	# Clean: seams just inside the hex edges, split so they follow curbs.
 	var seam_col: Color = TEAL if lv == 1 else CYAN
 	var seam_en: float = [0.0, 1.15, 1.35, 1.5, 1.7, 2.0][lv]
+	# Seams trace the same organic border the ground and junk use (HexField.border_warp), so a
+	# cleaned hex never shows a ruler-straight edge.
+	const SEG: int = 7
 	for e: int in 6:
 		var a: Vector3 = corner(c, r - 0.14, e)
 		var b: Vector3 = corner(c, r - 0.14, e + 1)
 		var col: Color = MAGENTA if lv >= 5 and (e + hid) % 3 == 0 else seam_col
-		for k: int in 3:
-			var pa: Vector3 = a.lerp(b, k / 3.0)
-			var pb: Vector3 = a.lerp(b, (k + 1) / 3.0)
+		for k: int in SEG:
+			var pa: Vector3 = a.lerp(b, float(k) / SEG)
+			var pb: Vector3 = a.lerp(b, float(k + 1) / SEG)
+			if fld.natural_borders:
+				pa -= fld.border_warp(pa)
+				pb -= fld.border_warp(pb)
 			var mid: Vector3 = (pa + pb) * 0.5
 			if lay and lay.surface_at(mid.x, mid.z) == CityLayout.Surface.BUILDING:
 				continue
