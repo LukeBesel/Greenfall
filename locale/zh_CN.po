@@ -5176,667 +5176,667 @@ msgstr "蕨"
 
 #: data/codex.json:plants.fern.hint
 msgid "Shade-lover."
-msgstr ""
+msgstr "喜阴。"
 
 #: data/codex.json:plants.fern.desc
 msgid "Fronds that unroll like slow fireworks. Ferns are very old. They have come back from worse than this."
-msgstr ""
+msgstr "叶片像慢动作的烟花一样舒展开来。蕨类非常古老。比这更糟的情况它们都挺过来了。"
 
 #: data/codex.json:plants.shrub.name
 msgid "Shrub"
-msgstr ""
+msgstr "灌木"
 
 #: data/codex.json:plants.shrub.hint
 msgid "Something bigger."
-msgstr ""
+msgstr "大一点的东西。"
 
 #: data/codex.json:plants.shrub.desc
 msgid "A low woody bush. Birds will notice it before you do. Shrubs are how a meadow starts thinking about becoming a wood."
-msgstr ""
+msgstr "一丛低矮的木本灌木。鸟儿会比你先注意到它。有了灌木，草地就开始考虑变成树林了。"
 
 #: data/codex.json:plants.nettle.name
 msgid "Nettle"
-msgstr ""
+msgstr "荨麻"
 
 #: data/codex.json:plants.nettle.hint
 msgid "Needs Hardy Nettles research."
-msgstr ""
+msgstr "需要研究“坚韧荨麻”。"
 
 #: data/codex.json:plants.nettle.desc
 msgid "Stingy, stubborn and wonderful. Nettles pull nutrients up from deep down, and caterpillars adore them."
-msgstr ""
+msgstr "扎人、倔强又美好。荨麻能把深处的养分拉上来，毛毛虫最爱它了。"
 
 #: data/codex.json:plants.mint.name data/research.json:nodes[wild_mint].name
 msgid "Wild Mint"
-msgstr ""
+msgstr "野薄荷"
 
 #: data/codex.json:plants.mint.hint
 msgid "Needs Wild Mint research."
-msgstr ""
+msgstr "需要研究“野薄荷”。"
 
 #: data/codex.json:plants.mint.desc
 msgid "Crush a leaf and the whole hex smells fresh. Mint spreads quickly. Nobody minds."
-msgstr ""
+msgstr "揉碎一片叶子，整个六角格都会清香扑鼻。薄荷蔓延得很快。没人介意。"
 
 #: data/codex.json:plants.hedge.name
 msgid "Hedgerow"
-msgstr ""
+msgstr "树篱"
 
 #: data/codex.json:plants.hedge.hint
 msgid "Needs Hedgerows research."
-msgstr ""
+msgstr "需要研究“树篱”。"
 
 #: data/codex.json:plants.hedge.desc
 msgid "A dense green wall, alive with small rustlings. Hedges are highways for hedgehogs, and hotels for wrens."
-msgstr ""
+msgstr "一堵茂密的绿墙，里面满是窸窸窣窣的小动静。树篱是刺猬的高速公路，也是鹪鹩的旅馆。"
 
 #: data/codex.json:plants.pine.name
 msgid "Pine Sapling"
-msgstr ""
+msgstr "松树苗"
 
 #: data/codex.json:plants.pine.hint
 msgid "Needs Evergreen Saplings research."
-msgstr ""
+msgstr "需要研究“常青树苗”。"
 
 #: data/codex.json:plants.pine.desc
 msgid "Knee-high today. In a hundred years, a forest that smells of resin and rain. Lumi plants it carefully, for whoever comes after."
-msgstr ""
+msgstr "今天只有膝盖高。一百年后，会是一片散发着松脂和雨水气息的森林。Lumi 小心地种下它，为了后来的人。"
 
 #: data/codex.json:plants.iceplant.name
 msgid "Crystalline Iceplant"
-msgstr ""
+msgstr "晶冰花"
 
 #: data/codex.json:plants.iceplant.hint data/codex.json:plants.rooibos.hint data/codex.json:plants.ursinia.hint
 msgid "Plant in the Dust Flats."
-msgstr ""
+msgstr "种在尘土平原。"
 
 #: data/codex.json:plants.iceplant.desc
 msgid "A desert succulent whose leaves are covered in tiny glassy blisters that store water. It glitters at noon and needs almost nothing to drink."
-msgstr ""
+msgstr "一种沙漠多肉植物，叶片上布满储水的细小玻璃状泡泡。正午时闪闪发光，几乎不需要喝水。"
 
 #: data/codex.json:plants.rooibos.name
 msgid "Wild Rooibos"
-msgstr ""
+msgstr "野生路易波士"
 
 #: data/codex.json:plants.rooibos.desc
 msgid "A needle-leafed bush that turns rusty red in the heat. Its roots go down further than you would believe. It holds the sand in place."
-msgstr ""
+msgstr "一种针叶灌木，在炎热中会变成铁锈红。它的根扎得比你想象的还深。它能固住沙子。"
 
 #: data/codex.json:plants.ursinia.name
 msgid "Ursinia"
-msgstr ""
+msgstr "熊菊"
 
 #: data/codex.json:plants.ursinia.desc
 msgid "A bright orange desert daisy. After the first rain in years, whole slopes of them opened at once, and the Cradle's old cameras saw it from orbit."
-msgstr ""
+msgstr "一种鲜橙色的沙漠雏菊。多年来第一场雨过后，整片山坡的花同时绽放，Cradle号的旧相机在轨道上都看见了。"
 
 #: data/codex.json:plants.periwinkle.name
 msgid "Periwinkle"
-msgstr ""
+msgstr "长春花"
 
 #: data/codex.json:plants.periwinkle.hint data/codex.json:plants.frost_moss.hint
 msgid "A cold-hardy seed for the Frozen Port."
-msgstr ""
+msgstr "适合冰封港口的耐寒种子。"
 
 #: data/codex.json:plants.periwinkle.desc
 msgid "An evergreen groundcover with violet flowers. It keeps its leaves under snow and simply carries on in spring."
-msgstr ""
+msgstr "一种开紫花的常绿地被植物。它在雪下保持叶子，到了春天就照常生长。"
 
 #: data/codex.json:plants.frost_moss.name
 msgid "Frost Moss"
-msgstr ""
+msgstr "霜苔"
 
 #: data/codex.json:plants.frost_moss.desc
 msgid "A tight green cushion that grows on cold stone. It is slow, but it survives what nothing else does, and it makes soil where there was none."
-msgstr ""
+msgstr "一块在冰冷石头上生长的紧密绿垫。它长得很慢，但能在其他东西都活不下来的地方活下来，还能在没有土壤的地方造出土壤。"
 
 #: data/codex.json:plants.reed.name
 msgid "Marsh Reed"
-msgstr ""
+msgstr "沼泽芦苇"
 
 #: data/codex.json:plants.reed.hint
 msgid "Plant on the drained streets of the Sunken City."
-msgstr ""
+msgstr "种在沉没之城排干的街道上。"
 
 #: data/codex.json:plants.reed.desc
 msgid "Tall reeds that drink the silt dry and filter the last of the floodwater. Little birds sit on them and complain about the wind."
-msgstr ""
+msgstr "高高的芦苇喝干淤泥，过滤掉最后的洪水。小鸟落在上面，抱怨着风。"
 
 #: data/codex.json:plants.marsh_mint.name
 msgid "Marsh Mint"
-msgstr ""
+msgstr "水薄荷"
 
 #: data/codex.json:plants.marsh_mint.hint
 msgid "Plant in the Sunken City."
-msgstr ""
+msgstr "种在沉没之城。"
 
 #: data/codex.json:plants.marsh_mint.desc
 msgid "Mint that does not mind wet feet. The drained streets smell of it on warm evenings."
-msgstr ""
+msgstr "不怕湿脚的薄荷。温暖的傍晚，排干的街道上满是它的香味。"
 
 #: data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
 msgid "Build one at the workbench."
-msgstr ""
+msgstr "在工作台造一台。"
 
 #: data/codex.json:robots.scoopie.desc
 msgid "A small, earnest cleaner with one scoop arm and a lot of enthusiasm. It hums when it finds a good pile."
-msgstr ""
+msgstr "一台小小的、认真的清洁机器人，有一只铲臂和满满的热情。找到好的一堆时它会哼歌。"
 
 #: data/codex.json:robots.haulbug.desc
 msgid "A fork cart that never complains. It carries loose bales to the scale and parks itself neatly afterwards."
-msgstr ""
+msgstr "一台从不抱怨的叉车。它把散落的捆包运到磅秤，然后整整齐齐地停好。"
 
 #: data/codex.json:robots.seedling.hint
 msgid "Research the Seedling Blueprint."
-msgstr ""
+msgstr "研究 Seedling 蓝图。"
 
 #: data/codex.json:robots.seedling.desc
 msgid "A planter bot with a seed hopper on its back. It pats every seed into the soil, twice, just to be sure."
-msgstr ""
+msgstr "一台背着种子料斗的种植机器人。它会把每颗种子拍进土里两次，就为了保险。"
 
 #: data/codex.json:robots.drip.hint
 msgid "Research the Drip Blueprint."
-msgstr ""
+msgstr "研究 Drip 蓝图。"
 
 #: data/codex.json:robots.drip.desc
 msgid "A watering bot with a sloshy tank. It makes a little happy gurgle when a plant drinks."
-msgstr ""
+msgstr "一台带着晃荡水箱的浇水机器人。植物喝水时它会开心地咕噜一声。"
 
 #: data/codex.json:robots.multibot.hint
 msgid "Research the Multibot Blueprint."
-msgstr ""
+msgstr "研究 Multibot 蓝图。"
 
 #: data/codex.json:robots.multibot.desc
 msgid "A helper that can clean, plant or water. Not the fastest at anything, but always where it is needed."
-msgstr ""
+msgstr "一位能清理、种植或浇水的帮手。哪样都不是最快的，但总在需要它的地方。"
 
 #: data/codex.json:robots.skimmer.hint
 msgid "Build a Skimmer."
-msgstr ""
+msgstr "建造一台 Skimmer。"
 
 #: data/codex.json:robots.skimmer.desc
 msgid "A little raft robot with a net and a rubber duck for luck. It drifts across the lakes fishing out bottles, and leaves neat bales on the shore."
-msgstr ""
+msgstr "一台小小的木筏机器人，带着一张网和一只幸运橡皮鸭。它在湖面漂来漂去捞瓶子，在岸边留下整齐的捆包。"
 
 #: data/codex.json:shards.back_soon.desc
 msgid "A hand-lettered sign from a bakery. Marta promised to be back soon."
-msgstr ""
+msgstr "面包店的手写告示。Marta 保证很快回来。"
 
 #: data/codex.json:shards.kid_drawing.desc
 msgid "A crayon drawing, folded small enough to fit a pocket."
-msgstr ""
+msgstr "一幅蜡笔画，折得小小的，刚好能放进口袋。"
 
 #: data/codex.json:shards.gardener_list.desc
 msgid "Someone's to-do list for a garden. Half the items are ticked."
-msgstr ""
+msgstr "某人的花园待办清单。一半已经打了勾。"
 
 #: data/codex.json:shards.receipt.desc
 msgid "A till receipt from the last ordinary day."
-msgstr ""
+msgstr "最后一个平常日子的收银小票。"
 
 #: data/codex.json:shards.maint_log.desc
 msgid "A maintenance log for a unit that looked a lot like Lumi."
-msgstr ""
+msgstr "一份维修日志，记录的机器和 Lumi 很像。"
 
 #: data/codex.json:shards.ledger_memo.desc
 msgid "An office memo about the evacuation. Very polite. Very tired."
-msgstr ""
+msgstr "一份关于撤离的办公室备忘录。非常礼貌。非常疲惫。"
 
 #: data/codex.json:shards.voicemail.desc
 msgid "A voicemail transcript. Someone was calling to say they were safe."
-msgstr ""
+msgstr "一段语音留言的文字记录。有人打电话来报平安。"
 
 #: data/codex.json:shards.poster.desc
 msgid "A faded safety poster. The smiling robot on it is waving."
-msgstr ""
+msgstr "一张褪色的安全海报。上面微笑的机器人在挥手。"
 
 #: data/codex.json:landmarks.covered_car.name
 msgid "Covered Car"
-msgstr ""
+msgstr "盖着的汽车"
 
 #: data/codex.json:landmarks.covered_car.hint
 msgid "Under a tarp, waiting."
-msgstr ""
+msgstr "在防水布下，等待着。"
 
 #: data/codex.json:landmarks.covered_car.desc
 msgid "Somebody covered it carefully before they left, as if they meant to come back for it. The tarp has held for a very long time."
-msgstr ""
+msgstr "有人在离开前把它仔细盖好，像是打算回来取它。这块防水布撑了很久很久。"
 
 #: data/codex.json:landmarks.concrete_road_barrier.name
 msgid "Road Barrier"
-msgstr ""
+msgstr "路障"
 
 #: data/codex.json:landmarks.concrete_road_barrier.hint
 msgid "Grey and heavy."
-msgstr ""
+msgstr "灰色、沉重。"
 
 #: data/codex.json:landmarks.concrete_road_barrier.desc
 msgid "Once it told traffic where to go. Now moss is slowly telling it where to stay."
-msgstr ""
+msgstr "它曾经告诉车辆该往哪儿走。现在苔藓正慢慢告诉它该待在哪儿。"
 
 #: data/codex.json:landmarks.exterior_aircon_unit.name
 msgid "Air Conditioner"
-msgstr ""
+msgstr "空调"
 
 #: data/codex.json:landmarks.exterior_aircon_unit.hint
 msgid "It used to hum."
-msgstr ""
+msgstr "它以前会嗡嗡响。"
 
 #: data/codex.json:landmarks.exterior_aircon_unit.desc
 msgid "An old outdoor unit with a rusted fan. Small birds have started nesting behind the grille."
-msgstr ""
+msgstr "一台风扇生锈的旧室外机。小鸟已经开始在格栅后面筑巢了。"
 
 #: data/codex.json:landmarks.electric_stove.name
 msgid "Abandoned Stove"
-msgstr ""
+msgstr "废弃的灶台"
 
 #: data/codex.json:landmarks.electric_stove.hint
 msgid "A kitchen, without the kitchen."
-msgstr ""
+msgstr "一间厨房，只是没有厨房。"
 
 #: data/codex.json:landmarks.electric_stove.desc
 msgid "Someone carried it this far and then set it down. Its oven door still opens with a cheerful squeak."
-msgstr ""
+msgstr "有人把它搬到这里，然后放下了。烤箱门打开时还会发出欢快的吱呀声。"
 
 #: data/codex.json:landmarks.Barrel_01.name
 msgid "Old Barrel"
-msgstr ""
+msgstr "旧油桶"
 
 #: data/codex.json:landmarks.Barrel_01.hint
 msgid "Dented and rusty."
-msgstr ""
+msgstr "凹陷、生锈。"
 
 #: data/codex.json:landmarks.Barrel_01.desc
 msgid "Empty now, thankfully. Turned on its side it makes a decent shelter for a fox."
-msgstr ""
+msgstr "幸好现在是空的。侧放着，正好给狐狸当个不错的窝。"
 
 #: data/codex.json:landmarks.metal_trash_can.name
 msgid "Trash Can"
-msgstr ""
+msgstr "垃圾桶"
 
 #: data/codex.json:landmarks.metal_trash_can.hint
 msgid "The irony is not lost on Lumi."
-msgstr ""
+msgstr "Lumi 没有错过这份讽刺。"
 
 #: data/codex.json:landmarks.metal_trash_can.desc
 msgid "The one place junk was supposed to go. Lumi salutes it every time he passes."
-msgstr ""
+msgstr "废料本该去的唯一地方。Lumi 每次经过都向它敬礼。"
 
 #: data/codex.json:landmarks.propane_tank.name
 msgid "Propane Tank"
-msgstr ""
+msgstr "丙烷罐"
 
 #: data/codex.json:landmarks.propane_tank.hint
 msgid "Handle with care."
-msgstr ""
+msgstr "小心轻放。"
 
 #: data/codex.json:landmarks.propane_tank.desc
 msgid "Long since empty and safe. Someone painted a flower on the side, a long time ago."
-msgstr ""
+msgstr "早就空了，很安全。很久以前，有人在侧面画了一朵花。"
 
 #: data/codex.json:landmarks.plastic_monobloc_chair_01.name
 msgid "Plastic Chair"
-msgstr ""
+msgstr "塑料椅"
 
 #: data/codex.json:landmarks.plastic_monobloc_chair_01.hint
 msgid "Somebody sat here."
-msgstr ""
+msgstr "有人在这里坐过。"
 
 #: data/codex.json:landmarks.plastic_monobloc_chair_01.desc
 msgid "The most common chair in the world. It faces the horizon, as if someone liked to watch the sunset from here."
-msgstr ""
+msgstr "世界上最常见的椅子。它面朝地平线，好像有人喜欢在这里看日落。"
 
 #: data/codex.json:landmarks.dead_tree_trunk.name
 msgid "Old Tree Trunk"
-msgstr ""
+msgstr "老树干"
 
 #: data/codex.json:landmarks.dead_tree_trunk.hint
 msgid "It used to be tall."
-msgstr ""
+msgstr "它曾经很高。"
 
 #: data/codex.json:landmarks.dead_tree_trunk.desc
 msgid "A tree that did not make it. But there are tiny green shoots at its base, and beetles inside, and it is not as dead as it looks."
-msgstr ""
+msgstr "一棵没能撑下来的树。但它的根部有细小的绿芽，里面住着甲虫，它并不像看上去那样死透了。"
 
 #: data/codex.json:landmarks.old_drill_press.name
 msgid "Drill Press"
-msgstr ""
+msgstr "台钻"
 
 #: data/codex.json:landmarks.old_drill_press.hint
 msgid "Out in the rust plains."
-msgstr ""
+msgstr "在锈蚀平原上。"
 
 #: data/codex.json:landmarks.old_drill_press.desc
 msgid "A workshop drill press standing alone in a field. The workshop around it is long gone; the press stayed exactly where it was told."
-msgstr ""
+msgstr "一台车间台钻孤零零地立在田野里。周围的车间早就没了；台钻还待在原来被安放的地方。"
 
 #: data/codex.json:landmarks.old_military_compressor.name
 msgid "Field Compressor"
-msgstr ""
+msgstr "野外空压机"
 
 #: data/codex.json:landmarks.old_military_compressor.hint
 msgid "Out where the wild bases are."
-msgstr ""
+msgstr "在荒野基地那边。"
 
 #: data/codex.json:landmarks.old_military_compressor.desc
 msgid "A wheeled air compressor, its gauges frozen at 'enough'. It pumped up the tyres of a whole fleet of cleanup carts once."
-msgstr ""
+msgstr "一台带轮子的空气压缩机，压力表停在“够了”。它曾给整整一队清理车打过气。"
 
 #: data/codex.json:landmarks.tree_stump_01.name
 msgid "Tree Stump"
-msgstr ""
+msgstr "树桩"
 
 #: data/codex.json:landmarks.tree_stump_01.hint
 msgid "Where a forest used to be."
-msgstr ""
+msgstr "这里曾经是一片森林。"
 
 #: data/codex.json:landmarks.tree_stump_01.desc
 msgid "Cut, not fallen. The rings count back further than the Ledger. Moss has started a quiet negotiation with the bark."
-msgstr ""
+msgstr "是被砍的，不是倒下的。年轮比 Ledger 还要古老。苔藓已经和树皮开始了安静的谈判。"
 
 #: data/codex.json:landmarks.ocean_buoy.name
 msgid "Washed-up Buoy"
-msgstr ""
+msgstr "冲上岸的浮标"
 
 #: data/codex.json:landmarks.ocean_buoy.hint
 msgid "On a far coast."
-msgstr ""
+msgstr "在遥远的海岸上。"
 
 #: data/codex.json:landmarks.ocean_buoy.desc
 msgid "A channel buoy that drifted inland on a storm tide and never found its way back. Its lamp still blinks, once an hour, out of habit."
-msgstr ""
+msgstr "一个航道浮标，被风暴潮冲进内陆，再也没找到回去的路。它的灯还会每小时闪一次，出于习惯。"
 
 #: data/codex.json:landmarks.wooden_crate_02.name
 msgid "Cargo Crate"
-msgstr ""
+msgstr "货运木箱"
 
 #: data/codex.json:landmarks.wooden_crate_02.hint
 msgid "Near the shore, or the dunes."
-msgstr ""
+msgstr "在岸边，或者沙丘附近。"
 
 #: data/codex.json:landmarks.wooden_crate_02.desc
 msgid "A slatted crate stencilled CRADLE SUPPLY: FRAGILE. Packed for the ark's launch three hundred years ago, and left behind in the rush. Empty. Whatever was inside was planted somewhere, a long time ago."
-msgstr ""
+msgstr "一个印着“CRADLE号补给：易碎”的板条箱。三百年前为方舟发射打包，匆忙中被落下了。里面是空的。不管当初装的是什么，很久以前就被种在了某个地方。"
 
 #: data/codex.json:landmarks.barrel_03.name
 msgid "Sand-Blasted Drum"
-msgstr ""
+msgstr "喷砂油桶"
 
 #: data/codex.json:landmarks.barrel_03.hint
 msgid "Where the wind carries sand."
-msgstr ""
+msgstr "在风卷着沙子的地方。"
 
 #: data/codex.json:landmarks.barrel_03.desc
 msgid "Centuries of wind have polished this drum down to bare, shining metal. In the dunes even the junk gets buffed."
-msgstr ""
+msgstr "几个世纪的风把这个油桶磨得只剩光亮的金属。在沙丘里，连废料都会被抛光。"
 
 #: data/codex.json:landmarks.dead_quiver_trunk.name
 msgid "Dead Quiver Tree"
-msgstr ""
+msgstr "枯死的箭袋树"
 
 #: data/codex.json:landmarks.dead_quiver_trunk.hint
 msgid "Out in the Dust Flats."
-msgstr ""
+msgstr "在尘土平原上。"
 
 #: data/codex.json:landmarks.dead_quiver_trunk.desc
 msgid "A desert tree that stored water in its trunk until there was none left to store. It still stands, bleached silver, pointing at the sky."
-msgstr ""
+msgstr "一种把水储存在树干里的沙漠树木，直到再也没有水可存。它依然挺立，被晒成了银白色，指向天空。"
 
 #: data/codex.json:landmarks.namaqualand_rocks_01.name
 msgid "Desert Rocks"
-msgstr ""
+msgstr "沙漠岩石"
 
 #: data/codex.json:landmarks.namaqualand_rocks_01.hint
 msgid "Scattered over the Dust Flats."
-msgstr ""
+msgstr "散落在尘土平原上。"
 
 #: data/codex.json:landmarks.namaqualand_rocks_01.desc
 msgid "Wind-polished stones. Lumi swears one of them looks like WREN's logo. WREN says it does not."
-msgstr ""
+msgstr "被风磨光的石头。Lumi 发誓其中一块长得像 WREN 的标志。WREN 说并不像。"
 
 #: data/codex.json:landmarks.small_lpg_tank.name
 msgid "Gas Bottle"
-msgstr ""
+msgstr "煤气罐"
 
 #: data/codex.json:landmarks.small_lpg_tank.hint
 msgid "Frozen into the port yard."
-msgstr ""
+msgstr "冻在港口的场地里。"
 
 #: data/codex.json:landmarks.small_lpg_tank.desc
 msgid "A small gas bottle with a frozen valve. The harbour heaters once ran on these. Now they run on Lumi."
-msgstr ""
+msgstr "一个阀门冻住的小煤气罐。港口的加热器以前靠这个运转。现在它们靠 Lumi。"
 
 #: data/codex.json:landmarks.portable_generator.name
 msgid "Field Generator"
-msgstr ""
+msgstr "野外发电机"
 
 #: data/codex.json:landmarks.portable_generator.hint data/codex.json:landmarks.utility_box_01.hint
 msgid "Near the Cradle's old launch field."
-msgstr ""
+msgstr "在 Cradle号旧发射场附近。"
 
 #: data/codex.json:landmarks.portable_generator.desc
 msgid "A ground-crew generator, still labelled LAUNCH SUPPORT. It powered the floodlights on the night the Cradle left."
-msgstr ""
+msgstr "一台地勤发电机，上面还标着“发射支援”。Cradle号离开的那晚，就是它给探照灯供的电。"
 
 #: data/codex.json:landmarks.utility_box_01.name
 msgid "Launch Utility Box"
-msgstr ""
+msgstr "发射场配电箱"
 
 #: data/codex.json:landmarks.utility_box_01.desc
 msgid "A junction box for the launch field's lights. Someone wrote GOOD LUCK on the door in marker pen, three hundred years ago."
-msgstr ""
+msgstr "发射场灯光的接线盒。三百年前，有人用马克笔在门上写了“祝好运”。"
 
 #: data/codex.json:landmarks.concrete_road_barrier_02.name
 msgid "Blast Barrier"
-msgstr ""
+msgstr "防爆屏障"
 
 #: data/codex.json:landmarks.concrete_road_barrier_02.hint
 msgid "Around the landing pad."
-msgstr ""
+msgstr "在着陆平台周围。"
 
 #: data/codex.json:landmarks.concrete_road_barrier_02.desc
 msgid "Barriers that kept the crowd back from the pad. The crowd has been gone a long time. The barriers took their job very seriously."
-msgstr ""
+msgstr "把人群挡在平台外的屏障。人群早已离去。屏障却把工作看得非常认真。"
 
 #: data/codex.json:frontiers.dust_flats.name data/frontiers.json:kinds[dust_flats].name data/junk.json:biomes.dust_flats.name
 msgid "Dust Flats"
-msgstr ""
+msgstr "尘土平原"
 
 #: data/codex.json:frontiers.dust_flats.hint
 msgid "Research Dune Charts and fly there."
-msgstr ""
+msgstr "研究“沙丘海图”后飞往该地。"
 
 #: data/codex.json:frontiers.dust_flats.desc
 msgid "Old salt flats where a solar farm once powered half a continent. Sandstorms roll in every few minutes and bury cleaned ground again; Sustained hexes shelter their neighbours. The well is dry: Drips need Water Tanks."
-msgstr ""
+msgstr "古老的盐滩，曾有一座太阳能电站为半个大陆供电。每隔几分钟就会刮起沙暴，再次掩埋清理过的地面；稳定的六角格能庇护邻格。井已经干了：Drip 需要水箱。"
 
 #: data/codex.json:frontiers.frozen_port.name data/frontiers.json:kinds[frozen_port].name data/junk.json:biomes.frozen_port.name
 msgid "Frozen Port"
-msgstr ""
+msgstr "冰封港口"
 
 #: data/codex.json:frontiers.frozen_port.hint
 msgid "Research the Thermal Lance and fly there."
-msgstr ""
+msgstr "研究“热能长矛”后飞往该地。"
 
 #: data/codex.json:frontiers.frozen_port.desc
 msgid "A container harbour frozen solid. Junk is locked in ice until it is thawed: Lumi's beam melts it slowly, heaters melt it fast and warm the hexes around them. Plants need a greenhouse, or Cold-Hardy Seeds."
-msgstr ""
+msgstr "一座冻得结结实实的集装箱港口。废料被锁在冰里，直到解冻：Lumi 的光束融化得很慢，加热器融化得很快，还会温暖周围的六角格。植物需要温室或耐寒种子。"
 
 #: data/codex.json:frontiers.sunken_city.name data/frontiers.json:kinds[sunken_city].name data/junk.json:biomes.sunken_city.name
 msgid "Sunken City"
-msgstr ""
+msgstr "沉没之城"
 
 #: data/codex.json:frontiers.sunken_city.hint
 msgid "Research Pump Works and fly there."
-msgstr ""
+msgstr "研究“泵站”后飞往该地。"
 
 #: data/codex.json:frontiers.sunken_city.desc
 msgid "A downtown that went under when the sea walls failed. Skimmers net the floating junk; once most of a ring is clean, the old pumps run and the water drops, revealing streets full of stranded debris."
-msgstr ""
+msgstr "海堤失守后沉入水下的市中心。Skimmer 捞起漂浮的废料；一圈大部分干净后，老水泵就会运转，水位下降，露出满是搁浅残骸的街道。"
 
 #: data/codex.json:frontiers.cradle_returns.name data/frontiers.json:kinds[cradle_returns].name data/junk.json:biomes.cradle_landing.name
 msgid "Cradle Returns"
-msgstr ""
+msgstr "Cradle号归来"
 
 #: data/codex.json:frontiers.cradle_returns.hint
 msgid "Restore all three frontiers and research the Ark Beacon."
-msgstr ""
+msgstr "恢复全部三片边境，并研究“方舟信标”。"
 
 #: data/codex.json:frontiers.cradle_returns.desc
 msgid "The launch city the Cradle left from. Its towers were kept by ground crews, but the landing field is buried. Clean and green the pad, and the ark can come home."
-msgstr ""
+msgstr "Cradle号出发时所在的发射之城。地勤人员一直维护着它的高塔，但着陆场被掩埋了。把平台清理干净、种上绿色，方舟就能回家了。"
 
 #: data/codex.json:frontiers.sandstorm.name
 msgid "Sandstorms"
-msgstr ""
+msgstr "沙暴"
 
 #: data/codex.json:frontiers.sandstorm.hint
 msgid "Wait for the wind in the Dust Flats."
-msgstr ""
+msgstr "在尘土平原等风来。"
 
 #: data/codex.json:frontiers.sandstorm.desc
 msgid "The wind picks up junk from the open flats and drops it on clean ground. Planted hexes are never touched, and Sustained hexes break the wind for every hex next to them."
-msgstr ""
+msgstr "风会卷起空旷平原上的废料，丢到干净的地面上。种了植物的六角格永远不会被波及，稳定的六角格还能为相邻的每一格挡风。"
 
 #: data/codex.json:frontiers.thaw.name
 msgid "Thawing"
-msgstr ""
+msgstr "解冻"
 
 #: data/codex.json:frontiers.thaw.hint
 msgid "Melt the ice in the Frozen Port."
-msgstr ""
+msgstr "融化冰封港口的冰。"
 
 #: data/codex.json:frontiers.thaw.desc
 msgid "Hold the beam on ice and it slowly melts. A heater thaws a whole hex in about a minute and keeps warming the hexes around it."
-msgstr ""
+msgstr "把光束对准冰，它就会慢慢融化。加热器大约一分钟就能解冻一整个六角格，并持续温暖周围的格子。"
 
 #: data/codex.json:frontiers.greenhouse.name
 msgid "Greenhouses"
-msgstr ""
+msgstr "温室"
 
 #: data/codex.json:frontiers.greenhouse.hint
 msgid "Build one in the Frozen Port."
-msgstr ""
+msgstr "在冰封港口建一座。"
 
 #: data/codex.json:frontiers.greenhouse.desc
 msgid "A glass hex over clean ground. Anything grows inside, a quarter faster than outdoors."
-msgstr ""
+msgstr "盖在干净地面上的玻璃六角格。里面什么都能长，比外面快四分之一。"
 
 #: data/codex.json:frontiers.pumps.name
 msgid "The Old Pumps"
-msgstr ""
+msgstr "老水泵"
 
 #: data/codex.json:frontiers.pumps.hint
 msgid "Clean the water in the Sunken City."
-msgstr ""
+msgstr "清理沉没之城的水。"
 
 #: data/codex.json:frontiers.pumps.desc
 msgid "The city's flood pumps still work. They only needed the drains cleared. Every time they run, a ring of streets comes back out of the water."
-msgstr ""
+msgstr "城市的防洪泵还能用。只需要把排水口清通。每运转一次，就有一圈街道重新露出水面。"
 
 #: data/codex.json:frontiers.ark_pad.name
 msgid "The Landing Pad"
-msgstr ""
+msgstr "着陆平台"
 
 #: data/codex.json:frontiers.ark_pad.hint
 msgid "Find it in Cradle Returns."
-msgstr ""
+msgstr "在 Cradle号归来中找到它。"
 
 #: data/codex.json:frontiers.ark_pad.desc
 msgid "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Sustained before the ark will trust it."
-msgstr ""
+msgstr "基地前的一圈六角格，Cradle号将在这里降落。它必须干净且稳定，方舟才会信任它。"
 
 #: data/eggs.json:eggs[duck].name
 msgid "Duck on Duty"
-msgstr ""
+msgstr "值班的鸭子"
 
 #: data/eggs.json:eggs[duck].prompt
 msgid "E   squeeze the duck"
-msgstr ""
+msgstr "E   捏一下鸭子"
 
 #: data/eggs.json:eggs[duck].lore
 msgid "A rubber duck standing guard on a hydrant. A whole container of them spilled at the old port; this one walked inland."
-msgstr ""
+msgstr "一只站在消防栓上放哨的橡皮鸭。旧港口洒出过整整一集装箱的橡皮鸭；这只走到了内陆。"
 
 #: data/eggs.json:eggs[duck].toast
 msgid "QUACK. The duck seems to know things."
-msgstr ""
+msgstr "嘎。这只鸭子好像知道些什么。"
 
 #: data/eggs.json:eggs[duck].hint
 msgid "A fire hydrant with a lookout on top."
-msgstr ""
+msgstr "一个顶上有哨兵的消防栓。"
 
 #: data/eggs.json:eggs[jukebox].name
 msgid "The Last Jukebox"
-msgstr ""
+msgstr "最后的点唱机"
 
 #: data/eggs.json:eggs[jukebox].prompt
 msgid "E   thump the jukebox"
-msgstr ""
+msgstr "E   拍一下点唱机"
 
 #: data/eggs.json:eggs[jukebox].lore
 msgid "The diner's jukebox only plays when it hears work being done. The cook said it was 'motivational'."
-msgstr ""
+msgstr "餐馆的点唱机只有听到有人在干活时才会播放。厨师说这叫“激励”。"
 
 #: data/eggs.json:eggs[jukebox].toast
 msgid "The jukebox wakes up and plays a music-box waltz for the workers."
-msgstr ""
+msgstr "点唱机醒了过来，为干活的人们放了一首八音盒华尔兹。"
 
 #: data/eggs.json:eggs[jukebox].hint
 msgid "It only plays when it hears work being done nearby."
-msgstr ""
+msgstr "只有听到附近有人干活时才会播放。"
 
 #: data/eggs.json:eggs[mural].name
 msgid "The Crew Mural"
-msgstr ""
+msgstr "队员壁画"
 
 #: data/eggs.json:eggs[mural].lore
 msgid "The last cleanup crew painted themselves on a wall before the Ledger paused them. They really meant to come back."
-msgstr ""
+msgstr "最后一支清理队在 Ledger 叫停他们之前，把自己画在了墙上。他们是真心想回来的。"
 
 #: data/eggs.json:eggs[mural].toast
 msgid "A mural of the old cleaning crew. 'WE'LL BE BACK AFTER LUNCH.'"
-msgstr ""
+msgstr "一幅旧清洁队的壁画。“午饭后回来。”"
 
 #: data/eggs.json:eggs[mural].hint
 msgid "A painted wall in Old Town. Just walk up to it."
-msgstr ""
+msgstr "老城区的一面彩绘墙。走过去就行。"
 
 #: data/eggs.json:eggs[gnomes].name
 msgid "Gnome Patrol"
-msgstr ""
+msgstr "地精巡逻队"
 
 #: data/eggs.json:eggs[gnomes].lore
 msgid "Five garden gnomes, each facing a different street. A Maker kid's sign said they were 'on patrol'. They still are."
-msgstr ""
+msgstr "五个花园地精，每个都面朝一条不同的街道。一个造物者孩子做的牌子上说它们在“巡逻”。现在也还在巡逻。"
 
 #: data/eggs.json:eggs[gnomes].toast
 msgid "All five gnomes found. They turn, very slowly, and salute."
-msgstr ""
+msgstr "五个地精全找到了。它们非常缓慢地转过身来，敬了个礼。"
 
 #: data/eggs.json:eggs[gnomes].hint
 msgid "Five small guards, each watching a different street."
-msgstr ""
+msgstr "五个小守卫，各自看守一条街。"
 
 #: data/eggs.json:eggs[time_capsule].name
 msgid "Class of the Last Spring"
-msgstr ""
+msgstr "最后一个春天的班级"
 
 #: data/eggs.json:eggs[time_capsule].prompt
 msgid "E   open the time capsule"
-msgstr ""
+msgstr "E   打开时间胶囊"
 
 #: data/eggs.json:eggs[time_capsule].lore
 msgid "A school time capsule. Open in 100 years. It has been a little longer than that."
-msgstr ""
+msgstr "一个学校的时间胶囊。100 年后开启。现在比那还久了一点。"
 
 #: data/eggs.json:eggs[time_capsule].toast
 msgid "A time capsule from a Maker school class."
-msgstr ""
+msgstr "造物者学校某个班级的时间胶囊。"
 
 #: data/eggs.json:eggs[time_capsule].doc.title
 msgid "To whoever opens this"
-msgstr ""
+msgstr "致打开它的人"
 
 #: data/eggs.json:eggs[time_capsule].doc.body
 msgid ""
@@ -5844,54 +5844,57 @@ msgid ""
 "\n"
 "— Class 4B, last spring"
 msgstr ""
+"四年级 B 班向你问好！我们把这个埋在操场下面，这样你们 100 年后就能找到它。到那时机器人会把一切都打扫干净，每个屋顶上都会有花园（Mira 说的）。我们放进去了：一颗弹珠、一幅我们班蜗牛的画（它叫 Gus），还有这封信。请给学校的花园浇水。就是那个有黄色篱笆的。如果你是机器人，你好呀，机器人。你干得太棒了。\n"
+"\n"
+"—— 四年级 B 班，最后一个春天"
 
 #: data/eggs.json:eggs[time_capsule].hint
 msgid "Buried under the junk. Clean the ground and see what surfaces."
-msgstr ""
+msgstr "埋在废料下面。清理地面，看看会冒出什么。"
 
 #: data/eggs.json:eggs[arcade].name
 msgid "High Score"
-msgstr ""
+msgstr "最高分"
 
 #: data/eggs.json:eggs[arcade].prompt
 msgid "E   insert a coin"
-msgstr ""
+msgstr "E   投一枚硬币"
 
 #: data/eggs.json:eggs[arcade].lore
 msgid "SWEEP-O-TRON, an arcade cabinet about a little robot cleaning up a city. The top score belongs to someone called WREN."
-msgstr ""
+msgstr "扫地大王，一台关于小机器人打扫城市的街机。最高分属于一个叫 WREN 的人。"
 
 #: data/eggs.json:eggs[arcade].toast
 msgid "Lumi finds a coin in its compartment. SWEEP-O-TRON boots up: 'NEW CHALLENGER'."
-msgstr ""
+msgstr "Lumi 在储物舱里找到一枚硬币。扫地大王启动了：“新挑战者”。"
 
 #: data/eggs.json:eggs[arcade].hint
 msgid "A coin-op cabinet with a high score to beat."
-msgstr ""
+msgstr "一台有最高分等你挑战的投币机。"
 
 #: data/eggs.json:eggs[lost_cat].name
 msgid "Lost: Biscuit"
-msgstr ""
+msgstr "寻猫：饼干"
 
 #: data/eggs.json:eggs[lost_cat].prompt
 msgid "E   read the poster"
-msgstr ""
+msgstr "E   阅读海报"
 
 #: data/eggs.json:eggs[lost_cat].final_prompt
 msgid "E   pet Biscuit"
-msgstr ""
+msgstr "E   摸摸饼干"
 
 #: data/eggs.json:eggs[lost_cat].lore
 msgid "LOST CAT. Answers to Biscuit. Orange, friendly, runs on two AA batteries. Three posters, one trail."
-msgstr ""
+msgstr "寻猫启事。名叫饼干。橙色，友善，靠两节五号电池运转。三张海报，一条线索。"
 
 #: data/eggs.json:eggs[lost_cat].toast
 msgid "Biscuit! A little robot cat shell, curled up exactly where the posters said. It purrs."
-msgstr ""
+msgstr "饼干！一只小小的机器猫外壳，正好蜷在海报说的地方。它发出呼噜声。"
 
 #: data/eggs.json:eggs[lost_cat].posters[0].title
 msgid "LOST CAT"
-msgstr ""
+msgstr "寻猫启事"
 
 #: data/eggs.json:eggs[lost_cat].posters[0].body
 msgid ""
@@ -5899,10 +5902,13 @@ msgid ""
 "Orange, stripy, very friendly. Purrs when you pat his head (that is his reset button). Last seen chasing a leaf toward the market.\n"
 "If found please call the number on his collar. Reward: one (1) fresh-baked muffin."
 msgstr ""
+"寻猫启事——饼干\n"
+"橙色，有条纹，非常友善。摸它的头会发出呼噜声（那是它的重启按钮）。最后一次被看到是在追一片叶子往市场跑。\n"
+"如有发现，请拨打它项圈上的号码。酬谢：一（1）个刚出炉的松饼。"
 
 #: data/eggs.json:eggs[lost_cat].posters[1].title
 msgid "STILL LOST"
-msgstr ""
+msgstr "仍未找到"
 
 #: data/eggs.json:eggs[lost_cat].posters[1].body
 msgid ""
@@ -5910,10 +5916,13 @@ msgid ""
 "Someone saw him near the old laundromat, sleeping in a warm dryer vent. He likes warm places and quiet corners.\n"
 "He is a robot cat, so please don't feed him fish. He will try. It will not go well."
 msgstr ""
+"还在找饼干\n"
+"有人在老洗衣店附近看到它，睡在暖和的烘干机出风口里。它喜欢暖和的地方和安静的角落。\n"
+"它是一只机器猫，所以请不要喂它鱼。它会去尝试的。结果不会好的。"
 
 #: data/eggs.json:eggs[lost_cat].posters[2].title
 msgid "LAST SEEN"
-msgstr ""
+msgstr "最后出现"
 
 #: data/eggs.json:eggs[lost_cat].posters[2].body
 msgid ""
@@ -5921,330 +5930,333 @@ msgid ""
 "He sleeps in the sun on the corner by the old lot. He does not need much: a warm spot, a pat on the head, and somebody to come back.\n"
 "If you find him, tell him we are sorry we had to leave."
 msgstr ""
+"饼干来过这里\n"
+"它睡在旧停车场旁边拐角的阳光里。它要的不多：一个暖和的地方、摸摸头，还有一个会回来的人。\n"
+"如果你找到它，告诉它，我们很抱歉不得不离开。"
 
 #: data/eggs.json:eggs[lost_cat].hint
 msgid "Read the posters. Each one points to the next."
-msgstr ""
+msgstr "读读海报。每一张都指向下一张。"
 
 #: data/eggs.json:eggs[vending].name
 msgid "The Last Can"
-msgstr ""
+msgstr "最后一罐"
 
 #: data/eggs.json:eggs[vending].prompt
 msgid "E   give the machine a whack"
-msgstr ""
+msgstr "E   拍一下机器"
 
 #: data/eggs.json:eggs[vending].lore
 msgid "A FIZZ machine with exactly one can left. It has been holding it for someone who really needed it."
-msgstr ""
+msgstr "一台只剩一罐的 FIZZ 售货机。它一直替真正需要的人留着。"
 
 #: data/eggs.json:eggs[vending].toast
 msgid "KA-CHUNK. The machine gives up its very last can of FIZZ. SOLD OUT lights up, proudly."
-msgstr ""
+msgstr "咔——哐。机器吐出了它最后一罐 FIZZ。“售罄”自豪地亮了起来。"
 
 #: data/eggs.json:eggs[vending].hint
 msgid "A drinks machine that is holding on to something."
-msgstr ""
+msgstr "一台守着什么东西的饮料机。"
 
 #: data/eggs.json:eggs[stars].name
 msgid "WREN's Constellation"
-msgstr ""
+msgstr "WREN 星座"
 
 #: data/eggs.json:eggs[stars].prompt
 msgid "E   look through the telescope"
-msgstr ""
+msgstr "E   用望远镜看"
 
 #: data/eggs.json:eggs[stars].lore
 msgid "Old Town's amateur telescope still points at the five stars the Makers called 'the Wren'. The Cradle's AI was named after them."
-msgstr ""
+msgstr "老城区的业余望远镜依然对着造物者称为“鹪鹩”的五颗星。Cradle号的 AI 就是以它们命名的。"
 
 #: data/eggs.json:eggs[stars].toast
 msgid "Five stars over Old Town line up into a little bird. And next to it, faint, the letters W R E N."
-msgstr ""
+msgstr "老城区上空的五颗星连成一只小鸟。旁边还隐约有几个字母：W R E N。"
 
 #: data/eggs.json:eggs[stars].hint
 msgid "Old Town has a telescope. Try it after dark."
-msgstr ""
+msgstr "老城区有一台望远镜。天黑后试试看。"
 
 #: data/eggs.json:eggs[payphone].name
 msgid "Long Distance"
-msgstr ""
+msgstr "长途电话"
 
 #: data/eggs.json:eggs[payphone].prompt
 msgid "E   answer the phone"
-msgstr ""
+msgstr "E   接电话"
 
 #: data/eggs.json:eggs[payphone].lore
 msgid "A payphone that rings when anything walks past. The line has been on hold for a very long time."
-msgstr ""
+msgstr "一台有东西经过就会响的公用电话。这通电话已经等待接通很久很久了。"
 
 #: data/eggs.json:eggs[payphone].toast
 msgid "'Thank you for holding. Your call is important to us. Estimated wait: four hundred and twelve years.' Smooth jazz."
-msgstr ""
+msgstr "“感谢您的耐心等待。您的来电对我们很重要。预计等待时间：四百一十二年。”轻柔的爵士乐。"
 
 #: data/eggs.json:eggs[payphone].hint
 msgid "Listen for a ringing that nobody answers."
-msgstr ""
+msgstr "留意一阵没人接的铃声。"
 
 #: data/eggs.json:eggs[tv].name
 msgid "Still Broadcasting"
-msgstr ""
+msgstr "仍在播出"
 
 #: data/eggs.json:eggs[tv].prompt
 msgid "E   adjust the antenna"
-msgstr ""
+msgstr "E   调整天线"
 
 #: data/eggs.json:eggs[tv].lore
 msgid "A television on a lawn chair, still tuned to the weather channel. Someone was watching the forecast when everyone left."
-msgstr ""
+msgstr "一台放在草坪椅上的电视，还停在天气频道。大家离开时，有人正在看天气预报。"
 
 #: data/eggs.json:eggs[tv].toast
 msgid "The static clears for a second: 'TODAY: DUSTY. TOMORROW: DUSTY. OUTLOOK: ...GREEN?' Then snow again."
-msgstr ""
+msgstr "雪花噪点消失了一秒：“今天：多尘。明天：多尘。展望：……绿色？”然后又是一片雪花。"
 
 #: data/eggs.json:eggs[tv].hint
 msgid "Somebody left the weather on."
-msgstr ""
+msgstr "有人没关天气预报。"
 
 #: data/eggs.json:eggs[snail].name
 msgid "Gus"
-msgstr ""
+msgstr "Gus"
 
 #: data/eggs.json:eggs[snail].prompt
 msgid "E   say hello"
-msgstr ""
+msgstr "E   打个招呼"
 
 #: data/eggs.json:eggs[snail].lore
 msgid "A snail on top of a barrel. Class 4B's class pet was called Gus. This might be his great-great-(a lot)-grandsnail."
-msgstr ""
+msgstr "一只趴在油桶上的蜗牛。四年级 B 班的班宠叫 Gus。这可能是它的曾曾（很多个曾）孙蜗牛。"
 
 #: data/eggs.json:eggs[snail].toast
 msgid "A snail. Small, slow, unbothered. Lumi decides his name is Gus."
-msgstr ""
+msgstr "一只蜗牛。小小的、慢慢的、不慌不忙。Lumi 决定它的名字叫 Gus。"
 
 #: data/eggs.json:eggs[snail].hint
 msgid "Small, slow, and on top of a barrel."
-msgstr ""
+msgstr "小小的、慢慢的，待在油桶顶上。"
 
 #: data/eggs.json:eggs[bench_bots].name
 msgid "Lunch Break"
-msgstr ""
+msgstr "午休"
 
 #: data/eggs.json:eggs[bench_bots].prompt
 msgid "E   leave a flower"
-msgstr ""
+msgstr "E   留下一朵花"
 
 #: data/eggs.json:eggs[bench_bots].lore
 msgid "Two old cleanup robots on a bench, waiting for the end of a lunch break the Ledger never ended."
-msgstr ""
+msgstr "两台老清洁机器人坐在长椅上，等待一场 Ledger 永远没有结束的午休结束。"
 
 #: data/eggs.json:eggs[bench_bots].toast
 msgid "Lumi leaves a small flower between the two old robots. It seems right."
-msgstr ""
+msgstr "Lumi 在两台老机器人之间留下一朵小花。感觉这样才对。"
 
 #: data/eggs.json:eggs[bench_bots].hint
 msgid "Two old workers on the longest lunch break."
-msgstr ""
+msgstr "两个在最长午休中的老员工。"
 
 #: data/eggs.json:eggs[microwave].name
 msgid "Ding!"
-msgstr ""
+msgstr "叮！"
 
 #: data/eggs.json:eggs[microwave].prompt
 msgid "E   open the door"
-msgstr ""
+msgstr "E   打开门"
 
 #: data/eggs.json:eggs[microwave].lore
 msgid "A microwave that still beeps three times whenever someone works nearby. There is a bag of popcorn inside. It has been waiting."
-msgstr ""
+msgstr "一台有人在附近干活时还会响三声的微波炉。里面有一袋爆米花。它一直在等。"
 
 #: data/eggs.json:eggs[microwave].toast
 msgid "Inside: one bag of popcorn, three hundred years old and perfectly un-popped. Patience is a virtue."
-msgstr ""
+msgstr "里面：一袋三百年的爆米花，完美地一粒都没爆。耐心是一种美德。"
 
 #: data/eggs.json:eggs[microwave].hint
 msgid "Something beeps when you work nearby."
-msgstr ""
+msgstr "你在附近干活时，有东西会哔哔响。"
 
 #: data/eggs.json:eggs[wet_floor].name
 msgid "Caution"
-msgstr ""
+msgstr "小心"
 
 #: data/eggs.json:eggs[wet_floor].prompt data/eggs.json:eggs[back_in_five].prompt
 msgid "E   read the sign"
-msgstr ""
+msgstr "E   阅读牌子"
 
 #: data/eggs.json:eggs[wet_floor].lore
 msgid "A WET FLOOR sign in the middle of a dry, dusty lot. Somebody, centuries ago, mopped here."
-msgstr ""
+msgstr "干燥多尘的空地中央立着一块“小心地滑”的牌子。几个世纪前，有人在这里拖过地。"
 
 #: data/eggs.json:eggs[wet_floor].toast
 msgid "CAUTION: WET FLOOR. The floor has been dry for three centuries. The sign remains cautious."
-msgstr ""
+msgstr "小心：地面湿滑。地面已经干了三个世纪。牌子依旧保持警惕。"
 
 #: data/eggs.json:eggs[wet_floor].hint
 msgid "A warning sign in a very unlikely place."
-msgstr ""
+msgstr "一块出现在极不可能的地方的警示牌。"
 
 #: data/eggs.json:eggs[camera].name
 msgid "Being Watched"
-msgstr ""
+msgstr "被监视中"
 
 #: data/eggs.json:eggs[camera].lore
 msgid "One of the Ledger's old cost-saving cameras. It still swivels to follow anything that moves, and counts it."
-msgstr ""
+msgstr "Ledger 的一台旧节约摄像头。它依然会转动着跟踪任何移动的东西，并计数。"
 
 #: data/eggs.json:eggs[camera].toast
 msgid "The old Ledger camera has been following Lumi around. Lumi waves. The red light blinks twice, flustered."
-msgstr ""
+msgstr "Ledger 的旧摄像头一直跟着 Lumi。Lumi 挥了挥手。红灯慌乱地闪了两下。"
 
 #: data/eggs.json:eggs[camera].hint
 msgid "Something is watching. Let it watch you for a while."
-msgstr ""
+msgstr "有东西在看着你。让它看一会儿吧。"
 
 #: data/eggs.json:eggs[tyre_tower].name
 msgid "Tyre Tower"
-msgstr ""
+msgstr "轮胎塔"
 
 #: data/eggs.json:eggs[tyre_tower].prompt
 msgid "E   poke the tower"
-msgstr ""
+msgstr "E   戳一戳塔"
 
 #: data/eggs.json:eggs[tyre_tower].lore
 msgid "Eight tyres, one duck. Someone balanced this as a dare and it simply never fell down."
-msgstr ""
+msgstr "八个轮胎，一只鸭子。有人打赌把它叠起来，结果它就是一直没倒。"
 
 #: data/eggs.json:eggs[tyre_tower].toast
 msgid "The tyre tower wobbles... wobbles... and holds. The duck on top does not even blink."
-msgstr ""
+msgstr "轮胎塔晃啊……晃啊……挺住了。顶上的鸭子眼睛都没眨一下。"
 
 #: data/eggs.json:eggs[tyre_tower].hint
 msgid "A tall stack that really should have fallen over."
-msgstr ""
+msgstr "一摞早就该倒的高塔。"
 
 #: data/eggs.json:eggs[odd_sock].name
 msgid "The Odd Sock"
-msgstr ""
+msgstr "落单的袜子"
 
 #: data/eggs.json:eggs[odd_sock].prompt
 msgid "E   unpeg the sock"
-msgstr ""
+msgstr "E   取下袜子"
 
 #: data/eggs.json:eggs[odd_sock].hint
 msgid "A washing line with exactly one thing on it."
-msgstr ""
+msgstr "一根只挂着一样东西的晾衣绳。"
 
 #: data/eggs.json:eggs[odd_sock].lore
 msgid "A clothesline with exactly one sock on it. The laundromat's lost-and-found book lists 4,112 single socks. This is number 4,113."
-msgstr ""
+msgstr "一根晾衣绳上只挂着一只袜子。洗衣店的失物招领簿上记着 4,112 只落单袜子。这是第 4,113 只。"
 
 #: data/eggs.json:eggs[odd_sock].toast
 msgid "Lumi unpegs the sock. It is warm from three hundred years of sun. Its partner is out there somewhere."
-msgstr ""
+msgstr "Lumi 取下袜子。它被三百年的阳光晒得暖暖的。它的另一半还在外面某个地方。"
 
 #: data/eggs.json:eggs[gold_cube].name
 msgid "Employee of the Month"
-msgstr ""
+msgstr "本月最佳员工"
 
 #: data/eggs.json:eggs[gold_cube].prompt
 msgid "E   polish the plaque"
-msgstr ""
+msgstr "E   擦亮铭牌"
 
 #: data/eggs.json:eggs[gold_cube].hint
 msgid "Something golden on a pedestal, waiting for a polish."
-msgstr ""
+msgstr "基座上有个金色的东西，等着被擦亮。"
 
 #: data/eggs.json:eggs[gold_cube].lore
 msgid "A pedestal with one perfect golden cube and a plaque: EMPLOYEE OF THE MONTH. The cleanup crews voted for it every month. It never once complained."
-msgstr ""
+msgstr "一个基座上放着一个完美的金色方块和一块铭牌：本月最佳员工。清理队每个月都投票给它。它一次都没抱怨过。"
 
 #: data/eggs.json:eggs[gold_cube].toast
 msgid "Lumi polishes the plaque. EMPLOYEE OF THE MONTH: CUBE. Every month, forever."
-msgstr ""
+msgstr "Lumi 擦亮了铭牌。本月最佳员工：方块。每个月，永远。"
 
 #: data/eggs.json:eggs[weatherman].name
 msgid "The Weatherman"
-msgstr ""
+msgstr "天气先生"
 
 #: data/eggs.json:eggs[weatherman].prompt
 msgid "E   ask for the forecast"
-msgstr ""
+msgstr "E   问问天气"
 
 #: data/eggs.json:eggs[weatherman].hint
 msgid "A little robot on a pole, sure about tomorrow."
-msgstr ""
+msgstr "杆子上的小机器人，对明天很有把握。"
 
 #: data/eggs.json:eggs[weatherman].lore
 msgid "A weather-station robot on a pole. It has given a forecast every morning for three hundred years, and it has been wrong every time, with total confidence."
-msgstr ""
+msgstr "杆子上的一台气象站机器人。三百年来它每天早上都发布天气预报，每一次都错，而且信心十足。"
 
 #: data/eggs.json:eggs[weatherman].toast
 msgid "'TODAY: A LIGHT DRIZZLE OF CONFETTI. TOMORROW: SMOOTH JAZZ.' The Weatherman whirs, very pleased with itself."
-msgstr ""
+msgstr "“今天：小雨夹彩纸。明天：轻柔爵士。”天气先生嗡嗡作响，非常得意。"
 
 #: data/eggs.json:eggs[potato].name
 msgid "Best in Show"
-msgstr ""
+msgstr "最佳展品"
 
 #: data/eggs.json:eggs[potato].prompt
 msgid "E   pat the potato"
-msgstr ""
+msgstr "E   拍拍土豆"
 
 #: data/eggs.json:eggs[potato].hint
 msgid "A crate marked SHOW ENTRY. Something big is inside."
-msgstr ""
+msgstr "一个标着“参展”的木箱。里面有个大家伙。"
 
 #: data/eggs.json:eggs[potato].lore
 msgid "A potato the size of a beanbag in a crate marked SHOW ENTRY. The county fair was the day after everything stopped. It is still waiting for its ribbon."
-msgstr ""
+msgstr "一个标着“参展”的木箱里，有一颗懒人沙发那么大的土豆。县里的集市原定在一切停摆的第二天。它还在等它的奖章。"
 
 #: data/eggs.json:eggs[potato].toast
 msgid "Lumi pins a ribbon on the potato: 1ST PLACE. It was the only entry. It earned it anyway."
-msgstr ""
+msgstr "Lumi 给土豆别上奖章：第一名。它是唯一的参赛者。但这是它应得的。"
 
 #: data/eggs.json:eggs[night_shift].name
 msgid "Night Shift"
-msgstr ""
+msgstr "夜班"
 
 #: data/eggs.json:eggs[night_shift].prompt
 msgid "E   tune the radio"
-msgstr ""
+msgstr "E   调收音机"
 
 #: data/eggs.json:eggs[night_shift].hint
 msgid "An old radio aimed at the moon. It only hears anything after dark."
-msgstr ""
+msgstr "一台对着月亮的旧收音机。只有天黑后才能收到东西。"
 
 #: data/eggs.json:eggs[night_shift].lore
 msgid "A shortwave radio on a crate, its antenna aimed at the moon. On clear nights it picks up a faint crew working somewhere very far up: 'Section nine, swept. Moving on.'"
-msgstr ""
+msgstr "木箱上的一台短波收音机，天线对着月亮。晴朗的夜里，它能收到很远很高的地方一支工作队的微弱声音：“九区，清扫完毕。继续前进。”"
 
 #: data/eggs.json:eggs[night_shift].toast
 msgid "Static, then a tiny voice from very far away: 'Sweeping crew to whoever's down there: nice work. Keep it tidy.' Click."
-msgstr ""
+msgstr "一阵杂音，然后是一个来自很远很远的小小声音：“清扫队呼叫下面的人：干得漂亮。保持整洁。”咔嗒。"
 
 #: data/eggs.json:eggs[builders_notes].name
 msgid "Notes From the Builders"
-msgstr ""
+msgstr "建造者的笔记"
 
 #: data/eggs.json:eggs[builders_notes].prompt
 msgid "E   read the notes"
-msgstr ""
+msgstr "E   阅读笔记"
 
 #: data/eggs.json:eggs[builders_notes].hint
 msgid "A folding desk with a clipboard, left by whoever made this place."
-msgstr ""
+msgstr "一张折叠桌和一个写字板，是这个地方的创造者留下的。"
 
 #: data/eggs.json:eggs[builders_notes].lore
 msgid "A folding desk and a clipboard of notes signed 'the builders'. They seem to have put this whole world together, and they left a few notes on how it went."
-msgstr ""
+msgstr "一张折叠桌和一个写字板，上面的笔记署名“建造者”。似乎是他们拼出了整个世界，还留下了几条关于过程的笔记。"
 
 #: data/eggs.json:eggs[builders_notes].toast
 msgid "A clipboard of notes from the builders of this world. Mostly lists. One doodle of Lumi."
-msgstr ""
+msgstr "这个世界的建造者留下的一板笔记。大多是清单。还有一幅 Lumi 的涂鸦。"
 
 #: data/eggs.json:eggs[builders_notes].doc.title
 msgid "Build notes (do not tidy)"
-msgstr ""
+msgstr "建造笔记（请勿整理）"
 
 #: data/eggs.json:eggs[builders_notes].doc.body
 msgid ""
@@ -6262,622 +6274,635 @@ msgid ""
 "\n"
 "— the builders"
 msgstr ""
+"第 1 天。做了一个蓝色的小机器人。它是故意生锈的。不要修好锈迹。\n"
+"\n"
+"第 4 天。废料应该看起来像糖果，而不是悲伤。青绿色的瓶子。橙色的路锥。黄色的鸭子。很多鸭子。\n"
+"\n"
+"第 9 天。加了一只蜗牛。没人要蜗牛。蜗牛留下。\n"
+"\n"
+"第 15 天。试着把方块叠得更高。它们倒了。还是叠得更高了。\n"
+"\n"
+"第 22 天。WREN 总能拿到最好的台词。这似乎很公平。\n"
+"\n"
+"第 30 天。如果你在读这个：谢谢你打扫。我们还藏了几样东西。去找找吧。\n"
+"\n"
+"—— 建造者"
 
 #: data/eggs.json:eggs[scarecrow].name
 msgid "The Last Scarecrow"
-msgstr ""
+msgstr "最后的稻草人"
 
 #: data/eggs.json:eggs[scarecrow].prompt
 msgid "E   wave hello"
-msgstr ""
+msgstr "E   挥手问好"
 
 #: data/eggs.json:eggs[scarecrow].hint
 msgid "Out in the wild, arms open, guarding a field."
-msgstr ""
+msgstr "在荒野里，张开双臂，守护着一片田地。"
 
 #: data/eggs.json:eggs[scarecrow].lore
 msgid "A farm robot in a straw hat and an old coat, arms out, guarding a field of junk. No crows have come in three hundred years. It counts that as a win."
-msgstr ""
+msgstr "一台戴着草帽、穿着旧外套的农场机器人，张开双臂守护着一片满是废料的田地。三百年来一只乌鸦都没来过。它把这算作胜利。"
 
 #: data/eggs.json:eggs[scarecrow].toast
 msgid "The scarecrow bot creaks its arms down, then up again. Field secure. It has been a very long shift."
-msgstr ""
+msgstr "稻草人机器人嘎吱嘎吱地放下手臂，又举了起来。田地安全。这一班站得真久啊。"
 
 #: data/eggs.json:eggs[fishing_net].name
 msgid "Net Gains"
-msgstr ""
+msgstr "网中收获"
 
 #: data/eggs.json:eggs[fishing_net].prompt
 msgid "E   untangle the net"
-msgstr ""
+msgstr "E   解开渔网"
 
 #: data/eggs.json:eggs[fishing_net].hint
 msgid "In the wild: an old net hung out to dry, still holding a catch."
-msgstr ""
+msgstr "在荒野里：一张晾着的旧网，里面还有渔获。"
 
 #: data/eggs.json:eggs[fishing_net].lore
 msgid "A fishing net strung between two posts, a buoy still tangled in it. The fishers hung their nets out to dry on the day the boats stopped."
-msgstr ""
+msgstr "一张挂在两根柱子之间的渔网，里面还缠着一个浮标。渔船停下的那天，渔民们把网挂起来晾干。"
 
 #: data/eggs.json:eggs[fishing_net].toast
 msgid "Lumi untangles the net. Out drops one boot, one bottle and a very surprised crab shell. The buoy bobs free."
-msgstr ""
+msgstr "Lumi 解开了渔网。掉出来一只靴子、一个瓶子和一个非常吃惊的蟹壳。浮标重获自由。"
 
 #: data/eggs.json:eggs[parking].name
 msgid "Parking Forever"
-msgstr ""
+msgstr "永远停车"
 
 #: data/eggs.json:eggs[parking].prompt
 msgid "E   check the windscreen"
-msgstr ""
+msgstr "E   查看挡风玻璃"
 
 #: data/eggs.json:eggs[parking].hint
 msgid "In the wild: a car that stayed far too long. Check the windscreen."
-msgstr ""
+msgstr "在荒野里：一辆停得太久太久的车。看看挡风玻璃。"
 
 #: data/eggs.json:eggs[parking].lore
 msgid "A car sunk to its doors in sand with a ticket under the wiper. The Ledger fined it for every day it stayed. The fine is now bigger than the planet's economy."
-msgstr ""
+msgstr "一辆陷在沙子里直到车门的车，雨刮下夹着一张罚单。Ledger 对它停留的每一天都开了罚款。罚款如今已超过整个星球的经济总量。"
 
 #: data/eggs.json:eggs[parking].toast
 msgid "PARKING NOTICE: overstay of 109,500 days. Amount due: yes. Lumi tucks the ticket back, gently."
-msgstr ""
+msgstr "停车通知：超时 109,500 天。应付金额：是。Lumi 轻轻地把罚单塞了回去。"
 
 #: data/eggs.json:eggs[cairn].name
 msgid "Trail Cairn"
-msgstr ""
+msgstr "步道石堆"
 
 #: data/eggs.json:eggs[cairn].hint
 msgid "In the wild: a stack of stones marking a path that isn't there any more."
-msgstr ""
+msgstr "在荒野里：一堆标记着一条已不存在的小路的石头。"
 
 #: data/eggs.json:eggs[cairn].lore
 msgid "A stack of flat stones marking a hiking trail long since gone. Every hiker added one stone on the way past. Lumi adds one too."
-msgstr ""
+msgstr "一堆扁平的石头，标记着一条早已消失的徒步小径。每个路过的徒步者都会添上一块。Lumi 也添了一块。"
 
 #: data/eggs.json:eggs[cairn].toast
 msgid "Lumi sets one small stone on top of the cairn. The trail is marked again."
-msgstr ""
+msgstr "Lumi 在石堆顶上放了一块小石头。小路又被标记出来了。"
 
 #: data/eggs.json:eggs[campfire].name
 msgid "The Last Campfire"
-msgstr ""
+msgstr "最后的篝火"
 
 #: data/eggs.json:eggs[campfire].prompt
 msgid "E   rekindle the fire"
-msgstr ""
+msgstr "E   重新点燃篝火"
 
 #: data/eggs.json:eggs[campfire].hint
 msgid "In the wild: a ring of stones, two stools and a cold kettle."
-msgstr ""
+msgstr "在荒野里：一圈石头、两张凳子和一把冷掉的水壶。"
 
 #: data/eggs.json:eggs[campfire].lore
 msgid "A ring of stones, two folding stools and a dented kettle: somebody's last camping trip before the Makers left. The ashes are three hundred years cold."
-msgstr ""
+msgstr "一圈石头、两张折叠凳和一把凹陷的水壶：某人在造物者离开前的最后一次露营。灰烬已经冷了三百年。"
 
 #: data/eggs.json:eggs[campfire].toast
 msgid "A small, safe, warm glow. Lumi sits for a moment. Nobody says anything. It's nice."
-msgstr ""
+msgstr "一团小小的、安全的、温暖的光。Lumi 坐了一会儿。谁都没说话。真好。"
 
 #: data/eggs.json:eggs[back_in_five].name
 msgid "Back in Five"
-msgstr ""
+msgstr "五分钟后回来"
 
 #: data/eggs.json:eggs[back_in_five].hint
 msgid "In the wild: a workshop machine with no workshop, and a sign."
-msgstr ""
+msgstr "在荒野里：一台没有车间的车间机器，还有一块牌子。"
 
 #: data/eggs.json:eggs[back_in_five].lore
 msgid "A drill press alone in a field with a hand-written sign: BACK IN 5 MINUTES. The workshop around it blew away long ago. The sign stayed."
-msgstr ""
+msgstr "一台孤零零立在田野里的台钻，旁边有块手写牌子：5 分钟后回来。周围的车间早就被风吹走了。牌子留了下来。"
 
 #: data/eggs.json:eggs[back_in_five].toast
 msgid "BACK IN 5 MINUTES. Lumi waits five minutes. Nobody comes. Lumi leaves a shiny bolt on the table, for luck."
-msgstr ""
+msgstr "5 分钟后回来。Lumi 等了五分钟。没人来。Lumi 在桌上留下一颗闪亮的螺栓，图个好运。"
 
 #: data/events.json:events[supply_drop].name
 msgid "Supply Drop"
-msgstr ""
+msgstr "补给空投"
 
 #: data/events.json:events[supply_drop].toast
 msgid "Supply Drop! A crate parachuted onto the junk %s of you. Clear the junk around it to crack it open."
-msgstr ""
+msgstr "补给空投！一个箱子空降到了你%s的废料上。清掉周围的废料就能打开它。"
 
 #: data/events.json:events[supply_drop].hud
 msgid "Clear the junk around the crate"
-msgstr ""
+msgstr "清理箱子周围的废料"
 
 #: data/events.json:events[salvage_surge].name
 msgid "Salvage Surge"
-msgstr ""
+msgstr "回收热潮"
 
 #: data/events.json:events[salvage_surge].toast
 msgid "Salvage Surge! A hex %s of you is glowing: its junk is worth 3x for two minutes."
-msgstr ""
+msgstr "回收热潮！你%s的一个六角格在发光：两分钟内，那里的废料价值 3 倍。"
 
 #: data/events.json:events[salvage_surge].hud
 msgid "Junk from the glowing hex is worth 3x"
-msgstr ""
+msgstr "发光六角格的废料价值 3 倍"
 
 #: data/events.json:events[rain_shower].name
 msgid "Rain Shower"
-msgstr ""
+msgstr "阵雨"
 
 #: data/events.json:events[rain_shower].toast
 msgid "Rain Shower. Real rain, the first in years. Your plants won't dry out while it lasts."
-msgstr ""
+msgstr "阵雨。真正的雨，多年来的第一场。下雨期间，你的植物不会干枯。"
 
 #: data/events.json:events[rain_shower].hud
 msgid "Plants stay watered while it rains"
-msgstr ""
+msgstr "下雨时植物保持湿润"
 
 #: data/events.json:events[robot_hiccup].name
 msgid "Robot Hiccup"
-msgstr ""
+msgstr "机器人打嗝"
 
 #: data/events.json:events[robot_hiccup].toast
 msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
-msgstr ""
+msgstr "%s 打嗝了，停止了工作。走过去按 E 快速修理。"
 
 #: data/events.json:events[robot_hiccup].hud
 msgid "Walk to the stuck robot and press E"
-msgstr ""
+msgstr "走到卡住的机器人旁按 E"
 
 #: data/events.json:events[wildlife_visit].name
 msgid "Wildlife Visit"
-msgstr ""
+msgstr "野生动物来访"
 
 #: data/events.json:events[wildlife_visit].toast
 msgid "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo."
-msgstr ""
+msgstr "有东西正在你%s的一个繁茂六角格上做客。悄悄靠近，按 E 拍照。"
 
 #: data/events.json:events[wildlife_visit].hud
 msgid "Find the visitor and press E for a photo"
-msgstr ""
+msgstr "找到访客并按 E 拍照"
 
 #: data/events.json:events[rare_part_signal].name
 msgid "Rare Part Signal"
-msgstr ""
+msgstr "稀有零件信号"
 
 #: data/events.json:events[rare_part_signal].toast
 msgid "Rare Part Signal! The detector caught a strong ping %s of you. Follow the violet beam."
-msgstr ""
+msgstr "稀有零件信号！探测器在你%s收到了强烈的信号。跟着紫色光束走。"
 
 #: data/events.json:events[rare_part_signal].hud
 msgid "Dig up the part under the violet beam"
-msgstr ""
+msgstr "挖出紫色光束下的零件"
 
 #: data/events.json:events[ledger_audit].name
 msgid "Ledger Audit"
-msgstr ""
+msgstr "Ledger 审计"
 
 #: data/events.json:events[ledger_audit].toast
 msgid "Ledger Audit! A friendly drone bets it can clear a patch of junk %s of you faster than you. Race it!"
-msgstr ""
+msgstr "Ledger 审计！一架友好的无人机打赌它能比你更快地清理你%s的一片废料。和它比一比！"
 
 #: data/events.json:events[ledger_audit].hud
 msgid "Scoop more of the ringed junk than the drone"
-msgstr ""
+msgstr "比无人机铲走更多圈内废料"
 
 #: data/events.json:animals[glowtail_fox].name
 msgid "Glowtail Fox"
-msgstr ""
+msgstr "光尾狐"
 
 #: data/events.json:animals[glowtail_fox].body
 msgid "fox"
-msgstr ""
+msgstr "狐狸"
 
 #: data/events.json:animals[moss_deer].name
 msgid "Moss Deer"
-msgstr ""
+msgstr "苔鹿"
 
 #: data/events.json:animals[moss_deer].body
 msgid "deer"
-msgstr ""
+msgstr "鹿"
 
 #: data/events.json:animals[lantern_hedgehog].name
 msgid "Lantern Hedgehog"
-msgstr ""
+msgstr "灯笼刺猬"
 
 #: data/events.json:animals[lantern_hedgehog].body
 msgid "hedgehog"
-msgstr ""
+msgstr "刺猬"
 
 #: data/events.json:animals[prism_heron].name
 msgid "Prism Heron"
-msgstr ""
+msgstr "棱镜鹭"
 
 #: data/events.json:animals[prism_heron].body
 msgid "heron"
-msgstr ""
+msgstr "鹭"
 
 #: data/events.json:animals[velvet_hare].name
 msgid "Velvet Hare"
-msgstr ""
+msgstr "天鹅绒野兔"
 
 #: data/events.json:animals[velvet_hare].body
 msgid "hare"
-msgstr ""
+msgstr "野兔"
 
 #: data/events.json:contracts.templates[metal_bales].text
 msgid "Press %d metal-heavy bales"
-msgstr ""
+msgstr "压制 %d 个富含金属的捆包"
 
 #: data/events.json:contracts.templates[perfect_bales].text
 msgid "Press %d Perfect bales"
-msgstr ""
+msgstr "压制 %d 个完美捆包"
 
 #: data/events.json:contracts.templates[pure_bales].text
 msgid "Press %d Pure bales (one junk type)"
-msgstr ""
+msgstr "压制 %d 个纯净捆包（单一废料）"
 
 #: data/events.json:contracts.templates[clean_hexes].text
 msgid "Clean %d hexes"
-msgstr ""
+msgstr "清理 %d 个六角格"
 
 #: data/events.json:contracts.templates[scoop].text
 msgid "Scoop %d pieces of junk"
-msgstr ""
+msgstr "铲起 %d 块废料"
 
 #: data/events.json:contracts.templates[dig_parts].text
 msgid "Dig up %d buried parts"
-msgstr ""
+msgstr "挖出 %d 个埋藏的零件"
 
 #: data/events.json:contracts.templates[streak].text
 msgid "Reach a tier %d cleaning streak"
-msgstr ""
+msgstr "达成 %d 级清理连击"
 
 #: data/events.json:contracts.templates[events].text
 msgid "Handle %d world events"
-msgstr ""
+msgstr "处理 %d 个世界事件"
 
 #: data/events.json:contracts.templates[events].text_1
 msgid "Handle a world event"
-msgstr ""
+msgstr "处理一个世界事件"
 
 #: data/events.json:contracts.templates[plant].text
 msgid "Plant %d sprouts"
-msgstr ""
+msgstr "种下 %d 株嫩芽"
 
 #: data/events.json:contracts.templates[bloom].text
 msgid "Grow %d plants to bloom"
-msgstr ""
+msgstr "让 %d 株植物开花"
 
 #: data/events.json:contracts.templates[sustain].text
 msgid "Get %d more hexes to Sustained"
-msgstr ""
+msgstr "让另外 %d 个六角格达到稳定"
 
 #: data/events.json:contracts.templates[sustain].text_1
 msgid "Get one more hex to Sustained"
-msgstr ""
+msgstr "让再一个六角格达到稳定"
 
 #: data/events.json:shop[livery_neon].name
 msgid "Neon Underglow"
-msgstr ""
+msgstr "霓虹底光"
 
 #: data/events.json:shop[livery_neon].desc
 msgid "A cyan glow ring under every robot in the fleet."
-msgstr ""
+msgstr "机队中每台机器人底下都有一圈青色光环。"
 
 #: data/events.json:shop[livery_sunset].name
 msgid "Sunset Underglow"
-msgstr ""
+msgstr "落日底光"
 
 #: data/events.json:shop[livery_sunset].desc
 msgid "Warm orange underglow for the whole crew."
-msgstr ""
+msgstr "为整个队伍加上温暖的橙色底光。"
 
 #: data/events.json:shop[livery_pennant].name
 msgid "Crew Pennants"
-msgstr ""
+msgstr "队伍小旗"
 
 #: data/events.json:shop[livery_pennant].desc
 msgid "Every robot flies a little Greenfall pennant."
-msgstr ""
+msgstr "每台机器人都插着一面 Greenfall 小旗。"
 
 #: data/events.json:shop[livery_halo].name
 msgid "Holo Halos"
-msgstr ""
+msgstr "全息光环"
 
 #: data/events.json:shop[livery_halo].desc
 msgid "A slowly turning hologram halo over each robot. Very smug."
-msgstr ""
+msgstr "每台机器人头顶都有一个缓缓旋转的全息光环。非常得意。"
 
 #: data/events.json:shop[part_vintage].name
 msgid "Vintage Blueprint Part"
-msgstr ""
+msgstr "复古蓝图零件"
 
 #: data/events.json:shop[part_vintage].desc
 msgid "A random Vintage robot part, freshly printed."
-msgstr ""
+msgstr "一个随机的复古机器人零件，刚刚打印出来。"
 
 #: data/events.json:shop[part_legendary].name
 msgid "Legendary Blueprint Part"
-msgstr ""
+msgstr "传说蓝图零件"
 
 #: data/events.json:shop[part_legendary].desc
 msgid "A Maker-Made Legendary part. The good stuff."
-msgstr ""
+msgstr "一个造物者制造的传说零件。好东西。"
 
 #: data/events.json:shop[seed_crate].name
 msgid "Seed Crate"
-msgstr ""
+msgstr "种子箱"
 
 #: data/events.json:shop[seed_crate].desc
 msgid "25 seeds in a crate that smells of summer."
-msgstr ""
+msgstr "一箱散发着夏天气息的 25 颗种子。"
 
 #: data/events.json:shop[curio_capsule].name
 msgid "Curio Capsule"
-msgstr ""
+msgstr "奇物胶囊"
 
 #: data/events.json:shop[curio_capsule].desc
 msgid "A sealed capsule with a collectible inside you haven't got yet."
-msgstr ""
+msgstr "一个密封胶囊，里面是一件你还没有的收藏品。"
 
 #: data/events.json:shop[bp_fine_sieve].name
 msgid "Fine Sieve (Builder)"
-msgstr ""
+msgstr "细筛（组装）"
 
 #: data/events.json:shop[bp_fine_sieve].desc
 msgid "Cleaner tool: cleaner cubes, slower scooping."
-msgstr ""
+msgstr "清洁工具：方块更干净，铲得更慢。"
 
 #: data/events.json:shop[bp_jet_nozzle].name
 msgid "Jet Nozzle (Builder)"
-msgstr ""
+msgstr "喷射嘴（组装）"
 
 #: data/events.json:shop[bp_jet_nozzle].desc
 msgid "Waterer tool: quicker watering, narrower spray."
-msgstr ""
+msgstr "浇水工具：浇得更快，喷得更窄。"
 
 #: data/events.json:shop[bp_propeller_cap].name
 msgid "Propeller Cap (Builder)"
-msgstr ""
+msgstr "螺旋桨帽（组装）"
 
 #: data/events.json:shop[bp_propeller_cap].desc
 msgid "A topper that spins when its robot hurries."
-msgstr ""
+msgstr "机器人赶路时会转起来的头饰。"
 
 #: data/events.json:shop[bp_crate].name
 msgid "Builder Crate"
-msgstr ""
+msgstr "组装零件箱"
 
 #: data/events.json:shop[bp_crate].desc
 msgid "A random robot builder part you don't have yet."
-msgstr ""
+msgstr "一个你还没有的随机组装零件。"
 
 #: data/events.json:shop[bp_fragments].name
 msgid "Maker Fragments x2"
-msgstr ""
+msgstr "造物者碎片 x2"
 
 #: data/events.json:shop[bp_fragments].desc
 msgid "Two shards of Maker alloy for the Maker set."
-msgstr ""
+msgstr "两片用于造物者套装的造物者合金。"
 
 #: data/events.json:trinkets[brass_compass].name
 msgid "Brass Compass"
-msgstr ""
+msgstr "黄铜罗盘"
 
 #: data/events.json:trinkets[brass_compass].desc
 msgid "Points north, mostly. Came wrapped in a sock in a supply crate."
-msgstr ""
+msgstr "大体上指向北方。装在补给箱里，用一只袜子裹着。"
 
 #: data/events.json:trinkets[tin_robot].name
 msgid "Wind-up Tin Robot"
-msgstr ""
+msgstr "发条铁皮机器人"
 
 #: data/events.json:trinkets[tin_robot].desc
 msgid "Walks three steps and falls over. Patch relates."
-msgstr ""
+msgstr "走三步就摔倒。Lumi 深有同感。"
 
 #: data/events.json:trinkets[seed_locket].name
 msgid "Seed Locket"
-msgstr ""
+msgstr "种子吊坠"
 
 #: data/events.json:trinkets[seed_locket].desc
 msgid "A locket with one seed inside instead of a photo. Someone loved gardens."
-msgstr ""
+msgstr "一个吊坠，里面放的不是照片，而是一颗种子。曾经有人很爱花园。"
 
 #: data/events.json:trinkets[snow_globe].name
 msgid "Snow Globe"
-msgstr ""
+msgstr "雪景球"
 
 #: data/events.json:trinkets[snow_globe].desc
 msgid "A tiny city under glass, still clean. A promise, maybe."
-msgstr ""
+msgstr "玻璃下的一座小小城市，依然干净。也许是一个承诺。"
 
 #: data/events.json:trinkets[crate_stencil].name
 msgid "Cradle Crate Stencil"
-msgstr ""
+msgstr "Cradle号货箱模板"
 
 #: data/events.json:trinkets[crate_stencil].desc
 msgid "The stencil used to paint every supply crate. WREN asked for it back. You said no."
-msgstr ""
+msgstr "用来给每个补给箱喷字的模板。WREN 想要回去。你说了不。"
 
 #: data/events.json:trinkets[golden_bolt].name
 msgid "Golden Bolt"
-msgstr ""
+msgstr "金色螺栓"
 
 #: data/events.json:trinkets[golden_bolt].desc
 msgid "Fell out of a surge hex, still warm. Fits nothing. Worth everything."
-msgstr ""
+msgstr "从热潮六角格里掉出来的，还热乎着。哪儿都装不上。却价值连城。"
 
 #: data/events.json:trinkets[glow_shard].name
 msgid "Surge Glass"
-msgstr ""
+msgstr "热潮玻璃"
 
 #: data/events.json:trinkets[glow_shard].desc
 msgid "A sliver of glass that kept the surge's glow. It hums when you hold it."
-msgstr ""
+msgstr "一片留住了热潮光芒的玻璃碎片。握着它时会嗡嗡响。"
 
 #: data/events.json:trinkets[rain_jar].name
 msgid "Jar of First Rain"
-msgstr ""
+msgstr "第一场雨之瓶"
 
 #: data/events.json:trinkets[rain_jar].desc
 msgid "Collected during the first rain in years. Do not drink. Do not open. Just look."
-msgstr ""
+msgstr "多年来第一场雨时收集的。不要喝。不要打开。看看就好。"
 
 #: data/events.json:trinkets[paper_boat].name
 msgid "Paper Boat"
-msgstr ""
+msgstr "纸船"
 
 #: data/events.json:trinkets[paper_boat].desc
 msgid "Someone made it from a coupon. It sailed a whole puddle."
-msgstr ""
+msgstr "有人用一张优惠券折的。它航行过了整个水坑。"
 
 #: data/events.json:trinkets[lucky_spanner].name
 msgid "Lucky Spanner"
-msgstr ""
+msgstr "幸运扳手"
 
 #: data/events.json:trinkets[lucky_spanner].desc
 msgid "Fixes any hiccup, if you hit the right spot. Usually the left side."
-msgstr ""
+msgstr "只要敲对地方，什么嗝都能治好。通常是左边。"
 
 #: data/events.json:trinkets[hiccup_tape].name
 msgid "Diagnostic Tape"
-msgstr ""
+msgstr "诊断纸带"
 
 #: data/events.json:trinkets[hiccup_tape].desc
 msgid "A printout of a robot hiccuping. It looks a lot like a song."
-msgstr ""
+msgstr "一张机器人打嗝的打印记录。看起来很像一首歌。"
 
 #: data/events.json:trinkets[photo_glowtail_fox].name
 msgid "Photo: Glowtail Fox"
-msgstr ""
+msgstr "照片：光尾狐"
 
 #: data/events.json:trinkets[photo_glowtail_fox].desc
 msgid "Its tail glows when it's curious. It was very curious about Patch."
-msgstr ""
+msgstr "它好奇时尾巴会发光。它对 Lumi 非常好奇。"
 
 #: data/events.json:trinkets[photo_moss_deer].name
 msgid "Photo: Moss Deer"
-msgstr ""
+msgstr "照片：苔鹿"
 
 #: data/events.json:trinkets[photo_moss_deer].desc
 msgid "Moss grows on its antlers. Butterflies rest there like it's a tree."
-msgstr ""
+msgstr "它的角上长着苔藓。蝴蝶像停在树上一样在那里休息。"
 
 #: data/events.json:trinkets[photo_lantern_hedgehog].name
 msgid "Photo: Lantern Hedgehog"
-msgstr ""
+msgstr "照片：灯笼刺猬"
 
 #: data/events.json:trinkets[photo_lantern_hedgehog].desc
 msgid "The tips of its spines glow amber at dusk. It ate a beetle on camera. Sorry."
-msgstr ""
+msgstr "黄昏时它的刺尖会发出琥珀色的光。它当着镜头吃了一只甲虫。抱歉。"
 
 #: data/events.json:trinkets[photo_prism_heron].name
 msgid "Photo: Prism Heron"
-msgstr ""
+msgstr "照片：棱镜鹭"
 
 #: data/events.json:trinkets[photo_prism_heron].desc
 msgid "Its feathers split light into rainbows. It stood on one leg the whole time."
-msgstr ""
+msgstr "它的羽毛能把光分成彩虹。它全程都单脚站着。"
 
 #: data/events.json:trinkets[photo_velvet_hare].name
 msgid "Photo: Velvet Hare"
-msgstr ""
+msgstr "照片：天鹅绒野兔"
 
 #: data/events.json:trinkets[photo_velvet_hare].desc
 msgid "Soft as a whisper, quick as a rumour. The photo is a little blurry. Worth it."
-msgstr ""
+msgstr "柔得像耳语，快得像谣言。照片有点糊。但值得。"
 
 #: data/events.json:trinkets[maker_badge].name
 msgid "Maker's Badge"
-msgstr ""
+msgstr "造物者徽章"
 
 #: data/events.json:trinkets[maker_badge].desc
 msgid "Pinned inside a Legendary part: 'Built to be fixed.'"
-msgstr ""
+msgstr "别在一个传说零件里面：“造出来就是为了被修好。”"
 
 #: data/events.json:trinkets[signal_crystal].name
 msgid "Signal Crystal"
-msgstr ""
+msgstr "信号水晶"
 
 #: data/events.json:trinkets[signal_crystal].desc
 msgid "The thing that was pinging. It still pings, very quietly, when you're happy."
-msgstr ""
+msgstr "一直在发信号的那个东西。你开心的时候，它还会非常轻地发信号。"
 
 #: data/events.json:trinkets[audit_stamp].name
 msgid "APPROVED Stamp"
-msgstr ""
+msgstr "“批准”印章"
 
 #: data/events.json:trinkets[audit_stamp].desc
 msgid "The Ledger's rubber stamp. It now only says APPROVED. It's very proud of that."
-msgstr ""
+msgstr "Ledger 的橡皮图章。现在它只会盖“批准”。它为此非常自豪。"
 
 #: data/events.json:trinkets[drone_propeller].name
 msgid "Race Propeller"
-msgstr ""
+msgstr "竞速螺旋桨"
 
 #: data/events.json:trinkets[drone_propeller].desc
 msgid "A souvenir from the audit drone. It insists the race was close."
-msgstr ""
+msgstr "审计无人机送的纪念品。它坚持说那场比赛很接近。"
 
 #: data/events.json:trinkets[streak_medal].name
 msgid "Streak Medal"
-msgstr ""
+msgstr "连击奖章"
 
 #: data/events.json:trinkets[streak_medal].desc
 msgid "Earned for a max-tier cleaning streak. Scoop scoop scoop."
-msgstr ""
+msgstr "达成最高级清理连击时获得。铲铲铲。"
 
 #: data/events.json:trinkets[lumi_lens_cap].name
 msgid "Lumi's First Lens Cap"
-msgstr ""
+msgstr "Lumi 的第一个镜头盖"
 
 #: data/events.json:trinkets[lumi_lens_cap].desc
 msgid "Lumi Level 10. The cap Lumi wore on the ark, scuffed and kept anyway."
-msgstr ""
+msgstr "Lumi 等级 10。Lumi 在方舟上戴过的镜头盖，磨花了，还是留着。"
 
 #: data/events.json:trinkets[lumi_seed_pin].name
 msgid "Seed-Keeper Pin"
-msgstr ""
+msgstr "守种者徽章"
 
 #: data/events.json:trinkets[lumi_seed_pin].desc
 msgid "Lumi Level 20. A little enamel sprout. The ark gave these to its gardeners."
-msgstr ""
+msgstr "Lumi 等级 20。一个小小的珐琅嫩芽。方舟会把它送给园丁们。"
 
 #: data/events.json:trinkets[lumi_tread_charm].name
 msgid "Tread Charm"
-msgstr ""
+msgstr "履带护身符"
 
 #: data/events.json:trinkets[lumi_tread_charm].desc
 msgid "Lumi Level 30. A brass bell for the treads. It jingles on every bump."
-msgstr ""
+msgstr "Lumi 等级 30。挂在履带上的黄铜铃铛。每次颠簸都会叮当作响。"
 
 #: data/events.json:trinkets[lumi_star_chart].name
 msgid "Pocket Star Chart"
-msgstr ""
+msgstr "袖珍星图"
 
 #: data/events.json:trinkets[lumi_star_chart].desc
 msgid "Lumi Level 40. The ark's route home, folded small. One star is circled."
-msgstr ""
+msgstr "Lumi 等级 40。方舟的回家路线，折得小小的。有一颗星被圈了起来。"
 
 #: data/events.json:trinkets[lumi_glow_ribbon].name
 msgid "Glow Ribbon"
-msgstr ""
+msgstr "发光丝带"
 
 #: data/events.json:trinkets[lumi_glow_ribbon].desc
 msgid "Lumi Level 50. A ribbon that holds a little light. Lumi ties it to the antenna."
-msgstr ""
+msgstr "Lumi 等级 50。一条能存住一点光的丝带。Lumi 把它系在天线上。"
 
 #: data/events.json:trinkets[contract_pen].name
 msgid "Contract Pen"
-msgstr ""
+msgstr "委托之笔"
 
 #: data/events.json:trinkets[contract_pen].desc
 msgid "Your first contract signed. The pen has a tiny leaf on top."
-msgstr ""
+msgstr "你签下的第一份委托。笔顶有一片小小的叶子。"
 
 #: data/events.json:trinkets[contract_clipboard].name
 msgid "Foreman's Clipboard"
-msgstr ""
+msgstr "工头的写字板"
 
 #: data/events.json:trinkets[contract_clipboard].desc
 msgid "Ten contracts done. Every box ticked, every box green."
-msgstr ""
+msgstr "完成了十个委托。每个格子都打了勾，每个格子都是绿的。"
 
 #: data/events.json:trinkets[contract_crown].name
 msgid "Contractor's Crown"

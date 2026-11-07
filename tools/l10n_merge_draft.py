@@ -75,6 +75,15 @@ def main() -> int:
     check_only = "--check" in sys.argv
     cat = ex.build()
     keys = list(cat.entries.keys())
+    # Draft line numbers index the POT as it was when the draft was written (.l10n_work/src.tsv),
+    # so later string extractions don't shift them.
+    src_ids: dict = {}
+    src_path = os.path.join(WORK, "src.tsv")
+    if os.path.exists(src_path):
+        for line in open(src_path, encoding="utf-8").read().split("\n"):
+            parts = line.split("\t")
+            if len(parts) >= 2 and re.fullmatch(r"\d{4}", parts[0]):
+                src_ids[int(parts[0])] = unesc(parts[2] if parts[1] == "P" and len(parts) > 2 else parts[1])
     total_bad = 0
     for lang in args:
         name, plural = LANGS[lang]
@@ -90,7 +99,9 @@ def main() -> int:
                     if not re.fullmatch(r"\d{4}", parts[0]):
                         print("%s:%d: bad line" % (f, ln)); total_bad += 1; continue
                     i = int(parts[0])
-                    k = keys[i]
+                    k = ("", src_ids[i]) if i in src_ids else keys[i]
+                    if k not in cat.entries:
+                        print("%s:%d: msgid no longer in the POT: %r" % (f, ln, k[1][:50])); continue
                     e = cat.entries[k]
                     if len(parts) > 2 and parts[1] == "P":
                         parts = [parts[0]] + parts[2:]
