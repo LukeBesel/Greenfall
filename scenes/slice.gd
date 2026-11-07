@@ -438,6 +438,9 @@ func _ready() -> void:
 	var feel := FeelFx.new()  # [first] core-loop juice (bale press, first robot, hex reveal)
 	feel.world = self
 	add_child(feel)
+	var finds := SeedFinds.new()  # [first] rare seeds in scooped junk (early trickle)
+	finds.world = self
+	add_child(finds)
 	_setup_research_codex()
 	var cargo := CargoPods.new()
 	cargo.world = self

@@ -98,3 +98,21 @@ func test_first_seed_is_one_early_seed() -> void:
 	var hl: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/hex_levels.json"))
 	var planted: Dictionary = hl["levels"][2]["reward"]
 	assert_lte(int(planted.get("seeds", 0)), 1, "planting a hex must not refund its own seeds")
+
+
+func test_seed_finds_locked_until_tin_then_rate_limited() -> void:
+	var had: Variant = GameState.flags.get("seeds_unlocked", null)
+	var sf := SeedFinds.new()
+	add_child_autofree(sf)
+	GameState.flags["seeds_unlocked"] = false
+	assert_eq(sf.chance_for("metal"), 0.0, "no finds before the seed tin")
+	GameState.flags["seeds_unlocked"] = true
+	assert_gt(sf.chance_for("metal"), 0.0)
+	assert_gt(sf.chance_for("paper"), sf.chance_for("metal"), "organic junk likelier")
+	assert_lt(sf.chance_for("paper"), 0.05, "rare")
+	sf._cooldown = 10.0
+	assert_eq(sf.chance_for("paper"), 0.0, "cooldown between finds")
+	if had == null:
+		GameState.flags.erase("seeds_unlocked")
+	else:
+		GameState.flags["seeds_unlocked"] = had
