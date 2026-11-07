@@ -309,3 +309,12 @@ If a session ends: commit WIP in each worktree, then resume or merge.
 - Next: per-world WREN story beats; a title-screen world picker; Steam Cloud for profile.save; a
   stronger visual identity per world type (sky tint, skyline); wildlife reacting to decor (wt/wild).
 
+
+
+## Owner design (Nov 7): the solar-system campaign
+The main campaign is a fixed solar system: Verdance plus ~4 handcrafted planets in order. Rocket tiers past Mk IV
+(Orbital, Interplanetary) unlock the next planet. Lore: the Ledger corporation strip-mined the system and left
+it to die under its trash; each planet reveals more. The game ends when every planet is clean: Lumi returns to
+Verdance, builds a big launch base, gives the rocket a final "Homeward" upgrade, plants the last seed and launches
+home (reusing the launch sequence, ark finale and space stage), then credits. Random Cradle Mode worlds become
+optional post-game. Owner: wt/home (progression, story, ending) + wt/worlds2 (planet looks, 3 save profiles).
