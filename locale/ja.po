@@ -2016,7 +2016,7 @@ msgstr "コレクションの発見が %d 必要（いまは %d）"
 
 #: systems/decor.gd:124
 msgid "Needs %d Seed of the Week paint chips (%d so far)"
-msgstr ""
+msgstr "「今週のシード」のペイントチップが %d 枚必要（いま %d 枚）"
 
 #: systems/decor.gd:182
 msgid "Too close to the base machines"
@@ -2515,11 +2515,11 @@ msgstr "%s が見つけた：%s。"
 
 #: systems/extras/album.gd:85
 msgid "First arrival"
-msgstr ""
+msgstr "到着時"
 
 #: systems/extras/album.gd:86
 msgid "Half clean"
-msgstr ""
+msgstr "半分きれい"
 
 #: systems/extras/album.gd:87 data/hex_levels.json:levels[5].name
 msgid "Thriving"
@@ -2527,79 +2527,80 @@ msgstr "繁栄"
 
 #: systems/extras/album.gd:88
 msgid "Base level 5"
-msgstr ""
+msgstr "基地レベル 5"
 
 #: systems/extras/album.gd:214
 msgid "Album: an \"after\" picture of %s (%s)."
-msgstr ""
+msgstr "アルバム：%s の「アフター」写真（%s）。"
 
-#: systems/extras/nursery.gd:88
+#: systems/extras/nursery.gd:92
 msgid "Only Mk I-II robots retire early. %s can retire in %d min."
-msgstr ""
+msgstr "早めに引退できるのは Mk I-II のロボットだけ。%s はあと %d 分で引退できる。"
 
-#: systems/extras/nursery.gd:116
+#: systems/extras/nursery.gd:120
 msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
-msgstr ""
+msgstr "%s は苗床ガーデンで引退生活へ。+%d パーツ、花には世話係ができた。"
 
-#: systems/extras/nursery.gd:204
+#: systems/extras/nursery.gd:208
 msgid "E   Say hi to %s"
-msgstr ""
+msgstr "E   %s にあいさつ"
 
-#: systems/extras/nursery.gd:262
+#: systems/extras/nursery.gd:266
 msgid "CARETAKER · %s"
-msgstr ""
+msgstr "世話係 · %s"
 
-#: systems/extras/nursery.gd:309
+#: systems/extras/nursery.gd:313
 msgid "%s beeps hello and shows Lumi the marigolds."
-msgstr ""
+msgstr "%s はピッとあいさつして、Lumi にマリーゴールドを見せる。"
 
-#: systems/extras/nursery.gd:310
+#: systems/extras/nursery.gd:314
 msgid "%s is busy with the watering can, but waves anyway."
-msgstr ""
+msgstr "%s はじょうろで忙しいけど、それでも手を振る。"
 
-#: systems/extras/nursery.gd:311
+#: systems/extras/nursery.gd:315
 msgid "%s hums to the seedlings. Retirement suits it."
-msgstr ""
+msgstr "%s は苗に鼻歌を聞かせている。引退生活が似合う。"
 
-#: systems/extras/nursery.gd:312
+#: systems/extras/nursery.gd:316
 msgid "%s points proudly at a new bud."
-msgstr ""
+msgstr "%s は新しいつぼみを得意げに指さす。"
 
 #: systems/extras/radio.gd:135
 msgid "E   Radio: %s"
-msgstr ""
+msgstr "E   ラジオ：%s"
 
 #: systems/extras/radio.gd:135
 msgid "mood music"
-msgstr ""
+msgstr "ムード音楽"
 
 #: systems/extras/radio.gd:161
 msgid "New song on the radio: %s"
-msgstr ""
+msgstr "ラジオに新しい曲：%s"
 
 #: systems/extras/weekly.gd:113
 msgid "Not this week: %s"
-msgstr ""
+msgstr "今週は使えない：%s"
 
 #: systems/extras/weekly.gd:254 ui/extras_panel.gd:9 ui/extras_panel.gd:372
+#: data/achievements.json:achievements[extras_weekly_1].name
 msgid "Seed of the Week"
-msgstr ""
+msgstr "今週のシード"
 
 #: systems/extras/weekly_run.gd:68
 msgid "SEED OF THE WEEK  ·  %d / %d hexes  ·  %s%s"
-msgstr ""
+msgstr "今週のシード  ·  %d / %d ヘックス  ·  %s%s"
 
 #: systems/extras/weekly_run.gd:69
 msgid "  ·  done"
-msgstr ""
+msgstr "  ·  達成"
 
 #: systems/extras/weekly_run.gd:89
 msgid "Twist"
-msgstr ""
+msgstr "ひねり"
 
 #: systems/extras/weekly_run.gd:91
 msgid "Goal"
-msgstr ""
+msgstr "目標"
 
 #: systems/extras/weekly_run.gd:91 data/events.json:contracts.templates[clean_hexes].text
 msgid "Clean %d hexes"
@@ -2607,47 +2608,47 @@ msgstr "ヘックスを %d 個片づける"
 
 #: systems/extras/weekly_run.gd:92 ui/extras_panel.gd:376
 msgid "Seed"
-msgstr ""
+msgstr "シード"
 
 #: systems/extras/weekly_run.gd:93 systems/extras/weekly_run.gd:119
 msgid "Best"
-msgstr ""
+msgstr "ベスト"
 
 #: systems/extras/weekly_run.gd:93 systems/extras/weekly_run.gd:119
 msgid "%s  ·  %d points"
-msgstr ""
+msgstr "%s  ·  %d ポイント"
 
 #: systems/extras/weekly_run.gd:93
 msgid "No finish yet"
-msgstr ""
+msgstr "まだクリアなし"
 
 #: systems/extras/weekly_run.gd:94 systems/extras/weekly_run.gd:122
 msgid "Reward"
-msgstr ""
+msgstr "報酬"
 
 #: systems/extras/weekly_run.gd:94
 msgid "A paint chip for your garden (first finish each week)"
-msgstr ""
+msgstr "ガーデン用のペイントチップ（毎週初回クリア時）"
 
 #: systems/extras/weekly_run.gd:96
 msgid "SEED OF THE WEEK"
-msgstr ""
+msgstr "今週のシード"
 
 #: systems/extras/weekly_run.gd:96
 msgid "Week %d, %d"
-msgstr ""
+msgstr "第 %d 週、%d 年"
 
 #: systems/extras/weekly_run.gd:96
 msgid "Start the clock"
-msgstr ""
+msgstr "計測スタート"
 
 #: systems/extras/weekly_run.gd:96 systems/extras/weekly_run.gd:123 ui/extras_panel.gd:380
 msgid "Return home"
-msgstr ""
+msgstr "ホームに戻る"
 
 #: systems/extras/weekly_run.gd:104
 msgid "The clock is running. Clean %d hexes."
-msgstr ""
+msgstr "計測中。ヘックスを %d 個片づけよう。"
 
 #: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:388
 msgid "Time"
@@ -2655,35 +2656,35 @@ msgstr "時刻"
 
 #: systems/extras/weekly_run.gd:117 systems/extras/weekly_run.gd:118
 msgid "  (new best)"
-msgstr ""
+msgstr "  （ベスト更新）"
 
 #: systems/extras/weekly_run.gd:118
 msgid "Score"
-msgstr ""
+msgstr "スコア"
 
 #: systems/extras/weekly_run.gd:122
 msgid "New paint chip! (%d in all) Weekly decorations in Garden Mode use them."
-msgstr ""
+msgstr "新しいペイントチップ！（全部で %d 枚）ガーデンモードの週替わりデコに使われる。"
 
 #: systems/extras/weekly_run.gd:123
 msgid "CHALLENGE COMPLETE"
-msgstr ""
+msgstr "チャレンジ達成"
 
 #: systems/extras/weekly_run.gd:123
 msgid "Keep exploring"
-msgstr ""
+msgstr "探索を続ける"
 
 #: systems/extras/welcome_back.gd:57
 msgid "%d h %d min"
-msgstr ""
+msgstr "%d 時間 %d 分"
 
 #: systems/extras/welcome_back.gd:69
 msgid "baled about %d bales"
-msgstr ""
+msgstr "ベールを約 %d 個プレスした"
 
 #: systems/extras/welcome_back.gd:71
 msgid "kept the base tidy"
-msgstr ""
+msgstr "基地をきれいに保った"
 
 #: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:674
 msgid "Cubes earned"
@@ -2691,35 +2692,35 @@ msgstr "稼いだキューブ"
 
 #: systems/extras/welcome_back.gd:76
 msgid "No hauler: Lumi cashed the stacked bales. A Haul Bug keeps them moving."
-msgstr ""
+msgstr "運搬役なし：積まれたベールは Lumi が換金した。Haul Bug がいれば流れが止まらない。"
 
 #: systems/extras/welcome_back.gd:78
 msgid "Plants grew"
-msgstr ""
+msgstr "育った植物"
 
 #: systems/extras/welcome_back.gd:80
 msgid "Bloomed (seeds)"
-msgstr ""
+msgstr "開花（種）"
 
 #: systems/extras/welcome_back.gd:82
 msgid "Scrubbers cleaned the air"
-msgstr ""
+msgstr "スクラバーが空気をきれいにした"
 
 #: systems/extras/welcome_back.gd:141
 msgid "WELCOME BACK"
-msgstr ""
+msgstr "おかえり"
 
 #: systems/extras/welcome_back.gd:142
 msgid "Away %s"
-msgstr ""
+msgstr "%s 不在"
 
 #: systems/extras/welcome_back.gd:163
 msgid "Robots work up to %d h while you're away."
-msgstr ""
+msgstr "不在のあいだ、ロボットは最大 %d 時間働く。"
 
 #: systems/extras/welcome_back.gd:166
 msgid "Back to work"
-msgstr ""
+msgstr "仕事に戻る"
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -2935,7 +2936,7 @@ msgstr "新しい名前"
 
 #: ui/builder_panel.gd:151 ui/builder_panel.gd:306
 msgid "Retire"
-msgstr ""
+msgstr "引退"
 
 #: ui/builder_panel.gd:161
 msgid ""
@@ -3024,7 +3025,7 @@ msgstr "装着できるものがない：箱のパーツが足りないか、ク
 
 #: ui/builder_panel.gd:599
 msgid "Retire? +%d parts"
-msgstr ""
+msgstr "引退？ +%d パーツ"
 
 #: ui/checklist_card.gd:92
 msgid "RESTART"
@@ -3643,83 +3644,83 @@ msgstr "依頼 %d 件達成  ·  作業台で受け取ろう"
 
 #: ui/extras_panel.gd:9
 msgid "Radio"
-msgstr ""
+msgstr "ラジオ"
 
 #: ui/extras_panel.gd:9
 msgid "Album"
-msgstr ""
+msgstr "アルバム"
 
 #: ui/extras_panel.gd:9
 msgid "Nursery"
-msgstr ""
+msgstr "苗床"
 
 #: ui/extras_panel.gd:58
 msgid "KEEPSAKES"
-msgstr ""
+msgstr "思い出"
 
 #: ui/extras_panel.gd:70
 msgid "%s / %s  switch tabs"
-msgstr ""
+msgstr "%s / %s  タブ切り替え"
 
 #: ui/extras_panel.gd:187
 msgid "SONGS  ·  %d / %d"
-msgstr ""
+msgstr "曲  ·  %d / %d"
 
 #: ui/extras_panel.gd:196
 msgid "Now playing: %s"
-msgstr ""
+msgstr "再生中：%s"
 
 #: ui/extras_panel.gd:201
 msgid "NOW PLAYING"
-msgstr ""
+msgstr "再生中"
 
 #: ui/extras_panel.gd:205
 msgid "Your pick plays everywhere until you switch back to the mood music."
-msgstr ""
+msgstr "ムード音楽に戻すまで、選んだ曲がどこでも流れる。"
 
 #: ui/extras_panel.gd:206
 msgid "Back to mood music"
-msgstr ""
+msgstr "ムード音楽に戻す"
 
 #: ui/extras_panel.gd:208
 msgid "The radio hands the music back to the day."
-msgstr ""
+msgstr "ラジオは音楽を一日の流れに返した。"
 
 #: ui/extras_panel.gd:212
 msgid "Mood music"
-msgstr ""
+msgstr "ムード音楽"
 
 #: ui/extras_panel.gd:213
 msgid "The music follows the day: the yard, the streets, the night. Pick a song to play it instead."
-msgstr ""
+msgstr "音楽は一日の流れに合わせて変わる：庭、通り、夜。曲を選べば代わりにそれが流れる。"
 
 #: ui/extras_panel.gd:214
 msgid "New songs come in as districts and planets are restored."
-msgstr ""
+msgstr "地区や惑星を復元すると新しい曲が届く。"
 
 #: ui/extras_panel.gd:227
 msgid "DISTRICTS"
-msgstr ""
+msgstr "地区"
 
 #: ui/extras_panel.gd:229
 msgid "Lumi takes a picture of each district on arrival, and \"after\" pictures as it is restored."
-msgstr ""
+msgstr "Lumi は到着した地区を一枚撮り、復元が進むと「アフター」写真も撮る。"
 
 #: ui/extras_panel.gd:233
 msgid "Before only"
-msgstr ""
+msgstr "ビフォーのみ"
 
 #: ui/extras_panel.gd:241
 msgid "PHOTOS  ·  %d"
-msgstr ""
+msgstr "写真  ·  %d"
 
 #: ui/extras_panel.gd:253
 msgid "Photo"
-msgstr ""
+msgstr "写真"
 
 #: ui/extras_panel.gd:262
 msgid "Photos you take in photo mode show up here."
-msgstr ""
+msgstr "フォトモードで撮った写真がここに並ぶ。"
 
 #: ui/extras_panel.gd:266 ui/photo_panel.gd:58
 msgid "PHOTO MODE"
@@ -3727,99 +3728,99 @@ msgstr "フォトモード"
 
 #: ui/extras_panel.gd:276
 msgid "No pictures yet."
-msgstr ""
+msgstr "まだ写真がない。"
 
 #: ui/extras_panel.gd:287
 msgid "BEFORE"
-msgstr ""
+msgstr "ビフォー"
 
 #: ui/extras_panel.gd:306
 msgid "not yet"
-msgstr ""
+msgstr "まだ"
 
 #: ui/extras_panel.gd:316
 msgid "The \"after\" picture comes when the district is half clean."
-msgstr ""
+msgstr "地区が半分きれいになると「アフター」写真が撮れる。"
 
 #: ui/extras_panel.gd:322
 msgid "CARETAKERS  ·  %d"
-msgstr ""
+msgstr "世話係  ·  %d"
 
 #: ui/extras_panel.gd:323
 msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
-msgstr ""
+msgstr "ガーデンボーナス：植物の成長が %d%% 速い（最大 %d%%）。"
 
 #: ui/extras_panel.gd:326
 msgid "No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."
-msgstr ""
+msgstr "まだ誰も引退していない。古いロボットや Mk I-II のロボットはここか作業台のビルダーで引退でき、基地の苗床ガーデンの世話をしてくれる。"
 
 #: ui/extras_panel.gd:335
 msgid "RETIRE A ROBOT"
-msgstr ""
+msgstr "ロボットを引退させる"
 
 #: ui/extras_panel.gd:337
 msgid "Retiring gives a few parts back, and the robot keeps its name and personality in the nursery."
-msgstr ""
+msgstr "引退するとパーツが少し戻り、ロボットは苗床で名前と性格をそのまま保つ。"
 
 #: ui/extras_panel.gd:339
 msgid "No robots in this district."
-msgstr ""
+msgstr "この地区にロボットはいない。"
 
 #: ui/extras_panel.gd:346
 msgid "Press again to retire (+%d parts)"
-msgstr ""
+msgstr "もう一度押すと引退（+%d パーツ）"
 
 #: ui/extras_panel.gd:346
 msgid "Retire  (+%d parts)"
-msgstr ""
+msgstr "引退  （+%d パーツ）"
 
 #: ui/extras_panel.gd:371
 msgid "WEEK %d, %d"
-msgstr ""
+msgstr "第 %d 週、%d 年"
 
 #: ui/extras_panel.gd:373
 msgid "The same seed and twist for everyone this week. Clean %d hexes as fast as you can. It has its own save, so your world is untouched."
-msgstr ""
+msgstr "今週はみんな同じシードとひねり。できるだけ早くヘックスを %d 個片づけよう。専用のセーブなので、あなたの世界はそのまま。"
 
 #: ui/extras_panel.gd:374
 msgid "Twist: %s"
-msgstr ""
+msgstr "ひねり：%s"
 
 #: ui/extras_panel.gd:377
 msgid "Best time"
-msgstr ""
+msgstr "ベストタイム"
 
 #: ui/extras_panel.gd:378
 msgid "Best score"
-msgstr ""
+msgstr "ベストスコア"
 
 #: ui/extras_panel.gd:384
 msgid "Restart this week's run"
-msgstr ""
+msgstr "今週のランをやり直す"
 
 #: ui/extras_panel.gd:388
 msgid "Resume this week's run"
-msgstr ""
+msgstr "今週のランを再開"
 
 #: ui/extras_panel.gd:388
 msgid "Start the challenge"
-msgstr ""
+msgstr "チャレンジを始める"
 
 #: ui/extras_panel.gd:392
 msgid "PAINT CHIPS  ·  %d"
-msgstr ""
+msgstr "ペイントチップ  ·  %d"
 
 #: ui/extras_panel.gd:393
 msgid "Finish a week's challenge for its paint chip. Chips unlock the weekly decorations in Garden Mode and paint them."
-msgstr ""
+msgstr "その週のチャレンジをクリアするとペイントチップがもらえる。チップはガーデンモードの週替わりデコを解放し、色を塗る。"
 
 #: ui/extras_panel.gd:406
 msgid "No chips yet."
-msgstr ""
+msgstr "まだチップがない。"
 
 #: ui/extras_panel.gd:438
 msgid "No picture yet"
-msgstr ""
+msgstr "まだ写真がない"
 
 #: ui/frontier_rockets.gd:11
 msgid "FRONTIERS"
@@ -4289,7 +4290,7 @@ msgstr "フォトモード  [%s]"
 
 #: ui/pause_menu.gd:59
 msgid "Keepsakes"
-msgstr ""
+msgstr "思い出"
 
 #: ui/pause_menu.gd:64
 msgid "Save game"
@@ -5930,6 +5931,58 @@ msgstr "最初じゃなかった"
 msgid "Find the older seed pod on a new world."
 msgstr "新しい世界で、もっと古い種子ポッドを見つける。"
 
+#: data/achievements.json:achievements[extras_radio_6].name
+msgid "Pirate Radio"
+msgstr "海賊ラジオ"
+
+#: data/achievements.json:achievements[extras_radio_6].desc
+msgid "Unlock 6 songs on the base radio."
+msgstr "基地のラジオで曲を 6 曲解放する。"
+
+#: data/achievements.json:achievements[extras_radio_all].name
+msgid "Full Rotation"
+msgstr "フルローテーション"
+
+#: data/achievements.json:achievements[extras_radio_all].desc
+msgid "Unlock every song on the base radio."
+msgstr "基地のラジオの曲をすべて解放する。"
+
+#: data/achievements.json:achievements[extras_album_4].name
+msgid "Then and Now"
+msgstr "あの頃と今"
+
+#: data/achievements.json:achievements[extras_album_4].desc
+msgid "Collect 4 pictures in the photo album."
+msgstr "アルバムに写真を 4 枚集める。"
+
+#: data/achievements.json:achievements[extras_retire_1].name
+msgid "Happy Retirement"
+msgstr "ハッピーリタイア"
+
+#: data/achievements.json:achievements[extras_retire_1].desc
+msgid "Retire a robot to the nursery garden."
+msgstr "ロボットを苗床ガーデンで引退させる。"
+
+#: data/achievements.json:achievements[extras_visits_5].name
+msgid "Garden Party"
+msgstr "ガーデンパーティー"
+
+#: data/achievements.json:achievements[extras_visits_5].desc
+msgid "Say hi to the nursery caretakers 5 times."
+msgstr "苗床の世話係に 5 回あいさつする。"
+
+#: data/achievements.json:achievements[extras_weekly_1].desc
+msgid "Finish a Seed of the Week challenge."
+msgstr "「今週のシード」チャレンジをクリアする。"
+
+#: data/achievements.json:achievements[extras_weekly_4].name
+msgid "Paint Collector"
+msgstr "カラーコレクター"
+
+#: data/achievements.json:achievements[extras_weekly_4].desc
+msgid "Earn 4 Seed of the Week paint chips."
+msgstr "「今週のシード」のペイントチップを 4 枚集める。"
+
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
 msgstr "Verdance のどこかで繁栄ヘックス25個。"
@@ -7184,19 +7237,19 @@ msgstr "WREN の鳥の形をしたたこ。柱につながれて、いつも空�
 
 #: data/decor.json:types[weekly_pennant].name
 msgid "Seed of the Week Pennant"
-msgstr ""
+msgstr "今週のシードのペナント"
 
 #: data/decor.json:types[weekly_pennant].desc
 msgid "A tall pennant in the colour of your newest Seed of the Week paint chip."
-msgstr ""
+msgstr "最新の「今週のシード」ペイントチップの色をした背の高いペナント。"
 
 #: data/decor.json:types[weekly_arch].name
 msgid "Paint Chip Arch"
-msgstr ""
+msgstr "ペイントチップのアーチ"
 
 #: data/decor.json:types[weekly_arch].desc
 msgid "A garden arch striped with every paint chip you have earned."
-msgstr ""
+msgstr "これまでに集めたペイントチップでしま模様にしたガーデンアーチ。"
 
 #: data/designs.json:designs[aurora].tagline
 msgid "Baseline / Explorer"
@@ -9374,6 +9427,10 @@ msgstr "ヘックスを30個片づける（湖も）"
 msgid "Upgrade the base to level 3"
 msgstr "基地をレベル3にする"
 
+#: data/goals.json:goals[extras_radio].text
+msgid "Pick a song on the base radio"
+msgstr "基地のラジオで曲を選ぶ"
+
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
 msgstr "種を25個植える"
@@ -9513,6 +9570,10 @@ msgstr "ヘックスを25個繁栄状態にする"
 #: data/goals.json:goals[base_5].text
 msgid "Upgrade the base to level 5"
 msgstr "基地をレベル5にする"
+
+#: data/goals.json:goals[extras_retire].text
+msgid "Retire an old robot to the nursery garden"
+msgstr "古いロボットを苗床ガーデンで引退させる"
 
 #: data/goals.json:goals[rocket].text
 msgid "Launch the rocket onward"
@@ -10180,135 +10241,135 @@ msgstr "特殊モジュール"
 
 #: data/radio.json:songs[first_light].name
 msgid "First Light"
-msgstr ""
+msgstr "はじまりの光"
 
 #: data/radio.json:songs[first_light].desc
 msgid "The tune Lumi hums on a dusty morning."
-msgstr ""
+msgstr "ほこりっぽい朝に Lumi が口ずさむ曲。"
 
 #: data/radio.json:songs[workbench_waltz].name
 msgid "Workbench Waltz"
-msgstr ""
+msgstr "作業台のワルツ"
 
 #: data/radio.json:songs[workbench_waltz].desc
 msgid "Cozy chords for tinkering at the bench."
-msgstr ""
+msgstr "作業台でいじくるための心地よい和音。"
 
 #: data/radio.json:songs[hopeful_static].name
 msgid "Hopeful Static"
-msgstr ""
+msgstr "希望のノイズ"
 
 #: data/radio.json:songs[hopeful_static].desc
 msgid "What the radio picked up the night Lumi landed."
-msgstr ""
+msgstr "Lumi が着陸した夜にラジオが拾った音。"
 
 #: data/radio.json:songs[lantern_hours].name
 msgid "Lantern Hours"
-msgstr ""
+msgstr "ランタンの時間"
 
 #: data/radio.json:songs[lantern_hours].desc
 msgid "Night music, slow and a little blue."
-msgstr ""
+msgstr "ゆっくりで少しブルーな夜の音楽。"
 
 #: data/radio.json:songs[rust_lullaby].name
 msgid "Rust Lullaby"
-msgstr ""
+msgstr "さびの子守歌"
 
 #: data/radio.json:songs[rust_lullaby].desc
 msgid "A music box found in a scrapyard, still in tune."
-msgstr ""
+msgstr "スクラップ置き場で見つけたオルゴール。まだ音は合っている。"
 
 #: data/radio.json:songs[sprout_shuffle].name
 msgid "Sprout Shuffle"
-msgstr ""
+msgstr "芽吹きシャッフル"
 
 #: data/radio.json:songs[sprout_shuffle].desc
 msgid "Bouncy and green. The seedlings like this one."
-msgstr ""
+msgstr "はずんで緑色。苗たちはこの曲が好き。"
 
 #: data/radio.json:songs[sprout_shuffle].hint
 msgid "Grow 10 plants to bloom"
-msgstr ""
+msgstr "植物を 10 本咲かせる"
 
 #: data/radio.json:songs[old_town_rooftops].name
 msgid "Old Town Rooftops"
-msgstr ""
+msgstr "旧市街の屋根"
 
 #: data/radio.json:songs[old_town_rooftops].desc
 msgid "Evening jazz over the mended roofs."
-msgstr ""
+msgstr "直した屋根の上に流れる夕暮れのジャズ。"
 
 #: data/radio.json:songs[old_town_rooftops].hint
 msgid "Raise a base to level 3"
-msgstr ""
+msgstr "基地をレベル 3 にする"
 
 #: data/radio.json:songs[greenline_express].name
 msgid "Greenline Express"
-msgstr ""
+msgstr "グリーンライン急行"
 
 #: data/radio.json:songs[greenline_express].desc
 msgid "A quick groove for a district that runs itself."
-msgstr ""
+msgstr "ひとりでに回る地区のための軽快なグルーヴ。"
 
 #: data/radio.json:songs[greenline_express].hint
 msgid "Raise a base to level 5"
-msgstr ""
+msgstr "基地をレベル 5 にする"
 
 #: data/radio.json:songs[far_shore].name
 msgid "Far Shore"
-msgstr ""
+msgstr "遠い岸辺"
 
 #: data/radio.json:songs[far_shore].desc
 msgid "Wide and airy, for the next district over the hill."
-msgstr ""
+msgstr "丘の向こうの次の地区へ、広くて軽やか。"
 
 #: data/radio.json:songs[far_shore].hint
 msgid "Visit a second district"
-msgstr ""
+msgstr "2 つ目の地区を訪れる"
 
 #: data/radio.json:songs[homeward].name
 msgid "Homeward"
-msgstr ""
+msgstr "帰り道"
 
 #: data/radio.json:songs[homeward].desc
 msgid "The swelling theme from Lumi's long fall."
-msgstr ""
+msgstr "Lumi の長い落下の、高まっていくテーマ。"
 
 #: data/radio.json:songs[homeward].hint
 msgid "Raise three bases to level 5"
-msgstr ""
+msgstr "基地を 3 つレベル 5 にする"
 
 #: data/radio.json:songs[verdance_in_bloom].name
 msgid "Verdance in Bloom"
-msgstr ""
+msgstr "花ざかりの Verdance"
 
 #: data/radio.json:songs[verdance_in_bloom].desc
 msgid "The whole planet in flower, in four chords."
-msgstr ""
+msgstr "惑星じゅうが花ざかり、4 つの和音で。"
 
 #: data/radio.json:songs[verdance_in_bloom].hint
 msgid "Bring the Cradle home"
-msgstr ""
+msgstr "Cradle を連れ帰る"
 
 #: data/radio.json:songs[cradle_choir].name
 msgid "Cradle Choir"
-msgstr ""
+msgstr "Cradle の合唱"
 
 #: data/radio.json:songs[cradle_choir].desc
 msgid "The ark's garden deck, remembered in slow swells."
-msgstr ""
+msgstr "箱舟の庭園デッキを、ゆるやかなうねりで思い出す。"
 
 #: data/radio.json:songs[cradle_choir].hint
 msgid "See the Cradle finale"
-msgstr ""
+msgstr "Cradle のフィナーレを見る"
 
 #: data/radio.json:songs[starseed_serenade].name
 msgid "Starseed Serenade"
-msgstr ""
+msgstr "スターシードのセレナーデ"
 
 #: data/radio.json:songs[starseed_serenade].desc
 msgid "A new world on the horizon, lydian and bright."
-msgstr ""
+msgstr "地平線の新しい世界、リディアンで明るく。"
 
 #: data/research.json:branches[robotics].name
 msgid "Robotics"
@@ -11462,51 +11523,51 @@ msgstr "追加の照準レーザー：一度に複数のガラクタを持ち上
 
 #: data/weekly.json:twists[scoopies_only].name
 msgid "Scoopies Only"
-msgstr ""
+msgstr "Scoopie だけ"
 
 #: data/weekly.json:twists[scoopies_only].desc
 msgid "Only Scoopies answer the call this week. Lumi does the hauling."
-msgstr ""
+msgstr "今週は Scoopie だけが呼びかけに応える。運ぶのは Lumi の仕事。"
 
 #: data/weekly.json:twists[dry_spell].name
 msgid "Dry Spell"
-msgstr ""
+msgstr "日照り"
 
 #: data/weekly.json:twists[dry_spell].desc
 msgid "No water robots, and the soil is thin. Water the garden by hand."
-msgstr ""
+msgstr "水やりロボットなし、土もやせている。ガーデンは手で水やりしよう。"
 
 #: data/weekly.json:twists[heavy_junk].desc
 msgid "Dense scrap: scooping is slower, but bales sell for more."
-msgstr ""
+msgstr "重いスクラップ：すくうのは遅いが、ベールは高く売れる。"
 
 #: data/weekly.json:twists[storm_week].name
 msgid "Storm Week"
-msgstr ""
+msgstr "嵐の週"
 
 #: data/weekly.json:twists[storm_week].desc
 msgid "Rain showers four times as often. Plants love it."
-msgstr ""
+msgstr "にわか雨が 4 倍よく降る。植物は大喜び。"
 
 #: data/weekly.json:twists[supply_rush].name
 msgid "Supply Rush"
-msgstr ""
+msgstr "補給ラッシュ"
 
 #: data/weekly.json:twists[supply_rush].desc
 msgid "Tailwinds: Lumi is quicker and supply drops come twice as often."
-msgstr ""
+msgstr "追い風：Lumi は速くなり、補給物資の投下は 2 倍よく来る。"
 
 #: data/weekly.json:twists[long_nights].desc
 msgid "Nights last twice as long. The night shift pays a little more."
-msgstr ""
+msgstr "夜が 2 倍長い。夜勤は少しだけ稼ぎがいい。"
 
 #: data/weekly.json:twists[no_haulers].name
 msgid "No Haulers"
-msgstr ""
+msgstr "運搬役なし"
 
 #: data/weekly.json:twists[no_haulers].desc
 msgid "The Haul Bugs are on holiday. Every bale goes to the scale by hand."
-msgstr ""
+msgstr "Haul Bug たちは休暇中。ベールはすべて手で秤まで運ぶ。"
 
 #: data/wren_lines.json:wake
 msgid "...carrier... Lumi? Relay at four percent. It's WREN. Hello. Hello. I'm still here."

@@ -2019,7 +2019,7 @@ msgstr "Necesita %d hallazgos de la Colección (%d por ahora)"
 
 #: systems/decor.gd:124
 msgid "Needs %d Seed of the Week paint chips (%d so far)"
-msgstr ""
+msgstr "Necesita %d fichas de pintura de la Semilla de la semana (%d por ahora)"
 
 #: systems/decor.gd:182
 msgid "Too close to the base machines"
@@ -2530,11 +2530,11 @@ msgstr "%s ha visto: %s."
 
 #: systems/extras/album.gd:85
 msgid "First arrival"
-msgstr ""
+msgstr "Llegada"
 
 #: systems/extras/album.gd:86
 msgid "Half clean"
-msgstr ""
+msgstr "Medio limpio"
 
 #: systems/extras/album.gd:87 data/hex_levels.json:levels[5].name
 msgid "Thriving"
@@ -2542,79 +2542,80 @@ msgstr "Próspero"
 
 #: systems/extras/album.gd:88
 msgid "Base level 5"
-msgstr ""
+msgstr "Base nivel 5"
 
 #: systems/extras/album.gd:214
 msgid "Album: an \"after\" picture of %s (%s)."
-msgstr ""
+msgstr "Álbum: una foto de «después» de %s (%s)."
 
-#: systems/extras/nursery.gd:88
+#: systems/extras/nursery.gd:92
 msgid "Only Mk I-II robots retire early. %s can retire in %d min."
-msgstr ""
+msgstr "Solo los robots Mk I-II se jubilan pronto. %s podrá jubilarse en %d min."
 
-#: systems/extras/nursery.gd:116
+#: systems/extras/nursery.gd:120
 msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
-msgstr ""
+msgstr "%s se jubila en el jardín del vivero. +%d piezas, y las flores tienen un cuidador."
 
-#: systems/extras/nursery.gd:204
+#: systems/extras/nursery.gd:208
 msgid "E   Say hi to %s"
-msgstr ""
+msgstr "E   Saludar a %s"
 
-#: systems/extras/nursery.gd:262
+#: systems/extras/nursery.gd:266
 msgid "CARETAKER · %s"
-msgstr ""
+msgstr "CUIDADOR · %s"
 
-#: systems/extras/nursery.gd:309
+#: systems/extras/nursery.gd:313
 msgid "%s beeps hello and shows Lumi the marigolds."
-msgstr ""
+msgstr "%s pita un saludo y le enseña a Lumi las caléndulas."
 
-#: systems/extras/nursery.gd:310
+#: systems/extras/nursery.gd:314
 msgid "%s is busy with the watering can, but waves anyway."
-msgstr ""
+msgstr "%s está ocupado con la regadera, pero saluda igual."
 
-#: systems/extras/nursery.gd:311
+#: systems/extras/nursery.gd:315
 msgid "%s hums to the seedlings. Retirement suits it."
-msgstr ""
+msgstr "%s les tararea a los brotes. La jubilación le sienta bien."
 
-#: systems/extras/nursery.gd:312
+#: systems/extras/nursery.gd:316
 msgid "%s points proudly at a new bud."
-msgstr ""
+msgstr "%s señala orgulloso un capullo nuevo."
 
 #: systems/extras/radio.gd:135
 msgid "E   Radio: %s"
-msgstr ""
+msgstr "E   Radio: %s"
 
 #: systems/extras/radio.gd:135
 msgid "mood music"
-msgstr ""
+msgstr "música ambiental"
 
 #: systems/extras/radio.gd:161
 msgid "New song on the radio: %s"
-msgstr ""
+msgstr "Nueva canción en la radio: %s"
 
 #: systems/extras/weekly.gd:113
 msgid "Not this week: %s"
-msgstr ""
+msgstr "Esta semana no: %s"
 
 #: systems/extras/weekly.gd:254 ui/extras_panel.gd:9 ui/extras_panel.gd:372
+#: data/achievements.json:achievements[extras_weekly_1].name
 msgid "Seed of the Week"
-msgstr ""
+msgstr "Semilla de la semana"
 
 #: systems/extras/weekly_run.gd:68
 msgid "SEED OF THE WEEK  ·  %d / %d hexes  ·  %s%s"
-msgstr ""
+msgstr "SEMILLA DE LA SEMANA  ·  %d / %d hexágonos  ·  %s%s"
 
 #: systems/extras/weekly_run.gd:69
 msgid "  ·  done"
-msgstr ""
+msgstr "  ·  hecho"
 
 #: systems/extras/weekly_run.gd:89
 msgid "Twist"
-msgstr ""
+msgstr "Giro"
 
 #: systems/extras/weekly_run.gd:91
 msgid "Goal"
-msgstr ""
+msgstr "Meta"
 
 #: systems/extras/weekly_run.gd:91 data/events.json:contracts.templates[clean_hexes].text
 msgid "Clean %d hexes"
@@ -2622,47 +2623,47 @@ msgstr "Limpia %d hexágonos"
 
 #: systems/extras/weekly_run.gd:92 ui/extras_panel.gd:376
 msgid "Seed"
-msgstr ""
+msgstr "Semilla"
 
 #: systems/extras/weekly_run.gd:93 systems/extras/weekly_run.gd:119
 msgid "Best"
-msgstr ""
+msgstr "Récord"
 
 #: systems/extras/weekly_run.gd:93 systems/extras/weekly_run.gd:119
 msgid "%s  ·  %d points"
-msgstr ""
+msgstr "%s  ·  %d puntos"
 
 #: systems/extras/weekly_run.gd:93
 msgid "No finish yet"
-msgstr ""
+msgstr "Aún sin terminar"
 
 #: systems/extras/weekly_run.gd:94 systems/extras/weekly_run.gd:122
 msgid "Reward"
-msgstr ""
+msgstr "Recompensa"
 
 #: systems/extras/weekly_run.gd:94
 msgid "A paint chip for your garden (first finish each week)"
-msgstr ""
+msgstr "Una ficha de pintura para tu jardín (la primera vez que terminas cada semana)"
 
 #: systems/extras/weekly_run.gd:96
 msgid "SEED OF THE WEEK"
-msgstr ""
+msgstr "SEMILLA DE LA SEMANA"
 
 #: systems/extras/weekly_run.gd:96
 msgid "Week %d, %d"
-msgstr ""
+msgstr "Semana %d, %d"
 
 #: systems/extras/weekly_run.gd:96
 msgid "Start the clock"
-msgstr ""
+msgstr "Iniciar el reloj"
 
 #: systems/extras/weekly_run.gd:96 systems/extras/weekly_run.gd:123 ui/extras_panel.gd:380
 msgid "Return home"
-msgstr ""
+msgstr "Volver a casa"
 
 #: systems/extras/weekly_run.gd:104
 msgid "The clock is running. Clean %d hexes."
-msgstr ""
+msgstr "El reloj corre. Limpia %d hexágonos."
 
 #: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:388
 msgid "Time"
@@ -2670,35 +2671,35 @@ msgstr "Hora"
 
 #: systems/extras/weekly_run.gd:117 systems/extras/weekly_run.gd:118
 msgid "  (new best)"
-msgstr ""
+msgstr "  (nuevo récord)"
 
 #: systems/extras/weekly_run.gd:118
 msgid "Score"
-msgstr ""
+msgstr "Puntuación"
 
 #: systems/extras/weekly_run.gd:122
 msgid "New paint chip! (%d in all) Weekly decorations in Garden Mode use them."
-msgstr ""
+msgstr "¡Nueva ficha de pintura! (%d en total) Las decoraciones semanales del modo Jardín las usan."
 
 #: systems/extras/weekly_run.gd:123
 msgid "CHALLENGE COMPLETE"
-msgstr ""
+msgstr "DESAFÍO COMPLETADO"
 
 #: systems/extras/weekly_run.gd:123
 msgid "Keep exploring"
-msgstr ""
+msgstr "Seguir explorando"
 
 #: systems/extras/welcome_back.gd:57
 msgid "%d h %d min"
-msgstr ""
+msgstr "%d h %d min"
 
 #: systems/extras/welcome_back.gd:69
 msgid "baled about %d bales"
-msgstr ""
+msgstr "embaló unas %d balas"
 
 #: systems/extras/welcome_back.gd:71
 msgid "kept the base tidy"
-msgstr ""
+msgstr "mantuvo la base ordenada"
 
 #: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:674
 msgid "Cubes earned"
@@ -2706,35 +2707,35 @@ msgstr "Cubos ganados"
 
 #: systems/extras/welcome_back.gd:76
 msgid "No hauler: Lumi cashed the stacked bales. A Haul Bug keeps them moving."
-msgstr ""
+msgstr "Sin transportista: Lumi cobró las balas apiladas. Un Haul Bug las mantiene en marcha."
 
 #: systems/extras/welcome_back.gd:78
 msgid "Plants grew"
-msgstr ""
+msgstr "Plantas crecidas"
 
 #: systems/extras/welcome_back.gd:80
 msgid "Bloomed (seeds)"
-msgstr ""
+msgstr "Florecidas (semillas)"
 
 #: systems/extras/welcome_back.gd:82
 msgid "Scrubbers cleaned the air"
-msgstr ""
+msgstr "Los depuradores limpiaron el aire"
 
 #: systems/extras/welcome_back.gd:141
 msgid "WELCOME BACK"
-msgstr ""
+msgstr "BIENVENIDO DE NUEVO"
 
 #: systems/extras/welcome_back.gd:142
 msgid "Away %s"
-msgstr ""
+msgstr "Fuera %s"
 
 #: systems/extras/welcome_back.gd:163
 msgid "Robots work up to %d h while you're away."
-msgstr ""
+msgstr "Los robots trabajan hasta %d h mientras no estás."
 
 #: systems/extras/welcome_back.gd:166
 msgid "Back to work"
-msgstr ""
+msgstr "A trabajar"
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -2950,7 +2951,7 @@ msgstr "Nombre nuevo"
 
 #: ui/builder_panel.gd:151 ui/builder_panel.gd:306
 msgid "Retire"
-msgstr ""
+msgstr "Jubilar"
 
 #: ui/builder_panel.gd:161
 msgid ""
@@ -3040,7 +3041,7 @@ msgstr "Nada que instalar: faltan esas piezas en el cajón o el equipo ya las ti
 
 #: ui/builder_panel.gd:599
 msgid "Retire? +%d parts"
-msgstr ""
+msgstr "¿Jubilar? +%d piezas"
 
 #: ui/checklist_card.gd:92
 msgid "RESTART"
@@ -3660,83 +3661,83 @@ msgstr "%d CONTRATOS LISTOS  ·  reclámalos en el banco de trabajo"
 
 #: ui/extras_panel.gd:9
 msgid "Radio"
-msgstr ""
+msgstr "Radio"
 
 #: ui/extras_panel.gd:9
 msgid "Album"
-msgstr ""
+msgstr "Álbum"
 
 #: ui/extras_panel.gd:9
 msgid "Nursery"
-msgstr ""
+msgstr "Vivero"
 
 #: ui/extras_panel.gd:58
 msgid "KEEPSAKES"
-msgstr ""
+msgstr "RECUERDOS"
 
 #: ui/extras_panel.gd:70
 msgid "%s / %s  switch tabs"
-msgstr ""
+msgstr "%s / %s  cambiar de pestaña"
 
 #: ui/extras_panel.gd:187
 msgid "SONGS  ·  %d / %d"
-msgstr ""
+msgstr "CANCIONES  ·  %d / %d"
 
 #: ui/extras_panel.gd:196
 msgid "Now playing: %s"
-msgstr ""
+msgstr "Sonando: %s"
 
 #: ui/extras_panel.gd:201
 msgid "NOW PLAYING"
-msgstr ""
+msgstr "SONANDO AHORA"
 
 #: ui/extras_panel.gd:205
 msgid "Your pick plays everywhere until you switch back to the mood music."
-msgstr ""
+msgstr "Tu elección suena en todas partes hasta que vuelvas a la música ambiental."
 
 #: ui/extras_panel.gd:206
 msgid "Back to mood music"
-msgstr ""
+msgstr "Volver a la música ambiental"
 
 #: ui/extras_panel.gd:208
 msgid "The radio hands the music back to the day."
-msgstr ""
+msgstr "La radio le devuelve la música al día."
 
 #: ui/extras_panel.gd:212
 msgid "Mood music"
-msgstr ""
+msgstr "Música ambiental"
 
 #: ui/extras_panel.gd:213
 msgid "The music follows the day: the yard, the streets, the night. Pick a song to play it instead."
-msgstr ""
+msgstr "La música sigue al día: el patio, las calles, la noche. Elige una canción para ponerla en su lugar."
 
 #: ui/extras_panel.gd:214
 msgid "New songs come in as districts and planets are restored."
-msgstr ""
+msgstr "Llegan canciones nuevas a medida que se restauran distritos y planetas."
 
 #: ui/extras_panel.gd:227
 msgid "DISTRICTS"
-msgstr ""
+msgstr "DISTRITOS"
 
 #: ui/extras_panel.gd:229
 msgid "Lumi takes a picture of each district on arrival, and \"after\" pictures as it is restored."
-msgstr ""
+msgstr "Lumi saca una foto de cada distrito al llegar, y fotos de «después» a medida que se restaura."
 
 #: ui/extras_panel.gd:233
 msgid "Before only"
-msgstr ""
+msgstr "Solo antes"
 
 #: ui/extras_panel.gd:241
 msgid "PHOTOS  ·  %d"
-msgstr ""
+msgstr "FOTOS  ·  %d"
 
 #: ui/extras_panel.gd:253
 msgid "Photo"
-msgstr ""
+msgstr "Foto"
 
 #: ui/extras_panel.gd:262
 msgid "Photos you take in photo mode show up here."
-msgstr ""
+msgstr "Las fotos que hagas en el modo foto aparecen aquí."
 
 #: ui/extras_panel.gd:266 ui/photo_panel.gd:58
 msgid "PHOTO MODE"
@@ -3744,99 +3745,99 @@ msgstr "MODO FOTO"
 
 #: ui/extras_panel.gd:276
 msgid "No pictures yet."
-msgstr ""
+msgstr "Aún no hay fotos."
 
 #: ui/extras_panel.gd:287
 msgid "BEFORE"
-msgstr ""
+msgstr "ANTES"
 
 #: ui/extras_panel.gd:306
 msgid "not yet"
-msgstr ""
+msgstr "aún no"
 
 #: ui/extras_panel.gd:316
 msgid "The \"after\" picture comes when the district is half clean."
-msgstr ""
+msgstr "La foto de «después» llega cuando el distrito está medio limpio."
 
 #: ui/extras_panel.gd:322
 msgid "CARETAKERS  ·  %d"
-msgstr ""
+msgstr "CUIDADORES  ·  %d"
 
 #: ui/extras_panel.gd:323
 msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
-msgstr ""
+msgstr "Bonus del jardín: las plantas crecen un %d%% más rápido (hasta un %d%%)."
 
 #: ui/extras_panel.gd:326
 msgid "No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."
-msgstr ""
+msgstr "Nadie se ha jubilado todavía. Los robots viejos o Mk I-II pueden jubilarse aquí o en el Taller del banco; cuidarán el jardín del vivero en la base."
 
 #: ui/extras_panel.gd:335
 msgid "RETIRE A ROBOT"
-msgstr ""
+msgstr "JUBILAR UN ROBOT"
 
 #: ui/extras_panel.gd:337
 msgid "Retiring gives a few parts back, and the robot keeps its name and personality in the nursery."
-msgstr ""
+msgstr "Jubilarlo devuelve unas piezas, y el robot conserva su nombre y su personalidad en el vivero."
 
 #: ui/extras_panel.gd:339
 msgid "No robots in this district."
-msgstr ""
+msgstr "No hay robots en este distrito."
 
 #: ui/extras_panel.gd:346
 msgid "Press again to retire (+%d parts)"
-msgstr ""
+msgstr "Pulsa otra vez para jubilar (+%d piezas)"
 
 #: ui/extras_panel.gd:346
 msgid "Retire  (+%d parts)"
-msgstr ""
+msgstr "Jubilar  (+%d piezas)"
 
 #: ui/extras_panel.gd:371
 msgid "WEEK %d, %d"
-msgstr ""
+msgstr "SEMANA %d, %d"
 
 #: ui/extras_panel.gd:373
 msgid "The same seed and twist for everyone this week. Clean %d hexes as fast as you can. It has its own save, so your world is untouched."
-msgstr ""
+msgstr "La misma semilla y el mismo giro para todos esta semana. Limpia %d hexágonos lo más rápido que puedas. Tiene su propia partida guardada, así que tu mundo queda intacto."
 
 #: ui/extras_panel.gd:374
 msgid "Twist: %s"
-msgstr ""
+msgstr "Giro: %s"
 
 #: ui/extras_panel.gd:377
 msgid "Best time"
-msgstr ""
+msgstr "Mejor tiempo"
 
 #: ui/extras_panel.gd:378
 msgid "Best score"
-msgstr ""
+msgstr "Mejor puntuación"
 
 #: ui/extras_panel.gd:384
 msgid "Restart this week's run"
-msgstr ""
+msgstr "Reiniciar la partida de esta semana"
 
 #: ui/extras_panel.gd:388
 msgid "Resume this week's run"
-msgstr ""
+msgstr "Continuar la partida de esta semana"
 
 #: ui/extras_panel.gd:388
 msgid "Start the challenge"
-msgstr ""
+msgstr "Empezar el desafío"
 
 #: ui/extras_panel.gd:392
 msgid "PAINT CHIPS  ·  %d"
-msgstr ""
+msgstr "FICHAS DE PINTURA  ·  %d"
 
 #: ui/extras_panel.gd:393
 msgid "Finish a week's challenge for its paint chip. Chips unlock the weekly decorations in Garden Mode and paint them."
-msgstr ""
+msgstr "Termina el desafío de una semana para ganar su ficha de pintura. Las fichas desbloquean las decoraciones semanales del modo Jardín y las pintan."
 
 #: ui/extras_panel.gd:406
 msgid "No chips yet."
-msgstr ""
+msgstr "Aún no hay fichas."
 
 #: ui/extras_panel.gd:438
 msgid "No picture yet"
-msgstr ""
+msgstr "Aún no hay foto"
 
 #: ui/frontier_rockets.gd:11
 msgid "FRONTIERS"
@@ -4306,7 +4307,7 @@ msgstr "Modo foto  [%s]"
 
 #: ui/pause_menu.gd:59
 msgid "Keepsakes"
-msgstr ""
+msgstr "Recuerdos"
 
 #: ui/pause_menu.gd:64
 msgid "Save game"
@@ -5947,6 +5948,58 @@ msgstr "No el primero"
 msgid "Find the older seed pod on a new world."
 msgstr "Encuentra la cápsula de semillas más antigua en un mundo nuevo."
 
+#: data/achievements.json:achievements[extras_radio_6].name
+msgid "Pirate Radio"
+msgstr "Radio pirata"
+
+#: data/achievements.json:achievements[extras_radio_6].desc
+msgid "Unlock 6 songs on the base radio."
+msgstr "Desbloquea 6 canciones en la radio de la base."
+
+#: data/achievements.json:achievements[extras_radio_all].name
+msgid "Full Rotation"
+msgstr "Rotación completa"
+
+#: data/achievements.json:achievements[extras_radio_all].desc
+msgid "Unlock every song on the base radio."
+msgstr "Desbloquea todas las canciones de la radio de la base."
+
+#: data/achievements.json:achievements[extras_album_4].name
+msgid "Then and Now"
+msgstr "Antes y ahora"
+
+#: data/achievements.json:achievements[extras_album_4].desc
+msgid "Collect 4 pictures in the photo album."
+msgstr "Reúne 4 fotos en el álbum."
+
+#: data/achievements.json:achievements[extras_retire_1].name
+msgid "Happy Retirement"
+msgstr "Feliz jubilación"
+
+#: data/achievements.json:achievements[extras_retire_1].desc
+msgid "Retire a robot to the nursery garden."
+msgstr "Jubila un robot en el jardín del vivero."
+
+#: data/achievements.json:achievements[extras_visits_5].name
+msgid "Garden Party"
+msgstr "Fiesta en el jardín"
+
+#: data/achievements.json:achievements[extras_visits_5].desc
+msgid "Say hi to the nursery caretakers 5 times."
+msgstr "Saluda 5 veces a los cuidadores del vivero."
+
+#: data/achievements.json:achievements[extras_weekly_1].desc
+msgid "Finish a Seed of the Week challenge."
+msgstr "Termina un desafío de la Semilla de la semana."
+
+#: data/achievements.json:achievements[extras_weekly_4].name
+msgid "Paint Collector"
+msgstr "Coleccionista de colores"
+
+#: data/achievements.json:achievements[extras_weekly_4].desc
+msgid "Earn 4 Seed of the Week paint chips."
+msgstr "Gana 4 fichas de pintura de la Semilla de la semana."
+
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
 msgstr "25 hexágonos prósperos en cualquier lugar de Verdance."
@@ -7201,19 +7254,19 @@ msgstr "Una cometa con la forma del pájaro de WREN, atada a un poste y siempre 
 
 #: data/decor.json:types[weekly_pennant].name
 msgid "Seed of the Week Pennant"
-msgstr ""
+msgstr "Banderín de la Semilla de la semana"
 
 #: data/decor.json:types[weekly_pennant].desc
 msgid "A tall pennant in the colour of your newest Seed of the Week paint chip."
-msgstr ""
+msgstr "Un banderín alto del color de tu última ficha de pintura de la Semilla de la semana."
 
 #: data/decor.json:types[weekly_arch].name
 msgid "Paint Chip Arch"
-msgstr ""
+msgstr "Arco de fichas"
 
 #: data/decor.json:types[weekly_arch].desc
 msgid "A garden arch striped with every paint chip you have earned."
-msgstr ""
+msgstr "Un arco de jardín con una franja por cada ficha de pintura que has ganado."
 
 #: data/designs.json:designs[aurora].tagline
 msgid "Baseline / Explorer"
@@ -9391,6 +9444,10 @@ msgstr "Limpia 30 hexágonos (lago incluido)"
 msgid "Upgrade the base to level 3"
 msgstr "Mejora la base a nivel 3"
 
+#: data/goals.json:goals[extras_radio].text
+msgid "Pick a song on the base radio"
+msgstr "Elige una canción en la radio de la base"
+
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
 msgstr "Planta 25 semillas"
@@ -9530,6 +9587,10 @@ msgstr "Lleva 25 hexágonos a Próspero"
 #: data/goals.json:goals[base_5].text
 msgid "Upgrade the base to level 5"
 msgstr "Mejora la base a nivel 5"
+
+#: data/goals.json:goals[extras_retire].text
+msgid "Retire an old robot to the nursery garden"
+msgstr "Jubila un robot viejo en el jardín del vivero"
 
 #: data/goals.json:goals[rocket].text
 msgid "Launch the rocket onward"
@@ -10197,135 +10258,135 @@ msgstr "Módulo especial"
 
 #: data/radio.json:songs[first_light].name
 msgid "First Light"
-msgstr ""
+msgstr "Primera luz"
 
 #: data/radio.json:songs[first_light].desc
 msgid "The tune Lumi hums on a dusty morning."
-msgstr ""
+msgstr "La melodía que Lumi tararea en una mañana polvorienta."
 
 #: data/radio.json:songs[workbench_waltz].name
 msgid "Workbench Waltz"
-msgstr ""
+msgstr "Vals del banco de trabajo"
 
 #: data/radio.json:songs[workbench_waltz].desc
 msgid "Cozy chords for tinkering at the bench."
-msgstr ""
+msgstr "Acordes acogedores para trastear en el banco."
 
 #: data/radio.json:songs[hopeful_static].name
 msgid "Hopeful Static"
-msgstr ""
+msgstr "Estática esperanzadora"
 
 #: data/radio.json:songs[hopeful_static].desc
 msgid "What the radio picked up the night Lumi landed."
-msgstr ""
+msgstr "Lo que captó la radio la noche que Lumi aterrizó."
 
 #: data/radio.json:songs[lantern_hours].name
 msgid "Lantern Hours"
-msgstr ""
+msgstr "Horas de farol"
 
 #: data/radio.json:songs[lantern_hours].desc
 msgid "Night music, slow and a little blue."
-msgstr ""
+msgstr "Música nocturna, lenta y un poco triste."
 
 #: data/radio.json:songs[rust_lullaby].name
 msgid "Rust Lullaby"
-msgstr ""
+msgstr "Nana de óxido"
 
 #: data/radio.json:songs[rust_lullaby].desc
 msgid "A music box found in a scrapyard, still in tune."
-msgstr ""
+msgstr "Una caja de música encontrada en un desguace, todavía afinada."
 
 #: data/radio.json:songs[sprout_shuffle].name
 msgid "Sprout Shuffle"
-msgstr ""
+msgstr "Shuffle de brotes"
 
 #: data/radio.json:songs[sprout_shuffle].desc
 msgid "Bouncy and green. The seedlings like this one."
-msgstr ""
+msgstr "Saltarina y verde. A los brotes les gusta esta."
 
 #: data/radio.json:songs[sprout_shuffle].hint
 msgid "Grow 10 plants to bloom"
-msgstr ""
+msgstr "Haz florecer 10 plantas"
 
 #: data/radio.json:songs[old_town_rooftops].name
 msgid "Old Town Rooftops"
-msgstr ""
+msgstr "Tejados del Casco Viejo"
 
 #: data/radio.json:songs[old_town_rooftops].desc
 msgid "Evening jazz over the mended roofs."
-msgstr ""
+msgstr "Jazz al anochecer sobre los tejados arreglados."
 
 #: data/radio.json:songs[old_town_rooftops].hint
 msgid "Raise a base to level 3"
-msgstr ""
+msgstr "Sube una base al nivel 3"
 
 #: data/radio.json:songs[greenline_express].name
 msgid "Greenline Express"
-msgstr ""
+msgstr "Expreso de la línea verde"
 
 #: data/radio.json:songs[greenline_express].desc
 msgid "A quick groove for a district that runs itself."
-msgstr ""
+msgstr "Un ritmo ágil para un distrito que funciona solo."
 
 #: data/radio.json:songs[greenline_express].hint
 msgid "Raise a base to level 5"
-msgstr ""
+msgstr "Sube una base al nivel 5"
 
 #: data/radio.json:songs[far_shore].name
 msgid "Far Shore"
-msgstr ""
+msgstr "Orilla lejana"
 
 #: data/radio.json:songs[far_shore].desc
 msgid "Wide and airy, for the next district over the hill."
-msgstr ""
+msgstr "Amplia y aireada, para el siguiente distrito tras la colina."
 
 #: data/radio.json:songs[far_shore].hint
 msgid "Visit a second district"
-msgstr ""
+msgstr "Visita un segundo distrito"
 
 #: data/radio.json:songs[homeward].name
 msgid "Homeward"
-msgstr ""
+msgstr "De vuelta a casa"
 
 #: data/radio.json:songs[homeward].desc
 msgid "The swelling theme from Lumi's long fall."
-msgstr ""
+msgstr "El tema que crece de la larga caída de Lumi."
 
 #: data/radio.json:songs[homeward].hint
 msgid "Raise three bases to level 5"
-msgstr ""
+msgstr "Sube tres bases al nivel 5"
 
 #: data/radio.json:songs[verdance_in_bloom].name
 msgid "Verdance in Bloom"
-msgstr ""
+msgstr "Verdance en flor"
 
 #: data/radio.json:songs[verdance_in_bloom].desc
 msgid "The whole planet in flower, in four chords."
-msgstr ""
+msgstr "Todo el planeta en flor, en cuatro acordes."
 
 #: data/radio.json:songs[verdance_in_bloom].hint
 msgid "Bring the Cradle home"
-msgstr ""
+msgstr "Trae el Cradle a casa"
 
 #: data/radio.json:songs[cradle_choir].name
 msgid "Cradle Choir"
-msgstr ""
+msgstr "Coro del Cradle"
 
 #: data/radio.json:songs[cradle_choir].desc
 msgid "The ark's garden deck, remembered in slow swells."
-msgstr ""
+msgstr "La cubierta jardín del arca, recordada en lentas oleadas."
 
 #: data/radio.json:songs[cradle_choir].hint
 msgid "See the Cradle finale"
-msgstr ""
+msgstr "Ve el final del Cradle"
 
 #: data/radio.json:songs[starseed_serenade].name
 msgid "Starseed Serenade"
-msgstr ""
+msgstr "Serenata de las astrosemillas"
 
 #: data/radio.json:songs[starseed_serenade].desc
 msgid "A new world on the horizon, lydian and bright."
-msgstr ""
+msgstr "Un mundo nuevo en el horizonte, lidio y brillante."
 
 #: data/research.json:branches[robotics].name
 msgid "Robotics"
@@ -11479,51 +11540,51 @@ msgstr "Láseres de puntería extra: levanta varias piezas a la vez."
 
 #: data/weekly.json:twists[scoopies_only].name
 msgid "Scoopies Only"
-msgstr ""
+msgstr "Solo Scoopies"
 
 #: data/weekly.json:twists[scoopies_only].desc
 msgid "Only Scoopies answer the call this week. Lumi does the hauling."
-msgstr ""
+msgstr "Esta semana solo los Scoopies acuden a la llamada. Lumi se encarga del transporte."
 
 #: data/weekly.json:twists[dry_spell].name
 msgid "Dry Spell"
-msgstr ""
+msgstr "Sequía"
 
 #: data/weekly.json:twists[dry_spell].desc
 msgid "No water robots, and the soil is thin. Water the garden by hand."
-msgstr ""
+msgstr "Sin robots de riego, y el suelo es pobre. Riega el jardín a mano."
 
 #: data/weekly.json:twists[heavy_junk].desc
 msgid "Dense scrap: scooping is slower, but bales sell for more."
-msgstr ""
+msgstr "Chatarra densa: recoger es más lento, pero las balas se venden más caras."
 
 #: data/weekly.json:twists[storm_week].name
 msgid "Storm Week"
-msgstr ""
+msgstr "Semana de tormentas"
 
 #: data/weekly.json:twists[storm_week].desc
 msgid "Rain showers four times as often. Plants love it."
-msgstr ""
+msgstr "Los chubascos llegan cuatro veces más a menudo. A las plantas les encanta."
 
 #: data/weekly.json:twists[supply_rush].name
 msgid "Supply Rush"
-msgstr ""
+msgstr "Fiebre de suministros"
 
 #: data/weekly.json:twists[supply_rush].desc
 msgid "Tailwinds: Lumi is quicker and supply drops come twice as often."
-msgstr ""
+msgstr "Viento de cola: Lumi es más rápido y los lanzamientos de suministros llegan el doble de a menudo."
 
 #: data/weekly.json:twists[long_nights].desc
 msgid "Nights last twice as long. The night shift pays a little more."
-msgstr ""
+msgstr "Las noches duran el doble. El turno de noche paga un poco más."
 
 #: data/weekly.json:twists[no_haulers].name
 msgid "No Haulers"
-msgstr ""
+msgstr "Sin transportistas"
 
 #: data/weekly.json:twists[no_haulers].desc
 msgid "The Haul Bugs are on holiday. Every bale goes to the scale by hand."
-msgstr ""
+msgstr "Los Haul Bugs están de vacaciones. Cada bala va a la báscula a mano."
 
 #: data/wren_lines.json:wake
 msgid "...carrier... Lumi? Relay at four percent. It's WREN. Hello. Hello. I'm still here."

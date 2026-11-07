@@ -2545,35 +2545,35 @@ msgstr "[Bàšé ļévéļ 5 ~]"
 msgid "Album: an \"after\" picture of %s (%s)."
 msgstr "[Àļbûm: àñ \"àƒţéŕ\" þîçţûŕé ôƒ %s (%s). ~~~~~~~~~~]"
 
-#: systems/extras/nursery.gd:88
+#: systems/extras/nursery.gd:92
 msgid "Only Mk I-II robots retire early. %s can retire in %d min."
 msgstr "[Ôñļý Mķ Î-ÎÎ ŕôbôţš ŕéţîŕé éàŕļý. %s çàñ ŕéţîŕé îñ %d mîñ. ~~~~~~~~~~~~~~~~~]"
 
-#: systems/extras/nursery.gd:116
+#: systems/extras/nursery.gd:120
 msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
 msgstr "[%s ŕéţîŕéš ţô ţĥé ñûŕšéŕý ĝàŕðéñ. +%d þàŕţš, àñð ţĥé ƒļôŵéŕš ĝéţ à çàŕéţàķéŕ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/extras/nursery.gd:204
+#: systems/extras/nursery.gd:208
 msgid "E   Say hi to %s"
 msgstr "E   [Šàý ĥî ţô %s ~]"
 
-#: systems/extras/nursery.gd:262
+#: systems/extras/nursery.gd:266
 msgid "CARETAKER · %s"
 msgstr "[ÇÀŔÉŢÀĶÉŔ · %s ~~]"
 
-#: systems/extras/nursery.gd:309
+#: systems/extras/nursery.gd:313
 msgid "%s beeps hello and shows Lumi the marigolds."
 msgstr "[%s bééþš ĥéļļô àñð šĥôŵš Ļûmî ţĥé màŕîĝôļðš. ~~~~~~~~~~~~]"
 
-#: systems/extras/nursery.gd:310
+#: systems/extras/nursery.gd:314
 msgid "%s is busy with the watering can, but waves anyway."
 msgstr "[%s îš bûšý ŵîţĥ ţĥé ŵàţéŕîñĝ çàñ, bûţ ŵàvéš àñýŵàý. ~~~~~~~~~~~~~~~]"
 
-#: systems/extras/nursery.gd:311
+#: systems/extras/nursery.gd:315
 msgid "%s hums to the seedlings. Retirement suits it."
 msgstr "[%s ĥûmš ţô ţĥé šééðļîñĝš. Ŕéţîŕéméñţ šûîţš îţ. ~~~~~~~~~~~~~]"
 
-#: systems/extras/nursery.gd:312
+#: systems/extras/nursery.gd:316
 msgid "%s points proudly at a new bud."
 msgstr "[%s þôîñţš þŕôûðļý àţ à ñéŵ bûð. ~~~~~~~~]"
 
@@ -2594,6 +2594,7 @@ msgid "Not this week: %s"
 msgstr "[Ñôţ ţĥîš ŵééķ: %s ~~~]"
 
 #: systems/extras/weekly.gd:254 ui/extras_panel.gd:9 ui/extras_panel.gd:372
+#: data/achievements.json:achievements[extras_weekly_1].name
 msgid "Seed of the Week"
 msgstr "[Šééð ôƒ ţĥé Ŵééķ ~~~]"
 
@@ -5943,6 +5944,58 @@ msgstr "[Ñôţ ţĥé Fîŕšţ ~~]"
 #: data/achievements.json:achievements[late_older_pod].desc
 msgid "Find the older seed pod on a new world."
 msgstr "[Fîñð ţĥé ôļðéŕ šééð þôð ôñ à ñéŵ ŵôŕļð. ~~~~~~~~~~~]"
+
+#: data/achievements.json:achievements[extras_radio_6].name
+msgid "Pirate Radio"
+msgstr "[Þîŕàţé Ŕàðîô ~]"
+
+#: data/achievements.json:achievements[extras_radio_6].desc
+msgid "Unlock 6 songs on the base radio."
+msgstr "[Ûñļôçķ 6 šôñĝš ôñ ţĥé bàšé ŕàðîô. ~~~~~~~~~]"
+
+#: data/achievements.json:achievements[extras_radio_all].name
+msgid "Full Rotation"
+msgstr "[Fûļļ Ŕôţàţîôñ ~~]"
+
+#: data/achievements.json:achievements[extras_radio_all].desc
+msgid "Unlock every song on the base radio."
+msgstr "[Ûñļôçķ évéŕý šôñĝ ôñ ţĥé bàšé ŕàðîô. ~~~~~~~~~~]"
+
+#: data/achievements.json:achievements[extras_album_4].name
+msgid "Then and Now"
+msgstr "[Ţĥéñ àñð Ñôŵ ~]"
+
+#: data/achievements.json:achievements[extras_album_4].desc
+msgid "Collect 4 pictures in the photo album."
+msgstr "[Çôļļéçţ 4 þîçţûŕéš îñ ţĥé þĥôţô àļbûm. ~~~~~~~~~~]"
+
+#: data/achievements.json:achievements[extras_retire_1].name
+msgid "Happy Retirement"
+msgstr "[Ĥàþþý Ŕéţîŕéméñţ ~~~]"
+
+#: data/achievements.json:achievements[extras_retire_1].desc
+msgid "Retire a robot to the nursery garden."
+msgstr "[Ŕéţîŕé à ŕôbôţ ţô ţĥé ñûŕšéŕý ĝàŕðéñ. ~~~~~~~~~~]"
+
+#: data/achievements.json:achievements[extras_visits_5].name
+msgid "Garden Party"
+msgstr "[Ĝàŕðéñ Þàŕţý ~]"
+
+#: data/achievements.json:achievements[extras_visits_5].desc
+msgid "Say hi to the nursery caretakers 5 times."
+msgstr "[Šàý ĥî ţô ţĥé ñûŕšéŕý çàŕéţàķéŕš 5 ţîméš. ~~~~~~~~~~~]"
+
+#: data/achievements.json:achievements[extras_weekly_1].desc
+msgid "Finish a Seed of the Week challenge."
+msgstr "[Fîñîšĥ à Šééð ôƒ ţĥé Ŵééķ çĥàļļéñĝé. ~~~~~~~~~~]"
+
+#: data/achievements.json:achievements[extras_weekly_4].name
+msgid "Paint Collector"
+msgstr "[Þàîñţ Çôļļéçţôŕ ~~]"
+
+#: data/achievements.json:achievements[extras_weekly_4].desc
+msgid "Earn 4 Seed of the Week paint chips."
+msgstr "[Éàŕñ 4 Šééð ôƒ ţĥé Ŵééķ þàîñţ çĥîþš. ~~~~~~~~~~]"
 
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
@@ -9388,6 +9441,10 @@ msgstr "[Çļéàñ 30 ĥéxéš (ļàķé ţôô) ~~~~~~]"
 msgid "Upgrade the base to level 3"
 msgstr "[Ûþĝŕàðé ţĥé bàšé ţô ļévéļ 3 ~~~~~~]"
 
+#: data/goals.json:goals[extras_radio].text
+msgid "Pick a song on the base radio"
+msgstr "[Þîçķ à šôñĝ ôñ ţĥé bàšé ŕàðîô ~~~~~~~]"
+
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
 msgstr "[Þļàñţ 25 šééðš ~~]"
@@ -9527,6 +9584,10 @@ msgstr "[Ĝéţ 25 ĥéxéš ţô Ţĥŕîvîñĝ ~~~~~]"
 #: data/goals.json:goals[base_5].text
 msgid "Upgrade the base to level 5"
 msgstr "[Ûþĝŕàðé ţĥé bàšé ţô ļévéļ 5 ~~~~~~]"
+
+#: data/goals.json:goals[extras_retire].text
+msgid "Retire an old robot to the nursery garden"
+msgstr "[Ŕéţîŕé àñ ôļð ŕôbôţ ţô ţĥé ñûŕšéŕý ĝàŕðéñ ~~~~~~~~~~~]"
 
 #: data/goals.json:goals[rocket].text
 msgid "Launch the rocket onward"
