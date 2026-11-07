@@ -318,3 +318,24 @@ it to die under its trash; each planet reveals more. The game ends when every pl
 Verdance, builds a big launch base, gives the rocket a final "Homeward" upgrade, plants the last seed and launches
 home (reusing the launch sequence, ark finale and space stage), then credits. Random Cradle Mode worlds become
 optional post-game. Owner: wt/home (progression, story, ending) + wt/worlds2 (planet looks, 3 save profiles).
+
+## Update: planet Ochre environment (wt/p_ochre)
+- Done: `planet/planets/ochre/` (OchreEnv `env.gd`, `pit.gd`, `props.gd`, `excavator.gd`, shaders, `junk_biome.json`):
+  the play field sits on a wide haul bench low inside an enormous terraced open-pit mine (2 steps down to a
+  sludge pond, 9 benches of layered ochre / terracotta / cream rock up to a ~100 m rim, haul roads spiralling
+  between them), layered mesas and salt pans on the plateau, a white-gold two-sun sky (canon binary star,
+  reads `SolarSystem.suns_for("ochre")` when home's helper exists) with a companion fill light, heat shimmer,
+  dust devils. Three bucket-wheel excavators (one toppled on the rim), haul trucks. Junk: ore tailings,
+  broken drill bits and rods, Ledger ore crates, bucket teeth, ore sacks (procedural, registered in AssetLib).
+  Stages: ruined (rust, slumped booms, salt crust) -> mid (repainted, booms raised, shade sails) -> future
+  (white machines with planters, wind-wheel vanes and a wind-catcher tower, solar sails with thin light
+  seams, a light seam on each terrace crest). Restoration (hex levels) greens the terraces from the floor up:
+  crop rows along the contours, water channels at each wall toe, vines, palms and succulents, an oasis pool.
+- Registry: `data/planets.json` (planet id -> env script, sky, fog, sun, ambient, palette, junk tint, music
+  mood); `planet/planets/planet_envs.gd` (PlanetEnvs: prepare/apply, dev hook). Dev: `--planet-env=ochre`
+  (a wild district dressed by the env), `--ochre-restore=0..1`, `--ochre-cam=x,y,z,tx,ty,tz`.
+- Integration for home/worlds2: call `PlanetEnvs.prepare(kind)` before the field is generated (junk models and
+  biome set), set `field.biome = kind.junk_biome`, `view.skip_horizon = true`, `field.set_meta("planet_env", id)`
+  (FutureLayer then skips its city spires), then `PlanetEnvs.apply(world, kind)` once the scene is built.
+- Next: waterfalls between terrace channels at the futuristic stage; tune on real hardware (pit terrain is
+  ~90k vertices in 16 sectors; plants ~4.7k instances in 28 MultiMeshes with visibility ranges).
