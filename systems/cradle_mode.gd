@@ -79,7 +79,11 @@ static func save_profile() -> bool:
 	if not persist:
 		return false
 	DirAccess.make_dir_recursive_absolute(profile_path().get_base_dir())
-	return SaveManager.write_dict(profile_path(), to_dict())
+	_p()["saved_unix"] = Time.get_unix_time_from_system()  # [worlds2] Steam Cloud: newest profile wins
+	var ok: bool = SaveManager.write_dict(profile_path(), to_dict())
+	if ok:
+		SteamService.on_saved(profile_path())  # [worlds2] the profile syncs with the world slots
+	return ok
 
 
 static func to_dict() -> Dictionary:
@@ -94,6 +98,9 @@ static func from_dict(d: Dictionary) -> Dictionary:
 	for k: String in ["starseeds", "starseeds_total"]:
 		p[k] = float(d.get(k, 0.0))
 	p["unlocked"] = bool(d.get("unlocked", false))
+	p["saved_unix"] = float(d.get("saved_unix", 0.0))  # [worlds2]
+	if d.has("name"):  # [worlds2] the save profile's name (systems/profile_slots.gd)
+		p["name"] = str(d["name"])
 	p["current"] = int(d.get("current", 0))
 	var hl: Dictionary = {}
 	for k: Variant in (d.get("heirlooms", {}) as Dictionary):
@@ -474,10 +481,44 @@ static func _change_scene(tree: SceneTree) -> void:
 	tree.change_scene_to_file.call_deferred("res://scenes/slice.tscn")
 
 
+## [worlds2] Title screen world picker: make world `i` the current one without changing scenes, so
+## Continue loads it. A world with no save yet is prepared fresh (with the carried-over meta flags
+## read from the save of the world that was current). Returns false for a bad index.
+static func select_world(i: int) -> bool:
+	if i < 0 or i >= worlds().size():
+		return false
+	var carry: Dictionary = {}
+	if SaveManager.has_save():
+		var fl: Dictionary = SaveManager.read_dict(SaveManager.slot_path()).get("flags", {})
+		for k: Variant in WorldGen.cfg().get("carry_flags", []):
+			if fl.has(str(k)):
+				carry[str(k)] = fl[str(k)]
+	_p()["current"] = i
+	apply_current()
+	save_profile()
+	if not SaveManager.has_save() and i > 0:
+		prepare_new_world_state(carry)
+		GameState.reload_in_memory = true  # the slice starts from this prepared state
+	return true
+
+
+## [worlds2] After SaveManager.set_profile: read that save profile's Cradle profile and point the
+## save slot at its current world.
+static func reload_for_profile() -> void:
+	if persist:
+		load_profile()
+	else:
+		profile = default_profile()
+	apply_current()
+
+
 ## Title screen New Game: every world is erased and the profile starts over.
 static func reset_all() -> void:
 	for w: Dictionary in worlds():
 		SaveManager.delete_save(int(w.get("slot", 0)))
+	var keep_name: Variant = _p().get("name")  # [worlds2] the save profile keeps its name
 	profile = default_profile()
+	if keep_name != null:
+		profile["name"] = keep_name
 	save_profile()
 	apply_current()

@@ -72,14 +72,41 @@ func read(name: String) -> PackedByteArray:
 	return r if r is PackedByteArray else PackedByteArray()
 
 
+## [worlds2] The cloud name of a local save: save profiles (user://saves/p2/slot_0.save) share one flat
+## cloud namespace, so their files carry the profile as a prefix ("p2_slot_0.save"). Pure.
+static func cloud_name(local_path: String) -> String:
+	var parent: String = local_path.get_base_dir().get_file()
+	if parent.length() >= 2 and parent.begins_with("p") and parent.substr(1).is_valid_int():
+		return parent + "_" + local_path.get_file()
+	return local_path.get_file()
+
+
 ## Upload a local file. Returns true when Steam accepted it.
-func push(local_path: String) -> bool:
+func push(local_path: String, name: String = "") -> bool:
 	if not enabled() or not FileAccess.file_exists(local_path):
 		return false
 	var bytes: PackedByteArray = FileAccess.get_file_as_bytes(local_path)
 	if bytes.is_empty():
 		return false
-	return bool(api.call("fileWrite", local_path.get_file(), bytes, bytes.size()))
+	return bool(api.call("fileWrite", name if name != "" else cloud_name(local_path), bytes, bytes.size()))
+
+
+## [worlds2] Saves uploaded before save profiles existed (no prefix) become profile 1's, so an old
+## PC's cloud saves still reach a new install. Never overwrites a prefixed copy. Returns the count.
+func adopt_legacy(prefix: String = "p1_") -> int:
+	var n: int = 0
+	if not enabled():
+		return n
+	var have: PackedStringArray = list()
+	for nm: String in have:
+		if nm.begins_with("p") and nm.contains("_") and nm.get_slice("_", 0).substr(1).is_valid_int():
+			continue  # already a profile file
+		if (prefix + nm) in have:
+			continue
+		var bytes: PackedByteArray = read(nm)
+		if not bytes.is_empty() and bool(api.call("fileWrite", prefix + nm, bytes, bytes.size())):
+			n += 1
+	return n
 
 
 func delete(name: String) -> void:
@@ -101,20 +128,24 @@ func list(suffix: String = ".save") -> PackedStringArray:
 
 
 ## Bring `dir` and the cloud in step, newest save wins per file. Returns {name: "cloud"|"local"}.
-func sync_dir(dir: String) -> Dictionary:
+## [worlds2] `prefix` picks one save profile's cloud files ("p2_"); the result uses local names.
+func sync_dir(dir: String, prefix: String = "") -> Dictionary:
 	var result: Dictionary = {}
 	if not enabled():
 		return result
 	DirAccess.make_dir_recursive_absolute(dir)
 	var names: Dictionary = {}
 	for nm: String in list():
-		names[nm] = true
+		if prefix == "":
+			names[nm] = true
+		elif nm.begins_with(prefix):
+			names[nm.substr(prefix.length())] = true
 	for nm: String in DirAccess.get_files_at(dir):
 		if nm.ends_with(".save"):
 			names[nm] = true
 	for nm: String in names:
 		var path: String = dir.path_join(nm)
-		var bytes: PackedByteArray = read(nm)
+		var bytes: PackedByteArray = read(prefix + nm)
 		var pick: String = pick_newer(FileAccess.file_exists(path), saved_unix_of_file(path), not bytes.is_empty(), saved_unix_of_bytes(bytes))
 		if pick == "cloud":
 			if FileAccess.file_exists(path):
@@ -128,6 +159,6 @@ func sync_dir(dir: String) -> Dictionary:
 				DirAccess.remove_absolute(path)
 			DirAccess.rename_absolute(path + ".tmp", path)
 		elif pick == "local":
-			push(path)
+			push(path, prefix + nm)
 		result[nm] = pick
 	return result

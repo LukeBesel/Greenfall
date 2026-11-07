@@ -335,3 +335,50 @@ solar-system orrery that zooms into a planet's globe to pick the hub (wt/home).
   `Audio.play_track(id)` / `stop_track()`. See docs/AUDIO.md. Needs wiring on the planet branches:
   call `set_planet_theme` on planet load, `set_music_mood("homecoming")` in the ending, and
   `Audio.loop("hover_spray", x)` while Lumi hovers over water. Next: owner listening pass.
+## Update: each world its own look, story and save sync (wt/worlds2)
+- **World looks** (`systems/world_look.gd`, `data/world_looks.json`, `planet/world_look_view.gd`): each
+  Cradle Mode world type has its own sky grade (over the planet haze, easing off as the district is
+  restored but keeping its identity), a sky body (`planet/sky_body.gd`, `art/shaders/sky_body.gdshader`:
+  a ringed gas giant over the Ice Moon, twin moons over the Desert, a big tide moon over the Ocean, a
+  shattered moon with a debris ring over the Rust World; the Marsh mist hides the sky), a city tint and
+  weathering overlay (`art/shaders/world_weather.gdshader`: frosted, sun-bleached, coastal, overgrown,
+  corroded), yard dressing (drift colour, bleached cloth, puddles) and a landmark
+  (`planet/world_landmark.gd`: seed silo, solar tower, surge barrier, overgrown cooling tower, gantry
+  crane; ruined parts until base 3, thin trim lights from base 3, mended from base 4). Modifiers show:
+  Long Nights darkens nights (`SkyDirector.night_dark`), Heavy Rain doubles yard puddles, wets the junk
+  and thickens the fog, Rich Salvage gives the junk a metallic shine. Verdance is untouched.
+- **Save profiles** (3 slots, `user://saves/p1..p3`; `SaveManager.profile_slot/profile_dir/set_profile/
+  delete_profile`, `systems/profile_slots.gd`): each has its own worlds, Heirlooms and progress; settings
+  are shared. Pre-profile saves move into p1 on first start (`SaveManager.migrate_to_profiles`).
+  Title > Profiles (`ui/profile_picker.gd`): per slot name, play time, planets, current planet and
+  district, Bloom %, cubes / seeds / parts; Continue (then the planet list, `ui/world_picker.gd`, when
+  the profile has more than one), New (confirm), Rename, Delete (confirm). Pad focus grid; cancel backs
+  out. `CradleMode.select_world` points Continue at a planet (an unplayed one lands fresh).
+- **Planet hook for the fixed solar system**: `WorldLook.planet_id()` (a world record's "planet"/"look"
+  key), `data/world_looks.json` "planets" maps planet ids onto look types (with overrides), and when
+  `data/planets.json` lists a planet with an env script (default `planet/planets/<id>/env.gd`),
+  `WorldLookView` instances it and calls `apply(world, field, kind)` (kind city | wild | frontier;
+  optional `set_progress(progress, hub_level)`); the env then owns the art (no generic landmark or sky
+  body unless the look says keep_landmark / keep_sky_body); grade, tint and weathering stay data-driven.
+- **WREN per world** (`systems/world_story.gd`, `data/wren_lines.json` `world_<planet or type>_<beat>`):
+  arrival, two memory notes revealing what the Ledger did to that world (strip-mined, pumped dry,
+  dredged, poisoned, its ships broken), halfway and restored, clear over the ark's
+  relay (`Wren.say(..., stage_override)`), remembered per world save (`flags.world_story`).
+- **Steam Cloud**: `profile.save` is stamped with `saved_unix` and uploaded on every write, so newest-wins
+  sync covers it with the world slots (docs/steam/README.md updated for both cloud modes).
+- **Binary sun on every planet** (owner rule; `planet/binary_sun.gd`, `art/shaders/sun_disc.gdshader`, made
+  by SkyDirector, so Verdance and frontiers too): the PhysicalSky draws the warm primary (scaled by its
+  size), the cooler companion gets its own disc with a thin halo at a fixed separation (they rise and set
+  together) and an unshadowed warm fill light. Sizes and energies come from `SolarSystem.suns_for(planet)`
+  (home's systems/solar_system.gd + data/solar_system.json) when present, else the canon defaults.
+- Steam Cloud covers every profile folder under a per-profile prefix (`p2_slot_0.save`); unprefixed cloud
+  saves from older builds are adopted into profile 1.
+- Dev: `--world-mods=heavy_rain+long_nights` (shots), `--menu=profiles|worlds --sample-worlds=N` (title).
+- Tests: `tests/test_world_look.gd` (look selection, planet mapping and env hook, modifiers, easing,
+  landmarks, sky bodies, WREN beats and lines, picker focus and selection, profile cloud stamp) and
+  `tests/test_profiles.gd` (migration, isolation, New/Delete/Rename, summaries, focus grid, cloud
+  prefixes); round trip checks the world look, the WREN thread, the profile stamp, migration into p1
+  and two profiles kept apart.
+- Next: wildlife and plants per world type (snow hares, dune lizards); per-world music tint; the world
+  picker could show a small render of each world.
+

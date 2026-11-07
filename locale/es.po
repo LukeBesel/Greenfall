@@ -416,7 +416,7 @@ msgstr "SALTO"
 msgid "LIFT OFF"
 msgstr "DESPEGUE"
 
-#: automation/rocket.gd:778 story/cine.gd:68
+#: automation/rocket.gd:789 story/cine.gd:68
 msgid "Space / Esc  skip"
 msgstr "Espacio / Esc  saltar"
 
@@ -1164,55 +1164,55 @@ msgstr "Enlace de robots en línea. Pulsa B para el mando: pinta zonas y manda e
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 en línea. Núcleo Floral 4%: luz verde baja. Relé del Cradle: débil. Haz crecer algo."
 
-#: scenes/slice.gd:804
+#: scenes/slice.gd:813
 msgid "HEX CLEAN!  +%s"
 msgstr "¡HEXÁGONO LIMPIO!  +%s"
 
-#: scenes/slice.gd:818
+#: scenes/slice.gd:827
 msgid "Milestone: %d hexes clean!"
 msgstr "Hito: ¡%d hexágonos limpios!"
 
-#: scenes/slice.gd:820
+#: scenes/slice.gd:829
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "Todo el desguace está limpio. Lumi emite un pitido muy largo y muy feliz."
 
-#: scenes/slice.gd:827
+#: scenes/slice.gd:836
 msgid "%s is out of range: %s"
 msgstr "%s está fuera de alcance: %s"
 
-#: scenes/slice.gd:837
+#: scenes/slice.gd:846
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Bloqueado. Sube tu base a nivel 5 para construir la plataforma de lanzamiento."
 
-#: scenes/slice.gd:840 ui/rockets_panel.gd:39
+#: scenes/slice.gd:849 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Celdas de energía recargando: %s. Las mejoras del cohete las recargan más rápido."
 
-#: scenes/slice.gd:894
+#: scenes/slice.gd:903
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Aterrizaje: %s. Base %d de %d. %s"
 
-#: scenes/slice.gd:895
+#: scenes/slice.gd:904
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "El cohete está aparcado en el solar, listo cuando se recarguen sus celdas."
 
-#: scenes/slice.gd:895
+#: scenes/slice.gd:904
 msgid "Landed on the base pad."
 msgstr "Aterrizaje en la plataforma de la base."
 
-#: scenes/slice.gd:986
+#: scenes/slice.gd:995
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Las mejoras necesitan un banco de trabajo. Vuelve a la base."
 
-#: scenes/slice.gd:1158
+#: scenes/slice.gd:1167
 msgid "Welcome back. The junk waited for you."
 msgstr "Bienvenido de nuevo. La chatarra te ha esperado."
 
-#: scenes/slice.gd:1175
+#: scenes/slice.gd:1184
 msgid "OUTPOST %d · Lv%d"
 msgstr "PUESTO %d · Nv%d"
 
-#: scenes/slice.gd:1175
+#: scenes/slice.gd:1184
 msgid "OUTPOST %d · RUIN"
 msgstr "PUESTO %d · RUINA"
 
@@ -1252,7 +1252,7 @@ msgstr "Robots construidos"
 msgid "Time played"
 msgstr "Tiempo jugado"
 
-#: steam/demo_end_screen.gd:78 ui/main_menu.gd:331
+#: steam/demo_end_screen.gd:78 ui/main_menu.gd:340
 msgid "Wishlist on Steam"
 msgstr "Añadir a deseados en Steam"
 
@@ -1268,7 +1268,7 @@ msgstr "Pantalla de título"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "Seguir jugando: el primer distrito sigue abierto, con la base a nivel %d."
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:759 ui/main_menu.gd:427
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:759 ui/main_menu.gd:446
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
@@ -1578,59 +1578,59 @@ msgstr "...Es verde. Lumi, es verde de verdad."
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "Mantenla regada. Aquí fuera las semillas escasean, pero cada flor devuelve una, y un poco de luz verde para tu núcleo. Así es como empieza."
 
-#: story/intro.gd:281
+#: story/intro.gd:282
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr "Hace trescientos años, las últimas semillas dejaron Verdance a bordo del arca Cradle."
 
-#: story/intro.gd:299
+#: story/intro.gd:300
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr "Lumi, el pequeño guardasemillas del arca, cantaba a los plantones cada noche."
 
-#: story/intro.gd:312
+#: story/intro.gd:313
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr "¿Otra vez tarareando, Lumi? No te oyen, ¿sabes? ...Aunque crecen más rápido cuando lo haces."
 
-#: story/intro.gd:331
+#: story/intro.gd:332
 msgid "Then, one night, the sky came apart."
 msgstr "Entonces, una noche, el cielo se rompió."
 
-#: story/intro.gd:363
+#: story/intro.gd:364
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr "¡Brecha en el casco de la cámara! ¡Lumi, deja las bandejas y apártate!"
 
-#: story/intro.gd:426
+#: story/intro.gd:427
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr "Lumi— aguanta— no puedo darle la vuelta— aguanta—"
 
-#: story/intro.gd:439
+#: story/intro.gd:440
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "El arca no pudo volver. La cápsula cayó durante días."
 
-#: story/intro.gd:611
+#: story/intro.gd:612
 msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
 msgstr "...¿Lumi? ...Lumi. El relé apenas aguanta, pero te tengo. Has caído. Estás en Verdance."
 
-#: story/intro.gd:618
+#: story/intro.gd:619
 msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
 msgstr "Tu núcleo funciona con luz verde, el brillo que desprenden los seres vivos. Ahí abajo ya no queda nada verde. Por eso te apagas."
 
-#: story/intro.gd:621
+#: story/intro.gd:622
 msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
 msgstr "Así que hagamos un poco. Limpia el suelo, planta esos plantones. Cada flor alimenta tu núcleo."
 
-#: story/intro.gd:628
+#: story/intro.gd:629
 msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
 msgstr "Llena tu Núcleo Floral. Reconstruye una plataforma de lanzamiento. Luego vuelas a casa con nosotros. ...Regadera a regadera."
 
-#: story/intro.gd:691
+#: story/intro.gd:692
 msgid "%s  skip"
 msgstr "%s  saltar"
 
-#: story/intro.gd:691
+#: story/intro.gd:692
 msgid "Space / Esc"
 msgstr "Espacio / Esc"
 
-#: story/intro.gd:732
+#: story/intro.gd:733
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "LUZ VERDE  ·  NADA DETECTADO"
 
@@ -2001,15 +2001,15 @@ msgstr "Colección completa"
 msgid "Needs %d tokens"
 msgstr "Requiere %d fichas"
 
-#: systems/cradle_mode.gd:282
+#: systems/cradle_mode.gd:289
 msgid "Fully grown"
 msgstr "Al máximo"
 
-#: systems/cradle_mode.gd:284
+#: systems/cradle_mode.gd:291
 msgid "Needs %d Starseeds"
 msgstr "Necesita %d semillas estelares"
 
-#: systems/cradle_mode.gd:298
+#: systems/cradle_mode.gd:305
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr "Herencia: %s, nivel %d. Viaja con Lumi a todos los mundos."
 
@@ -2275,13 +2275,21 @@ msgstr "+{amount} % de {stat} de {robot}"
 msgid "+{amount} {robot} {stat}"
 msgstr "+{amount} de {stat} de {robot}"
 
-#: systems/late_director.gd:90
+#: systems/late_director.gd:94
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "El Puente del Arca se abre cuando el Cradle haya vuelto a casa."
 
-#: systems/late_director.gd:124
+#: systems/late_director.gd:128
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
 msgstr "Modo Cradle: la bóveda de semillas del arca guarda semillas para otros mundos. Pausa > Puente del Arca para verlas, gastar semillas estelares en herencias o sembrar un mundo nuevo. El modo jardín (H) también está abierto."
+
+#: systems/profile_slots.gd:48 ui/world_picker.gd:138
+msgid "Profile %d"
+msgstr ""
+
+#: systems/profile_slots.gd:106
+msgid "%d:%02d h"
+msgstr ""
 
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:255
 msgid "Low"
@@ -2488,7 +2496,8 @@ msgid "%d bolts"
 msgstr "%d tornillos"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: systems/robot_builder.gd:382 ui/ark_bridge.gd:262 ui/main_menu.gd:433
+#: systems/robot_builder.gd:382 ui/ark_bridge.gd:262 ui/main_menu.gd:452
+#: ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s cubos"
 
@@ -2592,7 +2601,7 @@ msgstr "Volver a %s"
 msgid "WORLD %d"
 msgstr "MUNDO %d"
 
-#: ui/ark_bridge.gd:188
+#: ui/ark_bridge.gd:188 ui/world_picker.gd:115
 msgid "Not visited yet"
 msgstr "Aún sin visitar"
 
@@ -2600,7 +2609,7 @@ msgstr "Aún sin visitar"
 msgid "%s  ·  %d hexes  ·  %d ark waves  ·  %d curiosities"
 msgstr "%s  ·  %d hexágonos  ·  %d oleadas del arca  ·  %d curiosidades"
 
-#: ui/ark_bridge.gd:192
+#: ui/ark_bridge.gd:192 ui/world_picker.gd:119
 msgid "restored"
 msgstr "restaurado"
 
@@ -3761,104 +3770,110 @@ msgstr "PACA LISTA"
 msgid "◢ SIGNAL %d%%"
 msgstr "◢ SEÑAL %d%%"
 
-#: ui/main_menu.gd:312
+#: ui/main_menu.gd:314
 msgid "One small robot. One very big cleanup."
 msgstr "Un robot pequeño. Una limpieza enorme."
 
-#: ui/main_menu.gd:314
+#: ui/main_menu.gd:316
 msgid "DEMO  ·  the first district"
 msgstr "DEMO  ·  el primer distrito"
 
-#: ui/main_menu.gd:326
+#: ui/main_menu.gd:328 ui/profile_picker.gd:110
 msgid "Continue"
 msgstr "Continuar"
 
-#: ui/main_menu.gd:328
+#. Profiles button subtitle: the active save profile's name and its number of planets.
+#: ui/main_menu.gd:335
+msgid "Profiles"
+msgstr ""
+
+#: ui/main_menu.gd:337
 msgid "New Game"
 msgstr "Nueva partida"
 
-#: ui/main_menu.gd:332 ui/main_menu.gd:505 ui/pause_menu.gd:59
+#: ui/main_menu.gd:341 ui/main_menu.gd:539 ui/pause_menu.gd:59
 msgid "Settings"
 msgstr "Ajustes"
 
-#: ui/main_menu.gd:333 ui/main_menu.gd:505
+#: ui/main_menu.gd:342 ui/main_menu.gd:539
 msgid "Credits"
 msgstr "Créditos"
 
-#: ui/main_menu.gd:334
+#: ui/main_menu.gd:343
 msgid "Quit"
 msgstr "Salir"
 
-#: ui/main_menu.gd:340
+#: ui/main_menu.gd:349
 msgid "Made with Godot"
 msgstr "Hecho con Godot"
 
-#: ui/main_menu.gd:427
+#: ui/main_menu.gd:446
 msgid "%dm"
 msgstr "%d min"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:433
+#: ui/main_menu.gd:452
 msgid "Hub %d"
 msgstr "Base %d"
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:458
 msgid "Jan"
 msgstr "ene."
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:458
 msgid "Feb"
 msgstr "feb."
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:458
 msgid "Mar"
 msgstr "mar."
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:458
 msgid "Apr"
 msgstr "abr."
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:458
 msgid "May"
 msgstr "may."
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:458
 msgid "Jun"
 msgstr "jun."
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:458
 msgid "Jul"
 msgstr "jul."
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:458
 msgid "Aug"
 msgstr "ago."
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:458
 msgid "Sep"
 msgstr "sept."
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:458
 msgid "Oct"
 msgstr "oct."
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:458
 msgid "Nov"
 msgstr "nov."
 
-#: ui/main_menu.gd:437
+#: ui/main_menu.gd:458
 msgid "Dec"
 msgstr "dic."
 
-#: ui/main_menu.gd:534
+#: ui/main_menu.gd:568
 msgid "CREDITS"
 msgstr "CRÉDITOS"
 
-#: ui/main_menu.gd:549 ui/settings_panel.gd:117 ui/settings_panel.gd:145
+#: ui/main_menu.gd:583 ui/profile_picker.gd:49 ui/settings_panel.gd:117
+#: ui/settings_panel.gd:145 ui/world_picker.gd:53
 msgid "Back"
 msgstr "Volver"
 
-#: ui/main_menu.gd:562
+#: ui/main_menu.gd:596
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -3868,27 +3883,27 @@ msgstr ""
 "El código, las mallas procedurales, el audio sintetizado y los textos son originales de Greenfall.\n"
 "\n"
 
-#: ui/main_menu.gd:565
+#: ui/main_menu.gd:599
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "Recursos de terceros: CC0, Poly Haven (polyhaven.com)."
 
-#: ui/main_menu.gd:583
+#: ui/main_menu.gd:617
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]de %s[/color]"
 
-#: ui/main_menu.gd:617
+#: ui/main_menu.gd:651
 msgid "START A NEW GAME?"
 msgstr "¿EMPEZAR UNA PARTIDA NUEVA?"
 
-#: ui/main_menu.gd:618
+#: ui/main_menu.gd:652
 msgid "Your current save will be erased. This can't be undone."
 msgstr "Se borrará tu partida guardada. No se puede deshacer."
 
-#: ui/main_menu.gd:626
+#: ui/main_menu.gd:660
 msgid "Keep my save"
 msgstr "Conservar mi partida"
 
-#: ui/main_menu.gd:632
+#: ui/main_menu.gd:666 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "Borrar y empezar"
 
@@ -4186,6 +4201,82 @@ msgstr "Arrastrar orbitar/mirar · Rueda distancia · WASD mover · R/F altura �
 #: ui/photo_panel.gd:322
 msgid "PHOTO MODE   Tab"
 msgstr "MODO FOTO   Tab"
+
+#: ui/profile_picker.gd:38
+msgid "SAVE PROFILES"
+msgstr ""
+
+#: ui/profile_picker.gd:39
+msgid "Each profile has its own planets and progress. Settings are shared."
+msgstr ""
+
+#: ui/profile_picker.gd:97
+msgid "ACTIVE"
+msgstr ""
+
+#: ui/profile_picker.gd:111
+msgid "New"
+msgstr ""
+
+#: ui/profile_picker.gd:112
+msgid "Rename"
+msgstr ""
+
+#: ui/profile_picker.gd:114 ui/profile_picker.gd:233
+msgid "Delete"
+msgstr ""
+
+#: ui/profile_picker.gd:122
+msgid "Empty slot"
+msgstr ""
+
+#. Save profile summary: play time, number of planets, the current planet's name.
+#: ui/profile_picker.gd:125
+msgid "%s  ·  %s  ·  on %s"
+msgstr ""
+
+#: ui/profile_picker.gd:126
+msgid "%d planet"
+msgid_plural "%d planets"
+msgstr[0] ""
+msgstr[1] ""
+
+#. Save profile summary: how far the Bloom (restoration milestones) has come.
+#: ui/profile_picker.gd:131
+msgid "Bloom %d%%"
+msgstr ""
+
+#: ui/profile_picker.gd:134
+msgid "%s seeds"
+msgstr ""
+
+#: ui/profile_picker.gd:211
+msgid "START OVER IN %s?"
+msgstr ""
+
+#: ui/profile_picker.gd:212
+msgid "Every world, Heirloom and Starseed in this profile will be erased. The other profiles stay as they are."
+msgstr ""
+
+#: ui/profile_picker.gd:231
+msgid "DELETE %s?"
+msgstr ""
+
+#: ui/profile_picker.gd:232
+msgid "This profile's worlds and progress will be erased. This can't be undone."
+msgstr ""
+
+#: ui/profile_picker.gd:238
+msgid "RENAME PROFILE"
+msgstr ""
+
+#: ui/profile_picker.gd:252 ui/profile_picker.gd:269
+msgid "Cancel"
+msgstr ""
+
+#: ui/profile_picker.gd:252
+msgid "Save"
+msgstr ""
 
 #: ui/research_node_card.gd:175 ui/research_panel.gd:194
 msgid "Researched"
@@ -4822,6 +4913,30 @@ msgstr "MISIÓN SEMILLA  ·  MUNDO %d"
 #: ui/world_banner.gd:70
 msgid "Lumi's pod is down on %s. A new world, ruined and waiting. Grow something."
 msgstr "La cápsula de Lumi ha aterrizado en %s. Un mundo nuevo, en ruinas y esperando. Haz crecer algo."
+
+#: ui/world_picker.gd:32
+msgid "PLANETS"
+msgstr ""
+
+#: ui/world_picker.gd:33
+msgid "Every planet keeps its own save. Pick one to continue there."
+msgstr ""
+
+#: ui/world_picker.gd:89
+msgid "PLANET %d"
+msgstr ""
+
+#: ui/world_picker.gd:100
+msgid "Current"
+msgstr ""
+
+#: ui/world_picker.gd:115
+msgid "Home world"
+msgstr ""
+
+#: ui/world_picker.gd:117
+msgid "%d hexes"
+msgstr ""
 
 #: water/water_view.gd:78
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
@@ -12320,6 +12435,126 @@ msgstr "Estás decorando. Lo apruebo. Los gatos lo van a aprobar todavía más."
 #: data/wren_lines.json:garden_place
 msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
 msgstr "Un banco, un farol, una fuente. Empieza a parecer un sitio al que la gente querría volver."
+
+#: data/wren_lines.json:world_ice_moon_arrival
+msgid "An ice moon. The Ledger ran its cold storage out here. Cold keeps things, {name}. Including evidence."
+msgstr ""
+
+#: data/wren_lines.json:world_ice_moon_arrival
+msgid "Everything froze where they dropped it. Even the junk looks like it's waiting for a refund."
+msgstr ""
+
+#: data/wren_lines.json:world_ice_moon_memory_1
+msgid "Ledger ice-haul manifests, still in the silo's memory. They melted this moon's lakes for coolant and shipped the water off-world. The trash, they left right here."
+msgstr ""
+
+#: data/wren_lines.json:world_ice_moon_halfway
+msgid "Halfway. The lakes under the ice are filling again. The Ledger never budgeted for things coming back."
+msgstr ""
+
+#: data/wren_lines.json:world_ice_moon_memory_2
+msgid "That silo was a seed vault before the Ledger made it a depot. Someone kept seeds hidden in the bottom tier anyway. I'd have liked to meet them."
+msgstr ""
+
+#: data/wren_lines.json:world_ice_moon_restored
+msgid "Green under a ringed sky. The Ledger wrote this moon off as a loss. It was wrong about that too."
+msgstr ""
+
+#: data/wren_lines.json:world_desert_world_arrival
+msgid "A desert world. It wasn't always one. The Ledger pumped its aquifers dry and sold the water by the litre."
+msgstr ""
+
+#: data/wren_lines.json:world_desert_world_arrival
+msgid "Sun, sand and one very small robot. I like our odds. Mostly."
+msgstr ""
+
+#: data/wren_lines.json:world_desert_world_memory_1
+msgid "Ledger survey file, partial: 'Remaining yield negligible. Recommend abandonment in place.' In place. That's their phrase for leaving the mess."
+msgstr ""
+
+#: data/wren_lines.json:world_desert_world_halfway
+msgid "Halfway green, on a planet they filed as 'negligible'. I'm keeping a list of their mistakes. It's getting long."
+msgstr ""
+
+#: data/wren_lines.json:world_desert_world_memory_2
+msgid "That solar tower powered the pumps. When the water ran out they stopped paying for the mirrors, and they fell over one by one. You're standing them back up."
+msgstr ""
+
+#: data/wren_lines.json:world_desert_world_restored
+msgid "Shade, water, flowers in the sand. 'Negligible', they said. I'm framing that word."
+msgstr ""
+
+#: data/wren_lines.json:world_ocean_world_arrival
+msgid "An ocean world. The Ledger dredged its sea floor for metals and dumped the tailings along every coast. Mind the edges."
+msgstr ""
+
+#: data/wren_lines.json:world_ocean_world_arrival
+msgid "Salt in the air, salt on the junk. Don't lick anything, {name}."
+msgstr ""
+
+#: data/wren_lines.json:world_ocean_world_memory_1
+msgid "I found the dumping schedule. Every tide for forty years. They called it 'coastal storage'. The sea called it something else."
+msgstr ""
+
+#: data/wren_lines.json:world_ocean_world_halfway
+msgid "Halfway. The water's clearing. The fish are cautiously reconsidering."
+msgstr ""
+
+#: data/wren_lines.json:world_ocean_world_memory_2
+msgid "Those surge gates kept the Ledger's dredging yards dry. When they left, nobody closed them, and the sea took the yards back. Fair."
+msgstr ""
+
+#: data/wren_lines.json:world_ocean_world_restored
+msgid "Green to the waterline, clear water past it. 'Coastal storage' is just coast again."
+msgstr ""
+
+#: data/wren_lines.json:world_fungal_world_arrival
+msgid "A marsh world. The Ledger's chemical works drained into these valleys for a century. Everything grows here, mostly the wrong things first."
+msgstr ""
+
+#: data/wren_lines.json:world_fungal_world_arrival
+msgid "Mist on everything. If you get lost, follow the squelching. That'll be you."
+msgstr ""
+
+#: data/wren_lines.json:world_fungal_world_memory_1
+msgid "Ledger compliance report: 'Runoff within acceptable limits.' Acceptable to whom, I'd like to ask. The frogs weren't consulted."
+msgstr ""
+
+#: data/wren_lines.json:world_fungal_world_halfway
+msgid "Halfway. The mist smells less like a laboratory every morning. Progress has a smell. It's mud."
+msgstr ""
+
+#: data/wren_lines.json:world_fungal_world_memory_2
+msgid "That cooling tower ran the chemical works. The fungi moved in after the Ledger moved out. They've been cleaning up longer than we have. Respect."
+msgstr ""
+
+#: data/wren_lines.json:world_fungal_world_restored
+msgid "Clear air over the marsh. Reeds, frogs, real flowers. The runoff is just rain now."
+msgstr ""
+
+#: data/wren_lines.json:world_rust_world_arrival
+msgid "A rust world. This is where the Ledger broke its own ships. Pole to pole, and nothing switched off properly."
+msgstr ""
+
+#: data/wren_lines.json:world_rust_world_arrival
+msgid "The air tastes like old pennies. I don't have a tongue. I can still tell."
+msgstr ""
+
+#: data/wren_lines.json:world_rust_world_memory_1
+msgid "The Ledger's ledgers, literally: the tonnage stripped from every planet in the system, filed here. They kept perfect books on how they ruined everything."
+msgstr ""
+
+#: data/wren_lines.json:world_rust_world_halfway
+msgid "Halfway. Less rust in the wind. I don't have lungs, but I have standards."
+msgstr ""
+
+#: data/wren_lines.json:world_rust_world_memory_2
+msgid "That gantry scrapped the Ledger's fleet when the money ran out. The ark was on the list. Someone took it off. I think about that a lot."
+msgstr ""
+
+#: data/wren_lines.json:world_rust_world_restored
+msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
+msgstr ""
 
 #~ msgid "Salvaged: %s %s"
 #~ msgstr "Rescatado: %s %s"

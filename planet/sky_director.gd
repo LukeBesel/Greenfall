@@ -23,6 +23,10 @@ var night_tint := Color(0, 0, 0, 0)
 var grade: Dictionary = {}
 var grade_amt: float = 1.0
 var storm: float = 0.0
+## [worlds2] Long Nights (systems/world_look.gd): how much darker nights are, 0..1.
+var night_dark: float = 0.0
+## [worlds2] The binary star (planet/binary_sun.gd): the companion's disc and warm fill light.
+var binary: BinarySun
 
 
 func setup(p_env: Environment, p_sun: DirectionalLight3D) -> void:
@@ -38,7 +42,20 @@ func setup(p_env: Environment, p_sun: DirectionalLight3D) -> void:
 	_stars_img = _star_image()  # [vqa2] stars fade with the sun (see _apply_stars)
 	_stars_tex = ImageTexture.create_from_image(_stars_img)
 	sky_mat.night_sky = _stars_tex
+	binary = BinarySun.new()  # [worlds2] every planet sees both suns
+	binary.name = "BinarySun"
+	add_child(binary)
+	binary.setup(current_planet_id(), sky_mat)
 	time_of_day = float(GameState.flags.get("time_of_day", 0.32))
+
+
+## [worlds2] The planet this sky belongs to (data/solar_system.json ids): Verdance, or the current
+## world's planet / world type.
+static func current_planet_id() -> String:
+	if CradleMode.profile.is_empty() or CradleMode.current_index() <= 0:
+		return "verdance"
+	var pid: String = WorldLook.planet_id()
+	return pid if pid != "" else str(CradleMode.current_world().get("type", "verdance"))
 
 
 ## [vqa2] Night sky: sparse stars on a near-black sky. PhysicalSkyMaterial adds `night_sky`
@@ -134,6 +151,14 @@ func _apply() -> void:
 	env.tonemap_exposure = lerpf(1.6, 1.3, sun_up)
 	if not grade.is_empty() or storm > 0.0:
 		_apply_grade(sun_up)
+	if night_dark > 0.0:  # [worlds2] Long Nights: a dimmer moon, less ambient, a darker sky
+		var nd: float = clampf(night_dark, 0.0, 1.0) * (1.0 - sun_up)
+		moon.light_energy *= 1.0 - 0.45 * nd
+		env.ambient_light_energy *= 1.0 - 0.4 * nd
+		env.tonemap_exposure *= 1.0 - 0.22 * nd
+		sky_mat.energy_multiplier = 1.0 - 0.5 * nd
+	if binary:  # [worlds2] the companion sun follows the primary; orbit-scaled energies
+		binary.update(sun, sun_up)
 
 
 ## [biomes] Blend the frontier grade over the computed sky and fog; then the storm on top.

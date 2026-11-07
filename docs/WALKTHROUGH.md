@@ -124,6 +124,15 @@ hooks instead of played through.
   makes a new save slot and lands Lumi's pod in the new world's driest town. The new world starts
   ruined (base level 1, junk everywhere, the restart checklist) and runs the whole campaign again, with
   the kit and Heirlooms. Verdance (and every other world) stays one "Travel" away on the bridge.
+- **Each world looks like itself** (wt/worlds2): Ice Moon (pale icy sky, a ringed gas giant, frosted
+  city, the old seed silo iced to the waist), Desert World (amber haze, twin moons, sun-bleached city, a
+  solar tower in a field of fallen mirrors), Ocean World (deep blue, a big tide moon, salt-stained
+  coastal city, a storm-surge barrier, more puddles), Marsh World (green-grey mist, overgrown city, a
+  cooling tower gone to shelf fungi), Rust World (rust-red dusty sky, a shattered moon, corroded city, a
+  ship-breaking gantry). The weather eases as the base is restored; trim lights come on at base 3.
+  WREN tells each world's thread: arrival, two memories, halfway, restored.
+- **Title screen > Profiles**: three save profiles (own worlds, Heirlooms, progress); Continue a profile,
+  then pick a planet when it has several; New, Rename, Delete. Old saves are profile 1.
 - **Garden Mode** (H, or Pause > Garden Mode; after the finale or with this base at level 5): place
   decorations on clean ground. Each district's charm speeds its plants up a little (up to 8%).
 - Goals after the Seed Ark: open the Ark Bridge, place a decoration, buy an Heirloom, 10 decorations, 5
