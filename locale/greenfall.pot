@@ -15,15 +15,15 @@ msgstr ""
 msgid "Every %s in the fleet."
 msgstr ""
 
-#: autoload/Economy.gd:112
+#: autoload/Economy.gd:113
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr ""
 
-#: autoload/Economy.gd:112
+#: autoload/Economy.gd:113
 msgid "Base"
 msgstr ""
 
-#: autoload/Economy.gd:280 data/robots.json:tiers[0].name
+#: autoload/Economy.gd:282 data/robots.json:tiers[0].name
 msgid "Mk I"
 msgstr ""
 
@@ -816,27 +816,27 @@ msgstr ""
 msgid "Recovered: %s %s"
 msgstr ""
 
-#: player/patch_model.gd:13
+#: player/patch_model.gd:18 data/designs.json:designs[aurora].name
 msgid "Aurora"
 msgstr ""
 
-#: player/patch_model.gd:14
+#: player/patch_model.gd:19 data/designs.json:designs[bolt].name
 msgid "Bolt"
 msgstr ""
 
-#: player/patch_model.gd:15
+#: player/patch_model.gd:20 data/designs.json:designs[sprout].name
 msgid "Sprout"
 msgstr ""
 
-#: player/patch_model.gd:16
+#: player/patch_model.gd:21 data/designs.json:designs[pixel].name
 msgid "Pixel"
 msgstr ""
 
-#: player/patch_model.gd:17
+#: player/patch_model.gd:22 data/designs.json:designs[nova].name
 msgid "Nova"
 msgstr ""
 
-#: player/patch_model.gd:18
+#: player/patch_model.gd:23 data/designs.json:designs[patch].name
 msgid "Patch"
 msgstr ""
 
@@ -1735,19 +1735,19 @@ msgstr ""
 msgid "Restart checklist complete. Lumi is back on the job."
 msgstr ""
 
-#: systems/achievements.gd:137
+#: systems/achievements.gd:139
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr ""
 
-#: systems/achievements.gd:144 ui/notify_stack.gd:22
+#: systems/achievements.gd:146 ui/notify_stack.gd:22
 msgid "Achievement: %s. %s"
 msgstr ""
 
-#: systems/achievements.gd:147
+#: systems/achievements.gd:149
 msgid "Codex: %d new entries."
 msgstr ""
 
-#: systems/achievements.gd:150
+#: systems/achievements.gd:152
 msgid "Codex entry: %s"
 msgstr ""
 
@@ -1885,6 +1885,22 @@ msgstr ""
 
 #: systems/contracts.gd:375
 msgid "Needs %d tokens"
+msgstr ""
+
+#: systems/designs.gd:118
+msgid "Default"
+msgstr ""
+
+#: systems/designs.gd:137
+msgid "Best fleet: %s"
+msgstr ""
+
+#: systems/designs.gd:153
+msgid "New design unlocked: %s. Wear it from the workbench (Cosmetics)."
+msgstr ""
+
+#: systems/designs.gd:192
+msgid "Design: %s"
 msgstr ""
 
 #: systems/event_props.gd:153
@@ -2457,7 +2473,7 @@ msgstr ""
 msgid "CODEX"
 msgstr ""
 
-#: ui/codex_screen.gd:84 ui/upgrades_screen.gd:76
+#: ui/codex_screen.gd:84 ui/upgrades_screen.gd:77
 msgid "Close  [%s]"
 msgstr ""
 
@@ -2902,43 +2918,39 @@ msgstr ""
 msgid "BLOOM CORE   %d%%"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:7
-msgid "Default"
-msgstr ""
-
-#: ui/cosmetics_panel.gd:8 data/goals.json:goals[hex_10].text
-msgid "Clean 10 hexes"
-msgstr ""
-
-#: ui/cosmetics_panel.gd:9
-msgid "Build 3 robots"
-msgstr ""
-
-#: ui/cosmetics_panel.gd:10
-msgid "Grow your first sprout"
-msgstr ""
-
-#: ui/cosmetics_panel.gd:11
-msgid "Read 4 memory shards"
-msgstr ""
-
-#: ui/cosmetics_panel.gd:12
-msgid "Upgrade any robot fleet to Mk III"
-msgstr ""
-
-#: ui/cosmetics_panel.gd:22
+#: ui/cosmetics_panel.gd:34
 msgid "DESIGNS"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:36
-msgid "New design unlocked: %s. Try it at the workbench."
+#: ui/cosmetics_panel.gd:38
+msgid "Looks only (no bonuses)"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:61
-msgid "   (wearing)"
+#: ui/cosmetics_panel.gd:110 ui/cosmetics_panel.gd:141
+msgid "Wearing"
 msgstr ""
 
-#: ui/cosmetics_panel.gd:61
+#: ui/cosmetics_panel.gd:110
+msgid "Unlocked"
+msgstr ""
+
+#: ui/cosmetics_panel.gd:110
+msgid "Locked  %d%%"
+msgstr ""
+
+#: ui/cosmetics_panel.gd:137
+msgid "Bonus: %s"
+msgstr ""
+
+#: ui/cosmetics_panel.gd:137
+msgid "(off: looks only)"
+msgstr ""
+
+#: ui/cosmetics_panel.gd:143
+msgid "Unlocked. Press to wear."
+msgstr ""
+
+#: ui/cosmetics_panel.gd:145
 msgid "Locked: %s"
 msgstr ""
 
@@ -3008,6 +3020,14 @@ msgstr ""
 
 #: ui/currency_cluster.gd:11 ui/robot_card.gd:40
 msgid "PARTS"
+msgstr ""
+
+#: ui/design_toast.gd:58
+msgid "NEW DESIGN UNLOCKED"
+msgstr ""
+
+#: ui/design_toast.gd:66
+msgid "Wear it at the workbench: Cosmetics"
 msgstr ""
 
 #: ui/document_view.gd:45
@@ -4347,11 +4367,11 @@ msgstr ""
 msgid "Builder"
 msgstr ""
 
-#: ui/upgrades_screen.gd:68
+#: ui/upgrades_screen.gd:69
 msgid "UPGRADES"
 msgstr ""
 
-#: ui/upgrades_screen.gd:87
+#: ui/upgrades_screen.gd:88
 msgid "%s (soon)"
 msgstr ""
 
@@ -5697,6 +5717,134 @@ msgstr ""
 
 #: data/codex.json:frontiers.ark_pad.desc
 msgid "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Sustained before the ark will trust it."
+msgstr ""
+
+#: data/designs.json:designs[aurora].tagline
+msgid "Baseline / Explorer"
+msgstr ""
+
+#: data/designs.json:designs[aurora].desc
+msgid "The seed-keeper fresh from the ark: pearl paint, cyan eyes, an orange fin."
+msgstr ""
+
+#: data/designs.json:designs[aurora].buff.text
+msgid "+8% detector range"
+msgstr ""
+
+#: data/designs.json:designs[bolt].tagline
+msgid "Industrial / Tough"
+msgstr ""
+
+#: data/designs.json:designs[bolt].desc
+msgid "Hazard-yellow plating, heavy shoulder pads and a spare gear for luck."
+msgstr ""
+
+#: data/designs.json:designs[bolt].buff.text
+msgid "+5% bale value"
+msgstr ""
+
+#: data/designs.json:designs[bolt].unlock.text
+msgid "Press 50 bales or build 5 robots"
+msgstr ""
+
+#: data/designs.json:designs[bolt].unlock.any[0].unit
+msgid "bales"
+msgstr ""
+
+#: data/designs.json:designs[bolt].unlock.any[1].unit
+msgid "robots"
+msgstr ""
+
+#: data/designs.json:designs[sprout].tagline
+msgid "Eco / Restoration"
+msgstr ""
+
+#: data/designs.json:designs[sprout].desc
+msgid "Moss-green and growing a seedling of its own."
+msgstr ""
+
+#: data/designs.json:designs[sprout].buff.text
+msgid "+8% plant growth"
+msgstr ""
+
+#: data/designs.json:designs[sprout].unlock.text
+msgid "Grow 20 plants to bloom"
+msgstr ""
+
+#: data/designs.json:designs[sprout].unlock.any[0].unit
+msgid "blooms"
+msgstr ""
+
+#: data/designs.json:designs[pixel].tagline
+msgid "Friendly / Cheerful"
+msgstr ""
+
+#: data/designs.json:designs[pixel].desc
+msgid "Red and white, all smiles, with a butterfly that won't leave."
+msgstr ""
+
+#: data/designs.json:designs[pixel].buff.text
+msgid "+10% cleaning streak time"
+msgstr ""
+
+#: data/designs.json:designs[pixel].unlock.text
+msgid "Pet 5 animals or find 5 Collection trinkets"
+msgstr ""
+
+#: data/designs.json:designs[pixel].unlock.any[0].unit
+msgid "animals"
+msgstr ""
+
+#: data/designs.json:designs[pixel].unlock.any[1].unit
+msgid "cats"
+msgstr ""
+
+#: data/designs.json:designs[pixel].unlock.any[2].unit
+msgid "trinkets"
+msgstr ""
+
+#: data/designs.json:designs[nova].tagline
+msgid "Analyst / Tech"
+msgstr ""
+
+#: data/designs.json:designs[nova].desc
+msgid "Gunmetal, violet light and a holo screen always open."
+msgstr ""
+
+#: data/designs.json:designs[nova].buff.text
+msgid "+8% research speed"
+msgstr ""
+
+#: data/designs.json:designs[nova].unlock.text
+msgid "Finish 10 research projects"
+msgstr ""
+
+#: data/designs.json:designs[nova].unlock.any[0].unit
+msgid "projects"
+msgstr ""
+
+#: data/designs.json:designs[patch].tagline
+msgid "Utility / Support"
+msgstr ""
+
+#: data/designs.json:designs[patch].desc
+msgid "Medic cross, tool box, and a case of spares for any bot in need."
+msgstr ""
+
+#: data/designs.json:designs[patch].buff.text
+msgid "+6% robot work speed"
+msgstr ""
+
+#: data/designs.json:designs[patch].unlock.text
+msgid "Repair an outpost or upgrade a robot fleet to Mk III"
+msgstr ""
+
+#: data/designs.json:designs[patch].unlock.any[0].unit
+msgid "outposts"
+msgstr ""
+
+#: data/designs.json:designs[patch].unlock.any[1].unit
+msgid "Mk"
 msgstr ""
 
 #: data/eggs.json:eggs[duck].name
@@ -7102,6 +7250,10 @@ msgstr ""
 
 #: data/goals.json:goals[bales_20].text
 msgid "Robots press 20 bales"
+msgstr ""
+
+#: data/goals.json:goals[hex_10].text
+msgid "Clean 10 hexes"
 msgstr ""
 
 #: data/goals.json:goals[scoopie_2].text

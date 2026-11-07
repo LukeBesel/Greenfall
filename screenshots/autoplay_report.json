@@ -14,115 +14,99 @@
     ],
     [
       "first_hex_s",
-      1.1
+      1.3
     ],
     [
       "first_hexlv_1_s",
-      1.1
+      1.3
     ],
     [
       "first_research_s",
-      5.1
+      5.0
     ],
     [
       "first_robot_s",
-      6.2
+      6.0
     ],
     [
       "first_scoopie_s",
-      6.2
+      6.0
     ],
     [
       "first_haulbug_s",
-      6.7
-    ],
-    [
-      "first_skimmer_s",
-      17.8
+      7.8
     ]
   ],
-  "cubes": 904.387959488641,
+  "cubes": 1169.2288922348,
   "cubes_fell": 0,
-  "cubes_made": 29.0,
+  "cubes_made": 17.0,
   "dead_gaps_min": [],
   "district": "Old Town",
-  "earned_total": 10656.0793969886,
+  "earned_total": 6162.3703297348,
   "fell_through": 0,
-  "first_cashin_s": 22.6,
-  "first_cube_s": 18.3,
-  "first_haulbug_s": 400.4,
-  "first_hex_s": 65.6,
-  "first_hexlv_1_s": 66.5,
-  "first_research_s": 306.7,
-  "first_robot_s": 374.8,
-  "first_scoopie_s": 374.8,
-  "first_skimmer_s": 1068.2,
-  "first_upgrade_s": 20.7,
-  "game_time_min": 18.5,
-  "game_time_s": 1111.0,
-  "goal_gaps_min": [
-    [
-      1.1,
-      4.3,
-      3.2
-    ],
-    [
-      14.1,
-      17.6,
-      3.6
-    ]
-  ],
-  "goals_done": 30,
+  "first_cashin_s": 21.6,
+  "first_cube_s": 17.4,
+  "first_haulbug_s": 465.2,
+  "first_hex_s": 78.4,
+  "first_hexlv_1_s": 79.2,
+  "first_research_s": 299.1,
+  "first_robot_s": 359.8,
+  "first_scoopie_s": 359.8,
+  "first_upgrade_s": 19.9,
+  "game_time_min": 12.5,
+  "game_time_s": 752.5,
+  "goal_gaps_min": [],
+  "goals_done": 23,
   "goals_total": 144,
-  "hexes_cleaned": 10,
+  "hexes_cleaned": 6,
   "hub_level": 1,
-  "ignored_pieces": 26,
+  "ignored_pieces": 17,
   "junk_hexes": 33,
   "log": [
     {
       "event": "upgrade",
       "id": "compartment_size",
       "level": 1,
-      "t": 20.7
+      "t": 19.9
     },
     {
       "event": "upgrade",
       "id": "scoop_width",
       "level": 1,
-      "t": 22.9
+      "t": 21.9
     },
     {
       "event": "upgrade",
       "id": "compartment_size",
       "level": 2,
-      "t": 23.9
+      "t": 23.0
     },
     {
       "event": "upgrade",
       "id": "tread_speed",
       "level": 1,
-      "t": 25.0
+      "t": 24.0
     },
     {
       "event": "upgrade",
       "id": "scoop_width",
       "level": 2,
-      "t": 26.1
+      "t": 34.3
     },
     {
       "event": "upgrade",
       "id": "compartment_size",
       "level": 3,
-      "t": 37.8
+      "t": 35.4
     },
     {
       "bolts": 0.0,
       "bots": {},
-      "cubes": 328.0,
+      "cubes": 327.0,
       "data": 0.0,
-      "earned": 631.0,
+      "earned": 629.0,
       "escapes": 0,
-      "glass": 5.4,
+      "glass": 5.6,
       "goals": 7,
       "hex_levels": [
         0,
@@ -133,14 +117,14 @@
       ],
       "hexes": 0,
       "hub": 1,
-      "metal": 2.4,
+      "metal": 2.3,
       "parts": 2,
-      "plastic": 4.6,
+      "plastic": 4.3,
       "pos": [
-        -1.1,
-        0.7
+        -4.2,
+        2.9
       ],
-      "rate": 14.01,
+      "rate": 13.98,
       "remote_shops": 0,
       "research": "",
       "robots": {},
@@ -155,7 +139,7 @@
         "robot_bales": 0.0,
         "robots_built": 0.0
       },
-      "t": 60.5,
+      "t": 60.3,
       "task": "clean",
       "upgrades": 6
     },
@@ -163,66 +147,22 @@
       "event": "upgrade",
       "id": "scoop_speed",
       "level": 1,
-      "t": 112.4
-    },
-    {
-      "bolts": 0.0,
-      "bots": {},
-      "cubes": 426.0,
-      "data": 10.0,
-      "earned": 799.0,
-      "escapes": 0,
-      "glass": 6.6,
-      "goals": 8,
-      "hex_levels": [
-        1,
-        0,
-        0,
-        0,
-        0
-      ],
-      "hexes": 1,
-      "hub": 1,
-      "metal": 3.3,
-      "parts": 2,
-      "plastic": 6.8,
-      "pos": [
-        -28.5,
-        8.7
-      ],
-      "rate": 3.07,
-      "remote_shops": 0,
-      "research": "",
-      "robots": {},
-      "seeds": 0.0,
-      "stats": {
-        "air_filtered": 0.0,
-        "bales_recycled": 0.0,
-        "garden_stipend": 0.0,
-        "plants_bloomed": 0.0,
-        "plants_planted": 0.0,
-        "research_done": 0.0,
-        "robot_bales": 0.0,
-        "robots_built": 0.0
-      },
-      "t": 120.5,
-      "task": "dig",
-      "upgrades": 7
+      "t": 94.2
     },
     {
       "event": "upgrade",
       "id": "tread_speed",
       "level": 2,
-      "t": 135.9
+      "t": 97.3
     },
     {
       "bolts": 0.0,
       "bots": {},
-      "cubes": 480.0,
+      "cubes": 519.0,
       "data": 10.0,
-      "earned": 928.0,
+      "earned": 967.0,
       "escapes": 0,
-      "glass": 6.6,
+      "glass": 6.2,
       "goals": 8,
       "hex_levels": [
         1,
@@ -233,14 +173,14 @@
       ],
       "hexes": 1,
       "hub": 1,
-      "metal": 3.6,
-      "parts": 6,
-      "plastic": 8.3,
+      "metal": 3.1,
+      "parts": 4,
+      "plastic": 7.7,
       "pos": [
-        -25.7,
-        1.2
+        -8.6,
+        7.8
       ],
-      "rate": 2.29,
+      "rate": 8.06,
       "remote_shops": 0,
       "research": "",
       "robots": {},
@@ -255,7 +195,7 @@
         "robot_bales": 0.0,
         "robots_built": 0.0
       },
-      "t": 180.5,
+      "t": 120.3,
       "task": "clean",
       "upgrades": 8
     },
@@ -263,16 +203,16 @@
       "event": "upgrade",
       "id": "carry_stack",
       "level": 1,
-      "t": 187.1
+      "t": 180.0
     },
     {
       "bolts": 0.0,
       "bots": {},
-      "cubes": 588.0,
+      "cubes": 513.0,
       "data": 20.0,
-      "earned": 1116.0,
+      "earned": 1041.0,
       "escapes": 0,
-      "glass": 7.2,
+      "glass": 6.4,
       "goals": 8,
       "hex_levels": [
         2,
@@ -283,14 +223,14 @@
       ],
       "hexes": 2,
       "hub": 1,
-      "metal": 7.9,
-      "parts": 6,
-      "plastic": 14.5,
+      "metal": 3.7,
+      "parts": 4,
+      "plastic": 9.0,
       "pos": [
-        -1.2,
-        -16.4
+        -6.5,
+        0.3
       ],
-      "rate": 3.28,
+      "rate": 7.36,
       "remote_shops": 0,
       "research": "",
       "robots": {},
@@ -305,62 +245,38 @@
         "robot_bales": 0.0,
         "robots_built": 0.0
       },
-      "t": 240.5,
-      "task": "deliver",
+      "t": 180.3,
+      "task": "bench",
       "upgrades": 9
-    },
-    {
-      "event": "upgrade",
-      "id": "scoop_width",
-      "level": 3,
-      "t": 276.7
-    },
-    {
-      "event": "upgrade",
-      "id": "compartment_size",
-      "level": 4,
-      "t": 276.7
-    },
-    {
-      "event": "upgrade",
-      "id": "scoop_speed",
-      "level": 2,
-      "t": 276.7
-    },
-    {
-      "event": "upgrade",
-      "id": "tread_speed",
-      "level": 3,
-      "t": 276.7
     },
     {
       "bolts": 0.0,
       "bots": {},
-      "cubes": 729.0,
-      "data": 0.0,
-      "earned": 1696.0,
+      "cubes": 625.0,
+      "data": 20.0,
+      "earned": 1153.0,
       "escapes": 0,
-      "glass": 7.8,
-      "goals": 12,
+      "glass": 6.6,
+      "goals": 8,
       "hex_levels": [
-        3,
+        2,
         0,
         0,
         0,
         0
       ],
-      "hexes": 3,
+      "hexes": 2,
       "hub": 1,
-      "metal": 8.9,
-      "parts": 7,
-      "plastic": 16.1,
+      "metal": 7.8,
+      "parts": 6,
+      "plastic": 14.8,
       "pos": [
-        15.0,
-        -10.9
+        -6.7,
+        -7.3
       ],
-      "rate": 10.74,
+      "rate": 3.55,
       "remote_shops": 0,
-      "research": "salvage_logic",
+      "research": "",
       "robots": {},
       "seeds": 0.0,
       "stats": {
@@ -373,24 +289,42 @@
         "robot_bales": 0.0,
         "robots_built": 0.0
       },
-      "t": 300.5,
-      "task": "dig",
-      "upgrades": 13
+      "t": 240.3,
+      "task": "deliver",
+      "upgrades": 9
     },
     {
       "event": "upgrade",
-      "id": "compactor_pressure",
-      "level": 1,
-      "t": 313.0
+      "id": "scoop_width",
+      "level": 3,
+      "t": 268.8
+    },
+    {
+      "event": "upgrade",
+      "id": "compartment_size",
+      "level": 4,
+      "t": 268.8
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_speed",
+      "level": 2,
+      "t": 268.8
+    },
+    {
+      "event": "upgrade",
+      "id": "tread_speed",
+      "level": 3,
+      "t": 268.8
     },
     {
       "bolts": 0.0,
       "bots": {},
-      "cubes": 757.0,
+      "cubes": 850.0,
       "data": 0.0,
-      "earned": 1843.0,
+      "earned": 1816.0,
       "escapes": 0,
-      "glass": 8.6,
+      "glass": 8.1,
       "goals": 13,
       "hex_levels": [
         3,
@@ -401,17 +335,87 @@
       ],
       "hexes": 3,
       "hub": 1,
-      "metal": 9.7,
+      "metal": 9.0,
       "parts": 9,
-      "plastic": 16.5,
+      "plastic": 17.1,
       "pos": [
-        9.3,
-        -12.0
+        19.6,
+        -8.2
       ],
-      "rate": 2.75,
+      "rate": 11.44,
+      "remote_shops": 0,
+      "research": "soil_survey",
+      "robots": {},
+      "seeds": 0.0,
+      "stats": {
+        "air_filtered": 0.0,
+        "bales_recycled": 0.0,
+        "garden_stipend": 0.0,
+        "plants_bloomed": 0.0,
+        "plants_planted": 0.0,
+        "research_done": 1.0,
+        "robot_bales": 0.0,
+        "robots_built": 0.0
+      },
+      "t": 300.4,
+      "task": "bench",
+      "upgrades": 13
+    },
+    {
+      "event": "upgrade",
+      "id": "compactor_pressure",
+      "level": 1,
+      "t": 305.0
+    },
+    {
+      "event": "zone",
+      "hexes": [
+        2,
+        3,
+        12
+      ],
+      "key": "clean",
+      "t": 332.9
+    },
+    {
+      "event": "upgrade",
+      "id": "carry_stack",
+      "level": 2,
+      "t": 333.9
+    },
+    {
+      "bolts": 0.0,
+      "bots": {
+        "cleaning hex # (#%)": 1
+      },
+      "cubes": 361.0,
+      "data": 11.5,
+      "earned": 2699.0,
+      "escapes": 0,
+      "glass": 13.4,
+      "goals": 16,
+      "hex_levels": [
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hexes": 4,
+      "hub": 1,
+      "metal": 9.8,
+      "parts": 6,
+      "plastic": 19.9,
+      "pos": [
+        -1.1,
+        1.7
+      ],
+      "rate": 20.72,
       "remote_shops": 0,
       "research": "",
-      "robots": {},
+      "robots": {
+        "scoopie": 1
+      },
       "seeds": 0.0,
       "stats": {
         "air_filtered": 0.0,
@@ -421,44 +425,39 @@
         "plants_planted": 0.0,
         "research_done": 2.0,
         "robot_bales": 0.0,
-        "robots_built": 0.0
+        "robots_built": 1.0
       },
-      "t": 360.5,
-      "task": "clean",
-      "upgrades": 14
+      "t": 360.4,
+      "task": "shard",
+      "upgrades": 15
+    },
+    {
+      "event": "upgrade",
+      "id": "bot_scoopie_speed",
+      "level": 1,
+      "t": 360.8
     },
     {
       "event": "zone",
       "hexes": [
         2,
-        3,
-        18
+        12,
+        14
       ],
       "key": "clean",
-      "t": 374.8
-    },
-    {
-      "event": "zone",
-      "hexes": [
-        2,
-        18,
-        10
-      ],
-      "key": "clean",
-      "t": 386.6
+      "t": 363.9
     },
     {
       "bolts": 0.0,
       "bots": {
-        "cleaning hex # (#%)": 1,
-        "idle · waiting for bales": 1
+        "cleaning hex # (#%)": 1
       },
-      "cubes": 667.0,
-      "data": 10.6,
-      "earned": 3413.0,
+      "cubes": 525.0,
+      "data": 11.8,
+      "earned": 2953.0,
       "escapes": 0,
-      "glass": 13.7,
-      "goals": 19,
+      "glass": 13.5,
+      "goals": 17,
       "hex_levels": [
         4,
         0,
@@ -468,18 +467,17 @@
       ],
       "hexes": 4,
       "hub": 1,
-      "metal": 11.0,
-      "parts": 4,
-      "plastic": 20.7,
+      "metal": 10.2,
+      "parts": 6,
+      "plastic": 21.1,
       "pos": [
-        11.1,
-        -5.9
+        10.4,
+        -8.7
       ],
-      "rate": 33.49,
+      "rate": 4.28,
       "remote_shops": 0,
-      "research": "water_testing",
+      "research": "",
       "robots": {
-        "haulbug": 1,
         "scoopie": 1
       },
       "seeds": 0.0,
@@ -489,37 +487,25 @@
         "garden_stipend": 0.0,
         "plants_bloomed": 0.0,
         "plants_planted": 0.0,
-        "research_done": 2.0,
-        "robot_bales": 1.0,
-        "robots_built": 2.0
+        "research_done": 3.0,
+        "robot_bales": 2.0,
+        "robots_built": 1.0
       },
-      "t": 420.5,
+      "t": 420.4,
       "task": "clean",
-      "upgrades": 14
+      "upgrades": 16
     },
     {
-      "event": "upgrade",
-      "id": "bot_scoopie_speed",
-      "level": 1,
-      "t": 423.9
-    },
-    {
-      "event": "upgrade",
-      "id": "bot_haulbug_speed",
-      "level": 1,
-      "t": 447.4
-    },
-    {
-      "bolts": 0.0,
+      "bolts": 15.0,
       "bots": {
         "cleaning hex # (#%)": 1,
-        "fetching a bale": 1
+        "hauling # bale": 1
       },
-      "cubes": 604.0,
-      "data": 14.1,
-      "earned": 3540.0,
+      "cubes": 1404.0,
+      "data": 16.4,
+      "earned": 4392.0,
       "escapes": 0,
-      "glass": 14.5,
+      "glass": 14.2,
       "goals": 19,
       "hex_levels": [
         4,
@@ -530,14 +516,14 @@
       ],
       "hexes": 4,
       "hub": 1,
-      "metal": 13.2,
-      "parts": 5,
-      "plastic": 24.6,
+      "metal": 12.6,
+      "parts": 7,
+      "plastic": 26.2,
       "pos": [
-        11.1,
-        -9.3
+        21.1,
+        11.3
       ],
-      "rate": 2.71,
+      "rate": 50.12,
       "remote_shops": 0,
       "research": "",
       "robots": {
@@ -552,7 +538,7 @@
         "plants_bloomed": 0.0,
         "plants_planted": 0.0,
         "research_done": 3.0,
-        "robot_bales": 4.0,
+        "robot_bales": 6.0,
         "robots_built": 2.0
       },
       "t": 480.5,
@@ -561,51 +547,93 @@
     },
     {
       "event": "upgrade",
+      "id": "bot_haulbug_speed",
+      "level": 1,
+      "t": 489.9
+    },
+    {
+      "event": "upgrade",
       "id": "bot_scoopie_scoop_rate",
       "level": 1,
-      "t": 514.6
+      "t": 489.9
+    },
+    {
+      "event": "upgrade",
+      "id": "bot_scoopie_capacity",
+      "level": 1,
+      "t": 489.9
+    },
+    {
+      "event": "upgrade",
+      "id": "bot_scoopie_speed",
+      "level": 2,
+      "t": 489.9
     },
     {
       "event": "zone",
       "hexes": [
-        18,
-        10,
-        12
+        12,
+        14,
+        18
       ],
       "key": "clean",
+      "t": 516.8
+    },
+    {
+      "event": "upgrade",
+      "id": "detector_range",
+      "level": 1,
       "t": 519.9
     },
     {
-      "bolts": 0.0,
+      "event": "upgrade",
+      "id": "bot_scoopie_efficiency",
+      "level": 1,
+      "t": 519.9
+    },
+    {
+      "event": "upgrade",
+      "id": "bot_haulbug_speed",
+      "level": 2,
+      "t": 519.9
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_width",
+      "level": 4,
+      "t": 519.9
+    },
+    {
+      "bolts": 15.0,
       "bots": {
         "cleaning hex # (#%)": 1,
-        "fetching a bale": 1
+        "hauling # bale": 1
       },
-      "cubes": 1249.0,
-      "data": 29.0,
-      "earned": 4295.0,
+      "cubes": 1146.0,
+      "data": 16.7,
+      "earned": 5262.0,
       "escapes": 0,
-      "glass": 15.5,
-      "goals": 20,
+      "glass": 15.7,
+      "goals": 21,
       "hex_levels": [
-        5,
+        6,
         0,
         0,
         0,
         0
       ],
-      "hexes": 5,
+      "hexes": 6,
       "hub": 1,
-      "metal": 16.0,
-      "parts": 7,
-      "plastic": 30.1,
+      "metal": 15.9,
+      "parts": 6,
+      "plastic": 33.6,
       "pos": [
-        14.1,
-        10.3
+        22.3,
+        15.2
       ],
-      "rate": 14.95,
+      "rate": 17.4,
       "remote_shops": 0,
-      "research": "",
+      "research": "field_notebook",
       "robots": {
         "haulbug": 1,
         "scoopie": 1
@@ -618,120 +646,42 @@
         "plants_bloomed": 0.0,
         "plants_planted": 0.0,
         "research_done": 3.0,
-        "robot_bales": 7.0,
+        "robot_bales": 8.0,
         "robots_built": 2.0
       },
       "t": 540.5,
-      "task": "bench",
-      "upgrades": 17
-    },
-    {
-      "event": "upgrade",
-      "id": "bot_scoopie_capacity",
-      "level": 1,
-      "t": 546.6
-    },
-    {
-      "event": "upgrade",
-      "id": "bot_scoopie_speed",
-      "level": 2,
-      "t": 546.6
-    },
-    {
-      "event": "upgrade",
-      "id": "detector_range",
-      "level": 1,
-      "t": 547.6
-    },
-    {
-      "event": "upgrade",
-      "id": "bot_scoopie_efficiency",
-      "level": 1,
-      "t": 548.7
-    },
-    {
-      "event": "zone",
-      "hexes": [
-        18,
-        12,
-        14
-      ],
-      "key": "clean",
-      "t": 570.0
-    },
-    {
-      "event": "upgrade",
-      "id": "bot_haulbug_speed",
-      "level": 2,
-      "t": 583.9
-    },
-    {
-      "bolts": 0.0,
-      "bots": {
-        "cleaning hex # (#%)": 1,
-        "fetching a bale": 1
-      },
-      "cubes": 1152.0,
-      "data": 19.2,
-      "earned": 4952.0,
-      "escapes": 0,
-      "glass": 17.5,
-      "goals": 22,
-      "hex_levels": [
-        6,
-        0,
-        0,
-        0,
-        0
-      ],
-      "hexes": 6,
-      "hub": 1,
-      "metal": 19.7,
-      "parts": 9,
-      "plastic": 40.1,
-      "pos": [
-        29.4,
-        13.3
-      ],
-      "rate": 12.59,
-      "remote_shops": 0,
-      "research": "",
-      "robots": {
-        "haulbug": 1,
-        "scoopie": 1
-      },
-      "seeds": 0.0,
-      "stats": {
-        "air_filtered": 0.0,
-        "bales_recycled": 0.0,
-        "garden_stipend": 0.0,
-        "plants_bloomed": 0.0,
-        "plants_planted": 0.0,
-        "research_done": 4.0,
-        "robot_bales": 10.0,
-        "robots_built": 2.0
-      },
-      "t": 600.5,
       "task": "clean",
-      "upgrades": 22
+      "upgrades": 24
     },
     {
       "event": "upgrade",
-      "id": "scoop_width",
+      "id": "tread_speed",
       "level": 4,
-      "t": 613.8
+      "t": 549.9
     },
     {
-      "bolts": 0.0,
+      "event": "upgrade",
+      "id": "compartment_size",
+      "level": 5,
+      "t": 553.0
+    },
+    {
+      "event": "upgrade",
+      "id": "bot_scoopie_scoop_rate",
+      "level": 2,
+      "t": 584.9
+    },
+    {
+      "bolts": 15.0,
       "bots": {
         "cleaning hex # (#%)": 1,
         "fetching a bale": 1
       },
-      "cubes": 1068.0,
-      "data": 23.0,
-      "earned": 5032.0,
+      "cubes": 1031.0,
+      "data": 22.9,
+      "earned": 5665.0,
       "escapes": 0,
-      "glass": 19.1,
+      "glass": 17.9,
       "goals": 22,
       "hex_levels": [
         6,
@@ -742,14 +692,14 @@
       ],
       "hexes": 6,
       "hub": 1,
-      "metal": 20.8,
-      "parts": 7,
-      "plastic": 46.6,
+      "metal": 20.0,
+      "parts": 8,
+      "plastic": 45.5,
       "pos": [
-        30.2,
-        22.9
+        32.5,
+        24.4
       ],
-      "rate": 1.95,
+      "rate": 8.13,
       "remote_shops": 0,
       "research": "",
       "robots": {
@@ -767,27 +717,21 @@
         "robot_bales": 13.0,
         "robots_built": 2.0
       },
-      "t": 660.5,
+      "t": 600.5,
       "task": "clean",
-      "upgrades": 23
+      "upgrades": 27
     },
     {
-      "event": "upgrade",
-      "id": "tread_speed",
-      "level": 4,
-      "t": 682.0
-    },
-    {
-      "bolts": 0.0,
+      "bolts": 15.0,
       "bots": {
         "cleaning hex # (#%)": 1,
-        "fetching a bale": 1
+        "hauling # bales": 1
       },
-      "cubes": 1136.0,
-      "data": 1.8,
-      "earned": 5269.0,
+      "cubes": 1043.0,
+      "data": 5.5,
+      "earned": 5677.0,
       "escapes": 0,
-      "glass": 19.8,
+      "glass": 18.6,
       "goals": 22,
       "hex_levels": [
         6,
@@ -798,86 +742,14 @@
       ],
       "hexes": 6,
       "hub": 1,
-      "metal": 21.9,
-      "parts": 9,
-      "plastic": 51.0,
+      "metal": 21.2,
+      "parts": 8,
+      "plastic": 49.4,
       "pos": [
-        29.5,
+        30.9,
         24.0
       ],
-      "rate": 5.24,
-      "remote_shops": 0,
-      "research": "scoop_beam",
-      "robots": {
-        "haulbug": 1,
-        "scoopie": 1
-      },
-      "seeds": 0.0,
-      "stats": {
-        "air_filtered": 0.0,
-        "bales_recycled": 0.0,
-        "garden_stipend": 0.0,
-        "plants_bloomed": 0.0,
-        "plants_planted": 0.0,
-        "research_done": 4.0,
-        "robot_bales": 16.0,
-        "robots_built": 2.0
-      },
-      "t": 720.5,
-      "task": "clean",
-      "upgrades": 24
-    },
-    {
-      "event": "zone",
-      "hexes": [
-        18,
-        14,
-        16
-      ],
-      "key": "clean",
-      "t": 753.5
-    },
-    {
-      "event": "upgrade",
-      "id": "compartment_size",
-      "level": 5,
-      "t": 758.8
-    },
-    {
-      "event": "upgrade",
-      "id": "bot_scoopie_scoop_rate",
-      "level": 2,
-      "t": 758.8
-    },
-    {
-      "bolts": 0.0,
-      "bots": {
-        "cleaning hex # (#%)": 1,
-        "fetching a bale": 1
-      },
-      "cubes": 1177.0,
-      "data": 18.3,
-      "earned": 5659.0,
-      "escapes": 0,
-      "glass": 20.2,
-      "goals": 23,
-      "hex_levels": [
-        7,
-        0,
-        0,
-        0,
-        0
-      ],
-      "hexes": 7,
-      "hub": 1,
-      "metal": 25.2,
-      "parts": 9,
-      "plastic": 54.6,
-      "pos": [
-        27.9,
-        -14.0
-      ],
-      "rate": 14.0,
+      "rate": 0.92,
       "remote_shops": 0,
       "research": "",
       "robots": {
@@ -895,49 +767,51 @@
         "robot_bales": 19.0,
         "robots_built": 2.0
       },
-      "t": 780.5,
+      "t": 660.6,
       "task": "clean",
-      "upgrades": 26
+      "upgrades": 27
     },
     {
-      "event": "zone",
-      "hexes": [
-        18,
-        16,
-        9
-      ],
-      "key": "clean",
-      "t": 806.8
+      "event": "upgrade",
+      "id": "scoop_speed",
+      "level": 3,
+      "t": 670.8
     },
     {
-      "bolts": 0.0,
+      "event": "upgrade",
+      "id": "laser_reach",
+      "level": 1,
+      "t": 670.8
+    },
+    {
+      "bolts": 15.0,
       "bots": {
         "cleaning hex # (#%)": 1,
-        "fetching a bale": 1
+        "hauling # bales": 1
       },
-      "cubes": 1586.0,
-      "data": 33.4,
-      "earned": 6068.0,
+      "cubes": 1158.0,
+      "data": 13.1,
+      "earned": 6151.0,
       "escapes": 0,
-      "glass": 21.2,
-      "goals": 24,
+      "glass": 19.4,
+      "goals": 23,
       "hex_levels": [
-        8,
+        6,
         0,
         0,
         0,
         0
       ],
-      "hexes": 8,
+      "hexes": 6,
       "hub": 1,
-      "metal": 34.5,
-      "parts": 12,
-      "plastic": 59.7,
+      "metal": 22.4,
+      "parts": 7,
+      "plastic": 53.8,
       "pos": [
-        -0.2,
-        -8.2
+        29.6,
+        24.0
       ],
-      "rate": 7.66,
+      "rate": 8.39,
       "remote_shops": 0,
       "research": "",
       "robots": {
@@ -952,276 +826,36 @@
         "plants_bloomed": 0.0,
         "plants_planted": 0.0,
         "research_done": 5.0,
-        "robot_bales": 21.0,
+        "robot_bales": 25.0,
         "robots_built": 2.0
       },
-      "t": 840.5,
-      "task": "bench",
-      "upgrades": 26
-    },
-    {
-      "event": "zone",
-      "hexes": [
-        16,
-        18,
-        9,
-        13
-      ],
-      "key": "clean",
-      "t": 844.8
-    },
-    {
-      "bolts": 0.0,
-      "bots": {
-        "cleaning hex # (#%)": 2,
-        "hauling # bales": 1
-      },
-      "cubes": 502.0,
-      "data": 43.6,
-      "earned": 6469.0,
-      "escapes": 0,
-      "glass": 25.3,
-      "goals": 25,
-      "hex_levels": [
-        8,
-        0,
-        0,
-        0,
-        0
-      ],
-      "hexes": 8,
-      "hub": 1,
-      "metal": 47.9,
-      "parts": 8,
-      "plastic": 67.7,
-      "pos": [
-        -6.0,
-        -36.0
-      ],
-      "rate": 7.18,
-      "remote_shops": 0,
-      "research": "",
-      "robots": {
-        "haulbug": 1,
-        "scoopie": 2
-      },
-      "seeds": 0.0,
-      "stats": {
-        "air_filtered": 0.0,
-        "bales_recycled": 0.0,
-        "garden_stipend": 0.0,
-        "plants_bloomed": 0.0,
-        "plants_planted": 0.0,
-        "research_done": 5.0,
-        "robot_bales": 29.0,
-        "robots_built": 3.0
-      },
-      "t": 900.5,
+      "t": 720.6,
       "task": "clean",
-      "upgrades": 26
-    },
-    {
-      "bolts": 0.0,
-      "bots": {
-        "cleaning hex # (#%)": 2,
-        "fetching a bale": 1
-      },
-      "cubes": 789.0,
-      "data": 7.6,
-      "earned": 6756.0,
-      "escapes": 0,
-      "glass": 28.1,
-      "goals": 25,
-      "hex_levels": [
-        9,
-        0,
-        0,
-        0,
-        0
-      ],
-      "hexes": 9,
-      "hub": 1,
-      "metal": 53.6,
-      "parts": 8,
-      "plastic": 80.9,
-      "pos": [
-        -25.8,
-        -22.7
-      ],
-      "rate": 4.86,
-      "remote_shops": 0,
-      "research": "hardy_weeds",
-      "robots": {
-        "haulbug": 1,
-        "scoopie": 2
-      },
-      "seeds": 0.0,
-      "stats": {
-        "air_filtered": 0.0,
-        "bales_recycled": 0.0,
-        "garden_stipend": 0.0,
-        "plants_bloomed": 0.0,
-        "plants_planted": 0.0,
-        "research_done": 5.0,
-        "robot_bales": 38.0,
-        "robots_built": 3.0
-      },
-      "t": 960.5,
-      "task": "clean",
-      "upgrades": 26
-    },
-    {
-      "bolts": 0.0,
-      "bots": {
-        "cleaning hex # (#%)": 2,
-        "hauling # bales": 1
-      },
-      "cubes": 957.0,
-      "data": 13.9,
-      "earned": 6924.0,
-      "escapes": 0,
-      "glass": 31.8,
-      "goals": 25,
-      "hex_levels": [
-        9,
-        0,
-        0,
-        0,
-        0
-      ],
-      "hexes": 9,
-      "hub": 1,
-      "metal": 58.5,
-      "parts": 8,
-      "plastic": 91.6,
-      "pos": [
-        -8.6,
-        -30.2
-      ],
-      "rate": 4.14,
-      "remote_shops": 0,
-      "research": "",
-      "robots": {
-        "haulbug": 1,
-        "scoopie": 2
-      },
-      "seeds": 0.0,
-      "stats": {
-        "air_filtered": 0.0,
-        "bales_recycled": 0.0,
-        "garden_stipend": 0.0,
-        "plants_bloomed": 0.0,
-        "plants_planted": 0.0,
-        "research_done": 6.0,
-        "robot_bales": 43.0,
-        "robots_built": 3.0
-      },
-      "t": 1020.5,
-      "task": "clean",
-      "upgrades": 26
-    },
-    {
-      "event": "zone",
-      "hexes": [
-        18,
-        9,
-        13,
-        17
-      ],
-      "key": "clean",
-      "t": 1059.6
-    },
-    {
-      "event": "zone",
-      "hexes": [
-        18,
-        9,
-        13,
-        17,
-        30
-      ],
-      "key": "clean",
-      "t": 1067.3
-    },
-    {
-      "bolts": 12.0,
-      "bots": {
-        "cleaning hex # (#%)": 2,
-        "fetching a bale": 1,
-        "hauling # bales": 1,
-        "nothing left to clean": 1,
-        "skimming lake hex # (#%)": 1
-      },
-      "cubes": 338.0,
-      "data": 58.2,
-      "earned": 10090.0,
-      "escapes": 0,
-      "glass": 35.2,
-      "goals": 30,
-      "hex_levels": [
-        10,
-        0,
-        0,
-        0,
-        0
-      ],
-      "hexes": 10,
-      "hub": 1,
-      "metal": 61.0,
-      "parts": 3,
-      "plastic": 95.1,
-      "pos": [
-        -23.5,
-        -14.1
-      ],
-      "rate": 55.45,
-      "remote_shops": 0,
-      "research": "",
-      "robots": {
-        "haulbug": 2,
-        "scoopie": 3,
-        "skimmer": 1
-      },
-      "seeds": 0.0,
-      "stats": {
-        "air_filtered": 0.0,
-        "bales_recycled": 0.0,
-        "garden_stipend": 0.0,
-        "plants_bloomed": 0.0,
-        "plants_planted": 0.0,
-        "research_done": 6.0,
-        "robot_bales": 48.0,
-        "robots_built": 6.0
-      },
-      "t": 1080.5,
-      "task": "clean",
-      "upgrades": 26
+      "upgrades": 29
     }
   ],
   "next_goals": [
-    "base_2",
-    "hex_12",
-    "hex_15"
+    "hex_7",
+    "hex_10",
+    "scoopie_2"
   ],
-  "parts_bought": 8,
-  "parts_found": 17.0,
-  "perfect_cubes": 29.0,
+  "parts_bought": 2,
+  "parts_found": 14.0,
+  "perfect_cubes": 17.0,
   "remote_shops": 0,
   "research_done": [
     "salvage_logic",
     "soil_survey",
     "water_testing",
     "field_notebook",
-    "scoop_beam",
-    "hardy_weeds"
+    "scoop_beam"
   ],
-  "research_idle_max_s": 276.0,
-  "research_idle_s": 905.0,
-  "research_starved_s": 905.0,
+  "research_idle_max_s": 269.0,
+  "research_idle_s": 605.0,
+  "research_starved_s": 605.0,
   "robots": {
-    "haulbug": 2,
-    "scoopie": 3,
-    "skimmer": 1
+    "haulbug": 1,
+    "scoopie": 1
   },
   "stuck_escapes": 0,
   "stuck_robots": {},
@@ -1230,685 +864,440 @@
       "kind": "part",
       "rarity": 1,
       "stored": 1,
-      "t": 4.9,
+      "t": 4.4,
       "type": 0
     },
     {
       "kind": "part",
       "rarity": 0,
       "stored": 2,
-      "t": 10.8,
+      "t": 10.3,
       "type": 6
     },
     {
       "id": "scoop_15",
       "kind": "goal",
       "n": 1,
-      "t": 15.5
+      "t": 15.3
     },
     {
       "id": "bale_1",
       "kind": "goal",
       "n": 2,
-      "t": 18.4
+      "t": 17.4
     },
     {
       "id": "upgrade_1",
       "kind": "goal",
       "n": 3,
-      "t": 21.3
+      "t": 20.3
     },
     {
       "id": "perfect_1",
       "kind": "goal",
       "n": 4,
-      "t": 22.0
+      "t": 21.0
     },
     {
       "id": "cash_1",
       "kind": "goal",
       "n": 5,
-      "t": 22.7
+      "t": 21.7
     },
     {
       "id": "upgrades_5",
       "kind": "goal",
       "n": 6,
-      "t": 26.3
+      "t": 34.6
     },
     {
       "id": "compartment_3",
       "kind": "goal",
       "n": 7,
-      "t": 37.8
-    },
-    {
-      "hex": 1,
-      "kind": "hex_clean",
-      "n": 1,
-      "t": 65.6
-    },
-    {
-      "id": "hex_1",
-      "kind": "goal",
-      "n": 8,
-      "t": 65.8
-    },
-    {
-      "hex": 1,
-      "kind": "hex_level",
-      "level": 1,
-      "t": 66.5
+      "t": 36.0
     },
     {
       "kind": "part",
       "rarity": 1,
       "stored": 3,
-      "t": 120.6,
+      "t": 70.4,
       "type": 6
     },
     {
       "kind": "part",
       "rarity": 1,
       "stored": 4,
-      "t": 124.1,
+      "t": 73.9,
       "type": 3
     },
     {
-      "kind": "part",
-      "rarity": 1,
-      "stored": 5,
-      "t": 167.0,
-      "type": 4
+      "hex": 1,
+      "kind": "hex_clean",
+      "n": 1,
+      "t": 78.4
     },
     {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 6,
-      "t": 170.4,
-      "type": 4
+      "id": "hex_1",
+      "kind": "goal",
+      "n": 8,
+      "t": 79.1
+    },
+    {
+      "hex": 1,
+      "kind": "hex_level",
+      "level": 1,
+      "t": 79.2
     },
     {
       "hex": 6,
       "kind": "hex_clean",
       "n": 2,
-      "t": 183.4
+      "t": 175.9
     },
     {
       "hex": 6,
       "kind": "hex_level",
       "level": 1,
-      "t": 183.5
-    },
-    {
-      "hex": 5,
-      "kind": "hex_clean",
-      "n": 3,
-      "t": 254.6
-    },
-    {
-      "id": "hex_3",
-      "kind": "goal",
-      "n": 9,
-      "t": 255.3
-    },
-    {
-      "hex": 5,
-      "kind": "hex_level",
-      "level": 1,
-      "t": 255.5
-    },
-    {
-      "id": "shards_1",
-      "kind": "goal",
-      "n": 10,
-      "t": 256.1
-    },
-    {
-      "id": "parts_2",
-      "kind": "goal",
-      "n": 11,
-      "t": 256.8
-    },
-    {
-      "id": "earn_1k",
-      "kind": "goal",
-      "n": 12,
-      "t": 257.5
-    },
-    {
-      "id": "salvage_logic",
-      "kind": "research_start",
-      "t": 276.7
-    },
-    {
-      "id": "soil_survey",
-      "kind": "research_start",
-      "t": 276.7
-    },
-    {
-      "kind": "part",
-      "rarity": 3,
-      "stored": 7,
-      "t": 300.2,
-      "type": 6
-    },
-    {
-      "kind": "part",
-      "rarity": 2,
-      "stored": 8,
-      "t": 303.0,
-      "type": 2
-    },
-    {
-      "id": "salvage_logic",
-      "kind": "research",
-      "t": 306.7
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 9,
-      "t": 306.8,
-      "type": 7
-    },
-    {
-      "id": "research_1",
-      "kind": "goal",
-      "n": 13,
-      "t": 307.0
-    },
-    {
-      "kind": "part_swap",
-      "t": 313.0,
-      "type": "locomotion"
-    },
-    {
-      "id": "soil_survey",
-      "kind": "research",
-      "t": 337.1
+      "t": 176.3
     },
     {
       "kind": "part",
       "rarity": 1,
-      "stored": 8,
-      "t": 343.7,
-      "type": 7
-    },
-    {
-      "kind": "part",
-      "rarity": 1,
-      "stored": 9,
-      "t": 347.4,
-      "type": 5
-    },
-    {
-      "id": "cash_10",
-      "kind": "goal",
-      "n": 14,
-      "t": 373.8
-    },
-    {
-      "fleet": 1,
-      "kind": "robot",
-      "name": "Widget-68",
-      "t": 374.8,
-      "type": "scoopie"
-    },
-    {
-      "id": "scoopie_1",
-      "kind": "goal",
-      "n": 15,
-      "t": 375.2
-    },
-    {
-      "id": "zone_1",
-      "kind": "goal",
-      "n": 16,
-      "t": 376.0
-    },
-    {
-      "id": "upgrades_12",
-      "kind": "goal",
-      "n": 17,
-      "t": 376.6
-    },
-    {
-      "hex": 4,
-      "kind": "hex_clean",
-      "n": 4,
-      "t": 384.6
-    },
-    {
-      "hex": 4,
-      "kind": "hex_level",
-      "level": 1,
-      "t": 384.6
-    },
-    {
-      "id": "water_testing",
-      "kind": "research_start",
-      "t": 400.4
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 6,
-      "t": 400.4,
-      "type": 0
-    },
-    {
-      "kind": "part_bought",
-      "t": 400.4,
-      "type": 0
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 7,
-      "t": 400.4,
-      "type": 1
-    },
-    {
-      "kind": "part_bought",
-      "t": 400.4,
-      "type": 1
-    },
-    {
-      "fleet": 2,
-      "kind": "robot",
-      "name": "Dibs-78",
-      "t": 400.4,
-      "type": "haulbug"
-    },
-    {
-      "id": "haulbug_1",
-      "kind": "goal",
-      "n": 18,
-      "t": 401.1
-    },
-    {
-      "id": "earn_3k",
-      "kind": "goal",
-      "n": 19,
-      "t": 401.8
-    },
-    {
-      "id": "water_testing",
-      "kind": "research",
-      "t": 430.7
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
       "stored": 5,
-      "t": 438.4,
+      "t": 193.6,
       "type": 4
     },
     {
       "kind": "part",
       "rarity": 0,
       "stored": 6,
-      "t": 507.5,
-      "type": 5
+      "t": 196.8,
+      "type": 4
     },
     {
-      "hex": 3,
+      "hex": 5,
       "kind": "hex_clean",
-      "n": 5,
-      "t": 519.6
+      "n": 3,
+      "t": 247.5
     },
     {
-      "id": "hex_5",
+      "id": "hex_3",
       "kind": "goal",
-      "n": 20,
-      "t": 519.6
+      "n": 9,
+      "t": 247.8
     },
     {
-      "hex": 3,
+      "hex": 5,
       "kind": "hex_level",
       "level": 1,
-      "t": 519.7
+      "t": 248.3
     },
     {
-      "kind": "part",
-      "rarity": 1,
-      "stored": 7,
-      "t": 529.6,
-      "type": 0
+      "id": "parts_2",
+      "kind": "goal",
+      "n": 10,
+      "t": 248.5
     },
     {
-      "id": "field_notebook",
+      "id": "shards_1",
+      "kind": "goal",
+      "n": 11,
+      "t": 249.2
+    },
+    {
+      "id": "earn_1k",
+      "kind": "goal",
+      "n": 12,
+      "t": 249.9
+    },
+    {
+      "id": "salvage_logic",
       "kind": "research_start",
-      "t": 546.6
+      "t": 268.8
     },
     {
-      "id": "upgrades_20",
-      "kind": "goal",
-      "n": 21,
-      "t": 548.3
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 8,
-      "t": 561.2,
-      "type": 7
-    },
-    {
-      "hex": 2,
-      "kind": "hex_clean",
-      "n": 6,
-      "t": 569.1
-    },
-    {
-      "hex": 2,
-      "kind": "hex_level",
-      "level": 1,
-      "t": 569.7
-    },
-    {
-      "id": "field_notebook",
-      "kind": "research",
-      "t": 577.0
-    },
-    {
-      "id": "research_4",
-      "kind": "goal",
-      "n": 22,
-      "t": 577.7
+      "id": "soil_survey",
+      "kind": "research_start",
+      "t": 268.8
     },
     {
       "kind": "part",
-      "rarity": 0,
-      "stored": 9,
-      "t": 593.6,
-      "type": 5
-    },
-    {
-      "kind": "part_swap",
-      "t": 613.8,
-      "type": "locomotion"
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 8,
-      "t": 694.8,
+      "rarity": 3,
+      "stored": 7,
+      "t": 281.7,
       "type": 6
     },
     {
       "kind": "part",
       "rarity": 2,
+      "stored": 8,
+      "t": 286.2,
+      "type": 2
+    },
+    {
+      "kind": "part",
+      "rarity": 0,
       "stored": 9,
-      "t": 698.7,
-      "type": 3
+      "t": 289.9,
+      "type": 7
     },
     {
-      "id": "scoop_beam",
-      "kind": "research_start",
-      "t": 708.7
-    },
-    {
-      "id": "scoop_beam",
+      "id": "salvage_logic",
       "kind": "research",
-      "t": 736.1
+      "t": 299.1
     },
     {
-      "hex": 10,
-      "kind": "hex_clean",
-      "n": 7,
-      "t": 752.6
-    },
-    {
-      "hex": 10,
-      "kind": "hex_level",
-      "level": 1,
-      "t": 752.7
-    },
-    {
-      "id": "hex_7",
+      "id": "research_1",
       "kind": "goal",
-      "n": 23,
-      "t": 752.8
+      "n": 13,
+      "t": 299.4
+    },
+    {
+      "kind": "part_swap",
+      "t": 305.0,
+      "type": "locomotion"
+    },
+    {
+      "id": "soil_survey",
+      "kind": "research",
+      "t": 329.0
+    },
+    {
+      "id": "cash_10",
+      "kind": "goal",
+      "n": 14,
+      "t": 332.4
+    },
+    {
+      "id": "zone_1",
+      "kind": "goal",
+      "n": 15,
+      "t": 333.1
+    },
+    {
+      "kind": "part",
+      "rarity": 0,
+      "stored": 8,
+      "t": 342.7,
+      "type": 7
+    },
+    {
+      "kind": "part",
+      "rarity": 1,
+      "stored": 9,
+      "t": 348.2,
+      "type": 7
     },
     {
       "kind": "part",
       "rarity": 1,
       "stored": 10,
-      "t": 782.2,
+      "t": 351.8,
+      "type": 5
+    },
+    {
+      "hex": 4,
+      "kind": "hex_clean",
+      "n": 4,
+      "t": 355.3
+    },
+    {
+      "hex": 4,
+      "kind": "hex_level",
+      "level": 1,
+      "t": 356.3
+    },
+    {
+      "fleet": 1,
+      "kind": "robot",
+      "name": "Tin-38",
+      "t": 359.8,
+      "type": "scoopie"
+    },
+    {
+      "id": "scoopie_1",
+      "kind": "goal",
+      "n": 16,
+      "t": 360.3
+    },
+    {
+      "id": "upgrades_12",
+      "kind": "goal",
+      "n": 17,
+      "t": 361.0
+    },
+    {
+      "id": "water_testing",
+      "kind": "research_start",
+      "t": 389.7
+    },
+    {
+      "id": "water_testing",
+      "kind": "research",
+      "t": 419.7
+    },
+    {
+      "id": "earn_3k",
+      "kind": "goal",
+      "n": 18,
+      "t": 452.8
+    },
+    {
+      "kind": "part",
+      "rarity": 0,
+      "stored": 7,
+      "t": 465.2,
+      "type": 0
+    },
+    {
+      "kind": "part_bought",
+      "t": 465.2,
+      "type": 0
+    },
+    {
+      "kind": "part",
+      "rarity": 0,
+      "stored": 8,
+      "t": 465.2,
+      "type": 1
+    },
+    {
+      "kind": "part_bought",
+      "t": 465.2,
+      "type": 1
+    },
+    {
+      "fleet": 2,
+      "kind": "robot",
+      "name": "Rivet-65",
+      "t": 465.2,
+      "type": "haulbug"
+    },
+    {
+      "id": "haulbug_1",
+      "kind": "goal",
+      "n": 19,
+      "t": 465.7
+    },
+    {
+      "kind": "part",
+      "rarity": 0,
+      "stored": 6,
+      "t": 479.5,
+      "type": 5
+    },
+    {
+      "kind": "part",
+      "rarity": 3,
+      "stored": 7,
+      "t": 479.5,
+      "type": 7
+    },
+    {
+      "kind": "part_swap",
+      "t": 489.9,
+      "type": "chassis"
+    },
+    {
+      "hex": 3,
+      "kind": "hex_clean",
+      "n": 5,
+      "t": 516.1
+    },
+    {
+      "hex": 3,
+      "kind": "hex_level",
+      "level": 1,
+      "t": 516.3
+    },
+    {
+      "id": "hex_5",
+      "kind": "goal",
+      "n": 20,
+      "t": 516.6
+    },
+    {
+      "id": "upgrades_20",
+      "kind": "goal",
+      "n": 21,
+      "t": 517.3
+    },
+    {
+      "id": "field_notebook",
+      "kind": "research_start",
+      "t": 519.9
+    },
+    {
+      "kind": "part",
+      "rarity": 1,
+      "stored": 6,
+      "t": 535.1,
+      "type": 0
+    },
+    {
+      "hex": 2,
+      "kind": "hex_clean",
+      "n": 6,
+      "t": 536.4
+    },
+    {
+      "hex": 2,
+      "kind": "hex_level",
+      "level": 1,
+      "t": 537.3
+    },
+    {
+      "id": "field_notebook",
+      "kind": "research",
+      "t": 550.3
+    },
+    {
+      "id": "research_4",
+      "kind": "goal",
+      "n": 22,
+      "t": 550.9
+    },
+    {
+      "kind": "part",
+      "rarity": 1,
+      "stored": 7,
+      "t": 567.5,
       "type": 6
     },
     {
       "kind": "part",
       "rarity": 0,
-      "stored": 11,
-      "t": 786.9,
-      "type": 2
+      "stored": 8,
+      "t": 593.9,
+      "type": 7
+    },
+    {
+      "id": "scoop_beam",
+      "kind": "research_start",
+      "t": 620.2
+    },
+    {
+      "id": "scoop_beam",
+      "kind": "research",
+      "t": 647.6
+    },
+    {
+      "kind": "part",
+      "rarity": 0,
+      "stored": 9,
+      "t": 664.1,
+      "type": 7
     },
     {
       "id": "bales_20",
       "kind": "goal",
-      "n": 24,
-      "t": 787.2
-    },
-    {
-      "kind": "part",
-      "rarity": 1,
-      "stored": 12,
-      "t": 793.3,
-      "type": 3
-    },
-    {
-      "hex": 12,
-      "kind": "hex_clean",
-      "n": 8,
-      "t": 806.2
-    },
-    {
-      "hex": 12,
-      "kind": "hex_level",
-      "level": 1,
-      "t": 806.7
-    },
-    {
-      "fleet": 3,
-      "kind": "robot",
-      "name": "Sprocket-56",
-      "t": 844.2,
-      "type": "scoopie"
-    },
-    {
-      "id": "scoopie_2",
-      "kind": "goal",
-      "n": 25,
-      "t": 844.6
-    },
-    {
-      "hex": 14,
-      "kind": "hex_clean",
-      "n": 9,
-      "t": 901.5
-    },
-    {
-      "hex": 14,
-      "kind": "hex_level",
-      "level": 1,
-      "t": 901.7
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 9,
-      "t": 904.8,
-      "type": 1
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 10,
-      "t": 908.2,
-      "type": 6
-    },
-    {
-      "id": "hardy_weeds",
-      "kind": "research_start",
-      "t": 918.8
+      "n": 23,
+      "t": 664.1
     },
     {
       "kind": "part_swap",
-      "t": 918.8,
-      "type": "chassis"
-    },
-    {
-      "id": "hardy_weeds",
-      "kind": "research",
-      "t": 973.6
-    },
-    {
-      "hex": 15,
-      "kind": "hex_clean",
-      "n": 10,
-      "t": 1058.8
-    },
-    {
-      "id": "hex_10",
-      "kind": "goal",
-      "n": 26,
-      "t": 1058.8
-    },
-    {
-      "id": "upgrades_25",
-      "kind": "goal",
-      "n": 27,
-      "t": 1059.6
-    },
-    {
-      "hex": 15,
-      "kind": "hex_level",
-      "level": 1,
-      "t": 1059.8
-    },
-    {
-      "id": "research_6",
-      "kind": "goal",
-      "n": 28,
-      "t": 1060.3
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 9,
-      "t": 1067.1,
-      "type": 2
-    },
-    {
-      "kind": "part_bought",
-      "t": 1067.1,
-      "type": 2
-    },
-    {
-      "fleet": 4,
-      "kind": "robot",
-      "name": "Nib-30",
-      "t": 1067.1,
-      "type": "scoopie"
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 6,
-      "t": 1067.3,
-      "type": 0
-    },
-    {
-      "kind": "part_bought",
-      "t": 1067.3,
-      "type": 0
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 7,
-      "t": 1067.3,
-      "type": 1
-    },
-    {
-      "kind": "part_bought",
-      "t": 1067.3,
-      "type": 1
-    },
-    {
-      "fleet": 5,
-      "kind": "robot",
-      "name": "Tin-89",
-      "t": 1067.3,
-      "type": "haulbug"
-    },
-    {
-      "id": "robots_4",
-      "kind": "goal",
-      "n": 29,
-      "t": 1067.5
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 5,
-      "t": 1068.2,
-      "type": 0
-    },
-    {
-      "kind": "part_bought",
-      "t": 1068.2,
-      "type": 0
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 6,
-      "t": 1068.2,
-      "type": 1
-    },
-    {
-      "kind": "part_bought",
-      "t": 1068.2,
-      "type": 1
-    },
-    {
-      "kind": "part",
-      "rarity": 0,
-      "stored": 7,
-      "t": 1068.2,
-      "type": 2
-    },
-    {
-      "kind": "part_bought",
-      "t": 1068.2,
-      "type": 2
-    },
-    {
-      "fleet": 6,
-      "kind": "robot",
-      "name": "Socket-36",
-      "t": 1068.2,
-      "type": "skimmer"
-    },
-    {
-      "kind": "builder",
-      "t": 1068.2,
-      "what": "fit treads on Widget-68"
-    },
-    {
-      "id": "builder_1",
-      "kind": "goal",
-      "n": 30,
-      "t": 1068.2
-    },
-    {
-      "id": "big_tanks",
-      "kind": "research_start",
-      "t": 1105.5
+      "t": 670.8,
+      "type": "locomotion"
     }
   ],
   "upgrades": {
@@ -1917,11 +1306,12 @@
     "bot_scoopie_efficiency": 1,
     "bot_scoopie_scoop_rate": 2,
     "bot_scoopie_speed": 2,
-    "carry_stack": 1,
+    "carry_stack": 2,
     "compactor_pressure": 1,
     "compartment_size": 5,
     "detector_range": 1,
-    "scoop_speed": 2,
+    "laser_reach": 1,
+    "scoop_speed": 3,
     "scoop_width": 4,
     "tread_speed": 4
   }

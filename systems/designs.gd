@@ -191,3 +191,28 @@ static func breakdown(stat_id: String) -> Array[Dictionary]:
 	if m != 1.0:
 		out.append({"source": TranslationServer.translate("Design: %s") % TranslationServer.translate(str(def(current()).get("name", ""))), "text": "x%.2f" % m})
 	return out
+
+
+# --- Dev hooks (screenshots) --------------------------------------------------------------------
+##   --design=ID          unlock and wear a design at start
+##   --designs-all        unlock every design
+##   --design-unlock=ID   play the unlock (toast card) for ID after --design-unlock-at=S seconds (default 4)
+static func dev_hooks(world: Node) -> void:
+	if DevHooks.has("designs-all"):
+		for id: String in ids():
+			if not (id in unlocked()):
+				unlocked().append(id)
+	var want: String = DevHooks.get_s("design", "")
+	if want != "" and not def(want).is_empty():
+		if not (want in unlocked()):
+			unlocked().append(want)
+		select(want)
+		if world and world.get("patch") and world.patch.get("model"):
+			(world.patch.model as PatchModel).set_variant(want)
+	var show: String = DevHooks.get_s("design-unlock", "")
+	if show != "" and not def(show).is_empty() and world:
+		unlocked().erase(show)
+		world.get_tree().create_timer(DevHooks.get_f("design-unlock-at", 4.0)).timeout.connect(func() -> void:
+			unlocked().append(show)
+			pending_toasts.append(show)
+			DesignToast.show_next())
