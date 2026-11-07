@@ -404,6 +404,7 @@ func _build_accessories(v: Dictionary) -> void:
 					_bfly.add_child(hinge)
 					var w: MeshInstance3D = _part(hinge, "acc_wing")
 					w.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+					w.scale.z = -1.0  # the big forewing toward the head (-Z)
 					_bfly_wings.append(hinge)
 
 

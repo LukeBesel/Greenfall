@@ -86,6 +86,9 @@ func _play_next() -> void:
 	await get_tree().process_frame
 	var w: float = _panel.get_combined_minimum_size().x
 	_panel.position = Vector2((get_viewport().get_visible_rect().size.x - w) * 0.5, -40.0)
+	if DevHooks.has("design-unlock"):  # screenshots: software rendering runs at a few frames, so no slide-in
+		_panel.position.y = 86.0
+		_panel.modulate.a = 1.0
 	var tw: Tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tw.tween_property(_panel, "position:y", 86.0, 0.45)
 	tw.parallel().tween_property(_panel, "modulate:a", 1.0, 0.3)

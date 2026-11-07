@@ -663,11 +663,13 @@ for v in lf.data.vertices:
 ACC["acc_icon_leaf"] = (join("acc_icon_leaf", [lf, tube("ic_vein", [CHEST + Vector((0.012, -0.036, -0.004)), CHEST + Vector((-0.006, 0.0, -0.005)), CHEST + Vector((-0.02, 0.026, -0.004))], 0.002, "dark", sides=6)]), CHEST)
 
 # --- Butterfly companion (Pixel): one wing (PatchModel mirrors and flaps it) and a body.
-w_pts = []
-for i in range(48):
-	t = 2 * math.pi * i / 48
-	r = 0.05 * (0.62 + 0.38 * math.cos(2 * t) ** 2) * (1.15 if math.sin(t) > 0 else 0.8)
-	w_pts.append((abs(math.cos(t)) * r * 1.25 + 0.004, math.sin(t) * r))
+# Outline swept around the hinge (a fan, so it triangulates cleanly): big forewing, rounder hindwing.
+w_pts = [(0.0, 0.0)]
+for i in range(41):
+	t = -math.pi * 0.5 + math.pi * i / 40
+	fore = t > -0.15
+	r = (0.062 * (0.75 + 0.25 * math.sin((t + 0.15) * 2.0)) if fore else 0.045 * (0.8 + 0.2 * math.cos(t * 2.0)))
+	w_pts.append((math.cos(t) * r + 0.003, math.sin(t) * r))
 ACC["acc_wing"] = (prism("acc_wing", w_pts, 0.0025, (0, 0, 0), "wing", bevel=0.0, sub=0, rot=(90, 0, 0)), Vector((0, 0, 0)))
 ACC["acc_bfly_body"] = (join("acc_bfly_body", [
 	rbox("bf_body", (0.012, 0.012, 0.05), (0, 0, 0), 0.0059, "dark", sub=1),
