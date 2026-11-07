@@ -64,7 +64,20 @@ func _snapshot(s: Node) -> Dictionary:
 		"builder_fragments": RobotBuilder.fragments(),
 		"builder_presets": JSON.stringify(RobotBuilder.st().get("presets", {})),
 		"builds": _builds(f),
+		"fauna": _fauna(s),  # [wild]
 	}
+
+
+## [wild] Persisted animal state, plus whether the adopted cat is back in the live district.
+func _fauna(s: Node) -> String:
+	var named: String = "-"
+	if s.get("fauna") != null:
+		s.fauna.replan()
+		for a: Fauna.Animal in s.fauna.animals:
+			if a.named:
+				named = a.cat_name
+	return "%s %s %s %s live=%s" % [str(GameState.flags.get("fauna_seen", [])), str(GameState.flags.get("fauna_photos", [])),
+		str(GameState.flags.get("fauna_cat", {}).get("name", "")), str(GameState.flags.get("fauna_cat", {}).get("coat", "")), named]
 
 
 ## [drones] "name:trait:slot=part,..." per robot, sorted.
@@ -282,6 +295,16 @@ func _ready() -> void:
 	# [hud] Some Lumi XP across a couple of levels.
 	if s1.get("lumi_level") != null:
 		s1.lumi_level.add("dev", LumiLevel.need(1) + LumiLevel.need(2) + 37)
+	# [wild] Animals: sightings, a photo and an adopted cat (she should be back at the base).
+	if s1.get("fauna") != null:
+		s1.fauna.mark_seen("deer")
+		s1.fauna.record_photo("pigeon")
+		var stray := Fauna.Animal.new()
+		stray.sp = "cat"
+		stray.kind = "cat"
+		stray.key = "cat|5|0"
+		stray.coat = 1
+		s1.fauna.adopt(stray)
 	# [drones] Builder: parts in the bin, fragments, builds on two robots (one renamed), a preset.
 	for id: String in ["treads", "big_eye", "rotor", "long_forks", "top_hat", "mist_sprayer"]:
 		RobotBuilder.add_part(id, 2)
