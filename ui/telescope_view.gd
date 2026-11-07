@@ -87,6 +87,9 @@ func open_view(pick: int = -1) -> void:
 				vis.append(i)
 		if not vis.is_empty():
 			_zoom_to(vis[clampi(pick, 0, vis.size() - 1)], true)
+	if DevHooks.has("scope-debug"):
+		get_tree().create_timer(3.0).timeout.connect(func() -> void:
+			print("[scope] open mode=%s entries=%d picked=%d root_vis=%s alpha=%.2f vp=%s bots=%d" % [mode, entries.size(), picked, str(_root.visible), _root.modulate.a, str(_vp.size), district.bots.size() if district else -1]))
 
 
 func close_view() -> void:

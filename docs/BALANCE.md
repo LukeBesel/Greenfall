@@ -458,3 +458,31 @@ Data changes (early-game values only):
 - **Garden charm**: +0.4% plant growth per charm point in that district, capped at +8% (charm 20;
   the fountain is 4, a bench 1.5, a path 0.2). Decorations refund in full when picked up.
 
+
+## Remote progress and the Telescope (wt/scope, Nov 7)
+Robots on the other worlds of a Cradle Mode profile keep working while Lumi is elsewhere. One function
+does the maths for both: `Offline.compute` (core/offline.gd). `RemoteProgress.compute` (systems/remote_progress.gd)
+calls it and scales the result; nothing is duplicated.
+- **Rate:** `remote_factor` 0.5 of the offline rate (data/telescope.json), and offline is already 0.5 of the
+  online scoop rate, so a remote crew works at **25%** of what it does with Lumi there. Scrubbers pay nothing
+  from afar.
+- **Caps:** the offline 8 h cap (`Offline.CAP_S`) per absence, and the junk left in that district
+  (junk hexes x 337 units, the measured mean, minus `offline_units` already paid). A clean district pays nothing.
+- **When it pays:** on arrival by world travel (`CradleMode.switch_world` loads the world in memory, so the
+  slice skips its own offline payout; `Telescope` calls `RemoteProgress.on_district_ready`). The window starts
+  at that world's last save, i.e. when Lumi left it; under 120 s pays nothing. A cold start onto a world gets
+  the normal offline payout instead, and rocket travel inside one world gets neither, so time is never paid
+  twice. The units paid are added to `offline_units`, so the same junk can't pay again (the same rule as offline).
+  If the extras idle-gains work lands, it should also call `Offline.compute`; remote progress only covers
+  worlds other than the current one, so the two never overlap.
+- **What the telescope shows** is the same number live (`RemoteProgress.pending`): the district % and
+  "waiting for you" cubes tick up at the remote rate; piles shrink and hexes turn clean nearest the base first.
+  Estimates use the current world's upgrades; the payout on arrival uses the visited world's own.
+- **Size of it:** a Mk I Scoopie earns about 0.05 cubes/s remotely (~180 cubes/h, with a hauler in the crew).
+  A full 8 h away banks what that crew makes in about 2 h with Lumi there, and never more junk than the
+  district has left.
+- **Care package:** 400 cubes spent here, 5 min of double speed for the watched world's crew, one at a time
+  per world. Its extra payout is capped at 75% of its cost (`care.extra_cap`), so it can never turn cubes
+  here into more cubes there. It is a nudge you can watch, not an income source.
+- **Telescope unlock:** base level 4, or the Observatory Optics research (Robotics tier 6, 500 Data). Cost
+  6000 cubes + 40 parts (bolts until the money rework adds a parts currency). Tests: `tests/test_remote_progress.gd`.

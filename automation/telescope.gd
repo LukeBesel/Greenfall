@@ -49,6 +49,8 @@ func _ready() -> void:
 	if DevHooks.has("scope-open"):
 		_open_target = 1.0
 		_open = 1.0
+	if DevHooks.has("scope-debug"):
+		print("[scope] ready built=%s open=%s" % [str(built()), DevHooks.get_s("open", "")])
 	if DevHooks.get_s("open", "") == "scope":
 		(func() -> void: open_view(int(DevHooks.get_f("scope-pick", -1.0)))).call_deferred()
 
@@ -147,8 +149,11 @@ func _process(delta: float) -> void:
 	_t += delta
 	_open = move_toward(_open, _open_target, delta * 0.9)
 	var e: float = _open * _open * (3.0 - 2.0 * _open)
-	_shell_l.rotation.z = deg_to_rad(34.0) * e
-	_shell_r.rotation.z = -deg_to_rad(34.0) * e
+	# The shells swing a little and slide apart on their rails: a clean slit, not a cracked egg.
+	_shell_l.rotation.z = deg_to_rad(16.0) * e
+	_shell_r.rotation.z = -deg_to_rad(16.0) * e
+	_shell_l.position.x = -1.6 - 0.32 * e
+	_shell_r.position.x = 1.6 + 0.32 * e
 	_tube.rotation.x = deg_to_rad(25.0 + 32.0 * e)
 	_tube.position.y = 1.7 + 0.35 * e
 	_model.get_node("Dome").rotation.y = sin(_t * 0.05) * 0.25
@@ -159,7 +164,7 @@ func _process(delta: float) -> void:
 # --- Model -----------------------------------------------------------------------------------
 
 func _pos() -> Vector3:
-	var p: Array = data.get("pos", [-4.0, -7.9])
+	var p: Array = data.get("pos", [-5.6, -2.8])
 	return Vector3(float(p[0]), 0.0, float(p[1]))
 
 
@@ -228,7 +233,7 @@ func _spawn(animate: bool) -> void:
 	_model = Node3D.new()
 	_model.name = "Observatory"
 	_model.position = _pos()
-	_model.rotation.y = deg_to_rad(float(data.get("yaw_deg", 30.0)))
+	_model.rotation.y = deg_to_rad(float(data.get("yaw_deg", 90.0)))
 	add_child(_model)
 	# Plinth: a low satin hex step with a hairline light seam.
 	_mi(_model, ProcMesh.cyl(2.25, 2.35, 0.18, 6), satin, Vector3(0, 0.09, 0))
