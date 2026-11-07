@@ -346,7 +346,7 @@ func _build_curiosities() -> Control:
 	head.add_child(bar)
 	var first: Control = null
 	# Grouped by where they turn up, so a player knows a rocket trip might be needed.
-	for group: String in [tr("Old Town"), tr("Any district"), tr("Wilderness bases")]:
+	for group: String in [tr("Old Town"), tr("Any district"), tr("Wilderness bases"), tr("Frontiers"), tr("Other worlds")]:  # [late] +2 groups
 		var items: Array[Dictionary] = []
 		for c: Dictionary in all:
 			if str(c["where"]).begins_with(group):

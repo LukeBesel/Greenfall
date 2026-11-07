@@ -33,7 +33,7 @@ static func of(slice: Node) -> LateDirector:
 
 
 func _setup() -> void:
-	if DevHooks.has("post-finale") and not GameState.flags.get("late_post_finale_dev", false):
+	if DevHooks.has("post-finale") and not GameState.flags.get("late_post_finale_dev", false) and CradleMode.current_index() == 0:
 		dev_post_finale()
 	if DevHooks.has("starseeds"):
 		CradleMode.profile["starseeds"] = CradleMode.starseeds() + DevHooks.get_f("starseeds", 100.0)
@@ -148,6 +148,9 @@ func _arrive_new_world() -> void:
 			if rb:
 				rb.rotation.y = PI
 	WorldBanner.show_world(world, w)
+	print("[late] arrived on world %d %s: cubes=%s data=%s seeds_unlocked=%s robots=%d research=%d" % [int(w.get("index", 0)), str(w.get("name", "")),
+		GameState.get_currency("cubes").format(), GameState.get_currency(Research.CURRENCY).format(), str(GameState.flags.get("seeds_unlocked", false)),
+		fl.robots().size() if fl else 0, Research.done_list().size()])
 	GameState.inc_stat("worlds_landed")
 	if world.get("wren") != null:
 		get_tree().create_timer(5.0, false).timeout.connect(func() -> void: world.wren.say("new_world", 1.0, true))

@@ -145,6 +145,18 @@
     {"id": "cradle_grow25", "text": "Get 25 hexes Growing here", "type": "hex_level", "key": 3, "target": 25, "reward": {"cubes": 150000, "seeds": 100}},
     {"id": "cradle_home", "text": "Call the Cradle home", "type": "flag", "key": "cradle_returned", "target": 1, "reward": {"cubes": 250000, "seeds": 200}},
     {"id": "ark_1", "text": "Plant a Seed Ark wave", "type": "stat", "key": "ark_waves", "target": 1, "reward": {"cubes": 50000}},
-    {"id": "ark_3", "text": "Plant three Seed Ark waves", "type": "stat", "key": "ark_waves", "target": 3, "reward": {"cubes": 150000, "seeds": 200}}
+    {"id": "ark_3", "text": "Plant three Seed Ark waves", "type": "stat", "key": "ark_waves", "target": 3, "reward": {"cubes": 150000, "seeds": 200}},
+    {"id": "late_bridge", "text": "Open the Ark Bridge (pause menu)", "type": "stat", "key": "ark_bridge_opened", "target": 1, "reward": {"cubes": 20000}},
+    {"id": "late_garden_1", "text": "Place a decoration in Garden Mode (H)", "type": "stat", "key": "decor_placed", "target": 1, "reward": {"cubes": 20000, "seeds": 40}},
+    {"id": "late_heirloom_1", "text": "Buy an Heirloom on the Ark Bridge", "type": "stat", "key": "heirloom_levels", "target": 1, "reward": {"cubes": 40000}},
+    {"id": "late_garden_10", "text": "Place 10 decorations", "type": "stat", "key": "decor_placed", "target": 10, "reward": {"cubes": 60000, "seeds": 80}},
+    {"id": "late_garden_kinds", "text": "Place 5 kinds of decoration", "type": "stat", "key": "decor_kinds", "target": 5, "reward": {"cubes": 80000}},
+    {"id": "late_ark_5", "text": "Plant five Seed Ark waves", "type": "stat", "key": "ark_waves", "target": 5, "reward": {"cubes": 250000, "seeds": 300}},
+    {"id": "late_eggs_30", "text": "Find 30 curiosities", "type": "stat", "key": "eggs_found", "target": 30, "reward": {"cubes": 120000}},
+    {"id": "late_world_1", "text": "Seed a new world", "type": "stat", "key": "worlds_seeded", "target": 1, "reward": {"cubes": 50000, "seeds": 100}},
+    {"id": "late_charm_20", "text": "Reach 20 charm in one district", "type": "stat", "key": "decor_charm_best", "target": 20, "reward": {"cubes": 150000}},
+    {"id": "late_heirloom_10", "text": "Grow Heirlooms to 10 levels", "type": "stat", "key": "heirloom_levels", "target": 10, "reward": {"cubes": 200000}},
+    {"id": "late_world_2", "text": "Seed a second new world", "type": "stat", "key": "worlds_seeded", "target": 2, "reward": {"cubes": 250000, "seeds": 200}},
+    {"id": "late_eggs_38", "text": "Find 38 curiosities", "type": "stat", "key": "eggs_found", "target": 38, "reward": {"cubes": 300000, "seeds": 300}}
   ]
 }
