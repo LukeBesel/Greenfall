@@ -128,9 +128,10 @@ func _build_colliders() -> void:
 		body.add_child(deck)
 		var mast := CollisionShape3D.new()
 		var bx := BoxShape3D.new()
-		bx.size = Vector3(4.4, 3.0, 1.4)
+		bx.size = Vector3(1.4, 3.0, 4.4)
 		mast.shape = bx
-		mast.position = Vector3(0, 1.5, -(pad.radius() + 1.1))
+		mast.basis = Basis(Vector3.UP, PARK_YAW)
+		mast.position = _dir(Vector3(pad.radius() + 1.1, 1.5, -0.6))
 		body.add_child(mast)
 	# The hull (a box along the nose) and the wings (a thin slab), turned with the ship.
 	var hull := CollisionShape3D.new()
@@ -175,13 +176,13 @@ func launch(to_hub: int) -> void:
 	p.velocity = Vector3.ZERO
 	p.visible = true
 	p.global_position = _board_start()
-	p.rotation.y = PARK_YAW - PI * 0.5
+	p.rotation.y = PARK_YAW - PI * 0.5  # [ship] facing the ship from the starboard lift
 
 
 func _board_start() -> Vector3:
 	if pad:
 		return pad.lift_point() + Vector3(0, 0.08, 0)
-	return global_position + _dir(Vector3(1.9, 0, ShipModel.seat(look).z) * _ship_scale()) + Vector3(0, 0.05, 0)
+	return global_position + _dir(Vector3(-1.9, 0, ShipModel.seat(look).z) * _ship_scale()) + Vector3(0, 0.05, 0)
 
 
 ## The cockpit seat in world space (where Lumi drops in / pops out).
@@ -357,8 +358,8 @@ func _launch_camera(t: float, dt: float) -> void:
 		look_at = o + Vector3(0, by + 1.0 * k, 0)
 		fov = 50.0
 	elif t < _t0:
-		# Boarding: from the port side, Lumi on the lift and into the open canopy.
-		pos = o + _dir(Vector3(6.5, 3.4, 2.8) * k).lerp(_dir(Vector3(5.8, 3.6, 2.2) * k), (t - 1.7) / (_t0 - 1.7))
+		# Boarding: from the starboard side, Lumi on the lift and into the open canopy.
+		pos = o + _dir(Vector3(-6.5, 3.4, 2.8) * k).lerp(_dir(Vector3(-5.8, 3.6, 2.2) * k), (t - 1.7) / (_t0 - 1.7))
 		pos.y = o.y + by + 2.6 * k
 		look_at = (world.patch.global_position if world.patch.visible else _hatch_world()) + Vector3(0, 0.2, 0)
 		fov = 42.0

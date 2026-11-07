@@ -7,11 +7,12 @@ extends Node3D
 ## a compact service mast (beacon, floodlights, energy cells, an umbilical to the ship) and vents
 ## for steam and the VTOL downwash. The deck grows with the ship (ShipTiers.pad_scale).
 ## `construction` = true builds the level 4 placeholder: a hologram of the pad and the ship to come.
-## Local frame: the Rocket node's (unrotated); the ship stands at the centre, nose along `ship_yaw`.
+## Local frame: the Rocket node's (unrotated); the ship stands at the centre, nose along `ship_yaw`;
+## the boarding lift is on its starboard side (toward the yard), the mast off its port side.
 
 const TOP_Y: float = 0.6           # deck height: the ship's gear stands here
 const R0: float = 4.7              # deck radius at pad scale 1
-const TOWER_Z: float = -5.6        # service mast (behind the pad, away from the yard)
+const TOWER_Z: float = -5.6        # legacy; the mast now stands off the ship's port side
 
 var construction: bool = false
 ## In-planet rocket tier (kept for callers); the look (1..7) decides the size.
@@ -150,20 +151,26 @@ func _build() -> void:
 			_locks.append(claw)
 	set_clamps(0.0)
 	# Service mast behind the pad: beacon, floodlights, energy cells and the umbilical.
-	var tz := Vector3(0, 0, -(r + 1.0))
-	_mi(self, ProcMesh.cyl(0.7, 0.8, 0.2, 8), grey, tz + Vector3(0, 0.1, 0))
-	_mi(self, RobotVisual._rbox(Vector3(0.7, 4.2, 0.7), 0.12, 3), white, tz + Vector3(0, 2.2, 0))
+	# The mast stands off the port side (away from the yard), facing the ship (+Z local).
+	var mast := Node3D.new()
+	mast.name = "Mast"
+	mast.position = _dir(Vector3(r + 1.0, 0, -0.6))
+	mast.rotation.y = ship_yaw - PI * 0.5
+	add_child(mast)
+	var tz := Vector3.ZERO
+	_mi(mast, ProcMesh.cyl(0.7, 0.8, 0.2, 8), grey, tz + Vector3(0, 0.1, 0))
+	_mi(mast, RobotVisual._rbox(Vector3(0.7, 4.2, 0.7), 0.12, 3), white, tz + Vector3(0, 2.2, 0))
 	for x: float in [-0.25, 0.25]:
-		_mi(self, ProcMesh.box(Vector3(0.015, 3.6, 0.015)), glow, tz + Vector3(x, 2.2, 0.36))
+		_mi(mast, ProcMesh.box(Vector3(0.015, 3.6, 0.015)), glow, tz + Vector3(x, 2.2, 0.36))
 	for y: float in [1.4, 3.0]:
-		_mi(self, ProcMesh.box(Vector3(0.74, 0.4, 0.74)), dark, tz + Vector3(0, y, 0))
-		_mi(self, ProcMesh.box(Vector3(0.76, 0.04, 0.76)), tang, tz + Vector3(0, y - 0.24, 0))
+		_mi(mast, ProcMesh.box(Vector3(0.74, 0.4, 0.74)), dark, tz + Vector3(0, y, 0))
+		_mi(mast, ProcMesh.box(Vector3(0.76, 0.04, 0.76)), tang, tz + Vector3(0, y - 0.24, 0))
 	var top_y: float = 4.4
-	_mi(self, ProcMesh.cyl(0.32, 0.45, 0.2, 16), grey, tz + Vector3(0, top_y, 0))
-	_beacon(tz + Vector3(0, top_y + 0.22, 0), 0.16)
+	_mi(mast, ProcMesh.cyl(0.32, 0.45, 0.2, 16), grey, tz + Vector3(0, top_y, 0))
+	_beacon(mast, tz + Vector3(0, top_y + 0.22, 0), 0.16)
 	_spin_head = Node3D.new()
 	_spin_head.position = tz + Vector3(0, top_y + 0.22, 0)
-	add_child(_spin_head)
+	mast.add_child(_spin_head)
 	_spin = SpotLight3D.new()
 	_spin.light_color = Color(1.0, 0.5, 0.15)
 	_spin.light_energy = 0.0
@@ -174,8 +181,8 @@ func _build() -> void:
 	for x2: float in [-1.0, 1.0]:
 		var head := Node3D.new()
 		head.position = tz + Vector3(x2 * 0.5, 3.9, 0.3)
-		add_child(head)
-		head.look_at_from_position(head.position, Vector3(x2 * 1.2, 1.0, 0), Vector3.UP)
+		mast.add_child(head)
+		head.look_at(global_position + Vector3(0, TOP_Y + 1.0, 0), Vector3.UP)
 		_mi(head, RobotVisual._rbox(Vector3(0.5, 0.28, 0.24), 0.05, 2), white, Vector3.ZERO)
 		_mi(head, ProcMesh.box(Vector3(0.42, 0.2, 0.02)), Mats.lamp(Color(0.85, 0.95, 1.0), 4.0), Vector3(0, 0, -0.13))
 		var sl := SpotLight3D.new()
@@ -186,19 +193,19 @@ func _build() -> void:
 		head.add_child(sl)
 	for x3: float in [-1.7, 1.7]:
 		var cp := tz + Vector3(x3, 0, -0.1)
-		_mi(self, ProcMesh.cyl(0.48, 0.55, 0.18, 16), grey, cp + Vector3(0, 0.09, 0))
-		_mi(self, ProcMesh.capsule(0.42, 1.8), white, cp + Vector3(0, 1.08, 0))
-		_mi(self, ProcMesh.cyl(0.44, 0.44, 0.1, 20), tang, cp + Vector3(0, 1.5, 0))
+		_mi(mast, ProcMesh.cyl(0.48, 0.55, 0.18, 16), grey, cp + Vector3(0, 0.09, 0))
+		_mi(mast, ProcMesh.capsule(0.42, 1.8), white, cp + Vector3(0, 1.08, 0))
+		_mi(mast, ProcMesh.cyl(0.44, 0.44, 0.1, 20), tang, cp + Vector3(0, 1.5, 0))
 		var strip := Node3D.new()
 		strip.position = cp + Vector3(0, 0.4, 0.42)
-		add_child(strip)
+		mast.add_child(strip)
 		_mi(strip, ProcMesh.box(Vector3(0.04, 1.2, 0.03)), glow, Vector3(0, 0.6, 0))
 		_cell_strips.append(strip)
-		_beacon(cp + Vector3(0, 2.05, 0), 0.09)
+		_beacon(mast, cp + Vector3(0, 2.05, 0), 0.09)
 	# Umbilical: a hose from the mast to the ship's flank; it drops away before take-off.
 	var flank: Vector3 = _dir(Vector3(0.9, 1.1, -1.0) * sc) + Vector3(0, TOP_Y, 0)
 	var piv2 := Node3D.new()
-	piv2.position = tz + Vector3(0.25, 1.0, 0.36)
+	piv2.position = mast.position + Basis(Vector3.UP, mast.rotation.y) * Vector3(0.25, 1.0, 0.36)
 	add_child(piv2)
 	var end: Vector3 = flank - piv2.position
 	var prev := Vector3.ZERO
@@ -212,13 +219,13 @@ func _build() -> void:
 	# Boarding lift beside the cockpit (port side) and a light bridge to the canopy sill.
 	var seat: Vector3 = ShipModel.seat(look) * sc
 	lift = Node3D.new()
-	lift.position = _dir(Vector3(1.9 * sc, 0, seat.z)) + Vector3(0, TOP_Y + 0.02, 0)
+	lift.position = _dir(Vector3(-1.9 * sc, 0, seat.z)) + Vector3(0, TOP_Y + 0.02, 0)
 	add_child(lift)
 	_mi(lift, ProcMesh.cyl(0.42, 0.46, 0.08, 24), white, Vector3.ZERO)
 	_mi(lift, ProcMesh.torus(0.4, 0.425, 24, 3), glow, Vector3(0, 0.045, 0))
 	gangway = Node3D.new()
 	gangway.position = lift.position + Vector3(0, seat.y - 0.1 - TOP_Y, 0)
-	gangway.rotation.y = ship_yaw - PI * 0.5
+	gangway.rotation.y = ship_yaw + PI * 0.5
 	add_child(gangway)
 	var reach: float = 1.9 * sc - 0.55 * sc
 	var bridge := _mi(gangway, ProcMesh.box(Vector3(0.6, 0.02, reach)), RocketModel._additive(Color(0.3, 0.85, 1.0, 0.35)), Vector3(0, 0, reach * 0.5))
@@ -234,7 +241,7 @@ func _build() -> void:
 	sign_l.modulate = Color(0.5, 1.5, 2.0, 0.9)
 	sign_l.shaded = false
 	sign_l.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
-	sign_l.position = tz + Vector3(0, top_y + 0.9, 0)
+	sign_l.position = mast.position + Vector3(0, top_y + 0.9, 0)
 	add_child(sign_l)
 	# Vapour: the VTOL downwash spreading off the deck, a ground ring from under it, steam vents.
 	for k5: int in 4:
@@ -375,10 +382,10 @@ func _process(delta: float) -> void:
 
 # --- Helpers ---------------------------------------------------------------------------
 
-func _beacon(p: Vector3, r: float) -> void:
+func _beacon(parent: Node3D, p: Vector3, r: float) -> void:
 	var m: StandardMaterial3D = Mats.lamp(Color(1.0, 0.45, 0.12), 2.0)
 	_beacons.append(m)
-	_mi(self, ProcMesh.sphere(r, 12, 6), m, p)
+	_mi(parent, ProcMesh.sphere(r, 12, 6), m, p)
 
 
 ## Soft billows: few, large, slow-growing puffs that erode into wisps (art/shaders/vapour_puff.gdshader).
