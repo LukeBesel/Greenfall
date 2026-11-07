@@ -19,6 +19,8 @@ var world: Node
 var _pending_robot: String = ""
 var _installs: int = 0
 var _was_modal: bool = false
+var _demo: String = ""
+var _demo_done: bool = false
 
 
 func _ready() -> void:
@@ -26,11 +28,14 @@ func _ready() -> void:
 	EventBus.upgrade_bought.connect(func(_id: String, _l: int) -> void: _installs += 1)
 	EventBus.robot_built.connect(_on_robot_built)
 	EventBus.hex_cleaned.connect(_on_hex_cleaned)
+	_demo = DevHooks.get_s("first-demo", "")
 
 
 func _process(_delta: float) -> void:
 	if world == null:
 		return
+	if _demo != "" and not _demo_done:
+		_demo_tick()
 	var modal: bool = world.has_method("any_modal_open") and bool(world.call("any_modal_open"))
 	var hud: CanvasLayer = world.get("hud") as CanvasLayer
 	var free: bool = not modal and (hud == null or hud.visible)
@@ -170,3 +175,41 @@ func _on_hex_cleaned(hid: int, center: Vector3, _bonus: BigNum) -> void:
 		get_tree().create_timer(0.5).timeout.connect(func() -> void: Vfx.sweep(center, r * 1.35, RIPPLE_SPEED * 0.8, Color(1.0, 0.92, 0.7, 0.3), true))
 	else:
 		Audio.play("sweep", 1.0, -14.0)
+
+
+# --- Dev: stage a moment for screenshots ----------------------------------------------------
+## --first-demo=bale|sale|robot|reveal fires the moment so it peaks at --shot-delay
+## (lead times below are wall seconds before the shot; DevHooks counts wall-ish time).
+const DEMO_LEAD: Dictionary = {"bale": 0.45, "sale": 0.95, "robot": 0.75, "reveal": 0.7}
+
+
+func _demo_tick() -> void:
+	var t: float = float(DevHooks.get("_elapsed"))
+	var at: float = DevHooks.get_f("shot-delay", 10.0) - float(DEMO_LEAD.get(_demo, 0.5))
+	if _demo == "bale" and t >= at - 3.0 and world.patch.compartment.is_empty():
+		var cap: float = world.patch.capacity()
+		world.patch.compartment.add("metal", cap * 0.95)
+		EventBus.compartment_changed.emit(world.patch.compartment.fill, cap)
+	if t < at:
+		return
+	_demo_done = true
+	var p: Patch = world.patch
+	match _demo:
+		"bale":
+			p.start_cube()
+		"sale":
+			var cube: JunkCube = JunkCube.create(BigNum.from_float(84.0), {"fill": 0.95, "perfect": true, "colors": [Color(0.55, 0.5, 0.45)]})
+			world.add_cube(cube)
+			cube.global_position = (world.depot as Node3D).global_position + Vector3(0.3, 0.6, 0.2)
+		"robot":
+			var r: Robot = world.fleet.spawn("scoopie", 0, p.global_position + p.global_transform.basis.z * -3.0 + Vector3(1.2, 0, 0), 0.0, "Tin-15")
+			GameState.inc_stat("robots_built")
+			EventBus.robot_built.emit(r.robot_name)
+		"reveal":
+			var h: int = p.focus_hex()
+			var f: HexField = world.field
+			if h < 0 or f.is_clean(h):
+				h = f.hex_at(p.global_position + p.global_transform.basis.z * -4.0)
+			for pid: int in f.hex_pieces[h]:
+				if f.piece_alive[pid] != 0:
+					world.collect_piece(pid)

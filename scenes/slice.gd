@@ -494,6 +494,8 @@ func _ready() -> void:
 			Story.once("wake", tr("LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."), "story"))
 	if intro.should_play():
 		intro.finished.connect(wake)
+		hud.visible = false  # [first] no one-frame HUD/world flash before the deferred intro starts
+		intro.cover_now()
 		intro.play.call_deferred()
 	else:
 		if GameState.flags.get("intro_done", false) or not loaded:
