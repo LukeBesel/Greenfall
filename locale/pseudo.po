@@ -780,7 +780,7 @@ msgstr ""
 "[ÇÔMÞÔŠŢ ÞŔÉŠŠ  Ļv %d\n"
 "ĥôþþéŕ %d%%  →  šééðš ~~~~~~~~~~~~]"
 
-#: plants/garden.gd:256
+#: plants/garden.gd:263
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "[À ĥéx îš ƒûļļý ŕéšţôŕéð. Šôméţĥîñĝ šmàļļ îš àļŕéàðý ļîvîñĝ îñ îţ. ~~~~~~~~~~~~~~~~~~~~]"
 
@@ -1174,59 +1174,59 @@ msgstr "[ŴÀŢÉŔ ~]"
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: þàîñţ žôñéš àñð šéñð çŕéŵš ŵĥéŕé ýôû ŵàñţ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:508
+#: scenes/slice.gd:512
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "[ĻM-1 ôñļîñé. Bļôôm Çôŕé 4%: ĝŕééñ ļîĝĥţ ļôŵ. Çŕàðļé ŕéļàý: ƒàîñţ. Ĝŕôŵ šôméţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:820
+#: scenes/slice.gd:824
 msgid "HEX CLEAN!  +%s"
 msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 
-#: scenes/slice.gd:834
+#: scenes/slice.gd:838
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice.gd:836
+#: scenes/slice.gd:840
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "[Ţĥé ŵĥôļé Ĵûñķýàŕð îš çļéàñ. Ļûmî bééþš à véŕý ļôñĝ, véŕý ĥàþþý bééþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:843
+#: scenes/slice.gd:847
 msgid "%s is out of range: %s"
 msgstr "[%s îš ôûţ ôƒ ŕàñĝé: %s ~~~~~]"
 
-#: scenes/slice.gd:853
+#: scenes/slice.gd:857
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ 5 ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:856 ui/rockets_panel.gd:39
+#: scenes/slice.gd:860 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "[Éñéŕĝý çéļļš ŕéçĥàŕĝîñĝ: %s. Ŕôçķéţ ûþĝŕàðéš ŕéƒîļļ ţĥém ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:910
+#: scenes/slice.gd:914
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "[Ţôûçĥðôŵñ: %s. Ĥûb %d ôƒ %d. %s ~~~~~~~~]"
 
-#: scenes/slice.gd:911
+#: scenes/slice.gd:915
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "[Ţĥé ŕôçķéţ îš þàŕķéð ôñ ţĥé ļôţ, ŕéàðý ŵĥéñ îţš çéļļš ŕéƒîļļ. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:911
+#: scenes/slice.gd:915
 msgid "Landed on the base pad."
 msgstr "[Ļàñðéð ôñ ţĥé bàšé þàð. ~~~~~]"
 
-#: scenes/slice.gd:1002
+#: scenes/slice.gd:1006
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1170
+#: scenes/slice.gd:1174
 msgid "Welcome back. The junk waited for you."
 msgstr "[Ŵéļçômé bàçķ. Ţĥé ĵûñķ ŵàîţéð ƒôŕ ýôû. ~~~~~~~~~~]"
 
-#: scenes/slice.gd:1187
+#: scenes/slice.gd:1191
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:1187
+#: scenes/slice.gd:1191
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
@@ -1414,47 +1414,47 @@ msgstr "[Çŕàðļé Ŕéţûŕñš  ·  ţĥé àŕķ àñšŵéŕš ~~~~~~~~~
 msgid "The Cradle is holding orbit. Restore the whole system: the solar map is on the hologram (M). Build the Mk V Orbital drive to reach Ochre and Tidewell."
 msgstr "[Ţĥé Çŕàðļé îš ĥôļðîñĝ ôŕbîţ. Ŕéšţôŕé ţĥé ŵĥôļé šýšţém: ţĥé šôļàŕ màþ îš ôñ ţĥé ĥôļôĝŕàm (M). Bûîļð ţĥé Mķ V Ôŕbîţàļ ðŕîvé ţô ŕéàçĥ Ôçĥŕé àñð Ţîðéŵéļļ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/egg_props.gd:176
+#: story/egg_props.gd:181
 msgid "SELECT  A1  ·  B4  ·  C7"
 msgstr "[ŠÉĻÉÇŢ  À1  ·  B4  ·  Ç7 ~~~~~]"
 
-#: story/egg_props.gd:201
+#: story/egg_props.gd:206
 msgid "WE'LL BE BACK AFTER LUNCH"
 msgstr "[ŴÉ'ĻĻ BÉ BÀÇĶ ÀFŢÉŔ ĻÛÑÇĤ ~~~~~~]"
 
-#: story/egg_props.gd:316
+#: story/egg_props.gd:321
 msgid "OPEN IN 100 YEARS"
 msgstr "[ÔÞÉÑ ÎÑ 100 ÝÉÀŔŠ ~~~]"
 
-#: story/egg_props.gd:333
+#: story/egg_props.gd:338
 msgid "HI-SCORE"
 msgstr "[ĤÎ-ŠÇÔŔÉ ~]"
 
-#: story/egg_props.gd:334
+#: story/egg_props.gd:339
 msgid "WREN  999990"
 msgstr "[ŴŔÉÑ  999990 ~]"
 
-#: story/egg_props.gd:335
+#: story/egg_props.gd:340
 msgid "INSERT COIN"
 msgstr "[ÎÑŠÉŔŢ ÇÔÎÑ ~]"
 
-#: story/egg_props.gd:338
+#: story/egg_props.gd:343
 msgid "SWEEP-O-TRON"
 msgstr "[ŠŴÉÉÞ-Ô-ŢŔÔÑ ~]"
 
-#: story/egg_props.gd:430
+#: story/egg_props.gd:435
 msgid "BISCUIT"
 msgstr "[BÎŠÇÛÎŢ ~]"
 
-#: story/egg_props.gd:458
+#: story/egg_props.gd:463
 msgid "FIZZ"
 msgstr "[FÎŽŽ ~]"
 
-#: story/egg_props.gd:604
+#: story/egg_props.gd:609
 msgid "(it is not wet)"
 msgstr "[(îţ îš ñôţ ŵéţ) ~~]"
 
-#: story/egg_props.gd:621
+#: story/egg_props.gd:626
 msgid ""
 "THE LEDGER IS WATCHING\n"
 "(FOR SAVINGS)"
@@ -1462,7 +1462,7 @@ msgstr ""
 "[ŢĤÉ ĻÉÐĜÉŔ ÎŠ ŴÀŢÇĤÎÑĜ\n"
 "(FÔŔ ŠÀVÎÑĜŠ) ~~~~~~~~~~]"
 
-#: story/egg_props.gd:699
+#: story/egg_props.gd:704
 msgid ""
 "EMPLOYEE OF\n"
 "THE MONTH\n"
@@ -1472,7 +1472,7 @@ msgstr ""
 "ŢĤÉ MÔÑŢĤ\n"
 "— ÇÛBÉ — ~~~~~~~]"
 
-#: story/egg_props.gd:729
+#: story/egg_props.gd:734
 msgid ""
 "FORECAST\n"
 "ALWAYS RIGHT*"
@@ -1480,19 +1480,19 @@ msgstr ""
 "[FÔŔÉÇÀŠŢ\n"
 "ÀĻŴÀÝŠ ŔÎĜĤŢ* ~~~~~]"
 
-#: story/egg_props.gd:754
+#: story/egg_props.gd:759
 msgid "SHOW ENTRY"
 msgstr "[ŠĤÔŴ ÉÑŢŔÝ ~]"
 
-#: story/egg_props.gd:796
+#: story/egg_props.gd:801
 msgid "THE BUILDERS · DO NOT TIDY"
 msgstr "[ŢĤÉ BÛÎĻÐÉŔŠ · ÐÔ ÑÔŢ ŢÎÐÝ ~~~~~~]"
 
-#: story/egg_props.gd:884
+#: story/egg_props.gd:889
 msgid "FINE"
 msgstr "[FÎÑÉ ~]"
 
-#: story/egg_props.gd:961
+#: story/egg_props.gd:966
 msgid ""
 "BACK IN\n"
 "5 MINUTES"
@@ -1881,19 +1881,19 @@ msgstr "[<< ĻÉÐĜÉŔ // ÔFF ŢĤÉ ŔÉÇÔŔÐ >> ~~~~~~~]"
 msgid "LEDGER  WMS-07"
 msgstr "[ĻÉÐĜÉŔ  ŴMŠ-07 ~~]"
 
-#: story/ledger_uplink.gd:148
-msgid "<< LEDGER // CONTRACT 0001 // AMENDED >>"
-msgstr "[<< ĻÉÐĜÉŔ // ÇÔÑŢŔÀÇŢ 0001 // ÀMÉÑÐÉÐ >> ~~~~~~~~~~~]"
+#: story/ledger_uplink.gd:159
+msgid "LEDGER // AMENDED"
+msgstr "[ĻÉÐĜÉŔ // ÀMÉÑÐÉÐ ~~~]"
 
-#: story/ledger_uplink.gd:148
-msgid "<< INTERCEPT // LEDGER-NODE 07 // UNSECURED CHANNEL >>"
-msgstr "[<< ÎÑŢÉŔÇÉÞŢ // ĻÉÐĜÉŔ-ÑÔÐÉ 07 // ÛÑŠÉÇÛŔÉÐ ÇĤÀÑÑÉĻ >> ~~~~~~~~~~~~~~~~]"
+#: story/ledger_uplink.gd:159
+msgid "INTERCEPT // LEDGER"
+msgstr "[ÎÑŢÉŔÇÉÞŢ // ĻÉÐĜÉŔ ~~~~]"
 
-#: story/ledger_uplink.gd:149
+#: story/ledger_uplink.gd:160
 msgid "line item %04d   checksum %s"
 msgstr "[ļîñé îţém %04d   çĥéçķšûm %s ~~~~~~~]"
 
-#: story/ledger_uplink.gd:149
+#: story/ledger_uplink.gd:160
 msgid "MISMATCH"
 msgstr "[MÎŠMÀŢÇĤ ~]"
 
