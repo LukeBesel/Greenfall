@@ -99,7 +99,7 @@ static func _st_for(sts: Dictionary, key: String) -> SurfaceTool:
 
 ## A lathed body around the Z axis with an elliptical cross-section. mat_of(z, angle) picks the
 ## surface per quad (angle 0 = +X side, PI/2 = top). Analytic normals: no seams between bands.
-static func _lathe(sts: Dictionary, profile: Array[Vector2], center: Vector3, sx: float, sy: float, segs: int, rows: int, mat_of: Callable) -> void:
+static func _lathe(sts: Dictionary, profile: Array[Vector2], center: Vector3, sx: float, sy: float, segs: int, rows: int, mat_of: Callable, breaks: Array[float] = []) -> void:
 	var z0: float = profile[0].x
 	var z1: float = profile[-1].x
 	var pos := func(z: float, a: float) -> Vector3:
@@ -121,6 +121,17 @@ static func _lathe(sts: Dictionary, profile: Array[Vector2], center: Vector3, sx
 		var u: float = float(i) / rows
 		u = 0.5 - 0.5 * cos(u * PI)  # denser near the rounded ends
 		zs.append(lerpf(z0, z1, u))
+	# Band edges get their own rows so thin seams stay thin.
+	for b: float in breaks:
+		if b > z0 and b < z1:
+			zs.append(b)
+	zs.sort()
+	var k: int = zs.size() - 1
+	while k > 0:
+		if zs[k] - zs[k - 1] < 0.02:
+			zs.remove_at(k)
+		k -= 1
+	rows = zs.size() - 1
 	for i: int in rows:
 		for j: int in segs:
 			var a0: float = TAU * j / segs
@@ -182,7 +193,7 @@ static func _hull_mat(z: float, a: float) -> String:
 	var side: float = absf(cos(a))
 	if _in(z, -9.55, -8.95) or _in(z, 10.9, 11.5):
 		return "accent"
-	if _in(z, -13.3, -13.1) or _in(z, 2.9, 3.08) or _in(z, 13.5, 13.65):
+	if _in(z, -13.3, -13.2) or _in(z, 2.9, 2.98) or _in(z, 13.5, 13.58):
 		return "glow"
 	if up < -0.82:
 		return "trim"
@@ -220,9 +231,9 @@ static func _build_meshes() -> void:
 	if not _built.is_empty():
 		return
 	var hull_sts: Dictionary = {}
-	_lathe(hull_sts, HULL, Vector3.ZERO, SX, SY, 72, 64, _hull_mat)
-	_lathe(hull_sts, DECK, Vector3(0, 4.55, 0), 1.65, 0.62, 56, 40, _deck_mat)
-	_lathe(hull_sts, KEEL, Vector3(0, -4.7, 0), 1.0, 0.55, 40, 30, _keel_mat)
+	_lathe(hull_sts, HULL, Vector3.ZERO, SX, SY, 72, 64, _hull_mat, [-9.55, -8.95, 10.9, 11.5, -13.3, -13.2, 2.9, 2.98, 13.5, 13.58, -16.0, 9.5] as Array[float])
+	_lathe(hull_sts, DECK, Vector3(0, 4.55, 0), 1.65, 0.62, 56, 40, _deck_mat, [-11.7, -11.45, 6.55, 6.8, -10.5, 6.0] as Array[float])
+	_lathe(hull_sts, KEEL, Vector3(0, -4.7, 0), 1.0, 0.55, 40, 30, _keel_mat, [-11.3, -11.05] as Array[float])
 	_built["hull"] = _commit(hull_sts)
 	_built["solar"] = _solar_texture()
 	_built["rib"] = _arc_mesh(DOME_R + 0.02, DOME_SY, 0.07)
@@ -412,7 +423,7 @@ func _build_engines(hull: StandardMaterial3D, trim: StandardMaterial3D, accent: 
 	_plume.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	_plume.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
 	_plume.cull_mode = BaseMaterial3D.CULL_DISABLED
-	_plume.albedo_color = Color(0.45, 0.85, 1.0, 0.22)
+	_plume.albedo_color = Color(0.45, 0.85, 1.0, 0.1)
 	_plume.disable_fog = true
 	var flat := Vector3(PI * 0.5, 0, 0)
 	_add(ProcMesh.cyl(4.0, 3.3, 1.4, 48), trim, Vector3(0, 0, 15.6), flat)
@@ -440,8 +451,8 @@ func _build_engines(hull: StandardMaterial3D, trim: StandardMaterial3D, accent: 
 		_add(ProcMesh.torus(r1 - 0.06, r1 + 0.06, 32, 4), hull, spots[i] + Vector3(0, 0, 16.3 + ln), flat)
 		_add(ProcMesh.cyl(r0 * 0.95, r0 * 0.95, 0.05, 24), _engine, spots[i] + Vector3(0, 0, 16.4), flat)
 		var pm := CylinderMesh.new()
-		pm.top_radius = r1 * 0.85
-		pm.bottom_radius = 0.05
+		pm.top_radius = 0.05
+		pm.bottom_radius = r1 * 0.8
 		pm.height = ln * 2.6
 		pm.radial_segments = 20
 		pm.cap_top = false
@@ -523,7 +534,7 @@ func _process(delta: float) -> void:
 	_glow.emission = CYAN.lerp(ALARM, a * (0.55 + 0.45 * pulse))
 	_glow.emission_energy_multiplier = 2.6 + a * pulse * 3.0
 	_engine.emission_energy_multiplier = 6.0 * thrust + sin(_t * 23.0) * 0.3
-	_plume.albedo_color.a = 0.2 * clampf(thrust, 0.0, 1.5) + sin(_t * 31.0) * 0.015
+	_plume.albedo_color.a = 0.09 * clampf(thrust, 0.0, 1.5) + sin(_t * 31.0) * 0.008
 	_vault.emission_energy_multiplier = 0.9 + sin(_t * 1.3) * 0.15
 	_vault_light.light_color = Color(0.55, 1.0, 0.7).lerp(ALARM, a * pulse)
 	_nav.emission_energy_multiplier = 4.0 if fmod(_t, 1.6) < 0.12 else 0.4

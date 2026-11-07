@@ -138,7 +138,7 @@ func _is_boot() -> bool:
 func _status_text(stage: int) -> String:
 	match stage:
 		0: return tr("Loading")
-		1: return tr("Building the district")
+		1: return tr("Setting the scene")
 		2: return tr("Warming up")
 	return ""
 

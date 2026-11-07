@@ -1231,6 +1231,10 @@ msgstr "PUESTO %d · Nv%d"
 msgid "OUTPOST %d · RUIN"
 msgstr "PUESTO %d · RUINA"
 
+#: scenes/story_preview.gd:94 ui/loading_screen.gd:141
+msgid "Setting the scene"
+msgstr ""
+
 #: steam/demo.gd:73
 msgid "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of Verdance."
 msgstr "El nivel de base %d es el tope de la demo. El juego completo llega hasta el nivel 5 y luego lanza cohetes al resto de Verdance."
@@ -1593,59 +1597,59 @@ msgstr "...Es verde. Lumi, es verde de verdad."
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "Mantenla regada. Aquí fuera las semillas escasean, pero cada flor devuelve una, y un poco de luz verde para tu núcleo. Así es como empieza."
 
-#: story/intro.gd:282
+#: story/intro.gd:177
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr "Hace trescientos años, las últimas semillas dejaron Verdance a bordo del arca Cradle."
 
-#: story/intro.gd:300
+#: story/intro.gd:178
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr "Lumi, el pequeño guardasemillas del arca, cantaba a los plantones cada noche."
 
-#: story/intro.gd:313
+#: story/intro.gd:179
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr "¿Otra vez tarareando, Lumi? No te oyen, ¿sabes? ...Aunque crecen más rápido cuando lo haces."
 
-#: story/intro.gd:332
+#: story/intro.gd:180
 msgid "Then, one night, the sky came apart."
 msgstr "Entonces, una noche, el cielo se rompió."
 
-#: story/intro.gd:364
+#: story/intro.gd:181
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr "¡Brecha en el casco de la cámara! ¡Lumi, deja las bandejas y apártate!"
 
-#: story/intro.gd:427
+#: story/intro.gd:182
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr "Lumi— aguanta— no puedo darle la vuelta— aguanta—"
 
-#: story/intro.gd:440
+#: story/intro.gd:183
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "El arca no pudo volver. La cápsula cayó durante días."
 
-#: story/intro.gd:612
+#: story/intro.gd:184
 msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
 msgstr "...¿Lumi? ...Lumi. El relé apenas aguanta, pero te tengo. Has caído. Estás en Verdance."
 
-#: story/intro.gd:619
+#: story/intro.gd:185
 msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
 msgstr "Tu núcleo funciona con luz verde, el brillo que desprenden los seres vivos. Ahí abajo ya no queda nada verde. Por eso te apagas."
 
-#: story/intro.gd:622
+#: story/intro.gd:186
 msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
 msgstr "Así que hagamos un poco. Limpia el suelo, planta esos plantones. Cada flor alimenta tu núcleo."
 
-#: story/intro.gd:629
+#: story/intro.gd:187
 msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
 msgstr "Llena tu Núcleo Floral. Reconstruye una plataforma de lanzamiento. Luego vuelas a casa con nosotros. ...Regadera a regadera."
 
-#: story/intro.gd:692
+#: story/intro.gd:706
 msgid "%s  skip"
 msgstr "%s  saltar"
 
-#: story/intro.gd:692
+#: story/intro.gd:706
 msgid "Space / Esc"
 msgstr "Espacio / Esc"
 
-#: story/intro.gd:733
+#: story/intro.gd:747
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "LUZ VERDE  ·  NADA DETECTADO"
 
@@ -1789,33 +1793,17 @@ msgstr ""
 "CONTRATO 0001: MODIFICADO\n"
 "RESTAURACIÓN = ACTIVO"
 
-#: story/ledger.gd:965
+#: story/ledger.gd:966
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr "El contrato del Ledger está reescrito. Sus drones reparten semillas ahora. (+%d semillas)"
 
-#: story/ledger.gd:973
+#: story/ledger.gd:974
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr "<< LEDGER // EXTRAOFICIAL >>"
 
 #: story/ledger_drone.gd:50
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
-
-#: story/ledger_uplink.gd:148
-msgid "<< LEDGER // CONTRACT 0001 // AMENDED >>"
-msgstr "<< LEDGER // CONTRATO 0001 // MODIFICADO >>"
-
-#: story/ledger_uplink.gd:148
-msgid "<< INTERCEPT // LEDGER-NODE 07 // UNSECURED CHANNEL >>"
-msgstr "<< INTERCEPTADO // NODO LEDGER 07 // CANAL NO SEGURO >>"
-
-#: story/ledger_uplink.gd:149
-msgid "line item %04d   checksum %s"
-msgstr "partida %04d   suma de control %s"
-
-#: story/ledger_uplink.gd:149
-msgid "MISMATCH"
-msgstr "DISCREPANCIA"
 
 #: story/shards.gd:56
 msgid "Something surfaced in the cleared ground. A memory shard."
@@ -3692,6 +3680,14 @@ msgstr "PACA LISTA"
 #: ui/lens_overlay.gd:67
 msgid "◢ SIGNAL %d%%"
 msgstr "◢ SEÑAL %d%%"
+
+#: ui/loading_screen.gd:140
+msgid "Loading"
+msgstr ""
+
+#: ui/loading_screen.gd:142
+msgid "Warming up"
+msgstr ""
 
 #: ui/main_menu.gd:314
 msgid "One small robot. One very big cleanup."
@@ -12635,6 +12631,18 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "<< LEDGER // CONTRACT 0001 // AMENDED >>"
+#~ msgstr "<< LEDGER // CONTRATO 0001 // MODIFICADO >>"
+
+#~ msgid "<< INTERCEPT // LEDGER-NODE 07 // UNSECURED CHANNEL >>"
+#~ msgstr "<< INTERCEPTADO // NODO LEDGER 07 // CANAL NO SEGURO >>"
+
+#~ msgid "line item %04d   checksum %s"
+#~ msgstr "partida %04d   suma de control %s"
+
+#~ msgid "MISMATCH"
+#~ msgstr "DISCREPANCIA"
 
 #~ msgid "+%d bolts"
 #~ msgstr "+%d tornillos"

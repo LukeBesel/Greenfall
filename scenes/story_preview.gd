@@ -36,7 +36,7 @@ func _setup_ark() -> void:
 	ark.position = Vector3(0, 0, 0)
 	_shots = [
 		[3.0, func() -> void: stage.aim(Vector3(30, 14, 44), Vector3(0, -1, 0), 40.0)],
-		[5.0, func() -> void: stage.aim(Vector3(-36, -9, -30), Vector3(2, 0, 0), 40.0)],
+		[5.0, func() -> void: stage.aim(Vector3(-40, 7, 34), Vector3(2, -1, 0), 40.0)],
 	]
 
 
@@ -91,7 +91,7 @@ func _setup_loading() -> void:
 	ld._alpha = 1.0
 	ld._apply_alpha()
 	ld._reset_pieces()
-	ld._status.text = tr("Building the district")
+	ld._status.text = tr("Setting the scene")
 	ld.shown = 0.0
 	ld.target = 0.0
 	var fill := func(p: float) -> void:

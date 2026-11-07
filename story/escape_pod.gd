@@ -20,12 +20,12 @@ const PEARL := Color(0.9, 0.9, 0.87)
 const TANGERINE := Color(1.0, 0.52, 0.16)
 const CYAN := Color(0.3, 0.9, 1.0)
 
-## (y, radius) of the shell, bottom to top.
+## (radius, y) of the shell, bottom to top.
 const PROFILE: Array[Vector2] = [
-	Vector2(0.0, 0.0), Vector2(0.015, 0.3), Vector2(0.05, 0.5), Vector2(0.12, 0.63), Vector2(0.22, 0.71),
-	Vector2(DOOR_Y0, 0.76), Vector2(0.55, 0.795), Vector2(0.8, 0.81), Vector2(1.05, 0.805),
-	Vector2(1.3, 0.785), Vector2(DOOR_Y1, 0.74), Vector2(1.8, 0.68), Vector2(1.98, 0.585),
-	Vector2(2.035, 0.54), Vector2(2.06, 0.519), Vector2(2.12, 0.47), Vector2(2.24, 0.32), Vector2(2.31, 0.16), Vector2(2.335, 0.0),
+	Vector2(0.0, 0.0), Vector2(0.3, 0.015), Vector2(0.5, 0.05), Vector2(0.63, 0.12), Vector2(0.71, 0.22),
+	Vector2(0.76, DOOR_Y0), Vector2(0.795, 0.55), Vector2(0.81, 0.8), Vector2(0.805, 1.05),
+	Vector2(0.785, 1.3), Vector2(0.74, DOOR_Y1), Vector2(0.68, 1.8), Vector2(0.585, 1.98),
+	Vector2(0.54, 2.035), Vector2(0.519, 2.06), Vector2(0.47, 2.12), Vector2(0.32, 2.24), Vector2(0.16, 2.31), Vector2(0.0, 2.335),
 ]
 
 
@@ -209,8 +209,15 @@ static func build() -> Node3D:
 	var dark: StandardMaterial3D = Mats.metal("dark_steel")
 	var line: StandardMaterial3D = Mats.lamp(CYAN, 1.6)
 	var lining := StandardMaterial3D.new()
-	lining.albedo_color = Color(0.13, 0.12, 0.12)
-	lining.roughness = 0.85
+	lining.albedo_color = Color(0.36, 0.33, 0.3)
+	lining.roughness = 0.8
+	lining.emission_enabled = true
+	lining.emission = Color(1.0, 0.72, 0.45)
+	lining.emission_energy_multiplier = 0.12
+	var ramp := StandardMaterial3D.new()
+	ramp.albedo_color = Color(0.6, 0.6, 0.58)
+	ramp.roughness = 0.6
+	ramp.metallic = 0.3
 	var gasket := StandardMaterial3D.new()
 	gasket.albedo_color = Color(0.06, 0.06, 0.065)
 	gasket.roughness = 0.6
@@ -267,7 +274,7 @@ static func build() -> Node3D:
 	pod.add_child(hatch)
 	var door := MeshInstance3D.new()
 	door.name = "Door"
-	door.mesh = _door_mesh(hinge, [shell, lining] as Array[Material])
+	door.mesh = _door_mesh(hinge, [shell, ramp] as Array[Material])
 	hatch.add_child(door)
 	var edge := MeshInstance3D.new()
 	edge.name = "DoorEdge"
