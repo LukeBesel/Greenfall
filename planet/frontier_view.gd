@@ -183,6 +183,12 @@ func _process(delta: float) -> void:
 		_ark_y = lerpf(_ark_y, want, clampf(delta * 0.05, 0.0, 1.0))
 		_ark.position.y = _ark_y + sin(_t * 0.2) * 2.0
 		_ark.rotation.y = sin(_t * 0.03) * 0.04
+	if _mats.has("curtain"):  # [vqa] a few offices stay lit in the Cradle's towers at night
+		var sd: Node = world.get("sky_director")
+		if sd:
+			var tod: float = float(sd.get("time_of_day"))
+			var nt: float = 1.0 - smoothstep(0.2, 0.3, tod) + smoothstep(0.72, 0.82, tod)
+			(_mats["curtain"] as ShaderMaterial).set_shader_parameter("night", clampf(nt, 0.0, 1.0))
 	if _pad_mat:
 		var pc: float = float(_cradle.get("pad_clean", 0.0))
 		_pad_mat.emission_energy_multiplier = 0.4 + pc * 2.6 + (sin(_t * 2.0) * 0.4 if district.done else 0.0)
