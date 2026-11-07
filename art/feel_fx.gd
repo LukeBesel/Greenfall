@@ -29,6 +29,13 @@ func _ready() -> void:
 	EventBus.robot_built.connect(_on_robot_built)
 	EventBus.hex_cleaned.connect(_on_hex_cleaned)
 	_demo = DevHooks.get_s("first-demo", "")
+	if DevHooks.has("tutorial-step"):  # dev: jump the restart checklist (shots of a given step)
+		var st: int = int(DevHooks.get_f("tutorial-step", 0.0))
+		GameState.flags["tutorial_step"] = st
+		var tut: Tutorial = world.get("tutorial") as Tutorial if world else null
+		if tut:
+			tut.step = st
+			tut._announce.call_deferred()
 
 
 func _process(_delta: float) -> void:
@@ -178,15 +185,17 @@ func _on_hex_cleaned(hid: int, center: Vector3, _bonus: BigNum) -> void:
 
 
 # --- Dev: stage a moment for screenshots ----------------------------------------------------
-## --first-demo=bale|sale|robot|reveal fires the moment so it peaks at --shot-delay
-## (lead times below are wall seconds before the shot; DevHooks counts wall-ish time).
-const DEMO_LEAD: Dictionary = {"bale": 0.45, "sale": 0.95, "robot": 0.75, "reveal": 0.7}
+## --first-demo=bale|sale|robot|reveal fires the moment so it peaks at --shot-delay. Leads are
+## game seconds; DevHooks counts wall time, so they are divided by the time scale (software
+## renders run a few frames a minute: pair with --time-scale=0.1 so the moment spans frames).
+const DEMO_LEAD: Dictionary = {"bale": 0.6, "sale": 1.1, "robot": 0.5, "reveal": 0.45}
 
 
 func _demo_tick() -> void:
 	var t: float = float(DevHooks.get("_elapsed"))
-	var at: float = DevHooks.get_f("shot-delay", 10.0) - float(DEMO_LEAD.get(_demo, 0.5))
-	if _demo == "bale" and t >= at - 3.0 and world.patch.compartment.is_empty():
+	var ts: float = maxf(Engine.time_scale, 0.01)
+	var at: float = DevHooks.get_f("shot-delay", 10.0) - float(DEMO_LEAD.get(_demo, 0.5)) / ts
+	if _demo == "bale" and t >= at - 3.0 / ts and world.patch.compartment.is_empty():
 		var cap: float = world.patch.capacity()
 		world.patch.compartment.add("metal", cap * 0.95)
 		EventBus.compartment_changed.emit(world.patch.compartment.fill, cap)

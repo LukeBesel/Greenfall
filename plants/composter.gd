@@ -19,6 +19,8 @@ var _steam_t: float = 0.0
 var _press_head: Node3D
 
 
+const DORMANT_CAP: float = 8.0  # [first] compost heap limit while the press is dormant
+
 func _ready() -> void:
 	add_to_group("persist")
 	level = int(GameState.world.get("composter_level", 1))
@@ -86,6 +88,10 @@ func interact() -> void:
 ## Paper and card rot down nicely. Called for every piece anyone salvages.
 func on_salvage(type_id: String, vol: float) -> void:
 	if type_id == "paper":
+		# [first] Before the first sprout the press is dormant: only a small heap builds up, so its
+		# first output is a couple of seeds rather than a flood from an hour of paper.
+		if not active() and GameState.get_currency("compost").to_float() >= DORMANT_CAP:
+			return
 		GameState.add_currency("compost", BigNum.from_float(vol * 0.6))
 
 
