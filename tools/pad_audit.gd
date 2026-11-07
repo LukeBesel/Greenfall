@@ -197,6 +197,27 @@ func _check(label: String, root: Control, focus_optional: bool = false) -> void:
 			missing.append(_name(c))
 	if not missing.is_empty():
 		problems.append("%d unreachable: %s" % [missing.size(), ", ".join(missing.slice(0, 6))])
+	# Panels must fit the screen (e.g. 1280x800 at 110% interface scale): anything visible poking
+	# out of the visible rect, except content inside scroll areas, counts as clipped.
+	var vr: Rect2 = root.get_viewport_rect().grow(1.0)
+	var clipped: Array[String] = []
+	for n: Node in root.find_children("*", "Control", true, false):
+		var c: Control = n as Control
+		if not c.is_visible_in_tree() or c is ScrollContainer or c.size == Vector2.ZERO:
+			continue
+		var p: Node = c.get_parent()
+		var in_scroll: bool = false
+		while p and p != root:
+			if p is ScrollContainer:
+				in_scroll = true
+				break
+			p = p.get_parent()
+		if in_scroll or c.mouse_filter == Control.MOUSE_FILTER_IGNORE and not (c is Label or c is Button):
+			continue
+		if not vr.encloses(c.get_global_rect()) and (c is Button or c is Label or c is PanelContainer):
+			clipped.append(_name(c))
+	if not clipped.is_empty():
+		problems.append("%d clipped: %s" % [clipped.size(), ", ".join(clipped.slice(0, 5))])
 	if problems.is_empty():
 		print("[pad] %s: OK (%d focus stops)" % [label, all.size()])
 	else:

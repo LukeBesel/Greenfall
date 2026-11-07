@@ -274,7 +274,7 @@ class Graph extends Control:
 			c.pressed.connect(func() -> void: panel._on_card_pressed(id))
 			c.focus_entered.connect(func() -> void: panel._set_focus(id))
 			c.mouse_entered.connect(func() -> void: panel._set_focus(id))
-		custom_minimum_size = Vector2(br.size() * (ResearchNodeCard.W + 24.0), HEADER + _tiers * ROW)
+		custom_minimum_size = Vector2(br.size() * (ResearchNodeCard.W + 4.0), HEADER + _tiers * ROW)  # [deck] fits 1280x800 at 110% (columns spread by width)
 		resized.connect(_layout)
 		_layout()
 		_link_focus()

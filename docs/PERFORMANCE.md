@@ -77,8 +77,9 @@ primitives do, and are what the tables below use. On real hardware use the same 
   count and triangles. `STATS_SPLIT=City` breaks one group down by node name.
 - Late game: `--future=5 --hub-level=5` (every hex Thriving, base level 5).
 - Presets: `--quality=0..3`; Deck screen: `--resolution 1280x800`, `--ui-scale=1.1`.
-- Controller audit: `--pad-audit` (headless) opens every screen, checks focus reachability,
-  that B closes and A presses; `--menu --pad-audit` does the title screen;
+- Controller / layout audit: `--pad-audit` (headless) opens every screen, checks focus
+  reachability, that B closes and A presses, and that no panel is clipped by the screen
+  (run with `--resolution 1280x800 --ui-scale=1.1` for the Deck); `--menu --pad-audit` does the title screen;
   add `--audit-shots=DIR` on a rendered run for a screenshot tour.
 - Monitors in game on real hardware: Godot's debugger Monitors tab (Raster > Draw calls,
   Objects, Primitives; Time > FPS / Process) or `Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)`.
