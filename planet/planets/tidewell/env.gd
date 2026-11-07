@@ -929,6 +929,7 @@ func _build_rigs() -> void:
 		_mats["_box"] = BoxMesh.new()
 	for i: int in 2:
 		var p: Vector3 = _sea_spot(95.0 + i * 70.0, 150.0 + i * 90.0, 28.0)
+		print("[planet-tidewell] dredging rig %d at (%.0f, %.0f)" % [i, p.x, p.z])
 		var yaw: float = atan2(p.x, p.z) + _rng.randf_range(-0.5, 0.5)
 		var basis := Basis(Vector3.UP, yaw)
 		var list: float = deg_to_rad(_rng.randf_range(2.0, 5.0))
@@ -1013,6 +1014,7 @@ func _build_rigs() -> void:
 func _build_barge() -> void:
 	var b := FrontierView.Batch.new()
 	var p: Vector3 = _sea_spot(70.0, 115.0, 30.0)
+	print("[planet-tidewell] ore barge at (%.0f, %.0f)" % [p.x, p.z])
 	var yaw: float = _rng.randf() * TAU
 	var basis := Basis(Vector3.UP, yaw) * Basis(Vector3.RIGHT, deg_to_rad(-7.0)) * Basis(Vector3.FORWARD, deg_to_rad(11.0))
 	var o := Vector3(p.x, -1.6, p.z)

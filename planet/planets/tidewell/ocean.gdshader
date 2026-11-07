@@ -220,7 +220,7 @@ void fragment() {
 		}
 		// Caustics dance on the bed in clear, shallow water.
 		float ca = caustic(hit * 0.55, TIME * 0.9);
-		bed_c *= 1.0 + ca * 1.4 * clarity * exp(-hdepth * 0.22) * (1.0 - smoothstep(60.0, 180.0, cam_d));
+		bed_c *= 1.0 + ca * 0.8 * clarity * exp(-hdepth * 0.22) * (1.0 - smoothstep(60.0, 180.0, cam_d));
 		// Kelp beds in deeper water: a canopy layer of swaying dark fronds halfway up.
 		if (life > 0.01 && hdepth > 2.2) {
 			float kd = min(hdepth * 0.5, 4.0);
@@ -247,13 +247,14 @@ void fragment() {
 	}
 
 	// --- Water body: absorption along the path, scattering colour by depth.
-	float absorb = mix(1.9, 0.16, clarity);
-	float T = exp(-absorb * L);
+	// Per-channel absorption: clear sea loses red first (turquoise shallows, blue depths).
+	vec3 absorb = mix(vec3(1.9), vec3(0.42, 0.11, 0.08), clarity);
+	vec3 T = exp(-absorb * L);
 	vec3 body = mix(deep_col, shallow_col, exp(-hdepth * 0.28));
 	body = mix(body, lagoon_col, exp(-hdepth * 1.1) * 0.6);
 	vec3 murk = mix(murky_col, deep_col * 0.7 + vec3(0.05, 0.06, 0.06), smoothstep(40.0, 400.0, r) * (1.0 - in_field) * 0.8);
 	body = mix(murk + vec3(0.03, 0.02, 0.0) * fbm3(p * 0.02), body, clarity);
-	vec3 col = mix(body, bed_c * mix(vec3(0.75, 0.95, 0.9), vec3(1.0), exp(-L * 0.1)), T);
+	vec3 col = mix(body, bed_c, T) * 0.82;
 
 	// Oil film: dark, glossy, with a faint thin-film rainbow at grazing angles.
 	float fres = pow(1.0 - clamp(dot(-V, vec3(0.0, 1.0, 0.0)), 0.0, 1.0), 3.0);
