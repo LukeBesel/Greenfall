@@ -18,7 +18,7 @@
     "max": 3, "cost": {"cubes": 900, "parts": 42}, "growth": 2.2,
     "radius": [22.0, 34.0, 48.0], "rarer_per_jammer": 0.35
   },
-  "resolve_reward": {"seeds": 25, "trinkets": 3},
+  "resolve_reward": {"cubes": 450, "seeds": 25},
   "act1": [
     "CARRIER DETECTED. UNSCHEDULED ACTIVITY IN SECTOR: {district}.",
     "THE LEDGER: Waste is a line item. Line items must balance.",
