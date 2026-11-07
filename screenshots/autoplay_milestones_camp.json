@@ -30,5 +30,10 @@
   "dust_flats_growing50_s": 16909.0,
   "core_50_s": 17028.5,
   "launch_3_s": 18511.9,
-  "arrive_frozen_port_s": 18549.9
+  "arrive_frozen_port_s": 18549.9,
+  "frozen_port_base5_s": 20395.4,
+  "frozen_port_growing50_s": 20707.8,
+  "launch_4_s": 20708.8,
+  "arrive_sunken_city_s": 20745.4,
+  "sunken_city_growing50_s": 20909.6
 }
