@@ -206,13 +206,17 @@ func _build_bottom() -> void:
 	vb.add_child(_prompt)
 	_context = UITheme.label("", 13, UITheme.MUTED)
 	_context.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_context.custom_minimum_size = Vector2(420, 0)
+	_context.custom_minimum_size = Vector2(360, 0)
+	_context.clip_text = true  # [vqa] one short phrase; never wider than the hotbar area
+	_context.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_context.modulate.a = 0.0
 	vb.add_child(_context)
 
 
 func _build_notify() -> void:
 	var mc: MarginContainer = _margin(Control.PRESET_BOTTOM_LEFT)
+	# [vqa] Sits above the hotbar / level-bar band (bottom 150 px), never beside it.
+	mc.add_theme_constant_override("margin_bottom", 150)
 	_notify = NotifyStack.new()
 	mc.add_child(_notify)
 
@@ -287,34 +291,53 @@ func _process(delta: float) -> void:
 ## Hex %, part signal and carried bales in one quiet line that only shows while relevant:
 ## for a few seconds after it changes (scooping, a level-up), or while a part signal is strong.
 func _update_context(delta: float, minimal: bool) -> void:
-	var bits: Array[String] = []
-	if not patch.carried.is_empty():
-		bits.append(tr("CARRYING %d/%d") % [patch.carried.size(), patch.carry_cap()])
+	# [vqa] One short phrase, by priority: carrying > strong part signal > this hex. The hex part is
+	# just its state ("HEX 40% CLEAR", "GROWING  THIRSTY"); level hints and outpost notes live in
+	# the goals card and the outpost itself. It shows for a few seconds after it changes, while
+	# carrying, or while the signal is strong, in every HUD mode.
+	var text: String = ""
 	var h: int = patch.focus_hex()
 	var hex_text: String = ""
 	if h >= 0 and world and world.field.hex_hub[h] == 0:
-		hex_text = (tr("HEX  %d%% CLEAR") % int(floor(world.field.removed_fraction(h) * 100.0))) if not world.field.is_clean(h) else (world.hex_levels.describe(h) if world.get("hex_levels") else tr("HEX  CLEAR"))
-		var op: Variant = world.get("outposts")  # [outposts] note the outpost on this hex
-		if op is Outposts and (op as Outposts).hex_note(h) != "":
-			hex_text += "   ·   " + (op as Outposts).hex_note(h)
-	if hex_text != "":
-		bits.append(hex_text)
+		if not world.field.is_clean(h):
+			hex_text = tr("HEX  %d%% CLEAR") % int(floor(world.field.removed_fraction(h) * 100.0))
+		else:
+			hex_text = _short_level(h)
 	var strong: bool = _signal_text != "" and (_signal_strength >= 0.5 or not minimal)
-	if strong:
-		bits.append(_signal_text)
-	var text: String = "    ·    ".join(bits)
-	# Only a change of the hex/carry part counts as "new"; the signal shows while it is strong.
+	if not patch.carried.is_empty():
+		text = tr("CARRYING %d/%d") % [patch.carried.size(), patch.carry_cap()]
+	elif strong:
+		text = _signal_text
+	else:
+		text = hex_text
 	var sig: String = hex_text + str(patch.carried.size())
 	if sig != _context_sig:
 		_context_sig = sig
 		_context_idle = 0.0
 	_context_idle += delta
 	_context.text = text
-	_context.add_theme_color_override("font_color", _signal_color if strong and hex_text == "" else UITheme.MUTED)
-	var want: float = 1.0 if (not minimal or _context_idle < CONTEXT_HOLD_S or strong or not patch.carried.is_empty()) and text != "" else 0.0
+	_context.add_theme_color_override("font_color", _signal_color if strong and patch.carried.is_empty() else UITheme.MUTED)
+	var want: float = 1.0 if (_context_idle < CONTEXT_HOLD_S or strong or not patch.carried.is_empty()) and text != "" else 0.0
 	if hotbar.celebrating():
 		want = 0.0
 	_context.modulate.a = move_toward(_context.modulate.a, want, delta * (4.0 if want > 0.0 else 1.2))
+
+
+## [vqa] "GROWING", "PLANTED  THIRSTY", "GROWING  SUSTAIN 60%": the hex level in a few words.
+func _short_level(h: int) -> String:
+	var hl: Variant = world.get("hex_levels")
+	if hl == null:
+		return tr("HEX  CLEAR")
+	var l: int = int(hl.level_of(h))
+	if l < 0:
+		return ""
+	var s: String = str(hl.level_name(l)).to_upper()
+	if l == 3 or (l == 4 and not hl.sustained_now(h)):
+		if hl._ring_n.has(h) and hl.watered_ratio(h) >= float(hl.cfg.get("sustain_ratio", 0.9)):
+			s += tr("  SUSTAIN %d%%") % int(hl.sustain_progress(h) * 100.0)
+		elif hl._ring_n.has(h):
+			s += tr("  THIRSTY")
+	return s
 
 
 func _on_signal(text: String, color: Color, strength: float) -> void:

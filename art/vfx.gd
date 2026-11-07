@@ -224,6 +224,7 @@ func float_text(pos: Vector3, text: String, color: Color = Color.WHITE, size: fl
 	l.text = text
 	l.modulate = color
 	l.outline_modulate.a = 0.85
+	pos = _clear_of_hud(pos, rise)
 	l.global_position = pos
 	l.scale = Vector3.ONE * size
 	l.modulate.a = 0.0
@@ -236,6 +237,28 @@ func float_text(pos: Vector3, text: String, color: Color = Color.WHITE, size: fl
 	tw.tween_property(l, "modulate:a", 0.0, 0.5).set_delay(1.1)
 	tw.tween_property(l, "outline_modulate:a", 0.0, 0.5).set_delay(1.1)
 	tw.chain().tween_callback(func() -> void: l.visible = false)
+
+
+## [vqa] Floating text keeps out of the HUD bands: if it would start in the bottom 30% of the
+## screen (hotbar, level bar, prompt, notifications) or end in the top 16% (currency, district,
+## checklist), it is moved along the camera's up axis into the clear middle.
+func _clear_of_hud(pos: Vector3, rise: float) -> Vector3:
+	var cam: Camera3D = get_viewport().get_camera_3d() if get_viewport() else null
+	if cam == null or cam.is_position_behind(pos):
+		return pos
+	var h: float = get_viewport().get_visible_rect().size.y
+	var y0: float = cam.unproject_position(pos).y
+	var y1: float = cam.unproject_position(pos + Vector3(0, rise, 0)).y
+	var shift_px: float = 0.0
+	if y0 > h * 0.7:
+		shift_px = y0 - h * 0.7
+	elif y1 < h * 0.16:
+		shift_px = y1 - h * 0.16
+	if absf(shift_px) < 1.0:
+		return pos
+	var dist: float = cam.global_position.distance_to(pos)
+	var m_per_px: float = 2.0 * dist * tan(deg_to_rad(cam.fov) * 0.5) / maxf(h, 1.0)
+	return pos + cam.global_basis.y * shift_px * m_per_px
 
 
 ## Expanding flat ring on the ground (hex flips, cash-ins).
