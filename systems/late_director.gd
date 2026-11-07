@@ -205,7 +205,7 @@ func _world_look() -> void:
 		return
 	# [worlds2] The world type's coat, made wetter by Heavy Rain and shinier by Rich Salvage (systems/world_look.gd).
 	var rain_coat: Array = []
-	for mid: Variant in CradleMode.modifiers():
+	for mid: Variant in WorldLook.current().get("mods", CradleMode.modifiers()):
 		if rain_coat.is_empty():
 			rain_coat = WorldGen.modifier(str(mid)).get("coat", [])
 	var jc: Dictionary = WorldLook.junk_coat(WorldGen.world_type(str(CradleMode.current_world().get("type", ""))).get("coat", []), WorldLook.current(), rain_coat)

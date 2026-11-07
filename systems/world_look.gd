@@ -62,7 +62,10 @@ static func current() -> Dictionary:
 	if CradleMode.profile.is_empty() or CradleMode.current_index() <= 0:
 		return {}
 	var w: Dictionary = CradleMode.current_world()
-	return look_for(str(w.get("type", "")), w.get("modifiers", []))
+	var mods: Array = w.get("modifiers", [])
+	if DevHooks.has("world-mods"):  # dev (shots): --world-mods=heavy_rain+long_nights
+		mods = Array(DevHooks.get_s("world-mods", "").split("+", false))
+	return look_for(str(w.get("type", "")), mods)
 
 
 static func is_active() -> bool:
