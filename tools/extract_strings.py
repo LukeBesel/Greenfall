@@ -413,10 +413,12 @@ def pseudo(s: str) -> str:
     body = "".join(out)
     # About 35% longer: pad with tildes (German/Finnish run long).
     pad = max(1, round(len(s) * 0.35) - 3) if letters else 0
-    lead = len(body) - len(body.lstrip(" "))
-    trail = len(body) - len(body.rstrip(" "))
-    core = body.strip(" ")
-    return " " * lead + "[" + core + (" " + "~" * pad if pad else "") + "]" + " " * trail
+    # Leading/trailing spaces and line breaks stay outside the brackets (msgfmt --check wants a
+    # msgstr to start and end with "\n" exactly when its msgid does).
+    lead = len(body) - len(body.lstrip(" \n"))
+    trail = len(body) - len(body.rstrip(" \n"))
+    core = body.strip(" \n")
+    return body[:lead] + "[" + core + (" " + "~" * pad if pad else "") + "]" + (body[len(body) - trail:] if trail else "")
 
 
 # --- main ----------------------------------------------------------------------------------------

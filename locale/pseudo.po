@@ -1694,16 +1694,16 @@ msgid ""
 "\n"
 "Covering %d m around the base."
 msgstr ""
-"[\n"
-"Çôvéŕîñĝ %d m àŕôûñð ţĥé bàšé. ~~~~~~~~]"
+"\n"
+"[Çôvéŕîñĝ %d m àŕôûñð ţĥé bàšé. ~~~~~~~~]"
 
 #: story/ledger.gd:316
 msgid ""
 "\n"
 "The Ledger is on our side now. The jammers just hum along to the music."
 msgstr ""
-"[\n"
-"Ţĥé Ļéðĝéŕ îš ôñ ôûŕ šîðé ñôŵ. Ţĥé ĵàmméŕš ĵûšţ ĥûm àļôñĝ ţô ţĥé mûšîç. ~~~~~~~~~~~~~~~~~~~~~~]"
+"\n"
+"[Ţĥé Ļéðĝéŕ îš ôñ ôûŕ šîðé ñôŵ. Ţĥé ĵàmméŕš ĵûšţ ĥûm àļôñĝ ţô ţĥé mûšîç. ~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/ledger.gd:318 systems/decor.gd:125 systems/research.gd:186
 #: ui/hub_panel.gd:118 ui/stations_panel.gd:96
@@ -2837,9 +2837,9 @@ msgid ""
 "\n"
 "Cleared so far: %s"
 msgstr ""
-"[\n"
 "\n"
-"Çļéàŕéð šô ƒàŕ: %s ~~~~]"
+"\n"
+"[Çļéàŕéð šô ƒàŕ: %s ~~~~]"
 
 #: ui/codex_screen.gd:344
 msgid "CURIOSITIES"
@@ -3600,16 +3600,16 @@ msgid ""
 "\n"
 "Requires hub level %d."
 msgstr ""
-"[\n"
-"Ŕéqûîŕéš ĥûb ļévéļ %d. ~~~~~]"
+"\n"
+"[Ŕéqûîŕéš ĥûb ļévéļ %d. ~~~~~]"
 
 #: ui/hub_panel.gd:116
 msgid ""
 "\n"
 "All built (max)."
 msgstr ""
-"[\n"
-"Àļļ bûîļţ (màx). ~~~]"
+"\n"
+"[Àļļ bûîļţ (màx). ~~~]"
 
 #: ui/hub_panel.gd:119
 msgid ""
@@ -3822,9 +3822,8 @@ msgid ""
 "\n"
 msgstr ""
 "[[b][color=#%s]ĜŔÉÉÑFÀĻĻ[/color][/b]\n"
-"Çôðé, þŕôçéðûŕàļ méšĥéš, šýñţĥéšîžéð àûðîô àñð ŵŕîţîñĝ àŕé ôŕîĝîñàļ ţô Ĝŕééñƒàļļ.\n"
+"Çôðé, þŕôçéðûŕàļ méšĥéš, šýñţĥéšîžéð àûðîô àñð ŵŕîţîñĝ àŕé ôŕîĝîñàļ ţô Ĝŕééñƒàļļ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]\n"
 "\n"
-" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/main_menu.gd:565
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
@@ -4222,8 +4221,8 @@ msgid ""
 "\n"
 "Water Tanks: %d / %d placed · next %s cubes (Command view: Place refill tank)"
 msgstr ""
-"[\n"
-"Ŵàţéŕ Ţàñķš: %d / %d þļàçéð · ñéxţ %s çûbéš (Çômmàñð vîéŵ: Þļàçé ŕéƒîļļ ţàñķ) ~~~~~~~~~~~~~~~~~~~~~~~~]"
+"\n"
+"[Ŵàţéŕ Ţàñķš: %d / %d þļàçéð · ñéxţ %s çûbéš (Çômmàñð vîéŵ: Þļàçé ŕéƒîļļ ţàñķ) ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/robot_card.gd:79
 msgid "Build   %s cubes"

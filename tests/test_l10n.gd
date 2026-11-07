@@ -144,13 +144,15 @@ func test_full_translations_complete() -> void:
 			if msg == "":
 				continue
 			var out: String = t.get_message(msg)
+			if msg.contains(String.chr(4)):  # [i18n2] "context\u0004msgid" for msgctxt entries
+				out = t.get_message(msg.get_slice(String.chr(4), 1), msg.get_slice(String.chr(4), 0))
 			if out == "":
 				missing.append(msg)
 			elif msg.begins_with("E   ") and not out.begins_with("E   "):
 				prompt.append(msg)
-		# Strings added after the last translation pass fall back to English until the next pass;
-		# keep each language at least 80% complete (run tools/l10n_merge_draft.py to fill gaps).
-		assert_true(missing.size() <= int(ids.size() * 0.20), "%s: %d untranslated, e.g. %s" % [l, missing.size(), missing.slice(0, 3)])
+		# [i18n2] Strict: every msgid is translated. After a content drop, list the gaps with
+		# `python3 tools/l10n_status.py --export` and merge drafts with tools/l10n_merge_draft.py.
+		assert_eq(missing.size(), 0, "%s: %d untranslated, e.g. %s (run tools/l10n_status.py)" % [l, missing.size(), missing.slice(0, 3)])
 		assert_eq(prompt, [] as Array[String], "%s keeps the E prompt prefix" % l)
 		TranslationServer.set_locale(l)
 		for n: int in [0, 1, 2, 5, 21]:
