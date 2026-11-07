@@ -1056,7 +1056,7 @@ func _build_greenhouses() -> void:
 
 # --- Air: vapour, diamond dust ------------------------------------------------------------------
 
-func _vapour_material(tint: Color, density: float) -> ShaderMaterial:
+func _vapour_material(tint: Color, density: float, bright: float = 0.62) -> ShaderMaterial:
 	var nz := FastNoiseLite.new()
 	nz.seed = 812
 	nz.frequency = 0.03
@@ -1073,7 +1073,7 @@ func _vapour_material(tint: Color, density: float) -> ShaderMaterial:
 	m.set_shader_parameter("noise_tex", tex)
 	m.set_shader_parameter("tint", tint)
 	m.set_shader_parameter("shade", Color(0.6, 0.68, 0.8))
-	m.set_shader_parameter("brightness", 1.0)
+	m.set_shader_parameter("brightness", bright)
 	m.set_shader_parameter("density", density)
 	return m
 
@@ -1105,7 +1105,7 @@ func _vapour(pos: Vector3, radius: float, amount: int, life: float, size: Vector
 	var q := QuadMesh.new()
 	q.size = Vector2.ONE
 	p.mesh = q
-	p.material_override = _vent_mat if size.y < 15.0 else _vapour_material(Color(0.82, 0.9, 1.0), 0.32)
+	p.material_override = _vent_mat if size.y < 15.0 else _vapour_material(Color(0.82, 0.9, 1.0), 0.22, 0.5)
 	p.position = pos
 	p.visibility_aabb = AABB(Vector3(-radius - 20, -5, -radius - 20), Vector3(radius * 2 + 40, life * speed.y + 30, radius * 2 + 40))
 	_groups["always"].add_child(p)
@@ -1198,7 +1198,7 @@ func _setup_sky() -> void:
 	var gd: Vector3 = _v3(sk.get("giant_dir", [-0.38, 0.17, -0.91])).normalized()
 	_sky_mat.set_shader_parameter("giant_dir", gd)
 	_sky_mat.set_shader_parameter("giant_r", sin(deg_to_rad(float(sk.get("giant_radius_deg", 19.0)))))
-	var tilt: float = deg_to_rad(float(sk.get("ring_tilt_deg", 17.0)))
+	var tilt: float = deg_to_rad(float(sk.get("ring_tilt_deg", 0.0)))
 	_sky_mat.set_shader_parameter("giant_pole", Basis(Vector3(gd.z, 0, -gd.x).normalized(), tilt) * Basis(gd, 0.35) * Vector3.UP)
 	var a: Dictionary = suns["a"]
 	var b: Dictionary = suns["b"]

@@ -25,7 +25,7 @@
         -0.91
       ],
       "giant_radius_deg": 19.0,
-      "ring_tilt_deg": 17.0,
+      "ring_tilt_deg": 0.0,
       "aurora": 0.55
     },
     "fog": {
