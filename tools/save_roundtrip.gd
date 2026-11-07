@@ -75,6 +75,8 @@ func _snapshot(s: Node) -> Dictionary:
 		"decor": JSON.stringify(GameState.world.get("decor", {})),
 		"decor_charm": snappedf(float(GameState.world.get("decor_charm", 0.0)), 0.01),
 		"world_index": int(GameState.flags.get("world_index", 0)),
+		# [scope] the Telescope at this base, its sightings and use stats.
+		"telescope": "%s %s uses=%d" % [str(Telescope.of(s).built() if Telescope.of(s) else "none"), str(Codex.is_unlocked("sightings:first_light")), int(GameState.stats.get("telescope_uses", 0))],
 	}
 
 
@@ -346,6 +348,18 @@ func _ready() -> void:
 	Designs.set_looks_only(true)
 	(s1.patch.model as PatchModel).set_variant("nova")
 	_late_decorate(s1, 4)  # [late] a few Garden Mode decorations
+	# [scope] Build the Telescope (research route) and log its first sighting.
+	var scope: Telescope = Telescope.of(s1)
+	if scope:
+		Research.grant("observatory")
+		GameState.add_currency("cubes", BigNum.from_float(7000))
+		GameState.add_currency("bolts", BigNum.from_float(60))
+		if not scope.build():
+			_check("scope_built", true, false)
+		Codex.unlock("sightings:first_light")
+		GameState.inc_stat("telescope_uses", 2.0)
+	else:
+		_check("scope_node", true, false)
 	s1.patch.global_position = Vector3(3.0, 0.2, 5.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
 	s1.add_cube(dropped)
@@ -509,6 +523,9 @@ func _late_multi_world(packed: PackedScene) -> void:
 	_check("worlds2_landmark", true, s3.get_node_or_null("WorldLandmark") != null)
 	_check("worlds2_sky_grade", false, ((s3.sky_director as SkyDirector).grade as Dictionary).is_empty())
 	GameState.flags["world_story"] = ["arrival", "memory_1"]
+	# [scope] A care package from the new world to Verdance is kept in the profile.
+	GameState.add_currency("cubes", BigNum.from_float(RemoteProgress.care_cost()))
+	_check("scope_care_sent", true, RemoteProgress.send_care(CradleMode.worlds()[0]))
 	var before: Dictionary = _late_snap(s3)
 	if not SaveManager.save_game():
 		_check("late_new_world_saved", true, false)
@@ -524,6 +541,7 @@ func _late_multi_world(packed: PackedScene) -> void:
 	_check("worlds2_profile_stamped", true, float(CradleMode.profile.get("saved_unix", 0.0)) > 1.0e9)  # [worlds2] Steam Cloud newest-wins
 	_check("late_profile_heirlooms", hl_before, CradleMode.heirloom_total())
 	_check("late_profile_heirlooms_kept", true, CradleMode.heirloom_total() >= 4)
+	_check("scope_care_in_profile", true, RemoteProgress.boost_left(CradleMode.worlds()[0]) > 0.0)  # [scope]
 	# Back to Verdance: its save (slot 7) loads as it was left.
 	_check("late_switch_home", true, CradleMode.switch_world(0))
 	_check("late_home_slot", 7, SaveManager.slot)

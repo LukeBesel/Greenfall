@@ -7,7 +7,8 @@
     {"id": "shards", "name": "Memory Shards", "icon": "book"},
     {"id": "landmarks", "name": "Landmarks", "icon": "map"},
     {"id": "animals", "name": "Animals", "icon": "leaf"},
-    {"id": "frontiers", "name": "Frontiers", "icon": "map"}
+    {"id": "frontiers", "name": "Frontiers", "icon": "map"},
+    {"id": "sightings", "name": "Sightings", "icon": "star"}
   ],
   "junk": {
     "metal": {"kg_per_unit": 2.4, "hint": "Rusty, clanky, everywhere.", "desc": "Cans, tins and bent brackets. Most of it was made to last, and it did. Pressed into bales, it can be rolled and stamped into something useful again."},
@@ -112,5 +113,10 @@
     "heron": {"name": "Grey Heron", "hint": "Where: Shallows in the Sunken City and wild lakes.", "desc": "Herons stand perfectly still at the water's edge, then strike. They lift off slowly on huge grey wings when disturbed."},
     "turtle": {"name": "Pond Turtle", "hint": "Where: Clean water in the Sunken City.", "desc": "Turtles cruise the drowned streets with their heads up, as if they've always lived here. Maybe they have."},
     "crane": {"name": "Cradle Crane", "hint": "Where: The skies over Cradle Returns.", "desc": "White cranes circle high over the landing city on slow wingbeats. The ark's seed vault carried their eggs; this is the first flock to fly free."}
+  },
+  "_sightings_doc": "[scope] Seen through the Telescope (ui/telescope_view.gd).",
+  "sightings": {
+    "first_light": {"name": "First Light", "hint": "Build a Telescope and look through it.", "desc": "The first look across the system from your own observatory. Two suns, a handful of worlds, and somewhere down there, your crews still at work."},
+    "ledger_wreck": {"name": "Ledger Wreck", "hint": "Through the telescope, on a world where the Ledger's drones came down.", "desc": "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."}
   }
 }
