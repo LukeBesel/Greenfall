@@ -219,6 +219,7 @@ func update(delta: float) -> void:
 		return
 	_dt = delta
 	Research.now_override = 1000.0 + float(GameState.stats.get("time_played", 0.0))
+	RocketTiers.now_override = 1000.0 + float(GameState.stats.get("time_played", 0.0))  # [beat]
 	if DevHooks.has("game-minutes") and _now() >= DevHooks.get_f("game-minutes", 60.0) * 60.0 and not _stopping:
 		_stopping = true
 		_stop_run("game-minutes")
