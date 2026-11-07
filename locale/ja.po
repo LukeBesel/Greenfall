@@ -2600,7 +2600,7 @@ msgstr ""
 
 #: ui/bench_kit.gd:163 ui/upgrade_card.gd:217
 msgid "need %s"
-msgstr ""
+msgstr "あと%s"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
@@ -3807,7 +3807,7 @@ msgstr "フォトモード  [%s]"
 
 #: ui/pause_menu.gd:61
 msgid "Keepsakes"
-msgstr ""
+msgstr "記念品"
 
 #: ui/photo_filters.gd:11
 msgid "Natural"
@@ -4221,7 +4221,7 @@ msgstr "作る"
 
 #: ui/robot_card.gd:130
 msgid "Fleet upgrades"
-msgstr ""
+msgstr "艦隊アップグレード"
 
 #: ui/robot_card.gd:145
 msgid "Open Research"
@@ -4241,7 +4241,7 @@ msgstr ""
 
 #: ui/robot_card.gd:196
 msgid "Need %s more cubes"
-msgstr ""
+msgstr "キューブがあと%s必要"
 
 #: ui/robot_card.gd:222
 msgid "Unlock with research: %s"
@@ -4317,7 +4317,7 @@ msgstr "  ·  ワープ"
 
 #: ui/settings_panel.gd:12 ui/settings_panel.gd:221
 msgid "Basics"
-msgstr ""
+msgstr "基本"
 
 #: ui/settings_panel.gd:12
 msgid "Audio"
@@ -4373,11 +4373,11 @@ msgstr "言語"
 
 #: ui/settings_panel.gd:244
 msgid "More settings  (sound, graphics, controls, accessibility)"
-msgstr ""
+msgstr "その他の設定  （サウンド、グラフィック、操作、アクセシビリティ）"
 
 #: ui/settings_panel.gd:250
 msgid "Everything else"
-msgstr ""
+msgstr "その他すべて"
 
 #: ui/settings_panel.gd:290
 msgid "Volume"
@@ -4851,7 +4851,7 @@ msgstr "最大（%d）"
 
 #: ui/upgrade_card.gd:217
 msgid "need %s · ~%s"
-msgstr ""
+msgstr "あと%s · 約%s"
 
 #: ui/upgrade_card.gd:222
 msgid "Where it comes from:  %s"

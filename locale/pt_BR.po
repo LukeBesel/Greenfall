@@ -2608,7 +2608,7 @@ msgstr ""
 
 #: ui/bench_kit.gd:163 ui/upgrade_card.gd:217
 msgid "need %s"
-msgstr ""
+msgstr "faltam %s"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
@@ -3819,7 +3819,7 @@ msgstr "Modo foto  [%s]"
 
 #: ui/pause_menu.gd:61
 msgid "Keepsakes"
-msgstr ""
+msgstr "Lembranças"
 
 #: ui/photo_filters.gd:11
 msgid "Natural"
@@ -4234,7 +4234,7 @@ msgstr "Construir"
 
 #: ui/robot_card.gd:130
 msgid "Fleet upgrades"
-msgstr ""
+msgstr "Melhorias da frota"
 
 #: ui/robot_card.gd:145
 msgid "Open Research"
@@ -4254,7 +4254,7 @@ msgstr ""
 
 #: ui/robot_card.gd:196
 msgid "Need %s more cubes"
-msgstr ""
+msgstr "Faltam %s cubos"
 
 #: ui/robot_card.gd:222
 msgid "Unlock with research: %s"
@@ -4330,7 +4330,7 @@ msgstr "  ·  DOBRA"
 
 #: ui/settings_panel.gd:12 ui/settings_panel.gd:221
 msgid "Basics"
-msgstr ""
+msgstr "Básico"
 
 #: ui/settings_panel.gd:12
 msgid "Audio"
@@ -4386,11 +4386,11 @@ msgstr "Idioma"
 
 #: ui/settings_panel.gd:244
 msgid "More settings  (sound, graphics, controls, accessibility)"
-msgstr ""
+msgstr "Mais configurações  (som, gráficos, controles, acessibilidade)"
 
 #: ui/settings_panel.gd:250
 msgid "Everything else"
-msgstr ""
+msgstr "Todo o resto"
 
 #: ui/settings_panel.gd:290
 msgid "Volume"
@@ -4864,7 +4864,7 @@ msgstr "Máx. (%d)"
 
 #: ui/upgrade_card.gd:217
 msgid "need %s · ~%s"
-msgstr ""
+msgstr "faltam %s · ~%s"
 
 #: ui/upgrade_card.gd:222
 msgid "Where it comes from:  %s"
