@@ -211,6 +211,7 @@ func _bake_ground() -> ImageTexture:
 			var d: float = Vector2(wp.x, wp.z).length()
 			c = c.lerp(palette["far"], clampf((d - r_out * 0.62) / (r_out * 0.5), 0.0, 1.0))
 			img.set_pixel(x, y, c)
+	img.generate_mipmaps()
 	return ImageTexture.create_from_image(img)
 
 
@@ -220,6 +221,7 @@ func _build_ground() -> void:
 	_ground_mat = StandardMaterial3D.new()
 	_ground_mat.albedo_texture = _bake_ground()
 	_ground_mat.roughness = 0.95
+	_ground_mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	var g := MeshInstance3D.new()
 	g.mesh = plane
 	g.material_override = _ground_mat
@@ -259,7 +261,7 @@ func _build_base() -> void:
 		var b: Array = blocks[k]
 		var size: Vector3 = b[1]
 		var m := MeshInstance3D.new()
-		m.mesh = ProcMesh.rounded_box(size, 0.12, 2)
+		m.mesh = ProcMesh.box(size)
 		m.material_override = white
 		m.position = (b[0] as Vector3) + Vector3(0, size.y * 0.5, 0)
 		add_child(m)
@@ -283,7 +285,7 @@ func _build_base() -> void:
 
 func _build_junk() -> void:
 	var junk_cols: Array[Color] = [Color(0.45, 0.3, 0.2), Color(0.36, 0.34, 0.32), Color(0.55, 0.45, 0.34), Color(0.3, 0.36, 0.4), Color(0.62, 0.3, 0.2)]
-	var box := ProcMesh.rounded_box(Vector3(1.0, 0.7, 0.8), 0.08, 1)
+	var box := ProcMesh.box(Vector3(1.0, 0.7, 0.8))
 	_junk_mm = MultiMesh.new()
 	_junk_mm.transform_format = MultiMesh.TRANSFORM_3D
 	_junk_mm.use_colors = true
@@ -374,7 +376,7 @@ func _add_sprout(p: Vector3) -> void:
 
 
 func _build_bots() -> void:
-	_bale_mesh = ProcMesh.rounded_box(Vector3(0.7, 0.6, 0.7), 0.06, 1)
+	_bale_mesh = ProcMesh.box(Vector3(0.7, 0.6, 0.7))
 	_bale_mat = Telescope._mat(Color(0.62, 0.52, 0.38), 0.8, 0.1)
 	_spray_mat = Telescope._glow_mat(Color(0.65, 0.92, 1.0), 2.2)
 	var list: Array = snap.get("robots", [])
@@ -448,7 +450,7 @@ func _ledger_wreck() -> Node3D:
 	var shell := Telescope._mat(Color(0.18, 0.16, 0.16), 0.5, 0.5)
 	var red := Telescope._glow_mat(Color(1.0, 0.22, 0.16), 1.6)
 	var body := MeshInstance3D.new()
-	body.mesh = ProcMesh.rounded_box(Vector3(1.6, 0.6, 1.1), 0.1, 2)
+	body.mesh = ProcMesh.box(Vector3(1.6, 0.6, 1.1))
 	body.material_override = shell
 	body.position.y = 0.3
 	n.add_child(body)

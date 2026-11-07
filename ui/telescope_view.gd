@@ -359,7 +359,7 @@ func _show_system() -> void:
 	if not custom:
 		_build_orrery()
 	_cam.fov = 34.0
-	_dist = 96.0
+	_dist = 122.0
 	_title.text = tr("TELESCOPE  ·  SYSTEM VIEW")
 	var nv: int = 0
 	for i: int in entries.size():
@@ -582,7 +582,7 @@ func _show_remote(i: int) -> void:
 	_focus = _front_point()
 	_focus_goal = _focus
 	_look_i = 1
-	_dist = 58.0
+	_dist = 50.0
 	_cam.fov = 24.0
 	_title.text = tr("TELESCOPE  ·  %s") % tr(str(en["name"])).to_upper()
 	_button(tr("◀ Look"), func() -> void: _cycle_look(-1), 120.0)
@@ -605,7 +605,7 @@ func _front_point() -> Vector3:
 	var j: Array[int] = district._junk_order()
 	if j.is_empty():
 		return Vector3(0, 0, 4)
-	return district.center_of(j[0]) * 0.55
+	return district.center_of(j[0]) * 0.85
 
 
 func _look_points() -> Array[Vector3]:
@@ -685,7 +685,7 @@ func _process(delta: float) -> void:
 	if absf(rx) > 0.2:
 		_yaw -= rx * delta * 1.2
 	if absf(ry) > 0.2:
-		_dist = clampf(_dist + ry * delta * 30.0, 30.0 if mode == "remote" else 50.0, 100.0 if mode == "remote" else 140.0)
+		_dist = clampf(_dist + ry * delta * 30.0, 30.0 if mode == "remote" else 60.0, 100.0 if mode == "remote" else 170.0)
 	if mode == "system":
 		if _orrery:
 			for n: Node in _orrery.get_children():
@@ -697,7 +697,7 @@ func _process(delta: float) -> void:
 		_yaw += delta * 0.02
 		_pitch = 0.95
 		if _dist < 50.0:
-			_dist = 96.0
+			_dist = 122.0
 		var goal := Vector3.ZERO
 		if picked >= 0 and picked < _planet_nodes.size() and _sel_ring:
 			var pn: Node3D = _planet_nodes[picked]
