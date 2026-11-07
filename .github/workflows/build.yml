@@ -32,6 +32,10 @@ jobs:
       - name: Import project
         run: ./godot --headless --path . --import || true
 
+      # [health] Unit tests plus the save/load round trip; fails on a crash at quit (exit code 134).
+      - name: Tests and clean exit
+        run: PATH="$PWD:$PATH" tools/run_tests.sh
+
       - name: Export Windows and Linux
         run: |
           mkdir -p build/windows build/linux build/macos
