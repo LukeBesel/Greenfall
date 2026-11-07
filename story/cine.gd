@@ -113,16 +113,18 @@ func close_stage() -> void:
 	stage = null
 
 
+## [intro2] Narration goes to the game's one subtitle line (one line at a time, at the bottom).
 func caption(t: String) -> void:
-	_cap.text = tr(t) if t != "" else t  # [l10n]
-	_cap.modulate.a = 0.0
+	_cap.text = ""
 	if t != "":
-		_cap.create_tween().tween_property(_cap, "modulate:a", 1.0, 0.5)
+		Subtitles.say(t, "")
 
 
 func wren(t: String, stage_n: int = 2) -> void:
 	if world.get("wren") != null:
 		world.wren.line_started.emit(t, stage_n)
+	else:
+		Subtitles.say(t, "wren")
 
 
 func fade_to(a: float, dur: float) -> void:
@@ -142,6 +144,16 @@ func end() -> void:
 	if not running:
 		return
 	running = false
+	# [intro2] Let the last lines finish reading before handing back (skip clears them).
+	var subs: Subtitles = Subtitles.current
+	if subs and is_instance_valid(subs):
+		if skipped:
+			subs.clear()
+		else:
+			var waited: float = 0.0
+			while subs.is_busy() and waited < 25.0 and not skipped:
+				await get_tree().process_frame
+				waited += get_process_delta_time()
 	fade_to(1.0, 0.35)
 	await get_tree().create_timer(0.4).timeout
 	_restore()
