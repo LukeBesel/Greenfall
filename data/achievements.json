@@ -699,7 +699,7 @@
   {
    "id": "bloom_verdance",
    "name": "Verdance Bloom",
-   "desc": "Wake the Cradle: three districts in bloom, or 1% of the planet reclaimed.",
+   "desc": "Bring the Cradle home: three districts in bloom, or 1% of the planet reclaimed.",
    "icon": "tree",
    "cond": {
     "type": "flag",

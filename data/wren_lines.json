@@ -1,16 +1,16 @@
 {
-  "_doc": "WREN's lines by trigger. Each trigger has lines per memory stage: 0 = fragmented (rendered with glitches), 1 = recovering, 2 = whole. A line is never repeated until the pool for that trigger and stage is used up. {name} = Lumi's name, {robot} = a robot name.",
+  "_doc": "WREN's lines by trigger. WREN is the ark Cradle's AI, whispering to Lumi over a failing relay. Each trigger has lines per signal stage (the relay clears as the planet is restored): 0 = fragmented (rendered with glitches), 1 = recovering, 2 = clear. A line is never repeated until the pool for that trigger and stage is used up. {name} = Lumi's name, {robot} = a robot name.",
   "wake": [
-    ["...carrier... is someone... there? Signal at four percent. Hello?", "I don't... I don't know who I am. But I can see you. Small. Blue. Rusty. Hello."]
+    ["...carrier... Lumi? Relay at four percent. It's WREN. Hello. Hello. I'm still here.", "...that ground you just cleared... the relay got stronger. Hello again. Do that again. Please."]
   ],
   "hex_clean": [
-    ["...that patch of ground. It's... brown. Brown is better than gray.", "Signal stronger. Did you do that?", "...clean... I remember the word. Not what it was for.", "Another one. My static has a shape now."],
+    ["...that patch of ground. It's... brown. Brown is better than gray.", "Signal stronger. Did you do that?", "...clean... the relay likes that word. So do I.", "Another one. My static has a shape now."],
     ["Every hex you clear, I hear a little more. Keep going, {name}.", "That ground hasn't seen the sun in a long time. It's blinking.", "The grid just ticked. Somewhere a meter I used to watch moved by one.", "I'm starting to remember lists. Lists of hexes. Mostly unfinished."],
     ["Clean dirt. The Makers would have called that a start. I call it a start, too.", "Hex logged. I've started naming them. That one is 'Not Garbage'.", "You're good at this. Annoyingly good. The old fleet took breaks."]
   ],
   "milestone": [
     ["...ten... ten of something. Is ten a lot? It feels like a lot.", "Patterns in the noise. You're making them."],
-    ["Twenty-five hexes. I can see the street from up here now. Mostly.", "Fifty. I remembered my own name for a second. It's gone again. It was short."],
+    ["Twenty-five hexes. I can see the street from up here now. Mostly.", "Fifty. The relay held a whole minute without dropping. A record. Don't tell the ark, it gets competitive."],
     ["A hundred hexes. I can see this whole district without squinting. I don't have eyes, but you know what I mean."]
   ],
   "perfect": [
@@ -80,7 +80,7 @@
   ],
   "jammer_built": [
     ["...a loud little dish... I like it."],
-    ["Signal Jammer up. It sings static on the Ledger's channel. I can hear it from orbit, and I approve.", "New dish at the base. The drones will have to think twice. They only think once, so that's a lot."],
+    ["Signal Jammer up. It sings static on the Ledger's channel. I can hear it all the way out here on the ark, and I approve.", "New dish at the base. The drones will have to think twice. They only think once, so that's a lot."],
     ["Another jammer. The base is starting to sound like a very angry radio. Perfect."]
   ],
   "ledger_relay": [
@@ -205,7 +205,7 @@
   ],
   "egg_potato": [
     ["...large... vegetable... detected..."],
-    ["That is the biggest potato I have ever seen, and I have seen the whole planet from orbit.", "Best in Show. Uncontested. It still counts."],
+    ["That is the biggest potato I have ever seen, and I watched this whole planet through the ark's windows for three hundred years.", "Best in Show. Uncontested. It still counts."],
     ["Somebody grew that with love. Three hundred years later it still looks proud."]
   ],
   "egg_night_shift": [
@@ -240,7 +240,7 @@
   ],
   "egg_campfire": [
     ["...warm... reading: warm..."],
-    ["A campfire. I can see it from orbit. It's the coziest pixel on the planet.", "Somebody sat here and told stories. Let's sit a bit. No stories needed."],
+    ["A campfire. The ark's long-range eye can see it. It's the coziest pixel on the planet.", "Somebody sat here and told stories. Let's sit a bit. No stories needed."],
     ["Sit by the fire, {name}. You've earned a moment."]
   ],
   "egg_back_in_five": [
@@ -255,7 +255,7 @@
   ],
   "ark_wave": [
     ["...seed ark... wave... complete..."],
-    ["Seed Ark wave done. The Cradle is already loading the next one. More seeds, more green.", "Another wave planted across the planet. The Cradle hums a little louder each time."],
+    ["Seed Ark wave done. The Cradle is already loading the next one. More seeds, more green. More light for your core.", "Another wave planted across the planet. The Cradle hums a little louder each time."],
     ["Wave after wave. We're not finishing a job any more, {name}. We're tending a garden."]
   ],
   "biome_arrival": [
@@ -327,5 +327,25 @@
     ["...Cradle... coming... home..."],
     ["Lumi. The beacon is lit. The Cradle has answered. It's coming home.", "Pad green, district thriving, beacon lit. Ark Cradle, you are clear to land. I have waited a long time to say that."],
     ["Lumi. The Cradle is coming home. Because of you. Small, blue, stubborn you."]
+  ],
+  "core_25": [
+    ["...relay locking... Lumi? Lumi, I can hear you. Properly."],
+    ["Quarter charge. The relay finally stopped crackling. Hello, properly this time."],
+    ["A quarter full. I can hear you humming again."]
+  ],
+  "core_50": [
+    ["...brighter... you're brighter..."],
+    ["Half charged. You're glowing, Lumi. Properly glowing."],
+    ["Half full. The ark's sensors flagged you as a new star. I didn't correct them."]
+  ],
+  "core_75": [
+    ["...look up... tonight... look up..."],
+    ["Look up tonight. The steady light, west to east. That's us. We're coming."],
+    ["The Cradle is close enough to see now. Every night, a little closer."]
+  ],
+  "low_core": [
+    ["...you're dim... find green... any green..."],
+    ["Your core's low. Plant something, Lumi. Anything. Green light is green light."],
+    ["Running a little dim. A few blooms will fix that."]
   ]
 }

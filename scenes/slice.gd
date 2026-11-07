@@ -50,6 +50,7 @@ var upgrades: UpgradesScreen
 var command: CommandView
 var music: MusicHooks
 var intro: Intro
+var core_charge: CoreCharge
 var composter: Composter
 var pause_menu: PauseMenu
 var research: Research
@@ -472,12 +473,16 @@ func _ready() -> void:
 	add_child(bloom)
 	if frontier:  # [biomes] frontier mechanics and visuals, once the scene is built
 		frontier.setup()
+	core_charge = CoreCharge.new()  # Lumi's Bloom Core charge + its story beats (story/core_charge.gd)
+	core_charge.name = "CoreCharge"
+	core_charge.world = self
+	add_child(core_charge)
 	intro = Intro.new()
 	intro.world = self
 	add_child(intro)
 	var wake := func() -> void:
 		get_tree().create_timer(1.5).timeout.connect(func() -> void:
-			Story.once("wake", "LM-1  online.  Landing pod sealed.  Cradle uplink: weak.  Running checklist.", "story"))
+			Story.once("wake", "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something.", "story"))
 	if intro.should_play():
 		intro.finished.connect(wake)
 		intro.play.call_deferred()

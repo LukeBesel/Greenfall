@@ -1,6 +1,6 @@
 class_name Wren
 extends Node
-## WREN: the Cradle's caretaker AI in orbit. Speaks in short subtitled lines triggered by events.
+## WREN: the ark Cradle's AI, whispering to Lumi over a failing relay. Speaks in short subtitled lines.
 ## Her memory (and text clarity) returns with restoration: stage 0 lines arrive glitched and
 ## resolve as they type; later stages are clean. Lines never repeat until a pool is exhausted.
 

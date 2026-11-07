@@ -46,6 +46,7 @@ func _snapshot(s: Node) -> Dictionary:
 		"hub_level": s.hub.level,
 		"rocket_tier": RocketTiers.tier(),
 		"intro_done": GameState.flags.get("intro_done", false),
+		"core_charge": "%.3f %s" % [float(GameState.flags.get("core_charge", 0.0)), str(CoreCharge.beats_done())],
 		"tagged_cubes": _tagged_cubes(s),
 		"outposts": _outposts(s),
 		# [events] contracts board (timers excluded: they tick), tokens, collection, livery, shop.
@@ -249,6 +250,7 @@ func _ready() -> void:
 		if free >= 0:
 			s1.garden.plant(free)
 	s1.composter.level = 3
+	CoreCharge.store(0.31)  # Bloom Core charge + its 25% milestone
 	# [outposts] Repair outpost 0 and take it to Big Skip; repair the last one too.
 	if s1.get("outposts") != null and s1.outposts.items.size() >= 2:
 		s1.outposts.repair(0, false, true)

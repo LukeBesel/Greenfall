@@ -6,12 +6,12 @@ extends Node3D
 const GREENHOUSE_POS := Vector3(15.0, 0.0, -9.0)
 const LINES: Array[Array] = [
 	["Wait. Hold it up to the light.", 3.5],
-	["That's a Maker seed tin. Cradle stamp on the lid. I... know that stamp.", 5.0],
-	["Before they left, the Makers sealed every seed they had into the Cradle. Up here. With me.", 6.0],
-	["The plan was simple. The robots clean. The Cradle drops seeds. The world grows back. They called the day it finished the Greenfall.", 7.5],
-	["Then everything went quiet. The fleet stopped. I stopped. I don't remember why yet.", 5.5],
+	["That's a Maker seed tin. Cradle stamp on the lid. One of ours, left behind in the rush.", 5.0],
+	["When they left, the Makers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi.", 6.0],
+	["The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall.", 7.5],
+	["Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky.", 5.5],
 	["Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground.", 6.0],
-	["That somebody is you, apparently. Small. Blue. Rusty. Perfect.", 4.5],
+	["That somebody is you. Small. Stubborn. Running on four percent. Perfect.", 4.5],
 	["Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it.", 6.0],
 ]
 
@@ -218,7 +218,7 @@ func _sprout_moment(pos: Vector3) -> void:
 	Audio.play("fanfare", 0.8, -6.0)
 	world.wren.line_started.emit("...It's green. Lumi, it's actually green.", 1)
 	await get_tree().create_timer(4.5).timeout
-	world.wren.line_started.emit("Keep it watered. Plant more. Every bloom will give you seeds back. This is how it starts.", 1)
+	world.wren.line_started.emit("Keep it watered. Plant more. Every bloom gives you seeds back, and a little green light for your core. This is how it starts.", 1)
 	EventBus.tutorial_changed.emit("")
 	GameState.flags["first_sprout"] = true
 	Audio.music_sting("first_sprout")

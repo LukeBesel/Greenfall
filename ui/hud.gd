@@ -253,6 +253,9 @@ func set_core_charge(f: float) -> void:
 
 func _process(delta: float) -> void:
 	var minimal: bool = Settings.hud_mode == Settings.HudMode.MINIMAL
+	var cc: Variant = world.get("core_charge") if world else null  # [story2] Bloom Core ring by the level bar
+	if cc is CoreCharge:
+		set_core_charge((cc as CoreCharge).shown)
 	if world and world.field:
 		var f: HexField = world.field
 		var pct: float = float(f.cleaned_count) / maxf(f.junk_hex_count, 1)
