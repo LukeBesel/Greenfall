@@ -96,6 +96,25 @@ func _ready() -> void:
 	_show(Designs.current(), true)
 
 
+var _sig: String = ""
+var _tick: float = 0.0
+
+
+## Keep cards and progress live (unlocks while the bench is open, dev hooks after build).
+func _process(delta: float) -> void:
+	_tick += delta
+	if _tick < 0.5:
+		return
+	_tick = 0.0
+	var sig: String = "%s|%s|%s" % [Designs.current(), str(Designs.unlocked()), str(Designs.looks_only())]
+	for id: String in _cards:
+		sig += "|%.2f" % Designs.progress(id)
+	if sig != _sig:
+		_sig = sig
+		_looks.set_pressed_no_signal(Designs.looks_only())
+		refresh()
+
+
 ## The worn design's card (the workbench focuses it when the tab opens).
 func first_button() -> Control:
 	return _cards.get(Designs.current())

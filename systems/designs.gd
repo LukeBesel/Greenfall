@@ -142,6 +142,7 @@ static func progress_text(id: String) -> String:
 ## `quiet` (first check after loading an old save).
 static func check_unlocks(quiet: bool = false) -> Array[String]:
 	var out: Array[String] = []
+	_dev_tick()
 	var have: Array = unlocked()
 	for id: String in ids():
 		if id in have or not met(id):
@@ -210,9 +211,22 @@ static func dev_hooks(world: Node) -> void:
 		if world and world.get("patch") and world.patch.get("model"):
 			(world.patch.model as PatchModel).set_variant(want)
 	var show: String = DevHooks.get_s("design-unlock", "")
-	if show != "" and not def(show).is_empty() and world:
+	if show != "" and not def(show).is_empty():
 		unlocked().erase(show)
-		world.get_tree().create_timer(DevHooks.get_f("design-unlock-at", 4.0)).timeout.connect(func() -> void:
-			unlocked().append(show)
-			pending_toasts.append(show)
-			DesignToast.show_next())
+		_dev_show = show
+		_dev_at_ms = Time.get_ticks_msec() + int(DevHooks.get_f("design-unlock-at", 4.0) * 1000.0)
+
+
+static var _dev_show: String = ""
+static var _dev_at_ms: int = 0
+
+
+## --design-unlock: play the unlock once its (wall-clock) time has come. Called by check_unlocks.
+static func _dev_tick() -> void:
+	if _dev_show == "" or Time.get_ticks_msec() < _dev_at_ms:
+		return
+	if not (_dev_show in unlocked()):
+		unlocked().append(_dev_show)
+	pending_toasts.append(_dev_show)
+	_dev_show = ""
+	DesignToast.show_next()
