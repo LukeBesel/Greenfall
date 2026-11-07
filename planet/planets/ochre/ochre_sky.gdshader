@@ -13,6 +13,8 @@ uniform float sun_b_size = 1.15;
 uniform float sun_a_energy = 1.0;
 uniform float sun_b_energy = 0.6;
 uniform float halo = 0.35;
+uniform float disc_a = 14.0;    // disc brightness (the primary burns white)
+uniform float disc_b = 2.2;     // the companion stays visibly orange-red
 uniform vec3 horizon = vec3(1.0, 0.88, 0.66);
 uniform vec3 zenith = vec3(0.8, 0.72, 0.56);
 uniform vec3 haze = vec3(1.0, 0.82, 0.55);
@@ -28,7 +30,7 @@ float h31(vec3 p) {
 	return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
 }
 
-vec3 sun_disc(vec3 dir, vec3 sd, vec3 col, float size_deg, float e) {
+vec3 sun_disc(vec3 dir, vec3 sd, vec3 col, float size_deg, float e, float db) {
 	float c = dot(dir, normalize(sd));
 	float ang = degrees(acos(clamp(c, -1.0, 1.0)));
 	// Limb-darkened disc with a crisp edge, a soft corona and a wide faint glare.
@@ -36,7 +38,7 @@ vec3 sun_disc(vec3 dir, vec3 sd, vec3 col, float size_deg, float e) {
 	float limb = mix(0.75, 1.0, sqrt(max(0.0, 1.0 - pow(ang / size_deg, 2.0))));
 	float corona = exp(-max(ang - size_deg, 0.0) / (size_deg * 0.9)) * 0.55;
 	float glare = exp(-ang / 18.0) * 0.18 + exp(-ang / 55.0) * 0.06;
-	return col * e * (disc * limb * 14.0 + (corona + glare) * halo * 2.0);
+	return col * (disc * limb * db + e * (corona + glare) * halo * 2.0);
 }
 
 void sky() {
@@ -68,8 +70,8 @@ void sky() {
 		// The two suns (the companion a fixed angle from the primary).
 		if (up > -0.05) {
 			float hzb = smoothstep(-0.05, 0.05, up);
-			col += sun_disc(d, sun_a_dir, sun_a_col, sun_a_size, sun_a_energy) * hzb;
-			col += sun_disc(d, sun_b_dir, sun_b_col, sun_b_size, sun_b_energy) * hzb;
+			col += sun_disc(d, sun_a_dir, sun_a_col, sun_a_size, sun_a_energy, disc_a * sun_a_energy) * hzb;
+			col += sun_disc(d, sun_b_dir, sun_b_col, sun_b_size, sun_b_energy, disc_b) * hzb;
 		}
 	}
 	COLOR = col * energy;
