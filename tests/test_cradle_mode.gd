@@ -60,6 +60,7 @@ func test_prestige_earned_adds_up_each_source() -> void:
 func test_bank_pays_only_what_is_new() -> void:
 	GameState.stats["ark_waves"] = 2.0
 	GameState.flags["cradle_returned"] = true
+	Homeward.state()["done"] = true  # [home] the score track is post-game (planet picks before that)
 	var first: int = CradleMode.bank()
 	assert_gt(first, 0)
 	assert_eq(int(CradleMode.profile["starseeds_total"]), first, "[money] banked as a restoration score")

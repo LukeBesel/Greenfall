@@ -118,6 +118,7 @@ static func from_dict(d: Dictionary) -> Dictionary:
 		ws = p["worlds"]
 	p["worlds"] = ws
 	p["current"] = clampi(int(p["current"]), 0, ws.size() - 1)
+	p["homeward"] = Homeward.sanitize(d.get("homeward", {}))  # [home] the system campaign (systems/homeward.gd)
 	return p
 
 
@@ -142,7 +143,7 @@ static func current_world() -> Dictionary:
 ## The world record with its generated mix (towns etc. are recomputed, not stored).
 static func current_full() -> Dictionary:
 	var w: Dictionary = current_world()
-	return WorldGen.make(int(w.get("index", 0)), int(w.get("seed", WorldGen.VERDANCE_SEED)))
+	return WorldGen.make(int(w.get("index", 0)), int(w.get("seed", WorldGen.VERDANCE_SEED)), str(w.get("type", "")) if w.has("planet") else "")  # [home] fixed planets keep their type
 
 
 static func world_seed() -> int:
@@ -235,7 +236,10 @@ static func bank() -> int:
 	if bool(GameState.flags.get("bloom_finale_seen", false)):
 		w["finale"] = true
 		_p()["unlocked"] = true
-	_p()["starseeds_total"] = float(_p().get("starseeds_total", 0.0)) + gain
+	# [home] During the system campaign Heirlooms come from planet picks; the score track runs only
+	# after Homecoming or beyond the system (post-game), so the two never double up.
+	if Homeward.current_planet() < 0 or Homeward.done():
+		_p()["starseeds_total"] = float(_p().get("starseeds_total", 0.0)) + gain
 	# [money] No Starseed currency: the banked score unlocks Heirloom levels (systems/heirloom_track.gd).
 	for id: String in HeirloomTrack.apply(_p(), heirloom_defs()):
 		EventBus.toast.emit(TranslationServer.translate("Heirloom unlocked: %s, level %d. It travels with Lumi to every world.") % [TranslationServer.translate(str(heirloom_def(id).get("name", id))), heirloom_level(id)], "story")
@@ -289,19 +293,21 @@ static func buy_block_reason(id: String) -> String:
 	var lv: int = heirloom_level(id)
 	if lv >= int(d.get("max", 5)):
 		return TranslationServer.translate("Fully grown")
-	# [money] Heirlooms unlock along the Ark milestone track; nothing is bought.
+	if Homeward.picks() > 0:  # [home] a restored planet's Heirloom pick (the campaign's way to grow them)
+		return ""
+	# [money] Beyond the system (post-game), Heirlooms also unlock along the restoration-score track.
 	var nxt: Dictionary = HeirloomTrack.next_step(float(_p().get("starseeds_total", 0.0)), heirloom_defs())
 	if nxt.is_empty():
 		return TranslationServer.translate("Fully grown")
-	return TranslationServer.translate("Unlocks with Ark milestones (next: %s, at %d restoration)") % [TranslationServer.translate(str(heirloom_def(str(nxt["id"])).get("name", ""))), int(nxt["at"])]
+	return TranslationServer.translate("Restore a planet for a pick, or unlocks with Ark milestones (next: %s, at %d restoration)") % [TranslationServer.translate(str(heirloom_def(str(nxt["id"])).get("name", ""))), int(nxt["at"])]
 
 
 static func buy(id: String) -> bool:
-	if buy_block_reason(id) != "":  # [money] always blocked: Heirlooms are milestone unlocks (HeirloomTrack)
+	# [home] Taking an Heirloom level spends a planet pick (no currency; HeirloomTrack adds the rest).
+	if buy_block_reason(id) != "" or not Homeward.use_pick():
 		return false
 	var d: Dictionary = heirloom_def(id)
 	var lv: int = heirloom_level(id)
-	_p()["starseeds"] = starseeds() - heirloom_cost(d, lv)
 	(_p()["heirlooms"] as Dictionary)[id] = lv + 1
 	GameState.inc_stat("heirlooms_bought")
 	mirror_stats()

@@ -24,6 +24,22 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 4. More districts content: 41 eggs now; more biome props (nets, satellites) if Poly Haven gets them; per-biome plants/wildlife.
 5. Post-game (M11): done (wt/late). Next: per-world story threads with WREN, wildlife using the decor hook, tune Starseed income and Bloom thresholds after play-testing.
 
+## Update: Homeward, the Verdance system campaign (wt/home)
+- The game now ends when the whole system is restored. Five fixed planets (Verdance, Ochre, Tidewell,
+  Rime, Anvil; data/homeward.json, systems/homeward.gd) are profile worlds with fixed seeds, types,
+  modifiers, a relic each and Ledger lore (arrival memo, half-way intercept, restored note). Cradle
+  Returns now plays "The Cradle Answers" (story/cradle_answers.gd) instead of the ending.
+- Rocket drive Mk V Orbital / VI Interplanetary / VII Homeward (cubes + parts, kept in the profile),
+  per-planet charts (previous planet at 50%), the solar map (ui/system_map.gd: 3D orrery, two suns,
+  zoom in to a planet and on into the survey globe), planet flights through the rocket's own sequence.
+- Ending: Mk VII at Cradle Returns (launch complex), the last seed, launch home, Homecoming
+  (story/homecoming.gd) -> the ark finale -> credits; random Cradle Mode worlds are now post-game.
+- Binary star (data/solar_system.json, SolarSystem.suns_for, planet/binary_sun.gd): every sky shows
+  Hearth and Ember. Heirlooms come from planet picks (one per restored planet).
+- Next: planet-specific goal chains (a new planet replays the Verdance chain from the start, including
+  frontier goals); land at a chosen district on another planet (its PlanetData isn't generated until
+  visited); pace the four planets end to end with the bot without --home-ff; a Lumi design for the
+  ending; worlds2's world picker should honour `Homeward` planets (records with "planet").
 ## Update: three currencies (wt/money, Nov 7)
 - Done: exactly three currencies, Cubes / Parts / Seeds, from one source of truth (`data/currencies.json`, `core/currencies.gd`). Retired ids (bolts, sheet metal, plastic, glass, Data, compost, tokens, trinkets, Maker Fragments; Starseeds in the profile) are a legacy alias layer in `GameState.add_currency/get_currency/spend/can_afford` (fixed rates, one debug warning per id); `Currencies.fold()` for cost dicts, `GameState.can_afford_all/spend_all/add_all`. Every caller and data file uses the new ids (test_money checks the data files).
 - Done: save v2 (`SaveManager.migrate_v2`): old balances fold at the same rates; compost goes into the compost press hopper; Maker Fragments become Parts. Round trip has an old-save case.
