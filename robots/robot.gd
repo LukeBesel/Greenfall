@@ -447,10 +447,15 @@ func _pick_work_hex() -> int:
 			best = id
 	if best >= 0 or (_stay() and not z.is_empty()):
 		return best
+	# [beat] Sunken City: skim the ring the pumps need next before the outer rings.
+	var fr: Variant = world.get("frontier")
+	var sunken: FrontierDistrict = fr if lake and fr is FrontierDistrict and (fr as FrontierDistrict).kid == "sunken_city" else null
 	for id: int in field.hex_count():
 		if field.hex_hub[id] != 0 or field.is_clean(id) or field.is_water(id) != lake or _skip.has(1000000 + id) or field.locked.has(id):  # [biomes] ice
 			continue
 		var d: float = field.hex_center(id).distance_squared_to(global_position)
+		if sunken:
+			d += 1.0e6 * maxf(0.0, Frontiers.flood_stage_of(field, id, sunken.kind.get("flood", {})) - (sunken.drained + 1))
 		if d < best_d:
 			best_d = d
 			best = id
