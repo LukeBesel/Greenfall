@@ -224,7 +224,7 @@ func _render() -> Image:
 		return ph
 	var vp := SubViewport.new()
 	vp.size = SHOT_SIZE
-	vp.world_3d = world.get_viewport().world_3d
+	vp.world_3d = world.get_viewport().find_world_3d()
 	vp.msaa_3d = Viewport.MSAA_2X
 	vp.render_target_update_mode = SubViewport.UPDATE_ONCE
 	var cam := Camera3D.new()
