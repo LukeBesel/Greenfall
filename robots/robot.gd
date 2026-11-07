@@ -108,10 +108,13 @@ func rebuild_visual() -> void:
 	RobotBuilder.on_visual_rebuilt(self)  # [drones] part meshes, name tag, personality
 
 
+const _WATER_TIER_STATS: Array[String] = ["tank", "refill_rate"]  # [health] no per-call array
+
+
 func stat(s: String) -> float:
 	var v: float = Economy.robot_stat(type_id, s, tier, rarity_bonus)
 	# Water gear also improves with the Mk tier (Economy scales the work stats).
-	if s in ["tank", "refill_rate"]:
+	if s in _WATER_TIER_STATS:
 		v *= _tier_mult()
 	elif s == "spray_radius":
 		v *= sqrt(_tier_mult())
