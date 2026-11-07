@@ -220,9 +220,8 @@ func _grant(lv: int) -> String:
 		var types: Array = Economy.parts.get("types", [])
 		var t: int = randi() % maxi(types.size(), 1)
 		var r: int = int(plan["part_rarity"])
-		GameState.parts.append({"type": t, "rarity": r})
-		EventBus.part_found.emit(t, r)
-		bits.append("+" + L10nFmt.part_name(r, t))  # [i18n2]
+		RobotParts.salvage(t, r)  # [ui2] a robot part pays Parts
+		bits.append(RobotParts.gain_text(r))
 	var bonus: int = int(plan["bonus_parts"])
 	if bool(plan["trinket"]):
 		var left: Array[String] = Collection.unfound("lumi_level")  # in order: L10, L20, ...

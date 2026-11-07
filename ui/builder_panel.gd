@@ -21,6 +21,10 @@ const ROLE_STATS: Dictionary = {
 const CREW_NAMES: Dictionary = {"clean": "Clean", "haul": "Haul", "plant": "Plant", "water": "Water", "skim": "Skim"}  # l10n
 
 var fleet: Fleet
+## [ui2] Inside the Locker: no fleet list (the Locker's selector picks the robot), no stat table,
+## presets or shop line; parts are cosmetics, so only the look, name and personality show.
+var locker_mode: bool = false
+var _left: Control
 var _sel: Robot
 var _slot: String = "chassis"
 var _robot_list: VBoxContainer
@@ -59,6 +63,12 @@ func _ready() -> void:
 	_build_left()
 	_build_mid()
 	_build_right()
+	if locker_mode:  # [ui2]
+		_left.visible = false
+		_stats.visible = false
+		_preset_save.get_parent().visible = false
+		_preset_info.visible = false
+		_haggle.visible = false
 	var bots: Array[Robot] = _bots()
 	if not bots.is_empty():
 		_sel = bots[0]
@@ -99,6 +109,7 @@ func _column(title: String, width: float) -> VBoxContainer:
 
 func _build_left() -> void:
 	var vb: VBoxContainer = _column(tr("YOUR ROBOTS"), 214)
+	_left = vb.get_parent().get_parent()
 	_robot_list = VBoxContainer.new()
 	_robot_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_robot_list.add_theme_constant_override("separation", 5)
@@ -150,7 +161,7 @@ func _build_mid() -> void:
 	_stats = VBoxContainer.new()
 	_stats.add_theme_constant_override("separation", 1)
 	_mid.add_child(_stats)
-	_empty = UITheme.label(tr("No robots yet. Build one in the Bots tab, then fit it out here.\nHaggle throws in a set of treads with your first robot."), 16, UITheme.MUTED)
+	_empty = UITheme.label(tr("No robots yet. Build one in the Bots tab, then style it here.\nYour first robot comes with treads and a bobble plant."), 16, UITheme.MUTED)  # [ui2]
 	_empty.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_empty.visible = false
 	_mid.add_child(_empty)
@@ -285,7 +296,7 @@ func _refresh_all() -> void:
 	var has: bool = _sel != null and is_instance_valid(_sel)
 	_empty.visible = not has
 	for n: Control in [_name_edit.get_parent(), _trait, _stats]:
-		n.visible = has
+		n.visible = has and not (locker_mode and n == _stats)
 	_right.get_parent().get_parent().visible = has
 	if not has:
 		_title.text = tr("ROBOT BUILDER")
@@ -296,7 +307,7 @@ func _refresh_all() -> void:
 	_title.text = "%s  ·  %s" % [tr(str(Economy.robots.get(_sel.type_id, {}).get("name", ""))).to_upper(), Economy.tier_name(_sel.tier)]
 	if not _name_edit.has_focus():
 		_name_edit.text = _sel.robot_name
-	_trait.text = "%s  —  %s  %s" % [tr(str(tdef.get("name", ""))).to_upper(), tr(str(tdef.get("desc", ""))), _mods_text(tdef.get("mods", {}))]
+	_trait.text = "%s  —  %s" % [tr(str(tdef.get("name", ""))).to_upper(), tr(str(tdef.get("desc", "")))]  # [ui2] personality is flavour
 	for s: String in RobotBuilder.SLOTS:
 		var id: String = str(_sel.build.get(s, ""))
 		var b: Button = _slot_btns[s]
@@ -344,7 +355,7 @@ func _rebuild_options() -> void:
 				line2 = "fitted"
 				col = UITheme.GOLD
 			elif n > 0:
-				line2 = tr("in the bin: %d  ·  press to fit") % n
+				line2 = tr("Unlocked  ·  press to fit")  # [ui2] owned parts fit every robot
 				col = Color.WHITE
 			else:
 				var why: String = RobotBuilder.get_block_reason(id)
@@ -353,7 +364,7 @@ func _rebuild_options() -> void:
 					line2 += "  ·  " + why
 					col = UITheme.MUTED
 				else:
-					line2 += tr("  ·  press to get + fit")
+					line2 += tr("  ·  press to unlock + fit")
 					col = UITheme.GREEN
 			b.text = "%s%s\n%s" % [tr(str(p.get("name", id))), tr("  (Maker set)") if p.has("set") else "", line2]
 		b.add_theme_color_override("font_color", col)
@@ -387,14 +398,8 @@ func _refresh_presets() -> void:
 
 
 func _refresh_bin() -> void:
-	var total: int = 0
-	for id: String in RobotBuilder.inv():
-		total += int(RobotBuilder.inv()[id])
-	_bin.text = tr("Builder bin %d   ·   Parts %s") % [total, Settings.fmt(GameState.get_currency("parts"))]  # [money]
-	var offers: Array[String] = []
-	for id: String in RobotBuilder.haggle_offers():
-		offers.append(tr(str(RobotBuilder.part(id).get("name", id))))
-	_haggle.text = tr("Haggle's stall: %s  (new stock in %d min)") % [", ".join(offers), ceili(RobotBuilder.haggle_seconds_left() / 60.0)]
+	_bin.text = tr("%d styles unlocked   ·   Parts %s") % [RobotBuilder.inv().size(), Settings.fmt(GameState.get_currency("parts"))]  # [money] [ui2]
+	_haggle.text = ""  # [ui2] no rotating stall: every shop part is always listed
 
 
 # --- Preview + stats -----------------------------------------------------------------------
@@ -418,7 +423,7 @@ func _preview_candidate(id: String) -> void:
 		_info.text = tr("Stock part: no changes. The %s look of this robot type.") % Economy.tier_name(_sel.tier)
 	else:
 		var p: Dictionary = RobotBuilder.part(id)
-		_info.text = "%s  %s" % [tr(str(p.get("desc", ""))), _mods_text(p.get("mods", {}))]
+		_info.text = tr(str(p.get("desc", "")))  # [ui2] cosmetic: no stat changes
 		if RobotBuilder.has_set(cand) and not RobotBuilder.has_set(_sel.build):
 			_info.text += "   " + tr(str(RobotBuilder.cfg().get("set_bonus", {}).get("desc", "")))
 
@@ -492,7 +497,7 @@ func _process(delta: float) -> void:
 	if _pv:
 		_pv.animate(0.0, false, delta)
 	_bin_t -= delta
-	if _bin_t <= 0.0 and fleet and fleet.robots().size() != _robot_btns.size():
+	if _bin_t <= 0.0 and fleet and fleet.robots().size() != _robot_btns.size() and not locker_mode:
 		# Robots built or restored while the panel exists.
 		if _sel == null or not is_instance_valid(_sel):
 			var bl: Array[Robot] = _bots()
@@ -523,6 +528,15 @@ func _key(r: Robot) -> String:
 
 
 # --- Actions -------------------------------------------------------------------------------
+
+## [ui2] The Locker's bot selector picks the robot being edited.
+func select_robot(r: Robot) -> void:
+	_select(r)
+
+
+func selected() -> Robot:
+	return _sel
+
 
 func _select(r: Robot) -> void:
 	if r == _sel:

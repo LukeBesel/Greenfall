@@ -464,10 +464,9 @@ func _maybe_salvage_part(type_id: String) -> void:
 			r = i
 			break
 	var t: int = randi() % Economy.parts.get("types", [1]).size()
-	GameState.parts.append({"type": t, "rarity": r})
-	EventBus.part_found.emit(t, r)
+	RobotParts.salvage(t, r)  # [ui2] salvaged robot parts pay Parts
 	var rd: Dictionary = Economy.rarity(r)
-	EventBus.toast.emit(tr("Salvaged: %s") % L10nFmt.part_label(tr(str(rd.get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))), "hint")  # [i18n2]
+	EventBus.toast.emit(tr("Salvaged: %s") % L10nFmt.part_label(tr(str(rd.get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))) + "  " + RobotParts.gain_text(r), "hint")  # [i18n2] [ui2]
 	Audio.play("ding", 1.3, -10.0)
 
 
@@ -475,9 +474,8 @@ func _on_part_found(idx: int) -> void:
 	var f: HexField = world.field
 	var t: int = f.part_type[idx]
 	var r: int = f.part_rarity[idx]
-	GameState.parts.append({"type": t, "rarity": r})
 	GameState.inc_stat("parts_found")
-	EventBus.part_found.emit(t, r)
+	RobotParts.salvage(t, r)  # [ui2] pays Parts at the rarity's value
 	var rar: Dictionary = Economy.rarity(r)
 	var pt: Dictionary = Economy.part_type(t)
 	var col: Color = UITheme.rarity_color(r)
