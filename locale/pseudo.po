@@ -7617,8 +7617,8 @@ msgid "Clean 7 hexes"
 msgstr "[Çļéàñ 7 ĥéxéš ~~]"
 
 #: data/goals.json:goals[pet_cat].text
-msgid "Pet a stray cat (stop near one, then E)"
-msgstr "[Þéţ à šţŕàý çàţ (šţôþ ñéàŕ ôñé, ţĥéñ É) ~~~~~~~~~~~]"
+msgid "Pet a stray cat"
+msgstr "[Þéţ à šţŕàý çàţ ~~]"
 
 #: data/goals.json:goals[research_4].text
 msgid "Finish 4 research projects"
@@ -7749,8 +7749,8 @@ msgid "Get 3 hexes to Sustained"
 msgstr "[Ĝéţ 3 ĥéxéš ţô Šûšţàîñéð ~~~~~]"
 
 #: data/goals.json:goals[spot_deer].text
-msgid "Spot a deer at the edge of the green"
-msgstr "[Šþôţ à ðééŕ àţ ţĥé éðĝé ôƒ ţĥé ĝŕééñ ~~~~~~~~~~]"
+msgid "Spot a deer"
+msgstr "[Šþôţ à ðééŕ ~]"
 
 #: data/goals.json:goals[hex_20].text
 msgid "Clean 20 hexes"
