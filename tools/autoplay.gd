@@ -77,10 +77,12 @@ var _remote_shops: int = 0
 var _skip_shard: Dictionary = {}
 var _shard_t: Dictionary = {}
 var _stopping: bool = false
+var _start_t: float = 0.0
 
 
 func _init(p_world: Node) -> void:
 	world = p_world
+	_start_t = float(GameState.stats.get("time_played", 0.0))
 	Research.now_override = 1000.0
 	_hook(EventBus.cube_made, func(_i: Dictionary) -> void: _mark("first_cube_s"))
 	_hook(EventBus.cube_cashed, func(_v: BigNum, _p: Vector3) -> void: _mark("first_cashin_s"))
@@ -1328,7 +1330,7 @@ func _stat_pick(keys: Array) -> Dictionary:
 
 func _gaps(times: Array[float], end_t: float) -> Array:
 	var out: Array = []
-	var prev: float = 0.0
+	var prev: float = _start_t  # [beat] this scene's start (continued saves and rocket trips)
 	var ts: Array[float] = times.duplicate()
 	ts.sort()
 	ts.append(end_t)
