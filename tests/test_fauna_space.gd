@@ -133,3 +133,64 @@ func test_live_fauna_refuses_overlapping_spots() -> void:
 		fa._separate(deer)
 	var gap: float = Vector2(fox.pos.x - deer.pos.x, fox.pos.z - deer.pos.z).length()
 	assert_gt(gap, FaunaSpace.radius_of("fox", "quad") + FaunaSpace.radius_of("deer", "deer") - 0.05, "pushed apart")
+
+
+func test_songbird_perches() -> void:
+	assert_true(FaunaSpace.perch_sized(AABB(Vector3(-0.8, 0.1, -0.2), Vector3(1.6, 5.4, 0.4))), "a lamp post")
+	assert_true(FaunaSpace.perch_sized(AABB(Vector3(0, 9.0, 0), Vector3(3.0, 0.6, 0.5))), "a roof crown")
+	assert_false(FaunaSpace.perch_sized(AABB(Vector3(-0.2, 0, -0.2), Vector3(0.4, 0.9, 0.4))), "a hydrant is too low")
+	assert_false(FaunaSpace.perch_sized(AABB(Vector3(-6, 0, -6), Vector3(12, 15, 12))), "a whole building")
+	var cyl := CylinderMesh.new()
+	cyl.height = 4.0
+	cyl.top_radius = 0.1
+	var top: Vector3 = FaunaSpace.top_point(cyl)
+	assert_almost_eq(top.y, 2.0, 0.01, "on top of the post")
+	assert_almost_eq(Vector2(top.x, top.z).length(), 0.0, 0.05, "in the middle")
+	var s := FaunaSpace.new()
+	s.perches = PackedVector3Array([Vector3(0, 5, 0), Vector3(3, 5, 0), Vector3(30, 5, 0)])
+	var got: Array[Vector3] = s.free_perches(Vector3(1, 0, 0), 10.0, [])
+	assert_eq(got.size(), 2, "only the near ones")
+	assert_eq(got[0], Vector3(0, 5, 0), "nearest first")
+	assert_eq(s.free_perches(Vector3(1, 0, 0), 10.0, [Vector3(0, 5, 0)]).size(), 1, "one bird per perch")
+
+
+func test_frontier_ambience() -> void:
+	assert_eq(FaunaAmbience.kind_for(["dust_flats"]), "desert")
+	assert_eq(FaunaAmbience.kind_for(["wild", "wild_frost"]), "port")
+	assert_eq(FaunaAmbience.kind_for(["sunken_city"]), "sunken")
+	assert_eq(FaunaAmbience.kind_for(["city"]), "", "the city has its own sounds")
+	assert_gt(float(FaunaAmbience.levels("desert", 0.0)["insects"]), 0.2, "insects by day")
+	assert_almost_eq(float(FaunaAmbience.levels("desert", 1.0)["insects"]), 0.0, 0.001, "quiet at night")
+	assert_true(FaunaAmbience.levels("sunken", 0.0).has("lapping"))
+	var lp: PackedFloat32Array = FaunaSounds.loopify(PackedFloat32Array([1, 1, 1, 1, 0, 0]), 2.0 / FaunaSounds.RATE)
+	assert_eq(lp.size(), 4, "the tail is folded into the start")
+	assert_almost_eq(lp[0], 0.0, 0.001, "starts where it ended")
+	for id: String in ["wind", "insects", "lapping"]:
+		var w: AudioStreamWAV = FaunaSounds.loop_stream(id)
+		assert_eq(w.loop_mode, AudioStreamWAV.LOOP_FORWARD, id)
+		var peak: int = 0
+		for i: int in range(0, w.data.size() - 1, 202):
+			peak = maxi(peak, absi(w.data.decode_s16(i)))
+		assert_between(peak, 400, 32000, id + " is audible and not clipped")
+	var rng := RandomNumberGenerator.new()
+	for buf: PackedFloat32Array in [FaunaSounds.ice_creak(rng, 0.0), FaunaSounds.heron(rng, 0.0)]:
+		var mx: float = 0.0
+		for v: float in buf:
+			mx = maxf(mx, absf(v))
+		assert_between(mx, 0.02, 1.0)
+
+
+func test_lumi_pets_with_a_reach_and_tilt() -> void:
+	var pm := PatchModel.new()
+	assert_eq(pm._pet_env(0.1), 0.0, "not petting")
+	pm.pet_reach(2.0)
+	assert_true(pm.is_petting())
+	var e0: float = pm._pet_env(0.05)
+	var mid: float = pm._pet_env(0.6)
+	assert_lt(e0, mid, "eases in")
+	assert_almost_eq(mid, 1.0, 0.001)
+	pm._pet_env(1.3)
+	assert_lt(pm._pet_env(0.03), 0.5, "eases out at the end")
+	pm._pet_env(1.0)
+	assert_false(pm.is_petting())
+	pm.free()
