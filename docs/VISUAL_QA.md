@@ -27,10 +27,17 @@ Note: headless runs have no window, so without `--audit-size` the audit measured
 | View | Command (flags after `tools/shot.sh NAME`) | Look for | Status |
 |---|---|---|---|
 | Cradle Returns overview | `--frontier=cradle_returns --frontier-cam=110,-0.3,0,50 --frontier-nohud` (QUALITY=2, DELAY=170) | apron shading, lawn colour, tower glass, perspective lean | fixed |
-| Sunken City overview | `--frontier=sunken_city --frontier-cam=95,-0.42,0,55 --frontier-nohud` | dark shadow slabs on the near water | fixed |
-| Frozen Port overview | `--frontier=frozen_port --frontier-cam=95,-0.3,0,55 --frontier-nohud` | faceted far mountains, grey sky | fixed |
+| Sunken City overview | `--frontier=sunken_city --frontier-cam=95,-0.42,0,55 --frontier-nohud` (QUALITY=1; High runs out of memory here) | dark shadow slabs on the near water | fixed (left slab); open: one dark patch by the right-hand building stays at every time of day, so it is not water shading (likely shadowed wet-silt ground at the rim) |
+| Frozen Port overview | `--frontier=frozen_port --frontier-cam=80,-0.28,0,55 --frontier-nohud` | faceted far mountains, streaks on steep faces, polygon crack grid on the ice, grey sky | fixed |
 | Dust Flats overview | `--frontier=dust_flats --frontier-cam=95,-0.3,0,55 --frontier-nohud` | dune seams, wrecks sunk/floating | todo |
 | Restored states | add `--hub-level=5` (and `--drain=6` for the Sunken City, `--thaw-all` for the port) | white/futuristic landmarks, glow thinness | todo |
+
+## Lumi and HUD
+
+| View | Command | Look for | Status |
+|---|---|---|---|
+| Lumi's designs, side / 3/4 / back | `godot --path . res://scenes/design_lineup.tscn -- --fresh --out=NAME` (xvfb, vulkan, 1600x640) | ears reading as eyes from the side | fixed: vented side-pods, thin glow stripe, antenna stub |
+| HUD bottom at the hex-clean moment | `--first-demo=reveal --time-scale=0.05 --spawn-hex=30` at 1280x720 and 1280x800 | notification stack, context line, level bar and floating text crowding | fixed |
 
 ## Starter district and future layer
 
@@ -56,5 +63,5 @@ Note: headless runs have no window, so without `--audit-size` the audit measured
 
 | View | Command | Look for | Status |
 |---|---|---|---|
-| Rocket launch (boarding, countdown, ignition, lift-off) | `--hub-level=5 --auto-launch=1 --rocket-shots=3.0,6.0,9.6,12.0 --rocket-shot-wait=25 --rocket-shot-name=NAME` | yard sign, fence, wires, lamp heads between lens and rocket | fixed |
+| Rocket launch (boarding, countdown, ignition, lift-off) | `--hub-level=5 --auto-launch=1 --rocket-shots=3.0,6.0,9.6,12.0 --rocket-shot-wait=25 --rocket-shot-name=NAME` (DELAY=1000) | yard sign, fence, wires, lamp heads, holo boards between lens and rocket; camera inside the vapour | fixed (one lamp post still stands mid-ground in the ignition shot) |
 | Rocket arrival | `--rocket-arrive --rocket-shots=...` | camera inside the yard clutter | todo |
