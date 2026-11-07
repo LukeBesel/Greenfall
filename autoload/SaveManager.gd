@@ -138,5 +138,33 @@ static func migrate(d: Dictionary) -> Dictionary:
 				cur[k] = BigNum.from_float(float(cur[k])).serialize()
 		d["currencies"] = cur
 		v = 1
+	if v < 2:
+		d = migrate_v2(d)  # [money]
+		v = 2
 	d["version"] = v
+	return d
+
+
+## [money] v1 -> v2: fold the old currencies (bolts, sheet metal, plastic, glass, Data, compost,
+## tokens, trinkets) into cubes / parts / seeds at data/currencies.json's rates; compost goes
+## into the compost press hopper and Maker Fragments become Parts, so nothing earned is lost.
+static func migrate_v2(d: Dictionary) -> Dictionary:
+	var res: Dictionary = Currencies.migrate_serialized(d.get("currencies", {}))
+	var cur: Dictionary = res["currencies"]
+	var flags: Dictionary = d.get("flags", {})
+	var into: Dictionary = res["into"]
+	if into.has("press_hopper"):
+		flags["press_hopper"] = float(flags.get("press_hopper", 0.0)) + float(into["press_hopper"])
+	var rb: Variant = flags.get("builder")
+	if rb is Dictionary and int((rb as Dictionary).get("fragments", 0)) > 0:
+		var fr: int = int(rb["fragments"])
+		rb["fragments"] = 0
+		var p: BigNum = BigNum.from_serialized(cur["parts"]) if cur.has("parts") else BigNum.zero()
+		cur["parts"] = p.add(BigNum.from_float(fr * Currencies.rate("fragments", true))).serialize()
+	for id: String in Currencies.IDS:
+		if not cur.has(id):
+			cur[id] = BigNum.zero().serialize()
+	d["currencies"] = cur
+	flags["money_migrated"] = true
+	d["flags"] = flags
 	return d
