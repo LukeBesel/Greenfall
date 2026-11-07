@@ -26,42 +26,13 @@ static func offer(res: Dictionary, away_s: float, robots: Array = []) -> void:
 		pending["robots"] = robots.duplicate(true)
 
 
-## Grows the garden for `seconds` away (pure apart from the garden arrays). Returns
-## {grew, bloomed, seeds, hexes}. Slots dry out on their own water unless a waterer is in the fleet.
+## Offline garden growth (the maths lives in core/offline.gd, Offline.grow_garden).
 static func grow_garden(g: Garden, seconds: float, has_waterer: bool, grow_mult: float = 1.0, seed_mult: float = 1.0) -> Dictionary:
-	var out: Dictionary = {"grew": 0, "bloomed": 0, "seeds": 0.0, "hexes": {}}
-	if g == null or seconds <= 0.0:
-		return out
-	for s: int in g.slot_species.size():
-		if g.slot_species[s] < 0 or g.slot_stage[s] >= 4:
-			continue
-		var sp: Dictionary = g.species[g.slot_species[s]]
-		var wet_s: float = seconds if has_waterer else minf(seconds, g.slot_water[s])
-		if not has_waterer:
-			g.slot_water[s] = maxf(0.0, g.slot_water[s] - seconds)
-		if wet_s <= 0.0:
-			continue
-		var before: int = g.slot_stage[s]
-		var prog: float = g.slot_progress[s] + wet_s * Offline.OFFLINE_RATE * grow_mult / float(sp.get("grow_s", 40))
-		while prog >= 1.0 and g.slot_stage[s] < 4:
-			prog -= 1.0
-			g.slot_stage[s] += 1
-			if g.slot_stage[s] == 4:
-				out["bloomed"] = int(out["bloomed"]) + 1
-				out["seeds"] = float(out["seeds"]) + float(sp.get("seed_yield", 0.5)) * seed_mult
-		g.slot_progress[s] = 0.0 if g.slot_stage[s] >= 4 else prog
-		if g.slot_stage[s] != before:
-			out["grew"] = int(out["grew"]) + 1
-			(out["hexes"] as Dictionary)[g.slot_hex[s]] = true
-	return out
+	return Offline.grow_garden(g, seconds, has_waterer, grow_mult, seed_mult)
 
 
 static func fleet_has_waterer(robots: Array) -> bool:
-	for r: Dictionary in robots:
-		var role: String = str(Economy.robots.get(str(r.get("type", "")), {}).get("role", ""))
-		if role == "water" or role == "any":
-			return true
-	return false
+	return Offline.has_waterer(robots)
 
 
 ## "3 Scoopies, 1 Haul Bug" from the saved robot list.
@@ -122,18 +93,16 @@ static func resolve(slice: Node) -> WelcomeBack:
 	pending = {}
 	var robots: Array = res.get("robots", GameState.world.get("robots", []))
 	var g: Garden = slice.get("garden") as Garden
-	var gm: float = maxf(Economy.stat("plant_growth"), 0.1)
-	var sm: float = maxf(Economy.stat("seed_yield"), 0.1)
-	var gr: Dictionary = grow_garden(g, float(res.get("seconds", 0.0)), fleet_has_waterer(robots), gm, sm)
-	if float(gr["seeds"]) > 0.0:
-		GameState.add_currency("seeds", BigNum.from_float(float(gr["seeds"])))
-	if int(gr["bloomed"]) > 0:
-		GameState.inc_stat("plants_bloomed", float(gr["bloomed"]))
+	var gr: Dictionary = res.get("garden", {})
+	if not bool(res.get("garden_grown", false)) and g != null:
+		gr = grow_garden(g, float(res.get("seconds", 0.0)), fleet_has_waterer(robots), maxf(Economy.stat("plant_growth"), 0.1), maxf(Economy.stat("seed_yield"), 0.1))
+		res["garden"] = gr
+	Offline.apply(res)  # cubes, stacked bales, air, and the garden's seeds: credited once, here
 	if g:
 		for s: int in g.slot_species.size():
 			if g.slot_species[s] >= 0:
 				g._update_inst(s)
-		for h: Variant in (gr["hexes"] as Dictionary):
+		for h: Variant in (gr.get("hexes", {}) as Dictionary):
 			g._recount(int(h))
 	var sm_d: Dictionary = build_summary(res, gr, robots)
 	GameState.inc_stat("welcome_backs")

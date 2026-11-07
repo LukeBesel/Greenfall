@@ -1149,12 +1149,9 @@ func _restore_world(from_memory: bool = false) -> void:
 			if not field.is_clean(h):
 				junk_left += field.hex_left[h]
 		# [beat] Junk already "baled offline" stays on the field (geometry isn't advanced), so it must not
-		# pay again on the next reopen: count it against what is left.
-		junk_left = maxf(0.0, junk_left - float(GameState.world.get("offline_units", 0.0)))
-		var res: Dictionary = Offline.compute(GameState.world.get("robots", []), hub.scrubbers if hub else 0, float(sd.get("filter_per_s", 1.0)), away, junk_left)
-		GameState.world["offline_units"] = float(GameState.world.get("offline_units", 0.0)) + float(res["units"])
-		Offline.apply(res)
-		WelcomeBack.offer(res, away)  # [extras] the welcome-back card (systems/extras/welcome_back.gd) replaces the summary toast
+		# pay again on the next reopen: Offline.simulate counts it against what is left. [extras]
+		var res: Dictionary = Offline.simulate(GameState.world, away, junk_left, hub.scrubbers if hub else 0, float(sd.get("filter_per_s", 1.0)))
+		WelcomeBack.offer(res, away)  # [extras] garden growth + payout card once the garden is built (systems/extras/welcome_back.gd)
 	EventBus.toast.emit(tr("Welcome back. The junk waited for you."), "info")
 
 

@@ -72,6 +72,7 @@ func _snapshot(s: Node) -> Dictionary:
 		"decor": JSON.stringify(GameState.world.get("decor", {})),
 		"decor_charm": snappedf(float(GameState.world.get("decor_charm", 0.0)), 0.01),
 		"world_index": int(GameState.flags.get("world_index", 0)),
+		"extras": JSON.stringify(ExtrasRoundtrip.snap(s)),  # [extras] radio, album, nursery
 	}
 
 
@@ -344,6 +345,7 @@ func _ready() -> void:
 	Designs.set_looks_only(true)
 	(s1.patch.model as PatchModel).set_variant("nova")
 	_late_decorate(s1, 4)  # [late] a few Garden Mode decorations
+	ExtrasRoundtrip.setup(s1)  # [extras] radio song, album records, a retired caretaker
 	s1.patch.global_position = Vector3(3.0, 0.2, 5.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
 	s1.add_cube(dropped)
@@ -377,6 +379,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	for kid: String in ["frozen_port", "sunken_city", "dust_flats", "cradle_returns"]:
 		await _frontier_roundtrip(packed, kid, int(fhubs[kid]))
+	await ExtrasRoundtrip.weekly(self, packed)  # [extras] Seed of the Week in its own slot
 	await _late_multi_world(packed)  # [late] Cradle Mode: a second world, the profile, travel both ways
 	SaveManager.delete_save()
 	print("[roundtrip] %s (%d failures)" % ["OK" if _fails == 0 else "FAILED", _fails])

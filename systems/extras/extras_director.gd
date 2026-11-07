@@ -33,6 +33,7 @@ static func of(slice: Node) -> ExtrasDirector:
 
 
 func _setup() -> void:
+	add_to_group("persist")
 	radio = Radio.new()
 	world.add_child(radio)
 	radio.setup(world)
@@ -64,7 +65,7 @@ func _setup() -> void:
 		var bots: Array = GameState.world.get("robots", [])
 		if bots.is_empty():
 			bots = [{"type": "scoopie", "tier": 1}, {"type": "scoopie", "tier": 1}, {"type": "haulbug", "tier": 0}, {"type": "drip", "tier": 0}]
-		WelcomeBack.offer(Offline.compute(bots, 1, 1.0, h * 3600.0, 400.0), h * 3600.0, bots)
+		WelcomeBack.offer(Offline.simulate({"robots": bots}, h * 3600.0, 400.0, 1), h * 3600.0, bots)
 	(func() -> void: WelcomeBack.resolve(world)).call_deferred()
 	if DevHooks.has("weekly") and not WeeklyChallenge.active:
 		get_tree().create_timer(0.5).timeout.connect(func() -> void: WeeklyChallenge.start(get_tree()))
@@ -78,6 +79,19 @@ func _setup() -> void:
 		_cam.call_deferred()
 	if DevHooks.has("extras-nohud") and world.get("hud") != null:
 		(func() -> void: world.hud.visible = false).call_deferred()
+
+
+## Saved with the district: what junk is left, so Offline.simulate can cap a district that
+## isn't loaded (remote progress) without its field.
+func persist_save() -> void:
+	var f: HexField = world.get("field") as HexField
+	if f == null:
+		return
+	var left: float = 0.0
+	for h: int in f.hex_count():
+		if not f.is_clean(h):
+			left += f.hex_left[h]
+	GameState.world["junk_left"] = left
 
 
 ## Dev / shots: a few retired caretakers with varied types, tiers and traits.
