@@ -336,15 +336,20 @@ head_parts.append(cyl("chin", 0.11, 0.04, (0, HC - 0.245, 0.0), "dark", bevel=0.
 # Orange cheek lights at the lower outer corners of the visor.
 for s in (-1, 1):
 	head_parts.append(rbox("cheek", (0.03, 0.075, 0.05), (s * 0.325, HC - 0.075, shell_z(s * 0.325, HC - 0.075) + 0.018), 0.012, "lamp_accent", sub=1, rot=(0, s * -35, 0)))
-# Ears: white housing, dark trim ring, glowing ring, dark vented cap with a hub.
+# Ears (vqa): tech side-pods, never a round lens. Seen from the side a round white disc with a dark
+# rim and a glowing ring read as a big EYE (owner, several times). Now: a white pod stretched
+# front-to-back, a raised vented plate in the design's trim colour with three dark slats, one thin
+# glow stripe along its lower edge, and a short antenna stub on top. The face keeps the only eyes.
 for s in (-1, 1):
 	x = s * 0.375
-	head_parts.append(cyl("ear_house", 0.14, 0.08, (x, HC - 0.02, 0.05), "paint", axis='X', verts=48, bevel=0.025, segs=3))
-	head_parts.append(cyl("ear_trim", 0.118, 0.03, (x + s * 0.042, HC - 0.02, 0.05), "dark", axis='X', verts=48, bevel=0.008))
-	head_parts.append(torus("ear_ring", 0.1, 0.009, (x + s * 0.058, HC - 0.02, 0.05), "glow", axis='X'))
-	head_parts.append(cyl("ear_cap", 0.085, 0.03, (x + s * 0.05, HC - 0.02, 0.05), "trim", axis='X', verts=48, bevel=0.01))
-	head_parts.append(torus("ear_groove", 0.055, 0.005, (x + s * 0.066, HC - 0.02, 0.05), "dark", axis='X', major=40, minor=6))
-	head_parts.append(cyl("ear_hub", 0.028, 0.02, (x + s * 0.068, HC - 0.02, 0.05), "steel", axis='X', verts=24, bevel=0.005))
+	y = HC - 0.02
+	head_parts.append(rbox("ear_house", (0.085, 0.17, 0.27), (x, y, 0.05), 0.035, "paint", segs=3, sub=1))
+	head_parts.append(rbox("ear_cap", (0.03, 0.115, 0.2), (x + s * 0.05, y + 0.008, 0.055), 0.012, "trim", segs=2, sub=1))
+	for k in range(3):
+		head_parts.append(rbox("ear_slat", (0.012, 0.011, 0.15), (x + s * 0.066, y + 0.04 - k * 0.03, 0.06), 0.004, "dark", segs=1, sub=0))
+	head_parts.append(rbox("ear_stripe", (0.008, 0.01, 0.19), (x + s * 0.064, y - 0.06, 0.055), 0.003, "glow", segs=1, sub=0))
+	head_parts.append(cyl("ear_stub", 0.011, 0.075, (x + s * 0.03, y + 0.115, 0.11), "steel", verts=12, rot=(90 - 18, 0, 0)))
+	head_parts.append(cyl("ear_stub_tip", 0.017, 0.018, (x + s * 0.03, y + 0.152, 0.122), "trim", verts=16, bevel=0.005))
 # Antenna: dark base on the crown, a curved stalk leaning back, an orange swept fin. Its own part
 # ("antenna", same pivot as the head) so designs without one (Sprout, Pixel, Nova) can leave it off.
 ant_parts = []
