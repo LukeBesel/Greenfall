@@ -150,7 +150,7 @@
     {"id": "ark_3", "text": "Plant three Seed Ark waves", "type": "stat", "key": "ark_waves", "target": 3, "reward": {"cubes": 150000, "seeds": 200}},
     {"id": "late_bridge", "text": "Open the Ark Bridge", "type": "stat", "key": "ark_bridge_opened", "target": 1, "reward": {"cubes": 20000}},
     {"id": "late_garden_1", "text": "Place a decoration (H)", "type": "stat", "key": "decor_placed", "target": 1, "reward": {"cubes": 20000, "seeds": 40}},
-    {"id": "late_heirloom_1", "text": "Buy an Heirloom", "type": "stat", "key": "heirloom_levels", "target": 1, "reward": {"cubes": 40000}},
+    {"id": "late_heirloom_1", "text": "Unlock an Heirloom", "type": "stat", "key": "heirloom_levels", "target": 1, "reward": {"cubes": 40000}},
     {"id": "late_garden_10", "text": "Place 10 decorations", "type": "stat", "key": "decor_placed", "target": 10, "reward": {"cubes": 60000, "seeds": 80}},
     {"id": "late_garden_kinds", "text": "Place 5 kinds of decoration", "type": "stat", "key": "decor_kinds", "target": 5, "reward": {"cubes": 80000}},
     {"id": "late_ark_5", "text": "Plant five Seed Ark waves", "type": "stat", "key": "ark_waves", "target": 5, "reward": {"cubes": 250000, "seeds": 300}},
