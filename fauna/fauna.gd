@@ -1741,7 +1741,7 @@ func _dev_look() -> void:
 		"fly":
 			a.state = St.FLY
 			a.pos.y += 1.5
-		"": a.hold = DevHooks.has("fauna-hold")
+		"": a.hold = not DevHooks.has("fauna-free")
 	if pose == "pet":
 		var pm: Node = patch.get("model")
 		if pm and pm.has_method("set_happy"):
