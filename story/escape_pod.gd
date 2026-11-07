@@ -9,23 +9,28 @@ extends RefCounted
 ## "Spill" (light pool on the ground), "Body".
 
 const OPEN: float = -1.62
-const SEGS: int = 48
-const DOOR_HALF: int = 5  # door width in segments either side of the front
-const FRONT: int = 24  # SEGS / 2: the segment index facing -Z
+const SEGS: int = 10  # ten flat facets, sharp chines (the Seedglider family's faceted look)
+const DOOR_HALF: int = 1  # door width in facets either side of the front chine
+const FRONT: int = 5  # SEGS / 2: the chine facing -Z
 const DOOR_Y0: float = 0.34
 const DOOR_Y1: float = 1.6
 const WALL: float = 0.07
 const DOOR_GAP: float = 0.012
-const PEARL := Color(0.9, 0.9, 0.87)
-const TANGERINE := Color(1.0, 0.52, 0.16)
-const CYAN := Color(0.3, 0.9, 1.0)
+# The Seedglider palette (automation/ship_model.gd on wt/ship): the pod is a piece of that family.
+const PEARL := Color(0.93, 0.93, 0.91)
+const PANEL := Color(0.82, 0.83, 0.84)
+const TANGERINE := Color(1.0, 0.5, 0.16)
+const TRIM := Color(0.09, 0.1, 0.115)
+const CYAN := Color(0.3, 0.88, 1.0)
+const LAMP := Color(1.0, 0.36, 0.12)
+const SHIP_PAINT := "res://art/shaders/ship_paint.gdshader"
 
 ## (radius, y) of the shell, bottom to top.
 const PROFILE: Array[Vector2] = [
 	Vector2(0.0, 0.0), Vector2(0.3, 0.015), Vector2(0.5, 0.05), Vector2(0.63, 0.12), Vector2(0.71, 0.22),
 	Vector2(0.76, DOOR_Y0), Vector2(0.795, 0.55), Vector2(0.81, 0.8), Vector2(0.805, 1.05),
 	Vector2(0.785, 1.3), Vector2(0.74, DOOR_Y1), Vector2(0.68, 1.8), Vector2(0.585, 1.98),
-	Vector2(0.54, 2.035), Vector2(0.519, 2.06), Vector2(0.47, 2.12), Vector2(0.32, 2.24), Vector2(0.16, 2.31), Vector2(0.0, 2.335),
+	Vector2(0.536, 2.04), Vector2(0.528, 2.05), Vector2(0.47, 2.12), Vector2(0.32, 2.24), Vector2(0.16, 2.31), Vector2(0.0, 2.335),
 ]
 
 
@@ -51,26 +56,38 @@ static func _band(y0: float, y1: float) -> int:
 		return 2
 	if m > 1.6 and m < 1.8:
 		return 1
-	if m > 2.035 and m < 2.06:
+	if m > 2.04 and m < 2.05:
 		return 3
 	return 0
 
 
-static func _quad(st: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, d: Vector3, ua: Vector2, ub: Vector2, uc: Vector2, ud: Vector2) -> void:
-	# a-b bottom edge, d-c top edge, counter-clockwise seen from outside.
-	# Godot's front faces wind clockwise.
-	st.set_uv(ua)
-	st.add_vertex(a)
-	st.set_uv(ub)
-	st.add_vertex(b)
-	st.set_uv(uc)
-	st.add_vertex(c)
-	st.set_uv(ua)
-	st.add_vertex(a)
-	st.set_uv(uc)
-	st.add_vertex(c)
-	st.set_uv(ud)
-	st.add_vertex(d)
+static func _quad(st: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, d: Vector3, ua: Vector2, ub: Vector2, uc: Vector2, ud: Vector2, nb := Vector3.ZERO, nt := Vector3.ZERO) -> void:
+	# a-b bottom edge, d-c top edge. Godot's front faces wind clockwise. nb / nt: normals of the
+	# bottom and top edge (facet normals: sharp chines around, smooth up the profile).
+	# COLOR (1, 0, 0) = no baked AO / edge / cavity for ship_paint.
+	var verts: Array[Vector3] = [a, b, c, a, c, d]
+	var uvs: Array[Vector2] = [ua, ub, uc, ua, uc, ud]
+	var ns: Array[Vector3] = [nb, nb, nt, nb, nt, nt]
+	for k: int in 6:
+		st.set_color(Color(1, 0, 0))
+		if nb != Vector3.ZERO:
+			st.set_normal(ns[k])
+		st.set_uv(uvs[k])
+		st.add_vertex(verts[k])
+
+
+## Facet normal at height y: the facet's outward direction tilted by the profile's slope.
+static func _facet_n(am: float, y: float, flip: bool) -> Vector3:
+	var e: float = 0.02
+	var ya: float = clampf(y - e, 0.0005, PROFILE[-1].y - 0.0005)
+	var yb: float = clampf(y + e, 0.0005, PROFILE[-1].y - 0.0005)
+	var slope: float = (_door_r(yb) - _door_r(ya)) / maxf(yb - ya, 0.0001)
+	var n := (Vector3(sin(am), 0.0, -cos(am)) - Vector3(0, slope, 0)).normalized()
+	if y <= 0.001:
+		n = Vector3.DOWN
+	elif y >= PROFILE[-1].y - 0.001:
+		n = Vector3.UP
+	return -n if flip else n
 
 
 static func _uv(j: int, y: float) -> Vector2:
@@ -115,10 +132,13 @@ static func _shell_mesh(inset: float, flip: bool, skip_door: bool, door_only: bo
 			var p11: Vector3 = _pt(a1, qy1, qr1)
 			var p01: Vector3 = _pt(a0, qy1, qr1)
 			var st: SurfaceTool = sts[0 if door_only else band]
+			var am: float = (_ang(j) + _ang(j + 1)) * 0.5
+			var nb: Vector3 = _facet_n(am, qy0, flip)
+			var nt: Vector3 = _facet_n(am, qy1, flip)
 			if flip:
-				_quad(st, p10, p00, p01, p11, _uv(j + 1, y0), _uv(j, y0), _uv(j, y1), _uv(j + 1, y1))
+				_quad(st, p10, p00, p01, p11, _uv(j + 1, y0), _uv(j, y0), _uv(j, y1), _uv(j + 1, y1), nb, nt)
 			else:
-				_quad(st, p00, p10, p11, p01, _uv(j, y0), _uv(j + 1, y0), _uv(j + 1, y1), _uv(j, y1))
+				_quad(st, p00, p10, p11, p01, _uv(j, y0), _uv(j + 1, y0), _uv(j + 1, y1), _uv(j, y1), nb, nt)
 	return sts
 
 
@@ -126,7 +146,6 @@ static func _commit(sts: Array[SurfaceTool], mats: Array[Material]) -> ArrayMesh
 	var mesh := ArrayMesh.new()
 	for k: int in sts.size():
 		var st: SurfaceTool = sts[k]
-		st.generate_normals()
 		var arr: Array = st.commit_to_arrays()
 		if arr.is_empty() or not (arr[Mesh.ARRAY_VERTEX] is PackedVector3Array) or (arr[Mesh.ARRAY_VERTEX] as PackedVector3Array).is_empty():
 			continue
@@ -183,7 +202,6 @@ static func _door_mesh(hinge: Vector3, mats: Array[Material]) -> ArrayMesh:
 	var mesh := ArrayMesh.new()
 	for pair: Array in [[outer[0], mats[0]], [inner[0], mats[1]]]:
 		var st: SurfaceTool = pair[0]
-		st.generate_normals()
 		var arr: Array = st.commit_to_arrays()
 		var vs: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
 		for v: int in vs.size():
@@ -204,10 +222,13 @@ static func _door_r(y: float) -> float:
 static func build() -> Node3D:
 	var pod := Node3D.new()
 	pod.name = "LandingPod"
-	var shell: ShaderMaterial = Mats.worn_paint(PEARL, 0.86, 0.22, 21.0, 0.45)
-	var accent: ShaderMaterial = Mats.worn_paint(TANGERINE, 0.9, 0.18, 5.0, 0.35)
-	var dark: StandardMaterial3D = Mats.metal("dark_steel")
-	var line: StandardMaterial3D = Mats.lamp(CYAN, 1.6)
+	var shell: Material = paint(PEARL, 0.3)
+	var accent: Material = paint(TANGERINE, 0.3)
+	var dark := StandardMaterial3D.new()
+	dark.albedo_color = TRIM
+	dark.roughness = 0.4
+	dark.metallic = 0.5
+	var line: StandardMaterial3D = Mats.lamp(CYAN, 1.5)
 	var lining := StandardMaterial3D.new()
 	lining.albedo_color = Color(0.36, 0.33, 0.3)
 	lining.roughness = 0.8
@@ -244,26 +265,51 @@ static func build() -> Node3D:
 	pad.material_override = accent
 	pad.position = Vector3(0, DOOR_Y0 - 0.02, 0.05)
 	pod.add_child(pad)
-	# Three dark landing fins, clear of the door.
+	# Three swept graphite fins on the chines away from the door, tangerine tips with a small
+	# orange running lamp (the glider's wing language).
+	var fin_mesh: ArrayMesh = _fin_mesh()
+	var fin_mat: StandardMaterial3D = dark.duplicate()
+	fin_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	var lamp: StandardMaterial3D = Mats.lamp(LAMP, 2.5)
 	for k: int in 3:
-		var a: float = PI + (k - 1) * 1.15
+		var a: float = _ang([2, 0, 8][k])
 		var fin := MeshInstance3D.new()
-		fin.mesh = ProcMesh.rounded_box(Vector3(0.1, 0.62, 0.42), 0.04, 2)
-		fin.material_override = dark
-		fin.position = Vector3(sin(a) * 0.74, 0.3, -cos(a) * 0.74)
-		fin.rotation = Vector3(0, -a, 0)
+		fin.name = "Fin%d" % k
+		fin.mesh = fin_mesh
+		fin.material_override = fin_mat
+		fin.position = _pt(a, 0.0, 0.0)
+		fin.rotation = Vector3(0, PI - a, 0)
 		pod.add_child(fin)
+		var tip := MeshInstance3D.new()
+		tip.mesh = ProcMesh.box(Vector3(0.05, 0.16, 0.2))
+		tip.material_override = accent
+		tip.position = Vector3(0, 0.12, 1.12)
+		fin.add_child(tip)
+		var bulb := MeshInstance3D.new()
+		bulb.name = "Lamp"
+		bulb.mesh = ProcMesh.sphere(0.025, 8, 4)
+		bulb.material_override = lamp
+		bulb.position = Vector3(0, 0.22, 1.16)
+		fin.add_child(bulb)
 	# A porthole on the back and a beacon on top.
 	var port := MeshInstance3D.new()
 	port.mesh = ProcMesh.sphere(0.17, 20, 10)
-	port.material_override = Mats.lamp(Color(0.3, 0.85, 1.0), 1.2)
+	var glass := StandardMaterial3D.new()
+	glass.albedo_color = Color(0.08, 0.42, 0.55)
+	glass.roughness = 0.05
+	glass.metallic = 0.3
+	glass.clearcoat_enabled = true
+	glass.emission_enabled = true
+	glass.emission = Color(0.1, 0.55, 0.7)
+	glass.emission_energy_multiplier = 0.25
+	port.material_override = glass
 	port.scale = Vector3(1, 1, 0.35)
 	port.position = _pt(PI, 1.25, _door_r(1.25) - 0.03)
 	pod.add_child(port)
 	var beacon := MeshInstance3D.new()
 	beacon.name = "Beacon"
 	beacon.mesh = ProcMesh.sphere(0.06, 12, 6)
-	beacon.material_override = Mats.lamp(TANGERINE, 3.0)
+	beacon.material_override = Mats.lamp(LAMP, 3.0)
 	beacon.position = Vector3(0, 2.33, 0)
 	pod.add_child(beacon)
 	# The door, hinged along its bottom edge.
@@ -336,6 +382,73 @@ static func build() -> Node3D:
 	return pod
 
 
+## Hull paint: the Seedglider's ship_paint shader when it is in the project (wt/ship), else a
+## clear-coat StandardMaterial3D in the same colours. wear 0..1 (a crash-worn pod is ~0.4).
+static func paint(color: Color, rough: float = 0.3, wear: float = 0.0) -> Material:
+	if ResourceLoader.exists(SHIP_PAINT):
+		var sh: Shader = load(SHIP_PAINT) as Shader
+		if sh:
+			var m := ShaderMaterial.new()
+			m.shader = sh
+			m.set_shader_parameter("paint_color", color)
+			m.set_shader_parameter("roughness", rough)
+			m.set_shader_parameter("clearcoat_amt", 0.6)
+			m.set_shader_parameter("edge_wear", wear)
+			# Procedural meshes carry no baked AO / edge / cavity colours.
+			m.set_shader_parameter("seam_dark", 0.0)
+			m.set_shader_parameter("edge_light", 0.0)
+			m.set_shader_parameter("ao_strength", 0.0)
+			return m
+	var sm := StandardMaterial3D.new()
+	sm.albedo_color = color.lerp(Color(0.5, 0.47, 0.43), wear * 0.35)
+	sm.roughness = rough + wear * 0.3
+	sm.metallic = 0.05
+	sm.clearcoat_enabled = true
+	sm.clearcoat = 0.6 * (1.0 - wear * 0.6)
+	sm.clearcoat_roughness = 0.15
+	return sm
+
+
+## Set the hull wear (crash site repair): works for both paint kinds.
+static func set_wear(pod: Node3D, color: Color, wear: float) -> void:
+	var body: MeshInstance3D = pod.get_node_or_null("Body")
+	if body == null:
+		return
+	var m: Material = body.mesh.surface_get_material(0)
+	if m is ShaderMaterial:
+		(m as ShaderMaterial).set_shader_parameter("edge_wear", wear)
+	elif m is StandardMaterial3D:
+		var sm: StandardMaterial3D = m
+		sm.albedo_color = color.lerp(Color(0.5, 0.47, 0.43), wear * 0.35)
+		sm.roughness = 0.3 + wear * 0.3
+		sm.clearcoat = 0.6 * (1.0 - wear * 0.6)
+
+
+## A swept fin: a thin trapezoid prism in the YZ plane, root along the hull, tip swept back (+Z) and
+## up, sharp edges.
+static func _fin_mesh() -> ArrayMesh:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	st.set_smooth_group(-1)
+	var t: float = 0.03
+	# Outline (y, z): root bottom, root top, tip top, tip bottom.
+	var o: Array[Vector2] = [Vector2(0.0, 0.3), Vector2(0.72, 0.7), Vector2(0.3, 1.14), Vector2(-0.02, 1.12)]
+	var side := func(x: float) -> Array[Vector3]:
+		var out: Array[Vector3] = []
+		for q: Vector2 in o:
+			out.append(Vector3(x, q.x, q.y))
+		return out
+	var l: Array[Vector3] = side.call(-t)
+	var r: Array[Vector3] = side.call(t)
+	_quad(st, l[0], l[1], l[2], l[3], Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO)
+	_quad(st, r[3], r[2], r[1], r[0], Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO)
+	for k: int in 4:
+		var k2: int = (k + 1) % 4
+		_quad(st, r[k], r[k2], l[k2], l[k], Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO)
+	st.generate_normals()
+	return st.commit()
+
+
 static var _soft: GradientTexture2D
 
 
@@ -356,8 +469,8 @@ static func _soft_tex() -> GradientTexture2D:
 
 
 ## Snap the door open or shut (no animation), cabin light to match.
-static func set_open(pod: Node3D, open: bool) -> void:
-	(pod.get_node("Hatch") as Node3D).rotation.x = OPEN if open else 0.0
+static func set_open(pod: Node3D, open: bool, lean: float = 0.0) -> void:
+	(pod.get_node("Hatch") as Node3D).rotation.x = OPEN - lean if open else 0.0
 	(pod.get_node("Hatch") as Node3D).position.z = -_door_r(DOOR_Y0) + 0.02
 	(pod.get_node("PodLight") as OmniLight3D).light_energy = 1.4 if open else 0.0
 	((pod.get_node("Spill") as MeshInstance3D).material_override as StandardMaterial3D).albedo_color.a = 0.35 if open else 0.0
@@ -378,7 +491,8 @@ static func seam_points() -> Array[Vector3]:
 ## drops outward into a ramp and settles; the warm cabin light spills onto the ground.
 ## puff(local_pos, dir) is called for each steam jet (the caller knows which world the pod is in).
 ## Returns the total time in seconds.
-static func open_door(pod: Node3D, puff: Callable, speed: float = 1.0) -> float:
+static func open_door(pod: Node3D, puff: Callable, speed: float = 1.0, lean: float = 0.0) -> float:
+	var open_a: float = OPEN - lean  # a pod leaning back opens further so the ramp still meets the ground
 	var hatch: Node3D = pod.get_node("Hatch")
 	var light: OmniLight3D = pod.get_node("PodLight")
 	var spill: StandardMaterial3D = (pod.get_node("Spill") as MeshInstance3D).material_override
@@ -397,12 +511,12 @@ static func open_door(pod: Node3D, puff: Callable, speed: float = 1.0) -> float:
 			puff.call(p, out + Vector3(0, 0.35, 0)))
 	tw.tween_interval(0.45 * k)
 	# The drop: gravity pulls it open (ease-in), the light swells as the gap widens.
-	tw.tween_property(hatch, "rotation:x", OPEN, 0.95 * k).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tw.tween_property(hatch, "rotation:x", open_a, 0.95 * k).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tw.parallel().tween_property(light, "light_energy", 1.6, 0.95 * k)
 	tw.parallel().tween_property(spill, "albedo_color:a", 0.38, 1.1 * k)
 	# A small settle on the ground.
-	tw.tween_property(hatch, "rotation:x", OPEN + 0.07, 0.12 * k).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tw.tween_property(hatch, "rotation:x", OPEN, 0.16 * k).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tw.tween_property(hatch, "rotation:x", open_a + 0.07, 0.12 * k).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw.tween_property(hatch, "rotation:x", open_a, 0.16 * k).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tw.parallel().tween_property(light, "light_energy", 1.4, 0.3 * k)
 	return (0.12 + 0.45 + 0.95 + 0.28) * k
 

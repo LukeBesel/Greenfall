@@ -19,7 +19,7 @@ const PEARL := Color(0.92, 0.92, 0.9)
 const TANGERINE := Color(1.0, 0.5, 0.14)
 const SX: float = 1.45
 const SY: float = 0.78
-const POD_Y: float = -6.35
+const POD_Y: float = -7.05
 const POD_Z0: float = -8.5
 const POD_DZ: float = 2.7
 const DOME_AT := Vector3(0, 6.3, -4.5)
@@ -457,21 +457,22 @@ func _build_engines(hull: StandardMaterial3D, trim: StandardMaterial3D, accent: 
 		_add(pm, _plume, spots[i] + Vector3(0, 0, 16.3 + ln + 0.15), Vector3(0, PI, 0)).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
 
-## The cargo-pod rack under the keel: six small pearl pods with tangerine collars.
-func _build_pods(accent: StandardMaterial3D) -> void:
-	var pm := StandardMaterial3D.new()
-	pm.albedo_color = PEARL
-	pm.roughness = 0.3
-	pm.clearcoat_enabled = true
+## The cargo-pod rack under the keel: six escape pods (story/escape_pod.gd) hanging in clamps.
+## The intro's pod is rack slot 2, released with release_pod(2).
+func _build_pods(_accent: StandardMaterial3D) -> void:
 	var dark: StandardMaterial3D = Mats.metal("dark_steel")
 	for k: int in 6:
-		var pod := Node3D.new()
-		pod.position = Vector3(0, POD_Y, POD_Z0 + k * POD_DZ)
-		add_child(pod)
-		_add(ProcMesh.sphere(0.95, 24, 12), pm, Vector3.ZERO, Vector3.ZERO, Vector3(0.95, 1.15, 0.95), pod)
-		_add(ProcMesh.torus(0.78, 0.92, 24, 6), accent, Vector3(0, 0.45, 0), Vector3.ZERO, Vector3(1, 0.5, 1), pod)
-		_add(ProcMesh.cyl(0.18, 0.22, 0.9, 8), dark, Vector3(0, 1.2, 0), Vector3.ZERO, Vector3.ONE, pod)
-		_pods.append(pod)
+		var holder := Node3D.new()
+		holder.position = Vector3(0, POD_Y, POD_Z0 + k * POD_DZ)
+		add_child(holder)
+		var pod: Node3D = EscapePod.build()
+		pod.position = Vector3(0, -EscapePod.PROFILE[-1].y * 0.5, 0)
+		pod.rotation.y = PI * 0.5  # doors face the ship's side
+		for n: String in ["Scorch", "Spill", "PodLight"]:
+			pod.get_node(n).queue_free()
+		holder.add_child(pod)
+		_add(ProcMesh.cyl(0.16, 0.22, 0.7, 8), dark, Vector3(0, EscapePod.PROFILE[-1].y * 0.5 + 0.3, 0), Vector3.ZERO, Vector3.ONE, holder)
+		_pods.append(holder)
 
 
 ## Thin running lights: tiny cyan-white points down the spine and along the flanks, a slow chase
@@ -514,6 +515,12 @@ func dome_world() -> Vector3:
 ## Where the cargo pods hang (k = 0..5) in world space.
 func pod_world(k: int = 2) -> Vector3:
 	return global_transform * Vector3(0, POD_Y, POD_Z0 + clampi(k, 0, 5) * POD_DZ)
+
+
+## A rack pod's own transform (the intro swaps in its loose pod exactly there).
+func pod_xform(k: int = 2) -> Transform3D:
+	var h: Node3D = _pods[clampi(k, 0, _pods.size() - 1)]
+	return (h.get_child(0) as Node3D).global_transform
 
 
 ## Hide a rack pod (it has been blown loose); release_pod(k, false) puts it back.

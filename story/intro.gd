@@ -39,6 +39,7 @@ var _bars: Array[ColorRect] = []
 var _pod: Node3D
 var _hatch: Node3D
 var _fire: Node3D
+var _site: CrashSite
 var _skipped: bool = false
 var _cam_from := Transform3D()
 var _cam_to := Transform3D()
@@ -125,13 +126,22 @@ func place_pod() -> void:
 		_pod = build_pod()
 		world.add_child(_pod)
 	_pod.visible = true
-	_pod.global_position = POD_POS + Vector3(0, _ground(POD_POS), 0)
-	_pod.rotation = Vector3(0, 0.5, 0)
+	_crash_pose()
 	_hatch = _pod.get_node("Hatch")
-	EscapePod.set_open(_pod, true)
+	EscapePod.set_open(_pod, true, CrashSite.LEAN.x)
 	if _fire and is_instance_valid(_fire):
 		_fire.queue_free()
 	_fire = null
+
+
+## [intro2] The pod in its crash site (furrow, lean, smoke, sparks; mends with upgrades).
+func _crash_pose() -> void:
+	if _site and is_instance_valid(_site):
+		return
+	var fire: Node = _pod.get_node_or_null("ReentryFire")
+	if fire:
+		fire.queue_free()
+	_site = CrashSite.attach(world, _pod, POD_POS + Vector3(0, _ground(POD_POS), 0), 0.5)
 
 
 func _ground(p: Vector3) -> float:
@@ -420,9 +430,8 @@ func _phase_storm() -> void:
 		ark.position = Vector3(0, 0, 0)
 		ark.create_tween().tween_property(ark, "position", Vector3(34, 0, 0), 9.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 		st.pod.visible = true
+		st.pod.global_transform = ark.pod_xform(2)  # exactly where it hung in the rack
 		ark.release_pod(2)
-		st.pod.global_position = ark.pod_world(2) + Vector3(0, -1.0, 0)
-		st.pod.rotation = Vector3(0.3, 0.0, 0.2)
 		st.aim(Vector3(-8, -14, 26), st.pod.global_position, 48.0), 0.15)
 	if _skipped:
 		return
@@ -547,11 +556,10 @@ func _phase_landing() -> void:
 		return
 	if DevHooks.get_f("intro-from", 0.0) >= 5.0:
 		# Dev: straight to the wake-up.
-		_pod.global_position = land
-		_pod.rotation = Vector3(0, 0.5, 0)
+		_crash_pose()
 		_fire.queue_free()
 		_fire = null
-		EscapePod.set_open(_pod, true)
+		EscapePod.set_open(_pod, true, CrashSite.LEAN.x)
 		var o_from: Vector3 = _pod.global_transform * Vector3(0, 0.3, -0.3)
 		var o_to: Vector3 = _pod.global_transform * Vector3(0, 0.05, -2.2)
 		o_to.y = _ground(o_to) + 0.05
@@ -562,8 +570,7 @@ func _phase_landing() -> void:
 			model.core_glow = 0.15
 		await _wake(o_from, o_to)
 		return
-	_pod.global_position = land
-	_pod.rotation = Vector3(0, 0.5, 0)
+	_crash_pose()
 	_fire.queue_free()
 	_fire = null
 	Audio.play("thud", 0.5, 4.0)
@@ -584,7 +591,7 @@ func _phase_landing() -> void:
 	Audio.play("steam", 0.7, -2.0)
 	var pod: Node3D = _pod
 	var open_t: float = EscapePod.open_door(_pod, func(p: Vector3, _d: Vector3) -> void:
-		Vfx.burst("steam", pod.global_transform * p, Color(0.92, 0.94, 0.97, 0.75), 0.35))
+		Vfx.burst("steam", pod.global_transform * p, Color(0.92, 0.94, 0.97, 0.75), 0.35), 1.0, CrashSite.LEAN.x)
 	if await _hold(0.6):
 		return
 	Audio.play("hydraulic", 0.8, -4.0)
