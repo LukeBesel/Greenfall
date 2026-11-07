@@ -91,6 +91,7 @@ func _physics_process(delta: float) -> void:
 		# Fell out of the world: put it back near the hub.
 		global_position = Vector3(randf_range(-1, 1), 2.0, randf_range(2, 4))
 		linear_velocity = Vector3.ZERO
+		GameState.inc_stat("cubes_fell")  # [beat] counted so long autoplay runs report it
 
 
 func _on_body_entered(_body: Node) -> void:

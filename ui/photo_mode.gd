@@ -387,6 +387,7 @@ func _build_ui() -> void:
 	_panel.toggle(s, tr("Set time of day"), "time_override")
 	_panel.slider(s, tr("Time"), "time", 0.0, 1.0, 0.005, func(v: float) -> String:
 		var mins: int = int(round(v * 1440.0)) % 1440
+		@warning_ignore("integer_division")
 		return "%02d:%02d" % [mins / 60, mins % 60])
 	_panel.cycler(s, tr("Weather"), "weather", WEATHER)
 	s = _panel.section(tr("Lumi"))

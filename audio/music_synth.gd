@@ -66,7 +66,9 @@ static func _normalize(b: PackedFloat32Array, peak: float = 0.9) -> PackedFloat3
 
 ## Raised-cosine fade in/out so one-shots never start or stop with a step.
 static func _declick(b: PackedFloat32Array, attack_s: float, release_s: float) -> PackedFloat32Array:
+	@warning_ignore("integer_division")
 	var a: int = mini(int(attack_s * RATE), b.size() / 2)
+	@warning_ignore("integer_division")
 	var r: int = mini(int(release_s * RATE), b.size() / 2)
 	for i: int in a:
 		b[i] *= 0.5 - 0.5 * cos(PI * float(i) / a)

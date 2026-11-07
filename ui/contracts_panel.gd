@@ -87,6 +87,7 @@ func refresh(force: bool = false) -> void:
 
 static func _clock(s: float) -> String:
 	var t: int = maxi(int(ceil(s)), 0)
+	@warning_ignore("integer_division")
 	return "%d:%02d" % [t / 60, t % 60]
 
 

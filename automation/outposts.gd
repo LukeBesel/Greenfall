@@ -118,7 +118,10 @@ func _apply_dev_levels(lv: Array) -> void:
 			if DevHooks.has("outpost-clean"):  # also clear the whole hex, as a real repair would need
 				for pid: int in world.field.hex_pieces[int(spots[i]["hex"])]:
 					if world.field.piece_alive[pid] == 1:
-						world.collect_piece(pid) if world.has_method("collect_piece") else world.field.remove_piece(pid)
+						if world.has_method("collect_piece"):
+							world.collect_piece(pid)
+						else:
+							world.field.remove_piece(pid)
 
 
 static func of(n: Node) -> Outposts:

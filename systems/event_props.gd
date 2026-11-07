@@ -117,6 +117,7 @@ static func zone_ring(radius: float, col: Color) -> MeshInstance3D:
 		var d0 := Vector3(cos(a0), 0, sin(a0))
 		var d1 := Vector3(cos(a1), 0, sin(a1))
 		# Dashed: every other pair of segments is dimmer, reads as a "scanned" boundary.
+		@warning_ignore("integer_division")
 		var a: float = 0.95 if (k / 2) % 2 == 0 else 0.35
 		var bright := Color(1, 1, 1, a)
 		var soft := Color(1, 1, 1, 0.0)

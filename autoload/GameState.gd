@@ -74,6 +74,8 @@ func get_currency(id: String) -> BigNum:
 
 func add_currency(id: String, amount: BigNum) -> void:
 	currencies[id] = get_currency(id).add(amount)
+	if currencies[id].mantissa < 0.0:  # [beat] currencies never go negative
+		currencies[id] = BigNum.zero()
 	if id == "cubes" and amount.mantissa > 0.0:
 		var total: BigNum = BigNum.from_serialized(stats.get("cubes_earned_total", [0.0, 0]))
 		stats["cubes_earned_total"] = total.add(amount).serialize()
@@ -89,6 +91,8 @@ func spend(id: String, amount: BigNum) -> bool:
 	if not can_afford(id, amount):
 		return false
 	currencies[id] = get_currency(id).sub(amount)
+	if currencies[id].mantissa < 0.0:  # [beat] near-equal amounts pass gte(): never leave a tiny negative
+		currencies[id] = BigNum.zero()
 	EventBus.currency_changed.emit(id, currencies[id])
 	return true
 

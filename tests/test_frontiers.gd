@@ -214,6 +214,7 @@ func test_ice_locks_junk_until_thawed() -> void:
 	for h: int in fd.ice.size():
 		if fd.ice[h] > 0.0:
 			iced.append(h)
+	@warning_ignore("integer_division")
 	assert_gt(iced.size(), w.field.hex_count() / 2, "most of the port starts frozen")
 	for h: int in w.field.hex_count():
 		if w.field.is_water(h):
@@ -289,6 +290,7 @@ func test_draining_reveals_streets_ring_by_ring() -> void:
 	for h: int in w.field.hex_count():
 		if w.field.is_water(h):
 			water += 1
+	@warning_ignore("integer_division")
 	assert_gt(water, w.field.hex_count() / 2, "mostly water")
 	assert_false(Frontiers.drain_ready(w.field, 0, fl), "nothing skimmed yet")
 	var ring2: Array[int] = Frontiers.drain_hexes(w.field, 1, fl)

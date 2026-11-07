@@ -44,8 +44,8 @@ func _run() -> void:
 	get_tree().quit()
 
 
-func _load_master(name: String) -> Image:
-	var p: String = _in.path_join(name + ".png")
+func _load_master(name_: String) -> Image:
+	var p: String = _in.path_join(name_ + ".png")
 	var img := Image.load_from_file(p)
 	if img == null or img.is_empty():
 		push_error("missing master " + p)

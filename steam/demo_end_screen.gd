@@ -120,4 +120,5 @@ func close() -> void:
 
 static func _fmt_time(s: float) -> String:
 	var m: int = int(s / 60.0)
+	@warning_ignore("integer_division")
 	return TranslationServer.translate("%dh %02dm") % [m / 60, m % 60] if m >= 60 else TranslationServer.translate("%d min") % m

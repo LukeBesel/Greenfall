@@ -22,9 +22,7 @@ var carried: Array[JunkCube] = []
 
 var _target_piece: int = -1
 var _target_bale: JunkCube
-var _work_t: float = 0.0
 var _busy: float = 0.0
-var _repath_t: float = 0.0
 var _detour_t: float = 0.0
 var _detour := Vector3.ZERO
 var _progress_pos := Vector3.ZERO
@@ -48,6 +46,9 @@ var _refill: Dictionary = {}
 var _refilling: bool = false
 var _refill_fx_t: float = 0.0
 var _shore := Vector3.INF
+var _shore_t: float = 0.0  # [beat] time spent heading for this shore point
+var _bad_shore: Array = []  # [beat] shore points this skimmer couldn't reach
+var _bad_refill: Array = []  # [beat] refill points this robot got stuck on the way to
 var _stall_goal := Vector3.INF
 var _stall_best: float = INF
 var _stall_t: float = 0.0
@@ -105,10 +106,13 @@ func rebuild_visual() -> void:
 	RobotBuilder.on_visual_rebuilt(self)  # [drones] part meshes, name tag, personality
 
 
+const _WATER_TIER_STATS: Array[String] = ["tank", "refill_rate"]  # [health] no per-call array
+
+
 func stat(s: String) -> float:
 	var v: float = Economy.robot_stat(type_id, s, tier, rarity_bonus)
 	# Water gear also improves with the Mk tier (Economy scales the work stats).
-	if s in ["tank", "refill_rate"]:
+	if s in _WATER_TIER_STATS:
 		v *= _tier_mult()
 	elif s == "spray_radius":
 		v *= sqrt(_tier_mult())
@@ -141,7 +145,7 @@ func _physics_process(delta: float) -> void:
 			var col: KinematicCollision3D = get_last_slide_collision()
 			if col and col.get_collider() is Node:
 				var cn: Node = col.get_collider()
-				print("[trace] hit %s (%s) parent=%s at %s" % [cn.name, cn.get_class(), cn.get_parent().name if cn.get_parent() else "-", str(col.get_position())])
+				print("[trace] hit %s (%s) parent=%s at %s" % [cn.name, cn.get_class(), str(cn.get_parent().name) if cn.get_parent() else "-", str(col.get_position())])
 			print("[trace] %s pos=%s hex=%d work=%d piece=%d ppos=%s busy=%.1f hop=%.1f/%.1f pend=%.1f stall=%.1f move=%s | %s" % [robot_name, str(global_position.snapped(Vector3.ONE * 0.1)), world.field.hex_at(global_position), work_hex, _target_piece, str(world.field.piece_pos[_target_piece].snapped(Vector3.ONE * 0.1)) if _target_piece >= 0 else "-", _busy, hopper.fill, stat("capacity"), hopper.pending, _stall_t, str(move.snapped(Vector3.ONE * 0.1)), status_text()])
 	if _idling:
 		log_stats["idle_s"] = float(log_stats["idle_s"]) + delta
@@ -285,6 +289,7 @@ func _t(s: String) -> String:
 
 func _park_pos() -> Vector3:
 	var i: int = get_index()
+	@warning_ignore("integer_division")
 	return world.depot.global_position + Vector3(-3.0 + float(i % 6) * 1.2, 0, 4.0 + float(i / 6) * 1.2)
 
 
@@ -362,6 +367,12 @@ func _unstick() -> void:
 		_skip[_target_piece] = true
 	if _target_slot >= 0:
 		_skip[-2 - _target_slot] = true
+	# [beat] Pinned on the way to a refill point: try another one next time (a Drip circled a
+	# blocked barrel for good at the Cradle).
+	if not _refill.is_empty() and not _refilling:
+		_bad_refill.append(_refill["pos"])
+		if _bad_refill.size() > 6:
+			_bad_refill.pop_front()
 	reset_targets(true)
 	_stall_t = 0.0
 	_stall_goal = Vector3.INF
@@ -445,10 +456,15 @@ func _pick_work_hex() -> int:
 			best = id
 	if best >= 0 or (_stay() and not z.is_empty()):
 		return best
+	# [beat] Sunken City: skim the ring the pumps need next before the outer rings.
+	var fr: Variant = world.get("frontier")
+	var sunken: FrontierDistrict = fr if lake and fr is FrontierDistrict and (fr as FrontierDistrict).kid == "sunken_city" else null
 	for id: int in field.hex_count():
 		if field.hex_hub[id] != 0 or field.is_clean(id) or field.is_water(id) != lake or _skip.has(1000000 + id) or field.locked.has(id):  # [biomes] ice
 			continue
 		var d: float = field.hex_center(id).distance_squared_to(global_position)
+		if sunken:
+			d += 1.0e6 * maxf(0.0, Frontiers.flood_stage_of(field, id, sunken.kind.get("flood", {})) - (sunken.drained + 1))
 		if d < best_d:
 			best_d = d
 			best = id
@@ -699,7 +715,7 @@ func _do_refill(delta: float, tank: float) -> Vector3:
 		water = tank  # no world network (tests): instant refill
 		return Vector3.ZERO
 	if _refill.is_empty():
-		_refill = net.nearest_refill(global_position)
+		_refill = net.nearest_refill(global_position, _bad_refill)
 		if _refill.is_empty():
 			return _go_idle(_t("no water source"))
 	var spot: Vector3 = _refill["pos"]
@@ -724,6 +740,7 @@ func _do_refill(delta: float, tank: float) -> Vector3:
 			return Vector3.ZERO
 		_refilling = false
 		_refill = {}
+		_bad_refill.clear()
 		log_stats["refills"] = float(log_stats["refills"]) + 1.0
 		_busy = 0.4
 	return Vector3.ZERO
@@ -765,16 +782,30 @@ func _to_shore() -> Vector3:
 		_shore = Vector3.INF
 		return Vector3.ZERO
 	if _shore == Vector3.INF:
-		_shore = shore_point(world.field, global_position)
+		_shore = shore_point(world.field, global_position, _bad_shore)
+		_shore_t = 0.0
 	var m: Vector3 = _steer(_shore, 0.5)
+	# [beat] Blocked on the way (Sunken City rooftops, piers): after a while try another bit of
+	# shore; after several, drop the bale where it is rather than circle forever.
+	_shore_t += get_physics_process_delta_time()
+	if m != Vector3.ZERO and _shore_t > 40.0:
+		_bad_shore.append(_shore)
+		if _bad_shore.size() > 4:
+			_bad_shore.clear()
+			_make_bale()
+			_shore = Vector3.INF
+			return Vector3.ZERO
+		_shore = shore_point(world.field, global_position, _bad_shore)
+		_shore_t = 0.0
 	if m == Vector3.ZERO and hopper.pending <= 0.0:
 		_make_bale()
 		_shore = Vector3.INF
+		_bad_shore.clear()
 	return m
 
 
 ## Nearest land point just off a lake hex (not a building), for dropping bales.
-static func shore_point(field: HexField, from: Vector3) -> Vector3:
+static func shore_point(field: HexField, from: Vector3, avoid: Array = []) -> Vector3:
 	var best := Vector3.INF
 	var best_d: float = INF
 	for id: int in field.hex_count():
@@ -788,6 +819,12 @@ static func shore_point(field: HexField, from: Vector3) -> Vector3:
 			for t: float in [0.3, 0.15, 0.45, 0.0]:
 				var p: Vector3 = lc.lerp(wc, t)
 				if field.layout and field.layout.surface_at(p.x, p.z) == CityLayout.Surface.BUILDING:
+					continue
+				var near_bad: bool = false
+				for q: Variant in avoid:
+					if (q as Vector3).distance_to(p) < 4.0:
+						near_bad = true
+				if near_bad:
 					continue
 				var d: float = p.distance_squared_to(from)
 				if d < best_d:

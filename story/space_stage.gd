@@ -40,7 +40,6 @@ var _planet_mat: ShaderMaterial
 var _alarm: float = 0.0
 var _t: float = 0.0
 var _vault_lights: Array[OmniLight3D] = []
-var _notes: Array[Node3D] = []
 
 
 func _ready() -> void:
@@ -199,14 +198,14 @@ func _build_vault() -> void:
 	wall.cap_bottom = false
 	wall.flip_faces = true
 	_mesh(root, wall, glass, Vector3(0, 2.1, 0))
-	var ceil := CylinderMesh.new()
-	ceil.top_radius = 0.1
-	ceil.bottom_radius = 4.6
-	ceil.height = 1.4
-	ceil.radial_segments = 48
-	ceil.cap_bottom = false
-	ceil.flip_faces = true
-	_mesh(root, ceil, white, Vector3(0, 4.9, 0))
+	var ceil_ := CylinderMesh.new()
+	ceil_.top_radius = 0.1
+	ceil_.bottom_radius = 4.6
+	ceil_.height = 1.4
+	ceil_.radial_segments = 48
+	ceil_.cap_bottom = false
+	ceil_.flip_faces = true
+	_mesh(root, ceil_, white, Vector3(0, 4.9, 0))
 	var halo := _mesh(root, ProcMesh.torus(1.0, 1.12, 40, 6), Mats.lamp(Color(0.6, 1.0, 0.75), 3.0), Vector3(0, 4.25, 0))
 	halo.scale = Vector3(1, 0.3, 1)
 	# Seed drawers: rows of small glowing tiles around the wall (one MultiMesh per colour).
@@ -467,15 +466,15 @@ func set_alarm(a: float) -> void:
 # --- Effects ----------------------------------------------------------------------------
 
 ## A meteor streaking from a to b over dur seconds (glowing head + long tail).
-func meteor(a: Vector3, b: Vector3, dur: float, size: float = 1.0) -> void:
+func meteor(a: Vector3, b: Vector3, dur: float, size_: float = 1.0) -> void:
 	var n := Node3D.new()
 	_sets["space"].add_child(n)
 	var head := MeshInstance3D.new()
-	head.mesh = ProcMesh.sphere(0.6 * size, 10, 6)
+	head.mesh = ProcMesh.sphere(0.6 * size_, 10, 6)
 	head.material_override = Mats.lamp(Color(1.0, 0.75, 0.45), 8.0)
 	n.add_child(head)
 	var rock := MeshInstance3D.new()
-	rock.mesh = ProcMesh.sphere(0.5 * size, 7, 4)
+	rock.mesh = ProcMesh.sphere(0.5 * size_, 7, 4)
 	var rm := StandardMaterial3D.new()
 	rm.albedo_color = Color(0.2, 0.17, 0.15)
 	rock.material_override = rm
@@ -483,8 +482,8 @@ func meteor(a: Vector3, b: Vector3, dur: float, size: float = 1.0) -> void:
 	var tail := MeshInstance3D.new()
 	var tm := CylinderMesh.new()
 	tm.top_radius = 0.02
-	tm.bottom_radius = 0.55 * size
-	tm.height = 22.0 * size
+	tm.bottom_radius = 0.55 * size_
+	tm.height = 22.0 * size_
 	tm.radial_segments = 8
 	tail.mesh = tm
 	var tmat := StandardMaterial3D.new()
@@ -494,7 +493,7 @@ func meteor(a: Vector3, b: Vector3, dur: float, size: float = 1.0) -> void:
 	tmat.albedo_color = Color(1.0, 0.55, 0.2, 0.7)
 	tail.material_override = tmat
 	tail.rotation.x = -PI * 0.5
-	tail.position = Vector3(0, 0, 11.0 * size)
+	tail.position = Vector3(0, 0, 11.0 * size_)
 	n.add_child(tail)
 	n.position = a
 	n.look_at_from_position(a, b, Vector3.UP if absf((b - a).normalized().y) < 0.95 else Vector3.RIGHT)
@@ -534,14 +533,14 @@ func blast(pos: Vector3, scale_k: float = 1.0, col: Color = Color(1.0, 0.7, 0.35
 
 
 ## Chunks of hull flying outward and tumbling.
-func debris(pos: Vector3, count: int, speed: float, size: float = 1.0, dir := Vector3.ZERO) -> void:
+func debris(pos: Vector3, count: int, speed: float, size_: float = 1.0, dir := Vector3.ZERO) -> void:
 	var holder: Node3D = _sets[_set] if _sets.has(_set) else _sets["space"]
 	var hull_m := StandardMaterial3D.new()
 	hull_m.albedo_color = Color(0.85, 0.85, 0.83)
 	var hot := Mats.lamp(Color(1.0, 0.55, 0.2), 3.0)
 	for i: int in count:
 		var d := MeshInstance3D.new()
-		d.mesh = ProcMesh.box(Vector3(randf_range(0.1, 0.5), randf_range(0.05, 0.2), randf_range(0.1, 0.6)) * size)
+		d.mesh = ProcMesh.box(Vector3(randf_range(0.1, 0.5), randf_range(0.05, 0.2), randf_range(0.1, 0.6)) * size_)
 		d.material_override = hot if i % 3 == 0 else hull_m
 		holder.add_child(d)
 		d.global_position = pos
@@ -550,10 +549,10 @@ func debris(pos: Vector3, count: int, speed: float, size: float = 1.0, dir := Ve
 
 
 ## Soft white puffs (venting air / smoke) drifting along vel.
-func puff(pos: Vector3, vel: Vector3, col: Color = Color(0.9, 0.92, 0.95, 0.5), size: float = 1.0) -> void:
+func puff(pos: Vector3, vel: Vector3, col: Color = Color(0.9, 0.92, 0.95, 0.5), size_: float = 1.0) -> void:
 	var holder: Node3D = _sets[_set] if _sets.has(_set) else _sets["space"]
 	var p := MeshInstance3D.new()
-	p.mesh = ProcMesh.sphere(0.5 * size, 8, 5)
+	p.mesh = ProcMesh.sphere(0.5 * size_, 8, 5)
 	var m := StandardMaterial3D.new()
 	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
@@ -561,7 +560,7 @@ func puff(pos: Vector3, vel: Vector3, col: Color = Color(0.9, 0.92, 0.95, 0.5), 
 	p.material_override = m
 	holder.add_child(p)
 	p.global_position = pos
-	_fx.append({"node": p, "vel": vel, "spin": Vector3.ZERO, "life": 1.6, "grow": 1.8 * size, "fade": m})
+	_fx.append({"node": p, "vel": vel, "spin": Vector3.ZERO, "life": 1.6, "grow": 1.8 * size_, "fade": m})
 
 
 ## Musical notes drifting up from Lumi while it hums.

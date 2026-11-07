@@ -58,6 +58,7 @@ func _apply_settings() -> void:
 	_who.add_theme_font_size_override("font_size", sz[0])
 	_label.add_theme_font_size_override("font_size", sz[1])
 	(_label.get_parent() as Control).custom_minimum_size.x = 620.0 * clampf(float(sz[1]) / 19.0, 1.0, 1.3)
+	@warning_ignore("incompatible_ternary")
 	_bg.add_theme_stylebox_override("panel", UITheme.box(Color(0.02, 0.025, 0.035, 0.82), Color(1, 1, 1, 0.08), 1, 6, 12) if Settings.subtitle_background else StyleBoxEmpty.new())
 
 

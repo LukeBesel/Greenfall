@@ -234,6 +234,7 @@ func _pop_ingot() -> void:
 	_ingots.add_child(ing)
 	var slot: int = _ingot_n % 8
 	_ingot_n += 1
+	@warning_ignore("integer_division")
 	var final := Vector3(-0.12 + (slot % 3) * 0.12, 0.05 + (slot / 3) * 0.065, -0.06 + (slot % 2) * 0.1)
 	ing.position = Vector3(0.3, 0.45, -0.6)
 	var tw := ing.create_tween()

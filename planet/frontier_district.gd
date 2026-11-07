@@ -247,6 +247,13 @@ func _refresh_summary() -> void:
 		sum_lv += float(hl.levels[h])
 		if int(hl.levels[h]) >= 3:
 			good += 1
+	if kid == "sunken_city":
+		# [beat] Streets still under water count too: otherwise the six dry hexes alone made the
+		# Sunken City "50% Growing" minutes after landing (the Cradle unlock).
+		var fl: Dictionary = kind.get("flood", {})
+		for id: int in world.field.hex_count():
+			if world.field.is_water(id) and Frontiers.flood_stage_of(world.field, id, fl) > drained:
+				land += 1
 	growing_frac = float(good) / maxf(land, 1.0)
 	var restore: float = sum_lv / maxf(land * 5.0, 1.0)
 	var sd: SkyDirector = world.get("sky_director")
@@ -590,6 +597,7 @@ func card_text() -> String:
 			if storm_phase == 2:
 				lines.append(tr("Sandstorm blowing"))
 			else:
+				@warning_ignore("integer_division")
 				lines.append(tr("Next sandstorm  %d:%02d") % [int(storm_t) / 60, int(storm_t) % 60])
 			lines.append(tr("Well dry: Drips refill at tanks"))
 		"frozen_port":

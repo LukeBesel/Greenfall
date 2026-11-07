@@ -15,6 +15,7 @@ extends Node
 
 signal finished
 
+var _cover: CanvasLayer  # [first]
 var world: Node
 var running: bool = false
 ## True from _finish() until the fade-out has handed the camera and controls back.
@@ -196,6 +197,32 @@ func _model() -> PatchModel:
 	return world.patch.get("model") as PatchModel
 
 
+## [first] Black cover for the frames between the scene loading and the (deferred) intro start, so
+## the title screen's fade-to-black never flashes the gameplay world for a frame.
+func cover_now() -> void:
+	if _cover:
+		return
+	_cover = CanvasLayer.new()
+	_cover.layer = 41
+	var r := ColorRect.new()
+	r.color = Color(0.02, 0.02, 0.03, 1.0)
+	r.set_anchors_preset(Control.PRESET_FULL_RECT)
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_cover.add_child(r)
+	add_child(_cover)
+
+
+func _drop_cover() -> void:
+	if _cover == null:
+		return
+	var c: CanvasLayer = _cover
+	_cover = null
+	await get_tree().process_frame
+	await get_tree().process_frame
+	if is_instance_valid(c):
+		c.queue_free()
+
+
 func play() -> void:
 	running = true
 	var patch: Node3D = world.patch
@@ -205,6 +232,7 @@ func play() -> void:
 	if world.get("music") != null:
 		world.music.set_cinematic(true)
 	_build_overlay()
+	_drop_cover()  # [first]
 	_prev_cam = get_viewport().get_camera_3d()
 	_cam = Camera3D.new()
 	_cam.fov = 55.0
@@ -849,6 +877,11 @@ func _finish() -> void:
 			model.set_happy(0.6)
 			model.look_toward(null)
 			model.core_glow = CoreCharge.glow_for_flags()
+		# [first] Behind the black: put the gameplay camera right behind Lumi so the first frame
+		# doesn't glide in from wherever the rig was parked during the cinematic.
+		if world.get("cam") != null and world.cam.has_method("snap"):
+			world.cam.yaw = patch.rotation.y
+			world.cam.snap()
 		var modal: bool = world.has_method("any_modal_open") and world.any_modal_open()
 		if _prev_cam and is_instance_valid(_prev_cam) and not modal:
 			_prev_cam.current = true

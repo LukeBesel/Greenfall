@@ -7,9 +7,9 @@ extends Node
 var _fails: int = 0
 
 
-func _check(name: String, a: Variant, b: Variant) -> void:
+func _check(name_: String, a: Variant, b: Variant) -> void:
 	var ok: bool = str(a) == str(b)
-	print("[roundtrip] %s %s: %s -> %s" % ["PASS" if ok else "FAIL", name, str(a), str(b)])
+	print("[roundtrip] %s %s: %s -> %s" % ["PASS" if ok else "FAIL", name_, str(a), str(b)])
 	if not ok:
 		_fails += 1
 
@@ -46,6 +46,7 @@ func _snapshot(s: Node) -> Dictionary:
 		"hub_level": s.hub.level,
 		"rocket_tier": RocketTiers.tier(),
 		"intro_done": GameState.flags.get("intro_done", false),
+		"bloom": JSON.stringify([Bloom.done_list(), GameState.flags.get("bloom_finale_seen", false), GameState.flags.get("credits_seen", false), Bloom.ark_state()]),  # [beat]
 		"core_charge": "%.3f %s" % [float(GameState.flags.get("core_charge", 0.0)), str(CoreCharge.beats_done())],
 		"tagged_cubes": _tagged_cubes(s),
 		"outposts": _outposts(s),
@@ -65,6 +66,8 @@ func _snapshot(s: Node) -> Dictionary:
 		"builder_presets": JSON.stringify(RobotBuilder.st().get("presets", {})),
 		"builds": _builds(f),
 		"fauna": _fauna(s),  # [wild]
+		# [skins] Lumi's designs: worn, unlocked, looks-only, and the model actually built with it.
+		"design": "%s %s looks_only=%s model=%s" % [Designs.current(), JSON.stringify(Designs.unlocked()), str(Designs.looks_only()), (s.patch.model as PatchModel).variant],
 	}
 
 
@@ -138,7 +141,8 @@ func _frontier_snap(s: Node) -> Dictionary:
 		"ice": snappedf(ice_sum, 0.01), "locked": s.field.locked.size(), "drained": fd.drained,
 		"drain_order": JSON.stringify(fd.drain_order), "storms": fd.storms, "cleaned": s.field.cleaned_count,
 		"alive": s.field.piece_alive.count(1), "slots": s.garden.slot_pos.size(), "planted": planted,
-		"water": s.field.hex_water.count(1), "hub_level": s.hub.level}
+		"water": s.field.hex_water.count(1), "hub_level": s.hub.level,
+		"cradle_done": fd.done, "cradle_returned": GameState.flags.get("cradle_returned", false)}  # [beat]
 
 
 func _frontier_roundtrip(packed: PackedScene, kid: String, hub_i: int) -> void:
@@ -157,7 +161,7 @@ func _frontier_roundtrip(packed: PackedScene, kid: String, hub_i: int) -> void:
 	GameState.add_currency("seeds", BigNum.from_float(30))
 	match kid:
 		"frozen_port":
-			var iced: Array = range(fd.ice.size()).filter(func(h: int) -> bool: return fd.ice[h] > 0.0)
+			var iced: Array = range(fd.ice.size()).filter(func(h_: int) -> bool: return fd.ice[h_] > 0.0)
 			fd._place_heater(int(iced[0]), true)
 			fd._place_heater(int(iced[1]), true)
 			fd._thaw_step(30.0)
@@ -173,6 +177,8 @@ func _frontier_roundtrip(packed: PackedScene, kid: String, hub_i: int) -> void:
 			fd.drain_next(false)
 			var street: int = int(fd.drain_order[0])
 			fd._clear_hex(street)
+		"cradle_returns":  # [beat] the ark finale hook fires, and we save mid-cinematic
+			fd.complete()
 		"dust_flats":
 			for h: int in s1.field.hex_count():
 				if s1.field.hex_hub[h] == 0 and Frontiers.ring_of(s1.field, h) <= 2:
@@ -199,6 +205,10 @@ func _frontier_roundtrip(packed: PackedScene, kid: String, hub_i: int) -> void:
 	var after: Dictionary = _frontier_snap(s2)
 	for k: String in before:
 		_check("frontier_%s_%s" % [kid, k], before[k], after[k])
+	if kid == "cradle_returns":  # [beat] quit mid-finale: it plays again after loading, and the Seed Ark opens
+		await get_tree().create_timer(4.0).timeout
+		_check("cradle_finale_replays_after_load", true, BloomFinale.playing or bool(GameState.flags.get("bloom_finale_seen", false)))
+		_check("cradle_opens_seed_ark", true, Bloom.ark_unlocked())
 	s2.queue_free()
 	await get_tree().process_frame
 
@@ -264,6 +274,8 @@ func _ready() -> void:
 			s1.garden.plant(free)
 	s1.composter.level = 3
 	CoreCharge.store(0.31)  # Bloom Core charge + its 25% milestone
+	Bloom.done_list().append("first_meadow")  # [beat] a Verdance Bloom milestone, post-credits flag
+	GameState.flags["credits_seen"] = true
 	# [outposts] Repair outpost 0 and take it to Big Skip; repair the last one too.
 	if s1.get("outposts") != null and s1.outposts.items.size() >= 2:
 		s1.outposts.repair(0, false, true)
@@ -322,6 +334,11 @@ func _ready() -> void:
 		elif r.type_id == "drip":
 			r.trait_id = "sleepy"
 			RobotBuilder.equip(r, "tool", "mist_sprayer")
+	# [skins] Unlock two designs, wear Nova, turn bonuses off.
+	Designs.unlocked().append_array(["bolt", "nova"])
+	Designs.select("nova")
+	Designs.set_looks_only(true)
+	(s1.patch.model as PatchModel).set_variant("nova")
 	s1.patch.global_position = Vector3(3.0, 0.2, 5.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
 	s1.add_cube(dropped)
@@ -353,7 +370,7 @@ func _ready() -> void:
 	var fhubs: Dictionary = (s2.planet as PlanetData).frontier_hubs.duplicate()
 	s2.queue_free()
 	await get_tree().process_frame
-	for kid: String in ["frozen_port", "sunken_city", "dust_flats"]:
+	for kid: String in ["frozen_port", "sunken_city", "dust_flats", "cradle_returns"]:
 		await _frontier_roundtrip(packed, kid, int(fhubs[kid]))
 	SaveManager.delete_save()
 	print("[roundtrip] %s (%d failures)" % ["OK" if _fails == 0 else "FAILED", _fails])

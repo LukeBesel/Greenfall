@@ -22,7 +22,6 @@ var _feed_timer: float = 0.0
 var _combo: int = 0
 var _combo_timer: float = 0.0
 var _light_mat: ShaderMaterial
-var _pad_mat: ShaderMaterial
 var _needle: MeshInstance3D
 var _needle_t: float = 0.0
 var _t: float = 0.0

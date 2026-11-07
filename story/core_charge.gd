@@ -39,11 +39,11 @@ var _star: Node3D
 
 ## Charge from the inputs. bloom_progress = 0..1 toward the Verdance Bloom. Never reaches 1.0
 ## until that milestone is actually done, so the finale and "core full" stay the same moment.
-static func compute(blooms: float, level_points: float, bloom_progress: float, bloom_done: bool) -> float:
+static func compute(blooms: float, level_points: float, bloom_progress_: float, bloom_done: bool) -> float:
 	if bloom_done:
 		return 1.0
 	var c: float = START + W_BLOOMS * clampf(blooms / BLOOMS_FULL, 0.0, 1.0) \
-		+ W_LEVELS * clampf(level_points / LEVELS_FULL, 0.0, 1.0) + W_BLOOM * clampf(bloom_progress, 0.0, 1.0)
+		+ W_LEVELS * clampf(level_points / LEVELS_FULL, 0.0, 1.0) + W_BLOOM * clampf(bloom_progress_, 0.0, 1.0)
 	return minf(c, 0.99)
 
 
@@ -57,7 +57,31 @@ static func bloom_progress(m: Dictionary) -> float:
 	var p: float = Bloom.progress(ms, m) if not ms.is_empty() else 0.0
 	var per_district: float = float(Bloom.cfg().get("thriving_district_ratio", 0.6)) * float(Bloom.cfg().get("default_land_hexes", 230))
 	var need: float = 3.0 * per_district
+	p = maxf(p, float(m.get("campaign", 0.0)))  # [beat] steps along the Cradle path
 	return clampf(maxf(p, float(m.get("thriving_hexes", 0)) / maxf(need, 1.0)), 0.0, 1.0)
+
+
+## [beat] 0..1 along the critical path to the Cradle: bases at level 5 (2 open the Dust Flats),
+## each of the three frontiers visited, its base levelled and half its land Growing, then the
+## Cradle Returns visited, its pad clean and the district Growing. Reaches ~0.72 on arriving at
+## the Cradle (the 75% beat) and 1.0 only when the Cradle is complete (also the Verdance Bloom).
+static func campaign_progress(frontier_hubs: Dictionary) -> float:
+	var p: float = 0.03 * mini(Frontiers.bases_at_level(5), 2)
+	for fid: String in ["dust_flats", "frozen_port", "sunken_city"]:
+		if not frontier_hubs.has(fid) or not GameState.flags.get("frontier_seen_" + fid, false):
+			continue
+		var hi: int = int(frontier_hubs[fid])
+		p += 0.08
+		p += 0.08 * clampf((Frontiers.base_level(hi) - 1) / 4.0, 0.0, 1.0)
+		p += 0.06 * clampf(Frontiers.growing_frac(hi) / 0.5, 0.0, 1.0)
+	if frontier_hubs.has("cradle_returns") and GameState.flags.get("frontier_seen_cradle_returns", false):
+		p += 0.1
+		if GameState.flags.get("cradle_pad_clean", false):
+			p += 0.08
+		p += 0.14 * clampf(Frontiers.growing_frac(int(frontier_hubs["cradle_returns"])) / 0.7, 0.0, 1.0)
+	if GameState.flags.get("cradle_returned", false):
+		return 1.0
+	return clampf(p, 0.0, 0.98)
 
 
 static func stored() -> float:
@@ -226,6 +250,9 @@ func _beat_memory() -> void:
 	var t: float = 0.0
 	var said: int = 0
 	while t < 10.5 and not c.skipped:
+		if get_tree().paused:  # [beat] the pause menu holds the scene
+			await get_tree().process_frame
+			continue
 		t += get_process_delta_time()
 		lumi.beam_at(g + Vector3(0.1 + sin(t * 0.8) * 0.3, 0.1, 0.3))
 		if t > 1.0 and said == 0:
@@ -301,6 +328,9 @@ func _beat_ark_star() -> void:
 	var dur: float = 14.0
 	var said: int = 0
 	while t < dur and not c.skipped:
+		if get_tree().paused:  # [beat] the pause menu holds the scene
+			await get_tree().process_frame
+			continue
 		t += get_process_delta_time()
 		var k: float = clampf((t - 1.5) / (dur - 2.0), 0.0, 1.0)
 		var dir: Vector3 = (f + r * lerpf(-0.75, 0.75, k) + u * (0.18 + 0.12 * sin(k * PI))).normalized()

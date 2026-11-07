@@ -16,9 +16,7 @@ var hud: Node
 var expanded: bool = false
 var _goals: Goals
 var _head: Label
-var _check: VBoxContainer
-var _check_cap: Label
-var _check_text: Label
+var checklist: ChecklistCard  # [first] restart checklist card (was right-aligned text)
 var _rows: Array[Dictionary] = []
 var _idle: float = 0.0
 var _last_sig: String = ""
@@ -29,19 +27,9 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	custom_minimum_size = Vector2(W, 0)
 	add_theme_constant_override("separation", 8)
-	# Restart checklist block (tutorial).
-	_check = VBoxContainer.new()
-	_check.add_theme_constant_override("separation", 1)
-	_check.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(_check)
-	_check_cap = _cap("")
-	_check.add_child(_check_cap)
-	_check_text = UITheme.label("", 14, UITheme.CREAM)
-	_check_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_check_text.autowrap_mode = TextServer.AUTOWRAP_WORD
-	_check_text.custom_minimum_size = Vector2(W, 0)
-	_check.add_child(_check_text)
-	_check.visible = false
+	# Restart checklist card (tutorial; also borrowed for one-off "next step" hints).
+	checklist = ChecklistCard.new()
+	add_child(checklist)
 	_head = _cap("")
 	add_child(_head)
 	for k: int in 3:
@@ -59,44 +47,39 @@ static func _cap(t: String) -> Label:
 
 
 func _make_row() -> Dictionary:
-	var wrap := VBoxContainer.new()
-	wrap.add_theme_constant_override("separation", 3)
-	wrap.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(wrap)
+	var wrap_ := VBoxContainer.new()
+	wrap_.add_theme_constant_override("separation", 3)
+	wrap_.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(wrap_)
 	var title := UITheme.label("", 14, UITheme.CREAM)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	title.clip_text = true
 	title.custom_minimum_size = Vector2(W, 0)
-	wrap.add_child(title)
+	wrap_.add_child(title)
 	var line := Control.new()
 	line.custom_minimum_size = Vector2(W, 12)
 	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	wrap.add_child(line)
-	var r: Dictionary = {"wrap": wrap, "title": title, "line": line, "goal": -1, "shown": 0.0, "flash": 0.0, "busy": false}
+	wrap_.add_child(line)
+	var r: Dictionary = {"wrap": wrap_, "title": title, "line": line, "goal": -1, "shown": 0.0, "flash": 0.0, "busy": false}
 	line.draw.connect(func() -> void: _draw_line(r))
-	wrap.visible = false
+	wrap_.visible = false
 	return r
 
 
 ## Restart checklist text (EventBus.tutorial_changed); "" hides it with a fade.
 func set_checklist(text: String) -> void:
 	_idle = 0.0
-	if text == "":
-		if _check.visible:
-			var tw := _check.create_tween()
-			tw.tween_property(_check, "modulate:a", 0.0, 0.6)
-			tw.tween_callback(func() -> void: _check.visible = false)
-		return
-	var step: int = int(GameState.flags.get("tutorial_step", 0))
-	var n: int = Tutorial.STEPS.size()
-	_check_cap.text = ("R E S T A R T   C H E C K L I S T    %d / %d" % [mini(step + 1, n), n]) if step < n else "N E X T   S T E P"
-	var was: String = _check_text.text
-	_check_text.text = text
-	if not _check.visible or _check.modulate.a < 0.99 or _strip_count(was) != _strip_count(text):
-		_check.visible = true
-		_check.modulate.a = 0.0
-		_check.create_tween().tween_property(_check, "modulate:a", 1.0, 0.4)
+	if checklist.tutorial == null:
+		var w: Node = hud.get("world") if hud else null
+		checklist.tutorial = (w.get("tutorial") as Tutorial) if w else null
+	checklist.set_text(text)
+
+
+## [first] While the restart checklist runs, the goal rows stay out of the way (one instruction at a
+## time); they fade in once it is done.
+func _checklist_running() -> bool:
+	return checklist.tutorial != null and not checklist.tutorial.done()
 
 
 ## Step text without its "  3/8" counter (so counting up doesn't re-fade the block).
@@ -137,7 +120,7 @@ func _process(delta: float) -> void:
 	var sig: String = ""
 	for k: int in _rows.size():
 		var r: Dictionary = _rows[k]
-		(r["wrap"] as Control).visible = k < show_n and int(r["goal"]) >= 0
+		(r["wrap"] as Control).visible = k < show_n and int(r["goal"]) >= 0 and (expanded or not _checklist_running())
 		if r["busy"]:
 			continue
 		var gi: int = r["goal"]
@@ -175,9 +158,9 @@ func _next_free() -> int:
 func _assign(r: Dictionary, gi: int, animate: bool) -> void:
 	r["goal"] = gi
 	r["flash"] = 0.0
-	var wrap: Control = r["wrap"]
+	var wrap_: Control = r["wrap"]
 	if gi < 0:
-		wrap.visible = false
+		wrap_.visible = false
 		return
 	r["shown"] = _goals.progress(gi)
 	var title: Label = r["title"]
@@ -185,12 +168,12 @@ func _assign(r: Dictionary, gi: int, animate: bool) -> void:
 	title.add_theme_color_override("font_color", UITheme.CREAM)
 	if animate:
 		r["busy"] = true
-		wrap.modulate.a = 0.0
-		var tw := wrap.create_tween()
-		tw.tween_property(wrap, "modulate:a", 1.0, 0.45)
+		wrap_.modulate.a = 0.0
+		var tw := wrap_.create_tween()
+		tw.tween_property(wrap_, "modulate:a", 1.0, 0.45)
 		tw.tween_callback(func() -> void: r["busy"] = false)
 	else:
-		wrap.modulate.a = 1.0
+		wrap_.modulate.a = 1.0
 
 
 func _draw_line(r: Dictionary) -> void:
@@ -242,14 +225,14 @@ func _on_completed(gi: int) -> void:
 
 func _celebrate(r: Dictionary) -> void:
 	r["busy"] = true
-	var wrap: Control = r["wrap"]
+	var wrap_: Control = r["wrap"]
 	(r["title"] as Label).add_theme_color_override("font_color", UITheme.GREEN)
-	var tw := wrap.create_tween()
+	var tw := wrap_.create_tween()
 	tw.tween_method(func(t: float) -> void:
 		r["flash"] = t
 		(r["line"] as Control).queue_redraw(), 0.0, 1.0, 0.25)
 	tw.tween_interval(1.1)
-	tw.tween_property(wrap, "modulate:a", 0.0, 0.35)
+	tw.tween_property(wrap_, "modulate:a", 0.0, 0.35)
 	tw.tween_callback(func() -> void:
 		r["busy"] = false
 		_assign(r, _next_free(), true))

@@ -160,7 +160,7 @@ static func cost(id: String) -> BigNum:
 
 ## Real seconds to research, after research-speed bonuses.
 static func duration(id: String) -> float:
-	return float(def(id).get("time_s", 60)) / maxf(stat_mod("research_speed", 1.0), 0.1)
+	return float(def(id).get("time_s", 60)) / maxf(Designs.apply("research_speed", stat_mod("research_speed", 1.0)), 0.1)  # [skins] design buff
 
 
 static func can_start(id: String) -> bool:
@@ -184,6 +184,10 @@ static func reason(id: String) -> String:
 				if not has(r) and not is_active(r) and not is_queued(r):
 					names.append(TranslationServer.translate(str(def(r).get("name", r))))
 			return TranslationServer.translate("Needs %s") % ", ".join(names)
+	# [beat] Garden robots wait for a proper base (the ~1 h garden ramp): min_base_level in data.
+	var mb: int = int(def(id).get("min_base_level", 0))
+	if mb > 0 and int(GameState.world.get("hub_level", 1)) < mb and Frontiers.bases_at_level(mb) == 0:
+		return TranslationServer.translate("Needs base level %d") % mb
 	if not active().is_empty() and queue().size() >= max_queue():
 		return TranslationServer.translate("Queue is full")
 	if not GameState.can_afford(CURRENCY, cost(id)):
@@ -315,6 +319,7 @@ static func grant(id: String) -> void:
 static func time_text(s: float) -> String:
 	var n: int = int(ceil(s))
 	if n >= 60:
+		@warning_ignore("integer_division")
 		return "%d:%02d" % [n / 60, n % 60]
 	return TranslationServer.translate("%ds") % n
 
@@ -378,6 +383,7 @@ const STAT_NAMES: Dictionary = {
 	"data_gain": "data gained", "research_speed": "research speed", "lake_clarity": "lake clarity",
 	"speed": "speed", "work_rate": "work rate", "tank": "tank", "range": "range",
 	"efficiency": "bale quality", "carry": "carry",
+	"plant_growth": "plant growth", "seed_yield": "seeds per bloom",
 }
 # l10n:end
 

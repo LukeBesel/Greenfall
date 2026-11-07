@@ -120,8 +120,8 @@ func snap() -> void:
 
 
 ## Fixed framings for automated screenshots.
-func apply_preset(name: String) -> void:
-	match name:
+func apply_preset(name_: String) -> void:
+	match name_:
 		"close":
 			distance = 4.2
 			pitch = -0.32

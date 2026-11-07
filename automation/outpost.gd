@@ -70,6 +70,7 @@ func charger_world() -> Vector3:
 
 ## A parking spot in front of the outpost for idle robot k.
 func idle_world(k: int) -> Vector3:
+	@warning_ignore("integer_division")
 	return to_global(Vector3(-1.8 + float(k % 4) * 1.2, 0.0, 4.2 + float((k / 4) % 3) * 1.1))
 
 

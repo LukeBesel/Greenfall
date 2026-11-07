@@ -649,9 +649,9 @@ func _effect(e: Dictionary) -> void:
 
 func _duck_hint() -> String:
 	var have: Array = GameState.flags.get("skins_unlocked", ["aurora"])
-	for sid: String in CosmeticsPanel.UNLOCKS:
+	for sid: String in Designs.ids():  # [skins]
 		if not (sid in have) and PatchModel.VARIANTS.has(sid):
-			return tr("The duck squeaks a secret: \"%s\" unlocks the %s design.") % [CosmeticsPanel.UNLOCKS[sid], tr(str(PatchModel.VARIANTS[sid]["name"]))]
+			return tr("The duck squeaks a secret: \"%s\" unlocks the %s design.") % [Designs.unlock_text(sid), tr(str(PatchModel.VARIANTS[sid]["name"]))]
 	return tr("The duck has taught you everything it knows. Quack.")
 
 
@@ -688,9 +688,9 @@ func _dispense_can(n: Node3D) -> void:
 	tw.tween_property(can, "global_position", end, 0.6).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
 	tw.parallel().tween_property(can, "rotation:z", PI * 0.5, 0.3)
 	tw.tween_callback(func() -> void: Audio.play("clink", 0.9, -4.0))
-	var sign: MeshInstance3D = n.get_node_or_null("Screen")
-	if sign:
-		_flash(sign, Color(1.0, 0.3, 0.2), 2.0)
+	var sign_: MeshInstance3D = n.get_node_or_null("Screen")
+	if sign_:
+		_flash(sign_, Color(1.0, 0.3, 0.2), 2.0)
 
 
 func _look_up() -> void:

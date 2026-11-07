@@ -320,6 +320,7 @@ func _ready() -> void:
 				GameState.upgrades[spec.get_slice(":", 0)] = int(spec.get_slice(":", 1))
 	if DevHooks.has("give-parts"):
 		for k: int in int(DevHooks.get_f("give-parts", 8.0)):
+			@warning_ignore("integer_division")  # [health]
 			GameState.parts.append({"type": k % 8, "rarity": mini(k / 8, 4)})
 	if DevHooks.has("clean-hexes"):
 		# --clean-hexes=N  pre-clean the N land hexes nearest the base (to test planters/waterers).
@@ -348,6 +349,7 @@ func _ready() -> void:
 		# --order=clean:stay:far  (role:mode:hex ids separated by '+', or 'far' = farthest junk hex)
 		var spec_o: PackedStringArray = DevHooks.get_s("order", "").split(":")
 		var hexes: Array = []
+		@warning_ignore("incompatible_ternary")  # [health]
 		for t: String in spec_o[2].split("+") if spec_o.size() > 2 else []:
 			if t == "far":
 				var far_h: int = -1
@@ -436,6 +438,12 @@ func _ready() -> void:
 	tutorial = Tutorial.new()
 	tutorial.world = self
 	add_child(tutorial)
+	var feel := FeelFx.new()  # [first] core-loop juice (bale press, first robot, hex reveal)
+	feel.world = self
+	add_child(feel)
+	var finds := SeedFinds.new()  # [first] rare seeds in scooped junk (early trickle)
+	finds.world = self
+	add_child(finds)
 	_setup_research_codex()
 	var cargo := CargoPods.new()
 	cargo.world = self
@@ -480,7 +488,7 @@ func _ready() -> void:
 	add_child(fauna)
 	fauna.setup(self)
 	# Cradle Returns complete -> the ark comes home (the finale plays once per save).
-	EventBus.cradle_district_complete.connect(func(_h: int) -> void: bloom.play_finale(), CONNECT_ONE_SHOT)
+	# [beat] (Bloom connects EventBus.cradle_district_complete itself: a lambda here outlived the scene)
 	if frontier:  # [biomes] frontier mechanics and visuals, once the scene is built
 		frontier.setup()
 	core_charge = CoreCharge.new()  # Lumi's Bloom Core charge + its story beats (story/core_charge.gd)
@@ -495,6 +503,8 @@ func _ready() -> void:
 			Story.once("wake", tr("LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."), "story"))
 	if intro.should_play():
 		intro.finished.connect(wake)
+		hud.visible = false  # [first] no one-frame HUD/world flash before the deferred intro starts
+		intro.cover_now()
 		intro.play.call_deferred()
 	else:
 		if GameState.flags.get("intro_done", false) or not loaded:
@@ -908,10 +918,10 @@ func add_cube(cube: JunkCube) -> void:
 	_cubes_root.add_child(cube)
 
 
-func _hitstop(duration: float, scale: float) -> void:
+func _hitstop(duration: float, scale_: float) -> void:
 	if Settings.reduced_motion:
 		return
-	Engine.time_scale = scale * (float(DevHooks.get_f("time-scale", 1.0)))
+	Engine.time_scale = scale_ * (float(DevHooks.get_f("time-scale", 1.0)))
 	get_tree().create_timer(duration, true, false, true).timeout.connect(func() -> void:
 		Engine.time_scale = DevHooks.get_f("time-scale", 1.0))
 
@@ -1129,7 +1139,11 @@ func _restore_world(from_memory: bool = false) -> void:
 		for h: int in field.hex_count():
 			if not field.is_clean(h):
 				junk_left += field.hex_left[h]
+		# [beat] Junk already "baled offline" stays on the field (geometry isn't advanced), so it must not
+		# pay again on the next reopen: count it against what is left.
+		junk_left = maxf(0.0, junk_left - float(GameState.world.get("offline_units", 0.0)))
 		var res: Dictionary = Offline.compute(GameState.world.get("robots", []), hub.scrubbers if hub else 0, float(sd.get("filter_per_s", 1.0)), away, junk_left)
+		GameState.world["offline_units"] = float(GameState.world.get("offline_units", 0.0)) + float(res["units"])
 		Offline.apply(res)
 		if float(res["units"]) > 0.0 or float(res["air"]) > 0.0:
 			get_tree().create_timer(2.0).timeout.connect(func() -> void: EventBus.toast.emit(Offline.summary_text(res), "story"))

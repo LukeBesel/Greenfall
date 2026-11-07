@@ -2,7 +2,6 @@ extends Node
 ## Story beats and companion lines. M1 only has Patch's own little reactions (beeps + toasts);
 ## WREN's dialogue system arrives in M4 and will live here.
 
-var _shown: Dictionary = {}
 
 
 func _ready() -> void:
@@ -19,11 +18,11 @@ func once(id: String, text: String, kind: String = "story") -> void:
 
 
 func _on_cube_made(info: Dictionary) -> void:
-	once("first_cube", tr("Your first cube! Carry it to the Depot pad."), "hint")
+	# [first] The restart checklist teaches carrying the bale; these only name the bonuses, once.
 	if info.get("perfect", false):
-		once("first_perfect", tr("PERFECT CUBE! Filled right to the line."), "hint")
-	if info.get("pure", false):
-		once("first_pure", tr("A Pure Cube: one kind of junk is worth double."), "hint")
+		once("first_perfect", tr("Perfect bale: filled right to the gold line."), "hint")
+	elif info.get("pure", false):
+		once("first_pure", tr("Pure bale: one kind of junk is worth double."), "hint")
 
 
 func _on_hex_cleaned(_hex_id: int, _pos: Vector3, _bonus: BigNum) -> void:

@@ -24,6 +24,7 @@ var _active: bool = false
 var _letterbox: CanvasLayer
 var _bars: Array[ColorRect] = []
 var _waiting_sprout: bool = false
+var _hint_water: bool = false  # [first]
 
 
 func setup() -> void:
@@ -124,6 +125,9 @@ func _process(delta: float) -> void:
 	if _tin and _tin.visible and ready_to_find():
 		_tin_light.light_energy = 1.2 + sin(Time.get_ticks_msec() * 0.004) * 0.6
 		_tin.rotation.y += delta * 0.5
+	if _hint_water and int(GameState.stats.get("plants_planted", 0)) > 0:  # [first]
+		_hint_water = false
+		EventBus.tutorial_changed.emit(Tutorial.glyphs_bb(tr("{tool_water}  then hold  {scoop}  to water it")))
 	if _waiting_sprout:
 		for s: int in world.garden.slot_species.size():
 			if world.garden.slot_species[s] >= 0 and world.garden.slot_stage[s] >= 1:
@@ -145,10 +149,12 @@ func take_tin() -> void:
 	_cinematic()
 	await get_tree().create_timer(_total_time() + 1.0).timeout
 	GameState.flags["seeds_unlocked"] = true
-	GameState.add_currency("seeds", BigNum.from_float(float(cfg.get("seeds_given", 15))))
+	GameState.add_currency("seeds", BigNum.from_float(float(cfg.get("seeds_given", 1))))
 	world.patch.water = world.patch.water_cap()
 	world.patch.set_tool(Patch.Tool.PLANT)
-	EventBus.tutorial_changed.emit(Tutorial.glyphs(tr("Find clean ground.  Hold  {scoop}  to plant.  {tool_water}  for the watering can, hold  {scoop}  to water.")))  # [deck]
+	# [first] One instruction at a time on the checklist card: plant, then water.
+	EventBus.tutorial_changed.emit(Tutorial.glyphs_bb(tr("Hold  {scoop}  on clean ground to plant the seed")))
+	_hint_water = true
 	_waiting_sprout = true
 	_active = false
 
@@ -180,7 +186,6 @@ func _cinematic() -> void:
 	var start_yaw: float = cam.yaw
 	var dist0: float = cam.distance
 	cam.distance = 3.4
-	var t: float = 0.0
 	var total: float = _total_time()
 	var tw2 := create_tween()
 	tw2.tween_method(func(v: float) -> void:
@@ -189,7 +194,6 @@ func _cinematic() -> void:
 	for l: Array in LINES:
 		world.wren.line_started.emit(str(l[0]), 1)
 		await get_tree().create_timer(float(l[1])).timeout
-		t += float(l[1])
 	for i: int in _bars.size():
 		var r: ColorRect = _bars[i]
 		var tw := create_tween()
@@ -220,7 +224,7 @@ func _sprout_moment(pos: Vector3) -> void:
 	Audio.play("fanfare", 0.8, -6.0)
 	world.wren.line_started.emit(tr("...It's green. Lumi, it's actually green."), 1)
 	await get_tree().create_timer(4.5).timeout
-	world.wren.line_started.emit(tr("Keep it watered. Plant more. Every bloom gives you seeds back, and a little green light for your core. This is how it starts."), 1)
+	world.wren.line_started.emit(tr("Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."), 1)
 	EventBus.tutorial_changed.emit("")
 	GameState.flags["first_sprout"] = true
 	Audio.music_sting("first_sprout")

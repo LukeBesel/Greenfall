@@ -327,7 +327,7 @@ func _piece_arrived(type_id: String, vol: float, color: Color) -> void:
 	GameState.add_junk_removed(type_id, vol)
 	_scoop_combo = mini(_scoop_combo + 1, 10)
 	_combo_timer = 0.7
-	Audio.play_scale("clink", _scoop_combo - 1, -6.0)
+	Audio.play_ladder("clink", _scoop_combo - 1, -7.0)  # [first] gentle combo ladder
 	model.squash(0.08)
 	Vfx.burst("bits", to_global(model.chest_point), color, 0.4)
 	var cap: float = capacity()
@@ -356,7 +356,7 @@ func _handle_cubing(delta: float) -> void:
 		if t > 0.3 and not _crunched:
 			_crunched = true
 			Audio.play("crunch", 0.85, -3.0)
-			EventBus.shake_requested.emit(0.12)
+			FeelFx.bale_press(self)  # [first] squash/stretch, thunk, small shake
 			Input.start_joy_vibration(0, 0.5, 0.7, 0.25)
 		if not _cube_spawned and t >= 0.68:
 			_cube_spawned = true

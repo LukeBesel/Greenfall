@@ -48,6 +48,14 @@ func _ready() -> void:
 	apply_volumes()
 
 
+func _exit_tree() -> void:
+	StorySfx.finish_pending()  # [health] an unwaited WorkerThreadPool task crashes the engine at exit
+	# [health] Players stopped on exit only hand their playbacks to the mixer thread for deletion;
+	# give it a few mix steps so playbacks and streams aren't leaked at quit. Autoloads exit after
+	# the scene, so this runs once, at quit, after every scene player has stopped.
+	OS.delay_msec(150)
+
+
 func _setup_buses() -> void:
 	for bus_name: String in ["Music", "SFX"]:
 		if AudioServer.get_bus_index(bus_name) == -1:
@@ -108,6 +116,20 @@ func play(sound: String, pitch: float = 1.0, volume_db: float = 0.0, jitter: flo
 func play_scale(sound: String, step: int, volume_db: float = 0.0) -> void:
 	var s: int = PENTATONIC[clampi(step, 0, PENTATONIC.size() - 1)]
 	play(sound, pow(2.0, s / 12.0), volume_db, 0.0)
+
+
+## [first] A gentle combo ladder: steps climb one octave of the pentatonic scale, then hold there
+## with a soft alternation so a long combo never gets shrill; high notes sit a little quieter.
+func play_ladder(sound: String, step: int, volume_db: float = 0.0) -> void:
+	var s: int = ladder_semitones(step)
+	play(sound, pow(2.0, s / 12.0), volume_db - 0.25 * float(s) / 2.0, 0.0)
+
+
+static func ladder_semitones(step: int) -> int:
+	var up: Array[int] = [0, 2, 4, 7, 9, 12]
+	if step < up.size():
+		return up[maxi(step, 0)]
+	return 12 if (step - up.size()) % 2 == 0 else 9
 
 
 ## Continuous looping sound at `level` 0..1 (0 stops it). Cheap to call every frame; the
@@ -186,7 +208,7 @@ func _process(_delta: float) -> void:
 
 # --- Synthesis ----------------------------------------------------------------
 
-func _wav(samples: PackedFloat32Array, loop: bool = false) -> AudioStreamWAV:
+func _wav(samples: PackedFloat32Array, loop_: bool = false) -> AudioStreamWAV:
 	var data := PackedByteArray()
 	data.resize(samples.size() * 2)
 	for i: int in samples.size():
@@ -196,7 +218,7 @@ func _wav(samples: PackedFloat32Array, loop: bool = false) -> AudioStreamWAV:
 	w.mix_rate = RATE
 	w.stereo = false
 	w.data = data
-	if loop:
+	if loop_:
 		w.loop_mode = AudioStreamWAV.LOOP_FORWARD
 		w.loop_begin = 0
 		w.loop_end = samples.size()
@@ -211,6 +233,7 @@ func _buf(seconds: float) -> PackedFloat32Array:
 
 ## Fades the first and last few ms to avoid clicks.
 func _declick(b: PackedFloat32Array) -> PackedFloat32Array:
+	@warning_ignore("integer_division")
 	var n: int = mini(int(0.004 * RATE), b.size() / 2)
 	for i: int in n:
 		var g: float = float(i) / n
@@ -433,11 +456,11 @@ func _generate_all() -> void:
 	for v: int in 4:
 		var b := _buf(0.5)
 		var ph: float = 0.0
-		var notes: int = 2 + v
+		var notes_: int = 2 + v
 		for i: int in b.size():
 			var t: float = float(i) / RATE
-			var k: int = int(t / 0.5 * notes)
-			var lt: float = fmod(t, 0.5 / notes) / (0.5 / notes)
+			var k: int = int(t / 0.5 * notes_)
+			var lt: float = fmod(t, 0.5 / notes_) / (0.5 / notes_)
 			var f: float = 2600.0 + 900.0 * sin(TAU * lt) + 300.0 * k + 200.0 * v
 			ph += TAU * f / RATE
 			b[i] = sin(ph) * sin(PI * lt) * 0.18
@@ -453,6 +476,47 @@ func _generate_all() -> void:
 			fan[i] += (sin(TAU * f * t) + 0.35 * sin(TAU * f * 2.0 * t) + 0.15 * sin(TAU * f * 3.0 * t)) * exp(-t * 2.2) * 0.13
 	_add("fanfare", fan)
 	_generate_rocket()
+	_generate_feel()  # [first]
+
+
+## [first] Core-loop feedback: a soft two-note upgrade confirm, a deep bale thunk, a tiny tick for
+## count-ups, and a low airy sweep for the ground reveal.
+func _generate_feel() -> void:
+	for root: float in [659.25, 698.46, 622.25]:
+		var b := _buf(0.6)
+		for i: int in b.size():
+			var t: float = float(i) / RATE
+			var v: float = (sin(TAU * root * t) + 0.3 * sin(TAU * root * 2.0 * t)) * exp(-t * 6.0) * 0.18
+			if t > 0.075:
+				var t2: float = t - 0.075
+				var f2: float = root * 1.4983
+				v += (sin(TAU * f2 * t2) + 0.25 * sin(TAU * f2 * 2.0 * t2)) * exp(-t2 * 4.5) * 0.2
+			b[i] = v
+		_add("confirm", _declick(b))
+	for f: float in [62.0, 56.0, 68.0]:
+		var b := _buf(0.32)
+		var lp: float = 0.0
+		for i: int in b.size():
+			var t: float = float(i) / RATE
+			lp = lerpf(lp, _rng.randf_range(-1.0, 1.0), 0.08)
+			var body: float = sin(TAU * (f + 50.0 * exp(-t * 30.0)) * t) * exp(-t * 11.0)
+			b[i] = (body * 0.8 + lp * 0.5 * exp(-t * 22.0)) * 0.55
+		_add("thunk", _declick(b))
+	for f: float in [2400.0, 2550.0, 2300.0]:
+		var b := _buf(0.035)
+		for i: int in b.size():
+			var t: float = float(i) / RATE
+			b[i] = sin(TAU * f * t) * exp(-t * 140.0) * 0.16
+		_add("tick", b)
+	for v: int in 3:
+		var b := _buf(1.4)
+		var lp: float = 0.0
+		for i: int in b.size():
+			var t: float = float(i) / RATE
+			lp = lerpf(lp, _rng.randf_range(-1.0, 1.0), 0.03 + 0.02 * v)
+			var env: float = sin(PI * clampf(t / 1.4, 0.0, 1.0)) * exp(-t * 0.8)
+			b[i] = lp * env * 0.5
+		_add("sweep", _declick(b))
 
 
 ## Rocket launch layer: a deep rumbling roar (overlap several for a sustained burn), a two-tone

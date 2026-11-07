@@ -179,6 +179,8 @@ static func _format_abs(m: float, e: int, fmt: int, decimals: int) -> String:
 		return str(int(floor(v + 0.000001)))
 	match fmt:
 		Format.SCIENTIFIC:
+			if String.num(m, decimals).to_float() >= 10.0:  # [beat] 9.999e5 -> 1e6, not 10e5
+				return "%se%d" % [String.num(m / 10.0, decimals), e + 1]
 			return "%se%d" % [String.num(m, decimals), e]
 		Format.ENGINEERING:
 			var eng: int = int(floor(e / 3.0)) * 3
@@ -186,6 +188,10 @@ static func _format_abs(m: float, e: int, fmt: int, decimals: int) -> String:
 		_:
 			var group: int = int(floor(e / 3.0))
 			var scaled: float = m * pow(10.0, e - group * 3)
+			# [beat] 999.996k rounds to "1000": show it as 1M instead.
+			if String.num(scaled, decimals).to_float() >= 1000.0:
+				group += 1
+				scaled /= 1000.0
 			return "%s%s" % [_trim(String.num(scaled, decimals)), _suffix(group)]
 
 
@@ -205,6 +211,7 @@ static func _suffix(group: int) -> String:
 	# After Dc: aa, ab, ... zz, then fall back to e-notation-like marker.
 	var idx: int = group - SHORT_SUFFIXES.size()
 	if idx < 26 * 26:
+		@warning_ignore("integer_division")
 		var a: int = idx / 26
 		var b: int = idx % 26
 		return String.chr(97 + a) + String.chr(97 + b)
