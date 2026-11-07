@@ -126,6 +126,7 @@ static func ark_state() -> Dictionary:
 	if not (v is Dictionary):
 		v = {"wave": 0, "start": float(GameState.stats.get("plants_bloomed", 0.0))}
 		GameState.flags["seed_ark"] = v
+	(v as Dictionary)["wave"] = int((v as Dictionary).get("wave", 0))  # [beat] JSON brings it back as a float
 	return v
 
 
@@ -174,6 +175,9 @@ static func globe_line() -> String:
 
 func _ready() -> void:
 	add_to_group("persist")
+	# [beat] A method connection is dropped with this node (the slice's old one-shot lambda was not,
+	# and fired into freed districts after rocket trips).
+	EventBus.cradle_district_complete.connect(_on_cradle_complete)
 	_visit_biome.call_deferred()
 	# [beat] The Verdance Bloom is done but the finale never finished (quit mid-cinematic, or an
 	# older save): play it again at the next quiet moment.
@@ -277,6 +281,10 @@ static func _reward_text(r: Dictionary) -> String:
 	for k: String in r:
 		bits.append("+%s %s" % [Settings.fmt(BigNum.from_float(float(r[k]))), k])
 	return "  ".join(bits)
+
+
+func _on_cradle_complete(_hub: int) -> void:
+	play_finale()
 
 
 ## The Cradle answers (once). Waits for a quiet moment if a menu or another scene is busy.

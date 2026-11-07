@@ -46,6 +46,7 @@ func _snapshot(s: Node) -> Dictionary:
 		"hub_level": s.hub.level,
 		"rocket_tier": RocketTiers.tier(),
 		"intro_done": GameState.flags.get("intro_done", false),
+		"bloom": JSON.stringify([Bloom.done_list(), GameState.flags.get("bloom_finale_seen", false), GameState.flags.get("credits_seen", false), Bloom.ark_state()]),  # [beat]
 		"core_charge": "%.3f %s" % [float(GameState.flags.get("core_charge", 0.0)), str(CoreCharge.beats_done())],
 		"tagged_cubes": _tagged_cubes(s),
 		"outposts": _outposts(s),
@@ -125,7 +126,8 @@ func _frontier_snap(s: Node) -> Dictionary:
 		"ice": snappedf(ice_sum, 0.01), "locked": s.field.locked.size(), "drained": fd.drained,
 		"drain_order": JSON.stringify(fd.drain_order), "storms": fd.storms, "cleaned": s.field.cleaned_count,
 		"alive": s.field.piece_alive.count(1), "slots": s.garden.slot_pos.size(), "planted": planted,
-		"water": s.field.hex_water.count(1), "hub_level": s.hub.level}
+		"water": s.field.hex_water.count(1), "hub_level": s.hub.level,
+		"cradle_done": fd.done, "cradle_returned": GameState.flags.get("cradle_returned", false)}  # [beat]
 
 
 func _frontier_roundtrip(packed: PackedScene, kid: String, hub_i: int) -> void:
@@ -160,6 +162,8 @@ func _frontier_roundtrip(packed: PackedScene, kid: String, hub_i: int) -> void:
 			fd.drain_next(false)
 			var street: int = int(fd.drain_order[0])
 			fd._clear_hex(street)
+		"cradle_returns":  # [beat] the ark finale hook fires, and we save mid-cinematic
+			fd.complete()
 		"dust_flats":
 			for h: int in s1.field.hex_count():
 				if s1.field.hex_hub[h] == 0 and Frontiers.ring_of(s1.field, h) <= 2:
@@ -186,6 +190,10 @@ func _frontier_roundtrip(packed: PackedScene, kid: String, hub_i: int) -> void:
 	var after: Dictionary = _frontier_snap(s2)
 	for k: String in before:
 		_check("frontier_%s_%s" % [kid, k], before[k], after[k])
+	if kid == "cradle_returns":  # [beat] quit mid-finale: it plays again after loading, and the Seed Ark opens
+		await get_tree().create_timer(4.0).timeout
+		_check("cradle_finale_replays_after_load", true, BloomFinale.playing or bool(GameState.flags.get("bloom_finale_seen", false)))
+		_check("cradle_opens_seed_ark", true, Bloom.ark_unlocked())
 	s2.queue_free()
 	await get_tree().process_frame
 
@@ -251,6 +259,8 @@ func _ready() -> void:
 			s1.garden.plant(free)
 	s1.composter.level = 3
 	CoreCharge.store(0.31)  # Bloom Core charge + its 25% milestone
+	Bloom.done_list().append("first_meadow")  # [beat] a Verdance Bloom milestone, post-credits flag
+	GameState.flags["credits_seen"] = true
 	# [outposts] Repair outpost 0 and take it to Big Skip; repair the last one too.
 	if s1.get("outposts") != null and s1.outposts.items.size() >= 2:
 		s1.outposts.repair(0, false, true)
@@ -330,7 +340,7 @@ func _ready() -> void:
 	var fhubs: Dictionary = (s2.planet as PlanetData).frontier_hubs.duplicate()
 	s2.queue_free()
 	await get_tree().process_frame
-	for kid: String in ["frozen_port", "sunken_city", "dust_flats"]:
+	for kid: String in ["frozen_port", "sunken_city", "dust_flats", "cradle_returns"]:
 		await _frontier_roundtrip(packed, kid, int(fhubs[kid]))
 	SaveManager.delete_save()
 	print("[roundtrip] %s (%d failures)" % ["OK" if _fails == 0 else "FAILED", _fails])
