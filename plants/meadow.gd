@@ -116,7 +116,12 @@ func _surface_ok(x: float, z: float) -> int:
 
 
 func _hex_of(p: Vector3) -> int:
-	return field.hex_at(p + field.border_warp(p)) if field.natural_borders else field.hex_at(p)
+	# The base's own hex stays tidy yard ground (ground_pbr tests the hub on the true hex), so
+	# nothing grows on it even where the warped border lends it a neighbour's life.
+	var th: int = field.hex_at(p)
+	if th >= 0 and field.hex_hub[th] == 1:
+		return -1
+	return field.hex_at(p + field.border_warp(p)) if field.natural_borders else th
 
 
 func _land(hid: int) -> bool:
