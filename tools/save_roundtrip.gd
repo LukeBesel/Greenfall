@@ -14,6 +14,18 @@ func _check(name_: String, a: Variant, b: Variant) -> void:
 		_fails += 1
 
 
+## [style] A compact, order-stable signature of a look.
+func _style_sig(st: Dictionary) -> String:
+	var n: Dictionary = LumiStyle.normalize(st)
+	var bits: Array[String] = [str(n["bonus"]), str(n.get("name", ""))]
+	for k: String in LumiStyle.COLOR_SLOTS:
+		bits.append(LumiStyle.col(n, k).to_html(false))
+	for k: String in LumiStyle.PART_SLOTS:
+		bits.append(str(n[k]))
+	bits.append("%.2f" % float(n["wear"]))
+	return ",".join(bits)
+
+
 func _snapshot(s: Node) -> Dictionary:
 	var f: Fleet = s.fleet
 	var types: Array = []
@@ -71,6 +83,11 @@ func _snapshot(s: Node) -> Dictionary:
 		"fauna": _fauna(s),  # [wild]
 		# [skins] Lumi's designs: worn, unlocked, looks-only, and the model actually built with it.
 		"design": "%s %s looks_only=%s model=%s" % [Designs.current(), JSON.stringify(Designs.unlocked()), str(Designs.looks_only()), (s.patch.model as PatchModel).variant],
+		# [style] Character Builder: the worn look (and what the model actually shows), saved looks, bought parts.
+		"lumi_style": _style_sig(LumiStyle.current()),
+		"lumi_model": _style_sig(LumiStyle.style_for_model(s.patch.model)) + " laser=" + LumiStyle.laser_of(s.patch.model).to_html(false) + " rig=" + str(s.patch.model.get_node_or_null("LumiStyleRig") != null),
+		"lumi_looks": JSON.stringify(LumiStyle.looks().map(func(l: Variant) -> String: return _style_sig(l) if l is Dictionary and not (l as Dictionary).is_empty() else "-")),
+		"style_bought": JSON.stringify(LumiStyle.bought()),
 		# [late] Garden Mode decorations and their charm; Cradle Mode world tag.
 		"decor": JSON.stringify(GameState.world.get("decor", {})),
 		"decor_charm": snappedf(float(GameState.world.get("decor_charm", 0.0)), 0.01),
@@ -345,6 +362,19 @@ func _ready() -> void:
 	Designs.select("nova")
 	Designs.set_looks_only(true)
 	(s1.patch.model as PatchModel).set_variant("nova")
+	# [style] A custom look on Nova's bonus (heart eyes, halo, drone, pink laser), a saved look, a bought swatch.
+	var look: Dictionary = LumiStyle.preset("nova")
+	LumiStyle.set_value(look, "paint", Color("#3d63ff"))
+	LumiStyle.set_value(look, "laser", Color("#ff5480"))
+	LumiStyle.set_value(look, "hover", Color("#85ff5c"))
+	look["eye_shape"] = "heart"
+	look["head"] = "halo"
+	look["companion"] = "drone"
+	look["held"] = "medkit"
+	LumiStyle.set_current(look)
+	LumiStyle.save_look(1, LumiStyle.preset("bolt"), "Hazard")
+	LumiStyle.bought().append("swatch:copper")
+	LumiStyle.refresh_player(s1)
 	_late_decorate(s1, 4)  # [late] a few Garden Mode decorations
 	s1.patch.global_position = Vector3(3.0, 0.2, 5.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
