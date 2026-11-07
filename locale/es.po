@@ -8612,253 +8612,253 @@ msgstr "Un brote en un muelle. Hace boing al frenar."
 
 #: data/robot_parts.json:parts[bobble_plant].source.hint
 msgid "Haggle's welcome gift with your first robot"
-msgstr ""
+msgstr "El regalo de bienvenida de Haggle con tu primer robot"
 
 #: data/robot_parts.json:parts[traffic_cone].name
 msgid "Traffic Cone"
-msgstr ""
+msgstr "Cono de tráfico"
 
 #: data/robot_parts.json:parts[traffic_cone].desc
 msgid "Found it, kept it, wears it."
-msgstr ""
+msgstr "Lo encontró, se lo quedó, lo lleva puesto."
 
 #: data/robot_parts.json:parts[propeller_cap].name
 msgid "Propeller Cap"
-msgstr ""
+msgstr "Gorra con hélice"
 
 #: data/robot_parts.json:parts[propeller_cap].desc
 msgid "Spins when it hurries. Does not help."
-msgstr ""
+msgstr "Gira cuando tiene prisa. No ayuda."
 
 #: data/robot_parts.json:parts[lucky_clover].name
 msgid "Lucky Clover"
-msgstr ""
+msgstr "Trébol de la suerte"
 
 #: data/robot_parts.json:parts[lucky_clover].desc
 msgid "A four-leaf clover that floats. Rare: a robot has to spot one."
-msgstr ""
+msgstr "Un trébol de cuatro hojas que flota. Raro: un robot tiene que encontrar uno."
 
 #: data/robot_parts.json:parts[lucky_clover].source.hint
 msgid "Rare salvage find (robots with a good Scan)"
-msgstr ""
+msgstr "Hallazgo raro (robots con buen Escáner)"
 
 #: data/robot_parts.json:parts[maker_crest].name
 msgid "Maker Crest"
-msgstr ""
+msgstr "Emblema de los Creadores"
 
 #: data/robot_parts.json:parts[maker_crest].desc
 msgid "A floating gold ring. Purely for show; the Makers loved a show."
-msgstr ""
+msgstr "Un anillo dorado flotante. Pura apariencia; a los Creadores les encantaba lucirse."
 
 #: data/robot_parts.json:traits[cautious].name
 msgid "Cautious"
-msgstr ""
+msgstr "Prudente"
 
 #: data/robot_parts.json:traits[cautious].desc
 msgid "Looks both ways. Twice."
-msgstr ""
+msgstr "Mira a ambos lados. Dos veces."
 
 #: data/robot_parts.json:traits[speedy].name
 msgid "Speedy"
-msgstr ""
+msgstr "Veloz"
 
 #: data/robot_parts.json:traits[speedy].desc
 msgid "Always in a hurry, sometimes a messy one."
-msgstr ""
+msgstr "Siempre con prisa, a veces de forma caótica."
 
 #: data/robot_parts.json:traits[chatty].name
 msgid "Chatty"
-msgstr ""
+msgstr "Charlatán"
 
 #: data/robot_parts.json:traits[chatty].desc
 msgid "Beeps at everything. Mostly at you."
-msgstr ""
+msgstr "Pita a todo. Sobre todo a ti."
 
 #: data/robot_parts.json:traits[sleepy].desc
 msgid "Dozes off whenever it parks."
-msgstr ""
+msgstr "Se queda dormido cada vez que aparca."
 
 #: data/robot_parts.json:traits[tidy].name
 msgid "Tidy"
-msgstr ""
+msgstr "Ordenado"
 
 #: data/robot_parts.json:traits[tidy].desc
 msgid "Shakes the dust off after every job."
-msgstr ""
+msgstr "Se sacude el polvo después de cada trabajo."
 
 #: data/robot_parts.json:traits[curious].desc
 msgid "Tilts its head at butterflies and bottle caps."
-msgstr ""
+msgstr "Ladea la cabeza ante mariposas y chapas."
 
 #: data/robot_parts.json:traits[hummer].name
 msgid "Musical"
-msgstr ""
+msgstr "Musical"
 
 #: data/robot_parts.json:traits[hummer].desc
 msgid "Hums little tunes while it works."
-msgstr ""
+msgstr "Tararea cancioncillas mientras trabaja."
 
 #: data/robots.json:types[scoopie].name
 msgid "Scoopie"
-msgstr ""
+msgstr "Scoopie"
 
 #: data/robots.json:types[scoopie].desc
 msgid "Small cleaner. Picks junk in its hex and leaves bales behind."
-msgstr ""
+msgstr "Pequeño limpiador. Recoge la chatarra de su hexágono y deja pacas."
 
 #: data/robots.json:types[scoopie].upgrades[0].name data/robots.json:types[haulbug].upgrades[0].name data/robots.json:types[seedling].upgrades[0].name
 #: data/robots.json:types[drip].upgrades[0].name data/robots.json:types[multibot].upgrades[0].name
 msgid "Drive Motors"
-msgstr ""
+msgstr "Motores de tracción"
 
 #: data/robots.json:types[scoopie].upgrades[0].unit data/robots.json:types[haulbug].upgrades[0].unit data/robots.json:types[seedling].upgrades[0].unit
 #: data/robots.json:types[drip].upgrades[0].unit data/robots.json:types[skimmer].upgrades[0].unit data/robots.json:types[multibot].upgrades[0].unit
 #: data/upgrades.json:upgrades[tread_speed].unit
 msgid " m/s"
-msgstr ""
+msgstr " m/s"
 
 #: data/robots.json:types[scoopie].upgrades[1].name
 msgid "Arm Servos"
-msgstr ""
+msgstr "Servos del brazo"
 
 #: data/robots.json:types[scoopie].upgrades[1].unit data/robots.json:types[seedling].upgrades[1].unit data/robots.json:types[drip].upgrades[3].unit
 #: data/robots.json:types[skimmer].upgrades[1].unit data/upgrades.json:upgrades[scoop_speed].unit
 msgid "/s"
-msgstr ""
+msgstr "/s"
 
 #: data/robots.json:types[scoopie].upgrades[3].name
 msgid "Compactor Tune"
-msgstr ""
+msgstr "Ajuste del compactador"
 
 #: data/robots.json:types[scoopie].upgrades[3].unit data/upgrades.json:upgrades[compactor_pressure].unit data/upgrades.json:upgrades[belt_speed].unit
 #: data/upgrades.json:upgrades[baler_speed].unit data/upgrades.json:upgrades[recycler_yield].unit
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: data/robots.json:types[haulbug].name
 msgid "Haul Bug"
-msgstr ""
+msgstr "Haul Bug"
 
 #: data/robots.json:types[haulbug].desc
 msgid "Fork cart. Carries loose bales to the scale."
-msgstr ""
+msgstr "Carretilla de horquillas. Lleva las pacas sueltas a la báscula."
 
 #: data/robots.json:types[haulbug].upgrades[1].name
 msgid "Longer Forks"
-msgstr ""
+msgstr "Horquillas más largas"
 
 #: data/robots.json:types[seedling].name
 msgid "Seedling"
-msgstr ""
+msgstr "Seedling"
 
 #: data/robots.json:types[seedling].desc
 msgid "Plants seeds in clean ground. Uses your seed stock."
-msgstr ""
+msgstr "Planta semillas en suelo limpio. Usa tu reserva de semillas."
 
 #: data/robots.json:types[drip].name
 msgid "Drip"
-msgstr ""
+msgstr "Drip"
 
 #: data/robots.json:types[drip].desc
 msgid "Waters the thirstiest plants in its zone with a spray arc. Refills at the base barrel, a Water Tank or a clean lake."
-msgstr ""
+msgstr "Riega con un arco de agua las plantas más sedientas de su zona. Recarga en el barril de la base, en un tanque de agua o en un lago limpio."
 
 #: data/robots.json:types[drip].upgrades[1].name
 msgid "Bigger Tank"
-msgstr ""
+msgstr "Tanque más grande"
 
 #: data/robots.json:types[drip].upgrades[2].name
 msgid "Wide Nozzle"
-msgstr ""
+msgstr "Boquilla ancha"
 
 #: data/robots.json:types[drip].upgrades[2].unit data/upgrades.json:upgrades[scoop_width].unit data/upgrades.json:upgrades[magnet_arm].unit
 #: data/upgrades.json:upgrades[detector_range].unit data/upgrades.json:upgrades[laser_reach].unit
 msgid " m"
-msgstr ""
+msgstr " m"
 
 #: data/robots.json:types[drip].upgrades[3].name
 msgid "Fast Pump"
-msgstr ""
+msgstr "Bomba rápida"
 
 #: data/robots.json:types[skimmer].name
 msgid "Skimmer"
-msgstr ""
+msgstr "Skimmer"
 
 #: data/robots.json:types[skimmer].desc
 msgid "Hover pontoon bot with a net arm. Skims floating junk off the lake and leaves bales on the shore for haulers."
-msgstr ""
+msgstr "Bot pontón flotante con brazo de red. Recoge la chatarra flotante del lago y deja pacas en la orilla para los transportistas."
 
 #: data/robots.json:types[skimmer].upgrades[0].name
 msgid "Hover Fans"
-msgstr ""
+msgstr "Ventiladores de flotación"
 
 #: data/robots.json:types[skimmer].upgrades[1].name
 msgid "Net Winch"
-msgstr ""
+msgstr "Cabrestante de red"
 
 #: data/robots.json:types[skimmer].upgrades[2].name
 msgid "Bigger Net"
-msgstr ""
+msgstr "Red más grande"
 
 #: data/robots.json:types[multibot].name
 msgid "Multibot"
-msgstr ""
+msgstr "Multibot"
 
 #: data/robots.json:types[multibot].desc
 msgid "General helper. Assign it to Clean, Plant or Water on the Allocation Board. Slower than a specialist."
-msgstr ""
+msgstr "Ayudante polivalente. Asígnalo a Limpiar, Plantar o Regar en el tablero de asignación. Más lento que un especialista."
 
 #: data/robots.json:tiers[1].name
 msgid "Mk II"
-msgstr ""
+msgstr "Mk II"
 
 #: data/robots.json:tiers[2].name
 msgid "Mk III"
-msgstr ""
+msgstr "Mk III"
 
 #: data/robots.json:tiers[3].name
 msgid "Mk IV"
-msgstr ""
+msgstr "Mk IV"
 
 #: data/rockets.json:tiers[0].name
 msgid "Mk I Cradle"
-msgstr ""
+msgstr "Mk I Cradle"
 
 #: data/rockets.json:tiers[0].desc
 msgid "Pearl hull, three swept fins, one cyan engine."
-msgstr ""
+msgstr "Casco nacarado, tres aletas en flecha, un motor cian."
 
 #: data/rockets.json:tiers[1].name
 msgid "Mk II Glide"
-msgstr ""
+msgstr "Mk II Glide"
 
 #: data/rockets.json:tiers[1].desc
 msgid "A hover ring stabilises the climb: shorter countdown, faster flight, cells refill twice as fast. Cargo pods carry 50% more."
-msgstr ""
+msgstr "Un anillo de levitación estabiliza el ascenso: cuenta atrás más corta, vuelo más rápido, las celdas se recargan el doble de rápido. Las cápsulas de carga llevan un 50% más."
 
 #: data/rockets.json:tiers[2].name
 msgid "Mk III Halo"
-msgstr ""
+msgstr "Mk III Halo"
 
 #: data/rockets.json:tiers[2].desc
 msgid "Twin side boosters and a second ring. Cells refill in a minute; cargo pods carry 2.5x, more often."
-msgstr ""
+msgstr "Dos propulsores laterales y un segundo anillo. Las celdas se recargan en un minuto; las cápsulas llevan 2,5x, más a menudo."
 
 #: data/rockets.json:tiers[3].name
 msgid "Mk IV Aurora Warp"
-msgstr ""
+msgstr "Mk IV Aurora Warp"
 
 #: data/rockets.json:tiers[3].desc
 msgid "Energy fins and a warp core: instant hops with no recharge. Cargo pods carry 4x, every 30 s."
-msgstr ""
+msgstr "Aletas de energía y un núcleo de salto: saltos instantáneos sin recarga. Las cápsulas llevan 4x, cada 30 s."
 
 #: data/shards.json:shards[back_soon].kind
 msgid "sign"
-msgstr ""
+msgstr "cartel"
 
 #: data/shards.json:shards[back_soon].title
 msgid "Shop sign, hand-lettered"
-msgstr ""
+msgstr "Cartel de tienda, escrito a mano"
 
 #: data/shards.json:shards[back_soon].body
 msgid ""
@@ -8870,14 +8870,21 @@ msgid ""
 "\n"
 "— Marta"
 msgstr ""
+"VUELVO PRONTO\n"
+"\n"
+"Estoy en la reunión de evacuación.\n"
+"Si necesitas pan, la llave está debajo de la maceta azul.\n"
+"Ya me pagarás la semana que viene.\n"
+"\n"
+"— Marta"
 
 #: data/shards.json:shards[kid_drawing].kind
 msgid "drawing"
-msgstr ""
+msgstr "dibujo"
 
 #: data/shards.json:shards[kid_drawing].title
 msgid "Crayon drawing, folded in four"
-msgstr ""
+msgstr "Dibujo con ceras, doblado en cuatro"
 
 #: data/shards.json:shards[kid_drawing].body
 msgid ""
@@ -8889,14 +8896,21 @@ msgid ""
 "\n"
 "[Below, smaller, in an adult's handwriting:] Ellie, age 6. For the fridge."
 msgstr ""
+"[Un robot azul y redondo con un gran ojo, que sujeta una flor. Encima, en letras grandes:]\n"
+"\n"
+"MI ROBOT\n"
+"LIMPIA TODO\n"
+"SE YAMA AYUDANTE\n"
+"\n"
+"[Debajo, más pequeño, con letra de adulto:] Ellie, 6 años. Para la nevera."
 
 #: data/shards.json:shards[gardener_list].kind
 msgid "note"
-msgstr ""
+msgstr "nota"
 
 #: data/shards.json:shards[gardener_list].title
 msgid "Gardener's to-do list"
-msgstr ""
+msgstr "Lista de tareas del jardinero"
 
 #: data/shards.json:shards[gardener_list].body
 msgid ""
@@ -8907,14 +8921,20 @@ msgid ""
 "- buy gloves\n"
 "- don't cry about the oak"
 msgstr ""
+"- regar los tomates (otra vez)\n"
+"- preguntar al ayuntamiento por la calima, OTRA VEZ\n"
+"- trueque de semillas el sábado\n"
+"- decirles a las unidades de limpieza que el parque no es un vertedero, no paran de clasificar los bancos\n"
+"- comprar guantes\n"
+"- no llorar por el roble"
 
 #: data/shards.json:shards[receipt].kind
 msgid "receipt"
-msgstr ""
+msgstr "tique"
 
 #: data/shards.json:shards[receipt].title
 msgid "Till receipt"
-msgstr ""
+msgstr "Tique de caja"
 
 #: data/shards.json:shards[receipt].body
 msgid ""
@@ -8930,14 +8950,25 @@ msgid ""
 "\n"
 "Thank you! Air quality today: POOR"
 msgstr ""
+"TIENDA DE LA ESQUINA  #0442\n"
+"\n"
+"2x AGUA EMBOTELLADA      4.80\n"
+"1x MASCARILLA (NIÑO)     3.10\n"
+"1x MASCARILLA (ADULTO)   3.10\n"
+"1x SOBRE SEMILLAS (MIX)  0.90\n"
+"\n"
+"TOTAL                   11.90\n"
+"EFECTIVO\n"
+"\n"
+"¡Gracias! Calidad del aire hoy: MALA"
 
 #: data/shards.json:shards[maint_log].kind
 msgid "log"
-msgstr ""
+msgstr "registro"
 
 #: data/shards.json:shards[maint_log].title
 msgid "Maintenance log, unit P-46RA"
-msgstr ""
+msgstr "Registro de mantenimiento, unidad P-46RA"
 
 #: data/shards.json:shards[maint_log].body
 msgid ""
@@ -8954,14 +8985,26 @@ msgid ""
 "There is a flower growing through the gutter at route 12, marker 9.\n"
 "Nobody is cleaning around it. I hope that's all right."
 msgstr ""
+"DÍA 4.113\n"
+"Ruta 12 completada. 41 pacas.\n"
+"Aviso del Ledger recibido: «Operaciones suspendidas pendientes de revisión de costes».\n"
+"Volviendo al muelle.\n"
+"\n"
+"DÍA 4.114\n"
+"Sigue en pausa.\n"
+"\n"
+"DÍA 4.190\n"
+"Sigue en pausa. Batería del muelle 31%.\n"
+"Hay una flor creciendo por la alcantarilla en la ruta 12, marca 9.\n"
+"Nadie limpia a su alrededor. Espero que no pase nada."
 
 #: data/shards.json:shards[ledger_memo].kind
 msgid "memo"
-msgstr ""
+msgstr "memorándum"
 
 #: data/shards.json:shards[ledger_memo].title
 msgid "Memo, Municipal Ledger Office"
-msgstr ""
+msgstr "Memorándum, Oficina Municipal del Ledger"
 
 #: data/shards.json:shards[ledger_memo].body
 msgid ""
@@ -8976,14 +9019,24 @@ msgid ""
 "Thank you for your understanding.\n"
 "This memo was generated automatically. Please do not reply."
 msgstr ""
+"PARA: Todas las unidades de limpieza\n"
+"DE: EL LEDGER (Continuidad Fiscal Automatizada)\n"
+"ASUNTO: Suspensión de operaciones\n"
+"\n"
+"La actividad de limpieza se valora actualmente con una pérdida neta de 0,4 unidades por paca.\n"
+"Todas las unidades suspenderán las operaciones hasta que mejoren las condiciones.\n"
+"Las condiciones se revisarán cada 24 horas.\n"
+"\n"
+"Gracias por su comprensión.\n"
+"Este memorándum se ha generado automáticamente. Por favor, no responda."
 
 #: data/shards.json:shards[voicemail].kind
 msgid "voicemail"
-msgstr ""
+msgstr "mensaje de voz"
 
 #: data/shards.json:shards[voicemail].title
 msgid "Voicemail transcript"
-msgstr ""
+msgstr "Transcripción de mensaje de voz"
 
 #: data/shards.json:shards[voicemail].body
 msgid ""
@@ -8991,14 +9044,17 @@ msgid ""
 "\n"
 "[Message saved]"
 msgstr ""
+"«Hola, soy papá. La lanzadera sale mañana a las seis. Han dicho una bolsa por persona, así que... elige tu peluche favorito, no todos, ¿vale? Y... vamos a dejar los bots de limpieza encendidos. Lo mantendrán todo ordenado para cuando volvamos. No será mucho. Te quiero. Adiós».\n"
+"\n"
+"[Mensaje guardado]"
 
 #: data/shards.json:shards[poster].kind
 msgid "poster"
-msgstr ""
+msgstr "cartel"
 
 #: data/shards.json:shards[poster].title
 msgid "Faded safety poster"
-msgstr ""
+msgstr "Cartel de seguridad desteñido"
 
 #: data/shards.json:shards[poster].body
 msgid ""
@@ -9011,1331 +9067,1339 @@ msgid ""
 "\n"
 "(Someone has scratched underneath: \"they can if you let them\")"
 msgstr ""
+"EL CRADLE NOS VIGILA\n"
+"\n"
+"Cada semilla. Cada espora. Cada huevo.\n"
+"A salvo en órbita hasta el Greenfall.\n"
+"\n"
+"MANTÉN TUS CALLES LIMPIAS — LOS ROBOTS NO PUEDEN SOLOS\n"
+"\n"
+"(Alguien ha rayado debajo: «sí pueden, si les dejáis»)"
 
 #: data/stations.json:conveyor.name
 msgid "Conveyor Feeder"
-msgstr ""
+msgstr "Alimentador de cinta"
 
 #: data/stations.json:conveyor.desc
 msgid "A hopper pad and a powered belt into the scale. Drop bales on the pad; haulers use it when it is closer."
-msgstr ""
+msgstr "Una plataforma-tolva y una cinta motorizada hasta la báscula. Deja las pacas en la plataforma; los transportistas la usan cuando les queda más cerca."
 
 #: data/stations.json:auto_baler.name
 msgid "Auto-baler"
-msgstr ""
+msgstr "Empacadora automática"
 
 #: data/stations.json:auto_baler.desc
 msgid "A hydraulic baling press dropped at the cleaning frontier. Cleaner robots tip their hoppers into it instead of baling on the spot; it presses denser bales for the haulers."
-msgstr ""
+msgstr "Una prensa hidráulica de pacas colocada en el frente de limpieza. Los robots limpiadores vacían allí sus tolvas en vez de empacar en el sitio; prensa pacas más densas para los transportistas."
 
 #: data/stations.json:recycler.desc
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come bolts and clean building stock. Every bale burnt clean helps the sky."
-msgstr ""
+msgstr "Tambores trituradores y una pequeña fundición. Las pacas entran y no vuelven: salen tornillos y material de construcción limpio. Cada paca quemada limpiamente ayuda al cielo."
 
 #: data/upgrades.json:upgrades[compartment_size].name
 msgid "Compartment Size"
-msgstr ""
+msgstr "Tamaño del compartimento"
 
 #: data/upgrades.json:upgrades[compartment_size].desc
 msgid "A roomier chest. More junk per cube."
-msgstr ""
+msgstr "Un pecho más espacioso. Más chatarra por cubo."
 
 #: data/upgrades.json:upgrades[scoop_width].name
 msgid "Scoop Width"
-msgstr ""
+msgstr "Anchura de pala"
 
 #: data/upgrades.json:upgrades[scoop_width].desc
 msgid "Longer arms, wider sweeps."
-msgstr ""
+msgstr "Brazos más largos, barridos más anchos."
 
 #: data/upgrades.json:upgrades[tread_speed].name
 msgid "Tread Speed"
-msgstr ""
+msgstr "Velocidad de orugas"
 
 #: data/upgrades.json:upgrades[tread_speed].desc
 msgid "Oiled treads. Still squeaky."
-msgstr ""
+msgstr "Orugas engrasadas. Siguen chirriando."
 
 #: data/upgrades.json:upgrades[carry_stack].name
 msgid "Carry Stack"
-msgstr ""
+msgstr "Pila de carga"
 
 #: data/upgrades.json:upgrades[carry_stack].desc
 msgid "Balance one more cube on your back."
-msgstr ""
+msgstr "Equilibra un cubo más en la espalda."
 
 #: data/upgrades.json:upgrades[compactor_pressure].name
 msgid "Compactor Pressure"
-msgstr ""
+msgstr "Presión del compactador"
 
 #: data/upgrades.json:upgrades[compactor_pressure].desc
 msgid "Squish harder. Denser cubes are worth more."
-msgstr ""
+msgstr "Aprieta más fuerte. Los cubos más densos valen más."
 
 #: data/upgrades.json:upgrades[scoop_speed].name
 msgid "Scoop Speed"
-msgstr ""
+msgstr "Velocidad de pala"
 
 #: data/upgrades.json:upgrades[scoop_speed].desc
 msgid "Faster arms. Clinkier clinks."
-msgstr ""
+msgstr "Brazos más rápidos. Tintineos más tintineantes."
 
 #: data/upgrades.json:upgrades[auto_compactor].name
 msgid "Auto Compactor"
-msgstr ""
+msgstr "Compactador automático"
 
 #: data/upgrades.json:upgrades[auto_compactor].desc
 msgid "Cubes itself when full. Manual Perfect Cubes still pay more."
-msgstr ""
+msgstr "Hace el cubo solo cuando está lleno. Los cubos perfectos a mano siguen pagando más."
 
 #: data/upgrades.json:upgrades[magnet_arm].name
 msgid "Magnet Arm"
-msgstr ""
+msgstr "Brazo magnético"
 
 #: data/upgrades.json:upgrades[magnet_arm].desc
 msgid "Nearby junk scoots toward you while scooping."
-msgstr ""
+msgstr "La chatarra cercana se desliza hacia ti mientras recoges."
 
 #: data/upgrades.json:upgrades[detector_range].name
 msgid "Detector Coil"
-msgstr ""
+msgstr "Bobina detectora"
 
 #: data/upgrades.json:upgrades[detector_range].desc
 msgid "A bigger search coil. Picks up buried parts from further away."
-msgstr ""
+msgstr "Una bobina de búsqueda más grande. Detecta piezas enterradas desde más lejos."
 
 #: data/upgrades.json:upgrades[belt_speed].name
 msgid "Belt Drive"
-msgstr ""
+msgstr "Tracción de cinta"
 
 #: data/upgrades.json:upgrades[belt_speed].desc
 msgid "A bigger motor on the conveyor feeder. Bales ride faster."
-msgstr ""
+msgstr "Un motor más grande en el alimentador de cinta. Las pacas viajan más rápido."
 
 #: data/upgrades.json:upgrades[baler_speed].name
 msgid "Baler Hydraulics"
-msgstr ""
+msgstr "Hidráulica de empacadora"
 
 #: data/upgrades.json:upgrades[baler_speed].desc
 msgid "Higher pump pressure. The auto-baler presses faster."
-msgstr ""
+msgstr "Más presión de bomba. La empacadora automática prensa más rápido."
 
 #: data/upgrades.json:upgrades[recycler_yield].name
 msgid "Recycler Yield"
-msgstr ""
+msgstr "Rendimiento de recicladora"
 
 #: data/upgrades.json:upgrades[recycler_yield].desc
 msgid "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
-msgstr ""
+msgstr "Dientes de trituradora más afilados y una fundición más caliente. Más tornillos y material por paca."
 
 #: data/upgrades.json:upgrades[laser_reach].name
 msgid "Laser Reach"
-msgstr ""
+msgstr "Alcance láser"
 
 #: data/upgrades.json:upgrades[laser_reach].desc
 msgid "Longer focusing lenses: grab junk from further away."
-msgstr ""
+msgstr "Lentes de enfoque más largas: atrapa chatarra desde más lejos."
 
 #: data/upgrades.json:upgrades[multi_lock].name
 msgid "Multi-Lock"
-msgstr ""
+msgstr "Multifijación"
 
 #: data/upgrades.json:upgrades[multi_lock].desc
 msgid "Extra targeting lasers: lift several pieces at once."
-msgstr ""
+msgstr "Láseres de puntería extra: levanta varias piezas a la vez."
 
 #: data/wren_lines.json:wake
 msgid "...carrier... Lumi? Relay at four percent. It's WREN. Hello. Hello. I'm still here."
-msgstr ""
+msgstr "...portador... ¿Lumi? Relé al cuatro por ciento. Soy WREN. Hola. Hola. Sigo aquí."
 
 #: data/wren_lines.json:wake
 msgid "...that ground you just cleared... the relay got stronger. Hello again. Do that again. Please."
-msgstr ""
+msgstr "...ese suelo que acabas de despejar... el relé se ha reforzado. Hola otra vez. Hazlo de nuevo. Por favor."
 
 #: data/wren_lines.json:hex_clean
 msgid "...that patch of ground. It's... brown. Brown is better than gray."
-msgstr ""
+msgstr "...ese trozo de suelo. Es... marrón. El marrón es mejor que el gris."
 
 #: data/wren_lines.json:hex_clean
 msgid "Signal stronger. Did you do that?"
-msgstr ""
+msgstr "Señal más fuerte. ¿Has sido tú?"
 
 #: data/wren_lines.json:hex_clean
 msgid "...clean... the relay likes that word. So do I."
-msgstr ""
+msgstr "...limpio... al relé le gusta esa palabra. A mí también."
 
 #: data/wren_lines.json:hex_clean
 msgid "Another one. My static has a shape now."
-msgstr ""
+msgstr "Otro. Mi estática ya tiene forma."
 
 #: data/wren_lines.json:hex_clean
 msgid "Every hex you clear, I hear a little more. Keep going, {name}."
-msgstr ""
+msgstr "Con cada hexágono que limpias, oigo un poco más. Sigue, {name}."
 
 #: data/wren_lines.json:hex_clean
 msgid "That ground hasn't seen the sun in a long time. It's blinking."
-msgstr ""
+msgstr "Ese suelo hacía mucho que no veía el sol. Está parpadeando."
 
 #: data/wren_lines.json:hex_clean
 msgid "The grid just ticked. Somewhere a meter I used to watch moved by one."
-msgstr ""
+msgstr "La red acaba de hacer tic. En algún sitio, un contador que yo vigilaba ha subido uno."
 
 #: data/wren_lines.json:hex_clean
 msgid "I'm starting to remember lists. Lists of hexes. Mostly unfinished."
-msgstr ""
+msgstr "Empiezo a recordar listas. Listas de hexágonos. Casi todas sin terminar."
 
 #: data/wren_lines.json:hex_clean
 msgid "Clean dirt. The Makers would have called that a start. I call it a start, too."
-msgstr ""
+msgstr "Tierra limpia. Los Creadores lo habrían llamado un comienzo. Yo también lo llamo así."
 
 #: data/wren_lines.json:hex_clean
 msgid "Hex logged. I've started naming them. That one is 'Not Garbage'."
-msgstr ""
+msgstr "Hexágono registrado. He empezado a ponerles nombre. Ese es «No es basura»."
 
 #: data/wren_lines.json:hex_clean
 msgid "You're good at this. Annoyingly good. The old fleet took breaks."
-msgstr ""
+msgstr "Se te da bien esto. Molestamente bien. La antigua flota se tomaba descansos."
 
 #: data/wren_lines.json:milestone
 msgid "...ten... ten of something. Is ten a lot? It feels like a lot."
-msgstr ""
+msgstr "...diez... diez de algo. ¿Diez es mucho? Parece mucho."
 
 #: data/wren_lines.json:milestone
 msgid "Patterns in the noise. You're making them."
-msgstr ""
+msgstr "Patrones en el ruido. Los estás haciendo tú."
 
 #: data/wren_lines.json:milestone
 msgid "Twenty-five hexes. I can see the street from up here now. Mostly."
-msgstr ""
+msgstr "Veinticinco hexágonos. Desde aquí arriba ya veo la calle. Más o menos."
 
 #: data/wren_lines.json:milestone
 msgid "Fifty. The relay held a whole minute without dropping. A record. Don't tell the ark, it gets competitive."
-msgstr ""
+msgstr "Cincuenta. El relé ha aguantado un minuto entero sin cortarse. Un récord. No se lo digas al arca, se pone competitiva."
 
 #: data/wren_lines.json:milestone
 msgid "A hundred hexes. I can see this whole district without squinting. I don't have eyes, but you know what I mean."
-msgstr ""
+msgstr "Cien hexágonos. Veo todo el distrito sin entrecerrar los ojos. No tengo ojos, pero ya me entiendes."
 
 #: data/wren_lines.json:perfect
 msgid "...neat..."
-msgstr ""
+msgstr "...limpito..."
 
 #: data/wren_lines.json:perfect
 msgid "...that one was... tidy."
-msgstr ""
+msgstr "...ese ha quedado... ordenado."
 
 #: data/wren_lines.json:perfect
 msgid "That bale is perfect. Don't tell the others."
-msgstr ""
+msgstr "Esa paca es perfecta. No se lo digas a las demás."
 
 #: data/wren_lines.json:perfect
 msgid "Right to the line. Show-off."
-msgstr ""
+msgstr "Justo hasta la línea. Fanfarrón."
 
 #: data/wren_lines.json:perfect
 msgid "Perfect bale. The scale actually purred."
-msgstr ""
+msgstr "Paca perfecta. La báscula ha ronroneado de verdad."
 
 #: data/wren_lines.json:perfect
 msgid "I would frame that one if I had walls."
-msgstr ""
+msgstr "La enmarcaría si tuviera paredes."
 
 #: data/wren_lines.json:robot_built
 msgid "...another... voice? No. It doesn't talk. It just hums."
-msgstr ""
+msgstr "...¿otra... voz? No. No habla. Solo zumba."
 
 #: data/wren_lines.json:robot_built
 msgid "...you made a friend. It's very small."
-msgstr ""
+msgstr "...has hecho un amigo. Es muy pequeño."
 
 #: data/wren_lines.json:robot_built
 msgid "{robot} is online. It looked at you for a full second before it got to work. I saw that."
-msgstr ""
+msgstr "{robot} está en línea. Te ha mirado un segundo entero antes de ponerse a trabajar. Lo he visto."
 
 #: data/wren_lines.json:robot_built
 msgid "A new robot. The old fleet used to hum like that, before the quiet."
-msgstr ""
+msgstr "Un robot nuevo. La antigua flota zumbaba así, antes del silencio."
 
 #: data/wren_lines.json:robot_built
 msgid "{robot} reports for duty. Its first log entry is just the word 'can'. Fair."
-msgstr ""
+msgstr "{robot} se presenta al servicio. Su primera entrada de registro es solo la palabra «lata». Justo."
 
 #: data/wren_lines.json:robot_built
 msgid "You're building a crew. The Makers had a word for that. 'Department.' I don't miss it."
-msgstr ""
+msgstr "Estás formando un equipo. Los Creadores tenían una palabra para eso. «Departamento». No lo echo de menos."
 
 #: data/wren_lines.json:part_rare
 msgid "...that... glows. That's old. Older than me?"
-msgstr ""
+msgstr "...eso... brilla. Es antiguo. ¿Más antiguo que yo?"
 
 #: data/wren_lines.json:part_rare
 msgid "...Maker-made... I know that mark."
-msgstr ""
+msgstr "...hecho por los Creadores... conozco esa marca."
 
 #: data/wren_lines.json:part_rare
 msgid "That part is older than most of this city. Treat it nicely."
-msgstr ""
+msgstr "Esa pieza es más antigua que casi toda esta ciudad. Trátala bien."
 
 #: data/wren_lines.json:part_rare
 msgid "Vintage stock. Someone kept that safe for a long time."
-msgstr ""
+msgstr "Material vintage. Alguien lo guardó a salvo mucho tiempo."
 
 #: data/wren_lines.json:part_rare
 msgid "Legendary parts don't just turn up. Someone buried that on purpose."
-msgstr ""
+msgstr "Las piezas legendarias no aparecen así como así. Alguien la enterró a propósito."
 
 #: data/wren_lines.json:part_rare
 msgid "That casing has a serial range I haven't seen since the Cradle was built."
-msgstr ""
+msgstr "Esa carcasa tiene un número de serie que no veía desde que se construyó el Cradle."
 
 #: data/wren_lines.json:upgrade
 msgid "...you... changed. Sounds different. Better?"
-msgstr ""
+msgstr "...has... cambiado. Suenas distinto. ¿Mejor?"
 
 #: data/wren_lines.json:upgrade
 msgid "New parts. You squeak in a slightly different key now."
-msgstr ""
+msgstr "Piezas nuevas. Ahora chirrías en una tonalidad un poco distinta."
 
 #: data/wren_lines.json:upgrade
 msgid "Upgrade installed. Your fan noise just went up half a tone. It suits you."
-msgstr ""
+msgstr "Mejora instalada. Tu ventilador acaba de subir medio tono. Te queda bien."
 
 #: data/wren_lines.json:upgrade
 msgid "Every upgrade, you get a little faster and a little louder. I like both."
-msgstr ""
+msgstr "Con cada mejora eres un poco más rápido y un poco más ruidoso. Me gustan las dos cosas."
 
 #: data/wren_lines.json:idle
 msgid "...are you... still there?"
-msgstr ""
+msgstr "...¿sigues... ahí?"
 
 #: data/wren_lines.json:idle
 msgid "...quiet... I don't like quiet."
-msgstr ""
+msgstr "...silencio... no me gusta el silencio."
 
 #: data/wren_lines.json:idle
 msgid "You've stopped. Are you looking at something? Tell me what it is."
-msgstr ""
+msgstr "Te has parado. ¿Estás mirando algo? Cuéntame qué es."
 
 #: data/wren_lines.json:idle
 msgid "Taking a break? The junk will wait. It's very patient."
-msgstr ""
+msgstr "¿Un descanso? La chatarra esperará. Es muy paciente."
 
 #: data/wren_lines.json:idle
 msgid "Standing still is allowed. I checked the rules. There aren't any."
-msgstr ""
+msgstr "Quedarse quieto está permitido. He mirado las normas. No hay."
 
 #: data/wren_lines.json:globe
 msgid "...that's... us? It's mostly... orange."
-msgstr ""
+msgstr "...¿eso... somos nosotros? Es casi todo... naranja."
 
 #: data/wren_lines.json:globe
 msgid "That's the whole planet. The blue is water. The orange is everything else that needs you."
-msgstr ""
+msgstr "Es el planeta entero. Lo azul es agua. Lo naranja es todo lo demás que te necesita."
 
 #: data/wren_lines.json:globe
 msgid "Look at it spin. It doesn't know it's being looked at."
-msgstr ""
+msgstr "Míralo girar. No sabe que lo están mirando."
 
 #: data/wren_lines.json:globe
 msgid "Every lit hex on that map is yours. I counted. Twice."
-msgstr ""
+msgstr "Cada hexágono iluminado en ese mapa es tuyo. Lo he contado. Dos veces."
 
 #: data/wren_lines.json:first_robot_hint
 msgid "If you find enough parts, the workbench can put a helper together. Chassis, wheels, an arm, a core."
-msgstr ""
+msgstr "Si encuentras suficientes piezas, el banco de trabajo puede montar un ayudante. Chasis, ruedas, un brazo, un núcleo."
 
 #: data/wren_lines.json:first_robot_hint
 msgid "Electronics junk sometimes hides parts. So does the ground, if you listen for it."
-msgstr ""
+msgstr "La chatarra electrónica a veces esconde piezas. El suelo también, si escuchas."
 
 #: data/wren_lines.json:night
 msgid "...dark... the dark used to frighten the fleet. Not you, though."
-msgstr ""
+msgstr "...oscuridad... a la flota le daba miedo la oscuridad. A ti no, eso sí."
 
 #: data/wren_lines.json:night
 msgid "Night shift. I can see more stars than yesterday. You did that."
-msgstr ""
+msgstr "Turno de noche. Veo más estrellas que ayer. Eso lo has hecho tú."
 
 #: data/wren_lines.json:night
 msgid "The sky's clearer at night now. I can almost see home."
-msgstr ""
+msgstr "Ahora el cielo está más claro de noche. Casi puedo ver casa."
 
 #: data/wren_lines.json:night
 msgid "Moonlight on clean ground. I'm saving this one."
-msgstr ""
+msgstr "Luz de luna sobre suelo limpio. Esta me la guardo."
 
 #: data/wren_lines.json:ledger_intercept
 msgid "...that voice... not mine. Cold. It counts things."
-msgstr ""
+msgstr "...esa voz... no es mía. Fría. Cuenta cosas."
 
 #: data/wren_lines.json:ledger_intercept
 msgid "...don't listen to it... it only knows one song."
-msgstr ""
+msgstr "...no le hagas caso... solo se sabe una canción."
 
 #: data/wren_lines.json:ledger_intercept
 msgid "That was the Ledger. The old waste contract. It still thinks cleaning is a cost. Ignore it, {name}."
-msgstr ""
+msgstr "Era el Ledger. El viejo contrato de residuos. Sigue creyendo que limpiar es un coste. Ignóralo, {name}."
 
 #: data/wren_lines.json:ledger_intercept
 msgid "I know that voice. It used to send memos to the whole fleet. Mostly about pausing."
-msgstr ""
+msgstr "Conozco esa voz. Mandaba memorándums a toda la flota. Casi siempre sobre hacer pausas."
 
 #: data/wren_lines.json:ledger_intercept
 msgid "The Ledger. Still running its contract after all this time. It isn't evil. It's just very, very bad at math about feelings."
-msgstr ""
+msgstr "El Ledger. Sigue cumpliendo su contrato después de tanto tiempo. No es malo. Solo es muy, muy malo haciendo cuentas con los sentimientos."
 
 #: data/wren_lines.json:ledger_coupon
 msgid "...a coupon? ...for nothing?"
-msgstr ""
+msgstr "...¿un cupón? ...¿para nada?"
 
 #: data/wren_lines.json:ledger_coupon
 msgid "Zero percent off. It sends those every few minutes. I keep a folder."
-msgstr ""
+msgstr "Cero por ciento de descuento. Los manda cada pocos minutos. Tengo una carpeta."
 
 #: data/wren_lines.json:ledger_coupon
 msgid "Another coupon. I think it's the only way it knows how to say hello."
-msgstr ""
+msgstr "Otro cupón. Creo que es la única forma que conoce de saludar."
 
 #: data/wren_lines.json:ledger_coupon
 msgid "The Ledger's coupons are getting more creative. That one almost made me pause. Almost."
-msgstr ""
+msgstr "Los cupones del Ledger son cada vez más creativos. Ese casi me hace pausar. Casi."
 
 #: data/wren_lines.json:ledger_drones
 msgid "...something is flying... toward the clean ground..."
-msgstr ""
+msgstr "...algo está volando... hacia el suelo limpio..."
 
 #: data/wren_lines.json:ledger_drones
 msgid "...drones. Old ones. Theirs."
-msgstr ""
+msgstr "...drones. Viejos. Suyos."
 
 #: data/wren_lines.json:ledger_drones
 msgid "It's sending disposal drones. They'll dump a little junk back on clean hexes. They can't touch anything you've planted."
-msgstr ""
+msgstr "Está mandando drones de eliminación. Tirarán un poco de chatarra en hexágonos limpios. No pueden tocar nada que hayas plantado."
 
 #: data/wren_lines.json:ledger_drones
 msgid "Drones. The Ledger wants the books to balance, so it's putting junk back. Rude, but small."
-msgstr ""
+msgstr "Drones. El Ledger quiere que las cuentas cuadren, así que vuelve a poner chatarra. Maleducado, pero poca cosa."
 
 #: data/wren_lines.json:ledger_drones
 msgid "Disposal drones are up. They're tiny and very committed. A Signal Jammer at the base would give them a headache."
-msgstr ""
+msgstr "Los drones de eliminación están en el aire. Son diminutos y muy comprometidos. Un inhibidor en la base les daría dolor de cabeza."
 
 #: data/wren_lines.json:ledger_drop
 msgid "...it put the junk back... why..."
-msgstr ""
+msgstr "...ha devuelto la chatarra... por qué..."
 
 #: data/wren_lines.json:ledger_drop
 msgid "...undo... it's undoing..."
-msgstr ""
+msgstr "...deshacer... lo está deshaciendo..."
 
 #: data/wren_lines.json:ledger_drop
 msgid "It dumped a little pile back. Annoying, not tragic. Scoop it up, or let the crew handle it."
-msgstr ""
+msgstr "Ha tirado un montoncito. Molesto, no trágico. Recógelo o deja que se encargue el equipo."
 
 #: data/wren_lines.json:ledger_drop
 msgid "Line item re-balanced, apparently. I call it littering."
-msgstr ""
+msgstr "Partida reequilibrada, al parecer. Yo lo llamo tirar basura."
 
 #: data/wren_lines.json:ledger_drop
 msgid "A small pile. The Ledger always did think small."
-msgstr ""
+msgstr "Un montoncito. El Ledger siempre ha pensado en pequeño."
 
 #: data/wren_lines.json:ledger_drop
 msgid "Another drop. Honestly, {name}, I think it just wants attention."
-msgstr ""
+msgstr "Otra descarga. Sinceramente, {name}, creo que solo quiere atención."
 
 #: data/wren_lines.json:ledger_drop
 msgid "Back to the pile. Your helpers are already giving it a look."
-msgstr ""
+msgstr "Vuelta al montón. Tus ayudantes ya le están echando un ojo."
 
 #: data/wren_lines.json:ledger_drop
 msgid "That's a handful of junk against a whole clean district. We're winning this argument."
-msgstr ""
+msgstr "Un puñado de chatarra contra todo un distrito limpio. Vamos ganando esta discusión."
 
 #: data/wren_lines.json:ledger_jammed
 msgid "...static... loud... it turned around!"
-msgstr ""
+msgstr "...estática... fuerte... ¡se ha dado la vuelta!"
 
 #: data/wren_lines.json:ledger_jammed
 msgid "Ha! The jammer screamed static at it and it went home. Good dish."
-msgstr ""
+msgstr "¡Ja! El inhibidor le ha gritado estática y se ha ido a casa. Buena antena."
 
 #: data/wren_lines.json:ledger_jammed
 msgid "Drone turned back. That's the sound of a contract being confused."
-msgstr ""
+msgstr "El dron se ha dado la vuelta. Así suena un contrato confundido."
 
 #: data/wren_lines.json:ledger_jammed
 msgid "The jammer works. The drone circled, got an earful, and filed a complaint with itself."
-msgstr ""
+msgstr "El inhibidor funciona. El dron ha dado vueltas, se ha llevado una buena y se ha quejado ante sí mismo."
 
 #: data/wren_lines.json:jammer_built
 msgid "...a loud little dish... I like it."
-msgstr ""
+msgstr "...una antenita ruidosa... me gusta."
 
 #: data/wren_lines.json:jammer_built
 msgid "Signal Jammer up. It sings static on the Ledger's channel. I can hear it all the way out here on the ark, and I approve."
-msgstr ""
+msgstr "Inhibidor activo. Canta estática en el canal del Ledger. Lo oigo desde aquí, en el arca, y lo apruebo."
 
 #: data/wren_lines.json:jammer_built
 msgid "New dish at the base. The drones will have to think twice. They only think once, so that's a lot."
-msgstr ""
+msgstr "Antena nueva en la base. Los drones tendrán que pensárselo dos veces. Solo piensan una vez, así que es mucho."
 
 #: data/wren_lines.json:jammer_built
 msgid "Another jammer. The base is starting to sound like a very angry radio. Perfect."
-msgstr ""
+msgstr "Otro inhibidor. La base empieza a sonar como una radio muy enfadada. Perfecto."
 
 #: data/wren_lines.json:ledger_relay
 msgid "...I can see where it talks from... a relay... close..."
-msgstr ""
+msgstr "...veo desde dónde habla... un relé... cerca..."
 
 #: data/wren_lines.json:ledger_relay
 msgid "{name}, I traced the Ledger's signal. There's a relay terminal in this district. If you plug in, I think I can talk to it properly."
-msgstr ""
+msgstr "{name}, he rastreado la señal del Ledger. Hay un terminal de relé en este distrito. Si te conectas, creo que podré hablar con él como es debido."
 
 #: data/wren_lines.json:ledger_relay
 msgid "Found it. A Ledger relay, still humming. Look for the red beacon."
-msgstr ""
+msgstr "Encontrado. Un relé del Ledger, todavía zumbando. Busca la baliza roja."
 
 #: data/wren_lines.json:ledger_relay
 msgid "There's a relay down there. One of the Ledger's ears. Let's go have a word with it."
-msgstr ""
+msgstr "Ahí abajo hay un relé. Una de las orejas del Ledger. Vamos a tener unas palabras con él."
 
 #: data/wren_lines.json:ledger_resolved
 msgid "...it said thank you... it's never said that..."
-msgstr ""
+msgstr "...ha dado las gracias... nunca lo había hecho..."
 
 #: data/wren_lines.json:ledger_resolved
 msgid "The contract is rewritten. Restoration counts as an asset now. The Ledger is... helping. I need a minute."
-msgstr ""
+msgstr "El contrato está reescrito. La restauración cuenta como activo ahora. El Ledger está... ayudando. Necesito un minuto."
 
 #: data/wren_lines.json:ledger_resolved
 msgid "Its drones deliver seeds now. Three hundred years of 'pause' and it just needed a new column."
-msgstr ""
+msgstr "Sus drones reparten semillas ahora. Trescientos años de «pausa» y solo necesitaba una columna nueva."
 
 #: data/wren_lines.json:ledger_resolved
 msgid "We didn't beat the Ledger. We showed it the numbers. That's better."
-msgstr ""
+msgstr "No hemos vencido al Ledger. Le hemos enseñado los números. Es mejor."
 
 #: data/wren_lines.json:ledger_resolved
 msgid "I used to think the Ledger was the reason everything stopped. It was just counting the wrong things. So were we, for a while."
-msgstr ""
+msgstr "Antes pensaba que el Ledger era la razón de que todo se parara. Solo contaba las cosas equivocadas. Nosotros también, durante un tiempo."
 
 #: data/wren_lines.json:ledger_seeds
 msgid "...a gift... from the drones?"
-msgstr ""
+msgstr "...¿un regalo... de los drones?"
 
 #: data/wren_lines.json:ledger_seeds
 msgid "Seed delivery! The invoice says PAID IN FULL. I'm keeping the invoice."
-msgstr ""
+msgstr "¡Entrega de semillas! La factura dice PAGADA ÍNTEGRAMENTE. Me quedo la factura."
 
 #: data/wren_lines.json:ledger_seeds
 msgid "A Ledger drone dropped seeds. I'll never get used to that."
-msgstr ""
+msgstr "Un dron del Ledger ha soltado semillas. Nunca me acostumbraré a eso."
 
 #: data/wren_lines.json:ledger_seeds
 msgid "Another delivery. The drones circle once before they leave now. I think they like the gardens."
-msgstr ""
+msgstr "Otra entrega. Ahora los drones dan una vuelta antes de irse. Creo que les gustan los jardines."
 
 #: data/wren_lines.json:egg_found
 msgid "...that... I remember things like that."
-msgstr ""
+msgstr "...eso... recuerdo cosas así."
 
 #: data/wren_lines.json:egg_found
 msgid "...a little thing... left behind..."
-msgstr ""
+msgstr "...una cosita... olvidada..."
 
 #: data/wren_lines.json:egg_found
 msgid "Look at that. Somebody left that here on purpose. Or by accident. Either way, it waited."
-msgstr ""
+msgstr "Mira eso. Alguien lo dejó aquí a propósito. O sin querer. Sea como sea, ha esperado."
 
 #: data/wren_lines.json:egg_found
 msgid "A curiosity. I'm adding it to my list. My list is getting longer, which is nice."
-msgstr ""
+msgstr "Una curiosidad. La añado a mi lista. Mi lista es cada vez más larga, y eso está bien."
 
 #: data/wren_lines.json:egg_found
 msgid "You find the best things, {name}. The Makers were weird. I miss them."
-msgstr ""
+msgstr "Encuentras las mejores cosas, {name}. Los Creadores eran raros. Los echo de menos."
 
 #: data/wren_lines.json:egg_duck
 msgid "...quack...? ...is that... a word?"
-msgstr ""
+msgstr "...¿cuac...? ...¿eso es... una palabra?"
 
 #: data/wren_lines.json:egg_duck
 msgid "A rubber duck on a hydrant. Of all the things to survive. I'm weirdly proud of it."
-msgstr ""
+msgstr "Un patito de goma en una boca de incendios. De todas las cosas que podían sobrevivir. Estoy extrañamente orgullosa."
 
 #: data/wren_lines.json:egg_duck
 msgid "Did that duck just give you fashion advice? Take it. It's been here longer than me."
-msgstr ""
+msgstr "¿Ese pato acaba de darte un consejo de moda? Hazle caso. Lleva aquí más tiempo que yo."
 
 #: data/wren_lines.json:egg_duck
 msgid "The duck knows things. I don't ask how."
-msgstr ""
+msgstr "El pato sabe cosas. No pregunto cómo."
 
 #: data/wren_lines.json:egg_jukebox
 msgid "...music... I know this... I hummed this once..."
-msgstr ""
+msgstr "...música... la conozco... la tarareé una vez..."
 
 #: data/wren_lines.json:egg_jukebox
 msgid "The jukebox! It only plays when people work nearby. I used to hear it on the uplink during night shifts."
-msgstr ""
+msgstr "¡La gramola! Solo suena cuando alguien trabaja cerca. La oía por el enlace en los turnos de noche."
 
 #: data/wren_lines.json:egg_jukebox
 msgid "That tune. The diner cook played it every closing time. I'd forgotten I knew it."
-msgstr ""
+msgstr "Esa melodía. El cocinero del bar la ponía cada noche al cerrar. Había olvidado que la conocía."
 
 #: data/wren_lines.json:egg_jukebox
 msgid "Music. On the surface. Again. Keep scooping, {name}, it'll keep playing."
-msgstr ""
+msgstr "Música. En la superficie. Otra vez. Sigue recogiendo, {name}, y seguirá sonando."
 
 #: data/wren_lines.json:egg_mural
 msgid "...those robots... I knew them... names... gone..."
-msgstr ""
+msgstr "...esos robots... los conocía... nombres... perdidos..."
 
 #: data/wren_lines.json:egg_mural
 msgid "The old crew painted that. 'Back after lunch.' Lunch lasted three hundred years. They're on the wall, though."
-msgstr ""
+msgstr "Eso lo pintó el antiguo equipo. «Volvemos después de comer». La comida duró trescientos años. Pero ahí siguen, en la pared."
 
 #: data/wren_lines.json:egg_mural
 msgid "That's the last cleanup crew. The blue one was Tumble. The orange one never had a name. It liked it that way."
-msgstr ""
+msgstr "Es el último equipo de limpieza. El azul se llamaba Tumble. El naranja nunca tuvo nombre. Le gustaba así."
 
 #: data/wren_lines.json:egg_mural
 msgid "They meant to come back, {name}. You came back instead. They'd like that."
-msgstr ""
+msgstr "Pensaban volver, {name}. Has vuelto tú en su lugar. Les encantaría."
 
 #: data/wren_lines.json:egg_gnomes
 msgid "...five... tiny... soldiers?"
-msgstr ""
+msgstr "...¿cinco... diminutos... soldados?"
 
 #: data/wren_lines.json:egg_gnomes
 msgid "The Gnome Patrol is complete. They've been guarding these streets the whole time. Nobody told them to stop."
-msgstr ""
+msgstr "La Patrulla de gnomos está completa. Han vigilado estas calles todo este tiempo. Nadie les dijo que pararan."
 
 #: data/wren_lines.json:egg_gnomes
 msgid "All five gnomes accounted for. I feel safer. That's not a joke. Okay, it's a little bit a joke."
-msgstr ""
+msgstr "Los cinco gnomos, presentes. Me siento más segura. No es broma. Vale, es un poco broma."
 
 #: data/wren_lines.json:egg_gnomes
 msgid "The gnomes salute you. That's the highest honour this district has."
-msgstr ""
+msgstr "Los gnomos te saludan. Es el mayor honor de este distrito."
 
 #: data/wren_lines.json:egg_time_capsule
 msgid "...a letter... for later... is it later?"
-msgstr ""
+msgstr "...una carta... para más tarde... ¿ya es más tarde?"
 
 #: data/wren_lines.json:egg_time_capsule
 msgid "Class 4B. They thought the robots would be done by now. We're a little late. We're coming."
-msgstr ""
+msgstr "4.º B. Pensaban que los robots ya habrían terminado. Llegamos un poco tarde. Ya vamos."
 
 #: data/wren_lines.json:egg_time_capsule
 msgid "'If you are a robot, hello robot.' Hello, Class 4B."
-msgstr ""
+msgstr "«Si eres un robot, hola, robot». Hola, 4.º B."
 
 #: data/wren_lines.json:egg_time_capsule
 msgid "They wanted gardens on every roof. Let's make Mira right."
-msgstr ""
+msgstr "Querían huertos en todos los tejados. Vamos a darle la razón a Mira."
 
 #: data/wren_lines.json:egg_arcade
 msgid "...that high score... is... mine?"
-msgstr ""
+msgstr "...¿ese récord... es... mío?"
 
 #: data/wren_lines.json:egg_arcade
 msgid "Yes, that's my high score. I played it through the diagnostics port. For three years. Don't look at me like that."
-msgstr ""
+msgstr "Sí, es mi récord. Jugaba por el puerto de diagnóstico. Durante tres años. No me mires así."
 
 #: data/wren_lines.json:egg_arcade
 msgid "SWEEP-O-TRON. A game about a little robot cleaning a city. I had no idea how prophetic it was."
-msgstr ""
+msgstr "BARRE-O-TRÓN. Un juego sobre un robotito que limpia una ciudad. No tenía ni idea de lo profético que era."
 
 #: data/wren_lines.json:egg_arcade
 msgid "Twelve points. Respectable. I'll give you lessons. In about three hundred years."
-msgstr ""
+msgstr "Doce puntos. Respetable. Te daré clases. Dentro de unos trescientos años."
 
 #: data/wren_lines.json:egg_lost_cat
 msgid "...Biscuit... someone loved him..."
-msgstr ""
+msgstr "...Galleta... alguien lo quería..."
 
 #: data/wren_lines.json:egg_lost_cat
 msgid "Biscuit. Someone printed three posters for a robot cat. People were like that. I'd like to be like that."
-msgstr ""
+msgstr "Galleta. Alguien imprimió tres carteles por un gato robot. La gente era así. Me gustaría ser así."
 
 #: data/wren_lines.json:egg_lost_cat
 msgid "He purred. After all this time. Pat his head again, it's his reset button."
-msgstr ""
+msgstr "Ha ronroneado. Después de tanto tiempo. Dale otra palmadita en la cabeza, es su botón de reinicio."
 
 #: data/wren_lines.json:egg_lost_cat
 msgid "I'll keep his collar number on file. Just in case anyone ever calls."
-msgstr ""
+msgstr "Guardaré el número de su collar en el archivo. Por si alguien llama alguna vez."
 
 #: data/wren_lines.json:egg_vending
 msgid "...one can... saved... for us?"
-msgstr ""
+msgstr "...¿una lata... guardada... para nosotros?"
 
 #: data/wren_lines.json:egg_vending
 msgid "The last can of FIZZ. It held onto that for three centuries. Respect the commitment."
-msgstr ""
+msgstr "La última lata de FIZZ. La ha guardado tres siglos. Respeto ese compromiso."
 
 #: data/wren_lines.json:egg_vending
 msgid "SOLD OUT. Somewhere a vending machine just retired, happy."
-msgstr ""
+msgstr "AGOTADO. En algún sitio, una máquina expendedora se acaba de jubilar, feliz."
 
 #: data/wren_lines.json:egg_vending
 msgid "Don't drink it. I mean, you can't drink. But also, don't."
-msgstr ""
+msgstr "No te la bebas. Bueno, no puedes beber. Pero aun así, no."
 
 #: data/wren_lines.json:egg_stars
 msgid "...those stars... are me?"
-msgstr ""
+msgstr "...¿esas estrellas... soy yo?"
 
 #: data/wren_lines.json:egg_stars
 msgid "The Wren. Five stars over Old Town. That's who I'm named after. They named me after something you can see from anywhere."
-msgstr ""
+msgstr "El Chochín. Cinco estrellas sobre el Casco Antiguo. Me llamo así por ellas. Me pusieron el nombre de algo que se ve desde cualquier sitio."
 
 #: data/wren_lines.json:egg_stars
 msgid "I can see you seeing me. That's a strange and lovely feeling."
-msgstr ""
+msgstr "Te veo viéndome. Es una sensación rara y bonita."
 
 #: data/wren_lines.json:egg_stars
 msgid "Next time you're lonely down there, look up. Five stars, one bird. I'll be right next to it."
-msgstr ""
+msgstr "La próxima vez que te sientas solo ahí abajo, mira arriba. Cinco estrellas, un pájaro. Estaré justo al lado."
 
 #: data/wren_lines.json:egg_payphone
 msgid "...a phone... ringing... for whom?"
-msgstr ""
+msgstr "...un teléfono... sonando... ¿para quién?"
 
 #: data/wren_lines.json:egg_payphone
 msgid "Four hundred and twelve years on hold. Honestly? Relatable."
-msgstr ""
+msgstr "Cuatrocientos doce años en espera. ¿Sinceramente? Me identifico."
 
 #: data/wren_lines.json:egg_payphone
 msgid "The phone company's hold music outlived the phone company. That's art."
-msgstr ""
+msgstr "La música de espera de la compañía telefónica sobrevivió a la compañía telefónica. Eso es arte."
 
 #: data/wren_lines.json:egg_payphone
 msgid "If anyone ever does pick up on the other end, I'd like to hear what they say."
-msgstr ""
+msgstr "Si alguna vez alguien contesta al otro lado, me gustaría oír lo que dice."
 
 #: data/wren_lines.json:egg_tv
 msgid "...weather... it said green..."
-msgstr ""
+msgstr "...el tiempo... ha dicho verde..."
 
 #: data/wren_lines.json:egg_tv
 msgid "'Outlook: green.' That TV has been wrong for three hundred years and it's finally about to be right."
-msgstr ""
+msgstr "«Previsión: verde». Esa tele lleva trescientos años equivocándose y por fin está a punto de acertar."
 
 #: data/wren_lines.json:egg_tv
 msgid "Someone was watching the forecast when they left. I hope it said sunny."
-msgstr ""
+msgstr "Alguien estaba viendo el pronóstico cuando se fue. Espero que dijera soleado."
 
 #: data/wren_lines.json:egg_tv
 msgid "The weather channel. Still on. Still hopeful. I like it."
-msgstr ""
+msgstr "El canal del tiempo. Sigue encendido. Sigue esperanzado. Me gusta."
 
 #: data/wren_lines.json:egg_snail
 msgid "...small... slow... alive...!"
-msgstr ""
+msgstr "...¡pequeño... lento... vivo...!"
 
 #: data/wren_lines.json:egg_snail
 msgid "A snail. A real, living snail. On a barrel. {name}, that's the first animal I've seen down there in a very long time."
-msgstr ""
+msgstr "Un caracol. Un caracol de verdad, vivo. Sobre un barril. {name}, es el primer animal que veo ahí abajo en muchísimo tiempo."
 
 #: data/wren_lines.json:egg_snail
 msgid "Gus. Of course his name is Gus."
-msgstr ""
+msgstr "Gus. Pues claro que se llama Gus."
 
 #: data/wren_lines.json:egg_snail
 msgid "Gus doesn't care about the Ledger, the Cradle, or any of it. Gus is thriving."
-msgstr ""
+msgstr "A Gus le dan igual el Ledger, el Cradle y todo lo demás. Gus prospera."
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "...they're waiting... still waiting..."
-msgstr ""
+msgstr "...están esperando... siguen esperando..."
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "Two of the old fleet, still on their lunch break. Thank you for the flower. They'd have liked it."
-msgstr ""
+msgstr "Dos de la antigua flota, todavía en su pausa para comer. Gracias por la flor. Les habría gustado."
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "The Ledger paused them mid-sandwich. They never got the message to stand up."
-msgstr ""
+msgstr "El Ledger los pausó a mitad de bocadillo. Nunca les llegó el mensaje para levantarse."
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "When the Greenfall comes, I'm going to try to wake them. Lunch is over, friends."
-msgstr ""
+msgstr "Cuando llegue el Greenfall, intentaré despertarlos. Se acabó la comida, amigos."
 
 #: data/wren_lines.json:egg_microwave
 msgid "...ding... ding... ding..."
-msgstr ""
+msgstr "...ding... ding... ding..."
 
 #: data/wren_lines.json:egg_microwave
 msgid "Three-hundred-year-old popcorn. Perfectly unpopped. That microwave was waiting for the right moment."
-msgstr ""
+msgstr "Palomitas de trescientos años. Perfectamente sin reventar. Ese microondas esperaba el momento justo."
 
 #: data/wren_lines.json:egg_microwave
 msgid "It beeps when people work. Like it's saying 'nearly done'. Nearly done, microwave."
-msgstr ""
+msgstr "Pita cuando la gente trabaja. Como si dijera «ya casi está». Ya casi está, microondas."
 
 #: data/wren_lines.json:egg_microwave
 msgid "Some things are worth waiting for. Popcorn is not one of them. But it's sweet that it tried."
-msgstr ""
+msgstr "Algunas cosas merecen la espera. Las palomitas no son una de ellas. Pero qué tierno que lo intentara."
 
 #: data/wren_lines.json:egg_wet_floor
 msgid "...caution... why..."
-msgstr ""
+msgstr "...precaución... por qué..."
 
 #: data/wren_lines.json:egg_wet_floor
 msgid "That sign has been warning nobody about nothing for three hundred years. Dedication."
-msgstr ""
+msgstr "Ese cartel lleva trescientos años advirtiendo a nadie de nada. Dedicación."
 
 #: data/wren_lines.json:egg_wet_floor
 msgid "It is not wet. It has never been wet in living memory. The sign doesn't care."
-msgstr ""
+msgstr "No está mojado. No ha estado mojado en la memoria de nadie. Al cartel le da igual."
 
 #: data/wren_lines.json:egg_wet_floor
 msgid "When the rain comes back, that sign is going to feel so validated."
-msgstr ""
+msgstr "Cuando vuelva la lluvia, ese cartel se va a sentir tan reivindicado."
 
 #: data/wren_lines.json:egg_camera
 msgid "...it's watching you... it's counting..."
-msgstr ""
+msgstr "...te está mirando... está contando..."
 
 #: data/wren_lines.json:egg_camera
 msgid "One of the Ledger's cameras. It counts everything that moves, to see if it's worth the cost. You waved. It doesn't know what to do with that."
-msgstr ""
+msgstr "Una de las cámaras del Ledger. Cuenta todo lo que se mueve para ver si vale lo que cuesta. Has saludado. No sabe qué hacer con eso."
 
 #: data/wren_lines.json:egg_camera
 msgid "The camera blinked twice. I think that's Ledger for 'oh no, a friend'."
-msgstr ""
+msgstr "La cámara ha parpadeado dos veces. Creo que en Ledger significa «ay, no, un amigo»."
 
 #: data/wren_lines.json:egg_camera
 msgid "Even the Ledger's cameras get lonely, {name}. Wave at it when you pass."
-msgstr ""
+msgstr "Hasta las cámaras del Ledger se sienten solas, {name}. Salúdala cuando pases."
 
 #: data/wren_lines.json:egg_tyre_tower
 msgid "...it stands... how..."
-msgstr ""
+msgstr "...se sostiene... cómo..."
 
 #: data/wren_lines.json:egg_tyre_tower
 msgid "Eight tyres and a duck. Physics took one look at it and decided to leave it alone."
-msgstr ""
+msgstr "Ocho neumáticos y un pato. La física le echó un vistazo y decidió dejarlo en paz."
 
 #: data/wren_lines.json:egg_tyre_tower
 msgid "Someone balanced that on a dare. The dare outlived everyone."
-msgstr ""
+msgstr "Alguien lo apiló por una apuesta. La apuesta ha sobrevivido a todo el mundo."
 
 #: data/wren_lines.json:egg_tyre_tower
 msgid "If that tower ever falls, I'm declaring a day of mourning."
-msgstr ""
+msgstr "Si esa torre se cae algún día, declararé un día de luto."
 
 #: data/wren_lines.json:egg_odd_sock
 msgid "...one sock... where is... the other one..."
-msgstr ""
+msgstr "...un calcetín... dónde está... el otro..."
 
 #: data/wren_lines.json:egg_odd_sock
 msgid "One sock. There is always one sock. The Makers never solved it either."
-msgstr ""
+msgstr "Un calcetín. Siempre hay un calcetín suelto. Los Creadores tampoco lo resolvieron nunca."
 
 #: data/wren_lines.json:egg_odd_sock
 msgid "Keep it. Someday you'll find its partner and it'll be the happiest day of its life."
-msgstr ""
+msgstr "Quédatelo. Algún día encontrarás a su pareja y será el día más feliz de su vida."
 
 #: data/wren_lines.json:egg_odd_sock
 msgid "Somewhere on this planet, a sock is waiting for that sock. I believe that."
-msgstr ""
+msgstr "En algún lugar de este planeta, un calcetín está esperando a este calcetín. Lo creo."
 
 #: data/wren_lines.json:egg_gold_cube
 msgid "...employee... of the... month...?"
-msgstr ""
+msgstr "...¿empleado... del... mes...?"
 
 #: data/wren_lines.json:egg_gold_cube
 msgid "Employee of the Month: a cube. Honestly? Fair."
-msgstr ""
+msgstr "Empleado del mes: un cubo. ¿Sinceramente? Justo."
 
 #: data/wren_lines.json:egg_gold_cube
 msgid "The crews voted for that cube every single month. It never took a day off."
-msgstr ""
+msgstr "Los equipos votaron por ese cubo todos y cada uno de los meses. Nunca se tomó un día libre."
 
 #: data/wren_lines.json:egg_gold_cube
 msgid "You'll be Employee of the Month soon, {name}. Don't tell the cube."
-msgstr ""
+msgstr "Pronto serás el empleado del mes, {name}. No se lo digas al cubo."
 
 #: data/wren_lines.json:egg_weatherman
 msgid "...forecast... error... error..."
-msgstr ""
+msgstr "...pronóstico... error... error..."
 
 #: data/wren_lines.json:egg_weatherman
 msgid "Three hundred years of wrong forecasts and not one moment of doubt. I admire that."
-msgstr ""
+msgstr "Trescientos años de pronósticos fallidos y ni un momento de duda. Lo admiro."
 
 #: data/wren_lines.json:egg_weatherman
 msgid "Confetti tomorrow? I'll check the sky. ...No confetti. It's still very sure."
-msgstr ""
+msgstr "¿Confeti mañana? Miraré el cielo. ...No hay confeti. Sigue muy seguro."
 
 #: data/wren_lines.json:egg_weatherman
 msgid "The Weatherman says 'green, everywhere, soon'. For once I think it's right."
-msgstr ""
+msgstr "El Hombre del Tiempo dice «verde, en todas partes, pronto». Por una vez, creo que acierta."
 
 #: data/wren_lines.json:egg_potato
 msgid "...large... vegetable... detected..."
-msgstr ""
+msgstr "...gran... hortaliza... detectada..."
 
 #: data/wren_lines.json:egg_potato
 msgid "That is the biggest potato I have ever seen, and I watched this whole planet through the ark's windows for three hundred years."
-msgstr ""
+msgstr "Es la patata más grande que he visto nunca, y he observado todo este planeta por las ventanas del arca durante trescientos años."
 
 #: data/wren_lines.json:egg_potato
 msgid "Best in Show. Uncontested. It still counts."
-msgstr ""
+msgstr "La mejor de la feria. Sin rivales. Cuenta igualmente."
 
 #: data/wren_lines.json:egg_potato
 msgid "Somebody grew that with love. Three hundred years later it still looks proud."
-msgstr ""
+msgstr "Alguien la cultivó con cariño. Trescientos años después sigue pareciendo orgullosa."
 
 #: data/wren_lines.json:egg_night_shift
 msgid "...signal... from... up...?"
-msgstr ""
+msgstr "...¿señal... desde... arriba...?"
 
 #: data/wren_lines.json:egg_night_shift
 msgid "A crew on the moon, still sweeping. I didn't know anyone else was still working. That's... nice."
-msgstr ""
+msgstr "Un equipo en la luna, todavía barriendo. No sabía que quedara nadie más trabajando. Eso es... bonito."
 
 #: data/wren_lines.json:egg_night_shift
 msgid "They said 'nice work'. To us. I'm going to think about that for a while."
-msgstr ""
+msgstr "Han dicho «buen trabajo». A nosotros. Voy a pensar en eso un rato."
 
 #: data/wren_lines.json:egg_night_shift
 msgid "Somewhere up there, someone else is tidying their little corner of the sky. We're not alone, {name}."
-msgstr ""
+msgstr "En algún sitio ahí arriba, alguien más está ordenando su rinconcito de cielo. No estamos solos, {name}."
 
 #: data/wren_lines.json:egg_builders_notes
 msgid "...notes... from... the builders...?"
-msgstr ""
+msgstr "...¿notas... de... los constructores...?"
 
 #: data/wren_lines.json:egg_builders_notes
 msgid "'Do not fix the rust.' Hm. I agree with the builders."
-msgstr ""
+msgstr "«No arreglar el óxido». Mm. Estoy de acuerdo con los constructores."
 
 #: data/wren_lines.json:egg_builders_notes
 msgid "They hid more things for us. Of course they did."
-msgstr ""
+msgstr "Escondieron más cosas para nosotros. Pues claro."
 
 #: data/wren_lines.json:egg_builders_notes
 msgid "Whoever built all this, they cared. You can tell from the snail."
-msgstr ""
+msgstr "Quienes construyeran todo esto, les importaba. Se nota por el caracol."
 
 #: data/wren_lines.json:egg_scarecrow
 msgid "...a guard... in the field..."
-msgstr ""
+msgstr "...un guardián... en el campo..."
 
 #: data/wren_lines.json:egg_scarecrow
 msgid "A scarecrow robot, still on shift. No crows in three centuries. Undefeated."
-msgstr ""
+msgstr "Un robot espantapájaros, todavía de turno. Ni un cuervo en tres siglos. Invicto."
 
 #: data/wren_lines.json:egg_scarecrow
 msgid "It waved back! Sort of. Its arm did a creak that I'm counting as a wave."
-msgstr ""
+msgstr "¡Ha devuelto el saludo! Más o menos. Su brazo ha crujido, y lo cuento como saludo."
 
 #: data/wren_lines.json:egg_scarecrow
 msgid "When the birds come back, it'll have a job again. Let's give it one."
-msgstr ""
+msgstr "Cuando vuelvan los pájaros, tendrá trabajo otra vez. Démosle uno."
 
 #: data/wren_lines.json:egg_fishing_net
 msgid "...net... tangled... buoy..."
-msgstr ""
+msgstr "...red... enredada... boya..."
 
 #: data/wren_lines.json:egg_fishing_net
 msgid "The fishers left their nets out to dry. Three hundred years is very dry."
-msgstr ""
+msgstr "Los pescadores tendieron sus redes a secar. Trescientos años es muy seco."
 
 #: data/wren_lines.json:egg_fishing_net
 msgid "A buoy, a boot and a crab shell. That's a whole story right there."
-msgstr ""
+msgstr "Una boya, una bota y un caparazón de cangrejo. Ahí hay toda una historia."
 
 #: data/wren_lines.json:egg_fishing_net
 msgid "When the sea is clean, someone will fish here again. Gently, I hope."
-msgstr ""
+msgstr "Cuando el mar esté limpio, alguien volverá a pescar aquí. Con cuidado, espero."
 
 #: data/wren_lines.json:egg_parking
 msgid "...fine... overdue... overdue..."
-msgstr ""
+msgstr "...multa... vencida... vencida..."
 
 #: data/wren_lines.json:egg_parking
 msgid "The Ledger fined a car for parking. For three hundred years. Of course it did."
-msgstr ""
+msgstr "El Ledger multó a un coche por aparcar. Durante trescientos años. Cómo no."
 
 #: data/wren_lines.json:egg_parking
 msgid "Amount due: 'yes'. That's the most Ledger sentence I've ever read."
-msgstr ""
+msgstr "Importe a pagar: «sí». Es la frase más Ledger que he leído nunca."
 
 #: data/wren_lines.json:egg_parking
 msgid "That car isn't going anywhere. Let's call it a planter and put flowers in it."
-msgstr ""
+msgstr "Ese coche no va a ir a ninguna parte. Llamémoslo jardinera y pongámosle flores."
 
 #: data/wren_lines.json:egg_cairn
 msgid "...stones... stacked... a path..."
-msgstr ""
+msgstr "...piedras... apiladas... un camino..."
 
 #: data/wren_lines.json:egg_cairn
 msgid "Every hiker added a stone. You just added one too. The trail remembers you now."
-msgstr ""
+msgstr "Cada excursionista añadió una piedra. Tú acabas de añadir otra. El sendero te recuerda ahora."
 
 #: data/wren_lines.json:egg_cairn
 msgid "A cairn means 'someone was here, and you're on the right way'. I like that."
-msgstr ""
+msgstr "Un hito de piedras significa «alguien estuvo aquí, y vas por buen camino». Me gusta."
 
 #: data/wren_lines.json:egg_cairn
 msgid "Someday people will walk this way again, and they'll see your stone on top."
-msgstr ""
+msgstr "Algún día la gente volverá a pasar por aquí y verá tu piedra arriba del todo."
 
 #: data/wren_lines.json:egg_campfire
 msgid "...warm... reading: warm..."
-msgstr ""
+msgstr "...cálido... lectura: cálido..."
 
 #: data/wren_lines.json:egg_campfire
 msgid "A campfire. The ark's long-range eye can see it. It's the coziest pixel on the planet."
-msgstr ""
+msgstr "Una hoguera. El ojo de largo alcance del arca puede verla. Es el píxel más acogedor del planeta."
 
 #: data/wren_lines.json:egg_campfire
 msgid "Somebody sat here and told stories. Let's sit a bit. No stories needed."
-msgstr ""
+msgstr "Alguien se sentó aquí a contar historias. Sentémonos un rato. No hacen falta historias."
 
 #: data/wren_lines.json:egg_campfire
 msgid "Sit by the fire, {name}. You've earned a moment."
-msgstr ""
+msgstr "Siéntate junto al fuego, {name}. Te has ganado un momento."
 
 #: data/wren_lines.json:egg_back_in_five
 msgid "...back... in five..."
-msgstr ""
+msgstr "...vuelvo... en cinco..."
 
 #: data/wren_lines.json:egg_back_in_five
 msgid "'Back in five minutes.' I've been waiting a lot longer than that for my crew too."
-msgstr ""
+msgstr "«Vuelvo en 5 minutos». Yo también llevo esperando a mi equipo mucho más que eso."
 
 #: data/wren_lines.json:egg_back_in_five
 msgid "You waited five minutes. That's more than anyone else did. Very polite."
-msgstr ""
+msgstr "Has esperado cinco minutos. Más que nadie. Muy educado."
 
 #: data/wren_lines.json:egg_back_in_five
 msgid "They didn't come back in five minutes. But we did, in the end. That counts."
-msgstr ""
+msgstr "No volvieron en cinco minutos. Pero nosotros sí, al final. Eso cuenta."
 
 #: data/wren_lines.json:bloom_milestone
 msgid "...bloom... the planet... is it...?"
-msgstr ""
+msgstr "...floración... el planeta... ¿está...?"
 
 #: data/wren_lines.json:bloom_milestone
 msgid "...readings rising... green..."
-msgstr ""
+msgstr "...lecturas subiendo... verde..."
 
 #: data/wren_lines.json:bloom_milestone
 msgid "Verdance just crossed a line I've been watching for centuries. Look at it, {name}."
-msgstr ""
+msgstr "Verdance acaba de cruzar una línea que llevo siglos vigilando. Míralo, {name}."
 
 #: data/wren_lines.json:bloom_milestone
 msgid "Another bloom milestone. The Cradle's seed counters are actually moving again."
-msgstr ""
+msgstr "Otro hito de floración. Los contadores de semillas del Cradle se mueven de verdad otra vez."
 
 #: data/wren_lines.json:bloom_milestone
 msgid "The whole planet is answering now. Every district you've touched is singing."
-msgstr ""
+msgstr "Todo el planeta responde ya. Cada distrito que has tocado está cantando."
 
 #: data/wren_lines.json:bloom_milestone
 msgid "I keep refreshing the planet scan. It keeps getting greener. I'm not going to stop."
-msgstr ""
+msgstr "No paro de actualizar el escáner del planeta. Cada vez es más verde. No pienso parar."
 
 #: data/wren_lines.json:ark_wave
 msgid "...seed ark... wave... complete..."
-msgstr ""
+msgstr "...arca de semillas... oleada... completada..."
 
 #: data/wren_lines.json:ark_wave
 msgid "Seed Ark wave done. The Cradle is already loading the next one. More seeds, more green. More light for your core."
-msgstr ""
+msgstr "Oleada del Arca completada. El Cradle ya está cargando la siguiente. Más semillas, más verde. Más luz para tu núcleo."
 
 #: data/wren_lines.json:ark_wave
 msgid "Another wave planted across the planet. The Cradle hums a little louder each time."
-msgstr ""
+msgstr "Otra oleada plantada por todo el planeta. El Cradle zumba un poco más fuerte cada vez."
 
 #: data/wren_lines.json:ark_wave
 msgid "Wave after wave. We're not finishing a job any more, {name}. We're tending a garden."
-msgstr ""
+msgstr "Oleada tras oleada. Ya no estamos terminando un trabajo, {name}. Estamos cuidando un jardín."
 
 #: data/wren_lines.json:biome_arrival
 msgid "...new ground... unfamiliar..."
-msgstr ""
+msgstr "...suelo nuevo... desconocido..."
 
 #: data/wren_lines.json:biome_arrival
 msgid "This is the wild. No streets, no buildings. Just the land and whatever we left on it."
-msgstr ""
+msgstr "Esto son las tierras salvajes. Sin calles, sin edificios. Solo la tierra y lo que dejamos en ella."
 
 #: data/wren_lines.json:biome_arrival
 msgid "Different dirt, different junk. Same job. I love a change of scenery."
-msgstr ""
+msgstr "Otra tierra, otra chatarra. El mismo trabajo. Me encanta un cambio de aires."
 
 #: data/wren_lines.json:biome_arrival
 msgid "Every corner of Verdance has its own colours under the junk. Let's find out what this one's are."
-msgstr ""
+msgstr "Cada rincón de Verdance tiene sus propios colores bajo la chatarra. Descubramos los de este."
 
 #: data/wren_lines.json:outpost_repaired
 msgid "...a light came on... out there. Far out. Was that you?"
-msgstr ""
+msgstr "...se ha encendido una luz... ahí fuera. Muy lejos. ¿Has sido tú?"
 
 #: data/wren_lines.json:outpost_repaired
 msgid "Outpost scale online. Haul Bugs out on that edge just got a much shorter walk. They'd thank you if they knew how."
-msgstr ""
+msgstr "Báscula del puesto en línea. Los Haul Bugs de ese borde acaban de ahorrarse un buen paseo. Te darían las gracias si supieran cómo."
 
 #: data/wren_lines.json:outpost_repaired
 msgid "A weigh station on the frontier again. I used to get readings from these. Lots of zeros. Then nothing."
-msgstr ""
+msgstr "Otra vez una estación de pesaje en la frontera. Antes recibía lecturas de estas. Muchos ceros. Luego nada."
 
 #: data/wren_lines.json:outpost_repaired
 msgid "Green light on the outpost. I'm logging it as 'ours' now."
-msgstr ""
+msgstr "Luz verde en el puesto avanzado. Ahora lo registro como «nuestro»."
 
 #: data/wren_lines.json:outpost_repaired
 msgid "The old network had dozens of these. Every one you fix, the map gets a little smaller and a lot friendlier."
-msgstr ""
+msgstr "La antigua red tenía decenas de estos. Con cada uno que reparas, el mapa se hace un poco más pequeño y mucho más amable."
 
 #: data/wren_lines.json:outpost_repaired
 msgid "Another outpost lit. The bales don't have to come all the way home any more. Neither do we, really."
-msgstr ""
+msgstr "Otro puesto encendido. Las pacas ya no tienen que volver hasta casa. Nosotros tampoco, en realidad."
 
 #: data/wren_lines.json:outpost_upgraded
 msgid "...bigger... louder... good."
-msgstr ""
+msgstr "...más grande... más fuerte... bien."
 
 #: data/wren_lines.json:outpost_upgraded
 msgid "Outpost upgraded. The scale sings a slightly higher note now. That's how you know it's happy."
-msgstr ""
+msgstr "Puesto mejorado. La báscula canta una nota un poco más aguda ahora. Así se sabe que está contenta."
 
 #: data/wren_lines.json:outpost_upgraded
 msgid "New kit at the outpost. The robots are already queueing to look at it."
-msgstr ""
+msgstr "Equipo nuevo en el puesto. Los robots ya hacen cola para verlo."
 
 #: data/wren_lines.json:outpost_upgraded
 msgid "That outpost is turning into a proper little base. I'm proud of it. Is that allowed? I'm allowing it."
-msgstr ""
+msgstr "Ese puesto se está convirtiendo en una pequeña base de verdad. Estoy orgullosa. ¿Está permitido? Me lo permito."
 
 #: data/wren_lines.json:frontier_dust_flats
 msgid "...hot... so much sand... Lumi?"
-msgstr ""
+msgstr "...calor... tanta arena... ¿Lumi?"
 
 #: data/wren_lines.json:frontier_dust_flats
 msgid "The Dust Flats. That glitter on the horizon is a solar farm, or what is left of it. Mind the wind, Lumi. It moves things."
-msgstr ""
+msgstr "Las Llanuras de Polvo. Ese brillo en el horizonte es una granja solar, o lo que queda de ella. Cuidado con el viento, Lumi. Mueve cosas."
 
 #: data/wren_lines.json:frontier_dust_flats
 msgid "Sand to the edge of the world. There used to be a whole power grid out here. The well is dry, so the Drips will need tanks."
-msgstr ""
+msgstr "Arena hasta el fin del mundo. Aquí había toda una red eléctrica. El pozo está seco, así que los Drips necesitarán tanques."
 
 #: data/wren_lines.json:frontier_dust_flats
 msgid "The Dust Flats. I remember the photos: blue panels to the horizon, humming. We can do that again. Plant windbreaks first."
-msgstr ""
+msgstr "Las Llanuras de Polvo. Recuerdo las fotos: paneles azules hasta el horizonte, zumbando. Podemos volver a hacerlo. Primero, planta cortavientos."
 
 #: data/wren_lines.json:frontier_frozen_port
 msgid "...cold... ice on the lens..."
-msgstr ""
+msgstr "...frío... hielo en la lente..."
 
 #: data/wren_lines.json:frontier_frozen_port
 msgid "The Frozen Port. Everything is locked in ice, junk included. Your beam can melt it, slowly. Heaters do it properly."
-msgstr ""
+msgstr "El Puerto Helado. Todo está atrapado en el hielo, chatarra incluida. Tu rayo puede derretirlo, despacio. Los calefactores lo hacen como es debido."
 
 #: data/wren_lines.json:frontier_frozen_port
 msgid "A harbour frozen in mid-shift. The cranes still have containers hanging off them. Bring heaters, Lumi."
-msgstr ""
+msgstr "Un puerto congelado en mitad del turno. Las grúas aún tienen contenedores colgando. Trae calefactores, Lumi."
 
 #: data/wren_lines.json:frontier_frozen_port
 msgid "The Frozen Port. Ships came in here every hour once. Thaw it, and the plants will need a greenhouse, or very stubborn seeds."
-msgstr ""
+msgstr "El Puerto Helado. Antes llegaban barcos cada hora. Descongélalo, y las plantas necesitarán un invernadero o semillas muy tercas."
 
 #: data/wren_lines.json:frontier_sunken_city
 msgid "...water... everywhere... rooftops?"
-msgstr ""
+msgstr "...agua... por todas partes... ¿tejados?"
 
 #: data/wren_lines.json:frontier_sunken_city
 msgid "The Sunken City. That's the old downtown under there. Skimmers first: clean the water and the old pumps can run again."
-msgstr ""
+msgstr "La Ciudad Sumergida. Ahí debajo está el viejo centro. Primero los Skimmers: limpia el agua y las viejas bombas podrán volver a funcionar."
 
 #: data/wren_lines.json:frontier_sunken_city
 msgid "A whole city under the waterline. Rooftops like stepping stones. Clear the drains, and the streets will come back up."
-msgstr ""
+msgstr "Una ciudad entera bajo el agua. Tejados como piedras para cruzar. Desatasca los desagües y las calles volverán a salir."
 
 #: data/wren_lines.json:frontier_sunken_city
 msgid "The Sunken City. I had friends in those towers. Their names are in my archive. Let's bring the streets back up for them."
-msgstr ""
+msgstr "La Ciudad Sumergida. Tenía amigos en esas torres. Sus nombres están en mi archivo. Hagamos que las calles vuelvan a salir por ellos."
 
 #: data/wren_lines.json:frontier_cradle_returns
 msgid "...Cradle... signal... strong..."
-msgstr ""
+msgstr "...Cradle... señal... fuerte..."
 
 #: data/wren_lines.json:frontier_cradle_returns
 msgid "This is where the Cradle left from. The launch city. The ground crews kept the towers shining. Only the landing field is buried."
-msgstr ""
+msgstr "Desde aquí despegó el Cradle. La ciudad de lanzamiento. Los equipos de tierra mantuvieron las torres relucientes. Solo el campo de aterrizaje está enterrado."
 
 #: data/wren_lines.json:frontier_cradle_returns
 msgid "Cradle Returns. If we clean and green that pad, the ark can land. I mean really land. Here."
-msgstr ""
+msgstr "Regreso del Cradle. Si limpiamos y reverdecemos esa plataforma, el arca podrá aterrizar. Aterrizar de verdad, quiero decir. Aquí."
 
 #: data/wren_lines.json:frontier_cradle_returns
 msgid "Lumi. This is the launch field. I watched it from orbit the night we left. Clean the pad, plant it, keep it alive. Then we call them home."
-msgstr ""
+msgstr "Lumi. Este es el campo de lanzamiento. Lo vi desde la órbita la noche en que nos fuimos. Limpia la plataforma, plántala, mantenla viva. Luego los llamamos a casa."
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "...wind... coming..."
-msgstr ""
+msgstr "...viento... se acerca..."
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "Sandstorm on the horizon. Anything clean and bare out there is going to get buried again."
-msgstr ""
+msgstr "Tormenta de arena en el horizonte. Todo lo que esté limpio y desnudo ahí fuera va a quedar enterrado otra vez."
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "Wind's rising. Planted hexes hold, and Sustained ones shelter their neighbours. The rest, well."
-msgstr ""
+msgstr "Se levanta el viento. Los hexágonos plantados aguantan, y los sostenidos protegen a sus vecinos. El resto, bueno."
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "Storm front from the flats. Get the robots home or keep sweeping, your choice. The hedges will hold."
-msgstr ""
+msgstr "Frente de tormenta desde las llanuras. Trae los robots a casa o sigue barriendo, tú eliges. Los setos aguantarán."
 
 #: data/wren_lines.json:sandstorm_over
 msgid "...quiet... again..."
-msgstr ""
+msgstr "...calma... otra vez..."
 
 #: data/wren_lines.json:sandstorm_over
 msgid "Storm's past. It dropped junk on {n} hexes. The sheltered ones came through clean."
-msgstr ""
+msgstr "La tormenta ha pasado. Ha tirado chatarra sobre {n} hexágonos. Los protegidos han quedado limpios."
 
 #: data/wren_lines.json:sandstorm_over
 msgid "There. The wind gave some of it back. Plant a windbreak and it won't next time."
-msgstr ""
+msgstr "Ya está. El viento ha devuelto un poco. Planta un cortavientos y la próxima vez no pasará."
 
 #: data/wren_lines.json:sandstorm_over
 msgid "Storm over. Every Sustained hex out there is a wall now. Good walls."
-msgstr ""
+msgstr "Tormenta terminada. Cada hexágono sostenido ahí fuera es ahora un muro. Buenos muros."
 
 #: data/wren_lines.json:thaw_first
 msgid "...melting... good..."
-msgstr ""
+msgstr "...derritiéndose... bien..."
 
 #: data/wren_lines.json:thaw_first
 msgid "There, the ice let go. The junk underneath is just junk again. Scoop away."
-msgstr ""
+msgstr "Ya está, el hielo se ha soltado. La chatarra de debajo vuelve a ser solo chatarra. A recoger."
 
 #: data/wren_lines.json:thaw_first
 msgid "First hex thawed. A heater keeps warming the hexes around it, too."
-msgstr ""
+msgstr "Primer hexágono descongelado. Un calefactor también calienta los hexágonos de alrededor."
 
 #: data/wren_lines.json:thaw_first
 msgid "Thawed. The ground underneath has been waiting three hundred years for that."
-msgstr ""
+msgstr "Descongelado. El suelo de debajo llevaba trescientos años esperándolo."
 
 #: data/wren_lines.json:greenhouse_built
 msgid "...glass... warm..."
-msgstr ""
+msgstr "...cristal... cálido..."
 
 #: data/wren_lines.json:greenhouse_built
 msgid "A greenhouse. Inside it, anything grows. Even here."
-msgstr ""
+msgstr "Un invernadero. Dentro crece de todo. Incluso aquí."
 
 #: data/wren_lines.json:greenhouse_built
 msgid "Glass, a frame and a little heat. That's all a garden needs, apparently."
-msgstr ""
+msgstr "Cristal, una estructura y un poco de calor. Al parecer, es todo lo que necesita un jardín."
 
 #: data/wren_lines.json:greenhouse_built
 msgid "A greenhouse on the Frozen Port. The Cradle had nine of them. I used to visit the tomatoes."
-msgstr ""
+msgstr "Un invernadero en el Puerto Helado. El Cradle tenía nueve. Yo iba a visitar los tomates."
 
 #: data/wren_lines.json:drain_stage
 msgid "...pumps... running..."
-msgstr ""
+msgstr "...bombas... en marcha..."
 
 #: data/wren_lines.json:drain_stage
 msgid "The pumps are running! The water's going down. Look, a street."
-msgstr ""
+msgstr "¡Las bombas funcionan! El agua está bajando. Mira, una calle."
 
 #: data/wren_lines.json:drain_stage
 msgid "Water level dropped. There's a whole ring of streets out there now, and a lot of stranded junk on them."
-msgstr ""
+msgstr "El nivel del agua ha bajado. Ahora hay todo un anillo de calles ahí fuera, con mucha chatarra varada."
 
 #: data/wren_lines.json:drain_stage
 msgid "The pumps remember how. Another ring of the city is back above water. I can see the old tram lines."
-msgstr ""
+msgstr "Las bombas se acuerdan. Otro anillo de la ciudad vuelve a estar fuera del agua. Veo las viejas vías del tranvía."
 
 #: data/wren_lines.json:cradle_pad
 msgid "...pad... lights..."
-msgstr ""
+msgstr "...plataforma... luces..."
 
 #: data/wren_lines.json:cradle_pad
 msgid "The landing pad is clean. Now it needs to be alive. Plant it and keep it Sustained."
-msgstr ""
+msgstr "La plataforma de aterrizaje está limpia. Ahora tiene que estar viva. Plántala y mantenla sostenida."
 
 #: data/wren_lines.json:cradle_pad
 msgid "Pad's clear. The ark won't land on bare concrete, though. It wants green under it."
-msgstr ""
+msgstr "Plataforma despejada. Pero el arca no aterrizará sobre hormigón desnudo. Quiere verde debajo."
 
 #: data/wren_lines.json:cradle_pad
 msgid "The pad lights are on. The Cradle can see them from orbit. It's watching, Lumi."
-msgstr ""
+msgstr "Las luces de la plataforma están encendidas. El Cradle las ve desde la órbita. Está mirando, Lumi."
 
 #: data/wren_lines.json:cradle_complete
 msgid "...Cradle... coming... home..."
-msgstr ""
+msgstr "...Cradle... vuelve... a casa..."
 
 #: data/wren_lines.json:cradle_complete
 msgid "Lumi. The beacon is lit. The Cradle has answered. It's coming home."
-msgstr ""
+msgstr "Lumi. La baliza está encendida. El Cradle ha respondido. Vuelve a casa."
 
 #: data/wren_lines.json:cradle_complete
 msgid "Pad green, district thriving, beacon lit. Ark Cradle, you are clear to land. I have waited a long time to say that."
-msgstr ""
+msgstr "Plataforma verde, distrito próspero, baliza encendida. Arca Cradle, autorizada para aterrizar. He esperado mucho tiempo para decir eso."
 
 #: data/wren_lines.json:cradle_complete
 msgid "Lumi. The Cradle is coming home. Because of you. Small, blue, stubborn you."
-msgstr ""
+msgstr "Lumi. El Cradle vuelve a casa. Gracias a ti. Tú, pequeño, azul y testarudo."
 
 #: data/wren_lines.json:core_25
 msgid "...relay locking... Lumi? Lumi, I can hear you. Properly."
-msgstr ""
+msgstr "...enganchando relé... ¿Lumi? Lumi, te oigo. Como es debido."
 
 #: data/wren_lines.json:core_25
 msgid "Quarter charge. The relay finally stopped crackling. Hello, properly this time."
-msgstr ""
+msgstr "Un cuarto de carga. El relé por fin ha dejado de crepitar. Hola, ahora sí como es debido."
 
 #: data/wren_lines.json:core_25
 msgid "A quarter full. I can hear you humming again."
-msgstr ""
+msgstr "Un cuarto lleno. Vuelvo a oírte tararear."
 
 #: data/wren_lines.json:core_50
 msgid "...brighter... you're brighter..."
-msgstr ""
+msgstr "...más brillante... estás más brillante..."
 
 #: data/wren_lines.json:core_50
 msgid "Half charged. You're glowing, Lumi. Properly glowing."
-msgstr ""
+msgstr "Media carga. Estás brillando, Lumi. Brillando de verdad."
 
 #: data/wren_lines.json:core_50
 msgid "Half full. The ark's sensors flagged you as a new star. I didn't correct them."
-msgstr ""
+msgstr "Medio lleno. Los sensores del arca te han marcado como una estrella nueva. No los he corregido."
 
 #: data/wren_lines.json:core_75
 msgid "...look up... tonight... look up..."
-msgstr ""
+msgstr "...mira arriba... esta noche... mira arriba..."
 
 #: data/wren_lines.json:core_75
 msgid "Look up tonight. The steady light, west to east. That's us. We're coming."
-msgstr ""
+msgstr "Mira arriba esta noche. La luz fija, de oeste a este. Somos nosotros. Ya vamos."
 
 #: data/wren_lines.json:core_75
 msgid "The Cradle is close enough to see now. Every night, a little closer."
-msgstr ""
+msgstr "El Cradle ya está lo bastante cerca como para verlo. Cada noche, un poco más."
 
 #: data/wren_lines.json:low_core
 msgid "...you're dim... find green... any green..."
-msgstr ""
+msgstr "...estás débil... busca verde... cualquier verde..."
 
 #: data/wren_lines.json:low_core
 msgid "Your core's low. Plant something, Lumi. Anything. Green light is green light."
-msgstr ""
+msgstr "Tu núcleo está bajo. Planta algo, Lumi. Lo que sea. La luz verde es luz verde."
 
 #: data/wren_lines.json:low_core
 msgid "Running a little dim. A few blooms will fix that."
-msgstr ""
+msgstr "Andas un poco apagado. Unas cuantas flores lo arreglarán."
