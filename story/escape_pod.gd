@@ -23,6 +23,7 @@ const TANGERINE := Color(1.0, 0.5, 0.16)
 const TRIM := Color(0.09, 0.1, 0.115)
 const CYAN := Color(0.3, 0.88, 1.0)
 const LAMP := Color(1.0, 0.36, 0.12)
+const SOOT := Color(0.36, 0.32, 0.28)  # re-entry scorch on a worn hull
 const SHIP_PAINT := "res://art/shaders/ship_paint.gdshader"
 
 ## (radius, y) of the shell, bottom to top.
@@ -400,7 +401,7 @@ static func paint(color: Color, rough: float = 0.3, wear: float = 0.0) -> Materi
 			m.set_shader_parameter("ao_strength", 0.0)
 			return m
 	var sm := StandardMaterial3D.new()
-	sm.albedo_color = color.lerp(Color(0.5, 0.47, 0.43), wear * 0.35)
+	sm.albedo_color = color.lerp(SOOT, wear * 1.1)
 	sm.roughness = rough + wear * 0.3
 	sm.metallic = 0.05
 	sm.clearcoat_enabled = true
@@ -419,7 +420,7 @@ static func set_wear(pod: Node3D, color: Color, wear: float) -> void:
 		(m as ShaderMaterial).set_shader_parameter("edge_wear", wear)
 	elif m is StandardMaterial3D:
 		var sm: StandardMaterial3D = m
-		sm.albedo_color = color.lerp(Color(0.5, 0.47, 0.43), wear * 0.35)
+		sm.albedo_color = color.lerp(SOOT, wear * 1.1)
 		sm.roughness = 0.3 + wear * 0.3
 		sm.clearcoat = 0.6 * (1.0 - wear * 0.6)
 

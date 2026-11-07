@@ -95,7 +95,7 @@ func _build_ground() -> void:
 	var back: Vector3 = Vector3(FROM_DIR.x, 0, FROM_DIR.z).normalized()
 	var ang: float = atan2(back.x, back.z)
 	# The furrow: two soft dark smears stretched back along the approach.
-	for layer: Array in [[Vector2(2.6, 7.5), 0.55, 0.018, 2.4], [Vector2(1.4, 4.6), 0.7, 0.024, 1.6]]:
+	for layer: Array in [[Vector2(2.8, 8.0), 0.8, 0.018, 2.6], [Vector2(1.5, 5.0), 0.92, 0.024, 1.8]]:
 		var mi := MeshInstance3D.new()
 		var pm := PlaneMesh.new()
 		pm.size = layer[0]

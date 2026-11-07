@@ -78,8 +78,8 @@ func _setup_pod(crash: bool = false) -> void:
 	if crash:
 		# Before / after: damaged (smoke, sparks, torn panel, worn paint), then repaired.
 		EscapePod.set_open(pod, true, CrashSite.LEAN.x)
-		var eye: Vector3 = Vector3(-3.6, 2.3, -4.6)
-		_cam.look_at_from_position(eye, Vector3(0.3, 0.8, 0.6), Vector3.UP)
+		var eye: Vector3 = Vector3(-4.6, 2.2, -1.2)
+		_cam.look_at_from_position(eye, Vector3(0.6, 0.9, 1.0), Vector3.UP)
 		_shots = [[4.0, Callable()], [12.0, func() -> void: pass]]
 		get_tree().create_timer(4.6).timeout.connect(func() -> void: site.set_stage(2))
 		return
