@@ -34,6 +34,13 @@ float h21(vec2 p) {
 	return fract(p.x * p.y);
 }
 
+float vnoise(vec2 p) {
+	vec2 i = floor(p);
+	vec2 f = fract(p);
+	f = f * f * (3.0 - 2.0 * f);
+	return mix(mix(h21(i), h21(i + vec2(1, 0)), f.x), mix(h21(i + vec2(0, 1)), h21(i + vec2(1, 1)), f.x), f.y);
+}
+
 vec3 flower_col(float k) {
 	// Meadow palette: warm white, butter yellow, coral pink, violet-blue, orange, magenta.
 	if (k < 0.22) return vec3(0.92, 0.9, 0.82);
@@ -58,7 +65,10 @@ void vertex() {
 	float grow = 0.0;
 	if (kind == 0) {
 		// Grass: first tufts at Growing, a closed sward by Sustained / Thriving.
-		cov = smoothstep(0.12, 0.75, life) * density;
+		// Growing hexes fill in as patches (clumps around the plants), closing into a sward by
+		// Sustained / Thriving.
+		float patch = vnoise(p * 0.16 + 7.0) * 0.65 + vnoise(p * 0.5) * 0.35;
+		cov = clamp(smoothstep(0.15, 0.95, life) * mix(0.35, 1.6, patch) + smoothstep(0.85, 1.0, life), 0.0, 1.0) * density;
 		grow = 0.35 + 0.65 * smoothstep(0.2, 0.95, life);
 	} else if (kind == 1) {
 		// Flowers: a few on Growing hexes, drifts of them once Sustained, a carpet when Thriving.
