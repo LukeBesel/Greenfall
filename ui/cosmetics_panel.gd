@@ -18,6 +18,7 @@ var _bar: ProgressBar
 var _prog: Label
 var _looks: CheckButton
 var _shown: String = ""
+var _builder_btn: Button  # [style]
 
 
 ## Kept for older callers (scenes/slice.gd hooks it to a few gameplay signals).
@@ -42,6 +43,20 @@ func _ready() -> void:
 		Audio.play("click", 1.0, -6.0)
 		_show(_shown, true))
 	head.add_child(_looks)
+	# [style] Character Builder: every slot of the look, on its own screen.
+	var bb := Button.new()
+	bb.text = tr("Character Builder")
+	bb.custom_minimum_size = Vector2(190, 36)
+	bb.focus_mode = Control.FOCUS_ALL
+	UITheme.orange_button(bb)
+	bb.pressed.connect(func() -> void:
+		var lb: LumiBuilder = LumiBuilder.open(world, self)
+		lb.closed.connect(func() -> void:
+			refresh()
+			if is_instance_valid(bb):
+				bb.grab_focus.call_deferred()))
+	head.add_child(bb)
+	_builder_btn = bb
 
 	var top := HBoxContainer.new()
 	top.add_theme_constant_override("separation", 18)
@@ -157,7 +172,7 @@ func _show(id: String, force: bool = false) -> void:
 	_buff.add_theme_color_override("font_color", UITheme.MUTED if Designs.looks_only() else UITheme.GREEN)
 	var unlocked: bool = Designs.is_unlocked(id)
 	if id == Designs.current():
-		_state.text = tr("Wearing")
+		_state.text = tr("Wearing") if LumiStyle.is_preset(LumiStyle.current()) else tr("Wearing a custom look with this bonus")  # [style]
 	elif unlocked:
 		_state.text = tr("Unlocked. Press to wear.")
 	else:
@@ -174,7 +189,7 @@ func _wear(id: String) -> void:
 		Audio.play("error", 1.0, -6.0)
 		_show(id, true)
 		return
-	if not Designs.select(id):
+	if not LumiStyle.wear_preset(id):  # [style] wearing a design = its preset look
 		return
 	if world and world.get("patch"):
 		var p: Node3D = world.patch

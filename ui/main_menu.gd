@@ -145,8 +145,9 @@ func _build_stage() -> void:
 	_pivot = Node3D.new()
 	add_child(_pivot)
 	_model = PatchModel.new()
-	_pivot.add_child(_model)
 	var skin: String = str((_save.get("flags", {}) as Dictionary).get("patch_skin", ""))
+	_model.set_meta("lumi_style", LumiStyle.from_save_flags(_save.get("flags", {}), skin))  # [style] the save's look
+	_pivot.add_child(_model)
 	if skin != "":
 		_model.set_variant(skin)
 	_model.set_happy(0.9)

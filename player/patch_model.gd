@@ -196,7 +196,7 @@ func _find_sun() -> void:
 
 
 func _build() -> void:
-	var v: Dictionary = VARIANTS[variant]
+	var v: Dictionary = LumiStyle.variant_for(self, VARIANTS[variant])  # [style] Character Builder look (systems/lumi_style.gd)
 	var glow: Color = v["glow"]
 	var accent_c: Color = v["accent"]
 	_paint_mats.clear()
@@ -321,6 +321,7 @@ func _build() -> void:
 	_beam.top_level = true
 	_beam.visible = false
 	add_child(_beam)
+	LumiStyle.after_build(self)  # [style] eyes, side modules, hover ring, extra add-ons, laser colour
 
 
 # --- Design add-ons -----------------------------------------------------------------------------
