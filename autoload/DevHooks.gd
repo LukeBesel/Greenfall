@@ -38,6 +38,9 @@ extends Node
 ##   --streak=N         start with N cleaning-streak points (30 per tier)
 ##   --tokens=N         start with N contract tokens; --trinkets=N grants N collectibles; --livery=ID equips one
 ##   --tab=contracts    with --open=upgrades: the contracts board and token shop (--contracts-sample fills it)
+##   [hud] --lumi-level=N start at Lumi Level N; --lumi-xp=N grant N XP; --lumi-levelup=S level up S s after start
+##         (holds the level-up moment for screenshots); --tool=plant|water; --hud-pad (pad glyphs);
+##         --hud-mode=full|minimal|hidden; --hud-goals=expanded
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0

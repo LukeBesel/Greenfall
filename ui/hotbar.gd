@@ -263,7 +263,8 @@ func _draw_level(cx: float, y: float) -> void:
 	var flash: float = clampf((_lvl_t - 2.6) / 1.0, 0.0, 1.0)  # first second of a level-up
 	var glow: float = clampf(_lvl_t / 0.8, 0.0, 1.0) if _lvl_t > 0.0 else 0.0
 	# Track, fill and a soft head.
-	draw_rect(Rect2(x0, y, LEVEL_W, 3.0), Color(1, 1, 1, 0.12))
+	draw_rect(Rect2(x0 - 1.0, y - 1.0, LEVEL_W + 2.0, 5.0), Color(0, 0, 0, 0.35))
+	draw_rect(Rect2(x0, y, LEVEL_W, 3.0), Color(1, 1, 1, 0.16))
 	var f: float = 1.0 if flash > 0.0 else _shown_xp
 	var col: Color = XP_COL.lerp(Color.WHITE, flash * 0.7)
 	if f > 0.0:
@@ -275,7 +276,7 @@ func _draw_level(cx: float, y: float) -> void:
 		draw_line(Vector2(x0 + LEVEL_W * k * 0.25, y - 1.0), Vector2(x0 + LEVEL_W * k * 0.25, y + 4.0), Color(0, 0, 0, 0.35), 1.0)
 	# Level number (pops on level-up).
 	var pop: float = 1.0 + 0.35 * flash
-	var num_sz: int = int(round(16.0 * pop))
+	var num_sz: int = int(round(18.0 * pop))
 	_text(Vector2(cx, y - 6.0), str(_shown_level), num_sz, XP_COL.lerp(Color.WHITE, 0.25 + 0.5 * flash))
 	if Settings.hud_mode == Settings.HudMode.FULL:
 		_text(Vector2(cx - 18.0, y - 7.0), "LV", 12, Color(UITheme.MUTED, 0.9), HORIZONTAL_ALIGNMENT_RIGHT)
@@ -414,7 +415,8 @@ func _draw_hopper(cx: float, y: float) -> void:
 	var band: Array = Economy.cube_rules.get("perfect_band", [0.9, 1.0])
 	var pal: Dictionary = UITheme.meter_colors()
 	var o := Vector2(x0, y) + off
-	draw_rect(Rect2(o, Vector2(HOPPER_W, 2.0)), Color(1, 1, 1, 0.12))
+	draw_rect(Rect2(o - Vector2(1, 1), Vector2(HOPPER_W + 2.0, 4.0)), Color(0, 0, 0, 0.35))
+	draw_rect(Rect2(o, Vector2(HOPPER_W, 2.0)), Color(1, 1, 1, 0.16))
 	var b0: float = float(band[0]) / scale_max * HOPPER_W
 	var b1: float = float(band[1]) / scale_max * HOPPER_W
 	draw_rect(Rect2(o + Vector2(b0, -2.0), Vector2(b1 - b0, 6.0)), pal["band"])

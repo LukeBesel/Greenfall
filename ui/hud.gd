@@ -47,6 +47,7 @@ var _signal_strength: float = 0.0
 var _top_left: MarginContainer
 var _top_right: MarginContainer
 var _bottom: Control
+var _scrims: Control
 
 
 func _ready() -> void:
@@ -56,6 +57,7 @@ func _ready() -> void:
 	_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.theme = UITheme.get_theme()
 	add_child(_root)
+	_build_scrims()
 	lumi = (world.get("lumi_level") as LumiLevel) if world else null
 	_build_top_left()
 	_build_top_right()
@@ -87,6 +89,52 @@ func _margin(preset: Control.LayoutPreset, m: int = 22) -> MarginContainer:
 		mc.add_theme_constant_override(side, m)
 	_root.add_child(mc)
 	return mc
+
+
+## Soft dark radial scrims behind the corners and the hotbar (no boxes) so thin text and lines
+## read over bright litter and sky.
+func _build_scrims() -> void:
+	_scrims = Control.new()
+	_scrims.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_scrims.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_root.add_child(_scrims)
+	var spec: Array = [
+		# [anchor, size, gradient centre (UV), gradient edge (UV)]
+		[Control.PRESET_TOP_LEFT, Vector2(460, 220), Vector2(0, 0), Vector2(1, 0)],
+		[Control.PRESET_TOP_RIGHT, Vector2(520, 300), Vector2(1, 0), Vector2(0, 0)],
+		[Control.PRESET_CENTER_BOTTOM, Vector2(760, 380), Vector2(0.5, 1), Vector2(1, 1)],
+	]
+	for e: Array in spec:
+		var g := Gradient.new()
+		g.set_color(0, Color(0, 0, 0, 0.42))
+		g.set_color(1, Color(0, 0, 0, 0.0))
+		g.add_point(0.5, Color(0, 0, 0, 0.2))
+		var gt := GradientTexture2D.new()
+		gt.gradient = g
+		gt.fill = GradientTexture2D.FILL_RADIAL
+		gt.fill_from = e[2]
+		gt.fill_to = e[3]
+		gt.width = 128
+		gt.height = 64
+		var tr := TextureRect.new()
+		tr.texture = gt
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr.stretch_mode = TextureRect.STRETCH_SCALE
+		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		tr.set_anchors_preset(e[0])
+		var sz: Vector2 = e[1]
+		match e[0]:
+			Control.PRESET_TOP_LEFT:
+				tr.offset_right = sz.x
+				tr.offset_bottom = sz.y
+			Control.PRESET_TOP_RIGHT:
+				tr.offset_left = -sz.x
+				tr.offset_bottom = sz.y
+			_:
+				tr.offset_left = -sz.x * 0.5
+				tr.offset_right = sz.x * 0.5
+				tr.offset_top = -sz.y
+		_scrims.add_child(tr)
 
 
 func _build_top_left() -> void:
@@ -176,6 +224,7 @@ func _build_hints() -> void:
 func _apply_mode() -> void:
 	var hidden: bool = Settings.hud_mode == Settings.HudMode.HIDDEN
 	_top_left.visible = not hidden
+	_scrims.visible = not hidden
 	_top_right.visible = not hidden
 	hotbar.visible = not hidden
 	_context.visible = not hidden

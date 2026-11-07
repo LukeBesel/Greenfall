@@ -222,7 +222,8 @@ func _grant(lv: int) -> String:
 		bits.append("+%s %s" % [Economy.rarity(r).get("name", ""), Economy.part_type(t).get("name", "part")])
 	var tokens: int = int(plan["tokens"])
 	if bool(plan["trinket"]):
-		var tid: String = Collection.roll("lumi_level", randf())
+		var left: Array[String] = Collection.unfound("lumi_level")  # in order: L10, L20, ...
+		var tid: String = left[0] if not left.is_empty() else ""
 		if tid != "" and Collection.grant(tid, true):
 			bits.append(str(Collection.def(tid).get("name", tid)))
 		else:
