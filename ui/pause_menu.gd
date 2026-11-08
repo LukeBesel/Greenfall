@@ -123,6 +123,9 @@ func _quit_to_title() -> void:
 
 
 func open_menu() -> void:
+	var cx: Node = get_parent().get("codex") if get_parent() else null  # [ui7] never stack on the Codex
+	if cx and bool(cx.get("is_open")) and cx.has_method("close_screen"):
+		cx.call("close_screen")
 	is_open = true
 	_root.visible = true
 	_menu.visible = true

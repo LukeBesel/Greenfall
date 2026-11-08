@@ -131,7 +131,7 @@ func raise() -> void:
 	_show_built()  # [camp2]
 	Audio.play("chime", 0.9, -4.0)
 	Audio.play("servo", 0.8, -8.0)
-	Vfx.burst("sparkle", global_position + Vector3(0, 2.0 + tier() * 1.1, 0), GLOW)
+	Vfx.burst("sparkle", global_position + global_basis.y.normalized() * (2.0 + tier() * 1.1), GLOW)  # [orbB] local up
 	EventBus.toast.emit(tr("Relay signal %d%%. WREN can reach you.") % signal_pct() if tier() == 1 else tr("Relay signal %d%%. WREN comes through clearer.") % signal_pct(), "story")
 	var w: Variant = world.get("wren") if world else null
 	if w is Wren:
