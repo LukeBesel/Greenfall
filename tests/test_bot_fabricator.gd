@@ -208,3 +208,22 @@ func test_queue_comes_before_the_mix_and_api() -> void:
 	assert_true(f.queue().is_empty())
 	assert_eq(f.cap_now(), 6)
 	assert_eq(f.mix(), {"scoopie": 1})
+
+
+func test_fabricator_bots_wear_their_types_design() -> void:
+	# Locker designs reach every robot of a type through SphereCrew.dress_hooks (no Fabricator option).
+	var crew: SphereCrew = _crew()
+	var lumi := Node3D.new()
+	add_child_autofree(lumi)
+	lumi.global_position = crew.surface.ground(_g5.centers[100])
+	crew.focus = lumi
+	var seen: Array = []
+	var hook: Callable = func(_b: Node3D, _v: Node3D, t: String, _tier: int) -> void: seen.append(t)
+	SphereCrew.dress_hooks.append(hook)
+	var f: BotFabricator = _fab(crew, [{"cell": 100}])
+	_give(1e7, 1e6)
+	f.tick(0.01)
+	f.tick(float(BotFabricator.cfg()["build_s"]))
+	SphereCrew.dress_hooks.erase(hook)
+	assert_eq(crew.robots().size(), 1)
+	assert_eq(seen, ["scoopie"], "the new near robot was dressed as its type")

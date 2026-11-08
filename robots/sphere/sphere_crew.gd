@@ -55,6 +55,12 @@ var spend_seeds: bool = true
 ## Near budget: at most this many real SphereBots; past it the farthest near robots are records
 ## too (a Fabricator fleet of hundreds stays cheap even right around Lumi).
 var max_near: int = 48
+## Robot looks (owner: designed per type at the Locker, worn by every robot of that type, the
+## Fabricator's included). Every globe robot that becomes real is dressed by dress(): the equipped
+## livery (systems/liveries.gd, as on the flat fleet) and then each hook here, called as
+## hook.call(body: Node3D, visual: Node3D, type_id: String, tier: int). The Locker's per-type
+## design registers itself with SphereCrew.dress_hooks.append(...).
+static var dress_hooks: Array[Callable] = []
 
 var _claimed: Dictionary = {}  # cell -> unit name
 var _left: Dictionary = {}  # cell -> work target (junk left 0..1) while robots work it
@@ -355,6 +361,7 @@ func _promote(u: Dictionary) -> void:
 	if visuals:
 		b.add_visual(str(u["type"]), str(Economy.robot_tiers[clampi(int(u["tier"]), 0, Economy.robot_tiers.size() - 1)].get("look", "salvage")) if not Economy.robot_tiers.is_empty() else "salvage")
 	SphereRobotKinds.apply(b, str(u["type"]), int(u["tier"]))
+	dress(b, str(u["type"]), int(u["tier"]))
 	b.swarm = swarm
 	if swarm:
 		swarm.add(b)
@@ -362,6 +369,24 @@ func _promote(u: Dictionary) -> void:
 	_near_n += 1
 	u["stall_best"] = INF
 	u["stall_t"] = 0.0
+
+
+## Same looks as a workbench-built robot of this type (see dress_hooks).
+static func dress(b: Node3D, type_id: String, tier: int) -> void:
+	var want: String = Liveries.equipped()
+	var cur: Node = b.get_node_or_null(Liveries.NODE_NAME)
+	if cur and str(cur.get_meta("livery", "")) != want:
+		b.remove_child(cur)
+		cur.queue_free()
+		cur = null
+	if cur == null and want != "":
+		var n: Node3D = Liveries.build(want)
+		if n:
+			b.add_child(n)
+	var vis: Node3D = b.get("visual") as Node3D if "visual" in b else null
+	for h: Callable in dress_hooks:
+		if h.is_valid():
+			h.call(b, vis, type_id, tier)
 
 
 func _demote(u: Dictionary) -> void:
