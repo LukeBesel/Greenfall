@@ -6,7 +6,6 @@
     "research": [["earned", 500], ["stat", "research_done", 1]],
     "build": [["builds"]],
     "contracts": [["stat", "hexes_cleaned", 6], ["stat", "contracts_done", 1]],
-    "rockets": [["hub_level", 4]],
-    "locker": [["hub_level", 3]]
+    "rockets": [["hub_level", 4]]
   }
 }

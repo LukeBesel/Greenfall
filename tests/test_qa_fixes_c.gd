@@ -54,7 +54,7 @@ func test_goal_titles_fit_goals_card() -> void:
 
 
 func test_upgrades_screen_tab_closes_and_focus_follows_tabs() -> void:
-	GameState.flags["bench_tabs"] = ["patch", "bots", "build", "research", "contracts", "locker"]  # [ui2] all tabs open
+	GameState.flags["bench_tabs"] = ["patch", "bots", "build", "research", "contracts"]  # [ui2] all tabs open
 	var scr := UpgradesScreen.new()
 	add_child_autofree(scr)
 	scr._set_tab("patch")
@@ -72,13 +72,13 @@ func test_upgrades_screen_tab_closes_and_focus_follows_tabs() -> void:
 	# Active tab lit ([ui2] holo), the others quiet.
 	assert_eq(scr._tab_buttons[3].get_theme_color("font_color"), BenchKit.HOLO.lightened(0.5))
 	assert_eq(scr._tab_buttons[0].get_theme_color("font_color"), UITheme.MUTED)
-	# RB from Bots goes to the next tab on screen (Build), per TABS order.
+	# RB from Bots goes to the next tab on screen (Research), per TABS order.
 	scr._tab = "bots"
 	var ev := InputEventAction.new()
 	ev.action = "ui_tab_next"
 	ev.pressed = true
 	scr._input(ev)
-	assert_eq(scr._tab, "build")
+	assert_eq(scr._tab, "research")  # [ui6] Bots is third, Research fourth
 	scr._set_tab("contracts")
 	await wait_physics_frames(2)
 	var close := InputEventAction.new()

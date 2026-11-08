@@ -21,7 +21,7 @@ msgstr "[Évéŕý %s îñ ţĥé ƒļééţ. ~~~~~]"
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr "[Bàšé (Mķ Î, béƒôŕé ţîéŕ àñð þàŕţ ŕàŕîţý) ~~~~~~~~~~~]"
 
-#: autoload/Economy.gd:128 ui/upgrades_panel.gd:39
+#: autoload/Economy.gd:128 ui/bench_lists.gd:12 ui/upgrades_panel.gd:39
 msgid "Base"
 msgstr "[Bàšé ~]"
 
@@ -500,8 +500,8 @@ msgstr "[Évéŕý %dţĥ bàļé ţô ţĥé ŕéçýçļéŕ ~~~~~~~~]"
 msgid "Requires hub level %d or research: %s."
 msgstr "[Ŕéqûîŕéš ĥûb ļévéļ %d ôŕ ŕéšéàŕçĥ: %s. ~~~~~~~~~~]"
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:353
-#: systems/camp/camp.gd:365 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:356
+#: systems/camp/camp.gd:368 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
 #: systems/camp/hub_builds.gd:161 systems/camp/hub_builds.gd:171 systems/camp/yard_builds.gd:69
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
@@ -596,7 +596,7 @@ msgstr "[Šôméţĥîñĝ šĥîñý ţûŕñéð ûþ îñ ţĥé çļéàŕé
 msgid "Your CD case is full."
 msgstr "[Ýôûŕ ÇÐ çàšé îš ƒûļļ. ~~~~]"
 
-#: planet/far_junk.gd:190
+#: planet/far_junk.gd:198
 msgid "Past the survey line the junk runs too deep to start on. One district at a time: clean this one, then the rockets take us to the next."
 msgstr "[Þàšţ ţĥé šûŕvéý ļîñé ţĥé ĵûñķ ŕûñš ţôô ðééþ ţô šţàŕţ ôñ. Ôñé ðîšţŕîçţ àţ à ţîmé: çļéàñ ţĥîš ôñé, ţĥéñ ţĥé ŕôçķéţš ţàķé ûš ţô ţĥé ñéxţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -797,6 +797,14 @@ msgstr "[ŴŔÉÑ: Ţĥàţ'š ţĥé éðĝé ôƒ ţĥé šûŕvéý žôñé,
 #: planet/world_bounds.gd:166
 msgid "Lumi hovers back onto solid ground."
 msgstr "[Ļûmî ĥôvéŕš bàçķ ôñţô šôļîð ĝŕôûñð. ~~~~~~~~~]"
+
+#: planet/planets/tidewell/env.gd:1180
+msgid "LEDGER  DREDGE %02d"
+msgstr "[ĻÉÐĜÉŔ  ÐŔÉÐĜÉ %02d ~~~~]"
+
+#: planet/planets/tidewell/env.gd:1226
+msgid "LEDGER MINING  ORE BARGE 3"
+msgstr "[ĻÉÐĜÉŔ MÎÑÎÑĜ  ÔŔÉ BÀŔĜÉ 3 ~~~~~~]"
 
 #: plants/composter.gd:77
 msgid "E   compost press  ·  dormant until something grows"
@@ -1217,63 +1225,63 @@ msgstr "[Ŵàţéŕ Ţàñķ þļàçéð. Ŵàţéŕéŕš ñéàŕbý ŵîļļ
 msgid "WATER"
 msgstr "[ŴÀŢÉŔ ~]"
 
-#: scenes/slice.gd:302
+#: scenes/slice.gd:349
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: þàîñţ žôñéš àñð šéñð çŕéŵš ŵĥéŕé ýôû ŵàñţ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:893
+#: scenes/slice.gd:1010
 msgid "HEX CLEAN!  +%s"
 msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 
-#: scenes/slice.gd:907
+#: scenes/slice.gd:1024
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice.gd:909
+#: scenes/slice.gd:1026
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "[Ţĥé ŵĥôļé Ĵûñķýàŕð îš çļéàñ. Ļûmî bééþš à véŕý ļôñĝ, véŕý ĥàþþý bééþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:916
+#: scenes/slice.gd:1033
 msgid "%s is out of range: %s"
 msgstr "[%s îš ôûţ ôƒ ŕàñĝé: %s ~~~~~]"
 
-#: scenes/slice.gd:926
+#: scenes/slice.gd:1043
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ 5 ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:929 ui/rockets_panel.gd:39
+#: scenes/slice.gd:1046 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "[Éñéŕĝý çéļļš ŕéçĥàŕĝîñĝ: %s. Ŕôçķéţ ûþĝŕàðéš ŕéƒîļļ ţĥém ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:983
+#: scenes/slice.gd:1100
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "[Ţôûçĥðôŵñ: %s. Ĥûb %d ôƒ %d. %s ~~~~~~~~]"
 
-#: scenes/slice.gd:984
+#: scenes/slice.gd:1101
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "[Ţĥé ŕôçķéţ îš þàŕķéð ôñ ţĥé ļôţ, ŕéàðý ŵĥéñ îţš çéļļš ŕéƒîļļ. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:984
+#: scenes/slice.gd:1101
 msgid "Landed on the base pad."
 msgstr "[Ļàñðéð ôñ ţĥé bàšé þàð. ~~~~~]"
 
-#: scenes/slice.gd:1083
+#: scenes/slice.gd:1200
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1254
+#: scenes/slice.gd:1371
 msgid "Welcome back. The junk waited for you."
 msgstr "[Ŵéļçômé bàçķ. Ţĥé ĵûñķ ŵàîţéð ƒôŕ ýôû. ~~~~~~~~~~]"
 
-#: scenes/slice.gd:1271
+#: scenes/slice.gd:1388
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:1271
+#: scenes/slice.gd:1388
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:145
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:154
 msgid "Setting the scene"
 msgstr "[Šéţţîñĝ ţĥé šçéñé ~~~]"
 
@@ -2827,31 +2835,31 @@ msgstr "[%s šþôţţéð à %s: %s. ~~~~]"
 msgid "New CD: %s by %s, from %s"
 msgstr "[Ñéŵ ÇÐ: %s bý %s, ƒŕôm %s ~~~~~~]"
 
-#: systems/camp/camp.gd:168
+#: systems/camp/camp.gd:171
 msgid "E   Workbench (broken): repair it"
 msgstr "E   [Ŵôŕķbéñçĥ (bŕôķéñ): ŕéþàîŕ îţ ~~~~~~~]"
 
-#: systems/camp/camp.gd:169
+#: systems/camp/camp.gd:172
 msgid "E   Workbench: upgrades"
 msgstr "E   [Ŵôŕķbéñçĥ: ûþĝŕàðéš ~~~~]"
 
-#: systems/camp/camp.gd:216
+#: systems/camp/camp.gd:219
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð. Þŕéšš É àţ îţ ţô šþéñð çûbéš ôñ ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~]"
 
-#: systems/camp/camp.gd:351
+#: systems/camp/camp.gd:354
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   [%s (Ļv %d): ƒûļļý ûþĝŕàðéð ~~~~~~]"
 
-#: systems/camp/camp.gd:354
+#: systems/camp/camp.gd:357
 msgid "E   %s (Lv %d): %s"
 msgstr "E   [%s (Ļv %d): %s ~~]"
 
-#: systems/camp/camp.gd:355
+#: systems/camp/camp.gd:358
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   [%s (Ļv %d): ûþĝŕàðé ţô %s ƒôŕ %s ~~~~~~~~]"
 
-#: systems/camp/camp.gd:361
+#: systems/camp/camp.gd:364
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "[Ţŕàšĥ bîñ ûþĝŕàðéð: %s. Bàļéš šéļļ ƒôŕ %d%% ĥéŕé. ~~~~~~~~~~~~~~]"
 
@@ -2878,6 +2886,10 @@ msgstr "[Mûšéûm ~]"
 #: systems/camp/hub_builds.gd:190
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "[À ĥàļļ ŵîţĥ à þļîñţĥ ƒôŕ évéŕýţĥîñĝ Ļûmî ƒôûñð, ƒôŕ ŵĥôévéŕ çôméš ñéxţ. ~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/camp/locker_cabinet.gd:33
+msgid "E   open locker"
+msgstr "E   [ôþéñ ļôçķéŕ ~]"
 
 #: systems/camp/machine_reveal.gd:46
 msgid "%s built. Follow the light to it."
@@ -3128,7 +3140,7 @@ msgstr "[Ñééðš %s %d ~]"
 msgid "Buy %d Glim upgrades"
 msgstr "[Bûý %d Ĝļîm ûþĝŕàðéš ~~~~]"
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:13
+#: systems/glim/glim.gd:14 ui/bench_lists.gd:12 ui/glim_bench.gd:13
 msgid "Glim"
 msgstr "[Ĝļîm ~]"
 
@@ -3297,12 +3309,33 @@ msgstr "[Mîļéšţôñé ~]"
 msgid "need %s"
 msgstr "[ñééð %s ~]"
 
+#: ui/bench_lists.gd:12 ui/photo_mode.gd:393 ui/photo_mode.gd:420
+#: ui/upgrades_panel.gd:32
+msgid "Lumi"
+msgstr "[Ļûmî ~]"
+
+#: ui/bench_lists.gd:12 ui/bench_lists.gd:13 ui/upgrades_panel.gd:48
+msgid "Machines"
+msgstr "[Màçĥîñéš ~]"
+
+#: ui/bench_lists.gd:12 ui/globe_view.gd:169 ui/upgrades_panel.gd:49
+msgid "Rocket"
+msgstr "[Ŕôçķéţ ~]"
+
+#: ui/bench_lists.gd:13
+msgid "Yard"
+msgstr "[Ýàŕð ~]"
+
+#: ui/bench_lists.gd:13
+msgid "Story"
+msgstr "[Šţôŕý ~]"
+
 #: ui/build_panel.gd:26
 msgid "Nothing new to build right now. New buildings unlock as you play."
 msgstr "[Ñôţĥîñĝ ñéŵ ţô bûîļð ŕîĝĥţ ñôŵ. Ñéŵ bûîļðîñĝš ûñļôçķ àš ýôû þļàý. ~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/build_panel.gd:105 ui/robot_card.gd:110 ui/robot_card.gd:244
-#: ui/upgrades_screen.gd:15 ui/yard_builds_panel.gd:17
+#: ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr "[Bûîļð ~]"
 
@@ -3551,7 +3584,7 @@ msgstr "[ÇÔÐÉX ~]"
 msgid "Watch the story"
 msgstr "[Ŵàţçĥ ţĥé šţôŕý ~~]"
 
-#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:167
+#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:165
 msgid "Close  [%s]"
 msgstr "[Çļôšé  [%s] ~]"
 
@@ -4429,10 +4462,6 @@ msgstr "[Bàšéš ~]"
 msgid "Solar system"
 msgstr "[Šôļàŕ šýšţém ~]"
 
-#: ui/globe_view.gd:169 ui/upgrades_panel.gd:49
-msgid "Rocket"
-msgstr "[Ŕôçķéţ ~]"
-
 #: ui/globe_view.gd:169
 msgid "Travel between bases"
 msgstr "[Ţŕàvéļ béţŵééñ bàšéš ~~~~]"
@@ -4465,7 +4494,7 @@ msgstr "   [·   ÔÛŢÐÀŢÉÐ ~~]"
 msgid "Re-survey      %s cubes"
 msgstr "[Ŕé-šûŕvéý      %s çûbéš ~~~~~]"
 
-#: ui/goals_panel.gd:206 ui/objective_card.gd:112
+#: ui/goals_panel.gd:206 ui/list_detail.gd:418 ui/objective_card.gd:112
 msgid "DONE"
 msgstr "[ÐÔÑÉ ~]"
 
@@ -4688,42 +4717,69 @@ msgstr "[BÀĻÉ ŔÉÀÐÝ ~]"
 msgid "◢ BURIED PART %d%%"
 msgstr "[◢ BÛŔÎÉÐ ÞÀŔŢ %d%% ~~~]"
 
-#: ui/loading_screen.gd:144
+#: ui/list_detail.gd:88
+msgid "Nothing here yet. Keep playing."
+msgstr "[Ñôţĥîñĝ ĥéŕé ýéţ. Ķééþ þļàýîñĝ. ~~~~~~~~]"
+
+#: ui/list_detail.gd:414
+msgid "LOCKED"
+msgstr "[ĻÔÇĶÉÐ ~]"
+
+#: ui/list_detail.gd:422 ui/profile_picker.gd:97
+msgid "ACTIVE"
+msgstr "[ÀÇŢÎVÉ ~]"
+
+#: ui/list_detail.gd:438
+msgid "FREE"
+msgstr "[FŔÉÉ ~]"
+
+#: ui/list_detail.gd:539
+msgid "REQUIRES   NOT YET   %s"
+msgstr "[ŔÉQÛÎŔÉŠ   ÑÔŢ ÝÉŢ   %s ~~~~~]"
+
+#: ui/list_detail.gd:539
+msgid "Not unlocked yet. Keep playing."
+msgstr "[Ñôţ ûñļôçķéð ýéţ. Ķééþ þļàýîñĝ. ~~~~~~~~]"
+
+#: ui/list_detail.gd:542
+msgid "REQUIRES   %s"
+msgstr "[ŔÉQÛÎŔÉŠ   %s ~~]"
+
+#: ui/list_detail.gd:545
+msgid "REQUIRES   READY"
+msgstr "[ŔÉQÛÎŔÉŠ   ŔÉÀÐÝ ~~~]"
+
+#: ui/loading_screen.gd:153
 msgid "Loading"
 msgstr "[Ļôàðîñĝ ~]"
 
-#: ui/loading_screen.gd:146
+#: ui/loading_screen.gd:155
 msgid "Warming up"
 msgstr "[Ŵàŕmîñĝ ûþ ~]"
 
-#: ui/locker_panel.gd:81
+#: ui/locker_panel.gd:80
+msgid "LOCKER"
+msgstr "[ĻÔÇĶÉŔ ~]"
+
+#: ui/locker_panel.gd:85 ui/telescope_view.gd:379
+msgid "Close"
+msgstr "[Çļôšé ~]"
+
+#: ui/locker_panel.gd:154
 msgid "Fleet paint"
 msgstr "[Fļééţ þàîñţ ~]"
 
-#: ui/locker_panel.gd:114
+#: ui/locker_panel.gd:187
 msgid "The Locker"
 msgstr "[Ţĥé Ļôçķéŕ ~]"
 
-#: ui/locker_panel.gd:115
+#: ui/locker_panel.gd:188
+msgid "Build the Locker in the Build tab, then open it in the yard."
+msgstr "[Bûîļð ţĥé Ļôçķéŕ îñ ţĥé Bûîļð ţàb, ţĥéñ ôþéñ îţ îñ ţĥé ýàŕð. ~~~~~~~~~~~~~~~~~~]"
+
+#: ui/locker_panel.gd:189
 msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play."
 msgstr "[Šţýļé Ļûmî àñð évéŕý ŕôbôţ: çôļôûŕš, éýéš, ĥéàð þîéçéš, ţôþþéŕš, ƒļééţ þàîñţ. Ñéŵ þîéçéš ûñļôçķ àš ýôû þļàý. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/locker_panel.gd:125
-msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
-msgstr "[Ôþéñš àţ ĥûb ļévéļ %d (ñôŵ %d). Ûþĝŕàðé ţĥé ĥûb îñ ţĥé Ûþĝŕàðéš ţàb. ~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
-#: ui/upgrades_panel.gd:32
-msgid "Lumi"
-msgstr "[Ļûmî ~]"
-
-#: ui/locker_panel.gd:160
-msgid "You"
-msgstr "[Ýôû ~]"
-
-#: ui/locker_panel.gd:164
-msgid "Buddy"
-msgstr "[Bûððý ~]"
 
 #: ui/lumi_builder.gd:111
 msgid "CHARACTER BUILDER"
@@ -5265,10 +5321,6 @@ msgstr "[ŠÀVÉ ÞŔÔFÎĻÉŠ ~~]"
 #: ui/profile_picker.gd:39
 msgid "Each profile has its own planets and progress. Settings are shared."
 msgstr "[Éàçĥ þŕôƒîļé ĥàš îţš ôŵñ þļàñéţš àñð þŕôĝŕéšš. Šéţţîñĝš àŕé šĥàŕéð. ~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/profile_picker.gd:97
-msgid "ACTIVE"
-msgstr "[ÀÇŢÎVÉ ~]"
 
 #: ui/profile_picker.gd:111
 msgid "New"
@@ -5962,10 +6014,6 @@ msgstr "[%s (ĥéŕé) ~]"
 msgid "%s  ·  not visited"
 msgstr "[%s  ·  ñôţ vîšîţéð ~~~]"
 
-#: ui/telescope_view.gd:379
-msgid "Close"
-msgstr "[Çļôšé ~]"
-
 #: ui/telescope_view.gd:382
 msgid ""
 "Two suns, one system.\n"
@@ -6180,11 +6228,7 @@ msgstr "[ñééð %s · ~%s ~~]"
 msgid "Where it comes from:  %s"
 msgstr "[Ŵĥéŕé îţ çôméš ƒŕôm:  %s ~~~~~]"
 
-#: ui/upgrades_panel.gd:48
-msgid "Machines"
-msgstr "[Màçĥîñéš ~]"
-
-#: ui/upgrades_screen.gd:14
+#: ui/upgrades_screen.gd:15
 msgid "Bots"
 msgstr "[Bôţš ~]"
 
@@ -6192,15 +6236,11 @@ msgstr "[Bôţš ~]"
 msgid "Research"
 msgstr "[Ŕéšéàŕçĥ ~]"
 
-#: ui/upgrades_screen.gd:18
-msgid "Locker"
-msgstr "[Ļôçķéŕ ~]"
-
-#: ui/upgrades_screen.gd:145
+#: ui/upgrades_screen.gd:143
 msgid "WORKBENCH"
 msgstr "[ŴÔŔĶBÉÑÇĤ ~]"
 
-#: ui/upgrades_screen.gd:230
+#: ui/upgrades_screen.gd:228
 msgid "Not open yet. Keep playing."
 msgstr "[Ñôţ ôþéñ ýéţ. Ķééþ þļàýîñĝ. ~~~~~~]"
 
@@ -7159,6 +7199,14 @@ msgstr "[Þŕéššéš þļàñţ šçŕàþš îñţô çômþôšţ àñð š
 #: data/camp.json:builds.radio.desc
 msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
 msgstr "[À çĥûñķý ôļð ÇÐ þļàýéŕ ôñ à çŕàţé bý ţĥé ƒéñçé. Þļàýš ţĥé ðîšçš ýôû ƒîñð. ~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/camp.json:builds.locker.name
+msgid "Locker"
+msgstr "[Ļôçķéŕ ~]"
+
+#: data/camp.json:builds.locker.desc
+msgid "A tall steel locker by the bench. Open it to change Lumi's look, Glim's and your robots'."
+msgstr "[À ţàļļ šţééļ ļôçķéŕ bý ţĥé béñçĥ. Ôþéñ îţ ţô çĥàñĝé Ļûmî'š ļôôķ, Ĝļîm'š àñð ýôûŕ ŕôbôţš'. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/camp.json:builds.nursery.name
 msgid "Robot Nursery"
@@ -11201,7 +11249,8 @@ msgstr "[Véŕðàñçé ~]"
 msgid "Ochre"
 msgstr "[Ôçĥŕé ~]"
 
-#: data/homeward.json:planets[tidewell].name data/telescope.json:planets_default[tidewell].name
+#: data/homeward.json:planets[tidewell].name data/planets.json:tidewell.name data/planets.json:tidewell.district.name
+#: data/telescope.json:planets_default[tidewell].name
 msgid "Tidewell"
 msgstr "[Ţîðéŵéļļ ~]"
 
@@ -12100,6 +12149,58 @@ msgstr "[Šþéçîàļ Môðûļé ~~]"
 #: data/planets.json:rime.tagline
 msgid "An ice moon, core-mined until it froze."
 msgstr "[Àñ îçé môôñ, çôŕé-mîñéð ûñţîļ îţ ƒŕôžé. ~~~~~~~~~~~]"
+
+#: data/planets.json:tidewell.tagline
+msgid "An ocean world. The Ledger's dredging rigs still stand in the shallows."
+msgstr "[Àñ ôçéàñ ŵôŕļð. Ţĥé Ļéðĝéŕ'š ðŕéðĝîñĝ ŕîĝš šţîļļ šţàñð îñ ţĥé šĥàļļôŵš. ~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/planets.json:tidewell.sites.hub_raft.name
+msgid "Anchored Raft"
+msgstr "[Àñçĥôŕéð Ŕàƒţ ~~]"
+
+#: data/planets.json:tidewell.sites.hub_raft.desc
+msgid "Timber raft deck on rusted pontoons: workshop shack, store, deck crane, fuel tank, moorings."
+msgstr "[Ţîmbéŕ ŕàƒţ ðéçķ ôñ ŕûšţéð þôñţôôñš: ŵôŕķšĥôþ šĥàçķ, šţôŕé, ðéçķ çŕàñé, ƒûéļ ţàñķ, môôŕîñĝš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/planets.json:tidewell.sites.hub_stilts.name
+msgid "Stilt Yard"
+msgstr "[Šţîļţ Ýàŕð ~]"
+
+#: data/planets.json:tidewell.sites.hub_stilts.desc
+msgid "A sandy islet with a stilt deck and huts over the water, boardwalk, beached skiff."
+msgstr "[À šàñðý îšļéţ ŵîţĥ à šţîļţ ðéçķ àñð ĥûţš ôvéŕ ţĥé ŵàţéŕ, bôàŕðŵàļķ, béàçĥéð šķîƒƒ. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/planets.json:tidewell.sites.wreck.name
+msgid "Ore Barge Wreck"
+msgstr "[Ôŕé Bàŕĝé Ŵŕéçķ ~~]"
+
+#: data/planets.json:tidewell.sites.wreck.desc
+msgid "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+msgstr "[Ţĥé Ļéðĝéŕ'š ĥàļƒ-šûñķ mîñîñĝ bàŕĝé bý à šàñðbàŕ; ĥôþþéŕš ţûŕñ ţô þļàñţéŕš ŵĥéñ ŕéšţôŕéð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/planets.json:tidewell.sites.dredge_rig.name
+msgid "Dredge Rig"
+msgstr "[Ðŕéðĝé Ŕîĝ ~]"
+
+#: data/planets.json:tidewell.sites.dredge_rig.desc
+msgid "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
+msgstr "[À Ļéðĝéŕ ĵàçķ-ûþ ðŕéðĝîñĝ ŕîĝ ŵîţĥ bûçķéţ ļàððéŕ, ðéŕŕîçķ àñð çŕàñé. ~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/planets.json:tidewell.sites.reef_garden.name
+msgid "Reef Garden"
+msgstr "[Ŕééƒ Ĝàŕðéñ ~]"
+
+#: data/planets.json:tidewell.sites.reef_garden.desc
+msgid "Bleached coral breaking the surface among nets; live coral and floating gardens when restored."
+msgstr "[Bļéàçĥéð çôŕàļ bŕéàķîñĝ ţĥé šûŕƒàçé àmôñĝ ñéţš; ļîvé çôŕàļ àñð ƒļôàţîñĝ ĝàŕðéñš ŵĥéñ ŕéšţôŕéð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/planets.json:tidewell.sites.buoy_field.name
+msgid "Buoy Field"
+msgstr "[Bûôý Fîéļð ~]"
+
+#: data/planets.json:tidewell.sites.buoy_field.desc
+msgid "Rows of mooring buoys strung with rope and ghost nets; light caps when futuristic."
+msgstr "[Ŕôŵš ôƒ môôŕîñĝ bûôýš šţŕûñĝ ŵîţĥ ŕôþé àñð ĝĥôšţ ñéţš; ļîĝĥţ çàþš ŵĥéñ ƒûţûŕîšţîç. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/radio.json:songs[verdance_sprout].name data/songs.json:songs[sprout_step].title
 msgid "Sprout Step"

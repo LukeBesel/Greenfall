@@ -5,7 +5,7 @@ extends RefCounted
 ## State (per district): GameState.world["camp"] = {"bench": bool (repaired), "built": {id: true}}.
 
 const PATH: String = "res://data/camp.json"
-const IDS: Array[String] = ["shack", "generator", "lamps", "composter", "radio", "nursery"]  # [camp2]
+const IDS: Array[String] = ["shack", "generator", "lamps", "composter", "radio", "locker", "nursery"]  # [camp2] [ui6] locker
 
 static var _cfg: Dictionary = {}
 static var events: YardEvents = YardEvents.new()

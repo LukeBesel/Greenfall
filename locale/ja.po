@@ -24,7 +24,7 @@ msgstr "フリートの全%s。"
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr "基本（Mk I、ティアとパーツのレア度を除く）"
 
-#: autoload/Economy.gd:128 ui/upgrades_panel.gd:39
+#: autoload/Economy.gd:128 ui/bench_lists.gd:12 ui/upgrades_panel.gd:39
 msgid "Base"
 msgstr "基本"
 
@@ -34,11 +34,11 @@ msgstr "%s Lv %d"
 
 #: autoload/Economy.gd:188
 msgid "Needs %s Lv %d"
-msgstr ""
+msgstr "%s Lv %dが必要"
 
 #: autoload/Economy.gd:191
 msgid "Needs research: %s"
-msgstr ""
+msgstr "研究が必要：%s"
 
 #: autoload/Economy.gd:194 systems/research.gd:196
 msgid "Needs base level %d"
@@ -134,7 +134,7 @@ msgstr "フォトモード"
 
 #: autoload/Settings.gd:24
 msgid "Glim: scan (hold: upgrades)"
-msgstr ""
+msgstr "Glim：スキャン（長押し：アップグレード）"
 
 #: autoload/Settings.gd:30
 msgid "View"
@@ -278,7 +278,7 @@ msgstr "ベール投入口"
 
 #: automation/depot.gd:284
 msgid "TRASH"
-msgstr ""
+msgstr "ゴミ"
 
 #: automation/depot.gd:321
 msgid "SCRAP  INTAKE  ·  WEIGH HERE"
@@ -298,7 +298,7 @@ msgstr "パッド 01"
 
 #: automation/launch_pad.gd:238
 msgid "LANDING PAD"
-msgstr ""
+msgstr "着陸パッド"
 
 #: automation/launch_pad.gd:301
 msgid ""
@@ -501,8 +501,8 @@ msgstr "ベール%d個に1個をリサイクラーへ"
 msgid "Requires hub level %d or research: %s."
 msgstr "基地レベル %d または研究「%s」が必要。"
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:353
-#: systems/camp/camp.gd:365 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:356
+#: systems/camp/camp.gd:368 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
 #: systems/camp/hub_builds.gd:161 systems/camp/hub_builds.gd:171 systems/camp/yard_builds.gd:69
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
@@ -597,7 +597,7 @@ msgstr "片付けたがれきの中で何かが光った。古いCDだ！"
 msgid "Your CD case is full."
 msgstr "CDケースがいっぱいだ。"
 
-#: planet/far_junk.gd:190
+#: planet/far_junk.gd:198
 msgid "Past the survey line the junk runs too deep to start on. One district at a time: clean this one, then the rockets take us to the next."
 msgstr ""
 
@@ -796,6 +796,14 @@ msgstr ""
 
 #: planet/world_bounds.gd:166
 msgid "Lumi hovers back onto solid ground."
+msgstr ""
+
+#: planet/planets/tidewell/env.gd:1180
+msgid "LEDGER  DREDGE %02d"
+msgstr ""
+
+#: planet/planets/tidewell/env.gd:1226
+msgid "LEDGER MINING  ORE BARGE 3"
 msgstr ""
 
 #: plants/composter.gd:77
@@ -1216,63 +1224,63 @@ msgstr "給水タンクを設置。近くの水やりロボはここで補給す
 msgid "WATER"
 msgstr "水"
 
-#: scenes/slice.gd:302
+#: scenes/slice.gd:349
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーンを塗って、好きな場所にクルーを送ろう。"
 
-#: scenes/slice.gd:893
+#: scenes/slice.gd:1010
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
-#: scenes/slice.gd:907
+#: scenes/slice.gd:1024
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice.gd:909
+#: scenes/slice.gd:1026
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
 
-#: scenes/slice.gd:916
+#: scenes/slice.gd:1033
 msgid "%s is out of range: %s"
 msgstr "%s は範囲外：%s"
 
-#: scenes/slice.gd:926
+#: scenes/slice.gd:1043
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:929 ui/rockets_panel.gd:39
+#: scenes/slice.gd:1046 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:983
+#: scenes/slice.gd:1100
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陸：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:984
+#: scenes/slice.gd:1101
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
 
-#: scenes/slice.gd:984
+#: scenes/slice.gd:1101
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:1083
+#: scenes/slice.gd:1200
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice.gd:1254
+#: scenes/slice.gd:1371
 msgid "Welcome back. The junk waited for you."
 msgstr "おかえり。ガラクタが待っていたよ。"
 
-#: scenes/slice.gd:1271
+#: scenes/slice.gd:1388
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:1271
+#: scenes/slice.gd:1388
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:145
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:154
 msgid "Setting the scene"
 msgstr ""
 
@@ -2820,31 +2828,31 @@ msgstr "%sが%sを見つけた：%s。"
 msgid "New CD: %s by %s, from %s"
 msgstr "新しいCD：%s（%s、%s出身）"
 
-#: systems/camp/camp.gd:168
+#: systems/camp/camp.gd:171
 msgid "E   Workbench (broken): repair it"
 msgstr ""
 
-#: systems/camp/camp.gd:169
+#: systems/camp/camp.gd:172
 msgid "E   Workbench: upgrades"
 msgstr ""
 
-#: systems/camp/camp.gd:216
+#: systems/camp/camp.gd:219
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr ""
 
-#: systems/camp/camp.gd:351
+#: systems/camp/camp.gd:354
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr ""
 
-#: systems/camp/camp.gd:354
+#: systems/camp/camp.gd:357
 msgid "E   %s (Lv %d): %s"
 msgstr ""
 
-#: systems/camp/camp.gd:355
+#: systems/camp/camp.gd:358
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr ""
 
-#: systems/camp/camp.gd:361
+#: systems/camp/camp.gd:364
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr ""
 
@@ -2871,6 +2879,10 @@ msgstr "博物館"
 #: systems/camp/hub_builds.gd:190
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "ルミが見つけたすべてを台座に飾るホール。次に来る誰かのために。"
+
+#: systems/camp/locker_cabinet.gd:33
+msgid "E   open locker"
+msgstr "E   ロッカーを開く"
 
 #: systems/camp/machine_reveal.gd:46
 msgid "%s built. Follow the light to it."
@@ -3121,9 +3133,9 @@ msgstr ""
 msgid "Buy %d Glim upgrades"
 msgstr ""
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:13
+#: systems/glim/glim.gd:14 ui/bench_lists.gd:12 ui/glim_bench.gd:13
 msgid "Glim"
-msgstr ""
+msgstr "Glim"
 
 #: systems/glim/glim.gd:14
 msgid "Find the little lantern bot in the junk"
@@ -3290,12 +3302,33 @@ msgstr "マイルストーン"
 msgid "need %s"
 msgstr "あと%s"
 
+#: ui/bench_lists.gd:12 ui/photo_mode.gd:393 ui/photo_mode.gd:420
+#: ui/upgrades_panel.gd:32
+msgid "Lumi"
+msgstr "Lumi"
+
+#: ui/bench_lists.gd:12 ui/bench_lists.gd:13 ui/upgrades_panel.gd:48
+msgid "Machines"
+msgstr "機械"
+
+#: ui/bench_lists.gd:12 ui/globe_view.gd:169 ui/upgrades_panel.gd:49
+msgid "Rocket"
+msgstr "ロケット"
+
+#: ui/bench_lists.gd:13
+msgid "Yard"
+msgstr "庭"
+
+#: ui/bench_lists.gd:13
+msgid "Story"
+msgstr "ストーリー"
+
 #: ui/build_panel.gd:26
 msgid "Nothing new to build right now. New buildings unlock as you play."
 msgstr "今は新しく建てるものはありません。遊ぶうちに新しい建物が解放されます。"
 
 #: ui/build_panel.gd:105 ui/robot_card.gd:110 ui/robot_card.gd:244
-#: ui/upgrades_screen.gd:15 ui/yard_builds_panel.gd:17
+#: ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr "建造"
 
@@ -3541,7 +3574,7 @@ msgstr "図鑑"
 msgid "Watch the story"
 msgstr ""
 
-#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:167
+#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:165
 msgid "Close  [%s]"
 msgstr "閉じる  [%s]"
 
@@ -4416,10 +4449,6 @@ msgstr "基地"
 msgid "Solar system"
 msgstr "太陽系"
 
-#: ui/globe_view.gd:169 ui/upgrades_panel.gd:49
-msgid "Rocket"
-msgstr "ロケット"
-
 #: ui/globe_view.gd:169
 msgid "Travel between bases"
 msgstr "基地間を移動"
@@ -4452,7 +4481,7 @@ msgstr "   ·   古い情報"
 msgid "Re-survey      %s cubes"
 msgstr "再調査      %s キューブ"
 
-#: ui/goals_panel.gd:206 ui/objective_card.gd:112
+#: ui/goals_panel.gd:206 ui/list_detail.gd:418 ui/objective_card.gd:112
 msgid "DONE"
 msgstr "完了"
 
@@ -4673,42 +4702,69 @@ msgstr "ベール完成"
 msgid "◢ BURIED PART %d%%"
 msgstr "◢ 埋もれたパーツ %d%%"
 
-#: ui/loading_screen.gd:144
+#: ui/list_detail.gd:88
+msgid "Nothing here yet. Keep playing."
+msgstr "まだ何もありません。プレイを続けよう。"
+
+#: ui/list_detail.gd:414
+msgid "LOCKED"
+msgstr "未解放"
+
+#: ui/list_detail.gd:422 ui/profile_picker.gd:97
+msgid "ACTIVE"
+msgstr "進行中"
+
+#: ui/list_detail.gd:438
+msgid "FREE"
+msgstr "無料"
+
+#: ui/list_detail.gd:539
+msgid "REQUIRES   NOT YET   %s"
+msgstr "必要条件   未達成   %s"
+
+#: ui/list_detail.gd:539
+msgid "Not unlocked yet. Keep playing."
+msgstr "まだ解放されていません。プレイを続けよう。"
+
+#: ui/list_detail.gd:542
+msgid "REQUIRES   %s"
+msgstr "必要条件   %s"
+
+#: ui/list_detail.gd:545
+msgid "REQUIRES   READY"
+msgstr "必要条件   OK"
+
+#: ui/loading_screen.gd:153
 msgid "Loading"
 msgstr ""
 
-#: ui/loading_screen.gd:146
+#: ui/loading_screen.gd:155
 msgid "Warming up"
 msgstr ""
 
-#: ui/locker_panel.gd:81
+#: ui/locker_panel.gd:80
+msgid "LOCKER"
+msgstr "ロッカー"
+
+#: ui/locker_panel.gd:85 ui/telescope_view.gd:379
+msgid "Close"
+msgstr "閉じる"
+
+#: ui/locker_panel.gd:154
 msgid "Fleet paint"
 msgstr "艦隊の塗装"
 
-#: ui/locker_panel.gd:114
+#: ui/locker_panel.gd:187
 msgid "The Locker"
 msgstr "ロッカー"
 
-#: ui/locker_panel.gd:115
+#: ui/locker_panel.gd:188
+msgid "Build the Locker in the Build tab, then open it in the yard."
+msgstr "建設タブでロッカーを建て、庭で開こう。"
+
+#: ui/locker_panel.gd:189
 msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play."
 msgstr "Lumiとすべてのロボットを着せ替え：色、目、頭パーツ、飾り、艦隊の塗装。新しいパーツは遊ぶうちに解放されます。"
-
-#: ui/locker_panel.gd:125
-msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
-msgstr "ハブ レベル%dで解放（現在%d）。アップグレードタブでハブを強化しよう。"
-
-#: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
-#: ui/upgrades_panel.gd:32
-msgid "Lumi"
-msgstr "Lumi"
-
-#: ui/locker_panel.gd:160
-msgid "You"
-msgstr "あなた"
-
-#: ui/locker_panel.gd:164
-msgid "Buddy"
-msgstr ""
 
 #: ui/lumi_builder.gd:111
 msgid "CHARACTER BUILDER"
@@ -5249,10 +5305,6 @@ msgstr ""
 
 #: ui/profile_picker.gd:39
 msgid "Each profile has its own planets and progress. Settings are shared."
-msgstr ""
-
-#: ui/profile_picker.gd:97
-msgid "ACTIVE"
 msgstr ""
 
 #: ui/profile_picker.gd:111
@@ -5946,10 +5998,6 @@ msgstr "%s（ここ）"
 msgid "%s  ·  not visited"
 msgstr "%s  ·  未訪問"
 
-#: ui/telescope_view.gd:379
-msgid "Close"
-msgstr "閉じる"
-
 #: ui/telescope_view.gd:382
 msgid ""
 "Two suns, one system.\n"
@@ -6160,11 +6208,7 @@ msgstr "あと%s · 約%s"
 msgid "Where it comes from:  %s"
 msgstr "入手方法：  %s"
 
-#: ui/upgrades_panel.gd:48
-msgid "Machines"
-msgstr "機械"
-
-#: ui/upgrades_screen.gd:14
+#: ui/upgrades_screen.gd:15
 msgid "Bots"
 msgstr "ボット"
 
@@ -6172,15 +6216,11 @@ msgstr "ボット"
 msgid "Research"
 msgstr "研究"
 
-#: ui/upgrades_screen.gd:18
-msgid "Locker"
-msgstr "ロッカー"
-
-#: ui/upgrades_screen.gd:145
+#: ui/upgrades_screen.gd:143
 msgid "WORKBENCH"
 msgstr "作業台"
 
-#: ui/upgrades_screen.gd:230
+#: ui/upgrades_screen.gd:228
 msgid "Not open yet. Keep playing."
 msgstr "まだ開いていません。プレイを続けよう。"
 
@@ -7130,7 +7170,7 @@ msgstr "街灯とフェンス沿いのポールライトを配線し直す。夜
 
 #: data/camp.json:builds.composter.name
 msgid "Compost Press"
-msgstr ""
+msgstr "堆肥プレス"
 
 #: data/camp.json:builds.composter.desc
 msgid "Presses plant scraps into compost and seeds. Worth building once something grows."
@@ -7138,11 +7178,19 @@ msgstr "植物くずを堆肥と種にプレスする。何かが育ったら建
 
 #: data/camp.json:builds.radio.desc
 msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
-msgstr ""
+msgstr "柵のそばの木箱に載った古くてごつい CD プレーヤー。見つけたディスクを再生します。"
+
+#: data/camp.json:builds.locker.name
+msgid "Locker"
+msgstr "ロッカー"
+
+#: data/camp.json:builds.locker.desc
+msgid "A tall steel locker by the bench. Open it to change Lumi's look, Glim's and your robots'."
+msgstr "作業台のそばの背の高い鋼鉄ロッカー。開けるとLumi、Glim、ロボットの見た目を変えられる。"
 
 #: data/camp.json:builds.nursery.name
 msgid "Robot Nursery"
-msgstr ""
+msgstr "ロボット保育所"
 
 #: data/camp.json:builds.nursery.desc
 msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
@@ -11181,7 +11229,8 @@ msgstr "Verdance"
 msgid "Ochre"
 msgstr "Ochre"
 
-#: data/homeward.json:planets[tidewell].name data/telescope.json:planets_default[tidewell].name
+#: data/homeward.json:planets[tidewell].name data/planets.json:tidewell.name data/planets.json:tidewell.district.name
+#: data/telescope.json:planets_default[tidewell].name
 msgid "Tidewell"
 msgstr "Tidewell"
 
@@ -12079,6 +12128,58 @@ msgstr "特殊モジュール"
 
 #: data/planets.json:rime.tagline
 msgid "An ice moon, core-mined until it froze."
+msgstr ""
+
+#: data/planets.json:tidewell.tagline
+msgid "An ocean world. The Ledger's dredging rigs still stand in the shallows."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_raft.name
+msgid "Anchored Raft"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_raft.desc
+msgid "Timber raft deck on rusted pontoons: workshop shack, store, deck crane, fuel tank, moorings."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_stilts.name
+msgid "Stilt Yard"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_stilts.desc
+msgid "A sandy islet with a stilt deck and huts over the water, boardwalk, beached skiff."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.wreck.name
+msgid "Ore Barge Wreck"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.wreck.desc
+msgid "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.dredge_rig.name
+msgid "Dredge Rig"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.dredge_rig.desc
+msgid "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.reef_garden.name
+msgid "Reef Garden"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.reef_garden.desc
+msgid "Bleached coral breaking the surface among nets; live coral and floating gardens when restored."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.buoy_field.name
+msgid "Buoy Field"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.buoy_field.desc
+msgid "Rows of mooring buoys strung with rope and ghost nets; light caps when futuristic."
 msgstr ""
 
 #: data/radio.json:songs[verdance_sprout].name data/songs.json:songs[sprout_step].title
@@ -15747,6 +15848,12 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
+#~ msgstr "ハブ レベル%dで解放（現在%d）。アップグレードタブでハブを強化しよう。"
+
+#~ msgid "You"
+#~ msgstr "あなた"
 
 #~ msgid "Press  {cube}  to press a bale"
 #~ msgstr "{cube}  でベールを圧縮"
