@@ -160,8 +160,11 @@ func _move(delta: float) -> void:
 	if _cubing <= 0.0:
 		if sphere_motor:  # [orbit] stick is camera-local (x right, z back): read it in the camera's surface frame
 			var mv: Vector3 = input.get_world_move(0.0)
-			var f: Basis = sphere_cam.get("frame") if sphere_cam and "frame" in sphere_cam else global_basis
-			wish = f.x * mv.x + f.z * mv.z
+			if input.get("world_space") == true:  # [orbB] the autoplay bot steers in world space
+				wish = mv - up() * mv.dot(up())
+			else:
+				var f: Basis = sphere_cam.get("frame") if sphere_cam and "frame" in sphere_cam else global_basis
+				wish = f.x * mv.x + f.z * mv.z
 		else:
 			wish = input.get_world_move(cam_yaw_provider.call())
 	var speed: float = stat("move_speed") * (0.55 if input.scoop_held() and wish.length() > 0.1 else 1.0)

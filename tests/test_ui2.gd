@@ -139,11 +139,13 @@ func test_locker_hosts_a_registered_lumi_editor_and_the_robot_editor() -> void:
 	assert_eq(lp.editing(), "target:lumi")
 	assert_eq(made.size(), 1, "the registered Lumi editor is used")
 	assert_true(lp.is_ancestor_of(made[0]))
-	assert_eq(lp._who_btns.size(), 2, "Lumi + one robot to pick from")
-	lp.set_editing("Locker-01")
-	assert_true(lp._editor is BuilderPanel)
-	assert_true((lp._editor as BuilderPanel).locker_mode)
-	assert_eq((lp._editor as BuilderPanel).selected(), r, "the selector picks the robot")
+	var whos: Array[String] = []
+	for b: Button in lp._who_btns:
+		whos.append(str(b.get_meta("who")))
+	assert_true("bots" in whos, "[ui7] a Bots section (one design per robot type), not one row per robot")
+	assert_false("Locker-01" in whos)
+	lp.set_editing("bots")
+	assert_true(lp._editor is LockerEditors.BotEditor)
 	lp.set_editing("target:lumi")
 	assert_eq(made.size(), 2)
 

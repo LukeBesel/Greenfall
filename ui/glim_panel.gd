@@ -59,7 +59,12 @@ func _ready() -> void:
 	_looks = GlimLooksEditor.new()
 	_looks.director = director
 	_looks.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_looks.visible = false  # [ui7] all cosmetics live at the Locker (yard build); it hosts GlimLooksEditor
 	body.add_child(_looks)
+	var to_locker: Label = UITheme.label(tr("Change Glim's looks at the Locker in the yard."), 15, UITheme.MUTED)
+	to_locker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	to_locker.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	body.add_child(to_locker)
 	var hint: Label = UITheme.label("", 13, UITheme.MUTED)
 	Settings.bind_text(hint, func() -> String: return tr("%s  close") % Settings.glyph("pause"))
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT

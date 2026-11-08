@@ -202,6 +202,11 @@ func _build_patch() -> void:
 	match DevHooks.get_s("orbit-walk", "") if DevHooks.has("orbit-walk") else "-":
 		"-":
 			patch.input = SphereInput.new()
+			if DevHooks.has("autoplay"):  # the pacing bot (tools/autoplay.gd), moving along the ground
+				var ab := AutoplayBot.new(w)
+				ab.world_space = true
+				patch.input = ab
+				w.set("bot", ab)
 		"boost":
 			patch.input = SphereAutoInput.new(Vector3(0, 0, -1), true)
 		_:
