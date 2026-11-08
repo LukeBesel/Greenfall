@@ -657,3 +657,8 @@ tuned in the first-hour pass); no new SFX work unless a bug.
   junk-covered district, over the crash site (damaged pod smoking and sparking), down to Lumi, who
   cleans the clearing piece by piece (beam, the piece lifts and vanishes, a hop), then up again.
   Low preset: fewer pieces. Dev: `--title-t=S` start time, `--title-hold` freeze the camera.
+
+## Update: Glim in the workbench (wt/buddy2)
+- Done: workbench Upgrades tab has a "Glim" section (`ui/glim_bench.gd`, BenchRows, hidden until Glim is found); the Locker lists every unlocked CosmeticTargets bot after Lumi (`ct:<id>` entries in `ui/locker_panel.gd`), so Glim's looks are edited there. Hold F still opens the Glim panel.
+- Done: amber scan markers use Pace's lift rule (`GlimScan.too_big` -> `Pace.can_lift(field, pid)`).
+- Done: the autoplay bot buys Glim's Lantern and Scanner when affordable (1.5x margin); found at ~5 min.
