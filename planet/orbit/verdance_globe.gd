@@ -95,7 +95,7 @@ func _ready() -> void:
 	cells = SphereCells.from_planet(planet)
 	stats["grid_ms"] = Time.get_ticks_msec() - t1
 	view_mode = DevHooks.get_s("orbit-view", "follow")
-	_place_hubs(int(DevHooks.get_f("orbit-hubs", 10.0)))
+	_place_hubs(int(DevHooks.get_f("orbit-hubs", float(PlanetEnvs.globe("verdance")["hub_count"]))))  # [orbD] hub count from data
 	crews.clear()
 	for i: int in range(1, sites.size()):
 		crews.append({"hub": int(sites[i]["cell"]), "rate": 0.25 + 0.05 * (i % 4), "acc": 0.0})
@@ -127,7 +127,7 @@ func _ready() -> void:
 	_cubes_root = Node3D.new()
 	_cubes_root.name = "Cubes"
 	add_child(_cubes_root)
-	_build_base(sites[0])
+	_build_sites()  # [orbD] hub site prefabs (planet/sites/), replaces the grey-box _build_base
 	for i: int in sites.size():
 		_build_beacon(sites[i], i == 0)
 	# Lumi (the real Patch) on the start site, facing north up the main street.
@@ -298,9 +298,10 @@ func _place_hubs(n: int) -> void:
 		picks.append(best)
 	var blocked := func(c: int) -> bool: return cells.state[c] == WATER
 	for i: int in picks.size():
-		var s: Dictionary = terrain.reserve_site(picks[i], 140.0 if i == 0 else 45.0, 40.0, blocked)
+		var flat_m: float = 140.0 if i == 0 else 82.0  # [orbD] a ruin_block prefab is 108 m square (corners at 76 m)
+		var s: Dictionary = terrain.reserve_site(picks[i], flat_m, 40.0, blocked)
 		if s.is_empty():
-			s = terrain.reserve_site(picks[i], 140.0 if i == 0 else 45.0, 40.0)  # coast: allow it
+			s = terrain.reserve_site(picks[i], flat_m, 40.0)  # coast: allow it
 		if s.is_empty():
 			continue
 		sites.append(s)
@@ -345,6 +346,25 @@ func _build_beacon(s: Dictionary, home: bool) -> void:
 	root.global_transform = s["transform"]
 	root.add_child(mi)
 	mi.position = Vector3(9.0, cyl.height * 0.5, -9.0) if home else Vector3(0, cyl.height * 0.5, 0)
+
+
+## [orbD] Every hub's site prefab (SiteManager builds the near ones; the start yard now).
+var site_manager: SiteManager
+
+
+func _build_sites() -> void:
+	site_manager = SiteManager.new()
+	site_manager.name = "Sites"
+	add_child(site_manager)
+	site_manager.setup(self, "verdance", sites, planet.seed_value)
+	var p: SitePrefab = site_manager.build_hub(0)
+	p.get_parent().name = "StartSite"
+	site_manager.point_shaders_at(p)
+
+
+## [orbD] Planet % over the built hubs' regions (owner decision Nov 8); the HUD reads it.
+func planet_fraction() -> float:
+	return site_manager.planet_fraction() if site_manager else 0.0
 
 
 ## The start base as a site prefab: everything in site-local metres on the flat pad (y = 0 is
@@ -518,7 +538,7 @@ func _exit_tree() -> void:
 
 ## The cash-in depot on the start site's pad (site-local metres, like any site prefab).
 func _build_depot(s: Dictionary) -> void:
-	var root: Node3D = get_node_or_null("StartSite")
+	var root: Node3D = site_manager.roots[0] if site_manager else get_node_or_null("StartSite")  # [orbD]
 	depot = Depot.new()
 	depot.name = "Depot"
 	depot.world = self
@@ -526,6 +546,9 @@ func _build_depot(s: Dictionary) -> void:
 	root.add_child(depot)
 	depot.position = Vector3(5.5, 0.0, 3.5)
 	depot.rotation.y = -PI * 0.5
+	var sp: SitePrefab = site_manager.prefab(0) if site_manager else null  # [orbD] on the site's depot anchor
+	if sp:
+		depot.transform = sp.anchor_local("depot")
 
 
 ## Dev: the start loop on the planet, headless. Before the Baler: scoop, roll to the bin (the

@@ -284,6 +284,8 @@ func _process(delta: float) -> void:
 		_field_label.text = "%s   %d%%" % [str(world.district_name).to_upper(), int(floor(pct * 100.0))]
 		var pl: PlanetData = world.planet if world.get("planet") != null else null
 		var frac: float = pl.restored_fraction() if pl else 0.0
+		if world.has_method("planet_fraction"):  # [orbD] globe: planet % over the hub regions
+			frac = world.planet_fraction()
 		_planet_label.text = "%s   %s%%" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(frac * 100.0)]
 		_field_bar.queue_redraw()
 		_relay_label.text = tr("WREN SIGNAL   %d%%") % SignalTower.signal_pct()
