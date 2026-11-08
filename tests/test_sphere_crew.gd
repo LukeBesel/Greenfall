@@ -463,3 +463,29 @@ func test_offline_skimmers_work_the_lakes() -> void:
 	assert_gt(float(r["cubes"]), 0.0)
 	assert_almost_eq(SphereOffline.units_left(cells, SphereOffline.region(_g5, cells, 100, 4)), land0, 0.01, "land untouched")
 	assert_lt(SphereOffline.units_left(cells, SphereOffline.region_water(_g5, cells, 100, 4)), lake.size() * SphereOffline.UNITS_PER_WATER_CELL, "lakes cleaner")
+
+
+func test_robot_cleaned_count_matches_a_reload() -> void:
+	# [orbC] The live ledger count must equal what a reload recounts from SphereCells (orbD soak:
+	# 90 live vs 92 after reload). Near piece work and far numbers work, many cells.
+	var w: Dictionary = _world()
+	var crew: SphereCrew = w["crew"]
+	var cells: SphereCells = w["cells"]
+	var field := SphereField.new(_g5, _t5, cells, 7)
+	crew.field = field
+	var cleaned_signals: Array = [0]
+	crew.cell_cleaned.connect(func(_c: int) -> void: cleaned_signals[0] = int(cleaned_signals[0]) + 1)
+	var start: int = field.cleaned_count
+	for c: int in _g5.cells_around(100, 2):
+		field.materialize(c)  # Lumi's near ring: real pieces
+	for c: int in _g5.cells_around(3000, 3):
+		field.materialize(c)  # a far crew's own ring: real pieces, worked as numbers (the soak's case)
+	for i: int in 3:
+		crew.spawn("scoopie", 0, _g5.cells_around(100, 1)[i + 1])
+	for i: int in 3:
+		crew.spawn("scoopie", 0, _g5.cells_around(3000, 1)[i + 1], 3000)  # far: numbers only
+	_run(crew, 900.0, 0.2)
+	var reloaded := SphereField.new(_g5, _t5, cells, 7)
+	assert_gt(field.cleaned_count - start, 4, "the crews cleaned hexes")
+	assert_eq(field.cleaned_count, reloaded.cleaned_count, "live count = count after a reload")
+	assert_eq(int(cleaned_signals[0]), field.cleaned_count - start, "every clean went through cell_cleaned (the player's on_hex_clean flow)")

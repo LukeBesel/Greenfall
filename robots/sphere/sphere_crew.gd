@@ -704,7 +704,8 @@ func _work_pieces(u: Dictionary, c: int, dt: float) -> void:
 		return
 	u["acc"] = float(u["acc"]) - units
 	var was_dirty: bool = cells.is_dirty(c) or water_dirty(c)
-	field.remove_piece(pid)
+	if field.remove_piece(pid) and (field.hex_hub[c] == 1 or field.hex_water[c] == 1):
+		field.cleaned_count -= 1  # HexField counts every hex; the globe's load rule skips hub ground and lakes
 	if junk_view != null:
 		junk_view.call("hide_piece", pid)
 		if junk_view.has_method("refresh_hex"):
