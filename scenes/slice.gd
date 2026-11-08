@@ -77,6 +77,9 @@ func _ready() -> void:
 	if DevHooks.has("orbit"):  # [orbit] prototype: the walkable globe (planet/orbit/orbit_world.gd)
 		get_tree().change_scene_to_file.call_deferred("res://planet/orbit/orbit_world.tscn")
 		return
+	if DevHooks.has("sphere-walk"):  # [smove] Lumi on a stand-in planet (planet/sphere/sphere_walk.gd)
+		get_tree().change_scene_to_file.call_deferred("res://planet/sphere/sphere_walk.tscn")
+		return
 	var t0: int = Time.get_ticks_msec()
 	add_to_group("persist")
 	# Backstop: never start a district frozen (e.g. paused during a rocket flight).
