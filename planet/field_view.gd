@@ -274,7 +274,7 @@ func _update_mounds(id: int) -> void:
 		var pile: Vector4 = mi.get_meta("pile")
 		mi.visible = left > 0.0
 		mi.scale = Vector3(pile.z * 1.1, maxf(pile.w * left * 0.9, 0.001), pile.z * 1.1)
-		MoundColliders.update(mi.get_meta("body", null), mi.scale, mi.visible)  # [world2]
+		MoundColliders.update(mi.get_meta("body", null), mi.scale, mi.visible, 1.0 - field.removed_fraction(id))  # [world2]
 
 
 ## Re-seat remaining pieces of a hex on its (shrinking) mound.

@@ -143,7 +143,7 @@ static func free_spot(space: PhysicsDirectSpaceState3D, from: Vector3, fwd: Vect
 	var probe := BoxShape3D.new()
 	probe.size = Vector3.ONE * size * 0.95
 	q.shape = probe
-	q.collision_mask = PhysLayers.WORLD | PhysLayers.PROP
+	q.collision_mask = PhysLayers.WORLD | PhysLayers.PROP  # PROP includes junk heaps: never into a heap
 	var f := Vector3(fwd.x, 0, fwd.z).normalized()
 	for d: float in [1.25, 0.95, 0.7]:
 		var p: Vector3 = from + f * d

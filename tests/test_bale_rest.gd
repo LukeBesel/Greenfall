@@ -105,3 +105,23 @@ func test_free_spot_avoids_a_wall() -> void:
 	assert_gt(p.z, -0.95, "puts the bale down short of the wall, not in it")
 	var open: Vector3 = JunkCube.free_spot(space, Vector3(10, 0.05, 0), Vector3(0, 0, 1), 0.55)
 	assert_almost_eq(open.z, 1.25, 0.01)
+
+
+func test_heaps_are_solid_for_lumi_and_bots_and_shrink_as_cleared() -> void:
+	# [world2] Playtest #2: Lumi stood inside heaps and vacuumed the whole pile.
+	var pile := Vector4(12, -6, 2.0, 1.2)
+	var body: StaticBody3D = MoundColliders.make(root, pile)
+	assert_true(body.collision_layer & PhysLayers.PROP != 0, "heaps block Lumi and robots")
+	var sc := Vector3(pile.z * 1.1, pile.w * 0.9, pile.z * 1.1)
+	MoundColliders.update(body, sc, true, 1.0)
+	await wait_physics_frames(2)
+	var space: PhysicsDirectSpaceState3D = root.get_world_3d().direct_space_state
+	var q := PhysicsPointQueryParameters3D.new()
+	q.collision_mask = PhysLayers.SOLID
+	q.position = Vector3(pile.x + 1.6, 0.15, pile.y)
+	assert_false(space.intersect_point(q).is_empty(), "the full heap's edge is solid")
+	MoundColliders.update(body, Vector3(sc.x, sc.y * 0.4, sc.z), true, 0.3)
+	await wait_physics_frames(2)
+	assert_true(space.intersect_point(q).is_empty(), "a mostly cleared heap has drawn in")
+	q.position = Vector3(pile.x, 0.1, pile.y)
+	assert_false(space.intersect_point(q).is_empty(), "what is left is still solid")
