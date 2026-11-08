@@ -49,6 +49,12 @@ var _part_key := PackedInt32Array()  # part id -> cell * 4 + k (save key)
 var _found_keys: Dictionary = {}  # saved found parts (cell * 4 + k -> true), applied on materialize
 var _cell_landmark: Dictionary = {}  # cell -> index into landmarks
 var _saved_unlocked: Dictionary = {}  # cells of a locked biome a save says are open
+## [v1yard] func(dir: Vector3) -> bool: ground where no piece may lie (the start yard's pad, the
+## pod, building footprints; YardKeepOut). Pieces that land there are re-rolled, then dropped.
+var keep_out: Callable
+## [v1yard] Cells with no big items (cell -> true): the start's cells, as the flat game's first hexes.
+var small_only: Dictionary = {}
+const KEEP_OUT_TRIES: int = 8
 
 
 func _init(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p_seed: int = 4471) -> void:
@@ -200,9 +206,21 @@ func materialize(cell: int) -> PackedInt32Array:
 				lx = lm_at.x + dv.x
 				lz = lm_at.y + dv.y
 		var d: Vector3 = (ctr + (f.x * lx + f.z * lz) / grid.radius_m).normalized()
+		if keep_out.is_valid() and bool(keep_out.call(d)):  # [v1yard] off the pad: another spot in the cell, else none
+			var tries: int = 0
+			while tries < KEEP_OUT_TRIES and bool(keep_out.call(d)):
+				var r2: float = sqrt(rng.randf()) * hex_size * 0.92
+				var a2: float = rng.randf() * TAU
+				d = (ctr + (f.x * cos(a2) * r2 + f.z * sin(a2) * r2) / grid.radius_m).normalized()
+				tries += 1
+			if bool(keep_out.call(d)):
+				continue
+			in_pile = false
 		var ti: int = _pick_type(rng)
 		var models: Array = Economy.junk_types[Economy.junk_ids[ti]].get("models", [])
 		var mdl: Dictionary = _pick_model(rng, models) if not models.is_empty() else {}
+		if small_only.has(cell) and float(mdl.get("vol", 0.5)) >= LARGE_VOL:  # [v1yard] no big items at the start
+			mdl = _small_model(Economy.junk_types[Economy.junk_ids[ti]], Economy.junk_ids[ti], piece_pos.size())
 		var mid: String = str(mdl.get("id", ""))
 		var vol: float = float(mdl.get("vol", 0.5))
 		var lie: bool = rng.randf() < float(mdl.get("lie", 0.3))

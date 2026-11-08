@@ -93,6 +93,12 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	await BuildBudget.check("globe cells")  # [orbE]
 	tq = Time.get_ticks_msec()
 	field = SphereField.new(grid, terrain, cells, seed_value)
+	var ko: YardKeepOut = yard_keep_out()  # [v1yard] junk right up to the pad's edge, small pieces near the start
+	if ko:
+		field.keep_out = ko.blocks
+		var c0: int = start_cell()
+		for c: int in grid.cells_within(grid.centers[c0], YardKeepOut.SMALL_ONLY_M, c0):
+			field.small_only[c] = true
 	stats["field_ms"] = Time.get_ticks_msec() - tq
 	await BuildBudget.check("globe field")  # [orbE]
 	surface = SphereSurface.new(grid.radius_m)
@@ -155,8 +161,15 @@ func _place_hubs(n: int, fresh: bool, saved := PackedInt32Array()) -> void:
 
 
 func _clear_site(s: Dictionary, hub_cell: int, i: int) -> void:
+	var ko: YardKeepOut = yard_keep_out() if i == 0 else null  # [v1yard] only the pad's own cells go clean
 	for c: int in s["cells"]:
 		cells.set_flag(c, SphereCells.F_SITE)
+		if ko:
+			if ko.cell_inside(grid, c):
+				cells.state[c] = 1
+				cells.junk[c] = 0.0
+				cells.flags[c] |= SphereCells.F_HUB
+			continue
 		if grid.distance_m(c, hub_cell) < (60.0 if i > 0 else 22.0):
 			cells.state[c] = 1
 			cells.junk[c] = 0.0
@@ -167,6 +180,17 @@ func _clear_sites() -> void:
 	cells = SphereCells.from_planet(planet)
 	for s: Dictionary in sites:
 		_clear_site(s, int(s["cell"]), int(s["index"]))
+
+
+## [v1yard] The start yard's per-piece keep-out (the pad, the pod; SiteManager adds the building
+## footprints), or null off Verdance (other planets' start prefabs keep the 22 m clear core).
+func yard_keep_out() -> YardKeepOut:
+	if _keep_out == null and not sites.is_empty() and str(spec.get("id", "verdance")) == "verdance":
+		_keep_out = YardKeepOut.for_site(sites[0], terrain)
+	return _keep_out
+
+
+var _keep_out: YardKeepOut
 
 
 func start_cell() -> int:
