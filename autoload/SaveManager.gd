@@ -39,22 +39,23 @@ func _ready() -> void:
 ## [steam] The demo keeps its saves apart (Demo.SAVE_DIR) so a full-game save never opens in it.
 ## [worlds2] The folder that holds the profile folders.
 func root_dir(flat: bool = false) -> String:
-	if round_planets() and not flat:  # [orbB] the round-planets preview keeps its saves apart
-		return ("user://saves_" + dev_dir if dev_dir != "" else SAVE_DIR) + ROUND_SUFFIX
+	if round_planets() and not flat:  # [orbB] the round world keeps its saves apart
+		return ("user://saves_" + dev_dir if dev_dir != "" else (Demo.SAVE_DIR if Demo.is_demo() else SAVE_DIR)) + ROUND_SUFFIX
 	if dev_dir != "":  # [beat]
 		return "user://saves_" + dev_dir
 	return Demo.SAVE_DIR if Demo.is_demo() else SAVE_DIR
 
 
-## [orbB] Title screen "Round planets (preview)" (Settings.round_planets): New Game and Continue
-## start on the globe (SliceOrbit.wanted), saving under user://saves_round (profiles, worlds,
-## album and all), so the flat game's saves are never read or written. Steam Cloud stays the
-## flat game's (SteamService skips the preview's files). Not in the demo.
+## [orbB] The round world (Settings.round_planets): New Game and Continue start on the globe
+## (SliceOrbit.wanted), saving under user://saves_round (profiles, worlds, album and all), so the
+## flat game's saves are never read or written. Steam Cloud stays the flat game's (SteamService
+## skips the round tree's files). [v1menu] The default since the 2026-11-08 playtest, the demo
+## included (user://saves_demo_round); `--flat` (dev) reaches the dormant flat game.
 const ROUND_SUFFIX: String = "_round"
 
 
 func round_planets() -> bool:
-	return Settings.round_planets and not Demo.is_demo()
+	return Settings.round_planets and not "--flat" in OS.get_cmdline_user_args()  # [v1menu]
 
 
 ## Turns the preview on or off (title screen): saves the setting, then points at that save tree's

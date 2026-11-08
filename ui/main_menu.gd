@@ -1,6 +1,6 @@
 extends Node3D
 ## Title screen: Aurora hovering over a sunset junk lot, a slow orbiting camera and the front-end
-## menu (Continue / New Game / Settings / Credits / Quit).
+## menu (Continue / New Game / Settings / Quit).
 ## Any DevHooks flag (e.g. tools/shot.sh's --fresh --shot=...) skips straight to the game so the
 ## existing tooling keeps working; pass --menu to stay here (title screenshots), or
 ## --menu=settings|credits|confirm to open that sub-screen.
@@ -351,13 +351,10 @@ func _build_ui() -> void:
 	if not _save.is_empty():
 		_new_game = _menu_button(tr("New Game"), _on_new_game)
 		buttons.append(_new_game)
-	if not Demo.is_demo():  # [orbB] the round planets preview, right under New Game
-		_round_btn = _menu_button(_round_text(), _toggle_round, tr("Its own save. Your flat game is kept as it is."))
-		buttons.append(_round_btn)
 	if Demo.is_demo():  # [steam]
 		buttons.append(_menu_button(tr("Wishlist on Steam"), SteamService.open_store_page))
 	buttons.append(_menu_button(tr("Settings"), _open_settings))
-	buttons.append(_menu_button(tr("Credits"), _open_credits))
+	# [v1menu] No Credits button (owner, 2026-11-08); the panel stays for --menu=credits.
 	buttons.append(_menu_button(tr("Quit"), func() -> void: get_tree().quit()))
 	_chain_focus(buttons)
 	var spacer2 := Control.new()
@@ -706,17 +703,5 @@ func _build_confirm() -> void:
 
 
 
-# --- [orbB] Round planets (preview) ------------------------------------------------------
-
-var _round_btn: Button
-
-
-func _round_text() -> String:
-	return tr("Round planets (preview): %s") % (tr("On") if SaveManager.round_planets() else tr("Off"))
-
-
-## Flips the preview (SaveManager.set_round_planets) and rebuilds the menu: Continue and the
-## profiles now show the other save tree.
-func _toggle_round() -> void:
-	SaveManager.set_round_planets(not SaveManager.round_planets())
-	get_tree().reload_current_scene()
+# [v1menu] The "Round planets (preview)" toggle is gone: the round world is the game
+# (SaveManager.round_planets).

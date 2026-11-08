@@ -70,15 +70,17 @@ var music_volume: float = 0.55
 var mouse_sensitivity: float = 0.0035
 var invert_y: bool = false
 var best_value_tags: bool = true
-## [orbB] Title screen "Round planets (preview)": New Game / Continue start on the walkable globe
-## (scenes/slice_orbit.gd, as --orbit does), with its own save folder (SaveManager.root_dir).
-var round_planets: bool = false
+## [orbB] New Game / Continue start on the walkable globe (scenes/slice_orbit.gd), with its own save
+## folder (SaveManager.root_dir). [v1menu] The round world is the game now: always true, never saved
+## or loaded (old settings files hold the preview's `false`). The dev hook `--flat` turns it off to
+## reach the dormant flat game (SaveManager.round_planets).
+var round_planets: bool = true
 ## [hud] In-game HUD density: FULL (everything, no auto-fade), MINIMAL (default: non-essential
 ## elements fade after a few seconds without change), HIDDEN (only prompts and notifications).
 enum HudMode { FULL, MINIMAL, HIDDEN }
 var hud_mode: int = HudMode.MINIMAL
 enum Quality { LOW, MEDIUM, HIGH, ULTRA }
-var quality: int = Quality.HIGH
+var quality: int = Quality.MEDIUM  # [v1menu] Medium on a first run (owner, 2026-11-08)
 var fullscreen: bool = false
 var vsync: bool = true
 ## 3D render resolution as a fraction of the window (UI stays sharp).
@@ -258,7 +260,6 @@ func save_settings() -> void:
 	cfg.set_value("audio", "sfx", sfx_volume)
 	cfg.set_value("audio", "music", music_volume)
 	cfg.set_value("ui", "best_value_tags", best_value_tags)
-	cfg.set_value("preview", "round_planets", round_planets)  # [orbB]
 	cfg.set_value("ui", "hud_mode", hud_mode)  # [hud]
 	cfg.set_value("display", "quality", quality)
 	cfg.set_value("display", "fullscreen", fullscreen)
@@ -309,7 +310,6 @@ func load_settings() -> void:
 	sfx_volume = float(cfg.get_value("audio", "sfx", sfx_volume))
 	music_volume = float(cfg.get_value("audio", "music", music_volume))
 	best_value_tags = bool(cfg.get_value("ui", "best_value_tags", best_value_tags))
-	round_planets = bool(cfg.get_value("preview", "round_planets", round_planets))  # [orbB]
 	hud_mode = clampi(int(cfg.get_value("ui", "hud_mode", hud_mode)), 0, 2)  # [hud]
 	quality = int(cfg.get_value("display", "quality", quality))
 	fullscreen = bool(cfg.get_value("display", "fullscreen", fullscreen))
@@ -686,7 +686,7 @@ func auto_detect_display(cfg: ConfigFile) -> void:
 		return
 	var d: Dictionary = QualityDetect.pick(QualityDetect.probe_info())
 	if not has_q:
-		quality = int(d["quality"])
+		quality = mini(int(d["quality"]), Quality.MEDIUM)  # [v1menu] first run: Medium at most (weaker hardware still gets Low)
 		if not cfg.has_section_key("display", "render_scale"):
 			render_scale = float(d["render_scale"])
 		quality_auto = true
