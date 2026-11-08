@@ -127,7 +127,12 @@ static func build_site(env: OchreEnv, id: String) -> void:
 
 static func site_camera(pit: OchrePit) -> Array:
 	var o := Vector3(ORIGIN.x, top(pit, Vector2(260.0, 160.0)), ORIGIN.y)
-	return [o + Vector3(0.0, 62.0, 118.0), o + Vector3(0.0, -4.0, -4.0)]
+	match int(DevHooks.get_f("ochre-site-view", 0.0)):
+		1:  # close on the ruined copy
+			return [o + Vector3(-56.0, 16.0, 46.0), o + Vector3(-56.0, 3.0, 0.0)]
+		2:  # close on the restored copy
+			return [o + Vector3(56.0, 16.0, 46.0), o + Vector3(56.0, 3.0, 0.0)]
+	return [o + Vector3(0.0, 44.0, 92.0), o + Vector3(0.0, -2.0, -2.0)]
 
 
 ## The two lookbook cameras: [position, target].
