@@ -268,11 +268,11 @@ msgstr "Un hexagone entier est propre ! Le sol se souvient de ses couleurs."
 msgid "Upgraded! Lumi feels a little less creaky."
 msgstr "Amélioré ! Lumi grince un peu moins."
 
-#: automation/auto_baler.gd:477
+#: automation/auto_baler.gd:478
 msgid "AUTO-BALER"
 msgstr "PRESSE AUTO"
 
-#: automation/auto_baler.gd:480
+#: automation/auto_baler.gd:481
 msgid "KEEP CLEAR · 40 T"
 msgstr "NE PAS STATIONNER · 40 T"
 
@@ -284,7 +284,7 @@ msgstr "Capsule cargo posée : %s cubes de %d robots d'autres quartiers."
 msgid "TO  SCALE  ◀"
 msgstr "VERS LA  BALANCE  ◀"
 
-#: automation/conveyor.gd:182
+#: automation/conveyor.gd:184
 msgid "BALE  FEED"
 msgstr "ENTRÉE BALLES"
 
@@ -393,19 +393,19 @@ msgstr "AVANT-POSTE %d  EN RUINE · réparable à %d%% propre"
 msgid "OUTPOST %d  %s"
 msgstr "AVANT-POSTE %d  %s"
 
-#: automation/recycler.gd:221
+#: automation/recycler.gd:222
 msgid "GONE FOR GOOD  -%d kg"
 msgstr "DISPARU POUR DE BON  -%d kg"
 
-#: automation/recycler.gd:281
+#: automation/recycler.gd:282
 msgid "RECYCLER"
 msgstr "RECYCLEUR"
 
-#: automation/recycler.gd:284
+#: automation/recycler.gd:285
 msgid "SHRED  ·  SMELT  ·  GONE FOR GOOD"
 msgstr "BROYER  ·  FONDRE  ·  DISPARU POUR DE BON"
 
-#: automation/recycler.gd:437
+#: automation/recycler.gd:438
 msgid "HAND FEED"
 msgstr "À LA MAIN"
 
@@ -498,7 +498,7 @@ msgstr "Télescope construit. Approche-toi et appuie sur E pour observer le syst
 msgid "OBSERVATORY"
 msgstr "OBSERVATOIRE"
 
-#: automation/telescope.gd:307
+#: automation/telescope.gd:311
 msgid "E   Telescope: look across the system"
 msgstr "E   Télescope : observer le système"
 
@@ -781,7 +781,7 @@ msgstr "WREN : C'est la limite de la zone de relevé, Lumi. Rien là-bas à part
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi revient en planant sur la terre ferme."
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1057 scenes/slice_orbit.gd:288
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1057 scenes/slice_orbit.gd:293
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXAGONE PROPRE !  +%s"
 
@@ -893,43 +893,43 @@ msgstr "PIÈCE ENTERRÉE  ·  SIGNAL %d%%"
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi remonte dans la cour en cliquetant. C'était bizarre."
 
-#: player/patch.gd:240
+#: player/patch.gd:243
 msgid "No seeds yet. Keep cleaning."
 msgstr "Pas encore de graines. Continue de nettoyer."
 
-#: player/patch.gd:279
+#: player/patch.gd:282
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Plus de graines. Les plantes en fleur en donnent d'autres."
 
-#: player/patch.gd:286
+#: player/patch.gd:289
 msgid "Watering can is empty. Refill at the hub."
 msgstr "Arrosoir vide. Remplis-le à la base."
 
-#: player/patch.gd:481
+#: player/patch.gd:484
 msgid "PERFECT BALE  %s"
 msgstr "BALLE PARFAITE  %s"
 
-#: player/patch.gd:487
+#: player/patch.gd:490
 msgid "OVERSTUFFED  %s"
 msgstr "TROP PLEINE  %s"
 
-#: player/patch.gd:491
+#: player/patch.gd:494
 msgid "PURE  %s"
 msgstr "PURE  %s"
 
-#: player/patch.gd:493
+#: player/patch.gd:496
 msgid "SURGE  %s"
 msgstr "BOOST  %s"
 
-#: player/patch.gd:496
+#: player/patch.gd:499
 msgid "  (streak +%d%%)"
 msgstr "  (série +%d%%)"
 
-#: player/patch.gd:539
+#: player/patch.gd:542
 msgid "Salvaged: %s"
 msgstr "Récupéré : %s"
 
-#: player/patch.gd:568
+#: player/patch.gd:571
 msgid "Recovered: %s"
 msgstr "Retrouvé : %s"
 
@@ -1248,7 +1248,7 @@ msgstr ""
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Liaison robots en ligne. Appuie sur B pour la vue commande : peins des zones et envoie les équipes où tu veux."
 
-#: scenes/slice.gd:1071 scenes/slice_orbit.gd:304
+#: scenes/slice.gd:1071 scenes/slice_orbit.gd:309
 msgid "Milestone: %d hexes clean!"
 msgstr "Étape : %d hexagones propres !"
 
@@ -1280,7 +1280,7 @@ msgstr "La fusée est garée sur le terrain, prête dès que ses cellules seront
 msgid "Landed on the base pad."
 msgstr "Posé sur le plot de la base."
 
-#: scenes/slice.gd:1264 scenes/slice_orbit.gd:437
+#: scenes/slice.gd:1264 scenes/slice_orbit.gd:442
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Les améliorations demandent un établi. Retourne à la base."
 
@@ -1296,15 +1296,15 @@ msgstr "AVANT-POSTE %d · Niv%d"
 msgid "OUTPOST %d · RUIN"
 msgstr "AVANT-POSTE %d · RUINE"
 
-#: scenes/slice_orbit.gd:334 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:102
+#: scenes/slice_orbit.gd:339 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:102
 msgid "E   Workbench (broken): repair it"
 msgstr "E   Établi (cassé) : le réparer"
 
-#: scenes/slice_orbit.gd:334 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:339 systems/camp/camp.gd:177
 msgid "E   Workbench: upgrades"
 msgstr "E   Établi : améliorations"
 
-#: scenes/slice_orbit.gd:533 systems/camp/camp.gd:224
+#: scenes/slice_orbit.gd:538 systems/camp/camp.gd:224
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Établi réparé. Appuie sur E devant lui pour dépenser des cubes en améliorations."
 
@@ -1871,43 +1871,43 @@ msgstr ""
 msgid "Needs %s"
 msgstr "Nécessite %s"
 
-#: story/ledger.gd:493
+#: story/ledger.gd:490
 msgid "Ledger drone inbound, %s! It's heading for a clean hex."
 msgstr "Drone du Ledger en approche, %s ! Il se dirige vers un hexagone propre."
 
-#: story/ledger.gd:494
+#: story/ledger.gd:491
 msgid "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground."
 msgstr "Un drone du Ledger arrive pour déverser de la ferraille sur un hexagone propre (%s de toi). Il ne peut pas toucher le sol planté."
 
-#: story/ledger.gd:530
+#: story/ledger.gd:527
 msgid "SIGNAL JAMMED"
 msgstr "SIGNAL BROUILLÉ"
 
-#: story/ledger.gd:560
+#: story/ledger.gd:557
 msgid "Target re-classified as ASSET. Aborting. ...Interesting."
 msgstr "Cible reclassée comme ACTIF. Abandon de la procédure. ...Intéressant."
 
-#: story/ledger.gd:626
+#: story/ledger.gd:623
 msgid "The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."
 msgstr "Le drone a déversé un peu de ferraille. Ramasse-la, ou laisse tes aides ranger. Un brouilleur à la base tient les drones à distance."
 
-#: story/ledger.gd:682
+#: story/ledger.gd:679
 msgid "SEEDS · PAID IN FULL"
 msgstr "GRAINES · INTÉGRALEMENT RÉGLÉES"
 
-#: story/ledger.gd:699 systems/events.gd:490 systems/lumi_level.gd:218
+#: story/ledger.gd:696 systems/events.gd:490 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d graines"
 
-#: story/ledger.gd:769
+#: story/ledger.gd:766
 msgid "E   jack in: rewrite the Ledger's contract"
 msgstr "E   se brancher : réécrire le contrat du Ledger"
 
-#: story/ledger.gd:769
+#: story/ledger.gd:766
 msgid "E   read the amended contract"
 msgstr "E   lire le contrat modifié"
 
-#: story/ledger.gd:794 story/ledger.gd:848
+#: story/ledger.gd:791 story/ledger.gd:845
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: ACTIVE\n"
@@ -1917,11 +1917,11 @@ msgstr ""
 "CONTRAT 0001 : ACTIF\n"
 "LE DÉCHET EST UNE LIGNE COMPTABLE"
 
-#: story/ledger.gd:809
+#: story/ledger.gd:806
 msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
 msgstr "RELAIS 07  ·  PROPRIÉTÉ DU LEDGER  ·  AUCUN ACCÈS NON PLANIFIÉ"
 
-#: story/ledger.gd:848
+#: story/ledger.gd:845
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: AMENDED\n"
@@ -1931,11 +1931,11 @@ msgstr ""
 "CONTRAT 0001 : MODIFIÉ\n"
 "RESTAURATION = ACTIF"
 
-#: story/ledger.gd:966
+#: story/ledger.gd:963
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr "Le contrat du Ledger est réécrit. Ses drones livrent des graines maintenant. (+%d graines)"
 
-#: story/ledger.gd:974
+#: story/ledger.gd:971
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr "<< LEDGER // HORS PROCÈS-VERBAL >>"
 
@@ -2625,11 +2625,11 @@ msgstr "LE MUSÉE DU RETOUR"
 msgid "everything Lumi found, kept for whoever comes next"
 msgstr "tout ce que Lumi a trouvé, gardé pour ceux qui viendront après"
 
-#: systems/museum.gd:279
+#: systems/museum.gd:283
 msgid "E   salute the Gnome Patrol"
 msgstr "E   saluer la Patrouille de nains"
 
-#: systems/museum.gd:439
+#: systems/museum.gd:443
 msgid "Every plinth is full. The Museum is complete: everything Lumi found, kept for whoever comes next."
 msgstr "Chaque socle est occupé. Le Musée est complet : tout ce que Lumi a trouvé, gardé pour ceux qui viendront après."
 
