@@ -24,6 +24,13 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 4. More districts content: 41 eggs now; more biome props (nets, satellites) if Poly Haven gets them; per-biome plants/wildlife.
 5. Post-game (M11): done (wt/late). Next: per-world story threads with WREN, wildlife using the decor hook, tune Starseed income and Bloom thresholds after play-testing.
 
+## Update: slow start (wt/pace, Nov 8)
+- Owner playtest #2 pacing: Lumi starts with a 12 chest, 3 pieces/s, small junk only and no bale press. New early upgrades: Baler (100), Lift Strength (50 / 500: medium, then large junk), Scoop Size (pieces per pulse), Signal Finder (violet-beam part signals). Before the Baler the chest is emptied loose at the trash bin (camp's TrashBin.deposit) or the scale.
+- Helpers (Salvage Logic research) and automation (Conveyor, Auto-Baler, Recycler, Auto Compactor, Magnet Arm) wait for base level 2: first robot ~36 min, stations ~45+ min. Magnet Arm pulls a few loose, liftable pieces at a time.
+- No spontaneous reward crates (Supply Drop event and Ledger seed drops off). Events/requests that need an unlock are flag-gated (Pace.sync_flags).
+- Old saves (v<3) are granted Baler, Lift 2 and the chest/scoop levels to match. Numbers and before/after table: docs/BALANCE.md "Slow start".
+- Open: re-measure after world2 (HexField.piece_size, no large items in the start ring) and camp (trash bin, bench repair) merge; onboarding objective "sell 3 bales" now needs the Baler first; whole-campaign autoplay not re-run (too long), late stages use dev jumps that grant the early unlocks.
+
 ## Update: Homeward, the Verdance system campaign (wt/home)
 - The game now ends when the whole system is restored. Five fixed planets (Verdance, Ochre, Tidewell,
   Rime, Anvil; data/homeward.json, systems/homeward.gd) are profile worlds with fixed seeds, types,

@@ -587,3 +587,48 @@ calls it and scales the result; nothing is duplicated.
   here into more cubes there. It is a nudge you can watch, not an income source.
 - **Telescope unlock:** base level 4, or the Observatory Optics research (Robotics tier 6, 500 Data). Cost
   6000 cubes + 40 parts (bolts until the money rework adds a parts currency). Tests: `tests/test_remote_progress.gd`.
+
+## Slow start (wt/pace, Nov 8)
+Owner playtest #2: the start was far too fast and strong (4 upgrades after two bales, auto-cubing
+and robots within minutes). Lumi now starts small and earns his tools (core/pace.gd).
+
+Start: chest 12 (was 30), scoop 3 pieces/s (was 8), 1 piece per pulse, small junk only, no bale
+press. Before the Baler the chest is emptied loose into the trash bin (camp's TrashBin.deposit,
+else the scale pad) for 1.0 x junk value (no Pure/Perfect/sell bonuses). Lumi Level cube rewards
+were the hidden early flood (+85 at level 2): cap_cubes_base 30 -> 8, floor 15 -> 5 per level.
+
+| Upgrade | Cost | Notes |
+|---|---|---|
+| Baler | 100 | unlocks bales (stat baler_unlocked) |
+| Lift Strength | 50, 500 | Lv1 medium (jerrycans, crates), Lv2 large (tyres, TVs, fridges); stat lift_class |
+| Scoop Size (multi_lock) | 70 x2.4, max 4 | +1 piece per pulse, no longer gated |
+| Compartment Size | 45 x1.55 | +5 chest |
+| Scoop Speed | 45 x1.6 | +40 % per level |
+| Carry Stack / Compactor Pressure | 120 / 150 | need the Baler |
+| Signal Finder | 400 | needs Detector Coil 1; Rare Part Signal (violet beam) event only after it |
+| Magnet Arm | 1500 x1.9 | Scoop Width 3 + Lift 2 + base 2; pulls 2 + 1/level loose surface pieces, never heaps or heavy ones |
+| Auto Compactor | 2500 | Auto-Baler research + Compartment 6 |
+
+Research: Salvage Logic (1000, base 2) unlocks Scoopie / Haul Bug / Skimmer; Conveyor (3000),
+Auto-Baler (4500) and Recycler need base 2. Upgrades take `requires_research` / `min_base_level`.
+Events take `requires.flag` (Pace.sync_flags: has_baler, has_lift_medium, has_lift_large,
+has_signal_finder) and `enabled`; bale requests need has_baler. Supply Drop and the Ledger's seed
+drops are off (no spontaneous reward crates). Old saves (v < 3) get Baler, Lift 2 and
+data/patch.json old_save_grant (Compartment +4, Scoop Speed +5).
+
+Autoplay, game minutes at --time-scale=4 (Old Town; before = 5db7ed8):
+
+| Milestone | Before | After | Target |
+|---|---|---|---|
+| First upgrade | 0.3 | 1.3 | 1.5-3 |
+| Upgrades bought by the 2nd bale | 1 (5 by 0.7 min) | 4-8 incl. Baler + Lift 1 (0-1 affordable, purse 28-84) (0 affordable then) | ~1 after two bales |
+| Baler / first bale | (no Baler) 0.3 | 3.5-4.9 / 3.6-5.0 | 4-6 |
+| Large lift | (always) | 9.3-9.8 (Lift 2 now 500, was 400 in these runs) | 10-15 |
+| First hex | 1.3 | 5.7-6.8 | |
+| First seed (seed tin) | 13.0 | 16.1-21.2 | 18-22 |
+| Base 2 | 18.0 | 25.6-31.1 | |
+| First robot | 6.3 | 37.2 (Salvage Logic 2500) | 35-45 |
+| Conveyor / Auto-Baler station | 32.0 / 35.2 | Conveyor research starts 42-50, station after | 35-45+ |
+
+Run-to-run spread is about a minute early on. Without world2's HexField.piece_size the start ring
+can still hold large models; Pace counts those as medium so the first hexes can be cleaned.

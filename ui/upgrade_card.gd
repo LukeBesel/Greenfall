@@ -184,11 +184,12 @@ func refresh() -> void:
 		for rid: String in req:
 			parts.append(tr("%s Lv %d") % [tr(str(Economy.upgrade_defs[rid]["name"])), int(req[rid])])
 		_change.text = tr("Requires %s") % ", ".join(parts)
+		_change.text = Economy.lock_reason(upgrade_id)  # [pace] research / base-level locks too
 		_change.add_theme_color_override("font_color", UITheme.MUTED)
 	elif maxed:
 		_change.text = tr("%s%s  (max)") % [_fmt(before), unit]
 		_change.add_theme_color_override("font_color", UITheme.GOLD)
-	elif str(def["stat"]) == "auto_compactor":
+	elif str(def["stat"]) in ["auto_compactor", "baler_unlocked", "signal_finder"]:  # [pace] on/off unlocks
 		_change.text = tr("Off  →  On")
 		_change.add_theme_color_override("font_color", UITheme.GREEN)
 	else:

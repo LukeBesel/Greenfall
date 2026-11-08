@@ -3,6 +3,7 @@
   "types": [
     {
       "id": "scoopie",
+      "requires_research": "salvage_logic",
       "name": "Scoopie",
       "role": "clean",
       "desc": "Small cleaner. Picks junk in its hex and leaves bales behind.",
@@ -64,6 +65,7 @@
     },
     {
       "id": "haulbug",
+      "requires_research": "salvage_logic",
       "name": "Haul Bug",
       "role": "haul",
       "desc": "Fork cart. Carries loose bales to the scale.",
@@ -205,6 +207,7 @@
     },
     {
       "id": "skimmer",
+      "requires_research": "salvage_logic",
       "name": "Skimmer",
       "role": "skim",
       "desc": "Hover pontoon bot with a net arm. Skims floating junk off the lake and leaves bales on the shore for haulers.",

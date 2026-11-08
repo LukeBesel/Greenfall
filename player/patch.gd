@@ -274,12 +274,7 @@ func _handle_scoop(delta: float) -> void:
 	# Magnet arm: pull nearby junk toward the scoop.
 	var mag: float = stat("magnet_radius")
 	if mag > 0.0:
-		var field: HexField = world.field
-		for pid: int in field.pieces_within(scoop_origin(), stat("scoop_reach") + mag):
-			var to_me: Vector3 = scoop_origin() - field.piece_pos[pid]
-			to_me.y = 0.0
-			if to_me.length() > 0.4:
-				world.view.move_piece(pid, field.piece_pos[pid] + to_me.normalized() * minf(2.5 * delta, to_me.length()))
+		Pace.magnet_step(self, world.field, world.view, scoop_origin(), stat("scoop_reach") + mag, delta)  # [pace] capped, smooth, liftable only
 	_scoop_timer -= delta
 	if _scoop_timer > 0.0:
 		return
@@ -289,8 +284,10 @@ func _handle_scoop(delta: float) -> void:
 	for k: int in locks:
 		if k > 0 and not compartment.can_accept(cap):
 			break
-		var pid: int = world.field.find_scoop_target(scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"))
+		var pid: int = Pace.find_scoop_target(world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"), Pace.lift_class())  # [pace] Lift Strength
 		if pid < 0:
+			if k == 0:
+				Pace.heavy_hint(self, world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"))  # [pace]
 			break
 		_take_piece(pid)
 		took += 1
@@ -340,7 +337,7 @@ func _piece_arrived(type_id: String, vol: float, color: Color) -> void:
 		Audio.play("ding", 1.0, -6.0)
 		model.flash()
 	_was_in_band = in_band
-	if stat("auto_compactor") >= 1.0 and not compartment.can_accept(cap) and _cubing <= 0.0:
+	if stat("auto_compactor") >= 1.0 and Pace.baler_unlocked() and not compartment.can_accept(cap) and _cubing <= 0.0:  # [pace]
 		start_cube()
 
 
@@ -366,6 +363,9 @@ func _handle_cubing(delta: float) -> void:
 			model.open_hatch(0.0)
 		return
 	if input.cube_pressed():
+		if not Pace.baler_unlocked():  # [pace] the bale press is an upgrade
+			Pace.baler_hint(self)
+			return
 		if compartment.is_empty() or compartment.pending > 0.0:
 			if compartment.is_empty():
 				Audio.play("buzz", 1.2, -10.0)
@@ -374,7 +374,7 @@ func _handle_cubing(delta: float) -> void:
 
 
 func start_cube() -> void:
-	if compartment.is_empty():
+	if compartment.is_empty() or not Pace.baler_unlocked():  # [pace]
 		return
 	_cubing = CUBE_TIME
 	_cube_spawned = false

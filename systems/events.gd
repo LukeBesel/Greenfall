@@ -104,10 +104,14 @@ static func eligible_ids(ctx: Dictionary) -> Dictionary:
 			ok = false
 		if bool(req.get("ledger_resolved", false)) and not bool(ctx.get("ledger_resolved", false)):
 			ok = false
+		if str(req.get("flag", "")) != "" and not bool((ctx.get("flags", GameState.flags) as Dictionary).get(str(req["flag"]), false)):
+			ok = false  # [pace] needs an unlock (has_baler, has_signal_finder, ...: Pace.sync_flags)
 		if id in ["supply_drop", "salvage_surge", "ledger_audit"] and int(ctx.get("junk_hexes", 0)) <= 0:
 			ok = false
 		if id == "rare_part_signal" and int(ctx.get("parts_left", 0)) <= 0:
 			ok = false
+		if not bool(e.get("enabled", true)):
+			ok = false  # [pace] no spontaneous reward crates (owner playtest #2): supplies are found, never dropped
 		out[id] = ok
 	return out
 
