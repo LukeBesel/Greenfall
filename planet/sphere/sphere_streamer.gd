@@ -4,9 +4,10 @@ extends Node3D
 ##
 ## - Chunks (~256 hexes, SphereGrid.CHUNK_DROP) are built on WorkerThreadPool (SphereChunkJob)
 ##   and applied on the main thread, at most `apply_per_frame` per frame.
-## - LOD 0 (24 tris/hex, warped borders) within lod0_m of the view centre; LOD 1 (12 tris/hex)
-##   out to the horizon (from the view altitude, plus the tallest hills behind it), capped at
-##   lod1_m; past that the far shell (one coarse icosphere mesh reading the same state texture).
+## - LOD 0 (24 tris/hex, warped borders) within lod0_m of the view centre, LOD 1 (12 tris/hex)
+##   within lod1_m, LOD 2 (6 tris/hex) out to the horizon (from the view altitude, plus the
+##   tallest hills behind it), capped at far_m; past that, and for any view higher than
+##   shell_only_alt, the far shell (one coarse icosphere mesh reading the same state texture).
 ## - Collision (trimesh) only for chunks within collide_m of a physics centre (Lumi, robots).
 ## - The near ring: cells within near_m of the view centre (3D junk and other per-hex props
 ##   belong only there); near_changed(added, removed) fires when the ring moves.
@@ -25,7 +26,8 @@ var cells: SphereCells
 var material: ShaderMaterial
 var shell_material: ShaderMaterial
 var lod0_m: float = 240.0
-var lod1_m: float = 2600.0
+var lod1_m: float = 650.0
+var far_m: float = 2000.0
 var collide_m: float = 70.0
 var near_m: float = 70.0
 var hysteresis_m: float = 40.0
@@ -41,7 +43,7 @@ var lod_debug: bool = false
 var shell_level: int = 5
 var shell_drop: float = 3.0
 ## When the view is this high (m above ground), only the far shell is drawn.
-var shell_only_alt: float = 3000.0
+var shell_only_alt: float = 1500.0
 
 var stats: Dictionary = {}
 var _centres: Dictionary = {}  # key -> {pos, kind}
@@ -131,6 +133,7 @@ func settle(max_ms: int = 20000) -> void:
 	while (not _pending.is_empty() or not _jobs.is_empty()) and Time.get_ticks_msec() - t0 < max_ms:
 		_pump(1000)
 		OS.delay_usec(500)
+	_count_stats()
 
 
 func _process(delta: float) -> void:
@@ -174,17 +177,20 @@ func desired() -> Dictionary:
 			var hmax: float = terrain.macro_amp + terrain.detail_amp
 			# Horizon from the eye, plus how far hills of height hmax stay visible behind it.
 			var horizon: float = sqrt(2.0 * R * (alt + hmax) + alt * alt) + sqrt(2.0 * R * hmax * 2.0)
-			var far: float = minf(horizon, lod1_m)
+			var far: float = minf(horizon, far_m)
 			stats["horizon_m"] = horizon
 			for c: int in grid.chunks_within(vd, far + hysteresis_m):
 				var d: float = maxf(0.0, (grid.centers[c].angle_to(vd) - grid.chunk_radius[c]) * R)
 				var cur: int = loaded_lod(c)
 				var l0: float = lod0_m + (hysteresis_m if cur == 0 else 0.0)
-				var l1: float = far + (hysteresis_m if cur >= 0 else 0.0)
+				var l1: float = lod1_m + (hysteresis_m if cur == 1 else 0.0)
+				var l2: float = far + (hysteresis_m if cur >= 0 else 0.0)
 				if d < l0:
 					want[c] = 0
 				elif d < l1:
 					want[c] = 1
+				elif d < l2:
+					want[c] = 2
 	for key: Variant in _centres:
 		var cc: Dictionary = _centres[key]
 		var pd: Vector3 = (cc["pos"] as Vector3).normalized()
@@ -314,7 +320,7 @@ func _apply(job: SphereChunkJob) -> void:
 	if lod_debug:
 		var m: ShaderMaterial = material.duplicate()
 		m.set_shader_parameter("lod_tint", 1.0)
-		m.set_shader_parameter("lod_color", Vector3(1.0, 0.75, 0.75) if job.lod == 0 else Vector3(0.75, 0.85, 1.0))
+		m.set_shader_parameter("lod_color", [Vector3(1.0, 0.7, 0.7), Vector3(0.7, 1.0, 0.75), Vector3(0.7, 0.8, 1.0)][job.lod])
 		mi2.material_override = m
 	ch["lod"] = job.lod
 	ch["tris"] = job.indices.size() / 3
@@ -368,19 +374,21 @@ func _unload(c: int) -> void:
 func _count_stats() -> void:
 	var n0: int = 0
 	var n1: int = 0
+	var n2: int = 0
 	var nc: int = 0
 	var tri: int = 0
 	for c: int in _chunks:
 		var ch: Dictionary = _chunks[c]
-		if int(ch["lod"]) == 0:
-			n0 += 1
-		else:
-			n1 += 1
+		match int(ch["lod"]):
+			0: n0 += 1
+			1: n1 += 1
+			_: n2 += 1
 		if ch["body"] != null:
 			nc += 1
 		tri += int(ch["tris"])
 	stats["lod0"] = n0
 	stats["lod1"] = n1
+	stats["lod2"] = n2
 	stats["collide"] = nc
 	stats["chunk_tris"] = tri
 	stats["jobs"] = _jobs.size()
@@ -393,11 +401,13 @@ func _count_stats() -> void:
 func _update_near(pos: Vector3) -> void:
 	var cell: int = grid.cell_at_from(pos, _view_cell)
 	_view_cell = cell
-	if cell == _near_cell:
+	var low: bool = terrain.altitude(pos) < near_m * 2.0
+	var key: int = cell if low else -2
+	if key == _near_cell:
 		return
-	_near_cell = cell
+	_near_cell = key
 	var nw: PackedInt32Array = PackedInt32Array()
-	if terrain.altitude(pos) < near_m * 2.0:
+	if low:
 		nw = grid.cells_within(pos, near_m, cell)
 	var nset: Dictionary = {}
 	var added := PackedInt32Array()

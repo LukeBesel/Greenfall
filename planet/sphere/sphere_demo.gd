@@ -386,8 +386,8 @@ func _perf(delta: float) -> void:
 	_frames += 1
 	var st: Dictionary = streamer.stats
 	var built: int = maxi(1, int(st.get("built", 0)))
-	var line: String = "%s  alt %.0f m  horizon %.0f m | chunks L0 %d  L1 %d  coll %d  near %d hexes | jobs %d  queued %d | build %.1f ms (max %.1f)  apply %.2f ms (max %.2f)" % [
-		mode, float(st.get("view_alt", 0.0)), float(st.get("horizon_m", 0.0)), int(st.get("lod0", 0)), int(st.get("lod1", 0)),
+	var line: String = "%s  alt %.0f m  horizon %.0f m | chunks L0 %d  L1 %d  L2 %d  coll %d  near %d hexes | jobs %d  queued %d | build %.1f ms (max %.1f)  apply %.2f ms (max %.2f)" % [
+		mode, float(st.get("view_alt", 0.0)), float(st.get("horizon_m", 0.0)), int(st.get("lod0", 0)), int(st.get("lod1", 0)), int(st.get("lod2", 0)),
 		int(st.get("collide", 0)), int(st.get("near", 0)), int(st.get("jobs", 0)), int(st.get("pending", 0)),
 		float(st.get("build_us_sum", 0)) / built / 1000.0, float(st.get("build_us_max", 0)) / 1000.0,
 		float(st.get("apply_us_sum", 0)) / built / 1000.0, float(st.get("apply_us_max", 0)) / 1000.0]

@@ -8,7 +8,9 @@ extends RefCounted
 ##        carries its noise-warped owner cell in UV2.x, so ground borders wander instead of
 ##        tracing hex edges. Corners and edge mids are shared between hexes (computed once).
 ## LOD 1: each hex is a 12-triangle fan (centre, corners, edge mids), owner = the hex. Same
-##        border vertices as LOD 0, so neighbouring chunks of different LODs meet without cracks.
+##        border vertices as LOD 0, so neighbouring chunks of LOD 0 and 1 meet without cracks.
+## LOD 2: each hex is a 6-triangle fan (centre, corners); far ground only (the edge-mid cracks
+##        against LOD 1 are millimetres and the far shell lies under them anyway).
 
 const WATER: int = 5
 
@@ -37,7 +39,8 @@ var _cell_ang: float = 0.0
 func run() -> void:
 	var t0: int = Time.get_ticks_usec()
 	var R: float = terrain.R
-	_cell_ang = grid.centers[12].angle_to(grid.tri_center[grid.cell_tri[12 * SphereGrid.MAX_N]])
+	var c0: int = mini(12, grid.cell_count() - 1)
+	_cell_ang = grid.centers[c0].angle_to(grid.tri_center[grid.cell_tri[c0 * SphereGrid.MAX_N]])
 	var corner_v: Dictionary = {}  # triangle id -> vertex
 	var edge_v: Dictionary = {}    # (min cell << 32 | max cell) -> vertex
 	var cells: PackedInt32Array = grid.cells_in_chunk(chunk)
@@ -61,6 +64,10 @@ func run() -> void:
 				v = _vertex(cdir[i], cell, full)
 				corner_v[t] = v
 			cv[i] = v
+		if lod == 2:
+			for i: int in k:
+				indices.append_array(PackedInt32Array([vc, cv[(i + 1) % k], cv[i]]))
+			continue
 		for i: int in k:
 			var j: int = (i + 1) % k
 			var nb: int = grid.nbr[b6 + j]  # the edge corner i -> corner i+1 is shared with neighbour i+1

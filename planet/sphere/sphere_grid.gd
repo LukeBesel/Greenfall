@@ -421,7 +421,8 @@ func _build_chunks() -> void:
 		var a: float = centers[c].angle_to(centers[i])
 		if a > chunk_radius[c]:
 			chunk_radius[c] = a
-	var cell_r: float = centers[12].angle_to(tri_center[cell_tri[12 * MAX_N]])
+	var c0: int = mini(12, n - 1)
+	var cell_r: float = centers[c0].angle_to(tri_center[cell_tri[c0 * MAX_N]])
 	for c: int in nc:
 		chunk_radius[c] += cell_r
 
