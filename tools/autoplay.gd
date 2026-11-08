@@ -1100,6 +1100,9 @@ func _shop(want: Dictionary) -> void:
 		reserve = maxf(reserve, Economy.upgrade_cost(Pace.UP_BALER).to_float())  # [pace] a person saves for the Baler
 	if HubBuilds.listed(world, "bot_fabricator") and not BotFabricator.built(world):
 		reserve = maxf(reserve, float(BotFabricator.cost().get("cubes", 0)))  # [orbC] a person saves for the Fabricator
+	var fab_now: BotFabricator = BotFabricator.of(world)
+	if fab_now != null and fab_now.fleet_size() < fab_now.cap_now():
+		reserve = maxf(reserve, float(BotFabricator.robot_cost("scoopie")["cubes"]))  # [orbC] keep the line running
 	guard = 0
 	while guard < 20:
 		guard += 1
@@ -1134,10 +1137,13 @@ func _fabricator_mix(world: Node) -> void:
 		return
 	var want: Dictionary = {"scoopie": 3, "haulbug": 1}
 	var ok: Array[String] = BotFabricator.types()
+	var seeds: float = GameState.get_currency("seeds").to_float()
 	if ok.has("seedling"):
-		want["seedling"] = 1
+		want["seedling"] = 3 if seeds > 100.0 else 1  # seeds piling up: more planters
 	if ok.has("drip"):
 		want["drip"] = 2
+	if seeds > 100.0:
+		want["scoopie"] = 2
 	if fab.mix() != want:
 		fab.set_mix(want)
 
