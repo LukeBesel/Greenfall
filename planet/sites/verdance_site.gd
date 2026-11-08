@@ -142,8 +142,10 @@ func _make() -> void:
 	city.buildings = false  # the kit's buildings instead (below)
 	add_child(city)
 	await city.build(layout, _sidewalk_material())
+	await BuildBudget.check("site:roads")  # [orbE] behind the loading screen: a few kit buildings per frame
 	_roads()
-	_kit_blocks()
+	await BuildBudget.check("site:kit")
+	await _kit_blocks()
 	dressing = StreetDressing.new()
 	dressing.name = "Dressing"
 	dressing.skip_facades = true
@@ -291,9 +293,12 @@ func _kit_blocks() -> void:
 					var lp := Vector2(float(e[1]), float(e[2])).rotated(deg_to_rad(-turn))
 					var pal: Dictionary = {"main": "cream", "accent": ACCENTS[rng.randi() % ACCENTS.size()]}
 					_kit(str(e[0]), Vector2(c.x + lp.x, c.y + lp.y), deg_to_rad(float(e[3]) + turn), pal, 1 + rng.randi() % 3)
+					await BuildBudget.check("site:kit")  # [orbE]
 			CityLayout.Block.LANDFILL, CityLayout.Block.VACANT, CityLayout.Block.PARKING:
 				_lots.append({"c": c, "kind": "landfill" if int(b["type"]) == CityLayout.Block.LANDFILL else "lot", "seed": 1 + rng.randi() % 3})
+	await BuildBudget.check("site:lots")  # [orbE]
 	_build_lots()
+	await BuildBudget.check("site:collision")  # [orbE]
 	# The kit has no bodies of its own: one trimesh body for the buildings' solid meshes.
 	SitePrefab.collision_for(kit_root, self)
 

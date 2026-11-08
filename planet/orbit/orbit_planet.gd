@@ -53,17 +53,29 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	var lv: int = SphereGrid.level_of_freq(f)
 	# The survey runs on the same cells: level grids keep their GeoSphere, others share this grid.
 	planet = PlanetData.new(seed_value, lv, GlobeSpec.HEX_M) if lv >= 0 else PlanetData.new(seed_value, 0, GlobeSpec.HEX_M, GeoSphere.from_grid(grid))
-	planet.generate()
-	if not planet_state.is_empty():
-		planet.apply_dict(planet_state)
-	stats["planet_ms"] = Time.get_ticks_msec() - t0
-	var t1: int = Time.get_ticks_msec()
 	terrain = SphereTerrain.new(grid, seed_value)
-	# The survey's elevation lifts the macro terrain: lakes sit low, hills read from Command view.
-	var sorted_e: PackedFloat32Array = planet.elevation.duplicate()
-	sorted_e.sort()
-	terrain.set_cell_elevation(planet.elevation, 14.0, sorted_e[int(sorted_e.size() * 0.25)])
-	cells = SphereCells.from_planet(planet)
+	# [orbE] The survey and the terrain's elevation are pure data: behind the loading screen they run
+	# on a worker thread while the bar keeps moving (Anvil: 2-4 s that froze the first frame).
+	var survey := func() -> void:
+		planet.generate()
+		if not planet_state.is_empty():
+			planet.apply_dict(planet_state)
+		# The survey's elevation lifts the macro terrain: lakes sit low, hills read from Command view.
+		var sorted_e: PackedFloat32Array = planet.elevation.duplicate()
+		sorted_e.sort()
+		terrain.set_cell_elevation(planet.elevation, 14.0, sorted_e[int(sorted_e.size() * 0.25)])
+	if BuildBudget.active():
+		await BuildBudget.join(BuildBudget.add_task(survey, "globe survey"))
+	else:
+		survey.call()
+	stats["planet_ms"] = Time.get_ticks_msec() - t0
+	await BuildBudget.check("globe survey")
+	var t1: int = Time.get_ticks_msec()
+	# [orbE] The cells without from_planet's texture pass: refresh_all below writes it once.
+	cells = SphereCells.new(planet.cell_count())
+	cells.junk = planet.junk.duplicate()
+	cells.state = planet.state.duplicate()
+	cells.biome = planet.biome.duplicate()
 	stats["grid_ms"] = Time.get_ticks_msec() - t1
 	var tq: int = Time.get_ticks_msec()  # [orbE] load-time breakdown (docs/PERFORMANCE.md)
 	_place_hubs(n_hubs if n_hubs > 0 else int(spec.get("hub_count", 10)), cells_state.is_empty(), site_cells)
@@ -73,12 +85,15 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	if before_field.is_valid():
 		before_field.call(self)
 	stats["hubs_ms"] = Time.get_ticks_msec() - tq
+	await BuildBudget.check("globe hubs")  # [orbE]
 	tq = Time.get_ticks_msec()
 	cells.refresh_all()
 	stats["refresh_ms"] = Time.get_ticks_msec() - tq
+	await BuildBudget.check("globe cells")  # [orbE]
 	tq = Time.get_ticks_msec()
 	field = SphereField.new(grid, terrain, cells, seed_value)
 	stats["field_ms"] = Time.get_ticks_msec() - tq
+	await BuildBudget.check("globe field")  # [orbE]
 	surface = SphereSurface.new(grid.radius_m)
 	surface.height_fn = terrain.height
 	surface.cell_fn = func(p: Vector3, _hint: int) -> int: return grid.cell_at(p)
@@ -92,6 +107,7 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	tq = Time.get_ticks_msec()
 	streamer.setup(grid, terrain, cells)
 	stats["streamer_setup_ms"] = Time.get_ticks_msec() - tq
+	await BuildBudget.check("globe shell")  # [orbE]
 	tq = Time.get_ticks_msec()
 	streamer.near_changed.connect(_on_near_changed)
 	junk_view = SphereJunkView.new()
@@ -175,7 +191,11 @@ func build_start_site() -> Node3D:
 	add_child(site_manager)
 	planet_id = str(spec.get("id", planet_id))  # [orbD] --orbit-planet: that planet's site prefabs
 	site_manager.setup(self, planet_id, sites, seed_value)
-	var p: SitePrefab = site_manager.build_hub(0, true)
+	# [orbE] Behind the loading screen the yard builds across frames like the flat district (it
+	# was one 5-7 s frame); without a budget it builds at once, as before.
+	var p: SitePrefab = site_manager.build_hub(0, not BuildBudget.active())
+	if not p.is_built:
+		await p.rebuilt
 	start_site = p.get_parent()
 	start_site.name = "StartSite"
 	SiteManager.point_shaders_at(p)
