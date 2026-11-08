@@ -49,6 +49,6 @@ void fragment() {
 	// Tube body: pale core, saturated rim, so it reads as glass with gas in it.
 	float core = pow(clamp(dot(NORMAL, VIEW), 0.0, 1.0), 2.0);
 	vec3 lit = mix(c, mix(c, vec3(1.0), 0.45), core * (1.0 - twinkle * 0.5));
-	vec3 glass = c * 0.08 + vec3(0.02);
+	vec3 glass = mix(c * 0.03 + vec3(0.025), c * 0.08 + vec3(0.02), clamp(power, 0.0, 1.0));  // [world3] unpowered glass reads cold
 	ALBEDO = mix(glass, lit * energy * f, smoothstep(0.0, 0.15, f));
 }
