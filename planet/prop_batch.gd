@@ -47,7 +47,7 @@ static func merge(root: Node3D) -> Dictionary:
 	var n_out: int = 0
 	for mode: Variant in by_shadow:
 		var out := MeshInstance3D.new()
-		out.name = NODE_NAME
+		out.name = "%s%d" % [NODE_NAME, int(mode)]  # one per shadow mode: siblings must not share a name (Godot renames the second)
 		out.mesh = by_shadow[mode]
 		out.cast_shadow = mode
 		out.set_meta("no_collide", true)  # the originals' colliders were made at build time
