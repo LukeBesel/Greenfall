@@ -22,7 +22,7 @@ const SITES: Dictionary = {
 	"reef_garden": {"kind": "landmark", "radius": 42.0},
 	"buoy_field": {"kind": "landmark", "radius": 40.0},
 }
-const FLOATERS: Array[String] = ["plastic_bottle_gallon", "bleach_bottle", "plastic_jerrycan", "lifebuoy", "old_tyre", "wooden_crate_02", "Barrel_01", "trashbag", "multi_cleaner_bottle", "rubber_boots", "wine_bottles_01", "cardboard_box_01"]
+const FLOATERS: Array[String] = ["plastic_bottle_gallon", "bleach_bottle", "plastic_jerrycan", "lifebuoy", "old_tyre", "wooden_crate_02", "Barrel_01", "trashbag", "trashbag", "multi_cleaner_bottle", "rubber_boots", "cardboard_box_01", "plastic_jerrycan", "old_tyre"]
 
 var site_id: String = ""
 var radius: float = 50.0
@@ -207,7 +207,7 @@ func _islet_mesh(isl: Dictionary) -> void:
 ## Floating junk covering the site's water (fully trashed when ruined); thins with restoration.
 func _site_junk(r: float) -> void:
 	var by: Dictionary = {}
-	var n: int = int(r * r * 0.16)
+	var n: int = int(r * r * 0.75)
 	for k: int in n:
 		var a: float = _rng.randf() * TAU
 		var d: float = sqrt(_rng.randf()) * r * 0.95
@@ -257,11 +257,16 @@ func _site_junk(r: float) -> void:
 	var pm := PlaneMesh.new()
 	pm.size = Vector2(2, 2)
 	var b := FrontierView.Batch.new()
-	for cl: int in 6:
+	for cl: int in 18:
 		var cp := Vector3(cos(cl * 1.7 + 0.4) * r * 0.55, SEA_Y + 0.015, sin(cl * 2.3 + 1.0) * r * 0.55)
+		if cl >= 6:
+			var a: float = _rng.randf() * TAU
+			var d: float = sqrt(_rng.randf()) * r * 0.9
+			cp = Vector3(cos(a) * d, SEA_Y + 0.015, sin(a) * d)
 		if bed_at(cp.x, cp.z).x > SEA_Y - 0.1 or _on_deck(cp):
 			continue
-		b.add(pm, FrontierView._xf(cp, Vector3(0, _rng.randf() * 360.0, 0), Vector3(4.2, 1, 3.4)), net)
+		var sc: float = _rng.randf_range(2.6, 5.0)
+		b.add(pm, FrontierView._xf(cp, Vector3(0, _rng.randf() * 360.0, 0), Vector3(sc, 1, sc * 0.8)), net)
 	b.flush(_groups["ruin"], false)
 
 
@@ -294,6 +299,35 @@ func _shack(b: FrontierView.Batch, fut: FrontierView.Batch, p: Vector3, yaw: flo
 	_box(fut, xf.call(Vector3(0, size.y + 0.05, 0)), Vector3(size.x + 0.2, 0.04, size.z + 0.2), _mat("lamp"), rot)
 
 
+## A timber deck of individual planks (slightly uneven, varied tones, gaps) over joists, clipped
+## to an irregular outline (rx, rz with noise); top at y.
+func _plank_deck(b: FrontierView.Batch, c: Vector3, rx: float, rz: float, y: float, yaw: float, variant: int) -> void:
+	var nz := FastNoiseLite.new()
+	nz.seed = 4000 + variant
+	nz.frequency = 0.9
+	var bs := Basis(Vector3.UP, yaw)
+	var tones: Array[String] = ["plank_a", "plank_b", "plank_c"]
+	var x: float = -rx
+	while x < rx:
+		var w: float = _rng.randf_range(0.26, 0.34)
+		var u: float = x / rx
+		if absf(u) < 1.0:
+			var half: float = rz * sqrt(maxf(0.0, 1.0 - u * u))
+			var a: float = atan2(0.0, u)
+			half *= 1.0 + nz.get_noise_2d(u * 2.0, 0.0) * 0.18
+			var z0: float = -half * (1.0 + nz.get_noise_2d(u * 3.0, 5.0) * 0.1)
+			var z1: float = half
+			var z: float = z0
+			while z < z1 - 0.4:
+				var ln: float = minf(_rng.randf_range(2.0, 4.5), z1 - z)
+				var pc := c + bs * Vector3(x + w * 0.5, y - 0.05 + _rng.randf_range(-0.015, 0.015), z + ln * 0.5)
+				_box(b, pc, Vector3(w - 0.03, 0.1, ln - 0.04), _mat(tones[_rng.randi() % 3]), Vector3(_rng.randf_range(-0.6, 0.6), rad_to_deg(yaw), _rng.randf_range(-0.6, 0.6)))
+				z += ln
+			if int(x / 2.2) != int((x + w) / 2.2):  # a joist every couple of metres
+				_box(b, c + bs * Vector3(x, y - 0.22, (z0 + z1) * 0.5), Vector3(0.2, 0.22, z1 - z0), _mat("trunk"), Vector3(0, rad_to_deg(yaw), 0))
+		x += w
+
+
 func _planter(b: FrontierView.Batch, p: Vector3, r: float) -> void:
 	b.add(_blob_slab(_rng.randi() % 4, 0.2, 1.0), FrontierView._xf(p + Vector3(0, 0.2, 0), Vector3(0, _rng.randf() * 360.0, 0), Vector3(r, 0.4, r)), _mat("wood"))
 	for k: int in 5:
@@ -307,8 +341,8 @@ func _mat(key: String) -> Material:
 		return _mats[key]
 	match key:
 		"tin":
-			var t := AssetLib.pbr_material("corrugated_iron", 0.5, Color(0.72, 0.7, 0.66), true)
-			t.metallic = 0.4
+			var t := AssetLib.pbr_material("corrugated_iron", 0.5, Color(0.95, 0.9, 0.82), true)
+			t.metallic = 0.15
 			_mats[key] = t
 			return t
 		"tin_roof":
@@ -316,6 +350,14 @@ func _mat(key: String) -> Material:
 			r.metallic = 0.3
 			_mats[key] = r
 			return r
+		"plank_a", "plank_b", "plank_c":
+			var tint: Color = {"plank_a": Color(0.62, 0.48, 0.34), "plank_b": Color(0.52, 0.42, 0.32), "plank_c": Color(0.68, 0.6, 0.5)}[key]
+			var pl := AssetLib.pbr_material("rusty_painted_metal", 0.6, tint, true)
+			pl.metallic = 0.0
+			pl.metallic_texture = null
+			pl.roughness = 0.9
+			_mats[key] = pl
+			return pl
 		"deck":
 			var d := AssetLib.pbr_material("dry_decay_leaves", 0.4, Color(0.55, 0.44, 0.33), true)
 			d.metallic = 0.0
@@ -352,7 +394,7 @@ func _site_raft() -> void:
 	var deck_r: float = 16.0
 	var deck_y: float = 0.75
 	_decks.append(Vector3(0, 0, deck_r + 1.5))
-	b.add(_blob_slab(3, 0.16, 1.0, 0), FrontierView._xf(Vector3(0, deck_y - 0.25, 0), Vector3(0, 20, 0), Vector3(deck_r, 0.5, deck_r * 0.86)), _mat("deck"))
+	_plank_deck(b, Vector3.ZERO, deck_r, deck_r * 0.84, deck_y, 0.35, 3)
 	# Pontoons under the rim, bollards and a railing of posts and rope.
 	for k: int in 14:
 		var a: float = TAU * k / 14.0 + 0.1
@@ -426,7 +468,7 @@ func _site_stilts() -> void:
 	var deck_y: float = 1.6
 	var deck_c := Vector3(-14.0, 0, -10.0)
 	_decks.append(Vector3(deck_c.x, deck_c.z, 11.0))
-	b.add(_blob_slab(5, 0.14, 1.0), FrontierView._xf(deck_c + Vector3(0, deck_y, 0), Vector3(0, 35, 0), Vector3(9.5, 0.35, 7.5)), _mat("deck"))
+	_plank_deck(b, deck_c, 9.0, 7.0, deck_y + 0.18, 0.6, 5)
 	for k: int in 18:
 		var a: float = TAU * k / 18.0
 		var sp: Vector3 = deck_c + Vector3(cos(a) * 8.2, 0, sin(a) * 6.3)
