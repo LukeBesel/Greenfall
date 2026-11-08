@@ -145,6 +145,8 @@ func _probe_footprints(i: int, p: SitePrefab) -> int:
 	var tf: int = Time.get_ticks_msec()
 	var f0: int = SiteReach.frames_yielded
 	var moved: PackedStringArray = await SiteReach.fix_anchors(p, terrain)  # [orbE] yields
+	if not is_instance_valid(p) or not is_inside_tree():
+		return n  # the site (or the world) went away while the audit was spread over frames
 	if DevHooks.has("load-report"):
 		print("[sites] hub %d reach fix: %d ms over %d frames" % [i, Time.get_ticks_msec() - tf, SiteReach.frames_yielded - f0])
 	print("[sites] %s hub %d (%s): %d junk cells under its buildings cleared%s" % [planet_id, i, p.site_id, n,

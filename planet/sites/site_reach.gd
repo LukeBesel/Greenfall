@@ -194,6 +194,8 @@ static func audit(p: SitePrefab, terrain: SphereTerrain, only: Node = null) -> D
 		while not stack.is_empty():
 			if (reach & 63) == 0 and _due():  # [orbE] hand frames back (loading screen or gameplay budget)
 				await _pause("site audit")
+				if not _alive(p):
+					return {}  # the site went away while we waited
 			var c: int = stack[stack.size() - 1]
 			stack.resize(stack.size() - 1)
 			reach += 1
@@ -366,6 +368,10 @@ static func _due() -> bool:
 	return _play_us > 0 and _tree != null and Time.get_ticks_usec() - _since >= _play_us
 
 
+static func _alive(p: Variant) -> bool:  # Variant: a freed site can't be passed as a Node
+	return is_instance_valid(p) and (p as Node).is_inside_tree()
+
+
 static func _pause(at: String) -> void:
 	if BuildBudget.active():
 		await BuildBudget.pause(at)
@@ -394,6 +400,8 @@ static func fix_anchors(p: SitePrefab, terrain: SphereTerrain) -> PackedStringAr
 	# 2. Every other anchor: on ground Lumi can reach from there (a raft's deck, not the sea), clear
 	# of the prefab's geometry and of the other machines' footprints with a walking lane between.
 	var r: Dictionary = await audit(p, terrain, p.content)  # [orbE] a coroutine (yields behind the loader)
+	if r.is_empty() or not _alive(p):
+		return moved
 	var state: PackedByteArray = r["state"]
 	var n: int = r["n"]
 	var reach_at := func(l: Vector3) -> bool:
@@ -432,6 +440,8 @@ static func fix_anchors(p: SitePrefab, terrain: SphereTerrain) -> PackedStringAr
 			for k: int in k_n:
 				if _due():  # [orbE]
 					await _pause("site reach")
+					if not _alive(p):
+						return moved
 				var a: float = TAU * k / k_n
 				var c := at + Vector3(cos(a) * rr, 0, sin(a) * rr)
 				if _all_reach(reach_at, c, rad) and spaced.call(c, rad):
