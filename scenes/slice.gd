@@ -42,6 +42,7 @@ var contracts: Contracts  # [events] contracts board + token shop (systems/contr
 var photo: PhotoMode  # [photo] photo mode (ui/photo_mode.gd)
 var fauna: Fauna  # [wild] ambient animals (fauna/fauna.gd)
 var frontier: FrontierDistrict  # [biomes] late-game frontier districts (planet/frontier_district.gd)
+var planet_env: Dictionary = {}  # [planet-rime] dev: --planet-env=<id> dresses a district with a planet env (data/planets.json)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
 var depot: Depot
@@ -100,6 +101,12 @@ func _ready() -> void:
 		GameState.switch_hub(int(planet.frontier_hubs.get(DevHooks.get_s("frontier", "dust_flats"), 0)))
 		if DevHooks.has("hub-level"):
 			GameState.world["hub_level"] = clampi(int(DevHooks.get_f("hub-level", 1.0)), 1, 5)
+	if DevHooks.has("planet-env"):  # [planet-rime] env contract: dev_hub / prepare_field / dress_view / apply
+		planet_env = PlanetEnvs.entry(DevHooks.get_s("planet-env", ""))
+		if not planet_env.is_empty() and not loaded:
+			GameState.switch_hub(PlanetEnvs.dev_hub(planet_env, planet))
+			if DevHooks.has("hub-level"):
+				GameState.world["hub_level"] = clampi(int(DevHooks.get_f("hub-level", 1.0)), 1, 5)
 	hub_index = clampi(GameState.current_hub, 0, planet.hubs.size() - 1)
 	anchor_cell = planet.hubs[hub_index]
 	# Each hub's district has its own deterministic seed; city hubs get streets, others are wild.
@@ -119,6 +126,7 @@ func _ready() -> void:
 	if not fk.is_empty():  # [biomes]
 		field.biome = str(fk["biome"])
 		field.biome_set = Economy.biome_set(field.biome)
+	PlanetEnvs.call_env(planet_env, "prepare_field", [field])  # [planet-rime]
 	var ppx: Array = (cfg.get("pieces_per_hex", [6, 12]) as Array).duplicate()
 	if not fk.is_empty():  # [biomes] more junk per hex
 		ppx = [int(float(ppx[0]) * float(fk.get("pieces_mult", 1.0))), int(float(ppx[1]) * float(fk.get("pieces_mult", 1.0)))]
@@ -163,6 +171,7 @@ func _ready() -> void:
 		view.skip_horizon = true  # [biomes2] FrontierView builds the terrain and skyline
 	elif CradleMode.current_index() > 0:  # [late] another world's ground (snow on an ice moon, sand on a desert world)
 		CradleMode.dress_view(view)
+	PlanetEnvs.call_env(planet_env, "dress_view", [view])  # [planet-rime]
 	view.setup(field)
 	water = WaterView.new()
 	water.name = "Water"
@@ -500,6 +509,7 @@ func _ready() -> void:
 	# [beat] (Bloom connects EventBus.cradle_district_complete itself: a lambda here outlived the scene)
 	if frontier:  # [biomes] frontier mechanics and visuals, once the scene is built
 		frontier.setup()
+	PlanetEnvs.call_env(planet_env, "apply", [self, field, planet_env])  # [planet-rime]
 	core_charge = CoreCharge.new()  # Lumi's Bloom Core charge + its story beats (story/core_charge.gd)
 	core_charge.name = "CoreCharge"
 	core_charge.world = self

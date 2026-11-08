@@ -463,3 +463,14 @@ tuned in the first-hour pass); no new SFX work unless a bug.
   now one aged hydrant. The --fauna-look=duck shot needs a green shore: use `--restore=lake,5`.
 - Next: per-variant garden batches raise draw calls (~130 batches with all species); a merged
   per-chunk garden mesh would cut it. Grass density by quality preset should be checked on real GPUs.
+
+### Planet Rime environment (wt/p_rime)
+- Done: `planet/planets/rime/` (`RimeEnv`, entry `apply(world, field, kind)` plus `dev_hub`, `prepare_field`,
+  `dress_view`), registered in `data/planets.json` (read by `planet/planets/planet_envs.gd`). Own sky shader (black-blue
+  thin air, two small distant suns, stars by day, ringed gas giant, faint aurora), ice heightfield to the crater rim
+  (glassy ice, pressure ridges + slabs, glowing crevasses, drifts, mesas), borehole + headframe, core-drill
+  derricks, frozen geysers, ice spires/arches; restored: hot springs thaw, moss, flowers, ice-lanterns, greenhouse
+  domes, warm borehole. Junk set `rime_biome.json`; field ice sheet via `ground_pbr` `frontier_fx.w`.
+  Dev: `--planet-env=rime` (`--rime-cam`, `--rime-nohud`, `--rime-restore`). Shots: screenshots/planet_rime/.
+- Next (home): call the entry points when a Rime district loads; swap the fallback suns for
+  `SolarSystem.suns_for("rime")` (already read when `systems/solar_system.gd` exists).
