@@ -24,6 +24,7 @@ func _ready() -> void:
 		"ark": _setup_ark()
 		"pod": _setup_pod()
 		"crash": _setup_pod(true)
+		"introframe": _setup_introframe()
 		"loading": _setup_loading()
 
 
@@ -41,6 +42,50 @@ func _setup_ark() -> void:
 		[3.0, func() -> void: stage.aim(Vector3(30, 14, 44), Vector3(0, -1, 0), 40.0)],
 		[5.0, func() -> void: stage.aim(Vector3(-40, 7, 34), Vector3(2, -1, 0), 40.0)],
 	]
+
+
+## Intro frames in the space set with the letterbox and the real subtitle line: the ark gliding past
+## under the opening narration, then the pod dropping out of the ark's rack as WREN breaks up.
+func _setup_introframe() -> void:
+	var stage := SpaceStage.new()
+	var layer := CanvasLayer.new()
+	add_child(layer)
+	layer.add_child(stage)
+	var bars := CanvasLayer.new()
+	bars.layer = 40
+	add_child(bars)
+	for top: bool in [true, false]:
+		var bar := ColorRect.new()
+		bar.color = Color.BLACK
+		bar.set_anchors_preset(Control.PRESET_TOP_WIDE if top else Control.PRESET_BOTTOM_WIDE)
+		if top:
+			bar.offset_bottom = 70
+		else:
+			bar.offset_top = -70
+		bars.add_child(bar)
+	var subs := Subtitles.new()
+	add_child(subs)
+	Subtitles.force_low(true)
+	await get_tree().process_frame
+	stage.show_set("space")
+	var ark: CradleShip = stage.ark
+	ark.rotation = Vector3(0, -PI * 0.5, 0)
+	var lines: Dictionary = Intro.lines()
+	_events = [
+		[0.2, func() -> void:
+			stage.aim(Vector3(34, 11, 56), Vector3(-6, -5, 0), 38.0)
+			subs.queue_line(str(lines["title"][0]), "")],
+		[4.0, func() -> void:
+			subs.clear()
+			stage.pod.visible = true
+			stage.pod.global_transform = ark.pod_xform(2)
+			ark.release_pod(2)
+			stage.pod.global_position += Vector3(-2.2, -4.5, 1.6)
+			stage.pod.rotate_object_local(Vector3(1, 0, 0.4).normalized(), 0.6)
+			stage.aim(Vector3(-9, -16, 24), stage.pod.global_position + Vector3(4, 1.5, 0), 46.0)
+			subs.queue_line(Intro.glitch_tail(str(lines["hold_on"][0])), "wren")],
+	]
+	_shots = [[3.2, Callable()], [5.0, Callable()]]
 
 
 func _setup_pod(crash: bool = false) -> void:
