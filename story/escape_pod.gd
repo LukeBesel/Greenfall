@@ -947,7 +947,7 @@ static func set_condition(pod: Node3D, stage: int) -> void:
 	(pod.get_node("HoverGlow") as Node3D).visible = stage >= 2
 	(pod.get_node("HoverLight") as OmniLight3D).visible = stage >= 2
 	var hover: StandardMaterial3D = (pod.get_node("HoverGlow") as MeshInstance3D).material_override
-	hover.albedo_color.a = 0.0 if stage < 2 else 0.32
+	hover.albedo_color.a = 0.0 if stage < 2 else 0.45
 	(pod.get_node("HoverLight") as OmniLight3D).light_energy = 0.0 if stage < 2 else 0.9
 	(pod.get_meta("thrust") as StandardMaterial3D).emission_energy_multiplier = 0.0 if stage < 2 else 2.5
 	for lm: StandardMaterial3D in pod.get_meta("fin_lamps", []):
@@ -987,7 +987,7 @@ static func animate(pod: Node3D, t: float, delta: float) -> void:
 				(lamps[i] as StandardMaterial3D).emission_energy_multiplier = 4.0 if ph < 0.05 or (ph > 0.1 and ph < 0.15) else 0.25
 		_:
 			var hover: StandardMaterial3D = (pod.get_node("HoverGlow") as MeshInstance3D).material_override
-			hover.albedo_color.a = 0.28 + 0.07 * sin(t * 2.1)
+			hover.albedo_color.a = 0.4 + 0.08 * sin(t * 2.1)
 			(pod.get_node("HoverLight") as OmniLight3D).light_energy = 0.8 + 0.2 * sin(t * 2.1)
 			for i: int in lamps.size():
 				(lamps[i] as StandardMaterial3D).emission_energy_multiplier = 3.2 if fmod(t * 0.7 + i * 0.33, 1.0) < 0.14 else 1.2
