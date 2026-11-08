@@ -329,10 +329,8 @@ func _focus_default() -> void:
 		target = _panel.call("first_button") as Control
 	if target == null or not _focusable(target, true):
 		target = _first_focusable(_grid, false)
-	if target == null:
-		target = _first_focusable(_grid, true)
-	if target == null:
-		target = _close_btn
+	if target == null or (target is BaseButton and (target as BaseButton).disabled):
+		target = _close_btn  # [ui6] a disabled button can't take focus: Close, not nothing
 	if target:
 		target.grab_focus()
 
