@@ -900,6 +900,8 @@ func _process(delta: float) -> void:
 	if _tick >= 2.0:
 		_tick = 0.0
 		_refresh()
+		if has_meta("site_preview"):
+			_hide_district()
 	if shown < 0.0:
 		shown = restore
 	shown = move_toward(shown, restore, delta * 0.05)
@@ -969,6 +971,7 @@ func _apply_restore() -> void:
 ## flat district, terrain and far props are hidden; sky, suns, moons and Lumi stay.
 func _site_preview(arg: String) -> void:
 	var a: PackedStringArray = arg.split(",")
+	set_meta("site_preview", true)
 	_hide_district()
 	# Systems that build later (nurseries, decor) are hidden again once they exist.
 	get_tree().create_timer(1.0).timeout.connect(_hide_district)
