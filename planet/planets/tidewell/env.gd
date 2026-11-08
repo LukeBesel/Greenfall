@@ -513,7 +513,9 @@ func bed_at(x: float, z: float) -> Vector2:
 		var lv := Vector2(cy * dv.x + sy * dv.y, -sy * dv.x + cy * dv.y)
 		lv.x /= float(isl["stretch"])
 		var d: float = lv.length() / rad
-		d += _bed_noise.get_noise_2d(x * 4.0, z * 4.0) * 0.18
+		# Eroded outline: two octaves of wander, plus coves cut by a ridged term.
+		d += _bed_noise.get_noise_2d(x * 4.0, z * 4.0) * 0.24 + _bed_noise.get_noise_2d(x * 13.0, z * 13.0) * 0.07
+		d += maxf(0.0, 0.5 - absf(_bed_noise.get_noise_2d(x * 2.2 + 300.0, z * 2.2))) * 0.25
 		var s: float = clampf(1.0 - d, 0.0, 1.0)
 		var peak: float = isl["h"]
 		var hi: float
@@ -524,7 +526,10 @@ func bed_at(x: float, z: float) -> Vector2:
 				hi = lerpf(-4.0, peak, pow(s, 0.5))
 				reef = maxf(reef, smoothstep(0.0, 0.3, s))
 			_:
+				# Rocky relief: ridged outcrops and gullies on the slopes, a terrace above the beach.
+				var ridge: float = 1.0 - absf(_bed_noise.get_noise_2d(x * 7.0 + 50.0, z * 7.0))
 				hi = lerpf(-4.0, peak, pow(s, 1.3)) + (smoothstep(0.55, 0.75, s) * 0.6 if peak > 2.0 else 0.0)
+				hi += (ridge - 0.55) * peak * 0.35 * smoothstep(0.15, 0.6, s)
 				reef = maxf(reef, exp(-pow((d - 1.15) / 0.3, 2.0)) * (0.0 if isl.get("far", false) else 1.0))
 		h = maxf(h, hi)
 	return Vector2(h, reef)
@@ -695,17 +700,8 @@ func _build_islands() -> void:
 
 ## Rocks on every isle; driftwood and junk while ruined; mangroves and palms once restored.
 func _dress_islands() -> void:
-	var rock := SphereMesh.new()
-	rock.radius = 1.0
-	rock.height = 1.3
-	rock.radial_segments = 9
-	rock.rings = 5
-	var rock_mat := StandardMaterial3D.new()
-	rock_mat.albedo_texture = AssetLib.tex("dry_ground_rocks", "diff")
-	rock_mat.albedo_color = Color(0.62, 0.6, 0.56)
-	rock_mat.uv1_triplanar = true
-	rock_mat.uv1_scale = Vector3.ONE * 0.4
-	rock_mat.roughness = 0.9
+	var rock_mat: StandardMaterial3D = AssetLib.pbr_material("dry_ground_rocks", 0.45, Color(0.7, 0.68, 0.62), true)
+	rock_mat.metallic = 0.0
 	var b_always := FrontierView.Batch.new()
 	var b_ruin := FrontierView.Batch.new()
 	var b_green := FrontierView.Batch.new()
@@ -724,7 +720,7 @@ func _dress_islands() -> void:
 			var p := Vector3(c.x + cos(a) * d, 0, c.y + sin(a) * d)
 			p.y = bed_at(p.x, p.z).x - 0.2
 			var s: float = _rng.randf_range(0.6, 2.2)
-			b_always.add(rock, FrontierView._xf(p, Vector3(_rng.randf() * 30, _rng.randf() * 360, 0), Vector3(s, s * 0.7, s * 1.2)), rock_mat)
+			b_always.add(_lumpy(k % 5, 0.42), FrontierView._xf(p, Vector3(_rng.randf() * 30, _rng.randf() * 360, 0), Vector3(s, s * 0.65, s * 1.25)), rock_mat)
 		# Mangroves ring the shore, palms stand inland.
 		for k: int in int(rad * 0.9):
 			var a: float = TAU * float(k) / int(rad * 0.9) + _rng.randf() * 0.2
@@ -823,14 +819,9 @@ func _mangrove(b: FrontierView.Batch, p: Vector3, s: float, trunk_m: Material, l
 		b.add(_twig(), FrontierView._beam_xf(foot, knee, 0.07 * s), trunk_m)
 		b.add(_twig(), FrontierView._beam_xf(knee, top, 0.08 * s), trunk_m)
 	for k: int in 4:
-		var blob := SphereMesh.new()
-		blob.radius = 1.0
-		blob.height = 1.4
-		blob.radial_segments = 8
-		blob.rings = 4
 		var o := Vector3(_rng.randf_range(-1, 1), _rng.randf_range(0.2, 0.9), _rng.randf_range(-1, 1)) * s
 		var r: float = _rng.randf_range(0.9, 1.5) * s
-		b.add(blob, FrontierView._xf(top + o, Vector3.ZERO, Vector3(r * 1.2, r * 0.75, r * 1.2)), leaf_m)
+		b.add(_lumpy(5 + k % 3, 0.5, 2.6), FrontierView._xf(top + o, Vector3(0, _rng.randf() * 360.0, 0), Vector3(r * 1.2, r * 0.7, r * 1.2)), leaf_m)
 
 
 func _snag(b: FrontierView.Batch, p: Vector3, m: Material) -> void:
@@ -940,6 +931,86 @@ func _mat(key: String) -> Material:
 	return m
 
 
+## An eroded lump: a sphere pushed in and out by 3D noise (rocks, canopies, coral heads), with
+## smooth normals. A few variants are cached and reused with random scale/rotation.
+func _lumpy(variant: int, amp: float = 0.35, freq: float = 1.6) -> ArrayMesh:
+	var key: String = "_lumpy_%d_%.2f_%.2f" % [variant, amp, freq]
+	if _mats.has(key):
+		return _mats[key]
+	var nz := FastNoiseLite.new()
+	nz.seed = 7000 + variant * 31
+	nz.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+	nz.frequency = freq * 0.5
+	nz.fractal_octaves = 4
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var rings: int = 9
+	var segs: int = 14
+	for i: int in rings + 1:
+		var v: float = PI * float(i) / rings
+		for j: int in segs + 1:
+			var u: float = TAU * float(j % segs) / segs
+			var d := Vector3(sin(v) * cos(u), cos(v), sin(v) * sin(u))
+			var n: float = nz.get_noise_3d(d.x * 2.0, d.y * 2.0, d.z * 2.0)
+			var ridged: float = 1.0 - absf(nz.get_noise_3d(d.x * 5.0 + 9.0, d.y * 5.0, d.z * 5.0))
+			var r: float = 1.0 + n * amp + (ridged - 0.6) * amp * 0.35
+			st.set_uv(Vector2(float(j) / segs, float(i) / rings))
+			st.add_vertex(d * r)
+	for i: int in rings:
+		for j: int in segs:
+			var a: int = i * (segs + 1) + j
+			var b: int = a + segs + 1
+			for idx: int in [a, b, a + 1, a + 1, b, b + 1]:
+				st.add_index(idx)
+	st.generate_normals()
+	st.generate_tangents()
+	var m: ArrayMesh = st.commit()
+	_mats[key] = m
+	return m
+
+
+## A flat slab with a wandering, irregular outline (raft decks, garden mats, sea platforms):
+## top at y = +h/2, a slight bevel, no perfect circles.
+func _blob_slab(variant: int, wobble: float = 0.18, h: float = 1.0, lobes: int = 0) -> ArrayMesh:
+	var key: String = "_slab_%d_%.2f_%.2f_%d" % [variant, wobble, h, lobes]
+	if _mats.has(key):
+		return _mats[key]
+	var nz := FastNoiseLite.new()
+	nz.seed = 9100 + variant * 17
+	nz.frequency = 0.9
+	var segs: int = 40
+	var rim: Array[float] = []
+	for j: int in segs:
+		var a: float = TAU * j / segs
+		var r: float = 1.0 + nz.get_noise_2d(cos(a) * 1.5, sin(a) * 1.5) * wobble
+		if lobes > 0:
+			r += 0.08 * cos(a * lobes)
+		rim.append(r)
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var top: float = h * 0.5
+	var c := Vector3(0, top, 0)
+	for j: int in segs:
+		var j1: int = (j + 1) % segs
+		var a0: float = TAU * j / segs
+		var a1: float = TAU * j1 / segs
+		var p0 := Vector3(cos(a0) * rim[j], top, sin(a0) * rim[j])
+		var p1 := Vector3(cos(a1) * rim[j1], top, sin(a1) * rim[j1])
+		var i0 := Vector3(p0.x * 0.94, top, p0.z * 0.94)
+		var i1 := Vector3(p1.x * 0.94, top, p1.z * 0.94)
+		var b0 := Vector3(p0.x, -top, p0.z) * Vector3(0.96, 1, 0.96)
+		var b1 := Vector3(p1.x, -top, p1.z) * Vector3(0.96, 1, 0.96)
+		var e0 := Vector3(p0.x, top - h * 0.12, p0.z)
+		var e1 := Vector3(p1.x, top - h * 0.12, p1.z)
+		for v: Vector3 in [c, i1, i0, i0, i1, e1, i0, e1, e0, e0, e1, b1, e0, b1, b0]:
+			st.set_uv(Vector2(v.x, v.z) * 0.5)
+			st.add_vertex(v)
+	st.generate_normals()
+	var m: ArrayMesh = st.commit()
+	_mats[key] = m
+	return m
+
+
 ## Basis with a local (pre-rotation) scale.
 static func _ls(b: Basis, s: Vector3) -> Basis:
 	return b * Basis.from_scale(s)
@@ -947,7 +1018,7 @@ static func _ls(b: Basis, s: Vector3) -> Basis:
 
 func _box(b: FrontierView.Batch, pos: Vector3, size: Vector3, mat: Material, rot: Vector3 = Vector3.ZERO) -> void:
 	if not _mats.has("_box"):
-		_mats["_box"] = BoxMesh.new()
+		_mats["_box"] = ProcMesh.rounded_box(Vector3.ONE, 0.07, 2)
 	b.add(_mats["_box"], FrontierView._xf(pos, rot, size), mat)
 
 
@@ -987,7 +1058,7 @@ func _build_rigs() -> void:
 	var fut := FrontierView.Batch.new()
 	var mid := FrontierView.Batch.new()
 	if not _mats.has("_box"):
-		_mats["_box"] = BoxMesh.new()
+		_mats["_box"] = ProcMesh.rounded_box(Vector3.ONE, 0.07, 2)
 	for i: int in 2:
 		var p: Vector3 = _sea_spot(95.0 + i * 70.0, 150.0 + i * 90.0, 28.0)
 		print("[planet-tidewell] dredging rig %d at (%.0f, %.0f)" % [i, p.x, p.z])
@@ -1081,8 +1152,8 @@ func _build_barge() -> void:
 	var o := Vector3(p.x, -1.6, p.z)
 	var xf := func(v: Vector3) -> Vector3: return o + basis * v
 	if not _mats.has("_box"):
-		_mats["_box"] = BoxMesh.new()
-	var bx: BoxMesh = _mats["_box"]
+		_mats["_box"] = ProcMesh.rounded_box(Vector3.ONE, 0.07, 2)
+	var bx: Mesh = _mats["_box"]
 	b.add(bx, Transform3D(_ls(basis, Vector3(12.0, 5.0, 52.0)), xf.call(Vector3.ZERO)), _mat("hull"))
 	b.add(bx, Transform3D(_ls(basis, Vector3(12.2, 0.5, 52.2)), xf.call(Vector3(0, 1.0, 0))), _mat("rust_red"))
 	# Bow rake.
@@ -1133,8 +1204,15 @@ func _build_towers() -> void:
 		# Broken crown (ruin): jagged blocks and bent rebar.
 		for k: int in 5:
 			var o := Vector3(_rng.randf_range(-0.4, 0.4) * w, h + _rng.randf_range(0.0, 1.6), _rng.randf_range(-0.4, 0.4) * dpt)
-			_box(ruin, Vector3(p.x, 0, p.z) + Basis(Vector3.UP, yaw) * o, Vector3(_rng.randf_range(1.0, 3.0), _rng.randf_range(0.8, 2.4), _rng.randf_range(1.0, 3.0)), _mat("concrete"), Vector3(_rng.randf() * 20, _rng.randf() * 90, _rng.randf() * 20))
+			var cs: float = _rng.randf_range(0.7, 1.6)
+			ruin.add(_lumpy(k % 5, 0.45, 2.2), FrontierView._xf(Vector3(p.x, 0, p.z) + Basis(Vector3.UP, yaw) * o, Vector3(_rng.randf() * 40, _rng.randf() * 360, 0), Vector3(cs * 1.3, cs, cs)), _mat("concrete"))
 			_cyl(ruin, Vector3(p.x, h, p.z) + Basis(Vector3.UP, yaw) * Vector3(o.x, 0, o.z), Vector3(p.x, h + 2.4, p.z) + Basis(Vector3.UP, yaw) * Vector3(o.x + 0.6, 0, o.z), 0.04, _mat("rust_dark"))
+		# Fallen slabs and rubble heaped against the shaft at the waterline.
+		for k: int in 6:
+			var ang: float = _rng.randf() * TAU
+			var rp := Vector3(p.x, -0.3, p.z) + Basis(Vector3.UP, yaw) * Vector3(cos(ang) * (w * 0.5 + 0.6), 0, sin(ang) * (dpt * 0.5 + 0.6))
+			var rs: float = _rng.randf_range(0.8, 2.0)
+			b.add(_lumpy((k + i) % 5, 0.4, 1.8), FrontierView._xf(rp, Vector3(_rng.randf() * 30, _rng.randf() * 360, 0), Vector3(rs * 1.4, rs * 0.6, rs)), _mat("concrete"))
 		# Future crown.
 		_box(fut, Vector3(p.x, h + 0.9, p.z), Vector3(w + 0.4, 1.8, dpt + 0.4), _mat("white"), Vector3(tilt, rad_to_deg(yaw), 0))
 		_box(fut, Vector3(p.x, h + 0.25, p.z), Vector3(w + 0.46, 0.05, dpt + 0.46), _mat("lamp"), Vector3(tilt, rad_to_deg(yaw), 0))
@@ -1265,27 +1343,20 @@ func _build_lighthouses() -> void:
 ## ring of them just outside the field. Small and low (skimmers glide past them).
 func _build_gardens() -> void:
 	var b := FrontierView.Batch.new()
-	var disc := CylinderMesh.new()
-	disc.top_radius = 1.0
-	disc.bottom_radius = 0.92
-	disc.height = 1.0
-	disc.radial_segments = 14
-	var blob := SphereMesh.new()
-	blob.radius = 1.0
-	blob.height = 1.2
-	blob.radial_segments = 8
-	blob.rings = 4
 	var spots: Array[Vector3] = []
+	var k_g: int = 0
 	for k: int in 10:
 		spots.append(_sea_spot(_field_edge + 4.0, _field_edge + 60.0, 4.0))
 	for p: Vector3 in spots:
 		var r: float = _rng.randf_range(1.4, 2.6)
-		b.add(disc, FrontierView._xf(p + Vector3(0, 0.02, 0), Vector3.ZERO, Vector3(r, 0.3, r)), _mat("wood"))
-		b.add(disc, FrontierView._xf(p + Vector3(0, 0.2, 0), Vector3.ZERO, Vector3(r * 0.9, 0.12, r * 0.9)), _mat("garden"))
-		for k: int in 5:
-			var o := Vector3(_rng.randf_range(-0.6, 0.6), 0.4, _rng.randf_range(-0.6, 0.6)) * r
-			var s: float = _rng.randf_range(0.3, 0.6)
-			b.add(blob, FrontierView._xf(p + o, Vector3.ZERO, Vector3(s, s * 0.8, s)), _mat("mangrove"))
+		var yaw: float = _rng.randf() * 360.0
+		b.add(_blob_slab(k_g % 4, 0.22, 1.0), FrontierView._xf(p + Vector3(0, 0.02, 0), Vector3(0, yaw, 0), Vector3(r, 0.3, r)), _mat("wood"))
+		b.add(_blob_slab((k_g + 2) % 4, 0.26, 1.0), FrontierView._xf(p + Vector3(0, 0.2, 0), Vector3(0, yaw + 40.0, 0), Vector3(r * 0.86, 0.14, r * 0.86)), _mat("garden"))
+		for k: int in 6:
+			var o := Vector3(_rng.randf_range(-0.6, 0.6), 0.36, _rng.randf_range(-0.6, 0.6)) * r
+			var s: float = _rng.randf_range(0.25, 0.6)
+			b.add(_lumpy(5 + k % 3, 0.55, 3.0), FrontierView._xf(p + Vector3(o.x, 0.36, o.z), Vector3(0, _rng.randf() * 360.0, 0), Vector3(s, s * 0.8, s)), _mat("mangrove"))
+		k_g += 1
 	b.flush(_groups["green"], false)
 
 
@@ -1297,18 +1368,9 @@ func _build_future() -> void:
 	for k: int in 3:
 		var p: Vector3 = _sea_spot(_field_edge + 25.0, 160.0, 18.0)
 		var r: float = _rng.randf_range(7.0, 11.0)
-		var cm := CylinderMesh.new()
-		cm.top_radius = r
-		cm.bottom_radius = r * 0.94
-		cm.height = 1.0
-		cm.radial_segments = 32
-		b.add(cm, FrontierView._xf(p + Vector3(0, 0.55, 0)), _mat("white"))
-		var rim := CylinderMesh.new()
-		rim.top_radius = r + 0.02
-		rim.bottom_radius = r + 0.02
-		rim.height = 0.05
-		rim.radial_segments = 32
-		lit.add(rim, FrontierView._xf(p + Vector3(0, 1.0, 0)), _mat("lamp"))
+		var pyaw: float = _rng.randf() * 360.0
+		b.add(_blob_slab(10 + k, 0.1, 1.0, 3), FrontierView._xf(p + Vector3(0, 0.55, 0), Vector3(0, pyaw, 0), Vector3(r, 1.0, r)), _mat("white"))
+		lit.add(_blob_slab(10 + k, 0.1, 1.0, 3), FrontierView._xf(p + Vector3(0, 1.03, 0), Vector3(0, pyaw, 0), Vector3(r * 1.004, 0.03, r * 1.004)), _mat("lamp"))
 		for f: int in 6:
 			var a: float = TAU * f / 6.0
 			_cyl(b, p + Vector3(cos(a) * r * 0.8, -1.2, sin(a) * r * 0.8), p + Vector3(cos(a) * r * 0.8, 0.2, sin(a) * r * 0.8), 0.5, _mat("white"))
