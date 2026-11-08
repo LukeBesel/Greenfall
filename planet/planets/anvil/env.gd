@@ -943,9 +943,64 @@ func _apply_restore() -> void:
 
 # --- Dev ------------------------------------------------------------------------------------
 
+## Dev (--anvil-lookbook): Anvil's props, materials and restoration look staged in front of Lumi
+## (the junk there is cleared): an ember-cracked slag heap, an ore cart, a weathered stack section,
+## a half-buried hauler, red-leaf and lichen plants. These are the parts that move to the globe.
+func _lookbook() -> void:
+	var c := Vector3(0, 0, -9)
+	if field:
+		for pid: int in field.piece_count():
+			if field.piece_alive[pid] == 1 and Vector2(field.piece_pos[pid].x - c.x, field.piece_pos[pid].z - c.z).length() < 15.0:
+				field.remove_piece(pid)
+				var v: Node = world.get("view")
+				if v:
+					v.call("hide_piece", pid)
+	var root := Node3D.new()
+	root.name = "Lookbook"
+	add_child(root)
+	var b := AnvilProps.Batch.new()
+	var hi := AnvilProps.Batch.new()
+	b.add(AnvilProps.slag_mesh(5), Transform3D(Basis(Vector3.UP, 0.6) * Basis.from_scale(Vector3(5.0, 3.0, 4.2)), c + Vector3(-5.5, -0.15, -1.0)), slag_mat)
+	AnvilProps._stack(self, b, hi, c + Vector3(-11.0, -6.5, -9.0), 22.0, 2.6, 2)
+	AnvilProps._hauler(self, b, hi, Transform3D(Basis(Vector3.UP, 2.4) * Basis(Vector3.FORWARD, 0.12) * Basis.from_scale(Vector3.ONE * 0.55), c + Vector3(9.0, -1.4, -6.0)), 1)
+	b.flush(root)
+	if level >= 3:
+		hi.flush(root)
+	# A short rail stub with one ore cart.
+	var cart := AnvilProps.Batch.new()
+	var xf := Transform3D(Basis(Vector3.UP, 0.4), c + Vector3(3.0, 0.0, 3.0))
+	for off: float in [-0.75, 0.75]:
+		cart.add(AnvilProps.box(), xf * Transform3D(Basis.from_scale(Vector3(7.0, 0.14, 0.14)), Vector3(0, 0.25, off)), mat("rust"))
+	for k: int in 6:
+		cart.add(AnvilProps.box(), xf * Transform3D(Basis.from_scale(Vector3(0.35, 0.16, 2.4)), Vector3(-3.0 + k * 1.2, 0.08, 0)), mat("soot"))
+	cart.add(AnvilProps.box(), xf * Transform3D(Basis.from_scale(Vector3(2.4, 0.35, 1.5)), Vector3(0, 0.55, 0)), mat("rust"))
+	cart.add(ProcMesh.cyl(1.25, 0.95, 1.5, 14), xf * Transform3D(Basis.from_scale(Vector3(1.0, 1.0, 0.75)), Vector3(0, 1.5, 0)), mat("cart"))
+	cart.add(AnvilProps.slag_mesh(9), xf * Transform3D(Basis.from_scale(Vector3(1.0, 0.6, 0.7)), Vector3(0, 2.0, 0)), mat("ore"))
+	cart.flush(root)
+	# Restoration plants (shown with restore, like the field ring).
+	if shown > 0.3 or restore > 0.3:
+		var defs: Array = look.get("plants", [])
+		var rng := RandomNumberGenerator.new()
+		rng.seed = 77
+		for d: Dictionary in defs:
+			var mesh: Mesh = tinted_mesh(str(d["id"]), col(d.get("tint"), Color.WHITE), 800)
+			if mesh == null:
+				continue
+			for k: int in 7:
+				var mi := MeshInstance3D.new()
+				mi.mesh = mesh
+				mi.position = c + Vector3(rng.randf_range(-6.0, 7.0), 0.0, rng.randf_range(-2.0, 6.0))
+				mi.rotation.y = rng.randf() * TAU
+				mi.scale = Vector3.ONE * rng.randf_range(float(d["scale"][0]), float(d["scale"][1]))
+				root.add_child(mi)
+	print("[planet-anvil] lookbook staged at ", c)
+
+
 ## --planet-cam=dist,pitch,yaw[,fov] for landscape shots; --planet-view=x,y,z,lx,ly,lz[,fov] puts a
 ## free camera anywhere (landmark close-ups beyond the walkable field).
 func _dev_hooks() -> void:
+	if DevHooks.has("anvil-lookbook"):
+		_lookbook()
 	if DevHooks.has("planet-view"):
 		var v: PackedStringArray = DevHooks.get_s("planet-view", "0,40,40,0,0,0").split(",")
 		if v.size() >= 6:
