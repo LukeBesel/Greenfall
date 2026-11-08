@@ -188,12 +188,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
+## [onboard2] Coordinator: the "NOW PLAYING · LAST PLAY" card folds into the one message line
+## (ui/subtitles.gd): the title, then the hint, one at a time. The vignette stays (no text).
 func _on_started(id: String) -> void:
-	_card_title.text = tr(Tunes.title(id))
-	_card_by.text = (tr("by %s") % tr(Tunes.artist_name(id))) + "\n" + hint_text(id)
-	_card.visible = true
-	_card.modulate.a = 0.0
-	_card_t = 9.0
+	EventBus.toast.emit(tr("Last play: %s, by %s.") % [tr(Tunes.title(id)), tr(Tunes.artist_name(id))], "info")
+	EventBus.toast.emit(hint_text(id), "hint")
 
 
 func _on_finished(id: String) -> void:

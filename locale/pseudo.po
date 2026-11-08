@@ -552,7 +552,7 @@ msgstr "[Ţôô ĥéàvý: ñééðš %s ~~~~]"
 msgid "No Baler yet: empty your chest in the trash bin"
 msgstr "[Ñô Bàļéŕ ýéţ: émþţý ýôûŕ çĥéšţ îñ ţĥé ţŕàšĥ bîñ ~~~~~~~~~~~~~]"
 
-#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:258
+#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:257
 msgid "+%s cubes"
 msgstr "[+%s çûbéš ~]"
 
@@ -576,7 +576,7 @@ msgstr "[Ţĥé bîŕðš ĥàvé ðéçîðéð ýôû'ŕé àļļ ŕîĝĥţ. 
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "[Ţĥé çàţ ĥàš ðéçîðéð ýôû'ŕé ĥéŕš. Mééţ %s. Šĥé ļîvéš àţ ţĥîš bàšé ñôŵ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: fauna/fauna.gd:1964
+#: fauna/fauna.gd:1964 ui/subtitles.gd:412
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "[Ñéŵ šîĝĥţîñĝ: %s. Îţ'š îñ ţĥé Çôðéx ñôŵ. ~~~~~~~~~~~]"
 
@@ -1908,15 +1908,15 @@ msgstr "[<< ĻÉÐĜÉŔ // ÔFF ŢĤÉ ŔÉÇÔŔÐ >> ~~~~~~~]"
 msgid "LEDGER  WMS-07"
 msgstr "[ĻÉÐĜÉŔ  ŴMŠ-07 ~~]"
 
-#: story/objectives.gd:252
+#: story/objectives.gd:267
 msgid "Objective complete  ·  %s"
 msgstr "[Ôbĵéçţîvé çômþļéţé  ·  %s ~~~~~~]"
 
-#: story/objectives.gd:422
+#: story/objectives.gd:442
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr "[Ĥéàŕ ţĥàţ bééþîñĝ? Ýôûŕ ðéţéçţôŕ'š ƒôûñð à ŕôbôţ þàŕţ bûŕîéð ñéàŕbý. Ţĥé ƒàšţéŕ îţ bééþš, ţĥé çļôšéŕ ýôû àŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:423
+#: story/objectives.gd:443
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "[BÛŔÎÉÐ ÞÀŔŢ: ŵàļķ ţôŵàŕð îţ ûñţîļ ţĥé ŕéàðîñĝ þéàķš, ţĥéñ ðîĝ îţ ûþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -1969,26 +1969,22 @@ msgid "Space  pause   ·   Esc  skip"
 msgstr "[Šþàçé  þàûšé   ·   Éšç  šķîþ ~~~~~~~]"
 
 #: story/tutorial.gd:10
+msgid "{interact}  at the workbench to repair it"
+msgstr "[{interact}  àţ ţĥé ŵôŕķbéñçĥ ţô ŕéþàîŕ îţ ~~~~~~~~~~~]"
+
+#: story/tutorial.gd:11
 msgid "Hold  {scoop}  to scoop junk"
 msgstr "[Ĥôļð  {scoop}  ţô šçôôþ ĵûñķ ~~~~~~~]"
 
-#: story/tutorial.gd:11
-msgid "Press  {cube}  to press a bale"
-msgstr "[Þŕéšš  {cube}  ţô þŕéšš à bàļé ~~~~~~~]"
-
 #: story/tutorial.gd:12
-msgid "{interact}  to pick up the bale"
-msgstr "[{interact}  ţô þîçķ ûþ ţĥé bàļé ~~~~~~~~]"
+msgid "Empty your chest into the trash bin"
+msgstr "[Émþţý ýôûŕ çĥéšţ îñţô ţĥé ţŕàšĥ bîñ ~~~~~~~~~]"
 
 #: story/tutorial.gd:13
-msgid "Carry it onto the scale"
-msgstr "[Çàŕŕý îţ ôñţô ţĥé šçàļé ~~~~~]"
-
-#: story/tutorial.gd:14
 msgid "{interact}  at the workbench to upgrade"
 msgstr "[{interact}  àţ ţĥé ŵôŕķbéñçĥ ţô ûþĝŕàðé ~~~~~~~~~~~]"
 
-#: story/tutorial.gd:18
+#: story/tutorial.gd:19
 msgid "Lumi is back on the job"
 msgstr "[Ļûmî îš bàçķ ôñ ţĥé ĵôb ~~~~~]"
 
@@ -2044,7 +2040,7 @@ msgstr "[ŴÉ'ĻĻ BÉ BÀÇĶ ~~]"
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "[%d àçĥîévéméñţš ûñļôçķéð. Šéé ţĥém îñ ţĥé Çôðéx (Ķ). ~~~~~~~~~~~~~~~]"
 
-#: systems/achievements.gd:147 ui/notify_stack.gd:24
+#: systems/achievements.gd:147 ui/notify_stack.gd:27 ui/subtitles.gd:410
 msgid "Achievement: %s. %s"
 msgstr "[Àçĥîévéméñţ: %s. %s ~~~~]"
 
@@ -4129,7 +4125,7 @@ msgstr "[ÇÐ ÇÀŠÉ  ·  ŠÇŔÀŢÇĤÉÐ, ÔÑÉ ÞĻÀÝ ÉÀÇĤ  ·  %d
 msgid "Play once: %s"
 msgstr "[Þļàý ôñçé: %s ~~]"
 
-#: ui/extras_cd_list.gd:95 ui/scratched_cd_ui.gd:193
+#: ui/extras_cd_list.gd:95
 msgid "by %s"
 msgstr "[bý %s ~]"
 
@@ -4445,15 +4441,15 @@ msgstr "   [·   ÔÛŢÐÀŢÉÐ ~~]"
 msgid "Re-survey      %s cubes"
 msgstr "[Ŕé-šûŕvéý      %s çûbéš ~~~~~]"
 
-#: ui/goals_panel.gd:207 ui/objective_card.gd:112
+#: ui/goals_panel.gd:206 ui/objective_card.gd:112
 msgid "DONE"
 msgstr "[ÐÔÑÉ ~]"
 
-#: ui/goals_panel.gd:231
+#: ui/goals_panel.gd:230
 msgid "Goal complete  ·  %s%s"
 msgstr "[Ĝôàļ çômþļéţé  ·  %s%s ~~~~~]"
 
-#: ui/goals_panel.gd:258
+#: ui/goals_panel.gd:257
 msgid "+%s seeds"
 msgstr "[+%s šééðš ~]"
 
@@ -4577,60 +4573,60 @@ msgstr "[Ļûmî ŕéàçĥéð ļévéļ %d%s ~~~~~]"
 msgid "OLD TOWN   0%"
 msgstr "[ÔĻÐ ŢÔŴÑ   0% ~~]"
 
-#: ui/hud.gd:286
+#: ui/hud.gd:289
 msgid "WREN SIGNAL   %d%%"
 msgstr "[ŴŔÉÑ ŠÎĜÑÀĻ   %d%% ~~~]"
 
-#: ui/hud.gd:314
+#: ui/hud.gd:317
 msgid "HEX  %d%% CLEAR"
 msgstr "[ĤÉX  %d%% ÇĻÉÀŔ ~~]"
 
-#: ui/hud.gd:318
+#: ui/hud.gd:321
 msgid "%s  BASE"
 msgstr "[%s  BÀŠÉ ~]"
 
-#: ui/hud.gd:321
+#: ui/hud.gd:324
 msgid "CARRYING %d/%d"
 msgstr "[ÇÀŔŔÝÎÑĜ %d/%d ~~]"
 
-#: ui/hud.gd:345
+#: ui/hud.gd:348
 msgid "HEX  CLEAR"
 msgstr "[ĤÉX  ÇĻÉÀŔ ~]"
 
-#: ui/hud.gd:349
+#: ui/hud.gd:352
 msgid "HEX  %s"
 msgstr "[ĤÉX  %s ~]"
 
-#: ui/hud.gd:352
+#: ui/hud.gd:355
 msgid "  SUSTAIN %d%%"
 msgstr "  [ŠÛŠŢÀÎÑ %d%% ~~]"
 
-#: ui/hud.gd:354
+#: ui/hud.gd:357
 msgid "  THIRSTY"
 msgstr "  [ŢĤÎŔŠŢÝ ~]"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:379
+#: ui/hud.gd:382
 msgid "%s   pick up bale"
 msgstr "[%s   þîçķ ûþ bàļé ~~~]"
 
-#: ui/hud.gd:380
+#: ui/hud.gd:383
 msgid "%s   dig up part"
 msgstr "[%s   ðîĝ ûþ þàŕţ ~~~]"
 
-#: ui/hud.gd:381
+#: ui/hud.gd:384
 msgid "%s   read memory shard"
 msgstr "[%s   ŕéàð mémôŕý šĥàŕð ~~~~~]"
 
-#: ui/hud.gd:382
+#: ui/hud.gd:385
 msgid "%s   pick up the seed tin"
 msgstr "[%s   þîçķ ûþ ţĥé šééð ţîñ ~~~~~~]"
 
-#: ui/hud.gd:383
+#: ui/hud.gd:386
 msgid "%s   set bale down"
 msgstr "[%s   šéţ bàļé ðôŵñ ~~~]"
 
-#: ui/hud.gd:384
+#: ui/hud.gd:387
 msgid "%s   workbench"
 msgstr "[%s   ŵôŕķbéñçĥ ~~]"
 
@@ -4638,7 +4634,7 @@ msgstr "[%s   ŵôŕķbéñçĥ ~~]"
 msgid "press bale"
 msgstr "[þŕéšš bàļé ~]"
 
-#: ui/key_hints.gd:107
+#: ui/key_hints.gd:114
 msgid "tools"
 msgstr "[ţôôļš ~]"
 
@@ -5526,7 +5522,11 @@ msgstr "[Ķéþţ îñ ýôûŕ ÇÐ çàšé (%d / %d). Þļàý îţ àţ ţĥ
 msgid "You leave the scratched CD where it lay."
 msgstr "[Ýôû ļéàvé ţĥé šçŕàţçĥéð ÇÐ ŵĥéŕé îţ ļàý. ~~~~~~~~~~~]"
 
-#: ui/scratched_cd_ui.gd:202
+#: ui/scratched_cd_ui.gd:194
+msgid "Last play: %s, by %s."
+msgstr "[Ļàšţ þļàý: %s, bý %s. ~~~~]"
+
+#: ui/scratched_cd_ui.gd:201
 msgid "The scratched CD cracks and falls apart. %s"
 msgstr "[Ţĥé šçŕàţçĥéð ÇÐ çŕàçķš àñð ƒàļļš àþàŕţ. %s ~~~~~~~~~~~~]"
 
@@ -11874,8 +11874,40 @@ msgid "Lumi, it's WREN, the Cradle's caretaker. Your friend up here. Your pod's 
 msgstr "[Ļûmî, îţ'š ŴŔÉÑ, ţĥé Çŕàðļé'š çàŕéţàķéŕ. Ýôûŕ ƒŕîéñð ûþ ĥéŕé. Ýôûŕ þôð'š ðôŵñ, àñð ţĥé ŕéļàý'š ƒàîļîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:brief.lines
-msgid "Bale junk to power the old base, then build a signal tower so I can reach you. I'll be [glitch]listen—[/glitch]"
-msgstr "[Bàļé ĵûñķ ţô þôŵéŕ ţĥé ôļð bàšé, ţĥéñ bûîļð à šîĝñàļ ţôŵéŕ šô Î çàñ ŕéàçĥ ýôû. Î'ļļ bé [glitch]ļîšţéñ—[/glitch] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Fix the bench, clear junk for cubes, then build a signal tower to reach me. I'll be [glitch]listen—[/glitch]"
+msgstr "[Fîx ţĥé béñçĥ, çļéàŕ ĵûñķ ƒôŕ çûbéš, ţĥéñ bûîļð à šîĝñàļ ţôŵéŕ ţô ŕéàçĥ mé. Î'ļļ bé [glitch]ļîšţéñ—[/glitch] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[dump3].text
+msgid "Fill the trash bin 3 times"
+msgstr "[Fîļļ ţĥé ţŕàšĥ bîñ 3 ţîméš ~~~~~~]"
+
+#: data/objectives.json:objectives[dump3].desc
+msgid "Each chestful of junk pays a few cubes."
+msgstr "[Éàçĥ çĥéšţƒûļ ôƒ ĵûñķ þàýš à ƒéŵ çûbéš. ~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[compartment].text
+msgid "Buy Compartment Size"
+msgstr "[Bûý Çômþàŕţméñţ Šîžé ~~~~]"
+
+#: data/objectives.json:objectives[compartment].desc
+msgid "A bigger chest means fewer trips to the bin."
+msgstr "[À bîĝĝéŕ çĥéšţ méàñš ƒéŵéŕ ţŕîþš ţô ţĥé bîñ. ~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[scoop_size].text
+msgid "Buy Scoop Size"
+msgstr "[Bûý Šçôôþ Šîžé ~~]"
+
+#: data/objectives.json:objectives[scoop_size].desc
+msgid "Grab more junk at once. At the workbench."
+msgstr "[Ĝŕàb môŕé ĵûñķ àţ ôñçé. Àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[baler].text
+msgid "Save up for the Baler"
+msgstr "[Šàvé ûþ ƒôŕ ţĥé Bàļéŕ ~~~~]"
+
+#: data/objectives.json:objectives[baler].desc
+msgid "It presses junk into bales. Bales sell for far more."
+msgstr "[Îţ þŕéššéš ĵûñķ îñţô bàļéš. Bàļéš šéļļ ƒôŕ ƒàŕ môŕé. ~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[power].text
 msgid "Power the base: sell 3 bales"

@@ -357,7 +357,8 @@ func _ready() -> void:
 	WorldEvents.persist_state()["recent"] = ["supply_drop", "rain_shower"]
 	# [onboard] Past the brief, on the "Rebuild the base: level 2" objective, detector explained, board open.
 	GameState.flags["onboard_brief"] = true
-	GameState.flags["objective_step"] = 7
+	GameState.flags["objective_step"] = 11
+	GameState.flags["objectives_v2"] = true
 	GameState.flags["signal_explained"] = true
 	GameState.flags["requests_unlocked"] = true
 	GameState.flags["signal_tower"] = 2

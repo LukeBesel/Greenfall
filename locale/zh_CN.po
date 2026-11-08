@@ -553,7 +553,7 @@ msgstr ""
 msgid "No Baler yet: empty your chest in the trash bin"
 msgstr ""
 
-#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:258
+#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:257
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
@@ -577,7 +577,7 @@ msgstr ""
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "这只猫认定你是她的了。来认识一下%s吧。她现在住在这个基地。"
 
-#: fauna/fauna.gd:1964
+#: fauna/fauna.gd:1964 ui/subtitles.gd:412
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新发现：%s。已收入图鉴。"
 
@@ -1907,15 +1907,15 @@ msgstr "<< LEDGER // 非正式记录 >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/objectives.gd:252
+#: story/objectives.gd:267
 msgid "Objective complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:422
+#: story/objectives.gd:442
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr "听到哔哔声了吗？你的探测器发现附近埋着一个机器人零件。哔得越快，你就离得越近。"
 
-#: story/objectives.gd:423
+#: story/objectives.gd:443
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
@@ -1968,26 +1968,22 @@ msgid "Space  pause   ·   Esc  skip"
 msgstr ""
 
 #: story/tutorial.gd:10
+msgid "{interact}  at the workbench to repair it"
+msgstr "在工作台按 {interact} 修好它"
+
+#: story/tutorial.gd:11
 msgid "Hold  {scoop}  to scoop junk"
 msgstr "按住  {scoop}  铲起废料"
 
-#: story/tutorial.gd:11
-msgid "Press  {cube}  to press a bale"
-msgstr "按  {cube}  压成捆包"
-
 #: story/tutorial.gd:12
-msgid "{interact}  to pick up the bale"
-msgstr "按  {interact}  拿起捆包"
+msgid "Empty your chest into the trash bin"
+msgstr "把胸舱里的垃圾倒进垃圾桶"
 
 #: story/tutorial.gd:13
-msgid "Carry it onto the scale"
-msgstr "把它搬上磅秤"
-
-#: story/tutorial.gd:14
 msgid "{interact}  at the workbench to upgrade"
 msgstr "在工作台按  {interact}  升级"
 
-#: story/tutorial.gd:18
+#: story/tutorial.gd:19
 msgid "Lumi is back on the job"
 msgstr "Lumi 重新上岗了"
 
@@ -2043,7 +2039,7 @@ msgstr "我们会回来的"
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "已解锁 %d 个成就。在图鉴（K）里查看。"
 
-#: systems/achievements.gd:147 ui/notify_stack.gd:24
+#: systems/achievements.gd:147 ui/notify_stack.gd:27 ui/subtitles.gd:410
 msgid "Achievement: %s. %s"
 msgstr "成就：%s。%s"
 
@@ -4116,7 +4112,7 @@ msgstr "CD盒  ·  刮花的CD，每张只能播放一次  ·  %d / %d"
 msgid "Play once: %s"
 msgstr "播放一次：%s"
 
-#: ui/extras_cd_list.gd:95 ui/scratched_cd_ui.gd:193
+#: ui/extras_cd_list.gd:95
 msgid "by %s"
 msgstr "演奏：%s"
 
@@ -4432,15 +4428,15 @@ msgstr "   ·   已过时"
 msgid "Re-survey      %s cubes"
 msgstr "重新勘测      %s 方块"
 
-#: ui/goals_panel.gd:207 ui/objective_card.gd:112
+#: ui/goals_panel.gd:206 ui/objective_card.gd:112
 msgid "DONE"
 msgstr "完成"
 
-#: ui/goals_panel.gd:231
+#: ui/goals_panel.gd:230
 msgid "Goal complete  ·  %s%s"
 msgstr "目标完成  ·  %s%s"
 
-#: ui/goals_panel.gd:258
+#: ui/goals_panel.gd:257
 msgid "+%s seeds"
 msgstr "+%s 种子"
 
@@ -4562,60 +4558,60 @@ msgstr "Lumi 达到了 %d 级%s"
 msgid "OLD TOWN   0%"
 msgstr "老城区   0%"
 
-#: ui/hud.gd:286
+#: ui/hud.gd:289
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN 信号   %d%%"
 
-#: ui/hud.gd:314
+#: ui/hud.gd:317
 msgid "HEX  %d%% CLEAR"
 msgstr "六角格  已清理 %d%%"
 
-#: ui/hud.gd:318
+#: ui/hud.gd:321
 msgid "%s  BASE"
 msgstr "%s  基地"
 
-#: ui/hud.gd:321
+#: ui/hud.gd:324
 msgid "CARRYING %d/%d"
 msgstr "携带 %d/%d"
 
-#: ui/hud.gd:345
+#: ui/hud.gd:348
 msgid "HEX  CLEAR"
 msgstr "六角格  已清理"
 
-#: ui/hud.gd:349
+#: ui/hud.gd:352
 msgid "HEX  %s"
 msgstr "六角格  %s"
 
-#: ui/hud.gd:352
+#: ui/hud.gd:355
 msgid "  SUSTAIN %d%%"
 msgstr "  稳定 %d%%"
 
-#: ui/hud.gd:354
+#: ui/hud.gd:357
 msgid "  THIRSTY"
 msgstr "  缺水"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:379
+#: ui/hud.gd:382
 msgid "%s   pick up bale"
 msgstr "%s   拿起捆包"
 
-#: ui/hud.gd:380
+#: ui/hud.gd:383
 msgid "%s   dig up part"
 msgstr "%s   挖出零件"
 
-#: ui/hud.gd:381
+#: ui/hud.gd:384
 msgid "%s   read memory shard"
 msgstr "%s   阅读记忆碎片"
 
-#: ui/hud.gd:382
+#: ui/hud.gd:385
 msgid "%s   pick up the seed tin"
 msgstr "%s   拿起种子罐"
 
-#: ui/hud.gd:383
+#: ui/hud.gd:386
 msgid "%s   set bale down"
 msgstr "%s   放下捆包"
 
-#: ui/hud.gd:384
+#: ui/hud.gd:387
 msgid "%s   workbench"
 msgstr "%s   工作台"
 
@@ -4623,7 +4619,7 @@ msgstr "%s   工作台"
 msgid "press bale"
 msgstr "压制方块"
 
-#: ui/key_hints.gd:107
+#: ui/key_hints.gd:114
 msgid "tools"
 msgstr "工具"
 
@@ -5510,7 +5506,11 @@ msgstr "已放进你的CD盒（%d / %d）。可以在CD播放器上播放。"
 msgid "You leave the scratched CD where it lay."
 msgstr "你把刮花的CD留在了原地。"
 
-#: ui/scratched_cd_ui.gd:202
+#: ui/scratched_cd_ui.gd:194
+msgid "Last play: %s, by %s."
+msgstr "最后一次播放：%s，%s。"
+
+#: ui/scratched_cd_ui.gd:201
 msgid "The scratched CD cracks and falls apart. %s"
 msgstr "刮花的CD裂开碎掉了。%s"
 
@@ -11854,8 +11854,40 @@ msgid "Lumi, it's WREN, the Cradle's caretaker. Your friend up here. Your pod's 
 msgstr "Lumi，我是 WREN，摇篮号的看护者。你在上面的朋友。你的舱坠毁了，中继也快撑不住了。"
 
 #: data/objectives.json:brief.lines
-msgid "Bale junk to power the old base, then build a signal tower so I can reach you. I'll be [glitch]listen—[/glitch]"
-msgstr "把垃圾压成方块给旧基地供电，然后建一座信号塔，让我能联系到你。我会一直[glitch]听着——[/glitch]"
+msgid "Fix the bench, clear junk for cubes, then build a signal tower to reach me. I'll be [glitch]listen—[/glitch]"
+msgstr "修好工作台，清垃圾换方块，然后建信号塔来联系我。我会一直[glitch]听着——[/glitch]"
+
+#: data/objectives.json:objectives[dump3].text
+msgid "Fill the trash bin 3 times"
+msgstr "往垃圾桶倒 3 次垃圾"
+
+#: data/objectives.json:objectives[dump3].desc
+msgid "Each chestful of junk pays a few cubes."
+msgstr "每一舱垃圾都能换几个方块。"
+
+#: data/objectives.json:objectives[compartment].text
+msgid "Buy Compartment Size"
+msgstr "购买储物舱容量"
+
+#: data/objectives.json:objectives[compartment].desc
+msgid "A bigger chest means fewer trips to the bin."
+msgstr "舱更大，跑垃圾桶的次数更少。"
+
+#: data/objectives.json:objectives[scoop_size].text
+msgid "Buy Scoop Size"
+msgstr "购买铲斗容量"
+
+#: data/objectives.json:objectives[scoop_size].desc
+msgid "Grab more junk at once. At the workbench."
+msgstr "一次抓更多垃圾。在工作台购买。"
+
+#: data/objectives.json:objectives[baler].text
+msgid "Save up for the Baler"
+msgstr "攒钱买打包机"
+
+#: data/objectives.json:objectives[baler].desc
+msgid "It presses junk into bales. Bales sell for far more."
+msgstr "它把垃圾压成方块。方块卖得多得多。"
 
 #: data/objectives.json:objectives[power].text
 msgid "Power the base: sell 3 bales"
@@ -13910,7 +13942,7 @@ msgstr "洁白的双转子粉碎机，带一道扫描缝。每个垃圾块都会
 
 #: data/upgrades.json:upgrades[baler].name
 msgid "Baler"
-msgstr ""
+msgstr "打包机"
 
 #: data/upgrades.json:upgrades[baler].desc
 msgid "Fit the bale press in your chest. Press junk into bales: they sell for far more than loose junk."
@@ -14030,7 +14062,7 @@ msgstr "更长的聚焦镜片：从更远处抓取废料。"
 
 #: data/upgrades.json:upgrades[multi_lock].name
 msgid "Scoop Size"
-msgstr ""
+msgstr "铲斗容量"
 
 #: data/upgrades.json:upgrades[multi_lock].desc
 msgid "Lock onto one more piece per scoop pulse."
@@ -15687,6 +15719,18 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "Press  {cube}  to press a bale"
+#~ msgstr "按  {cube}  压成捆包"
+
+#~ msgid "{interact}  to pick up the bale"
+#~ msgstr "按  {interact}  拿起捆包"
+
+#~ msgid "Carry it onto the scale"
+#~ msgstr "把它搬上磅秤"
+
+#~ msgid "Bale junk to power the old base, then build a signal tower so I can reach you. I'll be [glitch]listen—[/glitch]"
+#~ msgstr "把垃圾压成方块给旧基地供电，然后建一座信号塔，让我能联系到你。我会一直[glitch]听着——[/glitch]"
 
 #~ msgid "   {ui_tab_prev}{ui_tab_next}  switch tabs"
 #~ msgstr "   {ui_tab_prev}{ui_tab_next}  切换页面"

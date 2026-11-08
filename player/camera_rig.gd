@@ -171,6 +171,43 @@ static func clear_length(space: PhysicsDirectSpaceState3D, focus: Vector3, b: Ba
 	return min_len
 
 
+## [onboard2] QA P2: after a cutscene, the normal follow framing (default distance and pitch) from
+## the yaw nearest `pref_yaw` whose arm and view edges are clear, so the pod or the bench behind
+## Lumi doesn't collapse the arm into the back of his head.
+const FOLLOW_DISTANCE: float = 6.2
+const FOLLOW_PITCH: float = -0.3
+
+
+func hand_off(pref_yaw: float) -> void:
+	distance = FOLLOW_DISTANCE
+	pitch = FOLLOW_PITCH
+	yaw = pref_yaw
+	if target and is_inside_tree():
+		var focus: Vector3 = target.global_position + Vector3(0, 1.1, 0)
+		yaw = clear_yaw(get_world_3d().direct_space_state, focus, pref_yaw, pitch, distance, camera.fov)
+	snap()
+
+
+## The yaw nearest `pref` (tried in 30-degree steps either side) with a full-length clear arm.
+static func clear_yaw(space: PhysicsDirectSpaceState3D, focus: Vector3, pref: float, pitch_: float, length: float, fov_deg: float) -> float:
+	if space == null:
+		return pref
+	var q := PhysicsRayQueryParameters3D.new()
+	q.collision_mask = PhysLayers.WORLD | PhysLayers.PROP
+	q.hit_from_inside = true
+	for k: int in 13:
+		@warning_ignore("integer_division")
+		var y: float = pref + deg_to_rad(30.0) * float((k + 1) / 2) * (1.0 if k % 2 == 1 else -1.0)
+		var b: Basis = view_basis(y, pitch_)
+		q.from = focus
+		q.to = focus + b * Vector3(0, 0, length + 0.4)
+		if not space.intersect_ray(q).is_empty():
+			continue
+		if clear_length(space, focus, b, length, length, fov_deg, 16.0 / 9.0) >= length:
+			return y
+	return pref
+
+
 func snap() -> void:
 	if target:
 		_focus = target.global_position + Vector3(0, 1.1, 0)

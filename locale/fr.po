@@ -553,7 +553,7 @@ msgstr ""
 msgid "No Baler yet: empty your chest in the trash bin"
 msgstr ""
 
-#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:258
+#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:257
 msgid "+%s cubes"
 msgstr "+%s cubes"
 
@@ -577,7 +577,7 @@ msgstr ""
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "La chatte a décidé que tu étais à elle. Voici %s. Elle vit à cette base maintenant."
 
-#: fauna/fauna.gd:1964
+#: fauna/fauna.gd:1964 ui/subtitles.gd:412
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "Nouvelle observation : %s. Elle est maintenant dans le Codex."
 
@@ -1909,15 +1909,15 @@ msgstr "<< LEDGER // HORS PROCÈS-VERBAL >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/objectives.gd:252
+#: story/objectives.gd:267
 msgid "Objective complete  ·  %s"
 msgstr "Objectif atteint  ·  %s"
 
-#: story/objectives.gd:422
+#: story/objectives.gd:442
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr "Tu entends ces bips ? Ton détecteur a trouvé une pièce de robot enterrée tout près. Plus il bipe vite, plus tu es proche."
 
-#: story/objectives.gd:423
+#: story/objectives.gd:443
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PIÈCE ENTERRÉE : avance vers elle jusqu'au signal maximal, puis déterre-la."
 
@@ -1970,26 +1970,22 @@ msgid "Space  pause   ·   Esc  skip"
 msgstr ""
 
 #: story/tutorial.gd:10
+msgid "{interact}  at the workbench to repair it"
+msgstr "{interact}  à l'établi pour le réparer"
+
+#: story/tutorial.gd:11
 msgid "Hold  {scoop}  to scoop junk"
 msgstr "Maintiens  {scoop}  pour ramasser la ferraille"
 
-#: story/tutorial.gd:11
-msgid "Press  {cube}  to press a bale"
-msgstr "Appuie sur  {cube}  pour presser une balle"
-
 #: story/tutorial.gd:12
-msgid "{interact}  to pick up the bale"
-msgstr "{interact}  pour ramasser la balle"
+msgid "Empty your chest into the trash bin"
+msgstr "Vide ton coffre dans la poubelle"
 
 #: story/tutorial.gd:13
-msgid "Carry it onto the scale"
-msgstr "Porte-la sur la balance"
-
-#: story/tutorial.gd:14
 msgid "{interact}  at the workbench to upgrade"
 msgstr "{interact}  à l'établi pour améliorer"
 
-#: story/tutorial.gd:18
+#: story/tutorial.gd:19
 msgid "Lumi is back on the job"
 msgstr "Lumi reprend du service"
 
@@ -2045,7 +2041,7 @@ msgstr "NOUS REVIENDRONS"
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "%d succès débloqués. Retrouve-les dans le Codex (K)."
 
-#: systems/achievements.gd:147 ui/notify_stack.gd:24
+#: systems/achievements.gd:147 ui/notify_stack.gd:27 ui/subtitles.gd:410
 msgid "Achievement: %s. %s"
 msgstr "Succès : %s. %s"
 
@@ -4128,7 +4124,7 @@ msgstr "BOÎTE À CD  ·  RAYÉS, UNE LECTURE CHACUN  ·  %d / %d"
 msgid "Play once: %s"
 msgstr "Écouter une fois : %s"
 
-#: ui/extras_cd_list.gd:95 ui/scratched_cd_ui.gd:193
+#: ui/extras_cd_list.gd:95
 msgid "by %s"
 msgstr "par %s"
 
@@ -4444,15 +4440,15 @@ msgstr "   ·   PÉRIMÉ"
 msgid "Re-survey      %s cubes"
 msgstr "Nouveau relevé      %s cubes"
 
-#: ui/goals_panel.gd:207 ui/objective_card.gd:112
+#: ui/goals_panel.gd:206 ui/objective_card.gd:112
 msgid "DONE"
 msgstr "FAIT"
 
-#: ui/goals_panel.gd:231
+#: ui/goals_panel.gd:230
 msgid "Goal complete  ·  %s%s"
 msgstr "Objectif atteint  ·  %s%s"
 
-#: ui/goals_panel.gd:258
+#: ui/goals_panel.gd:257
 msgid "+%s seeds"
 msgstr "+%s graines"
 
@@ -4574,60 +4570,60 @@ msgstr "Lumi a atteint le niveau %d%s"
 msgid "OLD TOWN   0%"
 msgstr "VIEILLE VILLE   0%"
 
-#: ui/hud.gd:286
+#: ui/hud.gd:289
 msgid "WREN SIGNAL   %d%%"
 msgstr "SIGNAL WREN   %d%%"
 
-#: ui/hud.gd:314
+#: ui/hud.gd:317
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% PROPRE"
 
-#: ui/hud.gd:318
+#: ui/hud.gd:321
 msgid "%s  BASE"
 msgstr "BASE %s"
 
-#: ui/hud.gd:321
+#: ui/hud.gd:324
 msgid "CARRYING %d/%d"
 msgstr "CHARGE %d/%d"
 
-#: ui/hud.gd:345
+#: ui/hud.gd:348
 msgid "HEX  CLEAR"
 msgstr "HEX  PROPRE"
 
-#: ui/hud.gd:349
+#: ui/hud.gd:352
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:352
+#: ui/hud.gd:355
 msgid "  SUSTAIN %d%%"
 msgstr "  DURABLE %d%%"
 
-#: ui/hud.gd:354
+#: ui/hud.gd:357
 msgid "  THIRSTY"
 msgstr "  ASSOIFFÉ"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:379
+#: ui/hud.gd:382
 msgid "%s   pick up bale"
 msgstr "%s   ramasser la balle"
 
-#: ui/hud.gd:380
+#: ui/hud.gd:383
 msgid "%s   dig up part"
 msgstr "%s   déterrer la pièce"
 
-#: ui/hud.gd:381
+#: ui/hud.gd:384
 msgid "%s   read memory shard"
 msgstr "%s   lire l'éclat de mémoire"
 
-#: ui/hud.gd:382
+#: ui/hud.gd:385
 msgid "%s   pick up the seed tin"
 msgstr "%s   ramasser la boîte à graines"
 
-#: ui/hud.gd:383
+#: ui/hud.gd:386
 msgid "%s   set bale down"
 msgstr "%s   poser la balle"
 
-#: ui/hud.gd:384
+#: ui/hud.gd:387
 msgid "%s   workbench"
 msgstr "%s   établi"
 
@@ -4635,7 +4631,7 @@ msgstr "%s   établi"
 msgid "press bale"
 msgstr "presser un ballot"
 
-#: ui/key_hints.gd:107
+#: ui/key_hints.gd:114
 msgid "tools"
 msgstr "outils"
 
@@ -5523,7 +5519,11 @@ msgstr "Rangé dans ta boîte à CD (%d / %d). Écoute-le au lecteur CD."
 msgid "You leave the scratched CD where it lay."
 msgstr "Tu laisses le CD rayé là où il était."
 
-#: ui/scratched_cd_ui.gd:202
+#: ui/scratched_cd_ui.gd:194
+msgid "Last play: %s, by %s."
+msgstr "Dernière écoute : %s, par %s."
+
+#: ui/scratched_cd_ui.gd:201
 msgid "The scratched CD cracks and falls apart. %s"
 msgstr "Le CD rayé se fend et tombe en morceaux. %s"
 
@@ -11867,8 +11867,40 @@ msgid "Lumi, it's WREN, the Cradle's caretaker. Your friend up here. Your pod's 
 msgstr "Lumi, c'est WREN, la gardienne du Cradle. Ton amie là-haut. Ta capsule s'est écrasée, et le relais lâche."
 
 #: data/objectives.json:brief.lines
-msgid "Bale junk to power the old base, then build a signal tower so I can reach you. I'll be [glitch]listen—[/glitch]"
-msgstr "Presse des déchets en ballots pour alimenter la vieille base, puis construis une tour radio pour que je te joigne. Je reste à l'[glitch]écou—[/glitch]"
+msgid "Fix the bench, clear junk for cubes, then build a signal tower to reach me. I'll be [glitch]listen—[/glitch]"
+msgstr "Répare l'établi, ramasse des déchets pour des cubes, puis construis une tour radio pour me joindre. Je reste à l'[glitch]écou—[/glitch]"
+
+#: data/objectives.json:objectives[dump3].text
+msgid "Fill the trash bin 3 times"
+msgstr "Remplis la poubelle 3 fois"
+
+#: data/objectives.json:objectives[dump3].desc
+msgid "Each chestful of junk pays a few cubes."
+msgstr "Chaque coffre de déchets rapporte quelques cubes."
+
+#: data/objectives.json:objectives[compartment].text
+msgid "Buy Compartment Size"
+msgstr "Achète Taille du compartiment"
+
+#: data/objectives.json:objectives[compartment].desc
+msgid "A bigger chest means fewer trips to the bin."
+msgstr "Un coffre plus grand, moins d'allers-retours."
+
+#: data/objectives.json:objectives[scoop_size].text
+msgid "Buy Scoop Size"
+msgstr "Achète Taille de pelle"
+
+#: data/objectives.json:objectives[scoop_size].desc
+msgid "Grab more junk at once. At the workbench."
+msgstr "Ramasse plus de déchets d'un coup. À l'établi."
+
+#: data/objectives.json:objectives[baler].text
+msgid "Save up for the Baler"
+msgstr "Économise pour la Presse à balles"
+
+#: data/objectives.json:objectives[baler].desc
+msgid "It presses junk into bales. Bales sell for far more."
+msgstr "Elle presse les déchets en ballots, qui valent bien plus."
 
 #: data/objectives.json:objectives[power].text
 msgid "Power the base: sell 3 bales"
@@ -13923,7 +13955,7 @@ msgstr "Un broyeur blanc et propre à double rotor, avec une ligne de scanner. I
 
 #: data/upgrades.json:upgrades[baler].name
 msgid "Baler"
-msgstr ""
+msgstr "Presse à balles"
 
 #: data/upgrades.json:upgrades[baler].desc
 msgid "Fit the bale press in your chest. Press junk into bales: they sell for far more than loose junk."
@@ -14043,7 +14075,7 @@ msgstr "Des lentilles de focalisation plus longues : attrape la ferraille de plu
 
 #: data/upgrades.json:upgrades[multi_lock].name
 msgid "Scoop Size"
-msgstr ""
+msgstr "Taille de pelle"
 
 #: data/upgrades.json:upgrades[multi_lock].desc
 msgid "Lock onto one more piece per scoop pulse."
@@ -15700,6 +15732,18 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "Press  {cube}  to press a bale"
+#~ msgstr "Appuie sur  {cube}  pour presser une balle"
+
+#~ msgid "{interact}  to pick up the bale"
+#~ msgstr "{interact}  pour ramasser la balle"
+
+#~ msgid "Carry it onto the scale"
+#~ msgstr "Porte-la sur la balance"
+
+#~ msgid "Bale junk to power the old base, then build a signal tower so I can reach you. I'll be [glitch]listen—[/glitch]"
+#~ msgstr "Presse des déchets en ballots pour alimenter la vieille base, puis construis une tour radio pour que je te joigne. Je reste à l'[glitch]écou—[/glitch]"
 
 #~ msgid "   {ui_tab_prev}{ui_tab_next}  switch tabs"
 #~ msgstr "   {ui_tab_prev}{ui_tab_next}  changer d'onglet"
