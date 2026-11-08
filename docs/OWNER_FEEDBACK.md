@@ -225,3 +225,8 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 33. The purple indicator points at nothing. In the screenshot, the ring was on a road cell while the step was "Empty your chest into the trash bin". Also, two cards showed at once ("OBJECTIVE: Save up for the Baler" plus "NEXT STEP: Empty your chest..."): there must be only one.
 34. After the signal tower restores the connection, WREN only says hello. WREN should narrate the goals and what we're trying to do to get back home.
 35. The starting hexes can't hold large items, because then you can't fully clear a hex.
+36. When a hex reaches 95% clear, the rest of it clears automatically: the hex counts as clean and its leftover pieces are swept away.
+37. The purple beam/ring and the yellow pointer should NOT point at parts or leftover pieces. Use them only to lead to PLACES a goal needs (bench, bin, tower spot, greenhouse...), and only when necessary.
+38. After walking away I couldn't tell which way home was. The pod's smoke should be a super tall plume, a landmark for home visible from far away.
+39. A hex stuck at 96% with no findable leftovers: this is the 95% rule (item 36). It's the top priority.
+40. Map view (M) looks great but is a little glitched, and it's too close to Moon Sweepers (legal risk). Make it our own style. The launch/travel UI must NOT be in the map; it appears only when you press E at the rocket.
