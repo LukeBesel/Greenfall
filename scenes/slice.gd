@@ -46,6 +46,7 @@ var frontier: FrontierDistrict  # [biomes] late-game frontier districts (planet/
 var planet_env: Dictionary = {}  # [planet-rime] dev: --planet-env=<id> dresses a district with a planet env (data/planets.json)
 var bounds: WorldBounds  # [orbit] soft edge + fall rescue (planet/world_bounds.gd)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
+var orbit: SliceOrbit  # [orbB] --orbit: the slice on the walkable globe (scenes/slice_orbit.gd); null on the flat game
 var view: FieldView
 var depot: Depot
 var patch: Patch
@@ -68,6 +69,7 @@ var _flower: Node3D
 var _sun: DirectionalLight3D
 var _env: Environment
 var dressing: StreetDressing
+var street_power: StreetPower  # [world3] the district's dead street lights (planet/street_power.gd)
 ## Shack and yard lamp pieces that sit derelict while a non-starter base is at level 1.
 var _ruin_bits: Dictionary = {}
 var _t: float = 0.0
@@ -82,7 +84,13 @@ signal built
 
 
 func _ready() -> void:
-	if DevHooks.has("orbit"):  # [orbit] prototype: the walkable globe (planet/orbit/orbit_world.gd)
+	if SliceOrbit.wanted():  # [orbB] --orbit: this slice builds on the globe instead
+		orbit = SliceOrbit.new()
+		orbit.name = "Orbit"
+		add_child(orbit)
+		orbit.build(self)
+		return
+	if DevHooks.has("orbit"):  # [orbit] phase A prototypes: --orbit=globe (verdance_globe), --orbit=v1 (orbit_world)
 		get_tree().change_scene_to_file.call_deferred("res://planet/orbit/%s.tscn" % ("orbit_world" if DevHooks.get_s("orbit", "") == "v1" else "verdance_globe"))
 		return
 	if DevHooks.has("sphere-walk"):  # [smove] Lumi on a stand-in planet (planet/sphere/sphere_walk.gd)
@@ -174,6 +182,10 @@ func _ready() -> void:
 	if not fk.is_empty():  # [biomes] the frontier's own harbour / flood replaces planet lakes
 		field.water_ids = Frontiers.water_ids_for(fk, f_radius, float(cfg.get("hex_size", 3.2)))
 		field.float_mult = float(fk.get("float_mult", 1.0))
+	if bool(planet_env.get("no_lakes", false)):  # [planet-ochre] a dry planet: no planet lakes in the field
+		field.water_ids = {}
+	if planet_env.has("pieces_mult"):  # [planet-ochre] a trashed planet: more junk per hex
+		ppx = [int(float(ppx[0]) * float(planet_env["pieces_mult"])), int(float(ppx[1]) * float(planet_env["pieces_mult"]))]
 	# Older saves were generated with straight hex borders; keep their piece layout identical.
 	if loaded and GameState.world.has("field"):
 		field.natural_borders = bool((GameState.world["field"] as Dictionary).get("natural_borders", false))
@@ -500,6 +512,7 @@ func _ready() -> void:
 	hex_levels.world = self
 	add_child(hex_levels)
 	hex_levels.setup()
+	_setup_street_power()  # [world3]
 	# Future layer: the district builds up into a glowing city as hexes level (planet/future_layer.gd).
 	if DevHooks.has("future"):
 		if frontier:  # [biomes] thaw the ice / run the pumps first so the preview covers every hex
@@ -736,14 +749,15 @@ func _build_environment() -> void:
 	env.ssao_enabled = true
 	env.ssao_radius = 1.0
 	env.ssao_intensity = 1.6
-	env.ssil_enabled = true
-	env.ssr_enabled = true
+	var fwd_plus: bool = RenderingServer.get_current_rendering_method() == "forward_plus"  # [qafix] QA #35: no "only on Forward+" warnings on Compatibility
+	env.ssil_enabled = fwd_plus  # [qafix]
+	env.ssr_enabled = fwd_plus  # [qafix]
 	env.ssr_max_steps = 48
-	env.sdfgi_enabled = true
+	env.sdfgi_enabled = fwd_plus  # [qafix]
 	env.sdfgi_use_occlusion = true
 	env.sdfgi_cascades = 4
 	env.sdfgi_min_cell_size = 0.2
-	env.volumetric_fog_enabled = true
+	env.volumetric_fog_enabled = fwd_plus  # [qafix]
 	env.volumetric_fog_density = 0.006
 	env.volumetric_fog_albedo = Color(0.85, 0.86, 0.9)
 	env.volumetric_fog_emission = Color(0.04, 0.045, 0.06)
@@ -917,6 +931,22 @@ func _build_board() -> void:
 	_ruin_bits["generator"] = gen  # [camp]
 
 
+## [world3] When you land nothing works: street lamps, shop neon and string lights wake up as
+## their hexes reach Sustained, or round the base at hub level 3 (planet/street_power.gd).
+func _setup_street_power() -> void:
+	street_power = StreetPower.new()
+	street_power.name = "StreetPower"
+	add_child(street_power)
+	street_power.setup(field, hex_levels, hub.level if hub else 1)
+	if city:
+		street_power.add_bulbs(city.lamp_bulbs)
+	if dressing:
+		street_power.add_groups(dressing.power_groups)
+	street_power.apply(false)
+	if hub:
+		hub.level_changed.connect(func(l: int) -> void: street_power.set_hub_level(l, true))
+
+
 ## Level 1 at any base but Old Town's start: the lean-to roof has slumped off its frame, the side
 ## sheet is gone, the bench bulb is dead and the yard lamp lies toppled. From level 2 it is fixed
 ## (tweened back into place when it happens live).
@@ -964,6 +994,8 @@ func _build_flower() -> void:
 
 func _process(delta: float) -> void:
 	_t += delta
+	if orbit:  # [orbB]
+		return
 	if _flower:
 		_flower.rotation.z = sin(_t * 1.1) * 0.02
 
@@ -982,11 +1014,16 @@ func _map_slice_to_planet() -> void:
 
 
 func planet_cell_at(pos: Vector3) -> int:
+	if orbit:  # [orbB] cell ids are the planet's ids
+		return orbit.cell_at(pos)
 	var anchor: int = anchor_cell
 	return planet.grid.nearest_from(planet.local_to_dir(anchor, pos.x, pos.z), anchor)
 
 
 func collect_piece(pid: int) -> void:
+	if orbit:  # [orbB]
+		orbit.collect_piece(pid)
+		return
 	var hid: int = field.piece_hex[pid]
 	var became_clean: bool = field.remove_piece(pid)
 	planet.set_junk(slice_cells[hid], 1.0 - field.removed_fraction(hid))
@@ -1000,6 +1037,9 @@ func collect_piece(pid: int) -> void:
 
 
 func _on_hex_clean(hid: int) -> void:
+	if orbit:  # [orbB]
+		orbit.on_hex_clean(hid)
+		return
 	# A hex the Ledger re-dumped on pays only the flat part of its bonus the second time and doesn't
 	# count again toward "Clean N hexes" (otherwise a dump is a profit).
 	var paid: Dictionary = GameState.world.get("hexes_paid", {})
@@ -1127,6 +1167,8 @@ func travel_to(to_hub: int) -> void:
 
 ## Salvaged building materials from scooped junk (data/hub.json "materials").
 func salvage_materials(type_id: String, vol: float) -> void:
+	if orbit:  # [orbB] hub materials come with the hub sites
+		return
 	if composter:
 		composter.on_salvage(type_id, vol)
 	var m: Dictionary = hub.data.get("materials", {}).get(type_id, {})
@@ -1150,6 +1192,9 @@ func _hitstop(duration: float, scale_: float) -> void:
 # --- Interaction / UI -------------------------------------------------------------
 
 func try_interact(p: Patch) -> void:
+	if orbit:  # [orbB]
+		orbit.try_interact(p)
+		return
 	if interactables and interactables.try_use(p.global_position):
 		return
 	if first_seed.near_tin(p.global_position):
@@ -1171,6 +1216,8 @@ func try_interact(p: Patch) -> void:
 
 
 func interact_prompt(p: Patch) -> String:
+	if orbit:  # [orbB]
+		return orbit.interact_prompt(p)
 	var ip: String = interactables.prompt(p.global_position) if interactables else ""
 	if ip != "":
 		return ip
@@ -1191,10 +1238,14 @@ const BENCH_RANGE: float = 3.2
 
 
 func near_bench() -> bool:
+	if orbit:  # [orbB] the bench comes with the start site
+		return false
 	return patch != null and patch.global_position.distance_to(BOARD_POS) < BENCH_RANGE
 
 
 func open_upgrades() -> void:
+	if orbit:  # [orbB]
+		return
 	if pause_menu.is_open:
 		return
 	# Upgrades are installed at a base workbench, not in the field.
@@ -1276,6 +1327,8 @@ func _open_command() -> void:
 
 
 func any_modal_open() -> bool:
+	if orbit:  # [orbB]
+		return orbit.any_modal_open()
 	return upgrades.is_open or pause_menu.is_open or globe.is_open or command.is_open \
 		or (codex != null and codex.is_open) or (doc_view != null and doc_view.is_open) \
 		or (photo != null and photo.is_open) \
@@ -1283,6 +1336,9 @@ func any_modal_open() -> bool:
 
 
 func _on_modal_closed() -> void:
+	if orbit:  # [orbB]
+		orbit.on_modal_closed()
+		return
 	# During the rocket launch the rocket owns the camera and Patch stays hidden and still.
 	if launching:
 		return
@@ -1294,6 +1350,9 @@ func _on_modal_closed() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if orbit:  # [orbB]
+		orbit.unhandled_input(event)
+		return
 	if launching or upgrades.is_open or pause_menu.is_open or globe.is_open or command.is_open or intro.busy() or (codex and codex.is_open):
 		return
 	if event.is_action_pressed("open_codex") and codex:
@@ -1327,6 +1386,9 @@ func _unhandled_input(event: InputEvent) -> void:
 # --- Persistence -----------------------------------------------------------------
 
 func persist_save() -> void:
+	if orbit:  # [orbB] GameState.orbit (direction + height); the flat district state is left as it was
+		orbit.persist_save()
+		return
 	GameState.world["field"] = field.to_dict()
 	GameState.planet_state = planet.to_dict()
 	GameState.world["garden"] = garden.persist()
@@ -1352,6 +1414,9 @@ func persist_save() -> void:
 
 ## from_memory: reloaded by rocket travel (not from disk), so no offline payout or welcome back.
 func _restore_world(from_memory: bool = false) -> void:
+	if orbit:  # [orbB]
+		orbit.restore_world()
+		return
 	for cd: Dictionary in GameState.world.get("cubes", []):
 		var c: JunkCube = JunkCube.from_dict(cd)
 		add_cube(c)

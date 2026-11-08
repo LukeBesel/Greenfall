@@ -32,7 +32,8 @@ var viewport: SubViewport
 var picture: Control
 var frame: int = 0
 var _t: float = 0.0
-var _static_t: float = STATIC_S
+var _static_t: float = STATIC_S  # seconds of static left (real time, so slow frames never stretch it)
+var _last_ms: int = 0
 var _hold: int = -1  # dev: hold one frame (--tv-frame=N)
 var _wall_step: float = 0.0  # dev: advance by wall clock every S s (--tv-step=S), for slow renders
 var _wall0: int = 0
@@ -152,7 +153,9 @@ func _process(delta: float) -> void:
 	if _done:
 		return
 	_t += delta
-	_static_t = maxf(0.0, _static_t - delta)
+	var now: int = Time.get_ticks_msec()
+	_static_t = maxf(0.0, _static_t - ((now - _last_ms) / 1000.0 if _last_ms > 0 else delta))
+	_last_ms = now
 	var want: int = frame
 	if _hold >= 0:
 		want = _hold

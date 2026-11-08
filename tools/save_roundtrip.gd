@@ -276,6 +276,12 @@ func _ready() -> void:
 	await get_tree().process_frame
 	SaveManager.slot = 7
 	SaveManager.enabled = true
+	if SliceOrbit.wanted():  # [orbB] --orbit: the round trip of the slice on the globe (tools/orbit_roundtrip.gd)
+		await OrbitRoundtrip.run(self, _check)
+		SaveManager.delete_save()
+		print("[roundtrip] %s (%d failures)" % ["OK" if _fails == 0 else "FAILED", _fails])
+		get_tree().quit(1 if _fails > 0 else 0)
+		return
 	var packed: PackedScene = load("res://scenes/slice.tscn")
 	var s1: Node = packed.instantiate()
 	get_tree().root.add_child(s1)

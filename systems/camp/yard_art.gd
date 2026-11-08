@@ -72,7 +72,7 @@ static func glow_mat(on: bool) -> ShaderMaterial:
 	if not _mat_cache.has(key):
 		var m := ShaderMaterial.new()
 		m.shader = GLOW_SHADER
-		m.set_shader_parameter("energy", 2.2 if on else 0.0)
+		m.set_shader_parameter("glow", 2.2 if on else 0.0)
 		_mat_cache[key] = m
 	return _mat_cache[key]
 
@@ -285,6 +285,27 @@ static func set_powered(root: Node, on: bool) -> void:
 		(root as Light3D).visible = on
 	for c: Node in root.get_children():
 		set_powered(c, on)
+
+
+## The "it comes back on" moment for a Kit build (world3's stutter, planet/power_fx.gd): after
+## `delay` s a spark, a few stutters, then steady light.
+static func flicker_on(host: Node, node: Node, delay: float = 0.0) -> void:
+	if host == null or node == null:
+		return
+	set_powered(node, false)
+	var tw: Tween = host.create_tween()
+	tw.tween_interval(delay)
+	tw.tween_callback(func() -> void:
+		if node is Node3D and (node as Node3D).is_inside_tree():
+			Vfx.burst("sparkle", (node as Node3D).global_position + Vector3(0, 1.0, 0), Color(1.0, 0.85, 0.5), 0.4)
+		Audio.play("clunk", randf_range(1.6, 2.0), -14.0))
+	for s: Array in PowerFx.STUTTER:
+		var on: bool = float(s[0]) > 0.5
+		tw.tween_callback(func() -> void:
+			if is_instance_valid(node):
+				set_powered(node, on))
+		if float(s[1]) > 0.0:
+			tw.tween_interval(float(s[1]))
 
 
 ## Re-paints every Kit mesh under `root` at a new wear (broken -> repaired).

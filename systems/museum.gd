@@ -128,6 +128,21 @@ static func check_complete() -> bool:
 	return true
 
 
+## Dev (--museum-sample): a partly filled collection, for screenshots.
+static func dev_sample() -> void:
+	for id: String in ["tv", "duck", "time_capsule", "stars"]:
+		GameState.flags["egg_" + id] = true
+	for i: int in 3:
+		EggCollect.add("gnomes", i)
+	var sh: Array = []
+	for d: Dictionary in Economy.read_json("res://data/shards.json").get("shards", []).slice(0, 3):
+		sh.append(str(d["id"]))
+	GameState.flags["shards_found"] = sh
+	var rl: Variant = Homeward.state().get("relics", [])
+	if rl is Array and not ("ochre_glass" in rl):
+		(rl as Array).append("ochre_glass")
+
+
 # --- In the world -----------------------------------------------------------------------
 
 static func attach(w: Node) -> Museum:
@@ -154,18 +169,6 @@ func _setup() -> void:
 	rotation.y = deg_to_rad(float(cfg().get("yaw_deg", 0.0)))
 	if DevHooks.has("museum-built"):
 		GameState.flags["museum_built"] = true
-	if DevHooks.has("museum-sample"):  # dev: a partly filled collection
-		for id: String in ["tv", "duck", "time_capsule", "stars"]:
-			GameState.flags["egg_" + id] = true
-		for i: int in 3:
-			EggCollect.add("gnomes", i)
-		var sh: Array = []
-		for d: Dictionary in Economy.read_json("res://data/shards.json").get("shards", []).slice(0, 3):
-			sh.append(str(d["id"]))
-		GameState.flags["shards_found"] = sh
-		var rl: Variant = Homeward.state().get("relics", [])
-		if rl is Array and not ("ochre_glass" in rl):
-			(rl as Array).append("ochre_glass")
 	if built():
 		_build_hall(false)
 	# [camp2] No plot sign on its own: the Museum is built from the Hub tab (systems/camp/hub_builds.gd).

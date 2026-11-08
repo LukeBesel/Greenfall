@@ -49,7 +49,7 @@ func _build() -> void:
 	_scale_post = YardArt.depot_scale()
 	_scale_post.position = post_at
 	add_child(_scale_post)
-	YardArt.set_powered(_scale_post, TrashBin.level() >= 2)
+	YardArt.set_powered(_scale_post, YardBuilds.built("generator"))  # [world3] [yard]
 	var pcs := CollisionShape3D.new()  # [world2] the dial post is solid (local frame, shared shape)
 	pcs.shape = PropColliders.cyl_shape(0.12, 1.4)
 	pcs.position = post_at + Vector3(0, 0.7, 0)
@@ -67,10 +67,13 @@ func _build() -> void:
 	add_child(face)
 	_needle = MeshInstance3D.new()
 	_needle.mesh = YardArt.bbox(Vector3(0.018, 0.16, 0.012), 0.004)
-	_needle.material_override = Mats.lamp(Color(0.85, 0.12, 0.05), 0.4)
+	_needle.material_override = Mats.rubber(Color(0.75, 0.1, 0.05))  # [world3] painted, not lit
 	_needle.position = post_at + Vector3(0, YardArt.SCALE_DIAL_Y, 0.13)
 	add_child(_needle)
-
+	# [world3] A dead bulb (nothing works when you land) until the generator is built (Hub tab).
+	YardBuilds.events.built.connect(func(id: String) -> void:
+		if id == "generator" and is_inside_tree():
+			YardArt.flicker_on(self, _scale_post, 1.0))  # [yard] the scale lamp's glow and light
 
 func pad_contains(world_pos: Vector3) -> bool:
 	var d: Vector3 = _local(world_pos)  # [orbit] the pad's own up (a depot on a round planet is tilted)
@@ -227,6 +230,4 @@ func _build_bin_art(l: int) -> Vector3:
 	sign_label.position = b["label"]
 	root.add_child(sign_label)
 	_chute_mouth = _chute.position + Vector3(0, float(b["mouth_y"]), 0)
-	if _scale_post:
-		YardArt.set_powered(_scale_post, l >= 2)
 	return b["size"]
