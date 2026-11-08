@@ -57,6 +57,19 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
   roughening. Renders: screenshots/leftovers/rime_night_before|after.png
   (`--planet-env=rime --time=0.0 --rime-nohud --spawn-pos=-45,-80 --spawn-yaw=0.48 --rime-cam=14,-0.18,0.48`).
 
+## Update: movement on a sphere (wt/smove, Nov 8)
+- Done: `planet/sphere/` holds standalone movement for round planets. These pieces are adopted by the orbit prototype.
+  - SphereMotor: hover spring, radial gravity, jump, hover-boost, slopes, parallel-transported frames.
+  - SphereWalker: Lumi.
+  - SphereCam: follow and command views, spring arm, level horizon.
+  - SphereBot, SphereSteer and SphereSwarm: great-circle travel and avoidance.
+  - SphereCrewSim: far bots as records.
+  - SpherePath: A* on GeoSphere.
+  - SpherePlace: normal-aligned placement and the curved tractor scoop.
+  - SphereSurface: the plug-in for terrain height and hex lookup.
+- Demo: `--sphere-walk[=boost|play]`, with `--sphere-start=pole`, `--sphere-view=command` and `--sphere-scene=horizon`. Tests: `tests/test_sphere_move.gd`.
+- True-scale boost lap at R 1840 m: back within 0.46 m after 11.56 km.
+- Next (waits for rollout approval): Patch.gd uses SphereMotor behind a flag.
 ## Update: simpler workbench (wt/ui2, Nov 7)
 Owner playtest #1: "SIMPLIFY GAME". The workbench is seven tabs (Lumi, Bots, Hub, Research, Rockets, Requests, Locker) with bigger text, one card style (`ui/bench_kit.gd`: card, title/body sizes, big button, cost row with the currency icons, spot pips) and every cost in Parts and/or cubes.
 - Done: robot part items are gone from the player-facing flow. `systems/robot_parts.gd`: a dug-up / spotted / rewarded robot part pays Parts at its rarity's value (Rusty 10 ... Legendary 450, `data/parts.json`); `GameState.parts` stays an empty legacy array that `RobotParts.fold_items()` folds into Parts every fleet tick. Save v4 (`SaveManager.migrate_v4`, after pace's v3) converts held items at the same values. Robot builds cost cubes + Parts (`data/robots.json` "parts", x1.2 per robot owned), Mk tiers cubes + `Fleet.TIER_PARTS` (200 / 700 / 2000); no recipes, no Control Cores, no rarity bonus.
@@ -601,6 +614,11 @@ tuned in the first-hour pass); no new SFX work unless a bug.
   now one aged hydrant. The --fauna-look=duck shot needs a green shore: use `--restore=lake,5`.
 - Next: per-variant garden batches raise draw calls (~130 batches with all species); a merged
   per-chunk garden mesh would cut it. Grass density by quality preset should be checked on real GPUs.
+## Update: walkable planet (wt/orbit, Nov 8)
+- Done (merge now): `planet/world_bounds.gd` (`WorldBounds`, one `[orbit]` hook in scenes/slice.gd): Lumi can't fall off a district: soft wall 3 m inside the ground square (WREN hint), hover-and-fade rescue onto the nearest walkable ground when Lumi is outside or under the ground, robots and loose cubes put back. `--edge-test` (headless PASS/FAIL), tests/test_world_bounds.gd.
+- Prototype (owner review first, not rolled out): `--orbit` loads `planet/orbit/orbit_world.tscn`: Verdance's 40,962-cell survey globe as one walkable sphere (R 920 m, 5.8 km around, 21 min on foot): streamed ground chunks with collision, a far shell, per-cell state texture, junk ring around Lumi, radial-gravity walker (PatchModel), parallel-transported camera, local sky/sun, hub sites with beacons, robots on the hex graph, data-only far crews. Dev: `--orbit-walk[=deg] --orbit-lap-quit` (lap report), `--orbit-view=ground|low|mid`, `--orbit-presim=MIN`, `--orbit-trail`, `--orbit-pieces=N`, `--orbit-hubs=N`, `--orbit-hex=M`. Tests: tests/test_orbit_globe.gd. Renders: screenshots/orbit/. The rollout plan is in the orbit report (coordinator).
+- Done (orbit view, Nov 8): the far shell is now a **big-hex map** (`planet/sphere/sphere_shell.gd` + `.gdshader`): one flat-coloured hex per level-5 cell (10,242 hexes, ~16 ground hexes each) with a thin outline that fades when hexes get tiny on screen. Each big hex shows the share of its ground hexes that is junk / cleaned / green (planted -> restored) / water, in a per-biome palette, refreshed every 0.5 s as cells change, so the planet visibly changes from orbit while crews clean and plant. Cities (PlanetData.city) are slate-blue clusters with amber outlines and warm lights; hub sites glow cyan. Mid view: closer camera (`--orbit-mid-dist=2.2` radii), atmosphere rim, city name + hub labels (`--orbit-nolabels`). Fix: `Settings.apply_quality_to_tree` was overwriting the orbit fog with the flat-world density (5x thicker), which turned Command view into grey haze; the orbit re-applies its own fog after it. Tests: tests/test_sphere_shell.gd. Renders: screenshots/orbit/.
+- Open: some start-base boxes stand in the lake west of the home hub (Command view); the sky is black in the ground views.
 
 ### Planet Rime environment (wt/p_rime)
 - Done: `planet/planets/rime/` (`RimeEnv`, entry `apply(world, field, kind)` plus `dev_hub`, `prepare_field`,
@@ -664,6 +682,10 @@ tuned in the first-hour pass); no new SFX work unless a bug.
 - Next: split the district build across frames so the loading bar keeps moving during it; pre-build
   the intro's SpaceStage behind the loader (its first frames compile on the intro's black fade now).
 
+## Update: hex globe foundation (wt/sgrid, Nov 8)
+- Done: `planet/sphere/` standalone module for the walkable round planets (used by wt/orbit's `--orbit`): `SphereGrid` (Goldberg hex globe, GeoSphere-compatible stable ids, O(1) point lookup, chunks of ~256 hexes, disk cache: level 7 = 163,842 hexes builds in 1.2 s, loads in 30 ms), `SphereTerrain` (true-scale noise terrain, per-cell elevation layer, `reserve_site` tangent-plane hub pads with a surface-aligned transform), `SphereCells` (packed per-hex state + state texture), `SphereStreamer` (WorkerThreadPool chunk builds, LOD 0/1/2 to the horizon + far shell, collision near bodies only, near rings for junk). Recommended size: level 7, hex circumradius 10 m, R 1840 m (table in sphere_grid.gd).
+- Dev: `--sphere-demo` (`--sphere-cam=orbit|high|skim|ground`, `--sphere-outlines`, `--sphere-lod-tint`). Tests: tests/test_sphere_grid.gd.
+- Phase A (Nov 8, wt/orbit, behind `--orbit`): the real Lumi on the globe. `Patch.enable_sphere()` + SphereMotor (hover, radial gravity, x4 boost, jump, camera-frame input); scoop real junk (`planet/orbit/sphere_field.gd`, `sphere_junk_view.gd`), bales fall with radial gravity, carry and cash at a Depot on the start site; game HUD; Command view (B). Real day and night sides: two suns fixed in space, the planet turns every 24 min (`--orbit-day`, `--orbit-time`). Checks: `--orbit-cash --orbit-cash-quit` PASS, lap with Patch 11.58 km PASS (0.22 m), tests/test_sphere_field.gd. Owner decisions in docs/DECISIONS.md; phases B-F as helper briefs in docs/ORBIT_ROLLOUT.md.
 ## Update: first minutes, objectives and HUD readability (wt/onboard, Nov 7)
 - Done: **why Lumi cleans**. Right after the intro WREN gives the plan in four short lines (`data/objectives.json` "brief"): pod and relay dead, junk pressed into cubes powers the base recycler, power rebuilds the base and builds robots, green charges the Bloom Core so Lumi can call the Cradle. Then one **story objective** at a time on a card above the checklist (`story/objectives.gd`, `ui/objective_card.gd`), each with a one-line why: Power the base: sell 3 bales > Clean a hex > Build your first robot > Send your robot to work > Build a Haul Bug > Plant the first seed > Rebuild the base: level 2 > level 3 (opens the Requests board). Goal rows fold while an objective runs (G shows them). Old saves skip the brief and catch up silently.
 - Done: "Clean this hex completely" is gone from the checklist (its last step is the upgrade); the **Clean a hex** objective outlines its target hex on the ground (`story/objective_hex.gd`): marching-squares contour of the warped hex (`HexField.border_warp`, so it follows where the junk ends), a thin additive line with a faint inner wash and a slow running light, cyan warming to green as it clears, and the hex's % floating above. The last 30% gets the amber pointer at the remaining pieces.
