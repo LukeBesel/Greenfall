@@ -119,6 +119,8 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 ## Ship, planets and system (ship, sysmap, p_*)
 - [ ] The spaceship has an original design and gets cooler with each tier, not just bigger.
 - [x] The solar-system map uses the detailed planet globes and zooms into the chosen planet. (sysmap, renders)
+- [ ] Planets unlock in order. Undiscovered planets are hidden or shown as a silhouette, and there is no "unvisited" label. (sysmap2)
+- [ ] Clean map view: no names, "you are here" or text over the planets, one small info panel, and no overlapping text anywhere. (sysmap2)
 - [x] Every planet has the same two suns, sized by distance.
 - [x] Planet globes are detailed from afar, with the ice-spike, sand and fire rings.
 - [x] Rime is merged.
