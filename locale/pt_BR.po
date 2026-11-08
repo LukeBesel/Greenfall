@@ -34,11 +34,11 @@ msgstr "%s Nv %d"
 
 #: autoload/Economy.gd:188
 msgid "Needs %s Lv %d"
-msgstr ""
+msgstr "Precisa de %s Nv %d"
 
 #: autoload/Economy.gd:191
 msgid "Needs research: %s"
-msgstr ""
+msgstr "Precisa de pesquisa: %s"
 
 #: autoload/Economy.gd:194 systems/research.gd:196
 msgid "Needs base level %d"
@@ -134,7 +134,7 @@ msgstr "Modo foto"
 
 #: autoload/Settings.gd:24
 msgid "Glim: scan (hold: upgrades)"
-msgstr ""
+msgstr "Glim: escanear (segurar: melhorias)"
 
 #: autoload/Settings.gd:30
 msgid "View"
@@ -278,7 +278,7 @@ msgstr "ENTRADA DE FARDOS"
 
 #: automation/depot.gd:284
 msgid "TRASH"
-msgstr ""
+msgstr "LIXO"
 
 #: automation/depot.gd:321
 msgid "SCRAP  INTAKE  ·  WEIGH HERE"
@@ -496,7 +496,7 @@ msgstr "OBSERVATÓRIO"
 
 #: automation/telescope.gd:307
 msgid "E   Telescope: look across the system"
-msgstr ""
+msgstr "E   Telescópio: observar o sistema"
 
 #: core/offline.gd:130 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
 #: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:258
@@ -521,15 +521,15 @@ msgstr "Os purificadores filtraram o ar o tempo todo. Está um pouco mais limpo.
 
 #: core/pace.gd:127
 msgid "Lift Strength %d"
-msgstr ""
+msgstr "Força de levantamento %d"
 
 #: core/pace.gd:128
 msgid "Too heavy: needs %s"
-msgstr ""
+msgstr "Pesado demais: precisa de %s"
 
 #: core/pace.gd:139
 msgid "No Baler yet: empty your chest in the trash bin"
-msgstr ""
+msgstr "Ainda sem enfardadeira: esvazie seu compartimento na lixeira"
 
 #: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:257
 msgid "+%s cubes"
@@ -545,11 +545,11 @@ msgstr "E   fazer carinho no gato"
 
 #: fauna/fauna.gd:1540
 msgid "E   scatter crumbs for the birds"
-msgstr ""
+msgstr "E   jogar migalhas para os pássaros"
 
 #: fauna/fauna.gd:1588
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
-msgstr ""
+msgstr "Os pássaros decidiram que você é gente boa. Saco de migalhas adicionado à sua Coleção."
 
 #: fauna/fauna.gd:1644
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
@@ -577,7 +577,7 @@ msgstr "Seu estojo de CDs está cheio."
 
 #: planet/far_junk.gd:198
 msgid "Past the survey line the junk runs too deep to start on. One district at a time: clean this one, then the rockets take us to the next."
-msgstr ""
+msgstr "Depois da linha de mapeamento, a sucata é funda demais para começar. Um distrito de cada vez: limpe este e os foguetes nos levam ao próximo."
 
 #: planet/frontier_district.gd:279
 msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
@@ -771,19 +771,19 @@ msgstr "LUZ  ÁGUA  VIDA"
 
 #: planet/world_bounds.gd:105
 msgid "WREN: That's the edge of the survey zone, Lumi. Nothing out there but haze."
-msgstr ""
+msgstr "WREN: Ali é o limite da zona de mapeamento, Lumi. Lá fora só tem neblina."
 
 #: planet/world_bounds.gd:166
 msgid "Lumi hovers back onto solid ground."
-msgstr ""
+msgstr "Lumi flutua de volta para o chão firme."
 
 #: planet/planets/tidewell/env.gd:1180
 msgid "LEDGER  DREDGE %02d"
-msgstr ""
+msgstr "LEDGER  DRAGA %02d"
 
 #: planet/planets/tidewell/env.gd:1226
 msgid "LEDGER MINING  ORE BARGE 3"
-msgstr ""
+msgstr "LEDGER MINING  BARCAÇA DE MINÉRIO 3"
 
 #: plants/composter.gd:77
 msgid "E   compost press  ·  dormant until something grows"
@@ -1262,7 +1262,7 @@ msgstr "POSTO %d · RUÍNA"
 
 #: scenes/story_preview.gd:156 ui/loading_screen.gd:154
 msgid "Setting the scene"
-msgstr ""
+msgstr "Preparando a cena"
 
 #: steam/demo.gd:73
 msgid "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of Verdance."
@@ -1933,27 +1933,27 @@ msgstr "Sinal do relé %d%%. WREN chega mais clara."
 
 #: story/story_pause.gd:30
 msgid "Paused"
-msgstr ""
+msgstr "Pausado"
 
 #: story/story_pause.gd:36
 msgid "%s  resume   ·   %s  skip"
-msgstr ""
+msgstr "%s  continuar   ·   %s  pular"
 
 #: story/story_pause.gd:36
 msgid "Space"
-msgstr ""
+msgstr "Espaço"
 
 #: story/story_pause.gd:36
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #: story/story_pause.gd:45
 msgid "%s  pause   ·   %s  skip"
-msgstr ""
+msgstr "%s  pausar   ·   %s  pular"
 
 #: story/story_pause.gd:46
 msgid "Space  pause   ·   Esc  skip"
-msgstr ""
+msgstr "Espaço  pausar   ·   Esc  pular"
 
 #: story/tutorial.gd:10
 msgid "{interact}  at the workbench to repair it"
@@ -2377,23 +2377,23 @@ msgstr "O drone venceu a auditoria, %d a %d. Mesmo assim deixou uma gorjeta: +%s
 
 #: systems/homeward.gd:147
 msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
-msgstr ""
+msgstr "Restaure %s a %d%% (%d%%) ou leve uma base ao nível %d"
 
 #: systems/homeward.gd:148
 msgid "Restore %s to %d%% (%d%%)"
-msgstr ""
+msgstr "Restaure %s a %d%% (%d%%)"
 
 #: systems/homeward.gd:155
 msgid "Restore another planet to %d%% (best %d%%)"
-msgstr ""
+msgstr "Restaure outro planeta a %d%% (melhor %d%%)"
 
 #: systems/homeward.gd:206
 msgid "Needs %s: found on %s"
-msgstr ""
+msgstr "Precisa de %s: encontrado em %s"
 
 #: systems/homeward.gd:351
 msgid "New tech: %s. %s"
-msgstr ""
+msgstr "Nova tecnologia: %s. %s"
 
 #: systems/homeward.gd:398
 msgid "Needs the %s drive"
@@ -2587,11 +2587,11 @@ msgstr "Todos os pedestais estão ocupados. O Museu está completo: tudo o que L
 
 #: systems/profile_slots.gd:48 ui/world_picker.gd:138
 msgid "Profile %d"
-msgstr ""
+msgstr "Perfil %d"
 
 #: systems/profile_slots.gd:106
 msgid "%d:%02d h"
-msgstr ""
+msgstr "%d:%02d h"
 
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:237 ui/settings_panel.gd:320
 msgid "Low"
@@ -2816,31 +2816,31 @@ msgstr "Novo CD: %s de %s, de %s"
 
 #: systems/camp/camp.gd:168
 msgid "E   Workbench (broken): repair it"
-msgstr ""
+msgstr "E   Bancada (quebrada): consertar"
 
 #: systems/camp/camp.gd:169
 msgid "E   Workbench: upgrades"
-msgstr ""
+msgstr "E   Bancada: melhorias"
 
 #: systems/camp/camp.gd:216
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
-msgstr ""
+msgstr "Bancada consertada. Aperte E nela para gastar cubos em melhorias."
 
 #: systems/camp/camp.gd:351
 msgid "E   %s (Lv %d): fully upgraded"
-msgstr ""
+msgstr "E   %s (Nv %d): totalmente melhorado"
 
 #: systems/camp/camp.gd:354
 msgid "E   %s (Lv %d): %s"
-msgstr ""
+msgstr "E   %s (Nv %d): %s"
 
 #: systems/camp/camp.gd:355
 msgid "E   %s (Lv %d): upgrade to %s for %s"
-msgstr ""
+msgstr "E   %s (Nv %d): melhorar para %s por %s"
 
 #: systems/camp/camp.gd:361
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
-msgstr ""
+msgstr "Lixeira melhorada: %s. Fardos vendem por %d%% aqui."
 
 #: systems/camp/hub_builds.gd:144
 msgid "Trash bin, level %d of %d"
@@ -2868,11 +2868,11 @@ msgstr "Um salão com um pedestal para tudo o que Lumi encontrou, para quem vier
 
 #: systems/camp/machine_reveal.gd:46
 msgid "%s built. Follow the light to it."
-msgstr ""
+msgstr "%s construído. Siga a luz até ele."
 
 #: systems/camp/machine_reveal.gd:46
 msgid "%s built."
-msgstr ""
+msgstr "%s construído."
 
 #: systems/camp/yard_builds.gd:61
 msgid "Repair the workbench first."
@@ -2880,11 +2880,11 @@ msgstr "Conserte a bancada primeiro."
 
 #: systems/camp/yard_builds.gd:67
 msgid "Grow your first seed first."
-msgstr ""
+msgstr "Primeiro faça sua primeira semente crescer."
 
 #: systems/camp/yard_builds.gd:67
 msgid "Not yet."
-msgstr ""
+msgstr "Ainda não."
 
 #: systems/extras/album.gd:86
 msgid "First arrival"
@@ -2944,7 +2944,7 @@ msgstr "%s aponta orgulhoso para um botão novo."
 
 #: systems/extras/radio.gd:184
 msgid "E   CD player: %s"
-msgstr ""
+msgstr "E   Toca-CD: %s"
 
 #: systems/extras/radio.gd:184
 msgid "mood music"
@@ -3101,47 +3101,47 @@ msgstr "De volta ao trabalho"
 
 #: systems/glim/glim.gd:14
 msgid "Find Glim first"
-msgstr ""
+msgstr "Encontre o Glim primeiro"
 
 #: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:142
 msgid "Maxed"
-msgstr ""
+msgstr "No máximo"
 
 #: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:149
 msgid "Needs %s %d"
-msgstr ""
+msgstr "Precisa de %s %d"
 
 #: systems/glim/glim.gd:14
 msgid "Buy %d Glim upgrades"
-msgstr ""
+msgstr "Compre %d melhorias do Glim"
 
 #: systems/glim/glim.gd:14 ui/glim_bench.gd:13
 msgid "Glim"
-msgstr ""
+msgstr "Glim"
 
 #: systems/glim/glim.gd:14
 msgid "Find the little lantern bot in the junk"
-msgstr ""
+msgstr "Encontre o robozinho lanterna na sucata"
 
 #: systems/glim/glim_director.gd:156
 msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
-msgstr ""
+msgstr "Um robozinho lanterna acende piscando na sucata ao seu lado: Glim! Ele vai iluminar o caminho à noite."
 
 #: systems/glim/glim_director.gd:158
 msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
-msgstr ""
+msgstr "Algo na sucata pisca de volta para você: Glim, um robozinho lanterna! Ele vai iluminar o caminho à noite."
 
 #: systems/glim/glim_director.gd:160
 msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
-msgstr ""
+msgstr "Toque %s: Glim escaneia seu hexágono atrás de sucata esquecida. Segure %s para as melhorias dele."
 
 #: systems/glim/glim_director.gd:216
 msgid "All clear here!"
-msgstr ""
+msgstr "Tudo limpo aqui!"
 
 #: systems/glim/glim_director.gd:218
 msgid "Only big pieces left"
-msgstr ""
+msgstr "Só sobraram peças grandes"
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -3389,6 +3389,8 @@ msgid ""
 "No robots yet. Build one in the Bots tab, then style it here.\n"
 "Your first robot comes with treads and a bobble plant."
 msgstr ""
+"Ainda sem robôs. Construa um na aba Bots e depois personalize aqui.\n"
+"Seu primeiro robô vem com esteiras e uma planta de mola."
 
 #: ui/builder_panel.gd:227
 msgid "PART SLOTS"
@@ -3534,7 +3536,7 @@ msgstr "CÓDICE"
 
 #: ui/codex_screen.gd:89
 msgid "Watch the story"
-msgstr ""
+msgstr "Ver a história"
 
 #: ui/codex_screen.gd:100 ui/upgrades_screen.gd:167
 msgid "Close  [%s]"
@@ -4356,15 +4358,15 @@ msgstr "Melhorar"
 
 #: ui/glim_panel.gd:40
 msgid "GLIM"
-msgstr ""
+msgstr "GLIM"
 
 #: ui/glim_panel.gd:42
 msgid "lantern bot"
-msgstr ""
+msgstr "robô lanterna"
 
 #: ui/glim_panel.gd:64
 msgid "%s  close"
-msgstr ""
+msgstr "%s  fechar"
 
 #: ui/glim_panel.gd:105
 msgid "UPGRADES"
@@ -4372,11 +4374,11 @@ msgstr "MELHORIAS"
 
 #: ui/glim_panel.gd:195
 msgid "LOOKS"
-msgstr ""
+msgstr "VISUAL"
 
 #: ui/glim_panel.gd:220
 msgid "???  %s"
-msgstr ""
+msgstr "???  %s"
 
 #: ui/globe_view.gd:121
 msgid "Survey"
@@ -4563,6 +4565,8 @@ msgid ""
 "%s   %d / %d\n"
 "%s"
 msgstr ""
+"%s   %d / %d\n"
+"%s"
 
 #: ui/hub_panel.gd:250
 msgid "All built"
@@ -4673,11 +4677,11 @@ msgstr "◢ PEÇA ENTERRADA %d%%"
 
 #: ui/loading_screen.gd:153
 msgid "Loading"
-msgstr ""
+msgstr "Carregando"
 
 #: ui/loading_screen.gd:155
 msgid "Warming up"
-msgstr ""
+msgstr "Aquecendo"
 
 #: ui/locker_panel.gd:81
 msgid "Fleet paint"
@@ -4706,7 +4710,7 @@ msgstr "Você"
 
 #: ui/locker_panel.gd:164
 msgid "Buddy"
-msgstr ""
+msgstr "Parceiro"
 
 #: ui/lumi_builder.gd:111
 msgid "CHARACTER BUILDER"
@@ -4843,7 +4847,7 @@ msgstr "Continuar"
 #. Profiles button subtitle: the active save profile's name and its number of planets.
 #: ui/main_menu.gd:345
 msgid "Profiles"
-msgstr ""
+msgstr "Perfis"
 
 #: ui/main_menu.gd:347
 msgid "New Game"
@@ -5243,75 +5247,75 @@ msgstr "MODO FOTO   Tab"
 
 #: ui/profile_picker.gd:38
 msgid "SAVE PROFILES"
-msgstr ""
+msgstr "PERFIS DE SALVAMENTO"
 
 #: ui/profile_picker.gd:39
 msgid "Each profile has its own planets and progress. Settings are shared."
-msgstr ""
+msgstr "Cada perfil tem seus próprios planetas e progresso. As configurações são compartilhadas."
 
 #: ui/profile_picker.gd:97
 msgid "ACTIVE"
-msgstr ""
+msgstr "ATIVO"
 
 #: ui/profile_picker.gd:111
 msgid "New"
-msgstr ""
+msgstr "Novo"
 
 #: ui/profile_picker.gd:112
 msgid "Rename"
-msgstr ""
+msgstr "Renomear"
 
 #: ui/profile_picker.gd:114 ui/profile_picker.gd:233
 msgid "Delete"
-msgstr ""
+msgstr "Excluir"
 
 #: ui/profile_picker.gd:122
 msgid "Empty slot"
-msgstr ""
+msgstr "Espaço vazio"
 
 #. Save profile summary: play time, number of planets, the current planet's name.
 #: ui/profile_picker.gd:125
 msgid "%s  ·  %s  ·  on %s"
-msgstr ""
+msgstr "%s  ·  %s  ·  em %s"
 
 #: ui/profile_picker.gd:126
 msgid "%d planet"
 msgid_plural "%d planets"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d planeta"
+msgstr[1] "%d planetas"
 
 #. Save profile summary: how far the Bloom (restoration milestones) has come.
 #: ui/profile_picker.gd:131
 msgid "Bloom %d%%"
-msgstr ""
+msgstr "Florada %d%%"
 
 #: ui/profile_picker.gd:134
 msgid "%s seeds"
-msgstr ""
+msgstr "%s sementes"
 
 #: ui/profile_picker.gd:211
 msgid "START OVER IN %s?"
-msgstr ""
+msgstr "RECOMEÇAR EM %s?"
 
 #: ui/profile_picker.gd:212
 msgid "Every world, Heirloom and Starseed in this profile will be erased. The other profiles stay as they are."
-msgstr ""
+msgstr "Todos os mundos, Relíquias e Sementes Estelares deste perfil serão apagados. Os outros perfis ficam como estão."
 
 #: ui/profile_picker.gd:231
 msgid "DELETE %s?"
-msgstr ""
+msgstr "EXCLUIR %s?"
 
 #: ui/profile_picker.gd:232
 msgid "This profile's worlds and progress will be erased. This can't be undone."
-msgstr ""
+msgstr "Os mundos e o progresso deste perfil serão apagados. Isso não pode ser desfeito."
 
 #: ui/profile_picker.gd:238
 msgid "RENAME PROFILE"
-msgstr ""
+msgstr "RENOMEAR PERFIL"
 
 #: ui/profile_picker.gd:252
 msgid "Save"
-msgstr ""
+msgstr "Salvar"
 
 #: ui/research_node_card.gd:175 ui/research_panel.gd:194
 msgid "Researched"
@@ -5455,7 +5459,7 @@ msgstr "Ainda não construído"
 
 #: ui/rockets_panel.gd:46
 msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab."
-msgstr ""
+msgstr "A plataforma de lançamento exige uma base nível 5 (a sua é nível %d). Melhore a base na aba Melhorias."
 
 #: ui/rockets_panel.gd:48
 msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
@@ -5879,7 +5883,7 @@ msgstr "Fardos reciclados %d   ·   Lixo destruído %s kg   ·   Peças %s"
 
 #: ui/system_map.gd:654
 msgid "%s  ·  %.2f AU"
-msgstr ""
+msgstr "%s  ·  %.2f UA"
 
 #: ui/system_map.gd:661
 msgid "In flight"
@@ -5887,11 +5891,11 @@ msgstr "Em voo"
 
 #: ui/system_map.gd:664
 msgid "Lumi is here"
-msgstr ""
+msgstr "Lumi está aqui"
 
 #: ui/system_map.gd:670
 msgid "Ready to launch"
-msgstr ""
+msgstr "Pronto para decolar"
 
 #: ui/system_map.gd:689 data/goals.json:goals[home_launch].text
 msgid "Launch home"
@@ -5903,23 +5907,23 @@ msgstr "Escolher um distrito"
 
 #: ui/system_map.gd:711
 msgid "System %d%% restored  ·  relics %d/%d"
-msgstr ""
+msgstr "Sistema %d%% restaurado  ·  artefatos %d/%d"
 
 #: ui/system_map.gd:713
 msgid "%d Heirloom picks"
-msgstr ""
+msgstr "%d escolhas de Relíquia"
 
 #: ui/system_map.gd:715
 msgid "Left/Right planet  ·  A zoom  ·  B back"
-msgstr ""
+msgstr "Esq./Dir. planeta  ·  A zoom  ·  B voltar"
 
 #: ui/system_map.gd:733
 msgid "Build the drive"
-msgstr ""
+msgstr "Construa o propulsor"
 
 #: ui/system_map.gd:749
 msgid "Not discovered yet"
-msgstr ""
+msgstr "Ainda não descoberto"
 
 #: ui/system_map.gd:755
 msgid "Rocket not ready"
@@ -5967,7 +5971,7 @@ msgstr "Nenhum outro mundo visitado ainda. Semeie ou visite outro mundo pela Pon
 
 #: ui/telescope_view.gd:477
 msgid "Spotted %s: it now shows on the system map"
-msgstr ""
+msgstr "%s avistado: agora aparece no mapa do sistema"
 
 #: ui/telescope_view.gd:480
 msgid ""
@@ -5992,12 +5996,16 @@ msgid ""
 "An unknown world.\n"
 "Too faint to chart yet."
 msgstr ""
+"Um mundo desconhecido.\n"
+"Fraco demais para mapear."
 
 #: ui/telescope_view.gd:485
 msgid ""
 "%s\n"
 "Charted. No landing yet."
 msgstr ""
+"%s\n"
+"Mapeado. Ainda sem pouso."
 
 #: ui/telescope_view.gd:492
 msgid "You stand on %s."
@@ -6193,27 +6201,27 @@ msgstr "A cápsula de Lumi pousou em %s. Um mundo novo, arruinado e à espera. F
 
 #: ui/world_picker.gd:32
 msgid "PLANETS"
-msgstr ""
+msgstr "PLANETAS"
 
 #: ui/world_picker.gd:33
 msgid "Every planet keeps its own save. Pick one to continue there."
-msgstr ""
+msgstr "Cada planeta tem seu próprio save. Escolha um para continuar lá."
 
 #: ui/world_picker.gd:89
 msgid "PLANET %d"
-msgstr ""
+msgstr "PLANETA %d"
 
 #: ui/world_picker.gd:100
 msgid "Current"
-msgstr ""
+msgstr "Atual"
 
 #: ui/world_picker.gd:115
 msgid "Home world"
-msgstr ""
+msgstr "Mundo natal"
 
 #: ui/world_picker.gd:117
 msgid "%d hexes"
-msgstr ""
+msgstr "%d hexágonos"
 
 #: ui/yard_builds_panel.gd:21
 msgid "Nothing new to build yet. More opens as the base grows."
@@ -7129,7 +7137,7 @@ msgstr "O poste de rua e as luminárias ao longo da cerca, religados. Luz para o
 
 #: data/camp.json:builds.composter.name
 msgid "Compost Press"
-msgstr ""
+msgstr "Prensa de composto"
 
 #: data/camp.json:builds.composter.desc
 msgid "Presses plant scraps into compost and seeds. Worth building once something grows."
@@ -7137,15 +7145,15 @@ msgstr "Prensa restos de plantas em composto e sementes. Vale a pena quando algo
 
 #: data/camp.json:builds.radio.desc
 msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
-msgstr ""
+msgstr "Um toca-CD velho e robusto sobre um caixote perto da cerca. Toca os discos que você encontra."
 
 #: data/camp.json:builds.nursery.name
 msgid "Robot Nursery"
-msgstr ""
+msgstr "Berçário de robôs"
 
 #: data/camp.json:builds.nursery.desc
 msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
-msgstr ""
+msgstr "Um gramado murado com canteiros de flores onde robôs aposentados cuidam do jardim e dão uma mão à sua equipe."
 
 #: data/codex.json:categories[junk].name data/hex_levels.json:levels[0].name
 msgid "Junk"
@@ -8378,7 +8386,7 @@ msgstr "PEÇAS"
 
 #: data/currencies.json:currencies[parts].desc
 msgid "Robot parts and building stock salvaged from junk, dug up with the detector, or made by the recycler. Pays for robots and their Mk tiers, base levels, stations, Locker styles, rocket stages and outpost repairs."
-msgstr ""
+msgstr "Peças de robô e material de construção resgatados da sucata, desenterrados com o detector ou feitos pelo reciclador. Pagam robôs e seus níveis Mk, níveis da base, estações, estilos do Armário, estágios de foguete e reparos de postos."
 
 #: data/currencies.json:currencies[seeds].name
 msgid "Seeds"
@@ -9926,11 +9934,11 @@ msgstr "Macia como um sussurro, rápida como um boato. A foto ficou um pouco tre
 
 #: data/events.json:trinkets[crumb_bag].name
 msgid "Crumb Bag"
-msgstr ""
+msgstr "Saco de migalhas"
 
 #: data/events.json:trinkets[crumb_bag].desc
 msgid "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
-msgstr ""
+msgstr "Um saco de papel com migalhas e cascas de sementes. Os pombos já conhecem o barulho dele."
 
 #: data/events.json:trinkets[pic_cat].name
 msgid "Photo: Stray Cat"
@@ -10378,39 +10386,39 @@ msgstr "Lanterna"
 
 #: data/glim.json:tracks[light].desc
 msgid "A brighter, wider lantern for night shifts."
-msgstr ""
+msgstr "Uma lanterna mais forte e mais larga para os turnos da noite."
 
 #: data/glim.json:tracks[scan].name
 msgid "Hex Scanner"
-msgstr ""
+msgstr "Scanner de hexágono"
 
 #: data/glim.json:tracks[scan].desc
 msgid "Pings the junk left in your hex. Upgrades reach the hexes around you and recharge faster."
-msgstr ""
+msgstr "Localiza a sucata que resta no seu hexágono. As melhorias alcançam os hexágonos ao redor e recarregam mais rápido."
 
 #: data/glim.json:tracks[auto].name
 msgid "Auto-Scan"
-msgstr ""
+msgstr "Autoescaneamento"
 
 #: data/glim.json:tracks[auto].desc
 msgid "Glim pings on his own every few seconds."
-msgstr ""
+msgstr "Glim escaneia sozinho a cada poucos segundos."
 
 #: data/glim.json:tracks[magnet].name
 msgid "Tidy Tug"
-msgstr ""
+msgstr "Puxãozinho"
 
 #: data/glim.json:tracks[magnet].desc
 msgid "A gentle tractor tug: tiny pieces scoot toward Lumi."
-msgstr ""
+msgstr "Um raio trator suave: pecinhas deslizam até Lumi."
 
 #: data/glim.json:tracks[music].name
 msgid "Music"
-msgstr ""
+msgstr "Música"
 
 #: data/glim.json:tracks[music].desc
 msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
-msgstr ""
+msgstr "Glim baixa os CDs que você achou: toque qualquer música encontrada, em qualquer lugar, a qualquer hora."
 
 #: data/glim.json:shells[pearl].name data/style_parts.json:swatches[pearl].name
 msgid "Pearl"
@@ -10422,7 +10430,7 @@ msgstr "Pôr do sol"
 
 #: data/glim.json:shells[moss].name
 msgid "Moss"
-msgstr ""
+msgstr "Musgo"
 
 #: data/glim.json:shells[graphite].name data/style_parts.json:swatches[graphite].name
 msgid "Graphite"
@@ -10430,7 +10438,7 @@ msgstr "Grafite"
 
 #: data/glim.json:shells[blossom].name
 msgid "Blossom"
-msgstr ""
+msgstr "Flor"
 
 #: data/glim.json:glows[cyan].name data/style_parts.json:swatches[cyan].name
 msgid "Cyan"
@@ -10450,11 +10458,11 @@ msgstr "Violeta"
 
 #: data/glim.json:glows[rose].name
 msgid "Rose"
-msgstr ""
+msgstr "Rosa"
 
 #: data/glim.json:tops[none].name
 msgid "Nothing"
-msgstr ""
+msgstr "Nada"
 
 #: data/glim.json:tops[antenna].name data/style_parts.json:options.head[antenna].name
 msgid "Antenna"
@@ -10462,7 +10470,7 @@ msgstr "Antena"
 
 #: data/glim.json:tops[beanie].name
 msgid "Little Beanie"
-msgstr ""
+msgstr "Gorrinho"
 
 #: data/glim.json:tops[halo].name data/style_parts.json:options.head[halo].name
 msgid "Halo"
@@ -10474,7 +10482,7 @@ msgstr "Recolha 15 pedaços de sucata"
 
 #: data/goals.json:goals[dump_1].text
 msgid "Empty your chest in the bin"
-msgstr ""
+msgstr "Esvazie seu compartimento na lixeira"
 
 #: data/goals.json:goals[upgrade_1].text
 msgid "Install a workbench upgrade"
@@ -10482,7 +10490,7 @@ msgstr "Instale uma melhoria da bancada"
 
 #: data/goals.json:goals[baler_1].text
 msgid "Install the Baler"
-msgstr ""
+msgstr "Instale a enfardadeira"
 
 #: data/goals.json:goals[bale_1].text
 msgid "Compress your first bale"
@@ -10494,7 +10502,7 @@ msgstr "Venda um fardo na balança"
 
 #: data/goals.json:goals[lift_1].text
 msgid "Lift Strength level 1"
-msgstr ""
+msgstr "Força de levantamento nível 1"
 
 #: data/goals.json:goals[hex_1].text
 msgid "Clean your first hex"
@@ -10542,7 +10550,7 @@ msgstr "Limpe 5 hexágonos"
 
 #: data/goals.json:goals[lift_2].text
 msgid "Lift Strength level 2 (large junk)"
-msgstr ""
+msgstr "Força de levantamento nível 2 (sucata grande)"
 
 #: data/goals.json:goals[upgrades_12].text
 msgid "Install 12 upgrades"
@@ -11195,35 +11203,35 @@ msgstr "Anvil"
 
 #: data/homeward.json:tech[deep_drill].name
 msgid "Deep Drill"
-msgstr ""
+msgstr "Broca profunda"
 
 #: data/homeward.json:tech[deep_drill].desc
 msgid "Ochre's miners bored through bedrock. On Verdance it breaks open the buried landfill of the Dust Flats."
-msgstr ""
+msgstr "Os mineiros de Ochre perfuravam a rocha-mãe. Em Verdance, ela abre o aterro enterrado das Planícies de Poeira."
 
 #: data/homeward.json:tech[tide_pump].name
 msgid "Tide Pump"
-msgstr ""
+msgstr "Bomba de maré"
 
 #: data/homeward.json:tech[tide_pump].desc
 msgid "Tidewell's sea pumps. On Verdance they drain the flooded streets of the Sunken City."
-msgstr ""
+msgstr "As bombas marinhas de Tidewell. Em Verdance, elas drenam as ruas alagadas da Cidade Submersa."
 
 #: data/homeward.json:tech[cryo_beacon].name
 msgid "Cryo Beacon"
-msgstr ""
+msgstr "Farol criogênico"
 
 #: data/homeward.json:tech[cryo_beacon].desc
 msgid "A beacon that sings through deep cold: what Verdance's Ark Beacon was missing."
-msgstr ""
+msgstr "Um farol que canta através do frio profundo: o que faltava ao Farol da Arca de Verdance."
 
 #: data/homeward.json:tech[heat_core].name
 msgid "Heat Core"
-msgstr ""
+msgstr "Núcleo térmico"
 
 #: data/homeward.json:tech[heat_core].desc
 msgid "Anvil's forge heart. Wound into the beam, it melts the Frozen Port's ice on Verdance."
-msgstr ""
+msgstr "O coração de forja de Anvil. Enrolado no feixe, derrete o gelo do Porto Congelado em Verdance."
 
 #: data/homeward.json:relics.ochre_glass.name data/museum.json:exhibits[ochre_glass].name
 msgid "Ochre Sun-Glass"
@@ -12079,59 +12087,59 @@ msgstr "Módulo especial"
 
 #: data/planets.json:rime.tagline
 msgid "An ice moon, core-mined until it froze."
-msgstr ""
+msgstr "Uma lua de gelo, minerada até o núcleo até congelar."
 
 #: data/planets.json:tidewell.tagline
 msgid "An ocean world. The Ledger's dredging rigs still stand in the shallows."
-msgstr ""
+msgstr "Um mundo oceânico. As plataformas de dragagem do Ledger ainda estão de pé nas águas rasas."
 
 #: data/planets.json:tidewell.sites.hub_raft.name
 msgid "Anchored Raft"
-msgstr ""
+msgstr "Balsa ancorada"
 
 #: data/planets.json:tidewell.sites.hub_raft.desc
 msgid "Timber raft deck on rusted pontoons: workshop shack, store, deck crane, fuel tank, moorings."
-msgstr ""
+msgstr "Deque de balsa de madeira sobre flutuadores enferrujados: oficina, loja, guindaste, tanque, amarras."
 
 #: data/planets.json:tidewell.sites.hub_stilts.name
 msgid "Stilt Yard"
-msgstr ""
+msgstr "Pátio de palafitas"
 
 #: data/planets.json:tidewell.sites.hub_stilts.desc
 msgid "A sandy islet with a stilt deck and huts over the water, boardwalk, beached skiff."
-msgstr ""
+msgstr "Uma ilhota de areia com deque e cabanas sobre palafitas, passarela e um bote encalhado."
 
 #: data/planets.json:tidewell.sites.wreck.name
 msgid "Ore Barge Wreck"
-msgstr ""
+msgstr "Destroços da barcaça"
 
 #: data/planets.json:tidewell.sites.wreck.desc
 msgid "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
-msgstr ""
+msgstr "A barcaça de mineração meio afundada do Ledger junto a um banco de areia; restaurada, as tremonhas viram canteiros."
 
 #: data/planets.json:tidewell.sites.dredge_rig.name
 msgid "Dredge Rig"
-msgstr ""
+msgstr "Plataforma de dragagem"
 
 #: data/planets.json:tidewell.sites.dredge_rig.desc
 msgid "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
-msgstr ""
+msgstr "Uma plataforma autoelevatória de dragagem do Ledger com escada de caçambas, torre e guindaste."
 
 #: data/planets.json:tidewell.sites.reef_garden.name
 msgid "Reef Garden"
-msgstr ""
+msgstr "Jardim de recife"
 
 #: data/planets.json:tidewell.sites.reef_garden.desc
 msgid "Bleached coral breaking the surface among nets; live coral and floating gardens when restored."
-msgstr ""
+msgstr "Coral branqueado aflora entre redes; restaurado, coral vivo e jardins flutuantes."
 
 #: data/planets.json:tidewell.sites.buoy_field.name
 msgid "Buoy Field"
-msgstr ""
+msgstr "Campo de boias"
 
 #: data/planets.json:tidewell.sites.buoy_field.desc
 msgid "Rows of mooring buoys strung with rope and ghost nets; light caps when futuristic."
-msgstr ""
+msgstr "Fileiras de boias de amarração com cordas e redes-fantasma; com luzes quando futurista."
 
 #: data/radio.json:songs[verdance_sprout].name data/songs.json:songs[sprout_step].title
 msgid "Sprout Step"
@@ -12355,7 +12363,7 @@ msgstr "Lógica de resgate"
 
 #: data/research.json:nodes[salvage_logic].desc
 msgid "Lumi rewrites the base's old assembly logic. The base can build helpers again: Scoopies, Haul Bugs and Skimmers."
-msgstr ""
+msgstr "Lumi reescreve a velha lógica de montagem da base. A base pode construir ajudantes de novo: Scoopies, Haul Bugs e Skimmers."
 
 #: data/research.json:nodes[seedling_blueprint].name
 msgid "Seedling Blueprint"
@@ -13057,7 +13065,7 @@ msgstr "Mk I Cradle"
 
 #: data/rockets.json:tiers[0].desc
 msgid "A compact one-seat glider: pearl hull, swept wings, twin engines and lift fans for vertical take-off."
-msgstr ""
+msgstr "Um planador compacto de um lugar: casco perolado, asas enflechadas, motores gêmeos e ventoinhas de sustentação para decolagem vertical."
 
 #: data/rockets.json:tiers[1].name
 msgid "Mk II Glide"
@@ -13065,7 +13073,7 @@ msgstr "Mk II Glide"
 
 #: data/rockets.json:tiers[1].desc
 msgid "Wing extensions steady the climb: shorter countdown, faster flight, cells refill twice as fast. Cargo pods carry 50% more."
-msgstr ""
+msgstr "Extensões de asa estabilizam a subida: contagem mais curta, voo mais rápido, células recarregam duas vezes mais rápido. As cápsulas de carga levam 50% a mais."
 
 #: data/rockets.json:tiers[2].name
 msgid "Mk III Halo"
@@ -13073,7 +13081,7 @@ msgstr "Mk III Halo"
 
 #: data/rockets.json:tiers[2].desc
 msgid "Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry 2.5x, more often."
-msgstr ""
+msgstr "Motores maiores e uma cabine nova. As células recarregam em um minuto; as cápsulas de carga levam 2,5x, com mais frequência."
 
 #: data/rockets.json:tiers[3].name
 msgid "Mk IV Aurora Warp"
@@ -13081,7 +13089,7 @@ msgstr "Mk IV Aurora Warp"
 
 #: data/rockets.json:tiers[3].desc
 msgid "Landing gear, cargo pods and a warp core: instant hops with no recharge. Cargo pods carry 4x, every 30 s."
-msgstr ""
+msgstr "Trem de pouso, cápsulas de carga e um núcleo de dobra: saltos instantâneos sem recarga. As cápsulas de carga levam 4x, a cada 30 s."
 
 #: data/shards.json:shards[back_soon].kind
 msgid "sign"
@@ -13649,179 +13657,179 @@ msgstr "Iron Bloom"
 
 #: data/songs.json:songs[signal_found].title
 msgid "Signal Found"
-msgstr ""
+msgstr "Sinal encontrado"
 
 #: data/songs.json:songs[what_the_ledger_took].title
 msgid "What the Ledger Took"
-msgstr ""
+msgstr "O que o Ledger levou"
 
 #: data/songs.json:songs[drone_sweep].title
 msgid "Drone Sweep"
-msgstr ""
+msgstr "Varredura de drones"
 
 #: data/songs.json:songs[small_robot_big_sky].title
 msgid "Small Robot, Big Sky"
-msgstr ""
+msgstr "Robô pequeno, céu grande"
 
 #: data/songs.json:songs[dumpster_disco].title
 msgid "Dumpster Disco"
-msgstr ""
+msgstr "Discoteca da caçamba"
 
 #: data/songs.json:songs[pocket_full_of_bolts].title
 msgid "Pocket Full of Bolts"
-msgstr ""
+msgstr "Bolso cheio de parafusos"
 
 #: data/songs.json:songs[tin_can_parade].title
 msgid "Tin Can Parade"
-msgstr ""
+msgstr "Desfile das latinhas"
 
 #: data/songs.json:songs[cardboard_kingdom].title
 msgid "Cardboard Kingdom"
-msgstr ""
+msgstr "Reino de papelão"
 
 #: data/songs.json:songs[rain_on_rust].title
 msgid "Rain on Rust"
-msgstr ""
+msgstr "Chuva na ferrugem"
 
 #: data/songs.json:songs[streetlight_memory].title
 msgid "Streetlight Memory"
-msgstr ""
+msgstr "Memória de poste"
 
 #: data/songs.json:songs[the_last_bus_stop].title
 msgid "The Last Bus Stop"
-msgstr ""
+msgstr "O último ponto de ônibus"
 
 #: data/songs.json:songs[something_in_the_alley].title
 msgid "Something in the Alley"
-msgstr ""
+msgstr "Algo no beco"
 
 #: data/songs.json:songs[green_again].title
 msgid "Green Again"
-msgstr ""
+msgstr "Verde de novo"
 
 #: data/songs.json:songs[dawn_patrol].title
 msgid "Dawn Patrol"
-msgstr ""
+msgstr "Patrulha da alvorada"
 
 #: data/songs.json:songs[cactus_cowbot].title
 msgid "Cactus Cowbot"
-msgstr ""
+msgstr "Cactus Cowbot"
 
 #: data/songs.json:songs[heatwave_hustle].title
 msgid "Heatwave Hustle"
-msgstr ""
+msgstr "Correria na onda de calor"
 
 #: data/songs.json:songs[mirage_market].title
 msgid "Mirage Market"
-msgstr ""
+msgstr "Mercado miragem"
 
 #: data/songs.json:songs[endless_sand].title
 msgid "Endless Sand"
-msgstr ""
+msgstr "Areia sem fim"
 
 #: data/songs.json:songs[letters_in_the_pit].title
 msgid "Letters in the Pit"
-msgstr ""
+msgstr "Cartas no poço"
 
 #: data/songs.json:songs[sandstorm_warning].title
 msgid "Sandstorm Warning"
-msgstr ""
+msgstr "Alerta de tempestade de areia"
 
 #: data/songs.json:songs[bones_of_the_excavator].title
 msgid "Bones of the Excavator"
-msgstr ""
+msgstr "Os ossos da escavadeira"
 
 #: data/songs.json:songs[first_rain_on_ochre].title
 msgid "First Rain on Ochre"
-msgstr ""
+msgstr "Primeira chuva em Ochre"
 
 #: data/songs.json:songs[bubble_pop].title
 msgid "Bubble Pop"
-msgstr ""
+msgstr "Bolha Pop"
 
 #: data/songs.json:songs[pier_pressure].title
 msgid "Pier Pressure"
-msgstr ""
+msgstr "Pressão no píer"
 
 #: data/songs.json:songs[crab_shuffle].title
 msgid "Crab Shuffle"
-msgstr ""
+msgstr "O shuffle do caranguejo"
 
 #: data/songs.json:songs[drifting_raft].title
 msgid "Drifting Raft"
-msgstr ""
+msgstr "Balsa à deriva"
 
 #: data/songs.json:songs[the_deep_below].title
 msgid "The Deep Below"
-msgstr ""
+msgstr "As profundezas"
 
 #: data/songs.json:songs[lighthouse_ghost].title
 msgid "Lighthouse Ghost"
-msgstr ""
+msgstr "O fantasma do farol"
 
 #: data/songs.json:songs[coral_comeback].title
 msgid "Coral Comeback"
-msgstr ""
+msgstr "A volta do coral"
 
 #: data/songs.json:songs[penguin_bot_waddle].title
 msgid "Penguin Bot Waddle"
-msgstr ""
+msgstr "Rebolado do pinguim-bô"
 
 #: data/songs.json:songs[ice_rink_lights].title
 msgid "Ice Rink Lights"
-msgstr ""
+msgstr "Luzes da pista de gelo"
 
 #: data/songs.json:songs[the_long_way_home].title
 msgid "The Long Way Home"
-msgstr ""
+msgstr "O longo caminho de casa"
 
 #: data/songs.json:songs[whiteout].title
 msgid "Whiteout"
-msgstr ""
+msgstr "Nevasca branca"
 
 #: data/songs.json:songs[frozen_voices].title
 msgid "Frozen Voices"
-msgstr ""
+msgstr "Vozes congeladas"
 
 #: data/songs.json:songs[hot_spring_hangout].title
 msgid "Hot Spring Hangout"
-msgstr ""
+msgstr "Rolê na fonte termal"
 
 #: data/songs.json:songs[spring_under_ice].title
 msgid "Spring Under Ice"
-msgstr ""
+msgstr "Nascente sob o gelo"
 
 #: data/songs.json:songs[molten_groove].title
 msgid "Molten Groove"
-msgstr ""
+msgstr "Groove derretido"
 
 #: data/songs.json:songs[forge_stomp].title
 msgid "Forge Stomp"
-msgstr ""
+msgstr "Pisada de forja"
 
 #: data/songs.json:songs[lava_lamp_lounge].title
 msgid "Lava Lamp Lounge"
-msgstr ""
+msgstr "Lounge da lâmpada de lava"
 
 #: data/songs.json:songs[ember_drift].title
 msgid "Ember Drift"
-msgstr ""
+msgstr "Deriva de brasas"
 
 #: data/songs.json:songs[the_clerk_s_regret].title
 msgid "The Clerk's Regret"
-msgstr ""
+msgstr "O arrependimento do escriturário"
 
 #: data/songs.json:songs[furnace_heartbeat].title
 msgid "Furnace Heartbeat"
-msgstr ""
+msgstr "Batida da fornalha"
 
 #: data/songs.json:songs[shadows_in_the_smelter].title
 msgid "Shadows in the Smelter"
-msgstr ""
+msgstr "Sombras na fundição"
 
 #: data/songs.json:songs[cool_stone].title
 msgid "Cool Stone"
-msgstr ""
+msgstr "Pedra fresca"
 
 #: data/stations.json:conveyor.name
 msgid "Conveyor Feeder"
@@ -14158,35 +14166,35 @@ msgstr "Ouro rosé"
 
 #: data/trash_bin.json:levels[0].name
 msgid "Dented Bin"
-msgstr ""
+msgstr "Lixeira amassada"
 
 #: data/trash_bin.json:levels[0].desc
 msgid "A dented wheelie bin on a rusty weigh plate. It swallows one bale at a time."
-msgstr ""
+msgstr "Uma lixeira de rodinhas amassada sobre uma balança enferrujada. Engole um fardo de cada vez."
 
 #: data/trash_bin.json:levels[1].name
 msgid "Scrap Skip"
-msgstr ""
+msgstr "Caçamba de sucata"
 
 #: data/trash_bin.json:levels[1].desc
 msgid "A proper steel skip. Bales go in faster and weigh in a little heavier."
-msgstr ""
+msgstr "Uma caçamba de aço de verdade. Os fardos entram mais rápido e pesam um pouco mais."
 
 #: data/trash_bin.json:levels[2].name
 msgid "Weigh Skip"
-msgstr ""
+msgstr "Caçamba-balança"
 
 #: data/trash_bin.json:levels[2].desc
 msgid "A ribbed skip on a calibrated scale with a warning beacon. Honest weights, better pay."
-msgstr ""
+msgstr "Uma caçamba nervurada sobre uma balança calibrada com giroflex. Peso honesto, pagamento melhor."
 
 #: data/trash_bin.json:levels[3].name
 msgid "Compactor"
-msgstr ""
+msgstr "Compactador"
 
 #: data/trash_bin.json:levels[3].desc
 msgid "A hydraulic ram presses every bale flat before it is weighed."
-msgstr ""
+msgstr "Um pistão hidráulico achata cada fardo antes da pesagem."
 
 #: data/trash_bin.json:levels[4].name
 msgid "Shredder"
@@ -14202,15 +14210,15 @@ msgstr "Enfardadeira"
 
 #: data/upgrades.json:upgrades[baler].desc
 msgid "Fit the bale press in your chest. Press junk into bales: they sell for far more than loose junk."
-msgstr ""
+msgstr "Instale a enfardadeira no seu compartimento. Prense a sucata em fardos: eles valem muito mais do que sucata solta."
 
 #: data/upgrades.json:upgrades[lift_strength].name
 msgid "Lift Strength"
-msgstr ""
+msgstr "Força de levantamento"
 
 #: data/upgrades.json:upgrades[lift_strength].desc
 msgid "Stronger lift beams. Level 1: medium junk (jerrycans, crates). Level 2: large junk (tyres, TVs, fridges)."
-msgstr ""
+msgstr "Feixes de levantamento mais fortes. Nível 1: sucata média (galões, caixotes). Nível 2: sucata grande (pneus, TVs, geladeiras)."
 
 #: data/upgrades.json:upgrades[compartment_size].name
 msgid "Compartment Size"
@@ -14274,7 +14282,7 @@ msgstr "Braço magnético"
 
 #: data/upgrades.json:upgrades[magnet_arm].desc
 msgid "A few loose pieces nearby drift toward you while scooping. Never heavy ones, never from inside a heap."
-msgstr ""
+msgstr "Algumas peças soltas por perto vêm até você enquanto recolhe. Nunca as pesadas, nunca de dentro de um monte."
 
 #: data/upgrades.json:upgrades[detector_range].name
 msgid "Detector Coil"
@@ -14322,15 +14330,15 @@ msgstr "Tamanho da pá"
 
 #: data/upgrades.json:upgrades[multi_lock].desc
 msgid "Lock onto one more piece per scoop pulse."
-msgstr ""
+msgstr "Trava mais uma peça por pulso de coleta."
 
 #: data/upgrades.json:upgrades[signal_finder].name
 msgid "Signal Finder"
-msgstr ""
+msgstr "Localizador de sinais"
 
 #: data/upgrades.json:upgrades[signal_finder].desc
 msgid "Tunes the detector to strong pings: rare part signals show as a violet beam."
-msgstr ""
+msgstr "Sintoniza o detector nos sinais fortes: sinais de peças raras aparecem como um feixe violeta."
 
 #: data/weekly.json:twists[scoopies_only].name
 msgid "Scoopies Only"
@@ -15858,123 +15866,123 @@ msgstr "Pronto. A última semente, na terra de onde a Cradle partiu. Agora é a 
 
 #: data/wren_lines.json:world_ice_moon_arrival
 msgid "An ice moon. The Ledger ran its cold storage out here. Cold keeps things, {name}. Including evidence."
-msgstr ""
+msgstr "Uma lua de gelo. O Ledger mantinha seu armazém frigorífico aqui. O frio conserva as coisas, {name}. Inclusive provas."
 
 #: data/wren_lines.json:world_ice_moon_arrival
 msgid "Everything froze where they dropped it. Even the junk looks like it's waiting for a refund."
-msgstr ""
+msgstr "Tudo congelou onde deixaram cair. Até a sucata parece estar esperando um reembolso."
 
 #: data/wren_lines.json:world_ice_moon_memory_1
 msgid "Ledger ice-haul manifests, still in the silo's memory. They melted this moon's lakes for coolant and shipped the water off-world. The trash, they left right here."
-msgstr ""
+msgstr "Manifestos de transporte de gelo do Ledger, ainda na memória do silo. Derreteram os lagos desta lua como refrigerante e mandaram a água para fora. O lixo, deixaram bem aqui."
 
 #: data/wren_lines.json:world_ice_moon_halfway
 msgid "Halfway. The lakes under the ice are filling again. The Ledger never budgeted for things coming back."
-msgstr ""
+msgstr "Metade do caminho. Os lagos sob o gelo estão enchendo de novo. O Ledger nunca previu no orçamento que as coisas voltassem."
 
 #: data/wren_lines.json:world_ice_moon_memory_2
 msgid "That silo was a seed vault before the Ledger made it a depot. Someone kept seeds hidden in the bottom tier anyway. I'd have liked to meet them."
-msgstr ""
+msgstr "Esse silo era um cofre de sementes antes do Ledger virar depósito. Mesmo assim, alguém escondeu sementes no nível mais baixo. Eu teria gostado de conhecer essa pessoa."
 
 #: data/wren_lines.json:world_ice_moon_restored
 msgid "Green under a ringed sky. The Ledger wrote this moon off as a loss. It was wrong about that too."
-msgstr ""
+msgstr "Verde sob um céu com anéis. O Ledger lançou esta lua como prejuízo. Errou nisso também."
 
 #: data/wren_lines.json:world_desert_world_arrival
 msgid "A desert world. It wasn't always one. The Ledger pumped its aquifers dry and sold the water by the litre."
-msgstr ""
+msgstr "Um mundo deserto. Nem sempre foi. O Ledger secou os aquíferos e vendeu a água por litro."
 
 #: data/wren_lines.json:world_desert_world_arrival
 msgid "Sun, sand and one very small robot. I like our odds. Mostly."
-msgstr ""
+msgstr "Sol, areia e um robô bem pequeno. Gosto das nossas chances. Quase sempre."
 
 #: data/wren_lines.json:world_desert_world_memory_1
 msgid "Ledger survey file, partial: 'Remaining yield negligible. Recommend abandonment in place.' In place. That's their phrase for leaving the mess."
-msgstr ""
+msgstr "Relatório de prospecção do Ledger, parcial: \"Rendimento restante desprezível. Recomenda-se abandono no local.\" No local. É assim que eles chamam deixar a bagunça."
 
 #: data/wren_lines.json:world_desert_world_halfway
 msgid "Halfway green, on a planet they filed as 'negligible'. I'm keeping a list of their mistakes. It's getting long."
-msgstr ""
+msgstr "Metade verde, num planeta arquivado como \"desprezível\". Estou fazendo uma lista dos erros deles. Está ficando longa."
 
 #: data/wren_lines.json:world_desert_world_memory_2
 msgid "That solar tower powered the pumps. When the water ran out they stopped paying for the mirrors, and they fell over one by one. You're standing them back up."
-msgstr ""
+msgstr "Aquela torre solar movia as bombas. Quando a água acabou, pararam de pagar pelos espelhos, e eles caíram um por um. Você os está erguendo de novo."
 
 #: data/wren_lines.json:world_desert_world_restored
 msgid "Shade, water, flowers in the sand. 'Negligible', they said. I'm framing that word."
-msgstr ""
+msgstr "Sombra, água, flores na areia. \"Desprezível\", disseram. Vou emoldurar essa palavra."
 
 #: data/wren_lines.json:world_ocean_world_arrival
 msgid "An ocean world. The Ledger dredged its sea floor for metals and dumped the tailings along every coast. Mind the edges."
-msgstr ""
+msgstr "Um mundo oceânico. O Ledger dragou o fundo do mar atrás de metais e despejou os rejeitos em todas as costas. Cuidado com as beiradas."
 
 #: data/wren_lines.json:world_ocean_world_arrival
 msgid "Salt in the air, salt on the junk. Don't lick anything, {name}."
-msgstr ""
+msgstr "Sal no ar, sal na sucata. Não lamba nada, {name}."
 
 #: data/wren_lines.json:world_ocean_world_memory_1
 msgid "I found the dumping schedule. Every tide for forty years. They called it 'coastal storage'. The sea called it something else."
-msgstr ""
+msgstr "Achei o cronograma de despejo. Toda maré, por quarenta anos. Chamavam de \"armazenamento costeiro\". O mar chamava de outra coisa."
 
 #: data/wren_lines.json:world_ocean_world_halfway
 msgid "Halfway. The water's clearing. The fish are cautiously reconsidering."
-msgstr ""
+msgstr "Metade do caminho. A água está clareando. Os peixes estão reconsiderando com cautela."
 
 #: data/wren_lines.json:world_ocean_world_memory_2
 msgid "Those surge gates kept the Ledger's dredging yards dry. When they left, nobody closed them, and the sea took the yards back. Fair."
-msgstr ""
+msgstr "Essas comportas mantinham secos os estaleiros de dragagem do Ledger. Quando foram embora, ninguém as fechou, e o mar tomou os estaleiros de volta. Justo."
 
 #: data/wren_lines.json:world_ocean_world_restored
 msgid "Green to the waterline, clear water past it. 'Coastal storage' is just coast again."
-msgstr ""
+msgstr "Verde até a linha d'água, água limpa depois dela. O \"armazenamento costeiro\" voltou a ser só costa."
 
 #: data/wren_lines.json:world_fungal_world_arrival
 msgid "A marsh world. The Ledger's chemical works drained into these valleys for a century. Everything grows here, mostly the wrong things first."
-msgstr ""
+msgstr "Um mundo de pântanos. As fábricas químicas do Ledger despejaram nestes vales por um século. Tudo cresce aqui, quase sempre as coisas erradas primeiro."
 
 #: data/wren_lines.json:world_fungal_world_arrival
 msgid "Mist on everything. If you get lost, follow the squelching. That'll be you."
-msgstr ""
+msgstr "Névoa em tudo. Se você se perder, siga o barulho de lama. Vai ser você."
 
 #: data/wren_lines.json:world_fungal_world_memory_1
 msgid "Ledger compliance report: 'Runoff within acceptable limits.' Acceptable to whom, I'd like to ask. The frogs weren't consulted."
-msgstr ""
+msgstr "Relatório de conformidade do Ledger: \"Efluentes dentro dos limites aceitáveis.\" Aceitáveis para quem, eu gostaria de saber. Os sapos não foram consultados."
 
 #: data/wren_lines.json:world_fungal_world_halfway
 msgid "Halfway. The mist smells less like a laboratory every morning. Progress has a smell. It's mud."
-msgstr ""
+msgstr "Metade do caminho. A névoa cheira menos a laboratório a cada manhã. O progresso tem cheiro. De lama."
 
 #: data/wren_lines.json:world_fungal_world_memory_2
 msgid "That cooling tower ran the chemical works. The fungi moved in after the Ledger moved out. They've been cleaning up longer than we have. Respect."
-msgstr ""
+msgstr "Aquela torre de resfriamento servia às fábricas químicas. Os fungos se mudaram quando o Ledger saiu. Eles limpam há mais tempo que nós. Respeito."
 
 #: data/wren_lines.json:world_fungal_world_restored
 msgid "Clear air over the marsh. Reeds, frogs, real flowers. The runoff is just rain now."
-msgstr ""
+msgstr "Ar limpo sobre o pântano. Juncos, sapos, flores de verdade. Os efluentes agora são só chuva."
 
 #: data/wren_lines.json:world_rust_world_arrival
 msgid "A rust world. This is where the Ledger broke its own ships. Pole to pole, and nothing switched off properly."
-msgstr ""
+msgstr "Um mundo de ferrugem. Foi aqui que o Ledger desmanchou as próprias naves. De polo a polo, e nada foi desligado direito."
 
 #: data/wren_lines.json:world_rust_world_arrival
 msgid "The air tastes like old pennies. I don't have a tongue. I can still tell."
-msgstr ""
+msgstr "O ar tem gosto de moedas velhas. Eu não tenho língua. Mesmo assim percebo."
 
 #: data/wren_lines.json:world_rust_world_memory_1
 msgid "The Ledger's ledgers, literally: the tonnage stripped from every planet in the system, filed here. They kept perfect books on how they ruined everything."
-msgstr ""
+msgstr "Os livros-caixa do Ledger, literalmente: a tonelagem arrancada de cada planeta do sistema, arquivada aqui. Eles mantiveram contas perfeitas de como arruinaram tudo."
 
 #: data/wren_lines.json:world_rust_world_halfway
 msgid "Halfway. Less rust in the wind. I don't have lungs, but I have standards."
-msgstr ""
+msgstr "Metade do caminho. Menos ferrugem no vento. Não tenho pulmões, mas tenho padrões."
 
 #: data/wren_lines.json:world_rust_world_memory_2
 msgid "That gantry scrapped the Ledger's fleet when the money ran out. The ark was on the list. Someone took it off. I think about that a lot."
-msgstr ""
+msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A arca estava na lista. Alguém a riscou. Penso muito nisso."
 
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
-msgstr ""
+msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
 
 #~ msgid "PAD 01"
 #~ msgstr "PLATAFORMA 01"
