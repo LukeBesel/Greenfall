@@ -123,14 +123,13 @@ func test_planet_fraction_counts_built_hub_regions_only() -> void:
 	assert_gt(sm.growth_m[0], 0.0)
 
 
-func test_hop_time_grows_gently_with_distance() -> void:
-	assert_almost_eq(HubHop.duration(100.0), HubHop.MIN_T, 0.01)
-	assert_gt(HubHop.duration(3000.0), HubHop.duration(1700.0))
-	assert_lt(HubHop.duration(3000.0), 13.0, "a 3 km hop on Anvil still takes under 13 s")
-	assert_almost_eq(HubHop.duration(50000.0), HubHop.MAX_T, 0.01)
-	assert_almost_eq(HubHop.alt_at(0.0, 200.0), 0.0, 0.01)
-	assert_almost_eq(HubHop.alt_at(0.5, 200.0), 200.0, 0.01)
-	assert_almost_eq(HubHop.alt_at(1.0, 200.0), 0.0, 0.01)
+func test_hop_is_short_and_low() -> void:
+	assert_lt(HubHop.duration(1700.0), 10.0, "well under 10 s on screen")
+	assert_eq(HubHop.duration(5000.0), HubHop.duration(1700.0), "Anvil's long hops cost the same")
+	assert_almost_eq(HubHop.leg_alt(0.0, true), 0.0, 0.01)
+	assert_almost_eq(HubHop.leg_alt(1.0, true), HubHop.CRUISE_ALT, 0.01)
+	assert_almost_eq(HubHop.leg_alt(1.0, false), 0.0, 0.01)
+	assert_lt(HubHop.CRUISE_ALT, 80.0, "the ground stays detailed terrain")
 
 
 func test_sled_upgrade_registers_once_and_tiers_speed_up() -> void:

@@ -1,43 +1,43 @@
 class_name HubHop
 extends Node3D
-## [orbD] The rocket hop between hubs on the same globe: no scene change. Lumi boards the ship on
-## this hub's rocket_pad anchor, it lifts off along the local up, cruises a great-circle arc over
-## the curve (altitude grows with the distance, so the horizon bends away), and lands on the
-## other site's rocket_pad; Lumi steps off beside it. The target site's prefab and ground chunks
-## are built during the cruise (Lumi's position is carried with the ship, so the streamer and
-## SiteManager follow it).
-## Travel time grows gently with distance (owner, Nov 8: big later planets must not feel slower):
-## T = clamp(5 + d / 450 m, 7, 15) s, so a 1.7 km hop on Verdance takes ~9 s and a 3 km hop on
-## Anvil ~12 s.
-## Use: var h := HubHop.new(); globe.add_child(h); await h.hop(globe, from_i, to_i)
-## The globe needs: lumi (Patch with sphere_motor), cam (SphereCam), terrain, site_manager.
-## Dev: --orbit-hop=N (hop to hub N once the globe is up; --orbit-hop=N,M hops back to M after).
+## [orbD] The rocket hop between hubs on the same globe: no scene change, and short.
+## Lumi boards the ship on this hub's rocket_pad anchor. It lifts off low (CRUISE_ALT, so the
+## ground under it stays detailed terrain and the far shell only shows at the horizon) and
+## heads off toward the target. The view then fades out (sky-blue veil). While faded, the ship
+## jumps to the far leg, the target's ground chunks settle and its site prefab is built. The view
+## fades back in on the approach, and the ship lands on the target's rocket_pad; Lumi steps off
+## beside it. Owner (Nov 8): keep it well under 10 s, blue sky, no high-altitude pastel map.
+## Flight time is LEG_S out + the fade + LEG_S in (about 7 s plus however long the target
+## takes to build behind the veil), whatever the distance, so Anvil's long hops cost the same.
+## Use: var h := HubHop.new(); add_child(h); await h.hop_with(site_manager, lumi, cam, terrain, i, j)
+## (or h.hop(globe, i, j) when the globe has lumi / cam / terrain / site_manager).
+## Dev: --orbit-hop=N[,M] (planet/sites/orbit_sites.gd).
 
 signal hopped(to_hub: int)
 
-const MIN_T: float = 7.0
-const MAX_T: float = 15.0
+const CRUISE_ALT: float = 45.0
+## Ground covered on each visible leg (m), and its time (s).
+const LEG_M: float = 260.0
+const LEG_S: float = 2.8
+const FADE_S: float = 0.6
+const VEIL := Color(0.66, 0.8, 0.95)
 
 var ship: ShipModel
 var flying: bool = false
 var progress: float = 0.0
 var _focus: Node3D
+var _veil: ColorRect
 
 
-static func duration(dist_m: float) -> float:
-	return clampf(5.0 + dist_m / 450.0, MIN_T, MAX_T)
+## Seconds a hop is on screen (the build behind the veil comes on top).
+static func duration(_dist_m: float = 0.0) -> float:
+	return LEG_S * 2.0 + FADE_S * 2.0
 
 
-## Peak cruise altitude above the ground (m) for a hop of dist_m.
-static func cruise_alt(dist_m: float) -> float:
-	return clampf(dist_m * 0.06, 50.0, 300.0)  # low enough that the curve stays gentle and the ground stays near
-
-
-## Altitude profile 0..1 -> m: a quick climb, a long cruise, a soft landing.
-static func alt_at(t: float, peak: float) -> float:
-	var up: float = smoothstep(0.0, 0.3, t)
-	var down: float = 1.0 - smoothstep(0.72, 1.0, t)
-	return peak * minf(up, down)
+## Altitude along a leg 0..1: out leg climbs to CRUISE_ALT, in leg descends from it.
+static func leg_alt(t: float, outbound: bool) -> float:
+	var k: float = smoothstep(0.0, 0.7, t) if outbound else 1.0 - smoothstep(0.3, 1.0, t)
+	return CRUISE_ALT * k
 
 
 func hop(globe: Node3D, from_i: int, to_i: int) -> bool:
@@ -54,61 +54,46 @@ func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerra
 	var b0: Transform3D = sm.pad_xf(to_i)
 	var dir_a: Vector3 = a.origin.normalized()
 	var dir_b: Vector3 = b0.origin.normalized()
-	var dist: float = dir_a.angle_to(dir_b) * terrain.R
-	var T: float = duration(dist)
-	var peak: float = cruise_alt(dist)
+	var ang: float = dir_a.angle_to(dir_b)
+	var axis: Vector3 = dir_a.cross(dir_b).normalized() if ang > 0.0001 else SphereGrid.frame(dir_a).x
+	var leg_ang: float = minf(LEG_M / terrain.R, ang * 0.45)
 	ship = ShipModel.new()
 	ship.name = "HopShip"
 	add_child(ship)
-	ship.build(int(GameState.get("rocket_tier")) if GameState.get("rocket_tier") != null else 1)
+	ship.build(1)
 	ship.global_transform = a
 	_focus = Node3D.new()
 	_focus.name = "HopFocus"
 	add_child(_focus)
-	var old_target: Node3D = cam.target
 	var old_dist: float = cam.distance
 	var old_max: float = cam.max_distance
 	cam.target = _focus
-	cam.max_distance = 60.0
-	cam.distance = 18.0
+	cam.max_distance = 40.0
+	cam.distance = 16.0
 	lumi.visible = false
 	lumi.process_mode = Node.PROCESS_MODE_DISABLED
 	Audio.play("whoosh", 0.7, -4.0)
-	EventBus.toast.emit(tr("Rocket hop: %.1f km") % (dist / 1000.0), "info")
-	var axis: Vector3 = dir_a.cross(dir_b).normalized()
-	var ang: float = dir_a.angle_to(dir_b)
-	var built_target: bool = false
-	var t: float = 0.0
-	var prev := a.origin
-	while t < T:
-		var dt: float = get_process_delta_time()
-		t += dt
-		progress = clampf(t / T, 0.0, 1.0)
-		# Hold on the pad for a moment, then the arc (eased so it leaves and arrives slowly).
-		var k: float = smoothstep(0.08, 0.92, progress)
-		var d: Vector3 = dir_a.rotated(axis, ang * k) if ang > 0.0001 else dir_a
-		var ground: Vector3 = terrain.ground(d)
-		if k >= 1.0:
-			ground = b0.origin
-		var pos: Vector3 = ground + d * alt_at(progress, peak)
-		var up: Vector3 = d
-		var fwd: Vector3 = (pos - prev)
-		fwd = (fwd - up * fwd.dot(up))
-		if fwd.length() < 0.001:
-			fwd = (dir_b - up * dir_b.dot(up))
-		var bas := Basis.looking_at(fwd.normalized(), up)
-		ship.global_transform = Transform3D(bas, pos)
-		ship.set_lift(1.0 - smoothstep(0.85, 1.0, progress) if progress > 0.5 else smoothstep(0.0, 0.1, progress))
-		_focus.global_position = pos + up * 2.0
-		lumi.global_position = pos
-		prev = pos
-		if not built_target and progress > 0.35:
-			built_target = true
-			var p: SitePrefab = sm.build_hub(to_i)
-			if not p.is_built:
-				await p.rebuilt
-		await get_tree().process_frame
-	# Landed: Lumi steps off beside the ship, on the target's pad.
+	EventBus.toast.emit(tr("Rocket hop: %.1f km") % (ang * terrain.R / 1000.0), "info")
+	# Out leg: lift off and head toward the target.
+	await _leg(dir_a, axis, 0.0, leg_ang, true, terrain, lumi, a.origin)
+	await _fade(1.0)
+	# Behind the veil: carry Lumi to the far leg, settle the ground there, build the site.
+	var start_in: float = ang - leg_ang
+	var d_in: Vector3 = dir_a.rotated(axis, start_in)
+	lumi.global_position = terrain.ground(d_in) + d_in * CRUISE_ALT
+	var g: Node = sm.globe
+	if g and g.has_method("update_centres"):
+		g.call("update_centres")
+	var st: Variant = g.get("streamer") if g else null
+	if st is SphereStreamer:
+		(st as SphereStreamer).settle(6000)
+	var p: SitePrefab = sm.build_hub(to_i)
+	if not p.is_built:
+		await p.rebuilt
+	b0 = sm.pad_xf(to_i)
+	await _fade(0.0, true)
+	# In leg: approach low and land on the pad.
+	await _leg(dir_a, axis, start_in, ang, false, terrain, lumi, b0.origin)
 	var b: Transform3D = sm.pad_xf(to_i)
 	ship.global_transform = b
 	ship.set_lift(0.0)
@@ -126,11 +111,55 @@ func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerra
 	Audio.play("thud", 1.0, -6.0)
 	flying = false
 	hopped.emit(to_i)
-	# The ship stays parked on the pad until the next hop.
-	var keep: ShipModel = ship
+	var keep: ShipModel = ship  # parked on the pad until the next hop
 	ship = null
 	keep.name = "ParkedShip"
 	for c: Node in get_children():
 		if c is ShipModel and c != keep:
 			c.queue_free()
 	return true
+
+
+## One visible leg along the great circle from angle a0 to a1 (radians around `axis` from dir_a).
+## The out leg ends in the air; the in leg ends on `land_at`.
+func _leg(dir_a: Vector3, axis: Vector3, a0: float, a1: float, outbound: bool, terrain: SphereTerrain, lumi: Node3D, land_at: Vector3) -> void:
+	var t: float = 0.0
+	var prev: Vector3 = ship.global_position
+	while t < LEG_S:
+		t += get_process_delta_time()
+		var k: float = clampf(t / LEG_S, 0.0, 1.0)
+		progress = k * 0.5 + (0.0 if outbound else 0.5)
+		var e: float = smoothstep(0.15, 1.0, k) if outbound else smoothstep(0.0, 0.85, k)
+		var d: Vector3 = dir_a.rotated(axis, lerpf(a0, a1, e))
+		var pos: Vector3 = terrain.ground(d) + d * leg_alt(k, outbound)
+		if not outbound and k >= 1.0:
+			pos = land_at
+		var fwd: Vector3 = pos - prev
+		fwd -= d * fwd.dot(d)
+		if fwd.length() < 0.001:
+			fwd = axis.cross(d)
+		ship.global_transform = Transform3D(Basis.looking_at(fwd.normalized(), d), pos)
+		ship.set_lift(smoothstep(0.0, 0.25, k) if outbound else 1.0 - smoothstep(0.7, 1.0, k))
+		_focus.global_position = pos + d * 2.0
+		lumi.global_position = pos
+		prev = pos
+		await get_tree().process_frame
+
+
+## Sky-blue veil over the screen (a = 0 clear, 1 covered).
+func _fade(to: float, free_after: bool = false) -> void:
+	if _veil == null:
+		var cl := CanvasLayer.new()
+		cl.layer = 90
+		add_child(cl)
+		_veil = ColorRect.new()
+		_veil.color = Color(VEIL.r, VEIL.g, VEIL.b, 0.0)
+		_veil.set_anchors_preset(Control.PRESET_FULL_RECT)
+		_veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		cl.add_child(_veil)
+	var tw := create_tween()
+	tw.tween_property(_veil, "color:a", to, FADE_S)
+	await tw.finished
+	if free_after and _veil:
+		_veil.get_parent().queue_free()
+		_veil = null
