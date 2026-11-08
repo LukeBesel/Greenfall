@@ -626,21 +626,29 @@ func _hero(c: Vector2) -> void:
 static func clean_pad(size: float) -> Node3D:
 	var k := YardArt.Kit.new()
 	var h: float = size * 0.5
-	k.box(Vector3(size, 0.06, size), Vector3(0, 0.03, 0), Color(0.47, 0.47, 0.45), Vector3.ZERO, 0.02)
+	# [v3city] Real slabs, not painted hairlines (QA: the 5 cm seam strips read as glitch lines
+	# across the pad): a dark bedding layer, and on it 6 x 6 bevelled panels with 12 cm joints,
+	# each a touch lighter or darker, so the joints read as paving at any distance.
+	k.box(Vector3(size, 0.05, size), Vector3(0, 0.025, 0), Color(0.3, 0.3, 0.29), Vector3.ZERO, 0.02)
 	var n: int = 6
 	var step: float = size / n
-	for i: int in range(1, n):
-		var c: float = -h + i * step
-		k.box(Vector3(size - 0.5, 0.008, 0.05), Vector3(0, 0.062, c), Color(0.34, 0.34, 0.33))
-		k.box(Vector3(0.05, 0.008, size - 0.5), Vector3(c, 0.062, 0), Color(0.34, 0.34, 0.33))
+	var tone := RandomNumberGenerator.new()
+	tone.seed = 4471
+	for i: int in n:
+		for j: int in n:
+			var t: float = tone.randf_range(-0.035, 0.035)
+			var col := Color(0.47 + t, 0.47 + t, 0.45 + t * 0.9)
+			var cx: float = -h + (i + 0.5) * step
+			var cz: float = -h + (j + 0.5) * step
+			k.box(Vector3(step - 0.12, 0.03, step - 0.12), Vector3(cx, 0.06, cz), col, Vector3.ZERO, 0.015)
 	for side: int in 4:
 		var along_x: bool = side < 2
 		var sgn: float = -1.0 if side % 2 == 0 else 1.0
 		var lip := Vector3(size, 0.1, 0.3) if along_x else Vector3(0.3, 0.1, size)
 		var at := Vector3(0, 0.05, sgn * (h - 0.15)) if along_x else Vector3(sgn * (h - 0.15), 0.05, 0)
 		k.box(lip, at, Color(0.42, 0.43, 0.42), Vector3.ZERO, 0.03)
-		var line := Vector3(size - 0.9, 0.008, 0.08) if along_x else Vector3(0.08, 0.008, size - 0.9)
-		var lat := Vector3(0, 0.062, sgn * (h - 0.55)) if along_x else Vector3(sgn * (h - 0.55), 0.062, 0)
+		var line := Vector3(size - 0.9, 0.008, 0.12) if along_x else Vector3(0.12, 0.008, size - 0.9)
+		var lat := Vector3(0, 0.078, sgn * (h - 0.55)) if along_x else Vector3(sgn * (h - 0.55), 0.078, 0)
 		k.box(line, lat, Color(0.3, 0.75, 0.78))
 	var mi: MeshInstance3D = k.mi(0.08, "CleanPad")
 	mi.set_meta("no_collide", true)
