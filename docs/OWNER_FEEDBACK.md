@@ -215,3 +215,4 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 25. Clicking an upgrade should show its details; only the price square buys.
 26. The start is too slow ("I already want to quit"): too much walking between trash and the bin. Speed it up.
 27. Upgrade types stay in a fixed row/order in the workbench, not moving around by price or affordability.
+28. Workbench tabs (Bots, Research, etc.) unlock by upgrading the workbench itself (workbench tiers), not on their own.
