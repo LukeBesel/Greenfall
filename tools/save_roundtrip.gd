@@ -100,7 +100,15 @@ func _snapshot(s: Node) -> Dictionary:
 		# [camp] the workbench repair, the trash bin's level, yard builds, and what's shown.
 		"camp": "bench=%s bin=L%d built=%s radio_shown=%s bench_prompt=%s" % [str(Camp.bench_ok()), TrashBin.level(), JSON.stringify(YardBuilds.state().get("built", {})), str(ExtrasDirector.of(s).radio.visible if ExtrasDirector.of(s) else false), (Camp.of(s).bench_prompt() if Camp.of(s) else "")],
 		"glim": JSON.stringify(_glim_snap(s)),  # [buddy] found, tiers, looks, the bot in the scene
+		"egg_collect": _egg_collect(s),  # [eggs2] collected gnomes and the Museum
 	}
+
+
+## [eggs2] Collected gnome parts, the Museum build flag and how many of its exhibits are full.
+func _egg_collect(_s: Node) -> String:
+	var parts: Array = EggCollect.parts("gnomes").duplicate()
+	parts.sort()
+	return "%s museum=%s full=%d" % [str(parts), str(Museum.built()), Museum.filled()]
 
 
 ## [wild] Persisted animal state, plus whether the adopted cat is back in the live district.
@@ -342,6 +350,9 @@ func _ready() -> void:
 	Collection.grant("photo_moss_deer", true)
 	Contracts.owned().append("livery_halo")
 	GameState.flags["livery"] = "livery_halo"
+	EggCollect.add("gnomes", 3)  # [eggs2] two gnomes brought home
+	EggCollect.add("gnomes", 0)
+	GameState.flags["museum_built"] = true
 	WorldEvents.persist_state()["recent"] = ["supply_drop", "rain_shower"]
 	# [onboard] Past the brief, on the "Rebuild the base: level 2" objective, detector explained, board open.
 	GameState.flags["onboard_brief"] = true

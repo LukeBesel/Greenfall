@@ -17776,3 +17776,281 @@ msgstr ""
 #: data/glim.json:tops[beanie].name
 msgid "Little Beanie"
 msgstr ""
+
+#: story/eggs.gd:579
+msgid "%s   ·   added to Lumi's collection"
+msgstr "%s   ·   Lumiのコレクションに追加"
+
+#: story/tv_broadcast.gd:20
+msgid "OLD TOWN IN BLOOM: SEED SWAP THIS SATURDAY"
+msgstr "花ざかりの旧市街：今週土曜日は種の交換会"
+
+#: story/tv_broadcast.gd:21
+msgid "LEDGER SECURES EXTRACTION RIGHTS"
+msgstr "Ledger、採掘権を獲得"
+
+#: story/tv_broadcast.gd:22
+msgid "THE SYSTEM IS STRIP-MINED. THE WASTE STAYS HERE"
+msgstr "星系は掘り尽くされ、ゴミだけが残る"
+
+#: story/tv_broadcast.gd:23
+msgid "EVACUATION: ALL RESIDENTS TO THE CRADLE"
+msgstr "避難勧告：全住民はCradle号へ"
+
+#: story/tv_broadcast.gd:24
+msgid "OLD TOWN, TONIGHT. A SIGN ON THE TOWN HALL"
+msgstr "今夜の旧市街。市庁舎の垂れ幕"
+
+#: story/tv_broadcast.gd:25 story/tv_broadcast.gd:197
+msgid "SIGNAL LOST"
+msgstr "信号なし"
+
+#: story/tv_broadcast.gd:103
+msgid "CH 4  ·  OLD TOWN NEWS  ·  LAST BROADCAST"
+msgstr "4チャンネル  ·  旧市街・ニュース  ·  最後の放送"
+
+#: story/tv_broadcast.gd:117
+msgid "{interact}  [k]/ Esc  [/k]turn it off"
+msgstr "{interact}  [k]/ Esc  [/k]消す"
+
+#: story/tv_broadcast.gd:206
+msgid "LIVE"
+msgstr "生放送"
+
+#: story/tv_broadcast.gd:326
+msgid "BREAKING"
+msgstr "速報"
+
+#: story/tv_broadcast.gd:354
+msgid "CRADLE"
+msgstr "Cradle号"
+
+#: story/tv_broadcast.gd:375
+msgid "WE'LL BE BACK"
+msgstr "また帰ってくる"
+
+#: systems/museum.gd:119
+msgid "Not enough cubes, parts or seeds"
+msgstr "キューブ、パーツ、種が足りません"
+
+#: systems/museum.gd:184
+msgid "FUTURE MUSEUM"
+msgstr "博物館予定地"
+
+#: systems/museum.gd:185
+msgid "for whoever comes next"
+msgstr "あとから来る誰かのために"
+
+#: systems/museum.gd:197
+msgid "E   build the Museum   %s"
+msgstr "E   博物館を建てる   %s"
+
+#: systems/museum.gd:197
+msgid "Museum   %s   (%s)"
+msgstr "博物館   %s   (%s)"
+
+#: systems/museum.gd:216
+msgid ""
+"The Museum is built. Everything Lumi found has a place now, for whoever "
+"comes next."
+msgstr ""
+"博物館が完成した。Lumiが見つけたものすべてに、あとから来る誰かのための居場所"
+"ができた。"
+
+#: systems/museum.gd:240
+msgid "THE MUSEUM OF COMING BACK"
+msgstr "帰還の博物館"
+
+#: systems/museum.gd:241
+msgid "everything Lumi found, kept for whoever comes next"
+msgstr "Lumiが見つけたすべてを、あとから来る誰かのために"
+
+#: systems/museum.gd:268
+msgid "E   salute the Gnome Patrol"
+msgstr "E   ノーム・パトロールに敬礼"
+
+#: systems/museum.gd:428
+msgid ""
+"Every plinth is full. The Museum is complete: everything Lumi found, kept "
+"for whoever comes next."
+msgstr ""
+"すべての台座が埋まった。博物館は完成：Lumiが見つけたすべてを、あとから来る誰"
+"かのために。"
+
+#: ui/codex_screen.gd:549
+msgid "LUMI'S COLLECTION"
+msgstr "Lumiのコレクション"
+
+#: ui/codex_screen.gd:550
+msgid "%d / %d complete"
+msgstr "%d / %d 完成"
+
+#: ui/codex_screen.gd:588
+msgid "TRINKETS AND CURIOS"
+msgstr "小物と珍品"
+
+#: ui/codex_screen.gd:600
+msgid "EVERY PLANET"
+msgstr "すべての惑星"
+
+#: ui/codex_screen.gd:603
+msgid "In Lumi's collection. It has a plinth in the Museum."
+msgstr "Lumiのコレクションにある。博物館に台座がある。"
+
+#: ui/codex_screen.gd:605
+msgid "Hint: %s"
+msgstr "ヒント：%s"
+
+#: ui/codex_screen.gd:607
+msgid "The Museum: built"
+msgstr "博物館：完成"
+
+#: ui/codex_screen.gd:607
+msgid "The Museum is built at Cradle Returns, near the end of the journey."
+msgstr "博物館は旅の終わり近く、Cradle Returnsに建てられる。"
+
+#: data/achievements.json:achievements[museum_complete].name
+msgid "For Whoever Comes Next"
+msgstr "あとから来る誰かのために"
+
+#: data/achievements.json:achievements[museum_complete].desc
+msgid "Fill every plinth in the Museum."
+msgstr "博物館のすべての台座を埋める。"
+
+#: data/eggs.json:eggs[gnomes].prompt
+msgid "E   pick up gnome"
+msgstr "E   ノームを拾う"
+
+#: data/eggs.json:eggs[gnomes].hint
+msgid "Five small guards, each watching a different street. Pick them up."
+msgstr "それぞれ別の通りを見張る、5人の小さな衛兵。拾い集めよう。"
+
+#: data/eggs.json:eggs[tv].lore
+msgid ""
+"A television on a lawn chair, still looping Old Town's last news broadcast: "
+"the spring seed swap, the Ledger's rigs coming down on their cables, the two "
+"suns' worlds strip-mined and buried in waste, the shuttles rising to the "
+"Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
+msgstr ""
+"芝生の椅子に置かれたテレビが、旧市街最後のニュースを繰り返し流している：春の"
+"種の交換会、ケーブルで降りてくるLedgerの採掘機、掘り尽くされゴミに埋もれた二"
+"つの太陽の星々、Cradle号へ昇るシャトル、そして市庁舎の「また帰ってくる」の垂"
+"れ幕。その後は砂嵐。"
+
+#: data/eggs.json:eggs[tv].toast
+msgid ""
+"The broadcast ends in snow. Somebody left it running for whoever came back."
+msgstr ""
+"放送は砂嵐で終わる。帰ってくる誰かのために、誰かが流しっぱなしにしていた。"
+
+#: data/eggs.json:eggs[tv].hint
+msgid "Somebody left the news on. Adjust the antenna."
+msgstr "誰かがニュースをつけっぱなしにしている。アンテナを調整しよう。"
+
+#: data/museum.json:exhibits[gnomes].hint
+msgid "Five garden gnomes guard Old Town's streets. Pick them up."
+msgstr "5体の庭ノームが旧市街の通りを守っている。拾い集めよう。"
+
+#: data/museum.json:exhibits[biscuit].name
+msgid "Biscuit's Shell"
+msgstr "ビスケットの殻"
+
+#: data/museum.json:exhibits[time_capsule].name
+msgid "Time Capsule"
+msgstr "タイムカプセル"
+
+#: data/museum.json:exhibits[broadcast].name
+msgid "The Last Broadcast"
+msgstr "最後の放送"
+
+#: data/museum.json:exhibits[broadcast].hint
+msgid "A TV on a lawn chair is still on. Adjust the antenna."
+msgstr "芝生の椅子のテレビがまだついている。アンテナを調整しよう。"
+
+#: data/museum.json:exhibits[gold_cube].name
+msgid "The Golden Cube"
+msgstr "黄金のキューブ"
+
+#: data/museum.json:exhibits[curiosities].hint
+msgid "Every curiosity on every planet (Codex > Curiosities has the hints)."
+msgstr "すべての惑星のすべての珍品（ヒントは図鑑の「珍品」に）。"
+
+#: data/museum.json:exhibits[shards].hint
+msgid "Letters, notes and drawings surface as the ground is cleaned."
+msgstr "地面がきれいになると、手紙やメモや絵が出てくる。"
+
+#: data/museum.json:exhibits[trinkets].name
+msgid "Trinkets and Curios"
+msgstr "小物と珍品"
+
+#: data/museum.json:exhibits[trinkets].hint
+msgid "World events, requests, streaks and Curio Capsules."
+msgstr "ワールドイベント、依頼、連続記録、珍品カプセル。"
+
+#: data/museum.json:exhibits[ochre_glass].hint
+msgid "Restore Ochre."
+msgstr "Ochre を復興する。"
+
+#: data/museum.json:exhibits[tidewell_pearl].hint
+msgid "Restore Tidewell."
+msgstr "Tidewell を復興する。"
+
+#: data/museum.json:exhibits[rime_core].hint
+msgid "Restore Rime."
+msgstr "Rime を復興する。"
+
+#: data/museum.json:exhibits[anvil_ingot].hint
+msgid "Restore Anvil."
+msgstr "Anvil を復興する。"
+
+#: data/wren_lines.json:museum_complete
+msgid "...all of it... kept..."
+msgstr "……すべて……保管……"
+
+#: data/wren_lines.json:museum_complete
+msgid ""
+"Every plinth full. Whoever comes next will know exactly who was here, and "
+"what they loved."
+msgstr ""
+"台座はすべて埋まった。あとから来る誰かは、ここに誰がいて、何を愛していたかを"
+"知るだろう。"
+
+#: data/wren_lines.json:museum_complete
+msgid ""
+"The Museum is complete. I've logged it as a landmark. Not a strategic one. A "
+"sentimental one."
+msgstr ""
+"博物館が完成した。ランドマークとして記録したよ。戦略的なものじゃない。思い出"
+"のための。"
+
+#: data/wren_lines.json:museum_complete
+msgid ""
+"Every last gnome, shard and ring, on its plinth. You didn't just clean the "
+"world, {name}. You remembered it."
+msgstr ""
+"最後のノームも、かけらも、指輪も、それぞれの台座に。{name}、きみは世界をきれ"
+"いにしただけじゃない。覚えていてくれたんだ。"
+
+#: data/wren_lines.json:egg_tv
+msgid "...broadcast... we'll be... back..."
+msgstr "……放送……また……帰って……"
+
+#: data/wren_lines.json:egg_tv
+msgid ""
+"That was the last news out of Old Town. The rigs, the waste, the shuttles up "
+"to me. I carried every one of those people."
+msgstr ""
+"あれが旧市街最後のニュース。採掘機、ゴミ、わたしのもとへ昇ってくるシャトル。"
+"あの人たちを、わたしは一人残らず運んだ。"
+
+#: data/wren_lines.json:egg_tv
+msgid "'We'll be back.' They meant it. I still have the passenger list."
+msgstr "「また帰ってくる」本気だったんだ。乗客名簿は今も持っている。"
+
+#: data/wren_lines.json:egg_tv
+msgid ""
+"Still broadcasting, after all this time. Somebody wanted whoever came back "
+"to know what happened. Now you do."
+msgstr ""
+"こんなに時がたっても、まだ放送している。帰ってきた誰かに何が起きたか知ってほ"
+"しかったんだね。もう、きみは知っている。"

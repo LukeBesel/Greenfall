@@ -18017,3 +18017,288 @@ msgstr ""
 #: data/glim.json:tops[beanie].name
 msgid "Little Beanie"
 msgstr ""
+
+#: story/eggs.gd:579
+msgid "%s   ·   added to Lumi's collection"
+msgstr "%s   ·   ajouté à la collection de Lumi"
+
+#: story/tv_broadcast.gd:20
+msgid "OLD TOWN IN BLOOM: SEED SWAP THIS SATURDAY"
+msgstr "LA VIEILLE VILLE EN FLEURS : TROC DE GRAINES CE SAMEDI"
+
+#: story/tv_broadcast.gd:21
+msgid "LEDGER SECURES EXTRACTION RIGHTS"
+msgstr "LE LEDGER OBTIENT LES DROITS D'EXTRACTION"
+
+#: story/tv_broadcast.gd:22
+msgid "THE SYSTEM IS STRIP-MINED. THE WASTE STAYS HERE"
+msgstr "LE SYSTÈME EST EXPLOITÉ À BLANC. LES DÉCHETS RESTENT ICI"
+
+#: story/tv_broadcast.gd:23
+msgid "EVACUATION: ALL RESIDENTS TO THE CRADLE"
+msgstr "ÉVACUATION : TOUS LES HABITANTS VERS LE CRADLE"
+
+#: story/tv_broadcast.gd:24
+msgid "OLD TOWN, TONIGHT. A SIGN ON THE TOWN HALL"
+msgstr "VIEILLE VILLE, CE SOIR. UNE BANDEROLE SUR LA MAIRIE"
+
+#: story/tv_broadcast.gd:25 story/tv_broadcast.gd:197
+msgid "SIGNAL LOST"
+msgstr "SIGNAL PERDU"
+
+#: story/tv_broadcast.gd:103
+msgid "CH 4  ·  OLD TOWN NEWS  ·  LAST BROADCAST"
+msgstr "CH 4  ·  INFOS VIEILLE VILLE  ·  DERNIÈRE ÉMISSION"
+
+#: story/tv_broadcast.gd:117
+msgid "{interact}  [k]/ Esc  [/k]turn it off"
+msgstr "{interact}  [k]/ Échap  [/k]éteindre"
+
+#: story/tv_broadcast.gd:206
+msgid "LIVE"
+msgstr "DIRECT"
+
+#: story/tv_broadcast.gd:326
+msgid "BREAKING"
+msgstr "FLASH SPÉCIAL"
+
+#: story/tv_broadcast.gd:354
+msgid "CRADLE"
+msgstr "CRADLE"
+
+#: story/tv_broadcast.gd:375
+msgid "WE'LL BE BACK"
+msgstr "NOUS REVIENDRONS"
+
+#: systems/museum.gd:119
+msgid "Not enough cubes, parts or seeds"
+msgstr "Pas assez de cubes, de pièces ou de graines"
+
+#: systems/museum.gd:184
+msgid "FUTURE MUSEUM"
+msgstr "FUTUR MUSÉE"
+
+#: systems/museum.gd:185
+msgid "for whoever comes next"
+msgstr "pour ceux qui viendront après"
+
+#: systems/museum.gd:197
+msgid "E   build the Museum   %s"
+msgstr "E   construire le Musée   %s"
+
+#: systems/museum.gd:197
+msgid "Museum   %s   (%s)"
+msgstr "Musée   %s   (%s)"
+
+#: systems/museum.gd:216
+msgid ""
+"The Museum is built. Everything Lumi found has a place now, for whoever "
+"comes next."
+msgstr ""
+"Le Musée est construit. Tout ce que Lumi a trouvé a maintenant sa place, "
+"pour ceux qui viendront après."
+
+#: systems/museum.gd:240
+msgid "THE MUSEUM OF COMING BACK"
+msgstr "LE MUSÉE DU RETOUR"
+
+#: systems/museum.gd:241
+msgid "everything Lumi found, kept for whoever comes next"
+msgstr "tout ce que Lumi a trouvé, gardé pour ceux qui viendront après"
+
+#: systems/museum.gd:268
+msgid "E   salute the Gnome Patrol"
+msgstr "E   saluer la Patrouille de nains"
+
+#: systems/museum.gd:428
+msgid ""
+"Every plinth is full. The Museum is complete: everything Lumi found, kept "
+"for whoever comes next."
+msgstr ""
+"Chaque socle est occupé. Le Musée est complet : tout ce que Lumi a trouvé, "
+"gardé pour ceux qui viendront après."
+
+#: ui/codex_screen.gd:549
+msgid "LUMI'S COLLECTION"
+msgstr "LA COLLECTION DE LUMI"
+
+#: ui/codex_screen.gd:550
+msgid "%d / %d complete"
+msgstr "%d / %d complets"
+
+#: ui/codex_screen.gd:588
+msgid "TRINKETS AND CURIOS"
+msgstr "BIBELOTS ET CURIOSITÉS"
+
+#: ui/codex_screen.gd:600
+msgid "EVERY PLANET"
+msgstr "TOUTES LES PLANÈTES"
+
+#: ui/codex_screen.gd:603
+msgid "In Lumi's collection. It has a plinth in the Museum."
+msgstr "Dans la collection de Lumi. Il a son socle au Musée."
+
+#: ui/codex_screen.gd:605
+msgid "Hint: %s"
+msgstr "Indice : %s"
+
+#: ui/codex_screen.gd:607
+msgid "The Museum: built"
+msgstr "Le Musée : construit"
+
+#: ui/codex_screen.gd:607
+msgid "The Museum is built at Cradle Returns, near the end of the journey."
+msgstr "Le Musée se construit à Cradle Returns, vers la fin du voyage."
+
+#: data/achievements.json:achievements[museum_complete].name
+msgid "For Whoever Comes Next"
+msgstr "Pour ceux qui viendront après"
+
+#: data/achievements.json:achievements[museum_complete].desc
+msgid "Fill every plinth in the Museum."
+msgstr "Remplis chaque socle du Musée."
+
+#: data/eggs.json:eggs[gnomes].prompt
+msgid "E   pick up gnome"
+msgstr "E   ramasser le nain"
+
+#: data/eggs.json:eggs[gnomes].hint
+msgid "Five small guards, each watching a different street. Pick them up."
+msgstr ""
+"Cinq petits gardiens, chacun surveillant une rue différente. Ramasse-les."
+
+#: data/eggs.json:eggs[tv].lore
+msgid ""
+"A television on a lawn chair, still looping Old Town's last news broadcast: "
+"the spring seed swap, the Ledger's rigs coming down on their cables, the two "
+"suns' worlds strip-mined and buried in waste, the shuttles rising to the "
+"Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
+msgstr ""
+"Une télé sur une chaise de jardin, qui passe en boucle le dernier journal de "
+"la Vieille Ville : le troc de graines du printemps, les foreuses du Ledger "
+"descendant au bout de leurs câbles, les mondes des deux soleils exploités et "
+"ensevelis sous les déchets, les navettes montant vers le Cradle, et une "
+"banderole sur la mairie : NOUS REVIENDRONS. Puis la neige."
+
+#: data/eggs.json:eggs[tv].toast
+msgid ""
+"The broadcast ends in snow. Somebody left it running for whoever came back."
+msgstr ""
+"L'émission finit dans la neige. Quelqu'un l'a laissée tourner pour ceux qui "
+"reviendraient."
+
+#: data/eggs.json:eggs[tv].hint
+msgid "Somebody left the news on. Adjust the antenna."
+msgstr "Quelqu'un a laissé les infos allumées. Règle l'antenne."
+
+#: data/museum.json:exhibits[gnomes].hint
+msgid "Five garden gnomes guard Old Town's streets. Pick them up."
+msgstr ""
+"Cinq nains de jardin gardent les rues de la Vieille Ville. Ramasse-les."
+
+#: data/museum.json:exhibits[biscuit].name
+msgid "Biscuit's Shell"
+msgstr "La carapace de Biscuit"
+
+#: data/museum.json:exhibits[time_capsule].name
+msgid "Time Capsule"
+msgstr "Capsule temporelle"
+
+#: data/museum.json:exhibits[broadcast].name
+msgid "The Last Broadcast"
+msgstr "La dernière émission"
+
+#: data/museum.json:exhibits[broadcast].hint
+msgid "A TV on a lawn chair is still on. Adjust the antenna."
+msgstr "Une télé sur une chaise de jardin est encore allumée. Règle l'antenne."
+
+#: data/museum.json:exhibits[gold_cube].name
+msgid "The Golden Cube"
+msgstr "Le Cube d'or"
+
+#: data/museum.json:exhibits[curiosities].hint
+msgid "Every curiosity on every planet (Codex > Curiosities has the hints)."
+msgstr ""
+"Chaque curiosité sur chaque planète (le Codex > Curiosités a les indices)."
+
+#: data/museum.json:exhibits[shards].hint
+msgid "Letters, notes and drawings surface as the ground is cleaned."
+msgstr "Lettres, notes et dessins remontent à mesure que le sol est nettoyé."
+
+#: data/museum.json:exhibits[trinkets].name
+msgid "Trinkets and Curios"
+msgstr "Bibelots et curiosités"
+
+#: data/museum.json:exhibits[trinkets].hint
+msgid "World events, requests, streaks and Curio Capsules."
+msgstr "Événements, demandes, séries et capsules de curiosités."
+
+#: data/museum.json:exhibits[ochre_glass].hint
+msgid "Restore Ochre."
+msgstr "Restaure Ochre."
+
+#: data/museum.json:exhibits[tidewell_pearl].hint
+msgid "Restore Tidewell."
+msgstr "Restaure Tidewell."
+
+#: data/museum.json:exhibits[rime_core].hint
+msgid "Restore Rime."
+msgstr "Restaure Rime."
+
+#: data/museum.json:exhibits[anvil_ingot].hint
+msgid "Restore Anvil."
+msgstr "Restaure Anvil."
+
+#: data/wren_lines.json:museum_complete
+msgid "...all of it... kept..."
+msgstr "...tout... gardé..."
+
+#: data/wren_lines.json:museum_complete
+msgid ""
+"Every plinth full. Whoever comes next will know exactly who was here, and "
+"what they loved."
+msgstr ""
+"Chaque socle occupé. Ceux qui viendront sauront exactement qui était là, et "
+"ce qu'ils aimaient."
+
+#: data/wren_lines.json:museum_complete
+msgid ""
+"The Museum is complete. I've logged it as a landmark. Not a strategic one. A "
+"sentimental one."
+msgstr ""
+"Le Musée est complet. Je l'ai noté comme repère. Pas stratégique. "
+"Sentimental."
+
+#: data/wren_lines.json:museum_complete
+msgid ""
+"Every last gnome, shard and ring, on its plinth. You didn't just clean the "
+"world, {name}. You remembered it."
+msgstr ""
+"Le moindre nain, éclat et anneau sur son socle. Tu n'as pas seulement "
+"nettoyé le monde, {name}. Tu t'en es souvenu."
+
+#: data/wren_lines.json:egg_tv
+msgid "...broadcast... we'll be... back..."
+msgstr "...émission... nous re... viendrons..."
+
+#: data/wren_lines.json:egg_tv
+msgid ""
+"That was the last news out of Old Town. The rigs, the waste, the shuttles up "
+"to me. I carried every one of those people."
+msgstr ""
+"C'étaient les dernières nouvelles de la Vieille Ville. Les foreuses, les "
+"déchets, les navettes montant jusqu'à moi. J'ai porté chacune de ces "
+"personnes."
+
+#: data/wren_lines.json:egg_tv
+msgid "'We'll be back.' They meant it. I still have the passenger list."
+msgstr ""
+"« Nous reviendrons. » Ils le pensaient. J'ai encore la liste des passagers."
+
+#: data/wren_lines.json:egg_tv
+msgid ""
+"Still broadcasting, after all this time. Somebody wanted whoever came back "
+"to know what happened. Now you do."
+msgstr ""
+"Toujours à l'antenne, après tout ce temps. Quelqu'un voulait que ceux qui "
+"reviendraient sachent ce qui s'était passé. Maintenant tu sais."

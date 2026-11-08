@@ -18487,3 +18487,297 @@ msgstr "[Ñôţĥîñĝ ~]"
 #: data/glim.json:tops[beanie].name
 msgid "Little Beanie"
 msgstr "[Ļîţţļé Béàñîé ~~]"
+
+#: story/eggs.gd:579
+msgid "%s   ·   added to Lumi's collection"
+msgstr "[%s   ·   àððéð ţô Ļûmî'š çôļļéçţîôñ ~~~~~~~~~]"
+
+#: story/tv_broadcast.gd:20
+msgid "OLD TOWN IN BLOOM: SEED SWAP THIS SATURDAY"
+msgstr "[ÔĻÐ ŢÔŴÑ ÎÑ BĻÔÔM: ŠÉÉÐ ŠŴÀÞ ŢĤÎŠ ŠÀŢÛŔÐÀÝ ~~~~~~~~~~~~]"
+
+#: story/tv_broadcast.gd:21
+msgid "LEDGER SECURES EXTRACTION RIGHTS"
+msgstr "[ĻÉÐĜÉŔ ŠÉÇÛŔÉŠ ÉXŢŔÀÇŢÎÔÑ ŔÎĜĤŢŠ ~~~~~~~~]"
+
+#: story/tv_broadcast.gd:22
+msgid "THE SYSTEM IS STRIP-MINED. THE WASTE STAYS HERE"
+msgstr "[ŢĤÉ ŠÝŠŢÉM ÎŠ ŠŢŔÎÞ-MÎÑÉÐ. ŢĤÉ ŴÀŠŢÉ ŠŢÀÝŠ ĤÉŔÉ ~~~~~~~~~~~~~]"
+
+#: story/tv_broadcast.gd:23
+msgid "EVACUATION: ALL RESIDENTS TO THE CRADLE"
+msgstr "[ÉVÀÇÛÀŢÎÔÑ: ÀĻĻ ŔÉŠÎÐÉÑŢŠ ŢÔ ŢĤÉ ÇŔÀÐĻÉ ~~~~~~~~~~~]"
+
+#: story/tv_broadcast.gd:24
+msgid "OLD TOWN, TONIGHT. A SIGN ON THE TOWN HALL"
+msgstr "[ÔĻÐ ŢÔŴÑ, ŢÔÑÎĜĤŢ. À ŠÎĜÑ ÔÑ ŢĤÉ ŢÔŴÑ ĤÀĻĻ ~~~~~~~~~~~~]"
+
+#: story/tv_broadcast.gd:25 story/tv_broadcast.gd:197
+msgid "SIGNAL LOST"
+msgstr "[ŠÎĜÑÀĻ ĻÔŠŢ ~]"
+
+#: story/tv_broadcast.gd:103
+msgid "CH 4  ·  OLD TOWN NEWS  ·  LAST BROADCAST"
+msgstr "[ÇĤ 4  ·  ÔĻÐ ŢÔŴÑ ÑÉŴŠ  ·  ĻÀŠŢ BŔÔÀÐÇÀŠŢ ~~~~~~~~~~~]"
+
+#: story/tv_broadcast.gd:117
+msgid "{interact}  [k]/ Esc  [/k]turn it off"
+msgstr "[{interact}  [k]/ Éšç  [/k]ţûŕñ îţ ôƒƒ ~~~~~~~~~~]"
+
+#: story/tv_broadcast.gd:206
+msgid "LIVE"
+msgstr "[ĻÎVÉ ~]"
+
+#: story/tv_broadcast.gd:326
+msgid "BREAKING"
+msgstr "[BŔÉÀĶÎÑĜ ~]"
+
+#: story/tv_broadcast.gd:354
+msgid "CRADLE"
+msgstr "[ÇŔÀÐĻÉ ~]"
+
+#: story/tv_broadcast.gd:375
+msgid "WE'LL BE BACK"
+msgstr "[ŴÉ'ĻĻ BÉ BÀÇĶ ~~]"
+
+#: systems/museum.gd:119
+msgid "Not enough cubes, parts or seeds"
+msgstr "[Ñôţ éñôûĝĥ çûbéš, þàŕţš ôŕ šééðš ~~~~~~~~]"
+
+#: systems/museum.gd:184
+msgid "FUTURE MUSEUM"
+msgstr "[FÛŢÛŔÉ MÛŠÉÛM ~~]"
+
+#: systems/museum.gd:185
+msgid "for whoever comes next"
+msgstr "[ƒôŕ ŵĥôévéŕ çôméš ñéxţ ~~~~~]"
+
+#: systems/museum.gd:197
+msgid "E   build the Museum   %s"
+msgstr "E   [bûîļð ţĥé Mûšéûm   %s ~~~~]"
+
+#: systems/museum.gd:197
+msgid "Museum   %s   (%s)"
+msgstr "[Mûšéûm   %s   (%s) ~~~]"
+
+#: systems/museum.gd:216
+msgid ""
+"The Museum is built. Everything Lumi found has a place now, for whoever "
+"comes next."
+msgstr ""
+"[Ţĥé Mûšéûm îš bûîļţ. Évéŕýţĥîñĝ Ļûmî ƒôûñð ĥàš à þļàçé ñôŵ, ƒôŕ ŵĥôévéŕ "
+"çôméš ñéxţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/museum.gd:240
+msgid "THE MUSEUM OF COMING BACK"
+msgstr "[ŢĤÉ MÛŠÉÛM ÔF ÇÔMÎÑĜ BÀÇĶ ~~~~~~]"
+
+#: systems/museum.gd:241
+msgid "everything Lumi found, kept for whoever comes next"
+msgstr "[évéŕýţĥîñĝ Ļûmî ƒôûñð, ķéþţ ƒôŕ ŵĥôévéŕ çôméš ñéxţ ~~~~~~~~~~~~~~~]"
+
+#: systems/museum.gd:268
+msgid "E   salute the Gnome Patrol"
+msgstr "E   [šàļûţé ţĥé Ĝñômé Þàţŕôļ ~~~~~]"
+
+#: systems/museum.gd:428
+msgid ""
+"Every plinth is full. The Museum is complete: everything Lumi found, kept "
+"for whoever comes next."
+msgstr ""
+"[Évéŕý þļîñţĥ îš ƒûļļ. Ţĥé Mûšéûm îš çômþļéţé: évéŕýţĥîñĝ Ļûmî ƒôûñð, ķéþţ "
+"ƒôŕ ŵĥôévéŕ çôméš ñéxţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/codex_screen.gd:549
+msgid "LUMI'S COLLECTION"
+msgstr "[ĻÛMÎ'Š ÇÔĻĻÉÇŢÎÔÑ ~~~]"
+
+#: ui/codex_screen.gd:550
+msgid "%d / %d complete"
+msgstr "[%d / %d çômþļéţé ~~~]"
+
+#: ui/codex_screen.gd:588
+msgid "TRINKETS AND CURIOS"
+msgstr "[ŢŔÎÑĶÉŢŠ ÀÑÐ ÇÛŔÎÔŠ ~~~~]"
+
+#: ui/codex_screen.gd:600
+msgid "EVERY PLANET"
+msgstr "[ÉVÉŔÝ ÞĻÀÑÉŢ ~]"
+
+#: ui/codex_screen.gd:603
+msgid "In Lumi's collection. It has a plinth in the Museum."
+msgstr "[Îñ Ļûmî'š çôļļéçţîôñ. Îţ ĥàš à þļîñţĥ îñ ţĥé Mûšéûm. ~~~~~~~~~~~~~~~]"
+
+#: ui/codex_screen.gd:605
+msgid "Hint: %s"
+msgstr "[Ĥîñţ: %s ~]"
+
+#: ui/codex_screen.gd:607
+msgid "The Museum: built"
+msgstr "[Ţĥé Mûšéûm: bûîļţ ~~~]"
+
+#: ui/codex_screen.gd:607
+msgid "The Museum is built at Cradle Returns, near the end of the journey."
+msgstr ""
+"[Ţĥé Mûšéûm îš bûîļţ àţ Çŕàðļé Ŕéţûŕñš, ñéàŕ ţĥé éñð ôƒ ţĥé ĵôûŕñéý. "
+"~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/achievements.json:achievements[museum_complete].name
+msgid "For Whoever Comes Next"
+msgstr "[Fôŕ Ŵĥôévéŕ Çôméš Ñéxţ ~~~~~]"
+
+#: data/achievements.json:achievements[museum_complete].desc
+msgid "Fill every plinth in the Museum."
+msgstr "[Fîļļ évéŕý þļîñţĥ îñ ţĥé Mûšéûm. ~~~~~~~~]"
+
+#: data/eggs.json:eggs[gnomes].prompt
+msgid "E   pick up gnome"
+msgstr "E   [þîçķ ûþ ĝñômé ~~]"
+
+#: data/eggs.json:eggs[gnomes].hint
+msgid "Five small guards, each watching a different street. Pick them up."
+msgstr ""
+"[Fîvé šmàļļ ĝûàŕðš, éàçĥ ŵàţçĥîñĝ à ðîƒƒéŕéñţ šţŕééţ. Þîçķ ţĥém ûþ. "
+"~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[tv].lore
+msgid ""
+"A television on a lawn chair, still looping Old Town's last news broadcast: "
+"the spring seed swap, the Ledger's rigs coming down on their cables, the two "
+"suns' worlds strip-mined and buried in waste, the shuttles rising to the "
+"Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
+msgstr ""
+"[À ţéļévîšîôñ ôñ à ļàŵñ çĥàîŕ, šţîļļ ļôôþîñĝ Ôļð Ţôŵñ'š ļàšţ ñéŵš bŕôàðçàšţ: "
+"ţĥé šþŕîñĝ šééð šŵàþ, ţĥé Ļéðĝéŕ'š ŕîĝš çômîñĝ ðôŵñ ôñ ţĥéîŕ çàbļéš, ţĥé ţŵô "
+"šûñš' ŵôŕļðš šţŕîþ-mîñéð àñð bûŕîéð îñ ŵàšţé, ţĥé šĥûţţļéš ŕîšîñĝ ţô ţĥé "
+"Çŕàðļé, àñð à bàññéŕ ôñ ţĥé ţôŵñ ĥàļļ ţĥàţ šàýš ŴÉ'ĻĻ BÉ BÀÇĶ. Ţĥéñ šţàţîç. "
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[tv].toast
+msgid ""
+"The broadcast ends in snow. Somebody left it running for whoever came back."
+msgstr ""
+"[Ţĥé bŕôàðçàšţ éñðš îñ šñôŵ. Šômébôðý ļéƒţ îţ ŕûññîñĝ ƒôŕ ŵĥôévéŕ çàmé bàçķ. "
+"~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/eggs.json:eggs[tv].hint
+msgid "Somebody left the news on. Adjust the antenna."
+msgstr "[Šômébôðý ļéƒţ ţĥé ñéŵš ôñ. Àðĵûšţ ţĥé àñţéññà. ~~~~~~~~~~~~~]"
+
+#: data/museum.json:exhibits[gnomes].hint
+msgid "Five garden gnomes guard Old Town's streets. Pick them up."
+msgstr ""
+"[Fîvé ĝàŕðéñ ĝñôméš ĝûàŕð Ôļð Ţôŵñ'š šţŕééţš. Þîçķ ţĥém ûþ. "
+"~~~~~~~~~~~~~~~~~]"
+
+#: data/museum.json:exhibits[biscuit].name
+msgid "Biscuit's Shell"
+msgstr "[Bîšçûîţ'š Šĥéļļ ~~]"
+
+#: data/museum.json:exhibits[time_capsule].name
+msgid "Time Capsule"
+msgstr "[Ţîmé Çàþšûļé ~]"
+
+#: data/museum.json:exhibits[broadcast].name
+msgid "The Last Broadcast"
+msgstr "[Ţĥé Ļàšţ Bŕôàðçàšţ ~~~]"
+
+#: data/museum.json:exhibits[broadcast].hint
+msgid "A TV on a lawn chair is still on. Adjust the antenna."
+msgstr ""
+"[À ŢV ôñ à ļàŵñ çĥàîŕ îš šţîļļ ôñ. Àðĵûšţ ţĥé àñţéññà. ~~~~~~~~~~~~~~~~]"
+
+#: data/museum.json:exhibits[gold_cube].name
+msgid "The Golden Cube"
+msgstr "[Ţĥé Ĝôļðéñ Çûbé ~~]"
+
+#: data/museum.json:exhibits[curiosities].hint
+msgid "Every curiosity on every planet (Codex > Curiosities has the hints)."
+msgstr ""
+"[Évéŕý çûŕîôšîţý ôñ évéŕý þļàñéţ (Çôðéx > Çûŕîôšîţîéš ĥàš ţĥé ĥîñţš). "
+"~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/museum.json:exhibits[shards].hint
+msgid "Letters, notes and drawings surface as the ground is cleaned."
+msgstr ""
+"[Ļéţţéŕš, ñôţéš àñð ðŕàŵîñĝš šûŕƒàçé àš ţĥé ĝŕôûñð îš çļéàñéð. "
+"~~~~~~~~~~~~~~~~~~]"
+
+#: data/museum.json:exhibits[trinkets].name
+msgid "Trinkets and Curios"
+msgstr "[Ţŕîñķéţš àñð Çûŕîôš ~~~~]"
+
+#: data/museum.json:exhibits[trinkets].hint
+msgid "World events, requests, streaks and Curio Capsules."
+msgstr "[Ŵôŕļð évéñţš, ŕéqûéšţš, šţŕéàķš àñð Çûŕîô Çàþšûļéš. ~~~~~~~~~~~~~~~]"
+
+#: data/museum.json:exhibits[ochre_glass].hint
+msgid "Restore Ochre."
+msgstr "[Ŕéšţôŕé Ôçĥŕé. ~~]"
+
+#: data/museum.json:exhibits[tidewell_pearl].hint
+msgid "Restore Tidewell."
+msgstr "[Ŕéšţôŕé Ţîðéŵéļļ. ~~~]"
+
+#: data/museum.json:exhibits[rime_core].hint
+msgid "Restore Rime."
+msgstr "[Ŕéšţôŕé Ŕîmé. ~~]"
+
+#: data/museum.json:exhibits[anvil_ingot].hint
+msgid "Restore Anvil."
+msgstr "[Ŕéšţôŕé Àñvîļ. ~~]"
+
+#: data/wren_lines.json:museum_complete
+msgid "...all of it... kept..."
+msgstr "[...àļļ ôƒ îţ... ķéþţ... ~~~~~]"
+
+#: data/wren_lines.json:museum_complete
+msgid ""
+"Every plinth full. Whoever comes next will know exactly who was here, and "
+"what they loved."
+msgstr ""
+"[Évéŕý þļîñţĥ ƒûļļ. Ŵĥôévéŕ çôméš ñéxţ ŵîļļ ķñôŵ éxàçţļý ŵĥô ŵàš ĥéŕé, àñð "
+"ŵĥàţ ţĥéý ļôvéð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:museum_complete
+msgid ""
+"The Museum is complete. I've logged it as a landmark. Not a strategic one. A "
+"sentimental one."
+msgstr ""
+"[Ţĥé Mûšéûm îš çômþļéţé. Î'vé ļôĝĝéð îţ àš à ļàñðmàŕķ. Ñôţ à šţŕàţéĝîç ôñé. "
+"À šéñţîméñţàļ ôñé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:museum_complete
+msgid ""
+"Every last gnome, shard and ring, on its plinth. You didn't just clean the "
+"world, {name}. You remembered it."
+msgstr ""
+"[Évéŕý ļàšţ ĝñômé, šĥàŕð àñð ŕîñĝ, ôñ îţš þļîñţĥ. Ýôû ðîðñ'ţ ĵûšţ çļéàñ ţĥé "
+"ŵôŕļð, {name}. Ýôû ŕémémbéŕéð îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_tv
+msgid "...broadcast... we'll be... back..."
+msgstr "[...bŕôàðçàšţ... ŵé'ļļ bé... bàçķ... ~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_tv
+msgid ""
+"That was the last news out of Old Town. The rigs, the waste, the shuttles up "
+"to me. I carried every one of those people."
+msgstr ""
+"[Ţĥàţ ŵàš ţĥé ļàšţ ñéŵš ôûţ ôƒ Ôļð Ţôŵñ. Ţĥé ŕîĝš, ţĥé ŵàšţé, ţĥé šĥûţţļéš "
+"ûþ ţô mé. Î çàŕŕîéð évéŕý ôñé ôƒ ţĥôšé þéôþļé. "
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_tv
+msgid "'We'll be back.' They meant it. I still have the passenger list."
+msgstr ""
+"['Ŵé'ļļ bé bàçķ.' Ţĥéý méàñţ îţ. Î šţîļļ ĥàvé ţĥé þàššéñĝéŕ ļîšţ. "
+"~~~~~~~~~~~~~~~~~~~]"
+
+#: data/wren_lines.json:egg_tv
+msgid ""
+"Still broadcasting, after all this time. Somebody wanted whoever came back "
+"to know what happened. Now you do."
+msgstr ""
+"[Šţîļļ bŕôàðçàšţîñĝ, àƒţéŕ àļļ ţĥîš ţîmé. Šômébôðý ŵàñţéð ŵĥôévéŕ çàmé bàçķ "
+"ţô ķñôŵ ŵĥàţ ĥàþþéñéð. Ñôŵ ýôû ðô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
