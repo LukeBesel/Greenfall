@@ -313,6 +313,7 @@ func _build_depot(site: Node3D) -> void:
 	var sp: SitePrefab = globe.site_manager.prefab(0) if globe.site_manager else null  # [orbD] on the site's depot anchor
 	if sp:
 		depot.transform = sp.anchor_local("depot")
+		depot.seat_bin(sp)  # [v3clear] the bin body on the "bin" anchor, inside its bay
 	w.set("depot", depot)
 
 
@@ -481,6 +482,8 @@ func _build_story() -> void:
 	tut.world = w
 	w.add_child(tut)
 	w.set("tutorial", tut)
+	if DevHooks.has("clarity-log"):  # [v3clear] what the player is told, over time (tools/clarity_log.gd)
+		w.add_child(ClarityLog.new(w))
 	var ct := Contracts.new()
 	ct.name = "Contracts"
 	ct.world = w
@@ -818,6 +821,9 @@ func reseat_yard() -> void:
 	var bin_reach: Variant = camp.get("_bin_anchor") if camp else null
 	if bin_reach is Node3D:
 		(bin_reach as Node3D).global_position = yard_point("bin")
+	var dep: Variant = w.get("depot")  # [v3clear] the bin body follows its anchor too
+	if dep is Depot and globe.site_manager and globe.site_manager.prefab(0):
+		(dep as Depot).seat_bin(globe.site_manager.prefab(0))
 	var cmp: Node3D = w.get("composter") as Node3D  # the compost press
 	if cmp:
 		var cs: Array = yard_slot("composter", Composter.POS)

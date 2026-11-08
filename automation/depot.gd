@@ -22,6 +22,7 @@ var _feed_timer: float = 0.0
 var _combo: int = 0
 var _combo_timer: float = 0.0
 var _scale_post: Node3D  # [yard]
+var _mouth_y: float = 0.0  # [v3clear] the bin body's mouth height (follows seat_bin)
 var _needle: MeshInstance3D
 var _needle_t: float = 0.0
 var _t: float = 0.0
@@ -230,5 +231,20 @@ func _build_bin_art(l: int) -> Vector3:
 	fill.scale = (b["fill"] as Array)[1]
 	root.add_child(fill)
 	# [yard] labels are kit decals on the body now (images, never 3D text)
-	_chute_mouth = _chute.position + Vector3(0, float(b["mouth_y"]), 0)
+	_mouth_y = float(b["mouth_y"])
+	_chute_mouth = _chute.position + Vector3(0, _mouth_y, 0)
 	return b["size"]
+
+
+## [v3clear] Stands the bin body on a site's "bin" anchor (owner item 41 / v2guide bug: the chute
+## sat 4.3 m from the anchor that the marked, lit bay and the dump reach are built round, so the bin
+## stood outside its bay). The body keeps facing the depot's +z (the yard).
+func seat_bin(prefab: Node) -> void:
+	if bare or _chute == null or prefab == null or not prefab.has_method("anchor"):
+		return
+	if prefab.call("anchor", "bin") == null:
+		return
+	var at: Vector3 = transform.affine_inverse() * (prefab.call("anchor_local", "bin") as Transform3D).origin
+	at.y = 0.0
+	_chute.position = at
+	_chute_mouth = at + Vector3(0, _mouth_y, 0)

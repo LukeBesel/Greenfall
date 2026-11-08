@@ -919,6 +919,9 @@ func _manage(p: Patch) -> void:
 			_bench_trip = true
 		return
 	_last_bench_t = _now()
+	var cp: Camp = Camp.of(world)  # [v3clear] at the bench a person repairs it first (the checklist's step 1)
+	if cp and not Camp.bench_ok():
+		cp.repair_now()
 	_shop(want)
 
 
