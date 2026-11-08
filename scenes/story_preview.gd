@@ -13,6 +13,8 @@ var _i: int = 0
 var _pod: Node3D
 var _cam: Camera3D
 var _saving: bool = false
+## [time, callable] run on the preview's own clock (the shots' clock).
+var _events: Array = []
 
 
 func _ready() -> void:
@@ -57,9 +59,9 @@ func _setup_pod(crash: bool = false) -> void:
 	we.environment = env
 	add_child(we)
 	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-22, 140, 0)
-	sun.light_energy = 1.6
-	sun.light_color = Color(1.0, 0.8, 0.62)
+	sun.rotation_degrees = Vector3(-38, 150, 0)
+	sun.light_energy = 1.7
+	sun.light_color = Color(1.0, 0.95, 0.88)
 	sun.shadow_enabled = true
 	add_child(sun)
 	var ground := MeshInstance3D.new()
@@ -80,9 +82,9 @@ func _setup_pod(crash: bool = false) -> void:
 		EscapePod.set_open(pod, true, CrashSite.LEAN.x)
 		var eye: Vector3 = Vector3(-4.6, 2.2, -1.2)
 		_cam.look_at_from_position(eye, Vector3(0.6, 0.9, 1.0), Vector3.UP)
+		site.set_stage(0)
 		_shots = [[4.0, Callable()], [7.0, Callable()], [15.0, Callable()]]
-		get_tree().create_timer(4.6).timeout.connect(func() -> void: site.set_stage(1))
-		get_tree().create_timer(7.6).timeout.connect(func() -> void: site.set_stage(2))
+		_events = [[4.5, func() -> void: site.set_stage(1)], [7.5, func() -> void: site.set_stage(2)]]
 		return
 	var front: Vector3 = pod.global_transform * Vector3(1.0, 1.1, -4.6)
 	_cam.look_at_from_position(front, pod.global_transform * Vector3(0, 0.85, 0), Vector3.UP)
@@ -125,6 +127,8 @@ func _setup_loading() -> void:
 
 func _process(delta: float) -> void:
 	_t += minf(delta, 0.05)
+	while not _events.is_empty() and _t >= float(_events[0][0]):
+		(_events.pop_front()[1] as Callable).call()
 	if _i >= _shots.size():
 		if not _shots.is_empty() and _t > float(_shots[-1][0]) + 0.5:
 			get_tree().quit()

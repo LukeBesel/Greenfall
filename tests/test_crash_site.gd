@@ -43,4 +43,7 @@ func test_site_mends_on_upgrade() -> void:
 	GameState.upgrades = {"scoop": CrashSite.REPAIR_LEVELS}
 	EventBus.upgrade_bought.emit("scoop", CrashSite.REPAIR_LEVELS)
 	assert_eq(site.stage, 2)
+	var m: Material = (site.pod.get_node("Body") as MeshInstance3D).mesh.surface_get_material(0)
+	if m is StandardMaterial3D:
+		assert_almost_eq((m as StandardMaterial3D).albedo_color.r, EscapePod.PEARL.r, 0.01, "repaired paint is clean pearl")
 	assert_false((site.pod.get_node("Smoke") as CPUParticles3D).emitting)
