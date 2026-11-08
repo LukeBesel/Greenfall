@@ -217,20 +217,40 @@ and `[orbit-perf]`.
 Medium keeps phase A's radii. Junk density is a design value (~70 pieces per 10 m hex) and is
 not cut per preset; the junk ring is the streamer's 70 m near ring on every preset.
 
-### Measured (headless, scoop walk with the Future Layer on 148 cells, 110 s)
+### Measured (headless, scoop walk with the Future Layer on 148 cells, 110 s; phase A globe scene)
 
 `godot --headless --path . -- --fresh --orbit --orbit-walk --orbit-scoop --orbit-future=10 [--orbit-hex=13.5 | --orbit-level=8] --quit-after=110`
 
 | Globe | Hexes | R | Ready (load) | Process ms avg (max) | Junk pieces drawn | Chunk tris (LOD 0/1 count) | Shell tris | Chunk build (worker) max | Chunk apply (main) max | Memory |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Verdance (level 7, 10 m) | 163,842 | 1,840 m | 10.3 s | 9-23 (17-55) | 1,800-2,450 | 73-80k (6-7 / 12-14) | 61k | 308 ms | 9 ms | 597 MB |
-| Anvil radius (level 7, 13.5 m hexes) | 163,842 | 2,485 m | 9.4 s | 10-11 (22-37) | 1,260-1,610 | 55-58k (4-5 / 9-10) | 61k | 100 ms | 14 ms | 596 MB |
-| Upper bound (level 8, 10 m) | 655,362 | 3,681 m | 9.1 s (grid cached; 32.6 s first time, planet 15.5 s) | 19-29 (45-68) | 4,340-4,760 | 106-109k (7 / 15-17) | 61k | 180 ms | 26 ms | 709 MB |
+| Anvil radius at the old 1.35x (level 7, 13.5 m hexes) | 163,842 | 2,485 m | 9.4 s | 10-11 (22-37) | 1,260-1,610 | 55-58k (4-5 / 9-10) | 61k | 100 ms | 14 ms | 596 MB |
+| Anvil now (2.0x = level 8, 10 m) | 655,362 | 3,681 m | 9.1 s (grid cached; 32.6 s first time, planet 15.5 s) | 19-29 (45-68) | 4,340-4,760 | 106-109k (7 / 15-17) | 61k | 180 ms | 26 ms | 709 MB |
 
-Anvil (~300k hexes at 10 m) sits between the level-7 and level-8 rows: per-frame costs follow
-the hexes near the camera (same 10 m density on every planet), so expect Verdance-like frame
-costs. Load time and memory sit about halfway to the level-8 row (~650 MB, planet generation
-~5-8 s the first time; the grid is cached in `user://sphere_grid_<level>.bin` after that).
+Planet sizes changed after these runs (main c56151f): Anvil is now 2.0x Verdance's radius,
+R 3,681 m, 655,362 hexes, which is exactly the level-8 row. Per-frame costs follow the hexes
+near the camera (10 m hexes on every planet), so frames cost about the same as Verdance's. The
+junk drawn is higher on that row (4.3-4.8k pieces) because its near ring covers more cells.
+Load time and memory scale with the whole planet (below).
+
+### Load time on the globe (--orbit, the real slice)
+
+`godot --headless --path . -- --fresh --orbit --orbit-planet=anvil --load-report --quit-after=30`
+prints `[orbit-load]` with the build breakdown (planet, grid, field, streamer setup, settle,
+preload wait) and the streamer stats.
+
+| Step (Anvil, 655k hexes) | Before | After | What changed |
+|---|---|---|---|
+| Streamer settle | 6-14 s | ~0.8-1.1 s | `settle(near_only)`: only LOD-0 and collision chunks block; LOD-1 streams in during the first seconds (the far shell covers it). Most of the old settle was the near ring's junk loading 40+ models one by one on the main thread (7.3 s in `near_changed`). Those models now load on loader threads from the start of the build (`OrbitPreload`). |
+| SphereField setup | 1.2-3.4 s | 0.1 s | Per-cell pass inlined over packed arrays (8 method calls per cell before). |
+| Far shell setup | 2.0-3.2 s | 0.9 s | Fine-to-coarse cell map cached in `user://sphere_shell_map_<n>_<nc>.bin`; aggregation over local packed arrays with a fixed vote array. |
+| Planet survey (PlanetData.generate) | 2-4 s | unchanged | Not touched (the survey generator); the next thing to thread. |
+| **Slice built** | 14.5-28 s here (21.9 s reported) | **8.5-9.2 s** | Container at load average ~10 on 4 cores. Verdance: 6.5 s. |
+
+All numbers are wall clock on a container running 2-3x oversubscribed (other helpers' builds
+and renders), so an idle machine is faster. Expect Anvil under 8 s on the Mac. The flag
+`--orbit-settle-all` restores the full settle (screenshots that want every LOD-1 chunk at
+frame one); `--orbit-no-preload` turns the model preload off for A/B timing.
 
 Systems added in this pass, measured in the same runs:
 - Sky (SkyDirector sphere mode): one uniform update per frame. It asked SphereCells for the
