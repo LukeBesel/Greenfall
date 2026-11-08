@@ -72,7 +72,9 @@ func _ready() -> void:
 		b.focus_neighbor_bottom = b.get_path_to(buttons[wrapi(i + 1, 0, buttons.size())])
 	# [onboard] The controls at a glance, under the menu (in game: hold Tab away from the workbench).
 	var keys_mc := MarginContainer.new()
-	keys_mc.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
+	keys_mc.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)  # [ui4] full width: the strip wraps instead of running off a small screen
+	keys_mc.add_theme_constant_override("margin_left", 24)
+	keys_mc.add_theme_constant_override("margin_right", 24)
 	keys_mc.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	keys_mc.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	keys_mc.add_theme_constant_override("margin_bottom", 28)
@@ -83,7 +85,7 @@ func _ready() -> void:
 	_settings.dim_background = false
 	_settings.closed.connect(func() -> void:
 		_menu.visible = true
-		_center_keys.visible = true  # [onboard]
+		_fit_keys()  # [onboard] [ui4]
 		_settings_btn.grab_focus())
 	_root.add_child(_settings)
 	_root.visible = false
@@ -128,7 +130,14 @@ func open_menu() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	EventBus.ui_modal_changed.emit(true)
 	LateMenu.refresh(self)  # [late] show Garden Mode / Ark Bridge once they are open
+	_fit_keys()
 	_first.call_deferred("grab_focus")
+
+
+## [ui4] The key strip only shows where it can't overlap the menu (short screens / big UI scale).
+func _fit_keys() -> void:
+	if _center_keys:
+		_center_keys.visible = get_viewport().get_visible_rect().size.y >= 680.0
 
 
 func close_menu() -> void:

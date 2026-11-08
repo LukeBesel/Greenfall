@@ -310,6 +310,12 @@ func _ready() -> void:
 	scroll.custom_minimum_size = Vector2(0, 330)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	sv.add_child(scroll)
+	# [ui4] The crew list gives up height on short screens (1280x720 at 125%) so the panel fits.
+	var fit_list := func() -> void:
+		if is_instance_valid(scroll) and scroll.is_inside_tree():
+			scroll.custom_minimum_size.y = clampf(scroll.get_viewport().get_visible_rect().size.y - 370.0, 140.0, 330.0)
+	fit_list.call_deferred()
+	get_viewport().size_changed.connect(fit_list)
 	_list = VBoxContainer.new()
 	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_list.add_theme_constant_override("separation", 3)
@@ -615,8 +621,34 @@ func _rebuild_list() -> void:
 	for c: Node in _list.get_children():
 		c.queue_free()
 	_fill_list()
+	_link_list_focus()  # [ui4]
 	if refocus:
 		_restore_focus()
+
+
+## [ui4] Explicit up / down D-pad links down the crew list (group, Build + Upgrade row, robots),
+## so every row is reachable with a pad even when the list scrolls (Godot's geometric search
+## skipped robot rows under a build row). The ends keep their default exits.
+func _link_list_focus() -> void:
+	var rows: Array = []  # each: Array[Button] (one per list line)
+	for c: Node in _list.get_children():
+		if c.is_queued_for_deletion():
+			continue
+		if c is Button:
+			rows.append([c])
+		elif c is HBoxContainer:
+			var line: Array = []
+			for b: Node in c.get_children():
+				if b is Button:
+					line.append(b)
+			if not line.is_empty():
+				rows.append(line)
+	for i: int in rows.size():
+		for b: Button in rows[i]:
+			if i > 0:
+				b.focus_neighbor_top = b.get_path_to(rows[i - 1][0])
+			if i < rows.size() - 1:
+				b.focus_neighbor_bottom = b.get_path_to(rows[i + 1][0])
 
 
 ## Content row laid over a Button (the Button keeps focus, toggle and metas).
@@ -753,6 +785,10 @@ func _add_build_row(role_id: String) -> void:
 			_refresh())
 		_style_button(u, UITheme.GOLD, false)
 		row.add_child(u)
+		# [ui4] Explicit D-pad links: the narrow Upgrade button beside the wide Build button was
+		# unreachable with Godot's geometric search inside the scrolled list.
+		b.focus_neighbor_right = b.get_path_to(u)
+		u.focus_neighbor_left = u.get_path_to(b)
 		_list.add_child(row)
 		var info := UITheme.label("", 11, Color(UITheme.MUTED, 0.85))
 		info.add_theme_constant_override("shadow_outline_size", 0)
