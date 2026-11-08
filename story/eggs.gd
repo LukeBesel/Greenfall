@@ -384,6 +384,7 @@ func _build_stars() -> void:
 	_star_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	_star_mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
 	_star_mat.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	_star_mat.billboard_keep_scale = true  # [eggs2] without it every star drew at full size and W R E N blurred into one blob
 	_star_mat.disable_fog = true
 	_star_mat.albedo_texture = _star_tex()  # [eggs2] was the drone's BLACK shadow blob: additive black = no stars at all
 	_star_mat.albedo_color = Color(0.85, 0.92, 1.0, 0.0)
