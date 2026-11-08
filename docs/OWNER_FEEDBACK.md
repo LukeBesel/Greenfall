@@ -114,6 +114,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [x] Every planet has the same two suns, sized by distance.
 - [x] Planet globes are detailed from afar, with the ice-spike, sand and fire rings.
 - [x] Rime is merged.
+- [ ] Rime at night is bright enough to read, and the gas giant is smaller. (rime2)
 - [ ] Ochre, Tidewell (ocean, hover over water) and Anvil (red, Nether vibe) are merged.
 
 ## Music and docs
