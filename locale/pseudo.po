@@ -18826,3 +18826,14 @@ msgid ""
 msgstr ""
 "[Ļàñðîñĝ ĝéàŕ, çàŕĝô þôðš àñð à ŵàŕþ çôŕé: îñšţàñţ ĥôþš ŵîţĥ ñô ŕéçĥàŕĝé. "
 "Çàŕĝô þôðš çàŕŕý 4x, évéŕý 30 š. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: planet/world_bounds.gd:105
+msgid ""
+"WREN: That's the edge of the survey zone, Lumi. Nothing out there but haze."
+msgstr ""
+"[ŴŔÉÑ: Ţĥàţ'š ţĥé éðĝé ôƒ ţĥé šûŕvéý žôñé, Ļûmî. Ñôţĥîñĝ ôûţ ţĥéŕé bûţ ĥàžé. "
+"~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: planet/world_bounds.gd:166
+msgid "Lumi hovers back onto solid ground."
+msgstr "[Ļûmî ĥôvéŕš bàçķ ôñţô šôļîð ĝŕôûñð. ~~~~~~~~~]"

@@ -16872,3 +16872,12 @@ msgid ""
 "Landing gear, cargo pods and a warp core: instant hops with no recharge. "
 "Cargo pods carry 4x, every 30 s."
 msgstr ""
+
+#: planet/world_bounds.gd:105
+msgid ""
+"WREN: That's the edge of the survey zone, Lumi. Nothing out there but haze."
+msgstr ""
+
+#: planet/world_bounds.gd:166
+msgid "Lumi hovers back onto solid ground."
+msgstr ""

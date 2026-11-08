@@ -44,6 +44,7 @@ var photo: PhotoMode  # [photo] photo mode (ui/photo_mode.gd)
 var fauna: Fauna  # [wild] ambient animals (fauna/fauna.gd)
 var frontier: FrontierDistrict  # [biomes] late-game frontier districts (planet/frontier_district.gd)
 var planet_env: Dictionary = {}  # [planet-rime] dev: --planet-env=<id> dresses a district with a planet env (data/planets.json)
+var bounds: WorldBounds  # [orbit] soft edge + fall rescue (planet/world_bounds.gd)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
 var depot: Depot
@@ -326,6 +327,15 @@ func _ready() -> void:
 		cam.distance = DevHooks.get_f("demo-dist", 2.8)
 		cam.pitch = -0.3
 		cam.snap()
+	bounds = WorldBounds.new()  # [orbit] Lumi, robots and cubes never fall off the world
+	bounds.name = "WorldBounds"
+	bounds.world = self
+	add_child(bounds)
+	if DevHooks.has("edge-test"):  # [orbit] headless WorldBounds check
+		var et := EdgeTest.new()
+		et.world = self
+		et.bounds = bounds
+		add_child(et)
 	if DevHooks.has("lens"):
 		cam.lens_view = true
 	if DevHooks.has("cam"):
