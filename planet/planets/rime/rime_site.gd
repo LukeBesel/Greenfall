@@ -391,14 +391,14 @@ func _dome(a: KitMesh.Builder, ruin: KitMesh.Builder, grn: KitMesh.Builder, c: V
 			TideProps.pipe(a, o, bs, Vector3(cos(a0) * rr, 0.5 + r * sin(lat), sin(a0) * rr), Vector3(cos(a1) * rr, 0.5 + r * sin(lat), sin(a1) * rr), 0.07, TideProps.m(self, "cream"), 6)
 	var glass := SphereMesh.new()
 	glass.radius = r - 0.05
-	glass.height = (r - 0.05) * 2.0
+	glass.height = r - 0.05
 	glass.is_hemisphere = true
 	glass.radial_segments = 30
 	glass.rings = 10
 	TideProps.add_mesh(grn, "glasshouse", glass, Transform3D(Basis(), o + Vector3(0, 0.5, 0)))
 	var bed := SphereMesh.new()
 	bed.radius = r * 0.8
-	bed.height = r * 1.6
+	bed.height = r * 0.8
 	bed.is_hemisphere = true
 	bed.radial_segments = 16
 	bed.rings = 5
