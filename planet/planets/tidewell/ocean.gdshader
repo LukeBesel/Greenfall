@@ -272,7 +272,7 @@ void fragment() {
 	foam += smoothstep(0.25, 0.0, depth) * 0.5 * fnoise;
 	float cap = smoothstep(0.8, 1.0, swell_h) * smoothstep(0.6, 0.85, fnoise) * smoothstep(0.1, 0.3, swell_k);
 	foam += cap * 0.55;
-	foam += scum;
+	foam += scum * 0.0;  // scum lines read as stray white strokes from above: off
 	foam = clamp(foam * (1.0 - oil * 0.7), 0.0, 1.0);
 	vec3 foam_c = mix(vec3(0.94, 0.97, 0.98), vec3(0.62, 0.6, 0.52), (1.0 - clarity) * 0.6);
 	col = mix(col, foam_c, foam);
