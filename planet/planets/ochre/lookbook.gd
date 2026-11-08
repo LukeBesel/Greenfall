@@ -86,10 +86,24 @@ static func build(env: OchreEnv) -> void:
 ## left and futuristic (stage 5, restoration 1) on the right.
 static func build_site(env: OchreEnv, id: String) -> void:
 	var y0: float = top(env.pit, Vector2(260.0, 160.0))
+	# A level stage round the two sites, with holes where they sit (a pit site digs below it).
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var cells := Vector2i(130, 80)
+	for i: int in cells.x:
+		for j: int in cells.y:
+			var x0: float = -130.0 + i * 2.0
+			var z0: float = -80.0 + j * 2.0
+			var c := Vector2(x0 + 1.0, z0 + 1.0)
+			if c.distance_to(Vector2(-56.0, 0.0)) < 47.0 or c.distance_to(Vector2(56.0, 0.0)) < 47.0:
+				continue
+			for v: Vector2 in [Vector2(x0, z0), Vector2(x0 + 2.0, z0), Vector2(x0 + 2.0, z0 + 2.0), Vector2(x0, z0), Vector2(x0 + 2.0, z0 + 2.0), Vector2(x0, z0 + 2.0)]:
+				st.set_color(Color(0.3, 1.0, 0.5, 0.0))
+				st.set_normal(Vector3.UP)
+				st.add_vertex(Vector3(ORIGIN.x + v.x, y0 - 0.05, ORIGIN.y + v.y))
 	var pad := MeshInstance3D.new()
-	pad.mesh = _vc_box(Vector3(260.0, 6.0, 160.0), Color(0.3, 1.0, 0.5, 0.0))
+	pad.mesh = st.commit()
 	pad.material_override = env._tmat()
-	pad.position = Vector3(ORIGIN.x, y0 - 3.05, ORIGIN.y)
 	env.add_child(pad)
 	for k: int in 2:
 		var holder := Node3D.new()
