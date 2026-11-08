@@ -68,6 +68,7 @@ var _flower: Node3D
 var _sun: DirectionalLight3D
 var _env: Environment
 var dressing: StreetDressing
+var street_power: StreetPower  # [world3] the district's dead street lights (planet/street_power.gd)
 ## Shack and yard lamp pieces that sit derelict while a non-starter base is at level 1.
 var _ruin_bits: Dictionary = {}
 var _t: float = 0.0
@@ -503,6 +504,7 @@ func _ready() -> void:
 	hex_levels.world = self
 	add_child(hex_levels)
 	hex_levels.setup()
+	_setup_street_power()  # [world3]
 	# Future layer: the district builds up into a glowing city as hexes level (planet/future_layer.gd).
 	if DevHooks.has("future"):
 		if frontier:  # [biomes] thaw the ice / run the pumps first so the preview covers every hex
@@ -918,6 +920,22 @@ func _build_board() -> void:
 	gen.rotation_degrees = Vector3(0, 70, 0)
 	add_child(gen)
 	_ruin_bits["generator"] = gen  # [camp]
+
+
+## [world3] When you land nothing works: street lamps, shop neon and string lights wake up as
+## their hexes reach Sustained, or round the base at hub level 3 (planet/street_power.gd).
+func _setup_street_power() -> void:
+	street_power = StreetPower.new()
+	street_power.name = "StreetPower"
+	add_child(street_power)
+	street_power.setup(field, hex_levels, hub.level if hub else 1)
+	if city:
+		street_power.add_bulbs(city.lamp_bulbs)
+	if dressing:
+		street_power.add_groups(dressing.power_groups)
+	street_power.apply(false)
+	if hub:
+		hub.level_changed.connect(func(l: int) -> void: street_power.set_hub_level(l, true))
 
 
 ## Level 1 at any base but Old Town's start: the lean-to roof has slumped off its frame, the side

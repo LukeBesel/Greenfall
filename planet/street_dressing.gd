@@ -111,8 +111,12 @@ var _flags: Array = []                      # [Transform3D, Color]
 var _hover: Array[Node3D] = []              # floating things animated in _process
 var _t: float = 0.0
 var _slab_mat: ShaderMaterial
-var _shop_neon: ShaderMaterial
-var _neon_lights: Array[Light3D] = []
+## [world3] Street lights that need the district's power (planet/street_power.gd): neon shop
+## signs, the string lights across the streets. Read by the slice once everything is built.
+var power_groups: Array[Dictionary] = []
+var _street_bulbs: Dictionary = {}  # hex -> bulbs while _build_street_lines runs
+var _street_run: bool = false
+var _built: bool = false
 var _pennant: Array[Color] = []
 var _plastic: Array[Color] = []
 var _awning_cols: Array[Color] = []
@@ -204,7 +208,10 @@ func build(p_layout: CityLayout, p_field: HexField, p_hub: int = 0, p_district: 
 	_build_beacon()
 	await BuildBudget.check("dress:flush")
 	_flush()
+	for g: Dictionary in power_groups:  # [world3] StreetPower switches these, not the layer reveal
+		(g["node"] as Node).set_meta("street_power", true)
 	set_level(level, false)
+	_built = true
 
 
 # --- Levels: ruined -> patched -> futuristic -------------------------------------------------
@@ -277,6 +284,8 @@ func set_level(l: int, animate: bool) -> void:
 			node.scale = Vector3.ONE
 			if not want and level > r.y:
 				node.queue_free()
+			elif want and _built:  # [world3] e.g. the Yard Lamps just built: its lights flicker on
+				_flicker_layer(node, 0.3)
 			continue
 		var tw := create_tween()
 		if want:
@@ -288,6 +297,7 @@ func set_level(l: int, animate: bool) -> void:
 				for q: int in 5:
 					Vfx.burst("sparkle", Vector3(randf_range(-7, 7), 0.6, randf_range(-7, 7)), Color(0.5, 0.95, 1.0) if level >= 3 else Color(1.0, 0.8, 0.4), 0.6))
 			tw.tween_property(node, "scale", Vector3.ONE, 0.8).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+			_flicker_layer(node, 1.6 + k * 0.45)  # [world3] its lights come on once it stands
 			k += 1
 		else:
 			tw.tween_interval(0.2)
@@ -298,6 +308,16 @@ func set_level(l: int, animate: bool) -> void:
 			tw.tween_callback(node.queue_free if level > r.y else node.hide)
 	_apply_surface(animate)
 	set_process(level >= 4)
+
+
+## [world3] A layer that arrives in play: its lamps, bulbs and tubes stutter on (the layer's own
+## lights; street-power groups inside it wait for the district's power).
+func _flicker_layer(node: Node3D, delay: float) -> void:
+	var mats: Array = []
+	var lights: Array = []
+	PowerFx.collect(node, mats, lights)
+	if not mats.is_empty() or not lights.is_empty():
+		PowerFx.flicker_on(self, mats, lights, delay)
 
 
 func _apply_surface(animate: bool) -> void:
@@ -313,7 +333,6 @@ func _apply_surface(animate: bool) -> void:
 		grime = 0.35
 		drift = _drift * 0.8
 	var glow: float = 0.0 if level < 3 else (0.7 if level < 5 else 1.1)
-	var neon: float = 5.0 if start_base or level >= 3 else 0.0
 	var vals: Dictionary = {"fade": fade, "grime": grime, "drift": drift, "glow": glow}
 	if _slab_mat:
 		for key: String in vals:
@@ -321,11 +340,7 @@ func _apply_surface(animate: bool) -> void:
 				create_tween().tween_property(_slab_mat, "shader_parameter/" + key, vals[key], 2.0).set_delay(0.6)
 			else:
 				_slab_mat.set_shader_parameter(key, vals[key])
-	if _shop_neon:
-		_shop_neon.set_shader_parameter("energy", neon)
-	for lt: Light3D in _neon_lights:
-		if is_instance_valid(lt):
-			lt.visible = neon > 0.0
+	# [world3] Shop neon is switched by StreetPower (district power), not by the hub level.
 
 
 func _process(delta: float) -> void:
@@ -574,7 +589,7 @@ func _build_shopfronts() -> void:
 				_neon_sign(txt, p, -al3, 0.42, ncol, 0.0, true)
 			else:
 				var p2: Vector3 = base + out3 * 0.42 + Vector3.UP * 3.55
-				_neon_sign(txt, p2, out3, 0.5, ncol, 1.0 if txt == "LAUNDRY" else 0.0, txt == "OPEN")
+				_neon_sign(txt, p2, out3, 0.5, ncol, 1.0 if txt == "LAUNDRY" else 0.0, txt == "OPEN", _neon_count % 3 != 1)
 		elif label_left > 0 and _rng.randf() < 0.75:
 			label_left -= 1
 			var nm: String = names[label_left % names.size()]
@@ -698,7 +713,9 @@ func _painted_sign(text: String, center: Vector3, _al: Vector3, out: Vector3, wi
 
 ## Neon tubes bent into text on a dark backing rail. `right`/`up` span the sign plane and
 ## `out` points to the viewer. state 1 = a failing sign that stutters.
-func _neon_sign(text: String, center: Vector3, out: Vector3, h: float, col: Color, state: float, frame: bool) -> void:
+## [world3] Each sign is its own node (tubes + backing) on the district's power: dead when you
+## land, and `hang` ones dangle off one bracket until the power comes back (StreetPower).
+func _neon_sign(text: String, center: Vector3, out: Vector3, h: float, col: Color, state: float, frame: bool, hang: bool = false) -> void:
 	var up := Vector3.UP
 	var right: Vector3 = up.cross(out).normalized()  # reads left-to-right for someone facing the sign
 	var s: float = h / 6.0
@@ -707,6 +724,11 @@ func _neon_sign(text: String, center: Vector3, out: Vector3, h: float, col: Colo
 	var total: float = text.length() * lw + (text.length() - 1) * gap
 	var seed_: float = float(_neon_count) * 1.37 + 0.3
 	_neon_count += 1
+	var keep_tubes: Geo = _tubes
+	var keep_deco: Geo = _deco
+	_tubes = Geo.new()
+	_deco = Geo.new()
+	var o := Vector3.ZERO  # built around the sign node's origin
 	var r: float = h * 0.04
 	var x0: float = -total * 0.5
 	var dead_letter: int = _rng.randi_range(1, text.length() - 1) if state > 0.5 else -1
@@ -718,8 +740,8 @@ func _neon_sign(text: String, center: Vector3, out: Vector3, h: float, col: Colo
 			for k: int in poly.size() - 1:
 				var a2: Vector2 = poly[k]
 				var b2: Vector2 = poly[k + 1]
-				var a: Vector3 = center + right * (x0 + a2.x * s) + up * (a2.y * s - h * 0.5) + out * 0.09
-				var b: Vector3 = center + right * (x0 + b2.x * s) + up * (b2.y * s - h * 0.5) + out * 0.09
+				var a: Vector3 = o + right * (x0 + a2.x * s) + up * (a2.y * s - h * 0.5) + out * 0.09
+				var b: Vector3 = o + right * (x0 + b2.x * s) + up * (b2.y * s - h * 0.5) + out * 0.09
 				_tubes.rod(a, b, r, col, Vector2(seed_, st))
 		x0 += lw + gap
 	var pad: float = h * 0.35
@@ -732,26 +754,59 @@ func _neon_sign(text: String, center: Vector3, out: Vector3, h: float, col: Colo
 		for k: int in 4:
 			var ca: Vector2 = corners[k]
 			var cb: Vector2 = corners[(k + 1) % 4]
-			_tubes.rod(center + right * ca.x + up * ca.y + out * 0.09, center + right * cb.x + up * cb.y + out * 0.09, r, fc, Vector2(seed_ + 0.5, 0.0))
+			_tubes.rod(o + right * ca.x + up * ca.y + out * 0.09, o + right * cb.x + up * cb.y + out * 0.09, r, fc, Vector2(seed_ + 0.5, 0.0))
 		bw += pad
 		bh += pad
-	var xf := Transform3D(Basis(right, up, out), center)
+	var xf := Transform3D(Basis(right, up, out), o)
 	_deco.box(xf, Vector3(bw, bh, 0.06), Color(0.06, 0.06, 0.07, STEEL))
 	# Little stand-offs and a transformer box: it is a real, cheap sign.
 	_deco.box(xf.translated_local(Vector3(bw * 0.3, -bh * 0.5 - 0.08, -0.02)), Vector3(0.22, 0.14, 0.1), Color(0.3, 0.3, 0.32, STEEL))
+	var node := Node3D.new()
+	node.name = "NeonSign%d" % (_neon_count - 1)
+	node.position = center
+	_cur.add_child(node)
+	var back := MeshInstance3D.new()
+	back.name = "Backing"
+	back.mesh = _deco.mesh()
+	back.material_override = _deco_mat()
+	node.add_child(back)
+	var nm := ShaderMaterial.new()
+	nm.shader = preload("res://art/shaders/neon.gdshader")
+	nm.set_shader_parameter("energy", 5.0)
+	nm.set_shader_parameter("power", 0.0)
+	var ti := MeshInstance3D.new()
+	ti.name = "Neon"
+	ti.mesh = _tubes.mesh()
+	ti.material_override = nm
+	ti.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	node.add_child(ti)
+	_tubes = keep_tubes
+	_deco = keep_deco
+	var lights: Array = []
 	if _neon_count <= 4:
 		var lt := OmniLight3D.new()
 		lt.light_color = col.lerp(Color.WHITE, 0.15)
 		lt.light_energy = 1.2
 		lt.omni_range = 4.5
 		lt.shadow_enabled = false
-		lt.position = center + out * 0.7
+		lt.position = out * 0.7
 		lt.distance_fade_enabled = true
 		lt.distance_fade_begin = 50.0
 		lt.distance_fade_length = 15.0
-		_cur.add_child(lt)
-		if _cur == _layers.get("Base"):
-			_neon_lights.append(lt)
+		lt.visible = false
+		node.add_child(lt)
+		lights.append(lt)
+	var home: Transform3D = node.transform
+	var tilt: Transform3D = home
+	if hang:
+		# Hanging off the bracket at one top corner, swung down and twisted a little off the wall.
+		var hr := RandomNumberGenerator.new()  # own RNG: the rest of the dressing stays as it was
+		hr.seed = layout.seed_value * 13 + _neon_count
+		var side: float = 1.0 if hr.randf() < 0.5 else -1.0
+		var pivot: Vector3 = right * (bw * 0.5 * side) + up * (bh * 0.5)
+		var rot := Basis(out, side * hr.randf_range(0.35, 0.6)) * Basis(up, hr.randf_range(-0.12, 0.12))
+		tilt = Transform3D(rot, center + pivot - rot * pivot)
+	power_groups.append({"at": center, "mats": [nm], "lights": lights, "node": node, "home": home, "tilt": tilt})
 
 
 func _pot(p: Vector3) -> void:
@@ -912,6 +967,12 @@ func _string_lights(a: Vector3, b: Vector3, sag: float, warm: bool, spacing: flo
 			col = col.lerp(WARM, 0.3)
 		if _rng.randf() < 0.06:
 			col = Color(0.05, 0.05, 0.05)  # a dead bulb
+		if _street_run:  # [world3] on the district's power, grouped by hex
+			var h: int = field.owner_hex(p) if field else -1
+			if not _street_bulbs.has(h):
+				_street_bulbs[h] = []
+			(_street_bulbs[h] as Array).append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), p), col])
+			continue
 		_bulbs.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), p), col])
 
 
@@ -952,6 +1013,28 @@ func _laundry_line(a: Vector3, b: Vector3, sag: float) -> void:
 ## Lines across the streets between facades that face each other, and from the yard poles to
 ## the nearest facades across the road.
 func _build_street_lines() -> void:
+	_street_run = true  # [world3]
+	_street_bulbs = {}
+	_street_lines()
+	_street_run = false
+	var bulb := _bulb_mesh()
+	for h: int in _street_bulbs:
+		var items: Array = _street_bulbs[h]
+		var bm := ShaderMaterial.new()
+		bm.shader = preload("res://art/shaders/neon.gdshader")
+		bm.set_shader_parameter("energy", 3.2)
+		bm.set_shader_parameter("twinkle", 1.0)
+		bm.set_shader_parameter("instance_seed", true)
+		bm.set_shader_parameter("power", 0.0)
+		var mmi: MultiMeshInstance3D = _mm("StreetBulbs%d" % h, bulb, items, bm, false)
+		var c := Vector3.ZERO
+		for it: Array in items:
+			c += (it[0] as Transform3D).origin
+		c /= float(items.size())
+		power_groups.append({"at": c, "hex": h, "mats": [bm], "lights": [], "node": mmi, "home": mmi.transform})
+
+
+func _street_lines() -> void:
 	var done: int = 0
 	for i: int in _facades.size():
 		for j: int in range(i + 1, _facades.size()):
@@ -1435,14 +1518,16 @@ func _flush() -> void:
 		ti.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		ti.name = "Neon"
 		_cur.add_child(ti)
-		if _cur == _layers.get("Base"):
-			_shop_neon = nm
+		if _cur == _layers.get("Base") or _cur == _layers.get("Ruin"):
+			nm.set_shader_parameter("power", 0.0)  # [world3] nothing works when you land
 	if not _bulbs.is_empty():
 		var bm := ShaderMaterial.new()
 		bm.shader = preload("res://art/shaders/neon.gdshader")
 		bm.set_shader_parameter("energy", 3.2)
 		bm.set_shader_parameter("twinkle", 1.0)
 		bm.set_shader_parameter("instance_seed", true)
+		if _cur == _layers.get("Base") or _cur == _layers.get("Ruin"):
+			bm.set_shader_parameter("power", 0.0)  # [world3] dead wires stay dead
 		var bulb := _bulb_mesh()
 		_mm("Bulbs", bulb, _bulbs, bm, false)
 	var fabric := ShaderMaterial.new()
