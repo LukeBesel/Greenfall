@@ -9,12 +9,13 @@ var _step: int = 0
 
 
 func _ready() -> void:
-	LumiStyle.dev_all = true
+	# A mid-game player: three designs unlocked, the rest still "???".
+	GameState.flags["skins_unlocked"] = ["aurora", "bolt", "pixel", "nova"]
+	GameState.stats["trinkets_found"] = 9
 	if DevHooks.has("lumi-random"):
 		var rng := RandomNumberGenerator.new()
 		rng.seed = int(DevHooks.get_f("lumi-random", 1.0))
 		LumiStyle.set_current(LumiStyle.randomized(rng, LumiStyle.current()))
-	LumiStyle.dev_all = false  # show locked parts as ??? in the shot
 	_b = LumiBuilder.open(null, self)
 	var sel: String = DevHooks.get_s("lumi-builder-slot", "")
 	if sel != "":
