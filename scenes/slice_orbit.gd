@@ -112,6 +112,9 @@ func build(p_world: Node3D) -> void:
 	var t2: int = Time.get_ticks_msec()
 	globe.streamer.settle()
 	globe.stats["settle_ms"] = Time.get_ticks_msec() - t2
+	var t3: int = Time.get_ticks_msec()
+	globe.refresh_junk_now()
+	globe.stats["junk_fill_ms"] = Time.get_ticks_msec() - t3
 	Settings.apply_quality_to_tree(w)
 	day.after_quality(view_mode == "command")
 	if DevHooks.has("give"):
@@ -126,9 +129,9 @@ func build(p_world: Node3D) -> void:
 	w.add_to_group("persist")
 	var g: OrbitPlanet = globe
 	print("[orbit] %s f=%d near ring: pieces=%d parts=%d landmarks=%d mounds=%d" % [pid, g.grid.freq, g.field.piece_pos.size(), g.field.part_pos.size(), g.field.landmarks.size(), g.junk_view.mound_count()])
-	print("[orbit] slice on the globe: R=%.0fm hexes=%d around=%.1fkm hubs=%d (nearest hub mean %.0fm, min %.0fm) loaded=%s built=%dms planet=%dms grid=%dms settle=%dms" % [
+	print("[orbit] slice on the globe: R=%.0fm hexes=%d around=%.1fkm hubs=%d (nearest hub mean %.0fm, min %.0fm) loaded=%s built=%dms planet=%dms grid=%dms settle=%dms junk_fill=%dms" % [
 		g.grid.radius_m, g.grid.cell_count(), TAU * g.grid.radius_m / 1000.0, g.sites.size(), g.hub_spacing(false), g.hub_spacing(true),
-		str(loaded), Time.get_ticks_msec() - t0, g.stats["planet_ms"], g.stats["grid_ms"], g.stats["settle_ms"]])
+		str(loaded), Time.get_ticks_msec() - t0, g.stats["planet_ms"], g.stats["grid_ms"], g.stats["settle_ms"], g.stats["junk_fill_ms"]])
 	w.emit_signal("built")
 
 
