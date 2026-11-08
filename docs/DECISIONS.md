@@ -213,8 +213,11 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
   flatter box), CCD on, lifted out of anything solid after a spawn or put-down, put down short of
   walls, and junk mounds are solid for bales only (`PhysLayers.MOUND`, `planet/mound_colliders.gd`).
   The bale shader is explicitly opaque, with desaturated per-item chunks, labels in the dominant junk's
-  accent colour and rough, sparse metal (the pale plastic colour plus sky-mirroring metal read as a
-  transparent blue block).
+  accent colour and rough, sparse metal. **Root cause of the "transparent" bale**: its mesh,
+  `ProcMesh.rounded_box`, was inside-out (counter-clockwise from outside, so back-face culling showed
+  the far inner walls: a see-through box tinted by the pale-blue plastic colour). rounded_box (used by
+  ~130 props) and the junk-heap mesh now wind clockwise from outside; `tests/test_bale_rest.gd`
+  checks the winding.
 - **[world2] Playtest #2 follow-ups**: junk heaps are solid for Lumi and robots too (MOUND | PROP),
   drawing in as the hex is cleaned, so piles are scooped from the edge, not vacuumed from inside.
   Hub/blocked hexes' ground follows the junk hexes that own it (no clean-looking patches). Pieces

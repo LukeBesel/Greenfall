@@ -615,3 +615,8 @@ Playtest #2 run (heaps now solid for Lumi and robots, `--save-dir` isolated): fi
 16.6, first Thriving 32.2, 15 hexes / 44 goals / 29.8k earned at 34.7 min. Scooping heaps from the edge
 costs time on landfill hexes; the "pace" helper is re-pacing the start anyway (slower by design).
 Single autoplay runs vary a lot (part luck, the bot digging first); compare several before tuning.
+
+Render cost at the start view (lavapipe, `--perf`, primitives / draw calls): Low 9.71M / 1848 (gen 1)
+-> 6.02M / 1739 (gen 2, after the Low budget: tiny litter items at 24 tris and 14% of the carpet,
+half the far layer in one batch per model); High 20.6M -> 27.4M before the far-layer cut (estimator
+after it: 15.4M -> 19.9M, Medium 12.5M -> 16.8M).
