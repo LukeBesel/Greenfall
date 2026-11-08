@@ -18,6 +18,7 @@ const HUB_SITE_M: float = 45.0
 const SITE_BLEND_M: float = 40.0
 
 var seed_value: int = 4471
+var spec: Dictionary = GlobeSpec.DEFAULT  # GlobeSpec.of(planet id): frequency, hub_count, radius
 var planet: PlanetData
 var grid: SphereGrid
 var terrain: SphereTerrain
@@ -37,17 +38,22 @@ var view_camera: Callable  # -> Vector3: where the camera is (for the "view" cen
 var _junk_dirty: bool = true
 
 
-## Builds the globe. planet_state / cells_state are saved dicts (empty for a new game).
-func build(p_seed: int, n_hubs: int = 10, planet_state: Dictionary = {}, cells_state: Dictionary = {}) -> void:
+## Builds the globe of `p_spec` (GlobeSpec.of: frequency, hub_count). planet_state /
+## cells_state are saved dicts (empty for a new game). n_hubs < 0: the spec's hub count.
+func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1, planet_state: Dictionary = {}, cells_state: Dictionary = {}) -> void:
 	seed_value = p_seed
+	spec = p_spec
+	var f: int = int(spec.get("frequency", GlobeSpec.VERDANCE_FREQ))
 	var t0: int = Time.get_ticks_msec()
-	planet = PlanetData.new(seed_value, 7, 10.0)
+	grid = SphereGrid.for_freq(f, GlobeSpec.HEX_M)
+	var lv: int = SphereGrid.level_of_freq(f)
+	# The survey runs on the same cells: level grids keep their GeoSphere, others share this grid.
+	planet = PlanetData.new(seed_value, lv, GlobeSpec.HEX_M) if lv >= 0 else PlanetData.new(seed_value, 0, GlobeSpec.HEX_M, GeoSphere.from_grid(grid))
 	planet.generate()
 	if not planet_state.is_empty():
 		planet.apply_dict(planet_state)
 	stats["planet_ms"] = Time.get_ticks_msec() - t0
 	var t1: int = Time.get_ticks_msec()
-	grid = SphereGrid.for_hex_size(7, 10.0)
 	terrain = SphereTerrain.new(grid, seed_value)
 	# The survey's elevation lifts the macro terrain: lakes sit low, hills read from Command view.
 	var sorted_e: PackedFloat32Array = planet.elevation.duplicate()
@@ -55,7 +61,7 @@ func build(p_seed: int, n_hubs: int = 10, planet_state: Dictionary = {}, cells_s
 	terrain.set_cell_elevation(planet.elevation, 14.0, sorted_e[int(sorted_e.size() * 0.25)])
 	cells = SphereCells.from_planet(planet)
 	stats["grid_ms"] = Time.get_ticks_msec() - t1
-	_place_hubs(n_hubs, cells_state.is_empty())
+	_place_hubs(n_hubs if n_hubs > 0 else int(spec.get("hub_count", 10)), cells_state.is_empty())
 	if not cells_state.is_empty() and not cells.apply_dict(cells_state):
 		push_warning("[orbit] saved cells didn't match this planet; starting its state fresh.")
 		_clear_sites()
@@ -272,6 +278,15 @@ func _process(_delta: float) -> void:
 		junk_view.rebuild(streamer.near_cells())
 		stats["junk"] = int(junk_view.stats.get("pieces", 0))
 		stats["junk_ms"] = int(float(junk_view.stats.get("rebuild_us", 0)) / 1000.0)
+
+
+## Draw the near ring's junk right now (after loading: no pop-in over the first frames).
+func refresh_junk_now() -> void:
+	update_centres()
+	_junk_dirty = false
+	junk_view.rebuild(streamer.near_cells())
+	junk_view.flush()
+	stats["junk"] = int(junk_view.stats.get("pieces", 0))
 
 
 ## Mean and minimum distance from each hub to its nearest other hub (m).

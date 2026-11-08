@@ -32,9 +32,9 @@ var _land: int = 0
 var _done: int = 0
 
 
-func _init(p_seed: int = 4471, level: int = 6, hex_radius_m: float = 10.0) -> void:
+func _init(p_seed: int = 4471, level: int = 6, hex_radius_m: float = 10.0, p_grid: GeoSphere = null) -> void:
 	seed_value = p_seed
-	grid = GeoSphere.cached(level)
+	grid = p_grid if p_grid else GeoSphere.cached(level)  # [orbB] any-frequency globes pass their grid
 	var cell_area: float = 2.598 * hex_radius_m * hex_radius_m
 	radius_m = sqrt(cell_area * grid.cell_count() / (4.0 * PI))
 
@@ -325,13 +325,13 @@ func cell_world(i: int) -> Vector3:
 
 
 func to_dict() -> Dictionary:
-	return {"seed": seed_value, "level": grid.level,
+	return {"seed": seed_value, "level": grid.level, "freq": grid.frequency(),  # [orbB]
 		"junk": Marshalls.raw_to_base64(junk.to_byte_array()),
 		"state": Marshalls.raw_to_base64(state)}
 
 
 func apply_dict(d: Dictionary) -> bool:
-	if int(d.get("seed", -1)) != seed_value or int(d.get("level", -1)) != grid.level:
+	if int(d.get("seed", -1)) != seed_value or int(d.get("level", -1)) != grid.level or int(d.get("freq", grid.frequency())) != grid.frequency():  # [orbB]
 		return false
 	var j: PackedFloat32Array = Marshalls.base64_to_raw(str(d.get("junk", ""))).to_float32_array()
 	var s: PackedByteArray = Marshalls.base64_to_raw(str(d.get("state", "")))
