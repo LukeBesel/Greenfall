@@ -521,6 +521,11 @@ func settle(cell: int) -> void:
 
 
 func find_scoop_target(origin: Vector3, forward: Vector3, reach: float, width: float) -> int:
+	return find_scoop_target_sized(origin, forward, reach, width, 99)
+
+
+## [orbB] The scoop zone, skipping pieces above a size class (Pace's lift strength).
+func find_scoop_target_sized(origin: Vector3, forward: Vector3, reach: float, width: float, max_size: int) -> int:
 	var u: Vector3 = origin.normalized()
 	var fwd: Vector3 = (forward - u * forward.dot(u)).normalized()
 	var right: Vector3 = fwd.cross(u)
@@ -545,7 +550,7 @@ func find_scoop_target(origin: Vector3, forward: Vector3, reach: float, width: f
 			if x > width * 0.5 + maxf(z, 0.0) * 0.25:
 				continue
 			var dist: float = z * z + x * x * 1.5
-			if dist < best_d:
+			if dist < best_d and (max_size >= 99 or piece_size[pid] <= max_size):
 				best_d = dist
 				best = pid
 	return best

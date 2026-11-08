@@ -9,7 +9,8 @@ static func items() -> Array[Dictionary]:
 	out.append({"name": "wall", "span": 9.0, "height": 4.0, "dist": 15.0, "build": wall})
 	out.append({"name": "props", "span": 12.0, "height": 4.0, "dist": 17.0, "build": props})
 	var spans: Dictionary = {"module_small": [11.0, 5.0], "module_medium": [14.0, 8.0], "module_large": [18.0, 8.0],
-		"tower": [11.0, 14.0], "hangar": [17.0, 8.0], "tank_farm": [16.0, 7.0], "machine_housing": [12.0, 5.0]}
+		"tower": [11.0, 14.0], "hangar": [17.0, 8.0], "tank_farm": [16.0, 7.0], "machine_housing": [12.0, 5.0],
+		"dome": [15.0, 7.0], "greenhouse": [15.0, 5.0]}
 	for k: String in KitBuilding.KINDS:
 		var sp: Array = spans[k]
 		out.append({"name": k, "span": sp[0], "height": sp[1], "dist": sp[0] * 1.9,

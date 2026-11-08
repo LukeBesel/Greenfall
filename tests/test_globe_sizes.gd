@@ -64,7 +64,7 @@ func test_globe_spec_from_planets_json() -> void:
 	var sorted_s: Array = sizes.duplicate()
 	sorted_s.sort()
 	assert_eq(sizes, sorted_s, "Ochre < Verdance < Tidewell < Rime < Anvil")
-	assert_almost_eq(float(GlobeSpec.of("anvil")["frequency"]) / 128.0, 1.35, 0.01)
+	assert_almost_eq(float(GlobeSpec.of("anvil")["frequency"]) / 128.0, 2.0, 0.01, "Anvil ~4x Verdance area")
 	assert_eq(int(GlobeSpec.of("nowhere")["frequency"]), 128, "unknown planet: Verdance's size")
 
 

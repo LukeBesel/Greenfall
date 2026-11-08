@@ -85,6 +85,8 @@ static func can_lift(field: Object, pid: int, max_size: int = -1) -> bool:
 static func find_scoop_target(field: HexField, origin: Vector3, forward: Vector3, reach: float, width: float, max_size: int) -> int:
 	if max_size >= SIZE_LARGE:
 		return field.find_scoop_target(origin, forward, reach, width)
+	if field is SphereField:  # [orbB] globe: pieces live per cell, "up" is radial
+		return (field as SphereField).find_scoop_target_sized(origin, forward, reach, width, max_size)
 	var fwd: Vector3 = Vector3(forward.x, 0.0, forward.z).normalized()
 	var right: Vector3 = Vector3(fwd.z, 0.0, -fwd.x)
 	var best: int = -1
@@ -272,7 +274,11 @@ static func magnet_step(patch: Node3D, field: HexField, view: Object, origin: Ve
 		if pid >= field.piece_alive.size() or field.piece_alive[pid] == 0:
 			continue
 		var to_me: Vector3 = origin - field.piece_pos[pid]
-		to_me.y = 0.0
+		if JunkCube.planet_radius > 0.0:  # [orbB] round planet: along the ground
+			var u: Vector3 = field.piece_pos[pid].normalized()
+			to_me -= u * to_me.dot(u)
+		else:
+			to_me.y = 0.0
 		var dist: float = to_me.length()
 		if dist > 0.5:
 			# Ease in: fast far away, gentle at the end (no snapping into the scoop).
