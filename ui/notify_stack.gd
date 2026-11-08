@@ -56,9 +56,15 @@ func push(text: String, kind: String = "info") -> void:
 	l.max_lines_visible = 2  # [vqa]
 	l.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	row.add_child(l)
-	row.modulate.a = 0.0
-	add_child(row)
-	_rows.append({"node": row, "label": l, "text": text, "count": 1, "left": float(LIFE.get(kind, 4.0)), "age": 0.0})
+	# [onboard] A soft backing fading to the right: bottom-left has no corner scrim, and thin text
+	# over bright litter was hard to read.
+	var back := PanelContainer.new()
+	back.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	back.add_theme_stylebox_override("panel", HudReadable.fade_backing(0.5))
+	back.add_child(row)
+	back.modulate.a = 0.0
+	add_child(back)
+	_rows.append({"node": back, "label": l, "text": text, "count": 1, "left": float(LIFE.get(kind, 4.0)), "age": 0.0})
 	while _rows.size() > MAX:
 		var old: Dictionary = _rows.pop_front()
 		var n: Control = old["node"]

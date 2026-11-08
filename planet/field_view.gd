@@ -373,8 +373,9 @@ func _set_life_ch(id: int, ch: int, v: float) -> void:
 	_life_dirty = true
 
 
-func set_focus_hex(id: int) -> void:
-	_ground_mat.set_shader_parameter("focus_axial", Vector2(9999, 9999) if id < 0 else Vector2(field.hex_axial[id]))
+func set_focus_hex(_id: int) -> void:
+	# [onboard] The straight amber focus line is replaced by the laser outline (story/objective_hex.gd).
+	_ground_mat.set_shader_parameter("focus_axial", Vector2(9999, 9999))
 
 
 func set_grid_visible(v: float) -> void:

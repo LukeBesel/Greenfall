@@ -17027,3 +17027,268 @@ msgstr "Multi-verrouillage"
 #: data/upgrades.json:upgrades[multi_lock].desc
 msgid "Extra targeting lasers: lift several pieces at once."
 msgstr "Des lasers de visée en plus : soulève plusieurs morceaux à la fois."
+
+#: player/detector.gd:83
+msgid "BURIED PART  %s  ·  %.1f m"
+msgstr "PIÈCE ENTERRÉE  %s  ·  %.1f m"
+
+#: player/detector.gd:86
+msgid "BURIED PART  ·  SIGNAL %d%%"
+msgstr "PIÈCE ENTERRÉE  ·  SIGNAL %d%%"
+
+#: story/intro.gd:692
+msgid "%s  skip"
+msgstr "%s  passer"
+
+#: story/intro.gd:692
+msgid "Space / Esc"
+msgstr "Espace / Échap"
+
+#: story/ledger_uplink.gd:148
+msgid "<< LEDGER // CONTRACT 0001 // AMENDED >>"
+msgstr "<< LEDGER // CONTRAT 0001 // MODIFIÉ >>"
+
+#: story/ledger_uplink.gd:148
+msgid "<< INTERCEPT // LEDGER-NODE 07 // UNSECURED CHANNEL >>"
+msgstr "<< INTERCEPTION // NŒUD LEDGER 07 // CANAL NON SÉCURISÉ >>"
+
+#: story/ledger_uplink.gd:149
+msgid "line item %04d   checksum %s"
+msgstr "ligne %04d   somme de contrôle %s"
+
+#: story/ledger_uplink.gd:149
+msgid "MISMATCH"
+msgstr "ÉCART"
+
+#: story/objectives.gd:241
+msgid "Objective complete  ·  %s"
+msgstr "Objectif atteint  ·  %s"
+
+#: story/objectives.gd:409
+msgid ""
+"Hear that beeping? Your detector's found a robot part buried nearby. The "
+"faster it beeps, the closer you are."
+msgstr ""
+"Tu entends ces bips ? Ton détecteur a trouvé une pièce de robot enterrée "
+"tout près. Plus il bipe vite, plus tu es proche."
+
+#: story/objectives.gd:410
+msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
+msgstr ""
+"PIÈCE ENTERRÉE : avance vers elle jusqu'au signal maximal, puis déterre-la."
+
+#: story/signal_tower.gd:99
+msgid "%s   rebuild the signal tower  ·  %s"
+msgstr "%s   reconstruire la tour radio  ·  %s"
+
+#: story/signal_tower.gd:100
+msgid "%s   boost the signal tower  ·  %s"
+msgstr "%s   renforcer la tour radio  ·  %s"
+
+#: story/signal_tower.gd:108
+msgid "The tower needs %s."
+msgstr "La tour a besoin de %s."
+
+#: story/signal_tower.gd:123
+msgid "Relay signal %d%%. WREN can reach you."
+msgstr "Signal du relais %d%%. WREN peut te joindre."
+
+#: story/signal_tower.gd:123
+msgid "Relay signal %d%%. WREN comes through clearer."
+msgstr "Signal du relais %d%%. WREN passe plus clairement."
+
+#: systems/contracts.gd:323
+msgid "New at the workbench: the Requests board. Small jobs, real rewards."
+msgstr ""
+"Nouveau à l'établi : le tableau des demandes. Petits boulots, vraies "
+"récompenses."
+
+#: systems/contracts.gd:326
+msgid ""
+"The relay's strong enough now to hear the Cradle's old work orders. They're "
+"on the Requests board at the workbench."
+msgstr ""
+"Le relais capte enfin les vieux ordres de travail du Cradle. Ils sont sur le "
+"tableau des demandes, à l'établi."
+
+#: systems/cradle_mode.gd:296
+msgid "Unlocks with Ark milestones (next: %s, at %d restoration)"
+msgstr ""
+
+#: ui/hud.gd:286
+msgid "WREN SIGNAL   %d%%"
+msgstr "SIGNAL WREN   %d%%"
+
+#: ui/hud.gd:318
+msgid "%s  BASE"
+msgstr "BASE %s"
+
+#: ui/key_hints.gd:20
+msgid "press bale"
+msgstr "presser un ballot"
+
+#: ui/key_hints.gd:107
+msgid "tools"
+msgstr "outils"
+
+#: ui/lens_overlay.gd:67
+msgid "◢ BURIED PART %d%%"
+msgstr "◢ PIÈCE ENTERRÉE %d%%"
+
+#: ui/objective_card.gd:46
+msgid "OBJECTIVE"
+msgstr "OBJECTIF"
+
+#: data/goals.json:goals[shards_1].text
+msgid "Find a memory shard"
+msgstr "Trouve un éclat de mémoire"
+
+#: data/objectives.json:brief.lines
+msgid ""
+"Lumi, it's WREN, the Cradle's caretaker. Your friend up here. Your pod's "
+"down, and the relay's failing."
+msgstr ""
+"Lumi, c'est WREN, la gardienne du Cradle. Ton amie là-haut. Ta capsule s'est "
+"écrasée, et le relais lâche."
+
+#: data/objectives.json:brief.lines
+msgid ""
+"Bale junk to power the old base, then build a signal tower so I can reach "
+"you. I'll be [glitch]listen—[/glitch]"
+msgstr ""
+"Presse des déchets en ballots pour alimenter la vieille base, puis construis "
+"une tour radio pour que je te joigne. Je reste à l'[glitch]écou—[/glitch]"
+
+#: data/objectives.json:objectives[power].text
+msgid "Power the base: sell 3 bales"
+msgstr "Alimente la base : vends 3 ballots"
+
+#: data/objectives.json:objectives[power].desc
+msgid "Cubes feed the recycler. Its power wakes the base."
+msgstr "Les cubes nourrissent le recycleur. Son énergie réveille la base."
+
+#: data/objectives.json:objectives[tower].text
+msgid "Rebuild the signal tower"
+msgstr "Reconstruis la tour radio"
+
+#: data/objectives.json:objectives[tower].desc
+msgid "WREN went silent. The tower lets her reach you."
+msgstr "WREN s'est tue. La tour lui permet de te joindre."
+
+#: data/objectives.json:objectives[hex].text
+msgid "Clean a hex"
+msgstr "Nettoie un hex"
+
+#: data/objectives.json:objectives[hex].desc
+msgid "Clean ground is where green can grow again."
+msgstr "Sur un sol propre, le vert peut repousser."
+
+#: data/objectives.json:objectives[robot].text
+msgid "Build your first robot"
+msgstr "Construis ton premier robot"
+
+#: data/objectives.json:objectives[robot].desc
+msgid "A helper keeps cleaning while you work."
+msgstr "Un assistant continue de nettoyer pendant que tu travailles."
+
+#: data/objectives.json:objectives[robot].lines
+msgid ""
+"The base has power! Enough to build you a helper. Try the Bots tab at the "
+"workbench."
+msgstr ""
+"La base a du courant ! Assez pour te construire un assistant. Essaie "
+"l'onglet Bots à l'établi."
+
+#: data/objectives.json:objectives[zone].text
+msgid "Send your robot to work"
+msgstr "Envoie ton robot au travail"
+
+#: data/objectives.json:objectives[zone].desc
+msgid "Press B and paint the hexes it should clean."
+msgstr "Appuie sur B et peins les hex qu'il doit nettoyer."
+
+#: data/objectives.json:objectives[haul].desc
+msgid "It carries bales to the scale for you."
+msgstr "Il porte les ballots jusqu'à la balance pour toi."
+
+#: data/objectives.json:objectives[seed].text
+msgid "Plant the first seed"
+msgstr "Plante la première graine"
+
+#: data/objectives.json:objectives[seed].desc
+msgid "Living green charges your Bloom Core."
+msgstr "Le vert vivant charge ton Cœur floral."
+
+#: data/objectives.json:objectives[seed].hint
+msgid "Keep clearing ground. Seeds turn up in clean soil."
+msgstr ""
+"Continue de dégager le sol. Les graines apparaissent dans la terre propre."
+
+#: data/objectives.json:objectives[base2].text
+msgid "Rebuild the base: level 2"
+msgstr "Reconstruis la base : niveau 2"
+
+#: data/objectives.json:objectives[base2].desc
+msgid "A bigger base runs more robots."
+msgstr "Une base plus grande fait tourner plus de robots."
+
+#: data/objectives.json:objectives[base2].lines
+msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
+msgstr "Le hub peut grandir. Reconstruis-le depuis l'onglet Base à l'établi."
+
+#: data/objectives.json:objectives[tower2].text
+msgid "Boost the signal tower"
+msgstr "Renforce la tour radio"
+
+#: data/objectives.json:objectives[tower2].desc
+msgid "A stronger signal: WREN comes through clearer."
+msgstr "Un signal plus fort : WREN passe plus clairement."
+
+#: data/objectives.json:objectives[base3].text
+msgid "Rebuild the base: level 3"
+msgstr "Reconstruis la base : niveau 3"
+
+#: data/objectives.json:objectives[base3].desc
+msgid "Level 3 opens the Requests board."
+msgstr "Le niveau 3 ouvre le tableau des demandes."
+
+#: data/signal_tower.json:tiers[0].name
+msgid "Signal Tower"
+msgstr "Tour radio"
+
+#: data/signal_tower.json:tiers[1].name
+msgid "Signal Tower Mk II"
+msgstr "Tour radio Mk II"
+
+#: data/signal_tower.json:tiers[2].name
+msgid "Signal Tower Mk III"
+msgstr "Tour radio Mk III"
+
+#: data/signal_tower.json:tiers[3].name
+msgid "Signal Tower Mk IV"
+msgstr "Tour radio Mk IV"
+
+#: data/wren_lines.json:wake
+msgid ""
+"...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing."
+msgstr ""
+"...Lumi ? ...C'est WREN. Ta tour me porte. Tout juste. Garde-la debout."
+
+#: data/wren_lines.json:wake
+msgid "...there you are. The signal's thin, but it's ours. Hello again, Lumi."
+msgstr ""
+"...te voilà. Le signal est faible, mais il est à nous. Re-bonjour, Lumi."
+
+#: data/wren_lines.json:signal_up
+msgid "Better. Less static. Keep building."
+msgstr "Mieux. Moins de parasites. Continue."
+
+#: data/wren_lines.json:signal_up
+msgid ""
+"Much better. I can hear the wind on your end now. And I can tell you more."
+msgstr ""
+"Bien mieux. J'entends le vent chez toi maintenant. Et je peux t'en dire plus."
+
+#: data/wren_lines.json:signal_up
+msgid "Clear as the garden deck. Now I can tell you everything I couldn't."
+msgstr "Clair comme sur le pont-jardin. Je peux enfin tout te dire."

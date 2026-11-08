@@ -15246,3 +15246,251 @@ msgstr ""
 #: data/upgrades.json:upgrades[multi_lock].desc
 msgid "Extra targeting lasers: lift several pieces at once."
 msgstr ""
+
+#: player/detector.gd:83
+msgid "BURIED PART  %s  ·  %.1f m"
+msgstr ""
+
+#: player/detector.gd:86
+msgid "BURIED PART  ·  SIGNAL %d%%"
+msgstr ""
+
+#: story/intro.gd:692
+msgid "%s  skip"
+msgstr ""
+
+#: story/intro.gd:692
+msgid "Space / Esc"
+msgstr ""
+
+#: story/ledger_uplink.gd:148
+msgid "<< LEDGER // CONTRACT 0001 // AMENDED >>"
+msgstr ""
+
+#: story/ledger_uplink.gd:148
+msgid "<< INTERCEPT // LEDGER-NODE 07 // UNSECURED CHANNEL >>"
+msgstr ""
+
+#: story/ledger_uplink.gd:149
+msgid "line item %04d   checksum %s"
+msgstr ""
+
+#: story/ledger_uplink.gd:149
+msgid "MISMATCH"
+msgstr ""
+
+#: story/objectives.gd:241
+msgid "Objective complete  ·  %s"
+msgstr ""
+
+#: story/objectives.gd:409
+msgid ""
+"Hear that beeping? Your detector's found a robot part buried nearby. The "
+"faster it beeps, the closer you are."
+msgstr ""
+
+#: story/objectives.gd:410
+msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
+msgstr ""
+
+#: story/signal_tower.gd:99
+msgid "%s   rebuild the signal tower  ·  %s"
+msgstr ""
+
+#: story/signal_tower.gd:100
+msgid "%s   boost the signal tower  ·  %s"
+msgstr ""
+
+#: story/signal_tower.gd:108
+msgid "The tower needs %s."
+msgstr ""
+
+#: story/signal_tower.gd:123
+msgid "Relay signal %d%%. WREN can reach you."
+msgstr ""
+
+#: story/signal_tower.gd:123
+msgid "Relay signal %d%%. WREN comes through clearer."
+msgstr ""
+
+#: systems/contracts.gd:323
+msgid "New at the workbench: the Requests board. Small jobs, real rewards."
+msgstr ""
+
+#: systems/contracts.gd:326
+msgid ""
+"The relay's strong enough now to hear the Cradle's old work orders. They're "
+"on the Requests board at the workbench."
+msgstr ""
+
+#: systems/cradle_mode.gd:296
+msgid "Unlocks with Ark milestones (next: %s, at %d restoration)"
+msgstr ""
+
+#: ui/hud.gd:286
+msgid "WREN SIGNAL   %d%%"
+msgstr ""
+
+#: ui/hud.gd:318
+msgid "%s  BASE"
+msgstr ""
+
+#: ui/key_hints.gd:20
+msgid "press bale"
+msgstr ""
+
+#: ui/key_hints.gd:107
+msgid "tools"
+msgstr ""
+
+#: ui/lens_overlay.gd:67
+msgid "◢ BURIED PART %d%%"
+msgstr ""
+
+#: ui/objective_card.gd:46
+msgid "OBJECTIVE"
+msgstr ""
+
+#: data/goals.json:goals[shards_1].text
+msgid "Find a memory shard"
+msgstr ""
+
+#: data/objectives.json:brief.lines
+msgid ""
+"Lumi, it's WREN, the Cradle's caretaker. Your friend up here. Your pod's "
+"down, and the relay's failing."
+msgstr ""
+
+#: data/objectives.json:brief.lines
+msgid ""
+"Bale junk to power the old base, then build a signal tower so I can reach "
+"you. I'll be [glitch]listen—[/glitch]"
+msgstr ""
+
+#: data/objectives.json:objectives[power].text
+msgid "Power the base: sell 3 bales"
+msgstr ""
+
+#: data/objectives.json:objectives[power].desc
+msgid "Cubes feed the recycler. Its power wakes the base."
+msgstr ""
+
+#: data/objectives.json:objectives[tower].text
+msgid "Rebuild the signal tower"
+msgstr ""
+
+#: data/objectives.json:objectives[tower].desc
+msgid "WREN went silent. The tower lets her reach you."
+msgstr ""
+
+#: data/objectives.json:objectives[hex].text
+msgid "Clean a hex"
+msgstr ""
+
+#: data/objectives.json:objectives[hex].desc
+msgid "Clean ground is where green can grow again."
+msgstr ""
+
+#: data/objectives.json:objectives[robot].text
+msgid "Build your first robot"
+msgstr ""
+
+#: data/objectives.json:objectives[robot].desc
+msgid "A helper keeps cleaning while you work."
+msgstr ""
+
+#: data/objectives.json:objectives[robot].lines
+msgid ""
+"The base has power! Enough to build you a helper. Try the Bots tab at the "
+"workbench."
+msgstr ""
+
+#: data/objectives.json:objectives[zone].text
+msgid "Send your robot to work"
+msgstr ""
+
+#: data/objectives.json:objectives[zone].desc
+msgid "Press B and paint the hexes it should clean."
+msgstr ""
+
+#: data/objectives.json:objectives[haul].desc
+msgid "It carries bales to the scale for you."
+msgstr ""
+
+#: data/objectives.json:objectives[seed].text
+msgid "Plant the first seed"
+msgstr ""
+
+#: data/objectives.json:objectives[seed].desc
+msgid "Living green charges your Bloom Core."
+msgstr ""
+
+#: data/objectives.json:objectives[seed].hint
+msgid "Keep clearing ground. Seeds turn up in clean soil."
+msgstr ""
+
+#: data/objectives.json:objectives[base2].text
+msgid "Rebuild the base: level 2"
+msgstr ""
+
+#: data/objectives.json:objectives[base2].desc
+msgid "A bigger base runs more robots."
+msgstr ""
+
+#: data/objectives.json:objectives[base2].lines
+msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
+msgstr ""
+
+#: data/objectives.json:objectives[tower2].text
+msgid "Boost the signal tower"
+msgstr ""
+
+#: data/objectives.json:objectives[tower2].desc
+msgid "A stronger signal: WREN comes through clearer."
+msgstr ""
+
+#: data/objectives.json:objectives[base3].text
+msgid "Rebuild the base: level 3"
+msgstr ""
+
+#: data/objectives.json:objectives[base3].desc
+msgid "Level 3 opens the Requests board."
+msgstr ""
+
+#: data/signal_tower.json:tiers[0].name
+msgid "Signal Tower"
+msgstr ""
+
+#: data/signal_tower.json:tiers[1].name
+msgid "Signal Tower Mk II"
+msgstr ""
+
+#: data/signal_tower.json:tiers[2].name
+msgid "Signal Tower Mk III"
+msgstr ""
+
+#: data/signal_tower.json:tiers[3].name
+msgid "Signal Tower Mk IV"
+msgstr ""
+
+#: data/wren_lines.json:wake
+msgid ""
+"...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing."
+msgstr ""
+
+#: data/wren_lines.json:wake
+msgid "...there you are. The signal's thin, but it's ours. Hello again, Lumi."
+msgstr ""
+
+#: data/wren_lines.json:signal_up
+msgid "Better. Less static. Keep building."
+msgstr ""
+
+#: data/wren_lines.json:signal_up
+msgid ""
+"Much better. I can hear the wind on your end now. And I can tell you more."
+msgstr ""
+
+#: data/wren_lines.json:signal_up
+msgid "Clear as the garden deck. Now I can tell you everything I couldn't."
+msgstr ""

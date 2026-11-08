@@ -54,6 +54,7 @@ var upgrades: UpgradesScreen
 var command: CommandView
 var music: MusicHooks
 var intro: Intro
+var objectives: Objectives  # [onboard] first-minutes story objectives (story/objectives.gd)
 var core_charge: CoreCharge
 var composter: Composter
 var pause_menu: PauseMenu
@@ -422,7 +423,7 @@ func _ready() -> void:
 	add_child(wren)
 	var subs := Subtitles.new()
 	add_child(subs)
-	wren.line_started.connect(subs.show_line)
+	wren.line_out.connect(subs.show_line)  # [onboard] through the Signal Tower gate (story/wren.gd)
 	garden = Garden.new()
 	garden.name = "Garden"
 	garden.world = self
@@ -532,9 +533,10 @@ func _ready() -> void:
 	intro = Intro.new()
 	intro.world = self
 	add_child(intro)
+	# [onboard] The old "LM-1 online..." wake toast flashed by too fast to read; WREN's brief and the
+	# objective card (story/objectives.gd) tell the plan now, and they stay.
 	var wake := func() -> void:
-		get_tree().create_timer(1.5).timeout.connect(func() -> void:
-			Story.once("wake", tr("LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."), "story"))
+		pass
 	if intro.should_play():
 		intro.finished.connect(wake)
 		hud.visible = false  # [first] no one-frame HUD/world flash before the deferred intro starts
@@ -546,6 +548,15 @@ func _ready() -> void:
 			intro.place_pod.call_deferred()
 		if not loaded:
 			wake.call()
+	SignalTower.migrate(self)  # [onboard] WREN only talks through the Signal Tower (story/signal_tower.gd)
+	if GameState.current_hub == 0 and frontier == null:
+		var tower := SignalTower.new()
+		tower.name = "SignalTower"
+		tower.world = self
+		add_child(tower)
+	objectives = Objectives.new()  # [onboard] WREN's last message after the intro + the objective card
+	objectives.world = self
+	add_child(objectives)
 	LateDirector.attach(self)  # [late] Garden Mode, Ark Bridge, Cradle Mode worlds (systems/late_director.gd)
 	var scope := Telescope.new()  # [scope] the Telescope + remote progress (automation/telescope.gd)
 	scope.name = "Telescope"
@@ -1052,8 +1063,12 @@ func open_upgrades() -> void:
 		return
 	# Upgrades are installed at a base workbench, not in the field.
 	if not near_bench() and not DevHooks.has("open"):
-		EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
-		Audio.play("buzz", 1.2, -10.0)
+		# [onboard] Away from the bench, Tab shows the key hints while held (the toast only once).
+		if hud and hud.has_method("peek_hints"):
+			hud.peek_hints()
+		if not GameState.flags.get("bench_hint_seen", false):
+			GameState.flags["bench_hint_seen"] = true
+			EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
 		return
 	if camp and not Camp.bench_ok() and not DevHooks.has("open"):  # [camp]
 		camp.repair_bench()

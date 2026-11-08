@@ -14,7 +14,7 @@
     {"id": "upgrades_5", "text": "Install 5 upgrades", "type": "stat", "key": "upgrades_bought", "target": 5, "reward": {"cubes": 60}},
     {"id": "cash_10", "text": "Sell 10 bales", "type": "stat", "key": "cubes_cashed", "target": 10, "reward": {"cubes": 80}},
     {"id": "compartment_3", "text": "Compartment Size level 3", "type": "upgrade", "key": "compartment_size", "target": 3, "reward": {"cubes": 100}},
-    {"id": "shards_1", "text": "Read a memory shard", "type": "stat", "key": "shards_found", "target": 1, "reward": {"cubes": 60}},
+    {"id": "shards_1", "text": "Find a memory shard", "type": "stat", "key": "shards_found", "target": 1, "reward": {"cubes": 60}},
     {"id": "hex_3", "text": "Clean 3 hexes", "type": "stat", "key": "hexes_cleaned", "target": 3, "reward": {"cubes": 100}},
     {"id": "parts_2", "text": "Dig up 2 robot parts", "type": "stat", "key": "parts_found", "target": 2, "reward": {"cubes": 100}},
     {"id": "earn_1k", "text": "Earn 1,000 cubes", "type": "earned", "target": 1000, "reward": {"cubes": 100}},

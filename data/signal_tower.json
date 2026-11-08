@@ -1,0 +1,11 @@
+{
+  "_doc": "[onboard] The Signal Tower (story/signal_tower.gd): WREN can only reach Lumi through it. Tier 0 is the broken mast in the yard; each tier raises the relay signal (signal_pct) and WREN's clarity (Wren.stage(): tier 1 crackly, 2 clearer, 3+ clear) and unlocks the lines she couldn't send. Costs in the three currencies only.",
+  "pos": [3.4, 0.0, -6.6],
+  "signal_pct": [0, 25, 50, 75, 100],
+  "tiers": [
+    {"name": "Signal Tower", "cost": {"cubes": 50}},
+    {"name": "Signal Tower Mk II", "cost": {"cubes": 900, "parts": 60}},
+    {"name": "Signal Tower Mk III", "cost": {"cubes": 6000, "parts": 300}},
+    {"name": "Signal Tower Mk IV", "cost": {"cubes": 30000, "parts": 1200}}
+  ]
+}

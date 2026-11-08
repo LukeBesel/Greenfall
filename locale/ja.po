@@ -16406,3 +16406,259 @@ msgstr "マルチロック"
 #: data/upgrades.json:upgrades[multi_lock].desc
 msgid "Extra targeting lasers: lift several pieces at once."
 msgstr "追加の照準レーザー：一度に複数のガラクタを持ち上げる。"
+
+#: player/detector.gd:83
+msgid "BURIED PART  %s  ·  %.1f m"
+msgstr "埋もれたパーツ  %s  ·  %.1f m"
+
+#: player/detector.gd:86
+msgid "BURIED PART  ·  SIGNAL %d%%"
+msgstr "埋もれたパーツ  ·  シグナル %d%%"
+
+#: story/intro.gd:692
+msgid "%s  skip"
+msgstr "%s  スキップ"
+
+#: story/intro.gd:692
+msgid "Space / Esc"
+msgstr "Space / Esc"
+
+#: story/ledger_uplink.gd:148
+msgid "<< LEDGER // CONTRACT 0001 // AMENDED >>"
+msgstr "<< LEDGER // 契約 0001 // 改定 >>"
+
+#: story/ledger_uplink.gd:148
+msgid "<< INTERCEPT // LEDGER-NODE 07 // UNSECURED CHANNEL >>"
+msgstr "<< 傍受 // LEDGER ノード 07 // 非暗号化チャンネル >>"
+
+#: story/ledger_uplink.gd:149
+msgid "line item %04d   checksum %s"
+msgstr "項目 %04d   チェックサム %s"
+
+#: story/ledger_uplink.gd:149
+msgid "MISMATCH"
+msgstr "不一致"
+
+#: story/objectives.gd:241
+msgid "Objective complete  ·  %s"
+msgstr "目標達成  ·  %s"
+
+#: story/objectives.gd:409
+msgid ""
+"Hear that beeping? Your detector's found a robot part buried nearby. The "
+"faster it beeps, the closer you are."
+msgstr ""
+"ピッピッて音、聞こえる？探知機が近くに埋まったロボットのパーツを見つけたの。"
+"速く鳴るほど近いよ。"
+
+#: story/objectives.gd:410
+msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
+msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
+
+#: story/signal_tower.gd:99
+msgid "%s   rebuild the signal tower  ·  %s"
+msgstr "%s   信号塔を建て直す  ·  %s"
+
+#: story/signal_tower.gd:100
+msgid "%s   boost the signal tower  ·  %s"
+msgstr "%s   信号塔を強化する  ·  %s"
+
+#: story/signal_tower.gd:108
+msgid "The tower needs %s."
+msgstr "塔には %s が必要。"
+
+#: story/signal_tower.gd:123
+msgid "Relay signal %d%%. WREN can reach you."
+msgstr "中継信号 %d%%。WRENの声が届く。"
+
+#: story/signal_tower.gd:123
+msgid "Relay signal %d%%. WREN comes through clearer."
+msgstr "中継信号 %d%%。WRENの声がはっきりしてきた。"
+
+#: systems/contracts.gd:323
+msgid "New at the workbench: the Requests board. Small jobs, real rewards."
+msgstr "作業台に新機能：依頼ボード。小さな仕事、ちゃんとした報酬。"
+
+#: systems/contracts.gd:326
+msgid ""
+"The relay's strong enough now to hear the Cradle's old work orders. They're "
+"on the Requests board at the workbench."
+msgstr ""
+"中継器がやっとクレイドルの古い作業指示を拾えるようになったわ。作業台の依頼"
+"ボードにあるよ。"
+
+#: systems/cradle_mode.gd:296
+msgid "Unlocks with Ark milestones (next: %s, at %d restoration)"
+msgstr ""
+
+#: ui/hud.gd:286
+msgid "WREN SIGNAL   %d%%"
+msgstr "WREN 信号   %d%%"
+
+#: ui/hud.gd:318
+msgid "%s  BASE"
+msgstr "%s  基地"
+
+#: ui/key_hints.gd:20
+msgid "press bale"
+msgstr "ベールを圧縮"
+
+#: ui/key_hints.gd:107
+msgid "tools"
+msgstr "ツール"
+
+#: ui/lens_overlay.gd:67
+msgid "◢ BURIED PART %d%%"
+msgstr "◢ 埋もれたパーツ %d%%"
+
+#: ui/objective_card.gd:46
+msgid "OBJECTIVE"
+msgstr "目標"
+
+#: data/goals.json:goals[shards_1].text
+msgid "Find a memory shard"
+msgstr "メモリーの破片を見つける"
+
+#: data/objectives.json:brief.lines
+msgid ""
+"Lumi, it's WREN, the Cradle's caretaker. Your friend up here. Your pod's "
+"down, and the relay's failing."
+msgstr ""
+"Lumi、WRENよ。クレイドルの世話係で、上にいるあなたの友達。ポッドは墜落して、"
+"中継器ももう持たない。"
+
+#: data/objectives.json:brief.lines
+msgid ""
+"Bale junk to power the old base, then build a signal tower so I can reach "
+"you. I'll be [glitch]listen—[/glitch]"
+msgstr ""
+"ゴミをベールにして古い基地に電力を。それから信号塔を建てて、私が届くように。"
+"ずっと[glitch]聞いて——[/glitch]"
+
+#: data/objectives.json:objectives[power].text
+msgid "Power the base: sell 3 bales"
+msgstr "基地に電力を：ベールを3つ売る"
+
+#: data/objectives.json:objectives[power].desc
+msgid "Cubes feed the recycler. Its power wakes the base."
+msgstr "キューブはリサイクラーの燃料。その電力が基地を目覚めさせる。"
+
+#: data/objectives.json:objectives[tower].text
+msgid "Rebuild the signal tower"
+msgstr "信号塔を建て直す"
+
+#: data/objectives.json:objectives[tower].desc
+msgid "WREN went silent. The tower lets her reach you."
+msgstr "WRENは沈黙した。塔があれば彼女の声が届く。"
+
+#: data/objectives.json:objectives[hex].text
+msgid "Clean a hex"
+msgstr "ヘックスを1つ掃除する"
+
+#: data/objectives.json:objectives[hex].desc
+msgid "Clean ground is where green can grow again."
+msgstr "きれいな地面なら、緑がまた育つ。"
+
+#: data/objectives.json:objectives[robot].text
+msgid "Build your first robot"
+msgstr "最初のロボットを作る"
+
+#: data/objectives.json:objectives[robot].desc
+msgid "A helper keeps cleaning while you work."
+msgstr "あなたが働く間も、助手が掃除を続けてくれる。"
+
+#: data/objectives.json:objectives[robot].lines
+msgid ""
+"The base has power! Enough to build you a helper. Try the Bots tab at the "
+"workbench."
+msgstr "基地に電力が戻った！助手を1体作れるわ。作業台のボットタブを見てみて。"
+
+#: data/objectives.json:objectives[zone].text
+msgid "Send your robot to work"
+msgstr "ロボットを仕事に送る"
+
+#: data/objectives.json:objectives[zone].desc
+msgid "Press B and paint the hexes it should clean."
+msgstr "Bを押して、掃除させるヘックスを塗ろう。"
+
+#: data/objectives.json:objectives[haul].desc
+msgid "It carries bales to the scale for you."
+msgstr "ベールをはかりまで運んでくれる。"
+
+#: data/objectives.json:objectives[seed].text
+msgid "Plant the first seed"
+msgstr "最初の種を植える"
+
+#: data/objectives.json:objectives[seed].desc
+msgid "Living green charges your Bloom Core."
+msgstr "生きた緑がブルームコアを充電する。"
+
+#: data/objectives.json:objectives[seed].hint
+msgid "Keep clearing ground. Seeds turn up in clean soil."
+msgstr "地面の掃除を続けて。きれいな土から種が見つかる。"
+
+#: data/objectives.json:objectives[base2].text
+msgid "Rebuild the base: level 2"
+msgstr "基地を再建：レベル2"
+
+#: data/objectives.json:objectives[base2].desc
+msgid "A bigger base runs more robots."
+msgstr "大きな基地ほど多くのロボットを動かせる。"
+
+#: data/objectives.json:objectives[base2].lines
+msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
+msgstr "基地を拡張できるようになったわ。作業台の基地タブで再建して。"
+
+#: data/objectives.json:objectives[tower2].text
+msgid "Boost the signal tower"
+msgstr "信号塔を強化する"
+
+#: data/objectives.json:objectives[tower2].desc
+msgid "A stronger signal: WREN comes through clearer."
+msgstr "信号が強くなれば、WRENの声がはっきりする。"
+
+#: data/objectives.json:objectives[base3].text
+msgid "Rebuild the base: level 3"
+msgstr "基地を再建：レベル3"
+
+#: data/objectives.json:objectives[base3].desc
+msgid "Level 3 opens the Requests board."
+msgstr "レベル3で依頼ボードが開く。"
+
+#: data/signal_tower.json:tiers[0].name
+msgid "Signal Tower"
+msgstr "信号塔"
+
+#: data/signal_tower.json:tiers[1].name
+msgid "Signal Tower Mk II"
+msgstr "信号塔 Mk II"
+
+#: data/signal_tower.json:tiers[2].name
+msgid "Signal Tower Mk III"
+msgstr "信号塔 Mk III"
+
+#: data/signal_tower.json:tiers[3].name
+msgid "Signal Tower Mk IV"
+msgstr "信号塔 Mk IV"
+
+#: data/wren_lines.json:wake
+msgid ""
+"...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing."
+msgstr "……Lumi？……WRENよ。あなたの塔が私をつないでる。ぎりぎりね。倒さないで。"
+
+#: data/wren_lines.json:wake
+msgid "...there you are. The signal's thin, but it's ours. Hello again, Lumi."
+msgstr "……いた。信号は弱いけど、私たちのもの。また会えたね、Lumi。"
+
+#: data/wren_lines.json:signal_up
+msgid "Better. Less static. Keep building."
+msgstr "よくなった。ノイズが減った。もっと建てて。"
+
+#: data/wren_lines.json:signal_up
+msgid ""
+"Much better. I can hear the wind on your end now. And I can tell you more."
+msgstr "ずっといい。そっちの風の音が聞こえる。もっと話せるわ。"
+
+#: data/wren_lines.json:signal_up
+msgid "Clear as the garden deck. Now I can tell you everything I couldn't."
+msgstr "庭園デッキみたいにクリア。言えなかったこと、全部話せる。"

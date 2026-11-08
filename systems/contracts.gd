@@ -247,9 +247,32 @@ static func owned() -> Array:
 
 # --- Live node --------------------------------------------------------------------------------
 
+## [onboard] The board opens later (owner: "you should not unlock contracts for a while"): at base
+## level unlock_hub_level, or after unlock_play_s of play, whichever comes first. A save that
+## already used the board keeps it. Dev: --requests-unlocked (and --contracts-sample / --tab=contracts).
+static func unlocked() -> bool:
+	if GameState.flags.get("requests_unlocked", false):
+		return true
+	if DevHooks.has("requests-unlocked") or DevHooks.has("contracts-sample") or DevHooks.get_s("tab", "") == "contracts":
+		return true
+	return unlock_due(int(GameState.world.get("hub_level", 1)), float(GameState.stats.get("time_played", 0.0)), state())
+
+
+## Pure: does this state open the board?
+static func unlock_due(hub_level: int, played_s: float, st: Dictionary) -> bool:
+	if int(st.get("done_total", 0)) > 0:
+		return true
+	for s: Variant in st.get("slots", []):
+		if s is Dictionary and str((s as Dictionary).get("state", "")) in ["active", "done"]:
+			return true
+	return hub_level >= int(cfg().get("unlock_hub_level", 3)) or played_s >= float(cfg().get("unlock_play_s", 2700))
+
+
 func _ready() -> void:
 	rng.randomize()
-	step(state(), 0.0, live_value, new_offer)  # a fresh board is filled right away
+	if unlocked():  # [onboard]
+		GameState.flags["requests_unlocked"] = true
+		step(state(), 0.0, live_value, new_offer)  # a fresh board is filled right away
 	if DevHooks.has("contracts-sample"):
 		_sample.call_deferred()
 
@@ -274,6 +297,10 @@ func _process(delta: float) -> void:
 		return
 	var dt: float = _t
 	_t = 0.0
+	if not GameState.flags.get("requests_unlocked", false):  # [onboard] closed until a later milestone
+		if not unlocked():
+			return
+		_announce_unlock()
 	_count_events()
 	for e: Dictionary in step(state(), dt, live_value, new_offer):
 		var s: Dictionary = slots()[int(e["i"])]
@@ -286,6 +313,22 @@ func _process(delta: float) -> void:
 					world.wren.say("contract_done", 0.6)
 			"failed":
 				EventBus.toast.emit(tr("A request ran out of time. No harm done; a new one will be posted soon."), "info")
+
+
+## [onboard] The board opens: one WREN line and a toast, then the first offers.
+func _announce_unlock() -> void:
+	GameState.flags["requests_unlocked"] = true
+	st_events_baseline()
+	step(state(), 0.0, live_value, new_offer)
+	EventBus.toast.emit(tr("New at the workbench: the Requests board. Small jobs, real rewards."), "story")
+	Audio.play("chime", 1.1, -6.0)
+	if world.get("wren") != null:
+		(world.wren as Wren).speak(tr("The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."), 1)
+
+
+## [onboard] World events handled before the board opened don't count toward its reward track.
+func st_events_baseline() -> void:
+	state()["events_seen"] = float(GameState.stats.get("ev_events_done", 0.0))
 
 
 ## [money] Handled world events count as finished requests (the board shows them live).

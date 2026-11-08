@@ -46,7 +46,7 @@
   ],
   "streak": {"_doc": "Points = pieces scooped in a row (Patch scoops up to ~8 a second). After grace_s without a scoop the points drain at drain_per_s, so a bale or a short walk barely dents it and only a long break resets it. The bale bonus uses the best tier reached while that bale was being filled.", "per_tier": 30, "max_tier": 5, "bonus_per_tier": 0.03, "grace_s": 2.2, "drain_per_s": 9.0, "cap_extra": 0.5},
   "contracts": {
-    "slots": 3, "offer_life_s": 1200, "cooldown_s": [60, 120], "decline_cooldown_s": 90, "fail_cooldown_s": 120,
+    "slots": 3, "unlock_hub_level": 3, "unlock_play_s": 2700, "_unlock": "[onboard] the Requests board opens at base level 3 or after 45 min of play, whichever is first (Contracts.unlocked)", "offer_life_s": 1200, "cooldown_s": [60, 120], "decline_cooldown_s": 90, "fail_cooldown_s": 120,
     "_tiers": "tier from lifetime hexes cleaned: below 12 = 0, below 40 = 1, below 100 = 2, else 3",
     "tier_hexes": [12, 40, 100],
     "templates": [
