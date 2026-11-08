@@ -230,7 +230,7 @@ func _render() -> Image:
 	vp.world_3d = world.get_viewport().find_world_3d()
 	vp.msaa_3d = Viewport.MSAA_DISABLED
 	vp.use_taa = false
-	vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA
+	vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA if RenderingServer.get_current_rendering_method() != "gl_compatibility" else Viewport.SCREEN_SPACE_AA_DISABLED  # [qafix] QA #35
 	vp.render_target_update_mode = SubViewport.UPDATE_ONCE
 	var cam := Camera3D.new()
 	cam.fov = 58.0
