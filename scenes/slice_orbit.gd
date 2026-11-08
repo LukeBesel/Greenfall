@@ -27,6 +27,7 @@ var day: OrbitDay
 var crews: OrbitCrews
 var cam: SphereCam
 var dev: OrbitDev
+var layers: OrbitLayers  # [orbE]
 var view_mode: String = "follow"
 
 
@@ -99,6 +100,7 @@ func build(p_world: Node3D) -> void:
 	w.set("pause_menu", pm)
 	if loaded:
 		restore_world()
+	layers = OrbitLayers.attach(self)  # [orbE] sky + day/night, Glim, future layer, survey, system map, photo mode
 	globe.update_centres()
 	var t2: int = Time.get_ticks_msec()
 	globe.streamer.settle()

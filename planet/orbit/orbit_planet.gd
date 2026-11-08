@@ -70,6 +70,7 @@ func build(p_seed: int, n_hubs: int = 10, planet_state: Dictionary = {}, cells_s
 	streamer.name = "Streamer"
 	streamer.shell_city = planet.city
 	add_child(streamer)
+	OrbitQuality.apply_streamer(streamer, Settings.quality, grid.radius_m)  # [orbE] per-preset budgets
 	streamer.setup(grid, terrain, cells)
 	streamer.near_changed.connect(_on_near_changed)
 	junk_view = SphereJunkView.new()

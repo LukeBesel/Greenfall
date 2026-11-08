@@ -29,6 +29,8 @@ static func _snap(s: Node) -> Dictionary:
 		"lumi_dir": "%.4f,%.4f,%.4f" % [at[0], at[1], at[2]],
 		"lumi_fill": snappedf(p.compartment.fill, 0.01),
 		"loose_cubes": cubes,
+		"sky_spin": snappedf((s.get("sky_director") as SkyDirector).spin, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
+		"sky_clouds": snappedf((s.get("sky_director") as SkyDirector).clouds, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
 	}
 
 
