@@ -6,7 +6,7 @@ render_mode specular_schlick_ggx;
 
 uniform vec3 iris : source_color = vec3(0.65, 0.68, 0.18);
 uniform float pupil_w = 0.62;   // 1 = round, smaller = slit (a soft, wide cat pupil reads cute)
-uniform float pupil_r = 0.52;   // pupil size (cute = big)
+uniform float pupil_r = 0.58;   // pupil size (cute = big)
 uniform float eye_closed = 0.0;
 uniform vec3 coat_base : source_color = vec3(0.86, 0.52, 0.24);
 
@@ -22,7 +22,7 @@ void fragment() {
 	vec2 pd = vec2(d.x / max(pupil_w, 0.05), d.y);
 	float pupil = 1.0 - smoothstep(pupil_r - 0.06, pupil_r + 0.02, length(pd));
 	col = mix(col, vec3(0.01, 0.008, 0.006), pupil);
-	float glint = smoothstep(0.2, 0.1, length(d - vec2(-0.32, 0.38))) + smoothstep(0.1, 0.04, length(d - vec2(0.3, -0.3))) * 0.5;
+	float glint = smoothstep(0.25, 0.13, length(d - vec2(-0.3, 0.36))) + smoothstep(0.1, 0.04, length(d - vec2(0.3, -0.3))) * 0.5;
 	float closed = step(0.5, eye_closed);
 	col = mix(col, coat_base * 0.8, closed);
 	float lash = closed * (1.0 - smoothstep(0.03, 0.08, abs(d.y + 0.05)));

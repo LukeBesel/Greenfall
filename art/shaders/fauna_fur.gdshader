@@ -53,7 +53,8 @@ void fragment() {
 		float grain0 = vnoise(lp * vec3(density * 0.35, density, density * 0.35));
 		vec3 alb0 = bc * (0.9 + 0.2 * grain0);
 		if (shell > 0.0) {
-			if (hash13(floor(lp * density)) < shell * 0.95 + 0.05) {
+			float graze0 = 1.0 - clamp(abs(dot(NORMAL, VIEW)), 0.0, 1.0);
+			if (hash13(floor(lp * density)) < shell * 0.95 + 0.05 + graze0 * graze0 * shell * 0.8) {
 				discard;
 			}
 			alb0 *= mix(0.8, 1.05, shell);
@@ -77,7 +78,8 @@ void fragment() {
 	c *= 0.9 + 0.2 * grain;
 	if (shell > 0.0) {
 		float strand = hash13(floor(lp * density));
-		if (strand < shell * 0.95 + 0.05) {
+		float graze = 1.0 - clamp(abs(dot(NORMAL, VIEW)), 0.0, 1.0);
+		if (strand < shell * 0.95 + 0.05 + graze * graze * shell * 0.8) {
 			discard;
 		}
 		c *= mix(0.78, 1.05, shell);
