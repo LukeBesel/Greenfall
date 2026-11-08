@@ -22,7 +22,7 @@ extends Node
 ##   --fly-planet=N[,S]       launch the rocket to system planet N after S seconds (no checks)
 
 const CHECK_S: float = 3.0
-const BED_OFFSET := Vector3(7.0, 0.0, 3.0)
+const BED_OFFSET := Vector3(10.5, 0.0, 4.5)  # [ship] clear of the Mk VII landing pad (radius ~8.7)
 
 var world: Node
 var map: SystemMap
@@ -358,7 +358,7 @@ func _build_home_site() -> void:
 	# Four tall service towers with green beacons and a ring gantry around the pad.
 	for i: int in 4:
 		var a: float = PI * 0.25 + i * PI * 0.5
-		var p: Vector3 = pad + Vector3(cos(a), 0, sin(a)) * 9.0
+		var p: Vector3 = pad + Vector3(cos(a), 0, sin(a)) * 12.5  # [ship] outside the Mk VII's wings
 		var tower := MeshInstance3D.new()
 		tower.mesh = ProcMesh.box(Vector3(1.2, 26.0, 1.2))
 		tower.material_override = steel
@@ -376,13 +376,13 @@ func _build_home_site() -> void:
 		lamp.position = p + Vector3(0, 26.6, 0)
 		_complex.add_child(lamp)
 	var ring := MeshInstance3D.new()
-	ring.mesh = ProcMesh.torus(8.6, 9.4, 64, 6)
+	ring.mesh = ProcMesh.torus(12.1, 12.9, 64, 6)  # [ship]
 	ring.material_override = white
 	ring.position = pad + Vector3(0, 18.0, 0)
 	ring.scale = Vector3(1, 0.5, 1)
 	_complex.add_child(ring)
 	var glow := MeshInstance3D.new()
-	glow.mesh = ProcMesh.torus(8.9, 9.1, 64, 4)
+	glow.mesh = ProcMesh.torus(12.4, 12.6, 64, 4)  # [ship]
 	glow.material_override = green
 	glow.position = pad + Vector3(0, 18.25, 0)
 	glow.scale = Vector3(1, 0.3, 1)

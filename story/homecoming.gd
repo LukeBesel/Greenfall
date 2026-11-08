@@ -137,8 +137,8 @@ func _space() -> void:
 		var e: float = k * k * (3.0 - 2.0 * k)
 		var p: Vector3 = start.lerp(dock, e)
 		p.x += sin(e * PI) * 6.0
+		ShipModel.face_along(rocket, (dock - p).lerp(dock - start, 0.4) + Vector3(sin(e * PI) * 4.0, 0, 0))  # [ship] nose first
 		rocket.position = p
-		rocket.rotation.z = -sin(e * PI) * 0.35
 		if rocket.plume:
 			rocket.plume.power = lerpf(1.0, 0.15, e)
 		SystemProps.wake_ark(ark, clampf((t - 9.0) / 8.0, 0.0, 1.0))

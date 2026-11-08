@@ -35,18 +35,14 @@ static func add_planets(stage: SpaceStage, center: Vector3, restored: Dictionary
 	return out
 
 
-## A rocket for the space shots (the Mk IV look with a green Homeward band), plume on.
+## The ship for the space shots: [ship] the Mk VII Homeward (seed vault, light banners), engines lit.
+## Turn it with ShipModel.face_along (its nose is +Z).
 static func add_rocket(stage: SpaceStage, pos: Vector3) -> RocketModel:
 	var r := RocketModel.new()
 	stage.root_of("space").add_child(r)
-	r.build(4)
+	r.build(7)
+	r.set_legs(0.0)
 	r.position = pos
-	var band := MeshInstance3D.new()
-	band.mesh = ProcMesh.torus(1.15, 1.3, 32, 6)
-	band.material_override = Mats.lamp(Color(0.5, 1.0, 0.6), 3.0)
-	band.position = Vector3(0, 3.2, 0)
-	band.scale = Vector3(1, 0.4, 1)
-	r.add_child(band)
 	if r.plume:
 		r.plume.power = 1.0
 	return r
