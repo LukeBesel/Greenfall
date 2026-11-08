@@ -131,10 +131,12 @@ func build(p_world: Node3D) -> void:
 		print("[orbit-load] start site %d ms, %d models: %s" % [Time.get_ticks_msec() - tq, AssetLib.traced.size(), ",".join(AssetLib.traced)])
 		AssetLib.tracing = tr0
 	await BuildBudget.check("orbit start site")  # [orbE]
-	# The site's deferred footprint probe and anchor reach audit (~0.7 s of physics queries on the
-	# next physics frame): give it a frame of its own, so it never stacks with a build slice.
+	# The site's deferred footprint probe and anchor fix (physics queries and flood fills, yielding
+	# themselves): wait for it here, so it never stacks with a build slice or outlives the loader.
 	await BuildBudget.pause("site probe")
-	await BuildBudget.pause("site probe")
+	var wait_t: int = Time.get_ticks_msec()
+	while BuildBudget.active() and globe.site_manager and not globe.site_manager.probed.has(0) and Time.get_ticks_msec() - wait_t < 30000:
+		await BuildBudget.pause("site probe")
 	_build_patch()
 	_build_depot(site)
 	await BuildBudget.check("orbit lumi")  # [orbE]
