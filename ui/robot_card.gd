@@ -90,7 +90,7 @@ func refresh() -> void:
 	else:
 		var nt: Dictionary = req["next"]
 		_tier.text = tr("Next: %s  ·  x%.1f work speed  ·  %s look") % [tr(str(nt["name"])), float(nt["mult"]), str(nt["look"])]
-		_tier_req.text = tr("Needs %s cubes, %s bolts and a %s Control Core.  %s") % [Settings.fmt(req["cost"]), Settings.fmt(req["bolts"]), tr(str(Economy.rarity(int(req["core_rarity"])).get("name", "?"))), req["reason"]]
+		_tier_req.text = tr("Needs %s cubes, %s parts and a %s Control Core.  %s") % [Settings.fmt(req["cost"]), Settings.fmt(req["parts"]), tr(str(Economy.rarity(int(req["core_rarity"])).get("name", "?"))), req["reason"]]
 		_tier_btn.visible = true
 		_tier_btn.text = tr("Upgrade fleet to %s") % tr(str(nt["name"]))
 		_tier_btn.disabled = not req["ok"]

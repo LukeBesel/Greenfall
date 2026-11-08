@@ -8,6 +8,8 @@ uniform vec4 coat : source_color = vec4(0.86, 0.72, 0.52, 1.0);
 uniform float top_amt = 0.8;    // cover on faces pointing up
 uniform float film = 0.25;      // thin film everywhere
 uniform float roughness = 0.95;
+uniform float metal = 0.0;      // [worlds2] Rich Salvage: a clean metallic glint
+uniform float spec = 0.3;
 
 varying vec3 wn;
 varying vec3 wp;
@@ -37,5 +39,6 @@ void fragment() {
 	ALBEDO = coat.rgb * (0.9 + 0.2 * n);
 	ALPHA = clamp(a, 0.0, 0.95);
 	ROUGHNESS = roughness;
-	SPECULAR = 0.3;
+	METALLIC = metal;
+	SPECULAR = spec;
 }

@@ -1,8 +1,8 @@
 class_name Wren
 extends Node
 ## WREN: the ark Cradle's AI, whispering to Lumi over a failing relay. Speaks in short subtitled lines.
-## Her memory (and text clarity) returns with restoration: stage 0 lines arrive glitched and
-## resolve as they type; later stages are clean. Lines never repeat until a pool is exhausted.
+## Her memory returns with restoration (stage 0..2 pick the line pools); every line is shown clean
+## on the one subtitle line (ui/subtitles.gd). Lines never repeat until a pool is exhausted.
 
 signal line_started(text: String, stage: int)
 
@@ -49,7 +49,9 @@ func _on_hex(_h: int, _p: Vector3, _b: BigNum) -> void:
 
 
 ## Queue a line from a trigger pool. chance < 1 lets frequent events stay sparse.
-func say(trigger: String, chance: float = 1.0, important: bool = false, vars: Dictionary = {}) -> void:
+## [worlds2] stage_override >= 0 speaks from that signal stage (Cradle Mode worlds: WREN talks over the
+## ark's own relay, clear from the first line).
+func say(trigger: String, chance: float = 1.0, important: bool = false, vars: Dictionary = {}, stage_override: int = -1) -> void:
 	if not awake() and trigger != "wake":
 		return
 	if randf() > chance:
@@ -59,7 +61,7 @@ func say(trigger: String, chance: float = 1.0, important: bool = false, vars: Di
 	var pools: Array = lines.get(trigger, [])
 	if pools.is_empty():
 		return
-	var st: int = mini(stage(), pools.size() - 1)
+	var st: int = mini(stage() if stage_override < 0 else stage_override, pools.size() - 1)
 	var pool: Array = pools[st]
 	if pool.is_empty():
 		return
@@ -76,7 +78,7 @@ func say(trigger: String, chance: float = 1.0, important: bool = false, vars: Di
 	used.append(pick)
 	GameState.flags[used_key] = used
 	var text: String = tr(str(pool[pick])).format({"name": GameState.flags.get("patch_name", "Lumi")}.merged(vars))
-	_queue.append({"text": text, "stage": st})
+	_queue.append({"text": text, "stage": st if stage_override < 0 else stage_override})
 
 
 func _process(delta: float) -> void:
@@ -84,7 +86,7 @@ func _process(delta: float) -> void:
 	if _cooldown <= 0.0 and not _queue.is_empty():
 		var l: Dictionary = _queue.pop_front()
 		line_started.emit(l["text"], int(l["stage"]))
-		_cooldown = 4.0 + str(l["text"]).length() * 0.045
+		_cooldown = Subtitles.total_time(str(l["text"])) + 0.6  # [intro2] the line is fully read before the next
 	# Idle remark once per idle stretch.
 	if world and world.patch:
 		var idle: float = world.patch._idle_time

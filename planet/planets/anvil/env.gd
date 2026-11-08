@@ -90,6 +90,26 @@ static func prepare_field(p_field: HexField, _kind: Dictionary = {}) -> void:
 	p_field.biome_set = Economy.biome_set(BIOME)
 
 
+## Dev (--planet-env=anvil): the first wild land hub (no streets; Anvil is open dust plains).
+static func dev_hub(planet: PlanetData) -> int:
+	var skip: Array = planet.frontier_hubs.values()
+	var first: int = -1
+	for i: int in planet.hubs.size():
+		var c: int = planet.hubs[i]
+		if i in skip or planet.city[c] >= 0 or planet.state[c] == PlanetData.State.WATER:
+			continue
+		if PlanetData.BIOMES[planet.biome[c]] == "rustlands":  # closest wild biome (no frost fauna)
+			return i
+		if first < 0:
+			first = i
+	return maxi(first, 0)
+
+
+## PlanetEnvs contract name (planet/planets/planet_envs.gd) for prepare_view.
+static func dress_view(view: FieldView) -> void:
+	prepare_view(view)
+
+
 static func prepare_view(view: FieldView, _kind: Dictionary = {}) -> void:
 	var lk: Dictionary = load_json(DATA_PATH)
 	view.layer_swap = lk.get("ground_layers", {})
@@ -144,6 +164,8 @@ func build() -> void:
 	process_priority = 20  # after SkyDirector: the sun tweaks sit on top of its day cycle
 	entry = planet_entry()
 	entry.merge(kind, true)
+	if entry.has("district_name") and world.get("district_name") != null:
+		world.set("district_name", str(entry["district_name"]))
 	look = load_json(DATA_PATH)
 	_rng.seed = field.seed_value + 7071
 	r_in = field.hex_size * (float(field.radius) + 0.55) * Hex.SQRT3 + 2.0

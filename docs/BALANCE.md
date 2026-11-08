@@ -458,3 +458,132 @@ Data changes (early-game values only):
 - **Garden charm**: +0.4% plant growth per charm point in that district, capped at +8% (charm 20;
   the fountain is 4, a bench 1.5, a path 0.2). Decorations refund in full when picked up.
 
+
+## Homeward pacing (wt/home, Nov 7)
+Owner target: the whole campaign 25-40 h for a human, every planet shorter than Verdance with its own twist.
+- Verdance to "The Cradle Answers": ~15-22 h human (unchanged, see above).
+- The four planets start from the Heirloom kit and the carried rocket tier (warp hops from the start) and
+  have smaller restoration targets (data/homeward.json): Ochre 110 Thriving + 1 base 5 (~2-2.5 h),
+  Tidewell 140 + 2 (~2.5-3 h), Rime 160 + 2 with Long Nights and Thin Soil (~3-3.5 h), Anvil 200 + 3
+  with Heavy Junk (~3.5-4.5 h): ~11-13.5 h, so ~27-36 h in all. *(assumption: scaled from the new-world
+  opening measured in wt/late, base 4 at ~55-80 game min; not measured end to end yet)*
+- Drive costs: Mk V 2.5M cubes + 300 parts is paid on Verdance late game (a Cradle-era stipend covers it in
+  well under an hour); Mk VI 1.2M + 500 parts on Ochre or Tidewell, around their base 5; Mk VII 8M + 2,000
+  parts back on Verdance after the system is restored (the Seed Ark gifts and four planets of stipends).
+- Each restored planet: a relic and one Heirloom pick (four picks over the campaign, so later planets speed up).
+## Three currencies (wt/money, Nov 7)
+
+Owner: "mostly focus on fewer currencies ... keep it extremely low like 3 or less." The game now has
+exactly three, defined in `data/currencies.json` (`core/currencies.gd`).
+
+**Currencies, before -> after**
+
+| Before (12) | After (3) | Rate (old -> new) | Where it went |
+|---|---|---|---|
+| Cubes | **Cubes** | 1 | unchanged: bales sold; pays upgrades, robots, base levels, research, rockets, decor |
+| Data | Cubes | 1 Data = 10 cubes | research costs cubes x10 plus real time; the old Data sources ("field notes") pay the cubes |
+| Bolts | **Parts** | 1 bolt = 5 parts | robot tiers (50/200/750 parts), Builder crafts, Haggle's stall, rocket Mk IV |
+| Sheet metal / plastic stock / glass | Parts | 1 = 1 part | scooping metal/plastic/glass junk gives Parts; base levels, stations, outposts, rockets |
+| Contract tokens | Parts (or unlocks) | 1 token = 5 parts | Requests pay cubes or parts; the token shop became the Requests reward track |
+| Maker Fragments | Parts | 1 = 25 parts | Maker set crafts cost parts + a Vintage robot part |
+| Trinkets (as a currency) | Cubes | 1 = 150 cubes | trinkets are only Collection finds; decor that cost trinkets needs Collection finds |
+| Compost | Seeds (press hopper) | 4 compost = 1 seed | the press's hopper is a machine fill level; it makes seeds directly |
+| Seeds | **Seeds** | 1 | unchanged |
+| Starseeds (profile) | none | - | a restoration score that unlocks Heirloom milestones |
+| Heirloom purchases | milestone unlocks | old prices as thresholds | cheapest first, round-robin by level |
+
+Rates are the alias layer's and the save migration's (save v2), so an old save keeps everything it
+earned: 45 Data -> 450 cubes, 10 bolts + 30 metal + 20 plastic + 5 glass -> 105 parts, and so on.
+
+**Cost changes (data files)**
+- Base levels (hub.json): L2 1.5k cubes + 150 parts (was 25 metal + 15 plastic), L3 12k + 350 parts
+  (was 90 metal + 60 plastic + 30 glass), L4 28k + 140 parts, L5 30k + 110 parts. With one pooled
+  currency the per-type gates vanished (base 2 and 3 waited on metal and glass); 150 and 350 parts
+  arrive when those gates opened (~16 and ~31 min).
+- Stations, outposts, rockets, signal jammers: the old material costs summed into Parts
+  (bolts x5), e.g. Recycler 1.5k cubes + 45 parts, rocket Mk II 150k cubes + 1,050 parts.
+- Research (research.json): x10 cubes per old Data for tiers 0-5 (Scoop Beam 250, Pollinator
+  Survey 2k, Rocket Cargo 3.8k), x25 for the frontier tiers 6-7 (Dune Charts 15k, Ark Beacon 37.5k):
+  late cubes are plentiful, and Data used to be the late gate. Field notes pay 10 cubes per old Data point (hex cleaned 100, restored 150, shard
+  200, robot bale 10, bloom 15). Thriving wildlife notes: 6 cubes/min per hex, cap 300/min.
+- Recycler: 10 parts x (0.5 + fill) per bale plus the bale's stock (was 2 bolts + stock).
+- Hex levels: Sustained 250 cubes, Thriving 600 (Data folded in).
+- Events and requests: bolts x5 -> parts; the Wildlife Visit's Data became more cubes.
+- Requests: cube requests pay 90-180 s of income, part requests 30-130 parts.
+- Lumi Level: every 5th level 5 + 5/10 levels Parts (was tokens).
+- Eggs and Bloom milestones: trinket rewards became 150 cubes each.
+- The compost press: unchanged rates (4 organic -> 1 seed per cycle), so the owner's planting curve
+  holds: one Maker seed at ~13 min, a trickle until ~1 h, then the garden takes off.
+
+**Milestones, before -> after** (autoplay, game minutes, `--fresh --autoplay --time-scale=16`, the
+same staged campaign as WALKTHROUGH.md; the 4x first-hour run in brackets)
+
+| Milestone | Before | After | Change |
+|---|---|---|---|
+| First upgrade | 0.7 | 0.6 | -8% |
+| First hex clean | 2.1 | 4.6 | +119% |
+| First robot (Scoopie) | 8.0 | 8.8 | +10% |
+| First research started | 8.3 | 9.1 | +9% |
+| Seed tin (the Maker seed) | 13.5 | 14.7 | +9% |
+| First hex Planted | 16.0 | 17.5 | +9% |
+| Base level 2 | 16.8 | 14.8 | -12% |
+| First hex Sustained | 18.0 | 19.3 | +7% |
+| First Skimmer | 30.6 | 27.1 | -11% |
+| First hex Thriving | 23.9 | 34.9 | +46% |
+| Base level 3 | 46.1 | 43.6 | -5% |
+| First Seedling (garden robots) | 49.2 | 47.6 | -3% |
+| First Drip | 57.9 | 64.0 | +11% |
+| Base level 4 | 66.8 | 64.5 | -3% |
+| Garden takes off (Pollinator Survey) | 65.9 | 72.0 | +9% |
+| Old Town base 5 / first launch | 73.7 | 80.6 | +9% |
+| Second district base 5 / launch | 161.0 | 149.0 | -7% |
+| Arrive in the Dust Flats | 161.7 | 149.7 | -7% |
+| Second district (launch to launch) | 87.3 | 68.4 | -22% |
+| Seeds in stock at 20 / 30 / 40 / 60 min | 8 / 79 / 139 / 227 | 0 / 35 / 126 / 130 | a trickle to ~1 h |
+
+Before = the branch before this pass; after = the final data. The 16x "before" run was cut short at
+185 min by the shared box's OOM killer, so the comparison stops at the first frontier (the 4x
+first-hour "before" run crashed in the engine at 43 min and is not used). Single-run noise at 16x is
+large: "first hex clean" ranged 2.3-4.8 min across five after-runs with near-identical data, and
+"first Thriving" is one hex's garden luck. Everything on the critical path is within about 10%;
+the second district is ~20% quicker (cubes fund research there now, where Data used to run dry).
+
+Tuning runs (16x, same seed): pooling the materials first made base 2 and 3 come ~8-10 min early
+(the metal and glass gates vanished) and the second district took 26 min instead of 87 (a bot
+arriving rich, research no longer Data-starved). Fixed with base 2/3 parts costs (150 / 350), a
+research reserve in the bot, and x25 cubes for the frontier research tiers; x15/x20 for tiers 4-5
+was tried and reverted (Old Town launch slipped to 93 min).
+
+**Notes**
+- The bot treats field-note cubes as its research fund (`AutoplayBot._research_ok`), like a player
+  who spends what used to be Data on research; it also researches when it is rich.
+- Parts pile up after the first district (the recycler and requests keep paying); the late sinks are
+  rocket stages (Mk III 3,300, Mk IV 10,000 parts), robot tiers and the Builder.
+
+## Remote progress and the Telescope (wt/scope, Nov 7)
+Robots on the other worlds of a Cradle Mode profile keep working while Lumi is elsewhere. One function
+does the maths for both: `Offline.compute` (core/offline.gd). `RemoteProgress.compute` (systems/remote_progress.gd)
+calls it and scales the result; nothing is duplicated.
+- **Rate:** `remote_factor` 0.5 of the offline rate (data/telescope.json), and offline is already 0.5 of the
+  online scoop rate, so a remote crew works at **25%** of what it does with Lumi there. Scrubbers pay nothing
+  from afar.
+- **Caps:** the offline 8 h cap (`Offline.CAP_S`) per absence, and the junk left in that district
+  (junk hexes x 337 units, the measured mean, minus `offline_units` already paid). A clean district pays nothing.
+- **When it pays:** on arrival by world travel (`CradleMode.switch_world` loads the world in memory, so the
+  slice skips its own offline payout; `Telescope` calls `RemoteProgress.on_district_ready`). The window starts
+  at that world's last save, i.e. when Lumi left it; under 120 s pays nothing. A cold start onto a world gets
+  the normal offline payout instead, and rocket travel inside one world gets neither, so time is never paid
+  twice. The units paid are added to `offline_units`, so the same junk can't pay again (the same rule as offline).
+  If the extras idle-gains work lands, it should also call `Offline.compute`; remote progress only covers
+  worlds other than the current one, so the two never overlap.
+- **What the telescope shows** is the same number live (`RemoteProgress.pending`): the district % and
+  "waiting for you" cubes tick up at the remote rate; piles shrink and hexes turn clean nearest the base first.
+  Estimates use the current world's upgrades; the payout on arrival uses the visited world's own.
+- **Size of it:** a Mk I Scoopie earns about 0.05 cubes/s remotely (~180 cubes/h, with a hauler in the crew).
+  A full 8 h away banks what that crew makes in about 2 h with Lumi there, and never more junk than the
+  district has left.
+- **Care package:** 400 cubes spent here, 5 min of double speed for the watched world's crew, one at a time
+  per world. Its extra payout is capped at 75% of its cost (`care.extra_cap`), so it can never turn cubes
+  here into more cubes there. It is a nudge you can watch, not an income source.
+- **Telescope unlock:** base level 4, or the Observatory Optics research (Robotics tier 6, 500 Data). Cost
+  6000 cubes + 40 parts (bolts until the money rework adds a parts currency). Tests: `tests/test_remote_progress.gd`.

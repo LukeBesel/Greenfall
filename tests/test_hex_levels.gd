@@ -188,5 +188,6 @@ func test_garden_stipend_pays_sustained_and_thriving_hexes() -> void:
 	assert_gt(per_min, 0.0, "Sustained/Thriving hexes pay a stipend")
 	var c0: float = GameState.get_currency("cubes").to_float()
 	hl._pay_stipend(60.0)
-	assert_almost_eq(GameState.get_currency("cubes").to_float() - c0, floorf(per_min), 1.0)
+	# [money] plus the wildlife-notes trickle (was research Data) from the Thriving hex
+	assert_almost_eq(GameState.get_currency("cubes").to_float() - c0, floorf(per_min) + floorf(hl.bonus("wildlife_cubes_per_min")), 1.0)
 	hl.free()

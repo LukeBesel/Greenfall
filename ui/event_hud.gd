@@ -189,7 +189,7 @@ func _update_banner() -> void:
 			tw.tween_callback(func() -> void: _banner.visible = events.active.size() > 0)
 		_shown_id = ""
 		var ready_n: int = Contracts.count_state("done")
-		_nudge.text = (tr("CONTRACT READY  ·  claim it at the workbench") if ready_n == 1 else tr("%d CONTRACTS READY  ·  claim them at the workbench") % ready_n) if ready_n > 0 else ""
+		_nudge.text = (tr("REQUEST READY  ·  claim it at the workbench") if ready_n == 1 else tr("%d REQUESTS READY  ·  claim them at the workbench") % ready_n) if ready_n > 0 else ""
 		return
 	_nudge.text = ""
 	var col: Color = a.get("color", UITheme.GOLD)

@@ -1,10 +1,12 @@
 class_name ContractsPanel
 extends VBoxContainer
-## Workbench "Contracts" tab: the three contract slots (accept / pass / claim), the token shop
-## (fleet liveries, blueprint parts, seed crates, Curio Capsules) and a Collection summary.
+## [money] Workbench "Requests" tab: the world event in progress (live), the three request slots
+## (accept / pass / claim; each pays Cubes or Parts), the reward track (fleet liveries, Builder
+## parts, capsules: what the token shop used to sell) and a Collection summary.
 ## Rebuilds itself when a slot changes state; labels tick every half second.
 
 const TOKEN_COLOR := Color(0.55, 0.95, 0.85)
+var _live: Label
 
 var world: Node
 var _tokens: Label
@@ -22,16 +24,19 @@ func _ready() -> void:
 	var head := HBoxContainer.new()
 	head.add_theme_constant_override("separation", 14)
 	add_child(head)
-	head.add_child(UITheme.label(tr("CONTRACTS"), 20, UITheme.CREAM))
+	head.add_child(UITheme.label(tr("REQUESTS"), 20, UITheme.CREAM))
 	# [vqa] The blurb wraps instead of setting the workbench's minimum width (it pushed the panel
 	# off a 1280x720 screen, more so in German).
-	var blurb: Label = UITheme.label(tr("Optional jobs with a timer. Finish in time for tokens; nothing is lost if one runs out."), 13, UITheme.MUTED)
+	var blurb: Label = UITheme.label(tr("Short optional jobs and world events. Each pays cubes or parts; nothing is lost if one runs out."), 13, UITheme.MUTED)
 	blurb.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	blurb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	blurb.custom_minimum_size.x = 200
 	head.add_child(blurb)
 	_tokens = UITheme.label("", 22, TOKEN_COLOR)
 	head.add_child(_tokens)
+	_live = UITheme.label("", 15, UITheme.GOLD)
+	_live.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	add_child(_live)
 	_slots_row = HBoxContainer.new()
 	_slots_row.add_theme_constant_override("separation", 14)
 	add_child(_slots_row)
@@ -39,7 +44,7 @@ func _ready() -> void:
 	var sh := HBoxContainer.new()
 	sh.add_theme_constant_override("separation", 14)
 	add_child(sh)
-	sh.add_child(UITheme.label(tr("TOKEN SHOP"), 20, UITheme.CREAM))
+	sh.add_child(UITheme.label(tr("REWARD TRACK"), 20, UITheme.CREAM))
 	_collection = UITheme.label("", 13, UITheme.MUTED)
 	_collection.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	sh.add_child(_collection)
@@ -70,7 +75,7 @@ func _signature() -> String:
 	var bits: Array[String] = []
 	for s: Dictionary in Contracts.slots():
 		bits.append("%s:%s" % [str(s.get("state", "")), str(s.get("tpl", ""))])
-	bits.append(str(Contracts.tokens()))
+	bits.append(str(Contracts.done_total()))
 	bits.append(str(Contracts.owned()))
 	bits.append(Liveries.equipped())
 	bits.append(str(Collection.count()))
@@ -78,7 +83,12 @@ func _signature() -> String:
 
 
 func refresh(force: bool = false) -> void:
-	_tokens.text = tr("◆  %d tokens") % Contracts.tokens()
+	_tokens.text = tr("%d done") % Contracts.done_total()
+	var ev: WorldEvents = world.get("events") as WorldEvents if world else null
+	if ev and not ev.active.is_empty():
+		_live.text = tr("LIVE  ·  %s  ·  %s  ·  %s left") % [tr(str(ev.active.get("name", ""))), str(ev.active.get("hint", "")), _clock(float(ev.active.get("left", 0.0)))]
+	else:
+		_live.text = ""
 	_collection.text = tr("Collection  %d / %d   ·   see the Codex (K)") % [Collection.count(), Collection.total()]
 	var sig: String = _signature()
 	if force or sig != _sig:
@@ -127,7 +137,7 @@ func _rebuild_slots() -> void:
 		var tag: String = {"offer": "N E W   O F F E R", "active": "I N   P R O G R E S S", "done": "C O M P L E T E", "wait": "P O S T I N G   S O O N"}.get(st, "")
 		vb.add_child(UITheme.label(tag, 11, col))
 		if st == "wait":
-			var l := UITheme.label(tr("A new contract is being posted."), 16, UITheme.MUTED)
+			var l := UITheme.label(tr("A new request is being posted."), 16, UITheme.MUTED)
 			l.autowrap_mode = TextServer.AUTOWRAP_WORD
 			vb.add_child(l)
 			refs["timer"] = UITheme.label("", 14, UITheme.MUTED)
@@ -138,7 +148,7 @@ func _rebuild_slots() -> void:
 		var title := UITheme.label(Contracts.text_of(s), 19, UITheme.CREAM)
 		title.autowrap_mode = TextServer.AUTOWRAP_WORD
 		vb.add_child(title)
-		vb.add_child(UITheme.label(tr("Reward  ◆ %d tokens  +  cubes") % int(s.get("tokens", 0)), 14, TOKEN_COLOR))
+		vb.add_child(UITheme.label(tr("Pays  %s") % Contracts.pay_text(s), 14, TOKEN_COLOR))
 		if st == "active" or st == "done":
 			var bar := ProgressBar.new()
 			bar.show_percentage = false
@@ -185,12 +195,12 @@ func _rebuild_slots() -> void:
 				row.add_child(b)
 			"done":
 				var cl := Button.new()
-				cl.text = tr("Claim  ◆ %d") % int(s.get("tokens", 0))
+				cl.text = tr("Claim  %s") % Contracts.pay_text(s)
 				cl.custom_minimum_size = Vector2(170, 40)
 				UITheme.orange_button(cl)
 				cl.pressed.connect(func() -> void:
 					var c: Contracts = _contracts()
-					if c and c.claim(i) > 0:
+					if c and c.claim(i) > 0.0:
 						if world and world.get("patch") != null:
 							Vfx.burst("confetti", world.patch.global_position + Vector3(0, 1.5, 0), Color.WHITE, 0.5)
 						refresh(true))
@@ -238,7 +248,7 @@ func _tick_labels() -> void:
 				var cnt: Label = refs.get("count")
 				if cnt:
 					cnt.text = "%d / %d" % [int(have), int(s.get("n", 1))]
-				timer.text = (tr("Time left %s") % _clock(float(s.get("left", 0.0)))) if st == "active" else tr("Finished. Claim your tokens!")
+				timer.text = (tr("Time left %s") % _clock(float(s.get("left", 0.0)))) if st == "active" else tr("Finished. Claim it!")
 				timer.add_theme_color_override("font_color", Color(1.0, 0.55, 0.35) if st == "active" and float(s.get("left", 0.0)) < 60.0 else UITheme.MUTED)
 
 
@@ -247,35 +257,41 @@ func _rebuild_shop() -> void:
 		_shop_grid.remove_child(ch)
 		ch.queue_free()
 	var owned: Array = Contracts.owned()
-	for it: Dictionary in Contracts.shop():
-		var id: String = str(it["id"])
+	var done: int = Contracts.done_total()
+	for t: Dictionary in Contracts.track():
+		var kind: String = str(t.get("kind", ""))
+		var id: String = str(t.get("id", ""))
+		var it: Dictionary = Contracts.shop_item(id) if kind == "livery" else {}
 		var col: Color = Color.html(str(it.get("color", "#8fe8d8"))) if it.has("color") else TOKEN_COLOR
-		var kind: String = str(it.get("kind", ""))
+		var reached: bool = done >= int(t.get("n", 0))
 		var b := Button.new()
-		b.custom_minimum_size = Vector2(240, 92)
+		b.custom_minimum_size = Vector2(240, 72)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.autowrap_mode = TextServer.AUTOWRAP_WORD
 		b.add_theme_font_size_override("font_size", 14)
-		var have: bool = id in owned
-		var price: String = "◆ %d" % int(it.get("cost", 0))
-		var status: String = price
-		if kind == "livery" and have:
-			status = tr("Equipped  (press to remove)") if Liveries.equipped() == id else tr("Owned  ·  press to equip")
-		var why: String = Contracts.block_reason(id)
-		if why != "" and not (kind == "livery" and have):
-			status = "%s   ·   %s" % [price, why]
-		b.text = "%s\n%s\n%s" % [tr(str(it.get("name", id))), tr(str(it.get("desc", ""))), status]
-		b.disabled = why != "" and not (kind == "livery" and have)
-		b.add_theme_color_override("font_color", col.lightened(0.25))
-		b.add_theme_stylebox_override("normal", UITheme.box(Color(col.r * 0.12 + 0.04, col.g * 0.12 + 0.04, col.b * 0.12 + 0.04, 0.92), Color(col, 0.6 if Liveries.equipped() == id else 0.25), 2 if Liveries.equipped() == id else 1, 8, 10))
-		b.pressed.connect(func() -> void:
-			var c: Contracts = _contracts()
-			if c == null:
-				return
-			var err: String = c.buy(id)
-			if err != "":
-				Audio.play("buzz", 1.2, -8.0)
-				EventBus.toast.emit(err, "info")
-			refresh(true))
+		var status: String
+		if not reached:
+			status = tr("After %d requests") % int(t.get("n", 0))
+		elif kind == "livery" and id in owned:
+			status = tr("Equipped  (press to remove)") if Liveries.equipped() == id else tr("Unlocked  ·  press to equip")
+		else:
+			status = tr("Unlocked")
+		b.text = "%s\n%s" % [Contracts.track_name(t), status]
+		if not it.is_empty():
+			b.tooltip_text = tr(str(it.get("desc", "")))
+		b.disabled = not (kind == "livery" and id in owned)
+		b.add_theme_color_override("font_color", col.lightened(0.25) if reached else UITheme.MUTED)
+		b.add_theme_color_override("font_disabled_color", col.lightened(0.25) if reached else UITheme.MUTED)
+		b.add_theme_stylebox_override("normal", UITheme.box(Color(col.r * 0.12 + 0.04, col.g * 0.12 + 0.04, col.b * 0.12 + 0.04, 0.92), Color(col, 0.6 if Liveries.equipped() == id and id != "" else 0.25), 2 if Liveries.equipped() == id and id != "" else 1, 8, 10))
+		if kind == "livery":
+			b.pressed.connect(func() -> void:
+				var c: Contracts = _contracts()
+				if c == null:
+					return
+				var err: String = c.buy(id)
+				if err != "":
+					Audio.play("buzz", 1.2, -8.0)
+					EventBus.toast.emit(err, "info")
+				refresh(true))
 		_shop_grid.add_child(b)

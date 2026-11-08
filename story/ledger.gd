@@ -149,11 +149,11 @@ func _check_acts() -> void:
 	GameState.flags["ledger_act"] = nxt
 	EventBus.ledger_event.emit("act", {"act": nxt})
 	if cur < 1 and nxt >= 1:
-		for l: String in cfg.get("act1", []):
+		for l: String in _act_lines("act1"):
 			uplink.show_line(tr(l).format({"district": str(world.district_name).to_upper()}))
 		_wren_later("ledger_intercept", 9.0)
 	if cur < 2 and nxt >= 2:
-		for l: String in cfg.get("act2", []):
+		for l: String in _act_lines("act2"):
 			uplink.show_line(l)
 		_drop_timer = float(cfg.get("drop", {}).get("first_after_s", 45.0))
 		_wren_later("ledger_drones", 7.0)
@@ -162,12 +162,24 @@ func _check_acts() -> void:
 	if cur < 3 and nxt >= 3:
 		GameState.flags["ledger_relay_hub"] = GameState.current_hub
 		_place_relay()
-		for l: String in cfg.get("act3", []):
+		for l: String in _act_lines("act3"):
 			uplink.show_line(l)
 		_wren_later("ledger_relay", 8.0)
 		get_tree().create_timer(12.0, false).timeout.connect(func() -> void:
 			if relay:
 				EventBus.toast.emit(tr("WREN traced the Ledger's relay: %s of the hub. Look for the red beacon.") % compass_label(relay.global_position), "story"))
+
+
+## [money] Only the first uplink_lines_per_act lines of an act take the uplink banner (rarer,
+## shorter intercepts).
+func _act_lines(key: String) -> Array:
+	var all: Array = cfg.get(key, [])
+	return all.slice(0, maxi(int(cfg.get("uplink_lines_per_act", 1)), 0))
+
+
+## [money] A small notify-stack entry instead of the big uplink banner.
+func _note(text: String) -> void:
+	EventBus.toast.emit(tr("Ledger: %s") % tr(text), "info")
 
 
 func _wren_later(trigger: String, delay: float) -> void:
@@ -241,8 +253,6 @@ func _process(delta: float) -> void:
 
 
 func _send_coupon() -> void:
-	if uplink.is_busy():
-		return
 	var all: Array = cfg.get("coupons", [])
 	if all.is_empty():
 		return
@@ -255,9 +265,9 @@ func _send_coupon() -> void:
 	if not (pick in seen):
 		seen.append(pick)
 	GameState.flags["ledger_coupons"] = seen
-	uplink.show_line(str(all[pick]), false, tr("<< INTERCEPT // LEDGER PROMOTIONS // %d OF %d >>") % [seen.size(), all.size()])
+	_note(str(all[pick]))  # [money] a notify-stack line, not the uplink banner
 	if world and world.get("wren") != null:
-		world.wren.say("ledger_coupon", 0.6)
+		world.wren.say("ledger_coupon", 0.25)
 
 
 # --- Jammers ------------------------------------------------------------------------
@@ -482,7 +492,7 @@ func _fly_dump(hid: int, pids: PackedInt32Array, spot: Vector3, jammed: bool) ->
 	var first: bool = int(GameState.stats.get("ledger_drops", 0)) == 0 and int(GameState.stats.get("ledger_jammed", 0)) == 0
 	EventBus.toast.emit(tr("Ledger drone inbound, %s! It's heading for a clean hex.") % compass_label(spot - world.patch.global_position) if not first
 		else tr("A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground.") % compass_label(spot - world.patch.global_position), "story")
-	if not warn.is_empty():
+	if not warn.is_empty() and first:  # [money] only the very first drone gets the uplink banner
 		uplink.show_line(str(warn[rng.randi() % warn.size()]))
 	Audio.play("glitch", 0.8, -8.0)
 	var marker: MeshInstance3D = _marker(spot, Color(1.0, 0.25, 0.15, 0.55))
@@ -524,8 +534,8 @@ func _jammed(marker: MeshInstance3D, exit_from: Vector3) -> void:
 		Vfx.ring(j.global_position, 3.0, Color(0.4, 0.85, 1.0, 0.8), 0.8)
 	Vfx.ring(Vector3.ZERO, jammer_radius(), Color(0.4, 0.85, 1.0, 0.5), 1.2)
 	var j_lines: Array = cfg.get("jammed", [])
-	if not j_lines.is_empty():
-		uplink.show_line(str(j_lines[rng.randi() % j_lines.size()]))
+	if not j_lines.is_empty() and rng.randf() < float(cfg.get("jammed_line_chance", 0.35)):  # [money]
+		_note(str(j_lines[rng.randi() % j_lines.size()]))
 	GameState.inc_stat("ledger_jammed")
 	EventBus.ledger_event.emit("jammed", {})
 	if world.get("wren") != null:
@@ -656,10 +666,10 @@ func start_seed_drop(at: Vector3 = Vector3.INF) -> bool:
 	tw.tween_callback(d.open_bin.bind(false))
 	tw.tween_property(d, "global_position", spot - dir * 60.0 + Vector3(0, 24, 0), 7.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tw.tween_callback(_drone_done.bind(d))
-	if rng.randf() < 0.5:
+	if rng.randf() < float(cfg.get("friendly_line_chance", 0.2)):  # [money] rarer, as a small note
 		var fl: Array = cfg.get("friendly", [])
 		if not fl.is_empty():
-			uplink.show_line(str(fl[rng.randi() % fl.size()]), true)
+			_note(str(fl[rng.randi() % fl.size()]))
 	return true
 
 
@@ -924,10 +934,11 @@ func resolve() -> void:
 		var who: String = str(l[0])
 		var text: String = tr(str(l[1])).format({"name": pname})  # [l10n]
 		var dur: float = float(l[2])
+		dur = maxf(dur, Subtitles.total_time(text))  # [intro2] every line stays up long enough to read
 		match who:
-			"wren": world.wren.line_started.emit(text, 2)
-			"ledger": uplink.show_now(text, false, maxf(dur - text.length() / 42.0 - 0.6, 0.3))
-			"friendly": uplink.show_now(text, true, maxf(dur - text.length() / 42.0 - 0.6, 0.3))
+			"wren": uplink._bind().show_now(text, "wren")
+			"ledger": uplink.show_now(text, false)
+			"friendly": uplink.show_now(text, true)
 		if str(l[1]).begins_with("RECALCULATING"):
 			_set_relay_friendly(true, true)
 			Vfx.burst("big_sparkle", rp + Vector3(0, 2.0, 0.4), Color(0.5, 1.0, 0.6))

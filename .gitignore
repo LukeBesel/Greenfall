@@ -9,3 +9,7 @@
 /screenshots/**/*.jpg
 /screenshots/**/*.webp
 __pycache__/
+/screenshots/**/*.wav
+/screenshots/**/*.ogg
+/screenshots/**/*.mp3
+/screenshots/autoplay_milestones_*.json

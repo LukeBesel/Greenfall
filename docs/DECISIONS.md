@@ -112,6 +112,149 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
   across worlds, not across profiles). Achievements, Codex and skins carry into new worlds.
 - **Each world keeps its own story beats** (seed tin, Ledger, finale): Seed Vault adds seeds but does
   not skip the tin (skipping it pulled the bot into hand-watering and made worlds slower).
+- **A world's look is data, applied after the district is built** (wt/worlds2): `data/world_looks.json`
+  per world type, read by CityView / StreetDressing for tints at build time and by `WorldLookView` for
+  sky, sky body, weathering overlay and landmark. The grade and weathering ease with the base level or
+  field progress but never fully go (a restored Ice Moon is still an ice moon). Frontier districts keep
+  their own grade and landmarks; the sky body and Long Nights carry over. Verdance gets no look at all.
+- **WREN is clear on new worlds**: she speaks over the ark's relay, so world-thread lines use signal
+  stage 2 from the first line instead of the campaign's glitched stage 0.
+- **Save profiles are folders** (`user://saves/p1..p3`): SaveManager.save_dir() is the active profile's
+  folder, so CradleMode, slots and every system stay unchanged; the Steam Cloud names carry the profile
+  as a prefix. Settings are shared across profiles.
+- **Planets own their art, the look stays data**: a planet with an env script in data/planets.json
+  draws its own landmarks and sky; the generic look keeps grade, tint and weathering.
+- **The profile syncs like a save**: it carries `saved_unix` so the Steam Cloud newest-wins rule applies
+  to it unchanged; the SteamService autoload syncs before CradleBoot reads it.
 - **Decorations refund in full** so moving costs nothing; their bonus is small and per district.
   Wildlife integration is a group hook ("decor" + metas), no dependency either way.
 
+
+## Homeward: the Verdance system campaign (wt/home, Nov 7)
+Canon (consistent with Lumi LM-1, the seed-keeper; the ark *Cradle*; WREN; the Bloom Core; the Makers; the Ledger):
+- **The Verdance system is a binary star**: Hearth (warm, yellow-white) and its small orange companion Ember. Every world sees both. From nearest to farthest: Ochre, Verdance, Tidewell, Anvil, Rime. Single source of truth: `data/solar_system.json` read through `SolarSystem.suns_for(id)` (systems/solar_system.gd). The sky director's DirectionalLight is Hearth (shadows, the PhysicalSky disc); `planet/binary_sun.gd` adds Ember (unshadowed warm fill and a soft disc with a thin halo) at the planet's separation, so the pair rises and sets together. Sizes go as 1/AU and light as 1/AU².
+- **The Ledger strip-mined the whole system**, not just Verdance: Ochre's sands (open pits), Tidewell's seabed (dredging), Rime's core heat (until it froze), Anvil (its foundry world and head office). When the ore ran out it dissolved itself and left five worlds under its trash; only the audit drones carried on. Each planet tells this in an arrival memo, a half-way intercept and a restored note (`data/homeward.json` docs, DocumentView + Codex "Homeward").
+- **The Makers sleep aboard the Cradle.** Their charter, one line long: wake us when the system can feed us. Not one world, all five. So at Cradle Returns the ark comes and answers but will not land ("The Cradle Answers", story/cradle_answers.gd), which replaces the old ark finale at that point. Verdance alone isn't enough.
+- **The ending, "Homecoming"**: restore every planet, return to Verdance's Cradle Returns (the Homeward launch complex), build the Mk VII Homeward rocket from all five worlds (one relic from each), plant the last seed in a bed with a yellow fence (Class 4B's school garden), launch. In orbit the Cradle wakes and takes the rocket in; in the seed vault Lumi sets the seedling tray back on its pedestal, three hundred years after climbing into a pod to save it; below decks the Makers wake. Then the existing ark finale (story/bloom_finale.gd) brings the Cradle down to Verdance ("welcome home"), and the credits roll. The game goes on.
+Mechanics:
+- **Planets are profile worlds with fixed seeds, names, types and modifiers** (`data/homeward.json`, `Homeward.make_planet_world`), so every system persists per planet through the existing slot machinery and worlds2's save slots. A record with `"planet": k` keeps its type when its mix is recomputed (`WorldGen.make(..., type_id)` from `CradleMode.current_full`). Verdance is world 0 / planet 0, unchanged.
+- **Random Cradle Mode worlds are kept as the post-game "beyond the system" mode**: the Ark Bridge's "Seed a new world" opens only after Homecoming (`CradleMode.unlocked()` is set by the ending). Every random world keeps its own finale (`Homeward.redirect_finale` only redirects on system planets, and only before the ending).
+- **Restoration per planet** (never drops, profile `homeward.pct`): Verdance = its Bloom Core charge (100% when the Cradle answers); the others = 0.5·thriving/target + 0.3·bases L5/target + 0.2·(landing district Thriving share / 60%). The targets are smaller than Verdance's campaign, growing from Ochre to Anvil. System % = mean of the five, shown on the solar map. A restored planet gives its relic and one **Heirloom pick** (Heirlooms become milestone unlocks, no Starseeds; `CradleMode.buy` spends a pick first).
+- **Rocket drive tiers are separate from the in-planet Mk I-IV** (`data/homeward.json` drive, profile `homeward.drive`, carried to every planet; the visible rocket keeps its Mk look, so `RocketTiers` and the rocket model are untouched): Mk V Orbital (after the Cradle answers; Ochre, Tidewell), Mk VI Interplanetary (one relic; Rime, Anvil), Mk VII Homeward (all relics, system 100%, built only at Cradle Returns). Priced in cubes and parts. **Per-planet nav**: a planet also needs its chart, i.e. the previous planet at 50%. The in-planet rocket tier is carried too (best of all planets).
+- **Travel**: the solar map's Launch (or the autoplay) runs the rocket's own launch sequence with a sentinel target (`Homeward.PLANET_BASE - k`, `HOME`); `automation/rocket.gd` hands the flight to `HomewardDirector.start_flight / travel`: the solar map shows the flight, then `Homeward.travel_to_planet` switches worlds and the rocket's arrival plays there (a new planet gets a rocket parked on the ground, so Lumi can always fly back).
+- **The solar map (ui/system_map.gd) is a 3D orrery** in its own World3D: the two suns circling, thin additive orbit lines, planets with restoration rings and labels (name, %, drive needed), two starfield shells for parallax. Selecting a planet glides the camera in; on the current planet "Choose a district" zooms in and hands over to the survey globe full screen (hubs and districts); closing the globe pulls back out. Other planets land at their last district (their PlanetData isn't generated until visited).
+- **Text**: all player-facing strings through tr(); data JSON stays English.
+
+## Planet audio (wt/sound, Nov 7)
+- **API** (all on the `Audio` autoload, all safe to call any time; unknown ids and NaN are ignored):
+  - `set_planet_theme(id) -> bool`: `"verdance"` (default), `"ochre"`, `"tidewell"`, `"rime"`, `"anvil"`.
+    Picks the planet's music track pool and its ambience bed; the first call for a planet synthesizes
+    its instruments and ambience (~0.2-0.6 s), so planet code calls it while the planet loads.
+  - `set_restoration(0..1)`: the planet's tracks switch to their restored variants past 0.55 (back
+    under 0.45; on a chord-cycle boundary) and their brightness / warm bloom lerp with it; the
+    ambience crossfades wind, groans and creaks into birds, insects and water. `MusicHooks` feeds it
+    every second from `world.planet.restored_fraction()`.
+  - `music_activity(amount)`: busy play (hexes cleaned, robots built, upgrades) favours the upbeat
+    tracks and pushes their drums; decays over about a minute. `MusicHooks` calls it.
+  - Mood `"homecoming"` (`set_music_mood`): the ending piece. It is sticky: `MusicHooks` never
+    replaces it; the ending code leaves it with another `set_music_mood()` call.
+  - Radio: `play_track(id)` loops one composed track with no gaps until `stop_track()`;
+    `music_track_ids(planet)`, `music_track_title(id)` (English; tr() at display), `get_music_track()`.
+    `hold_theme(id, restoration)` / `release_theme()` preview a whole planet (pool and bed).
+  - `duck(seconds)`: dips music -7 dB and ambience -4.5 dB; WREN's subtitles call it per line.
+  - `Audio.loop("hover_spray", level)`: Lumi hovering over water (Tidewell), built on first use.
+- **Composed tracks, not just ambient pads**: owner feedback asked for melodic, more upbeat music in
+  the spirit of a sandbox-game soundtrack (feel only, all compositions original). Each planet has a
+  rotating pool of 2-3 tracks (`audio/music_tracks.gd`) with a fixed motif re-fitted to each chord,
+  a groove and a form; pieces are separated by 8-55 s silence gaps (only the air bed plays).
+  Verdance keeps its generative score for calm moments and adds two upbeat cleaning tracks.
+- **Still synthesized at runtime**, no audio files: the new instruments (marimba, steel pan, hand
+  drums, choir pad, detuned synth, metal hits...) reuse `MusicSynth`'s pad and envelope helpers and
+  cost ~25-140 ms per planet, built lazily. Pre-rendered OGG loops were considered and not needed.
+- **Mix**: a hard limiter on Master (-0.5 dB) as well as Music (-1 dB); ambience on its own
+  "Ambience" bus that sends to SFX, so the SFX slider covers it; a slider at 0 mutes its bus.
+  Track loudness is kept within about +-2 dB of the generative explore piece (tools/render_music.gd).
+- **No new save state**: planet code re-sends the theme on load; restoration comes from the planet.
+
+## Three currencies (wt/money, Nov 7)
+- **Exactly three currencies: Cubes, Parts, Seeds** (owner: "keep it extremely low like 3 or less").
+  One source of truth: `data/currencies.json` + `core/currencies.gd` (ids, names, icons, colours,
+  legacy table). GameState stores only these three.
+- **Legacy alias layer, not a hard break**: `add_currency / get_currency / spend / can_afford` accept
+  the retired ids and map them at a fixed rate (bolts x5 parts, sheet metal / plastic / glass x1
+  parts, Data x10 cubes, compost x0.25 seeds, tokens x5 parts, trinkets x150 cubes, Maker Fragments
+  x25 parts), warning once per id in debug builds, so code from parallel branches keeps working
+  through merges. `Currencies.fold()` does the same for cost/reward dictionaries.
+- **Save v2** folds old balances at the same rates; old compost goes into the compost press's hopper
+  (a machine fill level, not a currency) and Maker Fragments into Parts. Nothing earned is lost.
+- **Research costs cubes (x10 the old Data) plus real time**; the old Data sources ("field notes":
+  hexes cleaned, restored, shards, robot bales, blooms) pay those cubes instead, so research paces as
+  it did. Thriving wildlife notes are a small cube trickle (6/min per hex, capped at 300/min).
+- **Robot part items stay items** (the rarity-graded parts the recipes, tiers and the Builder use);
+  they are not a currency. In the UI they are "robot parts"; the currency is "Parts".
+- **Contracts and World Events are one Requests board.** Requests pay cubes or parts; the token shop
+  became a reward track (liveries, Builder parts, Curio Capsules, rare robot parts at 2..20 finished
+  requests; a Vintage part every 5 after). Handled world events count as finished requests.
+- **Trinkets are only Collection finds.** Decorations that cost trinkets now need Collection finds
+  (`needs_finds`); old trinket rewards pay 150 cubes each.
+- **Heirlooms are milestone unlocks** (systems/heirloom_track.gd): the banked restoration score (the
+  old Starseed total) passes the old prices in a fixed cheapest-first order. Kept self-contained
+  because the "home" helper is replacing Cradle Mode's main flow.
+- **Base 2 and 3 ask 150 / 350 parts** (were 25 metal + 15 plastic / 90 metal + 60 plastic + 30
+  glass): with one pooled currency the per-type gates vanished; those amounts arrive at about the
+  minute the metal and glass used to. Frontier research costs x25 cubes (x10 below): late cubes are
+  plentiful where Data used to be the gate.
+- **The Ledger is quieter**: one uplink line per act; coupons and quips are small notify-stack
+  entries, coupons every 12-20 min (was 4-7).
+## Keepsakes (wt/extras, Nov 7)
+- **One idle-gains entry point**: `Offline.simulate` (time cap, junk cap, `offline_units` bookkeeping) so the welcome card and any remote view (telescope) share one capped calculation; currency only moves in `Offline.apply`.
+- **Radio songs are MusicDirector moods** (same key and layers), so they crossfade like any mood; the override lives in Audio and is cleared when the district leaves the tree.
+- **Album pictures use a fixed camera over the base**, not the player's view, so before and after line up in the slider; the HUD never appears in them.
+- **The weekly challenge is a save slot, not a world**: `WeeklyChallenge.active` steers CradleMode's seed/mix/modifiers; it never banks Starseeds, and its record and chips sit next to the profile so they belong to the save profile, not to a world.
+
+## Planet globes (wt/globes, Nov 7)
+- **One reusable component for every planet seen from space**: `ui/planet_globe.gd` (`PlanetGlobe`,
+  a Node3D). `PlanetGlobe.new()`, `add_child`, `.setup(planet_id, restoration)`, later
+  `.set_restoration(f)`. Optional: `.radius` (the node itself is never scaled, so labels/markers
+  parented to it keep their size), `.track_suns(node_a, node_b)` (light from two sun nodes in the
+  same world, re-aimed every frame), `.set_sun_dirs(a, b)`, `.set_sun_colors(a, b)`, `.max_lod`,
+  `.set_lod(n)`, `.spin_scale`. Unknown ids get a generic rocky world tinted by the optional
+  third `setup()` argument.
+- **Procedural, unshaded shaders with their own binary-sun lighting** (`art/shaders/planet_*.gdshader`,
+  shared maths in `planet_lib.gdshaderinc`): 3D value noise with analytic derivatives, so the
+  domain-warped FBM / ridged / eroded FBM heights give real relief normals in one pass; the
+  non-smooth features (canyons, terraces, cracks, dunes) bump through screen-space derivatives.
+  The globe sets two sun directions and colours itself (SolarSystem.suns_for when present, else
+  data/solar_system.json, else the canon), so it looks the same in any 3D view whatever lights it
+  has. With no host directions the key light comes from the upper left of the active camera and
+  the companion sits the planet's sun separation (canon 14 degrees) beside it. Energies fall off
+  with orbit distance at half strength (a UI view: Rime still reads, Ochre doesn't blow out).
+- **Looks**: Verdance rust-brown junk continents turning green in spreading patches, murky seas
+  clearing to blue, smog clouds turning white, dusty rim turning blue; Ochre dunes, stratified
+  canyon networks, a giant terraced strip mine, dust ring + drifting grains; Tidewell island
+  chains, reef shelves, three storm spirals, a glint per sun; Rime cracked glassy ice plates with
+  glowing blue faults and lineae, polar caps, an orbiting ring of instanced ice spikes; Anvil rust
+  highlands, ridged ranges, a great rift, craters, thin lava/foundry seams, a fire ring of embers
+  and ash (thin, subtle). Rings and debris are MultiMeshes; motes are billboard quads.
+- **LOD**: by screen radius (under 48 px: 4 octaves, 40x20 spheres, 35% of the debris; under 190 px:
+  6 octaves; else 8). The telescope caps at 1 below the High preset.
+- **How "home" should use it in `ui/system_map.gd`** (not edited here; it lives on wt/home): replace
+  each planet's sphere mesh + material with
+  `var g := PlanetGlobe.new(); g.radius = <current sphere radius>; parent.add_child(g); g.setup(id, pct)`
+  where `pct` is 0..1 restoration (the current world: `world.planet.restored_fraction()`; others:
+  their saved share). If the map has sun nodes, call `g.track_suns(sun_a_node, sun_b_node)` so
+  each planet is lit from the real suns (otherwise it lights itself from the camera). Call
+  `g.set_restoration(pct)` when the value changes; don't rebuild. Keep picking/hover on the globe
+  node (add an Area3D child of radius `g.radius` if the map ray-picks meshes). Rings reach 2.5-3x
+  the radius on Ochre/Rime/Anvil, so leave orbit spacing for them. Remove the map's own planet
+  lights if they were only there for the spheres.
+- Not done: the Homecoming / Cradle Answers space shots (`story/space_stage.gd`) keep their
+  near-orbit planet shader: they frame a planet thousands of units wide from low orbit, which
+  needs a different detail scale than a globe; a later pass can drop a `PlanetGlobe` with
+  `radius = PLANET_R` there behind a check.
+- **One subtitle line, reading-time rule** (intro2, owner playtest #1): every story/WREN/Ledger line goes
+  through `ui/subtitles.gd`: one line at a time at the bottom, 55 ms per character + 1.2 s (min 2.5 s).
+  Readable words never scramble while up (a ~150 ms glitch on appearance only); heavy glitching is
+  reserved for spans marked `[glitch]`/`[REDACTED]`/`█` (owner: "heavy glitches on what is redacted").
+- **Every scene load goes through the loading screen** (`Loader.goto`), with a shader warm-up pass; the
+  default clear colour is near-black so nothing ever flashes purple.

@@ -124,7 +124,12 @@ static func build(kind: String, part: int = 0) -> Node3D:
 
 static func duck() -> Node3D:
 	var n := Node3D.new()
-	n.add_child(model("fire_hydrant", Vector3.ZERO, 0.0, 1.2))
+	# [green] One hydrant: the file bundles a clean and an aged one side by side (the merged mesh
+	# read as a cluster of hydrants with the duck).
+	var hyd := MeshInstance3D.new()
+	hyd.mesh = AssetLib.model_part("fire_hydrant", "fire_hydrant_aged")
+	hyd.scale = Vector3.ONE * 1.2
+	n.add_child(hyd)
 	var top: float = AssetLib.model_aabb("fire_hydrant").end.y * 1.2
 	var d := Node3D.new()
 	d.name = "Anim"

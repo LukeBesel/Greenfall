@@ -104,11 +104,7 @@ static func cost(type_id: String) -> Dictionary:
 
 
 static func cost_text(type_id: String) -> String:
-	var bits: Array[String] = []
-	var c: Dictionary = cost(type_id)
-	for k: String in c:
-		bits.append(L10nFmt.amount(k, float(c[k])) if L10nFmt.has_count(k) else "%s %s" % [Settings.fmt(BigNum.from_float(float(c[k]))), TranslationServer.translate(k)])  # [i18n2]
-	return "  ".join(bits)
+	return Currencies.cost_text(cost(type_id))  # [money]
 
 
 ## Why it can't be bought ("" = it can).
@@ -119,10 +115,11 @@ static func buy_block_reason(type_id: String) -> String:
 	var finds: int = int(d.get("needs_finds", 0))
 	if finds > 0 and Collection.count() < finds:
 		return TranslationServer.translate("Needs %d Collection finds (%d so far)") % [finds, Collection.count()]
-	var c: Dictionary = cost(type_id)
-	for k: String in c:
-		if not GameState.can_afford(k, BigNum.from_float(float(c[k]))):
-			return TranslationServer.translate("Needs %s") % cost_text(type_id)
+	var chips: int = int(d.get("needs_chips", 0))  # [extras] Seed of the Week paint chips
+	if chips > 0 and WeeklyChallenge.chip_count() < chips:
+		return TranslationServer.translate("Needs %d Seed of the Week paint chips (%d so far)") % [chips, WeeklyChallenge.chip_count()]
+	if not GameState.can_afford_all(cost(type_id)):  # [money]
+		return TranslationServer.translate("Needs %s") % cost_text(type_id)
 	return ""
 
 
@@ -204,9 +201,7 @@ func place(type_id: String, cell: Vector2i, rot: int, pay: bool = true, fx: bool
 	if pay:
 		if buy_block_reason(type_id) != "":
 			return false
-		var c: Dictionary = cost(type_id)
-		for k: String in c:
-			GameState.spend(k, BigNum.from_float(float(c[k])))
+		GameState.spend_all(cost(type_id))  # [money]
 	_add({"t": type_id, "x": cell.x, "z": cell.y, "r": rot % 4}, fx)
 	GameState.inc_stat("decor_placed")
 	var kinds: Array = GameState.flags.get("decor_kinds", [])
@@ -225,9 +220,7 @@ func remove(index: int, refund: bool = true) -> Dictionary:
 		return {}
 	var it: Dictionary = items[index]
 	if refund:
-		var c: Dictionary = cost(str(it["t"]))
-		for k: String in c:
-			GameState.add_currency(k, BigNum.from_float(float(c[k])))
+		GameState.add_all(cost(str(it["t"])))  # [money]
 	nodes[index].queue_free()
 	items.remove_at(index)
 	nodes.remove_at(index)

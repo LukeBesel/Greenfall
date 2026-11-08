@@ -33,6 +33,9 @@ var late_hexes: Array = []
 var hex_grow_bonus: Dictionary = {}
 var _slot_inst: Dictionary = {}  # slot -> [key, index]
 var _tick: float = 0.0
+const VARIANT_TRIS: int = 3000  # [green]
+const MAX_VARIANTS: int = 3  # [green] caps the batch count (chunk x species x variant)
+var meadow: Meadow  # [green] living ground cover driven by hex life (plants/meadow.gd)
 
 
 func setup() -> void:
@@ -51,6 +54,10 @@ func setup() -> void:
 		var ck: Vector2i = _chunk_of(i)
 		_chunk_cap[ck] = int(_chunk_cap.get(ck, 0)) + 1
 	_load()
+	if world.get("view") is FieldView and not DevHooks.has("no-meadow"):  # [green]
+		meadow = Meadow.new()
+		meadow.setup(world)
+		add_child(meadow)
 
 
 ## [biomes] Slots for a hex that became land mid-game (a drained Sunken City street).
@@ -263,7 +270,7 @@ func _recount(hid: int) -> void:
 func _slot_xf(s: int) -> Transform3D:
 	var sp: Dictionary = species[slot_species[s]]
 	var stages: Array = cfg.get("stage_scale", [0.1, 0.3, 0.5, 0.8, 1.0])
-	var sc: float = float(stages[slot_stage[s]]) * float(sp.get("scale", 1.0))
+	var sc: float = float(stages[slot_stage[s]]) * float(sp.get("scale", 1.0)) * float(cfg.get("plant_scale", 1.0))  # [green]
 	var b := Basis(Vector3.UP, slot_yaw[s]).scaled(Vector3.ONE * sc)
 	if slot_water[s] <= 0.0 and slot_stage[s] > 0:
 		b = Basis(Vector3.RIGHT, 0.35) * b  # droop when thirsty
@@ -274,19 +281,26 @@ func _chunk_of(s: int) -> Vector2i:
 	return Vector2i(floori(slot_pos[s].x / CHUNK), floori(slot_pos[s].z / CHUNK))
 
 
+## [green] Which single variant of the species' plant file this slot shows (PlantParts).
+func _variant_of(s: int) -> int:
+	var n: int = mini(PlantParts.variants(str(species[slot_species[s]]["model"]), VARIANT_TRIS).size(), MAX_VARIANTS)
+	return (s * 7919 + slot_species[s] * 31) % maxi(n, 1)
+
+
 func _update_inst(s: int) -> void:
 	var ck: Vector2i = _chunk_of(s)
-	var key: String = "%d,%d|%d" % [ck.x, ck.y, slot_species[s]]
+	var vi: int = _variant_of(s)  # [green] one clump per slot, not the file's whole row of variants
+	var key: String = "%d,%d|%d|%d" % [ck.x, ck.y, slot_species[s], vi]
 	if not _slot_inst.has(s):
 		if not _mms.has(key):
 			var mm := MultiMesh.new()
 			mm.transform_format = MultiMesh.TRANSFORM_3D
-			mm.mesh = AssetLib.model_mesh_lite(str(species[slot_species[s]]["model"]), 1500)
+			mm.mesh = PlantParts.variants(str(species[slot_species[s]]["model"]), VARIANT_TRIS)[vi]
 			mm.instance_count = int(_chunk_cap.get(ck, 1))
 			mm.visible_instance_count = 0
 			var mmi := MultiMeshInstance3D.new()
 			mmi.multimesh = mm
-			mmi.visibility_range_end = 120.0
+			mmi.visibility_range_end = 150.0
 			add_child(mmi)
 			_mms[key] = mmi
 		var mmi2: MultiMeshInstance3D = _mms[key]

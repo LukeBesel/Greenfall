@@ -54,7 +54,7 @@ func test_milestones_unlock_in_order_and_pay_once() -> void:
 	assert_eq(got, ["first_meadow", "thriving_district"] as Array[String])
 	assert_true(GameState.flags.get("bloom_first_meadow", false))
 	var cubes: float = GameState.get_currency("cubes").to_float()
-	assert_almost_eq(cubes, 1500.0 + 4000.0, 0.01)
+	assert_almost_eq(cubes, 1800.0 + 4600.0, 0.01, "[money] old trinket rewards are 150 cubes each")
 	assert_eq(Bloom.check(some), [] as Array[String], "never twice")
 	assert_almost_eq(GameState.get_currency("cubes").to_float(), cubes, 0.01)
 	# [beat] Three districts in bloom no longer end the game: the Verdance Bloom (the finale) is
