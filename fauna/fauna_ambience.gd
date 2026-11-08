@@ -63,7 +63,7 @@ func tick(delta: float, night: float, sound_at: Callable, lumi: Vector3) -> void
 		if v > 0.01:
 			if not p.playing:
 				p.play(_rng.randf() * 4.0)
-			p.volume_db = linear_to_db(v) - 12.0
+			AudioVol.set_db(p, linear_to_db(v) - 12.0)  # [qafix] crash fix
 		elif p.playing:
 			p.stop()
 	_shot_t -= delta

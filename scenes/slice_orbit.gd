@@ -202,10 +202,17 @@ func _build_patch() -> void:
 	match DevHooks.get_s("orbit-walk", "") if DevHooks.has("orbit-walk") else "-":
 		"-":
 			patch.input = SphereInput.new()
+			if DevHooks.has("autoplay"):  # the pacing bot (tools/autoplay.gd), moving along the ground
+				var ab := AutoplayBot.new(w)
+				ab.world_space = true
+				patch.input = ab
+				w.set("bot", ab)
 		"boost":
 			patch.input = SphereAutoInput.new(Vector3(0, 0, -1), true)
 		_:
 			patch.input = SphereAutoInput.new(Vector3(0, 0, -1), false)
+	if patch.input is SphereAutoInput:  # [orbD] lap tests detour round mounds and props
+		(patch.input as SphereAutoInput).body = patch
 	if DevHooks.has("orbit-scoop") and patch.input is SphereAutoInput:
 		(patch.input as SphereAutoInput).scoop = true
 	patch.enable_sphere(g.surface, cam)
@@ -263,6 +270,13 @@ func collect_piece(pid: int) -> void:
 	globe.junk_view.refresh_hex(hid, became_clean)
 	if became_clean:
 		on_hex_clean(hid)
+
+
+## A bite off a heavy piece (Patch._take_piece): the cell's numbers and its heap follow.
+func piece_bitten(pid: int) -> void:
+	var hid: int = globe.field.piece_hex[pid]
+	globe.write_cell(hid)
+	globe.junk_view.refresh_hex(hid)
 
 
 ## slice.gd's _on_hex_clean by cell id: first-clean bonus (a re-dirtied cell pays only the flat

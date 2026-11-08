@@ -329,7 +329,7 @@ func _advance(dt: float) -> void:
 			s["t"] = float(s["t"]) + dt
 		s["gain"] = move_toward(float(s["gain"]), float(s["target"]), dt * float(s["rate"]))
 		var p: AudioStreamPlayer = _p[i]
-		p.volume_db = SONG_DB + linear_to_db(maxf(float(s["gain"]) * mul, 0.0001))
+		AudioVol.set_db(p, SONG_DB + linear_to_db(maxf(float(s["gain"]) * mul, 0.0001)))  # [qafix] crash fix
 		var over: bool = float(s["len"]) > 0.0 and float(s["t"]) >= float(s["len"])
 		if (float(s["gain"]) <= 0.0 and float(s["target"]) <= 0.0) or over:
 			p.stop()

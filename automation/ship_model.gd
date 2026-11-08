@@ -177,7 +177,7 @@ func _make_mats() -> void:
 	_mats.clear()
 	var t: int = tier
 	var u: float = float(t - 1) / 6.0                      # 0 at Mk I .. 1 at Mk VII
-	var pearl := _paint(PEARL, lerpf(0.38, 0.16, u))
+	var pearl := _paint(ShipStyle.paint_color(), lerpf(0.38, 0.16, u))  # [ui7] Locker ship looks
 	pearl.set_shader_parameter("pearl", lerpf(0.3, 0.95, u))
 	pearl.set_shader_parameter("flake", lerpf(0.2, 0.7, u))
 	pearl.set_shader_parameter("clearcoat_amt", lerpf(0.35, 1.0, u))
@@ -190,7 +190,7 @@ func _make_mats() -> void:
 	panel.set_shader_parameter("seam_dark", 0.55 if t < 4 else 0.25)
 	panel.set_shader_parameter("clearcoat_amt", lerpf(0.3, 0.9, u))
 	_mats["panel"] = panel
-	_mats["accent"] = _paint(ACCENT, lerpf(0.34, 0.2, u))
+	_mats["accent"] = _paint(ShipStyle.trim_color(), lerpf(0.34, 0.2, u))  # [ui7]
 	var trim := StandardMaterial3D.new()
 	trim.albedo_color = Color(0.09, 0.1, 0.115)
 	trim.roughness = lerpf(0.45, 0.18, u)
@@ -219,10 +219,10 @@ func _make_mats() -> void:
 	glass.rim_enabled = true
 	glass.rim = 0.4
 	_mats["glass"] = glass
-	_mats["glow"] = _glow(GLOW, glow_energy(t))
+	_mats["glow"] = _glow(ShipStyle.glow_color(), glow_energy(t))  # [ui7]
 	_lamp = Mats.lamp(Color(1.0, 0.36, 0.12), 3.0)
 	_mats["lamp"] = _lamp
-	_thruster = Mats.lamp(GLOW, 1.0)
+	_thruster = Mats.lamp(ShipStyle.glow_color(), 1.0)  # [ui7]
 	_thruster.set_meta("idle", lerpf(0.6, 3.5, u))
 	_mats["thruster"] = _thruster
 	_vault = Mats.lamp(Color(0.45, 1.0, 0.55), 1.6)

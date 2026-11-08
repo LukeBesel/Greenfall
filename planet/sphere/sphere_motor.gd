@@ -169,6 +169,14 @@ func step(body: CharacterBody3D, wish: Vector3, delta: float, boost: bool = fals
 		body.global_position = p1 + u1 * (ride_height - alt1)
 		if vv < 0.0:
 			vv = 0.0
+	# [orbD] Held up by a body the ground ray doesn't see (a junk mound, a prop on its own layer):
+	# land on it. Without this he hung there "falling" forever, vv grew without bound and the
+	# slide ate all his tangent speed, wedged between a mound and a prop.
+	if not grounded and vv < -2.0 and body.get_real_velocity().dot(u1) > vv * 0.3:
+		grounded = true
+		landed.emit(-vv)
+		vv = 0.0
+	vv = clampf(vv, -40.0, 40.0)
 	# Walls: keep only the tangent velocity the slide left us.
 	var real: Vector3 = SphereMath.tangent(body.get_real_velocity(), u1)
 	if real.length() < hv.length() - 0.01 and body.get_slide_collision_count() > 0:

@@ -192,65 +192,69 @@ msgstr ""
 msgid "Paddle 1"
 msgstr ""
 
-#: autoload/Settings.gd:521
+#: autoload/Settings.gd:522
 msgid "LMB"
 msgstr "左键"
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:523
 msgid "RMB"
 msgstr "右键"
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:524
 msgid "MMB"
 msgstr "中键"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:525
 msgid "Wheel up"
 msgstr "滚轮上"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:526
 msgid "Wheel down"
 msgstr "滚轮下"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:527
 msgid "Mouse %d"
 msgstr "鼠标 %d"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:529
 msgid "Button %d"
 msgstr "按键 %d"
 
-#: autoload/Settings.gd:533
+#: autoload/Settings.gd:534
 msgid "LS left"
 msgstr "左摇杆左"
 
-#: autoload/Settings.gd:533
+#: autoload/Settings.gd:534
 msgid "LS right"
 msgstr "左摇杆右"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:535
 msgid "LS up"
 msgstr "左摇杆上"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:535
 msgid "LS down"
 msgstr "左摇杆下"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:536
 msgid "RS left"
 msgstr "右摇杆左"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:536
 msgid "RS right"
 msgstr "右摇杆右"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:537
 msgid "RS up"
 msgstr "右摇杆上"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:537
 msgid "RS down"
 msgstr "右摇杆下"
+
+#: autoload/Settings.gd:548
+msgid "hold %s"
+msgstr ""
 
 #: autoload/Story.gd:23
 msgid "Perfect bale: filled right to the gold line."
@@ -268,11 +272,11 @@ msgstr "整片六角格都干净了！大地想起了它的颜色。"
 msgid "Upgraded! Lumi feels a little less creaky."
 msgstr "升级完成！Lumi 没那么嘎吱作响了。"
 
-#: automation/auto_baler.gd:477
+#: automation/auto_baler.gd:478
 msgid "AUTO-BALER"
 msgstr "自动打包机"
 
-#: automation/auto_baler.gd:480
+#: automation/auto_baler.gd:481
 msgid "KEEP CLEAR · 40 T"
 msgstr "请勿靠近 · 40 吨"
 
@@ -284,15 +288,15 @@ msgstr "货运舱着陆：%s 个方块，来自其他街区的 %d 台机器人�
 msgid "TO  SCALE  ◀"
 msgstr "前往  磅秤  ◀"
 
-#: automation/conveyor.gd:182
+#: automation/conveyor.gd:184
 msgid "BALE  FEED"
 msgstr "捆包入口"
 
-#: automation/hub.gd:69
+#: automation/hub.gd:72
 msgid "Hub upgraded: %s."
 msgstr "基地已升级：%s。"
 
-#: automation/hub.gd:100
+#: automation/hub.gd:103
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "空气净化器启动。风扇伴着一声悠长、满是灰尘的叹息转了起来。"
 
@@ -393,19 +397,19 @@ msgstr "前哨 %d  废墟 · 清洁度 %d%% 时可修复"
 msgid "OUTPOST %d  %s"
 msgstr "前哨 %d  %s"
 
-#: automation/recycler.gd:221
+#: automation/recycler.gd:222
 msgid "GONE FOR GOOD  -%d kg"
 msgstr "永久清除  -%d 千克"
 
-#: automation/recycler.gd:281
+#: automation/recycler.gd:282
 msgid "RECYCLER"
 msgstr "回收炉"
 
-#: automation/recycler.gd:284
+#: automation/recycler.gd:285
 msgid "SHRED  ·  SMELT  ·  GONE FOR GOOD"
 msgstr "粉碎  ·  熔炼  ·  永久清除"
 
-#: automation/recycler.gd:437
+#: automation/recycler.gd:438
 msgid "HAND FEED"
 msgstr "手动投料"
 
@@ -498,7 +502,7 @@ msgstr "望远镜已建成。走过去按 E，眺望整个星系。"
 msgid "OBSERVATORY"
 msgstr "天文台"
 
-#: automation/telescope.gd:307
+#: automation/telescope.gd:311
 msgid "E   Telescope: look across the system"
 msgstr "E   望远镜：眺望整个星系"
 
@@ -780,19 +784,11 @@ msgstr "WREN：那里是勘测区的边缘，Lumi。外面只有雾霾。"
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi 悬浮着回到了坚实的地面。"
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1057 scenes/slice_orbit.gd:277
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1063 scenes/slice_orbit.gd:302
 msgid "HEX CLEAN!  +%s"
 msgstr "六角格清理完毕！  +%s"
 
-#: planet/planets/tidewell/env.gd:1180
-msgid "LEDGER  DREDGE %02d"
-msgstr "LEDGER  挖泥船 %02d"
-
-#: planet/planets/tidewell/env.gd:1226
-msgid "LEDGER MINING  ORE BARGE 3"
-msgstr "LEDGER 矿业  矿石驳船 3"
-
-#: planet/sites/hub_hop.gd:77
+#: planet/sites/hub_hop.gd:76
 msgid "Rocket hop: %.1f km"
 msgstr ""
 
@@ -900,43 +896,43 @@ msgstr "埋藏零件  ·  信号 %d%%"
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi 哐啷哐啷地回到了院子里。真奇怪。"
 
-#: player/patch.gd:240
+#: player/patch.gd:243
 msgid "No seeds yet. Keep cleaning."
 msgstr "还没有种子。继续清理吧。"
 
-#: player/patch.gd:279
+#: player/patch.gd:282
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "种子用完了。开花的植物会掉落更多。"
 
-#: player/patch.gd:286
+#: player/patch.gd:289
 msgid "Watering can is empty. Refill at the hub."
 msgstr "水壶空了。回基地补水。"
 
-#: player/patch.gd:481
+#: player/patch.gd:491
 msgid "PERFECT BALE  %s"
 msgstr "完美捆包  %s"
 
-#: player/patch.gd:487
+#: player/patch.gd:497
 msgid "OVERSTUFFED  %s"
 msgstr "塞爆了  %s"
 
-#: player/patch.gd:491
+#: player/patch.gd:501
 msgid "PURE  %s"
 msgstr "纯净  %s"
 
-#: player/patch.gd:493
+#: player/patch.gd:503
 msgid "SURGE  %s"
 msgstr "冲劲  %s"
 
-#: player/patch.gd:496
+#: player/patch.gd:506
 msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
-#: player/patch.gd:539
+#: player/patch.gd:549
 msgid "Salvaged: %s"
 msgstr "回收：%s"
 
-#: player/patch.gd:568
+#: player/patch.gd:578
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
@@ -1060,32 +1056,32 @@ msgstr ""
 msgid "Hover-sled: buy it in Upgrades"
 msgstr ""
 
-#: robots/fleet.gd:138
+#: robots/fleet.gd:139
 msgid "Locked · research %s"
 msgstr "未解锁 · 研究 %s"
 
-#: robots/fleet.gd:140
+#: robots/fleet.gd:141
 msgid "Crew full (%d/%d): upgrade the hub"
 msgstr "队伍已满（%d/%d）：请升级基地"
 
-#: robots/fleet.gd:142 robots/fleet.gd:217
+#: robots/fleet.gd:143 robots/fleet.gd:219
 msgid "Not enough parts"
 msgstr "零件不足"
 
-#: robots/fleet.gd:144 robots/fleet.gd:219 robots/water_net.gd:149
-#: systems/research.gd:200 systems/robot_builder.gd:349 systems/robot_builder.gd:401
+#: robots/fleet.gd:145 robots/fleet.gd:221 robots/water_net.gd:149
+#: systems/research.gd:200 systems/robot_builder.gd:350 systems/robot_builder.gd:402
 msgid "Not enough cubes"
 msgstr "方块不足"
 
-#: robots/fleet.gd:182
+#: robots/fleet.gd:183
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr "%s %s 组装完成。它四下看了看，就开始干活了。%s"
 
-#: robots/fleet.gd:182
+#: robots/fleet.gd:183
 msgid " Seems %s."
 msgstr " 看起来%s。"
 
-#: robots/fleet.gd:238
+#: robots/fleet.gd:240
 msgid "%s fleet upgraded to %s."
 msgstr "%s机队已升级为 %s。"
 
@@ -1254,55 +1250,67 @@ msgstr ""
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "机器人上行链路上线。按 B 打开指挥：划定区域，把队伍派到你想去的地方。"
 
-#: scenes/slice.gd:1071 scenes/slice_orbit.gd:293
+#: scenes/slice.gd:1077 scenes/slice_orbit.gd:318
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice.gd:1073
+#: scenes/slice.gd:1079
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "整个废料场都干净了。Lumi 发出一声好长好长、非常开心的哔——"
 
-#: scenes/slice.gd:1080
+#: scenes/slice.gd:1086
 msgid "%s is out of range: %s"
 msgstr "%s 超出范围：%s"
 
-#: scenes/slice.gd:1090
+#: scenes/slice.gd:1096
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "未解锁。将基地升到 5 级才能建造发射台。"
 
-#: scenes/slice.gd:1093 ui/rockets_panel.gd:39
+#: scenes/slice.gd:1099 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice.gd:1147
+#: scenes/slice.gd:1153
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陆：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:1148
+#: scenes/slice.gd:1154
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "火箭停在空地上，电池充满就能出发。"
 
-#: scenes/slice.gd:1148
+#: scenes/slice.gd:1154
 msgid "Landed on the base pad."
 msgstr "已降落在基地平台。"
 
-#: scenes/slice.gd:1258
+#: scenes/slice.gd:1270 scenes/slice_orbit.gd:451
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice.gd:1444
+#: scenes/slice.gd:1459
 msgid "Welcome back. The junk waited for you."
 msgstr "欢迎回来。废料一直在等你。"
 
-#: scenes/slice.gd:1461
+#: scenes/slice.gd:1476
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨 %d · %d级"
 
-#: scenes/slice.gd:1461
+#: scenes/slice.gd:1476
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:154
+#: scenes/slice_orbit.gd:348 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:102
+msgid "E   Workbench (broken): repair it"
+msgstr "E   工作台（损坏）：修好它"
+
+#: scenes/slice_orbit.gd:348 systems/camp/camp.gd:177
+msgid "E   Workbench: upgrades"
+msgstr "E   工作台：升级"
+
+#: scenes/slice_orbit.gd:547 systems/camp/camp.gd:224
+msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
+msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
+
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:155
 msgid "Setting the scene"
 msgstr "正在布置场景"
 
@@ -1860,48 +1868,48 @@ msgstr ""
 "Ledger 现在站在我们这边了。干扰器只是跟着音乐哼哼。"
 
 #: story/ledger.gd:328 systems/decor.gd:122 systems/research.gd:192
-#: systems/robot_builder.gd:347 systems/robot_builder.gd:403 ui/stations_panel.gd:100
+#: systems/robot_builder.gd:348 systems/robot_builder.gd:404 ui/stations_panel.gd:100
 #: ui/telescope_panel.gd:43
 msgid "Needs %s"
 msgstr "需要 %s"
 
-#: story/ledger.gd:493
+#: story/ledger.gd:490
 msgid "Ledger drone inbound, %s! It's heading for a clean hex."
 msgstr "Ledger 无人机来袭，%s！它正飞向一片干净的六角格。"
 
-#: story/ledger.gd:494
+#: story/ledger.gd:491
 msgid "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground."
 msgstr "一架 Ledger 无人机要往干净的六角格上倾倒废料（在你的%s）。它碰不了种了植物的地面。"
 
-#: story/ledger.gd:530
+#: story/ledger.gd:527
 msgid "SIGNAL JAMMED"
 msgstr "信号已干扰"
 
-#: story/ledger.gd:560
+#: story/ledger.gd:557
 msgid "Target re-classified as ASSET. Aborting. ...Interesting."
 msgstr "目标重新归类为资产。中止。……有意思。"
 
-#: story/ledger.gd:626
+#: story/ledger.gd:623
 msgid "The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."
 msgstr "无人机倒回了一点废料。把它铲起来，或者让你的帮手收拾。基地里的信号干扰器能赶走无人机。"
 
-#: story/ledger.gd:682
+#: story/ledger.gd:679
 msgid "SEEDS · PAID IN FULL"
 msgstr "种子 · 已全额支付"
 
-#: story/ledger.gd:699 systems/events.gd:490 systems/lumi_level.gd:218
+#: story/ledger.gd:696 systems/events.gd:490 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d 种子"
 
-#: story/ledger.gd:769
+#: story/ledger.gd:766
 msgid "E   jack in: rewrite the Ledger's contract"
 msgstr "E   接入：改写 Ledger 的合同"
 
-#: story/ledger.gd:769
+#: story/ledger.gd:766
 msgid "E   read the amended contract"
 msgstr "E   阅读修订后的合同"
 
-#: story/ledger.gd:794 story/ledger.gd:848
+#: story/ledger.gd:791 story/ledger.gd:845
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: ACTIVE\n"
@@ -1911,11 +1919,11 @@ msgstr ""
 "合同 0001：生效中\n"
 "废料即为账目条款"
 
-#: story/ledger.gd:809
+#: story/ledger.gd:806
 msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
 msgstr "中继站 07  ·  LEDGER 资产  ·  禁止计划外访问"
 
-#: story/ledger.gd:848
+#: story/ledger.gd:845
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: AMENDED\n"
@@ -1925,11 +1933,11 @@ msgstr ""
 "合同 0001：已修订\n"
 "修复 = 资产"
 
-#: story/ledger.gd:966
+#: story/ledger.gd:963
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr "Ledger 的合同已改写。它的无人机现在运送种子了。（+%d 种子）"
 
-#: story/ledger.gd:974
+#: story/ledger.gd:971
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr "<< LEDGER // 非正式记录 >>"
 
@@ -1941,11 +1949,11 @@ msgstr "LEDGER  WMS-07"
 msgid "Objective complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:442
+#: story/objectives.gd:444
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr "听到哔哔声了吗？你的探测器发现附近埋着一个机器人零件。哔得越快，你就离得越近。"
 
-#: story/objectives.gd:444
+#: story/objectives.gd:446
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
@@ -2613,11 +2621,11 @@ msgstr "归来博物馆"
 msgid "everything Lumi found, kept for whoever comes next"
 msgstr "Lumi 找到的一切，为后来的人保存"
 
-#: systems/museum.gd:279
+#: systems/museum.gd:283
 msgid "E   salute the Gnome Patrol"
 msgstr "E   向地精巡逻队敬礼"
 
-#: systems/museum.gd:439
+#: systems/museum.gd:443
 msgid "Every plinth is full. The Museum is complete: everything Lumi found, kept for whoever comes next."
 msgstr "所有展台都已摆满。博物馆完成了：Lumi 找到的一切，为后来的人保存。"
 
@@ -2782,85 +2790,99 @@ msgstr "你离开期间，研究完成了：%s。"
 msgid "Research complete: %s. %s"
 msgstr "研究完成：%s。%s"
 
-#: systems/robot_builder.gd:261
+#: systems/robot_builder.gd:262 systems/robot_design.gd:60
 msgid "Wrong slot"
 msgstr "槽位不对"
 
-#: systems/robot_builder.gd:263
+#: systems/robot_builder.gd:264 systems/robot_design.gd:62
 msgid "Doesn't fit a %s"
 msgstr "不适用于%s"
 
-#: systems/robot_builder.gd:265
+#: systems/robot_builder.gd:266 systems/robot_design.gd:64
 msgid "Not unlocked yet"
 msgstr "尚未解锁"
 
-#: systems/robot_builder.gd:294
+#: systems/robot_builder.gd:295
 msgid "Names need at least 2 letters"
 msgstr "名字至少要 2 个字"
 
-#: systems/robot_builder.gd:296
+#: systems/robot_builder.gd:297
 msgid "Another robot is already called %s"
 msgstr "已经有机器人叫 %s 了"
 
-#: systems/robot_builder.gd:341
+#: systems/robot_builder.gd:342
 msgid "Can't be crafted"
 msgstr "无法制作"
 
-#: systems/robot_builder.gd:345
+#: systems/robot_builder.gd:346
 msgid "Research %s"
 msgstr "研究 %s"
 
-#: systems/robot_builder.gd:358 systems/robot_builder.gd:363
+#: systems/robot_builder.gd:359 systems/robot_builder.gd:364
 msgid "Unlock · %s"
 msgstr "解锁 · %s"
 
-#: systems/robot_builder.gd:360
+#: systems/robot_builder.gd:361
 msgid "Requests reward · %d requests"
 msgstr "委托奖励 · %d 个委托"
 
-#: systems/robot_builder.gd:398
+#: systems/robot_builder.gd:399
 msgid "Can't be bought"
 msgstr "无法购买"
 
-#: systems/robot_builder.gd:425
+#: systems/robot_builder.gd:426
 msgid "Requests reward (%d of %d requests)"
 msgstr "委托奖励（%d / %d 个委托）"
 
-#: systems/robot_builder.gd:516
+#: systems/robot_builder.gd:517
 msgid "Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d."
 msgstr "你的第一台机器人附带履带和一株弹簧小草。基地达到%d级后可在储物柜里装扮它。"
 
-#: systems/robot_builder.gd:526
+#: systems/robot_builder.gd:527
 msgid "A Maker Fragment was tucked inside it: +%d parts."
 msgstr "里面藏着一块创造者碎片：+%d 零件。"
 
-#: systems/robot_builder.gd:558
+#: systems/robot_builder.gd:559
 msgid "%s spotted something green and lucky: a Lucky Clover!"
 msgstr "%s 发现了一样又绿又幸运的东西：幸运草！"
 
-#: systems/robot_builder.gd:561
+#: systems/robot_builder.gd:562
 msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
 msgstr "%s 在垃圾里发现了一块闪光的创造者碎片：+%d 零件。"
 
-#: systems/robot_builder.gd:568
+#: systems/robot_builder.gd:569
 msgid "%s spotted a %s: %s."
 msgstr "%s发现了%s：%s。"
+
+#: systems/robot_design.gd:16 data/glim.json:glows[cyan].name data/ship_style.json:glows[cyan].name
+#: data/style_parts.json:swatches[cyan].name
+msgid "Cyan"
+msgstr "青色"
+
+#: systems/robot_design.gd:16 data/ship_style.json:glows[mint].name data/style_parts.json:swatches[mint].name
+msgid "Mint"
+msgstr "薄荷"
+
+#: systems/robot_design.gd:16 data/ship_style.json:glows[amber].name data/style_parts.json:swatches[amber].name
+msgid "Amber"
+msgstr "琥珀"
+
+#: systems/robot_design.gd:17 data/glim.json:glows[rose].name
+msgid "Rose"
+msgstr "玫瑰"
+
+#: systems/robot_design.gd:17 data/glim.json:glows[violet].name data/ship_style.json:glows[violet].name
+#: data/style_parts.json:swatches[violet].name
+msgid "Violet"
+msgstr "紫罗兰"
+
+#: systems/robot_design.gd:17
+msgid "Moonlight"
+msgstr "月光"
 
 #: systems/tunes.gd:165
 msgid "New CD: %s by %s, from %s"
 msgstr "新CD：%s，演奏：%s，来自%s"
-
-#: systems/camp/camp.gd:176
-msgid "E   Workbench (broken): repair it"
-msgstr "E   工作台（损坏）：修好它"
-
-#: systems/camp/camp.gd:177
-msgid "E   Workbench: upgrades"
-msgstr "E   工作台：升级"
-
-#: systems/camp/camp.gd:224
-msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
-msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
 #: systems/camp/camp.gd:378
 msgid "E   %s (Lv %d): fully upgraded"
@@ -3139,11 +3161,11 @@ msgstr "回去干活"
 msgid "Find Glim first"
 msgstr "先找到 Glim"
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:142
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:147
 msgid "Maxed"
 msgstr "已满级"
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:149
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:154
 msgid "Needs %s %d"
 msgstr "需要 %s %d"
 
@@ -3316,6 +3338,23 @@ msgstr "领取（%d 次选择）"
 msgid "Milestone"
 msgstr "里程碑"
 
+#: ui/bench_bots.gd:15 ui/build_panel.gd:105 ui/robot_card.gd:110
+#: ui/robot_card.gd:244 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
+msgid "Build"
+msgstr "建造"
+
+#: ui/bench_bots.gd:15
+msgid "Tiers"
+msgstr "等级"
+
+#: ui/bench_bots.gd:15
+msgid "Fleet"
+msgstr "车队"
+
+#: ui/bench_bots.gd:15
+msgid "Fabricator"
+msgstr "制造机"
+
 #: ui/bench_kit.gd:163 ui/upgrade_card.gd:221
 msgid "need %s"
 msgstr "还差%s"
@@ -3329,7 +3368,8 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "机器"
 
-#: ui/bench_lists.gd:12 ui/globe_view.gd:175 ui/upgrades_panel.gd:49
+#: ui/bench_lists.gd:12 ui/globe_view.gd:175 ui/locker_panel.gd:230
+#: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "火箭"
 
@@ -3344,11 +3384,6 @@ msgstr "故事"
 #: ui/build_panel.gd:26
 msgid "Nothing new to build right now. New buildings unlock as you play."
 msgstr "目前没有新的可建造项目。新建筑会在游戏中解锁。"
-
-#: ui/build_panel.gd:105 ui/robot_card.gd:110 ui/robot_card.gd:244
-#: ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
-msgid "Build"
-msgstr "建造"
 
 #: ui/build_panel.gd:110 ui/yard_builds_panel.gd:59
 msgid "Built:  %s"
@@ -4298,8 +4333,8 @@ msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
 msgstr "花园加成：植物生长快 %d%%（最多 %d%%）。"
 
 #: ui/extras_panel.gd:329
-msgid "No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."
-msgstr "还没有机器人退休。老机器人或 Mk I-II 机器人可以在这里或工作台的组装中退休；它们会照料基地的苗圃花园。"
+msgid "No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."
+msgstr ""
 
 #: ui/extras_panel.gd:338
 msgid "RETIRE A ROBOT"
@@ -4430,18 +4465,22 @@ msgid "lantern bot"
 msgstr "灯笼机器人"
 
 #: ui/glim_panel.gd:64
+msgid "Change Glim's looks at the Locker in the yard."
+msgstr "到院子里的储物柜更换Glim的外观。"
+
+#: ui/glim_panel.gd:69
 msgid "%s  close"
 msgstr "%s  关闭"
 
-#: ui/glim_panel.gd:105
+#: ui/glim_panel.gd:110
 msgid "UPGRADES"
 msgstr "升级"
 
-#: ui/glim_panel.gd:195
+#: ui/glim_panel.gd:200
 msgid "LOOKS"
 msgstr "外观"
 
-#: ui/glim_panel.gd:220
+#: ui/glim_panel.gd:225
 msgid "???  %s"
 msgstr "???  %s"
 
@@ -4748,33 +4787,58 @@ msgstr "未解锁"
 msgid "ACTIVE"
 msgstr "进行中"
 
-#: ui/list_detail.gd:438
+#: ui/list_detail.gd:443
 msgid "FREE"
 msgstr "免费"
 
-#: ui/list_detail.gd:541
+#: ui/list_detail.gd:546
 msgid "REQUIRES   NOT YET   %s"
 msgstr "需要   尚未满足   %s"
 
-#: ui/list_detail.gd:541
+#: ui/list_detail.gd:546
 msgid "Not unlocked yet. Keep playing."
 msgstr "尚未解锁。继续游戏吧。"
 
-#: ui/list_detail.gd:544
+#: ui/list_detail.gd:549
 msgid "REQUIRES   %s"
 msgstr "需要   %s"
 
-#: ui/list_detail.gd:547
+#: ui/list_detail.gd:552
 msgid "REQUIRES   READY"
 msgstr "需要   已就绪"
 
-#: ui/loading_screen.gd:153
+#: ui/loading_screen.gd:154
 msgid "Loading"
 msgstr "加载中"
 
-#: ui/loading_screen.gd:155
+#: ui/loading_screen.gd:156
 msgid "Warming up"
 msgstr "预热中"
+
+#: ui/locker_editors.gd:11 data/currencies.json:currencies[parts].name data/hub.json:materials.metal.name
+#: data/hub.json:materials.plastic.name data/hub.json:materials.glass.name
+msgid "Parts"
+msgstr "零件"
+
+#: ui/locker_editors.gd:11 ui/locker_editors.gd:12 data/style_parts.json:slots[paint].name
+msgid "Paint"
+msgstr "漆面"
+
+#: ui/locker_editors.gd:11 ui/locker_editors.gd:12
+msgid "Glow"
+msgstr "光效"
+
+#: ui/locker_editors.gd:12 data/style_parts.json:slots[trim].name
+msgid "Trim"
+msgstr "饰边"
+
+#: ui/locker_editors.gd:60
+msgid "Every %s wears this"
+msgstr "每台%s都会换上"
+
+#: ui/locker_editors.gd:213
+msgid "Ship looks: the tiers keep their shape"
+msgstr "飞船外观：等级外形不变"
 
 #: ui/locker_panel.gd:80
 msgid "LOCKER"
@@ -4784,21 +4848,21 @@ msgstr "储物柜"
 msgid "Close"
 msgstr "关闭"
 
-#: ui/locker_panel.gd:154
-msgid "Fleet paint"
-msgstr "车队涂装"
-
-#: ui/locker_panel.gd:187
+#: ui/locker_panel.gd:185
 msgid "The Locker"
 msgstr "储物柜"
 
-#: ui/locker_panel.gd:188
+#: ui/locker_panel.gd:186
 msgid "Build the Locker in the Build tab, then open it in the yard."
 msgstr "在建造页签建好储物柜，然后在院子里打开它。"
 
-#: ui/locker_panel.gd:189
+#: ui/locker_panel.gd:187
 msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play."
 msgstr "装扮Lumi和每台机器人：颜色、眼睛、头饰、顶饰、车队涂装。新部件会在游戏中逐步解锁。"
+
+#: ui/locker_panel.gd:228 ui/upgrades_screen.gd:15
+msgid "Bots"
+msgstr "机器人"
 
 #: ui/lumi_builder.gd:111
 msgid "CHARACTER BUILDER"
@@ -6240,10 +6304,6 @@ msgstr "还差%s · 约%s"
 #: ui/upgrade_card.gd:226
 msgid "Where it comes from:  %s"
 msgstr "来源：  %s"
-
-#: ui/upgrades_screen.gd:15
-msgid "Bots"
-msgstr "机器人"
 
 #: ui/upgrades_screen.gd:16
 msgid "Research"
@@ -8457,11 +8517,6 @@ msgstr "方块"
 msgid "The main money. Sell bales at the scale. Pays for upgrades, robots, base levels, research, rockets and decorations."
 msgstr "主要货币。在磅秤上卖草捆。用于升级、机器人、基地等级、研究、火箭和装饰。"
 
-#: data/currencies.json:currencies[parts].name data/hub.json:materials.metal.name data/hub.json:materials.plastic.name
-#: data/hub.json:materials.glass.name
-msgid "Parts"
-msgstr "零件"
-
 #: data/currencies.json:currencies[parts].short
 msgid "PARTS"
 msgstr "零件"
@@ -10502,29 +10557,25 @@ msgstr "音乐"
 msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
 msgstr "Glim 会下载你找到的 CD：随时随地播放任何找到的歌曲。"
 
-#: data/glim.json:shells[pearl].name data/style_parts.json:swatches[pearl].name
+#: data/glim.json:shells[pearl].name data/ship_style.json:paints[pearl].name data/style_parts.json:swatches[pearl].name
 msgid "Pearl"
 msgstr "珍珠白"
 
-#: data/glim.json:shells[sunset].name data/style_parts.json:swatches[sunset].name
+#: data/glim.json:shells[sunset].name data/ship_style.json:paints[sunset].name data/style_parts.json:swatches[sunset].name
 msgid "Sunset"
 msgstr "日落"
 
-#: data/glim.json:shells[moss].name
+#: data/glim.json:shells[moss].name data/ship_style.json:paints[moss].name
 msgid "Moss"
 msgstr "苔藓"
 
-#: data/glim.json:shells[graphite].name data/style_parts.json:swatches[graphite].name
+#: data/glim.json:shells[graphite].name data/ship_style.json:trims[graphite].name data/style_parts.json:swatches[graphite].name
 msgid "Graphite"
 msgstr "石墨"
 
 #: data/glim.json:shells[blossom].name
 msgid "Blossom"
 msgstr "花开"
-
-#: data/glim.json:glows[cyan].name data/style_parts.json:swatches[cyan].name
-msgid "Cyan"
-msgstr "青色"
 
 #: data/glim.json:glows[ember].name data/solar_system.json:star_b.name
 msgid "Ember"
@@ -10533,14 +10584,6 @@ msgstr "Ember"
 #: data/glim.json:glows[leaf].name data/style_parts.json:options.chest[leaf].name
 msgid "Leaf"
 msgstr "叶子"
-
-#: data/glim.json:glows[violet].name data/style_parts.json:swatches[violet].name
-msgid "Violet"
-msgstr "紫罗兰"
-
-#: data/glim.json:glows[rose].name
-msgid "Rose"
-msgstr "玫瑰"
 
 #: data/glim.json:tops[none].name
 msgid "Nothing"
@@ -12171,6 +12214,38 @@ msgstr "特殊模块"
 msgid "An ice moon, core-mined until it froze."
 msgstr "一颗冰卫星，被采矿直至核心，直到冻结。"
 
+#: data/planets.json:rime.sites.hub_camp.name
+msgid "Drill Camp"
+msgstr ""
+
+#: data/planets.json:rime.sites.hub_camp.desc
+msgid "Cabins on skids round a plated yard, a greenhouse dome, fuel tanks, a comms mast and a snowcat."
+msgstr ""
+
+#: data/planets.json:rime.sites.derrick.name
+msgid "Frozen Derrick"
+msgstr ""
+
+#: data/planets.json:rime.sites.derrick.desc
+msgid "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."
+msgstr ""
+
+#: data/planets.json:rime.sites.borehole.name
+msgid "The Borehole"
+msgstr ""
+
+#: data/planets.json:rime.sites.borehole.desc
+msgid "The shaft under its headframe and winder house; cold mist, then a warm glow."
+msgstr ""
+
+#: data/planets.json:rime.sites.hot_springs.name
+msgid "Hot Springs"
+msgstr ""
+
+#: data/planets.json:rime.sites.hot_springs.desc
+msgid "Geothermal pools with a bathhouse and boardwalk; frozen, then steaming."
+msgstr ""
+
 #: data/planets.json:ochre.tagline
 msgid "The Ledger's first open-pit strip mine, closest to the twin suns."
 msgstr ""
@@ -13449,6 +13524,26 @@ msgstr ""
 "\n"
 "（有人在下面刻着：“你们让它们做，它们就能”）"
 
+#: data/ship_style.json:paints[midnight].name data/style_parts.json:swatches[midnight].name
+msgid "Midnight"
+msgstr "午夜蓝"
+
+#: data/ship_style.json:paints[coral].name data/style_parts.json:swatches[coral].name
+msgid "Coral"
+msgstr "珊瑚"
+
+#: data/ship_style.json:paints[lunar].name
+msgid "Lunar Silver"
+msgstr "月银"
+
+#: data/ship_style.json:trims[tangerine].name
+msgid "Tangerine"
+msgstr "橘色"
+
+#: data/ship_style.json:trims[chrome].name
+msgid "Chrome"
+msgstr "镀铬"
+
 #: data/signal_tower.json:tiers[0].name
 msgid "Signal Tower"
 msgstr "信号塔"
@@ -13985,14 +14080,6 @@ msgstr "一台投放到清理前线的液压打包机。清洁机器人不再就
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky."
 msgstr "粉碎滚筒和一座小熔炉。草捆进去就再也不会回来：出来的是零件和干净的建材。每烧干净一个草捆，天空就好一点。"
 
-#: data/style_parts.json:slots[paint].name
-msgid "Paint"
-msgstr "漆面"
-
-#: data/style_parts.json:slots[trim].name
-msgid "Trim"
-msgstr "饰边"
-
 #: data/style_parts.json:slots[accent].name
 msgid "Accent"
 msgstr "点缀"
@@ -14186,10 +14273,6 @@ msgstr "橙色"
 msgid "Sky"
 msgstr "天蓝"
 
-#: data/style_parts.json:swatches[mint].name
-msgid "Mint"
-msgstr "薄荷"
-
 #: data/style_parts.json:swatches[mint].unlock.text
 msgid "Upgrade a hub to level 3"
 msgstr "将一个基地升到3级"
@@ -14201,10 +14284,6 @@ msgstr "警示黄"
 #: data/style_parts.json:swatches[soot].name
 msgid "Soot"
 msgstr "煤黑"
-
-#: data/style_parts.json:swatches[amber].name
-msgid "Amber"
-msgstr "琥珀"
 
 #: data/style_parts.json:swatches[olive].name
 msgid "Olive"
@@ -14254,10 +14333,6 @@ msgstr "海玻璃"
 msgid "Find 4 Collection trinkets"
 msgstr "找到4件收藏小玩意"
 
-#: data/style_parts.json:swatches[coral].name
-msgid "Coral"
-msgstr "珊瑚"
-
 #: data/style_parts.json:swatches[coral].unlock.text
 msgid "Find 12 Collection trinkets"
 msgstr "找到12件收藏小玩意"
@@ -14285,10 +14360,6 @@ msgstr "金色"
 #: data/style_parts.json:swatches[bloom].name
 msgid "Bloom green"
 msgstr "绽放绿"
-
-#: data/style_parts.json:swatches[midnight].name
-msgid "Midnight"
-msgstr "午夜蓝"
 
 #: data/style_parts.json:swatches[copper].name
 msgid "Copper"
@@ -16117,6 +16188,18 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "LEDGER  DREDGE %02d"
+#~ msgstr "LEDGER  挖泥船 %02d"
+
+#~ msgid "LEDGER MINING  ORE BARGE 3"
+#~ msgstr "LEDGER 矿业  矿石驳船 3"
+
+#~ msgid "No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."
+#~ msgstr "还没有机器人退休。老机器人或 Mk I-II 机器人可以在这里或工作台的组装中退休；它们会照料基地的苗圃花园。"
+
+#~ msgid "Fleet paint"
+#~ msgstr "车队涂装"
 
 #~ msgid "TRASH"
 #~ msgstr "垃圾"

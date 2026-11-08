@@ -140,85 +140,25 @@ func raise() -> void:
 
 # --- Look -----------------------------------------------------------------------------------
 
-## A slim white-and-steel mast that grows with each tier: a broken, leaning stub at tier 0; then
-## a dish, more sections, a second dish, a halo ring and a lit tip. A thin cyan seam runs up it.
+## [yard] A kit lattice mast that grows per tier (systems/camp/yard_art.gd YardArt.signal_tower):
+## dish, platform and second dish, halo ring and whips, beacon dome and solar panels. The tip lamp
+## pulses (red while broken, cyan once it carries a signal).
 func _build() -> void:
 	if _model:
 		_model.queue_free()
 	_model = Node3D.new()
 	add_child(_model)
 	var t: int = tier()
-	var steel: StandardMaterial3D = Mats.metal("dark_steel")
-	var white := StandardMaterial3D.new()
-	white.albedo_color = Color(0.86, 0.87, 0.86) if t > 0 else Color(0.45, 0.4, 0.36)
-	white.roughness = 0.35 if t > 0 else 0.8
-	var seam: StandardMaterial3D = Mats.lamp(GLOW, 1.6 if t > 0 else 0.0)
+	var d: Dictionary = YardArt.signal_tower(t)
+	var mi: MeshInstance3D = (d["kit"] as YardArt.Kit).mi(0.15 if t > 0 else 0.7, "Mast")
+	_model.add_child(mi)
+	YardArt.set_powered(mi, t > 0)
 	_lamp_mat = Mats.lamp(Color(1.0, 0.25, 0.2) if t == 0 else GLOW, 2.5)
-	_cyl(steel, 0.62, 0.7, 0.28, 0.14)  # plinth
-	var h: float = [1.3, 2.6, 3.8, 5.0, 6.2][clampi(t, 0, 4)]
-	var mast := Node3D.new()
-	_model.add_child(mast)
-	if t == 0:
-		mast.rotation = Vector3(0.0, 0.0, deg_to_rad(14.0))  # bent and leaning
-	_cyl(white, 0.16, 0.11, h, 0.28 + h * 0.5, mast)
-	if t > 0:
-		_cyl(seam, 0.03, 0.03, h - 0.3, 0.28 + h * 0.5, mast, Vector3(0.12, 0, 0.06))
-	for k: int in int(h / 1.2):  # collars
-		_cyl(steel, 0.2, 0.2, 0.06, 0.6 + k * 1.2, mast)
-	if t >= 1:
-		_dish(mast, Vector3(0.0, h * 0.62, 0.0), 0.0, 0.55)
-	if t >= 2:
-		_dish(mast, Vector3(0.0, h * 0.82, 0.0), PI * 0.8, 0.45)
-	if t >= 3:
-		var ring := MeshInstance3D.new()
-		var tm := TorusMesh.new()
-		tm.inner_radius = 0.5
-		tm.outer_radius = 0.54
-		ring.mesh = tm
-		ring.material_override = seam
-		ring.position = Vector3(0, h - 0.4, 0)
-		mast.add_child(ring)
 	var tip := MeshInstance3D.new()
-	tip.mesh = ProcMesh.sphere(0.07 if t < 4 else 0.11, 10, 6)
+	tip.mesh = YardArt.bbox(Vector3.ONE * (0.14 if t < 4 else 0.2), 0.06 if t < 4 else 0.09)
 	tip.material_override = _lamp_mat
-	tip.position = Vector3(0, 0.28 + h + 0.05, 0)
-	mast.add_child(tip)
-
-
-func _cyl(m: Material, top: float, bottom: float, h: float, y: float, parent: Node3D = null, off: Vector3 = Vector3.ZERO) -> void:
-	var mi := MeshInstance3D.new()
-	var cm := CylinderMesh.new()
-	cm.top_radius = top
-	cm.bottom_radius = bottom
-	cm.height = h
-	cm.radial_segments = 14
-	mi.mesh = cm
-	mi.material_override = m
-	mi.position = Vector3(0, y, 0) + off
-	(parent if parent else _model).add_child(mi)
-
-
-func _dish(parent: Node3D, at: Vector3, yaw: float, r: float) -> void:
-	var piv := Node3D.new()
-	piv.position = at
-	piv.rotation = Vector3(0, yaw, 0)
-	parent.add_child(piv)
-	var mi := MeshInstance3D.new()
-	var sm := SphereMesh.new()
-	sm.radius = r
-	sm.height = r * 0.5
-	sm.is_hemisphere = true
-	sm.radial_segments = 20
-	sm.rings = 6
-	mi.mesh = sm
-	var m := StandardMaterial3D.new()
-	m.albedo_color = Color(0.9, 0.9, 0.88)
-	m.roughness = 0.3
-	m.cull_mode = BaseMaterial3D.CULL_DISABLED
-	mi.material_override = m
-	mi.rotation = Vector3(deg_to_rad(-70.0), 0, 0)
-	mi.position = Vector3(0, 0, r * 0.45)
-	piv.add_child(mi)
+	tip.position = d["tip"]
+	_model.add_child(tip)
 
 
 func _process(delta: float) -> void:

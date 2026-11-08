@@ -341,18 +341,15 @@ func _build_jammer(i: int, animate: bool) -> void:
 	add_child(n)
 	var pos: Vector3 = JAMMER_SPOTS[i % JAMMER_SPOTS.size()]
 	n.position = pos
-	var paint: ShaderMaterial = Mats.worn_paint(Color(0.85, 0.85, 0.8), 0.85, 0.3, 70.0 + i, 0.4)
-	var steel: StandardMaterial3D = Mats.metal("steel")
-	n.add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(0.9, 0.6, 0.9), 0.06, 2), paint, Vector3(0, 0.3, 0)))
-	n.add_child(EggProps.mesh(ProcMesh.cyl(0.05, 0.07, 2.6, 8), steel, Vector3(0, 1.9, 0)))
-	n.add_child(EggProps.mesh(ProcMesh.box(Vector3(0.5, 0.12, 0.02)), Mats.lamp(Color(0.3, 0.8, 1.0), 1.4), Vector3(0, 0.42, 0.46)))
+	# [yard] Kit base, mast and dish (systems/camp/yard_art.gd); the Dish turns, the Tip glows.
+	var base_mi: MeshInstance3D = YardArt.jammer_base().mi(0.15, "Base")
+	n.add_child(base_mi)
+	n.add_child(EggProps.mesh(ProcMesh.box(Vector3(0.5, 0.12, 0.02)), Mats.lamp(Color(0.3, 0.8, 1.0), 1.4), Vector3(0, 0.42, 0.485)))
 	var dish := Node3D.new()
 	dish.name = "Dish"
 	dish.position = Vector3(0, 3.0, 0)
 	n.add_child(dish)
-	var bowl := EggProps.mesh(ProcMesh.hemisphere(0.55, 18, 5), paint, Vector3(0, 0, 0.1), Vector3(-70, 0, 0), Vector3(1, 0.35, 1))
-	dish.add_child(bowl)
-	dish.add_child(EggProps.mesh(ProcMesh.cyl(0.015, 0.015, 0.5, 6), steel, Vector3(0, 0.12, 0.35), Vector3(-70, 0, 0)))
+	dish.add_child(YardArt.jammer_dish().mi(0.15, "Bowl"))
 	var tip := EggProps.mesh(ProcMesh.sphere(0.06, 8, 4), Mats.lamp(Color(0.3, 0.8, 1.0), 4.0), Vector3(0, 0.2, 0.58))
 	tip.name = "Tip"
 	dish.add_child(tip)

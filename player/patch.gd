@@ -160,8 +160,11 @@ func _move(delta: float) -> void:
 	if _cubing <= 0.0:
 		if sphere_motor:  # [orbit] stick is camera-local (x right, z back): read it in the camera's surface frame
 			var mv: Vector3 = input.get_world_move(0.0)
-			var f: Basis = sphere_cam.get("frame") if sphere_cam and "frame" in sphere_cam else global_basis
-			wish = f.x * mv.x + f.z * mv.z
+			if input.get("world_space") == true:  # [orbB] the autoplay bot steers in world space
+				wish = mv - up() * mv.dot(up())
+			else:
+				var f: Basis = sphere_cam.get("frame") if sphere_cam and "frame" in sphere_cam else global_basis
+				wish = f.x * mv.x + f.z * mv.z
 		else:
 			wish = input.get_world_move(cam_yaw_provider.call())
 	var speed: float = stat("move_speed") * (0.55 if input.scoop_held() and wish.length() > 0.1 else 1.0)
@@ -369,13 +372,20 @@ func _take_piece(pid: int) -> void:
 	var field: HexField = world.field
 	var type_id: String = Economy.junk_ids[field.piece_type[pid]]
 	var vol: float = field.piece_vol[pid]
+	var whole: bool = true
+	if field.has_method("bite"):  # [orbB] globe pieces are heavy: a flat scoop pulse's worth per take
+		vol = float(field.call("bite", pid, SphereField.FLAT_BITE_VOL))
+		whole = bool(field.call("is_whole_take", pid, vol))
 	var start_xf: Transform3D = world.view.piece_transform(pid)
 	var mesh: Mesh = world.view.piece_mesh(pid)
 	var color: Color = Color.html(str(Economy.junk_types[type_id].get("cube_color", "#888888")))
 	compartment.reserve(vol)
 	if world.get("events") != null:
 		world.events.on_patch_take(pid, vol)  # [events] streak, surge share, audit score
-	world.collect_piece(pid)
+	if whole:
+		world.collect_piece(pid)
+	elif world.has_method("piece_bitten"):  # [orbB] the piece stays; its cell's junk goes down
+		world.call("piece_bitten", pid)
 	# Tractor beam show (pooled, see PickupFx): lock-on reticle, twin lasers, lift with arcs,
 	# compress to light and stream into the chest hopper. Big pieces get a heavier, slower take.
 	var big: bool = vol >= BIG_PIECE_VOL

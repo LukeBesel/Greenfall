@@ -1063,3 +1063,95 @@ static func tower(bt: KitMesh.Builder, o: Vector3, bs: Basis, c: Vector3, y0: fl
 			pipe(bt, o, bs, corner.call(k, yn), corner.call(k1, yn), chord * 0.5, mat, 6)
 			pipe(bt, o, bs, corner.call(k, y), corner.call(k1, yn), chord * 0.4, mat, 6)
 		y = yn
+
+
+# --- Flat-env sea furniture on the kit ([p_seas] replaces the BoxMesh towers and lighthouses) -----
+
+## A drowned office tower top at p (local; waterline at y 0): a concrete shaft with floor slabs
+## proud of the face, glazed bands between mullions (some panes gone), a plant-room crown with a
+## water tank and vents. Ruin: broken crown, rubble and rebar; green: a roof garden; future: a
+## white crown with a thin light line. h is the height above the sea.
+static func drowned_tower(env: Node, a: KitMesh.Builder, ruin: KitMesh.Builder, grn: KitMesh.Builder, fut: KitMesh.Builder, p: Vector3, yaw: float, w: float, dpt: float, h: float, tilt: float) -> void:
+	var rng: RandomNumberGenerator = env.get("_rng")
+	var bs := Basis(Vector3.UP, yaw) * Basis(Vector3.RIGHT, deg_to_rad(tilt))
+	var o := Vector3(p.x, 0.0, p.z)
+	box(a, o, bs, Vector3(0, (h - 8.0) * 0.5, 0), Vector3(w - 0.4, h + 8.0, dpt - 0.4), "concrete", Vector3.ZERO, 0.2)
+	var fl: float = -1.0
+	var floor_i: int = 0
+	while fl < h - 0.2:
+		box(a, o, bs, Vector3(0, fl, 0), Vector3(w + 0.2, 0.42, dpt + 0.2), "concrete", Vector3.ZERO, 0.08)
+		if fl + 3.3 < h:
+			for side: int in 4:
+				var along: float = w if side < 2 else dpt
+				var nrm: Vector3 = [Vector3(0, 0, 1), Vector3(0, 0, -1), Vector3(1, 0, 0), Vector3(-1, 0, 0)][side]
+				var face: float = (dpt if side < 2 else w) * 0.5 - 0.18
+				var tng: Vector3 = Vector3(nrm.z, 0, -nrm.x)
+				var n: int = maxi(2, int(along / 1.6))
+				for k: int in n:
+					var u: float = -along * 0.5 + (k + 0.5) * along / n
+					var c: Vector3 = nrm * face + tng * u + Vector3(0, fl + 1.75, 0)
+					var gone: bool = rng.randf() < 0.3
+					box(a, o, bs, c, Vector3(along / n - 0.16, 2.6, 0.06) if side < 2 else Vector3(0.06, 2.6, along / n - 0.16), "dark_steel" if gone else "glass", Vector3.ZERO, 0.01)
+					pipe(a, o, bs, c + tng * (along / n * 0.5) + nrm * 0.06 - Vector3(0, 1.3, 0), c + tng * (along / n * 0.5) + nrm * 0.06 + Vector3(0, 1.3, 0), 0.07, "dark_steel", 6)
+		fl += 3.3
+		floor_i += 1
+	# Plant-room crown, tank, vents (always; the ruin breaks its corner).
+	var cy: float = h
+	box(a, o, bs, Vector3(w * 0.15, cy + 1.2, -dpt * 0.1), Vector3(w * 0.45, 2.4, dpt * 0.4), "concrete", Vector3.ZERO, 0.12)
+	KitProps.tank(a, Transform3D(bs, o + bs * Vector3(-w * 0.28, cy, dpt * 0.22)), 1.0, 2.2, "paint:accent", a.state)
+	KitProps.vent(a, Transform3D(bs, o + bs * Vector3(w * 0.15, cy + 0.5, dpt * 0.1 + 0.02)), Vector2(1.2, 0.8), "paint:main")
+	for k: int in 6:
+		var rp := Vector3(rng.randf_range(-0.42, 0.42) * w, cy + rng.randf_range(0.0, 1.2), rng.randf_range(-0.42, 0.42) * dpt)
+		var cs: float = rng.randf_range(0.6, 1.4)
+		add_mesh(ruin, "concrete", env.call("_lumpy", k % 5, 0.4, 2.2), Transform3D(bs * Basis.from_euler(Vector3(rng.randf() * 0.6, rng.randf() * TAU, 0)).scaled(Vector3(cs * 1.3, cs, cs)), o + bs * rp))
+		ruin.rod("rusty", o + bs * Vector3(rp.x, cy, rp.z), o + bs * Vector3(rp.x + rng.randf_range(-0.8, 0.8), cy + rng.randf_range(1.5, 2.6), rp.z + rng.randf_range(-0.6, 0.6)), 0.035, 5)
+	for k: int in 6:
+		var ang: float = rng.randf() * TAU
+		var rp := Vector3(cos(ang) * (w * 0.5 + 0.8), -0.25, sin(ang) * (dpt * 0.5 + 0.8))
+		var rs: float = rng.randf_range(0.8, 1.8)
+		add_mesh(a, "concrete", env.call("_lumpy", (k + 2) % 5, 0.4, 1.8), Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(rs * 1.4, rs * 0.6, rs)), o + Basis(Vector3.UP, yaw) * rp))
+	# Restored roof garden; future crown.
+	KitProps.planter(grn, Transform3D(bs, o + bs * Vector3(-w * 0.15, cy + 0.02, -dpt * 0.3)), w * 0.5, "restored")
+	KitProps.planter(grn, Transform3D(bs, o + bs * Vector3(w * 0.1, cy + 0.02, dpt * 0.35)), w * 0.4, "restored")
+	box(fut, o, bs, Vector3(0, cy + 1.0, 0), Vector3(w + 0.5, 2.0, dpt + 0.5), "paint:white", Vector3.ZERO, 0.3)
+	box(fut, o, bs, Vector3(0, cy + 0.15, 0), Vector3(w + 0.56, 0.06, dpt + 0.56), "trim:cool", Vector3.ZERO, 0.01)
+	solid_box(_g(env, "always"), o, bs, Vector3(0, (h - 3.0) * 0.5, 0), Vector3(w + 0.4, h + 3.0, dpt + 0.4))
+
+
+## A lighthouse at base (local) h metres tall: a tapered lathe tower in white with a red band,
+## a door and slit windows, a gallery with a railing, a glazed lantern room and a red cap.
+## Restored only (the green group); the ruin is a rusted, broken stump with rubble.
+static func lighthouse(env: Node, a: KitMesh.Builder, ruin: KitMesh.Builder, base: Vector3, h: float) -> void:
+	var r0: float = 1.9
+	var r1: float = 1.15
+	var prof := PackedVector3Array([Vector3(0, 0, 0), Vector3(r0 + 0.25, 0, 1), Vector3(r0 + 0.25, 0.6, 1), Vector3(r0, 0.7, 1), Vector3(r1, h, 1), Vector3(0, h, 0)])
+	a.add("paint:white", KitMesh.lathe(prof, 20), Transform3D(Basis(), base))
+	var band := PackedVector3Array([Vector3(lerpf(r0, r1, 0.55) + 0.03, h * 0.55, 1), Vector3(lerpf(r0, r1, 0.72) + 0.03, h * 0.72, 1)])
+	a.add("paint:red", KitMesh.lathe(PackedVector3Array([Vector3(0, h * 0.55, 0), band[0], band[1], Vector3(0, h * 0.72, 0)]), 20), Transform3D(Basis(), base))
+	var bs := Basis()
+	box(a, base, bs, Vector3(0, 1.3, r0 - 0.05), Vector3(1.0, 1.9, 0.2), "paint:navy", Vector3.ZERO, 0.05)
+	for k: int in 3:
+		var y: float = h * (0.3 + k * 0.2)
+		var rr: float = lerpf(r0, r1, y / h)
+		box(a, base, Basis(Vector3.UP, k * 2.1), Vector3(0, y, rr), Vector3(0.35, 0.9, 0.2), "glass", Vector3.ZERO, 0.03)
+	a.add("dark_steel", KitMesh.bevel_cylinder(r1 + 0.6, 0.25, 0.05, 20), Transform3D(Basis(), base + Vector3(0, h, 0)))
+	var rp: Array[Vector3] = []
+	for k: int in 13:
+		var ang: float = TAU * k / 12.0
+		rp.append(Vector3(cos(ang) * (r1 + 0.5), h + 0.25, sin(ang) * (r1 + 0.5)))
+	rail(a, base, bs, rp, 0.9, "paint:red")
+	a.add("glass", KitMesh.bevel_cylinder(0.85, 1.3, 0.05, 12), Transform3D(Basis(), base + Vector3(0, h + 0.25, 0)))
+	a.add("trim:warm", KitMesh.bevel_cylinder(0.4, 0.8, 0.05, 10), Transform3D(Basis(), base + Vector3(0, h + 0.5, 0)))
+	for k: int in 6:
+		var ang: float = TAU * k / 6.0
+		a.rod("dark_steel", base + Vector3(cos(ang) * 0.88, h + 0.25, sin(ang) * 0.88), base + Vector3(cos(ang) * 0.88, h + 1.55, sin(ang) * 0.88), 0.04, 5)
+	a.add("paint:red", KitMesh.lathe(PackedVector3Array([Vector3(0, 0, 0), Vector3(1.05, 0, 1), Vector3(0.7, 0.55, 0), Vector3(0.12, 0.85, 1), Vector3(0, 0.95, 0)]), 16), Transform3D(Basis(), base + Vector3(0, h + 1.55, 0)))
+	a.lights.append({"pos": base + Vector3(0, h + 0.9, 0), "color": KitMat.GLOW["warm"], "range": 14.0, "energy": 2.0})
+	# Ruin: a rusted stump, broken off, with rubble at its foot.
+	var sp := PackedVector3Array([Vector3(0, 0, 0), Vector3(r0, 0, 1), Vector3(lerpf(r0, r1, 0.4), h * 0.4, 1), Vector3(0, h * 0.4, 0)])
+	ruin.add("rusty", KitMesh.lathe(sp, 14), Transform3D(Basis(Vector3.FORWARD, 0.06), base))
+	var rng: RandomNumberGenerator = env.get("_rng")
+	for k: int in 5:
+		var ang: float = rng.randf() * TAU
+		add_mesh(ruin, "concrete", env.call("_lumpy", k % 5, 0.4, 2.0), Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(1.2, 0.6, 1.0) * rng.randf_range(0.6, 1.2)), base + Vector3(cos(ang) * 2.8, 0.3, sin(ang) * 2.8)))
+	solid_cyl(_g(env, "always"), base, bs, Vector3.ZERO, Vector3(0, h, 0), r0)
