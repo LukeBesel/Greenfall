@@ -265,3 +265,41 @@ func test_streaming_budget() -> void:
 	s.settle()
 	assert_eq(int(s.stats["lod0"]) + int(s.stats["lod1"]) + int(s.stats["lod2"]), 0)
 	assert_eq(int(s.stats["collide"]), 0)
+
+
+func test_cell_elevation_layer() -> void:
+	var g: SphereGrid = _grid(5)
+	var t := SphereTerrain.new(g, 4471)
+	var e := PackedFloat32Array()
+	e.resize(g.cell_count())
+	for i: int in g.cell_count():
+		e[i] = g.centers[i].y  # smooth: north high, south low
+	var base: float = t.raw_height(g.centers[400])
+	t.set_cell_elevation(e, 20.0, 0.0)
+	# At a cell centre the layer is exactly that cell's value; between cells it is interpolated.
+	assert_almost_eq(t.raw_height(g.centers[400]) - base, e[400] * 20.0, 0.01)
+	var mid: Vector3 = (g.centers[400] + g.centers[g.neighbors(400)[0]]).normalized()
+	assert_almost_eq(t.elevation_at(mid), (e[400] + e[g.neighbors(400)[0]]) * 10.0, 0.05)
+	assert_gt(t.elevation_at(Vector3.UP), 19.0)
+	assert_lt(t.elevation_at(Vector3.DOWN), -19.0)
+
+
+func test_body_centres_keep_their_own_near_ring() -> void:
+	var g: SphereGrid = SphereGrid.for_hex_size(6, 10.0)
+	var t := SphereTerrain.new(g, 4471)
+	var s := SphereStreamer.new()
+	add_child_autofree(s)
+	s.setup(g, t, SphereCells.new(g.cell_count()))
+	var a: Vector3 = g.centers[g.cell_at(Vector3(0.1, 1, 0))]
+	var b: Vector3 = t.local_to_dir(g.cell_at(a), 300.0, 0.0)
+	s.set_centre("view", t.ground(a) + a * 6.0, SphereStreamer.VIEW)
+	s.settle()
+	var only_view: int = s.near_cells().size()
+	s.set_centre("bot", t.ground(b) + b, SphereStreamer.BODY)
+	s.settle()
+	assert_true(s.is_near(g.cell_at(b)), "a robot 300 m away has its own ring")
+	assert_gt(s.near_cells().size(), only_view + 30)
+	s.remove_centre("bot")
+	s.settle()
+	assert_false(s.is_near(g.cell_at(b)))
+	assert_eq(s.near_cells().size(), only_view)

@@ -528,3 +528,7 @@ tuned in the first-hour pass); no new SFX work unless a bug.
   `tests/test_crash_site.gd` (pod parts, door angle, repair stages).
 - Next: split the district build across frames so the loading bar keeps moving during it; pre-build
   the intro's SpaceStage behind the loader (its first frames compile on the intro's black fade now).
+
+## Update: hex globe foundation (wt/sgrid, Nov 8)
+- Done: `planet/sphere/` standalone module for the walkable round planets (used by wt/orbit's `--orbit`): `SphereGrid` (Goldberg hex globe, GeoSphere-compatible stable ids, O(1) point lookup, chunks of ~256 hexes, disk cache: level 7 = 163,842 hexes builds in 1.2 s, loads in 30 ms), `SphereTerrain` (true-scale noise terrain, per-cell elevation layer, `reserve_site` tangent-plane hub pads with a surface-aligned transform), `SphereCells` (packed per-hex state + state texture), `SphereStreamer` (WorkerThreadPool chunk builds, LOD 0/1/2 to the horizon + far shell, collision near bodies only, near rings for junk). Recommended size: level 7, hex circumradius 10 m, R 1840 m (table in sphere_grid.gd).
+- Dev: `--sphere-demo` (`--sphere-cam=orbit|high|skim|ground`, `--sphere-outlines`, `--sphere-lod-tint`). Tests: tests/test_sphere_grid.gd.
