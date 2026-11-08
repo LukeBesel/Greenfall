@@ -45,10 +45,11 @@ func test_gameplay_points_near_previous_rig() -> void:
 	var m := _model()
 	m._process(0.0)
 	var local: Vector3 = m.to_local(m.claw_point())
-	# Previous rig: right claw tip about (0.34, 0.35, -0.33) in model space (hover bob included).
-	assert_almost_eq(local.x, 0.335, 0.04)
-	assert_almost_eq(local.z, -0.31, 0.06)
-	assert_true(local.y > 0.25 and local.y < 0.45, "claw height %.2f" % local.y)
+	# v2 idle pose: the arms reach out and a little up (portrait); the right claw tip sits out to
+	# the side, in front, around torso height, where the pickup lasers start.
+	assert_true(local.x > 0.3 and local.x < 0.6, "claw out to the side (%.2f)" % local.x)
+	assert_true(local.z < -0.15, "claw in front (%.2f)" % local.z)
+	assert_true(local.y > 0.25 and local.y < 0.6, "claw height %.2f" % local.y)
 	var chest: Vector3 = m.to_local(m.chest_world())
 	assert_true(chest.z < -0.2 and chest.y > 0.38 and chest.y < 0.5, "chest hopper on the plate")
 
@@ -114,4 +115,4 @@ func test_beacon_stays_on_the_head_through_animation() -> void:
 		assert_true(worst < 0.02, "%s beacon within 2 cm of the fin (%.4f m)" % [id, worst])
 		# And it really sits on the crown, not floating above or inside the head.
 		var local: Vector3 = m._head.to_local(beacon.global_position)
-		assert_almost_eq(local.y, 0.582, 0.01, id)
+		assert_almost_eq(local.y, PatchModel.BEACON_LOCAL.y, 0.01, id)

@@ -17,7 +17,7 @@ extends Node3D
 # procedural extras (holo, butterfly, case); icon: chest screen icon; happy: resting smile (0..1).
 # l10n:begin
 const VARIANTS: Dictionary = {
-	"aurora": {"name": "Aurora", "paint": Color(0.9, 0.88, 0.83), "trim": Color(0.36, 0.38, 0.42), "glow": Color(0.3, 0.88, 1.0), "accent": Color(1.0, 0.5, 0.12), "lamp": Color(1.0, 0.55, 0.15), "icon": "recycle", "acc": ["antenna"]},
+	"aurora": {"name": "Aurora", "paint": Color(0.839, 0.808, 0.765), "trim": Color(0.412, 0.435, 0.471), "glow": Color(0.25, 0.886, 0.94), "accent": Color(0.945, 0.42, 0.012), "lamp": Color(0.973, 0.686, 0.035), "paddle": Color(0.953, 0.753, 0.251), "icon": "recycle", "acc": ["antenna"]},
 	"bolt": {"name": "Bolt", "paint": Color(0.95, 0.7, 0.1), "trim": Color(0.32, 0.29, 0.24), "glow": Color(1.0, 0.68, 0.18), "accent": Color(0.95, 0.72, 0.12), "lamp": Color(1.0, 0.6, 0.12), "icon": "recycle", "coverage": 0.8, "grime": 0.85, "stripes": 1.0, "acc": ["antenna", "acc_pad_r", "acc_pad_l", "gear"]},
 	"sprout": {"name": "Sprout", "paint": Color(0.47, 0.53, 0.23), "trim": Color(0.33, 0.35, 0.22), "glow": Color(0.52, 1.0, 0.36), "accent": Color(0.86, 0.62, 0.22), "lamp": Color(0.6, 1.0, 0.35), "icon": "leaf", "grime": 0.7, "moss": 0.6, "acc": ["acc_sprout"]},
 	"pixel": {"name": "Pixel", "paint": Color(0.8, 0.15, 0.14), "trim": Color(0.6, 0.12, 0.12), "glow": Color(1.0, 0.33, 0.5), "accent": Color(0.93, 0.91, 0.88), "lamp": Color(1.0, 0.4, 0.55), "icon": "recycle", "happy": 1.0, "acc": ["acc_pixel", "butterfly"]},
@@ -29,21 +29,21 @@ const VARIANTS: Dictionary = {
 var variant: String = "aurora"
 
 # Interface used by Patch, the camera, the detector and baling.
-var chest_point := Vector3(0, 0.4, -0.24)
-var back_hatch_point := Vector3(0, 0.38, 0.21)
-var vent_points: Array[Vector3] = [Vector3(-0.1, 0.98, 0.34), Vector3(0.1, 0.98, 0.34)]  # head's back vent slot
+var chest_point := Vector3(0, 0.4, -0.25)
+var back_hatch_point := Vector3(0, 0.38, 0.23)
+var vent_points: Array[Vector3] = [Vector3(-0.12, 0.93, 0.34), Vector3(0.12, 0.93, 0.34)]  # head's back vent band
 var stack_point := Vector3(0, 1.3, 0.3)
-var lens_point := Vector3(0, 0.83, -0.37)
+var lens_point := Vector3(0, 0.86, -0.36)
 ## [hero] Attachment anchors for head pieces, chest icons, held items and back gear (character
 ## builder). Positions in the model's float space (head_top in the head's space); see get_anchor().
-const ANCHORS := {"head_top": Vector3(0, 0.57, 0.03), "chest_plate": Vector3(0, 0.43, -0.224), "hand_r": Vector3(0, 0, -0.1), "hand_l": Vector3(0, 0, -0.1), "back": Vector3(0, 0.42, 0.215)}
+const ANCHORS := {"head_top": Vector3(0, 0.6, 0.0), "chest_plate": Vector3(0, 0.417, -0.236), "hand_r": Vector3(0, 0, -0.1), "hand_l": Vector3(0, 0, -0.1), "back": Vector3(0, 0.42, 0.225)}
 ## Eye shapes for bot_face.gdshader's eye_shape (VARIANTS may set "eyes"; set_eye_shape() at runtime).
 const EYE_SHAPES := ["crescent", "round", "happy", "bar", "heart"]
 var _anchors: Dictionary = {}
 ## [hero] Detector beacon: a small red lamp on the rear of the fin mount (head space), parented to
 ## the head so it follows hover bob, lean, head turn/tilt and every pose (owner: "the blinking red
 ## dot sometimes comes off the player's head" when it lived on Patch at a fixed height).
-const BEACON_LOCAL := Vector3(0, 0.582, 0.152)  # just behind the fin mount, under the swept blade
+const BEACON_LOCAL := Vector3(0, 0.5965, 0.21)  # on the fin mount, behind the stalk (build_aurora.py prints it)
 var _beacon: MeshInstance3D
 var _beacon_mat: StandardMaterial3D
 var _beacon_light: OmniLight3D
@@ -92,6 +92,9 @@ var _blink_t: float = -1.0
 var _blink_double: bool = false
 var _sleep_amt: float = 0.0
 var _happy_face: float = 0.0
+## [hero v2] Idle arm pose: x = shoulder pitch (up/forward), z = outward (right arm; mirrored on
+## the left), y = elbow bend.
+const ARM_REST := Vector3(0.12, 0.4, 0.5)
 const BLINK_CLOSE := 0.07
 const BLINK_HOLD := 0.04
 const BLINK_OPEN := 0.11
@@ -167,8 +170,9 @@ static func _pivot(part: String) -> Vector3:
 	return _parts[part]["pos"]
 
 
-func _paint(c: Color, seed_: float, coverage: float = 0.88, metal: float = 0.0, rough: float = 0.42) -> ShaderMaterial:
+func _paint(c: Color, seed_: float, coverage: float = 0.88, metal: float = 0.0, rough: float = 0.42, coat: float = 0.0) -> ShaderMaterial:
 	var m: ShaderMaterial = Mats.worn_paint(c, coverage, 0.25, seed_, 0.5)
+	m.set_shader_parameter("clearcoat", coat)
 	m.shader = HERO_PAINT
 	m.set_shader_parameter("paint_roughness", rough)
 	m.set_shader_parameter("paint_metallic", metal)
@@ -230,19 +234,24 @@ func _build() -> void:
 	var cover: float = float(v.get("coverage", 0.9))
 	var lamp_c: Color = v.get("lamp", accent_c)
 	_mats = {
-		"paint": _paint((v["paint"] as Color).darkened(0.04), 3.0, cover, float(v.get("metal", 0.0)), 0.42 - float(v.get("metal", 0.0)) * 0.3),
+		"paint": _paint((v["paint"] as Color), 3.0, cover, float(v.get("metal", 0.0)), 0.3 - float(v.get("metal", 0.0)) * 0.15, 0.75),
 		"trim": _paint((v["trim"] as Color).darkened(0.45), 7.0, cover, 0.35, 0.4),
 		"accent": _paint(accent_c, 11.0, cover - 0.04),
-		"dark": _paint(Color(0.17, 0.175, 0.19), 5.0, 0.75, 0.6, 0.38),
+		# [hero v2] Dark joint metal (sampled #1D2024): metallic with sharp highlights.
+		"dark": _paint(Color(0.114, 0.125, 0.141), 5.0, 0.8, 0.85, 0.26),
 		"steel": Mats.metal("steel"),
-		"glow": Mats.lamp(glow, 3.2),
+		"glow": Mats.lamp(glow, 3.6),
 		"lamp_accent": Mats.lamp(lamp_c, 2.4),
 		# [hero] Rebuild: side-module ring lenses and the hatch frame (thinner, dimmer than the eyes),
 		# the raised chest plate, the fin and the claws.
-		"glow_soft": Mats.lamp(glow, 1.5),
-		"plate": _paint((v["paint"] as Color).lightened(0.06), 17.0, cover, 0.25, 0.36),
-		"fin": _paint((v["trim"] as Color).lightened(0.12), 19.0, cover - 0.06, 0.55, 0.36),
-		"claw": _paint(Color(0.29, 0.3, 0.32), 23.0, 0.7, 0.7, 0.34),
+		"glow_soft": Mats.lamp(glow, 2.4),
+		"plate": _paint((v["paint"] as Color).lightened(0.05), 17.0, cover, 0.2, 0.3, 0.5),
+		"fin": _paint(Color(0.353, 0.376, 0.408), 19.0, 0.97, 0.9, 0.28),
+		"claw": _paint(Color(0.18, 0.192, 0.212), 23.0, 0.8, 0.85, 0.28),
+		"paddle": _paint(v.get("paddle", accent_c), 29.0, cover, 0.1, 0.3, 0.6),
+		"paddle_edge": Mats.lamp((v.get("paddle", accent_c) as Color).lightened(0.35), 1.6),
+		"latch": Mats.lamp(accent_c, 2.4),
+		"cable": _paint(Color(0.06, 0.062, 0.068), 31.0, 1.0, 0.0, 0.55),
 		# Design add-on materials (designs.glb).
 		"rust": _paint(Color(0.42, 0.36, 0.3), 13.0, 0.45, 0.5, 0.5),
 		"leaf": _leaf_mat(),
@@ -250,7 +259,7 @@ func _build() -> void:
 		"wing": _wing_mat(glow),
 		"screen": screen,
 		"thruster": _ring_mat,
-		"thruster_core": Mats.lamp(glow.lightened(0.4), 5.0),
+		"thruster_core": Mats.lamp(glow.lightened(0.3), 2.2),
 	}
 	# [hero] The chest plate stays readable: lighter edge wear than the shell.
 	(_mats["plate"] as ShaderMaterial).set_shader_parameter("edge_wear", 0.25)
@@ -262,8 +271,8 @@ func _build() -> void:
 		m.set_shader_parameter("moss", float(v.get("moss", 0.0)))
 	if float(v.get("stripes", 0.0)) > 0.0:
 		(_mats["accent"] as ShaderMaterial).set_shader_parameter("stripes", float(v["stripes"]))
-	_face_mat.set_shader_parameter("half_width", 0.325)
-	_face_mat.set_shader_parameter("half_height", 0.212)
+	_face_mat.set_shader_parameter("half_width", 0.335)
+	_face_mat.set_shader_parameter("half_height", 0.205)
 	_face_mat.set_shader_parameter("eye_radius", 0.5)
 	_face_mat.set_shader_parameter("eye_spacing", 0.8)
 	_face_mat.set_shader_parameter("eye_shape", maxi(EYE_SHAPES.find(str(v.get("eyes", "crescent"))), 0))
@@ -281,7 +290,7 @@ func _build() -> void:
 	hover_light.light_color = glow
 	hover_light.light_energy = 0.7  # [hero] tight glow: light the ground, not the whole bot
 	hover_light.omni_range = 0.9
-	hover_light.position = Vector3(0, 0.02, 0)
+	hover_light.position = Vector3(0, 0.06, 0)
 	hover_light.shadow_enabled = false
 	_float.add_child(hover_light)
 	# His own soft key light (only lights his meshes) so he reads against the busy world.
@@ -319,7 +328,7 @@ func _build() -> void:
 	_float.add_child(icon_l)
 	_icon = icon_l
 	_icon_color = icon_l.modulate
-	_fill_bar = _mi(_float, ProcMesh.box(Vector3(0.14, 0.008, 0.005)), Mats.lamp(glow, 2.5), Vector3(0, 0.356, -0.226))
+	_fill_bar = _mi(_float, ProcMesh.box(Vector3(0.14, 0.008, 0.005)), Mats.lamp(glow, 2.5), Vector3(0, 0.338, -0.238))
 	_fill_bar.scale.x = 0.01
 	# Back hatch where bales come out (hinged at its top edge).
 	_hatch = Node3D.new()
@@ -555,7 +564,7 @@ func _build_arm(side: float) -> Node3D:
 	for k: int in 3:
 		var a: float = TAU * k / 3.0 + PI * 0.5
 		var f := Node3D.new()
-		f.position = Vector3(cos(a) * 0.026, sin(a) * 0.026, -0.045)
+		f.position = Vector3(cos(a) * 0.03, sin(a) * 0.03, -0.058)
 		wrist.add_child(f)
 		# The finger meshes point down -Z with their outer face on +Y; turn them to face outward.
 		var orient := Node3D.new()
@@ -563,7 +572,7 @@ func _build_arm(side: float) -> Node3D:
 		f.add_child(orient)
 		_part(orient, "finger")
 		var tip := Node3D.new()
-		tip.position = Vector3(0, 0.002, -0.058)
+		tip.position = Vector3(0, 0.0, -0.05)
 		tip.rotation.x = -0.45
 		orient.add_child(tip)
 		_part(tip, "finger_tip")
@@ -589,16 +598,20 @@ func _process(delta: float) -> void:
 	_scoop_amt = move_toward(_scoop_amt, 1.0 if _scoop_t > 0.0 else 0.0, delta * 5.0)
 	_scoop_t = maxf(0.0, _scoop_t - delta)
 	var s: float = _t * 8.0
-	_arm_r.rotation.x = lerpf(0.15 * sin(_t * 1.3), -0.9 + sin(s) * 0.15, _scoop_amt)
-	_arm_l.rotation.x = lerpf(0.15 * sin(_t * 1.3 + 1.0), -0.5 + sin(s + 1.5) * 0.12, _scoop_amt * 0.7)
-	_arm_r.rotation.z = lerpf(0.0, -0.25, _scoop_amt)
+	# [hero v2] Idle: arms out and a little up and forward, elbows bent (the portrait's reaching pose).
+	_arm_r.rotation.x = lerpf(ARM_REST.x + 0.08 * sin(_t * 1.3), -0.9 + sin(s) * 0.15, _scoop_amt)
+	_arm_l.rotation.x = lerpf(ARM_REST.x + 0.08 * sin(_t * 1.3 + 1.0), -0.5 + sin(s + 1.5) * 0.12, _scoop_amt * 0.7)
+	_arm_r.rotation.z = lerpf(ARM_REST.z + 0.04 * sin(_t * 0.9), -0.25, _scoop_amt)
+	_arm_l.rotation.z = lerpf(-ARM_REST.z - 0.04 * sin(_t * 0.9 + 0.7), 0.0, _scoop_amt * 0.7)
+	(_arm_r.get_meta("elbow") as Node3D).rotation.x = lerpf(ARM_REST.y, 0.0, _scoop_amt)
+	(_arm_l.get_meta("elbow") as Node3D).rotation.x = lerpf(ARM_REST.y, 0.0, _scoop_amt * 0.7)
 	_hold = move_toward(_hold, 1.0 if holding else 0.0, delta * 3.0)
 	if _hold > 0.0:
 		var e: float = _hold * _hold * (3.0 - 2.0 * _hold)
 		_arm_r.rotation.x = lerpf(_arm_r.rotation.x, -1.25 + sin(_t * 1.6) * 0.03, e)
 		_arm_r.rotation.z = lerpf(_arm_r.rotation.z, 0.35, e)
 		var elbow_h: Node3D = _arm_r.get_meta("elbow")
-		elbow_h.rotation.x = lerpf(0.0, 0.9, e)
+		elbow_h.rotation.x = lerpf(ARM_REST.y, 0.9, e)
 	for f: Node3D in _claws:
 		var dir: Vector2 = f.get_meta("dir")
 		var open: float = (0.5 + 0.5 * sin(s * 1.5)) if _scoop_amt > 0.1 else lerpf(0.2, 0.9, _hold)
@@ -679,7 +692,7 @@ func claw_point_l() -> Vector3:
 
 ## World position of the chest hopper screen (where pickups stream in).
 func chest_world() -> Vector3:
-	return _float.to_global(Vector3(0, 0.42, -0.23))
+	return _float.to_global(Vector3(0, 0.42, -0.24))
 
 
 ## [hero] Anchor nodes for add-ons: "head_top" (on the head, turns with it), "chest_plate",
