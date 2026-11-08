@@ -86,7 +86,62 @@ func blocks_local(q: Vector2) -> bool:
 
 
 func blocks(dir: Vector3) -> bool:
-	return blocks_local(local(dir))
+	return blocks_local(local(dir)) or (_world_n > 0 and _blocks_world(dir))
+
+
+# --- [v3city] Town outskirts round any hub: footprints in their own ground frames ----------------
+## Buckets of WORLD_M (by direction x planet radius) -> [[frame inverse, Rect2 (frame-local), r]].
+const WORLD_M: float = 16.0
+var _world: Dictionary = {}
+var _world_n: int = 0
+var _world_keys: Dictionary = {}  # who added (hub index): added once
+
+
+## Footprints of buildings standing in ground frames on the sphere: [[frame: Transform3D, rect: Rect2]].
+## Pieces keep off them on every hub's outskirts (junk never lies inside a building there).
+func add_world(key: Variant, items: Array) -> void:
+	if _world_keys.has(key):
+		return
+	_world_keys[key] = true
+	for it: Array in items:
+		var fr: Transform3D = it[0]
+		var r: Rect2 = (it[1] as Rect2).grow(FOOT_GROW_M)
+		var inv: Transform3D = fr.affine_inverse()
+		var rad: float = fr.origin.length()
+		var nx: int = maxi(1, int(ceil(r.size.x / (WORLD_M * 0.5))))
+		var nz: int = maxi(1, int(ceil(r.size.y / (WORLD_M * 0.5))))
+		var seen: Dictionary = {}
+		for ix: int in nx + 1:
+			for iz: int in nz + 1:
+				var q := Vector3(r.position.x + r.size.x * ix / nx, 0.0, r.position.y + r.size.y * iz / nz)
+				var k: Vector3i = _wkey((fr * q).normalized(), radius)
+				if seen.has(k):
+					continue
+				seen[k] = true
+				if not _world.has(k):
+					_world[k] = []
+				(_world[k] as Array).append([inv, r, rad])
+		_world_n += 1
+
+
+func _wkey(d: Vector3, rad: float) -> Vector3i:
+	var p: Vector3 = d * rad / WORLD_M
+	return Vector3i(floori(p.x), floori(p.y), floori(p.z))
+
+
+func _blocks_world(dir: Vector3) -> bool:
+	var d: Vector3 = dir.normalized()
+	var base: Vector3 = d * radius / WORLD_M
+	var b0 := Vector3i(floori(base.x), floori(base.y), floori(base.z))
+	for k: Vector3i in [b0]:
+		var lst: Variant = _world.get(k)
+		if lst == null:
+			continue
+		for e: Array in lst:
+			var lp: Vector3 = (e[0] as Transform3D) * (d * float(e[2]))
+			if (e[1] as Rect2).has_point(Vector2(lp.x, lp.z)):
+				return true
+	return false
 
 
 ## Whether a cell lies wholly in the keep-out: its centre and six points near its rim.

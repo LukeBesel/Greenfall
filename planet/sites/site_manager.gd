@@ -28,6 +28,7 @@ const GROW_MAX_M: float = 900.0
 const RESTORED: int = 4
 
 const PLAY_BUDGET_US: int = 4000  # [orbE] reach audit work per frame in play
+const PLAY_SLICE_US: int = 6000  # [v3city] a hub town's build work per frame in play
 var probed: Dictionary = {}  # [orbE] hub index -> true once its footprint probe and anchor fix are done
 var globe: Node3D
 var planet_id: String = "verdance"
@@ -91,16 +92,32 @@ func build_hub(i: int, sync: bool = false) -> SitePrefab:
 	var budget: BuildBudget = BuildBudget.current
 	if sync:
 		BuildBudget.current = null
+	var play: BuildBudget = null
+	if not sync and budget == null and is_inside_tree():
+		# [v3city] In play a hub town builds a few ms a frame (it was one long frame; the towns are
+		# bigger now). The budget closes when the prefab is built.
+		play = BuildBudget.begin_play(get_tree(), PLAY_SLICE_US)
+		_building = true
 	var s: Dictionary = sites[i].duplicate()
 	s["planet"] = planet_id
 	s["hub_index"] = i
 	s["seed"] = _seed
 	s["water_fn"] = water_fn(i)  # [v3city] the town keeps its buildings, streets and props off the lake cells
-	s["globe_ctx"] = {"terrain": terrain, "grid": grid, "cells": cells, "xf": sites[i]["transform"], "clear": _clear_cell}  # [v3city] the outskirts
+	s["globe_ctx"] = {"terrain": terrain, "grid": grid, "cells": cells, "xf": sites[i]["transform"], "clear": _clear_cell, "keep_out": _keep_out(0)}  # [v3city] the outskirts
 	var p: SitePrefab = PlanetEnvs.build_site(roots[i], s, levels[i], restoration_of(i))
 	prefabs[i] = p
 	if sync:
 		BuildBudget.current = budget
+	if play:
+		var close := func() -> void:
+			if BuildBudget.current == play:
+				BuildBudget.end()
+			_building = false
+		if p.is_built:
+			close.call()
+		else:
+			p.rebuilt.connect(close, CONNECT_ONE_SHOT)
+			p.tree_exiting.connect(close, CONNECT_ONE_SHOT)
 	if p.is_built:
 		_on_built(i, p)
 	else:
@@ -180,7 +197,7 @@ func probe_cells(i: int, p: SitePrefab) -> int:
 	if space == null:
 		return 0
 	var n: int = 0
-	var ko: YardKeepOut = _keep_out(i)
+	var ko: YardKeepOut = _keep_out(0)  # [v3city] every hub: the town outskirts' footprints are per piece too
 	for c: int in sites[i]["cells"]:
 		if not cells.is_dirty(c) and cells.state[c] != 0:
 			continue

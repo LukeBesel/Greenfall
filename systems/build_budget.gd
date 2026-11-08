@@ -33,6 +33,19 @@ var _to: float = 0.0
 var _sub: float = 0.0
 
 
+## [v3city] A budget opened in play (a hub town building as Lumi comes near): a fixed slice of
+## this many microseconds a frame instead of the loader's adaptive one. 0 = the loader's rule.
+var play_slice_us: int = 0
+
+
+## [v3city] Opens a budget for building in play (no loading screen): `slice_us` of work a frame.
+static func begin_play(p_tree: SceneTree, slice_us: int) -> BuildBudget:
+	var b: BuildBudget = begin(p_tree)
+	b.play_slice_us = slice_us
+	b._slice_us = slice_us
+	return b
+
+
 static func begin(p_tree: SceneTree) -> BuildBudget:
 	current = BuildBudget.new()
 	current.tree = p_tree
@@ -68,6 +81,8 @@ static func pause(at: String = "") -> void:
 		print("[budget] a %.0f ms frame after %s" % [f / 1000.0, at])
 	b._frame_us = f if b._frame_us == 0 else int(lerpf(b._frame_us, f, 0.3))
 	b._slice_us = clampi(b._frame_us * 2, SLICE_US, MAX_SLICE_US)
+	if b.play_slice_us > 0:
+		b._slice_us = b.play_slice_us  # [v3city] in play: a fixed few ms a frame
 
 
 ## Yield only if this frame's slice is used up.
