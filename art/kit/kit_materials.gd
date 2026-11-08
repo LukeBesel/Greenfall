@@ -15,14 +15,14 @@ const STATES: PackedStringArray = ["broken", "repaired", "restored"]
 
 ## Cohesive kit palette (Moon Sweepers-like: warm creams, teal, orange, saturated but not neon).
 const PALETTE: Dictionary = {
-	"cream": Color(0.9, 0.85, 0.74),
+	"cream": Color(0.88, 0.8, 0.64),
 	"white": Color(0.88, 0.89, 0.9),
-	"teal": Color(0.1, 0.55, 0.6),
+	"teal": Color(0.04, 0.5, 0.55),
 	"mint": Color(0.42, 0.78, 0.6),
 	"sky": Color(0.3, 0.56, 0.86),
 	"navy": Color(0.13, 0.19, 0.31),
-	"orange": Color(0.95, 0.45, 0.1),
-	"yellow": Color(0.98, 0.74, 0.12),
+	"orange": Color(0.95, 0.38, 0.05),
+	"yellow": Color(0.98, 0.7, 0.05),
 	"red": Color(0.78, 0.17, 0.13),
 	"olive": Color(0.44, 0.5, 0.27),
 	"slate": Color(0.28, 0.31, 0.35),
@@ -51,8 +51,8 @@ const GLOW: Dictionary = {
 ## Wear parameters per state.
 const WEAR: Dictionary = {
 	"broken": {"edge_wear": 0.72, "patch_wear": 0.55, "rust": 0.85, "fade": 0.6, "grime": 0.85, "dust": 0.6, "streaks": 0.8},
-	"repaired": {"edge_wear": 0.42, "patch_wear": 0.12, "rust": 0.35, "fade": 0.22, "grime": 0.45, "dust": 0.3, "streaks": 0.35},
-	"restored": {"edge_wear": 0.22, "patch_wear": 0.0, "rust": 0.08, "fade": 0.0, "grime": 0.25, "dust": 0.1, "streaks": 0.1},
+	"repaired": {"edge_wear": 0.42, "patch_wear": 0.1, "rust": 0.35, "fade": 0.08, "grime": 0.45, "dust": 0.2, "streaks": 0.3},
+	"restored": {"edge_wear": 0.24, "patch_wear": 0.0, "rust": 0.06, "fade": 0.0, "grime": 0.25, "dust": 0.06, "streaks": 0.08},
 }
 
 const SHADER: Shader = preload("res://art/kit/kit_surface.gdshader")
@@ -118,8 +118,8 @@ static func steel(state: String = "repaired", dark: bool = false) -> ShaderMater
 		return _cache[key]
 	var m := _surface(key, "metal_plate", state)
 	m.set_shader_parameter("paint_amount", 0.0)
-	m.set_shader_parameter("base_tint", Color(0.42, 0.44, 0.47) if dark else Color(0.95, 0.96, 1.0))
-	m.set_shader_parameter("base_metallic", 0.85)
+	m.set_shader_parameter("base_tint", Color(0.5, 0.52, 0.56) if dark else Color(1.35, 1.36, 1.4))
+	m.set_shader_parameter("base_metallic", 0.55 if dark else 0.7)
 	m.set_shader_parameter("rust", float(WEAR[state]["rust"]) * 0.6 if WEAR.has(state) else 0.2)
 	_cache[key] = m
 	return m
@@ -267,6 +267,7 @@ static func dirt(state: String = "repaired") -> ShaderMaterial:
 	if _cache.has(key):
 		return _cache[key]
 	var m := _surface(key, "dirt", state)
+	m.set_shader_parameter("base_tint", Color(1.05, 0.95, 0.8))
 	m.set_shader_parameter("paint_amount", 0.0)
 	m.set_shader_parameter("base_metallic", 0.0)
 	m.set_shader_parameter("rust", 0.0)

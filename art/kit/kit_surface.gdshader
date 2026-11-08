@@ -25,7 +25,8 @@ uniform float grime : hint_range(0.0, 1.0) = 0.4;
 uniform float grime_height = 0.9;
 uniform float dust : hint_range(0.0, 1.0) = 0.2;
 uniform float streaks : hint_range(0.0, 1.0) = 0.2;           // rain/rust streaks on walls
-uniform float paint_roughness = 0.42;
+uniform float paint_roughness = 0.5;
+uniform float paint_saturation = 0.25;
 uniform float paint_metallic = 0.0;
 uniform float clearcoat_amt = 0.0;
 uniform float base_metallic = 0.9;                            // metal plates; 0 for concrete
@@ -115,12 +116,15 @@ void fragment() {
 	pc = mix(pc, vec3(dot(pc, vec3(0.3, 0.55, 0.15))) * 1.08 + vec3(0.04, 0.03, 0.02), fade * 0.55);
 	// brighter primer halo just inside the chips (worn edges read as light lines, like painted toys)
 	float halo = smoothstep(1.0 - edge_wear - 0.18, 1.0 - edge_wear, edge * (0.55 + chip_noise * 0.9)) * (1.0 - edge_chip);
-	pc = mix(pc, pc * 1.25 + vec3(0.05), halo * 0.55 * paint_amount);
+	pc = mix(pc, pc * 1.15 + vec3(0.02), halo * 0.3 * paint_amount);
+	// AGX (the game's tonemapper) desaturates: push paint saturation back up a little
+	float lum = dot(pc, vec3(0.2126, 0.7152, 0.0722));
+	pc = clamp(mix(vec3(lum), pc, 1.0 + paint_saturation), 0.0, 1.0);
 	// ---- base: steel/concrete, rusting where exposed ----
 	float r_mask = smoothstep(0.42, 0.62, fbm3(q * 1.4 + 11.0) + rust * 0.55 - 0.25) * rust;
 	vec3 base = mix(b_alb, r_alb, r_mask);
 	float base_r = mix(b_arm.g, r_arm.g, r_mask);
-	float base_m = mix(base_metallic * b_arm.b + base_metallic * 0.4, 0.15, r_mask);
+	float base_m = mix(base_metallic * (0.6 + 0.4 * b_arm.b), 0.15, r_mask);
 	vec3 alb = mix(base, pc, paint);
 	float rough = mix(base_r, paint_roughness + fine * 0.12, paint);
 	float metal = mix(clamp(base_m, 0.0, 1.0), paint_metallic, paint);
@@ -134,7 +138,7 @@ void fragment() {
 	alb = mix(alb, alb * vec3(0.42, 0.38, 0.33), g);
 	rough = mix(rough, 0.92, g);
 	float d = smoothstep(0.55, 0.95, n.y) * dust * smoothstep(0.35, 0.7, fbm3(q * 3.0 + 5.0));
-	alb = mix(alb, vec3(0.6, 0.55, 0.48), d * 0.7);
+	alb = mix(alb, mix(alb, vec3(0.62, 0.56, 0.48), 0.6), d * 0.7);
 	rough = mix(rough, 0.95, d);
 	// baked AO (vertex) + texture AO
 	float ao = mix(1.0, vcol.g, ao_strength);

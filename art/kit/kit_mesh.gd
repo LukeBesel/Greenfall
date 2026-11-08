@@ -289,7 +289,6 @@ static func _bevel_box(size: Vector3, bevel: float, seg: int) -> Array:
 	var r: float = clampf(bevel, 0.0005, minf(h.x, minf(h.y, h.z)) * 0.98)
 	seg = maxi(seg, 1)
 	var inner: Vector3 = h - Vector3(r, r, r)
-	var inset: float = minf(0.06, minf(inner.x, minf(inner.y, inner.z)) * 0.5) if minf(size.x, minf(size.y, size.z)) > 0.12 else 0.0
 	var v := PackedVector3Array()
 	var nn := PackedVector3Array()
 	var cc := PackedColorArray()
@@ -302,6 +301,9 @@ static func _bevel_box(size: Vector3, bevel: float, seg: int) -> Array:
 		var sg: float = f[1]
 		var ua: int = f[2]
 		var va: int = f[3]
+		# inset ring per face (thin panels still get painted faces with worn edges)
+		var face_min: float = minf(size[ua], size[va])
+		var inset: float = minf(0.06, minf(inner[ua], inner[va]) * 0.5) if face_min > 0.06 else 0.0
 		var cu: PackedFloat32Array = _axis_coords(h[ua], r, seg, inset)
 		var cv: PackedFloat32Array = _axis_coords(h[va], r, seg, inset)
 		var base: int = v.size()
