@@ -293,11 +293,13 @@ func test_cosmetic_targets_registry() -> void:
 	assert_true(ed is LumiBuilder)
 	ed.free()
 	var met: Array = [false]
+	CosmeticTargets.unregister("test_buddy")
+	var n0: int = CosmeticTargets.all().size()  # [buddy] Glim registers himself when a district loads
 	assert_false(CosmeticTargets.register("bad", {"name": "Bad"}), "needs an editor")
 	assert_true(CosmeticTargets.register("test_buddy", {"name": "Buddy", "order": 20,
 		"editor": func(_w: Node) -> Control: return Control.new(),
 		"unlocked": func() -> bool: return met[0], "hint": "Meet the light-bot"}))
-	assert_eq(CosmeticTargets.all().size(), 2)
+	assert_eq(CosmeticTargets.all().size(), n0 + 1)
 	assert_eq(CosmeticTargets.display_name("test_buddy"), "???", "locked target is ???")
 	assert_null(CosmeticTargets.make_editor("test_buddy", null))
 	met[0] = true

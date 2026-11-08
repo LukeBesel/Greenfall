@@ -133,5 +133,431 @@
         0.74
       ]
     }
+  },
+  "tidewell": {
+    "name": "Tidewell",
+    "world_type": "ocean_world",
+    "env": "res://planet/planets/tidewell/env.gd",
+    "tagline": "An ocean world. The Ledger's dredging rigs still stand in the shallows.",
+    "district": {
+      "id": "tidewell",
+      "name": "Tidewell",
+      "biome": "tidewell",
+      "dressing_biome": "neon_coast",
+      "layout": "wild",
+      "radius": 4,
+      "pieces_mult": 0.9,
+      "float_mult": 2.3,
+      "vol_mult": 1.35,
+      "value_mult": 6.0,
+      "cost_mult": 6.0,
+      "litter_mult": 0.35,
+      "ground_layers": {
+        "4": "damp_sand",
+        "5": "sand_01",
+        "6": "damp_sand"
+      },
+      "fx": [
+        0.25,
+        0.0,
+        0.6,
+        0.0
+      ],
+      "skip_horizon": true
+    },
+    "sky": {
+      "ruined": {
+        "fog": [
+          0.6,
+          0.66,
+          0.64
+        ],
+        "fog_amt": 0.45,
+        "fog_mult": 0.8,
+        "rayleigh": [
+          0.3,
+          0.45,
+          0.62
+        ],
+        "mie": [
+          0.82,
+          0.84,
+          0.8
+        ],
+        "sky_amt": 0.75,
+        "sat": 0.96,
+        "exposure": 1.0,
+        "fog_density": 0.0006,
+        "vol_density": 0.0009,
+        "turbidity": 3.6,
+        "mie_coef": 0.0035,
+        "fog_sky": 0.15,
+        "aerial": 0.4,
+        "contrast": 1.08,
+        "sun": [
+          0.95,
+          0.93,
+          0.86
+        ],
+        "height_fog": [
+          1.0,
+          0.006
+        ]
+      },
+      "restored": {
+        "fog": [
+          0.7,
+          0.86,
+          0.98
+        ],
+        "fog_amt": 0.5,
+        "fog_mult": 0.5,
+        "rayleigh": [
+          0.16,
+          0.44,
+          1.0
+        ],
+        "mie": [
+          1.0,
+          0.96,
+          0.9
+        ],
+        "sky_amt": 0.7,
+        "sat": 1.06,
+        "exposure": 1.02,
+        "fog_density": 0.0003,
+        "vol_density": 0.0005,
+        "turbidity": 2.0,
+        "mie_coef": 0.0018,
+        "fog_sky": 0.06,
+        "aerial": 0.6,
+        "contrast": 1.08,
+        "sun": [
+          1.0,
+          0.96,
+          0.88
+        ],
+        "height_fog": [
+          0.8,
+          0.004
+        ]
+      }
+    },
+    "fog": {
+      "ruined_density": 0.0006,
+      "restored_density": 0.0003,
+      "height_fog": [
+        1.0,
+        0.006
+      ]
+    },
+    "sun": {
+      "color": [
+        1.0,
+        0.95,
+        0.85
+      ],
+      "pitch": -55.0,
+      "yaw": -35.0,
+      "orbit": "mid"
+    },
+    "ambient": {
+      "energy": 1.2,
+      "color": [
+        0.62,
+        0.78,
+        0.86
+      ]
+    },
+    "palette": {
+      "deep": [
+        0.01,
+        0.1,
+        0.18
+      ],
+      "shallow": [
+        0.06,
+        0.5,
+        0.52
+      ],
+      "lagoon": [
+        0.25,
+        0.75,
+        0.7
+      ],
+      "murky": [
+        0.09,
+        0.2,
+        0.17
+      ],
+      "oil": [
+        0.04,
+        0.05,
+        0.05
+      ],
+      "foam": [
+        0.94,
+        0.97,
+        0.98
+      ],
+      "sand": [
+        0.72,
+        0.66,
+        0.52
+      ],
+      "rust": [
+        0.45,
+        0.24,
+        0.13
+      ],
+      "ledger_paint": [
+        0.86,
+        0.62,
+        0.16
+      ],
+      "future_white": [
+        0.93,
+        0.95,
+        0.96
+      ],
+      "light": [
+        0.68,
+        0.92,
+        1.0
+      ]
+    },
+    "junk_tint": [
+      0.36,
+      0.4,
+      0.36,
+      0.55
+    ],
+    "music_mood": "tidewell_swell",
+    "biome": "tidewell",
+    "sites": {
+      "_doc": "Placeable site prefabs for the walkable globe (planet/planets/tidewell/sites.gd): TideSite.place(id, root, stage 0-2, restoration 0-1, {water_radius, seed}); a local flat patch about 60-100 m across, sea level at y = 0.14, no world-origin assumptions. Preview: res://planet/planets/tidewell/site_preview.tscn -- --site=<id>.",
+      "script": "res://planet/planets/tidewell/sites.gd",
+      "hub_raft": {
+        "kind": "hub",
+        "name": "Anchored Raft",
+        "size_m": 92,
+        "desc": "Timber raft deck on rusted pontoons: workshop shack, store, deck crane, fuel tank, moorings."
+      },
+      "hub_stilts": {
+        "kind": "hub",
+        "name": "Stilt Yard",
+        "size_m": 96,
+        "desc": "A sandy islet with a stilt deck and huts over the water, boardwalk, beached skiff."
+      },
+      "wreck": {
+        "kind": "landmark",
+        "name": "Ore Barge Wreck",
+        "size_m": 100,
+        "desc": "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+      },
+      "dredge_rig": {
+        "kind": "landmark",
+        "name": "Dredge Rig",
+        "size_m": 88,
+        "desc": "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
+      },
+      "reef_garden": {
+        "kind": "landmark",
+        "name": "Reef Garden",
+        "size_m": 84,
+        "desc": "Bleached coral breaking the surface among nets; live coral and floating gardens when restored."
+      },
+      "buoy_field": {
+        "kind": "landmark",
+        "name": "Buoy Field",
+        "size_m": 80,
+        "desc": "Rows of mooring buoys strung with rope and ghost nets; light caps when futuristic."
+      }
+    }
+  },
+  "anvil": {
+    "id": "anvil",
+    "name": "Anvil",
+    "world_type": "rust",
+    "env": "res://planet/planets/anvil/env.gd",
+    "district_name": "Anvil Foundry Flats",
+    "sky": {
+      "rayleigh": [
+        0.9,
+        0.4,
+        0.25
+      ],
+      "rayleigh_coef": 1.4,
+      "mie": [
+        0.62,
+        0.74,
+        0.98
+      ],
+      "mie_eccentricity": 0.9,
+      "sky_amt": 0.85,
+      "turbidity": 4.0,
+      "mie_coef": 0.004,
+      "ground": [
+        0.42,
+        0.2,
+        0.12
+      ],
+      "sat": 1.15,
+      "exposure": 1.0,
+      "contrast": 1.18
+    },
+    "fog": {
+      "color": [
+        0.5,
+        0.18,
+        0.1
+      ],
+      "amt": 0.7,
+      "mult": 0.35,
+      "aerial": 0.15,
+      "fog_sky": 0.2,
+      "height_fog": [
+        2.0,
+        0.0
+      ]
+    },
+    "sun": {
+      "elev_max_deg": 52,
+      "energy_mult": 0.82,
+      "tint": [
+        1.0,
+        0.93,
+        0.84
+      ],
+      "fallback_size": 0.72,
+      "fallback_b_energy": 0.2,
+      "fallback_sep_deg": 11.0
+    },
+    "ambient": {
+      "energy_mult": 0.95
+    },
+    "restored": {
+      "_doc": "sky/fog targets at full restore: the dust sky clears to a pale terraformed blue",
+      "rayleigh": [
+        0.26,
+        0.5,
+        1.0
+      ],
+      "rayleigh_coef": 2.6,
+      "mie": [
+        1.0,
+        0.88,
+        0.78
+      ],
+      "sky_amt": 0.9,
+      "turbidity": 3.0,
+      "sat": 1.12,
+      "fog": [
+        0.62,
+        0.74,
+        0.92
+      ],
+      "fog_mult": 0.5,
+      "height_fog": 0.002
+    },
+    "palette": {
+      "dust": [
+        0.56,
+        0.2,
+        0.1
+      ],
+      "rock": [
+        0.3,
+        0.11,
+        0.07
+      ],
+      "band": [
+        0.6,
+        0.24,
+        0.12
+      ],
+      "soot": [
+        0.06,
+        0.05,
+        0.045
+      ],
+      "ember": [
+        1.0,
+        0.36,
+        0.12
+      ],
+      "lichen": [
+        0.44,
+        0.54,
+        0.3
+      ],
+      "redleaf": [
+        0.62,
+        0.12,
+        0.1
+      ],
+      "green": [
+        0.3,
+        0.52,
+        0.2
+      ],
+      "line": [
+        1.0,
+        0.88,
+        0.7
+      ]
+    },
+    "junk_tint": [
+      0.5,
+      0.18,
+      0.08,
+      0.55
+    ],
+    "music_mood": "anvil_foundry",
+    "night": {
+      "_doc": "night floor so the play area stays readable (ambient energy, warm ember-tinted fog light)",
+      "ambient_min": 0.85,
+      "fog": [
+        0.32,
+        0.14,
+        0.1
+      ]
+    },
+    "sites": [
+      {
+        "id": "foundry_yard",
+        "kind": "hub",
+        "name": "Foundry Yard",
+        "script": "res://planet/planets/anvil/anvil_sites.gd",
+        "size_m": 96,
+        "clear_core_m": 12,
+        "desc": "hub base: casting hall, two stacks, conveyor truss and hopper, ore spur, ember slag tip, buried hauler"
+      },
+      {
+        "id": "foundry_tower",
+        "kind": "landmark",
+        "name": "Ledger Foundry Tower",
+        "script": "res://planet/planets/anvil/anvil_sites.gd",
+        "size_m": 84,
+        "desc": "the Ledger's colossal 130 m foundry stack on buttresses, pipes and slag tips"
+      },
+      {
+        "id": "lava_forge",
+        "kind": "landmark",
+        "name": "Lava Forge",
+        "script": "res://planet/planets/anvil/anvil_sites.gd",
+        "size_m": 92,
+        "desc": "running furnace pouring molten slag down a channel to a pool; ladle crane; cools as restored"
+      },
+      {
+        "id": "ruined_smelter",
+        "kind": "landmark",
+        "name": "Ruined Smelter",
+        "script": "res://planet/planets/anvil/anvil_sites.gd",
+        "size_m": 84,
+        "desc": "collapsed smelter hall frame, tipped and spilled pots, a toppled stack; restored as a planted pergola"
+      }
+    ],
+    "sites_api": "AnvilSites.build(site_root: Node3D, site_id, stage 1..5, restoration 0..1) -> Node3D; local +Y up, locally flat patch at the root's origin"
   }
 }

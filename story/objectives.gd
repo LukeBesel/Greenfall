@@ -36,11 +36,22 @@ var _hold: float = 0.0
 var _dev_cleaned: bool = false
 
 
+## [onboard2] Objectives added in front of "power" (see _ready's save migration).
+const EARLY_ADDED: int = 4
+
+
 func _ready() -> void:
 	var cfg: Dictionary = Economy.read_json(PATH)
 	chain = cfg.get("objectives", [])
 	brief_lines = (cfg.get("brief", {}) as Dictionary).get("lines", [])
 	step = int(GameState.flags.get("objective_step", 0))
+	# [onboard2] Four early objectives (bin, Scoop Size, Compartment, Baler) were put in front: a save
+	# from before keeps its place in the chain; a save that never sold a bale starts at them.
+	if not GameState.flags.has("objectives_v2"):
+		if GameState.flags.has("objective_step") and (step > 0 or int(GameState.stats.get("cubes_cashed", 0)) > 0):
+			step += EARLY_ADDED
+			GameState.flags["objective_step"] = step
+		GameState.flags["objectives_v2"] = true
 	if DevHooks.has("objective"):  # dev: jump to objective N (shots)
 		step = clampi(int(DevHooks.get_f("objective", 0.0)), 0, chain.size())
 		GameState.flags["objective_step"] = step
@@ -169,6 +180,8 @@ func value_of(def: Dictionary) -> float:
 			return float(GameState.flags.get("core_charge", 0.0))
 		"tower":
 			return float(SignalTower.tier())
+		"upgrade":  # [onboard2] an upgrade's level (Scoop Size, Compartment, the Baler)
+			return float(GameState.level_of(key))
 	return 0.0
 
 
@@ -245,6 +258,8 @@ func complete() -> void:
 	var t: Array[String] = texts(chain[i])
 	step += 1
 	GameState.flags["objective_step"] = step
+	if DevHooks.has("autoplay"):  # pacing log
+		print("[onboard] objective %s done at %.1f min" % [str(chain[i].get("id", "")), float(GameState.stats.get("time_played", 0.0)) / 60.0])
 	_hold = NEXT_DELAY_S
 	_set_hex(-1)
 	var hud: Variant = world.get("hud") if world else null
@@ -366,6 +381,11 @@ func waypoint_target() -> Variant:
 		match str(def.get("id", "")):
 			"power":
 				return _depot_pos() if not p.carried.is_empty() else null
+			"dump3":  # [onboard2] a full-ish chest: to the bin
+				return _depot_pos() if p.compartment.fill >= p.capacity() * 0.5 else null
+			"scoop_size", "compartment", "baler":  # [onboard2] to the bench once it's affordable
+				var uid: String = str(def.get("key", ""))
+				return _bench_pos() if GameState.can_afford("cubes", Economy.upgrade_cost(uid)) else null
 			"robot", "haul", "base2", "base3":
 				return _bench_pos()
 			"tower", "tower2":

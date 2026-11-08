@@ -10,6 +10,9 @@ var info: Dictionary = {}
 var size: float = 0.55
 var carried: bool = false
 var claimed: bool = false  # being sucked into a depot
+## [orbit] Radius of the round planet the cubes live on (0 = a flat district). Gravity there is
+## radial (a point-gravity Area3D set up by the planet scene).
+static var planet_radius: float = 0.0
 
 var _visual: MeshInstance3D
 var _mat: ShaderMaterial
@@ -95,7 +98,14 @@ func _physics_process(delta: float) -> void:
 	if _unstick_frames > 0 and not carried and not freeze:
 		_unstick_frames -= 1
 		unstick()
-	if global_position.y < -20.0 and not carried:
+	if planet_radius > 0.0:  # [orbit] round planet: fell into it (radial gravity, planet/orbit/)
+		if not carried and global_position.length() < planet_radius - 40.0:
+			var lumi: Node3D = get_tree().get_first_node_in_group("patch") as Node3D
+			var u: Vector3 = (lumi.global_position if lumi else global_position).normalized()
+			global_position = (lumi.global_position if lumi else u * planet_radius) + u * 2.0
+			linear_velocity = Vector3.ZERO
+			GameState.inc_stat("cubes_fell")
+	elif global_position.y < -20.0 and not carried:
 		# Fell out of the world: put it back near the hub.
 		global_position = Vector3(randf_range(-1, 1), 2.0, randf_range(2, 4))
 		linear_velocity = Vector3.ZERO
@@ -125,13 +135,15 @@ func unstick() -> float:
 	q.collision_mask = STICK_MASK
 	q.exclude = [get_rid()]
 	var start: Vector3 = global_position
+	var up_v: Vector3 = global_position.normalized() if planet_radius > 0.0 else Vector3.UP  # [orbit] local up on a planet
 	for k: int in 31:
-		q.transform = Transform3D(global_basis * _shape.basis, start + Vector3(0, k * 0.05, 0))
+		q.transform = Transform3D(global_basis * _shape.basis, start + up_v * (k * 0.05))
 		if space.intersect_shape(q, 1).is_empty():
 			if k > 0:
-				global_position = start + Vector3(0, k * 0.05 + 0.01, 0)
-				if linear_velocity.y < 0.0:
-					linear_velocity.y = 0.0
+				global_position = start + up_v * (k * 0.05 + 0.01)
+				var vu: float = linear_velocity.dot(up_v)
+				if vu < 0.0:
+					linear_velocity -= up_v * vu
 			return k * 0.05
 	return 0.0
 

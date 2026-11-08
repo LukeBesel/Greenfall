@@ -65,7 +65,7 @@ static func build(_panel: Node, body: Control, on_btn: Callable, rebuild: Callab
 	var shuf: Button = _row(left, "%s%s\n%s" % ["▶  " if mode == Tunes.SHUFFLE else "", _t("Shuffle"), _t("All your CDs, at random")],
 		"recycle", CD_COLOR, func() -> void:
 			if Radio.play(Tunes.SHUFFLE):
-				EventBus.toast.emit(_t("CD player: shuffle"), "info")
+				EventBus.toast.emit(_t("CD player: shuffle"), "low")
 			rebuild.call())
 	shuf.add_theme_color_override("font_color", UITheme.GOLD if mode == Tunes.SHUFFLE else UITheme.CREAM)
 	on_btn.call(shuf)
@@ -83,7 +83,7 @@ static func build(_panel: Node, body: Control, on_btn: Callable, rebuild: Callab
 				EventBus.toast.emit(_t("Not found yet: CDs turn up in the rubble on %s.") % Tunes.planet_name(Tunes.found_on(id)), "hint")
 				return
 			if Radio.play(id):
-				EventBus.toast.emit(_t("Now playing: %s by %s") % [_t(Tunes.title(id)), _t(Tunes.artist_name(id))], "info")
+				EventBus.toast.emit(_t("Now playing: %s by %s") % [_t(Tunes.title(id)), _t(Tunes.artist_name(id))], "low")
 			rebuild.call())
 		b.add_theme_color_override("font_color", UITheme.GOLD if cur else (UITheme.CREAM if ok else UITheme.MUTED))
 		on_btn.call(b)
@@ -94,7 +94,7 @@ static func build(_panel: Node, body: Control, on_btn: Callable, rebuild: Callab
 		for id: String in Tunes.held():
 			var sb: Button = _row(left, "%s\n%s" % [_t("Play once: %s") % _t(Tunes.title(id)), _t("by %s") % _t(Tunes.artist_name(id))], "", Color.WHITE, func() -> void:
 				if Tunes.play_scratched(id):
-					EventBus.toast.emit(_t("Last play: %s by %s") % [_t(Tunes.title(id)), _t(Tunes.artist_name(id))], "info")
+					EventBus.toast.emit(_t("Last play: %s by %s") % [_t(Tunes.title(id)), _t(Tunes.artist_name(id))], "low")
 				rebuild.call())
 			sb.add_theme_color_override("font_color", Color(0.75, 0.8, 0.86))
 			on_btn.call(sb)

@@ -194,3 +194,61 @@ func test_scan_hexes_by_tier() -> void:
 	assert_eq(own.size(), 1, "tier 1: Lumi's own hex")
 	assert_eq(own[0], f.hex_at(c))
 	assert_gt(GlimDirector.scan_hexes(f, c, 1).size(), 1, "higher tiers reach the neighbours")
+
+
+func test_amber_for_pieces_too_heavy() -> void:
+	var types: Array = []
+	for id: String in Economy.junk_ids:
+		types.append(Economy.junk_types[id])
+	var f := HexField.new(5, 3.2, 99)
+	f.generate(types)
+	var ups: Dictionary = GameState.upgrades.duplicate()
+	GameState.upgrades = {}
+	var small: int = -1
+	var large: int = -1
+	for pid: int in f.piece_count():
+		if Pace.piece_size(f, pid) == Pace.SIZE_SMALL and small < 0:
+			small = pid
+		elif Pace.piece_size(f, pid) == Pace.SIZE_LARGE and large < 0:
+			large = pid
+	if small >= 0:
+		assert_false(GlimScan.too_big(null, f, small), "small pieces are always liftable")
+	if large >= 0 and Pace.lift_class() < Pace.SIZE_LARGE:
+		assert_true(GlimScan.too_big(null, f, large), "large pieces are amber before Lift Strength 2")
+	GameState.upgrades = ups
+
+
+func test_bench_reasons() -> void:
+	Glim.set_found(true)
+	assert_eq(GlimBench.reason_text("auto"), TranslationServer.translate("Needs %s %d") % [TranslationServer.translate("Hex Scanner"), 1])
+	assert_eq(GlimBench.reason_text("light"), TranslationServer.translate("Not enough cubes, parts or seeds"))
+	assert_true(HubBuilds.not_enough(GlimBench.reason_text("light")), "the row shows the short form")
+	_give(1.0e6, 1.0e5, 100)
+	assert_eq(GlimBench.reason_text("light"), "")
+
+
+func test_glim_in_locker_targets() -> void:
+	GlimDirector.register_cosmetics()
+	assert_true(CosmeticTargets.has("glim"))
+	assert_false(CosmeticTargets.is_unlocked("glim"), "locked until found")
+	Glim.set_found(true)
+	assert_true(CosmeticTargets.is_unlocked("glim"))
+	var ed: Control = CosmeticTargets.make_editor("glim", null)
+	assert_not_null(ed)
+	if ed:
+		ed.free()
+
+
+func test_locker_edits_glim() -> void:
+	GlimDirector.register_cosmetics()
+	Glim.set_found(true)
+	YardBuilds.mark_built("locker")  # [ui6] the Locker is a yard build now
+	var lp := LockerPanel.new()
+	add_child_autofree(lp)
+	await wait_frames(2)
+	var ids: Array[String] = []
+	for b: Button in lp._who_btns:
+		ids.append(str(b.get_meta("who")))
+	assert_has(ids, "target:glim", "Glim has a button in the Locker's bot bar")
+	lp.set_editing("target:glim")
+	assert_true(lp._editor is GlimPanel.GlimLooksEditor, "and his looks editor opens")

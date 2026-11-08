@@ -54,9 +54,11 @@ func _ready() -> void:
 		codex_requested.emit())
 	Settings.bind_text(codex_btn, func() -> String: return tr("Codex  [%s]") % Settings.glyph("open_codex"))  # [deck]
 	buttons.append(codex_btn)
-	buttons.append(_button(vb, tr("Photo mode  [%s]") % Settings.glyph("photo_mode"), func() -> void:  # [photo]
+	var photo_btn: Button = _button(vb, tr("Photo mode  [%s]") % Settings.glyph("photo_mode"), func() -> void:  # [photo]
 		close_menu()
-		photo_requested.emit()))
+		photo_requested.emit())
+	photo_btn.name = "PhotoBtn"  # [camp3] hidden until Blink, the camera bot, is built
+	buttons.append(photo_btn)
 	buttons.append_array(LateMenu.add_buttons(self, vb, _button))  # [late] Garden Mode, Ark Bridge
 	buttons.append(_button(vb, tr("Keepsakes"), func() -> void:  # [extras] radio, album, nursery, Seed of the Week
 		close_menu()
@@ -129,6 +131,9 @@ func open_menu() -> void:
 	get_tree().paused = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	EventBus.ui_modal_changed.emit(true)
+	var pb: Button = _menu.find_child("PhotoBtn", true, false) as Button  # [camp3]
+	if pb:
+		pb.visible = CameraBot.available()
 	LateMenu.refresh(self)  # [late] show Garden Mode / Ark Bridge once they are open
 	_fit_keys()
 	_first.call_deferred("grab_focus")

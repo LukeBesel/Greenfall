@@ -72,11 +72,18 @@ static func want_shown(hud_mode: int, played_s: float, tutorial_on: bool, peekin
 
 
 func _items() -> Array:
-	return FULL if _full else SHORT
+	return items_for(_full, Pace.baler_unlocked())
+
+
+## [onboard2] QA P2: "press bale" only once Lumi has the Baler.
+static func items_for(full: bool, baler: bool) -> Array:
+	if not full:
+		return SHORT
+	return FULL.filter(func(it: Array) -> bool: return (baler or str(it[0]) != "cube") and (str(it[0]) != "photo_mode" or CameraBot.available()))  # [camp3]
 
 
 func _signature() -> String:
-	var s: String = str(_full) + TranslationServer.get_locale()
+	var s: String = str(_full) + str(Pace.baler_unlocked()) + str(CameraBot.available()) + TranslationServer.get_locale()
 	for it: Array in _items():
 		s += Settings.glyph(str(it[0])) + ","
 	return s
@@ -131,6 +138,10 @@ func _process(delta: float) -> void:
 			_rebuild()
 	if mode == Mode.PAUSE:
 		return
+	if get_tree().paused:  # [ui5] the pause menu has its own legend: never both on screen
+		_alpha = 0.0
+		visible = false
+		return
 	_peek = maxf(0.0, _peek - delta)
 	if DevHooks.has("hints-full"):  # dev: the held-Tab list (shots)
 		_peek = 1.0
@@ -145,6 +156,13 @@ func _process(delta: float) -> void:
 	_alpha = move_toward(_alpha, 1.0 if want else 0.0, delta * (5.0 if want else 1.5))
 	modulate.a = _alpha
 	visible = _alpha > 0.0
+
+
+## [ui5] Hidden at once when the game pauses (also when this node itself stops processing).
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PAUSED and mode == Mode.HUD:
+		_alpha = 0.0
+		visible = false
 
 
 func _bench_or_modal() -> bool:

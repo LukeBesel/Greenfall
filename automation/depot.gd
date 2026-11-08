@@ -103,9 +103,14 @@ func _build() -> void:
 			PowerFx.flicker_on(self, [lm], [], 1.0))
 
 func pad_contains(world_pos: Vector3) -> bool:
-	var d: Vector3 = world_pos - global_position
+	var d: Vector3 = _local(world_pos)  # [orbit] the pad's own up (a depot on a round planet is tilted)
 	d.y = 0.0
 	return d.length() <= pad_radius
+
+
+## A world point in the depot's frame (unscaled): y is height above the pad.
+func _local(world_pos: Vector3) -> Vector3:
+	return global_basis.orthonormalized().inverse() * (world_pos - global_position)
 
 
 ## What a bale is worth here relative to its base value (hub level bonus + this scale's bonus).
@@ -150,7 +155,8 @@ func _physics_process(delta: float) -> void:
 		var c: JunkCube = n
 		if c.carried or c.claimed:
 			continue
-		if pad_contains(c.global_position) and c.global_position.y < 3.0:
+		var low: bool = c.global_position.y < 3.0 if JunkCube.planet_radius <= 0.0 else _local(c.global_position).y < 3.0  # [orbit]
+		if pad_contains(c.global_position) and low:
 			_swallow(c)
 
 
@@ -159,7 +165,7 @@ func _swallow(cube: JunkCube) -> void:
 	cube.set_carried(true)
 	var start: Vector3 = cube.global_position
 	var end: Vector3 = mouth_world()
-	var top: Vector3 = (start + end) * 0.5 + Vector3(0, 2.2, 0)
+	var top: Vector3 = (start + end) * 0.5 + global_basis.y.normalized() * 2.2
 	Audio.play("whoosh", 1.2, -8.0)
 	var tw := create_tween()
 	tw.tween_method(func(t: float) -> void:

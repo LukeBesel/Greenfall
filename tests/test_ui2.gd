@@ -114,14 +114,14 @@ func test_mk_tier_costs_parts_no_core() -> void:
 	assert_almost_eq(_parts_now(), 0.0, 0.001)
 
 
-func test_locker_opens_at_hub_level() -> void:
+func test_locker_opens_once_the_cabinet_is_built() -> void:  # [ui6]
 	assert_false(LockerPanel.is_open_for(null))
-	GameState.world["hub_level"] = LockerPanel.HUB_LEVEL
+	YardBuilds.mark_built("locker")
 	assert_true(LockerPanel.is_open_for(null))
 
 
 func test_locker_hosts_a_registered_lumi_editor_and_the_robot_editor() -> void:
-	GameState.world["hub_level"] = LockerPanel.HUB_LEVEL
+	YardBuilds.mark_built("locker")  # [ui6]
 	var made: Array = []
 	LockerPanel.add_editor("lumi", func(_w: Node) -> Control:
 		var c := Label.new()
@@ -136,7 +136,7 @@ func test_locker_hosts_a_registered_lumi_editor_and_the_robot_editor() -> void:
 	var lp := LockerPanel.new()
 	lp.fleet = f
 	add_child_autofree(lp)
-	assert_eq(lp.editing(), "lumi")
+	assert_eq(lp.editing(), "target:lumi")
 	assert_eq(made.size(), 1, "the registered Lumi editor is used")
 	assert_true(lp.is_ancestor_of(made[0]))
 	assert_eq(lp._who_btns.size(), 2, "Lumi + one robot to pick from")
@@ -144,7 +144,7 @@ func test_locker_hosts_a_registered_lumi_editor_and_the_robot_editor() -> void:
 	assert_true(lp._editor is BuilderPanel)
 	assert_true((lp._editor as BuilderPanel).locker_mode)
 	assert_eq((lp._editor as BuilderPanel).selected(), r, "the selector picks the robot")
-	lp.set_editing("lumi")
+	lp.set_editing("target:lumi")
 	assert_eq(made.size(), 2)
 
 
@@ -168,9 +168,9 @@ func test_tabs_are_the_simple_six() -> void:
 	var ids: Array[String] = []
 	for t: Dictionary in UpgradesScreen.TABS:
 		ids.append(str(t["id"]))
-	assert_eq(ids, ["patch", "bots", "build", "research", "contracts", "locker"] as Array[String])  # [ui3]
-	assert_eq(UpgradesScreen.TAB_ALIASES["builder"], "locker")
-	assert_eq(UpgradesScreen.TAB_ALIASES["cosmetics"], "locker")
+	assert_eq(ids, ["patch", "build", "bots", "research", "contracts"] as Array[String])  # [ui3] [ui6]
+	assert_eq(UpgradesScreen.TAB_ALIASES["builder"], "patch")
+	assert_eq(UpgradesScreen.TAB_ALIASES["cosmetics"], "patch")
 
 
 func test_robot_card_builds_with_parts() -> void:
@@ -198,13 +198,10 @@ func test_tabs_appear_once_open_and_stay() -> void:
 	GameState.flags.erase("bench_tabs")
 	assert_true(UpgradesScreen.tab_visible("patch"))
 	assert_false(UpgradesScreen.tab_visible("bots"), "hidden on a fresh game")
-	assert_false(UpgradesScreen.tab_visible("locker"))
 	GameState.stats["robots_built"] = 1.0
 	assert_true(UpgradesScreen.tab_visible("bots"))
 	GameState.stats["robots_built"] = 0.0
 	assert_true(UpgradesScreen.tab_visible("bots"), "an opened tab stays open")
-	GameState.world["hub_level"] = LockerPanel.HUB_LEVEL
-	assert_true(UpgradesScreen.tab_visible("locker"))
 
 
 func test_pause_menu_has_no_save_button() -> void:

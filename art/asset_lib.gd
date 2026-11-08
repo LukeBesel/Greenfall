@@ -107,6 +107,8 @@ static func model_part(id: String, node_name: String) -> Mesh:
 	var key: String = id + "::" + node_name
 	if _parts.has(key):
 		return _parts[key]
+	if tracing and not traced.has("part:" + id + "::" + node_name):
+		traced.append("part:" + id + "::" + node_name)
 	var ps: PackedScene = load(MODEL_DIR % [id, id])
 	var root: Node = ps.instantiate()
 	var mesh: Mesh = null
@@ -123,12 +125,34 @@ static func model_part(id: String, node_name: String) -> Mesh:
 	return mesh
 
 
+## [leftovers] Behind the loading screen: load a model's file on a loader thread (frames keep
+## drawing) and build its mesh, so the next model_mesh(id) is a cache hit. Plain call otherwise.
+static func fetch_model(id: String) -> void:
+	if _meshes.has(id):
+		return
+	var keep: Resource = await BuildBudget.fetch(MODEL_DIR % [id, id])
+	if not _meshes.has(id):
+		var was: bool = tracing
+		tracing = false  # fetched: not a blocking load
+		_load_model(id)
+		tracing = was
+	keep = null
+
+
+## [leftovers] Model ids loaded (blocking) by _load_model / model_part while `tracing`: the
+## district build's preload list (scenes/slice.gd --record-preload).
+static var tracing: bool = false
+static var traced: Array[String] = []
+
+
 static func has_model(id: String) -> bool:
 	return ResourceLoader.exists(MODEL_DIR % [id, id])
 
 
 static func _load_model(id: String) -> void:
 	var path: String = MODEL_DIR % [id, id]
+	if tracing and not traced.has(id):
+		traced.append(id)
 	var ps: PackedScene = load(path)
 	if ps == null:
 		push_error("Missing model %s" % id)

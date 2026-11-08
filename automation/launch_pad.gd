@@ -112,15 +112,6 @@ func _build() -> void:
 			_mi(self, ProcMesh.cyl(0.14, 0.18, 0.12, 12), white, p2 + Vector3(0, 0.06, 0))
 			var stud := _mi(self, ProcMesh.cyl(0.08, 0.08, 0.02, 12), Mats.lamp(ShipModel.GLOW, 1.2 + 0.3 * k3), p2 + Vector3(0, 0.13, 0))
 			stud.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	var num := Label3D.new()
-	num.text = tr("PAD 01")
-	num.font_size = 96
-	num.pixel_size = 0.006
-	num.modulate = Color(0.5, 1.5, 2.0)
-	num.shaded = false
-	num.rotation_degrees = Vector3(-90, 0, 0)
-	num.position = Vector3(0, TOP_Y + 0.03, r * 0.72)
-	add_child(num)
 	# Anti-grav emitters under the deck with light beams to ground plates.
 	for k4: int in 4:
 		var a3: float = TAU * k4 / 4.0 + PI / 4.0
@@ -165,7 +156,7 @@ func _build() -> void:
 	for y: float in [1.4, 3.0]:
 		_mi(mast, ProcMesh.box(Vector3(0.74, 0.4, 0.74)), dark, tz + Vector3(0, y, 0))
 		_mi(mast, ProcMesh.box(Vector3(0.76, 0.04, 0.76)), tang, tz + Vector3(0, y - 0.24, 0))
-	var top_y: float = 4.4
+	var top_y: float = 4.4  # [ship2] no sign or deck text (owner: no text over 3D)
 	_mi(mast, ProcMesh.cyl(0.32, 0.45, 0.2, 16), grey, tz + Vector3(0, top_y, 0))
 	_beacon(mast, tz + Vector3(0, top_y + 0.22, 0), 0.16)
 	_spin_head = Node3D.new()
@@ -233,16 +224,6 @@ func _build() -> void:
 	for x4: float in [-0.3, 0.3]:
 		_mi(gangway, ProcMesh.box(Vector3(0.015, 0.015, reach)), glow, Vector3(x4, 0.02, reach * 0.5))
 	set_gangway(1.0)
-	# The pad sign on the mast.
-	var sign_l := Label3D.new()
-	sign_l.text = tr("LANDING PAD")
-	sign_l.font_size = 80
-	sign_l.pixel_size = 0.006
-	sign_l.modulate = Color(0.5, 1.5, 2.0, 0.9)
-	sign_l.shaded = false
-	sign_l.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
-	sign_l.position = mast.position + Vector3(0, top_y + 0.9, 0)
-	add_child(sign_l)
 	# Vapour: the VTOL downwash spreading off the deck, a ground ring from under it, steam vents.
 	for k5: int in 4:
 		var a5: float = TAU * k5 / 4.0
@@ -297,15 +278,6 @@ func _build_hologram() -> void:
 			gi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		if n is Label3D or n is RocketPlume:
 			(n as Node3D).visible = false
-	var sign_l := Label3D.new()
-	sign_l.text = tr("LANDING PAD\nBASE LEVEL 5")
-	sign_l.font_size = 80
-	sign_l.pixel_size = 0.008
-	sign_l.modulate = Color(0.5, 1.5, 2.0, 0.9)
-	sign_l.shaded = false
-	sign_l.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
-	sign_l.position = Vector3(0, TOP_Y + 4.0, 0)
-	add_child(sign_l)
 
 
 ## Deck radius (local).

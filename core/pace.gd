@@ -196,7 +196,10 @@ static func try_dump(patch: Node3D, pos: Vector3, radius: float, into: Object = 
 	if patch == null or not dump_allowed():
 		return 0.0
 	var d: Vector3 = patch.global_position - pos
-	d.y = 0.0
+	if JunkCube.planet_radius > 0.0:  # [orbit] round planet: drop the local-up part
+		d -= pos.normalized() * d.dot(pos.normalized())
+	else:
+		d.y = 0.0
 	if d.length() > radius:
 		return 0.0
 	return dump_compartment(patch, pos + Vector3(0, 0.8, 0), into)

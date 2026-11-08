@@ -29,7 +29,9 @@ func test_brief_is_short() -> void:
 
 func test_objectives_have_a_short_why() -> void:
 	var list: Array = _cfg()["objectives"]
-	assert_eq(str(list[0]["text"]), "Power the base: sell 3 bales")
+	assert_eq(str(list[0]["text"]), "Fill the trash bin 3 times")  # [onboard2] nothing early needs the Baler
+	var ids: Array = list.map(func(d: Dictionary) -> String: return str(d["id"]))
+	assert_lt(ids.find("baler"), ids.find("power"), "the Baler comes before any bale")
 	assert_true(list.any(func(d: Dictionary) -> bool: return str(d["text"]) == "Build your first robot"))
 	var font: Font = HudReadable.font()
 	for d: Dictionary in list:
@@ -51,7 +53,7 @@ func test_objective_values_and_progress() -> void:
 	var o := Objectives.new()
 	o.chain = _cfg()["objectives"]
 	o.revealed = true
-	o.step = 0
+	o.step = o.chain.map(func(d: Dictionary) -> String: return str(d["id"])).find("power")
 	GameState.stats["cubes_cashed"] = 1
 	assert_eq(o.value_of(o.current()), 1.0)
 	var pr: Array = o.progress()
@@ -152,7 +154,7 @@ func test_objective_card_shows_current() -> void:
 	var o := Objectives.new()
 	o.chain = _cfg()["objectives"]
 	o.revealed = true
-	o.step = 2
+	o.step = o.chain.map(func(d: Dictionary) -> String: return str(d["id"])).find("hex")
 	var card := ObjectiveCard.new()
 	add_child_autofree(card)
 	card.objectives = o
@@ -290,3 +292,138 @@ func test_waypoint_edge_point_stays_on_the_border() -> void:
 	add_child_autofree(w)
 	assert_not_null(w.arrow)
 	assert_false(w.arrow.visible, "no arrow without a target")
+
+
+# --- [onboard2] One message line ---------------------------------------------------------------
+
+func _bar() -> Subtitles:
+	var s := Subtitles.new()
+	add_child_autofree(s)
+	return s
+
+
+## Steps the bar in small frames; returns [[text, seconds fully shown], ...] in order shown.
+func _run(s: Subtitles, seconds: float) -> Array:
+	var seen: Array = []
+	var t: float = 0.0
+	while t < seconds:
+		s._process(0.05)
+		t += 0.05
+		var cur: String = s.current_text()
+		if cur != "":
+			if seen.is_empty() or seen[-1][0] != cur:
+				seen.append([cur, 0.0])
+			if s._phase == 2:
+				seen[-1][1] = float(seen[-1][1]) + 0.05
+	return seen
+
+
+func test_two_messages_at_once_never_show_together() -> void:
+	var s := _bar()
+	s.queue_toast("New sighting: Pigeon. It's in the Codex now.", "info")
+	s.queue_toast("Workbench fixed. Press E at it to spend cubes on upgrades.", "info")
+	var seen: Array = _run(s, 20.0)
+	assert_eq(seen.size(), 2, "both shown, one after the other")
+	for e: Array in seen:
+		assert_gte(float(e[1]) + 0.051, Subtitles.duration_for(str(e[0])), "each stays up its reading time: %s" % e[0])
+
+
+func test_story_goes_before_info_and_speech_before_both() -> void:
+	var s := _bar()
+	s.queue_toast("First info line.", "info")  # goes up at once
+	s.queue_toast("Second info line.", "info")
+	s.queue_toast("A story beat.", "story")
+	s.queue_line("WREN speaks.", "wren")
+	var order: Array = _run(s, 30.0).map(func(e: Array) -> String: return str(e[0]))
+	assert_eq(order, ["First info line.", "WREN speaks.", "A story beat.", "Second info line."])
+
+
+func test_numbers_merge_into_one_line() -> void:
+	var s := _bar()
+	s.queue_toast("Something else first.", "info")
+	s.queue_toast("+12 cubes from robots.", "info")
+	s.queue_toast("+15 cubes from robots.", "info")
+	s.queue_toast("+19 cubes from robots.", "info")
+	var order: Array = _run(s, 20.0).map(func(e: Array) -> String: return str(e[0]))
+	assert_eq(order, ["Something else first.", "+19 cubes from robots."])
+
+
+func test_story_is_never_dropped_low_value_is() -> void:
+	var s := _bar()
+	for i: int in 12:
+		s.queue_toast("Info number %s." % ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"][i], "info")
+	s.queue_toast("Important story line.", "story")
+	assert_lte(s._queue.size(), Subtitles.TOAST_MAX_QUEUE)
+	assert_true(s._queue.any(func(q: Dictionary) -> bool: return q["text"] == "Important story line."))
+
+
+func test_toasts_do_not_hold_up_cutscenes() -> void:
+	var s := _bar()
+	s.queue_toast("A reward.", "info")
+	assert_false(s.is_busy("*"), "cutscenes wait on speech only")
+	s.queue_line("Intro line.", "")
+	assert_true(s.is_busy("*"))
+
+
+func test_goals_never_dim_in_minimal_hud() -> void:  # [onboard2] QA P1
+	var mode: int = Settings.hud_mode
+	Settings.hud_mode = Settings.HudMode.MINIMAL
+	var gp := GoalsPanel.new()
+	gp._idle = 100.0
+	gp._alpha = 1.0
+	var src: String = (gp.get_script() as Script).source_code
+	assert_false(src.contains("want = 0.5"), "no dimming branch")
+	gp.free()
+	Settings.hud_mode = mode
+
+
+func test_early_objectives_use_what_lumi_has() -> void:  # [onboard2] QA P2
+	var o := Objectives.new()
+	o.chain = _cfg()["objectives"]
+	var old: Dictionary = GameState.stats.duplicate()
+	GameState.stats["junk_dumps"] = 2
+	o.step = 0
+	assert_eq(o.value_of(o.chain[0]), 2.0, "the trash bin count")
+	for d: Dictionary in o.chain:
+		if str(d["id"]) in ["scoop_size", "compartment", "baler"]:
+			assert_eq(str(d["type"]), "upgrade")
+			assert_true(Economy.upgrade_cost(str(d["key"])).to_float() > 0.0, "%s is a real upgrade" % d["key"])
+	GameState.stats = old
+	o.free()
+
+
+func test_old_save_keeps_its_place_in_the_chain() -> void:  # [onboard2]
+	var keep: Dictionary = GameState.flags.duplicate(true)
+	GameState.flags = {"objective_step": 3, "onboard_brief": true}
+	var o := Objectives.new()
+	add_child_autofree(o)
+	assert_true(o.step >= 3 + Objectives.EARLY_ADDED, "shifted past the new early objectives")
+	assert_true(GameState.flags.get("objectives_v2", false))
+	GameState.flags = keep
+
+
+func test_no_bale_key_before_the_baler() -> void:  # [onboard2] QA P2
+	var names: Array = KeyHints.items_for(true, false).map(func(it: Array) -> String: return str(it[0]))
+	assert_false("cube" in names)
+	names = KeyHints.items_for(true, true).map(func(it: Array) -> String: return str(it[0]))
+	assert_true("cube" in names)
+
+
+func test_hand_off_turns_away_from_a_wall_behind_lumi() -> void:  # [onboard2] QA P2
+	var focus := Vector3(0, 1.1, 5000)
+	var body := StaticBody3D.new()
+	body.collision_layer = PhysLayers.WORLD
+	var cs := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(4, 4, 1)
+	cs.shape = box
+	body.add_child(cs)
+	add_child_autofree(body)
+	body.global_position = focus + Vector3(0, 0, 2.0)  # right behind, on the arm at yaw 0
+	await wait_physics_frames(2)
+	var space: PhysicsDirectSpaceState3D = get_viewport().world_3d.direct_space_state
+	var y: float = CameraRig.clear_yaw(space, focus, 0.0, CameraRig.FOLLOW_PITCH, CameraRig.FOLLOW_DISTANCE, 70.0)
+	assert_ne(y, 0.0, "picked a clear side")
+	assert_lt(absf(y), PI, "the nearest clear yaw")
+	var open: float = CameraRig.clear_yaw(space, focus + Vector3(500, 0, 0), 0.3, CameraRig.FOLLOW_PITCH, CameraRig.FOLLOW_DISTANCE, 70.0)
+	assert_almost_eq(open, 0.3, 0.001, "open ground: keeps Lumi's own facing")

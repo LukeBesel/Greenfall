@@ -28,6 +28,7 @@ var _bench_xf: Transform3D
 var _tools: Array = []  # [node, home transform, broken transform]
 var _spark_t: float = 0.0
 var _bin_anchor: Node3D
+var camera_bot: CameraBot  # [camp3]
 
 
 static func attach(slice: Node) -> Camp:
@@ -101,6 +102,7 @@ func _setup() -> void:
 	# Before anything reads the state: the slice has already loaded (or not) the district.
 	migrate()
 	migrate2()  # [camp2]
+	CameraBot.migrate(GameState.world.has("field"))  # [camp3]
 	if DevHooks.has("camp-broken"):
 		set_bench_ok(false)
 	elif DevHooks.has("camp-fixed"):
@@ -129,10 +131,16 @@ func _setup() -> void:
 	_apply_bench(bench_ok(), false)
 	var hub: Hub = world.get("hub") as Hub
 	_apply_builds()  # [camp2] everything but the bench and the bin is a Hub build
+	var locker := LockerCabinet.new()  # [ui6] the Locker is a yard build: E opens the character builder
+	world.add_child(locker)
+	locker.setup(world)
 	if hub:
 		hub.level_changed.connect(func(_l: int) -> void: _apply_builds())  # after the slice's own ruin/level pass
 	YardBuilds.events.built.connect(_on_built)
 	_register_bin()
+	camera_bot = CameraBot.new()  # [camp3] Blink: hidden until built
+	world.add_child(camera_bot)
+	camera_bot.setup(world)
 	if DevHooks.has("camp-repair"):
 		get_tree().create_timer(1.0).timeout.connect(repair_bench)
 	if DevHooks.has("camp-buy"):  # buy stations live (with their reveal), e.g. conveyor+auto_baler
@@ -303,8 +311,13 @@ func _on_built(id: String) -> void:
 		"nursery":
 			if ex and ex.nursery:
 				ex.nursery.set_built(true, true)
+		"camera_bot":  # [camp3]
+			if camera_bot:
+				camera_bot.set_built(true)
 		_:
 			_apply_builds()  # [camp2] lean-to, generator, lamps, compost press
+			if id == "lamps":
+				_power_on_street_lamp()  # [camp4] world3's flicker-then-on moment
 	var at: Vector3 = YardBuilds.pos(id, Vector3.ZERO)
 	var bits: Dictionary = world.get("_ruin_bits")
 	match id:
@@ -324,6 +337,18 @@ func _on_built(id: String) -> void:
 	MachineReveal.reveal(world, tr(str(YardBuilds.def(id).get("name", id))), at)
 
 
+
+
+## [camp4] The yard street lamp comes on with world3's flicker-then-on moment
+## (planet/power_fx.gd PowerFx.flicker_on). Loaded by path so this file doesn't depend on
+## world3 having landed: without it the lamp just turns on.
+func _power_on_street_lamp() -> void:
+	var lt: Light3D = (world.get("_ruin_bits") as Dictionary).get("street_light") as Light3D
+	if lt == null or not lt.visible or not ResourceLoader.exists("res://planet/power_fx.gd"):
+		return
+	var fx: Variant = load("res://planet/power_fx.gd")
+	if fx is GDScript:
+		(fx as GDScript).call("flicker_on", self, [], [lt], 0.4)
 
 
 # --- The trash bin --------------------------------------------------------------------------------

@@ -11,8 +11,8 @@ locale/
                   complete MACHINE DRAFTS (Nov 2026), not yet reviewed by native speakers
 ```
 
-All six languages are complete drafts written by an AI translator (2,968 strings each, Nov 2026;
-the second pass filled wildlife, Lumi designs and the late game). They are
+All six languages are complete drafts written by an AI translator (3,842 strings each, Nov 2026;
+the second pass filled wildlife, Lumi designs and the late game; the third Glim, profiles, songs and world arcs). They are
 shown to players today (Settings > Gameplay > Language, and "System default" on a matching OS), so
 a review pass per language is the next step before a store release; see "Reviewing a machine
 draft" below.

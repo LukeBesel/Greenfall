@@ -5,7 +5,7 @@ extends RefCounted
 ## State (per district): GameState.world["camp"] = {"bench": bool (repaired), "built": {id: true}}.
 
 const PATH: String = "res://data/camp.json"
-const IDS: Array[String] = ["shack", "generator", "lamps", "composter", "radio", "nursery"]  # [camp2]
+const IDS: Array[String] = ["shack", "generator", "lamps", "composter", "radio", "locker", "camera_bot", "nursery"]  # [camp2] [ui6] [camp3]
 
 static var _cfg: Dictionary = {}
 static var events: YardEvents = YardEvents.new()
@@ -39,11 +39,33 @@ static func state() -> Dictionary:
 
 
 static func built(id: String) -> bool:
+	if bool(def(id).get("global", false)):  # [camp3] one build for the whole game (the camera bot)
+		return bool(_global().get(id, false))
 	return bool((state()["built"] as Dictionary).get(id, false))
 
 
 static func mark_built(id: String) -> void:
+	if bool(def(id).get("global", false)):  # [camp3]
+		_global()[id] = true
+		return
 	(state()["built"] as Dictionary)[id] = true
+
+
+static func _global() -> Dictionary:
+	if not (GameState.flags.get("yard_global") is Dictionary):
+		GameState.flags["yard_global"] = {}
+	return GameState.flags["yard_global"]
+
+
+## [camp3] Whether a build's unlock condition (hub level, or play time for or_played_s) holds.
+static func unlocked(id: String, hub_level: int) -> bool:
+	var d: Dictionary = def(id)
+	var flag: String = str(d.get("requires_flag", ""))
+	if flag != "" and not bool(GameState.flags.get(flag, false)):
+		return false
+	if hub_level >= int(d.get("requires_level", 1)):
+		return true
+	return d.has("or_played_s") and float(GameState.stats.get("time_played", 0.0)) >= float(d["or_played_s"])
 
 
 static func pos(id: String, fallback: Vector3) -> Vector3:
@@ -60,7 +82,7 @@ static func block_reason(id: String, hub_level: int) -> String:
 	if bool(d.get("requires_bench", false)) and not Camp.bench_ok():
 		return TranslationServer.translate("Repair the workbench first.")
 	var req: int = int(d.get("requires_level", 1))
-	if hub_level < req:
+	if hub_level < req and not unlocked(id, hub_level):
 		return TranslationServer.translate("Requires hub level %d.") % req
 	var flag: String = str(d.get("requires_flag", ""))
 	if flag != "" and not bool(GameState.flags.get(flag, false)):
@@ -71,8 +93,10 @@ static func block_reason(id: String, hub_level: int) -> String:
 
 
 ## True while it's worth listing in the Hub tab (built, or its flag is met: no spoilers before).
-static func listed(id: String) -> bool:
+static func listed(id: String, hub_level: int = -1) -> bool:
 	var flag: String = str(def(id).get("requires_flag", ""))
+	if bool(def(id).get("hidden_until_unlocked", false)) and not built(id):  # [camp3]
+		return unlocked(id, hub_level if hub_level >= 0 else int(GameState.world.get("hub_level", 1)))
 	return built(id) or flag == "" or bool(GameState.flags.get(flag, false))
 
 

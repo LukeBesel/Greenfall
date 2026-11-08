@@ -1,7 +1,9 @@
 class_name LockerPanel
 extends VBoxContainer
-## [ui2] Workbench "Locker" tab: one place to style any bot. It opens once the hub reaches
-## HUB_LEVEL (before that the tab shows what opens it). Left: who you are editing (Lumi first,
+## [ui2] The Locker: one place to style any bot. [ui6] Not a workbench tab any more: it is a real
+## cabinet built in the yard (systems/camp/locker_cabinet.gd, Build tab); press E at it and
+## open_overlay() shows this panel over the game. Lumi and the other cosmetic targets (Glim, ...)
+## come from CosmeticTargets; robots after them. Left: who you are editing (Lumi first,
 ## then every robot) and the fleet paint (liveries won from Requests). Right: that bot's editor.
 ##
 ## Editors are pluggable, so the Lumi character builder (wt/style) drops in without touching
@@ -22,7 +24,7 @@ static var _editors: Dictionary = {}  # id -> Callable(world) -> Control, or a C
 
 var world: Node
 var fleet: Fleet
-var _who: String = "lumi"  # "lumi" or a robot name
+var _who: String = "target:lumi"  # "lumi" or a robot name
 var _list: HBoxContainer  # [ui3] the slim bot bar
 var _who_btns: Array[Button] = []
 var _host: VBoxContainer
@@ -44,13 +46,84 @@ static func remove_editor(id: String) -> void:
 
 
 ## The Locker is open from hub level HUB_LEVEL (any district), or when a dev flag opens it.
-static func is_open_for(w: Node) -> bool:
-	if DevHooks.has("locker") or bool(GameState.flags.get("locker_open", false)):
-		return true
-	var lv: int = int(GameState.world.get("hub_level", 1))
-	if w and w.get("hub") != null:
-		lv = maxi(lv, int(w.hub.level))
-	return lv >= HUB_LEVEL or Achievements.best_hub_level() >= HUB_LEVEL
+static func is_open_for(_w: Node) -> bool:
+	return DevHooks.has("locker") or YardBuilds.built("locker")  # [ui6] the cabinet stands
+
+
+## [ui6] The Locker over the game (from the cabinet's E prompt): dim, a holo frame, Close / Esc / B.
+## Pauses the world while open. Returns the layer (it frees itself on close).
+static func open_overlay(w: Node) -> CanvasLayer:
+	var cl := CanvasLayer.new()
+	cl.layer = 40
+	cl.process_mode = Node.PROCESS_MODE_ALWAYS
+	var root := Control.new()
+	root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.theme = UITheme.get_theme()
+	cl.add_child(root)
+	var dim := ColorRect.new()
+	dim.color = Color(0.01, 0.02, 0.03, 0.55)
+	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.add_child(dim)
+	var mc := MarginContainer.new()
+	mc.set_anchors_preset(Control.PRESET_FULL_RECT)
+	for side: String in ["margin_left", "margin_right", "margin_top", "margin_bottom"]:
+		mc.add_theme_constant_override(side, 36)
+	root.add_child(mc)
+	var panel := PanelContainer.new()
+	panel.add_theme_stylebox_override("panel", BenchKit.holo(Color(BenchKit.HOLO, 0.5), Color(0.02, 0.035, 0.045, 0.92), 1.0, 12, 18))
+	mc.add_child(panel)
+	var vb := VBoxContainer.new()
+	vb.add_theme_constant_override("separation", 10)
+	panel.add_child(vb)
+	var head := HBoxContainer.new()
+	vb.add_child(head)
+	var t: Label = UITheme.label(TranslationServer.translate("LOCKER"), 26, BenchKit.HOLO)
+	t.add_theme_constant_override("outline_size", 0)
+	t.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	head.add_child(t)
+	var close := Button.new()
+	close.text = TranslationServer.translate("Close")
+	close.custom_minimum_size = Vector2(140, 44)
+	BenchKit.style_action(close, BenchKit.HOLO)
+	head.add_child(close)
+	var lp := LockerPanel.new()
+	lp.world = w
+	lp.fleet = w.get("fleet") as Fleet if w else null
+	lp.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	vb.add_child(lp)
+	var tree: SceneTree = Engine.get_main_loop() as SceneTree
+	var was_paused: bool = tree.paused
+	var shut := func() -> void:
+		if not is_instance_valid(cl):
+			return
+		tree.paused = was_paused
+		EventBus.ui_modal_changed.emit(false)
+		cl.queue_free()
+	close.pressed.connect(shut)
+	cl.set_meta("shut", shut)
+	var catcher := _OverlayInput.new()
+	catcher.on_close = shut
+	cl.add_child(catcher)
+	(w if w and w.is_inside_tree() else tree.root).add_child(cl)
+	tree.paused = true
+	EventBus.ui_modal_changed.emit(true)
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	(func() -> void:
+		var f: Button = lp.first_button()
+		(f if f else close).grab_focus()).call_deferred()
+	return cl
+
+
+class _OverlayInput extends Node:
+	var on_close: Callable
+
+	func _ready() -> void:
+		process_mode = Node.PROCESS_MODE_ALWAYS
+
+	func _unhandled_input(event: InputEvent) -> void:
+		if event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause"):
+			on_close.call()
+			get_viewport().set_input_as_handled()
 
 
 func _ready() -> void:
@@ -112,17 +185,8 @@ func _build_locked() -> void:
 	tv.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(tv)
 	tv.add_child(BenchKit.title(tr("The Locker")))
+	tv.add_child(BenchKit.body(tr("Build the Locker in the Build tab, then open it in the yard."), UITheme.CREAM))
 	tv.add_child(BenchKit.body(tr("Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play.")))
-	var lv: int = int(GameState.world.get("hub_level", 1))
-	if world and world.get("hub") != null:
-		lv = int(world.hub.level)
-	var pr := HBoxContainer.new()
-	pr.add_theme_constant_override("separation", 12)
-	vb.add_child(pr)
-	var pips := BenchKit.Pips.new(HUB_LEVEL, true, UITheme.GOLD)
-	pips.set_counts(mini(lv, HUB_LEVEL), HUB_LEVEL)
-	pr.add_child(pips)
-	pr.add_child(UITheme.label(tr("Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab.") % [HUB_LEVEL, lv], BenchKit.BODY_SIZE, UITheme.CREAM))
 
 
 func first_button() -> Button:
@@ -157,12 +221,15 @@ func _rebuild_list() -> void:
 		_list.remove_child(c)
 		c.queue_free()
 	_who_btns.clear()
-	_add_who("lumi", tr("Lumi"), tr("You"), UITheme.GOLD)
+	for t: Dictionary in CosmeticTargets.all():  # [ui6] Lumi, Glim, ... (locked ones aren't shown)
+		var tid: String = str(t.get("id", ""))
+		if CosmeticTargets.is_unlocked(tid):
+			_add_who("target:" + tid, CosmeticTargets.display_name(tid), "", UITheme.GOLD if tid == "lumi" else BenchKit.HOLO)
 	for r: Robot in _bots():
 		var sub: String = "%s  ·  %s" % [tr(str(Economy.robots.get(r.type_id, {}).get("name", r.type_id))), Economy.tier_name(r.tier)]
 		_add_who(r.robot_name, r.robot_name, sub, RobotBuilder.CREW_COLORS.get(r.role(), UITheme.GOLD))
-	if _who != "lumi" and _find_robot(_who) == null:
-		_who = "lumi"
+	if not _who.begins_with("target:") and _find_robot(_who) == null:
+		_who = "target:lumi"
 	_style_list()
 
 
@@ -207,7 +274,7 @@ func set_editing(who: String) -> void:
 
 
 func _show_editor() -> void:
-	var kind: String = "lumi" if _who == "lumi" else "robot"
+	var kind: String = _who if _who.begins_with("target:") else "robot"
 	if kind == "robot" and _editor_kind == "robot" and is_instance_valid(_robot_editor):
 		_robot_editor.select_robot(_find_robot(_who))
 		return
@@ -238,7 +305,7 @@ func _clear_editor() -> void:
 
 
 func _make_editor(kind: String) -> Control:
-	var reg: Variant = _editors.get(kind)
+	var reg: Variant = _editors.get(kind, _editors.get(kind.trim_prefix("target:")))
 	var ed: Control = null
 	if reg is Callable and (reg as Callable).is_valid():
 		ed = (reg as Callable).call(world) as Control
@@ -246,6 +313,8 @@ func _make_editor(kind: String) -> Control:
 		ed = reg
 		if ed.get_parent():
 			ed.get_parent().remove_child(ed)
+	elif kind.begins_with("target:"):  # [ui6] CosmeticTargets editors (Lumi's builder, Glim's looks, ...)
+		ed = CosmeticTargets.make_editor(kind.substr(7), world)
 	elif kind == "lumi":
 		if ResourceLoader.exists(LUMI_BUILDER_PATH):
 			var scr: Script = load(LUMI_BUILDER_PATH)
@@ -311,8 +380,8 @@ func _process(delta: float) -> void:
 	_t = 0.0
 	if _bots_signature() != _bots_sig:
 		_rebuild_list()
-		if _who != "lumi" and _find_robot(_who) == null:
-			set_editing("lumi")
+		if not _who.begins_with("target:") and _find_robot(_who) == null:
+			set_editing("target:lumi")
 
 
 func _exit_tree() -> void:
