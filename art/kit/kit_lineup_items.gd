@@ -37,6 +37,13 @@ static func props(state: String) -> Node3D:
 	KitProps.pipe_run(b, Transform3D.IDENTITY, PackedVector3Array([Vector3(-4.5, 0.6, 0.6), Vector3(-3.5, 0.6, 0.6), Vector3(-3.5, 2.0, 0.6), Vector3(-1.8, 2.0, -0.2)]), 0.12)
 	KitProps.cable(b, Transform3D.IDENTITY, Vector3(-4.0, 4.0, -2.0), Vector3(-4.2, 3.6, 2.4), 0.6)
 	KitProps.hatch(b, KitMesh.xf(Vector3(2.4, 0.08, 2.8)), Vector2(1.2, 2.2), state)
+	KitProps.wind_turbine(b, KitMesh.xf(Vector3(4.6, 0, -4.6)), 9.0, state)
+	var rotor := MeshInstance3D.new()
+	rotor.mesh = KitProps.turbine_rotor(state, 4.0)
+	rotor.position = Vector3(4.6, 0, -4.6) + KitProps.turbine_hub(9.0)
+	rotor.rotation.z = 0.4
+	KitMat.apply(rotor, state, true)
+	root.add_child(rotor)
 	if state == "broken":
 		KitProps.debris(b, Transform3D.IDENTITY, 4.0, 10)
 	root.add_child(KitMesh.instance(b))

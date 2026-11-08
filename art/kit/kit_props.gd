@@ -348,3 +348,56 @@ static func debris(b: KitMesh.Builder, t: Transform3D, radius: float = 4.0, n: i
 				b.add("rubber", KitMesh.lathe(PackedVector3Array([Vector3(0.18, -0.1, 0), Vector3(0.3, -0.1, 1), Vector3(0.34, 0, 1), Vector3(0.3, 0.1, 1), Vector3(0.18, 0.1, 0), Vector3(0.18, -0.1, 0)]), 14), t * _x(p + Vector3(0, 0.1, 0), Vector3(b.rng.randf_range(-10, 10), 0, b.rng.randf_range(-10, 10))))
 			_:
 				b.box("paint:main", Vector3(b.rng.randf_range(0.3, 0.7), 0.05, b.rng.randf_range(0.3, 0.6)), t * _x(p, rot), 0.015)
+
+
+## Wind turbine TOWER (static, into the builder): tapered painted mast with bands, concrete
+## foot, service door, ladder cage and a chunky nacelle. Pair it with turbine_rotor() on a
+## separate MeshInstance3D at turbine_hub(height) so the rotor can spin (only when powered).
+## Replaces the rejected "plain white CG turbine".
+static func wind_turbine(b: KitMesh.Builder, t: Transform3D, height: float = 12.0, state: String = "repaired") -> void:
+	b.add("concrete", KitMesh.bevel_cylinder(1.6, 0.6, 0.1, 8), t * _x(Vector3.ZERO, Vector3(0, 22.5, 0)))
+	var lean := Vector3(0, 0, 3.0) if state == "broken" else Vector3.ZERO
+	var tt: Transform3D = t * _x(Vector3(0, 0.6, 0), lean)
+	var p := PackedVector3Array([Vector3(0, 0, 0), Vector3(0.95, 0, 1), Vector3(0.95, 0.3, 1), Vector3(0.8, 0.5, 0), Vector3(0.45, height - 0.6, 0), Vector3(0.5, height - 0.5, 1), Vector3(0.5, height, 1), Vector3(0, height, 0)])
+	b.add("paint:main", KitMesh.lathe(p, 16), tt)
+	for k: int in 3:
+		var y: float = 1.2 + k * (height - 2.5) / 2.0
+		var r: float = lerpf(0.82, 0.48, y / height) + 0.04
+		b.add("paint:accent", KitMesh.bevel_cylinder(r, 0.28, 0.05, 16), tt * _x(Vector3(0, y, 0)))
+	hatch(b, tt * _x(Vector3(0, 0.0, 0.78)), Vector2(0.8, 1.7), state)
+	# nacelle
+	var nt: Transform3D = tt * _x(Vector3(0, height, 0))
+	b.box("paint:main", Vector3(1.1, 1.0, 2.6), nt * _x(Vector3(0, 0.5, -0.3)), 0.3, 2)
+	b.box("paint:accent", Vector3(1.14, 0.22, 2.64), nt * _x(Vector3(0, 0.55, -0.3)), 0.08)
+	vent(b, nt * _x(Vector3(0.58, 0.3, -0.9), Vector3(0, 90, 0)), Vector2(0.8, 0.4), "paint:main")
+	b.add("trim:red", KitMesh.bevel_cylinder(0.08, 0.12, 0.02, 8), nt * _x(Vector3(0, 1.0, -1.2)))
+	b.rod("steel", nt * Vector3(-0.3, 1.0, -1.4), nt * Vector3(-0.3, 1.7, -1.4), 0.03)
+
+
+## Rotor hub position (local to the turbine's t) for turbine_rotor().
+static func turbine_hub(height: float = 12.0) -> Vector3:
+	return Vector3(0, 0.6 + height + 0.5, 1.15)
+
+
+## Spinning rotor (cached ArrayMesh, faces +Z, spin around local Z). Three chunky blades with
+## accent tips; broken: one blade snapped, one bent.
+static func turbine_rotor(state: String = "repaired", blade: float = 5.0, palette: Dictionary = {}) -> ArrayMesh:
+	return KitMesh.cached("rotor:%s:%.1f:%d" % [state, blade, palette.hash()], func() -> Resource:
+		var b := KitMesh.Builder.new(5, palette, state)
+		var cone := PackedVector3Array([Vector3(0, -0.1, 0), Vector3(0.48, -0.1, 1), Vector3(0.5, 0.2, 0), Vector3(0.3, 0.75, 0), Vector3(0, 0.9, 0)])
+		b.add("paint:accent", KitMesh.lathe(cone, 16), _x(Vector3.ZERO, Vector3(90, 0, 0)))
+		for k: int in 3:
+			if state == "broken" and k == 2:
+				b.box("rusty", Vector3(0.5, 0.9, 0.12), _x(Vector3(0, 0.7, 0), Vector3(0, 0, 120 * k)) * _x(Vector3(0, 0.0, 0)), 0.03)
+				continue
+			var bend := Vector3(0, 0, 0) if not (state == "broken" and k == 1) else Vector3(25, 0, 0)
+			var bt: Transform3D = _x(Vector3.ZERO, Vector3(0, 0, 120 * k)) * _x(Vector3(0, 0.4, 0), bend)
+			# blade = 3 tapered bevelled segments with a twist, accent tip
+			var segs: int = 3
+			for s: int in segs:
+				var f0: float = float(s) / segs
+				var w: float = lerpf(0.55, 0.22, f0)
+				var l: float = blade / segs
+				var key: String = "paint:main" if s < segs - 1 else "paint:accent"
+				b.box(key, Vector3(w, l + 0.04, 0.12), bt * _x(Vector3(0.08 * (1.0 - f0), l * (s + 0.5), 0), Vector3(0, 12.0 - 6.0 * s, 0)), 0.05, 2)
+		return b.commit()) as ArrayMesh
