@@ -101,7 +101,7 @@ void fragment() {
 	// ---- paint coverage: edges first (baked edge mask), then patches ----
 	float edge = vcol.r;
 	float chip_noise = big * 0.7 + fine * 0.3;
-	float edge_chip = smoothstep(1.0 - edge_wear, 1.0 - edge_wear + 0.08, edge * (0.55 + chip_noise * 0.9));
+	float edge_chip = smoothstep(1.0 - edge_wear, 1.0 - edge_wear + 0.08, edge * (0.2 + chip_noise * 0.95));
 	float patch_chip = smoothstep(1.0 - patch_wear * 0.6, 1.02 - patch_wear * 0.6, big + fine * 0.15);
 	float paint = paint_amount * (1.0 - max(edge_chip, patch_chip));
 	// paint colour: per-part variation, hazard pattern, fade
@@ -115,7 +115,7 @@ void fragment() {
 	pc *= mix(0.94, 1.04, n3(q * 2.5));
 	pc = mix(pc, vec3(dot(pc, vec3(0.3, 0.55, 0.15))) * 1.08 + vec3(0.04, 0.03, 0.02), fade * 0.55);
 	// brighter primer halo just inside the chips (worn edges read as light lines, like painted toys)
-	float halo = smoothstep(1.0 - edge_wear - 0.18, 1.0 - edge_wear, edge * (0.55 + chip_noise * 0.9)) * (1.0 - edge_chip);
+	float halo = smoothstep(1.0 - edge_wear - 0.18, 1.0 - edge_wear, edge * (0.2 + chip_noise * 0.95)) * (1.0 - edge_chip);
 	pc = mix(pc, pc * 1.15 + vec3(0.02), halo * 0.3 * paint_amount);
 	// AGX (the game's tonemapper) desaturates: push paint saturation back up a little
 	float lum = dot(pc, vec3(0.2126, 0.7152, 0.0722));

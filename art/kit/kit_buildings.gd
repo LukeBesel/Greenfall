@@ -519,7 +519,7 @@ static func _machine_housing(b: KitMesh.Builder, state: String) -> void:
 	# exhaust stacks + pipes to the side
 	for k: int in 2:
 		var sp := PackedVector3Array([Vector3(0, 0, 0), Vector3(0.22, 0, 1), Vector3(0.22, 2.4, 0), Vector3(0.3, 2.5, 1), Vector3(0.3, 2.75, 1), Vector3(0.17, 2.75, 1), Vector3(0.17, 2.5, 0)])
-		b.add("steel" if not broken else "rusty", KitMesh.lathe(sp, 14), bt * _x(Vector3(1.4 + k * 0.6, 2.4, -1.0)))
+		b.add("paint:accent" if not broken else "rusty", KitMesh.lathe(sp, 14), bt * _x(Vector3(1.4 + k * 0.6, 2.4, -1.0)))
 	KitProps.pipe_run(b, bt, PackedVector3Array([Vector3(2.1, 1.0, -0.6), Vector3(3.0, 1.0, -0.6), Vector3(3.0, 0.0, -0.6), Vector3(4.2, 0.0, -0.6)]), 0.15)
 	# control cabinet with screen and buttons
 	var ct: Transform3D = _x(Vector3(2.6, 0.47, 1.0))

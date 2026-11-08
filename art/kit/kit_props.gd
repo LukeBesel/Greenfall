@@ -194,7 +194,7 @@ static func tank(b: KitMesh.Builder, t: Transform3D, radius: float = 1.4, height
 		if q.y > base + height - radius * 0.55:
 			var f: float = (q.y - (base + height - radius * 0.55)) / radius
 			q.y = base + height - radius * 0.55 + f * radius * 0.55
-			q.z = 1.0 if q.x > radius * 0.9 else 0.0
+			q.z = 1.0 if q.x > radius * 0.995 else 0.0
 		dome.append(q)
 	b.add(key, KitMesh.lathe(dome, 24), t)
 	for k: int in 3:
