@@ -44,7 +44,7 @@ static func rows(fleet: Fleet, build_at: Callable) -> Array:
 		var cap: int = fleet.crew_cap()
 		var in_crew: int = fleet.crew_size(crew)
 		# Build.
-		if not Research.robot_unlocked(rid):
+		if not Research.robot_unlocked(rid) and n == 0:
 			out.append({"id": "build_" + rid, "cat": "build", "state": "locked", "name": name_,
 				"requires": _tr("Research: %s") % _tr(str(Research.def(Research.robot_requirement(rid)).get("name", "?")))})
 		else:
@@ -57,7 +57,7 @@ static func rows(fleet: Fleet, build_at: Callable) -> Array:
 				table.insert(2, [_tr("Tanks"), "%d / %d" % [fleet.water_net.tanks.size(), int(WaterNet.cfg().get("max", 6))]])
 			out.append({"id": "build_" + rid, "cat": "build", "icon": icon, "name": name_, "desc": _tr(str(def.get("desc", ""))),
 				"lv": mini(in_crew, cap), "max": cap if cap <= 10 else 0, "price": cost,
-				"state": "ready" if why == "" else ("short" if short else "locked"),
+				"state": "ready" if why == "" else ("short" if short or n > 0 else "locked"),  # owned types keep their name
 				"table": table, "requires": "" if why == "" or short else why,
 				"action": _tr("Build a %s") % name_ if n > 0 else _tr("Build your first %s") % name_,
 				"act": func() -> bool: return fleet.build(rid, build_at.call() if build_at.is_valid() else Vector3.ZERO) != null})

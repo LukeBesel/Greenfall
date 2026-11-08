@@ -702,6 +702,7 @@ func _machine_mats() -> Dictionary:
 	for k: String in ["steel", "dark", "glass", "concrete", "terra", "cream", "leaf", "line", "vane"]:
 		d[k] = _m(k)
 	d["paint"] = _m("paint_ruin")
+	d["kit_state"] = "broken"
 	return d
 
 
@@ -1293,6 +1294,9 @@ func set_level(l: int, animate: bool) -> void:
 		mi.material_override = paint
 	for n: Node3D in _future_bits:
 		n.visible = level >= 4
+	# The machines' kit detail (decals, trims, bolts) follows the stage too.
+	for mi: Node in find_children("*KitDetail", "MeshInstance3D", true, false):
+		KitMat.apply(mi as MeshInstance3D, OchreSites.kit_state(level), level >= 2)
 	if _terrain_mat:
 		_terrain_mat.set_shader_parameter("stage", float(level))
 

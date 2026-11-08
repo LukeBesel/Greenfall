@@ -727,6 +727,7 @@ static func ground_patch(size: Vector2, state: String = "repaired", seed_: int =
 	mi.name = "Plates"
 	mi.mesh = data.mesh
 	KitMat.apply(mi, state, true)
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF  # [orbE] perf: 8 cm plates, no visible shadow (51 shadow draws, 581k tris on Verdance's yards)
 	root.add_child(mi)
 	var gi := MultiMeshInstance3D.new()
 	gi.name = "Grit"

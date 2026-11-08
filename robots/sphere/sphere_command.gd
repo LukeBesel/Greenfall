@@ -5,8 +5,10 @@ extends Node
 ## against the globe (the terrain height, not a plane) and returns cell ids, so zone painting,
 ## robot orders and hex picking all speak cell ids like the rest of the sphere code.
 ## While the view is on, the streamer's hex outlines are shown (SphereStreamer.outlines).
-## Input (when `input_enabled`): left drag paints the selected role's zone, right drag erases it,
-## middle click sends the nearest robot to the hex, Tab cycles the role.
+## Input (when `input_enabled`): move keys / left stick pan the view away from Lumi (who stands
+## still meanwhile), left drag paints the selected role's zone, right drag erases it, middle click
+## sends the nearest robot to the hex, Tab cycles the role, interact (E) recentres on Lumi.
+## CommandOverlay draws the robots (clustered when they crowd), the zone and the role label.
 
 signal cell_picked(cell: int)
 
@@ -22,6 +24,18 @@ var role: String = "clean"
 var hover_cell: int = -1
 var _paint: int = 0  # 1 paint, -1 erase
 var _was_command: bool = false
+## Lumi's input: off while commanding, so the move keys pan the view instead of walking.
+var lumi_input: PlayerInput
+var overlay: CommandOverlay
+
+
+func _ready() -> void:
+	var cl := CanvasLayer.new()
+	cl.layer = 5
+	add_child(cl)
+	overlay = CommandOverlay.new()
+	overlay.cmd = self
+	cl.add_child(overlay)
 
 
 ## Where a camera ray through `screen_pos` meets the ground: a unit direction (ZERO = sky).
@@ -72,6 +86,12 @@ func _process(_delta: float) -> void:
 		if streamer:
 			streamer.outlines = on
 		_paint = 0
+		if lumi_input:
+			lumi_input.enabled = not on
+		if not on and cam:
+			cam.recenter_command()
+	if on and input_enabled and InputMap.has_action("move_left"):
+		cam.pan_command(Input.get_vector("move_left", "move_right", "move_forward", "move_back"), _delta)
 	if not on or cam.camera == null:
 		hover_cell = -1
 		return
@@ -99,6 +119,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			cell_picked.emit(c)
 	elif event is InputEventKey and (event as InputEventKey).pressed and (event as InputEventKey).keycode == KEY_TAB:
 		role = ROLES[(ROLES.find(role) + 1) % ROLES.size()]
+	elif event.is_action_pressed("interact"):
+		cam.recenter_command()
 
 
 ## Send the nearest robot of the selected role to `cell`. Returns its unit ({} if none).

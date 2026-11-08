@@ -88,7 +88,23 @@ func _ready() -> void:
 		orbit = SliceOrbit.new()
 		orbit.name = "Orbit"
 		add_child(orbit)
-		orbit.build(self)
+		# [orbE] Like the flat district: behind the loading screen the globe builds across frames,
+		# disabled and unrendered until it is whole (orbB measured a ~15 s first frame).
+		building = BuildBudget.active()
+		var ovp: Viewport = get_viewport()
+		var o_had_3d: bool = not ovp.disable_3d
+		if building:
+			process_mode = Node.PROCESS_MODE_DISABLED
+			ovp.disable_3d = true
+		var obb: BuildBudget = BuildBudget.current
+		await orbit.build(self)
+		if building:
+			if obb and DevHooks.has("load-report"):
+				print("[slice] globe build spread over %d frames, longest slice %.0f ms (%s)" % [obb.frames, obb.longest_us / 1000.0, obb.longest_at])
+			building = false
+			process_mode = Node.PROCESS_MODE_INHERIT
+			ovp.disable_3d = not o_had_3d
+			built.emit()
 		return
 	if DevHooks.has("orbit"):  # [orbit] phase A prototypes: --orbit=globe (verdance_globe), --orbit=v1 (orbit_world)
 		get_tree().change_scene_to_file.call_deferred("res://planet/orbit/%s.tscn" % ("orbit_world" if DevHooks.get_s("orbit", "") == "v1" else "verdance_globe"))

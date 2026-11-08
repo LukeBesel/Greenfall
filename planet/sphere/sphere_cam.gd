@@ -31,6 +31,9 @@ var follow_rate: float = 1.6
 var manual_hold: float = 1.5
 
 var camera: Camera3D
+## [orbC] Command view can pan away from the target: a unit direction on the planet it centres on
+## (ZERO = over the target). pan_command() moves it; leaving Command view recentres.
+var command_focus := Vector3.ZERO
 var _focus := Vector3.ZERO
 var _arm: float = 6.2
 var _mode_t: float = 0.0  # 0 follow .. 1 command
@@ -97,6 +100,26 @@ func _unhandled_input(event: InputEvent) -> void:
 			distance = minf(max_distance, distance * 1.13)
 
 
+## [orbC] Pan the Command view: v = stick/keys (x right, y down = toward the screen's bottom),
+## at a speed that grows with height, along the camera frame on the planet.
+func pan_command(v: Vector2, delta: float) -> void:
+	if view != "command" or target == null or v == Vector2.ZERO:
+		return
+	if command_focus == Vector3.ZERO:
+		command_focus = surface.up_at(target.global_position)
+	var move: Vector3 = frame.x * v.x + frame.z * v.y
+	var m: Vector3 = SphereMath.tangent(move, command_focus)
+	if m.length() < 1e-5:
+		return
+	var dist: float = command_height * 1.2 * delta * minf(v.length(), 1.0)
+	var adv: Array = SphereMath.advance(command_focus, m.normalized(), dist / surface.radius)
+	command_focus = adv[0]
+
+
+func recenter_command() -> void:
+	command_focus = Vector3.ZERO
+
+
 ## Yaw the frame about the local up (radians, positive = turn left).
 func add_yaw(a: float) -> void:
 	frame = (Basis(frame.y, a) * frame).orthonormalized()
@@ -110,6 +133,10 @@ func update_camera(delta: float) -> void:
 	if target == null or camera == null:
 		return
 	var tp: Vector3 = target.global_position
+	if view != "command":
+		command_focus = Vector3.ZERO  # [orbC]
+	elif command_focus != Vector3.ZERO:
+		tp = surface.ground(command_focus)  # [orbC] panned away from Lumi
 	var u: Vector3 = surface.up_at(tp)
 	if _last_up == Vector3.ZERO:
 		_last_up = u

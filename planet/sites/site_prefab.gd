@@ -13,6 +13,8 @@ extends Node3D
 ##   the rest are rebuilt.
 
 signal rebuilt
+## Anchors moved out of the prefab's geometry (SiteReach.fix_anchors): re-read them.
+signal anchors_moved(names: PackedStringArray)
 
 const ANCHORS: Array[String] = ["depot", "bench", "rocket_pad", "door"]
 ## Meshes lower than this (m) get no collider: decals, puddles, ground patches and thin litter.
@@ -36,6 +38,11 @@ var anchors_root: Node3D
 var body: StaticBody3D
 var build_ms: int = 0
 var is_built: bool = false
+## [orbD] A start site: the yard's anchors (VerdanceSite.START_YARD_ANCHORS) fill in where the
+## planet's own prefab has none.
+var start_yard: bool = false
+## Anchors the planet's own builder laid out (anchors()): fix_anchors leaves them where they are.
+var designed := PackedStringArray()
 
 
 func _init() -> void:
@@ -48,6 +55,7 @@ func _init() -> void:
 func build() -> void:
 	var t0: int = Time.get_ticks_msec()
 	is_built = false
+	designed = PackedStringArray()
 	if content:
 		content.free()
 		content = null
@@ -149,6 +157,12 @@ func _default_anchors() -> void:
 				var own: Dictionary = c.call("anchors")
 				for nm: String in own:
 					set_anchor(nm, own[nm][0], own[nm][1])
+					designed.append(nm)
+	if start_yard:
+		for nm: String in VerdanceSite.START_YARD_ANCHORS:
+			if anchor(nm) == null:
+				var e: Array = VerdanceSite.START_YARD_ANCHORS[nm]
+				set_anchor(nm, e[0], e[1])
 	for nm: String in defaults:
 		if anchor(nm) == null:
 			set_anchor(nm, defaults[nm][0], defaults[nm][1])

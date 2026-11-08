@@ -64,6 +64,24 @@ func neighbors(me: SphereBot, radius_m: float) -> Array:
 	return out
 
 
+## [orbC] Like neighbors(), but the bots themselves (their heading and speed matter for avoidance).
+func neighbor_bots(me: SphereBot, radius_m: float) -> Array[SphereBot]:
+	_rebuild()
+	var out: Array[SphereBot] = []
+	var k: Vector3i = _key(me.dir)
+	var lim: float = radius_m / surface.radius
+	for dx: int in [-1, 0, 1]:
+		for dy: int in [-1, 0, 1]:
+			for dz: int in [-1, 0, 1]:
+				var arr: Variant = _buckets.get(k + Vector3i(dx, dy, dz))
+				if arr == null:
+					continue
+				for b: SphereBot in arr:
+					if b != me and me.dir.angle_to(b.dir) < lim:
+						out.append(b)
+	return out
+
+
 func obstacles_near(d: Vector3, radius_m: float) -> Array:
 	var out: Array = []
 	var lim: float = radius_m / surface.radius

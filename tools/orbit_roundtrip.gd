@@ -67,6 +67,18 @@ static func _garden_sig(s: Node) -> String:
 	return ",".join(parts)
 
 
+## [orbC] Stops a slice's robot crew (the brain and every real robot) so state compares as saved.
+static func _freeze_crew(s: Node) -> void:
+	var so: SliceOrbit = s.get("orbit")
+	var crew: SphereCrew = so.crews.crew if so and so.crews else null
+	if crew == null:
+		return
+	crew.set_process(false)
+	for u: Dictionary in crew.robots():
+		if u["bot"] != null:
+			(u["bot"] as Node).set_process(false)
+
+
 static func run(rt: Node, check: Callable) -> void:
 	var tree: SceneTree = rt.get_tree()
 	var packed: PackedScene = load("res://scenes/slice.tscn")
@@ -237,8 +249,10 @@ static func run(rt: Node, check: Callable) -> void:
 	GameState.reload_in_memory = true
 	var s2: Node = packed.instantiate()
 	tree.root.add_child(s2)
+	_freeze_crew(s2)  # [orbC] the reloaded robots must not work before the comparison
 	for i: int in 5:
 		await tree.process_frame
+		_freeze_crew(s2)
 	s2.set_meta("rt_target", s1_target)
 	var b: Dictionary = _snap(s2)
 	for k: String in a:

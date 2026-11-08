@@ -227,3 +227,26 @@ func test_fabricator_bots_wear_their_types_design() -> void:
 	SphereCrew.dress_hooks.erase(hook)
 	assert_eq(crew.robots().size(), 1)
 	assert_eq(seen, ["scoopie"], "the new near robot was dressed as its type")
+
+
+func test_near_bales_are_real_cubes_and_lumi_can_take_them() -> void:
+	var cells := SphereCells.new(_g5.cell_count())
+	var surface := SphereSurface.new(_g5.radius_m)
+	surface.height_fn = _t5.height
+	var crew := SphereCrew.new()
+	add_child_autofree(crew)
+	crew.setup(_g5, cells, null, surface, SphereSwarm.new(surface))  # visuals on: a bale view
+	var lumi := Node3D.new()
+	add_child_autofree(lumi)
+	lumi.global_position = surface.ground(_g5.centers[100])
+	crew.focus = lumi
+	crew.bales.append({"id": 1, "cell": 100, "dir": _g5.centers[100], "value": 9.0, "units": 10.0, "claimed": ""})
+	crew.bales.append({"id": 2, "cell": 3000, "dir": _g5.centers[3000], "value": 9.0, "units": 10.0, "claimed": ""})
+	crew.bale_view.sync()
+	assert_not_null(crew.bale_view.cube_of(1), "the near bale is a JunkCube")
+	assert_null(crew.bale_view.cube_of(2), "the far one stays a record")
+	var cube: JunkCube = crew.bale_view.cube_of(1)
+	cube.carried = true  # Lumi picked it up
+	crew.bale_view.sync()
+	assert_eq(crew.bales.size(), 1, "Lumi's bale is no longer the crew's")
+	assert_eq(int(crew.bales[0]["id"]), 2)

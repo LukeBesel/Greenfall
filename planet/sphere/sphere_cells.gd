@@ -38,8 +38,7 @@ func _init(p_count: int) -> void:
 	@warning_ignore("integer_division")
 	var h: int = (n + TEX_W - 1) / TEX_W
 	image = Image.create(TEX_W, h, false, Image.FORMAT_RGBA8)
-	for i: int in n:
-		_write(i)
+	_write_all()  # [orbE] one buffer pass (per-pixel set_pixel over 655k cells was ~1 s each time)
 	texture = ImageTexture.create_from_image(image)
 
 
@@ -54,10 +53,23 @@ static func from_planet(p: PlanetData) -> SphereCells:
 
 
 func refresh_all() -> void:
-	for i: int in n:
-		_write(i)
+	_write_all()  # [orbE]
 	texture.update(image)
 	_dirty = false
+
+
+## [orbE] Every cell's pixel in one pass over a byte buffer (same encoding as _write).
+func _write_all() -> void:
+	var data := PackedByteArray()
+	data.resize(image.get_width() * image.get_height() * 4)
+	for i: int in n:
+		var st: int = state[i]
+		var o: int = i * 4
+		data[o] = int((junk[i] if st == 0 else 0.0) * 255.0 + 0.5)
+		data[o + 1] = st * 36
+		data[o + 2] = biome[i] * 17
+		data[o + 3] = (level[i] << 4) | (flags[i] & 15)
+	image.set_data(image.get_width(), image.get_height(), false, Image.FORMAT_RGBA8, data)
 
 
 func _write(i: int) -> void:

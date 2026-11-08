@@ -43,6 +43,9 @@ var _target_cell: int = -1
 var _normal := Vector3.UP
 var _stuck_t: float = 0.0
 var _last_d: float = 0.0
+var _desired_s := Vector3.ZERO  # [orbC] smoothed steering target
+## [orbC] Steer round static obstacles (buildings); off for short moves next to a wall.
+var avoid_static: bool = true
 
 
 func setup(p_surface: SphereSurface, p_dir: Vector3, p_heading: Vector3 = Vector3.ZERO) -> void:
@@ -123,15 +126,25 @@ func step(delta: float) -> void:
 		var near: Array = swarm.neighbors(self, 8.0)
 		var sep: Vector3 = SphereSteer.separation(dir, near, body_radius * 2.6, surface.radius)
 		# Other bots ahead are steered around like obstacles (both keep right on a head-on).
-		var obs: Array = swarm.obstacles_near(dir, 12.0)
-		for nd: Vector3 in near:
-			obs.append([nd, body_radius])
+		var obs: Array = swarm.obstacles_near(dir, 12.0) if avoid_static else []
+		# [orbC] Bots driving the same way (a convoy) only keep their spacing; dodging them made
+		# both weave side to side. Oncoming and parked bots are still steered round.
+		for nb: SphereBot in swarm.neighbor_bots(self, 8.0):
+			if nb.moving_speed > 0.3 and nb.heading.dot(heading) > 0.6:
+				continue
+			obs.append([nb.dir, body_radius])
 		var av: Vector3 = SphereSteer.avoid(dir, heading, obs, 4.0, body_radius, surface.radius)
 		if spd > 0.0:
 			desired = (desired + sep * 1.6 + av).normalized() if (desired + sep * 1.6 + av).length() > 0.01 else desired
 		elif sep.length() > 0.05:  # parked bots shuffle apart
 			desired = sep.normalized()
 			spd = speed * 0.3 * minf(1.0, sep.length())
+	# [orbC] Low-pass the steering target so separation / avoidance pushes can't flip it frame to frame.
+	if _desired_s == Vector3.ZERO or delta <= 0.0:
+		_desired_s = desired
+	else:
+		_desired_s = SphereMath.tangent_dir(SphereMath.slerp_safe(SphereMath.tangent_dir(_desired_s, dir, heading), desired, SphereMath.damp(10.0, delta)), dir, heading)
+	desired = _desired_s
 	heading = SphereSteer.turn(dir, heading, desired, turn_rate, delta)
 	# Slow down while turning hard so bots carve instead of sliding sideways.
 	var align: float = clampf(heading.dot(SphereMath.tangent_dir(desired, dir, heading)), 0.0, 1.0)

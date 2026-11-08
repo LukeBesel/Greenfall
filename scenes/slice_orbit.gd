@@ -46,7 +46,9 @@ static func wanted() -> bool:
 	return DevHooks.has("orbit") and not DevHooks.get_s("orbit", "") in ["v1", "globe"]
 
 
-## Builds the whole orbit slice into `p_world`. Synchronous (no BuildBudget yields yet).
+## Builds the whole orbit slice into `p_world`. [orbE] Behind the loading screen (a BuildBudget is
+## open, scenes/slice.gd `building`) it yields between steps and runs the survey on a thread, so
+## the first frame no longer freezes for the whole build; synchronous otherwise (tests, tools).
 func build(p_world: Node3D) -> void:
 	w = p_world
 	var t0: int = Time.get_ticks_msec()
@@ -79,7 +81,9 @@ func build(p_world: Node3D) -> void:
 	var hook := Callable()
 	if migrate:
 		hook = func(g: OrbitPlanet) -> void: report.merge(OrbitMigrate.apply(g))
-	globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}), OrbitSave.site_cells(od), hook)
+	BuildBudget.span(0.0, 0.5)  # [orbE] loading bar: the globe is the first half
+	await globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}), OrbitSave.site_cells(od), hook)
+	BuildBudget.span(0.5, 0.65)
 	hub_states = (od.get("hubs", {}) as Dictionary).duplicate(true)
 	# GameState.world is the start site's own dict on the globe (the flat one is kept for saves).
 	GameState.use_orbit_world(OrbitMigrate.hub_world() if migrate else ((od.get("hub_worlds", {}) as Dictionary).get("0", {}) as Dictionary).duplicate(true))
@@ -114,10 +118,20 @@ func build(p_world: Node3D) -> void:
 	cubes_root.name = "Cubes"
 	w.add_child(cubes_root)
 	w.set("_cubes_root", cubes_root)
+	await BuildBudget.check("orbit crews")  # [orbE]
 	var tq: int = Time.get_ticks_msec()  # [orbE] load breakdown
-	var site: Node3D = globe.build_start_site()
+	var tr0: bool = AssetLib.tracing
+	if DevHooks.has("load-report"):
+		AssetLib.tracing = true
+		AssetLib.traced.clear()
+	var site: Node3D = await globe.build_start_site()
+	if DevHooks.has("load-report"):  # [orbE] what the start site loads on the main thread
+		print("[orbit-load] start site %d ms, %d models: %s" % [Time.get_ticks_msec() - tq, AssetLib.traced.size(), ",".join(AssetLib.traced)])
+		AssetLib.tracing = tr0
+	await BuildBudget.check("orbit start site")  # [orbE]
 	_build_patch()
 	_build_depot(site)
+	await BuildBudget.check("orbit lumi")  # [orbE]
 	sites = OrbitSites.attach(self)  # [orbD] sled, rocket hops, planet %, site state
 	_build_hub()
 	_build_bench()
@@ -131,6 +145,8 @@ func build(p_world: Node3D) -> void:
 	w.add_child(garden)
 	w.set("garden", garden)
 	garden.setup()
+	await BuildBudget.check("orbit crew")  # [orbE]
+	BuildBudget.span(0.65, 0.8)
 	var hl := HexLevels.new()  # sparse: only cleaned cells are tracked; levels also go to SphereCells
 	hl.name = "HexLevels"
 	hl.world = w
@@ -154,10 +170,13 @@ func build(p_world: Node3D) -> void:
 	w.add_child(pm)
 	pm.closed.connect(on_modal_closed)
 	w.set("pause_menu", pm)
+	await BuildBudget.check("orbit hud")  # [orbE]
 	_build_upgrades()
 	w.call("_setup_research_codex")  # slice.gd's own: Research, Achievements, the Codex (UI + data)
+	await BuildBudget.check("orbit codex")  # [orbE]
 	_build_story()
 	_build_yard_systems()
+	await BuildBudget.check("orbit story")  # [orbE]
 	if loaded and not migrate:
 		restore_world()
 	elif migrate:
@@ -166,17 +185,20 @@ func build(p_world: Node3D) -> void:
 	tq = Time.get_ticks_msec()
 	layers = OrbitLayers.attach(self)  # [orbE] sky + day/night, Glim, future layer, survey, system map, photo mode
 	globe.stats["layers_ms"] = Time.get_ticks_msec() - tq
+	await BuildBudget.check("orbit layers")  # [orbE]
+	BuildBudget.span(0.8, 1.0)
 	var tw: int = Time.get_ticks_msec()
 	OrbitPreload.finish()  # [orbE] models were loading on threads all along; the settle seats them
 	globe.stats["preload_wait_ms"] = Time.get_ticks_msec() - tw
 	globe.stats["preload_models"] = preload_n
 	globe.update_centres()
 	var t2: int = Time.get_ticks_msec()
-	globe.streamer.settle(20000, not DevHooks.has("orbit-settle-all"))  # [orbE] near chunks only; the rest streams in
+	await globe.streamer.settle_async(20000, not DevHooks.has("orbit-settle-all"))  # [orbE] near chunks only; the rest streams in
 	globe.stats["settle_ms"] = Time.get_ticks_msec() - t2
 	var t3: int = Time.get_ticks_msec()
 	globe.refresh_junk_now()
 	globe.stats["junk_fill_ms"] = Time.get_ticks_msec() - t3
+	await BuildBudget.check("orbit junk")  # [orbE]
 	Settings.apply_quality_to_tree(w)
 	day.after_quality(view_mode == "command")
 	if DevHooks.has("give"):
@@ -196,7 +218,8 @@ func build(p_world: Node3D) -> void:
 		str(loaded), Time.get_ticks_msec() - t0, g.stats["planet_ms"], g.stats["grid_ms"], g.stats["settle_ms"], g.stats["junk_fill_ms"]])
 	if DevHooks.has("load-report"):  # [orbE] where the build time goes
 		print("[orbit-load] %s streamer=%s chunks=%d cells/chunk=%d" % [JSON.stringify(g.stats), JSON.stringify(g.streamer.stats), g.grid.chunk_count(), g.grid.cell_count() / maxi(g.grid.chunk_count(), 1)])
-	w.emit_signal("built")
+	if not bool(w.get("building")):  # [orbE] behind the loader, slice.gd emits once it has re-enabled the world
+		w.emit_signal("built")
 
 
 func _build_patch() -> void:
@@ -528,7 +551,12 @@ func _place_pod() -> void:
 ## built state in the hub's dict, and the bin's reach is the start site's "bin" anchor. The
 ## yard models on the anchors are orbD's / yard's; Camp shows and hides what exists.
 func _attach_camp() -> void:
-	w.set("_ruin_bits", {"bench": bench})
+	var sp0: SitePrefab = globe.site_manager.prefab(0) if globe.site_manager else null  # [orbD] the yard's models on the anchors
+	if sp0:
+		var ys: YardSite = YardSite.build(w, sp0, bench)
+		w.set("_ruin_bits", ys.bits)
+	else:
+		w.set("_ruin_bits", {"bench": bench})
 	var camp: Camp = Camp.attach(w)
 	w.set("camp", camp)
 	if camp == null:
@@ -544,6 +572,58 @@ func _attach_camp() -> void:
 		var home: Vector3 = yard_point("camera_bot")
 		camp.camera_bot.set("_home", home)
 		camp.camera_bot.global_position = home + home.normalized() * 1.5
+	if sp0:  # [orbD] anchors that settle later (moved out of another planet's geometry) carry their interactables
+		sp0.anchors_moved.connect(func(_names: PackedStringArray) -> void: reseat_yard())
+
+
+## [orbD] Re-reads the start site's anchors for everything attached to them at setup: the signal
+## tower, the locker and its reach point, Blink's home and the trash bin's reach point. (The
+## depot, bench and the yard models follow the anchors on their own: OrbitSites / YardSite.)
+func reseat_yard() -> void:
+	var tower: Node3D = w.get_node_or_null("SignalTower") as Node3D
+	if tower:
+		var ts: Array = yard_slot("signal_tower", SignalTower.pos())
+		tower.global_transform = (ts[0] as Node3D).global_transform * (ts[1] as Transform3D)
+	var locker: Node3D = w.get_node_or_null("LockerCabinet") as Node3D
+	if locker:
+		var ls: Array = yard_slot("locker", LockerCabinet.POS)
+		locker.global_transform = (ls[0] as Node3D).global_transform * (ls[1] as Transform3D)
+		var reach: Node3D = locker.get("_anchor") as Node3D
+		if reach:
+			reach.global_position = locker.global_position + locker.global_basis.z * 0.9
+	var camp: Camp = w.get("camp")
+	if camp and camp.camera_bot:
+		var home: Vector3 = yard_point("camera_bot")
+		camp.camera_bot.set("_home", home)
+		camp.camera_bot.global_position = home + home.normalized() * 1.5
+	var bin_reach: Variant = camp.get("_bin_anchor") if camp else null
+	if bin_reach is Node3D:
+		(bin_reach as Node3D).global_position = yard_point("bin")
+	# [orbB] the CD player, the nursery, the Telescope and the crashed pod follow their anchors too
+	var ex: ExtrasDirector = ExtrasDirector.of(w)
+	if ex and ex.radio:
+		var rs: Array = yard_slot("radio", Radio.POS)
+		ex.radio.global_transform = (rs[0] as Node3D).global_transform * (rs[1] as Transform3D)
+		var rr: Node3D = ex.radio.get("_anchor") as Node3D
+		if rr:
+			rr.global_position = ex.radio.global_position + ex.radio.global_basis.x * 1.0
+	if ex and ex.nursery:
+		var ns: Array = yard_slot("nursery", ex.nursery.position)
+		ex.nursery.global_transform = (ns[0] as Node3D).global_transform * (ns[1] as Transform3D)
+		ex.nursery.set("center", ex.nursery.global_position)
+	var scope: Telescope = Telescope.of(w)
+	if scope:
+		var tp: Vector3 = scope.call("_pos")
+		var tsl: Array = yard_slot("telescope", tp)
+		scope.global_transform = (tsl[0] as Node3D).global_transform * (tsl[1] as Transform3D) * Transform3D(Basis(), -tp)
+	var pod_site: Node3D = w.get_meta("orbit_pod", null) as Node3D
+	if pod_site:
+		var at: Vector3 = yard_point("pod")
+		pod_site.global_transform = Transform3D(SphereGrid.frame(at.normalized()) * Basis(Vector3.UP, 0.5), at)
+	if DevHooks.has("yard-report"):
+		var dd := func(n: Variant, anchor: String) -> String:
+			return "%.2f" % (n as Node3D).global_position.distance_to(yard_point(anchor)) if n is Node3D else "-"
+		print("[yard] reseated: tower %s, locker %s, bin reach %s (m from their anchors)" % [dd.call(tower, "signal_tower"), dd.call(locker, "locker"), dd.call(bin_reach, "bin")])
 
 
 # --- Hub and workbench (the start site) ---------------------------------------------------

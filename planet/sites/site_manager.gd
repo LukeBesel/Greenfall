@@ -184,7 +184,7 @@ func _solid_above(space: PhysicsDirectSpaceState3D, p: SitePrefab, g: Vector3, u
 func _clear_cell(c: int) -> void:
 	cells.set_junk(c, 0.0)
 	cells.set_state(c, 1)
-	cells.set_flag(c, SphereCells.F_HUB)  # [orbB] hub ground across a reload (SphereField counts F_HUB cells as hub)
+	cells.set_flag(c, SphereCells.F_HUB)  # hub ground, saved with the cells: on reload the field counts it as hub, never as "cleaned"
 	var field: Variant = globe.get("field")
 	if field is SphereField:
 		var f: SphereField = field

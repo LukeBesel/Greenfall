@@ -173,3 +173,5 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] All cosmetics live at the Locker: Lumi, Glim, bots and rockets. Nowhere else edits looks (ui).
 - [ ] Send a picture of the workbench view (main: render queued until memory frees).
 - [ ] Bots are BUILT at the workbench (Bots tab, Fabricator queue). Their LOOKS are designed at the Locker, per robot type or job, and every bot of that type wears the design (e.g. all planting bots green, including newly built ones) (ui, orbC).
+- [ ] Owner (Nov 8, later): no need to send pictures for now. Focus on finishing everything already agreed. Renders only where a helper needs one to check its own work.
+- [ ] Workbench (and Locker): simple is good, but restyle it futuristic and robot-like. Not full screen (like Moon Sweepers): floating modules with gaps that show the environment, slightly see-through glass, chamfered corners, thin glowing lines, a hologram open (ui).
