@@ -152,6 +152,7 @@ func _setup_loading() -> void:
 	ld._alpha = 1.0
 	ld._apply_alpha()
 	ld._reset_pieces()
+	ld._ensure_vignette()
 	ld._status.text = tr("Setting the scene")
 	ld.shown = 0.0
 	ld.target = 0.0
