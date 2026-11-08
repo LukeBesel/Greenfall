@@ -128,7 +128,7 @@ static func listed(world: Node, id: String) -> bool:
 			return _hub_level(world) >= int(t.data.get("requires_level", 4)) or (Research.exists(rid) and Research.has(rid))
 		"museum":
 			return world != null and Museum.site_here(world) and Museum.unlocked()
-	return YardBuilds.listed(id)
+	return YardBuilds.listed(id, _hub_level(world))
 
 
 static func entry(world: Node, id: String) -> Dictionary:

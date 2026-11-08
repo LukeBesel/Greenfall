@@ -98,6 +98,7 @@ func _snapshot(s: Node) -> Dictionary:
 		"telescope": "%s %s uses=%d" % [str(Telescope.of(s).built() if Telescope.of(s) else "none"), str(Codex.is_unlocked("sightings:first_light")), int(GameState.stats.get("telescope_uses", 0))],
 		"extras": JSON.stringify(ExtrasRoundtrip.snap(s)),  # [extras] radio, album, nursery
 		# [camp] the workbench repair, the trash bin's level, yard builds, and what's shown.
+		"camera_bot": "%s shown=%s" % [str(CameraBot.available()), str(Camp.of(s).camera_bot != null and Camp.of(s).camera_bot.visible if Camp.of(s) else false)],  # [camp3]
 		"camp": "bench=%s bin=L%d built=%s radio_shown=%s bench_prompt=%s" % [str(Camp.bench_ok()), TrashBin.level(), JSON.stringify(YardBuilds.state().get("built", {})), str(ExtrasDirector.of(s).radio.visible if ExtrasDirector.of(s) else false), (Camp.of(s).bench_prompt() if Camp.of(s) else "")],
 		"glim": JSON.stringify(_glim_snap(s)),  # [buddy] found, tiers, looks, the bot in the scene
 		"egg_collect": _egg_collect(s),  # [eggs2] collected gnomes and the Museum
@@ -428,6 +429,8 @@ func _ready() -> void:
 		Camp.of(s1).repair_now()
 		TrashBin.set_level(3)
 		YardBuilds.mark_built("radio")
+		YardBuilds.mark_built(CameraBot.ID)  # [camp3] Blink, the camera bot
+		Camp.of(s1).camera_bot.set_built(false)
 		ExtrasDirector.of(s1).radio.set_built(true, false)
 	else:
 		_check("camp_node", true, false)
@@ -803,6 +806,8 @@ func _camp2_fresh_yard(s: Node) -> void:
 		_check("camp2_node", true, false)
 		return
 	_check("camp2_fresh_yard", JSON.stringify(["workbench", "trash_bin"]), JSON.stringify(c.standing()))
+	_check("camp3_no_photo_mode_at_start", false, CameraBot.available() and not DevHooks.has("photo"))  # [camp3]
+	_check("camp3_no_camera_bot_at_start", false, c.camera_bot.visible if c.camera_bot else true)
 	var ids: Array = HubBuilds.available(s).map(func(e: Dictionary) -> String: return str(e["id"]))
 	_check("camp2_shack_listed", true, "shack" in ids)
 	c.repair_now()
