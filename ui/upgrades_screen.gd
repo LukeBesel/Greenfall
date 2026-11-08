@@ -257,7 +257,7 @@ func _populate() -> void:
 				ld.provider = BenchLists.research
 				ld.categories = BenchLists.research_cats()
 				ld.counter = BenchLists.research_counter
-		ld.custom_minimum_size = Vector2(0, maxf(_root.size.y - 300.0, 300.0))  # fits without scrolling the page
+		ld.custom_minimum_size = Vector2(0, maxf(_root.get_viewport_rect().size.y - 345.0, 280.0))  # [ui7] fits without scrolling the page
 		_grid.add_child(ld)
 		_panel = ld
 		return
@@ -367,7 +367,7 @@ func _first_focusable(root: Node, allow_disabled: bool) -> Control:
 
 func _relayout() -> void:
 	# Single-panel tabs fill the width; only card grids reflow.
-	if _tab != "bots":  # [ui2] [ui3] single-panel tabs (Upgrades lays out its own sections)
+	if not _grid.get_children().any(func(c: Node) -> bool: return c is UpgradeCard or c is RobotCard):  # [ui7] every tab is one panel now
 		_grid.columns = 1
 		return
 	var w: float = _root.size.x - 110.0
