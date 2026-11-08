@@ -67,8 +67,7 @@ func _make(p_site: String, seed_v: int, water_r: float) -> void:
 			_site_stilts()
 		"wreck":
 			islands = [{"c": Vector2(-24, 18), "r": 12.0, "h": 0.35, "kind": "bar", "yaw": 1.1, "stretch": 2.0}]
-			_barge(Vector3(0, SEA_Y, 0), 0.7, _groups["always"], _groups["ruin"])
-			_green_on_wreck()
+			_barge(Vector3(0, SEA_Y, 0), 0.7)
 		"dredge_rig":
 			islands = []
 			var a := FrontierView.Batch.new()
@@ -104,6 +103,7 @@ func set_state(p_stage: int, p_restoration: float) -> void:
 		var full: Array = _junk_full[i]
 		mm.visible_instance_count = int(round(full.size() * clampf(1.0 - restore * 1.15, 0.0, 1.0)))
 		_junk[i].visible = mm.visible_instance_count > 0
+	TideProps.set_rust(self, stage, restore)  # [p_seas]
 
 
 # --- Shared site pieces -----------------------------------------------------------------------
@@ -537,19 +537,6 @@ func _site_stilts() -> void:
 
 
 # --- Landmarks -----------------------------------------------------------------------------------
-
-## Restored wreck: the hoppers turned into planters, a mangrove on the bow.
-func _green_on_wreck() -> void:
-	_decks.append(Vector3(0, 0, 30.0))
-	var grn := FrontierView.Batch.new()
-	var bs := Basis(Vector3.UP, 0.7) * Basis(Vector3.RIGHT, deg_to_rad(-5.0)) * Basis(Vector3.FORWARD, deg_to_rad(8.0))
-	for k: int in 4:
-		var hp: Vector3 = Vector3(0, -0.5 + SEA_Y, 0) + bs * Vector3(0, 5.8, -14.0 + k * 9.0)
-		for j: int in 4:
-			var s: float = _rng.randf_range(0.6, 1.2)
-			grn.add(_lumpy(5 + j % 3, 0.55, 3.0), _lxf(hp + Vector3(_rng.randf_range(-2.5, 2.5), 0.3, _rng.randf_range(-2, 2)), Vector3.ZERO, Vector3(s, s * 0.8, s)), _mat("mangrove"))
-	grn.flush(_groups["green"])
-
 
 ## A reef garden: coral heads and shallows round a sandbar; ruined, bleached dead coral breaks the
 ## surface among nets; restored, live coral (also drawn under the water by the sea shader), and
