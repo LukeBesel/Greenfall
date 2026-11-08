@@ -337,6 +337,8 @@ func _start_flight() -> void:
 	model.plume.power = 0.0
 	for b: ColorRect in _bars:
 		b.visible = false
+	if HomewardDirector.start_flight(world, _to_hub, _flight_s):  # [home] planet trips and the home launch
+		return
 	world.globe.fly(world.hub_index, _to_hub, _flight_s)
 
 
@@ -346,6 +348,8 @@ func _travel() -> void:
 	_mode = ""
 	Input.stop_joy_vibration(0)
 	print("[rocket] travel to hub %d" % _to_hub)
+	if HomewardDirector.travel(world, _to_hub):  # [home]
+		return
 	world.travel_to(_to_hub)
 
 
@@ -451,11 +455,18 @@ func _arrive_camera(t: float, dt: float) -> void:
 		_cam.fov = 50.0
 		_place_cam(o + Vector3(-11.0, 2.0, -4.0), mp + Vector3(0, 3.0, 0), dt)
 	elif t < LAND_S + 1.6:
+		# [vqa2] Touchdown from the open lot east of the pad (as the launch close-ups): it stood
+		# inside the yard by the recycler, looking at the pad across the back fence and wires.
 		_cam.fov = 58.0
-		_place_cam(o + Vector3(7.5, 2.0, 9.5), mp + Vector3(0, 3.0, 0), dt)
+		_place_cam(o + Vector3(10.5, 1.8, 1.5), mp + Vector3(0, 3.0, 0), dt)
 	else:
 		_cam.fov = 55.0
 		_place_cam(o + Vector3(7.0, 3.0, 3.6), o + Vector3(2.0, 2.4, 0.5), dt)
+	# [vqa2] Yard dressing hides for the close shots (hard cuts), as in the launch.
+	var close: bool = t >= LAND_S * 0.62
+	for n: Node3D in _clutter:
+		if is_instance_valid(n):
+			n.visible = not close
 
 
 func _finish_arrival() -> void:
@@ -524,6 +535,10 @@ func _begin(mode: String) -> void:
 	for nm: String in ["StreetDressing", "FutureLayer", "EasterEggs"]:
 		for n: Node in world.find_children(nm, "Node3D", true, false):
 			_clutter.append(n as Node3D)
+	# [vqa2] The hub's own street lamp (slice.gd ruin bits) stood mid-ground in the ignition shot.
+	var bits: Variant = world.get("_ruin_bits")
+	if bits is Dictionary and (bits as Dictionary).get("street_lamp") is Node3D:
+		_clutter.append((bits as Dictionary)["street_lamp"])
 	_build_fx()
 	_build_ui()
 

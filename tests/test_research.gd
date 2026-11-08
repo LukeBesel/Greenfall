@@ -29,12 +29,14 @@ func after_each() -> void:
 	Research.now_override = -1.0
 
 
+## [money] Research costs cubes now (10 per old Data unit, Research.note_cubes()); the tests keep
+## counting in the old units so the tree's numbers read the same.
 func _give(n: float) -> void:
-	GameState.add_currency(Research.CURRENCY, BigNum.from_float(n))
+	GameState.add_currency(Research.CURRENCY, BigNum.from_float(n * Research.note_cubes()))
 
 
 func _data() -> float:
-	return GameState.get_currency(Research.CURRENCY).to_float()
+	return GameState.get_currency(Research.CURRENCY).to_float() / Research.note_cubes()
 
 
 func test_tree_data_is_consistent() -> void:
@@ -54,8 +56,8 @@ func test_tree_data_is_consistent() -> void:
 
 
 func test_start_needs_data_and_prereqs() -> void:
-	assert_false(Research.can_start("scoop_beam"), "no data yet")
-	assert_eq(Research.reason("scoop_beam"), "Not enough data")
+	assert_false(Research.can_start("scoop_beam"), "no cubes yet")
+	assert_eq(Research.reason("scoop_beam"), "Not enough cubes")
 	_give(1000)
 	assert_eq(Research.status("wide_beam"), "locked")
 	assert_false(Research.start("bigger_hopper"), "prereq missing")

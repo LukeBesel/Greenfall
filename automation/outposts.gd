@@ -315,7 +315,7 @@ func repair_block(i: int) -> String:
 	if clean_fraction(i) < clean_needed():
 		return tr("Clear the junk around it first (%d%% of %d%%).") % [int(clean_fraction(i) * 100.0), int(clean_needed() * 100.0)]
 	if not Hub.can_pay(repair_cost(i)):
-		return tr("Not enough materials.")
+		return tr("Not enough cubes or parts.")  # [money]
 	return ""
 
 
@@ -330,7 +330,7 @@ func upgrade_block(i: int) -> String:
 	if items.size() > i and items[i].busy:
 		return "Building..."
 	if not Hub.can_pay(upgrade_cost(i)):
-		return tr("Not enough materials.")
+		return tr("Not enough cubes or parts.")  # [money]
 	return ""
 
 
@@ -392,14 +392,7 @@ func _sweep(i: int) -> void:
 
 
 static func cost_text(cost: Dictionary) -> String:
-	var names: Dictionary = {"cubes": "cubes"}
-	var mats: Dictionary = Economy.read_json("res://data/hub.json").get("materials", {})
-	for k: String in mats:
-		names[str(mats[k]["id"])] = TranslationServer.translate(str(mats[k]["name"])).to_lower()
-	var parts: Array[String] = []
-	for k: String in cost:
-		parts.append(L10nFmt.amount(k, float(cost[k])) if L10nFmt.has_count(k) else "%s %s" % [Settings.fmt(BigNum.from_float(float(cost[k]))), names.get(k, k)])  # [i18n2]
-	return " · ".join(parts)
+	return Currencies.cost_text(cost)  # [money] cubes / parts / seeds only
 
 
 func prompt(i: int) -> String:

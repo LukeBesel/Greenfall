@@ -1,12 +1,14 @@
 class_name TidewellEnv
 extends Node3D
 ## [planet-tidewell] Tidewell, the Ocean World: drowned dredging rigs in an open sea.
-## Entry point: TidewellEnv.apply(world, field, kind) once the district scene is built. Three
-## optional static hooks run while the field is made (scenes/slice.gd, tagged [planet-tidewell]):
-##   prepare(kind)              registers the nets-and-buoys junk palette (biome set "tidewell")
-##   field_water(field, kind)   which hexes are sea: all but the raft base, a ring-1 sand crescent
-##                              and four small islands / sandbars
-##   post_generate(field, kind) floating junk gathers into trash rafts and takes the palette
+## Shared planet-env contract (planet/planets/planet_envs.gd, data/planets.json "tidewell"):
+##   dev_hub(planet)            the --planet-env dev hook loads a wild (non-city) hub
+##   prepare_field(field)       before generate: the nets-and-buoys junk palette (biome set
+##                              "tidewell") and the sea: every hex but the raft base, a ring-1
+##                              sand crescent and a few small islands (field_water)
+##   dress_view(view)           after generate, before FieldView.setup: floating junk gathers into
+##                              trash rafts (post_generate); sandy ground layers, no hills horizon
+##   apply(world, field, kind)  once the district scene is built: everything below
 ## The look (data: data/planets.json "tidewell" + planet/planets/tidewell/tidewell.json):
 ##   ocean.gdshader  one opaque sea from the base to the horizon (swell, foam, depth colour,
 ##                   seabed with caustics, kelp and coral when restored, fish/whale shadows, oil
@@ -34,6 +36,7 @@ const WHITE := Color(0.93, 0.95, 0.96)
 const LIGHT := Color(0.68, 0.92, 1.0)
 
 static var _data: Dictionary = {}
+static var _pending: HexField = null  # the field between prepare_field and dress_view
 
 var world: Node
 var field: HexField
@@ -78,6 +81,54 @@ static func data() -> Dictionary:
 static func prepare(kind_: Dictionary) -> void:
 	var bid: String = str(kind_.get("district", {}).get("biome", "tidewell"))
 	Economy.biome_sets[bid] = data().get("biome_set", {})
+
+
+static func entry() -> Dictionary:
+	var e: Variant = (Economy.read_json("res://data/planets.json") as Dictionary).get("tidewell", {})
+	return e if e is Dictionary else {}
+
+
+## Dev hook: a wild hub (no streets; frontier hubs skipped), on the coast if there is one.
+static func dev_hub(planet: PlanetData) -> int:
+	var skip: Array = planet.frontier_hubs.values()
+	var best: int = -1
+	for i: int in planet.hubs.size():
+		var c: int = planet.hubs[i]
+		if i in skip or planet.city[c] >= 0:
+			continue
+		var b: String = str(PlanetData.BIOMES[planet.biome[c]])
+		if b == "neon_coast":
+			return i
+		if best < 0 and not (b in ["frostcap", "dust_dunes"]):
+			best = i
+	return maxi(best, 0)
+
+
+## Shared contract, before HexField.generate: junk palette, floating-junk density, the sea.
+static func prepare_field(f: HexField) -> void:
+	var e: Dictionary = entry()
+	prepare(e)
+	var d: Dictionary = e.get("district", {})
+	f.biome = str(d.get("biome", "tidewell"))
+	f.biome_set = Economy.biome_set(f.biome)
+	f.float_mult = float(d.get("float_mult", 2.0))
+	var w: Dictionary = field_water(f, e)
+	for k: Variant in w:
+		f.water_ids[k] = true
+	_pending = f
+
+
+## Shared contract, before FieldView.setup (the field is generated): trash rafts, ground look.
+static func dress_view(view: FieldView) -> void:
+	var e: Dictionary = entry()
+	var d: Dictionary = e.get("district", {})
+	if _pending:
+		post_generate(_pending, e)
+		_pending = null
+	view.layer_swap = d.get("ground_layers", {})
+	var fx: Array = d.get("fx", [0, 0, 0, 0])
+	view.ground_fx = Vector4(float(fx[0]), float(fx[1]), float(fx[2]), float(fx[3]))
+	view.skip_horizon = true
 
 
 ## Sea hexes (spiral index -> true). Dry: the base (ring 0), a crescent of ring 1 and the
@@ -188,6 +239,9 @@ static func raft_centres(f: HexField, id: int) -> Array[Vector3]:
 
 ## Entry point (brief): builds the planet's look on a district that was made with the hooks above.
 static func apply(p_world: Node, p_field: HexField, p_kind: Dictionary) -> TidewellEnv:
+	var old: Node = p_world.get_node_or_null("TidewellEnv")
+	if old:
+		old.free()
 	var env := TidewellEnv.new()
 	env.name = "TidewellEnv"
 	p_world.add_child(env)

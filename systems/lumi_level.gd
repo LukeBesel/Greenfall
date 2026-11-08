@@ -75,7 +75,7 @@ static func apply_xp(st: Dictionary, amount: int, c: Dictionary = {}) -> Array[i
 
 
 ## The reward plan for reaching `level` (no side effects): {cubes, seeds, parts, part_rarity,
-## tokens, trinket(bool)}. `income_cubes` is the progress-scaled cube amount for one level
+## bonus_parts (Parts currency, [money] was tokens), trinket(bool)}. `income_cubes` is the progress-scaled cube amount for one level
 ## (about cube_secs of income); `earned` is lifetime cubes earned (lifts the cap late game).
 static func reward_plan(level_: int, income_cubes: float, earned: float, seeds_unlocked: bool, c: Dictionary = {}) -> Dictionary:
 	var rw: Dictionary = (c if not c.is_empty() else cfg()).get("reward", {})
@@ -83,7 +83,7 @@ static func reward_plan(level_: int, income_cubes: float, earned: float, seeds_u
 	var floor_c: float = float(rw.get("min_cubes_per_level", 15)) * level_
 	var cap_c: float = maxf(float(rw.get("cap_cubes_base", 30)) * pow(float(level_), 1.5), earned * float(rw.get("cap_earned_frac", 0.004)))
 	var out: Dictionary = {"cubes": round(clampf(income_cubes, floor_c, maxf(cap_c, floor_c))),
-		"seeds": 0, "parts": 0, "part_rarity": 0, "tokens": 0, "trinket": false}
+		"seeds": 0, "parts": 0, "part_rarity": 0, "bonus_parts": 0, "trinket": false}
 	var se: int = int(rw.get("seeds_every", 2))
 	if seeds_unlocked and se > 0 and level_ % se == 0:
 		@warning_ignore("integer_division")
@@ -94,10 +94,10 @@ static func reward_plan(level_: int, income_cubes: float, earned: float, seeds_u
 		# Common early, then Uncommon/Rare/Vintage as Lumi grows (rarity index into parts.json).
 		@warning_ignore("integer_division")
 		out["part_rarity"] = clampi(level_ / 15, 0, 3)
-	var te: int = int(rw.get("token_every", 5))
+	var te: int = int(rw.get("bonus_parts_every", 5))  # [money] Parts (was contract tokens)
 	if te > 0 and level_ % te == 0:
 		@warning_ignore("integer_division")
-		out["tokens"] = int(rw.get("tokens", 1)) + int(rw.get("tokens_per_10_levels", 1)) * (level_ / 10)
+		out["bonus_parts"] = int(rw.get("bonus_parts", 5)) + int(rw.get("bonus_parts_per_10_levels", 5)) * (level_ / 10)
 	var ke: int = int(rw.get("trinket_every", 10))
 	if ke > 0 and level_ % ke == 0:
 		out["trinket"] = true
@@ -212,7 +212,7 @@ func _grant(lv: int) -> String:
 	var cubes: float = float(plan["cubes"])
 	if cubes > 0.0:
 		GameState.add_currency("cubes", BigNum.from_float(cubes))
-		bits.append(tr("+%s cubes") % Settings.fmt(BigNum.from_float(cubes)))
+		bits.append(L10nFmt.amount("cubes", cubes, true))
 	if int(plan["seeds"]) > 0:
 		GameState.add_currency("seeds", BigNum.from_float(int(plan["seeds"])))
 		bits.append(tr("+%d seeds") % int(plan["seeds"]))
@@ -223,15 +223,15 @@ func _grant(lv: int) -> String:
 		GameState.parts.append({"type": t, "rarity": r})
 		EventBus.part_found.emit(t, r)
 		bits.append("+" + L10nFmt.part_name(r, t))  # [i18n2]
-	var tokens: int = int(plan["tokens"])
+	var bonus: int = int(plan["bonus_parts"])
 	if bool(plan["trinket"]):
 		var left: Array[String] = Collection.unfound("lumi_level")  # in order: L10, L20, ...
 		var tid: String = left[0] if not left.is_empty() else ""
 		if tid != "" and Collection.grant(tid, true):
 			bits.append(tr(str(Collection.def(tid).get("name", tid))))
 		else:
-			tokens += int(rw.get("trinket_tokens", 3))
-	if tokens > 0:
-		GameState.add_currency(Contracts.CURRENCY, BigNum.from_float(tokens))
-		bits.append(tr_n("+%d token", "+%d tokens", tokens) % tokens)
+			bonus += int(rw.get("trinket_parts", 15))
+	if bonus > 0:
+		GameState.add_currency("parts", BigNum.from_float(bonus))
+		bits.append(L10nFmt.reward("parts", bonus))
 	return "  ".join(bits)

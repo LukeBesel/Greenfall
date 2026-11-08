@@ -48,18 +48,11 @@ func sell_mult() -> float:
 
 
 static func can_pay(cost: Dictionary, mult: float = 1.0) -> bool:
-	for k: String in cost:
-		if not GameState.can_afford(k, BigNum.from_float(float(cost[k]) * mult)):
-			return false
-	return true
+	return GameState.can_afford_all(cost, mult)  # [money] legacy keys folded into the three
 
 
 static func pay(cost: Dictionary, mult: float = 1.0) -> bool:
-	if not can_pay(cost, mult):
-		return false
-	for k: String in cost:
-		GameState.spend(k, BigNum.from_float(float(cost[k]) * mult))
-	return true
+	return GameState.spend_all(cost, mult)  # [money]
 
 
 func upgrade() -> bool:
@@ -173,6 +166,10 @@ func _scaffold(center: Vector3, size: Vector3, duration: float) -> void:
 	tw.tween_callback(cage.queue_free)
 
 
+## [vqa2] First panel of the level-4 solar row (yard front-right, out of the spawn camera's view).
+const SOLAR_ROW := Vector3(3.2, 0.0, 7.5)
+
+
 func _build_level(l: int, animate: bool) -> void:
 	var iron: StandardMaterial3D = AssetLib.pbr_material("corrugated_iron", 0.6, Color(0.92, 0.9, 0.86), true)
 	var paint: ShaderMaterial = Mats.worn_paint(Color(0.35, 0.55, 0.62), 0.8, 0.4, 20.0 + l, 0.4)
@@ -204,12 +201,23 @@ func _build_level(l: int, animate: bool) -> void:
 			_piece(ProcMesh.cyl(0.04, 0.06, 7.0, 6), Mats.metal("steel"), Transform3D(Basis(), Vector3(7.0, 3.5, 5.5)), animate, 0.8)
 			_piece(ProcMesh.sphere(0.12, 8, 4), Mats.lamp(Color(1.0, 0.2, 0.15), 3.0), Transform3D(Basis(), Vector3(7.0, 7.05, 5.5)), animate, 1.0)
 		4:
+			# [vqa2] Solar row in the front-right of the yard, in front of the level-3 office. It used to
+			# span the yard's front edge (x -3.5..3.5, z 7) right under the spawn camera, which saw
+			# a dark glass slab across the bottom of the screen.
 			if animate:
-				_scaffold(Vector3(0.0, 0, 7.0), Vector3(7.0, 1.6, 2.4), 2.0)
+				_scaffold(Vector3(4.5, 0, 7.5), Vector3(4.6, 1.6, 2.4), 2.0)
 			var panel: StandardMaterial3D = Mats.glass(Color(0.08, 0.12, 0.25, 1.0), 0.15)
-			for i: int in 5:
-				_piece(ProcMesh.box(Vector3(1.3, 0.04, 2.0)), panel, Transform3D(Basis(Vector3.RIGHT, -0.5), Vector3(-2.8 + i * 1.4, 1.1, 7.0)), animate, i * 0.15)
-				_piece(ProcMesh.cyl(0.03, 0.03, 1.1, 6), Mats.metal("steel"), Transform3D(Basis(), Vector3(-2.8 + i * 1.4, 0.55, 7.0)), animate, i * 0.15)
+			for i: int in 3:
+				_piece(ProcMesh.box(Vector3(1.3, 0.04, 2.0)), panel, Transform3D(Basis(Vector3.RIGHT, -0.5), SOLAR_ROW + Vector3(i * 1.4, 1.1, 0)), animate, i * 0.15)
+				_piece(ProcMesh.cyl(0.03, 0.03, 1.1, 6), Mats.metal("steel"), Transform3D(Basis(), SOLAR_ROW + Vector3(i * 1.4, 0.55, 0)), animate, i * 0.15)
+			var body := StaticBody3D.new()  # Lumi, robots and the camera arm stop at the row
+			var cs := CollisionShape3D.new()
+			var bs := BoxShape3D.new()
+			bs.size = Vector3(4.1, 1.6, 1.9)
+			cs.shape = bs
+			cs.position = SOLAR_ROW + Vector3(1.4, 0.8, 0)
+			body.add_child(cs)
+			add_child(body)
 		5:
 			if animate:
 				_scaffold(Vector3(-7.0, 0, -5.0), Vector3(2.0, 9.0, 2.0), 2.6)

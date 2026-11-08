@@ -56,6 +56,9 @@ func _ready() -> void:
 		close_menu()
 		photo_requested.emit()))
 	buttons.append_array(LateMenu.add_buttons(self, vb, _button))  # [late] Garden Mode, Ark Bridge
+	buttons.append(_button(vb, tr("Keepsakes"), func() -> void:  # [extras] radio, album, nursery, Seed of the Week
+		close_menu()
+		ExtrasPanel.open_for(get_parent(), "")))
 	_settings_btn = _button(vb, tr("Settings"), _open_settings)
 	buttons.append(_settings_btn)
 	buttons.append(_button(vb, tr("Save game"), func() -> void:
@@ -102,7 +105,7 @@ func _quit_to_title() -> void:
 	get_tree().paused = false
 	EventBus.ui_modal_changed.emit(false)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	get_tree().change_scene_to_file(TITLE_SCENE)
+	Loader.goto(TITLE_SCENE)  # [intro2] loading screen
 
 
 func open_menu() -> void:

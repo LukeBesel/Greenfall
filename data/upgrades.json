@@ -166,7 +166,7 @@
       "name": "Recycler Yield",
       "tab": "hub",
       "icon": "auto",
-      "desc": "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale.",
+      "desc": "Sharper shredder teeth and a hotter smelter. More parts per bale.",
       "stat": "recycler_yield",
       "mode": "mul_pct",
       "amount": 0.15,

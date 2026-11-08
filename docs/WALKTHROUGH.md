@@ -31,31 +31,33 @@ hooks instead of played through.
 ## 1. Old Town: clean, bale, sell (0:00-0:15)
 - Hold LMB to scoop, RMB/C to press a bale (Perfect band 90-100%), carry it to the scale. First bale
   ~0:20 s, first sale ~0:40 s, first workbench upgrade ~0:40 s [bot].
-- Clean the first hex (~2 min): every piece of junk in it. Hex bonus + 10 Data.
+- Clean the first hex (~2 min): every piece of junk in it. Hex bonus + 100 cubes of field notes.
 - Memory shards and buried robot parts (the detector beeps) appear as hexes clean.
 - Goals: scoop 15 > bale > sell > upgrade > first hex > Perfect bale > 5 upgrades > 10 bales > ...
-- Gates: none. Currencies: cubes (selling), Data (cleaning, shards, robot bales), materials (sheet
-  metal / plastic / glass from scooped junk; finite per district).
+- Gates: none. **Three currencies only** (data/currencies.json): **Cubes** (selling bales; field notes
+  from cleaning, shards and robot bales pay cubes too), **Parts** (scooped metal / plastic / glass junk,
+  the recycler, scrapped spares at Haggle's, requests; scooped parts are finite per district) and
+  **Seeds** (planting; the compost press makes them).
 
 ## 2. Robots and research (0:05-0:30)
-- Research (workbench, Research tab) costs Data and real time. Tier-0 nodes are 25 Data.
+- Research (workbench, Research tab) costs cubes and real time. Tier-0 nodes are 250 cubes.
 - First Scoopie ~0:07, Haul Bug ~0:09 [bot] (build cost + parts; Haggle's sells missing rusty parts).
-- Command (B): paint zones for crews. Base level 2 (1.5k cubes + 25 metal + 15 plastic) ~0:11-0:20.
+- Command (B): paint zones for crews. Base level 2 (1.5k cubes + 40 parts) ~0:11-0:20.
 
 ## 3. The first seed, and the slow garden (0:12-0:60)
 - A green signal leads to the old greenhouse: the seed tin (a small story moment). Plant with tool 2,
   water with tool 3 (refill in the yard).
 - On purpose, the garden is slow here: few seeds, slow growth, hand watering. Cleaning drives
   progress and the goal chain (hexes 10-30, upgrades, bales, recycler, base 3).
-- Seedling Blueprint (160 Data) and Drip Blueprint (200 Data) need a level-3 base (Depot Station,
+- Seedling Blueprint (1.6k cubes) and Drip Blueprint (2k cubes) need a level-3 base (Depot Station,
   ~0:43 [bot]): Seedling ~0:49, Drip ~1:03 [bot].
 
 ## 4. The garden takes off (~1:00-1:30)
-- **Pollinator Survey** (Botany, 200 Data after Wild Mint, base 3; ~1:10 [bot]): +75% plant growth, +60% seeds per
+- **Pollinator Survey** (Botany, 2k cubes after Wild Mint, base 3; ~1:10 [bot]): +75% plant growth, +60% seeds per
   bloom. With Seedlings planting and Drips watering, hexes go Planted > Growing > Sustained > Thriving
   in minutes. The goal chain pays out a run of garden goals here ("the garden takes off").
 - Sustain is done by watering robots (Drip, Multibot on water) plus Water Tanks; never sprinklers.
-- Thriving hexes pay a garden stipend (cubes/min, capped at 900/min) and wildlife Data (0.6/min each),
+- Thriving hexes pay a garden stipend (cubes/min, capped at 900/min) and a wildlife-notes trickle (6 cubes/min each),
   so a finished district keeps moving.
 - Bloom Core 25% (WREN's signal clears, garden-deck memory) lands in this stretch.
 
@@ -71,22 +73,22 @@ hooks instead of played through.
   base 5 2:32 [bot].
 - Goals: fix up the new base (3, 4), Clean 50 hexes, 800 blooms, 40 restored hexes, second base at 5.
 - **Dust Flats unlock**: research Dune Charts (logistics line: ... Haul Routes > Rocket Cargo >
-  Dune Charts, 1,920 Data in all) **and** two bases at level 5.
+  Dune Charts, 28.2k cubes in all) **and** two bases at level 5.
 
 ## 7. Dust Flats (3:00-4:30)
 - Radius-4 frontier (60 hexes), bulkier junk, bales x3, base costs x4 (286k cubes for levels 2-5).
 - Sandstorms every 5-8 min (first after 2.5 min) re-dust clean, bare, unplanted hexes that no
   Sustained hex shelters. Plant early; Dune Fences research widens shelter.
 - The well is dry: Drips refill at Water Tanks only (Dew Condensers research triples tank refill).
-- **Frozen Port unlock**: Thermal Lance research (cleaning line, 1,775 Data), three bases at 5, Dust
+- **Frozen Port unlock**: Thermal Lance research (cleaning line, 29.8k cubes), three bases at 5, Dust
   Flats base at 3. The bot finishes Dust (base 5 + 50% Growing) before moving on.
 
 ## 8. Frozen Port (4:30-6:00)
 - Junk is locked in ice: Lumi's beam thaws a hex slowly (twice as fast with the Thermal Lance);
   heaters (E on ice, 90 cubes growing x1.32, max 16) thaw their hex fast and warm the neighbours.
-- Outdoors only cold-hardy plants grow after Cold-Hardy Seeds (Botany line, 2.3k Data); before that,
+- Outdoors only cold-hardy plants grow after Cold-Hardy Seeds (Botany line, 51.4k cubes); before that,
   greenhouses (E with the seed tool on a clean hex; 450 cubes growing x1.25) take any seed.
-- **Sunken City unlock**: Pump Works research (hydrology line, 2,625 Data), four bases at 5, Frozen
+- **Sunken City unlock**: Pump Works research (hydrology line, 51k cubes), four bases at 5, Frozen
   Port base at 3.
 
 ## 9. Sunken City (6:00-7:30)
@@ -95,35 +97,74 @@ hooks instead of played through.
 - Base costs x8; bales x8.
 
 ## 10. Cradle Returns and the finale (7:30-9:00)
-- **Unlock**: Ark Beacon research (5,045 Data in all, needs Dune Charts + Dew Condensers), all three
+- **Unlock**: Ark Beacon research (91.7k cubes in all, needs Dune Charts + Dew Condensers), all three
   frontier bases at level 5, and every frontier at least 50% Growing.
 - The base starts at level 3 (ground crews kept it). Clean the 7-hex landing pad, plant it and get
   every pad hex to Sustained; get 70% of the district Growing.
 - Then `FrontierDistrict.complete()` fires `EventBus.cradle_district_complete` once. That sets
   `flags.cradle_returned`, which is the **Verdance Bloom** milestone (data/bloom.json): the Bloom Core
-  hits 100% and `Bloom.play_finale()` plays the ark-landing cinematic (story/bloom_finale.gd).
-- After the finale the **end credits** roll once (ui/credits_roll.gd, built from docs/CREDITS.md;
-  any key skips). The title screen's Credits page shows them any time.
+  hits 100% and `Bloom.play_finale()` runs. [home] Before the ending this is **"The Cradle Answers"**
+  (story/cradle_answers.gd): the ark comes but won't land; its Makers sleep aboard until the whole system
+  lives. The Seed Ark loop opens; the Homeward campaign starts (section 10b).
 - Bloom Core beats along the way (story/core_charge.gd): 25% ~Old Town garden, 50% ~Dust Flats,
   75% ~arriving at Sunken City / the Cradle, 100% = the finale.
+
+## 10b. Homeward: the other four planets and the ending (wt/home)
+- **Solar map**: M > Solar system (or Pause > Solar system): a 3D orrery of the binary star and its five
+  worlds with each planet's restoration and the drive it needs. Build the drive there.
+- **Mk V Orbital** (2.5M cubes, 300 parts; after the Cradle answers) reaches Ochre and Tidewell; **Mk VI
+  Interplanetary** (1.2M cubes, 500 parts; one relic) reaches Rime and Anvil. Each planet also needs its
+  chart: the previous planet at 50%. Launch from the map: the rocket's launch, the flight on the map, the
+  arrival on the new planet (rocket parked on the ground, so you can always fly back).
+- **Each planet** restores like Verdance (its own save, districts, bases, district hops) and is done at
+  100%: 0.5 x Thriving hexes / target + 0.3 x bases at level 5 / target + 0.2 x the landing district's
+  Thriving share / 60%. Targets: Ochre 110 / 1, Tidewell 140 / 2, Rime 160 / 2, Anvil 200 / 3. Arrival
+  memo, half-way intercept (also the next planet's chart), restored note; a relic and an Heirloom pick.
+- Twists (data/homeward.json + world types): Ochre desert, Tailwinds + Rich Salvage (short); Tidewell
+  ocean, Heavy Rain + Wild Bloom; Rime ice moon, Long Nights + Thin Soil; Anvil rust world, Heavy Junk +
+  Long Nights (the hardest, the Ledger's head office).
+- **The ending**: all five at 100% -> fly back to Verdance, hop to Cradle Returns, build **Mk VII
+  Homeward** there (8M cubes, 2,000 parts, all four relics): the launch complex goes up around the pad.
+  E at the yellow-fenced bed beside it plants the last seed; E again (or the map's Launch home) launches.
+  **Homecoming** (story/homecoming.gd): the climb out of a green Verdance, the Cradle wakes and takes
+  the rocket in, Lumi returns the seedling tray to the vault, then the ark finale over Verdance and the
+  **end credits** (once). The game carries on; Cradle Mode's random worlds ("beyond the system") open.
+- Dev: `--cradle-answered`, `--drive=N`, `--planet-restore[=S]`, `--system-done`, `--home-ready`,
+  `--fly-planet=N[,S]`, `--cradle-answers[=S]`, `--homecoming[=S]`, `--open=system`.
+  Autoplay to the ending: `godot --headless --path . -- --fresh --frontier=cradle_returns
+  --frontier-done=3 --autoplay --home-ff=20 --time-scale=4 --quit-after=900` (home_* milestones).
 
 ## 11. Post-game: the Seed Ark loop
 - The ark stays parked over the district; the game carries on. Every bloom anywhere counts toward the
   next Seed Ark wave (120 x 1.5^n blooms, rewards x1.35^n). Goals: plant one and three waves.
 - Later Verdance Bloom milestones (Wide Bloom, Evergreen) keep going: 6 / 12 districts in bloom or
-  3% / 5% of the planet. Rocket Mk II-IV, contracts, the Collection, eggs and achievements stay open.
+  3% / 5% of the planet. Rocket Mk II-IV, the Requests board, the Collection, eggs and achievements stay open.
 
 ## 12. Cradle Mode and Garden Mode (post-game, wt/late)
+[home] Since Homeward, random Cradle Mode worlds are the post-game "beyond the system" mode (after
+Homecoming); the Ark Bridge opens earlier for Heirloom picks (one per restored planet).
+
 - **Ark Bridge** (Pause > Ark Bridge; a story toast and WREN point to it after the finale). Opening it
-  banks the Starseeds Verdance has earned: 4 per Seed Ark wave, 6 per Bloom milestone, 1.5 x sqrt(Thriving
-  hexes), 20 for the Cradle, 3 per level-5 base (a full campaign is roughly 80-110).
-- **Heirlooms** (10, data/cradle.json) are bought there and kept forever: plant growth, hopper, scoop
-  rate, bale value, move speed, seeds per bloom, and a starting kit (cubes, Data, seeds, waiting robots,
+  banks the restoration score Verdance has earned (not a currency): 4 per Seed Ark wave, 6 per Bloom
+  milestone, 1.5 x sqrt(Thriving hexes), 20 for the Cradle, 3 per level-5 base (a full campaign is
+  roughly 80-110).
+- **Heirlooms** (10, data/cradle.json) unlock along a milestone track as the score grows (cheapest
+  first, at the old Starseed prices; systems/heirloom_track.gd) and are kept forever: plant growth, hopper, scoop
+  rate, bale value, move speed, seeds per bloom, and a starting kit (cubes, seeds, waiting robots,
   known research).
 - **Seed a new world**: the preview shows its name, type and two modifiers. Launching saves Verdance,
   makes a new save slot and lands Lumi's pod in the new world's driest town. The new world starts
   ruined (base level 1, junk everywhere, the restart checklist) and runs the whole campaign again, with
   the kit and Heirlooms. Verdance (and every other world) stays one "Travel" away on the bridge.
+- **Each world looks like itself** (wt/worlds2): Ice Moon (pale icy sky, a ringed gas giant, frosted
+  city, the old seed silo iced to the waist), Desert World (amber haze, twin moons, sun-bleached city, a
+  solar tower in a field of fallen mirrors), Ocean World (deep blue, a big tide moon, salt-stained
+  coastal city, a storm-surge barrier, more puddles), Marsh World (green-grey mist, overgrown city, a
+  cooling tower gone to shelf fungi), Rust World (rust-red dusty sky, a shattered moon, corroded city, a
+  ship-breaking gantry). The weather eases as the base is restored; trim lights come on at base 3.
+  WREN tells each world's thread: arrival, two memories, halfway, restored.
+- **Title screen > Profiles**: three save profiles (own worlds, Heirlooms, progress); Continue a profile,
+  then pick a planet when it has several; New, Rename, Delete. Old saves are profile 1.
 - **Garden Mode** (H, or Pause > Garden Mode; after the finale or with this base at level 5): place
   decorations on clean ground. Each district's charm speeds its plants up a little (up to 8%).
 - Goals after the Seed Ark: open the Ark Bridge, place a decoration, buy an Heirloom, 10 decorations, 5
@@ -148,8 +189,8 @@ hooks instead of played through.
 | Gate | Needs | Earned from | Verified |
 |---|---|---|---|
 | Robots | build cost + parts | cubes; parts dug up / Haggle's | autoplay |
-| Research | Data | hexes cleaned 10, restored 15, shards 20, robot bales 1, blooms 1.5, Thriving wildlife 0.6/min | autoplay (all 38 nodes done by ~3:00) |
-| Base levels | cubes + materials | selling, garden stipend; scooped junk | autoplay x2 districts + Dust |
+| Research | cubes + real time | field notes pay cubes: hexes cleaned 100, restored 150, shards 200, robot bales 10, blooms 15, Thriving wildlife 6/min | autoplay (all 38 nodes done by ~3:00) |
+| Base levels | cubes + parts | selling, garden stipend; scooped junk, recycler, requests | autoplay x2 districts + Dust |
 | Dust Flats | Dune Charts + 2 bases L5 | | autoplay |
 | Frozen Port | Thermal Lance + 3 bases L5 + Dust L3 | | autoplay |
 | Sunken City | Pump Works + 4 bases L5 + Frozen L3 | | autoplay / dev jump |

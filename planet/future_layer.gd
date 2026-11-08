@@ -757,7 +757,7 @@ func _build_labels(list: Array) -> void:
 		l.modulate = Color(1.5, 1.9, 1.9)
 		l.outline_modulate = Color(col.r, col.g, col.b, 0.8)
 		l.shaded = false
-		l.double_sided = true
+		l.double_sided = false  # [vqa2] one face per side: seen from behind it read mirrored
 		l.render_priority = 2
 		l.outline_render_priority = 1
 		var w: float = float(d["w"]) * 0.86
@@ -768,11 +768,16 @@ func _build_labels(list: Array) -> void:
 		l.transform = Transform3D(xf.basis.orthonormalized(), xf.origin + xf.basis.z.normalized() * 0.04)
 		add_child(l)
 		_labels[k] = l
+		var back: Label3D = l.duplicate() as Label3D  # [vqa2] the back face, reading the right way round
+		back.transform = Transform3D(Basis(Vector3.UP, PI), Vector3(0, 0, -0.08))
+		l.add_child(back)
 		if _built and float(_known.get(k, -100.0)) >= _clock - 0.01:
 			l.modulate.a = 0.0
+			back.modulate.a = 0.0
 			var tw := l.create_tween()
 			tw.tween_interval(0.35)
 			tw.tween_property(l, "modulate:a", 1.0, 0.6)
+			tw.parallel().tween_property(back, "modulate:a", 1.0, 0.6)
 	for k: int in _labels.keys():
 		if not want.has(k):
 			(_labels[k] as Label3D).queue_free()
@@ -1005,26 +1010,9 @@ static func apply_preview(w: Node, n: int) -> void:
 			w.litter.refresh_hex(hid)
 			planet.set_junk(w.slice_cells[hid], 0.0)
 			planet.mark_clean(w.slice_cells[hid])
-	if n >= 2 and g:
-		GameState.flags["seeds_unlocked"] = true
-		var stage: int = [0, 0, 1, 2, 3, 4][n]
+	if n >= 2 and g:  # [green] real planted slots at a stage mix for the level (plants/garden_dev.gd)
 		for hid: int in hl.levels:
-			var sl: PackedInt32Array = g.hex_slots.get(hid, PackedInt32Array())
-			var sum: float = 0.0
-			for i: int in sl.size():
-				var s: int = sl[i]
-				if n < 4 and i % 2 == 1:
-					continue
-				g.slot_species[s] = g._pick_species(s)  # [biomes] district-appropriate species (frontier natives)
-				g.slot_stage[s] = stage
-				g.slot_water[s] = float(g.species[g.slot_species[s]].get("water_s", 120))
-				g._update_inst(s)
-				sum += stage + 1.0
-			if sl.size() > 0:
-				var life: float = sum / (sl.size() * 5.0)
-				g.hex_life[hid] = life
-				w.view.set_life(hid, life)
-				planet.state[w.slice_cells[hid]] = PlanetData.State.RESTORED if life >= 0.8 else (PlanetData.State.GROWING if life >= 0.35 else PlanetData.State.PLANTED)
+			GardenDev.grow_hex(w, hid, n)
 	for hid: int in hl.levels:
 		hl.levels[hid] = maxi(int(hl.levels[hid]), n)
 	hl._recalc_bonus()

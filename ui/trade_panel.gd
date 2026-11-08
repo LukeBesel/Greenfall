@@ -1,7 +1,7 @@
 class_name TradePanel
 extends VBoxContainer
 ## Haggle's Parts Trade (kiosk at the hub). Buy parts at a premium, swap three spares for one of
-## your choice, scrap spares for Bolts. Pity offer: a part a recipe has needed for a long time is
+## your choice, scrap spares for Parts [money]. Pity offer: a part a recipe has needed for a long time is
 ## offered at half price.
 
 const BUY_PRICE: Array[float] = [80.0, 220.0, 700.0, 2600.0, 12000.0]
@@ -68,7 +68,7 @@ func refresh() -> void:
 	var types: Array = Economy.parts.get("types", [])
 	if _rows.size() != types.size() or not is_instance_valid(_scrap_btn):
 		_build_rows(types.size())
-	_bolts.text = tr("Bolts  %s      Parts in storage  %d") % [Settings.fmt(GameState.get_currency("bolts")), GameState.parts.size()]
+	_bolts.text = tr("Parts  %s      Robot parts in storage  %d") % [Settings.fmt(GameState.get_currency("parts")), GameState.parts.size()]  # [money]
 	var need: Array[int] = _needed_types()
 	# Pity: track how long each needed type has been missing.
 	var t_now: float = float(GameState.stats.get("time_played", 0.0))
@@ -109,7 +109,7 @@ func refresh() -> void:
 		swap.disabled = take.size() < 3
 		swap.tooltip_text = swap_tip
 	var rusty: int = _rusty_spares().size()
-	_scrap_btn.text = tr("Scrap %d spare Rusty parts  ->  +%d bolts") % [rusty, rusty * 2]
+	_scrap_btn.text = tr("Scrap %d spare Rusty robot parts  ->  %s") % [rusty, L10nFmt.amount("parts", rusty * scrap_value(0), true)]  # [money]
 	_scrap_btn.disabled = rusty == 0
 	_refresh_bits()
 
@@ -142,7 +142,7 @@ func _refresh_bits() -> void:
 		var p: Dictionary = RobotBuilder.part(id)
 		var src: Dictionary = p.get("source", {})
 		var b: Button = _bits.get_child(i) as Button
-		b.text = tr("%s  (own %d)\n%s cubes + %d bolts") % [tr(str(p.get("name", id))), RobotBuilder.count(id), Settings.fmt(BigNum.from_float(float(src.get("cubes", 0)))), int(src.get("bolts", 0))]
+		b.text = tr("%s  (own %d)\n%s") % [tr(str(p.get("name", id))), RobotBuilder.count(id), Currencies.cost_text({"cubes": src.get("cubes", 0), "parts": src.get("parts", 0)})]  # [money]
 		b.tooltip_text = tr(str(p.get("desc", "")))
 		b.disabled = RobotBuilder.haggle_block_reason(id) != ""
 
@@ -246,6 +246,11 @@ func swap_take() -> Array[int]:
 	return out
 
 
+## [money] Parts paid for scrapping one spare of a rarity (data/parts.json rarities[].parts).
+static func scrap_value(rarity: int) -> float:
+	return float(Economy.rarity(rarity).get("parts", 10))
+
+
 func _rusty_spares() -> Array[int]:
 	var out: Array[int] = []
 	for i: int in _spares():
@@ -288,7 +293,7 @@ func _swap(t: int) -> void:
 
 func _scrap() -> void:
 	var rs: Array[int] = _rusty_spares()
-	GameState.add_currency("bolts", BigNum.from_float(rs.size() * 2.0))
+	GameState.add_currency("parts", BigNum.from_float(rs.size() * scrap_value(0)))  # [money]
 	_remove(rs)
 	Audio.play("crunch", 1.2, -6.0)
 	refresh()

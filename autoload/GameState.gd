@@ -3,7 +3,7 @@ extends Node
 ## Runs the fixed-rate simulation tick (10 Hz) independent of frame rate.
 
 const SIM_HZ: float = 10.0
-const SAVE_VERSION: int = 1
+const SAVE_VERSION: int = 2  # [money] v2: three currencies (cubes, parts, seeds)
 const RATE_WINDOW_S: float = 60.0
 
 var currencies: Dictionary = {}  # id -> BigNum
@@ -36,7 +36,7 @@ func _ready() -> void:
 
 
 func new_game() -> void:
-	currencies = {"cubes": BigNum.zero()}
+	currencies = {"cubes": BigNum.zero(), "parts": BigNum.zero(), "seeds": BigNum.zero()}  # [money]
 	upgrades = {}
 	stats = {
 		"cubes_made": 0, "pure_cubes": 0, "perfect_cubes": 0, "lumpy_cubes": 0,
@@ -66,13 +66,26 @@ func _physics_process(delta: float) -> void:
 
 # --- Currency -----------------------------------------------------------------
 
+## [money] Exactly three currencies (core/currencies.gd, data/currencies.json): cubes, parts, seeds.
+## Retired ids ("bolts", "data", "compost", ...) still work through the legacy alias layer: they
+## read and write the new currency at the table's rate (and warn once in debug builds).
 func get_currency(id: String) -> BigNum:
+	if not Currencies.is_currency(id) and Currencies.is_legacy(id):
+		var r: Array = Currencies.resolve(id, 1.0)
+		var per: float = float(r[1])
+		return get_currency(str(r[0])).mul_f(1.0 / per) if per > 0.0 else BigNum.zero()
 	if not currencies.has(id):
 		currencies[id] = BigNum.zero()
 	return currencies[id]
 
 
 func add_currency(id: String, amount: BigNum) -> void:
+	if not Currencies.is_currency(id) and Currencies.is_legacy(id):  # [money]
+		var per: float = float(Currencies.resolve(id, 1.0)[1])
+		if per <= 0.0:
+			return
+		add_currency(Currencies.canonical(id), amount.mul_f(per))
+		return
 	currencies[id] = get_currency(id).add(amount)
 	if currencies[id].mantissa < 0.0:  # [beat] currencies never go negative
 		currencies[id] = BigNum.zero()
@@ -84,10 +97,14 @@ func add_currency(id: String, amount: BigNum) -> void:
 
 
 func can_afford(id: String, amount: BigNum) -> bool:
+	if not Currencies.is_currency(id) and Currencies.is_legacy(id):  # [money]
+		return get_currency(Currencies.canonical(id)).gte(amount.mul_f(float(Currencies.resolve(id, 1.0)[1])))
 	return get_currency(id).gte(amount)
 
 
 func spend(id: String, amount: BigNum) -> bool:
+	if not Currencies.is_currency(id) and Currencies.is_legacy(id):  # [money]
+		return spend(Currencies.canonical(id), amount.mul_f(float(Currencies.resolve(id, 1.0)[1])))
 	if not can_afford(id, amount):
 		return false
 	currencies[id] = get_currency(id).sub(amount)
@@ -95,6 +112,32 @@ func spend(id: String, amount: BigNum) -> bool:
 		currencies[id] = BigNum.zero()
 	EventBus.currency_changed.emit(id, currencies[id])
 	return true
+
+
+## [money] Cost dictionaries ({"cubes": 1500, "parts": 40}, legacy keys folded): affordable / pay.
+func can_afford_all(cost: Dictionary, mult: float = 1.0) -> bool:
+	var f: Dictionary = Currencies.fold(cost)
+	for id: String in Currencies.IDS:
+		if float(f.get(id, 0.0)) > 0.0 and not can_afford(id, BigNum.from_float(float(f[id]) * mult)):
+			return false
+	return true
+
+
+func spend_all(cost: Dictionary, mult: float = 1.0) -> bool:
+	if not can_afford_all(cost, mult):
+		return false
+	var f: Dictionary = Currencies.fold(cost)
+	for id: String in Currencies.IDS:
+		if float(f.get(id, 0.0)) > 0.0:
+			spend(id, BigNum.from_float(float(f[id]) * mult))
+	return true
+
+
+func add_all(reward: Dictionary, mult: float = 1.0) -> void:
+	var f: Dictionary = Currencies.fold(reward)
+	for id: String in Currencies.IDS:
+		if float(f.get(id, 0.0)) != 0.0:
+			add_currency(id, BigNum.from_float(float(f[id]) * mult))
 
 
 ## Average income per second over the recent window (cash-ins are bursty).
@@ -174,7 +217,10 @@ func from_dict(d: Dictionary) -> void:
 	saved_unix = float(d.get("saved_unix", 0.0))
 	var cur: Dictionary = d.get("currencies", {})
 	for k: String in cur:
-		currencies[k] = BigNum.from_serialized(cur[k])
+		if Currencies.is_currency(k):  # [money] migrate() already folded legacy ids
+			currencies[k] = BigNum.from_serialized(cur[k])
+		else:
+			add_currency(k, BigNum.from_serialized(cur[k]))
 	var ups: Dictionary = d.get("upgrades", {})
 	for k: String in ups:
 		upgrades[k] = int(ups[k])

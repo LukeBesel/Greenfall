@@ -7,7 +7,10 @@ on:
 
 concurrency:
   group: build-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false  # let a build finish so the rolling "latest" release is published; newer pushes queue
+
+permissions:
+  contents: write  # publish the rolling "latest" release (tools/update-greenfall-mac.sh)
 
 jobs:
   export:
@@ -83,3 +86,21 @@ jobs:
         with:
           name: GreenfallDemo-macOS
           path: build/demo/macos
+
+      # One stable place for the newest build: a rolling "latest" pre-release, replaced on every push
+      # to the development branch. tools/update-greenfall-mac.sh downloads from it (no browser, so
+      # macOS never quarantines the app and no "Open Anyway" step is needed).
+      - name: Publish rolling "latest" release
+        if: github.event_name == 'push' && success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p release
+          [ -f build/macos/Greenfall.zip ] && cp build/macos/Greenfall.zip release/Greenfall-macOS.zip
+          (cd build/windows && zip -qr ../../release/Greenfall-Windows.zip .)
+          (cd build/linux && zip -qr ../../release/Greenfall-Linux.zip .)
+          cp tools/update-greenfall-mac.sh release/update-greenfall.sh
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest release/* --prerelease --target "$GITHUB_SHA" \
+            --title "Greenfall (latest build)" \
+            --notes "Newest build of ${GITHUB_REF_NAME} at ${GITHUB_SHA::7}. Mac: run update-greenfall.sh to install or update without security prompts."

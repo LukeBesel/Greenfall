@@ -83,6 +83,18 @@ func _ready() -> void:
 	var sp := Control.new()
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(sp)
+	# [intro2] Rewatch the opening cinematic (owner playtest #2).
+	var story := Button.new()
+	story.text = tr("Watch the story")
+	story.custom_minimum_size = Vector2(170, 44)
+	story.focus_mode = Control.FOCUS_NONE
+	story.pressed.connect(func() -> void:
+		close_screen()
+		var w: Node = get_tree().current_scene
+		var intro: Variant = w.get("intro") if w else null
+		if intro is Intro:
+			get_tree().create_timer(0.25).timeout.connect((intro as Intro).replay))
+	header.add_child(story)
 	var close := Button.new()
 	Settings.bind_text(close, func() -> String: return tr("Close  [%s]") % Settings.glyph("open_codex" if not Settings.last_input_pad else "ui_cancel"))  # [deck]
 	close.custom_minimum_size = Vector2(140, 44)
@@ -550,8 +562,8 @@ static func _trinket_hint(t: Dictionary) -> String:
 	match str(t.get("source", "")):
 		"wildlife_visit": return TranslationServer.translate("Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera.")
 		"animal_photos": return TranslationServer.translate("Hint: animals come back as the ground heals. Photograph them in photo mode (P).")  # [wild]
-		"contracts": return TranslationServer.translate("Hint: complete %d contracts at the workbench.") % int(t.get("milestone", 1))
-		"capsule": return TranslationServer.translate("Hint: Curio Capsules, in the workbench token shop.")
+		"contracts": return TranslationServer.translate("Hint: finish %d requests (Requests tab at the workbench).") % int(t.get("milestone", 1))
+		"capsule": return TranslationServer.translate("Hint: Curio Capsules, on the Requests reward track at the workbench.")
 		"streak": return TranslationServer.translate("Hint: keep scooping without stopping until the streak meter is full.")
 	return TranslationServer.translate("Hint: turns up during %s.") % Collection.source_name(str(t.get("source", ""))).to_lower()
 
@@ -691,7 +703,7 @@ func _build_stats() -> Control:
 	])
 	_stat_card(grid, tr("Progress"), "", [
 		[UITheme.GOLD, tr("Upgrades bought"), _int(st.get("upgrades_bought", 0))],
-		[Color(0.45, 0.8, 1.0), tr("Data earned"), _int(st.get("data_earned", 0))],
+		[Color(0.45, 0.8, 1.0), tr("Field notes logged"), _int(st.get("data_earned", 0))],
 		[Color(0.45, 0.8, 1.0), tr("Research done"), "%d / %d" % [Research.done_list().size(), Research.ids().size()]],
 		[UITheme.GOLD, tr("Achievements"), "%d / %d" % [Achievements.unlocked_count(), Achievements.defs().size()]],
 		[UITheme.CREAM, tr("Best hub level"), str(Achievements.best_hub_level())],

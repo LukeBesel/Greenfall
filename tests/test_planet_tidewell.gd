@@ -40,7 +40,7 @@ func test_registered_in_planets_json() -> void:
 	var k: Dictionary = _kind()
 	assert_eq(str(k.get("world_type", "")), "ocean_world")
 	assert_true(ResourceLoader.exists(str(k.get("env", ""))))
-	for key: String in ["sky", "fog", "sun", "ambient", "palette", "junk_tint", "music", "district"]:
+	for key: String in ["sky", "fog", "sun", "ambient", "palette", "junk_tint", "music_mood", "district"]:
 		assert_true(k.has(key), "planets.json tidewell has " + key)
 
 
