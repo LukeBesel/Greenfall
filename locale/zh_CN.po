@@ -742,6 +742,14 @@ msgstr "一起绽放"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  生命"
 
+#: planet/world_bounds.gd:105
+msgid "WREN: That's the edge of the survey zone, Lumi. Nothing out there but haze."
+msgstr ""
+
+#: planet/world_bounds.gd:166
+msgid "Lumi hovers back onto solid ground."
+msgstr ""
+
 #: plants/composter.gd:74
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   堆肥压制机  ·  休眠中，等有东西长出来"
@@ -1168,63 +1176,63 @@ msgstr "水箱已放置。附近的浇水机器人会来这里补水。"
 msgid "WATER"
 msgstr "水"
 
-#: scenes/slice.gd:281
+#: scenes/slice.gd:282
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "机器人上行链路上线。按 B 打开指挥：划定区域，把队伍派到你想去的地方。"
 
-#: scenes/slice.gd:512
+#: scenes/slice.gd:522
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 上线。绽放核心 4%：绿光微弱。Cradle号中继：若有若无。种点东西吧。"
 
-#: scenes/slice.gd:824
+#: scenes/slice.gd:834
 msgid "HEX CLEAN!  +%s"
 msgstr "六角格清理完毕！  +%s"
 
-#: scenes/slice.gd:838
+#: scenes/slice.gd:848
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice.gd:840
+#: scenes/slice.gd:850
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "整个废料场都干净了。Lumi 发出一声好长好长、非常开心的哔——"
 
-#: scenes/slice.gd:847
+#: scenes/slice.gd:857
 msgid "%s is out of range: %s"
 msgstr "%s 超出范围：%s"
 
-#: scenes/slice.gd:857
+#: scenes/slice.gd:867
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "未解锁。将基地升到 5 级才能建造发射台。"
 
-#: scenes/slice.gd:860 ui/rockets_panel.gd:39
+#: scenes/slice.gd:870 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:924
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陆：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:925
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "火箭停在空地上，电池充满就能出发。"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:925
 msgid "Landed on the base pad."
 msgstr "已降落在基地平台。"
 
-#: scenes/slice.gd:1006
+#: scenes/slice.gd:1016
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice.gd:1174
+#: scenes/slice.gd:1184
 msgid "Welcome back. The junk waited for you."
 msgstr "欢迎回来。废料一直在等你。"
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1201
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨 %d · %d级"
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1201
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
@@ -5364,7 +5372,7 @@ msgstr "选择一个你造访过的世界，观看那里的队伍。你脚下的
 msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
 msgstr "还没有造访过其他世界。先在方舟舰桥播种或造访另一个世界，再回来看看。"
 
-#: ui/telescope_view.gd:466
+#: ui/telescope_view.gd:476
 msgid ""
 "%s\n"
 "District %d%% clean · %d robots\n"
@@ -5374,7 +5382,7 @@ msgstr ""
 "街区 %d%% 已清理 · %d 台机器人\n"
 "上次造访 %s"
 
-#: ui/telescope_view.gd:468
+#: ui/telescope_view.gd:478
 msgid ""
 "%s\n"
 "You are here."
@@ -5382,7 +5390,7 @@ msgstr ""
 "%s\n"
 "你在这里。"
 
-#: ui/telescope_view.gd:470
+#: ui/telescope_view.gd:480
 msgid ""
 "%s\n"
 "Not visited yet."
@@ -5390,51 +5398,51 @@ msgstr ""
 "%s\n"
 "尚未造访。"
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "You stand on %s."
 msgstr "你正站在 %s 上。"
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "%s: nobody of yours down there yet."
 msgstr "%s：那里还没有你的队伍。"
 
-#: ui/telescope_view.gd:491
+#: ui/telescope_view.gd:501
 msgid "unknown"
 msgstr "未知"
 
-#: ui/telescope_view.gd:494
+#: ui/telescope_view.gd:504
 msgid "%d min ago"
 msgstr "%d 分钟前"
 
-#: ui/telescope_view.gd:496
+#: ui/telescope_view.gd:506
 msgid "%.1f h ago"
 msgstr "%.1f 小时前"
 
-#: ui/telescope_view.gd:497
+#: ui/telescope_view.gd:507
 msgid "%d days ago"
 msgstr "%d 天前"
 
-#: ui/telescope_view.gd:587
+#: ui/telescope_view.gd:597
 msgid "TELESCOPE  ·  %s"
 msgstr "望远镜  ·  %s"
 
-#: ui/telescope_view.gd:588
+#: ui/telescope_view.gd:598
 msgid "◀ Look"
 msgstr "◀ 观察"
 
-#: ui/telescope_view.gd:589
+#: ui/telescope_view.gd:599
 msgid "Look ▶"
 msgstr "观察 ▶"
 
-#: ui/telescope_view.gd:591
+#: ui/telescope_view.gd:601
 msgid "Back to system"
 msgstr "返回星系"
 
-#: ui/telescope_view.gd:592
+#: ui/telescope_view.gd:602
 msgid "Right stick or drag: turn and zoom.  Hold something in the reticle to log it."
 msgstr "右摇杆或拖动：旋转和缩放。  把目标保持在准星中即可记录。"
 
-#: ui/telescope_view.gd:638
+#: ui/telescope_view.gd:648
 msgid ""
 "PLANET     %s\n"
 "DISTRICT   %.2f%% clean\n"
@@ -5446,7 +5454,7 @@ msgstr ""
 "机器人   %d / %d 台在工作\n"
 "上次造访 %s"
 
-#: ui/telescope_view.gd:641
+#: ui/telescope_view.gd:651
 msgid ""
 "\n"
 "CARE PACKAGE  %d:%02d left"
@@ -5454,7 +5462,7 @@ msgstr ""
 "\n"
 "补给包  剩余 %d:%02d"
 
-#: ui/telescope_view.gd:642
+#: ui/telescope_view.gd:652
 msgid ""
 "Remote pace (%d%% of offline)\n"
 "Waiting for you: %s cubes%s"
@@ -5462,27 +5470,27 @@ msgstr ""
 "远程节奏（离线的 %d%%）\n"
 "等你来取：%s 方块%s"
 
-#: ui/telescope_view.gd:645
+#: ui/telescope_view.gd:655
 msgid "Send a care package (%s cubes)"
 msgstr "发送补给包（%s 方块）"
 
-#: ui/telescope_view.gd:659
+#: ui/telescope_view.gd:669
 msgid "Care package away. The crew on %s works at double speed for %d minutes."
 msgstr "补给包已发出。%s 上的队伍将以双倍速度工作 %d 分钟。"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Ledger wreck"
 msgstr "Ledger 残骸"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Deer"
 msgstr "鹿"
 
-#: ui/telescope_view.gd:738
+#: ui/telescope_view.gd:748
 msgid "Logged through the telescope: %s. New Codex entry."
 msgstr "通过望远镜记录：%s。图鉴新条目。"
 
-#: ui/telescope_view.gd:739
+#: ui/telescope_view.gd:749
 msgid "Codex: %s"
 msgstr "图鉴：%s"
 

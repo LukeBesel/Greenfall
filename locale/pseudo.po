@@ -740,6 +740,14 @@ msgstr "[ŢÔĜÉŢĤÉŔ ŴÉ BĻÔÔM ~~~]"
 msgid "LIGHT  WATER  LIFE"
 msgstr "[ĻÎĜĤŢ  ŴÀŢÉŔ  ĻÎFÉ ~~~]"
 
+#: planet/world_bounds.gd:105
+msgid "WREN: That's the edge of the survey zone, Lumi. Nothing out there but haze."
+msgstr "[ŴŔÉÑ: Ţĥàţ'š ţĥé éðĝé ôƒ ţĥé šûŕvéý žôñé, Ļûmî. Ñôţĥîñĝ ôûţ ţĥéŕé bûţ ĥàžé. ~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: planet/world_bounds.gd:166
+msgid "Lumi hovers back onto solid ground."
+msgstr "[Ļûmî ĥôvéŕš bàçķ ôñţô šôļîð ĝŕôûñð. ~~~~~~~~~]"
+
 #: plants/composter.gd:74
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   [çômþôšţ þŕéšš  ·  ðôŕmàñţ ûñţîļ šôméţĥîñĝ ĝŕôŵš ~~~~~~~~~~~~~]"
@@ -1170,63 +1178,63 @@ msgstr "[Ŵàţéŕ Ţàñķ þļàçéð. Ŵàţéŕéŕš ñéàŕbý ŵîļļ
 msgid "WATER"
 msgstr "[ŴÀŢÉŔ ~]"
 
-#: scenes/slice.gd:281
+#: scenes/slice.gd:282
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: þàîñţ žôñéš àñð šéñð çŕéŵš ŵĥéŕé ýôû ŵàñţ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:512
+#: scenes/slice.gd:522
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "[ĻM-1 ôñļîñé. Bļôôm Çôŕé 4%: ĝŕééñ ļîĝĥţ ļôŵ. Çŕàðļé ŕéļàý: ƒàîñţ. Ĝŕôŵ šôméţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:824
+#: scenes/slice.gd:834
 msgid "HEX CLEAN!  +%s"
 msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 
-#: scenes/slice.gd:838
+#: scenes/slice.gd:848
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice.gd:840
+#: scenes/slice.gd:850
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "[Ţĥé ŵĥôļé Ĵûñķýàŕð îš çļéàñ. Ļûmî bééþš à véŕý ļôñĝ, véŕý ĥàþþý bééþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:847
+#: scenes/slice.gd:857
 msgid "%s is out of range: %s"
 msgstr "[%s îš ôûţ ôƒ ŕàñĝé: %s ~~~~~]"
 
-#: scenes/slice.gd:857
+#: scenes/slice.gd:867
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ 5 ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:860 ui/rockets_panel.gd:39
+#: scenes/slice.gd:870 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "[Éñéŕĝý çéļļš ŕéçĥàŕĝîñĝ: %s. Ŕôçķéţ ûþĝŕàðéš ŕéƒîļļ ţĥém ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:924
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "[Ţôûçĥðôŵñ: %s. Ĥûb %d ôƒ %d. %s ~~~~~~~~]"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:925
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "[Ţĥé ŕôçķéţ îš þàŕķéð ôñ ţĥé ļôţ, ŕéàðý ŵĥéñ îţš çéļļš ŕéƒîļļ. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:925
 msgid "Landed on the base pad."
 msgstr "[Ļàñðéð ôñ ţĥé bàšé þàð. ~~~~~]"
 
-#: scenes/slice.gd:1006
+#: scenes/slice.gd:1016
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1174
+#: scenes/slice.gd:1184
 msgid "Welcome back. The junk waited for you."
 msgstr "[Ŵéļçômé bàçķ. Ţĥé ĵûñķ ŵàîţéð ƒôŕ ýôû. ~~~~~~~~~~]"
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1201
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1201
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
@@ -5375,7 +5383,7 @@ msgstr "[Þîçķ à ŵôŕļð ýôû'vé vîšîţéð ţô ŵàţçĥ îţš 
 msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
 msgstr "[Ñô ôţĥéŕ ŵôŕļð vîšîţéð ýéţ. Šééð ôŕ vîšîţ àñôţĥéŕ ŵôŕļð ƒŕôm ţĥé Àŕķ Bŕîðĝé, ţĥéñ çômé bàçķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:466
+#: ui/telescope_view.gd:476
 msgid ""
 "%s\n"
 "District %d%% clean · %d robots\n"
@@ -5385,7 +5393,7 @@ msgstr ""
 "Ðîšţŕîçţ %d%% çļéàñ · %d ŕôbôţš\n"
 "Ļàšţ vîšîţ %s ~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:468
+#: ui/telescope_view.gd:478
 msgid ""
 "%s\n"
 "You are here."
@@ -5393,7 +5401,7 @@ msgstr ""
 "[%s\n"
 "Ýôû àŕé ĥéŕé. ~~~]"
 
-#: ui/telescope_view.gd:470
+#: ui/telescope_view.gd:480
 msgid ""
 "%s\n"
 "Not visited yet."
@@ -5401,51 +5409,51 @@ msgstr ""
 "[%s\n"
 "Ñôţ vîšîţéð ýéţ. ~~~~]"
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "You stand on %s."
 msgstr "[Ýôû šţàñð ôñ %s. ~~~]"
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "%s: nobody of yours down there yet."
 msgstr "[%s: ñôbôðý ôƒ ýôûŕš ðôŵñ ţĥéŕé ýéţ. ~~~~~~~~~]"
 
-#: ui/telescope_view.gd:491
+#: ui/telescope_view.gd:501
 msgid "unknown"
 msgstr "[ûñķñôŵñ ~]"
 
-#: ui/telescope_view.gd:494
+#: ui/telescope_view.gd:504
 msgid "%d min ago"
 msgstr "[%d mîñ àĝô ~]"
 
-#: ui/telescope_view.gd:496
+#: ui/telescope_view.gd:506
 msgid "%.1f h ago"
 msgstr "[%.1f ĥ àĝô ~]"
 
-#: ui/telescope_view.gd:497
+#: ui/telescope_view.gd:507
 msgid "%d days ago"
 msgstr "[%d ðàýš àĝô ~]"
 
-#: ui/telescope_view.gd:587
+#: ui/telescope_view.gd:597
 msgid "TELESCOPE  ·  %s"
 msgstr "[ŢÉĻÉŠÇÔÞÉ  ·  %s ~~~]"
 
-#: ui/telescope_view.gd:588
+#: ui/telescope_view.gd:598
 msgid "◀ Look"
 msgstr "[◀ Ļôôķ ~]"
 
-#: ui/telescope_view.gd:589
+#: ui/telescope_view.gd:599
 msgid "Look ▶"
 msgstr "[Ļôôķ ▶ ~]"
 
-#: ui/telescope_view.gd:591
+#: ui/telescope_view.gd:601
 msgid "Back to system"
 msgstr "[Bàçķ ţô šýšţém ~~]"
 
-#: ui/telescope_view.gd:592
+#: ui/telescope_view.gd:602
 msgid "Right stick or drag: turn and zoom.  Hold something in the reticle to log it."
 msgstr "[Ŕîĝĥţ šţîçķ ôŕ ðŕàĝ: ţûŕñ àñð žôôm.  Ĥôļð šôméţĥîñĝ îñ ţĥé ŕéţîçļé ţô ļôĝ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:638
+#: ui/telescope_view.gd:648
 msgid ""
 "PLANET     %s\n"
 "DISTRICT   %.2f%% clean\n"
@@ -5457,7 +5465,7 @@ msgstr ""
 "ŔÔBÔŢŠ     %d àçţîvé ôƒ %d\n"
 "ĻÀŠŢ VÎŠÎŢ %s ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:641
+#: ui/telescope_view.gd:651
 msgid ""
 "\n"
 "CARE PACKAGE  %d:%02d left"
@@ -5465,7 +5473,7 @@ msgstr ""
 "\n"
 "[ÇÀŔÉ ÞÀÇĶÀĜÉ  %d:%02d ļéƒţ ~~~~~~]"
 
-#: ui/telescope_view.gd:642
+#: ui/telescope_view.gd:652
 msgid ""
 "Remote pace (%d%% of offline)\n"
 "Waiting for you: %s cubes%s"
@@ -5473,27 +5481,27 @@ msgstr ""
 "[Ŕémôţé þàçé (%d%% ôƒ ôƒƒļîñé)\n"
 "Ŵàîţîñĝ ƒôŕ ýôû: %s çûbéš%s ~~~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:645
+#: ui/telescope_view.gd:655
 msgid "Send a care package (%s cubes)"
 msgstr "[Šéñð à çàŕé þàçķàĝé (%s çûbéš) ~~~~~~~]"
 
-#: ui/telescope_view.gd:659
+#: ui/telescope_view.gd:669
 msgid "Care package away. The crew on %s works at double speed for %d minutes."
 msgstr "[Çàŕé þàçķàĝé àŵàý. Ţĥé çŕéŵ ôñ %s ŵôŕķš àţ ðôûbļé šþééð ƒôŕ %d mîñûţéš. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Ledger wreck"
 msgstr "[Ļéðĝéŕ ŵŕéçķ ~]"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Deer"
 msgstr "[Ðééŕ ~]"
 
-#: ui/telescope_view.gd:738
+#: ui/telescope_view.gd:748
 msgid "Logged through the telescope: %s. New Codex entry."
 msgstr "[Ļôĝĝéð ţĥŕôûĝĥ ţĥé ţéļéšçôþé: %s. Ñéŵ Çôðéx éñţŕý. ~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:739
+#: ui/telescope_view.gd:749
 msgid "Codex: %s"
 msgstr "[Çôðéx: %s ~]"
 

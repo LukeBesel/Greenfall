@@ -743,6 +743,14 @@ msgstr "ENSEMBLE, FLEURISSONS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUMIÈRE  EAU  VIE"
 
+#: planet/world_bounds.gd:105
+msgid "WREN: That's the edge of the survey zone, Lumi. Nothing out there but haze."
+msgstr ""
+
+#: planet/world_bounds.gd:166
+msgid "Lumi hovers back onto solid ground."
+msgstr ""
+
 #: plants/composter.gd:74
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   presse à compost  ·  en sommeil jusqu'à ce que quelque chose pousse"
@@ -1171,63 +1179,63 @@ msgstr "Réservoir posé. Les arroseurs proches viendront s'y remplir."
 msgid "WATER"
 msgstr "EAU"
 
-#: scenes/slice.gd:281
+#: scenes/slice.gd:282
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Liaison robots en ligne. Appuie sur B pour la vue commande : peins des zones et envoie les équipes où tu veux."
 
-#: scenes/slice.gd:512
+#: scenes/slice.gd:522
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 en ligne. Cœur floral 4% : lumière verte faible. Relais du Cradle : à peine. Fais pousser quelque chose."
 
-#: scenes/slice.gd:824
+#: scenes/slice.gd:834
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXAGONE PROPRE !  +%s"
 
-#: scenes/slice.gd:838
+#: scenes/slice.gd:848
 msgid "Milestone: %d hexes clean!"
 msgstr "Étape : %d hexagones propres !"
 
-#: scenes/slice.gd:840
+#: scenes/slice.gd:850
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "Toute la casse est propre. Lumi émet un très long bip très heureux."
 
-#: scenes/slice.gd:847
+#: scenes/slice.gd:857
 msgid "%s is out of range: %s"
 msgstr "%s est hors de portée : %s"
 
-#: scenes/slice.gd:857
+#: scenes/slice.gd:867
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Verrouillé. Monte ta base au niveau 5 pour construire le pas de tir."
 
-#: scenes/slice.gd:860 ui/rockets_panel.gd:39
+#: scenes/slice.gd:870 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Cellules d'énergie en recharge : %s. Les améliorations de fusée les remplissent plus vite."
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:924
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Atterrissage : %s. Base %d sur %d. %s"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:925
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "La fusée est garée sur le terrain, prête dès que ses cellules seront pleines."
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:925
 msgid "Landed on the base pad."
 msgstr "Posé sur le plot de la base."
 
-#: scenes/slice.gd:1006
+#: scenes/slice.gd:1016
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Les améliorations demandent un établi. Retourne à la base."
 
-#: scenes/slice.gd:1174
+#: scenes/slice.gd:1184
 msgid "Welcome back. The junk waited for you."
 msgstr "Bon retour. La ferraille t'a attendu."
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1201
 msgid "OUTPOST %d · Lv%d"
 msgstr "AVANT-POSTE %d · Niv%d"
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1201
 msgid "OUTPOST %d · RUIN"
 msgstr "AVANT-POSTE %d · RUINE"
 
@@ -5376,7 +5384,7 @@ msgstr "Choisis un monde visité pour regarder son équipe. Celui où tu te trou
 msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
 msgstr "Aucun autre monde visité. Ensemence ou visite un monde depuis le Pont de l'Arche, puis reviens."
 
-#: ui/telescope_view.gd:466
+#: ui/telescope_view.gd:476
 msgid ""
 "%s\n"
 "District %d%% clean · %d robots\n"
@@ -5386,7 +5394,7 @@ msgstr ""
 "Quartier propre à %d%% · %d robots\n"
 "Dernière visite %s"
 
-#: ui/telescope_view.gd:468
+#: ui/telescope_view.gd:478
 msgid ""
 "%s\n"
 "You are here."
@@ -5394,7 +5402,7 @@ msgstr ""
 "%s\n"
 "Tu es ici."
 
-#: ui/telescope_view.gd:470
+#: ui/telescope_view.gd:480
 msgid ""
 "%s\n"
 "Not visited yet."
@@ -5402,51 +5410,51 @@ msgstr ""
 "%s\n"
 "Pas encore visité."
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "You stand on %s."
 msgstr "Tu te trouves sur %s."
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "%s: nobody of yours down there yet."
 msgstr "%s : personne des tiens là-bas pour l'instant."
 
-#: ui/telescope_view.gd:491
+#: ui/telescope_view.gd:501
 msgid "unknown"
 msgstr "inconnue"
 
-#: ui/telescope_view.gd:494
+#: ui/telescope_view.gd:504
 msgid "%d min ago"
 msgstr "il y a %d min"
 
-#: ui/telescope_view.gd:496
+#: ui/telescope_view.gd:506
 msgid "%.1f h ago"
 msgstr "il y a %.1f h"
 
-#: ui/telescope_view.gd:497
+#: ui/telescope_view.gd:507
 msgid "%d days ago"
 msgstr "il y a %d jours"
 
-#: ui/telescope_view.gd:587
+#: ui/telescope_view.gd:597
 msgid "TELESCOPE  ·  %s"
 msgstr "TÉLESCOPE  ·  %s"
 
-#: ui/telescope_view.gd:588
+#: ui/telescope_view.gd:598
 msgid "◀ Look"
 msgstr "◀ Vue"
 
-#: ui/telescope_view.gd:589
+#: ui/telescope_view.gd:599
 msgid "Look ▶"
 msgstr "Vue ▶"
 
-#: ui/telescope_view.gd:591
+#: ui/telescope_view.gd:601
 msgid "Back to system"
 msgstr "Retour au système"
 
-#: ui/telescope_view.gd:592
+#: ui/telescope_view.gd:602
 msgid "Right stick or drag: turn and zoom.  Hold something in the reticle to log it."
 msgstr "Stick droit ou glisser : tourner et zoomer.  Garde quelque chose dans le réticule pour le noter."
 
-#: ui/telescope_view.gd:638
+#: ui/telescope_view.gd:648
 msgid ""
 "PLANET     %s\n"
 "DISTRICT   %.2f%% clean\n"
@@ -5458,7 +5466,7 @@ msgstr ""
 "ROBOTS     %d actifs sur %d\n"
 "VISITE     %s"
 
-#: ui/telescope_view.gd:641
+#: ui/telescope_view.gd:651
 msgid ""
 "\n"
 "CARE PACKAGE  %d:%02d left"
@@ -5466,7 +5474,7 @@ msgstr ""
 "\n"
 "COLIS  encore %d:%02d"
 
-#: ui/telescope_view.gd:642
+#: ui/telescope_view.gd:652
 msgid ""
 "Remote pace (%d%% of offline)\n"
 "Waiting for you: %s cubes%s"
@@ -5474,27 +5482,27 @@ msgstr ""
 "Rythme à distance (%d%% du hors-ligne)\n"
 "T'attend : %s cubes%s"
 
-#: ui/telescope_view.gd:645
+#: ui/telescope_view.gd:655
 msgid "Send a care package (%s cubes)"
 msgstr "Envoyer un colis de soutien (%s cubes)"
 
-#: ui/telescope_view.gd:659
+#: ui/telescope_view.gd:669
 msgid "Care package away. The crew on %s works at double speed for %d minutes."
 msgstr "Colis envoyé. L'équipe de %s travaille deux fois plus vite pendant %d minutes."
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Ledger wreck"
 msgstr "Épave du Ledger"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Deer"
 msgstr "Cerf"
 
-#: ui/telescope_view.gd:738
+#: ui/telescope_view.gd:748
 msgid "Logged through the telescope: %s. New Codex entry."
 msgstr "Noté au télescope : %s. Nouvelle entrée du Codex."
 
-#: ui/telescope_view.gd:739
+#: ui/telescope_view.gd:749
 msgid "Codex: %s"
 msgstr "Codex : %s"
 
