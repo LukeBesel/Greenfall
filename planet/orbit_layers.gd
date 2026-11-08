@@ -135,6 +135,8 @@ func place_intro() -> bool:
 func open_survey() -> void:
 	if survey.is_open or system_map.is_open or so.any_modal_open():
 		return
+	if so.sites and so.sites.picker and so.sites.picker.is_open:  # [v2map] the rocket's list is up
+		return
 	so.set_input(false)
 	survey.open_view()
 

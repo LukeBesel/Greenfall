@@ -71,36 +71,161 @@ static func of(world: Node) -> OrbitSites:
 	return (o as SliceOrbit).sites if o is SliceOrbit else null
 
 
-## The survey hologram's launch list (GlobeView): the hub sites on this globe, and a launch is a
-## rocket hop (same planet, no scene change).
+## [v2map] Owner note 40: the survey map (M) is only a map. Travel is at the rocket: it stands on
+## the pad of the hub Lumi last landed at (from base level 5, as on the flat game, or once Lumi
+## has flown), and E there opens the destination list (ui/rocket_picker.gd): the other hubs on
+## this globe (a rocket hop), other planets once the system is open, and the Homeward launch.
+## Dev: --orbit-survey-launch=N still flies to the Nth hub in that list; --rocket parks it at once.
+var picker: RocketPicker
+var rocket_spot: Node3D
+var _site_hub: Dictionary = {}  # site index -> planet.hubs index
+
+
 func _wire_survey() -> void:
-	var gv: Variant = so.w.get("globe")
-	if not (gv is GlobeView) or sm == null:
+	if sm == null:
 		return
-	var v: GlobeView = gv
 	var pl: PlanetData = so.globe.planet
-	var site_hub: Dictionary = {}  # planet.hubs index -> site index
 	for k: int in pl.hubs.size():
 		for i: int in sm.sites.size():
 			if int(sm.sites[i]["cell"]) == pl.hubs[k]:
-				site_hub[k] = i
-	v.hub_order = func() -> Array:
-		var cur: int = sm.nearest if sm.nearest >= 0 else 0
-		for k: Variant in site_hub:
-			if site_hub[k] == cur:
-				v.current_hub = int(k)
-		return site_hub.keys()
-	v.rocket_ready = func() -> bool: return not hop.flying
-	v.rocket_lock_text = func() -> String: return tr("The rocket is in flight.")
-	v.launch_to = func(k: int) -> void:
-		if site_hub.has(k):
-			hop_to(int(site_hub[k]))
-	if DevHooks.has("orbit-survey-launch"):  # dev: launch from the survey list to its Nth entry
-		var keys: Array = v.hub_order.call()
-		var pick: int = int(keys[clampi(int(DevHooks.get_f("orbit-survey-launch", 1.0)), 0, keys.size() - 1)])
-		print("[hop] survey list %d hubs (current %d), launching to hub %d (site %d)" % [keys.size(), v.current_hub, pick, int(site_hub[pick])])
+				_site_hub[i] = k
+	var gv: Variant = so.w.get("globe")
+	if gv is GlobeView:
+		(gv as GlobeView).travel_in_map = false
+	picker = RocketPicker.new()
+	picker.name = "RocketPicker"
+	so.w.add_child(picker)
+	picker.entries_fn = destinations
+	picker.blocker_fn = func() -> String: return tr("The rocket is in flight.") if hop.flying or bool(so.w.get("launching")) else ""
+	picker.planets_open = func() -> bool: return Homeward.system_open()
+	picker.open_planets = _open_planets
+	picker.home_ready = func() -> bool: return HomewardDirector.home_ready(so.w)
+	picker.launch_home = func() -> void: HomewardDirector.launch_home(so.w)
+	picker.picked.connect(func(site: int) -> void: hop_to(site))
+	picker.closed.connect(func() -> void:
+		if not hop.flying and not (so.layers and so.layers.system_map and so.layers.system_map.is_open):
+			so.on_modal_closed())
+	rocket_spot = Node3D.new()
+	rocket_spot.name = "RocketSpot"
+	add_child(rocket_spot)
+	var ia: Variant = so.w.get("interactables")
+	if ia is Interactables:
+		(ia as Interactables).register(rocket_spot, 6.5, rocket_prompt, open_rocket, func() -> bool: return rocket_spot.visible and not hop.flying)
+	hop.hopped.connect(func(to_i: int) -> void:
+		GameState.orbit["rocket_site"] = to_i
+		GameState.orbit["rocket_owned"] = true)
+	_sync_rocket()
+	if DevHooks.has("orbit-rocket-open"):  # dev: open the rocket's list after T s; prints its rows
+		get_tree().create_timer(DevHooks.get_f("orbit-rocket-open", 3.0)).timeout.connect(func() -> void:
+			_sync_rocket()
+			open_rocket()
+			print("[rocket] parked %s at site %d, list %s, prompt '%s'" % [rocket_spot.visible, rocket_site(), str(picker.offered_sites()), rocket_prompt()]))
+	if DevHooks.has("orbit-survey-launch"):  # dev: fly to the Nth hub of the rocket's list
 		await get_tree().create_timer(1.0).timeout
-		v.launch_to.call(pick)
+		var keys: Array = picker.offered_sites()
+		if keys.is_empty():
+			print("[hop] rocket list empty")
+			return
+		var pick: int = int(keys[clampi(int(DevHooks.get_f("orbit-survey-launch", 1.0)), 0, keys.size() - 1)])
+		print("[hop] rocket list %d hubs (at site %d), flying to site %d" % [keys.size(), rocket_site(), pick])
+		hop_to(pick)
+
+
+## Whether Lumi has a rocket on this globe: base level 5 builds it (as the flat game's launch pad),
+## and once Lumi has flown (a hop or an arrival from another planet) it travels with him.
+func rocket_unlocked() -> bool:
+	var hub: Variant = so.w.get("hub")
+	return DevHooks.has("rocket") or bool(GameState.orbit.get("rocket_owned", false)) \
+		or (hub is Hub and (hub as Hub).level >= 5)
+
+
+## The hub whose pad the rocket stands on (the last landing, else the start site).
+func rocket_site() -> int:
+	return clampi(int(GameState.orbit.get("rocket_site", 0)), 0, maxi(sm.sites.size() - 1, 0)) if sm else 0
+
+
+func rocket_prompt() -> String:
+	return tr("E   Rocket: choose a destination")
+
+
+func open_rocket() -> void:
+	if picker == null or picker.is_open or hop.flying:
+		return
+	so.set_input(false)
+	picker.open()
+
+
+## The other hubs on this globe, nearest first: [{site, name, km}].
+func destinations() -> Array:
+	var out: Array = []
+	if sm == null:
+		return out
+	var from_i: int = rocket_site()
+	var here: Vector3 = sm.pad_xf(from_i).origin.normalized()
+	var R: float = so.globe.terrain.R
+	for i: int in sm.sites.size():
+		if i == from_i or (not _site_hub.is_empty() and not _site_hub.has(i)):
+			continue
+		var d: Vector3 = (sm.sites[i]["transform"] as Transform3D).origin.normalized()
+		out.append({"site": i, "name": site_name(i), "km": here.angle_to(d) * R / 1000.0})
+	out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return float(a["km"]) < float(b["km"]))
+	return out.slice(0, 6)
+
+
+func site_name(i: int) -> String:
+	var pl: PlanetData = so.globe.planet
+	if _site_hub.has(i):
+		var cell: int = pl.hubs[int(_site_hub[i])]
+		if pl.city[cell] >= 0:
+			return tr(str(pl.cities[pl.city[cell]]["name"]))
+		return tr("%s site") % PlanetData.BIOMES[pl.biome[cell]].capitalize().replace("_", " ")
+	return tr("Hub %d") % i
+
+
+func _open_planets() -> void:
+	var m: SystemMap = so.layers.system_map if so.layers else null
+	var d: HomewardDirector = HomewardDirector.of(so.w)
+	if d and d.map:
+		m = d.map
+	if m == null:
+		so.on_modal_closed()
+		return
+	m.on_here = open_rocket
+	m.open_map(false, true)
+
+
+## Keeps the parked rocket on its pad (shown once unlocked and the pad's site is built).
+func _sync_rocket() -> void:
+	if rocket_spot == null or sm == null:
+		return
+	var i: int = rocket_site()
+	var p: SitePrefab = sm.prefab(i)
+	var on: bool = rocket_unlocked() and p != null and p.is_built and p.is_inside_tree()
+	rocket_spot.visible = on
+	if hop.flying:
+		return
+	var ship: ShipModel = hop.parked()
+	if not on:
+		if ship:
+			ship.visible = false
+		return
+	var xf: Transform3D = sm.pad_xf(i)
+	rocket_spot.global_transform = xf
+	if ship == null:
+		ship = hop.park(xf, int(GameState.flags.get("rocket_tier", 1)))
+	ship.visible = true
+	if ship.global_position.distance_to(xf.origin) > 0.5:
+		ship.global_transform = xf
+
+
+var _rocket_t: float = 0.0
+
+
+func _process(delta: float) -> void:
+	_rocket_t += delta
+	if _rocket_t >= 0.5:
+		_rocket_t = 0.0
+		_sync_rocket()
 
 
 ## The interplanet rocket from this globe (SystemMap -> HomewardDirector): lift off from the

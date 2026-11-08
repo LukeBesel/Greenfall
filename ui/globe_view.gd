@@ -76,6 +76,11 @@ var _flight_locked: bool = false
 ## [home] Opens the solar-system map (set by systems/homeward_director.gd); the button hides without it.
 var open_system: Callable = Callable()
 var _system_btn: Button
+## [v2map] Owner note 40: on the round game the map is only a map; the rocket's destination list
+## (ui/rocket_picker.gd, E at the rocket) does the travel. false hides the Rocket card.
+var travel_in_map: bool = true
+var _rocket_card: Control
+var _hint: PromptLabel
 
 
 func _ready() -> void:
@@ -175,6 +180,7 @@ func _ready() -> void:
 	right.offset_top = 28
 	right.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	_root.add_child(right)
+	_rocket_card = right
 	var c2: Array = _holo_card(tr("Rocket"), 320, tr("Travel between bases"))
 	right.add_child(c2[0])
 	_hub_list = VBoxContainer.new()
@@ -195,6 +201,7 @@ func _ready() -> void:
 	hint.offset_top = -38
 	hint.offset_bottom = -18
 	_root.add_child(hint)
+	_hint = hint
 	_root.visible = false
 
 
@@ -273,7 +280,12 @@ func open_view() -> void:
 	_root.modulate.a = 0.0
 	create_tween().tween_property(_root, "modulate:a", 1.0, 0.25)
 	_refresh_text()
-	_refresh_hubs()
+	_rocket_card.visible = travel_in_map  # [v2map]
+	if travel_in_map:
+		_refresh_hubs()
+	elif not _hint.has_meta("v2map"):
+		_hint.set_meta("v2map", true)
+		_hint.set_template(tr("[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"))
 	_focus_first.call_deferred()  # [deck] pad players need a focused control for the D-pad
 
 

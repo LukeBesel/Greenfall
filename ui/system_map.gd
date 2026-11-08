@@ -45,6 +45,12 @@ const MARGIN: float = 24.0
 
 var world: Node
 var is_open: bool = false
+## [v2map] Owner (Nov 8, note 40): travel happens only at the rocket (E at its pad). Opened as a
+## map (M > Solar system, pause menu) the panel only describes planets; open_map(_, true) from the
+## rocket's destination list (ui/rocket_picker.gd) shows the Launch buttons.
+var travel: bool = false
+## [v2map] Travel mode, the planet Lumi is on: back to the rocket's hub list (set by the picker).
+var on_here: Callable = Callable()
 var selected: int = 0
 var _root: Control
 var _svc: SubViewportContainer
@@ -97,10 +103,11 @@ func _ready() -> void:
 
 # --- Open / close ----------------------------------------------------------------------------
 
-func open_map(from_planet: bool = false) -> void:
+func open_map(from_planet: bool = false, p_travel: bool = false) -> void:
 	if is_open:
 		return
 	is_open = true
+	travel = p_travel  # [v2map]
 	selected = clampi(Homeward.current_planet(), 0, Homeward.planets().size() - 1)
 	get_viewport().disable_3d = true  # the district behind is fully covered: don't render it
 	_build()
@@ -694,7 +701,17 @@ func _info_panel() -> PanelContainer:
 	var act := Button.new()
 	act.custom_minimum_size = Vector2(0, 38)
 	_button(act)
-	if here and HomewardDirector.home_ready(world):
+	if not travel and not _locked:  # [v2map] a map, not a launcher: travel is at the rocket
+		act.text = tr("Choose a district") if here else tr("Launch from the rocket pad")
+		act.disabled = not here or world == null or world.get("globe") == null
+		if here:
+			act.pressed.connect(_hand_to_globe)
+	elif here and travel and on_here.is_valid() and not HomewardDirector.home_ready(world):  # [v2map]
+		act.text = tr("Hubs on this planet")
+		act.pressed.connect(func() -> void:
+			close_map()
+			on_here.call())
+	elif here and HomewardDirector.home_ready(world):
 		act.text = tr("Launch home")
 		act.pressed.connect(func() -> void:
 			close_map()
@@ -712,7 +729,8 @@ func _info_panel() -> PanelContainer:
 			HomewardDirector.launch_planet(world, kk))
 	b.add_child(act)
 	_first = act
-	_drive_row(b, k)
+	if travel or _locked:  # [v2map] the drive is a rocket part: built from the rocket's list
+		_drive_row(b, k)
 	var line := ColorRect.new()
 	line.color = Color(HOLO, 0.25)
 	line.custom_minimum_size = Vector2(0, 1)

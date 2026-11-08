@@ -57,10 +57,7 @@ func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerra
 	var ang: float = dir_a.angle_to(dir_b)
 	var axis: Vector3 = dir_a.cross(dir_b).normalized() if ang > 0.0001 else SphereGrid.frame(dir_a).x
 	var leg_ang: float = minf(LEG_M / terrain.R, ang * 0.45)
-	ship = ShipModel.new()
-	ship.name = "HopShip"
-	add_child(ship)
-	ship.build(1)
+	ship = _take_parked()  # [v2map] the parked rocket lifts off (no twin left on the pad)
 	ship.global_transform = a
 	_focus = Node3D.new()
 	_focus.name = "HopFocus"
@@ -159,10 +156,7 @@ func arrive_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTe
 
 
 func _board(at: Transform3D, lumi: Patch, cam: SphereCam) -> void:
-	ship = ShipModel.new()
-	ship.name = "HopShip"
-	add_child(ship)
-	ship.build(1)
+	ship = _take_parked()  # [v2map]
 	ship.global_transform = at
 	_focus = Node3D.new()
 	_focus.name = "HopFocus"
@@ -202,6 +196,37 @@ func _step_off(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerr
 	for c: Node in get_children():
 		if c is ShipModel and c != keep:
 			c.queue_free()
+
+
+## [v2map] The rocket parked on a pad (planet/sites/orbit_sites.gd shows it once unlocked), or null.
+func parked() -> ShipModel:
+	var n: Node = get_node_or_null("ParkedShip")
+	return n as ShipModel if n and not n.is_queued_for_deletion() else null
+
+
+## [v2map] Parks a rocket of this tier on a pad transform; returns it.
+func park(xf: Transform3D, tier: int = 1) -> ShipModel:
+	var s: ShipModel = parked()
+	if s == null:
+		s = ShipModel.new()
+		s.name = "ParkedShip"
+		add_child(s)
+		s.build(clampi(tier, 1, 7))
+	s.global_transform = xf
+	s.set_lift(0.0)
+	return s
+
+
+## [v2map] The ship for a flight: the parked one if there is one, else a new one.
+func _take_parked() -> ShipModel:
+	var s: ShipModel = parked()
+	if s == null:
+		s = ShipModel.new()
+		add_child(s)
+		s.build(clampi(int(GameState.flags.get("rocket_tier", 1)), 1, 7))
+	s.name = "HopShip"
+	s.visible = true
+	return s
 
 
 ## Drops the veil at once (a cinematic takes over the screen).
