@@ -189,65 +189,69 @@ msgstr "[Ţôûçĥþàð ~]"
 msgid "Paddle 1"
 msgstr "[Þàððļé 1 ~]"
 
-#: autoload/Settings.gd:521
+#: autoload/Settings.gd:522
 msgid "LMB"
 msgstr "[ĻMB ~]"
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:523
 msgid "RMB"
 msgstr "[ŔMB ~]"
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:524
 msgid "MMB"
 msgstr "[MMB ~]"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:525
 msgid "Wheel up"
 msgstr "[Ŵĥééļ ûþ ~]"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:526
 msgid "Wheel down"
 msgstr "[Ŵĥééļ ðôŵñ ~]"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:527
 msgid "Mouse %d"
 msgstr "[Môûšé %d ~]"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:529
 msgid "Button %d"
 msgstr "[Bûţţôñ %d ~]"
 
-#: autoload/Settings.gd:533
+#: autoload/Settings.gd:534
 msgid "LS left"
 msgstr "[ĻŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:533
+#: autoload/Settings.gd:534
 msgid "LS right"
 msgstr "[ĻŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:535
 msgid "LS up"
 msgstr "[ĻŠ ûþ ~]"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:535
 msgid "LS down"
 msgstr "[ĻŠ ðôŵñ ~]"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:536
 msgid "RS left"
 msgstr "[ŔŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:536
 msgid "RS right"
 msgstr "[ŔŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:537
 msgid "RS up"
 msgstr "[ŔŠ ûþ ~]"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:537
 msgid "RS down"
 msgstr "[ŔŠ ðôŵñ ~]"
+
+#: autoload/Settings.gd:548
+msgid "hold %s"
+msgstr "[ĥôļð %s ~]"
 
 #: autoload/Story.gd:23
 msgid "Perfect bale: filled right to the gold line."
@@ -786,7 +790,7 @@ msgstr "[ŴŔÉÑ: Ţĥàţ'š ţĥé éðĝé ôƒ ţĥé šûŕvéý žôñé,
 msgid "Lumi hovers back onto solid ground."
 msgstr "[Ļûmî ĥôvéŕš bàçķ ôñţô šôļîð ĝŕôûñð. ~~~~~~~~~]"
 
-#: planet/orbit/verdance_globe.gd:556 scenes/slice.gd:1056 scenes/slice_orbit.gd:227
+#: planet/orbit/verdance_globe.gd:556 scenes/slice.gd:1056 scenes/slice_orbit.gd:261
 msgid "HEX CLEAN!  +%s"
 msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 
@@ -862,27 +866,27 @@ msgstr ""
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "[À ĥéx îš ƒûļļý ŕéšţôŕéð. Šôméţĥîñĝ šmàļļ îš àļŕéàðý ļîvîñĝ îñ îţ. ~~~~~~~~~~~~~~~~~~~~]"
 
-#: plants/hex_levels.gd:90
+#: plants/hex_levels.gd:111
 msgid "HEX  LV %d  %s"
 msgstr "[ĤÉX  ĻV %d  %s ~~]"
 
-#: plants/hex_levels.gd:93
+#: plants/hex_levels.gd:114
 msgid "      SUSTAIN  %d%%"
 msgstr "      [ŠÛŠŢÀÎÑ  %d%% ~~~~]"
 
-#: plants/hex_levels.gd:95
+#: plants/hex_levels.gd:116
 msgid "      THIRSTY"
 msgstr "      [ŢĤÎŔŠŢÝ ~~]"
 
-#: plants/hex_levels.gd:97
+#: plants/hex_levels.gd:118
 msgid "      next: %s"
 msgstr "      [ñéxţ: %s ~~]"
 
-#: plants/hex_levels.gd:253
+#: plants/hex_levels.gd:275
 msgid "HEX LV %d  %s"
 msgstr "[ĤÉX ĻV %d  %s ~~]"
 
-#: plants/hex_levels.gd:260
+#: plants/hex_levels.gd:282
 msgid "Hex Lv %d  %s.   %s"
 msgstr "[Ĥéx Ļv %d  %s.   %s ~~~~]"
 
@@ -1249,7 +1253,7 @@ msgstr "[ŴÀŢÉŔ ~]"
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: þàîñţ žôñéš àñð šéñð çŕéŵš ŵĥéŕé ýôû ŵàñţ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1070
+#: scenes/slice.gd:1070 scenes/slice_orbit.gd:277
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
@@ -1571,87 +1575,87 @@ msgstr ""
 "[BÀÇĶ ÎÑ\n"
 "5 MÎÑÛŢÉŠ ~~~]"
 
-#: story/eggs.gd:338
+#: story/eggs.gd:340
 msgid "Something metal surfaced in the cleared ground."
 msgstr "[Šôméţĥîñĝ méţàļ šûŕƒàçéð îñ ţĥé çļéàŕéð ĝŕôûñð. ~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:551 story/eggs.gd:613
+#: story/eggs.gd:553 story/eggs.gd:615
 msgid "Gnome %d / %d"
 msgstr "[Ĝñômé %d / %d ~~]"
 
-#: story/eggs.gd:559
+#: story/eggs.gd:561
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "[Ţĥé ļàšţ þôšţéŕ þôîñţš šôméŵĥéŕé çļôšé. Šôméţĥîñĝ ôŕàñĝé îš çûŕļéð ûþ ñéàŕbý. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:614
+#: story/eggs.gd:616
 msgid "%s   ·   added to Lumi's collection"
 msgstr "[%s   ·   àððéð ţô Ļûmî'š çôļļéçţîôñ ~~~~~~~~~]"
 
-#: story/eggs.gd:630
+#: story/eggs.gd:632
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "[Ţĥé ŕàðîô ĥîššéš qûîéţļý. Ñôţĥîñĝ ûþ ţĥéŕé îš àŵàķé ýéţ. Çômé bàçķ àƒţéŕ ðàŕķ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:631
+#: story/eggs.gd:633
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "[Ţĥŕôûĝĥ ţĥé ţéļéšçôþé: ĵûšţ à bŕîĝĥţ, ðûšţý šķý. Çômé bàçķ àƒţéŕ ðàŕķ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:660
+#: story/eggs.gd:662
 msgid "SOLD OUT"
 msgstr "[ŠÔĻÐ ÔÛŢ ~]"
 
-#: story/eggs.gd:677
+#: story/eggs.gd:680
 msgid "QUACK!"
 msgstr "[QÛÀÇĶ! ~]"
 
-#: story/eggs.gd:695
+#: story/eggs.gd:698
 msgid "NEW CHALLENGER!"
 msgstr "[ÑÉŴ ÇĤÀĻĻÉÑĜÉŔ! ~~]"
 
-#: story/eggs.gd:698
+#: story/eggs.gd:701
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "[ĜÀMÉ ÔVÉŔ  ·  ŠÇÔŔÉ 12 ~~~~~]"
 
-#: story/eggs.gd:726
+#: story/eggs.gd:729
 msgid "hi, Gus"
 msgstr "[ĥî, Ĝûš ~]"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "CONFETTI"
 msgstr "[ÇÔÑFÉŢŢÎ ~]"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "LIGHT JAZZ"
 msgstr "[ĻÎĜĤŢ ĴÀŽŽ ~]"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "99% DUCKS"
 msgstr "[99% ÐÛÇĶŠ ~]"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "SUNNY (INDOORS)"
 msgstr "[ŠÛÑÑÝ (ÎÑÐÔÔŔŠ) ~~]"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "FOG OF NOODLES"
 msgstr "[FÔĜ ÔF ÑÔÔÐĻÉŠ ~~]"
 
-#: story/eggs.gd:776
+#: story/eggs.gd:779
 msgid "1ST PLACE"
 msgstr "[1ŠŢ ÞĻÀÇÉ ~]"
 
-#: story/eggs.gd:834
+#: story/eggs.gd:837
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "[Ţĥé ðûçķ šqûéàķš à šéçŕéţ: \"%s\" ûñļôçķš ţĥé %s ðéšîĝñ. ~~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:835
+#: story/eggs.gd:838
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "[Ţĥé ðûçķ ĥàš ţàûĝĥţ ýôû évéŕýţĥîñĝ îţ ķñôŵš. Qûàçķ. ~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:1063
+#: story/eggs.gd:1066
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "[Çûŕîôšîţý ƒôûñð: %s  (%d / %d)   %s ~~~~~~~~~]"
 
-#: story/eggs.gd:1074
+#: story/eggs.gd:1077
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "[Évéŕý çûŕîôšîţý ôñ ţĥé ļîšţ, ƒôûñð. Ļûmî'š çôļļéçţîôñ çômþàŕţméñţ îš véŕý ƒûļļ ôƒ mémôŕîéš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 

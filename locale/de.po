@@ -192,65 +192,69 @@ msgstr ""
 msgid "Paddle 1"
 msgstr ""
 
-#: autoload/Settings.gd:521
+#: autoload/Settings.gd:522
 msgid "LMB"
 msgstr "LMT"
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:523
 msgid "RMB"
 msgstr "RMT"
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:524
 msgid "MMB"
 msgstr "MMT"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:525
 msgid "Wheel up"
 msgstr "Rad hoch"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:526
 msgid "Wheel down"
 msgstr "Rad runter"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:527
 msgid "Mouse %d"
 msgstr "Maus %d"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:529
 msgid "Button %d"
 msgstr "Taste %d"
 
-#: autoload/Settings.gd:533
+#: autoload/Settings.gd:534
 msgid "LS left"
 msgstr "LS links"
 
-#: autoload/Settings.gd:533
+#: autoload/Settings.gd:534
 msgid "LS right"
 msgstr "LS rechts"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:535
 msgid "LS up"
 msgstr "LS hoch"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:535
 msgid "LS down"
 msgstr "LS runter"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:536
 msgid "RS left"
 msgstr "RS links"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:536
 msgid "RS right"
 msgstr "RS rechts"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:537
 msgid "RS up"
 msgstr "RS hoch"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:537
 msgid "RS down"
 msgstr "RS runter"
+
+#: autoload/Settings.gd:548
+msgid "hold %s"
+msgstr ""
 
 #: autoload/Story.gd:23
 msgid "Perfect bale: filled right to the gold line."
@@ -789,7 +793,7 @@ msgstr "WREN: Da endet die Vermessungszone, Lumi. Da draußen gibt's nur Dunst."
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi schwebt zurück auf festen Boden."
 
-#: planet/orbit/verdance_globe.gd:556 scenes/slice.gd:1056 scenes/slice_orbit.gd:227
+#: planet/orbit/verdance_globe.gd:556 scenes/slice.gd:1056 scenes/slice_orbit.gd:261
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXFELD SAUBER!  +%s"
 
@@ -865,27 +869,27 @@ msgstr ""
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "Ein Hexfeld ist vollständig wiederhergestellt. Schon lebt etwas Kleines darin."
 
-#: plants/hex_levels.gd:90
+#: plants/hex_levels.gd:111
 msgid "HEX  LV %d  %s"
 msgstr "HEX  ST %d  %s"
 
-#: plants/hex_levels.gd:93
+#: plants/hex_levels.gd:114
 msgid "      SUSTAIN  %d%%"
 msgstr "      STABIL  %d%%"
 
-#: plants/hex_levels.gd:95
+#: plants/hex_levels.gd:116
 msgid "      THIRSTY"
 msgstr "      DURSTIG"
 
-#: plants/hex_levels.gd:97
+#: plants/hex_levels.gd:118
 msgid "      next: %s"
 msgstr "      nächste: %s"
 
-#: plants/hex_levels.gd:253
+#: plants/hex_levels.gd:275
 msgid "HEX LV %d  %s"
 msgstr "HEX ST %d  %s"
 
-#: plants/hex_levels.gd:260
+#: plants/hex_levels.gd:282
 msgid "Hex Lv %d  %s.   %s"
 msgstr "Hex Stufe %d  %s.   %s"
 
@@ -1252,7 +1256,7 @@ msgstr "WASSER"
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Roboter-Uplink aktiv. Drück B für das Kommando: Zonen malen und Crews hinschicken, wo du willst."
 
-#: scenes/slice.gd:1070
+#: scenes/slice.gd:1070 scenes/slice_orbit.gd:277
 msgid "Milestone: %d hexes clean!"
 msgstr "Meilenstein: %d Hexfelder sauber!"
 
@@ -1574,87 +1578,87 @@ msgstr ""
 "BIN IN\n"
 "5 MINUTEN ZURÜCK"
 
-#: story/eggs.gd:338
+#: story/eggs.gd:340
 msgid "Something metal surfaced in the cleared ground."
 msgstr "Etwas Metallisches ist im geräumten Boden aufgetaucht."
 
-#: story/eggs.gd:551 story/eggs.gd:613
+#: story/eggs.gd:553 story/eggs.gd:615
 msgid "Gnome %d / %d"
 msgstr "Gnom %d / %d"
 
-#: story/eggs.gd:559
+#: story/eggs.gd:561
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "Das letzte Plakat zeigt auf etwas ganz in der Nähe. Etwas Orangefarbenes hat sich dort zusammengerollt."
 
-#: story/eggs.gd:614
+#: story/eggs.gd:616
 msgid "%s   ·   added to Lumi's collection"
 msgstr "%s   ·   zu Lumis Sammlung hinzugefügt"
 
-#: story/eggs.gd:630
+#: story/eggs.gd:632
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "Das Funkgerät rauscht leise. Da oben ist noch nichts wach. Komm nach Einbruch der Dunkelheit wieder."
 
-#: story/eggs.gd:631
+#: story/eggs.gd:633
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "Durchs Teleskop: nur ein heller, staubiger Himmel. Komm nach Einbruch der Dunkelheit wieder."
 
-#: story/eggs.gd:660
+#: story/eggs.gd:662
 msgid "SOLD OUT"
 msgstr "AUSVERKAUFT"
 
-#: story/eggs.gd:677
+#: story/eggs.gd:680
 msgid "QUACK!"
 msgstr "QUAK!"
 
-#: story/eggs.gd:695
+#: story/eggs.gd:698
 msgid "NEW CHALLENGER!"
 msgstr "NEUER HERAUSFORDERER!"
 
-#: story/eggs.gd:698
+#: story/eggs.gd:701
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "GAME OVER  ·  PUNKTE 12"
 
-#: story/eggs.gd:726
+#: story/eggs.gd:729
 msgid "hi, Gus"
 msgstr "hallo, Gus"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "CONFETTI"
 msgstr "KONFETTI"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "LIGHT JAZZ"
 msgstr "LEICHTER JAZZ"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "99% DUCKS"
 msgstr "ENTEN: 99%"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "SUNNY (INDOORS)"
 msgstr "SONNIG (DRINNEN)"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "FOG OF NOODLES"
 msgstr "NUDELNEBEL"
 
-#: story/eggs.gd:776
+#: story/eggs.gd:779
 msgid "1ST PLACE"
 msgstr "1. PLATZ"
 
-#: story/eggs.gd:834
+#: story/eggs.gd:837
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "Die Ente quietscht ein Geheimnis: „%s“ schaltet das Design %s frei."
 
-#: story/eggs.gd:835
+#: story/eggs.gd:838
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "Die Ente hat dir alles beigebracht, was sie weiß. Quak."
 
-#: story/eggs.gd:1063
+#: story/eggs.gd:1066
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "Kuriosität gefunden: %s  (%d / %d)   %s"
 
-#: story/eggs.gd:1074
+#: story/eggs.gd:1077
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "Jede Kuriosität auf der Liste gefunden. Lumis Sammelfach ist randvoll mit Erinnerungen."
 

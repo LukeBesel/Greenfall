@@ -192,65 +192,69 @@ msgstr ""
 msgid "Paddle 1"
 msgstr ""
 
-#: autoload/Settings.gd:521
+#: autoload/Settings.gd:522
 msgid "LMB"
 msgstr "Clic izq."
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:523
 msgid "RMB"
 msgstr "Clic der."
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:524
 msgid "MMB"
 msgstr "Clic central"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:525
 msgid "Wheel up"
 msgstr "Rueda arriba"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:526
 msgid "Wheel down"
 msgstr "Rueda abajo"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:527
 msgid "Mouse %d"
 msgstr "Ratón %d"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:529
 msgid "Button %d"
 msgstr "Botón %d"
 
-#: autoload/Settings.gd:533
+#: autoload/Settings.gd:534
 msgid "LS left"
 msgstr "JI izquierda"
 
-#: autoload/Settings.gd:533
+#: autoload/Settings.gd:534
 msgid "LS right"
 msgstr "JI derecha"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:535
 msgid "LS up"
 msgstr "JI arriba"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:535
 msgid "LS down"
 msgstr "JI abajo"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:536
 msgid "RS left"
 msgstr "JD izquierda"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:536
 msgid "RS right"
 msgstr "JD derecha"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:537
 msgid "RS up"
 msgstr "JD arriba"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:537
 msgid "RS down"
 msgstr "JD abajo"
+
+#: autoload/Settings.gd:548
+msgid "hold %s"
+msgstr ""
 
 #: autoload/Story.gd:23
 msgid "Perfect bale: filled right to the gold line."
@@ -789,7 +793,7 @@ msgstr "WREN: Ese es el borde de la zona de exploración, Lumi. Ahí fuera solo 
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi vuelve flotando a tierra firme."
 
-#: planet/orbit/verdance_globe.gd:556 scenes/slice.gd:1056 scenes/slice_orbit.gd:227
+#: planet/orbit/verdance_globe.gd:556 scenes/slice.gd:1056 scenes/slice_orbit.gd:261
 msgid "HEX CLEAN!  +%s"
 msgstr "¡HEXÁGONO LIMPIO!  +%s"
 
@@ -865,27 +869,27 @@ msgstr ""
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "Un hexágono está totalmente restaurado. Algo pequeñito ya vive en él."
 
-#: plants/hex_levels.gd:90
+#: plants/hex_levels.gd:111
 msgid "HEX  LV %d  %s"
 msgstr "HEX  NV %d  %s"
 
-#: plants/hex_levels.gd:93
+#: plants/hex_levels.gd:114
 msgid "      SUSTAIN  %d%%"
 msgstr "      SOSTENIDO  %d%%"
 
-#: plants/hex_levels.gd:95
+#: plants/hex_levels.gd:116
 msgid "      THIRSTY"
 msgstr "      SEDIENTO"
 
-#: plants/hex_levels.gd:97
+#: plants/hex_levels.gd:118
 msgid "      next: %s"
 msgstr "      siguiente: %s"
 
-#: plants/hex_levels.gd:253
+#: plants/hex_levels.gd:275
 msgid "HEX LV %d  %s"
 msgstr "HEX NV %d  %s"
 
-#: plants/hex_levels.gd:260
+#: plants/hex_levels.gd:282
 msgid "Hex Lv %d  %s.   %s"
 msgstr "Hex Nv %d  %s.   %s"
 
@@ -1252,7 +1256,7 @@ msgstr "AGUA"
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Enlace de robots en línea. Pulsa B para el mando: pinta zonas y manda equipos donde quieras."
 
-#: scenes/slice.gd:1070
+#: scenes/slice.gd:1070 scenes/slice_orbit.gd:277
 msgid "Milestone: %d hexes clean!"
 msgstr "Hito: ¡%d hexágonos limpios!"
 
@@ -1574,87 +1578,87 @@ msgstr ""
 "VUELVO EN\n"
 "5 MINUTOS"
 
-#: story/eggs.gd:338
+#: story/eggs.gd:340
 msgid "Something metal surfaced in the cleared ground."
 msgstr "Algo metálico ha salido a la superficie en el suelo despejado."
 
-#: story/eggs.gd:551 story/eggs.gd:613
+#: story/eggs.gd:553 story/eggs.gd:615
 msgid "Gnome %d / %d"
 msgstr "Gnomo %d / %d"
 
-#: story/eggs.gd:559
+#: story/eggs.gd:561
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "El último cartel señala un sitio muy cerca. Algo naranja está hecho un ovillo por ahí."
 
-#: story/eggs.gd:614
+#: story/eggs.gd:616
 msgid "%s   ·   added to Lumi's collection"
 msgstr "%s   ·   añadido a la colección de Lumi"
 
-#: story/eggs.gd:630
+#: story/eggs.gd:632
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "La radio sisea bajito. Ahí arriba aún no hay nada despierto. Vuelve cuando oscurezca."
 
-#: story/eggs.gd:631
+#: story/eggs.gd:633
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "Por el telescopio: solo un cielo claro y polvoriento. Vuelve cuando oscurezca."
 
-#: story/eggs.gd:660
+#: story/eggs.gd:662
 msgid "SOLD OUT"
 msgstr "AGOTADO"
 
-#: story/eggs.gd:677
+#: story/eggs.gd:680
 msgid "QUACK!"
 msgstr "¡CUAC!"
 
-#: story/eggs.gd:695
+#: story/eggs.gd:698
 msgid "NEW CHALLENGER!"
 msgstr "¡NUEVO RIVAL!"
 
-#: story/eggs.gd:698
+#: story/eggs.gd:701
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "GAME OVER  ·  PUNTOS 12"
 
-#: story/eggs.gd:726
+#: story/eggs.gd:729
 msgid "hi, Gus"
 msgstr "hola, Gus"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "CONFETTI"
 msgstr "CONFETI"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "LIGHT JAZZ"
 msgstr "JAZZ SUAVE"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "99% DUCKS"
 msgstr "PATOS: 99%"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "SUNNY (INDOORS)"
 msgstr "SOLEADO (DENTRO)"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "FOG OF NOODLES"
 msgstr "NIEBLA DE FIDEOS"
 
-#: story/eggs.gd:776
+#: story/eggs.gd:779
 msgid "1ST PLACE"
 msgstr "1.ER PUESTO"
 
-#: story/eggs.gd:834
+#: story/eggs.gd:837
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "El pato chilla un secreto: «%s» desbloquea el diseño %s."
 
-#: story/eggs.gd:835
+#: story/eggs.gd:838
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "El pato te ha enseñado todo lo que sabe. Cuac."
 
-#: story/eggs.gd:1063
+#: story/eggs.gd:1066
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "Curiosidad encontrada: %s  (%d / %d)   %s"
 
-#: story/eggs.gd:1074
+#: story/eggs.gd:1077
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "Todas las curiosidades de la lista, encontradas. El compartimento de colección de Lumi está llenísimo de recuerdos."
 

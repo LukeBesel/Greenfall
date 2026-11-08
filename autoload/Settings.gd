@@ -118,6 +118,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_register_default_actions()
 	load_settings()
+	PadHold.install(get_tree())  # [orbD] hold the pad's map button (View) for the goal tracker
 	for a: String in OS.get_cmdline_user_args():  # [l10n] dev hook: --locale=pseudo|de|es|en
 		if a.begins_with("--locale="):
 			locale_override = a.substr(9)
@@ -204,7 +205,7 @@ func _register_default_actions() -> void:
 		"ui_tab_prev": [_key(KEY_Q), _joy(JOY_BUTTON_LEFT_SHOULDER)],
 		"buy_max": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],
 		"open_codex": [_key(KEY_K), _joy(JOY_BUTTON_MISC1)],
-		"toggle_goals": [_key(KEY_G), _joy(JOY_BUTTON_TOUCHPAD), _joy(JOY_BUTTON_PADDLE1)],  # [hud] expand the goal tracker; [orbD] LS click went to boost, every standard pad button is taken: touchpad (PS / Deck) and paddle 1 (Deck L4 / Elite)
+		"toggle_goals": [_key(KEY_G), _joy(JOY_BUTTON_TOUCHPAD), _joy(JOY_BUTTON_PADDLE1)],  # [hud] expand the goal tracker; [orbD] pad: hold View (ui/pad_hold.gd), or touchpad / paddle 1
 		"photo_mode": [_key(KEY_P)],  # [photo] pad: via the pause menu
 		"garden_mode": [_key(KEY_H)],  # [late] Garden Mode (ui/garden_placer.gd); pad: via the pause menu
 		"glim_scan": [_key(KEY_F), _axis(JOY_AXIS_TRIGGER_LEFT, 1.0)],  # [buddy] tap: hex scan, hold: Glim panel
@@ -541,6 +542,10 @@ static func event_label(ev: InputEvent) -> String:
 
 ## Glyph text for an action on the device last used (e.g. "E" or "A"), for HUD prompts.
 func glyph(action: String) -> String:
+	if action == PadHold.LONG_ACTION and last_input_pad:  # [orbD] on a pad the goals are "hold View"
+		var mb: InputEvent = binding(PadHold.SHORT_ACTION, true)
+		if mb and is_pad_event(mb):
+			return tr("hold %s") % PadGlyphs.event_name(mb)
 	var ev: InputEvent = binding(action, last_input_pad)
 	if ev == null:
 		ev = binding(action, not last_input_pad)

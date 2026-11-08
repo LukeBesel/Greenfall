@@ -179,3 +179,27 @@ func test_boost_is_rebindable_without_conflicts() -> void:
 	assert_true(names.has("boost"))
 	assert_eq(Settings.conflicts(), {})
 	assert_eq(Settings.event_label(Settings.binding("boost", false)), "Shift")
+
+
+func test_pad_view_short_press_opens_map_long_press_toggles_goals() -> void:
+	var h := PadHold.new()
+	add_child_autofree(h)
+	var got: Array[String] = []
+	h.sent.connect(func(a: String) -> void: got.append(a))
+	var down := InputEventJoypadButton.new()
+	down.button_index = JOY_BUTTON_BACK
+	down.pressed = true
+	var up := InputEventJoypadButton.new()
+	up.button_index = JOY_BUTTON_BACK
+	up.pressed = false
+	assert_true(PadHold.is_hold_button(down), "View is bound to the map")
+	h._input(down)
+	h._process(0.2)
+	h._input(up)
+	assert_eq(got, ["open_globe"] as Array[String])
+	got.clear()
+	h._input(down)
+	h._process(0.3)
+	h._process(0.3)
+	h._input(up)
+	assert_eq(got, ["toggle_goals"] as Array[String], "a long press only toggles the goals")
