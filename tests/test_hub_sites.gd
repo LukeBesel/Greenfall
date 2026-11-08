@@ -218,3 +218,24 @@ func test_start_yard_anchors_spaced_and_lane_open() -> void:
 			assert_gt(absf(p.x), 2.5, inter[i] + " keeps the north lane open")
 		for j: int in range(i + 1, inter.size()):
 			assert_gt(p.distance_to(all[inter[j]][0]), 2.99, "%s / %s at least 3 m apart" % [inter[i], inter[j]])
+
+
+func test_autowalk_detours_with_longer_sidesteps() -> void:
+	var b := CharacterBody3D.new()
+	add_child_autofree(b)
+	b.global_position = Vector3(0, 1840, 0)
+	var inp := SphereAutoInput.new(Vector3(0, 0, -1))
+	inp.body = b
+	b.velocity = Vector3.ZERO  # pushing into a wall
+	for k: int in 8:
+		inp.update(0.1)
+	assert_gt(absf(inp.get_world_move(0.0).x), 0.5, "stalled: sidestepping")
+	var first: float = inp._side_dur
+	for k: int in 8:
+		inp.update(0.1)  # still blocked sideways: the other way, longer
+	assert_gt(inp._side_dur, first)
+	b.velocity = Vector3(3, 0, 0)  # moving freely again
+	for k: int in 200:
+		inp.update(0.1)
+	assert_eq(inp._phase, 0, "back on its heading")
+	assert_almost_eq(inp.get_world_move(0.0), Vector3(0, 0, -1), Vector3.ONE * 0.001)

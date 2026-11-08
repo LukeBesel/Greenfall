@@ -21,7 +21,6 @@ var _stall: float = 0.0
 var _phase: int = 0  # 0 ahead, 1 side, 2 pass, 3 back
 var _phase_t: float = 0.0
 var _side: float = 1.0
-var _tries: int = 0
 
 
 func _init(p_stick: Vector3 = Vector3(0, 0, -1), p_boost: bool = false) -> void:
@@ -46,7 +45,7 @@ func get_world_move(_cam_yaw: float) -> Vector3:
 		1:
 			return Vector3(_side, 0, -0.15).normalized()
 		3:
-			return Vector3(-_side, 0, -0.15).normalized()
+			return Vector3(-signf(_net), 0, -0.15).normalized()
 	return stick
 
 
@@ -55,25 +54,54 @@ func _detour(delta: float) -> void:
 		return
 	var up: Vector3 = body.global_position.normalized()
 	var spd: float = (body.velocity - up * body.velocity.dot(up)).length()
-	if _phase == 0:
-		_stall = _stall + delta if spd < 0.6 else 0.0
-		if _stall >= STALL_S:
-			_stall = 0.0
-			_phase = 1
-			_phase_t = 0.0
-		return
+	var stalled: bool = spd < 0.6
+	_stall = _stall + delta if stalled else maxf(0.0, _stall - delta)
 	_phase_t += delta
-	if _phase == 1 and spd < 0.3 and _phase_t > 0.5:
-		_side = -_side  # this side is blocked too: try the other way, a little further
-		_tries += 1
-		_phase_t = -0.6 * _tries
-		return
-	var dur: float = SIDE_S if _phase != 2 else PASS_S
-	if _phase_t >= dur:
-		_phase = (_phase + 1) % 4
-		_phase_t = 0.0
-		if _phase == 0:
-			_tries = 0
+	match _phase:
+		0:  # ahead: a stall starts a sidestep, each one longer while the obstacle goes on
+			_free_t += delta
+			if _free_t > 12.0:
+				_escal = 0
+			if _stall >= STALL_S:
+				_go_side()
+		1:  # sideways: blocked this way too -> the other way, longer
+			_net += _side * delta
+			if _stall >= STALL_S:
+				_side = -_side
+				_go_side()
+			elif _phase_t >= _side_dur:
+				_phase = 2
+				_phase_t = 0.0
+				_stall = 0.0
+		2:  # pass the obstacle: still blocked -> keep sidestepping the same way
+			if _stall >= STALL_S:
+				_go_side()
+			elif _phase_t >= PASS_S:
+				_phase = 3
+				_phase_t = 0.0
+				_stall = 0.0
+		3:  # step back onto the line by the net offset (a blocked return just carries on ahead)
+			_net -= signf(_net) * delta
+			if absf(_net) < 0.1 or _stall >= STALL_S:
+				_phase = 0
+				_phase_t = 0.0
+				_stall = 0.0
+				_free_t = 0.0
+
+
+var _escal: int = 0
+var _side_dur: float = SIDE_S
+var _net: float = 0.0
+var _free_t: float = 0.0
+
+
+func _go_side() -> void:
+	_escal = mini(_escal + 1, 6)
+	_side_dur = SIDE_S * float(_escal)
+	_phase = 1
+	_phase_t = 0.0
+	_stall = 0.0
+	_free_t = 0.0
 
 
 func boost_held() -> bool:
