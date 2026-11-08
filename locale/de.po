@@ -1725,51 +1725,35 @@ msgstr "Das Erste, was sie sehen, ist eine Welt, die wieder grün ist. Das warst
 msgid "Homecoming"
 msgstr "Heimkehr"
 
-#: story/intro.gd:195
+#: story/intro.gd:197
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr "Vor dreihundert Jahren verließen die letzten Samen Verdance an Bord der Arche Cradle."
 
-#: story/intro.gd:196
+#: story/intro.gd:198
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr "Lumi, der kleine Samenhüter der Arche, sang den Setzlingen jede Nacht etwas vor."
 
-#: story/intro.gd:197
+#: story/intro.gd:199
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr "Summst du schon wieder, Lumi? Sie können dich nicht hören, weißt du. ...Sie wachsen aber schneller, wenn du es tust."
 
-#: story/intro.gd:198
+#: story/intro.gd:200
 msgid "Then, one night, the sky came apart."
 msgstr "Dann, eines Nachts, zerbrach der Himmel."
 
-#: story/intro.gd:199
+#: story/intro.gd:201
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr "Hüllenbruch in der Tresorbucht! Lumi, lass die Schalen, raus da!"
 
-#: story/intro.gd:200
+#: story/intro.gd:202
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr "Lumi— halt durch— ich kann sie nicht wenden— halt durch—"
 
-#: story/intro.gd:201
+#: story/intro.gd:203
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "Die Arche konnte nicht umkehren. Die Kapsel fiel tagelang."
 
-#: story/intro.gd:202
-msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
-msgstr "...Lumi? ...Lumi. Das Relais hält kaum, aber ich hab dich. Du bist gelandet. Du bist auf Verdance."
-
-#: story/intro.gd:203
-msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
-msgstr "Dein Kern läuft mit grünem Licht, dem Leuchten, das Lebendiges abgibt. Da unten ist nichts Grünes mehr. Deshalb verblasst du."
-
-#: story/intro.gd:204
-msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
-msgstr "Also machen wir welches. Räum den Boden auf, pflanz die Setzlinge. Jede Blüte nährt deinen Kern."
-
-#: story/intro.gd:205
-msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
-msgstr "Füll deinen Blütenkern. Bau eine Startrampe. Dann fliegst du heim zu uns. ...Eine Gießkanne nach der anderen."
-
-#: story/intro.gd:802
+#: story/intro.gd:826
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "GRÜNES LICHT  ·  NICHTS ERKANNT"
 
@@ -1925,15 +1909,15 @@ msgstr "<< LEDGER // INOFFIZIELL >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/objectives.gd:240
+#: story/objectives.gd:252
 msgid "Objective complete  ·  %s"
 msgstr "Ziel erreicht  ·  %s"
 
-#: story/objectives.gd:410
+#: story/objectives.gd:422
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr "Hörst du das Piepen? Dein Detektor hat ein vergrabenes Roboterteil in der Nähe gefunden. Je schneller er piept, desto näher bist du."
 
-#: story/objectives.gd:411
+#: story/objectives.gd:423
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "VERGRABENES TEIL: Geh darauf zu, bis der Wert am höchsten ist, dann grab es aus."
 
@@ -3129,23 +3113,23 @@ msgstr ""
 msgid "Buy %d Glim upgrades"
 msgstr ""
 
-#: systems/glim/glim_director.gd:150
+#: systems/glim/glim_director.gd:152
 msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
 msgstr ""
 
-#: systems/glim/glim_director.gd:152
+#: systems/glim/glim_director.gd:154
 msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
 msgstr ""
 
-#: systems/glim/glim_director.gd:154
+#: systems/glim/glim_director.gd:156
 msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
 msgstr ""
 
-#: systems/glim/glim_director.gd:200
+#: systems/glim/glim_director.gd:212
 msgid "All clear here!"
 msgstr ""
 
-#: systems/glim/glim_director.gd:202
+#: systems/glim/glim_director.gd:214
 msgid "Only big pieces left"
 msgstr ""
 
@@ -15671,6 +15655,18 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
+#~ msgstr "...Lumi? ...Lumi. Das Relais hält kaum, aber ich hab dich. Du bist gelandet. Du bist auf Verdance."
+
+#~ msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
+#~ msgstr "Dein Kern läuft mit grünem Licht, dem Leuchten, das Lebendiges abgibt. Da unten ist nichts Grünes mehr. Deshalb verblasst du."
+
+#~ msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
+#~ msgstr "Also machen wir welches. Räum den Boden auf, pflanz die Setzlinge. Jede Blüte nährt deinen Kern."
+
+#~ msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
+#~ msgstr "Füll deinen Blütenkern. Bau eine Startrampe. Dann fliegst du heim zu uns. ...Eine Gießkanne nach der anderen."
 
 #~ msgid "Rebuild the signal tower"
 #~ msgstr "Funkturm wieder aufbauen"
