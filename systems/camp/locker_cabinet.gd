@@ -34,9 +34,12 @@ func setup(p_world: Node) -> void:
 			func() -> void: open(),
 			func() -> bool: return visible)
 	visible = is_built()
-	YardBuilds.events.built.connect(func(id: String) -> void:
-		if id == "locker":
-			visible = true)
+	YardBuilds.events.built.connect(_on_built)  # a method: the static signal drops it when we're freed
+
+
+func _on_built(id: String) -> void:
+	if id == "locker":
+		visible = true
 
 
 ## A tall two-door steel cabinet with a thin cyan light seam and a small vent grille.

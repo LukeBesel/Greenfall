@@ -137,9 +137,7 @@ func _panel() -> Array:
 	var outer := VBoxContainer.new()
 	outer.add_theme_constant_override("separation", 0)
 	pc.add_child(outer)
-	var strip: TextureRect = UITheme.hazard_strip(5)
-	strip.modulate = Color(1, 1, 1, 0.75)
-	outer.add_child(strip)
+	outer.add_child(_HazardEdge.new())  # drawn, not UITheme.hazard_strip's static texture (a static Resource crashed the quit)
 	var mc := MarginContainer.new()
 	mc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	for side: String in ["margin_left", "margin_right", "margin_top", "margin_bottom"]:
@@ -159,6 +157,8 @@ func first_button() -> Button:
 
 
 func _process(delta: float) -> void:
+	if not is_visible_in_tree():
+		return  # the workbench is closed: nothing to refresh
 	_t += delta
 	if _t >= 0.25:
 		_t = 0.0
@@ -341,6 +341,20 @@ static func _icon(kind: String, set_: String, px: float, col: Color) -> Control:
 			return g
 	var hg := BenchKit.Glyph.new(kind, px, col)
 	return hg
+
+
+## A thin orange / dark diagonal hazard edge along the top of a panel.
+class _HazardEdge extends Control:
+	func _init() -> void:
+		custom_minimum_size = Vector2(0, 5)
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	func _draw() -> void:
+		draw_rect(Rect2(Vector2.ZERO, size), Color(0.08, 0.08, 0.09, 0.9))
+		var x: float = -size.y
+		while x < size.x:
+			draw_colored_polygon(PackedVector2Array([Vector2(x, size.y), Vector2(x + size.y, 0), Vector2(x + size.y + 6, 0), Vector2(x + 6, size.y)]), Color(1.0, 0.62, 0.18, 0.75))
+			x += 12.0
 
 
 class _ResearchGlyph extends Control:
