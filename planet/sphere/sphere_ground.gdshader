@@ -20,12 +20,14 @@ uniform vec3 lod_color = vec3(1.0);
 varying vec4 st;
 varying vec3 wpos;
 varying vec3 wnrm;
+varying float wet;
 
 void vertex() {
 	int idx = int(UV2.x + 0.5);
 	st = texelFetch(state_tex, ivec2(idx % state_w, idx / state_w), 0);
 	wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	wnrm = normalize((MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
+	wet = UV2.y;
 }
 
 vec3 tri(sampler2D t, vec3 p, vec3 w) {
@@ -51,10 +53,13 @@ void fragment() {
 	if (abs(biome - 5.0) < 0.5) col = mix(col, vec3(0.86, 0.9, 0.95), 0.55);
 	else if (abs(biome - 4.0) < 0.5) col *= vec3(1.12, 0.98, 0.8);
 	else if (abs(biome - 3.0) < 0.5) col *= vec3(0.85, 0.95, 0.8);
-	float water = step(4.5, state);
-	col = mix(col, vec3(0.08, 0.2, 0.26) + 0.06 * n, water * 0.92);
+	float water = far_shell > 0.5 ? step(4.5, state) : smoothstep(0.45, 0.8, wet);  // [v1world] chunks: smooth wetness (UV2.y), not the warped owner's state
+	// [v1world] Shore: land near a lake turns to damp mud over the bank (clean shore cells were pale concrete strips).
+	float bank = far_shell > 0.5 ? 0.0 : smoothstep(0.04, 0.5, wet);
+	col = mix(col, dirt * vec3(0.72, 0.66, 0.58), bank * 0.85);
+	col = mix(col, col * 0.42 + vec3(0.015, 0.03, 0.035), water);  // [v1world] wet mud on banks and beds (was a flat blue)
 	col = mix(col, col * lod_color, lod_tint);
 	ALBEDO = col;
-	ROUGHNESS = mix(0.95, 0.12, water);
-	SPECULAR = mix(0.35, 0.6, water);
+	ROUGHNESS = mix(0.95, 0.6, water);  // [v1world] was 0.12 / 0.6: glossy banks mirrored the sky as a white strip
+	SPECULAR = mix(0.35, 0.4, water);
 }
