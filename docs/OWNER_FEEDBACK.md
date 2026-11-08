@@ -26,6 +26,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] WREN is introduced as the ark's caretaker AI. It leaves one last message as the pod crashes, then goes silent.
 - [ ] Signal towers bring WREN back: better towers unlock more messages, and they get clearer at higher signal.
 - [ ] Bird and WREN chatter is rare, never constant.
+- [ ] Only ONE message line is on screen at a time, anywhere in the game (subtitles, toasts, rewards, hints). Every message stays up long enough for an average reader. (onboard2)
 - [ ] Goal text after leaving the pod stays long enough to read.
 - [ ] Goal and task-bar text is easy to read.
 - [ ] Goals say "Clean a hex", never "this hex".
@@ -61,7 +62,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] After two bales you can afford about 1 upgrade.
 - [ ] Auto-cubing and automation come much later.
 - [ ] Overpowered upgrades are slowed down.
-- [ ] The full game takes about 20 h: grindy, but upgrades speed it up and something new arrives every 5-20 min, never a long stretch with no goal. Planting ramps up around 2.5 h (owner OK), with plenty going on before that. (pace2)
+- [ ] The full game takes about 20 h: grindy, but upgrades speed it up and something new arrives every 5-20 min, never a long stretch with no goal. Planting ramps up around 1-2 h, and the first planet takes 3-4 h, with plenty going on throughout. (pace2)
 - [ ] The magnet comes late, is capped, isn't glitchy, and never pulls pieces Lumi can't lift.
 - [ ] The first seed comes at about 20 min (or with super luck). Planting ramps up at about 1 h.
 - [ ] The rare-part beam indicator is an upgrade, and dig events appear only once digging is unlocked.
@@ -129,6 +130,8 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [x] Rime is merged.
 - [x] Rime at night is bright enough to read, and the gas giant is smaller. (rime2, render v2)
 - [ ] Ochre, Tidewell (ocean, hover over water) and Anvil (red, Nether vibe) are merged.
+- [ ] The next planet unlocks without 100% on the current one (about 50% plus the drive). Today the Mk V and Mk VI drives require a 100% planet; fixing that. Only the final launch home needs everything. (pace2)
+- [ ] You can't 100% a planet until you bring tools, bots and upgrades from later planets (e.g. a deep drill from Ochre, a water bot from Tidewell). Gated hexes say what they need, so you return later with new toys. (pace2)
 
 ## Music and docs
 - [x] The Suno prompts doc has a grinding playlist per planet, with context in each prompt, as plain copyable text plus a .txt file.

@@ -23,6 +23,8 @@ var running: bool = false
 ## True from _finish() until the fade-out has handed the camera and controls back.
 var ending: bool = false
 var _waiting: bool = false
+## [intro3] WREN's brief was played inside the intro (the objectives only reveal their card).
+var brief_played: bool = false
 
 var _cam: Camera3D
 var _prev_cam: Camera3D
@@ -191,7 +193,7 @@ func _drop_cover() -> void:
 ## optional "tail": the signal breaks up on the last words (heavy glitch on that span only).
 ## Kept in one place so tests can check the subtitle timing rule against all of them.
 static func lines() -> Dictionary:
-	return {
+	var out: Dictionary = {
 		"title": [TranslationServer.translate("Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."), ""],
 		"vault": [TranslationServer.translate("Lumi, the ark's little seed-keeper, sang to the seedlings every night."), ""],
 		"hum": [TranslationServer.translate("Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."), "wren"],
@@ -199,11 +201,25 @@ static func lines() -> Dictionary:
 		"breach": [TranslationServer.translate("Hull breach in the vault bay! Lumi, leave the trays, get clear!"), "wren"],
 		"hold_on": [TranslationServer.translate("Lumi— hold on— I can't turn her around— hold on—"), "wren", "tail"],
 		"fall": [TranslationServer.translate("The ark could not turn back. The pod fell for days."), ""],
-		"wake": [TranslationServer.translate("...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."), "wren"],
-		"green": [TranslationServer.translate("Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."), "wren"],
-		"plan": [TranslationServer.translate("So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."), "wren"],
-		"home": [TranslationServer.translate("Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."), "wren"],
 	}
+	# [intro3] At the crash WREN gets ONE last message through before the relay dies: onboarding's
+	# brief (data/objectives.json "brief"), its last words breaking up in a [glitch] span. She is
+	# silent after that until the signal tower is built.
+	var brief: Array = brief_lines()
+	for i: int in brief.size():
+		out["brief_%d" % i] = [TranslationServer.translate(str(brief[i])), "wren"]
+	return out
+
+
+## The brief's raw lines from data/objectives.json (translated when shown).
+static func brief_lines() -> Array:
+	var f := FileAccess.open("res://data/objectives.json", FileAccess.READ)
+	if f == null:
+		return []
+	var d: Variant = JSON.parse_string(f.get_as_text())
+	if not (d is Dictionary):
+		return []
+	return ((d as Dictionary).get("brief", {}) as Dictionary).get("lines", [])
 
 
 ## Rewatch the whole intro from the Codex. A temporary pod plays the landing; afterwards Lumi, the
@@ -688,22 +704,30 @@ func _wake(out_from: Vector3, out_to: Vector3) -> void:
 		return
 	if model:
 		model.look_toward(out_to + Vector3(3, 1, 2))
-	if await _hold(_say("wake")):
+	# WREN's one last message gets through, then the relay dies (the objectives card follows).
+	var all: Dictionary = lines()
+	if not all.has("brief_0"):
+		await _hold(1.0)
+		return
+	GameState.flags["onboard_brief"] = true  # the objectives don't replay it
+	brief_played = true
+	if await _hold(_say("brief_0")):
 		return
 	if model:
 		model.look_toward(null)
-	# Pull back so the battery readout and Lumi share the frame.
-	_shot(_cam.global_position, out_to + Vector3(0, 0.7, 0), out_to + fwd * 3.2 + Vector3(1.4, 1.5, 0.6), out_to + Vector3(0, 0.6, 0), 16.0)
-	if await _hold(_say("green")):
-		return
-	if model:
 		model.set_happy(0.7)
 		model.flash()
 		Audio.play("chirp" if Audio.has_sound("chirp") else "blip", 1.3, -6.0)
-	if await _hold(_say("plan")):
-		return
-	_say("home")
-	await _wait_lines(0.6)
+	# Pull back so the battery readout and Lumi share the frame while her signal breaks up.
+	_shot(_cam.global_position, out_to + Vector3(0, 0.7, 0), out_to + fwd * 3.2 + Vector3(1.4, 1.5, 0.6), out_to + Vector3(0, 0.6, 0), 12.0)
+	var k: int = 1
+	while all.has("brief_%d" % k):
+		_say("brief_%d" % k)
+		k += 1
+	await _wait_lines(0.4)
+	if not _skipped:
+		Audio.play("glitch" if Audio.has_sound("glitch") else "blip", 0.7, -10.0)  # the relay drops
+		await _hold(1.2)
 
 # --- Overlay ------------------------------------------------------------------------------
 
