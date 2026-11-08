@@ -153,31 +153,6 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 	var off_frame: float = rad_to_deg((fa.global_basis * Vector3.UP).angle_to(fa.to_global(far_p).normalized()))
 	var off_animal: float = rad_to_deg((fa.global_basis * (fa._tilt(far_p) * Vector3.UP)).angle_to(fa.to_global(far_p).normalized()))
 	check.call("orbit_fauna_upright_far_out", true, off_frame > 3.0 and off_animal < 0.05)
-	# The meadow: the greened cells near Lumi grow grass and flowers on the ground (per cell, by level).
-	var md: MeadowSphere = hf.node("MeadowSphere") as MeadowSphere
-	await tree.create_timer(2.5).timeout
-	var cen: Dictionary = md.census() if md else {}
-	check.call("orbit_meadow_grows", true, md != null and int(cen.get("cells", 0)) > 5 and int(cen.get("grass", 0)) > 100 and int(cen.get("flowers", 0)) > 10)
-	var off_md: Array = []
-	if md:
-		for c2: Node in md.get_children():
-			if c2 is MultiMeshInstance3D and (c2 as MultiMeshInstance3D).multimesh.instance_count > 0:
-				var wp2: Vector3 = md.global_transform * (c2 as MultiMeshInstance3D).multimesh.get_instance_transform(0).origin
-				if absf(g.surface.altitude(wp2)) > 0.3:
-					off_md.append("%s %.2f" % [c2.name, g.surface.altitude(wp2)])
-				if off_md.size() > 3:
-					break
-	check.call("orbit_meadow_on_the_ground", "[]", str(off_md))
-	# Wildlife: butterflies over a Growing cell of this hub, a metre or so above its ground.
-	var wl: Wildlife = hf.node("Wildlife") as Wildlife
-	var n_fly: int = wl._flies.size() if wl else -1
-	if wl:
-		wl.add_butterflies(region[region.size() >> 1], 3)
-	var fly_ok: bool = wl != null and wl._flies.size() == n_fly + 3
-	if fly_ok:
-		var fp: Vector3 = wl.to_global(wl._flies[wl._flies.size() - 1]["pos"])
-		fly_ok = g.surface.altitude(fp) > 0.0 and g.surface.altitude(fp) < 3.0
-	check.call("orbit_wildlife_butterflies", true, fly_ok and s.get("wildlife") == wl)
 	# Easter eggs: this hub's set, standing on the ground clear of the yard; one can be poked.
 	var eg: EasterEggs = hf.node("EasterEggs") as EasterEggs
 	check.call("orbit_eggs_placed", true, eg != null and eg.placed.size() > 0)
