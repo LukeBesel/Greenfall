@@ -192,3 +192,68 @@ Cost: the far buffers add draw calls (about +12% estimated draws in Old Town at 
 candidates: merge the far meshes' surfaces (wine bottles have 16, the stove 20) into one
 vertex-coloured surface, and drop far-group shadows on Low where the shadow distance (35 m)
 barely reaches past the near ring.
+
+## Round planet (--orbit, orbE, Nov 8 2026)
+
+Target: 60 fps on the owner's Mac on Medium. These numbers come from the cloud container
+(4 cores shared with other helpers, load average 11-17, so CPU times are roughly 3x what one
+free core gives) and from headless runs. Counts (triangles, instances, chunks) and the thread
+build times are the robust part. Real Mac fps still needs a run on the Mac:
+`godot --path . -- --orbit --orbit-walk --orbit-scoop --perf --quality=1` and read `[perf]`
+and `[orbit-perf]`.
+
+### Per-preset budgets (planet/orbit_quality.gd, `OrbitQuality`)
+
+| | Low | Medium (Mac target) | High | Ultra |
+|---|---|---|---|---|
+| LOD 0 chunks (full detail, junk, future layer) | 180 m | 240 m | 280 m | 320 m |
+| LOD 1 chunks | 520 m | 650 m | 760 m | 860 m |
+| Far shell beyond | 1.7 km x size | 2.0 km x size | 2.3 km x size | 2.6 km x size |
+| Chunk meshes applied per frame | 1 | 2 | 2 | 3 |
+| Future layer range | 220 m | 320 m | 380 m | 420 m |
+| Moon shadows | off | on | on | on |
+
+"x size" = globe radius / 1,840 m, clamped 0.85..1.4 (planets differ in size; `GlobeSize`).
+Medium keeps phase A's radii. Junk density is a design value (~70 pieces per 10 m hex) and is
+not cut per preset; the junk ring is the streamer's 70 m near ring on every preset.
+
+### Measured (headless, scoop walk with the Future Layer on 148 cells, 110 s)
+
+`godot --headless --path . -- --fresh --orbit --orbit-walk --orbit-scoop --orbit-future=10 [--orbit-hex=13.5 | --orbit-level=8] --quit-after=110`
+
+| Globe | Hexes | R | Ready (load) | Process ms avg (max) | Junk pieces drawn | Chunk tris (LOD 0/1 count) | Shell tris | Chunk build (worker) max | Chunk apply (main) max | Memory |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Verdance (level 7, 10 m) | 163,842 | 1,840 m | 10.3 s | 9-23 (17-55) | 1,800-2,450 | 73-80k (6-7 / 12-14) | 61k | 308 ms | 9 ms | 597 MB |
+| Anvil radius (level 7, 13.5 m hexes) | 163,842 | 2,485 m | 9.4 s | 10-11 (22-37) | 1,260-1,610 | 55-58k (4-5 / 9-10) | 61k | 100 ms | 14 ms | 596 MB |
+| Upper bound (level 8, 10 m) | 655,362 | 3,681 m | 9.1 s (grid cached; 32.6 s first time, planet 15.5 s) | 19-29 (45-68) | 4,340-4,760 | 106-109k (7 / 15-17) | 61k | 180 ms | 26 ms | 709 MB |
+
+Anvil (~300k hexes at 10 m) sits between the level-7 and level-8 rows: per-frame costs follow
+the hexes near the camera (same 10 m density on every planet), so expect Verdance-like frame
+costs. Load time and memory sit about halfway to the level-8 row (~650 MB, planet generation
+~5-8 s the first time; the grid is cached in `user://sphere_grid_<level>.bin` after that).
+
+Systems added in this pass, measured in the same runs:
+- Sky (SkyDirector sphere mode): one uniform update per frame. It asked SphereCells for the
+  clean fraction every frame (an O(n) loop over 164k cells); now every 4 s.
+- Future Layer on chunks: 2,737 pieces on 7-9 chunks. Builds are budgeted at 2.5 ms a frame
+  (measured max 2.7 ms), about 19 ms spread per chunk, and a swap of 0.8 ms. A chunk rebuilds
+  only when one of its cells changes level. Before that fix, every junk or near-flag write
+  rebuilt chunks (a 138 ms frame).
+- Survey hologram and PlanetGlobe overlay: the far shell's 10,242 big hexes (61k triangles),
+  built when opened or re-surveyed (and every 4 s while the system map is open), never per frame.
+
+### Where the frame goes, and what to cut first if the Mac misses 60
+1. Chunk apply on the main thread (mesh and collision upload): 9-26 ms worst case. It's a hitch
+   when a new LOD-0 chunk lands, not a steady cost. Low applies one per frame; next step:
+   build the collision shape on the worker (SphereChunkJob) (orbB).
+2. Junk instances in the near ring (1.8-2.5k on Verdance, 4.7k at level 8): SphereJunkView
+   rebuilds take 2-8 ms. JunkLOD (impostors past ~40 m) is orbB's B2 item and the biggest
+   remaining win.
+3. Shadows: the sun (and the moon at night) are the only shadowed lights; Low turns the moon's
+   shadow off. Glim's lantern is unshadowed below Medium (systems/glim/glim_bot.gd).
+4. Sky shader: 4-octave cloud noise per sky pixel. If it shows up on the Mac GPU profiler,
+   drop to 3 octaves on Low (`fbm` in planet/orbit/orbit_sky.gdshader).
+
+Rendered draw-call numbers for the globe at Low/Medium (960x540) are pending: renders were
+killed for memory in the shared container. Command (gated render):
+`xvfb-run -a -s "-screen 0 1280x720x24" godot --path . --rendering-driver vulkan --resolution 960x540 -- --fresh --quality=1 --perf --orbit --orbit-walk --orbit-scoop --quit-after=120`.

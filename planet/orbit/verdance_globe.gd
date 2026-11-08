@@ -939,7 +939,7 @@ func _perf_line() -> String:
 		RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME),
 		RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME), JSON.stringify(st)]
 	if future:  # [orbE]
-		s += " future=%s fps=%d" % [JSON.stringify(future.stats), Engine.get_frames_per_second()]
+		s += " future=%s fps=%d mem_mb=%d" % [JSON.stringify(future.stats), Engine.get_frames_per_second(), OS.get_static_memory_usage() / 1048576]
 	_perf = [0.0, 0.0, 0.0, 0.0]
 	_perf_n = 0
 	return s
