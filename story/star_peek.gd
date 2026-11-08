@@ -94,15 +94,14 @@ func _world_env() -> Environment:
 	return w3.environment if w3 and w3.environment else null
 
 
-## World position of the eyepiece (back end of the brass tube), a little behind it.
+## Where the eye is: at the telescope's head pivot (eye height). The eyepiece end of a tube tilted
+## up at the stars dips low between the tripod legs, which then fill the picture; the whole
+## telescope is hidden while we look through it, so the view starts clean at the pivot.
 func eyepiece() -> Vector3:
 	if scope == null:
 		return Vector3(0, 1.4, 0)
 	var head: Node3D = scope.get_node_or_null("Anim")
-	if head == null:
-		return scope.global_position + Vector3(0, 1.3, 0)
-	var back: Vector3 = head.to_global(Vector3(-0.5, 0.0, 0.0))
-	return back + (back - target).normalized() * 0.15
+	return (head.global_position if head else scope.global_position + Vector3(0, 1.22, 0)) + Vector3(0, 0.12, 0)
 
 
 func close() -> void:
@@ -149,9 +148,8 @@ func _exit_tree() -> void:
 
 
 func _show_head(on: bool) -> void:
-	var head: Node3D = scope.get_node_or_null("Anim") if is_instance_valid(scope) else null
-	if head:
-		head.visible = on
+	if is_instance_valid(scope):
+		scope.visible = on
 	# Lumi may be standing in front of the tube: she steps out of the picture while we look.
 	if world and world.get("patch") != null and world.patch and world.patch.get("model") != null:
 		(world.patch.model as Node3D).visible = on
