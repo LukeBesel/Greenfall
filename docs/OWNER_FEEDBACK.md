@@ -225,3 +225,4 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 33. The purple indicator points at nothing. In the screenshot, the ring was on a road cell while the step was "Empty your chest into the trash bin". Also, two cards showed at once ("OBJECTIVE: Save up for the Baler" plus "NEXT STEP: Empty your chest..."): there must be only one.
 34. After the signal tower restores the connection, WREN only says hello. WREN should narrate the goals and what we're trying to do to get back home.
 35. The starting hexes can't hold large items, because then you can't fully clear a hex.
+36. When a hex reaches 95% clear, the rest of it clears automatically: the hex counts as clean and its leftover pieces are swept away.
