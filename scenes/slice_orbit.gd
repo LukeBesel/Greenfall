@@ -436,6 +436,11 @@ func _build_yard_systems() -> void:
 		tower.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)  # after its _ready
 	_attach_camp()
 	_place_pod()
+	var cc := CoreCharge.new()  # Lumi's Bloom Core charge and its story beats (story/core_charge.gd)
+	cc.name = "CoreCharge"
+	cc.world = w
+	w.add_child(cc)
+	w.set("core_charge", cc)
 	var obj := Objectives.new()  # WREN's last message after the intro + the objective card and outline
 	obj.world = w
 	w.add_child(obj)
