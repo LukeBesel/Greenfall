@@ -742,3 +742,75 @@ Also fixed on the way (bot pacing was skewed): the bare Old Town yard hid the le
 front posts solid (invisible walls where Lumi stuck for minutes; camp now turns collision off with
 the hidden parts); the bot sidesteps obstacles, and when boxed in for 90 s hops back to the yard and
 logs `[bot-trap]`; `--time-scale` above 4 raises the physics tick rate so steps stay as short as 4x.
+
+## Cross-planet pacing (orbC, Nov 8)
+Owner: later planets are bigger (up to 4x Verdance's area on Anvil) but each must play faster, never
+slower: the tools, bots and drive upgrades from each planet speed the work up. Whole game ~20 h,
+Verdance 3-4 h, something new every 5-20 min. Bot-to-human factor about 2x (see above), so a later
+planet's "can leave" point (50%) should come in about 1.5-2 h of bot time, and never after Verdance's.
+
+**Method.** The flat autoplay bot (tools/autoplay.gd), one stage per planet, headless at 16x:
+`--fresh --save-dir=pace_<id> --planet-start=<id> --heirlooms=<picks> --autoplay --time-scale=16
+--quit-at-pct=50` (scratchpad/orbc/pace.sh). `--planet-start` (systems/cradle_mode.gd) lands on a
+campaign planet the way rocket travel does (new world state, carried flags, rocket tier).
+`--quit-at-pct=N` saves and stops when Homeward.measure_current() reaches N%; the log carries
+`planet`/`pct` per minute and the milestones file `pct25/50/75_<id>_s`. Assumed Heirloom picks, one
+per planet before (the restoration reward): Ochre Old Crew 1; Tidewell Old Crew 2 + Head Start 1;
+Rime + Quick Beam 1; Anvil + Archivist 1. The flat game stands in for the round planets (autoplay
+does not play the globe yet): a planet's size there is its Thriving target (110 / 140 / 160 / 200
+Thriving hexes and 1 / 2 / 2 / 3 bases at level 5, so more districts to restore).
+
+**Levers (data).**
+- `data/homeward.json` planets[k].`arrival` (new, Homeward.apply_arrival on landing): what the crew
+  brings from the planets before: research tier (every research below it granted: blueprints, beam,
+  stations), a starting crew on top of the Heirloom kit, robot Mk tiers, cubes, parts, seeds.
+
+| Planet | research tier | crew | robot Mk (index) | cubes / parts / seeds |
+|---|---|---|---|---|
+| Ochre | 3 | 2 Scoopie, Haul Bug, Seedling | - | 4k / 400 / - |
+| Tidewell | 3 | 2 Scoopie, Haul Bug, Seedling, Drip | Scoopie II | 5k / 500 / - |
+| Rime | 4 | 2 Scoopie, Haul Bug, 2 Seedling, 2 Drip | Scoopie, Haul Bug, Seedling II; Drip III | 10k / 1k / 80 |
+| Anvil | 5 | 3 Scoopie, Haul Bug, 3 Seedling, 2 Drip, Multibot | Scoopie, Haul Bug III; Seedling, Drip IV | 15k / 1.5k / 150 |
+
+- The Bot Fabricator (data/fabricator.json, from Tidewell on): 8k cubes + 300 parts, robots at 0.35x
+  their price (a Scoopie 385 cubes + 25 parts) with no growth, 30 s each, fleet cap 0.6 per 1,000
+  hexes on a globe (Verdance 98, Ochre 71, Tidewell 165, Rime 252, Anvil 393), 3x the crew cap on a
+  flat district. It was 30k + 900 and robots 0.6x: on Tidewell that landed at about 2-2.5 h, near
+  the planet's end.
+- The bot (tools/autoplay.gd): builds the Fabricator as soon as it is offered and paid for (robot
+  builds wait, the upgrade loop saves for it), keeps one robot's cubes in reserve while the line runs
+  below its cap, and sets a mix of cleaners and haulers plus planters and waterers once researched
+  (more Seedlings when seeds pile up). `_fabricator_mix`.
+
+**Measured (bot game minutes to the planet's 50%).**
+
+| Planet | before (no arrival kit) | v1 kit | final | 25% | base 5 | Fabricator | goal gaps over 20 min |
+|---|---|---|---|---|---|---|---|
+| Verdance (fresh) | 50% at 433; leave point base 3 at 114 (Mk V gate) | - | - | 120 | 162 | - | none (max 15.2) |
+| Ochre | 25% not reached at 155 | 143 | 122 | 80 | 118 | (not unlocked) | none |
+| Tidewell | Fabricator never bought in 92 min | 119.5 | 119.5 | 84 | 112 | 29 | none (max 5.2) |
+| Rime | - | 146 (v1) | ~145 (139 / 151, 3 runs) | 75 | 100-106 | 5 | 20.0 max (one, at the edge) |
+| Anvil | - | 227 | 140 (v2 kit 152) | 70 | 76 | 4 | none |
+
+Goals came every 2.5-4 min on every planet; no goal-less stretch over 20 min anywhere (the longest
+20.0 min, once, on Rime). Run-to-run spread is large (Anvil's 25% came at 75 and at 139 min with the same
+data), so treat single numbers as +-20%.
+
+**Whole game (bot time, x2 for a person).** Verdance to its leave point ~1.9-2.2 h (base 3 at 114
+min, Mk V soon after), then Ochre ~2.0, Tidewell ~2.0, Rime ~2.4, Anvil ~2.3 to 50%, plus the
+return trips (50% -> 100% with the later tech, est. 1.5-2 h): about 10-11 h bot, so ~20-22 h for a
+person. Verdance's own 50% (the Bloom Core) comes much later (433 bot min) because its frontiers wait
+for later-planet tech; that is by design (return trips).
+
+Result: every later planet reaches 50% in 2.0-2.5 bot hours (4-5 h for a person), within ~20% of
+the 1.5-2 h target and never slower than Verdance's own path to the same point. They still come in
+a little after Verdance's leave point (base 3, ~1.9 h bot), mostly because the 50% needs Thriving
+hexes over several districts (planting is the bottleneck: seeds pile up while Seedlings are few).
+Next lever if a person's runs come in slow: more planters in the arrival kits or a Seedling-first
+default Fabricator mix, not lower Thriving targets (those are the planets' size).
+
+**Caveats.** The flat districts don't grow with the globe's area: on round planets the Fabricator's
+size-scaled fleet cap and far crews carry the bigger planets (orbit autoplay is not wired yet). The
+bot spends greedily, so the Fabricator's fleet stays near 20 robots on a flat district; a person who
+sets the mix and lets it run gets more. Two bot runs stalled with the tree paused (a modal the bot
+does not close) at random times; the watchdog in those runs found `paused=true`, cause still open.

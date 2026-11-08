@@ -121,7 +121,7 @@ func accept(contents: Dictionary, from: Vector3) -> void:
 		var tw := fl.create_tween()
 		tw.tween_interval(i * 0.07)
 		tw.tween_method(func(t: float) -> void:
-			var top: Vector3 = (start + chute) * 0.5 + Vector3(0, 1.0, 0)
+			var top: Vector3 = (start + chute) * 0.5 + (global_basis.y if is_inside_tree() else Vector3.UP)  # [orbD] local up
 			fl.global_position = start.lerp(top, t).lerp(top.lerp(chute, t), t)
 			fl.rotation += Vector3(0.2, 0.15, 0.1)
 			, 0.0, 1.0, 0.45)

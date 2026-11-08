@@ -167,6 +167,14 @@ func build_crew(so: Node) -> SphereCrew:
 			var f: SphereField = g.get("field")
 			EventBus.field_progress_changed.emit(f.cleaned_count, f.junk_hex_count))
 	_watch_sites(g)
+	var w: Node = so.get("w")
+	if w.get("fleet") == null:  # the workbench, robot cards and Builder talk to world.fleet
+		var sf := SphereFleet.new()
+		sf.name = "Fleet"
+		sf.world = w
+		sf.crew = crew
+		w.add_child(sf)
+		w.set("fleet", sf)
 	if DevHooks.has("fabricator-build"):  # dev: a Fabricator standing at this planet's base
 		BotFabricator.state(BotFabricator.planet_of(so.get("w")))["built"] = true
 		GameState.add_currency("cubes", BigNum.from_float(DevHooks.get_f("fabricator-build", 1e6) if DevHooks.get_f("fabricator-build", 1.0) > 1.0 else 1e6))

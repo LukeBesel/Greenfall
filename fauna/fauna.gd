@@ -1562,7 +1562,7 @@ func _pet_enabled(a: Animal) -> bool:
 	if world.has_method("near_bench") and bool(world.call("near_bench")):
 		return false
 	var fs: Node = world.get("first_seed")
-	if fs and fs.has_method("near_tin") and bool(fs.call("near_tin", _lumi_pos)):
+	if fs and fs.has_method("near_tin") and bool(fs.call("near_tin", _w(_lumi_pos))):  # [orbB] a world point
 		return false
 	return true
 

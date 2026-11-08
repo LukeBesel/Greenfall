@@ -535,7 +535,8 @@ static func cost_text(cost: Dictionary) -> String:
 ## [orbC] What a crew brings to planet k (data/homeward.json planets[k].arrival): the tools and
 ## bots of the planets before it, so each bigger planet starts further along and never plays
 ## slower than Verdance. Keys (all optional): research_tier (grants every research below that
-## tier), robots (kit robots, added to the Heirloom crew), robot_tier {type: Mk index}, cubes, parts.
+## tier), robots (kit robots, added to the Heirloom crew), robot_tier {type: Mk index}, cubes, parts,
+## seeds (also unlocks seeds).
 static func arrival_kit(k: int) -> Dictionary:
 	return (planet_def(k).get("arrival", {}) as Dictionary).duplicate(true) if k > 0 else {}
 
@@ -551,6 +552,9 @@ static func apply_kit(a: Dictionary) -> Dictionary:
 		GameState.add_currency("cubes", BigNum.from_float(float(a["cubes"])))
 	if float(a.get("parts", 0.0)) > 0.0:
 		GameState.add_currency("parts", BigNum.from_float(float(a["parts"])))
+	if float(a.get("seeds", 0.0)) > 0.0:
+		GameState.add_currency("seeds", BigNum.from_float(float(a["seeds"])))
+		GameState.flags["seeds_unlocked"] = true
 	var tier: int = int(a.get("research_tier", 0))
 	if tier > 0:
 		for rid: String in Research.ids():

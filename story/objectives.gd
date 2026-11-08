@@ -394,7 +394,7 @@ func waypoint_target() -> Variant:
 				return SignalTower.pos() if SignalTower.tier() < int(def.get("target", 1)) else null
 			"seed":
 				if GameState.flags.get("seed_signal", false) and not GameState.flags.get("seeds_unlocked", false):
-					return FirstSeed.GREENHOUSE_POS
+					return (world.first_seed as FirstSeed).greenhouse_point() if world.get("first_seed") != null else FirstSeed.GREENHOUSE_POS  # [orbB]
 		return null
 	var gl: Goals = world.get("goals") as Goals
 	if gl == null or gl.current().is_empty():

@@ -278,3 +278,23 @@ func test_apply_arrival_grants_bots_tiers_and_money() -> void:
 	assert_eq((GameState.flags.get("late_start_robots", []) as Array).size(), (a["robots"] as Array).size())
 	for t: String in a.get("robot_tier", {}):
 		assert_gte(int(GameState.flags.get("tier_" + t, 0)), int(a["robot_tier"][t]))
+
+
+func test_sphere_fleet_builds_workbench_robots_into_the_crew() -> void:
+	# [orbC] On the globe world.fleet is a SphereFleet: the Bots tab builds into the SphereCrew.
+	var crew: SphereCrew = _crew()
+	var sf := SphereFleet.new()
+	sf.crew = crew
+	add_child_autofree(sf)
+	Research.grant("salvage_logic")
+	_give(1e6, 1e5)
+	assert_eq(sf.build_block_reason("scoopie"), "", "buildable like on a flat district")
+	var c0: float = GameState.get_currency("cubes").to_float()
+	var r: Robot = sf.build("scoopie", crew.surface.ground(_g5.centers[100]))
+	assert_not_null(r, "the flat API's return value")
+	assert_eq(crew.count("scoopie"), 1, "it joined the crew")
+	assert_eq(sf.count("scoopie"), 1)
+	assert_eq(sf.crew_size("clean"), 1)
+	assert_lt(GameState.get_currency("cubes").to_float(), c0, "paid")
+	assert_gt(sf.build_cost("scoopie").to_float(), Economy.robots["scoopie"]["cost"] * 1.0, "the next one costs more, as on the flat")
+	assert_eq(sf.robot_total(), 1)

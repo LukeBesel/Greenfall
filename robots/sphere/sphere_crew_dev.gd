@@ -39,6 +39,9 @@ static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, wri
 		crew.depot_cell = crew.grid.cell_at(dd)
 		crew.depot_points[start] = dd
 	crew.junk_view = src.junk_view
+	crew.world = parent
+	if parent.has_method("add_cube"):
+		crew.add_cube_fn = Callable(parent, "add_cube")
 	crew.terrain_for_recount = src.get("terrain") as SphereTerrain
 	crew.focus = lumi
 	parent.add_child(crew)
