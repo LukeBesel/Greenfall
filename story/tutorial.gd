@@ -40,6 +40,11 @@ func _ready() -> void:
 		marker.world = world
 		add_child(marker)
 	_announce.call_deferred()
+	if DevHooks.has("chest-full"):  # [v2guide] dev: start with a full chest (shots of the dump step)
+		(func() -> void:
+			var pt: Patch = world.get("patch") as Patch if world else null
+			if pt:
+				pt.compartment.fill = pt.capacity()).call_deferred()
 	Settings.input_device_changed.connect(func(_p: bool) -> void:  # [deck] prompts follow the device
 		if not done():
 			EventBus.tutorial_changed.emit(current_text()))
@@ -112,7 +117,9 @@ func _process(delta: float) -> void:
 	if _target_t <= 0.0 and marker:
 		_target_t = TARGET_REFRESH_S
 		var t: Dictionary = target()
-		if t.is_empty():
+		var ob: Objectives = world.get("objectives") as Objectives
+		# [v2guide] the purple beacon points at places once the card shows; #37: never at pieces
+		if t.is_empty() or (ob and ob.revealed) or str(t.get("kind", "")) == "piece":
 			marker.clear()
 		else:
 			marker.set_target(t["pos"], str(t["kind"]))
@@ -137,8 +144,9 @@ func target() -> Dictionary:
 			if p.compartment.is_empty():
 				var pid2: int = f.nearest_alive(at)
 				return {} if pid2 < 0 else {"pos": f.piece_pos[pid2], "kind": "piece"}
-			if world.get("depot") != null:
-				return {"pos": (world.depot as Node3D).global_position, "kind": "pad"}
+			var bin: Variant = Objectives.bin_point(world)  # [v2guide] the bin's body, not the scale plate
+			if bin is Vector3:
+				return {"pos": bin, "kind": "pad"}
 		"upgrade":
 			return {"pos": world.call("bench_pos"), "kind": "bench"}  # [orbB]
 	return {}

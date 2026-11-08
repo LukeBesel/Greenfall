@@ -99,6 +99,11 @@ func sell_factor() -> float:
 	return m
 
 
+## [v2guide] The bin body on the ground (where the beacon stands for "empty your chest").
+func bin_world() -> Vector3:
+	return to_global(_chute.position) if _chute else global_position
+
+
 func mouth_world() -> Vector3:
 	return to_global(_chute_mouth)
 

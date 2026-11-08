@@ -156,6 +156,8 @@ func step(delta: float) -> void:
 		heading = SphereMath.tangent_dir(adv[1], dir, heading)
 	if working and _target_cell >= 0 and graph:
 		var left: float = float(graph.call("junk_left", _target_cell)) - work_rate * delta
+		if SphereCells.clean_left(left):  # [v2feel] the shared clean rule: the last 5% sweeps away
+			left = 0.0
 		graph.call("work_cell", _target_cell, maxf(left, 0.0))
 		if left <= 0.0:
 			graph.call("release", _target_cell)

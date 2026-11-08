@@ -77,6 +77,20 @@ static func piece_size(field: Object, pid: int) -> int:
 	return sc
 
 
+## [v2feel] Whether Lumi can clean hex `h` with his current Lift Strength: the pieces he can't lift
+## add up to no more than the part that sweeps away by itself once the hex counts as clean
+## (field.clean_threshold, 95% on the globe). Objectives only pick hexes that pass.
+static func hex_clearable(field: HexField, h: int, max_size: int = -1) -> bool:
+	var lc: int = lift_class() if max_size < 0 else max_size
+	if lc >= SIZE_LARGE or h < 0 or h >= field.hex_pieces.size():
+		return true
+	var heavy: float = 0.0
+	for pid: int in field.hex_pieces[h]:
+		if field.piece_alive[pid] == 1 and piece_size(field, pid) > lc:
+			heavy += field.piece_vol[pid]
+	return heavy <= (1.0 - field.clean_threshold) * field.hex_total[h] + 0.001
+
+
 static func can_lift(field: Object, pid: int, max_size: int = -1) -> bool:
 	return piece_size(field, pid) <= (lift_class() if max_size < 0 else max_size)
 

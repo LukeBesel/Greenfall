@@ -89,7 +89,7 @@ static func apply(globe: OrbitPlanet) -> Dictionary:
 			report["cleaned"] = int(report["cleaned"]) + 1
 		else:
 			cells.junk[i] = cells.junk[i] * left6[p]
-			if cells.junk[i] <= 0.02 and cells.state[i] == 0:
+			if SphereCells.clean_left(cells.junk[i]) and cells.state[i] == 0:  # [v2feel]
 				cells.state[i] = 1
 				report["cleaned"] = int(report["cleaned"]) + 1
 	cells.refresh_all()
