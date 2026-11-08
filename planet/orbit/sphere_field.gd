@@ -68,6 +68,7 @@ func _init(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p
 	grid = p_grid
 	terrain = p_terrain
 	cells = p_cells
+	clean_threshold = 1.0 - SphereCells.CLEAN_LEFT  # [v2feel] the shared clean rule
 	var n: int = grid.cell_count()
 	hex_total.resize(n)
 	hex_left.resize(n)
@@ -88,7 +89,7 @@ func _init(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p
 			break
 	# [orbE] Load time: the per-cell pass inlines is_dirty / has_flag / water_dirty over local packed
 	# arrays (8 method calls per cell were ~3 s on Anvil's 655k cells). Same rules as before:
-	# dirty = JUNK state with junk > 0.02; a lake with floating junk is a junk hex.
+	# dirty = JUNK state with junk > SphereCells.CLEAN_LEFT; a lake with floating junk is a junk hex.
 	var st: PackedByteArray = cells.state
 	var jk: PackedFloat32Array = cells.junk
 	var fl: PackedByteArray = cells.flags
@@ -97,14 +98,14 @@ func _init(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p
 		var j: float = jk[i]
 		if st[i] == 5:
 			hex_water[i] = 1
-			if j > 0.02:
+			if j > SphereCells.CLEAN_LEFT:
 				hex_left[i] = j
 				junk_hex_count += 1
 			else:
 				hex_left[i] = 0.0
 				hex_clean[i] = 1
 			continue
-		var dirty: bool = st[i] == 0 and j > 0.02
+		var dirty: bool = st[i] == 0 and j > SphereCells.CLEAN_LEFT
 		var f_i: int = fl[i]
 		var hub: bool = (f_i & SphereCells.F_HUB) != 0 or ((f_i & SphereCells.F_SITE) != 0 and not dirty and not hub_flags)  # [orbB] F_HUB persists
 		hex_hub[i] = 1 if hub else 0
@@ -129,7 +130,7 @@ var _bag_type: int = -1  # [v1world] junk type index of the trash bags (plastic)
 
 
 func water_dirty(i: int) -> bool:
-	return cells.state[i] == 5 and cells.junk[i] > 0.02
+	return cells.state[i] == 5 and cells.junk[i] > SphereCells.CLEAN_LEFT
 
 
 ## Dirty for the field: land junk or floating junk.
@@ -229,8 +230,8 @@ func materialize(cell: int) -> PackedInt32Array:
 		var ti: int = _pick_type(rng)
 		var models: Array = Economy.junk_types[Economy.junk_ids[ti]].get("models", [])
 		var mdl: Dictionary = _pick_model(rng, models) if not models.is_empty() else {}
-		if small_only.has(cell) and float(mdl.get("vol", 0.5)) >= LARGE_VOL:  # [v1yard] no big items at the start
-			mdl = _small_model(Economy.junk_types[Economy.junk_ids[ti]], Economy.junk_ids[ti], piece_pos.size())
+		if small_only.has(cell) and float(mdl.get("vol", 0.5)) >= Pace.MEDIUM_VOL:  # [v1yard] no big items at the start; [v2feel] nor medium: all liftable at Lift 0
+			mdl = _tiny_model(Economy.junk_types[Economy.junk_ids[ti]], Economy.junk_ids[ti], piece_pos.size())
 		var mid: String = str(mdl.get("id", ""))
 		var vol: float = float(mdl.get("vol", 0.5))
 		var lie: bool = rng.randf() < float(mdl.get("lie", 0.3))
@@ -257,6 +258,45 @@ func materialize(cell: int) -> PackedInt32Array:
 	hex_left[cell] = FLAT_HEX_VOL * left
 	hex_total[cell] = FLAT_HEX_VOL
 	return out
+
+
+## [v2feel] A small-class model (liftable at Lift Strength 0) of a junk type, else a trash bag.
+func _tiny_model(t: Dictionary, type_id: String, pid: int) -> Dictionary:
+	var r := RandomNumberGenerator.new()
+	r.seed = hash([seed_value, pid, 4142])
+	var pool: Array = []
+	for m: Variant in (biome_set.get("models", {}) as Dictionary).get(type_id, []) + t.get("models", []):
+		if float((m as Dictionary).get("vol", 1.0)) < Pace.MEDIUM_VOL:
+			pool.append(m)
+	if pool.is_empty():
+		return {"id": "trashbag", "vol": 1.4, "lie": 0.0}
+	return _pick_model(r, pool)
+
+
+## [v2feel] Owner item 36: a cell that reaches 95% cleared is clean (SphereCells.CLEAN_LEFT) and its
+## leftover pieces sweep away. Every removal path (Lumi, robots, outposts, fauna) goes through here;
+## the junk view hides the swept pieces with a poof (hex_swept). Their cubes are simply dropped.
+signal hex_swept(cell: int, pids: PackedInt32Array)
+
+
+func remove_piece(pid: int) -> bool:
+	var flipped: bool = super(pid)
+	if flipped:
+		sweep_cell(piece_hex[pid])
+	return flipped
+
+
+## Removes what is left of a clean cell's pieces. Returns their ids.
+func sweep_cell(cell: int) -> PackedInt32Array:
+	var gone := PackedInt32Array()
+	for p: int in pieces_in(cell):
+		if piece_alive[p] == 1:
+			piece_alive[p] = 0
+			gone.append(p)
+	hex_left[cell] = 0.0
+	if not gone.is_empty():
+		hex_swept.emit(cell, gone)
+	return gone
 
 
 func visual_vol(pid: int) -> float:
@@ -502,6 +542,8 @@ func _materialize_floating(cell: int) -> PackedInt32Array:
 		var a: float = rng.randf() * TAU
 		var d: Vector3 = (ctr + (f.x * cos(a) + f.z * sin(a)) * (r / grid.radius_m)).normalized()
 		var fl: Array = FLOATERS[rng.randi() % FLOATERS.size()]
+		if fl[1] == "old_tyre" and small_only.has(cell):  # [v2feel] no heavy floaters at the start
+			fl = FLOATERS[0]
 		var tyre: bool = fl[1] == "old_tyre"
 		var vol: float = 2.5 if tyre else 0.6 * rng.randf_range(0.8, 1.3)
 		var sc: float = rng.randf_range(0.9, 1.1)
