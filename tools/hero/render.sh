@@ -2,7 +2,7 @@
 # hero_render.sh RES args... : gated single render of scenes/hero_preview.tscn in the hero worktree
 cd "$(dirname "$0")/../.."
 RES=$1; shift
-for i in $(seq 1 120); do
+for i in $(seq 1 ${GATE_TRIES:-120}); do
   if ! pgrep -f '^godot .*rendering-driver vulkan' >/dev/null && [ "$(free -g | awk '/Mem:/{print $7}')" -ge 6 ]; then break; fi
   sleep 10
 done

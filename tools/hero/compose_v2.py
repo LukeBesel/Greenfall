@@ -43,6 +43,17 @@ elif what == "head":
 elif what == "chest":
 	r = Image.open(OUT + "/chest_v2.png").convert("RGB")
 	side(concept.crop((170, 300, 760, 620)), r, 520, "concept (body crop)", "Godot render v2").save(OUT + "/compare_chest_v2.png")
+elif what == "hands":
+	r = Image.open(OUT + "/hands_v2.png").convert("RGB")
+	c1 = concept.crop((160, 400, 340, 600))   # right claw, open, low
+	c2 = concept.crop((690, 190, 930, 350))   # left claw reaching for the can
+	h = 300
+	a = c1.resize((int(c1.width * h / c1.height), h))
+	b = c2.resize((int(c2.width * h / c2.height), h))
+	cc = Image.new("RGB", (a.width + b.width + 4, h), (0, 0, 0))
+	cc.paste(a, (0, 0))
+	cc.paste(b, (a.width + 4, 0))
+	side(cc, r, 520, "concept claws", "Godot render v2").save(OUT + "/compare_hands_v2.png")
 elif what == "turn":
 	ims = [Image.open("%s/turn_v2_%d.png" % (OUT, i)).convert("RGB") for i in range(5)]
 	ims = [im.crop((int(im.width * 0.1), int(im.height * 0.04), int(im.width * 0.9), int(im.height * 0.88))) for im in ims]

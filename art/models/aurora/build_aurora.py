@@ -307,8 +307,8 @@ def with_material(obj, material):
 #   dark frame holding the raised recycling plate, glowing orange latches, a dark lower band;
 #   hover pod 0.12 .. 0.27 with a big bright cyan ring underneath; short segmented arms.
 HEAD_P = Vector((0, 0.56, 0))
-HC = 0.855                         # head centre height
-HA, HB, HCZ = 0.415, 0.295, 0.335  # head half sizes (x, y, z)
+HC = 0.828                         # head centre height (bottom stays at HEAD_P.y)
+HA, HB, HCZ = 0.43, 0.268, 0.335   # head half sizes (x, y, z): wide, low pill (concept ~1.5:1 incl. modules)
 E_H, E_V = 3.0, 2.9               # superellipsoid exponents: horizontal (x-z), vertical
 HW, HH, HD = HA * 2, HB * 2, HCZ * 2
 
@@ -377,7 +377,7 @@ def on_shell(x, y, z_sign=-1):
 
 # Visor: one curved glossy black screen across nearly the whole front; the shell is a thick band
 # below it and a thinner one above and at the sides (portrait).
-VA, VB, VN = 0.335, 0.205, 3.1
+VA, VB, VN = 0.345, 0.19, 3.1
 VCY = HC + 0.005
 
 
@@ -469,8 +469,8 @@ groove(head, (1.0, 0.8, 0.008), (0, HC, 0.15), depth=0.011)
 for s in (-1, 1):
 	groove(head, (0.008, 0.14, 0.42), (s * 0.165, HC + HB, 0.12), depth=0.009)
 groove(head, (0.34, 0.14, 0.008), (0, HC + HB, -0.09), depth=0.009)
-groove(head, (1.0, 0.008, 0.4), (0, HC + 0.155, 0.2), depth=0.009)
-groove(head, (1.0, 0.008, 0.4), (0, HC - 0.13, 0.2), depth=0.009)
+groove(head, (1.0, 0.008, 0.4), (0, HC + 0.14, 0.2), depth=0.009)
+groove(head, (1.0, 0.008, 0.4), (0, HC - 0.118, 0.2), depth=0.009)
 # Visor recess: the thick shell wraps the glass (dark trim walls).
 cut = conform("visor_cut", "trim", lambda s_: 0.034, grow=0.016, back=-0.15)
 boolean(head, cut)
@@ -534,9 +534,9 @@ SM_Y, SM_Z = HC - 0.025, 0.0
 mod = []
 mod.append(lathe("sm_collar", [(0.13, -0.01), (0.168, -0.01), (0.171, 0.004), (0.165, 0.014), (0.152, 0.016)], "paint", segs=64))
 mod.append(lathe("sm_house", [(0.11, 0.0), (0.155, 0.0), (0.158, 0.02), (0.155, 0.04), (0.148, 0.05), (0.138, 0.053), (0.133, 0.05)], "trim", segs=64))
-mod.append(torus("sm_ring", 0.1265, 0.0058, (0, 0.05, 0), "glow_soft", axis='Y', major=72, minor=8))
+mod.append(torus("sm_ring", 0.1255, 0.0092, (0, 0.05, 0), "glow_soft", axis='Y', major=72, minor=8))
 mod.append(lathe("sm_face", [(0.12, 0.05), (0.116, 0.046), (0.1, 0.045), (0.098, 0.05), (0.094, 0.051), (0.084, 0.05), (0.08, 0.044), (0.064, 0.043),
-	(0.062, 0.048), (0.058, 0.05), (0.05, 0.049), (0.046, 0.044), (0.03, 0.042)], "dark", segs=56))
+	(0.062, 0.048), (0.058, 0.05), (0.05, 0.049), (0.046, 0.044), (0.03, 0.042)], "screen", segs=56))  # [hero v2] dark glossy lens (concept)
 mod.append(lathe("sm_steel", [(0.094, 0.052), (0.096, 0.049), (0.083, 0.049), (0.084, 0.052)], "steel", segs=56))
 mod.append(lathe("sm_lens", [(0.0, 0.058), (0.012, 0.0575), (0.022, 0.055), (0.03, 0.05), (0.032, 0.044)], "screen", segs=32))
 mod.append(torus("sm_lens_ring", 0.034, 0.003, (0, 0.046, 0), "steel", axis='Y', major=32, minor=6))
@@ -549,23 +549,25 @@ for k in range(4):
 side_r = join("side_module_r", mod)
 side_r.data.transform(Matrix.Translation(Vector((HA - 0.022, SM_Y, SM_Z))) @ Matrix.Rotation(math.radians(-90), 4, 'Z'))
 side_l = mirror_x(side_r, "side_module_l")
-head_parts += [side_r, side_l]
+# [hero v2] Character builder: the side modules ("ears") are their own part so they can be swapped.
+ears = join("ears", [side_r, side_l])
 head = join("head", head_parts)
 
 # Fin (part "antenna", head pivot): a thin brushed-metal stalk rising up and back from the back of
 # the crown, carrying a flat amber paddle with a lighter lit top edge (concept).
 p, n = shell_hit((0, 3.0, 0.16), (0, -1, 0))
 FIN_BASE = Vector((0, (p.y if p is not None else HC + HB) - 0.004, 0.16))
-STALK_END = FIN_BASE + Vector((0, 0.1, 0.12))
+STALK_END = FIN_BASE + Vector((0, 0.165, 0.1))
+STALK_L = (STALK_END - FIN_BASE).length
 fin_parts = [
 	rbox("fin_mount", (0.07, 0.03, 0.09), FIN_BASE + Vector((0, 0.008, 0.0)), 0.012, "trim", segs=2, sub=1),
 	cyl("fin_hinge", 0.014, 0.08, FIN_BASE + Vector((0, 0.026, -0.005)), "steel", axis='X', verts=16, bevel=0.003),
 ]
-stalk = rbox("fin_stalk", (0.034, 0.016, 0.17), (0, 0, 0), 0.006, "fin", segs=2, sub=1)
+stalk = rbox("fin_stalk", (0.04, 0.02, STALK_L + 0.03), (0, 0, 0), 0.007, "fin", segs=2, sub=1)
 ang = math.degrees(math.atan2(STALK_END.y - FIN_BASE.y, STALK_END.z - FIN_BASE.z))
 xform(stalk, (FIN_BASE + STALK_END) * 0.5 + Vector((0, 0.012, 0)), (-ang, 0, 0))
 fin_parts.append(stalk)
-fin_parts.append(rbox("fin_stalk_inset", (0.012, 0.018, 0.11), (0, 0, 0), 0.003, "dark", sub=0, segs=1))
+fin_parts.append(rbox("fin_stalk_inset", (0.014, 0.022, STALK_L * 0.7), (0, 0, 0), 0.003, "dark", sub=0, segs=1))
 xform(fin_parts[-1], (FIN_BASE + STALK_END) * 0.5 + Vector((0, 0.012, 0)), (-ang, 0, 0))
 # Paddle: rounded, tapering a little toward the back, tilted up at the tail.
 pad_pts = []
@@ -573,14 +575,14 @@ for k in range(40):
 	t = 2 * math.pi * k / 40
 	x = math.cos(t)
 	z = math.sin(t)
-	w = 0.04 * (1.0 - 0.25 * max(z, 0.0))
-	pad_pts.append((x * w, z * 0.125))
-paddle = prism("fin_paddle", pad_pts, 0.016, (0, 0, 0), "paddle", bevel=0.004, segs=2, sub=1, rot=(90, 0, 0))
-xform(paddle, STALK_END + Vector((0, 0.014, 0.085)), (-8, 0, 0))
+	w = 0.05 * (1.0 - 0.3 * max(z, 0.0))
+	pad_pts.append((x * w, z * 0.13))
+paddle = prism("fin_paddle", pad_pts, 0.018, (0, 0, 0), "paddle", bevel=0.004, segs=2, sub=1, rot=(90, 0, 0))
+xform(paddle, STALK_END + Vector((0, 0.016, 0.09)), (-14, 0, 0))
 fin_parts.append(paddle)
-edge = [(math.cos(2 * math.pi * k / 40) * 0.04 * (1.0 - 0.25 * max(math.sin(2 * math.pi * k / 40), 0.0)), math.sin(2 * math.pi * k / 40) * 0.125) for k in range(40)]
-rim = loop_tube("fin_edge", [(x, 0.0085, z) for (x, z) in edge], 0.0035, "paddle_edge", sides=6)
-xform(rim, STALK_END + Vector((0, 0.014, 0.085)), (-8, 0, 0))
+edge = [(math.cos(2 * math.pi * k / 40) * 0.05 * (1.0 - 0.3 * max(math.sin(2 * math.pi * k / 40), 0.0)), math.sin(2 * math.pi * k / 40) * 0.13) for k in range(40)]
+rim = loop_tube("fin_edge", [(x, 0.0095, z) for (x, z) in edge], 0.003, "paddle_edge", sides=6)
+xform(rim, STALK_END + Vector((0, 0.016, 0.09)), (-14, 0, 0))
 fin_parts.append(rim)
 fin_parts.append(screw(FIN_BASE + Vector((0.036, 0.008, 0.02)), (1, 0, 0), r=0.006))
 fin_parts.append(screw(FIN_BASE + Vector((-0.036, 0.008, 0.02)), (-1, 0, 0), r=0.006))
@@ -594,7 +596,7 @@ visor = conform("visor", "face", lambda s_: 0.03 - 0.022 * (1 - s_ * s_) - 0.004
 
 # ---------------------------------------------------------------- BODY (pivot = float origin)
 body_parts = []
-TY, TH, TW, TD = 0.415, 0.31, 0.6, 0.42
+TY, TH, TW, TD = 0.415, 0.31, 0.66, 0.42   # [hero v2] wider: ~0.75 of the head's width (concept)
 upper = rbox("torso", (TW, TH, TD), (0, TY, 0), 0.1, "paint", segs=4, sub=2)
 BAND_Y = 0.528
 groove(upper, (0.8, 0.014, 0.8), (0, BAND_Y, 0), depth=0.01)          # light band seam
@@ -611,8 +613,8 @@ cut = rbox("plate_cut", (0.29, 0.205, 0.07), PL_C, 0.02, "trim", sub=1)
 boolean(upper, cut)
 body_parts.append(upper)
 # Light band: one closed cyan loop in the top seam all round the torso.
-body_parts.append(loop_tube("light_band", rrect_loop(TW * 0.5 - 0.026, TD * 0.5 - 0.026, 0.085, BAND_Y), 0.0062, "glow", sides=8))
-body_parts.append(tube("bay_strip", [(-0.19, 0.548, -TD * 0.5 + 0.004), (0.19, 0.548, -TD * 0.5 + 0.004)], 0.0045, "glow", sides=8))
+body_parts.append(loop_tube("light_band", rrect_loop(TW * 0.5 - 0.026, TD * 0.5 - 0.026, 0.085, BAND_Y), 0.0085, "glow", sides=10))
+body_parts.append(tube("bay_strip", [(-0.2, 0.548, -TD * 0.5 + 0.004), (0.2, 0.548, -TD * 0.5 + 0.004)], 0.006, "glow", sides=8))
 for k in range(5):
 	x = -0.15 + k * 0.075
 	body_parts.append(cyl("bay_drum", 0.016, 0.05, (x, 0.548, -TD * 0.5 + 0.045), "dark", axis='X', verts=12, bevel=0.003))
@@ -627,9 +629,9 @@ for sx in (-1, 1):
 		body_parts.append(screw((sx * 0.108, PL_C.y + sy * 0.068, PL_FRONT), (0, 0, -1), r=0.0075))
 # Orange latches: glowing pills in dark housings either side of the plate; orange vents on the flanks.
 for s in (-1, 1):
-	body_parts.append(rbox("latch_house", (0.05, 0.14, 0.05), (s * 0.18, PL_C.y, -TD * 0.5 + 0.005), 0.014, "dark", segs=2, sub=1))
-	body_parts.append(rbox("latch", (0.028, 0.105, 0.02), (s * 0.18, PL_C.y, -TD * 0.5 - 0.02), 0.012, "latch", segs=3, sub=1))
-	body_parts.append(rbox("latch_pin", (0.052, 0.012, 0.012), (s * 0.18, PL_C.y + 0.062, -TD * 0.5 - 0.018), 0.004, "steel", sub=0, segs=1))
+	body_parts.append(rbox("latch_house", (0.05, 0.14, 0.05), (s * 0.198, PL_C.y, -TD * 0.5 + 0.005), 0.014, "dark", segs=2, sub=1))
+	body_parts.append(rbox("latch", (0.028, 0.105, 0.02), (s * 0.198, PL_C.y, -TD * 0.5 - 0.02), 0.012, "latch", segs=3, sub=1))
+	body_parts.append(rbox("latch_pin", (0.052, 0.012, 0.012), (s * 0.198, PL_C.y + 0.062, -TD * 0.5 - 0.018), 0.004, "steel", sub=0, segs=1))
 	body_parts.append(rbox("flank_vent", (0.02, 0.09, 0.13), (s * (TW * 0.5 - 0.004), 0.4, 0.07), 0.008, "accent", segs=2, sub=1))
 	for k in range(3):
 		body_parts.append(rbox("flank_slat", (0.012, 0.012, 0.11), (s * (TW * 0.5 + 0.006), 0.375 + k * 0.025, 0.07), 0.003, "dark", sub=0, segs=1))
@@ -638,7 +640,7 @@ for s in (-1, 1):
 	for z in (-0.15, 0.15):
 		body_parts.append(screw((s * TW * 0.5, 0.29, z), (s, 0, 0), r=0.007))
 # Dark lower band of panels.
-low = rbox("lower_band", (TW - 0.01, 0.075, TD - 0.01), (0, 0.285, 0), 0.03, "trim", segs=3, sub=1)
+low = rbox("lower_band", (TW - 0.04, 0.075, TD - 0.04), (0, 0.285, 0), 0.03, "trim", segs=3, sub=1)  # [hero v2] flush, not a bumper
 for x in (-0.13, 0.0, 0.13):
 	groove(low, (0.008, 0.1, 0.8), (x, 0.285, 0), depth=0.006)
 body_parts.append(low)
@@ -655,18 +657,19 @@ for sx in (-1, 1):
 		body_parts.append(screw((sx * 0.16, y, TD * 0.5), (0, 0, 1), r=0.007))
 # Hover pod: dark rounded bowl, a ring housing at the bottom with the big bright cyan ring under it
 # and a glowing core disc.
-body_parts.append(lathe("pod", [(0.0, 0.262), (0.205, 0.262), (0.214, 0.245), (0.21, 0.222), (0.196, 0.196), (0.178, 0.172), (0.168, 0.156),
-	(0.172, 0.142), (0.17, 0.13), (0.16, 0.126), (0.137, 0.126), (0.132, 0.132), (0.11, 0.134), (0.0, 0.134)], "trim", segs=64))
-body_parts.append(torus("pod_seam", 0.2, 0.005, (0, 0.226, 0), "dark", major=64, minor=6))
-body_parts.append(torus("pod_lip", 0.172, 0.006, (0, 0.142, 0), "steel", major=64, minor=6))
-for k in range(8):
-	a = 2 * math.pi * (k + 0.5) / 8
-	body_parts.append(rbox("pod_fin", (0.03, 0.03, 0.012), (math.cos(a) * 0.188, 0.19, math.sin(a) * 0.188), 0.004, "dark", sub=0, segs=1, rot=(0, -math.degrees(a), 30)))
-	body_parts.append(screw((math.cos(a) * 0.2, 0.238, math.sin(a) * 0.2), (math.cos(a), 0.3, math.sin(a)), r=0.006))
+body_parts.append(lathe("pod", [(0.0, 0.262), (0.222, 0.262), (0.232, 0.25), (0.232, 0.214), (0.226, 0.196), (0.212, 0.178), (0.2, 0.168),
+	(0.2, 0.158), (0.19, 0.15), (0.175, 0.147), (0.13, 0.147), (0.125, 0.152), (0.1, 0.153), (0.0, 0.153)], "trim", segs=72))
+body_parts.append(torus("pod_seam", 0.229, 0.005, (0, 0.226, 0), "dark", major=72, minor=6))
+body_parts.append(torus("pod_lip", 0.2, 0.0055, (0, 0.171, 0), "steel", major=72, minor=6))
+for k in range(10):
+	a = 2 * math.pi * (k + 0.5) / 10
+	body_parts.append(rbox("pod_fin", (0.03, 0.022, 0.012), (math.cos(a) * 0.223, 0.188, math.sin(a) * 0.223), 0.004, "dark", sub=0, segs=1, rot=(0, -math.degrees(a), 30)))
+	body_parts.append(screw((math.cos(a) * 0.232, 0.238, math.sin(a) * 0.232), (math.cos(a), 0.1, math.sin(a)), r=0.006))
 body = join("body", body_parts)
-thruster = torus("thruster", 0.149, 0.0105, (0, 0.128, 0), "thruster", major=80, minor=12)
-core = lathe("thruster_core", [(0.0, 0.131), (0.1, 0.131), (0.112, 0.132)], "thruster_core", segs=48)
-thruster = join("thruster", [thruster, core])
+thruster = torus("thruster", 0.188, 0.0115, (0, 0.152, 0), "thruster", major=96, minor=12)
+thr_in = torus("thruster_in", 0.118, 0.0065, (0, 0.148, 0), "thruster", major=72, minor=8)
+core = lathe("thruster_core", [(0.0, 0.1505), (0.1, 0.1505), (0.112, 0.151)], "thruster_core", segs=48)
+thruster = join("thruster", [thruster, thr_in, core])
 
 ICON_P = Vector((0, PL_C.y + 0.012, PL_FRONT - 0.002))
 
@@ -674,15 +677,15 @@ def recycle_icon(name, size, center, material):
 	"""Three bent arrows chasing around a triangle (the recycling symbol), flat, facing -Z."""
 	R = size * 0.5
 	tri = [Vector((math.cos(math.radians(90 + 120 * k)), math.sin(math.radians(90 + 120 * k)), 0)) * R for k in range(3)]
-	w = size * 0.15
+	w = size * 0.12  # [hero v2] slimmer arrows, hollow middle (concept)
 	parts = []
 	for k in range(3):
 		c0 = tri[k]
 		prev = tri[k - 1]
 		nxt = tri[(k + 1) % 3]
-		a = c0 + (prev - c0) * 0.3    # start on the previous edge
-		b = c0 + (nxt - c0) * 0.4     # shaft end on the next edge
-		h = c0 + (nxt - c0) * 0.6     # arrow tip (a clear gap before the next arrow)
+		a = c0 + (prev - c0) * 0.24   # start on the previous edge
+		b = c0 + (nxt - c0) * 0.36    # shaft end on the next edge
+		h = c0 + (nxt - c0) * 0.56    # arrow tip (a clear gap before the next arrow)
 		for (p, q) in ((a, c0), (c0, b)):
 			d = (q - p).normalized()
 			nrm = Vector((-d.y, d.x, 0)) * w * 0.5
@@ -703,7 +706,7 @@ def recycle_icon(name, size, center, material):
 
 
 
-icon_recycle = recycle_icon("icon_recycle", 0.12, ICON_P, "glow")
+icon_recycle = recycle_icon("icon_recycle", 0.112, ICON_P, "glow")
 
 # Hatch (hinged at its top edge) on the torso back.
 HATCH_P = Vector((0, 0.5, TD * 0.5))
@@ -746,24 +749,31 @@ elbow = join("arm_elbow", [
 wrist = join("arm_wrist", [
 	cyl("wr_ring", 0.042, 0.02, W + Vector((0, 0, 0.02)), "dark", axis='Z', bevel=0.006),
 	torus("wr_steel", 0.044, 0.004, W + Vector((0, 0, 0.008)), "steel", axis='Z', major=32, minor=6),
-	cyl("wr_cuff", 0.048, 0.026, W + Vector((0, 0, -0.004)), "trim", axis='Z', bevel=0.008),
-	rbox("palm", (0.082, 0.078, 0.05), W + Vector((0, 0, -0.035)), 0.016, "dark", segs=3, sub=1),
+	cyl("wr_cuff", 0.054, 0.034, W + Vector((0, 0, -0.006)), "paint", axis='Z', bevel=0.01),  # [hero v2] cream cuff (concept)
+	rbox("palm", (0.088, 0.084, 0.052), W + Vector((0, 0, -0.038)), 0.018, "dark", segs=3, sub=1),
+	torus("palm_ring", 0.047, 0.004, W + Vector((0, 0, -0.024)), "steel", axis='Z', major=32, minor=6),
 ])
-# One finger (base segment) and one claw (middle segment + hooked tip), in their own frames: they
-# point down -Z, outward = +Y.
+# [hero v2] Hands (concept): chunky three-finger grippers. Each finger has a dark core with a light
+# worn-grey armour plate on its outer face, a steel knuckle, then a second armoured segment ending in
+# a hooked tip; the fingers curl into an open C. One finger (base segment) and one claw (middle
+# segment + hooked tip), in their own frames: they point down -Z, outward = +Y.
 finger = join("finger", [
-	rbox("fg", (0.034, 0.03, 0.05), (0, 0.0, -0.022), 0.009, "dark", segs=2, sub=1),
-	cyl("fg_knuckle", 0.016, 0.038, (0, 0.0, -0.05), "steel", axis='X', verts=14, bevel=0.004),
-	rbox("fg_plate", (0.03, 0.006, 0.036), (0, 0.016, -0.02), 0.002, "claw", sub=0, segs=1),
+	rbox("fg_core", (0.03, 0.028, 0.056), (0, -0.003, -0.024), 0.009, "dark", segs=2, sub=1),
+	rbox("fg_armor", (0.042, 0.02, 0.05), (0, 0.011, -0.024), 0.009, "claw", segs=3, sub=1),
+	rbox("fg_rib", (0.044, 0.006, 0.008), (0, 0.016, -0.04), 0.002, "dark", sub=0, segs=1),
+	cyl("fg_knuckle", 0.017, 0.046, (0, 0.0, -0.051), "steel", axis='X', verts=16, bevel=0.004),
+	cyl("fg_knuckle_cap", 0.009, 0.05, (0, 0.0, -0.051), "dark", axis='X', verts=12, bevel=0.002),
+	screw((0.0, 0.021, -0.014), (0, 1, 0), r=0.0045),
 ])
-mid = rbox("ft_mid", (0.032, 0.028, 0.034), (0, 0.0, -0.016), 0.008, "claw", segs=2, sub=1)
+mid = rbox("ft_mid", (0.04, 0.03, 0.036), (0, 0.004, -0.017), 0.01, "claw", segs=3, sub=1)
+pad = rbox("ft_pad", (0.028, 0.012, 0.034), (0, -0.012, -0.022), 0.004, "dark", sub=0, segs=2)
 # Hook outline: x = along the finger (down -Z after the turn), y = outward (+Y) / inward (-Y).
-hook_pts = [(0.0, 0.013), (0.028, 0.013), (0.046, 0.005), (0.058, -0.01), (0.066, -0.03), (0.054, -0.027), (0.042, -0.014), (0.028, -0.011), (0.0, -0.011)]
+hook_pts = [(0.0, 0.016), (0.03, 0.016), (0.05, 0.008), (0.064, -0.008), (0.072, -0.03), (0.064, -0.034), (0.05, -0.02), (0.032, -0.012), (0.0, -0.012)]
 area = sum(hook_pts[i][0] * hook_pts[(i + 1) % len(hook_pts)][1] - hook_pts[(i + 1) % len(hook_pts)][0] * hook_pts[i][1] for i in range(len(hook_pts)))
 if area < 0:
 	hook_pts.reverse()
-hk = prism("ft_hook", hook_pts, 0.026, (0, 0, -0.03), "claw", bevel=0.004, segs=2, sub=1, rot=(0, 90, 0))
-tip = join("finger_tip", [mid, hk, cyl("ft_knuckle", 0.013, 0.034, (0, 0.0, -0.034), "steel", axis='X', verts=12, bevel=0.003)])
+hk = prism("ft_hook", hook_pts, 0.032, (0, 0, -0.03), "claw", bevel=0.006, segs=2, sub=1, rot=(0, 90, 0))
+tip = join("finger_tip", [mid, pad, hk, cyl("ft_knuckle", 0.014, 0.042, (0, 0.0, -0.034), "steel", axis='X', verts=14, bevel=0.003)])
 tip.name = tip.data.name = "finger_tip"
 
 shoulder_l = mirror_x(shoulder, "arm_shoulder_l")
@@ -774,7 +784,7 @@ for o, n in ((shoulder, "arm_shoulder_r"), (elbow, "arm_elbow_r"), (wrist, "arm_
 	o.data.name = n
 
 PARTS = {
-	"body": Vector((0, 0, 0)), "thruster": Vector((0, 0, 0)), "hatch": HATCH_P, "head": HEAD_P, "antenna": HEAD_P, "visor": VISOR_C,
+	"body": Vector((0, 0, 0)), "thruster": Vector((0, 0, 0)), "hatch": HATCH_P, "head": HEAD_P, "ears": HEAD_P, "antenna": HEAD_P, "visor": VISOR_C,
 	"icon_recycle": ICON_P,
 	"arm_shoulder_r": S, "arm_elbow_r": E, "arm_wrist_r": W,
 	"arm_shoulder_l": Vector((-S.x, S.y, S.z)), "arm_elbow_l": Vector((-E.x, E.y, E.z)), "arm_wrist_l": Vector((-W.x, W.y, W.z)),
@@ -794,6 +804,7 @@ def decimate(obj, ratio):
 
 decimate(head, float(os.environ.get("HEAD_DEC", "0.6")))
 decimate(body, float(os.environ.get("BODY_DEC", "0.6")))
+decimate(ears, 0.6)
 HERO_OBJS = [o for o in bpy.data.objects if o.type == 'MESH']
 print("anchors: head_top", tuple(FIN_BASE), "beacon(head space)", tuple(BEACON - HEAD_P), "chest_plate", tuple(ICON_P), "visor", tuple(VISOR_C), "S", tuple(S), "E", tuple(E), "W", tuple(W))
 
@@ -934,7 +945,22 @@ def unwrap(o):
 	bpy.ops.object.mode_set(mode='OBJECT')
 
 
-for o in objs:
+def unwrap_atlas(group, margin=0.003):
+	"""[hero v2] One shared UV atlas for a group of parts (multi-object edit mode packs every
+	island into the same 0..1 square at one texel density): tools/hero/bake_masks.py bakes the
+	per-pixel AO / edge / cavity mask atlas into it, and every hero paint material samples it."""
+	bpy.ops.object.select_all(action='DESELECT')
+	for o in group:
+		o.select_set(True)
+	bpy.context.view_layer.objects.active = group[0]
+	bpy.ops.object.mode_set(mode='EDIT')
+	bpy.ops.mesh.select_all(action='SELECT')
+	bpy.ops.uv.smart_project(angle_limit=math.radians(60), island_margin=margin, area_weight=0.6)
+	bpy.ops.object.mode_set(mode='OBJECT')
+
+
+unwrap_atlas(HERO_OBJS)
+for o in ACC_OBJS:
 	unwrap(o)
 
 
@@ -995,7 +1021,9 @@ def write_glb(path, objects):
 				# Blender is CCW front-facing like glTF; convert Z-up to Y-up: (x, y, z) -> (x, z, -y).
 				for li in tri.loops:
 					lp = me.loops[li]
-					key = (lp.vertex_index, round(lp.normal.x, 3), round(lp.normal.y, 3), round(lp.normal.z, 3))
+					uvk = (round(uv[li].uv[0], 5), round(uv[li].uv[1], 5)) if uv else (0.0, 0.0)
+					# [hero v2] UV seams split vertices too (the mask atlas needs exact UVs).
+					key = (lp.vertex_index, round(lp.normal.x, 3), round(lp.normal.y, 3), round(lp.normal.z, 3), uvk)
 					if key not in remap:
 						co = me.vertices[lp.vertex_index].co
 						n = lp.normal

@@ -4,6 +4,7 @@ extends Node3D
 ##                     backdrop, left claw reaching for a can with the cyan pickup lasers.
 ##   --view=turn     : front, 3/4, side, back 3/4 and back (the turnaround layout), one PNG each.
 ##   --view=head / chest : close-ups (eyes and visor; chest plate and claws), portrait lighting.
+##   --view=hands    : both claws in the portrait pose, framed between them.
 ##   --view=blink    : head close-up, a blink at phase 0 (open), 50 ms (closing), 90 ms (shut), 170 ms (opening).
 ##   --out=screenshots/hero/x  (writes <out>.png or <out>_N.png), --eyes=crescent|round|happy|bar|heart
 ## Run (software Vulkan is slow, keep the settle time):
@@ -31,7 +32,7 @@ func _ready() -> void:
 	get_viewport().msaa_3d = Viewport.MSAA_4X
 	get_viewport().screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA
 	# Close-ups use the portrait's warm set too.
-	var portrait: bool = _view in ["portrait", "head", "chest"]
+	var portrait: bool = _view in ["portrait", "head", "chest", "hands"]
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
 	var sky := Sky.new()
@@ -81,10 +82,10 @@ func _ready() -> void:
 	key.look_at_from_position(Vector3(3.0, 2.2, 0.7), Vector3.ZERO, Vector3.UP)
 	var rim := DirectionalLight3D.new()
 	rim.light_color = Color(1.0, 0.6, 0.32) if portrait else Color(0.7, 0.85, 1.0)
-	rim.light_energy = 1.6 if portrait else 0.8
+	rim.light_energy = 2.6 if portrait else 0.8
 	rim.light_specular = 1.2
 	add_child(rim)
-	rim.look_at_from_position(Vector3(-1.5, 1.8, 3.0), Vector3.ZERO, Vector3.UP)
+	rim.look_at_from_position(Vector3(-1.5, 2.6, 3.0), Vector3.ZERO, Vector3.UP)  # [hero v2] sun behind and above (concept)
 	var fill := DirectionalLight3D.new()
 	fill.light_color = Color(0.62, 0.74, 1.0)
 	fill.light_energy = 0.35
@@ -123,11 +124,12 @@ func _ready() -> void:
 	_cam = Camera3D.new()
 	add_child(_cam)
 	_cam.current = true
-	if portrait:
+	if _view == "portrait":  # [hero v2] (was `portrait`, which swallowed the head/chest close-ups)
 		_cam.fov = 30.0
-		var a: float = deg_to_rad(38.0)
+		# [hero v2] The concept looks down on him a little (the crown and fin read against the sky).
+		var a: float = deg_to_rad(31.0)
 		var d: float = 2.6
-		_shots = [[Vector3(sin(a) * d, 1.08, -cos(a) * d), Vector3(-0.16, 0.7, -0.05)]]
+		_shots = [[Vector3(sin(a) * d, 1.5, -cos(a) * d), Vector3(-0.14, 0.72, -0.05)]]
 		var cam_attr := CameraAttributesPractical.new()
 		cam_attr.dof_blur_far_enabled = true
 		cam_attr.dof_blur_far_distance = 4.0
@@ -138,7 +140,12 @@ func _ready() -> void:
 	elif _view == "head":
 		_cam.fov = 26.0
 		var ah: float = deg_to_rad(34.0)
-		_shots = [[Vector3(sin(ah) * 1.55, 1.02, -cos(ah) * 1.55), Vector3(-0.04, 0.86, -0.05)]]
+		_shots = [[Vector3(sin(ah) * 2.15, 1.25, -cos(ah) * 2.15), Vector3(-0.04, 0.84, -0.05)]]
+		_build_can_and_lasers()
+	elif _view == "hands":
+		# [hero v2] Close-up of the reaching claw (framed on it in _set_view, after the pose).
+		_cam.fov = 26.0
+		_shots = [[Vector3.ZERO, Vector3.ZERO]]
 		_build_can_and_lasers()
 	elif _view == "chest":
 		_cam.fov = 28.0
@@ -167,7 +174,7 @@ func _build_can_and_lasers() -> void:
 		mi.mesh = AssetLib.model_mesh("can_rusted")
 		mi.rotation_degrees = Vector3(-35, 30, 60)
 		_can.add_child(mi)
-	_can.position = Vector3(-0.92, 0.66, -0.78)
+	_can.position = Vector3(-0.95, 0.95, -0.72)
 	var glow: Color = PatchModel.glow_of("aurora")
 	for k: int in 3:
 		var m := MeshInstance3D.new()
@@ -201,8 +208,15 @@ func _pose() -> void:
 		var ph: float = BLINK_PHASES[clampi(_i, 0, BLINK_PHASES.size() - 1)]
 		(_model.get("_face_mat") as ShaderMaterial).set_shader_parameter("blink", PatchModel.blink_curve(ph))
 		return
-	if not _view in ["portrait", "head", "chest"]:
+	if not _view in ["portrait", "head", "chest", "hands"]:
 		return
+	_model._blink_timer = 100.0  # no random blink in a review shot
+	_model._blink_t = -1.0
+	# [hero v2] Flying pose of the portrait: pitched forward and leaning toward the can.
+	_model.rotation_degrees = Vector3(-6.0, 0.0, 7.0)
+	var arm_r: Node3D = _model.get("_arm_r")
+	arm_r.rotation = Vector3(0.05, 0.1, 1.05)
+	(arm_r.get_meta("elbow") as Node3D).rotation = Vector3(0.35, 0.0, 0.0)
 	# Left arm raised and reaching toward the can (the portrait's beam arm), claws open.
 	var arm: Node3D = _model.get("_arm_l")
 	arm.rotation = Vector3(0.35, 0.3, -1.1)
@@ -244,5 +258,11 @@ func _process(delta: float) -> void:
 
 func _set_view(i: int) -> void:
 	var v: Array = _shots[i]
+	if _view == "hands":
+		var c: Vector3 = _model.claw_point_l()
+		var r: Vector3 = _model.claw_point()
+		_cam.position = (c + r) * 0.5 + Vector3(0.35, 0.25, -1.55)
+		_cam.look_at((c + r) * 0.5 + Vector3(0.0, -0.02, 0.0), Vector3.UP)
+		return
 	_cam.position = v[0]
 	_cam.look_at(v[1], Vector3.UP)

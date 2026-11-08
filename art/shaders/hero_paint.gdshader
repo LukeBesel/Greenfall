@@ -24,7 +24,7 @@ uniform float clearcoat = 0.0;                          // glossy lacquer over t
 uniform float tex_scale = 2.4;
 uniform float seed = 0.0;
 uniform float ao_strength = 1.0;
-uniform vec4 chip_color : source_color = vec4(0.11, 0.115, 0.125, 1.0);  // dark metal under the paint
+uniform vec4 chip_color : source_color = vec4(0.24, 0.16, 0.115, 1.0);  // concept: warm dark brown chips (sampled 60..85, 38..68, 24..62)
 uniform vec4 rust_color : source_color = vec4(0.42, 0.22, 0.1, 1.0);
 uniform vec4 rim_color : source_color = vec4(0.62, 0.85, 1.0, 1.0);      // shadow-side rim (cool)
 uniform vec4 rim_warm : source_color = vec4(1.0, 0.72, 0.5, 1.0);        // sun-side rim (peach)
@@ -34,6 +34,10 @@ uniform vec4 moss_color : source_color = vec4(0.27, 0.38, 0.12, 1.0);
 uniform float stripes : hint_range(0.0, 1.0) = 0.0;
 uniform vec4 stripe_color : source_color = vec4(0.08, 0.075, 0.07, 1.0);
 uniform vec3 sun_dir = vec3(-0.5, 0.6, 0.6);   // world direction TOWARD the sun
+// [hero v2] Baked 2K wear-mask atlas (tools/hero/bake_masks.py; all hero parts share one UV atlas):
+// R = AO, G = convex edge, B = cavity. Off (use_mask = 0) for parts with their own UVs (add-ons).
+uniform sampler2D mask_tex : hint_default_white, filter_linear_mipmap, repeat_disable;
+uniform float use_mask = 0.0;
 uniform sampler2D metal_alb : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D metal_nrm : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D metal_arm : filter_linear_mipmap_anisotropic, repeat_enable;
@@ -124,6 +128,12 @@ void fragment() {
 	float ao = vcol.r;
 	float edge = vcol.g;
 	float cav = vcol.b;
+	if (use_mask > 0.5) {
+		vec3 mk = texture(mask_tex, UV).rgb;
+		ao = mk.r;
+		edge = max(mk.g, edge * 0.5);
+		cav = max(mk.b, cav * 0.5);
+	}
 	float joint = 1.0 - vcol.a;
 	vec3 q = opos * 6.0 + vec3(seed);
 	float big = fbm3(q);
@@ -131,19 +141,29 @@ void fragment() {
 	// Where the wear gathers: convex edges, joints, the top (up-facing) and broad patches.
 	float up = smoothstep(0.35, 0.95, onrm.y);
 	float patch_ = smoothstep(0.42, 0.7, big);
-	float dens = clamp(edge * edge_wear * 1.5 + joint * 0.7 + up * 0.45 + patch_ * 0.35, 0.0, 1.0);
-	// Ragged dark speckle chips in two sizes (cells warped by noise) plus a few big flakes on edges.
-	vec3 wp = opos + (vec3(n3(opos * 60.0), n3(opos * 60.0 + 7.0), n3(opos * 60.0 + 13.0)) - 0.5) * 0.006;
-	float r1 = 0.08 + 0.24 * dens;
-	vec2 c1 = cell(wp * 95.0 + seed);
-	float on1 = step(c1.y, 0.04 + 0.7 * dens * dens);
-	float sp1 = (1.0 - smoothstep(0.0, 0.05, c1.x - r1)) * on1;
-	vec2 c2 = cell(wp * 210.0 + seed * 2.0);
-	float sp2 = (1.0 - smoothstep(0.0, 0.08, c2.x - (0.12 + 0.2 * dens))) * step(c2.y, 0.03 + 0.45 * dens * dens);
-	vec2 c3 = cell(wp * 34.0 + seed * 3.0);
-	float fl_r = 0.34 * smoothstep(0.35, 1.0, edge * edge_wear * 1.4 + joint * 0.5);
-	float flake = (1.0 - smoothstep(0.0, 0.04, c3.x - fl_r)) * step(c3.y, 0.55) * step(0.001, fl_r);
-	float chips = clamp(max(max(sp1, sp2 * 0.9), flake), 0.0, 1.0) * specks;
+	float dens = clamp(edge * edge_wear * 1.5 + joint * 0.7 + up * 0.2 + patch_ * 0.3, 0.0, 1.0);
+	// Ragged dark chips (concept: 1-2.5 cm, warm dark brown, clustered in patches with clean
+	// stretches between), small specks, a few big flakes on edges, and diagonal smear scuffs.
+	vec3 wp = opos + (vec3(n3(opos * 60.0), n3(opos * 60.0 + 7.0), n3(opos * 60.0 + 13.0)) - 0.5) * 0.009;
+	float cluster = smoothstep(0.42, 0.66, fbm3(opos * 3.2 + seed * 0.7 + 50.0));
+	float dc = clamp(dens * 0.75 + cluster * 0.65, 0.0, 1.0);
+	float r1 = 0.1 + 0.26 * dc;
+	vec2 c1 = cell(wp * 48.0 + seed);
+	float on1 = step(c1.y, 0.02 + 0.42 * dc * dc);
+	float sp1 = (1.0 - smoothstep(0.0, 0.06, c1.x - r1 * mix(0.7, 1.25, n3(wp * 140.0)))) * on1;
+	vec2 c2 = cell(wp * 150.0 + seed * 2.0);
+	float sp2 = (1.0 - smoothstep(0.0, 0.08, c2.x - (0.14 + 0.18 * dc))) * step(c2.y, 0.04 + 0.32 * dc);
+	vec2 c3 = cell(wp * 26.0 + seed * 3.0);
+	float fl_r = 0.32 * smoothstep(0.35, 1.0, edge * edge_wear * 1.4 + joint * 0.5);
+	float flake = (1.0 - smoothstep(0.0, 0.04, c3.x - fl_r)) * step(c3.y, 0.5) * step(0.001, fl_r);
+	// Smears: cells squashed along a diagonal so each chip becomes a short dragged scuff.
+	float ang = 0.6 + (n3(opos * 2.0 + seed) - 0.5) * 1.2;
+	vec3 da = normalize(vec3(cos(ang), sin(ang), 0.45));
+	vec3 db = normalize(cross(da, vec3(0.0, 0.0, 1.0) + vec3(0.001)));
+	vec3 sq = vec3(dot(wp, da) * 22.0, dot(wp, db) * 95.0, dot(wp, cross(da, db)) * 95.0);
+	vec2 c5 = cell(sq + seed * 4.0);
+	float smear = (1.0 - smoothstep(0.0, 0.1, c5.x - 0.28)) * step(c5.y, 0.05 + 0.5 * cluster * cluster + 0.25 * dens);
+	float chips = clamp(max(max(sp1, sp2 * 0.85), max(flake, smear * 0.85)), 0.0, 1.0) * specks;
 	// Paint cover: chips (dark metal) and very worn edges where the coverage runs out.
 	float worn_n = big * 0.45 + fine * 0.55 - edge * edge_wear * 0.9 - joint * 0.3;
 	float bare_edge = 1.0 - smoothstep(1.0 - paint_coverage - 0.04, 1.0 - paint_coverage + 0.04, worn_n);
@@ -163,7 +183,7 @@ void fragment() {
 	// [skins] Hazard chevrons painted across the part (worn with the paint).
 	float stp = step(0.5, fract((opos.x + opos.y * 0.9 - opos.z * 0.4) * 11.0 + seed * 0.37));
 	pc = mix(pc, stripe_color.rgb * mix(0.9, 1.1, fine), stp * stripes);
-	vec3 bare = mix(chip_color.rgb, m_alb * 0.5, 0.35) * mix(0.8, 1.15, fine);
+	vec3 bare = mix(chip_color.rgb, m_alb * 0.4, 0.2) * mix(0.75, 1.15, fine);
 	vec3 alb = mix(bare, pc, paint);
 	alb = mix(alb, rust_color.rgb * mix(0.7, 1.2, fine), rs * 0.85);
 	vec3 nrm = mix(mix(m_nrm, r_nrm, rs), mix(vec3(0.5, 0.5, 1.0), m_nrm, 0.12), paint);
@@ -181,7 +201,7 @@ void fragment() {
 	float g = clamp(cav * 1.3 + (1.0 - ao) * 0.9, 0.0, 1.0);
 	float streak = smoothstep(0.55, 0.85, n3(vec3(opos.x * 34.0, opos.y * 3.0, opos.z * 34.0) + seed)) * (1.0 - smoothstep(-0.2, 0.6, onrm.y));
 	g = max(g, streak * 0.55);
-	g = max(g, smoothstep(0.58, 0.85, fbm3(q * 1.3 + 21.0)) * 0.4);
+	g = max(g, smoothstep(0.5, 0.85, fbm3(q * 1.3 + 21.0)) * 0.5);  // broad brown stains (concept)
 	g *= grime;
 	alb = mix(alb, alb * vec3(0.42, 0.36, 0.3), g);
 	rough = mix(rough, 0.85, g * 0.8);
