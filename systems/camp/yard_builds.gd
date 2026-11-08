@@ -1,11 +1,11 @@
 class_name YardBuilds
 extends RefCounted
-## [camp] Things built into the yard from the Hub tab (ui/yard_builds_panel.gd): the radio and the
-## robot nursery. Nothing here exists on a fresh base. Data: data/camp.json "builds".
+## [camp] Things built into the yard from the Hub tab (ui/yard_builds_panel.gd): the lean-to,
+## generator, yard lamps, compost press, CD player and robot nursery. Nothing here exists on a fresh base. Data: data/camp.json "builds".
 ## State (per district): GameState.world["camp"] = {"bench": bool (repaired), "built": {id: true}}.
 
 const PATH: String = "res://data/camp.json"
-const IDS: Array[String] = ["radio", "nursery"]
+const IDS: Array[String] = ["shack", "generator", "lamps", "composter", "radio", "nursery"]  # [camp2]
 
 static var _cfg: Dictionary = {}
 static var events: YardEvents = YardEvents.new()
@@ -57,6 +57,8 @@ static func block_reason(id: String, hub_level: int) -> String:
 		return "?"
 	if built(id):
 		return TranslationServer.translate("Built.")
+	if bool(d.get("requires_bench", false)) and not Camp.bench_ok():
+		return TranslationServer.translate("Repair the workbench first.")
 	var req: int = int(d.get("requires_level", 1))
 	if hub_level < req:
 		return TranslationServer.translate("Requires hub level %d.") % req

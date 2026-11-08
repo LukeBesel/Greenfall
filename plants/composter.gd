@@ -43,6 +43,8 @@ func _ready() -> void:
 
 
 func active() -> bool:
+	if not YardBuilds.built("composter") and not DevHooks.has("unlock-seeds"):
+		return false  # [camp2] a Hub build now: it does nothing until it is built
 	return bool(GameState.flags.get("first_sprout", false)) or DevHooks.has("unlock-seeds")
 
 

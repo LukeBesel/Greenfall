@@ -251,6 +251,7 @@ func refresh() -> void:
 		(_stations.get_parent().get_parent() as Control).visible = _stations.visible
 	if _scope:  # [scope]
 		_scope.refresh()
+		(_scope.get_parent().get_parent() as Control).visible = false  # [camp2] built from the BUILD list
 	if _yard:  # [camp]
 		_yard.refresh()
 	var lg: Node = _ledger()
