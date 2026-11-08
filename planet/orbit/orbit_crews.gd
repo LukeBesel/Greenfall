@@ -87,6 +87,7 @@ func work_cell(c: int, left: float) -> void:
 		for pid: int in field.reduce_to(c, left):
 			globe.junk_view.hide_piece(pid)
 		globe.write_cell(c)
+		globe.junk_view.refresh_hex(c)
 		if left <= 0.0 and field.hex_clean[c] == 0:
 			field.hex_clean[c] = 1
 			field.cleaned_count += 1

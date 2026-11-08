@@ -24,12 +24,19 @@ extends RefCounted
 ##   8      655,362   3681 m  23.1 km  84 min  210/297 m  4.6°   1.4 m    2562
 ## Level 7: nearby ground reads flat, the curve shows gently at the horizon (~200 m) and clearly
 ## from a jump or the Command view; hubs ~1.7 km apart need the rocket; the grid loads in ~30 ms.
+##
+## [orbB] Any subdivision frequency f (10·f²+2 cells, planets differ in size: GlobeSpec):
+## for_freq(f). A power-of-two f is level log2(f) exactly as above (same ids, same cache). Any
+## other f subdivides each icosahedron face as a lattice (class I geodesic); ids are not
+## hierarchical then, so chunks keep their own centres (chunk_center) on a coarse lattice of
+## frequency ~f/16, and `level` is only floor(log2 f) (identity is `freq`).
 
 const MAX_N: int = 6       # neighbour / corner stride
 const CHUNK_DROP: int = 4  # chunk = cell of level (level - 4): ~256 cells per chunk
 const CACHE_VERSION: int = 2
 
 var level: int = 6
+var freq: int = 64  # [orbB] subdivision frequency: 10·freq²+2 cells (2^level for level grids)
 var radius_m: float = 1.0
 var centers := PackedVector3Array()
 var nbr_count := PackedByteArray()     # 5 or 6
@@ -43,6 +50,7 @@ var cell_chunk := PackedInt32Array()
 var chunk_start := PackedInt32Array()  # CSR: cells of chunk c = chunk_cells[chunk_start[c] .. chunk_start[c + 1])
 var chunk_cells := PackedInt32Array()
 var chunk_radius := PackedFloat32Array()  # angular radius (rad) of each chunk around its centre
+var chunk_center := PackedVector3Array()  # [orbB] unit centre of each chunk (= centers[c] on level grids)
 # Point lookup: cube-map buckets -> a nearby cell, then a short greedy walk.
 var _bucket_m: int = 1
 var _bucket := PackedInt32Array()
@@ -61,6 +69,42 @@ static func for_hex_size(lv: int, hex_m: float = 10.0) -> SphereGrid:
 
 static func radius_for(lv: int, hex_m: float) -> float:
 	return sqrt(2.598076 * hex_m * hex_m * cells_at_level(lv) / (4.0 * PI))
+
+
+## [orbB] Frequency grids (any f >= 1). Power-of-two f goes through the level path.
+static func cells_at_freq(f: int) -> int:
+	return 10 * f * f + 2
+
+
+static func level_of_freq(f: int) -> int:
+	if f >= 1 and (f & (f - 1)) == 0:
+		var lv: int = 0
+		while (1 << lv) < f:
+			lv += 1
+		return lv
+	return -1
+
+
+static func for_freq(f: int, hex_m: float = 10.0) -> SphereGrid:
+	var g: SphereGrid = cached_freq(f)
+	g.radius_m = sqrt(2.598076 * hex_m * hex_m * cells_at_freq(f) / (4.0 * PI))
+	return g
+
+
+static func cached_freq(f: int) -> SphereGrid:
+	var lv: int = level_of_freq(f)
+	if lv >= 0:
+		return cached(lv)
+	var key: String = "f%d" % f
+	if _mem.has(key):
+		return (_mem[key] as SphereGrid)._shallow()
+	var g := SphereGrid.new()
+	var path: String = "user://sphere_grid_f%d.bin" % f
+	if not g.load_cache_freq(path, f):
+		g.generate_freq(f)
+		g.save_cache_freq(path)
+	_mem[key] = g
+	return g._shallow()
 
 
 ## Loaded from user://sphere_grid_<level>.bin when present, else generated and saved.
@@ -85,6 +129,8 @@ static func cached(lv: int) -> SphereGrid:
 func _shallow() -> SphereGrid:
 	var g := SphereGrid.new()
 	g.level = level
+	g.freq = freq
+	g.chunk_center = chunk_center
 	g.radius_m = radius_m
 	g.centers = centers
 	g.nbr_count = nbr_count
@@ -247,7 +293,7 @@ func chunks_within(dir: Vector3, meters: float) -> PackedInt32Array:
 	var a: float = meters / radius_m
 	var out := PackedInt32Array()
 	for c: int in chunk_count():
-		if centers[c].angle_to(d) - chunk_radius[c] < a:
+		if chunk_center[c].angle_to(d) - chunk_radius[c] < a:
 			out.append(c)
 	return out
 
@@ -268,6 +314,7 @@ static func frame(dir: Vector3) -> Basis:
 
 func generate(lv: int) -> void:
 	level = lv
+	freq = 1 << lv
 	_gen_mesh(lv)
 	_build_topology()
 	_build_buckets()
@@ -401,7 +448,15 @@ func _build_buckets() -> void:
 
 func _build_chunks() -> void:
 	chunk_level = maxi(0, level - CHUNK_DROP)
+	var lattice: bool = level_of_freq(freq) < 0
 	var nc: int = cells_at_level(chunk_level)
+	if lattice:  # [orbB] a coarse lattice of its own (ids are not a prefix of the fine ones)
+		_coarse = SphereGrid.new()
+		_coarse.generate_topology_only_freq(maxi(1, roundi(freq / float(1 << CHUNK_DROP))))
+		nc = _coarse.centers.size()
+		chunk_center = _coarse.centers
+	else:
+		chunk_center = centers.slice(0, nc)
 	var n: int = centers.size()
 	cell_chunk.resize(n)
 	var counts := PackedInt32Array()
@@ -428,7 +483,7 @@ func _build_chunks() -> void:
 	chunk_radius.fill(0.0)
 	for i: int in n:
 		var c: int = cell_chunk[i]
-		var a: float = centers[c].angle_to(centers[i])
+		var a: float = chunk_center[c].angle_to(centers[i])
 		if a > chunk_radius[c]:
 			chunk_radius[c] = a
 	var c0: int = mini(12, n - 1)
@@ -441,7 +496,7 @@ var _coarse: SphereGrid
 
 
 func _nearest_coarse(d: Vector3, hint: int, nc: int) -> int:
-	if nc == centers.size():
+	if nc == centers.size() and _coarse == null:
 		return walk(d, mini(hint, nc - 1))
 	if _coarse == null:
 		_coarse = SphereGrid.new()
@@ -452,8 +507,137 @@ func _nearest_coarse(d: Vector3, hint: int, nc: int) -> int:
 ## A grid without buckets or chunks (used for the coarse chunk grid).
 func generate_topology_only(lv: int) -> void:
 	level = lv
+	freq = 1 << lv
 	_gen_mesh(lv)
 	_build_topology()
+
+
+## [orbB] A frequency grid (power-of-two f = the level grid).
+func generate_freq(f: int) -> void:
+	var lv: int = level_of_freq(f)
+	if lv >= 0:
+		generate(lv)
+		return
+	freq = f
+	level = 0
+	while (2 << level) <= f:
+		level += 1
+	_gen_lattice(f)
+	_build_topology()
+	_build_buckets()
+	_build_chunks()
+
+
+func generate_topology_only_freq(f: int) -> void:
+	var lv: int = level_of_freq(f)
+	if lv >= 0:
+		generate_topology_only(lv)
+		return
+	freq = f
+	_gen_lattice(f)
+	_build_topology()
+
+
+## [orbB] Class I geodesic: each icosahedron face (same face list as _gen_mesh) cut into f² small
+## triangles on a barycentric lattice, points normalised. Ids: the 12 corners, then (f - 1) per
+## edge counted from the edge's lower corner id, then each face's interior row by row.
+func _gen_lattice(f: int) -> void:
+	var ico: Array = _icosahedron()
+	var ip: PackedVector3Array = ico[0]
+	var faces: PackedInt32Array = ico[1]
+	var edge_id: Dictionary = {}
+	var ne: int = 0
+	for fi: int in range(0, faces.size(), 3):
+		for k: int in 3:
+			var u: int = faces[fi + k]
+			var v: int = faces[fi + (k + 1) % 3]
+			var key: int = (mini(u, v) << 8) | maxi(u, v)
+			if not edge_id.has(key):
+				edge_id[key] = ne
+				ne += 1
+	@warning_ignore("integer_division")
+	var n_int: int = (f - 1) * (f - 2) / 2
+	var pts := PackedVector3Array()
+	pts.resize(12 + ne * (f - 1) + 20 * n_int)
+	for i: int in 12:
+		pts[i] = ip[i]
+	var tr := PackedInt32Array()
+	tr.resize(20 * f * f * 3)
+	var w: int = 0
+	var idx := PackedInt32Array()
+	idx.resize((f + 1) * (f + 1))
+	var base_int: int = 12 + ne * (f - 1)
+	for fn: int in 20:
+		var a: int = faces[fn * 3]
+		var b: int = faces[fn * 3 + 1]
+		var c: int = faces[fn * 3 + 2]
+		var kint: int = 0
+		for i: int in f + 1:
+			for j: int in f + 1 - i:
+				var wa: int = f - i - j
+				var id: int
+				if wa == f:
+					id = a
+				elif i == f:
+					id = b
+				elif j == f:
+					id = c
+				elif j == 0:
+					id = _lattice_edge(a, b, i, f, edge_id)
+				elif i == 0:
+					id = _lattice_edge(a, c, j, f, edge_id)
+				elif wa == 0:
+					id = _lattice_edge(b, c, j, f, edge_id)
+				else:
+					id = base_int + fn * n_int + kint
+					kint += 1
+				if id >= 12:
+					pts[id] = _lattice_point(ip[a], ip[b], ip[c], i, j, f)
+				idx[i * (f + 1) + j] = id
+		for i: int in f:
+			for j: int in f - i:
+				tr[w] = idx[i * (f + 1) + j]; tr[w + 1] = idx[(i + 1) * (f + 1) + j]; tr[w + 2] = idx[i * (f + 1) + j + 1]
+				w += 3
+				if i + j < f - 1:
+					tr[w] = idx[(i + 1) * (f + 1) + j]; tr[w + 1] = idx[(i + 1) * (f + 1) + j + 1]; tr[w + 2] = idx[i * (f + 1) + j + 1]
+					w += 3
+	centers = pts
+	tris = tr
+
+
+## Equal angles along each row (row k = i + j joins the points k/f along edges a-b and a-c), so
+## cells stay even near the corners (flat barycentric points shrink them by ~1/3). Edge points
+## only depend on their own edge, so neighbouring faces share them exactly.
+static func _lattice_point(pa: Vector3, pb: Vector3, pc: Vector3, i: int, j: int, f: int) -> Vector3:
+	var k: int = i + j
+	if k == 0:
+		return pa
+	var l: Vector3 = pa.slerp(pb, float(k) / f)
+	var r: Vector3 = pa.slerp(pc, float(k) / f)
+	return l.slerp(r, float(j) / k).normalized()
+
+
+static func _lattice_edge(u: int, v: int, t: int, f: int, edge_id: Dictionary) -> int:
+	var e: int = edge_id[(mini(u, v) << 8) | maxi(u, v)]
+	return 12 + e * (f - 1) + ((t if u < v else f - t) - 1)
+
+
+static func _icosahedron() -> Array:
+	var t: float = (1.0 + sqrt(5.0)) / 2.0
+	var pts := PackedVector3Array([
+		Vector3(-1, t, 0), Vector3(1, t, 0), Vector3(-1, -t, 0), Vector3(1, -t, 0),
+		Vector3(0, -1, t), Vector3(0, 1, t), Vector3(0, -1, -t), Vector3(0, 1, -t),
+		Vector3(t, 0, -1), Vector3(t, 0, 1), Vector3(-t, 0, -1), Vector3(-t, 0, 1),
+	])
+	for i: int in pts.size():
+		pts[i] = pts[i].normalized()
+	var faces := PackedInt32Array([
+		0, 11, 5, 0, 5, 1, 0, 1, 7, 0, 7, 10, 0, 10, 11,
+		1, 5, 9, 5, 11, 4, 11, 10, 2, 10, 7, 6, 7, 1, 8,
+		3, 9, 4, 3, 4, 2, 3, 2, 6, 3, 6, 8, 3, 8, 9,
+		4, 9, 5, 2, 4, 11, 6, 2, 10, 8, 6, 7, 9, 8, 1,
+	])
+	return [pts, faces]
 
 
 func _gen_mesh(lv: int) -> void:
@@ -527,4 +711,48 @@ func load_cache(path: String, lv: int) -> bool:
 	_bucket = f.get_var()
 	_bucket_m = f.get_32()
 	chunk_level = f.get_32()
+	freq = 1 << lv  # [orbB] level caches keep their v2 layout; chunk centres are the id prefix
+	chunk_center = centers.slice(0, chunk_start.size() - 1)
 	return centers.size() == cells_at_level(lv) and _bucket.size() == 6 * _bucket_m * _bucket_m
+
+
+## [orbB] Frequency (lattice) grid cache: its own file and layout (chunk centres stored).
+const FREQ_CACHE_VERSION: int = 1
+
+
+func save_cache_freq(path: String) -> void:
+	var f := FileAccess.open(path, FileAccess.WRITE)
+	if f == null:
+		return
+	f.store_32(FREQ_CACHE_VERSION)
+	f.store_32(freq)
+	f.store_32(level)
+	for a: Variant in [centers, nbr_count, nbr, cell_tri, tris, tri_center, cell_chunk, chunk_start, chunk_cells, chunk_radius, chunk_center, _bucket]:
+		f.store_var(a)
+	f.store_32(_bucket_m)
+	f.store_32(chunk_level)
+
+
+func load_cache_freq(path: String, fq: int) -> bool:
+	if not FileAccess.file_exists(path):
+		return false
+	var f := FileAccess.open(path, FileAccess.READ)
+	if f == null or f.get_32() != FREQ_CACHE_VERSION or f.get_32() != fq:
+		return false
+	freq = fq
+	level = f.get_32()
+	centers = f.get_var()
+	nbr_count = f.get_var()
+	nbr = f.get_var()
+	cell_tri = f.get_var()
+	tris = f.get_var()
+	tri_center = f.get_var()
+	cell_chunk = f.get_var()
+	chunk_start = f.get_var()
+	chunk_cells = f.get_var()
+	chunk_radius = f.get_var()
+	chunk_center = f.get_var()
+	_bucket = f.get_var()
+	_bucket_m = f.get_32()
+	chunk_level = f.get_32()
+	return centers.size() == cells_at_freq(fq) and _bucket.size() == 6 * _bucket_m * _bucket_m

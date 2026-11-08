@@ -88,10 +88,12 @@ func _build_world() -> void:
 	add_child(_fill)
 	var ground := MeshInstance3D.new()
 	var pm := PlaneMesh.new()
-	pm.size = Vector2(400, 400)
+	var depth: float = SPACING * maxi(_items.size(), 1) + 400.0
+	pm.size = Vector2(400, depth)
 	pm.material = AssetLib.pbr_material("dry_ground_rocks", 80.0)
+	pm.material.uv1_scale = Vector3(80.0, 80.0 * depth / 400.0, 1.0)
 	ground.mesh = pm
-	ground.position = Vector3(0, -0.01, -SPACING * 3)
+	ground.position = Vector3(0, -0.01, -SPACING * (_items.size() - 1) * 0.5)
 	add_child(ground)
 	_apply_light(false)
 
