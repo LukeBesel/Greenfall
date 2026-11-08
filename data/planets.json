@@ -142,9 +142,9 @@
     "district_name": "Anvil Foundry Flats",
     "sky": {
       "rayleigh": [
-        0.96,
-        0.52,
-        0.32
+        0.9,
+        0.4,
+        0.25
       ],
       "rayleigh_coef": 1.4,
       "mie": [
@@ -167,9 +167,9 @@
     },
     "fog": {
       "color": [
-        0.62,
-        0.26,
-        0.14
+        0.5,
+        0.18,
+        0.1
       ],
       "amt": 0.7,
       "mult": 0.35,
