@@ -25,6 +25,9 @@ var terrain: SphereTerrain
 var cells: SphereCells
 var material: ShaderMaterial
 var shell_material: ShaderMaterial
+var shell: SphereShell
+## Optional PlanetData.city for the fine grid (set before setup) so cities read on the shell.
+var shell_city := PackedInt32Array()
 var lod0_m: float = 240.0
 var lod1_m: float = 650.0
 var far_m: float = 2000.0
@@ -155,6 +158,8 @@ func _process(delta: float) -> void:
 	if _rebuild_shell_later and _jobs.is_empty():
 		_rebuild_shell_later = false
 		_build_shell()
+	if shell:
+		shell.update(delta)
 	cells.flush()
 
 
@@ -450,41 +455,14 @@ func _update_near_rings() -> void:
 
 # --- Far shell ----------------------------------------------------------------------------
 
-## The whole planet at low detail: the level-`shell_level` icosphere (vertex i is cell i of the
-## fine grid, so it reads the state texture directly), heights from the terrain, sunk a little
-## so chunks always cover it.
+## The whole planet at low detail, as a map of big hexes (SphereShell): one flat-coloured hex
+## per level-`shell_level` cell, coloured by the fine hexes it covers and refreshed as they
+## change, heights from the terrain, sunk a little so chunks always cover it.
 func _build_shell() -> void:
-	var lv: int = mini(shell_level, grid.level)
-	var g: SphereGrid = SphereGrid.cached(lv)
-	var n: int = g.cell_count()
-	var v := PackedVector3Array()
-	var nr := PackedVector3Array()
-	var uv := PackedVector2Array()
-	v.resize(n)
-	nr.resize(n)
-	uv.resize(n)
-	for i: int in n:
-		var d: Vector3 = g.centers[i]
-		var h: float = terrain.height(d)
-		if cells.state[i] == SphereChunkJob.WATER:
-			h -= terrain.water_drop
-		v[i] = d * (terrain.R + h - shell_drop)
-		nr[i] = d
-		uv[i] = Vector2(float(i), float(i))
-	var idx := PackedInt32Array()
-	idx.resize(g.tris.size())
-	for t: int in range(0, g.tris.size(), 3):  # CCW from outside -> Godot's clockwise front faces
-		idx[t] = g.tris[t]
-		idx[t + 1] = g.tris[t + 2]
-		idx[t + 2] = g.tris[t + 1]
-	var arr: Array = []
-	arr.resize(Mesh.ARRAY_MAX)
-	arr[Mesh.ARRAY_VERTEX] = v
-	arr[Mesh.ARRAY_NORMAL] = nr
-	arr[Mesh.ARRAY_TEX_UV2] = uv
-	arr[Mesh.ARRAY_INDEX] = idx
-	var am := ArrayMesh.new()
-	am.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
+	if shell == null:
+		shell = SphereShell.new(grid, cells, terrain, shell_level, shell_city)
+		shell.drop = shell_drop
+	var am: ArrayMesh = shell.build_mesh()
 	if _shell == null:
 		_shell = MeshInstance3D.new()
 		_shell.name = "FarShell"
@@ -492,7 +470,7 @@ func _build_shell() -> void:
 		add_child(_shell)
 	_shell.mesh = am
 	if shell_material == null:
-		shell_material = material.duplicate()
-		shell_material.set_shader_parameter("far_shell", 1.0)
+		shell_material = shell.make_material(material)
 	_shell.material_override = shell_material
-	stats["shell_tris"] = idx.size() / 3
+	stats["shell_tris"] = int(shell.stats["tris"])
+	stats["shell_ms"] = int(shell.stats.get("map_ms", 0)) + int(shell.stats["mesh_ms"])

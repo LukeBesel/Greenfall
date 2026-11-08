@@ -14,7 +14,8 @@ extends Node3D
 ##   per-cell transforms. Near robots are SphereBots on the hex graph (this node is their graph).
 ##   Far crews are data only.
 ## Dev: --orbit-walk[=boost] --orbit-lap-quit, --orbit-view=follow|ground|command|mid,
-## --orbit-presim=MIN, --orbit-trail, --orbit-pieces=N, --orbit-hubs=N, --orbit-nohud.
+## --orbit-presim=MIN, --orbit-trail, --orbit-pieces=N, --orbit-hubs=N, --orbit-nohud,
+## --orbit-mid-dist=R (mid camera distance in planet radii), --orbit-nolabels.
 ## The first standalone prototype is still there as --orbit=v1 (planet/orbit/orbit_world.gd).
 
 const LAP_PATH := "res://screenshots/orbit/lap_trail_v2.json"
@@ -43,6 +44,7 @@ var stats: Dictionary = {}
 var view: String = "follow"
 
 var _orbit_cam: Camera3D
+var _mid_dist: float = 2.2
 var _junk_mms: Array[MultiMeshInstance3D] = []
 var _junk_lift: Array[float] = []
 var _junk_cache: Dictionary = {}
@@ -97,6 +99,7 @@ func _ready() -> void:
 	swarm = SphereSwarm.new(surface)
 	streamer = SphereStreamer.new()
 	streamer.name = "Streamer"
+	streamer.shell_city = planet.city
 	add_child(streamer)
 	streamer.setup(grid, terrain, cells)
 	streamer.near_changed.connect(func(_a: PackedInt32Array, _r: PackedInt32Array) -> void: _junk_dirty = true)
@@ -139,6 +142,9 @@ func _ready() -> void:
 	if DevHooks.has("orbit-trail"):
 		_draw_trail()
 	Settings.apply_quality_to_tree(self)
+	# The quality pass sets the flat-world fog density (0.0025..0.005); on the orbit that is several
+	# times too thick, and from Command height the whole map turned to grey haze.
+	env.fog_density = 0.0003 if view == "command" else 0.0011
 	if not (DevHooks.has("orbit-nohud") or DevHooks.has("no-hud")):
 		var cl := CanvasLayer.new()
 		add_child(cl)
@@ -163,16 +169,79 @@ func _apply_view() -> void:
 			cam.command_height = DevHooks.get_f("orbit-height", 400.0)
 		"mid":
 			env.fog_enabled = false
+			env.tonemap_exposure = 1.0
+			_mid_dist = DevHooks.get_f("orbit-mid-dist", 2.2)
 			_orbit_cam = Camera3D.new()
 			_orbit_cam.fov = 60.0
 			_orbit_cam.far = grid.radius_m * 12.0
 			_orbit_cam.near = 1.0
 			add_child(_orbit_cam)
+			_build_atmosphere()
+			if not DevHooks.has("orbit-nolabels"):
+				_build_city_labels()
 	if DevHooks.has("orbit-cam"):
 		var a: PackedStringArray = DevHooks.get_s("orbit-cam", "6,-0.3").split(",")
 		cam.distance = float(a[0])
 		if a.size() > 1:
 			cam.pitch = float(a[1])
+
+
+## A thin glowing rim around the planet for the orbit views.
+func _build_atmosphere() -> void:
+	var sh := Shader.new()
+	sh.code = """shader_type spatial;
+render_mode unshaded, blend_add, depth_draw_never, cull_back, shadows_disabled;
+uniform vec3 tint = vec3(0.35, 0.65, 1.0);
+void fragment() {
+	float f = 1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0);
+	ALBEDO = tint * (pow(f, 6.0) * 0.35 + pow(f, 14.0) * 0.6);
+}
+"""
+	var m := ShaderMaterial.new()
+	m.shader = sh
+	var sp := SphereMesh.new()
+	sp.radius = grid.radius_m * 1.018
+	sp.height = sp.radius * 2.0
+	sp.radial_segments = 96
+	sp.rings = 48
+	var mi := MeshInstance3D.new()
+	mi.name = "Atmosphere"
+	mi.mesh = sp
+	mi.material_override = m
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(mi)
+
+
+## City names (and hub sites) floating over the globe in the orbit view; the planet hides the
+## ones on its far side.
+func _build_city_labels() -> void:
+	for cd: Dictionary in planet.cities:
+		var d: Vector3 = grid.centers[int(cd["cell"])]
+		var lb := Label3D.new()
+		lb.text = str(cd["name"])
+		lb.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		lb.fixed_size = true
+		lb.pixel_size = 0.0011
+		lb.font_size = 26 if cd["capital"] else 20
+		lb.outline_size = 8
+		lb.modulate = Color(1.0, 0.86, 0.55) if cd["capital"] else Color(1.0, 0.95, 0.85)
+		lb.outline_modulate = Color(0.05, 0.04, 0.03, 0.85)
+		lb.position = d * (grid.radius_m + 40.0)
+		lb.offset = Vector2(0, 26)  # just above the city, not over it
+		add_child(lb)
+	for i: int in sites.size():
+		var d2: Vector3 = grid.centers[int(sites[i]["cell"])]
+		var hb := Label3D.new()
+		hb.text = "HOME" if i == 0 else "hub"
+		hb.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		hb.fixed_size = true
+		hb.pixel_size = 0.0011
+		hb.font_size = 18
+		hb.outline_size = 6
+		hb.modulate = Color(0.45, 0.95, 1.0)
+		hb.outline_modulate = Color(0.0, 0.08, 0.1, 0.85)
+		hb.position = d2 * (grid.radius_m + 25.0)
+		add_child(hb)
 
 
 # --- Hubs -------------------------------------------------------------------------------
@@ -622,7 +691,7 @@ func _process(delta: float) -> void:
 	if _orbit_cam:  # the whole little planet with Lumi's side toward the camera
 		var u: Vector3 = walker.up()
 		var d: Vector3 = (u * 0.82 + f.z * 0.57).normalized()
-		_orbit_cam.look_at_from_position(d * grid.radius_m * 2.7, u * grid.radius_m * 0.12, f.y)
+		_orbit_cam.look_at_from_position(d * grid.radius_m * _mid_dist, u * grid.radius_m * 0.12, f.y)
 		_orbit_cam.current = true
 	_update_centres()
 	if _junk_dirty:
