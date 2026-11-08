@@ -65,6 +65,18 @@ static func flush(env: Node, b: KitMesh.Builder, group: String) -> MeshInstance3
 	var mi: MeshInstance3D = KitMesh.instance(b, b.state, group != "ruin")
 	mi.name = "Kit_" + group
 	_g(env, group).add_child(mi)
+	# Lamps the props asked for: shadowless pools of light, only in the restored groups (nothing
+	# glows while broken). At most 10 per group to stay cheap.
+	if group in ["green", "future"]:
+		for k: int in mini(b.lights.size(), 10):
+			var ld: Dictionary = b.lights[k]
+			var ol := OmniLight3D.new()
+			ol.light_color = ld.get("color", KitMat.GLOW["warm"])
+			ol.omni_range = float(ld.get("range", 6.0))
+			ol.light_energy = float(ld.get("energy", 1.2))
+			ol.shadow_enabled = false
+			ol.position = (env as Node3D).to_local(ld["pos"]) if (env as Node3D).is_inside_tree() else ld["pos"]
+			_g(env, group).add_child(ol)
 	if group in ["always", "mid"]:
 		var mats: Dictionary = env.get("_mats")
 		if not mats.has("_kit_always"):
@@ -792,6 +804,7 @@ static func lamp(bt: KitMesh.Builder, lit_bt: KitMesh.Builder, o: Vector3, bs: B
 	pipe(bt, o, bs, hp - Vector3(0, 0.11, 0), hp + Vector3(0, 0.11, 0), 0.14, body, 10)
 	if lit_bt:
 		pipe(lit_bt, o, bs, hp - Vector3(0, 0.16, 0), hp - Vector3(0, 0.1, 0), 0.11, lens, 10)
+		lit_bt.lights.append({"pos": o + bs * (hp - Vector3(0, 0.4, 0)), "color": KitMat.GLOW["warm"] if lens != "trim:cool" else KitMat.GLOW["cool"], "range": 7.0, "energy": 1.4})
 
 
 # --- Colliders ------------------------------------------------------------------------------------
