@@ -430,6 +430,7 @@ static func run(rt: Node, check: Callable) -> void:
 			if ab.grow(0.2).has_point(mid) or ab.grow(0.2).has_point(cam3.global_position):
 				blockers.append(str(s1.get_path_to(gi)))
 	check.call("orbit_start_view_clear", "[]", str(blockers))
+	OrbitBeaconCheck.run(s1, so, check)  # [v2guide] every beacon on its object (playtest 2 #33)
 	GameState.add_currency("cubes", BigNum.from_float(1234))
 	# Clean the dirty near cell closest to Lumi, by hand.
 	var target: int = -1

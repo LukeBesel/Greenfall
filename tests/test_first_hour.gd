@@ -116,3 +116,24 @@ func test_seed_finds_locked_until_tin_then_rate_limited() -> void:
 		GameState.flags.erase("seeds_unlocked")
 	else:
 		GameState.flags["seeds_unlocked"] = had
+
+
+## [v2guide] Owner playtest 2 #33: one card. With a story objective on the card, a checklist step
+## replaces the card's text; it never shows as a second "NEXT STEP" card.
+func test_one_card_substep_replaces_the_objective_text() -> void:
+	var ob := Objectives.new()
+	ob.chain = [{"id": "baler", "text": "Save up for the Baler", "desc": "Bales sell for more.", "type": "upgrade", "key": "baler", "target": 1}]
+	ob.revealed = true
+	var panel := GoalsPanel.new()
+	add_child_autofree(panel)
+	panel.objective.objectives = ob
+	panel.objective.visible = true
+	panel.set_checklist("Empty your chest into the trash bin")
+	assert_false(panel.checklist.visible, "no second card")
+	panel.objective._set_texts(ob.current())
+	assert_eq(panel.objective._title.text, "Empty your chest into the trash bin")
+	assert_false(panel.objective._why.visible)
+	panel.set_checklist("")
+	panel.objective._set_texts(ob.current())
+	assert_eq(panel.objective._title.text, "Save up for the Baler", "the objective comes back")
+	ob.free()
