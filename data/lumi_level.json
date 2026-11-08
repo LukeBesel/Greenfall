@@ -25,7 +25,7 @@
   },
   "reward": {
     "cube_secs": 30,
-    "min_cubes_per_level": 15,
+    "min_cubes_per_level": 5,
     "part_every": 5,
     "bonus_parts_every": 5,
     "bonus_parts": 5,
@@ -34,7 +34,7 @@
     "seeds": 2,
     "trinket_every": 10,
     "trinket_parts": 15,
-    "cap_cubes_base": 30,
+    "cap_cubes_base": 8,
     "cap_earned_frac": 0.004
   }
 }

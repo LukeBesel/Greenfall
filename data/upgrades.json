@@ -11,7 +11,7 @@
       "mode": "add",
       "amount": 1.0,
       "unit": "",
-      "base_cost": 90,
+      "base_cost": 120,
       "growth": 1.0,
       "max_level": 1
     },
@@ -25,8 +25,8 @@
       "mode": "add",
       "amount": 1.0,
       "unit": "",
-      "base_cost": 60,
-      "growth": 10.0,
+      "base_cost": 50,
+      "growth": 8.0,
       "max_level": 2
     },
     {
@@ -39,7 +39,7 @@
       "mode": "add",
       "amount": 5.0,
       "unit": "",
-      "base_cost": 25,
+      "base_cost": 45,
       "growth": 1.55,
       "max_level": 25
     },

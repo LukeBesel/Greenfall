@@ -62,10 +62,19 @@ static func piece_size(field: Object, pid: int) -> int:
 	var ps: Variant = field.get("piece_size")
 	if ps is PackedByteArray and pid < (ps as PackedByteArray).size():
 		return int((ps as PackedByteArray)[pid])
+	var sc: int = SIZE_SMALL
 	var pm: Variant = field.get("piece_model")
 	if pm != null and pid < (pm as Array).size():
-		return size_class(_model_base_vol(str(pm[pid])))
-	return size_class(float(field.get("piece_vol")[pid]))
+		sc = size_class(_model_base_vol(str(pm[pid])))
+	else:
+		sc = size_class(float(field.get("piece_vol")[pid]))
+	# Without world2's piece_size the starting hexes may still hold big models; world2 swaps them
+	# for small/medium ones, so count them as medium here (a no-op once that lands).
+	if sc == SIZE_LARGE and field.has_method("hex_center") and field.get("piece_hex") != null:
+		var c: Vector3 = field.call("hex_center", int(field.get("piece_hex")[pid]))
+		if Vector2(c.x, c.z).length() <= float(field.get("hex_size")) * 1.9:
+			sc = SIZE_MEDIUM
+	return sc
 
 
 static func can_lift(field: Object, pid: int, max_size: int = -1) -> bool:
@@ -177,7 +186,7 @@ static func dump_compartment(patch: Node3D, at: Vector3, into: Object = null) ->
 	Audio.play("coin", 1.0, -6.0)
 	Vfx.burst("dust", at, Color(0.6, 0.55, 0.5, 0.5), 0.6)
 	if paid > 0.0:
-		Vfx.float_text(at + Vector3(0, 0.6, 0), "+" + Settings.fmt(BigNum.from_float(paid)), Color(0.9, 0.92, 0.88), 0.45, 0.7)
+		Vfx.float_text(at + Vector3(0, 0.6, 0), TranslationServer.translate("+%s cubes") % Settings.fmt(BigNum.from_float(paid)), Color(0.9, 0.92, 0.88), 0.5, 1.0)
 	return paid
 
 

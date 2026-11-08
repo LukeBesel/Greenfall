@@ -1,11 +1,11 @@
 {
   "_doc": "Lumi's base stats before upgrades. plant_growth / seed_yield: garden-wide multipliers on plant growth speed and seeds per bloom (research raises them: the ~1 h garden ramp, docs/BALANCE.md). [pace] Slow start: small chest, slow scoop; baler_unlocked / lift_class / signal_finder come from the Baler, Lift Strength and Signal Finder upgrades. dump: loose junk emptied before the Baler pays mult x junk value (the camp trash bin pays its own rate). old_save_grant: levels added to saves from before the slow start.",
   "stats": {
-    "capacity": 10.0,
+    "capacity": 12.0,
     "scoop_width": 1.4,
     "scoop_reach": 2.4,
     "pickup_count": 1.0,
-    "scoop_rate": 2.5,
+    "scoop_rate": 3.0,
     "move_speed": 4.6,
     "carry_stack": 1,
     "cube_value_mult": 1.0,
@@ -31,7 +31,7 @@
     ]
   },
   "dump": {
-    "mult": 0.5,
+    "mult": 1.0,
     "after_baler": false
   },
   "old_save_grant": {

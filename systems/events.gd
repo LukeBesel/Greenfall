@@ -110,6 +110,8 @@ static func eligible_ids(ctx: Dictionary) -> Dictionary:
 			ok = false
 		if id == "rare_part_signal" and int(ctx.get("parts_left", 0)) <= 0:
 			ok = false
+		if not bool(e.get("enabled", true)):
+			ok = false  # [pace] no spontaneous reward crates (owner playtest #2): supplies are found, never dropped
 		out[id] = ok
 	return out
 

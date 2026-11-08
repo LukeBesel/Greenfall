@@ -3,7 +3,7 @@
   "schedule": {"first_after_s": 210, "every_s": [240, 480], "retry_s": 40, "no_repeat": 2, "min_hexes": 2},
   "reward": {"min_cubes": 40, "earned_frac": 0.004},
   "events": [
-    {"id": "supply_drop", "name": "Supply Drop", "weight": 3, "duration_s": 600, "color": "#5fe6ff",
+    {"id": "supply_drop", "name": "Supply Drop", "enabled": false, "weight": 3, "duration_s": 600, "color": "#5fe6ff",
       "zone_radius": 4.0,
       "toast": "Supply Drop! A crate parachuted onto the junk %s of you. Clear the junk around it to crack it open.",
       "hud": "Clear the junk around the crate",

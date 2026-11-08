@@ -1252,6 +1252,8 @@ func _swap_spares(robot: String) -> void:
 ## the base levels pace as they did with Data); it also starts research when it is rich.
 func _research_ok(id: String) -> bool:
 	var c: float = Research.cost(id).to_float()
+	if id in ["salvage_logic", "conveyor", "auto_baler"] and GameState.get_currency("cubes").to_float() >= c:
+		return true  # [pace] the helper and automation unlocks come before saving for base 3
 	var fund: float = float(GameState.stats.get("notes_cubes", 0.0)) + float(GameState.stats.get("wildlife_cubes", 0.0)) - float(GameState.stats.get("bot_research_spent", 0.0))
 	return c <= fund or GameState.get_currency("cubes").to_float() > maxf(c * 4.0, _research_reserve())
 
