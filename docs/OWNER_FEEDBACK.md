@@ -45,6 +45,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] A carried bale sits clearly outside Lumi.
 - [ ] The entire world is trashed. No cleared spots are visible from spawn, and there are no empty streets.
 - [ ] Starting hexes have no large items (fridges and the like).
+- [ ] When you land nothing works: no lit streetlamps, neon signs or string lights, and nothing powered. Everything is broken and comes back on only when you fix or build it (parts and cubes) or restore the area. (world3)
 - [ ] Walking off the edge never drops Lumi out of the world. (orbit)
 
 ## Walk around the planet (orbit)
