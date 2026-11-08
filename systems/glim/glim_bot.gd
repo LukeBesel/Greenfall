@@ -5,7 +5,7 @@ extends Node3D
 ## shoulder height with a soft bob and carries one cheap OmniLight (shadows only above Low).
 
 const SIZE: float = 0.17  # shell radius (Lumi is ~1.3 m tall)
-const FOLLOW_OFFSET := Vector3(0.75, 1.55, 0.55)  # target-local: right, up, behind
+const FOLLOW_OFFSET := Vector3(0.62, 1.4, 0.3)  # target-local: right, up, behind (beside his head)
 
 var target: Node3D
 var sky: Node  # SkyDirector (time of day for the lantern); null = always night-bright
