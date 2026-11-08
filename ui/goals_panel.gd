@@ -1,7 +1,7 @@
 class_name GoalsPanel
 extends VBoxContainer
 ## Compact goal tracker (top-right, under the district line). No card: right-aligned text over a
-## hairline progress line. Shows the current goal; the toggle_goals key (G / L3) expands it to
+## hairline progress line. Shows the current goal; the toggle_goals key (G / touchpad) expands it to
 ## the next three with their rewards. The restart checklist (tutorial steps) uses the same style
 ## above the goal and fades away once the tutorial is done. A finished goal flashes green, sends
 ## an elegant toast to the notification stack, then the next one fades in.

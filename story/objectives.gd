@@ -417,6 +417,8 @@ func waypoint_target() -> Variant:
 
 
 func _bench_pos() -> Variant:
+	if world.has_method("bench_pos"):  # [orbB] the globe's bench anchor too
+		return world.call("bench_pos")
 	var sc: Script = world.get_script() as Script
 	return sc.get_script_constant_map().get("BOARD_POS", null) if sc else null
 

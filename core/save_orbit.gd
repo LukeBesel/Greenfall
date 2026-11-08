@@ -11,6 +11,8 @@ extends RefCounted
 ##   field       SphereField.to_dict() (found parts, unlocked cells)
 ##   sites       [{cell, index}] the hub pads, in order (index 0 = start site)
 ##   hubs        {site index (str): {"level": int}} per-hub state (hub level for now)
+##   hub_worlds  {site index (str): dict} GameState.world of each hub site (systems' per-hub state:
+##               hub_level, hub_scrubbers, camp, trash_bin, ...), the flat game's district dict
 ##   hexes_paid  {cell (str): true} first-clean bonuses paid
 ##   hex_levels  HexLevels.persist() (sparse on the globe)
 ##   day_t       seconds of planet rotation
@@ -37,6 +39,8 @@ static func migrate(od: Dictionary) -> Dictionary:
 			od["freq"] = GlobeSpec.VERDANCE_FREQ
 		if not od.has("hubs"):
 			od["hubs"] = {}
+		if not od.has("hub_worlds"):
+			od["hub_worlds"] = {}
 		v = 2
 	od["schema"] = v
 	return od

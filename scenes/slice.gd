@@ -1237,14 +1237,20 @@ func interact_prompt(p: Patch) -> String:
 const BENCH_RANGE: float = 3.2
 
 
+## [orbB] Where the workbench is: BOARD_POS on the flat game, the start site's bench anchor on the globe.
+func bench_pos() -> Vector3:
+	return orbit.bench_position() if orbit else BOARD_POS
+
+
 func near_bench() -> bool:
-	if orbit:  # [orbB] the bench comes with the start site
-		return false
+	if orbit:  # [orbB] the start site's bench anchor
+		return orbit.near_bench()
 	return patch != null and patch.global_position.distance_to(BOARD_POS) < BENCH_RANGE
 
 
 func open_upgrades() -> void:
 	if orbit:  # [orbB]
+		orbit.open_upgrades()
 		return
 	if pause_menu.is_open:
 		return
@@ -1311,6 +1317,9 @@ func _setup_research_codex() -> void:
 
 
 func _open_codex(tab: String = "") -> void:
+	if orbit:  # [orbB]
+		orbit.open_codex(tab)
+		return
 	if codex.is_open:
 		return
 	codex.open_screen(tab)

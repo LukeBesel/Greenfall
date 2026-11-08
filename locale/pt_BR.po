@@ -184,63 +184,71 @@ msgstr "Direcional direita"
 msgid "Share"
 msgstr "Compartilhar"
 
-#: autoload/Settings.gd:520
+#: autoload/Settings.gd:36
+msgid "Touchpad"
+msgstr ""
+
+#: autoload/Settings.gd:36
+msgid "Paddle 1"
+msgstr ""
+
+#: autoload/Settings.gd:521
 msgid "LMB"
 msgstr "Botão esq."
 
-#: autoload/Settings.gd:521
+#: autoload/Settings.gd:522
 msgid "RMB"
 msgstr "Botão dir."
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:523
 msgid "MMB"
 msgstr "Botão do meio"
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:524
 msgid "Wheel up"
 msgstr "Roda p/ cima"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:525
 msgid "Wheel down"
 msgstr "Roda p/ baixo"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:526
 msgid "Mouse %d"
 msgstr "Mouse %d"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:528
 msgid "Button %d"
 msgstr "Botão %d"
 
-#: autoload/Settings.gd:532
+#: autoload/Settings.gd:533
 msgid "LS left"
 msgstr "AE esquerda"
 
-#: autoload/Settings.gd:532
+#: autoload/Settings.gd:533
 msgid "LS right"
 msgstr "AE direita"
 
-#: autoload/Settings.gd:533
+#: autoload/Settings.gd:534
 msgid "LS up"
 msgstr "AE cima"
 
-#: autoload/Settings.gd:533
+#: autoload/Settings.gd:534
 msgid "LS down"
 msgstr "AE baixo"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:535
 msgid "RS left"
 msgstr "AD esquerda"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:535
 msgid "RS right"
 msgstr "AD direita"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:536
 msgid "RS up"
 msgstr "AD cima"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:536
 msgid "RS down"
 msgstr "AD baixo"
 
@@ -280,11 +288,11 @@ msgstr "PARA A  BALANÇA  ◀"
 msgid "BALE  FEED"
 msgstr "ENTRADA DE FARDOS"
 
-#: automation/hub.gd:69
+#: automation/hub.gd:72
 msgid "Hub upgraded: %s."
 msgstr "Base melhorada: %s."
 
-#: automation/hub.gd:100
+#: automation/hub.gd:103
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "Purificador de ar ligado. As ventoinhas giram com um longo suspiro empoeirado."
 
@@ -495,7 +503,7 @@ msgid "E   Telescope: look across the system"
 msgstr "E   Telescópio: observar o sistema"
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:258
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:478 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d min"
 
@@ -773,7 +781,7 @@ msgstr "WREN: Ali é o limite da zona de mapeamento, Lumi. Lá fora só tem nebl
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi flutua de volta para o chão firme."
 
-#: planet/orbit/verdance_globe.gd:556 scenes/slice.gd:1057 scenes/slice_orbit.gd:261
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1057 scenes/slice_orbit.gd:285
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXÁGONO LIMPO!  +%s"
 
@@ -1236,7 +1244,7 @@ msgstr "ÁGUA"
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Link dos robôs online. Aperte B para o Comando: pinte zonas e mande equipes para onde quiser."
 
-#: scenes/slice.gd:1071 scenes/slice_orbit.gd:277
+#: scenes/slice.gd:1071 scenes/slice_orbit.gd:301
 msgid "Milestone: %d hexes clean!"
 msgstr "Marco: %d hexágonos limpos!"
 
@@ -1268,21 +1276,33 @@ msgstr "O foguete está estacionado no pátio, pronto quando as células recarre
 msgid "Landed on the base pad."
 msgstr "Pousou na plataforma da base."
 
-#: scenes/slice.gd:1258
+#: scenes/slice.gd:1264 scenes/slice_orbit.gd:434
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Melhorias precisam de uma bancada. Volte para a base."
 
-#: scenes/slice.gd:1443
+#: scenes/slice.gd:1452
 msgid "Welcome back. The junk waited for you."
 msgstr "Bem-vindo de volta. A sucata esperou por você."
 
-#: scenes/slice.gd:1460
+#: scenes/slice.gd:1469
 msgid "OUTPOST %d · Lv%d"
 msgstr "POSTO %d · Nv%d"
 
-#: scenes/slice.gd:1460
+#: scenes/slice.gd:1469
 msgid "OUTPOST %d · RUIN"
 msgstr "POSTO %d · RUÍNA"
+
+#: scenes/slice_orbit.gd:331 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:96
+msgid "E   Workbench (broken): repair it"
+msgstr "E   Bancada (quebrada): consertar"
+
+#: scenes/slice_orbit.gd:331 systems/camp/camp.gd:177
+msgid "E   Workbench: upgrades"
+msgstr "E   Bancada: melhorias"
+
+#: scenes/slice_orbit.gd:530 systems/camp/camp.gd:224
+msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
+msgstr "Bancada consertada. Aperte E nela para gastar cubos em melhorias."
 
 #: scenes/story_preview.gd:156 ui/loading_screen.gd:154
 msgid "Setting the scene"
@@ -1384,51 +1404,51 @@ msgstr "A Cradle está em casa. A Arca de Sementes está aberta: cada flor em Ve
 msgid "Bloom Core 100%. Lumi's core is full of green light."
 msgstr "Núcleo Floral 100%. O núcleo de Lumi está cheio de luz verde."
 
-#: story/core_charge.gd:231
+#: story/core_charge.gd:232
 msgid "Bloom Core  25%"
 msgstr "Núcleo Floral  25%"
 
-#: story/core_charge.gd:232
+#: story/core_charge.gd:233
 msgid "There. The relay just locked on. Lumi, I can hear you properly now. Clear as the old days."
 msgstr "Pronto. O relé acabou de travar. Lumi, agora eu te ouço direito. Claro como nos velhos tempos."
 
-#: story/core_charge.gd:252
+#: story/core_charge.gd:253
 msgid "A memory  ·  the garden deck of the Cradle"
 msgstr "Uma lembrança  ·  o deck jardim da Cradle"
 
-#: story/core_charge.gd:263
+#: story/core_charge.gd:264
 msgid "Remember the garden deck? You watered every bed twice, just to be sure."
 msgstr "Lembra do deck jardim? Você regava cada canteiro duas vezes, só para garantir."
 
-#: story/core_charge.gd:266
+#: story/core_charge.gd:267
 msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
 msgstr "Cada cantinho que você faz crescer aí embaixo é mais um canteiro como estes. Você não está perdido, Lumi. Você está replantando."
 
-#: story/core_charge.gd:270
+#: story/core_charge.gd:271
 msgid "Bloom Core 25%: WREN's signal is clear now."
 msgstr "Núcleo Floral 25%: o sinal da WREN está claro agora."
 
-#: story/core_charge.gd:287
+#: story/core_charge.gd:288
 msgid "Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."
 msgstr "Núcleo Floral 50%: o brilho de Lumi voltou, mais forte do que em anos."
 
-#: story/core_charge.gd:289
+#: story/core_charge.gd:290
 msgid "Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."
 msgstr "Meia carga. Você está brilhando, Lumi. Brilhando de verdade. Eu tinha esquecido como você podia ser brilhante."
 
-#: story/core_charge.gd:322
+#: story/core_charge.gd:324
 msgid "That night..."
 msgstr "Naquela noite..."
 
-#: story/core_charge.gd:346
+#: story/core_charge.gd:348
 msgid "Lumi, look up. That light. West to east, steady, not twinkling."
 msgstr "Lumi, olha para cima. Aquela luz. De oeste para leste, firme, sem piscar."
 
-#: story/core_charge.gd:351
+#: story/core_charge.gd:353
 msgid "That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."
 msgstr "É a Cradle. Quando seu núcleo acendeu, a arca ouviu. Ela deu meia-volta. Estamos voltando para te buscar."
 
-#: story/core_charge.gd:361
+#: story/core_charge.gd:363
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "Núcleo Floral 75%: a Cradle está voltando para casa. Procure por ela cruzando o céu à noite."
 
@@ -1923,11 +1943,11 @@ msgstr "LEDGER  WMS-07"
 msgid "Objective complete  ·  %s"
 msgstr "Objetivo concluído  ·  %s"
 
-#: story/objectives.gd:442
+#: story/objectives.gd:444
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr "Ouviu esse bipe? Seu detector achou uma peça de robô enterrada aqui perto. Quanto mais rápido o bipe, mais perto você está."
 
-#: story/objectives.gd:444
+#: story/objectives.gd:446
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PEÇA ENTERRADA: ande na direção dela até a leitura chegar ao máximo e desenterre."
 
@@ -2864,18 +2884,6 @@ msgstr "Luar"
 msgid "New CD: %s by %s, from %s"
 msgstr "Novo CD: %s de %s, de %s"
 
-#: systems/camp/camp.gd:176
-msgid "E   Workbench (broken): repair it"
-msgstr "E   Bancada (quebrada): consertar"
-
-#: systems/camp/camp.gd:177
-msgid "E   Workbench: upgrades"
-msgstr "E   Bancada: melhorias"
-
-#: systems/camp/camp.gd:224
-msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
-msgstr "Bancada consertada. Aperte E nela para gastar cubos em melhorias."
-
 #: systems/camp/camp.gd:378
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   %s (Nv %d): totalmente melhorado"
@@ -3277,7 +3285,7 @@ msgstr "%s  ·  %d hexágonos  ·  %d ondas da arca  ·  %d curiosidades"
 msgid "restored"
 msgstr "restaurado"
 
-#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:747
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:756
 msgid "You are here"
 msgstr "Você está aqui"
 
@@ -3297,8 +3305,8 @@ msgstr "SEMEAR UM MUNDO NOVO"
 msgid "The Cradle has to come home first."
 msgstr "Primeiro a Cradle precisa voltar para casa."
 
-#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:320
-#: ui/rockets_panel.gd:81 ui/system_map.gd:698
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:329
+#: ui/rockets_panel.gd:81 ui/system_map.gd:707
 msgid "Launch"
 msgstr "Lançar"
 
@@ -3364,7 +3372,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "Máquinas"
 
-#: ui/bench_lists.gd:12 ui/globe_view.gd:169 ui/locker_panel.gd:230
+#: ui/bench_lists.gd:12 ui/globe_view.gd:175 ui/locker_panel.gd:230
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "Foguete"
@@ -3789,7 +3797,7 @@ msgstr "Fardos irregulares"
 msgid "Bales cashed in"
 msgstr "Fardos trocados"
 
-#: ui/codex_screen.gd:774 ui/globe_view.gd:138 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:774 ui/globe_view.gd:144 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "Cultivo"
 
@@ -4472,71 +4480,71 @@ msgstr "VISUAL"
 msgid "???  %s"
 msgstr "???  %s"
 
-#: ui/globe_view.gd:121
+#: ui/globe_view.gd:127
 msgid "Survey"
 msgstr "Mapear"
 
-#: ui/globe_view.gd:121
+#: ui/globe_view.gd:127
 msgid "Verdance  ·  hand-held projection"
 msgstr "Verdance  ·  projeção portátil"
 
-#: ui/globe_view.gd:137
+#: ui/globe_view.gd:143
 msgid "Not cleaned yet"
 msgstr "Ainda não limpo"
 
-#: ui/globe_view.gd:137
+#: ui/globe_view.gd:143
 msgid "Cleaned"
 msgstr "Limpo"
 
-#: ui/globe_view.gd:138 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:144 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr "Plantado"
 
-#: ui/globe_view.gd:139 ui/system_map.gd:667 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:145 ui/system_map.gd:676 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr "Restaurado"
 
-#: ui/globe_view.gd:139
+#: ui/globe_view.gd:145
 msgid "Cities"
 msgstr "Cidades"
 
-#: ui/globe_view.gd:140
+#: ui/globe_view.gd:146
 msgid "Bases"
 msgstr "Bases"
 
-#: ui/globe_view.gd:155 ui/late_menu.gd:21
+#: ui/globe_view.gd:161 ui/late_menu.gd:21
 msgid "Solar system"
 msgstr "Sistema solar"
 
-#: ui/globe_view.gd:169
+#: ui/globe_view.gd:175
 msgid "Travel between bases"
 msgstr "Viajar entre bases"
 
-#: ui/globe_view.gd:182
+#: ui/globe_view.gd:188
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr "[k]Arraste para girar   ·   Roda para zoom   ·   [/k][p]{@look}  girar     {zoom_out}{zoom_in}  zoom     {@dpad}  lista de voos     [/p]{open_globe}  fechar"
 
-#: ui/globe_view.gd:317
+#: ui/globe_view.gd:326
 msgid "%d sectors away"
 msgstr "a %d setores"
 
-#: ui/globe_view.gd:439
+#: ui/globe_view.gd:448
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "do planeta recuperado  ·  %s de %s hexágonos de terra"
 
-#: ui/globe_view.gd:446
+#: ui/globe_view.gd:455
 msgid "%s HEXES CLEAN"
 msgstr "%s HEXÁGONOS LIMPOS"
 
-#: ui/globe_view.gd:448
+#: ui/globe_view.gd:457
 msgid "Surveyed %s ago%s"
 msgstr "Mapeado há %s%s"
 
-#: ui/globe_view.gd:448
+#: ui/globe_view.gd:457
 msgid "   ·   OUTDATED"
 msgstr "   ·   DESATUALIZADO"
 
-#: ui/globe_view.gd:449
+#: ui/globe_view.gd:458
 msgid "Re-survey      %s cubes"
 msgstr "Mapear de novo      %s cubos"
 
@@ -5339,15 +5347,15 @@ msgstr "Selo Greenfall"
 msgid "Resolution"
 msgstr "Resolução"
 
-#: ui/photo_mode.gd:860
+#: ui/photo_mode.gd:890
 msgid "Couldn't capture the photo."
 msgstr "Não foi possível tirar a foto."
 
-#: ui/photo_mode.gd:869
+#: ui/photo_mode.gd:899
 msgid "Couldn't save the photo (%s)."
 msgstr "Não foi possível salvar a foto (%s)."
 
-#: ui/photo_mode.gd:882
+#: ui/photo_mode.gd:912
 msgid "Saved  %s  (%dx%d)"
 msgstr "Salva  %s  (%dx%d)"
 
@@ -6016,51 +6024,51 @@ msgstr "Rota automática: %s"
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s"
 msgstr "Fardos reciclados %d   ·   Lixo destruído %s kg   ·   Peças %s"
 
-#: ui/system_map.gd:654
+#: ui/system_map.gd:663
 msgid "%s  ·  %.2f AU"
 msgstr "%s  ·  %.2f UA"
 
-#: ui/system_map.gd:661
+#: ui/system_map.gd:670
 msgid "In flight"
 msgstr "Em voo"
 
-#: ui/system_map.gd:664
+#: ui/system_map.gd:673
 msgid "Lumi is here"
 msgstr "Lumi está aqui"
 
-#: ui/system_map.gd:670
+#: ui/system_map.gd:679
 msgid "Ready to launch"
 msgstr "Pronto para decolar"
 
-#: ui/system_map.gd:689 data/goals.json:goals[home_launch].text
+#: ui/system_map.gd:698 data/goals.json:goals[home_launch].text
 msgid "Launch home"
 msgstr "Decolar para casa"
 
-#: ui/system_map.gd:694
+#: ui/system_map.gd:703
 msgid "Choose a district"
 msgstr "Escolher um distrito"
 
-#: ui/system_map.gd:711
+#: ui/system_map.gd:720
 msgid "System %d%% restored  ·  relics %d/%d"
 msgstr "Sistema %d%% restaurado  ·  artefatos %d/%d"
 
-#: ui/system_map.gd:713
+#: ui/system_map.gd:722
 msgid "%d Heirloom picks"
 msgstr "%d escolhas de Relíquia"
 
-#: ui/system_map.gd:715
+#: ui/system_map.gd:724
 msgid "Left/Right planet  ·  A zoom  ·  B back"
 msgstr "Esq./Dir. planeta  ·  A zoom  ·  B voltar"
 
-#: ui/system_map.gd:733
+#: ui/system_map.gd:742
 msgid "Build the drive"
 msgstr "Construa o propulsor"
 
-#: ui/system_map.gd:749
+#: ui/system_map.gd:758
 msgid "Not discovered yet"
 msgstr "Ainda não descoberto"
 
-#: ui/system_map.gd:755
+#: ui/system_map.gd:764
 msgid "Rocket not ready"
 msgstr "Foguete não está pronto"
 
@@ -16150,17 +16158,17 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
 
-#~ msgid "No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."
-#~ msgstr "Ninguém se aposentou ainda. Robôs velhos ou Mk I-II podem se aposentar aqui ou na Oficina da bancada; eles vão cuidar do jardim do viveiro na base."
-
-#~ msgid "Fleet paint"
-#~ msgstr "Pintura da frota"
-
 #~ msgid "TRASH"
 #~ msgstr "LIXO"
 
 #~ msgid "SCRAP  INTAKE  ·  WEIGH HERE"
 #~ msgstr "RECEBIMENTO DE SUCATA  ·  PESE AQUI"
+
+#~ msgid "No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."
+#~ msgstr "Ninguém se aposentou ainda. Robôs velhos ou Mk I-II podem se aposentar aqui ou na Oficina da bancada; eles vão cuidar do jardim do viveiro na base."
+
+#~ msgid "Fleet paint"
+#~ msgstr "Pintura da frota"
 
 #~ msgid "PAD 01"
 #~ msgstr "PLATAFORMA 01"

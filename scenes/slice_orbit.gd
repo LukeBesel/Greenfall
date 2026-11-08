@@ -8,10 +8,14 @@ extends Node
 ## Built here: the globe (OrbitPlanet: survey, terrain, cells, streamer, SphereField as the
 ## slice's `field`, SphereJunkView as its `view`, sites, gravity), sky and day/night (OrbitDay),
 ## stand-in crews (OrbitCrews), the real Patch on a SphereMotor with SphereCam, the HUD, the
-## Depot on the start pad, Lumi Level and the pause menu.
+## Depot on the start pad, Lumi Level, the pause menu, hex levels (sparse), the Hub (logic; the
+## site prefab shows its stage), the workbench (bench anchor) + Upgrades, Research/Achievements/
+## Codex, music, WREN + subtitles, Goals, the restart checklist (Tutorial), Requests (Contracts).
+## GameState.world is the start site's own dict (GameState.use_orbit_world).
 ## Not ported yet (left null on the slice, skipped): CityLayout/CityView/StreetDressing/litter/
 ## far junk/water (orbD sites), Fleet/robot builder/Command view (orbC), SkyDirector/GlobeView/
-## FutureLayer (orbE), Hub/Camp/garden/hex levels/story/events/research and the rest.
+## FutureLayer (orbE), Camp (bench repair, trash bin, yard builds), garden, events, intro/
+## objectives/signal tower, core charge, outposts, eggs, ledger, telescope, extras, Glim, photo.
 ##
 ## Dev flags (phase A's, now on the slice): --orbit-walk[=boost] --orbit-lap-quit,
 ## --orbit-scoop, --orbit-cash --orbit-cash-quit, --orbit-view=follow|ground|command,
@@ -28,6 +32,7 @@ var day: OrbitDay
 var crews: OrbitCrews
 var cam: SphereCam
 var dev: OrbitDev
+var layers: OrbitLayers  # [orbE]
 var view_mode: String = "follow"
 var sites: OrbitSites  # [orbD]
 var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
@@ -50,6 +55,7 @@ func build(p_world: Node3D) -> void:
 	elif not DevHooks.has("fresh"):
 		loaded = SaveManager.load_game()
 	var od: Dictionary = OrbitSave.migrate(GameState.orbit) if loaded else {}
+	var preload_n: int = OrbitPreload.start()  # [orbE] junk models load on threads while the planet builds
 	# The planet: --orbit-planet=<id>, else the saved one, else Verdance. Its size is data (GlobeSpec).
 	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", "verdance"))
 	var spec: Dictionary = GlobeSpec.of(pid)
@@ -70,6 +76,8 @@ func build(p_world: Node3D) -> void:
 		hook = func(g: OrbitPlanet) -> void: report.merge(OrbitMigrate.apply(g))
 	globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}), OrbitSave.site_cells(od), hook)
 	hub_states = (od.get("hubs", {}) as Dictionary).duplicate(true)
+	# GameState.world is the start site's own dict on the globe (the flat one is kept for saves).
+	GameState.use_orbit_world(OrbitMigrate.hub_world() if migrate else ((od.get("hub_worlds", {}) as Dictionary).get("0", {}) as Dictionary).duplicate(true))
 	if migrate:
 		hub_states = report.get("hubs", {})
 		GameState.orbit = {"migrated": "flat_v%d" % GameState.SAVE_VERSION, "hubs": hub_states}
@@ -101,10 +109,13 @@ func build(p_world: Node3D) -> void:
 	cubes_root.name = "Cubes"
 	w.add_child(cubes_root)
 	w.set("_cubes_root", cubes_root)
+	var tq: int = Time.get_ticks_msec()  # [orbE] load breakdown
 	var site: Node3D = globe.build_start_site()
 	_build_patch()
 	_build_depot(site)
 	sites = OrbitSites.attach(self)  # [orbD] sled, rocket hops, planet %, site state
+	_build_hub()
+	_build_bench()
 	if DevHooks.has("orbit-bots") or not DevHooks.has("orbit-walk"):
 		crews.spawn_demo_bots(globe.start_cell(), int(DevHooks.get_f("orbit-bots", 4.0)), w)
 	var hl := HexLevels.new()  # sparse: only cleaned cells are tracked; levels also go to SphereCells
@@ -130,13 +141,24 @@ func build(p_world: Node3D) -> void:
 	w.add_child(pm)
 	pm.closed.connect(on_modal_closed)
 	w.set("pause_menu", pm)
+	_build_upgrades()
+	w.call("_setup_research_codex")  # slice.gd's own: Research, Achievements, the Codex (UI + data)
+	_build_story()
 	if loaded and not migrate:
 		restore_world()
 	elif migrate:
 		(w.get("patch") as Patch).restore_cargo(OrbitMigrate.lumi_cargo())
+	globe.stats["site_patch_hud_ms"] = Time.get_ticks_msec() - tq
+	tq = Time.get_ticks_msec()
+	layers = OrbitLayers.attach(self)  # [orbE] sky + day/night, Glim, future layer, survey, system map, photo mode
+	globe.stats["layers_ms"] = Time.get_ticks_msec() - tq
+	var tw: int = Time.get_ticks_msec()
+	OrbitPreload.finish()  # [orbE] models were loading on threads all along; the settle seats them
+	globe.stats["preload_wait_ms"] = Time.get_ticks_msec() - tw
+	globe.stats["preload_models"] = preload_n
 	globe.update_centres()
 	var t2: int = Time.get_ticks_msec()
-	globe.streamer.settle()
+	globe.streamer.settle(20000, not DevHooks.has("orbit-settle-all"))  # [orbE] near chunks only; the rest streams in
 	globe.stats["settle_ms"] = Time.get_ticks_msec() - t2
 	var t3: int = Time.get_ticks_msec()
 	globe.refresh_junk_now()
@@ -158,6 +180,8 @@ func build(p_world: Node3D) -> void:
 	print("[orbit] slice on the globe: R=%.0fm hexes=%d around=%.1fkm hubs=%d (nearest hub mean %.0fm, min %.0fm) loaded=%s built=%dms planet=%dms grid=%dms settle=%dms junk_fill=%dms" % [
 		g.grid.radius_m, g.grid.cell_count(), TAU * g.grid.radius_m / 1000.0, g.sites.size(), g.hub_spacing(false), g.hub_spacing(true),
 		str(loaded), Time.get_ticks_msec() - t0, g.stats["planet_ms"], g.stats["grid_ms"], g.stats["settle_ms"], g.stats["junk_fill_ms"]])
+	if DevHooks.has("load-report"):  # [orbE] where the build time goes
+		print("[orbit-load] %s streamer=%s chunks=%d cells/chunk=%d" % [JSON.stringify(g.stats), JSON.stringify(g.streamer.stats), g.grid.chunk_count(), g.grid.cell_count() / maxi(g.grid.chunk_count(), 1)])
 	w.emit_signal("built")
 
 
@@ -293,16 +317,225 @@ func cell_at(pos: Vector3) -> int:
 
 
 func try_interact(_p: Patch) -> void:
-	pass  # the bench, shards, seed tin and composter come with the hub sites
+	if near_bench():
+		if not Camp.bench_ok():
+			repair_bench()
+		else:
+			open_upgrades()
 
 
 func interact_prompt(_p: Patch) -> String:
+	if near_bench():
+		if _repairing:
+			return ""
+		return tr("E   Workbench (broken): repair it") if not Camp.bench_ok() else tr("E   Workbench: upgrades")
 	return sites.interact_prompt() if sites else ""  # [orbD] the hover-sled
 
 
 func any_modal_open() -> bool:
+	for k: String in ["pause_menu", "upgrades", "codex"]:
+		var m: Node = w.get(k)
+		if m != null and bool(m.get("is_open")):
+			return true
+	return false
+
+
+# --- Story, music, goals (no flat geometry) ---------------------------------------------
+
+## The systems the flat slice builds after the board that only read world state: music, WREN and
+## the subtitles, goals, the restart checklist (tutorial), the Requests board.
+func _build_story() -> void:
+	var music := MusicHooks.new()
+	music.world = w
+	w.add_child(music)
+	w.set("music", music)
+	var wren := Wren.new()
+	wren.world = w
+	w.add_child(wren)
+	w.set("wren", wren)
+	var subs := Subtitles.new()
+	w.add_child(subs)
+	wren.line_out.connect(subs.show_line)
+	var goals := Goals.new()
+	goals.name = "Goals"
+	goals.world = w
+	w.add_child(goals)
+	w.set("goals", goals)
+	var tut := Tutorial.new()
+	tut.world = w
+	w.add_child(tut)
+	w.set("tutorial", tut)
+	var ct := Contracts.new()
+	ct.name = "Contracts"
+	ct.world = w
+	w.add_child(ct)
+	w.set("contracts", ct)
+
+
+# --- Hub and workbench (the start site) ---------------------------------------------------
+
+const BENCH_RANGE: float = 3.2
+
+
+## The base: hub.json levels, costs and scrubbers, logic only (the site prefab shows each level).
+## Its level lives in GameState.world (the start site's dict) and drives the site's stage.
+func _build_hub() -> void:
+	var hub := Hub.new()
+	hub.name = "Hub"
+	hub.visuals = false
+	w.add_child(hub)
+	w.set("hub", hub)
+	_sync_hub_level(hub.level)
+	hub.level_changed.connect(_sync_hub_level)
+
+
+func _sync_hub_level(l: int) -> void:
+	hub_states["0"] = {"level": l}
+	var sm: SiteManager = globe.site_manager
+	if sm:
+		sm.set_level(0, l)
+
+
+## The workbench: the start site's "bench" anchor (falls back to the pad centre).
+func bench_position() -> Vector3:
+	var sm: SiteManager = globe.site_manager
+	var sp: SitePrefab = sm.prefab(0) if sm else null
+	if sp:
+		return sp.global_transform * sp.anchor_local("bench").origin
+	return globe.site_point(0, Vector3(-3.6, 0, 2.2))
+
+
+func near_bench() -> bool:
+	var patch: Patch = w.get("patch")
+	return patch != null and patch.global_position.distance_to(bench_position()) < BENCH_RANGE
+
+
+func _build_upgrades() -> void:
+	var up := UpgradesScreen.new()
+	up.fleet = w.get("fleet")
+	up.hub = w.get("hub")
+	up.build_at = func() -> Vector3: return bench_position() + bench_position().normalized() * 0.2
+	w.add_child(up)
+	up.closed.connect(on_modal_closed)
+	w.set("upgrades", up)
+
+
+## slice.gd's open_upgrades: only at the bench (Tab elsewhere peeks the key hints).
+func open_upgrades() -> void:
 	var pm: PauseMenu = w.get("pause_menu")
-	return pm != null and pm.is_open
+	if pm.is_open:
+		return
+	if not near_bench() and not DevHooks.has("open"):
+		var hud: Node = w.get("hud")
+		if hud and hud.has_method("peek_hints"):
+			hud.call("peek_hints")
+		if not GameState.flags.get("bench_hint_seen", false):
+			GameState.flags["bench_hint_seen"] = true
+			EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
+		return
+	if not Camp.bench_ok() and not DevHooks.has("open"):  # the first E repairs the broken bench
+		repair_bench()
+		return
+	(w.get("upgrades") as UpgradesScreen).open_screen()
+	set_input(false)
+
+
+# --- The broken workbench (Camp's rules on the start site's bench anchor) -----------------------
+
+var bench: Node3D
+var _bench_parts: Array = []  # [node, repaired transform, broken transform]
+var _repairing: bool = false
+
+
+func _build_bench() -> void:
+	var sm: SiteManager = globe.site_manager
+	var sp: SitePrefab = sm.prefab(0) if sm else null
+	bench = Node3D.new()
+	bench.name = "Workbench"
+	if sp:
+		sp.add_child(bench)
+		bench.transform = sp.anchor_local("bench")
+	else:
+		globe.start_site.add_child(bench)
+		bench.position = Vector3(-3.6, 0, 2.2)
+	var top := MeshInstance3D.new()
+	var bparts: Array = [ProcMesh.part(ProcMesh.box(Vector3(2.2, 0.06, 0.8)), ProcMesh.xf(Vector3(0, 0.92, 0)))]
+	for x: float in [-1.0, 1.0]:
+		for z: float in [-0.33, 0.33]:
+			bparts.append(ProcMesh.part(ProcMesh.box(Vector3(0.06, 0.9, 0.06)), ProcMesh.xf(Vector3(x, 0.45, z))))
+	bparts.append(ProcMesh.part(ProcMesh.box(Vector3(2.0, 0.03, 0.7)), ProcMesh.xf(Vector3(0, 0.25, 0))))
+	top.mesh = ProcMesh.merge(bparts)
+	top.material_override = Mats.worn_paint(Color(0.32, 0.38, 0.45), 0.5, 0.6, 12.0, 0.7)
+	bench.add_child(top)
+	_bench_parts.append([top, Transform3D(), Transform3D(Basis(Vector3.BACK, 0.32) * Basis(Vector3.UP, 0.25), Vector3(0.1, -0.12, 0.05))])
+	var i: int = 0
+	for spec: Array in [["metal_toolbox", Vector3(-0.6, 0.95, 0.0), 0.2], ["clipboard", Vector3(0.35, 0.955, 0.1), 0.0], ["oil_tin", Vector3(0.8, 0.95, -0.2), 0.0]]:
+		var mi := MeshInstance3D.new()
+		mi.mesh = AssetLib.model_mesh_lite(spec[0], 3000) if AssetLib.has_model(spec[0]) else ProcMesh.box(Vector3(0.3, 0.2, 0.2))
+		var fixed := Transform3D(Basis(Vector3.UP, spec[2]), spec[1])
+		var broken := Transform3D(Basis.from_euler(Vector3(1.1 - i * 0.6, i * 1.7, 1.3 - i * 0.9)), Vector3(-0.9 + i * 0.7, 0.08, 0.6 + (i % 2) * 0.2))
+		mi.transform = fixed
+		bench.add_child(mi)
+		_bench_parts.append([mi, fixed, broken])
+		i += 1
+	var pb: StaticBody3D = PropColliders.body(bench, "BenchBody")  # top level, world space
+	PropColliders.add_box(pb, bench.global_transform * Transform3D(Basis(), Vector3(0, 0.47, 0)), Vector3(2.2, 0.95, 0.8))
+	_apply_bench(Camp.bench_ok(), false)
+
+
+func _apply_bench(ok: bool, animate: bool) -> void:
+	for e: Array in _bench_parts:
+		var n: Node3D = e[0]
+		var to: Transform3D = e[1] if ok else e[2]
+		if animate:
+			create_tween().tween_property(n, "transform", to, 0.6).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		else:
+			n.transform = to
+
+
+## Camp.repair_bench on the globe: the beam welds along the bench, it rights itself, then works.
+func repair_bench() -> void:
+	if _repairing or Camp.bench_ok():
+		return
+	_repairing = true
+	var patch: Patch = w.get("patch")
+	set_input(false)
+	var up: Vector3 = bench.global_position.normalized()
+	var target: Vector3 = bench.global_position + up * 0.9
+	var dur: float = float(Camp.cfg().get("bench_repair_s", 2.6))
+	var tw := create_tween()
+	tw.tween_callback(func() -> void:
+		patch.model.call("beam_at", target)
+		patch.model.call("shudder", 0.25)
+		Audio.play("servo", 1.1, -6.0))
+	for k: int in 6:
+		tw.tween_callback(func() -> void:
+			var at: Vector3 = target + bench.global_basis.x * lerpf(-0.9, 0.9, k / 5.0)
+			patch.model.call("beam_at", at)
+			Vfx.burst("sparkle", at, Color(1.0, 0.75, 0.35), 0.35)
+			Audio.play("tick" if k % 2 == 0 else "clink", randf_range(0.9, 1.3), -8.0))
+		tw.tween_interval(dur * 0.5 / 6.0)
+	tw.tween_callback(func() -> void:
+		Audio.play("hydraulic", 1.0, -6.0)
+		_apply_bench(true, true))
+	tw.tween_interval(dur * 0.5)
+	tw.tween_callback(func() -> void:
+		patch.model.call("beam_at", null)
+		patch.model.call("set_happy", 1.0)
+		Camp.set_bench_ok(true)
+		_repairing = false
+		set_input(true)
+		GameState.inc_stat("bench_repaired")
+		Audio.play("chime", 1.0, -4.0)
+		EventBus.toast.emit(tr("Workbench fixed. Press E at it to spend cubes on upgrades."), "info"))
+
+
+func open_codex(tab: String = "") -> void:
+	var cx: CodexScreen = w.get("codex")
+	if cx == null or cx.is_open:
+		return
+	cx.open_screen(tab)
+	set_input(false)
 
 
 func set_input(on: bool) -> void:
@@ -320,9 +553,15 @@ func on_modal_closed() -> void:
 
 func unhandled_input(event: InputEvent) -> void:
 	var pm: PauseMenu = w.get("pause_menu")
-	if pm.is_open:
+	if any_modal_open():
 		return
-	if event.is_action_pressed("open_command"):
+	if event.is_action_pressed("open_codex") and w.get("codex"):
+		open_codex()
+		w.get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("open_upgrades"):
+		open_upgrades()
+		w.get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("open_command"):
 		cam.view = "follow" if cam.view == "command" else "command"
 		w.get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("pause"):
@@ -365,6 +604,7 @@ func persist_save() -> void:
 		"field": g.field.to_dict(),  # found parts, unlocked cells
 		"sites": OrbitSave.sites_to_array(g.sites),
 		"hubs": hub_states,
+		"hub_worlds": {"0": GameState.world},
 		"migrated": str(GameState.orbit.get("migrated", "")),
 		"hexes_paid": GameState.orbit.get("hexes_paid", {}),
 		"hex_levels": (w.get("hex_levels") as HexLevels).persist(),

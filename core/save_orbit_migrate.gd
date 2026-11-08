@@ -124,8 +124,23 @@ static func hub_levels(globe: OrbitPlanet, base: PlanetData) -> Dictionary:
 	return out
 
 
+## The start site's per-hub dict (GameState.world on the globe) from the flat district's: only
+## the keys that hold no flat positions or hex ids come over.
+const HUB_WORLD_KEYS: Array[String] = ["hub_level", "hub_scrubbers", "camp", "trash_bin", "composter_level", "telescope"]
+
+
+static func hub_world() -> Dictionary:
+	var src: Dictionary = GameState.world if GameState.flat_world == null else GameState.flat_world
+	var out: Dictionary = {}
+	for k: String in HUB_WORLD_KEYS:
+		if src.has(k):
+			out[k] = (src[k] as Variant)
+	return out.duplicate(true)
+
+
 ## Lumi's cargo from the flat district he was in ({compartment, carried}); his position is not
 ## kept (he starts on the start site).
 static func lumi_cargo() -> Dictionary:
-	var pd: Dictionary = GameState.world.get("patch", {})
+	var src: Dictionary = GameState.world if GameState.flat_world == null else GameState.flat_world
+	var pd: Dictionary = src.get("patch", {})
 	return {"compartment": pd.get("compartment", {}), "carried": pd.get("carried", [])}

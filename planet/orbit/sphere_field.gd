@@ -63,23 +63,35 @@ func _init(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p
 		if cells.flags[i] & SphereCells.F_HUB:
 			hub_flags = true
 			break
+	# [orbE] Load time: the per-cell pass inlines is_dirty / has_flag / water_dirty over local packed
+	# arrays (8 method calls per cell were ~3 s on Anvil's 655k cells). Same rules as before:
+	# dirty = JUNK state with junk > 0.02; a lake with floating junk is a junk hex.
+	var st: PackedByteArray = cells.state
+	var jk: PackedFloat32Array = cells.junk
+	var fl: PackedByteArray = cells.flags
+	hex_total.fill(1.0)
 	for i: int in n:
-		var water: bool = cells.state[i] == 5
-		hex_water[i] = 1 if water else 0
-		if water:  # [orbB] a lake with floating junk is a junk hex (flat parity); a clear one is not
-			hex_total[i] = 1.0
-			hex_left[i] = cells.junk[i] if water_dirty(i) else 0.0
-			hex_clean[i] = 0 if water_dirty(i) else 1
-			if water_dirty(i):
+		var j: float = jk[i]
+		if st[i] == 5:
+			hex_water[i] = 1
+			if j > 0.02:
+				hex_left[i] = j
 				junk_hex_count += 1
+			else:
+				hex_left[i] = 0.0
+				hex_clean[i] = 1
 			continue
-		hex_hub[i] = 1 if cells.has_flag(i, SphereCells.F_HUB) or (cells.has_flag(i, SphereCells.F_SITE) and not cells.is_dirty(i) and not hub_flags) else 0  # [orbB] F_HUB persists
-		hex_total[i] = 1.0
-		hex_left[i] = cells.junk[i] if cells.is_dirty(i) else 0.0
-		hex_clean[i] = 0 if cells.is_dirty(i) else 1
-		if not water and hex_hub[i] == 0:
+		var dirty: bool = st[i] == 0 and j > 0.02
+		var f_i: int = fl[i]
+		var hub: bool = (f_i & SphereCells.F_HUB) != 0 or ((f_i & SphereCells.F_SITE) != 0 and not dirty and not hub_flags)  # [orbB] F_HUB persists
+		hex_hub[i] = 1 if hub else 0
+		if dirty:
+			hex_left[i] = j
+		else:
+			hex_clean[i] = 1
+		if not hub:
 			junk_hex_count += 1
-			if hex_clean[i] == 1:
+			if not dirty:
 				cleaned_count += 1
 	for id: String in Economy.junk_ids:
 		var w: float = float(Economy.junk_types[id].get("weight", 1.0))
