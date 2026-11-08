@@ -371,7 +371,7 @@ func persist_save() -> void:
 		"day_t": day.elapsed(),
 		"lumi": {"at": g.to_dirh(patch.global_position), "fwd": _v_arr(patch.forward()), "cargo": pd},
 		"cubes": cubes,
-		"sites": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth
+		"site_state": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth (main: renamed from "sites", which orbB uses for site geometry)
 	}
 
 
@@ -398,7 +398,7 @@ func restore_world() -> void:
 		cam.snap()
 	patch.restore_cargo(ld.get("cargo", {}))
 	if sites:  # [orbD]
-		sites.load_state(od.get("sites", {}))
+		sites.load_state(od.get("site_state", {}))
 
 
 static func _v_arr(v: Vector3) -> Array:
