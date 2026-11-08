@@ -248,9 +248,11 @@ func work_cell(c: int, left: float) -> void:
 		_left[c] = [left, _real_left(c)]
 	else:
 		_left.erase(c)
-	if junk_view != null:
+	if junk_view != null and not gone.is_empty():
 		for pid: int in gone:
 			junk_view.call("hide_piece", pid)
+		if junk_view.has_method("refresh_hex"):
+			junk_view.call("refresh_hex", c)
 	cell_worked.emit(c)
 	if was_dirty and not cells.is_dirty(c):
 		cell_cleaned.emit(c)

@@ -12,6 +12,12 @@ extends RefCounted
 ##                                    within 10%, and the cells it cleaned
 
 
+## The globe's planet id (OrbitPlanet.spec, GlobeSpec.of), Verdance for the phase A scene.
+static func planet_of(src: Object) -> String:
+	var sp: Variant = src.get("spec")
+	return str((sp as Dictionary).get("id", "verdance")) if sp is Dictionary else "verdance"
+
+
 static func wanted() -> bool:
 	return DevHooks.has("robots") or DevHooks.has("orbit-far-crew") or DevHooks.has("offline-jump")
 
@@ -22,7 +28,7 @@ static func wanted() -> bool:
 static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, write_cell: Callable = Callable()) -> SphereCrew:
 	var crew := SphereCrew.new()
 	crew.name = "SphereCrew"
-	crew.setup(src.grid, src.cells, src.field, src.surface, src.swarm, src.streamer, str(src.get("planet_id") if src.get("planet_id") != null else "verdance"))
+	crew.setup(src.grid, src.cells, src.field, src.surface, src.swarm, src.streamer, planet_of(src))
 	var start: int = int((src.sites[0] as Dictionary)["cell"])
 	crew.hub_cell = start
 	crew.depot_cell = start
@@ -108,7 +114,7 @@ static func offline_jump(src: Object, fleet: Array, seconds: float) -> Dictionar
 	var start: int = int((src.sites[0] as Dictionary)["cell"])
 	var flat: Dictionary = Offline.compute(fleet, 0, 1.0, seconds, INF)
 	var res: Dictionary = SphereOffline.simulate(src.grid, src.cells, src.field, [{"cell": start, "robots": fleet}], seconds,
-		str(src.get("planet_id") if src.get("planet_id") != null else "verdance"))
+		planet_of(src))
 	if src.get("junk_view") != null:
 		for pid: int in res["pieces"]:
 			src.junk_view.call("hide_piece", pid)
