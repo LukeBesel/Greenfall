@@ -18,6 +18,25 @@ const HOLO := Color(0.45, 0.88, 1.0)
 const GOLD := Color(1.0, 0.78, 0.36)
 const AU_UNITS: float = 8.0
 const HOME_CAM := Vector3(0, 33.0, 44.0)
+## [sysmap] Each planet is a detailed PlanetGlobe (ui/planet_globe.gd). Map radius per planet, and
+## how far its rings reach (in radii: Ochre's dust, Rime's ice spikes, Anvil's embers); orbits are
+## spaced from these so no ring ever sweeps through a neighbouring planet.
+const GLOBE_R: Dictionary = {"verdance": 1.95, "ochre": 1.5, "tidewell": 2.0, "anvil": 1.7, "rime": 1.45}
+const RING_REACH: Dictionary = {"ochre": 2.6, "rime": 2.45, "anvil": 2.2}
+const SUN_ZONE: float = 4.4
+const ORBIT_GAP: float = 0.3
+## Overview camera: a low, wide angle (elevation in radians), pulled back by OVERVIEW_DIST x the
+## system's extent and aimed a little toward the viewer so the near lanes stay on screen. Tuned
+## so every planet stays inside the middle of the screen at 16:9 (planets pass under the side
+## cards only at the far edge) and reads at 15-35 px radius at 720p.
+const OVERVIEW_ELEV: float = 0.45
+const OVERVIEW_DIST: float = 1.9
+const OVERVIEW_AIM: float = 0.45
+## The selected planet swells a little in the overview so its silhouette and rings read.
+const SELECT_GROW: float = 1.3
+## Zoomed framing: the globe fills this share of the screen height, its rings at most RING_FILL.
+const GLOBE_FILL: float = 0.55
+const RING_FILL: float = 0.8
 
 var world: Node
 var is_open: bool = false
@@ -28,6 +47,9 @@ var _vp: SubViewport
 var _cam: Camera3D
 var _sys: Node3D
 var _planets: Array[Node3D] = []
+var _globes: Array[PlanetGlobe] = []  # [sysmap]
+var _orbit_rs: Array[float] = []
+var _resto_t: float = 0.0
 var _rings: Array[MeshInstance3D] = []
 var _labels: Array[Label3D] = []
 var _orbits: Array[MeshInstance3D] = []
@@ -79,10 +101,10 @@ func open_map(from_planet: bool = false) -> void:
 	_root.modulate.a = 0.0
 	create_tween().tween_property(_root, "modulate:a", 1.0, 0.35)
 	if from_planet:  # back from the globe: start close on the planet, then pull out
-		_cam.global_transform = _planet_frame(selected, 1.6)
+		_cam.global_transform = _planet_frame(selected, 1.6 * _globe_r(selected))
 		_frame(_overview(), 1.6)
 	else:
-		_cam.global_transform = Transform3D(Basis(), HOME_CAM * 1.35).looking_at(Vector3.ZERO, Vector3.UP)
+		_cam.global_transform = Transform3D(Basis(), _overview().origin * 1.35).looking_at(Vector3.ZERO, Vector3.UP)
 		_frame(_overview(), 1.4)
 	if not _locked:
 		get_tree().paused = true
@@ -175,6 +197,8 @@ func _build() -> void:
 	_build_stars()
 	_build_suns()
 	_planets.clear()
+	_globes.clear()
+	_layout_orbits()
 	_rings.clear()
 	_labels.clear()
 	_orbits.clear()
@@ -257,13 +281,7 @@ func _sun(col: Color, r: float, energy: float) -> Node3D:
 	hm.albedo_color = Color(col.r, col.g, col.b, 0.55)
 	halo.material_override = hm
 	halo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	n.add_child(halo)
-	var l := OmniLight3D.new()
-	l.light_color = col
-	l.light_energy = energy * 0.9
-	l.omni_range = 70.0
-	l.omni_attenuation = 0.6
-	n.add_child(l)
+	n.add_child(halo)  # [sysmap] no OmniLight: the globes light themselves from these nodes
 	_sys.add_child(n)
 	return n
 
@@ -288,7 +306,57 @@ func _planet_color(k: int) -> Color:
 
 
 func _orbit_r(k: int) -> float:
-	return SolarSystem.orbit_au(str(Homeward.planet_def(k).get("id", "verdance"))) * AU_UNITS
+	if k >= 0 and k < _orbit_rs.size():
+		return _orbit_rs[k]
+	return SolarSystem.orbit_au(_pid_of(k)) * AU_UNITS
+
+
+func _pid_of(k: int) -> String:
+	return str(Homeward.planet_def(k).get("id", "verdance"))
+
+
+## [sysmap] The globe radius of planet k in map units.
+func _globe_r(k: int) -> float:
+	var id: String = _pid_of(k)
+	if GLOBE_R.has(id):
+		return float(GLOBE_R[id])
+	return 0.85 + float(Homeward.planet_def(k).get("orbit", 1.0)) * 0.1
+
+
+## Outer edge of the planet's own rings (or its atmosphere halo when it has none).
+func _ring_out(k: int) -> float:
+	return _globe_r(k) * float(RING_REACH.get(_pid_of(k), 1.15))
+
+
+## Everything drawn around planet k: rings plus the restoration halo just outside them.
+func _reach(k: int) -> float:
+	return _ring_out(k) + 0.12
+
+
+## Orbits in AU order, each lane wide enough for the planet's rings and its neighbours'.
+func _layout_orbits() -> void:
+	var n: int = Homeward.planets().size()
+	var order: Array[int] = []
+	for k: int in n:
+		order.append(k)
+	order.sort_custom(func(a: int, b: int) -> bool: return SolarSystem.orbit_au(_pid_of(a)) < SolarSystem.orbit_au(_pid_of(b)))
+	_orbit_rs.resize(n)
+	var r: float = SUN_ZONE
+	var prev: int = -1
+	for k: int in order:
+		if prev < 0:
+			r += _reach(k)
+		else:  # neither planet's rings (or halo) can reach the other's globe, even when aligned
+			r += maxf(_reach(prev) + _globe_r(k), _reach(k) + _globe_r(prev)) + ORBIT_GAP
+		_orbit_rs[k] = r
+		prev = k
+
+
+func _extent() -> float:
+	var e: float = SUN_ZONE
+	for k: int in _orbit_rs.size():
+		e = maxf(e, _orbit_rs[k] + _reach(k))
+	return e
 
 
 func _orbit_angle(k: int) -> float:
@@ -308,7 +376,8 @@ func _build_planet(k: int) -> void:
 	var pct: float = Homeward.stored_pct(k)
 	var here: bool = k == Homeward.current_planet()
 	var open: bool = here or Homeward.can_reach(k) or Homeward.world_of(k) >= 0
-	var radius: float = 0.85 + float(d.get("orbit", 1.0)) * 0.1
+	var radius: float = _globe_r(k)
+	var halo_r: float = _ring_out(k) + 0.04
 	# Orbit line.
 	var im := ImmediateMesh.new()
 	im.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
@@ -329,40 +398,25 @@ func _build_planet(k: int) -> void:
 	_sys.add_child(orbit)
 	_orbits.append(orbit)
 	_orbit_mats.append(om)
-	# The planet: its colour, greener as it is restored, dusty grey while unreached.
+	# [sysmap] The planet: a detailed PlanetGlobe (relief, clouds, rings, restoration greening),
+	# lit from the map's two sun nodes.
 	var p := Node3D.new()
 	_sys.add_child(p)
-	var body := MeshInstance3D.new()
-	body.mesh = ProcMesh.sphere(radius, 40, 20)
-	var m := ShaderMaterial.new()
-	m.shader = preload("res://art/shaders/space_planet.gdshader")
-	m.set_shader_parameter("seed", 3.7 + k * 5.3)
-	m.set_shader_parameter("green", pct * 0.9)
-	var tint := StandardMaterial3D.new()
-	tint.albedo_color = col.lerp(Color(0.35, 0.34, 0.33), 0.0 if open else 0.55)
-	tint.roughness = 0.85
-	tint.emission_enabled = true
-	tint.emission = tint.albedo_color
-	tint.emission_energy_multiplier = 0.04
-	body.material_override = m if k == 0 else tint
-	p.add_child(body)
-	# Thin atmosphere rim.
-	var atmo := MeshInstance3D.new()
-	atmo.mesh = ProcMesh.sphere(radius * 1.08, 40, 20)
-	var am := ShaderMaterial.new()
-	am.shader = _rim_shader()
-	am.set_shader_parameter("tint", col.lerp(Color(0.6, 0.9, 1.0), 0.5))
-	atmo.material_override = am
-	atmo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	p.add_child(atmo)
+	var g := PlanetGlobe.new()
+	g.radius = radius
+	g.max_lod = 2 if Settings.quality >= 1 else 1
+	p.add_child(g)
+	g.setup(str(d.get("id", "")), pct, col)
+	g.track_suns(_sun_a, _sun_b)
+	_globes.append(g)
 	# Restoration ring: a dim full ring with the restored share lit green.
 	var ring := MeshInstance3D.new()
-	ring.mesh = _arc_mesh(radius * 1.65, radius * 1.75, pct)
+	ring.mesh = _arc_mesh(halo_r, halo_r + 0.08, pct)
 	ring.material_override = Mats.lamp(Color(0.55, 1.0, 0.6), 2.0)
 	ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	p.add_child(ring)
 	var back := MeshInstance3D.new()
-	back.mesh = _arc_mesh(radius * 1.65, radius * 1.75, 1.0)
+	back.mesh = _arc_mesh(halo_r, halo_r + 0.08, 1.0)
 	var bm := StandardMaterial3D.new()
 	bm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	bm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
@@ -381,7 +435,7 @@ func _build_planet(k: int) -> void:
 	lab.outline_size = 7
 	lab.outline_modulate = Color(0, 0.02, 0.05, 0.8)
 	lab.no_depth_test = true
-	lab.position = Vector3(0, radius * 2.0 + 0.3, 0)
+	lab.position = Vector3(0, radius * 1.25 + 0.3, 0)
 	var tag: String
 	if here:
 		tag = tr("you are here")
@@ -413,20 +467,6 @@ static func _glow_tex() -> GradientTexture2D:
 	return g
 
 
-static func _rim_shader() -> Shader:
-	var s := Shader.new()
-	s.code = """shader_type spatial;
-render_mode unshaded, blend_add, depth_draw_never, cull_back;
-uniform vec4 tint : source_color = vec4(0.6, 0.9, 1.0, 1.0);
-void fragment() {
-	float f = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), 3.0);
-	ALBEDO = tint.rgb * f * 1.4;
-	ALPHA = f;
-}
-"""
-	return s
-
-
 ## A flat ring segment from 12 o'clock clockwise, `frac` of the way round.
 static func _arc_mesh(r0: float, r1: float, frac: float) -> ArrayMesh:
 	var st := SurfaceTool.new()
@@ -449,7 +489,18 @@ static func _arc_mesh(r0: float, r1: float, frac: float) -> ArrayMesh:
 # --- Camera ------------------------------------------------------------------------------------
 
 func _overview() -> Transform3D:
-	return Transform3D(Basis(), HOME_CAM).looking_at(Vector3(0, -2.0, 0), Vector3.UP)
+	# [sysmap] Low and wide: the whole system fits between the cards, near planets read large.
+	var e: float = _extent()
+	var eye := Vector3(0.0, sin(OVERVIEW_ELEV), cos(OVERVIEW_ELEV)) * e * OVERVIEW_DIST
+	return Transform3D(Basis(), eye).looking_at(Vector3(0.0, 0.0, e * OVERVIEW_AIM), Vector3.UP)
+
+
+## [sysmap] Zoomed-in distance for planet k: the globe fills GLOBE_FILL of the screen height and
+## its rings at most RING_FILL, so the relief, clouds and rings read (a 15 px globe is a dot).
+func _zoom_dist(k: int) -> float:
+	var t: float = tan(deg_to_rad(_cam.fov if _cam else 42.0) * 0.5)
+	var eye: float = maxf(_globe_r(k) / (t * GLOBE_FILL), _ring_out(k) / (t * RING_FILL))
+	return eye / 1.52  # _planet_frame's offset is ~1.52 x dist long
 
 
 ## Close on planet k (dist in planet radii-ish units), from the sun side so it is lit.
@@ -470,7 +521,7 @@ func _frame(to: Transform3D, dur: float) -> void:
 
 func _zoom_to(k: int) -> void:
 	_zoom_planet = k
-	_frame(_planet_frame(k, 6.5), 1.3)
+	_frame(_planet_frame(k, _zoom_dist(k)), 1.3)
 
 
 # --- Cards -------------------------------------------------------------------------------------
@@ -702,7 +753,7 @@ func _hand_to_globe() -> void:
 	if _handing_over or world == null or world.get("globe") == null:
 		return
 	_handing_over = true
-	_frame(_planet_frame(selected, 1.2), 0.9)
+	_frame(_planet_frame(selected, 1.2 * _globe_r(selected)), 0.9)
 	_fade.create_tween().tween_property(_fade, "color:a", 1.0, 0.8)
 	await get_tree().create_timer(0.85, true, false, true).timeout
 	_handing_over = false
@@ -730,25 +781,35 @@ func _process(delta: float) -> void:
 	_sun_a.position = Vector3(cos(sa), 0, sin(sa)) * 0.55
 	_sun_b.position = -Vector3(cos(sa), 0, sin(sa)) * 3.4
 	for k: int in _planets.size():
-		_planets[k].position = _planet_pos(k)
-		_planets[k].get_child(0).rotation.y = _t * 0.2
+		_planets[k].position = _planet_pos(k)  # the globe spins itself
 		var sel: bool = k == selected
+		# Globe, rings and halo swell together (the label keeps its fixed screen size).
+		var grow: float = SELECT_GROW if sel and _zoom_planet < 0 and _fly_t < 0.0 else 1.0
+		_planets[k].scale = Vector3.ONE * lerpf(_planets[k].scale.x, grow, clampf(delta * 4.0, 0.0, 1.0))
 		_orbit_mats[k].albedo_color = Color(HOLO, 0.5 if sel else 0.18)
 		_labels[k].modulate.a = 1.0 if sel or _zoom_planet < 0 else 0.45
 	# Camera easing (follows a moving planet while zoomed).
 	if _zoom_planet >= 0 and _cam_k >= 1.0 and not _handing_over:
-		_cam_to = _planet_frame(_zoom_planet, 6.5)
+		_cam_to = _planet_frame(_zoom_planet, _zoom_dist(_zoom_planet))
 		_cam.global_transform = _cam.global_transform.interpolate_with(_cam_to, clampf(delta * 3.0, 0.0, 1.0))
 	elif _cam_k < 1.0:
 		_cam_k = minf(1.0, _cam_k + delta / _cam_dur)
 		if _zoom_planet >= 0 and not _handing_over:
-			_cam_to = _planet_frame(_zoom_planet, 6.5)
+			_cam_to = _planet_frame(_zoom_planet, _zoom_dist(_zoom_planet))
 		var e: float = _cam_k * _cam_k * (3.0 - 2.0 * _cam_k)
 		_cam.global_transform = _cam_from.interpolate_with(_cam_to, e)
 	else:
 		# Overview: a slow drift so the starfield shells slide past each other.
 		var drift := Transform3D(Basis(Vector3.UP, sin(_t * 0.07) * 0.08), Vector3.ZERO) * _overview()
 		_cam.global_transform = _cam.global_transform.interpolate_with(drift, clampf(delta * 0.8, 0.0, 1.0))
+	# [sysmap] Restoration can change while the map is open: retint the globes, don't rebuild.
+	_resto_t -= delta
+	if _resto_t <= 0.0:
+		_resto_t = 1.0
+		for k: int in _globes.size():
+			var f: float = Homeward.stored_pct(k)
+			if absf(f - _globes[k].restoration) > 0.001:
+				_globes[k].set_restoration(f)
 	# Interplanetary flight marker.
 	if _fly_t >= 0.0 and _fly_from >= 0 and _fly_to >= 0:
 		_fly_t = minf(1.0, _fly_t + delta / _fly_dur)
@@ -765,6 +826,15 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_open or _locked:
 		return
+	var mb := event as InputEventMouseButton
+	if mb and mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+		var k: int = _pick_at()
+		if k >= 0:
+			if _list and k < _list.get_child_count() and _list.get_child(k) is Control:
+				(_list.get_child(k) as Control).grab_focus()
+			_select(k, true)
+			get_viewport().set_input_as_handled()
+			return
 	if event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel"):
 		if _zoom_planet >= 0:
 			_zoom_planet = -1
@@ -772,3 +842,24 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			close_map()
 		get_viewport().set_input_as_handled()
+
+
+## [sysmap] Click picking: the planet whose globe (or rings) is under the mouse, -1 if none.
+func _pick_at() -> int:
+	if _cam == null or _svc == null or _vp == null or _svc.size.x <= 0.0:
+		return -1
+	var m: Vector2 = _svc.get_local_mouse_position() * (Vector2(_vp.size) / _svc.size)
+	var best: int = -1
+	var best_d: float = INF
+	var right: Vector3 = _cam.global_transform.basis.x
+	for k: int in _planets.size():
+		var pos: Vector3 = _planets[k].global_position
+		if _cam.is_position_behind(pos):
+			continue
+		var sp: Vector2 = _cam.unproject_position(pos)
+		var pr: float = (_cam.unproject_position(pos + right * _ring_out(k)) - sp).length()
+		var dd: float = m.distance_to(sp)
+		if dd < maxf(pr, 22.0) and dd < best_d:
+			best_d = dd
+			best = k
+	return best
