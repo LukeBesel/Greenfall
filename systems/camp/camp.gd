@@ -286,6 +286,7 @@ func _apply_builds() -> void:
 	if gen:
 		gen.visible = YardBuilds.built("generator")
 		_set_solid(gen, gen.visible)  # [pace2]
+	YardArt.ground_for_level(world, hub_level())  # [yard] kit ground patch: repaired, restored from L3
 	var dressing: Node = world.get("dressing")
 	if dressing and dressing.has_method("set_level"):
 		var hub: Hub = world.get("hub") as Hub

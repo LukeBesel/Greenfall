@@ -136,6 +136,14 @@ class Kit:
 	func decal(nm: String, size: Vector2, pos: Vector3, rot: Vector3 = Vector3.ZERO) -> void:
 		b.decal(nm, size, _t(ProcMesh.xf(pos, rot)))
 
+	## A rounded mound (soil heaps, domes): radius r, height h, base centred on pos.
+	func dome(r: float, h: float, pos: Vector3, key: String = "dirt", col: Color = Color.WHITE) -> void:
+		var p := PackedVector3Array([Vector3(0, 0, 1)])
+		for i: int in 7:
+			var a: float = PI * 0.5 * float(i) / 6.0
+			p.append(Vector3(cos(a) * r, sin(a) * h, 1))
+		b.add(_add_key(key, col), KitMesh.lathe(p, 14), _t(Transform3D(Basis(), pos)))
+
 	## A small light that only shines when the build is powered (YardArt.set_powered).
 	func light(pos: Vector3, col: Color, energy: float, rng: float) -> void:
 		lights.append([_stack.back() * pos, col, energy, rng])
@@ -859,87 +867,67 @@ static func depot_scale() -> MeshInstance3D:
 
 # --- Yard ground ------------------------------------------------------------------------------------
 
-## The yard is never a flat slab (owner): on top of the painted yard slab (planet/street_dressing.gd)
-## this adds a cracked concrete footing under the lean-to and bench, broken slab plates, a kerb
-## round the edge (gap at the walkway), drain covers, grit drifted against everything, and dry
-## grass tufts in the corners and cracks. Visual only, at most ~5 cm proud (Lumi and bales pass).
-## `half` = the yard's half-size; `feet` = world points of things that collect grit round their base.
+## The yard is never a flat slab (owner): street_dressing's flat painted YardSlab is hidden and a
+## kit ground patch (KitMesh.ground_patch: concrete plates with seams and cracks, kerbs, drains,
+## a dirt skirt, grit, tufts; painted bays once restored) covers the 17 x 17 m yard instead,
+## sunk so the plate tops sit ~2 cm proud (bales and bases don't sink in). On top: a cracked
+## footing under the lean-to/bench, and grit and tufts drifted round the feet of things.
+## The patch follows the hub level (YardArt.ground_for_level): repaired, then restored from L3.
+const GROUND_SINK: float = 0.055
+const GROUND_PALETTE: Dictionary = {"main": "cream", "accent": "teal"}  # Verdance (docs/ART_KIT.md)
+
+
 static func dress_ground(world: Node3D, shack: Node3D, half: float = 8.5, feet: Array = []) -> Node3D:
 	var root := Node3D.new()
 	root.name = "YardGround"
 	world.add_child(root)
+	_hide_slab(world)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 7151
 	var k := Kit.new()
 	var conc := Color(0.66, 0.64, 0.6)
-	# Footing under the lean-to/bench (in the shack's frame), split by a crack, with a kerb lip.
-	if shack:
+	if shack:  # footing under the lean-to/bench (in the shack's frame), split by a crack
 		k.push(world.global_transform.affine_inverse() * shack.global_transform)
-		k.box(Vector3(2.0, 0.05, 2.9), Vector3(-0.92, 0.012, -0.05), conc, Vector3(0, 0, 0.3), 0.015, "concrete")
-		k.box(Vector3(1.78, 0.05, 2.9), Vector3(1.0, 0.012, -0.05), conc.darkened(0.06), Vector3(0, 0, -0.4), 0.015, "concrete")
-		k.box(Vector3(3.9, 0.08, 0.16), Vector3(0, 0.03, -1.42), conc.darkened(0.12), Vector3.ZERO, 0.03, "concrete")
+		k.box(Vector3(2.0, 0.06, 2.9), Vector3(-0.92, 0.03, -0.05), conc, Vector3(0, 0, 0.3), 0.015, "concrete")
+		k.box(Vector3(1.78, 0.06, 2.9), Vector3(1.0, 0.03, -0.05), conc.darkened(0.06), Vector3(0, 0, -0.4), 0.015, "concrete")
+		k.box(Vector3(3.9, 0.1, 0.16), Vector3(0, 0.05, -1.42), conc.darkened(0.12), Vector3.ZERO, 0.03, "concrete")
 		feet.append(shack.global_position)
 		k.pop()
-	# Broken slab plates in the open corners (each two pieces with a crack between).
-	for p: Array in [[Vector2(-7.2, -7.4), 1.6], [Vector2(6.3, -6.6), 1.8], [Vector2(-6.9, -1.4), 1.6], [Vector2(3.7, 6.7), 1.7],
-			[Vector2(-3.3, 6.8), 1.9], [Vector2(6.8, 6.6), 1.5], [Vector2(7.0, -2.6), 1.3]]:
-		var c: Vector2 = p[0]
-		var s: float = p[1]
-		var yaw: float = rng.randf_range(-0.25, 0.25)
-		var split: float = rng.randf_range(0.35, 0.65)
-		var tint: Color = conc.darkened(rng.randf_range(-0.05, 0.15))
-		k.push(Transform3D(Basis(Vector3.UP, yaw), Vector3(c.x, 0.0, c.y)))
-		var w1: float = s * split - 0.03
-		var w2: float = s * (1.0 - split) - 0.03
-		k.box(Vector3(w1, 0.045, s), Vector3(-s * 0.5 + w1 * 0.5, 0.016, 0), tint, Vector3(rng.randf_range(-1.2, 1.2), 0, rng.randf_range(-1.2, 1.2)), 0.015, "concrete")
-		k.box(Vector3(w2, 0.045, s * rng.randf_range(0.7, 1.0)), Vector3(s * 0.5 - w2 * 0.5, 0.016, 0), tint.darkened(0.05), Vector3(rng.randf_range(-1.5, 1.5), rng.randf_range(-4, 4), rng.randf_range(-1.5, 1.5)), 0.015, "concrete")
-		k.pop()
-		feet.append(Vector3(c.x, 0, c.y))
-	# Kerb stones along the edge; the front (walkway, +z) leaves a gap in the middle.
-	for side: int in 4:
-		var n: int = int(half * 2.0 / 1.0)
-		for i: int in n:
-			var t: float = -half + 0.5 + i * 1.0
-			if side == 2 and absf(t) < 1.8:
-				continue
-			if rng.randf() < 0.08:
-				continue  # a missing stone
-			var pos: Vector3
-			var rot: float
-			match side:
-				0:
-					pos = Vector3(t, 0.05, -half + 0.08)
-					rot = 0.0
-				1:
-					pos = Vector3(half - 0.08, 0.05, t)
-					rot = 90.0
-				2:
-					pos = Vector3(t, 0.05, half - 0.08)
-					rot = 0.0
-				_:
-					pos = Vector3(-half + 0.08, 0.05, t)
-					rot = 90.0
-			var tilt := Vector3(rng.randf_range(-2.0, 2.0), rot + rng.randf_range(-2.5, 2.5), rng.randf_range(-2.0, 2.0))
-			if i % 2 == 0 and side == 2:
-				k.hazard(Vector3(0.96, 0.12, 0.2), pos, tilt)
-			else:
-				k.box(Vector3(0.96, 0.12, 0.2), pos, conc.lightened(0.05).darkened(rng.randf_range(0.0, 0.15)), tilt, 0.03, "concrete")
-	# Drain covers and a manhole.
-	for d: Array in [[Vector3(3.9, 0.02, 3.4), 0.32], [Vector3(-6.2, 0.02, -3.9), 0.42], [Vector3(-2.0, 0.02, -5.6), 0.28]]:
-		var at: Vector3 = d[0]
-		var r: float = d[1]
-		k.cyl(r + 0.05, 0.035, at, GUNMETAL, Vector3.ZERO, 0.01, 18)
-		k.cyl(r, 0.04, at + Vector3(0, 0.006, 0), Color(0.36, 0.38, 0.4, 0.0), Vector3.ZERO, 0.008, 18)
-		for i: int in 4:
-			k.box(Vector3(r * 1.6, 0.012, 0.03), at + Vector3(0, 0.028, -r * 0.45 + i * r * 0.3), DARK, Vector3.ZERO, 0.004)
-		for a: int in 6:
-			k.bolt(at + Vector3(cos(a * TAU / 6) * (r - 0.03), 0.026, sin(a * TAU / 6) * (r - 0.03)), Vector3.UP, STEEL, 0.012)
-	var ground: MeshInstance3D = k.mi(0.3, "Plates")
-	ground.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	root.add_child(ground)
+	var footing: MeshInstance3D = k.mi(0.3, "Footing")
+	footing.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	root.add_child(footing)
 	root.add_child(_grit(rng, half, feet))
 	root.add_child(_tufts(rng, half, feet))
+	var hub: Node = world.get("hub") as Node
+	ground_for_level(world, int(hub.get("level")) if hub else int(GameState.world.get("hub_level", 1)), half)
 	return root
+
+
+## Swaps the yard's kit ground patch for the hub level (cached by the kit, so cheap).
+static func ground_for_level(world: Node, level: int, half: float = 8.5) -> void:
+	var root: Node3D = world.get_node_or_null("YardGround") as Node3D if world else null
+	if root == null:
+		return
+	var st: String = "restored" if level >= 3 else "repaired"
+	var old: Node = root.get_node_or_null("KitGroundPatch")
+	if old and str(old.get_meta("kit_state", "")) == st:
+		return
+	if old:
+		root.remove_child(old)
+		old.queue_free()
+	var patch: Node3D = KitMesh.ground_patch(Vector2(half * 2.0, half * 2.0), st, 31, {"palette": GROUND_PALETTE})
+	patch.name = "KitGroundPatch"
+	patch.position.y = -GROUND_SINK
+	patch.set_meta("kit_state", st)
+	root.add_child(patch)
+	_hide_slab(world)
+
+
+static func _hide_slab(world: Node) -> void:
+	var dressing: Node = world.get("dressing") as Node if world else null
+	if dressing:
+		for n: Node in dressing.find_children("YardSlab", "", true, false):
+			(n as Node3D).visible = false
 
 
 ## Pebbles and grit: drifted along the kerb and round the feet of things, a light sprinkle elsewhere.
@@ -948,10 +936,10 @@ static func _grit(rng: RandomNumberGenerator, half: float, feet: Array) -> Multi
 	mm.transform_format = MultiMesh.TRANSFORM_3D
 	mm.use_colors = true
 	mm.mesh = bbox(Vector3(1, 0.6, 0.8), 0.25)
-	var n: int = 900
+	var n: int = 500
 	mm.instance_count = n
 	for i: int in n:
-		var p: Vector3 = _scatter_point(rng, half, feet, 0.55)
+		var p: Vector3 = _scatter_point(rng, half, feet, 0.15)
 		var s: float = rng.randf_range(0.03, 0.09) * (1.8 if rng.randf() < 0.1 else 1.0)
 		var b := Basis.from_euler(Vector3(rng.randf() * TAU, rng.randf() * TAU, rng.randf() * TAU)).scaled(Vector3.ONE * s)
 		mm.set_instance_transform(i, Transform3D(b, p + Vector3(0, s * 0.2, 0)))
@@ -982,11 +970,11 @@ static func _tufts(rng: RandomNumberGenerator, half: float, feet: Array) -> Mult
 	mm.transform_format = MultiMesh.TRANSFORM_3D
 	mm.use_colors = true
 	mm.mesh = ProcMesh.merge(parts)
-	var n: int = 220
+	var n: int = 120
 	mm.instance_count = n
 	var last := Vector3.ZERO
 	for i: int in n:
-		var p: Vector3 = _scatter_point(rng, half, feet, 0.6) if i % 3 == 0 else last + Vector3(rng.randf_range(-0.2, 0.2), 0, rng.randf_range(-0.2, 0.2))
+		var p: Vector3 = _scatter_point(rng, half, feet, 0.2) if i % 3 == 0 else last + Vector3(rng.randf_range(-0.2, 0.2), 0, rng.randf_range(-0.2, 0.2))
 		last = p
 		var s: float = rng.randf_range(0.6, 1.4)
 		mm.set_instance_transform(i, Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(s, s * rng.randf_range(0.8, 1.3), s)), p))
@@ -1061,3 +1049,158 @@ static func locker() -> Kit:
 	k.cable([Vector3(0.5, 2.24, -0.3), Vector3(0.62, 1.4, -0.36), Vector3(0.66, 0.2, -0.36), Vector3(0.9, 0.03, -0.3)], 0.02)
 	k.light(Vector3(0, 1.4, 0.7), CYAN, 0.25, 1.4)
 	return k
+
+
+
+# --- Compost press (plants/composter.gd) ---------------------------------------------------------------
+
+## {body, drum, head} Kits. Local: front -Z; bins on the left, the seed press on the right with its
+## drum at (1.0, 1.1, 0) and stamping head at (1.0, 1.15, -0.55) (their own nodes animate).
+static func composter() -> Dictionary:
+	var k := Kit.new()
+	k.box(Vector3(2.95, 0.08, 1.05), Vector3(0.05, 0.04, 0), GUNMETAL)
+	k.hazard(Vector3(2.95, 0.05, 0.07), Vector3(0.05, 0.06, -0.5))
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 404
+	for bx: float in [-0.9, 0.05]:
+		for sx: float in [-1.0, 1.0]:
+			for sz: float in [-1.0, 1.0]:
+				k.box(Vector3(0.09, 0.74, 0.09), Vector3(bx + sx * 0.42, 0.45, sz * 0.42), TEAL_D)
+				k.box(Vector3(0.12, 0.04, 0.12), Vector3(bx + sx * 0.42, 0.83, sz * 0.42), TEAL)
+		for y: float in [0.22, 0.44, 0.66]:
+			for sz: float in [-1.0, 1.0]:
+				k.box(Vector3(0.78, 0.15, 0.05), Vector3(bx, y, sz * 0.42), WOOD.darkened(rng.randf_range(0.0, 0.25)), Vector3(0, 0, rng.randf_range(-1.5, 1.5)), 0.02)
+			for sx: float in [-1.0, 1.0]:
+				k.box(Vector3(0.05, 0.15, 0.78), Vector3(bx + sx * 0.42, y, 0), WOOD.darkened(rng.randf_range(0.0, 0.25)), Vector3(rng.randf_range(-1.5, 1.5), 0, 0), 0.02)
+		k.dome(0.38, 0.28, Vector3(bx, 0.5, 0))
+		for q: int in 4:
+			var a: float = rng.randf() * TAU
+			k.box(Vector3(0.04, 0.1, 0.012), Vector3(bx + cos(a) * 0.15, 0.8, sin(a) * 0.15), GREEN, Vector3(rng.randf_range(-25, 25), rng.randf() * 180, 0), 0.004)
+	# The press cabinet.
+	k.box(Vector3(0.9, 1.0, 0.8), Vector3(1.0, 0.58, 0), GREEN, Vector3.ZERO, 0.06)
+	k.box(Vector3(0.96, 0.06, 0.86), Vector3(1.0, 1.1, 0), CREAM, Vector3.ZERO, 0.025)
+	k.hazard(Vector3(0.92, 0.1, 0.82), Vector3(1.0, 0.18, 0))
+	k.vent(0.42, 0.34, Vector3(1.455, 0.6, 0.05), GREEN.darkened(0.2), Vector3(0, 90, 0), 4)
+	k.decal("label_seeds", Vector2(0.56, 0.14), Vector3(1.0, 0.95, -0.405), Vector3(0, 180, 0))
+	k.bolts4(Vector3(1.0, 0.58, -0.405), Vector3(0.4, 0, 0), Vector3(0, 0.44, 0), Vector3.FORWARD)
+	for z: float in [-0.4, 0.4]:
+		k.box(Vector3(0.14, 0.36, 0.06), Vector3(1.0, 1.24, z), GUNMETAL)
+	# Press arm over the seed tray, the tray, the chimney, the status lamp housing.
+	k.box(Vector3(0.12, 0.6, 0.12), Vector3(1.38, 1.38, -0.42), GUNMETAL)
+	k.box(Vector3(0.6, 0.1, 0.3), Vector3(1.12, 1.66, -0.55), CREAM)
+	k.cyl(0.08, 0.26, Vector3(1.0, 1.5, -0.55), GUNMETAL, Vector3.ZERO, 0.02, 12)
+	k.box(Vector3(0.56, 0.1, 0.44), Vector3(1.0, 0.55, -0.62), ORANGE)
+	for q: int in 9:
+		k.box(Vector3(0.05, 0.03, 0.05), Vector3(0.82 + (q % 3) * 0.17 + rng.randf_range(-0.03, 0.03), 0.615, -0.76 + int(q / 3) * 0.12), YELLOW, Vector3(0, rng.randf() * 90, 0), 0.012)
+	k.pipe(Vector3(1.3, 1.1, 0.25), Vector3(1.3, 1.7, 0.25), 0.07, GUNMETAL, true)
+	k.cyl(0.1, 0.06, Vector3(1.3, 1.76, 0.25), DARK, Vector3.ZERO, 0.02, 12)
+	k.cyl(0.075, 0.06, Vector3(0.65, 0.85, -0.42), DARK, Vector3(90, 0, 0), 0.015, 12)
+	# Garden clutter: a sack, a leaning spade, a watering can.
+	k.box(Vector3(0.42, 0.3, 0.3), Vector3(1.8, 0.15, -0.2), CREAM.darkened(0.08), Vector3(0, 25, 4), 0.1)
+	k.box(Vector3(0.04, 0.95, 0.04), Vector3(-1.48, 0.48, 0.3), WOOD, Vector3(0, 0, -12), 0.012)
+	k.box(Vector3(0.2, 0.26, 0.03), Vector3(-1.39, 0.1, 0.3), GUNMETAL, Vector3(0, 0, -12), 0.012)
+	k.cyl(0.12, 0.24, Vector3(-1.5, 0.12, -0.5), TEAL, Vector3.ZERO, 0.03, 14)
+	k.pipe(Vector3(-1.4, 0.12, -0.5), Vector3(-1.22, 0.3, -0.5), 0.02, TEAL, false)
+	var d := Kit.new()  # drum (axis along Z)
+	d.cyl(0.25, 0.7, Vector3.ZERO, GUNMETAL, Vector3(90, 0, 0), 0.03, 16)
+	for z: float in [-0.33, 0.33]:
+		d.cyl(0.265, 0.05, Vector3(0, 0, z), ORANGE, Vector3(90, 0, 0), 0.012, 16)
+	for i: int in 4:
+		var a: float = TAU * i / 4.0
+		d.box(Vector3(0.04, 0.12, 0.62), Vector3(cos(a) * 0.25, sin(a) * 0.25, 0), GREEN, Vector3(0, 0, rad_to_deg(a)), 0.012)
+	var h := Kit.new()  # stamping head
+	h.box(Vector3(0.4, 0.1, 0.3), Vector3.ZERO, STEEL)
+	h.cyl(0.04, 0.36, Vector3(0, 0.22, 0), STEEL, Vector3.ZERO, 0.01, 10)
+	h.hazard(Vector3(0.41, 0.03, 0.31), Vector3(0, -0.03, 0))
+	return {"body": k, "drum": d, "head": h}
+
+
+# --- CD player stand (systems/extras/radio.gd) ------------------------------------------------------
+
+## The console the boombox sits on (top at y 0.7) with a speaker stack each side. Front +X.
+static func radio_stand() -> Kit:
+	var k := Kit.new()
+	k.box(Vector3(0.7, 0.08, 0.9), Vector3(0, 0.04, 0), DARK)
+	k.box(Vector3(0.64, 0.6, 0.84), Vector3(0, 0.38, 0), TEAL, Vector3.ZERO, 0.05)
+	k.box(Vector3(0.7, 0.05, 0.9), Vector3(0, 0.69, 0), CREAM, Vector3.ZERO, 0.02)
+	k.box(Vector3(0.03, 0.42, 0.7), Vector3(0.325, 0.38, 0), CREAM, Vector3.ZERO, 0.015)
+	for i: int in 9:  # a shelf of CD cases
+		k.box(Vector3(0.12, 0.13, 0.018), Vector3(0.3, 0.3, -0.24 + i * 0.03), [RED, YELLOW, BLUE, CREAM, GREEN, ORANGE][i % 6], Vector3(0, 0, -6 if i == 5 else 0), 0.004)
+	k.decal("grille", Vector2(0.3, 0.16), Vector3(0.343, 0.5, 0.15), Vector3(0, 90, 0))
+	k.glow_box(Vector3(0.012, 0.03, 0.06), Vector3(0.345, 0.5, -0.2), WARM)
+	for s: float in [-1.0, 1.0]:
+		var z: float = s * 0.72
+		k.box(Vector3(0.42, 0.06, 0.42), Vector3(0, 0.03, z), DARK)
+		k.box(Vector3(0.38, 0.92, 0.38), Vector3(0, 0.52, z), DARK.lightened(0.08), Vector3(0, s * -12, 0), 0.04)
+		for y: float in [0.34, 0.76]:
+			var c: Vector3 = Vector3(0.19, y, z) + Basis(Vector3.UP, deg_to_rad(s * -12)) * Vector3(0.0, 0, 0)
+			k.cyl(0.13, 0.03, c, STEEL, Vector3(0, s * -12, 90), 0.008, 18)
+			k.cyl(0.11, 0.03, c + Vector3(0.008, 0, 0), RUBBER, Vector3(0, s * -12, 90), 0.008, 18)
+			k.cyl(0.035, 0.03, c + Vector3(0.016, 0, 0), ORANGE, Vector3(0, s * -12, 90), 0.006, 10)
+		k.box(Vector3(0.4, 0.05, 0.4), Vector3(0, 1.0, z), ORANGE, Vector3(0, s * -12, 0), 0.015)
+	k.cable([Vector3(-0.3, 0.6, -0.2), Vector3(-0.32, 0.3, -0.45), Vector3(-0.2, 0.03, -0.6), Vector3(-0.1, 0.5, -0.72)], 0.014)
+	k.cable([Vector3(-0.3, 0.6, 0.2), Vector3(-0.32, 0.3, 0.45), Vector3(-0.2, 0.03, 0.6), Vector3(-0.1, 0.5, 0.72)], 0.014)
+	return k
+
+
+# --- Robot nursery (systems/extras/nursery.gd) -------------------------------------------------------
+
+## The garden's hard parts: a soil bed (grass via nursery_grass), segmented concrete kerbs with a
+## gap on the yard side (+z), a little charging shelter at the back and a plaque post. size = SIZE.
+static func nursery(size: Vector2) -> Kit:
+	var k := Kit.new()
+	var hx: float = size.x * 0.5
+	var hz: float = size.y * 0.5
+	k.box(Vector3(size.x, 0.06, size.y), Vector3(0, 0.02, 0), Color.WHITE, Vector3.ZERO, 0.01, "dirt")  # top ~5 cm: above the yard plates
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 88
+	var kerb := func(a: Vector3, e: Vector3) -> void:
+		var d: Vector3 = e - a
+		var n: int = maxi(1, int(round(d.length() / 0.6)))
+		for i: int in n:
+			var c: Vector3 = a + d * ((i + 0.5) / n)
+			k.box(Vector3(d.length() / n - 0.03, 0.18, 0.14), c + Vector3(0, 0.09, 0), Color.WHITE, Vector3(rng.randf_range(-1.5, 1.5), rad_to_deg(atan2(-d.z, d.x)) + rng.randf_range(-1.5, 1.5), 0), 0.035, "concrete")
+	kerb.call(Vector3(-hx, 0, -hz), Vector3(hx, 0, -hz))
+	kerb.call(Vector3(-hx, 0, -hz), Vector3(-hx, 0, hz))
+	kerb.call(Vector3(hx, 0, -hz), Vector3(hx, 0, hz))
+	kerb.call(Vector3(-hx, 0, hz), Vector3(-hx + size.x * 0.36, 0, hz))
+	kerb.call(Vector3(hx - size.x * 0.36, 0, hz), Vector3(hx, 0, hz))
+	# Charging shelter at the back-right: two posts, a teal roof, a cream back, a pad that glows.
+	k.push(Transform3D(Basis(), Vector3(hx - 0.85, 0, -hz + 0.55)))
+	for x: float in [-0.55, 0.55]:
+		k.box(Vector3(0.08, 1.15, 0.08), Vector3(x, 0.58, 0.3), TEAL_D)
+	k.box(Vector3(1.24, 1.2, 0.06), Vector3(0, 0.62, -0.32), CREAM)
+	k.box(Vector3(1.4, 0.07, 0.86), Vector3(0, 1.2, 0), TEAL, Vector3(-8, 0, 0), 0.025)
+	k.box(Vector3(1.44, 0.1, 0.06), Vector3(0, 1.23, 0.43), ORANGE, Vector3(-8, 0, 0), 0.02)
+	k.cyl(0.42, 0.05, Vector3(0, 0.045, 0), GUNMETAL, Vector3.ZERO, 0.015, 20)
+	k.glow_cyl(0.34, 0.012, Vector3(0, 0.074, 0), WARM, Vector3.ZERO, 20)
+	k.box(Vector3(0.24, 0.3, 0.1), Vector3(0.35, 0.75, -0.26), DARK)
+	k.glow_box(Vector3(0.05, 0.05, 0.02), Vector3(0.35, 0.82, -0.205), MINT)
+	k.decal("power", Vector2(0.14, 0.14), Vector3(0.35, 0.66, -0.205))
+	k.light(Vector3(0, 0.6, 0.1), WARM, 0.35, 1.6)
+	k.pop()
+	# Plaque post by the gap (the sign text stays a flat Label3D on it).
+	k.box(Vector3(0.08, 1.0, 0.08), Vector3(hx - 0.45, 0.5, hz - 0.2), WOOD)
+	k.box(Vector3(0.96, 0.4, 0.06), Vector3(hx - 0.45, 1.0, hz - 0.2), CREAM, Vector3.ZERO, 0.02)
+	k.box(Vector3(1.0, 0.05, 0.08), Vector3(hx - 0.45, 1.22, hz - 0.2), TEAL, Vector3.ZERO, 0.015)
+	# Watering can.
+	k.cyl(0.1, 0.18, Vector3(-hx + 0.5, 0.09, hz - 0.5), TEAL)
+	k.pipe(Vector3(-hx + 0.58, 0.1, hz - 0.5), Vector3(-hx + 0.74, 0.25, hz - 0.5), 0.018, TEAL, false)
+	return k
+
+
+## Dense grass for the nursery bed (MultiMesh of kit-coloured tufts inside a rect).
+static func nursery_grass(size: Vector2) -> MultiMeshInstance3D:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 512
+	var mi: MultiMeshInstance3D = _tufts(rng, 1.0, [])
+	var mm: MultiMesh = mi.multimesh
+	mm.instance_count = 260
+	for i: int in mm.instance_count:
+		var p := Vector3(rng.randf_range(-size.x * 0.47, size.x * 0.47), 0.05, rng.randf_range(-size.y * 0.47, size.y * 0.47))
+		var s: float = rng.randf_range(0.7, 1.3)
+		mm.set_instance_transform(i, Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(s, s * rng.randf_range(0.6, 1.0), s)), p))
+		var g: float = rng.randf_range(0.8, 1.1)
+		mm.set_instance_color(i, Color(g * 0.8, g, g * 0.7))
+	mi.name = "Grass"
+	return mi

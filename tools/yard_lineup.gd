@@ -12,6 +12,7 @@ const SHOTS: Dictionary = {
 	"shack": [Vector3(1.2, 2.6, 4.2), Vector3(-4.6, 1.0, 1.4)],
 	"bench": [Vector3(23.2, 2.2, 2.6), Vector3(20.0, 0.8, 0.0)],
 	"locker": [Vector3(-4.0, 1.9, 7.4), Vector3(-6.4, 1.1, 4.6)],
+	"builds": [Vector3(40.5, 3.6, 6.8), Vector3(40.5, 0.6, 0.0)],
 	"bins": [Vector3(0.0, 4.4, -18.0), Vector3(0.0, 0.8, -26.5)],
 }
 const BOARD_POS := Vector3(-3.6, 0, 2.2)  # scenes/slice.gd
@@ -25,7 +26,7 @@ var _cam: Camera3D
 
 func _ready() -> void:
 	_out = DevHooks.get_s("out", "screenshots/yard/lineup")
-	_shots = DevHooks.get_s("shots", "yard,shack,bench,locker,bins").split(",")
+	_shots = DevHooks.get_s("shots", "yard,shack,bench,locker,builds,bins").split(",")
 	var night: bool = DevHooks.has("night")
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
@@ -65,9 +66,16 @@ func _ready() -> void:
 	slab.mesh = sp
 	slab.position.y = 0.012
 	slab.material_override = AssetLib.pbr_material("concrete_floor_worn_001", 0.3, Color(0.85, 0.83, 0.8), true)
-	add_child(slab)
+	slab.name = "YardSlab"
+	dressing = Node3D.new()
+	dressing.name = "Dressing"
+	add_child(dressing)
+	dressing.add_child(slab)  # YardArt hides it under the kit ground patch
 	_build_yard()
+	_build_builds()
 	_build_bins()
+	if DevHooks.has("hub-level"):
+		YardArt.ground_for_level(self, int(DevHooks.get_f("hub-level", 1.0)))
 	_cam = Camera3D.new()
 	_cam.fov = 40.0
 	add_child(_cam)
@@ -144,6 +152,7 @@ func _board(shack_at: Vector3, bench_ok: bool, full: bool) -> void:
 
 
 var depot: Node3D  # read by YardArt.dress_board (like the slice's)
+var dressing: Node3D  # holds the stand-in YardSlab (StreetDressing's)
 
 
 func _build_yard() -> void:
@@ -154,6 +163,32 @@ func _build_yard() -> void:
 	lk.rotation.y = deg_to_rad(90.0)
 	add_child(lk)
 	YardArt.set_powered(lk, true)
+
+
+## Batch 2: compost press, CD player stand, robot nursery (models only, no gameplay nodes).
+func _build_builds() -> void:
+	var cp: Dictionary = YardArt.composter()
+	var c := Node3D.new()
+	c.position = Vector3(37.5, 0, 0.5)
+	c.rotation_degrees = Vector3(0, 180, 0)
+	add_child(c)
+	c.add_child((cp["body"] as YardArt.Kit).mi(0.2))
+	for pair: Array in [["drum", Vector3(1.0, 1.1, 0)], ["head", Vector3(1.0, 1.15, -0.55)]]:
+		var m: MeshInstance3D = (cp[pair[0]] as YardArt.Kit).mi(0.2)
+		m.position = pair[1]
+		c.add_child(m)
+	var st: MeshInstance3D = YardArt.radio_stand().mi(0.15)
+	st.position = Vector3(41.0, 0, 1.5)
+	st.rotation_degrees = Vector3(0, 90, 0)
+	add_child(st)
+	YardArt.set_powered(st, true)
+	var n := Node3D.new()
+	n.position = Vector3(44.0, 0, -1.5)
+	add_child(n)
+	var g: MeshInstance3D = YardArt.nursery(Vector2(5.0, 3.4)).mi(0.15)
+	n.add_child(g)
+	YardArt.set_powered(g, true)
+	n.add_child(YardArt.nursery_grass(Vector2(5.0, 3.4)))
 
 
 func _build_bins() -> void:
