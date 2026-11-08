@@ -15,33 +15,38 @@ static func ensure() -> void:
 	if _done:
 		return
 	_done = true
+	# [v1menu] The synthesis is pure maths: behind the loading screen it runs on a worker thread
+	# (one task, so the rng order and the sounds are unchanged) and the loader keeps animating;
+	# the streams are registered on the main thread afterwards. Synchronous without a budget.
+	var bufs: Dictionary = {}
+	if BuildBudget.active():
+		var task: int = WorkerThreadPool.add_task(_synth_all.bind(bufs), false, "fauna sounds")
+		while not WorkerThreadPool.is_task_completed(task):
+			await BuildBudget.pause("sounds (thread)")
+		WorkerThreadPool.wait_for_task_completion(task)
+	else:
+		_synth_all(bufs)
+	for name: String in ["purr", "meow", "coo", "chirp", "song", "quack", "gull", "frog", "seal", "flutter"]:
+		Audio.override(name, bufs[name])
+	await BuildBudget.check("sounds")
+
+
+## Every sound's streams, synthesized in the original rng order (name -> Array of AudioStreamWAV).
+static func _synth_all(out: Dictionary) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 9091
-	var reg := func(name: String, bufs: Array) -> void:
-		var streams: Array = []
-		for b: PackedFloat32Array in bufs:
-			streams.append(wav(b))
-		Audio.override(name, streams)
-	# [leftovers] Behind the loading screen (scenes/slice.gd) it yields between calls; same rng order.
-	reg.call("purr", [purr(rng, 0.0), purr(rng, 0.15), purr(rng, -0.1)])
-	await BuildBudget.check("sounds")
-	reg.call("meow", [meow(0.0), meow(0.12), meow(-0.08)])
-	await BuildBudget.check("sounds")
-	reg.call("coo", [coo(0.0), coo(0.1), coo(-0.06)])
-	await BuildBudget.check("sounds")
-	reg.call("chirp", [chirp(rng, 0), chirp(rng, 1), chirp(rng, 2), chirp(rng, 3)])
-	await BuildBudget.check("sounds")
-	reg.call("song", [song(rng, 0), song(rng, 1), song(rng, 2), song(rng, 3)])
-	await BuildBudget.check("sounds")
-	reg.call("quack", [quack(rng, 0.0), quack(rng, 0.08), quack(rng, -0.06)])
-	await BuildBudget.check("sounds")
-	reg.call("gull", [gull(0.0), gull(0.1), gull(-0.08)])
-	await BuildBudget.check("sounds")
-	reg.call("frog", [frog(rng, 0.0), frog(rng, 0.12), frog(rng, -0.1)])
-	await BuildBudget.check("sounds")
-	reg.call("seal", [seal(0.0), seal(0.1), seal(-0.1)])
-	await BuildBudget.check("sounds")
-	reg.call("flutter", [flutter(rng, 0.8), flutter(rng, 1.0), flutter(rng, 1.3)])
+	out["purr"] = [purr(rng, 0.0), purr(rng, 0.15), purr(rng, -0.1)]
+	out["meow"] = [meow(0.0), meow(0.12), meow(-0.08)]
+	out["coo"] = [coo(0.0), coo(0.1), coo(-0.06)]
+	out["chirp"] = [chirp(rng, 0), chirp(rng, 1), chirp(rng, 2), chirp(rng, 3)]
+	out["song"] = [song(rng, 0), song(rng, 1), song(rng, 2), song(rng, 3)]
+	out["quack"] = [quack(rng, 0.0), quack(rng, 0.08), quack(rng, -0.06)]
+	out["gull"] = [gull(0.0), gull(0.1), gull(-0.08)]
+	out["frog"] = [frog(rng, 0.0), frog(rng, 0.12), frog(rng, -0.1)]
+	out["seal"] = [seal(0.0), seal(0.1), seal(-0.1)]
+	out["flutter"] = [flutter(rng, 0.8), flutter(rng, 1.0), flutter(rng, 1.3)]
+	for name: String in out:
+		out[name] = (out[name] as Array).map(func(b: PackedFloat32Array) -> AudioStreamWAV: return wav(b))
 
 
 static func crickets_loop() -> AudioStreamWAV:
