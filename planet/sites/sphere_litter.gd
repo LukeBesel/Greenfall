@@ -96,6 +96,8 @@ func _build_cell(c: int) -> void:
 		var d: Vector3 = (dir + (f.x * lx + f.z * lz) / terrain.R).normalized()
 		if grid.cell_at(d) != c:
 			continue  # only on this cell (its neighbours lay their own)
+		if sfield.keep_out.is_valid() and bool(sfield.keep_out.call(d)):
+			continue  # [v1yard] none on the start yard's pad (its cells round it are junk cells now)
 		var wp: Vector3 = terrain.ground(d)
 		var lp: Vector3 = node.transform.affine_inverse() * wp
 		var m: int = rng.randi() % 4 if rng.randf() < 0.88 else 4 + rng.randi() % maxi(1, _meshes.size() - 4)
