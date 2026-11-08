@@ -31,7 +31,7 @@ func _ready() -> void:
 			_frame(w2, 27.0, 26.0)
 		"lineup":
 			var w: float = _row(LINEUP, 9.6, 32.0)
-			_frame(w, 60.0, 24.0)
+			_frame(w, 57.0, 24.0)
 		_:
 			_lineup()
 	if _out == "":
@@ -102,11 +102,9 @@ func _studio() -> void:
 	env.tonemap_mode = Environment.TONE_MAPPER_AGX
 	env.glow_enabled = true
 	env.glow_intensity = 0.55
-	env.glow_bloom = 0.05
 	env.glow_hdr_threshold = 1.0
 	env.ssao_enabled = true
 	env.ssao_intensity = 1.4
-	env.ssr_enabled = true
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
@@ -164,8 +162,8 @@ func _row(tiers: Array[int], spacing: float, yaw_deg: float) -> float:
 		l.modulate = Color(0.4, 1.0, 1.4)
 		l.outline_size = 0
 		l.shaded = false
-		l.rotation_degrees = Vector3(-70, 0, 0)
-		l.position = Vector3(i * spacing, 0.03, 5.6)
+		l.rotation_degrees = Vector3(-22, 0, 0)
+		l.position = Vector3(i * spacing, 0.5, 5.4)
 		add_child(l)
 	return (tiers.size() - 1) * spacing
 
