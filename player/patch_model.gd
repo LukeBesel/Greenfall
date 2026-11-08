@@ -36,14 +36,14 @@ var stack_point := Vector3(0, 1.3, 0.3)
 var lens_point := Vector3(0, 0.86, -0.36)
 ## [hero] Attachment anchors for head pieces, chest icons, held items and back gear (character
 ## builder). Positions in the model's float space (head_top in the head's space); see get_anchor().
-const ANCHORS := {"head_top": Vector3(0, 0.556, 0.0), "chest_plate": Vector3(0, 0.417, -0.236), "hand_r": Vector3(0, 0, -0.13), "hand_l": Vector3(0, 0, -0.13), "back": Vector3(0, 0.42, 0.225)}
+const ANCHORS := {"head_top": Vector3(0, 0.66, 0.0), "chest_plate": Vector3(0, 0.407, -0.236), "hand_r": Vector3(0, 0, -0.13), "hand_l": Vector3(0, 0, -0.13), "back": Vector3(0, 0.42, 0.225)}
 ## Eye shapes for bot_face.gdshader's eye_shape (VARIANTS may set "eyes"; set_eye_shape() at runtime).
 const EYE_SHAPES := ["crescent", "round", "happy", "bar", "heart"]
 var _anchors: Dictionary = {}
 ## [hero] Detector beacon: a small red lamp on the rear of the fin mount (head space), parented to
 ## the head so it follows hover bob, lean, head turn/tilt and every pose (owner: "the blinking red
 ## dot sometimes comes off the player's head" when it lived on Patch at a fixed height).
-const BEACON_LOCAL := Vector3(0, 0.555, 0.21)  # on the fin mount, behind the stalk (build_aurora.py prints it)
+const BEACON_LOCAL := Vector3(0, 0.657, 0.21)  # on the fin mount, behind the stalk (build_aurora.py prints it)
 var _beacon: MeshInstance3D
 var _beacon_mat: StandardMaterial3D
 var _beacon_light: OmniLight3D
@@ -307,6 +307,7 @@ func _build() -> void:
 		m.set_shader_parameter("grime", float(v.get("grime", 0.6)))
 		m.set_shader_parameter("moss", float(v.get("moss", 0.0)))
 	(_mats["paddle"] as ShaderMaterial).set_shader_parameter("grime", 0.2)
+	(_mats["claw"] as ShaderMaterial).set_shader_parameter("specks", 0.5)
 	_acc_mats.clear()
 	if ResourceLoader.exists(MASK_PATH):
 		var mask: Texture2D = load(MASK_PATH)
@@ -315,10 +316,10 @@ func _build() -> void:
 			m.set_shader_parameter("use_mask", 1.0)
 	if float(v.get("stripes", 0.0)) > 0.0:
 		(_mats["accent"] as ShaderMaterial).set_shader_parameter("stripes", float(v["stripes"]))
-	_face_mat.set_shader_parameter("half_width", 0.345)
-	_face_mat.set_shader_parameter("half_height", 0.19)
-	_face_mat.set_shader_parameter("eye_radius", 0.5)
-	_face_mat.set_shader_parameter("eye_spacing", 0.8)
+	_face_mat.set_shader_parameter("half_width", 0.35)
+	_face_mat.set_shader_parameter("half_height", 0.235)
+	_face_mat.set_shader_parameter("eye_radius", 0.46)  # [hero v2] turnaround: eye radius ~0.45 visor half-heights
+	_face_mat.set_shader_parameter("eye_spacing", 0.74)
 	_face_mat.set_shader_parameter("eye_shape", maxi(EYE_SHAPES.find(str(v.get("eyes", "crescent"))), 0))
 	_mats["face"] = _face_mat
 	_root = Node3D.new()
@@ -620,7 +621,7 @@ func _build_arm(side: float) -> Node3D:
 		_part(orient, _slot(VARIANTS.get(variant, VARIANTS["aurora"]), "finger"))
 		var tip := Node3D.new()
 		tip.position = Vector3(0, 0.0, -0.05)
-		tip.rotation.x = -0.45
+		tip.rotation.x = -0.35  # [hero v2] with the tip's own angled blocks the claw reads as an open C (concept)
 		orient.add_child(tip)
 		_part(tip, _slot(VARIANTS.get(variant, VARIANTS["aurora"]), "finger_tip"))
 		f.set_meta("dir", Vector2(cos(a), sin(a)))
@@ -739,7 +740,7 @@ func claw_point_l() -> Vector3:
 
 ## World position of the chest hopper screen (where pickups stream in).
 func chest_world() -> Vector3:
-	return _float.to_global(Vector3(0, 0.42, -0.24))
+	return _float.to_global(Vector3(0, 0.407, -0.24))
 
 
 ## [hero] Anchor nodes for add-ons: "head_top" (on the head, turns with it), "chest_plate",

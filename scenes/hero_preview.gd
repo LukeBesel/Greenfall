@@ -144,8 +144,8 @@ func _ready() -> void:
 		_build_can_and_lasers()
 	elif _view == "hands":
 		# [hero v2] Close-up of the reaching claw (framed on it in _set_view, after the pose).
-		_cam.fov = 26.0
-		_shots = [[Vector3.ZERO, Vector3.ZERO]]
+		_cam.fov = 24.0
+		_shots = [[Vector3.ZERO, Vector3.ZERO], [Vector3.ZERO, Vector3.ZERO]]
 		_build_can_and_lasers()
 	elif _view == "chest":
 		_cam.fov = 28.0
@@ -158,9 +158,9 @@ func _ready() -> void:
 			_shots.append([Vector3(0.35, 1.0, -2.6), Vector3(0, 0.84, 0)])
 	else:
 		_cam.fov = 22.0
-		var d2: float = 4.6
-		var h: float = 0.92
-		var tgt := Vector3(0, 0.62, 0)
+		var d2: float = 5.4
+		var h: float = 0.95
+		var tgt := Vector3(0, 0.68, 0)
 		for deg: float in [0.0, 40.0, 90.0, 140.0, 180.0]:
 			var r: float = deg_to_rad(deg)
 			_shots.append([Vector3(sin(r) * d2, h, -cos(r) * d2), tgt])
@@ -224,7 +224,7 @@ func _pose() -> void:
 	el.rotation = Vector3(0.25, 0.0, 0.0)
 	for f: Node3D in _model.get("_claws"):
 		var dir: Vector2 = f.get_meta("dir")
-		f.rotation = Vector3(-dir.y, dir.x, 0) * 0.5
+		f.rotation = Vector3(-dir.y, dir.x, 0) * 0.32
 	var a: Vector3 = _model.claw_point_l()
 	(get_node("ClawLight") as OmniLight3D).global_position = a
 	for k: int in _lasers.size():
@@ -259,10 +259,11 @@ func _process(delta: float) -> void:
 func _set_view(i: int) -> void:
 	var v: Array = _shots[i]
 	if _view == "hands":
-		var c: Vector3 = _model.claw_point_l()
-		var r: Vector3 = _model.claw_point()
-		_cam.position = (c + r) * 0.5 + Vector3(0.35, 0.25, -1.55)
-		_cam.look_at((c + r) * 0.5 + Vector3(0.0, -0.02, 0.0), Vector3.UP)
+		# Shot 0: the reaching left claw (from the front left); shot 1: the low right claw.
+		var c: Vector3 = _model.claw_point_l() if i == 0 else _model.claw_point()
+		var off := Vector3(0.12, 0.32, -0.62) if i == 0 else Vector3(0.5, 0.05, -0.42)
+		_cam.position = c + off * 1.6
+		_cam.look_at(c + Vector3(0.0, 0.03, 0.04), Vector3.UP)
 		return
 	_cam.position = v[0]
 	_cam.look_at(v[1], Vector3.UP)

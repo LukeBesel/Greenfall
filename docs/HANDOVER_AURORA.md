@@ -1,6 +1,6 @@
 # Handover: Aurora (Lumi) hero model v2
 
-Branch `wt/hero`. The latest `claude/kind-wright-rhxixd` is merged in. The owner reviews Aurora only. Do not start the other five designs.
+Branch `claude/greenfall-aurora` (was `wt/hero`). The owner reviews Aurora only. Do not start the other five designs.
 
 ## Where things are
 - Concept references (copied into the repo; `.gdignore` keeps Godot from importing them):
@@ -40,11 +40,21 @@ Branch `wt/hero`. The latest `claude/kind-wright-rhxixd` is merged in. The owner
   - Chunky segmented claws: the base segment plus a hooked tip.
   - The idle pose holds the arms out and slightly up (`ARM_REST`). Scoop, hold and photo poses still work.
 - **Poly count:** about 68k triangles in the hero glb, plus about 6 x 1.2k for the claws. The head and body are decimated to 0.6.
-- **Wear:** texture baking was tried and does NOT work in this container. Blender 4.0.2 Cycles bakes every shaded pass to images as black (EMIT, DIFFUSE colour and AO all came out black; only NORMAL works).
+- **Wear (updated, aurora session 2):** baking works with the official `bpy` 4.2 wheel from PyPI; only Debian's Blender 4.0.2 bakes black. `tools/hero/bake_masks.py` bakes a 2K mask atlas (`art/models/aurora/aurora_masks.png`: R = AO, G = bevel edge, B = cavity) into one UV atlas shared by every hero part. **Re-run it after every build_aurora.py run** (the atlas UVs change).
   - So the wear is per-pixel procedural in object space in `hero_paint.gdshader`, driven by per-vertex AO / edge / cavity / joint masks.
   - Layers: dark speckle chips in two sizes plus edge flakes, denser on edges, joints and up-facing surfaces; lighter worn edges; tiny rust specks; two-direction scratches; seam grime with downward streaks; dust.
   - The paint has a clear-coat.
   - If a working Blender is available on the new machine, baking real 2K masks per part is still the better option.
+
+## Character-builder slots (aurora session 2)
+Every swappable characteristic is its own part or its own colour key, so a builder can mix them:
+- **Shapes:** `PatchModel.SLOT_DEFAULTS` maps `head`, `visor`, `ears` (side modules, now split out of the head), `finger` and `finger_tip` (hands) to parts in aurora.glb. A variant or builder save overrides a slot by naming another part with the same pivot conventions (unknown names fall back to Aurora's).
+- **Eyes:** `"eyes"` -> `EYE_SHAPES` (face shader), independent of the head mesh. The face size is set from the visor outline (`half_width` / `half_height`).
+- **Colours:** `paint`, `trim`, `glow`, `accent`, `lamp`, `paddle` plus `COLOR_DEFAULTS` keys `dark`, `fin`, `claw` and `cable`.
+- **Toppers:** the `"acc"` list, placed on the `head_top` / `beacon` anchors. Add-on parts (`acc_*`, own UVs) get mask-free material copies automatically.
+- **Arm and claw size:** `ARM_SCALE` / `CLAW_SCALE`.
+
+The other five designs' add-ons in designs.glb still use the previous head constants (not rebuilt, as asked).
 
 ## Palette (sampled from art/concept, sRGB)
 | Element | Sampled | Used |
@@ -80,6 +90,7 @@ Branch `wt/hero`. The latest `claude/kind-wright-rhxixd` is merged in. The owner
 ## Commands
 ```
 blender -b --python art/models/aurora/build_aurora.py                  # rebuild aurora.glb
+/tmp/bpyenv/bin/python tools/hero/bake_masks.py                       # then ALWAYS re-bake the mask atlas (bpy 4.2 venv, see the script header; ~4 min)
 godot --headless --import --path .
 SKIP_ROUNDTRIP=1 tools/run_tests.sh -gselect=test_hero_model             # hero tests
 tools/hero/render.sh 1120x700 --view=portrait --out=screenshots/hero/portrait_v2
@@ -87,7 +98,8 @@ tools/hero/render.sh 1080x800 --view=head     --out=screenshots/hero/head_v2
 tools/hero/render.sh 1080x800 --view=chest    --out=screenshots/hero/chest_v2
 tools/hero/render.sh 640x800  --view=turn     --out=screenshots/hero/turn_v2
 tools/hero/render.sh 960x600  --view=blink    --out=screenshots/hero/blink_v2
-for v in portrait head chest turn; do python3 tools/hero/compose_v2.py screenshots/hero $v; done   # concept vs render sheets
+tools/hero/render.sh 800x800  --view=hands    --out=screenshots/hero/hands_v2   # both claws, one shot each
+for v in portrait head chest hands turn; do python3 tools/hero/compose_v2.py screenshots/hero $v; done   # concept vs render sheets
 QUALITY=2 RES=1280x720 DELAY=110 tools/shot.sh hero/oldtown_v2 --no-intro --demo-scoop --cam=close --demo-yaw=2.5   # once, at the end
 ```
 `tools/hero/render.sh` waits until no other Vulkan Godot is running and at least 6 GB is free. It was made for the shared container, so drop the gate on a dedicated machine.
@@ -95,3 +107,42 @@ QUALITY=2 RES=1280x720 DELAY=110 tools/shot.sh hero/oldtown_v2 --no-intro --demo
 The `blink` view writes `blink_v2_0..3.png`. `compose_v2.py` has no blink option yet (the v1 blink sheet is `screenshots/hero/blink_sequence.png`), so lay those four frames side by side by hand.
 
 Full checks before reporting: `godot --headless --path . --import`, `tools/run_tests.sh`, `godot --headless --path . res://tools/save_roundtrip.tscn -- --fresh`, and a headless autoplay.
+
+## Report: aurora session 2 (owner's five gaps, hands, builder slots)
+Final comparison sheets are committed: `screenshots/hero/compare_{portrait,head,chest,hands,turnaround}_v2.png` and `blink_v2_0..3.png`.
+
+### Done this session
+1. **Head.** A soft superellipsoid pill with the turnaround's proportions: about 1.3:1 without the side modules (half sizes 0.43 x 0.32 x 0.335). The visor is about 0.8 of the head's width and 0.75 of its height. Eye size and spacing are re-measured from the turnaround front view. The big dark vent slot sits high on the back.
+2. **Fin.** A taller, thicker dark teal-grey stalk with a wider, clean, saturated amber paddle (few chips, no grime wash), tilted tail-up, with a thin lighter lit edge.
+3. **Light band.** A thicker cyan loop round the torso's top seam plus a brighter bay strip.
+4. **Arms and pose.**
+   - Arms are 1.2x and claws 1.3x (`ARM_SCALE`, `CLAW_SCALE`).
+   - The portrait pose is now the concept's: pitched forward and leaning toward the can, left arm reaching, right arm out and down.
+   - The review camera looks down on him a little, like the concept.
+5. **Torso.**
+   - Taller (0.34) at the concept's width, with the hover pod moved down with it.
+   - Glowing orange latches at the concept's saturation, a flush dark lower band and a slimmer recycle icon with a hollow middle.
+   - The pod is a flatter dark disc with the bright cyan ring at its rim, plus an inner ring and core.
+6. **Hands** (owner's follow-up request). Each finger is a chain of three armoured blocks: a light worn-grey plate over a dark core, steel knuckles, dark gaps and pads. The chain curls into an open C with a short hooked end, on a cream cuff and dark palm with a steel ring. `--view=hands` renders both claws.
+7. **Colours and wear.**
+   - Shell paint lowered to the sampled pinkish grey.
+   - Chips are warm dark brown (sampled 60–85 / 38–68 / 24–62 sRGB) and matte. They come in clusters with clean stretches between, at about 2 cm cell size, plus small specks, edge flakes and diagonal smear scuffs.
+   - Broad brown stains; a warm sun-side rim and a cool cyan shadow-side rim (`rim_strength` 0.11).
+8. **Real baked maps.** Baking works with the official `bpy` 4.2 wheel; Debian's Blender 4.0.2 still bakes black. `tools/hero/bake_masks.py` bakes a 2K AO / edge / cavity atlas, and the paint shader uses it per pixel. The chips and scuffs stay procedural per pixel on top: same resolution, no seams, and they recolour per design.
+   - Fixed a GLB-writer bug: it merged vertices across UV seams.
+9. **Character builder.** Each characteristic is swappable on its own; see "Character-builder slots" above. The side modules are now their own `ears` part.
+10. **Review tool fixes.** The head and chest close-ups had been rendering the portrait camera (the portrait branch swallowed them), and review shots could catch a random blink. Both fixed.
+
+### Remaining differences vs the concept (honest list)
+- **Head reads rounder in the portrait.** The concept portrait's head looks wider, but that's perspective plus the forward tilt. Measured on the orthographic turnaround it is about 1.3:1, which is what the model uses. If the owner prefers the portrait's wider look, lower `HB` (0.32 -> about 0.29) and re-measure.
+- **Torso still a little short.** The concept's torso plus dark band is about 0.67 of the head's height; ours is about 0.55. Making it taller means moving the head pivot, arm sockets and every torso feature together.
+- **Idle arm pose.** The turnaround's arms hang down at the sides; our idle (`ARM_REST`) holds them out and up, as the owner asked for the portrait look. The turnaround view uses the idle pose.
+- **Eyes and lamps.** The eye cyan is paler and the bloom wider than the concept's saturated (158,245,252), and the pupil is a touch smaller. I did not touch the face shader (the earlier eye fixes stay). The cheek lamps still render slightly pale yellow rather than deep amber.
+- **Visor reflections.** The concept's warm orange environment reflections in the lower visor depend on each scene's sky; the preview has a plain sky, so we get a white streak instead.
+- **Side modules.** The concept's lens is near-black glass with almost no visible detail. Ours shows the steel fins and rings, and reads lighter at grazing angles (side and back views).
+- **Hands.** The blocks are rounder (subdivided) than the concept's crisper chamfered plates. Each claw has 3 fingers, as in the concept, but the portrait's claws are seen side-on and look bigger through perspective.
+- **Wear.** The concept's scuffs include a few long thin scratches and orange-brown rust stains on the back of the head; ours has short smears and tiny rust specks. Density on lit surfaces is close; ours reads more evenly spread on the back.
+- **Panel detail.** The concept's head has more visible panel seams (a vertical seam on each side behind the visor, a crown panel). Ours are shallower grooves that only read up close.
+- **Hover pod.** Still bulkier than the concept's slim dark disc, and the concept's underside shows concentric glowing rings that read more strongly than our inner ring and core.
+- **Turnaround floor.** The plain studio floor shows bright reflection patches behind the 3/4 and back views; that's the preview scene, not the model.
+- **Not re-rendered this session:** the in-game Old Town shot and the title-screen shot.

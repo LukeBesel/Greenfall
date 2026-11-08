@@ -307,8 +307,8 @@ def with_material(obj, material):
 #   dark frame holding the raised recycling plate, glowing orange latches, a dark lower band;
 #   hover pod 0.12 .. 0.27 with a big bright cyan ring underneath; short segmented arms.
 HEAD_P = Vector((0, 0.56, 0))
-HC = 0.828                         # head centre height (bottom stays at HEAD_P.y)
-HA, HB, HCZ = 0.43, 0.268, 0.335   # head half sizes (x, y, z): wide, low pill (concept ~1.5:1 incl. modules)
+HC = 0.88                          # head centre height (bottom stays at HEAD_P.y)
+HA, HB, HCZ = 0.43, 0.32, 0.335    # head half sizes (x, y, z): turnaround front view ~1.3:1 without the side modules
 E_H, E_V = 3.0, 2.9               # superellipsoid exponents: horizontal (x-z), vertical
 HW, HH, HD = HA * 2, HB * 2, HCZ * 2
 
@@ -370,6 +370,12 @@ def shell_hit(origin, direction):
 	return (hit[0], hit[1]) if hit[0] is not None else (None, None)
 
 
+def shell_z_back(y):
+	"""z of the shell's back surface at height y (x = 0), from the original (uncut) shell."""
+	p, _n = shell_hit((0, y, 2.0), (0, 0, -1))
+	return p.z if p is not None else HCZ
+
+
 def on_shell(x, y, z_sign=-1):
 	"""Point and normal on the shell straight in from x/y on the front (z_sign -1) or back (+1)."""
 	return shell_hit((x, y, 2.0 * z_sign), (0, 0, -z_sign))
@@ -377,7 +383,7 @@ def on_shell(x, y, z_sign=-1):
 
 # Visor: one curved glossy black screen across nearly the whole front; the shell is a thick band
 # below it and a thinner one above and at the sides (portrait).
-VA, VB, VN = 0.345, 0.19, 3.1
+VA, VB, VN = 0.35, 0.235, 3.1     # visor ~0.8 of the head's width, ~0.75 of its height (turnaround)
 VCY = HC + 0.005
 
 
@@ -469,8 +475,8 @@ groove(head, (1.0, 0.8, 0.008), (0, HC, 0.15), depth=0.011)
 for s in (-1, 1):
 	groove(head, (0.008, 0.14, 0.42), (s * 0.165, HC + HB, 0.12), depth=0.009)
 groove(head, (0.34, 0.14, 0.008), (0, HC + HB, -0.09), depth=0.009)
-groove(head, (1.0, 0.008, 0.4), (0, HC + 0.14, 0.2), depth=0.009)
-groove(head, (1.0, 0.008, 0.4), (0, HC - 0.118, 0.2), depth=0.009)
+groove(head, (1.0, 0.008, 0.4), (0, HC + 0.17, 0.2), depth=0.009)
+groove(head, (1.0, 0.008, 0.4), (0, HC - 0.14, 0.2), depth=0.009)
 # Visor recess: the thick shell wraps the glass (dark trim walls).
 cut = conform("visor_cut", "trim", lambda s_: 0.034, grow=0.016, back=-0.15)
 boolean(head, cut)
@@ -478,7 +484,7 @@ boolean(head, cut)
 # across the back with small amber indicator lights, and the big dark neck opening low at the back.
 cut = rbox("crown_cut", (0.26, 0.09, 0.075), (0, HC + HB + 0.005, -0.14), 0.022, "trim", sub=1)
 boolean(head, cut)
-cut = rbox("vent_cut", (0.46, 0.07, 0.16), (0, HC + 0.075, HCZ - 0.005), 0.028, "trim", sub=1)
+cut = rbox("vent_cut", (0.5, 0.1, 0.16), (0, HC + 0.15, HCZ - 0.04), 0.032, "trim", sub=1)  # [hero v2] big dark slot high on the back (turnaround)
 boolean(head, cut)
 cut = rbox("neck_cut", (0.44, 0.17, 0.46), (0, HC - HB + 0.03, 0.17), 0.07, "trim", sub=1)
 boolean(head, cut)
@@ -488,9 +494,9 @@ crown_y = p.y if p is not None else HC + HB
 head_parts.append(rbox("crown_lid", (0.235, 0.014, 0.05), (0, crown_y - 0.006, -0.125), 0.006, "paint", sub=1, segs=2, rot=(-14, 0, 0)))
 head_parts.append(rbox("crown_floor", (0.24, 0.01, 0.06), (0, crown_y - 0.03, -0.14), 0.003, "dark", sub=0))
 for k in range(5):
-	head_parts.append(rbox("vent_slat", (0.42, 0.008, 0.014), (0, HC + 0.05 + k * 0.013, HCZ - 0.03), 0.003, "dark", sub=0, segs=2))
+	head_parts.append(rbox("vent_slat", (0.46, 0.008, 0.014), (0, HC + 0.118 + k * 0.016, shell_z_back(HC + 0.118 + k * 0.016) - 0.03), 0.003, "dark", sub=0, segs=2))
 for k, x in enumerate((-0.15, -0.11, 0.11, 0.15)):
-	head_parts.append(rbox("vent_led", (0.016, 0.012, 0.01), (x, HC + 0.075, HCZ - 0.035 + 0.012), 0.003, "lamp_accent", sub=0, segs=1))
+	head_parts.append(rbox("vent_led", (0.016, 0.012, 0.01), (x, HC + 0.15, shell_z_back(HC + 0.15) - 0.03), 0.003, "lamp_accent", sub=0, segs=1))
 head_parts.append(rbox("neck_cavity", (0.4, 0.012, 0.4), (0, HC - HB + 0.09, 0.15), 0.005, "dark", sub=0))
 for k in range(4):
 	head_parts.append(cyl("neck_cable", 0.012, 0.14, ((k - 1.5) * 0.06, HC - HB + 0.07, 0.24), "dark", axis='Z', verts=10))
@@ -596,11 +602,12 @@ visor = conform("visor", "face", lambda s_: 0.03 - 0.022 * (1 - s_ * s_) - 0.004
 
 # ---------------------------------------------------------------- BODY (pivot = float origin)
 body_parts = []
-TY, TH, TW, TD = 0.415, 0.31, 0.66, 0.42   # [hero v2] wider: ~0.75 of the head's width (concept)
+TY, TH, TW, TD = 0.4, 0.34, 0.6, 0.42   # [hero v2] turnaround: ~0.6 of the head's width (with the side modules), ~2/3 of its height
 upper = rbox("torso", (TW, TH, TD), (0, TY, 0), 0.1, "paint", segs=4, sub=2)
 BAND_Y = 0.528
+POD_DY = -0.03   # [hero v2] the taller torso pushes the hover pod down
 groove(upper, (0.8, 0.014, 0.8), (0, BAND_Y, 0), depth=0.01)          # light band seam
-groove(upper, (0.8, 0.008, 0.8), (0, 0.33, 0), depth=0.009)           # waist seam
+groove(upper, (0.8, 0.008, 0.8), (0, 0.31, 0), depth=0.009)           # waist seam
 for s in (-1, 1):
 	groove(upper, (0.008, 0.4, 0.6), (s * 0.19, TY, 0.08), depth=0.008)
 groove(upper, (0.8, 0.4, 0.008), (0, TY, 0.09), depth=0.008)
@@ -608,7 +615,7 @@ groove(upper, (0.8, 0.4, 0.008), (0, TY, 0.09), depth=0.008)
 cut = rbox("bay_cut", (0.4, 0.07, 0.11), (0, 0.565, -TD * 0.5 + 0.025), 0.02, "trim", sub=1)
 boolean(upper, cut)
 # Recessed dark frame for the chest plate.
-PL_C = Vector((0, 0.405, -TD * 0.5))
+PL_C = Vector((0, 0.395, -TD * 0.5))
 cut = rbox("plate_cut", (0.29, 0.205, 0.07), PL_C, 0.02, "trim", sub=1)
 boolean(upper, cut)
 body_parts.append(upper)
@@ -632,17 +639,17 @@ for s in (-1, 1):
 	body_parts.append(rbox("latch_house", (0.05, 0.14, 0.05), (s * 0.198, PL_C.y, -TD * 0.5 + 0.005), 0.014, "dark", segs=2, sub=1))
 	body_parts.append(rbox("latch", (0.028, 0.105, 0.02), (s * 0.198, PL_C.y, -TD * 0.5 - 0.02), 0.012, "latch", segs=3, sub=1))
 	body_parts.append(rbox("latch_pin", (0.052, 0.012, 0.012), (s * 0.198, PL_C.y + 0.062, -TD * 0.5 - 0.018), 0.004, "steel", sub=0, segs=1))
-	body_parts.append(rbox("flank_vent", (0.02, 0.09, 0.13), (s * (TW * 0.5 - 0.004), 0.4, 0.07), 0.008, "accent", segs=2, sub=1))
+	body_parts.append(rbox("flank_vent", (0.02, 0.09, 0.13), (s * (TW * 0.5 - 0.004), 0.39, 0.07), 0.008, "accent", segs=2, sub=1))
 	for k in range(3):
-		body_parts.append(rbox("flank_slat", (0.012, 0.012, 0.11), (s * (TW * 0.5 + 0.006), 0.375 + k * 0.025, 0.07), 0.003, "dark", sub=0, segs=1))
+		body_parts.append(rbox("flank_slat", (0.012, 0.012, 0.11), (s * (TW * 0.5 + 0.006), 0.365 + k * 0.025, 0.07), 0.003, "dark", sub=0, segs=1))
 	body_parts.append(cyl("shoulder_socket", 0.074, 0.05, (s * (TW * 0.5 - 0.01), 0.47, -0.01), "dark", axis='X', bevel=0.012))
 	body_parts.append(torus("socket_ring", 0.078, 0.006, (s * (TW * 0.5 + 0.012), 0.47, -0.01), "steel", axis='X', major=40, minor=6))
 	for z in (-0.15, 0.15):
-		body_parts.append(screw((s * TW * 0.5, 0.29, z), (s, 0, 0), r=0.007))
+		body_parts.append(screw((s * TW * 0.5, 0.27, z), (s, 0, 0), r=0.007))
 # Dark lower band of panels.
-low = rbox("lower_band", (TW - 0.04, 0.075, TD - 0.04), (0, 0.285, 0), 0.03, "trim", segs=3, sub=1)  # [hero v2] flush, not a bumper
+low = rbox("lower_band", (TW - 0.04, 0.075, TD - 0.04), (0, 0.255, 0), 0.03, "trim", segs=3, sub=1)  # [hero v2] flush, not a bumper
 for x in (-0.13, 0.0, 0.13):
-	groove(low, (0.008, 0.1, 0.8), (x, 0.285, 0), depth=0.006)
+	groove(low, (0.008, 0.1, 0.8), (x, 0.255, 0), depth=0.006)
 body_parts.append(low)
 # Neck.
 body_parts.append(cyl("neck", 0.09, 0.07, (0, 0.575, 0.02), "dark", bevel=0.01))
@@ -657,6 +664,7 @@ for sx in (-1, 1):
 		body_parts.append(screw((sx * 0.16, y, TD * 0.5), (0, 0, 1), r=0.007))
 # Hover pod: dark rounded bowl, a ring housing at the bottom with the big bright cyan ring under it
 # and a glowing core disc.
+POD_N = len(body_parts)
 body_parts.append(lathe("pod", [(0.0, 0.262), (0.222, 0.262), (0.232, 0.25), (0.232, 0.214), (0.226, 0.196), (0.212, 0.178), (0.2, 0.168),
 	(0.2, 0.158), (0.19, 0.15), (0.175, 0.147), (0.13, 0.147), (0.125, 0.152), (0.1, 0.153), (0.0, 0.153)], "trim", segs=72))
 body_parts.append(torus("pod_seam", 0.229, 0.005, (0, 0.226, 0), "dark", major=72, minor=6))
@@ -665,11 +673,14 @@ for k in range(10):
 	a = 2 * math.pi * (k + 0.5) / 10
 	body_parts.append(rbox("pod_fin", (0.03, 0.022, 0.012), (math.cos(a) * 0.223, 0.188, math.sin(a) * 0.223), 0.004, "dark", sub=0, segs=1, rot=(0, -math.degrees(a), 30)))
 	body_parts.append(screw((math.cos(a) * 0.232, 0.238, math.sin(a) * 0.232), (math.cos(a), 0.1, math.sin(a)), r=0.006))
+for o in body_parts[POD_N:]:
+	o.data.transform(Matrix.Translation(Vector((0, POD_DY, 0))))
 body = join("body", body_parts)
 thruster = torus("thruster", 0.188, 0.0115, (0, 0.152, 0), "thruster", major=96, minor=12)
 thr_in = torus("thruster_in", 0.118, 0.0065, (0, 0.148, 0), "thruster", major=72, minor=8)
 core = lathe("thruster_core", [(0.0, 0.1505), (0.1, 0.1505), (0.112, 0.151)], "thruster_core", segs=48)
 thruster = join("thruster", [thruster, thr_in, core])
+thruster.data.transform(Matrix.Translation(Vector((0, POD_DY, 0))))
 
 ICON_P = Vector((0, PL_C.y + 0.012, PL_FRONT - 0.002))
 
@@ -765,15 +776,34 @@ finger = join("finger", [
 	cyl("fg_knuckle_cap", 0.009, 0.05, (0, 0.0, -0.051), "dark", axis='X', verts=12, bevel=0.002),
 	screw((0.0, 0.021, -0.014), (0, 1, 0), r=0.0045),
 ])
-mid = rbox("ft_mid", (0.04, 0.03, 0.036), (0, 0.004, -0.017), 0.01, "claw", segs=3, sub=1)
-pad = rbox("ft_pad", (0.028, 0.012, 0.034), (0, -0.012, -0.022), 0.004, "dark", sub=0, segs=2)
-# Hook outline: x = along the finger (down -Z after the turn), y = outward (+Y) / inward (-Y).
-hook_pts = [(0.0, 0.016), (0.03, 0.016), (0.05, 0.008), (0.064, -0.008), (0.072, -0.03), (0.064, -0.034), (0.05, -0.02), (0.032, -0.012), (0.0, -0.012)]
-area = sum(hook_pts[i][0] * hook_pts[(i + 1) % len(hook_pts)][1] - hook_pts[(i + 1) % len(hook_pts)][0] * hook_pts[i][1] for i in range(len(hook_pts)))
-if area < 0:
-	hook_pts.reverse()
-hk = prism("ft_hook", hook_pts, 0.032, (0, 0, -0.03), "claw", bevel=0.006, segs=2, sub=1, rot=(0, 90, 0))
-tip = join("finger_tip", [mid, pad, hk, cyl("ft_knuckle", 0.014, 0.042, (0, 0.0, -0.034), "steel", axis='X', verts=14, bevel=0.003)])
+# Tip: two more short armoured blocks with dark gaps and pads, each angled further inward, ending
+# in a short blunt hook (the concept's fingers are three-block chains curling into a C).
+def seg(name, size, center, rot, move):
+	o = rbox(name, size, center, min(size) * 0.28, "claw", segs=3, sub=1)
+	xform(o, move, rot)
+	return o
+
+
+def pad_(name, size, center, rot, move):
+	o = rbox(name, size, center, 0.003, "dark", sub=0, segs=2)
+	xform(o, move, rot)
+	return o
+
+
+S2 = Vector((0, -0.006, -0.04))      # second knuckle (tip frame), already turned 32 deg inward
+S3 = S2 + Vector((0, -0.019, -0.031))  # third knuckle, another 30 deg in
+tip_parts = [
+	rbox("ft_mid", (0.04, 0.032, 0.038), (0, 0.004, -0.019), 0.01, "claw", segs=3, sub=1),
+	rbox("ft_pad", (0.028, 0.012, 0.03), (0, -0.012, -0.02), 0.004, "dark", sub=0, segs=2),
+	cyl("ft_knuckle", 0.014, 0.042, (0, 0.0, -0.034), "steel", axis='X', verts=14, bevel=0.003),
+	cyl("ft_gap2", 0.012, 0.044, S2, "dark", axis='X', verts=12, bevel=0.002),
+	seg("ft_seg2", (0.038, 0.03, 0.034), (0, 0.002, -0.017), (-32, 0, 0), S2),
+	pad_("ft_pad2", (0.026, 0.01, 0.026), (0, -0.012, -0.016), (-32, 0, 0), S2),
+	cyl("ft_gap3", 0.011, 0.04, S3, "dark", axis='X', verts=12, bevel=0.002),
+	seg("ft_hook", (0.034, 0.026, 0.03), (0, 0.0, -0.013), (-62, 0, 0), S3),
+	pad_("ft_hook_tip", (0.024, 0.012, 0.012), (0, -0.006, -0.028), (-62, 0, 0), S3),
+]
+tip = join("finger_tip", tip_parts)
 tip.name = tip.data.name = "finger_tip"
 
 shoulder_l = mirror_x(shoulder, "arm_shoulder_l")

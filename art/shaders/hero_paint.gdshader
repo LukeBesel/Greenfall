@@ -24,7 +24,7 @@ uniform float clearcoat = 0.0;                          // glossy lacquer over t
 uniform float tex_scale = 2.4;
 uniform float seed = 0.0;
 uniform float ao_strength = 1.0;
-uniform vec4 chip_color : source_color = vec4(0.24, 0.16, 0.115, 1.0);  // concept: warm dark brown chips (sampled 60..85, 38..68, 24..62)
+uniform vec4 chip_color : source_color = vec4(0.3, 0.2, 0.14, 1.0);  // concept: warm dark brown chips (sampled 60..85, 38..68, 24..62)
 uniform vec4 rust_color : source_color = vec4(0.42, 0.22, 0.1, 1.0);
 uniform vec4 rim_color : source_color = vec4(0.62, 0.85, 1.0, 1.0);      // shadow-side rim (cool)
 uniform vec4 rim_warm : source_color = vec4(1.0, 0.72, 0.5, 1.0);        // sun-side rim (peach)
@@ -152,7 +152,7 @@ void fragment() {
 	float on1 = step(c1.y, 0.02 + 0.42 * dc * dc);
 	float sp1 = (1.0 - smoothstep(0.0, 0.06, c1.x - r1 * mix(0.7, 1.25, n3(wp * 140.0)))) * on1;
 	vec2 c2 = cell(wp * 150.0 + seed * 2.0);
-	float sp2 = (1.0 - smoothstep(0.0, 0.08, c2.x - (0.14 + 0.18 * dc))) * step(c2.y, 0.04 + 0.32 * dc);
+	float sp2 = (1.0 - smoothstep(0.0, 0.08, c2.x - (0.14 + 0.18 * dc))) * step(c2.y, 0.02 + 0.2 * dc);
 	vec2 c3 = cell(wp * 26.0 + seed * 3.0);
 	float fl_r = 0.32 * smoothstep(0.35, 1.0, edge * edge_wear * 1.4 + joint * 0.5);
 	float flake = (1.0 - smoothstep(0.0, 0.04, c3.x - fl_r)) * step(c3.y, 0.5) * step(0.001, fl_r);
@@ -160,7 +160,7 @@ void fragment() {
 	float ang = 0.6 + (n3(opos * 2.0 + seed) - 0.5) * 1.2;
 	vec3 da = normalize(vec3(cos(ang), sin(ang), 0.45));
 	vec3 db = normalize(cross(da, vec3(0.0, 0.0, 1.0) + vec3(0.001)));
-	vec3 sq = vec3(dot(wp, da) * 22.0, dot(wp, db) * 95.0, dot(wp, cross(da, db)) * 95.0);
+	vec3 sq = vec3(dot(wp, da) * 30.0, dot(wp, db) * 120.0, dot(wp, cross(da, db)) * 120.0);
 	vec2 c5 = cell(sq + seed * 4.0);
 	float smear = (1.0 - smoothstep(0.0, 0.1, c5.x - 0.28)) * step(c5.y, 0.05 + 0.5 * cluster * cluster + 0.25 * dens);
 	float chips = clamp(max(max(sp1, sp2 * 0.85), max(flake, smear * 0.85)), 0.0, 1.0) * specks;

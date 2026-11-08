@@ -44,7 +44,11 @@ elif what == "chest":
 	r = Image.open(OUT + "/chest_v2.png").convert("RGB")
 	side(concept.crop((170, 300, 760, 620)), r, 520, "concept (body crop)", "Godot render v2").save(OUT + "/compare_chest_v2.png")
 elif what == "hands":
-	r = Image.open(OUT + "/hands_v2.png").convert("RGB")
+	r0 = Image.open(OUT + "/hands_v2_0.png").convert("RGB")
+	r1 = Image.open(OUT + "/hands_v2_1.png").convert("RGB")
+	r = Image.new("RGB", (r0.width + r1.width + 4, r0.height), (0, 0, 0))
+	r.paste(r1, (0, 0))
+	r.paste(r0, (r1.width + 4, 0))
 	c1 = concept.crop((160, 400, 340, 600))   # right claw, open, low
 	c2 = concept.crop((690, 190, 930, 350))   # left claw reaching for the can
 	h = 300
