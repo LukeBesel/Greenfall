@@ -34,6 +34,8 @@ var _capture_pad: bool = false
 var _capture_t: float = 0.0
 ## [ui2] The full tabs (everything but Basics) show once "More settings" is pressed.
 var _more: bool = false
+var _tabs_hint: Control
+var _back_hint: Control
 
 
 func _ready() -> void:
@@ -64,6 +66,10 @@ func _ready() -> void:
 	var hint := PromptLabel.new(tr("{ui_tab_prev}{ui_tab_next}  switch tabs     {ui_cancel}  back"), 13)  # [deck]
 	hint.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	head.add_child(hint)
+	_tabs_hint = hint
+	_back_hint = PromptLabel.new(tr("{ui_cancel}  back"), 13)  # [ui5] Basics has one tab: no "switch tabs"
+	_back_hint.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	head.add_child(_back_hint)
 
 	var tabs := HBoxContainer.new()
 	tabs.add_theme_constant_override("separation", 8)
@@ -150,7 +156,7 @@ func _relocalize() -> void:
 func _fit() -> void:
 	var vs: Vector2 = get_viewport_rect().size
 	_panel.custom_minimum_size.x = minf(860.0, vs.x - 24.0)
-	_scroll.custom_minimum_size.y = clampf(vs.y - 230.0, 220.0, 400.0)
+	_scroll.custom_minimum_size.y = clampf(vs.y - 240.0, 220.0, 470.0)  # [ui5] tall enough for every Basics row at 720 p
 
 
 # --- Open / close -------------------------------------------------------------------
@@ -214,11 +220,14 @@ func _set_more(on: bool) -> void:
 	for i: int in range(1, _tab_buttons.size()):
 		_tab_buttons[i].visible = on
 	_tab_buttons[0].visible = true
+	if _tabs_hint:
+		_tabs_hint.visible = on
+		_back_hint.visible = not on
 
 
 ## [ui2] The few settings most players want, then a way to everything else.
 func _build_basics(p: VBoxContainer) -> void:
-	_section(p, tr("Basics"))
+	# [ui5] No "Basics" caption (the tab says it), so the last row fits above the footer.
 	_slider(p, "Master", Settings.master_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
 		Settings.master_volume = v
 		Audio.apply_volumes())

@@ -199,8 +199,18 @@ func _build_tab() -> void:
 		var on: bool = id == _tab
 		b.add_theme_stylebox_override("normal", UITheme.box(Color(0.2, 0.15, 0.07, 0.9) if on else UITheme.TEAL, UITheme.GOLD if on else UITheme.RUST, 1, 6, 8))
 		b.add_theme_color_override("font_color", UITheme.GOLD if on else UITheme.CREAM)
-	_summary.text = tr("%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements") % [Codex.count(), Codex.total(),
-		Codex.curiosities_found(), Codex.egg_defs().size(), Collection.count(), Collection.total(), Achievements.unlocked_count(), Achievements.defs().size()]
+	# [ui5] One counter, for the tab you're on (four on one line wrapped and restated the tabs).
+	match _tab:
+		"curiosities":
+			_summary.text = tr("%d / %d curiosities") % [Codex.curiosities_found(), Codex.egg_defs().size()]
+		"collection":
+			_summary.text = tr("%d / %d collectibles") % [Collection.count(), Collection.total()]
+		"achievements":
+			_summary.text = tr("%d / %d achievements") % [Achievements.unlocked_count(), Achievements.defs().size()]
+		"codex":
+			_summary.text = tr("%d / %d entries") % [Codex.count(), Codex.total()]
+		_:
+			_summary.text = ""
 	var first: Control = null
 	match _tab:
 		"codex":

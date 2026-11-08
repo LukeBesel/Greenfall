@@ -1296,7 +1296,7 @@ msgstr "你的基地已经成长到试玩版的极限。"
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "在完整版中，Lumi 会把基地建到 5 级，种满整片街区直到繁茂，让它们成长为明亮的未来城市，还会乘火箭飞往星球上的数十座基地。你的试玩进度会被保留。"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:755
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:765
 msgid "Hexes cleaned"
 msgstr "已清理六角格"
 
@@ -1304,11 +1304,11 @@ msgstr "已清理六角格"
 msgid "Bales made"
 msgstr "已制作捆包"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:770
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:780
 msgid "Robots built"
 msgstr "已建造机器人"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:778
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:788
 msgid "Time played"
 msgstr "游戏时长"
 
@@ -1328,7 +1328,7 @@ msgstr "标题画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:847 ui/main_menu.gd:457
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:457
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
 
@@ -2043,7 +2043,7 @@ msgstr "我们会回来的"
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "已解锁 %d 个成就。在图鉴（K）里查看。"
 
-#: systems/achievements.gd:147 ui/notify_stack.gd:24
+#: systems/achievements.gd:147 ui/notify_stack.gd:27
 msgid "Achievement: %s. %s"
 msgstr "成就：%s。%s"
 
@@ -2083,11 +2083,11 @@ msgstr "在废料底下的某个地方。"
 msgid "Found on the planet it belongs to."
 msgstr "在它所属的星球上找到。"
 
-#: systems/codex.gd:200 ui/codex_screen.gd:370
+#: systems/codex.gd:200 ui/codex_screen.gd:380
 msgid "Old Town"
 msgstr "老城区"
 
-#: systems/codex.gd:204 ui/codex_screen.gd:370
+#: systems/codex.gd:204 ui/codex_screen.gd:380
 msgid "Wilderness bases"
 msgstr "荒野基地"
 
@@ -2095,7 +2095,7 @@ msgstr "荒野基地"
 msgid " · often %s"
 msgstr " · 常见于%s"
 
-#: systems/codex.gd:207 ui/codex_screen.gd:370 data/codex.json:categories[frontiers].name
+#: systems/codex.gd:207 ui/codex_screen.gd:380 data/codex.json:categories[frontiers].name
 msgid "Frontiers"
 msgstr "边境"
 
@@ -2103,11 +2103,11 @@ msgstr "边境"
 msgid " · %s"
 msgstr " · %s"
 
-#: systems/codex.gd:209 ui/codex_screen.gd:370
+#: systems/codex.gd:209 ui/codex_screen.gd:380
 msgid "Other worlds"
 msgstr "其他世界"
 
-#: systems/codex.gd:210 ui/codex_screen.gd:370
+#: systems/codex.gd:210 ui/codex_screen.gd:380
 msgid "Any district"
 msgstr "任意街区"
 
@@ -2603,20 +2603,20 @@ msgstr ""
 msgid "%d:%02d h"
 msgstr ""
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:237 ui/settings_panel.gd:320
 msgid "Low"
 msgstr "低"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
-#: ui/settings_panel.gd:584
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:237 ui/settings_panel.gd:320
+#: ui/settings_panel.gd:593
 msgid "Medium"
 msgstr "中"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:237 ui/settings_panel.gd:320
 msgid "High"
 msgstr "高"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:237 ui/settings_panel.gd:320
 msgid "Ultra"
 msgstr "超高"
 
@@ -2664,7 +2664,7 @@ msgstr "已在队列中"
 msgid "Queue is full"
 msgstr "队列已满"
 
-#: systems/research.gd:330 ui/codex_screen.gd:851
+#: systems/research.gd:330 ui/codex_screen.gd:861
 msgid "%ds"
 msgstr "%d秒"
 
@@ -3073,7 +3073,7 @@ msgstr "压了大约 %d 个捆包"
 msgid "kept the base tidy"
 msgstr "把基地收拾得整整齐齐"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:762
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:772
 msgid "Cubes earned"
 msgstr "赚到的方块"
 
@@ -3270,7 +3270,7 @@ msgstr "初始配置：只有 Lumi。传家宝会添加更多。"
 msgid "Starting kit: %s"
 msgstr "初始配置：%s"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:565
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:574
 msgid "Full"
 msgstr "完整"
 
@@ -3509,7 +3509,7 @@ msgstr "在%s的瓦砾中找到他们的一张CD。"
 msgid "Your CDs (%d / %d): %s"
 msgstr "你的CD（%d / %d）：%s"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:784
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:794
 msgid "Achievements"
 msgstr "成就"
 
@@ -3541,16 +3541,28 @@ msgstr ""
 msgid "Close  [%s]"
 msgstr "关闭  [%s]"
 
-#: ui/codex_screen.gd:202
-msgid "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements"
-msgstr "条目 %d / %d   ·   奇物 %d / %d   ·   收藏品 %d / %d   ·   成就 %d / %d"
+#: ui/codex_screen.gd:205
+msgid "%d / %d curiosities"
+msgstr "奇物 %d / %d"
 
-#: ui/codex_screen.gd:330 ui/codex_screen.gd:450 ui/codex_screen.gd:616
-#: ui/codex_screen.gd:631
+#: ui/codex_screen.gd:207
+msgid "%d / %d collectibles"
+msgstr "收藏品 %d / %d"
+
+#: ui/codex_screen.gd:209
+msgid "%d / %d achievements"
+msgstr "成就 %d / %d"
+
+#: ui/codex_screen.gd:211
+msgid "%d / %d entries"
+msgstr "条目 %d / %d"
+
+#: ui/codex_screen.gd:340 ui/codex_screen.gd:460 ui/codex_screen.gd:626
+#: ui/codex_screen.gd:641
 msgid "Not found yet"
 msgstr "尚未发现"
 
-#: ui/codex_screen.gd:334
+#: ui/codex_screen.gd:344
 msgid ""
 "\n"
 "\n"
@@ -3560,211 +3572,211 @@ msgstr ""
 "\n"
 "已清理：%s"
 
-#: ui/codex_screen.gd:359
+#: ui/codex_screen.gd:369
 msgid "CURIOSITIES"
 msgstr "奇物"
 
-#: ui/codex_screen.gd:360 ui/codex_screen.gd:481
+#: ui/codex_screen.gd:370 ui/codex_screen.gd:491
 msgid "%d / %d found"
 msgstr "已找到 %d / %d"
 
-#: ui/codex_screen.gd:454
+#: ui/codex_screen.gd:464
 msgid "Found  ·  %s"
 msgstr "已找到  ·  %s"
 
-#: ui/codex_screen.gd:457
+#: ui/codex_screen.gd:467
 msgid "Parts found: %d / %d"
 msgstr "已找到零件：%d / %d"
 
-#: ui/codex_screen.gd:458
+#: ui/codex_screen.gd:468
 msgid "Reward: a small surprise"
 msgstr "奖励：一个小惊喜"
 
-#: ui/codex_screen.gd:480
+#: ui/codex_screen.gd:490
 msgid "COLLECTION"
 msgstr "收藏"
 
-#: ui/codex_screen.gd:564
+#: ui/codex_screen.gd:574
 msgid "LUMI'S COLLECTION"
 msgstr "Lumi 的收藏"
 
-#: ui/codex_screen.gd:565
+#: ui/codex_screen.gd:575
 msgid "%d / %d complete"
 msgstr "%d / %d 已完成"
 
-#: ui/codex_screen.gd:603
+#: ui/codex_screen.gd:613
 msgid "TRINKETS AND CURIOS"
 msgstr "小玩意与珍奇"
 
-#: ui/codex_screen.gd:615
+#: ui/codex_screen.gd:625
 msgid "EVERY PLANET"
 msgstr "所有星球"
 
-#: ui/codex_screen.gd:618
+#: ui/codex_screen.gd:628
 msgid "In Lumi's collection. It has a plinth in the Museum."
 msgstr "在Lumi 的收藏里。它在博物馆有自己的展台。"
 
-#: ui/codex_screen.gd:620
+#: ui/codex_screen.gd:630
 msgid "Hint: %s"
 msgstr "提示：%s"
 
-#: ui/codex_screen.gd:622
+#: ui/codex_screen.gd:632
 msgid "The Museum: built"
 msgstr "博物馆：已建成"
 
-#: ui/codex_screen.gd:622
+#: ui/codex_screen.gd:632
 msgid "The Museum is built at Cradle Returns, near the end of the journey."
 msgstr "博物馆建在Cradle Returns，接近旅程的终点。"
 
-#: ui/codex_screen.gd:634
+#: ui/codex_screen.gd:644
 msgid "In your collection"
 msgstr "已收藏"
 
-#: ui/codex_screen.gd:639
+#: ui/codex_screen.gd:649
 msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
 msgstr "提示：一位害羞的访客会来到稳定和繁茂的六角格。带上相机。"
 
-#: ui/codex_screen.gd:640
+#: ui/codex_screen.gd:650
 msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
 msgstr "提示：大地恢复后，动物就会回来。用拍照模式（P）给它们拍照吧。"
 
-#: ui/codex_screen.gd:641
+#: ui/codex_screen.gd:651
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
 msgstr "提示：完成 %d 个委托（工作台的委托标签页）。"
 
-#: ui/codex_screen.gd:642
+#: ui/codex_screen.gd:652
 msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
 msgstr "提示：奇物胶囊在工作台委托的奖励轨道上。"
 
-#: ui/codex_screen.gd:643
+#: ui/codex_screen.gd:653
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "提示：不停地铲，直到连击条满。"
 
-#: ui/codex_screen.gd:644
+#: ui/codex_screen.gd:654
 msgid "Hint: turns up during %s."
 msgstr "提示：在%s期间出现。"
 
-#: ui/codex_screen.gd:713
+#: ui/codex_screen.gd:723
 msgid "Unlocked  ·  %s"
 msgstr "已解锁  ·  %s"
 
-#: ui/codex_screen.gd:752
+#: ui/codex_screen.gd:762
 msgid "Total"
 msgstr "总计"
 
-#: ui/codex_screen.gd:753
+#: ui/codex_screen.gd:763
 msgid "Junk removed"
 msgstr "清除的废料"
 
-#: ui/codex_screen.gd:753
+#: ui/codex_screen.gd:763
 msgid "by type"
 msgstr "按种类"
 
-#: ui/codex_screen.gd:754 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:764 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "清理"
 
-#: ui/codex_screen.gd:756
+#: ui/codex_screen.gd:766
 msgid "Hexes restored"
 msgstr "恢复的六角格"
 
-#: ui/codex_screen.gd:757
+#: ui/codex_screen.gd:767
 msgid "Bales pressed"
 msgstr "压制的捆包"
 
-#: ui/codex_screen.gd:758
+#: ui/codex_screen.gd:768
 msgid "Pure bales"
 msgstr "纯净捆包"
 
-#: ui/codex_screen.gd:759
+#: ui/codex_screen.gd:769
 msgid "Perfect bales"
 msgstr "完美捆包"
 
-#: ui/codex_screen.gd:760
+#: ui/codex_screen.gd:770
 msgid "Lumpy bales"
 msgstr "不平整捆包"
 
-#: ui/codex_screen.gd:761
+#: ui/codex_screen.gd:771
 msgid "Bales cashed in"
 msgstr "兑现的捆包"
 
-#: ui/codex_screen.gd:764 ui/globe_view.gd:138 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:774 ui/globe_view.gd:138 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "种植"
 
-#: ui/codex_screen.gd:765
+#: ui/codex_screen.gd:775
 msgid "Seeds planted"
 msgstr "播下的种子"
 
-#: ui/codex_screen.gd:766
+#: ui/codex_screen.gd:776
 msgid "Plants bloomed"
 msgstr "开花的植物"
 
-#: ui/codex_screen.gd:767
+#: ui/codex_screen.gd:777
 msgid "Air filtered"
 msgstr "过滤的空气"
 
-#: ui/codex_screen.gd:769 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:779 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "机器人"
 
-#: ui/codex_screen.gd:771
+#: ui/codex_screen.gd:781
 msgid "Bales by robots"
 msgstr "机器人打的捆包"
 
-#: ui/codex_screen.gd:772
+#: ui/codex_screen.gd:782
 msgid "Parts dug up"
 msgstr "挖出的零件"
 
-#: ui/codex_screen.gd:774
+#: ui/codex_screen.gd:784
 msgid "Exploring"
 msgstr "探索"
 
-#: ui/codex_screen.gd:775
+#: ui/codex_screen.gd:785
 msgid "Distance rolled"
 msgstr "行驶距离"
 
-#: ui/codex_screen.gd:776
+#: ui/codex_screen.gd:786
 msgid "Memory shards read"
 msgstr "读过的记忆碎片"
 
-#: ui/codex_screen.gd:777
+#: ui/codex_screen.gd:787
 msgid "Codex entries"
 msgstr "图鉴条目"
 
-#: ui/codex_screen.gd:780
+#: ui/codex_screen.gd:790
 msgid "Progress"
 msgstr "进度"
 
-#: ui/codex_screen.gd:781
+#: ui/codex_screen.gd:791
 msgid "Upgrades bought"
 msgstr "购买的升级"
 
-#: ui/codex_screen.gd:782
+#: ui/codex_screen.gd:792
 msgid "Field notes logged"
 msgstr "已记录的野外笔记"
 
-#: ui/codex_screen.gd:783
+#: ui/codex_screen.gd:793
 msgid "Research done"
 msgstr "完成的研究"
 
-#: ui/codex_screen.gd:785
+#: ui/codex_screen.gd:795
 msgid "Best hub level"
 msgstr "最高基地等级"
 
-#: ui/codex_screen.gd:835
+#: ui/codex_screen.gd:845
 msgid "%s kg"
 msgstr "%s 千克"
 
-#: ui/codex_screen.gd:836
+#: ui/codex_screen.gd:846
 msgid "%.1f kg"
 msgstr "%.1f 千克"
 
-#: ui/codex_screen.gd:840
+#: ui/codex_screen.gd:850
 msgid "%.2f km"
 msgstr "%.2f 公里"
 
-#: ui/codex_screen.gd:850
+#: ui/codex_screen.gd:860
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
 
@@ -4913,8 +4925,8 @@ msgstr "12月"
 msgid "CREDITS"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:594 ui/profile_picker.gd:49 ui/settings_panel.gd:116
-#: ui/settings_panel.gd:141 ui/world_picker.gd:53
+#: ui/main_menu.gd:594 ui/profile_picker.gd:49 ui/settings_panel.gd:122
+#: ui/settings_panel.gd:147 ui/world_picker.gd:53
 msgid "Back"
 msgstr "返回"
 
@@ -5045,7 +5057,7 @@ msgstr "火箭飞行期间无法使用拍照模式。"
 msgid "Photo mode isn't available during a cinematic."
 msgstr "过场动画期间无法使用拍照模式。"
 
-#: ui/photo_mode.gd:367 ui/photo_mode.gd:420 ui/settings_panel.gd:373
+#: ui/photo_mode.gd:367 ui/photo_mode.gd:420 ui/settings_panel.gd:382
 msgid "Camera"
 msgstr "相机"
 
@@ -5053,7 +5065,7 @@ msgstr "相机"
 msgid "Mode"
 msgstr "模式"
 
-#: ui/photo_mode.gd:369 ui/settings_panel.gd:381
+#: ui/photo_mode.gd:369 ui/settings_panel.gd:390
 msgid "Field of view"
 msgstr "视野"
 
@@ -5090,7 +5102,7 @@ msgid "Blur"
 msgstr "模糊"
 
 #: ui/photo_mode.gd:377 ui/photo_panel.gd:240 ui/photo_panel.gd:242
-#: ui/photo_panel.gd:280 ui/settings_panel.gd:671
+#: ui/photo_panel.gd:280 ui/settings_panel.gd:680
 msgid "Off"
 msgstr "关"
 
@@ -5203,7 +5215,7 @@ msgid "Exit"
 msgstr "退出"
 
 #: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
-#: ui/settings_panel.gd:671
+#: ui/settings_panel.gd:680
 msgid "On"
 msgstr "开"
 
@@ -5514,7 +5526,7 @@ msgstr "你把刮花的CD留在了原地。"
 msgid "The scratched CD cracks and falls apart. %s"
 msgstr "刮花的CD裂开碎掉了。%s"
 
-#: ui/settings_panel.gd:12 ui/settings_panel.gd:221
+#: ui/settings_panel.gd:12
 msgid "Basics"
 msgstr "基础"
 
@@ -5538,291 +5550,295 @@ msgstr "游戏"
 msgid "Accessibility"
 msgstr "辅助功能"
 
-#: ui/settings_panel.gd:61
+#: ui/settings_panel.gd:63
 msgid "SETTINGS"
 msgstr "设置"
 
-#: ui/settings_panel.gd:64
+#: ui/settings_panel.gd:66
 msgid "{ui_tab_prev}{ui_tab_next}  switch tabs     {ui_cancel}  back"
 msgstr "{ui_tab_prev}{ui_tab_next}  切换页面     {ui_cancel}  返回"
 
-#: ui/settings_panel.gd:111
+#: ui/settings_panel.gd:70
+msgid "{ui_cancel}  back"
+msgstr "{ui_cancel}  返回"
+
+#: ui/settings_panel.gd:117
 msgid "Changes are saved automatically."
 msgstr "更改会自动保存。"
 
-#: ui/settings_panel.gd:228 ui/settings_panel.gd:311
+#: ui/settings_panel.gd:237 ui/settings_panel.gd:320
 msgid "Quality preset"
 msgstr "画质预设"
 
-#: ui/settings_panel.gd:231 ui/settings_panel.gd:330
+#: ui/settings_panel.gd:240 ui/settings_panel.gd:339
 msgid "Fullscreen"
 msgstr "全屏"
 
-#: ui/settings_panel.gd:234 ui/settings_panel.gd:374
+#: ui/settings_panel.gd:243 ui/settings_panel.gd:383
 msgid "Mouse sensitivity"
 msgstr "鼠标灵敏度"
 
-#: ui/settings_panel.gd:238 ui/settings_panel.gd:550
+#: ui/settings_panel.gd:247 ui/settings_panel.gd:559
 msgid "System default"
 msgstr "跟随系统"
 
-#: ui/settings_panel.gd:239 ui/settings_panel.gd:548 ui/settings_panel.gd:551
+#: ui/settings_panel.gd:248 ui/settings_panel.gd:557 ui/settings_panel.gd:560
 msgid "Language"
 msgstr "语言"
 
-#: ui/settings_panel.gd:244
+#: ui/settings_panel.gd:253
 msgid "More settings  (sound, graphics, controls, accessibility)"
 msgstr "更多设置  （声音、画面、操作、辅助功能）"
 
-#: ui/settings_panel.gd:250
+#: ui/settings_panel.gd:259
 msgid "Everything else"
 msgstr "其他全部"
 
-#: ui/settings_panel.gd:290
+#: ui/settings_panel.gd:299
 msgid "Volume"
 msgstr "音量"
 
-#: ui/settings_panel.gd:297
+#: ui/settings_panel.gd:306
 msgid "Sound effects"
 msgstr "音效"
 
-#: ui/settings_panel.gd:304
+#: ui/settings_panel.gd:313
 msgid "Rendering"
 msgstr "渲染"
 
-#: ui/settings_panel.gd:305
+#: ui/settings_panel.gd:314
 msgid "Low drops GI and fog; Ultra adds reflections."
 msgstr "低：关闭全局光照和雾；超高：增加反射。"
 
-#: ui/settings_panel.gd:306
+#: ui/settings_panel.gd:315
 msgid "This renderer always uses the Low preset."
 msgstr "此渲染器始终使用“低”预设。"
 
-#: ui/settings_panel.gd:308
+#: ui/settings_panel.gd:317
 msgid "Detected: %s for %s. "
 msgstr "检测到：%s，适用于 %s。"
 
-#: ui/settings_panel.gd:309
+#: ui/settings_panel.gd:318
 msgid "Your choice (hardware: %s). "
 msgstr "你的选择（硬件：%s）。"
 
-#: ui/settings_panel.gd:310
+#: ui/settings_panel.gd:319
 msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
 msgstr "低：关闭全局光照、雾和阴影细节；超高：增加反射。"
 
-#: ui/settings_panel.gd:318
+#: ui/settings_panel.gd:327
 msgid "Renderer"
 msgstr "渲染器"
 
-#: ui/settings_panel.gd:318
+#: ui/settings_panel.gd:327
 msgid "Standard (Forward+)"
 msgstr "标准（Forward+）"
 
-#: ui/settings_panel.gd:318
+#: ui/settings_panel.gd:327
 msgid "Light (Mobile)"
 msgstr "轻量（Mobile）"
 
-#: ui/settings_panel.gd:320
+#: ui/settings_panel.gd:329
 msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
 msgstr "轻量适合较旧的集成显卡。重启游戏后生效（当前：%s）。"
 
-#: ui/settings_panel.gd:326
+#: ui/settings_panel.gd:335
 msgid "Render scale"
 msgstr "渲染缩放"
 
-#: ui/settings_panel.gd:328
+#: ui/settings_panel.gd:337
 msgid "Lower renders 3D at a smaller size; the interface stays sharp."
 msgstr "调低会以较小尺寸渲染 3D；界面保持清晰。"
 
-#: ui/settings_panel.gd:329
+#: ui/settings_panel.gd:338
 msgid "Display"
 msgstr "显示"
 
-#: ui/settings_panel.gd:333
+#: ui/settings_panel.gd:342
 msgid "V-Sync"
 msgstr "垂直同步"
 
-#: ui/settings_panel.gd:339 ui/settings_panel.gd:368
+#: ui/settings_panel.gd:348 ui/settings_panel.gd:377
 msgid "Bindings"
 msgstr "按键绑定"
 
-#: ui/settings_panel.gd:342
+#: ui/settings_panel.gd:351
 msgid "ACTION   (select a binding to rebind it)"
 msgstr "操作   （选择一个绑定来重新设置）"
 
-#: ui/settings_panel.gd:345
+#: ui/settings_panel.gd:354
 msgid "KEYBOARD / MOUSE"
 msgstr "键盘 / 鼠标"
 
-#: ui/settings_panel.gd:345
+#: ui/settings_panel.gd:354
 msgid "CONTROLLER"
 msgstr "手柄"
 
-#: ui/settings_panel.gd:361
+#: ui/settings_panel.gd:370
 msgid "Reset to defaults"
 msgstr "恢复默认"
 
-#: ui/settings_panel.gd:368
+#: ui/settings_panel.gd:377
 msgid "Restore every key and controller binding."
 msgstr "恢复所有键盘和手柄绑定。"
 
-#: ui/settings_panel.gd:370
+#: ui/settings_panel.gd:379
 msgid "Button prompts"
 msgstr "按键图标"
 
-#: ui/settings_panel.gd:372
+#: ui/settings_panel.gd:381
 msgid "Controller art: Automatic follows the connected pad."
 msgstr "手柄图标：“自动”会跟随已连接的手柄。"
 
-#: ui/settings_panel.gd:377
+#: ui/settings_panel.gd:386
 msgid "Stick look speed"
 msgstr "摇杆视角速度"
 
-#: ui/settings_panel.gd:380
+#: ui/settings_panel.gd:389
 msgid "Invert look Y"
 msgstr "反转 Y 轴视角"
 
-#: ui/settings_panel.gd:384
+#: ui/settings_panel.gd:393
 msgid "Mouse smoothing"
 msgstr "鼠标平滑"
 
-#: ui/settings_panel.gd:385
+#: ui/settings_panel.gd:394
 msgid "Eases mouse look over a few frames."
 msgstr "在几帧内平滑鼠标视角。"
 
-#: ui/settings_panel.gd:386
+#: ui/settings_panel.gd:395
 msgid "Scooping"
 msgstr "铲取"
 
-#: ui/settings_panel.gd:387
+#: ui/settings_panel.gd:396
 msgid "Scoop button"
 msgstr "铲取按键"
 
-#: ui/settings_panel.gd:387
+#: ui/settings_panel.gd:396
 msgid "Hold"
 msgstr "按住"
 
-#: ui/settings_panel.gd:387
+#: ui/settings_panel.gd:396
 msgid "Toggle"
 msgstr "切换"
 
-#: ui/settings_panel.gd:428
+#: ui/settings_panel.gd:437
 msgid "press a button…"
 msgstr "请按一个按钮…"
 
-#: ui/settings_panel.gd:428
+#: ui/settings_panel.gd:437
 msgid "press a key…"
 msgstr "请按一个键…"
 
-#: ui/settings_panel.gd:460
+#: ui/settings_panel.gd:469
 msgid "Conflict: %s is used by both %s and %s."
 msgstr "冲突：%s 同时被 %s 和 %s 使用。"
 
-#: ui/settings_panel.gd:554
+#: ui/settings_panel.gd:563
 msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
 msgstr "菜单、HUD、字幕和剧情文本。Pseudo 用于测试翻译。"
 
-#: ui/settings_panel.gd:555
+#: ui/settings_panel.gd:564
 msgid "Comfort"
 msgstr "舒适度"
 
-#: ui/settings_panel.gd:556
+#: ui/settings_panel.gd:565
 msgid "Camera shake"
 msgstr "镜头晃动"
 
-#: ui/settings_panel.gd:558
+#: ui/settings_panel.gd:567
 msgid "Reduced motion"
 msgstr "减少动态效果"
 
-#: ui/settings_panel.gd:559
+#: ui/settings_panel.gd:568
 msgid "Calmer camera and fewer bouncy effects."
 msgstr "更平稳的镜头，更少的弹跳效果。"
 
-#: ui/settings_panel.gd:560 ui/settings_panel.gd:570
+#: ui/settings_panel.gd:569 ui/settings_panel.gd:579
 msgid "Interface"
 msgstr "界面"
 
-#: ui/settings_panel.gd:561
+#: ui/settings_panel.gd:570
 msgid "Number format"
 msgstr "数字格式"
 
-#: ui/settings_panel.gd:561
+#: ui/settings_panel.gd:570
 msgid "Short (1.2K)"
 msgstr "简写（1.2K）"
 
-#: ui/settings_panel.gd:561
+#: ui/settings_panel.gd:570
 msgid "Scientific (1.2e3)"
 msgstr "科学计数（1.2e3）"
 
-#: ui/settings_panel.gd:561
+#: ui/settings_panel.gd:570
 msgid "Engineering (1.2e3)"
 msgstr "工程计数（1.2e3）"
 
-#: ui/settings_panel.gd:563
+#: ui/settings_panel.gd:572
 msgid "Best-value tags"
 msgstr "性价比标签"
 
-#: ui/settings_panel.gd:564
+#: ui/settings_panel.gd:573
 msgid "Tag the affordable upgrade that gives the most per cube."
 msgstr "标出买得起且每方块收益最高的升级。"
 
-#: ui/settings_panel.gd:565
+#: ui/settings_panel.gd:574
 msgid "HUD"
 msgstr "HUD"
 
-#: ui/settings_panel.gd:565
+#: ui/settings_panel.gd:574
 msgid "Minimal"
 msgstr "精简"
 
-#: ui/settings_panel.gd:565
+#: ui/settings_panel.gd:574
 msgid "Hidden"
 msgstr "隐藏"
 
-#: ui/settings_panel.gd:566
+#: ui/settings_panel.gd:575
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "精简：几秒后淡出额外信息。隐藏：只保留提示和消息。"
 
-#: ui/settings_panel.gd:576
+#: ui/settings_panel.gd:585
 msgid "Interface scale"
 msgstr "界面缩放"
 
-#: ui/settings_panel.gd:578
+#: ui/settings_panel.gd:587
 msgid "Size of menus, HUD and subtitles."
 msgstr "菜单、HUD 和字幕的大小。"
 
-#: ui/settings_panel.gd:579
+#: ui/settings_panel.gd:588
 msgid "Colour-blind palette"
 msgstr "色盲配色"
 
-#: ui/settings_panel.gd:580
+#: ui/settings_panel.gd:589
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "对六角格进度、料斗计量条和零件稀有度使用 Okabe-Ito 配色。"
 
-#: ui/settings_panel.gd:581 ui/settings_panel.gd:582
+#: ui/settings_panel.gd:590 ui/settings_panel.gd:591
 msgid "Subtitles"
 msgstr "字幕"
 
-#: ui/settings_panel.gd:583
+#: ui/settings_panel.gd:592
 msgid "WREN and Ledger lines."
 msgstr "WREN 和 Ledger 的台词。"
 
-#: ui/settings_panel.gd:584
+#: ui/settings_panel.gd:593
 msgid "Subtitle size"
 msgstr "字幕大小"
 
-#: ui/settings_panel.gd:584
+#: ui/settings_panel.gd:593
 msgid "Small"
 msgstr "小"
 
-#: ui/settings_panel.gd:584
+#: ui/settings_panel.gd:593
 msgid "Large"
 msgstr "大"
 
-#: ui/settings_panel.gd:586
+#: ui/settings_panel.gd:595
 msgid "Subtitle background"
 msgstr "字幕背景"
 
-#: ui/settings_panel.gd:587
+#: ui/settings_panel.gd:596
 msgid "A solid backdrop behind subtitle text."
 msgstr "在字幕文字后加一层实色背景。"
 
@@ -15687,6 +15703,9 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements"
+#~ msgstr "条目 %d / %d   ·   奇物 %d / %d   ·   收藏品 %d / %d   ·   成就 %d / %d"
 
 #~ msgid "   {ui_tab_prev}{ui_tab_next}  switch tabs"
 #~ msgstr "   {ui_tab_prev}{ui_tab_next}  切换页面"
