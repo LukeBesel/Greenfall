@@ -192,65 +192,69 @@ msgstr ""
 msgid "Paddle 1"
 msgstr ""
 
-#: autoload/Settings.gd:521
+#: autoload/Settings.gd:522
 msgid "LMB"
 msgstr "左クリック"
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:523
 msgid "RMB"
 msgstr "右クリック"
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:524
 msgid "MMB"
 msgstr "中クリック"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:525
 msgid "Wheel up"
 msgstr "ホイール上"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:526
 msgid "Wheel down"
 msgstr "ホイール下"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:527
 msgid "Mouse %d"
 msgstr "マウス %d"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:529
 msgid "Button %d"
 msgstr "ボタン %d"
 
-#: autoload/Settings.gd:533
+#: autoload/Settings.gd:534
 msgid "LS left"
 msgstr "Lスティック左"
 
-#: autoload/Settings.gd:533
+#: autoload/Settings.gd:534
 msgid "LS right"
 msgstr "Lスティック右"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:535
 msgid "LS up"
 msgstr "Lスティック上"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:535
 msgid "LS down"
 msgstr "Lスティック下"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:536
 msgid "RS left"
 msgstr "Rスティック左"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:536
 msgid "RS right"
 msgstr "Rスティック右"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:537
 msgid "RS up"
 msgstr "Rスティック上"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:537
 msgid "RS down"
 msgstr "Rスティック下"
+
+#: autoload/Settings.gd:548
+msgid "hold %s"
+msgstr ""
 
 #: autoload/Story.gd:23
 msgid "Perfect bale: filled right to the gold line."
@@ -268,11 +272,11 @@ msgstr "ヘックスがまるごときれいに！大地が自分の色を思い
 msgid "Upgraded! Lumi feels a little less creaky."
 msgstr "アップグレード完了！Lumiのきしみが少しおさまった。"
 
-#: automation/auto_baler.gd:477
+#: automation/auto_baler.gd:478
 msgid "AUTO-BALER"
 msgstr "オートベーラー"
 
-#: automation/auto_baler.gd:480
+#: automation/auto_baler.gd:481
 msgid "KEEP CLEAR · 40 T"
 msgstr "立入禁止 · 40 T"
 
@@ -284,7 +288,7 @@ msgstr "貨物ポッド着陸：%s キューブ、ほかの地区のロボット
 msgid "TO  SCALE  ◀"
 msgstr "はかり  へ  ◀"
 
-#: automation/conveyor.gd:182
+#: automation/conveyor.gd:184
 msgid "BALE  FEED"
 msgstr "ベール投入口"
 
@@ -393,19 +397,19 @@ msgstr "前哨基地 %d  廃墟 · きれいさ %d%% で修理可能"
 msgid "OUTPOST %d  %s"
 msgstr "前哨基地 %d  %s"
 
-#: automation/recycler.gd:221
+#: automation/recycler.gd:222
 msgid "GONE FOR GOOD  -%d kg"
 msgstr "完全処分  -%d kg"
 
-#: automation/recycler.gd:281
+#: automation/recycler.gd:282
 msgid "RECYCLER"
 msgstr "リサイクラー"
 
-#: automation/recycler.gd:284
+#: automation/recycler.gd:285
 msgid "SHRED  ·  SMELT  ·  GONE FOR GOOD"
 msgstr "粉砕  ·  溶解  ·  完全処分"
 
-#: automation/recycler.gd:437
+#: automation/recycler.gd:438
 msgid "HAND FEED"
 msgstr "手動投入"
 
@@ -498,7 +502,7 @@ msgstr "望遠鏡が完成した。近づいて E を押すと、星系を見渡
 msgid "OBSERVATORY"
 msgstr "天文台"
 
-#: automation/telescope.gd:307
+#: automation/telescope.gd:311
 msgid "E   Telescope: look across the system"
 msgstr "E   望遠鏡：星系を見わたす"
 
@@ -780,11 +784,11 @@ msgstr "WREN：そこが測量ゾーンの端よ、Lumi。外にはもやしか�
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi はふわりと固い地面に戻った。"
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1057 scenes/slice_orbit.gd:288
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1063 scenes/slice_orbit.gd:302
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
-#: planet/sites/hub_hop.gd:77
+#: planet/sites/hub_hop.gd:76
 msgid "Rocket hop: %.1f km"
 msgstr ""
 
@@ -892,43 +896,43 @@ msgstr "埋もれたパーツ  ·  シグナル %d%%"
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi はガタガタと庭に戻ってきた。いまのは何だったんだろう。"
 
-#: player/patch.gd:240
+#: player/patch.gd:243
 msgid "No seeds yet. Keep cleaning."
 msgstr "まだ種がない。片づけを続けよう。"
 
-#: player/patch.gd:279
+#: player/patch.gd:282
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "種がなくなった。咲いた植物がまた落としてくれる。"
 
-#: player/patch.gd:286
+#: player/patch.gd:289
 msgid "Watering can is empty. Refill at the hub."
 msgstr "じょうろが空っぽ。基地で補給しよう。"
 
-#: player/patch.gd:481
+#: player/patch.gd:491
 msgid "PERFECT BALE  %s"
 msgstr "パーフェクトベール  %s"
 
-#: player/patch.gd:487
+#: player/patch.gd:497
 msgid "OVERSTUFFED  %s"
 msgstr "詰め込みすぎ  %s"
 
-#: player/patch.gd:491
+#: player/patch.gd:501
 msgid "PURE  %s"
 msgstr "ピュア  %s"
 
-#: player/patch.gd:493
+#: player/patch.gd:503
 msgid "SURGE  %s"
 msgstr "サージ  %s"
 
-#: player/patch.gd:496
+#: player/patch.gd:506
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:539
+#: player/patch.gd:549
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:568
+#: player/patch.gd:578
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -1246,63 +1250,63 @@ msgstr ""
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーンを塗って、好きな場所にクルーを送ろう。"
 
-#: scenes/slice.gd:1071 scenes/slice_orbit.gd:304
+#: scenes/slice.gd:1077 scenes/slice_orbit.gd:318
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice.gd:1073
+#: scenes/slice.gd:1079
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
 
-#: scenes/slice.gd:1080
+#: scenes/slice.gd:1086
 msgid "%s is out of range: %s"
 msgstr "%s は範囲外：%s"
 
-#: scenes/slice.gd:1090
+#: scenes/slice.gd:1096
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:1093 ui/rockets_panel.gd:39
+#: scenes/slice.gd:1099 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:1147
+#: scenes/slice.gd:1153
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陸：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:1148
+#: scenes/slice.gd:1154
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
 
-#: scenes/slice.gd:1148
+#: scenes/slice.gd:1154
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:1264 scenes/slice_orbit.gd:437
+#: scenes/slice.gd:1270 scenes/slice_orbit.gd:451
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice.gd:1453
+#: scenes/slice.gd:1459
 msgid "Welcome back. The junk waited for you."
 msgstr "おかえり。ガラクタが待っていたよ。"
 
-#: scenes/slice.gd:1470
+#: scenes/slice.gd:1476
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:1470
+#: scenes/slice.gd:1476
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
-#: scenes/slice_orbit.gd:334 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:102
+#: scenes/slice_orbit.gd:348 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:102
 msgid "E   Workbench (broken): repair it"
 msgstr "E   作業台（故障）：修理する"
 
-#: scenes/slice_orbit.gd:334 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:348 systems/camp/camp.gd:177
 msgid "E   Workbench: upgrades"
 msgstr "E   作業台：アップグレード"
 
-#: scenes/slice_orbit.gd:533 systems/camp/camp.gd:224
+#: scenes/slice_orbit.gd:547 systems/camp/camp.gd:224
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
@@ -1869,43 +1873,43 @@ msgstr ""
 msgid "Needs %s"
 msgstr "%s が必要"
 
-#: story/ledger.gd:493
+#: story/ledger.gd:490
 msgid "Ledger drone inbound, %s! It's heading for a clean hex."
 msgstr "Ledger のドローンが接近中、%s！きれいなヘックスに向かっている。"
 
-#: story/ledger.gd:494
+#: story/ledger.gd:491
 msgid "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground."
 msgstr "Ledger のドローンがきれいなヘックスにガラクタを捨てに来る（君の%s）。植えた地面には手を出せない。"
 
-#: story/ledger.gd:530
+#: story/ledger.gd:527
 msgid "SIGNAL JAMMED"
 msgstr "シグナル妨害"
 
-#: story/ledger.gd:560
+#: story/ledger.gd:557
 msgid "Target re-classified as ASSET. Aborting. ...Interesting."
 msgstr "対象を資産として再分類。中止します。……興味深い。"
 
-#: story/ledger.gd:626
+#: story/ledger.gd:623
 msgid "The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."
 msgstr "ドローンがガラクタを少し捨てていった。すくうか、ヘルパーたちに片づけてもらおう。基地にシグナルジャマーがあればドローンは近寄らない。"
 
-#: story/ledger.gd:682
+#: story/ledger.gd:679
 msgid "SEEDS · PAID IN FULL"
 msgstr "種 · 全額支払済み"
 
-#: story/ledger.gd:699 systems/events.gd:490 systems/lumi_level.gd:218
+#: story/ledger.gd:696 systems/events.gd:490 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d 種"
 
-#: story/ledger.gd:769
+#: story/ledger.gd:766
 msgid "E   jack in: rewrite the Ledger's contract"
 msgstr "E   接続：Ledger の契約を書き換える"
 
-#: story/ledger.gd:769
+#: story/ledger.gd:766
 msgid "E   read the amended contract"
 msgstr "E   改定された契約を読む"
 
-#: story/ledger.gd:794 story/ledger.gd:848
+#: story/ledger.gd:791 story/ledger.gd:845
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: ACTIVE\n"
@@ -1915,11 +1919,11 @@ msgstr ""
 "契約 0001：有効\n"
 "廃棄物は計上項目である"
 
-#: story/ledger.gd:809
+#: story/ledger.gd:806
 msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
 msgstr "リレー 07  ·  LEDGER 所有  ·  予定外のアクセスを禁ず"
 
-#: story/ledger.gd:848
+#: story/ledger.gd:845
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: AMENDED\n"
@@ -1929,11 +1933,11 @@ msgstr ""
 "契約 0001：改定\n"
 "再生 = 資産"
 
-#: story/ledger.gd:966
+#: story/ledger.gd:963
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr "Ledger の契約が書き換わった。ドローンが種を届けてくれるようになった。（+%d 種）"
 
-#: story/ledger.gd:974
+#: story/ledger.gd:971
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr "<< LEDGER // オフレコ >>"
 
@@ -2617,11 +2621,11 @@ msgstr "帰還の博物館"
 msgid "everything Lumi found, kept for whoever comes next"
 msgstr "Lumiが見つけたすべてを、あとから来る誰かのために"
 
-#: systems/museum.gd:279
+#: systems/museum.gd:283
 msgid "E   salute the Gnome Patrol"
 msgstr "E   ノーム・パトロールに敬礼"
 
-#: systems/museum.gd:439
+#: systems/museum.gd:443
 msgid "Every plinth is full. The Museum is complete: everything Lumi found, kept for whoever comes next."
 msgstr "すべての台座が埋まった。博物館は完成：Lumiが見つけたすべてを、あとから来る誰かのために。"
 

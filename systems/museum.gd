@@ -268,6 +268,10 @@ func _build_hall(animate: bool) -> void:
 		p.position = Vector3(x, 0.25, z)
 		hall.add_child(p)
 		plinths[str(xs[i]["id"])] = p
+	YardArt.kitify(hall)  # [yard] bevelled kit parts and shaders for the hall and plinths
+	var dress: MeshInstance3D = YardArt.museum_dress(w, d).mi(0.12, "Dress")  # [yard]
+	hall.add_child(dress)
+	YardArt.set_powered(dress, true)
 	if animate:
 		hall.scale = Vector3(1, 0.02, 1)
 		var tw := hall.create_tween()

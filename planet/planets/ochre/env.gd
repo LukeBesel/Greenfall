@@ -141,11 +141,14 @@ func build() -> void:
 	_build_ramps()
 	_build_excavators()
 	_build_trucks()
-	_build_sails()
-	_build_ruin_junk()
-	_build_scree()
-	_build_falls()
-	_build_plants()
+	# Dev site / lookbook renders skip the pit's dressing (memory on the shared render box).
+	var stage_only: bool = DevHooks.has("ochre-site") or DevHooks.has("ochre-lookbook")
+	if not stage_only:
+		_build_sails()
+		_build_ruin_junk()
+		_build_scree()
+		_build_falls()
+		_build_plants()
 	_build_fx()
 	for n: Node in find_children("WheelFuture", "Node3D", true, false):
 		_future_bits.append(n as Node3D)

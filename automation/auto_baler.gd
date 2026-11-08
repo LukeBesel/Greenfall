@@ -38,6 +38,7 @@ var _clock: float = 0.0
 func _ready() -> void:
 	add_to_group("baler_station")
 	_build()
+	YardArt.kitify(self)  # [yard] bevelled kit parts and shaders
 
 
 func cfg() -> Dictionary:

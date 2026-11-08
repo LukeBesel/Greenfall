@@ -47,9 +47,9 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
   comms mast, snowcat. Preview: `res://planet/planets/rime/site_preview.tscn -- --site=hub_camp
   [--site-stage=1 --site-restore=1 --time=0.9 (night)]`. `rime_ice.gdshader` gained `moss_centre`/`moss_off`.
 - Tests: `tests/test_p_seas_sites.gd`. Renders: screenshots/p_seas/.
-- Left: hub_stilts, reef_garden and buoy_field still use the older env props (coral is lumps); the flat
-  district env's towers/lighthouses still use BoxMesh parts; `--planet-env=rime` prints no env line in a
-  fresh headless run (not touched here).
+- Follow-up: reef coral, hub_stilts, buoy_field and the flat env's drowned towers and lighthouses are on
+  the kit too (TideProps.drowned_tower / lighthouse; preview `--site-props`). Left: the flat env's base
+  moorings, floating gardens and future platforms still use older parts.
 
 ## Update: loading screen keeps moving, Rime night glint (claude/greenfall-leftovers, Nov 8)
 - **District build across frames.** Behind the loading screen `scenes/slice.gd` builds as a coroutine: the
@@ -846,7 +846,7 @@ rebuilt on the sphere. What carries over, and how to place it on a globe:
   shade sails -> future (4-5) white machines with planters, solar sails, a thin light seam on crests, waterfalls.
 - Dev: `--planet-env=ochre`, `--ochre-lookbook=1|2` (kit under both suns), `--ochre-restore`, `--ochre-cam`.
 ## Update: hub sites, rocket hop, hover-sled (wt/orbD, phase D, Nov 8)
-- Done: **Site API** `PlanetEnvs.build_site(site_root, site, stage 1-5, restoration)` -> `SitePrefab` (planet/sites/site_prefab.gd): anchors depot/bench/rocket_pad/door, collision (trimesh of solid meshes unless the builder has bodies), `set_stage`/`set_restoration` (in-place re-dress where the builder supports it, else rebuild). Dispatch in `planet/sites/site_builders.gd`: Verdance (`VerdanceSite`: real CityView + StreetDressing blocks, ruined), Rime (`RimeSite`: RimeEnv's derricks, geysers, pools, domes on a flat pad), Anvil/Ochre/Tidewell via their own `build`/`place`. `PlanetEnvs.globe(id)` gives radius/hub count (data/planets.json `globe`, else the owner's size table).
+- Done: **Site API** `PlanetEnvs.build_site(site_root, site, stage 1-5, restoration)` -> `SitePrefab` (planet/sites/site_prefab.gd): anchors depot/bench/rocket_pad/door, collision (trimesh of solid meshes unless the builder has bodies), `set_stage`/`set_restoration` (in-place re-dress where the builder supports it, else rebuild). Dispatch in `planet/sites/site_builders.gd`: Verdance (`VerdanceSite`: real CityView + StreetDressing blocks, ruined), Rime (p_seas' `RimeHubSite` via planets.json, like Tidewell), Anvil/Ochre/Tidewell via their own `build`/`place`. `PlanetEnvs.globe(id)` gives radius/hub count (data/planets.json `globe`, else the owner's size table).
 - Done: `site_inv` shader global (project.godot): world-space maths in building_city, deco, yard_slab, puddle, mural, fabric, light_seam, junk_coat run in the nearest site's frame on the globe (identity on the flat game).
 - Done: `SiteManager` (globe): builds hub prefabs within 420 m of Lumi, frees them past 650 m, clears junk under building footprints, planet % over the built hubs' regions (18 rings; HUD reads `world.planet_fraction()`), per-hub growth radius that greens the rest (SphereCells + survey PlanetData), save_state/load_state ready for B1.
 - Done: `HubHop` rocket hop between hubs on the same globe (no scene change): lift-off, arc over the curve, land on the target's rocket_pad; 7-15 s by distance. `--orbit-hop=N[,M]`.
