@@ -276,11 +276,11 @@ msgstr "VERS LA  BALANCE  ◀"
 msgid "BALE  FEED"
 msgstr "ENTRÉE BALLES"
 
-#: automation/depot.gd:284
+#: automation/depot.gd:290
 msgid "TRASH"
 msgstr "DÉCHETS"
 
-#: automation/depot.gd:321
+#: automation/depot.gd:327
 msgid "SCRAP  INTAKE  ·  WEIGH HERE"
 msgstr "DÉPÔT FERRAILLE  ·  PESÉE ICI"
 
@@ -479,8 +479,8 @@ msgstr "1 balle sur %d au recycleur"
 msgid "Requires hub level %d or research: %s."
 msgstr "Nécessite la base niveau %d ou la recherche : %s."
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:364
-#: systems/camp/camp.gd:376 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:378
+#: systems/camp/camp.gd:390 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
 #: systems/camp/hub_builds.gd:161 systems/camp/hub_builds.gd:171 systems/camp/yard_builds.gd:91
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
@@ -777,6 +777,10 @@ msgstr "WREN : C'est la limite de la zone de relevé, Lumi. Rien là-bas à part
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi revient en planant sur la terre ferme."
 
+#: planet/orbit/verdance_globe.gd:479 scenes/slice.gd:1016
+msgid "HEX CLEAN!  +%s"
+msgstr "HEXAGONE PROPRE !  +%s"
+
 #: planet/planets/tidewell/env.gd:1180
 msgid "LEDGER  DREDGE %02d"
 msgstr "LEDGER  DRAGUE %02d"
@@ -784,6 +788,22 @@ msgstr "LEDGER  DRAGUE %02d"
 #: planet/planets/tidewell/env.gd:1226
 msgid "LEDGER MINING  ORE BARGE 3"
 msgstr "LEDGER MINING  BARGE À MINERAI 3"
+
+#: planet/sphere/sphere_walk.gd:431
+msgid "Planet %d m around"
+msgstr ""
+
+#: planet/sphere/sphere_walk.gd:431
+msgid "Walked %d m (%d%%)"
+msgstr ""
+
+#: planet/sphere/sphere_walk.gd:432
+msgid "Speed %.1f m/s"
+msgstr ""
+
+#: planet/sphere/sphere_walk.gd:432
+msgid "Bots near %d, far %d"
+msgstr ""
 
 #: plants/composter.gd:77
 msgid "E   compost press  ·  dormant until something grows"
@@ -869,47 +889,47 @@ msgstr "PIÈCE ENTERRÉE  %s  ·  %.1f m"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "PIÈCE ENTERRÉE  ·  SIGNAL %d%%"
 
-#: player/patch.gd:106
+#: player/patch.gd:146
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi remonte dans la cour en cliquetant. C'était bizarre."
 
-#: player/patch.gd:181
+#: player/patch.gd:240
 msgid "No seeds yet. Keep cleaning."
 msgstr "Pas encore de graines. Continue de nettoyer."
 
-#: player/patch.gd:220
+#: player/patch.gd:279
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Plus de graines. Les plantes en fleur en donnent d'autres."
 
-#: player/patch.gd:227
+#: player/patch.gd:286
 msgid "Watering can is empty. Refill at the hub."
 msgstr "Arrosoir vide. Remplis-le à la base."
 
-#: player/patch.gd:415
+#: player/patch.gd:481
 msgid "PERFECT BALE  %s"
 msgstr "BALLE PARFAITE  %s"
 
-#: player/patch.gd:421
+#: player/patch.gd:487
 msgid "OVERSTUFFED  %s"
 msgstr "TROP PLEINE  %s"
 
-#: player/patch.gd:425
+#: player/patch.gd:491
 msgid "PURE  %s"
 msgstr "PURE  %s"
 
-#: player/patch.gd:427
+#: player/patch.gd:493
 msgid "SURGE  %s"
 msgstr "BOOST  %s"
 
-#: player/patch.gd:430
+#: player/patch.gd:496
 msgid "  (streak +%d%%)"
 msgstr "  (série +%d%%)"
 
-#: player/patch.gd:473
+#: player/patch.gd:539
 msgid "Salvaged: %s"
 msgstr "Récupéré : %s"
 
-#: player/patch.gd:502
+#: player/patch.gd:568
 msgid "Recovered: %s"
 msgstr "Retrouvé : %s"
 
@@ -1204,59 +1224,55 @@ msgstr "Réservoir posé. Les arroseurs proches viendront s'y remplir."
 msgid "WATER"
 msgstr "EAU"
 
-#: scenes/slice.gd:349
+#: scenes/slice.gd:355
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Liaison robots en ligne. Appuie sur B pour la vue commande : peins des zones et envoie les équipes où tu veux."
 
-#: scenes/slice.gd:1010
-msgid "HEX CLEAN!  +%s"
-msgstr "HEXAGONE PROPRE !  +%s"
-
-#: scenes/slice.gd:1024
+#: scenes/slice.gd:1030
 msgid "Milestone: %d hexes clean!"
 msgstr "Étape : %d hexagones propres !"
 
-#: scenes/slice.gd:1026
+#: scenes/slice.gd:1032
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "Toute la casse est propre. Lumi émet un très long bip très heureux."
 
-#: scenes/slice.gd:1033
+#: scenes/slice.gd:1039
 msgid "%s is out of range: %s"
 msgstr "%s est hors de portée : %s"
 
-#: scenes/slice.gd:1043
+#: scenes/slice.gd:1049
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Verrouillé. Monte ta base au niveau 5 pour construire le pas de tir."
 
-#: scenes/slice.gd:1046 ui/rockets_panel.gd:39
+#: scenes/slice.gd:1052 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Cellules d'énergie en recharge : %s. Les améliorations de fusée les remplissent plus vite."
 
-#: scenes/slice.gd:1100
+#: scenes/slice.gd:1106
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Atterrissage : %s. Base %d sur %d. %s"
 
-#: scenes/slice.gd:1101
+#: scenes/slice.gd:1107
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "La fusée est garée sur le terrain, prête dès que ses cellules seront pleines."
 
-#: scenes/slice.gd:1101
+#: scenes/slice.gd:1107
 msgid "Landed on the base pad."
 msgstr "Posé sur le plot de la base."
 
-#: scenes/slice.gd:1200
+#: scenes/slice.gd:1206
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Les améliorations demandent un établi. Retourne à la base."
 
-#: scenes/slice.gd:1371
+#: scenes/slice.gd:1377
 msgid "Welcome back. The junk waited for you."
 msgstr "Bon retour. La ferraille t'a attendu."
 
-#: scenes/slice.gd:1388
+#: scenes/slice.gd:1394
 msgid "OUTPOST %d · Lv%d"
 msgstr "AVANT-POSTE %d · Niv%d"
 
-#: scenes/slice.gd:1388
+#: scenes/slice.gd:1394
 msgid "OUTPOST %d · RUIN"
 msgstr "AVANT-POSTE %d · RUINE"
 
@@ -2826,19 +2842,19 @@ msgstr "E   Établi : améliorations"
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Établi réparé. Appuie sur E devant lui pour dépenser des cubes en améliorations."
 
-#: systems/camp/camp.gd:362
+#: systems/camp/camp.gd:376
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   %s (Niv %d) : entièrement amélioré"
 
-#: systems/camp/camp.gd:365
+#: systems/camp/camp.gd:379
 msgid "E   %s (Lv %d): %s"
 msgstr "E   %s (Niv %d) : %s"
 
-#: systems/camp/camp.gd:366
+#: systems/camp/camp.gd:380
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   %s (Niv %d) : passer à %s pour %s"
 
-#: systems/camp/camp.gd:372
+#: systems/camp/camp.gd:386
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "Poubelle améliorée : %s. Les balles se vendent ici à %d%%."
 
@@ -4712,19 +4728,19 @@ msgstr "ACTIF"
 msgid "FREE"
 msgstr "GRATUIT"
 
-#: ui/list_detail.gd:539
+#: ui/list_detail.gd:541
 msgid "REQUIRES   NOT YET   %s"
 msgstr "REQUIS   PAS ENCORE   %s"
 
-#: ui/list_detail.gd:539
+#: ui/list_detail.gd:541
 msgid "Not unlocked yet. Keep playing."
 msgstr "Pas encore débloqué. Continue à jouer."
 
-#: ui/list_detail.gd:542
+#: ui/list_detail.gd:544
 msgid "REQUIRES   %s"
 msgstr "REQUIS   %s"
 
-#: ui/list_detail.gd:545
+#: ui/list_detail.gd:547
 msgid "REQUIRES   READY"
 msgstr "REQUIS   PRÊT"
 
@@ -11245,7 +11261,7 @@ msgstr "Tidewell"
 msgid "Rime"
 msgstr "Rime"
 
-#: data/homeward.json:planets[anvil].name data/telescope.json:planets_default[anvil].name
+#: data/homeward.json:planets[anvil].name data/planets.json:anvil.name data/telescope.json:planets_default[anvil].name
 msgid "Anvil"
 msgstr "Anvil"
 
@@ -12188,6 +12204,38 @@ msgstr "Champ de bouées"
 #: data/planets.json:tidewell.sites.buoy_field.desc
 msgid "Rows of mooring buoys strung with rope and ghost nets; light caps when futuristic."
 msgstr "Des rangées de bouées d'amarrage chargées de cordes et de filets fantômes ; des capuchons lumineux une fois futuristes."
+
+#: data/planets.json:anvil.sites[foundry_yard].name
+msgid "Foundry Yard"
+msgstr ""
+
+#: data/planets.json:anvil.sites[foundry_yard].desc
+msgid "hub base: casting hall, two stacks, conveyor truss and hopper, ore spur, ember slag tip, buried hauler"
+msgstr ""
+
+#: data/planets.json:anvil.sites[foundry_tower].name
+msgid "Ledger Foundry Tower"
+msgstr ""
+
+#: data/planets.json:anvil.sites[foundry_tower].desc
+msgid "the Ledger's colossal 130 m foundry stack on buttresses, pipes and slag tips"
+msgstr ""
+
+#: data/planets.json:anvil.sites[lava_forge].name
+msgid "Lava Forge"
+msgstr ""
+
+#: data/planets.json:anvil.sites[lava_forge].desc
+msgid "running furnace pouring molten slag down a channel to a pool; ladle crane; cools as restored"
+msgstr ""
+
+#: data/planets.json:anvil.sites[ruined_smelter].name
+msgid "Ruined Smelter"
+msgstr ""
+
+#: data/planets.json:anvil.sites[ruined_smelter].desc
+msgid "collapsed smelter hall frame, tipped and spilled pots, a toppled stack; restored as a planted pergola"
+msgstr ""
 
 #: data/radio.json:songs[verdance_sprout].name data/songs.json:songs[sprout_step].title
 msgid "Sprout Step"

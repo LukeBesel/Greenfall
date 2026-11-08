@@ -206,7 +206,8 @@ static func plan(fld: HexField, lay: CityLayout, levels: Dictionary, hub_level: 
 	_plan_buildings(p, fld, lay, levels, s)
 	_plan_roads(p, fld, lay, levels)
 	_plan_hub(p, hub_level)
-	_plan_skyline(p, fld, lay, s)
+	if not fld.has_meta("planet_env"):  # [planet-ochre] planet envs own their skyline
+		_plan_skyline(p, fld, lay, s)
 	return p
 
 

@@ -276,11 +276,11 @@ msgstr "はかり  へ  ◀"
 msgid "BALE  FEED"
 msgstr "ベール投入口"
 
-#: automation/depot.gd:284
+#: automation/depot.gd:290
 msgid "TRASH"
 msgstr "ゴミ"
 
-#: automation/depot.gd:321
+#: automation/depot.gd:327
 msgid "SCRAP  INTAKE  ·  WEIGH HERE"
 msgstr "スクラップ受付  ·  ここで計量"
 
@@ -479,8 +479,8 @@ msgstr "ベール%d個に1個をリサイクラーへ"
 msgid "Requires hub level %d or research: %s."
 msgstr "基地レベル %d または研究「%s」が必要。"
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:364
-#: systems/camp/camp.gd:376 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:378
+#: systems/camp/camp.gd:390 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
 #: systems/camp/hub_builds.gd:161 systems/camp/hub_builds.gd:171 systems/camp/yard_builds.gd:91
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
@@ -776,6 +776,10 @@ msgstr "WREN：そこが測量ゾーンの端よ、Lumi。外にはもやしか�
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi はふわりと固い地面に戻った。"
 
+#: planet/orbit/verdance_globe.gd:479 scenes/slice.gd:1016
+msgid "HEX CLEAN!  +%s"
+msgstr "ヘックス クリーン！  +%s"
+
 #: planet/planets/tidewell/env.gd:1180
 msgid "LEDGER  DREDGE %02d"
 msgstr "LEDGER  浚渫船 %02d"
@@ -783,6 +787,22 @@ msgstr "LEDGER  浚渫船 %02d"
 #: planet/planets/tidewell/env.gd:1226
 msgid "LEDGER MINING  ORE BARGE 3"
 msgstr "LEDGER マイニング  鉱石バージ 3"
+
+#: planet/sphere/sphere_walk.gd:431
+msgid "Planet %d m around"
+msgstr ""
+
+#: planet/sphere/sphere_walk.gd:431
+msgid "Walked %d m (%d%%)"
+msgstr ""
+
+#: planet/sphere/sphere_walk.gd:432
+msgid "Speed %.1f m/s"
+msgstr ""
+
+#: planet/sphere/sphere_walk.gd:432
+msgid "Bots near %d, far %d"
+msgstr ""
 
 #: plants/composter.gd:77
 msgid "E   compost press  ·  dormant until something grows"
@@ -868,47 +888,47 @@ msgstr "埋もれたパーツ  %s  ·  %.1f m"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "埋もれたパーツ  ·  シグナル %d%%"
 
-#: player/patch.gd:106
+#: player/patch.gd:146
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi はガタガタと庭に戻ってきた。いまのは何だったんだろう。"
 
-#: player/patch.gd:181
+#: player/patch.gd:240
 msgid "No seeds yet. Keep cleaning."
 msgstr "まだ種がない。片づけを続けよう。"
 
-#: player/patch.gd:220
+#: player/patch.gd:279
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "種がなくなった。咲いた植物がまた落としてくれる。"
 
-#: player/patch.gd:227
+#: player/patch.gd:286
 msgid "Watering can is empty. Refill at the hub."
 msgstr "じょうろが空っぽ。基地で補給しよう。"
 
-#: player/patch.gd:415
+#: player/patch.gd:481
 msgid "PERFECT BALE  %s"
 msgstr "パーフェクトベール  %s"
 
-#: player/patch.gd:421
+#: player/patch.gd:487
 msgid "OVERSTUFFED  %s"
 msgstr "詰め込みすぎ  %s"
 
-#: player/patch.gd:425
+#: player/patch.gd:491
 msgid "PURE  %s"
 msgstr "ピュア  %s"
 
-#: player/patch.gd:427
+#: player/patch.gd:493
 msgid "SURGE  %s"
 msgstr "サージ  %s"
 
-#: player/patch.gd:430
+#: player/patch.gd:496
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:473
+#: player/patch.gd:539
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:502
+#: player/patch.gd:568
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -1202,59 +1222,55 @@ msgstr "給水タンクを設置。近くの水やりロボはここで補給す
 msgid "WATER"
 msgstr "水"
 
-#: scenes/slice.gd:349
+#: scenes/slice.gd:355
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーンを塗って、好きな場所にクルーを送ろう。"
 
-#: scenes/slice.gd:1010
-msgid "HEX CLEAN!  +%s"
-msgstr "ヘックス クリーン！  +%s"
-
-#: scenes/slice.gd:1024
+#: scenes/slice.gd:1030
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice.gd:1026
+#: scenes/slice.gd:1032
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
 
-#: scenes/slice.gd:1033
+#: scenes/slice.gd:1039
 msgid "%s is out of range: %s"
 msgstr "%s は範囲外：%s"
 
-#: scenes/slice.gd:1043
+#: scenes/slice.gd:1049
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:1046 ui/rockets_panel.gd:39
+#: scenes/slice.gd:1052 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:1100
+#: scenes/slice.gd:1106
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陸：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:1101
+#: scenes/slice.gd:1107
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
 
-#: scenes/slice.gd:1101
+#: scenes/slice.gd:1107
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:1200
+#: scenes/slice.gd:1206
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice.gd:1371
+#: scenes/slice.gd:1377
 msgid "Welcome back. The junk waited for you."
 msgstr "おかえり。ガラクタが待っていたよ。"
 
-#: scenes/slice.gd:1388
+#: scenes/slice.gd:1394
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:1388
+#: scenes/slice.gd:1394
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
@@ -2818,19 +2834,19 @@ msgstr "E   作業台：アップグレード"
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
-#: systems/camp/camp.gd:362
+#: systems/camp/camp.gd:376
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   %s（Lv %d）：アップグレード完了"
 
-#: systems/camp/camp.gd:365
+#: systems/camp/camp.gd:379
 msgid "E   %s (Lv %d): %s"
 msgstr "E   %s（Lv %d）：%s"
 
-#: systems/camp/camp.gd:366
+#: systems/camp/camp.gd:380
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   %s（Lv %d）：%s にアップグレード（%s）"
 
-#: systems/camp/camp.gd:372
+#: systems/camp/camp.gd:386
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "ゴミ箱をアップグレード：%s。ここではベールが %d%% で売れる。"
 
@@ -4700,19 +4716,19 @@ msgstr "進行中"
 msgid "FREE"
 msgstr "無料"
 
-#: ui/list_detail.gd:539
+#: ui/list_detail.gd:541
 msgid "REQUIRES   NOT YET   %s"
 msgstr "必要条件   未達成   %s"
 
-#: ui/list_detail.gd:539
+#: ui/list_detail.gd:541
 msgid "Not unlocked yet. Keep playing."
 msgstr "まだ解放されていません。プレイを続けよう。"
 
-#: ui/list_detail.gd:542
+#: ui/list_detail.gd:544
 msgid "REQUIRES   %s"
 msgstr "必要条件   %s"
 
-#: ui/list_detail.gd:545
+#: ui/list_detail.gd:547
 msgid "REQUIRES   READY"
 msgstr "必要条件   OK"
 
@@ -11232,7 +11248,7 @@ msgstr "Tidewell"
 msgid "Rime"
 msgstr "Rime"
 
-#: data/homeward.json:planets[anvil].name data/telescope.json:planets_default[anvil].name
+#: data/homeward.json:planets[anvil].name data/planets.json:anvil.name data/telescope.json:planets_default[anvil].name
 msgid "Anvil"
 msgstr "Anvil"
 
@@ -12175,6 +12191,38 @@ msgstr "ブイフィールド"
 #: data/planets.json:tidewell.sites.buoy_field.desc
 msgid "Rows of mooring buoys strung with rope and ghost nets; light caps when futuristic."
 msgstr "ロープとゴーストネットが絡んだ係留ブイの列。未来化すると光るキャップがつく。"
+
+#: data/planets.json:anvil.sites[foundry_yard].name
+msgid "Foundry Yard"
+msgstr ""
+
+#: data/planets.json:anvil.sites[foundry_yard].desc
+msgid "hub base: casting hall, two stacks, conveyor truss and hopper, ore spur, ember slag tip, buried hauler"
+msgstr ""
+
+#: data/planets.json:anvil.sites[foundry_tower].name
+msgid "Ledger Foundry Tower"
+msgstr ""
+
+#: data/planets.json:anvil.sites[foundry_tower].desc
+msgid "the Ledger's colossal 130 m foundry stack on buttresses, pipes and slag tips"
+msgstr ""
+
+#: data/planets.json:anvil.sites[lava_forge].name
+msgid "Lava Forge"
+msgstr ""
+
+#: data/planets.json:anvil.sites[lava_forge].desc
+msgid "running furnace pouring molten slag down a channel to a pool; ladle crane; cools as restored"
+msgstr ""
+
+#: data/planets.json:anvil.sites[ruined_smelter].name
+msgid "Ruined Smelter"
+msgstr ""
+
+#: data/planets.json:anvil.sites[ruined_smelter].desc
+msgid "collapsed smelter hall frame, tipped and spilled pots, a toppled stack; restored as a planted pergola"
+msgstr ""
 
 #: data/radio.json:songs[verdance_sprout].name data/songs.json:songs[sprout_step].title
 msgid "Sprout Step"
