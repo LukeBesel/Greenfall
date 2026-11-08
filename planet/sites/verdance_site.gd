@@ -238,6 +238,8 @@ func _make() -> void:
 		furniture.town_r = town_r
 		furniture.goal_r = GOAL_R if start else 18.0
 		furniture.state = kit_state(level)
+		furniture.buildings = _foot.duplicate()
+		furniture.big_ship = start
 		var pb: Variant = city.get("_prop_body")
 		if pb is Node:
 			for cs: Node in (pb as Node).get_children():
