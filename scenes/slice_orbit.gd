@@ -450,7 +450,12 @@ func yard_point(anchor: String) -> Vector3:
 ## built state in the hub's dict, and the bin's reach is the start site's "bin" anchor. The
 ## yard models on the anchors are orbD's / yard's; Camp shows and hides what exists.
 func _attach_camp() -> void:
-	w.set("_ruin_bits", {"bench": bench})
+	var sp0: SitePrefab = globe.site_manager.prefab(0) if globe.site_manager else null  # [orbD] the yard's models on the anchors
+	if sp0:
+		var ys: YardSite = YardSite.build(w, sp0, bench)
+		w.set("_ruin_bits", ys.bits)
+	else:
+		w.set("_ruin_bits", {"bench": bench})
 	var camp: Camp = Camp.attach(w)
 	w.set("camp", camp)
 	if camp == null:

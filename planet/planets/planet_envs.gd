@@ -104,6 +104,7 @@ static func build_site(site_root: Node3D, site: Dictionary, stage: int, restorat
 	p.site = site
 	p.stage = clampi(stage, 1, 5)
 	p.restoration = clampf(restoration, 0.0, 1.0)
+	p.start_yard = hub_i == 0  # the start yard's machines need their anchors on every planet
 	if site.has("transform"):
 		if site_root.is_inside_tree():
 			site_root.global_transform = site["transform"]

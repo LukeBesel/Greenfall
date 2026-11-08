@@ -19,9 +19,15 @@ const SKIP: Array[String] = ["rocket_pad"]
 const FLOOR_UP_M: float = 1.6
 ## Largest step between neighbouring cells Lumi's hover takes (kerbs, deck edges, ramps).
 const STEP_UP_M: float = 0.45
+## Lumi reaches a machine from within this of its edge; edges searched out to MAX_EDGE_M.
+const EDGE_M: float = 1.2
+const MAX_EDGE_M: float = 6.0
+## Anchors moved by fix_anchors keep this far apart (machines 3 m apart, minus a little).
+const SPACING_M: float = 2.6
 
 
-static func audit(p: SitePrefab, terrain: SphereTerrain) -> Dictionary:
+static func audit(p: SitePrefab, terrain: SphereTerrain, only: Node = null) -> Dictionary:
+	var own: Node = only if only else p
 	var space: PhysicsDirectSpaceState3D = p.get_world_3d().direct_space_state
 	var shape := BoxShape3D.new()
 	shape.size = BOX - Vector3(0.06, 0.06, 0.06)
@@ -61,7 +67,7 @@ static func audit(p: SitePrefab, terrain: SphereTerrain) -> Dictionary:
 			if rh.is_empty():
 				break
 			var rc: Object = rh["collider"]
-			if rc is Node and p.is_ancestor_of(rc as Node):
+			if rc is Node and own.is_ancestor_of(rc as Node):
 				fh = maxf(0.0, ((rh["position"] as Vector3) - g).dot(up))
 				break
 			ex.append(rh["rid"])
@@ -70,7 +76,7 @@ static func audit(p: SitePrefab, terrain: SphereTerrain) -> Dictionary:
 		var ok: bool = true
 		for hit: Dictionary in space.intersect_shape(q, 16):
 			var co: Object = hit.get("collider")
-			if co is Node and p.is_ancestor_of(co as Node):
+			if co is Node and own.is_ancestor_of(co as Node):
 				ok = false
 				break
 		state[idx] = 1 if ok else 2
@@ -107,29 +113,43 @@ static func audit(p: SitePrefab, terrain: SphereTerrain) -> Dictionary:
 		if nm in SKIP:
 			continue
 		var a: Vector3 = p.anchor_local(nm).origin
-		var ok: bool = false
-		var r: int = int(ceil(REACH_M / STEP))
-		for dz: int in range(-r, r + 1):
-			for dx: int in range(-r, r + 1):
-				if Vector2(dx, dz).length() * STEP > REACH_M:
-					continue
-				var j: int = to_idx.call(a.x + dx * STEP, a.z + dz * STEP)
-				if j >= 0 and state[j] == 3:
-					ok = true
-					break
-			if ok:
+		# A machine's own body fills its anchor: Lumi needs to get to its edge. The edge is the
+		# nearest free cell; a reachable cell must lie within that distance + EDGE_M (and REACH_M).
+		var edge: float = -1.0
+		var reach_ok: bool = false
+		var rmax: int = int(ceil(MAX_EDGE_M / STEP))
+		var cells: Array = []
+		for dz: int in range(-rmax, rmax + 1):
+			for dx: int in range(-rmax, rmax + 1):
+				var d: float = Vector2(dx, dz).length() * STEP
+				if d <= MAX_EDGE_M:
+					cells.append([d, dx, dz])
+		cells.sort_custom(func(x: Array, y: Array) -> bool: return x[0] < y[0])
+		for e: Array in cells:
+			var j2: int = to_idx.call(a.x + int(e[1]) * STEP, a.z + int(e[2]) * STEP)
+			if j2 < 0:
+				continue
+			var d2: float = e[0]
+			if edge < 0.0 and free.call(j2):
+				edge = d2
+			var lim: float = maxf(REACH_M, (edge if edge >= 0.0 else 0.0) + EDGE_M)
+			if edge >= 0.0 and d2 > lim:
 				break
-		anchors[nm] = ok
-		if not ok:
+			if state[j2] == 3:
+				reach_ok = true
+				break
+		anchors[nm] = reach_ok
+		if not reach_ok:
 			cut.append(nm)
 	var why: String = ""
 	if s0 >= 0 and state[s0] != 3:  # what blocks the landing spot (for the report)
 		for hit: Dictionary in space.intersect_shape(q, 8):
 			var co: Object = hit.get("collider")
-			if co is Node and p.is_ancestor_of(co as Node):
+			if co is Node and own.is_ancestor_of(co as Node):
 				why += " %s" % String((co as Node).get_path()).get_slice("/Content/", 1)
 		why = "floor %.2f m:%s" % [floor_h[s0], why]
-	return {"reachable": reach, "anchors": anchors, "cut": cut, "start_free": s0 >= 0 and state[s0] == 3, "why": why}
+	return {"reachable": reach, "anchors": anchors, "cut": cut, "start_free": s0 >= 0 and state[s0] == 3, "why": why,
+		"state": state, "n": n}
 
 
 ## Reached free cells become 3 (free but unreached stays 1).
@@ -141,7 +161,8 @@ static func _mark_reached(state: PackedByteArray, seen: PackedByteArray) -> Pack
 
 
 ## True when Lumi's box fits at a site-local point (standing on the prefab's floor, if any).
-static func free_at(p: SitePrefab, terrain: SphereTerrain, local: Vector3) -> bool:
+static func free_at(p: SitePrefab, terrain: SphereTerrain, local: Vector3, only: Node = null) -> bool:
+	var owner_n: Node = only if only else p
 	var space: PhysicsDirectSpaceState3D = p.get_world_3d().direct_space_state
 	var wp: Vector3 = p.global_transform * Vector3(local.x, 0, local.z)
 	var up: Vector3 = wp.normalized()
@@ -166,14 +187,14 @@ static func free_at(p: SitePrefab, terrain: SphereTerrain, local: Vector3) -> bo
 	q.transform = Transform3D(SphereGrid.frame(up), g + up * (fh + BOX_Y))
 	for hit: Dictionary in space.intersect_shape(q, 16):
 		var co: Object = hit.get("collider")
-		if co is Node and p.is_ancestor_of(co as Node):
+		if co is Node and owner_n.is_ancestor_of(co as Node):
 			return false
 	return true
 
 
 ## The nearest free site-local point to `local` (rings of 0.75 m out to max_r), or `local`.
-static func nearest_free(p: SitePrefab, terrain: SphereTerrain, local: Vector3, max_r: float = 18.0) -> Vector3:
-	if free_at(p, terrain, local):
+static func nearest_free(p: SitePrefab, terrain: SphereTerrain, local: Vector3, max_r: float = 18.0, only: Node = null) -> Vector3:
+	if free_at(p, terrain, local, only):
 		return local
 	var r: float = 0.75
 	while r <= max_r:
@@ -181,7 +202,7 @@ static func nearest_free(p: SitePrefab, terrain: SphereTerrain, local: Vector3, 
 		for k: int in n:
 			var a: float = TAU * k / n
 			var c := local + Vector3(cos(a) * r, 0, sin(a) * r)
-			if free_at(p, terrain, c):
+			if free_at(p, terrain, c, only):
 				return c
 		r += 0.75
 	return local
@@ -192,14 +213,55 @@ static func nearest_free(p: SitePrefab, terrain: SphereTerrain, local: Vector3, 
 ## steps off to is free. Returns the anchors moved.
 static func fix_anchors(p: SitePrefab, terrain: SphereTerrain) -> PackedStringArray:
 	var moved := PackedStringArray()
-	for nm: String in ["depot", "bench", "door", "rocket_pad"]:
-		var m: Marker3D = p.anchor(nm)
-		if m == null:
+	# 1. The rocket pad: the spot Lumi steps off to must be free of the prefab's geometry.
+	var pad: Marker3D = p.anchor("rocket_pad")
+	var reserved: Array[Vector3] = []
+	if pad:
+		var step: Vector3 = pad.position + Vector3(4.5, 0, 3.0)
+		var to: Vector3 = nearest_free(p, terrain, step, 18.0, p.content)
+		if to.distance_to(step) > 0.01:
+			pad.position = to - Vector3(4.5, 0, 3.0)
+			moved.append("rocket_pad")
+		reserved.append(pad.position)
+		reserved.append(pad.position + Vector3(4.5, 0, 3.0))
+	# 2. Every other anchor: on ground Lumi can reach from there (a raft's deck, not the sea), clear
+	# of the prefab's geometry and SPACING_M from anchors already settled.
+	var r: Dictionary = audit(p, terrain, p.content)
+	var state: PackedByteArray = r["state"]
+	var n: int = r["n"]
+	var reach_at := func(l: Vector3) -> bool:
+		var ix: int = int(round((l.x + HALF_M) / STEP))
+		var iz: int = int(round((l.z + HALF_M) / STEP))
+		return ix >= 0 and iz >= 0 and ix < n and iz < n and state[iz * n + ix] == 3
+	var spaced := func(l: Vector3) -> bool:
+		for q: Vector3 in reserved:
+			if Vector2(q.x - l.x, q.z - l.z).length() < SPACING_M:
+				return false
+		return true
+	for nm: String in p.anchor_names():
+		if nm == "rocket_pad":
 			continue
+		var m: Marker3D = p.anchor(nm)
 		var at: Vector3 = m.position
-		var probe: Vector3 = at + (Vector3(4.5, 0, 3.0) if nm == "rocket_pad" else Vector3.ZERO)
-		var to: Vector3 = nearest_free(p, terrain, probe)
-		if to.distance_to(probe) > 0.01:
-			m.position = to - (probe - at)
-			moved.append(nm)
+		var ok: bool = reach_at.call(at)  # a designed layout keeps its spacing; only moved anchors are spaced
+		if not ok:
+			var best := at
+			var found: bool = false
+			var rr: float = STEP
+			while rr <= HALF_M and not found:
+				var k_n: int = maxi(8, int(TAU * rr / STEP))
+				for k: int in k_n:
+					var a: float = TAU * k / k_n
+					var c := at + Vector3(cos(a) * rr, 0, sin(a) * rr)
+					if reach_at.call(c) and spaced.call(c):
+						best = c
+						found = true
+						break
+				rr += STEP
+			if found:
+				m.position = best
+				moved.append(nm)
+		reserved.append(m.position)
+	if not moved.is_empty():
+		p.anchors_moved.emit(moved)
 	return moved
