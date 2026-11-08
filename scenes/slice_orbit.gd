@@ -239,7 +239,13 @@ func _build_patch() -> void:
 	# Facing north from the pad's middle: the crashed pod (anchor "pod", 9.8 m south) stays behind
 	# the follow camera (~6 m back) instead of filling the view or swallowing the camera.
 	var spawn_dir: Vector3 = g.terrain.local_to_dir(hub_cell, 0.0, 0.5)
+	if DevHooks.has("orbit-spawn"):  # [v1world] dev: --orbit-spawn=x,z[,yaw_deg] metres from the start cell (renders of the junk field)
+		var sp: PackedStringArray = DevHooks.get_s("orbit-spawn", "0,0").split(",")
+		spawn_dir = g.terrain.local_to_dir(hub_cell, float(sp[0]), float(sp[1]) if sp.size() > 1 else 0.0)
 	var north: Vector3 = -SphereGrid.frame(spawn_dir).z
+	if DevHooks.has("orbit-spawn") and DevHooks.get_s("orbit-spawn", "").split(",").size() > 2:  # [v1world]
+		var up_s: Vector3 = spawn_dir.normalized()
+		north = north.rotated(up_s, deg_to_rad(float(DevHooks.get_s("orbit-spawn", "").split(",")[2])))
 	cam = SphereCam.new()
 	cam.name = "SphereCam"
 	cam.surface = g.surface

@@ -308,7 +308,7 @@ func test_materialized_cell_takes_a_full_cell_of_work() -> void:
 	crew.field = field
 	var c: int = _g5.cells_around(100, 1)[3]
 	field.materialize(c)
-	assert_eq(field.pieces_in(c).size(), SphereField.FULL_PIECES)
+	assert_eq(field.pieces_in(c).size(), SphereField.DRAW_PIECES)
 	var u: Dictionary = crew.spawn("scoopie", 0, c)
 	crew.order(u, c)
 	var at_clean: Array = [-1.0]
