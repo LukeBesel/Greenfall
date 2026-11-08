@@ -748,6 +748,26 @@ msgstr "[ŴŔÉÑ: Ţĥàţ'š ţĥé éðĝé ôƒ ţĥé šûŕvéý žôñé,
 msgid "Lumi hovers back onto solid ground."
 msgstr "[Ļûmî ĥôvéŕš bàçķ ôñţô šôļîð ĝŕôûñð. ~~~~~~~~~]"
 
+#: planet/orbit/verdance_globe.gd:417 scenes/slice.gd:850
+msgid "HEX CLEAN!  +%s"
+msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
+
+#: planet/sphere/sphere_walk.gd:431
+msgid "Planet %d m around"
+msgstr "[Þļàñéţ %d m àŕôûñð ~~~]"
+
+#: planet/sphere/sphere_walk.gd:431
+msgid "Walked %d m (%d%%)"
+msgstr "[Ŵàļķéð %d m (%d%%) ~~~]"
+
+#: planet/sphere/sphere_walk.gd:432
+msgid "Speed %.1f m/s"
+msgstr "[Šþééð %.1f m/š ~~]"
+
+#: planet/sphere/sphere_walk.gd:432
+msgid "Bots near %d, far %d"
+msgstr "[Bôţš ñéàŕ %d, ƒàŕ %d ~~~~]"
+
 #: plants/composter.gd:74
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   [çômþôšţ þŕéšš  ·  ðôŕmàñţ ûñţîļ šôméţĥîñĝ ĝŕôŵš ~~~~~~~~~~~~~]"
@@ -832,47 +852,47 @@ msgstr "[ŠÎĜÑÀĻ  %s  ·  %.1f m ~~~~]"
 msgid "SIGNAL  %d%%"
 msgstr "[ŠÎĜÑÀĻ  %d%% ~]"
 
-#: player/patch.gd:106
+#: player/patch.gd:146
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "[Ļûmî ŕàţţļéš bàçķ ûþ îñţô ţĥé ýàŕð. Ţĥàţ ŵàš ôðð. ~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:181
+#: player/patch.gd:240
 msgid "No seeds yet. Keep cleaning."
 msgstr "[Ñô šééðš ýéţ. Ķééþ çļéàñîñĝ. ~~~~~~~]"
 
-#: player/patch.gd:220
+#: player/patch.gd:279
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "[Ôûţ ôƒ šééðš. Bļôômîñĝ þļàñţš ðŕôþ môŕé. ~~~~~~~~~~~]"
 
-#: player/patch.gd:227
+#: player/patch.gd:286
 msgid "Watering can is empty. Refill at the hub."
 msgstr "[Ŵàţéŕîñĝ çàñ îš émþţý. Ŕéƒîļļ àţ ţĥé ĥûb. ~~~~~~~~~~~]"
 
-#: player/patch.gd:411
+#: player/patch.gd:469
 msgid "PERFECT BALE  %s"
 msgstr "[ÞÉŔFÉÇŢ BÀĻÉ  %s ~~~]"
 
-#: player/patch.gd:417
+#: player/patch.gd:475
 msgid "OVERSTUFFED  %s"
 msgstr "[ÔVÉŔŠŢÛFFÉÐ  %s ~~]"
 
-#: player/patch.gd:421
+#: player/patch.gd:479
 msgid "PURE  %s"
 msgstr "[ÞÛŔÉ  %s ~]"
 
-#: player/patch.gd:423
+#: player/patch.gd:481
 msgid "SURGE  %s"
 msgstr "[ŠÛŔĜÉ  %s ~]"
 
-#: player/patch.gd:426
+#: player/patch.gd:484
 msgid "  (streak +%d%%)"
 msgstr "  [(šţŕéàķ +%d%%) ~~~]"
 
-#: player/patch.gd:470
+#: player/patch.gd:528
 msgid "Salvaged: %s"
 msgstr "[Šàļvàĝéð: %s ~]"
 
-#: player/patch.gd:500
+#: player/patch.gd:558
 msgid "Recovered: %s"
 msgstr "[Ŕéçôvéŕéð: %s ~~]"
 
@@ -1178,63 +1198,59 @@ msgstr "[Ŵàţéŕ Ţàñķ þļàçéð. Ŵàţéŕéŕš ñéàŕbý ŵîļļ
 msgid "WATER"
 msgstr "[ŴÀŢÉŔ ~]"
 
-#: scenes/slice.gd:294
+#: scenes/slice.gd:297
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: þàîñţ žôñéš àñð šéñð çŕéŵš ŵĥéŕé ýôû ŵàñţ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:535
+#: scenes/slice.gd:538
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "[ĻM-1 ôñļîñé. Bļôôm Çôŕé 4%: ĝŕééñ ļîĝĥţ ļôŵ. Çŕàðļé ŕéļàý: ƒàîñţ. Ĝŕôŵ šôméţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:847
-msgid "HEX CLEAN!  +%s"
-msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
-
-#: scenes/slice.gd:861
+#: scenes/slice.gd:864
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice.gd:863
+#: scenes/slice.gd:866
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "[Ţĥé ŵĥôļé Ĵûñķýàŕð îš çļéàñ. Ļûmî bééþš à véŕý ļôñĝ, véŕý ĥàþþý bééþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:870
+#: scenes/slice.gd:873
 msgid "%s is out of range: %s"
 msgstr "[%s îš ôûţ ôƒ ŕàñĝé: %s ~~~~~]"
 
-#: scenes/slice.gd:880
+#: scenes/slice.gd:883
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ 5 ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:883 ui/rockets_panel.gd:39
+#: scenes/slice.gd:886 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "[Éñéŕĝý çéļļš ŕéçĥàŕĝîñĝ: %s. Ŕôçķéţ ûþĝŕàðéš ŕéƒîļļ ţĥém ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:937
+#: scenes/slice.gd:940
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "[Ţôûçĥðôŵñ: %s. Ĥûb %d ôƒ %d. %s ~~~~~~~~]"
 
-#: scenes/slice.gd:938
+#: scenes/slice.gd:941
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "[Ţĥé ŕôçķéţ îš þàŕķéð ôñ ţĥé ļôţ, ŕéàðý ŵĥéñ îţš çéļļš ŕéƒîļļ. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:938
+#: scenes/slice.gd:941
 msgid "Landed on the base pad."
 msgstr "[Ļàñðéð ôñ ţĥé bàšé þàð. ~~~~~]"
 
-#: scenes/slice.gd:1029
+#: scenes/slice.gd:1032
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1197
+#: scenes/slice.gd:1200
 msgid "Welcome back. The junk waited for you."
 msgstr "[Ŵéļçômé bàçķ. Ţĥé ĵûñķ ŵàîţéð ƒôŕ ýôû. ~~~~~~~~~~]"
 
-#: scenes/slice.gd:1214
+#: scenes/slice.gd:1217
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:1214
+#: scenes/slice.gd:1217
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 

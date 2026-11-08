@@ -10,6 +10,9 @@ var info: Dictionary = {}
 var size: float = 0.55
 var carried: bool = false
 var claimed: bool = false  # being sucked into a depot
+## [orbit] Radius of the round planet the cubes live on (0 = a flat district). Gravity there is
+## radial (a point-gravity Area3D set up by the planet scene).
+static var planet_radius: float = 0.0
 
 var _visual: MeshInstance3D
 var _mat: ShaderMaterial
@@ -87,7 +90,14 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	_land_cooldown = maxf(0.0, _land_cooldown - delta)
-	if global_position.y < -20.0 and not carried:
+	if planet_radius > 0.0:  # [orbit] round planet: fell into it (radial gravity, planet/orbit/)
+		if not carried and global_position.length() < planet_radius - 40.0:
+			var lumi: Node3D = get_tree().get_first_node_in_group("patch") as Node3D
+			var u: Vector3 = (lumi.global_position if lumi else global_position).normalized()
+			global_position = (lumi.global_position if lumi else u * planet_radius) + u * 2.0
+			linear_velocity = Vector3.ZERO
+			GameState.inc_stat("cubes_fell")
+	elif global_position.y < -20.0 and not carried:
 		# Fell out of the world: put it back near the hub.
 		global_position = Vector3(randf_range(-1, 1), 2.0, randf_range(2, 4))
 		linear_velocity = Vector3.ZERO

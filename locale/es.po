@@ -751,6 +751,26 @@ msgstr ""
 msgid "Lumi hovers back onto solid ground."
 msgstr ""
 
+#: planet/orbit/verdance_globe.gd:417 scenes/slice.gd:850
+msgid "HEX CLEAN!  +%s"
+msgstr "¡HEXÁGONO LIMPIO!  +%s"
+
+#: planet/sphere/sphere_walk.gd:431
+msgid "Planet %d m around"
+msgstr ""
+
+#: planet/sphere/sphere_walk.gd:431
+msgid "Walked %d m (%d%%)"
+msgstr ""
+
+#: planet/sphere/sphere_walk.gd:432
+msgid "Speed %.1f m/s"
+msgstr ""
+
+#: planet/sphere/sphere_walk.gd:432
+msgid "Bots near %d, far %d"
+msgstr ""
+
 #: plants/composter.gd:74
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   prensa de compost  ·  inactiva hasta que algo crezca"
@@ -833,47 +853,47 @@ msgstr "SEÑAL  %s  ·  %.1f m"
 msgid "SIGNAL  %d%%"
 msgstr "SEÑAL  %d%%"
 
-#: player/patch.gd:106
+#: player/patch.gd:146
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi vuelve traqueteando al patio. Qué raro."
 
-#: player/patch.gd:181
+#: player/patch.gd:240
 msgid "No seeds yet. Keep cleaning."
 msgstr "Aún no hay semillas. Sigue limpiando."
 
-#: player/patch.gd:220
+#: player/patch.gd:279
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Sin semillas. Las plantas en flor dan más."
 
-#: player/patch.gd:227
+#: player/patch.gd:286
 msgid "Watering can is empty. Refill at the hub."
 msgstr "Regadera vacía. Rellénala en la base."
 
-#: player/patch.gd:411
+#: player/patch.gd:469
 msgid "PERFECT BALE  %s"
 msgstr "PACA PERFECTA  %s"
 
-#: player/patch.gd:417
+#: player/patch.gd:475
 msgid "OVERSTUFFED  %s"
 msgstr "REPLETA  %s"
 
-#: player/patch.gd:421
+#: player/patch.gd:479
 msgid "PURE  %s"
 msgstr "PURA  %s"
 
-#: player/patch.gd:423
+#: player/patch.gd:481
 msgid "SURGE  %s"
 msgstr "IMPULSO  %s"
 
-#: player/patch.gd:426
+#: player/patch.gd:484
 msgid "  (streak +%d%%)"
 msgstr "  (racha +%d%%)"
 
-#: player/patch.gd:470
+#: player/patch.gd:528
 msgid "Salvaged: %s"
 msgstr "Rescatado: %s"
 
-#: player/patch.gd:500
+#: player/patch.gd:558
 msgid "Recovered: %s"
 msgstr "Recuperado: %s"
 
@@ -1179,63 +1199,59 @@ msgstr "Tanque de agua colocado. Los regadores cercanos recargarán aquí."
 msgid "WATER"
 msgstr "AGUA"
 
-#: scenes/slice.gd:294
+#: scenes/slice.gd:297
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Enlace de robots en línea. Pulsa B para el mando: pinta zonas y manda equipos donde quieras."
 
-#: scenes/slice.gd:535
+#: scenes/slice.gd:538
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 en línea. Núcleo Floral 4%: luz verde baja. Relé del Cradle: débil. Haz crecer algo."
 
-#: scenes/slice.gd:847
-msgid "HEX CLEAN!  +%s"
-msgstr "¡HEXÁGONO LIMPIO!  +%s"
-
-#: scenes/slice.gd:861
+#: scenes/slice.gd:864
 msgid "Milestone: %d hexes clean!"
 msgstr "Hito: ¡%d hexágonos limpios!"
 
-#: scenes/slice.gd:863
+#: scenes/slice.gd:866
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "Todo el desguace está limpio. Lumi emite un pitido muy largo y muy feliz."
 
-#: scenes/slice.gd:870
+#: scenes/slice.gd:873
 msgid "%s is out of range: %s"
 msgstr "%s está fuera de alcance: %s"
 
-#: scenes/slice.gd:880
+#: scenes/slice.gd:883
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Bloqueado. Sube tu base a nivel 5 para construir la plataforma de lanzamiento."
 
-#: scenes/slice.gd:883 ui/rockets_panel.gd:39
+#: scenes/slice.gd:886 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Celdas de energía recargando: %s. Las mejoras del cohete las recargan más rápido."
 
-#: scenes/slice.gd:937
+#: scenes/slice.gd:940
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Aterrizaje: %s. Base %d de %d. %s"
 
-#: scenes/slice.gd:938
+#: scenes/slice.gd:941
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "El cohete está aparcado en el solar, listo cuando se recarguen sus celdas."
 
-#: scenes/slice.gd:938
+#: scenes/slice.gd:941
 msgid "Landed on the base pad."
 msgstr "Aterrizaje en la plataforma de la base."
 
-#: scenes/slice.gd:1029
+#: scenes/slice.gd:1032
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Las mejoras necesitan un banco de trabajo. Vuelve a la base."
 
-#: scenes/slice.gd:1197
+#: scenes/slice.gd:1200
 msgid "Welcome back. The junk waited for you."
 msgstr "Bienvenido de nuevo. La chatarra te ha esperado."
 
-#: scenes/slice.gd:1214
+#: scenes/slice.gd:1217
 msgid "OUTPOST %d · Lv%d"
 msgstr "PUESTO %d · Nv%d"
 
-#: scenes/slice.gd:1214
+#: scenes/slice.gd:1217
 msgid "OUTPOST %d · RUIN"
 msgstr "PUESTO %d · RUINA"
 

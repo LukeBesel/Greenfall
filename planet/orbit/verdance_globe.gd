@@ -13,7 +13,13 @@ extends Node3D
 ## - Junk: real junk models in the streamer's 70 m near ring (near_changed), from cached
 ##   per-cell transforms. Near robots are SphereBots on the hex graph (this node is their graph).
 ##   Far crews are data only.
+## Phase A (owner decisions, docs/DECISIONS.md): the real Lumi (player/patch.gd with SphereMotor)
+## scoops real junk (SphereField + SphereJunkView), presses bales that fall with radial gravity,
+## stacks and carries them to a real Depot on the start site, with the game HUD and economy.
+## Real day and night sides: two suns fixed in space, the planet turns once per DAY_MIN.
 ## Dev: --orbit-walk[=boost] --orbit-lap-quit, --orbit-view=follow|ground|command|mid,
+## --orbit-day=MIN (rotation period, default 24), --orbit-time=0..1 (local time at the start hub,
+## 0.5 = noon), --orbit-scoop (autowalk with the scoop held), --orbit-cash (scripted bale test),
 ## --orbit-presim=MIN, --orbit-trail, --orbit-pieces=N, --orbit-hubs=N, --orbit-nohud.
 ## The first standalone prototype is still there as --orbit=v1 (planet/orbit/orbit_world.gd).
 
@@ -30,25 +36,34 @@ var cells: SphereCells
 var streamer: SphereStreamer
 var surface: SphereSurface
 var swarm: SphereSwarm
-var walker: SphereWalker
+var lumi: Patch
 var cam: SphereCam
+var field: SphereField
+var junk_view: SphereJunkView
+var depot: Depot
+var hud: HUD
+var district_name: String = "Verdance"
+var day_min: float = 24.0
+var day_t: float = 0.5  # planet rotation phase (0..1)
+var sun2: DirectionalLight3D
+var sky_sun: DirectionalLight3D
+var lamp: OmniLight3D
+var _cubes_root: Node3D
+var _spin_axis := Vector3.UP
+var _sun_dir0 := Vector3.ZERO  # first sun, rotation phase 0, planet frame
 var sun: DirectionalLight3D
 var env: Environment
 var hubs: Array[int] = []
 var sites: Array[Dictionary] = []
 var bots: Array[SphereBot] = []
 var crews: Array[Dictionary] = []
-var pieces_per_cell: int = 120
 var stats: Dictionary = {}
-var view: String = "follow"
+var view_mode: String = "follow"
+var view: SphereJunkView  # the FieldView role (Patch calls world.view)
 
 var _orbit_cam: Camera3D
-var _junk_mms: Array[MultiMeshInstance3D] = []
-var _junk_lift: Array[float] = []
-var _junk_cache: Dictionary = {}
 var _junk_dirty: bool = true
 var _near_set: Dictionary = {}
-var _junk_shown: Dictionary = {}
 var _claimed: Dictionary = {}
 var _hud: Label
 var _lap_on: bool = false
@@ -77,8 +92,7 @@ func _ready() -> void:
 	terrain.set_cell_elevation(planet.elevation, 14.0, sorted_e[int(sorted_e.size() * 0.25)])
 	cells = SphereCells.from_planet(planet)
 	stats["grid_ms"] = Time.get_ticks_msec() - t1
-	pieces_per_cell = int(DevHooks.get_f("orbit-pieces", 120.0))
-	view = DevHooks.get_s("orbit-view", "follow")
+	view_mode = DevHooks.get_s("orbit-view", "follow")
 	_place_hubs(int(DevHooks.get_f("orbit-hubs", 10.0)))
 	crews.clear()
 	for i: int in range(1, sites.size()):
@@ -89,6 +103,7 @@ func _ready() -> void:
 			all_crews.append({"hub": int(sites[i]["cell"]), "rate": 0.5 + 0.1 * (i % 4), "acc": 0.0})
 		_tick(all_crews, DevHooks.get_f("orbit-presim", 120.0) * 60.0)
 	cells.refresh_all()
+	field = SphereField.new(grid, terrain, cells, seed_v)
 	_build_env()
 	surface = SphereSurface.new(grid.radius_m)
 	surface.height_fn = terrain.height
@@ -99,47 +114,66 @@ func _ready() -> void:
 	streamer.name = "Streamer"
 	add_child(streamer)
 	streamer.setup(grid, terrain, cells)
-	streamer.near_changed.connect(func(_a: PackedInt32Array, _r: PackedInt32Array) -> void: _junk_dirty = true)
-	_build_junk_pool()
+	streamer.near_changed.connect(_on_near_changed)
+	junk_view = SphereJunkView.new()
+	junk_view.name = "Junk"
+	junk_view.setup(field)
+	view = junk_view
+	add_child(junk_view)
+	_build_gravity()
+	_cubes_root = Node3D.new()
+	_cubes_root.name = "Cubes"
+	add_child(_cubes_root)
 	_build_base(sites[0])
 	for i: int in sites.size():
 		_build_beacon(sites[i], i == 0)
-	# Lumi on the start site, facing north up the main street.
-	walker = SphereWalker.new(surface)
-	walker.name = "Lumi"
-	match DevHooks.get_s("orbit-walk", ""):
-		"":
-			walker.input = SphereInput.new()
-		"boost":
-			walker.input = SphereAutoInput.new(Vector3(0, 0, -1), true)
-		_:
-			walker.input = SphereAutoInput.new(Vector3(0, 0, -1), false)
-	add_child(walker)
+	# Lumi (the real Patch) on the start site, facing north up the main street.
 	var hub_cell: int = int(sites[0]["cell"])
 	var spawn_dir: Vector3 = terrain.local_to_dir(hub_cell, 0.0, 6.0)
 	var north: Vector3 = -SphereGrid.frame(spawn_dir).z
-	walker.place(terrain.ground(spawn_dir) + spawn_dir * 0.3, north)
 	cam = SphereCam.new()
 	cam.name = "SphereCam"
 	cam.surface = surface
-	cam.target = walker
+	lumi = Patch.new()
+	lumi.name = "Patch"
+	lumi.world = self
+	match DevHooks.get_s("orbit-walk", ""):
+		"":
+			lumi.input = SphereInput.new()
+		"boost":
+			lumi.input = SphereAutoInput.new(Vector3(0, 0, -1), true)
+		_:
+			lumi.input = SphereAutoInput.new(Vector3(0, 0, -1), false)
+	if DevHooks.has("orbit-scoop") and lumi.input is SphereAutoInput:
+		(lumi.input as SphereAutoInput).scoop = true
+	lumi.enable_sphere(surface, cam)
+	add_child(lumi)
+	lumi.place_on_sphere(terrain.ground(spawn_dir), north)
+	lumi.detector.field = field
+	cam.target = lumi
 	add_child(cam)
-	walker.cam = cam
 	cam.reset_frame(north)
 	_apply_view()
 	cam.snap()
+	_build_depot(sites[0])
+	_build_lights()
 	_spawn_bots(hub_cell, 4)
 	_update_centres()
 	var t2: int = Time.get_ticks_msec()
 	streamer.settle()
 	stats["settle_ms"] = Time.get_ticks_msec() - t2
-	if DevHooks.has("orbit-walk"):
+	if DevHooks.has("orbit-walk") and not DevHooks.has("orbit-scoop"):
 		_lap_on = true
-		_lap_start = walker.global_position
+		_lap_start = lumi.global_position
 	if DevHooks.has("orbit-trail"):
 		_draw_trail()
 	Settings.apply_quality_to_tree(self)
 	if not (DevHooks.has("orbit-nohud") or DevHooks.has("no-hud")):
+		hud = HUD.new()  # the game's HUD: cubes, bale meter, hex readout, prompts
+		hud.patch = lumi
+		hud.world = self
+		add_child(hud)
+	if DevHooks.has("orbit-devhud"):
 		var cl := CanvasLayer.new()
 		add_child(cl)
 		_hud = Label.new()
@@ -148,13 +182,15 @@ func _ready() -> void:
 		_hud.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
 		cl.add_child(_hud)
 	stats["ready_ms"] = Time.get_ticks_msec() - t0
+	if DevHooks.has("orbit-cash"):
+		_cash_test.call_deferred()
 	print("[orbit] integrated: R=%.0fm hexes=%d around=%.1fkm hubs=%d (nearest hub mean %.0fm, min %.0fm) ready=%dms planet=%dms grid=%dms settle=%dms" % [
 		grid.radius_m, grid.cell_count(), TAU * grid.radius_m / 1000.0, sites.size(), _hub_spacing(false), _hub_spacing(true),
 		stats["ready_ms"], stats["planet_ms"], stats["grid_ms"], stats["settle_ms"]])
 
 
 func _apply_view() -> void:
-	match view:
+	match view_mode:
 		"ground":
 			cam.distance = 7.5
 			cam.pitch = -0.1
@@ -254,7 +290,7 @@ func _build_base(s: Dictionary) -> void:
 	var wall: StandardMaterial3D = AssetLib.pbr_material("concrete_wall_008", 0.22, Color(0.85, 0.8, 0.74), true)
 	var brick: StandardMaterial3D = AssetLib.pbr_material("red_brick", 0.3, Color(0.8, 0.72, 0.68), true)
 	var slab_m: StandardMaterial3D = AssetLib.pbr_material("concrete_pavement", 0.2, Color(0.9, 0.9, 0.88), true)
-	_box(root, Vector3(0, 0, 0), Vector3(16, 0.25, 16), slab_m, false)
+	_box(root, Vector3(0, 0, 0), Vector3(16, 0.04, 16), slab_m, false)  # flush with the pad (no collision)
 	_box(root, Vector3(-4.5, 0, -4.0), Vector3(3.4, 2.4, 2.2), wall, true)
 	if AssetLib.has_model("street_lamp_01"):
 		for p: Vector2 in [Vector2(4.2, -3.0), Vector2(-7, 7), Vector2(7, 7)]:
@@ -329,104 +365,131 @@ func _build_env() -> void:
 	sun.light_color = Color(1.0, 0.94, 0.85)
 	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = 120.0
+	sun.sky_mode = DirectionalLight3D.SKY_MODE_LIGHT_ONLY
 	add_child(sun)
 
 
-# --- Junk (near ring) -------------------------------------------------------------------
+# --- Game world API (what Patch, the HUD and the Depot call) -----------------------------
 
-func _build_junk_pool() -> void:
-	for id: String in JUNK_MODELS:
-		var mesh: Mesh = AssetLib.model_mesh_lite(id, 900) if AssetLib.has_model(id) else null
-		if mesh == null:
-			mesh = BoxMesh.new()
-		_junk_lift.append(-mesh.get_aabb().position.y)
-		var mm := MultiMesh.new()
-		mm.transform_format = MultiMesh.TRANSFORM_3D
-		mm.mesh = mesh
-		var mmi := MultiMeshInstance3D.new()
-		mmi.multimesh = mm
-		mmi.extra_cull_margin = 4.0
-		add_child(mmi)
-		_junk_mms.append(mmi)
-
-
-func _cell_junk(cell: int) -> Array:
-	if _junk_cache.has(cell):
-		return _junk_cache[cell]
-	var rng := RandomNumberGenerator.new()
-	rng.seed = planet.seed_value * 31 + cell
-	var bufs: Array = []
-	for _m: int in JUNK_MODELS.size():
-		bufs.append(PackedFloat32Array())
-	var wsum: float = 0.0
-	for w: float in JUNK_W:
-		wsum += w
-	var ctr: Vector3 = grid.centers[cell]
-	var f: Basis = SphereGrid.frame(ctr)
-	for i: int in pieces_per_cell:
-		var r: float = sqrt(rng.randf()) * 9.2
-		var a: float = rng.randf() * TAU
-		var d: Vector3 = (ctr + (f.x * cos(a) + f.z * sin(a)) * (r / grid.radius_m)).normalized()
-		var pick: float = rng.randf() * wsum
-		var m: int = 0
-		while m < JUNK_W.size() - 1 and pick > JUNK_W[m]:
-			pick -= JUNK_W[m]
-			m += 1
-		var lf: Basis = SphereGrid.frame(d)
-		var b := Basis(lf.y, rng.randf() * TAU) * lf
-		if rng.randf() < 0.45:
-			b = Basis(b.x, rng.randf_range(1.2, 1.7)) * b
-		var s: float = rng.randf_range(0.85, 1.25)
-		b = b.scaled(Vector3.ONE * s)
-		var o: Vector3 = terrain.ground(d) + d * (_junk_lift[m] * s * 0.6 - 0.04)
-		var buf: PackedFloat32Array = bufs[m]
-		buf.append_array(PackedFloat32Array([b.x.x, b.y.x, b.z.x, o.x, b.x.y, b.y.y, b.z.y, o.y, b.x.z, b.y.z, b.z.z, o.z]))
-		bufs[m] = buf
-	_junk_cache[cell] = bufs
-	return bufs
+func _on_near_changed(added: PackedInt32Array, _removed: PackedInt32Array) -> void:
+	for c: int in added:
+		field.materialize(c)
+	_junk_dirty = true
 
 
 func _rebuild_junk() -> void:
-	var t0: int = Time.get_ticks_msec()
 	var near: PackedInt32Array = streamer.near_cells()
 	_near_set.clear()
 	for c: int in near:
 		_near_set[c] = true
-	if _junk_cache.size() > 2500:
-		var keep: Dictionary = {}
-		for c: int in near:
-			if _junk_cache.has(c):
-				keep[c] = _junk_cache[c]
-		_junk_cache = keep
-	var out: Array = []
-	for _m: int in JUNK_MODELS.size():
-		out.append(PackedFloat32Array())
-	var total: int = 0
-	for c: int in near:
-		var j: float = cells.junk[c] if cells.is_dirty(c) else 0.0
-		_junk_shown[c] = j
-		if j <= 0.02:
-			continue
-		var bufs: Array = _cell_junk(c)
-		for m: int in bufs.size():
-			var b: PackedFloat32Array = bufs[m]
-			@warning_ignore("integer_division")
-			var k: int = int(round(b.size() / 12 * j))
-			if k > 0:
-				var o: PackedFloat32Array = out[m]
-				o.append_array(b.slice(0, k * 12))
-				out[m] = o
-				total += k
-	for m: int in _junk_mms.size():
-		var mm: MultiMesh = _junk_mms[m].multimesh
-		var o: PackedFloat32Array = out[m]
-		mm.instance_count = 0
-		@warning_ignore("integer_division")
-		mm.instance_count = o.size() / 12
-		if o.size() > 0:
-			mm.buffer = o
-	stats["junk"] = total
-	stats["junk_ms"] = Time.get_ticks_msec() - t0
+	junk_view.rebuild(near)
+	stats["junk"] = int(junk_view.stats.get("pieces", 0))
+	stats["junk_ms"] = int(junk_view.stats.get("rebuild_us", 0)) / 1000
+
+
+func collect_piece(pid: int) -> void:
+	var hid: int = field.piece_hex[pid]
+	var became_clean: bool = field.remove_piece(pid)
+	_write_cell(hid)
+	junk_view.hide_piece(pid)
+	if became_clean:
+		_on_hex_clean(hid)
+
+
+## SphereField's ledger -> SphereCells (ground texture, far view) and the survey PlanetData.
+func _write_cell(hid: int) -> void:
+	var left: float = 1.0 - field.removed_fraction(hid)
+	cells.set_junk(hid, left if field.hex_clean[hid] == 0 else 0.0)
+	planet.set_junk(hid, left)
+	if field.hex_clean[hid] == 1:
+		planet.mark_clean(hid)
+
+
+func _on_hex_clean(hid: int) -> void:
+	cells.set_state(hid, 1)
+	var bonus: BigNum = Economy.hex_bonus(field.hex_total[hid])
+	GameState.add_currency("cubes", bonus)
+	GameState.inc_stat("hexes_cleaned")
+	var center: Vector3 = field.hex_center(hid)
+	var u: Vector3 = center.normalized()
+	Audio.play("chime", 1.0, -3.0)
+	Vfx.burst("big_sparkle", center + u * 0.3, Color(1.0, 0.92, 0.55))
+	Vfx.float_text(center + u * 1.4, tr("HEX CLEAN!  +%s") % Settings.fmt(bonus), Color(1.0, 0.92, 0.45), 1.5, 2.0)
+	EventBus.hex_cleaned.emit(hid, center, bonus)
+	EventBus.field_progress_changed.emit(field.cleaned_count, field.junk_hex_count)
+	lumi.model.set_happy(1.0)
+
+
+func salvage_materials(_type_id: String, _vol: float) -> void:
+	pass  # hub materials come with the hub (phase D)
+
+
+func add_cube(cube: JunkCube) -> void:
+	_cubes_root.add_child(cube)
+
+
+## Cubes fall toward the planet's centre: one point-gravity area around the whole globe.
+func _build_gravity() -> void:
+	JunkCube.planet_radius = grid.radius_m
+	var area := Area3D.new()
+	area.name = "PlanetGravity"
+	area.gravity_space_override = Area3D.SPACE_OVERRIDE_REPLACE
+	area.gravity_point = true
+	area.gravity_point_center = Vector3.ZERO
+	area.gravity_point_unit_distance = 0.0
+	area.gravity = float(ProjectSettings.get_setting("physics/3d/default_gravity", 9.8))
+	area.monitoring = true  # gravity overrides only reach bodies the area detects
+	area.monitorable = false
+	area.collision_layer = 0
+	area.collision_mask = 0xFFFF
+	var cs := CollisionShape3D.new()
+	var sh := SphereShape3D.new()
+	sh.radius = grid.radius_m + 3000.0
+	cs.shape = sh
+	area.add_child(cs)
+	add_child(area)
+
+
+func _exit_tree() -> void:
+	JunkCube.planet_radius = 0.0
+
+
+## The cash-in depot on the start site's pad (site-local metres, like any site prefab).
+func _build_depot(s: Dictionary) -> void:
+	var root: Node3D = get_node_or_null("StartSite")
+	depot = Depot.new()
+	depot.name = "Depot"
+	depot.world = self
+	depot.patch = lumi
+	root.add_child(depot)
+	depot.position = Vector3(5.5, 0.0, 3.5)
+	depot.rotation.y = -PI * 0.5
+
+
+## Dev: press a bale, carry it to the depot and cash it (headless proof of the loop).
+func _cash_test() -> void:
+	var before: String = Settings.fmt(GameState.get_currency("cubes"))
+	for k: int in 12:
+		var pid: int = field.nearest_alive(lumi.global_position)
+		if pid >= 0:
+			lumi._take_piece(pid)
+	await get_tree().create_timer(1.0).timeout
+	print("[orbit] cash: pieces=%d near=%d fill=%.2f" % [field.piece_count(), streamer.near_cells().size(), lumi.compartment.fill])
+	lumi.start_cube()
+	await get_tree().create_timer(2.4).timeout
+	var c: JunkCube = lumi.nearest_loose_cube()
+	var alt: float = surface.altitude(c.global_position) if c else -99.0
+	print("[orbit] cash: bale made=%s alt_above_ground=%.2f carried=%d" % [str(c != null), alt, lumi.carried.size()])
+	if c:
+		lumi.pick_up(c)
+	await get_tree().create_timer(0.6).timeout
+	lumi.place_on_sphere(depot.global_position + depot.global_basis.y * 0.5, lumi.forward())
+	await get_tree().create_timer(3.0).timeout
+	var after: String = Settings.fmt(GameState.get_currency("cubes"))
+	print("[orbit] cash: cubes %s -> %s depot_cashed=%d hexes_cleaned=%d %s" % [before, after, depot.cashed, int(GameState.stats.get("hexes_cleaned", 0)),
+		"PASS" if depot.cashed >= 1 else "FAIL"])
+	if DevHooks.has("orbit-lap-quit") or DevHooks.has("orbit-cash-quit"):
+		get_tree().quit(0 if depot.cashed >= 1 else 1)
 
 
 # --- Robots: this node is the SphereBot graph -------------------------------------------
@@ -488,15 +551,22 @@ func path(from: int, to: int) -> PackedInt32Array:
 
 
 func work_cell(c: int, left: float) -> void:
-	cells.set_junk(c, left)
+	if field.materialized[c] == 1:
+		for pid: int in field.reduce_to(c, left):
+			junk_view.hide_piece(pid)
+		_write_cell(c)
+		if left <= 0.0 and field.hex_clean[c] == 0:
+			field.hex_clean[c] = 1
+			field.cleaned_count += 1
+	else:
+		cells.set_junk(c, left)
+		field.settle(c)
 	if left <= 0.0 and cells.state[c] == 0:
 		cells.set_state(c, 1)
-	if _near_set.has(c) and absf(float(_junk_shown.get(c, 1.0)) - maxf(left, 0.0)) > 0.08:
-		_junk_dirty = true
 
 
 func junk_left(c: int) -> float:
-	return cells.junk[c]
+	return (1.0 - field.removed_fraction(c)) if field and field.materialized[c] == 1 else cells.junk[c]
 
 
 func release(c: int) -> void:
@@ -515,6 +585,11 @@ func _tick(list: Array[Dictionary], dt: float) -> void:
 				break
 			cells.set_junk(c, 0.0)
 			cells.set_state(c, 1)
+			if field:
+				if field.materialized[c] == 1:
+					work_cell(c, 0.0)
+				else:
+					field.settle(c)
 			release(c)
 
 
@@ -524,16 +599,16 @@ func _lap_tick(delta: float) -> void:
 	if not _lap_on or _lap_done:
 		return
 	_lap_t += delta
-	_trail_d += walker.velocity.length() * delta
+	_trail_d += lumi.velocity.length() * delta
 	if _trail_d > 20.0:
 		_trail_d = 0.0
-		var p: Vector3 = walker.global_position
+		var p: Vector3 = lumi.global_position
 		_trail.append([snappedf(p.x, 0.01), snappedf(p.y, 0.01), snappedf(p.z, 0.01)])
 	if int(_lap_t / 60.0) != int((_lap_t - delta) / 60.0):
-		print("[orbit] t=%.0fs walked=%.0fm cell=%d %s" % [_lap_t, walker.distance, grid.cell_at(walker.global_position), _perf_line()])
+		print("[orbit] t=%.0fs walked=%.0fm cell=%d %s" % [_lap_t, lumi.sphere_motor.distance, grid.cell_at(lumi.global_position), _perf_line()])
 	var circ: float = TAU * grid.radius_m
-	if walker.distance > circ * 0.8:
-		var dd: float = walker.global_position.distance_to(_lap_start)
+	if lumi.sphere_motor.distance > circ * 0.8:
+		var dd: float = lumi.global_position.distance_to(_lap_start)
 		if dd < _lap_min:
 			_lap_min = dd
 		elif dd > _lap_min + 15.0:
@@ -541,7 +616,7 @@ func _lap_tick(delta: float) -> void:
 			_trail.append([_lap_start.x, _lap_start.y, _lap_start.z])
 			var ok: bool = _lap_min < 12.0
 			print("[orbit] LAP walked=%.0fm around=%.0fm game_time=%.0fs (%.1f min) closest_to_start=%.2fm %s" % [
-				walker.distance, circ, _lap_t, _lap_t / 60.0, _lap_min, "PASS" if ok else "FAIL"])
+				lumi.sphere_motor.distance, circ, _lap_t, _lap_t / 60.0, _lap_min, "PASS" if ok else "FAIL"])
 			var abs_path: String = ProjectSettings.globalize_path(LAP_PATH)
 			DirAccess.make_dir_recursive_absolute(abs_path.get_base_dir())
 			var fa := FileAccess.open(abs_path, FileAccess.WRITE)
@@ -598,8 +673,8 @@ func _draw_trail() -> void:
 	m2.albedo_color = Color(1.0, 0.8, 0.35)
 	mk.material_override = m2
 	add_child(mk)
-	var u: Vector3 = walker.global_position.normalized()
-	mk.global_transform = Transform3D(SphereGrid.frame(u), walker.global_position + u * 90.0)
+	var u: Vector3 = lumi.global_position.normalized()
+	mk.global_transform = Transform3D(SphereGrid.frame(u), lumi.global_position + u * 90.0)
 
 
 # --- Loop -------------------------------------------------------------------------------
@@ -607,20 +682,23 @@ func _draw_trail() -> void:
 func _update_centres() -> void:
 	var cp: Vector3 = _orbit_cam.global_position if _orbit_cam else cam.camera.global_position
 	streamer.set_centre("view", cp, SphereStreamer.VIEW)
-	streamer.set_centre("lumi", walker.global_position, SphereStreamer.BODY)
+	streamer.set_centre("lumi", lumi.global_position, SphereStreamer.BODY)
 
 
 func _physics_process(delta: float) -> void:
 	_lap_tick(delta)
+	_scoop_log(delta)
 
 
 func _process(delta: float) -> void:
 	_perf_tick(delta)
 	var f: Basis = cam.frame
 	env.sky_rotation = f.get_euler()
-	sun.global_basis = f * Basis.from_euler(Vector3(deg_to_rad(-38.0), deg_to_rad(35.0), 0.0))
+	_update_day(delta, f)
+	if Input.is_action_just_pressed("open_command") and lumi.input is PlayerInput and (lumi.input as PlayerInput).enabled:
+		cam.view = "follow" if cam.view == "command" else "command"
 	if _orbit_cam:  # the whole little planet with Lumi's side toward the camera
-		var u: Vector3 = walker.up()
+		var u: Vector3 = lumi.up()
 		var d: Vector3 = (u * 0.82 + f.z * 0.57).normalized()
 		_orbit_cam.look_at_from_position(d * grid.radius_m * 2.7, u * grid.radius_m * 0.12, f.y)
 		_orbit_cam.current = true
@@ -634,8 +712,91 @@ func _process(delta: float) -> void:
 		for b: SphereBot in bots:
 			cleaned += b.cleaned
 		_hud.text = "Verdance  R %.0f m  %d hexes  walked %.0f / %.0f m  junk %d  bots cleaned %d  fps %d" % [
-			grid.radius_m, grid.cell_count(), walker.distance, TAU * grid.radius_m, int(stats.get("junk", 0)), cleaned,
+			grid.radius_m, grid.cell_count(), lumi.sphere_motor.distance, TAU * grid.radius_m, int(stats.get("junk", 0)), cleaned,
 			Engine.get_frames_per_second()]
+
+
+# --- Day and night (owner: real day and night sides) -------------------------------------
+## Two suns fixed in space light one side of the planet; the planet turns once every day_min
+## minutes, so walking far changes your local time and every spot gets its own day. The sky
+## dome follows the local frame (sky_rotation), so a sky-only light carries the sun's direction
+## into sky space for the disk; the scene is lit by the real (world-space) lights.
+
+const DECLINATION: float = 0.25
+
+var _phi0: float = 0.0
+var _elapsed: float = 0.0
+
+
+func _build_lights() -> void:
+	day_min = DevHooks.get_f("orbit-day", 24.0)
+	var h: Vector3 = grid.centers[int(sites[0]["cell"])]
+	var lon: float = atan2(h.x, h.z)
+	_phi0 = lon + (DevHooks.get_f("orbit-time", 0.42) - 0.5) * TAU
+	sun2 = DirectionalLight3D.new()
+	sun2.name = "SecondSun"
+	sun2.light_color = Color(1.0, 0.72, 0.5)
+	sun2.shadow_enabled = false
+	sun2.sky_mode = DirectionalLight3D.SKY_MODE_LIGHT_ONLY
+	add_child(sun2)
+	sky_sun = DirectionalLight3D.new()
+	sky_sun.name = "SkySun"
+	sky_sun.sky_mode = DirectionalLight3D.SKY_MODE_SKY_ONLY
+	sky_sun.light_color = sun.light_color
+	add_child(sky_sun)
+	lamp = OmniLight3D.new()  # Lumi's own light: nights stay readable (Glim takes this over)
+	lamp.name = "LumiLamp"
+	lamp.omni_range = 11.0
+	lamp.light_color = Color(0.75, 0.88, 1.0)
+	lamp.shadow_enabled = false
+	lumi.add_child(lamp)
+	lamp.position = Vector3(0, 2.4, 0.4)
+
+
+## World direction toward a sun at rotation phase phi (the planet's spin axis is world +Y).
+static func sun_dir(phi: float, decl: float) -> Vector3:
+	return Vector3(sin(phi) * cos(decl), sin(decl), cos(phi) * cos(decl)).normalized()
+
+
+## Local time 0..1 (0.5 = noon) at a point, for the HUD clock and tests.
+func local_time(p: Vector3) -> float:
+	var phi: float = _phi0 + TAU * _elapsed / (day_min * 60.0)
+	var lon: float = atan2(p.x, p.z)
+	return fposmod(0.5 + (phi - lon) / TAU, 1.0)
+
+
+func _update_day(delta: float, f: Basis) -> void:
+	_elapsed += delta
+	var phi: float = _phi0 + TAU * _elapsed / (day_min * 60.0)
+	var s1: Vector3 = sun_dir(phi, DECLINATION)
+	var s2: Vector3 = sun_dir(phi + 0.42, DECLINATION - 0.12)
+	var u: Vector3 = lumi.up()
+	var e1: float = s1.dot(u)
+	var e2: float = s2.dot(u)
+	var d1: float = smoothstep(-0.06, 0.14, e1)
+	var d2: float = smoothstep(-0.06, 0.14, e2)
+	var day: float = maxf(d1, d2 * 0.8)
+	sun.global_basis = _toward(s1)
+	sun.light_energy = 1.2 * d1
+	sun.shadow_enabled = d1 > 0.05
+	sun2.global_basis = _toward(s2)
+	sun2.light_energy = 0.45 * d2
+	var sky_dir: Vector3 = (f * s1) if DevHooks.has("orbit-skyflip") else (f.transposed() * s1)
+	sky_sun.global_basis = _toward(sky_dir)
+	sky_sun.light_energy = 1.0
+	env.ambient_light_energy = lerpf(0.75, 1.1, day)
+	env.ambient_light_sky_contribution = lerpf(0.25, 1.0, day)
+	env.ambient_light_color = Color(0.36, 0.44, 0.62)
+	env.tonemap_exposure = lerpf(1.55, 1.25, day)
+	lamp.light_energy = lerpf(2.2, 0.0, day)
+	lamp.visible = day < 0.98
+	stats["local_time"] = local_time(lumi.global_position)
+	stats["daylight"] = day
+
+
+static func _toward(d: Vector3) -> Basis:
+	var ref: Vector3 = Vector3.UP if absf(d.y) < 0.95 else Vector3.RIGHT
+	return Basis.looking_at(-d, ref)
 
 
 func _perf_tick(delta: float) -> void:
@@ -644,8 +805,22 @@ func _perf_tick(delta: float) -> void:
 	_perf[2] = maxf(_perf[2], Performance.get_monitor(Performance.TIME_PROCESS) * 1000.0)
 	_perf[3] += delta
 	_perf_n += 1
-	if _perf[3] >= 5.0 * Engine.time_scale and not DevHooks.has("orbit-walk"):
+	if _perf[3] >= 5.0 * Engine.time_scale and (not DevHooks.has("orbit-walk") or DevHooks.has("orbit-scoop")):
 		print("[orbit-perf] " + _perf_line())
+
+
+var _scoop_log_t: float = 0.0
+
+
+func _scoop_log(delta: float) -> void:
+	if not DevHooks.has("orbit-scoop"):
+		return
+	_scoop_log_t += delta
+	if int(_scoop_log_t / 10.0) != int((_scoop_log_t - delta) / 10.0):
+		print("[orbit] scoop t=%.0fs walked=%.0fm fill=%.2f/%.2f scooped=%.1f hexes_cleaned=%d cubes=%s junk_drawn=%d time=%.2f day=%.2f" % [
+			_scoop_log_t, lumi.sphere_motor.distance, lumi.compartment.fill, lumi.capacity(), float(GameState.stats.get("junk_removed", 0.0)) if GameState.stats.get("junk_removed", 0.0) is float else -1.0,
+			int(GameState.stats.get("hexes_cleaned", 0)), Settings.fmt(GameState.get_currency("cubes")), int(stats.get("junk", 0)),
+			float(stats.get("local_time", 0.0)), float(stats.get("daylight", 0.0))])
 
 
 func _perf_line() -> String:
