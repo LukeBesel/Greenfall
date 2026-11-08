@@ -400,3 +400,89 @@ func load_state(d: Dictionary) -> void:
 			growth_m[i] = float(g[i])
 	if sites.size() > 0:
 		built[0] = 1
+
+
+# --- Getting round a site's buildings --------------------------------------------------------
+
+## Where to head for next to reach `to` from `from` (world points) without walking into a site's
+## buildings: `to` itself when the straight line is clear, else the road intersection (one, or the
+## first of two) that gets round them along the site's streets. Sites without building footprints
+## (other planets' prefabs) always answer `to`. Cheap: a few dozen segment tests.
+func detour(from: Vector3, to: Vector3) -> Vector3:
+	var i: int = nearest
+	if i < 0 or i >= prefabs.size() or prefabs[i] == null:
+		return to
+	var p: SitePrefab = prefabs[i]
+	var rects: Array[Rect2] = []
+	var streets: Array[float] = []
+	for c: Node in p.content.get_children() if p.content else []:
+		if c.has_method("footprints"):
+			rects.append_array(c.call("footprints"))
+		if c is VerdanceSite and (c as VerdanceSite).layout:
+			var n: int = int(ceil((c as VerdanceSite).layout.extent / CityLayout.PITCH))
+			for k: int in range(-n - 1, n + 1):
+				streets.append((k + 0.5) * CityLayout.PITCH)
+	if rects.is_empty() or streets.is_empty():
+		return to
+	var inv: Transform3D = p.global_transform.affine_inverse()
+	var a3: Vector3 = inv * from
+	var b3: Vector3 = inv * to
+	var a := Vector2(a3.x, a3.z)
+	var b := Vector2(b3.x, b3.z)
+	var grown: Array[Rect2] = []
+	for r: Rect2 in rects:
+		var gr: Rect2 = r.grow(1.0)
+		if not gr.has_point(a) and not gr.has_point(b):  # a target hugging a wall: that wall isn't in the way
+			grown.append(gr)
+	if _clear(a, b, grown):
+		return to
+	var pts: Array[Vector2] = []
+	for x: float in streets:
+		for z: float in streets:
+			pts.append(Vector2(x, z))
+	var best := Vector2.INF
+	var best_len: float = INF
+	var then := Vector2.INF  # the corner after `best` (two-corner routes)
+	for w: Vector2 in pts:  # one corner
+		if a.distance_to(w) < 2.0:
+			continue  # standing on it already
+		if _clear(a, w, grown) and _clear(w, b, grown):
+			var l: float = a.distance_to(w) + w.distance_to(b)
+			if l < best_len:
+				best_len = l
+				best = w
+	if best == Vector2.INF:
+		for w1: Vector2 in pts:  # two corners
+			if not _clear(a, w1, grown):
+				continue
+			for w2: Vector2 in pts:
+				if w2 != w1 and _clear(w1, w2, grown) and _clear(w2, b, grown):
+					var l2: float = a.distance_to(w1) + w1.distance_to(w2) + w2.distance_to(b)
+					if l2 < best_len:
+						best_len = l2
+						best = w1
+						then = w2
+	if best != Vector2.INF and then != Vector2.INF and a.distance_to(best) < 2.0:
+		best = then  # at the first corner: on to the second
+	if best == Vector2.INF:
+		return to
+	var wl := Vector3(best.x, 0.0, best.y)
+	var wd: Vector3 = (p.global_transform * wl).normalized()
+	return terrain.ground(wd)
+
+
+static func _clear(a: Vector2, b: Vector2, rects: Array[Rect2]) -> bool:
+	for r: Rect2 in rects:
+		if _seg_hits_rect(a, b, r):
+			return false
+	return true
+
+
+static func _seg_hits_rect(a: Vector2, b: Vector2, r: Rect2) -> bool:
+	if r.has_point(a) or r.has_point(b):
+		return true
+	var c: Array[Vector2] = [r.position, Vector2(r.end.x, r.position.y), r.end, Vector2(r.position.x, r.end.y)]
+	for k: int in 4:
+		if Geometry2D.segment_intersects_segment(a, b, c[k], c[(k + 1) % 4]) != null:
+			return true
+	return false

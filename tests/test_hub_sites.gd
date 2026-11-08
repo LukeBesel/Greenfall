@@ -265,3 +265,41 @@ func test_probe_clears_junk_inside_any_planets_buildings() -> void:
 			clean += 1
 	assert_gt(clean, 0, "cells under Ochre's hub buildings go clean")
 	assert_lt(clean, s["cells"].size(), "open ground keeps its junk")
+
+
+func test_detour_goes_round_buildings_along_the_streets() -> void:
+	var g := _globe(6)
+	var s: Dictionary = g.terrain.reserve_site(77, 100.0, 20.0)
+	assert_false(s.is_empty())
+	var sites: Array[Dictionary] = [s]
+	var sm := SiteManager.new()
+	g.add_child(sm)
+	sm.setup(g, "verdance", sites)
+	sm.set_process(false)
+	var p: SitePrefab = sm.build_hub(0, true)
+	if not p.is_built:
+		await p.rebuilt
+	sm.nearest = 0
+	var vs: VerdanceSite = p.content.get_child(0) as VerdanceSite
+	var rects: Array[Rect2] = vs.footprints()
+	assert_gt(rects.size(), 0)
+	# From the yard to the far side of a building compound: the straight line is blocked.
+	var r: Rect2 = rects[0]
+	var c: Vector2 = r.get_center()
+	var far: Vector2 = c + (c - Vector2.ZERO).normalized() * (r.size.length() * 0.5 + 6.0)
+	var xf: Transform3D = p.global_transform
+	var from: Vector3 = g.terrain.ground((xf * Vector3(0, 0, 0)).normalized())
+	var to: Vector3 = g.terrain.ground((xf * Vector3(far.x, 0, far.y)).normalized())
+	var grown: Array[Rect2] = []
+	for rr: Rect2 in rects:
+		if not rr.grow(1.0).has_point(far):
+			grown.append(rr.grow(1.0))
+	if SiteManager._clear(Vector2.ZERO, far, grown):
+		pass_test("this layout leaves that line clear")
+		return
+	var via: Vector3 = sm.detour(from, to)
+	assert_gt(via.distance_to(to), 1.0, "a waypoint, not the target")
+	var vl: Vector3 = xf.affine_inverse() * via
+	assert_true(SiteManager._clear(Vector2.ZERO, Vector2(vl.x, vl.z), grown), "the leg to the waypoint is clear")
+	# A clear line goes straight.
+	assert_eq(sm.detour(from, from + (from - to) * 0.01), from + (from - to) * 0.01)
