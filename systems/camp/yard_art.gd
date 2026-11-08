@@ -22,8 +22,6 @@ extends RefCounted
 ##   bin_body(level) -> {root, size, mouth_y, ram}   the trash bin by level (automation/depot.gd)
 ##   depot_pad(radius) / depot_scale(...)            the weigh plate and the dial post
 
-const PAINT_SHADER: Shader = preload("res://systems/camp/yard_paint.gdshader")
-const GLOW_SHADER: Shader = preload("res://systems/camp/yard_glow.gdshader")
 
 # Palette: cosy, saturated, cohesive. Alpha 0 = bare metal.
 const TEAL := Color(0.18, 0.56, 0.6)
@@ -51,36 +49,11 @@ static var _mesh_cache: Dictionary = {}
 static var _mat_cache: Dictionary = {}
 
 
-# --- Materials ------------------------------------------------------------------------------------
+# --- Wear -> kit state ------------------------------------------------------------------------------
 
-static func paint_mat(wear: float, stripes: bool = false) -> ShaderMaterial:
-	var w: float = snappedf(clampf(wear, 0.0, 1.0), 0.05)
-	var key: String = "p%.2f%s" % [w, "s" if stripes else ""]
-	if not _mat_cache.has(key):
-		var m := ShaderMaterial.new()
-		m.shader = PAINT_SHADER
-		m.set_shader_parameter("wear", w)
-		m.set_shader_parameter("stripes", 1.0 if stripes else 0.0)
-		m.set_shader_parameter("detail_nrm", AssetLib.tex("metal_plate", "nor_gl"))
-		m.set_shader_parameter("rust_alb", AssetLib.tex("rusty_metal_02", "diff"))
-		_mat_cache[key] = m
-	return _mat_cache[key]
-
-
-static func glow_mat(on: bool) -> ShaderMaterial:
-	var key: String = "glow_on" if on else "glow_off"
-	if not _mat_cache.has(key):
-		var m := ShaderMaterial.new()
-		m.shader = GLOW_SHADER
-		m.set_shader_parameter("glow", 2.2 if on else 0.0)
-		_mat_cache[key] = m
-	return _mat_cache[key]
-
-
-static func glass_mat() -> Material:
-	if not _mat_cache.has("glass"):
-		_mat_cache["glass"] = Mats.glass(Color(0.08, 0.12, 0.15, 0.7), 0.06)
-	return _mat_cache["glass"]
+## Kit state for a wear value: >= 0.5 broken, >= 0.25 repaired, else restored (art/kit, docs/ART_KIT.md).
+static func state_for(wear: float) -> String:
+	return "broken" if wear >= 0.5 else ("repaired" if wear >= 0.25 else "restored")
 
 
 # --- Meshes ---------------------------------------------------------------------------------------
@@ -93,49 +66,14 @@ static func bbox(size: Vector3, bev: float) -> Mesh:
 	return _mesh_cache[key]
 
 
-## Bevelled cylinder along Y, centred (bev = edge chamfer). r_top may differ from r_bot.
-static func bcyl(r_top: float, r_bot: float, h: float, bev: float, segs: int = 14) -> Mesh:
-	var key: String = "c%.3f_%.3f_%.3f_%.3f_%d" % [r_top, r_bot, h, bev, segs]
-	if _mesh_cache.has(key):
-		return _mesh_cache[key]
-	var hy: float = h * 0.5
-	var b: float = clampf(bev, 0.0005, minf(minf(r_top, r_bot) * 0.45, hy * 0.45))
-	var rings: Array = [[r_bot - b, -hy, Vector2(0.5, -0.85)], [r_bot, -hy + b, Vector2(1.0, -0.25)],
-		[r_top, hy - b, Vector2(1.0, 0.25)], [r_top - b, hy, Vector2(0.5, 0.85)]]
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var pt := func(ri: int, k: int) -> Array:
-		var a: float = TAU * float(k % segs) / segs
-		var rr: Array = rings[ri]
-		var nv: Vector2 = rr[2]
-		return [Vector3(cos(a) * float(rr[0]), float(rr[1]), sin(a) * float(rr[0])), Vector3(cos(a) * nv.x, nv.y, sin(a) * nv.x).normalized()]
-	for ri: int in 3:
-		for k: int in segs:
-			var q: Array = [pt.call(ri, k), pt.call(ri, k + 1), pt.call(ri + 1, k + 1), pt.call(ri + 1, k)]
-			for idx: int in [0, 1, 2, 0, 2, 3]:
-				st.set_normal(q[idx][1])
-				st.add_vertex(q[idx][0])
-	for k: int in segs:  # caps
-		var a0: float = TAU * k / segs
-		var a1: float = TAU * (k + 1) / segs
-		var rt: float = r_top - b
-		var rb: float = r_bot - b
-		for v: Vector3 in [Vector3(0, hy, 0), Vector3(cos(a0) * rt, hy, sin(a0) * rt), Vector3(cos(a1) * rt, hy, sin(a1) * rt)]:
-			st.set_normal(Vector3.UP)
-			st.add_vertex(v)
-		for v: Vector3 in [Vector3(0, -hy, 0), Vector3(cos(a1) * rb, -hy, sin(a1) * rb), Vector3(cos(a0) * rb, -hy, sin(a0) * rb)]:
-			st.set_normal(Vector3.DOWN)
-			st.add_vertex(v)
-	var m: ArrayMesh = st.commit()
-	_mesh_cache[key] = m
-	return m
-
-
 # --- The Kit builder --------------------------------------------------------------------------------
 
 class Kit:
 	extends RefCounted
-	var parts: Dictionary = {}  # material key -> Array of ProcMesh parts
+	## Thin adapter over the shared kit's KitMesh.Builder (art/kit/kit_mesh.gd): the yard models
+	## keep their colour-based calls, the kit gives the shaders (edge wear, baked AO, grime, rust
+	## per state), trims, decals and one draw call per material.
+	var b := KitMesh.Builder.new(17, {}, "repaired")
 	var lights: Array = []  # [pos, color, energy, range]
 	var _stack: Array[Transform3D] = [Transform3D.IDENTITY]
 
@@ -146,21 +84,43 @@ class Kit:
 		if _stack.size() > 1:
 			_stack.pop_back()
 
-	func add(key: String, mesh: Mesh, xf: Transform3D, col: Color) -> void:
-		if not parts.has(key):
-			parts[key] = []
-		(parts[key] as Array).append({"mesh": mesh, "xform": _stack.back() * xf, "color": col})
+	func _t(xf: Transform3D) -> Transform3D:
+		return _stack.back() * xf
+
+	## The kit key for one of the palette colours (alpha 0 = bare metal).
+	static func key_of(col: Color, key: String) -> String:
+		match key:
+			"glow":
+				return "trim:#" + Color(col.r, col.g, col.b).to_html(false)
+			"hazard", "glass", "concrete", "rusty", "rubber":
+				return key
+		if col.a < 0.5:
+			return "steel" if col.get_luminance() > 0.45 else "dark_steel"
+		if col.is_equal_approx(YardArt.RUBBER):
+			return "rubber"
+		return "paint:#" + Color(col.r, col.g, col.b).to_html(false)
+
+	func _add_key(key: String, col: Color) -> String:
+		var k: String = key_of(col, key)
+		if k == "hazard":
+			b.palette["hazard"] = "#" + Color(col.r, col.g, col.b).to_html(false)
+		return k
 
 	## Bevelled box. bev < 0 = auto (about a fifth of the thinnest side, at most 4 cm).
 	func box(size: Vector3, pos: Vector3, col: Color, rot: Vector3 = Vector3.ZERO, bev: float = -1.0, key: String = "paint") -> void:
-		var b: float = bev if bev >= 0.0 else minf(0.04, minf(size.x, minf(size.y, size.z)) * 0.2)
-		add(key, YardArt.bbox(size, b), ProcMesh.xf(pos, rot), col)
+		var bv: float = bev if bev >= 0.0 else minf(0.04, minf(size.x, minf(size.y, size.z)) * 0.2)
+		b.box(_add_key(key, col), size, _t(ProcMesh.xf(pos, rot)), bv)
 
-	## Bevelled cylinder (Y axis before `rot`).
+	## Bevelled cylinder centred on pos (Y axis before `rot`); r_top tapers it.
 	func cyl(r: float, h: float, pos: Vector3, col: Color, rot: Vector3 = Vector3.ZERO, bev: float = -1.0, segs: int = 14, key: String = "paint", r_top: float = -1.0) -> void:
-		var rt: float = r if r_top < 0.0 else r_top
-		var b: float = bev if bev >= 0.0 else minf(0.03, minf(r, h) * 0.2)
-		add(key, YardArt.bcyl(rt, r, h, b, segs), ProcMesh.xf(pos, rot), col)
+		var bv: float = bev if bev >= 0.0 else minf(0.03, minf(r, h) * 0.2)
+		var t: Transform3D = _t(ProcMesh.xf(pos, rot)) * Transform3D(Basis(), Vector3(0, -h * 0.5, 0))
+		var k: String = _add_key(key, col)
+		if r_top >= 0.0 and absf(r_top - r) > 0.002:
+			var p := PackedVector3Array([Vector3(0, 0, 1), Vector3(r, 0, 1), Vector3(r_top, h, 1), Vector3(0, h, 1)])
+			b.add(k, KitMesh.lathe(p, segs), t)
+		else:
+			b.cyl(k, r, h, t, bv, segs)
 
 	func hazard(size: Vector3, pos: Vector3, rot: Vector3 = Vector3.ZERO, col: Color = YardArt.YELLOW) -> void:
 		box(size, pos, col, rot, -1.0, "hazard")
@@ -171,14 +131,19 @@ class Kit:
 	func glow_cyl(r: float, h: float, pos: Vector3, col: Color, rot: Vector3 = Vector3.ZERO, segs: int = 14) -> void:
 		cyl(r, h, pos, col, rot, minf(0.01, minf(r, h) * 0.3), segs, "glow")
 
+	## An atlas decal (art/kit/decals: arrow, chevrons, warn, power, logo, num_01.., label_*) on a
+	## face looking along +Z after `rot`.
+	func decal(nm: String, size: Vector2, pos: Vector3, rot: Vector3 = Vector3.ZERO) -> void:
+		b.decal(nm, size, _t(ProcMesh.xf(pos, rot)))
+
 	## A small light that only shines when the build is powered (YardArt.set_powered).
 	func light(pos: Vector3, col: Color, energy: float, rng: float) -> void:
 		lights.append([_stack.back() * pos, col, energy, rng])
 
 	## A hex bolt head standing out of a face with outward normal `nrm`.
 	func bolt(pos: Vector3, nrm: Vector3, col: Color = YardArt.STEEL, r: float = 0.022) -> void:
-		var q := Quaternion(Vector3.UP, nrm.normalized()) if absf(nrm.normalized().dot(Vector3.UP)) < 0.999 else (Quaternion.IDENTITY if nrm.y > 0.0 else Quaternion(Vector3.RIGHT, PI))
-		add("paint", YardArt.bcyl(r, r, r * 0.9, r * 0.25, 6), Transform3D(Basis(q), pos + nrm.normalized() * r * 0.3), col)
+		var n: Vector3 = nrm.normalized()
+		b.cyl(key_of(col, "paint"), r, r * 0.9, _t(KitMesh.look_y(pos, n)), r * 0.25, 6)
 
 	## Bolts at the four corners of a rectangle: centre c, half-extents along u and v, face normal n.
 	func bolts4(c: Vector3, u: Vector3, v: Vector3, n: Vector3, col: Color = YardArt.STEEL, r: float = 0.022) -> void:
@@ -210,25 +175,26 @@ class Kit:
 		pop()
 
 	## A straight pipe from a to b with flange collars at both ends.
-	func pipe(a: Vector3, b: Vector3, r: float, col: Color, flanges: bool = true, key: String = "paint") -> void:
-		var d: Vector3 = b - a
-		var l: float = d.length()
-		if l < 0.001:
+	func pipe(a: Vector3, e: Vector3, r: float, col: Color, flanges: bool = true, key: String = "paint") -> void:
+		var pa: Vector3 = _stack.back() * a
+		var pe: Vector3 = _stack.back() * e
+		var d: Vector3 = pe - pa
+		if d.length() < 0.001:
 			return
-		var q := Quaternion(Vector3.UP, d / l) if absf((d / l).dot(Vector3.UP)) < 0.999 else (Quaternion.IDENTITY if d.y > 0.0 else Quaternion(Vector3.RIGHT, PI))
-		var bs := Basis(q)
-		add(key, YardArt.bcyl(r, r, l, r * 0.2, 10), Transform3D(bs, (a + b) * 0.5), col)
+		b.rod(key_of(col, key), pa, pe, r, 10)
 		if flanges:
-			for p: Vector3 in [a + d / l * 0.03, b - d / l * 0.03]:
-				add("paint", YardArt.bcyl(r * 1.45, r * 1.45, 0.05, 0.012, 10), Transform3D(bs, p), YardArt.STEEL)
+			var dn: Vector3 = d.normalized()
+			for p: Vector3 in [pa + dn * 0.005, pe - dn * 0.055]:
+				b.cyl("steel", r * 1.45, 0.05, KitMesh.look_y(p, dn), 0.012, 10)
 
-	## A sagging cable through points (rubber).
+	## A sagging cable through points (rubber unless coloured).
 	func cable(pts: Array, r: float = 0.025, col: Color = YardArt.RUBBER) -> void:
-		for i: int in pts.size() - 1:
-			pipe(pts[i], pts[i + 1], r, col, false)
-			add("paint", YardArt.bcyl(r, r, r * 2.0, r * 0.4, 8), Transform3D(Basis(), pts[i + 1]), col)
+		var pv := PackedVector3Array()
+		for p: Vector3 in pts:
+			pv.append(_stack.back() * p)
+		b.tube(key_of(col, "paint"), pv, r, 8, 0.4)
 
-	## Builds the MeshInstance3D (one surface per material). `wear` picks the paint's wear.
+	## Builds the MeshInstance3D. `wear` picks the kit state (YardArt.state_for); unpowered.
 	func mi(wear: float = 0.15, name: String = "") -> MeshInstance3D:
 		var m := MeshInstance3D.new()
 		if name != "":
@@ -238,28 +204,13 @@ class Kit:
 
 	## Puts the mesh into an existing MeshInstance3D (keeps its name, transform and children).
 	func into(m: MeshInstance3D, wear: float = 0.15) -> void:
-		var am := ArrayMesh.new()
-		var keys: Array = []
-		for key: String in ["paint", "hazard", "glow", "glass"]:
-			if parts.has(key) and not (parts[key] as Array).is_empty():
-				var merged: ArrayMesh = ProcMesh.merge(parts[key])
-				am.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, merged.surface_get_arrays(0))
-				keys.append(key)
-		m.mesh = am
+		var st: String = YardArt.state_for(wear)
+		b.state = st
+		m.mesh = b.commit()
 		m.material_override = null
-		for i: int in keys.size():
-			match str(keys[i]):
-				"paint":
-					m.set_surface_override_material(i, YardArt.paint_mat(wear))
-					m.set_meta("yard_paint", i)
-				"hazard":
-					m.set_surface_override_material(i, YardArt.paint_mat(wear, true))
-					m.set_meta("yard_hazard", i)
-				"glow":
-					m.set_surface_override_material(i, YardArt.glow_mat(false))
-					m.set_meta("yard_glow", i)
-				"glass":
-					m.set_surface_override_material(i, YardArt.glass_mat())
+		KitMat.apply(m, st, false)
+		m.set_meta("kit_state", st)
+		m.set_meta("kit_powered", false)
 		for l: Array in lights:
 			var ol := OmniLight3D.new()
 			ol.position = l[0]
@@ -275,12 +226,14 @@ class Kit:
 
 # --- States ---------------------------------------------------------------------------------------
 
-## Lights (or kills) every glow surface and Kit light under `root`.
+## Lights (or kills) every trim and Kit light under `root` (never lit while broken).
 static func set_powered(root: Node, on: bool) -> void:
 	if root == null:
 		return
-	if root is MeshInstance3D and root.has_meta("yard_glow"):
-		(root as MeshInstance3D).set_surface_override_material(int(root.get_meta("yard_glow")), glow_mat(on))
+	if root is MeshInstance3D and root.has_meta("kit_state"):
+		var st: String = str(root.get_meta("kit_state"))
+		KitMat.apply(root as MeshInstance3D, st, on)
+		root.set_meta("kit_powered", on)
 	if root is Light3D and root.has_meta("yard_light"):
 		(root as Light3D).visible = on
 	for c: Node in root.get_children():
@@ -308,16 +261,14 @@ static func flicker_on(host: Node, node: Node, delay: float = 0.0) -> void:
 			tw.tween_interval(float(s[1]))
 
 
-## Re-paints every Kit mesh under `root` at a new wear (broken -> repaired).
+## Re-paints every Kit mesh under `root` at a new wear (broken -> repaired): a new kit state.
 static func set_wear(root: Node, wear: float) -> void:
 	if root == null:
 		return
-	if root is MeshInstance3D:
-		var m: MeshInstance3D = root
-		if m.has_meta("yard_paint"):
-			m.set_surface_override_material(int(m.get_meta("yard_paint")), paint_mat(wear))
-		if m.has_meta("yard_hazard"):
-			m.set_surface_override_material(int(m.get_meta("yard_hazard")), paint_mat(wear, true))
+	if root is MeshInstance3D and root.has_meta("kit_state"):
+		var st: String = state_for(wear)
+		root.set_meta("kit_state", st)
+		KitMat.apply(root as MeshInstance3D, st, bool(root.get_meta("kit_powered", false)))
 	for c: Node in root.get_children():
 		set_wear(c, wear)
 
@@ -480,6 +431,8 @@ static func shack_side() -> Kit:
 	k.panel(1.4, 1.6, Vector3.ZERO, TEAL_D, Vector3(0, 90, 0), TEAL, 0.05)
 	k.panel(1.4, 1.6, Vector3(-0.02, 0, 0), TEAL_D, Vector3(0, -90, 0), Color(-1, 0, 0), 0.03)
 	k.hazard(Vector3(0.07, 0.12, 1.42), Vector3(0.02, -0.72, 0))
+	k.decal("logo", Vector2(0.55, 0.55), Vector3(-0.065, 0.15, 0), Vector3(0, -90, 0))
+	k.decal("label_hub", Vector2(0.8, 0.2), Vector3(-0.065, -0.4, 0), Vector3(0, -90, 0))
 	k.box(Vector3(0.09, 0.08, 1.46), Vector3(0, 0.82, 0), TEAL)
 	return k
 
@@ -670,6 +623,7 @@ static func street_lamp() -> Kit:
 	k.box(Vector3(0.2, 0.32, 0.14), Vector3(0, 1.35, 0.13), CREAM)
 	k.box(Vector3(0.15, 0.22, 0.02), Vector3(0, 1.33, 0.205), CREAM.darkened(0.1), Vector3.ZERO, 0.006)
 	k.glow_box(Vector3(0.03, 0.03, 0.02), Vector3(0.05, 1.47, 0.205), MINT)
+	k.decal("power", Vector2(0.1, 0.1), Vector3(0, 1.3, 0.215))
 	# Head: a chunky saucer with a warm lens ring underneath.
 	k.cyl(0.13, 0.12, Vector3(0, 3.5, 0), GUNMETAL, Vector3.ZERO, 0.03, 12)
 	k.cyl(0.42, 0.14, Vector3(0, LAMP_HEAD_Y, 0), CREAM, Vector3.ZERO, 0.05, 20, "paint", 0.36)
@@ -693,6 +647,8 @@ static func generator() -> Kit:
 	k.vent(0.56, 0.36, Vector3(0.12, 0.48, 0.325), DARK.lightened(0.15))
 	k.vent(0.56, 0.36, Vector3(0.12, 0.48, -0.325), DARK.lightened(0.15), Vector3(0, 180, 0))
 	k.bolts4(Vector3(0.05, 0.48, 0.325), Vector3(0.43, 0, 0), Vector3(0, 0.27, 0), Vector3.BACK)
+	k.decal("power", Vector2(0.16, 0.16), Vector3(-0.3, 0.6, 0.33))
+	k.decal("label_power", Vector2(0.5, 0.12), Vector3(0.12, 0.72, -0.35), Vector3(0, 180, 0))
 	# Fuel tank on top, red, with a cap.
 	k.cyl(0.17, 0.62, Vector3(0.05, 1.02, 0), RED, Vector3(0, 0, 90), 0.05, 16)
 	k.cyl(0.05, 0.06, Vector3(0.2, 1.2, 0), YELLOW, Vector3.ZERO, 0.012, 10)
@@ -747,6 +703,8 @@ static func _wheelie() -> Dictionary:
 	k.box(Vector3(0.34, 0.26, 0.06), Vector3(0.14, 0.6, d * 0.5 - 0.01), col.darkened(0.35), Vector3(-10, 12, 8), 0.02)  # the dent
 	k.box(Vector3(w + 0.1, 0.08, d + 0.1), Vector3(0, 1.14, 0), col.darkened(0.2), Vector3.ZERO, 0.03)  # rim
 	k.box(Vector3(0.3, 0.12, 0.1), Vector3(0, 1.06, d * 0.5 + 0.06), col.darkened(0.2), Vector3.ZERO, 0.03)  # grip
+	k.decal("label_scrap", Vector2(0.52, 0.13), Vector3(0, 0.48, d * 0.5 + 0.005))
+	k.decal("num_01", Vector2(0.16, 0.16), Vector3(-0.32, 0.98, d * 0.5 + 0.005))
 	# Lid flopped back over the hinge.
 	k.push(ProcMesh.xf(Vector3(0, 1.16, -d * 0.5 - 0.06), Vector3(-118, 0, 4)))
 	k.box(Vector3(w + 0.12, 0.06, d + 0.06), Vector3(0, 0, d * 0.5 + 0.03), col.lightened(0.04), Vector3.ZERO, 0.025)
@@ -765,7 +723,7 @@ static func _wheelie() -> Dictionary:
 	root.rotation = Vector3(0.0, 0.18, deg_to_rad(-3.0))  # a little crooked
 	root.add_child(k.mi(0.72, "Body"))
 	return {"root": root, "size": Vector3(w + 0.1, 1.25, d + 0.1), "mouth_y": 1.43, "ram": null,
-		"fill": [Vector3(0, 1.12, 0), Vector3(0.4, 0.3, 0.42)], "label": Vector3(-0.1, 0.8, d * 0.5 + 0.05)}
+		"fill": [Vector3(0, 1.12, 0), Vector3(0.4, 0.3, 0.42)]}
 
 
 static func _skip(l: int) -> Dictionary:
@@ -799,6 +757,9 @@ static func _skip(l: int) -> Dictionary:
 		k.box(Vector3(w + 0.1, 0.1, 0.14), Vector3(0, h + 0.17, s * (d * 0.5 + 0.03)), trim if l >= 3 else body_col.darkened(0.18), Vector3.ZERO, 0.03)
 	for x: float in [-1.15, -0.45, 0.45, 1.15]:
 		k.bolt(Vector3(x, h + 0.17, d * 0.5 + 0.1), Vector3.BACK)
+	k.decal("label_scrap", Vector2(0.7, 0.18), Vector3(-0.45, h * 0.66, d * 0.5 + 0.045))
+	k.decal("warn", Vector2(0.26, 0.26), Vector3(0.45, h * 0.66, d * 0.5 + 0.045))
+	k.decal("num_0%d" % mini(l, 6), Vector2(0.22, 0.22), Vector3(-0.45, h * 0.36, d * 0.5 + 0.045))
 	var top: float = h
 	if l == 3 or l == 4:
 		k.cyl(0.09, 0.08, Vector3(w * 0.5 - 0.15, h + 0.26, d * 0.5 - 0.1), DARK, Vector3.ZERO, 0.02, 12)
@@ -827,8 +788,8 @@ static func _skip(l: int) -> Dictionary:
 		top = 2.6
 	if smart:
 		k.glow_box(Vector3(w + 0.02, 0.03, 0.02), Vector3(0, h - 0.14, d * 0.5 + 0.1), CYAN)
-		k.box(Vector3(0.44, 0.3, 0.06), Vector3(0.85, h * 0.62, d * 0.5 + 0.1), DARK)
-		k.glow_box(Vector3(0.36, 0.22, 0.02), Vector3(0.85, h * 0.62, d * 0.5 + 0.135), CYAN)
+		k.box(Vector3(0.44, 0.3, 0.06), Vector3(0.45, h * 0.32, d * 0.5 + 0.06), DARK)
+		k.glow_box(Vector3(0.36, 0.22, 0.02), Vector3(0.45, h * 0.32, d * 0.5 + 0.095), CYAN)
 		k.cyl(0.1, 0.08, Vector3(0, 2.7, -0.1), CREAM, Vector3.ZERO, 0.03, 14)
 		k.glow_cyl(0.06, 0.04, Vector3(0, 2.76, -0.1), CYAN, Vector3.ZERO, 12)
 	var root := Node3D.new()
@@ -839,7 +800,7 @@ static func _skip(l: int) -> Dictionary:
 		root.add_child(ram_node)
 	set_powered(root, true)
 	return {"root": root, "size": Vector3(w, top + 0.2 if l >= 4 else h + 0.2, d), "mouth_y": h + 0.4, "ram": ram_node,
-		"fill": [Vector3(0, h * 0.55, 0), Vector3(1.15, 0.5, 0.7)], "label": Vector3(-0.2 if smart else 0.0, h * 0.62, d * 0.5 + 0.11)}
+		"fill": [Vector3(0, h * 0.55, 0), Vector3(1.15, 0.5, 0.7)]}
 
 
 ## The weigh plate (radius = half its width): tread panels, a drain grate, hazard border, bumpers.
@@ -864,6 +825,8 @@ static func depot_pad(radius: float) -> MeshInstance3D:
 		k.hazard(Vector3(s - 0.3, 0.025, 0.14), Vector3(0, 0.075, s * 0.5 - 0.1))
 		k.box(Vector3(0.24, 0.09, 0.24), Vector3(s * 0.5 - 0.1, 0.06, s * 0.5 - 0.1), YELLOW, Vector3.ZERO, 0.03)  # corner bumper
 		k.pop()
+	k.decal("chevrons", Vector2(1.0, 0.32), Vector3(0, 0.09, -s * 0.5 + 0.38), Vector3(-90, 0, 0))
+	k.decal("arrow", Vector2(0.5, 0.5), Vector3(0, 0.09, s * 0.5 - 0.5), Vector3(-90, 180, 0))
 	var m: MeshInstance3D = k.mi(0.35, "Plate")
 	return m
 
@@ -912,9 +875,9 @@ static func dress_ground(world: Node3D, shack: Node3D, half: float = 8.5, feet: 
 	# Footing under the lean-to/bench (in the shack's frame), split by a crack, with a kerb lip.
 	if shack:
 		k.push(world.global_transform.affine_inverse() * shack.global_transform)
-		k.box(Vector3(2.0, 0.05, 2.9), Vector3(-0.92, 0.012, -0.05), conc, Vector3(0, 0, 0.3), 0.015)
-		k.box(Vector3(1.78, 0.05, 2.9), Vector3(1.0, 0.012, -0.05), conc.darkened(0.06), Vector3(0, 0, -0.4), 0.015)
-		k.box(Vector3(3.9, 0.08, 0.16), Vector3(0, 0.03, -1.42), conc.darkened(0.12), Vector3.ZERO, 0.03)
+		k.box(Vector3(2.0, 0.05, 2.9), Vector3(-0.92, 0.012, -0.05), conc, Vector3(0, 0, 0.3), 0.015, "concrete")
+		k.box(Vector3(1.78, 0.05, 2.9), Vector3(1.0, 0.012, -0.05), conc.darkened(0.06), Vector3(0, 0, -0.4), 0.015, "concrete")
+		k.box(Vector3(3.9, 0.08, 0.16), Vector3(0, 0.03, -1.42), conc.darkened(0.12), Vector3.ZERO, 0.03, "concrete")
 		feet.append(shack.global_position)
 		k.pop()
 	# Broken slab plates in the open corners (each two pieces with a crack between).
@@ -928,8 +891,8 @@ static func dress_ground(world: Node3D, shack: Node3D, half: float = 8.5, feet: 
 		k.push(Transform3D(Basis(Vector3.UP, yaw), Vector3(c.x, 0.0, c.y)))
 		var w1: float = s * split - 0.03
 		var w2: float = s * (1.0 - split) - 0.03
-		k.box(Vector3(w1, 0.045, s), Vector3(-s * 0.5 + w1 * 0.5, 0.016, 0), tint, Vector3(rng.randf_range(-1.2, 1.2), 0, rng.randf_range(-1.2, 1.2)), 0.015)
-		k.box(Vector3(w2, 0.045, s * rng.randf_range(0.7, 1.0)), Vector3(s * 0.5 - w2 * 0.5, 0.016, 0), tint.darkened(0.05), Vector3(rng.randf_range(-1.5, 1.5), rng.randf_range(-4, 4), rng.randf_range(-1.5, 1.5)), 0.015)
+		k.box(Vector3(w1, 0.045, s), Vector3(-s * 0.5 + w1 * 0.5, 0.016, 0), tint, Vector3(rng.randf_range(-1.2, 1.2), 0, rng.randf_range(-1.2, 1.2)), 0.015, "concrete")
+		k.box(Vector3(w2, 0.045, s * rng.randf_range(0.7, 1.0)), Vector3(s * 0.5 - w2 * 0.5, 0.016, 0), tint.darkened(0.05), Vector3(rng.randf_range(-1.5, 1.5), rng.randf_range(-4, 4), rng.randf_range(-1.5, 1.5)), 0.015, "concrete")
 		k.pop()
 		feet.append(Vector3(c.x, 0, c.y))
 	# Kerb stones along the edge; the front (walkway, +z) leaves a gap in the middle.
@@ -960,7 +923,7 @@ static func dress_ground(world: Node3D, shack: Node3D, half: float = 8.5, feet: 
 			if i % 2 == 0 and side == 2:
 				k.hazard(Vector3(0.96, 0.12, 0.2), pos, tilt)
 			else:
-				k.box(Vector3(0.96, 0.12, 0.2), pos, conc.lightened(0.05).darkened(rng.randf_range(0.0, 0.15)), tilt, 0.03)
+				k.box(Vector3(0.96, 0.12, 0.2), pos, conc.lightened(0.05).darkened(rng.randf_range(0.0, 0.15)), tilt, 0.03, "concrete")
 	# Drain covers and a manhole.
 	for d: Array in [[Vector3(3.9, 0.02, 3.4), 0.32], [Vector3(-6.2, 0.02, -3.9), 0.42], [Vector3(-2.0, 0.02, -5.6), 0.28]]:
 		var at: Vector3 = d[0]
@@ -1085,6 +1048,7 @@ static func locker() -> Kit:
 	k.glow_box(Vector3(0.018, 1.7, 0.018), Vector3(0, 1.12, 0.36), CYAN)  # status seam
 	k.box(Vector3(0.3, 0.14, 0.06), Vector3(0, 2.0, 0.33), DARK, Vector3.ZERO, 0.02)  # little screen
 	k.glow_box(Vector3(0.24, 0.08, 0.02), Vector3(0, 2.0, 0.36), MINT)
+	k.decal("logo", Vector2(0.22, 0.22), Vector3(0.5, 2.18, 0.33))
 	# Helmet on top, coat hooks with a scarf on the side: someone's personal corner.
 	k.cyl(0.2, 0.18, Vector3(0.25, 2.33, -0.05), ORANGE, Vector3(0, 0, 0), 0.08, 16)
 	k.box(Vector3(0.34, 0.03, 0.2), Vector3(0.25, 2.26, 0.12), ORANGE.darkened(0.15), Vector3(-8, 0, 0), 0.01)

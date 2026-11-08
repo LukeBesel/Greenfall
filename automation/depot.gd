@@ -224,10 +224,6 @@ func _build_bin_art(l: int) -> Vector3:
 	fill.position = (b["fill"] as Array)[0]
 	fill.scale = (b["fill"] as Array)[1]
 	root.add_child(fill)
-	var smart: bool = l >= 5
-	var sign_label := Mats.stencil(tr("TRASH") if l <= 1 else tr("SCRAP  INTAKE  ·  WEIGH HERE"), 48 if l <= 1 else 64,
-		Color(0.2, 0.24, 0.26, 0.9) if smart else Color(0.95, 0.93, 0.85, 0.9))
-	sign_label.position = b["label"]
-	root.add_child(sign_label)
+	# [yard] labels are kit decals on the body now (images, never 3D text)
 	_chute_mouth = _chute.position + Vector3(0, float(b["mouth_y"]), 0)
 	return b["size"]
