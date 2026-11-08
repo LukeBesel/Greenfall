@@ -44,7 +44,10 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Walking off the edge never drops Lumi out of the world. (orbit)
 
 ## Walk around the planet (orbit)
-- [ ] You can keep walking and arrive back where you started, with the ground curving like a tiny planet. A prototype comes first, then the owner reviews it.
+- [ ] Each planet is a real, small, round planet you can walk all the way around, like moon sweeper games. You can see it curve.
+- [ ] It is big enough that you never set foot on most hexes, because the bots clean those.
+- [ ] Bases are sites on the globe.
+- [ ] Order: a prototype and plan first, then the owner reviews, then a rollout split across helpers.
 
 ## Pacing and economy (pace)
 - [ ] There are only 3 currencies: cubes, parts and seeds.
