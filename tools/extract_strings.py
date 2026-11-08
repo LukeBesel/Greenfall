@@ -46,6 +46,7 @@ JSON_RULES: dict[str, dict] = {
     "ledger.json": {"keys": COMMON_KEYS, "pools": {"act1", "act2", "act3", "coupons", "drop_warn", "friendly",
                                                    "jammed", "lonely", "cinematic"}},
     "events.json": {"keys": COMMON_KEYS, "pools": {"wren"}},
+    "songs.json": {"keys": COMMON_KEYS | {"genre", "bio"}},  # [tunes] artists and songs
     # Data-only files: nothing player-facing (asset lists, tuning, Steam API stat names).
     "assets.json": {"skip": True},
     "steam.json": {"skip": True},

@@ -145,6 +145,7 @@ static func entries(md_path: String = "res://docs/CREDITS.md") -> Array:
 			intro.append(line.replace(" (https://polyhaven.com)", "").strip_edges())
 	out.append(["head", TranslationServer.translate("MADE WITH LOVE AND JUNK")])
 	out.append(["name", TranslationServer.translate("Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall.")])
+	out.append(["name", TranslationServer.translate("Music by Lucas")])  # [tunes]
 	out.append(["small", TranslationServer.translate("Built with the Godot Engine.")])
 	out.append(["gap", ""])
 	if not authors.is_empty():

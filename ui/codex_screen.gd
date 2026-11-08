@@ -16,6 +16,7 @@ const TABS: Array[Dictionary] = [
 	{"id": "stats", "name": "Stats"},
 	{"id": "curiosities", "name": "Curiosities"},
 	{"id": "collection", "name": "Collection"},
+	{"id": "artists", "name": "Artists"},  # [tunes]
 ]
 # l10n:end
 const COLLECT_COLOR := Color(0.55, 0.95, 0.85)
@@ -212,6 +213,8 @@ func _build_tab() -> void:
 			first = _build_curiosities()
 		"collection":
 			first = _build_collection()
+		"artists":
+			first = CodexArtists.build(_body)  # [tunes]
 	if first:
 		first.call_deferred("grab_focus")
 
