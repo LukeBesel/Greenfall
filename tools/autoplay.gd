@@ -475,6 +475,20 @@ func _pace_upgrade() -> String:
 	return ""
 
 
+## [pace] The helper / automation research a planner works toward once the base allows it.
+func _pace_research_next() -> String:
+	for id: String in ["salvage_logic", "conveyor", "auto_baler"]:
+		if not Research.exists(id) or Research.has(id) or Research.is_active(id) or Research.is_queued(id):
+			continue
+		if Research.status(id) != "available":
+			return ""
+		var mb: int = int(Research.def(id).get("min_base_level", 0))
+		if int(GameState.world.get("hub_level", 1)) < mb:
+			return ""
+		return id
+	return ""
+
+
 func _drop_all(p: Patch) -> void:
 	var guard: int = 0
 	while not p.carried.is_empty() and guard < 12:
@@ -981,6 +995,9 @@ func _shop(want: Dictionary) -> void:
 	var leak: bool = float(want.get("hub_save", 0.0)) <= 0.0
 	if robot == "" or fleet.can_build(robot):
 		reserve = float(want.get("hub_save", 0.0))
+	var prn: String = _pace_research_next()
+	if prn != "":
+		reserve = maxf(reserve, Research.cost(prn).to_float())  # [pace]
 	if not Pace.baler_unlocked() and Economy.is_unlocked(Pace.UP_BALER):
 		reserve = maxf(reserve, Economy.upgrade_cost(Pace.UP_BALER).to_float() * 0.6)  # [pace] a person saves for the Baler
 	guard = 0
@@ -1268,6 +1285,9 @@ func _research_pick() -> String:
 	if not Research.active().is_empty() and Research.queue().size() >= Research.max_queue():
 		return ""
 	var saving: bool = false
+	var need: String = _pace_research_next()  # [pace] save for the helper / automation unlock
+	if need != "":
+		return need if _research_ok(need) and Research.can_start(need) else ""
 	var prio: Array[String] = AutoplayCampaign.research_first(world)
 	prio.append_array(RESEARCH_PRIORITY)
 	for id: String in prio:
