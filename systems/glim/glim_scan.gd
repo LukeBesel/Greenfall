@@ -25,6 +25,7 @@ var _origin := Vector3.ZERO
 var _reach: float = 0.0
 var last_count: int = 0
 var last_big: int = 0
+var hold_for_shot: bool = false  # --glim-scan-hold
 
 const RING_SHADER := """
 shader_type spatial;
@@ -152,8 +153,10 @@ func active() -> bool:
 func _process(delta: float) -> void:
 	if _t < 0.0:
 		return
-	_t += delta
+	_t += minf(delta, 0.1)
 	var sweep: float = _reach / RING_SPEED
+	if hold_for_shot:  # dev (slow software renders): park the ring at 65% with markers up
+		_t = clampf(_t, sweep * 0.65, sweep * 0.65 + 0.3)
 	var r: float = _t * RING_SPEED
 	_ring.visible = r < _reach + 1.5
 	if _ring.visible:

@@ -9,6 +9,7 @@ extends Node
 ##   --glim-tiers=light:2,scan:3,auto:1,magnet:1   set upgrade tiers (implies --glim)
 ##   --glim-look=shells:sunset,glows:ember,tops:beanie   wear a look (implies --glim, unlocks it)
 ##   --glim-scan[=S]        pulse the scanner S game seconds after start (default 3), then every 6 s
+##   --glim-scan-hold       keep the pulse parked mid-sweep (screenshots on slow renderers)
 ##   --glim-open[=S]        open the Glim panel after S wall-clock seconds
 ##   --glim-cam[=dist]      close-up camera on Glim (screenshots)
 ##   --glim-groove[=BPM]    Glim bobs to an imaginary song (music visuals without a song)
@@ -49,6 +50,7 @@ func _setup() -> void:
 	scan.name = "GlimScan"
 	scan.field = world.get("field") as HexField
 	scan.world = world
+	scan.hold_for_shot = DevHooks.has("glim-scan-hold")
 	world.add_child(scan)
 	panel = GlimPanel.new()
 	panel.name = "GlimPanel"

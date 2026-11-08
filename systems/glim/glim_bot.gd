@@ -61,6 +61,8 @@ func _build() -> void:
 	_shell_mat = _mat(Color(0.92, 0.9, 0.87), 0.28)
 	_shell_mat.clearcoat_enabled = true
 	_shell_mat.clearcoat = 0.6
+	_shell_mat.emission_enabled = true  # a faint pearl self-light so he reads as white at dusk
+	_shell_mat.emission_energy_multiplier = 0.12
 	_accent_mat = _mat(Color(1.0, 0.55, 0.18), 0.4)
 	_core_mat = _mat(Color(0.3, 0.9, 1.0))
 	_core_mat.emission_enabled = true
@@ -105,6 +107,7 @@ func apply_look() -> void:
 	if _shell_mat == null:
 		return
 	_shell_mat.albedo_color = Glim.worn_color("shells")
+	_shell_mat.emission = Glim.worn_color("shells")
 	var g: Color = Glim.worn_color("glows")
 	_core_mat.albedo_color = g
 	_core_mat.emission = g
@@ -196,6 +199,7 @@ func snap_to_target() -> void:
 	if target:
 		global_position = _follow_point()
 		_vel = Vector3.ZERO
+		_yaw = target.global_rotation.y
 
 
 func _follow_point() -> Vector3:
