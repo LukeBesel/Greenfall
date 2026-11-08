@@ -483,8 +483,8 @@ static func run(rt: Node, check: Callable) -> void:
 	if ob and ob.outline:
 		var oc: int = g.grid.neighbors(target)[2]
 		ob.set_process(false)  # [v1guide] every step now outlines its own dirty hex: hold it still for the check
-		ob.outline.set_hex(oc)
 		for i: int in 40:
+			ob.outline.set_hex(oc)  # [main] a goal finishing by signal (not _process) can clear it mid-wait on slow runners: keep it pinned
 			await tree.process_frame
 		var aabb: AABB = (ob.outline.get_child(0) as MeshInstance3D).get_aabb() if ob.outline.get_child_count() > 0 else AABB()
 		check.call("orbit_outline_on_cell", true, ob.outline.global_position.distance_to(g.field.hex_center(oc)) < 0.5)
