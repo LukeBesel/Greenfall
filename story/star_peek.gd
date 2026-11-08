@@ -51,6 +51,15 @@ func start() -> void:
 	cam.near = 0.05
 	cam.far = 1500.0
 	cam.attributes = null  # no far DOF: stars stay sharp
+	# A night-adapted eyepiece: the bright moonlit haze is dimmed and the fog dropped, so the stars stand out.
+	var vp_env: Environment = _world_env()
+	if vp_env:
+		var e: Environment = vp_env.duplicate()
+		e.fog_enabled = false
+		e.volumetric_fog_enabled = false
+		e.tonemap_exposure = vp_env.tonemap_exposure * 0.32
+		e.glow_enabled = true
+		cam.environment = e
 	add_child(cam)
 	cam.global_position = eye
 	cam.look_at(target, Vector3.UP)
@@ -73,6 +82,13 @@ func start() -> void:
 	if DevHooks.has("shot"):  # dev: slow software renders capture the open eyepiece, not the iris
 		_open = 1.0
 		_t = 2.2
+
+
+func _world_env() -> Environment:
+	if world and world.get("env") is Environment:
+		return world.env
+	var w3: World3D = get_viewport().find_world_3d() if get_viewport() else null
+	return w3.environment if w3 and w3.environment else null
 
 
 ## World position of the eyepiece (back end of the brass tube), a little behind it.

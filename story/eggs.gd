@@ -22,7 +22,7 @@ var _scoop_cd: Dictionary = {}
 ## [eggs2] Where Lumi starts (scenes/slice.gd SPAWN): far-out eggs measure from here.
 const SPAWN_Z: float = 3.0
 ## [eggs2] Where WREN's constellation hangs in the sky (the telescope aims here).
-const STAR_POS := Vector3(110, 170, -190)
+const STAR_POS := Vector3(80, 260, -140)  # high (~58 deg) so streets and towers rarely hide it
 var _peek: Node  # [eggs2] StarPeek while looking through the telescope
 var _tv: Node  # [eggs2] TvBroadcast while it plays
 var _dev_use: Dictionary = {}  # [eggs2] dev --egg-use target
@@ -434,6 +434,9 @@ func _process(delta: float) -> void:
 	if _star_mat:
 		var boost: float = 1.0 if is_found("stars") else 0.55
 		_star_mat.albedo_color.a = _night_amount() * boost * (0.85 + 0.15 * sin(_t * 1.7))
+		# [eggs2] Through the eyepiece the Wren burns bright (HDR white over the darkened lens sky).
+		var k: float = 2.8 if is_instance_valid(_peek) else 1.0
+		_star_mat.albedo_color = Color(0.85 * k, 0.92 * k, 1.0 * k, 1.0 if is_instance_valid(_peek) else _star_mat.albedo_color.a)
 	_animate(delta)
 	_glint(delta)
 	if not _dev_use.is_empty() and DevHooks._elapsed >= DevHooks.get_f("egg-use", 0.5):  # [eggs2] wall clock (slow renders)
