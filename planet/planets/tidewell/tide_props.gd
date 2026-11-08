@@ -26,6 +26,8 @@ static func m(env: Node, key: String) -> Material:
 	if mats.has("k:" + key):
 		return mats["k:" + key]
 	var wl: float = TidewellEnv.SEA_Y + (env as Node3D).global_position.y if (env as Node3D).is_inside_tree() else TidewellEnv.SEA_Y
+	if env.get("kit_dry") == true:
+		wl = -1000.0  # Rime: no sea, no algae band
 	var mt: Material
 	match key:
 		"hull":
@@ -63,6 +65,16 @@ static func m(env: Node, key: String) -> Material:
 			mt = g
 		"lamp_warm":
 			mt = Mats.lamp(Color(1.0, 0.82, 0.55), 2.2)
+		"snow":
+			mt = SeasKit.paint(Color(0.9, 0.94, 1.0), {"edge": 0.0, "rough": 0.7, "metal": 0.0, "detail": "snow_02", "nrm": 0.6, "dscale": 0.5, "tone": 0.04, "grime": 0.1})
+		"navy":
+			mt = SeasKit.paint(NAVY, {"waterline": wl, "edge": 0.6, "rough": 0.5})
+		"lamp_red":
+			mt = Mats.lamp(Color(1.0, 0.25, 0.18), 2.4)
+		"concrete":
+			mt = SeasKit.paint(Color(0.62, 0.63, 0.62), {"edge": 0.5, "rough": 0.85, "metal": 0.0, "detail": "dirty_concrete", "nrm": 0.6, "tone": 0.1, "edge_col": Color(0.78, 0.78, 0.76)})
+		"steel_plain":
+			mt = Mats.metal("dark_steel")
 		"bulb":
 			mt = Mats.lamp(Color(1.0, 0.8, 0.5), 2.6)
 		"rope_line":
