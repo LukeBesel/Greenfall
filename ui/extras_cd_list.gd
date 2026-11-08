@@ -75,7 +75,7 @@ static func build(_panel: Node, body: Control, on_btn: Callable, rebuild: Callab
 		var cur: bool = id == mode
 		var txt: String
 		if ok:
-			txt = "%s%s\n%s" % ["▶  " if cur else "", _t(Tunes.title(id)), _t("by %s") % _t(Tunes.artist_name(id))]
+			txt = "%s%s\n%s" % ["▶  " if cur else "", _t(Tunes.title(id)), _t("by %s, from %s") % [_t(Tunes.artist_name(id)), Tunes.planet_name(Tunes.home(id))]]
 		else:
 			txt = "? ? ?\n%s" % (_t("Found on %s") % Tunes.planet_name(Tunes.found_on(id)))
 		var b: Button = _row(left, txt, "" if ok else "lock", Color(UITheme.MUTED, 0.7), func() -> void:
@@ -89,6 +89,15 @@ static func build(_panel: Node, body: Control, on_btn: Callable, rebuild: Callab
 		on_btn.call(b)
 		if cur:
 			focus = b
+	if not Tunes.held().is_empty():
+		left.add_child(UITheme.label(_t("CD CASE  ·  SCRATCHED, ONE PLAY EACH  ·  %d / %d") % [Tunes.held().size(), Tunes.case_size()], 12, Color(0.4, 0.75, 1.0)))
+		for id: String in Tunes.held():
+			var sb: Button = _row(left, "%s\n%s" % [_t("Play once: %s") % _t(Tunes.title(id)), _t("by %s") % _t(Tunes.artist_name(id))], "", Color.WHITE, func() -> void:
+				if Tunes.play_scratched(id):
+					EventBus.toast.emit(_t("Last play: %s by %s") % [_t(Tunes.title(id)), _t(Tunes.artist_name(id))], "info")
+				rebuild.call())
+			sb.add_theme_color_override("font_color", Color(0.75, 0.8, 0.86))
+			on_btn.call(sb)
 	if focus:
 		focus.call_deferred("grab_focus")
 	var right: VBoxContainer = _col(body, 0, _t("NOW PLAYING"))
@@ -99,7 +108,7 @@ static func build(_panel: Node, body: Control, on_btn: Callable, rebuild: Callab
 		if id != "":
 			right.add_child(UITheme.label(_t(Tunes.title(id)), 26, Color.WHITE))
 			var a: Dictionary = Tunes.artist(str(Tunes.song(id).get("artist", "")))
-			right.add_child(UITheme.label(_t("by %s") % _t(str(a.get("name", ""))), 16, UITheme.GOLD))
+			right.add_child(UITheme.label(_t("by %s, from %s") % [_t(str(a.get("name", ""))), Tunes.planet_name(Tunes.home(id))], 16, UITheme.GOLD))
 			right.add_child(_wrap(_t(str(Tunes.song(id).get("desc", ""))), 15, UITheme.MUTED))
 			right.add_child(_wrap("%s  ·  %s" % [_t(str(a.get("genre", ""))), _t(str(a.get("bio", "")))], 13, UITheme.MUTED))
 		var off: Button = _row(right, _t("Turn off (back to the day's music)"), "", Color.WHITE, func() -> void:

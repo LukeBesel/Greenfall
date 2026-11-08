@@ -55,9 +55,9 @@ static func build(body: Control) -> Control:
 	var show := func(aid: String) -> void:
 		var a: Dictionary = Tunes.artist(aid)
 		var got: bool = aid in known
-		genre.text = _t(str(a.get("genre", ""))).to_upper() if got else ""
+		genre.text = ("%s  ·  %s" % [_t(str(a.get("genre", ""))), _t("From %s") % Tunes.planet_name(Tunes.artist_home(aid))]).to_upper() if got else ""
 		nm.text = _t(str(a.get("name", ""))) if got else _t("Not met yet")
-		bio.text = _t(str(a.get("bio", ""))) if got else _t("Find one of their CDs in the rubble.")
+		bio.text = _t(str(a.get("bio", ""))) if got else (_t("Find one of their CDs in the rubble on %s.") % Tunes.planet_name(Tunes.artist_home(aid)))
 		var have: PackedStringArray = []
 		var total: int = 0
 		for id: String in Tunes.songs_by(aid):

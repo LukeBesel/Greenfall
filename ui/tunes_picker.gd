@@ -99,6 +99,14 @@ func _fill() -> void:
 		var b: Button = _add("%s  ·  %s" % [tr(Tunes.title(id)), tr(Tunes.artist_name(id))], mode == id, id)
 		if mode == id:
 			focus = b
+	for id: String in Tunes.held():
+		var sb: Button = _add(tr("Play once: %s (scratched)") % tr(Tunes.title(id)), false, "")
+		for c: Dictionary in sb.pressed.get_connections():
+			sb.pressed.disconnect(c["callable"])
+		sb.pressed.connect(func() -> void:
+			Audio.play("click", 1.0, -6.0)
+			Tunes.play_scratched(id)
+			close())
 	focus.call_deferred("grab_focus")
 
 

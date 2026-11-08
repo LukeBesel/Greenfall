@@ -8,7 +8,11 @@ extends Node3D
 ## - A bit rarer than ordinary finds, with a pity counter so every CD turns up in time: the chance
 ##   grows with each cleaned hex since the last CD and is certain after cd_find.guarantee_hexes.
 ## - A CD left lying stays where it surfaced (flags.songs.pending) until Lumi picks it up.
-## State: GameState.flags.songs {found, pity, pending: {song id: {hub, hex, planet}}}.
+## - Scratched CDs: rarer still, 5-10 per planet, of songs you don't own yet (other planets'
+##   first; never an owned one, skipped when none qualify). Picking one up asks "Play now?" or
+##   keeps it in the CD case (ui/scratched_cd_ui.gd). It plays once, then breaks.
+## State: GameState.flags.songs {found, pity, pending: {song id or "s:"+id: {hub, hex, planet,
+## scratched}}, scratch_left: {planet: n}, scratch_cool, scratched (held), plays}.
 
 const PICK_R: float = 1.7
 const OFFSET := Vector3(-0.9, 0.04, 1.1)
@@ -84,6 +88,41 @@ static func take(id: String) -> bool:
 	return Tunes.grant(id)
 
 
+## Scratched CDs left to find on a planet (5-10, rolled the first time it is asked).
+static func scratch_left(planet: String, r: float = 0.5) -> int:
+	var st: Dictionary = Tunes.st()
+	if not (st.get("scratch_left") is Dictionary):
+		st["scratch_left"] = {}
+	var d: Dictionary = st["scratch_left"]
+	if not d.has(planet):
+		var span: Array = Tunes.scratch_cfg().get("per_planet", [5, 10])
+		d[planet] = int(roundf(lerpf(float(span[0]), float(span[1]), clampf(r, 0.0, 1.0))))
+	return int(d[planet])
+
+
+## One cleaned hex: maybe a scratched CD (its song id, or ""). Rare, with a few hexes' cooldown.
+static func roll_scratched(planet: String, hub: int, r: float, pick: float) -> String:
+	var c: Dictionary = Tunes.scratch_cfg()
+	var st: Dictionary = Tunes.st()
+	if float(GameState.stats.get("hexes_cleaned", 0.0)) < float(c.get("min_hexes", 12)):
+		return ""
+	var cool: int = int(st.get("scratch_cool", 0))
+	if cool > 0:
+		st["scratch_cool"] = cool - 1
+		return ""
+	if scratch_left(planet, pick) <= 0 or r >= float(c.get("chance", 0.025)):
+		return ""
+	var cand: Array[String] = []
+	for id: String in Tunes.scratch_candidates(planet):
+		if not pending().has("s:" + id):
+			cand.append(id)
+	if cand.is_empty():
+		return ""  # nothing you don't own yet: skip, and keep the quota
+	(st["scratch_left"] as Dictionary)[planet] = scratch_left(planet) - 1
+	st["scratch_cool"] = int(c.get("cooldown_hexes", 6))
+	return cand[clampi(int(pick * cand.size()), 0, cand.size() - 1)]
+
+
 # --- Live --------------------------------------------------------------------------------
 
 func on_hex_cleaned(hid: int) -> void:
@@ -91,10 +130,14 @@ func on_hex_cleaned(hid: int) -> void:
 		return
 	var planet: String = SolarSystem.current_id()
 	var id: String = roll(planet, GameState.current_hub, rng.randf(), rng.randf())
-	if id == "":
+	if id != "":
+		pending()[id] = {"hub": GameState.current_hub, "hex": hid, "planet": planet}
+		_show(id, hid, true)
 		return
-	pending()[id] = {"hub": GameState.current_hub, "hex": hid, "planet": planet}
-	_show(id, hid, true)
+	id = roll_scratched(planet, GameState.current_hub, rng.randf(), rng.randf())
+	if id != "":
+		pending()["s:" + id] = {"hub": GameState.current_hub, "hex": hid, "planet": planet, "scratched": true}
+		_show("s:" + id, hid, true)
 
 
 func _restore() -> void:
@@ -103,7 +146,7 @@ func _restore() -> void:
 	var planet: String = SolarSystem.current_id()
 	for id: Variant in pending().keys():
 		var p: Dictionary = pending()[id]
-		if Tunes.is_found(str(id)):
+		if Tunes.is_found(str(id).trim_prefix("s:")):
 			pending().erase(id)
 			continue
 		if int(p.get("hub", -1)) == GameState.current_hub and str(p.get("planet", "")) == planet:
@@ -115,16 +158,17 @@ func _restore() -> void:
 func _show(id: String, hid: int, fresh: bool) -> void:
 	if _discs.has(id):
 		return
-	var node: Node3D = build_cd()
+	var scratched: bool = id.begins_with("s:")
+	var node: Node3D = build_cd(scratched)
 	add_child(node)
-	var pos: Vector3 = world.field.hex_center(hid) + OFFSET
+	var pos: Vector3 = world.field.hex_center(hid) + (OFFSET if not scratched else Vector3(1.0, 0.04, -0.8))
 	node.global_position = pos
 	node.rotation.y = rng.randf() * TAU
 	_discs[id] = node
 	if fresh:
 		Vfx.burst("sparkle", pos + Vector3(0, 0.3, 0), Color(0.75, 0.9, 1.0), 0.6)
 		Audio.play("detector", 1.25, -10.0)
-		EventBus.toast.emit(tr("Something shiny turned up in the cleared rubble. An old CD!"), "hint")
+		EventBus.toast.emit(tr("A scratched CD turned up in the rubble.") if scratched else tr("Something shiny turned up in the cleared rubble. An old CD!"), "hint")
 
 
 func _process(delta: float) -> void:
@@ -150,11 +194,26 @@ func _process(delta: float) -> void:
 			_discs.erase(id)
 			Vfx.burst("sparkle", n.global_position + Vector3(0, 0.4, 0), Color(0.8, 0.95, 1.0), 0.8)
 			n.queue_free()
-			take(id)
+			if id.begins_with("s:"):
+				_take_scratched(id.trim_prefix("s:"))
+			else:
+				take(id)
 
 
-## A CD in a cracked jewel case, lying half out of it in the dirt.
-static func build_cd() -> Node3D:
+func _take_scratched(song_id: String) -> void:
+	pending().erase("s:" + song_id)
+	if Tunes.is_found(song_id):
+		return
+	var ui: Node = world.get_node_or_null("ScratchedCdUI") if world else null
+	if ui and ui.has_method("ask"):
+		ui.call("ask", song_id)
+	elif not Tunes.hold(song_id):
+		EventBus.toast.emit(tr("Your CD case is full."), "info")
+
+
+## A CD in a cracked jewel case, lying half out of it in the dirt. Scratched: a duller, greyer
+## disc with a pale, worn label.
+static func build_cd(scratched: bool = false) -> Node3D:
 	var root := Node3D.new()
 	root.name = "CD"
 	var case_mat := StandardMaterial3D.new()
@@ -163,8 +222,8 @@ static func build_cd() -> Node3D:
 	case_mat.roughness = 0.15
 	case_mat.metallic_specular = 0.8
 	var tray := DecorProps.paint(Color(0.08, 0.08, 0.09), 0.6)
-	var disc := DecorProps.paint(Color(0.86, 0.88, 0.92), 0.12, 0.95)
-	var label := DecorProps.paint(Color(0.95, 0.62, 0.22), 0.5)
+	var disc := DecorProps.paint(Color(0.86, 0.88, 0.92) if not scratched else Color(0.6, 0.6, 0.62), 0.12 if not scratched else 0.55, 0.95 if not scratched else 0.5)
+	var label := DecorProps.paint(Color(0.95, 0.62, 0.22) if not scratched else Color(0.62, 0.58, 0.52), 0.5 if not scratched else 0.85)
 	var hub := DecorProps.paint(Color(0.92, 0.94, 0.97, 0.6), 0.2)
 	var s: float = 1.9  # a real CD is tiny next to Lumi; a little larger so it reads
 	var case_ := Node3D.new()
@@ -185,7 +244,7 @@ static func build_cd() -> Node3D:
 	var glint := OmniLight3D.new()
 	glint.name = "Glint"
 	glint.light_color = Color(0.8, 0.92, 1.0)
-	glint.light_energy = 0.6
+	glint.light_energy = 0.6 if not scratched else 0.3
 	glint.omni_range = 1.4
 	glint.position = Vector3(0, 0.35, 0)
 	root.add_child(glint)

@@ -56,6 +56,9 @@ func _tunes_setup() -> void:
 	var pk := TunesPicker.new()
 	pk.world = world
 	world.add_child.call_deferred(pk)
+	var sc := ScratchedCdUI.new()
+	sc.world = world
+	world.add_child.call_deferred(sc)
 	var d: Node = Tunes.director()
 	if d and world.get("patch") != null:
 		d.set("listener", world.patch)

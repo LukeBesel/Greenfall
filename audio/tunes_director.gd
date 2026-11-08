@@ -17,6 +17,9 @@ extends Node
 ## screen is up.
 
 signal song_started(id: String)
+## A scratched CD: plays once, then breaks (Tunes.break_scratched on finish).
+signal scratch_started(id: String)
+signal scratch_finished(id: String)
 
 const BUS: String = "Songs"
 const SONG_DB: float = -7.0  # the songs are mastered much louder than the synth score
@@ -36,6 +39,9 @@ var rng := RandomNumberGenerator.new()
 ## Tests drive tick() by hand and run without the loading screen.
 var manual: bool = false
 var hush: bool = false
+var scratch: String = ""  # the scratched CD playing its one play
+var _scratch_t: float = 0.0
+var _crackle: AudioStreamPlayer
 
 var _p: Array[AudioStreamPlayer] = []
 var _slot: Array[Dictionary] = []  # per player: id, t, len, gain, target, rate, loop
@@ -62,7 +68,63 @@ func _ready() -> void:
 		add_child(p)
 		_p.append(p)
 		_slot.append(_empty())
+	_crackle = AudioStreamPlayer.new()
+	_crackle.bus = BUS
+	_crackle.name = "Crackle"
+	_crackle.stream = crackle_stream()
+	add_child(_crackle)
 	_last_us = Time.get_ticks_usec()
+
+
+## A gentle disc crackle: a soft hiss with a few pops and two skips (the scratched CD starting).
+static func crackle_stream() -> AudioStreamWAV:
+	var rate: int = 22050
+	var n: int = int(rate * 1.6)
+	var rng_ := RandomNumberGenerator.new()
+	rng_.seed = 7171
+	var data := PackedByteArray()
+	data.resize(n * 2)
+	var lp: float = 0.0
+	for i: int in n:
+		var t: float = float(i) / rate
+		lp += (rng_.randf_range(-1.0, 1.0) - lp) * 0.3
+		var env: float = smoothstep(0.0, 0.05, t) * (1.0 - smoothstep(1.1, 1.6, t))
+		var v: float = lp * 0.05 * env
+		if rng_.randf() < 0.0016:
+			v += rng_.randf_range(-0.55, 0.55) * env
+		for skip: float in [0.42, 0.78]:
+			if t > skip and t < skip + 0.03:
+				v += sin(TAU * 1900.0 * t) * 0.12 * (1.0 - (t - skip) / 0.03)
+		data.encode_s16(i * 2, int(clampf(v, -1.0, 1.0) * 32000.0))
+	var w := AudioStreamWAV.new()
+	w.format = AudioStreamWAV.FORMAT_16_BITS
+	w.mix_rate = rate
+	w.data = data
+	return w
+
+
+## A scratched CD's one play: the other music fades out, a crackle, the song once, then it breaks.
+func play_once(id: String) -> bool:
+	if scratch != "" or not Tunes.has_file(id) or Tunes.stream(id) == null:
+		return false
+	scratch = id
+	_scratch_t = 0.0
+	_crackle.play()
+	_start(id, 1.6, false)
+	print("[tunes] scratched CD: %s (last play)" % id)
+	scratch_started.emit(id)
+	return true
+
+
+func _finish_scratch() -> void:
+	var id: String = scratch
+	scratch = ""
+	_fade_all(1.2)
+	Tunes.break_scratched(id)
+	print("[tunes] scratched CD broke: %s" % id)
+	scratch_finished.emit(id)
+	if context == "play" and radio == "":
+		_start_gap(false)
 
 
 func _exit_tree() -> void:
@@ -96,6 +158,8 @@ func set_radio(mode: String) -> void:
 		return
 	radio = mode
 	print("[tunes] CD player: %s" % (mode if mode != "" else "off"))
+	if scratch != "":
+		return  # the scratched CD finishes its one play first
 	if mode == "":
 		_fade_all(2.0)
 		_start_gap(true)
@@ -150,6 +214,8 @@ func tick(dt: float) -> void:
 	var loading: bool = _loading()
 	if loading and not _was_loading:
 		_fade_all(0.6)
+		if scratch != "":
+			_finish_scratch()
 	if _was_loading and not loading and context == "play":
 		_start_gap(true)
 	_was_loading = loading
@@ -175,6 +241,11 @@ func _drive(dt: float) -> void:
 	var s: Dictionary = _slot[_main]
 	var playing: bool = str(s["id"]) != "" and float(s["target"]) > 0.0
 	var xf: float = float(Tunes.cfg().get("crossfade_s", 4.0))
+	if scratch != "":
+		_scratch_t += dt
+		if _scratch_t > 1.0 and (str(s["id"]) != scratch or float(s["t"]) >= float(s["len"]) - 1.5):
+			_finish_scratch()
+		return
 	match context:
 		"menu":
 			if not Tunes.has_file(MAIN):
@@ -225,7 +296,7 @@ func _planet() -> String:
 
 func _advance(dt: float) -> void:
 	var mul: float = 1.0 if Audio.music_enabled else 0.0
-	if radio != "" and context == "play":
+	if radio != "" and context == "play" and scratch == "":
 		mul *= _radio_falloff()
 	for i: int in _p.size():
 		var s: Dictionary = _slot[i]
@@ -265,6 +336,8 @@ func _apply_bus() -> void:
 
 
 func _wants_hush() -> bool:
+	if scratch != "":
+		return true
 	for s: Dictionary in _slot:
 		if float(s["gain"]) > 0.0 or float(s["target"]) > 0.0:
 			return true
@@ -329,6 +402,8 @@ func _start(id: String, fade: float, loop: bool) -> void:
 	_p[k].play()
 	if recent.is_empty() or recent[recent.size() - 1] != id:
 		recent.append(id)
+		if scratch != id:
+			Tunes.note_play(id)
 	while recent.size() > 6:
 		recent.remove_at(0)
 	print("[tunes] now playing %s (%s%s)" % [id, context, (", CD player " + radio) if radio != "" and context == "play" else ""])

@@ -45,9 +45,10 @@ func test_library_matches_the_prompt_list() -> void:
 		assert_false(Tunes.artist(str(s["artist"])).is_empty(), "%s has an artist" % s["id"])
 		if str(s["unlock"]) == "cd":
 			assert_has(["verdance", "ochre", "tidewell", "rime", "anvil"], str(s["found_on"]))
-	for id: String in ["greenfall_main", "fall_of_lm1", "clean_sweep", "morning_shift", "sunbaked"]:
+			assert_eq(str(s["found_on"]), Tunes.artist_home(str(s["artist"])), "%s's CD is on its artist's home planet" % s["id"])
+	for id: String in ["greenfall_main", "fall_of_lm1", "clean_sweep", "morning_shift", "sunbaked", "dune_caravan", "strip_mine_shuffle"]:
 		assert_true(Tunes.has_file(id), "%s.mp3 is in the build" % id)
-	assert_between(Tunes.artists().size(), 6, 9, "a small recurring roster")
+	assert_between(Tunes.artists().size(), 6, 14, "a small recurring roster")
 	for a: Dictionary in Tunes.artists():
 		assert_gt(Tunes.songs_by(str(a["id"])).size() + int(not Tunes.songs_by(str(a["id"])).is_empty()), -1)
 		assert_ne(str(a.get("bio", "")), "", "%s has a bio" % a["id"])
@@ -63,7 +64,7 @@ func test_start_songs_and_cd_unlocks_are_saved() -> void:
 	assert_eq(Tunes.found().size(), 3)
 	assert_true(Tunes.grant("sunbaked", true))
 	assert_false(Tunes.grant("sunbaked", true), "once")
-	assert_eq(Tunes.toast_text("sunbaked"), "New CD: Sunbaked by Two Suns Tango Orchestra")
+	assert_eq(Tunes.toast_text("sunbaked"), "New CD: Sunbaked by Two Suns Tango Orchestra, from Ochre")
 	var saved: String = JSON.stringify(GameState.flags)
 	GameState.flags = JSON.parse_string(saved)
 	assert_true(Tunes.is_found("sunbaked"), "survives a save")
@@ -147,6 +148,78 @@ func test_cds_drop_per_planet_with_a_guarantee() -> void:
 		Tunes.grant(id, true)
 	for i: int in 40:
 		assert_eq(CdFinds.roll("verdance", 0, 0.0, 0.0), "", "nothing left to find on Verdance")
+
+
+func test_intact_cds_only_on_their_home_planet() -> void:
+	_all_files()
+	GameState.stats["hexes_cleaned"] = 50.0
+	for planet: String in ["verdance", "ochre", "tidewell", "rime", "anvil"]:
+		for i: int in 200:
+			var id: String = CdFinds.roll(planet, 1, 0.0, _rng.randf())
+			if id == "":
+				break
+			assert_eq(Tunes.home(id), planet, "%s turned up on %s" % [id, planet])
+			CdFinds.take(id)
+		assert_true(Tunes.cds_left(planet).is_empty(), "all of %s's CDs found there" % planet)
+	assert_eq(Tunes.found().size(), Tunes.songs().size(), "every song unlocked for good")
+
+
+func test_scratched_cd_plays_once_then_breaks() -> void:
+	_all_files()
+	GameState.stats["hexes_cleaned"] = 50.0
+	var id: String = ""
+	for i: int in 50:
+		id = CdFinds.roll_scratched("rime", 1, 0.0, 0.0)
+		if id != "":
+			break
+	assert_ne(id, "", "a scratched CD turns up")
+	assert_false(Tunes.is_found(id), "only songs you don't own")
+	assert_ne(Tunes.home(id), "rime", "other planets' songs first")
+	assert_between(CdFinds.scratch_left("rime"), 4, 9, "5-10 per planet")
+	assert_eq(ScratchedCdUI.ask_text("sunbaked"), "Sunbaked by Two Suns Tango Orchestra: it will only play once, then break. Play now?")
+	assert_eq(ScratchedCdUI.hint_text("thaw"), "Find the intact CD on Rime to keep it.")
+	var d: Node = Director.new()
+	d.manual = true
+	add_child_autofree(d)
+	d.set_context("play")
+	assert_true(Tunes.hold(id))
+	var saved: String = JSON.stringify(GameState.flags)
+	GameState.flags = JSON.parse_string(saved)
+	assert_has(Tunes.held(), id, "held scratched CDs survive a save")
+	var fin: Array = []
+	d.scratch_finished.connect(func(x: String) -> void: fin.append(x))
+	Tunes.file_override[id] = true
+	assert_true(d.play_once(id))
+	d.tick(0.1)
+	assert_eq(d.current(), id, "plays now")
+	assert_false(d.play_once(id), "one at a time")
+	var len_s: float = float(d._slot[d._main]["len"])
+	var t: float = 0.0
+	while t < len_s + 5.0 and fin.is_empty():
+		d.tick(0.25)
+		t += 0.25
+	assert_eq(fin, [id], "plays to the end once")
+	assert_does_not_have(Tunes.held(), id, "then breaks")
+	assert_eq(Tunes.play_count(id), 1, "the play is counted")
+	assert_false(Tunes.is_found(id), "a teaser: it doesn't unlock the song")
+	assert_false(Tunes.play_scratched(id), "gone")
+	d.set_context("none")
+
+
+func test_no_scratched_cd_for_owned_songs() -> void:
+	_all_files()
+	GameState.stats["hexes_cleaned"] = 50.0
+	for s: Dictionary in Tunes.songs():
+		Tunes.grant(str(s["id"]), true)
+	for i: int in 100:
+		assert_eq(CdFinds.roll_scratched("ochre", 1, 0.0, 0.0), "", "nothing left to tease: skipped")
+	assert_gt(CdFinds.scratch_left("ochre"), 0, "the quota is kept")
+	Tunes.st()["found"] = []
+	for i: int in 3:
+		Tunes.hold("sunbaked")
+	assert_true(Tunes.case_full() or Tunes.held().size() == 3)
+	Tunes.grant("sunbaked", true)
+	assert_false(Tunes.hold("sunbaked"), "never hold a scratched copy of an owned song")
 
 
 func test_director_plays_title_and_intro_songs() -> void:

@@ -581,6 +581,18 @@ msgstr "新发现：%s。已收入图鉴。"
 msgid "Snap! A %s for your Collection."
 msgstr "咔嚓！一张%s的照片，收进你的收藏。"
 
+#: planet/cd_finds.gd:171
+msgid "A scratched CD turned up in the rubble."
+msgstr ""
+
+#: planet/cd_finds.gd:171
+msgid "Something shiny turned up in the cleared rubble. An old CD!"
+msgstr ""
+
+#: planet/cd_finds.gd:211
+msgid "Your CD case is full."
+msgstr ""
+
 #: planet/frontier_district.gd:279
 msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
 msgstr "沙暴将至。裸露的干净地面会被掩埋；种了植物或有遮挡的六角格能挺住。"
@@ -1280,7 +1292,7 @@ msgstr "你的基地已经成长到试玩版的极限。"
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "在完整版中，Lumi 会把基地建到 5 级，种满整片街区直到繁茂，让它们成长为明亮的未来城市，还会乘火箭飞往星球上的数十座基地。你的试玩进度会被保留。"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:679
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:682
 msgid "Hexes cleaned"
 msgstr "已清理六角格"
 
@@ -1288,15 +1300,15 @@ msgstr "已清理六角格"
 msgid "Bales made"
 msgstr "已制作捆包"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:694
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:697
 msgid "Robots built"
 msgstr "已建造机器人"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:702
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:705
 msgid "Time played"
 msgstr "游戏时长"
 
-#: steam/demo_end_screen.gd:78 ui/main_menu.gd:340
+#: steam/demo_end_screen.gd:78 ui/main_menu.gd:341
 msgid "Wishlist on Steam"
 msgstr "在 Steam 上加入愿望单"
 
@@ -1312,7 +1324,7 @@ msgstr "标题画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:771 ui/main_menu.gd:446
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:774 ui/main_menu.gd:447
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
 
@@ -1747,7 +1759,7 @@ msgstr "那我们就造一些出来。清理地面，种下那些幼苗。每一
 msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
 msgstr "充满你的绽放核心。重建一座发射场。然后飞回我们身边。……一壶水一壶水地来。"
 
-#: story/intro.gd:798
+#: story/intro.gd:800
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "绿光  ·  未检测到"
 
@@ -2003,11 +2015,11 @@ msgstr "在废料底下的某个地方。"
 msgid "Found on the planet it belongs to."
 msgstr "在它所属的星球上找到。"
 
-#: systems/codex.gd:200 ui/codex_screen.gd:367
+#: systems/codex.gd:200 ui/codex_screen.gd:370
 msgid "Old Town"
 msgstr "老城区"
 
-#: systems/codex.gd:204 ui/codex_screen.gd:367
+#: systems/codex.gd:204 ui/codex_screen.gd:370
 msgid "Wilderness bases"
 msgstr "荒野基地"
 
@@ -2015,7 +2027,7 @@ msgstr "荒野基地"
 msgid " · often %s"
 msgstr " · 常见于%s"
 
-#: systems/codex.gd:207 ui/codex_screen.gd:367 data/codex.json:categories[frontiers].name
+#: systems/codex.gd:207 ui/codex_screen.gd:370 data/codex.json:categories[frontiers].name
 msgid "Frontiers"
 msgstr "边境"
 
@@ -2023,11 +2035,11 @@ msgstr "边境"
 msgid " · %s"
 msgstr " · %s"
 
-#: systems/codex.gd:209 ui/codex_screen.gd:367
+#: systems/codex.gd:209 ui/codex_screen.gd:370
 msgid "Other worlds"
 msgstr "其他世界"
 
-#: systems/codex.gd:210 ui/codex_screen.gd:367
+#: systems/codex.gd:210 ui/codex_screen.gd:370
 msgid "Any district"
 msgstr "任意街区"
 
@@ -2503,7 +2515,7 @@ msgstr "已在队列中"
 msgid "Queue is full"
 msgstr "队列已满"
 
-#: systems/research.gd:324 ui/codex_screen.gd:775
+#: systems/research.gd:324 ui/codex_screen.gd:778
 msgid "%ds"
 msgstr "%d秒"
 
@@ -2583,7 +2595,7 @@ msgstr "解锁 %s 机器人"
 msgid "Unlocks %s seeds"
 msgstr "解锁%s种子"
 
-#: systems/research.gd:411 ui/extras_panel.gd:193
+#: systems/research.gd:411
 msgid "Unlocks: %s"
 msgstr "解锁：%s"
 
@@ -2636,7 +2648,7 @@ msgid "Requests reward · %d requests"
 msgstr ""
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: systems/robot_builder.gd:384 ui/main_menu.gd:452 ui/profile_picker.gd:133
+#: systems/robot_builder.gd:384 ui/main_menu.gd:453 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s 方块"
 
@@ -2671,6 +2683,10 @@ msgstr ""
 #: systems/robot_builder.gd:603
 msgid "%s spotted a %s."
 msgstr "%s 发现了%s。"
+
+#: systems/tunes.gd:164
+msgid "New CD: %s by %s, from %s"
+msgstr ""
 
 #: systems/extras/album.gd:86
 msgid "First arrival"
@@ -2724,15 +2740,15 @@ msgstr "%s 对着幼苗哼歌。退休生活很适合它。"
 msgid "%s points proudly at a new bud."
 msgstr "%s 骄傲地指着一个新花苞。"
 
-#: systems/extras/radio.gd:165
+#: systems/extras/radio.gd:180
 msgid "E   Radio: %s"
 msgstr "E   收音机：%s"
 
-#: systems/extras/radio.gd:165
+#: systems/extras/radio.gd:180
 msgid "mood music"
 msgstr "氛围音乐"
 
-#: systems/extras/radio.gd:193
+#: systems/extras/radio.gd:213
 msgid "New song on the radio: %s"
 msgstr "收音机新歌：%s"
 
@@ -2740,7 +2756,7 @@ msgstr "收音机新歌：%s"
 msgid "Not this week: %s"
 msgstr "本周不行：%s"
 
-#: systems/extras/weekly.gd:254 ui/extras_panel.gd:9 ui/extras_panel.gd:372
+#: systems/extras/weekly.gd:254 ui/extras_panel.gd:9 ui/extras_panel.gd:349
 #: data/achievements.json:achievements[extras_weekly_1].name
 msgid "Seed of the Week"
 msgstr "每周种子"
@@ -2765,7 +2781,7 @@ msgstr "目标"
 msgid "Clean %d hexes"
 msgstr "清理 %d 个六角格"
 
-#: systems/extras/weekly_run.gd:92 ui/extras_panel.gd:376
+#: systems/extras/weekly_run.gd:92 ui/extras_panel.gd:353
 msgid "Seed"
 msgstr "种子"
 
@@ -2801,7 +2817,7 @@ msgstr "第 %d 周，%d 年"
 msgid "Start the clock"
 msgstr "开始计时"
 
-#: systems/extras/weekly_run.gd:96 systems/extras/weekly_run.gd:123 ui/extras_panel.gd:380
+#: systems/extras/weekly_run.gd:96 systems/extras/weekly_run.gd:123 ui/extras_panel.gd:357
 msgid "Return home"
 msgstr "回家"
 
@@ -2845,7 +2861,7 @@ msgstr "压了大约 %d 个捆包"
 msgid "kept the base tidy"
 msgstr "把基地收拾得整整齐齐"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:686
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:689
 msgid "Cubes earned"
 msgstr "赚到的方块"
 
@@ -3211,7 +3227,31 @@ msgstr "下一步"
 msgid "RESTART CHECKLIST  ·  DONE"
 msgstr "重启清单  ·  完成"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:708
+#: ui/codex_artists.gd:33
+msgid "ARTISTS"
+msgstr ""
+
+#: ui/codex_artists.gd:34
+msgid "%d / %d known"
+msgstr ""
+
+#: ui/codex_artists.gd:58
+msgid "From %s"
+msgstr ""
+
+#: ui/codex_artists.gd:59
+msgid "Not met yet"
+msgstr ""
+
+#: ui/codex_artists.gd:60
+msgid "Find one of their CDs in the rubble on %s."
+msgstr ""
+
+#: ui/codex_artists.gd:67
+msgid "Your CDs (%d / %d): %s"
+msgstr ""
+
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:711
 msgid "Achievements"
 msgstr "成就"
 
@@ -3227,31 +3267,35 @@ msgstr "奇物"
 msgid "Collection"
 msgstr "收藏"
 
-#: ui/codex_screen.gd:76
+#: ui/codex_screen.gd:19
+msgid "Artists"
+msgstr ""
+
+#: ui/codex_screen.gd:77
 msgid "CODEX"
 msgstr "图鉴"
 
-#: ui/codex_screen.gd:88
+#: ui/codex_screen.gd:89
 msgid "Watch the story"
 msgstr ""
 
-#: ui/codex_screen.gd:99 ui/upgrades_screen.gd:92
+#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:92
 msgid "Close  [%s]"
 msgstr "关闭  [%s]"
 
-#: ui/codex_screen.gd:118
+#: ui/codex_screen.gd:119
 msgid "   {ui_tab_prev}{ui_tab_next}  switch tabs"
 msgstr "   {ui_tab_prev}{ui_tab_next}  切换页面"
 
-#: ui/codex_screen.gd:201
+#: ui/codex_screen.gd:202
 msgid "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements"
 msgstr "条目 %d / %d   ·   奇物 %d / %d   ·   收藏品 %d / %d   ·   成就 %d / %d"
 
-#: ui/codex_screen.gd:327 ui/codex_screen.gd:447 ui/codex_screen.gd:555
+#: ui/codex_screen.gd:330 ui/codex_screen.gd:450 ui/codex_screen.gd:558
 msgid "Not found yet"
 msgstr "尚未发现"
 
-#: ui/codex_screen.gd:331
+#: ui/codex_screen.gd:334
 msgid ""
 "\n"
 "\n"
@@ -3261,179 +3305,179 @@ msgstr ""
 "\n"
 "已清理：%s"
 
-#: ui/codex_screen.gd:356
+#: ui/codex_screen.gd:359
 msgid "CURIOSITIES"
 msgstr "奇物"
 
-#: ui/codex_screen.gd:357 ui/codex_screen.gd:478
+#: ui/codex_screen.gd:360 ui/codex_screen.gd:481
 msgid "%d / %d found"
 msgstr "已找到 %d / %d"
 
-#: ui/codex_screen.gd:451
+#: ui/codex_screen.gd:454
 msgid "Found  ·  %s"
 msgstr "已找到  ·  %s"
 
-#: ui/codex_screen.gd:454
+#: ui/codex_screen.gd:457
 msgid "Parts found: %d / %d"
 msgstr "已找到零件：%d / %d"
 
-#: ui/codex_screen.gd:455
+#: ui/codex_screen.gd:458
 msgid "Reward: a small surprise"
 msgstr "奖励：一个小惊喜"
 
-#: ui/codex_screen.gd:477
+#: ui/codex_screen.gd:480
 msgid "COLLECTION"
 msgstr "收藏"
 
-#: ui/codex_screen.gd:558
+#: ui/codex_screen.gd:561
 msgid "In your collection"
 msgstr "已收藏"
 
-#: ui/codex_screen.gd:563
+#: ui/codex_screen.gd:566
 msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
 msgstr "提示：一位害羞的访客会来到稳定和繁茂的六角格。带上相机。"
 
-#: ui/codex_screen.gd:564
+#: ui/codex_screen.gd:567
 msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
 msgstr "提示：大地恢复后，动物就会回来。用拍照模式（P）给它们拍照吧。"
 
-#: ui/codex_screen.gd:565
+#: ui/codex_screen.gd:568
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
 msgstr ""
 
-#: ui/codex_screen.gd:566
+#: ui/codex_screen.gd:569
 msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
 msgstr ""
 
-#: ui/codex_screen.gd:567
+#: ui/codex_screen.gd:570
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "提示：不停地铲，直到连击条满。"
 
-#: ui/codex_screen.gd:568
+#: ui/codex_screen.gd:571
 msgid "Hint: turns up during %s."
 msgstr "提示：在%s期间出现。"
 
-#: ui/codex_screen.gd:637
+#: ui/codex_screen.gd:640
 msgid "Unlocked  ·  %s"
 msgstr "已解锁  ·  %s"
 
-#: ui/codex_screen.gd:676
+#: ui/codex_screen.gd:679
 msgid "Total"
 msgstr "总计"
 
-#: ui/codex_screen.gd:677
+#: ui/codex_screen.gd:680
 msgid "Junk removed"
 msgstr "清除的废料"
 
-#: ui/codex_screen.gd:677
+#: ui/codex_screen.gd:680
 msgid "by type"
 msgstr "按种类"
 
-#: ui/codex_screen.gd:678 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:681 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "清理"
 
-#: ui/codex_screen.gd:680
+#: ui/codex_screen.gd:683
 msgid "Hexes restored"
 msgstr "恢复的六角格"
 
-#: ui/codex_screen.gd:681
+#: ui/codex_screen.gd:684
 msgid "Bales pressed"
 msgstr "压制的捆包"
 
-#: ui/codex_screen.gd:682
+#: ui/codex_screen.gd:685
 msgid "Pure bales"
 msgstr "纯净捆包"
 
-#: ui/codex_screen.gd:683
+#: ui/codex_screen.gd:686
 msgid "Perfect bales"
 msgstr "完美捆包"
 
-#: ui/codex_screen.gd:684
+#: ui/codex_screen.gd:687
 msgid "Lumpy bales"
 msgstr "不平整捆包"
 
-#: ui/codex_screen.gd:685
+#: ui/codex_screen.gd:688
 msgid "Bales cashed in"
 msgstr "兑现的捆包"
 
-#: ui/codex_screen.gd:688 ui/globe_view.gd:138 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:691 ui/globe_view.gd:138 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "种植"
 
-#: ui/codex_screen.gd:689
+#: ui/codex_screen.gd:692
 msgid "Seeds planted"
 msgstr "播下的种子"
 
-#: ui/codex_screen.gd:690
+#: ui/codex_screen.gd:693
 msgid "Plants bloomed"
 msgstr "开花的植物"
 
-#: ui/codex_screen.gd:691
+#: ui/codex_screen.gd:694
 msgid "Air filtered"
 msgstr "过滤的空气"
 
-#: ui/codex_screen.gd:693 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:696 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "机器人"
 
-#: ui/codex_screen.gd:695
+#: ui/codex_screen.gd:698
 msgid "Bales by robots"
 msgstr "机器人打的捆包"
 
-#: ui/codex_screen.gd:696
+#: ui/codex_screen.gd:699
 msgid "Parts dug up"
 msgstr "挖出的零件"
 
-#: ui/codex_screen.gd:698
+#: ui/codex_screen.gd:701
 msgid "Exploring"
 msgstr "探索"
 
-#: ui/codex_screen.gd:699
+#: ui/codex_screen.gd:702
 msgid "Distance rolled"
 msgstr "行驶距离"
 
-#: ui/codex_screen.gd:700
+#: ui/codex_screen.gd:703
 msgid "Memory shards read"
 msgstr "读过的记忆碎片"
 
-#: ui/codex_screen.gd:701
+#: ui/codex_screen.gd:704
 msgid "Codex entries"
 msgstr "图鉴条目"
 
-#: ui/codex_screen.gd:704
+#: ui/codex_screen.gd:707
 msgid "Progress"
 msgstr "进度"
 
-#: ui/codex_screen.gd:705
+#: ui/codex_screen.gd:708
 msgid "Upgrades bought"
 msgstr "购买的升级"
 
-#: ui/codex_screen.gd:706
+#: ui/codex_screen.gd:709
 msgid "Field notes logged"
 msgstr ""
 
-#: ui/codex_screen.gd:707
+#: ui/codex_screen.gd:710
 msgid "Research done"
 msgstr "完成的研究"
 
-#: ui/codex_screen.gd:709
+#: ui/codex_screen.gd:712
 msgid "Best hub level"
 msgstr "最高基地等级"
 
-#: ui/codex_screen.gd:759
+#: ui/codex_screen.gd:762
 msgid "%s kg"
 msgstr "%s 千克"
 
-#: ui/codex_screen.gd:760
+#: ui/codex_screen.gd:763
 msgid "%.1f kg"
 msgstr "%.1f 千克"
 
-#: ui/codex_screen.gd:764
+#: ui/codex_screen.gd:767
 msgid "%.2f km"
 msgstr "%.2f 公里"
 
-#: ui/codex_screen.gd:774
+#: ui/codex_screen.gd:777
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
 
@@ -3742,19 +3786,23 @@ msgstr "用爱与废料制作"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "代码、程序化网格、合成音乐和音效以及文字均为 Greenfall 原创。"
 
-#: ui/credits_roll.gd:148
+#: ui/credits_roll.gd:148 ui/main_menu.gd:598
+msgid "Music by Lucas"
+msgstr ""
+
+#: ui/credits_roll.gd:149
 msgid "Built with the Godot Engine."
 msgstr "使用 Godot 引擎制作。"
 
-#: ui/credits_roll.gd:151
+#: ui/credits_roll.gd:152
 msgid "MODELS AND TEXTURES FROM POLY HAVEN"
 msgstr "模型与贴图来自 POLY HAVEN"
 
-#: ui/credits_roll.gd:161
+#: ui/credits_roll.gd:162
 msgid "Thank you for playing."
 msgstr "感谢游玩。"
 
-#: ui/credits_roll.gd:162
+#: ui/credits_roll.gd:163
 msgid "Lumi is still out there, planting. The Seed Ark is open."
 msgstr "Lumi 还在外面种着花草。种子方舟已经开启。"
 
@@ -3786,9 +3834,89 @@ msgstr ""
 msgid "%d REQUESTS READY  ·  claim them at the workbench"
 msgstr ""
 
+#: ui/extras_cd_list.gd:64
+msgid "CDS  ·  %d / %d"
+msgstr ""
+
+#: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107 ui/tunes_picker.gd:95
+msgid "Shuffle"
+msgstr ""
+
+#: ui/extras_cd_list.gd:65
+msgid "All your CDs, at random"
+msgstr ""
+
+#: ui/extras_cd_list.gd:68
+msgid "CD player: shuffle"
+msgstr ""
+
+#: ui/extras_cd_list.gd:78 ui/extras_cd_list.gd:111
+msgid "by %s, from %s"
+msgstr ""
+
+#: ui/extras_cd_list.gd:80
+msgid "Found on %s"
+msgstr ""
+
+#: ui/extras_cd_list.gd:83
+msgid "Not found yet: CDs turn up in the rubble on %s."
+msgstr ""
+
+#: ui/extras_cd_list.gd:86 ui/tunes_picker.gd:125
+msgid "Now playing: %s by %s"
+msgstr ""
+
+#: ui/extras_cd_list.gd:93
+msgid "CD CASE  ·  SCRATCHED, ONE PLAY EACH  ·  %d / %d"
+msgstr ""
+
+#: ui/extras_cd_list.gd:95
+msgid "Play once: %s"
+msgstr ""
+
+#: ui/extras_cd_list.gd:95 ui/scratched_cd_ui.gd:193
+msgid "by %s"
+msgstr ""
+
+#: ui/extras_cd_list.gd:97
+msgid "Last play: %s by %s"
+msgstr ""
+
+#: ui/extras_cd_list.gd:103
+msgid "NOW PLAYING"
+msgstr "正在播放"
+
+#: ui/extras_cd_list.gd:114
+msgid "Turn off (back to the day's music)"
+msgstr ""
+
+#: ui/extras_cd_list.gd:116
+msgid "The CD player goes quiet. The day's music comes back."
+msgstr ""
+
+#: ui/extras_cd_list.gd:121
+msgid "The day's music"
+msgstr ""
+
+#: ui/extras_cd_list.gd:122
+msgid "Your CDs come on now and then while you work, with quiet in between. Pick one here, or Shuffle, to play them back to back."
+msgstr ""
+
+#: ui/extras_cd_list.gd:124
+msgid "Glim has copied your CDs: press N anywhere to pick a song."
+msgstr ""
+
+#: ui/extras_cd_list.gd:126
+msgid "The music comes from the CD player, so it's softer far away from it."
+msgstr ""
+
+#: ui/extras_cd_list.gd:127
+msgid "New CDs turn up in the rubble as you clean. Each planet hides its own."
+msgstr ""
+
 #: ui/extras_panel.gd:9
-msgid "Radio"
-msgstr "收音机"
+msgid "CD Player"
+msgstr ""
 
 #: ui/extras_panel.gd:9
 msgid "Album"
@@ -3806,163 +3934,127 @@ msgstr "纪念"
 msgid "%s / %s  switch tabs"
 msgstr "%s / %s  切换标签"
 
-#: ui/extras_panel.gd:187
-msgid "SONGS  ·  %d / %d"
-msgstr "歌曲  ·  %d / %d"
-
-#: ui/extras_panel.gd:196
-msgid "Now playing: %s"
-msgstr "正在播放：%s"
-
-#: ui/extras_panel.gd:201
-msgid "NOW PLAYING"
-msgstr "正在播放"
-
-#: ui/extras_panel.gd:205
-msgid "Your pick loops everywhere until you switch back to the mood music. A restored planet plays its restored version."
-msgstr "你选的歌会在各处循环播放，直到你切回氛围音乐。修复后的星球会播放修复版。"
-
-#: ui/extras_panel.gd:206
-msgid "Back to mood music"
-msgstr "切回氛围音乐"
-
-#: ui/extras_panel.gd:208
-msgid "The radio hands the music back to the day."
-msgstr "收音机把音乐还给了这一天。"
-
-#: ui/extras_panel.gd:212
-msgid "Mood music"
-msgstr "氛围音乐"
-
-#: ui/extras_panel.gd:213
-msgid "The music follows the day: the yard, the streets, the night. Pick a song to play it instead."
-msgstr "音乐跟随一天的变化：院子、街道、夜晚。选一首歌来代替它播放。"
-
-#: ui/extras_panel.gd:214
-msgid "New songs come in as districts and planets are restored."
-msgstr "随着街区和星球得到修复，会有新歌加入。"
-
-#: ui/extras_panel.gd:227
+#: ui/extras_panel.gd:204
 msgid "DISTRICTS"
 msgstr "街区"
 
-#: ui/extras_panel.gd:229
+#: ui/extras_panel.gd:206
 msgid "Lumi takes a picture of each district on arrival, and \"after\" pictures as it is restored."
 msgstr "Lumi 到达每个街区时会拍一张照片，修复过程中还会拍“之后”的照片。"
 
-#: ui/extras_panel.gd:233
+#: ui/extras_panel.gd:210
 msgid "Before only"
 msgstr "只有之前"
 
-#: ui/extras_panel.gd:241
+#: ui/extras_panel.gd:218
 msgid "PHOTOS  ·  %d"
 msgstr "照片  ·  %d"
 
-#: ui/extras_panel.gd:253
+#: ui/extras_panel.gd:230
 msgid "Photo"
 msgstr "照片"
 
-#: ui/extras_panel.gd:262
+#: ui/extras_panel.gd:239
 msgid "Photos you take in photo mode show up here."
 msgstr "在拍照模式中拍的照片会出现在这里。"
 
-#: ui/extras_panel.gd:266 ui/photo_panel.gd:58
+#: ui/extras_panel.gd:243 ui/photo_panel.gd:58
 msgid "PHOTO MODE"
 msgstr "拍照模式"
 
-#: ui/extras_panel.gd:276
+#: ui/extras_panel.gd:253
 msgid "No pictures yet."
 msgstr "还没有照片。"
 
-#: ui/extras_panel.gd:287
+#: ui/extras_panel.gd:264
 msgid "BEFORE"
 msgstr "之前"
 
-#: ui/extras_panel.gd:306
+#: ui/extras_panel.gd:283
 msgid "not yet"
 msgstr "尚未"
 
-#: ui/extras_panel.gd:316
+#: ui/extras_panel.gd:293
 msgid "The \"after\" picture comes when the district is half clean."
 msgstr "街区清理过半时会拍下“之后”的照片。"
 
-#: ui/extras_panel.gd:322
+#: ui/extras_panel.gd:299
 msgid "CARETAKERS  ·  %d"
 msgstr "园丁  ·  %d"
 
-#: ui/extras_panel.gd:323
+#: ui/extras_panel.gd:300
 msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
 msgstr "花园加成：植物生长快 %d%%（最多 %d%%）。"
 
-#: ui/extras_panel.gd:326
+#: ui/extras_panel.gd:303
 msgid "No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."
 msgstr "还没有机器人退休。老机器人或 Mk I-II 机器人可以在这里或工作台的组装中退休；它们会照料基地的苗圃花园。"
 
-#: ui/extras_panel.gd:335
+#: ui/extras_panel.gd:312
 msgid "RETIRE A ROBOT"
 msgstr "让机器人退休"
 
-#: ui/extras_panel.gd:337
+#: ui/extras_panel.gd:314
 msgid "Retiring gives a few parts back, and the robot keeps its name and personality in the nursery."
 msgstr "退休会返还一些零件，机器人在苗圃里保留它的名字和个性。"
 
-#: ui/extras_panel.gd:339
+#: ui/extras_panel.gd:316
 msgid "No robots in this district."
 msgstr "这个街区没有机器人。"
 
-#: ui/extras_panel.gd:346
+#: ui/extras_panel.gd:323
 msgid "Press again to retire (+%d parts)"
 msgstr "再按一次确认退休（+%d 零件）"
 
-#: ui/extras_panel.gd:346
+#: ui/extras_panel.gd:323
 msgid "Retire  (+%d parts)"
 msgstr "退休  （+%d 零件）"
 
-#: ui/extras_panel.gd:371
+#: ui/extras_panel.gd:348
 msgid "WEEK %d, %d"
 msgstr "第 %d 周，%d 年"
 
-#: ui/extras_panel.gd:373
+#: ui/extras_panel.gd:350
 msgid "The same seed and twist for everyone this week. Clean %d hexes as fast as you can. It has its own save, so your world is untouched."
 msgstr "本周所有人都是同样的种子和变化。尽快清理 %d 个六角格。它有独立存档，你的世界不受影响。"
 
-#: ui/extras_panel.gd:374
+#: ui/extras_panel.gd:351
 msgid "Twist: %s"
 msgstr "变化：%s"
 
-#: ui/extras_panel.gd:377
+#: ui/extras_panel.gd:354
 msgid "Best time"
 msgstr "最佳时间"
 
-#: ui/extras_panel.gd:378
+#: ui/extras_panel.gd:355
 msgid "Best score"
 msgstr "最高得分"
 
-#: ui/extras_panel.gd:384
+#: ui/extras_panel.gd:361
 msgid "Restart this week's run"
 msgstr "重新开始本周挑战"
 
-#: ui/extras_panel.gd:388
+#: ui/extras_panel.gd:365
 msgid "Resume this week's run"
 msgstr "继续本周挑战"
 
-#: ui/extras_panel.gd:388
+#: ui/extras_panel.gd:365
 msgid "Start the challenge"
 msgstr "开始挑战"
 
-#: ui/extras_panel.gd:392
+#: ui/extras_panel.gd:369
 msgid "PAINT CHIPS  ·  %d"
 msgstr "色片  ·  %d"
 
-#: ui/extras_panel.gd:393
+#: ui/extras_panel.gd:370
 msgid "Finish a week's challenge for its paint chip. Chips unlock the weekly decorations in Garden Mode and paint them."
 msgstr "完成一周的挑战即可获得那周的色片。色片能解锁花园模式的每周装饰并为它们上色。"
 
-#: ui/extras_panel.gd:406
+#: ui/extras_panel.gd:383
 msgid "No chips yet."
 msgstr "还没有色片。"
 
-#: ui/extras_panel.gd:438
+#: ui/extras_panel.gd:415
 msgid "No picture yet"
 msgstr "还没有照片"
 
@@ -4277,110 +4369,110 @@ msgstr ""
 msgid "Warming up"
 msgstr ""
 
-#: ui/main_menu.gd:314
+#: ui/main_menu.gd:315
 msgid "One small robot. One very big cleanup."
 msgstr "一个小机器人。一场超大的清扫。"
 
-#: ui/main_menu.gd:316
+#: ui/main_menu.gd:317
 msgid "DEMO  ·  the first district"
 msgstr "试玩版  ·  第一个街区"
 
-#: ui/main_menu.gd:328 ui/profile_picker.gd:110
+#: ui/main_menu.gd:329 ui/profile_picker.gd:110
 msgid "Continue"
 msgstr "继续"
 
 #. Profiles button subtitle: the active save profile's name and its number of planets.
-#: ui/main_menu.gd:335
+#: ui/main_menu.gd:336
 msgid "Profiles"
 msgstr ""
 
-#: ui/main_menu.gd:337
+#: ui/main_menu.gd:338
 msgid "New Game"
 msgstr "新游戏"
 
-#: ui/main_menu.gd:341 ui/main_menu.gd:539 ui/pause_menu.gd:62
+#: ui/main_menu.gd:342 ui/main_menu.gd:540 ui/pause_menu.gd:62
 msgid "Settings"
 msgstr "设置"
 
-#: ui/main_menu.gd:342 ui/main_menu.gd:539
+#: ui/main_menu.gd:343 ui/main_menu.gd:540
 msgid "Credits"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:343
+#: ui/main_menu.gd:344
 msgid "Quit"
 msgstr "退出"
 
-#: ui/main_menu.gd:349
+#: ui/main_menu.gd:350
 msgid "Made with Godot"
 msgstr "使用 Godot 制作"
 
-#: ui/main_menu.gd:446
+#: ui/main_menu.gd:447
 msgid "%dm"
 msgstr "%d分钟"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:452
+#: ui/main_menu.gd:453
 msgid "Hub %d"
 msgstr "基地 %d"
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Jan"
 msgstr "1月"
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Feb"
 msgstr "2月"
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Mar"
 msgstr "3月"
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Apr"
 msgstr "4月"
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "May"
 msgstr "5月"
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Jun"
 msgstr "6月"
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Jul"
 msgstr "7月"
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Aug"
 msgstr "8月"
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Sep"
 msgstr "9月"
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Oct"
 msgstr "10月"
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Nov"
 msgstr "11月"
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Dec"
 msgstr "12月"
 
-#: ui/main_menu.gd:568
+#: ui/main_menu.gd:569
 msgid "CREDITS"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:583 ui/profile_picker.gd:49 ui/settings_panel.gd:117
+#: ui/main_menu.gd:584 ui/profile_picker.gd:49 ui/settings_panel.gd:117
 #: ui/settings_panel.gd:145 ui/world_picker.gd:53
 msgid "Back"
 msgstr "返回"
 
-#: ui/main_menu.gd:596
+#: ui/main_menu.gd:597
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -4390,27 +4482,27 @@ msgstr ""
 "代码、程序化网格、合成音频和文字均为 Greenfall 原创。\n"
 "\n"
 
-#: ui/main_menu.gd:599
+#: ui/main_menu.gd:601
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "第三方资源：CC0，Poly Haven（polyhaven.com）。"
 
-#: ui/main_menu.gd:617
+#: ui/main_menu.gd:619
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]作者：%s[/color]"
 
-#: ui/main_menu.gd:651
+#: ui/main_menu.gd:653
 msgid "START A NEW GAME?"
 msgstr "开始新游戏？"
 
-#: ui/main_menu.gd:652
+#: ui/main_menu.gd:654
 msgid "Your current save will be erased. This can't be undone."
 msgstr "你当前的存档将被删除。此操作无法撤销。"
 
-#: ui/main_menu.gd:660
+#: ui/main_menu.gd:662
 msgid "Keep my save"
 msgstr "保留存档"
 
-#: ui/main_menu.gd:666 ui/profile_picker.gd:213
+#: ui/main_menu.gd:668 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "删除并开始"
 
@@ -4939,6 +5031,54 @@ msgstr "倒计时 %d秒  ·  飞行 %.1f秒  ·  充能 %s  ·  货运舱 x%.1f 
 #: ui/rockets_panel.gd:140
 msgid "  ·  WARP"
 msgstr "  ·  跃迁"
+
+#: ui/scratched_cd_ui.gd:86
+msgid "NOW PLAYING  ·  LAST PLAY"
+msgstr ""
+
+#: ui/scratched_cd_ui.gd:110
+msgid "SCRATCHED CD"
+msgstr ""
+
+#: ui/scratched_cd_ui.gd:122
+msgid "Play now"
+msgstr ""
+
+#: ui/scratched_cd_ui.gd:124
+msgid "Keep for later"
+msgstr ""
+
+#: ui/scratched_cd_ui.gd:125
+msgid "Leave it"
+msgstr ""
+
+#: ui/scratched_cd_ui.gd:141
+msgid "%s by %s: it will only play once, then break. Play now?"
+msgstr ""
+
+#: ui/scratched_cd_ui.gd:146
+msgid "Find the intact CD on %s to keep it."
+msgstr ""
+
+#: ui/scratched_cd_ui.gd:154
+msgid "Your CD case is full (%d)."
+msgstr ""
+
+#: ui/scratched_cd_ui.gd:177
+msgid "Kept in your CD case. Play it at the CD player."
+msgstr ""
+
+#: ui/scratched_cd_ui.gd:180
+msgid "Kept in your CD case (%d / %d). Play it at the CD player."
+msgstr ""
+
+#: ui/scratched_cd_ui.gd:182
+msgid "You leave the scratched CD where it lay."
+msgstr ""
+
+#: ui/scratched_cd_ui.gd:202
+msgid "The scratched CD cracks and falls apart. %s"
+msgstr ""
 
 #: ui/settings_panel.gd:11
 msgid "Audio"
@@ -5583,6 +5723,22 @@ msgstr ""
 #: ui/trade_panel.gd:171
 msgid "Swap 3 spares"
 msgstr "换 3 个备件"
+
+#: ui/tunes_picker.gd:38
+msgid "GLIM'S CDS"
+msgstr ""
+
+#: ui/tunes_picker.gd:48
+msgid "N / Esc  close"
+msgstr ""
+
+#: ui/tunes_picker.gd:96
+msgid "Off (the day's music)"
+msgstr ""
+
+#: ui/tunes_picker.gd:103
+msgid "Play once: %s (scratched)"
+msgstr ""
 
 #: ui/upgrade_card.gd:54
 msgid "Lv 0"
@@ -11185,7 +11341,7 @@ msgstr "特殊模块"
 msgid "An ice moon, core-mined until it froze."
 msgstr ""
 
-#: data/radio.json:songs[verdance_sprout].name
+#: data/radio.json:songs[verdance_sprout].name data/songs.json:songs[sprout_step].title
 msgid "Sprout Step"
 msgstr "新芽步伐"
 
@@ -11193,7 +11349,7 @@ msgstr "新芽步伐"
 msgid "Kalimba and bells, the first green on Verdance."
 msgstr "卡林巴和铃声，Verdance 上的第一抹绿。"
 
-#: data/radio.json:songs[verdance_sweep].name
+#: data/radio.json:songs[verdance_sweep].name data/songs.json:songs[clean_sweep].title
 msgid "Clean Sweep"
 msgstr "大扫除"
 
@@ -11201,7 +11357,7 @@ msgstr "大扫除"
 msgid "Marimba and a four-on-the-floor kick: cleaning music."
 msgstr "马林巴配上四拍底鼓：清理时的音乐。"
 
-#: data/radio.json:songs[ochre_sunbaked].name
+#: data/radio.json:songs[ochre_sunbaked].name data/songs.json:songs[sunbaked].title
 msgid "Sunbaked"
 msgstr "烈日炙烤"
 
@@ -11213,7 +11369,7 @@ msgstr "鲁特琴固定音型上的明快马林巴动机。"
 msgid "Land on Ochre"
 msgstr "登陆 Ochre"
 
-#: data/radio.json:songs[ochre_caravan].name
+#: data/radio.json:songs[ochre_caravan].name data/songs.json:songs[dune_caravan].title
 msgid "Dune Caravan"
 msgstr "沙丘驼队"
 
@@ -11237,7 +11393,7 @@ msgstr "在热浪中闪烁的卡林巴和铃声。"
 msgid "A base on Ochre at level 5"
 msgstr "Ochre 上一个基地达到 5 级"
 
-#: data/radio.json:songs[tidewell_tradewinds].name
+#: data/radio.json:songs[tidewell_tradewinds].name data/songs.json:songs[tradewinds].title
 msgid "Tradewinds"
 msgstr "信风"
 
@@ -11249,7 +11405,7 @@ msgstr "在浪花上跳跃的钢鼓。"
 msgid "Land on Tidewell"
 msgstr "登陆 Tidewell"
 
-#: data/radio.json:songs[tidewell_tidepools].name
+#: data/radio.json:songs[tidewell_tidepools].name data/songs.json:songs[tidepools].title
 msgid "Tidepools"
 msgstr "潮汐池"
 
@@ -11261,7 +11417,7 @@ msgstr "起伏琶音上的竖琴旋律。"
 msgid "A base on Tidewell at level 3"
 msgstr "Tidewell 上一个基地达到 3 级"
 
-#: data/radio.json:songs[tidewell_skipper].name
+#: data/radio.json:songs[tidewell_skipper].name data/songs.json:songs[skipping_stones].title
 msgid "Skipping Stones"
 msgstr "打水漂"
 
@@ -11273,7 +11429,7 @@ msgstr "跳跃的马林巴拖曳节奏。"
 msgid "A base on Tidewell at level 5"
 msgstr "Tidewell 上一个基地达到 5 级"
 
-#: data/radio.json:songs[rime_hoarfrost].name
+#: data/radio.json:songs[rime_hoarfrost].name data/songs.json:songs[hoarfrost].title
 msgid "Hoarfrost"
 msgstr "白霜"
 
@@ -11293,7 +11449,7 @@ msgstr "极光下由玻璃声叠奏的钢琴。"
 msgid "A base on Rime at level 5"
 msgstr "Rime 上一个基地达到 5 级"
 
-#: data/radio.json:songs[anvil_foundry].name
+#: data/radio.json:songs[anvil_foundry].name data/songs.json:songs[foundry_heart].title
 msgid "Foundry Heart"
 msgstr "熔炉之心"
 
@@ -11305,7 +11461,7 @@ msgstr "一座学会希望的幽暗律动熔炉。"
 msgid "Land on Anvil"
 msgstr "登陆 Anvil"
 
-#: data/radio.json:songs[anvil_ash].name
+#: data/radio.json:songs[anvil_ash].name data/songs.json:songs[ash_choir].title
 msgid "Ash Choir"
 msgstr "灰烬合唱"
 
@@ -11317,7 +11473,7 @@ msgstr "铜管与余烬上的诡异合唱。"
 msgid "A base on Anvil at level 3"
 msgstr "Anvil 上一个基地达到 3 级"
 
-#: data/radio.json:songs[anvil_engine].name
+#: data/radio.json:songs[anvil_engine].name data/songs.json:songs[red_engine].title
 msgid "Red Engine"
 msgstr "红色引擎"
 
@@ -12390,6 +12546,478 @@ msgstr "铁锤"
 #: data/solar_system.json:planets.rime.moons[0].name
 msgid "Vane"
 msgstr "风标"
+
+#: data/songs.json:artists[farewell].name
+msgid "The Cradle Farewell Orchestra"
+msgstr ""
+
+#: data/songs.json:artists[farewell].genre
+msgid "Orchestral"
+msgstr ""
+
+#: data/songs.json:artists[farewell].bio
+msgid "Played one last concert on the launch pad while the ark boarded. Half of them missed the flight on purpose, so the encore was very long."
+msgstr ""
+
+#: data/songs.json:artists[compactors].name
+msgid "The Compactors"
+msgstr ""
+
+#: data/songs.json:artists[compactors].genre
+msgid "Garage pop"
+msgstr ""
+
+#: data/songs.json:artists[compactors].bio
+msgid "A four-piece that rehearsed inside a broken trash compactor for the acoustics. They swear the walls only closed in on them once, during a drum solo."
+msgstr ""
+
+#: data/songs.json:artists[rustbucket].name
+msgid "Lil' Rustbucket"
+msgstr ""
+
+#: data/songs.json:artists[rustbucket].genre
+msgid "Chiptune"
+msgstr ""
+
+#: data/songs.json:artists[rustbucket].bio
+msgid "A retired sweeper bot who refused to stop making beats. Every track was recorded on its own diagnostic beeper, between error codes."
+msgstr ""
+
+#: data/songs.json:artists[recycle_bin].name
+msgid "DJ Recycle Bin"
+msgstr ""
+
+#: data/songs.json:artists[recycle_bin].genre
+msgid "Lofi beats"
+msgstr ""
+
+#: data/songs.json:artists[recycle_bin].bio
+msgid "Only samples sounds from the city dump: lids, crinkles, a fridge door with real soul. Released three albums and never once got out of bed for them."
+msgstr ""
+
+#: data/songs.json:artists[pianissimo].name
+msgid "Professor Pianissimo"
+msgstr ""
+
+#: data/songs.json:artists[pianissimo].genre
+msgid "Quiet piano"
+msgstr ""
+
+#: data/songs.json:artists[pianissimo].bio
+msgid "Composes only for empty rooms and sleeping cities. His neighbours filed forty-one noise complaints, all saying the music was too soft to hear properly."
+msgstr ""
+
+#: data/songs.json:artists[two_suns].name
+msgid "Two Suns Tango Orchestra"
+msgstr ""
+
+#: data/songs.json:artists[two_suns].genre
+msgid "Desert dance band"
+msgstr ""
+
+#: data/songs.json:artists[two_suns].bio
+msgid "Ochre's hardest-working band: with two suns there is no shade and no siesta, so they just kept playing. The sunglasses are part of the uniform."
+msgstr ""
+
+#: data/songs.json:artists[mirage_bros].name
+msgid "The Mirage Brothers"
+msgstr ""
+
+#: data/songs.json:artists[mirage_bros].genre
+msgid "Heat-haze ambient"
+msgstr ""
+
+#: data/songs.json:artists[mirage_bros].bio
+msgid "Nobody is sure how many Mirage Brothers there are. On a hot day the crowd counted seven; on a cold one, just Gary."
+msgstr ""
+
+#: data/songs.json:artists[salty_buoys].name
+msgid "The Salty Buoys"
+msgstr ""
+
+#: data/songs.json:artists[salty_buoys].genre
+msgid "Island pop"
+msgstr ""
+
+#: data/songs.json:artists[salty_buoys].bio
+msgid "A beach band that played on floating junk rafts, drifting between islands mid-song. Their tour schedule depended entirely on the tide."
+msgstr ""
+
+#: data/songs.json:artists[barnacle_trio].name
+msgid "Barnacle Bossa Trio"
+msgstr ""
+
+#: data/songs.json:artists[barnacle_trio].genre
+msgid "Bossa and lofi"
+msgstr ""
+
+#: data/songs.json:artists[barnacle_trio].bio
+msgid "Three mellow players who refused to evacuate until the set was finished. The set was four hours long. They caught the last pod, still humming."
+msgstr ""
+
+#: data/songs.json:artists[streetlights].name
+msgid "Static & the Streetlights"
+msgstr ""
+
+#: data/songs.json:artists[streetlights].genre
+msgid "Icy synthpop"
+msgstr ""
+
+#: data/songs.json:artists[streetlights].bio
+msgid "A synth duo who powered their gigs by plugging into whichever harbour lamp still worked. The power company billed them for the whole ice shelf."
+msgstr ""
+
+#: data/songs.json:artists[mittens].name
+msgid "Mittens McKenzie"
+msgstr ""
+
+#: data/songs.json:artists[mittens].genre
+msgid "Frozen piano"
+msgstr ""
+
+#: data/songs.json:artists[mittens].bio
+msgid "Rime's beloved pianist, who played every concert in mittens. Critics called it muffled genius. Mittens called it frostbite prevention."
+msgstr ""
+
+#: data/songs.json:artists[smelter].name
+msgid "Smelter Skelter"
+msgstr ""
+
+#: data/songs.json:artists[smelter].genre
+msgid "Foundry industrial"
+msgstr ""
+
+#: data/songs.json:artists[smelter].bio
+msgid "Brooding Anvil band who tuned their drums to the furnace roar. The Ledger tried to buy their catalogue; they melted the contract down and played the slag."
+msgstr ""
+
+#: data/songs.json:artists[ledger_audio].name
+msgid "Ledger Brand Audio"
+msgstr ""
+
+#: data/songs.json:artists[ledger_audio].genre
+msgid "Corporate"
+msgstr ""
+
+#: data/songs.json:artists[ledger_audio].bio
+msgid "The Ledger's in-house jingle studio. Every song is copyrighted, trademarked and billed per listen. Credited as \"Ledger Brand Audio, all rights extracted\"."
+msgstr ""
+
+#: data/songs.json:songs[greenfall_main].title
+msgid "Greenfall (Main Theme)"
+msgstr ""
+
+#: data/songs.json:songs[greenfall_main].desc
+msgid "The song the Makers hummed on the way to the ark. Hopeful, a little lonely."
+msgstr ""
+
+#: data/songs.json:songs[fall_of_lm1].title
+msgid "The Fall of LM-1"
+msgstr ""
+
+#: data/songs.json:songs[fall_of_lm1].desc
+msgid "Meteors, alarms, one small pod falling. Then quiet piano."
+msgstr ""
+
+#: data/songs.json:songs[the_ledger].title
+msgid "The Ledger"
+msgstr ""
+
+#: data/songs.json:songs[the_ledger].desc
+msgid "Ticking clocks and detuned bass. Sounds expensive."
+msgstr ""
+
+#: data/songs.json:songs[sprout_step].desc
+msgid "Bright and bouncy, for scooping junk off city streets and pressing it into bales."
+msgstr ""
+
+#: data/songs.json:songs[clean_sweep].desc
+msgid "Sunny indie-pop groove for a little robot sweeping an abandoned city back to life."
+msgstr ""
+
+#: data/songs.json:songs[little_helpers].title
+msgid "Little Helpers"
+msgstr ""
+
+#: data/songs.json:songs[little_helpers].desc
+msgid "A crew of small worker robots buzzing around a junkyard base."
+msgstr ""
+
+#: data/songs.json:songs[neon_gutters].title
+msgid "Neon Gutters"
+msgstr ""
+
+#: data/songs.json:songs[neon_gutters].desc
+msgid "Rusty neon signs flicker over trash-filled streets at sunset."
+msgstr ""
+
+#: data/songs.json:songs[morning_shift].title
+msgid "Morning Shift"
+msgstr ""
+
+#: data/songs.json:songs[morning_shift].desc
+msgid "Early light over a city half-buried in junk as the first robots head out to work."
+msgstr ""
+
+#: data/songs.json:songs[bale_by_bale].title
+msgid "Bale by Bale"
+msgstr ""
+
+#: data/songs.json:songs[bale_by_bale].desc
+msgid "Focus music for steady, repetitive cleanup work."
+msgstr ""
+
+#: data/songs.json:songs[rust_and_ribbons].title
+msgid "Rust and Ribbons"
+msgstr ""
+
+#: data/songs.json:songs[rust_and_ribbons].desc
+msgid "Wandering alone through quiet ruined streets while plants push up through the cracks."
+msgstr ""
+
+#: data/songs.json:songs[old_town_at_rest].title
+msgid "Old Town at Rest"
+msgstr ""
+
+#: data/songs.json:songs[old_town_at_rest].desc
+msgid "Home base at the end of a long day: a repaired workbench, a humming generator, a few robots parked nearby."
+msgstr ""
+
+#: data/songs.json:songs[verdance_night].title
+msgid "Verdance Night"
+msgstr ""
+
+#: data/songs.json:songs[verdance_night].desc
+msgid "Night falls over the junk city and only a few street lamps still glow."
+msgstr ""
+
+#: data/songs.json:songs[verdance_in_bloom].title
+msgid "Verdance in Bloom"
+msgstr "繁花 Verdance"
+
+#: data/songs.json:songs[verdance_in_bloom].desc
+msgid "The once trash-covered city is green again: gardens on every corner, birds back in the trees."
+msgstr ""
+
+#: data/songs.json:songs[sunbaked].desc
+msgid "Two blazing suns over orange dunes and a giant abandoned strip mine."
+msgstr ""
+
+#: data/songs.json:songs[strip_mine_shuffle].title
+msgid "Strip Mine Shuffle"
+msgstr ""
+
+#: data/songs.json:songs[strip_mine_shuffle].desc
+msgid "Hauling scrap out of a terraced mining pit under a white-hot sky."
+msgstr ""
+
+#: data/songs.json:songs[dune_caravan].desc
+msgid "A long line of robots crossing rolling dunes, carrying scrap home."
+msgstr ""
+
+#: data/songs.json:songs[glass_dunes].title
+msgid "Glass Dunes"
+msgstr ""
+
+#: data/songs.json:songs[glass_dunes].desc
+msgid "Wind has polished the sand into glittering glass ridges."
+msgstr ""
+
+#: data/songs.json:songs[sandglass].title
+msgid "Sandglass"
+msgstr ""
+
+#: data/songs.json:songs[sandglass].desc
+msgid "A slow hot afternoon, steady work in the shade of a rusted mining crane."
+msgstr ""
+
+#: data/songs.json:songs[twin_noon].title
+msgid "Twin Noon"
+msgstr ""
+
+#: data/songs.json:songs[twin_noon].desc
+msgid "Midday under two suns, heat shimmering over empty land."
+msgstr ""
+
+#: data/songs.json:songs[mirage_night].title
+msgid "Mirage Night"
+msgstr ""
+
+#: data/songs.json:songs[mirage_night].desc
+msgid "Desert night, warm wind, the mine's silhouette against the stars."
+msgstr ""
+
+#: data/songs.json:songs[oasis_terraces].title
+msgid "Oasis Terraces"
+msgstr ""
+
+#: data/songs.json:songs[oasis_terraces].desc
+msgid "The old mine pit has become terraced gardens around a bright blue oasis."
+msgstr ""
+
+#: data/songs.json:songs[tradewinds].desc
+msgid "Hovering over a turquoise ocean between tiny islands, scooping floating junk out of the waves."
+msgstr ""
+
+#: data/songs.json:songs[hover_hop].title
+msgid "Hover Hop"
+msgstr ""
+
+#: data/songs.json:songs[hover_hop].desc
+msgid "Skimming fast across open water from island to island."
+msgstr ""
+
+#: data/songs.json:songs[skipping_stones].desc
+msgid "Sun on the water, gulls overhead, junk bobbing in the surf."
+msgstr ""
+
+#: data/songs.json:songs[salt_and_sails].title
+msgid "Salt and Sails"
+msgstr ""
+
+#: data/songs.json:songs[salt_and_sails].desc
+msgid "Old harbour wrecks and rusty buoys along a windy coast."
+msgstr ""
+
+#: data/songs.json:songs[low_tide_lofi].title
+msgid "Low Tide Lofi"
+msgstr ""
+
+#: data/songs.json:songs[low_tide_lofi].desc
+msgid "Slow work on a quiet beach at low tide."
+msgstr ""
+
+#: data/songs.json:songs[glass_lagoon].title
+msgid "Glass Lagoon"
+msgstr ""
+
+#: data/songs.json:songs[glass_lagoon].desc
+msgid "A clear shallow lagoon with coral visible under still water."
+msgstr ""
+
+#: data/songs.json:songs[tidepools].desc
+msgid "Night on the ocean planet, bioluminescent glow in the waves."
+msgstr ""
+
+#: data/songs.json:songs[kelp_garden].title
+msgid "Kelp Garden"
+msgstr ""
+
+#: data/songs.json:songs[kelp_garden].desc
+msgid "The seas are clean again: kelp forests, schools of fish, floating island gardens."
+msgstr ""
+
+#: data/songs.json:songs[snowplow].title
+msgid "Snowplow"
+msgstr ""
+
+#: data/songs.json:songs[snowplow].desc
+msgid "Pushing through fresh snow on a frozen moon, digging out buried scrap."
+msgstr ""
+
+#: data/songs.json:songs[hoarfrost].desc
+msgid "Glassy blue ice plains under a huge ringed planet."
+msgstr ""
+
+#: data/songs.json:songs[crunch_ice].title
+msgid "Crunch Ice"
+msgstr ""
+
+#: data/songs.json:songs[crunch_ice].desc
+msgid "Steady work inside a heated dome while snow blows outside."
+msgstr ""
+
+#: data/songs.json:songs[aurora_drift].title
+msgid "Aurora Drift"
+msgstr ""
+
+#: data/songs.json:songs[aurora_drift].desc
+msgid "Green and violet aurora rippling over frozen ridges."
+msgstr ""
+
+#: data/songs.json:songs[ringlight].title
+msgid "Ringlight"
+msgstr ""
+
+#: data/songs.json:songs[ringlight].desc
+msgid "A giant ringed gas planet hangs over a frozen crater."
+msgstr ""
+
+#: data/songs.json:songs[frozen_harbor].title
+msgid "Frozen Harbor"
+msgstr ""
+
+#: data/songs.json:songs[frozen_harbor].desc
+msgid "An abandoned drilling port locked in ice, snow falling softly."
+msgstr ""
+
+#: data/songs.json:songs[long_night].title
+msgid "Long Night"
+msgstr ""
+
+#: data/songs.json:songs[long_night].desc
+msgid "The long night on an ice moon far from its suns."
+msgstr ""
+
+#: data/songs.json:songs[thaw].title
+msgid "Thaw"
+msgstr ""
+
+#: data/songs.json:songs[thaw].desc
+msgid "Warmth returns from deep underground: frozen pools become steaming hot springs and moss spreads over the ice."
+msgstr ""
+
+#: data/songs.json:songs[red_engine].desc
+msgid "A red Mars-like foundry world of iron towers and lava rivers, home of the Ledger."
+msgstr ""
+
+#: data/songs.json:songs[slag_run].title
+msgid "Slag Run"
+msgstr ""
+
+#: data/songs.json:songs[slag_run].desc
+msgid "Hauling scrap past roaring furnaces and rivers of molten slag."
+msgstr ""
+
+#: data/songs.json:songs[foundry_heart].desc
+msgid "Deep inside an abandoned volcanic foundry, like walking through an underworld."
+msgstr ""
+
+#: data/songs.json:songs[ember_market].title
+msgid "Ember Market"
+msgstr ""
+
+#: data/songs.json:songs[ember_market].desc
+msgid "A ruined forge city lit by drifting embers."
+msgstr ""
+
+#: data/songs.json:songs[red_dust_waltz].title
+msgid "Red Dust Waltz"
+msgstr ""
+
+#: data/songs.json:songs[red_dust_waltz].desc
+msgid "A dust storm rolls over rusted machines on a red planet."
+msgstr ""
+
+#: data/songs.json:songs[magma_crawl].title
+msgid "Magma Crawl"
+msgstr ""
+
+#: data/songs.json:songs[magma_crawl].desc
+msgid "Lava slowly creeping across black rock under a blood-red sky."
+msgstr ""
+
+#: data/songs.json:songs[ash_choir].desc
+msgid "Ash drifts through red light as night falls on the volcanic world."
+msgstr ""
+
+#: data/songs.json:songs[iron_bloom].title
+msgid "Iron Bloom"
+msgstr ""
+
+#: data/songs.json:songs[iron_bloom].desc
+msgid "The foundry world restored: flowers growing between cooled lava flows, iron towers wrapped in vines."
+msgstr ""
 
 #: data/stations.json:conveyor.name
 msgid "Conveyor Feeder"
@@ -14163,6 +14791,33 @@ msgstr ""
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
 
+#~ msgid "Radio"
+#~ msgstr "收音机"
+
+#~ msgid "SONGS  ·  %d / %d"
+#~ msgstr "歌曲  ·  %d / %d"
+
+#~ msgid "Now playing: %s"
+#~ msgstr "正在播放：%s"
+
+#~ msgid "Your pick loops everywhere until you switch back to the mood music. A restored planet plays its restored version."
+#~ msgstr "你选的歌会在各处循环播放，直到你切回氛围音乐。修复后的星球会播放修复版。"
+
+#~ msgid "Back to mood music"
+#~ msgstr "切回氛围音乐"
+
+#~ msgid "The radio hands the music back to the day."
+#~ msgstr "收音机把音乐还给了这一天。"
+
+#~ msgid "Mood music"
+#~ msgstr "氛围音乐"
+
+#~ msgid "The music follows the day: the yard, the streets, the night. Pick a song to play it instead."
+#~ msgstr "音乐跟随一天的变化：院子、街道、夜晚。选一首歌来代替它播放。"
+
+#~ msgid "New songs come in as districts and planets are restored."
+#~ msgstr "随着街区和星球得到修复，会有新歌加入。"
+
 #~ msgid "line item %04d   checksum %s"
 #~ msgstr "条目 %04d   校验和 %s"
 
@@ -14596,9 +15251,6 @@ msgstr ""
 
 #~ msgid "Raise three bases to level 5"
 #~ msgstr "把三个基地升到 5 级"
-
-#~ msgid "Verdance in Bloom"
-#~ msgstr "繁花 Verdance"
 
 #~ msgid "The whole planet in flower, in four chords."
 #~ msgstr "整颗星球繁花盛开，只用四个和弦。"

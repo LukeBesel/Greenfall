@@ -982,8 +982,8 @@ func _tunes_start() -> void:
 func _tunes_land(fade: float = 4.0) -> void:
 	var td: Node = Tunes.director()
 	if td and Tunes.context() == "intro" and Tunes.now_playing() != "":
-		td.call("intro_land", fade)
 		print("[intro] song fades out at %.1fs (song at %.1fs)" % [_t, float(td.call("position"))])
+		td.call("intro_land", fade)
 
 
 ## [intro2] Dev check: how long each intro line was really on screen against the reading rule.

@@ -161,8 +161,98 @@ static func grant(id: String, quiet: bool = false) -> bool:
 
 
 static func toast_text(id: String) -> String:
-	return TranslationServer.translate("New CD: %s by %s") % [TranslationServer.translate(title(id)),
-		TranslationServer.translate(artist_name(id))]
+	return TranslationServer.translate("New CD: %s by %s, from %s") % [TranslationServer.translate(title(id)),
+		TranslationServer.translate(artist_name(id)), planet_name(home(id))]
+
+
+## The planet the song's artist lived on: its intact CD is found there.
+static func home(id: String) -> String:
+	var a: Dictionary = artist(str(song(id).get("artist", "")))
+	return str(a.get("home", song(id).get("found_on", "")))
+
+
+static func artist_home(artist_id: String) -> String:
+	return str(artist(artist_id).get("home", ""))
+
+
+# --- Scratched CDs: one play, then they break -------------------------------------------
+
+static func scratch_cfg() -> Dictionary:
+	return cfg().get("scratched", {})
+
+
+## Scratched CDs in the CD case (song ids, may repeat).
+static func held() -> Array:
+	var st_: Dictionary = st()
+	if not (st_.get("scratched") is Array):
+		st_["scratched"] = []
+	return st_["scratched"]
+
+
+static func case_size() -> int:
+	return int(scratch_cfg().get("case_size", 4))
+
+
+static func case_full() -> bool:
+	return held().size() >= case_size()
+
+
+## Keeps a scratched CD for later (false when the case is full or the song is owned already).
+static func hold(id: String) -> bool:
+	if case_full() or is_found(id) or song(id).is_empty():
+		return false
+	held().append(id)
+	return true
+
+
+## Songs a scratched CD may carry on `planet`: ones you don't own yet (files present), not
+## already in your case. Other planets' songs first; never an owned song.
+static func scratch_candidates(planet: String) -> Array[String]:
+	var other: Array[String] = []
+	var here: Array[String] = []
+	for id: String in available():
+		if is_found(id) or id in held():
+			continue
+		if home(id) == planet:
+			here.append(id)
+		else:
+			other.append(id)
+	return other if not other.is_empty() else here
+
+
+static func plays() -> Dictionary:
+	var st_: Dictionary = st()
+	if not (st_.get("plays") is Dictionary):
+		st_["plays"] = {}
+	return st_["plays"]
+
+
+static func note_play(id: String) -> void:
+	plays()[id] = int(plays().get(id, 0)) + 1
+
+
+static func play_count(id: String) -> int:
+	return int(plays().get(id, 0))
+
+
+## Plays a held scratched CD once (it breaks at the end). False if not in the case.
+static func play_scratched(id: String) -> bool:
+	if not (id in held()) or not has_file(id):
+		return false
+	var d: Node = director()
+	if d == null:
+		return false
+	return bool(d.call("play_once", id))
+
+
+## The scratched CD finished: it breaks and leaves the case.
+static func break_scratched(id: String) -> void:
+	var h: Array = held()
+	var i: int = h.find(id)
+	if i >= 0:
+		h.remove_at(i)
+	note_play(id)
+	GameState.inc_stat("scratched_cds_played")
 
 
 ## CDs still to find on a planet (files present, not owned), data order.
@@ -177,7 +267,7 @@ static func cds_left(planet: String) -> Array[String]:
 
 ## The planet a CD is found on ("" for start songs).
 static func found_on(id: String) -> String:
-	return str(song(id).get("found_on", ""))
+	return str(song(id).get("found_on", home(id)))
 
 
 static func planet_name(planet: String) -> String:
