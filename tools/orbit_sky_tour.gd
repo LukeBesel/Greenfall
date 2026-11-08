@@ -13,6 +13,7 @@ var _next: float = 0.0
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS  # the system map pauses the tree
 	for s: String in DevHooks.get_s("orbit-tour", "0.5,0.76,0.95").split(","):
 		times.append(float(s))
 	_t0 = Time.get_ticks_msec()

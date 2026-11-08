@@ -51,7 +51,11 @@ var sky_mat: ShaderMaterial
 var sky_director: SkyDirector  # [orbE] clock, suns, moon, weather (planet/sky_director.gd)
 var future: FutureLayerSphere  # [orbE] the Future Layer on chunks
 var glim: GlimBot  # [orbE]
-var survey: GlobeView  # [orbE] the survey hologram the light buddy's lantern (nights stay readable)
+var survey: GlobeView  # [orbE] the survey hologram
+var system_map: SystemMap  # [orbE]
+var patch: Patch  # [orbE] alias of lumi (the slice calls Lumi `patch`)
+var photo: PhotoMode  # [orbE]
+var launching: bool = false  # [orbE] photo mode asks (no rocket flights on the prototype) the light buddy's lantern (nights stay readable)
 var _cubes_root: Node3D
 var _spin_axis := Vector3.UP
 var _sun_dir0 := Vector3.ZERO  # first sun, rotation phase 0, planet frame
@@ -858,6 +862,17 @@ func _build_lights() -> void:
 	survey.holder = lumi
 	survey.world_root = self
 	add_child(survey)
+	system_map = SystemMap.new()  # [orbE] the orrery; Verdance's globe shows the walked cells
+	system_map.name = "SystemMap"
+	system_map.world = self
+	add_child(system_map)
+	survey.open_system = func() -> void: system_map.open_map(true)
+	if DevHooks.has("orbit-sysmap"):
+		get_tree().create_timer(DevHooks.get_f("orbit-sysmap", 3.0)).timeout.connect(func() -> void: system_map.open_map(true))
+	patch = lumi  # [orbE] photo mode, the system map and Glim read world.patch
+	photo = PhotoMode.new()
+	photo.world = self
+	add_child(photo)
 	if DevHooks.has("orbit-survey"):  # open the hologram after the world settles (renders, checks)
 		get_tree().create_timer(DevHooks.get_f("orbit-survey", 3.0)).timeout.connect(survey.open_view)
 	if DevHooks.has("orbit-tour"):  # [orbE] day/dusk/night render tour (tools/orbit_sky_tour.gd)

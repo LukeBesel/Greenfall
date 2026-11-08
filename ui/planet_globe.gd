@@ -144,6 +144,64 @@ func setup(id: String, restoration_: float = 0.0, tint: Color = Color(0.0, 0.0, 
 	return self
 
 
+# --- [orbE] The walked planet: its real cell state over the procedural surface ---------------
+## On the planet Lumi walks, the globe shows the real SphereCells state through the far shell's
+## big hexes (planet/sphere/sphere_shell.gd): cleaned land as a faint mint wash, greened land as
+## soft green, untouched junk left to the procedural look; plus a gold "you are here" pin.
+var cell_shell: SphereShell
+var _cell_overlay: MeshInstance3D
+var _here: MeshInstance3D
+var _cell_t: float = 0.0
+
+
+func set_cells(shell: SphereShell) -> void:
+	cell_shell = shell
+	_cell_t = 0.0
+	refresh_cells()
+
+
+static func overlay_color(s: Color) -> Color:
+	var land: float = maxf(1.0 - s.a, 0.0001)
+	var clean: float = s.g / land
+	var green: float = s.b / land
+	var c: Color = Color(0.55, 1.0, 0.8).lerp(Color(0.35, 0.95, 0.4), green / maxf(clean + green, 0.0001))
+	return Color(c.r, c.g, c.b, clampf(clean * 0.35 + green * 0.7, 0.0, 0.75) * smoothstep(0.2, 0.6, land))
+
+
+func refresh_cells() -> void:
+	if cell_shell == null or _body == null:
+		return
+	var img: Image = SphereMapMesh.snapshot(cell_shell)
+	var m: ArrayMesh = SphereMapMesh.build(cell_shell.coarse, func(c: int) -> Color: return overlay_color(SphereMapMesh.shares(img, c)), 1.003, 0.96)
+	if _cell_overlay == null:
+		_cell_overlay = MeshInstance3D.new()
+		_cell_overlay.name = "CellState"
+		var mat := StandardMaterial3D.new()
+		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		mat.vertex_color_use_as_albedo = true
+		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+		mat.render_priority = 1
+		_cell_overlay.material_override = mat
+		_cell_overlay.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		_body.add_child(_cell_overlay)
+	_cell_overlay.mesh = m
+
+
+## A gold pin on the globe at a direction in the planet's frame (Lumi's position, normalized).
+func set_here(dir: Vector3) -> void:
+	if _body == null:
+		return
+	if _here == null:
+		_here = MeshInstance3D.new()
+		_here.name = "YouAreHere"
+		_here.mesh = ProcMesh.sphere(0.03, 10, 5)
+		_here.material_override = Mats.lamp(Color(1.0, 0.85, 0.45), 2.4)
+		_here.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		_body.add_child(_here)
+	_here.position = dir.normalized() * 1.03
+
+
 func set_restoration(f: float) -> void:
 	restoration = clampf(f, 0.0, 1.0)
 	for m: ShaderMaterial in _mats:
@@ -296,6 +354,8 @@ func _clear() -> void:
 			remove_child(c)
 			c.free()
 	_tilt = null
+	_cell_overlay = null  # [orbE] freed with the tilt node
+	_here = null
 	_mats.clear()
 	_ring_mats.clear()
 	_multis.clear()
@@ -509,6 +569,13 @@ func _process(delta: float) -> void:
 		_cloud_pivot.rotation.y += sp * 1.22 * delta
 	if _ring_pivot:
 		_ring_pivot.rotate_object_local(Vector3.UP, sp * 0.8 * delta)
+	if cell_shell:  # [orbE] the walked planet's state follows play while the map is open
+		_cell_t -= delta
+		if _cell_t <= 0.0:
+			_cell_t = 4.0
+			refresh_cells()
+		if _here:
+			_here.scale = Vector3.ONE * (1.0 + 0.3 * sin(Time.get_ticks_msec() * 0.008))
 	_lod_t -= delta
 	if _lod_t <= 0.0:
 		_lod_t = 0.3
