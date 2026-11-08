@@ -863,3 +863,26 @@ rebuilt on the sphere. What carries over, and how to place it on a globe:
 - Pending: day/dusk/night renders (killed for memory twice in the shared container; command in the orbE report), rendered draw-call numbers, Mac fps, flipping the default (main, after owner sign-off).
 - Done (orbD, Nov 8 late): the start yard's models on the globe (`planet/sites/yard_site.gd`): the yard helper's own models (YardArt, the build scripts, FabricatorModel, the intro's pod) on the hub-0 anchors. Camp drives the lean-to/bench/lamp/generator bits as on the flat game; YardSite follows the same saved state for the extra lamps, compost press, radio, nursery, telescope, stations and Bot Fabricator. Every planet's start site gets the yard anchors; anchors inside another planet's geometry or off its walkable ground move to reachable, spaced spots, and the models follow. Dev: `--yard-report`, `--yard-all`. `--site-reach` with the whole yard built: Verdance, Ochre, Rime, Anvil PASS; Tidewell's raft deck (~150 m2) is too small for all 20 machines (17/20; the early yard passes).
 - Done (orbD): Homeward launch and interplanet rocket on the globe, kit hover-sled with ride animation, footprints for every planet's sites (F_HUB, round-trip safe), lap autowalk detours, SphereMotor wedge fix.
+
+## Status 2026-11-08: play-ready wrap-up
+- **Merged this round:**
+  - Round-planet parity: First Seed, compost press, seed finds, memory shards and the document view.
+  - Stations, litter, lakes with fish, street power.
+  - Robots: auto-baler, haulers to depots, the Drip water net.
+  - Intro, binary sun, lens view, Bloom finale framing.
+  - Autoplay pause watchdog.
+- **Checks:** 877/877 tests pass, plus the flat save round trip, the orbit round trip and the two-process orbit reload.
+- **Round planets** are still a preview: the title toggle "Round planets (preview)".
+- **Open (none block play):**
+  - Haulbugs get "no path" on Ochre, Rime and Anvil globes.
+  - The Ochre Bloom-finale camera is blocked by start-site geometry.
+  - A fauna upright check fails on the far-out globes.
+  - The orbit_old_* round-trip legs wrongly load the Verdance flat-save fixture under --orbit-planet.
+  - A reload resumes from the last autosave rather than the exit state.
+  - Autoplay never cashes in at the depot on Tidewell.
+- **Held for later:**
+  - Wildlife and Meadow on the globe (cf2ca15, reverted in a4b506f).
+  - Feel FX (stash on wt/orbB).
+  - The Cradle launch onto a globe.
+  - The other 5 Lumi designs and planet music themes.
+- **Owner:** a Mac perf run, `--orbit --quality=1 --perf`, then the same with `--orbit-planet=anvil`.
