@@ -25,8 +25,8 @@ signal worn
 ## Overlay mode (set by open()): backdrop, input capture, Done closes.
 var standalone: bool = false
 
-const SIDE_W: float = 236.0
-const EDIT_W: float = 400.0
+const SIDE_W: float = 220.0
+const EDIT_W: float = 360.0  # fits 1280x720 at 125% UI scale
 
 var world: Node
 var edit: Dictionary = {}
@@ -139,6 +139,7 @@ func _build() -> void:
 	frame.add_theme_stylebox_override("panel", UITheme.box(Color(0.03, 0.035, 0.045, 1.0), Color(1, 1, 1, 0.07), 1, 10, 0))
 	body.add_child(frame)
 	_preview = LumiPreview.new(Vector2i(720, 720))
+	_preview.custom_minimum_size = Vector2(260, 300)
 	_preview.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	frame.add_child(_preview)
@@ -174,7 +175,7 @@ func _build() -> void:
 	ed_scroll.add_child(_editor)
 	_info = UITheme.label("", 14, UITheme.GOLD)
 	_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_info.custom_minimum_size = Vector2(EDIT_W - 30, 40)
+	_info.custom_minimum_size = Vector2(EDIT_W - 40, 40)
 	rv.add_child(_info)
 
 	var foot := HBoxContainer.new()
@@ -390,7 +391,7 @@ func _build_colors() -> void:
 	var sw_on: Dictionary = LumiStyle.swatch_for(cur)
 	var name_l := _note(tr(str(sw_on.get("name", "Custom"))) if not sw_on.is_empty() else tr("Custom colour"), UITheme.CREAM, 15)
 	var grid := GridContainer.new()
-	grid.columns = 7
+	grid.columns = 6
 	grid.add_theme_constant_override("h_separation", 6)
 	grid.add_theme_constant_override("v_separation", 6)
 	_editor.add_child(grid)
