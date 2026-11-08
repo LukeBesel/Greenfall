@@ -120,6 +120,8 @@ func set_level(l: int) -> void:
 			k.set_state(ks)
 			k.set_powered(level >= 2)
 		_build_lots()
+		if kit_root:
+			KitBatch.merge(kit_root)  # [orbE] the rebuilt bodies merge again
 
 
 ## The kit state for a base level: broken (1), repaired (2-3), restored (4-5).
@@ -303,6 +305,7 @@ func _kit_blocks() -> void:
 	await BuildBudget.check("site:collision")  # [orbE]
 	# The kit has no bodies of its own: one trimesh body for the buildings' solid meshes.
 	SitePrefab.collision_for(kit_root, self)
+	KitBatch.merge(kit_root)  # [orbE] perf: one surface per material for all the yard's buildings
 
 
 var _lots: Array[Dictionary] = []

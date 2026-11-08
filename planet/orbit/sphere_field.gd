@@ -40,6 +40,7 @@ var _type_w: Array[float] = []
 var _type_wsum: float = 0.0
 var _lift_cache: Dictionary = {}  # model id -> [upright lift, lying lift]
 var piece_lift := PackedFloat32Array()  # [orbB] rest offset above the ground (before the pile)
+var piece_model_vol := PackedFloat32Array()  # [orbB] the model's own volume (piece_vol is scaled for pacing)
 var parts_def: Dictionary = {}  # data/parts.json (set before cells materialize; Economy.parts by default)
 var landmark_defs: Array = []   # [{id, count}] (Economy.landmarks_for(biome))
 var locked_biomes: Dictionary = {}  # biome index -> true: those cells stay locked
@@ -225,6 +226,10 @@ func materialize(cell: int) -> PackedInt32Array:
 	return out
 
 
+func visual_vol(pid: int) -> float:
+	return piece_model_vol[pid]
+
+
 ## Scales a cell's new pieces so their volumes sum to `target` (sizes on screen are untouched).
 func _scale_cell(pids: PackedInt32Array, raw_sum: float, target: float) -> void:
 	if pids.is_empty() or raw_sum <= 0.0:
@@ -273,6 +278,7 @@ func _add_piece(cell: int, d: Vector3, b: Basis, lift: float, ti: int, mid: Stri
 	piece_embed.append(embed)
 	piece_alive.append(1)
 	piece_lift.append(lift)
+	piece_model_vol.append(vol)
 	piece_xf.append(Transform3D(b, Vector3.ZERO))
 	_seat(pid, d)
 	return pid

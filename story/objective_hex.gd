@@ -118,6 +118,9 @@ func _process(delta: float) -> void:
 
 
 func _build(f: HexField) -> void:
+	if f is SphereField:  # [orbB] the globe: the cell's own frame and corners
+		_build_sphere(f as SphereField)
+		return
 	if not _cache.has(hex):
 		_cache[hex] = contour(f, hex, maxf(STEP_M, f.hex_size * 0.06))
 	_loops = _cache[hex]
@@ -143,7 +146,44 @@ func _inward_sign(f: HexField, loop: PackedVector2Array) -> float:
 	return 1.0 if vote >= 0.0 else -1.0
 
 
+## [orbB] On the globe this node sits on the cell's centre with local up (+Y); loops are in metres
+## east/south of it, along the cell's real corners (subdivided so the line hugs the terrain).
+func _build_sphere(f: SphereField) -> void:
+	var ctr: Vector3 = f.grid.centers[hex]
+	var fr: Basis = SphereGrid.frame(ctr)
+	global_transform = Transform3D(fr, f.terrain.ground(ctr))
+	if not _cache.has(hex):
+		var loop := PackedVector2Array()
+		var cs: PackedVector3Array = f.grid.corners(hex)
+		for k: int in cs.size():
+			var a: Vector3 = cs[k] - ctr
+			var b: Vector3 = cs[(k + 1) % cs.size()] - ctr
+			var pa := Vector2(a.dot(fr.x), a.dot(fr.z)) * f.grid.radius_m
+			var pb := Vector2(b.dot(fr.x), b.dot(fr.z)) * f.grid.radius_m
+			for s: int in 6:
+				loop.append(pa.lerp(pb, s / 6.0))
+		var arr: Array[PackedVector2Array] = [loop]
+		_cache[hex] = arr
+	_loops = _cache[hex]
+	_inward.clear()
+	for loop: PackedVector2Array in _loops:  # the left normal points in when it faces the centre
+		var a: Vector2 = loop[0]
+		var t: Vector2 = (loop[1] - a).normalized()
+		_inward.append(1.0 if Vector2(-t.y, t.x).dot(-a) >= 0.0 else -1.0)
+	_height_t = 0.0
+	_mesh(f)
+	_label.position = Vector3(0.0, _surface(f, 0.0, 0.0) + 1.9, 0.0)
+
+
 func _surface(f: HexField, x: float, z: float) -> float:
+	if f is SphereField and hex >= 0:  # [orbB] ground (+ heap) height in this node's frame
+		var sf: SphereField = f
+		var ctr: Vector3 = sf.grid.centers[hex]
+		var fr: Basis = SphereGrid.frame(ctr)
+		var d: Vector3 = (ctr + (fr.x * x + fr.z * z) / sf.grid.radius_m).normalized()
+		var g: Vector3 = sf.terrain.ground(d)
+		g += d * sf.ground_height(hex, g)
+		return (global_transform.affine_inverse() * g).y
 	var lay: CityLayout = f.layout
 	var y: float = lay.height_at(x, z) if lay else 0.0
 	var p := Vector3(x, 0.0, z)

@@ -50,6 +50,7 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	var f: int = int(spec.get("frequency", GlobeSpec.VERDANCE_FREQ))
 	var t0: int = Time.get_ticks_msec()
 	grid = SphereGrid.for_freq(f, GlobeSpec.HEX_M)
+	stats["grid_load_ms"] = Time.get_ticks_msec() - t0  # [orbE]
 	var lv: int = SphereGrid.level_of_freq(f)
 	# The survey runs on the same cells: level grids keep their GeoSphere, others share this grid.
 	planet = PlanetData.new(seed_value, lv, GlobeSpec.HEX_M) if lv >= 0 else PlanetData.new(seed_value, 0, GlobeSpec.HEX_M, GeoSphere.from_grid(grid))

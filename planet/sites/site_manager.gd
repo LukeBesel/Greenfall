@@ -27,6 +27,7 @@ const GROW_M_PER_MIN: float = 6.0
 const GROW_MAX_M: float = 900.0
 const RESTORED: int = 4
 
+var probed: Dictionary = {}  # [orbE] hub index -> true once its footprint probe and anchor fix are done
 var globe: Node3D
 var planet_id: String = "verdance"
 var grid: SphereGrid
@@ -137,11 +138,12 @@ func _probe_footprints(i: int, p: SitePrefab) -> int:
 	if not is_instance_valid(p) or not p.is_inside_tree():
 		return 0
 	var n: int = probe_cells(i, p)
-	var moved: PackedStringArray = SiteReach.fix_anchors(p, terrain)
+	var moved: PackedStringArray = await SiteReach.fix_anchors(p, terrain)  # [orbE] yields behind the loader
 	print("[sites] %s hub %d (%s): %d junk cells under its buildings cleared%s" % [planet_id, i, p.site_id, n,
 		"" if moved.is_empty() else ", anchors moved clear: " + ",".join(moved)])
 	if not moved.is_empty():
 		anchors_fixed.emit(i, p)
+	probed[i] = true  # [orbE] the loading screen waits for the start site's probe
 	return n
 
 

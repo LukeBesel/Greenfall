@@ -47,14 +47,15 @@ func _setup() -> void:
 		CradleMode.profile["current"] = 0
 	CradleMode.mirror_stats()
 	GameState.flags["last_district"] = str(world.get("district_name"))  # [worlds2] save profile summary
-	decor = Decor.new()
-	world.add_child(decor)
-	decor.setup(world)
-	placer = GardenPlacer.new()
-	placer.name = "GardenPlacer"
-	placer.world = world
-	placer.decor = decor
-	world.add_child(placer)
+	if world.get("orbit") == null:  # [orbB] Garden Mode's decor grid is flat yard metres: the globe gets it with the yard frame
+		decor = Decor.new()
+		world.add_child(decor)
+		decor.setup(world)
+		placer = GardenPlacer.new()
+		placer.name = "GardenPlacer"
+		placer.world = world
+		placer.decor = decor
+		world.add_child(placer)
 	HomewardDirector.attach(world)  # [home] the system campaign (systems/homeward_director.gd)
 	bridge = ArkBridge.new()
 	bridge.name = "ArkBridge"
@@ -66,7 +67,7 @@ func _setup() -> void:
 	(func() -> void:  # [worlds2] the world's sky, landmark and weathering; WREN's story for it
 		WorldLookView.attach(world)
 		WorldStory.attach(world)).call_deferred()
-	if DevHooks.has("decor-sample"):
+	if DevHooks.has("decor-sample") and decor:  # [orbB]
 		_decor_sample.call_deferred()
 	if DevHooks.has("late-save-after"):  # dev: write the save S seconds in (prepared states for shots)
 		get_tree().create_timer(DevHooks.get_f("late-save-after", 20.0)).timeout.connect(func() -> void:
@@ -74,7 +75,7 @@ func _setup() -> void:
 	var op: String = DevHooks.get_s("open", "")
 	if op == "ark":
 		(func() -> void: bridge.open_bridge()).call_deferred()
-	elif op == "garden":
+	elif op == "garden" and placer:  # [orbB]
 		(func() -> void:
 			placer.open()
 			if DevHooks.has("garden-type"):
@@ -96,13 +97,16 @@ func open_bridge() -> bool:
 		return false
 	if world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = false
-	world.cam.input_enabled = false
+	if world.get("cam") != null:  # [orbB] the globe's camera is the SphereCam (SliceOrbit.set_input)
+		world.cam.input_enabled = false
+	elif world.get("orbit") != null:
+		world.orbit.set_input(false)
 	bridge.open_bridge()
 	return true
 
 
 func open_garden() -> bool:
-	return placer.open()
+	return placer.open() if placer else false  # [orbB] no decor grid on the globe yet
 
 
 ## A cinematic or story beat owns the screen (don't leave the world now).

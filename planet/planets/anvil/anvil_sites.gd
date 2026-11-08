@@ -44,6 +44,35 @@ static func build(site_root: Node3D, site_id: String, stage: int, restoration: f
 			_ruined_smelter(kit, root, stage, restoration)
 		_:
 			push_warning("AnvilSites: unknown site " + site_id)
+	KitBatch.merge(root)  # [orbE] perf: the site's kit buildings as one surface per material
+	PropBatch.merge(root)  # [orbE] and its static loose pieces
+	root.set_meta("site", site_id)
+	root.set_meta("stage", stage)
+	root.set_meta("restoration", restoration)
+	return root
+
+
+## [orbE] build() behind the globe's loading screen: the hub yard yields between its steps
+## (BuildBudget) so no frame runs over ~1 s; the landmarks build at once, as before. Same result.
+static func build_async(site_root: Node3D, site_id: String, stage: int, restoration: float) -> Node3D:
+	if site_id != "foundry_yard" or not BuildBudget.active():
+		return build(site_root, site_id, stage, restoration)
+	var kit: AnvilEnv = AnvilEnv.kit()
+	site_root.add_child(kit)
+	var root := Node3D.new()
+	root.name = "AnvilSite_" + site_id
+	site_root.add_child(root)
+	stage = clampi(stage, 1, 5)
+	restoration = clampf(restoration, 0.0, 1.0)
+	kit.level = stage
+	kit.restore = restoration
+	kit.terrain_mat.set_shader_parameter("restore", restoration * 0.55)
+	kit.slag_mat.set_shader_parameter("restore", restoration * 0.8)
+	for step: Callable in _foundry_yard_steps(kit, root, stage, restoration):
+		step.call()
+		await BuildBudget.check("anvil:yard")
+	KitBatch.merge(root)  # [orbE]
+	PropBatch.merge(root)
 	root.set_meta("site", site_id)
 	root.set_meta("stage", stage)
 	root.set_meta("restoration", restoration)
@@ -443,49 +472,62 @@ static func _clutter(b: KitMesh.Builder, spots: Array, lamp_at: Array) -> void:
 
 
 static func _foundry_yard(kit: AnvilEnv, root: Node3D, stage: int, restoration: float) -> void:
+	for step: Callable in _foundry_yard_steps(kit, root, stage, restoration):
+		step.call()
+
+
+## [orbE] The foundry yard as steps, so the globe's loading screen can yield between them
+## (build_async). Same pieces in the same order as before; build() runs them back to back.
+static func _foundry_yard_steps(kit: AnvilEnv, root: Node3D, stage: int, restoration: float) -> Array[Callable]:
 	var r: float = eff(stage, restoration)
 	var pw: bool = stage >= 2
-	ground_patch(kit, root, 48.0, 101)
-	_kit_patch(root, Vector2(26, 22), stage, 5, Vector3(0, 0, -2))
+	var steps: Array[Callable] = []
+	steps.append(func() -> void:
+		ground_patch(kit, root, 48.0, 101)
+		_kit_patch(root, Vector2(26, 22), stage, 5, Vector3(0, 0, -2)))
 	# Kit buildings: the casting hall, an office module, a machine house and a tank farm.
-	AnvilKit.building(root, "hangar", stage, 11, AnvilKit.FOUNDRY, Vector3(-2, 0, -29), 0.0, 1.6)
-	AnvilKit.building(root, "module_medium", stage, 12, AnvilKit.HABITAT, Vector3(-27, 0, 4), 70.0, 1.2)
-	AnvilKit.building(root, "machine_housing", stage, 13, AnvilKit.FOUNDRY, Vector3(25, 0, -12), -80.0, 1.3)
-	AnvilKit.building(root, "tank_farm", stage, 14, AnvilKit.FOUNDRY, Vector3(27, 0, 16), -120.0, 1.15)
-	var b := _b(stage, 15, AnvilKit.FOUNDRY)
-	AnvilKit.stack(b, AnvilKit.x(Vector3(-24, 0, -40)), 40.0, 3.0, 1)
-	AnvilKit.stack(b, AnvilKit.x(Vector3(20, 0, -42)), 33.0, 2.6, 4)
-	AnvilKit.truss(b, Vector3(10, 0, -22), Vector3(30, 0, 2), 8.0)
-	var hop := PackedVector3Array([Vector3(0.6, 0, 1), Vector3(2.4, 3.0, 0), Vector3(2.6, 3.1, 1), Vector3(2.6, 3.4, 1), Vector3(0.6, 3.4, 0)])
-	b.add("paint:main", KitMesh.lathe(hop, 16), AnvilKit.x(Vector3(31, 6.0, 4)))
-	for sx: float in [-1.0, 1.0]:
-		for sz: float in [-1.0, 1.0]:
-			b.rod("paint:accent", Vector3(31 + sx * 1.8, 0.2, 4 + sz * 1.8), Vector3(31 + sx * 1.3, 6.2, 4 + sz * 1.3), 0.14, 6)
-	AnvilKit.track(b, Vector3(-30, 0, 26), Vector3(6, 0, 31))
-	for k: int in 3:
-		var tp: Vector3 = Vector3(-30, 0, 26).lerp(Vector3(6, 0, 31), 0.2 + 0.28 * k)
-		AnvilKit.ore_cart(b, Transform3D(Basis(Vector3.UP, atan2(36.0, 5.0) + PI * 0.5), tp + Vector3(0, 0.3, 0)), stage == 1 and k == 1)
-	for k: int in 3:
-		KitProps.cable(b, Transform3D.IDENTITY, Vector3(-21.6, 14.0 + k * 1.3, -38.0), Vector3(-10.0 + k * 3.0, 13.5, -23.0), 1.4 + k * 0.4, 0.06)
-	_clutter(b, [Vector3(-8, 0, 12), Vector3(9, 0, 11), Vector3(-15, 0, -12), Vector3(15, 0, -6), Vector3(-6, 0, 20), Vector3(18, 0, 22)], [Vector3(-13.5, 0, 8.5), Vector3(13.5, 0, 8.5)])
-	AnvilKit.node(b, root, "Foundry", pw)
-	if stage >= 3:
-		AnvilKit.building(root, "dome", stage, 61, AnvilKit.HABITAT, Vector3(-28, 0, 28), 40.0, 1.08)
-	var hb := _b(stage, 16, AnvilKit.LEDGER)
-	AnvilKit.hauler(hb, Transform3D(Basis(Vector3.UP, 2.1), Vector3(32, 0, 30)))
-	AnvilKit.node(hb, root, "Hauler", pw)
-	var sb := Batch.new()
-	sb.add(AnvilProps.slag_mesh(21), Transform3D(Basis(Vector3.UP, 1.2) * Basis.from_scale(Vector3(9.0, 4.8, 7.5)), Vector3(-34, -0.2, 14)), kit.slag_mat)
-	sb.flush(root)
-	if stage >= 4:
-		AnvilKit.building(root, "greenhouse", stage, 66, AnvilKit.HABITAT, Vector3(-38, 0, 14), 75.0, 1.0)
-	if stage >= 2:
-		turbine(root, stage, Vector3(40, 0, -26), 1.7, 0)
-	if stage >= 4:
-		turbine(root, stage, Vector3(-42, 0, -10), 1.9, 1)
-	edge_ring(kit, root, 46.0, r, 1501)
-	trash(kit, root, 46.0, 13.0, 700, r, 501)
-	ground_cover(kit, root, 46.0, 13.0, r, 601)
+	steps.append(func() -> void: AnvilKit.building(root, "hangar", stage, 11, AnvilKit.FOUNDRY, Vector3(-2, 0, -29), 0.0, 1.6))
+	steps.append(func() -> void: AnvilKit.building(root, "module_medium", stage, 12, AnvilKit.HABITAT, Vector3(-27, 0, 4), 70.0, 1.2))
+	steps.append(func() -> void: AnvilKit.building(root, "machine_housing", stage, 13, AnvilKit.FOUNDRY, Vector3(25, 0, -12), -80.0, 1.3))
+	steps.append(func() -> void: AnvilKit.building(root, "tank_farm", stage, 14, AnvilKit.FOUNDRY, Vector3(27, 0, 16), -120.0, 1.15))
+	steps.append(func() -> void:
+		var b := _b(stage, 15, AnvilKit.FOUNDRY)
+		AnvilKit.stack(b, AnvilKit.x(Vector3(-24, 0, -40)), 40.0, 3.0, 1)
+		AnvilKit.stack(b, AnvilKit.x(Vector3(20, 0, -42)), 33.0, 2.6, 4)
+		AnvilKit.truss(b, Vector3(10, 0, -22), Vector3(30, 0, 2), 8.0)
+		var hop := PackedVector3Array([Vector3(0.6, 0, 1), Vector3(2.4, 3.0, 0), Vector3(2.6, 3.1, 1), Vector3(2.6, 3.4, 1), Vector3(0.6, 3.4, 0)])
+		b.add("paint:main", KitMesh.lathe(hop, 16), AnvilKit.x(Vector3(31, 6.0, 4)))
+		for sx: float in [-1.0, 1.0]:
+			for sz: float in [-1.0, 1.0]:
+				b.rod("paint:accent", Vector3(31 + sx * 1.8, 0.2, 4 + sz * 1.8), Vector3(31 + sx * 1.3, 6.2, 4 + sz * 1.3), 0.14, 6)
+		AnvilKit.track(b, Vector3(-30, 0, 26), Vector3(6, 0, 31))
+		for k: int in 3:
+			var tp: Vector3 = Vector3(-30, 0, 26).lerp(Vector3(6, 0, 31), 0.2 + 0.28 * k)
+			AnvilKit.ore_cart(b, Transform3D(Basis(Vector3.UP, atan2(36.0, 5.0) + PI * 0.5), tp + Vector3(0, 0.3, 0)), stage == 1 and k == 1)
+		for k: int in 3:
+			KitProps.cable(b, Transform3D.IDENTITY, Vector3(-21.6, 14.0 + k * 1.3, -38.0), Vector3(-10.0 + k * 3.0, 13.5, -23.0), 1.4 + k * 0.4, 0.06)
+		_clutter(b, [Vector3(-8, 0, 12), Vector3(9, 0, 11), Vector3(-15, 0, -12), Vector3(15, 0, -6), Vector3(-6, 0, 20), Vector3(18, 0, 22)], [Vector3(-13.5, 0, 8.5), Vector3(13.5, 0, 8.5)])
+		AnvilKit.node(b, root, "Foundry", pw))
+	steps.append(func() -> void:
+		if stage >= 3:
+			AnvilKit.building(root, "dome", stage, 61, AnvilKit.HABITAT, Vector3(-28, 0, 28), 40.0, 1.08)
+		var hb := _b(stage, 16, AnvilKit.LEDGER)
+		AnvilKit.hauler(hb, Transform3D(Basis(Vector3.UP, 2.1), Vector3(32, 0, 30)))
+		AnvilKit.node(hb, root, "Hauler", pw)
+		var sb := Batch.new()
+		sb.add(AnvilProps.slag_mesh(21), Transform3D(Basis(Vector3.UP, 1.2) * Basis.from_scale(Vector3(9.0, 4.8, 7.5)), Vector3(-34, -0.2, 14)), kit.slag_mat)
+		sb.flush(root))
+	steps.append(func() -> void:
+		if stage >= 4:
+			AnvilKit.building(root, "greenhouse", stage, 66, AnvilKit.HABITAT, Vector3(-38, 0, 14), 75.0, 1.0)
+		if stage >= 2:
+			turbine(root, stage, Vector3(40, 0, -26), 1.7, 0)
+		if stage >= 4:
+			turbine(root, stage, Vector3(-42, 0, -10), 1.9, 1))
+	steps.append(func() -> void: edge_ring(kit, root, 46.0, r, 1501))
+	steps.append(func() -> void: trash(kit, root, 46.0, 13.0, 700, r, 501))
+	steps.append(func() -> void: ground_cover(kit, root, 46.0, 13.0, r, 601))
+	return steps
 
 
 static func _foundry_tower(kit: AnvilEnv, root: Node3D, stage: int, restoration: float) -> void:

@@ -533,6 +533,12 @@ func bury_parts(parts_def: Dictionary) -> void:
 		part_found.append(0)
 
 
+## [orbB] How big a piece looks (its model's volume). On the flat game that is its volume; the
+## globe's pieces carry more ledger volume than they show (SphereField pacing).
+func visual_vol(pid: int) -> float:
+	return piece_vol[pid]
+
+
 ## [orbB] Distance from a world point to part i along the ground (SphereField measures on the globe).
 func part_distance(i: int, pos: Vector3) -> float:
 	return Vector2(pos.x - part_pos[i].x, pos.z - part_pos[i].z).length()

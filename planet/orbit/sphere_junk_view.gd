@@ -54,7 +54,8 @@ func _process(delta: float) -> void:
 	_pump(budget)
 	if not _far_todo.is_empty():
 		var g: int = _far_todo.pop_front()
-		_g_mm[g * 2 + 1].mesh = JunkLod.far_mesh(_g_model[g], JunkLod.FAR_TRIS[quality] * (4 if _g_heavy[g] == 1 else 1))
+		var fm: Mesh = JunkLod.far_mesh(_g_model[g], JunkLod.FAR_TRIS[quality] * (4 if _g_heavy[g] == 1 else 1))
+		_g_mm[g * 2 + 1].mesh = fm if DevHooks.has("no-far-single") else JunkFarSingle.single(fm)  # [orbE] one draw per far model
 	_t -= delta
 	if _t <= 0.0:
 		_t = JunkLod.UPDATE_EVERY
@@ -346,6 +347,10 @@ func _update_mounds(id: int) -> void:
 		MoundColliders.update(e[1], mi.scale, mi.visible, 1.0 - sfield.removed_fraction(id))
 
 
+## [orbE] Landmark triangle budget per quality preset (Low, Medium, High, Ultra).
+const LANDMARK_TRIS: Array[int] = [3000, 6000, 12000, 24000]
+
+
 func _build_landmark(lm: Dictionary) -> Node3D:
 	var root := Node3D.new()
 	root.name = "Landmark_%s" % str(lm["model"])
@@ -355,7 +360,9 @@ func _build_landmark(lm: Dictionary) -> Node3D:
 	if not AssetLib.has_model(model):
 		return root
 	var mi := MeshInstance3D.new()
-	mi.mesh = AssetLib.model_mesh(model)
+	# [orbE] perf: a landmark's mesh within a triangle budget per preset, using the model's own
+	# import LODs (AssetLib.lite): Anvil's concrete road barriers were 61k triangles each (8 in view).
+	mi.mesh = AssetLib.model_mesh_lite(model, LANDMARK_TRIS[clampi(Settings.quality, 0, 3)])
 	root.add_child(mi)
 	# Solid like the flat props (PhysLayers.PROP): one box from the model's bounds, in its own frame.
 	var bb: AABB = AssetLib.model_aabb(model)

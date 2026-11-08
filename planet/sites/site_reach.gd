@@ -49,16 +49,26 @@ static func _reached(state: PackedByteArray, n: int, discs: Array, start: Vector
 		var ix: int = int(round((x + HALF_M) / STEP))
 		var iz: int = int(round((z + HALF_M) / STEP))
 		return -1 if ix < 0 or iz < 0 or ix >= n or iz >= n else iz * n + ix
-	var blocked := func(i: int) -> bool:
-		var x: float = (i % n) * STEP - HALF_M
-		var z: float = floori(float(i) / n) * STEP - HALF_M
-		for d: Array in discs:
-			var dp: Vector3 = d[0]
-			if dp.distance_to(start) < 0.05:
-				continue  # the landing spot is kept clear for spacing, it isn't an obstacle
-			if Vector2(dp.x - x, dp.z - z).length() < float(d[1]):
-				return true
-		return false
+	# [orbE] The discs rasterised once into a mask (same test per cell as before: closer than the
+	# disc's radius, the landing spot excepted). The flood fill checked every disc for every cell:
+	# ~20 discs x 62k cells per fill, ~5 s for a start yard on Anvil.
+	var mask := PackedByteArray()
+	mask.resize(n * n)
+	for d: Array in discs:
+		var dp: Vector3 = d[0]
+		if dp.distance_to(start) < 0.05:
+			continue  # the landing spot is kept clear for spacing, it isn't an obstacle
+		var rad: float = float(d[1])
+		var ix0: int = maxi(0, int(floor((dp.x - rad + HALF_M) / STEP)) - 1)
+		var ix1: int = mini(n - 1, int(ceil((dp.x + rad + HALF_M) / STEP)) + 1)
+		var iz0: int = maxi(0, int(floor((dp.z - rad + HALF_M) / STEP)) - 1)
+		var iz1: int = mini(n - 1, int(ceil((dp.z + rad + HALF_M) / STEP)) + 1)
+		for iz: int in range(iz0, iz1 + 1):
+			var z: float = iz * STEP - HALF_M
+			for ix: int in range(ix0, ix1 + 1):
+				var x: float = ix * STEP - HALF_M
+				if Vector2(dp.x - x, dp.z - z).length() < rad:
+					mask[iz * n + ix] = 1
 	var out: Array = []
 	var s0: int = to_i.call(start.x, start.z)
 	if s0 < 0 or state[s0] != 3:
@@ -80,7 +90,7 @@ static func _reached(state: PackedByteArray, n: int, discs: Array, start: Vector
 			if nx < 0 or nz < 0 or nx >= n or nz >= n:
 				continue
 			var j: int = nz * n + nx
-			if seen[j] == 1 or state[j] != 3 or blocked.call(j):
+			if seen[j] == 1 or state[j] != 3 or mask[j] == 1:
 				continue
 			seen[j] = 1
 			stack.append(j)
@@ -182,6 +192,8 @@ static func audit(p: SitePrefab, terrain: SphereTerrain, only: Node = null) -> D
 		var stack := PackedInt32Array([s0])
 		seen[s0] = 1
 		while not stack.is_empty():
+			if (reach & 255) == 0 and BuildBudget.due():  # [orbE] behind the loading screen: hand frames back
+				await BuildBudget.pause("site audit")
 			var c: int = stack[stack.size() - 1]
 			stack.resize(stack.size() - 1)
 			reach += 1
@@ -330,6 +342,9 @@ static func nearest_free(p: SitePrefab, terrain: SphereTerrain, local: Vector3, 
 ## Moves a prefab's standard anchors out of its geometry (builders that don't know the anchor
 ## defaults: Ochre's yard, Tidewell's raft deck). The rocket pad moves so that the spot Lumi
 ## steps off to is free. Returns the anchors moved.
+## [orbE] A coroutine: behind the globe's loading screen it yields between candidate spots (the
+## yard's 16 machines took ~5 s of flood fills in one frame on Anvil); without a BuildBudget it
+## runs straight through, exactly as before.
 static func fix_anchors(p: SitePrefab, terrain: SphereTerrain) -> PackedStringArray:
 	var moved := PackedStringArray()
 	# 1. The rocket pad: the spot Lumi steps off to must be free of the prefab's geometry.
@@ -345,7 +360,7 @@ static func fix_anchors(p: SitePrefab, terrain: SphereTerrain) -> PackedStringAr
 		reserved.append(pad.position + Vector3(4.5, 0, 3.0))
 	# 2. Every other anchor: on ground Lumi can reach from there (a raft's deck, not the sea), clear
 	# of the prefab's geometry and of the other machines' footprints with a walking lane between.
-	var r: Dictionary = audit(p, terrain, p.content)
+	var r: Dictionary = await audit(p, terrain, p.content)  # [orbE] a coroutine (yields behind the loader)
 	var state: PackedByteArray = r["state"]
 	var n: int = r["n"]
 	var reach_at := func(l: Vector3) -> bool:
@@ -377,16 +392,21 @@ static func fix_anchors(p: SitePrefab, terrain: SphereTerrain) -> PackedStringAr
 		var rad: float = foot(nm)
 		var rr: float = STEP
 		var found: bool = false
+		var land: Vector3 = pad.position + Vector3(4.5, 0, 3.0) if pad else Vector3.ZERO
+		var before: Array = []  # [orbE] what's reached with the anchors placed so far: fixed during this search, flood-filled once (was per candidate)
 		while rr <= HALF_M and not found:
 			var k_n: int = maxi(8, int(TAU * rr / STEP))
 			for k: int in k_n:
+				if BuildBudget.due():  # [orbE]
+					await BuildBudget.pause("site reach")
 				var a: float = TAU * k / k_n
 				var c := at + Vector3(cos(a) * rr, 0, sin(a) * rr)
 				if _all_reach(reach_at, c, rad) and spaced.call(c, rad):
 					var trial: Array = placed.duplicate()
 					trial.append([c, rad])
-					var land: Vector3 = pad.position + Vector3(4.5, 0, 3.0) if pad else Vector3.ZERO
-					if _no_worse(_reached(state, n, placed, land), _reached(state, n, trial, land)):
+					if before.is_empty():
+						before = _reached(state, n, placed, land)
+					if _no_worse(before, _reached(state, n, trial, land)):
 						m.position = c
 						found = true
 						break
