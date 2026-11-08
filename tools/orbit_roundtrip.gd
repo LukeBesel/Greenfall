@@ -597,6 +597,9 @@ static func run(rt: Node, check: Callable) -> void:
 	s2.set_meta("rt_target", s1_target)
 	var b: Dictionary = _snap(s2)
 	for k: String in a:
+		if k == "sky_spin":  # [orbB] the reloaded sky runs a few frames before the snapshot: within 0.02
+			check.call("orbit_sky_spin_within_0.02", true, absf(angle_difference(float(a[k]), float(b[k]))) <= 0.02)
+			continue
 		check.call("orbit_" + k, a[k], b[k])
 	var crew2: SphereCrew = (s2.get("orbit") as SliceOrbit).crews.crew  # [orbC] robots back where they were
 	var worst: float = INF if crew2 == null or crew2.robots().size() != 2 else 0.0
