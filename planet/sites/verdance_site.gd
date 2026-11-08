@@ -84,11 +84,12 @@ func anchors() -> Dictionary:
 const START_YARD_ANCHORS: Dictionary = {
 	"pod": [Vector3(0, 0, 9.8), 0.0],
 	"bin": [Vector3(8.0, 0, 4.3), -PI * 0.5],
-	"stations": [Vector3(8.5, 0, 0.8), -PI * 0.5],
+	"stations": [Vector3(16.5, 0, 1.5), 0.0],  # out on the street east of the yard (flat: "keep the base yard free")
 	"radio": [Vector3(5.0, 0, -1.5), -PI * 0.5],
 	"signal_tower": [Vector3(8.0, 0, -7.5), -PI * 0.5],
 	"telescope": [Vector3(4.8, 0, -9.0), 0.0],
-	"shack": [Vector3(-8.6, 0, 7.5), PI * 0.5],
+	"shack": [Vector3(-7.35, 0, 7.5), PI * 0.5],  # over the bench: the flat lean-to has it 0.65 m in from its centre
+	"fabricator": [Vector3(-6.0, 0, -9.6), 0.0],
 	"generator": [Vector3(-5.0, 0, 9.5), PI],
 	"composter": [Vector3(-8.5, 0, 3.8), PI * 0.5],
 	"locker": [Vector3(-8.5, 0, 0.2), PI * 0.5],
