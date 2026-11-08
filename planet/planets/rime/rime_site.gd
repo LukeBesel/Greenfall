@@ -95,7 +95,9 @@ func set_state(p_stage: int, p_restoration: float) -> void:
 		(_groups[g] as Node3D).visible = vis[g]
 	var warm: float = restore if stage >= 1 else restore * 0.3
 	if ground_mat:
-		ground_mat.set_shader_parameter("restore", warm)
+		# Moss in patches and hollows, never a carpet (owner: no flat green carpets): the ice
+		# shader's moss covers almost everything at restore 1, so the ground gets at most 0.45.
+		ground_mat.set_shader_parameter("restore", warm * 0.45)
 	for mi: MeshInstance3D in _pools_mi:
 		mi.set_instance_shader_parameter("thaw", warm)
 	for st: CPUParticles3D in _steam:
