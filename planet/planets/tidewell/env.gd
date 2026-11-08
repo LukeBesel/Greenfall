@@ -1043,6 +1043,12 @@ func _blob_slab(variant: int, wobble: float = 0.18, h: float = 1.0, lobes: int =
 	return m
 
 
+## Unit box for all box-built parts. (ProcMesh.rounded_box came out lit from the wrong side here:
+## dark tops on every deck, shack and hull; a plain BoxMesh shades correctly.)
+static func _bevel_box() -> Mesh:
+	return BoxMesh.new()
+
+
 ## Transform with a LOCAL scale (ProcMesh.xf / FrontierView._xf scale in parent space, which
 ## skews any rotated, non-uniformly scaled box).
 static func _lxf(pos: Vector3, rot_deg: Vector3 = Vector3.ZERO, scl: Vector3 = Vector3.ONE) -> Transform3D:
@@ -1056,7 +1062,7 @@ static func _ls(b: Basis, s: Vector3) -> Basis:
 
 func _box(b: FrontierView.Batch, pos: Vector3, size: Vector3, mat: Material, rot: Vector3 = Vector3.ZERO) -> void:
 	if not _mats.has("_box"):
-		_mats["_box"] = ProcMesh.rounded_box(Vector3.ONE, 0.07, 2)
+		_mats["_box"] = _bevel_box()
 	b.add(_mats["_box"], _lxf(pos, rot, size), mat)
 
 
@@ -1096,7 +1102,7 @@ func _build_rigs() -> void:
 	var fut := FrontierView.Batch.new()
 	var mid := FrontierView.Batch.new()
 	if not _mats.has("_box"):
-		_mats["_box"] = ProcMesh.rounded_box(Vector3.ONE, 0.07, 2)
+		_mats["_box"] = _bevel_box()
 	for i: int in 2:
 		var p: Vector3 = _sea_spot(95.0 + i * 70.0, 150.0 + i * 90.0, 28.0)
 		print("[planet-tidewell] dredging rig %d at (%.0f, %.0f)" % [i, p.x, p.z])
@@ -1110,7 +1116,7 @@ func _build_rigs() -> void:
 ## One jack-up dredging rig at p (local to the batches' parent), facing yaw.
 func _rig(i: int, p: Vector3, yaw: float, always: FrontierView.Batch, mid: FrontierView.Batch, fut: FrontierView.Batch, label_parent: Node3D) -> void:
 	if not _mats.has("_box"):
-		_mats["_box"] = ProcMesh.rounded_box(Vector3.ONE, 0.07, 2)
+		_mats["_box"] = _bevel_box()
 	var basis := Basis(Vector3.UP, yaw)
 	var list: float = deg_to_rad(_rng.randf_range(2.0, 5.0))
 	basis = basis * Basis(Vector3.FORWARD, list)
@@ -1201,7 +1207,7 @@ func _barge(p: Vector3, yaw: float, parent: Node3D, ruin_parent: Node3D) -> void
 	var o := Vector3(p.x, -0.5, p.z)
 	var xf := func(v: Vector3) -> Vector3: return o + basis * v
 	if not _mats.has("_box"):
-		_mats["_box"] = ProcMesh.rounded_box(Vector3.ONE, 0.07, 2)
+		_mats["_box"] = _bevel_box()
 	var bx: Mesh = _mats["_box"]
 	b.add(bx, Transform3D(_ls(basis, Vector3(12.0, 5.0, 52.0)), xf.call(Vector3.ZERO)), _mat("hull"))
 	b.add(bx, Transform3D(_ls(basis, Vector3(12.2, 0.5, 52.2)), xf.call(Vector3(0, 1.0, 0))), _mat("rust_red"))
