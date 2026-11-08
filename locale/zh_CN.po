@@ -1052,32 +1052,32 @@ msgstr ""
 msgid "Hover-sled: buy it in Upgrades"
 msgstr ""
 
-#: robots/fleet.gd:138
+#: robots/fleet.gd:139
 msgid "Locked · research %s"
 msgstr "未解锁 · 研究 %s"
 
-#: robots/fleet.gd:140
+#: robots/fleet.gd:141
 msgid "Crew full (%d/%d): upgrade the hub"
 msgstr "队伍已满（%d/%d）：请升级基地"
 
-#: robots/fleet.gd:142 robots/fleet.gd:218
+#: robots/fleet.gd:143 robots/fleet.gd:219
 msgid "Not enough parts"
 msgstr "零件不足"
 
-#: robots/fleet.gd:144 robots/fleet.gd:220 robots/water_net.gd:149
+#: robots/fleet.gd:145 robots/fleet.gd:221 robots/water_net.gd:149
 #: systems/research.gd:200 systems/robot_builder.gd:350 systems/robot_builder.gd:402
 msgid "Not enough cubes"
 msgstr "方块不足"
 
-#: robots/fleet.gd:182
+#: robots/fleet.gd:183
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr "%s %s 组装完成。它四下看了看，就开始干活了。%s"
 
-#: robots/fleet.gd:182
+#: robots/fleet.gd:183
 msgid " Seems %s."
 msgstr " 看起来%s。"
 
-#: robots/fleet.gd:239
+#: robots/fleet.gd:240
 msgid "%s fleet upgraded to %s."
 msgstr "%s机队已升级为 %s。"
 
@@ -1306,7 +1306,7 @@ msgstr "E   工作台：升级"
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:154
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:155
 msgid "Setting the scene"
 msgstr "正在布置场景"
 
@@ -4803,11 +4803,11 @@ msgstr "需要   %s"
 msgid "REQUIRES   READY"
 msgstr "需要   已就绪"
 
-#: ui/loading_screen.gd:153
+#: ui/loading_screen.gd:154
 msgid "Loading"
 msgstr "加载中"
 
-#: ui/loading_screen.gd:155
+#: ui/loading_screen.gd:156
 msgid "Warming up"
 msgstr "预热中"
 

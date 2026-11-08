@@ -1053,32 +1053,32 @@ msgstr ""
 msgid "Hover-sled: buy it in Upgrades"
 msgstr ""
 
-#: robots/fleet.gd:138
+#: robots/fleet.gd:139
 msgid "Locked · research %s"
 msgstr "Verrouillé · recherche %s"
 
-#: robots/fleet.gd:140
+#: robots/fleet.gd:141
 msgid "Crew full (%d/%d): upgrade the hub"
 msgstr "Équipe complète (%d/%d) : améliore la base"
 
-#: robots/fleet.gd:142 robots/fleet.gd:218
+#: robots/fleet.gd:143 robots/fleet.gd:219
 msgid "Not enough parts"
 msgstr "Pas assez de pièces"
 
-#: robots/fleet.gd:144 robots/fleet.gd:220 robots/water_net.gd:149
+#: robots/fleet.gd:145 robots/fleet.gd:221 robots/water_net.gd:149
 #: systems/research.gd:200 systems/robot_builder.gd:350 systems/robot_builder.gd:402
 msgid "Not enough cubes"
 msgstr "Pas assez de cubes"
 
-#: robots/fleet.gd:182
+#: robots/fleet.gd:183
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr "%s %s assemblé. Il regarde autour de lui, puis se met au travail.%s"
 
-#: robots/fleet.gd:182
+#: robots/fleet.gd:183
 msgid " Seems %s."
 msgstr " Il a l'air %s."
 
-#: robots/fleet.gd:239
+#: robots/fleet.gd:240
 msgid "%s fleet upgraded to %s."
 msgstr "Flotte %s améliorée en %s."
 
@@ -1308,7 +1308,7 @@ msgstr "E   Établi : améliorations"
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Établi réparé. Appuie sur E devant lui pour dépenser des cubes en améliorations."
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:154
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:155
 msgid "Setting the scene"
 msgstr "Mise en place"
 
@@ -4815,11 +4815,11 @@ msgstr "REQUIS   %s"
 msgid "REQUIRES   READY"
 msgstr "REQUIS   PRÊT"
 
-#: ui/loading_screen.gd:153
+#: ui/loading_screen.gd:154
 msgid "Loading"
 msgstr "Chargement"
 
-#: ui/loading_screen.gd:155
+#: ui/loading_screen.gd:156
 msgid "Warming up"
 msgstr "Préchauffage"
 
