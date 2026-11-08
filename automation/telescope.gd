@@ -291,6 +291,10 @@ func _spawn(animate: bool) -> void:
 	# A slim mast with a soft aviation light, like the rest of the restored base.
 	_mi(_model, ProcMesh.cyl(0.025, 0.035, 1.4, 6), satin, Vector3(1.35, 2.1, -0.9))
 	_mi(_model, ProcMesh.sphere(0.06, 8, 4), Mats.lamp(Color(0.6, 0.9, 1.0), 2.0), Vector3(1.35, 2.83, -0.9))
+	YardArt.kitify(_model)  # [yard] bevelled kit parts and shaders (glass, glow rings and domes stay)
+	var annex: MeshInstance3D = YardArt.observatory_dress().mi(0.12, "Annex")  # [yard]
+	_model.add_child(annex)
+	YardArt.set_powered(annex, true)
 	_anchor = Node3D.new()
 	_anchor.position = _model.position + Basis(Vector3.UP, _model.rotation.y) * Vector3(0, 0, 2.2)
 	add_child(_anchor)
