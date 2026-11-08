@@ -133,6 +133,8 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] The main theme plays on the title screen and The Fall of LM-1 plays in the intro. (tunes)
 - [ ] You start with the main theme plus 1-2 songs. The rest unlock from CDs found in the rubble, with a readable "New song" toast. (tunes)
 - [ ] Unlocked songs shuffle at random with quiet gaps between them. The radio is a CD player with a Random mode, and it also lets you pick a song. (tunes)
+- [ ] Each song's intact CD is found on its home planet and unlocks it for good; the artist is shown as from that planet. (tunes)
+- [ ] 5-10 rare scratched CDs per planet hold songs from other planets. Each plays once (Play now / Keep), then breaks, and is clearly labelled as one listen. (tunes)
 - [ ] Later, a light-buddy "Music" upgrade downloads your CDs so you can play any found song anywhere. (tunes + buddy)
 - [ ] New MP3s can be dropped in by song name. (tunes)
 - [ ] Every song has a funny in-world artist with a short bio, drawn from a recurring cast of about 6-8 artists. Artists appear on the DVD toast, in the radio and on a Codex Artists page. The game never mentions Suno; the credits just say "Music by Lucas". (tunes)
