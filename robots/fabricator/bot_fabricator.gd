@@ -32,6 +32,9 @@ var spawn_fn: Callable
 var count_fn: Callable
 var cap: int = 0
 var status: String = ""
+## The yard's 3D model (systems/camp/fabricator_model.gd), beside the Depot.
+var model: Node3D
+var _model_on: bool = false
 ## Types it may build (empty = BotFabricator.types(): what research has unlocked).
 var only_types: Array[String] = []
 
@@ -150,7 +153,48 @@ static func attach(w: Node) -> BotFabricator:
 	f.world = w
 	f.planet_id = planet_of(w)
 	f._wire()
+	f._place_model()
 	return f
+
+
+## Site-local / yard spot of the model: beside the Depot, 5 m to its left, facing the same way.
+const MODEL_OFFSET := Vector3(-5.0, 0.0, 0.0)
+
+
+func _place_model() -> void:
+	if model != null and is_instance_valid(model):
+		return
+	var dp: Node3D = world.get("depot") as Node3D if "depot" in world else null
+	if dp == null or dp.get_parent() == null:
+		return
+	model = FabricatorModel.new()
+	model.name = "FabricatorModel"
+	# Same parent as the Depot (the yard, or the start site's prefab on the globe), so the model
+	# sits on that ground in its local frame (+Y up).
+	dp.get_parent().add_child(model)
+	model.transform = dp.transform * Transform3D(Basis(), MODEL_OFFSET)
+	var so: Object = world.get("orbit")
+	if so != null and so.get("crews") != null and (so.get("crews") as Object).get("crew") != null:
+		var crew: SphereCrew = (so.get("crews") as Object).get("crew")
+		crew.set_obstacles("fabricator", [[crew.surface.up_at(model.global_position), 2.8]])
+	_model_on = false
+	model.call("set_building", false)
+	if DevHooks.has("fabricator-build"):
+		print("[fabricator] model under %s, %.1f m from the Depot" % [str(model.get_parent().name), model.global_position.distance_to(dp.global_position)])
+
+
+func _sync_model() -> void:
+	if model == null or not is_instance_valid(model):
+		return
+	var st: Dictionary = state(planet_id)
+	# On while the line runs (a robot in the bay, or the next one starting this tick); off when
+	# paused, waiting for cubes and parts, the fleet is full or the mix is empty.
+	var on: bool = not bool(st.get("paused", false)) and (str(st.get("cur", "")) != "" or status == "Building.")
+	if on != _model_on:
+		_model_on = on
+		model.call("set_building", on)
+		if DevHooks.has("fabricator-build"):
+			print("[fabricator] building %s (%s)" % [str(on), status_line()])
 
 
 static func of(w: Node) -> BotFabricator:
@@ -313,6 +357,11 @@ func _process(delta: float) -> void:
 
 ## Runs the line: start a robot when it can pay (paid up front), finish it after build_s.
 func tick(delta: float) -> void:
+	_tick_line(delta)
+	_sync_model()
+
+
+func _tick_line(delta: float) -> void:
 	var st: Dictionary = state(planet_id)
 	if not bool(st.get("built", false)) or not spawn_fn.is_valid():
 		status = ""

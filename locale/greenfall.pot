@@ -436,7 +436,7 @@ msgstr ""
 msgid "Rocket upgraded: %s."
 msgstr ""
 
-#: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:89
+#: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:92
 #: systems/camp/yard_builds.gd:81 ui/stations_panel.gd:96
 msgid "Built."
 msgstr ""
@@ -486,8 +486,8 @@ msgstr ""
 msgid "Requires hub level %d or research: %s."
 msgstr ""
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:93
-#: systems/camp/camp.gd:380 systems/camp/camp.gd:392 systems/camp/hub_builds.gd:79
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
+#: systems/camp/camp.gd:386 systems/camp/camp.gd:398 systems/camp/hub_builds.gd:79
 #: systems/camp/hub_builds.gd:155 systems/camp/hub_builds.gd:165 systems/camp/hub_builds.gd:175
 #: systems/camp/yard_builds.gd:91 ui/telescope_panel.gd:40
 msgid "Not enough materials."
@@ -506,7 +506,7 @@ msgid "E   Telescope: look across the system"
 msgstr ""
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:478 ui/upgrade_card.gd:258
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:483 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr ""
 
@@ -538,7 +538,7 @@ msgstr ""
 msgid "No Baler yet: empty your chest in the trash bin"
 msgstr ""
 
-#: core/pace.gd:191 systems/events.gd:482 ui/goals_panel.gd:257
+#: core/pace.gd:191 systems/events.gd:492 ui/goals_panel.gd:257
 msgid "+%s cubes"
 msgstr ""
 
@@ -784,12 +784,16 @@ msgstr ""
 msgid "Lumi hovers back onto solid ground."
 msgstr ""
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1063 scenes/slice_orbit.gd:302
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1063 scenes/slice_orbit.gd:304
 msgid "HEX CLEAN!  +%s"
 msgstr ""
 
 #: planet/sites/hub_hop.gd:76
 msgid "Rocket hop: %.1f km"
+msgstr ""
+
+#: planet/sites/orbit_sites.gd:89
+msgid "The rocket is in flight."
 msgstr ""
 
 #: planet/sphere/sphere_walk.gd:431
@@ -1231,23 +1235,31 @@ msgstr ""
 msgid "WATER"
 msgstr ""
 
-#: robots/fabricator/bot_fabricator.gd:91 systems/camp/yard_builds.gd:89
+#: robots/fabricator/bot_fabricator.gd:94 systems/camp/yard_builds.gd:89
 msgid "Not yet."
 msgstr ""
 
-#: robots/fabricator/bot_fabricator.gd:361
+#: robots/fabricator/bot_fabricator.gd:410
 msgid "Fleet %d / %d"
 msgstr ""
 
-#: robots/fabricator/bot_fabricator.gd:363
+#: robots/fabricator/bot_fabricator.gd:412
 msgid "Building a %s, %d%%"
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:39
+msgid "%s zone"
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:39
+msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
 msgstr ""
 
 #: scenes/slice.gd:368
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr ""
 
-#: scenes/slice.gd:1077 scenes/slice_orbit.gd:318
+#: scenes/slice.gd:1077 scenes/slice_orbit.gd:320
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
@@ -1279,7 +1291,7 @@ msgstr ""
 msgid "Landed on the base pad."
 msgstr ""
 
-#: scenes/slice.gd:1270 scenes/slice_orbit.gd:451
+#: scenes/slice.gd:1270 scenes/slice_orbit.gd:530
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
@@ -1295,15 +1307,15 @@ msgstr ""
 msgid "OUTPOST %d · RUIN"
 msgstr ""
 
-#: scenes/slice_orbit.gd:348 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:102
+#: scenes/slice_orbit.gd:364 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:115
 msgid "E   Workbench (broken): repair it"
 msgstr ""
 
-#: scenes/slice_orbit.gd:348 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:364 systems/camp/camp.gd:177
 msgid "E   Workbench: upgrades"
 msgstr ""
 
-#: scenes/slice_orbit.gd:547 systems/camp/camp.gd:224
+#: scenes/slice_orbit.gd:630 systems/camp/camp.gd:224
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr ""
 
@@ -1399,7 +1411,7 @@ msgstr ""
 msgid "Nothing is waiting to end, {name}. Nobody is keeping score. We're home. We just keep planting."
 msgstr ""
 
-#: story/bloom_finale.gd:150
+#: story/bloom_finale.gd:163
 msgid "The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram (M)."
 msgstr ""
 
@@ -1749,35 +1761,35 @@ msgstr ""
 msgid "Homecoming"
 msgstr ""
 
-#: story/intro.gd:197
+#: story/intro.gd:221
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr ""
 
-#: story/intro.gd:198
+#: story/intro.gd:222
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr ""
 
-#: story/intro.gd:199
+#: story/intro.gd:223
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr ""
 
-#: story/intro.gd:200
+#: story/intro.gd:224
 msgid "Then, one night, the sky came apart."
 msgstr ""
 
-#: story/intro.gd:201
+#: story/intro.gd:225
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr ""
 
-#: story/intro.gd:202
+#: story/intro.gd:226
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr ""
 
-#: story/intro.gd:203
+#: story/intro.gd:227
 msgid "The ark could not turn back. The pod fell for days."
 msgstr ""
 
-#: story/intro.gd:826
+#: story/intro.gd:850
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr ""
 
@@ -1879,7 +1891,7 @@ msgstr ""
 msgid "SEEDS · PAID IN FULL"
 msgstr ""
 
-#: story/ledger.gd:696 systems/events.gd:490 systems/lumi_level.gd:218
+#: story/ledger.gd:696 systems/events.gd:500 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr ""
 
@@ -2229,19 +2241,19 @@ msgstr ""
 msgid "Locked"
 msgstr ""
 
-#: systems/cradle_mode.gd:253
+#: systems/cradle_mode.gd:261
 msgid "Heirloom unlocked: %s, level %d. It travels with Lumi to every world."
 msgstr ""
 
-#: systems/cradle_mode.gd:303 systems/cradle_mode.gd:309
+#: systems/cradle_mode.gd:311 systems/cradle_mode.gd:317
 msgid "Fully grown"
 msgstr ""
 
-#: systems/cradle_mode.gd:310
+#: systems/cradle_mode.gd:318
 msgid "Restore a planet for a pick, or unlocks with Ark milestones (next: %s, at %d restoration)"
 msgstr ""
 
-#: systems/cradle_mode.gd:323
+#: systems/cradle_mode.gd:331
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr ""
 
@@ -2297,107 +2309,107 @@ msgstr ""
 msgid "CRADLE · SUPPLY"
 msgstr ""
 
-#: systems/events.gd:442
+#: systems/events.gd:452
 msgid "STREAK x%d  +%d%%"
 msgstr ""
 
-#: systems/events.gd:627
+#: systems/events.gd:638
 msgid "%d pieces of junk left around the crate"
 msgstr ""
 
-#: systems/events.gd:652
+#: systems/events.gd:663
 msgid "Supply crate opened: %s"
 msgstr ""
 
-#: systems/events.gd:654
+#: systems/events.gd:665
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr ""
 
-#: systems/events.gd:701
+#: systems/events.gd:714
 msgid "%d pieces grabbed at 3x"
 msgstr ""
 
-#: systems/events.gd:706
+#: systems/events.gd:719
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr ""
 
-#: systems/events.gd:706
+#: systems/events.gd:719
 msgid "The surge faded. Next time!"
 msgstr ""
 
-#: systems/events.gd:754
+#: systems/events.gd:768
 msgid "Every plant is drinking"
 msgstr ""
 
-#: systems/events.gd:764
+#: systems/events.gd:778
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr ""
 
-#: systems/events.gd:785
+#: systems/events.gd:799
 msgid "E   fix %s's hiccup"
 msgstr ""
 
-#: systems/events.gd:812
+#: systems/events.gd:826
 msgid "%s is %d m away"
 msgstr ""
 
-#: systems/events.gd:814
+#: systems/events.gd:828
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr ""
 
-#: systems/events.gd:828
+#: systems/events.gd:842
 msgid "%s is fixed and back to work. %s"
 msgstr ""
 
-#: systems/events.gd:881
+#: systems/events.gd:896
 msgid "Wildlife Visit: %s"
 msgstr ""
 
-#: systems/events.gd:882
+#: systems/events.gd:897
 msgid "E   take a photo of the %s"
 msgstr ""
 
-#: systems/events.gd:913
+#: systems/events.gd:938
 msgid "%s, %d m away"
 msgstr ""
 
-#: systems/events.gd:916
+#: systems/events.gd:941
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr ""
 
-#: systems/events.gd:946
+#: systems/events.gd:971
 msgid "Snap! The %s is in your Collection. %s"
 msgstr ""
 
-#: systems/events.gd:946
+#: systems/events.gd:971
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr ""
 
-#: systems/events.gd:996
+#: systems/events.gd:1022
 msgid "Signal %d%%"
 msgstr ""
 
-#: systems/events.gd:1000
+#: systems/events.gd:1026
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr ""
 
-#: systems/events.gd:1002
+#: systems/events.gd:1028
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr ""
 
-#: systems/events.gd:1068
+#: systems/events.gd:1097
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr ""
 
-#: systems/events.gd:1069
+#: systems/events.gd:1098
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr ""
 
-#: systems/events.gd:1106
+#: systems/events.gd:1137
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr ""
 
-#: systems/events.gd:1110
+#: systems/events.gd:1141
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr ""
 
@@ -2453,35 +2465,35 @@ msgstr ""
 msgid "Rocket drive built: %s."
 msgstr ""
 
-#: systems/homeward_director.gd:250
+#: systems/homeward_director.gd:253
 msgid "Intercepted: %s"
 msgstr ""
 
-#: systems/homeward_director.gd:257
+#: systems/homeward_director.gd:260
 msgid "%s: %s"
 msgstr ""
 
-#: systems/homeward_director.gd:267
+#: systems/homeward_director.gd:270
 msgid "%s is restored. System: %d%%."
 msgstr ""
 
-#: systems/homeward_director.gd:270
+#: systems/homeward_director.gd:273
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr ""
 
-#: systems/homeward_director.gd:277
+#: systems/homeward_director.gd:280
 msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
 msgstr ""
 
-#: systems/homeward_director.gd:431
+#: systems/homeward_director.gd:438
 msgid "E   launch home"
 msgstr ""
 
-#: systems/homeward_director.gd:431
+#: systems/homeward_director.gd:438
 msgid "E   plant the last seed"
 msgstr ""
 
-#: systems/homeward_director.gd:442
+#: systems/homeward_director.gd:449
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr ""
 
@@ -2866,19 +2878,19 @@ msgstr ""
 msgid "New CD: %s by %s, from %s"
 msgstr ""
 
-#: systems/camp/camp.gd:378
+#: systems/camp/camp.gd:384
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr ""
 
-#: systems/camp/camp.gd:381
+#: systems/camp/camp.gd:387
 msgid "E   %s (Lv %d): %s"
 msgstr ""
 
-#: systems/camp/camp.gd:382
+#: systems/camp/camp.gd:388
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr ""
 
-#: systems/camp/camp.gd:388
+#: systems/camp/camp.gd:394
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr ""
 
@@ -3283,7 +3295,7 @@ msgstr ""
 msgid "The Cradle has to come home first."
 msgstr ""
 
-#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:329
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:334
 #: ui/rockets_panel.gd:81 ui/system_map.gd:707
 msgid "Launch"
 msgstr ""
@@ -3350,7 +3362,7 @@ msgstr ""
 msgid "Machines"
 msgstr ""
 
-#: ui/bench_lists.gd:12 ui/globe_view.gd:175 ui/locker_panel.gd:230
+#: ui/bench_lists.gd:12 ui/globe_view.gd:178 ui/locker_panel.gd:230
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr ""
@@ -3770,7 +3782,7 @@ msgstr ""
 msgid "Bales cashed in"
 msgstr ""
 
-#: ui/codex_screen.gd:774 ui/globe_view.gd:144 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:774 ui/globe_view.gd:147 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr ""
 
@@ -4465,71 +4477,71 @@ msgstr ""
 msgid "???  %s"
 msgstr ""
 
-#: ui/globe_view.gd:127
+#: ui/globe_view.gd:130
 msgid "Survey"
 msgstr ""
 
-#: ui/globe_view.gd:127
+#: ui/globe_view.gd:130
 msgid "Verdance  ·  hand-held projection"
 msgstr ""
 
-#: ui/globe_view.gd:143
+#: ui/globe_view.gd:146
 msgid "Not cleaned yet"
 msgstr ""
 
-#: ui/globe_view.gd:143
+#: ui/globe_view.gd:146
 msgid "Cleaned"
 msgstr ""
 
-#: ui/globe_view.gd:144 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:147 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr ""
 
-#: ui/globe_view.gd:145 ui/system_map.gd:676 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:148 ui/system_map.gd:676 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr ""
 
-#: ui/globe_view.gd:145
+#: ui/globe_view.gd:148
 msgid "Cities"
 msgstr ""
 
-#: ui/globe_view.gd:146
+#: ui/globe_view.gd:149
 msgid "Bases"
 msgstr ""
 
-#: ui/globe_view.gd:161 ui/late_menu.gd:21
+#: ui/globe_view.gd:164 ui/late_menu.gd:21
 msgid "Solar system"
 msgstr ""
 
-#: ui/globe_view.gd:175
+#: ui/globe_view.gd:178
 msgid "Travel between bases"
 msgstr ""
 
-#: ui/globe_view.gd:188
+#: ui/globe_view.gd:191
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr ""
 
-#: ui/globe_view.gd:326
+#: ui/globe_view.gd:331
 msgid "%d sectors away"
 msgstr ""
 
-#: ui/globe_view.gd:448
+#: ui/globe_view.gd:453
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr ""
 
-#: ui/globe_view.gd:455
+#: ui/globe_view.gd:460
 msgid "%s HEXES CLEAN"
 msgstr ""
 
-#: ui/globe_view.gd:457
+#: ui/globe_view.gd:462
 msgid "Surveyed %s ago%s"
 msgstr ""
 
-#: ui/globe_view.gd:457
+#: ui/globe_view.gd:462
 msgid "   ·   OUTDATED"
 msgstr ""
 
-#: ui/globe_view.gd:458
+#: ui/globe_view.gd:463
 msgid "Re-survey      %s cubes"
 msgstr ""
 

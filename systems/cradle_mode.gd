@@ -51,6 +51,14 @@ static func boot() -> void:
 		apply_current()
 		if made or DevHooks.has("fresh"):
 			prepare_new_world_state({})
+	if DevHooks.has("planet-start"):  # [orbC] dev: start fresh on campaign planet ID (e.g. tidewell), as a rocket arrival would
+		var pk: int = Homeward.planet_index(DevHooks.get_s("planet-start", "tidewell"))
+		if pk > 0:
+			Homeward.make_planet_world(pk)
+			profile["current"] = worlds().size() - 1
+			profile["unlocked"] = true
+			apply_current()
+			prepare_new_world_state({})
 
 
 # --- Profile ---------------------------------------------------------------------------

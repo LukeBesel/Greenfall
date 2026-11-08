@@ -159,12 +159,37 @@ func build_crew(so: Node) -> SphereCrew:
 	crew.cell_cleaned.connect(func(_c: int) -> void:
 		var f: SphereField = g.get("field")
 		EventBus.field_progress_changed.emit(f.cleaned_count, f.junk_hex_count))
+	_watch_sites(g)
 	if DevHooks.has("fabricator-build"):  # dev: a Fabricator standing at this planet's base
 		BotFabricator.state(BotFabricator.planet_of(so.get("w")))["built"] = true
 		GameState.add_currency("cubes", BigNum.from_float(DevHooks.get_f("fabricator-build", 1e6) if DevHooks.get_f("fabricator-build", 1.0) > 1.0 else 1e6))
 		GameState.add_currency("parts", BigNum.from_float(1e5))
 	BotFabricator.attach(so.get("w"))  # a built Bot Fabricator builds into this crew
 	return crew
+
+
+## Every hub site's buildings become obstacles for the crew (routes, claims and steering).
+func _watch_sites(g: Object) -> void:
+	var sm: SiteManager = g.get("site_manager") as SiteManager
+	if sm == null:
+		return
+	var add: Callable = func(i: int, p: SitePrefab) -> void:
+		if p == null or crew == null:
+			return
+		var circ: Array = SphereObstacles.circles(p, crew.surface)
+		crew.set_obstacles("site%d" % i, circ)
+		if not p.rebuilt.is_connected(_on_site_rebuilt.bind(i, p)):
+			p.rebuilt.connect(_on_site_rebuilt.bind(i, p))
+	sm.site_built.connect(add)
+	for i: int in sm.prefabs.size():
+		var p: SitePrefab = sm.prefabs[i] as SitePrefab
+		if p != null and p.is_built:
+			add.call(i, p)
+
+
+func _on_site_rebuilt(i: int, p: SitePrefab) -> void:
+	if crew != null and is_instance_valid(p):
+		crew.set_obstacles("site%d" % i, SphereObstacles.circles(p, crew.surface))
 
 
 func save_crew() -> Dictionary:
