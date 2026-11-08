@@ -77,17 +77,11 @@ const VERDANCE_R: float = 1840.0
 ## radius_m / radius_scale / hub_count / hubs), else the owner's defaults.
 static func globe(id: String) -> Dictionary:
 	var d: Dictionary = GLOBE_DEFAULTS.get(id, GLOBE_DEFAULTS["verdance"])
-	var r: float = VERDANCE_R * float(d["radius_scale"])
-	var n: int = int(d["hub_count"])
-	var g: Variant = (all().get(id, {}) as Dictionary).get("globe", {}) if all().get(id) is Dictionary else {}
-	if g is Dictionary:
-		var gd: Dictionary = g
-		if gd.has("radius_m"):
-			r = float(gd["radius_m"])
-		elif gd.has("radius_scale"):
-			r = VERDANCE_R * float(gd["radius_scale"])
-		n = int(gd.get("hub_count", gd.get("hubs", n)))
-	return {"radius_m": r, "hub_count": n}
+	var e: Variant = all().get(id)
+	if e is Dictionary and (e as Dictionary).get("globe") is Dictionary:
+		var g: Dictionary = GlobeSpec.of(id)  # orbB's per-planet sizes (frequency is the truth)
+		return {"radius_m": VERDANCE_R * float(g["frequency"]) / float(GlobeSpec.VERDANCE_FREQ), "hub_count": int(g["hub_count"])}
+	return {"radius_m": VERDANCE_R * float(d["radius_scale"]), "hub_count": int(d["hub_count"])}
 
 
 ## Builds a hub site prefab on a globe (or in a preview) and returns its SitePrefab.

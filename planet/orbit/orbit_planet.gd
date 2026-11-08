@@ -156,6 +156,7 @@ func build_start_site() -> Node3D:
 	site_manager = SiteManager.new()
 	site_manager.name = "Sites"
 	add_child(site_manager)
+	planet_id = str(spec.get("id", planet_id))  # [orbD] --orbit-planet: that planet's site prefabs
 	site_manager.setup(self, planet_id, sites, seed_value)
 	var p: SitePrefab = site_manager.build_hub(0, true)
 	start_site = p.get_parent()
