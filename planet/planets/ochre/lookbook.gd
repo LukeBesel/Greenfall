@@ -159,6 +159,6 @@ static func _vc_box(size: Vector3, col: Color) -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	st.set_smooth_group(-1)
-	OchreProps.put(st, OchreProps.unit_box(), Transform3D(Basis.from_scale(size), Vector3.ZERO), col)
+	OchreProps.put(st, OchreProps.kbox(size), Transform3D.IDENTITY, col)
 	st.generate_normals()
 	return st.commit()

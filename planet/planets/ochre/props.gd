@@ -24,10 +24,11 @@ class Batch:
 		OchreProps.put(st_for(mat), mesh, xf, col)
 
 	func box(pos: Vector3, size: Vector3, mat: Material, basis: Basis = Basis(), col: Color = Color.WHITE) -> void:
-		add(OchreProps.unit_box(), Transform3D(basis * Basis.from_scale(size), pos), mat, col)
+		add(OchreProps.kbox(size), Transform3D(basis.orthonormalized(), pos), mat, col)
 
 	func beam(a: Vector3, b: Vector3, thick: float, mat: Material, col: Color = Color.WHITE) -> void:
-		add(OchreProps.unit_box(), OchreProps.beam_xf(a, b, thick), mat, col)
+		var bx: Transform3D = OchreProps.beam_xf(a, b, 1.0)
+		add(OchreProps.kbox(Vector3(thick, a.distance_to(b), thick)), Transform3D(bx.basis.orthonormalized(), bx.origin), mat, col)
 
 	func flush(parent: Node3D, shadows: bool = true, vis_end: float = 0.0) -> Array[MeshInstance3D]:
 		var out: Array[MeshInstance3D] = []
@@ -44,6 +45,43 @@ class Batch:
 			out.append(mi)
 		sts.clear()
 		return out
+
+
+## A bevelled box of this size (art/kit KitMesh.bevel_box, auto bevel), as a cached ArrayMesh
+## so the Batch / SurfaceTool paths get kit edges instead of raw BoxMesh corners.
+static func kbox(size: Vector3) -> ArrayMesh:
+	var key: String = "kbox:%.3f,%.3f,%.3f" % [size.x, size.y, size.z]
+	if not _cache.has(key):
+		_cache[key] = _prim_mesh(KitMesh.bevel_box(size, KitMesh.auto_bevel(size)), Vector3.ZERO)
+	return _cache[key]
+
+
+## A bevelled cylinder / tapered drum (axis +Y, centred like ProcMesh.cyl), cached ArrayMesh.
+static func kcyl(r_top: float, r_bot: float, height: float, segs: int = 12) -> ArrayMesh:
+	var key: String = "kcyl:%.3f,%.3f,%.3f,%d" % [r_top, r_bot, height, segs]
+	if not _cache.has(key):
+		var prim: Array
+		if absf(r_top - r_bot) < 0.001:
+			prim = KitMesh.bevel_cylinder(r_top, height, minf(r_top, height) * 0.08, segs)
+		else:
+			var bv: float = minf(minf(r_top, r_bot) * 0.15, height * 0.08)
+			prim = KitMesh.lathe(PackedVector3Array([Vector3(0, 0, 0), Vector3(r_bot - bv, 0, 0), Vector3(r_bot, bv, 1), Vector3(r_top, height - bv, 1), Vector3(r_top - bv, height, 1), Vector3(0, height, 0)]), segs)
+		_cache[key] = _prim_mesh(prim, Vector3(0, -height * 0.5, 0))
+	return _cache[key]
+
+
+static func _prim_mesh(prim: Array, offset: Vector3) -> ArrayMesh:
+	var arr: Array = []
+	arr.resize(Mesh.ARRAY_MAX)
+	var v: PackedVector3Array = (prim[KitMesh.ARR_V] as PackedVector3Array).duplicate()
+	for i: int in v.size():
+		v[i] += offset
+	arr[Mesh.ARRAY_VERTEX] = v
+	arr[Mesh.ARRAY_NORMAL] = prim[KitMesh.ARR_N]
+	arr[Mesh.ARRAY_INDEX] = prim[KitMesh.ARR_I]
+	var m := ArrayMesh.new()
+	m.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
+	return m
 
 
 static func unit_box() -> BoxMesh:
@@ -176,25 +214,25 @@ static func _drill_bit() -> ArrayMesh:
 	var st := _new_st()
 	var steel := Color(0.62, 0.58, 0.54)
 	var rust := Color(0.66, 0.4, 0.24)
-	put(st, ProcMesh.cyl(0.17, 0.2, 0.22, 10), _xf(Vector3(0, 0.33, 0)), steel)
-	put(st, ProcMesh.cyl(0.11, 0.13, 0.2, 10), _xf(Vector3(0, 0.54, 0)), rust)
-	put(st, ProcMesh.cyl(0.08, 0.09, 0.28, 8), _xf(Vector3(0.0, 0.76, 0.0), Vector3(6, 0, 4)), rust.darkened(0.15))
+	put(st, kcyl(0.17, 0.2, 0.22, 10), _xf(Vector3(0, 0.33, 0)), steel)
+	put(st, kcyl(0.11, 0.13, 0.2, 10), _xf(Vector3(0, 0.54, 0)), rust)
+	put(st, kcyl(0.08, 0.09, 0.28, 8), _xf(Vector3(0.0, 0.76, 0.0), Vector3(6, 0, 4)), rust.darkened(0.15))
 	for k: int in 3:
 		var a: float = TAU * k / 3.0
 		var dir := Vector3(cos(a), 0, sin(a))
 		var xf := Transform3D(Basis(Vector3.UP, -a) * Basis(Vector3.FORWARD, deg_to_rad(-125.0)), dir * 0.11 + Vector3(0, 0.2, 0))
-		put(st, ProcMesh.cyl(0.02, 0.12, 0.17, 9), xf, Color(0.42, 0.4, 0.38))
+		put(st, kcyl(0.02, 0.12, 0.17, 9), xf, Color(0.42, 0.4, 0.38))
 		for r: int in 2:
-			put(st, ProcMesh.cyl(0.13 - r * 0.04, 0.13 - r * 0.04, 0.025, 9), xf * _xf(Vector3(0, -0.04 + r * 0.06, 0)), Color(0.55, 0.52, 0.48))
+			put(st, kcyl(0.13 - r * 0.04, 0.13 - r * 0.04, 0.025, 9), xf * _xf(Vector3(0, -0.04 + r * 0.06, 0)), Color(0.55, 0.52, 0.48))
 	return _commit(st, _rust())
 
 
 ## A snapped length of drill rod with a tool joint.
 static func _drill_rod() -> ArrayMesh:
 	var st := _new_st()
-	put(st, ProcMesh.cyl(0.075, 0.075, 1.6, 10), _xf(Vector3(0, 0.8, 0)), Color(0.6, 0.42, 0.28))
-	put(st, ProcMesh.cyl(0.1, 0.1, 0.28, 10), _xf(Vector3(0, 0.14, 0)), Color(0.62, 0.6, 0.56))
-	put(st, ProcMesh.cyl(0.05, 0.075, 0.12, 6), _xf(Vector3(0, 1.66, 0), Vector3(8, 0, 0)), Color(0.5, 0.36, 0.26))
+	put(st, kcyl(0.075, 0.075, 1.6, 10), _xf(Vector3(0, 0.8, 0)), Color(0.6, 0.42, 0.28))
+	put(st, kcyl(0.1, 0.1, 0.28, 10), _xf(Vector3(0, 0.14, 0)), Color(0.62, 0.6, 0.56))
+	put(st, kcyl(0.05, 0.075, 0.12, 6), _xf(Vector3(0, 1.66, 0), Vector3(8, 0, 0)), Color(0.5, 0.36, 0.26))
 	return _commit(st, _rust())
 
 
@@ -207,16 +245,16 @@ static func _crate(open: bool) -> ArrayMesh:
 	var s := Vector3(1.0, 0.62, 0.66)
 	for i: int in 3:
 		var y: float = 0.11 + i * 0.2
-		put(st, unit_box(), _xf(Vector3(0, y, 0), Vector3.ZERO, Vector3(s.x, 0.18, s.z)), wood.darkened(0.06 * (i % 2)))
+		put(st, kbox(Vector3(s.x, 0.18, s.z)), _xf(Vector3(0, y, 0), Vector3.ZERO), wood.darkened(0.06 * (i % 2)))
 	if not open:
-		put(st, unit_box(), _xf(Vector3(0, s.y + 0.02, 0), Vector3(0, 0, 1.5), Vector3(s.x + 0.02, 0.05, s.z + 0.02)), wood.lightened(0.05))
+		put(st, kbox(Vector3(s.x + 0.02, 0.05, s.z + 0.02)), _xf(Vector3(0, s.y + 0.02, 0), Vector3(0, 0, 1.5)), wood.lightened(0.05))
 	else:
-		put(st, unit_box(), _xf(Vector3(0.12, s.y + 0.25, -s.z * 0.5 - 0.02), Vector3(-70, 0, 0), Vector3(s.x + 0.02, 0.05, s.z)), wood.lightened(0.05))
-		put(st, unit_box(), _xf(Vector3(0, s.y - 0.08, 0), Vector3.ZERO, Vector3(s.x - 0.08, 0.06, s.z - 0.08)), Color(0.7, 0.5, 0.3))
+		put(st, kbox(Vector3(s.x + 0.02, 0.05, s.z)), _xf(Vector3(0.12, s.y + 0.25, -s.z * 0.5 - 0.02), Vector3(-70, 0, 0)), wood.lightened(0.05))
+		put(st, kbox(Vector3(s.x - 0.08, 0.06, s.z - 0.08)), _xf(Vector3(0, s.y - 0.08, 0), Vector3.ZERO), Color(0.7, 0.5, 0.3))
 	for x: float in [-0.5, 0.5]:
 		for z: float in [-0.33, 0.33]:
-			put(st, unit_box(), _xf(Vector3(x * s.x, s.y * 0.5, z * 2.0 * s.z * 0.5), Vector3.ZERO, Vector3(0.05, s.y + 0.02, 0.05)), dark)
-	put(st, unit_box(), _xf(Vector3(0, 0.36, 0), Vector3.ZERO, Vector3(s.x + 0.015, 0.09, s.z + 0.015)), amber)
+			put(st, kbox(Vector3(0.05, s.y + 0.02, 0.05)), _xf(Vector3(x * s.x, s.y * 0.5, z * 2.0 * s.z * 0.5), Vector3.ZERO), dark)
+	put(st, kbox(Vector3(s.x + 0.015, 0.09, s.z + 0.015)), _xf(Vector3(0, 0.36, 0), Vector3.ZERO), amber)
 	return _commit(st, _cached_mat("crate", func() -> Material: return _mat_vc("rusty_metal_03", 0.85, 0.0, 1.2)))
 
 
@@ -230,7 +268,7 @@ static func _tooth() -> ArrayMesh:
 	c.radial_segments = 4
 	c.rings = 1
 	put(st, c, _xf(Vector3(0, 0.31, 0), Vector3(0, 45, 0), Vector3(1.0, 1.0, 0.55)), Color(0.55, 0.38, 0.26))
-	put(st, unit_box(), _xf(Vector3(0, 0.05, 0), Vector3.ZERO, Vector3(0.26, 0.1, 0.16)), Color(0.45, 0.42, 0.4))
+	put(st, kbox(Vector3(0.26, 0.1, 0.16)), _xf(Vector3(0, 0.05, 0), Vector3.ZERO), Color(0.45, 0.42, 0.4))
 	return _commit(st, _rust())
 
 
@@ -243,8 +281,8 @@ static func _sack() -> ArrayMesh:
 	sph.radius = 0.3
 	sph.height = 0.5
 	put(st, sph, _xf(Vector3(0, 0.2, 0), Vector3.ZERO, Vector3(1.1, 0.85, 0.85)), Color(0.58, 0.47, 0.34))
-	put(st, ProcMesh.cyl(0.04, 0.1, 0.16, 8), _xf(Vector3(0, 0.43, 0)), Color(0.52, 0.42, 0.3))
-	put(st, unit_box(), _xf(Vector3(0, 0.25, 0.23), Vector3.ZERO, Vector3(0.3, 0.12, 0.02)), Color(0.75, 0.5, 0.2))
+	put(st, kcyl(0.04, 0.1, 0.16, 8), _xf(Vector3(0, 0.43, 0)), Color(0.52, 0.42, 0.3))
+	put(st, kbox(Vector3(0.3, 0.12, 0.02)), _xf(Vector3(0, 0.25, 0.23), Vector3.ZERO), Color(0.75, 0.5, 0.2))
 	return _commit(st, _cached_mat("canvas", func() -> Material: return _mat_vc("polystyrene", 0.95, 0.0, 2.0)))
 
 
@@ -442,8 +480,8 @@ static func aloe(seed_v: int) -> ArrayMesh:
 			for vv: Vector3 in tri:
 				st.set_color(c)
 				st.add_vertex(vv)
-	put(st, ProcMesh.cyl(0.015, 0.025, 1.1, 5), _xf(Vector3(0, 0.55, 0)), Color(0.45, 0.42, 0.25, 0.4))
-	put(st, ProcMesh.cyl(0.02, 0.08, 0.38, 6), _xf(Vector3(0, 1.25, 0)), Color(0.95, 0.38, 0.16, 0.8))
+	put(st, kcyl(0.015, 0.025, 1.1, 5), _xf(Vector3(0, 0.55, 0)), Color(0.45, 0.42, 0.25, 0.4))
+	put(st, kcyl(0.02, 0.08, 0.38, 6), _xf(Vector3(0, 1.25, 0)), Color(0.95, 0.38, 0.16, 0.8))
 	var m: ArrayMesh = _commit(st, foliage_mat())
 	_cache[key] = m
 	return m
