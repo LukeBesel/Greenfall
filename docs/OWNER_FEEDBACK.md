@@ -165,3 +165,4 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Every build and building on every planet must look as good as Moon Sweepers hubs (kit, yard, p_anvil, p_ochre, p_seas, orbD). The rejected example is the Anvil restored yard: white CG turbines, a flat slab, a flat green carpet.
 - [ ] Use as many helpers as needed, all aligned and not overwriting each other (file ownership in owners.md; main merges).
 - [ ] Fully build the walkable round planets (orbB to orbE).
+- [ ] Planets come in different sizes: Ochre (2nd) a bit smaller, later ones larger, Anvil (last) the largest. Later planets unlock more and speed things up so the game keeps moving (orbB grid sizes, orbD hub counts, pacing).
