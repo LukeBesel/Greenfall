@@ -495,6 +495,7 @@ func _build_yard_systems() -> void:
 	obj.world = w
 	w.add_child(obj)
 	w.set("objectives", obj)
+	_build_hub_frame()
 	var bloom := Bloom.new()  # post-game milestones + Seed Ark (systems/bloom.gd)
 	bloom.name = "Bloom"
 	bloom.world = w
@@ -526,6 +527,27 @@ func _attach_extras() -> void:
 		var slot2: Array = yard_slot("nursery", ex.nursery.position)
 		ex.nursery.global_transform = (slot2[0] as Node3D).global_transform * (slot2[1] as Transform3D)
 		ex.nursery.set("center", ex.nursery.global_position)
+
+
+## Flat-yard systems that live at whichever hub Lumi is near (planet/orbit/hub_frame.gd): they keep
+## their flat-game coordinates in that hub's frame and sleep between hubs.
+var hub_frame: HubFrame
+
+
+func _build_hub_frame() -> void:
+	hub_frame = HubFrame.new()
+	w.add_child(hub_frame)
+	hub_frame.setup(self)
+	hub_frame.hub_changed.connect(func(_h: int) -> void:
+		var fa: Node = hub_frame.node("Fauna")
+		w.set("fauna", fa as Fauna if fa else null))
+	hub_frame.host("Fauna", func(f: HubFrame, _hub: int) -> Node:  # ambient animals return as hexes are restored
+		var fa := Fauna.new()
+		f.add_child(fa)
+		fa.frame_cells = f.region()
+		fa.setup(w)
+		return fa)
+	w.set("fauna", hub_frame.node("Fauna") as Fauna)
 
 
 ## The landing pod in its crash site on the start site's "pod" anchor. The intro cinematic itself

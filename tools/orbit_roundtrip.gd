@@ -79,6 +79,51 @@ static func _garden_sig(s: Node) -> String:
 	return ",".join(parts)
 
 
+## [orbB] Fauna in its hub frame: animals on greened cells near the start hub, standing on the
+## globe's ground; a hop to hub 1 moves the frame and rebuilds them there; between hubs they sleep.
+static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callable) -> void:
+	var hf: HubFrame = so.hub_frame
+	check.call("orbit_fauna_frame_at_start", 0, hf.hub)
+	var g: OrbitPlanet = so.globe
+	var hl: HexLevels = s.get("hex_levels")
+	var region: PackedInt32Array = hf.region()
+	var n: int = 0
+	for c: int in region:
+		if g.field.hex_hub[c] == 0 and g.field.hex_water[c] == 0 and n < 60 and not hl.levels.has(c) and g.field.is_clean(c) == false:
+			so.crews.work_cell(c, 0.0)
+			hl.track(c)
+			hl.levels[c] = 4
+			n += 1
+	var fa: Fauna = hf.node("Fauna") as Fauna
+	fa.replan()
+	for i: int in 30:
+		await tree.process_frame
+	var bad: Array = []
+	for a: Variant in fa.animals:
+		var wp: Vector3 = fa.to_global(a.pos)
+		var alt: float = g.surface.altitude(wp)
+		if alt < -1.5 or alt > 40.0 or g.grid.great_circle_m(wp, g.grid.centers[g.start_cell()]) > 450.0:
+			bad.append("%s alt %.1f" % [str(a.sp), alt])
+	check.call("orbit_fauna_animals", true, fa.animals.size() > 0)
+	check.call("orbit_fauna_on_the_ground", "[]", str(bad))
+	var p: Patch = s.get("patch")
+	var back: Vector3 = p.global_position
+	var h1: Vector3 = g.terrain.ground(g.grid.centers[int(g.sites[1]["cell"])])
+	p.place_on_sphere(h1, p.forward())
+	hf.check_now()
+	check.call("orbit_fauna_frame_hops", 1, hf.hub)
+	check.call("orbit_fauna_rebuilt_at_hub", true, hf.node("Fauna") != null and hf.node("Fauna") != fa)
+	var mid: Vector3 = (back.normalized() + h1.normalized()).normalized()
+	p.place_on_sphere(g.terrain.ground(mid), p.forward())
+	hf.check_now()
+	check.call("orbit_fauna_sleeps_between_hubs", -1, hf.hub)
+	p.place_on_sphere(back, p.forward())
+	hf.check_now()
+	check.call("orbit_fauna_back_at_start", 0, hf.hub)
+	for i: int in 3:
+		await tree.process_frame
+
+
 static func run(rt: Node, check: Callable) -> void:
 	var tree: SceneTree = rt.get_tree()
 	var packed: PackedScene = load("res://scenes/slice.tscn")
@@ -147,6 +192,7 @@ static func run(rt: Node, check: Callable) -> void:
 			planted_n += 1
 	check.call("orbit_garden_planted", 3, planted_n)
 	check.call("orbit_garden_slots_on_ground", true, gdn.slot_pos.size() > 0 and absf(gdn.slot_pos[0].length() - (g.grid.radius_m + g.terrain.height(gdn.slot_pos[0].normalized()))) < 0.05)
+	await _fauna_check(tree, s1, so, check)
 	# Glim's scanner marks the junk of the cell Lumi stands in (pieces by how big they look).
 	var gd: GlimDirector = GlimDirector.of(s1)
 	if gd:
