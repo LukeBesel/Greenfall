@@ -183,7 +183,7 @@ static func bale_mesh() -> ArrayMesh:
 				var b: Vector3 = grid[j][i + 1]
 				var c: Vector3 = grid[j + 1][i + 1]
 				var d: Vector3 = grid[j + 1][i]
-				for q: Vector3 in [a, c, b, a, d, c]:
+				for q: Vector3 in [a, b, c, a, c, d]:  # clockwise from outside: Godot's front faces
 					st.add_vertex(q)
 	st.generate_normals()
 	return st.commit()

@@ -125,3 +125,33 @@ func test_heaps_are_solid_for_lumi_and_bots_and_shrink_as_cleared() -> void:
 	assert_true(space.intersect_point(q).is_empty(), "a mostly cleared heap has drawn in")
 	q.position = Vector3(pile.x, 0.1, pile.y)
 	assert_false(space.intersect_point(q).is_empty(), "what is left is still solid")
+
+
+func _front_ratio(m: Mesh) -> float:
+	# Godot's front faces wind clockwise seen from outside: (b - a) x (c - a) points inward.
+	var good: int = 0
+	var all: int = 0
+	for s: int in m.get_surface_count():
+		var arr: Array = m.surface_get_arrays(s)
+		var v: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
+		var idx: PackedInt32Array = arr[Mesh.ARRAY_INDEX] if arr[Mesh.ARRAY_INDEX] != null else PackedInt32Array()
+		var n: int = idx.size() if not idx.is_empty() else v.size()
+		for t: int in range(0, n, 3):
+			var a: Vector3 = v[idx[t] if not idx.is_empty() else t]
+			var b: Vector3 = v[idx[t + 1] if not idx.is_empty() else t + 1]
+			var c: Vector3 = v[idx[t + 2] if not idx.is_empty() else t + 2]
+			var cr: Vector3 = (b - a).cross(c - a)
+			if cr.length() < 1e-9:
+				continue
+			all += 1
+			if cr.dot((a + b + c) / 3.0) < 0.0:
+				good += 1
+	return float(good) / maxf(all, 1)
+
+
+func test_bale_faces_point_outward() -> void:
+	# [world2] An inside-out bale renders see-through (the "transparent" bale): its back faces show.
+	assert_gt(_front_ratio(JunkCube.bale_mesh()), 0.99, "bale block winds outward")
+	assert_gt(_front_ratio(ProcMesh.box(Vector3.ONE)), 0.99, "reference: ProcMesh.box")
+	# The bale used ProcMesh.rounded_box, which was inside-out: the owner's "transparent" bale.
+	assert_gt(_front_ratio(ProcMesh.rounded_box(Vector3.ONE, 0.05, 3)), 0.99, "rounded_box winds outward")
