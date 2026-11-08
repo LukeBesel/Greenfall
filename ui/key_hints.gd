@@ -11,8 +11,8 @@ enum Mode { HUD, PAUSE }
 const FIRST_S: float = 600.0
 const KEY_COLOR := Color(1.0, 0.76, 0.4)
 const NAME_COLOR := Color(0.93, 0.93, 0.9)
-const NAME_PX: int = 15
-const KEY_PX: int = 14
+const NAME_PX: int = 14
+const KEY_PX: int = 13
 
 # l10n:begin
 const SHORT: Array = [["open_globe", "map"], ["open_command", "command"], ["lens_view", "lens"], ["toggle_goals", "goals"]]
@@ -43,7 +43,7 @@ func _ready() -> void:
 	add_theme_stylebox_override("panel", HudReadable.pill(0.72 if mode == Mode.PAUSE else 0.62))
 	_flow = HFlowContainer.new()
 	_flow.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_flow.add_theme_constant_override("h_separation", 18)
+	_flow.add_theme_constant_override("h_separation", 12)
 	_flow.add_theme_constant_override("v_separation", 6)
 	_flow.alignment = FlowContainer.ALIGNMENT_CENTER if mode == Mode.PAUSE else FlowContainer.ALIGNMENT_END
 	add_child(_flow)
@@ -118,8 +118,8 @@ func _fit() -> void:
 	var rows: Array[Node] = _flow.get_children().filter(func(c: Node) -> bool: return not c.is_queued_for_deletion())
 	for c: Node in rows:
 		w += (c as Control).get_combined_minimum_size().x
-	w += 18.0 * maxf(0.0, rows.size() - 1) + 2.0
-	var cap: float = 1180.0 if mode == Mode.PAUSE else 400.0  # HUD: stay right of the hotbar
+	w += 12.0 * maxf(0.0, rows.size() - 1) + 2.0
+	var cap: float = 1180.0 if mode == Mode.PAUSE else 380.0  # HUD: stay right of the hotbar
 	_flow.custom_minimum_size.x = minf(w, cap)
 
 

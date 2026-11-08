@@ -58,8 +58,8 @@ static func fade_backing(alpha: float = 0.5) -> StyleBoxTexture:
 ## A rounded dark pill (key hints).
 static func pill(alpha: float = 0.66) -> StyleBoxFlat:
 	var sb := UITheme.box(Color(0.02, 0.025, 0.03, alpha), Color(1, 1, 1, 0.1), 1, 16, 0)
-	sb.content_margin_left = 14
-	sb.content_margin_right = 14
+	sb.content_margin_left = 10
+	sb.content_margin_right = 10
 	sb.content_margin_top = 7
 	sb.content_margin_bottom = 7
 	return sb
