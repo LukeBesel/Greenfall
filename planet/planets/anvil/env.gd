@@ -979,6 +979,15 @@ func _site_preview(arg: String) -> void:
 	var stage: int = int(a[1]) if a.size() > 1 else level
 	var rest: float = float(a[2]) if a.size() > 2 else restore
 	AnvilSites.build(site_root, a[0], stage, rest)
+	# Preview only: plain dust to the horizon so the site doesn't float over the void.
+	var back := MeshInstance3D.new()
+	back.name = "PreviewBackdrop"
+	var pm := PlaneMesh.new()
+	pm.size = Vector2(1600, 1600)
+	back.mesh = pm
+	back.position.y = -0.7
+	back.material_override = terrain_mat
+	site_root.add_child(back)
 	if world.get("hud") != null:
 		(world.hud as CanvasLayer).visible = false
 	print("[planet-anvil] site %s stage %d restoration %.2f" % [a[0], stage, rest])

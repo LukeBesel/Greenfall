@@ -13,13 +13,30 @@ static var _box_mesh: Mesh
 
 static func box() -> Mesh:
 	if _box_mesh == null:
-		# Beveled unit box: every plate, beam and panel catches a soft edge highlight.
-		_box_mesh = ProcMesh.rounded_box(Vector3.ONE, 0.12, 2)
+		_box_mesh = ProcMesh.box(Vector3.ONE)
 	return _box_mesh
 
 
+static var _bevels: Dictionary = {}
+
+
+## A plate/block of this exact size with a real bevel (scaling a beveled unit box stretches the
+## bevel into pills), so edges catch a soft highlight instead of reading as CG boxes.
+static func bevel_box(size: Vector3) -> Mesh:
+	var key := Vector3i(roundi(size.x * 20.0), roundi(size.y * 20.0), roundi(size.z * 20.0))
+	if not _bevels.has(key):
+		var r: float = clampf(minf(size.x, minf(size.y, size.z)) * 0.18, 0.02, 0.12)
+		_bevels[key] = ProcMesh.rounded_box(size, r, 1)
+	return _bevels[key]
+
+
 static func add_box(b: Batch, pos: Vector3, size: Vector3, m: Material, rot_deg: Vector3 = Vector3.ZERO) -> void:
-	b.add(box(), Transform3D(Basis.from_euler(rot_deg * (PI / 180.0)) * Basis.from_scale(size), pos), m)
+	b.add(bevel_box(size), Transform3D(Basis.from_euler(rot_deg * (PI / 180.0)), pos), m)
+
+
+## A beveled block placed by basis (no scale) and size.
+static func add_plate(b: Batch, basis: Basis, pos: Vector3, size: Vector3, m: Material) -> void:
+	b.add(bevel_box(size), Transform3D(basis, pos), m)
 
 
 static func add_beam(b: Batch, a: Vector3, c: Vector3, thick: float, m: Material) -> void:
@@ -77,7 +94,7 @@ static func make_mat(env: AnvilEnv, key: String) -> Material:
 		"corr":
 			return AssetLib.pbr_material("corrugated_iron", 0.18, Color(0.75, 0.42, 0.3), true)
 		"concrete":
-			return AssetLib.pbr_material("concrete_wall_008", 0.06, Color(0.82, 0.62, 0.54), true)
+			return AssetLib.pbr_material("concrete_wall_008", 0.3, Color(0.62, 0.42, 0.36), true)
 		"soot":
 			var so := StandardMaterial3D.new()
 			so.albedo_color = Color(0.06, 0.05, 0.045)
@@ -455,7 +472,7 @@ static func slag_mesh(seed_v: int) -> ArrayMesh:
 			var u: float = float(i) / (nr - 1)
 			var rr: float = u * (1.0 + nz.get_noise_2d(cos(a), sin(a)) * 0.35)
 			# Lumpy tipped-load profile: a ragged crest, dumped lobes and gullies down the flanks.
-			var gully: float = absf(nz.get_noise_2d(cos(a) * 4.0 + 9.0, sin(a) * 4.0)) * 0.14 * u
+			var gully: float = absf(nz.get_noise_2d(cos(a) * 4.0 + 9.0, sin(a) * 4.0)) * 0.06 * u
 			# Rounded, lumpy tip (a dumped heap, not a cone): domed crest, knobbly dumped blocks.
 			var dome: float = pow(maxf(1.0 - u * u, 0.0), 0.75)
 			var lumps: float = nz.get_noise_2d(cos(a) * u * 5.0 + 20.0, sin(a) * u * 5.0) * 0.16 + nz.get_noise_2d(cos(a) * u * 13.0, sin(a) * u * 13.0) * 0.06

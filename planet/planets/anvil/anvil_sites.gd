@@ -135,7 +135,7 @@ static func trash(kit: AnvilEnv, root: Node3D, radius: float, keep_r: float, cou
 			var r: float = lerpf(keep_r, radius * 0.95, pow(rng.randf(), 0.8))
 			var p := Vector3(cos(a) * r, 0, sin(a) * r)
 			var tilt := Basis(Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)).normalized(), rng.randf_range(0.0, 1.4)) if rng.randf() < 0.55 else Basis()
-			var bs: Basis = Basis(Vector3.UP, rng.randf() * TAU) * tilt * Basis.from_scale(Vector3.ONE * rng.randf_range(0.8, 1.3))
+			var bs: Basis = Basis(Vector3.UP, rng.randf() * TAU) * tilt * Basis.from_scale(Vector3.ONE * rng.randf_range(1.1, 1.8))
 			p.y = -aabb.position.y * 0.6 - 0.05
 			mm.set_instance_transform(i, Transform3D(bs, p))
 		mm.visible_instance_count = int(per * left)
@@ -198,9 +198,10 @@ static func hall(kit: AnvilEnv, b: Batch, fut: Batch, c: Vector3, yaw: float, le
 				continue
 			var lx: float = -len_ * 0.5 + (k + 0.5) * len_ / panels
 			var sag: float = rng.randf_range(-0.04, 0.04) if broken else 0.0
-			b.add(AnvilProps.box(), Transform3D(basis * Basis(Vector3.RIGHT, sag) * Basis.from_scale(Vector3(len_ / panels * 0.98, h * rng.randf_range(0.93, 1.0), 0.25)), c + basis * Vector3(lx, h * 0.5, side * w * 0.5)), kit.mat("corr"))
+			var ph: float = h * rng.randf_range(0.93, 1.0)
+			AnvilProps.add_plate(b, basis * Basis(Vector3.RIGHT, sag), c + basis * Vector3(lx, ph * 0.5, side * w * 0.5), Vector3(len_ / panels * 0.98, ph, 0.25), kit.mat("corr"))
 	for side: float in [-1.0, 1.0]:
-		b.add(AnvilProps.box(), Transform3D(basis * Basis.from_scale(Vector3(0.25, h, w)), c + basis * Vector3(side * len_ * 0.5, h * 0.5, 0)), kit.mat("corr"))
+		AnvilProps.add_plate(b, basis, c + basis * Vector3(side * len_ * 0.5, h * 0.5, 0), Vector3(0.25, h, w), kit.mat("corr"))
 	# Frame columns and the sawtooth roof.
 	for k: int in panels + 1:
 		var lx: float = -len_ * 0.5 + k * len_ / panels
@@ -211,10 +212,10 @@ static func hall(kit: AnvilEnv, b: Batch, fut: Batch, c: Vector3, yaw: float, le
 		if broken and rng.randf() < 0.3:
 			continue
 		var lx: float = -len_ * 0.5 + (k + 0.5) * len_ / teeth
-		b.add(AnvilProps.box(), Transform3D(basis * Basis(Vector3.FORWARD, 0.45) * Basis.from_scale(Vector3(len_ / teeth * 1.05, 0.3, w)), c + basis * Vector3(lx, h + 1.4, 0)), kit.mat("rust"))
-		b.add(AnvilProps.box(), Transform3D(basis * Basis.from_scale(Vector3(0.3, 2.8, w)), c + basis * Vector3(lx + len_ / teeth * 0.45, h + 1.3, 0)), kit.mat("stack"))
+		AnvilProps.add_plate(b, basis * Basis(Vector3.FORWARD, 0.45), c + basis * Vector3(lx, h + 1.4, 0), Vector3(len_ / teeth * 1.05, 0.3, w), kit.mat("corr"))
+		AnvilProps.add_plate(b, basis, c + basis * Vector3(lx + len_ / teeth * 0.45, h + 1.3, 0), Vector3(0.3, 2.8, w), kit.mat("stack"))
 	# A loading door, dark inside.
-	b.add(AnvilProps.box(), Transform3D(basis * Basis.from_scale(Vector3(6.0, h * 0.6, 0.3)), c + basis * Vector3(0, h * 0.3, w * 0.5 + 0.05)), kit.mat("soot"))
+	AnvilProps.add_plate(b, basis, c + basis * Vector3(0, h * 0.3, w * 0.5 + 0.08), Vector3(6.0, h * 0.6, 0.3), kit.mat("soot"))
 	for side: float in [-1.0, 1.0]:
 		fut.add(AnvilProps.box(), Transform3D(basis * Basis.from_scale(Vector3(len_, 0.12, 0.12)), c + basis * Vector3(0, h - 0.3, side * (w * 0.5 + 0.45))), kit.mat("line"))
 		fut.add(AnvilProps.box(), Transform3D(basis * Basis.from_scale(Vector3(len_ * 0.95, 0.7, 0.5)), c + basis * Vector3(0, h * 0.62, side * (w * 0.5 + 0.5))), kit.mat("green"))
