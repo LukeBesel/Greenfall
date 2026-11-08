@@ -435,6 +435,7 @@ func _build_yard_systems() -> void:
 		w.add_child(tower)  # a child of the slice, as on the flat game (HubBuilds and the bot look it up)
 		tower.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)  # after its _ready
 	_attach_camp()
+	_place_pod()
 	var obj := Objectives.new()  # WREN's last message after the intro + the objective card and outline
 	obj.world = w
 	w.add_child(obj)
@@ -446,6 +447,35 @@ func yard_point(anchor: String) -> Vector3:
 	var flat: Vector3 = YardBuilds.pos(anchor, Vector3.ZERO) if YardBuilds.def(anchor).size() > 0 else Vector3.ZERO
 	var slot: Array = yard_slot(anchor, flat)
 	return (slot[0] as Node3D).global_transform * (slot[1] as Transform3D).origin
+
+
+## The landing pod in its crash site on the start site's "pod" anchor. The intro cinematic itself
+## is camera work for orbE; on the globe it doesn't play yet, so the landing counts as done.
+func _place_pod() -> void:
+	GameState.flags["intro_done"] = true
+	var pod: Node3D = Intro.build_pod()
+	var fire: Node = pod.get_node_or_null("ReentryFire")
+	if fire:
+		fire.queue_free()
+	var at: Vector3 = yard_point("pod")
+	var site: Node3D = CrashSite.attach(w, pod, at, 0.5)
+	site.global_basis = SphereGrid.frame(at.normalized()) * Basis(Vector3.UP, 0.5)
+	EscapePod.set_open(pod, true, CrashSite.LEAN.x)
+	# Solid: one box from the pod's own bounds, in its frame (PropColliders.fit reads world y).
+	var ab := AABB()
+	var first: bool = true
+	var inv: Transform3D = pod.global_transform.affine_inverse()
+	for c: Node in pod.find_children("*", "MeshInstance3D", true, false):
+		var mi: MeshInstance3D = c
+		if mi.mesh == null:
+			continue
+		var b: AABB = (inv * mi.global_transform) * mi.mesh.get_aabb()
+		ab = b if first else ab.merge(b)
+		first = false
+	if not first:
+		var body: StaticBody3D = PropColliders.body(pod, "Props")
+		PropColliders.add_box(body, Transform3D(pod.global_basis.orthonormalized(), pod.global_transform * ab.get_center()), ab.size * 0.85)
+	w.set_meta("orbit_pod", site)
 
 
 ## Camp (systems/camp/camp.gd) as on the flat game: the broken bench is its "bench" bit, the
