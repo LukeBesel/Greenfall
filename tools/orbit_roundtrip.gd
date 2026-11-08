@@ -45,6 +45,7 @@ static func _snap(s: Node) -> Dictionary:
 		"hub_level": (s.get("hub") as Hub).level,
 		"bench_ok": Camp.bench_ok(),
 		"garden": _garden_sig(s),
+		"outposts": "%s live %s" % [_outpost_state(), str(_outpost_levels(s))],  # [orbB]
 		"yard_built": JSON.stringify(YardBuilds.state().get("built", {})),
 		"site_stage": g.site_manager.levels[0] if g.site_manager else -1,
 		"parts_near": s.field.part_pos.size() > 0,
@@ -52,6 +53,24 @@ static func _snap(s: Node) -> Dictionary:
 		"sky_spin": snappedf((s.get("sky_director") as SkyDirector).spin, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
 		"sky_clouds": snappedf((s.get("sky_director") as SkyDirector).clouds, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
 	}
+
+
+static func _outpost_state() -> String:
+	var out: Array = []
+	var by_hub: Dictionary = GameState.world.get("orbit_outposts", {})
+	for k: String in by_hub:
+		out.append("%s:%s" % [k, str(((by_hub[k] as Dictionary).get("levels", []) as Array).map(func(v: Variant) -> int: return int(v)))])
+	out.sort()
+	return " ".join(out)
+
+
+static func _outpost_levels(s: Node) -> Array:
+	var out: Array = []
+	var op: Outposts = s.get("outposts") as Outposts
+	if op:
+		for o: Outpost in op.items:
+			out.append(o.level)
+	return out
 
 
 ## [orbC] Stops a slice's robot crew (the brain and every real robot) so state compares as saved.
@@ -126,12 +145,33 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 	await tree.physics_frame
 	check.call("orbit_egg_prompt", true, s.interact_prompt(p) != "")
 	var eggs0: Array = eg.placed.map(func(x: Dictionary) -> String: return str(x["id"]))
+	# Outposts: 3-4 ruins round the hub just outside its site, upright on the ground; one repaired
+	# (its level lives per hub in the start site's dict) becomes the nearest scale for a hauler.
+	var op: Outposts = hf.node("Outposts") as Outposts
+	check.call("orbit_outposts_placed", true, op != null and op.items.size() >= 3 and s.get("outposts") == op)
+	var opbad: Array = []
+	for o: Outpost in op.items:
+		var alt2: float = g.surface.altitude(o.global_position)
+		var tilt: float = rad_to_deg(o.global_basis.y.normalized().angle_to(o.global_position.normalized()))
+		var cell: int = g.field.hex_at(o.global_position)
+		if absf(alt2) > 0.6 or tilt > 1.0 or not region.has(cell) or g.cells.has_flag(cell, SphereCells.F_SITE):
+			opbad.append("outpost %d alt %.2f tilt %.1f cell %d" % [o.index, alt2, tilt, cell])
+	check.call("orbit_outposts_on_the_ground", "[]", str(opbad))
+	p.place_on_sphere(op.items[0].anchor.global_position, p.forward())
+	await tree.physics_frame
+	check.call("orbit_outpost_prompt", true, s.interact_prompt(p).to_lower().contains("outpost"))
+	op.repair(0, false, true)
+	var lv0: Array = ((GameState.world.get("orbit_outposts", {}) as Dictionary).get("0", {}) as Dictionary).get("levels", [])
+	check.call("orbit_outpost_repaired_state", 1, int(lv0[0]) if lv0.size() > 0 else -1)
+	check.call("orbit_outpost_nearest_scale", true, Outposts.nearest_depot(s, op.items[0].pad_world()) == op.items[0].scale_depot)
 	var h1: Vector3 = g.terrain.ground(g.grid.centers[int(g.sites[1]["cell"])])
 	p.place_on_sphere(h1, p.forward())
 	hf.check_now()
 	check.call("orbit_fauna_frame_hops", 1, hf.hub)
 	check.call("orbit_fauna_rebuilt_at_hub", true, hf.node("Fauna") != null and hf.node("Fauna") != fa)
 	var eg1: EasterEggs = hf.node("EasterEggs") as EasterEggs
+	var op1: Outposts = hf.node("Outposts") as Outposts
+	check.call("orbit_outposts_hub1_own", true, op1 != null and op1 != op and op1.hub_index == 1 and op1.repaired_count() == 0 and s.get("outposts") == op1)
 	check.call("orbit_eggs_hub1_own_set", true, eg1 != null and eg1 != eg and eg1.hub_index == 1 and (eg1.placed.size() == 0 or eg1.placed.map(func(x: Dictionary) -> String: return str(x["id"])) != eggs0))
 	var mid: Vector3 = (back.normalized() + h1.normalized()).normalized()
 	p.place_on_sphere(g.terrain.ground(mid), p.forward())
@@ -140,6 +180,7 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 	p.place_on_sphere(back, p.forward())
 	hf.check_now()
 	check.call("orbit_fauna_back_at_start", 0, hf.hub)
+	check.call("orbit_outpost_rebuilt_repaired", 1, (hf.node("Outposts") as Outposts).items[0].level)
 	for i: int in 3:
 		await tree.process_frame
 
