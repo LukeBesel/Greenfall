@@ -44,6 +44,12 @@ var _focus_hex: int = -1
 var prompt: String = ""
 enum Tool { SCOOP, PLANT, WATER }
 var tool: int = Tool.SCOOP
+## [orbit] Set by enable_sphere() when Lumi walks a round planet (planet/orbit/): radial gravity
+## and hover through SphereMotor, input in the camera's surface frame. Null = the flat districts.
+var sphere: SphereSurface
+var sphere_motor: SphereMotor
+var sphere_cam: Node3D  # SphereCam (anything with a `frame: Basis`)
+var _shape: CollisionShape3D
 var water: float = 0.0
 var _plant_t: float = 0.0
 var _water_t: float = 0.0
@@ -59,6 +65,7 @@ func _ready() -> void:
 	shape.shape = box
 	shape.position = Vector3(0, 0.6, 0)
 	add_child(shape)
+	_shape = shape
 	model = PatchModel.new()
 	model.name = "Model"
 	add_child(model)
@@ -76,6 +83,36 @@ func _ready() -> void:
 	add_child(_stack_root)
 	if input == null:
 		input = PlayerInput.new()
+
+
+## [orbit] Local up: the radial direction on a round planet, world +Y in the flat districts.
+func up() -> Vector3:
+	return sphere.up_at(global_position) if sphere else Vector3.UP
+
+
+## [orbit] Switches Lumi to a round planet: SphereMotor movement (hover, radial gravity, boost,
+## jump), the collision box lifted so it only meets walls and props.
+func enable_sphere(surface: SphereSurface, cam_node: Node3D) -> void:
+	sphere = surface
+	sphere_cam = cam_node
+	sphere_motor = SphereMotor.new(surface)
+	sphere_motor.landed.connect(func(impact: float) -> void:
+		if impact > 2.0:
+			model.squash(-clampf(impact * 0.06, 0.1, 0.45)))
+	sphere_motor.jumped.connect(func() -> void:
+		model.squash(0.3)
+		Audio.play("whoosh", 1.3, -12.0))
+	motion_mode = CharacterBody3D.MOTION_MODE_FLOATING
+	wall_min_slide_angle = 0.0
+	if _shape:
+		(_shape.shape as BoxShape3D).size = Vector3(1.1, 0.95, 1.0)
+		_shape.position = Vector3(0, 0.25 + 0.475, 0)
+
+
+## [orbit] Puts Lumi on the planet's ground under `pos`, facing `fwd`.
+func place_on_sphere(pos: Vector3, fwd: Vector3) -> void:
+	sphere_motor.place(self, pos, fwd)
+	_prev_vel = Vector3.ZERO
 
 
 func stat(id: String) -> float:
@@ -99,7 +136,10 @@ func _physics_process(delta: float) -> void:
 	_move(delta)
 	# Safety net: if physics ever pushes Patch through the ground (seen once in a long autoplay run,
 	# wedged against the base), put him back in the yard instead of falling forever.
-	if global_position.y < -30.0:
+	if sphere and sphere.altitude(global_position) < -3.0:  # [orbit] under the planet's ground
+		place_on_sphere(global_position, forward())
+		GameState.inc_stat("fell_through")
+	elif sphere == null and global_position.y < -30.0:
 		global_position = Vector3(0.0, 0.6, 3.0)
 		velocity = Vector3.ZERO
 		GameState.inc_stat("fell_through")
@@ -116,34 +156,47 @@ func _physics_process(delta: float) -> void:
 # --- Movement -----------------------------------------------------------------
 
 func _move(delta: float) -> void:
-	var wish: Vector3 = Vector3.ZERO if _cubing > 0.0 else input.get_world_move(cam_yaw_provider.call())
+	var wish: Vector3 = Vector3.ZERO
+	if _cubing <= 0.0:
+		if sphere_motor:  # [orbit] stick is camera-local (x right, z back): read it in the camera's surface frame
+			var mv: Vector3 = input.get_world_move(0.0)
+			var f: Basis = sphere_cam.get("frame") if sphere_cam and "frame" in sphere_cam else global_basis
+			wish = f.x * mv.x + f.z * mv.z
+		else:
+			wish = input.get_world_move(cam_yaw_provider.call())
 	var speed: float = stat("move_speed") * (0.55 if input.scoop_held() and wish.length() > 0.1 else 1.0)
 	# Wading: Patch can't swim yet. Shallow lake water slows him and splashes.
 	var here: int = world.field.hex_at(global_position) if world and world.field else -1
 	if here >= 0 and world.field.is_water(here) and not world.has_meta("hover_water"):  # [planet-tidewell] floats over water there
 		speed *= 0.45
-		if Vector2(velocity.x, velocity.z).length() > 0.5 and randf() < 0.15:
-			Vfx.burst("soil", global_position + Vector3(0, 0.15, 0), Color(0.6, 0.7, 0.75, 0.7), 0.3)
+		if _tangent(velocity).length() > 0.5 and randf() < 0.15:
+			Vfx.burst("soil", global_position + up() * 0.15, Color(0.6, 0.7, 0.75, 0.7), 0.3)
 	# A heavy stack slows him a touch, never much.
 	speed *= 1.0 - 0.03 * carried.size()
-	var target: Vector3 = wish * speed
-	var hv := Vector3(velocity.x, 0.0, velocity.z)
-	var rate: float = ACCEL if target.length() > hv.length() else DECEL
-	hv = hv.move_toward(target, rate * delta)
-	velocity.x = hv.x
-	velocity.z = hv.z
-	velocity.y = 0.0 if is_on_floor() else velocity.y - GRAVITY * delta
-	if wish.length() > 0.1:
-		var target_yaw: float = atan2(-wish.x, -wish.z)
-		rotation.y = lerp_angle(rotation.y, target_yaw, clampf(TURN_RATE * delta, 0.0, 1.0))
-	move_and_slide()
+	if sphere_motor:
+		sphere_motor.speed = speed
+		var boost: bool = _cubing <= 0.0 and input.has_method("boost_held") and bool(input.call("boost_held"))
+		var jump: bool = _cubing <= 0.0 and input.has_method("jump_pressed") and bool(input.call("jump_pressed"))
+		sphere_motor.step(self, wish, delta, boost, jump)
+	else:
+		var target: Vector3 = wish * speed
+		var hv := Vector3(velocity.x, 0.0, velocity.z)
+		var rate: float = ACCEL if target.length() > hv.length() else DECEL
+		hv = hv.move_toward(target, rate * delta)
+		velocity.x = hv.x
+		velocity.z = hv.z
+		velocity.y = 0.0 if is_on_floor() else velocity.y - GRAVITY * delta
+		if wish.length() > 0.1:
+			var target_yaw: float = atan2(-wish.x, -wish.z)
+			rotation.y = lerp_angle(rotation.y, target_yaw, clampf(TURN_RATE * delta, 0.0, 1.0))
+		move_and_slide()
 	# Nudge cubes we bump into.
 	for i: int in get_slide_collision_count():
 		var col: KinematicCollision3D = get_slide_collision(i)
 		var body: Object = col.get_collider()
 		if body is JunkCube and not (body as JunkCube).carried:
 			(body as JunkCube).apply_central_impulse(-col.get_normal() * 0.6)
-	var hspeed: float = Vector2(velocity.x, velocity.z).length()
+	var hspeed: float = _tangent(velocity).length()
 	var accel_w: Vector3 = (velocity - _prev_vel) / maxf(delta, 0.0001)
 	_prev_vel = velocity
 	var local_acc: Vector3 = global_transform.basis.inverse() * accel_w
@@ -151,7 +204,7 @@ func _move(delta: float) -> void:
 	var now_moving: bool = hspeed > 0.6
 	if now_moving != _moving:
 		_moving = now_moving
-		Vfx.burst("dust", global_position + Vector3(0, 0.1, 0), Color(0.8, 0.65, 0.5, 0.7), 0.8)
+		Vfx.burst("dust", global_position + up() * 0.1, Color(0.8, 0.65, 0.5, 0.7), 0.8)
 		Audio.play("squeak", 1.0 if now_moving else 0.85, -10.0, 0.1)
 		model.squash(0.25 if now_moving else -0.3)
 	if now_moving:
@@ -166,6 +219,12 @@ func _move(delta: float) -> void:
 			_distance_accum = 0.0
 	else:
 		_idle_time += delta
+
+
+## The part of v along the ground (drops the local-up component).
+func _tangent(v: Vector3) -> Vector3:
+	var u: Vector3 = up()
+	return v - u * v.dot(u)
 
 
 # --- Tools: plant and water ---------------------------------------------------------
@@ -229,8 +288,8 @@ func _handle_tools(delta: float) -> void:
 		# The old can leaks: a bit is lost with every pour (an upgrade fixes it).
 		water = maxf(0.0, water - (1.0 if GameState.level_of("fix_can") > 0 else 1.3))
 		var spot: Vector3 = global_position + forward() * 1.3
-		Vfx.burst("soil", spot + Vector3(0, 0.6, 0), Color(0.55, 0.75, 1.0, 0.8), 0.7)
-		Vfx.burst("dust", spot + Vector3(0, 0.05, 0), Color(0.6, 0.75, 0.9, 0.4), 0.3)
+		Vfx.burst("soil", spot + up() * 0.6, Color(0.55, 0.75, 1.0, 0.8), 0.7)
+		Vfx.burst("dust", spot + up() * 0.05, Color(0.6, 0.75, 0.9, 0.4), 0.3)
 		if randf() < 0.5:
 			Audio.play("steam", 1.8, -16.0)
 		for slot: int in g.planted_near(global_position, forward()):
@@ -240,7 +299,7 @@ func _handle_tools(delta: float) -> void:
 # --- Scooping -----------------------------------------------------------------
 
 func scoop_origin() -> Vector3:
-	return global_position + Vector3(0, 0.2, 0) - global_transform.basis.z * 0.25
+	return global_position + up() * 0.2 - global_transform.basis.z * 0.25
 
 
 func forward() -> Vector3:
@@ -274,7 +333,14 @@ func _handle_scoop(delta: float) -> void:
 	# Magnet arm: pull nearby junk toward the scoop.
 	var mag: float = stat("magnet_radius")
 	if mag > 0.0:
-		Pace.magnet_step(self, world.field, world.view, scoop_origin(), stat("scoop_reach") + mag, delta)  # [pace] capped, smooth, liftable only
+		if sphere:  # [orbit] pull along the ground (local up)
+			var field: HexField = world.field
+			for pid: int in field.pieces_within(scoop_origin(), stat("scoop_reach") + mag):
+				var to_me: Vector3 = _tangent(scoop_origin() - field.piece_pos[pid])
+				if to_me.length() > 0.4:
+					world.view.move_piece(pid, field.piece_pos[pid] + to_me.normalized() * minf(2.5 * delta, to_me.length()))
+		else:
+			Pace.magnet_step(self, world.field, world.view, scoop_origin(), stat("scoop_reach") + mag, delta)  # [pace] capped, smooth, liftable only
 	_scoop_timer -= delta
 	if _scoop_timer > 0.0:
 		return
@@ -402,9 +468,9 @@ func _spawn_cube() -> void:
 	var cube: JunkCube = JunkCube.create(info["value"], info)
 	world.add_cube(cube)
 	cube.global_position = to_global(model.back_hatch_point + Vector3(0, 0.05, 0.3))
-	cube.rotation.y = rotation.y
+	cube.global_basis = global_basis.orthonormalized()
 	# Pushed out by the ram: slides off the lip and drops with weight.
-	cube.linear_velocity = global_transform.basis.z * 1.4 + Vector3(0, 0.4, 0)
+	cube.linear_velocity = global_transform.basis.z * 1.4 + up() * 0.4
 	cube.angular_velocity = global_transform.basis.x * -1.2
 	Audio.play("clunk", 1.0, -4.0)
 	GameState.inc_stat("cubes_made")
@@ -428,7 +494,7 @@ func _spawn_cube() -> void:
 		color = Color(1.0, 0.82, 0.3)
 	if float(info.get("streak_bonus", 0.0)) > 0.0:
 		label += tr("  (streak +%d%%)") % int(round(float(info["streak_bonus"]) * 100.0))
-	Vfx.float_text(global_position + Vector3(0, 1.9, 0), label, color, 0.45, 0.7)
+	Vfx.float_text(global_position + up() * 1.9, label, color, 0.45, 0.7)
 	EventBus.cube_made.emit(info)
 	get_tree().create_timer(1.5).timeout.connect(func() -> void: if is_instance_valid(model): model.set_happy(0.5))
 
@@ -510,7 +576,7 @@ func nearest_loose_cube() -> JunkCube:
 		if c.carried or c.claimed:
 			continue
 		var d: Vector3 = c.global_position - global_position
-		d.y *= 0.5
+		d -= up() * d.dot(up()) * 0.5
 		# Prefer cubes in front.
 		var score: float = d.length() - maxf(0.0, d.normalized().dot(forward())) * 0.4
 		if score < best_d:
@@ -555,6 +621,9 @@ func place_top_cube() -> void:
 	var c: JunkCube = pop_carried_cube()
 	if c == null:
 		return
+	if sphere:
+		_place_cube_sphere(c)
+		return
 	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
 	var front: Vector3 = JunkCube.free_spot(space, global_position, forward(), c.size)  # [world2] never into a wall or prop
 	var q := PhysicsRayQueryParameters3D.create(front + Vector3(0, 2.5, 0), front + Vector3(0, -1.0, 0), 1 | 4 | PhysLayers.MOUND)  # [world2] from just above (not onto roofs), heaps count
@@ -574,6 +643,37 @@ func place_top_cube() -> void:
 		, 0.0, 1.0, 0.2)
 	tw.tween_callback(func() -> void:
 		c.rotation = Vector3(0, rotation.y, 0)
+		c.set_carried(false)
+		c.linear_velocity = Vector3.ZERO
+		Audio.play("thud", 1.0, -6.0)
+		c.squish(0.18))
+	model.squash(0.2)
+
+
+## [orbit] place_top_cube on a round planet: everything along the local up.
+func _place_cube_sphere(c: JunkCube) -> void:
+	var front: Vector3 = global_position + forward() * 1.25
+	var u: Vector3 = sphere.up_at(front)
+	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var q := PhysicsRayQueryParameters3D.create(front + u * 2.5, front - u * 1.0, 1 | 4 | PhysLayers.MOUND)
+	var hit: Dictionary = space.intersect_ray(q)
+	var base: Vector3 = sphere.ground(u)
+	if not hit.is_empty():
+		var hp: Vector3 = hit["position"]
+		base = front + u * (hp - front).dot(u)
+		if hit["collider"] is JunkCube:
+			var cp: Vector3 = (hit["collider"] as JunkCube).global_position
+			base = cp + u * (hp - cp).dot(u)
+	var dest: Vector3 = base + u * (c.size * 0.5 + 0.02)
+	var start: Vector3 = c.global_position
+	var rest_basis: Basis = global_basis.orthonormalized()
+	var tw := c.create_tween()
+	tw.tween_method(func(t: float) -> void:
+		var top: Vector3 = (start + dest) * 0.5 + u * 0.6
+		c.global_position = start.lerp(top, t).lerp(top.lerp(dest, t), t)
+		, 0.0, 1.0, 0.2)
+	tw.tween_callback(func() -> void:
+		c.global_basis = rest_basis
 		c.set_carried(false)
 		c.linear_velocity = Vector3.ZERO
 		Audio.play("thud", 1.0, -6.0)
@@ -625,10 +725,10 @@ func _update_hints(delta: float) -> void:
 	model.sleeping = _idle_time > 45.0
 	if _idle_time > 8.0 and fmod(_idle_time, 9.0) < delta:
 		model.shudder(0.25)
-		Vfx.burst("bits", global_position + Vector3(0, 1.0, 0), Color(0.75, 0.4, 0.2), 0.6)
+		Vfx.burst("bits", global_position + up() * 1.0, Color(0.75, 0.4, 0.2), 0.6)
 		Audio.play("beep", 0.9, -12.0)
 	if model.sleeping and fmod(_idle_time, 3.0) < delta:
-		Vfx.float_text(global_position + Vector3(0.3, 1.8, 0), "z", Color(0.9, 0.9, 1.0), 0.7, 0.8)
+		Vfx.float_text(global_position + up() * 1.8 + global_basis.x * 0.3, "z", Color(0.9, 0.9, 1.0), 0.7, 0.8)
 		Audio.play("beep", 0.6, -18.0)
 	# Hex under the scoop for the HUD readout.
 	if world and world.field:

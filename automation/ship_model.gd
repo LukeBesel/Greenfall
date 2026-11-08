@@ -301,6 +301,7 @@ func _build_face() -> void:
 	v.add_child(mi)
 
 
+## Painted livery only (a shaded stencil on the hull); [ship2] no glowing text.
 func _build_marks() -> void:
 	var lift_y: float = float(_pts.get("lift", 0.62))
 	for side: float in [-1.0, 1.0]:
@@ -309,16 +310,6 @@ func _build_marks() -> void:
 		l.position = Vector3(side * 0.855, 0.66 + lift_y, -0.2)
 		l.rotation = Vector3(0, side * PI * 0.5, 0)
 		add_child(l)
-		var tag := Label3D.new()
-		tag.text = tr(ShipTiers.mark(tier))
-		tag.font_size = 64
-		tag.pixel_size = 0.0022
-		tag.modulate = Color(0.45, 1.3, 1.7)
-		tag.outline_size = 0
-		tag.shaded = false
-		tag.position = Vector3(side * 0.86, 0.58 + lift_y, -0.2)
-		tag.rotation = Vector3(0, side * PI * 0.5, 0)
-		add_child(tag)
 
 
 func _build_engines(want: PackedStringArray) -> void:

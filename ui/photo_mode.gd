@@ -110,6 +110,8 @@ func set_value(key: String, v: Variant) -> void:
 func block_reason(from_menu: bool = false) -> String:
 	if is_open:
 		return "open"
+	if not CameraBot.available():
+		return "locked"  # [camp3] photo mode comes with Blink, the camera bot (a Build-tab build)
 	if world == null or world.get("patch") == null:
 		return "unavailable"
 	if bool(world.get("launching")):
@@ -146,6 +148,7 @@ func open(_from_menu: bool = false) -> void:
 	if is_open or world == null:
 		return
 	is_open = true
+	GameState.inc_stat("photo_mode_opens")  # [camp3] (old saves that used photo mode keep Blink)
 	var tree: SceneTree = get_tree()
 	_snap = {"paused": tree.paused, "mouse": Input.mouse_mode, "disable_3d": tree.root.disable_3d}
 	_snapshot_world()

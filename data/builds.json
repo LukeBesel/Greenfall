@@ -31,6 +31,10 @@
       "kind": "one_time"
     },
     {
+      "id": "camera_bot",
+      "kind": "one_time"
+    },
+    {
       "id": "conveyor",
       "kind": "one_time"
     },

@@ -21,6 +21,26 @@
      "Villain theme",
      "Villain theme for the Ledger, a cold mining corporation that stripped a whole star system and left it buried in junk, still sending glitchy messages and drones. Dark corporate synthwave, ticking-clock percussion, detuned bass, stuttering arpeggios. Sinister and stylish rather than scary. Instrumental, 100 bpm.",
      "Sinister corporate villain theme, cold synth bass, clock ticking, robotic arpeggios, dark and sleek, instrumental, 95 bpm"
+    ],
+    [
+     "Signal Found",
+     "Story: first message after the tower",
+     "A faint radio signal breaks through static after a long silence. Gentle synth arpeggio slowly joined by warm strings, hopeful and emotional, goosebumps moment. Instrumental, 76 bpm."
+    ],
+    [
+     "What the Ledger Took",
+     "Story: memory shards",
+     "Haunting music box over low drones and distant choir, uncovering what happened to an abandoned world. Sad, eerie and beautiful. Instrumental, 62 bpm."
+    ],
+    [
+     "Drone Sweep",
+     "Story: Ledger drones nearby",
+     "Tense stealth music, ticking hi-hats, pulsing bass, cold synth stabs, something mechanical is watching. Suspenseful, not too loud. Instrumental, 96 bpm."
+    ],
+    [
+     "Small Robot, Big Sky",
+     "Story: launching to a new planet",
+     "Soaring uplifting anthem, driving drums, bright synth lead and big strings, leaving home for the stars. Triumphant and catchy. Instrumental, 124 bpm."
     ]
    ]
   },
@@ -86,6 +106,56 @@
      "Restored planet",
      "The once trash-covered city is green again: gardens on every corner, birds back in the trees. Joyful orchestral pop with bright strings, a flute melody and birdsong-like trills. Spring celebration that still loops well. Instrumental, 105 bpm.",
      "Joyful spring orchestral music, bright flute and strings, birds and flowers, celebration, instrumental, 108 bpm"
+    ],
+    [
+     "Dumpster Disco",
+     "Playlist, bop",
+     "Funky disco groove, slap bass, four-on-the-floor kick, chopped strings, a robot dancing through a junkyard. Catchy and fun. Instrumental, 118 bpm."
+    ],
+    [
+     "Pocket Full of Bolts",
+     "Playlist, bop",
+     "Bubbly synth pop with a whistled hook, plucky bass and snappy claps, carefree and silly, impossible not to nod along. Instrumental, 120 bpm."
+    ],
+    [
+     "Tin Can Parade",
+     "Playlist, lighthearted",
+     "Quirky marching band of kitchen-pot percussion, kazoo-like synth and tuba bass, a goofy little parade of robots. Instrumental, 112 bpm."
+    ],
+    [
+     "Cardboard Kingdom",
+     "Playlist, lighthearted",
+     "Playful toy piano and pizzicato strings, a kid's imagination turning junk into castles. Light and charming. Instrumental, 104 bpm."
+    ],
+    [
+     "Rain on Rust",
+     "Playlist, lost in it",
+     "Rainy-day lofi, soft rain texture, muted electric piano, slow brushed drums, cosy and introspective. Instrumental, 76 bpm."
+    ],
+    [
+     "Streetlight Memory",
+     "Playlist, feely",
+     "Nostalgic synth ballad, warm pads, a simple lonely melody remembering the city when its lights were on. Bittersweet. Instrumental, 84 bpm."
+    ],
+    [
+     "The Last Bus Stop",
+     "Playlist, emotional",
+     "Slow piano and cello, an empty bus stop where someone waited for a bus that never came. Heartfelt and quiet. Instrumental, 66 bpm."
+    ],
+    [
+     "Something in the Alley",
+     "Night, spooky",
+     "Creepy but playful night music, plucked strings, low clarinet, footsteps-like percussion, a shadow in the junk turns out to be a cat. Instrumental, 88 bpm."
+    ],
+    [
+     "Green Again",
+     "Restored, bop",
+     "Feel-good summer groove, bright guitar riff, bouncy bass and handclaps, the city is alive again. Catchy celebration. Instrumental, 116 bpm."
+    ],
+    [
+     "Dawn Patrol",
+     "Playlist, lost in it",
+     "Ambient electronic with a slow rising pulse, soft bells, first sunlight over a quiet city, drifting and peaceful. Instrumental, 90 bpm."
     ]
    ]
   },
@@ -139,6 +209,46 @@
      "Restored planet",
      "The old mine pit has become terraced gardens around a bright blue oasis. Flowing strings, kalimba and gentle hand percussion, water and life returning. Warm and joyful, still loopable. Instrumental, 100 bpm.",
      "Uplifting world music, flowing strings and kalimba, water returning to the desert, joyful, instrumental, 100 bpm"
+    ],
+    [
+     "Cactus Cowbot",
+     "Playlist, bop",
+     "Upbeat western swing with a robot twist, twangy guitar, shuffling drums, harmonica hook, cheeky and fun. Instrumental, 122 bpm."
+    ],
+    [
+     "Heatwave Hustle",
+     "Playlist, bop",
+     "Groovy afrobeat-inspired rhythm, bright marimba hook, hand percussion, sunny desert energy. Danceable. Instrumental, 115 bpm."
+    ],
+    [
+     "Mirage Market",
+     "Playlist, lighthearted",
+     "Bouncy bazaar music, plucky oud riff, darbuka, little flute runs, a busy market that is just a mirage. Playful. Instrumental, 108 bpm."
+    ],
+    [
+     "Endless Sand",
+     "Playlist, lost in it",
+     "Hypnotic slow desert groove, repeating kalimba pattern, deep frame drum, warm drones, easy to get lost in. Instrumental, 86 bpm."
+    ],
+    [
+     "Letters in the Pit",
+     "Playlist, emotional",
+     "Tender guitar and strings, notes left by miners who missed their families, warm and sad. Instrumental, 72 bpm."
+    ],
+    [
+     "Sandstorm Warning",
+     "Playlist, tense",
+     "Driving tense desert percussion, low drones, wind swells, a storm rolling in. Urgent but controlled. Instrumental, 104 bpm."
+    ],
+    [
+     "Bones of the Excavator",
+     "Night, eerie",
+     "Eerie desert night, slow metallic creaks, low bowed strings, a giant rusted machine sleeping in the dark. Haunting. Instrumental, 60 bpm."
+    ],
+    [
+     "First Rain on Ochre",
+     "Restored, feely",
+     "Gentle rain sounds over warm piano and strings, the desert drinking its first rain in years. Emotional and hopeful. Instrumental, 80 bpm."
     ]
    ]
   },
@@ -192,6 +302,46 @@
      "Restored planet",
      "The seas are clean again: kelp forests, schools of fish, floating island gardens. Uplifting orchestral piece with harp glissandos, warm strings and gentle steel pan. Sparkling and alive. Instrumental, 98 bpm.",
      "Uplifting ocean orchestral, harp and strings, sparkling sea life returning, instrumental, 96 bpm"
+    ],
+    [
+     "Bubble Pop",
+     "Playlist, bop",
+     "Bright bubbly synth pop, popping plucks, bouncy bass and claps, playful underwater fun. Catchy hook. Instrumental, 124 bpm."
+    ],
+    [
+     "Pier Pressure",
+     "Playlist, bop",
+     "Surf rock instrumental, reverb guitar riff, punchy drums, sunny boardwalk energy. Fun and catchy. Instrumental, 130 bpm."
+    ],
+    [
+     "Crab Shuffle",
+     "Playlist, lighthearted",
+     "Silly sideways shuffle beat, marimba and ukulele, little xylophone runs, crabs dancing on the sand. Instrumental, 110 bpm."
+    ],
+    [
+     "Drifting Raft",
+     "Playlist, lost in it",
+     "Dreamy ambient guitar with long delays, slow waves, floating on a calm sea at sunset. Instrumental, 78 bpm."
+    ],
+    [
+     "Message in a Bottle",
+     "Playlist, emotional",
+     "Soft piano and acoustic guitar, a child's letter washed ashore, gentle and touching. Instrumental, 70 bpm."
+    ],
+    [
+     "The Deep Below",
+     "Playlist, tense",
+     "Mysterious deep-sea suspense, low pulsing synths, sonar pings, distant whale-like calls, something huge below. Instrumental, 72 bpm."
+    ],
+    [
+     "Lighthouse Ghost",
+     "Night, spooky",
+     "Haunting sea night music, slow music box, wind and creaking wood, a lighthouse that blinks on its own. Eerie but gentle. Instrumental, 58 bpm."
+    ],
+    [
+     "Coral Comeback",
+     "Restored, bop",
+     "Joyful tropical house groove, steel drums, bright plucks, colourful reef bursting back to life. Catchy and uplifting. Instrumental, 118 bpm."
     ]
    ]
   },
@@ -245,6 +395,46 @@
      "Restored planet",
      "Warmth returns from deep underground: frozen pools become steaming hot springs and moss spreads over the ice. A warm melody over icy bells, strings melting in, gentle drums arriving. Spring after a long winter, emotional build. Instrumental, 92 bpm.",
      "Hopeful emotional build, icy bells to warm strings and soft drums, spring after winter, instrumental, 90 bpm"
+    ],
+    [
+     "Penguin Bot Waddle",
+     "Playlist, lighthearted",
+     "Goofy waddling bassoon and pizzicato melody, sleigh bells, a clumsy little robot sliding on ice. Cute and funny. Instrumental, 106 bpm."
+    ],
+    [
+     "Ice Rink Lights",
+     "Playlist, bop",
+     "Upbeat electro pop, sparkly arpeggios, punchy beat, skating under coloured lights. Catchy. Instrumental, 122 bpm."
+    ],
+    [
+     "Snow Globe",
+     "Playlist, lost in it",
+     "Delicate music box and soft pads, slowly swirling snowflakes, dreamy and calm, easy to drift away to. Instrumental, 76 bpm."
+    ],
+    [
+     "The Long Way Home",
+     "Playlist, emotional",
+     "Slow emotional piano with warm strings, missing home in the coldest place, building to a hopeful swell. Instrumental, 68 bpm."
+    ],
+    [
+     "Whiteout",
+     "Playlist, tense",
+     "Tense blizzard music, howling wind, icy high strings, low pulsing drums, can't see anything. Instrumental, 98 bpm."
+    ],
+    [
+     "Frozen Voices",
+     "Night, scary",
+     "Creepy frozen ambience, cracking ice, whispery pads, a distant choir that might be the wind. Scary but quiet. Instrumental, 54 bpm."
+    ],
+    [
+     "Hot Spring Hangout",
+     "Playlist, lighthearted",
+     "Chill bossa lounge, warm keys, soft brushes, relaxing in a steaming hot spring among the snow. Instrumental, 92 bpm."
+    ],
+    [
+     "Spring Under Ice",
+     "Restored, feely",
+     "Gentle rising strings and harp, ice cracking open to reveal green below, warm emotional release. Instrumental, 84 bpm."
     ]
    ]
   },
@@ -298,6 +488,46 @@
      "Restored planet",
      "The foundry world restored: flowers growing between cooled lava flows, iron towers wrapped in vines. Hopeful cinematic piano and strings over a soft industrial pulse, warm choir swell. Darkness turning to light, triumphant ending. Instrumental, 95 bpm.",
      "Triumphant cinematic piano and strings, darkness turning to light, warm and hopeful finale, instrumental, 94 bpm"
+    ],
+    [
+     "Molten Groove",
+     "Playlist, bop",
+     "Heavy funky rock groove, chunky distorted guitar riff, big drums, red hot and catchy. Instrumental, 114 bpm."
+    ],
+    [
+     "Forge Stomp",
+     "Playlist, bop",
+     "Stomping industrial pop beat, anvil hits, chanting-style synth stabs, catchy dark energy. Instrumental, 120 bpm."
+    ],
+    [
+     "Lava Lamp Lounge",
+     "Playlist, lighthearted",
+     "Retro lounge funk, warm Rhodes, wah guitar, lava-lamp glow, surprisingly chill on a volcanic world. Instrumental, 96 bpm."
+    ],
+    [
+     "Ember Drift",
+     "Playlist, lost in it",
+     "Slow dark ambient groove, glowing embers drifting upward, deep bass pulse, hypnotic and moody. Instrumental, 80 bpm."
+    ],
+    [
+     "The Clerk's Regret",
+     "Playlist, emotional",
+     "Sad cello and slow piano, a Ledger clerk who wrote down every ton taken, regret and quiet hope. Instrumental, 64 bpm."
+    ],
+    [
+     "Furnace Heartbeat",
+     "Playlist, tense",
+     "Ominous rising tension, heartbeat drum, grinding machinery, low brass, something waking in the foundry. Instrumental, 90 bpm."
+    ],
+    [
+     "Shadows in the Smelter",
+     "Night, scary",
+     "Dark horror-tinged ambience, distant metal scrapes, low choir, creaking chains, scary but not overwhelming. Instrumental, 56 bpm."
+    ],
+    [
+     "Cool Stone",
+     "Restored, feely",
+     "Warm hopeful piano over soft synth pads, lava cooling into fertile ground, peaceful after the fire. Instrumental, 78 bpm."
     ]
    ]
   }

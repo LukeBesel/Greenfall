@@ -79,11 +79,11 @@ func _items() -> Array:
 static func items_for(full: bool, baler: bool) -> Array:
 	if not full:
 		return SHORT
-	return FULL.filter(func(it: Array) -> bool: return baler or str(it[0]) != "cube")
+	return FULL.filter(func(it: Array) -> bool: return (baler or str(it[0]) != "cube") and (str(it[0]) != "photo_mode" or CameraBot.available()))  # [camp3]
 
 
 func _signature() -> String:
-	var s: String = str(_full) + str(Pace.baler_unlocked()) + TranslationServer.get_locale()
+	var s: String = str(_full) + str(Pace.baler_unlocked()) + str(CameraBot.available()) + TranslationServer.get_locale()
 	for it: Array in _items():
 		s += Settings.glyph(str(it[0])) + ","
 	return s

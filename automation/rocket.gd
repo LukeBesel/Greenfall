@@ -4,7 +4,7 @@ extends Node3D
 ## LaunchPad (level 5 base) or, after landing in a district without one, parked on the ground.
 ## Runs the two cinematics ([ship] VTOL instead of the old vertical rocket):
 ##   launch(to_hub): establishing shot, the canopy opens, Lumi rides the boarding lift and drops into
-##     the cockpit, holographic countdown with siren, beacons and steam, the umbilical drops and the
+##     the cockpit, a countdown of beeps with siren, beacons and steam, the umbilical drops and the
 ##     light bridge retracts, the lift fans spool up, IGNITION: the fans blast the deck (downwash,
 ##     flash, shake), the docking locks release, LIFT OFF: a vertical rise to a hover, the gear
 ##     folds, the main engines light and the ship pitches up and flies away to a bright dot; then
@@ -44,7 +44,6 @@ var _shake_t: float = 0.0
 var _trail: CPUParticles3D
 var _dust: CPUParticles3D
 var _dot: MeshInstance3D
-var _count: Label3D
 var _ui: CanvasLayer
 var _bars: Array[ColorRect] = []
 var _fade: ColorRect
@@ -231,11 +230,11 @@ func _launch_step(dt: float) -> void:
 		p.scale = Vector3.ONE
 		Audio.play("clunk", 0.9, -4.0))
 	_once("canopy_shut", 3.85, func() -> void: Audio.play("clunk", 1.2, -6.0))
-	# Countdown: holo numbers, siren, beacons, steam; the cells drain into the ship.
+	# Countdown: beeps, siren, beacons, steam; the cells drain into the ship. [ship2] No 3D text:
+	# the visuals and sounds carry it (owner: no text over 3D).
 	if t >= _t0 and t < _ig:
 		var n: int = _cd - int(floor(t - _t0))
 		_once("cd%d" % n, _t0 + (_cd - n), func() -> void:
-			_show_count(str(n))
 			Audio.play("beep", 1.0 + 0.12 * (_cd - n), -2.0)
 			Input.start_joy_vibration(0, 0.1, 0.0, 0.1))
 		if t >= _siren_next:
@@ -264,7 +263,6 @@ func _launch_step(dt: float) -> void:
 	_once("charge", _ig - 2.1, func() -> void: Audio.play("charge", 1.0, -2.0, 0.0))
 	# Ignition: the lift fans go to full and blast the deck.
 	_once("ignite", _ig, func() -> void:
-		_show_count(tr("IGNITION"))
 		model.set_charge(0.0)
 		if pad:
 			pad.vent_steam(false)
@@ -298,7 +296,6 @@ func _launch_step(dt: float) -> void:
 	_once("clamps", _ig + 0.55, func() -> void:
 		Audio.play("clunk", 0.7, -2.0)
 		Audio.play("hydraulic", 0.6, -6.0))
-	_once("count_off", _lo + 1.8, func() -> void: _count.visible = false)
 	# Lift-off: a vertical rise to a hover, then nose up and away along the heading.
 	if t >= _lo:
 		var h1: float = HOVER * sc * smoothstep(0.0, 2.6, tau)
@@ -315,13 +312,10 @@ func _launch_step(dt: float) -> void:
 		_dot.visible = u > 2.0
 		(_dot.material_override as StandardMaterial3D).albedo_color.a = smoothstep(2.0, 5.0, u)
 	_once("liftoff", _lo, func() -> void:
-		_count.position = _dir(Vector3(-3.2, 0, 1.0) * sc) + Vector3(0, _base_y + 3.2 * sc, 0)
-		_show_count(tr("LIFT OFF"))
+		Subtitles.post(tr("LIFT OFF").capitalize(), "info")  # [ship2] once, on the message line
 		Audio.play("whoosh", 0.35, 0.0)
 		Audio.music_sting("level_up"))
 	_once("mains", _lo + 2.1, func() -> void:
-		if _warp:
-			_show_count(tr("WARP"))
 		Audio.play("whoosh", 0.6, -2.0)
 		Audio.play("crunch", 0.5, -6.0)
 		_shake = maxf(_shake, 0.45)
@@ -364,7 +358,7 @@ func _launch_camera(t: float, dt: float) -> void:
 		look_at = (world.patch.global_position if world.patch.visible else _hatch_world()) + Vector3(0, 0.2, 0)
 		fov = 42.0
 	elif t < _ig - 0.7:
-		# Countdown: low front three-quarter, beacons, steam and the holo numbers.
+		# Countdown: low front three-quarter, beacons and steam.
 		pos = o + Vector3(8.4, 1.2, -4.4).lerp(Vector3(7.6, 1.3, -4.0), (t - _t0) / maxf(_ig - 0.7 - _t0, 0.1)) * k
 		look_at = o + Vector3(0, by + 1.2 * k, 0)
 		fov = 52.0
@@ -404,7 +398,6 @@ func _place_cam(pos: Vector3, look: Vector3, dt: float) -> void:
 func _start_flight() -> void:
 	_mode = "flight"
 	_t = 0.0
-	_count.visible = false
 	_trail.emitting = false
 	model.plume.power = 0.0
 	for b: ColorRect in _bars:
@@ -555,7 +548,7 @@ func _arrive_camera(t: float, dt: float) -> void:
 	elif t < LAND_S + 1.4:
 		# [vqa2] Hover and touchdown from the open lot east of the pad.
 		_cam.fov = 48.0
-		_place_cam(o + Vector3(10.5, 1.6, -2.5) * k, mp + Vector3(0, 0.9 * k, 0), dt)
+		_place_cam(o + Vector3(10.5, 2.6, -2.5) * k, mp + Vector3(0, 0.9 * k, 0), dt)
 	else:
 		_cam.fov = 52.0
 		_place_cam(o + Vector3(7.5, 2.6, 4.0) * k, (o + _land_to) * 0.5 + Vector3(0, 1.2, 0), dt)
@@ -681,8 +674,6 @@ func _end_cinematic() -> void:
 		_bars.clear()
 		_fade = null
 		_hint = null
-	if _count:
-		_count.visible = false
 	Input.stop_joy_vibration(0)
 
 
@@ -768,14 +759,6 @@ func _once(key: String, at: float, f: Callable) -> void:
 		f.call()
 
 
-func _show_count(text: String) -> void:
-	_count.text = text
-	_count.visible = true
-	var s: float = 1.0 if text.length() <= 2 else 0.45
-	_count.scale = Vector3.ONE * 1.4 * s
-	create_tween().tween_property(_count, "scale", Vector3.ONE * s, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-
-
 func _flash(c: Color, a: float) -> void:
 	if _fade:
 		_fade.color = Color(c.r, c.g, c.b, a)
@@ -852,18 +835,6 @@ func _build_fx() -> void:
 	_dot.position = Vector3(0, 1.0, -3.6)
 	_dot.visible = false
 	model.add_child(_dot)
-	# Holographic countdown beside the rocket.
-	_count = Label3D.new()
-	_count.font_size = 200
-	_count.pixel_size = 0.011
-	_count.modulate = Color(0.2, 1.2, 2.4)
-	_count.outline_size = 24
-	_count.outline_modulate = Color(0.0, 0.25, 0.45, 0.6)
-	_count.shaded = false
-	_count.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	_count.position = _dir(Vector3(-3.0, 0, 1.5) * _ship_scale()) + Vector3(0, _base_y + 3.0 * _ship_scale(), 0)  # [ship] beside the ship as the lot cameras see it
-	_count.visible = false
-	add_child(_count)
 
 
 func _build_ui() -> void:

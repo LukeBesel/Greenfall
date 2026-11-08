@@ -98,7 +98,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Locked tabs and options show a lock and can't be opened.
 - [ ] It's very clear what you can and can't afford.
 - [ ] Upgrade screens as simple as the owner's reference: a plain one-line list (icon, name, level pips, price tag, "?" locked rows) plus one detail panel with a big Install button. 3-4 tabs at most. (ui5)
-- [ ] Photo mode comes with a camera-bot Hub build: unlocked early-ish, but it needs a good amount of parts. Before that, no photo mode. (camp3)
+- [x] Photo mode comes with a camera-bot Hub build: unlocked early-ish, but it needs a good amount of parts. Before that, no photo mode. (camp3: Blink, hub level 2 or ~25 min, 400 cubes + 80 parts)
 - [ ] The Locker is a physical yard build bought with parts; open it with E for cosmetics. It is not a workbench tab. (ui5)
 - [ ] Workbench tabs: Upgrades holds everything with tiers; Build holds one-time buildings, which drop off once built. As few tabs as possible. (ui3 + camp2)
 - [ ] The upgrades page isn't glitchy or bulky.
@@ -160,3 +160,9 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 
 ## Download
 - [x] The Mac updater script works with no "Open Anyway" prompt (rolling `latest` release).
+
+## Nov 8 (art bar + helpers)
+- [ ] Every build and building on every planet must look as good as Moon Sweepers hubs (kit, yard, p_anvil, p_ochre, p_seas, orbD). The rejected example is the Anvil restored yard: white CG turbines, a flat slab, a flat green carpet.
+- [ ] Use as many helpers as needed, all aligned and not overwriting each other (file ownership in owners.md; main merges).
+- [ ] Fully build the walkable round planets (orbB to orbE).
+- [ ] Planets come in different sizes: Ochre (2nd) a bit smaller, later ones larger, Anvil (last) the largest. Later planets unlock more and speed things up so the game keeps moving (orbB grid sizes, orbD hub counts, pacing).

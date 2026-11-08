@@ -82,6 +82,12 @@ signal built
 
 
 func _ready() -> void:
+	if DevHooks.has("orbit"):  # [orbit] prototype: the walkable globe (planet/orbit/orbit_world.gd)
+		get_tree().change_scene_to_file.call_deferred("res://planet/orbit/%s.tscn" % ("orbit_world" if DevHooks.get_s("orbit", "") == "v1" else "verdance_globe"))
+		return
+	if DevHooks.has("sphere-walk"):  # [smove] Lumi on a stand-in planet (planet/sphere/sphere_walk.gd)
+		get_tree().change_scene_to_file.call_deferred("res://planet/sphere/sphere_walk.tscn")
+		return
 	var t0: int = Time.get_ticks_msec()
 	_t_build = t0
 	# [leftovers] Behind the loading screen the heavy first half (field, views, city, dressing)

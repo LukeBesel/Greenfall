@@ -1,59 +1,1042 @@
-{"_doc": "[tunes] The song library (systems/tunes.gd). Files are audio/songs/<id>.mp3; a song whose file is missing is skipped everywhere (no CD, not on the CD player, not in the shuffle), so new MP3s can be dropped in by id later (then run an import). group: story or a planet id. kind: title / cinematic / villain (CD player only unless shuffle), playlist (background shuffle on its planet), night (only at night on its planet), restored (only once its planet is mostly restored). unlock: start (owned from the start) or cd (a CD found in the rubble on found_on). artist: an id in artists. Names, titles, genres, bios and descs are English and translated at display time (tr). artist home: the planet the artist lived on; every intact CD is found on its artist's home planet (found_on). scratched: rare one-play teaser CDs of songs you do not own yet, per_planet of them on each planet (planet/cd_finds.gd). State: GameState.flags.songs {found, pity, pending, scratched (held), scratch_left, scratch_cool, plays}.", "start": ["clean_sweep", "greenfall_main", "morning_shift"], "gap_s": [30, 90], "first_gap_s": [10, 25], "crossfade_s": 4.0, "other_planet_weight": 0.12, "story_weight": 0.5, "cd_find": {"min_hexes": 4, "base_chance": 0.05, "pity_step": 0.035, "guarantee_hexes": 18}, "scratched": {"per_planet": [5, 10], "chance": 0.025, "min_hexes": 12, "cooldown_hexes": 6, "case_size": 4}, "artists": [
-  {"id": "farewell", "home": "verdance", "name": "The Cradle Farewell Orchestra", "genre": "Orchestral", "bio": "Played one last concert on the launch pad while the ark boarded. Half of them missed the flight on purpose, so the encore was very long."}, 
-  {"id": "compactors", "home": "verdance", "name": "The Compactors", "genre": "Garage pop", "bio": "A four-piece that rehearsed inside a broken trash compactor for the acoustics. They swear the walls only closed in on them once, during a drum solo."}, 
-  {"id": "rustbucket", "home": "verdance", "name": "Lil' Rustbucket", "genre": "Chiptune", "bio": "A retired sweeper bot who refused to stop making beats. Every track was recorded on its own diagnostic beeper, between error codes."}, 
-  {"id": "recycle_bin", "home": "verdance", "name": "DJ Recycle Bin", "genre": "Lofi beats", "bio": "Only samples sounds from the city dump: lids, crinkles, a fridge door with real soul. Released three albums and never once got out of bed for them."}, 
-  {"id": "pianissimo", "home": "verdance", "name": "Professor Pianissimo", "genre": "Quiet piano", "bio": "Composes only for empty rooms and sleeping cities. His neighbours filed forty-one noise complaints, all saying the music was too soft to hear properly."}, 
-  {"id": "two_suns", "home": "ochre", "name": "Two Suns Tango Orchestra", "genre": "Desert dance band", "bio": "Ochre's hardest-working band: with two suns there is no shade and no siesta, so they just kept playing. The sunglasses are part of the uniform."}, 
-  {"id": "mirage_bros", "home": "ochre", "name": "The Mirage Brothers", "genre": "Heat-haze ambient", "bio": "Nobody is sure how many Mirage Brothers there are. On a hot day the crowd counted seven; on a cold one, just Gary."}, 
-  {"id": "salty_buoys", "home": "tidewell", "name": "The Salty Buoys", "genre": "Island pop", "bio": "A beach band that played on floating junk rafts, drifting between islands mid-song. Their tour schedule depended entirely on the tide."}, 
-  {"id": "barnacle_trio", "home": "tidewell", "name": "Barnacle Bossa Trio", "genre": "Bossa and lofi", "bio": "Three mellow players who refused to evacuate until the set was finished. The set was four hours long. They caught the last pod, still humming."}, 
-  {"id": "streetlights", "home": "rime", "name": "Static & the Streetlights", "genre": "Icy synthpop", "bio": "A synth duo who powered their gigs by plugging into whichever harbour lamp still worked. The power company billed them for the whole ice shelf."}, 
-  {"id": "mittens", "home": "rime", "name": "Mittens McKenzie", "genre": "Frozen piano", "bio": "Rime's beloved pianist, who played every concert in mittens. Critics called it muffled genius. Mittens called it frostbite prevention."}, 
-  {"id": "smelter", "home": "anvil", "name": "Smelter Skelter", "genre": "Foundry industrial", "bio": "Brooding Anvil band who tuned their drums to the furnace roar. The Ledger tried to buy their catalogue; they melted the contract down and played the slag."}, 
-  {"id": "ledger_audio", "home": "anvil", "name": "Ledger Brand Audio", "genre": "Corporate", "bio": "The Ledger's in-house jingle studio. Every song is copyrighted, trademarked and billed per listen. Credited as \"Ledger Brand Audio, all rights extracted\"."}], "songs": [
-  {"id": "greenfall_main", "title": "Greenfall (Main Theme)", "artist": "farewell", "group": "story", "kind": "title", "bpm": 85, "unlock": "start", "desc": "The song the Makers hummed on the way to the ark. Hopeful, a little lonely."}, 
-  {"id": "fall_of_lm1", "title": "The Fall of LM-1", "artist": "farewell", "group": "story", "kind": "cinematic", "shuffle": false, "bpm": 90, "unlock": "cd", "found_on": "verdance", "desc": "Meteors, alarms, one small pod falling. Then quiet piano."}, 
-  {"id": "the_ledger", "title": "The Ledger", "artist": "ledger_audio", "group": "story", "kind": "villain", "shuffle": false, "bpm": 100, "unlock": "cd", "found_on": "anvil", "desc": "Ticking clocks and detuned bass. Sounds expensive."}, 
-  {"id": "sprout_step", "title": "Sprout Step", "artist": "compactors", "group": "verdance", "kind": "playlist", "bpm": 115, "unlock": "cd", "found_on": "verdance"}, 
-  {"id": "clean_sweep", "title": "Clean Sweep", "artist": "compactors", "group": "verdance", "kind": "playlist", "bpm": 120, "unlock": "start"}, 
-  {"id": "little_helpers", "title": "Little Helpers", "artist": "rustbucket", "group": "verdance", "kind": "playlist", "bpm": 125, "unlock": "cd", "found_on": "verdance"}, 
-  {"id": "neon_gutters", "title": "Neon Gutters", "artist": "recycle_bin", "group": "verdance", "kind": "playlist", "bpm": 108, "unlock": "cd", "found_on": "verdance"}, 
-  {"id": "morning_shift", "title": "Morning Shift", "artist": "compactors", "group": "verdance", "kind": "playlist", "bpm": 100, "unlock": "start"}, 
-  {"id": "bale_by_bale", "title": "Bale by Bale", "artist": "recycle_bin", "group": "verdance", "kind": "playlist", "bpm": 85, "unlock": "cd", "found_on": "verdance"}, 
-  {"id": "rust_and_ribbons", "title": "Rust and Ribbons", "artist": "pianissimo", "group": "verdance", "kind": "playlist", "bpm": 75, "unlock": "cd", "found_on": "verdance"}, 
-  {"id": "old_town_at_rest", "title": "Old Town at Rest", "artist": "pianissimo", "group": "verdance", "kind": "playlist", "bpm": 70, "unlock": "cd", "found_on": "verdance"}, 
-  {"id": "verdance_night", "title": "Verdance Night", "artist": "pianissimo", "group": "verdance", "kind": "night", "bpm": 60, "unlock": "cd", "found_on": "verdance"}, 
-  {"id": "verdance_in_bloom", "title": "Verdance in Bloom", "artist": "farewell", "group": "verdance", "kind": "restored", "bpm": 105, "unlock": "cd", "found_on": "verdance"}, 
-  {"id": "sunbaked", "title": "Sunbaked", "artist": "two_suns", "group": "ochre", "kind": "playlist", "bpm": 118, "unlock": "cd", "found_on": "ochre"}, 
-  {"id": "strip_mine_shuffle", "title": "Strip Mine Shuffle", "artist": "two_suns", "group": "ochre", "kind": "playlist", "bpm": 112, "unlock": "cd", "found_on": "ochre"}, 
-  {"id": "dune_caravan", "title": "Dune Caravan", "artist": "two_suns", "group": "ochre", "kind": "playlist", "bpm": 105, "unlock": "cd", "found_on": "ochre"}, 
-  {"id": "glass_dunes", "title": "Glass Dunes", "artist": "mirage_bros", "group": "ochre", "kind": "playlist", "bpm": 96, "unlock": "cd", "found_on": "ochre"}, 
-  {"id": "sandglass", "title": "Sandglass", "artist": "mirage_bros", "group": "ochre", "kind": "playlist", "bpm": 84, "unlock": "cd", "found_on": "ochre"}, 
-  {"id": "twin_noon", "title": "Twin Noon", "artist": "mirage_bros", "group": "ochre", "kind": "playlist", "bpm": 72, "unlock": "cd", "found_on": "ochre"}, 
-  {"id": "mirage_night", "title": "Mirage Night", "artist": "mirage_bros", "group": "ochre", "kind": "night", "bpm": 65, "unlock": "cd", "found_on": "ochre"}, 
-  {"id": "oasis_terraces", "title": "Oasis Terraces", "artist": "two_suns", "group": "ochre", "kind": "restored", "bpm": 100, "unlock": "cd", "found_on": "ochre"}, 
-  {"id": "tradewinds", "title": "Tradewinds", "artist": "salty_buoys", "group": "tidewell", "kind": "playlist", "bpm": 112, "unlock": "cd", "found_on": "tidewell"}, 
-  {"id": "hover_hop", "title": "Hover Hop", "artist": "salty_buoys", "group": "tidewell", "kind": "playlist", "bpm": 126, "unlock": "cd", "found_on": "tidewell"}, 
-  {"id": "skipping_stones", "title": "Skipping Stones", "artist": "salty_buoys", "group": "tidewell", "kind": "playlist", "bpm": 120, "unlock": "cd", "found_on": "tidewell"}, 
-  {"id": "salt_and_sails", "title": "Salt and Sails", "artist": "salty_buoys", "group": "tidewell", "kind": "playlist", "bpm": 104, "unlock": "cd", "found_on": "tidewell"}, 
-  {"id": "low_tide_lofi", "title": "Low Tide Lofi", "artist": "barnacle_trio", "group": "tidewell", "kind": "playlist", "bpm": 82, "unlock": "cd", "found_on": "tidewell"}, 
-  {"id": "glass_lagoon", "title": "Glass Lagoon", "artist": "barnacle_trio", "group": "tidewell", "kind": "playlist", "bpm": 90, "unlock": "cd", "found_on": "tidewell"}, 
-  {"id": "tidepools", "title": "Tidepools", "artist": "barnacle_trio", "group": "tidewell", "kind": "night", "bpm": 62, "unlock": "cd", "found_on": "tidewell"}, 
-  {"id": "kelp_garden", "title": "Kelp Garden", "artist": "barnacle_trio", "group": "tidewell", "kind": "restored", "bpm": 98, "unlock": "cd", "found_on": "tidewell"}, 
-  {"id": "snowplow", "title": "Snowplow", "artist": "streetlights", "group": "rime", "kind": "playlist", "bpm": 118, "unlock": "cd", "found_on": "rime"}, 
-  {"id": "hoarfrost", "title": "Hoarfrost", "artist": "streetlights", "group": "rime", "kind": "playlist", "bpm": 96, "unlock": "cd", "found_on": "rime"}, 
-  {"id": "crunch_ice", "title": "Crunch Ice", "artist": "streetlights", "group": "rime", "kind": "playlist", "bpm": 90, "unlock": "cd", "found_on": "rime"}, 
-  {"id": "aurora_drift", "title": "Aurora Drift", "artist": "streetlights", "group": "rime", "kind": "playlist", "bpm": 88, "unlock": "cd", "found_on": "rime"}, 
-  {"id": "ringlight", "title": "Ringlight", "artist": "streetlights", "group": "rime", "kind": "playlist", "bpm": 84, "unlock": "cd", "found_on": "rime"}, 
-  {"id": "frozen_harbor", "title": "Frozen Harbor", "artist": "mittens", "group": "rime", "kind": "playlist", "bpm": 68, "unlock": "cd", "found_on": "rime"}, 
-  {"id": "long_night", "title": "Long Night", "artist": "mittens", "group": "rime", "kind": "night", "bpm": 55, "unlock": "cd", "found_on": "rime"}, 
-  {"id": "thaw", "title": "Thaw", "artist": "mittens", "group": "rime", "kind": "restored", "bpm": 92, "unlock": "cd", "found_on": "rime"}, 
-  {"id": "red_engine", "title": "Red Engine", "artist": "smelter", "group": "anvil", "kind": "playlist", "bpm": 110, "unlock": "cd", "found_on": "anvil"}, 
-  {"id": "slag_run", "title": "Slag Run", "artist": "smelter", "group": "anvil", "kind": "playlist", "bpm": 126, "unlock": "cd", "found_on": "anvil"}, 
-  {"id": "foundry_heart", "title": "Foundry Heart", "artist": "smelter", "group": "anvil", "kind": "playlist", "bpm": 90, "unlock": "cd", "found_on": "anvil"}, 
-  {"id": "ember_market", "title": "Ember Market", "artist": "smelter", "group": "anvil", "kind": "playlist", "bpm": 98, "unlock": "cd", "found_on": "anvil"}, 
-  {"id": "red_dust_waltz", "title": "Red Dust Waltz", "artist": "smelter", "group": "anvil", "kind": "playlist", "bpm": 80, "unlock": "cd", "found_on": "anvil"}, 
-  {"id": "magma_crawl", "title": "Magma Crawl", "artist": "smelter", "group": "anvil", "kind": "playlist", "bpm": 70, "unlock": "cd", "found_on": "anvil"}, 
-  {"id": "ash_choir", "title": "Ash Choir", "artist": "smelter", "group": "anvil", "kind": "night", "bpm": 60, "unlock": "cd", "found_on": "anvil"}, 
-  {"id": "iron_bloom", "title": "Iron Bloom", "artist": "smelter", "group": "anvil", "kind": "restored", "bpm": 95, "unlock": "cd", "found_on": "anvil"}]}
+{
+ "_doc": "[tunes] The song library (systems/tunes.gd). Files are audio/songs/<id>.mp3; a song whose file is missing is skipped everywhere (no CD, not on the CD player, not in the shuffle), so new MP3s can be dropped in by id later (then run an import). group: story or a planet id. kind: title / cinematic / villain (CD player only unless shuffle), playlist (background shuffle on its planet), night (only at night on its planet), restored (only once its planet is mostly restored). unlock: start (owned from the start) or cd (a CD found in the rubble on found_on). artist: an id in artists. Names, titles, genres, bios and descs are English and translated at display time (tr). artist home: the planet the artist lived on; every intact CD is found on its artist's home planet (found_on). scratched: rare one-play teaser CDs of songs you do not own yet, per_planet of them on each planet (planet/cd_finds.gd). State: GameState.flags.songs {found, pity, pending, scratched (held), scratch_left, scratch_cool, plays}.",
+ "start": [
+  "clean_sweep",
+  "greenfall_main",
+  "morning_shift"
+ ],
+ "gap_s": [
+  30,
+  90
+ ],
+ "first_gap_s": [
+  10,
+  25
+ ],
+ "crossfade_s": 4.0,
+ "other_planet_weight": 0.12,
+ "story_weight": 0.5,
+ "cd_find": {
+  "min_hexes": 4,
+  "base_chance": 0.05,
+  "pity_step": 0.035,
+  "guarantee_hexes": 18
+ },
+ "scratched": {
+  "per_planet": [
+   5,
+   10
+  ],
+  "chance": 0.025,
+  "min_hexes": 12,
+  "cooldown_hexes": 6,
+  "case_size": 4
+ },
+ "artists": [
+  {
+   "id": "farewell",
+   "home": "verdance",
+   "name": "The Cradle Farewell Orchestra",
+   "genre": "Orchestral",
+   "bio": "Played one last concert on the launch pad while the ark boarded. Half of them missed the flight on purpose, so the encore was very long."
+  },
+  {
+   "id": "compactors",
+   "home": "verdance",
+   "name": "The Compactors",
+   "genre": "Garage pop",
+   "bio": "A four-piece that rehearsed inside a broken trash compactor for the acoustics. They swear the walls only closed in on them once, during a drum solo."
+  },
+  {
+   "id": "rustbucket",
+   "home": "verdance",
+   "name": "Lil' Rustbucket",
+   "genre": "Chiptune",
+   "bio": "A retired sweeper bot who refused to stop making beats. Every track was recorded on its own diagnostic beeper, between error codes."
+  },
+  {
+   "id": "recycle_bin",
+   "home": "verdance",
+   "name": "DJ Recycle Bin",
+   "genre": "Lofi beats",
+   "bio": "Only samples sounds from the city dump: lids, crinkles, a fridge door with real soul. Released three albums and never once got out of bed for them."
+  },
+  {
+   "id": "pianissimo",
+   "home": "verdance",
+   "name": "Professor Pianissimo",
+   "genre": "Quiet piano",
+   "bio": "Composes only for empty rooms and sleeping cities. His neighbours filed forty-one noise complaints, all saying the music was too soft to hear properly."
+  },
+  {
+   "id": "two_suns",
+   "home": "ochre",
+   "name": "Two Suns Tango Orchestra",
+   "genre": "Desert dance band",
+   "bio": "Ochre's hardest-working band: with two suns there is no shade and no siesta, so they just kept playing. The sunglasses are part of the uniform."
+  },
+  {
+   "id": "mirage_bros",
+   "home": "ochre",
+   "name": "The Mirage Brothers",
+   "genre": "Heat-haze ambient",
+   "bio": "Nobody is sure how many Mirage Brothers there are. On a hot day the crowd counted seven; on a cold one, just Gary."
+  },
+  {
+   "id": "salty_buoys",
+   "home": "tidewell",
+   "name": "The Salty Buoys",
+   "genre": "Island pop",
+   "bio": "A beach band that played on floating junk rafts, drifting between islands mid-song. Their tour schedule depended entirely on the tide."
+  },
+  {
+   "id": "barnacle_trio",
+   "home": "tidewell",
+   "name": "Barnacle Bossa Trio",
+   "genre": "Bossa and lofi",
+   "bio": "Three mellow players who refused to evacuate until the set was finished. The set was four hours long. They caught the last pod, still humming."
+  },
+  {
+   "id": "streetlights",
+   "home": "rime",
+   "name": "Static & the Streetlights",
+   "genre": "Icy synthpop",
+   "bio": "A synth duo who powered their gigs by plugging into whichever harbour lamp still worked. The power company billed them for the whole ice shelf."
+  },
+  {
+   "id": "mittens",
+   "home": "rime",
+   "name": "Mittens McKenzie",
+   "genre": "Frozen piano",
+   "bio": "Rime's beloved pianist, who played every concert in mittens. Critics called it muffled genius. Mittens called it frostbite prevention."
+  },
+  {
+   "id": "smelter",
+   "home": "anvil",
+   "name": "Smelter Skelter",
+   "genre": "Foundry industrial",
+   "bio": "Brooding Anvil band who tuned their drums to the furnace roar. The Ledger tried to buy their catalogue; they melted the contract down and played the slag."
+  },
+  {
+   "id": "ledger_audio",
+   "home": "anvil",
+   "name": "Ledger Brand Audio",
+   "genre": "Corporate",
+   "bio": "The Ledger's in-house jingle studio. Every song is copyrighted, trademarked and billed per listen. Credited as \"Ledger Brand Audio, all rights extracted\"."
+  }
+ ],
+ "songs": [
+  {
+   "id": "greenfall_main",
+   "title": "Greenfall (Main Theme)",
+   "artist": "farewell",
+   "group": "story",
+   "kind": "title",
+   "bpm": 85,
+   "unlock": "start",
+   "desc": "The song the Makers hummed on the way to the ark. Hopeful, a little lonely."
+  },
+  {
+   "id": "fall_of_lm1",
+   "title": "The Fall of LM-1",
+   "artist": "farewell",
+   "group": "story",
+   "kind": "cinematic",
+   "shuffle": false,
+   "bpm": 90,
+   "unlock": "cd",
+   "found_on": "verdance",
+   "desc": "Meteors, alarms, one small pod falling. Then quiet piano."
+  },
+  {
+   "id": "the_ledger",
+   "title": "The Ledger",
+   "artist": "ledger_audio",
+   "group": "story",
+   "kind": "villain",
+   "shuffle": false,
+   "bpm": 100,
+   "unlock": "cd",
+   "found_on": "anvil",
+   "desc": "Ticking clocks and detuned bass. Sounds expensive."
+  },
+  {
+   "id": "sprout_step",
+   "title": "Sprout Step",
+   "artist": "compactors",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 115,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "clean_sweep",
+   "title": "Clean Sweep",
+   "artist": "compactors",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 120,
+   "unlock": "start"
+  },
+  {
+   "id": "little_helpers",
+   "title": "Little Helpers",
+   "artist": "rustbucket",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 125,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "neon_gutters",
+   "title": "Neon Gutters",
+   "artist": "recycle_bin",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 108,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "morning_shift",
+   "title": "Morning Shift",
+   "artist": "compactors",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 100,
+   "unlock": "start"
+  },
+  {
+   "id": "bale_by_bale",
+   "title": "Bale by Bale",
+   "artist": "recycle_bin",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 85,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "rust_and_ribbons",
+   "title": "Rust and Ribbons",
+   "artist": "pianissimo",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 75,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "old_town_at_rest",
+   "title": "Old Town at Rest",
+   "artist": "pianissimo",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 70,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "verdance_night",
+   "title": "Verdance Night",
+   "artist": "pianissimo",
+   "group": "verdance",
+   "kind": "night",
+   "bpm": 60,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "verdance_in_bloom",
+   "title": "Verdance in Bloom",
+   "artist": "farewell",
+   "group": "verdance",
+   "kind": "restored",
+   "bpm": 105,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "sunbaked",
+   "title": "Sunbaked",
+   "artist": "two_suns",
+   "group": "ochre",
+   "kind": "playlist",
+   "bpm": 118,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "strip_mine_shuffle",
+   "title": "Strip Mine Shuffle",
+   "artist": "two_suns",
+   "group": "ochre",
+   "kind": "playlist",
+   "bpm": 112,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "dune_caravan",
+   "title": "Dune Caravan",
+   "artist": "two_suns",
+   "group": "ochre",
+   "kind": "playlist",
+   "bpm": 105,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "glass_dunes",
+   "title": "Glass Dunes",
+   "artist": "mirage_bros",
+   "group": "ochre",
+   "kind": "playlist",
+   "bpm": 96,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "sandglass",
+   "title": "Sandglass",
+   "artist": "mirage_bros",
+   "group": "ochre",
+   "kind": "playlist",
+   "bpm": 84,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "twin_noon",
+   "title": "Twin Noon",
+   "artist": "mirage_bros",
+   "group": "ochre",
+   "kind": "playlist",
+   "bpm": 72,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "mirage_night",
+   "title": "Mirage Night",
+   "artist": "mirage_bros",
+   "group": "ochre",
+   "kind": "night",
+   "bpm": 65,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "oasis_terraces",
+   "title": "Oasis Terraces",
+   "artist": "two_suns",
+   "group": "ochre",
+   "kind": "restored",
+   "bpm": 100,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "tradewinds",
+   "title": "Tradewinds",
+   "artist": "salty_buoys",
+   "group": "tidewell",
+   "kind": "playlist",
+   "bpm": 112,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "hover_hop",
+   "title": "Hover Hop",
+   "artist": "salty_buoys",
+   "group": "tidewell",
+   "kind": "playlist",
+   "bpm": 126,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "skipping_stones",
+   "title": "Skipping Stones",
+   "artist": "salty_buoys",
+   "group": "tidewell",
+   "kind": "playlist",
+   "bpm": 120,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "salt_and_sails",
+   "title": "Salt and Sails",
+   "artist": "salty_buoys",
+   "group": "tidewell",
+   "kind": "playlist",
+   "bpm": 104,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "low_tide_lofi",
+   "title": "Low Tide Lofi",
+   "artist": "barnacle_trio",
+   "group": "tidewell",
+   "kind": "playlist",
+   "bpm": 82,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "glass_lagoon",
+   "title": "Glass Lagoon",
+   "artist": "barnacle_trio",
+   "group": "tidewell",
+   "kind": "playlist",
+   "bpm": 90,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "tidepools",
+   "title": "Tidepools",
+   "artist": "barnacle_trio",
+   "group": "tidewell",
+   "kind": "night",
+   "bpm": 62,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "kelp_garden",
+   "title": "Kelp Garden",
+   "artist": "barnacle_trio",
+   "group": "tidewell",
+   "kind": "restored",
+   "bpm": 98,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "snowplow",
+   "title": "Snowplow",
+   "artist": "streetlights",
+   "group": "rime",
+   "kind": "playlist",
+   "bpm": 118,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "hoarfrost",
+   "title": "Hoarfrost",
+   "artist": "streetlights",
+   "group": "rime",
+   "kind": "playlist",
+   "bpm": 96,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "crunch_ice",
+   "title": "Crunch Ice",
+   "artist": "streetlights",
+   "group": "rime",
+   "kind": "playlist",
+   "bpm": 90,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "aurora_drift",
+   "title": "Aurora Drift",
+   "artist": "streetlights",
+   "group": "rime",
+   "kind": "playlist",
+   "bpm": 88,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "ringlight",
+   "title": "Ringlight",
+   "artist": "streetlights",
+   "group": "rime",
+   "kind": "playlist",
+   "bpm": 84,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "frozen_harbor",
+   "title": "Frozen Harbor",
+   "artist": "mittens",
+   "group": "rime",
+   "kind": "playlist",
+   "bpm": 68,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "long_night",
+   "title": "Long Night",
+   "artist": "mittens",
+   "group": "rime",
+   "kind": "night",
+   "bpm": 55,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "thaw",
+   "title": "Thaw",
+   "artist": "mittens",
+   "group": "rime",
+   "kind": "restored",
+   "bpm": 92,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "red_engine",
+   "title": "Red Engine",
+   "artist": "smelter",
+   "group": "anvil",
+   "kind": "playlist",
+   "bpm": 110,
+   "unlock": "cd",
+   "found_on": "anvil"
+  },
+  {
+   "id": "slag_run",
+   "title": "Slag Run",
+   "artist": "smelter",
+   "group": "anvil",
+   "kind": "playlist",
+   "bpm": 126,
+   "unlock": "cd",
+   "found_on": "anvil"
+  },
+  {
+   "id": "foundry_heart",
+   "title": "Foundry Heart",
+   "artist": "smelter",
+   "group": "anvil",
+   "kind": "playlist",
+   "bpm": 90,
+   "unlock": "cd",
+   "found_on": "anvil"
+  },
+  {
+   "id": "ember_market",
+   "title": "Ember Market",
+   "artist": "smelter",
+   "group": "anvil",
+   "kind": "playlist",
+   "bpm": 98,
+   "unlock": "cd",
+   "found_on": "anvil"
+  },
+  {
+   "id": "red_dust_waltz",
+   "title": "Red Dust Waltz",
+   "artist": "smelter",
+   "group": "anvil",
+   "kind": "playlist",
+   "bpm": 80,
+   "unlock": "cd",
+   "found_on": "anvil"
+  },
+  {
+   "id": "magma_crawl",
+   "title": "Magma Crawl",
+   "artist": "smelter",
+   "group": "anvil",
+   "kind": "playlist",
+   "bpm": 70,
+   "unlock": "cd",
+   "found_on": "anvil"
+  },
+  {
+   "id": "ash_choir",
+   "title": "Ash Choir",
+   "artist": "smelter",
+   "group": "anvil",
+   "kind": "night",
+   "bpm": 60,
+   "unlock": "cd",
+   "found_on": "anvil"
+  },
+  {
+   "id": "iron_bloom",
+   "title": "Iron Bloom",
+   "artist": "smelter",
+   "group": "anvil",
+   "kind": "restored",
+   "bpm": 95,
+   "unlock": "cd",
+   "found_on": "anvil"
+  },
+  {
+   "id": "signal_found",
+   "title": "Signal Found",
+   "artist": "rustbucket",
+   "group": "story",
+   "kind": "cinematic",
+   "bpm": 76,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "what_the_ledger_took",
+   "title": "What the Ledger Took",
+   "artist": "recycle_bin",
+   "group": "story",
+   "kind": "cinematic",
+   "bpm": 62,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "drone_sweep",
+   "title": "Drone Sweep",
+   "artist": "pianissimo",
+   "group": "story",
+   "kind": "cinematic",
+   "bpm": 96,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "small_robot_big_sky",
+   "title": "Small Robot, Big Sky",
+   "artist": "farewell",
+   "group": "story",
+   "kind": "cinematic",
+   "bpm": 124,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "dumpster_disco",
+   "title": "Dumpster Disco",
+   "artist": "compactors",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 118,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "pocket_full_of_bolts",
+   "title": "Pocket Full of Bolts",
+   "artist": "rustbucket",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 120,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "tin_can_parade",
+   "title": "Tin Can Parade",
+   "artist": "recycle_bin",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 112,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "cardboard_kingdom",
+   "title": "Cardboard Kingdom",
+   "artist": "pianissimo",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 104,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "rain_on_rust",
+   "title": "Rain on Rust",
+   "artist": "farewell",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 76,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "streetlight_memory",
+   "title": "Streetlight Memory",
+   "artist": "compactors",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 84,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "the_last_bus_stop",
+   "title": "The Last Bus Stop",
+   "artist": "rustbucket",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 66,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "something_in_the_alley",
+   "title": "Something in the Alley",
+   "artist": "recycle_bin",
+   "group": "verdance",
+   "kind": "night",
+   "bpm": 88,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "green_again",
+   "title": "Green Again",
+   "artist": "pianissimo",
+   "group": "verdance",
+   "kind": "restored",
+   "bpm": 116,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "dawn_patrol",
+   "title": "Dawn Patrol",
+   "artist": "farewell",
+   "group": "verdance",
+   "kind": "playlist",
+   "bpm": 90,
+   "unlock": "cd",
+   "found_on": "verdance"
+  },
+  {
+   "id": "cactus_cowbot",
+   "title": "Cactus Cowbot",
+   "artist": "two_suns",
+   "group": "ochre",
+   "kind": "playlist",
+   "bpm": 122,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "heatwave_hustle",
+   "title": "Heatwave Hustle",
+   "artist": "mirage_bros",
+   "group": "ochre",
+   "kind": "playlist",
+   "bpm": 115,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "mirage_market",
+   "title": "Mirage Market",
+   "artist": "two_suns",
+   "group": "ochre",
+   "kind": "playlist",
+   "bpm": 108,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "endless_sand",
+   "title": "Endless Sand",
+   "artist": "mirage_bros",
+   "group": "ochre",
+   "kind": "playlist",
+   "bpm": 86,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "letters_in_the_pit",
+   "title": "Letters in the Pit",
+   "artist": "two_suns",
+   "group": "ochre",
+   "kind": "playlist",
+   "bpm": 72,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "sandstorm_warning",
+   "title": "Sandstorm Warning",
+   "artist": "mirage_bros",
+   "group": "ochre",
+   "kind": "playlist",
+   "bpm": 104,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "bones_of_the_excavator",
+   "title": "Bones of the Excavator",
+   "artist": "two_suns",
+   "group": "ochre",
+   "kind": "night",
+   "bpm": 60,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "first_rain_on_ochre",
+   "title": "First Rain on Ochre",
+   "artist": "mirage_bros",
+   "group": "ochre",
+   "kind": "restored",
+   "bpm": 80,
+   "unlock": "cd",
+   "found_on": "ochre"
+  },
+  {
+   "id": "bubble_pop",
+   "title": "Bubble Pop",
+   "artist": "salty_buoys",
+   "group": "tidewell",
+   "kind": "playlist",
+   "bpm": 124,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "pier_pressure",
+   "title": "Pier Pressure",
+   "artist": "barnacle_trio",
+   "group": "tidewell",
+   "kind": "playlist",
+   "bpm": 130,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "crab_shuffle",
+   "title": "Crab Shuffle",
+   "artist": "salty_buoys",
+   "group": "tidewell",
+   "kind": "playlist",
+   "bpm": 110,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "drifting_raft",
+   "title": "Drifting Raft",
+   "artist": "barnacle_trio",
+   "group": "tidewell",
+   "kind": "playlist",
+   "bpm": 78,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "message_in_a_bottle",
+   "title": "Message in a Bottle",
+   "artist": "salty_buoys",
+   "group": "tidewell",
+   "kind": "playlist",
+   "bpm": 70,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "the_deep_below",
+   "title": "The Deep Below",
+   "artist": "barnacle_trio",
+   "group": "tidewell",
+   "kind": "playlist",
+   "bpm": 72,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "lighthouse_ghost",
+   "title": "Lighthouse Ghost",
+   "artist": "salty_buoys",
+   "group": "tidewell",
+   "kind": "night",
+   "bpm": 58,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "coral_comeback",
+   "title": "Coral Comeback",
+   "artist": "barnacle_trio",
+   "group": "tidewell",
+   "kind": "restored",
+   "bpm": 118,
+   "unlock": "cd",
+   "found_on": "tidewell"
+  },
+  {
+   "id": "penguin_bot_waddle",
+   "title": "Penguin Bot Waddle",
+   "artist": "streetlights",
+   "group": "rime",
+   "kind": "playlist",
+   "bpm": 106,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "ice_rink_lights",
+   "title": "Ice Rink Lights",
+   "artist": "mittens",
+   "group": "rime",
+   "kind": "playlist",
+   "bpm": 122,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "snow_globe",
+   "title": "Snow Globe",
+   "artist": "streetlights",
+   "group": "rime",
+   "kind": "playlist",
+   "bpm": 76,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "the_long_way_home",
+   "title": "The Long Way Home",
+   "artist": "mittens",
+   "group": "rime",
+   "kind": "playlist",
+   "bpm": 68,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "whiteout",
+   "title": "Whiteout",
+   "artist": "streetlights",
+   "group": "rime",
+   "kind": "playlist",
+   "bpm": 98,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "frozen_voices",
+   "title": "Frozen Voices",
+   "artist": "mittens",
+   "group": "rime",
+   "kind": "night",
+   "bpm": 54,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "hot_spring_hangout",
+   "title": "Hot Spring Hangout",
+   "artist": "streetlights",
+   "group": "rime",
+   "kind": "playlist",
+   "bpm": 92,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "spring_under_ice",
+   "title": "Spring Under Ice",
+   "artist": "mittens",
+   "group": "rime",
+   "kind": "restored",
+   "bpm": 84,
+   "unlock": "cd",
+   "found_on": "rime"
+  },
+  {
+   "id": "molten_groove",
+   "title": "Molten Groove",
+   "artist": "smelter",
+   "group": "anvil",
+   "kind": "playlist",
+   "bpm": 114,
+   "unlock": "cd",
+   "found_on": "anvil"
+  },
+  {
+   "id": "forge_stomp",
+   "title": "Forge Stomp",
+   "artist": "ledger_audio",
+   "group": "anvil",
+   "kind": "playlist",
+   "bpm": 120,
+   "unlock": "cd",
+   "found_on": "anvil"
+  },
+  {
+   "id": "lava_lamp_lounge",
+   "title": "Lava Lamp Lounge",
+   "artist": "smelter",
+   "group": "anvil",
+   "kind": "playlist",
+   "bpm": 96,
+   "unlock": "cd",
+   "found_on": "anvil"
+  },
+  {
+   "id": "ember_drift",
+   "title": "Ember Drift",
+   "artist": "ledger_audio",
+   "group": "anvil",
+   "kind": "playlist",
+   "bpm": 80,
+   "unlock": "cd",
+   "found_on": "anvil"
+  },
+  {
+   "id": "the_clerk_s_regret",
+   "title": "The Clerk's Regret",
+   "artist": "smelter",
+   "group": "anvil",
+   "kind": "playlist",
+   "bpm": 64,
+   "unlock": "cd",
+   "found_on": "anvil"
+  },
+  {
+   "id": "furnace_heartbeat",
+   "title": "Furnace Heartbeat",
+   "artist": "ledger_audio",
+   "group": "anvil",
+   "kind": "playlist",
+   "bpm": 90,
+   "unlock": "cd",
+   "found_on": "anvil"
+  },
+  {
+   "id": "shadows_in_the_smelter",
+   "title": "Shadows in the Smelter",
+   "artist": "smelter",
+   "group": "anvil",
+   "kind": "night",
+   "bpm": 56,
+   "unlock": "cd",
+   "found_on": "anvil"
+  },
+  {
+   "id": "cool_stone",
+   "title": "Cool Stone",
+   "artist": "ledger_audio",
+   "group": "anvil",
+   "kind": "restored",
+   "bpm": 78,
+   "unlock": "cd",
+   "found_on": "anvil"
+  }
+ ]
+}
