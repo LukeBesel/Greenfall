@@ -24,6 +24,10 @@ var _progress: float = -1.0
 var _flash: float = 0.0
 var _busy: bool = false
 var _index: int = -1
+## [v2guide] Owner playtest 2 #33: one card. A sub-step (the restart checklist's "Empty your chest
+## into the trash bin", the first seed's "water it") replaces the card's text while it lasts.
+var substep: String = ""
+var substep_progress: Array = [-1.0, ""]
 
 
 func _ready() -> void:
@@ -100,10 +104,25 @@ func refresh(animate: bool) -> void:
 
 
 func _set_texts(def: Dictionary) -> void:
+	if substep != "":  # [v2guide]
+		_title.text = substep
+		_why.visible = false
+		return
 	var t: Array[String] = Objectives.texts(def)
 	_title.text = t[0]
 	_why.text = t[1]
 	_why.visible = t[1] != ""
+
+
+## [v2guide] Sets (or clears, with "") the sub-step shown in place of the objective; plain text.
+func set_substep(text: String, pr: Array = [-1.0, ""]) -> void:
+	substep_progress = pr
+	if text == substep:
+		return
+	substep = text
+	if visible and not _busy:
+		_title.modulate.a = 0.0
+		create_tween().set_ignore_time_scale(true).tween_property(_title, "modulate:a", 1.0, 0.3)
 
 
 func _on_completed(_i: int) -> void:
@@ -130,7 +149,7 @@ func _process(delta: float) -> void:
 	if def.is_empty():
 		return
 	_set_texts(def)  # the why can change (a wait flag), and the language
-	var pr: Array = objectives.progress()
+	var pr: Array = objectives.progress() if substep == "" else substep_progress  # [v2guide]
 	_progress = float(pr[0])
 	_count.text = str(pr[1])
 	_shown = lerpf(_shown, maxf(_progress, 0.0), clampf(delta * 6.0, 0.0, 1.0))
