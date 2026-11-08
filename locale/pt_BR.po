@@ -15882,7 +15882,7 @@ msgstr "Metade do caminho. Os lagos sob o gelo estão enchendo de novo. O Ledger
 
 #: data/wren_lines.json:world_ice_moon_memory_2
 msgid "That silo was a seed vault before the Ledger made it a depot. Someone kept seeds hidden in the bottom tier anyway. I'd have liked to meet them."
-msgstr "Esse silo era um cofre de sementes antes do Ledger virar depósito. Mesmo assim, alguém escondeu sementes no nível mais baixo. Eu teria gostado de conhecer essa pessoa."
+msgstr "Esse silo era um cofre de sementes antes de o Ledger transformá-lo em depósito. Mesmo assim, alguém escondeu sementes no nível mais baixo. Eu teria gostado de conhecer essa pessoa."
 
 #: data/wren_lines.json:world_ice_moon_restored
 msgid "Green under a ringed sky. The Ledger wrote this moon off as a loss. It was wrong about that too."
