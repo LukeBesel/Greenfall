@@ -4,6 +4,9 @@ shader_type spatial;
 // dust drifting in from the edges, and the painted markings / cracks / moss that
 // StreetDressing bakes into `paint` (RGBA), worn by noise. Opaque, so SSR and SSAO work on it.
 render_mode cull_back;
+// [orbD] Site frame on a walkable globe (identity on the flat game): "world" maths run in the
+// nearest hub site's local metres, y up on its pad (planet/sites/site_manager.gd).
+global uniform mat4 site_inv;
 
 uniform sampler2D conc_alb : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D conc_nrm : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
@@ -50,7 +53,7 @@ float fbm(vec2 p) {
 }
 
 void vertex() {
-	v_world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	v_world = (site_inv * MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
 
 void fragment() {

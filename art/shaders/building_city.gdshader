@@ -8,6 +8,9 @@ shader_type spatial;
 // Everything else (windows, shopfronts, roof membrane, gravel, solar cells) is procedural from
 // world position, so one draw call covers a whole block.
 render_mode diffuse_burley, specular_schlick_ggx;
+// [orbD] Site frame on a walkable globe (identity on the flat game): "world" maths run in the
+// nearest hub site's local metres, y up on its pad (planet/sites/site_manager.gd).
+global uniform mat4 site_inv;
 
 uniform sampler2D tex_red_brick : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D tex_brick : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
@@ -46,8 +49,8 @@ float lum(vec3 c) {
 }
 
 void vertex() {
-	wp = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	wn = normalize((MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
+	wp = (site_inv * MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	wn = normalize((site_inv * MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
 	// Tangent frame matching the world-projected texture coordinates used below.
 	if (abs(NORMAL.y) > 0.7) {
 		TANGENT = vec3(1.0, 0.0, 0.0);
