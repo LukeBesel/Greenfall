@@ -417,7 +417,25 @@ static func ore_silo(b: KitMesh.Builder, t: Transform3D, stage: int) -> void:
 ## The oasis greenhouse dome (about 15 m across, 8 m tall): a bevelled concrete ring wall, a
 ## ribbed glass dome with a lantern cap, an airlock porch, vents and a decal. Broken: bare ribs
 ## with gaps, shattered glass, debris. Restored: green inside, lit lantern and porch lamps.
-static func greenhouse(b: KitMesh.Builder, t: Transform3D, stage: int) -> void:
+## Pale aqua greenhouse glass: clear, cool, a bright fresnel rim, the planting showing through.
+static func dome_glass() -> StandardMaterial3D:
+	if _mats.has("dome_glass"):
+		return _mats["dome_glass"]
+	var m := StandardMaterial3D.new()
+	m.albedo_color = Color(0.72, 0.92, 0.95, 0.28)
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	m.roughness = 0.04
+	m.metallic = 0.1
+	m.metallic_specular = 0.8
+	m.rim_enabled = true
+	m.rim = 0.6
+	m.rim_tint = 0.3
+	_mats["dome_glass"] = m
+	return m
+
+
+static func greenhouse(b: KitMesh.Builder, t: Transform3D, stage: int, site: Node3D = null) -> void:
 	var broken: bool = stage <= 1
 	var X := func(p: Vector3, r: Vector3 = Vector3.ZERO) -> Transform3D: return t * KitMesh.xf(p, r)
 	var R: float = 7.5
@@ -428,7 +446,16 @@ static func greenhouse(b: KitMesh.Builder, t: Transform3D, stage: int) -> void:
 		var a: float = PI * 0.5 * float(k) / 8.0
 		prof.append(Vector3(cos(a) * R, 1.45 + sin(a) * 6.3, 1.0 if k in [0, 8] else 0.0))
 	if not broken:
-		b.add("glass", KitMesh.lathe(prof, 24), X.call(Vector3.ZERO))
+		if site:
+			var gl := MeshInstance3D.new()
+			gl.name = "DomeGlass"
+			gl.mesh = OchreProps._prim_mesh(KitMesh.lathe(prof, 24), Vector3.ZERO)
+			gl.transform = t
+			gl.material_override = dome_glass()
+			gl.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			site.add_child(gl)
+		else:
+			b.add("glass", KitMesh.lathe(prof, 24), X.call(Vector3.ZERO))
 	var ribs: int = 16
 	for i: int in ribs:
 		if broken and i % 5 == 2:
@@ -788,8 +815,8 @@ static func _oasis(site: Node3D, stage: int, restore: float, rng: RandomNumberGe
 				b.add(ProcMesh.sphere(0.9, 8, 4), ProcMesh.xf(Vector3(cos(a) * (r0 + 1.6), 0.45 + k * 0.5, sin(a) * (r0 + 1.6)), Vector3.ZERO, Vector3(1.3, 0.6, 1.3)), mat("leaf"))
 	# Palms: stumps while ruined, a ring of date palms once restored.
 	var palms: Array = []
-	for i: int in 7:
-		var a: float = TAU * i / 7.0 + rng.randf_range(-0.1, 0.1)
+	for i: int in 4:
+		var a: float = TAU * i / 4.0 + 0.4 + rng.randf_range(-0.15, 0.15)
 		var p := Vector3(cos(a) * 13.2, 0, sin(a) * 13.2)
 		if restore < 0.15 or stage <= 1:
 			b.add(OchreProps.kcyl(0.2, 0.3, rng.randf_range(0.6, 2.6), 7), ProcMesh.xf(p + Vector3(0, 0.6, 0), Vector3(rng.randf_range(-12, 12), 0, rng.randf_range(-12, 12))), mat("dark"))
@@ -810,7 +837,7 @@ static func _oasis(site: Node3D, stage: int, restore: float, rng: RandomNumberGe
 	b.flush(site, true, 600.0)
 	# Kit dressing: the spring's pump house and header tank (Hub builds, stage 2+), pipes out to
 	# the beds and planters when restored, lamps; scrap barrels in the dry pan while ruined.
-	greenhouse(okb, KitMesh.xf(Vector3(-27.0, 0, 13.0), Vector3(0, 60, 0)) * Transform3D(Basis.from_scale(Vector3.ONE * 1.45), Vector3.ZERO), stage)  # the hero
+	greenhouse(okb, KitMesh.xf(Vector3(-27.0, 0, 13.0), Vector3(0, 60, 0)) * Transform3D(Basis.from_scale(Vector3.ONE * 1.45), Vector3.ZERO), stage, site)  # the hero
 	_avoid.append([Vector2(-27.0, 13.0), 14.0])
 	if stage >= 2:
 		_kb(site, "module_small", Vector3(30.0, 0, -12.0), -110.0, stage, 81)
