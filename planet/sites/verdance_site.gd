@@ -121,6 +121,13 @@ func _ruin_layout(reshuffle: bool) -> void:
 		if key == Vector2i.ZERO:
 			continue
 		var b: Dictionary = layout.blocks[key]
+		if not reshuffle and key.x == 0:
+			# The start yard's main street: open landfill lots north and south of the yard, so the
+			# way out (and a lap round the planet) is never walled off.
+			b["type"] = CityLayout.Block.LANDFILL
+			b["buildings"] = []
+			layout.blocks[key] = b
+			continue
 		if reshuffle:
 			var t: int = kinds[rng.randi() % kinds.size()]
 			b["type"] = t
