@@ -86,6 +86,7 @@ func _setup_globe(data: Dictionary) -> void:
 			avoid.append(to_local(so.call("yard_point", nm)))
 	for s: Dictionary in Outposts.plan_cells(self, f, frame_cells, {}, hub_index):  # keep off the outpost slabs
 		avoid.append(s["pos"] as Vector3)
+	avoid.append(LedgerArc.relay_spot_cells(self, f, frame_cells, hub_index)["pos"] as Vector3)  # and the Ledger's relay
 	var plan: Array[Dictionary] = plan_spots_cells(self, f, frame_cells, ids, defs, avoid, f.seed_value + 9091 + hub_index * 31)
 	for p: Dictionary in plan:
 		_spawn(p)
