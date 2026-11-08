@@ -76,6 +76,8 @@ func _ready() -> void:
 	_glow = Mats.lamp(CYAN, 2.4)
 	_engine = Mats.lamp(Color(0.6, 0.95, 1.0), 6.0)
 	_nav = Mats.lamp(Color(1.0, 0.36, 0.12), 4.0)
+	# Lighter accent plates than the Mk VII glider: the ark stays mostly pearl.
+	(mats["panel"] as ShaderMaterial).set_shader_parameter("paint_color", Color(0.6, 0.62, 0.66))
 	mats["glow"] = _glow
 	mats["thruster"] = _engine
 	mats["lamp"] = _nav
