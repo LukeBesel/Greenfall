@@ -189,3 +189,22 @@ func test_panel_is_one_simple_card() -> void:
 		assert_eq(f.weight(t), mini(w0 + 1, int(BotFabricator.cfg()["max_weight"])))
 	(buttons[buttons.size() - 1] as Button).pressed.emit()
 	assert_true(f.paused(), "the last button pauses")
+
+
+func test_queue_comes_before_the_mix_and_api() -> void:
+	var crew: SphereCrew = _crew()
+	var f: BotFabricator = _fab(crew, [{"cell": 100}])
+	_give(1e7, 1e6)
+	f.set_mix({"scoopie": 1})
+	f.enqueue("haulbug")
+	f.enqueue("haulbug")
+	assert_eq(f.upcoming(4), ["haulbug", "haulbug", "scoopie", "scoopie"] as Array[String])
+	var bs: float = float(BotFabricator.cfg()["build_s"])
+	for i: int in 3:
+		f.tick(0.01)
+		f.tick(bs)
+	assert_eq(f.built_count(), 3)
+	assert_eq(int((BotFabricator.state("test_planet")["made"] as Dictionary).get("haulbug", 0)), 2)
+	assert_true(f.queue().is_empty())
+	assert_eq(f.cap_now(), 6)
+	assert_eq(f.mix(), {"scoopie": 1})

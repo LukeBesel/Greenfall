@@ -10,7 +10,13 @@ extends Node
 ## records and its near budget keep that cheap).
 ##
 ## State (persists with the save): GameState.flags["fabricator"][planet id] =
-##   {built, paused, mix: {type: weight}, made: {type: n}, cur: type being built ("" = none), t: 0..1}
+##   {built, paused, mix: {type: weight}, queue: [type, ...] (one-offs, built before the mix),
+##    made: {type: n}, cur: type being built ("" = none), t: 0..1}
+##
+## UI API (ui/fabricator_panel.gd, the workbench Bots tab): BotFabricator.of(world) -> node, then
+## mix() / set_mix(d) / set_weight(t, w) / weight(t), queue() / enqueue(t) / clear_queue(),
+## upcoming(n), cap_now(), fleet_size(), built_count(), paused() / set_paused(on), status_line(),
+## and static robot_cost(t), types(), built(world), unlocked(world), cost().
 ## The node itself is rebuilt by attach(world) whenever a world with a built Fabricator starts.
 
 signal robot_made(type_id: String)
@@ -42,7 +48,7 @@ static func state(pid: String) -> Dictionary:
 	var all: Dictionary = GameState.flags["fabricator"]
 	if not (all.get(pid) is Dictionary):
 		all[pid] = {"built": false, "paused": false, "mix": (cfg().get("default_mix", {"scoopie": 3, "haulbug": 1}) as Dictionary).duplicate(),
-			"made": {}, "cur": "", "t": 0.0}
+			"queue": [], "made": {}, "cur": "", "t": 0.0}
 	return all[pid]
 
 
@@ -232,6 +238,63 @@ func weight(type_id: String) -> int:
 	return int((state(planet_id)["mix"] as Dictionary).get(type_id, 0))
 
 
+func mix() -> Dictionary:
+	return (state(planet_id)["mix"] as Dictionary).duplicate()
+
+
+func set_mix(d: Dictionary) -> void:
+	var m: Dictionary = {}
+	for t: String in d:
+		m[t] = clampi(int(d[t]), 0, int(cfg().get("max_weight", 9)))
+	state(planet_id)["mix"] = m
+
+
+## One-off orders, built before the mix (in order).
+func queue() -> Array:
+	return (state(planet_id).get("queue", []) as Array).duplicate()
+
+
+func enqueue(type_id: String) -> void:
+	var st: Dictionary = state(planet_id)
+	if not (st.get("queue") is Array):
+		st["queue"] = []
+	(st["queue"] as Array).append(type_id)
+
+
+func clear_queue() -> void:
+	state(planet_id)["queue"] = []
+
+
+## The next `n` robots it will build (queue first, then the mix), for a preview row.
+func upcoming(n: int = 5) -> Array[String]:
+	var st: Dictionary = state(planet_id)
+	var out: Array[String] = []
+	var made: Dictionary = (st["made"] as Dictionary).duplicate()
+	var allowed: Array[String] = only_types if not only_types.is_empty() else types()
+	for t: Variant in st.get("queue", []):
+		if out.size() < n and allowed.has(str(t)):
+			out.append(str(t))
+	while out.size() < n:
+		var t: String = next_type(st["mix"], made, allowed)
+		if t == "":
+			break
+		out.append(t)
+		made[t] = int(made.get(t, 0)) + 1
+	return out
+
+
+func cap_now() -> int:
+	return cap
+
+
+## Robots this Fabricator has built on this planet.
+func built_count() -> int:
+	var n: int = 0
+	for t: String in state(planet_id)["made"]:
+		n += int(state(planet_id)["made"][t])
+	return n
+
+
 func set_paused(on: bool) -> void:
 	state(planet_id)["paused"] = on
 
@@ -262,13 +325,19 @@ func tick(delta: float) -> void:
 		if fleet_size() >= cap:
 			status = "Fleet full."
 			return
-		var nt: String = next_type(st["mix"], st["made"], only_types if not only_types.is_empty() else types())
+		var allowed: Array[String] = only_types if not only_types.is_empty() else types()
+		var q: Array = st.get("queue", [])
+		var nt: String = str(q[0]) if not q.is_empty() and allowed.has(str(q[0])) else next_type(st["mix"], st["made"], allowed)
+		if not q.is_empty() and not allowed.has(str(q[0])):
+			q.pop_front()  # a queued type that is no longer allowed is dropped
 		if nt == "":
 			status = "Set a mix to start."
 			return
 		if not pay_robot(nt):
 			status = "Waiting for cubes and parts."
 			return
+		if not q.is_empty() and str(q[0]) == nt:
+			q.pop_front()
 		st["cur"] = nt
 		st["t"] = 0.0
 		cur = nt
