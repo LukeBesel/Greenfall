@@ -564,6 +564,12 @@ static func platform(env: Node, a: KitMesh.Builder, o: Vector3, bs: Basis, c: Ve
 ## crane / fuel), a slipway into the water, moorings to buoys. Ruin: junk heaps, a toppled drum
 ## stack, dark lamps; restored: planters, solar, lit windows and string lights; future: white
 ## shells and a canopy sail.
+## [orbD] The annex module south of the main deck (its centre, size x, size z) and where the
+## boardwalk to it leaves the main module's south rail (local x).
+const ANNEX: Array = [Vector3(1.5, 0, 17.0), 15.0, 11.0]
+const ANNEX_GAP_X: float = 1.5
+
+
 static func raft(env: Node) -> void:
 	var rng: RandomNumberGenerator = env.get("_rng")
 	var always: Node3D = _g(env, "always")
@@ -574,7 +580,8 @@ static func raft(env: Node) -> void:
 	var bs := Basis(Vector3.UP, 0.3)
 	var o := Vector3.ZERO
 	var y: float = 0.75
-	var mods: Array = [[Vector3(0, 0, 0), 20.0, 14.0], [Vector3(15.5, 0, -5.0), 9.0, 10.0], [Vector3(-14.0, 0, 3.0), 7.0, 9.0]]
+	var mods: Array = [[Vector3(0, 0, 0), 20.0, 14.0], [Vector3(15.5, 0, -5.0), 9.0, 10.0], [Vector3(-14.0, 0, 3.0), 7.0, 9.0],
+		ANNEX]  # [orbD] the annex: deck room for the whole start yard on the globe
 	for md: Array in mods:
 		platform(env, a, o, bs, md[0], md[1], md[2], y)
 		if env.get("_decks") is Array:
@@ -586,6 +593,20 @@ static func raft(env: Node) -> void:
 		box(a, o, bs, gc + Vector3(0, y - 0.05, 0), Vector3(2.4, 0.16, 2.2), m(env, "timber2"))
 		for sd: float in [-1.0, 1.0]:
 			rail(a, o, bs, [gc + Vector3(-1.2, y, sd * 1.05), gc + Vector3(1.2, y, sd * 1.05)] as Array[Vector3], 0.95, m(env, "ledger"), 0.035)
+		solid_box(always, o, bs, gc + Vector3(0, y - 0.6, 0), Vector3(2.6, 1.2, 2.2), Vector3.ZERO, PhysLayers.WORLD)  # [orbD] a floor: Lumi crossed into the sea here
+	# [orbD] The boardwalk to the annex: planks on stringers, Ledger rails both sides, floats under it.
+	var bw_a: Vector3 = Vector3(ANNEX_GAP_X, 0, 7.0)
+	var bw_len: float = (ANNEX[0] as Vector3).z - float(ANNEX[2]) * 0.5 - 7.0 + 0.4
+	var bw_c: Vector3 = bw_a + Vector3(0, 0, bw_len * 0.5 - 0.2)
+	var zz: float = 0.0
+	while zz < bw_len:
+		box(a, o, bs, bw_a + Vector3(0, y - 0.05, zz + 0.25 - 0.2), Vector3(2.4, 0.12, 0.46), m(env, "timber" if int(zz * 2.0) % 3 != 0 else "timber2"), Vector3(rng.randf_range(-0.4, 0.4), 0, rng.randf_range(-0.6, 0.6)), 0.03)
+		zz += 0.5
+	for sd: float in [-1.0, 1.0]:
+		box(a, o, bs, bw_c + Vector3(sd * 1.0, y - 0.22, 0), Vector3(0.18, 0.2, bw_len), m(env, "timber2"))
+		rail(a, o, bs, [bw_a + Vector3(sd * 1.25, y, -0.2), bw_a + Vector3(sd * 1.25, y, bw_len - 0.2)] as Array[Vector3], 0.95, m(env, "ledger"), 0.035)
+	pipe(a, o, bs, bw_c + Vector3(-1.3, TidewellEnv.SEA_Y + 0.15, 0), bw_c + Vector3(1.3, TidewellEnv.SEA_Y + 0.15, 0), 0.6, m(env, "orange"), 14)
+	solid_box(always, o, bs, bw_c + Vector3(0, y - 0.6, 0), Vector3(2.6, 1.2, bw_len), Vector3.ZERO, PhysLayers.WORLD)
 	# Slipway off the small module into the sea (Lumi and bots can get up here).
 	var sp := Vector3(-14.0, 0, 9.5)
 	box(a, o, bs, sp + Vector3(0, (y + TidewellEnv.SEA_Y - 0.3) * 0.5, 1.6), Vector3(3.2, 0.2, 4.2), m(env, "steel"), Vector3(-12, 0, 0))
@@ -613,7 +634,8 @@ static func raft(env: Node) -> void:
 	pipe(a, o, bs, tc + Vector3(0, 1.1, 0), tc + Vector3(0, 1.5, 0), 0.25, m(env, "steel"), 10)
 	solid_box(always, o, bs, tc, Vector3(6.4, 2.6, 2.6))
 	# Rails round the main module's open sides, lamp posts (lit when restored).
-	rail(a, o, bs, [Vector3(-9.6, y, 6.6), Vector3(9.6, y, 6.6)] as Array[Vector3], 1.0, m(env, "ledger"))
+	rail(a, o, bs, [Vector3(-9.6, y, 6.6), Vector3(ANNEX_GAP_X - 1.5, y, 6.6)] as Array[Vector3], 1.0, m(env, "ledger"))  # [orbD] open where the boardwalk leaves
+	rail(a, o, bs, [Vector3(ANNEX_GAP_X + 1.5, y, 6.6), Vector3(9.6, y, 6.6)] as Array[Vector3], 1.0, m(env, "ledger"))
 	rail(a, o, bs, [Vector3(-9.6, y, -6.6), Vector3(3.0, y, -6.6)] as Array[Vector3], 1.0, m(env, "ledger"))
 	for lp: Vector3 in [Vector3(-9.0, y, 6.0), Vector3(0.0, y, 6.0), Vector3(9.0, y, 6.0), Vector3(12.0, y, -9.0)]:
 		pipe(a, o, bs, lp, lp + Vector3(0, 3.2, 0), 0.07, m(env, "steel"), 8)

@@ -214,7 +214,7 @@ func _reach_audit() -> void:
 		print("[reach] %s hub %d %s: %d/%d anchors reachable, %d m2 walkable from the pad%s%s (%d ms)" % [
 			so.globe.planet_id, i, p.site_id, (r["anchors"] as Dictionary).size() - cut.size(), (r["anchors"] as Dictionary).size(),
 			int(int(r["reachable"]) * SiteReach.STEP * SiteReach.STEP), "" if r["start_free"] else ", LANDING SPOT BLOCKED (%s)" % r["why"],
-			"" if cut.is_empty() else ", cut off: " + ", ".join(cut), Time.get_ticks_msec() - t0])
+			"" if cut.is_empty() else ", cut off: " + ", ".join(cut.map(func(nm: String) -> String: return "%s@(%.1f,%.1f)" % [nm, p.anchor_local(nm).origin.x, p.anchor_local(nm).origin.z])), Time.get_ticks_msec() - t0])
 		if i > 0:
 			sm.free_hub(i)
 			await get_tree().process_frame

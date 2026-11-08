@@ -471,6 +471,37 @@ func _attach_camp() -> void:
 		var home: Vector3 = yard_point("camera_bot")
 		camp.camera_bot.set("_home", home)
 		camp.camera_bot.global_position = home + home.normalized() * 1.5
+	if sp0:  # [orbD] anchors that settle later (moved out of another planet's geometry) carry their interactables
+		sp0.anchors_moved.connect(func(_names: PackedStringArray) -> void: reseat_yard())
+
+
+## [orbD] Re-reads the start site's anchors for everything attached to them at setup: the signal
+## tower, the locker and its reach point, Blink's home and the trash bin's reach point. (The
+## depot, bench and the yard models follow the anchors on their own: OrbitSites / YardSite.)
+func reseat_yard() -> void:
+	var tower: Node3D = w.get_node_or_null("SignalTower") as Node3D
+	if tower:
+		var ts: Array = yard_slot("signal_tower", SignalTower.pos())
+		tower.global_transform = (ts[0] as Node3D).global_transform * (ts[1] as Transform3D)
+	var locker: Node3D = w.get_node_or_null("LockerCabinet") as Node3D
+	if locker:
+		var ls: Array = yard_slot("locker", LockerCabinet.POS)
+		locker.global_transform = (ls[0] as Node3D).global_transform * (ls[1] as Transform3D)
+		var reach: Node3D = locker.get("_anchor") as Node3D
+		if reach:
+			reach.global_position = locker.global_position + locker.global_basis.z * 0.9
+	var camp: Camp = w.get("camp")
+	if camp and camp.camera_bot:
+		var home: Vector3 = yard_point("camera_bot")
+		camp.camera_bot.set("_home", home)
+		camp.camera_bot.global_position = home + home.normalized() * 1.5
+	var bin_reach: Variant = camp.get("_bin_anchor") if camp else null
+	if bin_reach is Node3D:
+		(bin_reach as Node3D).global_position = yard_point("bin")
+	if DevHooks.has("yard-report"):
+		var dd := func(n: Variant, anchor: String) -> String:
+			return "%.2f" % (n as Node3D).global_position.distance_to(yard_point(anchor)) if n is Node3D else "-"
+		print("[yard] reseated: tower %s, locker %s, bin reach %s (m from their anchors)" % [dd.call(tower, "signal_tower"), dd.call(locker, "locker"), dd.call(bin_reach, "bin")])
 
 
 # --- Hub and workbench (the start site) ---------------------------------------------------
