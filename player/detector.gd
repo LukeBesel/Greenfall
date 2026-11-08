@@ -13,28 +13,11 @@ var digging: float = 0.0
 
 var _cfg: Dictionary
 var _beep_timer: float = 0.0
-var _lamp: MeshInstance3D
-var _lamp_mat: StandardMaterial3D
-var _light: OmniLight3D
 var _flash: float = 0.0
 
 
 func _ready() -> void:
 	_cfg = Economy.parts.get("detector", {})
-	_lamp_mat = StandardMaterial3D.new()
-	_lamp_mat.albedo_color = Color(0.25, 0.02, 0.02)
-	_lamp_mat.emission_enabled = true
-	_lamp_mat.emission = Color(1.0, 0.08, 0.05)
-	_lamp_mat.emission_energy_multiplier = 0.0
-	_lamp = MeshInstance3D.new()
-	_lamp.mesh = ProcMesh.sphere(0.035, 10, 5)
-	_lamp.material_override = _lamp_mat
-	add_child(_lamp)
-	_light = OmniLight3D.new()
-	_light.light_color = Color(1.0, 0.1, 0.05)
-	_light.omni_range = 2.5
-	_light.light_energy = 0.0
-	add_child(_light)
 
 
 func range_m() -> float:
@@ -46,12 +29,12 @@ func range_m() -> float:
 func _process(delta: float) -> void:
 	if patch == null or field == null:
 		return
-	# Lamp sits on the sensor head (lens point, a little up and to the side).
-	# Small warning lamp on the crown, behind the antenna: never on the face, where it reads as an eye.
-	position = Vector3(-0.15, 1.06, 0.16)
+	# [hero] The red lamp is the model's head-mounted beacon (PatchModel.set_beacon): it rides the
+	# head through every animation instead of floating at a fixed spot on Patch.
 	_flash = maxf(0.0, _flash - delta * 9.0)
-	_lamp_mat.emission_energy_multiplier = 0.15 + _flash * 6.0
-	_light.light_energy = _flash * 1.6
+	var model: Variant = patch.get("model")
+	if model is PatchModel:
+		(model as PatchModel).set_beacon(_flash)
 	if digging > 0.0:
 		return
 	var r: float = range_m()

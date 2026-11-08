@@ -40,6 +40,14 @@ const ANCHORS := {"head_top": Vector3(0, 0.57, 0.03), "chest_plate": Vector3(0, 
 ## Eye shapes for bot_face.gdshader's eye_shape (VARIANTS may set "eyes"; set_eye_shape() at runtime).
 const EYE_SHAPES := ["crescent", "round", "happy", "bar", "heart"]
 var _anchors: Dictionary = {}
+## [hero] Detector beacon: a small red lamp on the rear of the fin mount (head space), parented to
+## the head so it follows hover bob, lean, head turn/tilt and every pose (owner: "the blinking red
+## dot sometimes comes off the player's head" when it lived on Patch at a fixed height).
+const BEACON_LOCAL := Vector3(0, 0.582, 0.152)  # just behind the fin mount, under the swept blade
+var _beacon: MeshInstance3D
+var _beacon_mat: StandardMaterial3D
+var _beacon_light: OmniLight3D
+var _beacon_amt: float = 0.0
 var sleeping: bool = false
 var _iris_now: float = 0.5
 
@@ -678,6 +686,7 @@ func chest_world() -> Vector3:
 ## "back" (float space) and "hand_r" / "hand_l" (claw tips, on the wrists).
 func _make_anchors() -> void:
 	_anchors.clear()
+	_make_beacon()
 	for n: String in ANCHORS:
 		var a := Node3D.new()
 		a.name = n
@@ -691,6 +700,42 @@ func _make_anchors() -> void:
 			parent = _arm_l.get_meta("wrist")
 		parent.add_child(a)
 		_anchors[n] = a
+
+
+func _make_beacon() -> void:
+	var b := Node3D.new()
+	b.name = "beacon"
+	b.position = BEACON_LOCAL
+	_head.add_child(b)
+	_anchors["beacon"] = b
+	_beacon_mat = StandardMaterial3D.new()
+	_beacon_mat.albedo_color = Color(0.25, 0.02, 0.02)
+	_beacon_mat.emission_enabled = true
+	_beacon_mat.emission = Color(1.0, 0.08, 0.05)
+	_beacon = MeshInstance3D.new()
+	_beacon.mesh = ProcMesh.sphere(0.014, 10, 5)
+	_beacon.material_override = _beacon_mat
+	_beacon.layers = 1 | HERO_LAYER
+	_beacon.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	b.add_child(_beacon)
+	_beacon_light = OmniLight3D.new()
+	_beacon_light.light_color = Color(1.0, 0.1, 0.05)
+	_beacon_light.omni_range = 2.5
+	_beacon_light.shadow_enabled = false
+	b.add_child(_beacon_light)
+	set_beacon(_beacon_amt)
+
+
+## Detector beacon brightness (0 idle glow .. 1 flash); PartDetector drives it.
+func set_beacon(amount: float) -> void:
+	_beacon_amt = amount
+	if _beacon_mat:
+		_beacon_mat.emission_energy_multiplier = 0.15 + amount * 6.0
+		_beacon_light.light_energy = amount * 1.6
+
+
+func beacon_world() -> Vector3:
+	return _head.to_global(BEACON_LOCAL)
 
 
 func get_anchor(anchor: String) -> Node3D:

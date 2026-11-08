@@ -88,3 +88,30 @@ func test_happy_face_never_parks_half_way() -> void:
 	for i: int in 30:
 		m._process(0.02)
 	assert_eq(float(m._face_mat.get_shader_parameter("happy")), 0.0)
+
+
+func test_beacon_stays_on_the_head_through_animation() -> void:
+	for id: String in PatchModel.VARIANTS:
+		var m := PatchModel.new()
+		m.preview_variant = id
+		add_child_autofree(m)
+		var beacon: Node3D = m.get_anchor("beacon")
+		assert_not_null(beacon, id)
+		var worst: float = 0.0
+		for i: int in 180:
+			var t: float = i / 60.0
+			m.set_motion(3.0, 0.8, Vector2(sin(t * 3.0) * 8.0, cos(t * 2.0) * 8.0), 1.0 / 60.0)
+			if i % 40 == 0:
+				m.set_scooping(true)
+			m.holding = i > 90 and i < 140
+			m.look_toward(m.global_position + Vector3(sin(t) * 3.0, 0.5, -2.0))
+			m.set_happy(1.0 if i > 120 else 0.5)
+			m.squash(0.5)
+			m._process(1.0 / 60.0)
+			m.set_beacon(0.5 + 0.5 * sin(t * 10.0))
+			var want: Vector3 = m._head.to_global(PatchModel.BEACON_LOCAL)
+			worst = maxf(worst, beacon.get_child(0).global_position.distance_to(want))
+		assert_true(worst < 0.02, "%s beacon within 2 cm of the fin (%.4f m)" % [id, worst])
+		# And it really sits on the crown, not floating above or inside the head.
+		var local: Vector3 = m._head.to_local(beacon.global_position)
+		assert_almost_eq(local.y, 0.582, 0.01, id)
