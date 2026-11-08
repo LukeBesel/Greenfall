@@ -57,7 +57,10 @@ func start() -> void:
 		var e: Environment = vp_env.duplicate()
 		e.fog_enabled = false
 		e.volumetric_fog_enabled = false
-		e.tonemap_exposure = vp_env.tonemap_exposure * 0.32
+		e.tonemap_exposure = vp_env.tonemap_exposure * 0.3
+		e.background_energy_multiplier = vp_env.background_energy_multiplier * 0.35
+		e.adjustment_enabled = true
+		e.adjustment_saturation = 0.6
 		e.glow_enabled = true
 		cam.environment = e
 	add_child(cam)
@@ -149,6 +152,9 @@ func _show_head(on: bool) -> void:
 	var head: Node3D = scope.get_node_or_null("Anim") if is_instance_valid(scope) else null
 	if head:
 		head.visible = on
+	# Lumi may be standing in front of the tube: she steps out of the picture while we look.
+	if world and world.get("patch") != null and world.patch and world.patch.get("model") != null:
+		(world.patch.model as Node3D).visible = on
 
 
 func _lock(on: bool) -> void:

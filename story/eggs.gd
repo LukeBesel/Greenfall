@@ -435,7 +435,7 @@ func _process(delta: float) -> void:
 		var boost: float = 1.0 if is_found("stars") else 0.55
 		_star_mat.albedo_color.a = _night_amount() * boost * (0.85 + 0.15 * sin(_t * 1.7))
 		# [eggs2] Through the eyepiece the Wren burns bright (HDR white over the darkened lens sky).
-		var k: float = 2.8 if is_instance_valid(_peek) else 1.0
+		var k: float = 6.0 if is_instance_valid(_peek) else 1.0
 		_star_mat.albedo_color = Color(0.85 * k, 0.92 * k, 1.0 * k, 1.0 if is_instance_valid(_peek) else _star_mat.albedo_color.a)
 	_animate(delta)
 	_glint(delta)
