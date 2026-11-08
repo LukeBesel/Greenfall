@@ -93,15 +93,10 @@ func _ready() -> void:
 	add_child(_mmi)
 
 
-## Can Lumi lift this piece right now? Uses the pace helper's lift rule when it exists
-## (Patch.can_lift_piece(pid) or Economy.can_lift_vol(vol)); otherwise everything is liftable.
-static func too_big(p_world: Node, f: HexField, pid: int) -> bool:
-	var patch: Node = p_world.get("patch") if p_world else null
-	if patch and patch.has_method("can_lift_piece"):
-		return not bool(patch.call("can_lift_piece", pid))
-	if Economy.has_method("can_lift_vol"):
-		return not bool(Economy.call("can_lift_vol", f.piece_vol[pid]))
-	return false
+## Can Lumi lift this piece right now? Pace's Lift Strength rule (core/pace.gd: the piece's size
+## class against Lumi's lift tier).
+static func too_big(_world: Node, f: HexField, pid: int) -> bool:
+	return not Pace.can_lift(f, pid)
 
 
 ## The pieces still lying in `hexes` (alive, not locked), for the markers.

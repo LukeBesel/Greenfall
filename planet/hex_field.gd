@@ -188,6 +188,7 @@ func generate(junk_types: Array, pieces_per_hex: Vector2i = Vector2i(6, 12)) -> 
 		var k0: int = _hex_kind(hex_center(id))
 		hex_hub[id] = 1 if k0 == HEX_HUB else (2 if k0 == HEX_BLOCKED and not water_ids.has(id) else 0)
 	for id: int in n:
+		await BuildBudget.check("field:generate")  # [leftovers] behind the loading screen; same draws
 		var center: Vector3 = hex_center(id)
 		var kind: int = _hex_kind(center)
 		if water_ids.has(id) and kind != HEX_HUB:

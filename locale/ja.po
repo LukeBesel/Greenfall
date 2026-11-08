@@ -24,7 +24,7 @@ msgstr "フリートの全%s。"
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr "基本（Mk I、ティアとパーツのレア度を除く）"
 
-#: autoload/Economy.gd:128 ui/bench_lists.gd:12 ui/upgrades_panel.gd:34
+#: autoload/Economy.gd:128 ui/bench_lists.gd:12 ui/upgrades_panel.gd:39
 msgid "Base"
 msgstr "基本"
 
@@ -597,7 +597,7 @@ msgstr "片付けたがれきの中で何かが光った。古いCDだ！"
 msgid "Your CD case is full."
 msgstr "CDケースがいっぱいだ。"
 
-#: planet/far_junk.gd:190
+#: planet/far_junk.gd:198
 msgid "Past the survey line the junk runs too deep to start on. One district at a time: clean this one, then the rockets take us to the next."
 msgstr ""
 
@@ -796,6 +796,14 @@ msgstr ""
 
 #: planet/world_bounds.gd:166
 msgid "Lumi hovers back onto solid ground."
+msgstr ""
+
+#: planet/planets/tidewell/env.gd:1180
+msgid "LEDGER  DREDGE %02d"
+msgstr ""
+
+#: planet/planets/tidewell/env.gd:1226
+msgid "LEDGER MINING  ORE BARGE 3"
 msgstr ""
 
 #: plants/composter.gd:77
@@ -1216,63 +1224,63 @@ msgstr "給水タンクを設置。近くの水やりロボはここで補給す
 msgid "WATER"
 msgstr "水"
 
-#: scenes/slice.gd:302
+#: scenes/slice.gd:349
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーンを塗って、好きな場所にクルーを送ろう。"
 
-#: scenes/slice.gd:893
+#: scenes/slice.gd:1010
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
-#: scenes/slice.gd:907
+#: scenes/slice.gd:1024
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice.gd:909
+#: scenes/slice.gd:1026
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
 
-#: scenes/slice.gd:916
+#: scenes/slice.gd:1033
 msgid "%s is out of range: %s"
 msgstr "%s は範囲外：%s"
 
-#: scenes/slice.gd:926
+#: scenes/slice.gd:1043
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:929 ui/rockets_panel.gd:39
+#: scenes/slice.gd:1046 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:983
+#: scenes/slice.gd:1100
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陸：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:984
+#: scenes/slice.gd:1101
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
 
-#: scenes/slice.gd:984
+#: scenes/slice.gd:1101
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:1083
+#: scenes/slice.gd:1200
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice.gd:1254
+#: scenes/slice.gd:1371
 msgid "Welcome back. The junk waited for you."
 msgstr "おかえり。ガラクタが待っていたよ。"
 
-#: scenes/slice.gd:1271
+#: scenes/slice.gd:1388
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:1271
+#: scenes/slice.gd:1388
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:145
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:154
 msgid "Setting the scene"
 msgstr ""
 
@@ -1907,15 +1915,15 @@ msgstr "<< LEDGER // オフレコ >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/objectives.gd:252
+#: story/objectives.gd:267
 msgid "Objective complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:422
+#: story/objectives.gd:442
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr "ピッピッて音、聞こえる？探知機が近くに埋まったロボットのパーツを見つけたの。速く鳴るほど近いよ。"
 
-#: story/objectives.gd:423
+#: story/objectives.gd:443
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
 
@@ -1968,26 +1976,22 @@ msgid "Space  pause   ·   Esc  skip"
 msgstr ""
 
 #: story/tutorial.gd:10
+msgid "{interact}  at the workbench to repair it"
+msgstr "作業台で {interact} を押して修理する"
+
+#: story/tutorial.gd:11
 msgid "Hold  {scoop}  to scoop junk"
 msgstr "{scoop}  長押しでガラクタをすくう"
 
-#: story/tutorial.gd:11
-msgid "Press  {cube}  to press a bale"
-msgstr "{cube}  でベールを圧縮"
-
 #: story/tutorial.gd:12
-msgid "{interact}  to pick up the bale"
-msgstr " {interact} でベールを持ち上げる"
+msgid "Empty your chest into the trash bin"
+msgstr "胸のゴミをゴミ箱に空ける"
 
 #: story/tutorial.gd:13
-msgid "Carry it onto the scale"
-msgstr "はかりまで運ぼう"
-
-#: story/tutorial.gd:14
 msgid "{interact}  at the workbench to upgrade"
 msgstr "作業台で  {interact}  を押してアップグレード"
 
-#: story/tutorial.gd:18
+#: story/tutorial.gd:19
 msgid "Lumi is back on the job"
 msgstr "Lumi、仕事に復帰"
 
@@ -2555,7 +2559,7 @@ msgstr "実績：%s"
 msgid "Buy for %s"
 msgstr "%sで購入"
 
-#: systems/museum.gd:119 systems/camp/hub_builds.gd:80
+#: systems/museum.gd:119 systems/camp/hub_builds.gd:80 ui/glim_bench.gd:42
 msgid "Not enough cubes, parts or seeds"
 msgstr "キューブ、パーツ、種が足りません"
 
@@ -3117,11 +3121,11 @@ msgstr "仕事に戻る"
 msgid "Find Glim first"
 msgstr ""
 
-#: systems/glim/glim.gd:14 ui/glim_panel.gd:142
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:142
 msgid "Maxed"
 msgstr ""
 
-#: systems/glim/glim.gd:14 ui/glim_panel.gd:149
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:149
 msgid "Needs %s %d"
 msgstr ""
 
@@ -3129,23 +3133,31 @@ msgstr ""
 msgid "Buy %d Glim upgrades"
 msgstr ""
 
-#: systems/glim/glim_director.gd:152
-msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
-msgstr ""
+#: systems/glim/glim.gd:14 ui/bench_lists.gd:12 ui/glim_bench.gd:13
+msgid "Glim"
+msgstr "Glim"
 
-#: systems/glim/glim_director.gd:154
-msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
+#: systems/glim/glim.gd:14
+msgid "Find the little lantern bot in the junk"
 msgstr ""
 
 #: systems/glim/glim_director.gd:156
+msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
+msgstr ""
+
+#: systems/glim/glim_director.gd:158
+msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
+msgstr ""
+
+#: systems/glim/glim_director.gd:160
 msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
 msgstr ""
 
-#: systems/glim/glim_director.gd:212
+#: systems/glim/glim_director.gd:216
 msgid "All clear here!"
 msgstr ""
 
-#: systems/glim/glim_director.gd:214
+#: systems/glim/glim_director.gd:218
 msgid "Only big pieces left"
 msgstr ""
 
@@ -3291,19 +3303,15 @@ msgid "need %s"
 msgstr "あと%s"
 
 #: ui/bench_lists.gd:12 ui/photo_mode.gd:393 ui/photo_mode.gd:420
-#: ui/upgrades_panel.gd:30
+#: ui/upgrades_panel.gd:32
 msgid "Lumi"
 msgstr "Lumi"
 
-#: ui/bench_lists.gd:12 ui/bench_lists.gd:13 ui/upgrades_panel.gd:43
+#: ui/bench_lists.gd:12 ui/bench_lists.gd:13 ui/upgrades_panel.gd:48
 msgid "Machines"
 msgstr "機械"
 
-#: ui/bench_lists.gd:12
-msgid "Glim"
-msgstr "Glim"
-
-#: ui/bench_lists.gd:12 ui/globe_view.gd:169 ui/upgrades_panel.gd:44
+#: ui/bench_lists.gd:12 ui/globe_view.gd:169 ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "ロケット"
 
@@ -4157,7 +4165,7 @@ msgstr "CDケース  ·  傷あり、各1回だけ再生  ·  %d / %d"
 msgid "Play once: %s"
 msgstr "1回だけ再生：%s"
 
-#: ui/extras_cd_list.gd:95 ui/scratched_cd_ui.gd:193
+#: ui/extras_cd_list.gd:95
 msgid "by %s"
 msgstr "%s"
 
@@ -4377,6 +4385,10 @@ msgstr "[%s] 置く   [%s] 回す   [%s / %s] アイテム   [%s] 拾う   [%s] 
 msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
 msgstr "拾った：%s。別の場所に置くか、しまっておこう。"
 
+#: ui/glim_bench.gd:58 ui/hub_panel.gd:67 ui/upgrades_panel.gd:144
+msgid "Upgrade"
+msgstr "アップグレード"
+
 #: ui/glim_panel.gd:40
 msgid "GLIM"
 msgstr ""
@@ -4469,7 +4481,7 @@ msgstr "   ·   古い情報"
 msgid "Re-survey      %s cubes"
 msgstr "再調査      %s キューブ"
 
-#: ui/goals_panel.gd:206 ui/list_detail.gd:404 ui/objective_card.gd:112
+#: ui/goals_panel.gd:206 ui/list_detail.gd:418 ui/objective_card.gd:112
 msgid "DONE"
 msgstr "完了"
 
@@ -4500,10 +4512,6 @@ msgstr "コア %d%%"
 #: ui/hub_panel.gd:59
 msgid "What you get"
 msgstr "得られるもの"
-
-#: ui/hub_panel.gd:67 ui/upgrades_panel.gd:137
-msgid "Upgrade"
-msgstr "アップグレード"
 
 #: ui/hub_panel.gd:97 ui/hub_panel.gd:250
 msgid "Build Air Scrubber"
@@ -4660,7 +4668,7 @@ msgstr "%s   作業台"
 msgid "press bale"
 msgstr "ベールを圧縮"
 
-#: ui/key_hints.gd:107
+#: ui/key_hints.gd:114
 msgid "tools"
 msgstr "ツール"
 
@@ -4698,39 +4706,39 @@ msgstr "◢ 埋もれたパーツ %d%%"
 msgid "Nothing here yet. Keep playing."
 msgstr "まだ何もありません。プレイを続けよう。"
 
-#: ui/list_detail.gd:400
+#: ui/list_detail.gd:414
 msgid "LOCKED"
 msgstr "未解放"
 
-#: ui/list_detail.gd:408 ui/profile_picker.gd:97
+#: ui/list_detail.gd:422 ui/profile_picker.gd:97
 msgid "ACTIVE"
 msgstr "進行中"
 
-#: ui/list_detail.gd:424
+#: ui/list_detail.gd:438
 msgid "FREE"
 msgstr "無料"
 
-#: ui/list_detail.gd:525
+#: ui/list_detail.gd:539
 msgid "REQUIRES   NOT YET   %s"
 msgstr "必要条件   未達成   %s"
 
-#: ui/list_detail.gd:525
+#: ui/list_detail.gd:539
 msgid "Not unlocked yet. Keep playing."
 msgstr "まだ解放されていません。プレイを続けよう。"
 
-#: ui/list_detail.gd:528
+#: ui/list_detail.gd:542
 msgid "REQUIRES   %s"
 msgstr "必要条件   %s"
 
-#: ui/list_detail.gd:531
+#: ui/list_detail.gd:545
 msgid "REQUIRES   READY"
 msgstr "必要条件   OK"
 
-#: ui/loading_screen.gd:144
+#: ui/loading_screen.gd:153
 msgid "Loading"
 msgstr ""
 
-#: ui/loading_screen.gd:146
+#: ui/loading_screen.gd:155
 msgid "Warming up"
 msgstr ""
 
@@ -5574,7 +5582,11 @@ msgstr "CDケースにしまった（%d / %d）。CDプレーヤーで再生で�
 msgid "You leave the scratched CD where it lay."
 msgstr "傷だらけのCDはそのまま置いていった。"
 
-#: ui/scratched_cd_ui.gd:202
+#: ui/scratched_cd_ui.gd:194
+msgid "Last play: %s, by %s."
+msgstr "ラストプレイ：%s（%s）"
+
+#: ui/scratched_cd_ui.gd:201
 msgid "The scratched CD cracks and falls apart. %s"
 msgstr "傷だらけのCDはひび割れて、ばらばらになった。%s"
 
@@ -11217,7 +11229,8 @@ msgstr "Verdance"
 msgid "Ochre"
 msgstr "Ochre"
 
-#: data/homeward.json:planets[tidewell].name data/telescope.json:planets_default[tidewell].name
+#: data/homeward.json:planets[tidewell].name data/planets.json:tidewell.name data/planets.json:tidewell.district.name
+#: data/telescope.json:planets_default[tidewell].name
 msgid "Tidewell"
 msgstr "Tidewell"
 
@@ -11918,8 +11931,40 @@ msgid "Lumi, it's WREN, the Cradle's caretaker. Your friend up here. Your pod's 
 msgstr "Lumi、WRENよ。クレイドルの世話係で、上にいるあなたの友達。ポッドは墜落して、中継器ももう持たない。"
 
 #: data/objectives.json:brief.lines
-msgid "Bale junk to power the old base, then build a signal tower so I can reach you. I'll be [glitch]listen—[/glitch]"
-msgstr "ゴミをベールにして古い基地に電力を。それから信号塔を建てて、私が届くように。ずっと[glitch]聞いて——[/glitch]"
+msgid "Fix the bench, clear junk for cubes, then build a signal tower to reach me. I'll be [glitch]listen—[/glitch]"
+msgstr "作業台を直して、ゴミでキューブを稼ぎ、信号塔を建てて私に届けて。ずっと[glitch]聞いて——[/glitch]"
+
+#: data/objectives.json:objectives[dump3].text
+msgid "Fill the trash bin 3 times"
+msgstr "ゴミ箱を3回いっぱいにする"
+
+#: data/objectives.json:objectives[dump3].desc
+msgid "Each chestful of junk pays a few cubes."
+msgstr "胸いっぱいのゴミでキューブが少し手に入る。"
+
+#: data/objectives.json:objectives[compartment].text
+msgid "Buy Compartment Size"
+msgstr "コンテナ容量を買う"
+
+#: data/objectives.json:objectives[compartment].desc
+msgid "A bigger chest means fewer trips to the bin."
+msgstr "胸が大きいほど、ゴミ箱への往復が減る。"
+
+#: data/objectives.json:objectives[scoop_size].text
+msgid "Buy Scoop Size"
+msgstr "スコップサイズを買う"
+
+#: data/objectives.json:objectives[scoop_size].desc
+msgid "Grab more junk at once. At the workbench."
+msgstr "一度にもっとゴミをつかめる。作業台で。"
+
+#: data/objectives.json:objectives[baler].text
+msgid "Save up for the Baler"
+msgstr "ベーラーのために貯める"
+
+#: data/objectives.json:objectives[baler].desc
+msgid "It presses junk into bales. Bales sell for far more."
+msgstr "ゴミをベールに圧縮する。ベールはずっと高く売れる。"
 
 #: data/objectives.json:objectives[power].text
 msgid "Power the base: sell 3 bales"
@@ -12083,6 +12128,58 @@ msgstr "特殊モジュール"
 
 #: data/planets.json:rime.tagline
 msgid "An ice moon, core-mined until it froze."
+msgstr ""
+
+#: data/planets.json:tidewell.tagline
+msgid "An ocean world. The Ledger's dredging rigs still stand in the shallows."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_raft.name
+msgid "Anchored Raft"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_raft.desc
+msgid "Timber raft deck on rusted pontoons: workshop shack, store, deck crane, fuel tank, moorings."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_stilts.name
+msgid "Stilt Yard"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_stilts.desc
+msgid "A sandy islet with a stilt deck and huts over the water, boardwalk, beached skiff."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.wreck.name
+msgid "Ore Barge Wreck"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.wreck.desc
+msgid "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.dredge_rig.name
+msgid "Dredge Rig"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.dredge_rig.desc
+msgid "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.reef_garden.name
+msgid "Reef Garden"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.reef_garden.desc
+msgid "Bleached coral breaking the surface among nets; live coral and floating gardens when restored."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.buoy_field.name
+msgid "Buoy Field"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.buoy_field.desc
+msgid "Rows of mooring buoys strung with rope and ghost nets; light caps when futuristic."
 msgstr ""
 
 #: data/radio.json:songs[verdance_sprout].name data/songs.json:songs[sprout_step].title
@@ -13974,7 +14071,7 @@ msgstr "ツインローターとスキャナーの線が入った白いシュレ
 
 #: data/upgrades.json:upgrades[baler].name
 msgid "Baler"
-msgstr ""
+msgstr "ベーラー"
 
 #: data/upgrades.json:upgrades[baler].desc
 msgid "Fit the bale press in your chest. Press junk into bales: they sell for far more than loose junk."
@@ -14094,7 +14191,7 @@ msgstr "長い集束レンズ：もっと遠くのガラクタをつかむ。"
 
 #: data/upgrades.json:upgrades[multi_lock].name
 msgid "Scoop Size"
-msgstr ""
+msgstr "スコップサイズ"
 
 #: data/upgrades.json:upgrades[multi_lock].desc
 msgid "Lock onto one more piece per scoop pulse."
@@ -15757,6 +15854,18 @@ msgstr ""
 
 #~ msgid "You"
 #~ msgstr "あなた"
+
+#~ msgid "Press  {cube}  to press a bale"
+#~ msgstr "{cube}  でベールを圧縮"
+
+#~ msgid "{interact}  to pick up the bale"
+#~ msgstr " {interact} でベールを持ち上げる"
+
+#~ msgid "Carry it onto the scale"
+#~ msgstr "はかりまで運ぼう"
+
+#~ msgid "Bale junk to power the old base, then build a signal tower so I can reach you. I'll be [glitch]listen—[/glitch]"
+#~ msgstr "ゴミをベールにして古い基地に電力を。それから信号塔を建てて、私が届くように。ずっと[glitch]聞いて——[/glitch]"
 
 #~ msgid "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements"
 #~ msgstr "項目 %d / %d   ·   珍品 %d / %d   ·   コレクション %d / %d   ·   実績 %d / %d"

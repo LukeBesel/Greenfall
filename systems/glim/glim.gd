@@ -11,7 +11,7 @@ const DEFAULT_LOOK: Dictionary = {"shells": "pearl", "glows": "cyan", "tops": "a
 
 ## Player-facing reasons and hints returned in English below (translated where shown).
 # l10n:begin
-const STRINGS: Array[String] = ["Find Glim first", "Maxed", "Needs %s %d", "Buy for %s", "Buy %d Glim upgrades", "Clean %d hexes"]
+const STRINGS: Array[String] = ["Find Glim first", "Maxed", "Needs %s %d", "Buy for %s", "Buy %d Glim upgrades", "Clean %d hexes", "Glim", "Find the little lantern bot in the junk"]
 # l10n:end
 
 static var _data: Dictionary = {}

@@ -7,12 +7,13 @@ extends Node
 
 # l10n:begin
 const STEPS: Array[Dictionary] = [
+	{"id": "repair", "text": "{interact}  at the workbench to repair it"},
 	{"id": "scoop", "text": "Hold  {scoop}  to scoop junk", "goal": 8},
-	{"id": "bale", "text": "Press  {cube}  to press a bale"},
-	{"id": "carry", "text": "{interact}  to pick up the bale"},
-	{"id": "cash", "text": "Carry it onto the scale"},
+	{"id": "dump", "text": "Empty your chest into the trash bin"},
 	{"id": "upgrade", "text": "{interact}  at the workbench to upgrade"},
 ]
+# [onboard2] QA P2: every early step uses what Lumi has at the start (the broken bench, his scoop,
+# the trash bin). Bales come later, with the Baler (story objectives, data/objectives.json).
 # [onboard] "Clean this hex completely" is now the story objective "Clean a hex" (story/objectives.gd),
 # which outlines its hex on the ground; an old save on that step simply counts the checklist as done.
 const DONE_TEXT: String = "Lumi is back on the job"
@@ -30,8 +31,6 @@ var _target_t: float = 0.0
 func _ready() -> void:
 	step = int(GameState.flags.get("tutorial_step", 0))
 	EventBus.junk_scooped.connect(func(_t: String, _p: Vector3) -> void: _progress("scoop"))
-	EventBus.cube_made.connect(func(_i: Dictionary) -> void: _progress("bale"))
-	EventBus.cube_cashed.connect(func(_v: BigNum, _p: Vector3) -> void: _progress("cash"))
 	EventBus.upgrade_bought.connect(func(_id: String, _l: int) -> void: _progress("upgrade"))
 	if not done():
 		marker = TutorialMarker.new()
@@ -97,7 +96,10 @@ func _process(delta: float) -> void:
 	if done() or world == null:
 		return
 	# Steps that depend on state rather than an event.
-	if STEPS[step]["id"] == "carry" and not world.patch.carried.is_empty():
+	if STEPS[step]["id"] == "repair" and Camp.bench_ok() and not _camp_repairing():
+		_advance()
+		return
+	elif STEPS[step]["id"] == "dump" and int(GameState.stats.get("junk_dumps", 0)) > 0:
 		_advance()
 		return
 	elif STEPS[step]["id"] == "upgrade" and GameState.level_of("compartment_size") + GameState.level_of("scoop_width") + GameState.stats.get("upgrades_bought", 0) > 0:
@@ -126,20 +128,22 @@ func target() -> Dictionary:
 			var pid: int = f.nearest_alive(at)
 			if pid >= 0:
 				return {"pos": f.piece_pos[pid], "kind": "piece"}
-		"bale":
+		"repair":
+			return {"pos": world.BOARD_POS, "kind": "bench"}
+		"dump":
 			if p.compartment.is_empty():
 				var pid2: int = f.nearest_alive(at)
 				return {} if pid2 < 0 else {"pos": f.piece_pos[pid2], "kind": "piece"}
-			return {"pos": p.to_global(p.model.back_hatch_point), "kind": "self"}
-		"carry":
-			var cube: JunkCube = _nearest_loose_cube(at)
-			return {} if cube == null else {"pos": cube.global_position, "kind": "bale"}
-		"cash":
 			if world.get("depot") != null:
 				return {"pos": (world.depot as Node3D).global_position, "kind": "pad"}
 		"upgrade":
 			return {"pos": world.BOARD_POS, "kind": "bench"}
 	return {}
+
+
+func _camp_repairing() -> bool:
+	var c: Variant = world.get_node_or_null("Camp") if world else null
+	return c is Camp and (c as Camp).repairing
 
 
 func _nearest_loose_cube(at: Vector3) -> JunkCube:
@@ -173,6 +177,8 @@ func _advance() -> void:
 	_count = 0
 	_target_t = 0.0
 	GameState.flags["tutorial_step"] = step
+	if DevHooks.has("autoplay"):  # pacing log
+		print("[onboard] checklist step %d done at %.1f min" % [step, float(GameState.stats.get("time_played", 0.0)) / 60.0])
 	Audio.play("ding", 1.2, -12.0)
 	_announce()
 

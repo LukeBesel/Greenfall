@@ -5,7 +5,7 @@ This is every note from the owner's playtests and requests, and who is working o
 Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, buddy, eggs2, orbit, hero, sysmap, p_ochre, p_tidewell, p_anvil.
 
 ## Start, loading and intro (intro2)
-- [x] (intro2 merged; the bar still pauses while the district builds, about 10 s on a dark screen, follow-up) There is no purple "paused" screen at launch. A real loading screen shows a loading bar with the red Lumi picking up garbage in a line. No music plays during loading. (Reported in playtests #1 and #2.)
+- [x] (intro2 merged; follow-up on claude/greenfall-leftovers: the district now builds across frames, the bar shows real progress and Lumi keeps moving; one ~0.5-0.8 s step remains at the end of the build) There is no purple "paused" screen at launch. A real loading screen shows a loading bar with the red Lumi picking up garbage in a line. No music plays during loading. (Reported in playtests #1 and #2.)
 - [x] Only one text line shows at a time.
 - [x] The text stays long enough to read, and the animation is slower and longer.
 - [x] Subtitles sit at the bottom and are readable against the background.
@@ -98,6 +98,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Locked tabs and options show a lock and can't be opened.
 - [ ] It's very clear what you can and can't afford.
 - [ ] Upgrade screens as simple as the owner's reference: a plain one-line list (icon, name, level pips, price tag, "?" locked rows) plus one detail panel with a big Install button. 3-4 tabs at most. (ui5)
+- [ ] Photo mode comes with a camera-bot Hub build: unlocked early-ish, but it needs a good amount of parts. Before that, no photo mode. (camp3)
 - [ ] The Locker is a physical yard build bought with parts; open it with E for cosmetics. It is not a workbench tab. (ui5)
 - [ ] Workbench tabs: Upgrades holds everything with tiers; Build holds one-time buildings, which drop off once built. As few tabs as possible. (ui3 + camp2)
 - [ ] The upgrades page isn't glitchy or bulky.

@@ -89,6 +89,7 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	StorySfx.finish_pending()  # [health] an unwaited WorkerThreadPool task crashes the engine at exit
+	BuildBudget.finish_pending()  # [leftovers] quitting while a district builds
 	# [health] Players stopped on exit only hand their playbacks to the mixer thread for deletion;
 	# give it a few mix steps so playbacks and streams aren't leaked at quit. Autoloads exit after
 	# the scene, so this runs once, at quit, after every scene player has stopped.

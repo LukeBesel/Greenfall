@@ -90,24 +90,28 @@ func _dev_hooks() -> void:
 				Glim.st()[kv[0]] = kv[1]
 
 
-## [style] The Locker's bot selector (systems/cosmetic_targets.gd, if that branch is merged):
-## Glim registers his looks editor. Looked up by name so this file works without it.
+## The Locker (ui/locker_panel.gd) lists CosmeticTargets: Glim registers his looks editor there.
+## The editor finds the live director through the world it is given (the registry is static).
 func _register_cosmetics() -> void:
-	for c: Dictionary in ProjectSettings.get_global_class_list():
-		if str(c.get("class", "")) == "CosmeticTargets":
-			var ct: Script = load(str(c["path"]))
-			if ct:
-				ct.call("register", "glim", {
-					"name": "Glim",
-					"order": 20,
-					"editor": func(_w: Node) -> Control:
-						var ed := GlimPanel.GlimLooksEditor.new()
-						ed.director = self
-						return ed,
-					"unlocked": func() -> bool: return Glim.is_found(),
-					"hint": "Find the little lantern bot in the junk",
-				})
-			return
+	register_cosmetics()
+
+
+## Static callables only: the registry is static and outlives this node (a lambda here would
+## capture a freed director after a district change).
+static func register_cosmetics() -> void:
+	CosmeticTargets.register("glim", {
+		"name": "Glim",
+		"order": 20,
+		"editor": GlimDirector.make_looks_editor,
+		"unlocked": Glim.is_found,
+		"hint": "Find the little lantern bot in the junk",
+	})
+
+
+static func make_looks_editor(w: Node) -> Control:
+	var ed := GlimPanel.GlimLooksEditor.new()
+	ed.director = GlimDirector.of(w)
+	return ed
 
 
 func _spawn(reveal: bool) -> void:

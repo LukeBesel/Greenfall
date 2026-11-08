@@ -24,6 +24,39 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 4. More districts content: 41 eggs now; more biome props (nets, satellites) if Poly Haven gets them; per-biome plants/wildlife.
 5. Post-game (M11): done (wt/late). Next: per-world story threads with WREN, wildlife using the decor hook, tune Starseed income and Bloom thresholds after play-testing.
 
+## Update: loading screen keeps moving, Rime night glint (claude/greenfall-leftovers, Nov 8)
+- **District build across frames.** Behind the loading screen `scenes/slice.gd` builds as a coroutine: the
+  heavy first half (field generation, FieldView ground/mounds/junk/landmarks, litter, far junk, CityView,
+  StreetDressing, sound synthesis) yields to the Loader whenever its slice is used up
+  (`systems/build_budget.gd`: `if BuildBudget.due(): await BuildBudget.pause()`; slice 45 ms, grows to 2x
+  the cost of a loading-screen frame on slow renderers). The bar shows the real build progress, Lumi keeps
+  moving. The scene stays `PROCESS_MODE_DISABLED` and the root viewport's 3D off until it is whole; it joins
+  the `persist` group last. Without a budget (tests, tools, save round trip) nothing yields: same code path.
+- Off the main thread: the ground's 1200x1200 layout bake (`CityLayout.bake_start`) and the litter carpet's
+  placement (`LitterView.start/finish`, now straight into MultiMesh buffers) run on WorkerThreadPool tasks
+  (read-only on field and layout; waited on at quit, `BuildBudget.finish_pending`). Model files load on
+  loader threads (`BuildBudget.fetch`, `AssetLib.fetch_model`); models the build would load blocking are in
+  `data/preload_models.json` (regenerate: `--record-preload`, ids merge across districts).
+- The second half (board, hub, Lumi, HUD, story and systems) still runs in one go on purpose: its deferred
+  calls hook into systems made later in the same `_ready` (e.g. `LumiLevel._hook_late` -> goals/events), so
+  yielding there would change behaviour. `Settings.apply_render_quality` waits for the end of the build (its
+  shadow-filter settings recompile every pipeline: a 9 s frozen frame on software Vulkan).
+- Same game: field, far junk, eggs and piece transforms identical to before (diffed); tests 637/637, save
+  round trip PASS, autoplay without SCRIPT ERROR.
+- Measured (`--load-report` prints steps and slow slices; the Loader prints `longest frame`):
+  headless New Game, Old Town: ready 21.7 s -> 14.5 s, longest frame 19.5 s -> 0.7-0.86 s.
+  GL compat under xvfb: ready 35.4 s -> 30.6 s (shot run), 46-54 s -> 46 s; longest frame 23-28 s -> 4.1-4.4 s,
+  now in the shader warm-up, not the build. Renders: screenshots/leftovers/loading_before|after.png.
+- Not yet under 100 ms: the one-go second half (~0.5 s headless here: first_seed, outposts, eggs,
+  Nursery garden, fauna each 40-110 ms) and single far-junk LOD meshes / city blocks (up to ~0.2 s). Next:
+  move those systems' mesh/material building into static caches warmed in the sliced half; spread
+  ShaderWarmup over frames (one warm-up frame compiles every pipeline at once).
+- **Rime night glint** (`rime_ice.gdshader`): at night bare ice gets a roughness floor (0.3, more where the
+  view grazes) and its specular is clamped, so giantshine spreads into a soft sheen instead of a hard white
+  hotspot on the flats around the borehole headframe; by day it is unchanged except slight grazing
+  roughening. Renders: screenshots/leftovers/rime_night_before|after.png
+  (`--planet-env=rime --time=0.0 --rime-nohud --spawn-pos=-45,-80 --spawn-yaw=0.48 --rime-cam=14,-0.18,0.48`).
+
 ## Update: simpler workbench (wt/ui2, Nov 7)
 Owner playtest #1: "SIMPLIFY GAME". The workbench is seven tabs (Lumi, Bots, Hub, Research, Rockets, Requests, Locker) with bigger text, one card style (`ui/bench_kit.gd`: card, title/body sizes, big button, cost row with the currency icons, spot pips) and every cost in Parts and/or cubes.
 - Done: robot part items are gone from the player-facing flow. `systems/robot_parts.gd`: a dug-up / spotted / rewarded robot part pays Parts at its rarity's value (Rusty 10 ... Legendary 450, `data/parts.json`); `GameState.parts` stays an empty legacy array that `RobotParts.fold_items()` folds into Parts every fleet tick. Save v4 (`SaveManager.migrate_v4`, after pace's v3) converts held items at the same values. Robot builds cost cubes + Parts (`data/robots.json` "parts", x1.2 per robot owned), Mk tiers cubes + `Fleet.TIER_PARTS` (200 / 700 / 2000); no recipes, no Control Cores, no rarity bonus.
@@ -657,3 +690,38 @@ tuned in the first-hour pass); no new SFX work unless a bug.
   junk-covered district, over the crash site (damaged pod smoking and sparking), down to Lumi, who
   cleans the clearing piece by piece (beam, the piece lifts and vanishes, a hop), then up again.
   Low preset: fewer pieces. Dev: `--title-t=S` start time, `--title-hold` freeze the camera.
+
+## Update: Glim in the workbench (wt/buddy2)
+- Done: workbench Upgrades tab has a "Glim" section (`ui/glim_bench.gd`, BenchRows, hidden until Glim is found); the Locker lists every unlocked CosmeticTargets bot after Lumi (`ct:<id>` entries in `ui/locker_panel.gd`), so Glim's looks are edited there. Hold F still opens the Glim panel.
+- Done: amber scan markers use Pace's lift rule (`GlimScan.too_big` -> `Pace.can_lift(field, pid)`).
+- Done: the autoplay bot buys Glim's Lantern and Scanner when affordable (1.5x margin); found at ~5 min.
+### [planet-tidewell] Tidewell (Ocean World) environment
+- Done (wt/p_tidewell): `planet/planets/tidewell/` (env.gd entry `TidewellEnv.apply(world, field, kind)`, plus
+  static hooks `prepare` / `field_water` / `post_generate` that the slice calls while the field is made),
+  registered in `data/planets.json`. Opaque ocean shader to the horizon (swell, shore foam, whitecaps, depth
+  colour from baked bed maps, refracted seabed with caustics, kelp, coral, fish/whale shadows, oil slicks that
+  clear hex by hex), archipelago of isles / sandbars / reefs, Ledger jack-up dredging rigs and a half-sunk ore
+  barge, drowned tower tops, buoys, moorings; restored: mangroves, palms, floating gardens, lighthouses with thin
+  beams; future: white sea platforms, solar rafts, light buoys. Lumi floats over water (bob, wake ring, spray,
+  mirrored reflection; no wading slowdown via `world.meta hover_water`), skimmers leave wakes. Binary suns
+  (`TideSuns`: companion light + sky disc, SolarSystem.suns_for when present). Trash rafts (ghost-net mats) and a
+  nets-and-buoys junk palette. Dev: `--planet-env=tidewell [--tide-cam=dist,pitch,yaw[,fov]]`. Test:
+  `tests/test_planet_tidewell.gd`.
+- On the shared contract now (planet/planets/planet_envs.gd: dev_hub / prepare_field / dress_view / apply);
+  own slice hooks dropped. Owner (Nov 8): flat-world layout paused for the walkable sphere; env.gd's header lists
+  what transfers to a globe (sea shader, generic hover-over-water, suns, props, junk palette, restoration rules).
+- Site prefabs for the globe (Nov 8): `TideSite.place(id, root, stage, restoration)` in planet/planets/tidewell/sites.gd
+  builds compact local scenes on their own sea patch (ocean shader `local_space`): hubs `hub_raft` (anchored raft) and
+  `hub_stilts` (stilt yard on an islet); landmarks `wreck`, `dredge_rig`, `reef_garden`, `buoy_field`. Listed in
+  data/planets.json "tidewell".sites. Preview: `res://planet/planets/tidewell/site_preview.tscn -- --site=<id>
+  --site-stage=0..2 --site-restore=0..1 --site-cam=dist,pitch,yaw[,fov,ty]`. Floating junk thins with restoration.
+- Next: home wires Tidewell as a campaign planet (call the same hooks from its world build); fauna2 may add
+  `tidewell` to gull/fish regions; sound: music key `tidewell_swell`.
+## Update: the owner's songs, CDs and artists (wt/tunes)
+- Done: song library `data/songs.json` (all 45 planned songs from docs/music/suno_prompts.json; files in audio/songs/<id>.mp3, missing ones skipped everywhere, so new MP3s drop in by id + import). `systems/tunes.gd` (rules, class `Tunes`), `audio/tunes_director.gd` (playback on a "Songs" bus, child of Audio; hushes the synth score via `Audio.tunes_hush`, which stays the fallback when no song fits).
+- Title screen: a random owned song each time (main theme first on the very first launch), crossfading, with a now-playing tag bottom right (`ui/title_song_tag.gd`). Intro: The Fall of LM-1 from the first frame, paused with the cinematic, faded at the landing.
+- In play: background shuffle of owned songs that fit the planet and moment (home planet first, story songs sometimes, other planets rarely; night/restored songs only then), 30-90 s quiet gaps, never the same song twice in a row.
+- CDs (`planet/cd_finds.gd`): intact CDs surface on cleaned hexes of the artist's home planet (pity guarantee by 18 hexes, kept in flags.songs.pending until picked up); scratched one-play CDs (5-10 per planet, songs you don't own; "Play now / Keep for later", CD case of 4, `ui/scratched_cd_ui.gd`). 13 in-world artists with homes and bios; Codex "Artists" tab (`ui/codex_artists.gd`). Start songs: Greenfall (Main Theme), Clean Sweep, Morning Shift.
+- CD player (Keepsakes tab, `ui/extras_cd_list.gd`): Shuffle / pick on repeat / off, lock + "found on" rows, CD case. Pre-Glim the music comes from the CD player (softer far away) and stops when you leave the district; with Glim's Music upgrade (`Glim.has_music()`, wt/buddy) any CD plays anywhere via N (`ui/tunes_picker.gd`). Credits: "Music by Lucas" (no Suno in the game; licensing note stays in audio/songs/README.md).
+- Dev: `--cds=a,b`, `--scratched=a`, `--cd-play=shuffle|id`, `--cd-drop`, `--glim-music`.
+- Next: autoplay bot could walk to CDs; a CD-player hub radio model is wt/camp.

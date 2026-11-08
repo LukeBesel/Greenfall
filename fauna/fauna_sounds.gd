@@ -22,15 +22,25 @@ static func ensure() -> void:
 		for b: PackedFloat32Array in bufs:
 			streams.append(wav(b))
 		Audio.override(name, streams)
+	# [leftovers] Behind the loading screen (scenes/slice.gd) it yields between calls; same rng order.
 	reg.call("purr", [purr(rng, 0.0), purr(rng, 0.15), purr(rng, -0.1)])
+	await BuildBudget.check("sounds")
 	reg.call("meow", [meow(0.0), meow(0.12), meow(-0.08)])
+	await BuildBudget.check("sounds")
 	reg.call("coo", [coo(0.0), coo(0.1), coo(-0.06)])
+	await BuildBudget.check("sounds")
 	reg.call("chirp", [chirp(rng, 0), chirp(rng, 1), chirp(rng, 2), chirp(rng, 3)])
+	await BuildBudget.check("sounds")
 	reg.call("song", [song(rng, 0), song(rng, 1), song(rng, 2), song(rng, 3)])
+	await BuildBudget.check("sounds")
 	reg.call("quack", [quack(rng, 0.0), quack(rng, 0.08), quack(rng, -0.06)])
+	await BuildBudget.check("sounds")
 	reg.call("gull", [gull(0.0), gull(0.1), gull(-0.08)])
+	await BuildBudget.check("sounds")
 	reg.call("frog", [frog(rng, 0.0), frog(rng, 0.12), frog(rng, -0.1)])
+	await BuildBudget.check("sounds")
 	reg.call("seal", [seal(0.0), seal(0.1), seal(-0.1)])
+	await BuildBudget.check("sounds")
 	reg.call("flutter", [flutter(rng, 0.8), flutter(rng, 1.0), flutter(rng, 1.3)])
 
 

@@ -130,9 +130,18 @@ void fragment() {
 	vec3 tn = texture(snow_nrm, p * 0.11).rgb * 2.0 - 1.0;
 	float nk = snow_amt * 0.6 * (1.0 - smoothstep(40.0, 200.0, dist));
 	vec3 wn = normalize(n * max(tn.z, 0.2) + vec3(1.0, 0.0, 0.0) * tn.x * nk + vec3(0.0, 0.0, 1.0) * -tn.y * nk);
+	// [leftovers] Night glint: giantshine (a strong directional light at night exposure) mirrored
+	// in the glassy ice made a hard white hotspot on the flats around the borehole headframe.
+	// At night bare ice is roughened (most where the view grazes it) so the giantshine spreads into
+	// a soft broad sheen, and its specular is clamped. By day the ice stays glassy.
+	float ndv = clamp(dot(n, normalize(CAMERA_POSITION_WORLD - wpos)), 0.0, 1.0);
+	float graze = 1.0 - smoothstep(0.1, 0.7, ndv);
+	float bare = 1.0 - snow_amt;
+	rough = max(rough, (0.3 + 0.14 * graze) * night * bare + 0.12 * graze * bare);
+	float spec = mix(0.7, 0.4, snow_amt) * (1.0 - 0.45 * night * bare);
 	ALBEDO = alb;
 	NORMAL = normalize((VIEW_MATRIX * vec4(wn, 0.0)).xyz);
 	ROUGHNESS = rough;
-	SPECULAR = mix(0.7, 0.4, snow_amt);
+	SPECULAR = spec;
 	EMISSION = em;
 }

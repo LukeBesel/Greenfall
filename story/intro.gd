@@ -964,7 +964,9 @@ func _finish() -> void:
 			model.core_glow = CoreCharge.glow_for_flags()
 		# [first] Behind the black: put the gameplay camera right behind Lumi so the first frame
 		# doesn't glide in from wherever the rig was parked during the cinematic.
-		if world.get("cam") != null and world.cam.has_method("snap"):
+		if world.get("cam") != null and world.cam.has_method("hand_off"):  # [onboard2] normal framing, clear arm
+			world.cam.hand_off(patch.rotation.y)
+		elif world.get("cam") != null and world.cam.has_method("snap"):
 			world.cam.yaw = patch.rotation.y
 			world.cam.snap()
 		var modal: bool = world.has_method("any_modal_open") and world.any_modal_open()
