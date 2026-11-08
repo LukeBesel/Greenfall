@@ -61,6 +61,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] The magnet comes late, is capped, isn't glitchy, and never pulls pieces Lumi can't lift.
 - [ ] The first seed comes at about 20 min (or with super luck). Planting ramps up at about 1 h.
 - [ ] The rare-part beam indicator is an upgrade, and dig events appear only once digging is unlocked.
+- [ ] Supply crates never appear out of nowhere: supplies are only found in the world. Every reward toast names exactly what you got, in readable text.
 
 ## Landing site and yard (camp)
 - [ ] The yard holds only the pod, a broken workbench and the trash bin. Everything else appears when it is unlocked.
@@ -71,6 +72,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Yard interactables are at least about 3 m apart.
 - [ ] The radio and jukebox stop the background music and play only their own song.
 - [ ] The observatory telescope sits away from spawn and its view doesn't glitch.
+- [ ] Buying a machine upgrade (belt drive, baler and so on) makes it visibly appear, with a build effect and a pointer to it. (Bug: they bought both and nothing appeared.)
 
 ## Workbench and menus (ui2)
 - [ ] The workbench is simple, small and futuristic.
@@ -90,6 +92,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Cosmetic parts unlock throughout the game.
 - [ ] Locked bot designs are hidden (silhouette or "???").
 - [ ] Character builder: colours, eyes, head piece, held item, companion, glow and laser colours.
+- [ ] The red antenna beacon stays on Lumi's head and never drifts off. (hero)
 - [ ] Aurora's model matches the concept art exactly. The owner reviews it, then the other 5 designs follow.
 
 ## Light buddy and night (buddy)
