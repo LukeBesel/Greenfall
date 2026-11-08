@@ -52,7 +52,6 @@ func _ready() -> void:
 	add_child(outline)
 	focus_outline = ObjectiveHex.new()
 	focus_outline.world = world
-	focus_outline.show_label = false
 	focus_outline.strength = 0.5
 	add_child(focus_outline)
 	waypoint = Waypoint.new()

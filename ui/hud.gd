@@ -222,7 +222,7 @@ func _build_bottom() -> void:
 func _build_notify() -> void:
 	var mc: MarginContainer = _margin(Control.PRESET_BOTTOM_LEFT)
 	# [vqa] Sits above the hotbar / level-bar band (bottom 150 px), never beside it.
-	mc.add_theme_constant_override("margin_bottom", 150)
+	mc.add_theme_constant_override("margin_bottom", 250)  # [onboard] above WREN's subtitle band too: no overlap
 	_notify = NotifyStack.new()
 	mc.add_child(_notify)
 

@@ -2,7 +2,7 @@ class_name ObjectiveHex
 extends Node3D
 ## [onboard] Outlines an objective's target hex on the ground: a thin glowing line that follows the
 ## hex's natural border (the same HexField.border_warp the junk placement and the ground use), a
-## faint wash just inside it, a slow light running along it, and the hex's % clean floating above.
+## faint wash just inside it and a slow light running along it (the % is on the card and the HUD line).
 ## The line warms from cyan toward green as the hex clears. Fades between targets; hides with the
 ## HUD (cinematics, menus) and the reduced-motion setting stops the running light.
 
@@ -40,7 +40,7 @@ void fragment() {
 
 var world: Node
 ## [onboard] The focus outline (the hex Lumi stands in) is dimmer and has no % label.
-var show_label: bool = true
+var show_label: bool = false  # owner: no floating text; the % is on the card and the HUD line
 var strength: float = 1.0
 var hex: int = -1
 var _want: int = -1
