@@ -326,7 +326,9 @@ func piece_bitten(pid: int) -> void:
 
 ## slice.gd's _on_hex_clean by cell id: first-clean bonus (a re-dirtied cell pays only the flat
 ## part again and doesn't count twice), milestones, the first hex's fanfare, the event.
-func on_hex_clean(hid: int) -> void:
+## quiet: [orbC] a robot cleaned it out of Lumi's sight: same bonus, stats and milestones, no
+## chime or sparkles.
+func on_hex_clean(hid: int, quiet: bool = false) -> void:
 	var field: SphereField = globe.field
 	if field.hex_water[hid] == 0:
 		globe.cells.set_state(hid, 1)
@@ -341,16 +343,17 @@ func on_hex_clean(hid: int) -> void:
 	var center: Vector3 = field.hex_center(hid)
 	var u: Vector3 = center.normalized()
 	var patch: Patch = w.get("patch")
-	Audio.play("chime", 1.0, -3.0)
-	Vfx.burst("big_sparkle", center + u * 0.3, Color(1.0, 0.92, 0.55))
-	Vfx.ring(center, field.hex_size * 1.1, Color(1.0, 0.9, 0.5, 0.9), 0.8)
-	Vfx.float_text(center + u * 1.4, tr("HEX CLEAN!  +%s") % Settings.fmt(bonus), Color(1.0, 0.92, 0.45), 1.5, 2.0)
+	if not quiet:  # [orbC]
+		Audio.play("chime", 1.0, -3.0)
+		Vfx.burst("big_sparkle", center + u * 0.3, Color(1.0, 0.92, 0.55))
+		Vfx.ring(center, field.hex_size * 1.1, Color(1.0, 0.9, 0.5, 0.9), 0.8)
+		Vfx.float_text(center + u * 1.4, tr("HEX CLEAN!  +%s") % Settings.fmt(bonus), Color(1.0, 0.92, 0.45), 1.5, 2.0)
 	EventBus.hex_cleaned.emit(hid, center, bonus)
 	EventBus.field_progress_changed.emit(field.cleaned_count, field.junk_hex_count)
-	if patch:
+	if patch and not quiet:  # [orbC]
 		patch.model.set_happy(1.0)
 	var n: int = cleaned_by_lumi()
-	if n == 1 and first:
+	if n == 1 and first and not quiet:  # [orbC]
 		EventBus.hitstop_requested.emit(0.45, 0.25)
 		Audio.play("fanfare", 1.0, -4.0)
 	if n in HEX_MILESTONES and not GameState.flags.get("hexm_%d" % n, false):
