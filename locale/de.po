@@ -32,7 +32,19 @@ msgstr "Basis"
 msgid "%s Lv %d"
 msgstr "%s St %d"
 
-#: autoload/Economy.gd:300 data/robots.json:tiers[0].name
+#: autoload/Economy.gd:183
+msgid "Needs %s Lv %d"
+msgstr ""
+
+#: autoload/Economy.gd:186
+msgid "Needs research: %s"
+msgstr ""
+
+#: autoload/Economy.gd:189 systems/research.gd:190
+msgid "Needs base level %d"
+msgstr "Benötigt Basisstufe %d"
+
+#: autoload/Economy.gd:325 data/robots.json:tiers[0].name
 msgid "Mk I"
 msgstr "Mk I"
 
@@ -513,7 +525,7 @@ msgid "E   look through the telescope"
 msgstr "E   durchs Teleskop schauen"
 
 #: core/offline.gd:130 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:257
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d Min."
 
@@ -532,6 +544,22 @@ msgstr "Ballen im Wert von %s stapelten sich an der Basis, ohne dass jemand sie 
 #: core/offline.gd:137
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Die Luftwäscher haben die ganze Zeit gefiltert. Die Luft ist ein bisschen klarer."
+
+#: core/pace.gd:127
+msgid "Lift Strength %d"
+msgstr ""
+
+#: core/pace.gd:128
+msgid "Too heavy: needs %s"
+msgstr ""
+
+#: core/pace.gd:139
+msgid "No Baler yet: empty your chest in the trash bin"
+msgstr ""
+
+#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:245
+msgid "+%s cubes"
+msgstr "+%s Würfel"
 
 #: fauna/fauna.gd:1211
 msgid "E   pet %s"
@@ -1175,59 +1203,59 @@ msgstr "WASSER"
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Roboter-Uplink aktiv. Drück B für das Kommando: Zonen malen und Crews hinschicken, wo du willst."
 
-#: scenes/slice.gd:522
+#: scenes/slice.gd:527
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 aktiv. Blütenkern 4%: grünes Licht schwach. Cradle-Relais: kaum. Lass etwas wachsen."
 
-#: scenes/slice.gd:834
+#: scenes/slice.gd:839
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXFELD SAUBER!  +%s"
 
-#: scenes/slice.gd:848
+#: scenes/slice.gd:853
 msgid "Milestone: %d hexes clean!"
 msgstr "Meilenstein: %d Hexfelder sauber!"
 
-#: scenes/slice.gd:850
+#: scenes/slice.gd:855
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "Der ganze Schrottplatz ist sauber. Lumi piept ein sehr langes, sehr glückliches Piepen."
 
-#: scenes/slice.gd:857
+#: scenes/slice.gd:862
 msgid "%s is out of range: %s"
 msgstr "%s ist außer Reichweite: %s"
 
-#: scenes/slice.gd:867
+#: scenes/slice.gd:872
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Gesperrt. Bring deine Basis auf Stufe 5, um die Startrampe zu bauen."
 
-#: scenes/slice.gd:870 ui/rockets_panel.gd:39
+#: scenes/slice.gd:875 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Energiezellen laden: %s. Raketen-Upgrades füllen sie schneller."
 
-#: scenes/slice.gd:924
+#: scenes/slice.gd:929
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Landung: %s. Basis %d von %d. %s"
 
-#: scenes/slice.gd:925
+#: scenes/slice.gd:930
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "Die Rakete parkt auf dem Platz, bereit, sobald die Zellen voll sind."
 
-#: scenes/slice.gd:925
+#: scenes/slice.gd:930
 msgid "Landed on the base pad."
 msgstr "Auf der Basisplattform gelandet."
 
-#: scenes/slice.gd:1016
+#: scenes/slice.gd:1021
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Upgrades brauchen eine Werkbank. Zurück zur Basis."
 
-#: scenes/slice.gd:1184
+#: scenes/slice.gd:1189
 msgid "Welcome back. The junk waited for you."
 msgstr "Willkommen zurück. Der Schrott hat auf dich gewartet."
 
-#: scenes/slice.gd:1201
+#: scenes/slice.gd:1206
 msgid "OUTPOST %d · Lv%d"
 msgstr "AUSSENPOSTEN %d · St%d"
 
-#: scenes/slice.gd:1201
+#: scenes/slice.gd:1206
 msgid "OUTPOST %d · RUIN"
 msgstr "AUSSENPOSTEN %d · RUINE"
 
@@ -1830,7 +1858,7 @@ msgstr "Die Drohne hat etwas Schrott zurückgekippt. Schaufel ihn auf oder lass 
 msgid "SEEDS · PAID IN FULL"
 msgstr "SAMEN · VOLLSTÄNDIG BEZAHLT"
 
-#: story/ledger.gd:699 systems/events.gd:486 systems/lumi_level.gd:218
+#: story/ledger.gd:699 systems/events.gd:490 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d Samen"
 
@@ -2178,111 +2206,107 @@ msgstr "Design: %s"
 msgid "CRADLE · SUPPLY"
 msgstr "CRADLE · VERSORGUNG"
 
-#: systems/events.gd:438
+#: systems/events.gd:442
 msgid "STREAK x%d  +%d%%"
 msgstr "SERIE x%d  +%d%%"
 
-#: systems/events.gd:478 ui/goals_panel.gd:245
-msgid "+%s cubes"
-msgstr "+%s Würfel"
-
-#: systems/events.gd:624
+#: systems/events.gd:628
 msgid "%d pieces of junk left around the crate"
 msgstr "Noch %d Schrottteile um die Kiste"
 
-#: systems/events.gd:649
+#: systems/events.gd:653
 msgid "Supply crate opened: %s"
 msgstr "Versorgungskiste geöffnet: %s"
 
-#: systems/events.gd:651
+#: systems/events.gd:655
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "Das Leuchtfeuer der Versorgungskiste ist abgelaufen, und eine Drohne hat sie wieder hochgezogen. Es kommt eine neue."
 
-#: systems/events.gd:698
+#: systems/events.gd:702
 msgid "%d pieces grabbed at 3x"
 msgstr "%d Teile zum 3-fachen Wert geschnappt"
 
-#: systems/events.gd:703
+#: systems/events.gd:707
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "Der Schub ist vorbei. Du hast %d Teile zum dreifachen Wert geschnappt; sie zahlen sich beim Pressen aus."
 
-#: systems/events.gd:703
+#: systems/events.gd:707
 msgid "The surge faded. Next time!"
 msgstr "Der Schub ist vorbei. Nächstes Mal!"
 
-#: systems/events.gd:751
+#: systems/events.gd:755
 msgid "Every plant is drinking"
 msgstr "Jede Pflanze trinkt"
 
-#: systems/events.gd:761
+#: systems/events.gd:765
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "Der Regen zieht weiter. Der Boden hat ihn aufgesogen: %s"
 
-#: systems/events.gd:782
+#: systems/events.gd:786
 msgid "E   fix %s's hiccup"
 msgstr "E   %s vom Schluckauf befreien"
 
-#: systems/events.gd:809
+#: systems/events.gd:813
 msgid "%s is %d m away"
 msgstr "%s ist %d m entfernt"
 
-#: systems/events.gd:811
+#: systems/events.gd:815
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "%s hat den Schluckauf selbst abgeschüttelt. Es wirkt verlegen."
 
-#: systems/events.gd:825
+#: systems/events.gd:829
 msgid "%s is fixed and back to work. %s"
 msgstr "%s ist repariert und wieder bei der Arbeit. %s"
 
-#: systems/events.gd:878
+#: systems/events.gd:882
 msgid "Wildlife Visit: %s"
 msgstr "Tierbesuch: %s"
 
-#: systems/events.gd:879
+#: systems/events.gd:883
 msgid "E   take a photo of the %s"
 msgstr "E   %s fotografieren"
 
-#: systems/events.gd:910
+#: systems/events.gd:914
 msgid "%s, %d m away"
 msgstr "%s, %d m entfernt"
 
-#: systems/events.gd:913
+#: systems/events.gd:917
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "%s ist weitergezogen. Taucht irgendwo im Grünen wieder auf."
 
-#: systems/events.gd:943
+#: systems/events.gd:947
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "Klick! %s ist jetzt in deiner Sammlung. %s"
 
-#: systems/events.gd:943
+#: systems/events.gd:947
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "Klick! Noch ein schönes Foto: %s. %s"
 
-#: systems/events.gd:993
+#: systems/events.gd:997
 msgid "Signal %d%%"
 msgstr "Signal %d%%"
 
-#: systems/events.gd:997
+#: systems/events.gd:1001
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "Das war das Signal: ein Versteck mit einem seltenen Teil darin. %s"
 
-#: systems/events.gd:999
+#: systems/events.gd:1003
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "Das Signal ist verblasst. Das Teil liegt noch da unten; der Detektor findet es."
 
-#: systems/events.gd:1065
+#: systems/events.gd:1069
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "PRÜFUNG   DU %d  :  %d DROHNE"
 
-#: systems/events.gd:1066
+#: systems/events.gd:1070
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "Du %d  :  %d Drohne   ·   noch %d"
 
-#: systems/events.gd:1103
+#: systems/events.gd:1107
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "Prüfung gewonnen, %d zu %d! Der Ledger stempelt GENEHMIGT. %s"
 
-#: systems/events.gd:1107
+#: systems/events.gd:1111
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "Die Drohne hat die Prüfung gewonnen, %d zu %d. Ein Trinkgeld gab's trotzdem: +%s Würfel."
 
@@ -2483,10 +2507,6 @@ msgstr "Wird gerade erforscht"
 #: systems/research.gd:180
 msgid "Already queued"
 msgstr "Schon in der Warteschlange"
-
-#: systems/research.gd:190
-msgid "Needs base level %d"
-msgstr "Benötigt Basisstufe %d"
 
 #: systems/research.gd:192
 msgid "Queue is full"
@@ -2946,12 +2966,12 @@ msgstr "Noch nicht besucht"
 msgid "%s  ·  %d hexes  ·  %d ark waves  ·  %d curiosities"
 msgstr "%s  ·  %d Hexfelder  ·  %d Archenwellen  ·  %d Kuriositäten"
 
-#: ui/ark_bridge.gd:192 ui/system_map.gd:389 ui/system_map.gd:612
+#: ui/ark_bridge.gd:192 ui/system_map.gd:443 ui/system_map.gd:663
 #: ui/world_picker.gd:119
 msgid "restored"
 msgstr "wiederhergestellt"
 
-#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:690
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:741
 msgid "You are here"
 msgstr "Du bist hier"
 
@@ -2972,7 +2992,7 @@ msgid "The Cradle has to come home first."
 msgstr "Zuerst muss die Cradle heimkehren."
 
 #: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:320
-#: ui/rockets_panel.gd:81 ui/system_map.gd:676
+#: ui/rockets_panel.gd:81 ui/system_map.gd:727
 msgid "Launch"
 msgstr "Starten"
 
@@ -5252,103 +5272,103 @@ msgstr "Auto-Route: %s"
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s"
 msgstr ""
 
-#: ui/system_map.gd:387 ui/system_map.gd:612
+#: ui/system_map.gd:441 ui/system_map.gd:663
 msgid "you are here"
 msgstr "du bist hier"
 
-#: ui/system_map.gd:393
+#: ui/system_map.gd:447
 msgid "needs %s"
 msgstr "braucht %s"
 
-#: ui/system_map.gd:497
+#: ui/system_map.gd:548
 msgid "In flight"
 msgstr "Im Flug"
 
-#: ui/system_map.gd:497
+#: ui/system_map.gd:548
 msgid "D-pad / click  pick a planet      Enter / A  choose      Esc / B  back"
 msgstr "Steuerkreuz / Klick  Planet wählen      Enter / A  auswählen      Esc / B  zurück"
 
-#: ui/system_map.gd:549
+#: ui/system_map.gd:600
 msgid "Verdance system"
 msgstr "Verdance-System"
 
-#: ui/system_map.gd:549
+#: ui/system_map.gd:600
 msgid "two suns  ·  five worlds  ·  system restoration"
 msgstr "zwei Sonnen  ·  fünf Welten  ·  Wiederherstellung des Systems"
 
-#: ui/system_map.gd:554
+#: ui/system_map.gd:605
 msgid "restored  ·  %d of %d planets"
 msgstr "wiederhergestellt  ·  %d von %d Planeten"
 
-#: ui/system_map.gd:559
+#: ui/system_map.gd:610
 msgid "Relics"
 msgstr "Relikte"
 
-#: ui/system_map.gd:564
+#: ui/system_map.gd:615
 msgid "Restore %s"
 msgstr "Stelle %s wieder her"
 
-#: ui/system_map.gd:568
+#: ui/system_map.gd:619
 msgid "Heirloom picks waiting: %d (Pause > Ark Bridge)"
 msgstr "Erbstück-Wahlen offen: %d (Pause > Archenbrücke)"
 
-#: ui/system_map.gd:569
+#: ui/system_map.gd:620
 msgid "Rocket drive"
 msgstr "Raketenantrieb"
 
-#: ui/system_map.gd:569
+#: ui/system_map.gd:620
 msgid "interplanetary  ·  carried to every planet"
 msgstr "interplanetar  ·  reist mit auf jeden Planeten"
 
-#: ui/system_map.gd:576
+#: ui/system_map.gd:627
 msgid "The Homeward rocket stands ready."
 msgstr "Die Heimkehr-Rakete steht bereit."
 
-#: ui/system_map.gd:578
+#: ui/system_map.gd:629
 msgid "Next: %s"
 msgstr "Nächster: %s"
 
-#: ui/system_map.gd:587
+#: ui/system_map.gd:638
 msgid "Build"
 msgstr "Bauen"
 
-#: ui/system_map.gd:602
+#: ui/system_map.gd:653
 msgid "Planets"
 msgstr "Planeten"
 
-#: ui/system_map.gd:602
+#: ui/system_map.gd:653
 msgid "pick a world"
 msgstr "wähle eine Welt"
 
-#: ui/system_map.gd:612
+#: ui/system_map.gd:663
 msgid "unvisited"
 msgstr "unbesucht"
 
-#: ui/system_map.gd:643
+#: ui/system_map.gd:694
 msgid "%s  ·  %.2f AU from the suns"
 msgstr "%s  ·  %.2f AE von den Sonnen"
 
-#: ui/system_map.gd:655
+#: ui/system_map.gd:706
 msgid "Restored %d%%"
 msgstr "Wiederhergestellt %d%%"
 
-#: ui/system_map.gd:657
+#: ui/system_map.gd:708
 msgid "Goal: %d Thriving hexes, %d bases at level 5, a Thriving landing district"
 msgstr "Ziel: %d blühende Felder, %d Basen auf Stufe 5, ein blühender Landebezirk"
 
-#: ui/system_map.gd:657
+#: ui/system_map.gd:708
 msgid "Goal: the Bloom Core full (Cradle Returns)"
 msgstr "Ziel: der Blütenkern voll (Cradle-Rückkehr)"
 
-#: ui/system_map.gd:666 data/goals.json:goals[home_launch].text
+#: ui/system_map.gd:717 data/goals.json:goals[home_launch].text
 msgid "Launch home"
 msgstr "Nach Hause starten"
 
-#: ui/system_map.gd:671
+#: ui/system_map.gd:722
 msgid "Choose a district"
 msgstr "Bezirk wählen"
 
-#: ui/system_map.gd:696
+#: ui/system_map.gd:747
 msgid "Rocket not ready"
 msgstr "Rakete nicht bereit"
 
@@ -5588,7 +5608,7 @@ msgstr "BESTER WERT"
 msgid "Buy"
 msgstr "Kaufen"
 
-#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:208
+#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:209
 msgid "Max"
 msgstr "Max."
 
@@ -5600,31 +5620,31 @@ msgstr "St %d%s"
 msgid "Requires %s"
 msgstr "Benötigt %s"
 
-#: ui/upgrade_card.gd:189
+#: ui/upgrade_card.gd:190
 msgid "%s%s  (max)"
 msgstr "%s%s  (max.)"
 
-#: ui/upgrade_card.gd:192
+#: ui/upgrade_card.gd:193
 msgid "Off  →  On"
 msgstr "Aus  →  An"
 
-#: ui/upgrade_card.gd:199
+#: ui/upgrade_card.gd:200
 msgid "MAX"
 msgstr "MAX."
 
-#: ui/upgrade_card.gd:208
+#: ui/upgrade_card.gd:209
 msgid "Max (%d)"
 msgstr "Max. (%d)"
 
-#: ui/upgrade_card.gd:214
+#: ui/upgrade_card.gd:215
 msgid "in about %s"
 msgstr "in etwa %s"
 
-#: ui/upgrade_card.gd:214
+#: ui/upgrade_card.gd:215
 msgid "earn more cubes"
 msgstr "mehr Würfel verdienen"
 
-#: ui/upgrade_card.gd:219
+#: ui/upgrade_card.gd:220
 msgid "Where it comes from:  %s"
 msgstr "Woher es kommt:  %s"
 
@@ -9777,6 +9797,18 @@ msgstr "Die alte Startstadt, wo die Arche landen wird."
 msgid "Scoop 15 pieces of junk"
 msgstr "Schaufel 15 Stück Schrott"
 
+#: data/goals.json:goals[dump_1].text
+msgid "Empty your chest in the bin"
+msgstr ""
+
+#: data/goals.json:goals[upgrade_1].text
+msgid "Install a workbench upgrade"
+msgstr "Bau ein Werkbank-Upgrade ein"
+
+#: data/goals.json:goals[baler_1].text
+msgid "Install the Baler"
+msgstr ""
+
 #: data/goals.json:goals[bale_1].text
 msgid "Compress your first bale"
 msgstr "Press deinen ersten Ballen"
@@ -9785,9 +9817,9 @@ msgstr "Press deinen ersten Ballen"
 msgid "Sell a bale at the scale"
 msgstr "Verkauf einen Ballen an der Waage"
 
-#: data/goals.json:goals[upgrade_1].text
-msgid "Install a workbench upgrade"
-msgstr "Bau ein Werkbank-Upgrade ein"
+#: data/goals.json:goals[lift_1].text
+msgid "Lift Strength level 1"
+msgstr ""
 
 #: data/goals.json:goals[hex_1].text
 msgid "Clean your first hex"
@@ -9833,17 +9865,9 @@ msgstr "Schließ ein Forschungsprojekt ab"
 msgid "Clean 5 hexes"
 msgstr "Räum 5 Hexfelder"
 
-#: data/goals.json:goals[scoopie_1].text
-msgid "Build a Scoopie"
-msgstr "Bau einen Scoopie"
-
-#: data/goals.json:goals[zone_1].text
-msgid "Paint a work zone (B Command)"
-msgstr "Mal eine Arbeitszone (B Kommando)"
-
-#: data/goals.json:goals[haulbug_1].text
-msgid "Build a Haul Bug"
-msgstr "Bau einen Haul Bug"
+#: data/goals.json:goals[lift_2].text
+msgid "Lift Strength level 2 (large junk)"
+msgstr ""
 
 #: data/goals.json:goals[upgrades_12].text
 msgid "Install 12 upgrades"
@@ -9869,21 +9893,33 @@ msgstr "Schließ 4 Forschungsprojekte ab"
 msgid "Install 20 upgrades"
 msgstr "Bau 20 Upgrades ein"
 
-#: data/goals.json:goals[bales_20].text
-msgid "Robots press 20 bales"
-msgstr "Roboter pressen 20 Ballen"
-
 #: data/goals.json:goals[hex_10].text data/radio.json:songs[verdance_sweep].hint
 msgid "Clean 10 hexes"
 msgstr "10 Hexfelder räumen"
 
-#: data/goals.json:goals[scoopie_2].text
-msgid "Run 2 Scoopies"
-msgstr "Lass 2 Scoopies laufen"
-
 #: data/goals.json:goals[base_2].text
 msgid "Upgrade the base to level 2"
 msgstr "Verbessere die Basis auf Stufe 2"
+
+#: data/goals.json:goals[scoopie_1].text
+msgid "Build a Scoopie"
+msgstr "Bau einen Scoopie"
+
+#: data/goals.json:goals[zone_1].text
+msgid "Paint a work zone (B Command)"
+msgstr "Mal eine Arbeitszone (B Kommando)"
+
+#: data/goals.json:goals[haulbug_1].text
+msgid "Build a Haul Bug"
+msgstr "Bau einen Haul Bug"
+
+#: data/goals.json:goals[bales_20].text
+msgid "Robots press 20 bales"
+msgstr "Roboter pressen 20 Ballen"
+
+#: data/goals.json:goals[scoopie_2].text
+msgid "Run 2 Scoopies"
+msgstr "Lass 2 Scoopies laufen"
 
 #: data/goals.json:goals[hex_12].text
 msgid "Clean 12 hexes"
@@ -11382,8 +11418,8 @@ msgid "Salvage Logic"
 msgstr "Bergungslogik"
 
 #: data/research.json:nodes[salvage_logic].desc
-msgid "Lumi rewrites the starter bots' route planner. Fewer wrong turns."
-msgstr "Lumi schreibt die Routenplanung der Starter-Bots neu. Weniger falsche Abzweigungen."
+msgid "Lumi rewrites the base's old assembly logic. The base can build helpers again: Scoopies, Haul Bugs and Skimmers."
+msgstr ""
 
 #: data/research.json:nodes[seedling_blueprint].name
 msgid "Seedling Blueprint"
@@ -12387,6 +12423,22 @@ msgstr "Eine hydraulische Ballenpresse, abgesetzt an der Aufräumgrenze. Putzrob
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky."
 msgstr ""
 
+#: data/upgrades.json:upgrades[baler].name
+msgid "Baler"
+msgstr ""
+
+#: data/upgrades.json:upgrades[baler].desc
+msgid "Fit the bale press in your chest. Press junk into bales: they sell for far more than loose junk."
+msgstr ""
+
+#: data/upgrades.json:upgrades[lift_strength].name
+msgid "Lift Strength"
+msgstr ""
+
+#: data/upgrades.json:upgrades[lift_strength].desc
+msgid "Stronger lift beams. Level 1: medium junk (jerrycans, crates). Level 2: large junk (tyres, TVs, fridges)."
+msgstr ""
+
 #: data/upgrades.json:upgrades[compartment_size].name
 msgid "Compartment Size"
 msgstr "Fachgröße"
@@ -12448,8 +12500,8 @@ msgid "Magnet Arm"
 msgstr "Magnetarm"
 
 #: data/upgrades.json:upgrades[magnet_arm].desc
-msgid "Nearby junk scoots toward you while scooping."
-msgstr "Schrott in der Nähe rutscht beim Schaufeln zu dir."
+msgid "A few loose pieces nearby drift toward you while scooping. Never heavy ones, never from inside a heap."
+msgstr ""
 
 #: data/upgrades.json:upgrades[detector_range].name
 msgid "Detector Coil"
@@ -12492,12 +12544,20 @@ msgid "Longer focusing lenses: grab junk from further away."
 msgstr "Längere Fokuslinsen: Schrott aus größerer Entfernung greifen."
 
 #: data/upgrades.json:upgrades[multi_lock].name
-msgid "Multi-Lock"
-msgstr "Mehrfachziel"
+msgid "Scoop Size"
+msgstr ""
 
 #: data/upgrades.json:upgrades[multi_lock].desc
-msgid "Extra targeting lasers: lift several pieces at once."
-msgstr "Zusätzliche Ziellaser: mehrere Teile gleichzeitig anheben."
+msgid "Lock onto one more piece per scoop pulse."
+msgstr ""
+
+#: data/upgrades.json:upgrades[signal_finder].name
+msgid "Signal Finder"
+msgstr ""
+
+#: data/upgrades.json:upgrades[signal_finder].desc
+msgid "Tunes the detector to strong pings: rare part signals show as a violet beam."
+msgstr ""
 
 #: data/weekly.json:twists[scoopies_only].name
 msgid "Scoopies Only"
@@ -14126,6 +14186,18 @@ msgstr ""
 
 #~ msgid "Space / Esc"
 #~ msgstr "Leertaste / Esc"
+
+#~ msgid "Lumi rewrites the starter bots' route planner. Fewer wrong turns."
+#~ msgstr "Lumi schreibt die Routenplanung der Starter-Bots neu. Weniger falsche Abzweigungen."
+
+#~ msgid "Nearby junk scoots toward you while scooping."
+#~ msgstr "Schrott in der Nähe rutscht beim Schaufeln zu dir."
+
+#~ msgid "Multi-Lock"
+#~ msgstr "Mehrfachziel"
+
+#~ msgid "Extra targeting lasers: lift several pieces at once."
+#~ msgstr "Zusätzliche Ziellaser: mehrere Teile gleichzeitig anheben."
 
 #~ msgid "<< LEDGER // CONTRACT 0001 // AMENDED >>"
 #~ msgstr "<< LEDGER // VERTRAG 0001 // GEÄNDERT >>"

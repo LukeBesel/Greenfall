@@ -32,7 +32,19 @@ msgstr "基本"
 msgid "%s Lv %d"
 msgstr "%s Lv %d"
 
-#: autoload/Economy.gd:300 data/robots.json:tiers[0].name
+#: autoload/Economy.gd:183
+msgid "Needs %s Lv %d"
+msgstr ""
+
+#: autoload/Economy.gd:186
+msgid "Needs research: %s"
+msgstr ""
+
+#: autoload/Economy.gd:189 systems/research.gd:190
+msgid "Needs base level %d"
+msgstr "基地レベル %d が必要"
+
+#: autoload/Economy.gd:325 data/robots.json:tiers[0].name
 msgid "Mk I"
 msgstr "Mk I"
 
@@ -513,7 +525,7 @@ msgid "E   look through the telescope"
 msgstr "E   望遠鏡をのぞく"
 
 #: core/offline.gd:130 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:257
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d 分"
 
@@ -532,6 +544,22 @@ msgstr "%s 相当のベールが、運ぶ者もなく基地に積まれていた
 #: core/offline.gd:137
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
+
+#: core/pace.gd:127
+msgid "Lift Strength %d"
+msgstr ""
+
+#: core/pace.gd:128
+msgid "Too heavy: needs %s"
+msgstr ""
+
+#: core/pace.gd:139
+msgid "No Baler yet: empty your chest in the trash bin"
+msgstr ""
+
+#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:245
+msgid "+%s cubes"
+msgstr "+%s キューブ"
 
 #: fauna/fauna.gd:1211
 msgid "E   pet %s"
@@ -1172,59 +1200,59 @@ msgstr "水"
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーンを塗って、好きな場所にクルーを送ろう。"
 
-#: scenes/slice.gd:522
+#: scenes/slice.gd:527
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 起動。ブルームコア 4%：緑の光 微弱。Cradle号リレー：かすか。何かを育てよう。"
 
-#: scenes/slice.gd:834
+#: scenes/slice.gd:839
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
-#: scenes/slice.gd:848
+#: scenes/slice.gd:853
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice.gd:850
+#: scenes/slice.gd:855
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
 
-#: scenes/slice.gd:857
+#: scenes/slice.gd:862
 msgid "%s is out of range: %s"
 msgstr "%s は範囲外：%s"
 
-#: scenes/slice.gd:867
+#: scenes/slice.gd:872
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:870 ui/rockets_panel.gd:39
+#: scenes/slice.gd:875 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:924
+#: scenes/slice.gd:929
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陸：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:925
+#: scenes/slice.gd:930
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
 
-#: scenes/slice.gd:925
+#: scenes/slice.gd:930
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:1016
+#: scenes/slice.gd:1021
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice.gd:1184
+#: scenes/slice.gd:1189
 msgid "Welcome back. The junk waited for you."
 msgstr "おかえり。ガラクタが待っていたよ。"
 
-#: scenes/slice.gd:1201
+#: scenes/slice.gd:1206
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:1201
+#: scenes/slice.gd:1206
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
@@ -1827,7 +1855,7 @@ msgstr "ドローンがガラクタを少し捨てていった。すくうか、
 msgid "SEEDS · PAID IN FULL"
 msgstr "種 · 全額支払済み"
 
-#: story/ledger.gd:699 systems/events.gd:486 systems/lumi_level.gd:218
+#: story/ledger.gd:699 systems/events.gd:490 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d 種"
 
@@ -2175,111 +2203,107 @@ msgstr "デザイン：%s"
 msgid "CRADLE · SUPPLY"
 msgstr "CRADLE号 · 補給"
 
-#: systems/events.gd:438
+#: systems/events.gd:442
 msgid "STREAK x%d  +%d%%"
 msgstr "コンボ x%d  +%d%%"
 
-#: systems/events.gd:478 ui/goals_panel.gd:245
-msgid "+%s cubes"
-msgstr "+%s キューブ"
-
-#: systems/events.gd:624
+#: systems/events.gd:628
 msgid "%d pieces of junk left around the crate"
 msgstr "箱のまわりにガラクタが残り %d 個"
 
-#: systems/events.gd:649
+#: systems/events.gd:653
 msgid "Supply crate opened: %s"
 msgstr "補給箱を開けた：%s"
 
-#: systems/events.gd:651
+#: systems/events.gd:655
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "補給箱のビーコンが時間切れになり、ドローンが引き上げていった。また来るよ。"
 
-#: systems/events.gd:698
+#: systems/events.gd:702
 msgid "%d pieces grabbed at 3x"
 msgstr "3倍で %d 個ゲット"
 
-#: systems/events.gd:703
+#: systems/events.gd:707
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "ラッシュが終わった。3倍の価値で %d 個ゲット。ベールにすると支払われる。"
 
-#: systems/events.gd:703
+#: systems/events.gd:707
 msgid "The surge faded. Next time!"
 msgstr "ラッシュが終わった。また次回！"
 
-#: systems/events.gd:751
+#: systems/events.gd:755
 msgid "Every plant is drinking"
 msgstr "すべての植物が水を飲んでいる"
 
-#: systems/events.gd:761
+#: systems/events.gd:765
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "雨が去っていく。大地が吸い込んだ：%s"
 
-#: systems/events.gd:782
+#: systems/events.gd:786
 msgid "E   fix %s's hiccup"
 msgstr "E   %s のしゃっくりを治す"
 
-#: systems/events.gd:809
+#: systems/events.gd:813
 msgid "%s is %d m away"
 msgstr "%s まで %d m"
 
-#: systems/events.gd:811
+#: systems/events.gd:815
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "%s はひとりでしゃっくりが止まった。ちょっと恥ずかしそう。"
 
-#: systems/events.gd:825
+#: systems/events.gd:829
 msgid "%s is fixed and back to work. %s"
 msgstr "%s は修理されて仕事に戻った。%s"
 
-#: systems/events.gd:878
+#: systems/events.gd:882
 msgid "Wildlife Visit: %s"
 msgstr "生き物がやってきた：%s"
 
-#: systems/events.gd:879
+#: systems/events.gd:883
 msgid "E   take a photo of the %s"
 msgstr "E   %s の写真を撮る"
 
-#: systems/events.gd:910
+#: systems/events.gd:914
 msgid "%s, %d m away"
 msgstr "%s、%d m 先"
 
-#: systems/events.gd:913
+#: systems/events.gd:917
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "%s はどこかへ行ってしまった。どこか緑のある場所にまた現れるよ。"
 
-#: systems/events.gd:943
+#: systems/events.gd:947
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "パシャ！%s がコレクションに入った。%s"
 
-#: systems/events.gd:943
+#: systems/events.gd:947
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "パシャ！%s のすてきな写真をもう一枚。%s"
 
-#: systems/events.gd:993
+#: systems/events.gd:997
 msgid "Signal %d%%"
 msgstr "シグナル %d%%"
 
-#: systems/events.gd:997
+#: systems/events.gd:1001
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "あれがシグナルの正体：レアパーツが入った隠し場所。%s"
 
-#: systems/events.gd:999
+#: systems/events.gd:1003
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "シグナルが消えた。パーツはまだ下にある。探知機が見つけてくれる。"
 
-#: systems/events.gd:1065
+#: systems/events.gd:1069
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "監査   あなた %d  :  %d ドローン"
 
-#: systems/events.gd:1066
+#: systems/events.gd:1070
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "あなた %d  :  %d ドローン   ·   残り %d"
 
-#: systems/events.gd:1103
+#: systems/events.gd:1107
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "監査に勝利、%d 対 %d！Ledger が「承認」のスタンプを押した。%s"
 
-#: systems/events.gd:1107
+#: systems/events.gd:1111
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "監査はドローンの勝ち、%d 対 %d。それでもチップを置いていった：+%s キューブ。"
 
@@ -2474,10 +2498,6 @@ msgstr "研究中"
 #: systems/research.gd:180
 msgid "Already queued"
 msgstr "すでに予約済み"
-
-#: systems/research.gd:190
-msgid "Needs base level %d"
-msgstr "基地レベル %d が必要"
 
 #: systems/research.gd:192
 msgid "Queue is full"
@@ -2937,12 +2957,12 @@ msgstr "まだ訪れていない"
 msgid "%s  ·  %d hexes  ·  %d ark waves  ·  %d curiosities"
 msgstr "%s  ·  ヘックス %d  ·  アークウェーブ %d  ·  珍品 %d"
 
-#: ui/ark_bridge.gd:192 ui/system_map.gd:389 ui/system_map.gd:612
+#: ui/ark_bridge.gd:192 ui/system_map.gd:443 ui/system_map.gd:663
 #: ui/world_picker.gd:119
 msgid "restored"
 msgstr "再生済み"
 
-#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:690
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:741
 msgid "You are here"
 msgstr "現在地"
 
@@ -2963,7 +2983,7 @@ msgid "The Cradle has to come home first."
 msgstr "まずは Cradle号が帰ってこないと。"
 
 #: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:320
-#: ui/rockets_panel.gd:81 ui/system_map.gd:676
+#: ui/rockets_panel.gd:81 ui/system_map.gd:727
 msgid "Launch"
 msgstr "発射"
 
@@ -5240,103 +5260,103 @@ msgstr "自動ルート：%s"
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s"
 msgstr ""
 
-#: ui/system_map.gd:387 ui/system_map.gd:612
+#: ui/system_map.gd:441 ui/system_map.gd:663
 msgid "you are here"
 msgstr "現在地"
 
-#: ui/system_map.gd:393
+#: ui/system_map.gd:447
 msgid "needs %s"
 msgstr "%s が必要"
 
-#: ui/system_map.gd:497
+#: ui/system_map.gd:548
 msgid "In flight"
 msgstr "飛行中"
 
-#: ui/system_map.gd:497
+#: ui/system_map.gd:548
 msgid "D-pad / click  pick a planet      Enter / A  choose      Esc / B  back"
 msgstr "十字キー / クリック  惑星を選ぶ      Enter / A  決定      Esc / B  戻る"
 
-#: ui/system_map.gd:549
+#: ui/system_map.gd:600
 msgid "Verdance system"
 msgstr "Verdance 星系"
 
-#: ui/system_map.gd:549
+#: ui/system_map.gd:600
 msgid "two suns  ·  five worlds  ·  system restoration"
 msgstr "2つの太陽 ・ 5つの世界 ・ 星系の再生"
 
-#: ui/system_map.gd:554
+#: ui/system_map.gd:605
 msgid "restored  ·  %d of %d planets"
 msgstr "再生済み ・ %d / %d 惑星"
 
-#: ui/system_map.gd:559
+#: ui/system_map.gd:610
 msgid "Relics"
 msgstr "遺物"
 
-#: ui/system_map.gd:564
+#: ui/system_map.gd:615
 msgid "Restore %s"
 msgstr "%s を再生しよう"
 
-#: ui/system_map.gd:568
+#: ui/system_map.gd:619
 msgid "Heirloom picks waiting: %d (Pause > Ark Bridge)"
 msgstr "家宝の選択が残っている：%d（ポーズ > アークブリッジ）"
 
-#: ui/system_map.gd:569
+#: ui/system_map.gd:620
 msgid "Rocket drive"
 msgstr "ロケット推進"
 
-#: ui/system_map.gd:569
+#: ui/system_map.gd:620
 msgid "interplanetary  ·  carried to every planet"
 msgstr "惑星間 ・ どの惑星にも持っていける"
 
-#: ui/system_map.gd:576
+#: ui/system_map.gd:627
 msgid "The Homeward rocket stands ready."
 msgstr "帰郷ロケットの準備ができている。"
 
-#: ui/system_map.gd:578
+#: ui/system_map.gd:629
 msgid "Next: %s"
 msgstr "次：%s"
 
-#: ui/system_map.gd:587
+#: ui/system_map.gd:638
 msgid "Build"
 msgstr "建造"
 
-#: ui/system_map.gd:602
+#: ui/system_map.gd:653
 msgid "Planets"
 msgstr "惑星"
 
-#: ui/system_map.gd:602
+#: ui/system_map.gd:653
 msgid "pick a world"
 msgstr "世界を選ぶ"
 
-#: ui/system_map.gd:612
+#: ui/system_map.gd:663
 msgid "unvisited"
 msgstr "未訪問"
 
-#: ui/system_map.gd:643
+#: ui/system_map.gd:694
 msgid "%s  ·  %.2f AU from the suns"
 msgstr "%s ・ 太陽から %.2f AU"
 
-#: ui/system_map.gd:655
+#: ui/system_map.gd:706
 msgid "Restored %d%%"
 msgstr "再生 %d%%"
 
-#: ui/system_map.gd:657
+#: ui/system_map.gd:708
 msgid "Goal: %d Thriving hexes, %d bases at level 5, a Thriving landing district"
 msgstr "目標：繁栄ヘクス %d、レベル5の拠点 %d、繁栄した着陸地区"
 
-#: ui/system_map.gd:657
+#: ui/system_map.gd:708
 msgid "Goal: the Bloom Core full (Cradle Returns)"
 msgstr "目標：ブルームコアを満タンに（Cradle号の帰還）"
 
-#: ui/system_map.gd:666 data/goals.json:goals[home_launch].text
+#: ui/system_map.gd:717 data/goals.json:goals[home_launch].text
 msgid "Launch home"
 msgstr "ふるさとへ発射"
 
-#: ui/system_map.gd:671
+#: ui/system_map.gd:722
 msgid "Choose a district"
 msgstr "地区を選ぶ"
 
-#: ui/system_map.gd:696
+#: ui/system_map.gd:747
 msgid "Rocket not ready"
 msgstr "ロケットの準備ができていない"
 
@@ -5576,7 +5596,7 @@ msgstr "お得"
 msgid "Buy"
 msgstr "買う"
 
-#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:208
+#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:209
 msgid "Max"
 msgstr "最大"
 
@@ -5588,31 +5608,31 @@ msgstr "Lv %d%s"
 msgid "Requires %s"
 msgstr "%s が必要"
 
-#: ui/upgrade_card.gd:189
+#: ui/upgrade_card.gd:190
 msgid "%s%s  (max)"
 msgstr "%s%s（最大）"
 
-#: ui/upgrade_card.gd:192
+#: ui/upgrade_card.gd:193
 msgid "Off  →  On"
 msgstr "オフ  →  オン"
 
-#: ui/upgrade_card.gd:199
+#: ui/upgrade_card.gd:200
 msgid "MAX"
 msgstr "最大"
 
-#: ui/upgrade_card.gd:208
+#: ui/upgrade_card.gd:209
 msgid "Max (%d)"
 msgstr "最大（%d）"
 
-#: ui/upgrade_card.gd:214
+#: ui/upgrade_card.gd:215
 msgid "in about %s"
 msgstr "あと約 %s"
 
-#: ui/upgrade_card.gd:214
+#: ui/upgrade_card.gd:215
 msgid "earn more cubes"
 msgstr "キューブをもっと稼ごう"
 
-#: ui/upgrade_card.gd:219
+#: ui/upgrade_card.gd:220
 msgid "Where it comes from:  %s"
 msgstr "入手方法：  %s"
 
@@ -9765,6 +9785,18 @@ msgstr "アークが降り立つ、昔の発射都市。"
 msgid "Scoop 15 pieces of junk"
 msgstr "ガラクタを15個すくう"
 
+#: data/goals.json:goals[dump_1].text
+msgid "Empty your chest in the bin"
+msgstr ""
+
+#: data/goals.json:goals[upgrade_1].text
+msgid "Install a workbench upgrade"
+msgstr "作業台でアップグレードを取り付ける"
+
+#: data/goals.json:goals[baler_1].text
+msgid "Install the Baler"
+msgstr ""
+
 #: data/goals.json:goals[bale_1].text
 msgid "Compress your first bale"
 msgstr "はじめてベールを圧縮する"
@@ -9773,9 +9805,9 @@ msgstr "はじめてベールを圧縮する"
 msgid "Sell a bale at the scale"
 msgstr "はかりでベールを売る"
 
-#: data/goals.json:goals[upgrade_1].text
-msgid "Install a workbench upgrade"
-msgstr "作業台でアップグレードを取り付ける"
+#: data/goals.json:goals[lift_1].text
+msgid "Lift Strength level 1"
+msgstr ""
 
 #: data/goals.json:goals[hex_1].text
 msgid "Clean your first hex"
@@ -9821,17 +9853,9 @@ msgstr "研究を1件完了する"
 msgid "Clean 5 hexes"
 msgstr "ヘックスを5個片づける"
 
-#: data/goals.json:goals[scoopie_1].text
-msgid "Build a Scoopie"
-msgstr "Scoopie を作る"
-
-#: data/goals.json:goals[zone_1].text
-msgid "Paint a work zone (B Command)"
-msgstr "作業ゾーンを塗る（B 指揮）"
-
-#: data/goals.json:goals[haulbug_1].text
-msgid "Build a Haul Bug"
-msgstr "Haul Bug を作る"
+#: data/goals.json:goals[lift_2].text
+msgid "Lift Strength level 2 (large junk)"
+msgstr ""
 
 #: data/goals.json:goals[upgrades_12].text
 msgid "Install 12 upgrades"
@@ -9857,21 +9881,33 @@ msgstr "研究を4件完了する"
 msgid "Install 20 upgrades"
 msgstr "アップグレードを20個取り付ける"
 
-#: data/goals.json:goals[bales_20].text
-msgid "Robots press 20 bales"
-msgstr "ロボットがベールを20個圧縮"
-
 #: data/goals.json:goals[hex_10].text data/radio.json:songs[verdance_sweep].hint
 msgid "Clean 10 hexes"
 msgstr "ヘックスを10個片づける"
 
-#: data/goals.json:goals[scoopie_2].text
-msgid "Run 2 Scoopies"
-msgstr "Scoopie を2台動かす"
-
 #: data/goals.json:goals[base_2].text
 msgid "Upgrade the base to level 2"
 msgstr "基地をレベル2にする"
+
+#: data/goals.json:goals[scoopie_1].text
+msgid "Build a Scoopie"
+msgstr "Scoopie を作る"
+
+#: data/goals.json:goals[zone_1].text
+msgid "Paint a work zone (B Command)"
+msgstr "作業ゾーンを塗る（B 指揮）"
+
+#: data/goals.json:goals[haulbug_1].text
+msgid "Build a Haul Bug"
+msgstr "Haul Bug を作る"
+
+#: data/goals.json:goals[bales_20].text
+msgid "Robots press 20 bales"
+msgstr "ロボットがベールを20個圧縮"
+
+#: data/goals.json:goals[scoopie_2].text
+msgid "Run 2 Scoopies"
+msgstr "Scoopie を2台動かす"
 
 #: data/goals.json:goals[hex_12].text
 msgid "Clean 12 hexes"
@@ -11370,8 +11406,8 @@ msgid "Salvage Logic"
 msgstr "サルベージ論理"
 
 #: data/research.json:nodes[salvage_logic].desc
-msgid "Lumi rewrites the starter bots' route planner. Fewer wrong turns."
-msgstr "Lumi が初期ボットのルート計画を書き直す。道まちがいが減る。"
+msgid "Lumi rewrites the base's old assembly logic. The base can build helpers again: Scoopies, Haul Bugs and Skimmers."
+msgstr ""
 
 #: data/research.json:nodes[seedling_blueprint].name
 msgid "Seedling Blueprint"
@@ -12375,6 +12411,22 @@ msgstr "清掃の最前線に設置する油圧ベールプレス。清掃ロボ
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky."
 msgstr ""
 
+#: data/upgrades.json:upgrades[baler].name
+msgid "Baler"
+msgstr ""
+
+#: data/upgrades.json:upgrades[baler].desc
+msgid "Fit the bale press in your chest. Press junk into bales: they sell for far more than loose junk."
+msgstr ""
+
+#: data/upgrades.json:upgrades[lift_strength].name
+msgid "Lift Strength"
+msgstr ""
+
+#: data/upgrades.json:upgrades[lift_strength].desc
+msgid "Stronger lift beams. Level 1: medium junk (jerrycans, crates). Level 2: large junk (tyres, TVs, fridges)."
+msgstr ""
+
 #: data/upgrades.json:upgrades[compartment_size].name
 msgid "Compartment Size"
 msgstr "コンテナ容量"
@@ -12436,8 +12488,8 @@ msgid "Magnet Arm"
 msgstr "マグネットアーム"
 
 #: data/upgrades.json:upgrades[magnet_arm].desc
-msgid "Nearby junk scoots toward you while scooping."
-msgstr "すくっているあいだ、近くのガラクタが君のほうへすべってくる。"
+msgid "A few loose pieces nearby drift toward you while scooping. Never heavy ones, never from inside a heap."
+msgstr ""
 
 #: data/upgrades.json:upgrades[detector_range].name
 msgid "Detector Coil"
@@ -12480,12 +12532,20 @@ msgid "Longer focusing lenses: grab junk from further away."
 msgstr "長い集束レンズ：もっと遠くのガラクタをつかむ。"
 
 #: data/upgrades.json:upgrades[multi_lock].name
-msgid "Multi-Lock"
-msgstr "マルチロック"
+msgid "Scoop Size"
+msgstr ""
 
 #: data/upgrades.json:upgrades[multi_lock].desc
-msgid "Extra targeting lasers: lift several pieces at once."
-msgstr "追加の照準レーザー：一度に複数のガラクタを持ち上げる。"
+msgid "Lock onto one more piece per scoop pulse."
+msgstr ""
+
+#: data/upgrades.json:upgrades[signal_finder].name
+msgid "Signal Finder"
+msgstr ""
+
+#: data/upgrades.json:upgrades[signal_finder].desc
+msgid "Tunes the detector to strong pings: rare part signals show as a violet beam."
+msgstr ""
 
 #: data/weekly.json:twists[scoopies_only].name
 msgid "Scoopies Only"
@@ -14114,6 +14174,18 @@ msgstr ""
 
 #~ msgid "Space / Esc"
 #~ msgstr "Space / Esc"
+
+#~ msgid "Lumi rewrites the starter bots' route planner. Fewer wrong turns."
+#~ msgstr "Lumi が初期ボットのルート計画を書き直す。道まちがいが減る。"
+
+#~ msgid "Nearby junk scoots toward you while scooping."
+#~ msgstr "すくっているあいだ、近くのガラクタが君のほうへすべってくる。"
+
+#~ msgid "Multi-Lock"
+#~ msgstr "マルチロック"
+
+#~ msgid "Extra targeting lasers: lift several pieces at once."
+#~ msgstr "追加の照準レーザー：一度に複数のガラクタを持ち上げる。"
 
 #~ msgid "<< LEDGER // CONTRACT 0001 // AMENDED >>"
 #~ msgstr "<< LEDGER // 契約 0001 // 改定 >>"

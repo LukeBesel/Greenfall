@@ -131,9 +131,11 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [x] The Suno prompts doc has a grinding playlist per planet, with context in each prompt, as plain copyable text plus a .txt file.
 - [x] The owner's first 5 songs are in audio/songs/.
 - [ ] The main theme plays on the title screen and The Fall of LM-1 plays in the intro. (tunes)
-- [ ] You start with the main theme plus 1-2 songs. The rest unlock from DVDs found in the rubble, with a readable "New song" toast. (tunes)
-- [ ] Unlocked songs shuffle at random with quiet gaps between them. The radio has a Random mode and also lets you pick a song. (tunes)
+- [ ] You start with the main theme plus 1-2 songs. The rest unlock from CDs found in the rubble, with a readable "New song" toast. (tunes)
+- [ ] Unlocked songs shuffle at random with quiet gaps between them. The radio is a CD player with a Random mode, and it also lets you pick a song. (tunes)
+- [ ] Later, a light-buddy "Music" upgrade downloads your CDs so you can play any found song anywhere. (tunes + buddy)
 - [ ] New MP3s can be dropped in by song name. (tunes)
+- [ ] Every song has a funny in-world artist with a short bio, drawn from a recurring cast of about 6-8 artists. Artists appear on the DVD toast, in the radio and on a Codex Artists page. The game never mentions Suno; the credits just say "Music by Lucas". (tunes)
 - [x] Music is frozen. Sound effects stay satisfying.
 
 ## Download

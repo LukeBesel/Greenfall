@@ -245,7 +245,7 @@ func _process(delta: float) -> void:
 		if _drop_timer <= 0.0:
 			var ok: bool = start_drop()
 			_drop_timer = drop_interval() if ok else 40.0
-	if a >= 4 and drone == null and GameState.flags.get("seeds_unlocked", false):
+	if a >= 4 and drone == null and GameState.flags.get("seeds_unlocked", false) and bool(cfg.get("seed_drop", {}).get("enabled", true)):  # [pace] no spontaneous crates
 		_seed_timer -= delta
 		if _seed_timer <= 0.0:
 			_seed_timer = _range_of(cfg.get("seed_drop", {}).get("every_s", [200, 320]))

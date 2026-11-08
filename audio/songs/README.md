@@ -9,6 +9,8 @@ Made by the owner on Suno's free plan, Nov 2026. Free-plan songs are licensed fo
 | clean_sweep.mp3 | Clean Sweep | Verdance |
 | morning_shift.mp3 | Morning Shift | Verdance |
 | sunbaked.mp3 | Sunbaked | Ochre |
+| dune_caravan.mp3 | Dune Caravan | Ochre |
+| strip_mine_shuffle.mp3 | Strip Mine Shuffle | Ochre |
 
 ## Adding songs
 

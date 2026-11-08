@@ -327,6 +327,11 @@ func _ready() -> void:
 	if DevHooks.has("unlock-seeds"):
 		GameState.flags["seeds_unlocked"] = true
 		GameState.add_currency("seeds", BigNum.from_float(200))
+	for dh: String in ["hub-level", "future", "robots", "post-finale", "new-world", "frontier", "research", "restore", "unlock-seeds", "demo-scoop"]:  # [pace] dev jumps past the slow start
+		if DevHooks.has(dh):
+			Pace.grant_early_unlocks()
+			break
+	Pace.sync_flags()  # [pace]
 	if DevHooks.has("upgrade-levels"):
 		# --upgrade-levels=multi_lock:3+laser_reach:4  (screenshots/testing)
 		for spec: String in DevHooks.get_s("upgrade-levels", "").split("+"):

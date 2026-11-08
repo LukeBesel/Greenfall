@@ -159,6 +159,12 @@ func _physics_process(delta: float) -> void:
 		if cube:
 			_feed_timer = FEED_INTERVAL
 			_swallow(cube)
+	if patch and not bare and _feed_timer <= 0.0:  # [pace] no Baler yet: empty the chest loose
+		var bin: Node3D = Pace.trash_bin(get_tree(), global_position)
+		if bin:
+			Pace.try_dump(patch, bin.global_position, Pace.BIN_RADIUS, bin)
+		else:
+			Pace.try_dump(patch, global_position, pad_radius)
 	# Loose cubes on the pad get sucked in.
 	for n: Node in get_tree().get_nodes_in_group("junk_cube"):
 		var c: JunkCube = n

@@ -173,6 +173,7 @@ func load_game() -> bool:
 	if d.is_empty():
 		return false
 	GameState.from_dict(migrate(d))
+	Pace.sync_flags()  # [pace]
 	EventBus.game_loaded.emit()
 	return true
 
@@ -219,6 +220,9 @@ static func migrate(d: Dictionary) -> Dictionary:
 	if v < 2:
 		d = migrate_v2(d)  # [money]
 		v = 2
+	if v < 3:
+		d = Pace.migrate_save(d)  # [pace] grant the slow-start unlocks to older saves
+		v = 3
 	d["version"] = v
 	return d
 
