@@ -92,7 +92,7 @@ class Kit:
 		match key:
 			"glow":
 				return "trim:#" + Color(col.r, col.g, col.b).to_html(false)
-			"hazard", "glass", "concrete", "rusty", "rubber":
+			"hazard", "glass", "concrete", "rusty", "rubber", "dirt", "leaves", "foliage":
 				return key
 		if col.a < 0.5:
 			return "steel" if col.get_luminance() > 0.45 else "dark_steel"
