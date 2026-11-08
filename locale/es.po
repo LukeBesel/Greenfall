@@ -583,15 +583,15 @@ msgstr "¡Clic! Una foto (%s) para tu Colección."
 
 #: planet/cd_finds.gd:171
 msgid "A scratched CD turned up in the rubble."
-msgstr ""
+msgstr "Ha aparecido un CD rayado entre los escombros."
 
 #: planet/cd_finds.gd:171
 msgid "Something shiny turned up in the cleared rubble. An old CD!"
-msgstr ""
+msgstr "Algo brilla entre los escombros despejados. ¡Un CD antiguo!"
 
 #: planet/cd_finds.gd:211
 msgid "Your CD case is full."
-msgstr ""
+msgstr "Tu estuche de CD está lleno."
 
 #: planet/frontier_district.gd:279
 msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
@@ -2695,7 +2695,7 @@ msgstr "%s ha visto: %s."
 
 #: systems/tunes.gd:164
 msgid "New CD: %s by %s, from %s"
-msgstr ""
+msgstr "Nuevo CD: %s de %s, de %s"
 
 #: systems/extras/album.gd:86
 msgid "First arrival"
@@ -3239,27 +3239,27 @@ msgstr "LISTA DE REINICIO  ·  COMPLETA"
 
 #: ui/codex_artists.gd:33
 msgid "ARTISTS"
-msgstr ""
+msgstr "ARTISTAS"
 
 #: ui/codex_artists.gd:34
 msgid "%d / %d known"
-msgstr ""
+msgstr "%d / %d conocidos"
 
 #: ui/codex_artists.gd:58
 msgid "From %s"
-msgstr ""
+msgstr "De %s"
 
 #: ui/codex_artists.gd:59
 msgid "Not met yet"
-msgstr ""
+msgstr "Aún no descubierto"
 
 #: ui/codex_artists.gd:60
 msgid "Find one of their CDs in the rubble on %s."
-msgstr ""
+msgstr "Encuentra uno de sus CD entre los escombros de %s."
 
 #: ui/codex_artists.gd:67
 msgid "Your CDs (%d / %d): %s"
-msgstr ""
+msgstr "Tus CD (%d / %d): %s"
 
 #: ui/codex_screen.gd:15 ui/codex_screen.gd:711
 msgid "Achievements"
@@ -3279,7 +3279,7 @@ msgstr "Colección"
 
 #: ui/codex_screen.gd:19
 msgid "Artists"
-msgstr ""
+msgstr "Artistas"
 
 #: ui/codex_screen.gd:77
 msgid "CODEX"
@@ -3799,7 +3799,7 @@ msgstr "El código, las mallas procedurales, la música y los sonidos sintetizad
 
 #: ui/credits_roll.gd:148 ui/main_menu.gd:598
 msgid "Music by Lucas"
-msgstr ""
+msgstr "Música de Lucas"
 
 #: ui/credits_roll.gd:149
 msgid "Built with the Godot Engine."
@@ -3847,51 +3847,51 @@ msgstr ""
 
 #: ui/extras_cd_list.gd:64
 msgid "CDS  ·  %d / %d"
-msgstr ""
+msgstr "CD  ·  %d / %d"
 
 #: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107 ui/tunes_picker.gd:95
 msgid "Shuffle"
-msgstr ""
+msgstr "Aleatorio"
 
 #: ui/extras_cd_list.gd:65
 msgid "All your CDs, at random"
-msgstr ""
+msgstr "Todos tus CD, al azar"
 
 #: ui/extras_cd_list.gd:68
 msgid "CD player: shuffle"
-msgstr ""
+msgstr "Reproductor de CD: aleatorio"
 
 #: ui/extras_cd_list.gd:78 ui/extras_cd_list.gd:111
 msgid "by %s, from %s"
-msgstr ""
+msgstr "de %s, de %s"
 
 #: ui/extras_cd_list.gd:80
 msgid "Found on %s"
-msgstr ""
+msgstr "Se encuentra en %s"
 
 #: ui/extras_cd_list.gd:83
 msgid "Not found yet: CDs turn up in the rubble on %s."
-msgstr ""
+msgstr "Aún no encontrado: este CD está entre los escombros de %s."
 
 #: ui/extras_cd_list.gd:86 ui/tunes_picker.gd:125
 msgid "Now playing: %s by %s"
-msgstr ""
+msgstr "Sonando: %s de %s"
 
 #: ui/extras_cd_list.gd:93
 msgid "CD CASE  ·  SCRATCHED, ONE PLAY EACH  ·  %d / %d"
-msgstr ""
+msgstr "ESTUCHE  ·  RAYADOS, UNA ESCUCHA CADA UNO  ·  %d / %d"
 
 #: ui/extras_cd_list.gd:95
 msgid "Play once: %s"
-msgstr ""
+msgstr "Escuchar una vez: %s"
 
 #: ui/extras_cd_list.gd:95 ui/scratched_cd_ui.gd:193
 msgid "by %s"
-msgstr ""
+msgstr "de %s"
 
 #: ui/extras_cd_list.gd:97
 msgid "Last play: %s by %s"
-msgstr ""
+msgstr "Última escucha: %s de %s"
 
 #: ui/extras_cd_list.gd:103
 msgid "NOW PLAYING"
@@ -3899,35 +3899,35 @@ msgstr "SONANDO AHORA"
 
 #: ui/extras_cd_list.gd:114
 msgid "Turn off (back to the day's music)"
-msgstr ""
+msgstr "Apagar (volver a la música del día)"
 
 #: ui/extras_cd_list.gd:116
 msgid "The CD player goes quiet. The day's music comes back."
-msgstr ""
+msgstr "El reproductor se calla. Vuelve la música del día."
 
 #: ui/extras_cd_list.gd:121
 msgid "The day's music"
-msgstr ""
+msgstr "La música del día"
 
 #: ui/extras_cd_list.gd:122
 msgid "Your CDs come on now and then while you work, with quiet in between. Pick one here, or Shuffle, to play them back to back."
-msgstr ""
+msgstr "Tus CD suenan de vez en cuando mientras trabajas, con calma entre ellos. Elige uno aquí, o Aleatorio, para oírlos seguidos."
 
 #: ui/extras_cd_list.gd:124
 msgid "Glim has copied your CDs: press N anywhere to pick a song."
-msgstr ""
+msgstr "Glim ha copiado tus CD: pulsa N en cualquier lugar para elegir una canción."
 
 #: ui/extras_cd_list.gd:126
 msgid "The music comes from the CD player, so it's softer far away from it."
-msgstr ""
+msgstr "La música sale del reproductor de CD, así que lejos suena más bajo."
 
 #: ui/extras_cd_list.gd:127
 msgid "New CDs turn up in the rubble as you clean. Each planet hides its own."
-msgstr ""
+msgstr "Al limpiar aparecen nuevos CD entre los escombros. Cada planeta esconde los suyos."
 
 #: ui/extras_panel.gd:9
 msgid "CD Player"
-msgstr ""
+msgstr "Reproductor de CD"
 
 #: ui/extras_panel.gd:9
 msgid "Album"
@@ -5046,51 +5046,51 @@ msgstr "  ·  SALTO"
 
 #: ui/scratched_cd_ui.gd:86
 msgid "NOW PLAYING  ·  LAST PLAY"
-msgstr ""
+msgstr "SONANDO  ·  ÚLTIMA VEZ"
 
 #: ui/scratched_cd_ui.gd:110
 msgid "SCRATCHED CD"
-msgstr ""
+msgstr "CD RAYADO"
 
 #: ui/scratched_cd_ui.gd:122
 msgid "Play now"
-msgstr ""
+msgstr "Escuchar ahora"
 
 #: ui/scratched_cd_ui.gd:124
 msgid "Keep for later"
-msgstr ""
+msgstr "Guardar para luego"
 
 #: ui/scratched_cd_ui.gd:125
 msgid "Leave it"
-msgstr ""
+msgstr "Dejarlo"
 
 #: ui/scratched_cd_ui.gd:141
 msgid "%s by %s: it will only play once, then break. Play now?"
-msgstr ""
+msgstr "%s de %s: solo sonará una vez y luego se romperá. ¿Escucharlo ahora?"
 
 #: ui/scratched_cd_ui.gd:146
 msgid "Find the intact CD on %s to keep it."
-msgstr ""
+msgstr "Encuentra el CD intacto en %s para conservarlo."
 
 #: ui/scratched_cd_ui.gd:154
 msgid "Your CD case is full (%d)."
-msgstr ""
+msgstr "Tu estuche de CD está lleno (%d)."
 
 #: ui/scratched_cd_ui.gd:177
 msgid "Kept in your CD case. Play it at the CD player."
-msgstr ""
+msgstr "Guardado en tu estuche. Escúchalo en el reproductor de CD."
 
 #: ui/scratched_cd_ui.gd:180
 msgid "Kept in your CD case (%d / %d). Play it at the CD player."
-msgstr ""
+msgstr "Guardado en tu estuche (%d / %d). Escúchalo en el reproductor de CD."
 
 #: ui/scratched_cd_ui.gd:182
 msgid "You leave the scratched CD where it lay."
-msgstr ""
+msgstr "Dejas el CD rayado donde estaba."
 
 #: ui/scratched_cd_ui.gd:202
 msgid "The scratched CD cracks and falls apart. %s"
-msgstr ""
+msgstr "El CD rayado se agrieta y se rompe. %s"
 
 #: ui/settings_panel.gd:11
 msgid "Audio"
@@ -5738,19 +5738,19 @@ msgstr "Cambiar 3 repuestos"
 
 #: ui/tunes_picker.gd:38
 msgid "GLIM'S CDS"
-msgstr ""
+msgstr "LOS CD DE GLIM"
 
 #: ui/tunes_picker.gd:48
 msgid "N / Esc  close"
-msgstr ""
+msgstr "N / Esc  cerrar"
 
 #: ui/tunes_picker.gd:96
 msgid "Off (the day's music)"
-msgstr ""
+msgstr "Apagado (música del día)"
 
 #: ui/tunes_picker.gd:103
 msgid "Play once: %s (scratched)"
-msgstr ""
+msgstr "Escuchar una vez: %s (rayado)"
 
 #: ui/upgrade_card.gd:54
 msgid "Lv 0"
@@ -11355,7 +11355,7 @@ msgstr ""
 
 #: data/radio.json:songs[verdance_sprout].name data/songs.json:songs[sprout_step].title
 msgid "Sprout Step"
-msgstr "Paso de brote"
+msgstr "Sprout Step"
 
 #: data/radio.json:songs[verdance_sprout].desc
 msgid "Kalimba and bells, the first green on Verdance."
@@ -11363,7 +11363,7 @@ msgstr "Kalimba y campanas, el primer verde de Verdance."
 
 #: data/radio.json:songs[verdance_sweep].name data/songs.json:songs[clean_sweep].title
 msgid "Clean Sweep"
-msgstr "Limpieza a fondo"
+msgstr "Clean Sweep"
 
 #: data/radio.json:songs[verdance_sweep].desc
 msgid "Marimba and a four-on-the-floor kick: cleaning music."
@@ -11371,7 +11371,7 @@ msgstr "Marimba y un bombo constante: música para limpiar."
 
 #: data/radio.json:songs[ochre_sunbaked].name data/songs.json:songs[sunbaked].title
 msgid "Sunbaked"
-msgstr "Tostado al sol"
+msgstr "Sunbaked"
 
 #: data/radio.json:songs[ochre_sunbaked].desc
 msgid "A sunny marimba hook over a lute ostinato."
@@ -11383,7 +11383,7 @@ msgstr "Aterriza en Ochre"
 
 #: data/radio.json:songs[ochre_caravan].name data/songs.json:songs[dune_caravan].title
 msgid "Dune Caravan"
-msgstr "Caravana de dunas"
+msgstr "Dune Caravan"
 
 #: data/radio.json:songs[ochre_caravan].desc
 msgid "A winding pluck line over a loping frame drum."
@@ -11407,7 +11407,7 @@ msgstr "Una base en Ochre al nivel 5"
 
 #: data/radio.json:songs[tidewell_tradewinds].name data/songs.json:songs[tradewinds].title
 msgid "Tradewinds"
-msgstr "Vientos alisios"
+msgstr "Tradewinds"
 
 #: data/radio.json:songs[tidewell_tradewinds].desc
 msgid "Steel pans skipping over the waves."
@@ -11419,7 +11419,7 @@ msgstr "Aterriza en Tidewell"
 
 #: data/radio.json:songs[tidewell_tidepools].name data/songs.json:songs[tidepools].title
 msgid "Tidepools"
-msgstr "Pozas de marea"
+msgstr "Tidepools"
 
 #: data/radio.json:songs[tidewell_tidepools].desc
 msgid "A harp melody over rolling arpeggios."
@@ -11431,7 +11431,7 @@ msgstr "Una base en Tidewell al nivel 3"
 
 #: data/radio.json:songs[tidewell_skipper].name data/songs.json:songs[skipping_stones].title
 msgid "Skipping Stones"
-msgstr "Piedras saltarinas"
+msgstr "Skipping Stones"
 
 #: data/radio.json:songs[tidewell_skipper].desc
 msgid "A bouncy marimba shuffle."
@@ -11443,7 +11443,7 @@ msgstr "Una base en Tidewell al nivel 5"
 
 #: data/radio.json:songs[rime_hoarfrost].name data/songs.json:songs[hoarfrost].title
 msgid "Hoarfrost"
-msgstr "Escarcha"
+msgstr "Hoarfrost"
 
 #: data/radio.json:songs[rime_hoarfrost].desc
 msgid "Glass bells that slowly gather warmth."
@@ -11463,7 +11463,7 @@ msgstr "Una base en Rime al nivel 5"
 
 #: data/radio.json:songs[anvil_foundry].name data/songs.json:songs[foundry_heart].title
 msgid "Foundry Heart"
-msgstr "Corazón de fundición"
+msgstr "Foundry Heart"
 
 #: data/radio.json:songs[anvil_foundry].desc
 msgid "A dark, groovy forge that learns to hope."
@@ -11475,7 +11475,7 @@ msgstr "Aterriza en Anvil"
 
 #: data/radio.json:songs[anvil_ash].name data/songs.json:songs[ash_choir].title
 msgid "Ash Choir"
-msgstr "Coro de ceniza"
+msgstr "Ash Choir"
 
 #: data/radio.json:songs[anvil_ash].desc
 msgid "An eerie choir over brass and embers."
@@ -11487,7 +11487,7 @@ msgstr "Una base en Anvil al nivel 3"
 
 #: data/radio.json:songs[anvil_engine].name data/songs.json:songs[red_engine].title
 msgid "Red Engine"
-msgstr "Motor rojo"
+msgstr "Red Engine"
 
 #: data/radio.json:songs[anvil_engine].desc
 msgid "Sub bass and metal hits, the furnaces running clean."
@@ -12561,475 +12561,307 @@ msgstr "Vane"
 
 #: data/songs.json:artists[farewell].name
 msgid "The Cradle Farewell Orchestra"
-msgstr ""
+msgstr "The Cradle Farewell Orchestra"
 
 #: data/songs.json:artists[farewell].genre
 msgid "Orchestral"
-msgstr ""
+msgstr "Orquestal"
 
 #: data/songs.json:artists[farewell].bio
 msgid "Played one last concert on the launch pad while the ark boarded. Half of them missed the flight on purpose, so the encore was very long."
-msgstr ""
+msgstr "Dio un último concierto en la plataforma de lanzamiento mientras embarcaba el arca. La mitad perdió el vuelo a propósito, así que el bis fue larguísimo."
 
 #: data/songs.json:artists[compactors].name
 msgid "The Compactors"
-msgstr ""
+msgstr "The Compactors"
 
 #: data/songs.json:artists[compactors].genre
 msgid "Garage pop"
-msgstr ""
+msgstr "Pop de garaje"
 
 #: data/songs.json:artists[compactors].bio
 msgid "A four-piece that rehearsed inside a broken trash compactor for the acoustics. They swear the walls only closed in on them once, during a drum solo."
-msgstr ""
+msgstr "Un cuarteto que ensayaba dentro de una compactadora de basura rota por la acústica. Juran que las paredes solo se cerraron una vez, durante un solo de batería."
 
 #: data/songs.json:artists[rustbucket].name
 msgid "Lil' Rustbucket"
-msgstr ""
+msgstr "Lil' Rustbucket"
 
 #: data/songs.json:artists[rustbucket].genre
 msgid "Chiptune"
-msgstr ""
+msgstr "Chiptune"
 
 #: data/songs.json:artists[rustbucket].bio
 msgid "A retired sweeper bot who refused to stop making beats. Every track was recorded on its own diagnostic beeper, between error codes."
-msgstr ""
+msgstr "Un robot barrendero jubilado que se negó a dejar de hacer ritmos. Cada pista se grabó con su propio pitido de diagnóstico, entre códigos de error."
 
 #: data/songs.json:artists[recycle_bin].name
 msgid "DJ Recycle Bin"
-msgstr ""
+msgstr "DJ Recycle Bin"
 
 #: data/songs.json:artists[recycle_bin].genre
 msgid "Lofi beats"
-msgstr ""
+msgstr "Ritmos lofi"
 
 #: data/songs.json:artists[recycle_bin].bio
 msgid "Only samples sounds from the city dump: lids, crinkles, a fridge door with real soul. Released three albums and never once got out of bed for them."
-msgstr ""
+msgstr "Solo samplea sonidos del vertedero de la ciudad: tapas, crujidos, una puerta de nevera con mucho soul. Sacó tres discos sin levantarse nunca de la cama."
 
 #: data/songs.json:artists[pianissimo].name
 msgid "Professor Pianissimo"
-msgstr ""
+msgstr "Professor Pianissimo"
 
 #: data/songs.json:artists[pianissimo].genre
 msgid "Quiet piano"
-msgstr ""
+msgstr "Piano suave"
 
 #: data/songs.json:artists[pianissimo].bio
 msgid "Composes only for empty rooms and sleeping cities. His neighbours filed forty-one noise complaints, all saying the music was too soft to hear properly."
-msgstr ""
+msgstr "Compone solo para habitaciones vacías y ciudades dormidas. Sus vecinos pusieron cuarenta y una quejas por ruido, todas porque la música era demasiado baja."
 
 #: data/songs.json:artists[two_suns].name
 msgid "Two Suns Tango Orchestra"
-msgstr ""
+msgstr "Two Suns Tango Orchestra"
 
 #: data/songs.json:artists[two_suns].genre
 msgid "Desert dance band"
-msgstr ""
+msgstr "Banda de baile del desierto"
 
 #: data/songs.json:artists[two_suns].bio
 msgid "Ochre's hardest-working band: with two suns there is no shade and no siesta, so they just kept playing. The sunglasses are part of the uniform."
-msgstr ""
+msgstr "La banda más trabajadora de Ochre: con dos soles no hay sombra ni siesta, así que siguieron tocando. Las gafas de sol son parte del uniforme."
 
 #: data/songs.json:artists[mirage_bros].name
 msgid "The Mirage Brothers"
-msgstr ""
+msgstr "The Mirage Brothers"
 
 #: data/songs.json:artists[mirage_bros].genre
 msgid "Heat-haze ambient"
-msgstr ""
+msgstr "Ambient de calima"
 
 #: data/songs.json:artists[mirage_bros].bio
 msgid "Nobody is sure how many Mirage Brothers there are. On a hot day the crowd counted seven; on a cold one, just Gary."
-msgstr ""
+msgstr "Nadie sabe cuántos Mirage Brothers hay. En un día caluroso el público contó siete; en uno frío, solo a Gary."
 
 #: data/songs.json:artists[salty_buoys].name
 msgid "The Salty Buoys"
-msgstr ""
+msgstr "The Salty Buoys"
 
 #: data/songs.json:artists[salty_buoys].genre
 msgid "Island pop"
-msgstr ""
+msgstr "Pop isleño"
 
 #: data/songs.json:artists[salty_buoys].bio
 msgid "A beach band that played on floating junk rafts, drifting between islands mid-song. Their tour schedule depended entirely on the tide."
-msgstr ""
+msgstr "Una banda de playa que tocaba sobre balsas de chatarra flotante, derivando entre islas en mitad de la canción. Su gira dependía por completo de la marea."
 
 #: data/songs.json:artists[barnacle_trio].name
 msgid "Barnacle Bossa Trio"
-msgstr ""
+msgstr "Barnacle Bossa Trio"
 
 #: data/songs.json:artists[barnacle_trio].genre
 msgid "Bossa and lofi"
-msgstr ""
+msgstr "Bossa y lofi"
 
 #: data/songs.json:artists[barnacle_trio].bio
 msgid "Three mellow players who refused to evacuate until the set was finished. The set was four hours long. They caught the last pod, still humming."
-msgstr ""
+msgstr "Tres músicos tranquilos que se negaron a evacuar hasta terminar el set. El set duraba cuatro horas. Cogieron la última cápsula, aún tarareando."
 
 #: data/songs.json:artists[streetlights].name
 msgid "Static & the Streetlights"
-msgstr ""
+msgstr "Static & the Streetlights"
 
 #: data/songs.json:artists[streetlights].genre
 msgid "Icy synthpop"
-msgstr ""
+msgstr "Synthpop helado"
 
 #: data/songs.json:artists[streetlights].bio
 msgid "A synth duo who powered their gigs by plugging into whichever harbour lamp still worked. The power company billed them for the whole ice shelf."
-msgstr ""
+msgstr "Un dúo de sintes que enchufaba sus conciertos a la farola del puerto que aún funcionara. La eléctrica les cobró toda la plataforma de hielo."
 
 #: data/songs.json:artists[mittens].name
 msgid "Mittens McKenzie"
-msgstr ""
+msgstr "Mittens McKenzie"
 
 #: data/songs.json:artists[mittens].genre
 msgid "Frozen piano"
-msgstr ""
+msgstr "Piano helado"
 
 #: data/songs.json:artists[mittens].bio
 msgid "Rime's beloved pianist, who played every concert in mittens. Critics called it muffled genius. Mittens called it frostbite prevention."
-msgstr ""
+msgstr "La pianista favorita de Rime, que tocaba cada concierto con manoplas. La crítica lo llamó genio amortiguado. Mittens lo llamó prevenir la congelación."
 
 #: data/songs.json:artists[smelter].name
 msgid "Smelter Skelter"
-msgstr ""
+msgstr "Smelter Skelter"
 
 #: data/songs.json:artists[smelter].genre
 msgid "Foundry industrial"
-msgstr ""
+msgstr "Industrial de fundición"
 
 #: data/songs.json:artists[smelter].bio
 msgid "Brooding Anvil band who tuned their drums to the furnace roar. The Ledger tried to buy their catalogue; they melted the contract down and played the slag."
-msgstr ""
+msgstr "Banda sombría de Anvil que afinaba sus tambores con el rugido de los hornos. El Ledger quiso comprar su catálogo; fundieron el contrato y tocaron la escoria."
 
 #: data/songs.json:artists[ledger_audio].name
 msgid "Ledger Brand Audio"
-msgstr ""
+msgstr "Ledger Brand Audio"
 
 #: data/songs.json:artists[ledger_audio].genre
 msgid "Corporate"
-msgstr ""
+msgstr "Corporativo"
 
 #: data/songs.json:artists[ledger_audio].bio
 msgid "The Ledger's in-house jingle studio. Every song is copyrighted, trademarked and billed per listen. Credited as \"Ledger Brand Audio, all rights extracted\"."
-msgstr ""
+msgstr "El estudio de jingles propio del Ledger. Cada canción tiene copyright, marca registrada y se cobra por escucha. Acreditado como «Ledger Brand Audio, todos los derechos extraídos»."
 
 #: data/songs.json:songs[greenfall_main].title
 msgid "Greenfall (Main Theme)"
-msgstr ""
+msgstr "Greenfall (Main Theme)"
 
 #: data/songs.json:songs[greenfall_main].desc
 msgid "The song the Makers hummed on the way to the ark. Hopeful, a little lonely."
-msgstr ""
+msgstr "La canción que tarareaban los Creadores camino del arca. Esperanzada, un poco solitaria."
 
 #: data/songs.json:songs[fall_of_lm1].title
 msgid "The Fall of LM-1"
-msgstr ""
+msgstr "The Fall of LM-1"
 
 #: data/songs.json:songs[fall_of_lm1].desc
 msgid "Meteors, alarms, one small pod falling. Then quiet piano."
-msgstr ""
+msgstr "Meteoros, alarmas, una pequeña cápsula cayendo. Después, un piano tranquilo."
 
 #: data/songs.json:songs[the_ledger].title
 msgid "The Ledger"
-msgstr ""
+msgstr "The Ledger"
 
 #: data/songs.json:songs[the_ledger].desc
 msgid "Ticking clocks and detuned bass. Sounds expensive."
-msgstr ""
-
-#: data/songs.json:songs[sprout_step].desc
-msgid "Bright and bouncy, for scooping junk off city streets and pressing it into bales."
-msgstr ""
-
-#: data/songs.json:songs[clean_sweep].desc
-msgid "Sunny indie-pop groove for a little robot sweeping an abandoned city back to life."
-msgstr ""
+msgstr "Relojes que hacen tictac y un bajo desafinado. Suena caro."
 
 #: data/songs.json:songs[little_helpers].title
 msgid "Little Helpers"
-msgstr ""
-
-#: data/songs.json:songs[little_helpers].desc
-msgid "A crew of small worker robots buzzing around a junkyard base."
-msgstr ""
+msgstr "Little Helpers"
 
 #: data/songs.json:songs[neon_gutters].title
 msgid "Neon Gutters"
-msgstr ""
-
-#: data/songs.json:songs[neon_gutters].desc
-msgid "Rusty neon signs flicker over trash-filled streets at sunset."
-msgstr ""
+msgstr "Neon Gutters"
 
 #: data/songs.json:songs[morning_shift].title
 msgid "Morning Shift"
-msgstr ""
-
-#: data/songs.json:songs[morning_shift].desc
-msgid "Early light over a city half-buried in junk as the first robots head out to work."
-msgstr ""
+msgstr "Morning Shift"
 
 #: data/songs.json:songs[bale_by_bale].title
 msgid "Bale by Bale"
-msgstr ""
-
-#: data/songs.json:songs[bale_by_bale].desc
-msgid "Focus music for steady, repetitive cleanup work."
-msgstr ""
+msgstr "Bale by Bale"
 
 #: data/songs.json:songs[rust_and_ribbons].title
 msgid "Rust and Ribbons"
-msgstr ""
-
-#: data/songs.json:songs[rust_and_ribbons].desc
-msgid "Wandering alone through quiet ruined streets while plants push up through the cracks."
-msgstr ""
+msgstr "Rust and Ribbons"
 
 #: data/songs.json:songs[old_town_at_rest].title
 msgid "Old Town at Rest"
-msgstr ""
-
-#: data/songs.json:songs[old_town_at_rest].desc
-msgid "Home base at the end of a long day: a repaired workbench, a humming generator, a few robots parked nearby."
-msgstr ""
+msgstr "Old Town at Rest"
 
 #: data/songs.json:songs[verdance_night].title
 msgid "Verdance Night"
-msgstr ""
-
-#: data/songs.json:songs[verdance_night].desc
-msgid "Night falls over the junk city and only a few street lamps still glow."
-msgstr ""
+msgstr "Verdance Night"
 
 #: data/songs.json:songs[verdance_in_bloom].title
 msgid "Verdance in Bloom"
-msgstr "Verdance en flor"
-
-#: data/songs.json:songs[verdance_in_bloom].desc
-msgid "The once trash-covered city is green again: gardens on every corner, birds back in the trees."
-msgstr ""
-
-#: data/songs.json:songs[sunbaked].desc
-msgid "Two blazing suns over orange dunes and a giant abandoned strip mine."
-msgstr ""
+msgstr "Verdance in Bloom"
 
 #: data/songs.json:songs[strip_mine_shuffle].title
 msgid "Strip Mine Shuffle"
-msgstr ""
-
-#: data/songs.json:songs[strip_mine_shuffle].desc
-msgid "Hauling scrap out of a terraced mining pit under a white-hot sky."
-msgstr ""
-
-#: data/songs.json:songs[dune_caravan].desc
-msgid "A long line of robots crossing rolling dunes, carrying scrap home."
-msgstr ""
+msgstr "Strip Mine Shuffle"
 
 #: data/songs.json:songs[glass_dunes].title
 msgid "Glass Dunes"
-msgstr ""
-
-#: data/songs.json:songs[glass_dunes].desc
-msgid "Wind has polished the sand into glittering glass ridges."
-msgstr ""
+msgstr "Glass Dunes"
 
 #: data/songs.json:songs[sandglass].title
 msgid "Sandglass"
-msgstr ""
-
-#: data/songs.json:songs[sandglass].desc
-msgid "A slow hot afternoon, steady work in the shade of a rusted mining crane."
-msgstr ""
+msgstr "Sandglass"
 
 #: data/songs.json:songs[twin_noon].title
 msgid "Twin Noon"
-msgstr ""
-
-#: data/songs.json:songs[twin_noon].desc
-msgid "Midday under two suns, heat shimmering over empty land."
-msgstr ""
+msgstr "Twin Noon"
 
 #: data/songs.json:songs[mirage_night].title
 msgid "Mirage Night"
-msgstr ""
-
-#: data/songs.json:songs[mirage_night].desc
-msgid "Desert night, warm wind, the mine's silhouette against the stars."
-msgstr ""
+msgstr "Mirage Night"
 
 #: data/songs.json:songs[oasis_terraces].title
 msgid "Oasis Terraces"
-msgstr ""
-
-#: data/songs.json:songs[oasis_terraces].desc
-msgid "The old mine pit has become terraced gardens around a bright blue oasis."
-msgstr ""
-
-#: data/songs.json:songs[tradewinds].desc
-msgid "Hovering over a turquoise ocean between tiny islands, scooping floating junk out of the waves."
-msgstr ""
+msgstr "Oasis Terraces"
 
 #: data/songs.json:songs[hover_hop].title
 msgid "Hover Hop"
-msgstr ""
-
-#: data/songs.json:songs[hover_hop].desc
-msgid "Skimming fast across open water from island to island."
-msgstr ""
-
-#: data/songs.json:songs[skipping_stones].desc
-msgid "Sun on the water, gulls overhead, junk bobbing in the surf."
-msgstr ""
+msgstr "Hover Hop"
 
 #: data/songs.json:songs[salt_and_sails].title
 msgid "Salt and Sails"
-msgstr ""
-
-#: data/songs.json:songs[salt_and_sails].desc
-msgid "Old harbour wrecks and rusty buoys along a windy coast."
-msgstr ""
+msgstr "Salt and Sails"
 
 #: data/songs.json:songs[low_tide_lofi].title
 msgid "Low Tide Lofi"
-msgstr ""
-
-#: data/songs.json:songs[low_tide_lofi].desc
-msgid "Slow work on a quiet beach at low tide."
-msgstr ""
+msgstr "Low Tide Lofi"
 
 #: data/songs.json:songs[glass_lagoon].title
 msgid "Glass Lagoon"
-msgstr ""
-
-#: data/songs.json:songs[glass_lagoon].desc
-msgid "A clear shallow lagoon with coral visible under still water."
-msgstr ""
-
-#: data/songs.json:songs[tidepools].desc
-msgid "Night on the ocean planet, bioluminescent glow in the waves."
-msgstr ""
+msgstr "Glass Lagoon"
 
 #: data/songs.json:songs[kelp_garden].title
 msgid "Kelp Garden"
-msgstr ""
-
-#: data/songs.json:songs[kelp_garden].desc
-msgid "The seas are clean again: kelp forests, schools of fish, floating island gardens."
-msgstr ""
+msgstr "Kelp Garden"
 
 #: data/songs.json:songs[snowplow].title
 msgid "Snowplow"
-msgstr ""
-
-#: data/songs.json:songs[snowplow].desc
-msgid "Pushing through fresh snow on a frozen moon, digging out buried scrap."
-msgstr ""
-
-#: data/songs.json:songs[hoarfrost].desc
-msgid "Glassy blue ice plains under a huge ringed planet."
-msgstr ""
+msgstr "Snowplow"
 
 #: data/songs.json:songs[crunch_ice].title
 msgid "Crunch Ice"
-msgstr ""
-
-#: data/songs.json:songs[crunch_ice].desc
-msgid "Steady work inside a heated dome while snow blows outside."
-msgstr ""
+msgstr "Crunch Ice"
 
 #: data/songs.json:songs[aurora_drift].title
 msgid "Aurora Drift"
-msgstr ""
-
-#: data/songs.json:songs[aurora_drift].desc
-msgid "Green and violet aurora rippling over frozen ridges."
-msgstr ""
+msgstr "Aurora Drift"
 
 #: data/songs.json:songs[ringlight].title
 msgid "Ringlight"
-msgstr ""
-
-#: data/songs.json:songs[ringlight].desc
-msgid "A giant ringed gas planet hangs over a frozen crater."
-msgstr ""
+msgstr "Ringlight"
 
 #: data/songs.json:songs[frozen_harbor].title
 msgid "Frozen Harbor"
-msgstr ""
-
-#: data/songs.json:songs[frozen_harbor].desc
-msgid "An abandoned drilling port locked in ice, snow falling softly."
-msgstr ""
+msgstr "Frozen Harbor"
 
 #: data/songs.json:songs[long_night].title
 msgid "Long Night"
-msgstr ""
-
-#: data/songs.json:songs[long_night].desc
-msgid "The long night on an ice moon far from its suns."
-msgstr ""
+msgstr "Long Night"
 
 #: data/songs.json:songs[thaw].title
 msgid "Thaw"
-msgstr ""
-
-#: data/songs.json:songs[thaw].desc
-msgid "Warmth returns from deep underground: frozen pools become steaming hot springs and moss spreads over the ice."
-msgstr ""
-
-#: data/songs.json:songs[red_engine].desc
-msgid "A red Mars-like foundry world of iron towers and lava rivers, home of the Ledger."
-msgstr ""
+msgstr "Thaw"
 
 #: data/songs.json:songs[slag_run].title
 msgid "Slag Run"
-msgstr ""
-
-#: data/songs.json:songs[slag_run].desc
-msgid "Hauling scrap past roaring furnaces and rivers of molten slag."
-msgstr ""
-
-#: data/songs.json:songs[foundry_heart].desc
-msgid "Deep inside an abandoned volcanic foundry, like walking through an underworld."
-msgstr ""
+msgstr "Slag Run"
 
 #: data/songs.json:songs[ember_market].title
 msgid "Ember Market"
-msgstr ""
-
-#: data/songs.json:songs[ember_market].desc
-msgid "A ruined forge city lit by drifting embers."
-msgstr ""
+msgstr "Ember Market"
 
 #: data/songs.json:songs[red_dust_waltz].title
 msgid "Red Dust Waltz"
-msgstr ""
-
-#: data/songs.json:songs[red_dust_waltz].desc
-msgid "A dust storm rolls over rusted machines on a red planet."
-msgstr ""
+msgstr "Red Dust Waltz"
 
 #: data/songs.json:songs[magma_crawl].title
 msgid "Magma Crawl"
-msgstr ""
-
-#: data/songs.json:songs[magma_crawl].desc
-msgid "Lava slowly creeping across black rock under a blood-red sky."
-msgstr ""
-
-#: data/songs.json:songs[ash_choir].desc
-msgid "Ash drifts through red light as night falls on the volcanic world."
-msgstr ""
+msgstr "Magma Crawl"
 
 #: data/songs.json:songs[iron_bloom].title
 msgid "Iron Bloom"
-msgstr ""
-
-#: data/songs.json:songs[iron_bloom].desc
-msgid "The foundry world restored: flowers growing between cooled lava flows, iron towers wrapped in vines."
-msgstr ""
+msgstr "Iron Bloom"
 
 #: data/stations.json:conveyor.name
 msgid "Conveyor Feeder"

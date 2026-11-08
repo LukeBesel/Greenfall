@@ -12465,296 +12465,128 @@ msgstr ""
 msgid "Ticking clocks and detuned bass. Sounds expensive."
 msgstr ""
 
-#: data/songs.json:songs[sprout_step].desc
-msgid "Bright and bouncy, for scooping junk off city streets and pressing it into bales."
-msgstr ""
-
-#: data/songs.json:songs[clean_sweep].desc
-msgid "Sunny indie-pop groove for a little robot sweeping an abandoned city back to life."
-msgstr ""
-
 #: data/songs.json:songs[little_helpers].title
 msgid "Little Helpers"
-msgstr ""
-
-#: data/songs.json:songs[little_helpers].desc
-msgid "A crew of small worker robots buzzing around a junkyard base."
 msgstr ""
 
 #: data/songs.json:songs[neon_gutters].title
 msgid "Neon Gutters"
 msgstr ""
 
-#: data/songs.json:songs[neon_gutters].desc
-msgid "Rusty neon signs flicker over trash-filled streets at sunset."
-msgstr ""
-
 #: data/songs.json:songs[morning_shift].title
 msgid "Morning Shift"
-msgstr ""
-
-#: data/songs.json:songs[morning_shift].desc
-msgid "Early light over a city half-buried in junk as the first robots head out to work."
 msgstr ""
 
 #: data/songs.json:songs[bale_by_bale].title
 msgid "Bale by Bale"
 msgstr ""
 
-#: data/songs.json:songs[bale_by_bale].desc
-msgid "Focus music for steady, repetitive cleanup work."
-msgstr ""
-
 #: data/songs.json:songs[rust_and_ribbons].title
 msgid "Rust and Ribbons"
-msgstr ""
-
-#: data/songs.json:songs[rust_and_ribbons].desc
-msgid "Wandering alone through quiet ruined streets while plants push up through the cracks."
 msgstr ""
 
 #: data/songs.json:songs[old_town_at_rest].title
 msgid "Old Town at Rest"
 msgstr ""
 
-#: data/songs.json:songs[old_town_at_rest].desc
-msgid "Home base at the end of a long day: a repaired workbench, a humming generator, a few robots parked nearby."
-msgstr ""
-
 #: data/songs.json:songs[verdance_night].title
 msgid "Verdance Night"
-msgstr ""
-
-#: data/songs.json:songs[verdance_night].desc
-msgid "Night falls over the junk city and only a few street lamps still glow."
 msgstr ""
 
 #: data/songs.json:songs[verdance_in_bloom].title
 msgid "Verdance in Bloom"
 msgstr ""
 
-#: data/songs.json:songs[verdance_in_bloom].desc
-msgid "The once trash-covered city is green again: gardens on every corner, birds back in the trees."
-msgstr ""
-
-#: data/songs.json:songs[sunbaked].desc
-msgid "Two blazing suns over orange dunes and a giant abandoned strip mine."
-msgstr ""
-
 #: data/songs.json:songs[strip_mine_shuffle].title
 msgid "Strip Mine Shuffle"
-msgstr ""
-
-#: data/songs.json:songs[strip_mine_shuffle].desc
-msgid "Hauling scrap out of a terraced mining pit under a white-hot sky."
-msgstr ""
-
-#: data/songs.json:songs[dune_caravan].desc
-msgid "A long line of robots crossing rolling dunes, carrying scrap home."
 msgstr ""
 
 #: data/songs.json:songs[glass_dunes].title
 msgid "Glass Dunes"
 msgstr ""
 
-#: data/songs.json:songs[glass_dunes].desc
-msgid "Wind has polished the sand into glittering glass ridges."
-msgstr ""
-
 #: data/songs.json:songs[sandglass].title
 msgid "Sandglass"
-msgstr ""
-
-#: data/songs.json:songs[sandglass].desc
-msgid "A slow hot afternoon, steady work in the shade of a rusted mining crane."
 msgstr ""
 
 #: data/songs.json:songs[twin_noon].title
 msgid "Twin Noon"
 msgstr ""
 
-#: data/songs.json:songs[twin_noon].desc
-msgid "Midday under two suns, heat shimmering over empty land."
-msgstr ""
-
 #: data/songs.json:songs[mirage_night].title
 msgid "Mirage Night"
-msgstr ""
-
-#: data/songs.json:songs[mirage_night].desc
-msgid "Desert night, warm wind, the mine's silhouette against the stars."
 msgstr ""
 
 #: data/songs.json:songs[oasis_terraces].title
 msgid "Oasis Terraces"
 msgstr ""
 
-#: data/songs.json:songs[oasis_terraces].desc
-msgid "The old mine pit has become terraced gardens around a bright blue oasis."
-msgstr ""
-
-#: data/songs.json:songs[tradewinds].desc
-msgid "Hovering over a turquoise ocean between tiny islands, scooping floating junk out of the waves."
-msgstr ""
-
 #: data/songs.json:songs[hover_hop].title
 msgid "Hover Hop"
-msgstr ""
-
-#: data/songs.json:songs[hover_hop].desc
-msgid "Skimming fast across open water from island to island."
-msgstr ""
-
-#: data/songs.json:songs[skipping_stones].desc
-msgid "Sun on the water, gulls overhead, junk bobbing in the surf."
 msgstr ""
 
 #: data/songs.json:songs[salt_and_sails].title
 msgid "Salt and Sails"
 msgstr ""
 
-#: data/songs.json:songs[salt_and_sails].desc
-msgid "Old harbour wrecks and rusty buoys along a windy coast."
-msgstr ""
-
 #: data/songs.json:songs[low_tide_lofi].title
 msgid "Low Tide Lofi"
-msgstr ""
-
-#: data/songs.json:songs[low_tide_lofi].desc
-msgid "Slow work on a quiet beach at low tide."
 msgstr ""
 
 #: data/songs.json:songs[glass_lagoon].title
 msgid "Glass Lagoon"
 msgstr ""
 
-#: data/songs.json:songs[glass_lagoon].desc
-msgid "A clear shallow lagoon with coral visible under still water."
-msgstr ""
-
-#: data/songs.json:songs[tidepools].desc
-msgid "Night on the ocean planet, bioluminescent glow in the waves."
-msgstr ""
-
 #: data/songs.json:songs[kelp_garden].title
 msgid "Kelp Garden"
-msgstr ""
-
-#: data/songs.json:songs[kelp_garden].desc
-msgid "The seas are clean again: kelp forests, schools of fish, floating island gardens."
 msgstr ""
 
 #: data/songs.json:songs[snowplow].title
 msgid "Snowplow"
 msgstr ""
 
-#: data/songs.json:songs[snowplow].desc
-msgid "Pushing through fresh snow on a frozen moon, digging out buried scrap."
-msgstr ""
-
-#: data/songs.json:songs[hoarfrost].desc
-msgid "Glassy blue ice plains under a huge ringed planet."
-msgstr ""
-
 #: data/songs.json:songs[crunch_ice].title
 msgid "Crunch Ice"
-msgstr ""
-
-#: data/songs.json:songs[crunch_ice].desc
-msgid "Steady work inside a heated dome while snow blows outside."
 msgstr ""
 
 #: data/songs.json:songs[aurora_drift].title
 msgid "Aurora Drift"
 msgstr ""
 
-#: data/songs.json:songs[aurora_drift].desc
-msgid "Green and violet aurora rippling over frozen ridges."
-msgstr ""
-
 #: data/songs.json:songs[ringlight].title
 msgid "Ringlight"
-msgstr ""
-
-#: data/songs.json:songs[ringlight].desc
-msgid "A giant ringed gas planet hangs over a frozen crater."
 msgstr ""
 
 #: data/songs.json:songs[frozen_harbor].title
 msgid "Frozen Harbor"
 msgstr ""
 
-#: data/songs.json:songs[frozen_harbor].desc
-msgid "An abandoned drilling port locked in ice, snow falling softly."
-msgstr ""
-
 #: data/songs.json:songs[long_night].title
 msgid "Long Night"
-msgstr ""
-
-#: data/songs.json:songs[long_night].desc
-msgid "The long night on an ice moon far from its suns."
 msgstr ""
 
 #: data/songs.json:songs[thaw].title
 msgid "Thaw"
 msgstr ""
 
-#: data/songs.json:songs[thaw].desc
-msgid "Warmth returns from deep underground: frozen pools become steaming hot springs and moss spreads over the ice."
-msgstr ""
-
-#: data/songs.json:songs[red_engine].desc
-msgid "A red Mars-like foundry world of iron towers and lava rivers, home of the Ledger."
-msgstr ""
-
 #: data/songs.json:songs[slag_run].title
 msgid "Slag Run"
-msgstr ""
-
-#: data/songs.json:songs[slag_run].desc
-msgid "Hauling scrap past roaring furnaces and rivers of molten slag."
-msgstr ""
-
-#: data/songs.json:songs[foundry_heart].desc
-msgid "Deep inside an abandoned volcanic foundry, like walking through an underworld."
 msgstr ""
 
 #: data/songs.json:songs[ember_market].title
 msgid "Ember Market"
 msgstr ""
 
-#: data/songs.json:songs[ember_market].desc
-msgid "A ruined forge city lit by drifting embers."
-msgstr ""
-
 #: data/songs.json:songs[red_dust_waltz].title
 msgid "Red Dust Waltz"
-msgstr ""
-
-#: data/songs.json:songs[red_dust_waltz].desc
-msgid "A dust storm rolls over rusted machines on a red planet."
 msgstr ""
 
 #: data/songs.json:songs[magma_crawl].title
 msgid "Magma Crawl"
 msgstr ""
 
-#: data/songs.json:songs[magma_crawl].desc
-msgid "Lava slowly creeping across black rock under a blood-red sky."
-msgstr ""
-
-#: data/songs.json:songs[ash_choir].desc
-msgid "Ash drifts through red light as night falls on the volcanic world."
-msgstr ""
-
 #: data/songs.json:songs[iron_bloom].title
 msgid "Iron Bloom"
-msgstr ""
-
-#: data/songs.json:songs[iron_bloom].desc
-msgid "The foundry world restored: flowers growing between cooled lava flows, iron towers wrapped in vines."
 msgstr ""
 
 #: data/stations.json:conveyor.name
