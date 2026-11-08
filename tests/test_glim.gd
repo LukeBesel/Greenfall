@@ -181,3 +181,16 @@ func test_music_upgrade_gate() -> void:
 	assert_gt(Glim.song_bpm(), 0.0)
 	Glim.set_found(false)
 	assert_false(Glim.has_music(), "no Glim, no music")
+
+
+func test_scan_hexes_by_tier() -> void:
+	var types: Array = []
+	for id: String in Economy.junk_ids:
+		types.append(Economy.junk_types[id])
+	var f := HexField.new(5, 3.2, 99)
+	f.generate(types)
+	var c: Vector3 = f.hex_center(0)
+	var own: Array[int] = GlimDirector.scan_hexes(f, c, 0)
+	assert_eq(own.size(), 1, "tier 1: Lumi's own hex")
+	assert_eq(own[0], f.hex_at(c))
+	assert_gt(GlimDirector.scan_hexes(f, c, 1).size(), 1, "higher tiers reach the neighbours")
