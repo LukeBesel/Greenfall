@@ -245,10 +245,11 @@ func _apply_level(l: int) -> void:
 		return
 	var bare: bool = l <= 1
 	var bits: Dictionary = world.get("_ruin_bits")
-	for k: String in ["frame", "roof", "back", "side", "lamp", "bulb", "street_lamp", "street_light", "generator"]:
+	for k: String in ["frame", "roof", "back", "side", "lamp", "bulb", "street_lamp", "street_light", "generator", "post_l", "post_r"]:
 		var n: Node3D = bits.get(k) as Node3D
 		if n:
 			n.visible = not bare
+			_set_solid(n, not bare)  # [pace2] hidden parts must not leave invisible walls (posts, roof)
 
 
 func _on_built(id: String) -> void:
@@ -362,3 +363,11 @@ func report() -> String:
 		lines.append("[camp]   %-10s (%.1f, %.1f) shown=%s" % [p[0], v.x, v.z, str(p[2])])
 	lines.append("[camp] too_close=%s" % str(too_close()))
 	return "\n".join(lines)
+
+
+## [pace2] Turns the collision of a yard part (and its children) on or off with its visibility.
+static func _set_solid(n: Node, on: bool) -> void:
+	if n is CollisionShape3D:
+		(n as CollisionShape3D).set_deferred("disabled", not on)
+	for c: Node in n.get_children():
+		_set_solid(c, on)

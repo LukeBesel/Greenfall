@@ -448,7 +448,7 @@ func _refresh_text() -> void:
 	_age.text = tr("Surveyed %s ago%s") % [_fmt_age(age), tr("   ·   OUTDATED") if age > 600.0 else ""]
 	_resurvey.text = tr("Re-survey      %s cubes") % Settings.fmt(survey_cost())
 	if _system_btn:  # [home]
-		_system_btn.visible = open_system.is_valid() and Homeward.answered()
+		_system_btn.visible = open_system.is_valid() and Homeward.system_open()  # [pace2] partial progress opens the system
 	_ark.text = Bloom.globe_line()
 	_ark.visible = _ark.text != ""
 

@@ -758,6 +758,7 @@ func _build_board() -> void:
 		pcs0.shape = PropColliders.cyl_shape(0.08, 2.1)
 		pcs0.position = Vector3(px, 1.05, 1.0)
 		sb.add_child(pcs0)
+		_ruin_bits["post_l" if px < 0.0 else "post_r"] = pcs0  # [pace2] camp turns these off with the bare lean-to
 	shack.add_child(sb)
 	# Hub dressing: a street lamp and a generator.
 	var sl := MeshInstance3D.new()

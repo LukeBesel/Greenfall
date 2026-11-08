@@ -122,6 +122,36 @@ static func answered() -> bool:
 	return bool(state().get("answered", false))
 
 
+## [pace2] The system (map, drives, other planets) opens with partial progress: the Cradle's
+## answer, a built Mk V, or Verdance far enough along for the Mk V gate (data: drive requires_*).
+static func system_open() -> bool:
+	if answered() or drive() >= 5:
+		return true
+	var d5: Dictionary = drive_def(5)
+	return not d5.is_empty() and progress_blocker(d5) == ""
+
+
+## [pace2] "" when a drive tier's partial-progress gates hold (pure on the stored percentages):
+## requires_planet_pct [k, pct]: planet k restored to pct; requires_other_pct: any planet other
+## than Verdance restored to pct (its chart). 100% and relics stay optional except where a tier
+## still lists requires_relics / requires_system (Mk VII Homeward).
+static func progress_blocker(nd: Dictionary) -> String:
+	var pp: Variant = nd.get("requires_planet_pct")
+	if pp is Array and (pp as Array).size() >= 2:
+		var k: int = int(pp[0])
+		var need: float = float(pp[1])
+		if stored_pct(k) < need - 0.0001:
+			return TranslationServer.translate("Restore %s to %d%% (%d%%)") % [planet_name(k), int(round(need * 100.0)), int(floor(stored_pct(k) * 100.0))]
+	if nd.has("requires_other_pct"):
+		var need2: float = float(nd["requires_other_pct"])
+		var best: float = 0.0
+		for k2: int in range(1, planets().size()):
+			best = maxf(best, stored_pct(k2))
+		if best < need2 - 0.0001:
+			return TranslationServer.translate("Restore another planet to %d%% (best %d%%)") % [int(round(need2 * 100.0)), int(floor(best * 100.0))]
+	return ""
+
+
 static func done() -> bool:
 	return bool(state().get("done", false))
 
@@ -389,6 +419,9 @@ static func drive_blocker(at_home_site: bool = false) -> String:
 	var flag: String = str(nd.get("requires_flag", ""))
 	if flag == "cradle_answered" and not answered():
 		return TranslationServer.translate("The Cradle has to answer first (Cradle Returns)")
+	var pb: String = progress_blocker(nd)  # [pace2]
+	if pb != "":
+		return pb
 	if relics().size() < int(nd.get("requires_relics", 0)):
 		return TranslationServer.translate("Needs %d planet relics (%d)") % [int(nd["requires_relics"]), relics().size()]
 	if system_pct() < float(nd.get("requires_system", 0.0)) - 0.0001:

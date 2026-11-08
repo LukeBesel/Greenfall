@@ -31,8 +31,8 @@
     "anvil_ingot": {"name": "Anvil Ingot", "desc": "The Ledger's last ingot, recast as a plain ring with a seed stamped in it."}
   },
   "drive": [
-    {"tier": 5, "name": "Mk V Orbital", "desc": "A vacuum-rated hull and a sun-sail: reaches the near planets, Ochre and Tidewell.", "cost": {"cubes": 2500000, "parts": 300}, "requires_flag": "cradle_answered"},
-    {"tier": 6, "name": "Mk VI Interplanetary", "desc": "A fold drive salvaged from a Ledger ore hauler: reaches Rime and Anvil.", "cost": {"cubes": 1200000, "parts": 500}, "requires_relics": 1},
+    {"tier": 5, "name": "Mk V Orbital", "desc": "A vacuum-rated hull and a sun-sail: reaches the near planets, Ochre and Tidewell.", "cost": {"cubes": 2500000, "parts": 300}, "requires_planet_pct": [0, 0.55]},
+    {"tier": 6, "name": "Mk VI Interplanetary", "desc": "A fold drive salvaged from a Ledger ore hauler: reaches Rime and Anvil.", "cost": {"cubes": 1200000, "parts": 500}, "requires_other_pct": 0.5},
     {"tier": 7, "name": "Mk VII Homeward", "desc": "A great green-light rocket on a launch complex built from every planet you saved. One trip: up to the Cradle.", "cost": {"cubes": 8000000, "parts": 2000}, "requires_relics": 4, "requires_system": 1.0, "home_only": true}
   ],
   "homeward_frontier": "cradle_returns",

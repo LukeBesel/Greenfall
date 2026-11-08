@@ -38,6 +38,7 @@ var _interact: bool = false
 var _dt: float = 0.0
 var _cooldown: float = 0.0
 var _stuck_timer: float = 0.0
+var _escape_side: float = 1.0  # [pace2]
 var _last_pos := Vector3.ZERO
 var _report: Dictionary = {}
 var _log: Array = []
@@ -275,9 +276,17 @@ func _watch_stuck(p: Patch, delta: float) -> void:
 	elif _watch_t > 6.0:
 		_watch_t = 0.0
 		_escapes += 1
-		var a: float = randf() * TAU
-		_escape_dir = Vector3(cos(a), 0, sin(a))
-		_escape_t = 2.5
+		if _target_piece >= 0 and DevHooks.has("bot-debug"):
+			var f: HexField = world.field
+			print("[bot-esc] t=%.1f task=%s pos=%s piece=%d at %s size=%d embed=%.2f" % [_now() / 60.0, _task, str(p.global_position), _target_piece, str(f.piece_pos[_target_piece]), Pace.piece_size(f, _target_piece), f.piece_embed[_target_piece] if _target_piece < f.piece_embed.size() else -1.0])
+		# [pace2] Sidestep around the obstacle (perpendicular to where we were heading, alternating
+		# sides, a little backwards) instead of a random direction that often points back into it.
+		var head: Vector3 = Vector3(_move.x, 0, _move.z).normalized()
+		_escape_side = -_escape_side
+		_escape_dir = (Vector3(head.z, 0, -head.x) * _escape_side - head * 0.35).normalized()
+		_escape_t = 1.6 + 0.4 * float(_escapes % 3)
+		if _target_piece >= 0 and _escapes % 2 == 0:
+			_ignore_piece[_target_piece] = true
 		_target_piece = -1
 
 
@@ -489,7 +498,16 @@ func _pace_research_next() -> String:
 		if int(GameState.world.get("hub_level", 1)) < mb:
 			return ""
 		return id
+	# [pace2] Once base 3 is up, the garden chain (Pollinator Survey = the garden taking off).
+	if int(GameState.world.get("hub_level", 1)) >= 3:
+		for id: String in PACE_GARDEN_CHAIN:
+			if not Research.exists(id) or Research.has(id) or Research.is_active(id) or Research.is_queued(id):
+				continue
+			return id if Research.status(id) == "available" else ""
 	return ""
+
+
+const PACE_GARDEN_CHAIN: Array[String] = ["soil_survey", "hardy_weeds", "wild_mint", "pollinator_survey"]
 
 
 func _drop_all(p: Patch) -> void:
@@ -1011,7 +1029,7 @@ func _shop(want: Dictionary) -> void:
 	if prn != "":
 		reserve = maxf(reserve, Research.cost(prn).to_float())  # [pace]
 	if not Pace.baler_unlocked() and Economy.is_unlocked(Pace.UP_BALER):
-		reserve = maxf(reserve, Economy.upgrade_cost(Pace.UP_BALER).to_float() * 0.6)  # [pace] a person saves for the Baler
+		reserve = maxf(reserve, Economy.upgrade_cost(Pace.UP_BALER).to_float())  # [pace] a person saves for the Baler
 	guard = 0
 	while guard < 20:
 		guard += 1
@@ -1235,7 +1253,7 @@ func _lake_dirty() -> bool:
 ## the base levels pace as they did with Data); it also starts research when it is rich.
 func _research_ok(id: String) -> bool:
 	var c: float = Research.cost(id).to_float()
-	if id in ["salvage_logic", "conveyor", "auto_baler"] and GameState.get_currency("cubes").to_float() >= c:
+	if (id in ["salvage_logic", "conveyor", "auto_baler"] or id in PACE_GARDEN_CHAIN) and GameState.get_currency("cubes").to_float() >= c:
 		return true  # [pace] the helper and automation unlocks come before saving for base 3
 	var fund: float = float(GameState.stats.get("notes_cubes", 0.0)) + float(GameState.stats.get("wildlife_cubes", 0.0)) - float(GameState.stats.get("bot_research_spent", 0.0))
 	return c <= fund or GameState.get_currency("cubes").to_float() > maxf(c * 4.0, _research_reserve())
@@ -1244,6 +1262,9 @@ func _research_ok(id: String) -> bool:
 ## Cubes the bot keeps for the next base level / robot before dipping into them for research.
 func _research_reserve() -> float:
 	var nxt: Dictionary = world.hub.level_def(world.hub.level + 1) if world.get("hub") != null else {}
+	if world.get("hub") != null and int(world.hub.level) >= 2:
+		# [pace2] mid game: a player researches with spare cubes instead of hoarding 1.5x the next base
+		return float(nxt.get("cost", {}).get("cubes", 0.0)) * 0.5 + 1000.0
 	return float(nxt.get("cost", {}).get("cubes", 0.0)) * 1.5 + 2000.0
 
 
