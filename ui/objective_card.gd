@@ -12,6 +12,7 @@ extends PanelContainer
 const W: float = 300.0
 const ACCENT := Color(0.55, 0.9, 1.0)
 const WHY := Color(0.78, 0.8, 0.79)
+const HINT := Color(1.0, 0.82, 0.45)  # [v3clear] a situation hint (amber)
 
 var objectives: Objectives
 var _cap: Label
@@ -104,14 +105,19 @@ func refresh(animate: bool) -> void:
 
 
 func _set_texts(def: Dictionary) -> void:
+	# [v3clear] Owner item 41: the player's situation (full chest, too heavy, short of cubes, lost...)
+	# takes the why line, in amber, so the card always says the one next thing.
+	var hint: String = objectives.situation if objectives else ""
+	_why.add_theme_color_override("font_color", HINT if hint != "" else WHY)
 	if substep != "":  # [v2guide]
 		_title.text = substep
-		_why.visible = false
+		_why.text = hint
+		_why.visible = hint != ""
 		return
 	var t: Array[String] = Objectives.texts(def)
 	_title.text = t[0]
-	_why.text = t[1]
-	_why.visible = t[1] != ""
+	_why.text = hint if hint != "" else t[1]
+	_why.visible = _why.text != ""
 
 
 ## [v2guide] Sets (or clears, with "") the sub-step shown in place of the objective; plain text.

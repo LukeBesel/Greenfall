@@ -16,7 +16,8 @@ extends VBoxContainer
 
 signal acted(id: String)
 
-const ROW_H: float = 40.0
+const ROW_H: float = 48.0  # [v3clear] big readable rows (owner item 41)
+const GOAL := Color(0.55, 0.9, 1.0)  # [v3clear] the row the objective card asks for
 const TAG_OK := Color(1.0, 0.55, 0.18)
 const SEL_BG := Color(1.0, 0.55, 0.18, 0.9)
 const LOCK_GREY := Color(0.5, 0.52, 0.55)
@@ -53,6 +54,7 @@ var _d_req: Label
 var _d_btn: Button
 var _d_cost: BenchKit.CostRow
 var _t: float = 0.0
+var _goal: String = ""  # [v3clear] id of the row the current goal needs
 
 
 func _ready() -> void:
@@ -199,6 +201,7 @@ func _cat_items() -> Array:
 
 func refresh(force: bool = false) -> void:
 	_items = provider.call() if provider.is_valid() else []
+	_goal = goal_row_id(world)
 	# Categories: only the ones with rows (keep the current one).
 	var cats_here: Array[String] = []
 	for c: Array in categories:
@@ -338,7 +341,7 @@ func _rebuild_rows(rows: Array) -> void:
 		icon_box.custom_minimum_size = Vector2(24, 24)
 		icon_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		hb.add_child(icon_box)
-		var nm: Label = UITheme.label("", 17, UITheme.CREAM)
+		var nm: Label = UITheme.label("", 19, UITheme.CREAM)  # [v3clear] 17 -> 19
 		nm.add_theme_constant_override("outline_size", 0)
 		nm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		nm.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -447,8 +450,11 @@ func _style_row(b: Button, it: Dictionary) -> void:
 			var ic: Control = _icon(str(it.get("icon", "cube")), str(it.get("icon_set", "hud")), 22.0, Color(0.08, 0.06, 0.04) if on else BenchKit.HOLO)
 			ic.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			icon_box.add_child(ic)
-	nm.text = "?  ?" if locked else str(it.get("name", ""))
-	nm.add_theme_color_override("font_color", Color(0.08, 0.06, 0.04) if on else (LOCK_GREY if locked else UITheme.CREAM))
+	# [v3clear] Locked rows keep their name (the detail says what unlocks them); the goal's row is cyan;
+	# rows you can't pay yet are dimmer than the ones you can.
+	var goal: bool = str(it["id"]) == _goal and not locked and st != "done"
+	nm.text = ("▸ " if goal else "") + str(it.get("name", ""))
+	nm.add_theme_color_override("font_color", Color(0.08, 0.06, 0.04) if on else (LOCK_GREY if locked else (GOAL if goal else (UITheme.CREAM if st == "ready" else UITheme.CREAM.darkened(0.25)))))
 	var mx: int = int(it.get("max", 0))
 	pips.visible = mx > 0 and not locked and mx <= 10
 	if pips.visible:
@@ -504,6 +510,10 @@ func _style_row(b: Button, it: Dictionary) -> void:
 	# Row background: solid orange when selected.
 	var sel_sb: StyleBoxFlat = UITheme.box(SEL_BG, Color(0, 0, 0, 0), 0, 5, 6)
 	var idle: StyleBoxFlat = UITheme.box(Color(1, 1, 1, 0.03), Color(0, 0, 0, 0), 0, 5, 6)
+	if goal:  # [v3clear] the row the current goal needs: a cyan frame
+		idle = UITheme.box(Color(GOAL, 0.12), Color(GOAL, 0.9), 2, 5, 6)
+	elif st == "ready":  # [v3clear] affordable rows stand out
+		idle = UITheme.box(Color(TAG_OK, 0.1), Color(TAG_OK, 0.35), 1, 5, 6)
 	b.add_theme_stylebox_override("normal", sel_sb if on else idle)
 	b.add_theme_stylebox_override("hover", sel_sb if on else UITheme.box(Color(1, 1, 1, 0.08), Color(0, 0, 0, 0), 0, 5, 6))
 	b.add_theme_stylebox_override("pressed", sel_sb)
@@ -545,6 +555,17 @@ func _do(id: String) -> void:
 	else:
 		Audio.play("buzz", 1.2, -8.0)
 	refresh()
+	_flash_row(id)  # [v3clear] the bought row lights up (the HUD is hidden behind the bench)
+
+
+## [v3clear] A short bright pulse on a row and the detail's name: "that worked".
+func _flash_row(id: String) -> void:
+	var b: Control = _rows.get(id) as Control
+	for c: Control in [b, _d_name]:
+		if c == null or not c.is_inside_tree():
+			continue
+		c.modulate = Color(1.8, 1.7, 1.2)
+		c.create_tween().set_ignore_time_scale(true).tween_property(c, "modulate", Color.WHITE, 0.6).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 
 func _show_detail(it: Dictionary) -> void:
@@ -558,7 +579,7 @@ func _show_detail(it: Dictionary) -> void:
 		if str(c[0]) == str(it.get("cat", "")):
 			cat_name = tr(str(c[1]))
 	_d_eyebrow.text = cat_name.to_upper()
-	_d_name.text = "?  ?" if locked else str(it.get("name", ""))
+	_d_name.text = str(it.get("name", ""))  # [v3clear] locked items keep their name
 	_d_desc.text = "" if locked else str(it.get("desc", ""))
 	_d_desc.visible = _d_desc.text != ""
 	var ikey: String = "%s|%s|%s" % [it.get("icon", ""), it.get("icon_set", "hud"), str(locked)]
@@ -604,14 +625,14 @@ func _show_detail(it: Dictionary) -> void:
 	_d_table.visible = _d_table.get_child_count() > 0 and not locked
 	var req: String = str(it.get("requires", ""))
 	if locked:
-		_d_req.text = tr("REQUIRES   NOT YET   %s") % req if req != "" else tr("Not unlocked yet. Keep playing.")
+		_d_req.text = (tr("LOCKED.  To unlock: %s") % req) if req != "" else tr("Locked. Keep playing to unlock it.")  # [v3clear]
 		_d_req.add_theme_color_override("font_color", Color(1.0, 0.6, 0.45))
 	elif req != "":
 		_d_req.text = tr("REQUIRES   %s") % req
 		_d_req.add_theme_color_override("font_color", Color(1.0, 0.6, 0.45) if st == "short" else UITheme.MUTED)
 	else:
-		_d_req.text = tr("REQUIRES   READY") if st == "ready" else ""
-		_d_req.add_theme_color_override("font_color", BenchKit.OK)
+		_d_req.text = tr("You can buy this now!") if st == "ready" else (short_text(it.get("price", {})) if st == "short" else "")  # [v3clear]
+		_d_req.add_theme_color_override("font_color", BenchKit.OK if st == "ready" else Color(1.0, 0.6, 0.45))
 	_d_req.visible = _d_req.text != ""
 	var action: String = str(it.get("action", ""))
 	_d_btn.visible = action != "" and not locked
@@ -620,3 +641,28 @@ func _show_detail(it: Dictionary) -> void:
 	_d_cost.visible = _d_btn.visible and st in ["ready", "short"]
 	if _d_cost.visible:
 		_d_cost.set_cost(it.get("price", {}), " ")
+
+
+## [v3clear] "Need 40 more cubes. Pick up trash to earn them." for a price you can't pay yet.
+static func short_text(price: Dictionary) -> String:
+	var miss: PackedStringArray = []
+	var how: String = ""
+	for cid: String in Currencies.IDS:
+		var need: float = float(Currencies.fold(price).get(cid, 0.0))
+		var have: float = GameState.get_currency(cid).to_float()
+		if need > have + 0.001:
+			miss.append(TranslationServer.translate("%s more %s") % [Settings.fmt(BigNum.from_float(ceilf(need - have))), Currencies.display_name(cid).to_lower()])
+			if how == "":
+				how = TranslationServer.translate("Pick up trash to earn them.") if cid == "cubes" else TranslationServer.translate("Dig up parts and salvage junk to get them.")
+	if miss.is_empty():
+		return ""
+	return TranslationServer.translate("Need %s. %s") % [" and ".join(miss), how]
+
+
+## [v3clear] The id of the workbench row the objective card's current step asks for ("" for none).
+static func goal_row_id(w: Node) -> String:
+	var ob: Variant = w.get("objectives") if w else null
+	if not ob is Objectives:
+		return ""
+	var r: Array = (ob as Objectives).bench_row()
+	return str(r[1]) if r.size() >= 2 else ""

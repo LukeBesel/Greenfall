@@ -203,7 +203,7 @@ func _build_bottom() -> void:
 	_bottom.add_child(hotbar)
 	# Prompt and contextual readout, just above the level bar.
 	var mc: MarginContainer = _margin(Control.PRESET_CENTER_BOTTOM, 0)
-	mc.add_theme_constant_override("margin_bottom", 130)
+	mc.add_theme_constant_override("margin_bottom", 168)  # [v3clear] above the level bar (the hex line sat on it)
 	var vb := VBoxContainer.new()
 	vb.alignment = BoxContainer.ALIGNMENT_END
 	vb.add_theme_constant_override("separation", 2)
@@ -304,6 +304,7 @@ func _process(delta: float) -> void:
 			_planet_label.visible = false
 		_field_bar.queue_redraw()
 		_relay_label.text = tr("WREN SIGNAL   %d%%") % SignalTower.signal_pct()
+		_relay_label.visible = SignalTower.tier() > 0  # [v3clear] hide what isn't relevant yet: no 0% before the tower
 		var sig: String = _field_label.text + _planet_label.text + _relay_label.text
 		if sig != _district_sig:
 			_district_sig = sig

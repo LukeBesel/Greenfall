@@ -445,7 +445,7 @@ func interact_prompt(p: Patch) -> String:
 			return camp.bench_prompt()
 		if _repairing:
 			return ""
-		return tr("E   Workbench (broken): repair it") if not Camp.bench_ok() else tr("E   Workbench: upgrades")
+		return tr("E   Fix the workbench") if not Camp.bench_ok() else tr("E   Open the workbench")  # [v3clear]
 	return sites.interact_prompt() if sites else ""  # [orbD] the hover-sled
 
 

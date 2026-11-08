@@ -317,6 +317,7 @@ func _process(delta: float) -> void:
 		return
 	_t = REFRESH_S
 	var def: Dictionary = current()
+	situation = situation_hint(REFRESH_S)  # [v3clear]
 	waypoint.set_target(waypoint_target())
 	if def.is_empty() or _hold > 0.0:
 		_set_hex(-1)
@@ -483,7 +484,7 @@ func step_target(def: Dictionary) -> Dictionary:
 				out["row"] = ["build", "signal_tower"] if SignalTower.tier() == 0 else ["patch", "hb_signal_tower"]
 				var aff2: bool = GameState.can_afford_all(SignalTower.next_cost())
 				out["to"] = "bench" if aff2 else ("depot" if p and not p.carried.is_empty() else "hex")
-			"hex", "hex3", "zone":
+			"hex", "hex2", "hex3", "zone":  # [v3clear] hex2
 				out["to"] = "hex"
 			"bench2":
 				out = {"to": "bench" if BenchTiers.block_reason(world) == "" else "hex", "row": ["patch", "bench_tier"]}
@@ -566,7 +567,10 @@ func waypoint_target() -> Variant:
 	if tut and not tut.done():  # #37: only places (bench, bin), never pieces
 		var tt: Dictionary = tut.target()
 		return tt.get("pos", null) if str(tt.get("kind", "")) in ["bench", "pad"] else null
-	return step_target(current()).get("pos", null)
+	var pos: Variant = step_target(current()).get("pos", null)
+	if pos == null and is_lost() and needs_home():  # [v3clear] lost on the way home: the beam stands on home (a place, owner #37)
+		pos = home_pos()
+	return pos
 
 
 func _bench_pos() -> Variant:
@@ -648,7 +652,7 @@ func _bale_reminder(delta: float) -> void:
 	if p == null or p.compartment == null or p.compartment.fill < p.capacity() * 0.95:
 		return
 	_bale_nag_t = 9.0
-	Vfx.float_text(p.global_position + OrbitUp.up(p.global_position) * 2.0, tr("Chest full: press [%s] to make a bale") % Settings.glyph("cube"), Color(1.0, 0.86, 0.45), 0.55, 0.6)
+	Vfx.float_text(p.global_position + OrbitUp.up(p.global_position) * 2.0, tr("Your chest is full. Press [%s] to make a bale.") % Settings.glyph("cube"), Color(1.0, 0.86, 0.45), 0.55, 0.6)
 
 
 # --- The part detector -------------------------------------------------------------------------
@@ -697,3 +701,105 @@ func _dev_near_part() -> void:
 		dir = dir.normalized() if dir.length() > 0.1 else Vector3.BACK
 		p.global_position = Vector3(to.x, p.global_position.y, to.z) + dir * 6.0
 		p.look_at(Vector3(to.x, p.global_position.y, to.z), Vector3.UP)
+
+
+# --- [v3clear] One clear next thing (owner item 41) -------------------------------------------------
+# A short line for the card's "why" slot when the player's situation says what to do better than
+# the step does: a full chest, a piece too heavy, not enough cubes for the step, nothing to pick up
+# nearby, or being lost. "" when the step's own line is the right one.
+
+## Lumi is this far (along the ground) from home before the card points the way back.
+const LOST_M: float = 80.0
+## No liftable piece within this many metres (away from home) = nothing to pick up here.
+const EMPTY_R: float = 14.0
+## ...for this long before the card says so.
+const EMPTY_S: float = 6.0
+## A "too heavy" pulse stays on the card this long (ms).
+const HEAVY_MS: int = 6000
+
+var situation: String = ""
+var _empty_t: float = 0.0
+var _was_full: bool = false
+
+
+func _patch() -> Patch:
+	return world.get("patch") as Patch if world else null
+
+
+func home_pos() -> Variant:
+	var b: Variant = bin_point(world)
+	return b if b is Vector3 else _bench_pos()
+
+
+## Lumi has to get home for what comes next: a full chest, bales on his back, or a step at the base.
+func needs_home() -> bool:
+	var p: Patch = _patch()
+	if p == null:
+		return false
+	if not p.carried.is_empty() or (p.compartment and p.compartment.fill >= p.capacity() * 0.98):
+		return true
+	var to: String = str(step_target(current()).get("to", ""))
+	return to in ["bench", "bin", "depot"]
+
+
+func is_lost() -> bool:
+	var p: Patch = _patch()
+	var h: Variant = home_pos()
+	return p != null and h is Vector3 and OrbitUp.ground_dist(p.global_position, h) > LOST_M
+
+
+## The bench item the current step wants, when its price can't be paid yet: {cubes: n, ...}.
+func _step_price() -> Dictionary:
+	var def: Dictionary = current()
+	if def.is_empty():
+		return {}
+	var typ: String = str(def.get("type", ""))
+	var key: String = str(def.get("key", ""))
+	if typ == "upgrade" and Economy.upgrade_defs.has(key) and GameState.level_of(key) < int(def.get("target", 1)):
+		return {"cubes": Economy.upgrade_cost(key).to_float()}
+	if typ == "bench" and BenchTiers.tier() < int(def.get("target", 2)) and BenchTiers.block_reason(world) == "":
+		return BenchTiers.next_cost()
+	if typ == "tower" and SignalTower.tier() < int(def.get("target", 1)):
+		return SignalTower.next_cost()
+	return {}
+
+
+func situation_hint(dt: float = 0.0) -> String:
+	var p: Patch = _patch()
+	if p == null or p.compartment == null:
+		return ""
+	var f: HexField = world.get("field") as HexField
+	var cap: float = p.capacity()
+	var full: bool = p.compartment.fill >= cap * 0.98 and cap > 0.0
+	var press: bool = Pace.baler_unlocked() and not Pace.dump_allowed()
+	var full_line: String = (tr("Your chest is full. Press [%s] to make a bale.") % Settings.glyph("cube")) if press \
+		else tr("Your chest is full. Bring it to the bin.")
+	if full and not _was_full:  # the moment it fills: say it over Lumi too, with a sound
+		Vfx.float_text(p.global_position + OrbitUp.up(p.global_position) * 2.0, full_line, Color(1.0, 0.86, 0.45), 0.55, 0.6)
+		Audio.play("ding", 0.8, -8.0)
+	_was_full = full
+	var far: bool = is_lost()
+	if full:
+		return tr("Your chest is full. Head home: the bin is under the tall smoke.") if far and not press else full_line
+	if not p.carried.is_empty():
+		return tr("Carry your bale home: the scale is under the tall smoke.") if far else tr("Carry your bale to the scale by the bin.")
+	if Time.get_ticks_msec() - Pace.heavy_at < HEAVY_MS and Pace.heavy_at > 0:
+		return tr("Too heavy. Upgrade Lift at the bench.")
+	var price: Dictionary = _step_price()
+	if not price.is_empty() and not GameState.can_afford_all(price):
+		return ListDetail.short_text(price)
+	if far and needs_home():
+		return tr("Head home: follow the beam to the tall smoke.")
+	# Nothing to pick up nearby (away from home, on a cleaning step)
+	var home: Variant = home_pos()
+	var at_home: bool = home is Vector3 and OrbitUp.ground_dist(p.global_position, home) < 25.0
+	if f != null and not at_home and str(step_target(current()).get("to", "")) in ["hex", ""]:
+		if Pace.liftable_near(f, p.global_position, EMPTY_R):
+			_empty_t = 0.0
+		else:
+			_empty_t += dt
+		if _empty_t >= EMPTY_S:
+			return tr("Nothing to pick up here. Walk to more trash.")
+	else:
+		_empty_t = 0.0
+	return ""

@@ -21,7 +21,7 @@ func test_beam_is_a_tall_sky_beam() -> void:
 func test_brief_says_why() -> void:
 	var lines: Array = Intro.brief_lines()
 	var all: String = " ".join(lines).to_lower()
-	assert_true(all.contains("junk") and all.contains("parts") and all.contains("signal tower"), "pick up junk, find parts, build the tower")
+	assert_true((all.contains("junk") or all.contains("trash")) and all.contains("parts") and all.contains("signal tower"), "pick up junk, find parts, build the tower")
 	assert_true(all.contains("[glitch]"), "WREN still breaks up")
 
 
