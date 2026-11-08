@@ -254,12 +254,15 @@ func _on_compartment(fill: float, cap: float) -> void:
 
 # --- Public API ----------------------------------------------------------------------------
 
+## [onboard2] One message line: toasts go to the subtitle bar's queue (ui/subtitles.gd), one at a
+## time with reading time. The old bottom-left stack is only a fallback where there is no bar.
 func show_toast(text: String, kind: String = "info") -> void:
-	_notify.push(text, kind)
+	if not Subtitles.post(text, kind):
+		_notify.push(text, kind)
 
 
 func notify(text: String, kind: String = "info") -> void:
-	_notify.push(text, kind)
+	show_toast(text, kind)
 
 
 ## Bloom Core charge 0..1, drawn as a tiny ring at the left end of the level bar.

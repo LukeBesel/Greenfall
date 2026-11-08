@@ -27,6 +27,24 @@ const GAP_S: float = 0.45
 const MAX_CHARS: int = 80
 const MAX_CHARS_CJK: int = 30
 const MAX_QUEUE: int = 8
+## [onboard2] Owner: "I can't read two lines at once." This bar is THE message line: speech
+## (WREN, Ledger, intro) and every toast (rewards, sightings, goals, unlocks, hints, achievements,
+## "now playing") share it, one line at a time, each held its reading time. Priorities: speech 3,
+## story 2, goal/level/hint/achievement 1, info 0, low (sightings, now playing) -1. Higher goes
+## first (never cutting off the line on screen); a queued line with the same wording but other
+## numbers is replaced by the newer one ("+12 cubes" then "+15 cubes" shows once); low-value lines
+## that waited too long are dropped; speech and story are never dropped.
+const TOAST_MAX_QUEUE: int = 6
+const STALE_S: Dictionary = {0: 25.0, -1: 40.0}
+const TOAST_KINDS: Dictionary = {
+	"story": {"prio": 2, "col": Color(1.0, 0.86, 0.6)},
+	"goal": {"prio": 1, "col": Color(0.7, 0.93, 1.0)},
+	"level": {"prio": 1, "col": Color(0.72, 1.0, 0.85)},
+	"hint": {"prio": 1, "col": Color(0.78, 1.0, 0.78)},
+	"achievement": {"prio": 1, "col": Color(1.0, 0.82, 0.45)},
+	"info": {"prio": 0, "col": Color(0.95, 0.94, 0.9)},
+	"low": {"prio": -1, "col": Color(0.88, 0.88, 0.85)},
+}
 
 const SPEAKERS: Dictionary = {
 	"": {"tag": "", "tag_col": Color(1, 1, 1), "col": Color(0.95, 0.94, 0.9)},
@@ -64,6 +82,8 @@ var _burst_t: float = 0.0
 var _burst_wait: float = 2.0
 var _col: Color = Color.WHITE
 var _dirty: bool = false
+var _clock: float = 0.0  # [onboard2] for stale toasts
+var _speech_hidden: bool = false
 
 
 # --- Timing rule (pure, tested) ---------------------------------------------------------
@@ -240,6 +260,14 @@ static func say(text: String, speaker: String = "") -> void:
 		current.queue_line(text, speaker)
 
 
+## [onboard2] Post a toast on the message line (kinds: TOAST_KINDS). Returns false if there is no bar.
+static func post(text: String, kind: String = "info") -> bool:
+	if current and is_instance_valid(current):
+		current.queue_toast(text, kind)
+		return true
+	return false
+
+
 ## Keep the low (letterbox) placement even while the HUD is visible.
 static func force_low(on: bool) -> void:
 	_forced_low = maxi(0, _forced_low + (1 if on else -1))
@@ -298,7 +326,7 @@ func _ready() -> void:
 
 ## Subtitle settings: on/off, size, a more opaque backing.
 func _apply_settings() -> void:
-	visible = Settings.subtitles_enabled
+	visible = true  # [onboard2] toasts share this bar; the subtitle setting hides speech lines only
 	var sz: Array[int] = UITheme.subtitle_sizes()
 	_tag.add_theme_font_size_override("font_size", sz[0])
 	_label.add_theme_font_size_override("font_size", sz[1])
@@ -321,12 +349,89 @@ func queue_line(text: String, speaker: String = "") -> void:
 	if text.strip_edges() == "":
 		return
 	var cs: PackedStringArray = chunks(text)
+	var items: Array[Dictionary] = []
 	for i: int in cs.size():
-		_queue.append({"text": cs[i], "speaker": speaker, "last": i == cs.size() - 1})
-	while _queue.size() > MAX_QUEUE:
-		_queue.pop_front()
+		items.append({"text": cs[i], "speaker": speaker, "last": i == cs.size() - 1, "prio": 3, "t": _clock})
+	_enqueue(items)
+	var speech: int = 0
+	for q: Dictionary in _queue:
+		speech += 1 if int(q["prio"]) >= 3 else 0
+	while speech > MAX_QUEUE:  # an old backlog of speech: the oldest speech goes
+		for k: int in _queue.size():
+			if int(_queue[k]["prio"]) >= 3:
+				_queue.remove_at(k)
+				break
+		speech -= 1
 	if _phase == 0:
 		_next()
+
+
+## [onboard2] A toast on the message line (see TOAST_KINDS).
+func queue_toast(text: String, kind: String = "info") -> void:
+	text = tr(text) if text != "" else text
+	if text.strip_edges() == "":
+		return
+	kind = toast_kind(text, kind)
+	var prio: int = int((TOAST_KINDS[kind] as Dictionary)["prio"])
+	if current_text() == text or (_phase == 4 and str(_cur.get("text", "")) == text):
+		return  # the same line is up right now
+	var key: String = merge_key(text)
+	for q: Dictionary in _queue:
+		if q.has("key") and str(q["key"]) == key:
+			q["text"] = text  # the newer numbers win; one line instead of several
+			q["t"] = _clock
+			return
+	var cs: PackedStringArray = chunks(text)
+	var items: Array[Dictionary] = []
+	for i: int in cs.size():
+		items.append({"text": cs[i], "speaker": "toast:" + kind, "last": i == cs.size() - 1, "prio": prio, "t": _clock, "key": key if i == 0 else key + "#%d" % i})
+	_enqueue(items)
+	# Too many toasts waiting: the lowest-value, oldest go (story is kept).
+	var n: int = 0
+	for q: Dictionary in _queue:
+		n += 1 if int(q["prio"]) < 3 else 0
+	while n > TOAST_MAX_QUEUE:
+		var worst: int = -1
+		for k: int in _queue.size():
+			var pk: int = int(_queue[k]["prio"])
+			if pk < 2 and (worst < 0 or pk < int(_queue[worst]["prio"])):
+				worst = k
+		if worst < 0:
+			break
+		_queue.remove_at(worst)
+		n -= 1
+	if _phase == 0:
+		_next()
+
+
+## Kind from the text when the caller only said "info" (achievements, sightings).
+static func toast_kind(text: String, kind: String) -> String:
+	if kind == "info":
+		if text.begins_with("Achievement") or text.begins_with(TranslationServer.translate("Achievement: %s. %s").get_slice("%", 0)):
+			return "achievement"
+		if text.begins_with(TranslationServer.translate("New sighting: %s. It's in the Codex now.").get_slice("%", 0)) or text.begins_with("New sighting"):
+			return "low"
+	return kind if TOAST_KINDS.has(kind) else "info"
+
+
+## The wording without its numbers: "+12 cubes" and "+15 cubes" merge.
+static func merge_key(text: String) -> String:
+	var re := RegEx.create_from_string("[0-9][0-9.,]*[KMBTkmbt%]?")
+	return re.sub(text, "#", true)
+
+
+## Inserts after everything of the same or higher priority (stable), never before the line on screen.
+func _enqueue(items: Array[Dictionary]) -> void:
+	if items.is_empty():
+		return
+	var prio: int = int(items[0]["prio"])
+	var at: int = _queue.size()
+	for k: int in _queue.size():
+		if int(_queue[k]["prio"]) < prio:
+			at = k
+			break
+	for i: int in items.size():
+		_queue.insert(at + i, items[i])
 
 
 ## WREN's signal (stage was the old glitch level; every line is shown clean now).
@@ -334,9 +439,10 @@ func show_line(text: String, _stage: int = 2) -> void:
 	queue_line(text, "wren")
 
 
-## Drop the queue and show this line now (replaces whatever is up). "" just clears.
+## Drop the queued speech and show this line now (replaces whatever is up). "" just clears.
+## [onboard2] Queued toasts are kept: nothing important is lost.
 func show_now(text: String, speaker: String = "") -> void:
-	_queue.clear()
+	_queue = _queue.filter(func(q: Dictionary) -> bool: return int(q["prio"]) < 3)
 	if _phase == 2 and not _cur.is_empty():
 		_log_shown()
 	_cur = {}
@@ -353,8 +459,10 @@ func clear() -> void:
 
 ## Anything showing or queued (for one speaker, or "*" for any).
 func is_busy(speaker: String = "*") -> bool:
-	if speaker == "*":
-		return _phase != 0 or not _queue.is_empty()
+	if speaker == "*":  # [onboard2] speech only: toasts on the bar never hold up a cutscene
+		if not _cur.is_empty() and int(_cur.get("prio", 3)) >= 3 and _phase in [1, 2, 3]:
+			return true
+		return _queue.any(func(q: Dictionary) -> bool: return int(q["prio"]) >= 3)
 	if not _cur.is_empty() and str(_cur.get("speaker", "")) == speaker and _phase in [1, 2, 3]:
 		return true
 	for q: Dictionary in _queue:
@@ -375,7 +483,13 @@ func _next() -> void:
 		_pill.visible = false
 		return
 	_cur = _queue.pop_front()
-	var sp: Dictionary = SPEAKERS.get(str(_cur["speaker"]), SPEAKERS[""])
+	var spk: String = str(_cur["speaker"])
+	if int(_cur.get("prio", 3)) < 2 and STALE_S.has(int(_cur["prio"])) and _clock - float(_cur.get("t", _clock)) > float(STALE_S[int(_cur["prio"])]):
+		_next()  # waited too long; it no longer matters
+		return
+	var sp: Dictionary = SPEAKERS.get(spk, SPEAKERS[""])
+	if spk.begins_with("toast:"):
+		sp = {"tag": "", "tag_col": Color.WHITE, "col": (TOAST_KINDS.get(spk.substr(6), TOAST_KINDS["info"]) as Dictionary)["col"]}
 	_tag.text = tr(str(sp["tag"])) if str(sp["tag"]) != "" else ""
 	_tag.visible = _tag.text != ""
 	_tag.add_theme_color_override("font_color", sp["tag_col"])
@@ -393,9 +507,11 @@ func _next() -> void:
 	_hold = duration_for(_chars)
 	_phase = 1
 	_pt = 0.0
-	_pill.visible = true
+	# Speech with subtitles switched off still runs its timing (cutscenes wait on it), unseen.
+	_speech_hidden = not spk.begins_with("toast:") and not Settings.subtitles_enabled
+	_pill.visible = not _speech_hidden
 	_pill.modulate.a = 0.0
-	if visible:
+	if not _speech_hidden and not spk.begins_with("toast:"):
 		Audio.duck(_hold + FADE_S * 2.0)  # [sound] music dips under the line
 		if str(_cur["speaker"]) == "wren":
 			Audio.play("blip", 1.05, -18.0, 0.03)
@@ -470,6 +586,7 @@ func _process(delta: float) -> void:
 	_low = low if _low < 0.0 else move_toward(_low, low, delta * 4.0)
 	layer = 45 if low > 0.5 else 6
 	_mc.add_theme_constant_override("margin_bottom", int(lerpf(182.0, 16.0, _low)))
+	_clock += delta
 	if _phase == 0:
 		offset = Vector2.ZERO
 		return
