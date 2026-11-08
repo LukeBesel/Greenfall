@@ -32,7 +32,7 @@ func _ready() -> void:
 	add_theme_constant_override("separation", 16)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	# --- The next level: one clear card ---------------------------------------------------
-	var hc: Array = BenchKit.card(Color(BenchKit.HOLO, 0.4), 500)
+	var hc: Array = BenchKit.card(Color(BenchKit.HOLO, 0.4), 400)
 	_hero = hc[0]
 	_hero.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_hero.size_flags_stretch_ratio = 1.1
@@ -105,6 +105,10 @@ func _ready() -> void:
 	(stc[1] as VBoxContainer).add_child(_stations)
 	for g: Node in _stations.find_children("*", "GridContainer", true, false):
 		(g as GridContainer).columns = 1  # one column beside the level card
+	for b: Node in _stations.find_children("*", "Button", true, false):
+		(b as Button).custom_minimum_size.x = 0.0  # fits beside the level card at 125% UI scale
+		(b as Button).clip_text = true
+		(b as Button).text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	# [scope] The Telescope (ui/telescope_panel.gd).
 	var tc: Array = BenchKit.card()
 	side.add_child(tc[0])

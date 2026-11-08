@@ -4,7 +4,7 @@ extends Button
 ## States: locked / available / queued / active (progress ring) / researched. Hover and focus
 ## grow it a touch; starting research pops it; finishing it bursts and flashes.
 
-const W: float = 200.0  # [ui2] taller, readable cards (was 200 x 76, 15 / 12 px text); 5 columns fit 1280x800 @110%
+const W: float = 184.0  # [ui2] taller, readable cards (was 200 x 76, 15 / 12 px text); 5 columns fit 1280x720 @125%
 const H: float = 86.0
 
 var node_id: String
