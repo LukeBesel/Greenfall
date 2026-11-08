@@ -662,3 +662,25 @@ tuned in the first-hour pass); no new SFX work unless a bug.
 - Done: workbench Upgrades tab has a "Glim" section (`ui/glim_bench.gd`, BenchRows, hidden until Glim is found); the Locker lists every unlocked CosmeticTargets bot after Lumi (`ct:<id>` entries in `ui/locker_panel.gd`), so Glim's looks are edited there. Hold F still opens the Glim panel.
 - Done: amber scan markers use Pace's lift rule (`GlimScan.too_big` -> `Pace.can_lift(field, pid)`).
 - Done: the autoplay bot buys Glim's Lantern and Scanner when affordable (1.5x margin); found at ~5 min.
+### [planet-tidewell] Tidewell (Ocean World) environment
+- Done (wt/p_tidewell): `planet/planets/tidewell/` (env.gd entry `TidewellEnv.apply(world, field, kind)`, plus
+  static hooks `prepare` / `field_water` / `post_generate` that the slice calls while the field is made),
+  registered in `data/planets.json`. Opaque ocean shader to the horizon (swell, shore foam, whitecaps, depth
+  colour from baked bed maps, refracted seabed with caustics, kelp, coral, fish/whale shadows, oil slicks that
+  clear hex by hex), archipelago of isles / sandbars / reefs, Ledger jack-up dredging rigs and a half-sunk ore
+  barge, drowned tower tops, buoys, moorings; restored: mangroves, palms, floating gardens, lighthouses with thin
+  beams; future: white sea platforms, solar rafts, light buoys. Lumi floats over water (bob, wake ring, spray,
+  mirrored reflection; no wading slowdown via `world.meta hover_water`), skimmers leave wakes. Binary suns
+  (`TideSuns`: companion light + sky disc, SolarSystem.suns_for when present). Trash rafts (ghost-net mats) and a
+  nets-and-buoys junk palette. Dev: `--planet-env=tidewell [--tide-cam=dist,pitch,yaw[,fov]]`. Test:
+  `tests/test_planet_tidewell.gd`.
+- On the shared contract now (planet/planets/planet_envs.gd: dev_hub / prepare_field / dress_view / apply);
+  own slice hooks dropped. Owner (Nov 8): flat-world layout paused for the walkable sphere; env.gd's header lists
+  what transfers to a globe (sea shader, generic hover-over-water, suns, props, junk palette, restoration rules).
+- Site prefabs for the globe (Nov 8): `TideSite.place(id, root, stage, restoration)` in planet/planets/tidewell/sites.gd
+  builds compact local scenes on their own sea patch (ocean shader `local_space`): hubs `hub_raft` (anchored raft) and
+  `hub_stilts` (stilt yard on an islet); landmarks `wreck`, `dredge_rig`, `reef_garden`, `buoy_field`. Listed in
+  data/planets.json "tidewell".sites. Preview: `res://planet/planets/tidewell/site_preview.tscn -- --site=<id>
+  --site-stage=0..2 --site-restore=0..1 --site-cam=dist,pitch,yaw[,fov,ty]`. Floating junk thins with restoration.
+- Next: home wires Tidewell as a campaign planet (call the same hooks from its world build); fauna2 may add
+  `tidewell` to gull/fish regions; sound: music key `tidewell_swell`.
