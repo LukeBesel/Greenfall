@@ -124,3 +124,29 @@ func test_floating_junk_on_lakes() -> void:
 	for pid: int in pids:
 		f.remove_piece(pid)
 	assert_eq(f.hex_clean[w], 1, "a cleared lake flips clean")
+
+
+func test_cell_holds_a_flat_hex_of_volume_in_bites() -> void:
+	var f := _field()
+	var cell: int = _patch_of_cells(30)[29]
+	var pids: PackedInt32Array = f.materialize(cell)
+	var total: float = 0.0
+	for pid: int in pids:
+		total += f.piece_vol[pid]
+	assert_almost_eq(total, SphereField.FLAT_HEX_VOL, 0.5, "a cell holds a flat hex's junk volume")
+	assert_almost_eq(f.hex_total[cell], SphereField.FLAT_HEX_VOL, 0.01)
+	var pid: int = pids[0]
+	var scl: float = f.piece_scale[pid]
+	var v0: float = f.piece_vol[pid]
+	var bites: int = 0
+	var taken: float = 0.0
+	while f.piece_alive[pid] == 1 and bites < 50:
+		var b: float = f.bite(pid)
+		assert_lte(b, SphereField.FLAT_BITE_VOL * 1.25 + 0.001, "a bite is a flat scoop pulse's worth")
+		taken += b
+		if f.is_whole_take(pid, b):
+			f.remove_piece(pid)
+		bites += 1
+	assert_almost_eq(taken, v0, 0.001, "every bit of the piece's volume is taken once")
+	assert_eq(f.piece_scale[pid], scl, "pieces keep their model's size")
+	assert_almost_eq(f.hex_left[cell], SphereField.FLAT_HEX_VOL - v0, 0.01, "the ledger follows the bites")

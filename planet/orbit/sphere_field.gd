@@ -18,6 +18,15 @@ extends HexField
 const FULL_PIECES: int = 70  # pieces on an untouched 10 m hex (the flat districts' density)
 const FLOAT_PIECES: int = 22  # floaters on an untouched water cell
 const FLAT_DISTRICT_HEXES: float = 61.0  # a radius-4 flat district: landmark counts are per one of these
+## [orbB] Pacing (owner decision (b), Nov 8): ~70 light pieces per cell, but a cell holds a flat hex's
+## total junk volume, so hexes flip, pay and level at the flat game's pace. Measured on the flat
+## Old Town gen-2 field: 407 volume per junk hex (478 pieces of 0.85). A scoop pulse there takes a
+## piece and its little cluster, ~1.22 volume: here Lumi takes a heavy piece in bites of that size
+## (bite()), so the scoop speed per volume and the chest/bale granularity stay the flat game's.
+## Pieces keep their model's size; only their volume (the ledger) is scaled.
+const FLAT_HEX_VOL: float = 407.0
+const FLAT_LAKE_VOL: float = 75.0  # a flat lake hex: 70-110 floaters of ~0.8
+const FLAT_BITE_VOL: float = 1.22
 const PILE_EMBED := Vector2(0.55, 1.02)
 const FLOATERS: Array = [["plastic", "plastic_bottle_gallon"], ["plastic", "bleach_bottle"], ["plastic", "trashbag"], ["plastic", "multi_cleaner_bottle"], ["rubber", "rubber_duck_toy"], ["rubber", "old_tyre"], ["rubber", "dirty_football"], ["glass", "wine_bottles_01"], ["paper", "cardboard_box_01"], ["plastic", "plastic_crate_01"]]
 const LYING_FLOATERS: Array = ["plastic_bottle_gallon", "bleach_bottle", "multi_cleaner_bottle", "old_tyre", "wine_bottles_01"]
@@ -209,9 +218,43 @@ func materialize(cell: int) -> PackedInt32Array:
 		vol_sum += vol
 	hex_pieces[cell] = out
 	# The cell's ledger in volume: total so that left / total stays the cell's junk fraction.
-	hex_left[cell] = vol_sum
-	hex_total[cell] = vol_sum / maxf(left, 0.01)
+	_scale_cell(out, vol_sum, FLAT_HEX_VOL * left)
+	hex_left[cell] = FLAT_HEX_VOL * left
+	hex_total[cell] = FLAT_HEX_VOL
 	return out
+
+
+## Scales a cell's new pieces so their volumes sum to `target` (sizes on screen are untouched).
+func _scale_cell(pids: PackedInt32Array, raw_sum: float, target: float) -> void:
+	if pids.is_empty() or raw_sum <= 0.0:
+		return
+	var k: float = target / raw_sum
+	for pid: int in pids:
+		piece_vol[pid] *= k
+
+
+## [orbB] Lumi's scoop takes a heavy piece a bite at a time: up to `max_vol` of its volume. Returns
+## the volume taken; when it is the piece's last, the caller removes the piece (collect_piece).
+func bite(pid: int, max_vol: float = FLAT_BITE_VOL) -> float:
+	_last_bite_whole = false
+	if pid < 0 or pid >= piece_alive.size() or piece_alive[pid] == 0:
+		return 0.0
+	var v: float = piece_vol[pid]
+	if v <= max_vol * 1.25:  # the rest goes in one go (no crumbs)
+		_last_bite_whole = true
+		return v
+	piece_vol[pid] = v - max_vol
+	var id: int = piece_hex[pid]
+	hex_left[id] = maxf(0.0, hex_left[id] - max_vol)
+	return max_vol
+
+
+var _last_bite_whole: bool = false
+
+
+## Whether the last bite() took what was left of the piece (the caller then removes it).
+func is_whole_take(_pid: int, _taken: float) -> bool:
+	return _last_bite_whole
 
 
 func _add_piece(cell: int, d: Vector3, b: Basis, lift: float, ti: int, mid: String, pose: int, vol: float, sc: float, embed: float) -> int:
@@ -433,8 +476,9 @@ func _materialize_floating(cell: int) -> PackedInt32Array:
 		out.append(pid)
 		vol_sum += vol
 	hex_pieces[cell] = out
-	hex_left[cell] = vol_sum
-	hex_total[cell] = vol_sum / maxf(left, 0.01)
+	_scale_cell(out, vol_sum, FLAT_LAKE_VOL * float_mult * left)
+	hex_left[cell] = FLAT_LAKE_VOL * float_mult * left
+	hex_total[cell] = FLAT_LAKE_VOL * float_mult
 	return out
 
 

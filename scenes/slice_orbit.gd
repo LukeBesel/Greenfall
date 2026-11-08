@@ -270,6 +270,13 @@ func collect_piece(pid: int) -> void:
 		on_hex_clean(hid)
 
 
+## A bite off a heavy piece (Patch._take_piece): the cell's numbers and its heap follow.
+func piece_bitten(pid: int) -> void:
+	var hid: int = globe.field.piece_hex[pid]
+	globe.write_cell(hid)
+	globe.junk_view.refresh_hex(hid)
+
+
 ## slice.gd's _on_hex_clean by cell id: first-clean bonus (a re-dirtied cell pays only the flat
 ## part again and doesn't count twice), milestones, the first hex's fanfare, the event.
 func on_hex_clean(hid: int) -> void:
