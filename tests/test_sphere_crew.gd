@@ -324,3 +324,70 @@ func test_materialized_cell_takes_a_full_cell_of_work() -> void:
 	for pid: int in field.pieces_in(c):
 		alive += field.piece_alive[pid]
 	assert_lte(alive, 1, "the pieces are gone too")
+
+
+# --- [orbC] polish: buildings, piece-by-piece work, 3D bales ---------------------------------
+
+func _box_site(w: Dictionary, at_cell: int) -> Node3D:
+	var surface: SphereSurface = w["surface"]
+	var d: Vector3 = _g5.centers[at_cell]
+	var root := Node3D.new()
+	root.set("size_m", 90.0)
+	add_child_autofree(root)
+	root.global_transform = Transform3D(SphereMath.basis_from_up_fwd(d, SphereMath.any_perpendicular(d)), surface.ground(d))
+	var sb := StaticBody3D.new()
+	root.add_child(sb)
+	var cs := CollisionShape3D.new()
+	var bx := BoxShape3D.new()
+	bx.size = Vector3(8.0, 4.0, 4.0)
+	cs.shape = bx
+	cs.position = Vector3(0, 2.0, 0)
+	sb.add_child(cs)
+	return root
+
+
+func test_site_colliders_become_obstacles_and_blocked_cells() -> void:
+	var w: Dictionary = _world()
+	var crew: SphereCrew = w["crew"]
+	var c: int = _g5.cells_around(100, 2)[10]
+	var site: Node3D = _box_site(w, c)
+	var circ: Array = SphereObstacles.circles(site, crew.surface)
+	assert_gt(circ.size(), 2, "an 8 x 4 m box is tiled")
+	for ob: Array in circ:
+		assert_lt((ob[0] as Vector3).angle_to(_g5.centers[c]) * _g5.radius_m, 4.5, "on the box")
+		assert_lt(float(ob[1]), 2.5, "a tight fit")
+	crew.set_obstacles("s", circ)
+	assert_true(crew.blocked.has(c), "routes avoid the cell under the building")
+	var p: PackedInt32Array = crew.route(_g5.cells_around(100, 4)[50], _g5.cells_around(c, 2)[12])
+	assert_false(p.slice(1, p.size() - 1).has(c), "no route through it")
+	crew.tick(3.0)  # the swarm gets the circles
+	var stand: Vector3 = crew._approach(crew.surface.ground(_g5.centers[c]), crew.surface.ground(_g5.centers[100]))
+	assert_false(crew._inside_building(crew.surface.up_at(stand)), "scoops a piece under a wall from outside")
+
+
+func test_near_robot_drives_to_each_piece() -> void:
+	var w: Dictionary = _world()
+	var crew: SphereCrew = w["crew"]
+	var cells: SphereCells = w["cells"]
+	var field := SphereField.new(_g5, _t5, cells, 7)
+	crew.field = field
+	var c: int = _g5.cells_around(100, 1)[2]
+	field.materialize(c)
+	var u: Dictionary = crew.spawn("scoopie", 0, c)
+	crew.order(u, c)
+	var took_near: int = 0
+	var took: int = 0
+	var alive: Dictionary = {}
+	for pid: int in field.pieces_in(c):
+		alive[pid] = true
+	for i: int in 600:
+		(u["bot"] as SphereBot).step(0.1)
+		crew.tick(0.1)
+		for pid: int in alive.keys():
+			if field.piece_alive[pid] == 0:
+				alive.erase(pid)
+				took += 1
+				if (u["bot"] as SphereBot).global_position.distance_to(field.piece_pos[pid]) < 2.0:
+					took_near += 1
+	assert_gt(took, 10)
+	assert_gt(float(took_near) / took, 0.8, "pieces go where the robot is (%d of %d)" % [took_near, took])

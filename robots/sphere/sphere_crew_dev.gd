@@ -7,6 +7,7 @@ extends RefCounted
 ##                                    prints the [bots] table before --quit-after
 ##   --orbit-far-crew[=N]             3 Scoopies + 1 Haul Bug at hub site N (default 1, ~1.7 km
 ##                                    away); prints the far shell's colour there before --quit-after
+##   --bot-motion                     with --quit-after: [motion] jitter / building-overlap report
 ##   --offline-jump[=S]               offline jump of S seconds (default 7200) for the --robots
 ##                                    fleet: flat Offline.compute vs SphereOffline.simulate, PASS
 ##                                    within 10%, and the cells it cleaned
@@ -32,6 +33,11 @@ static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, wri
 	var start: int = int((src.sites[0] as Dictionary)["cell"])
 	crew.hub_cell = start
 	crew.depot_cell = start
+	var dp: Node3D = parent.get("depot") as Node3D if "depot" in parent else null
+	if dp != null:  # haulers drive up to the Depot itself, not the hub's centre (the pod stands there)
+		var dd: Vector3 = crew.surface.up_at(dp.global_position)
+		crew.depot_cell = crew.grid.cell_at(dd)
+		crew.depot_points[start] = dd
 	crew.junk_view = src.junk_view
 	crew.focus = lumi
 	parent.add_child(crew)
@@ -55,6 +61,11 @@ static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, wri
 			crew.spawn(kv.get_slice(":", 0), tier, around[(n + 1) % around.size()], start, "Test-%d" % n)
 			fleet.append({"type": kv.get_slice(":", 0), "tier": tier})
 			n += 1
+	if DevHooks.has("bot-motion"):
+		var pr := CrewProbe.new()
+		pr.name = "CrewProbe"
+		pr.crew = crew
+		parent.add_child(pr)
 	if DevHooks.has("orbit-far-crew"):
 		var si: int = clampi(int(DevHooks.get_f("orbit-far-crew", 0.0)), 0, src.sites.size() - 1)
 		if si <= 1:  # a bare flag reads as "1"  # default: the hub nearest the start (~1.6-1.7 km on Verdance)
