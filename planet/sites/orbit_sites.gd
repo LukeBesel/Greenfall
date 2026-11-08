@@ -48,6 +48,9 @@ func _setup() -> void:
 	if DevHooks.has("orbit-hop"):
 		_dev_hop.call_deferred()
 	_wire_survey.call_deferred()
+	_build_stations()
+	_build_litter()
+	_build_water()
 	if DevHooks.has("soak"):  # dev QA soak (planet/sites/soak_watch.gd)
 		SoakWatch.attach(so)
 	if DevHooks.has("site-reach"):
@@ -154,6 +157,60 @@ func _on_anchors_fixed(i: int, p: SitePrefab) -> void:
 	var d: Variant = so.w.get("depot")
 	if d is Node3D and (d as Node3D).get_parent() == p.get_parent():
 		(d as Node3D).transform = p.anchor_local("depot")
+		if stations:
+			stations.transform = (d as Node3D).transform * Transform3D(Basis(), Vector3(0, 0, 1.8))
+
+
+## Ground litter on junk cells near Lumi (planet/sites/sphere_litter.gd, the flat LitterView's
+## carpet); the slice's `litter`, so Patch's scoop sweeps it. --no-litter turns it off.
+var litter: SphereLitter
+
+
+func _build_litter() -> void:
+	if DevHooks.has("no-litter") or so.w.get("litter") != null:
+		return
+	litter = SphereLitter.new()
+	litter.name = "Litter"
+	so.w.add_child(litter)
+	so.w.set("litter", litter)
+	litter.setup_globe(so.globe)
+	if DevHooks.has("litter-report"):
+		for k: int in 3:  # three reports, a report-interval apart (a scoop run shows the sweep)
+			get_tree().create_timer(DevHooks.get_f("litter-report", 6.0) * (k + 1)).timeout.connect(func() -> void:
+				print("[litter] %d cells laid, %d pieces" % [litter.get("_cell").size(), litter.piece_count()]))
+
+
+## Lake surfaces on near water cells (planet/sites/sphere_water.gd). --water-report prints a count.
+var water: SphereWater
+
+
+func _build_water() -> void:
+	water = SphereWater.new()
+	water.name = "Lakes"
+	so.w.add_child(water)
+	water.setup_globe(so.globe)
+	if DevHooks.has("water-report"):
+		get_tree().create_timer(DevHooks.get_f("water-report", 6.0)).timeout.connect(func() -> void:
+			print("[water] %d lake cells shown" % water.count()))
+
+
+## The flat game's Stations (conveyor feeder, auto-baler, recycler: automation/stations.gd) on the
+## start site, in a frame that puts the flat depot spot (0, 0, -1.8) on the site's depot: the
+## machines and their belts keep their flat layout round the depot, on the globe.
+var stations: Stations
+
+
+func _build_stations() -> void:
+	var dep: Node3D = so.w.get("depot") as Node3D
+	if dep == null or Stations.of(so.w) != null:
+		return
+	stations = Stations.new()
+	stations.name = "Stations"
+	stations.world = so.w
+	dep.get_parent().add_child(stations)
+	stations.transform = dep.transform * Transform3D(Basis(), Vector3(0, 0, 1.8))
+	if "stations" in so.w:
+		so.w.set("stations", stations)
 
 
 func interact_prompt() -> String:
@@ -211,6 +268,8 @@ func _reach_audit() -> void:
 		await SiteReach.fix_anchors(p, so.globe.terrain)  # as SiteManager does after a build (idempotent) [orbE] a coroutine now
 		var t0: int = Time.get_ticks_msec()
 		var r: Dictionary = await SiteReach.audit(p, so.globe.terrain)  # [orbE] a coroutine now
+		if r.is_empty():
+			continue  # [orbE] the site went away while the audit waited
 		var cut: Array = r["cut"]
 		bad += cut.size() + (0 if r["start_free"] else 1)
 		print("[reach] %s hub %d %s: %d/%d anchors reachable, %d m2 walkable from the pad%s%s (%d ms)" % [

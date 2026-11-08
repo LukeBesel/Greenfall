@@ -186,7 +186,7 @@ func clarity() -> float:
 ## Re-make the plan and start/stop animals to match it.
 func replan() -> void:
 	var f: HexField = world.field
-	var ctxs: Array = FaunaRules.contexts(f, _level_of, frame_cells)  # [orbB] a hub region on the globe
+	var ctxs: Array = FaunaRules.contexts(f, _level_of, _near_cells())  # [orbB] the hub region near Lumi on the globe
 	var fd: Dictionary = {}
 	var green: int = 0
 	var land: int = 0
@@ -301,6 +301,35 @@ func _w(p: Vector3) -> Vector3:
 
 func _l(p: Vector3) -> Vector3:
 	return to_local(p) if _globe else p
+
+
+## [orbB] The globe: the frame's cells within spawning reach of Lumi (a flat district's worth),
+## so replan's contexts skip the rest of the hub region. Recomputed as Lumi walks on.
+var _near := PackedInt32Array()
+var _near_at := Vector3.INF
+
+
+func _near_cells() -> PackedInt32Array:
+	if not _globe:
+		return frame_cells
+	if _near_at != Vector3.INF and _near_at.distance_to(_lumi_pos) < 8.0:
+		return _near
+	_near_at = _lumi_pos
+	_near = PackedInt32Array()
+	var r: float = float(_cfg.get("spawn_radius", 55.0)) + world.field.hex_size * 2.0
+	for h: int in frame_cells:
+		if _hex_c(h).distance_to(_lumi_pos) < r:
+			_near.append(h)
+	return _near
+
+
+## [orbB] The globe: rotates the hub frame's +Y onto the ground's own up at p (the frame is a
+## tangent plane at the hub, about 5 degrees off at 100 m). Identity on the flat game.
+func _tilt(p: Vector3) -> Basis:
+	if not _globe:
+		return Basis.IDENTITY
+	var up: Vector3 = (global_basis.inverse() * to_global(p).normalized()).normalized()
+	return Basis(Quaternion(Vector3.UP, up))
 
 
 func _hexes() -> Variant:
@@ -420,10 +449,14 @@ func _props_blocked(p: Vector3, r: float) -> bool:
 
 
 func _ensure_space() -> void:
-	if _space_t > 0.0 and not space.cells.is_empty():
+	if _space_t > 0.0 and not space.cells.is_empty() and (not _globe or space.center.distance_to(Vector2(_lumi_pos.x, _lumi_pos.z)) < 30.0):  # [orbB] rescan as Lumi walks on
 		return
 	_space_t = 90.0
 	space = FaunaSpace.new()
+	if _globe:  # [orbB] props in this hub frame, near Lumi only
+		space.frame = global_transform.affine_inverse()
+		space.reach = float(_cfg.get("despawn_radius", 70.0)) + 12.0
+		space.center = Vector2(_lumi_pos.x, _lumi_pos.z)
 	var skip: Array = [self]
 	for nm: String in ["patch", "garden", "hud", "photo", "intro", "globe", "command", "pause_menu", "codex", "upgrades"]:
 		var nd: Variant = world.get(nm)
@@ -456,7 +489,9 @@ func _phys_clear(p: Vector3, r: float) -> bool:
 	var q := PhysicsShapeQueryParameters3D.new()
 	q.shape = _cyl
 	q.transform = Transform3D(Basis.IDENTITY, Vector3(p.x, p.y + 0.8, p.z))
-	q.collision_mask = 1
+	if _globe:  # [orbB] frame-local -> world, upright in the hub frame
+		q.transform = Transform3D(global_basis.orthonormalized(), to_global(Vector3(p.x, p.y + 0.8, p.z)))
+	q.collision_mask = 1 | (PhysLayers.PROP if _globe else 0)  # [orbB] the site prefabs build with prop colliders
 	return w3.direct_space_state.intersect_shape(q, 1).is_empty()
 
 
@@ -485,9 +520,12 @@ func _separate(a: Animal) -> void:
 		return
 	var ra: float = FaunaSpace.radius_of(a.sp, a.kind) * a.size
 	for o: Animal in animals:
+		var d := Vector2(a.pos.x - o.pos.x, a.pos.z - o.pos.z)
+		var mx: float = ra + 0.55 * o.size  # [orbB] cheap reject first (0.55: the largest radius_of)
+		if d.x * d.x + d.y * d.y >= mx * mx:
+			continue
 		if o == a or not _grounded(o) or (o.kind == "swim") != (a.kind == "swim"):
 			continue
-		var d := Vector2(a.pos.x - o.pos.x, a.pos.z - o.pos.z)
 		var m: float = ra + FaunaSpace.radius_of(o.sp, o.kind) * o.size
 		var l: float = d.length()
 		if l < m:
@@ -523,7 +561,7 @@ func _spawn(key: String, e: Dictionary) -> bool:
 	elif a.kind == "bird":
 		var ak: String = "%s|%d" % [sid, a.hex]
 		var anc: Vector3 = _anchors.get(ak, Vector3.INF)
-		if anc == Vector3.INF or not FaunaRules.spot_ok(f, anc, 0.4):
+		if anc == Vector3.INF or not FaunaRules.spot_ok(f, _w(anc), 0.4):
 			anc = find_spot(sid, a.hex)
 			_anchors[ak] = anc
 		if anc != Vector3.INF:
@@ -740,7 +778,7 @@ func _build_warm_spots() -> void:
 		var w: Vector3 = _warm[i]
 		w.y = _ground_y(w)
 		_warm[i] = w
-		if not FaunaRules.spot_ok(f, w, 0.4) or (is_inside_tree() and _props_blocked(w, 0.3)):  # [fauna2]
+		if not FaunaRules.spot_ok(f, _w(w), 0.4) or (is_inside_tree() and _props_blocked(w, 0.3)):  # [fauna2]
 			_warm.remove_at(i)
 
 
@@ -780,6 +818,8 @@ func _process(delta: float) -> void:
 		a.acc += delta
 		if far and (_frame + i) % 3 != 0:
 			continue
+		if _globe and (_frame + i) % (6 if far else 3) != 0 and a.pos.distance_to(_lumi_pos) > 10.0 and not _in_view(a.pos):
+			continue  # [orbB] offscreen and not by Lumi: every 3rd frame (far: every 6th)
 		var dt: float = minf(a.acc, 0.25)
 		a.acc = 0.0
 		a.fade = minf(a.fade + dt * 1.6, 1.0)
@@ -884,7 +924,7 @@ func _wander_target(a: Animal, r: float) -> Vector3:
 	for k: int in 6:
 		var p: Vector3 = a.home + Vector3(_rng.randf_range(-r, r), 0, _rng.randf_range(-r, r))
 		var mid: Vector3 = (p + a.pos) * 0.5
-		if FaunaRules.spot_ok(world.field, _w(p), 0.35, junk_ok) and FaunaRules.spot_ok(world.field, mid, 0.25, junk_ok) and not near_outpost(p) \
+		if FaunaRules.spot_ok(world.field, _w(p), 0.35, junk_ok) and FaunaRules.spot_ok(world.field, _w(mid), 0.25, junk_ok) and not near_outpost(p) \
 				and spot_free(p, a.sp, a.kind, a, a.size) and not space.blocked(mid, FaunaSpace.radius_of(a.sp, a.kind) * 0.7 * a.size):
 			p.y = _ground_y(p)
 			return p
@@ -907,7 +947,7 @@ func _update(a: Animal, dt: float) -> void:
 	if a.check_t <= 0.0:
 		a.check_t = 1.0 + _rng.randf()
 		if a.kind in ["quad", "deer", "hopper", "cat", "lizard", "frog", "seal", "heron"] or (a.kind == "bird" and a.state != St.FLY and a.state != St.SOAR and a.state != St.PERCH):
-			if not FaunaRules.spot_ok(world.field, a.pos, 0.2, false) or _props_blocked(a.pos, FaunaSpace.radius_of(a.sp, a.kind) * a.size * 0.8):
+			if not FaunaRules.spot_ok(world.field, _w(a.pos), 0.2, false) or _props_blocked(a.pos, FaunaSpace.radius_of(a.sp, a.kind) * a.size * 0.8):
 				a.target = _wander_target(a, 4.0)
 				a.state = St.WALK
 	if a.kind != "school" and a.kind != "swarm":
@@ -1252,7 +1292,7 @@ func _take_off(a: Animal, scared: bool) -> void:
 				o.state = St.FLY
 				o.perch = false
 				o.target = land + Vector3(_rng.randf_range(-1.2, 1.2), 0, _rng.randf_range(-1.2, 1.2))
-				if not FaunaRules.spot_ok(f, o.target, 0.3) or not spot_free(o.target, o.sp, o.kind, o, o.size):
+				if not FaunaRules.spot_ok(f, _w(o.target), 0.3) or not spot_free(o.target, o.sp, o.kind, o, o.size):
 					o.target = land
 				o.target.y = _ground_y(o.target)
 				o.alt = 1.0
@@ -1866,7 +1906,8 @@ func _draw_all() -> void:
 						var blink: float = clampf(sin(now * (1.3 + fmod(ph2, 0.7)) + ph2 * 5.0) * 2.0 - 0.6, 0.0, 1.0) * clampf(_night * 1.5 - 0.3, 0.0, 1.0) * a.fade
 						_put_glow(p2 + Vector3(0, 0.3, 0), blink)
 			_:
-				var b2 := Basis(Vector3.UP, a.yaw)
+				var tb: Basis = _tilt(a.pos)  # [orbB] the ground's own up (identity on the flat game)
+				var b2 := tb * Basis(Vector3.UP, a.yaw)
 				if a.roll != 0.0:
 					b2 = b2 * Basis(Vector3.BACK, a.roll)
 				if a.kind == "swim" and a.state == St.GRAZE and a.sp == "duck":
@@ -1874,10 +1915,10 @@ func _draw_all() -> void:
 				var breathe: float = 1.0
 				if a.kind == "cat" and a.state == St.SLEEP:
 					breathe = 1.0 + sin(now * 1.6 + a.phase) * 0.025
-				var xf := Transform3D(b2.scaled(Vector3(s, s * breathe, s)), a.pos + Vector3(0, a.bob, 0))
+				var xf := Transform3D((b2 * Basis.from_scale(Vector3(s, s * breathe, s))) if _globe else b2.scaled(Vector3(s, s * breathe, s)), a.pos + tb * Vector3(0, a.bob, 0))
 				if a.rig:
 					a.rig.visible = true
-					_drive_rig(a, Transform3D(Basis(Vector3.UP, a.yaw).scaled(Vector3.ONE * s), a.pos + Vector3(0, a.bob, 0)), _frame_dt)
+					_drive_rig(a, Transform3D(tb * Basis(Vector3.UP, a.yaw).scaled(Vector3.ONE * s), a.pos + tb * Vector3(0, a.bob, 0)), _frame_dt)
 					continue
 				var model: String = _model_for(a)
 				if model == "rat" and not is_rigged(FaunaModels.mesh("rat")):

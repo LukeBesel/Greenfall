@@ -29,6 +29,13 @@ run() {
 }
 
 run roundtrip res://tools/save_roundtrip.tscn -- --fresh --save-dir=check_exit_$$  # own save folder: parallel runs cannot clobber it
+# [orbB] the globe's save -> load across two processes (Lumi's position, currencies)
+if tools/orbit_reload_check.sh >screenshots/check_exit_orbit_reload.log 2>&1; then
+	echo "[check_exit] PASS orbit_reload (two processes)"
+else
+	echo "[check_exit] FAIL orbit_reload: see screenshots/check_exit_orbit_reload.log"
+	fail=1
+fi
 if [ "$1" = "--quick" ]; then
 	run quit15 -- --fresh --quit-after=15
 fi

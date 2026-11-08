@@ -70,6 +70,9 @@ var music_volume: float = 0.55
 var mouse_sensitivity: float = 0.0035
 var invert_y: bool = false
 var best_value_tags: bool = true
+## [orbB] Title screen "Round planets (preview)": New Game / Continue start on the walkable globe
+## (scenes/slice_orbit.gd, as --orbit does), with its own save folder (SaveManager.root_dir).
+var round_planets: bool = false
 ## [hud] In-game HUD density: FULL (everything, no auto-fade), MINIMAL (default: non-essential
 ## elements fade after a few seconds without change), HIDDEN (only prompts and notifications).
 enum HudMode { FULL, MINIMAL, HIDDEN }
@@ -255,6 +258,7 @@ func save_settings() -> void:
 	cfg.set_value("audio", "sfx", sfx_volume)
 	cfg.set_value("audio", "music", music_volume)
 	cfg.set_value("ui", "best_value_tags", best_value_tags)
+	cfg.set_value("preview", "round_planets", round_planets)  # [orbB]
 	cfg.set_value("ui", "hud_mode", hud_mode)  # [hud]
 	cfg.set_value("display", "quality", quality)
 	cfg.set_value("display", "fullscreen", fullscreen)
@@ -305,6 +309,7 @@ func load_settings() -> void:
 	sfx_volume = float(cfg.get_value("audio", "sfx", sfx_volume))
 	music_volume = float(cfg.get_value("audio", "music", music_volume))
 	best_value_tags = bool(cfg.get_value("ui", "best_value_tags", best_value_tags))
+	round_planets = bool(cfg.get_value("preview", "round_planets", round_planets))  # [orbB]
 	hud_mode = clampi(int(cfg.get_value("ui", "hud_mode", hud_mode)), 0, 2)  # [hud]
 	quality = int(cfg.get_value("display", "quality", quality))
 	fullscreen = bool(cfg.get_value("display", "fullscreen", fullscreen))

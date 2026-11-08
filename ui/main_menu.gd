@@ -351,6 +351,9 @@ func _build_ui() -> void:
 	if not _save.is_empty():
 		_new_game = _menu_button(tr("New Game"), _on_new_game)
 		buttons.append(_new_game)
+	if not Demo.is_demo():  # [orbB] the round planets preview, right under New Game
+		_round_btn = _menu_button(_round_text(), _toggle_round, tr("Its own save. Your flat game is kept as it is."))
+		buttons.append(_round_btn)
 	if Demo.is_demo():  # [steam]
 		buttons.append(_menu_button(tr("Wishlist on Steam"), SteamService.open_store_page))
 	buttons.append(_menu_button(tr("Settings"), _open_settings))
@@ -389,6 +392,14 @@ func _build_ui() -> void:
 			_settings.select_tab(int(DevHooks.get_f("tab", 0.0)))
 		"credits": _open_credits.call_deferred()
 		"confirm": _on_new_game.call_deferred()
+		"round-new", "round-continue":  # [orbB] dev / export checks: the preview on, then New Game or Continue
+			(func() -> void:
+				if not SaveManager.round_planets():
+					SaveManager.set_round_planets(true)
+				if DevHooks.get_s("menu", "") == "round-new" or not SaveManager.has_save():
+					_start_new()
+				else:
+					_go(true)).call_deferred()
 		"profiles":  # [worlds2]
 			_open_profiles.call_deferred()
 		"worlds":  # [worlds2] profile, then its worlds
@@ -692,3 +703,20 @@ func _build_confirm() -> void:
 	for b: Button in [_confirm_no, yes]:
 		b.focus_neighbor_top = b.get_path_to(b)
 		b.focus_neighbor_bottom = b.get_path_to(b)
+
+
+
+# --- [orbB] Round planets (preview) ------------------------------------------------------
+
+var _round_btn: Button
+
+
+func _round_text() -> String:
+	return tr("Round planets (preview): %s") % (tr("On") if SaveManager.round_planets() else tr("Off"))
+
+
+## Flips the preview (SaveManager.set_round_planets) and rebuilds the menu: Continue and the
+## profiles now show the other save tree.
+func _toggle_round() -> void:
+	SaveManager.set_round_planets(not SaveManager.round_planets())
+	get_tree().reload_current_scene()

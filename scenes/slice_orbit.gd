@@ -17,7 +17,8 @@ extends Node
 ## GameState.world is the start site's own dict (GameState.use_orbit_world).
 ## Not here: CityLayout/CityView/StreetDressing/litter/far junk/water (orbD sites), Fleet/robot
 ## builder/Command view (orbC), SkyDirector/GlobeView/FutureLayer, the intro cinematic and photo
-## mode (orbE); outposts, eggs, the Ledger arc, Bloom/late director, fauna, frontier districts.
+## mode (orbE); frontier districts (retired on the globe). Fauna, eggs, outposts, the Ledger arc
+## and Garden Mode's decor run per hub (HubFrame).
 ##
 ## Dev flags (phase A's, now on the slice): --orbit-walk[=boost] --orbit-lap-quit,
 ## --orbit-scoop, --orbit-cash --orbit-cash-quit, --orbit-view=follow|ground|command,
@@ -43,7 +44,9 @@ var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.
 
 ## True when --orbit asks for the slice on the globe (not one of the phase A prototypes).
 static func wanted() -> bool:
-	return DevHooks.has("orbit") and not DevHooks.get_s("orbit", "") in ["v1", "globe"]
+	if DevHooks.has("orbit"):
+		return not DevHooks.get_s("orbit", "") in ["v1", "globe"]
+	return SaveManager.round_planets()  # the title screen's "Round planets (preview)"
 
 
 ## Builds the whole orbit slice into `p_world`. [orbE] Behind the loading screen (a BuildBudget is
@@ -505,7 +508,7 @@ func _build_yard_systems() -> void:
 	bloom.name = "Bloom"
 	bloom.world = w
 	w.add_child(bloom)
-	LateDirector.attach(w)  # Homeward, the Ark Bridge, world look/story (Garden Mode's decor waits for the yard frame)
+	LateDirector.attach(w)  # Homeward, the Ark Bridge, world look/story, Garden Mode (its decor per hub in the frame)
 
 
 ## A yard spot in world space (the anchor's origin, or the flat yard spot on the pad).
@@ -545,14 +548,56 @@ func _build_hub_frame() -> void:
 	hub_frame.setup(self)
 	hub_frame.hub_changed.connect(func(_h: int) -> void:
 		var fa: Node = hub_frame.node("Fauna")
-		w.set("fauna", fa as Fauna if fa else null))
+		w.set("fauna", fa as Fauna if fa else null)
+		var eg: Node = hub_frame.node("EasterEggs")
+		w.set("eggs", eg as EasterEggs if eg else null)
+		var op: Node = hub_frame.node("Outposts")
+		w.set("outposts", op as Outposts if op else null)
+		var lg: Node = hub_frame.node("Ledger")
+		w.set("ledger", lg as LedgerArc if lg else null))
 	hub_frame.host("Fauna", func(f: HubFrame, _hub: int) -> Node:  # ambient animals return as hexes are restored
 		var fa := Fauna.new()
 		f.add_child(fa)
 		fa.frame_cells = f.region()
 		fa.setup(w)
 		return fa)
+	hub_frame.host("Outposts", func(f: HubFrame, hub: int) -> Node:  # each hub's ruined frontier outposts
+		var op := Outposts.new()
+		op.name = "Outposts"
+		op.world = w
+		op.hub_index = hub
+		op.frame_cells = f.region()
+		f.add_child(op)
+		op.setup()
+		return op)
+	hub_frame.host("EasterEggs", func(f: HubFrame, hub: int) -> Node:  # each hub's easter eggs and collectibles
+		var eg := EasterEggs.new()
+		eg.name = "EasterEggs"
+		eg.world = w
+		eg.hub_index = hub
+		f.add_child(eg)
+		eg.frame_cells = f.region()
+		eg.setup()
+		return eg)
 	w.set("fauna", hub_frame.node("Fauna") as Fauna)
+	hub_frame.host("Ledger", func(f: HubFrame, hub: int) -> Node:  # the Ledger arc: drones, jammers and the relay at this hub
+		var lg := LedgerArc.new()
+		lg.name = "Ledger"
+		lg.world = w
+		lg.hub_index = hub
+		lg.frame_cells = f.region()
+		f.add_child(lg)
+		lg.setup()
+		return lg)
+	hub_frame.host("Decor", func(f: HubFrame, hub: int) -> Node:  # Garden Mode's decorations at this hub
+		var dc := Decor.new()
+		dc.hub_index = hub
+		f.add_child(dc)
+		dc.setup(w)
+		return dc)
+	w.set("eggs", hub_frame.node("EasterEggs") as EasterEggs)
+	w.set("outposts", hub_frame.node("Outposts") as Outposts)
+	w.set("ledger", hub_frame.node("Ledger") as LedgerArc)
 
 
 ## The landing pod in its crash site on the start site's "pod" anchor. The intro cinematic itself

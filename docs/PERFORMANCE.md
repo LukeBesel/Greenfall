@@ -430,3 +430,37 @@ Left over:
   physics sweep is ~0.5-0.7 s, the flood fills are now cheap. Spreading it over frames in
   SiteManager's runtime builds is the next step (orbD).
 - Lumi's rig near the camera (62 surfaces).
+
+### Perf pass 5 (Nov 8, headless): no hitches in play
+
+**A hub built in play** (SiteManager builds hubs as Lumi comes near, or on a rocket hop): its
+reach audit and anchor fix now run on a gameplay frame budget (`SiteReach.play_budget`, ~4 ms of
+work a frame; the loading screen keeps its own budget).
+- Anvil hub 3 after a hop: spread over ~180 frames, a few seconds of the hub "constructing",
+  instead of one 0.5-2 s frame.
+- Same anchors, same result: `--site-reach` passes on all planets and `tests/test_hub_sites.gd`
+  passes.
+
+**Found while profiling (per-script timers over all 92 processing scripts, then removed):**
+- The Album took a picture check every 3 s that walked every cell for the "thriving" share
+  (~270 ms each time on Anvil: a hitch every 3 s). On the globe it now counts the tracked cells
+  only (same result).
+- Biggest steady script cost left: wildlife (`fauna/fauna.gd`), ~3.5 ms a frame headless (animal
+  updates and MultiMesh writes). Worth a look by its owner: update far animals less often,
+  write only the MultiMeshes that changed.
+- `OrbitDev`'s `[orbit-perf] process_ms` reads 130-200 ms on the current slice while the real
+  frame rate is 135-140 fps. Trust `--perf` (`game_fps`) instead.
+
+**Final numbers (headless, shared 4-core box, load ~5):**
+
+| | Verdance (164k hexes) | Anvil (655k hexes) |
+|---|---|---|
+| Frame rate, standing in the yard | 138-142 fps | 133-138 fps |
+| Longest loading frame | 0.44 s | 0.72 s |
+| Loader ready | ~10 s | ~11 s |
+| Est. draws at the start site, Medium (batching on) | 1,670 | 1,734 |
+| Scene triangles | 2.24 M | 2.07 M |
+| Hub built in play | spread over frames | spread over frames (~180 frames) |
+
+The Mac check: `godot --path . -- --orbit --quality=1 --perf` (and `--orbit-planet=anvil`), then
+read `game_fps` and `draw_calls`.

@@ -234,6 +234,11 @@ func _yield_to_real_systems() -> void:
 	if _pod and (world.has_meta("orbit_pod") or world.get_node_or_null("CrashSite") != null):
 		_pod.get_parent().queue_free()  # this node's crash site holder
 		_pod = null
+	# The real Stations (OrbitSites builds them on the globe) bring their own machines.
+	if not _stations.is_empty() and world.is_inside_tree() and Stations.of(world) != null:
+		for id: String in _stations:
+			(_stations[id] as Node).queue_free()
+		_stations.clear()
 	# Radio and nursery: the extras' own models stand once they show (built).
 	var ex: ExtrasDirector = ExtrasDirector.of(world)
 	if ex:

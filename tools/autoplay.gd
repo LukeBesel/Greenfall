@@ -214,6 +214,16 @@ func _hexes() -> Variant:
 
 
 func _go(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
+	var orb: Variant = world.get("orbit")  # [orbD] on a globe hub site: round its buildings along the streets
+	if orb is SliceOrbit and (orb as SliceOrbit).globe.site_manager:
+		var via: Vector3 = (orb as SliceOrbit).globe.site_manager.detour(p.global_position, target)
+		if via.distance_to(target) > 0.5:
+			_go_raw(p, via, 1.0)
+			return maxf(target.distance_to(p.global_position), stop_dist + 1.0)
+	return _go_raw(p, target, stop_dist)
+
+
+func _go_raw(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
 	var d: Vector3 = target - p.global_position
 	if JunkCube.planet_radius > 0.0:  # [orbB] round planet: drop the local-up part
 		var u: Vector3 = p.global_position.normalized()

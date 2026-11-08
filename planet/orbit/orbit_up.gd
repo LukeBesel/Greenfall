@@ -35,3 +35,23 @@ static func hexes(f: HexField, around: Vector3, rings: int = RINGS) -> Variant:
 		var sf: SphereField = f
 		return sf.grid.cells_around(sf.grid.cell_at(around), rings)
 	return f.hex_count()
+
+
+## A prop solid on the globe: one box from its meshes' bounds in its own frame (PropColliders.fit
+## compares world y, which only works on the flat game). Returns the body (or null without meshes).
+static func fit_box(root: Node3D, nm: String = "Props", shrink: float = 0.85) -> StaticBody3D:
+	var ab := AABB()
+	var first: bool = true
+	var inv: Transform3D = root.global_transform.affine_inverse()
+	for c: Node in root.find_children("*", "MeshInstance3D", true, false):
+		var mi: MeshInstance3D = c
+		if mi.mesh == null:
+			continue
+		var b: AABB = (inv * mi.global_transform) * mi.mesh.get_aabb()
+		ab = b if first else ab.merge(b)
+		first = false
+	if first:
+		return null
+	var body: StaticBody3D = PropColliders.body(root, nm)
+	PropColliders.add_box(body, Transform3D(root.global_basis.orthonormalized(), root.global_transform * ab.get_center()), ab.size * shrink)
+	return body

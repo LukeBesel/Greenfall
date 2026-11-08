@@ -45,6 +45,8 @@ static func _snap(s: Node) -> Dictionary:
 		"hub_level": (s.get("hub") as Hub).level,
 		"bench_ok": Camp.bench_ok(),
 		"garden": _garden_sig(s),
+		"outposts": "%s live %s" % [_outpost_state(), str(_outpost_levels(s))],  # [orbB]
+		"decor": _decor_state(),  # [orbB]
 		"yard_built": JSON.stringify(YardBuilds.state().get("built", {})),
 		"site_stage": g.site_manager.levels[0] if g.site_manager else -1,
 		"parts_near": s.field.part_pos.size() > 0,
@@ -52,6 +54,47 @@ static func _snap(s: Node) -> Dictionary:
 		"sky_spin": snappedf((s.get("sky_director") as SkyDirector).spin, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
 		"sky_clouds": snappedf((s.get("sky_director") as SkyDirector).clouds, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
 	}
+
+
+static func _outpost_state() -> String:
+	var out: Array = []
+	var by_hub: Dictionary = GameState.world.get("orbit_outposts", {})
+	for k: String in by_hub:
+		out.append("%s:%s" % [k, str(((by_hub[k] as Dictionary).get("levels", []) as Array).map(func(v: Variant) -> int: return int(v)))])
+	out.sort()
+	return " ".join(out)
+
+
+static func _decor_state() -> String:
+	var lists: Dictionary = {"0": GameState.world.get("decor", {})}
+	for k: String in (GameState.world.get("orbit_decor", {}) as Dictionary):
+		lists[k] = GameState.world["orbit_decor"][k]
+	var out: Array = []
+	for k: String in lists:
+		for it: Variant in (lists[k] as Dictionary).get("items", []):
+			out.append("%s:%s %d,%d r%d" % [k, str(it["t"]), int(it["x"]), int(it["z"]), int(it.get("r", 0))])
+	out.sort()
+	return " ".join(out)
+
+
+## A free decor cell near Lumi (frame-local), or Vector2i(9999, 9999).
+static func _free_decor_cell(dc: Decor, t: String, near: Vector3) -> Vector2i:
+	var c0: Vector2i = Decor.cell_at(dc.to_local(near))
+	for r: int in range(2, 14):
+		for k: int in 16:
+			var c: Vector2i = c0 + Vector2i(roundi(cos(TAU * k / 16.0) * r), roundi(sin(TAU * k / 16.0) * r))
+			if dc.place_block_reason(t, c, 0) == "":
+				return c
+	return Vector2i(9999, 9999)
+
+
+static func _outpost_levels(s: Node) -> Array:
+	var out: Array = []
+	var op: Outposts = s.get("outposts") as Outposts
+	if op:
+		for o: Outpost in op.items:
+			out.append(o.level)
+	return out
 
 
 ## [orbC] Stops a slice's robot crew (the brain and every real robot) so state compares as saved.
@@ -106,13 +149,137 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 			bad.append("%s alt %.1f" % [str(a.sp), alt])
 	check.call("orbit_fauna_animals", true, fa.animals.size() > 0)
 	check.call("orbit_fauna_on_the_ground", "[]", str(bad))
+	var far_p := Vector3(0, 0, 120.0)  # 120 m out the frame's up is degrees off; the animal's is the ground's
+	var off_frame: float = rad_to_deg((fa.global_basis * Vector3.UP).angle_to(fa.to_global(far_p).normalized()))
+	var off_animal: float = rad_to_deg((fa.global_basis * (fa._tilt(far_p) * Vector3.UP)).angle_to(fa.to_global(far_p).normalized()))
+	check.call("orbit_fauna_upright_far_out", true, off_frame > 3.0 and off_animal < 0.05)
+	# Easter eggs: this hub's set, standing on the ground clear of the yard; one can be poked.
+	var eg: EasterEggs = hf.node("EasterEggs") as EasterEggs
+	check.call("orbit_eggs_placed", true, eg != null and eg.placed.size() > 0)
+	var off: Array = []
+	for e: Dictionary in eg.placed:
+		var en0: Node3D = e["node"]
+		var alt: float = g.surface.altitude(en0.global_position)
+		var dm: float = g.grid.great_circle_m(en0.global_position, g.grid.centers[g.start_cell()])
+		if absf(alt) > 0.6 or dm < 13.0 or dm > 450.0:
+			off.append("%s alt %.2f at %.0f m" % [str(e["id"]), alt, dm])
+	check.call("orbit_eggs_on_the_ground", "[]", str(off))
+	var e0: Dictionary = eg.placed[0]
+	var en: Node3D = e0["node"]
+	en.visible = true
 	var p: Patch = s.get("patch")
 	var back: Vector3 = p.global_position
+	p.place_on_sphere(en.global_position + en.global_basis.z * 1.4, p.forward())
+	await tree.physics_frame
+	check.call("orbit_egg_prompt", true, s.interact_prompt(p) != "")
+	var eggs0: Array = eg.placed.map(func(x: Dictionary) -> String: return str(x["id"]))
+	# Outposts: 3-4 ruins round the hub just outside its site, upright on the ground; one repaired
+	# (its level lives per hub in the start site's dict) becomes the nearest scale for a hauler.
+	var op: Outposts = hf.node("Outposts") as Outposts
+	check.call("orbit_outposts_placed", true, op != null and op.items.size() >= 3 and s.get("outposts") == op)
+	var opbad: Array = []
+	for o: Outpost in op.items:
+		var alt2: float = g.surface.altitude(o.global_position)
+		var tilt: float = rad_to_deg(o.global_basis.y.normalized().angle_to(o.global_position.normalized()))
+		var cell: int = g.field.hex_at(o.global_position)
+		if absf(alt2) > 0.6 or tilt > 1.0 or not region.has(cell) or g.cells.has_flag(cell, SphereCells.F_SITE):
+			opbad.append("outpost %d alt %.2f tilt %.1f cell %d" % [o.index, alt2, tilt, cell])
+	check.call("orbit_outposts_on_the_ground", "[]", str(opbad))
+	p.place_on_sphere(op.items[0].anchor.global_position, p.forward())
+	await tree.physics_frame
+	check.call("orbit_outpost_prompt", true, s.interact_prompt(p).to_lower().contains("outpost"))
+	op.repair(0, false, true)
+	var lv0: Array = ((GameState.world.get("orbit_outposts", {}) as Dictionary).get("0", {}) as Dictionary).get("levels", [])
+	check.call("orbit_outpost_repaired_state", 1, int(lv0[0]) if lv0.size() > 0 else -1)
+	check.call("orbit_outpost_nearest_scale", true, Outposts.nearest_depot(s, op.items[0].pad_world()) == op.items[0].scale_depot)
+	# The Ledger: a drone comes in from up high; its dump makes a clean cell dirty again in the
+	# cell's numbers too; the relay (act 3) stands upright at this hub's frontier with its prompt.
+	var lg: LedgerArc = hf.node("Ledger") as LedgerArc
+	check.call("orbit_ledger_at_hub", true, lg != null and s.get("ledger") == lg)
+	GameState.flags["ledger_act"] = 2
+	p.place_on_sphere(back, p.forward())
+	lg._dev_clean_nearest()
+	var cands: Array[int] = LedgerArc.drop_candidates(g.field, lg.is_planted, region)
+	check.call("orbit_ledger_drop_candidates", true, cands.size() > 0)
+	if cands.size() > 0:
+		check.call("orbit_ledger_drone_inbound", true, lg.start_drop(true) and lg.drone != null)
+		var dalt: float = g.surface.altitude(lg.drone.global_position) if lg.drone else -1.0
+		check.call("orbit_ledger_drone_up_high", true, dalt > 10.0 and dalt < 40.0)
+		lg._drone_done(lg.drone)
+		var hid: int = -1
+		var pids := PackedInt32Array()
+		for c: int in cands:
+			pids = LedgerArc.pick_drop_pieces(g.field, c, RandomNumberGenerator.new())
+			if not pids.is_empty():
+				hid = c
+				break
+		if hid >= 0:
+			var drops0: int = int(GameState.stats.get("ledger_drops", 0))
+			lg._release(hid, pids, lg._marker(lg.to_local(g.field.hex_center(hid)), Color.RED))
+			check.call("orbit_ledger_drop_dirties_cell", "0 0 true", "%d %d %s" % [g.field.hex_clean[hid], g.cells.state[hid], str(g.cells.junk[hid] > 0.0)])
+			await tree.create_timer(1.3).timeout
+			check.call("orbit_ledger_drop_landed", drops0 + 1, int(GameState.stats.get("ledger_drops", 0)))
+	var jclash: Array = []  # the base's jammer spots stay clear of the yard's anchors
+	for ji: int in 3:
+		var js: Vector3 = lg.jammer_spot(ji)
+		if absf(g.surface.altitude(lg.to_global(js))) > 0.6 or lg._solid_at(js):
+			jclash.append("jammer %d off the ground or in something" % ji)
+		for nm: String in LedgerArc.YARD_ANCHORS:
+			var yp: Vector3 = lg.to_local(so.yard_point(nm))
+			if Vector2(yp.x - js.x, yp.z - js.z).length() < 3.0:
+				jclash.append("%s %.1f m" % [nm, Vector2(yp.x - js.x, yp.z - js.z).length()])
+	check.call("orbit_ledger_jammer_spots_clear", "[]", str(jclash))
+	GameState.flags["ledger_act"] = 3
+	GameState.flags["ledger_relay_hub"] = 0
+	lg._place_relay()
+	var ra: float = g.surface.altitude(lg.relay.global_position) if lg.relay else 99.0
+	var rtilt: float = rad_to_deg(lg.relay.global_basis.y.angle_to(lg.relay.global_position.normalized())) if lg.relay else 99.0
+	check.call("orbit_ledger_relay_placed", true, lg.relay != null and absf(ra) < 0.6 and rtilt < 1.0 and not g.cells.has_flag(g.field.hex_at(lg.relay.global_position), SphereCells.F_SITE))
+	if lg.relay:
+		p.place_on_sphere(lg.relay.to_global(Vector3(0, 0, 2.0)), p.forward())
+		await tree.physics_frame
+		check.call("orbit_ledger_relay_prompt", true, s.interact_prompt(p).contains("jack in"))
+	p.place_on_sphere(back, p.forward())
+	await tree.physics_frame
+	# Garden Mode: this hub's decor sits in the frame on the ground; the yard's machines and its
+	# buildings block a spot; the placer opens on it with the SphereCam following its cursor.
+	var dc: Decor = hf.node("Decor") as Decor
+	var lt: LateDirector = LateDirector.of(s)
+	check.call("orbit_decor_at_hub", true, dc != null and lt != null and lt.decor == dc and lt.placer.decor == dc)
+	var t0: String = Decor.type_ids()[0]
+	var c0: Vector2i = _free_decor_cell(dc, t0, back)
+	check.call("orbit_decor_placed", true, c0.x != 9999 and dc.place(t0, c0, 1, false, false))
+	if not dc.nodes.is_empty():
+		var dn: Node3D = dc.nodes[0]
+		var dtilt: float = rad_to_deg(dn.global_basis.y.angle_to(dn.global_position.normalized()))
+		check.call("orbit_decor_on_the_ground", true, absf(g.surface.altitude(dn.global_position)) < 0.4 and dtilt < 1.0)
+	check.call("orbit_decor_state", 1, ((GameState.world.get("decor", {}) as Dictionary).get("items", []) as Array).size())
+	var pod: Node3D = s.get_meta("orbit_pod") as Node3D if s.has_meta("orbit_pod") else null
+	check.call("orbit_decor_sees_solid", true, pod != null and dc._solid_at(dc.to_local(pod.global_position)))
+	check.call("orbit_decor_blocked_at_bench", true, dc.place_block_reason(t0, Decor.cell_at(dc.to_local(so.yard_point("bench"))), 0) != "")
+	var hl0: int = int(GameState.world.get("hub_level", 1))
+	GameState.world["hub_level"] = 5
+	var sc: SphereCam = so.cam
+	check.call("orbit_garden_mode_opens", true, lt.placer.open() and lt.placer.is_open and sc.target != null and sc.target.get_parent() == dc)
+	lt.placer.close()
+	check.call("orbit_garden_mode_closes", true, not lt.placer.is_open and sc.target == p)
+	GameState.world["hub_level"] = hl0
 	var h1: Vector3 = g.terrain.ground(g.grid.centers[int(g.sites[1]["cell"])])
 	p.place_on_sphere(h1, p.forward())
 	hf.check_now()
 	check.call("orbit_fauna_frame_hops", 1, hf.hub)
 	check.call("orbit_fauna_rebuilt_at_hub", true, hf.node("Fauna") != null and hf.node("Fauna") != fa)
+	var eg1: EasterEggs = hf.node("EasterEggs") as EasterEggs
+	var op1: Outposts = hf.node("Outposts") as Outposts
+	var dc1: Decor = hf.node("Decor") as Decor
+	var t1: String = Decor.type_ids()[0]
+	var c1: Vector2i = _free_decor_cell(dc1, t1, h1) if dc1 else Vector2i(9999, 9999)
+	check.call("orbit_decor_hub1_own", true, dc1 != null and dc1 != dc and dc1.items.is_empty() and lt.decor == dc1 and dc1.place(t1, c1, 1, false, false))
+	check.call("orbit_decor_hub1_state", 1, (((GameState.world.get("orbit_decor", {}) as Dictionary).get("1", {}) as Dictionary).get("items", []) as Array).size())
+	var lg1: LedgerArc = hf.node("Ledger") as LedgerArc
+	check.call("orbit_ledger_hub1_no_relay", true, lg1 != null and lg1 != lg and lg1.relay == null and s.get("ledger") == lg1)
+	check.call("orbit_outposts_hub1_own", true, op1 != null and op1 != op and op1.hub_index == 1 and op1.repaired_count() == 0 and s.get("outposts") == op1)
+	check.call("orbit_eggs_hub1_own_set", true, eg1 != null and eg1 != eg and eg1.hub_index == 1 and (eg1.placed.size() == 0 or eg1.placed.map(func(x: Dictionary) -> String: return str(x["id"])) != eggs0))
 	var mid: Vector3 = (back.normalized() + h1.normalized()).normalized()
 	p.place_on_sphere(g.terrain.ground(mid), p.forward())
 	hf.check_now()
@@ -120,6 +287,8 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 	p.place_on_sphere(back, p.forward())
 	hf.check_now()
 	check.call("orbit_fauna_back_at_start", 0, hf.hub)
+	check.call("orbit_outpost_rebuilt_repaired", 1, (hf.node("Outposts") as Outposts).items[0].level)
+	check.call("orbit_decor_rebuilt", 1, (hf.node("Decor") as Decor).items.size())
 	for i: int in 3:
 		await tree.process_frame
 
