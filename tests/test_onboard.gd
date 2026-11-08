@@ -290,3 +290,74 @@ func test_waypoint_edge_point_stays_on_the_border() -> void:
 	add_child_autofree(w)
 	assert_not_null(w.arrow)
 	assert_false(w.arrow.visible, "no arrow without a target")
+
+
+# --- [onboard2] One message line ---------------------------------------------------------------
+
+func _bar() -> Subtitles:
+	var s := Subtitles.new()
+	add_child_autofree(s)
+	return s
+
+
+## Steps the bar in small frames; returns [[text, seconds fully shown], ...] in order shown.
+func _run(s: Subtitles, seconds: float) -> Array:
+	var seen: Array = []
+	var t: float = 0.0
+	while t < seconds:
+		s._process(0.05)
+		t += 0.05
+		var cur: String = s.current_text()
+		if cur != "":
+			if seen.is_empty() or seen[-1][0] != cur:
+				seen.append([cur, 0.0])
+			if s._phase == 2:
+				seen[-1][1] = float(seen[-1][1]) + 0.05
+	return seen
+
+
+func test_two_messages_at_once_never_show_together() -> void:
+	var s := _bar()
+	s.queue_toast("New sighting: Pigeon. It's in the Codex now.", "info")
+	s.queue_toast("Workbench fixed. Press E at it to spend cubes on upgrades.", "info")
+	var seen: Array = _run(s, 20.0)
+	assert_eq(seen.size(), 2, "both shown, one after the other")
+	for e: Array in seen:
+		assert_gte(float(e[1]) + 0.051, Subtitles.duration_for(str(e[0])), "each stays up its reading time: %s" % e[0])
+
+
+func test_story_goes_before_info_and_speech_before_both() -> void:
+	var s := _bar()
+	s.queue_toast("First info line.", "info")  # goes up at once
+	s.queue_toast("Second info line.", "info")
+	s.queue_toast("A story beat.", "story")
+	s.queue_line("WREN speaks.", "wren")
+	var order: Array = _run(s, 30.0).map(func(e: Array) -> String: return str(e[0]))
+	assert_eq(order, ["First info line.", "WREN speaks.", "A story beat.", "Second info line."])
+
+
+func test_numbers_merge_into_one_line() -> void:
+	var s := _bar()
+	s.queue_toast("Something else first.", "info")
+	s.queue_toast("+12 cubes from robots.", "info")
+	s.queue_toast("+15 cubes from robots.", "info")
+	s.queue_toast("+19 cubes from robots.", "info")
+	var order: Array = _run(s, 20.0).map(func(e: Array) -> String: return str(e[0]))
+	assert_eq(order, ["Something else first.", "+19 cubes from robots."])
+
+
+func test_story_is_never_dropped_low_value_is() -> void:
+	var s := _bar()
+	for i: int in 12:
+		s.queue_toast("Info number %s." % ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"][i], "info")
+	s.queue_toast("Important story line.", "story")
+	assert_lte(s._queue.size(), Subtitles.TOAST_MAX_QUEUE)
+	assert_true(s._queue.any(func(q: Dictionary) -> bool: return q["text"] == "Important story line."))
+
+
+func test_toasts_do_not_hold_up_cutscenes() -> void:
+	var s := _bar()
+	s.queue_toast("A reward.", "info")
+	assert_false(s.is_busy("*"), "cutscenes wait on speech only")
+	s.queue_line("Intro line.", "")
+	assert_true(s.is_busy("*"))
