@@ -11,10 +11,10 @@ extends Node3D
 ##   start hub has a small base and ruined blocks placed on the sphere.
 ## - Near robots walk the hex graph (OrbitBot); far crews are data-only (abstract simulation).
 ## Dev: --orbit-walk[=deg] (straight line, lap report), --orbit-view=follow|low|mid,
-## --orbit-presim=MIN (far crews' progress), --orbit-pieces=N, --orbit-hubs=N, --orbit-hex=M,
+## --orbit-presim=MIN (far crews' progress), --orbit-pieces=N, --orbit-hubs=N, --orbit-hex=M, --orbit-level=6|7 (default 7),
 ## --orbit-trail (draw the saved lap), --orbit-nohud, --orbit-lap-quit.
 
-const STREAM_M: float = 520.0
+var stream_m: float = 560.0
 const JUNK_RINGS: int = 5
 const LAP_PATH := "res://screenshots/orbit/lap_trail.json"
 const JUNK_MODELS: Array[String] = ["old_tyre", "Television_01", "vintage_microwave", "plastic_crate_01", "trashbag",
@@ -64,7 +64,7 @@ var stats: Dictionary = {}
 func _ready() -> void:
 	var t0: int = Time.get_ticks_msec()
 	var hex: float = DevHooks.get_f("orbit-hex", 10.0)
-	planet = PlanetData.new(int(DevHooks.get_f("seed", 4471.0)), 6, hex)
+	planet = PlanetData.new(int(DevHooks.get_f("seed", 4471.0)), int(DevHooks.get_f("orbit-level", 7.0)), hex)
 	planet.generate()
 	stats["planet_ms"] = Time.get_ticks_msec() - t0
 	var t1: int = Time.get_ticks_msec()
@@ -114,7 +114,7 @@ func _ready() -> void:
 	_apply_view(DevHooks.get_s("orbit-view", "follow"))
 	# Ground under Lumi before the first physics frame.
 	var t2: int = Time.get_ticks_msec()
-	for c: int in globe.chunks_near(walker.global_position, 300.0):
+	for c: int in globe.chunks_near(walker.global_position, 300.0 if cam.view == "follow" else stream_m):  # all of it for fixed views (slow software renders)
 		_load_chunk(c)
 	stats["first_chunks_ms"] = Time.get_ticks_msec() - t2
 	_queue_chunks()
@@ -140,6 +140,7 @@ func _apply_view(v: String) -> void:
 	cam.view = v
 	match v:
 		"low":
+			stream_m = 950.0
 			cam.distance = 190.0
 			cam.pitch = -0.62
 		"mid":
@@ -392,12 +393,12 @@ func _load_chunk(c: int) -> void:
 
 
 func _queue_chunks() -> void:
-	var want: PackedInt32Array = globe.chunks_near(walker.global_position, STREAM_M)
+	var want: PackedInt32Array = globe.chunks_near(walker.global_position, stream_m)
 	for c: int in want:
 		if not _chunks.has(c) and not _chunk_queue.has(c):
 			_chunk_queue.append(c)
 	# Unload chunks well out of range (hysteresis).
-	var keep: PackedInt32Array = globe.chunks_near(walker.global_position, STREAM_M + 250.0)
+	var keep: PackedInt32Array = globe.chunks_near(walker.global_position, stream_m + 250.0)
 	for c: int in _chunks.keys():
 		if not keep.has(c):
 			(_chunks[c] as Node).queue_free()

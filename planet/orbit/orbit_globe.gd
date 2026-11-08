@@ -4,11 +4,12 @@ extends RefCounted
 ## Goldberg grid every planet already has) with metres, terrain height, surface frames, chunks and
 ## a per-cell state texture the ground shaders read. Pure data; OrbitWorld builds the views.
 ##
-## Sizes (hex circumradius 10 m, as the flat districts): level 6 = 40,962 cells, R ~ 920 m,
-## circumference ~ 5.8 km (about 21 min on foot at 4.6 m/s).
+## Sizes (hex circumradius 10 m, as the flat districts): level 7 = 163,842 cells, R ~ 1.84 km,
+## 11.6 km around (~42 min on foot at 4.6 m/s); level 6 = 40,962 cells, R ~ 920 m, 5.8 km.
 
 const STATE_W: int = 256
-const CHUNK_LEVEL: int = 2  # 162 chunks of ~250 cells (~250 m across at level 6)
+## Chunk = nearest cell of GeoSphere(level - 4): ~250 cells each (162 chunks at level 6, 642 at 7).
+var chunk_level: int = 2
 
 var planet: PlanetData
 var grid: GeoSphere
@@ -47,13 +48,15 @@ var sites: Array[Dictionary] = []
 
 
 func add_site(dir: Vector3, flat_m: float, blend_m: float, h: float = 0.0) -> void:
-	sites.append({"dir": dir.normalized(), "flat": flat_m, "blend": blend_m, "h": h})
+	sites.append({"dir": dir.normalized(), "flat": flat_m, "blend": blend_m, "h": h, "cos": cos((flat_m + blend_m) / R)})
 
 
 ## Terrain height (m) above the base radius for a unit direction.
 func height(dir: Vector3) -> float:
 	var t: float = noise.get_noise_3dv(dir * R) * height_amp
 	for s: Dictionary in sites:
+		if dir.dot(s["dir"]) < float(s["cos"]):
+			continue
 		var d: float = (s["dir"] as Vector3).angle_to(dir) * R
 		var fl: float = float(s["flat"])
 		if d < fl + float(s["blend"]):
@@ -105,7 +108,8 @@ func cell_angle() -> float:
 # --- Chunks ---------------------------------------------------------------------------
 
 func _build_chunks() -> void:
-	chunk_grid = GeoSphere.cached(CHUNK_LEVEL)
+	chunk_level = maxi(1, grid.level - 4)
+	chunk_grid = GeoSphere.cached(chunk_level)
 	var n: int = grid.cell_count()
 	cell_chunk.resize(n)
 	chunk_cells.clear()
