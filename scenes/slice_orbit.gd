@@ -112,6 +112,7 @@ func build(p_world: Node3D) -> void:
 	_build_depot(site)
 	sites = OrbitSites.attach(self)  # [orbD] sled, rocket hops, planet %, site state
 	_build_hub()
+	_build_bench()
 	if DevHooks.has("orbit-bots") or not DevHooks.has("orbit-walk"):
 		crews.spawn_demo_bots(globe.start_cell(), int(DevHooks.get_f("orbit-bots", 4.0)), w)
 	var hl := HexLevels.new()  # sparse: only cleaned cells are tracked; levels also go to SphereCells
@@ -304,12 +305,17 @@ func cell_at(pos: Vector3) -> int:
 
 func try_interact(_p: Patch) -> void:
 	if near_bench():
-		open_upgrades()
+		if not Camp.bench_ok():
+			repair_bench()
+		else:
+			open_upgrades()
 
 
 func interact_prompt(_p: Patch) -> String:
 	if near_bench():
-		return "upgrades"
+		if _repairing:
+			return ""
+		return tr("E   Workbench (broken): repair it") if not Camp.bench_ok() else tr("E   Workbench: upgrades")
 	return sites.interact_prompt() if sites else ""  # [orbD] the hover-sled
 
 
@@ -414,8 +420,101 @@ func open_upgrades() -> void:
 			GameState.flags["bench_hint_seen"] = true
 			EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
 		return
+	if not Camp.bench_ok() and not DevHooks.has("open"):  # the first E repairs the broken bench
+		repair_bench()
+		return
 	(w.get("upgrades") as UpgradesScreen).open_screen()
 	set_input(false)
+
+
+# --- The broken workbench (Camp's rules on the start site's bench anchor) -----------------------
+
+var bench: Node3D
+var _bench_parts: Array = []  # [node, repaired transform, broken transform]
+var _repairing: bool = false
+
+
+func _build_bench() -> void:
+	var sm: SiteManager = globe.site_manager
+	var sp: SitePrefab = sm.prefab(0) if sm else null
+	bench = Node3D.new()
+	bench.name = "Workbench"
+	if sp:
+		sp.add_child(bench)
+		bench.transform = sp.anchor_local("bench")
+	else:
+		globe.start_site.add_child(bench)
+		bench.position = Vector3(-3.6, 0, 2.2)
+	var top := MeshInstance3D.new()
+	var bparts: Array = [ProcMesh.part(ProcMesh.box(Vector3(2.2, 0.06, 0.8)), ProcMesh.xf(Vector3(0, 0.92, 0)))]
+	for x: float in [-1.0, 1.0]:
+		for z: float in [-0.33, 0.33]:
+			bparts.append(ProcMesh.part(ProcMesh.box(Vector3(0.06, 0.9, 0.06)), ProcMesh.xf(Vector3(x, 0.45, z))))
+	bparts.append(ProcMesh.part(ProcMesh.box(Vector3(2.0, 0.03, 0.7)), ProcMesh.xf(Vector3(0, 0.25, 0))))
+	top.mesh = ProcMesh.merge(bparts)
+	top.material_override = Mats.worn_paint(Color(0.32, 0.38, 0.45), 0.5, 0.6, 12.0, 0.7)
+	bench.add_child(top)
+	_bench_parts.append([top, Transform3D(), Transform3D(Basis(Vector3.BACK, 0.32) * Basis(Vector3.UP, 0.25), Vector3(0.1, -0.12, 0.05))])
+	var i: int = 0
+	for spec: Array in [["metal_toolbox", Vector3(-0.6, 0.95, 0.0), 0.2], ["clipboard", Vector3(0.35, 0.955, 0.1), 0.0], ["oil_tin", Vector3(0.8, 0.95, -0.2), 0.0]]:
+		var mi := MeshInstance3D.new()
+		mi.mesh = AssetLib.model_mesh_lite(spec[0], 3000) if AssetLib.has_model(spec[0]) else ProcMesh.box(Vector3(0.3, 0.2, 0.2))
+		var fixed := Transform3D(Basis(Vector3.UP, spec[2]), spec[1])
+		var broken := Transform3D(Basis.from_euler(Vector3(1.1 - i * 0.6, i * 1.7, 1.3 - i * 0.9)), Vector3(-0.9 + i * 0.7, 0.08, 0.6 + (i % 2) * 0.2))
+		mi.transform = fixed
+		bench.add_child(mi)
+		_bench_parts.append([mi, fixed, broken])
+		i += 1
+	var pb: StaticBody3D = PropColliders.body(bench, "BenchBody")  # top level, world space
+	PropColliders.add_box(pb, bench.global_transform * Transform3D(Basis(), Vector3(0, 0.47, 0)), Vector3(2.2, 0.95, 0.8))
+	_apply_bench(Camp.bench_ok(), false)
+
+
+func _apply_bench(ok: bool, animate: bool) -> void:
+	for e: Array in _bench_parts:
+		var n: Node3D = e[0]
+		var to: Transform3D = e[1] if ok else e[2]
+		if animate:
+			create_tween().tween_property(n, "transform", to, 0.6).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		else:
+			n.transform = to
+
+
+## Camp.repair_bench on the globe: the beam welds along the bench, it rights itself, then works.
+func repair_bench() -> void:
+	if _repairing or Camp.bench_ok():
+		return
+	_repairing = true
+	var patch: Patch = w.get("patch")
+	set_input(false)
+	var up: Vector3 = bench.global_position.normalized()
+	var target: Vector3 = bench.global_position + up * 0.9
+	var dur: float = float(Camp.cfg().get("bench_repair_s", 2.6))
+	var tw := create_tween()
+	tw.tween_callback(func() -> void:
+		patch.model.call("beam_at", target)
+		patch.model.call("shudder", 0.25)
+		Audio.play("servo", 1.1, -6.0))
+	for k: int in 6:
+		tw.tween_callback(func() -> void:
+			var at: Vector3 = target + bench.global_basis.x * lerpf(-0.9, 0.9, k / 5.0)
+			patch.model.call("beam_at", at)
+			Vfx.burst("sparkle", at, Color(1.0, 0.75, 0.35), 0.35)
+			Audio.play("tick" if k % 2 == 0 else "clink", randf_range(0.9, 1.3), -8.0))
+		tw.tween_interval(dur * 0.5 / 6.0)
+	tw.tween_callback(func() -> void:
+		Audio.play("hydraulic", 1.0, -6.0)
+		_apply_bench(true, true))
+	tw.tween_interval(dur * 0.5)
+	tw.tween_callback(func() -> void:
+		patch.model.call("beam_at", null)
+		patch.model.call("set_happy", 1.0)
+		Camp.set_bench_ok(true)
+		_repairing = false
+		set_input(true)
+		GameState.inc_stat("bench_repaired")
+		Audio.play("chime", 1.0, -4.0)
+		EventBus.toast.emit(tr("Workbench fixed. Press E at it to spend cubes on upgrades."), "info"))
 
 
 func open_codex(tab: String = "") -> void:
