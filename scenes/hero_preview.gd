@@ -3,6 +3,7 @@ extends Node3D
 ##   --view=portrait : alone at the portrait's 3/4 angle and scale, warm side light, dark warm
 ##                     backdrop, left claw reaching for a can with the cyan pickup lasers.
 ##   --view=turn     : front, 3/4, side, back 3/4 and back (the turnaround layout), one PNG each.
+##   --view=head / chest : close-ups (eyes and visor; chest plate and claws), portrait lighting.
 ##   --view=blink    : head close-up, a blink at phase 0 (open), 50 ms (closing), 90 ms (shut), 170 ms (opening).
 ##   --out=screenshots/hero/x  (writes <out>.png or <out>_N.png), --eyes=crescent|round|happy|bar|heart
 ## Run (software Vulkan is slow, keep the settle time):
@@ -29,7 +30,8 @@ func _ready() -> void:
 	_settle = DevHooks.get_f("settle", 8.0)
 	get_viewport().msaa_3d = Viewport.MSAA_4X
 	get_viewport().screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA
-	var portrait: bool = _view == "portrait"
+	# Close-ups use the portrait's warm set too.
+	var portrait: bool = _view in ["portrait", "head", "chest"]
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
 	var sky := Sky.new()
@@ -133,6 +135,16 @@ func _ready() -> void:
 		cam_attr.dof_blur_amount = 0.08
 		_cam.attributes = cam_attr
 		_build_can_and_lasers()
+	elif _view == "head":
+		_cam.fov = 26.0
+		var ah: float = deg_to_rad(34.0)
+		_shots = [[Vector3(sin(ah) * 1.55, 1.02, -cos(ah) * 1.55), Vector3(-0.04, 0.86, -0.05)]]
+		_build_can_and_lasers()
+	elif _view == "chest":
+		_cam.fov = 28.0
+		var ac: float = deg_to_rad(24.0)
+		_shots = [[Vector3(sin(ac) * 1.35, 0.55, -cos(ac) * 1.35), Vector3(-0.02, 0.38, -0.1)]]
+		_build_can_and_lasers()
 	elif _view == "blink":
 		_cam.fov = 18.0
 		for k: int in BLINK_PHASES.size():
@@ -155,7 +167,7 @@ func _build_can_and_lasers() -> void:
 		mi.mesh = AssetLib.model_mesh("can_rusted")
 		mi.rotation_degrees = Vector3(-35, 30, 60)
 		_can.add_child(mi)
-	_can.position = Vector3(-0.78, 0.36, -0.72)
+	_can.position = Vector3(-0.92, 0.66, -0.78)
 	var glow: Color = PatchModel.glow_of("aurora")
 	for k: int in 3:
 		var m := MeshInstance3D.new()
@@ -189,13 +201,13 @@ func _pose() -> void:
 		var ph: float = BLINK_PHASES[clampi(_i, 0, BLINK_PHASES.size() - 1)]
 		(_model.get("_face_mat") as ShaderMaterial).set_shader_parameter("blink", PatchModel.blink_curve(ph))
 		return
-	if _view != "portrait":
+	if not _view in ["portrait", "head", "chest"]:
 		return
 	# Left arm raised and reaching toward the can (the portrait's beam arm), claws open.
 	var arm: Node3D = _model.get("_arm_l")
-	arm.rotation = Vector3(-1.1, -0.2, -0.75)
+	arm.rotation = Vector3(0.75, 0.15, -0.85)
 	var el: Node3D = arm.get_meta("elbow")
-	el.rotation = Vector3(-0.2, 0.0, 0.0)
+	el.rotation = Vector3(0.35, 0.0, 0.0)
 	for f: Node3D in _model.get("_claws"):
 		var dir: Vector2 = f.get_meta("dir")
 		f.rotation = Vector3(-dir.y, dir.x, 0) * 0.5
