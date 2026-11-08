@@ -147,6 +147,7 @@ func build(p_world: Node3D) -> void:
 	_build_upgrades()
 	w.call("_setup_research_codex")  # slice.gd's own: Research, Achievements, the Codex (UI + data)
 	_build_story()
+	_build_yard_systems()
 	if loaded and not migrate:
 		restore_world()
 	elif migrate:
@@ -331,7 +332,10 @@ func cell_at(pos: Vector3) -> int:
 	return globe.cell_at(pos)
 
 
-func try_interact(_p: Patch) -> void:
+func try_interact(p: Patch) -> void:
+	var ia: Interactables = w.get("interactables")
+	if ia and ia.try_use(p.global_position):
+		return
 	if near_bench():
 		if not Camp.bench_ok():
 			repair_bench()
@@ -339,7 +343,11 @@ func try_interact(_p: Patch) -> void:
 			open_upgrades()
 
 
-func interact_prompt(_p: Patch) -> String:
+func interact_prompt(p: Patch) -> String:
+	var ia: Interactables = w.get("interactables")
+	var ip: String = ia.prompt(p.global_position) if ia else ""
+	if ip != "":
+		return ip
 	if near_bench():
 		if _repairing:
 			return ""
@@ -385,6 +393,33 @@ func _build_story() -> void:
 	ct.world = w
 	w.add_child(ct)
 	w.set("contracts", ct)
+
+
+# --- Yard systems on the start site's anchors ---------------------------------------------
+
+## Where a yard system stands: the hub-0 prefab's named anchor (orbD), else its flat yard spot
+## on the pad. Returns [parent, local transform].
+func yard_slot(anchor: String, flat_pos: Vector3) -> Array:
+	var sm: SiteManager = globe.site_manager
+	var sp: SitePrefab = sm.prefab(0) if sm else null
+	if sp and sp.anchor_names().has(anchor):
+		return [sp, sp.anchor_local(anchor)]
+	return [sp if sp else globe.start_site, Transform3D(Basis(), flat_pos)]
+
+
+func _build_yard_systems() -> void:
+	var ia := Interactables.new()  # generic E-interactables (eggs, relay, bin, tower, ...)
+	ia.name = "Interactables"
+	w.add_child(ia)
+	w.set("interactables", ia)
+	SignalTower.migrate(w)  # WREN only talks through the Signal Tower (story/signal_tower.gd)
+	if GameState.current_hub == 0:
+		var tower := SignalTower.new()
+		tower.name = "SignalTower"
+		tower.world = w
+		var slot: Array = yard_slot("signal_tower", SignalTower.pos())
+		w.add_child(tower)  # a child of the slice, as on the flat game (HubBuilds and the bot look it up)
+		tower.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)  # after its _ready
 
 
 # --- Hub and workbench (the start site) ---------------------------------------------------
