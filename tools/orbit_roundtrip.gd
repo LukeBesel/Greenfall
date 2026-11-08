@@ -30,6 +30,10 @@ static func _snap(s: Node) -> Dictionary:
 		"lumi_dir": "%.4f,%.4f,%.4f" % [at[0], at[1], at[2]],
 		"lumi_fill": snappedf(p.compartment.fill, 0.01),
 		"parts_found": s.field.part_found.count(1),
+		"hexes_paid": (GameState.orbit.get("hexes_paid", {}) as Dictionary).size(),
+		"hex_level_target": (s.get("hex_levels") as HexLevels).level_of(int(s.get_meta("rt_target", -1))),
+		"cells_level_target": g.cells.level[int(s.get_meta("rt_target", 0))],
+		"milestone_1": GameState.flags.get("hexm_1", false),
 		"parts_near": s.field.part_pos.size() > 0,
 		"loose_cubes": cubes,
 	}
@@ -65,6 +69,10 @@ static func run(rt: Node, check: Callable) -> void:
 			if g.field.piece_alive[pid] == 1:
 				s1.collect_piece(pid)
 	check.call("orbit_cell_cleaned", clean0 + 1, s1.field.cleaned_count)
+	check.call("orbit_first_hex_milestone", true, GameState.flags.get("hexm_1", false))
+	await tree.create_timer(1.4).timeout  # HexLevels samples once a second: the clean cell reaches level 1
+	check.call("orbit_hex_level_1", 1, (s1.get("hex_levels") as HexLevels).level_of(target))
+	s1.set_meta("rt_target", target)
 	# Half-clean a second one and set a level on a third (the far shell / future layer read these).
 	for c: int in g.grid.neighbors(target if target >= 0 else g.start_cell()):
 		if g.field.hex_hub[c] == 0 and not g.field.is_clean(c):
@@ -82,6 +90,7 @@ static func run(rt: Node, check: Callable) -> void:
 	var ok: bool = SaveManager.save_game()
 	check.call("orbit_saved", true, ok)
 	var a: Dictionary = _snap(s1)
+	var s1_target: int = int(s1.get_meta("rt_target", -1))
 	check.call("orbit_save_has_no_flat_xz", false, JSON.stringify(GameState.orbit.get("lumi", {})).contains("\"pos\""))
 	s1.queue_free()
 	await tree.process_frame
@@ -93,6 +102,7 @@ static func run(rt: Node, check: Callable) -> void:
 	tree.root.add_child(s2)
 	for i: int in 5:
 		await tree.process_frame
+	s2.set_meta("rt_target", s1_target)
 	var b: Dictionary = _snap(s2)
 	for k: String in a:
 		check.call("orbit_" + k, a[k], b[k])

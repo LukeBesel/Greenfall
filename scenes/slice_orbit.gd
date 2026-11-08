@@ -20,6 +20,7 @@ extends Node
 ## --orbit=globe (planet/orbit/verdance_globe.tscn) and --orbit=v1.
 
 const SCHEMA: int = 1  # GameState.orbit layout (see persist_save)
+const HEX_MILESTONES: Array[int] = [1, 5, 10, 25, 50, 100, 150, 200, 264]  # slice.gd's, by cell id here
 
 var w: Node3D  # the slice (scenes/slice.gd)
 var globe: OrbitPlanet
@@ -54,6 +55,7 @@ func build(p_world: Node3D) -> void:
 		push_warning("[orbit] saved globe is %s f=%d, building %s f=%d fresh" % [od.get("planet_id", "?"), int(od.get("freq", 0)), pid, int(spec["frequency"])])
 		od = {}
 		loaded = false
+		GameState.orbit = {}
 	var seed_v: int = int(DevHooks.get_f("seed", float(od.get("seed", spec.get("seed", 4471)))))
 	globe = OrbitPlanet.new()
 	globe.name = "Globe"
@@ -91,6 +93,14 @@ func build(p_world: Node3D) -> void:
 	_build_depot(site)
 	if DevHooks.has("orbit-bots") or not DevHooks.has("orbit-walk"):
 		crews.spawn_demo_bots(globe.start_cell(), int(DevHooks.get_f("orbit-bots", 4.0)), w)
+	var hl := HexLevels.new()  # sparse: only cleaned cells are tracked; levels also go to SphereCells
+	hl.name = "HexLevels"
+	hl.world = w
+	hl.sparse = true
+	w.set("hex_levels", hl)  # before add_child: its tree-entered hooks may read world.hex_levels
+	w.add_child(hl)
+	hl.setup()
+	EventBus.hex_level_changed.connect(_on_hex_level)
 	var lumi_level := LumiLevel.new()
 	lumi_level.name = "LumiLevel"
 	lumi_level.world = w
@@ -209,22 +219,54 @@ func collect_piece(pid: int) -> void:
 		on_hex_clean(hid)
 
 
+## slice.gd's _on_hex_clean by cell id: first-clean bonus (a re-dirtied cell pays only the flat
+## part again and doesn't count twice), milestones, the first hex's fanfare, the event.
 func on_hex_clean(hid: int) -> void:
 	var field: SphereField = globe.field
-	globe.cells.set_state(hid, 1)
-	var bonus: BigNum = Economy.hex_bonus(field.hex_total[hid])
+	if field.hex_water[hid] == 0:
+		globe.cells.set_state(hid, 1)
+	var paid: Dictionary = GameState.orbit.get("hexes_paid", {})
+	var first: bool = not paid.has(str(hid))
+	paid[str(hid)] = true
+	GameState.orbit["hexes_paid"] = paid
+	var bonus: BigNum = Economy.hex_bonus(field.hex_total[hid] if first else 0.0)
 	GameState.add_currency("cubes", bonus)
-	GameState.inc_stat("hexes_cleaned")
+	if first:
+		GameState.inc_stat("hexes_cleaned")
 	var center: Vector3 = field.hex_center(hid)
 	var u: Vector3 = center.normalized()
+	var patch: Patch = w.get("patch")
 	Audio.play("chime", 1.0, -3.0)
 	Vfx.burst("big_sparkle", center + u * 0.3, Color(1.0, 0.92, 0.55))
+	Vfx.ring(center, field.hex_size * 1.1, Color(1.0, 0.9, 0.5, 0.9), 0.8)
 	Vfx.float_text(center + u * 1.4, tr("HEX CLEAN!  +%s") % Settings.fmt(bonus), Color(1.0, 0.92, 0.45), 1.5, 2.0)
 	EventBus.hex_cleaned.emit(hid, center, bonus)
 	EventBus.field_progress_changed.emit(field.cleaned_count, field.junk_hex_count)
-	var patch: Patch = w.get("patch")
 	if patch:
 		patch.model.set_happy(1.0)
+	var n: int = cleaned_by_lumi()
+	if n == 1 and first:
+		EventBus.hitstop_requested.emit(0.45, 0.25)
+		Audio.play("fanfare", 1.0, -4.0)
+	if n in HEX_MILESTONES and not GameState.flags.get("hexm_%d" % n, false):
+		GameState.flags["hexm_%d" % n] = true
+		EventBus.milestone_reached.emit("hexes_%d" % n)
+		if n > 1:
+			Audio.play("fanfare", 1.0, -5.0)
+			if patch:
+				Vfx.burst("confetti", patch.global_position + patch.up() * 1.5, Color.WHITE)
+			EventBus.toast.emit(tr("Milestone: %d hexes clean!") % n, "story")
+
+
+## Hexes counted for milestones: the cells this save paid a first-clean bonus for (far crews'
+## numbers flip cells clean too, but they are not Lumi's milestones).
+func cleaned_by_lumi() -> int:
+	return (GameState.orbit.get("hexes_paid", {}) as Dictionary).size()
+
+
+func _on_hex_level(hid: int, lvl: int) -> void:
+	if globe and hid >= 0 and hid < globe.cells.n:
+		globe.cells.set_level(hid, lvl)
 
 
 func cell_at(pos: Vector3) -> int:
@@ -302,6 +344,8 @@ func persist_save() -> void:
 		"planet": g.planet.to_dict(),
 		"cells": g.cells.to_dict(),
 		"field": g.field.to_dict(),  # found parts, unlocked cells
+		"hexes_paid": GameState.orbit.get("hexes_paid", {}),
+		"hex_levels": (w.get("hex_levels") as HexLevels).persist(),
 		"day_t": day.elapsed(),
 		"lumi": {"at": g.to_dirh(patch.global_position), "fwd": _v_arr(patch.forward()), "cargo": pd},
 		"cubes": cubes,
