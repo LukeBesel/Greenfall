@@ -22,7 +22,7 @@ func test_orbits_follow_au_and_leave_ring_room() -> void:
 	for i: int in range(1, order.size()):
 		var a: int = order[i - 1]
 		var b: int = order[i]
-		assert_gt(m._orbit_rs[b] - m._orbit_rs[a], m._reach(a) + m._reach(b), "%s and %s rings never touch" % [m._pid_of(a), m._pid_of(b)])
+		assert_gt(m._orbit_rs[b] - m._orbit_rs[a], maxf(m._reach(a) + m._globe_r(b), m._reach(b) + m._globe_r(a)), "%s and %s: no ring reaches the other globe" % [m._pid_of(a), m._pid_of(b)])
 
 
 func test_ringed_planets_reach_past_twice_their_radius() -> void:
