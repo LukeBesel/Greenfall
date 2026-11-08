@@ -14,6 +14,8 @@ static func setup(s: Node) -> void:
 	Tunes.grant("sunbaked", true)  # [tunes] a CD found, one lying in the rubble, the pity counter
 	CdFinds.pending()["dune_caravan"] = {"hub": GameState.current_hub, "hex": 3, "planet": "ochre"}
 	Tunes.st()["pity"] = 7
+	Tunes.hold("strip_mine_shuffle")  # a scratched CD in the case
+	Tunes.note_play("clean_sweep")
 	var e: Dictionary = PhotoAlbum.entry(GameState.current_hub)
 	e["name"] = "Old Town"
 	e["before"] = PhotoAlbum.dir().path_join("h0_before.jpg")
