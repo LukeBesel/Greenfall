@@ -527,7 +527,7 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:147 story/objectives.gd:787
+#: core/pace.gd:147 story/objectives.gd:789
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr ""
 
@@ -1990,43 +1990,43 @@ msgstr "目标完成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr ""
 
-#: story/objectives.gd:633
+#: story/objectives.gd:635
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr ""
 
-#: story/objectives.gd:655 story/objectives.gd:775
+#: story/objectives.gd:657 story/objectives.gd:777
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr ""
 
-#: story/objectives.gd:671
+#: story/objectives.gd:673
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr "听到哔哔声了吗？你的探测器发现附近埋着一个机器人零件。哔得越快，你就离得越近。"
 
-#: story/objectives.gd:673
+#: story/objectives.gd:675
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
-#: story/objectives.gd:776
+#: story/objectives.gd:778
 msgid "Your chest is full. Bring it to the bin."
 msgstr ""
 
-#: story/objectives.gd:783
+#: story/objectives.gd:785
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:785
+#: story/objectives.gd:787
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:785
+#: story/objectives.gd:787
 msgid "Carry your bale to the scale by the bin."
 msgstr ""
 
-#: story/objectives.gd:792
+#: story/objectives.gd:794
 msgid "Head home: follow the beam to the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:802
+#: story/objectives.gd:804
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr ""
 
@@ -10801,7 +10801,7 @@ msgstr "挖出 2 个机器人零件"
 msgid "Earn 1,000 cubes"
 msgstr "赚到 1,000 方块"
 
-#: data/goals.json:goals[research_1].text
+#: data/goals.json:goals[research_1].text data/objectives.json:objectives[research1].text
 msgid "Finish a research project"
 msgstr "完成一项研究"
 
@@ -10837,7 +10837,7 @@ msgstr "完成 4 项研究"
 msgid "Buy 20 upgrades"
 msgstr ""
 
-#: data/goals.json:goals[hex_10].text data/radio.json:songs[verdance_sweep].hint
+#: data/goals.json:goals[hex_10].text data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
 msgid "Clean 10 hexes"
 msgstr "清理 10 个六角格"
 
@@ -10933,7 +10933,7 @@ msgstr "回收 5 个捆包"
 msgid "Get a hex to Growing"
 msgstr "让一个六角格达到“生长中”"
 
-#: data/goals.json:goals[hex_20].text
+#: data/goals.json:goals[hex_20].text data/objectives.json:objectives[hex20].text
 msgid "Clean 20 hexes"
 msgstr "清理 20 个六角格"
 
@@ -12330,6 +12330,14 @@ msgstr ""
 msgid "Something green is waking out there. Plant the first seed."
 msgstr ""
 
+#: data/objectives.json:objectives[hex10].desc
+msgid "Robots help. Press {open_command} to give them hexes."
+msgstr ""
+
+#: data/objectives.json:objectives[hex10].lines
+msgid "Ten clean hexes. Your robots are learning from you, Lumi."
+msgstr ""
+
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
 msgstr ""
@@ -12352,6 +12360,22 @@ msgstr ""
 
 #: data/objectives.json:objectives[tower2].lines
 msgid "Boost the tower. I want to hear you clearly."
+msgstr ""
+
+#: data/objectives.json:objectives[research1].desc
+msgid "Workbench, Research tab. Research unlocks new robots."
+msgstr ""
+
+#: data/objectives.json:objectives[research1].lines
+msgid "Your bench can study now. Research unlocks new machines and seeds."
+msgstr ""
+
+#: data/objectives.json:objectives[hex20].desc
+msgid "More clean ground means more room to grow."
+msgstr ""
+
+#: data/objectives.json:objectives[hex20].lines
+msgid "Twenty hexes. The air already smells different."
 msgstr ""
 
 #: data/objectives.json:objectives[base3].text

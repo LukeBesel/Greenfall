@@ -639,6 +639,8 @@ func _land(h: int) -> bool:
 
 
 func _hex_planted(g: Garden, h: int) -> Vector2i:
+	if g.sparse and world.field.is_clean(h):
+		g.ensure_hex(h)  # [v3clear] the globe's garden makes a clean cell's slots on demand
 	var planted: int = 0
 	var ids: PackedInt32Array = g.hex_slots.get(h, PackedInt32Array())
 	var total: int = 0

@@ -913,3 +913,23 @@ rebuilt on the sphere. What carries over, and how to place it on a globe:
 - Done (round 2): every hub is a town with its own character (VerdanceSite.KINDS: downtown, old town, industrial, suburb, harbour where the lake reaches in) on a 120 m pad, with furniture and outskirts. The outskirts keep junk off per piece (YardKeepOut.add_world) rather than clearing cells, and outposts and eggs avoid the buildings. Hub towns build 6 ms a frame in play (BuildBudget.begin_play). Lake waterfronts: quay, railings with gaps, lamps, piers, boats, an old ship on the start lake. Furniture is batched (144 m cells, 3 surfaces, no small-prop shadows).
 - Done: the land between hubs (`planet/sites/hinterland.gd`): open junk fields, suburbs and industrial edges decided per hex past 345 m from any hub. Buildings and props are MultiMeshes over the ring round Lumi (near/far split per instance), with colliders within 70 m and footprints in the junk keep-out. `--hinter-report`, `--no-hinterland`.
 - Open: pitched roofs for the suburb houses; road strips between the hinterland's houses; a hinterland walk check.
+
+## Update: Verdance clarity pass (wt/v3clear, owner item 41)
+- **Texts:** objectives, checklist, prompts, toasts and WREN briefs use short, plain words, start with a verb and show the key glyph. "Compartment Size" is now "Chest Size". Codex toasts stay quiet until the tower is up.
+- **One next thing:** the objective card's why line turns into an amber hint for these cases (`Objectives.situation_hint`):
+  - chest full
+  - piece too heavy
+  - not enough cubes (how many are missing and how to earn them)
+  - nothing to pick up nearby
+  - far from home when the next thing is at home (the beam points home)
+- **Pace:**
+  - Bot Bay costs 1200 cubes and 40 parts. The first Scoopie costs 800 cubes (was 1100).
+  - New steps: "Clean 2 hexes", "Clean 10 hexes", "Finish a research project" and "Clean 20 hexes".
+  - Orbit autoplay (8x): the whole story chain to base 2 runs in ~43 min. No step stalls. The gaps between steps are 4-7 min.
+  - On the globe, the robot objective counts the crew, and autoplay plants (sparse garden slots).
+- **Workbench:** 48 px rows. Affordable rows stand out and the current goal's row has a cyan frame. Locked rows show their name and what unlocks them. A bought row flashes.
+- **Fixes:**
+  - The trash bin stands inside its bay (`Depot.seat_bin` on the "bin" anchor).
+  - The robot objective counts the globe's crew.
+  - The HEX line sits above the level bar.
+- **Tool:** `--clarity-log` prints over time what the player is told (card, prompts, toasts, WREN).
