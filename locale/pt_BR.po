@@ -1171,63 +1171,63 @@ msgstr "Tanque de água colocado. Regadores próximos vão reabastecer aqui."
 msgid "WATER"
 msgstr "ÁGUA"
 
-#: scenes/slice.gd:281
+#: scenes/slice.gd:290
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Link dos robôs online. Aperte B para o Comando: pinte zonas e mande equipes para onde quiser."
 
-#: scenes/slice.gd:512
+#: scenes/slice.gd:522
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 online. Núcleo Floral 4%: luz verde fraca. Relé da Cradle: quase nada. Faça algo crescer."
 
-#: scenes/slice.gd:824
+#: scenes/slice.gd:834
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXÁGONO LIMPO!  +%s"
 
-#: scenes/slice.gd:838
+#: scenes/slice.gd:848
 msgid "Milestone: %d hexes clean!"
 msgstr "Marco: %d hexágonos limpos!"
 
-#: scenes/slice.gd:840
+#: scenes/slice.gd:850
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "O ferro-velho inteiro está limpo. Lumi solta um bipe muito longo e muito feliz."
 
-#: scenes/slice.gd:847
+#: scenes/slice.gd:857
 msgid "%s is out of range: %s"
 msgstr "%s está fora de alcance: %s"
 
-#: scenes/slice.gd:857
+#: scenes/slice.gd:867
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Bloqueado. Leve sua base ao nível 5 para construir a plataforma de lançamento."
 
-#: scenes/slice.gd:860 ui/rockets_panel.gd:39
+#: scenes/slice.gd:870 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Células de energia recarregando: %s. Melhorias do foguete recarregam mais rápido."
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:924
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Pouso: %s. Base %d de %d. %s"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:925
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "O foguete está estacionado no pátio, pronto quando as células recarregarem."
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:925
 msgid "Landed on the base pad."
 msgstr "Pousou na plataforma da base."
 
-#: scenes/slice.gd:1006
+#: scenes/slice.gd:1016
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Melhorias precisam de uma bancada. Volte para a base."
 
-#: scenes/slice.gd:1174
+#: scenes/slice.gd:1184
 msgid "Welcome back. The junk waited for you."
 msgstr "Bem-vindo de volta. A sucata esperou por você."
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1201
 msgid "OUTPOST %d · Lv%d"
 msgstr "POSTO %d · Nv%d"
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1201
 msgid "OUTPOST %d · RUIN"
 msgstr "POSTO %d · RUÍNA"
 
@@ -1501,83 +1501,91 @@ msgstr ""
 "VOLTO EM\n"
 "5 MINUTOS"
 
-#: story/eggs.gd:250
+#: story/eggs.gd:335
 msgid "Something metal surfaced in the cleared ground."
 msgstr "Algo de metal apareceu no chão limpo."
 
-#: story/eggs.gd:430
+#: story/eggs.gd:534 story/eggs.gd:617
 msgid "Gnome %d / %d"
 msgstr "Gnomo %d / %d"
 
-#: story/eggs.gd:438
+#: story/eggs.gd:542
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "O último pôster aponta para um lugar bem perto. Algo laranja está enroladinho ali."
 
-#: story/eggs.gd:464
+#: story/eggs.gd:583
+msgid "E   salute the patrol"
+msgstr ""
+
+#: story/eggs.gd:583
+msgid "E   look"
+msgstr ""
+
+#: story/eggs.gd:641
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "O rádio chia baixinho. Nada lá em cima acordou ainda. Volte depois que escurecer."
 
-#: story/eggs.gd:465
+#: story/eggs.gd:642
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "Pelo telescópio: só um céu claro e empoeirado. Volte depois que escurecer."
 
-#: story/eggs.gd:485
+#: story/eggs.gd:668
 msgid "SOLD OUT"
 msgstr "ESGOTADO"
 
-#: story/eggs.gd:502
+#: story/eggs.gd:685
 msgid "QUACK!"
 msgstr "QUÁ!"
 
-#: story/eggs.gd:520
+#: story/eggs.gd:703
 msgid "NEW CHALLENGER!"
 msgstr "NOVO DESAFIANTE!"
 
-#: story/eggs.gd:523
+#: story/eggs.gd:706
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "FIM DE JOGO  ·  PONTOS 12"
 
-#: story/eggs.gd:553
+#: story/eggs.gd:734
 msgid "hi, Gus"
 msgstr "oi, Gus"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:779
 msgid "CONFETTI"
 msgstr "CONFETE"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:779
 msgid "LIGHT JAZZ"
 msgstr "JAZZ SUAVE"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:779
 msgid "99% DUCKS"
 msgstr "PATOS: 99%"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:779
 msgid "SUNNY (INDOORS)"
 msgstr "ENSOLARADO (LÁ DENTRO)"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:779
 msgid "FOG OF NOODLES"
 msgstr "NÉVOA DE MACARRÃO"
 
-#: story/eggs.gd:603
+#: story/eggs.gd:784
 msgid "1ST PLACE"
 msgstr "1º LUGAR"
 
-#: story/eggs.gd:661
+#: story/eggs.gd:842
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "O pato grasna um segredo: \"%s\" desbloqueia o design %s."
 
-#: story/eggs.gd:662
+#: story/eggs.gd:843
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "O pato te ensinou tudo o que sabe. Quá."
 
-#: story/eggs.gd:812
+#: story/eggs.gd:1066
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "Curiosidade encontrada: %s  (%d / %d)   %s"
 
-#: story/eggs.gd:823
+#: story/eggs.gd:1077
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "Todas as curiosidades da lista, encontradas. O compartimento de coleção de Lumi está lotado de lembranças."
 
@@ -1929,6 +1937,34 @@ msgstr "Limpe este hexágono por completo"
 #: story/tutorial.gd:17
 msgid "Lumi is back on the job"
 msgstr "Lumi está de volta ao trabalho"
+
+#: story/tv_broadcast.gd:101
+msgid "CH 4  ·  OLD TOWN NEWS  ·  LAST BROADCAST"
+msgstr ""
+
+#: story/tv_broadcast.gd:115
+msgid "{interact}  [k]/ Esc  [/k]turn it off"
+msgstr ""
+
+#: story/tv_broadcast.gd:195
+msgid "SIGNAL LOST"
+msgstr ""
+
+#: story/tv_broadcast.gd:204
+msgid "LIVE"
+msgstr ""
+
+#: story/tv_broadcast.gd:324
+msgid "BREAKING"
+msgstr ""
+
+#: story/tv_broadcast.gd:352
+msgid "CRADLE"
+msgstr ""
+
+#: story/tv_broadcast.gd:373
+msgid "WE'LL BE BACK"
+msgstr ""
 
 #: systems/achievements.gd:139
 msgid "%d achievements unlocked. See them in the Codex (K)."
@@ -5376,7 +5412,7 @@ msgstr "Escolha um mundo que você visitou para ver a equipe dele. O mundo em qu
 msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
 msgstr "Nenhum outro mundo visitado ainda. Semeie ou visite outro mundo pela Ponte da Arca e volte."
 
-#: ui/telescope_view.gd:466
+#: ui/telescope_view.gd:476
 msgid ""
 "%s\n"
 "District %d%% clean · %d robots\n"
@@ -5386,7 +5422,7 @@ msgstr ""
 "Distrito %d%% limpo · %d robôs\n"
 "Última visita %s"
 
-#: ui/telescope_view.gd:468
+#: ui/telescope_view.gd:478
 msgid ""
 "%s\n"
 "You are here."
@@ -5394,7 +5430,7 @@ msgstr ""
 "%s\n"
 "Você está aqui."
 
-#: ui/telescope_view.gd:470
+#: ui/telescope_view.gd:480
 msgid ""
 "%s\n"
 "Not visited yet."
@@ -5402,51 +5438,51 @@ msgstr ""
 "%s\n"
 "Ainda não visitado."
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "You stand on %s."
 msgstr "Você está em %s."
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "%s: nobody of yours down there yet."
 msgstr "%s: ninguém seu lá embaixo ainda."
 
-#: ui/telescope_view.gd:491
+#: ui/telescope_view.gd:501
 msgid "unknown"
 msgstr "desconhecida"
 
-#: ui/telescope_view.gd:494
+#: ui/telescope_view.gd:504
 msgid "%d min ago"
 msgstr "há %d min"
 
-#: ui/telescope_view.gd:496
+#: ui/telescope_view.gd:506
 msgid "%.1f h ago"
 msgstr "há %.1f h"
 
-#: ui/telescope_view.gd:497
+#: ui/telescope_view.gd:507
 msgid "%d days ago"
 msgstr "há %d dias"
 
-#: ui/telescope_view.gd:587
+#: ui/telescope_view.gd:597
 msgid "TELESCOPE  ·  %s"
 msgstr "TELESCÓPIO  ·  %s"
 
-#: ui/telescope_view.gd:588
+#: ui/telescope_view.gd:598
 msgid "◀ Look"
 msgstr "◀ Olhar"
 
-#: ui/telescope_view.gd:589
+#: ui/telescope_view.gd:599
 msgid "Look ▶"
 msgstr "Olhar ▶"
 
-#: ui/telescope_view.gd:591
+#: ui/telescope_view.gd:601
 msgid "Back to system"
 msgstr "Voltar ao sistema"
 
-#: ui/telescope_view.gd:592
+#: ui/telescope_view.gd:602
 msgid "Right stick or drag: turn and zoom.  Hold something in the reticle to log it."
 msgstr "Analógico direito ou arrastar: girar e dar zoom.  Mantenha algo na mira para registrar."
 
-#: ui/telescope_view.gd:638
+#: ui/telescope_view.gd:648
 msgid ""
 "PLANET     %s\n"
 "DISTRICT   %.2f%% clean\n"
@@ -5458,7 +5494,7 @@ msgstr ""
 "ROBÔS      %d ativos de %d\n"
 "VISITA     %s"
 
-#: ui/telescope_view.gd:641
+#: ui/telescope_view.gd:651
 msgid ""
 "\n"
 "CARE PACKAGE  %d:%02d left"
@@ -5466,7 +5502,7 @@ msgstr ""
 "\n"
 "PACOTE  faltam %d:%02d"
 
-#: ui/telescope_view.gd:642
+#: ui/telescope_view.gd:652
 msgid ""
 "Remote pace (%d%% of offline)\n"
 "Waiting for you: %s cubes%s"
@@ -5474,27 +5510,27 @@ msgstr ""
 "Ritmo à distância (%d%% do offline)\n"
 "Esperando por você: %s cubos%s"
 
-#: ui/telescope_view.gd:645
+#: ui/telescope_view.gd:655
 msgid "Send a care package (%s cubes)"
 msgstr "Enviar um pacote de ajuda (%s cubos)"
 
-#: ui/telescope_view.gd:659
+#: ui/telescope_view.gd:669
 msgid "Care package away. The crew on %s works at double speed for %d minutes."
 msgstr "Pacote enviado. A equipe de %s trabalha com o dobro da velocidade por %d minutos."
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Ledger wreck"
 msgstr "Destroços do Ledger"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Deer"
 msgstr "Cervo"
 
-#: ui/telescope_view.gd:738
+#: ui/telescope_view.gd:748
 msgid "Logged through the telescope: %s. New Codex entry."
 msgstr "Registrado pelo telescópio: %s. Nova entrada no Códice."
 
-#: ui/telescope_view.gd:739
+#: ui/telescope_view.gd:749
 msgid "Codex: %s"
 msgstr "Códice: %s"
 
@@ -8077,6 +8113,10 @@ msgstr "Uma parede pintada na Cidade Velha. É só chegar perto."
 msgid "Gnome Patrol"
 msgstr "Patrulha dos gnomos"
 
+#: data/eggs.json:eggs[gnomes].prompt
+msgid "E   pick up gnome"
+msgstr ""
+
 #: data/eggs.json:eggs[gnomes].lore
 msgid "Five garden gnomes, each facing a different street. A Maker kid's sign said they were 'on patrol'. They still are."
 msgstr "Cinco gnomos de jardim, cada um virado para uma rua diferente. A placa de uma criança dos Criadores dizia que eles estavam \"de patrulha\". Ainda estão."
@@ -8086,8 +8126,8 @@ msgid "All five gnomes found. They turn, very slowly, and salute."
 msgstr "Os cinco gnomos encontrados. Eles se viram, bem devagar, e batem continência."
 
 #: data/eggs.json:eggs[gnomes].hint
-msgid "Five small guards, each watching a different street."
-msgstr "Cinco pequenos guardas, cada um vigiando uma rua."
+msgid "Five small guards, each watching a different street. Bring them home."
+msgstr ""
 
 #: data/eggs.json:eggs[time_capsule].name
 msgid "Class of the Last Spring"
@@ -8274,16 +8314,16 @@ msgid "E   adjust the antenna"
 msgstr "E   ajustar a antena"
 
 #: data/eggs.json:eggs[tv].lore
-msgid "A television on a lawn chair, still tuned to the weather channel. Someone was watching the forecast when everyone left."
-msgstr "Uma TV numa cadeira de praia, ainda no canal do tempo. Alguém estava vendo a previsão quando todo mundo foi embora."
+msgid "A television on a lawn chair, still looping Old Town's last news broadcast: the spring seed swap, the Ledger's rigs coming down on their cables, the two suns' worlds strip-mined and buried in waste, the shuttles rising to the Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
+msgstr ""
 
 #: data/eggs.json:eggs[tv].toast
-msgid "The static clears for a second: 'TODAY: DUSTY. TOMORROW: DUSTY. OUTLOOK: ...GREEN?' Then snow again."
-msgstr "O chiado some por um segundo: \"HOJE: POEIRA. AMANHÃ: POEIRA. TENDÊNCIA: ...VERDE?\" Depois, chuvisco de novo."
+msgid "The broadcast ends in snow. Somebody left it running for whoever came back."
+msgstr ""
 
 #: data/eggs.json:eggs[tv].hint
-msgid "Somebody left the weather on."
-msgstr "Alguém deixou a previsão do tempo ligada."
+msgid "Somebody left the news on. Adjust the antenna."
+msgstr ""
 
 #: data/eggs.json:eggs[snail].name
 msgid "Gus"
@@ -10461,7 +10501,7 @@ msgstr "Ochre"
 msgid "Tidewell"
 msgstr "Tidewell"
 
-#: data/homeward.json:planets[rime].name data/telescope.json:planets_default[rime].name
+#: data/homeward.json:planets[rime].name data/planets.json:rime.name data/telescope.json:planets_default[rime].name
 msgid "Rime"
 msgstr "Rime"
 
@@ -11140,6 +11180,10 @@ msgstr "Módulo sensor"
 #: data/parts.json:types[module].name
 msgid "Special Module"
 msgstr "Módulo especial"
+
+#: data/planets.json:rime.tagline
+msgid "An ice moon, core-mined until it froze."
+msgstr ""
 
 #: data/radio.json:songs[verdance_sprout].name
 msgid "Sprout Step"
@@ -13100,20 +13144,20 @@ msgid "If anyone ever does pick up on the other end, I'd like to hear what they 
 msgstr "Se um dia alguém atender do outro lado, eu queria ouvir o que vai dizer."
 
 #: data/wren_lines.json:egg_tv
-msgid "...weather... it said green..."
-msgstr "...previsão... disse verde..."
+msgid "...broadcast... we'll be... back..."
+msgstr ""
 
 #: data/wren_lines.json:egg_tv
-msgid "'Outlook: green.' That TV has been wrong for three hundred years and it's finally about to be right."
-msgstr "\"Tendência: verde.\" Essa TV erra há trezentos anos e finalmente está prestes a acertar."
+msgid "That was the last news out of Old Town. The rigs, the waste, the shuttles up to me. I carried every one of those people."
+msgstr ""
 
 #: data/wren_lines.json:egg_tv
-msgid "Someone was watching the forecast when they left. I hope it said sunny."
-msgstr "Alguém estava vendo a previsão quando foi embora. Espero que tenha dito ensolarado."
+msgid "'We'll be back.' They meant it. I still have the passenger list."
+msgstr ""
 
 #: data/wren_lines.json:egg_tv
-msgid "The weather channel. Still on. Still hopeful. I like it."
-msgstr "O canal do tempo. Ainda ligado. Ainda esperançoso. Gosto dele."
+msgid "Still broadcasting, after all this time. Somebody wanted whoever came back to know what happened. Now you do."
+msgstr ""
 
 #: data/wren_lines.json:egg_snail
 msgid "...small... slow... alive...!"
@@ -14094,6 +14138,30 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "Five small guards, each watching a different street."
+#~ msgstr "Cinco pequenos guardas, cada um vigiando uma rua."
+
+#~ msgid "A television on a lawn chair, still tuned to the weather channel. Someone was watching the forecast when everyone left."
+#~ msgstr "Uma TV numa cadeira de praia, ainda no canal do tempo. Alguém estava vendo a previsão quando todo mundo foi embora."
+
+#~ msgid "The static clears for a second: 'TODAY: DUSTY. TOMORROW: DUSTY. OUTLOOK: ...GREEN?' Then snow again."
+#~ msgstr "O chiado some por um segundo: \"HOJE: POEIRA. AMANHÃ: POEIRA. TENDÊNCIA: ...VERDE?\" Depois, chuvisco de novo."
+
+#~ msgid "Somebody left the weather on."
+#~ msgstr "Alguém deixou a previsão do tempo ligada."
+
+#~ msgid "...weather... it said green..."
+#~ msgstr "...previsão... disse verde..."
+
+#~ msgid "'Outlook: green.' That TV has been wrong for three hundred years and it's finally about to be right."
+#~ msgstr "\"Tendência: verde.\" Essa TV erra há trezentos anos e finalmente está prestes a acertar."
+
+#~ msgid "Someone was watching the forecast when they left. I hope it said sunny."
+#~ msgstr "Alguém estava vendo a previsão quando foi embora. Espero que tenha dito ensolarado."
+
+#~ msgid "The weather channel. Still on. Still hopeful. I like it."
+#~ msgstr "O canal do tempo. Ainda ligado. Ainda esperançoso. Gosto dele."
 
 #~ msgid "<< LEDGER // CONTRACT 0001 // AMENDED >>"
 #~ msgstr "<< LEDGER // CONTRATO 0001 // ALTERADO >>"

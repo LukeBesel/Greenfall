@@ -1168,63 +1168,63 @@ msgstr "給水タンクを設置。近くの水やりロボはここで補給す
 msgid "WATER"
 msgstr "水"
 
-#: scenes/slice.gd:281
+#: scenes/slice.gd:290
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーンを塗って、好きな場所にクルーを送ろう。"
 
-#: scenes/slice.gd:512
+#: scenes/slice.gd:522
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 起動。ブルームコア 4%：緑の光 微弱。Cradle号リレー：かすか。何かを育てよう。"
 
-#: scenes/slice.gd:824
+#: scenes/slice.gd:834
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
-#: scenes/slice.gd:838
+#: scenes/slice.gd:848
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice.gd:840
+#: scenes/slice.gd:850
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
 
-#: scenes/slice.gd:847
+#: scenes/slice.gd:857
 msgid "%s is out of range: %s"
 msgstr "%s は範囲外：%s"
 
-#: scenes/slice.gd:857
+#: scenes/slice.gd:867
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:860 ui/rockets_panel.gd:39
+#: scenes/slice.gd:870 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:924
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陸：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:925
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:925
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:1006
+#: scenes/slice.gd:1016
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice.gd:1174
+#: scenes/slice.gd:1184
 msgid "Welcome back. The junk waited for you."
 msgstr "おかえり。ガラクタが待っていたよ。"
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1201
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1201
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
@@ -1498,83 +1498,91 @@ msgstr ""
 "5分で\n"
 "戻ります"
 
-#: story/eggs.gd:250
+#: story/eggs.gd:335
 msgid "Something metal surfaced in the cleared ground."
 msgstr "片づいた地面から何か金属のものが出てきた。"
 
-#: story/eggs.gd:430
+#: story/eggs.gd:534 story/eggs.gd:617
 msgid "Gnome %d / %d"
 msgstr "ノーム %d / %d"
 
-#: story/eggs.gd:438
+#: story/eggs.gd:542
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "最後のポスターがすぐ近くを指している。近くでオレンジ色の何かが丸まっている。"
 
-#: story/eggs.gd:464
+#: story/eggs.gd:583
+msgid "E   salute the patrol"
+msgstr ""
+
+#: story/eggs.gd:583
+msgid "E   look"
+msgstr ""
+
+#: story/eggs.gd:641
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "ラジオが小さくザーッと鳴っている。上ではまだ何も目覚めていない。暗くなってからまた来よう。"
 
-#: story/eggs.gd:465
+#: story/eggs.gd:642
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "望遠鏡をのぞくと：明るくほこりっぽい空だけ。暗くなってからまた来よう。"
 
-#: story/eggs.gd:485
+#: story/eggs.gd:668
 msgid "SOLD OUT"
 msgstr "売り切れ"
 
-#: story/eggs.gd:502
+#: story/eggs.gd:685
 msgid "QUACK!"
 msgstr "グワッ！"
 
-#: story/eggs.gd:520
+#: story/eggs.gd:703
 msgid "NEW CHALLENGER!"
 msgstr "新たな挑戦者！"
 
-#: story/eggs.gd:523
+#: story/eggs.gd:706
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "ゲームオーバー  ·  スコア 12"
 
-#: story/eggs.gd:553
+#: story/eggs.gd:734
 msgid "hi, Gus"
 msgstr "やあ、ガス"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:779
 msgid "CONFETTI"
 msgstr "紙吹雪"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:779
 msgid "LIGHT JAZZ"
 msgstr "ライトジャズ"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:779
 msgid "99% DUCKS"
 msgstr "アヒル率 99%"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:779
 msgid "SUNNY (INDOORS)"
 msgstr "晴れ（屋内）"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:779
 msgid "FOG OF NOODLES"
 msgstr "ヌードルの霧"
 
-#: story/eggs.gd:603
+#: story/eggs.gd:784
 msgid "1ST PLACE"
 msgstr "1位"
 
-#: story/eggs.gd:661
+#: story/eggs.gd:842
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "アヒルがキュッと秘密をささやく：「%s」で %s デザインが解放される。"
 
-#: story/eggs.gd:662
+#: story/eggs.gd:843
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "アヒルは知っていることを全部教えてくれた。グワッ。"
 
-#: story/eggs.gd:812
+#: story/eggs.gd:1066
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "珍品発見：%s（%d / %d）   %s"
 
-#: story/eggs.gd:823
+#: story/eggs.gd:1077
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "リストの珍品をぜんぶ見つけた。Lumi のコレクション室は思い出でいっぱい。"
 
@@ -1926,6 +1934,34 @@ msgstr "このヘックスを完全にきれいにしよう"
 #: story/tutorial.gd:17
 msgid "Lumi is back on the job"
 msgstr "Lumi、仕事に復帰"
+
+#: story/tv_broadcast.gd:101
+msgid "CH 4  ·  OLD TOWN NEWS  ·  LAST BROADCAST"
+msgstr ""
+
+#: story/tv_broadcast.gd:115
+msgid "{interact}  [k]/ Esc  [/k]turn it off"
+msgstr ""
+
+#: story/tv_broadcast.gd:195
+msgid "SIGNAL LOST"
+msgstr ""
+
+#: story/tv_broadcast.gd:204
+msgid "LIVE"
+msgstr ""
+
+#: story/tv_broadcast.gd:324
+msgid "BREAKING"
+msgstr ""
+
+#: story/tv_broadcast.gd:352
+msgid "CRADLE"
+msgstr ""
+
+#: story/tv_broadcast.gd:373
+msgid "WE'LL BE BACK"
+msgstr ""
 
 #: systems/achievements.gd:139
 msgid "%d achievements unlocked. See them in the Codex (K)."
@@ -5364,7 +5400,7 @@ msgstr "訪れたことのある世界を選ぶと、そこのクルーを見ら
 msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
 msgstr "まだ他の世界を訪れていない。アークブリッジから別の世界に種をまくか訪れてから、また来よう。"
 
-#: ui/telescope_view.gd:466
+#: ui/telescope_view.gd:476
 msgid ""
 "%s\n"
 "District %d%% clean · %d robots\n"
@@ -5374,7 +5410,7 @@ msgstr ""
 "地区 %d%% きれい · ロボット %d 台\n"
 "最終訪問 %s"
 
-#: ui/telescope_view.gd:468
+#: ui/telescope_view.gd:478
 msgid ""
 "%s\n"
 "You are here."
@@ -5382,7 +5418,7 @@ msgstr ""
 "%s\n"
 "ここにいる。"
 
-#: ui/telescope_view.gd:470
+#: ui/telescope_view.gd:480
 msgid ""
 "%s\n"
 "Not visited yet."
@@ -5390,51 +5426,51 @@ msgstr ""
 "%s\n"
 "まだ訪れていない。"
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "You stand on %s."
 msgstr "いまは %s にいる。"
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "%s: nobody of yours down there yet."
 msgstr "%s：まだ仲間は誰もいない。"
 
-#: ui/telescope_view.gd:491
+#: ui/telescope_view.gd:501
 msgid "unknown"
 msgstr "不明"
 
-#: ui/telescope_view.gd:494
+#: ui/telescope_view.gd:504
 msgid "%d min ago"
 msgstr "%d 分前"
 
-#: ui/telescope_view.gd:496
+#: ui/telescope_view.gd:506
 msgid "%.1f h ago"
 msgstr "%.1f 時間前"
 
-#: ui/telescope_view.gd:497
+#: ui/telescope_view.gd:507
 msgid "%d days ago"
 msgstr "%d 日前"
 
-#: ui/telescope_view.gd:587
+#: ui/telescope_view.gd:597
 msgid "TELESCOPE  ·  %s"
 msgstr "望遠鏡  ·  %s"
 
-#: ui/telescope_view.gd:588
+#: ui/telescope_view.gd:598
 msgid "◀ Look"
 msgstr "◀ 視点"
 
-#: ui/telescope_view.gd:589
+#: ui/telescope_view.gd:599
 msgid "Look ▶"
 msgstr "視点 ▶"
 
-#: ui/telescope_view.gd:591
+#: ui/telescope_view.gd:601
 msgid "Back to system"
 msgstr "星系に戻る"
 
-#: ui/telescope_view.gd:592
+#: ui/telescope_view.gd:602
 msgid "Right stick or drag: turn and zoom.  Hold something in the reticle to log it."
 msgstr "右スティックかドラッグ：回転とズーム。  照準に何かをとらえ続けると記録できる。"
 
-#: ui/telescope_view.gd:638
+#: ui/telescope_view.gd:648
 msgid ""
 "PLANET     %s\n"
 "DISTRICT   %.2f%% clean\n"
@@ -5446,7 +5482,7 @@ msgstr ""
 "ロボット   %d / %d 台が稼働中\n"
 "最終訪問   %s"
 
-#: ui/telescope_view.gd:641
+#: ui/telescope_view.gd:651
 msgid ""
 "\n"
 "CARE PACKAGE  %d:%02d left"
@@ -5454,7 +5490,7 @@ msgstr ""
 "\n"
 "支援物資  残り %d:%02d"
 
-#: ui/telescope_view.gd:642
+#: ui/telescope_view.gd:652
 msgid ""
 "Remote pace (%d%% of offline)\n"
 "Waiting for you: %s cubes%s"
@@ -5462,27 +5498,27 @@ msgstr ""
 "遠隔ペース（オフラインの %d%%）\n"
 "受け取り待ち：%s キューブ%s"
 
-#: ui/telescope_view.gd:645
+#: ui/telescope_view.gd:655
 msgid "Send a care package (%s cubes)"
 msgstr "支援物資を送る（%s キューブ）"
 
-#: ui/telescope_view.gd:659
+#: ui/telescope_view.gd:669
 msgid "Care package away. The crew on %s works at double speed for %d minutes."
 msgstr "支援物資を送った。%s のクルーが %d 分間、倍の速さで働く。"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Ledger wreck"
 msgstr "Ledger の残骸"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Deer"
 msgstr "シカ"
 
-#: ui/telescope_view.gd:738
+#: ui/telescope_view.gd:748
 msgid "Logged through the telescope: %s. New Codex entry."
 msgstr "望遠鏡で記録：%s。図鑑に新しい項目。"
 
-#: ui/telescope_view.gd:739
+#: ui/telescope_view.gd:749
 msgid "Codex: %s"
 msgstr "図鑑：%s"
 
@@ -8065,6 +8101,10 @@ msgstr "旧市街の絵が描かれた壁。近づくだけでいい。"
 msgid "Gnome Patrol"
 msgstr "ノーム・パトロール"
 
+#: data/eggs.json:eggs[gnomes].prompt
+msgid "E   pick up gnome"
+msgstr ""
+
 #: data/eggs.json:eggs[gnomes].lore
 msgid "Five garden gnomes, each facing a different street. A Maker kid's sign said they were 'on patrol'. They still are."
 msgstr "それぞれ違う通りを向いた5体の庭のノーム。メイカーの子どもの看板によると「パトロール中」。いまもそうだ。"
@@ -8074,8 +8114,8 @@ msgid "All five gnomes found. They turn, very slowly, and salute."
 msgstr "5体のノームをすべて見つけた。とてもゆっくり振り向いて、敬礼する。"
 
 #: data/eggs.json:eggs[gnomes].hint
-msgid "Five small guards, each watching a different street."
-msgstr "それぞれ違う通りを見張る、5人の小さな衛兵。"
+msgid "Five small guards, each watching a different street. Bring them home."
+msgstr ""
 
 #: data/eggs.json:eggs[time_capsule].name
 msgid "Class of the Last Spring"
@@ -8262,16 +8302,16 @@ msgid "E   adjust the antenna"
 msgstr "E   アンテナを調整する"
 
 #: data/eggs.json:eggs[tv].lore
-msgid "A television on a lawn chair, still tuned to the weather channel. Someone was watching the forecast when everyone left."
-msgstr "ガーデンチェアの上のテレビ。いまも天気チャンネルのまま。みんなが去ったとき、誰かが天気予報を見ていた。"
+msgid "A television on a lawn chair, still looping Old Town's last news broadcast: the spring seed swap, the Ledger's rigs coming down on their cables, the two suns' worlds strip-mined and buried in waste, the shuttles rising to the Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
+msgstr ""
 
 #: data/eggs.json:eggs[tv].toast
-msgid "The static clears for a second: 'TODAY: DUSTY. TOMORROW: DUSTY. OUTLOOK: ...GREEN?' Then snow again."
-msgstr "ノイズが一瞬晴れる：「今日：ほこりっぽい。明日：ほこりっぽい。見通し：……緑？」 そしてまた砂嵐。"
+msgid "The broadcast ends in snow. Somebody left it running for whoever came back."
+msgstr ""
 
 #: data/eggs.json:eggs[tv].hint
-msgid "Somebody left the weather on."
-msgstr "誰かが天気予報をつけっぱなしにした。"
+msgid "Somebody left the news on. Adjust the antenna."
+msgstr ""
 
 #: data/eggs.json:eggs[snail].name
 msgid "Gus"
@@ -10449,7 +10489,7 @@ msgstr "Ochre"
 msgid "Tidewell"
 msgstr "Tidewell"
 
-#: data/homeward.json:planets[rime].name data/telescope.json:planets_default[rime].name
+#: data/homeward.json:planets[rime].name data/planets.json:rime.name data/telescope.json:planets_default[rime].name
 msgid "Rime"
 msgstr "Rime"
 
@@ -11128,6 +11168,10 @@ msgstr "センサーモジュール"
 #: data/parts.json:types[module].name
 msgid "Special Module"
 msgstr "特殊モジュール"
+
+#: data/planets.json:rime.tagline
+msgid "An ice moon, core-mined until it froze."
+msgstr ""
 
 #: data/radio.json:songs[verdance_sprout].name
 msgid "Sprout Step"
@@ -13088,20 +13132,20 @@ msgid "If anyone ever does pick up on the other end, I'd like to hear what they 
 msgstr "もしいつか向こうで誰かが出たら、何て言うのか聞いてみたい。"
 
 #: data/wren_lines.json:egg_tv
-msgid "...weather... it said green..."
-msgstr "……天気……緑って言った……"
+msgid "...broadcast... we'll be... back..."
+msgstr ""
 
 #: data/wren_lines.json:egg_tv
-msgid "'Outlook: green.' That TV has been wrong for three hundred years and it's finally about to be right."
-msgstr "「見通し：緑」。あのテレビは三百年まちがえ続けて、やっと当たりそうなんだ。"
+msgid "That was the last news out of Old Town. The rigs, the waste, the shuttles up to me. I carried every one of those people."
+msgstr ""
 
 #: data/wren_lines.json:egg_tv
-msgid "Someone was watching the forecast when they left. I hope it said sunny."
-msgstr "誰かが出ていくとき天気予報を見てた。晴れって言ってたらいいな。"
+msgid "'We'll be back.' They meant it. I still have the passenger list."
+msgstr ""
 
 #: data/wren_lines.json:egg_tv
-msgid "The weather channel. Still on. Still hopeful. I like it."
-msgstr "天気チャンネル。まだついてる。まだ希望を持ってる。好きだな。"
+msgid "Still broadcasting, after all this time. Somebody wanted whoever came back to know what happened. Now you do."
+msgstr ""
 
 #: data/wren_lines.json:egg_snail
 msgid "...small... slow... alive...!"
@@ -14082,6 +14126,30 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "Five small guards, each watching a different street."
+#~ msgstr "それぞれ違う通りを見張る、5人の小さな衛兵。"
+
+#~ msgid "A television on a lawn chair, still tuned to the weather channel. Someone was watching the forecast when everyone left."
+#~ msgstr "ガーデンチェアの上のテレビ。いまも天気チャンネルのまま。みんなが去ったとき、誰かが天気予報を見ていた。"
+
+#~ msgid "The static clears for a second: 'TODAY: DUSTY. TOMORROW: DUSTY. OUTLOOK: ...GREEN?' Then snow again."
+#~ msgstr "ノイズが一瞬晴れる：「今日：ほこりっぽい。明日：ほこりっぽい。見通し：……緑？」 そしてまた砂嵐。"
+
+#~ msgid "Somebody left the weather on."
+#~ msgstr "誰かが天気予報をつけっぱなしにした。"
+
+#~ msgid "...weather... it said green..."
+#~ msgstr "……天気……緑って言った……"
+
+#~ msgid "'Outlook: green.' That TV has been wrong for three hundred years and it's finally about to be right."
+#~ msgstr "「見通し：緑」。あのテレビは三百年まちがえ続けて、やっと当たりそうなんだ。"
+
+#~ msgid "Someone was watching the forecast when they left. I hope it said sunny."
+#~ msgstr "誰かが出ていくとき天気予報を見てた。晴れって言ってたらいいな。"
+
+#~ msgid "The weather channel. Still on. Still hopeful. I like it."
+#~ msgstr "天気チャンネル。まだついてる。まだ希望を持ってる。好きだな。"
 
 #~ msgid "<< LEDGER // CONTRACT 0001 // AMENDED >>"
 #~ msgstr "<< LEDGER // 契約 0001 // 改定 >>"

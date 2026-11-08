@@ -9,8 +9,13 @@ extends RefCounted
 const LIFT_S: float = 0.75
 
 
+## Collected part indices as ints (a loaded save hands JSON numbers back as floats).
 static func parts(id: String) -> Array:
-	return GameState.flags.get("egg_%s_parts" % id, [])
+	var out: Array = []
+	for v: Variant in GameState.flags.get("egg_%s_parts" % id, []):
+		if not (int(v) in out):
+			out.append(int(v))
+	return out
 
 
 static func has_part(id: String, part: int) -> bool:
@@ -23,7 +28,7 @@ static func count(id: String) -> int:
 
 ## Records part `part` of egg `id`. Returns the new count (unchanged if it was already there).
 static func add(id: String, part: int) -> int:
-	var list: Array = parts(id).duplicate()
+	var list: Array = parts(id)
 	if not (part in list):
 		list.append(part)
 		GameState.flags["egg_%s_parts" % id] = list

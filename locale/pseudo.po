@@ -1170,63 +1170,63 @@ msgstr "[Ŵàţéŕ Ţàñķ þļàçéð. Ŵàţéŕéŕš ñéàŕbý ŵîļļ
 msgid "WATER"
 msgstr "[ŴÀŢÉŔ ~]"
 
-#: scenes/slice.gd:281
+#: scenes/slice.gd:290
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: þàîñţ žôñéš àñð šéñð çŕéŵš ŵĥéŕé ýôû ŵàñţ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:512
+#: scenes/slice.gd:522
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "[ĻM-1 ôñļîñé. Bļôôm Çôŕé 4%: ĝŕééñ ļîĝĥţ ļôŵ. Çŕàðļé ŕéļàý: ƒàîñţ. Ĝŕôŵ šôméţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:824
+#: scenes/slice.gd:834
 msgid "HEX CLEAN!  +%s"
 msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 
-#: scenes/slice.gd:838
+#: scenes/slice.gd:848
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice.gd:840
+#: scenes/slice.gd:850
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "[Ţĥé ŵĥôļé Ĵûñķýàŕð îš çļéàñ. Ļûmî bééþš à véŕý ļôñĝ, véŕý ĥàþþý bééþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:847
+#: scenes/slice.gd:857
 msgid "%s is out of range: %s"
 msgstr "[%s îš ôûţ ôƒ ŕàñĝé: %s ~~~~~]"
 
-#: scenes/slice.gd:857
+#: scenes/slice.gd:867
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ 5 ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:860 ui/rockets_panel.gd:39
+#: scenes/slice.gd:870 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "[Éñéŕĝý çéļļš ŕéçĥàŕĝîñĝ: %s. Ŕôçķéţ ûþĝŕàðéš ŕéƒîļļ ţĥém ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:924
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "[Ţôûçĥðôŵñ: %s. Ĥûb %d ôƒ %d. %s ~~~~~~~~]"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:925
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "[Ţĥé ŕôçķéţ îš þàŕķéð ôñ ţĥé ļôţ, ŕéàðý ŵĥéñ îţš çéļļš ŕéƒîļļ. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:925
 msgid "Landed on the base pad."
 msgstr "[Ļàñðéð ôñ ţĥé bàšé þàð. ~~~~~]"
 
-#: scenes/slice.gd:1006
+#: scenes/slice.gd:1016
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1174
+#: scenes/slice.gd:1184
 msgid "Welcome back. The junk waited for you."
 msgstr "[Ŵéļçômé bàçķ. Ţĥé ĵûñķ ŵàîţéð ƒôŕ ýôû. ~~~~~~~~~~]"
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1201
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1201
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
@@ -1500,83 +1500,91 @@ msgstr ""
 "[BÀÇĶ ÎÑ\n"
 "5 MÎÑÛŢÉŠ ~~~]"
 
-#: story/eggs.gd:250
+#: story/eggs.gd:335
 msgid "Something metal surfaced in the cleared ground."
 msgstr "[Šôméţĥîñĝ méţàļ šûŕƒàçéð îñ ţĥé çļéàŕéð ĝŕôûñð. ~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:430
+#: story/eggs.gd:534 story/eggs.gd:617
 msgid "Gnome %d / %d"
 msgstr "[Ĝñômé %d / %d ~~]"
 
-#: story/eggs.gd:438
+#: story/eggs.gd:542
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "[Ţĥé ļàšţ þôšţéŕ þôîñţš šôméŵĥéŕé çļôšé. Šôméţĥîñĝ ôŕàñĝé îš çûŕļéð ûþ ñéàŕbý. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:464
+#: story/eggs.gd:583
+msgid "E   salute the patrol"
+msgstr "E   [šàļûţé ţĥé þàţŕôļ ~~~]"
+
+#: story/eggs.gd:583
+msgid "E   look"
+msgstr "E   [ļôôķ ~]"
+
+#: story/eggs.gd:641
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "[Ţĥé ŕàðîô ĥîššéš qûîéţļý. Ñôţĥîñĝ ûþ ţĥéŕé îš àŵàķé ýéţ. Çômé bàçķ àƒţéŕ ðàŕķ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:465
+#: story/eggs.gd:642
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "[Ţĥŕôûĝĥ ţĥé ţéļéšçôþé: ĵûšţ à bŕîĝĥţ, ðûšţý šķý. Çômé bàçķ àƒţéŕ ðàŕķ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:485
+#: story/eggs.gd:668
 msgid "SOLD OUT"
 msgstr "[ŠÔĻÐ ÔÛŢ ~]"
 
-#: story/eggs.gd:502
+#: story/eggs.gd:685
 msgid "QUACK!"
 msgstr "[QÛÀÇĶ! ~]"
 
-#: story/eggs.gd:520
+#: story/eggs.gd:703
 msgid "NEW CHALLENGER!"
 msgstr "[ÑÉŴ ÇĤÀĻĻÉÑĜÉŔ! ~~]"
 
-#: story/eggs.gd:523
+#: story/eggs.gd:706
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "[ĜÀMÉ ÔVÉŔ  ·  ŠÇÔŔÉ 12 ~~~~~]"
 
-#: story/eggs.gd:553
+#: story/eggs.gd:734
 msgid "hi, Gus"
 msgstr "[ĥî, Ĝûš ~]"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:779
 msgid "CONFETTI"
 msgstr "[ÇÔÑFÉŢŢÎ ~]"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:779
 msgid "LIGHT JAZZ"
 msgstr "[ĻÎĜĤŢ ĴÀŽŽ ~]"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:779
 msgid "99% DUCKS"
 msgstr "[99% ÐÛÇĶŠ ~]"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:779
 msgid "SUNNY (INDOORS)"
 msgstr "[ŠÛÑÑÝ (ÎÑÐÔÔŔŠ) ~~]"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:779
 msgid "FOG OF NOODLES"
 msgstr "[FÔĜ ÔF ÑÔÔÐĻÉŠ ~~]"
 
-#: story/eggs.gd:603
+#: story/eggs.gd:784
 msgid "1ST PLACE"
 msgstr "[1ŠŢ ÞĻÀÇÉ ~]"
 
-#: story/eggs.gd:661
+#: story/eggs.gd:842
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "[Ţĥé ðûçķ šqûéàķš à šéçŕéţ: \"%s\" ûñļôçķš ţĥé %s ðéšîĝñ. ~~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:662
+#: story/eggs.gd:843
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "[Ţĥé ðûçķ ĥàš ţàûĝĥţ ýôû évéŕýţĥîñĝ îţ ķñôŵš. Qûàçķ. ~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:812
+#: story/eggs.gd:1066
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "[Çûŕîôšîţý ƒôûñð: %s  (%d / %d)   %s ~~~~~~~~~]"
 
-#: story/eggs.gd:823
+#: story/eggs.gd:1077
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "[Évéŕý çûŕîôšîţý ôñ ţĥé ļîšţ, ƒôûñð. Ļûmî'š çôļļéçţîôñ çômþàŕţméñţ îš véŕý ƒûļļ ôƒ mémôŕîéš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -1928,6 +1936,34 @@ msgstr "[Çļéàñ ţĥîš ĥéx çômþļéţéļý ~~~~~~]"
 #: story/tutorial.gd:17
 msgid "Lumi is back on the job"
 msgstr "[Ļûmî îš bàçķ ôñ ţĥé ĵôb ~~~~~]"
+
+#: story/tv_broadcast.gd:101
+msgid "CH 4  ·  OLD TOWN NEWS  ·  LAST BROADCAST"
+msgstr "[ÇĤ 4  ·  ÔĻÐ ŢÔŴÑ ÑÉŴŠ  ·  ĻÀŠŢ BŔÔÀÐÇÀŠŢ ~~~~~~~~~~~]"
+
+#: story/tv_broadcast.gd:115
+msgid "{interact}  [k]/ Esc  [/k]turn it off"
+msgstr "[{interact}  [k]/ Éšç  [/k]ţûŕñ îţ ôƒƒ ~~~~~~~~~~]"
+
+#: story/tv_broadcast.gd:195
+msgid "SIGNAL LOST"
+msgstr "[ŠÎĜÑÀĻ ĻÔŠŢ ~]"
+
+#: story/tv_broadcast.gd:204
+msgid "LIVE"
+msgstr "[ĻÎVÉ ~]"
+
+#: story/tv_broadcast.gd:324
+msgid "BREAKING"
+msgstr "[BŔÉÀĶÎÑĜ ~]"
+
+#: story/tv_broadcast.gd:352
+msgid "CRADLE"
+msgstr "[ÇŔÀÐĻÉ ~]"
+
+#: story/tv_broadcast.gd:373
+msgid "WE'LL BE BACK"
+msgstr "[ŴÉ'ĻĻ BÉ BÀÇĶ ~~]"
 
 #: systems/achievements.gd:139
 msgid "%d achievements unlocked. See them in the Codex (K)."
@@ -5375,7 +5411,7 @@ msgstr "[Þîçķ à ŵôŕļð ýôû'vé vîšîţéð ţô ŵàţçĥ îţš 
 msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
 msgstr "[Ñô ôţĥéŕ ŵôŕļð vîšîţéð ýéţ. Šééð ôŕ vîšîţ àñôţĥéŕ ŵôŕļð ƒŕôm ţĥé Àŕķ Bŕîðĝé, ţĥéñ çômé bàçķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:466
+#: ui/telescope_view.gd:476
 msgid ""
 "%s\n"
 "District %d%% clean · %d robots\n"
@@ -5385,7 +5421,7 @@ msgstr ""
 "Ðîšţŕîçţ %d%% çļéàñ · %d ŕôbôţš\n"
 "Ļàšţ vîšîţ %s ~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:468
+#: ui/telescope_view.gd:478
 msgid ""
 "%s\n"
 "You are here."
@@ -5393,7 +5429,7 @@ msgstr ""
 "[%s\n"
 "Ýôû àŕé ĥéŕé. ~~~]"
 
-#: ui/telescope_view.gd:470
+#: ui/telescope_view.gd:480
 msgid ""
 "%s\n"
 "Not visited yet."
@@ -5401,51 +5437,51 @@ msgstr ""
 "[%s\n"
 "Ñôţ vîšîţéð ýéţ. ~~~~]"
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "You stand on %s."
 msgstr "[Ýôû šţàñð ôñ %s. ~~~]"
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "%s: nobody of yours down there yet."
 msgstr "[%s: ñôbôðý ôƒ ýôûŕš ðôŵñ ţĥéŕé ýéţ. ~~~~~~~~~]"
 
-#: ui/telescope_view.gd:491
+#: ui/telescope_view.gd:501
 msgid "unknown"
 msgstr "[ûñķñôŵñ ~]"
 
-#: ui/telescope_view.gd:494
+#: ui/telescope_view.gd:504
 msgid "%d min ago"
 msgstr "[%d mîñ àĝô ~]"
 
-#: ui/telescope_view.gd:496
+#: ui/telescope_view.gd:506
 msgid "%.1f h ago"
 msgstr "[%.1f ĥ àĝô ~]"
 
-#: ui/telescope_view.gd:497
+#: ui/telescope_view.gd:507
 msgid "%d days ago"
 msgstr "[%d ðàýš àĝô ~]"
 
-#: ui/telescope_view.gd:587
+#: ui/telescope_view.gd:597
 msgid "TELESCOPE  ·  %s"
 msgstr "[ŢÉĻÉŠÇÔÞÉ  ·  %s ~~~]"
 
-#: ui/telescope_view.gd:588
+#: ui/telescope_view.gd:598
 msgid "◀ Look"
 msgstr "[◀ Ļôôķ ~]"
 
-#: ui/telescope_view.gd:589
+#: ui/telescope_view.gd:599
 msgid "Look ▶"
 msgstr "[Ļôôķ ▶ ~]"
 
-#: ui/telescope_view.gd:591
+#: ui/telescope_view.gd:601
 msgid "Back to system"
 msgstr "[Bàçķ ţô šýšţém ~~]"
 
-#: ui/telescope_view.gd:592
+#: ui/telescope_view.gd:602
 msgid "Right stick or drag: turn and zoom.  Hold something in the reticle to log it."
 msgstr "[Ŕîĝĥţ šţîçķ ôŕ ðŕàĝ: ţûŕñ àñð žôôm.  Ĥôļð šôméţĥîñĝ îñ ţĥé ŕéţîçļé ţô ļôĝ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:638
+#: ui/telescope_view.gd:648
 msgid ""
 "PLANET     %s\n"
 "DISTRICT   %.2f%% clean\n"
@@ -5457,7 +5493,7 @@ msgstr ""
 "ŔÔBÔŢŠ     %d àçţîvé ôƒ %d\n"
 "ĻÀŠŢ VÎŠÎŢ %s ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:641
+#: ui/telescope_view.gd:651
 msgid ""
 "\n"
 "CARE PACKAGE  %d:%02d left"
@@ -5465,7 +5501,7 @@ msgstr ""
 "\n"
 "[ÇÀŔÉ ÞÀÇĶÀĜÉ  %d:%02d ļéƒţ ~~~~~~]"
 
-#: ui/telescope_view.gd:642
+#: ui/telescope_view.gd:652
 msgid ""
 "Remote pace (%d%% of offline)\n"
 "Waiting for you: %s cubes%s"
@@ -5473,27 +5509,27 @@ msgstr ""
 "[Ŕémôţé þàçé (%d%% ôƒ ôƒƒļîñé)\n"
 "Ŵàîţîñĝ ƒôŕ ýôû: %s çûbéš%s ~~~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:645
+#: ui/telescope_view.gd:655
 msgid "Send a care package (%s cubes)"
 msgstr "[Šéñð à çàŕé þàçķàĝé (%s çûbéš) ~~~~~~~]"
 
-#: ui/telescope_view.gd:659
+#: ui/telescope_view.gd:669
 msgid "Care package away. The crew on %s works at double speed for %d minutes."
 msgstr "[Çàŕé þàçķàĝé àŵàý. Ţĥé çŕéŵ ôñ %s ŵôŕķš àţ ðôûbļé šþééð ƒôŕ %d mîñûţéš. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Ledger wreck"
 msgstr "[Ļéðĝéŕ ŵŕéçķ ~]"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Deer"
 msgstr "[Ðééŕ ~]"
 
-#: ui/telescope_view.gd:738
+#: ui/telescope_view.gd:748
 msgid "Logged through the telescope: %s. New Codex entry."
 msgstr "[Ļôĝĝéð ţĥŕôûĝĥ ţĥé ţéļéšçôþé: %s. Ñéŵ Çôðéx éñţŕý. ~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:739
+#: ui/telescope_view.gd:749
 msgid "Codex: %s"
 msgstr "[Çôðéx: %s ~]"
 
@@ -8078,6 +8114,10 @@ msgstr "[À þàîñţéð ŵàļļ îñ Ôļð Ţôŵñ. Ĵûšţ ŵàļķ ûþ
 msgid "Gnome Patrol"
 msgstr "[Ĝñômé Þàţŕôļ ~]"
 
+#: data/eggs.json:eggs[gnomes].prompt
+msgid "E   pick up gnome"
+msgstr "E   [þîçķ ûþ ĝñômé ~~]"
+
 #: data/eggs.json:eggs[gnomes].lore
 msgid "Five garden gnomes, each facing a different street. A Maker kid's sign said they were 'on patrol'. They still are."
 msgstr "[Fîvé ĝàŕðéñ ĝñôméš, éàçĥ ƒàçîñĝ à ðîƒƒéŕéñţ šţŕééţ. À Màķéŕ ķîð'š šîĝñ šàîð ţĥéý ŵéŕé 'ôñ þàţŕôļ'. Ţĥéý šţîļļ àŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
@@ -8087,8 +8127,8 @@ msgid "All five gnomes found. They turn, very slowly, and salute."
 msgstr "[Àļļ ƒîvé ĝñôméš ƒôûñð. Ţĥéý ţûŕñ, véŕý šļôŵļý, àñð šàļûţé. ~~~~~~~~~~~~~~~~~]"
 
 #: data/eggs.json:eggs[gnomes].hint
-msgid "Five small guards, each watching a different street."
-msgstr "[Fîvé šmàļļ ĝûàŕðš, éàçĥ ŵàţçĥîñĝ à ðîƒƒéŕéñţ šţŕééţ. ~~~~~~~~~~~~~~~]"
+msgid "Five small guards, each watching a different street. Bring them home."
+msgstr "[Fîvé šmàļļ ĝûàŕðš, éàçĥ ŵàţçĥîñĝ à ðîƒƒéŕéñţ šţŕééţ. Bŕîñĝ ţĥém ĥômé. ~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/eggs.json:eggs[time_capsule].name
 msgid "Class of the Last Spring"
@@ -8275,16 +8315,16 @@ msgid "E   adjust the antenna"
 msgstr "E   [àðĵûšţ ţĥé àñţéññà ~~~]"
 
 #: data/eggs.json:eggs[tv].lore
-msgid "A television on a lawn chair, still tuned to the weather channel. Someone was watching the forecast when everyone left."
-msgstr "[À ţéļévîšîôñ ôñ à ļàŵñ çĥàîŕ, šţîļļ ţûñéð ţô ţĥé ŵéàţĥéŕ çĥàññéļ. Šôméôñé ŵàš ŵàţçĥîñĝ ţĥé ƒôŕéçàšţ ŵĥéñ évéŕýôñé ļéƒţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "A television on a lawn chair, still looping Old Town's last news broadcast: the spring seed swap, the Ledger's rigs coming down on their cables, the two suns' worlds strip-mined and buried in waste, the shuttles rising to the Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
+msgstr "[À ţéļévîšîôñ ôñ à ļàŵñ çĥàîŕ, šţîļļ ļôôþîñĝ Ôļð Ţôŵñ'š ļàšţ ñéŵš bŕôàðçàšţ: ţĥé šþŕîñĝ šééð šŵàþ, ţĥé Ļéðĝéŕ'š ŕîĝš çômîñĝ ðôŵñ ôñ ţĥéîŕ çàbļéš, ţĥé ţŵô šûñš' ŵôŕļðš šţŕîþ-mîñéð àñð bûŕîéð îñ ŵàšţé, ţĥé šĥûţţļéš ŕîšîñĝ ţô ţĥé Çŕàðļé, àñð à bàññéŕ ôñ ţĥé ţôŵñ ĥàļļ ţĥàţ šàýš ŴÉ'ĻĻ BÉ BÀÇĶ. Ţĥéñ šţàţîç. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/eggs.json:eggs[tv].toast
-msgid "The static clears for a second: 'TODAY: DUSTY. TOMORROW: DUSTY. OUTLOOK: ...GREEN?' Then snow again."
-msgstr "[Ţĥé šţàţîç çļéàŕš ƒôŕ à šéçôñð: 'ŢÔÐÀÝ: ÐÛŠŢÝ. ŢÔMÔŔŔÔŴ: ÐÛŠŢÝ. ÔÛŢĻÔÔĶ: ...ĜŔÉÉÑ?' Ţĥéñ šñôŵ àĝàîñ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "The broadcast ends in snow. Somebody left it running for whoever came back."
+msgstr "[Ţĥé bŕôàðçàšţ éñðš îñ šñôŵ. Šômébôðý ļéƒţ îţ ŕûññîñĝ ƒôŕ ŵĥôévéŕ çàmé bàçķ. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/eggs.json:eggs[tv].hint
-msgid "Somebody left the weather on."
-msgstr "[Šômébôðý ļéƒţ ţĥé ŵéàţĥéŕ ôñ. ~~~~~~~]"
+msgid "Somebody left the news on. Adjust the antenna."
+msgstr "[Šômébôðý ļéƒţ ţĥé ñéŵš ôñ. Àðĵûšţ ţĥé àñţéññà. ~~~~~~~~~~~~~]"
 
 #: data/eggs.json:eggs[snail].name
 msgid "Gus"
@@ -10462,7 +10502,7 @@ msgstr "[Ôçĥŕé ~]"
 msgid "Tidewell"
 msgstr "[Ţîðéŵéļļ ~]"
 
-#: data/homeward.json:planets[rime].name data/telescope.json:planets_default[rime].name
+#: data/homeward.json:planets[rime].name data/planets.json:rime.name data/telescope.json:planets_default[rime].name
 msgid "Rime"
 msgstr "[Ŕîmé ~]"
 
@@ -11141,6 +11181,10 @@ msgstr "[Šéñšôŕ Môðûļé ~~]"
 #: data/parts.json:types[module].name
 msgid "Special Module"
 msgstr "[Šþéçîàļ Môðûļé ~~]"
+
+#: data/planets.json:rime.tagline
+msgid "An ice moon, core-mined until it froze."
+msgstr "[Àñ îçé môôñ, çôŕé-mîñéð ûñţîļ îţ ƒŕôžé. ~~~~~~~~~~~]"
 
 #: data/radio.json:songs[verdance_sprout].name
 msgid "Sprout Step"
@@ -13101,20 +13145,20 @@ msgid "If anyone ever does pick up on the other end, I'd like to hear what they 
 msgstr "[Îƒ àñýôñé évéŕ ðôéš þîçķ ûþ ôñ ţĥé ôţĥéŕ éñð, Î'ð ļîķé ţô ĥéàŕ ŵĥàţ ţĥéý šàý. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:egg_tv
-msgid "...weather... it said green..."
-msgstr "[...ŵéàţĥéŕ... îţ šàîð ĝŕééñ... ~~~~~~~]"
+msgid "...broadcast... we'll be... back..."
+msgstr "[...bŕôàðçàšţ... ŵé'ļļ bé... bàçķ... ~~~~~~~~~]"
 
 #: data/wren_lines.json:egg_tv
-msgid "'Outlook: green.' That TV has been wrong for three hundred years and it's finally about to be right."
-msgstr "['Ôûţļôôķ: ĝŕééñ.' Ţĥàţ ŢV ĥàš bééñ ŵŕôñĝ ƒôŕ ţĥŕéé ĥûñðŕéð ýéàŕš àñð îţ'š ƒîñàļļý àbôûţ ţô bé ŕîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "That was the last news out of Old Town. The rigs, the waste, the shuttles up to me. I carried every one of those people."
+msgstr "[Ţĥàţ ŵàš ţĥé ļàšţ ñéŵš ôûţ ôƒ Ôļð Ţôŵñ. Ţĥé ŕîĝš, ţĥé ŵàšţé, ţĥé šĥûţţļéš ûþ ţô mé. Î çàŕŕîéð évéŕý ôñé ôƒ ţĥôšé þéôþļé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:egg_tv
-msgid "Someone was watching the forecast when they left. I hope it said sunny."
-msgstr "[Šôméôñé ŵàš ŵàţçĥîñĝ ţĥé ƒôŕéçàšţ ŵĥéñ ţĥéý ļéƒţ. Î ĥôþé îţ šàîð šûññý. ~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "'We'll be back.' They meant it. I still have the passenger list."
+msgstr "['Ŵé'ļļ bé bàçķ.' Ţĥéý méàñţ îţ. Î šţîļļ ĥàvé ţĥé þàššéñĝéŕ ļîšţ. ~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:egg_tv
-msgid "The weather channel. Still on. Still hopeful. I like it."
-msgstr "[Ţĥé ŵéàţĥéŕ çĥàññéļ. Šţîļļ ôñ. Šţîļļ ĥôþéƒûļ. Î ļîķé îţ. ~~~~~~~~~~~~~~~~~]"
+msgid "Still broadcasting, after all this time. Somebody wanted whoever came back to know what happened. Now you do."
+msgstr "[Šţîļļ bŕôàðçàšţîñĝ, àƒţéŕ àļļ ţĥîš ţîmé. Šômébôðý ŵàñţéð ŵĥôévéŕ çàmé bàçķ ţô ķñôŵ ŵĥàţ ĥàþþéñéð. Ñôŵ ýôû ðô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:egg_snail
 msgid "...small... slow... alive...!"

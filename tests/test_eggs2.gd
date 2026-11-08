@@ -59,9 +59,10 @@ func test_collect_counts_once_per_part() -> void:
 
 func test_old_save_seen_gnomes_count_as_collected() -> void:
 	# Old saves stored walked-past gnomes under the same key.
-	GameState.flags["egg_gnomes_parts"] = [1, 3]
+	GameState.flags["egg_gnomes_parts"] = [1.0, 3.0]  # as a loaded save hands them back
 	assert_eq(EggCollect.count("gnomes"), 2)
 	assert_true(EggCollect.has_part("gnomes", 3))
+	assert_eq(EggCollect.add("gnomes", 1), 2, "a loaded part is not added twice")
 
 
 func test_display_shows_collected_and_salutes() -> void:

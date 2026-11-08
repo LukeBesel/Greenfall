@@ -264,7 +264,7 @@ static func found_count() -> int:
 
 
 func _parts_seen(id: String) -> Array:
-	return GameState.flags.get("egg_%s_parts" % id, [])
+	return EggCollect.parts(id)  # [eggs2] ints, also after a load
 
 
 func _spawn(p: Dictionary) -> void:
