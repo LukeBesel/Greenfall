@@ -14,7 +14,7 @@ extends Node3D
 
 const WATER: int = 5
 const START_SITE_M: float = 140.0  # start pad radius (the yard and its blocks)
-const HUB_SITE_M: float = 45.0
+const HUB_SITE_M: float = 82.0  # [orbD] a ruin_block site prefab is 108 m square (corners at 76 m)
 const SITE_BLEND_M: float = 40.0
 
 var seed_value: int = 4471
@@ -31,6 +31,8 @@ var junk_view: SphereJunkView
 var hubs: Array[int] = []
 var sites: Array[Dictionary] = []
 var start_site: Node3D
+var site_manager: SiteManager  # [orbD] every hub's site prefab (planet/sites/)
+var planet_id: String = "verdance"  # [orbD] which planet's site prefabs
 var stats: Dictionary = {}
 ## Bodies the streamer keeps 3D around (key -> Node3D); "view" is the camera.
 var trackers: Dictionary = {}
@@ -149,12 +151,17 @@ func site_at(p: Vector3) -> int:
 ## Stand-in start base in site-local metres on the flat pad (y = 0 is the pad, +y up): the
 ## contract PlanetEnvs.build_site gets (orbD replaces this with the real yard prefab).
 func build_start_site() -> Node3D:
-	start_site = Node3D.new()
+	# [orbD] The real hub sites: SiteManager builds the start yard prefab now (in this frame, so
+	# its anchors are ready for the depot) and the other hubs as Lumi comes near.
+	site_manager = SiteManager.new()
+	site_manager.name = "Sites"
+	add_child(site_manager)
+	planet_id = str(spec.get("id", planet_id))  # [orbD] --orbit-planet: that planet's site prefabs
+	site_manager.setup(self, planet_id, sites, seed_value)
+	var p: SitePrefab = site_manager.build_hub(0, true)
+	start_site = p.get_parent()
 	start_site.name = "StartSite"
-	add_child(start_site)
-	start_site.global_transform = sites[0]["transform"]
-	var slab_m: StandardMaterial3D = AssetLib.pbr_material("concrete_pavement", 0.2, Color(0.9, 0.9, 0.88), true)
-	_box(start_site, Vector3.ZERO, Vector3(16, 0.04, 16), slab_m, false)  # flush with the pad (no collision)
+	SiteManager.point_shaders_at(p)
 	return start_site
 
 

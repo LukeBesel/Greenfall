@@ -5,6 +5,9 @@ shader_type spatial;
 // and grime along the bottom. variant 0 = wall mural, 1 = billboard poster (paper sheets,
 // torn edges). Original composition; all from noise and SDFs, no texture art.
 render_mode cull_back;
+// [orbD] Site frame on a walkable globe (identity on the flat game): "world" maths run in the
+// nearest hub site's local metres, y up on its pad (planet/sites/site_manager.gd).
+global uniform mat4 site_inv;
 
 uniform float variant = 0.0;
 uniform vec2 size = vec2(10.0, 8.0);
@@ -66,7 +69,7 @@ float sd_ellipse(vec2 p, vec2 c, vec2 r, float ang) {
 varying vec3 v_world;
 
 void vertex() {
-	v_world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	v_world = (site_inv * MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
 
 void fragment() {
