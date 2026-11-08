@@ -126,7 +126,7 @@ func test_longer_gaps_between_songs() -> void:
 
 func test_quiet_minutes_after_the_pod_lands() -> void:
 	var d: Node = _director()
-	d.recent = [MAIN]  # the title screen played the main theme
+	(d.recent as Array[String]).append(MAIN)  # the title screen played the main theme
 	d.intro_start()
 	d.tick(0.1)
 	d.intro_land(1.0)
