@@ -15,7 +15,8 @@ extends Node
 ##     every prompt names the thing it opens. `--camp-report` prints the yard's interactables.
 ## Dev: --camp-broken (start with the bench broken even on a loaded save), --camp-fixed (repaired),
 ##      --camp-repair (start the repair after 1 s), --camp-built=radio+nursery (build them free),
-##      --camp-bin=N (trash bin level), --camp-report.
+##      --camp-bin=N (trash bin level), --camp-report, --camp-buy=conveyor+auto_baler[+recycler]
+##      (buy stations live after --camp-buy-at=S s, with their reveal).
 
 const BIN_ANCHOR := Vector3(2.2, 0.0, -4.5)  # beside the bin, off the weigh plate
 const BIN_REACH: float = 1.6
@@ -111,8 +112,23 @@ func _setup() -> void:
 	_register_bin()
 	if DevHooks.has("camp-repair"):
 		get_tree().create_timer(1.0).timeout.connect(repair_bench)
+	if DevHooks.has("camp-buy"):  # buy stations live (with their reveal), e.g. conveyor+auto_baler
+		get_tree().create_timer(DevHooks.get_f("camp-buy-at", 2.0)).timeout.connect(_dev_buy)
 	if DevHooks.has("camp-report"):
 		get_tree().create_timer(DevHooks.get_f("camp-report", 2.0)).timeout.connect(func() -> void: print(report()))
+
+
+func _dev_buy() -> void:
+	var st: Stations = Stations.of(world)
+	if st == null:
+		return
+	GameState.world["hub_level"] = maxi(int(GameState.world.get("hub_level", 1)), 3)
+	for id: String in DevHooks.get_s("camp-buy", "conveyor+auto_baler").split("+", false):
+		Research.grant(id)
+		var c: Dictionary = st.def(id).get("cost", {})
+		for k: String in c:
+			GameState.add_currency(k if k in ["cubes", "parts", "seeds"] else "parts", BigNum.from_float(float(c[k]) * 2.0))
+		print("[camp] buy %s: %s -> %s" % [id, st.block_reason(id), str(st.build(id))])
 
 
 func persist_save() -> void:

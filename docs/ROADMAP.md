@@ -24,6 +24,18 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 4. More districts content: 41 eggs now; more biome props (nets, satellites) if Poly Haven gets them; per-biome plants/wildlife.
 5. Post-game (M11): done (wt/late). Next: per-world story threads with WREN, wildlife using the decor hook, tune Starseed income and Bloom thresholds after play-testing.
 
+## Update: the landing yard (wt/camp, owner playtest #2)
+- Done: a fresh base is bare: the escape pod (intro2's crash site), a BROKEN workbench and the trash bin. Old Town's lean-to, generator, street lamp and the yard's poles, crates and festoons (street_dressing "Yard" layer) arrive with hub level 2; the compost press shows once something has grown (with a reveal).
+- Done: the workbench starts tilted on a buckled leg, tools in the dirt, sparking. The first E plays a ~2.6 s repair (Lumi turns, welds it with the claw beam, it rights itself); after that E opens it. `systems/camp/camp.gd`, state `GameState.world.camp.bench` (old saves: repaired).
+- Done: **TrashBin** (`automation/trash_bin.gd`, `data/trash_bin.json`): 5 levels (Dented Bin, Scrap Skip, Weigh Skip, Compactor, Smart Intake), each its own body in `automation/depot.gd`; value_mult and feed_interval per level; upgraded with E beside the bin or in the Hub tab (`ui/yard_builds_panel.gd`). Static API for pace: level(), max_level(), level_def(), next_def(), next_cost(), block_reason(hub_level), upgrade(hub_level), value_mult(), feed_interval(), events.changed.
+- Done: the radio and the robot nursery are Hub-tab yard builds (`systems/camp/yard_builds.gd`, `data/camp.json`): radio at hub level 2 for cubes, on its own crate by the right fence; nursery listed after the first sprout. Old saves keep theirs (migration in Camp.migrate). Retiring a robot needs the nursery built.
+- Done: radio songs replace the score: picking a song cuts the mood piece at once (pads fade in 0.6 s, melody and stingers dropped), stingers are muted while a song plays, and "Back to mood music" fades the score in from silence (`audio/music_director.gd` `_cut`, `tests/test_radio_music.gd`).
+- Done: the observatory Telescope stands at the back edge of the yard (-4.4, -6.2, door toward the yard); view fixes: one zoom range per view for wheel and stick (no snapping back), no stale selection ring.
+- Done: yard interactables are >= 3 m apart (`data/camp.json` min_gap, `tests/test_camp.gd`, `--camp-report`) and every prompt names its object ("Workbench: upgrades", "Trash bin (Lv 1): upgrade ...", "Radio: ...", "Telescope: ...").
+- Done: machines never sell invisibly: Belt Drive / Baler Hydraulics / Recycler Yield need their machine (`requires_station` in data/upgrades.json; hidden on the workbench until it stands), and every machine or yard build gets a reveal (`systems/camp/machine_reveal.gd`: light pillar, its name, a glowing trail from Lumi, chime). `tests/test_machines_appear.gd`.
+- Dev: `--camp-broken`, `--camp-fixed`, `--camp-repair`, `--camp-built=radio+nursery`, `--camp-bin=N`, `--camp-buy=conveyor+auto_baler`, `--camp-report`.
+- Open: the Keepsakes radio tab still plays songs before the radio is built; the yard builds have no build-from-the-yard placement (fixed spots).
+
 ## Update: Homeward, the Verdance system campaign (wt/home)
 - The game now ends when the whole system is restored. Five fixed planets (Verdance, Ochre, Tidewell,
   Rime, Anvil; data/homeward.json, systems/homeward.gd) are profile worlds with fixed seeds, types,

@@ -28,11 +28,11 @@ msgstr "Basis (Mk I, vor Stufe und Teile-Seltenheit)"
 msgid "Base"
 msgstr "Basis"
 
-#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:185
+#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:188
 msgid "%s Lv %d"
 msgstr "%s St %d"
 
-#: autoload/Economy.gd:300 data/robots.json:tiers[0].name
+#: autoload/Economy.gd:305 data/robots.json:tiers[0].name
 msgid "Mk I"
 msgstr "Mk I"
 
@@ -260,7 +260,11 @@ msgstr "ZUR  WAAGE  ◀"
 msgid "BALE  FEED"
 msgstr "BALLEN-ZUFUHR"
 
-#: automation/depot.gd:114
+#: automation/depot.gd:271
+msgid "TRASH"
+msgstr ""
+
+#: automation/depot.gd:308
 msgid "SCRAP  INTAKE  ·  WEIGH HERE"
 msgstr "SCHROTTANNAHME  ·  HIER WIEGEN"
 
@@ -320,7 +324,7 @@ msgstr "Schon repariert."
 msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr "Räum erst den Schrott drumherum weg (%d%% von %d%%)."
 
-#: automation/outposts.gd:318 automation/outposts.gd:333 automation/stations.gd:117
+#: automation/outposts.gd:318 automation/outposts.gd:333 automation/stations.gd:131
 msgid "Not enough cubes or parts."
 msgstr ""
 
@@ -328,7 +332,7 @@ msgstr ""
 msgid "Repair it first."
 msgstr "Erst reparieren."
 
-#: automation/outposts.gd:329
+#: automation/outposts.gd:329 automation/trash_bin.gd:82 ui/yard_builds_panel.gd:55
 msgid "Fully upgraded."
 msgstr "Voll ausgebaut."
 
@@ -448,47 +452,49 @@ msgstr "Nicht genug Würfel oder Teile"
 msgid "Rocket upgraded: %s."
 msgstr "Rakete verbessert: %s."
 
-#: automation/stations.gd:108 automation/telescope.gd:98 ui/stations_panel.gd:92
+#: automation/stations.gd:122 automation/telescope.gd:98 systems/camp/yard_builds.gd:59
+#: ui/stations_panel.gd:92 ui/yard_builds_panel.gd:77
 msgid "Built."
 msgstr "Gebaut."
 
-#: automation/stations.gd:112 ui/stations_panel.gd:93
+#: automation/stations.gd:126 ui/stations_panel.gd:93
 msgid "Requires research: %s."
 msgstr "Benötigt Forschung: %s."
 
-#: automation/stations.gd:115 ui/stations_panel.gd:93
+#: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:62
+#: ui/stations_panel.gd:93
 msgid "Requires hub level %d."
 msgstr "Benötigt Basisstufe %d."
 
-#: automation/stations.gd:132
+#: automation/stations.gd:146
 msgid "Conveyor Feeder online. Drop bales on the yellow pad."
 msgstr "Förderband in Betrieb. Leg Ballen auf die gelbe Plattform."
 
-#: automation/stations.gd:137
+#: automation/stations.gd:152
 msgid "Recycler lit. Bales that go in here are gone for good."
 msgstr "Recycler gezündet. Ballen, die hier reingehen, sind für immer weg."
 
-#: automation/stations.gd:142
+#: automation/stations.gd:158
 msgid "Auto-baler dropped at the cleaning frontier. Cleaners will tip their hoppers into it."
 msgstr "Auto-Presse an der Aufräumgrenze abgesetzt. Die Putzbots kippen ihre Trichter hinein."
 
-#: automation/stations.gd:251
+#: automation/stations.gd:268
 msgid "Off: every bale to the scale"
 msgstr "Aus: alle Ballen zur Waage"
 
-#: automation/stations.gd:253
+#: automation/stations.gd:270
 msgid "All bales to the recycler"
 msgstr "Alle Ballen zum Recycler"
 
-#: automation/stations.gd:255
+#: automation/stations.gd:272
 msgid "Every 2nd bale to the recycler"
 msgstr "Jeder 2. Ballen zum Recycler"
 
-#: automation/stations.gd:257
+#: automation/stations.gd:274
 msgid "Every 3rd bale to the recycler"
 msgstr "Jeder 3. Ballen zum Recycler"
 
-#: automation/stations.gd:258
+#: automation/stations.gd:275
 msgid "Every %dth bale to the recycler"
 msgstr "Jeder %d. Ballen zum Recycler"
 
@@ -496,7 +502,9 @@ msgstr "Jeder %d. Ballen zum Recycler"
 msgid "Requires hub level %d or research: %s."
 msgstr "Erfordert Basisstufe %d oder Forschung: %s."
 
-#: automation/telescope.gd:104 ui/telescope_panel.gd:40
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:299
+#: systems/camp/camp.gd:311 systems/camp/yard_builds.gd:67 ui/telescope_panel.gd:40
+#: ui/yard_builds_panel.gd:59 ui/yard_builds_panel.gd:78
 msgid "Not enough materials."
 msgstr "Nicht genug Material."
 
@@ -504,16 +512,16 @@ msgstr "Nicht genug Material."
 msgid "Telescope built. Walk up to it and press E to look across the system."
 msgstr "Teleskop gebaut. Geh hin und drück E, um über das System zu blicken."
 
-#: automation/telescope.gd:254 ui/telescope_panel.gd:11
+#: automation/telescope.gd:259 ui/telescope_panel.gd:11
 msgid "OBSERVATORY"
 msgstr "OBSERVATORIUM"
 
-#: automation/telescope.gd:302 data/eggs.json:eggs[stars].prompt
-msgid "E   look through the telescope"
-msgstr "E   durchs Teleskop schauen"
+#: automation/telescope.gd:307
+msgid "E   Telescope: look across the system"
+msgstr ""
 
 #: core/offline.gd:130 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:257
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:260
 msgid "%d min"
 msgstr "%d Min."
 
@@ -1171,63 +1179,63 @@ msgstr "Wassertank gesetzt. Gießbots in der Nähe tanken hier."
 msgid "WATER"
 msgstr "WASSER"
 
-#: scenes/slice.gd:281
+#: scenes/slice.gd:282
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Roboter-Uplink aktiv. Drück B für das Kommando: Zonen malen und Crews hinschicken, wo du willst."
 
-#: scenes/slice.gd:512
+#: scenes/slice.gd:513
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 aktiv. Blütenkern 4%: grünes Licht schwach. Cradle-Relais: kaum. Lass etwas wachsen."
 
-#: scenes/slice.gd:824
+#: scenes/slice.gd:830
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXFELD SAUBER!  +%s"
 
-#: scenes/slice.gd:838
+#: scenes/slice.gd:844
 msgid "Milestone: %d hexes clean!"
 msgstr "Meilenstein: %d Hexfelder sauber!"
 
-#: scenes/slice.gd:840
+#: scenes/slice.gd:846
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "Der ganze Schrottplatz ist sauber. Lumi piept ein sehr langes, sehr glückliches Piepen."
 
-#: scenes/slice.gd:847
+#: scenes/slice.gd:853
 msgid "%s is out of range: %s"
 msgstr "%s ist außer Reichweite: %s"
 
-#: scenes/slice.gd:857
+#: scenes/slice.gd:863
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Gesperrt. Bring deine Basis auf Stufe 5, um die Startrampe zu bauen."
 
-#: scenes/slice.gd:860 ui/rockets_panel.gd:39
+#: scenes/slice.gd:866 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Energiezellen laden: %s. Raketen-Upgrades füllen sie schneller."
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:920
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Landung: %s. Basis %d von %d. %s"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:921
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "Die Rakete parkt auf dem Platz, bereit, sobald die Zellen voll sind."
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:921
 msgid "Landed on the base pad."
 msgstr "Auf der Basisplattform gelandet."
 
-#: scenes/slice.gd:1006
+#: scenes/slice.gd:1015
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Upgrades brauchen eine Werkbank. Zurück zur Basis."
 
-#: scenes/slice.gd:1174
+#: scenes/slice.gd:1186
 msgid "Welcome back. The junk waited for you."
 msgstr "Willkommen zurück. Der Schrott hat auf dich gewartet."
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1203
 msgid "OUTPOST %d · Lv%d"
 msgstr "AUSSENPOSTEN %d · St%d"
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1203
 msgid "OUTPOST %d · RUIN"
 msgstr "AUSSENPOSTEN %d · RUINE"
 
@@ -1805,8 +1813,9 @@ msgstr ""
 "Der Ledger ist jetzt auf unserer Seite. Die Störsender summen einfach zur Musik mit."
 
 #: story/ledger.gd:328 systems/decor.gd:122 systems/research.gd:186
-#: systems/robot_builder.gd:360 systems/robot_builder.gd:437 ui/hub_panel.gd:126
-#: ui/stations_panel.gd:96 ui/telescope_panel.gd:43
+#: systems/robot_builder.gd:360 systems/robot_builder.gd:437 ui/hub_panel.gd:130
+#: ui/stations_panel.gd:96 ui/telescope_panel.gd:43 ui/yard_builds_panel.gd:59
+#: ui/yard_builds_panel.gd:81
 msgid "Needs %s"
 msgstr "Benötigt %s"
 
@@ -2657,6 +2666,54 @@ msgstr ""
 msgid "%s spotted a %s."
 msgstr "%s hat entdeckt: %s."
 
+#: systems/camp/camp.gd:145
+msgid "E   Workbench (broken): repair it"
+msgstr ""
+
+#: systems/camp/camp.gd:146
+msgid "E   Workbench: upgrades"
+msgstr ""
+
+#: systems/camp/camp.gd:193
+msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
+msgstr ""
+
+#: systems/camp/camp.gd:271
+msgid "Compost Press"
+msgstr ""
+
+#: systems/camp/camp.gd:297
+msgid "E   %s (Lv %d): fully upgraded"
+msgstr ""
+
+#: systems/camp/camp.gd:300
+msgid "E   %s (Lv %d): %s"
+msgstr ""
+
+#: systems/camp/camp.gd:301
+msgid "E   %s (Lv %d): upgrade to %s for %s"
+msgstr ""
+
+#: systems/camp/camp.gd:307
+msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
+msgstr ""
+
+#: systems/camp/machine_reveal.gd:46
+msgid "%s built. Follow the light to it."
+msgstr ""
+
+#: systems/camp/machine_reveal.gd:46
+msgid "%s built."
+msgstr ""
+
+#: systems/camp/yard_builds.gd:65
+msgid "Grow your first seed first."
+msgstr ""
+
+#: systems/camp/yard_builds.gd:65
+msgid "Not yet."
+msgstr ""
+
 #: systems/extras/album.gd:86
 msgid "First arrival"
 msgstr "Ankunft"
@@ -2677,47 +2734,51 @@ msgstr "Basis Stufe 5"
 msgid "Album: an \"after\" picture of %s (%s)."
 msgstr "Album: ein „Nachher“-Bild von %s (%s)."
 
-#: systems/extras/nursery.gd:92
+#: systems/extras/nursery.gd:90
+msgid "Build the Robot Nursery in the Hub tab first."
+msgstr ""
+
+#: systems/extras/nursery.gd:94
 msgid "Only Mk I-II robots retire early. %s can retire in %d min."
 msgstr "Nur Roboter der Mk I-II gehen früh in Rente. %s kann in %d Min. in Rente gehen."
 
-#: systems/extras/nursery.gd:120
+#: systems/extras/nursery.gd:122
 msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
 msgstr "%s geht in den Ruhestand in den Gärtnereigarten. +%d Teile, und die Blumen bekommen einen Gärtner."
 
-#: systems/extras/nursery.gd:208
+#: systems/extras/nursery.gd:223
 msgid "E   Say hi to %s"
 msgstr "E   %s Hallo sagen"
 
-#: systems/extras/nursery.gd:266
+#: systems/extras/nursery.gd:281
 msgid "CARETAKER · %s"
 msgstr "GÄRTNER · %s"
 
-#: systems/extras/nursery.gd:313
+#: systems/extras/nursery.gd:328
 msgid "%s beeps hello and shows Lumi the marigolds."
 msgstr "%s piept zur Begrüßung und zeigt Lumi die Ringelblumen."
 
-#: systems/extras/nursery.gd:314
+#: systems/extras/nursery.gd:329
 msgid "%s is busy with the watering can, but waves anyway."
 msgstr "%s ist mit der Gießkanne beschäftigt, winkt aber trotzdem."
 
-#: systems/extras/nursery.gd:315
+#: systems/extras/nursery.gd:330
 msgid "%s hums to the seedlings. Retirement suits it."
 msgstr "%s summt den Setzlingen etwas vor. Der Ruhestand steht ihm."
 
-#: systems/extras/nursery.gd:316
+#: systems/extras/nursery.gd:331
 msgid "%s points proudly at a new bud."
 msgstr "%s zeigt stolz auf eine neue Knospe."
 
-#: systems/extras/radio.gd:165
+#: systems/extras/radio.gd:168
 msgid "E   Radio: %s"
 msgstr "E   Radio: %s"
 
-#: systems/extras/radio.gd:165
+#: systems/extras/radio.gd:168
 msgid "mood music"
 msgstr "Stimmungsmusik"
 
-#: systems/extras/radio.gd:193
+#: systems/extras/radio.gd:211
 msgid "New song on the radio: %s"
 msgstr "Neues Lied im Radio: %s"
 
@@ -3769,7 +3830,7 @@ msgstr ""
 msgid "%d REQUESTS READY  ·  claim them at the workbench"
 msgstr ""
 
-#: ui/extras_panel.gd:9
+#: ui/extras_panel.gd:9 data/camp.json:builds.radio.name
 msgid "Radio"
 msgstr "Radio"
 
@@ -4085,23 +4146,23 @@ msgstr "+%d EP"
 msgid "CORE %d%%"
 msgstr "KERN %d%%"
 
-#: ui/hub_panel.gd:21
+#: ui/hub_panel.gd:22
 msgid "HUB"
 msgstr "BASIS"
 
-#: ui/hub_panel.gd:69
+#: ui/hub_panel.gd:73
 msgid "Build Signal Jammer"
 msgstr "Störsender bauen"
 
-#: ui/hub_panel.gd:94
+#: ui/hub_panel.gd:98
 msgid " (have %s)"
 msgstr " (vorhanden: %s)"
 
-#: ui/hub_panel.gd:101
+#: ui/hub_panel.gd:105
 msgid "Parts %s"
 msgstr ""
 
-#: ui/hub_panel.gd:103
+#: ui/hub_panel.gd:107
 msgid ""
 "Level %d   ·   %s\n"
 "%s   Bales sell for +%d%%."
@@ -4109,11 +4170,11 @@ msgstr ""
 "Stufe %d   ·   %s\n"
 "%s   Ballen bringen +%d%%."
 
-#: ui/hub_panel.gd:106
+#: ui/hub_panel.gd:110
 msgid "Fully built."
 msgstr "Komplett gebaut."
 
-#: ui/hub_panel.gd:109
+#: ui/hub_panel.gd:113
 msgid ""
 "Next: %s. %s\n"
 "Needs %s"
@@ -4121,15 +4182,16 @@ msgstr ""
 "Nächste: %s. %s\n"
 "Benötigt %s"
 
-#: ui/hub_panel.gd:110 ui/stations_panel.gd:98 ui/telescope_panel.gd:45
+#: ui/hub_panel.gd:114 ui/stations_panel.gd:98 ui/telescope_panel.gd:45
+#: ui/yard_builds_panel.gd:83
 msgid "Build %s"
 msgstr "%s bauen"
 
-#: ui/hub_panel.gd:115
+#: ui/hub_panel.gd:119
 msgid "Continue in the full game"
 msgstr "Weiter im vollen Spiel"
 
-#: ui/hub_panel.gd:122
+#: ui/hub_panel.gd:126
 msgid ""
 "\n"
 "Requires hub level %d."
@@ -4137,7 +4199,7 @@ msgstr ""
 "\n"
 "Benötigt Basisstufe %d."
 
-#: ui/hub_panel.gd:124
+#: ui/hub_panel.gd:128
 msgid ""
 "\n"
 "All built (max)."
@@ -4145,7 +4207,7 @@ msgstr ""
 "\n"
 "Alles gebaut (max.)."
 
-#: ui/hub_panel.gd:127
+#: ui/hub_panel.gd:131
 msgid ""
 "%s   ·   %d / %d built\n"
 "%s%s"
@@ -4153,11 +4215,11 @@ msgstr ""
 "%s   ·   %d / %d gebaut\n"
 "%s%s"
 
-#: ui/hub_panel.gd:128
+#: ui/hub_panel.gd:132
 msgid "Air Scrubbers maxed"
 msgstr "Luftwäscher maximal"
 
-#: ui/hub_panel.gd:128
+#: ui/hub_panel.gd:132
 msgid "Build Air Scrubber"
 msgstr "Luftwäscher bauen"
 
@@ -4904,7 +4966,7 @@ msgstr "RAKETE"
 msgid "Top tier: warp hops, no recharge."
 msgstr "Höchste Stufe: Warp-Sprünge, kein Aufladen."
 
-#: ui/rockets_panel.gd:119
+#: ui/rockets_panel.gd:119 ui/yard_builds_panel.gd:60
 msgid "Upgrade to %s"
 msgstr "Verbessern auf %s"
 
@@ -5336,7 +5398,7 @@ msgstr "Bezirk wählen"
 msgid "Rocket not ready"
 msgstr "Rakete nicht bereit"
 
-#: ui/telescope_panel.gd:39
+#: ui/telescope_panel.gd:39 ui/yard_builds_panel.gd:77
 msgid "Built. Walk up to it and press E."
 msgstr "Gebaut. Geh hin und drück E."
 
@@ -5344,23 +5406,23 @@ msgstr "Gebaut. Geh hin und drück E."
 msgid "Codex: First Light"
 msgstr "Kodex: Erstes Licht"
 
-#: ui/telescope_view.gd:363
+#: ui/telescope_view.gd:364
 msgid "TELESCOPE  ·  SYSTEM VIEW"
 msgstr "TELESKOP  ·  SYSTEMANSICHT"
 
-#: ui/telescope_view.gd:369
+#: ui/telescope_view.gd:370
 msgid "%s (here)"
 msgstr "%s (hier)"
 
-#: ui/telescope_view.gd:371
+#: ui/telescope_view.gd:372
 msgid "%s  ·  not visited"
 msgstr "%s  ·  nicht besucht"
 
-#: ui/telescope_view.gd:378
+#: ui/telescope_view.gd:379
 msgid "Close"
 msgstr "Schließen"
 
-#: ui/telescope_view.gd:381
+#: ui/telescope_view.gd:382
 msgid ""
 "Two suns, one system.\n"
 "Worlds visited: %d"
@@ -5368,15 +5430,15 @@ msgstr ""
 "Zwei Sonnen, ein System.\n"
 "Besuchte Welten: %d"
 
-#: ui/telescope_view.gd:383
+#: ui/telescope_view.gd:384
 msgid "Pick a world you've visited to watch its crew. The one you stand on can't see itself."
 msgstr "Wähle eine besuchte Welt, um ihrer Crew zuzusehen. Die, auf der du stehst, sieht sich nicht selbst."
 
-#: ui/telescope_view.gd:383
+#: ui/telescope_view.gd:384
 msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
 msgstr "Noch keine andere Welt besucht. Besäe oder besuche eine Welt über die Archenbrücke und komm dann zurück."
 
-#: ui/telescope_view.gd:466
+#: ui/telescope_view.gd:477
 msgid ""
 "%s\n"
 "District %d%% clean · %d robots\n"
@@ -5386,7 +5448,7 @@ msgstr ""
 "Bezirk %d%% sauber · %d Roboter\n"
 "Letzter Besuch %s"
 
-#: ui/telescope_view.gd:468
+#: ui/telescope_view.gd:479
 msgid ""
 "%s\n"
 "You are here."
@@ -5394,7 +5456,7 @@ msgstr ""
 "%s\n"
 "Du bist hier."
 
-#: ui/telescope_view.gd:470
+#: ui/telescope_view.gd:481
 msgid ""
 "%s\n"
 "Not visited yet."
@@ -5402,51 +5464,51 @@ msgstr ""
 "%s\n"
 "Noch nicht besucht."
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:488
 msgid "You stand on %s."
 msgstr "Du stehst auf %s."
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:488
 msgid "%s: nobody of yours down there yet."
 msgstr "%s: Dort unten ist noch niemand von dir."
 
-#: ui/telescope_view.gd:491
+#: ui/telescope_view.gd:502
 msgid "unknown"
 msgstr "unbekannt"
 
-#: ui/telescope_view.gd:494
+#: ui/telescope_view.gd:505
 msgid "%d min ago"
 msgstr "vor %d Min."
 
-#: ui/telescope_view.gd:496
+#: ui/telescope_view.gd:507
 msgid "%.1f h ago"
 msgstr "vor %.1f Std."
 
-#: ui/telescope_view.gd:497
+#: ui/telescope_view.gd:508
 msgid "%d days ago"
 msgstr "vor %d Tagen"
 
-#: ui/telescope_view.gd:587
+#: ui/telescope_view.gd:598
 msgid "TELESCOPE  ·  %s"
 msgstr "TELESKOP  ·  %s"
 
-#: ui/telescope_view.gd:588
+#: ui/telescope_view.gd:599
 msgid "◀ Look"
 msgstr "◀ Blick"
 
-#: ui/telescope_view.gd:589
+#: ui/telescope_view.gd:600
 msgid "Look ▶"
 msgstr "Blick ▶"
 
-#: ui/telescope_view.gd:591
+#: ui/telescope_view.gd:602
 msgid "Back to system"
 msgstr "Zurück zum System"
 
-#: ui/telescope_view.gd:592
+#: ui/telescope_view.gd:603
 msgid "Right stick or drag: turn and zoom.  Hold something in the reticle to log it."
 msgstr "Rechter Stick oder Ziehen: drehen und zoomen.  Halte etwas im Fadenkreuz, um es zu erfassen."
 
-#: ui/telescope_view.gd:638
+#: ui/telescope_view.gd:649
 msgid ""
 "PLANET     %s\n"
 "DISTRICT   %.2f%% clean\n"
@@ -5458,7 +5520,7 @@ msgstr ""
 "ROBOTER    %d aktiv von %d\n"
 "BESUCHT    %s"
 
-#: ui/telescope_view.gd:641
+#: ui/telescope_view.gd:652
 msgid ""
 "\n"
 "CARE PACKAGE  %d:%02d left"
@@ -5466,7 +5528,7 @@ msgstr ""
 "\n"
 "HILFSPAKET  noch %d:%02d"
 
-#: ui/telescope_view.gd:642
+#: ui/telescope_view.gd:653
 msgid ""
 "Remote pace (%d%% of offline)\n"
 "Waiting for you: %s cubes%s"
@@ -5474,27 +5536,27 @@ msgstr ""
 "Ferntempo (%d%% von offline)\n"
 "Wartet auf dich: %s Würfel%s"
 
-#: ui/telescope_view.gd:645
+#: ui/telescope_view.gd:656
 msgid "Send a care package (%s cubes)"
 msgstr "Hilfspaket schicken (%s Würfel)"
 
-#: ui/telescope_view.gd:659
+#: ui/telescope_view.gd:670
 msgid "Care package away. The crew on %s works at double speed for %d minutes."
 msgstr "Hilfspaket unterwegs. Die Crew auf %s arbeitet %d Minuten lang doppelt so schnell."
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:753
 msgid "Ledger wreck"
 msgstr "Ledger-Wrack"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:753
 msgid "Deer"
 msgstr "Reh"
 
-#: ui/telescope_view.gd:738
+#: ui/telescope_view.gd:754
 msgid "Logged through the telescope: %s. New Codex entry."
 msgstr "Durchs Teleskop erfasst: %s. Neuer Kodex-Eintrag."
 
-#: ui/telescope_view.gd:739
+#: ui/telescope_view.gd:755
 msgid "Codex: %s"
 msgstr "Kodex: %s"
 
@@ -5572,7 +5634,7 @@ msgstr "BESTER WERT"
 msgid "Buy"
 msgstr "Kaufen"
 
-#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:208
+#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:211
 msgid "Max"
 msgstr "Max."
 
@@ -5580,35 +5642,39 @@ msgstr "Max."
 msgid "Lv %d%s"
 msgstr "St %d%s"
 
-#: ui/upgrade_card.gd:186
+#: ui/upgrade_card.gd:182
+msgid "Build the %s first (Hub tab)"
+msgstr ""
+
+#: ui/upgrade_card.gd:189
 msgid "Requires %s"
 msgstr "Benötigt %s"
 
-#: ui/upgrade_card.gd:189
+#: ui/upgrade_card.gd:192
 msgid "%s%s  (max)"
 msgstr "%s%s  (max.)"
 
-#: ui/upgrade_card.gd:192
+#: ui/upgrade_card.gd:195
 msgid "Off  →  On"
 msgstr "Aus  →  An"
 
-#: ui/upgrade_card.gd:199
+#: ui/upgrade_card.gd:202
 msgid "MAX"
 msgstr "MAX."
 
-#: ui/upgrade_card.gd:208
+#: ui/upgrade_card.gd:211
 msgid "Max (%d)"
 msgstr "Max. (%d)"
 
-#: ui/upgrade_card.gd:214
+#: ui/upgrade_card.gd:217
 msgid "in about %s"
 msgstr "in etwa %s"
 
-#: ui/upgrade_card.gd:214
+#: ui/upgrade_card.gd:217
 msgid "earn more cubes"
 msgstr "mehr Würfel verdienen"
 
-#: ui/upgrade_card.gd:219
+#: ui/upgrade_card.gd:222
 msgid "Where it comes from:  %s"
 msgstr "Woher es kommt:  %s"
 
@@ -5678,6 +5744,14 @@ msgstr ""
 
 #: ui/world_picker.gd:117
 msgid "%d hexes"
+msgstr ""
+
+#: ui/yard_builds_panel.gd:12
+msgid "YARD"
+msgstr ""
+
+#: ui/yard_builds_panel.gd:53
+msgid "Trash bin: %s (level %d)   ·   bales sell for %d%% here"
 msgstr ""
 
 #: water/water_view.gd:78
@@ -6551,6 +6625,18 @@ msgstr "Sechs Bezirke in Blüte oder 3% des Planeten zurückgewonnen."
 #: data/bloom.json:milestones[evergreen].desc
 msgid "Twelve districts in bloom, or 5% of the planet reclaimed."
 msgstr "Zwölf Bezirke in Blüte oder 5% des Planeten zurückgewonnen."
+
+#: data/camp.json:builds.radio.desc
+msgid "A valve radio on a crate by the fence. Plays the songs of the worlds you restore."
+msgstr ""
+
+#: data/camp.json:builds.nursery.name
+msgid "Robot Nursery"
+msgstr ""
+
+#: data/camp.json:builds.nursery.desc
+msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
+msgstr ""
 
 #: data/codex.json:categories[junk].name data/hex_levels.json:levels[0].name
 msgid "Junk"
@@ -8232,6 +8318,10 @@ msgstr "Ein Getränkeautomat, der an etwas festhält."
 #: data/eggs.json:eggs[stars].name
 msgid "WREN's Constellation"
 msgstr "WRENs Sternbild"
+
+#: data/eggs.json:eggs[stars].prompt
+msgid "E   look through the telescope"
+msgstr "E   durchs Teleskop schauen"
 
 #: data/eggs.json:eggs[stars].lore
 msgid "Old Town's amateur telescope still points at the five stars the Makers called 'the Wren'. The Cradle's AI was named after them."
@@ -12365,6 +12455,46 @@ msgstr "Eine hydraulische Ballenpresse, abgesetzt an der Aufräumgrenze. Putzrob
 
 #: data/stations.json:recycler.desc
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky."
+msgstr ""
+
+#: data/trash_bin.json:levels[0].name
+msgid "Dented Bin"
+msgstr ""
+
+#: data/trash_bin.json:levels[0].desc
+msgid "A dented wheelie bin on a rusty weigh plate. It swallows one bale at a time."
+msgstr ""
+
+#: data/trash_bin.json:levels[1].name
+msgid "Scrap Skip"
+msgstr ""
+
+#: data/trash_bin.json:levels[1].desc
+msgid "A proper steel skip. Bales go in faster and weigh in a little heavier."
+msgstr ""
+
+#: data/trash_bin.json:levels[2].name
+msgid "Weigh Skip"
+msgstr ""
+
+#: data/trash_bin.json:levels[2].desc
+msgid "A ribbed skip on a calibrated scale with a warning beacon. Honest weights, better pay."
+msgstr ""
+
+#: data/trash_bin.json:levels[3].name
+msgid "Compactor"
+msgstr ""
+
+#: data/trash_bin.json:levels[3].desc
+msgid "A hydraulic ram presses every bale flat before it is weighed."
+msgstr ""
+
+#: data/trash_bin.json:levels[4].name
+msgid "Smart Intake"
+msgstr ""
+
+#: data/trash_bin.json:levels[4].desc
+msgid "A clean white intake with a scanner seam. It sorts what it eats and pays the best rate."
 msgstr ""
 
 #: data/upgrades.json:upgrades[compartment_size].name
