@@ -204,6 +204,13 @@ func _step_off(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerr
 			c.queue_free()
 
 
+## Drops the veil at once (a cinematic takes over the screen).
+func clear_veil() -> void:
+	if _veil:
+		_veil.get_parent().queue_free()
+		_veil = null
+
+
 func _veil_now(a: float) -> void:
 	if _veil == null:
 		var cl := CanvasLayer.new()

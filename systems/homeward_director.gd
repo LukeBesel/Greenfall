@@ -332,7 +332,8 @@ static func _launch(w: Node, target: int) -> bool:
 
 ## Mk VII built and the last seed planted, at the Homeward complex.
 static func home_ready(w: Node) -> bool:
-	return Homeward.drive() >= 7 and bool(GameState.flags.get("home_last_seed", false)) and Homeward.at_home_site(w) and not Homeward.done()
+	var here: bool = Homeward.at_home_site(w) or (OrbitSites.of(w) != null and Homeward.current_planet() == 0)  # [orbD] on Verdance's globe: from any hub pad
+	return Homeward.drive() >= 7 and bool(GameState.flags.get("home_last_seed", false)) and here and not Homeward.done()
 
 
 static func launch_home(w: Node) -> bool:
