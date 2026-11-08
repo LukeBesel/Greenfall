@@ -34,6 +34,11 @@ func _ready() -> void:
 	env.fog_density = 0.0006
 	env.fog_light_color = Color(0.7, 0.84, 0.98)
 	env.fog_aerial_perspective = 0.5
+	env.volumetric_fog_density = 0.0006  # (the presets turn volumetric fog on; its default is a pea-souper)
+	env.volumetric_fog_albedo = Color(0.85, 0.9, 0.96)
+	env.volumetric_fog_length = 120.0
+	env.volumetric_fog_sky_affect = 0.1
+	env.fog_sky_affect = 0.15
 	env.adjustment_enabled = true
 	env.adjustment_saturation = 1.15
 	env.adjustment_contrast = 1.08
