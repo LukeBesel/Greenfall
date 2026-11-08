@@ -2773,15 +2773,15 @@ msgstr "[%s ĥûmš ţô ţĥé šééðļîñĝš. Ŕéţîŕéméñţ šûîţ
 msgid "%s points proudly at a new bud."
 msgstr "[%s þôîñţš þŕôûðļý àţ à ñéŵ bûð. ~~~~~~~~]"
 
-#: systems/extras/radio.gd:168
-msgid "E   Radio: %s"
-msgstr "E   [Ŕàðîô: %s ~]"
+#: systems/extras/radio.gd:169
+msgid "E   CD player: %s"
+msgstr "E   [ÇÐ þļàýéŕ: %s ~~]"
 
-#: systems/extras/radio.gd:168
+#: systems/extras/radio.gd:169
 msgid "mood music"
 msgstr "[môôð mûšîç ~]"
 
-#: systems/extras/radio.gd:211
+#: systems/extras/radio.gd:214
 msgid "New song on the radio: %s"
 msgstr "[Ñéŵ šôñĝ ôñ ţĥé ŕàðîô: %s ~~~~~~]"
 
@@ -3837,7 +3837,7 @@ msgstr "[ŔÉQÛÉŠŢ ŔÉÀÐÝ  ·  çļàîm îţ àţ ţĥé ŵôŕķbéñ�
 msgid "%d REQUESTS READY  ·  claim them at the workbench"
 msgstr "[%d ŔÉQÛÉŠŢŠ ŔÉÀÐÝ  ·  çļàîm ţĥém àţ ţĥé ŵôŕķbéñçĥ ~~~~~~~~~~~~~~]"
 
-#: ui/extras_panel.gd:9 data/camp.json:builds.radio.name
+#: ui/extras_panel.gd:9
 msgid "Radio"
 msgstr "[Ŕàðîô ~]"
 
@@ -6643,9 +6643,13 @@ msgstr "[Šîx ðîšţŕîçţš îñ bļôôm, ôŕ 3% oƒ ţĥé þļàñéţ
 msgid "Twelve districts in bloom, or 5% of the planet reclaimed."
 msgstr "[Ţŵéļvé ðîšţŕîçţš îñ bļôôm, ôŕ 5% oƒ ţĥé þļàñéţ ŕéçļàîméð. ~~~~~~~~~~~~~~~~~]"
 
+#: data/camp.json:builds.radio.name
+msgid "CD Player"
+msgstr "[ÇÐ Þļàýéŕ ~]"
+
 #: data/camp.json:builds.radio.desc
-msgid "A valve radio on a crate by the fence. Plays the songs of the worlds you restore."
-msgstr "[À vàļvé ŕàðîô ôñ à çŕàţé bý ţĥé ƒéñçé. Þļàýš ţĥé šôñĝš ôƒ ţĥé ŵôŕļðš ýôû ŕéšţôŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
+msgstr "[À çĥûñķý ôļð ÇÐ þļàýéŕ ôñ à çŕàţé bý ţĥé ƒéñçé. Þļàýš ţĥé ðîšçš ýôû ƒîñð. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/camp.json:builds.nursery.name
 msgid "Robot Nursery"

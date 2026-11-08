@@ -2748,15 +2748,15 @@ msgstr ""
 msgid "%s points proudly at a new bud."
 msgstr ""
 
-#: systems/extras/radio.gd:168
-msgid "E   Radio: %s"
+#: systems/extras/radio.gd:169
+msgid "E   CD player: %s"
 msgstr ""
 
-#: systems/extras/radio.gd:168
+#: systems/extras/radio.gd:169
 msgid "mood music"
 msgstr ""
 
-#: systems/extras/radio.gd:211
+#: systems/extras/radio.gd:214
 msgid "New song on the radio: %s"
 msgstr ""
 
@@ -3807,7 +3807,7 @@ msgstr ""
 msgid "%d REQUESTS READY  ·  claim them at the workbench"
 msgstr ""
 
-#: ui/extras_panel.gd:9 data/camp.json:builds.radio.name
+#: ui/extras_panel.gd:9
 msgid "Radio"
 msgstr ""
 
@@ -6576,8 +6576,12 @@ msgstr ""
 msgid "Twelve districts in bloom, or 5% of the planet reclaimed."
 msgstr ""
 
+#: data/camp.json:builds.radio.name
+msgid "CD Player"
+msgstr ""
+
 #: data/camp.json:builds.radio.desc
-msgid "A valve radio on a crate by the fence. Plays the songs of the worlds you restore."
+msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
 msgstr ""
 
 #: data/camp.json:builds.nursery.name

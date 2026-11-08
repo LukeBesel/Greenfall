@@ -91,6 +91,12 @@ func _setup() -> void:
 	if DevHooks.has("camp-built"):
 		for id: String in DevHooks.get_s("camp-built", "radio+nursery").split("+", false):
 			YardBuilds.mark_built(id)
+	# The extras set themselves up before Camp: show what migration / dev hooks just marked built.
+	var ex: ExtrasDirector = ExtrasDirector.of(world)
+	if ex and ex.radio:
+		ex.radio.set_built(YardBuilds.built("radio"), false)
+	if ex and ex.nursery:
+		ex.nursery.set_built(YardBuilds.built("nursery"), false)
 	if DevHooks.has("camp-bin"):
 		TrashBin.set_level(int(DevHooks.get_f("camp-bin", 1.0)))
 	_bench = (world.get("_ruin_bits") as Dictionary).get("bench") as Node3D

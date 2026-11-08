@@ -2774,15 +2774,15 @@ msgstr "%s cantarola para as mudas. A aposentadoria combina com ele."
 msgid "%s points proudly at a new bud."
 msgstr "%s aponta orgulhoso para um botão novo."
 
-#: systems/extras/radio.gd:168
-msgid "E   Radio: %s"
-msgstr "E   Rádio: %s"
+#: systems/extras/radio.gd:169
+msgid "E   CD player: %s"
+msgstr ""
 
-#: systems/extras/radio.gd:168
+#: systems/extras/radio.gd:169
 msgid "mood music"
 msgstr "música ambiente"
 
-#: systems/extras/radio.gd:211
+#: systems/extras/radio.gd:214
 msgid "New song on the radio: %s"
 msgstr "Nova música no rádio: %s"
 
@@ -3838,7 +3838,7 @@ msgstr ""
 msgid "%d REQUESTS READY  ·  claim them at the workbench"
 msgstr ""
 
-#: ui/extras_panel.gd:9 data/camp.json:builds.radio.name
+#: ui/extras_panel.gd:9
 msgid "Radio"
 msgstr "Rádio"
 
@@ -6642,8 +6642,12 @@ msgstr "Seis distritos em flor, ou 3% do planeta recuperado."
 msgid "Twelve districts in bloom, or 5% of the planet reclaimed."
 msgstr "Doze distritos em flor, ou 5% do planeta recuperado."
 
+#: data/camp.json:builds.radio.name
+msgid "CD Player"
+msgstr ""
+
 #: data/camp.json:builds.radio.desc
-msgid "A valve radio on a crate by the fence. Plays the songs of the worlds you restore."
+msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
 msgstr ""
 
 #: data/camp.json:builds.nursery.name
@@ -14244,6 +14248,9 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "E   Radio: %s"
+#~ msgstr "E   Rádio: %s"
 
 #~ msgid "line item %04d   checksum %s"
 #~ msgstr "item %04d   checksum %s"

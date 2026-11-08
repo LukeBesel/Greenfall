@@ -2765,15 +2765,15 @@ msgstr "%s 对着幼苗哼歌。退休生活很适合它。"
 msgid "%s points proudly at a new bud."
 msgstr "%s 骄傲地指着一个新花苞。"
 
-#: systems/extras/radio.gd:168
-msgid "E   Radio: %s"
-msgstr "E   收音机：%s"
+#: systems/extras/radio.gd:169
+msgid "E   CD player: %s"
+msgstr ""
 
-#: systems/extras/radio.gd:168
+#: systems/extras/radio.gd:169
 msgid "mood music"
 msgstr "氛围音乐"
 
-#: systems/extras/radio.gd:211
+#: systems/extras/radio.gd:214
 msgid "New song on the radio: %s"
 msgstr "收音机新歌：%s"
 
@@ -3827,7 +3827,7 @@ msgstr ""
 msgid "%d REQUESTS READY  ·  claim them at the workbench"
 msgstr ""
 
-#: ui/extras_panel.gd:9 data/camp.json:builds.radio.name
+#: ui/extras_panel.gd:9
 msgid "Radio"
 msgstr "收音机"
 
@@ -6630,8 +6630,12 @@ msgstr "六个街区繁花盛开，或收复星球的 3%。"
 msgid "Twelve districts in bloom, or 5% of the planet reclaimed."
 msgstr "十二个街区繁花盛开，或收复星球的 5%。"
 
+#: data/camp.json:builds.radio.name
+msgid "CD Player"
+msgstr ""
+
 #: data/camp.json:builds.radio.desc
-msgid "A valve radio on a crate by the fence. Plays the songs of the worlds you restore."
+msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
 msgstr ""
 
 #: data/camp.json:builds.nursery.name
@@ -14232,6 +14236,9 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "E   Radio: %s"
+#~ msgstr "E   收音机：%s"
 
 #~ msgid "line item %04d   checksum %s"
 #~ msgstr "条目 %04d   校验和 %s"

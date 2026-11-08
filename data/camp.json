@@ -3,7 +3,7 @@
   "bench_repair_s": 2.6,
   "min_gap": 3.0,
   "builds": {
-    "radio": {"name": "Radio", "desc": "A valve radio on a crate by the fence. Plays the songs of the worlds you restore.", "cost": {"cubes": 1200}, "requires_level": 2, "pos": [6.6, 3.4], "yaw_deg": 180.0},
+    "radio": {"name": "CD Player", "desc": "A chunky old CD player on a crate by the fence. Plays the discs you find.", "cost": {"cubes": 1200}, "requires_level": 2, "pos": [6.6, 3.4], "yaw_deg": 180.0},
     "nursery": {"name": "Robot Nursery", "desc": "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand.", "cost": {"cubes": 2500}, "requires_level": 1, "requires_flag": "first_sprout"}
   }
 }
