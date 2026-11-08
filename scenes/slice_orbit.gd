@@ -17,7 +17,8 @@ extends Node
 ## GameState.world is the start site's own dict (GameState.use_orbit_world).
 ## Not here: CityLayout/CityView/StreetDressing/litter/far junk/water (orbD sites), Fleet/robot
 ## builder/Command view (orbC), SkyDirector/GlobeView/FutureLayer, the intro cinematic and photo
-## mode (orbE); outposts, eggs, the Ledger arc, Bloom/late director, fauna, frontier districts.
+## mode (orbE); Garden Mode's decor, frontier districts (retired on the globe). Fauna, eggs,
+## outposts and the Ledger arc run per hub (HubFrame).
 ##
 ## Dev flags (phase A's, now on the slice): --orbit-walk[=boost] --orbit-lap-quit,
 ## --orbit-scoop, --orbit-cash --orbit-cash-quit, --orbit-view=follow|ground|command,
@@ -544,13 +545,26 @@ func _build_hub_frame() -> void:
 		var fa: Node = hub_frame.node("Fauna")
 		w.set("fauna", fa as Fauna if fa else null)
 		var eg: Node = hub_frame.node("EasterEggs")
-		w.set("eggs", eg as EasterEggs if eg else null))
+		w.set("eggs", eg as EasterEggs if eg else null)
+		var op: Node = hub_frame.node("Outposts")
+		w.set("outposts", op as Outposts if op else null)
+		var lg: Node = hub_frame.node("Ledger")
+		w.set("ledger", lg as LedgerArc if lg else null))
 	hub_frame.host("Fauna", func(f: HubFrame, _hub: int) -> Node:  # ambient animals return as hexes are restored
 		var fa := Fauna.new()
 		f.add_child(fa)
 		fa.frame_cells = f.region()
 		fa.setup(w)
 		return fa)
+	hub_frame.host("Outposts", func(f: HubFrame, hub: int) -> Node:  # each hub's ruined frontier outposts
+		var op := Outposts.new()
+		op.name = "Outposts"
+		op.world = w
+		op.hub_index = hub
+		op.frame_cells = f.region()
+		f.add_child(op)
+		op.setup()
+		return op)
 	hub_frame.host("EasterEggs", func(f: HubFrame, hub: int) -> Node:  # each hub's easter eggs and collectibles
 		var eg := EasterEggs.new()
 		eg.name = "EasterEggs"
@@ -561,7 +575,18 @@ func _build_hub_frame() -> void:
 		eg.setup()
 		return eg)
 	w.set("fauna", hub_frame.node("Fauna") as Fauna)
+	hub_frame.host("Ledger", func(f: HubFrame, hub: int) -> Node:  # the Ledger arc: drones, jammers and the relay at this hub
+		var lg := LedgerArc.new()
+		lg.name = "Ledger"
+		lg.world = w
+		lg.hub_index = hub
+		lg.frame_cells = f.region()
+		f.add_child(lg)
+		lg.setup()
+		return lg)
 	w.set("eggs", hub_frame.node("EasterEggs") as EasterEggs)
+	w.set("outposts", hub_frame.node("Outposts") as Outposts)
+	w.set("ledger", hub_frame.node("Ledger") as LedgerArc)
 
 
 ## The landing pod in its crash site on the start site's "pod" anchor. The intro cinematic itself

@@ -45,7 +45,8 @@ func _ready() -> void:
 
 func setup() -> void:
 	cfg = load_cfg()
-	spots = plan(world.field, cfg)
+	_globe = world.field is SphereField  # [orbB]
+	spots = plan_cells(self, world.field, frame_cells, cfg, hub_index) if _globe else plan(world.field, cfg)
 	var lv: Array = levels()
 	while lv.size() < spots.size():
 		lv.append(0)
@@ -53,8 +54,11 @@ func setup() -> void:
 	for i: int in spots.size():
 		var o := Outpost.new()
 		add_child(o)
-		o.global_position = spots[i]["pos"]
-		o.rotation.y = float(spots[i]["yaw"])
+		if _globe:  # [orbB] frame-local, standing on the ground's own up
+			o.transform = spots[i]["xf"]
+		else:
+			o.global_position = spots[i]["pos"]
+			o.rotation.y = float(spots[i]["yaw"])
 		o.setup(i, int(lv[i]), world)
 		items.append(o)
 		if world.get("interactables") != null:
@@ -62,7 +66,7 @@ func setup() -> void:
 	var where: Array[String] = []
 	for sp: Dictionary in spots:
 		where.append("hex%d@(%.0f,%.0f)" % [int(sp["hex"]), (sp["pos"] as Vector3).x, (sp["pos"] as Vector3).z])
-	print("[outposts] district %d: %d outposts %s levels %s" % [GameState.current_hub, items.size(), " ".join(where), str(levels())])
+	print("[outposts] %s %d: %d outposts %s levels %s" % ["hub" if _globe else "district", hub_index if _globe else GameState.current_hub, items.size(), " ".join(where), str(levels())])
 	if DevHooks.has("outpost-spawn"):
 		var k: int = clampi(int(DevHooks.get_f("outpost-spawn", 0.0)), 0, maxi(items.size() - 1, 0))
 		if k < items.size() and world.get("patch") != null:
@@ -138,6 +142,13 @@ static func _mgr(w: Node) -> Outposts:
 
 
 func state() -> Dictionary:
+	if _globe:  # [orbB] per hub: GameState.world["orbit_outposts"][hub] (the start site's dict)
+		if not GameState.world.get("orbit_outposts") is Dictionary:
+			GameState.world["orbit_outposts"] = {}
+		var by_hub: Dictionary = GameState.world["orbit_outposts"]
+		if not by_hub.get(str(hub_index)) is Dictionary:
+			by_hub[str(hub_index)] = {}
+		return by_hub[str(hub_index)]
 	if not GameState.world.has("outposts") or not GameState.world["outposts"] is Dictionary:
 		GameState.world["outposts"] = {}
 	return GameState.world["outposts"]
@@ -381,7 +392,7 @@ func _sweep(i: int) -> void:
 	if world == null or world.get("field") == null or i >= spots.size():
 		return
 	var f: HexField = world.field
-	var p: Vector3 = spots[i]["pos"]
+	var p: Vector3 = to_global(spots[i]["pos"]) if _globe else spots[i]["pos"]  # [orbB]
 	var foot: float = float(cfg.get("footprint", 3.6)) + 0.6
 	for pid: int in f.pieces_within(p, foot):
 		if f.piece_alive[pid] == 1 and not f.is_water(f.piece_hex[pid]):
@@ -442,10 +453,10 @@ static func nearest_depot(w: Node, pos: Vector3) -> Depot:
 	var m: Outposts = _mgr(w)
 	if m == null:
 		return best
-	var best_d: float = Vector2(best.global_position.x - pos.x, best.global_position.z - pos.z).length() if best else INF
+	var best_d: float = OrbitUp.ground_dist(best.global_position, pos) if best else INF  # [orbB] (x/z on the flat game)
 	for o: Outpost in m.working():
 		var p: Vector3 = o.scale_depot.global_position
-		var d: float = Vector2(p.x - pos.x, p.z - pos.z).length()
+		var d: float = OrbitUp.ground_dist(p, pos)
 		if d < best_d:
 			best_d = d
 			best = o.scale_depot
@@ -490,9 +501,9 @@ static func charge_mult(r: Node3D, w: Node, delta: float) -> float:
 			if o.level < 3 or o.busy:
 				continue
 			var cp: Vector3 = o.charger_world()
-			if Vector2(cp.x - r.global_position.x, cp.z - r.global_position.z).length() < rad:
+			if OrbitUp.ground_dist(cp, r.global_position) < rad:  # [orbB]
 				if t < float(c.get("charge_s", 25.0)) - 1.0:
-					Vfx.burst("sparkle", r.global_position + Vector3(0, 0.7, 0), Color(0.45, 0.9, 1.0), 0.6)
+					Vfx.burst("sparkle", r.global_position + OrbitUp.up(r.global_position) * 0.7, Color(0.45, 0.9, 1.0), 0.6)
 					Audio.play("chime", 1.6, -16.0)
 				t = float(c.get("charge_s", 25.0))
 				break
@@ -528,3 +539,98 @@ func hex_note(h: int) -> String:
 	if lv <= 0:
 		return tr("OUTPOST %d  RUINED · repair at %d%% clear") % [i + 1, int(clean_needed() * 100.0)]
 	return tr("OUTPOST %d  %s") % [i + 1, tr(str(level_def(lv).get("name", ""))).to_upper()]
+
+
+# --- [orbB] The globe: outposts per hub, in the hub frame (planet/orbit/hub_frame.gd) ------------
+
+var hub_index: int = 0  # the hub whose outposts these are (set by the frame host)
+var frame_cells := PackedInt32Array()  # that hub's region
+var _globe: bool = false
+
+
+## The hub's outpost sites, frame-local: [{pos, yaw, hex, xf}]. Like plan(): 3-4 ruins spread
+## round the hub, on open cells just outside the hub site (its frontier), standing on the ground's
+## up. Deterministic per planet seed and hub; the eggs avoid them (story/eggs.gd).
+static func plan_cells(frame: Node3D, f: SphereField, cells: PackedInt32Array, c: Dictionary, hub: int) -> Array[Dictionary]:
+	if c.is_empty():
+		c = load_cfg()
+	var r := RandomNumberGenerator.new()
+	r.seed = f.seed_value + 4242 + hub * 613
+	var cnt: Array = c.get("count", [3, 4])
+	var n: int = r.randi_range(int(cnt[0]), int(cnt[1]))
+	var foot: float = float(c.get("footprint", 3.6))
+	var sites: Array[Dictionary] = []
+	var d_min: float = INF
+	for id: int in cells:
+		if f.hex_hub[id] != 0 or f.is_water(id) or f.cells.has_flag(id, SphereCells.F_SITE):
+			continue
+		var site: Dictionary = _site_cell(frame, f, id, foot, f.seed_value + 4242 + id * 31)
+		if site.is_empty():
+			continue
+		var pl: Vector3 = site["pos"]
+		site["d"] = Vector2(pl.x, pl.z).length()
+		d_min = minf(d_min, float(site["d"]))
+		sites.append(site)
+	var out: Array[Dictionary] = []
+	if sites.is_empty():
+		return out
+	var a0: float = r.randf() * TAU
+	var used: Dictionary = {}
+	for k: int in n:
+		var want: float = a0 + TAU * float(k) / float(n)
+		var best: int = -1
+		var best_s: float = INF
+		for si: int in sites.size():
+			if used.has(si):
+				continue
+			var p: Vector3 = sites[si]["pos"]
+			var clash: bool = false
+			for o: Dictionary in out:
+				if Vector2(p.x - o["pos"].x, p.z - o["pos"].z).length() < foot * 4.0:
+					clash = true
+					break
+			if clash:
+				continue
+			var score: float = absf(angle_difference(atan2(p.z, p.x), want)) + (float(sites[si]["d"]) - d_min) / 30.0 \
+				+ (0.25 if sites[si].get("relaxed", false) else 0.0)
+			if score < best_s:
+				best_s = score
+				best = si
+		if best < 0:
+			continue
+		used[best] = true
+		var pp: Vector3 = sites[best]["pos"]
+		var yaw: float = atan2(-pp.x, -pp.z)  # facing the hub
+		var up: Vector3 = (frame.global_basis.inverse() * f.up_at(frame.to_global(pp))).normalized()
+		var bas: Basis = Basis(Quaternion(Vector3.UP, up)) * Basis(Vector3.UP, yaw)
+		out.append({"pos": pp, "yaw": yaw, "hex": int(sites[best]["hex"]), "xf": Transform3D(bas, pp)})
+	return out
+
+
+static func _site_cell(frame: Node3D, f: SphereField, id: int, foot: float, seed_v: int) -> Dictionary:
+	var r := RandomNumberGenerator.new()
+	r.seed = seed_v
+	var c: Vector3 = frame.to_local(f.hex_center(id))
+	for pass_i: int in 2:
+		var relaxed: bool = pass_i == 1
+		for attempt: int in 12:
+			var p: Vector3 = c if attempt == 0 else c + Vector3(r.randf_range(-1, 1), 0, r.randf_range(-1, 1)) * f.hex_size * 0.42
+			var wp: Vector3 = f.terrain.ground(frame.to_global(p).normalized())
+			if f.hex_at(wp) != id:
+				continue
+			if _open_cells(frame, f, frame.to_local(wp), foot * (0.8 if relaxed else 1.0)):
+				return {"pos": frame.to_local(wp), "hex": id, "relaxed": relaxed}
+	return {}
+
+
+static func _open_cells(frame: Node3D, f: SphereField, p: Vector3, foot: float) -> bool:
+	for k: int in 9:
+		var o: Vector3 = Vector3.ZERO if k == 8 else Vector3(cos(TAU * k / 8.0), 0, sin(TAU * k / 8.0)) * foot
+		var wq: Vector3 = frame.to_global(p + o)
+		var h: int = f.hex_at(wq)
+		if h < 0 or f.is_water(h) or f.hex_hub[h] != 0 or f.cells.has_flag(h, SphereCells.F_SITE):
+			return false
+		for lm: Dictionary in f.landmarks:
+			if OrbitUp.ground_dist(lm["pos"], wq) < 1.6:
+				return false
+	return true
