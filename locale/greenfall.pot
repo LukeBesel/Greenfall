@@ -16838,3 +16838,37 @@ msgid ""
 "Still broadcasting, after all this time. Somebody wanted whoever came back "
 "to know what happened. Now you do."
 msgstr ""
+
+#: automation/launch_pad.gd:238
+msgid "LANDING PAD"
+msgstr ""
+
+#: automation/launch_pad.gd:301
+msgid ""
+"LANDING PAD\n"
+"BASE LEVEL 5"
+msgstr ""
+
+#: data/rockets.json:tiers[0].desc
+msgid ""
+"A compact one-seat glider: pearl hull, swept wings, twin engines and lift "
+"fans for vertical take-off."
+msgstr ""
+
+#: data/rockets.json:tiers[1].desc
+msgid ""
+"Wing extensions steady the climb: shorter countdown, faster flight, cells "
+"refill twice as fast. Cargo pods carry 50% more."
+msgstr ""
+
+#: data/rockets.json:tiers[2].desc
+msgid ""
+"Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry "
+"2.5x, more often."
+msgstr ""
+
+#: data/rockets.json:tiers[3].desc
+msgid ""
+"Landing gear, cargo pods and a warp core: instant hops with no recharge. "
+"Cargo pods carry 4x, every 30 s."
+msgstr ""

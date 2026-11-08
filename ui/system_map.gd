@@ -58,6 +58,7 @@ var _orbit_mats: Array[StandardMaterial3D] = []
 var _sun_a: Node3D
 var _sun_b: Node3D
 var _marker: MeshInstance3D
+var _ship: ShipModel  # [ship] Lumi's ship at its current tier
 var _cards: Control
 var _panel: PanelContainer
 var _first: Control
@@ -217,6 +218,9 @@ func _build() -> void:
 	_marker.material_override = Mats.lamp(Color(1.0, 0.95, 0.7), 4.0)
 	_marker.visible = false
 	_sys.add_child(_marker)
+	_ship = ShipModel.for_display()  # [ship] parked by the current planet, flies the trips
+	_ship.scale = Vector3.ONE * 0.045 * ShipTiers.scale_of(_ship.tier)
+	_sys.add_child(_ship)
 	_cards = Control.new()
 	_cards.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_cards.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -835,6 +839,10 @@ func _process(delta: float) -> void:
 			var g: PlanetGlobe = _globes[k]
 			if g and absf(Homeward.stored_pct(k) - g.restoration) > 0.001:
 				g.set_restoration(Homeward.stored_pct(k))
+	if _ship and not (_fly_t >= 0.0 and _fly_from >= 0 and _fly_to >= 0):  # [ship] parked by the current planet
+		var hk: int = clampi(Homeward.current_planet(), 0, _planets.size() - 1)
+		_ship.position = _planet_pos(hk) + Vector3(cos(_t * 0.25), 0.35, sin(_t * 0.25)) * 1.7
+		ShipModel.face_along(_ship, Vector3(-sin(_t * 0.25), 0, cos(_t * 0.25)))
 	# Interplanetary flight marker.
 	if _fly_t >= 0.0 and _fly_from >= 0 and _fly_to >= 0:
 		_fly_t = minf(1.0, _fly_t + delta / _fly_dur)
@@ -843,8 +851,12 @@ func _process(delta: float) -> void:
 		var mid: Vector3 = (a + b) * 0.5 + Vector3(0, a.distance_to(b) * 0.3, 0)
 		var u: float = _fly_t
 		var pos: Vector3 = a.lerp(mid, u).lerp(mid.lerp(b, u), u)
-		_marker.visible = true
+		_marker.visible = _ship == null  # [ship] the ship itself flies the arc
 		_marker.position = pos
+		if _ship:
+			ShipModel.face_along(_ship, pos - _ship.position)
+			_ship.position = pos
+			_ship.plume.power = 1.0
 		_cam.global_transform = _cam.global_transform.interpolate_with(Transform3D(Basis(), pos + Vector3(0, 6, 10)).looking_at(pos, Vector3.UP), clampf(delta * 2.0, 0.0, 1.0))
 		_cam.frustum_offset = _zoom_off()
 

@@ -9,6 +9,8 @@ const PLUME_SHADER := preload("res://art/shaders/rocket_plume.gdshader")
 var power: float = 0.0
 var scale_len: float = 1.0
 var radius: float = 0.62
+## [ship] Only one plume per engine group lights the ground (many lights are costly).
+var use_light: bool = true
 var light: OmniLight3D
 var _outer: MeshInstance3D
 var _core: MeshInstance3D
@@ -48,7 +50,7 @@ func _ready() -> void:
 	add_child(_flare)
 	light = OmniLight3D.new()
 	light.light_color = Color(0.55, 0.9, 1.0)
-	light.omni_range = 16.0 * scale_len
+	light.omni_range = 16.0 * maxf(scale_len, 0.6)
 	light.omni_attenuation = 1.2
 	light.position = Vector3(0, -1.2, 0)
 	light.shadow_enabled = false
@@ -107,7 +109,7 @@ func _apply() -> void:
 	_outer.visible = on
 	_core.visible = on
 	_flare.visible = on
-	light.visible = on
+	light.visible = on and use_light
 	if not on:
 		return
 	var flick: float = 1.0 + 0.08 * sin(_t * 53.0) + 0.06 * sin(_t * 31.0 + 1.3)

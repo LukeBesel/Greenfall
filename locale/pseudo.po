@@ -18781,3 +18781,48 @@ msgid ""
 msgstr ""
 "[Šţîļļ bŕôàðçàšţîñĝ, àƒţéŕ àļļ ţĥîš ţîmé. Šômébôðý ŵàñţéð ŵĥôévéŕ çàmé bàçķ "
 "ţô ķñôŵ ŵĥàţ ĥàþþéñéð. Ñôŵ ýôû ðô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: automation/launch_pad.gd:238
+msgid "LANDING PAD"
+msgstr "[ĻÀÑÐÎÑĜ ÞÀÐ ~]"
+
+#: automation/launch_pad.gd:301
+msgid ""
+"LANDING PAD\n"
+"BASE LEVEL 5"
+msgstr ""
+"[ĻÀÑÐÎÑĜ ÞÀÐ\n"
+"BÀŠÉ ĻÉVÉĻ 5 ~~~~~]"
+
+#: data/rockets.json:tiers[0].desc
+msgid ""
+"A compact one-seat glider: pearl hull, swept wings, twin engines and lift "
+"fans for vertical take-off."
+msgstr ""
+"[À çômþàçţ ôñé-šéàţ ĝļîðéŕ: þéàŕļ ĥûļļ, šŵéþţ ŵîñĝš, ţŵîñ éñĝîñéš àñð ļîƒţ "
+"ƒàñš ƒôŕ véŕţîçàļ ţàķé-ôƒƒ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/rockets.json:tiers[1].desc
+msgid ""
+"Wing extensions steady the climb: shorter countdown, faster flight, cells "
+"refill twice as fast. Cargo pods carry 50% more."
+msgstr ""
+"[Ŵîñĝ éxţéñšîôñš šţéàðý ţĥé çļîmb: šĥôŕţéŕ çôûñţðôŵñ, ƒàšţéŕ ƒļîĝĥţ, çéļļš "
+"ŕéƒîļļ ţŵîçé àš ƒàšţ. Çàŕĝô þôðš çàŕŕý 50% môŕé. "
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/rockets.json:tiers[2].desc
+msgid ""
+"Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry "
+"2.5x, more often."
+msgstr ""
+"[Bîĝĝéŕ éñĝîñéš àñð à ñéŵ çàñôþý. Çéļļš ŕéƒîļļ îñ à mîñûţé; çàŕĝô þôðš çàŕŕý "
+"2.5x, môŕé ôƒţéñ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/rockets.json:tiers[3].desc
+msgid ""
+"Landing gear, cargo pods and a warp core: instant hops with no recharge. "
+"Cargo pods carry 4x, every 30 s."
+msgstr ""
+"[Ļàñðîñĝ ĝéàŕ, çàŕĝô þôðš àñð à ŵàŕþ çôŕé: îñšţàñţ ĥôþš ŵîţĥ ñô ŕéçĥàŕĝé. "
+"Çàŕĝô þôðš çàŕŕý 4x, évéŕý 30 š. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
