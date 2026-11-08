@@ -74,6 +74,7 @@ func _ready() -> void:
 	var tabs := HBoxContainer.new()
 	tabs.add_theme_constant_override("separation", 8)
 	vb.add_child(tabs)
+	_tabs_row = tabs  # [v1menu]
 	var group := ButtonGroup.new()
 	for i: int in TABS.size():
 		var b := Button.new()
@@ -180,6 +181,7 @@ func close_panel() -> void:
 		return
 	_end_capture()
 	is_open = false
+	_apply_quality_now()  # [v1menu]
 	Settings.save_settings()
 	visible = false
 	closed.emit()
@@ -220,6 +222,9 @@ func _set_more(on: bool) -> void:
 	for i: int in range(1, _tab_buttons.size()):
 		_tab_buttons[i].visible = on
 	_tab_buttons[0].visible = true
+	if _tabs_row:  # [v1menu] only Basics: no lone "BASICS" tab header
+		_tabs_row.visible = on
+		_link_focus()
 	if _tabs_hint:
 		_tabs_hint.visible = on
 		_back_hint.visible = not on
@@ -234,9 +239,7 @@ func _build_basics(p: VBoxContainer) -> void:
 	_slider(p, "Music", Settings.music_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
 		Settings.music_volume = v
 		Audio.apply_volumes())
-	_cycler(p, tr("Quality preset"), [tr("Low"), tr("Medium"), tr("High"), tr("Ultra")], Settings.quality, func(i: int) -> void:
-		Settings.set_quality_manual(i)
-		Settings.apply_quality_to_tree(get_tree().current_scene))
+	_cycler(p, tr("Quality preset"), [tr("Low"), tr("Medium"), tr("High"), tr("Ultra")], Settings.quality, _queue_quality)
 	_toggle(p, tr("Fullscreen"), Settings.fullscreen, func(v: bool) -> void:
 		Settings.fullscreen = v
 		Settings.apply_display())
@@ -279,7 +282,7 @@ func _link_focus() -> void:
 		var ctl: Control = c as Control
 		if ctl.focus_mode == Control.FOCUS_ALL and ctl.has_meta("row_ctl"):
 			focusables.append(ctl)
-	var tab_btn: Button = _tab_buttons[_tab]
+	var tab_btn: Control = _tab_buttons[_tab] if _more else _back  # [v1menu] the tab row is hidden on Basics alone
 	var first: Control = focusables[0] if not focusables.is_empty() else _back
 	var last: Control = focusables[-1] if not focusables.is_empty() else tab_btn
 	for b: Button in _tab_buttons:
@@ -290,7 +293,7 @@ func _link_focus() -> void:
 		c.focus_neighbor_top = c.get_path_to(tab_btn if k == 0 else focusables[k - 1])
 		c.focus_neighbor_bottom = c.get_path_to(_back if k == focusables.size() - 1 else focusables[k + 1])
 	_back.focus_neighbor_top = _back.get_path_to(last)
-	_back.focus_neighbor_bottom = _back.get_path_to(tab_btn)
+	_back.focus_neighbor_bottom = _back.get_path_to(tab_btn if _more else first)
 
 
 # --- Pages ----------------------------------------------------------------------------
@@ -317,9 +320,7 @@ func _build_graphics(p: VBoxContainer) -> void:
 		hint = (tr("Detected: %s for %s. ") % [QualityDetect.preset_name(Settings.quality), Settings.quality_note]) if Settings.quality_auto \
 			else (tr("Your choice (hardware: %s). ") % Settings.quality_note)
 		hint += tr("Low drops GI, fog and shadows detail; Ultra adds reflections.")
-	_cycler(p, tr("Quality preset"), [tr("Low"), tr("Medium"), tr("High"), tr("Ultra")], Settings.quality, func(i: int) -> void:
-		Settings.set_quality_manual(i)  # [deck] a manual choice turns auto-detection off
-		Settings.apply_quality_to_tree(get_tree().current_scene), hint)
+	_cycler(p, tr("Quality preset"), [tr("Low"), tr("Medium"), tr("High"), tr("Ultra")], Settings.quality, _queue_quality, hint)  # [deck] a manual choice turns auto-detection off
 	# [deck] Renderer: Mobile is lighter on old integrated GPUs (always the Low look). Restart needed.
 	var methods: Array[String] = ["forward_plus", "mobile"]
 	var cur_m: int = 1 if Settings.renderer_override() == "mobile" else 0
@@ -714,3 +715,37 @@ func _slider(p: VBoxContainer, text: String, value: float, lo: float, hi: float,
 		cb.call(v)
 		Settings.save_settings())
 	_row(p, text, hb, "", s)
+
+
+# --- [v1menu] Quality preset changes, applied once the player stops cycling ----------------
+# Each preset change makes the renderer rebuild GPU pipelines (MSAA, TAA, SDFGI, shadow filter),
+# a stall of up to seconds on a cold driver cache. Cycling Low -> Ultra used to pay it on every
+# click; now the label changes at once and the preset applies QUALITY_SETTLE_S after the last click.
+
+const QUALITY_SETTLE_S: float = 0.45
+var _quality_timer: Timer
+var _tabs_row: HBoxContainer
+var _quality_applied: int = -1
+
+
+func _queue_quality(i: int) -> void:
+	if _quality_applied < 0:
+		_quality_applied = Settings.quality
+	Settings.set_quality_manual(i)
+	if _quality_timer == null:
+		_quality_timer = Timer.new()
+		_quality_timer.one_shot = true
+		_quality_timer.process_mode = Node.PROCESS_MODE_ALWAYS  # the pause menu pauses the tree
+		_quality_timer.timeout.connect(_apply_quality_now)
+		add_child(_quality_timer)
+	_quality_timer.start(QUALITY_SETTLE_S)
+
+
+func _apply_quality_now() -> void:
+	if _quality_timer:
+		_quality_timer.stop()
+	if _quality_applied < 0 or Settings.quality == _quality_applied:
+		_quality_applied = -1
+		return
+	_quality_applied = -1
+	Settings.apply_quality_to_tree(get_tree().current_scene)
