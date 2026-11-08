@@ -26,6 +26,8 @@ const NEAR: float = 0.05
 ## [sysmap] Map radius per planet, and how far its rings reach (in radii: Ochre's dust, Rime's ice
 ## spikes, Anvil's embers); orbits are spaced so no ring ever sweeps through a neighbouring planet.
 const GLOBE_R: Dictionary = {"verdance": 1.95, "ochre": 1.5, "tidewell": 2.0, "anvil": 1.7, "rime": 1.45}
+## [orbE] Map radius of a Verdance-sized globe; each planet is scaled by its real globe (GlobeSize).
+const GLOBE_BASE: float = 1.75
 const RING_REACH: Dictionary = {"ochre": 2.6, "rime": 2.45, "anvil": 2.2}
 const SUN_ZONE: float = 4.4
 const ORBIT_GAP: float = 0.3
@@ -333,6 +335,8 @@ func _pid_of(k: int) -> String:
 ## The globe radius of planet k in map units.
 func _globe_r(k: int) -> float:
 	var id: String = _pid_of(k)
+	if GlobeSize.IDS.has(id):  # [orbE] planets differ in size: the map follows the globes
+		return GLOBE_BASE * pow(GlobeSize.scale_of(id), 0.7)  # gently compressed: Anvil (2x) reads big, still fits the orrery
 	if GLOBE_R.has(id):
 		return float(GLOBE_R[id])
 	return 0.85 + float(Homeward.planet_def(k).get("orbit", 1.0)) * 0.1
@@ -424,6 +428,11 @@ func _build_planet(k: int) -> void:
 	g.setup(str(d.get("id", "")), Homeward.stored_pct(k), _planet_color(k))
 	g.track_suns(_sun_a, _sun_b)
 	_globes.append(g)
+	if k == Homeward.current_planet():  # [orbE] the walked globe shows its real cells and Lumi's spot
+		var sh: SphereShell = _walked_shell()
+		if sh:
+			g.set_cells(sh)
+			_update_here(g)
 	if k == Homeward.current_planet():  # where Lumi is: a soft gold ring, no text
 		var ring := MeshInstance3D.new()
 		var rr: float = _ring_out(k) + 0.04
@@ -835,6 +844,9 @@ func _process(delta: float) -> void:
 		_cam.global_transform = _cam.global_transform.interpolate_with(drift, clampf(delta * 0.8, 0.0, 1.0))
 		_cam.frustum_offset = _ov_off
 	# Restoration can change while the map is open: retint the globes, don't rebuild.
+	var hk2: int = Homeward.current_planet()  # [orbE] Lumi's spot follows play
+	if hk2 >= 0 and hk2 < _globes.size() and _globes[hk2] and _globes[hk2].cell_shell:
+		_update_here(_globes[hk2])
 	_resto_t -= delta
 	if _resto_t <= 0.0:
 		_resto_t = 1.0
@@ -919,3 +931,19 @@ func _pick_at() -> int:
 			best_d = dd
 			best = k
 	return best
+
+
+## [orbE] The round planet Lumi walks (its streamer's far shell), or null on the flat game.
+func _walked_shell() -> SphereShell:
+	if world == null:
+		return null
+	var st: Variant = world.get("streamer")
+	return (st as SphereStreamer).shell if st is SphereStreamer else null
+
+
+func _update_here(g: PlanetGlobe) -> void:
+	var p: Variant = world.get("lumi") if world.get("lumi") != null else world.get("patch")
+	if p is Node3D:
+		g.set_here((p as Node3D).global_position)
+		# Clean overview (owner, sysmap2): the pin only shows once zoomed in on Lumi's planet.
+		g.set_here_visible(_zoom_planet == Homeward.current_planet())

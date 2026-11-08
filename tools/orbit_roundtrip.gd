@@ -41,6 +41,8 @@ static func _snap(s: Node) -> Dictionary:
 		"site_stage": g.site_manager.levels[0] if g.site_manager else -1,
 		"parts_near": s.field.part_pos.size() > 0,
 		"loose_cubes": cubes,
+		"sky_spin": snappedf((s.get("sky_director") as SkyDirector).spin, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
+		"sky_clouds": snappedf((s.get("sky_director") as SkyDirector).clouds, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
 	}
 
 

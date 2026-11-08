@@ -120,7 +120,7 @@ func _process(delta: float) -> void:
 		add_hopper((blooms - _last_blooms) * 1.5)
 		_last_blooms = blooms
 	var on: bool = active()
-	_lamp.emission = Color(0.5, 1.0, 0.4) if on else Color(0.35, 0.2, 0.1)
+	_lamp.emission = Color(0.5, 1.0, 0.4) if on else Color(0.0, 0.0, 0.0)  # [yard] a dead lens while dormant
 	if not on:
 		return
 	var have: bool = hopper() >= compost_per_cycle()
@@ -157,71 +157,22 @@ func _refresh_label() -> void:
 
 
 func _build() -> void:
-	var wood: ShaderMaterial = Mats.worn_paint(Color(0.45, 0.33, 0.22), 0.6, 0.2, 31.0, 0.6)
-	var green: ShaderMaterial = Mats.worn_paint(Color(0.32, 0.55, 0.3), 0.8, 0.3, 17.0, 0.5)
-	var steel: StandardMaterial3D = Mats.metal("dark_steel")
-	var soil := StandardMaterial3D.new()
-	soil.albedo_color = Color(0.22, 0.15, 0.09)
-	soil.roughness = 1.0
-	# Two slatted compost bins.
-	for i: int in 2:
-		var bx: float = -0.9 + i * 0.95
-		for side: int in 4:
-			var slat := MeshInstance3D.new()
-			slat.mesh = ProcMesh.box(Vector3(0.85 if side < 2 else 0.06, 0.6, 0.06 if side < 2 else 0.85))
-			slat.material_override = wood
-			var off: Vector3 = [Vector3(0, 0, -0.4), Vector3(0, 0, 0.4), Vector3(-0.4, 0, 0), Vector3(0.4, 0, 0)][side]
-			slat.position = Vector3(bx, 0.3, 0) + off
-			add_child(slat)
-		var heap := MeshInstance3D.new()
-		heap.mesh = ProcMesh.hemisphere(0.38, 14, 5)
-		heap.material_override = soil
-		heap.position = Vector3(bx, 0.42, 0)
-		heap.scale = Vector3(1, 0.5, 1)
-		add_child(heap)
-	# Press: green cabinet with a turning drum and a stamping head.
-	var cab := MeshInstance3D.new()
-	cab.mesh = ProcMesh.rounded_box(Vector3(0.9, 1.0, 0.8), 0.06, 2)
-	cab.material_override = green
-	cab.position = Vector3(1.0, 0.5, 0)
-	add_child(cab)
+	# [yard] Kit bins, press cabinet, drum and stamping head (systems/camp/yard_art.gd).
+	var parts: Dictionary = YardArt.composter()
+	add_child((parts["body"] as YardArt.Kit).mi(0.2, "Body"))
 	_drum = Node3D.new()
 	_drum.position = Vector3(1.0, 1.1, 0)
 	add_child(_drum)
-	var drum := MeshInstance3D.new()
-	drum.mesh = ProcMesh.cyl(0.25, 0.25, 0.7, 16)
-	drum.material_override = steel
-	drum.rotation_degrees = Vector3(90, 0, 0)
-	_drum.add_child(drum)
-	for k: int in 4:
-		var fin := MeshInstance3D.new()
-		fin.mesh = ProcMesh.box(Vector3(0.04, 0.12, 0.72))
-		fin.material_override = green
-		fin.position = Vector3(cos(TAU * k / 4.0) * 0.25, sin(TAU * k / 4.0) * 0.25, 0)
-		fin.rotation = Vector3(0, 0, TAU * k / 4.0)
-		_drum.add_child(fin)
+	_drum.add_child((parts["drum"] as YardArt.Kit).mi(0.2, "Drum"))
 	_press_head = Node3D.new()
 	_press_head.position = Vector3(1.0, 1.15, -0.55)
 	add_child(_press_head)
-	var head := MeshInstance3D.new()
-	head.mesh = ProcMesh.box(Vector3(0.4, 0.12, 0.3))
-	head.material_override = steel
-	_press_head.add_child(head)
-	var tray := MeshInstance3D.new()
-	tray.mesh = ProcMesh.box(Vector3(0.5, 0.05, 0.4))
-	tray.material_override = wood
-	tray.position = Vector3(1.0, 0.55, -0.6)
-	add_child(tray)
-	var chimney := MeshInstance3D.new()
-	chimney.mesh = ProcMesh.cyl(0.07, 0.08, 0.6, 10)
-	chimney.material_override = steel
-	chimney.position = Vector3(1.3, 1.3, 0.25)
-	add_child(chimney)
+	_press_head.add_child((parts["head"] as YardArt.Kit).mi(0.2, "Head"))
 	var lamp := MeshInstance3D.new()
-	lamp.mesh = ProcMesh.sphere(0.05, 10, 5)
+	lamp.mesh = YardArt.bbox(Vector3(0.1, 0.1, 0.04), 0.02)
 	_lamp = Mats.lamp(Color(0.5, 1.0, 0.4), 2.5)
 	lamp.material_override = _lamp
-	lamp.position = Vector3(0.65, 0.85, -0.41)
+	lamp.position = Vector3(0.65, 0.85, -0.45)
 	add_child(lamp)
 	_label = Label3D.new()
 	_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED

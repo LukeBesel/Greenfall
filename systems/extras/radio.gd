@@ -243,10 +243,9 @@ func _note_here() -> void:
 func _build() -> void:
 	# [camp] Its own spot by the fence: a wooden crate with the radio on top (scaled up a little so
 	# it reads from the camera), facing into the yard.
-	var wood: StandardMaterial3D = DecorProps.wood()
-	add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(0.62, 0.7, 0.8), 0.03, 2), wood, Vector3(0, 0.35, 0)))
-	for z: float in [-0.2, 0.2]:
-		add_child(EggProps.mesh(ProcMesh.box(Vector3(0.64, 0.05, 0.05)), DecorProps.paint(Color(0.3, 0.22, 0.15), 0.7), Vector3(0, 0.5, z)))
+	var stand: MeshInstance3D = YardArt.radio_stand().mi(0.15, "Stand")  # [yard] kit console + speaker stacks
+	add_child(stand)
+	YardArt.set_powered(stand, true)  # only shows once built
 	_set = Node3D.new()
 	_set.position = Vector3(0, 0.7, 0)
 	add_child(_set)
