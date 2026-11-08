@@ -122,6 +122,14 @@ static func run(rt: Node, check: Callable) -> void:
 	await tree.physics_frame
 	check.call("orbit_bin_prompt", true, s1.interact_prompt(p) != "")
 	YardBuilds.mark_built("radio")
+	var ex: ExtrasDirector = ExtrasDirector.of(s1)
+	check.call("orbit_radio_on_anchor", true, ex != null and ex.radio != null and ex.radio.global_position.distance_to(so1.yard_point("radio")) < 0.1)
+	if ex and ex.radio:
+		ex.radio.set_built(true, false)
+		var reach: Node3D = ex.radio.get("_anchor") as Node3D
+		p.place_on_sphere(reach.global_position, p.forward())
+		await tree.physics_frame
+		check.call("orbit_radio_prompt", true, s1.interact_prompt(p).contains(TranslationServer.translate("E   CD player: %s").split(":")[0]))
 	# The base: a hub upgrade raises the start site's stage and stays in the site's own dict.
 	GameState.add_currency("cubes", BigNum.from_float(1e6))
 	GameState.add_currency("parts", BigNum.from_float(1e5))

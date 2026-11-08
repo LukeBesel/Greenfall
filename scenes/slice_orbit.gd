@@ -434,6 +434,7 @@ func _build_yard_systems() -> void:
 		var slot: Array = yard_slot("signal_tower", SignalTower.pos())
 		w.add_child(tower)  # a child of the slice, as on the flat game (HubBuilds and the bot look it up)
 		tower.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)  # after its _ready
+	_attach_extras()
 	_attach_camp()
 	_place_pod()
 	var cc := CoreCharge.new()  # Lumi's Bloom Core charge and its story beats (story/core_charge.gd)
@@ -452,6 +453,25 @@ func yard_point(anchor: String) -> Vector3:
 	var flat: Vector3 = YardBuilds.pos(anchor, Vector3.ZERO) if YardBuilds.def(anchor).size() > 0 else Vector3.ZERO
 	var slot: Array = yard_slot(anchor, flat)
 	return (slot[0] as Node3D).global_transform * (slot[1] as Transform3D).origin
+
+
+## Extras as on the flat game (radio / CD player, robot nursery, album, welcome back, Seed of the
+## Week); the radio and the nursery stand on the start site's anchors (the nursery's caretakers
+## wander in its own frame, so they come along).
+func _attach_extras() -> void:
+	var ex: ExtrasDirector = ExtrasDirector.attach(w)
+	if ex == null:
+		return
+	if ex.radio:
+		var slot: Array = yard_slot("radio", Radio.POS)
+		ex.radio.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)
+		var reach: Node3D = ex.radio.get("_anchor") as Node3D
+		if reach:
+			reach.global_position = ex.radio.global_position + ex.radio.global_basis.x * 1.0
+	if ex.nursery:
+		var slot2: Array = yard_slot("nursery", ex.nursery.position)
+		ex.nursery.global_transform = (slot2[0] as Node3D).global_transform * (slot2[1] as Transform3D)
+		ex.nursery.set("center", ex.nursery.global_position)
 
 
 ## The landing pod in its crash site on the start site's "pod" anchor. The intro cinematic itself
