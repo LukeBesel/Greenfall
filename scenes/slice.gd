@@ -73,6 +73,9 @@ var launching: bool = false
 
 
 func _ready() -> void:
+	if DevHooks.has("orbit"):  # [orbit] prototype: the walkable globe (planet/orbit/orbit_world.gd)
+		get_tree().change_scene_to_file.call_deferred("res://planet/orbit/orbit_world.tscn")
+		return
 	var t0: int = Time.get_ticks_msec()
 	add_to_group("persist")
 	# Backstop: never start a district frozen (e.g. paused during a rocket flight).
