@@ -87,6 +87,8 @@ func on_signal_raised(tier_: int) -> void:
 	GameState.flags["wren_awake"] = true
 	say("wake" if tier_ == 1 else "signal_up", 1.0, true)
 	var bl: Array = GameState.flags.get("wren_backlog", [])
+	if tier_ == 1:  # [v2guide] first contact: her briefing (story/objectives.gd) leads; only the last two missed lines
+		bl = bl.slice(maxi(0, bl.size() - 2))
 	for t: Variant in bl:
 		_queue.append({"text": str(t), "stage": stage()})
 	GameState.flags["wren_backlog"] = []
@@ -136,7 +138,8 @@ func say(trigger: String, chance: float = 1.0, important: bool = false, vars: Di
 func _process(delta: float) -> void:
 	_cooldown = maxf(0.0, _cooldown - delta)
 	_chatter_t = maxf(0.0, _chatter_t - delta)
-	if _cooldown <= 0.0 and not _queue.is_empty():
+	var modal: bool = world != null and world.has_method("any_modal_open") and bool(world.call("any_modal_open"))
+	if _cooldown <= 0.0 and not _queue.is_empty() and not modal:  # [v2guide] nothing during modals
 		var l: Dictionary = _queue.pop_front()
 		line_started.emit(l["text"], int(l["stage"]))
 		_cooldown = Subtitles.total_time(str(l["text"])) + 0.6  # [intro2] the line is fully read before the next

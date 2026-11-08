@@ -24,6 +24,7 @@ const POINT_AT: float = 0.7
 var world: Node
 var chain: Array = []
 var brief_lines: Array = []
+var wren_brief: Array = []  ## [v2guide] WREN's briefing once the tower carries her
 var step: int = 0
 var revealed: bool = false
 var target_hex: int = -1
@@ -45,6 +46,7 @@ func _ready() -> void:
 	var cfg: Dictionary = Economy.read_json(PATH)
 	chain = cfg.get("objectives", [])
 	brief_lines = (cfg.get("brief", {}) as Dictionary).get("lines", [])
+	wren_brief = (cfg.get("wren_brief", {}) as Dictionary).get("lines", [])  # [v2guide]
 	step = int(GameState.flags.get("objective_step", 0))
 	# [onboard2] Four early objectives (bin, Scoop Size, Compartment, Baler) were put in front: a save
 	# from before keeps its place in the chain; a save that never sold a bale starts at them.
@@ -307,6 +309,7 @@ func _process(delta: float) -> void:
 	if not revealed:
 		return
 	_explain_signal()
+	_narrate()  # [v2guide]
 	_bale_reminder(delta)
 	_hold = maxf(0.0, _hold - delta)
 	_t -= delta
@@ -353,11 +356,7 @@ func complete() -> void:
 	completed.emit(i)
 	if not done():
 		get_tree().create_timer(NEXT_DELAY_S).timeout.connect(func() -> void:
-			changed.emit(step)
-			var w: Wren = _wren()
-			if w and not done():
-				for l: Variant in chain[step].get("lines", []):
-					w.speak(tr(str(l)), 1))
+			changed.emit(step))  # [v2guide] WREN's line for the step: _narrate
 	else:
 		changed.emit(step)
 
@@ -588,6 +587,39 @@ static func bin_point(w: Node) -> Variant:
 func _depot_pos() -> Variant:
 	var d: Variant = world.get("depot")
 	return (d as Node3D).global_position if d is Node3D else null
+
+
+# --- [v2guide] WREN narrates the journey ----------------------------------------------------------
+# Owner 2026-11-08 playtest 2 #34: once the signal tower carries her, WREN says who she is and the
+# plan home (wren_brief), then gives one line (lines[0]) as each new story step starts. At most one
+# line per step (flags.wren_steps), nothing while a modal is open (Wren holds its queue then too),
+# and nothing before the tower (no backlog of step lines).
+
+func _narrate() -> void:
+	var w: Wren = _wren()
+	if w == null or not w.awake() or _hold > 0.0:
+		return
+	if world.has_method("any_modal_open") and bool(world.call("any_modal_open")):
+		return
+	if not GameState.flags.get("wren_briefed", false):
+		GameState.flags["wren_briefed"] = true
+		for l: Variant in wren_brief:
+			w.speak(tr(str(l)), w.stage())
+		return
+	if step >= chain.size():
+		return
+	var def: Dictionary = chain[step]
+	if value_of(def) >= target_of(def):  # finishing right now (the tower that woke her): no line
+		return
+	var said: Array = GameState.flags.get("wren_steps", [])
+	var id: String = str(def.get("id", ""))
+	if id in said:
+		return
+	said.append(id)
+	GameState.flags["wren_steps"] = said
+	var ls: Array = def.get("lines", [])
+	if not ls.is_empty():
+		w.speak(tr(str(ls[0])), w.stage())
 
 
 # --- [v1guide] How to make a bale -----------------------------------------------------------------
