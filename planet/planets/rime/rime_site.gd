@@ -3,7 +3,7 @@ extends TidewellEnv
 ## [p_seas] Rime's placeable hub-site prefabs for the walkable globe, same API shape as TideSite:
 ## compact local scenes (about 80-90 m across) on their own ice patch, no world-origin
 ## assumptions. (Extends TidewellEnv only to share its prop helpers: _lumpy, _blob_slab,
-## _scatter_models and the SeasKit / TideProps paints; nothing of the sea is built.)
+## _scatter_models and the TideProps kit helpers; nothing of the sea is built.)
 ##   RimeSite.place(site_id, root, stage, restoration, opts) -> RimeSite
 ##     site_id      one of SITES
 ##     stage        0 ruin, 1 restored, 2 futuristic
@@ -209,7 +209,7 @@ func _pad_dressing() -> void:
 		var d: float = sqrt(_rng.randf()) * pad_r * 0.9
 		var p := Vector3(cos(ang) * d, 0.0, sin(ang) * d)
 		var s := Vector3(_rng.randf_range(1.6, 2.6), 0.08, _rng.randf_range(1.2, 2.0))
-		SeasKit.box(a, o, bs, p + Vector3(0, 0.03, 0), s, TideProps.m(self, "steel"), Vector3(_rng.randf_range(-1, 1), _rng.randf() * 180.0, _rng.randf_range(-1, 1)), 0.03)
+		TideProps.box(a, o, bs, p + Vector3(0, 0.03, 0), s, TideProps.m(self, "steel"), Vector3(_rng.randf_range(-1, 1), _rng.randf() * 180.0, _rng.randf_range(-1, 1)), 0.03)
 	var kerb_n: int = int(TAU * pad_r / 2.6)
 	for k: int in kerb_n:
 		if k % 7 == 3:
@@ -217,13 +217,13 @@ func _pad_dressing() -> void:
 		var ang: float = TAU * (float(k) + 0.5) / kerb_n
 		var p := Vector3(cos(ang), 0, sin(ang)) * (pad_r + 0.6)
 		p.y = ground_y(p.x, p.z) + 0.15
-		SeasKit.box(a, o, bs, p, Vector3(2.3, 0.35, 0.4), TideProps.m(self, "timber2"), Vector3(_rng.randf_range(-3, 3), -rad_to_deg(ang) + 90.0, _rng.randf_range(-4, 4)), 0.06)
+		TideProps.box(a, o, bs, p, Vector3(2.3, 0.35, 0.4), TideProps.m(self, "timber2"), Vector3(_rng.randf_range(-3, 3), -rad_to_deg(ang) + 90.0, _rng.randf_range(-4, 4)), 0.06)
 	for k: int in 8:
 		var ang: float = TAU * k / 8.0 + 0.2
 		var p := Vector3(cos(ang), 0, sin(ang)) * (pad_r + 4.0)
 		p.y = ground_y(p.x, p.z)
-		SeasKit.pipe(a, o, bs, p + Vector3(0, -0.3, 0), p + Vector3(0, 2.2, 0), 0.04, TideProps.m(self, "orange"), 6)
-		SeasKit.box(a, o, bs, p + Vector3(0.22, 1.95, 0), Vector3(0.42, 0.28, 0.02), TideProps.m(self, "red"), Vector3(0, _rng.randf() * 360.0, 0), 0.005)
+		TideProps.pipe(a, o, bs, p + Vector3(0, -0.3, 0), p + Vector3(0, 2.2, 0), 0.04, TideProps.m(self, "orange"), 6)
+		TideProps.box(a, o, bs, p + Vector3(0.22, 1.95, 0), Vector3(0.42, 0.28, 0.02), TideProps.m(self, "red"), Vector3(0, _rng.randf() * 360.0, 0), 0.005)
 	TideProps.flush(self, a, "always")
 
 
@@ -237,7 +237,7 @@ func _ice_rocks() -> void:
 		p.y = ground_y(p.x, p.z) - 0.3
 		var s: float = _rng.randf_range(0.8, 2.6)
 		if k % 3 == 0:
-			_ice_add("always", SeasKit.bevel_box(Vector3(s * 2.2, s * 0.5, s * 1.6), 0.12), Transform3D(Basis.from_euler(Vector3(_rng.randf_range(-35, 35), _rng.randf() * 360.0, _rng.randf_range(-30, 30)) * (PI / 180.0)), p), _ice_mat("clear"))
+			_ice_add("always", TideProps.kit_mesh(KitMesh.bevel_box(Vector3(s * 2.2, s * 0.5, s * 1.6), 0.12)), Transform3D(Basis.from_euler(Vector3(_rng.randf_range(-35, 35), _rng.randf() * 360.0, _rng.randf_range(-30, 30)) * (PI / 180.0)), p), _ice_mat("clear"))
 		else:
 			_ice_add("always", _lumpy(k % 5, 0.4, 1.8), _lxf(p, Vector3(0, _rng.randf() * 360.0, 0), Vector3(s * 1.2, s * 0.7, s)), _ice_mat("frost" if k % 2 == 0 else "ice"))
 	TideProps.flush(self, a, "always")
@@ -293,36 +293,36 @@ func _cabin(a: KitMesh.Builder, grn: KitMesh.Builder, fut: KitMesh.Builder, c: V
 	var hx: float = size.x * 0.5
 	var hz: float = size.z * 0.5
 	for sd: float in [-1.0, 1.0]:
-		SeasKit.pipe(a, o, bs, Vector3(-hx - 0.4, 0.25, sd * (hz - 0.5)), Vector3(hx + 0.4, 0.25, sd * (hz - 0.5)), 0.16, TideProps.m(self, "steel"), 8)
-		SeasKit.pipe(a, o, bs, Vector3(hx + 0.4, 0.25, sd * (hz - 0.5)), Vector3(hx + 0.75, 0.55, sd * (hz - 0.5)), 0.16, TideProps.m(self, "steel"), 8)
-	SeasKit.box(a, o, bs, Vector3(0, 0.55, 0), Vector3(size.x - 0.3, 0.3, size.z - 0.3), TideProps.m(self, "steel"))
-	SeasKit.box(a, o, bs, Vector3(0, 0.7 + size.y * 0.5, 0), size, TideProps.m(self, paint), Vector3.ZERO, 0.32)
-	SeasKit.box(a, o, bs, Vector3(0, 0.7 + size.y * 0.25, 0), Vector3(size.x + 0.04, 0.14, size.z + 0.04), TideProps.m(self, "navy"), Vector3.ZERO, 0.04)
-	SeasKit.box(a, o, bs, Vector3(0, 0.75 + size.y + 0.1, 0), Vector3(size.x - 0.1, 0.32, size.z - 0.1), TideProps.m(self, "snow"), Vector3.ZERO, 0.14)
+		TideProps.pipe(a, o, bs, Vector3(-hx - 0.4, 0.25, sd * (hz - 0.5)), Vector3(hx + 0.4, 0.25, sd * (hz - 0.5)), 0.16, TideProps.m(self, "steel"), 8)
+		TideProps.pipe(a, o, bs, Vector3(hx + 0.4, 0.25, sd * (hz - 0.5)), Vector3(hx + 0.75, 0.55, sd * (hz - 0.5)), 0.16, TideProps.m(self, "steel"), 8)
+	TideProps.box(a, o, bs, Vector3(0, 0.55, 0), Vector3(size.x - 0.3, 0.3, size.z - 0.3), TideProps.m(self, "steel"))
+	TideProps.box(a, o, bs, Vector3(0, 0.7 + size.y * 0.5, 0), size, TideProps.m(self, paint), Vector3.ZERO, 0.32)
+	TideProps.box(a, o, bs, Vector3(0, 0.7 + size.y * 0.25, 0), Vector3(size.x + 0.04, 0.14, size.z + 0.04), TideProps.m(self, "navy"), Vector3.ZERO, 0.04)
+	TideProps.box(a, o, bs, Vector3(0, 0.75 + size.y + 0.1, 0), Vector3(size.x - 0.1, 0.32, size.z - 0.1), TideProps.m(self, "snow"), Vector3.ZERO, 0.14)
 	_ice_add("always", _lumpy(2, 0.3, 1.5), Transform3D(bs * Basis.from_scale(Vector3(hx * 0.7, 0.35, hz * 0.6)), o + bs * Vector3(-hx * 0.2, 0.9 + size.y, 0)), _ice_mat("frost"))
 	var nw: int = int(size.x / 1.5)
 	for w: int in nw:
 		var wx: float = -hx + 1.0 + w * (size.x - 2.0) / maxf(1.0, nw - 1)
 		if absf(wx - hx * 0.45) < 0.8:
 			continue
-		SeasKit.box(a, o, bs, Vector3(wx, 0.7 + size.y * 0.6, hz + 0.02), Vector3(0.9, 0.7, 0.12), TideProps.m(self, "navy"), Vector3.ZERO, 0.05)
-		SeasKit.box(a, o, bs, Vector3(wx, 0.7 + size.y * 0.6, hz + 0.08), Vector3(0.7, 0.52, 0.04), TideProps.m(self, "glass"), Vector3.ZERO, 0.01)
-		SeasKit.box(grn, o, bs, Vector3(wx, 0.7 + size.y * 0.6, hz + 0.11), Vector3(0.66, 0.48, 0.02), TideProps.m(self, "glass_lit"), Vector3.ZERO, 0.005)
+		TideProps.box(a, o, bs, Vector3(wx, 0.7 + size.y * 0.6, hz + 0.02), Vector3(0.9, 0.7, 0.12), TideProps.m(self, "navy"), Vector3.ZERO, 0.05)
+		TideProps.box(a, o, bs, Vector3(wx, 0.7 + size.y * 0.6, hz + 0.08), Vector3(0.7, 0.52, 0.04), TideProps.m(self, "glass"), Vector3.ZERO, 0.01)
+		TideProps.box(grn, o, bs, Vector3(wx, 0.7 + size.y * 0.6, hz + 0.11), Vector3(0.66, 0.48, 0.02), TideProps.m(self, "glass_lit"), Vector3.ZERO, 0.005)
 	var dx: float = hx * 0.45
-	SeasKit.box(a, o, bs, Vector3(dx, 0.7 + 1.05, hz + 0.03), Vector3(1.1, 2.1, 0.14), TideProps.m(self, "navy"))
-	SeasKit.box(a, o, bs, Vector3(dx, 0.62, hz + 0.9), Vector3(1.8, 0.14, 1.5), TideProps.m(self, "steel"), Vector3.ZERO, 0.03)
+	TideProps.box(a, o, bs, Vector3(dx, 0.7 + 1.05, hz + 0.03), Vector3(1.1, 2.1, 0.14), TideProps.m(self, "navy"))
+	TideProps.box(a, o, bs, Vector3(dx, 0.62, hz + 0.9), Vector3(1.8, 0.14, 1.5), TideProps.m(self, "steel"), Vector3.ZERO, 0.03)
 	for k: int in 3:
-		SeasKit.box(a, o, bs, Vector3(dx, 0.45 - k * 0.17, hz + 1.85 + k * 0.32), Vector3(1.2, 0.08, 0.32), TideProps.m(self, "steel"), Vector3.ZERO, 0.02)
-	SeasKit.rail(a, o, bs, [Vector3(dx - 0.85, 0.68, hz + 0.2), Vector3(dx - 0.85, 0.68, hz + 1.6)] as Array[Vector3], 0.9, TideProps.m(self, "ledger"), 0.03)
-	SeasKit.lamp(a, grn, o, bs, Vector3(dx, 0.7 + 2.45, hz + 0.05), Vector3(0, 0, 1), TideProps.m(self, "steel"), TideProps.m(self, "lamp_warm"))
-	SeasKit.vent(a, o, bs, Vector3(-hx - 0.04, 0.7 + size.y * 0.55, 0), 0.9, 0.7, Vector3(-1, 0, 0), TideProps.m(self, "steel"), TideProps.m(self, "dark"))
-	SeasKit.pipe(a, o, bs, Vector3(-hx * 0.5, 0.7 + size.y, -hz * 0.4), Vector3(-hx * 0.5, 0.7 + size.y + 1.3, -hz * 0.4), 0.12, TideProps.m(self, "steel"), 8)
-	SeasKit.pipe(a, o, bs, Vector3(-hx * 0.5, 0.7 + size.y + 1.3, -hz * 0.4), Vector3(-hx * 0.5, 0.7 + size.y + 1.45, -hz * 0.4), 0.24, TideProps.m(self, "dark"), 8)
-	SeasKit.pipe(a, o, bs, Vector3(hx * 0.6, 0.7 + size.y, -hz * 0.3), Vector3(hx * 0.6, 0.7 + size.y + 2.4, -hz * 0.3), 0.03, TideProps.m(self, "steel"), 6)
-	SeasKit.decal(a, o, bs, Vector3(-hx * 0.45, 0.7 + size.y * 0.55, hz + 0.02), Vector3(0, 0, 1), 0.9, 0.9, "logo")
-	SeasKit.box(fut, o, bs, Vector3(0, 0.7 + size.y * 0.5, 0), size + Vector3(0.1, 0.1, 0.1), TideProps.m(self, "white"), Vector3.ZERO, 0.36)
-	SeasKit.box(fut, o, bs, Vector3(0, 0.7 + size.y * 0.25, 0), Vector3(size.x + 0.16, 0.04, size.z + 0.16), TideProps.m(self, "lamp_cool"), Vector3.ZERO, 0.01)
-	SeasKit.solid_box(_groups["always"], o, bs, Vector3(0, 0.7 + size.y * 0.5, 0), size + Vector3(0.8, 1.4, 0.3))
+		TideProps.box(a, o, bs, Vector3(dx, 0.45 - k * 0.17, hz + 1.85 + k * 0.32), Vector3(1.2, 0.08, 0.32), TideProps.m(self, "steel"), Vector3.ZERO, 0.02)
+	TideProps.rail(a, o, bs, [Vector3(dx - 0.85, 0.68, hz + 0.2), Vector3(dx - 0.85, 0.68, hz + 1.6)] as Array[Vector3], 0.9, TideProps.m(self, "ledger"), 0.03)
+	TideProps.lamp(a, grn, o, bs, Vector3(dx, 0.7 + 2.45, hz + 0.05), Vector3(0, 0, 1), TideProps.m(self, "steel"), TideProps.m(self, "lamp_warm"))
+	TideProps.vent(a, o, bs, Vector3(-hx - 0.04, 0.7 + size.y * 0.55, 0), 0.9, 0.7, Vector3(-1, 0, 0), TideProps.m(self, "steel"), TideProps.m(self, "dark"))
+	TideProps.pipe(a, o, bs, Vector3(-hx * 0.5, 0.7 + size.y, -hz * 0.4), Vector3(-hx * 0.5, 0.7 + size.y + 1.3, -hz * 0.4), 0.12, TideProps.m(self, "steel"), 8)
+	TideProps.pipe(a, o, bs, Vector3(-hx * 0.5, 0.7 + size.y + 1.3, -hz * 0.4), Vector3(-hx * 0.5, 0.7 + size.y + 1.45, -hz * 0.4), 0.24, TideProps.m(self, "dark"), 8)
+	TideProps.pipe(a, o, bs, Vector3(hx * 0.6, 0.7 + size.y, -hz * 0.3), Vector3(hx * 0.6, 0.7 + size.y + 2.4, -hz * 0.3), 0.03, TideProps.m(self, "steel"), 6)
+	TideProps.decal(a, o, bs, Vector3(-hx * 0.45, 0.7 + size.y * 0.55, hz + 0.02), Vector3(0, 0, 1), 0.9, 0.9, "logo")
+	TideProps.box(fut, o, bs, Vector3(0, 0.7 + size.y * 0.5, 0), size + Vector3(0.1, 0.1, 0.1), TideProps.m(self, "white"), Vector3.ZERO, 0.36)
+	TideProps.box(fut, o, bs, Vector3(0, 0.7 + size.y * 0.25, 0), Vector3(size.x + 0.16, 0.04, size.z + 0.16), TideProps.m(self, "lamp_cool"), Vector3.ZERO, 0.01)
+	TideProps.solid_box(_groups["always"], o, bs, Vector3(0, 0.7 + size.y * 0.5, 0), size + Vector3(0.8, 1.4, 0.3))
 	_decks.append(Vector3(o.x, o.z, maxf(hx, hz)))
 
 
@@ -330,16 +330,16 @@ func _cabin(a: KitMesh.Builder, grn: KitMesh.Builder, fut: KitMesh.Builder, c: V
 func _tank(a: KitMesh.Builder, c: Vector3, yaw: float, ln: float, r: float, paint: String) -> void:
 	var bs := Basis(Vector3.UP, yaw)
 	var o: Vector3 = c + Vector3(0, ground_y(c.x, c.z), 0)
-	SeasKit.pipe(a, o, bs, Vector3(-ln * 0.5, r + 0.5, 0), Vector3(ln * 0.5, r + 0.5, 0), r, TideProps.m(self, paint), 20)
-	SeasKit.pipe(a, o, bs, Vector3(-ln * 0.3, r + 0.5, 0), Vector3(-ln * 0.3 + 0.3, r + 0.5, 0), r + 0.03, TideProps.m(self, "hazard"), 20)
+	TideProps.pipe(a, o, bs, Vector3(-ln * 0.5, r + 0.5, 0), Vector3(ln * 0.5, r + 0.5, 0), r, TideProps.m(self, paint), 20)
+	TideProps.pipe(a, o, bs, Vector3(-ln * 0.3, r + 0.5, 0), Vector3(-ln * 0.3 + 0.3, r + 0.5, 0), r + 0.03, TideProps.m(self, "hazard"), 20)
 	for x: float in [-ln * 0.32, ln * 0.32]:
-		SeasKit.box(a, o, bs, Vector3(x, (r + 0.5) * 0.5, 0), Vector3(0.35, r + 0.5, r * 1.7), TideProps.m(self, "steel"))
+		TideProps.box(a, o, bs, Vector3(x, (r + 0.5) * 0.5, 0), Vector3(0.35, r + 0.5, r * 1.7), TideProps.m(self, "steel"))
 	for sd: float in [-1.0, 1.0]:
-		SeasKit.pipe(a, o, bs, Vector3(-ln * 0.5, 0.12, sd * r * 0.8), Vector3(ln * 0.5, 0.12, sd * r * 0.8), 0.12, TideProps.m(self, "steel"), 8)
-	SeasKit.ladder(a, o, bs, Vector3(ln * 0.2, 0.1, r + 0.15), Vector3(ln * 0.2, r * 2.0 + 0.5, r * 0.4 + 0.15), 0.5, Vector3(0, 0, 1), TideProps.m(self, "steel"))
-	SeasKit.pipe(a, o, bs, Vector3(0, r * 2.0 + 0.45, 0), Vector3(0, r * 2.0 + 0.85, 0), 0.25, TideProps.m(self, "steel"), 10)
+		TideProps.pipe(a, o, bs, Vector3(-ln * 0.5, 0.12, sd * r * 0.8), Vector3(ln * 0.5, 0.12, sd * r * 0.8), 0.12, TideProps.m(self, "steel"), 8)
+	TideProps.ladder(a, o, bs, Vector3(ln * 0.2, 0.1, r + 0.15), Vector3(ln * 0.2, r * 2.0 + 0.5, r * 0.4 + 0.15), 0.5, Vector3(0, 0, 1), TideProps.m(self, "steel"))
+	TideProps.pipe(a, o, bs, Vector3(0, r * 2.0 + 0.45, 0), Vector3(0, r * 2.0 + 0.85, 0), 0.25, TideProps.m(self, "steel"), 10)
 	_ice_add("always", _lumpy(1, 0.3, 1.5), Transform3D(bs * Basis.from_scale(Vector3(ln * 0.35, 0.18, r * 0.6)), o + bs * Vector3(0, r * 2.0 + 0.45, 0)), _ice_mat("frost"))
-	SeasKit.solid_box(_groups["always"], o, bs, Vector3(0, r + 0.5, 0), Vector3(ln, r * 2.0 + 1.0, r * 2.0))
+	TideProps.solid_box(_groups["always"], o, bs, Vector3(0, r + 0.5, 0), Vector3(ln, r * 2.0 + 1.0, r * 2.0))
 
 
 ## A glass greenhouse dome: ribbed white frame on a kerb ring; ruined it has lost most panes,
@@ -347,7 +347,7 @@ func _tank(a: KitMesh.Builder, c: Vector3, yaw: float, ln: float, r: float, pain
 func _dome(a: KitMesh.Builder, ruin: KitMesh.Builder, grn: KitMesh.Builder, c: Vector3, r: float) -> void:
 	var o: Vector3 = c + Vector3(0, ground_y(c.x, c.z), 0)
 	var bs := Basis()
-	SeasKit.pipe(a, o, bs, Vector3(0, 0.0, 0), Vector3(0, 0.5, 0), r + 0.4, TideProps.m(self, "steel"), 32)
+	TideProps.pipe(a, o, bs, Vector3(0, 0.0, 0), Vector3(0, 0.5, 0), r + 0.4, TideProps.m(self, "steel"), 32)
 	var ribs: int = 10
 	for k: int in ribs:
 		var ang: float = TAU * k / ribs
@@ -355,44 +355,44 @@ func _dome(a: KitMesh.Builder, ruin: KitMesh.Builder, grn: KitMesh.Builder, c: V
 		for j: int in range(1, 7):
 			var lat: float = PI * 0.5 * float(j) / 6.0
 			var p := Vector3(cos(ang) * r * cos(lat), 0.5 + r * sin(lat), sin(ang) * r * cos(lat))
-			SeasKit.pipe(a, o, bs, prev, p, 0.09, TideProps.m(self, "cream"), 6)
+			TideProps.pipe(a, o, bs, prev, p, 0.09, TideProps.m(self, "cream"), 6)
 			prev = p
 	for lat: float in [0.3, 0.65, 1.0]:
 		var rr: float = r * cos(lat)
 		for k: int in 20:
 			var a0: float = TAU * k / 20.0
 			var a1: float = TAU * (k + 1) / 20.0
-			SeasKit.pipe(a, o, bs, Vector3(cos(a0) * rr, 0.5 + r * sin(lat), sin(a0) * rr), Vector3(cos(a1) * rr, 0.5 + r * sin(lat), sin(a1) * rr), 0.07, TideProps.m(self, "cream"), 6)
+			TideProps.pipe(a, o, bs, Vector3(cos(a0) * rr, 0.5 + r * sin(lat), sin(a0) * rr), Vector3(cos(a1) * rr, 0.5 + r * sin(lat), sin(a1) * rr), 0.07, TideProps.m(self, "cream"), 6)
 	var glass := SphereMesh.new()
 	glass.radius = r - 0.05
 	glass.height = (r - 0.05) * 2.0
 	glass.is_hemisphere = true
 	glass.radial_segments = 30
 	glass.rings = 10
-	SeasKit.add_mesh(grn, "glasshouse", glass, Transform3D(Basis(), o + Vector3(0, 0.5, 0)))
+	TideProps.add_mesh(grn, "glasshouse", glass, Transform3D(Basis(), o + Vector3(0, 0.5, 0)))
 	var bed := SphereMesh.new()
 	bed.radius = r * 0.8
 	bed.height = r * 1.6
 	bed.is_hemisphere = true
 	bed.radial_segments = 16
 	bed.rings = 5
-	SeasKit.add_mesh(grn, TideProps.m(self, "leaf"), bed, Transform3D(Basis.from_scale(Vector3(1, 0.25, 1)), o + Vector3(0, 0.45, 0)))
+	TideProps.add_mesh(grn, TideProps.m(self, "leaf"), bed, Transform3D(Basis.from_scale(Vector3(1, 0.25, 1)), o + Vector3(0, 0.45, 0)))
 	for k: int in 7:
 		var ang: float = _rng.randf() * TAU
 		var q: Vector3 = Vector3(cos(ang), 0, sin(ang)) * r * _rng.randf_range(0.15, 0.6)
 		var s: float = _rng.randf_range(0.6, 1.2)
-		SeasKit.add_mesh(grn, TideProps.m(self, "leaf"), _lumpy(5 + k % 3, 0.5, 3.0), Transform3D(Basis.from_scale(Vector3(s, s * 1.3, s)), o + q + Vector3(0, 0.9 + s * 0.6, 0)))
-	SeasKit.add_mesh(grn, TideProps.m(self, "lamp_warm"), glass, Transform3D(Basis.from_scale(Vector3(0.12, 0.12, 0.12)), o + Vector3(0, r + 0.2, 0)))
+		TideProps.add_mesh(grn, TideProps.m(self, "leaf"), _lumpy(5 + k % 3, 0.5, 3.0), Transform3D(Basis.from_scale(Vector3(s, s * 1.3, s)), o + q + Vector3(0, 0.9 + s * 0.6, 0)))
+	TideProps.add_mesh(grn, TideProps.m(self, "lamp_warm"), glass, Transform3D(Basis.from_scale(Vector3(0.12, 0.12, 0.12)), o + Vector3(0, r + 0.2, 0)))
 	# Ruin: a few cracked panes left, broken glass and frame bits in the snow.
 	for k: int in 4:
 		var ang: float = _rng.randf() * TAU
 		var lat: float = _rng.randf_range(0.2, 0.9)
 		var p := Vector3(cos(ang) * r * cos(lat), 0.5 + r * sin(lat), sin(ang) * r * cos(lat))
-		SeasKit.box(ruin, o, bs, p, Vector3(1.4, 0.04, 1.2), "glasshouse", Vector3(rad_to_deg(lat) * 0.0, -rad_to_deg(ang), 90.0 - rad_to_deg(lat)), 0.01)
+		TideProps.box(ruin, o, bs, p, Vector3(1.4, 0.04, 1.2), "glasshouse", Vector3(rad_to_deg(lat) * 0.0, -rad_to_deg(ang), 90.0 - rad_to_deg(lat)), 0.01)
 	for k: int in 5:
 		var q := Vector3(_rng.randf_range(-r, r), 0.1, _rng.randf_range(-r, r)) * 1.2
-		SeasKit.pipe(ruin, o, bs, q, q + Vector3(_rng.randf_range(-1.5, 1.5), 0.05, _rng.randf_range(-1.5, 1.5)), 0.08, TideProps.m(self, "cream"), 6)
-	SeasKit.solid_cyl(_groups["always"], o, bs, Vector3.ZERO, Vector3(0, r, 0), r)
+		TideProps.pipe(ruin, o, bs, q, q + Vector3(_rng.randf_range(-1.5, 1.5), 0.05, _rng.randf_range(-1.5, 1.5)), 0.08, TideProps.m(self, "cream"), 6)
+	TideProps.solid_cyl(_groups["always"], o, bs, Vector3.ZERO, Vector3(0, r, 0), r)
 
 
 func _ice_add(group: String, mesh: Mesh, xf: Transform3D, mat: Material) -> void:
@@ -405,23 +405,23 @@ func _ice_add(group: String, mesh: Mesh, xf: Transform3D, mat: Material) -> void
 func _mast(a: KitMesh.Builder, grn: KitMesh.Builder, c: Vector3, h: float) -> void:
 	var o: Vector3 = c + Vector3(0, ground_y(c.x, c.z), 0)
 	var bs := Basis()
-	SeasKit.box(a, o, bs, Vector3(0, 0.2, 0), Vector3(2.0, 0.4, 2.0), TideProps.m(self, "steel"))
-	SeasKit.tower(a, o, bs, Vector3.ZERO, 0.4, h, 0.7, 0.35, 3, TideProps.m(self, "red"), 0.08, 1.6)
+	TideProps.box(a, o, bs, Vector3(0, 0.2, 0), Vector3(2.0, 0.4, 2.0), TideProps.m(self, "steel"))
+	TideProps.tower(a, o, bs, Vector3.ZERO, 0.4, h, 0.7, 0.35, 3, TideProps.m(self, "red"), 0.08, 1.6)
 	for k: int in 3:
 		var y: float = h * (0.3 + k * 0.3)
 		if k % 2 == 0:
-			SeasKit.tower(a, o, bs, Vector3.ZERO, y, y + 1.4, lerpf(0.72, 0.36, y / h), lerpf(0.72, 0.36, (y + 1.4) / h), 3, TideProps.m(self, "cream"), 0.09, 0.7)
-	SeasKit.pipe(a, o, bs, Vector3(0.3, h * 0.72, 0), Vector3(0.9, h * 0.72, 0.3), 0.05, TideProps.m(self, "steel"), 6)
-	SeasKit.pipe(a, o, bs, Vector3(1.0, h * 0.72 - 0.05, 0.35), Vector3(1.25, h * 0.72 + 0.05, 0.45), 0.8, TideProps.m(self, "cream"), 18)
+			TideProps.tower(a, o, bs, Vector3.ZERO, y, y + 1.4, lerpf(0.72, 0.36, y / h), lerpf(0.72, 0.36, (y + 1.4) / h), 3, TideProps.m(self, "cream"), 0.09, 0.7)
+	TideProps.pipe(a, o, bs, Vector3(0.3, h * 0.72, 0), Vector3(0.9, h * 0.72, 0.3), 0.05, TideProps.m(self, "steel"), 6)
+	TideProps.pipe(a, o, bs, Vector3(1.0, h * 0.72 - 0.05, 0.35), Vector3(1.25, h * 0.72 + 0.05, 0.45), 0.8, TideProps.m(self, "cream"), 18)
 	for k: int in 3:
 		var ang: float = TAU * k / 3.0 + 0.4
 		var g := Vector3(cos(ang), 0, sin(ang)) * h * 0.55
 		g.y = ground_y(c.x + g.x, c.z + g.z) - o.y
-		SeasKit.pipe(a, o, bs, Vector3(0, h * 0.85, 0), g, 0.015, TideProps.m(self, "dark"), 4)
-		SeasKit.box(a, o, bs, g + Vector3(0, 0.15, 0), Vector3(0.5, 0.3, 0.5), TideProps.m(self, "steel"))
-	SeasKit.pipe(a, o, bs, Vector3(0, h, 0), Vector3(0, h + 0.4, 0), 0.06, TideProps.m(self, "steel"), 6)
-	SeasKit.pipe(grn, o, bs, Vector3(0, h + 0.4, 0), Vector3(0, h + 0.65, 0), 0.14, TideProps.m(self, "lamp_red"), 8)
-	SeasKit.solid_cyl(_groups["always"], o, bs, Vector3.ZERO, Vector3(0, h, 0), 0.9)
+		TideProps.pipe(a, o, bs, Vector3(0, h * 0.85, 0), g, 0.015, TideProps.m(self, "dark"), 4)
+		TideProps.box(a, o, bs, g + Vector3(0, 0.15, 0), Vector3(0.5, 0.3, 0.5), TideProps.m(self, "steel"))
+	TideProps.pipe(a, o, bs, Vector3(0, h, 0), Vector3(0, h + 0.4, 0), 0.06, TideProps.m(self, "steel"), 6)
+	TideProps.pipe(grn, o, bs, Vector3(0, h + 0.4, 0), Vector3(0, h + 0.65, 0), 0.14, TideProps.m(self, "lamp_red"), 8)
+	TideProps.solid_cyl(_groups["always"], o, bs, Vector3.ZERO, Vector3(0, h, 0), 0.9)
 
 
 ## A little snowcat: body, glazed cab, two rubber track units with tread ribs, a roof light bar.
@@ -429,20 +429,20 @@ func _snowcat(a: KitMesh.Builder, grn: KitMesh.Builder, c: Vector3, yaw: float, 
 	var bs := Basis(Vector3.UP, yaw)
 	var o: Vector3 = c + Vector3(0, ground_y(c.x, c.z), 0)
 	for sd: float in [-1.0, 1.0]:
-		SeasKit.box(a, o, bs, Vector3(sd * 1.15, 0.5, 0), Vector3(0.75, 0.95, 4.0), TideProps.m(self, "dark"), Vector3.ZERO, 0.3)
+		TideProps.box(a, o, bs, Vector3(sd * 1.15, 0.5, 0), Vector3(0.75, 0.95, 4.0), TideProps.m(self, "dark"), Vector3.ZERO, 0.3)
 		for k: int in 12:
-			SeasKit.box(a, o, bs, Vector3(sd * 1.15, 0.03, -1.65 + k * 0.3), Vector3(0.8, 0.08, 0.12), TideProps.m(self, "steel"), Vector3.ZERO, 0.02)
+			TideProps.box(a, o, bs, Vector3(sd * 1.15, 0.03, -1.65 + k * 0.3), Vector3(0.8, 0.08, 0.12), TideProps.m(self, "steel"), Vector3.ZERO, 0.02)
 		for k: int in 4:
-			SeasKit.pipe(a, o, bs, Vector3(sd * 1.55, 0.45, -1.3 + k * 0.86), Vector3(sd * 1.6, 0.45, -1.3 + k * 0.86), 0.3, TideProps.m(self, "steel"), 10)
-	SeasKit.box(a, o, bs, Vector3(0, 1.2, -0.2), Vector3(2.4, 0.8, 3.8), TideProps.m(self, paint), Vector3.ZERO, 0.22)
-	SeasKit.box(a, o, bs, Vector3(0, 2.05, -0.6), Vector3(2.1, 1.0, 2.0), TideProps.m(self, paint), Vector3.ZERO, 0.25)
-	SeasKit.box(a, o, bs, Vector3(0, 2.1, 0.42), Vector3(1.8, 0.7, 0.08), TideProps.m(self, "glass"), Vector3(-15, 0, 0), 0.02)
+			TideProps.pipe(a, o, bs, Vector3(sd * 1.55, 0.45, -1.3 + k * 0.86), Vector3(sd * 1.6, 0.45, -1.3 + k * 0.86), 0.3, TideProps.m(self, "steel"), 10)
+	TideProps.box(a, o, bs, Vector3(0, 1.2, -0.2), Vector3(2.4, 0.8, 3.8), TideProps.m(self, paint), Vector3.ZERO, 0.22)
+	TideProps.box(a, o, bs, Vector3(0, 2.05, -0.6), Vector3(2.1, 1.0, 2.0), TideProps.m(self, paint), Vector3.ZERO, 0.25)
+	TideProps.box(a, o, bs, Vector3(0, 2.1, 0.42), Vector3(1.8, 0.7, 0.08), TideProps.m(self, "glass"), Vector3(-15, 0, 0), 0.02)
 	for sd: float in [-1.0, 1.0]:
-		SeasKit.box(a, o, bs, Vector3(sd * 1.06, 2.1, -0.6), Vector3(0.06, 0.6, 1.5), TideProps.m(self, "glass"), Vector3.ZERO, 0.01)
-		SeasKit.pipe(grn, o, bs, Vector3(sd * 0.7, 1.2, 1.72), Vector3(sd * 0.7, 1.2, 1.78), 0.14, TideProps.m(self, "lamp_warm"), 10)
-	SeasKit.box(a, o, bs, Vector3(0, 2.62, -0.6), Vector3(1.6, 0.14, 0.3), TideProps.m(self, "steel"))
-	SeasKit.box(a, o, bs, Vector3(0, 0.9, 2.1), Vector3(2.8, 0.7, 0.2), TideProps.m(self, "ledger"), Vector3(-20, 0, 0), 0.06)  # plough blade
-	SeasKit.solid_box(_groups["always"], o, bs, Vector3(0, 1.3, 0), Vector3(3.0, 2.6, 4.4))
+		TideProps.box(a, o, bs, Vector3(sd * 1.06, 2.1, -0.6), Vector3(0.06, 0.6, 1.5), TideProps.m(self, "glass"), Vector3.ZERO, 0.01)
+		TideProps.pipe(grn, o, bs, Vector3(sd * 0.7, 1.2, 1.72), Vector3(sd * 0.7, 1.2, 1.78), 0.14, TideProps.m(self, "lamp_warm"), 10)
+	TideProps.box(a, o, bs, Vector3(0, 2.62, -0.6), Vector3(1.6, 0.14, 0.3), TideProps.m(self, "steel"))
+	TideProps.box(a, o, bs, Vector3(0, 0.9, 2.1), Vector3(2.8, 0.7, 0.2), TideProps.m(self, "ledger"), Vector3(-20, 0, 0), 0.06)  # plough blade
+	TideProps.solid_box(_groups["always"], o, bs, Vector3(0, 1.3, 0), Vector3(3.0, 2.6, 4.4))
 
 
 # --- Sites -----------------------------------------------------------------------------------------
@@ -465,10 +465,10 @@ func _site_camp() -> void:
 	# Covered walkway between the first two cabins.
 	var w0 := Vector3(-3.6, ground_y(-3.6, -7.5) + 1.9, -7.5)
 	var w1 := Vector3(1.6, ground_y(1.6, -9.0) + 1.9, -9.0)
-	SeasKit.pipe(a, Vector3.ZERO, Basis(), w0, w1, 0.95, TideProps.m(self, "cream"), 16)
+	TideProps.pipe(a, Vector3.ZERO, Basis(), w0, w1, 0.95, TideProps.m(self, "cream"), 16)
 	for k: int in 4:
 		var p: Vector3 = w0.lerp(w1, (k + 0.5) / 4.0)
-		SeasKit.pipe(a, Vector3.ZERO, Basis(), p - (w1 - w0).normalized() * 0.08, p + (w1 - w0).normalized() * 0.08, 1.02, TideProps.m(self, "navy"), 16)
+		TideProps.pipe(a, Vector3.ZERO, Basis(), p - (w1 - w0).normalized() * 0.08, p + (w1 - w0).normalized() * 0.08, 1.02, TideProps.m(self, "navy"), 16)
 	# Clutter: crates, drums, a sled, a workbench, pallets.
 	var cols: Array[String] = ["orange", "teal", "red", "ledger", "cream"]
 	for k: int in 10:
@@ -479,7 +479,7 @@ func _site_camp() -> void:
 			continue
 		p.y = ground_y(p.x, p.z)
 		var s: float = _rng.randf_range(0.6, 1.1)
-		SeasKit.box(a, p, Basis(), Vector3(0, s * 0.35, 0), Vector3(s, s * 0.7, s * 1.3), TideProps.m(self, cols[k % 5]), Vector3(0, _rng.randf() * 90.0, 0))
+		TideProps.box(a, p, Basis(), Vector3(0, s * 0.35, 0), Vector3(s, s * 0.7, s * 1.3), TideProps.m(self, cols[k % 5]), Vector3(0, _rng.randf() * 90.0, 0))
 	var pts: Array[Transform3D] = []
 	for k: int in 12:
 		var ang: float = _rng.randf() * TAU
@@ -492,19 +492,19 @@ func _site_camp() -> void:
 	_scatter_models(["Barrel_01", "barrel_03", "propane_tank", "metal_toolbox", "wooden_crate_02", "small_lpg_tank"], pts, _groups["always"], 200.0)
 	var sl := Vector3(-3.0, 0, 6.0)
 	sl.y = ground_y(sl.x, sl.z)
-	SeasKit.box(a, sl, Basis(Vector3.UP, 0.6), Vector3(0, 0.45, 0), Vector3(1.2, 0.12, 2.6), TideProps.m(self, "timber"))
+	TideProps.box(a, sl, Basis(Vector3.UP, 0.6), Vector3(0, 0.45, 0), Vector3(1.2, 0.12, 2.6), TideProps.m(self, "timber"))
 	for sd: float in [-1.0, 1.0]:
-		SeasKit.pipe(a, sl, Basis(Vector3.UP, 0.6), Vector3(sd * 0.55, 0.06, -1.3), Vector3(sd * 0.55, 0.06, 1.5), 0.05, TideProps.m(self, "steel"), 6)
-		SeasKit.pipe(a, sl, Basis(Vector3.UP, 0.6), Vector3(sd * 0.55, 0.06, 1.5), Vector3(sd * 0.55, 0.4, 1.75), 0.05, TideProps.m(self, "steel"), 6)
+		TideProps.pipe(a, sl, Basis(Vector3.UP, 0.6), Vector3(sd * 0.55, 0.06, -1.3), Vector3(sd * 0.55, 0.06, 1.5), 0.05, TideProps.m(self, "steel"), 6)
+		TideProps.pipe(a, sl, Basis(Vector3.UP, 0.6), Vector3(sd * 0.55, 0.06, 1.5), Vector3(sd * 0.55, 0.4, 1.75), 0.05, TideProps.m(self, "steel"), 6)
 	# Lamp posts and string lights (lit when restored).
 	var posts: Array[Vector3] = [Vector3(-4.0, 0, 0.0), Vector3(4.5, 0, -3.0), Vector3(6.0, 0, 6.0), Vector3(-5.0, 0, 5.0)]
 	for i: int in posts.size():
 		var p: Vector3 = posts[i]
 		p.y = ground_y(p.x, p.z)
 		posts[i] = p
-		SeasKit.pipe(a, p, Basis(), Vector3.ZERO, Vector3(0, 3.6, 0), 0.08, TideProps.m(self, "steel"), 8)
-		SeasKit.lamp(a, grn, p, Basis(), Vector3(0, 3.5, 0), Vector3(1, 0, 0), TideProps.m(self, "steel"), TideProps.m(self, "lamp_warm"))
-		SeasKit.solid_cyl(_groups["always"], p, Basis(), Vector3.ZERO, Vector3(0, 3.6, 0), 0.15)
+		TideProps.pipe(a, p, Basis(), Vector3.ZERO, Vector3(0, 3.6, 0), 0.08, TideProps.m(self, "steel"), 8)
+		TideProps.lamp(a, grn, p, Basis(), Vector3(0, 3.5, 0), Vector3(1, 0, 0), TideProps.m(self, "steel"), TideProps.m(self, "lamp_warm"))
+		TideProps.solid_cyl(_groups["always"], p, Basis(), Vector3.ZERO, Vector3(0, 3.6, 0), 0.15)
 	var bulb := SphereMesh.new()
 	bulb.radius = 0.08
 	bulb.height = 0.16
@@ -515,7 +515,7 @@ func _site_camp() -> void:
 		var p1: Vector3 = posts[(i + 1) % posts.size()] + Vector3(0, 3.5, 0)
 		for k: int in 10:
 			var t: float = (k + 0.5) / 10.0
-			SeasKit.add_mesh(grn, TideProps.m(self, "bulb"), bulb, Transform3D(Basis(), p0.lerp(p1, t) - Vector3(0, sin(t * PI) * 0.7, 0)))
+			TideProps.add_mesh(grn, TideProps.m(self, "bulb"), bulb, Transform3D(Basis(), p0.lerp(p1, t) - Vector3(0, sin(t * PI) * 0.7, 0)))
 	# Ruin: drifted junk heaps, a toppled drum stack, snow-buried sheet metal.
 	var heap: Array[Transform3D] = []
 	for k: int in 40:
@@ -530,8 +530,8 @@ func _site_camp() -> void:
 	for k: int in 8:
 		var p := Vector3(_rng.randf_range(-14, 14), 0, _rng.randf_range(-12, 14))
 		p.y = ground_y(p.x, p.z) + 0.05
-		SeasKit.box(ruin, p, Basis(), Vector3.ZERO, Vector3(_rng.randf_range(1.0, 2.2), 0.06, _rng.randf_range(0.6, 1.3)), TideProps.m(self, ["red", "steel", "orange"][k % 3]), Vector3(_rng.randf_range(-10, 10), _rng.randf() * 360.0, _rng.randf_range(-10, 10)), 0.02)
-		SeasKit.add_mesh(a, TideProps.m(self, "snow"), _lumpy(k % 4, 0.35, 1.6), _lxf(p + Vector3(0.4, -0.1, 0.2), Vector3(0, _rng.randf() * 360.0, 0), Vector3(1.2, 0.35, 0.8)))
+		TideProps.box(ruin, p, Basis(), Vector3.ZERO, Vector3(_rng.randf_range(1.0, 2.2), 0.06, _rng.randf_range(0.6, 1.3)), TideProps.m(self, ["red", "steel", "orange"][k % 3]), Vector3(_rng.randf_range(-10, 10), _rng.randf() * 360.0, _rng.randf_range(-10, 10)), 0.02)
+		TideProps.add_mesh(a, TideProps.m(self, "snow"), _lumpy(k % 4, 0.35, 1.6), _lxf(p + Vector3(0.4, -0.1, 0.2), Vector3(0, _rng.randf() * 360.0, 0), Vector3(1.2, 0.35, 0.8)))
 	TideProps.flush(self, a, "always")
 	TideProps.flush(self, ruin, "ruin")
 	TideProps.flush(self, grn, "green")
@@ -548,15 +548,15 @@ func _site_derrick() -> void:
 	var fut := TideProps.builder(self, "future")
 	var o := Vector3(0, ground_y(0, 0), 0)
 	var bs := Basis(Vector3.UP, 0.4) * Basis(Vector3.FORWARD, deg_to_rad(3.0))
-	SeasKit.box(a, o, bs, Vector3(0, 1.0, 0), Vector3(8.0, 2.0, 8.0), TideProps.m(self, "navy"))
-	SeasKit.box(a, o, bs, Vector3(0, 2.1, 0), Vector3(8.6, 0.25, 8.6), TideProps.m(self, "steel"))
-	SeasKit.box(a, o, bs, Vector3(0, 0.15, 0), Vector3(8.2, 0.3, 8.2), TideProps.m(self, "hazard"), Vector3.ZERO, 0.06)
-	SeasKit.rail(a, o, bs, [Vector3(-4.1, 2.2, -4.1), Vector3(4.1, 2.2, -4.1), Vector3(4.1, 2.2, 4.1), Vector3(-4.1, 2.2, 4.1)] as Array[Vector3], 1.0, TideProps.m(self, "ledger"))
-	SeasKit.tower(a, o, bs, Vector3.ZERO, 2.2, 28.0, 3.0, 0.9, 4, TideProps.m(self, "orange"), 0.2, 2.8, PI * 0.25)
-	SeasKit.box(a, o, bs, Vector3(0, 28.8, 0), Vector3(2.4, 1.6, 2.4), TideProps.m(self, "ledger"))
-	SeasKit.box(a, o, bs, Vector3(0, 17.0, 0), Vector3(3.4, 0.2, 3.4), TideProps.m(self, "steel"))
-	SeasKit.pipe(a, o, bs, Vector3(0, -2.0, 0), Vector3(0, 27.0, 0), 0.2, TideProps.m(self, "steel"), 10)
-	SeasKit.pipe(a, o, bs, Vector3(0, 9.0, 0), Vector3(0, 11.0, 0), 0.6, TideProps.m(self, "ledger"), 12)  # travelling block
+	TideProps.box(a, o, bs, Vector3(0, 1.0, 0), Vector3(8.0, 2.0, 8.0), TideProps.m(self, "navy"))
+	TideProps.box(a, o, bs, Vector3(0, 2.1, 0), Vector3(8.6, 0.25, 8.6), TideProps.m(self, "steel"))
+	TideProps.box(a, o, bs, Vector3(0, 0.15, 0), Vector3(8.2, 0.3, 8.2), TideProps.m(self, "hazard"), Vector3.ZERO, 0.06)
+	TideProps.rail(a, o, bs, [Vector3(-4.1, 2.2, -4.1), Vector3(4.1, 2.2, -4.1), Vector3(4.1, 2.2, 4.1), Vector3(-4.1, 2.2, 4.1)] as Array[Vector3], 1.0, TideProps.m(self, "ledger"))
+	TideProps.tower(a, o, bs, Vector3.ZERO, 2.2, 28.0, 3.0, 0.9, 4, TideProps.m(self, "orange"), 0.2, 2.8, PI * 0.25)
+	TideProps.box(a, o, bs, Vector3(0, 28.8, 0), Vector3(2.4, 1.6, 2.4), TideProps.m(self, "ledger"))
+	TideProps.box(a, o, bs, Vector3(0, 17.0, 0), Vector3(3.4, 0.2, 3.4), TideProps.m(self, "steel"))
+	TideProps.pipe(a, o, bs, Vector3(0, -2.0, 0), Vector3(0, 27.0, 0), 0.2, TideProps.m(self, "steel"), 10)
+	TideProps.pipe(a, o, bs, Vector3(0, 9.0, 0), Vector3(0, 11.0, 0), 0.6, TideProps.m(self, "ledger"), 12)  # travelling block
 	for k: int in 3:
 		var y: float = 6.0 + k * 7.0
 		var r: float = lerpf(3.0, 0.9, (y - 2.2) / 25.8)
@@ -573,14 +573,14 @@ func _site_derrick() -> void:
 	_cabin(a, grn, fut, Vector3(7.5, 0, -2.0), 0.4 + PI * 0.5, Vector3(5.0, 2.6, 3.2), "orange")
 	var rk := Vector3(-8.0, ground_y(-8.0, 2.0), 2.0)
 	for x: float in [-2.5, 0.0, 2.5]:
-		SeasKit.box(a, rk, Basis(Vector3.UP, 0.4), Vector3(x, 0.5, 0), Vector3(0.3, 1.0, 3.0), TideProps.m(self, "steel"))
+		TideProps.box(a, rk, Basis(Vector3.UP, 0.4), Vector3(x, 0.5, 0), Vector3(0.3, 1.0, 3.0), TideProps.m(self, "steel"))
 	for k: int in 9:
-		SeasKit.pipe(a, rk, Basis(Vector3.UP, 0.4), Vector3(-4.0, 1.15 + (k / 3) * 0.24, -0.6 + (k % 3) * 0.3 + (k / 3) * 0.15), Vector3(4.0, 1.15 + (k / 3) * 0.24, -0.6 + (k % 3) * 0.3 + (k / 3) * 0.15), 0.11, TideProps.m(self, "steel" if k % 2 == 0 else "red"), 8)
+		TideProps.pipe(a, rk, Basis(Vector3.UP, 0.4), Vector3(-4.0, 1.15 + (k / 3) * 0.24, -0.6 + (k % 3) * 0.3 + (k / 3) * 0.15), Vector3(4.0, 1.15 + (k / 3) * 0.24, -0.6 + (k % 3) * 0.3 + (k / 3) * 0.15), 0.11, TideProps.m(self, "steel" if k % 2 == 0 else "red"), 8)
 	_tank(a, Vector3(-3.0, 0, -9.0), 0.4, 5.0, 1.0, "ledger")
 	_tank(a, Vector3(1.5, 0, -10.5), 0.4, 4.0, 0.9, "teal")
 	# Ruin: ice grips the drill floor, a fallen crown block, junk.
 	_ice_add("ruin", _lumpy(3, 0.35, 1.6), Transform3D(bs * Basis.from_scale(Vector3(6.5, 2.6, 6.0)), o + Vector3(0, -0.8, 0)), _ice_mat("ice"))
-	SeasKit.box(ruin, o, Basis(), Vector3(6.0, 0.8, 6.0), Vector3(2.4, 1.6, 2.4), TideProps.m(self, "ledger"), Vector3(20, 35, 40))
+	TideProps.box(ruin, o, Basis(), Vector3(6.0, 0.8, 6.0), Vector3(2.4, 1.6, 2.4), TideProps.m(self, "ledger"), Vector3(20, 35, 40))
 	var heap: Array[Transform3D] = []
 	for k: int in 26:
 		var ang: float = _rng.randf() * TAU
@@ -590,18 +590,18 @@ func _site_derrick() -> void:
 		heap.append(Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), p))
 	_scatter_models(["Barrel_01", "rusted_wheel_rim_02", "old_tyre", "metal_jerrycan", "can_rusted"], heap, _groups["ruin"], 200.0)
 	# Restored: a warm geothermal vent at the foot, lamps; future: white tap pod with light lines.
-	SeasKit.pipe(grn, o, bs, Vector3(0, 2.3, 0), Vector3(0, 2.5, 0), 1.2, TideProps.m(self, "lamp_warm"), 18)
+	TideProps.pipe(grn, o, bs, Vector3(0, 2.3, 0), Vector3(0, 2.5, 0), 1.2, TideProps.m(self, "lamp_warm"), 18)
 	_steam_at(o + Vector3(0, 3.0, 0), 1.2)
-	SeasKit.pipe(fut, o, bs, Vector3(0, 29.5, 0), Vector3(0, 33.0, 0), 1.5, TideProps.m(self, "white"), 18)
+	TideProps.pipe(fut, o, bs, Vector3(0, 29.5, 0), Vector3(0, 33.0, 0), 1.5, TideProps.m(self, "white"), 18)
 	for c: int in 2:
 		var ang: float = PI * c + PI * 0.25
-		SeasKit.pipe(fut, o, bs, Vector3(cos(ang) * 3.05, 2.3, sin(ang) * 3.05), Vector3(cos(ang) * 0.95, 27.5, sin(ang) * 0.95), 0.04, TideProps.m(self, "lamp_cool"), 4)
+		TideProps.pipe(fut, o, bs, Vector3(cos(ang) * 3.05, 2.3, sin(ang) * 3.05), Vector3(cos(ang) * 0.95, 27.5, sin(ang) * 0.95), 0.04, TideProps.m(self, "lamp_cool"), 4)
 	TideProps.flush(self, a, "always")
 	TideProps.flush(self, ruin, "ruin")
 	TideProps.flush(self, grn, "green")
 	TideProps.flush(self, fut, "future")
-	SeasKit.solid_box(_groups["always"], o, bs, Vector3(0, 1.5, 0), Vector3(8.6, 3.0, 8.6))
-	SeasKit.solid_box(_groups["always"], rk, Basis(Vector3.UP, 0.4), Vector3(0, 0.8, 0), Vector3(8.0, 1.6, 3.0))
+	TideProps.solid_box(_groups["always"], o, bs, Vector3(0, 1.5, 0), Vector3(8.6, 3.0, 8.6))
+	TideProps.solid_box(_groups["always"], rk, Basis(Vector3.UP, 0.4), Vector3(0, 0.8, 0), Vector3(8.0, 1.6, 3.0))
 
 
 ## The borehole: a wide shaft ringed by a concrete collar with a hazard kerb and rail, a headframe
@@ -619,44 +619,44 @@ func _site_borehole() -> void:
 	for k: int in segs:
 		var ang: float = TAU * (k + 0.5) / segs
 		var p := Vector3(cos(ang), 0, sin(ang)) * (r + 1.2)
-		SeasKit.box(a, o, bs, p + Vector3(0, 0.4, 0), Vector3(2.0, 1.2, TAU * (r + 1.2) / segs + 0.05), TideProps.m(self, "concrete"), Vector3(0, -rad_to_deg(ang), 0), 0.12)
-		SeasKit.box(a, o, bs, p + Vector3(0, 1.05, 0) - Vector3(cos(ang), 0, sin(ang)) * 0.75, Vector3(0.4, 0.14, TAU * (r + 0.4) / segs), TideProps.m(self, "hazard"), Vector3(0, -rad_to_deg(ang), 0), 0.03)
+		TideProps.box(a, o, bs, p + Vector3(0, 0.4, 0), Vector3(2.0, 1.2, TAU * (r + 1.2) / segs + 0.05), TideProps.m(self, "concrete"), Vector3(0, -rad_to_deg(ang), 0), 0.12)
+		TideProps.box(a, o, bs, p + Vector3(0, 1.05, 0) - Vector3(cos(ang), 0, sin(ang)) * 0.75, Vector3(0.4, 0.14, TAU * (r + 0.4) / segs), TideProps.m(self, "hazard"), Vector3(0, -rad_to_deg(ang), 0), 0.03)
 	var rp: Array[Vector3] = []
 	for k: int in 25:
 		var ang: float = TAU * k / 24.0
 		rp.append(Vector3(cos(ang), 0, sin(ang)) * (r + 2.0) + Vector3(0, 1.0, 0))
-	SeasKit.rail(a, o, bs, rp, 1.0, TideProps.m(self, "ledger"))
+	TideProps.rail(a, o, bs, rp, 1.0, TideProps.m(self, "ledger"))
 	# The shaft itself: dark walls going down with ring stiffeners, a black bottom.
-	SeasKit.pipe(a, o, bs, Vector3(0, -14.0, 0), Vector3(0, -14.2, 0), r + 0.2, TideProps.m(self, "dark"), 32)
+	TideProps.pipe(a, o, bs, Vector3(0, -14.0, 0), Vector3(0, -14.2, 0), r + 0.2, TideProps.m(self, "dark"), 32)
 	for k: int in 6:
 		var y: float = -0.5 - k * 2.2
 		for j: int in 24:
 			var a0: float = TAU * j / 24.0
 			var a1: float = TAU * (j + 1) / 24.0
-			SeasKit.box(a, o, bs, Vector3(cos((a0 + a1) * 0.5), 0, sin((a0 + a1) * 0.5)) * (r + 0.1) + Vector3(0, y - 1.0, 0), Vector3(0.3, 2.2, TAU * r / 24.0 + 0.05), TideProps.m(self, "concrete" if k < 2 else "dark"), Vector3(0, -rad_to_deg((a0 + a1) * 0.5), 0), 0.04)
+			TideProps.box(a, o, bs, Vector3(cos((a0 + a1) * 0.5), 0, sin((a0 + a1) * 0.5)) * (r + 0.1) + Vector3(0, y - 1.0, 0), Vector3(0.3, 2.2, TAU * r / 24.0 + 0.05), TideProps.m(self, "concrete" if k < 2 else "dark"), Vector3(0, -rad_to_deg((a0 + a1) * 0.5), 0), 0.04)
 	# Headframe: two A-frame trusses, a sheave deck with two wheels, cables down the hole.
 	var ht: float = 18.0
 	for sd: float in [-1.0, 1.0]:
-		SeasKit.truss(a, o, bs, Vector3(sd * (r + 1.5), 1.0, -3.0), Vector3(sd * 1.5, ht, 0), 1.4, 1.2, TideProps.m(self, "ledger"), 0.16)
-		SeasKit.truss(a, o, bs, Vector3(sd * (r + 1.5), 1.0, 3.0), Vector3(sd * 1.5, ht, 0), 1.4, 1.2, TideProps.m(self, "ledger"), 0.16)
-	SeasKit.box(a, o, bs, Vector3(0, ht + 0.4, 0), Vector3(5.0, 0.8, 3.0), TideProps.m(self, "red"))
+		TideProps.truss(a, o, bs, Vector3(sd * (r + 1.5), 1.0, -3.0), Vector3(sd * 1.5, ht, 0), 1.4, 1.2, TideProps.m(self, "ledger"), 0.16)
+		TideProps.truss(a, o, bs, Vector3(sd * (r + 1.5), 1.0, 3.0), Vector3(sd * 1.5, ht, 0), 1.4, 1.2, TideProps.m(self, "ledger"), 0.16)
+	TideProps.box(a, o, bs, Vector3(0, ht + 0.4, 0), Vector3(5.0, 0.8, 3.0), TideProps.m(self, "red"))
 	for sd: float in [-0.9, 0.9]:
 		var wheel := TorusMesh.new()
 		wheel.inner_radius = 1.5
 		wheel.outer_radius = 1.75
 		wheel.rings = 24
 		wheel.ring_segments = 6
-		SeasKit.add_mesh(a, TideProps.m(self, "steel_plain"), wheel, Transform3D(Basis(Vector3.RIGHT, PI * 0.5), o + Vector3(sd, ht + 1.9, 0)))
-		SeasKit.pipe(a, o, bs, Vector3(sd, ht + 1.9, -0.3), Vector3(sd, ht + 1.9, 0.3), 0.25, TideProps.m(self, "steel"), 10)
-		SeasKit.pipe(a, o, bs, Vector3(sd + 1.6 * signf(sd), ht + 1.9, 0), Vector3(sd + 1.6 * signf(sd), -6.0, 0), 0.04, TideProps.m(self, "dark"), 4)
-	SeasKit.box(a, o, bs, Vector3(1.0, -4.0, 0), Vector3(1.6, 2.4, 1.6), TideProps.m(self, "ledger"))  # cage, half way down
-	SeasKit.pipe(grn, o, bs, Vector3(0, ht + 0.8, 0), Vector3(0, ht + 1.0, 0), 0.2, TideProps.m(self, "lamp_red"), 8)
+		TideProps.add_mesh(a, TideProps.m(self, "steel_plain"), wheel, Transform3D(Basis(Vector3.RIGHT, PI * 0.5), o + Vector3(sd, ht + 1.9, 0)))
+		TideProps.pipe(a, o, bs, Vector3(sd, ht + 1.9, -0.3), Vector3(sd, ht + 1.9, 0.3), 0.25, TideProps.m(self, "steel"), 10)
+		TideProps.pipe(a, o, bs, Vector3(sd + 1.6 * signf(sd), ht + 1.9, 0), Vector3(sd + 1.6 * signf(sd), -6.0, 0), 0.04, TideProps.m(self, "dark"), 4)
+	TideProps.box(a, o, bs, Vector3(1.0, -4.0, 0), Vector3(1.6, 2.4, 1.6), TideProps.m(self, "ledger"))  # cage, half way down
+	TideProps.pipe(grn, o, bs, Vector3(0, ht + 0.8, 0), Vector3(0, ht + 1.0, 0), 0.2, TideProps.m(self, "lamp_red"), 8)
 	# Winder house with a cable run to the sheaves.
 	_cabin(a, grn, fut, Vector3(-15.0, 0, 6.0), 0.6, Vector3(6.0, 3.2, 4.0), "teal")
-	SeasKit.pipe(a, Vector3.ZERO, bs, Vector3(-13.0, ground_y(-13.0, 6.0) + 3.8, 5.0), Vector3(-0.9, ht + 1.9, 0), 0.04, TideProps.m(self, "dark"), 4)
+	TideProps.pipe(a, Vector3.ZERO, bs, Vector3(-13.0, ground_y(-13.0, 6.0) + 3.8, 5.0), Vector3(-0.9, ht + 1.9, 0), 0.04, TideProps.m(self, "dark"), 4)
 	_tank(a, Vector3(12.0, 0, -9.0), -0.5, 5.0, 1.0, "red")
 	# Warm glow from the shaft when restored, cold mist when ruined (both steam particles).
-	SeasKit.pipe(grn, o, bs, Vector3(0, -12.0, 0), Vector3(0, -11.8, 0), r - 0.5, TideProps.m(self, "lamp_warm"), 28)
+	TideProps.pipe(grn, o, bs, Vector3(0, -12.0, 0), Vector3(0, -11.8, 0), r - 0.5, TideProps.m(self, "lamp_warm"), 28)
 	_steam_at(o + Vector3(0, 0.5, 0), r * 0.6)
 	var heap: Array[Transform3D] = []
 	for k: int in 30:
@@ -670,16 +670,16 @@ func _site_borehole() -> void:
 		var ang: float = _rng.randf() * TAU
 		var p := Vector3(cos(ang), 0, sin(ang)) * (r + 4.5)
 		p.y = ground_y(p.x, p.z)
-		SeasKit.box(ruin, p, Basis(), Vector3(0, 0.3, 0), Vector3(1.8, 0.6, 1.4), TideProps.m(self, "concrete"), Vector3(_rng.randf_range(-20, 20), _rng.randf() * 360.0, _rng.randf_range(-20, 20)), 0.1)
-	SeasKit.pipe(fut, o, bs, Vector3(0, 1.15, 0), Vector3(0, 1.2, 0), r + 0.5, TideProps.m(self, "lamp_cool"), 32)
+		TideProps.box(ruin, p, Basis(), Vector3(0, 0.3, 0), Vector3(1.8, 0.6, 1.4), TideProps.m(self, "concrete"), Vector3(_rng.randf_range(-20, 20), _rng.randf() * 360.0, _rng.randf_range(-20, 20)), 0.1)
+	TideProps.pipe(fut, o, bs, Vector3(0, 1.15, 0), Vector3(0, 1.2, 0), r + 0.5, TideProps.m(self, "lamp_cool"), 32)
 	TideProps.flush(self, a, "always")
 	TideProps.flush(self, ruin, "ruin")
 	TideProps.flush(self, grn, "green")
 	TideProps.flush(self, fut, "future")
 	for k: int in 12:
 		var ang: float = TAU * k / 12.0
-		SeasKit.solid_box(_groups["always"], o, bs, Vector3(cos(ang), 0, sin(ang)) * (r + 1.6), Vector3(2.6, 3.0, TAU * (r + 1.6) / 12.0 + 0.2), Vector3(0, -rad_to_deg(ang), 0))
-	SeasKit.solid_box(_groups["always"], o, bs, Vector3(0, 0.5, 0), Vector3(r * 1.6, 1.0, r * 1.6), Vector3.ZERO, PhysLayers.WORLD)  # lid: nobody falls in
+		TideProps.solid_box(_groups["always"], o, bs, Vector3(cos(ang), 0, sin(ang)) * (r + 1.6), Vector3(2.6, 3.0, TAU * (r + 1.6) / 12.0 + 0.2), Vector3(0, -rad_to_deg(ang), 0))
+	TideProps.solid_box(_groups["always"], o, bs, Vector3(0, 0.5, 0), Vector3(r * 1.6, 1.0, r * 1.6), Vector3.ZERO, PhysLayers.WORLD)  # lid: nobody falls in
 
 
 ## Hot springs: three pools in rocky ice rims (frozen when ruined, steaming and turquoise when
@@ -728,25 +728,25 @@ func _site_springs() -> void:
 		for k: int in n:
 			var p: Vector3 = p0.lerp(p1, (k + 0.5) / n)
 			p.y = maxf(ground_y(p.x, p.z), 0.0) + 0.35
-			SeasKit.box(a, p, Basis(Vector3.UP, yaw), Vector3.ZERO, Vector3(1.6, 0.1, 0.38), TideProps.m(self, "timber" if k % 4 else "timber2"), Vector3(0, 0, _rng.randf_range(-2, 2)), 0.03)
+			TideProps.box(a, p, Basis(Vector3.UP, yaw), Vector3.ZERO, Vector3(1.6, 0.1, 0.38), TideProps.m(self, "timber" if k % 4 else "timber2"), Vector3(0, 0, _rng.randf_range(-2, 2)), 0.03)
 			if k % 5 == 0:
 				for sd: float in [-0.7, 0.7]:
-					SeasKit.pipe(a, p, Basis(Vector3.UP, yaw), Vector3(sd, -0.8, 0), Vector3(sd, -0.05, 0), 0.08, TideProps.m(self, "timber2"), 6)
+					TideProps.pipe(a, p, Basis(Vector3.UP, yaw), Vector3(sd, -0.8, 0), Vector3(sd, -0.05, 0), 0.08, TideProps.m(self, "timber2"), 6)
 	_cabin(a, grn, fut, Vector3(-14.0, 0, -9.0), 0.5, Vector3(5.5, 2.6, 3.6), "red")
 	# Geothermal wellhead and its insulated pipe to the pools.
 	var wh := Vector3(10.0, 0, -9.0)
 	wh.y = ground_y(wh.x, wh.z)
-	SeasKit.box(a, wh, Basis(), Vector3(0, 0.4, 0), Vector3(2.2, 0.8, 2.2), TideProps.m(self, "concrete"))
-	SeasKit.flanged_pipe(a, wh, Basis(), Vector3(0, 0.8, 0), Vector3(0, 2.6, 0), 0.32, TideProps.m(self, "red"), TideProps.m(self, "steel"), 0.9)
-	SeasKit.pipe(a, wh, Basis(), Vector3(-0.6, 2.2, 0), Vector3(0.6, 2.2, 0), 0.22, TideProps.m(self, "red"), 10)
-	SeasKit.pipe(a, wh, Basis(), Vector3(0, 2.6, 0), Vector3(0, 2.75, 0), 0.5, TideProps.m(self, "ledger"), 14)
+	TideProps.box(a, wh, Basis(), Vector3(0, 0.4, 0), Vector3(2.2, 0.8, 2.2), TideProps.m(self, "concrete"))
+	TideProps.flanged_pipe(a, wh, Basis(), Vector3(0, 0.8, 0), Vector3(0, 2.6, 0), 0.32, TideProps.m(self, "red"), TideProps.m(self, "steel"), 0.9)
+	TideProps.pipe(a, wh, Basis(), Vector3(-0.6, 2.2, 0), Vector3(0.6, 2.2, 0), 0.22, TideProps.m(self, "red"), 10)
+	TideProps.pipe(a, wh, Basis(), Vector3(0, 2.6, 0), Vector3(0, 2.75, 0), 0.5, TideProps.m(self, "ledger"), 14)
 	var prev: Vector3 = wh + Vector3(-0.6, 0.8, 0)
 	for k: int in 6:
 		var t: float = (k + 1) / 6.0
 		var q: Vector3 = (wh + Vector3(-0.6, 0, 0)).lerp(pools[1] + Vector3(3.2, 0, 0), t)
 		q.y = ground_y(q.x, q.z) + 0.55
-		SeasKit.pipe(a, Vector3.ZERO, Basis(), prev, q, 0.2, TideProps.m(self, "cream"), 10)
-		SeasKit.box(a, q + Vector3(0, -0.3, 0), Basis(), Vector3.ZERO, Vector3(0.3, 0.6, 0.6), TideProps.m(self, "steel"), Vector3.ZERO, 0.04)
+		TideProps.pipe(a, Vector3.ZERO, Basis(), prev, q, 0.2, TideProps.m(self, "cream"), 10)
+		TideProps.box(a, q + Vector3(0, -0.3, 0), Basis(), Vector3.ZERO, Vector3(0.3, 0.6, 0.6), TideProps.m(self, "steel"), Vector3.ZERO, 0.04)
 		prev = q
 	_steam_at(wh + Vector3(0, 3.0, 0), 0.4)
 	# Ruin: frozen junk at the pool rims; restored: moss tufts and lanterns on posts.
@@ -761,14 +761,14 @@ func _site_springs() -> void:
 	for k: int in 6:
 		var p: Vector3 = bw[0].lerp(bw[bw.size() - 1], (k + 0.5) / 6.0) + Vector3(0, 0, 1.2)
 		p.y = ground_y(p.x, p.z)
-		SeasKit.pipe(a, p, Basis(), Vector3.ZERO, Vector3(0, 1.6, 0), 0.06, TideProps.m(self, "timber2"), 6)
-		SeasKit.box(a, p, Basis(), Vector3(0, 1.75, 0), Vector3(0.32, 0.4, 0.32), TideProps.m(self, "steel"), Vector3(0, 45, 0), 0.05)
-		SeasKit.box(grn, p, Basis(), Vector3(0, 1.75, 0), Vector3(0.24, 0.32, 0.36), TideProps.m(self, "lamp_warm"), Vector3(0, 45, 0), 0.03)
+		TideProps.pipe(a, p, Basis(), Vector3.ZERO, Vector3(0, 1.6, 0), 0.06, TideProps.m(self, "timber2"), 6)
+		TideProps.box(a, p, Basis(), Vector3(0, 1.75, 0), Vector3(0.32, 0.4, 0.32), TideProps.m(self, "steel"), Vector3(0, 45, 0), 0.05)
+		TideProps.box(grn, p, Basis(), Vector3(0, 1.75, 0), Vector3(0.24, 0.32, 0.36), TideProps.m(self, "lamp_warm"), Vector3(0, 45, 0), 0.03)
 	TideProps.flush(self, a, "always")
 	TideProps.flush(self, ruin, "ruin")
 	TideProps.flush(self, grn, "green")
 	TideProps.flush(self, fut, "future")
-	SeasKit.solid_box(_groups["always"], wh, Basis(), Vector3(0, 1.3, 0), Vector3(2.2, 2.6, 2.2))
+	TideProps.solid_box(_groups["always"], wh, Basis(), Vector3(0, 1.3, 0), Vector3(2.2, 2.6, 2.2))
 
 
 func _on_deck(p: Vector3) -> bool:

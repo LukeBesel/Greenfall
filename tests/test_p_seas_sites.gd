@@ -1,5 +1,5 @@
 extends GutTest
-## [p_seas] Tidewell + Rime hub-site art pass: SeasKit meshes face outward, structures carry
+## [p_seas] Tidewell + Rime hub-site art pass: the hull loft faces outward, structures carry
 ## colliders (skimmers and Lumi stop at hulls, legs and cabins), Rime site prefabs build and
 ## restage with the same API shape as TideSite.
 
@@ -22,7 +22,7 @@ func _outward(m: Mesh) -> Vector2i:
 
 
 func test_kit_meshes_face_outward() -> void:
-	for m: Mesh in [SeasKit.bevel_box(Vector3(2, 1, 3)), SeasKit.bevel_cyl(0.5, 2.0), SeasKit.hull_mesh(40.0, 10.0, 5.0)]:
+	for m: Mesh in [TideProps.hull_mesh(40.0, 10.0, 5.0), TideProps.hull_mesh(6.5, 2.4, 1.3, 0.5, 1.6, 0.2)]:
 		var s: Vector2i = _outward(m)
 		assert_gt(s.x, 0)
 		assert_eq(s.y, 0, "no inside-out triangles")
@@ -77,11 +77,13 @@ func test_rime_sites_build_and_restage() -> void:
 		assert_true((s._groups["future"] as Node3D).visible)
 
 
-func test_rust_follows_restoration() -> void:
+func test_kit_state_follows_restoration() -> void:
 	var root := Node3D.new()
 	add_child_autofree(root)
 	var s: TideSite = TideSite.place("wreck", root, 0, 0.0)
-	var hull: ShaderMaterial = s._mats["k:hull"]
-	var ruined: float = float(hull.get_shader_parameter("rust"))
+	assert_eq(str(s._mats.get("_kit_state", "")), "broken", "ruined wreck: kit broken state")
+	assert_gt((s._mats["_kit_always"] as Array).size(), 0, "structures are kit meshes")
 	s.set_state(1, 1.0)
-	assert_lt(float(hull.get_shader_parameter("rust")), ruined, "restoring cleans the rust")
+	assert_eq(str(s._mats["_kit_state"]), "restored")
+	s.set_state(1, 0.3)
+	assert_eq(str(s._mats["_kit_state"]), "repaired")
