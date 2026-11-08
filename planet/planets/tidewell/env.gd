@@ -1137,43 +1137,21 @@ func _barge(p: Vector3, yaw: float, _parent: Node3D = null, _ruin_parent: Node3D
 ## Tops of drowned towers: concrete shafts out of the water with dark window bands, broken
 ## crowns, rebar. Future: clean white crowns with roof gardens and a hair-thin light band.
 func _build_towers() -> void:
-	var b := FrontierView.Batch.new()
-	var ruin := FrontierView.Batch.new()
-	var fut := FrontierView.Batch.new()
-	var grn := FrontierView.Batch.new()
+	var b: KitMesh.Builder = TideProps.builder(self, "always")
+	var ruin: KitMesh.Builder = TideProps.builder(self, "ruin")
+	var fut: KitMesh.Builder = TideProps.builder(self, "future")
+	var grn: KitMesh.Builder = TideProps.builder(self, "green")
 	for i: int in 7:
 		var p: Vector3 = _sea_spot(70.0, 380.0, 16.0)
 		var w: float = _rng.randf_range(9.0, 16.0)
 		var dpt: float = _rng.randf_range(9.0, 15.0)
 		var h: float = _rng.randf_range(3.0, 16.0)
 		var yaw: float = _rng.randf_range(-0.4, 0.4) + float(i)
-		var tilt: float = _rng.randf_range(-3.0, 3.0)
-		var c := Vector3(p.x, (h - 8.0) * 0.5, p.z)
-		_box(b, c, Vector3(w, h + 8.0, dpt), _mat("concrete"), Vector3(tilt, rad_to_deg(yaw), 0))
-		var fl: float = 0.8
-		while fl < h - 0.6:
-			_box(b, Vector3(p.x, fl, p.z), Vector3(w + 0.05, 1.3, dpt + 0.05), _mat("window"), Vector3(tilt, rad_to_deg(yaw), 0))
-			fl += 3.3
-		# Broken crown (ruin): jagged blocks and bent rebar.
-		for k: int in 5:
-			var o := Vector3(_rng.randf_range(-0.4, 0.4) * w, h + _rng.randf_range(0.0, 1.6), _rng.randf_range(-0.4, 0.4) * dpt)
-			var cs: float = _rng.randf_range(0.7, 1.6)
-			ruin.add(_lumpy(k % 5, 0.45, 2.2), _lxf(Vector3(p.x, 0, p.z) + Basis(Vector3.UP, yaw) * o, Vector3(_rng.randf() * 40, _rng.randf() * 360, 0), Vector3(cs * 1.3, cs, cs)), _mat("concrete"))
-			_cyl(ruin, Vector3(p.x, h, p.z) + Basis(Vector3.UP, yaw) * Vector3(o.x, 0, o.z), Vector3(p.x, h + 2.4, p.z) + Basis(Vector3.UP, yaw) * Vector3(o.x + 0.6, 0, o.z), 0.04, _mat("rust_dark"))
-		# Fallen slabs and rubble heaped against the shaft at the waterline.
-		for k: int in 6:
-			var ang: float = _rng.randf() * TAU
-			var rp := Vector3(p.x, -0.3, p.z) + Basis(Vector3.UP, yaw) * Vector3(cos(ang) * (w * 0.5 + 0.6), 0, sin(ang) * (dpt * 0.5 + 0.6))
-			var rs: float = _rng.randf_range(0.8, 2.0)
-			b.add(_lumpy((k + i) % 5, 0.4, 1.8), _lxf(rp, Vector3(_rng.randf() * 30, _rng.randf() * 360, 0), Vector3(rs * 1.4, rs * 0.6, rs)), _mat("concrete"))
-		# Future crown.
-		_box(fut, Vector3(p.x, h + 0.9, p.z), Vector3(w + 0.4, 1.8, dpt + 0.4), _mat("white"), Vector3(tilt, rad_to_deg(yaw), 0))
-		_box(fut, Vector3(p.x, h + 0.25, p.z), Vector3(w + 0.46, 0.05, dpt + 0.46), _mat("lamp"), Vector3(tilt, rad_to_deg(yaw), 0))
-		_box(grn, Vector3(p.x, h + 0.35, p.z), Vector3(w * 0.9, 0.7, dpt * 0.9), _mat("garden"), Vector3(tilt, rad_to_deg(yaw), 0))
-	b.flush(_groups["always"])
-	ruin.flush(_groups["ruin"])
-	fut.flush(_groups["future"])
-	grn.flush(_groups["green"])
+		TideProps.drowned_tower(self, b, ruin, grn, fut, p, yaw, w, dpt, h, _rng.randf_range(-3.0, 3.0))  # [p_seas] kit
+	TideProps.flush(self, b, "always")
+	TideProps.flush(self, ruin, "ruin")
+	TideProps.flush(self, fut, "future")
+	TideProps.flush(self, grn, "green")
 
 
 # --- Sea furniture ------------------------------------------------------------------------------
@@ -1223,8 +1201,8 @@ func _build_base_moorings() -> void:
 ## Lighthouses on the bigger isles: a broken dark stump while ruined; restored, a white tower
 ## with a red band and a lantern whose thin beam sweeps slowly over the sea.
 func _build_lighthouses() -> void:
-	var b := FrontierView.Batch.new()
-	var ruin := FrontierView.Batch.new()
+	var b: KitMesh.Builder = TideProps.builder(self, "green")  # [p_seas] kit lighthouses
+	var ruin: KitMesh.Builder = TideProps.builder(self, "ruin")
 	var n: int = 0
 	var beam_mat := ShaderMaterial.new()
 	beam_mat.shader = preload(DIR + "beam.gdshader")
@@ -1237,37 +1215,7 @@ func _build_lighthouses() -> void:
 		var g: float = bed_at(c.x, c.y).x
 		var base := Vector3(c.x, g - 0.3, c.y)
 		var h: float = 14.0
-		for k: int in 4:
-			var y0: float = h * k / 4.0
-			var cm := CylinderMesh.new()
-			cm.bottom_radius = lerpf(1.8, 1.1, float(k) / 4.0)
-			cm.top_radius = lerpf(1.8, 1.1, float(k + 1) / 4.0)
-			cm.height = h / 4.0
-			cm.radial_segments = 16
-			b.add(cm, _lxf(base + Vector3(0, y0 + h / 8.0, 0)), _mat("buoy_red") if k == 2 else _mat("white"))
-		var gal := CylinderMesh.new()
-		gal.top_radius = 1.6
-		gal.bottom_radius = 1.6
-		gal.height = 0.25
-		gal.radial_segments = 16
-		b.add(gal, _lxf(base + Vector3(0, h + 0.1, 0)), _mat("rust_dark"))
-		var lan := CylinderMesh.new()
-		lan.top_radius = 0.85
-		lan.bottom_radius = 0.95
-		lan.height = 1.4
-		lan.radial_segments = 12
-		b.add(lan, _lxf(base + Vector3(0, h + 0.95, 0)), _mat("lamp_warm"))
-		var cap := SphereMesh.new()
-		cap.radius = 1.0
-		cap.height = 1.0
-		cap.is_hemisphere = true
-		b.add(cap, _lxf(base + Vector3(0, h + 1.65, 0)), _mat("buoy_red"))
-		var stump := CylinderMesh.new()
-		stump.top_radius = 1.4
-		stump.bottom_radius = 1.8
-		stump.height = 6.0
-		stump.radial_segments = 12
-		ruin.add(stump, _lxf(base + Vector3(0, 3.0, 0), Vector3(4, 0, 2)), _mat("rust_dark"))
+		TideProps.lighthouse(self, b, ruin, base, h)
 		# Beam: two thin cones back to back on a turning pivot (green group, so restored only).
 		var pivot := Node3D.new()
 		pivot.position = base + Vector3(0, h + 0.95, 0)
@@ -1289,8 +1237,8 @@ func _build_lighthouses() -> void:
 			pivot.add_child(mi)
 		_groups["green"].add_child(pivot)
 		_beams.append(pivot)
-	b.flush(_groups["green"])
-	ruin.flush(_groups["ruin"])
+	TideProps.flush(self, b, "green")
+	TideProps.flush(self, ruin, "ruin")
 
 
 ## Floating gardens: round planted rafts moored on some clean water hexes once restored, and a
