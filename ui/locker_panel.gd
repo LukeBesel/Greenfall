@@ -175,6 +175,7 @@ func _ready() -> void:
 	hsc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	hsc.follow_focus = true
 	if modules:
+		hsc.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO  # [ui7] a tall editor scrolls inside the floating frame
 		_page = HoloFrame.module(12)
 		_page.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		add_child(_page)
