@@ -120,7 +120,7 @@ Same upgrades bought, no errors.
 | Memory shards + document view | missing | orbB | Shards in cleaned cells restore WREN's memory. `doc_view` is null, so the Ledger's "read the amended contract" does nothing on the globe. |
 | Easter eggs, collectibles, museum | works | | Per hub; `orbit_eggs_*`, `orbit_egg_prompt`. |
 | Ledger arc (drones, jammers, relay, resolve) | works | | Per hub; `orbit_ledger_*`. The resolve cinematic runs in the frame; I didn't take a picture of it. |
-| Bloom (milestones, Seed Ark, finale) | partial | orbE | Built; the finale on the globe is unchecked. |
+| Bloom (milestones, Seed Ark, finale) | works | orbE | Headless framing check (`--orbit --bloom-finale`, all planets): camera 1.3 m up, no roll, ark 40 deg up, same as the flat game. On a globe the orbit picks its clearest start yaw and a two-way spring arm keeps site geometry from blocking the view. Verdance, Anvil, Tidewell and Rime are clear. Open: on Ochre, Lumi's spawn spot is under or against the start site's geometry, so the camera can't see her from any side. That needs a site or spawn fix (orbD / p_ochre). |
 | Late game: Ark Bridge, Cradle Mode worlds, Homeward | partial | orbB / orbE | Built (`LateDirector`, `HomewardDirector`, `ArkBridge`). Launching a new Cradle world onto a globe is unchecked. |
 
 ## Sky, maps, camera, UI
