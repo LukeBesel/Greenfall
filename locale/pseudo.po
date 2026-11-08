@@ -450,7 +450,7 @@ msgstr "[Ñôţ éñôûĝĥ çûbéš ôŕ þàŕţš ~~~~~~]"
 msgid "Rocket upgraded: %s."
 msgstr "[Ŕôçķéţ ûþĝŕàðéð: %s. ~~~~]"
 
-#: automation/stations.gd:122 automation/telescope.gd:98 systems/camp/yard_builds.gd:59
+#: automation/stations.gd:122 automation/telescope.gd:98 systems/camp/yard_builds.gd:81
 #: ui/stations_panel.gd:96
 msgid "Built."
 msgstr "[Bûîļţ. ~]"
@@ -459,7 +459,7 @@ msgstr "[Bûîļţ. ~]"
 msgid "Requires research: %s."
 msgstr "[Ŕéqûîŕéš ŕéšéàŕçĥ: %s. ~~~~~]"
 
-#: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:64
+#: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:86
 #: ui/stations_panel.gd:97
 msgid "Requires hub level %d."
 msgstr "[Ŕéqûîŕéš ĥûb ļévéļ %d. ~~~~~]"
@@ -500,9 +500,9 @@ msgstr "[Évéŕý %dţĥ bàļé ţô ţĥé ŕéçýçļéŕ ~~~~~~~~]"
 msgid "Requires hub level %d or research: %s."
 msgstr "[Ŕéqûîŕéš ĥûb ļévéļ %d ôŕ ŕéšéàŕçĥ: %s. ~~~~~~~~~~]"
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:353
-#: systems/camp/camp.gd:365 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
-#: systems/camp/hub_builds.gd:161 systems/camp/hub_builds.gd:171 systems/camp/yard_builds.gd:69
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:361
+#: systems/camp/camp.gd:373 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
+#: systems/camp/hub_builds.gd:161 systems/camp/hub_builds.gd:171 systems/camp/yard_builds.gd:91
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
 msgstr "[Ñôţ éñôûĝĥ màţéŕîàļš. ~~~~]"
@@ -797,6 +797,14 @@ msgstr "[ŴŔÉÑ: Ţĥàţ'š ţĥé éðĝé ôƒ ţĥé šûŕvéý žôñé,
 #: planet/world_bounds.gd:166
 msgid "Lumi hovers back onto solid ground."
 msgstr "[Ļûmî ĥôvéŕš bàçķ ôñţô šôļîð ĝŕôûñð. ~~~~~~~~~]"
+
+#: planet/planets/tidewell/env.gd:1180
+msgid "LEDGER  DREDGE %02d"
+msgstr "[ĻÉÐĜÉŔ  ÐŔÉÐĜÉ %02d ~~~~]"
+
+#: planet/planets/tidewell/env.gd:1226
+msgid "LEDGER MINING  ORE BARGE 3"
+msgstr "[ĻÉÐĜÉŔ MÎÑÎÑĜ  ÔŔÉ BÀŔĜÉ 3 ~~~~~~]"
 
 #: plants/composter.gd:77
 msgid "E   compost press  ·  dormant until something grows"
@@ -2827,31 +2835,31 @@ msgstr "[%s šþôţţéð à %s: %s. ~~~~]"
 msgid "New CD: %s by %s, from %s"
 msgstr "[Ñéŵ ÇÐ: %s bý %s, ƒŕôm %s ~~~~~~]"
 
-#: systems/camp/camp.gd:168
+#: systems/camp/camp.gd:173
 msgid "E   Workbench (broken): repair it"
 msgstr "E   [Ŵôŕķbéñçĥ (bŕôķéñ): ŕéþàîŕ îţ ~~~~~~~]"
 
-#: systems/camp/camp.gd:169
+#: systems/camp/camp.gd:174
 msgid "E   Workbench: upgrades"
 msgstr "E   [Ŵôŕķbéñçĥ: ûþĝŕàðéš ~~~~]"
 
-#: systems/camp/camp.gd:216
+#: systems/camp/camp.gd:221
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð. Þŕéšš É àţ îţ ţô šþéñð çûbéš ôñ ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~]"
 
-#: systems/camp/camp.gd:351
+#: systems/camp/camp.gd:359
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   [%s (Ļv %d): ƒûļļý ûþĝŕàðéð ~~~~~~]"
 
-#: systems/camp/camp.gd:354
+#: systems/camp/camp.gd:362
 msgid "E   %s (Lv %d): %s"
 msgstr "E   [%s (Ļv %d): %s ~~]"
 
-#: systems/camp/camp.gd:355
+#: systems/camp/camp.gd:363
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   [%s (Ļv %d): ûþĝŕàðé ţô %s ƒôŕ %s ~~~~~~~~]"
 
-#: systems/camp/camp.gd:361
+#: systems/camp/camp.gd:369
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "[Ţŕàšĥ bîñ ûþĝŕàðéð: %s. Bàļéš šéļļ ƒôŕ %d%% ĥéŕé. ~~~~~~~~~~~~~~]"
 
@@ -2887,15 +2895,15 @@ msgstr "[%s bûîļţ. Fôļļôŵ ţĥé ļîĝĥţ ţô îţ. ~~~~~~~~~]"
 msgid "%s built."
 msgstr "[%s bûîļţ. ~]"
 
-#: systems/camp/yard_builds.gd:61
+#: systems/camp/yard_builds.gd:83
 msgid "Repair the workbench first."
 msgstr "[Ŕéþàîŕ ţĥé ŵôŕķbéñçĥ ƒîŕšţ. ~~~~~~]"
 
-#: systems/camp/yard_builds.gd:67
+#: systems/camp/yard_builds.gd:89
 msgid "Grow your first seed first."
 msgstr "[Ĝŕôŵ ýôûŕ ƒîŕšţ šééð ƒîŕšţ. ~~~~~~]"
 
-#: systems/camp/yard_builds.gd:67
+#: systems/camp/yard_builds.gd:89
 msgid "Not yet."
 msgstr "[Ñôţ ýéţ. ~]"
 
@@ -3040,7 +3048,7 @@ msgstr "[Ŕéţûŕñ ĥômé ~]"
 msgid "The clock is running. Clean %d hexes."
 msgstr "[Ţĥé çļôçķ îš ŕûññîñĝ. Çļéàñ %d ĥéxéš. ~~~~~~~~~~]"
 
-#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:388
+#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:391
 msgid "Time"
 msgstr "[Ţîmé ~]"
 
@@ -4712,7 +4720,7 @@ msgstr "[Šţýļé Ļûmî àñð évéŕý ŕôbôţ: çôļôûŕš, éýéš
 msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
 msgstr "[Ôþéñš àţ ĥûb ļévéļ %d (ñôŵ %d). Ûþĝŕàðé ţĥé ĥûb îñ ţĥé Ûþĝŕàðéš ţàb. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
+#: ui/locker_panel.gd:160 ui/photo_mode.gd:396 ui/photo_mode.gd:423
 #: ui/upgrades_panel.gd:32
 msgid "Lumi"
 msgstr "[Ļûmî ~]"
@@ -4789,7 +4797,7 @@ msgstr "[Àðvàñçéð (ĥûé, šàţûŕàţîôñ, bŕîĝĥţñéšš) ~~~
 msgid "Hue"
 msgstr "[Ĥûé ~]"
 
-#: ui/lumi_builder.gd:456 ui/photo_mode.gd:382
+#: ui/lumi_builder.gd:456 ui/photo_mode.gd:385
 msgid "Saturation"
 msgstr "[Šàţûŕàţîôñ ~]"
 
@@ -4866,7 +4874,7 @@ msgstr "[Þŕôƒîļéš ~]"
 msgid "New Game"
 msgstr "[Ñéŵ Ĝàmé ~]"
 
-#: ui/main_menu.gd:351 ui/main_menu.gd:550 ui/pause_menu.gd:64
+#: ui/main_menu.gd:351 ui/main_menu.gd:550 ui/pause_menu.gd:66
 msgid "Settings"
 msgstr "[Šéţţîñĝš ~]"
 
@@ -4874,7 +4882,7 @@ msgstr "[Šéţţîñĝš ~]"
 msgid "Credits"
 msgstr "[Çŕéðîţš ~]"
 
-#: ui/main_menu.gd:353 ui/pause_menu.gd:68
+#: ui/main_menu.gd:353 ui/pause_menu.gd:70
 msgid "Quit"
 msgstr "[Qûîţ ~]"
 
@@ -5007,7 +5015,7 @@ msgstr "[Çôðéx  [%s] ~]"
 msgid "Photo mode  [%s]"
 msgstr "[Þĥôţô môðé  [%s] ~~~]"
 
-#: ui/pause_menu.gd:61 data/achievements.json:achievements[home_relics].name
+#: ui/pause_menu.gd:63 data/achievements.json:achievements[home_relics].name
 msgid "Keepsakes"
 msgstr "[Ķééþšàķéš ~]"
 
@@ -5071,157 +5079,157 @@ msgstr "[Ôŕbîţ Ļûmî ~]"
 msgid "Free fly"
 msgstr "[Fŕéé ƒļý ~]"
 
-#: ui/photo_mode.gd:116
+#: ui/photo_mode.gd:118
 msgid "Photo mode isn't available during a rocket flight."
 msgstr "[Þĥôţô môðé îšñ'ţ àvàîļàbļé ðûŕîñĝ à ŕôçķéţ ƒļîĝĥţ. ~~~~~~~~~~~~~~~]"
 
-#: ui/photo_mode.gd:119 ui/photo_mode.gd:122 ui/photo_mode.gd:125
-#: ui/photo_mode.gd:131
+#: ui/photo_mode.gd:121 ui/photo_mode.gd:124 ui/photo_mode.gd:127
+#: ui/photo_mode.gd:133
 msgid "Photo mode isn't available during a cinematic."
 msgstr "[Þĥôţô môðé îšñ'ţ àvàîļàbļé ðûŕîñĝ à çîñémàţîç. ~~~~~~~~~~~~~]"
 
-#: ui/photo_mode.gd:367 ui/photo_mode.gd:420 ui/settings_panel.gd:382
+#: ui/photo_mode.gd:370 ui/photo_mode.gd:423 ui/settings_panel.gd:382
 msgid "Camera"
 msgstr "[Çàméŕà ~]"
 
-#: ui/photo_mode.gd:368
+#: ui/photo_mode.gd:371
 msgid "Mode"
 msgstr "[Môðé ~]"
 
-#: ui/photo_mode.gd:369 ui/settings_panel.gd:390
+#: ui/photo_mode.gd:372 ui/settings_panel.gd:390
 msgid "Field of view"
 msgstr "[Fîéļð ôƒ vîéŵ ~~]"
 
-#: ui/photo_mode.gd:370
+#: ui/photo_mode.gd:373
 msgid "Roll"
 msgstr "[Ŕôļļ ~]"
 
-#: ui/photo_mode.gd:371
+#: ui/photo_mode.gd:374
 msgid "Distance"
 msgstr "[Ðîšţàñçé ~]"
 
-#: ui/photo_mode.gd:372
+#: ui/photo_mode.gd:375
 msgid "Height"
 msgstr "[Ĥéîĝĥţ ~]"
 
-#: ui/photo_mode.gd:373
+#: ui/photo_mode.gd:376
 msgid "Reset camera"
 msgstr "[Ŕéšéţ çàméŕà ~]"
 
-#: ui/photo_mode.gd:374 ui/photo_mode.gd:420
+#: ui/photo_mode.gd:377 ui/photo_mode.gd:423
 msgid "Lens"
 msgstr "[Ļéñš ~]"
 
-#: ui/photo_mode.gd:375
+#: ui/photo_mode.gd:378
 msgid "Auto-focus Lumi"
 msgstr "[Àûţô-ƒôçûš Ļûmî ~~]"
 
-#: ui/photo_mode.gd:376
+#: ui/photo_mode.gd:379
 msgid "Focus distance"
 msgstr "[Fôçûš ðîšţàñçé ~~]"
 
-#: ui/photo_mode.gd:377
+#: ui/photo_mode.gd:380
 msgid "Blur"
 msgstr "[Bļûŕ ~]"
 
-#: ui/photo_mode.gd:377 ui/photo_panel.gd:240 ui/photo_panel.gd:242
+#: ui/photo_mode.gd:380 ui/photo_panel.gd:240 ui/photo_panel.gd:242
 #: ui/photo_panel.gd:280 ui/settings_panel.gd:680
 msgid "Off"
 msgstr "[Ôƒƒ ~]"
 
-#: ui/photo_mode.gd:378
+#: ui/photo_mode.gd:381
 msgid "Exposure"
 msgstr "[Éxþôšûŕé ~]"
 
-#: ui/photo_mode.gd:378
+#: ui/photo_mode.gd:381
 msgid "%+.1f EV"
 msgstr "[%+.1f ÉV ~]"
 
-#: ui/photo_mode.gd:379 ui/photo_mode.gd:420
+#: ui/photo_mode.gd:382 ui/photo_mode.gd:423
 msgid "Look"
 msgstr "[Ļôôķ ~]"
 
-#: ui/photo_mode.gd:380
+#: ui/photo_mode.gd:383
 msgid "Filter"
 msgstr "[Fîļţéŕ ~]"
 
-#: ui/photo_mode.gd:381
+#: ui/photo_mode.gd:384
 msgid "Contrast"
 msgstr "[Çôñţŕàšţ ~]"
 
-#: ui/photo_mode.gd:383
+#: ui/photo_mode.gd:386
 msgid "Warmth"
 msgstr "[Ŵàŕmţĥ ~]"
 
-#: ui/photo_mode.gd:384
+#: ui/photo_mode.gd:387
 msgid "Vignette"
 msgstr "[Vîĝñéţţé ~]"
 
-#: ui/photo_mode.gd:385
+#: ui/photo_mode.gd:388
 msgid "Grain"
 msgstr "[Ĝŕàîñ ~]"
 
-#: ui/photo_mode.gd:386 ui/photo_mode.gd:420
+#: ui/photo_mode.gd:389 ui/photo_mode.gd:423
 msgid "World"
 msgstr "[Ŵôŕļð ~]"
 
-#: ui/photo_mode.gd:387
+#: ui/photo_mode.gd:390
 msgid "Set time of day"
 msgstr "[Šéţ ţîmé ôƒ ðàý ~~]"
 
-#: ui/photo_mode.gd:392
+#: ui/photo_mode.gd:395
 msgid "Weather"
 msgstr "[Ŵéàţĥéŕ ~]"
 
-#: ui/photo_mode.gd:394
+#: ui/photo_mode.gd:397
 msgid "Pose"
 msgstr "[Þôšé ~]"
 
-#: ui/photo_mode.gd:395 data/style_parts.json:slots[eye_shape].name
+#: ui/photo_mode.gd:398 data/style_parts.json:slots[eye_shape].name
 msgid "Eyes"
 msgstr "[Éýéš ~]"
 
-#: ui/photo_mode.gd:396
+#: ui/photo_mode.gd:399
 msgid "Turn"
 msgstr "[Ţûŕñ ~]"
 
-#: ui/photo_mode.gd:397
+#: ui/photo_mode.gd:400
 msgid "Show robots"
 msgstr "[Šĥôŵ ŕôbôţš ~]"
 
-#: ui/photo_mode.gd:398 ui/photo_mode.gd:420
+#: ui/photo_mode.gd:401 ui/photo_mode.gd:423
 msgid "Frame"
 msgstr "[Fŕàmé ~]"
 
-#: ui/photo_mode.gd:399
+#: ui/photo_mode.gd:402
 msgid "Hide HUD"
 msgstr "[Ĥîðé ĤÛÐ ~]"
 
-#: ui/photo_mode.gd:400
+#: ui/photo_mode.gd:403
 msgid "Rule of thirds"
 msgstr "[Ŕûļé ôƒ ţĥîŕðš ~~]"
 
-#: ui/photo_mode.gd:401
+#: ui/photo_mode.gd:404
 msgid "Letterbox 2.39:1"
 msgstr "[Ļéţţéŕbôx 2.39:1 ~~~]"
 
-#: ui/photo_mode.gd:402
+#: ui/photo_mode.gd:405
 msgid "Greenfall stamp"
 msgstr "[Ĝŕééñƒàļļ šţàmþ ~~]"
 
-#: ui/photo_mode.gd:403
+#: ui/photo_mode.gd:406
 msgid "Resolution"
 msgstr "[Ŕéšôļûţîôñ ~]"
 
-#: ui/photo_mode.gd:857
+#: ui/photo_mode.gd:860
 msgid "Couldn't capture the photo."
 msgstr "[Çôûļðñ'ţ çàþţûŕé ţĥé þĥôţô. ~~~~~~]"
 
-#: ui/photo_mode.gd:866
+#: ui/photo_mode.gd:869
 msgid "Couldn't save the photo (%s)."
 msgstr "[Çôûļðñ'ţ šàvé ţĥé þĥôţô (%s). ~~~~~~~]"
 
-#: ui/photo_mode.gd:879
+#: ui/photo_mode.gd:882
 msgid "Saved  %s  (%dx%d)"
 msgstr "[Šàvéð  %s  (%dx%d) ~~~]"
 
@@ -7167,6 +7175,14 @@ msgstr "[Ŕôbôţ Ñûŕšéŕý ~~]"
 #: data/camp.json:builds.nursery.desc
 msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
 msgstr "[À ŵàļļéð ļàŵñ ŵîţĥ ƒļôŵéŕ béðš ŵĥéŕé ŕéţîŕéð ŕôbôţš ţéñð ţĥé ĝàŕðéñ àñð ļéñð ýôûŕ çŕéŵ à ĥàñð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/camp.json:builds.camera_bot.name
+msgid "Blink"
+msgstr "[Bļîñķ ~]"
+
+#: data/camp.json:builds.camera_bot.desc
+msgid "A little floating camera bot with a big lens for a face. Builds once; then he follows Lumi from base to base and photo mode opens."
+msgstr "[À ļîţţļé ƒļôàţîñĝ çàméŕà bôţ ŵîţĥ à bîĝ ļéñš ƒôŕ à ƒàçé. Bûîļðš ôñçé; ţĥéñ ĥé ƒôļļôŵš Ļûmî ƒŕôm bàšé ţô bàšé àñð þĥôţô môðé ôþéñš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/codex.json:categories[junk].name data/hex_levels.json:levels[0].name
 msgid "Junk"
@@ -11201,7 +11217,8 @@ msgstr "[Véŕðàñçé ~]"
 msgid "Ochre"
 msgstr "[Ôçĥŕé ~]"
 
-#: data/homeward.json:planets[tidewell].name data/telescope.json:planets_default[tidewell].name
+#: data/homeward.json:planets[tidewell].name data/planets.json:tidewell.name data/planets.json:tidewell.district.name
+#: data/telescope.json:planets_default[tidewell].name
 msgid "Tidewell"
 msgstr "[Ţîðéŵéļļ ~]"
 
@@ -12100,6 +12117,58 @@ msgstr "[Šþéçîàļ Môðûļé ~~]"
 #: data/planets.json:rime.tagline
 msgid "An ice moon, core-mined until it froze."
 msgstr "[Àñ îçé môôñ, çôŕé-mîñéð ûñţîļ îţ ƒŕôžé. ~~~~~~~~~~~]"
+
+#: data/planets.json:tidewell.tagline
+msgid "An ocean world. The Ledger's dredging rigs still stand in the shallows."
+msgstr "[Àñ ôçéàñ ŵôŕļð. Ţĥé Ļéðĝéŕ'š ðŕéðĝîñĝ ŕîĝš šţîļļ šţàñð îñ ţĥé šĥàļļôŵš. ~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/planets.json:tidewell.sites.hub_raft.name
+msgid "Anchored Raft"
+msgstr "[Àñçĥôŕéð Ŕàƒţ ~~]"
+
+#: data/planets.json:tidewell.sites.hub_raft.desc
+msgid "Timber raft deck on rusted pontoons: workshop shack, store, deck crane, fuel tank, moorings."
+msgstr "[Ţîmbéŕ ŕàƒţ ðéçķ ôñ ŕûšţéð þôñţôôñš: ŵôŕķšĥôþ šĥàçķ, šţôŕé, ðéçķ çŕàñé, ƒûéļ ţàñķ, môôŕîñĝš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/planets.json:tidewell.sites.hub_stilts.name
+msgid "Stilt Yard"
+msgstr "[Šţîļţ Ýàŕð ~]"
+
+#: data/planets.json:tidewell.sites.hub_stilts.desc
+msgid "A sandy islet with a stilt deck and huts over the water, boardwalk, beached skiff."
+msgstr "[À šàñðý îšļéţ ŵîţĥ à šţîļţ ðéçķ àñð ĥûţš ôvéŕ ţĥé ŵàţéŕ, bôàŕðŵàļķ, béàçĥéð šķîƒƒ. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/planets.json:tidewell.sites.wreck.name
+msgid "Ore Barge Wreck"
+msgstr "[Ôŕé Bàŕĝé Ŵŕéçķ ~~]"
+
+#: data/planets.json:tidewell.sites.wreck.desc
+msgid "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+msgstr "[Ţĥé Ļéðĝéŕ'š ĥàļƒ-šûñķ mîñîñĝ bàŕĝé bý à šàñðbàŕ; ĥôþþéŕš ţûŕñ ţô þļàñţéŕš ŵĥéñ ŕéšţôŕéð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/planets.json:tidewell.sites.dredge_rig.name
+msgid "Dredge Rig"
+msgstr "[Ðŕéðĝé Ŕîĝ ~]"
+
+#: data/planets.json:tidewell.sites.dredge_rig.desc
+msgid "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
+msgstr "[À Ļéðĝéŕ ĵàçķ-ûþ ðŕéðĝîñĝ ŕîĝ ŵîţĥ bûçķéţ ļàððéŕ, ðéŕŕîçķ àñð çŕàñé. ~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/planets.json:tidewell.sites.reef_garden.name
+msgid "Reef Garden"
+msgstr "[Ŕééƒ Ĝàŕðéñ ~]"
+
+#: data/planets.json:tidewell.sites.reef_garden.desc
+msgid "Bleached coral breaking the surface among nets; live coral and floating gardens when restored."
+msgstr "[Bļéàçĥéð çôŕàļ bŕéàķîñĝ ţĥé šûŕƒàçé àmôñĝ ñéţš; ļîvé çôŕàļ àñð ƒļôàţîñĝ ĝàŕðéñš ŵĥéñ ŕéšţôŕéð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/planets.json:tidewell.sites.buoy_field.name
+msgid "Buoy Field"
+msgstr "[Bûôý Fîéļð ~]"
+
+#: data/planets.json:tidewell.sites.buoy_field.desc
+msgid "Rows of mooring buoys strung with rope and ghost nets; light caps when futuristic."
+msgstr "[Ŕôŵš ôƒ môôŕîñĝ bûôýš šţŕûñĝ ŵîţĥ ŕôþé àñð ĝĥôšţ ñéţš; ļîĝĥţ çàþš ŵĥéñ ƒûţûŕîšţîç. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/radio.json:songs[verdance_sprout].name data/songs.json:songs[sprout_step].title
 msgid "Sprout Step"

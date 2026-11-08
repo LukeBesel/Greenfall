@@ -451,7 +451,7 @@ msgstr "Nicht genug Würfel oder Teile"
 msgid "Rocket upgraded: %s."
 msgstr "Rakete verbessert: %s."
 
-#: automation/stations.gd:122 automation/telescope.gd:98 systems/camp/yard_builds.gd:59
+#: automation/stations.gd:122 automation/telescope.gd:98 systems/camp/yard_builds.gd:81
 #: ui/stations_panel.gd:96
 msgid "Built."
 msgstr "Gebaut."
@@ -460,7 +460,7 @@ msgstr "Gebaut."
 msgid "Requires research: %s."
 msgstr "Benötigt Forschung: %s."
 
-#: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:64
+#: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:86
 #: ui/stations_panel.gd:97
 msgid "Requires hub level %d."
 msgstr "Benötigt Basisstufe %d."
@@ -501,9 +501,9 @@ msgstr "Jeder %d. Ballen zum Recycler"
 msgid "Requires hub level %d or research: %s."
 msgstr "Erfordert Basisstufe %d oder Forschung: %s."
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:353
-#: systems/camp/camp.gd:365 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
-#: systems/camp/hub_builds.gd:161 systems/camp/hub_builds.gd:171 systems/camp/yard_builds.gd:69
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:361
+#: systems/camp/camp.gd:373 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
+#: systems/camp/hub_builds.gd:161 systems/camp/hub_builds.gd:171 systems/camp/yard_builds.gd:91
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
 msgstr "Nicht genug Material."
@@ -797,6 +797,14 @@ msgstr ""
 
 #: planet/world_bounds.gd:166
 msgid "Lumi hovers back onto solid ground."
+msgstr ""
+
+#: planet/planets/tidewell/env.gd:1180
+msgid "LEDGER  DREDGE %02d"
+msgstr ""
+
+#: planet/planets/tidewell/env.gd:1226
+msgid "LEDGER MINING  ORE BARGE 3"
 msgstr ""
 
 #: plants/composter.gd:77
@@ -2828,31 +2836,31 @@ msgstr "%s hat ein(e) %s entdeckt: %s."
 msgid "New CD: %s by %s, from %s"
 msgstr "Neue CD: %s von %s, aus %s"
 
-#: systems/camp/camp.gd:168
+#: systems/camp/camp.gd:173
 msgid "E   Workbench (broken): repair it"
 msgstr ""
 
-#: systems/camp/camp.gd:169
+#: systems/camp/camp.gd:174
 msgid "E   Workbench: upgrades"
 msgstr ""
 
-#: systems/camp/camp.gd:216
+#: systems/camp/camp.gd:221
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr ""
 
-#: systems/camp/camp.gd:351
+#: systems/camp/camp.gd:359
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr ""
 
-#: systems/camp/camp.gd:354
+#: systems/camp/camp.gd:362
 msgid "E   %s (Lv %d): %s"
 msgstr ""
 
-#: systems/camp/camp.gd:355
+#: systems/camp/camp.gd:363
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr ""
 
-#: systems/camp/camp.gd:361
+#: systems/camp/camp.gd:369
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr ""
 
@@ -2888,15 +2896,15 @@ msgstr ""
 msgid "%s built."
 msgstr ""
 
-#: systems/camp/yard_builds.gd:61
+#: systems/camp/yard_builds.gd:83
 msgid "Repair the workbench first."
 msgstr "Zuerst die Werkbank reparieren."
 
-#: systems/camp/yard_builds.gd:67
+#: systems/camp/yard_builds.gd:89
 msgid "Grow your first seed first."
 msgstr ""
 
-#: systems/camp/yard_builds.gd:67
+#: systems/camp/yard_builds.gd:89
 msgid "Not yet."
 msgstr ""
 
@@ -3041,7 +3049,7 @@ msgstr "Nach Hause"
 msgid "The clock is running. Clean %d hexes."
 msgstr "Die Uhr läuft. Räum %d Hexfelder."
 
-#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:388
+#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:391
 msgid "Time"
 msgstr "Zeit"
 
@@ -4709,7 +4717,7 @@ msgstr "Gestalte Lumi und jeden Roboter: Farben, Augen, Kopfteile, Aufsätze, Fl
 msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
 msgstr "Öffnet bei Hub-Stufe %d (jetzt %d). Baue den Hub im Upgrades-Tab aus."
 
-#: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
+#: ui/locker_panel.gd:160 ui/photo_mode.gd:396 ui/photo_mode.gd:423
 #: ui/upgrades_panel.gd:32
 msgid "Lumi"
 msgstr "Lumi"
@@ -4786,7 +4794,7 @@ msgstr "Erweitert (Farbton, Sättigung, Helligkeit)"
 msgid "Hue"
 msgstr "Farbton"
 
-#: ui/lumi_builder.gd:456 ui/photo_mode.gd:382
+#: ui/lumi_builder.gd:456 ui/photo_mode.gd:385
 msgid "Saturation"
 msgstr "Sättigung"
 
@@ -4863,7 +4871,7 @@ msgstr ""
 msgid "New Game"
 msgstr "Neues Spiel"
 
-#: ui/main_menu.gd:351 ui/main_menu.gd:550 ui/pause_menu.gd:64
+#: ui/main_menu.gd:351 ui/main_menu.gd:550 ui/pause_menu.gd:66
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -4871,7 +4879,7 @@ msgstr "Einstellungen"
 msgid "Credits"
 msgstr "Mitwirkende"
 
-#: ui/main_menu.gd:353 ui/pause_menu.gd:68
+#: ui/main_menu.gd:353 ui/pause_menu.gd:70
 msgid "Quit"
 msgstr "Beenden"
 
@@ -5004,7 +5012,7 @@ msgstr "Kodex  [%s]"
 msgid "Photo mode  [%s]"
 msgstr "Fotomodus  [%s]"
 
-#: ui/pause_menu.gd:61 data/achievements.json:achievements[home_relics].name
+#: ui/pause_menu.gd:63 data/achievements.json:achievements[home_relics].name
 msgid "Keepsakes"
 msgstr "Andenken"
 
@@ -5068,157 +5076,157 @@ msgstr "Lumi umkreisen"
 msgid "Free fly"
 msgstr "Freier Flug"
 
-#: ui/photo_mode.gd:116
+#: ui/photo_mode.gd:118
 msgid "Photo mode isn't available during a rocket flight."
 msgstr "Der Fotomodus ist während eines Raketenflugs nicht verfügbar."
 
-#: ui/photo_mode.gd:119 ui/photo_mode.gd:122 ui/photo_mode.gd:125
-#: ui/photo_mode.gd:131
+#: ui/photo_mode.gd:121 ui/photo_mode.gd:124 ui/photo_mode.gd:127
+#: ui/photo_mode.gd:133
 msgid "Photo mode isn't available during a cinematic."
 msgstr "Der Fotomodus ist während einer Zwischensequenz nicht verfügbar."
 
-#: ui/photo_mode.gd:367 ui/photo_mode.gd:420 ui/settings_panel.gd:382
+#: ui/photo_mode.gd:370 ui/photo_mode.gd:423 ui/settings_panel.gd:382
 msgid "Camera"
 msgstr "Kamera"
 
-#: ui/photo_mode.gd:368
+#: ui/photo_mode.gd:371
 msgid "Mode"
 msgstr "Modus"
 
-#: ui/photo_mode.gd:369 ui/settings_panel.gd:390
+#: ui/photo_mode.gd:372 ui/settings_panel.gd:390
 msgid "Field of view"
 msgstr "Sichtfeld"
 
-#: ui/photo_mode.gd:370
+#: ui/photo_mode.gd:373
 msgid "Roll"
 msgstr "Neigung"
 
-#: ui/photo_mode.gd:371
+#: ui/photo_mode.gd:374
 msgid "Distance"
 msgstr "Abstand"
 
-#: ui/photo_mode.gd:372
+#: ui/photo_mode.gd:375
 msgid "Height"
 msgstr "Höhe"
 
-#: ui/photo_mode.gd:373
+#: ui/photo_mode.gd:376
 msgid "Reset camera"
 msgstr "Kamera zurücksetzen"
 
-#: ui/photo_mode.gd:374 ui/photo_mode.gd:420
+#: ui/photo_mode.gd:377 ui/photo_mode.gd:423
 msgid "Lens"
 msgstr "Linse"
 
-#: ui/photo_mode.gd:375
+#: ui/photo_mode.gd:378
 msgid "Auto-focus Lumi"
 msgstr "Autofokus auf Lumi"
 
-#: ui/photo_mode.gd:376
+#: ui/photo_mode.gd:379
 msgid "Focus distance"
 msgstr "Fokusabstand"
 
-#: ui/photo_mode.gd:377
+#: ui/photo_mode.gd:380
 msgid "Blur"
 msgstr "Unschärfe"
 
-#: ui/photo_mode.gd:377 ui/photo_panel.gd:240 ui/photo_panel.gd:242
+#: ui/photo_mode.gd:380 ui/photo_panel.gd:240 ui/photo_panel.gd:242
 #: ui/photo_panel.gd:280 ui/settings_panel.gd:680
 msgid "Off"
 msgstr "Aus"
 
-#: ui/photo_mode.gd:378
+#: ui/photo_mode.gd:381
 msgid "Exposure"
 msgstr "Belichtung"
 
-#: ui/photo_mode.gd:378
+#: ui/photo_mode.gd:381
 msgid "%+.1f EV"
 msgstr "%+.1f EV"
 
-#: ui/photo_mode.gd:379 ui/photo_mode.gd:420
+#: ui/photo_mode.gd:382 ui/photo_mode.gd:423
 msgid "Look"
 msgstr "Look"
 
-#: ui/photo_mode.gd:380
+#: ui/photo_mode.gd:383
 msgid "Filter"
 msgstr "Filter"
 
-#: ui/photo_mode.gd:381
+#: ui/photo_mode.gd:384
 msgid "Contrast"
 msgstr "Kontrast"
 
-#: ui/photo_mode.gd:383
+#: ui/photo_mode.gd:386
 msgid "Warmth"
 msgstr "Wärme"
 
-#: ui/photo_mode.gd:384
+#: ui/photo_mode.gd:387
 msgid "Vignette"
 msgstr "Vignette"
 
-#: ui/photo_mode.gd:385
+#: ui/photo_mode.gd:388
 msgid "Grain"
 msgstr "Körnung"
 
-#: ui/photo_mode.gd:386 ui/photo_mode.gd:420
+#: ui/photo_mode.gd:389 ui/photo_mode.gd:423
 msgid "World"
 msgstr "Welt"
 
-#: ui/photo_mode.gd:387
+#: ui/photo_mode.gd:390
 msgid "Set time of day"
 msgstr "Tageszeit festlegen"
 
-#: ui/photo_mode.gd:392
+#: ui/photo_mode.gd:395
 msgid "Weather"
 msgstr "Wetter"
 
-#: ui/photo_mode.gd:394
+#: ui/photo_mode.gd:397
 msgid "Pose"
 msgstr "Pose"
 
-#: ui/photo_mode.gd:395 data/style_parts.json:slots[eye_shape].name
+#: ui/photo_mode.gd:398 data/style_parts.json:slots[eye_shape].name
 msgid "Eyes"
 msgstr "Augen"
 
-#: ui/photo_mode.gd:396
+#: ui/photo_mode.gd:399
 msgid "Turn"
 msgstr "Drehen"
 
-#: ui/photo_mode.gd:397
+#: ui/photo_mode.gd:400
 msgid "Show robots"
 msgstr "Roboter zeigen"
 
-#: ui/photo_mode.gd:398 ui/photo_mode.gd:420
+#: ui/photo_mode.gd:401 ui/photo_mode.gd:423
 msgid "Frame"
 msgstr "Rahmen"
 
-#: ui/photo_mode.gd:399
+#: ui/photo_mode.gd:402
 msgid "Hide HUD"
 msgstr "HUD ausblenden"
 
-#: ui/photo_mode.gd:400
+#: ui/photo_mode.gd:403
 msgid "Rule of thirds"
 msgstr "Drittelregel"
 
-#: ui/photo_mode.gd:401
+#: ui/photo_mode.gd:404
 msgid "Letterbox 2.39:1"
 msgstr "Letterbox 2.39:1"
 
-#: ui/photo_mode.gd:402
+#: ui/photo_mode.gd:405
 msgid "Greenfall stamp"
 msgstr "Greenfall-Stempel"
 
-#: ui/photo_mode.gd:403
+#: ui/photo_mode.gd:406
 msgid "Resolution"
 msgstr "Auflösung"
 
-#: ui/photo_mode.gd:857
+#: ui/photo_mode.gd:860
 msgid "Couldn't capture the photo."
 msgstr "Das Foto konnte nicht aufgenommen werden."
 
-#: ui/photo_mode.gd:866
+#: ui/photo_mode.gd:869
 msgid "Couldn't save the photo (%s)."
 msgstr "Das Foto konnte nicht gespeichert werden (%s)."
 
-#: ui/photo_mode.gd:879
+#: ui/photo_mode.gd:882
 msgid "Saved  %s  (%dx%d)"
 msgstr "Gespeichert  %s  (%dx%d)"
 
@@ -7159,6 +7167,14 @@ msgstr ""
 
 #: data/camp.json:builds.nursery.desc
 msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
+msgstr ""
+
+#: data/camp.json:builds.camera_bot.name
+msgid "Blink"
+msgstr ""
+
+#: data/camp.json:builds.camera_bot.desc
+msgid "A little floating camera bot with a big lens for a face. Builds once; then he follows Lumi from base to base and photo mode opens."
 msgstr ""
 
 #: data/codex.json:categories[junk].name data/hex_levels.json:levels[0].name
@@ -11194,7 +11210,8 @@ msgstr "Verdance"
 msgid "Ochre"
 msgstr "Ochre"
 
-#: data/homeward.json:planets[tidewell].name data/telescope.json:planets_default[tidewell].name
+#: data/homeward.json:planets[tidewell].name data/planets.json:tidewell.name data/planets.json:tidewell.district.name
+#: data/telescope.json:planets_default[tidewell].name
 msgid "Tidewell"
 msgstr "Tidewell"
 
@@ -12092,6 +12109,58 @@ msgstr "Spezialmodul"
 
 #: data/planets.json:rime.tagline
 msgid "An ice moon, core-mined until it froze."
+msgstr ""
+
+#: data/planets.json:tidewell.tagline
+msgid "An ocean world. The Ledger's dredging rigs still stand in the shallows."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_raft.name
+msgid "Anchored Raft"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_raft.desc
+msgid "Timber raft deck on rusted pontoons: workshop shack, store, deck crane, fuel tank, moorings."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_stilts.name
+msgid "Stilt Yard"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_stilts.desc
+msgid "A sandy islet with a stilt deck and huts over the water, boardwalk, beached skiff."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.wreck.name
+msgid "Ore Barge Wreck"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.wreck.desc
+msgid "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.dredge_rig.name
+msgid "Dredge Rig"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.dredge_rig.desc
+msgid "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.reef_garden.name
+msgid "Reef Garden"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.reef_garden.desc
+msgid "Bleached coral breaking the surface among nets; live coral and floating gardens when restored."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.buoy_field.name
+msgid "Buoy Field"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.buoy_field.desc
+msgid "Rows of mooring buoys strung with rope and ghost nets; light caps when futuristic."
 msgstr ""
 
 #: data/radio.json:songs[verdance_sprout].name data/songs.json:songs[sprout_step].title

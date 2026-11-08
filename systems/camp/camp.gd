@@ -28,6 +28,7 @@ var _bench_xf: Transform3D
 var _tools: Array = []  # [node, home transform, broken transform]
 var _spark_t: float = 0.0
 var _bin_anchor: Node3D
+var camera_bot: CameraBot  # [camp3]
 
 
 static func attach(slice: Node) -> Camp:
@@ -101,6 +102,7 @@ func _setup() -> void:
 	# Before anything reads the state: the slice has already loaded (or not) the district.
 	migrate()
 	migrate2()  # [camp2]
+	CameraBot.migrate(GameState.world.has("field"))  # [camp3]
 	if DevHooks.has("camp-broken"):
 		set_bench_ok(false)
 	elif DevHooks.has("camp-fixed"):
@@ -133,6 +135,9 @@ func _setup() -> void:
 		hub.level_changed.connect(func(_l: int) -> void: _apply_builds())  # after the slice's own ruin/level pass
 	YardBuilds.events.built.connect(_on_built)
 	_register_bin()
+	camera_bot = CameraBot.new()  # [camp3] Blink: hidden until built
+	world.add_child(camera_bot)
+	camera_bot.setup(world)
 	if DevHooks.has("camp-repair"):
 		get_tree().create_timer(1.0).timeout.connect(repair_bench)
 	if DevHooks.has("camp-buy"):  # buy stations live (with their reveal), e.g. conveyor+auto_baler
@@ -303,6 +308,9 @@ func _on_built(id: String) -> void:
 		"nursery":
 			if ex and ex.nursery:
 				ex.nursery.set_built(true, true)
+		"camera_bot":  # [camp3]
+			if camera_bot:
+				camera_bot.set_built(true)
 		_:
 			_apply_builds()  # [camp2] lean-to, generator, lamps, compost press
 	var at: Vector3 = YardBuilds.pos(id, Vector3.ZERO)
