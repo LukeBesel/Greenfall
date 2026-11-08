@@ -171,7 +171,14 @@ func lane_mark(x: float, z: float) -> float:
 func bake_image(size_m: float, res: float = 0.25) -> Image:
 	var px: int = int(size_m / res)
 	var img := Image.create(px, px, false, Image.FORMAT_RGBA8)
-	for j: int in px:
+	_bake_rows(img, 0, px, size_m, res)
+	return img
+
+
+## Rows [r0, r1) of the bake into img's rows 0.. (read-only on the layout: safe on worker threads).
+func _bake_rows(img: Image, r0: int, r1: int, size_m: float, res: float) -> void:
+	var px: int = img.get_width()
+	for j: int in range(r0, r1):
 		var z: float = -size_m * 0.5 + (j + 0.5) * res
 		for i: int in px:
 			var x: float = -size_m * 0.5 + (i + 0.5) * res
@@ -180,7 +187,39 @@ func bake_image(size_m: float, res: float = 0.25) -> Image:
 			var curb: float = 0.0
 			if s == Surface.ROAD:
 				curb = clampf(1.0 - curb_distance(x, z) / 1.6, 0.0, 1.0)
-			img.set_pixel(i, j, Color(float(s) / 4.0, lane, curb, height_at(x, z) / 0.5))
+			img.set_pixel(i, j - r0, Color(float(s) / 4.0, lane, curb, height_at(x, z) / 0.5))
+
+
+## [leftovers] bake_image on WorkerThreadPool threads, one row band per task, so the 1200 x 1200
+## bake (about 3 s of GDScript) runs beside the district build. Same pixels as bake_image.
+## Collect with `await bake_collect(job)` (BuildBudget yields frames while it waits).
+func bake_start(size_m: float, res: float = 0.25, bands: int = 1) -> Dictionary:
+	var px: int = int(size_m / res)
+	var rows: int = ceili(float(px) / bands)
+	var list: Array = []
+	for b: int in bands:
+		var r0: int = mini(px, b * rows)
+		var r1: int = mini(px, r0 + rows)
+		list.append([r0, r1, Image.create(px, maxi(1, r1 - r0), false, Image.FORMAT_RGBA8)])
+	var job: Dictionary = {"px": px, "size": size_m, "res": res, "bands": list}
+	job["group"] = BuildBudget.add_group_task(_bake_band.bind(job), bands, "layout bake")
+	return job
+
+
+func _bake_band(i: int, job: Dictionary) -> void:
+	var band: Array = job["bands"][i]
+	if int(band[1]) > int(band[0]):
+		_bake_rows(band[2], band[0], band[1], job["size"], job["res"])
+
+
+func bake_collect(job: Dictionary) -> Image:
+	await BuildBudget.join_group(int(job["group"]))
+	var px: int = job["px"]
+	var img := Image.create(px, px, false, Image.FORMAT_RGBA8)
+	for band: Array in job["bands"]:
+		var h: int = int(band[1]) - int(band[0])
+		if h > 0:
+			img.blit_rect(band[2], Rect2i(0, 0, px, h), Vector2i(0, band[0]))
 	return img
 
 

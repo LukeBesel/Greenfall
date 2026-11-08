@@ -55,6 +55,9 @@ func build(p_field: HexField) -> void:
 	var n_junk: int = int(area * JUNK_PER_M2 * low)
 	var n_lit: int = int(area * LITTER_PER_M2 * low)
 	for k: int in n_junk + n_lit:
+		if k & 255 == 255:  # [leftovers] time-sliced behind the loading screen (BuildBudget)
+			BuildBudget.sub(0.8 * float(k) / (n_junk + n_lit))
+			await BuildBudget.check("far:place")
 		var ang: float = rng.randf() * TAU
 		var r: float = sqrt(lerpf(inner_r * inner_r, FAR_R * FAR_R, rng.randf()))
 		var p := Vector3(cos(ang) * r, 0.0, sin(ang) * r)
@@ -85,6 +88,7 @@ func build(p_field: HexField) -> void:
 			litter += 1
 	var tris: Array[int] = [60, 80, 100, 120]  # far and hazy: the lightest LOD
 	for key: String in groups:
+		await BuildBudget.check("far:group")
 		var model: String = key.get_slice("|", 1)
 		var xfs: Array = groups[key]
 		var mm := MultiMesh.new()
@@ -93,6 +97,8 @@ func build(p_field: HexField) -> void:
 		mm.instance_count = xfs.size()
 		for i: int in xfs.size():
 			mm.set_instance_transform(i, xfs[i])
+			if i & 1023 == 1023:
+				await BuildBudget.check("far:mm")
 		var mmi := MultiMeshInstance3D.new()
 		mmi.name = "Far_" + key.replace("|", "_")
 		mmi.multimesh = mm
@@ -116,6 +122,8 @@ func build(p_field: HexField) -> void:
 		for i: int in xfs2.size():
 			mm2.set_instance_transform(i, xfs2[i])
 			mm2.set_instance_color(i, cols[i])
+			if i & 1023 == 1023:
+				await BuildBudget.check("far:litter")
 		var mmi2 := MultiMeshInstance3D.new()
 		mmi2.name = "FarLitter%d" % q
 		mmi2.multimesh = mm2

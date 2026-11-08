@@ -42,23 +42,34 @@ func build(p_layout: CityLayout, p_ground_material: Material) -> void:
 	_static.cell = CityLayout.PITCH * 2.0
 	_props.cell = CityLayout.PITCH * 2.0
 	_props.visibility_end = 260.0
-	_load_kit(APT)
-	_load_kit(FAC)
+	await _load_kit(APT)
+	await _load_kit(FAC)
 	_curb_mat = AssetLib.pbr_material("concrete_pavement", 1.2, Color(0.82, 0.8, 0.78), true)
+	var bi: int = 0
 	for key: Vector2i in layout.blocks:
+		bi += 1
+		BuildBudget.sub(0.6 * float(bi) / layout.blocks.size())
+		await BuildBudget.check("city:block")  # [leftovers] time-sliced behind the loading screen
 		_build_block(key, layout.blocks[key])
-	_flush_batches()
+	await BuildBudget.check("city:batches")
+	await _flush_batches()
 	if not layout.wild:
-		_build_street_props()
-		_build_skyline()  # wilderness has its own horizon (FieldView hills and biome wrecks)
-	_static.flush(self)
-	_props.flush(self)
+		await BuildBudget.check("city:props")
+		await _build_street_props()
+		await BuildBudget.check("city:skyline")
+		await _build_skyline()  # wilderness has its own horizon (FieldView hills and biome wrecks)
+	await BuildBudget.check("city:static")
+	await _static.flush_async(self)
+	await BuildBudget.check("city:props flush")
+	await _props.flush_async(self)
 
 
 # --- Kit --------------------------------------------------------------------------
 
 func _load_kit(id: String) -> void:
-	var ps: PackedScene = load(AssetLib.MODEL_DIR % [id, id])
+	var keep: Resource = await BuildBudget.fetch(AssetLib.MODEL_DIR % [id, id])  # [leftovers]
+	await BuildBudget.check("city:kit")
+	var ps: PackedScene = keep if keep is PackedScene else load(AssetLib.MODEL_DIR % [id, id])
 	var root: Node = ps.instantiate()
 	var d: Dictionary = {}
 	for c: Node in root.get_children():
@@ -93,6 +104,7 @@ func _place(_block: Vector2i, kit: String, piece: String, xf: Transform3D) -> vo
 
 func _flush_batches() -> void:
 	for key: String in _batches:
+		await BuildBudget.check("city:batch")
 		var parts: PackedStringArray = key.split("|")
 		var mesh: Mesh = AssetLib.lite(_kit[parts[0]][parts[1]], 600)
 		var xfs: Array = _batches[key]
@@ -406,6 +418,7 @@ func _build_street_props() -> void:
 	var walk_mid: float = half - CityLayout.ROAD_W * 0.5 - CityLayout.WALK_W * 0.5
 	for bx: int in range(-n, n + 1):
 		for bz: int in range(-n, n + 1):
+			await BuildBudget.check("city:street props")
 			var c := Vector2(bx, bz) * CityLayout.PITCH
 			if c.length() > layout.extent:
 				continue
@@ -474,6 +487,8 @@ func _build_skyline() -> void:
 	var rust_w: StandardMaterial3D = rust_mat.duplicate()
 	rust_w.uv1_world_triplanar = true
 	for i: int in 90:
+		if i % 10 == 9:
+			await BuildBudget.check("city:skyline")
 		var ang: float = TAU * i / 90.0 + _rng.randf_range(-0.03, 0.03)
 		var dist: float = r0 + _rng.randf_range(0.0, 170.0)
 		var w: float = _rng.randf_range(14.0, 28.0)
