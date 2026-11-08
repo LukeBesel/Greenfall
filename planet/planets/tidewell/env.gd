@@ -22,6 +22,31 @@ extends Node3D
 ##   TideHover       Lumi floats: bob, wake ring, spray, reflection; skimmers leave wakes
 ##   TideSuns        the binary star (two lights, two glints on the sea)
 ## Stages: ruin (base 1, little cleaned) -> restored (base 2-3 or 35% cleaned) -> future (4-5).
+##
+## FOR THE WALKABLE SPHERE (owner, Nov 8: flat-world layout work stopped here). What transfers:
+##   - ocean.gdshader: needs only a per-hex state texture (same as FieldView's), a bed-height map
+##     (R = metres, G = reef mask) and the palette uniforms. On a globe, swap the planar xz lookups
+##     for the sphere's hex id / local tangent coords; swell, foam, oil film, absorption, seabed
+##     parallax, caustics, kelp, coral and fish shadows are all local and carry over as they are.
+##   - Hovering over water is generic: world.set_meta("hover_water", true) removes the wading
+##     slowdown (player/patch.gd), and TideHover (bob, wake ring via the sea's `wakes` uniform,
+##     spray, mirrored reflection via mirror.gdshader) works on any world with a water surface.
+##   - TideSuns: the binary star (second unshadowed light + sky disc) for any planet id.
+##   - net.gdshader (trash-raft ghost nets), beam.gdshader (thin lighthouse beams), sun_disc.
+##   - Props as builders (each takes a position/yaw, merges per material): _build_rigs (jack-up
+##     dredging rig), _build_barge (half-sunk ore barge), _build_towers (drowned tower tops with
+##     rubble), _mangrove, _palm, _snag, gardens (_blob_slab rafts), sea platforms, solar rafts,
+##     buoys; _lumpy (eroded rocks, canopies, rubble) and _blob_slab (irregular outlines) helpers.
+##   - Junk: tidewell.json biome_set (nets-and-buoys palette) and floaters (raft clustering, no
+##     plastic_crate_01 floaters: its lite mesh does not decimate). Palette/sky/ambient in
+##     data/planets.json "tidewell".
+##   - Restoration rules: restore = 0.65 * cleaned share + 0.5 * (base level - 1) / 4; ruin group
+##     (flotsam, snags, broken crowns, stump lighthouse) below 35% / base 1; green group (mangroves,
+##     palms, gardens, lighthouses, kelp/coral/fish in the sea) from base 2 or 35%; future group
+##     (white sea platforms, solar rafts, light buoys, clad rigs) from base 4. Sky grade blends
+##     ruined -> restored by smoothstep(0.1, 0.8, restore); the sea clears hex by hex.
+##   What does not transfer: _plan_islands / bed_at / _bake / _build_islands and the polar ocean
+##   mesh (flat-world archipelago and horizon).
 
 const DIR := "res://planet/planets/tidewell/"
 const NEAR_SIZE: float = 320.0

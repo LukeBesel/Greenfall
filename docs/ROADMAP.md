@@ -538,5 +538,8 @@ tuned in the first-hour pass); no new SFX work unless a bug.
   (`TideSuns`: companion light + sky disc, SolarSystem.suns_for when present). Trash rafts (ghost-net mats) and a
   nets-and-buoys junk palette. Dev: `--planet-env=tidewell [--tide-cam=dist,pitch,yaw[,fov]]`. Test:
   `tests/test_planet_tidewell.gd`.
+- On the shared contract now (planet/planets/planet_envs.gd: dev_hub / prepare_field / dress_view / apply);
+  own slice hooks dropped. Owner (Nov 8): flat-world layout paused for the walkable sphere; env.gd's header lists
+  what transfers to a globe (sea shader, generic hover-over-water, suns, props, junk palette, restoration rules).
 - Next: home wires Tidewell as a campaign planet (call the same hooks from its world build); fauna2 may add
   `tidewell` to gull/fish regions; sound: music key `tidewell_swell`.
