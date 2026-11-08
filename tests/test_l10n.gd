@@ -160,8 +160,8 @@ func test_full_translations_complete() -> void:
 			var s: String = tr_n("+%d part", "+%d parts", n) % n  # [money]
 			assert_true(s.contains(str(n)) and s != "+%d parts" % n, "%s plural n=%d: %s" % [l, n, s])
 	TranslationServer.set_locale("de")
-	assert_eq(tr_n("Missing %d part", "Missing %d parts", 1) % 1, "1 Teil fehlt")
-	assert_eq(tr_n("Missing %d part", "Missing %d parts", 3) % 3, "3 Teile fehlen")
+	assert_eq(tr_n("+%d part", "+%d parts", 1) % 1, "+1 Teil")  # [ui2] "Missing %d part" is gone (no part recipes)
+	assert_eq(tr_n("+%d part", "+%d parts", 3) % 3, "+3 Teile")
 	TranslationServer.set_locale("fr")  # French: 0 and 1 are singular
 	assert_eq(tr_n("+%d part", "+%d parts", 0) % 0, "+0 pièce")
 

@@ -3,7 +3,7 @@ extends Node
 ## Runs the fixed-rate simulation tick (10 Hz) independent of frame rate.
 
 const SIM_HZ: float = 10.0
-const SAVE_VERSION: int = 3  # [money] v2: three currencies (cubes, parts, seeds); [pace] v3: Baler / Lift Strength upgrades
+const SAVE_VERSION: int = 4  # [money] v2: three currencies (cubes, parts, seeds); [pace] v3: Baler / Lift Strength upgrades; [ui2] v4: robot part items -> Parts
 const RATE_WINDOW_S: float = 60.0
 
 var currencies: Dictionary = {}  # id -> BigNum
@@ -12,7 +12,7 @@ var stats: Dictionary = {}  # id -> float / Dictionary
 var flags: Dictionary = {}  # id -> Variant (milestones, tutorial, easter eggs)
 ## Opaque per-system blobs (field, player, loose cubes, ...). Systems write and read their own key.
 var world: Dictionary = {}
-## Robot parts in storage: Array of {type: int, rarity: int}.
+## Legacy robot part items ({type, rarity}); [ui2] always folded into Parts (RobotParts.fold_items).
 var parts: Array = []
 ## Per-hub district state. `world` is always districts[current_hub].
 var districts: Dictionary = {}

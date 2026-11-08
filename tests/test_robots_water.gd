@@ -111,8 +111,7 @@ func test_crew_cap_follows_base_level() -> void:
 		r.robot_name = "S%d" % i
 		f.add_child(r)
 	GameState.currencies["cubes"] = BigNum.from_float(1.0e9)
-	for k: int in 8:
-		GameState.parts.append({"type": k, "rarity": 0})
+	GameState.currencies["parts"] = BigNum.from_float(1.0e6)  # [ui2] builds cost Parts
 	var fl: Variant = (GameState.flags["research"] as Dictionary).duplicate(true) if GameState.flags.get("research") is Dictionary else null
 	Research.grant("salvage_logic")  # [pace] helpers need Salvage Logic first
 	assert_false(f.can_build("scoopie"), "cleaner crew is full at level 1")

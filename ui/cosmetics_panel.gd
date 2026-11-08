@@ -8,7 +8,7 @@ extends VBoxContainer
 var world: Node
 var _preview: DesignPreview
 var _cards: Dictionary = {}  # id -> Button
-var _row: HBoxContainer
+var _row: HFlowContainer  # [ui2] wraps inside the Locker
 var _name: Label
 var _tag: Label
 var _desc: Label
@@ -94,8 +94,9 @@ func _ready() -> void:
 	_prog = UITheme.label("", 14, UITheme.MUTED)
 	info.add_child(_prog)
 
-	_row = HBoxContainer.new()
-	_row.add_theme_constant_override("separation", 8)
+	_row = HFlowContainer.new()
+	_row.add_theme_constant_override("h_separation", 8)
+	_row.add_theme_constant_override("v_separation", 8)
 	add_child(_row)
 	for id: String in Designs.ids():
 		var b := Button.new()

@@ -3,8 +3,9 @@ extends InputSource
 ## Playtest bot that plays like a sensible human through the first couple of hours:
 ##   - cleans one focus hex at a time (the nearest unfinished one), bales near the Perfect band,
 ##     sells bales (until Haul Bugs take over), digs up detector parts on the way;
-##   - shops at the workbench: goal-unblocking upgrades first, then robots (buying missing parts at
-##     Haggle's when that is all that is missing), base levels, stations, research, cheap upgrades;
+##   - shops at the workbench: goal-unblocking upgrades first, then robots ([ui2] Parts + cubes;
+##     Parts for the next base level are kept unless the robot can't wait), base levels, stations,
+##     research, cheap upgrades;
 ##   - paints Command zones (cleaners to the frontier, planters/waterers to the garden hexes);
 ##   - picks up the seed tin, plants one hex at a time, waters by hand until Drips take over,
 ##     places Water Tanks, reads memory shards.
@@ -54,7 +55,6 @@ var _bench_trip: bool = false
 var _last_bench_t: float = -999.0
 var _refilling: bool = false
 var _goals_hooked: bool = false
-var _trade: TradePanel
 var _hub_level_seen: int = 1
 var _goal_times: Array[float] = []
 var _progress_times: Array[float] = []
@@ -108,7 +108,7 @@ func _init(p_world: Node) -> void:
 	_hook(EventBus.research_completed, func(id: String) -> void:
 		_mark("first_research_s")
 		_event("research", {"id": id}))
-	_hook(EventBus.part_found, func(t: int, r: int) -> void: _event("part", {"type": t, "rarity": r, "stored": GameState.parts.size()}))
+	_hook(EventBus.part_found, func(t: int, r: int) -> void: _event("part", {"type": t, "rarity": r, "parts": snappedf(GameState.get_currency("parts").to_float(), 1.0)}))
 	world.tree_exiting.connect(write_report)
 	world.tree_exiting.connect(_unhook)  # [beat] rocket travel reloads the scene: drop the old bot's hooks
 
@@ -888,10 +888,10 @@ func _shopping_list() -> Dictionary:
 	var robot: String = _next_robot()
 	out["robot"] = robot
 	if robot != "":
-		var cost: float = world.fleet.build_cost(robot).to_float() + _missing_parts(robot) * TradePanel.BUY_PRICE[0]
+		var cost: float = world.fleet.build_cost(robot).to_float()
 		out["robot_cost"] = cost
 		out["reserve"] = cost
-		if cubes >= cost:
+		if cubes >= cost and GameState.can_afford("parts", world.fleet.build_parts(robot)):  # [ui2]
 			out["trip"] = true
 	var hub: Hub = world.hub
 	var nxt: Dictionary = hub.level_def(hub.level + 1)
@@ -952,20 +952,22 @@ func _shop(want: Dictionary) -> void:
 	var pu: String = _pace_upgrade()
 	if pu != "":
 		Economy.buy_upgrade(pu, 1)
-	# 3) Robots (buy missing parts at Haggle's when that is all that is missing).
+	# 3) Robots ([ui2] Parts + cubes; keep the next base level's Parts unless the robot can't wait).
 	var robot: String = str(want.get("robot", ""))
 	if robot != "":
-		_swap_spares(robot)
 		var hub_save: float = float(want.get("hub_save", 0.0))
 		var spare: float = GameState.get_currency("cubes").to_float() - float(want.get("robot_cost", 0.0))
-		var ok: bool = hub_save <= 0.0 or spare >= hub_save or _robot_goal(robot) or _essential(robot)
-		if ok:
-			_buy_parts_for(robot)
+		var must: bool = _robot_goal(robot) or _essential(robot)
+		var ok: bool = hub_save <= 0.0 or spare >= hub_save or must
+		ok = ok and (must or hub_save <= 0.0 or _mats_spare({"parts": fleet.build_parts(robot).to_float()}, false))
 		if ok and fleet.can_build(robot):
 			var at: Vector3 = world.upgrades.build_at.call() if world.upgrades.build_at.is_valid() else BENCH_STAND
 			fleet.build(robot, at)
 	for t: String in Economy.robot_order:
-		if fleet.count(t) > 0 and fleet.tier_requirements(t).get("ok", false):
+		var treq: Dictionary = fleet.tier_requirements(t)
+		var keep_cubes: float = float(want.get("hub_save", 0.0)) * 0.5  # [ui2] a tier keeps half the base's cubes
+		if fleet.count(t) > 0 and treq.get("ok", false) and _mats_spare({"parts": (treq["parts"] as BigNum).to_float()}, false) \
+				and GameState.get_currency("cubes").to_float() - (treq["cost"] as BigNum).to_float() >= keep_cubes:
 			if fleet.upgrade_tier(t):
 				_progress()
 				_event("tier", {"type": t, "tier": fleet.tier_of(t)})
@@ -1228,52 +1230,6 @@ func _lake_dirty() -> bool:
 	return false
 
 
-func _missing_parts(type_id: String) -> int:
-	var n: int = 0
-	for r: Dictionary in world.fleet.recipe_status(type_id):
-		if not r["have"]:
-			n += 1
-	return n
-
-
-func _trade_panel() -> TradePanel:
-	if _trade == null:
-		_trade = TradePanel.new()
-		_trade.fleet = world.fleet
-		_trade.visible = false
-		world.add_child(_trade)
-	return _trade
-
-
-func _buy_parts_for(type_id: String) -> void:
-	var miss: Array[int] = []
-	for r: Dictionary in world.fleet.recipe_status(type_id):
-		if not r["have"]:
-			miss.append(Fleet.part_index(str(r["part_id"])))
-	if miss.is_empty():
-		return
-	var tp: TradePanel = _trade_panel()
-	tp.refresh()
-	var total: float = world.fleet.build_cost(type_id).to_float()
-	for t: int in miss:
-		total += tp._price(t, 0)
-	if GameState.get_currency("cubes").to_float() < total:
-		return
-	for t: int in miss:
-		tp._buy(t, 0, tp._price(t, 0))
-		_parts_bought += 1
-		_event("part_bought", {"type": t})
-
-
-## Three spare parts for one a recipe needs (Haggle's swap).
-func _swap_spares(robot: String) -> void:
-	var tp: TradePanel = _trade_panel()
-	for r: Dictionary in world.fleet.recipe_status(robot):
-		if not r["have"] and tp.swap_take().size() >= 3:
-			tp._swap(Fleet.part_index(str(r["part_id"])))
-			_event("part_swap", {"type": str(r["part_id"])})
-
-
 ## [money] Research costs cubes now. The bot treats the field-note cubes (the old Data income)
 ## as its research fund, like a player who spends the research share on research (so research and
 ## the base levels pace as they did with Data); it also starts research when it is rich.
@@ -1470,7 +1426,7 @@ func _snapshot() -> void:
 	var ngoals: int = world.goals.done_count() if world.get("goals") else 0
 	_log.append({"t": _now(), "pos": [snappedf(world.patch.global_position.x, 0.1), snappedf(world.patch.global_position.z, 0.1)], "escapes": _escapes, "remote_shops": _remote_shops, "cubes": snappedf(GameState.get_currency("cubes").to_float(), 1.0),
 		"rate": snappedf(GameState.income_rate(), 0.01), "earned": snappedf(BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float(), 1.0), "parts_cur": snappedf(GameState.get_currency("parts").to_float(), 0.1),  # [money]
-		"seeds": snappedf(GameState.get_currency("seeds").to_float(), 0.1), "parts": GameState.parts.size(),
+		"seeds": snappedf(GameState.get_currency("seeds").to_float(), 0.1), "parts": snappedf(GameState.get_currency("parts").to_float(), 1.0),
 		"hexes": world.field.cleaned_count, "hex_levels": lv, "robots": types, "hub": int(world.hub.level),
 		"task": _task, "research": Research.active_id(), "upgrades": int(GameState.stats.get("upgrades_bought", 0)),
 		"bots": _robot_health(), "goals": ngoals, "stats": _stat_pick(["research_done", "plants_bloomed", "garden_stipend", "air_filtered", "robots_built", "robot_bales", "bales_recycled", "plants_planted"])})

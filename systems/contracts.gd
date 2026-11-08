@@ -15,6 +15,9 @@ extends Node
 const PATH: String = "res://data/events.json"
 
 static var _cfg: Dictionary = {}
+## [ui2] Simple board: a new request starts right away (no Accept / Pass) and never runs out of
+## time; the player only claims it. Tests of the old offer flow turn this off.
+static var auto_accept: bool = true
 static var _shop: Array = []
 
 var world: Node
@@ -159,6 +162,8 @@ static func step(st: Dictionary, dt: float, value_fn: Callable, offer_fn: Callab
 		arr.append(wait_slot(0.0))
 	for i: int in arr.size():
 		var s: Dictionary = arr[i]
+		if auto_accept and str(s.get("state", "")) == "offer":
+			accept_slot(s, float(value_fn.call(s)))  # [ui2]
 		match str(s.get("state", "wait")):
 			"offer":
 				s["offer_left"] = float(s.get("offer_left", 0.0)) - dt
@@ -169,7 +174,7 @@ static func step(st: Dictionary, dt: float, value_fn: Callable, offer_fn: Callab
 				if count_of(s, float(value_fn.call(s))) >= float(s.get("n", 1)):
 					s["state"] = "done"
 					out.append({"kind": "done", "i": i})
-				else:
+				elif not auto_accept:  # [ui2] auto-accepted requests have no time limit
 					s["left"] = float(s.get("left", 0.0)) - dt
 					if float(s["left"]) <= 0.0:
 						arr[i] = wait_slot(float(cfg().get("fail_cooldown_s", 120)))
@@ -180,6 +185,8 @@ static func step(st: Dictionary, dt: float, value_fn: Callable, offer_fn: Callab
 				s["wait"] = float(s.get("wait", 0.0)) - dt
 				if float(s["wait"]) <= 0.0:
 					arr[i] = offer_fn.call(i)
+					if auto_accept and str((arr[i] as Dictionary).get("state", "")) == "offer":
+						accept_slot(arr[i], float(value_fn.call(arr[i])))  # [ui2]
 					out.append({"kind": "offer", "i": i})
 	return out
 
@@ -227,13 +234,13 @@ static func track_name(t: Dictionary) -> String:
 		"livery":
 			return TranslationServer.translate(str(shop_item(str(t.get("id", ""))).get("name", "")))
 		"builder":
-			return TranslationServer.translate("%s (Builder)") % TranslationServer.translate(str(RobotBuilder.part(str(t.get("id", ""))).get("name", "")))
+			return TranslationServer.translate("%s (robot style)") % TranslationServer.translate(str(RobotBuilder.part(str(t.get("id", ""))).get("name", "")))  # [ui2]
 		"builder_crate":
 			return TranslationServer.translate("Builder Crate")
 		"capsule":
 			return TranslationServer.translate("Curio Capsule")
 		"part":
-			return TranslationServer.translate("%s robot part") % TranslationServer.translate(str(Economy.rarity(int(t.get("rarity", 3))).get("name", "")))
+			return L10nFmt.amount("parts", RobotParts.value(int(t.get("rarity", 3))), true)  # [ui2] pays Parts
 	return "?"
 
 
@@ -450,10 +457,10 @@ func _grant_step(t: Dictionary) -> void:
 			var id: String = str(t.get("id", ""))
 			if not (id in owned()):
 				owned().append(id)
-			EventBus.toast.emit(tr("Requests reward: %s. Equip it on the Requests tab.") % track_name(t), "story")
+			EventBus.toast.emit(tr("Requests reward: %s. Paint your fleet with it in the Locker.") % track_name(t), "story")  # [ui2]
 		"builder":
 			RobotBuilder.add_part(str(t.get("id", "")))
-			EventBus.toast.emit(tr("Requests reward: %s. Fit it in the Builder tab.") % track_name(t), "story")
+			EventBus.toast.emit(tr("Requests reward: %s. Fit it in the Locker.") % track_name(t), "story")  # [ui2]
 		"builder_crate":
 			var pid: String = RobotBuilder.roll_unowned(rng)
 			RobotBuilder.add_part(pid)
@@ -465,9 +472,8 @@ func _grant_step(t: Dictionary) -> void:
 		"part":
 			var ty: int = rng.randi() % maxi(Economy.parts.get("types", [1]).size(), 1)
 			var r: int = int(t.get("rarity", 3))
-			GameState.parts.append({"type": ty, "rarity": r})
-			EventBus.part_found.emit(ty, r)
-			EventBus.toast.emit(tr("Requests reward: %s.") % L10nFmt.part_name(r, ty), "story")
+			RobotParts.salvage(ty, r)  # [ui2] pays Parts
+			EventBus.toast.emit(tr("Requests reward: %s.") % RobotParts.gain_text(r), "story")
 	Audio.play("fanfare", 1.1, -8.0)
 
 

@@ -777,16 +777,11 @@ func _refresh_build() -> void:
 					var maxed: bool = req.get("maxed", false)
 					(b as Button).text = tr("Max tier") if maxed else tr("Upgrade > %s") % tr(str(req["next"]["name"]))
 					(b as Button).disabled = maxed or not (at_bench and req["ok"])
-					(b as Button).tooltip_text = "" if maxed else tr("%s cubes, %s parts, %s Control Core. %s") % [Settings.fmt(req["cost"]), Settings.fmt(req["parts"]), tr(str(Economy.rarity(int(req["core_rarity"])).get("name", "?"))), req["reason"]]
+					(b as Button).tooltip_text = "" if maxed else "%s. %s" % [Currencies.cost_text({"cubes": (req["cost"] as BigNum).to_float(), "parts": (req["parts"] as BigNum).to_float()}), req["reason"]]  # [ui2]
 		elif c.has_meta("build_info"):
 			var t2: String = str(c.get_meta("build_info"))
-			var have: int = 0
-			var rs: Array = f.recipe_status(t2)
-			for r: Dictionary in rs:
-				if r["have"]:
-					have += 1
 			var why: String = f.build_block_reason(t2)
-			(c as Label).text = tr("  parts %d/%d · %s") % [have, rs.size(), ("ready" if why == "" else why) if at_bench else tr("build at the workbench")]
+			(c as Label).text = "  %s · %s" % [L10nFmt.amount("parts", f.build_parts(t2).to_float()), (tr("ready") if why == "" else why) if at_bench else tr("build at the workbench")]  # [ui2] Parts, no part recipe
 	if _tank_btn:
 		var net: WaterNet = f.water_net
 		if net == null:

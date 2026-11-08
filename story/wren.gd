@@ -34,7 +34,7 @@ func _ready() -> void:
 			say("perfect", 0.35))
 	EventBus.upgrade_bought.connect(func(_id: String, _l: int) -> void:
 		say("upgrade", 0.3)
-		if GameState.parts.size() < 2 and not GameState.flags.get("wren_hint_robot", false):
+		if GameState.get_currency("parts").to_float() < 40.0 and not GameState.flags.get("wren_hint_robot", false):  # [ui2] parts are a currency
 			GameState.flags["wren_hint_robot"] = true
 			say("first_robot_hint", 1.0, true))
 	EventBus.robot_built.connect(func(rname: String) -> void: say("robot_built", 1.0, true, {"robot": rname}))

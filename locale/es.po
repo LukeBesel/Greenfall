@@ -28,7 +28,7 @@ msgstr "Base (Mk I, antes de nivel y rareza de piezas)"
 msgid "Base"
 msgstr "Base"
 
-#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:188
+#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:190
 msgid "%s Lv %d"
 msgstr "%s Nv %d"
 
@@ -108,7 +108,7 @@ msgstr "Mapa global"
 msgid "Lens view"
 msgstr "Vista de lente"
 
-#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:51
+#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:52
 msgid "Codex"
 msgstr "Códice"
 
@@ -434,7 +434,7 @@ msgstr "SALTO"
 msgid "Space / Esc  skip"
 msgstr "Espacio / Esc  saltar"
 
-#: automation/rocket_tiers.gd:51
+#: automation/rocket_tiers.gd:51 ui/robot_card.gd:251
 msgid "Top tier"
 msgstr "Nivel máximo"
 
@@ -519,7 +519,7 @@ msgid "E   Telescope: look across the system"
 msgstr ""
 
 #: core/offline.gd:130 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:261
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d min"
 
@@ -905,11 +905,11 @@ msgstr "IMPULSO  %s"
 msgid "  (streak +%d%%)"
 msgstr "  (racha +%d%%)"
 
-#: player/patch.gd:474
+#: player/patch.gd:473
 msgid "Salvaged: %s"
 msgstr "Rescatado: %s"
 
-#: player/patch.gd:504
+#: player/patch.gd:502
 msgid "Recovered: %s"
 msgstr "Recuperado: %s"
 
@@ -1025,43 +1025,32 @@ msgstr "Mirar a la derecha"
 msgid "Look up"
 msgstr "Mirar arriba"
 
-#: robots/fleet.gd:183
+#: robots/fleet.gd:138
 msgid "Locked · research %s"
 msgstr "Bloqueado · investigación %s"
 
-#: robots/fleet.gd:185
+#: robots/fleet.gd:140
 msgid "Crew full (%d/%d): upgrade the hub"
 msgstr "Equipo completo (%d/%d): mejora la base"
 
-#: robots/fleet.gd:191
-msgid "Missing %d part"
-msgid_plural "Missing %d parts"
-msgstr[0] "Falta %d pieza"
-msgstr[1] "Faltan %d piezas"
+#: robots/fleet.gd:142 robots/fleet.gd:217
+msgid "Not enough parts"
+msgstr "No hay suficientes piezas"
 
-#: robots/fleet.gd:193 robots/fleet.gd:265 robots/water_net.gd:149
-#: systems/research.gd:194 systems/robot_builder.gd:362 systems/robot_builder.gd:435
-#: ui/robot_card.gd:79
+#: robots/fleet.gd:144 robots/fleet.gd:219 robots/water_net.gd:149
+#: systems/research.gd:194 systems/robot_builder.gd:349 systems/robot_builder.gd:401
 msgid "Not enough cubes"
 msgstr "No hay cubos suficientes"
 
-#: robots/fleet.gd:231
+#: robots/fleet.gd:182
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr "%s %s montado. Mira a su alrededor y se pone a trabajar.%s"
 
-#: robots/fleet.gd:231
+#: robots/fleet.gd:182
 msgid " Seems %s."
 msgstr " Parece %s."
 
-#: robots/fleet.gd:263
-msgid "Needs a %s Control Core"
-msgstr "Requiere un núcleo de control %s"
-
-#: robots/fleet.gd:267
-msgid "Not enough parts (scrap spares at Haggle's or run the recycler)"
-msgstr "No hay suficientes piezas (desguaza piezas sobrantes con Haggle o pon en marcha la recicladora)"
-
-#: robots/fleet.gd:287
+#: robots/fleet.gd:238
 msgid "%s fleet upgraded to %s."
 msgstr "Flota de %s mejorada a %s."
 
@@ -1845,9 +1834,8 @@ msgstr ""
 "El Ledger está de nuestro lado ahora. Los inhibidores solo tararean al ritmo de la música."
 
 #: story/ledger.gd:328 systems/decor.gd:122 systems/research.gd:186
-#: systems/robot_builder.gd:360 systems/robot_builder.gd:437 ui/hub_panel.gd:130
-#: ui/stations_panel.gd:96 ui/telescope_panel.gd:43 ui/yard_builds_panel.gd:59
-#: ui/yard_builds_panel.gd:81
+#: systems/robot_builder.gd:347 systems/robot_builder.gd:403 ui/stations_panel.gd:96
+#: ui/telescope_panel.gd:43 ui/yard_builds_panel.gd:59 ui/yard_builds_panel.gd:81
 msgid "Needs %s"
 msgstr "Requiere %s"
 
@@ -2171,7 +2159,7 @@ msgstr "Rachas de limpieza"
 msgid "Lumi Levels"
 msgstr "Niveles de Lumi"
 
-#: systems/collection.gd:88 ui/upgrades_screen.gd:17
+#: systems/collection.gd:88 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:18
 msgid "Requests"
 msgstr "Encargos"
 
@@ -2179,63 +2167,59 @@ msgstr "Encargos"
 msgid "Curio Capsules"
 msgstr "Cápsulas de curiosidades"
 
-#: systems/contracts.gd:230
-msgid "%s (Builder)"
-msgstr "%s (Taller)"
+#: systems/contracts.gd:237
+msgid "%s (robot style)"
+msgstr "%s (estilo de robot)"
 
-#: systems/contracts.gd:232
+#: systems/contracts.gd:239
 msgid "Builder Crate"
 msgstr "Caja de taller"
 
-#: systems/contracts.gd:234
+#: systems/contracts.gd:241
 msgid "Curio Capsule"
 msgstr "Cápsula de curiosidades"
 
-#: systems/contracts.gd:236
-msgid "%s robot part"
-msgstr "%s pieza de robot"
-
-#: systems/contracts.gd:309
+#: systems/contracts.gd:316
 msgid "Request complete: %s. Claim it at the workbench."
 msgstr "Encargo completado: %s. Recógelo en el banco de trabajo."
 
-#: systems/contracts.gd:315
+#: systems/contracts.gd:322
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
 msgstr "Un encargo se quedó sin tiempo. No pasa nada; pronto llegará otro."
 
-#: systems/contracts.gd:323
+#: systems/contracts.gd:330
 msgid "New at the workbench: the Requests board. Small jobs, real rewards."
 msgstr "Nuevo en el banco de trabajo: el tablón de encargos. Trabajos pequeños, premios de verdad."
 
-#: systems/contracts.gd:326
+#: systems/contracts.gd:333
 msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
 msgstr "El relé ya capta las viejas órdenes de trabajo del Cradle. Están en el tablón de encargos del banco de trabajo."
 
-#: systems/contracts.gd:411
+#: systems/contracts.gd:418
 msgid "Request done: %s."
 msgstr "Encargo cobrado: %s."
 
-#: systems/contracts.gd:453
-msgid "Requests reward: %s. Equip it on the Requests tab."
-msgstr "Recompensa de encargos: %s. Equípala en la pestaña Encargos."
+#: systems/contracts.gd:460
+msgid "Requests reward: %s. Paint your fleet with it in the Locker."
+msgstr "Recompensa de encargos: %s. Pinta tu flota con ella en la Taquilla."
 
-#: systems/contracts.gd:456
-msgid "Requests reward: %s. Fit it in the Builder tab."
-msgstr "Recompensa de encargos: %s. Móntala en la pestaña Taller."
+#: systems/contracts.gd:463
+msgid "Requests reward: %s. Fit it in the Locker."
+msgstr "Recompensa de encargos: %s. Pónsela en la Taquilla."
 
-#: systems/contracts.gd:460 systems/contracts.gd:470
+#: systems/contracts.gd:467 systems/contracts.gd:476
 msgid "Requests reward: %s."
 msgstr "Recompensa de encargos: %s."
 
-#: systems/contracts.gd:478
+#: systems/contracts.gd:484
 msgid "Unknown item"
 msgstr "Objeto desconocido"
 
-#: systems/contracts.gd:491
+#: systems/contracts.gd:497
 msgid "Unlocks after %d requests"
 msgstr "Se desbloquea tras %d encargos"
 
-#: systems/contracts.gd:492
+#: systems/contracts.gd:498
 msgid "Locked"
 msgstr "Bloqueado"
 
@@ -2311,103 +2295,103 @@ msgstr "CRADLE · SUMINISTROS"
 msgid "STREAK x%d  +%d%%"
 msgstr "RACHA x%d  +%d%%"
 
-#: systems/events.gd:628
+#: systems/events.gd:627
 msgid "%d pieces of junk left around the crate"
 msgstr "Quedan %d trozos de chatarra alrededor de la caja"
 
-#: systems/events.gd:653
+#: systems/events.gd:652
 msgid "Supply crate opened: %s"
 msgstr "Caja de suministros abierta: %s"
 
-#: systems/events.gd:655
+#: systems/events.gd:654
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "La baliza de la caja se agotó y un dron se la llevó de vuelta arriba. Vendrá otra."
 
-#: systems/events.gd:702
+#: systems/events.gd:701
 msgid "%d pieces grabbed at 3x"
 msgstr "%d trozos cogidos a x3"
 
-#: systems/events.gd:707
+#: systems/events.gd:706
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "La oleada pasó. Cogiste %d trozos a triple valor; se pagan al empacar."
 
-#: systems/events.gd:707
+#: systems/events.gd:706
 msgid "The surge faded. Next time!"
 msgstr "La oleada pasó. ¡La próxima vez!"
 
-#: systems/events.gd:755
+#: systems/events.gd:754
 msgid "Every plant is drinking"
 msgstr "Todas las plantas están bebiendo"
 
-#: systems/events.gd:765
+#: systems/events.gd:764
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "La lluvia se aleja. El suelo la ha absorbido: %s"
 
-#: systems/events.gd:786
+#: systems/events.gd:785
 msgid "E   fix %s's hiccup"
 msgstr "E   curar el hipo de %s"
 
-#: systems/events.gd:813
+#: systems/events.gd:812
 msgid "%s is %d m away"
 msgstr "%s está a %d m"
 
-#: systems/events.gd:815
+#: systems/events.gd:814
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "A %s se le pasó el hipo solo. Parece avergonzado."
 
-#: systems/events.gd:829
+#: systems/events.gd:828
 msgid "%s is fixed and back to work. %s"
 msgstr "%s está reparado y vuelve al trabajo. %s"
 
-#: systems/events.gd:882
+#: systems/events.gd:881
 msgid "Wildlife Visit: %s"
 msgstr "Visita de fauna: %s"
 
-#: systems/events.gd:883
+#: systems/events.gd:882
 msgid "E   take a photo of the %s"
 msgstr "E   hacer una foto: %s"
 
-#: systems/events.gd:914
+#: systems/events.gd:913
 msgid "%s, %d m away"
 msgstr "%s, a %d m"
 
-#: systems/events.gd:917
+#: systems/events.gd:916
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "%s se ha marchado. Volverá a algún sitio verde."
 
-#: systems/events.gd:947
+#: systems/events.gd:946
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "¡Clic! %s ya está en tu colección. %s"
 
-#: systems/events.gd:947
+#: systems/events.gd:946
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "¡Clic! Otra foto preciosa: %s. %s"
 
-#: systems/events.gd:997
+#: systems/events.gd:996
 msgid "Signal %d%%"
 msgstr "Señal %d%%"
 
-#: systems/events.gd:1001
+#: systems/events.gd:1000
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "Esa era la señal: un escondite con una pieza rara dentro. %s"
 
-#: systems/events.gd:1003
+#: systems/events.gd:1002
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "La señal se apagó. La pieza sigue ahí abajo; el detector la encontrará."
 
-#: systems/events.gd:1069
+#: systems/events.gd:1068
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "AUDITORÍA   TÚ %d  :  %d DRON"
 
-#: systems/events.gd:1070
+#: systems/events.gd:1069
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "Tú %d  :  %d Dron   ·   quedan %d"
 
-#: systems/events.gd:1107
+#: systems/events.gd:1106
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "¡Auditoría ganada, %d a %d! El Ledger la sella como APROBADA. %s"
 
-#: systems/events.gd:1111
+#: systems/events.gd:1110
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "El dron ganó la auditoría, %d a %d. Aun así dejó propina: +%s cubos."
 
@@ -2609,19 +2593,20 @@ msgstr ""
 msgid "%d:%02d h"
 msgstr ""
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:255
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
 msgid "Low"
 msgstr "Bajo"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:255 ui/settings_panel.gd:528
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
+#: ui/settings_panel.gd:584
 msgid "Medium"
 msgstr "Medio"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:255
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
 msgid "High"
 msgstr "Alto"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:255
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
 msgid "Ultra"
 msgstr "Ultra"
 
@@ -2770,73 +2755,60 @@ msgid "Doesn't fit a %s"
 msgstr "No encaja en: %s"
 
 #: systems/robot_builder.gd:265
-msgid "None in the parts bin"
-msgstr "No hay en el cajón de piezas"
+msgid "Not unlocked yet"
+msgstr "Aún no desbloqueado"
 
-#: systems/robot_builder.gd:296
+#: systems/robot_builder.gd:294
 msgid "Names need at least 2 letters"
 msgstr "Los nombres necesitan al menos 2 letras"
 
-#: systems/robot_builder.gd:298
+#: systems/robot_builder.gd:296
 msgid "Another robot is already called %s"
 msgstr "Otro robot ya se llama %s"
 
-#: systems/robot_builder.gd:349
+#: systems/robot_builder.gd:341
 msgid "Can't be crafted"
 msgstr "No se puede fabricar"
 
-#: systems/robot_builder.gd:353
+#: systems/robot_builder.gd:345
 msgid "Research %s"
 msgstr "Investigar %s"
 
-#: systems/robot_builder.gd:358
-msgid "Needs a %s%s"
-msgstr "Requiere: %s%s"
+#: systems/robot_builder.gd:358 systems/robot_builder.gd:363
+msgid "Unlock · %s"
+msgstr "Desbloquear · %s"
 
-#: systems/robot_builder.gd:372
-msgid "Haggle's stall · %s"
-msgstr "Puesto de Haggle · %s"
-
-#: systems/robot_builder.gd:374
+#: systems/robot_builder.gd:360
 msgid "Requests reward · %d requests"
 msgstr "Recompensa de encargos · %d encargos"
 
-#. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: systems/robot_builder.gd:384 ui/main_menu.gd:461 ui/profile_picker.gd:133
-msgid "%s cubes"
-msgstr "%s cubos"
+#: systems/robot_builder.gd:398
+msgid "Can't be bought"
+msgstr "No se puede comprar"
 
-#: systems/robot_builder.gd:385
-msgid "Craft · %s"
-msgstr "Fabricar · %s"
-
-#: systems/robot_builder.gd:432
-msgid "Not in Haggle's stall right now"
-msgstr "Ahora no está en el puesto de Haggle"
-
-#: systems/robot_builder.gd:459
+#: systems/robot_builder.gd:425
 msgid "Requests reward (%d of %d requests)"
 msgstr "Recompensa de encargos (%d de %d encargos)"
 
-#: systems/robot_builder.gd:550
-msgid "Haggle: \"First bot? Treads on the house. And a plant, bots like plants.\" (Workbench > Builder)"
-msgstr "Haggle: «¿Primer bot? Las orugas invita la casa. Y una planta, a los bots les gustan las plantas». (Banco de trabajo > Taller)"
+#: systems/robot_builder.gd:516
+msgid "Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d."
+msgstr "Tu primer bot vino con orugas y una planta saltarina. Dale estilo en la Taquilla cuando la base llegue al nivel %d."
 
-#: systems/robot_builder.gd:560
+#: systems/robot_builder.gd:526
 msgid "A Maker Fragment was tucked inside it: +%d parts."
 msgstr "Dentro había un fragmento Creador: +%d piezas."
 
-#: systems/robot_builder.gd:592
+#: systems/robot_builder.gd:558
 msgid "%s spotted something green and lucky: a Lucky Clover!"
 msgstr "¡%s vio algo verde y afortunado: un trébol de la suerte!"
 
-#: systems/robot_builder.gd:595
+#: systems/robot_builder.gd:561
 msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
 msgstr "%s vio un fragmento Creador brillando entre la chatarra: +%d piezas."
 
-#: systems/robot_builder.gd:603
-msgid "%s spotted a %s."
-msgstr "%s ha visto: %s."
+#: systems/robot_builder.gd:568
+msgid "%s spotted a %s: %s."
+msgstr "%s encontró: %s, %s."
 
 #: systems/camp/camp.gd:151
 msgid "E   Workbench (broken): repair it"
@@ -3260,7 +3232,7 @@ msgstr "Equipo inicial: solo Lumi. Las herencias añaden más."
 msgid "Starting kit: %s"
 msgstr "Equipo inicial: %s"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:509
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:565
 msgid "Full"
 msgstr "Completo"
 
@@ -3271,6 +3243,10 @@ msgstr "Tomar  (%d elecciones)"
 #: ui/ark_bridge.gd:307
 msgid "Milestone"
 msgstr "Hito"
+
+#: ui/bench_kit.gd:163 ui/upgrade_card.gd:221
+msgid "need %s"
+msgstr "faltan %s"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
@@ -3326,7 +3302,7 @@ msgstr "Alcance de riego"
 msgid "Refill"
 msgstr "Recarga"
 
-#: ui/builder_panel.gd:21 ui/command_view.gd:1207 ui/command_view.gd:1210
+#: ui/builder_panel.gd:21 ui/command_view.gd:1202 ui/command_view.gd:1205
 #: data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "Limpiar"
@@ -3347,105 +3323,99 @@ msgstr "Regar"
 msgid "Skim"
 msgstr "Espumar"
 
-#: ui/builder_panel.gd:103
+#: ui/builder_panel.gd:113
 msgid "YOUR ROBOTS"
 msgstr "TUS ROBOTS"
 
-#: ui/builder_panel.gd:143
+#: ui/builder_panel.gd:154
 msgid "New name"
 msgstr "Nombre nuevo"
 
-#: ui/builder_panel.gd:151 ui/builder_panel.gd:306
+#: ui/builder_panel.gd:162 ui/builder_panel.gd:317
 msgid "Retire"
 msgstr "Jubilar"
 
-#: ui/builder_panel.gd:161
+#: ui/builder_panel.gd:172
 msgid ""
-"No robots yet. Build one in the Bots tab, then fit it out here.\n"
-"Haggle throws in a set of treads with your first robot."
+"No robots yet. Build one in the Bots tab, then style it here.\n"
+"Your first robot comes with treads and a bobble plant."
 msgstr ""
-"Aún no hay robots. Construye uno en la pestaña Bots y equípalo aquí.\n"
-"Haggle regala un juego de orugas con tu primer robot."
 
-#: ui/builder_panel.gd:216
+#: ui/builder_panel.gd:227
 msgid "PART SLOTS"
 msgstr "RANURAS"
 
-#: ui/builder_panel.gd:228
+#: ui/builder_panel.gd:239
 msgid "PARTS THAT FIT"
 msgstr "PIEZAS COMPATIBLES"
 
-#: ui/builder_panel.gd:299
+#: ui/builder_panel.gd:310
 msgid "ROBOT BUILDER"
 msgstr "TALLER DE ROBOTS"
 
-#: ui/builder_panel.gd:315
+#: ui/builder_panel.gd:326
 msgid "Stock"
 msgstr "De serie"
 
-#: ui/builder_panel.gd:351
+#: ui/builder_panel.gd:362
 msgid "Stock  ·  the %s look%s"
 msgstr "De serie  ·  el aspecto %s%s"
 
-#: ui/builder_panel.gd:351
+#: ui/builder_panel.gd:362
 msgid "   (fitted)"
 msgstr "   (instalada)"
 
-#: ui/builder_panel.gd:359
-msgid "in the bin: %d  ·  press to fit"
-msgstr "en el cajón: %d  ·  pulsa para instalar"
-
-#: ui/builder_panel.gd:368
-msgid "  ·  press to get + fit"
-msgstr "  ·  pulsa para conseguir + instalar"
-
 #: ui/builder_panel.gd:370
+msgid "Unlocked  ·  press to fit"
+msgstr "Desbloqueado  ·  pulsa para equipar"
+
+#: ui/builder_panel.gd:379
+msgid "  ·  press to unlock + fit"
+msgstr "  ·  pulsa para desbloquear y equipar"
+
+#: ui/builder_panel.gd:381
 msgid "  (Maker set)"
 msgstr "  (conjunto de los Creadores)"
 
-#: ui/builder_panel.gd:390
+#: ui/builder_panel.gd:401
 msgid "Save as %s preset"
 msgstr "Guardar como plantilla de %s"
 
-#: ui/builder_panel.gd:392
+#: ui/builder_panel.gd:403
 msgid "Fit preset on crew (%d)"
 msgstr "Aplicar plantilla al equipo (%d)"
 
-#: ui/builder_panel.gd:398
+#: ui/builder_panel.gd:409
 msgid "%s crew preset: %s"
 msgstr "Plantilla del equipo %s: %s"
 
-#: ui/builder_panel.gd:398
+#: ui/builder_panel.gd:409
 msgid "none saved"
 msgstr "ninguna guardada"
 
-#: ui/builder_panel.gd:405
-msgid "Builder bin %d   ·   Parts %s"
-msgstr "Caja de taller %d   ·   Piezas %s"
+#: ui/builder_panel.gd:413
+msgid "%d styles unlocked   ·   Parts %s"
+msgstr "%d estilos desbloqueados   ·   Piezas %s"
 
-#: ui/builder_panel.gd:409
-msgid "Haggle's stall: %s  (new stock in %d min)"
-msgstr "Puesto de Haggle: %s  (género nuevo en %d min)"
-
-#: ui/builder_panel.gd:430
+#: ui/builder_panel.gd:435
 msgid "Stock part: no changes. The %s look of this robot type."
 msgstr "Pieza de serie: sin cambios. El aspecto %s de este tipo de robot."
 
-#: ui/builder_panel.gd:576
+#: ui/builder_panel.gd:590
 msgid "Saved %s's build as the %s crew preset."
 msgstr "Configuración de %s guardada como plantilla del equipo %s."
 
-#: ui/builder_panel.gd:584
+#: ui/builder_panel.gd:598
 msgid "Fitted %d part across the %s crew."
 msgid_plural "Fitted %d parts across the %s crew."
 msgstr[0] "%d pieza instalada en el equipo %s."
 msgstr[1] "%d piezas instaladas en el equipo %s."
 
-#: ui/builder_panel.gd:584
+#: ui/builder_panel.gd:598
 msgid "Nothing to fit: the bin is short of those parts, or the crew already has them."
 msgstr "Nada que instalar: faltan esas piezas en el cajón o el equipo ya las tiene."
 
-#: ui/builder_panel.gd:599
+#: ui/builder_panel.gd:613
 msgid "Retire? +%d parts"
 msgstr "¿Jubilar? +%d piezas"
 
@@ -3489,7 +3459,7 @@ msgstr "CÓDICE"
 msgid "Watch the story"
 msgstr ""
 
-#: ui/codex_screen.gd:99 ui/upgrades_screen.gd:92
+#: ui/codex_screen.gd:99 ui/upgrades_screen.gd:166
 msgid "Close  [%s]"
 msgstr "Cerrar  [%s]"
 
@@ -3820,159 +3790,103 @@ msgstr "Nivel máximo"
 msgid "Upgrade > %s"
 msgstr "Mejorar > %s"
 
-#: ui/command_view.gd:780
-msgid "%s cubes, %s parts, %s Control Core. %s"
-msgstr "%s cubos, %s piezas, %s Núcleo de control. %s"
+#: ui/command_view.gd:784
+msgid "ready"
+msgstr "listo"
 
-#: ui/command_view.gd:789
-msgid "  parts %d/%d · %s"
-msgstr "  piezas %d/%d · %s"
-
-#: ui/command_view.gd:789
+#: ui/command_view.gd:784
 msgid "build at the workbench"
 msgstr "se construye en el banco de trabajo"
 
-#: ui/command_view.gd:796
+#: ui/command_view.gd:791
 msgid "Place refill tank here  %s  (%d/%d)"
 msgstr "Poner tanque de recarga aquí  %s  (%d/%d)"
 
-#: ui/command_view.gd:798
+#: ui/command_view.gd:793
 msgid "A Water Tank at your hex. Waterers refill at the nearest one."
 msgstr "Un tanque de agua en tu hexágono. Los regadores recargan en el más cercano."
 
-#: ui/command_view.gd:1055
+#: ui/command_view.gd:1050
 msgid "%s · %d HEX"
 msgid_plural "%s · %d HEXES"
 msgstr[0] "%s · %d HEX"
 msgstr[1] "%s · %d HEX"
 
-#: ui/command_view.gd:1091
+#: ui/command_view.gd:1086
 msgid "BASE"
 msgstr "BASE"
 
-#: ui/command_view.gd:1098
+#: ui/command_view.gd:1093
 msgid "YOU"
 msgstr "TÚ"
 
-#: ui/command_view.gd:1198
+#: ui/command_view.gd:1193
 msgid "HEX %d"
 msgstr "HEX %d"
 
-#: ui/command_view.gd:1202
+#: ui/command_view.gd:1197
 msgid "BASE YARD"
 msgstr "PATIO DE LA BASE"
 
-#: ui/command_view.gd:1203
+#: ui/command_view.gd:1198
 msgid "Home ground, always clean"
 msgstr "Terreno propio, siempre limpio"
 
-#: ui/command_view.gd:1205
+#: ui/command_view.gd:1200
 msgid "LAKE HEX %d"
 msgstr "HEX DEL LAGO %d"
 
-#: ui/command_view.gd:1207
+#: ui/command_view.gd:1202
 msgid "Floating junk  %d%% left"
 msgstr "Chatarra flotante  queda %d%%"
 
-#: ui/command_view.gd:1213
+#: ui/command_view.gd:1208
 msgid "Junk  %d%% left"
 msgstr "Chatarra  queda %d%%"
 
-#: ui/command_view.gd:1219
+#: ui/command_view.gd:1214
 msgid "Level %d · %s"
 msgstr "Nivel %d · %s"
 
-#: ui/command_view.gd:1221
+#: ui/command_view.gd:1216
 msgid "In %s zone"
 msgstr "En zona %s"
 
-#: ui/command_view.gd:1274
+#: ui/command_view.gd:1269
 msgid "%d robots"
 msgstr "%d robots"
 
-#: ui/command_view.gd:1277
+#: ui/command_view.gd:1272
 msgid "%d / %d hexes clean"
 msgstr "%d / %d hexágonos limpios"
 
-#: ui/contracts_panel.gd:27
-msgid "REQUESTS"
-msgstr "ENCARGOS"
+#: ui/contracts_panel.gd:75
+msgid "%d done"
+msgid_plural "%d done"
+msgstr[0] "%d hecho"
+msgstr[1] "%d hechos"
 
-#: ui/contracts_panel.gd:30
-msgid "Short optional jobs and world events. Each pays cubes or parts; nothing is lost if one runs out."
-msgstr "Tareas opcionales cortas y eventos del mundo. Cada una paga cubos o piezas; no se pierde nada si una caduca."
+#: ui/contracts_panel.gd:80
+msgid "Live now:  %s  ·  %s  ·  %s left"
+msgstr "En directo:  %s  ·  %s  ·  quedan %s"
 
-#: ui/contracts_panel.gd:47
-msgid "REWARD TRACK"
-msgstr "PISTA DE RECOMPENSAS"
+#: ui/contracts_panel.gd:83
+msgid "Every reward unlocked. Each %d more requests pay a Vintage part's worth of parts."
+msgstr "Todas las recompensas desbloqueadas. Cada %d encargos más pagan piezas por valor de una pieza Vintage."
 
 #: ui/contracts_panel.gd:86
-msgid "%d done"
-msgstr "%d hechos"
+msgid "Next unlock in %d request:  %s"
+msgid_plural "Next unlock in %d requests:  %s"
+msgstr[0] "Próximo desbloqueo en %d encargo:  %s"
+msgstr[1] "Próximo desbloqueo en %d encargos:  %s"
 
-#: ui/contracts_panel.gd:89
-msgid "LIVE  ·  %s  ·  %s  ·  %s left"
-msgstr "EN VIVO  ·  %s  ·  %s  ·  quedan %s"
+#: ui/contracts_panel.gd:117
+msgid "A new request is on its way"
+msgstr "Un nuevo encargo está en camino"
 
-#: ui/contracts_panel.gd:92
-msgid "Collection  %d / %d   ·   see the Codex (K)"
-msgstr "Colección  %d / %d   ·   ver el Códice (K)"
-
-#: ui/contracts_panel.gd:140
-msgid "A new request is being posted."
-msgstr "Se está publicando un nuevo encargo."
-
-#: ui/contracts_panel.gd:151
-msgid "Pays  %s"
-msgstr "Paga  %s"
-
-#: ui/contracts_panel.gd:173
-msgid "Accept  (%s)"
-msgstr "Aceptar  (%s)"
-
-#: ui/contracts_panel.gd:182
-msgid "Pass"
-msgstr "Pasar"
-
-#: ui/contracts_panel.gd:192
-msgid "Working on it"
-msgstr "En ello"
-
-#: ui/contracts_panel.gd:198
-msgid "Claim  %s"
-msgstr "Cobrar  %s"
-
-#: ui/contracts_panel.gd:238
-msgid "Next posting in %s"
-msgstr "Próximo anuncio en %s"
-
-#: ui/contracts_panel.gd:240
-msgid "Time limit %s once accepted   ·   offer open %s"
-msgstr "Tiempo límite %s al aceptar   ·   oferta abierta %s"
-
-#: ui/contracts_panel.gd:251
-msgid "Time left %s"
-msgstr "Tiempo restante %s"
-
-#: ui/contracts_panel.gd:251
-msgid "Finished. Claim it!"
-msgstr "Terminado. ¡Cóbralo!"
-
-#: ui/contracts_panel.gd:275
-msgid "After %d requests"
-msgstr "Tras %d encargos"
-
-#: ui/contracts_panel.gd:277
-msgid "Equipped  (press to remove)"
-msgstr "Equipado  (pulsa para quitar)"
-
-#: ui/contracts_panel.gd:277
-msgid "Unlocked  ·  press to equip"
-msgstr "Desbloqueado  ·  pulsa para equipar"
-
-#: ui/contracts_panel.gd:279 ui/cosmetics_panel.gd:144
-msgid "Unlocked"
-msgstr "Desbloqueado"
+#: ui/contracts_panel.gd:143
+msgid "Claim"
+msgstr "Reclamar"
 
 #: ui/core_meter.gd:22
 msgid "BLOOM CORE"
@@ -3994,31 +3908,35 @@ msgstr "Solo estética (sin bonificaciones)"
 msgid "Character Builder"
 msgstr "Editor de personaje"
 
-#: ui/cosmetics_panel.gd:144 ui/cosmetics_panel.gd:177
+#: ui/cosmetics_panel.gd:145 ui/cosmetics_panel.gd:178
 msgid "Wearing"
 msgstr "Puesto"
 
-#: ui/cosmetics_panel.gd:144
+#: ui/cosmetics_panel.gd:145
+msgid "Unlocked"
+msgstr "Desbloqueado"
+
+#: ui/cosmetics_panel.gd:145
 msgid "Locked  %d%%"
 msgstr "Bloqueado  %d%%"
 
-#: ui/cosmetics_panel.gd:174 ui/lumi_builder.gd:645
+#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:645
 msgid "Bonus: %s"
 msgstr "Bonificación: %s"
 
-#: ui/cosmetics_panel.gd:174 ui/lumi_builder.gd:645
+#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:645
 msgid "(off: looks only)"
 msgstr "(desactivado: solo estética)"
 
-#: ui/cosmetics_panel.gd:177
+#: ui/cosmetics_panel.gd:178
 msgid "Wearing a custom look with this bonus"
 msgstr "Aspecto propio con este bonus"
 
-#: ui/cosmetics_panel.gd:179
+#: ui/cosmetics_panel.gd:180
 msgid "Unlocked. Press to wear."
 msgstr "Desbloqueado. Pulsa para ponértelo."
 
-#: ui/cosmetics_panel.gd:181 ui/lumi_builder.gd:376 ui/lumi_builder.gd:493
+#: ui/cosmetics_panel.gd:182 ui/lumi_builder.gd:376 ui/lumi_builder.gd:493
 #: ui/lumi_builder.gd:531 ui/lumi_builder.gd:599 ui/lumi_builder.gd:600
 msgid "Locked: %s"
 msgstr "Bloqueado: %s"
@@ -4311,7 +4229,7 @@ msgstr ""
 msgid "%s  close"
 msgstr ""
 
-#: ui/glim_panel.gd:105 ui/upgrades_screen.gd:71
+#: ui/glim_panel.gd:105
 msgid "UPGRADES"
 msgstr "MEJORAS"
 
@@ -4423,82 +4341,99 @@ msgstr "+%d PX"
 msgid "CORE %d%%"
 msgstr "NÚCLEO %d%%"
 
-#: ui/hub_panel.gd:22
-msgid "HUB"
-msgstr "BASE"
+#: ui/hub_panel.gd:57
+msgid "What you get"
+msgstr "Lo que obtienes"
 
-#: ui/hub_panel.gd:73
+#: ui/hub_panel.gd:65
+msgid "Upgrade"
+msgstr "Mejorar"
+
+#: ui/hub_panel.gd:92 ui/hub_panel.gd:243
+msgid "Build Air Scrubber"
+msgstr "Construir depurador de aire"
+
+#: ui/hub_panel.gd:129
 msgid "Build Signal Jammer"
 msgstr "Construir inhibidor"
 
-#: ui/hub_panel.gd:98
+#: ui/hub_panel.gd:168
 msgid " (have %s)"
 msgstr " (tienes %s)"
 
-#: ui/hub_panel.gd:105
-msgid "Parts %s"
-msgstr "Piezas %s"
+#: ui/hub_panel.gd:181
+msgid "Bales sell for +%d%% (now +%d%%)"
+msgstr "Las balas se venden por +%d%% (ahora +%d%%)"
 
-#: ui/hub_panel.gd:107
-msgid ""
-"Level %d   ·   %s\n"
-"%s   Bales sell for +%d%%."
-msgstr ""
-"Nivel %d   ·   %s\n"
-"%s   Las pacas se venden a +%d%%."
+#: ui/hub_panel.gd:184
+msgid "+%d robot spots in every crew"
+msgstr "+%d plazas de robot en cada equipo"
 
-#: ui/hub_panel.gd:110
-msgid "Fully built."
-msgstr "Totalmente construido."
+#: ui/hub_panel.gd:187
+msgid "Air Scrubbers: clear the dusty sky"
+msgstr "Depuradores de aire: limpian el cielo polvoriento"
 
-#: ui/hub_panel.gd:113
-msgid ""
-"Next: %s. %s\n"
-"Needs %s"
-msgstr ""
-"Siguiente: %s. %s\n"
-"Requiere %s"
+#: ui/hub_panel.gd:192
+msgid "Unlocks the %s"
+msgstr "Desbloquea: %s"
 
-#: ui/hub_panel.gd:114 ui/stations_panel.gd:98 ui/telescope_panel.gd:45
-#: ui/yard_builds_panel.gd:83
-msgid "Build %s"
-msgstr "Construir: %s"
+#: ui/hub_panel.gd:194
+msgid "Opens the Locker: style Lumi and your robots"
+msgstr "Abre la Taquilla: dale estilo a Lumi y a tus robots"
 
-#: ui/hub_panel.gd:119
+#: ui/hub_panel.gd:196
+msgid "A launch pad: rockets to the next district"
+msgstr "Una plataforma de lanzamiento: cohetes al siguiente distrito"
+
+#: ui/hub_panel.gd:207
+msgid "Now: level %d, %s. Bales sell for +%d%%."
+msgstr "Ahora: nivel %d, %s. Las balas se venden por +%d%%."
+
+#: ui/hub_panel.gd:209
+msgid "Hub level %d  ·  fully built"
+msgstr "Base nivel %d  ·  completa"
+
+#: ui/hub_panel.gd:212
+msgid "Every hub level is built."
+msgstr "Todos los niveles de la base están construidos."
+
+#: ui/hub_panel.gd:214
+msgid "Fully built"
+msgstr "Completa"
+
+#: ui/hub_panel.gd:217
+msgid "Next: hub level %d"
+msgstr "Siguiente: base nivel %d"
+
+#: ui/hub_panel.gd:224
+msgid "Upgrade to level %d"
+msgstr "Mejorar a nivel %d"
+
+#: ui/hub_panel.gd:224
+msgid "Not enough yet"
+msgstr "Aún no alcanza"
+
+#: ui/hub_panel.gd:228
 msgid "Continue in the full game"
 msgstr "Continúa en el juego completo"
 
-#: ui/hub_panel.gd:126
+#: ui/hub_panel.gd:237
+msgid "Opens at hub level %d."
+msgstr "Se abre con la base en nivel %d."
+
+#: ui/hub_panel.gd:239
+msgid "All built."
+msgstr "Todos construidos."
+
+#: ui/hub_panel.gd:242
 msgid ""
-"\n"
-"Requires hub level %d."
+"%s   %d / %d\n"
+"%s"
 msgstr ""
-"\n"
-"Requiere base de nivel %d."
 
-#: ui/hub_panel.gd:128
-msgid ""
-"\n"
-"All built (max)."
-msgstr ""
-"\n"
-"Todo construido (máx.)."
-
-#: ui/hub_panel.gd:131
-msgid ""
-"%s   ·   %d / %d built\n"
-"%s%s"
-msgstr ""
-"%s   ·   %d / %d construidos\n"
-"%s%s"
-
-#: ui/hub_panel.gd:132
-msgid "Air Scrubbers maxed"
-msgstr "Depuradores al máximo"
-
-#: ui/hub_panel.gd:132
-msgid "Build Air Scrubber"
-msgstr "Construir depurador de aire"
+#: ui/hub_panel.gd:243
+msgid "All built"
+msgstr "Todos construidos"
 
 #: ui/hud.gd:77
 msgid "Lumi reached level %d%s"
@@ -4610,6 +4545,35 @@ msgstr ""
 #: ui/loading_screen.gd:146
 msgid "Warming up"
 msgstr ""
+
+#: ui/locker_panel.gd:68
+msgid "Editing"
+msgstr "Editando"
+
+#: ui/locker_panel.gd:79
+msgid "Fleet paint"
+msgstr "Pintura de flota"
+
+#: ui/locker_panel.gd:104
+msgid "The Locker"
+msgstr "La Taquilla"
+
+#: ui/locker_panel.gd:105
+msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play."
+msgstr "Dale estilo a Lumi y a cada robot: colores, ojos, piezas de cabeza, adornos, pintura de flota. Desbloqueas piezas nuevas jugando."
+
+#: ui/locker_panel.gd:115
+msgid "Opens at hub level %d (now %d). Upgrade the hub in the Hub tab."
+msgstr "Se abre con la base en nivel %d (ahora %d). Mejora la base en la pestaña Base."
+
+#: ui/locker_panel.gd:150 ui/photo_mode.gd:393 ui/photo_mode.gd:420
+#: ui/upgrades_screen.gd:13
+msgid "Lumi"
+msgstr "Lumi"
+
+#: ui/locker_panel.gd:150
+msgid "You"
+msgstr "Tú"
 
 #: ui/lumi_builder.gd:111
 msgid "CHARACTER BUILDER"
@@ -4752,7 +4716,7 @@ msgstr ""
 msgid "New Game"
 msgstr "Nueva partida"
 
-#: ui/main_menu.gd:350 ui/main_menu.gd:548 ui/pause_menu.gd:63
+#: ui/main_menu.gd:350 ui/main_menu.gd:548 ui/pause_menu.gd:64
 msgid "Settings"
 msgstr "Ajustes"
 
@@ -4760,7 +4724,7 @@ msgstr "Ajustes"
 msgid "Credits"
 msgstr "Créditos"
 
-#: ui/main_menu.gd:352
+#: ui/main_menu.gd:352 ui/pause_menu.gd:68
 msgid "Quit"
 msgstr "Salir"
 
@@ -4776,6 +4740,11 @@ msgstr "%d min"
 #: ui/main_menu.gd:461
 msgid "Hub %d"
 msgstr "Base %d"
+
+#. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
+#: ui/main_menu.gd:461 ui/profile_picker.gd:133
+msgid "%s cubes"
+msgstr "%s cubos"
 
 #: ui/main_menu.gd:467
 msgid "Jan"
@@ -4829,8 +4798,8 @@ msgstr "dic."
 msgid "CREDITS"
 msgstr "CRÉDITOS"
 
-#: ui/main_menu.gd:592 ui/profile_picker.gd:49 ui/settings_panel.gd:117
-#: ui/settings_panel.gd:145 ui/world_picker.gd:53
+#: ui/main_menu.gd:592 ui/profile_picker.gd:49 ui/settings_panel.gd:116
+#: ui/settings_panel.gd:141 ui/world_picker.gd:53
 msgid "Back"
 msgstr "Volver"
 
@@ -4872,41 +4841,25 @@ msgstr "Borrar y empezar"
 msgid "OBJECTIVE"
 msgstr "OBJETIVO"
 
-#: ui/pause_menu.gd:42
+#: ui/pause_menu.gd:43
 msgid "PAUSED"
 msgstr "EN PAUSA"
 
-#: ui/pause_menu.gd:49
+#: ui/pause_menu.gd:50
 msgid "Resume"
 msgstr "Reanudar"
 
-#: ui/pause_menu.gd:54
+#: ui/pause_menu.gd:55
 msgid "Codex  [%s]"
 msgstr "Códice  [%s]"
 
-#: ui/pause_menu.gd:56
+#: ui/pause_menu.gd:57
 msgid "Photo mode  [%s]"
 msgstr "Modo foto  [%s]"
 
-#: ui/pause_menu.gd:60 data/achievements.json:achievements[home_relics].name
+#: ui/pause_menu.gd:61 data/achievements.json:achievements[home_relics].name
 msgid "Keepsakes"
 msgstr "Recuerdos"
-
-#: ui/pause_menu.gd:65
-msgid "Save game"
-msgstr "Guardar partida"
-
-#: ui/pause_menu.gd:67
-msgid "Saved."
-msgstr "Guardado."
-
-#: ui/pause_menu.gd:68
-msgid "Quit to title"
-msgstr "Volver al título"
-
-#: ui/pause_menu.gd:69
-msgid "Quit to desktop"
-msgstr "Salir al escritorio"
 
 #: ui/photo_filters.gd:11
 msgid "Natural"
@@ -4977,7 +4930,7 @@ msgstr "El modo foto no está disponible durante un vuelo en cohete."
 msgid "Photo mode isn't available during a cinematic."
 msgstr "El modo foto no está disponible durante una cinemática."
 
-#: ui/photo_mode.gd:367 ui/photo_mode.gd:420 ui/settings_panel.gd:317
+#: ui/photo_mode.gd:367 ui/photo_mode.gd:420 ui/settings_panel.gd:373
 msgid "Camera"
 msgstr "Cámara"
 
@@ -4985,7 +4938,7 @@ msgstr "Cámara"
 msgid "Mode"
 msgstr "Modo"
 
-#: ui/photo_mode.gd:369 ui/settings_panel.gd:325
+#: ui/photo_mode.gd:369 ui/settings_panel.gd:381
 msgid "Field of view"
 msgstr "Campo de visión"
 
@@ -5022,7 +4975,7 @@ msgid "Blur"
 msgstr "Desenfoque"
 
 #: ui/photo_mode.gd:377 ui/photo_panel.gd:240 ui/photo_panel.gd:242
-#: ui/photo_panel.gd:280 ui/settings_panel.gd:615
+#: ui/photo_panel.gd:280 ui/settings_panel.gd:671
 msgid "Off"
 msgstr "No"
 
@@ -5069,10 +5022,6 @@ msgstr "Fijar la hora del día"
 #: ui/photo_mode.gd:392
 msgid "Weather"
 msgstr "Clima"
-
-#: ui/photo_mode.gd:393 ui/photo_mode.gd:420 ui/upgrades_screen.gd:10
-msgid "Lumi"
-msgstr "Lumi"
 
 #: ui/photo_mode.gd:394
 msgid "Pose"
@@ -5139,7 +5088,7 @@ msgid "Exit"
 msgstr "Salir"
 
 #: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
-#: ui/settings_panel.gd:615
+#: ui/settings_panel.gd:671
 msgid "On"
 msgstr "Sí"
 
@@ -5295,57 +5244,73 @@ msgstr "Pulsa para poner en cola"
 msgid "%s cancelled. Cubes refunded."
 msgstr "%s cancelada. Cubos devueltos."
 
-#: ui/robot_card.gd:40 data/currencies.json:currencies[parts].short
-msgid "PARTS"
-msgstr "PIEZAS"
+#: ui/robot_card.gd:78
+msgid "Crew"
+msgstr "Equipo"
 
-#: ui/robot_card.gd:68
-msgid "%s   ·   %s   ·   %d built"
-msgstr "%s   ·   %s   ·   %d construidos"
+#: ui/robot_card.gd:90
+msgid "Tier"
+msgstr "Nivel"
 
-#: ui/robot_card.gd:73
-msgid "Crew: %d / %d  (hub level %d: +%d per level)"
-msgstr "Equipo: %d / %d  (base nivel %d: +%d por nivel)"
+#: ui/robot_card.gd:110 ui/robot_card.gd:244
+msgid "Build"
+msgstr "Construir"
 
-#: ui/robot_card.gd:77
-msgid ""
-"\n"
-"Water Tanks: %d / %d placed · next %s cubes (Command view: Place refill tank)"
+#: ui/robot_card.gd:130
+msgid "Fleet upgrades"
+msgstr "Mejoras de flota"
+
+#: ui/robot_card.gd:145
+msgid "Open Research"
+msgstr "Abrir Investigación"
+
+#: ui/robot_card.gd:187
+msgid "Lv %d  ·  %s%s (max)"
 msgstr ""
-"\n"
-"Tanques de agua: %d / %d colocados · siguiente %s cubos (vista de mando: poner tanque de recarga)"
 
-#: ui/robot_card.gd:79
-msgid "Build   %s cubes"
-msgstr "Construir   %s cubos"
+#: ui/robot_card.gd:188 ui/upgrade_card.gd:87 ui/upgrade_card.gd:215
+msgid "Max"
+msgstr "Máx."
 
-#: ui/robot_card.gd:79
-msgid "Build   (%s)"
-msgstr "Construir   (%s)"
+#: ui/robot_card.gd:194
+msgid "+  %s cubes"
+msgstr ""
 
-#: ui/robot_card.gd:83
-msgid "Locked  ·  research %s"
-msgstr "Bloqueado  ·  investigación %s"
+#: ui/robot_card.gd:196
+msgid "Need %s more cubes"
+msgstr "Faltan %s cubos"
 
-#: ui/robot_card.gd:87
-msgid "Fleet tier: %s (max)"
-msgstr "Nivel de flota: %s (máx.)"
+#: ui/robot_card.gd:222
+msgid "Unlock with research: %s"
+msgstr "Se desbloquea investigando: %s"
 
-#: ui/robot_card.gd:92
-msgid "Next: %s  ·  x%.1f work speed  ·  %s look"
-msgstr "Siguiente: %s  ·  x%.1f velocidad de trabajo  ·  aspecto %s"
+#: ui/robot_card.gd:232
+msgid "%d built  ·  full: more spots with hub levels"
+msgstr "%d construidos  ·  lleno: más plazas con niveles de base"
 
-#: ui/robot_card.gd:93
-msgid "Needs %s cubes, %s parts and a %s Control Core.  %s"
-msgstr "Necesita %s cubos, %s piezas y un Núcleo de control %s.  %s"
+#: ui/robot_card.gd:232
+msgid "%d built  ·  %d free"
+msgstr "%d construidos  ·  %d libres"
 
-#: ui/robot_card.gd:95
-msgid "Upgrade fleet to %s"
-msgstr "Mejorar flota a %s"
+#: ui/robot_card.gd:236
+msgid "Water Tanks %d / %d  ·  place them from the Command view"
+msgstr "Tanques de agua %d / %d  ·  colócalos desde la vista de mando"
 
-#: ui/robot_card.gd:118
-msgid "□  %s  ·  missing  (detector, or salvage from electronics junk)"
-msgstr "□  %s  ·  falta  (detector, o rescátalo de chatarra electrónica)"
+#: ui/robot_card.gd:244
+msgid "Build first"
+msgstr "Construir el primero"
+
+#: ui/robot_card.gd:250
+msgid "top tier"
+msgstr "nivel máximo"
+
+#: ui/robot_card.gd:256
+msgid "next: x%s work speed"
+msgstr "siguiente: x%s velocidad de trabajo"
+
+#: ui/robot_card.gd:257 ui/rockets_panel.gd:119 ui/yard_builds_panel.gd:60
+msgid "Upgrade to %s"
+msgstr "Mejorar a %s"
 
 #: ui/rockets_panel.gd:35
 msgid "LAUNCH PAD"
@@ -5383,10 +5348,6 @@ msgstr "COHETE"
 msgid "Top tier: warp hops, no recharge."
 msgstr "Nivel máximo: saltos, sin recarga."
 
-#: ui/rockets_panel.gd:119 ui/yard_builds_panel.gd:60
-msgid "Upgrade to %s"
-msgstr "Mejorar a %s"
-
 #: ui/rockets_panel.gd:136
 msgid "Countdown %ds  ·  Flight %.1fs  ·  Recharge %s  ·  Cargo pods x%.1f every %ds"
 msgstr "Cuenta atrás %ds  ·  Vuelo %.1fs  ·  Recarga %s  ·  Cápsulas de carga x%.1f cada %ds"
@@ -5395,303 +5356,315 @@ msgstr "Cuenta atrás %ds  ·  Vuelo %.1fs  ·  Recarga %s  ·  Cápsulas de car
 msgid "  ·  WARP"
 msgstr "  ·  SALTO"
 
-#: ui/settings_panel.gd:11
+#: ui/settings_panel.gd:12 ui/settings_panel.gd:221
+msgid "Basics"
+msgstr "Básico"
+
+#: ui/settings_panel.gd:12
 msgid "Audio"
 msgstr "Audio"
 
-#: ui/settings_panel.gd:11
+#: ui/settings_panel.gd:12
 msgid "Graphics"
 msgstr "Gráficos"
 
-#: ui/settings_panel.gd:11
+#: ui/settings_panel.gd:12
 msgid "Controls"
 msgstr "Controles"
 
-#: ui/settings_panel.gd:11
+#: ui/settings_panel.gd:12
 msgid "Gameplay"
 msgstr "Juego"
 
-#: ui/settings_panel.gd:11
+#: ui/settings_panel.gd:12
 msgid "Accessibility"
 msgstr "Accesibilidad"
 
-#: ui/settings_panel.gd:58
+#: ui/settings_panel.gd:61
 msgid "SETTINGS"
 msgstr "AJUSTES"
 
-#: ui/settings_panel.gd:61
+#: ui/settings_panel.gd:64
 msgid "{ui_tab_prev}{ui_tab_next}  switch tabs     {ui_cancel}  back"
 msgstr "{ui_tab_prev}{ui_tab_next}  cambiar de pestaña     {ui_cancel}  volver"
 
-#: ui/settings_panel.gd:112
+#: ui/settings_panel.gd:111
 msgid "Changes are saved automatically."
 msgstr "Los cambios se guardan automáticamente."
 
-#: ui/settings_panel.gd:234
-msgid "Volume"
-msgstr "Volumen"
-
-#: ui/settings_panel.gd:241
-msgid "Sound effects"
-msgstr "Efectos de sonido"
-
-#: ui/settings_panel.gd:248
-msgid "Rendering"
-msgstr "Renderizado"
-
-#: ui/settings_panel.gd:249
-msgid "Low drops GI and fog; Ultra adds reflections."
-msgstr "Bajo quita la GI y la niebla; Ultra añade reflejos."
-
-#: ui/settings_panel.gd:250
-msgid "This renderer always uses the Low preset."
-msgstr "Este renderizador siempre usa el ajuste Bajo."
-
-#: ui/settings_panel.gd:252
-msgid "Detected: %s for %s. "
-msgstr "Detectado: %s para %s."
-
-#: ui/settings_panel.gd:253
-msgid "Your choice (hardware: %s). "
-msgstr "Tu elección (hardware: %s)."
-
-#: ui/settings_panel.gd:254
-msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
-msgstr "Bajo quita la GI, la niebla y detalle de sombras; Ultra añade reflejos."
-
-#: ui/settings_panel.gd:255
+#: ui/settings_panel.gd:228 ui/settings_panel.gd:311
 msgid "Quality preset"
 msgstr "Calidad"
 
-#: ui/settings_panel.gd:262
-msgid "Renderer"
-msgstr "Renderizador"
-
-#: ui/settings_panel.gd:262
-msgid "Standard (Forward+)"
-msgstr "Estándar (Forward+)"
-
-#: ui/settings_panel.gd:262
-msgid "Light (Mobile)"
-msgstr "Ligero (Mobile)"
-
-#: ui/settings_panel.gd:264
-msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
-msgstr "Ligero va bien con gráficas integradas antiguas. Se aplica al reiniciar el juego (ahora: %s)."
-
-#: ui/settings_panel.gd:270
-msgid "Render scale"
-msgstr "Escala de renderizado"
-
-#: ui/settings_panel.gd:272
-msgid "Lower renders 3D at a smaller size; the interface stays sharp."
-msgstr "Más bajo renderiza el 3D a menor tamaño; la interfaz sigue nítida."
-
-#: ui/settings_panel.gd:273
-msgid "Display"
-msgstr "Pantalla"
-
-#: ui/settings_panel.gd:274
+#: ui/settings_panel.gd:231 ui/settings_panel.gd:330
 msgid "Fullscreen"
 msgstr "Pantalla completa"
 
-#: ui/settings_panel.gd:277
-msgid "V-Sync"
-msgstr "V-Sync"
-
-#: ui/settings_panel.gd:283 ui/settings_panel.gd:312
-msgid "Bindings"
-msgstr "Asignaciones"
-
-#: ui/settings_panel.gd:286
-msgid "ACTION   (select a binding to rebind it)"
-msgstr "ACCIÓN   (elige una asignación para cambiarla)"
-
-#: ui/settings_panel.gd:289
-msgid "KEYBOARD / MOUSE"
-msgstr "TECLADO / RATÓN"
-
-#: ui/settings_panel.gd:289
-msgid "CONTROLLER"
-msgstr "MANDO"
-
-#: ui/settings_panel.gd:305
-msgid "Reset to defaults"
-msgstr "Restablecer"
-
-#: ui/settings_panel.gd:312
-msgid "Restore every key and controller binding."
-msgstr "Restaura todas las teclas y botones del mando."
-
-#: ui/settings_panel.gd:314
-msgid "Button prompts"
-msgstr "Iconos de botones"
-
-#: ui/settings_panel.gd:316
-msgid "Controller art: Automatic follows the connected pad."
-msgstr "Estilo de mando: Automático sigue al mando conectado."
-
-#: ui/settings_panel.gd:318
+#: ui/settings_panel.gd:234 ui/settings_panel.gd:374
 msgid "Mouse sensitivity"
 msgstr "Sensibilidad del ratón"
 
-#: ui/settings_panel.gd:321
-msgid "Stick look speed"
-msgstr "Velocidad del stick"
-
-#: ui/settings_panel.gd:324
-msgid "Invert look Y"
-msgstr "Invertir eje Y"
-
-#: ui/settings_panel.gd:328
-msgid "Mouse smoothing"
-msgstr "Suavizado del ratón"
-
-#: ui/settings_panel.gd:329
-msgid "Eases mouse look over a few frames."
-msgstr "Suaviza la cámara con ratón durante unos fotogramas."
-
-#: ui/settings_panel.gd:330
-msgid "Scooping"
-msgstr "Recogida"
-
-#: ui/settings_panel.gd:331
-msgid "Scoop button"
-msgstr "Botón de pala"
-
-#: ui/settings_panel.gd:331
-msgid "Hold"
-msgstr "Mantener"
-
-#: ui/settings_panel.gd:331
-msgid "Toggle"
-msgstr "Alternar"
-
-#: ui/settings_panel.gd:372
-msgid "press a button…"
-msgstr "pulsa un botón…"
-
-#: ui/settings_panel.gd:372
-msgid "press a key…"
-msgstr "pulsa una tecla…"
-
-#: ui/settings_panel.gd:404
-msgid "Conflict: %s is used by both %s and %s."
-msgstr "Conflicto: %s lo usan %s y %s."
-
-#: ui/settings_panel.gd:492 ui/settings_panel.gd:495
-msgid "Language"
-msgstr "Idioma"
-
-#: ui/settings_panel.gd:494
+#: ui/settings_panel.gd:238 ui/settings_panel.gd:550
 msgid "System default"
 msgstr "Predeterminado del sistema"
 
-#: ui/settings_panel.gd:498
+#: ui/settings_panel.gd:239 ui/settings_panel.gd:548 ui/settings_panel.gd:551
+msgid "Language"
+msgstr "Idioma"
+
+#: ui/settings_panel.gd:244
+msgid "More settings  (sound, graphics, controls, accessibility)"
+msgstr "Más ajustes  (sonido, gráficos, controles, accesibilidad)"
+
+#: ui/settings_panel.gd:250
+msgid "Everything else"
+msgstr "Todo lo demás"
+
+#: ui/settings_panel.gd:290
+msgid "Volume"
+msgstr "Volumen"
+
+#: ui/settings_panel.gd:297
+msgid "Sound effects"
+msgstr "Efectos de sonido"
+
+#: ui/settings_panel.gd:304
+msgid "Rendering"
+msgstr "Renderizado"
+
+#: ui/settings_panel.gd:305
+msgid "Low drops GI and fog; Ultra adds reflections."
+msgstr "Bajo quita la GI y la niebla; Ultra añade reflejos."
+
+#: ui/settings_panel.gd:306
+msgid "This renderer always uses the Low preset."
+msgstr "Este renderizador siempre usa el ajuste Bajo."
+
+#: ui/settings_panel.gd:308
+msgid "Detected: %s for %s. "
+msgstr "Detectado: %s para %s."
+
+#: ui/settings_panel.gd:309
+msgid "Your choice (hardware: %s). "
+msgstr "Tu elección (hardware: %s)."
+
+#: ui/settings_panel.gd:310
+msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
+msgstr "Bajo quita la GI, la niebla y detalle de sombras; Ultra añade reflejos."
+
+#: ui/settings_panel.gd:318
+msgid "Renderer"
+msgstr "Renderizador"
+
+#: ui/settings_panel.gd:318
+msgid "Standard (Forward+)"
+msgstr "Estándar (Forward+)"
+
+#: ui/settings_panel.gd:318
+msgid "Light (Mobile)"
+msgstr "Ligero (Mobile)"
+
+#: ui/settings_panel.gd:320
+msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
+msgstr "Ligero va bien con gráficas integradas antiguas. Se aplica al reiniciar el juego (ahora: %s)."
+
+#: ui/settings_panel.gd:326
+msgid "Render scale"
+msgstr "Escala de renderizado"
+
+#: ui/settings_panel.gd:328
+msgid "Lower renders 3D at a smaller size; the interface stays sharp."
+msgstr "Más bajo renderiza el 3D a menor tamaño; la interfaz sigue nítida."
+
+#: ui/settings_panel.gd:329
+msgid "Display"
+msgstr "Pantalla"
+
+#: ui/settings_panel.gd:333
+msgid "V-Sync"
+msgstr "V-Sync"
+
+#: ui/settings_panel.gd:339 ui/settings_panel.gd:368
+msgid "Bindings"
+msgstr "Asignaciones"
+
+#: ui/settings_panel.gd:342
+msgid "ACTION   (select a binding to rebind it)"
+msgstr "ACCIÓN   (elige una asignación para cambiarla)"
+
+#: ui/settings_panel.gd:345
+msgid "KEYBOARD / MOUSE"
+msgstr "TECLADO / RATÓN"
+
+#: ui/settings_panel.gd:345
+msgid "CONTROLLER"
+msgstr "MANDO"
+
+#: ui/settings_panel.gd:361
+msgid "Reset to defaults"
+msgstr "Restablecer"
+
+#: ui/settings_panel.gd:368
+msgid "Restore every key and controller binding."
+msgstr "Restaura todas las teclas y botones del mando."
+
+#: ui/settings_panel.gd:370
+msgid "Button prompts"
+msgstr "Iconos de botones"
+
+#: ui/settings_panel.gd:372
+msgid "Controller art: Automatic follows the connected pad."
+msgstr "Estilo de mando: Automático sigue al mando conectado."
+
+#: ui/settings_panel.gd:377
+msgid "Stick look speed"
+msgstr "Velocidad del stick"
+
+#: ui/settings_panel.gd:380
+msgid "Invert look Y"
+msgstr "Invertir eje Y"
+
+#: ui/settings_panel.gd:384
+msgid "Mouse smoothing"
+msgstr "Suavizado del ratón"
+
+#: ui/settings_panel.gd:385
+msgid "Eases mouse look over a few frames."
+msgstr "Suaviza la cámara con ratón durante unos fotogramas."
+
+#: ui/settings_panel.gd:386
+msgid "Scooping"
+msgstr "Recogida"
+
+#: ui/settings_panel.gd:387
+msgid "Scoop button"
+msgstr "Botón de pala"
+
+#: ui/settings_panel.gd:387
+msgid "Hold"
+msgstr "Mantener"
+
+#: ui/settings_panel.gd:387
+msgid "Toggle"
+msgstr "Alternar"
+
+#: ui/settings_panel.gd:428
+msgid "press a button…"
+msgstr "pulsa un botón…"
+
+#: ui/settings_panel.gd:428
+msgid "press a key…"
+msgstr "pulsa una tecla…"
+
+#: ui/settings_panel.gd:460
+msgid "Conflict: %s is used by both %s and %s."
+msgstr "Conflicto: %s lo usan %s y %s."
+
+#: ui/settings_panel.gd:554
 msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
 msgstr "Menús, HUD, subtítulos y textos de la historia. Pseudo sirve para probar traducciones."
 
-#: ui/settings_panel.gd:499
+#: ui/settings_panel.gd:555
 msgid "Comfort"
 msgstr "Comodidad"
 
-#: ui/settings_panel.gd:500
+#: ui/settings_panel.gd:556
 msgid "Camera shake"
 msgstr "Vibración de cámara"
 
-#: ui/settings_panel.gd:502
+#: ui/settings_panel.gd:558
 msgid "Reduced motion"
 msgstr "Movimiento reducido"
 
-#: ui/settings_panel.gd:503
+#: ui/settings_panel.gd:559
 msgid "Calmer camera and fewer bouncy effects."
 msgstr "Cámara más tranquila y menos efectos de rebote."
 
-#: ui/settings_panel.gd:504 ui/settings_panel.gd:514
+#: ui/settings_panel.gd:560 ui/settings_panel.gd:570
 msgid "Interface"
 msgstr "Interfaz"
 
-#: ui/settings_panel.gd:505
+#: ui/settings_panel.gd:561
 msgid "Number format"
 msgstr "Formato de números"
 
-#: ui/settings_panel.gd:505
+#: ui/settings_panel.gd:561
 msgid "Short (1.2K)"
 msgstr "Corto (1,2K)"
 
-#: ui/settings_panel.gd:505
+#: ui/settings_panel.gd:561
 msgid "Scientific (1.2e3)"
 msgstr "Científico (1,2e3)"
 
-#: ui/settings_panel.gd:505
+#: ui/settings_panel.gd:561
 msgid "Engineering (1.2e3)"
 msgstr "Ingeniería (1,2e3)"
 
-#: ui/settings_panel.gd:507
+#: ui/settings_panel.gd:563
 msgid "Best-value tags"
 msgstr "Etiquetas de mejor valor"
 
-#: ui/settings_panel.gd:508
+#: ui/settings_panel.gd:564
 msgid "Tag the affordable upgrade that gives the most per cube."
 msgstr "Marca la mejora asequible que más da por cubo."
 
-#: ui/settings_panel.gd:509
+#: ui/settings_panel.gd:565
 msgid "HUD"
 msgstr "HUD"
 
-#: ui/settings_panel.gd:509
+#: ui/settings_panel.gd:565
 msgid "Minimal"
 msgstr "Mínimo"
 
-#: ui/settings_panel.gd:509
+#: ui/settings_panel.gd:565
 msgid "Hidden"
 msgstr "Oculto"
 
-#: ui/settings_panel.gd:510
+#: ui/settings_panel.gd:566
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "Mínimo atenúa los extras tras unos segundos. Oculto solo deja indicaciones y mensajes."
 
-#: ui/settings_panel.gd:520
+#: ui/settings_panel.gd:576
 msgid "Interface scale"
 msgstr "Escala de interfaz"
 
-#: ui/settings_panel.gd:522
+#: ui/settings_panel.gd:578
 msgid "Size of menus, HUD and subtitles."
 msgstr "Tamaño de menús, HUD y subtítulos."
 
-#: ui/settings_panel.gd:523
+#: ui/settings_panel.gd:579
 msgid "Colour-blind palette"
 msgstr "Paleta para daltonismo"
 
-#: ui/settings_panel.gd:524
+#: ui/settings_panel.gd:580
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "Colores Okabe-Ito para el progreso de hexágonos, el medidor de tolva y la rareza de piezas."
 
-#: ui/settings_panel.gd:525 ui/settings_panel.gd:526
+#: ui/settings_panel.gd:581 ui/settings_panel.gd:582
 msgid "Subtitles"
 msgstr "Subtítulos"
 
-#: ui/settings_panel.gd:527
+#: ui/settings_panel.gd:583
 msgid "WREN and Ledger lines."
 msgstr "Frases de WREN y del Ledger."
 
-#: ui/settings_panel.gd:528
+#: ui/settings_panel.gd:584
 msgid "Subtitle size"
 msgstr "Tamaño de subtítulos"
 
-#: ui/settings_panel.gd:528
+#: ui/settings_panel.gd:584
 msgid "Small"
 msgstr "Pequeño"
 
-#: ui/settings_panel.gd:528
+#: ui/settings_panel.gd:584
 msgid "Large"
 msgstr "Grande"
 
-#: ui/settings_panel.gd:530
+#: ui/settings_panel.gd:586
 msgid "Subtitle background"
 msgstr "Fondo de subtítulos"
 
-#: ui/settings_panel.gd:531
+#: ui/settings_panel.gd:587
 msgid "A solid backdrop behind subtitle text."
 msgstr "Un fondo sólido detrás del texto de los subtítulos."
 
@@ -5706,6 +5679,10 @@ msgstr "Mover a la frontera"
 #: ui/stations_panel.gd:98 ui/telescope_panel.gd:45
 msgid "%s built"
 msgstr "%s construido"
+
+#: ui/stations_panel.gd:98 ui/telescope_panel.gd:45 ui/yard_builds_panel.gd:83
+msgid "Build %s"
+msgstr "Construir: %s"
 
 #: ui/stations_panel.gd:103
 msgid "Auto-route: %s"
@@ -5933,70 +5910,6 @@ msgstr "Registrado con el telescopio: %s. Nueva entrada del Códice."
 msgid "Codex: %s"
 msgstr "Códice: %s"
 
-#: ui/trade_panel.gd:23
-msgid "HAGGLE'S PARTS TRADE"
-msgstr "TRUEQUE DE PIEZAS DE HAGGLE"
-
-#: ui/trade_panel.gd:25
-msgid "\"Everything's original. Mostly. Three of yours for one of mine, no questions, some questions.\""
-msgstr "«Todo es original. Casi todo. Tres tuyas por una mía, sin preguntas, alguna pregunta»."
-
-#: ui/trade_panel.gd:71
-msgid "Parts  %s      Robot parts in storage  %d"
-msgstr "Piezas  %s      Piezas de robot en almacén  %d"
-
-#: ui/trade_panel.gd:83
-msgid "Haggle: \"Funny thing, I just happened to find a %s. For you, half price.\""
-msgstr "Haggle: «Qué casualidad, justo me he encontrado esto: %s. Para ti, a mitad de precio»."
-
-#: ui/trade_panel.gd:91
-msgid "Trades away: %s"
-msgstr "Cambia: %s"
-
-#: ui/trade_panel.gd:93
-msgid "Needs 3 spare parts (Control Cores needed for a Mk tier are never traded)."
-msgstr "Requiere 3 piezas de repuesto (los núcleos de control que hacen falta para un nivel Mk nunca se cambian)."
-
-#: ui/trade_panel.gd:98
-msgid "   (needed)"
-msgstr "   (necesaria)"
-
-#: ui/trade_panel.gd:100
-msgid "own %d"
-msgstr "tienes %d"
-
-#: ui/trade_panel.gd:103
-msgid "Buy Rusty  %s"
-msgstr "Comprar oxidada  %s"
-
-#: ui/trade_panel.gd:106
-msgid "Buy Worn  %s"
-msgstr "Comprar gastada  %s"
-
-#: ui/trade_panel.gd:112
-msgid "Scrap %d spare Rusty robot parts  ->  %s"
-msgstr "Desguazar %d piezas de robot oxidadas sobrantes  ->  %s"
-
-#: ui/trade_panel.gd:122
-msgid "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab"
-msgstr "PIEZAS DE TALLER  ·  género nuevo en %d min  ·  instálalas en la pestaña Taller"
-
-#: ui/trade_panel.gd:137
-msgid "Haggle: \"%s. Treat it nicely.\""
-msgstr "Haggle: «%s. Trátalo bien»."
-
-#: ui/trade_panel.gd:145
-msgid ""
-"%s  (own %d)\n"
-"%s"
-msgstr ""
-"%s  (tienes %d)\n"
-"%s"
-
-#: ui/trade_panel.gd:171
-msgid "Swap 3 spares"
-msgstr "Cambiar 3 repuestos"
-
 #: ui/upgrade_card.gd:54
 msgid "Lv 0"
 msgstr "Nv 0"
@@ -6009,81 +5922,69 @@ msgstr "MEJOR VALOR"
 msgid "Buy"
 msgstr "Comprar"
 
-#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:212
-msgid "Max"
-msgstr "Máx."
-
-#: ui/upgrade_card.gd:177
+#: ui/upgrade_card.gd:179
 msgid "Lv %d%s"
 msgstr "Nv %d%s"
 
-#: ui/upgrade_card.gd:182
+#: ui/upgrade_card.gd:184
 msgid "Build the %s first (Hub tab)"
 msgstr ""
 
-#: ui/upgrade_card.gd:189
+#: ui/upgrade_card.gd:191
 msgid "Requires %s"
 msgstr "Requiere %s"
 
-#: ui/upgrade_card.gd:193
+#: ui/upgrade_card.gd:195
 msgid "%s%s  (max)"
 msgstr "%s%s  (máx.)"
 
-#: ui/upgrade_card.gd:196
+#: ui/upgrade_card.gd:198
 msgid "Off  →  On"
 msgstr "No  →  Sí"
 
-#: ui/upgrade_card.gd:203
+#: ui/upgrade_card.gd:205
 msgid "MAX"
 msgstr "MÁX."
 
-#: ui/upgrade_card.gd:212
+#: ui/upgrade_card.gd:215
 msgid "Max (%d)"
 msgstr "Máx. (%d)"
 
-#: ui/upgrade_card.gd:218
-msgid "in about %s"
-msgstr "en unos %s"
+#: ui/upgrade_card.gd:221
+msgid "need %s · ~%s"
+msgstr "faltan %s · ~%s"
 
-#: ui/upgrade_card.gd:218
-msgid "earn more cubes"
-msgstr "gana más cubos"
-
-#: ui/upgrade_card.gd:223
+#: ui/upgrade_card.gd:226
 msgid "Where it comes from:  %s"
 msgstr "De dónde sale:  %s"
 
-#: ui/upgrades_screen.gd:11
+#: ui/upgrades_screen.gd:14
 msgid "Bots"
 msgstr "Bots"
 
-#: ui/upgrades_screen.gd:12
-msgid "Trade"
-msgstr "Trueque"
-
-#: ui/upgrades_screen.gd:13
+#: ui/upgrades_screen.gd:15
 msgid "Hub"
 msgstr "Base"
 
-#: ui/upgrades_screen.gd:14
+#: ui/upgrades_screen.gd:16
 msgid "Research"
 msgstr "Investigación"
 
-#: ui/upgrades_screen.gd:15
+#: ui/upgrades_screen.gd:17
 msgid "Rockets"
 msgstr "Cohetes"
 
-#: ui/upgrades_screen.gd:16
-msgid "Cosmetics"
-msgstr "Cosméticos"
+#: ui/upgrades_screen.gd:19
+msgid "Locker"
+msgstr "Taquilla"
 
-#: ui/upgrades_screen.gd:18
-msgid "Builder"
-msgstr "Taller"
+#: ui/upgrades_screen.gd:144
+msgid "WORKBENCH"
+msgstr "BANCO DE TRABAJO"
 
-#: ui/upgrades_screen.gd:103
-msgid "%s (soon)"
-msgstr "%s (pronto)"
+#: ui/upgrades_screen.gd:229
+msgid "Not open yet. Keep playing."
+msgstr "Aún no está abierto. Sigue jugando."
 
 #: ui/world_banner.gd:37
 msgid "SEED MISSION  ·  WORLD %d"
@@ -6710,8 +6611,8 @@ msgid "Mix and Match"
 msgstr "Mezcla y combina"
 
 #: data/achievements.json:achievements[builder_mix].desc
-msgid "Build a robot with all five custom parts."
-msgstr "Construye un robot con las cinco piezas personalizadas."
+msgid "Style a robot with all five custom parts in the Locker."
+msgstr "Dale estilo a un robot con las cinco piezas personalizadas en la Taquilla."
 
 #: data/achievements.json:achievements[builder_maker].name
 msgid "As the Makers Made It"
@@ -8246,9 +8147,13 @@ msgstr "El dinero principal. Vende fardos en la báscula. Paga mejoras, robots, 
 msgid "Parts"
 msgstr "Piezas"
 
+#: data/currencies.json:currencies[parts].short
+msgid "PARTS"
+msgstr "PIEZAS"
+
 #: data/currencies.json:currencies[parts].desc
-msgid "Robot parts and building stock salvaged from junk, the recycler and Haggle's scrap bin. Pays for robots, the Builder, base levels, stations, rocket stages and outpost repairs."
-msgstr "Piezas de robot y material de obra rescatados de la chatarra, la recicladora y el cubo de desguace de Haggle. Pagan robots, el Taller, niveles de base, estaciones, etapas de cohete y reparaciones de puestos."
+msgid "Robot parts and building stock salvaged from junk, dug up with the detector, or made by the recycler. Pays for robots and their Mk tiers, base levels, stations, Locker styles, rocket stages and outpost repairs."
+msgstr ""
 
 #: data/currencies.json:currencies[seeds].name
 msgid "Seeds"
@@ -10482,10 +10387,6 @@ msgstr "Termina 6 proyectos de investigación"
 msgid "Build 4 robots"
 msgstr "Construye 4 robots"
 
-#: data/goals.json:goals[builder_1].text
-msgid "Fit a part in the Builder"
-msgstr "Instala una pieza en el Taller"
-
 #: data/goals.json:goals[hex_15].text
 msgid "Clean 15 hexes"
 msgstr "Limpia 15 hexágonos"
@@ -10581,6 +10482,10 @@ msgstr "Mejora la base a nivel 3"
 #: data/goals.json:goals[extras_radio].text
 msgid "Pick a song on the base radio"
 msgstr "Elige una canción en la radio de la base"
+
+#: data/goals.json:goals[builder_1].text
+msgid "Style a robot in the Locker"
+msgstr "Dale estilo a un robot en la Taquilla"
 
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
@@ -10733,10 +10638,6 @@ msgstr "Lanza el cohete más allá"
 #: data/goals.json:goals[builder_full].text
 msgid "Fully custom-build a robot"
 msgstr "Construye un robot totalmente personalizado"
-
-#: data/goals.json:goals[builder_preset].text
-msgid "Save a crew build preset"
-msgstr "Guarda una plantilla de equipo"
 
 #: data/goals.json:goals[research_20].text
 msgid "Finish 20 research projects"
@@ -12415,16 +12316,16 @@ msgid "Cargo Hull"
 msgstr "Casco de carga"
 
 #: data/robot_parts.json:parts[cargo_hull].desc
-msgid "Thick side plates and a rear rack. Holds more, drives heavier."
-msgstr "Placas laterales gruesas y una baca trasera. Lleva más, conduce más pesado."
+msgid "Thick side plates and a rear rack."
+msgstr "Placas laterales gruesas y una parrilla trasera."
 
 #: data/robot_parts.json:parts[sealed_shell].name
 msgid "Sealed Shell"
 msgstr "Carcasa sellada"
 
 #: data/robot_parts.json:parts[sealed_shell].desc
-msgid "Smooth covers keep grit out of the compactor. Fussier to service."
-msgstr "Cubiertas lisas que mantienen la arena fuera del compactador. Más quisquillosa de mantener."
+msgid "Smooth covers, neat seams, no grit."
+msgstr "Cubiertas lisas, costuras limpias, sin arenilla."
 
 #: data/robot_parts.json:parts[maker_shell].name
 msgid "Maker Shell"
@@ -12439,32 +12340,32 @@ msgid "Big-Eye Sensor"
 msgstr "Sensor ojo grande"
 
 #: data/robot_parts.json:parts[big_eye].desc
-msgid "A huge lens. Spots salvage from far off, gets a little distracted."
-msgstr "Una lente enorme. Ve chatarra útil desde lejos, se distrae un poco."
+msgid "A huge lens on a stalk."
+msgstr "Una lente enorme sobre un tallo."
 
 #: data/robot_parts.json:parts[focus_visor].name
 msgid "Focus Visor"
 msgstr "Visor de concentración"
 
 #: data/robot_parts.json:parts[focus_visor].desc
-msgid "Blinkers for robots. Works faster, notices less."
-msgstr "Anteojeras para robots. Trabaja más rápido, se fija en menos."
+msgid "Blinkers for robots."
+msgstr "Anteojeras para robots."
 
 #: data/robot_parts.json:parts[periscope].name
 msgid "Periscope"
 msgstr "Periscopio"
 
 #: data/robot_parts.json:parts[periscope].desc
-msgid "Sees over the plants: wider spray, slower to turn."
-msgstr "Ve por encima de las plantas: riego más amplio, gira más despacio."
+msgid "Sees over the plants. Mostly."
+msgstr "Ve por encima de las plantas. Casi siempre."
 
 #: data/robot_parts.json:parts[chatter_dome].name
 msgid "Chatterbox Dome"
 msgstr "Cúpula parlanchina"
 
 #: data/robot_parts.json:parts[chatter_dome].desc
-msgid "Glass dome with a speaker. Gossips about junk, finds a bit more of it."
-msgstr "Una cúpula de cristal con altavoz. Cotillea sobre la chatarra y encuentra un poco más."
+msgid "Glass dome with a little speaker."
+msgstr "Cúpula de cristal con un altavoz pequeño."
 
 #: data/robot_parts.json:parts[maker_optic].name
 msgid "Maker Optic"
@@ -12479,32 +12380,32 @@ msgid "Treads"
 msgstr "Orugas"
 
 #: data/robot_parts.json:parts[treads].desc
-msgid "Rubber tracks. Carries more, rolls slower."
-msgstr "Orugas de goma. Lleva más, rueda más despacio."
+msgid "Rubber tracks."
+msgstr "Orugas de goma."
 
 #: data/robot_parts.json:parts[rotor].name
 msgid "Quad Rotor"
 msgstr "Cuadrirrotor"
 
 #: data/robot_parts.json:parts[rotor].desc
-msgid "Four ducted fans. Quick, but every kilo counts."
-msgstr "Cuatro ventiladores carenados. Rápido, pero cada kilo cuenta."
+msgid "Four ducted fans."
+msgstr "Cuatro ventiladores carenados."
 
 #: data/robot_parts.json:parts[legs].name
 msgid "Walker Legs"
 msgstr "Patas andadoras"
 
 #: data/robot_parts.json:parts[legs].desc
-msgid "Four careful legs. A steady platform for the arm."
-msgstr "Cuatro patas cuidadosas. Una plataforma estable para el brazo."
+msgid "Four careful legs."
+msgstr "Cuatro patas cuidadosas."
 
 #: data/robot_parts.json:parts[hover_skirt].name
 msgid "Hover Skirt"
 msgstr "Faldón de aire"
 
 #: data/robot_parts.json:parts[hover_skirt].desc
-msgid "A cushion of air. Glides fast, shakes the hopper."
-msgstr "Un colchón de aire. Se desliza rápido, sacude la tolva."
+msgid "A cushion of air and a soft glow underneath."
+msgstr "Un colchón de aire y un brillo suave debajo."
 
 #: data/robot_parts.json:parts[maker_glider].name
 msgid "Maker Glider"
@@ -12519,56 +12420,56 @@ msgid "Wide Scoop"
 msgstr "Pala ancha"
 
 #: data/robot_parts.json:parts[wide_scoop].desc
-msgid "Grabs more per pass, picks up some grit too."
-msgstr "Coge más en cada pasada, y algo de arenilla también."
+msgid "A big, wide scoop."
+msgstr "Una pala grande y ancha."
 
 #: data/robot_parts.json:parts[fine_sieve].name
 msgid "Fine Sieve"
 msgstr "Tamiz fino"
 
 #: data/robot_parts.json:parts[fine_sieve].desc
-msgid "Shakes the dirt out: cleaner cubes, slower scooping."
-msgstr "Sacude la tierra: cubos más limpios, recogida más lenta."
+msgid "A sieve that shakes out the dirt."
+msgstr "Un tamiz que sacude la tierra."
 
 #: data/robot_parts.json:parts[long_forks].name
 msgid "Long Forks"
 msgstr "Horquillas largas"
 
 #: data/robot_parts.json:parts[long_forks].desc
-msgid "Room for one more bale. Wobbly at speed."
-msgstr "Sitio para una paca más. Se tambalea a velocidad."
+msgid "Extra-long forks."
+msgstr "Horquillas extralargas."
 
 #: data/robot_parts.json:parts[tow_hook].name
 msgid "Tow Hook"
 msgstr "Gancho de remolque"
 
 #: data/robot_parts.json:parts[tow_hook].desc
-msgid "Winch and hook: drags bales quickly, eyes on the hook."
-msgstr "Cabrestante y gancho: arrastra pacas rápido, con los ojos en el gancho."
+msgid "Winch and hook."
+msgstr "Cabrestante y gancho."
 
 #: data/robot_parts.json:parts[seed_drill].name data/robots.json:types[seedling].upgrades[1].name
 msgid "Seed Drill"
 msgstr "Sembradora"
 
 #: data/robot_parts.json:parts[seed_drill].desc
-msgid "An auger that plants fast. Heavy on the nose."
-msgstr "Una barrena que planta rápido. Pesa mucho por delante."
+msgid "An auger nose."
+msgstr "Una nariz de barrena."
 
 #: data/robot_parts.json:parts[mist_sprayer].name
 msgid "Mist Sprayer"
 msgstr "Nebulizador"
 
 #: data/robot_parts.json:parts[mist_sprayer].desc
-msgid "Fan nozzle: waters a wider circle, empties the tank sooner."
-msgstr "Boquilla en abanico: riega un círculo más amplio, vacía el tanque antes."
+msgid "A fan nozzle."
+msgstr "Una boquilla de abanico."
 
 #: data/robot_parts.json:parts[jet_nozzle].name
 msgid "Jet Nozzle"
 msgstr "Boquilla de chorro"
 
 #: data/robot_parts.json:parts[jet_nozzle].desc
-msgid "Strong straight jet: quicker watering, narrower spray."
-msgstr "Chorro recto y fuerte: riego más rápido, chorro más estrecho."
+msgid "A strong, straight jet nozzle."
+msgstr "Una boquilla de chorro fuerte y recto."
 
 #: data/robot_parts.json:parts[antenna].name
 msgid "Bulb Antenna"
@@ -12603,8 +12504,8 @@ msgid "A sprout on a spring. Boings when it brakes."
 msgstr "Un brote en un muelle. Hace boing al frenar."
 
 #: data/robot_parts.json:parts[bobble_plant].source.hint
-msgid "Haggle's welcome gift with your first robot"
-msgstr "El regalo de bienvenida de Haggle con tu primer robot"
+msgid "Comes with your first robot"
+msgstr "Viene con tu primer robot"
 
 #: data/robot_parts.json:parts[traffic_cone].name
 msgid "Traffic Cone"
@@ -13870,8 +13771,8 @@ msgid "Every lit hex on that map is yours. I counted. Twice."
 msgstr "Cada hexágono iluminado en ese mapa es tuyo. Lo he contado. Dos veces."
 
 #: data/wren_lines.json:first_robot_hint
-msgid "If you find enough parts, the workbench can put a helper together. Chassis, wheels, an arm, a core."
-msgstr "Si encuentras suficientes piezas, el banco de trabajo puede montar un ayudante. Chasis, ruedas, un brazo, un núcleo."
+msgid "With enough parts, the workbench can put a helper together. Bots tab, one button."
+msgstr "Con suficientes piezas, el banco de trabajo puede montar un ayudante. Pestaña Bots, un botón."
 
 #: data/wren_lines.json:first_robot_hint
 msgid "Electronics junk sometimes hides parts. So does the ground, if you listen for it."
@@ -15257,6 +15158,360 @@ msgstr ""
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
 
+#~ msgid "Missing %d part"
+#~ msgstr[0] "Falta %d pieza"
+#~ msgstr[1] "Faltan %d piezas"
+
+#~ msgid "Needs a %s Control Core"
+#~ msgstr "Requiere un núcleo de control %s"
+
+#~ msgid "Not enough parts (scrap spares at Haggle's or run the recycler)"
+#~ msgstr "No hay suficientes piezas (desguaza piezas sobrantes con Haggle o pon en marcha la recicladora)"
+
+#~ msgid "%s (Builder)"
+#~ msgstr "%s (Taller)"
+
+#~ msgid "%s robot part"
+#~ msgstr "%s pieza de robot"
+
+#~ msgid "Requests reward: %s. Equip it on the Requests tab."
+#~ msgstr "Recompensa de encargos: %s. Equípala en la pestaña Encargos."
+
+#~ msgid "Requests reward: %s. Fit it in the Builder tab."
+#~ msgstr "Recompensa de encargos: %s. Móntala en la pestaña Taller."
+
+#~ msgid "None in the parts bin"
+#~ msgstr "No hay en el cajón de piezas"
+
+#~ msgid "Needs a %s%s"
+#~ msgstr "Requiere: %s%s"
+
+#~ msgid "Haggle's stall · %s"
+#~ msgstr "Puesto de Haggle · %s"
+
+#~ msgid "Craft · %s"
+#~ msgstr "Fabricar · %s"
+
+#~ msgid "Not in Haggle's stall right now"
+#~ msgstr "Ahora no está en el puesto de Haggle"
+
+#~ msgid "Haggle: \"First bot? Treads on the house. And a plant, bots like plants.\" (Workbench > Builder)"
+#~ msgstr "Haggle: «¿Primer bot? Las orugas invita la casa. Y una planta, a los bots les gustan las plantas». (Banco de trabajo > Taller)"
+
+#~ msgid "%s spotted a %s."
+#~ msgstr "%s ha visto: %s."
+
+#~ msgid ""
+#~ "No robots yet. Build one in the Bots tab, then fit it out here.\n"
+#~ "Haggle throws in a set of treads with your first robot."
+#~ msgstr ""
+#~ "Aún no hay robots. Construye uno en la pestaña Bots y equípalo aquí.\n"
+#~ "Haggle regala un juego de orugas con tu primer robot."
+
+#~ msgid "in the bin: %d  ·  press to fit"
+#~ msgstr "en el cajón: %d  ·  pulsa para instalar"
+
+#~ msgid "  ·  press to get + fit"
+#~ msgstr "  ·  pulsa para conseguir + instalar"
+
+#~ msgid "Builder bin %d   ·   Parts %s"
+#~ msgstr "Caja de taller %d   ·   Piezas %s"
+
+#~ msgid "Haggle's stall: %s  (new stock in %d min)"
+#~ msgstr "Puesto de Haggle: %s  (género nuevo en %d min)"
+
+#~ msgid "%s cubes, %s parts, %s Control Core. %s"
+#~ msgstr "%s cubos, %s piezas, %s Núcleo de control. %s"
+
+#~ msgid "  parts %d/%d · %s"
+#~ msgstr "  piezas %d/%d · %s"
+
+#~ msgid "REQUESTS"
+#~ msgstr "ENCARGOS"
+
+#~ msgid "Short optional jobs and world events. Each pays cubes or parts; nothing is lost if one runs out."
+#~ msgstr "Tareas opcionales cortas y eventos del mundo. Cada una paga cubos o piezas; no se pierde nada si una caduca."
+
+#~ msgid "REWARD TRACK"
+#~ msgstr "PISTA DE RECOMPENSAS"
+
+#~ msgid "LIVE  ·  %s  ·  %s  ·  %s left"
+#~ msgstr "EN VIVO  ·  %s  ·  %s  ·  quedan %s"
+
+#~ msgid "Collection  %d / %d   ·   see the Codex (K)"
+#~ msgstr "Colección  %d / %d   ·   ver el Códice (K)"
+
+#~ msgid "A new request is being posted."
+#~ msgstr "Se está publicando un nuevo encargo."
+
+#~ msgid "Pays  %s"
+#~ msgstr "Paga  %s"
+
+#~ msgid "Accept  (%s)"
+#~ msgstr "Aceptar  (%s)"
+
+#~ msgid "Pass"
+#~ msgstr "Pasar"
+
+#~ msgid "Working on it"
+#~ msgstr "En ello"
+
+#~ msgid "Claim  %s"
+#~ msgstr "Cobrar  %s"
+
+#~ msgid "Next posting in %s"
+#~ msgstr "Próximo anuncio en %s"
+
+#~ msgid "Time limit %s once accepted   ·   offer open %s"
+#~ msgstr "Tiempo límite %s al aceptar   ·   oferta abierta %s"
+
+#~ msgid "Time left %s"
+#~ msgstr "Tiempo restante %s"
+
+#~ msgid "Finished. Claim it!"
+#~ msgstr "Terminado. ¡Cóbralo!"
+
+#~ msgid "After %d requests"
+#~ msgstr "Tras %d encargos"
+
+#~ msgid "Equipped  (press to remove)"
+#~ msgstr "Equipado  (pulsa para quitar)"
+
+#~ msgid "Unlocked  ·  press to equip"
+#~ msgstr "Desbloqueado  ·  pulsa para equipar"
+
+#~ msgid "HUB"
+#~ msgstr "BASE"
+
+#~ msgid "Parts %s"
+#~ msgstr "Piezas %s"
+
+#~ msgid ""
+#~ "Level %d   ·   %s\n"
+#~ "%s   Bales sell for +%d%%."
+#~ msgstr ""
+#~ "Nivel %d   ·   %s\n"
+#~ "%s   Las pacas se venden a +%d%%."
+
+#~ msgid "Fully built."
+#~ msgstr "Totalmente construido."
+
+#~ msgid ""
+#~ "Next: %s. %s\n"
+#~ "Needs %s"
+#~ msgstr ""
+#~ "Siguiente: %s. %s\n"
+#~ "Requiere %s"
+
+#~ msgid ""
+#~ "\n"
+#~ "Requires hub level %d."
+#~ msgstr ""
+#~ "\n"
+#~ "Requiere base de nivel %d."
+
+#~ msgid ""
+#~ "\n"
+#~ "All built (max)."
+#~ msgstr ""
+#~ "\n"
+#~ "Todo construido (máx.)."
+
+#~ msgid ""
+#~ "%s   ·   %d / %d built\n"
+#~ "%s%s"
+#~ msgstr ""
+#~ "%s   ·   %d / %d construidos\n"
+#~ "%s%s"
+
+#~ msgid "Air Scrubbers maxed"
+#~ msgstr "Depuradores al máximo"
+
+#~ msgid "Save game"
+#~ msgstr "Guardar partida"
+
+#~ msgid "Saved."
+#~ msgstr "Guardado."
+
+#~ msgid "Quit to title"
+#~ msgstr "Volver al título"
+
+#~ msgid "Quit to desktop"
+#~ msgstr "Salir al escritorio"
+
+#~ msgid "%s   ·   %s   ·   %d built"
+#~ msgstr "%s   ·   %s   ·   %d construidos"
+
+#~ msgid "Crew: %d / %d  (hub level %d: +%d per level)"
+#~ msgstr "Equipo: %d / %d  (base nivel %d: +%d por nivel)"
+
+#~ msgid ""
+#~ "\n"
+#~ "Water Tanks: %d / %d placed · next %s cubes (Command view: Place refill tank)"
+#~ msgstr ""
+#~ "\n"
+#~ "Tanques de agua: %d / %d colocados · siguiente %s cubos (vista de mando: poner tanque de recarga)"
+
+#~ msgid "Build   %s cubes"
+#~ msgstr "Construir   %s cubos"
+
+#~ msgid "Build   (%s)"
+#~ msgstr "Construir   (%s)"
+
+#~ msgid "Locked  ·  research %s"
+#~ msgstr "Bloqueado  ·  investigación %s"
+
+#~ msgid "Fleet tier: %s (max)"
+#~ msgstr "Nivel de flota: %s (máx.)"
+
+#~ msgid "Next: %s  ·  x%.1f work speed  ·  %s look"
+#~ msgstr "Siguiente: %s  ·  x%.1f velocidad de trabajo  ·  aspecto %s"
+
+#~ msgid "Needs %s cubes, %s parts and a %s Control Core.  %s"
+#~ msgstr "Necesita %s cubos, %s piezas y un Núcleo de control %s.  %s"
+
+#~ msgid "Upgrade fleet to %s"
+#~ msgstr "Mejorar flota a %s"
+
+#~ msgid "□  %s  ·  missing  (detector, or salvage from electronics junk)"
+#~ msgstr "□  %s  ·  falta  (detector, o rescátalo de chatarra electrónica)"
+
+#~ msgid "HAGGLE'S PARTS TRADE"
+#~ msgstr "TRUEQUE DE PIEZAS DE HAGGLE"
+
+#~ msgid "\"Everything's original. Mostly. Three of yours for one of mine, no questions, some questions.\""
+#~ msgstr "«Todo es original. Casi todo. Tres tuyas por una mía, sin preguntas, alguna pregunta»."
+
+#~ msgid "Parts  %s      Robot parts in storage  %d"
+#~ msgstr "Piezas  %s      Piezas de robot en almacén  %d"
+
+#~ msgid "Haggle: \"Funny thing, I just happened to find a %s. For you, half price.\""
+#~ msgstr "Haggle: «Qué casualidad, justo me he encontrado esto: %s. Para ti, a mitad de precio»."
+
+#~ msgid "Trades away: %s"
+#~ msgstr "Cambia: %s"
+
+#~ msgid "Needs 3 spare parts (Control Cores needed for a Mk tier are never traded)."
+#~ msgstr "Requiere 3 piezas de repuesto (los núcleos de control que hacen falta para un nivel Mk nunca se cambian)."
+
+#~ msgid "   (needed)"
+#~ msgstr "   (necesaria)"
+
+#~ msgid "own %d"
+#~ msgstr "tienes %d"
+
+#~ msgid "Buy Rusty  %s"
+#~ msgstr "Comprar oxidada  %s"
+
+#~ msgid "Buy Worn  %s"
+#~ msgstr "Comprar gastada  %s"
+
+#~ msgid "Scrap %d spare Rusty robot parts  ->  %s"
+#~ msgstr "Desguazar %d piezas de robot oxidadas sobrantes  ->  %s"
+
+#~ msgid "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab"
+#~ msgstr "PIEZAS DE TALLER  ·  género nuevo en %d min  ·  instálalas en la pestaña Taller"
+
+#~ msgid "Haggle: \"%s. Treat it nicely.\""
+#~ msgstr "Haggle: «%s. Trátalo bien»."
+
+#~ msgid ""
+#~ "%s  (own %d)\n"
+#~ "%s"
+#~ msgstr ""
+#~ "%s  (tienes %d)\n"
+#~ "%s"
+
+#~ msgid "Swap 3 spares"
+#~ msgstr "Cambiar 3 repuestos"
+
+#~ msgid "in about %s"
+#~ msgstr "en unos %s"
+
+#~ msgid "earn more cubes"
+#~ msgstr "gana más cubos"
+
+#~ msgid "Trade"
+#~ msgstr "Trueque"
+
+#~ msgid "Cosmetics"
+#~ msgstr "Cosméticos"
+
+#~ msgid "Builder"
+#~ msgstr "Taller"
+
+#~ msgid "%s (soon)"
+#~ msgstr "%s (pronto)"
+
+#~ msgid "Build a robot with all five custom parts."
+#~ msgstr "Construye un robot con las cinco piezas personalizadas."
+
+#~ msgid "Robot parts and building stock salvaged from junk, the recycler and Haggle's scrap bin. Pays for robots, the Builder, base levels, stations, rocket stages and outpost repairs."
+#~ msgstr "Piezas de robot y material de obra rescatados de la chatarra, la recicladora y el cubo de desguace de Haggle. Pagan robots, el Taller, niveles de base, estaciones, etapas de cohete y reparaciones de puestos."
+
+#~ msgid "Fit a part in the Builder"
+#~ msgstr "Instala una pieza en el Taller"
+
+#~ msgid "Save a crew build preset"
+#~ msgstr "Guarda una plantilla de equipo"
+
+#~ msgid "Thick side plates and a rear rack. Holds more, drives heavier."
+#~ msgstr "Placas laterales gruesas y una baca trasera. Lleva más, conduce más pesado."
+
+#~ msgid "Smooth covers keep grit out of the compactor. Fussier to service."
+#~ msgstr "Cubiertas lisas que mantienen la arena fuera del compactador. Más quisquillosa de mantener."
+
+#~ msgid "A huge lens. Spots salvage from far off, gets a little distracted."
+#~ msgstr "Una lente enorme. Ve chatarra útil desde lejos, se distrae un poco."
+
+#~ msgid "Blinkers for robots. Works faster, notices less."
+#~ msgstr "Anteojeras para robots. Trabaja más rápido, se fija en menos."
+
+#~ msgid "Sees over the plants: wider spray, slower to turn."
+#~ msgstr "Ve por encima de las plantas: riego más amplio, gira más despacio."
+
+#~ msgid "Glass dome with a speaker. Gossips about junk, finds a bit more of it."
+#~ msgstr "Una cúpula de cristal con altavoz. Cotillea sobre la chatarra y encuentra un poco más."
+
+#~ msgid "Rubber tracks. Carries more, rolls slower."
+#~ msgstr "Orugas de goma. Lleva más, rueda más despacio."
+
+#~ msgid "Four ducted fans. Quick, but every kilo counts."
+#~ msgstr "Cuatro ventiladores carenados. Rápido, pero cada kilo cuenta."
+
+#~ msgid "Four careful legs. A steady platform for the arm."
+#~ msgstr "Cuatro patas cuidadosas. Una plataforma estable para el brazo."
+
+#~ msgid "A cushion of air. Glides fast, shakes the hopper."
+#~ msgstr "Un colchón de aire. Se desliza rápido, sacude la tolva."
+
+#~ msgid "Grabs more per pass, picks up some grit too."
+#~ msgstr "Coge más en cada pasada, y algo de arenilla también."
+
+#~ msgid "Shakes the dirt out: cleaner cubes, slower scooping."
+#~ msgstr "Sacude la tierra: cubos más limpios, recogida más lenta."
+
+#~ msgid "Room for one more bale. Wobbly at speed."
+#~ msgstr "Sitio para una paca más. Se tambalea a velocidad."
+
+#~ msgid "Winch and hook: drags bales quickly, eyes on the hook."
+#~ msgstr "Cabrestante y gancho: arrastra pacas rápido, con los ojos en el gancho."
+
+#~ msgid "An auger that plants fast. Heavy on the nose."
+#~ msgstr "Una barrena que planta rápido. Pesa mucho por delante."
+
+#~ msgid "Fan nozzle: waters a wider circle, empties the tank sooner."
+#~ msgstr "Boquilla en abanico: riega un círculo más amplio, vacía el tanque antes."
+
+#~ msgid "Strong straight jet: quicker watering, narrower spray."
+#~ msgstr "Chorro recto y fuerte: riego más rápido, chorro más estrecho."
+
+#~ msgid "Haggle's welcome gift with your first robot"
+#~ msgstr "El regalo de bienvenida de Haggle con tu primer robot"
+
+#~ msgid "If you find enough parts, the workbench can put a helper together. Chassis, wheels, an arm, a core."
+#~ msgstr "Si encuentras suficientes piezas, el banco de trabajo puede montar un ayudante. Chasis, ruedas, un brazo, un núcleo."
+
 #~ msgid ""
 #~ "LAUNCH PAD\n"
 #~ "BASE LEVEL 5"
@@ -15335,9 +15590,6 @@ msgstr ""
 
 #~ msgid "Next: %s"
 #~ msgstr "Siguiente: %s"
-
-#~ msgid "Build"
-#~ msgstr "Construir"
 
 #~ msgid "Planets"
 #~ msgstr "Planetas"

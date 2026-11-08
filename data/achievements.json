@@ -787,7 +787,7 @@
   {
    "id": "builder_mix",
    "name": "Mix and Match",
-   "desc": "Build a robot with all five custom parts.",
+   "desc": "Style a robot with all five custom parts in the Locker.",
    "icon": "bot",
    "cond": {
     "type": "stat",

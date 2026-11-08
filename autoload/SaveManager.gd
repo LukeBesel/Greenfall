@@ -223,6 +223,9 @@ static func migrate(d: Dictionary) -> Dictionary:
 	if v < 3:
 		d = Pace.migrate_save(d)  # [pace] grant the slow-start unlocks to older saves
 		v = 3
+	if v < 4:
+		d = migrate_v4(d)  # [ui2]
+		v = 4
 	d["version"] = v
 	return d
 
@@ -255,5 +258,22 @@ static func migrate_v2(d: Dictionary) -> Dictionary:
 			if slots[i] is Dictionary and str((slots[i] as Dictionary).get("tpl", "")) == "events":
 				slots[i] = {"state": "wait", "wait": 30.0}
 	flags["money_migrated"] = true
+	d["flags"] = flags
+	return d
+
+
+## [ui2] v3 -> v4: robot part items (the rarity-graded parts the old recipes, Mk tiers and the
+## Builder used) become Parts at their rarity's value (data/parts.json rarities[].parts), so
+## a Vintage core is 150 parts. Builder parts are cosmetics now: nothing to convert there.
+static func migrate_v4(d: Dictionary) -> Dictionary:
+	var items: Array = d.get("parts", []) if d.get("parts") is Array else []
+	var add: float = RobotParts.items_value(items)
+	var cur: Dictionary = d.get("currencies", {})
+	var p: BigNum = BigNum.from_serialized(cur["parts"]) if cur.has("parts") else BigNum.zero()
+	cur["parts"] = p.add(BigNum.from_float(add)).serialize()
+	d["currencies"] = cur
+	d["parts"] = []
+	var flags: Dictionary = d.get("flags", {})
+	flags["parts_migrated"] = add
 	d["flags"] = flags
 	return d

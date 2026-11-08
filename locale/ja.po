@@ -28,7 +28,7 @@ msgstr "基本（Mk I、ティアとパーツのレア度を除く）"
 msgid "Base"
 msgstr "基本"
 
-#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:188
+#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:190
 msgid "%s Lv %d"
 msgstr "%s Lv %d"
 
@@ -108,7 +108,7 @@ msgstr "地球儀マップ"
 msgid "Lens view"
 msgstr "レンズビュー"
 
-#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:51
+#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:52
 msgid "Codex"
 msgstr "図鑑"
 
@@ -434,7 +434,7 @@ msgstr "ワープ"
 msgid "Space / Esc  skip"
 msgstr "Space / Esc  スキップ"
 
-#: automation/rocket_tiers.gd:51
+#: automation/rocket_tiers.gd:51 ui/robot_card.gd:251
 msgid "Top tier"
 msgstr "最高ティア"
 
@@ -519,7 +519,7 @@ msgid "E   Telescope: look across the system"
 msgstr ""
 
 #: core/offline.gd:130 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:261
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d 分"
 
@@ -904,11 +904,11 @@ msgstr "サージ  %s"
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:474
+#: player/patch.gd:473
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:504
+#: player/patch.gd:502
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -1024,42 +1024,32 @@ msgstr "右を見る"
 msgid "Look up"
 msgstr "上を見る"
 
-#: robots/fleet.gd:183
+#: robots/fleet.gd:138
 msgid "Locked · research %s"
 msgstr "ロック中 · 研究 %s"
 
-#: robots/fleet.gd:185
+#: robots/fleet.gd:140
 msgid "Crew full (%d/%d): upgrade the hub"
 msgstr "クルーが満員（%d/%d）：基地をアップグレードしよう"
 
-#: robots/fleet.gd:191
-msgid "Missing %d part"
-msgid_plural "Missing %d parts"
-msgstr[0] "パーツが %d 個足りない"
+#: robots/fleet.gd:142 robots/fleet.gd:217
+msgid "Not enough parts"
+msgstr "パーツが足りません"
 
-#: robots/fleet.gd:193 robots/fleet.gd:265 robots/water_net.gd:149
-#: systems/research.gd:194 systems/robot_builder.gd:362 systems/robot_builder.gd:435
-#: ui/robot_card.gd:79
+#: robots/fleet.gd:144 robots/fleet.gd:219 robots/water_net.gd:149
+#: systems/research.gd:194 systems/robot_builder.gd:349 systems/robot_builder.gd:401
 msgid "Not enough cubes"
 msgstr "キューブが足りない"
 
-#: robots/fleet.gd:231
+#: robots/fleet.gd:182
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr "%s %s 組み立て完了。きょろきょろしてから、仕事に取りかかった。%s"
 
-#: robots/fleet.gd:231
+#: robots/fleet.gd:182
 msgid " Seems %s."
 msgstr " %sみたい。"
 
-#: robots/fleet.gd:263
-msgid "Needs a %s Control Core"
-msgstr "%sコントロールコアが必要"
-
-#: robots/fleet.gd:267
-msgid "Not enough parts (scrap spares at Haggle's or run the recycler)"
-msgstr "パーツが足りない（Haggle の店で余りを解体するか、リサイクラーを動かそう）"
-
-#: robots/fleet.gd:287
+#: robots/fleet.gd:238
 msgid "%s fleet upgraded to %s."
 msgstr "%s フリートを %s にアップグレード。"
 
@@ -1842,9 +1832,8 @@ msgstr ""
 "Ledger はもう私たちの味方。ジャマーは音楽に合わせてハミングしているだけ。"
 
 #: story/ledger.gd:328 systems/decor.gd:122 systems/research.gd:186
-#: systems/robot_builder.gd:360 systems/robot_builder.gd:437 ui/hub_panel.gd:130
-#: ui/stations_panel.gd:96 ui/telescope_panel.gd:43 ui/yard_builds_panel.gd:59
-#: ui/yard_builds_panel.gd:81
+#: systems/robot_builder.gd:347 systems/robot_builder.gd:403 ui/stations_panel.gd:96
+#: ui/telescope_panel.gd:43 ui/yard_builds_panel.gd:59 ui/yard_builds_panel.gd:81
 msgid "Needs %s"
 msgstr "%s が必要"
 
@@ -2168,7 +2157,7 @@ msgstr "清掃コンボ"
 msgid "Lumi Levels"
 msgstr "Lumi のレベル"
 
-#: systems/collection.gd:88 ui/upgrades_screen.gd:17
+#: systems/collection.gd:88 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:18
 msgid "Requests"
 msgstr "依頼"
 
@@ -2176,63 +2165,59 @@ msgstr "依頼"
 msgid "Curio Capsules"
 msgstr "珍品カプセル"
 
-#: systems/contracts.gd:230
-msgid "%s (Builder)"
-msgstr "%s（ビルダー）"
+#: systems/contracts.gd:237
+msgid "%s (robot style)"
+msgstr "%s（ロボットスタイル）"
 
-#: systems/contracts.gd:232
+#: systems/contracts.gd:239
 msgid "Builder Crate"
 msgstr "ビルダーの木箱"
 
-#: systems/contracts.gd:234
+#: systems/contracts.gd:241
 msgid "Curio Capsule"
 msgstr "珍品カプセル"
 
-#: systems/contracts.gd:236
-msgid "%s robot part"
-msgstr "%s ロボットパーツ"
-
-#: systems/contracts.gd:309
+#: systems/contracts.gd:316
 msgid "Request complete: %s. Claim it at the workbench."
 msgstr "依頼達成：%s。作業台で受け取ろう。"
 
-#: systems/contracts.gd:315
+#: systems/contracts.gd:322
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
 msgstr "依頼の時間切れ。問題なし。すぐに新しい依頼が来る。"
 
-#: systems/contracts.gd:323
+#: systems/contracts.gd:330
 msgid "New at the workbench: the Requests board. Small jobs, real rewards."
 msgstr "作業台に新機能：依頼ボード。小さな仕事、ちゃんとした報酬。"
 
-#: systems/contracts.gd:326
+#: systems/contracts.gd:333
 msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
 msgstr "中継器がやっとクレイドルの古い作業指示を拾えるようになったわ。作業台の依頼ボードにあるよ。"
 
-#: systems/contracts.gd:411
+#: systems/contracts.gd:418
 msgid "Request done: %s."
 msgstr "依頼完了：%s。"
 
-#: systems/contracts.gd:453
-msgid "Requests reward: %s. Equip it on the Requests tab."
-msgstr "依頼の報酬：%s。依頼タブで装備しよう。"
+#: systems/contracts.gd:460
+msgid "Requests reward: %s. Paint your fleet with it in the Locker."
+msgstr "依頼の報酬：%s。ロッカーで艦隊を塗装できます。"
 
-#: systems/contracts.gd:456
-msgid "Requests reward: %s. Fit it in the Builder tab."
-msgstr "依頼の報酬：%s。ビルダータブで取り付けよう。"
+#: systems/contracts.gd:463
+msgid "Requests reward: %s. Fit it in the Locker."
+msgstr "依頼の報酬：%s。ロッカーで取り付けよう。"
 
-#: systems/contracts.gd:460 systems/contracts.gd:470
+#: systems/contracts.gd:467 systems/contracts.gd:476
 msgid "Requests reward: %s."
 msgstr "依頼の報酬：%s。"
 
-#: systems/contracts.gd:478
+#: systems/contracts.gd:484
 msgid "Unknown item"
 msgstr "不明なアイテム"
 
-#: systems/contracts.gd:491
+#: systems/contracts.gd:497
 msgid "Unlocks after %d requests"
 msgstr "依頼 %d 件で解放"
 
-#: systems/contracts.gd:492
+#: systems/contracts.gd:498
 msgid "Locked"
 msgstr "ロック中"
 
@@ -2308,103 +2293,103 @@ msgstr "CRADLE号 · 補給"
 msgid "STREAK x%d  +%d%%"
 msgstr "コンボ x%d  +%d%%"
 
-#: systems/events.gd:628
+#: systems/events.gd:627
 msgid "%d pieces of junk left around the crate"
 msgstr "箱のまわりにガラクタが残り %d 個"
 
-#: systems/events.gd:653
+#: systems/events.gd:652
 msgid "Supply crate opened: %s"
 msgstr "補給箱を開けた：%s"
 
-#: systems/events.gd:655
+#: systems/events.gd:654
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "補給箱のビーコンが時間切れになり、ドローンが引き上げていった。また来るよ。"
 
-#: systems/events.gd:702
+#: systems/events.gd:701
 msgid "%d pieces grabbed at 3x"
 msgstr "3倍で %d 個ゲット"
 
-#: systems/events.gd:707
+#: systems/events.gd:706
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "ラッシュが終わった。3倍の価値で %d 個ゲット。ベールにすると支払われる。"
 
-#: systems/events.gd:707
+#: systems/events.gd:706
 msgid "The surge faded. Next time!"
 msgstr "ラッシュが終わった。また次回！"
 
-#: systems/events.gd:755
+#: systems/events.gd:754
 msgid "Every plant is drinking"
 msgstr "すべての植物が水を飲んでいる"
 
-#: systems/events.gd:765
+#: systems/events.gd:764
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "雨が去っていく。大地が吸い込んだ：%s"
 
-#: systems/events.gd:786
+#: systems/events.gd:785
 msgid "E   fix %s's hiccup"
 msgstr "E   %s のしゃっくりを治す"
 
-#: systems/events.gd:813
+#: systems/events.gd:812
 msgid "%s is %d m away"
 msgstr "%s まで %d m"
 
-#: systems/events.gd:815
+#: systems/events.gd:814
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "%s はひとりでしゃっくりが止まった。ちょっと恥ずかしそう。"
 
-#: systems/events.gd:829
+#: systems/events.gd:828
 msgid "%s is fixed and back to work. %s"
 msgstr "%s は修理されて仕事に戻った。%s"
 
-#: systems/events.gd:882
+#: systems/events.gd:881
 msgid "Wildlife Visit: %s"
 msgstr "生き物がやってきた：%s"
 
-#: systems/events.gd:883
+#: systems/events.gd:882
 msgid "E   take a photo of the %s"
 msgstr "E   %s の写真を撮る"
 
-#: systems/events.gd:914
+#: systems/events.gd:913
 msgid "%s, %d m away"
 msgstr "%s、%d m 先"
 
-#: systems/events.gd:917
+#: systems/events.gd:916
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "%s はどこかへ行ってしまった。どこか緑のある場所にまた現れるよ。"
 
-#: systems/events.gd:947
+#: systems/events.gd:946
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "パシャ！%s がコレクションに入った。%s"
 
-#: systems/events.gd:947
+#: systems/events.gd:946
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "パシャ！%s のすてきな写真をもう一枚。%s"
 
-#: systems/events.gd:997
+#: systems/events.gd:996
 msgid "Signal %d%%"
 msgstr "シグナル %d%%"
 
-#: systems/events.gd:1001
+#: systems/events.gd:1000
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "あれがシグナルの正体：レアパーツが入った隠し場所。%s"
 
-#: systems/events.gd:1003
+#: systems/events.gd:1002
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "シグナルが消えた。パーツはまだ下にある。探知機が見つけてくれる。"
 
-#: systems/events.gd:1069
+#: systems/events.gd:1068
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "監査   あなた %d  :  %d ドローン"
 
-#: systems/events.gd:1070
+#: systems/events.gd:1069
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "あなた %d  :  %d ドローン   ·   残り %d"
 
-#: systems/events.gd:1107
+#: systems/events.gd:1106
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "監査に勝利、%d 対 %d！Ledger が「承認」のスタンプを押した。%s"
 
-#: systems/events.gd:1111
+#: systems/events.gd:1110
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "監査はドローンの勝ち、%d 対 %d。それでもチップを置いていった：+%s キューブ。"
 
@@ -2600,19 +2585,20 @@ msgstr ""
 msgid "%d:%02d h"
 msgstr ""
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:255
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
 msgid "Low"
 msgstr "低"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:255 ui/settings_panel.gd:528
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
+#: ui/settings_panel.gd:584
 msgid "Medium"
 msgstr "中"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:255
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
 msgid "High"
 msgstr "高"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:255
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
 msgid "Ultra"
 msgstr "最高"
 
@@ -2761,73 +2747,60 @@ msgid "Doesn't fit a %s"
 msgstr "%s には合わない"
 
 #: systems/robot_builder.gd:265
-msgid "None in the parts bin"
-msgstr "パーツ箱にない"
+msgid "Not unlocked yet"
+msgstr "まだ解放されていません"
 
-#: systems/robot_builder.gd:296
+#: systems/robot_builder.gd:294
 msgid "Names need at least 2 letters"
 msgstr "名前は2文字以上必要"
 
-#: systems/robot_builder.gd:298
+#: systems/robot_builder.gd:296
 msgid "Another robot is already called %s"
 msgstr "ほかのロボットがすでに %s という名前"
 
-#: systems/robot_builder.gd:349
+#: systems/robot_builder.gd:341
 msgid "Can't be crafted"
 msgstr "作れない"
 
-#: systems/robot_builder.gd:353
+#: systems/robot_builder.gd:345
 msgid "Research %s"
 msgstr "研究 %s"
 
-#: systems/robot_builder.gd:358
-msgid "Needs a %s%s"
-msgstr "%s%s が必要"
+#: systems/robot_builder.gd:358 systems/robot_builder.gd:363
+msgid "Unlock · %s"
+msgstr "解放 · %s"
 
-#: systems/robot_builder.gd:372
-msgid "Haggle's stall · %s"
-msgstr "Haggle の屋台 · %s"
-
-#: systems/robot_builder.gd:374
+#: systems/robot_builder.gd:360
 msgid "Requests reward · %d requests"
 msgstr "依頼の報酬 · 依頼 %d 件"
 
-#. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: systems/robot_builder.gd:384 ui/main_menu.gd:461 ui/profile_picker.gd:133
-msgid "%s cubes"
-msgstr "%s キューブ"
+#: systems/robot_builder.gd:398
+msgid "Can't be bought"
+msgstr "購入できません"
 
-#: systems/robot_builder.gd:385
-msgid "Craft · %s"
-msgstr "作る · %s"
-
-#: systems/robot_builder.gd:432
-msgid "Not in Haggle's stall right now"
-msgstr "いまは Haggle の屋台にない"
-
-#: systems/robot_builder.gd:459
+#: systems/robot_builder.gd:425
 msgid "Requests reward (%d of %d requests)"
 msgstr "依頼の報酬（%d / %d 件）"
 
-#: systems/robot_builder.gd:550
-msgid "Haggle: \"First bot? Treads on the house. And a plant, bots like plants.\" (Workbench > Builder)"
-msgstr "Haggle：「はじめてのボット？キャタピラはサービスだ。それと植物もひとつ。ボットは植物が好きなんだ」（作業台 > ビルダー）"
+#: systems/robot_builder.gd:516
+msgid "Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d."
+msgstr "最初のボットにはキャタピラとゆらゆら植物が付いてきた。ハブがレベル%dになったらロッカーで飾ろう。"
 
-#: systems/robot_builder.gd:560
+#: systems/robot_builder.gd:526
 msgid "A Maker Fragment was tucked inside it: +%d parts."
 msgstr "中にメーカーの欠片が入っていた：+%d パーツ。"
 
-#: systems/robot_builder.gd:592
+#: systems/robot_builder.gd:558
 msgid "%s spotted something green and lucky: a Lucky Clover!"
 msgstr "%s が緑で縁起のいいものを見つけた：幸運のクローバー！"
 
-#: systems/robot_builder.gd:595
+#: systems/robot_builder.gd:561
 msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
 msgstr "%s がガラクタの中で光るメーカーの欠片を見つけた：+%d パーツ。"
 
-#: systems/robot_builder.gd:603
-msgid "%s spotted a %s."
-msgstr "%s が見つけた：%s。"
+#: systems/robot_builder.gd:568
+msgid "%s spotted a %s: %s."
+msgstr "%sが%sを見つけた：%s。"
 
 #: systems/camp/camp.gd:151
 msgid "E   Workbench (broken): repair it"
@@ -3251,7 +3224,7 @@ msgstr "スタート装備：Lumi だけ。家宝で増やせる。"
 msgid "Starting kit: %s"
 msgstr "スタート装備：%s"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:509
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:565
 msgid "Full"
 msgstr "フル"
 
@@ -3262,6 +3235,10 @@ msgstr "受け取る（選択 %d）"
 #: ui/ark_bridge.gd:307
 msgid "Milestone"
 msgstr "マイルストーン"
+
+#: ui/bench_kit.gd:163 ui/upgrade_card.gd:221
+msgid "need %s"
+msgstr "あと%s"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
@@ -3317,7 +3294,7 @@ msgstr "散水範囲"
 msgid "Refill"
 msgstr "補給"
 
-#: ui/builder_panel.gd:21 ui/command_view.gd:1207 ui/command_view.gd:1210
+#: ui/builder_panel.gd:21 ui/command_view.gd:1202 ui/command_view.gd:1205
 #: data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "清掃"
@@ -3338,104 +3315,98 @@ msgstr "水やり"
 msgid "Skim"
 msgstr "すくう"
 
-#: ui/builder_panel.gd:103
+#: ui/builder_panel.gd:113
 msgid "YOUR ROBOTS"
 msgstr "あなたのロボット"
 
-#: ui/builder_panel.gd:143
+#: ui/builder_panel.gd:154
 msgid "New name"
 msgstr "新しい名前"
 
-#: ui/builder_panel.gd:151 ui/builder_panel.gd:306
+#: ui/builder_panel.gd:162 ui/builder_panel.gd:317
 msgid "Retire"
 msgstr "引退"
 
-#: ui/builder_panel.gd:161
+#: ui/builder_panel.gd:172
 msgid ""
-"No robots yet. Build one in the Bots tab, then fit it out here.\n"
-"Haggle throws in a set of treads with your first robot."
+"No robots yet. Build one in the Bots tab, then style it here.\n"
+"Your first robot comes with treads and a bobble plant."
 msgstr ""
-"まだロボットがいない。ボットタブで作ってから、ここで装備しよう。\n"
-"最初のロボットには Haggle がキャタピラをおまけしてくれる。"
 
-#: ui/builder_panel.gd:216
+#: ui/builder_panel.gd:227
 msgid "PART SLOTS"
 msgstr "パーツスロット"
 
-#: ui/builder_panel.gd:228
+#: ui/builder_panel.gd:239
 msgid "PARTS THAT FIT"
 msgstr "合うパーツ"
 
-#: ui/builder_panel.gd:299
+#: ui/builder_panel.gd:310
 msgid "ROBOT BUILDER"
 msgstr "ロボットビルダー"
 
-#: ui/builder_panel.gd:315
+#: ui/builder_panel.gd:326
 msgid "Stock"
 msgstr "標準"
 
-#: ui/builder_panel.gd:351
+#: ui/builder_panel.gd:362
 msgid "Stock  ·  the %s look%s"
 msgstr "標準  ·  %s の外見%s"
 
-#: ui/builder_panel.gd:351
+#: ui/builder_panel.gd:362
 msgid "   (fitted)"
 msgstr "   （装着中）"
 
-#: ui/builder_panel.gd:359
-msgid "in the bin: %d  ·  press to fit"
-msgstr "箱の中：%d  ·  押して装着"
-
-#: ui/builder_panel.gd:368
-msgid "  ·  press to get + fit"
-msgstr "  ·  押して入手＋装着"
-
 #: ui/builder_panel.gd:370
+msgid "Unlocked  ·  press to fit"
+msgstr "解放済み  ·  押して装着"
+
+#: ui/builder_panel.gd:379
+msgid "  ·  press to unlock + fit"
+msgstr "  ·  押して解放＋装着"
+
+#: ui/builder_panel.gd:381
 msgid "  (Maker set)"
 msgstr "  （メイカーセット）"
 
-#: ui/builder_panel.gd:390
+#: ui/builder_panel.gd:401
 msgid "Save as %s preset"
 msgstr "%s のプリセットとして保存"
 
-#: ui/builder_panel.gd:392
+#: ui/builder_panel.gd:403
 msgid "Fit preset on crew (%d)"
 msgstr "クルーにプリセットを適用（%d）"
 
-#: ui/builder_panel.gd:398
+#: ui/builder_panel.gd:409
 msgid "%s crew preset: %s"
 msgstr "%s クルーのプリセット：%s"
 
-#: ui/builder_panel.gd:398
+#: ui/builder_panel.gd:409
 msgid "none saved"
 msgstr "保存なし"
 
-#: ui/builder_panel.gd:405
-msgid "Builder bin %d   ·   Parts %s"
-msgstr "ビルダーの木箱 %d   ·   パーツ %s"
+#: ui/builder_panel.gd:413
+msgid "%d styles unlocked   ·   Parts %s"
+msgstr "スタイル%d個解放   ·   パーツ %s"
 
-#: ui/builder_panel.gd:409
-msgid "Haggle's stall: %s  (new stock in %d min)"
-msgstr "Haggle の屋台：%s（%d 分後に入荷）"
-
-#: ui/builder_panel.gd:430
+#: ui/builder_panel.gd:435
 msgid "Stock part: no changes. The %s look of this robot type."
 msgstr "標準パーツ：変更なし。このロボットタイプの %s の外見。"
 
-#: ui/builder_panel.gd:576
+#: ui/builder_panel.gd:590
 msgid "Saved %s's build as the %s crew preset."
 msgstr "%s の構成を %s クルーのプリセットとして保存した。"
 
-#: ui/builder_panel.gd:584
+#: ui/builder_panel.gd:598
 msgid "Fitted %d part across the %s crew."
 msgid_plural "Fitted %d parts across the %s crew."
 msgstr[0] "%d 個のパーツを %s クルーに装着した。"
 
-#: ui/builder_panel.gd:584
+#: ui/builder_panel.gd:598
 msgid "Nothing to fit: the bin is short of those parts, or the crew already has them."
 msgstr "装着できるものがない：箱のパーツが足りないか、クルーがすでに装着済み。"
 
-#: ui/builder_panel.gd:599
+#: ui/builder_panel.gd:613
 msgid "Retire? +%d parts"
 msgstr "引退？ +%d パーツ"
 
@@ -3479,7 +3450,7 @@ msgstr "図鑑"
 msgid "Watch the story"
 msgstr ""
 
-#: ui/codex_screen.gd:99 ui/upgrades_screen.gd:92
+#: ui/codex_screen.gd:99 ui/upgrades_screen.gd:166
 msgid "Close  [%s]"
 msgstr "閉じる  [%s]"
 
@@ -3810,158 +3781,100 @@ msgstr "最高ティア"
 msgid "Upgrade > %s"
 msgstr "アップグレード > %s"
 
-#: ui/command_view.gd:780
-msgid "%s cubes, %s parts, %s Control Core. %s"
-msgstr "%s キューブ、%s パーツ、%s コントロールコア。%s"
+#: ui/command_view.gd:784
+msgid "ready"
+msgstr "準備OK"
 
-#: ui/command_view.gd:789
-msgid "  parts %d/%d · %s"
-msgstr "  パーツ %d/%d · %s"
-
-#: ui/command_view.gd:789
+#: ui/command_view.gd:784
 msgid "build at the workbench"
 msgstr "作業台で作る"
 
-#: ui/command_view.gd:796
+#: ui/command_view.gd:791
 msgid "Place refill tank here  %s  (%d/%d)"
 msgstr "補給タンクをここに置く  %s  （%d/%d）"
 
-#: ui/command_view.gd:798
+#: ui/command_view.gd:793
 msgid "A Water Tank at your hex. Waterers refill at the nearest one."
 msgstr "いまいるヘックスの給水タンク。水やり係はいちばん近いタンクで補給する。"
 
-#: ui/command_view.gd:1055
+#: ui/command_view.gd:1050
 msgid "%s · %d HEX"
 msgid_plural "%s · %d HEXES"
 msgstr[0] "%s · %d ヘックス"
 
-#: ui/command_view.gd:1091
+#: ui/command_view.gd:1086
 msgid "BASE"
 msgstr "基地"
 
-#: ui/command_view.gd:1098
+#: ui/command_view.gd:1093
 msgid "YOU"
 msgstr "あなた"
 
-#: ui/command_view.gd:1198
+#: ui/command_view.gd:1193
 msgid "HEX %d"
 msgstr "ヘックス %d"
 
-#: ui/command_view.gd:1202
+#: ui/command_view.gd:1197
 msgid "BASE YARD"
 msgstr "基地の庭"
 
-#: ui/command_view.gd:1203
+#: ui/command_view.gd:1198
 msgid "Home ground, always clean"
 msgstr "ホームグラウンド、いつもきれい"
 
-#: ui/command_view.gd:1205
+#: ui/command_view.gd:1200
 msgid "LAKE HEX %d"
 msgstr "湖のヘックス %d"
 
-#: ui/command_view.gd:1207
+#: ui/command_view.gd:1202
 msgid "Floating junk  %d%% left"
 msgstr "浮かぶガラクタ  残り %d%%"
 
-#: ui/command_view.gd:1213
+#: ui/command_view.gd:1208
 msgid "Junk  %d%% left"
 msgstr "ガラクタ  残り %d%%"
 
-#: ui/command_view.gd:1219
+#: ui/command_view.gd:1214
 msgid "Level %d · %s"
 msgstr "レベル %d · %s"
 
-#: ui/command_view.gd:1221
+#: ui/command_view.gd:1216
 msgid "In %s zone"
 msgstr "%s ゾーン内"
 
-#: ui/command_view.gd:1274
+#: ui/command_view.gd:1269
 msgid "%d robots"
 msgstr "ロボット %d 台"
 
-#: ui/command_view.gd:1277
+#: ui/command_view.gd:1272
 msgid "%d / %d hexes clean"
 msgstr "きれいなヘックス %d / %d"
 
-#: ui/contracts_panel.gd:27
-msgid "REQUESTS"
-msgstr "依頼"
+#: ui/contracts_panel.gd:75
+msgid "%d done"
+msgid_plural "%d done"
+msgstr[0] "%d件完了"
 
-#: ui/contracts_panel.gd:30
-msgid "Short optional jobs and world events. Each pays cubes or parts; nothing is lost if one runs out."
-msgstr "短い任意の仕事とワールドイベント。どれもキューブかパーツがもらえる。時間切れでも何も失わない。"
+#: ui/contracts_panel.gd:80
+msgid "Live now:  %s  ·  %s  ·  %s left"
+msgstr "開催中：  %s  ·  %s  ·  残り%s"
 
-#: ui/contracts_panel.gd:47
-msgid "REWARD TRACK"
-msgstr "報酬トラック"
+#: ui/contracts_panel.gd:83
+msgid "Every reward unlocked. Each %d more requests pay a Vintage part's worth of parts."
+msgstr "報酬はすべて解放済み。依頼を%d件こなすごとにヴィンテージ部品1個分のパーツがもらえます。"
 
 #: ui/contracts_panel.gd:86
-msgid "%d done"
-msgstr "%d 件達成"
+msgid "Next unlock in %d request:  %s"
+msgid_plural "Next unlock in %d requests:  %s"
+msgstr[0] "次の解放まで依頼%d件：  %s"
 
-#: ui/contracts_panel.gd:89
-msgid "LIVE  ·  %s  ·  %s  ·  %s left"
-msgstr "ライブ  ·  %s  ·  %s  ·  残り %s"
+#: ui/contracts_panel.gd:117
+msgid "A new request is on its way"
+msgstr "新しい依頼が届きます"
 
-#: ui/contracts_panel.gd:92
-msgid "Collection  %d / %d   ·   see the Codex (K)"
-msgstr "コレクション  %d / %d   ·   図鑑（K）を見よう"
-
-#: ui/contracts_panel.gd:140
-msgid "A new request is being posted."
-msgstr "新しい依頼を掲示中。"
-
-#: ui/contracts_panel.gd:151
-msgid "Pays  %s"
-msgstr "報酬  %s"
-
-#: ui/contracts_panel.gd:173
-msgid "Accept  (%s)"
-msgstr "受ける（%s）"
-
-#: ui/contracts_panel.gd:182
-msgid "Pass"
-msgstr "見送る"
-
-#: ui/contracts_panel.gd:192
-msgid "Working on it"
-msgstr "作業中"
-
-#: ui/contracts_panel.gd:198
-msgid "Claim  %s"
-msgstr "受け取る  %s"
-
-#: ui/contracts_panel.gd:238
-msgid "Next posting in %s"
-msgstr "次の掲示まで %s"
-
-#: ui/contracts_panel.gd:240
-msgid "Time limit %s once accepted   ·   offer open %s"
-msgstr "受注後の制限時間 %s   ·   受付 %s"
-
-#: ui/contracts_panel.gd:251
-msgid "Time left %s"
-msgstr "残り時間 %s"
-
-#: ui/contracts_panel.gd:251
-msgid "Finished. Claim it!"
-msgstr "完了。受け取ろう！"
-
-#: ui/contracts_panel.gd:275
-msgid "After %d requests"
-msgstr "依頼 %d 件のあと"
-
-#: ui/contracts_panel.gd:277
-msgid "Equipped  (press to remove)"
-msgstr "装備中（押して外す）"
-
-#: ui/contracts_panel.gd:277
-msgid "Unlocked  ·  press to equip"
-msgstr "解放済み  ·  押して装備"
-
-#: ui/contracts_panel.gd:279 ui/cosmetics_panel.gd:144
-msgid "Unlocked"
-msgstr "解放済み"
+#: ui/contracts_panel.gd:143
+msgid "Claim"
+msgstr "受け取る"
 
 #: ui/core_meter.gd:22
 msgid "BLOOM CORE"
@@ -3983,31 +3896,35 @@ msgstr "見た目だけ（ボーナスなし）"
 msgid "Character Builder"
 msgstr "キャラクターエディター"
 
-#: ui/cosmetics_panel.gd:144 ui/cosmetics_panel.gd:177
+#: ui/cosmetics_panel.gd:145 ui/cosmetics_panel.gd:178
 msgid "Wearing"
 msgstr "着用中"
 
-#: ui/cosmetics_panel.gd:144
+#: ui/cosmetics_panel.gd:145
+msgid "Unlocked"
+msgstr "解放済み"
+
+#: ui/cosmetics_panel.gd:145
 msgid "Locked  %d%%"
 msgstr "ロック中  %d%%"
 
-#: ui/cosmetics_panel.gd:174 ui/lumi_builder.gd:645
+#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:645
 msgid "Bonus: %s"
 msgstr "ボーナス：%s"
 
-#: ui/cosmetics_panel.gd:174 ui/lumi_builder.gd:645
+#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:645
 msgid "(off: looks only)"
 msgstr "（オフ：見た目だけ）"
 
-#: ui/cosmetics_panel.gd:177
+#: ui/cosmetics_panel.gd:178
 msgid "Wearing a custom look with this bonus"
 msgstr "この補正でカスタム外見を着用中"
 
-#: ui/cosmetics_panel.gd:179
+#: ui/cosmetics_panel.gd:180
 msgid "Unlocked. Press to wear."
 msgstr "解放済み。押すと着替える。"
 
-#: ui/cosmetics_panel.gd:181 ui/lumi_builder.gd:376 ui/lumi_builder.gd:493
+#: ui/cosmetics_panel.gd:182 ui/lumi_builder.gd:376 ui/lumi_builder.gd:493
 #: ui/lumi_builder.gd:531 ui/lumi_builder.gd:599 ui/lumi_builder.gd:600
 msgid "Locked: %s"
 msgstr "ロック中：%s"
@@ -4300,7 +4217,7 @@ msgstr ""
 msgid "%s  close"
 msgstr ""
 
-#: ui/glim_panel.gd:105 ui/upgrades_screen.gd:71
+#: ui/glim_panel.gd:105
 msgid "UPGRADES"
 msgstr "アップグレード"
 
@@ -4412,82 +4329,99 @@ msgstr "+%d XP"
 msgid "CORE %d%%"
 msgstr "コア %d%%"
 
-#: ui/hub_panel.gd:22
-msgid "HUB"
-msgstr "基地"
+#: ui/hub_panel.gd:57
+msgid "What you get"
+msgstr "得られるもの"
 
-#: ui/hub_panel.gd:73
+#: ui/hub_panel.gd:65
+msgid "Upgrade"
+msgstr "アップグレード"
+
+#: ui/hub_panel.gd:92 ui/hub_panel.gd:243
+msgid "Build Air Scrubber"
+msgstr "空気清浄機を建てる"
+
+#: ui/hub_panel.gd:129
 msgid "Build Signal Jammer"
 msgstr "シグナルジャマーを建てる"
 
-#: ui/hub_panel.gd:98
+#: ui/hub_panel.gd:168
 msgid " (have %s)"
 msgstr " （所持 %s）"
 
-#: ui/hub_panel.gd:105
-msgid "Parts %s"
-msgstr "パーツ %s"
+#: ui/hub_panel.gd:181
+msgid "Bales sell for +%d%% (now +%d%%)"
+msgstr "ベールの売値+%d%%（現在+%d%%）"
 
-#: ui/hub_panel.gd:107
-msgid ""
-"Level %d   ·   %s\n"
-"%s   Bales sell for +%d%%."
-msgstr ""
-"レベル %d   ·   %s\n"
-"%s   ベールが +%d%% で売れる。"
+#: ui/hub_panel.gd:184
+msgid "+%d robot spots in every crew"
+msgstr "各クルーのロボット枠+%d"
 
-#: ui/hub_panel.gd:110
-msgid "Fully built."
-msgstr "すべて建設済み。"
+#: ui/hub_panel.gd:187
+msgid "Air Scrubbers: clear the dusty sky"
+msgstr "空気清浄機：ほこりっぽい空を澄ませる"
 
-#: ui/hub_panel.gd:113
-msgid ""
-"Next: %s. %s\n"
-"Needs %s"
-msgstr ""
-"次：%s。%s\n"
-"必要：%s"
+#: ui/hub_panel.gd:192
+msgid "Unlocks the %s"
+msgstr "%sを解放"
 
-#: ui/hub_panel.gd:114 ui/stations_panel.gd:98 ui/telescope_panel.gd:45
-#: ui/yard_builds_panel.gd:83
-msgid "Build %s"
-msgstr "%s を建てる"
+#: ui/hub_panel.gd:194
+msgid "Opens the Locker: style Lumi and your robots"
+msgstr "ロッカーが開く：Lumiとロボットを着せ替え"
 
-#: ui/hub_panel.gd:119
+#: ui/hub_panel.gd:196
+msgid "A launch pad: rockets to the next district"
+msgstr "発射台：次の地区へロケットで"
+
+#: ui/hub_panel.gd:207
+msgid "Now: level %d, %s. Bales sell for +%d%%."
+msgstr "現在：レベル%d、%s。ベールの売値+%d%%。"
+
+#: ui/hub_panel.gd:209
+msgid "Hub level %d  ·  fully built"
+msgstr "ハブ レベル%d  ·  完成"
+
+#: ui/hub_panel.gd:212
+msgid "Every hub level is built."
+msgstr "ハブはすべて完成しました。"
+
+#: ui/hub_panel.gd:214
+msgid "Fully built"
+msgstr "完成"
+
+#: ui/hub_panel.gd:217
+msgid "Next: hub level %d"
+msgstr "次：ハブ レベル%d"
+
+#: ui/hub_panel.gd:224
+msgid "Upgrade to level %d"
+msgstr "レベル%dにアップグレード"
+
+#: ui/hub_panel.gd:224
+msgid "Not enough yet"
+msgstr "まだ足りません"
+
+#: ui/hub_panel.gd:228
 msgid "Continue in the full game"
 msgstr "続きは製品版で"
 
-#: ui/hub_panel.gd:126
+#: ui/hub_panel.gd:237
+msgid "Opens at hub level %d."
+msgstr "ハブ レベル%dで解放。"
+
+#: ui/hub_panel.gd:239
+msgid "All built."
+msgstr "すべて建設済み。"
+
+#: ui/hub_panel.gd:242
 msgid ""
-"\n"
-"Requires hub level %d."
+"%s   %d / %d\n"
+"%s"
 msgstr ""
-"\n"
-"基地レベル %d が必要。"
 
-#: ui/hub_panel.gd:128
-msgid ""
-"\n"
-"All built (max)."
-msgstr ""
-"\n"
-"すべて建設済み（最大）。"
-
-#: ui/hub_panel.gd:131
-msgid ""
-"%s   ·   %d / %d built\n"
-"%s%s"
-msgstr ""
-"%s   ·   %d / %d 建設済み\n"
-"%s%s"
-
-#: ui/hub_panel.gd:132
-msgid "Air Scrubbers maxed"
-msgstr "空気清浄機は最大"
-
-#: ui/hub_panel.gd:132
-msgid "Build Air Scrubber"
-msgstr "空気清浄機を建てる"
+#: ui/hub_panel.gd:243
+msgid "All built"
+msgstr "すべて建設済み"
 
 #: ui/hud.gd:77
 msgid "Lumi reached level %d%s"
@@ -4599,6 +4533,35 @@ msgstr ""
 #: ui/loading_screen.gd:146
 msgid "Warming up"
 msgstr ""
+
+#: ui/locker_panel.gd:68
+msgid "Editing"
+msgstr "編集中"
+
+#: ui/locker_panel.gd:79
+msgid "Fleet paint"
+msgstr "艦隊の塗装"
+
+#: ui/locker_panel.gd:104
+msgid "The Locker"
+msgstr "ロッカー"
+
+#: ui/locker_panel.gd:105
+msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play."
+msgstr "Lumiとすべてのロボットを着せ替え：色、目、頭パーツ、飾り、艦隊の塗装。新しいパーツは遊ぶうちに解放されます。"
+
+#: ui/locker_panel.gd:115
+msgid "Opens at hub level %d (now %d). Upgrade the hub in the Hub tab."
+msgstr "ハブ レベル%dで解放（現在%d）。ハブタブでアップグレードしよう。"
+
+#: ui/locker_panel.gd:150 ui/photo_mode.gd:393 ui/photo_mode.gd:420
+#: ui/upgrades_screen.gd:13
+msgid "Lumi"
+msgstr "Lumi"
+
+#: ui/locker_panel.gd:150
+msgid "You"
+msgstr "あなた"
 
 #: ui/lumi_builder.gd:111
 msgid "CHARACTER BUILDER"
@@ -4741,7 +4704,7 @@ msgstr ""
 msgid "New Game"
 msgstr "はじめから"
 
-#: ui/main_menu.gd:350 ui/main_menu.gd:548 ui/pause_menu.gd:63
+#: ui/main_menu.gd:350 ui/main_menu.gd:548 ui/pause_menu.gd:64
 msgid "Settings"
 msgstr "設定"
 
@@ -4749,7 +4712,7 @@ msgstr "設定"
 msgid "Credits"
 msgstr "クレジット"
 
-#: ui/main_menu.gd:352
+#: ui/main_menu.gd:352 ui/pause_menu.gd:68
 msgid "Quit"
 msgstr "終了"
 
@@ -4765,6 +4728,11 @@ msgstr "%d分"
 #: ui/main_menu.gd:461
 msgid "Hub %d"
 msgstr "基地 %d"
+
+#. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
+#: ui/main_menu.gd:461 ui/profile_picker.gd:133
+msgid "%s cubes"
+msgstr "%s キューブ"
 
 #: ui/main_menu.gd:467
 msgid "Jan"
@@ -4818,8 +4786,8 @@ msgstr "12月"
 msgid "CREDITS"
 msgstr "クレジット"
 
-#: ui/main_menu.gd:592 ui/profile_picker.gd:49 ui/settings_panel.gd:117
-#: ui/settings_panel.gd:145 ui/world_picker.gd:53
+#: ui/main_menu.gd:592 ui/profile_picker.gd:49 ui/settings_panel.gd:116
+#: ui/settings_panel.gd:141 ui/world_picker.gd:53
 msgid "Back"
 msgstr "戻る"
 
@@ -4861,41 +4829,25 @@ msgstr "消去して始める"
 msgid "OBJECTIVE"
 msgstr "目標"
 
-#: ui/pause_menu.gd:42
+#: ui/pause_menu.gd:43
 msgid "PAUSED"
 msgstr "ポーズ中"
 
-#: ui/pause_menu.gd:49
+#: ui/pause_menu.gd:50
 msgid "Resume"
 msgstr "再開"
 
-#: ui/pause_menu.gd:54
+#: ui/pause_menu.gd:55
 msgid "Codex  [%s]"
 msgstr "図鑑  [%s]"
 
-#: ui/pause_menu.gd:56
+#: ui/pause_menu.gd:57
 msgid "Photo mode  [%s]"
 msgstr "フォトモード  [%s]"
 
-#: ui/pause_menu.gd:60 data/achievements.json:achievements[home_relics].name
+#: ui/pause_menu.gd:61 data/achievements.json:achievements[home_relics].name
 msgid "Keepsakes"
 msgstr "思い出の品"
-
-#: ui/pause_menu.gd:65
-msgid "Save game"
-msgstr "セーブする"
-
-#: ui/pause_menu.gd:67
-msgid "Saved."
-msgstr "セーブしました。"
-
-#: ui/pause_menu.gd:68
-msgid "Quit to title"
-msgstr "タイトルへ戻る"
-
-#: ui/pause_menu.gd:69
-msgid "Quit to desktop"
-msgstr "デスクトップへ終了"
 
 #: ui/photo_filters.gd:11
 msgid "Natural"
@@ -4966,7 +4918,7 @@ msgstr "ロケット飛行中はフォトモードを使えません。"
 msgid "Photo mode isn't available during a cinematic."
 msgstr "ムービー中はフォトモードを使えません。"
 
-#: ui/photo_mode.gd:367 ui/photo_mode.gd:420 ui/settings_panel.gd:317
+#: ui/photo_mode.gd:367 ui/photo_mode.gd:420 ui/settings_panel.gd:373
 msgid "Camera"
 msgstr "カメラ"
 
@@ -4974,7 +4926,7 @@ msgstr "カメラ"
 msgid "Mode"
 msgstr "モード"
 
-#: ui/photo_mode.gd:369 ui/settings_panel.gd:325
+#: ui/photo_mode.gd:369 ui/settings_panel.gd:381
 msgid "Field of view"
 msgstr "視野角"
 
@@ -5011,7 +4963,7 @@ msgid "Blur"
 msgstr "ぼかし"
 
 #: ui/photo_mode.gd:377 ui/photo_panel.gd:240 ui/photo_panel.gd:242
-#: ui/photo_panel.gd:280 ui/settings_panel.gd:615
+#: ui/photo_panel.gd:280 ui/settings_panel.gd:671
 msgid "Off"
 msgstr "オフ"
 
@@ -5058,10 +5010,6 @@ msgstr "時刻を設定"
 #: ui/photo_mode.gd:392
 msgid "Weather"
 msgstr "天気"
-
-#: ui/photo_mode.gd:393 ui/photo_mode.gd:420 ui/upgrades_screen.gd:10
-msgid "Lumi"
-msgstr "Lumi"
 
 #: ui/photo_mode.gd:394
 msgid "Pose"
@@ -5128,7 +5076,7 @@ msgid "Exit"
 msgstr "終了"
 
 #: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
-#: ui/settings_panel.gd:615
+#: ui/settings_panel.gd:671
 msgid "On"
 msgstr "オン"
 
@@ -5283,57 +5231,73 @@ msgstr "押して予約"
 msgid "%s cancelled. Cubes refunded."
 msgstr "%s を中止。キューブを返却。"
 
-#: ui/robot_card.gd:40 data/currencies.json:currencies[parts].short
-msgid "PARTS"
-msgstr "パーツ"
+#: ui/robot_card.gd:78
+msgid "Crew"
+msgstr "クルー"
 
-#: ui/robot_card.gd:68
-msgid "%s   ·   %s   ·   %d built"
-msgstr "%s   ·   %s   ·   %d 台建造済み"
+#: ui/robot_card.gd:90
+msgid "Tier"
+msgstr "ティア"
 
-#: ui/robot_card.gd:73
-msgid "Crew: %d / %d  (hub level %d: +%d per level)"
-msgstr "クルー：%d / %d（基地レベル %d：レベルごとに +%d）"
+#: ui/robot_card.gd:110 ui/robot_card.gd:244
+msgid "Build"
+msgstr "建造"
 
-#: ui/robot_card.gd:77
-msgid ""
-"\n"
-"Water Tanks: %d / %d placed · next %s cubes (Command view: Place refill tank)"
+#: ui/robot_card.gd:130
+msgid "Fleet upgrades"
+msgstr "艦隊アップグレード"
+
+#: ui/robot_card.gd:145
+msgid "Open Research"
+msgstr "研究を開く"
+
+#: ui/robot_card.gd:187
+msgid "Lv %d  ·  %s%s (max)"
 msgstr ""
-"\n"
-"給水タンク：%d / %d 設置 · 次は %s キューブ（指揮ビュー：補給タンクを置く）"
 
-#: ui/robot_card.gd:79
-msgid "Build   %s cubes"
-msgstr "作る   %s キューブ"
+#: ui/robot_card.gd:188 ui/upgrade_card.gd:87 ui/upgrade_card.gd:215
+msgid "Max"
+msgstr "最大"
 
-#: ui/robot_card.gd:79
-msgid "Build   (%s)"
-msgstr "作る   （%s）"
+#: ui/robot_card.gd:194
+msgid "+  %s cubes"
+msgstr ""
 
-#: ui/robot_card.gd:83
-msgid "Locked  ·  research %s"
-msgstr "ロック中  ·  研究 %s"
+#: ui/robot_card.gd:196
+msgid "Need %s more cubes"
+msgstr "キューブがあと%s必要"
 
-#: ui/robot_card.gd:87
-msgid "Fleet tier: %s (max)"
-msgstr "フリートのティア：%s（最大）"
+#: ui/robot_card.gd:222
+msgid "Unlock with research: %s"
+msgstr "研究で解放：%s"
 
-#: ui/robot_card.gd:92
-msgid "Next: %s  ·  x%.1f work speed  ·  %s look"
-msgstr "次：%s  ·  作業速度 x%.1f  ·  %s の外見"
+#: ui/robot_card.gd:232
+msgid "%d built  ·  full: more spots with hub levels"
+msgstr "%d台  ·  満員：ハブレベルで枠が増えます"
 
-#: ui/robot_card.gd:93
-msgid "Needs %s cubes, %s parts and a %s Control Core.  %s"
-msgstr "%s キューブ、%s パーツ、%s のコントロールコアが必要。  %s"
+#: ui/robot_card.gd:232
+msgid "%d built  ·  %d free"
+msgstr "%d台  ·  空き%d"
 
-#: ui/robot_card.gd:95
-msgid "Upgrade fleet to %s"
-msgstr "フリートを %s にアップグレード"
+#: ui/robot_card.gd:236
+msgid "Water Tanks %d / %d  ·  place them from the Command view"
+msgstr "給水タンク %d / %d  ·  コマンドビューで設置"
 
-#: ui/robot_card.gd:118
-msgid "□  %s  ·  missing  (detector, or salvage from electronics junk)"
-msgstr "□  %s  ·  不足（探知機、または電子ガラクタから回収）"
+#: ui/robot_card.gd:244
+msgid "Build first"
+msgstr "最初の1台を作る"
+
+#: ui/robot_card.gd:250
+msgid "top tier"
+msgstr "最高ティア"
+
+#: ui/robot_card.gd:256
+msgid "next: x%s work speed"
+msgstr "次：作業速度x%s"
+
+#: ui/robot_card.gd:257 ui/rockets_panel.gd:119 ui/yard_builds_panel.gd:60
+msgid "Upgrade to %s"
+msgstr "%s にアップグレード"
 
 #: ui/rockets_panel.gd:35
 msgid "LAUNCH PAD"
@@ -5371,10 +5335,6 @@ msgstr "ロケット"
 msgid "Top tier: warp hops, no recharge."
 msgstr "最高ティア：ワープジャンプ、充電不要。"
 
-#: ui/rockets_panel.gd:119 ui/yard_builds_panel.gd:60
-msgid "Upgrade to %s"
-msgstr "%s にアップグレード"
-
 #: ui/rockets_panel.gd:136
 msgid "Countdown %ds  ·  Flight %.1fs  ·  Recharge %s  ·  Cargo pods x%.1f every %ds"
 msgstr "カウントダウン %d秒  ·  飛行 %.1f秒  ·  充電 %s  ·  貨物ポッド x%.1f %d秒ごと"
@@ -5383,303 +5343,315 @@ msgstr "カウントダウン %d秒  ·  飛行 %.1f秒  ·  充電 %s  ·  貨�
 msgid "  ·  WARP"
 msgstr "  ·  ワープ"
 
-#: ui/settings_panel.gd:11
+#: ui/settings_panel.gd:12 ui/settings_panel.gd:221
+msgid "Basics"
+msgstr "基本"
+
+#: ui/settings_panel.gd:12
 msgid "Audio"
 msgstr "オーディオ"
 
-#: ui/settings_panel.gd:11
+#: ui/settings_panel.gd:12
 msgid "Graphics"
 msgstr "グラフィック"
 
-#: ui/settings_panel.gd:11
+#: ui/settings_panel.gd:12
 msgid "Controls"
 msgstr "操作"
 
-#: ui/settings_panel.gd:11
+#: ui/settings_panel.gd:12
 msgid "Gameplay"
 msgstr "ゲームプレイ"
 
-#: ui/settings_panel.gd:11
+#: ui/settings_panel.gd:12
 msgid "Accessibility"
 msgstr "アクセシビリティ"
 
-#: ui/settings_panel.gd:58
+#: ui/settings_panel.gd:61
 msgid "SETTINGS"
 msgstr "設定"
 
-#: ui/settings_panel.gd:61
+#: ui/settings_panel.gd:64
 msgid "{ui_tab_prev}{ui_tab_next}  switch tabs     {ui_cancel}  back"
 msgstr "{ui_tab_prev}{ui_tab_next}  タブ切り替え     {ui_cancel}  戻る"
 
-#: ui/settings_panel.gd:112
+#: ui/settings_panel.gd:111
 msgid "Changes are saved automatically."
 msgstr "変更は自動で保存されます。"
 
-#: ui/settings_panel.gd:234
-msgid "Volume"
-msgstr "音量"
-
-#: ui/settings_panel.gd:241
-msgid "Sound effects"
-msgstr "効果音"
-
-#: ui/settings_panel.gd:248
-msgid "Rendering"
-msgstr "レンダリング"
-
-#: ui/settings_panel.gd:249
-msgid "Low drops GI and fog; Ultra adds reflections."
-msgstr "低はGIと霧をオフ、最高は反射を追加。"
-
-#: ui/settings_panel.gd:250
-msgid "This renderer always uses the Low preset."
-msgstr "このレンダラーは常に「低」プリセットを使います。"
-
-#: ui/settings_panel.gd:252
-msgid "Detected: %s for %s. "
-msgstr "検出：%s（%s 向け）。"
-
-#: ui/settings_panel.gd:253
-msgid "Your choice (hardware: %s). "
-msgstr "あなたの選択（ハードウェア：%s）。"
-
-#: ui/settings_panel.gd:254
-msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
-msgstr "低はGI、霧、影の細部をオフ、最高は反射を追加。"
-
-#: ui/settings_panel.gd:255
+#: ui/settings_panel.gd:228 ui/settings_panel.gd:311
 msgid "Quality preset"
 msgstr "画質プリセット"
 
-#: ui/settings_panel.gd:262
-msgid "Renderer"
-msgstr "レンダラー"
-
-#: ui/settings_panel.gd:262
-msgid "Standard (Forward+)"
-msgstr "標準（Forward+）"
-
-#: ui/settings_panel.gd:262
-msgid "Light (Mobile)"
-msgstr "軽量（Mobile）"
-
-#: ui/settings_panel.gd:264
-msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
-msgstr "軽量は古い内蔵グラフィック向け。ゲームの再起動後に反映されます（現在：%s）。"
-
-#: ui/settings_panel.gd:270
-msgid "Render scale"
-msgstr "レンダースケール"
-
-#: ui/settings_panel.gd:272
-msgid "Lower renders 3D at a smaller size; the interface stays sharp."
-msgstr "下げると3Dを小さく描画します。UIはくっきりしたまま。"
-
-#: ui/settings_panel.gd:273
-msgid "Display"
-msgstr "ディスプレイ"
-
-#: ui/settings_panel.gd:274
+#: ui/settings_panel.gd:231 ui/settings_panel.gd:330
 msgid "Fullscreen"
 msgstr "フルスクリーン"
 
-#: ui/settings_panel.gd:277
-msgid "V-Sync"
-msgstr "垂直同期"
-
-#: ui/settings_panel.gd:283 ui/settings_panel.gd:312
-msgid "Bindings"
-msgstr "キー割り当て"
-
-#: ui/settings_panel.gd:286
-msgid "ACTION   (select a binding to rebind it)"
-msgstr "アクション   （割り当てを選んで変更）"
-
-#: ui/settings_panel.gd:289
-msgid "KEYBOARD / MOUSE"
-msgstr "キーボード / マウス"
-
-#: ui/settings_panel.gd:289
-msgid "CONTROLLER"
-msgstr "コントローラー"
-
-#: ui/settings_panel.gd:305
-msgid "Reset to defaults"
-msgstr "初期設定に戻す"
-
-#: ui/settings_panel.gd:312
-msgid "Restore every key and controller binding."
-msgstr "キーとコントローラーの割り当てをすべて元に戻します。"
-
-#: ui/settings_panel.gd:314
-msgid "Button prompts"
-msgstr "ボタン表示"
-
-#: ui/settings_panel.gd:316
-msgid "Controller art: Automatic follows the connected pad."
-msgstr "コントローラー表示：「自動」は接続中のパッドに合わせます。"
-
-#: ui/settings_panel.gd:318
+#: ui/settings_panel.gd:234 ui/settings_panel.gd:374
 msgid "Mouse sensitivity"
 msgstr "マウス感度"
 
-#: ui/settings_panel.gd:321
-msgid "Stick look speed"
-msgstr "スティックの視点速度"
-
-#: ui/settings_panel.gd:324
-msgid "Invert look Y"
-msgstr "視点の上下を反転"
-
-#: ui/settings_panel.gd:328
-msgid "Mouse smoothing"
-msgstr "マウススムージング"
-
-#: ui/settings_panel.gd:329
-msgid "Eases mouse look over a few frames."
-msgstr "マウスの視点移動を数フレームかけてなめらかにします。"
-
-#: ui/settings_panel.gd:330
-msgid "Scooping"
-msgstr "すくう操作"
-
-#: ui/settings_panel.gd:331
-msgid "Scoop button"
-msgstr "すくうボタン"
-
-#: ui/settings_panel.gd:331
-msgid "Hold"
-msgstr "長押し"
-
-#: ui/settings_panel.gd:331
-msgid "Toggle"
-msgstr "切り替え"
-
-#: ui/settings_panel.gd:372
-msgid "press a button…"
-msgstr "ボタンを押してください…"
-
-#: ui/settings_panel.gd:372
-msgid "press a key…"
-msgstr "キーを押してください…"
-
-#: ui/settings_panel.gd:404
-msgid "Conflict: %s is used by both %s and %s."
-msgstr "重複：%s が %s と %s の両方に使われています。"
-
-#: ui/settings_panel.gd:492 ui/settings_panel.gd:495
-msgid "Language"
-msgstr "言語"
-
-#: ui/settings_panel.gd:494
+#: ui/settings_panel.gd:238 ui/settings_panel.gd:550
 msgid "System default"
 msgstr "システムの設定"
 
-#: ui/settings_panel.gd:498
+#: ui/settings_panel.gd:239 ui/settings_panel.gd:548 ui/settings_panel.gd:551
+msgid "Language"
+msgstr "言語"
+
+#: ui/settings_panel.gd:244
+msgid "More settings  (sound, graphics, controls, accessibility)"
+msgstr "その他の設定  （サウンド、グラフィック、操作、アクセシビリティ）"
+
+#: ui/settings_panel.gd:250
+msgid "Everything else"
+msgstr "その他すべて"
+
+#: ui/settings_panel.gd:290
+msgid "Volume"
+msgstr "音量"
+
+#: ui/settings_panel.gd:297
+msgid "Sound effects"
+msgstr "効果音"
+
+#: ui/settings_panel.gd:304
+msgid "Rendering"
+msgstr "レンダリング"
+
+#: ui/settings_panel.gd:305
+msgid "Low drops GI and fog; Ultra adds reflections."
+msgstr "低はGIと霧をオフ、最高は反射を追加。"
+
+#: ui/settings_panel.gd:306
+msgid "This renderer always uses the Low preset."
+msgstr "このレンダラーは常に「低」プリセットを使います。"
+
+#: ui/settings_panel.gd:308
+msgid "Detected: %s for %s. "
+msgstr "検出：%s（%s 向け）。"
+
+#: ui/settings_panel.gd:309
+msgid "Your choice (hardware: %s). "
+msgstr "あなたの選択（ハードウェア：%s）。"
+
+#: ui/settings_panel.gd:310
+msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
+msgstr "低はGI、霧、影の細部をオフ、最高は反射を追加。"
+
+#: ui/settings_panel.gd:318
+msgid "Renderer"
+msgstr "レンダラー"
+
+#: ui/settings_panel.gd:318
+msgid "Standard (Forward+)"
+msgstr "標準（Forward+）"
+
+#: ui/settings_panel.gd:318
+msgid "Light (Mobile)"
+msgstr "軽量（Mobile）"
+
+#: ui/settings_panel.gd:320
+msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
+msgstr "軽量は古い内蔵グラフィック向け。ゲームの再起動後に反映されます（現在：%s）。"
+
+#: ui/settings_panel.gd:326
+msgid "Render scale"
+msgstr "レンダースケール"
+
+#: ui/settings_panel.gd:328
+msgid "Lower renders 3D at a smaller size; the interface stays sharp."
+msgstr "下げると3Dを小さく描画します。UIはくっきりしたまま。"
+
+#: ui/settings_panel.gd:329
+msgid "Display"
+msgstr "ディスプレイ"
+
+#: ui/settings_panel.gd:333
+msgid "V-Sync"
+msgstr "垂直同期"
+
+#: ui/settings_panel.gd:339 ui/settings_panel.gd:368
+msgid "Bindings"
+msgstr "キー割り当て"
+
+#: ui/settings_panel.gd:342
+msgid "ACTION   (select a binding to rebind it)"
+msgstr "アクション   （割り当てを選んで変更）"
+
+#: ui/settings_panel.gd:345
+msgid "KEYBOARD / MOUSE"
+msgstr "キーボード / マウス"
+
+#: ui/settings_panel.gd:345
+msgid "CONTROLLER"
+msgstr "コントローラー"
+
+#: ui/settings_panel.gd:361
+msgid "Reset to defaults"
+msgstr "初期設定に戻す"
+
+#: ui/settings_panel.gd:368
+msgid "Restore every key and controller binding."
+msgstr "キーとコントローラーの割り当てをすべて元に戻します。"
+
+#: ui/settings_panel.gd:370
+msgid "Button prompts"
+msgstr "ボタン表示"
+
+#: ui/settings_panel.gd:372
+msgid "Controller art: Automatic follows the connected pad."
+msgstr "コントローラー表示：「自動」は接続中のパッドに合わせます。"
+
+#: ui/settings_panel.gd:377
+msgid "Stick look speed"
+msgstr "スティックの視点速度"
+
+#: ui/settings_panel.gd:380
+msgid "Invert look Y"
+msgstr "視点の上下を反転"
+
+#: ui/settings_panel.gd:384
+msgid "Mouse smoothing"
+msgstr "マウススムージング"
+
+#: ui/settings_panel.gd:385
+msgid "Eases mouse look over a few frames."
+msgstr "マウスの視点移動を数フレームかけてなめらかにします。"
+
+#: ui/settings_panel.gd:386
+msgid "Scooping"
+msgstr "すくう操作"
+
+#: ui/settings_panel.gd:387
+msgid "Scoop button"
+msgstr "すくうボタン"
+
+#: ui/settings_panel.gd:387
+msgid "Hold"
+msgstr "長押し"
+
+#: ui/settings_panel.gd:387
+msgid "Toggle"
+msgstr "切り替え"
+
+#: ui/settings_panel.gd:428
+msgid "press a button…"
+msgstr "ボタンを押してください…"
+
+#: ui/settings_panel.gd:428
+msgid "press a key…"
+msgstr "キーを押してください…"
+
+#: ui/settings_panel.gd:460
+msgid "Conflict: %s is used by both %s and %s."
+msgstr "重複：%s が %s と %s の両方に使われています。"
+
+#: ui/settings_panel.gd:554
 msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
 msgstr "メニュー、HUD、字幕、ストーリーのテキスト。Pseudo は翻訳テスト用です。"
 
-#: ui/settings_panel.gd:499
+#: ui/settings_panel.gd:555
 msgid "Comfort"
 msgstr "快適さ"
 
-#: ui/settings_panel.gd:500
+#: ui/settings_panel.gd:556
 msgid "Camera shake"
 msgstr "カメラの揺れ"
 
-#: ui/settings_panel.gd:502
+#: ui/settings_panel.gd:558
 msgid "Reduced motion"
 msgstr "動きを減らす"
 
-#: ui/settings_panel.gd:503
+#: ui/settings_panel.gd:559
 msgid "Calmer camera and fewer bouncy effects."
 msgstr "カメラを落ち着かせ、弾むエフェクトを減らします。"
 
-#: ui/settings_panel.gd:504 ui/settings_panel.gd:514
+#: ui/settings_panel.gd:560 ui/settings_panel.gd:570
 msgid "Interface"
 msgstr "インターフェース"
 
-#: ui/settings_panel.gd:505
+#: ui/settings_panel.gd:561
 msgid "Number format"
 msgstr "数字の表示形式"
 
-#: ui/settings_panel.gd:505
+#: ui/settings_panel.gd:561
 msgid "Short (1.2K)"
 msgstr "短縮（1.2K）"
 
-#: ui/settings_panel.gd:505
+#: ui/settings_panel.gd:561
 msgid "Scientific (1.2e3)"
 msgstr "指数（1.2e3）"
 
-#: ui/settings_panel.gd:505
+#: ui/settings_panel.gd:561
 msgid "Engineering (1.2e3)"
 msgstr "工学（1.2e3）"
 
-#: ui/settings_panel.gd:507
+#: ui/settings_panel.gd:563
 msgid "Best-value tags"
 msgstr "お得タグ"
 
-#: ui/settings_panel.gd:508
+#: ui/settings_panel.gd:564
 msgid "Tag the affordable upgrade that gives the most per cube."
 msgstr "買えるアップグレードのうち、キューブあたりの効果が最も高いものに印をつけます。"
 
-#: ui/settings_panel.gd:509
+#: ui/settings_panel.gd:565
 msgid "HUD"
 msgstr "HUD"
 
-#: ui/settings_panel.gd:509
+#: ui/settings_panel.gd:565
 msgid "Minimal"
 msgstr "最小"
 
-#: ui/settings_panel.gd:509
+#: ui/settings_panel.gd:565
 msgid "Hidden"
 msgstr "非表示"
 
-#: ui/settings_panel.gd:510
+#: ui/settings_panel.gd:566
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "最小は数秒後に補助表示を消します。非表示はプロンプトとメッセージだけを残します。"
 
-#: ui/settings_panel.gd:520
+#: ui/settings_panel.gd:576
 msgid "Interface scale"
 msgstr "UI の大きさ"
 
-#: ui/settings_panel.gd:522
+#: ui/settings_panel.gd:578
 msgid "Size of menus, HUD and subtitles."
 msgstr "メニュー、HUD、字幕の大きさ。"
 
-#: ui/settings_panel.gd:523
+#: ui/settings_panel.gd:579
 msgid "Colour-blind palette"
 msgstr "色覚サポート配色"
 
-#: ui/settings_panel.gd:524
+#: ui/settings_panel.gd:580
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "ヘックスの進行、ホッパーメーター、パーツのレア度に Okabe-Ito 配色を使います。"
 
-#: ui/settings_panel.gd:525 ui/settings_panel.gd:526
+#: ui/settings_panel.gd:581 ui/settings_panel.gd:582
 msgid "Subtitles"
 msgstr "字幕"
 
-#: ui/settings_panel.gd:527
+#: ui/settings_panel.gd:583
 msgid "WREN and Ledger lines."
 msgstr "WREN と Ledger のセリフ。"
 
-#: ui/settings_panel.gd:528
+#: ui/settings_panel.gd:584
 msgid "Subtitle size"
 msgstr "字幕の大きさ"
 
-#: ui/settings_panel.gd:528
+#: ui/settings_panel.gd:584
 msgid "Small"
 msgstr "小"
 
-#: ui/settings_panel.gd:528
+#: ui/settings_panel.gd:584
 msgid "Large"
 msgstr "大"
 
-#: ui/settings_panel.gd:530
+#: ui/settings_panel.gd:586
 msgid "Subtitle background"
 msgstr "字幕の背景"
 
-#: ui/settings_panel.gd:531
+#: ui/settings_panel.gd:587
 msgid "A solid backdrop behind subtitle text."
 msgstr "字幕テキストの後ろに不透明な背景を表示します。"
 
@@ -5694,6 +5666,10 @@ msgstr "辺境へ移す"
 #: ui/stations_panel.gd:98 ui/telescope_panel.gd:45
 msgid "%s built"
 msgstr "%s 建設済み"
+
+#: ui/stations_panel.gd:98 ui/telescope_panel.gd:45 ui/yard_builds_panel.gd:83
+msgid "Build %s"
+msgstr "%s を建てる"
 
 #: ui/stations_panel.gd:103
 msgid "Auto-route: %s"
@@ -5921,70 +5897,6 @@ msgstr "望遠鏡で記録：%s。図鑑に新しい項目。"
 msgid "Codex: %s"
 msgstr "図鑑：%s"
 
-#: ui/trade_panel.gd:23
-msgid "HAGGLE'S PARTS TRADE"
-msgstr "HAGGLE のパーツ取引"
-
-#: ui/trade_panel.gd:25
-msgid "\"Everything's original. Mostly. Three of yours for one of mine, no questions, some questions.\""
-msgstr "「ぜんぶ純正だよ。だいたいはね。そっちの3つとこっちの1つ、詮索なし、ちょっとだけ詮索あり」"
-
-#: ui/trade_panel.gd:71
-msgid "Parts  %s      Robot parts in storage  %d"
-msgstr "パーツ  %s      在庫のロボットパーツ  %d"
-
-#: ui/trade_panel.gd:83
-msgid "Haggle: \"Funny thing, I just happened to find a %s. For you, half price.\""
-msgstr "Haggle：「不思議なもんでね、ちょうど %s を見つけたところさ。君には半額だ」"
-
-#: ui/trade_panel.gd:91
-msgid "Trades away: %s"
-msgstr "手放すもの：%s"
-
-#: ui/trade_panel.gd:93
-msgid "Needs 3 spare parts (Control Cores needed for a Mk tier are never traded)."
-msgstr "予備パーツが3つ必要（Mk ティアに必要なコントロールコアは取引されません）。"
-
-#: ui/trade_panel.gd:98
-msgid "   (needed)"
-msgstr "   （必要）"
-
-#: ui/trade_panel.gd:100
-msgid "own %d"
-msgstr "所持 %d"
-
-#: ui/trade_panel.gd:103
-msgid "Buy Rusty  %s"
-msgstr "サビたものを買う  %s"
-
-#: ui/trade_panel.gd:106
-msgid "Buy Worn  %s"
-msgstr "使い古しを買う  %s"
-
-#: ui/trade_panel.gd:112
-msgid "Scrap %d spare Rusty robot parts  ->  %s"
-msgstr "余った錆びたロボットパーツ %d 個を解体  ->  %s"
-
-#: ui/trade_panel.gd:122
-msgid "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab"
-msgstr "ビルダーパーツ  ·  %d 分後に入荷  ·  ビルダータブで装着"
-
-#: ui/trade_panel.gd:137
-msgid "Haggle: \"%s. Treat it nicely.\""
-msgstr "Haggle：「%s。大事にしてやってくれ」"
-
-#: ui/trade_panel.gd:145
-msgid ""
-"%s  (own %d)\n"
-"%s"
-msgstr ""
-"%s  （所持 %d）\n"
-"%s"
-
-#: ui/trade_panel.gd:171
-msgid "Swap 3 spares"
-msgstr "予備3つを交換"
-
 #: ui/upgrade_card.gd:54
 msgid "Lv 0"
 msgstr "Lv 0"
@@ -5997,81 +5909,69 @@ msgstr "お得"
 msgid "Buy"
 msgstr "買う"
 
-#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:212
-msgid "Max"
-msgstr "最大"
-
-#: ui/upgrade_card.gd:177
+#: ui/upgrade_card.gd:179
 msgid "Lv %d%s"
 msgstr "Lv %d%s"
 
-#: ui/upgrade_card.gd:182
+#: ui/upgrade_card.gd:184
 msgid "Build the %s first (Hub tab)"
 msgstr ""
 
-#: ui/upgrade_card.gd:189
+#: ui/upgrade_card.gd:191
 msgid "Requires %s"
 msgstr "%s が必要"
 
-#: ui/upgrade_card.gd:193
+#: ui/upgrade_card.gd:195
 msgid "%s%s  (max)"
 msgstr "%s%s（最大）"
 
-#: ui/upgrade_card.gd:196
+#: ui/upgrade_card.gd:198
 msgid "Off  →  On"
 msgstr "オフ  →  オン"
 
-#: ui/upgrade_card.gd:203
+#: ui/upgrade_card.gd:205
 msgid "MAX"
 msgstr "最大"
 
-#: ui/upgrade_card.gd:212
+#: ui/upgrade_card.gd:215
 msgid "Max (%d)"
 msgstr "最大（%d）"
 
-#: ui/upgrade_card.gd:218
-msgid "in about %s"
-msgstr "あと約 %s"
+#: ui/upgrade_card.gd:221
+msgid "need %s · ~%s"
+msgstr "あと%s · 約%s"
 
-#: ui/upgrade_card.gd:218
-msgid "earn more cubes"
-msgstr "キューブをもっと稼ごう"
-
-#: ui/upgrade_card.gd:223
+#: ui/upgrade_card.gd:226
 msgid "Where it comes from:  %s"
 msgstr "入手方法：  %s"
 
-#: ui/upgrades_screen.gd:11
+#: ui/upgrades_screen.gd:14
 msgid "Bots"
 msgstr "ボット"
 
-#: ui/upgrades_screen.gd:12
-msgid "Trade"
-msgstr "取引"
-
-#: ui/upgrades_screen.gd:13
+#: ui/upgrades_screen.gd:15
 msgid "Hub"
 msgstr "基地"
 
-#: ui/upgrades_screen.gd:14
+#: ui/upgrades_screen.gd:16
 msgid "Research"
 msgstr "研究"
 
-#: ui/upgrades_screen.gd:15
+#: ui/upgrades_screen.gd:17
 msgid "Rockets"
 msgstr "ロケット"
 
-#: ui/upgrades_screen.gd:16
-msgid "Cosmetics"
-msgstr "見た目"
+#: ui/upgrades_screen.gd:19
+msgid "Locker"
+msgstr "ロッカー"
 
-#: ui/upgrades_screen.gd:18
-msgid "Builder"
-msgstr "ビルダー"
+#: ui/upgrades_screen.gd:144
+msgid "WORKBENCH"
+msgstr "作業台"
 
-#: ui/upgrades_screen.gd:103
-msgid "%s (soon)"
-msgstr "%s（近日）"
+#: ui/upgrades_screen.gd:229
+msgid "Not open yet. Keep playing."
+msgstr "まだ開いていません。プレイを続けよう。"
 
 #: ui/world_banner.gd:37
 msgid "SEED MISSION  ·  WORLD %d"
@@ -6698,8 +6598,8 @@ msgid "Mix and Match"
 msgstr "組み合わせ自在"
 
 #: data/achievements.json:achievements[builder_mix].desc
-msgid "Build a robot with all five custom parts."
-msgstr "5つのカスタムパーツすべてを使ってロボットを作る。"
+msgid "Style a robot with all five custom parts in the Locker."
+msgstr "ロッカーでロボットに5つのカスタムパーツをすべて付けよう。"
 
 #: data/achievements.json:achievements[builder_maker].name
 msgid "As the Makers Made It"
@@ -8234,9 +8134,13 @@ msgstr "メインのお金。はかりでベールを売ろう。アップグレ
 msgid "Parts"
 msgstr "パーツ"
 
+#: data/currencies.json:currencies[parts].short
+msgid "PARTS"
+msgstr "パーツ"
+
 #: data/currencies.json:currencies[parts].desc
-msgid "Robot parts and building stock salvaged from junk, the recycler and Haggle's scrap bin. Pays for robots, the Builder, base levels, stations, rocket stages and outpost repairs."
-msgstr "ガラクタ、リサイクラー、Haggle のスクラップ箱から集めたロボットパーツと建材。ロボット、ビルダー、拠点レベル、設備、ロケットの段、前哨基地の修理に使う。"
+msgid "Robot parts and building stock salvaged from junk, dug up with the detector, or made by the recycler. Pays for robots and their Mk tiers, base levels, stations, Locker styles, rocket stages and outpost repairs."
+msgstr ""
 
 #: data/currencies.json:currencies[seeds].name
 msgid "Seeds"
@@ -10470,10 +10374,6 @@ msgstr "研究を6件完了する"
 msgid "Build 4 robots"
 msgstr "ロボットを4台作る"
 
-#: data/goals.json:goals[builder_1].text
-msgid "Fit a part in the Builder"
-msgstr "ビルダーでパーツを装着する"
-
 #: data/goals.json:goals[hex_15].text
 msgid "Clean 15 hexes"
 msgstr "ヘックスを15個片づける"
@@ -10569,6 +10469,10 @@ msgstr "基地をレベル3にする"
 #: data/goals.json:goals[extras_radio].text
 msgid "Pick a song on the base radio"
 msgstr "基地のラジオで曲を選ぶ"
+
+#: data/goals.json:goals[builder_1].text
+msgid "Style a robot in the Locker"
+msgstr "ロッカーでロボットを飾る"
 
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
@@ -10721,10 +10625,6 @@ msgstr "ロケットで次へ飛び立つ"
 #: data/goals.json:goals[builder_full].text
 msgid "Fully custom-build a robot"
 msgstr "ロボットをフルカスタムで作る"
-
-#: data/goals.json:goals[builder_preset].text
-msgid "Save a crew build preset"
-msgstr "クルーの構成プリセットを保存する"
 
 #: data/goals.json:goals[research_20].text
 msgid "Finish 20 research projects"
@@ -12403,16 +12303,16 @@ msgid "Cargo Hull"
 msgstr "カーゴハル"
 
 #: data/robot_parts.json:parts[cargo_hull].desc
-msgid "Thick side plates and a rear rack. Holds more, drives heavier."
-msgstr "厚いサイドプレートと後部ラック。たくさん積めるが、走りは重い。"
+msgid "Thick side plates and a rear rack."
+msgstr "分厚いサイドプレートと後部ラック。"
 
 #: data/robot_parts.json:parts[sealed_shell].name
 msgid "Sealed Shell"
 msgstr "密閉シェル"
 
 #: data/robot_parts.json:parts[sealed_shell].desc
-msgid "Smooth covers keep grit out of the compactor. Fussier to service."
-msgstr "なめらかなカバーで圧縮機に砂が入らない。整備は少し面倒。"
+msgid "Smooth covers, neat seams, no grit."
+msgstr "なめらかなカバー、きれいな継ぎ目、砂ぼこりなし。"
 
 #: data/robot_parts.json:parts[maker_shell].name
 msgid "Maker Shell"
@@ -12427,32 +12327,32 @@ msgid "Big-Eye Sensor"
 msgstr "ビッグアイセンサー"
 
 #: data/robot_parts.json:parts[big_eye].desc
-msgid "A huge lens. Spots salvage from far off, gets a little distracted."
-msgstr "巨大なレンズ。遠くの回収品を見つけるけれど、少し気が散りやすい。"
+msgid "A huge lens on a stalk."
+msgstr "茎の先に巨大なレンズ。"
 
 #: data/robot_parts.json:parts[focus_visor].name
 msgid "Focus Visor"
 msgstr "集中バイザー"
 
 #: data/robot_parts.json:parts[focus_visor].desc
-msgid "Blinkers for robots. Works faster, notices less."
-msgstr "ロボット用の目隠し。作業は速く、気づくことは少なく。"
+msgid "Blinkers for robots."
+msgstr "ロボット用の目隠し。"
 
 #: data/robot_parts.json:parts[periscope].name
 msgid "Periscope"
 msgstr "潜望鏡"
 
 #: data/robot_parts.json:parts[periscope].desc
-msgid "Sees over the plants: wider spray, slower to turn."
-msgstr "植物ごしに見わたせる：散水は広く、回るのは遅い。"
+msgid "Sees over the plants. Mostly."
+msgstr "植物の上まで見える。だいたいは。"
 
 #: data/robot_parts.json:parts[chatter_dome].name
 msgid "Chatterbox Dome"
 msgstr "おしゃべりドーム"
 
 #: data/robot_parts.json:parts[chatter_dome].desc
-msgid "Glass dome with a speaker. Gossips about junk, finds a bit more of it."
-msgstr "スピーカーつきのガラスドーム。ガラクタのうわさ話をして、少し多く見つける。"
+msgid "Glass dome with a little speaker."
+msgstr "小さなスピーカー付きのガラスドーム。"
 
 #: data/robot_parts.json:parts[maker_optic].name
 msgid "Maker Optic"
@@ -12467,32 +12367,32 @@ msgid "Treads"
 msgstr "キャタピラ"
 
 #: data/robot_parts.json:parts[treads].desc
-msgid "Rubber tracks. Carries more, rolls slower."
-msgstr "ゴムのキャタピラ。たくさん運べるが、走るのは遅い。"
+msgid "Rubber tracks."
+msgstr "ゴムのキャタピラ。"
 
 #: data/robot_parts.json:parts[rotor].name
 msgid "Quad Rotor"
 msgstr "クアッドローター"
 
 #: data/robot_parts.json:parts[rotor].desc
-msgid "Four ducted fans. Quick, but every kilo counts."
-msgstr "4つのダクトファン。速いけれど、1キロでも重さがひびく。"
+msgid "Four ducted fans."
+msgstr "4基のダクトファン。"
 
 #: data/robot_parts.json:parts[legs].name
 msgid "Walker Legs"
 msgstr "ウォーカーレッグ"
 
 #: data/robot_parts.json:parts[legs].desc
-msgid "Four careful legs. A steady platform for the arm."
-msgstr "慎重な4本脚。アームのための安定した土台。"
+msgid "Four careful legs."
+msgstr "慎重な4本脚。"
 
 #: data/robot_parts.json:parts[hover_skirt].name
 msgid "Hover Skirt"
 msgstr "ホバースカート"
 
 #: data/robot_parts.json:parts[hover_skirt].desc
-msgid "A cushion of air. Glides fast, shakes the hopper."
-msgstr "空気のクッション。すべるように速いが、ホッパーが揺れる。"
+msgid "A cushion of air and a soft glow underneath."
+msgstr "空気のクッションと、下にやわらかな光。"
 
 #: data/robot_parts.json:parts[maker_glider].name
 msgid "Maker Glider"
@@ -12507,56 +12407,56 @@ msgid "Wide Scoop"
 msgstr "ワイドスコップ"
 
 #: data/robot_parts.json:parts[wide_scoop].desc
-msgid "Grabs more per pass, picks up some grit too."
-msgstr "ひとすくいで多くつかむけれど、砂も少し拾う。"
+msgid "A big, wide scoop."
+msgstr "大きくて幅広いスコップ。"
 
 #: data/robot_parts.json:parts[fine_sieve].name
 msgid "Fine Sieve"
 msgstr "細かいふるい"
 
 #: data/robot_parts.json:parts[fine_sieve].desc
-msgid "Shakes the dirt out: cleaner cubes, slower scooping."
-msgstr "土をふるい落とす：キューブはきれいに、すくうのは遅く。"
+msgid "A sieve that shakes out the dirt."
+msgstr "土をふるい落とすふるい。"
 
 #: data/robot_parts.json:parts[long_forks].name
 msgid "Long Forks"
 msgstr "ロングフォーク"
 
 #: data/robot_parts.json:parts[long_forks].desc
-msgid "Room for one more bale. Wobbly at speed."
-msgstr "ベールをもう1個積める。スピードを出すとぐらつく。"
+msgid "Extra-long forks."
+msgstr "特長のフォーク。"
 
 #: data/robot_parts.json:parts[tow_hook].name
 msgid "Tow Hook"
 msgstr "牽引フック"
 
 #: data/robot_parts.json:parts[tow_hook].desc
-msgid "Winch and hook: drags bales quickly, eyes on the hook."
-msgstr "ウインチとフック：ベールを素早く引っぱる。フックから目を離さずに。"
+msgid "Winch and hook."
+msgstr "ウインチとフック。"
 
 #: data/robot_parts.json:parts[seed_drill].name data/robots.json:types[seedling].upgrades[1].name
 msgid "Seed Drill"
 msgstr "シードドリル"
 
 #: data/robot_parts.json:parts[seed_drill].desc
-msgid "An auger that plants fast. Heavy on the nose."
-msgstr "素早く植えるオーガー。前が重い。"
+msgid "An auger nose."
+msgstr "オーガーの鼻先。"
 
 #: data/robot_parts.json:parts[mist_sprayer].name
 msgid "Mist Sprayer"
 msgstr "ミストスプレーヤー"
 
 #: data/robot_parts.json:parts[mist_sprayer].desc
-msgid "Fan nozzle: waters a wider circle, empties the tank sooner."
-msgstr "扇形ノズル：広い円に水をまくが、タンクが早く空になる。"
+msgid "A fan nozzle."
+msgstr "扇形ノズル。"
 
 #: data/robot_parts.json:parts[jet_nozzle].name
 msgid "Jet Nozzle"
 msgstr "ジェットノズル"
 
 #: data/robot_parts.json:parts[jet_nozzle].desc
-msgid "Strong straight jet: quicker watering, narrower spray."
-msgstr "強くまっすぐな水流：水やりは速く、散水は狭く。"
+msgid "A strong, straight jet nozzle."
+msgstr "まっすぐ強い噴射ノズル。"
 
 #: data/robot_parts.json:parts[antenna].name
 msgid "Bulb Antenna"
@@ -12591,8 +12491,8 @@ msgid "A sprout on a spring. Boings when it brakes."
 msgstr "バネの上の新芽。ブレーキをかけるとボヨンと揺れる。"
 
 #: data/robot_parts.json:parts[bobble_plant].source.hint
-msgid "Haggle's welcome gift with your first robot"
-msgstr "最初のロボットにつく Haggle からの歓迎ギフト"
+msgid "Comes with your first robot"
+msgstr "最初のロボットに付属"
 
 #: data/robot_parts.json:parts[traffic_cone].name
 msgid "Traffic Cone"
@@ -13858,8 +13758,8 @@ msgid "Every lit hex on that map is yours. I counted. Twice."
 msgstr "地図で光ってるヘックスは全部君のもの。数えたよ。2回。"
 
 #: data/wren_lines.json:first_robot_hint
-msgid "If you find enough parts, the workbench can put a helper together. Chassis, wheels, an arm, a core."
-msgstr "パーツが十分集まれば、作業台で助っ人を組み立てられる。シャーシ、車輪、アーム、コア。"
+msgid "With enough parts, the workbench can put a helper together. Bots tab, one button."
+msgstr "パーツが足りれば作業台で助っ人を組み立てられる。ボットタブ、ボタンひとつ。"
 
 #: data/wren_lines.json:first_robot_hint
 msgid "Electronics junk sometimes hides parts. So does the ground, if you listen for it."
@@ -15245,6 +15145,359 @@ msgstr ""
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
 
+#~ msgid "Missing %d part"
+#~ msgstr[0] "パーツが %d 個足りない"
+
+#~ msgid "Needs a %s Control Core"
+#~ msgstr "%sコントロールコアが必要"
+
+#~ msgid "Not enough parts (scrap spares at Haggle's or run the recycler)"
+#~ msgstr "パーツが足りない（Haggle の店で余りを解体するか、リサイクラーを動かそう）"
+
+#~ msgid "%s (Builder)"
+#~ msgstr "%s（ビルダー）"
+
+#~ msgid "%s robot part"
+#~ msgstr "%s ロボットパーツ"
+
+#~ msgid "Requests reward: %s. Equip it on the Requests tab."
+#~ msgstr "依頼の報酬：%s。依頼タブで装備しよう。"
+
+#~ msgid "Requests reward: %s. Fit it in the Builder tab."
+#~ msgstr "依頼の報酬：%s。ビルダータブで取り付けよう。"
+
+#~ msgid "None in the parts bin"
+#~ msgstr "パーツ箱にない"
+
+#~ msgid "Needs a %s%s"
+#~ msgstr "%s%s が必要"
+
+#~ msgid "Haggle's stall · %s"
+#~ msgstr "Haggle の屋台 · %s"
+
+#~ msgid "Craft · %s"
+#~ msgstr "作る · %s"
+
+#~ msgid "Not in Haggle's stall right now"
+#~ msgstr "いまは Haggle の屋台にない"
+
+#~ msgid "Haggle: \"First bot? Treads on the house. And a plant, bots like plants.\" (Workbench > Builder)"
+#~ msgstr "Haggle：「はじめてのボット？キャタピラはサービスだ。それと植物もひとつ。ボットは植物が好きなんだ」（作業台 > ビルダー）"
+
+#~ msgid "%s spotted a %s."
+#~ msgstr "%s が見つけた：%s。"
+
+#~ msgid ""
+#~ "No robots yet. Build one in the Bots tab, then fit it out here.\n"
+#~ "Haggle throws in a set of treads with your first robot."
+#~ msgstr ""
+#~ "まだロボットがいない。ボットタブで作ってから、ここで装備しよう。\n"
+#~ "最初のロボットには Haggle がキャタピラをおまけしてくれる。"
+
+#~ msgid "in the bin: %d  ·  press to fit"
+#~ msgstr "箱の中：%d  ·  押して装着"
+
+#~ msgid "  ·  press to get + fit"
+#~ msgstr "  ·  押して入手＋装着"
+
+#~ msgid "Builder bin %d   ·   Parts %s"
+#~ msgstr "ビルダーの木箱 %d   ·   パーツ %s"
+
+#~ msgid "Haggle's stall: %s  (new stock in %d min)"
+#~ msgstr "Haggle の屋台：%s（%d 分後に入荷）"
+
+#~ msgid "%s cubes, %s parts, %s Control Core. %s"
+#~ msgstr "%s キューブ、%s パーツ、%s コントロールコア。%s"
+
+#~ msgid "  parts %d/%d · %s"
+#~ msgstr "  パーツ %d/%d · %s"
+
+#~ msgid "REQUESTS"
+#~ msgstr "依頼"
+
+#~ msgid "Short optional jobs and world events. Each pays cubes or parts; nothing is lost if one runs out."
+#~ msgstr "短い任意の仕事とワールドイベント。どれもキューブかパーツがもらえる。時間切れでも何も失わない。"
+
+#~ msgid "REWARD TRACK"
+#~ msgstr "報酬トラック"
+
+#~ msgid "LIVE  ·  %s  ·  %s  ·  %s left"
+#~ msgstr "ライブ  ·  %s  ·  %s  ·  残り %s"
+
+#~ msgid "Collection  %d / %d   ·   see the Codex (K)"
+#~ msgstr "コレクション  %d / %d   ·   図鑑（K）を見よう"
+
+#~ msgid "A new request is being posted."
+#~ msgstr "新しい依頼を掲示中。"
+
+#~ msgid "Pays  %s"
+#~ msgstr "報酬  %s"
+
+#~ msgid "Accept  (%s)"
+#~ msgstr "受ける（%s）"
+
+#~ msgid "Pass"
+#~ msgstr "見送る"
+
+#~ msgid "Working on it"
+#~ msgstr "作業中"
+
+#~ msgid "Claim  %s"
+#~ msgstr "受け取る  %s"
+
+#~ msgid "Next posting in %s"
+#~ msgstr "次の掲示まで %s"
+
+#~ msgid "Time limit %s once accepted   ·   offer open %s"
+#~ msgstr "受注後の制限時間 %s   ·   受付 %s"
+
+#~ msgid "Time left %s"
+#~ msgstr "残り時間 %s"
+
+#~ msgid "Finished. Claim it!"
+#~ msgstr "完了。受け取ろう！"
+
+#~ msgid "After %d requests"
+#~ msgstr "依頼 %d 件のあと"
+
+#~ msgid "Equipped  (press to remove)"
+#~ msgstr "装備中（押して外す）"
+
+#~ msgid "Unlocked  ·  press to equip"
+#~ msgstr "解放済み  ·  押して装備"
+
+#~ msgid "HUB"
+#~ msgstr "基地"
+
+#~ msgid "Parts %s"
+#~ msgstr "パーツ %s"
+
+#~ msgid ""
+#~ "Level %d   ·   %s\n"
+#~ "%s   Bales sell for +%d%%."
+#~ msgstr ""
+#~ "レベル %d   ·   %s\n"
+#~ "%s   ベールが +%d%% で売れる。"
+
+#~ msgid "Fully built."
+#~ msgstr "すべて建設済み。"
+
+#~ msgid ""
+#~ "Next: %s. %s\n"
+#~ "Needs %s"
+#~ msgstr ""
+#~ "次：%s。%s\n"
+#~ "必要：%s"
+
+#~ msgid ""
+#~ "\n"
+#~ "Requires hub level %d."
+#~ msgstr ""
+#~ "\n"
+#~ "基地レベル %d が必要。"
+
+#~ msgid ""
+#~ "\n"
+#~ "All built (max)."
+#~ msgstr ""
+#~ "\n"
+#~ "すべて建設済み（最大）。"
+
+#~ msgid ""
+#~ "%s   ·   %d / %d built\n"
+#~ "%s%s"
+#~ msgstr ""
+#~ "%s   ·   %d / %d 建設済み\n"
+#~ "%s%s"
+
+#~ msgid "Air Scrubbers maxed"
+#~ msgstr "空気清浄機は最大"
+
+#~ msgid "Save game"
+#~ msgstr "セーブする"
+
+#~ msgid "Saved."
+#~ msgstr "セーブしました。"
+
+#~ msgid "Quit to title"
+#~ msgstr "タイトルへ戻る"
+
+#~ msgid "Quit to desktop"
+#~ msgstr "デスクトップへ終了"
+
+#~ msgid "%s   ·   %s   ·   %d built"
+#~ msgstr "%s   ·   %s   ·   %d 台建造済み"
+
+#~ msgid "Crew: %d / %d  (hub level %d: +%d per level)"
+#~ msgstr "クルー：%d / %d（基地レベル %d：レベルごとに +%d）"
+
+#~ msgid ""
+#~ "\n"
+#~ "Water Tanks: %d / %d placed · next %s cubes (Command view: Place refill tank)"
+#~ msgstr ""
+#~ "\n"
+#~ "給水タンク：%d / %d 設置 · 次は %s キューブ（指揮ビュー：補給タンクを置く）"
+
+#~ msgid "Build   %s cubes"
+#~ msgstr "作る   %s キューブ"
+
+#~ msgid "Build   (%s)"
+#~ msgstr "作る   （%s）"
+
+#~ msgid "Locked  ·  research %s"
+#~ msgstr "ロック中  ·  研究 %s"
+
+#~ msgid "Fleet tier: %s (max)"
+#~ msgstr "フリートのティア：%s（最大）"
+
+#~ msgid "Next: %s  ·  x%.1f work speed  ·  %s look"
+#~ msgstr "次：%s  ·  作業速度 x%.1f  ·  %s の外見"
+
+#~ msgid "Needs %s cubes, %s parts and a %s Control Core.  %s"
+#~ msgstr "%s キューブ、%s パーツ、%s のコントロールコアが必要。  %s"
+
+#~ msgid "Upgrade fleet to %s"
+#~ msgstr "フリートを %s にアップグレード"
+
+#~ msgid "□  %s  ·  missing  (detector, or salvage from electronics junk)"
+#~ msgstr "□  %s  ·  不足（探知機、または電子ガラクタから回収）"
+
+#~ msgid "HAGGLE'S PARTS TRADE"
+#~ msgstr "HAGGLE のパーツ取引"
+
+#~ msgid "\"Everything's original. Mostly. Three of yours for one of mine, no questions, some questions.\""
+#~ msgstr "「ぜんぶ純正だよ。だいたいはね。そっちの3つとこっちの1つ、詮索なし、ちょっとだけ詮索あり」"
+
+#~ msgid "Parts  %s      Robot parts in storage  %d"
+#~ msgstr "パーツ  %s      在庫のロボットパーツ  %d"
+
+#~ msgid "Haggle: \"Funny thing, I just happened to find a %s. For you, half price.\""
+#~ msgstr "Haggle：「不思議なもんでね、ちょうど %s を見つけたところさ。君には半額だ」"
+
+#~ msgid "Trades away: %s"
+#~ msgstr "手放すもの：%s"
+
+#~ msgid "Needs 3 spare parts (Control Cores needed for a Mk tier are never traded)."
+#~ msgstr "予備パーツが3つ必要（Mk ティアに必要なコントロールコアは取引されません）。"
+
+#~ msgid "   (needed)"
+#~ msgstr "   （必要）"
+
+#~ msgid "own %d"
+#~ msgstr "所持 %d"
+
+#~ msgid "Buy Rusty  %s"
+#~ msgstr "サビたものを買う  %s"
+
+#~ msgid "Buy Worn  %s"
+#~ msgstr "使い古しを買う  %s"
+
+#~ msgid "Scrap %d spare Rusty robot parts  ->  %s"
+#~ msgstr "余った錆びたロボットパーツ %d 個を解体  ->  %s"
+
+#~ msgid "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab"
+#~ msgstr "ビルダーパーツ  ·  %d 分後に入荷  ·  ビルダータブで装着"
+
+#~ msgid "Haggle: \"%s. Treat it nicely.\""
+#~ msgstr "Haggle：「%s。大事にしてやってくれ」"
+
+#~ msgid ""
+#~ "%s  (own %d)\n"
+#~ "%s"
+#~ msgstr ""
+#~ "%s  （所持 %d）\n"
+#~ "%s"
+
+#~ msgid "Swap 3 spares"
+#~ msgstr "予備3つを交換"
+
+#~ msgid "in about %s"
+#~ msgstr "あと約 %s"
+
+#~ msgid "earn more cubes"
+#~ msgstr "キューブをもっと稼ごう"
+
+#~ msgid "Trade"
+#~ msgstr "取引"
+
+#~ msgid "Cosmetics"
+#~ msgstr "見た目"
+
+#~ msgid "Builder"
+#~ msgstr "ビルダー"
+
+#~ msgid "%s (soon)"
+#~ msgstr "%s（近日）"
+
+#~ msgid "Build a robot with all five custom parts."
+#~ msgstr "5つのカスタムパーツすべてを使ってロボットを作る。"
+
+#~ msgid "Robot parts and building stock salvaged from junk, the recycler and Haggle's scrap bin. Pays for robots, the Builder, base levels, stations, rocket stages and outpost repairs."
+#~ msgstr "ガラクタ、リサイクラー、Haggle のスクラップ箱から集めたロボットパーツと建材。ロボット、ビルダー、拠点レベル、設備、ロケットの段、前哨基地の修理に使う。"
+
+#~ msgid "Fit a part in the Builder"
+#~ msgstr "ビルダーでパーツを装着する"
+
+#~ msgid "Save a crew build preset"
+#~ msgstr "クルーの構成プリセットを保存する"
+
+#~ msgid "Thick side plates and a rear rack. Holds more, drives heavier."
+#~ msgstr "厚いサイドプレートと後部ラック。たくさん積めるが、走りは重い。"
+
+#~ msgid "Smooth covers keep grit out of the compactor. Fussier to service."
+#~ msgstr "なめらかなカバーで圧縮機に砂が入らない。整備は少し面倒。"
+
+#~ msgid "A huge lens. Spots salvage from far off, gets a little distracted."
+#~ msgstr "巨大なレンズ。遠くの回収品を見つけるけれど、少し気が散りやすい。"
+
+#~ msgid "Blinkers for robots. Works faster, notices less."
+#~ msgstr "ロボット用の目隠し。作業は速く、気づくことは少なく。"
+
+#~ msgid "Sees over the plants: wider spray, slower to turn."
+#~ msgstr "植物ごしに見わたせる：散水は広く、回るのは遅い。"
+
+#~ msgid "Glass dome with a speaker. Gossips about junk, finds a bit more of it."
+#~ msgstr "スピーカーつきのガラスドーム。ガラクタのうわさ話をして、少し多く見つける。"
+
+#~ msgid "Rubber tracks. Carries more, rolls slower."
+#~ msgstr "ゴムのキャタピラ。たくさん運べるが、走るのは遅い。"
+
+#~ msgid "Four ducted fans. Quick, but every kilo counts."
+#~ msgstr "4つのダクトファン。速いけれど、1キロでも重さがひびく。"
+
+#~ msgid "Four careful legs. A steady platform for the arm."
+#~ msgstr "慎重な4本脚。アームのための安定した土台。"
+
+#~ msgid "A cushion of air. Glides fast, shakes the hopper."
+#~ msgstr "空気のクッション。すべるように速いが、ホッパーが揺れる。"
+
+#~ msgid "Grabs more per pass, picks up some grit too."
+#~ msgstr "ひとすくいで多くつかむけれど、砂も少し拾う。"
+
+#~ msgid "Shakes the dirt out: cleaner cubes, slower scooping."
+#~ msgstr "土をふるい落とす：キューブはきれいに、すくうのは遅く。"
+
+#~ msgid "Room for one more bale. Wobbly at speed."
+#~ msgstr "ベールをもう1個積める。スピードを出すとぐらつく。"
+
+#~ msgid "Winch and hook: drags bales quickly, eyes on the hook."
+#~ msgstr "ウインチとフック：ベールを素早く引っぱる。フックから目を離さずに。"
+
+#~ msgid "An auger that plants fast. Heavy on the nose."
+#~ msgstr "素早く植えるオーガー。前が重い。"
+
+#~ msgid "Fan nozzle: waters a wider circle, empties the tank sooner."
+#~ msgstr "扇形ノズル：広い円に水をまくが、タンクが早く空になる。"
+
+#~ msgid "Strong straight jet: quicker watering, narrower spray."
+#~ msgstr "強くまっすぐな水流：水やりは速く、散水は狭く。"
+
+#~ msgid "Haggle's welcome gift with your first robot"
+#~ msgstr "最初のロボットにつく Haggle からの歓迎ギフト"
+
+#~ msgid "If you find enough parts, the workbench can put a helper together. Chassis, wheels, an arm, a core."
+#~ msgstr "パーツが十分集まれば、作業台で助っ人を組み立てられる。シャーシ、車輪、アーム、コア。"
+
 #~ msgid ""
 #~ "LAUNCH PAD\n"
 #~ "BASE LEVEL 5"
@@ -15323,9 +15576,6 @@ msgstr ""
 
 #~ msgid "Next: %s"
 #~ msgstr "次：%s"
-
-#~ msgid "Build"
-#~ msgstr "建造"
 
 #~ msgid "Planets"
 #~ msgstr "惑星"

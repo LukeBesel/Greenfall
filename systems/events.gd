@@ -497,9 +497,8 @@ func _pay(rw: Dictionary, at: Vector3, source: String) -> String:
 			var pr: Array = rw["part_rarity"]
 			r = int(pr[0]) if rng.randf() < 0.75 else int(pr[1])
 		var t: int = rng.randi() % maxi(Economy.parts.get("types", [1]).size(), 1)
-		GameState.parts.append({"type": t, "rarity": r})
-		EventBus.part_found.emit(t, r)
-		bits.append("+" + L10nFmt.part_name(r, t))  # [i18n2]
+		RobotParts.salvage(t, r)  # [ui2] a found robot part pays Parts
+		bits.append(RobotParts.gain_text(r))
 	if rng.randf() < float(rw.get("trinket_chance", 0.0)):
 		var tid: String = Collection.roll(source, rng.randf())
 		if tid != "" and Collection.grant(tid):

@@ -36,12 +36,12 @@ hooks instead of played through.
 - Goals: scoop 15 > bale > sell > upgrade > first hex > Perfect bale > 5 upgrades > 10 bales > ...
 - Gates: none. **Three currencies only** (data/currencies.json): **Cubes** (selling bales; field notes
   from cleaning, shards and robot bales pay cubes too), **Parts** (scooped metal / plastic / glass junk,
-  the recycler, scrapped spares at Haggle's, requests; scooped parts are finite per district) and
+  the recycler, dug-up robot parts (they pay Parts by rarity), requests; scooped parts are finite per district) and
   **Seeds** (planting; the compost press makes them).
 
 ## 2. Robots and research (0:05-0:30)
 - Research (workbench, Research tab) costs cubes and real time. Tier-0 nodes are 250 cubes.
-- First Scoopie ~0:07, Haul Bug ~0:09 [bot] (build cost + parts; Haggle's sells missing rusty parts).
+- First Scoopie ~0:07, Haul Bug ~0:09 [bot] (cubes + Parts; [ui2] no part recipes).
 - Command (B): paint zones for crews. Base level 2 (1.5k cubes + 40 parts) ~0:11-0:20.
 
 ## 3. The first seed, and the slow garden (0:12-0:60)
@@ -188,7 +188,7 @@ Homecoming); the Ark Bridge opens earlier for Heirloom picks (one per restored p
 ## Gates and reachability (checked)
 | Gate | Needs | Earned from | Verified |
 |---|---|---|---|
-| Robots | build cost + parts | cubes; parts dug up / Haggle's | autoplay |
+| Robots | cubes + Parts | cubes; Parts (scooped, dug up, recycler) | autoplay |
 | Research | cubes + real time | field notes pay cubes: hexes cleaned 100, restored 150, shards 200, robot bales 10, blooms 15, Thriving wildlife 6/min | autoplay (all 38 nodes done by ~3:00) |
 | Base levels | cubes + parts | selling, garden stipend; scooped junk, recycler, requests | autoplay x2 districts + Dust |
 | Dust Flats | Dune Charts + 2 bases L5 | | autoplay |

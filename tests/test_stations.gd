@@ -208,7 +208,7 @@ func test_hub_panel_shows_stations_section() -> void:
 	hp.hub = hub
 	add_child_autofree(hp)
 	var sp: StationsPanel = null
-	for c: Node in hp.get_children():
+	for c: Node in hp.find_children("*", "", true, false):  # [ui2] inside a card
 		if c is StationsPanel:
 			sp = c
 	assert_not_null(sp)
