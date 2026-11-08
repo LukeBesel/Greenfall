@@ -90,6 +90,7 @@ func set_level(l: int) -> void:
 		for k: KitBuilding in kits:
 			k.set_state(ks)
 			k.set_powered(level >= 2)
+		_build_lots()
 
 
 ## The kit state for a base level: broken (1), repaired (2-3), restored (4-5).
@@ -118,6 +119,7 @@ func _make() -> void:
 	dressing = StreetDressing.new()
 	dressing.name = "Dressing"
 	dressing.skip_facades = true
+	dressing.kit_yard = true
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
 	set_level(level)
@@ -242,44 +244,106 @@ func _kit_blocks() -> void:
 	_kit_state = kit_state(level)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_value + 401
-	var junk := KitMesh.Builder.new(seed_value, {"main": "cream", "accent": "teal"}, _kit_state)
-	var any_junk: bool = false
+	# The hub yard: a kit ground patch (plates, kerbs, cracks, grit, tufts), never a flat slab.
+	_lots.append({"c": Vector2.ZERO, "kind": "yard", "seed": 1 + hub_index % 3})
+	var hero_key := Vector2i(0, -1)
 	for key: Vector2i in layout.blocks:
 		if key == Vector2i.ZERO:
 			continue
 		var b: Dictionary = layout.blocks[key]
 		var c: Vector2 = (b["rect"] as Rect2).get_center()
+		if key == hero_key and site_id != "start_yard":
+			_hero(c)
+			continue
 		match int(b["type"]):
 			CityLayout.Block.BUILDINGS:
 				var pat: Array = PATTERNS[rng.randi() % PATTERNS.size()]
 				var turn: float = float(rng.randi() % 4) * 90.0 if pat.size() == 1 else (0.0 if rng.randf() < 0.5 else 180.0)
 				for e: Array in pat:
-					var kind: String = e[0]
 					var lp := Vector2(float(e[1]), float(e[2])).rotated(deg_to_rad(-turn))
-					var yaw: float = deg_to_rad(float(e[3]) + turn)
 					var pal: Dictionary = {"main": "cream", "accent": ACCENTS[rng.randi() % ACCENTS.size()]}
-					var kb: KitBuilding = KitBuilding.create(kind, _kit_state, 1 + rng.randi() % 3, pal, level >= 2)
-					kb.position = Vector3(c.x + lp.x, 0.0, c.y + lp.y)
-					kb.rotation.y = yaw
-					kit_root.add_child(kb)
-					kits.append(kb)
-					var fp: Vector2 = KitBuilding.FOOTPRINT.get(kind, Vector2(10, 10)) * 0.8
-					if absf(sin(yaw)) > 0.5:
-						fp = Vector2(fp.y, fp.x)
-					_foot.append(Rect2(Vector2(kb.position.x, kb.position.z) - fp * 0.5, fp))
-			CityLayout.Block.LANDFILL:
-				any_junk = true
-				var t := Transform3D(Basis(), Vector3(c.x, 0, c.y))
-				KitProps.debris(junk, t, 9.0, 26)
-				KitProps.crate_stack(junk, t * KitMesh.xf(Vector3(rng.randf_range(-6, 6), 0, rng.randf_range(-6, 6)), Vector3(0, rng.randf() * 90.0, 0)), 3 + rng.randi() % 3, _kit_state)
-				for k: int in 3:
-					KitProps.barrel(junk, t * KitMesh.xf(Vector3(rng.randf_range(-8, 8), 0.0, rng.randf_range(-8, 8)), Vector3(0, rng.randf() * 180.0, 0)), "paint:barrel", rng.randf() < 0.5)
-				var gp: Node3D = KitMesh.ground_patch(Vector2(18, 18), _kit_state, 1 + rng.randi() % 3)
-				gp.position = Vector3(c.x, 0, c.y)
-				kit_root.add_child(gp)
-	if any_junk:
-		var mi: MeshInstance3D = KitMesh.instance(junk)
-		mi.name = "LotJunk"
-		kit_root.add_child(mi)
+					_kit(str(e[0]), Vector2(c.x + lp.x, c.y + lp.y), deg_to_rad(float(e[3]) + turn), pal, 1 + rng.randi() % 3)
+			CityLayout.Block.LANDFILL, CityLayout.Block.VACANT, CityLayout.Block.PARKING:
+				_lots.append({"c": c, "kind": "landfill" if int(b["type"]) == CityLayout.Block.LANDFILL else "lot", "seed": 1 + rng.randi() % 3})
+	_build_lots()
 	# The kit has no bodies of its own: one trimesh body for the buildings' solid meshes.
 	SitePrefab.collision_for(kit_root, self)
+
+
+var _lots: Array[Dictionary] = []
+var _lot_root: Node3D
+
+
+## One kit building at a site-local point, with its footprint for the junk clearing.
+func _kit(kind: String, at: Vector2, yaw: float, pal: Dictionary, seed_v: int) -> KitBuilding:
+	var kb: KitBuilding = KitBuilding.create(kind, _kit_state, seed_v, pal, level >= 2)
+	kb.position = Vector3(at.x, 0.0, at.y)
+	kb.rotation.y = yaw
+	kit_root.add_child(kb)
+	kits.append(kb)
+	var fp: Vector2 = KitBuilding.FOOTPRINT.get(kind, Vector2(10, 10)) * 0.8
+	if absf(sin(yaw)) > 0.5:
+		fp = Vector2(fp.y, fp.x)
+	_foot.append(Rect2(at - fp * 0.5, fp))
+	return kb
+
+
+## The hub's hero building, facing the yard across the street (Moon Sweepers' big hub hall):
+## a large module flanked by a tower and a tank farm, the hub sign on its front.
+func _hero(c: Vector2) -> void:
+	var pal: Dictionary = {"main": "cream", "accent": "teal"}
+	_kit("module_large", c + Vector2(0, 1.5), PI, pal, 1 + hub_index % 3)
+	_kit("tower", c + Vector2(-7.5, -6.0), PI, pal, 1 + (hub_index + 1) % 3)
+	_kit("machine_housing", c + Vector2(7.0, -6.0), PI, {"main": "cream", "accent": "orange"}, 1 + (hub_index + 2) % 3)
+
+
+## Yard and lot dressing for the current state: kit ground patches everywhere; landfill heaps of
+## kit debris, crate stacks and tipped barrels while broken, tidied when repaired, planters with
+## bushes and flowers when restored. Rebuilt on a state change (meshes are kit-cached).
+func _build_lots() -> void:
+	if _lot_root:
+		_lot_root.free()
+	_lot_root = Node3D.new()
+	_lot_root.name = "Lots"
+	add_child(_lot_root)
+	var st: String = _kit_state
+	var b := KitMesh.Builder.new(seed_value + 7, {"main": "cream", "accent": "teal"}, st)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value + 409
+	for lot: Dictionary in _lots:
+		var c: Vector2 = lot["c"]
+		var yard: bool = lot["kind"] == "yard"
+		var gp: Node3D = KitMesh.ground_patch(Vector2(21, 21) if yard else Vector2(18, 18), st, int(lot["seed"]))
+		gp.position = Vector3(c.x, 0.0, c.y)
+		_lot_root.add_child(gp)
+		var t := Transform3D(Basis(), Vector3(c.x, 0, c.y))
+		if yard:
+			# Lived-in clutter on the yard's edges, clear of the anchors and the way out north.
+			for p: Vector3 in [Vector3(-9.0, 0, -2.0), Vector3(9.0, 0, -2.0)]:
+				KitProps.crate_stack(b, t * KitMesh.xf(p, Vector3(0, rng.randf() * 90.0, 0)), 3, st)
+			KitProps.barrel(b, t * KitMesh.xf(Vector3(-9.5, 0, 2.5)), "paint:barrel", st == "broken")
+			KitProps.lamp_post(b, t * KitMesh.xf(Vector3(9.8, 0, 2.5)), 4.5, st)
+			if st == "restored":
+				for x: float in [-4.5, 4.5]:
+					KitProps.planter(b, t * KitMesh.xf(Vector3(x, 0, 10.2)), 2.4, st)
+			continue
+		match st:
+			"broken":
+				if lot["kind"] == "landfill":
+					KitProps.debris(b, t, 9.0, 26)
+					KitProps.crate_stack(b, t * KitMesh.xf(Vector3(rng.randf_range(-6, 6), 0, rng.randf_range(-6, 6)), Vector3(0, rng.randf() * 90.0, 0)), 3 + rng.randi() % 3, st)
+					for k: int in 3:
+						KitProps.barrel(b, t * KitMesh.xf(Vector3(rng.randf_range(-8, 8), 0.0, rng.randf_range(-8, 8)), Vector3(0, rng.randf() * 180.0, 0)), "paint:barrel", rng.randf() < 0.5)
+				else:
+					KitProps.debris(b, t, 7.0, 10)
+			"repaired":
+				KitProps.crate_stack(b, t * KitMesh.xf(Vector3(-5, 0, -5)), 4, st)
+				KitProps.barrel(b, t * KitMesh.xf(Vector3(5, 0, -5)))
+				KitProps.lamp_post(b, t * KitMesh.xf(Vector3(6, 0, 6)), 4.5, st)
+			_:
+				for k: int in 4:
+					KitProps.planter(b, t * KitMesh.xf(Vector3(-6.0 + k * 4.0, 0, rng.randf_range(-3, 3)), Vector3(0, 90.0 * (k % 2), 0)), 2.6, st)
+				KitProps.lamp_post(b, t * KitMesh.xf(Vector3(6, 0, 6)), 4.5, st)
+	var mi: MeshInstance3D = KitMesh.instance(b)
+	mi.name = "LotProps"
+	_lot_root.add_child(mi)
