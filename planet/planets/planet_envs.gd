@@ -112,6 +112,10 @@ static func build_site(site_root: Node3D, site: Dictionary, stage: int, restorat
 			site_root.transform = site["transform"]
 	site_root.add_child(p)
 	var opts: Dictionary = {"hub_index": hub_i, "seed": int(site.get("seed", 4471)), "name": str(site.get("name", ""))}
+	if site.get("water_fn") is Callable:  # [v3city] Verdance's towns keep off the lakes
+		opts["water"] = site["water_fn"]
+	if site.get("globe_ctx") is Dictionary:
+		opts["globe"] = site["globe_ctx"]
 	if SiteBuilders.configure(p, opts):
 		p.build()
 	return p

@@ -11,6 +11,9 @@ render_mode diffuse_burley, specular_schlick_ggx;
 // [orbD] Site frame on a walkable globe (identity on the flat game): "world" maths run in the
 // nearest hub site's local metres, y up on its pad (planet/sites/site_manager.gd).
 global uniform mat4 site_inv;
+// [v3city] Town outskirts on the globe (planet/sites/town_outskirts.gd): each tile's mesh is built
+// in its own ground frame (y up there), so the maths run in object space instead.
+uniform bool local_space = false;
 
 uniform sampler2D tex_red_brick : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D tex_brick : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
@@ -51,6 +54,10 @@ float lum(vec3 c) {
 void vertex() {
 	wp = (site_inv * MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	wn = normalize((site_inv * MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
+	if (local_space) {
+		wp = VERTEX;
+		wn = NORMAL;
+	}
 	// Tangent frame matching the world-projected texture coordinates used below.
 	if (abs(NORMAL.y) > 0.7) {
 		TANGENT = vec3(1.0, 0.0, 0.0);

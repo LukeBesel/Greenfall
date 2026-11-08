@@ -43,7 +43,24 @@ static func for_site(site: Dictionary, terrain: SphereTerrain) -> YardKeepOut:
 ## Building footprints (site-local rects, VerdanceSite.footprints()).
 func add_footprints(fp: Array[Rect2]) -> void:
 	for r: Rect2 in fp:
-		rects.append(r.grow(FOOT_GROW_M))
+		var g: Rect2 = r.grow(FOOT_GROW_M)
+		_bin_rect(g)  # [v3city] the start town has a few hundred: binned, not scanned
+	_binned = true
+
+
+## [v3city] Footprints binned in BIN_M squares (the pad and pod stay in the plain lists).
+const BIN_M: float = 8.0
+var _bins: Dictionary = {}  # Vector2i -> Array[Rect2]
+var _binned: bool = false
+
+
+func _bin_rect(g: Rect2) -> void:
+	for bx: int in range(floori(g.position.x / BIN_M), floori(g.end.x / BIN_M) + 1):
+		for bz: int in range(floori(g.position.y / BIN_M), floori(g.end.y / BIN_M) + 1):
+			var k := Vector2i(bx, bz)
+			if not _bins.has(k):
+				_bins[k] = []
+			(_bins[k] as Array).append(g)
 
 
 ## Site-local (x, z) of a world direction, on the pad's plane.
@@ -56,6 +73,12 @@ func blocks_local(q: Vector2) -> bool:
 	for r: Rect2 in rects:
 		if r.has_point(q):
 			return true
+	if _binned:
+		var bin: Variant = _bins.get(Vector2i(floori(q.x / BIN_M), floori(q.y / BIN_M)))
+		if bin != null:
+			for r2: Rect2 in bin:
+				if r2.has_point(q):
+					return true
 	for d: Vector3 in discs:
 		if q.distance_squared_to(Vector2(d.x, d.y)) < d.z * d.z:
 			return true

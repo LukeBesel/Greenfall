@@ -95,6 +95,8 @@ func build_hub(i: int, sync: bool = false) -> SitePrefab:
 	s["planet"] = planet_id
 	s["hub_index"] = i
 	s["seed"] = _seed
+	s["water_fn"] = water_fn(i)  # [v3city] the town keeps its buildings, streets and props off the lake cells
+	s["globe_ctx"] = {"terrain": terrain, "grid": grid, "cells": cells, "xf": sites[i]["transform"], "clear": _clear_cell}  # [v3city] the outskirts
 	var p: SitePrefab = PlanetEnvs.build_site(roots[i], s, levels[i], restoration_of(i))
 	prefabs[i] = p
 	if sync:
@@ -104,6 +106,17 @@ func build_hub(i: int, sync: bool = false) -> SitePrefab:
 	else:
 		p.rebuilt.connect(func() -> void: _on_built(i, p), CONNECT_ONE_SHOT)
 	return p
+
+
+## [v3city] func(x, z) -> bool: whether a site-local point of hub i lies on a water cell.
+func water_fn(i: int) -> Callable:
+	var xf: Transform3D = sites[i]["transform"]
+	var g: SphereGrid = grid
+	var cs: SphereCells = cells
+	return func(x: float, z: float) -> bool:
+		if g == null or cs == null:
+			return false
+		return cs.state[g.cell_at(xf * Vector3(x, 0.0, z))] == 5
 
 
 func free_hub(i: int) -> void:
@@ -118,8 +131,12 @@ func prefab(i: int) -> SitePrefab:
 
 
 func _on_built(i: int, p: SitePrefab) -> void:
+	var t0: int = Time.get_ticks_msec()
 	_attach_power(i, p)
+	var t1: int = Time.get_ticks_msec()
 	_clear_footprints(i, p)
+	if DevHooks.has("load-report"):  # [v3city]
+		print("[sites] hub %d built: power %d ms, footprints %d ms" % [i, t1 - t0, Time.get_ticks_msec() - t1])
 	_probe_footprints.call_deferred(i, p)
 	site_built.emit(i, p)
 
@@ -234,14 +251,18 @@ func _clear_footprints(i: int, p: SitePrefab) -> void:
 	if cells == null or p.content == null:
 		return
 	var rects: Array[Rect2] = []
+	var small: Array[Rect2] = []
 	for c: Node in p.content.get_children():
 		if c.has_method("footprints"):
 			rects.append_array(c.call("footprints"))
+		if c.has_method("prop_rects"):
+			small.append_array(c.call("prop_rects"))  # [v3city] parked wrecks and shelters
 	if rects.is_empty():
 		return
 	var ko: YardKeepOut = _keep_out(i)
 	if ko:  # [v1yard] the start yard: pieces keep off the buildings one by one; only cells wholly under them go clean
 		ko.add_footprints(rects)
+		ko.add_footprints(small)
 		var field: Variant = globe.get("field")
 		for c: int in sites[i]["cells"]:
 			if ko.cell_inside(grid, c):
@@ -337,6 +358,8 @@ func region_clean(i: int) -> float:
 	for c: int in reg:
 		if cells.state[c] == 5:  # water
 			continue
+		if cells.flags[c] & SphereCells.F_HUB:
+			continue  # [v3city] hub ground (the yard, under the town's buildings): not a junk hex
 		n += 1
 		if not cells.is_dirty(c):
 			ok += 1
@@ -411,6 +434,8 @@ func planet_fraction() -> float:
 		var ci: int = c
 		if cells.state[ci] == 5:
 			continue
+		if cells.flags[ci] & SphereCells.F_HUB:
+			continue  # [v3city] hub ground: not a junk hex, never counted
 		n += 1
 		if not cells.is_dirty(ci):
 			ok += 1

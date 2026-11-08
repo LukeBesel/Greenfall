@@ -39,6 +39,20 @@ var buildings: bool = true
 ## [orbD] Flush sidewalks (2 cm, no slab or kerb colliders): on a globe site loose junk lies on the
 ## cells under them, and a 12 cm slab hid it and snagged Lumi along the kerb.
 var flush_walks: bool = false
+## [v3city] Globe hub towns (planet/sites/verdance_site.gd): blocks within detail_ring get the
+## kit facades, the rest proxies; proxy_collide gives every proxy building a box collider (the
+## town is walkable, not a backdrop); street props reach prop_ring blocks within prop_radius m.
+var detail_ring: int = DETAIL_RING
+var proxy_collide: bool = false
+var prop_ring: int = DETAIL_RING
+var prop_radius: float = INF
+var _bld_body: StaticBody3D  # [v3city] one body for every proxy building's box
+## [v3city] func(x, z) -> bool: site-local point on a lake cell (globe towns): no props there.
+var water_fn: Callable
+
+
+func _wet(x: float, z: float) -> bool:
+	return water_fn.is_valid() and bool(water_fn.call(x, z))
 
 
 func _walk_h() -> float:  # [orbD] the sidewalk top street furniture stands on
@@ -146,7 +160,7 @@ func _build_block(key: Vector2i, b: Dictionary) -> void:
 	var rect: Rect2 = b["rect"]
 	if layout.wild:
 		return  # the hub yard's fence belongs to StreetDressing (it is ruined, then repaired)
-	var detailed: bool = maxi(absi(key.x), absi(key.y)) <= DETAIL_RING
+	var detailed: bool = maxi(absi(key.x), absi(key.y)) <= detail_ring  # [v3city]
 	_build_sidewalks(rect, detailed)
 	match int(b["type"]):
 		CityLayout.Block.BUILDINGS:
@@ -157,11 +171,29 @@ func _build_block(key: Vector2i, b: Dictionary) -> void:
 					_build_building(key, bd)
 				else:
 					_detail.proxy_building(bd, _body, _det)
+					if proxy_collide:  # [v3city]
+						_proxy_box(bd)
 			_flush_block(key)
 		CityLayout.Block.HUB:
 			pass  # yard fence: StreetDressing
 		CityLayout.Block.PARKING, CityLayout.Block.VACANT:
 			_build_fence(rect, false)
+
+
+## [v3city] A proxy building's collider: its footprint up to the roof (tiers set back above).
+func _proxy_box(bd: Dictionary) -> void:
+	if _bld_body == null:
+		_bld_body = StaticBody3D.new()
+		_bld_body.name = "ProxyBuildings"
+		add_child(_bld_body)
+	var r: Rect2 = bd["rect"]
+	var h: float = float(bd["floors"]) * FLOOR_H
+	var cs := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(r.size.x, h, r.size.y)
+	cs.shape = box
+	cs.position = Vector3(r.get_center().x, h * 0.5, r.get_center().y)
+	_bld_body.add_child(cs)
 
 
 ## One body and one detail MeshInstance per block, centred on the block so the detail mesh's
@@ -202,6 +234,8 @@ func _build_sidewalks(r: Rect2, detailed: bool = true) -> void:
 		Rect2(Vector2(outer.position.x, r.position.y), Vector2(w, r.size.y)),
 		Rect2(Vector2(r.end.x, r.position.y), Vector2(w, r.size.y)),
 	]
+	if water_fn.is_valid():  # [v3city] a lakeside block: its sidewalk and kerb stop at the shore
+		slabs = _dry_pieces(slabs)
 	for s: Rect2 in slabs:
 		var pm := PlaneMesh.new()
 		pm.size = s.size
@@ -228,8 +262,22 @@ func _build_sidewalks(r: Rect2, detailed: bool = true) -> void:
 			body.free()
 	# Curb faces (outer edge only, facing the road).
 	var curb_parts: Array = []
-	for e: Array in [[outer.position, Vector2(outer.end.x, outer.position.y)], [Vector2(outer.position.x, outer.end.y), outer.end],
-			[outer.position, Vector2(outer.position.x, outer.end.y)], [Vector2(outer.end.x, outer.position.y), outer.end]]:
+	var edges: Array = [[outer.position, Vector2(outer.end.x, outer.position.y)], [Vector2(outer.position.x, outer.end.y), outer.end],
+			[outer.position, Vector2(outer.position.x, outer.end.y)], [Vector2(outer.end.x, outer.position.y), outer.end]]
+	if water_fn.is_valid():  # [v3city] kerb runs only on dry ground
+		var dry: Array = []
+		for e0: Array in edges:
+			var a0: Vector2 = e0[0]
+			var b0: Vector2 = e0[1]
+			var k: int = maxi(1, int(ceil(a0.distance_to(b0) / 3.0)))
+			for i: int in k:
+				var p0: Vector2 = a0.lerp(b0, float(i) / k)
+				var p1: Vector2 = a0.lerp(b0, float(i + 1) / k)
+				var m0: Vector2 = (p0 + p1) * 0.5
+				if not _wet(m0.x, m0.y) and not _wet(p0.x, p0.y) and not _wet(p1.x, p1.y):
+					dry.append([p0, p1])
+		edges = dry
+	for e: Array in edges:
 		var a: Vector2 = e[0]
 		var bb: Vector2 = e[1]
 		var len_: float = a.distance_to(bb)
@@ -238,6 +286,27 @@ func _build_sidewalks(r: Rect2, detailed: bool = true) -> void:
 		curb_parts.append(ProcMesh.part(ProcMesh.box(Vector3(len_, h + 0.02, 0.22) if horiz else Vector3(0.22, h + 0.02, len_)),
 			ProcMesh.xf(Vector3(mid.x, h * 0.5 - 0.005, mid.y))))
 	_static.merge(ProcMesh.merge(curb_parts), Transform3D.IDENTITY, _curb_mat, true, Vector3(r.get_center().x, 0, r.get_center().y))  # [deck]
+
+
+## [v3city] Slabs cut into pieces of at most 3 m, keeping only the dry ones.
+func _dry_pieces(slabs: Array[Rect2]) -> Array[Rect2]:
+	var out: Array[Rect2] = []
+	for r: Rect2 in slabs:
+		var along_x: bool = r.size.x >= r.size.y
+		var length: float = r.size.x if along_x else r.size.y
+		var k: int = maxi(1, int(ceil(length / 3.0)))
+		var step: float = length / k
+		for i: int in k:
+			var pr: Rect2 = Rect2(r.position + Vector2(i * step, 0), Vector2(step, r.size.y)) if along_x \
+				else Rect2(r.position + Vector2(0, i * step), Vector2(r.size.x, step))
+			var wet: bool = false
+			for q: Vector2 in [pr.get_center(), pr.position, pr.end, Vector2(pr.position.x, pr.end.y), Vector2(pr.end.x, pr.position.y)]:
+				if _wet(q.x, q.y):
+					wet = true
+					break
+			if not wet:
+				out.append(pr)
+	return out
 
 
 func _build_building(block: Vector2i, bd: Dictionary) -> void:
@@ -372,6 +441,9 @@ func _build_fence(r: Rect2, partial: bool) -> void:
 			var run: int = mini(_rng.randi_range(1, 3), n - k)
 			var p0: Vector2 = a.lerp(bb, float(k) / n)
 			var p1: Vector2 = a.lerp(bb, float(k + run) / n)
+			if _wet(p0.x, p0.y) or _wet(p1.x, p1.y):  # [v3city] no fence out in the lake
+				k += run + 2
+				continue
 			for q: int in run + 1:
 				var p: Vector2 = a.lerp(bb, float(k + q) / n)
 				parts.append(ProcMesh.part(ProcMesh.cyl(0.03, 0.03, 1.8, 6), ProcMesh.xf(Vector3(p.x, 0.9, p.y), Vector3(_rng.randf_range(-4, 4), 0, _rng.randf_range(-4, 4)))))
@@ -408,6 +480,8 @@ static func _align_y(d: Vector3) -> Basis:
 ## [deck] Street props are instanced per model and 72 m cell (MeshBatch); collision stays as
 ## plain StaticBody3D nodes with the same transform.
 func _mesh_prop(model: String, pos: Vector3, yaw: float, collide: bool, scl: float = 1.0, roll: float = 0.0) -> void:
+	if _wet(pos.x, pos.z):
+		return  # [v3city] not on the lake
 	var mesh: Mesh = AssetLib.lite(AssetLib.model_part(model.get_slice("::", 0), model.get_slice("::", 1)) if "::" in model else AssetLib.model_mesh(model), 2500)
 	var xf := Transform3D(Basis.from_euler(Vector3(0.0, yaw, roll)) * Basis.from_scale(Vector3.ONE * scl), pos)
 	_props.instance(mesh, xf)
@@ -463,9 +537,11 @@ func _build_street_props() -> void:
 		for bz: int in range(-n, n + 1):
 			await BuildBudget.check("city:street props")
 			var c := Vector2(bx, bz) * CityLayout.PITCH
-			if c.length() > layout.extent:
+			if c.length() > (prop_radius if prop_radius < INF else layout.extent):  # [v3city]
 				continue
-			var near: bool = maxi(absi(bx), absi(bz)) <= DETAIL_RING
+			if prop_radius < INF and not layout.blocks.has(Vector2i(bx, bz)):
+				continue  # [v3city] a globe town's dropped blocks (off the pad)
+			var near: bool = maxi(absi(bx), absi(bz)) <= prop_ring  # [v3city]
 			if not near:
 				continue
 			# Lamps and poles on two sidewalks of each block.
@@ -475,7 +551,7 @@ func _build_street_props() -> void:
 					var t: float = -half + 6.0 + k * lamp_spacing
 					var p: Vector2 = c + (Vector2(t, -walk_mid - 0.6) if side == 0 else Vector2(walk_mid + 0.6, t))
 					var yaw: float = PI if side == 0 else -PI * 0.5
-					if _rng.randf() < 0.75:
+					if _rng.randf() < 0.75 and not _wet(p.x, p.y):  # [v3city]
 						var lamp_model: String = "street_lamp_02" if _rng.randf() < 0.5 else "street_lamp_01"
 						var lamp_yaw: float = yaw + _rng.randf_range(-0.05, 0.05)
 						var lean: float = _rng.randf_range(-0.15, 0.15) if _rng.randf() < 0.15 else 0.0  # leaning, half-collapsed
