@@ -138,12 +138,26 @@ var _rebuild_shell_later: bool = false
 
 
 ## Blocks until every wanted chunk is built (loading screens, tests, screenshots).
-func settle(max_ms: int = 20000) -> void:
+## [orbE] near_only: only the full-detail (LOD 0) and collision chunks block; mid-distance
+## chunks are queued and stream in during the first seconds of play (the far shell covers them).
+## Loading screens use it: Anvil's settle went from ~7-14 s to the near ring only.
+func settle(max_ms: int = 20000, near_only: bool = false) -> void:
 	var t0: int = Time.get_ticks_msec()
 	_update_wants()
+	stats["settle_wants_ms"] = Time.get_ticks_msec() - t0  # [orbE]
+	var later: Dictionary = {}
+	if near_only:
+		for c: int in _pending.keys():
+			if int(_pending[c]) > 0:
+				later[c] = _pending[c]
+				_pending.erase(c)
 	while (not _pending.is_empty() or not _jobs.is_empty()) and Time.get_ticks_msec() - t0 < max_ms:
 		_pump(1000)
 		OS.delay_usec(500)
+	stats["settle_loop_ms"] = Time.get_ticks_msec() - t0 - int(stats["settle_wants_ms"])  # [orbE]
+	for c: int in later:
+		if not _chunks.has(c) and not _jobs.has(c):
+			_pending[c] = later[c]
 	_count_stats()
 
 

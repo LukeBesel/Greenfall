@@ -3,6 +3,9 @@ shader_type spatial;
 // sways in a breeze from TIME (no script), more the further a vertex hangs below its line
 // (model-space -Y). Light shines through thin fabric (backlight) and the hem collects grime.
 render_mode cull_disabled, depth_draw_opaque;
+// [orbD] Site frame on a walkable globe (identity on the flat game): "world" maths run in the
+// nearest hub site's local metres, y up on its pad (planet/sites/site_manager.gd).
+global uniform mat4 site_inv;
 
 uniform float sway = 0.09;
 uniform float grime = 0.35;
@@ -16,7 +19,7 @@ float hash21(vec2 p) {
 
 void vertex() {
 	v_obj = VERTEX;
-	vec3 origin = (MODEL_MATRIX * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
+	vec3 origin = (site_inv * MODEL_MATRIX * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
 	float ph = origin.x * 0.37 + origin.z * 0.29;
 	float hang = max(-VERTEX.y, 0.0);
 	float gust = 0.6 + 0.4 * sin(TIME * 0.35 + ph * 0.2);

@@ -3,6 +3,9 @@ shader_type spatial;
 // overlay): sand, frost or silt settles on up-facing surfaces and a thin film mutes the rest, so
 // bright plastics read as old, weathered things lying in that land rather than fresh confetti.
 render_mode blend_mix, depth_draw_never, cull_back, diffuse_burley, specular_schlick_ggx;
+// [orbD] Site frame on a walkable globe (identity on the flat game): "world" maths run in the
+// nearest hub site's local metres, y up on its pad (planet/sites/site_manager.gd).
+global uniform mat4 site_inv;
 
 uniform vec4 coat : source_color = vec4(0.86, 0.72, 0.52, 1.0);
 uniform float top_amt = 0.8;    // cover on faces pointing up
@@ -28,8 +31,8 @@ float vnoise(vec2 p) {
 }
 
 void vertex() {
-	wn = normalize((MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
-	wp = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	wn = normalize((site_inv * MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
+	wp = (site_inv * MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
 
 void fragment() {

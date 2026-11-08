@@ -135,107 +135,119 @@ msgstr ""
 msgid "Glim: scan (hold: upgrades)"
 msgstr ""
 
-#: autoload/Settings.gd:30
+#: autoload/Settings.gd:25
+msgid "Hover boost"
+msgstr ""
+
+#: autoload/Settings.gd:31
 msgid "View"
 msgstr ""
 
-#: autoload/Settings.gd:30
+#: autoload/Settings.gd:31
 msgid "Menu"
 msgstr ""
 
-#: autoload/Settings.gd:30
+#: autoload/Settings.gd:31
 msgid "LS"
 msgstr ""
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:32
 msgid "RS"
 msgstr ""
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:32
 msgid "LB"
 msgstr ""
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:32
 msgid "RB"
 msgstr ""
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "D-pad up"
 msgstr ""
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "D-pad down"
 msgstr ""
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:34
 msgid "D-pad left"
 msgstr ""
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:34
 msgid "D-pad right"
 msgstr ""
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:35
 msgid "Share"
 msgstr ""
 
-#: autoload/Settings.gd:518
-msgid "LMB"
+#: autoload/Settings.gd:36
+msgid "Touchpad"
 msgstr ""
 
-#: autoload/Settings.gd:519
-msgid "RMB"
-msgstr ""
-
-#: autoload/Settings.gd:520
-msgid "MMB"
+#: autoload/Settings.gd:36
+msgid "Paddle 1"
 msgstr ""
 
 #: autoload/Settings.gd:521
-msgid "Wheel up"
+msgid "LMB"
 msgstr ""
 
 #: autoload/Settings.gd:522
-msgid "Wheel down"
+msgid "RMB"
 msgstr ""
 
 #: autoload/Settings.gd:523
-msgid "Mouse %d"
+msgid "MMB"
+msgstr ""
+
+#: autoload/Settings.gd:524
+msgid "Wheel up"
 msgstr ""
 
 #: autoload/Settings.gd:525
+msgid "Wheel down"
+msgstr ""
+
+#: autoload/Settings.gd:526
+msgid "Mouse %d"
+msgstr ""
+
+#: autoload/Settings.gd:528
 msgid "Button %d"
 msgstr ""
 
-#: autoload/Settings.gd:530
+#: autoload/Settings.gd:533
 msgid "LS left"
 msgstr ""
 
-#: autoload/Settings.gd:530
+#: autoload/Settings.gd:533
 msgid "LS right"
 msgstr ""
 
-#: autoload/Settings.gd:531
+#: autoload/Settings.gd:534
 msgid "LS up"
 msgstr ""
 
-#: autoload/Settings.gd:531
+#: autoload/Settings.gd:534
 msgid "LS down"
 msgstr ""
 
-#: autoload/Settings.gd:532
+#: autoload/Settings.gd:535
 msgid "RS left"
 msgstr ""
 
-#: autoload/Settings.gd:532
+#: autoload/Settings.gd:535
 msgid "RS right"
 msgstr ""
 
-#: autoload/Settings.gd:533
+#: autoload/Settings.gd:536
 msgid "RS up"
 msgstr ""
 
-#: autoload/Settings.gd:533
+#: autoload/Settings.gd:536
 msgid "RS down"
 msgstr ""
 
@@ -273,14 +285,6 @@ msgstr ""
 
 #: automation/conveyor.gd:182
 msgid "BALE  FEED"
-msgstr ""
-
-#: automation/depot.gd:296
-msgid "TRASH"
-msgstr ""
-
-#: automation/depot.gd:333
-msgid "SCRAP  INTAKE  ·  WEIGH HERE"
 msgstr ""
 
 #: automation/hub.gd:69
@@ -428,7 +432,7 @@ msgstr ""
 msgid "Rocket upgraded: %s."
 msgstr ""
 
-#: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:83
+#: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:89
 #: systems/camp/yard_builds.gd:81 ui/stations_panel.gd:96
 msgid "Built."
 msgstr ""
@@ -478,8 +482,8 @@ msgstr ""
 msgid "Requires hub level %d or research: %s."
 msgstr ""
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:87
-#: systems/camp/camp.gd:378 systems/camp/camp.gd:390 systems/camp/hub_builds.gd:79
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:93
+#: systems/camp/camp.gd:380 systems/camp/camp.gd:392 systems/camp/hub_builds.gd:79
 #: systems/camp/hub_builds.gd:155 systems/camp/hub_builds.gd:165 systems/camp/hub_builds.gd:175
 #: systems/camp/yard_builds.gd:91 ui/telescope_panel.gd:40
 msgid "Not enough materials."
@@ -498,7 +502,7 @@ msgid "E   Telescope: look across the system"
 msgstr ""
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:258
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:478 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr ""
 
@@ -776,7 +780,7 @@ msgstr ""
 msgid "Lumi hovers back onto solid ground."
 msgstr ""
 
-#: planet/orbit/verdance_globe.gd:483 scenes/slice.gd:1056 scenes/slice_orbit.gd:225
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1057 scenes/slice_orbit.gd:277
 msgid "HEX CLEAN!  +%s"
 msgstr ""
 
@@ -786,6 +790,10 @@ msgstr ""
 
 #: planet/planets/tidewell/env.gd:1226
 msgid "LEDGER MINING  ORE BARGE 3"
+msgstr ""
+
+#: planet/sites/hub_hop.gd:77
+msgid "Rocket hop: %.1f km"
 msgstr ""
 
 #: planet/sphere/sphere_walk.gd:431
@@ -844,27 +852,27 @@ msgstr ""
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr ""
 
-#: plants/hex_levels.gd:90
+#: plants/hex_levels.gd:111
 msgid "HEX  LV %d  %s"
 msgstr ""
 
-#: plants/hex_levels.gd:93
+#: plants/hex_levels.gd:114
 msgid "      SUSTAIN  %d%%"
 msgstr ""
 
-#: plants/hex_levels.gd:95
+#: plants/hex_levels.gd:116
 msgid "      THIRSTY"
 msgstr ""
 
-#: plants/hex_levels.gd:97
+#: plants/hex_levels.gd:118
 msgid "      next: %s"
 msgstr ""
 
-#: plants/hex_levels.gd:253
+#: plants/hex_levels.gd:275
 msgid "HEX LV %d  %s"
 msgstr ""
 
-#: plants/hex_levels.gd:260
+#: plants/hex_levels.gd:282
 msgid "Hex Lv %d  %s.   %s"
 msgstr ""
 
@@ -1038,6 +1046,14 @@ msgstr ""
 
 #: player/photo_poser.gd:27
 msgid "Look up"
+msgstr ""
+
+#: player/vehicle.gd:94
+msgid "Ride the hover-sled"
+msgstr ""
+
+#: player/vehicle.gd:94
+msgid "Hover-sled: buy it in Upgrades"
 msgstr ""
 
 #: robots/fleet.gd:138
@@ -1219,67 +1235,67 @@ msgstr ""
 msgid "WATER"
 msgstr ""
 
-#: robots/fabricator/bot_fabricator.gd:85 systems/camp/yard_builds.gd:89
+#: robots/fabricator/bot_fabricator.gd:91 systems/camp/yard_builds.gd:89
 msgid "Not yet."
 msgstr ""
 
-#: robots/fabricator/bot_fabricator.gd:285
+#: robots/fabricator/bot_fabricator.gd:361
 msgid "Fleet %d / %d"
 msgstr ""
 
-#: robots/fabricator/bot_fabricator.gd:287
+#: robots/fabricator/bot_fabricator.gd:363
 msgid "Building a %s, %d%%"
 msgstr ""
 
-#: scenes/slice.gd:367
+#: scenes/slice.gd:368
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr ""
 
-#: scenes/slice.gd:1070
+#: scenes/slice.gd:1071 scenes/slice_orbit.gd:293
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
-#: scenes/slice.gd:1072
+#: scenes/slice.gd:1073
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr ""
 
-#: scenes/slice.gd:1079
+#: scenes/slice.gd:1080
 msgid "%s is out of range: %s"
 msgstr ""
 
-#: scenes/slice.gd:1089
+#: scenes/slice.gd:1090
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr ""
 
-#: scenes/slice.gd:1092 ui/rockets_panel.gd:39
+#: scenes/slice.gd:1093 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr ""
 
-#: scenes/slice.gd:1146
+#: scenes/slice.gd:1147
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr ""
 
-#: scenes/slice.gd:1147
+#: scenes/slice.gd:1148
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr ""
 
-#: scenes/slice.gd:1147
+#: scenes/slice.gd:1148
 msgid "Landed on the base pad."
 msgstr ""
 
-#: scenes/slice.gd:1257
+#: scenes/slice.gd:1258
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
-#: scenes/slice.gd:1443
+#: scenes/slice.gd:1444
 msgid "Welcome back. The junk waited for you."
 msgstr ""
 
-#: scenes/slice.gd:1460
+#: scenes/slice.gd:1461
 msgid "OUTPOST %d · Lv%d"
 msgstr ""
 
-#: scenes/slice.gd:1460
+#: scenes/slice.gd:1461
 msgid "OUTPOST %d · RUIN"
 msgstr ""
 
@@ -1383,51 +1399,51 @@ msgstr ""
 msgid "Bloom Core 100%. Lumi's core is full of green light."
 msgstr ""
 
-#: story/core_charge.gd:231
+#: story/core_charge.gd:232
 msgid "Bloom Core  25%"
 msgstr ""
 
-#: story/core_charge.gd:232
+#: story/core_charge.gd:233
 msgid "There. The relay just locked on. Lumi, I can hear you properly now. Clear as the old days."
 msgstr ""
 
-#: story/core_charge.gd:252
+#: story/core_charge.gd:253
 msgid "A memory  ·  the garden deck of the Cradle"
 msgstr ""
 
-#: story/core_charge.gd:263
+#: story/core_charge.gd:264
 msgid "Remember the garden deck? You watered every bed twice, just to be sure."
 msgstr ""
 
-#: story/core_charge.gd:266
+#: story/core_charge.gd:267
 msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
 msgstr ""
 
-#: story/core_charge.gd:270
+#: story/core_charge.gd:271
 msgid "Bloom Core 25%: WREN's signal is clear now."
 msgstr ""
 
-#: story/core_charge.gd:287
+#: story/core_charge.gd:288
 msgid "Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."
 msgstr ""
 
-#: story/core_charge.gd:289
+#: story/core_charge.gd:290
 msgid "Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."
 msgstr ""
 
-#: story/core_charge.gd:322
+#: story/core_charge.gd:324
 msgid "That night..."
 msgstr ""
 
-#: story/core_charge.gd:346
+#: story/core_charge.gd:348
 msgid "Lumi, look up. That light. West to east, steady, not twinkling."
 msgstr ""
 
-#: story/core_charge.gd:351
+#: story/core_charge.gd:353
 msgid "That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."
 msgstr ""
 
-#: story/core_charge.gd:361
+#: story/core_charge.gd:363
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr ""
 
@@ -1548,87 +1564,87 @@ msgid ""
 "5 MINUTES"
 msgstr ""
 
-#: story/eggs.gd:338
+#: story/eggs.gd:340
 msgid "Something metal surfaced in the cleared ground."
 msgstr ""
 
-#: story/eggs.gd:551 story/eggs.gd:613
+#: story/eggs.gd:553 story/eggs.gd:615
 msgid "Gnome %d / %d"
 msgstr ""
 
-#: story/eggs.gd:559
+#: story/eggs.gd:561
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr ""
 
-#: story/eggs.gd:614
+#: story/eggs.gd:616
 msgid "%s   ·   added to Lumi's collection"
 msgstr ""
 
-#: story/eggs.gd:630
+#: story/eggs.gd:632
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr ""
 
-#: story/eggs.gd:631
+#: story/eggs.gd:633
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr ""
 
-#: story/eggs.gd:660
+#: story/eggs.gd:662
 msgid "SOLD OUT"
 msgstr ""
 
-#: story/eggs.gd:677
+#: story/eggs.gd:680
 msgid "QUACK!"
 msgstr ""
 
-#: story/eggs.gd:695
+#: story/eggs.gd:698
 msgid "NEW CHALLENGER!"
 msgstr ""
 
-#: story/eggs.gd:698
+#: story/eggs.gd:701
 msgid "GAME OVER  ·  SCORE 12"
 msgstr ""
 
-#: story/eggs.gd:726
+#: story/eggs.gd:729
 msgid "hi, Gus"
 msgstr ""
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "CONFETTI"
 msgstr ""
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "LIGHT JAZZ"
 msgstr ""
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "99% DUCKS"
 msgstr ""
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "SUNNY (INDOORS)"
 msgstr ""
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "FOG OF NOODLES"
 msgstr ""
 
-#: story/eggs.gd:776
+#: story/eggs.gd:779
 msgid "1ST PLACE"
 msgstr ""
 
-#: story/eggs.gd:834
+#: story/eggs.gd:837
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr ""
 
-#: story/eggs.gd:835
+#: story/eggs.gd:838
 msgid "The duck has taught you everything it knows. Quack."
 msgstr ""
 
-#: story/eggs.gd:1063
+#: story/eggs.gd:1066
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr ""
 
-#: story/eggs.gd:1074
+#: story/eggs.gd:1077
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr ""
 
@@ -2828,19 +2844,19 @@ msgstr ""
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr ""
 
-#: systems/camp/camp.gd:376
+#: systems/camp/camp.gd:378
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr ""
 
-#: systems/camp/camp.gd:379
+#: systems/camp/camp.gd:381
 msgid "E   %s (Lv %d): %s"
 msgstr ""
 
-#: systems/camp/camp.gd:380
+#: systems/camp/camp.gd:382
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr ""
 
-#: systems/camp/camp.gd:386
+#: systems/camp/camp.gd:388
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr ""
 
@@ -2920,27 +2936,27 @@ msgstr ""
 msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
 msgstr ""
 
-#: systems/extras/nursery.gd:223
+#: systems/extras/nursery.gd:214
 msgid "E   Say hi to %s"
 msgstr ""
 
-#: systems/extras/nursery.gd:281
+#: systems/extras/nursery.gd:272
 msgid "CARETAKER · %s"
 msgstr ""
 
-#: systems/extras/nursery.gd:328
+#: systems/extras/nursery.gd:319
 msgid "%s beeps hello and shows Lumi the marigolds."
 msgstr ""
 
-#: systems/extras/nursery.gd:329
+#: systems/extras/nursery.gd:320
 msgid "%s is busy with the watering can, but waves anyway."
 msgstr ""
 
-#: systems/extras/nursery.gd:330
+#: systems/extras/nursery.gd:321
 msgid "%s hums to the seedlings. Retirement suits it."
 msgstr ""
 
-#: systems/extras/nursery.gd:331
+#: systems/extras/nursery.gd:322
 msgid "%s points proudly at a new bud."
 msgstr ""
 
@@ -3225,7 +3241,7 @@ msgstr ""
 msgid "restored"
 msgstr ""
 
-#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:747
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:756
 msgid "You are here"
 msgstr ""
 
@@ -3245,8 +3261,8 @@ msgstr ""
 msgid "The Cradle has to come home first."
 msgstr ""
 
-#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:320
-#: ui/rockets_panel.gd:81 ui/system_map.gd:698
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:329
+#: ui/rockets_panel.gd:81 ui/system_map.gd:707
 msgid "Launch"
 msgstr ""
 
@@ -3295,7 +3311,7 @@ msgstr ""
 msgid "Machines"
 msgstr ""
 
-#: ui/bench_lists.gd:12 ui/globe_view.gd:169 ui/upgrades_panel.gd:49
+#: ui/bench_lists.gd:12 ui/globe_view.gd:175 ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr ""
 
@@ -3719,7 +3735,7 @@ msgstr ""
 msgid "Bales cashed in"
 msgstr ""
 
-#: ui/codex_screen.gd:774 ui/globe_view.gd:138 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:774 ui/globe_view.gd:144 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr ""
 
@@ -4410,71 +4426,71 @@ msgstr ""
 msgid "???  %s"
 msgstr ""
 
-#: ui/globe_view.gd:121
+#: ui/globe_view.gd:127
 msgid "Survey"
 msgstr ""
 
-#: ui/globe_view.gd:121
+#: ui/globe_view.gd:127
 msgid "Verdance  ·  hand-held projection"
 msgstr ""
 
-#: ui/globe_view.gd:137
+#: ui/globe_view.gd:143
 msgid "Not cleaned yet"
 msgstr ""
 
-#: ui/globe_view.gd:137
+#: ui/globe_view.gd:143
 msgid "Cleaned"
 msgstr ""
 
-#: ui/globe_view.gd:138 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:144 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr ""
 
-#: ui/globe_view.gd:139 ui/system_map.gd:667 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:145 ui/system_map.gd:676 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr ""
 
-#: ui/globe_view.gd:139
+#: ui/globe_view.gd:145
 msgid "Cities"
 msgstr ""
 
-#: ui/globe_view.gd:140
+#: ui/globe_view.gd:146
 msgid "Bases"
 msgstr ""
 
-#: ui/globe_view.gd:155 ui/late_menu.gd:21
+#: ui/globe_view.gd:161 ui/late_menu.gd:21
 msgid "Solar system"
 msgstr ""
 
-#: ui/globe_view.gd:169
+#: ui/globe_view.gd:175
 msgid "Travel between bases"
 msgstr ""
 
-#: ui/globe_view.gd:182
+#: ui/globe_view.gd:188
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr ""
 
-#: ui/globe_view.gd:317
+#: ui/globe_view.gd:326
 msgid "%d sectors away"
 msgstr ""
 
-#: ui/globe_view.gd:439
+#: ui/globe_view.gd:448
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr ""
 
-#: ui/globe_view.gd:446
+#: ui/globe_view.gd:455
 msgid "%s HEXES CLEAN"
 msgstr ""
 
-#: ui/globe_view.gd:448
+#: ui/globe_view.gd:457
 msgid "Surveyed %s ago%s"
 msgstr ""
 
-#: ui/globe_view.gd:448
+#: ui/globe_view.gd:457
 msgid "   ·   OUTDATED"
 msgstr ""
 
-#: ui/globe_view.gd:449
+#: ui/globe_view.gd:458
 msgid "Re-survey      %s cubes"
 msgstr ""
 
@@ -4604,60 +4620,60 @@ msgstr ""
 msgid "OLD TOWN   0%"
 msgstr ""
 
-#: ui/hud.gd:289
+#: ui/hud.gd:294
 msgid "WREN SIGNAL   %d%%"
 msgstr ""
 
-#: ui/hud.gd:317
+#: ui/hud.gd:322
 msgid "HEX  %d%% CLEAR"
 msgstr ""
 
-#: ui/hud.gd:321
+#: ui/hud.gd:326
 msgid "%s  BASE"
 msgstr ""
 
-#: ui/hud.gd:324
+#: ui/hud.gd:329
 msgid "CARRYING %d/%d"
 msgstr ""
 
-#: ui/hud.gd:348
+#: ui/hud.gd:353
 msgid "HEX  CLEAR"
 msgstr ""
 
-#: ui/hud.gd:352
+#: ui/hud.gd:357
 msgid "HEX  %s"
 msgstr ""
 
-#: ui/hud.gd:355
+#: ui/hud.gd:360
 msgid "  SUSTAIN %d%%"
 msgstr ""
 
-#: ui/hud.gd:357
+#: ui/hud.gd:362
 msgid "  THIRSTY"
 msgstr ""
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:382
+#: ui/hud.gd:387
 msgid "%s   pick up bale"
 msgstr ""
 
-#: ui/hud.gd:383
+#: ui/hud.gd:388
 msgid "%s   dig up part"
 msgstr ""
 
-#: ui/hud.gd:384
+#: ui/hud.gd:389
 msgid "%s   read memory shard"
 msgstr ""
 
-#: ui/hud.gd:385
+#: ui/hud.gd:390
 msgid "%s   pick up the seed tin"
 msgstr ""
 
-#: ui/hud.gd:386
+#: ui/hud.gd:391
 msgid "%s   set bale down"
 msgstr ""
 
-#: ui/hud.gd:387
+#: ui/hud.gd:392
 msgid "%s   workbench"
 msgstr ""
 
@@ -5240,15 +5256,15 @@ msgstr ""
 msgid "Resolution"
 msgstr ""
 
-#: ui/photo_mode.gd:860
+#: ui/photo_mode.gd:890
 msgid "Couldn't capture the photo."
 msgstr ""
 
-#: ui/photo_mode.gd:869
+#: ui/photo_mode.gd:899
 msgid "Couldn't save the photo (%s)."
 msgstr ""
 
-#: ui/photo_mode.gd:882
+#: ui/photo_mode.gd:912
 msgid "Saved  %s  (%dx%d)"
 msgstr ""
 
@@ -5917,51 +5933,51 @@ msgstr ""
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s"
 msgstr ""
 
-#: ui/system_map.gd:654
+#: ui/system_map.gd:663
 msgid "%s  ·  %.2f AU"
 msgstr ""
 
-#: ui/system_map.gd:661
+#: ui/system_map.gd:670
 msgid "In flight"
 msgstr ""
 
-#: ui/system_map.gd:664
+#: ui/system_map.gd:673
 msgid "Lumi is here"
 msgstr ""
 
-#: ui/system_map.gd:670
+#: ui/system_map.gd:679
 msgid "Ready to launch"
 msgstr ""
 
-#: ui/system_map.gd:689 data/goals.json:goals[home_launch].text
+#: ui/system_map.gd:698 data/goals.json:goals[home_launch].text
 msgid "Launch home"
 msgstr ""
 
-#: ui/system_map.gd:694
+#: ui/system_map.gd:703
 msgid "Choose a district"
 msgstr ""
 
-#: ui/system_map.gd:711
+#: ui/system_map.gd:720
 msgid "System %d%% restored  ·  relics %d/%d"
 msgstr ""
 
-#: ui/system_map.gd:713
+#: ui/system_map.gd:722
 msgid "%d Heirloom picks"
 msgstr ""
 
-#: ui/system_map.gd:715
+#: ui/system_map.gd:724
 msgid "Left/Right planet  ·  A zoom  ·  B back"
 msgstr ""
 
-#: ui/system_map.gd:733
+#: ui/system_map.gd:742
 msgid "Build the drive"
 msgstr ""
 
-#: ui/system_map.gd:749
+#: ui/system_map.gd:758
 msgid "Not discovered yet"
 msgstr ""
 
-#: ui/system_map.gd:755
+#: ui/system_map.gd:764
 msgid "Rocket not ready"
 msgstr ""
 

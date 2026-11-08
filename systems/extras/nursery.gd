@@ -174,30 +174,21 @@ func _pick_spot() -> Vector3:
 
 
 func _build_garden() -> void:
-	var kerb: StandardMaterial3D = DecorProps.stone(Color(0.8, 0.78, 0.73))
 	var hx: float = SIZE.x * 0.5
 	var hz: float = SIZE.y * 0.5
-	# Low stone kerb around a lawn, a gap on the yard side to walk in.
-	add_child(EggProps.mesh(ProcMesh.box(Vector3(SIZE.x, 0.03, SIZE.y)), DecorProps.leaves(Color(0.32, 0.5, 0.24)), Vector3(0, 0.015, 0)))
-	for z: float in [-hz, hz]:
-		var w: float = SIZE.x if z < 0 else SIZE.x * 0.36
-		for x: float in ([0.0] if z < 0 else [-hx + w * 0.5, hx - w * 0.5]):
-			add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(w, 0.18, 0.12), 0.02, 2), kerb, Vector3(x, 0.09, z)))
-	for x: float in [-hx, hx]:
-		add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(0.12, 0.18, SIZE.y), 0.02, 2), kerb, Vector3(x, 0.09, 0)))
+	# [yard] Soil bed with dense grass, segmented kerbs (gap on the yard side), a charging shelter.
+	var hard: MeshInstance3D = YardArt.nursery(SIZE).mi(0.15, "Garden")
+	add_child(hard)
+	YardArt.set_powered(hard, true)  # only shows once built
+	add_child(YardArt.nursery_grass(SIZE))
 	# Flower beds the caretakers tend.
 	for p: Vector3 in [Vector3(-1.25, 0, -0.85), Vector3(1.25, 0, -0.85), Vector3(-0.4, 0, 0.75)]:
 		var bed: Node3D = DecorProps.flower_bed()
 		bed.position = p
 		add_child(bed)
 		_beds.append(p)
-	# A little shed sign and a watering can.
-	var post: StandardMaterial3D = DecorProps.wood()
-	add_child(EggProps.mesh(ProcMesh.box(Vector3(0.07, 1.0, 0.07)), post, Vector3(hx - 0.45, 0.5, hz - 0.2)))
-	add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(0.9, 0.34, 0.05), 0.02, 2), DecorProps.paint(Color(0.92, 0.9, 0.84), 0.5), Vector3(hx - 0.45, 1.0, hz - 0.17)))
-	var sign: Label3D = EggProps.label("NURSERY", 46, Color(0.24, 0.42, 0.26), Vector3(hx - 0.45, 1.0, hz - 0.14))
+	var sign: Label3D = EggProps.label("NURSERY", 46, Color(0.24, 0.42, 0.26), Vector3(hx - 0.45, 1.0, hz - 0.165))
 	add_child(sign)
-	add_child(EggProps.mesh(ProcMesh.cyl(0.08, 0.1, 0.18, 10), DecorProps.paint(Color(0.3, 0.55, 0.62), 0.4, 0.4), Vector3(-hx + 0.5, 0.09, hz - 0.5)))
 
 
 ## Rebuilds the caretakers from GameState (after a retire, or on load).

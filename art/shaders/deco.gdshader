@@ -6,6 +6,9 @@ shader_type spatial;
 //   0.25 plastic (scuffs, sheen)                  0.0 painted wood / board (grain, flaking)
 // Everything gets triplanar grime from a real texture, rain streaks and ground splash dirt.
 render_mode cull_disabled;
+// [orbD] Site frame on a walkable globe (identity on the flat game): "world" maths run in the
+// nearest hub site's local metres, y up on its pad (planet/sites/site_manager.gd).
+global uniform mat4 site_inv;
 
 uniform sampler2D grime_tex : source_color, filter_linear_mipmap, repeat_enable;
 uniform sampler2D grime_nrm : hint_normal, filter_linear_mipmap, repeat_enable;
@@ -26,8 +29,8 @@ float noise(vec2 p) {
 }
 
 void vertex() {
-	v_world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	v_wn = normalize((MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
+	v_world = (site_inv * MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	v_wn = normalize((site_inv * MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
 }
 
 vec3 tri_sample(sampler2D t, vec3 p, vec3 n) {
