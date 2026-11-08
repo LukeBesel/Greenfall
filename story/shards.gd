@@ -7,6 +7,7 @@ var world: Node
 var docs: Array = []
 var _placed: Dictionary = {}  # hex id -> shard index
 var _visible: Dictionary = {}  # hex id -> Node3D
+var _globe: bool = false  # [orbB] on the walkable globe: the start hub's region (slice_orbit.gd)
 
 
 func setup() -> void:
@@ -14,12 +15,17 @@ func setup() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = world.field.seed_value + 77
 	var candidates: Array[int] = []
-	for id: int in world.field.hex_count():
-		if world.field.hex_hub[id] == 0:
+	var so: Node = world.get("orbit")
+	_globe = so != null  # [orbB] the globe: the start hub's region, nearest the hub first
+	var cells: Variant = (so.get("globe") as OrbitPlanet).grid.cells_around((so.get("globe") as OrbitPlanet).start_cell(), SiteManager.REGION_RINGS) if _globe else range(world.field.hex_count())
+	var f: HexField = world.field
+	for id: int in cells:
+		if f.hex_hub[id] == 0 and not f.is_water(id) and not (_globe and (f as SphereField).cells.has_flag(id, SphereCells.F_SITE)):
 			candidates.append(id)
+	var hub_c: Vector3 = (so.get("globe") as OrbitPlanet).field.hex_center((so.get("globe") as OrbitPlanet).start_cell()) if _globe else Vector3.ZERO
 	# Act 1 shards near the hub first; deterministic shuffle by distance + noise.
 	candidates.sort_custom(func(a: int, b: int) -> bool:
-		return world.field.hex_center(a).length() + rng.randf() * 0.0 < world.field.hex_center(b).length())
+		return f.hex_center(a).distance_to(hub_c) + rng.randf() * 0.0 < f.hex_center(b).distance_to(hub_c))
 	for i: int in docs.size():
 		var pick: int = mini(1 + i * 3 + rng.randi_range(0, 2), candidates.size() - 1)
 		_placed[candidates[pick]] = i
@@ -40,6 +46,10 @@ func _reveal(hid: int, fresh: bool) -> void:
 	var node := Node3D.new()
 	add_child(node)
 	node.global_position = pos
+	if _globe:  # [orbB] the same offset in the cell's own frame, on the ground, upright
+		var fr: Basis = SphereGrid.frame(world.field.hex_center(hid).normalized())
+		pos = (world.field as SphereField).terrain.ground((world.field.hex_center(hid) + fr.x * 1.2 + fr.z * 0.8).normalized())
+		node.global_transform = Transform3D(fr, pos)
 	var mi := MeshInstance3D.new()
 	mi.mesh = AssetLib.model_mesh_lite("portable_cassette_player" if AssetLib.has_model("portable_cassette_player") else "boombox", 2000)
 	mi.scale = Vector3.ONE * 0.6
@@ -52,7 +62,7 @@ func _reveal(hid: int, fresh: bool) -> void:
 	node.add_child(glow)
 	_visible[hid] = node
 	if fresh:
-		Vfx.burst("sparkle", pos + Vector3(0, 0.4, 0), Color(0.5, 0.85, 1.0))
+		Vfx.burst("sparkle", pos + OrbitUp.up(pos) * 0.4, Color(0.5, 0.85, 1.0))
 		EventBus.toast.emit(tr("Something surfaced in the cleared ground. A memory shard."), "story")
 
 

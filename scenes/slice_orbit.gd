@@ -395,6 +395,14 @@ func try_interact(p: Patch) -> void:
 	if cmp and cmp.near(p.global_position):
 		cmp.interact()
 		return
+	var sh: ShardSystem = w.get("shards")
+	if sh and sh.nearby(p.global_position) >= 0:  # a memory shard: read it
+		var doc: Dictionary = sh.take(p.global_position)
+		var dv: DocumentView = w.get("doc_view")
+		if not doc.is_empty() and dv:
+			set_input(false)
+			dv.show_doc(doc)
+		return
 	if near_bench():
 		var camp: Camp = w.get("camp")
 		if not Camp.bench_ok():
@@ -417,6 +425,9 @@ func interact_prompt(p: Patch) -> String:
 	var cmp: Composter = w.get("composter")
 	if cmp and cmp.near(p.global_position):
 		return cmp.prompt()
+	var sh: ShardSystem = w.get("shards")
+	if sh and sh.nearby(p.global_position) >= 0:
+		return "shard"
 	if near_bench():
 		var camp: Camp = w.get("camp")
 		if camp:
@@ -428,7 +439,7 @@ func interact_prompt(p: Patch) -> String:
 
 
 func any_modal_open() -> bool:
-	for k: String in ["pause_menu", "upgrades", "codex"]:
+	for k: String in ["pause_menu", "upgrades", "codex", "doc_view"]:
 		var m: Node = w.get(k)
 		if m != null and bool(m.get("is_open")):
 			return true
@@ -520,6 +531,7 @@ func _build_yard_systems() -> void:
 	_build_hub_frame()
 	_attach_first_seed.call_deferred()
 	_attach_seed_economy()
+	_attach_shards()
 	var bloom := Bloom.new()  # post-game milestones + Seed Ark (systems/bloom.gd)
 	bloom.name = "Bloom"
 	bloom.world = w
@@ -572,6 +584,22 @@ func _attach_first_seed() -> void:
 
 ## The seed economy at the base: the compost press on the start yard's "composter" anchor (its own
 ## model and label; YardSite's stand-in steps aside), and the early seed finds in scooped junk.
+## Memory shards in the start hub's region (they surface as their cells are cleaned) and the
+## paper view that reads them (also the Ledger's contract and the eggs' notes).
+func _attach_shards() -> void:
+	var dv := DocumentView.new()
+	dv.name = "DocumentView"
+	w.add_child(dv)
+	dv.closed.connect(on_modal_closed)
+	w.set("doc_view", dv)
+	var sh := ShardSystem.new()
+	sh.name = "Shards"
+	sh.world = w
+	w.add_child(sh)
+	sh.setup()
+	w.set("shards", sh)
+
+
 func _attach_seed_economy() -> void:
 	var finds := SeedFinds.new()
 	finds.name = "SeedFinds"

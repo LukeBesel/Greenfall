@@ -362,6 +362,34 @@ static func _first_seed_check(tree: SceneTree, s: Node, so: SliceOrbit, check: C
 		if n2 is SeedFinds:
 			sf = n2
 	check.call("orbit_seed_finds", true, sf != null and sf.chance_for("paper") > 0.0)
+	# Memory shards: placed in the start hub's region; one surfaces when its cell is clean, on the
+	# ground; E reads it in the document view and it counts as found.
+	var sh: ShardSystem = s.get("shards") as ShardSystem
+	var region0: PackedInt32Array = g.grid.cells_around(g.start_cell(), SiteManager.REGION_RINGS)
+	var placed_ok: bool = sh != null and sh._placed.size() == sh.docs.size() and sh.docs.size() > 0
+	if placed_ok:
+		for hid: int in sh._placed:
+			placed_ok = placed_ok and region0.has(hid)
+	check.call("orbit_shards_placed", true, placed_ok)
+	if sh and placed_ok:
+		var first: int = -1
+		for hid2: int in sh._placed:
+			if int(sh._placed[hid2]) == 0:
+				first = hid2
+		so.crews.work_cell(first, 0.0)
+		sh._reveal(first, true)
+		var sn: Node3D = sh._visible.get(first) as Node3D
+		check.call("orbit_shard_surfaces_on_ground", true, sn != null and absf(g.surface.altitude(sn.global_position)) < 0.4)
+		if sn:
+			p.place_on_sphere(sn.global_position + sn.global_basis.z * 1.0, p.forward())
+			await tree.physics_frame
+			check.call("orbit_shard_prompt", "shard", s.interact_prompt(p))
+			s.try_interact(p)
+			var dv: DocumentView = s.get("doc_view") as DocumentView
+			check.call("orbit_shard_read", true, dv != null and dv.is_open and sh.found(0))
+			if dv:
+				dv.close_doc()
+			check.call("orbit_shard_closed_input_back", true, not tree.paused and so.cam.input_enabled)
 	p.place_on_sphere(back, p.forward())
 
 
