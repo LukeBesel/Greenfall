@@ -73,14 +73,33 @@ var _ruin_bits: Dictionary = {}
 var _t: float = 0.0
 ## Rocket launch → flight → travel: no modal hotkeys, and closing a modal doesn't hand control back.
 var launching: bool = false
+## [leftovers] True while the district builds across frames behind the loading screen (a
+## BuildBudget is open: ui/loading_screen.gd). `built` fires once everything exists.
+var building: bool = false
+var _t_build: int = 0
+var _env_pending: Environment
+signal built
 
 
 func _ready() -> void:
 	var t0: int = Time.get_ticks_msec()
-	add_to_group("persist")
+	_t_build = t0
+	# [leftovers] Behind the loading screen the heavy first half (field, views, city, dressing)
+	# yields between chunks so the bar keeps moving; the scene stays disabled until it is whole.
+	# Everything from _build_board() on (gameplay nodes, UI, story) still runs in one go, so the
+	# order of their _ready / deferred calls is exactly as before. Without a budget (tests,
+	# tools) nothing yields at all.
+	building = BuildBudget.active()
+	var vp: Viewport = get_viewport()
+	var had_3d: bool = not vp.disable_3d
+	if building:
+		process_mode = Node.PROCESS_MODE_DISABLED
+		vp.disable_3d = true  # nothing of the half-built world renders (the vignette has its own viewport)
+	AssetLib.tracing = DevHooks.has("record-preload")
 	# Backstop: never start a district frozen (e.g. paused during a rocket flight).
 	get_tree().paused = false
 	_build_environment()
+	await _step(0.02, 0.03, "env")
 	var cfg: Dictionary = Economy.planet.get("slice_field", {})
 	var base_seed: int = int(DevHooks.get_f("seed", float(CradleMode.world_seed())))  # [late] Cradle Mode worlds (Verdance = slice_field seed)
 	var loaded: bool = false
@@ -100,6 +119,7 @@ func _ready() -> void:
 	planet.generate()
 	if not GameState.planet_state.is_empty():
 		planet.apply_dict(GameState.planet_state)
+	await _step(0.03, 0.06, "planet")
 	if DevHooks.has("frontier") and not loaded:  # [biomes] dev: --frontier=dust_flats|frozen_port|sunken_city|cradle_returns
 		GameState.switch_hub(int(planet.frontier_hubs.get(DevHooks.get_s("frontier", "dust_flats"), 0)))
 		if DevHooks.has("hub-level"):
@@ -152,7 +172,8 @@ func _ready() -> void:
 	if loaded and GameState.world.has("field"):
 		field.natural_borders = bool((GameState.world["field"] as Dictionary).get("natural_borders", false))
 		field.junk_gen = int((GameState.world["field"] as Dictionary).get("junk_gen", 1))  # [world2] older saves keep v1 junk
-	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
+	await _step(0.06, 0.09, "field")
+	await field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
 	if not fk.is_empty():
 		Frontiers.toughen(field, float(fk.get("vol_mult", 1.0)))
 	field.place_landmarks(Economy.landmarks_for(field.biome))
@@ -167,8 +188,21 @@ func _ready() -> void:
 		frontier.name = "Frontier"
 		add_child(frontier)
 		frontier.prepare(self)
+	await _step(0.09, 0.12, "prefetch")
+	# [leftovers] Off the main thread while the views build: the ground's layout bake and the litter
+	# carpet's placement run on WorkerThreadPool threads (both read-only on the field and layout,
+	# which nothing changes until they are collected).
+	var bake_job: Dictionary = layout.bake_start(layout.extent * 2.0, 0.25) if building and layout else {}
+	litter = LitterView.new()
+	litter.name = "Litter"
+	litter.density_mult = float(fk.get("litter_mult", 1.0))  # [biomes]
+	await litter.start(field)
+	await _step(0.12, 0.2, "preload")
+	var keep: Array = (await _preload_models()) if building else []
+	await _step(0.2, 0.45, "view")
 	view = FieldView.new()
 	view.name = "FieldView"
+	view.layout_job = bake_job
 	add_child(view)
 	if not fk.is_empty():  # [biomes] frontier ground textures and shader extras
 		view.layer_swap = fk.get("ground_layers", {})
@@ -178,33 +212,34 @@ func _ready() -> void:
 	elif CradleMode.current_index() > 0:  # [late] another world's ground (snow on an ice moon, sand on a desert world)
 		CradleMode.dress_view(view)
 	PlanetEnvs.call_env(planet_env, "dress_view", [view])  # [planet-rime]
-	view.setup(field)
+	await view.setup(field)
 	water = WaterView.new()
 	water.name = "Water"
 	water.world = self
 	add_child(water)
-	litter = LitterView.new()
-	litter.name = "Litter"
+	await _step(0.45, 0.55, "litter")
 	add_child(litter)
-	litter.density_mult = float(fk.get("litter_mult", 1.0))  # [biomes]
-	litter.setup(field)
+	await litter.finish()
 	if fk.is_empty():  # [world2] the world past the field stays covered (frontiers have their own terrain)
+		await _step(0.55, 0.65, "far junk")
 		var far := FarJunk.new()
 		far.name = "FarJunk"
 		far.world = self
 		add_child(far)
-		far.build(field)
+		await far.build(field)
+	await _step(0.65, 0.85, "city")
 	city = CityView.new()
 	city.name = "City"
 	add_child(city)
-	city.build(layout, view.ground_material)
+	await city.build(layout, view.ground_material)
 	# Awnings, neon, murals, string lights, yard slab and props (planet/street_dressing.gd).
+	await _step(0.85, 0.95, "dressing")
 	if not DevHooks.has("no-dressing"):
 		dressing = StreetDressing.new()
 		dressing.name = "StreetDressing"
 		add_child(dressing)
 		dressing.skip_facades = not fk.is_empty()  # [biomes] (the Sunken City's facades sit below the waterline)
-		dressing.build(layout, field, hub_index, district_name, ("" if is_city else field.biome) if fk.is_empty() else str(fk.get("dressing_biome", "")), int(GameState.world.get("hub_level", 1)))
+		await dressing.build(layout, field, hub_index, district_name, ("" if is_city else field.biome) if fk.is_empty() else str(fk.get("dressing_biome", "")), int(GameState.world.get("hub_level", 1)))
 	_cubes_root = Node3D.new()
 	_cubes_root.name = "Cubes"
 	add_child(_cubes_root)
@@ -212,6 +247,18 @@ func _ready() -> void:
 	depot.name = "Depot"
 	depot.position = Vector3(0, 0, -1.8)
 	add_child(depot)
+	# [leftovers] Warm what the one-go half would otherwise make on the spot: the synthesised animal
+	# and story sounds (made once per run) and the models it loads (data/preload_models.json).
+	await _step(0.95, 0.96, "sounds")
+	await FaunaSounds.ensure()
+	await BuildBudget.check("sounds")
+	FaunaSounds.crickets_loop()
+	await BuildBudget.check("sounds")
+	StorySfx.ensure()
+	# --- From here on: one go (see the top of _ready). The budget closes so nothing below yields.
+	await _step(0.96, 1.0, "systems")
+	var bb: BuildBudget = BuildBudget.current
+	BuildBudget.end()
 	_build_board()
 	if DevHooks.has("future"):  # --future=N preview: the hub at level N too (FutureLayer.apply_preview)
 		GameState.world["hub_level"] = clampi(int(DevHooks.get_f("future", 5.0)), 1, 5)
@@ -582,6 +629,70 @@ func _ready() -> void:
 	GlimDirector.attach(self)  # [buddy] Glim the lantern bot: light, hex scanner, upgrades, looks (systems/glim/)
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	add_to_group("persist")  # [leftovers] last: no autosave can gather a half-built district
+	keep.clear()
+	if AssetLib.tracing:
+		_record_preload()
+	if building:
+		if bb:
+			print("[slice] build spread over %d frames, longest slice %.0f ms (%s)" % [bb.frames, bb.longest_us / 1000.0, bb.longest_at])
+		building = false
+		process_mode = Node.PROCESS_MODE_INHERIT
+		vp.disable_3d = not had_3d
+		if _env_pending:
+			Settings.apply_render_quality(_env_pending, vp)
+			_env_pending = null
+	built.emit()
+
+
+const PRELOAD_LIST: String = "res://data/preload_models.json"
+
+
+## [leftovers] Models (and model parts) the build would load one by one on the main thread (city
+## props, dressing, the one-go half), fetched on loader threads and meshed while the loading
+## screen still draws. Recorded with --record-preload (any district; ids merge). A missing or
+## stale entry only means that model loads where it is used, as before.
+func _preload_models() -> Array:
+	var keep: Array = []
+	var ids: Array = Economy.read_json(PRELOAD_LIST).get("models", []) if FileAccess.file_exists(PRELOAD_LIST) else []
+	for i: int in ids.size():
+		BuildBudget.sub(float(i) / maxf(1.0, ids.size()))
+		var id: String = str(ids[i])
+		if id.begins_with("part:"):
+			var spec: String = id.substr(5)
+			var mid: String = spec.get_slice("::", 0)
+			if AssetLib.has_model(mid):
+				var r: Resource = await BuildBudget.fetch(AssetLib.MODEL_DIR % [mid, mid])
+				if r:
+					keep.append(r)
+				await BuildBudget.check("preload")
+				AssetLib.model_part(mid, spec.get_slice("::", 1))
+		elif AssetLib.has_model(id):
+			await AssetLib.fetch_model(id)
+		await BuildBudget.check("preload")
+	return keep
+
+
+## Dev (--record-preload): merge the models this build's one-go half loaded into PRELOAD_LIST.
+func _record_preload() -> void:
+	AssetLib.tracing = false
+	var have: Array = Economy.read_json(PRELOAD_LIST).get("models", []) if FileAccess.file_exists(PRELOAD_LIST) else []
+	for id: String in AssetLib.traced:
+		if not have.has(id):
+			have.append(id)
+	var f := FileAccess.open(PRELOAD_LIST, FileAccess.WRITE)
+	f.store_string(JSON.stringify({"_note": "Models the district build loads on the main thread (scenes/slice.gd _preload_models). Regenerate: godot --headless --path . -- --fresh --record-preload --quit-after=30", "models": have}, "\t") + "\n")
+	f.close()
+	print("[slice] preload list: %d models (%d this build)" % [have.size(), AssetLib.traced.size()])
+
+
+## [leftovers] A build step boundary: progress for the bar, and a frame back to the loading screen
+## if this frame's slice is used up. Free when nothing is loading.
+func _step(from: float, to: float, at: String) -> void:
+	if building and DevHooks.has("load-report"):
+		print("[slice] step %s at %d ms" % [at, Time.get_ticks_msec() - _t_build])
+	BuildBudget.span(from, to)
+	await BuildBudget.check(at)
 
 
 func _build_environment() -> void:
@@ -654,7 +765,13 @@ func _build_environment() -> void:
 	_sun.shadow_blur = 1.0
 	_sun.directional_shadow_max_distance = 80.0
 	add_child(_sun)
-	Settings.apply_render_quality(env, get_viewport())
+	# [leftovers] Its global shadow-filter settings recompile every pipeline, the loading screen's
+	# included (a 9 s frozen frame on software Vulkan): behind the loading screen it waits for the
+	# end of the build, where the warm-up compiles the district's shaders anyway.
+	if building:
+		_env_pending = env
+	else:
+		Settings.apply_render_quality(env, get_viewport())
 	Settings.apply_sun_quality(_sun)
 	sky_director = SkyDirector.new()
 	sky_director.world = self

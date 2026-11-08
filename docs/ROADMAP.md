@@ -24,6 +24,39 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 4. More districts content: 41 eggs now; more biome props (nets, satellites) if Poly Haven gets them; per-biome plants/wildlife.
 5. Post-game (M11): done (wt/late). Next: per-world story threads with WREN, wildlife using the decor hook, tune Starseed income and Bloom thresholds after play-testing.
 
+## Update: loading screen keeps moving, Rime night glint (claude/greenfall-leftovers, Nov 8)
+- **District build across frames.** Behind the loading screen `scenes/slice.gd` builds as a coroutine: the
+  heavy first half (field generation, FieldView ground/mounds/junk/landmarks, litter, far junk, CityView,
+  StreetDressing, sound synthesis) yields to the Loader whenever its slice is used up
+  (`systems/build_budget.gd`: `if BuildBudget.due(): await BuildBudget.pause()`; slice 45 ms, grows to 2x
+  the cost of a loading-screen frame on slow renderers). The bar shows the real build progress, Lumi keeps
+  moving. The scene stays `PROCESS_MODE_DISABLED` and the root viewport's 3D off until it is whole; it joins
+  the `persist` group last. Without a budget (tests, tools, save round trip) nothing yields: same code path.
+- Off the main thread: the ground's 1200x1200 layout bake (`CityLayout.bake_start`) and the litter carpet's
+  placement (`LitterView.start/finish`, now straight into MultiMesh buffers) run on WorkerThreadPool tasks
+  (read-only on field and layout; waited on at quit, `BuildBudget.finish_pending`). Model files load on
+  loader threads (`BuildBudget.fetch`, `AssetLib.fetch_model`); models the build would load blocking are in
+  `data/preload_models.json` (regenerate: `--record-preload`, ids merge across districts).
+- The second half (board, hub, Lumi, HUD, story and systems) still runs in one go on purpose: its deferred
+  calls hook into systems made later in the same `_ready` (e.g. `LumiLevel._hook_late` -> goals/events), so
+  yielding there would change behaviour. `Settings.apply_render_quality` waits for the end of the build (its
+  shadow-filter settings recompile every pipeline: a 9 s frozen frame on software Vulkan).
+- Same game: field, far junk, eggs and piece transforms identical to before (diffed); tests 637/637, save
+  round trip PASS, autoplay without SCRIPT ERROR.
+- Measured (`--load-report` prints steps and slow slices; the Loader prints `longest frame`):
+  headless New Game, Old Town: ready 21.7 s -> 14.5 s, longest frame 19.5 s -> 0.7-0.86 s.
+  GL compat under xvfb: ready 35.4 s -> 30.6 s (shot run), 46-54 s -> 46 s; longest frame 23-28 s -> 4.1-4.4 s,
+  now in the shader warm-up, not the build. Renders: screenshots/leftovers/loading_before|after.png.
+- Not yet under 100 ms: the one-go second half (~0.5 s headless here: first_seed, outposts, eggs,
+  Nursery garden, fauna each 40-110 ms) and single far-junk LOD meshes / city blocks (up to ~0.2 s). Next:
+  move those systems' mesh/material building into static caches warmed in the sliced half; spread
+  ShaderWarmup over frames (one warm-up frame compiles every pipeline at once).
+- **Rime night glint** (`rime_ice.gdshader`): at night bare ice gets a roughness floor (0.3, more where the
+  view grazes) and its specular is clamped, so giantshine spreads into a soft sheen instead of a hard white
+  hotspot on the flats around the borehole headframe; by day it is unchanged except slight grazing
+  roughening. Renders: screenshots/leftovers/rime_night_before|after.png
+  (`--planet-env=rime --time=0.0 --rime-nohud --spawn-pos=-45,-80 --spawn-yaw=0.48 --rime-cam=14,-0.18,0.48`).
+
 ## Update: simpler workbench (wt/ui2, Nov 7)
 Owner playtest #1: "SIMPLIFY GAME". The workbench is seven tabs (Lumi, Bots, Hub, Research, Rockets, Requests, Locker) with bigger text, one card style (`ui/bench_kit.gd`: card, title/body sizes, big button, cost row with the currency icons, spot pips) and every cost in Parts and/or cubes.
 - Done: robot part items are gone from the player-facing flow. `systems/robot_parts.gd`: a dug-up / spotted / rewarded robot part pays Parts at its rarity's value (Rusty 10 ... Legendary 450, `data/parts.json`); `GameState.parts` stays an empty legacy array that `RobotParts.fold_items()` folds into Parts every fleet tick. Save v4 (`SaveManager.migrate_v4`, after pace's v3) converts held items at the same values. Robot builds cost cubes + Parts (`data/robots.json` "parts", x1.2 per robot owned), Mk tiers cubes + `Fleet.TIER_PARTS` (200 / 700 / 2000); no recipes, no Control Cores, no rarity bonus.
