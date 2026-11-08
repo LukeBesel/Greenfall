@@ -89,15 +89,26 @@ static func build_site(env: OchreEnv, id: String) -> void:
 	# A level stage round the two sites, with holes where they sit (a pit site digs below it).
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	# Grid vertices inside a hole are pushed out onto its circle, so the edge is a smooth ring
+	# (cells wholly inside collapse to nothing) instead of a stair-step of skipped cells.
 	var cells := Vector2i(130, 80)
+	var holes: Array[Vector2] = [Vector2(-56.0, 0.0), Vector2(56.0, 0.0)]
+	var hr: float = 47.0
+	var snap := func(v: Vector2) -> Vector2:
+		for c: Vector2 in holes:
+			var d: Vector2 = v - c
+			if d.length() < hr:
+				return c + (d.normalized() if d.length() > 0.001 else Vector2.RIGHT) * hr
+		return v
 	for i: int in cells.x:
 		for j: int in cells.y:
 			var x0: float = -130.0 + i * 2.0
 			var z0: float = -80.0 + j * 2.0
-			var c := Vector2(x0 + 1.0, z0 + 1.0)
-			if c.distance_to(Vector2(-56.0, 0.0)) < 47.0 or c.distance_to(Vector2(56.0, 0.0)) < 47.0:
-				continue
-			for v: Vector2 in [Vector2(x0, z0), Vector2(x0 + 2.0, z0), Vector2(x0 + 2.0, z0 + 2.0), Vector2(x0, z0), Vector2(x0 + 2.0, z0 + 2.0), Vector2(x0, z0 + 2.0)]:
+			var q: Array = []
+			for v: Vector2 in [Vector2(x0, z0), Vector2(x0 + 2.0, z0), Vector2(x0 + 2.0, z0 + 2.0), Vector2(x0, z0 + 2.0)]:
+				q.append(snap.call(v))
+			for k: int in [0, 1, 2, 0, 2, 3]:
+				var v: Vector2 = q[k]
 				st.set_color(Color(0.3, 1.0, 0.5, 0.0))
 				st.set_normal(Vector3.UP)
 				st.add_vertex(Vector3(ORIGIN.x + v.x, y0 - 0.05, ORIGIN.y + v.y))
@@ -116,7 +127,12 @@ static func build_site(env: OchreEnv, id: String) -> void:
 
 static func site_camera(pit: OchrePit) -> Array:
 	var o := Vector3(ORIGIN.x, top(pit, Vector2(260.0, 160.0)), ORIGIN.y)
-	return [o + Vector3(0.0, 62.0, 118.0), o + Vector3(0.0, -4.0, -4.0)]
+	match int(DevHooks.get_f("ochre-site-view", 0.0)):
+		1:  # close on the ruined copy
+			return [o + Vector3(-56.0, 16.0, 46.0), o + Vector3(-56.0, 3.0, 0.0)]
+		2:  # close on the restored copy
+			return [o + Vector3(56.0, 16.0, 46.0), o + Vector3(56.0, 3.0, 0.0)]
+	return [o + Vector3(0.0, 44.0, 92.0), o + Vector3(0.0, -2.0, -2.0)]
 
 
 ## The two lookbook cameras: [position, target].
@@ -143,6 +159,6 @@ static func _vc_box(size: Vector3, col: Color) -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	st.set_smooth_group(-1)
-	OchreProps.put(st, OchreProps.unit_box(), Transform3D(Basis.from_scale(size), Vector3.ZERO), col)
+	OchreProps.put(st, OchreProps.kbox(size), Transform3D.IDENTITY, col)
 	st.generate_normals()
 	return st.commit()

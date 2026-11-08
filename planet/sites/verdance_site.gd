@@ -65,12 +65,40 @@ func footprints() -> Array[Rect2]:
 ## the south corners either side of the pod door, the rocket pad on the north side. Lumi spawns
 ## at (0, 6) facing north, so the way out of the yard stays open.
 func anchors() -> Dictionary:
-	return {
+	var a: Dictionary = {
 		"depot": [Vector3(8.0, 0, 7.5), -PI * 0.5],
 		"bench": [Vector3(-8.0, 0, 7.5), PI * 0.5],
 		"door": [Vector3(0, 0, 9.5), 0.0],
 		"rocket_pad": [Vector3(0, 0, -6.5), 0.0],
 	}
+	if site_id == "start_yard":
+		a.merge(START_YARD_ANCHORS)
+	return a
+
+
+## [orbD] The start yard's machines and Hub builds (orbB ports Camp onto these; owner rules: the
+## yard starts with only the pod, the broken bench and the bin; interactables at least 3 m apart;
+## the lane north out of the yard, |x| < 2.5 m, stays open). East: depot, bin, stations, radio,
+## signal tower, telescope. West: bench (shack over it), generator, composter, locker, camera
+## bot, nursery. The pod sits behind Lumi's spawn at (0, 6). Lamps on the yard's corners.
+const START_YARD_ANCHORS: Dictionary = {
+	"pod": [Vector3(0, 0, 9.8), 0.0],
+	"bin": [Vector3(8.0, 0, 4.3), -PI * 0.5],
+	"stations": [Vector3(8.5, 0, 0.8), -PI * 0.5],
+	"radio": [Vector3(5.0, 0, -1.5), -PI * 0.5],
+	"signal_tower": [Vector3(8.0, 0, -7.5), -PI * 0.5],
+	"telescope": [Vector3(4.8, 0, -9.0), 0.0],
+	"shack": [Vector3(-8.6, 0, 7.5), PI * 0.5],
+	"generator": [Vector3(-5.0, 0, 9.5), PI],
+	"composter": [Vector3(-8.5, 0, 3.8), PI * 0.5],
+	"locker": [Vector3(-8.5, 0, 0.2), PI * 0.5],
+	"camera_bot": [Vector3(-5.0, 0, -2.0), PI * 0.5],
+	"nursery": [Vector3(-7.5, 0, -5.5), PI * 0.5],
+	"lamps_0": [Vector3(-3.6, 0, -10.0), 0.0],
+	"lamps_1": [Vector3(3.6, 0, -10.0), 0.0],
+	"lamps_2": [Vector3(-10.2, 0, 10.2), 0.0],
+	"lamps_3": [Vector3(10.2, 0, 10.2), 0.0],
+}
 
 
 ## Half-size of the built area (m).
@@ -320,10 +348,10 @@ func _build_lots() -> void:
 		var t := Transform3D(Basis(), Vector3(c.x, 0, c.y))
 		if yard:
 			# Lived-in clutter on the yard's edges, clear of the anchors and the way out north.
-			for p: Vector3 in [Vector3(-9.0, 0, -2.0), Vector3(9.0, 0, -2.0)]:
+			# Clear of every start-yard anchor (the lamps are the "Yard Lamps" Hub build).
+			for p: Vector3 in [Vector3(-10.2, 0, -8.2), Vector3(10.2, 0, -3.6)]:
 				KitProps.crate_stack(b, t * KitMesh.xf(p, Vector3(0, rng.randf() * 90.0, 0)), 3, st)
-			KitProps.barrel(b, t * KitMesh.xf(Vector3(-9.5, 0, 2.5)), "paint:barrel", st == "broken")
-			KitProps.lamp_post(b, t * KitMesh.xf(Vector3(9.8, 0, 2.5)), 4.5, st)
+			KitProps.barrel(b, t * KitMesh.xf(Vector3(-10.4, 0, 5.7)), "paint:barrel", st == "broken")
 			if st == "restored":
 				for x: float in [-4.5, 4.5]:
 					KitProps.planter(b, t * KitMesh.xf(Vector3(x, 0, 10.2)), 2.4, st)

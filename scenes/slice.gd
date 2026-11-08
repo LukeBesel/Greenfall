@@ -1036,6 +1036,12 @@ func collect_piece(pid: int) -> void:
 		_on_hex_clean(hid)
 
 
+## [orbB] A bite was taken off a heavy globe piece (Patch._take_piece): the cell's numbers follow.
+func piece_bitten(pid: int) -> void:
+	if orbit:
+		orbit.piece_bitten(pid)
+
+
 func _on_hex_clean(hid: int) -> void:
 	if orbit:  # [orbB]
 		orbit.on_hex_clean(hid)
@@ -1322,6 +1328,8 @@ func _open_codex(tab: String = "") -> void:
 		return
 	if codex.is_open:
 		return
+	if pause_menu.is_open:  # [ui7] never stack the Codex on the pause menu
+		pause_menu.close_menu()
 	codex.open_screen(tab)
 	if patch.input is PlayerInput:
 		(patch.input as PlayerInput).enabled = false

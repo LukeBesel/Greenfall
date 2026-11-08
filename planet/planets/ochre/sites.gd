@@ -28,7 +28,7 @@ static func build(id: String, root: Node3D, stage: int, restoration: float) -> N
 		"hub_base":
 			_ground(site, tmat, 46.0, 0.0, rng)
 			_hub_base(site, st, r, rng)
-			_scatter(site, 44.0, 9.0, st, r, rng, 1300)
+			_scatter(site, 44.0, 17.0, st, r, rng, 1100)
 		"toppled_excavator":
 			_ground(site, tmat, 48.0, 0.0, rng)
 			_toppled(site, st, r, rng)
@@ -67,6 +67,9 @@ static func terrain_mat(restore: float, stage: int) -> ShaderMaterial:
 		m.set_shader_parameter(u, Vector3(c.r, c.g, c.b))
 	m.set_shader_parameter("restore", restore)
 	m.set_shader_parameter("stage", float(stage))
+	# Salt crust reads as crust, not a white glare (it was overbright under the closest suns).
+	m.set_shader_parameter("c_salt", Vector3(0.74, 0.7, 0.62))
+	m.set_shader_parameter("pan_amt", 0.0)
 	return m
 
 
@@ -255,7 +258,7 @@ static func _plants(site: Node3D, radius: float, clear_r: float, restore: float,
 	var lists: Array = []
 	for k: Array in kinds:
 		lists.append([])
-	var n: int = int(220.0 * restore)
+	var n: int = int(130.0 * restore)
 	for i: int in n:
 		var a: float = rng.randf() * TAU
 		var d: float = lerpf(clear_r + 1.0, radius * 0.95, sqrt(rng.randf()))
@@ -292,148 +295,215 @@ static func _mm(site: Node3D, mesh: Mesh, xfs: Array, vis: float, shadows: bool,
 	site.add_child(mmi)
 
 
+# --- Kit helpers (art/kit, Moon Sweepers bar) -------------------------------------------------------------
+
+## Ochre's kit palette: sand-white shells, oxide-red accents, ledger-yellow rails.
+const KIT_PALETTE: Dictionary = {"main": "white", "accent": "red", "pipe": "orange", "rail": "yellow", "pole": "slate",
+	"crate": "#c8743a", "barrel": "red", "broken_main": "#8a7a64", "broken_accent": "#5e3426", "flower_a": "#e86a3a", "flower_b": "#f2d8a0"}
+
+
+static func kit_state(stage: int) -> String:
+	return "broken" if stage <= 1 else ("repaired" if stage <= 3 else "restored")
+
+
+## A ready-made kit building (with its own plates, clutter and lamps), lit from stage 2.
+static func _kb(site: Node3D, kind: String, pos: Vector3, yaw_deg: float, stage: int, seed_v: int) -> KitBuilding:
+	var k: KitBuilding = KitBuilding.create(kind, kit_state(stage), seed_v, KIT_PALETTE, stage >= 2)
+	k.position = pos
+	k.rotation_degrees.y = yaw_deg
+	site.add_child(k)
+	return k
+
+
+## Commits a site builder into a MeshInstance3D and adds its prop lights when powered.
+static func _kit_commit(site: Node3D, b: KitMesh.Builder, stage: int, name_: String) -> void:
+	var mi: MeshInstance3D = KitMesh.instance(b, kit_state(stage), stage >= 2)
+	mi.name = name_
+	site.add_child(mi)
+	if stage >= 2:
+		for l: Dictionary in b.lights:
+			var o := OmniLight3D.new()
+			o.position = l["pos"]
+			o.light_color = l["color"]
+			o.omni_range = float(l["range"])
+			o.light_energy = float(l["energy"])
+			o.shadow_enabled = false
+			site.add_child(o)
+
+
+static func _plates(site: Node3D, size: Vector2, pos: Vector3, yaw_deg: float, stage: int, seed_v: int) -> void:
+	var g: Node3D = KitMesh.ground_patch(size, kit_state(stage), seed_v, {"palette": KIT_PALETTE})
+	g.position = pos
+	g.rotation_degrees.y = yaw_deg
+	site.add_child(g)
+
+
+## The Ledger ore silo in kit parts: bevelled drum on a braced frame, ribs, a cone hopper, a
+## caged ladder, a conveyor gallery to the yard, hazard bands, a label decal. Broken: rust
+## patches, the gallery fallen, the roof cap missing.
+static func ore_silo(b: KitMesh.Builder, t: Transform3D, stage: int) -> void:
+	var broken: bool = stage <= 1
+	var X := func(p: Vector3, r: Vector3 = Vector3.ZERO) -> Transform3D: return t * KitMesh.xf(p, r)
+	b.add("concrete", KitMesh.bevel_cylinder(5.0, 0.7, 0.12, 12), X.call(Vector3.ZERO))
+	for x: float in [-2.7, 2.7]:
+		for z: float in [-2.7, 2.7]:
+			b.box("dark_steel", Vector3(0.45, 6.2, 0.45), X.call(Vector3(x, 3.8, z)))
+			b.box("concrete", Vector3(0.9, 0.5, 0.9), X.call(Vector3(x, 0.95, z)))
+	for z: float in [-2.7, 2.7]:
+		b.rod("dark_steel", t * Vector3(-2.7, 1.2, z), t * Vector3(2.7, 6.4, z), 0.09)
+		b.rod("dark_steel", t * Vector3(z, 1.2, -2.7), t * Vector3(z, 6.4, 2.7), 0.09)
+	b.add("paint:main" if not broken else "rusty", KitMesh.lathe(PackedVector3Array([Vector3(0.7, 0, 0), Vector3(4.2, 3.8, 1), Vector3(4.2, 4.0, 1)]), 24), X.call(Vector3(0, 3.2, 0)))
+	b.add("paint:main", KitMesh.bevel_cylinder(4.2, 10.0, 0.12, 28), X.call(Vector3(0, 7.2, 0)))
+	for k: int in 5:
+		b.add("paint:accent" if k % 2 == 0 else "dark_steel", KitMesh.bevel_cylinder(4.32, 0.28, 0.06, 28), X.call(Vector3(0, 7.6 + k * 2.2, 0)))
+	for k: int in 12:
+		var a: float = TAU * k / 12.0
+		b.box("dark_steel", Vector3(0.16, 9.6, 0.16), X.call(Vector3(cos(a) * 4.24, 12.2, sin(a) * 4.24), Vector3(0, -rad_to_deg(a), 0)))
+	b.add("hazard", KitMesh.bevel_cylinder(4.25, 0.35, 0.04, 28), X.call(Vector3(0, 7.25, 0)))
+	if not broken:
+		b.add("paint:accent", KitMesh.lathe(PackedVector3Array([Vector3(4.4, 0, 0), Vector3(4.4, 0.3, 1), Vector3(1.0, 1.9, 1), Vector3(0.6, 2.1, 0)]), 28), X.call(Vector3(0, 17.2, 0)))
+		KitProps.vent(b, X.call(Vector3(0, 19.3, 0.6), Vector3(-90, 0, 0)), Vector2(0.9, 0.6))
+	KitProps.ladder(b, X.call(Vector3(0, 0.7, 4.35)), 16.4)
+	for k: int in 6:
+		b.rod("paint:rail", t * Vector3(-0.5, 3.0 + k * 2.6, 4.35), t * Vector3(-0.5, 3.0 + k * 2.6, 5.0), 0.04)
+		b.rod("paint:rail", t * Vector3(0.5, 3.0 + k * 2.6, 4.35), t * Vector3(0.5, 3.0 + k * 2.6, 5.0), 0.04)
+	b.decal("label_scrap", Vector2(3.0, 0.75), X.call(Vector3(0, 13.5, 4.33)))
+	b.decal("num_01", Vector2(1.2, 1.2), X.call(Vector3(-2.2, 10.5, 3.7), Vector3(0, -30, 0)))
+	# Conveyor gallery: a boxed truss with a walkway, down to a transfer tower by the yard.
+	var g0 := Vector3(-1.5, 16.0, 0)
+	var g1 := Vector3(-16.0, 4.0, 2.0) if not broken else Vector3(-14.0, 0.4, 4.5)
+	var d: Vector3 = (g1 - g0)
+	var n: int = 7
+	for k: int in n + 1:
+		var p: Vector3 = g0 + d * (float(k) / n)
+		for z: float in [-0.9, 0.9]:
+			if k < n:
+				var q: Vector3 = g0 + d * (float(k + 1) / n)
+				b.rod("paint:accent", t * (p + Vector3(0, 0, z)), t * (q + Vector3(0, 0, z)), 0.1)
+				b.rod("paint:accent", t * (p + Vector3(0, 1.4, z)), t * (q + Vector3(0, 1.4, z)), 0.08)
+				b.rod("dark_steel", t * (p + Vector3(0, 0, z)), t * (q + Vector3(0, 1.4, z)), 0.05)
+		b.box("paint:main", Vector3(0.3, 1.5, 2.0), X.call(p + Vector3(0, 0.7, 0)))
+		if not broken and k > 0 and k < n and k % 2 == 0:
+			b.box("dark_steel", Vector3(0.6, p.y, 0.6), X.call(Vector3(p.x, p.y * 0.5, p.z)))
+	b.tube("rubber", PackedVector3Array([t * (g0 + Vector3(0, 0.25, 0)), t * (g1 + Vector3(0, 0.25, 0))]), 0.35, 8)
+	b.box("paint:main", Vector3(3.0, 5.2, 3.0), X.call(Vector3(-17.0, 2.6, 2.0)))
+	b.box("paint:accent", Vector3(3.2, 0.3, 3.2), X.call(Vector3(-17.0, 5.3, 2.0)))
+	if broken:
+		KitProps.debris(b, X.call(Vector3(-8.0, 0, 4.0)), 6.0, 18)
+
+
+## The oasis greenhouse dome (about 15 m across, 8 m tall): a bevelled concrete ring wall, a
+## ribbed glass dome with a lantern cap, an airlock porch, vents and a decal. Broken: bare ribs
+## with gaps, shattered glass, debris. Restored: green inside, lit lantern and porch lamps.
+static func greenhouse(b: KitMesh.Builder, t: Transform3D, stage: int) -> void:
+	var broken: bool = stage <= 1
+	var X := func(p: Vector3, r: Vector3 = Vector3.ZERO) -> Transform3D: return t * KitMesh.xf(p, r)
+	var R: float = 7.5
+	b.add("concrete", KitMesh.bevel_cylinder(R + 0.5, 1.2, 0.12, 32), X.call(Vector3.ZERO))
+	b.add("paint:accent", KitMesh.bevel_cylinder(R + 0.55, 0.25, 0.05, 32), X.call(Vector3(0, 1.2, 0)))
+	var prof := PackedVector3Array()
+	for k: int in 9:
+		var a: float = PI * 0.5 * float(k) / 8.0
+		prof.append(Vector3(cos(a) * R, 1.45 + sin(a) * 6.3, 1.0 if k in [0, 8] else 0.0))
+	if not broken:
+		b.add("glass", KitMesh.lathe(prof, 24), X.call(Vector3.ZERO))
+	var ribs: int = 16
+	for i: int in ribs:
+		if broken and i % 5 == 2:
+			continue
+		var a: float = TAU * i / ribs
+		var pts := PackedVector3Array()
+		for k: int in 9:
+			var e: float = PI * 0.5 * float(k) / 8.0
+			var r: float = cos(e) * (R + 0.08)
+			pts.append(t * Vector3(cos(a) * r, 1.45 + sin(e) * 6.38, sin(a) * r))
+		b.tube("paint:main", pts, 0.09, 6)
+	for k: int in 3:
+		var e: float = PI * 0.5 * float(k + 1) / 4.0
+		var r: float = cos(e) * (R + 0.1)
+		b.add("dark_steel", KitMesh.lathe(PackedVector3Array([Vector3(r, 0, 1), Vector3(r + 0.08, 0.06, 1), Vector3(r, 0.12, 1)]), 32), X.call(Vector3(0, 1.45 + sin(e) * 6.4 - 0.06, 0)))
+	b.add("paint:accent", KitMesh.bevel_cylinder(1.1, 0.9, 0.08, 12), X.call(Vector3(0, 7.6, 0)))
+	b.add("trim:warm", KitMesh.bevel_cylinder(1.12, 0.08, 0.02, 12), X.call(Vector3(0, 8.1, 0)))
+	# Airlock porch with a hatch, lamp, label.
+	var porch: Transform3D = X.call(Vector3(0, 0, R + 1.2))
+	b.box("paint:main", Vector3(3.2, 3.0, 2.6), porch * KitMesh.xf(Vector3(0, 1.5, 0)))
+	b.box("paint:accent", Vector3(3.4, 0.3, 2.8), porch * KitMesh.xf(Vector3(0, 3.1, 0)))
+	KitProps.hatch(b, porch * KitMesh.xf(Vector3(0, 0, 1.31)), Vector2(1.3, 2.2), kit_state(stage))
+	b.decal("label_seeds", Vector2(1.8, 0.45), porch * KitMesh.xf(Vector3(0, 2.6, 1.32)))
+	KitProps.vent(b, X.call(Vector3(R + 0.1, 0.6, 0), Vector3(0, 90, 0)), Vector2(1.0, 0.6))
+	KitProps.vent(b, X.call(Vector3(-R - 0.1, 0.6, 0), Vector3(0, -90, 0)), Vector2(1.0, 0.6))
+	if broken:
+		KitProps.debris(b, X.call(Vector3.ZERO), R, 30)
+	elif stage >= 4:
+		for k: int in 7:
+			var a: float = TAU * k / 7.0
+			KitProps.bush(b, X.call(Vector3(cos(a) * 4.0, 1.2, sin(a) * 4.0)), 0.9)
+			KitProps.bush(b, X.call(Vector3(cos(a + 0.4) * 2.0, 1.2, sin(a + 0.4) * 2.0)), 0.7)
+
+
 # --- Hub base: the Ledger's haul depot ------------------------------------------------------------------
 
-## The yard slab and the ore silo shell from the start (owner: the yard holds only the pod, a broken
-## workbench and the trash bin, which the game places); the site office, corrugated workshop, water
-## tower and fuel tanks are Hub builds and appear from stage 2. Ruined: rust, slumped roofs, broken glass, a toppled tank. Fixed up:
-## repainted, patched, shade sails. Futuristic: white shells, solar sails with a thin hem light,
-## planters and palms in the yard, the silo a vertical garden.
-static func _hub_base(site: Node3D, stage: int, restore: float, rng: RandomNumberGenerator) -> void:
-	var b := OchreProps.Batch.new()
-	var ruined: bool = stage <= 1
-	var fut: bool = stage >= 4
-	var paint: Material = _paint(stage)
-	var wall: Material = mat("rust_wall") if ruined else (mat("wall_mid") if not fut else mat("paint_future"))
-	var roof: Material = mat("corr_ruin") if ruined else (mat("corr") if not fut else mat("cream"))
-	# Yard slab with kerb.
-	b.box(Vector3(0, 0.12, 0), Vector3(22.0, 0.3, 18.0), mat("slab"))
-	for s: float in [-1.0, 1.0]:
-		b.box(Vector3(0, 0.25, s * 9.1), Vector3(22.4, 0.4, 0.3), mat("concrete"))
-		b.box(Vector3(s * 11.1, 0.25, 0), Vector3(0.3, 0.4, 18.4), mat("concrete"))
-	if stage >= 2:  # a Hub build: only the yard and the silo shell are there from the start
-		# Site office (two portable cabins stacked, an outside stair, windows, AC units).
-		var off := Vector3(-16.0, 0, -12.0)
-		for k: int in 2:
-			var y: float = 1.5 + k * 3.0
-			b.box(off + Vector3(0, y, 0), Vector3(12.0, 2.9, 4.0), wall)
-			for w: int in 4:
-				b.box(off + Vector3(-4.2 + w * 2.8, y + 0.3, 2.02), Vector3(1.6, 1.1, 0.06), mat("glass_broken") if ruined and (w + k) % 2 == 0 else mat("glass"))
-				b.box(off + Vector3(-4.2 + w * 2.8, y + 0.3, 2.05), Vector3(1.8, 0.08, 0.1), mat("dark"))
-			b.box(off + Vector3(5.2, y + 0.9, -2.3), Vector3(1.2, 0.8, 0.6), mat("steel"))
-		for i: int in 12:
-			b.box(off + Vector3(6.6 + i * 0.0, 0.25 + i * 0.25, 1.4 - i * 0.28), Vector3(1.0, 0.08, 0.3), mat("steel"))
-		b.beam(off + Vector3(7.1, 3.3, -1.9), off + Vector3(7.1, 0.3, 1.5), 0.08, mat("steel"))
-		b.box(off + Vector3(0, 6.1, 0), Vector3(12.4, 0.2, 4.4), roof, Basis(Vector3.RIGHT, 0.12 if ruined else 0.0) * Basis(Vector3.FORWARD, 0.06 if ruined else 0.0))
-	# Ore silo + conveyor gallery to the yard.
-	var silo := Vector3(17.0, 0, -10.0)
-	for x: float in [-2.6, 2.6]:
-		for z: float in [-2.6, 2.6]:
-			b.box(silo + Vector3(x, 3.0, z), Vector3(0.5, 6.0, 0.5), mat("dark"))
-	b.add(ProcMesh.cyl(4.2, 4.2, 10.0, 24), ProcMesh.xf(silo + Vector3(0, 11.0, 0)), paint)
-	b.add(ProcMesh.cyl(0.6, 4.2, 4.0, 24), ProcMesh.xf(silo + Vector3(0, 4.0, 0), Vector3(180, 0, 0)), paint)
-	b.add(ProcMesh.cyl(1.2, 4.3, 2.0, 24), ProcMesh.xf(silo + Vector3(0, 17.0, 0)), roof)
+## Kit-built depot (art/kit): plated yard (never a slab), the ore silo with its conveyor gallery
+## from the start; the site office (module_medium), workshop (hangar), crusher (machine_housing)
+## and fuel/water tank farm arrive as Hub builds from stage 2 (owner: minimal start yard).
+## Broken: rust, missing plates, debris, no light. Repaired: patched and lit. Restored: fresh
+## paint, planters, solar panels, painted floor lines.
+static func _hub_base(site: Node3D, stage: int, _restore: float, _rng: RandomNumberGenerator) -> void:
+	var st: String = kit_state(stage)
+	_plates(site, Vector2(30.0, 24.0), Vector3(0, 0, 0), 0.0, stage, 41)
+	var b := KitMesh.Builder.new(4100 + stage, KIT_PALETTE, st)
+	ore_silo(b, KitMesh.xf(Vector3(19.0, 0, -12.0)), stage)
+	# Yard clutter: crate stacks, barrels, lamp posts, a hazard barrier line.
+	KitProps.crate_stack(b, KitMesh.xf(Vector3(-11.0, 0, 8.5), Vector3(0, 20, 0)), 5, st)
+	KitProps.crate_stack(b, KitMesh.xf(Vector3(9.0, 0, 9.0), Vector3(0, -15, 0)), 3, st)
 	for k: int in 5:
-		b.add(ProcMesh.cyl(4.28, 4.28, 0.18, 24), ProcMesh.xf(silo + Vector3(0, 7.0 + k * 2.0, 0)), mat("dark"))
-	var g0: Vector3 = silo + Vector3(-1.5, 16.0, 0)
-	var g1: Vector3 = Vector3(6.0, 2.0, -4.0)
-	if ruined:
-		g1 = Vector3(8.0, 0.4, -6.5)
-	b.beam(g0, g1, 1.6, mat("dark"))
-	b.beam(g0 + Vector3(0, 1.0, 0), g1 + Vector3(0, 1.0, 0), 0.12, mat("steel"))
-	for k: int in 4:
-		var p: Vector3 = g0.lerp(g1, 0.2 + k * 0.2)
-		b.beam(Vector3(p.x, 0, p.z), p, 0.35, mat("steel"))
-	if stage >= 2:  # a Hub build: only the yard and the silo shell are there from the start
-		# Workshop: a corrugated arch on a block plinth, roller door.
-		var ws := Vector3(16.0, 0, 13.0)
-		b.box(ws + Vector3(0, 0.6, 0), Vector3(14.0, 1.2, 9.0), mat("concrete"))
-		var segs: int = 9
-		for i: int in segs:
-			var a0: float = PI * float(i) / segs
-			var a1: float = PI * float(i + 1) / segs
-			if ruined and i == 6:
-				continue
-			var p0 := Vector3(0, sin(a0) * 4.6 + 1.2, cos(a0) * 4.5)
-			var p1 := Vector3(0, sin(a1) * 4.6 + 1.2, cos(a1) * 4.5)
-			var mid: Vector3 = (p0 + p1) * 0.5
-			var d: Vector3 = p1 - p0
-			b.box(ws + mid, Vector3(14.0, 0.08, d.length() + 0.05), roof, Basis(Vector3.RIGHT, atan2(-d.y, d.z) * -1.0))
-		b.box(ws + Vector3(7.02, 2.8, 0), Vector3(0.06, 3.0, 3.6), mat("dark"))
-		# Water tower and fuel tanks.
-		var wt := Vector3(-18.0, 0, 13.0)
-		for x: float in [-1.6, 1.6]:
-			for z: float in [-1.6, 1.6]:
-				b.beam(wt + Vector3(x, 0, z), wt + Vector3(x * 0.7, 9.0, z * 0.7), 0.3, mat("dark"))
-		b.add(ProcMesh.cyl(2.6, 2.6, 3.4, 20), ProcMesh.xf(wt + Vector3(0, 10.7, 0)), wall)
-		b.add(ProcMesh.cyl(0.4, 2.7, 1.0, 20), ProcMesh.xf(wt + Vector3(0, 12.9, 0)), roof)
-		for k: int in 3:
-			var tank := Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(-3.0 + k * 3.2, 1.4, 12.5))
-			if ruined and k == 2:
-				tank = Transform3D(Basis(Vector3.UP, 0.7) * Basis(Vector3.FORWARD, PI * 0.5), Vector3(4.0, 1.25, 14.5))
-			b.add(ProcMesh.cyl(1.2, 1.2, 5.5, 18), tank, paint if k != 1 else wall)
-	# Fence posts round the yard (some leaning while ruined).
-	for i: int in 22:
-		var a: float = TAU * i / 22.0
-		var p := Vector3(cos(a) * 30.0, 0, sin(a) * 26.0)
-		var lean: float = rng.randf_range(-0.35, 0.35) if ruined else 0.0
-		b.beam(p, p + Vector3(lean, 2.2, lean * 0.5), 0.12, mat("steel"))
-	# Trucks parked by the silo.
-	OchreSites.truck(b, Transform3D(Basis(Vector3.UP, 0.4), Vector3(4.0, 0.0, -1.0)), paint, ruined)
-	if not fut:
-		OchreSites.truck(b, Transform3D(Basis(Vector3.UP, 2.1), Vector3(-6.0, 0.0, 3.0)) * (Transform3D(Basis(Vector3.FORWARD, deg_to_rad(-75.0)), Vector3(0, 2.6, 0)) if ruined else Transform3D()), paint, ruined)
-	# Fixed up: shade sails over the yard. Futuristic: solar sails, planters, light seams.
-	if stage >= 2:
-		var sails: Array = [[Vector3(-8, 4.5, -6), Vector3(0, 5.5, -8), Vector3(-2, 3.6, 2)], [Vector3(2, 4.8, 3), Vector3(9, 4.0, -2), Vector3(8, 5.6, 6)]]
-		for s: Array in sails:
-			var corners: Array[Vector3] = []
-			corners.assign(s)
-			var mi := MeshInstance3D.new()
-			mi.mesh = OchreProps.sail_mesh(corners, 0.35)
-			mi.material_override = sail_mat(Color(0.95, 0.92, 0.85) if fut else _pal("terracotta", Color(0.66, 0.34, 0.2)).lightened(0.3), 0.0, 0.0 if fut else 0.6, 0.0)
-			site.add_child(mi)
-			for c: Vector3 in s:
-				b.beam(Vector3(c.x, 0.2, c.z), c, 0.12, mat("steel"))
-	if fut:
-		for i: int in 6:
-			var z: float = -22.0 + i * 4.0
-			var corners: Array[Vector3] = [Vector3(26, 2.2, z), Vector3(26, 2.2, z + 3.4), Vector3(31, 4.4, z + 3.4), Vector3(31, 4.4, z)]
-			var mi := MeshInstance3D.new()
-			mi.mesh = OchreProps.sail_mesh(corners, 0.0)
-			mi.material_override = sail_mat(Color(0.2, 0.22, 0.3), 1.0, 0.0, 0.9)
-			site.add_child(mi)
-			for c: Vector3 in corners:
-				b.beam(Vector3(c.x, 0, c.z), c, 0.12, mat("paint_future"))
-		for i: int in 8:
-			var p := Vector3(-9.0 + i * 2.6, 0.5, 8.0)
-			b.box(p, Vector3(2.0, 0.8, 1.2), mat("terra"))
-			b.add(ProcMesh.sphere(0.8, 8, 4), ProcMesh.xf(p + Vector3(0, 0.8, 0), Vector3.ZERO, Vector3(1.1, 0.8, 0.8)), mat("leaf"))
+		KitProps.barrel(b, KitMesh.xf(Vector3(-13.5 + k * 0.75, 0, -9.5)), "paint:barrel", stage <= 1 and k % 2 == 1)
+	for p: Vector3 in [Vector3(-14.5, 0, 11.5), Vector3(14.5, 0, -11.0), Vector3(14.0, 0, 11.5)]:
+		KitProps.lamp_post(b, KitMesh.xf(p), 4.5, st)
+	for k: int in 6:
+		b.box("hazard", Vector3(1.6, 0.8, 0.35), KitMesh.xf(Vector3(-6.0 + k * 1.9, 0.4, 12.6), Vector3(0, 0, (8.0 if stage <= 1 and k % 3 == 0 else 0.0))))
+	if stage <= 1:
+		KitProps.debris(b, KitMesh.xf(Vector3(0, 0, 0)), 13.0, 40)
+	if stage >= 4:
+		for k: int in 4:
+			KitProps.planter(b, KitMesh.xf(Vector3(-9.0 + k * 3.0, 0, 11.0)), 2.2, st)
 		for k: int in 6:
-			b.add(ProcMesh.sphere(1.0, 8, 4), ProcMesh.xf(silo + Vector3(cos(k * 1.05) * 4.3, 9.0 + k * 1.4, sin(k * 1.05) * 4.3), Vector3.ZERO, Vector3(0.8, 1.2, 0.8)), mat("leaf"))
-		b.box(Vector3(0, 0.33, 9.1), Vector3(22.4, 0.05, 0.08), mat("line"))
-		b.box(Vector3(0, 0.33, -9.1), Vector3(22.4, 0.05, 0.08), mat("line"))
-	b.flush(site, true, 700.0)
+			KitProps.solar_panel(b, KitMesh.xf(Vector3(24.0, 0, -2.0 + k * 2.6), Vector3(0, 90, 0)), Vector2(2.4, 1.4), st, 1.2)
+		b.decal("arrow", Vector2(1.6, 1.6), KitMesh.xf(Vector3(0, 0.07, 0), Vector3(-90, 0, 0)))
+		b.decal("chevrons", Vector2(3.0, 0.8), KitMesh.xf(Vector3(0, 0.07, 6.0), Vector3(-90, 0, 0)))
+	_kit_commit(site, b, stage, "Depot")
+	# Haul trucks (the detailed Ochre truck).
+	var tb := OchreProps.Batch.new()
+	OchreSites.truck(tb, Transform3D(Basis(Vector3.UP, 0.4), Vector3(3.0, 0.0, -3.0)), _paint(stage), stage <= 1)
+	if stage <= 3:
+		OchreSites.truck(tb, Transform3D(Basis(Vector3.UP, 2.1), Vector3(-5.0, 0.0, 3.0)) * (Transform3D(Basis(Vector3.FORWARD, deg_to_rad(-75.0)), Vector3(0, 2.6, 0)) if stage <= 1 else Transform3D()), _paint(stage), stage <= 1)
+	tb.flush(site, true, 700.0)
+	# Hub builds.
+	if stage >= 2:
+		_kb(site, "module_large", Vector3(-19.0, 0, -13.0), 15.0, stage, 51)  # the hero: site office
+		_kb(site, "hangar", Vector3(20.0, 0, 15.0), -100.0, stage, 52)
+		_kb(site, "machine_housing", Vector3(8.0, 0, -19.0), 0.0, stage, 53)
+		_kb(site, "tank_farm", Vector3(-21.0, 0, 15.0), 70.0, stage, 54)
 
 
 ## A haul truck (chassis, ribbed dump bed, cab, rails, ladder, stacks, treaded wheels with rims).
 static func truck(b: OchreProps.Batch, xf: Transform3D, paint: Material, ruined: bool) -> void:
-	var box: BoxMesh = OchreProps.unit_box()
 	var put := func(pos: Vector3, size: Vector3, m: Material, rot: Vector3 = Vector3.ZERO) -> void:
-		b.add(box, xf * ProcMesh.xf(pos, rot, size), m)
+		b.add(OchreProps.kbox(size), xf * ProcMesh.xf(pos, rot), m)
 	for z: float in [-1.1, 1.1]:
 		put.call(Vector3(0, 1.9, z), Vector3(11.0, 0.7, 0.5), mat("dark"))
 	put.call(Vector3(5.4, 2.2, 0), Vector3(0.6, 1.4, 5.0), paint)
 	for i: int in 7:
 		put.call(Vector3(5.72, 2.0 + i * 0.16, 0), Vector3(0.04, 0.08, 3.2), mat("dark"))
-	b.add(ProcMesh.cyl(0.55, 0.55, 2.2, 12), xf * Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(0.8, 1.7, 2.35)), mat("steel"))
+	b.add(OchreProps.kcyl(0.55, 0.55, 2.2, 12), xf * Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(0.8, 1.7, 2.35)), mat("steel"))
 	var bed := ProcMesh.xf(Vector3(-1.2, 3.0, 0), Vector3(0, 0, -6.0 if not ruined else -16.0))
-	b.add(box, xf * bed * ProcMesh.xf(Vector3.ZERO, Vector3.ZERO, Vector3(8.0, 0.3, 5.2)), paint)
+	b.add(OchreProps.kbox(Vector3(8.0, 0.3, 5.2)), xf * bed * ProcMesh.xf(Vector3.ZERO, Vector3.ZERO), paint)
 	for z: float in [-2.55, 2.55]:
-		b.add(box, xf * bed * ProcMesh.xf(Vector3(0, 1.2, z), Vector3(z * 3.0, 0, 0), Vector3(8.0, 2.4, 0.18)), paint)
+		b.add(OchreProps.kbox(Vector3(8.0, 2.4, 0.18)), xf * bed * ProcMesh.xf(Vector3(0, 1.2, z), Vector3(z * 3.0, 0, 0)), paint)
 		for i: int in 6:
-			b.add(box, xf * bed * ProcMesh.xf(Vector3(-3.6 + i * 1.45, 1.2, z * 1.04), Vector3.ZERO, Vector3(0.18, 2.4, 0.18)), mat("dark"))
-	b.add(box, xf * bed * ProcMesh.xf(Vector3(-4.0, 1.2, 0), Vector3.ZERO, Vector3(0.2, 2.4, 5.2)), paint)
-	b.add(box, xf * bed * ProcMesh.xf(Vector3(5.0, 2.5, 0), Vector3(0, 0, 8.0), Vector3(2.4, 0.18, 5.4)), paint)
+			b.add(OchreProps.kbox(Vector3(0.18, 2.4, 0.18)), xf * bed * ProcMesh.xf(Vector3(-3.6 + i * 1.45, 1.2, z * 1.04), Vector3.ZERO), mat("dark"))
+	b.add(OchreProps.kbox(Vector3(0.2, 2.4, 5.2)), xf * bed * ProcMesh.xf(Vector3(-4.0, 1.2, 0), Vector3.ZERO), paint)
+	b.add(OchreProps.kbox(Vector3(2.4, 0.18, 5.4)), xf * bed * ProcMesh.xf(Vector3(5.0, 2.5, 0), Vector3(0, 0, 8.0)), paint)
 	put.call(Vector3(4.2, 3.6, 1.2), Vector3(2.2, 2.2, 2.0), paint)
 	put.call(Vector3(5.32, 3.95, 1.2), Vector3(0.05, 1.0, 1.6), mat("glass_broken") if ruined else mat("glass"))
 	put.call(Vector3(4.2, 3.95, 2.22), Vector3(1.6, 0.9, 0.05), mat("glass"))
@@ -444,7 +514,7 @@ static func truck(b: OchreProps.Batch, xf: Transform3D, paint: Material, ruined:
 	for i: int in 5:
 		put.call(Vector3(5.75, 0.5 + i * 0.4, -2.2), Vector3(0.05, 0.05, 0.6), mat("steel"))
 	for z: float in [-0.6, 0.0]:
-		b.add(ProcMesh.cyl(0.14, 0.16, 2.6, 8), xf * ProcMesh.xf(Vector3(3.2, 4.4, z)), mat("dark"))
+		b.add(OchreProps.kcyl(0.14, 0.16, 2.6, 8), xf * ProcMesh.xf(Vector3(3.2, 4.4, z)), mat("dark"))
 	put.call(Vector3(5.5, 4.2, 2.6), Vector3(0.1, 0.6, 0.35), mat("dark"))
 	for z: float in [-1.8, 1.8]:
 		put.call(Vector3(5.73, 2.6, z), Vector3(0.04, 0.3, 0.5), mat("glass"))
@@ -453,12 +523,12 @@ static func truck(b: OchreProps.Batch, xf: Transform3D, paint: Material, ruined:
 			if ruined and x > 0.0 and z > 0.0:
 				continue
 			var wx := Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(x, 1.55, z))
-			b.add(ProcMesh.cyl(1.55, 1.55, 1.1, 18), xf * wx, mat("rubber"))
+			b.add(OchreProps.kcyl(1.55, 1.55, 1.1, 18), xf * wx, mat("rubber"))
 			for g: int in 9:
 				var a: float = TAU * g / 9.0
-				b.add(box, xf * wx * ProcMesh.xf(Vector3(cos(a) * 1.5, 0, sin(a) * 1.5), Vector3(0, -rad_to_deg(a), 0), Vector3(0.28, 1.14, 0.2)), mat("rubber"))
-			b.add(ProcMesh.cyl(0.9, 0.9, 1.16, 14), xf * wx, mat("steel"))
-			b.add(ProcMesh.cyl(0.3, 0.3, 1.3, 8), xf * wx, mat("dark"))
+				b.add(OchreProps.kbox(Vector3(0.28, 1.14, 0.2)), xf * wx * ProcMesh.xf(Vector3(cos(a) * 1.5, 0, sin(a) * 1.5), Vector3(0, -rad_to_deg(a), 0)), mat("rubber"))
+			b.add(OchreProps.kcyl(0.9, 0.9, 1.16, 14), xf * wx, mat("steel"))
+			b.add(OchreProps.kcyl(0.3, 0.3, 1.3, 8), xf * wx, mat("dark"))
 
 
 # --- Landmark sites ------------------------------------------------------------------------------------
@@ -481,6 +551,28 @@ static func _toppled(site: Node3D, stage: int, _restore: float, _rng: RandomNumb
 	for k: int in 3:
 		g.box(Vector3(10.0 + k * 3.0, 0.02, 10.0 + k * 1.5), Vector3(14.0, 0.06, 1.6), mat("dark"), Basis(Vector3.UP, 0.2))
 	g.flush(site, false, 300.0)
+	# Kit dressing: a cordon round the wreck, salvage clutter, a salvage hut and lamps once
+	# the site is worked, planters at the futuristic stage.
+	var st: String = kit_state(stage)
+	var b := KitMesh.Builder.new(3100 + stage, KIT_PALETTE, st)
+	for k: int in 18:
+		var a: float = TAU * k / 18.0
+		var p := Vector3(cos(a) * 34.0, 0, sin(a) * 30.0)
+		var tilt: float = (_rng.randf_range(-35.0, 35.0) if stage <= 1 and k % 3 == 0 else 0.0)
+		b.box("hazard", Vector3(1.8, 0.75, 0.3), KitMesh.xf(p + Vector3(0, 0.38, 0), Vector3(tilt, -rad_to_deg(a) + 90.0, 0)))
+	KitProps.crate_stack(b, KitMesh.xf(Vector3(18.0, 0, -14.0), Vector3(0, 30, 0)), 5, st)
+	for k: int in 4:
+		KitProps.barrel(b, KitMesh.xf(Vector3(20.0 + k * 0.8, 0, -10.5)), "paint:barrel", stage <= 1 and k % 2 == 0)
+	if stage <= 1:
+		KitProps.debris(b, KitMesh.xf(Vector3(4.0, 0, 6.0)), 18.0, 50)
+	else:
+		for p: Vector3 in [Vector3(26.0, 0, -6.0), Vector3(-24.0, 0, 16.0), Vector3(6.0, 0, 27.0)]:
+			KitProps.lamp_post(b, KitMesh.xf(p), 4.5, st)
+		_kb(site, "module_small", Vector3(24.0, 0, -20.0), -40.0, stage, 61)
+	if stage >= 4:
+		for k: int in 5:
+			KitProps.planter(b, KitMesh.xf(Vector3(-14.0 + k * 3.0, 0, 22.0), Vector3(0, 10, 0)), 2.2, st)
+	_kit_commit(site, b, stage, "Cordon")
 
 
 ## A fragment of the open pit: five stepped benches carved into a 90 m patch, wandering edges,
@@ -601,6 +693,36 @@ static func _pit(site: Node3D, tmat: ShaderMaterial, stage: int, restore: float,
 			var rr: float = (r_floor * 0.85 if k == 0 else r_floor + (k - 1) * pitch + wall + 1.0) + rng.randf() * 1.2
 			palms.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU), Vector3(cos(a) * rr, -float(steps - k) * step_h, sin(a) * rr)))
 		_mm(site, OchreProps.palm(2), palms, 400.0, true)
+	# Kit dressing: rim railings and lamps, a pump house on the rim, an irrigation pipe from the
+	# floor pond up the ramp once restored; scrap barrels and crates on the benches while ruined.
+	var kst: String = kit_state(stage)
+	var kb := KitMesh.Builder.new(5100 + stage, KIT_PALETTE, kst)
+	var rim: float = r_out - 2.0
+	if stage >= 2:
+		for k: int in 10:
+			var a0: float = TAU * k / 10.0 + 0.1
+			var a1: float = a0 + TAU / 14.0
+			KitProps.railing(kb, Transform3D.IDENTITY, Vector3(cos(a0) * rim, 0.0, sin(a0) * rim), Vector3(cos(a1) * rim, 0.0, sin(a1) * rim), 1.0, "paint:rail", kst)
+		for k: int in 4:
+			var a: float = TAU * k / 4.0 + 0.5
+			KitProps.lamp_post(kb, KitMesh.xf(Vector3(cos(a) * (rim + 2.0), 0, sin(a) * (rim + 2.0))), 4.5, kst)
+		_kb(site, "machine_housing", Vector3(cos(ramp_a0) * (r_out + 6.0), 0, sin(ramp_a0) * (r_out + 6.0)), -rad_to_deg(ramp_a0) - 90.0, stage, 71)
+		_kb(site, "tower", Vector3(cos(ramp_a0 + PI) * (r_out + 4.0), 0, sin(ramp_a0 + PI) * (r_out + 4.0)), 0.0, stage, 72)  # the hero: pump tower
+	if stage >= 4:
+		var pts := PackedVector3Array()
+		for k: int in 9:
+			var t: float = float(k) / 8.0
+			var a: float = ramp_a0 + t * 2.4
+			var rr: float = lerpf(r_floor + 3.0, r_out - 6.0, t)
+			pts.append(Vector3(cos(a) * (rr + 3.2), lerpf(-steps * step_h, 0.0, t) + 0.5, sin(a) * (rr + 3.2)))
+		KitProps.pipe_run(kb, Transform3D.IDENTITY, pts, 0.18, "paint:pipe")
+	if stage <= 1:
+		for k: int in 3:
+			var a: float = rng.randf() * TAU
+			var rr: float = r_floor + (k + 1) * pitch + wall + 2.0
+			KitProps.crate_stack(kb, KitMesh.xf(Vector3(cos(a) * rr, -float(steps - k - 1) * step_h, sin(a) * rr), Vector3(0, rng.randf() * 180.0, 0)), 3, kst)
+			KitProps.barrel(kb, KitMesh.xf(Vector3(cos(a + 0.05) * rr, -float(steps - k - 1) * step_h, sin(a + 0.05) * rr)), "paint:barrel", true)
+	_kit_commit(site, kb, stage, "PitKit")
 
 
 ## The oasis: a spring pool ringed with flat stones, terraced garden beds stepping up round it,
@@ -619,7 +741,9 @@ static func _oasis(site: Node3D, stage: int, restore: float, rng: RandomNumberGe
 	wm.set_shader_parameter("clean", clampf(restore * 2.0, 0.0, 1.0) if stage >= 2 else 0.05)
 	pond.material_override = wm
 	site.add_child(pond)
-	# Rim stones and three low terrace rings of rammed earth (garden beds when restored).
+	var ost: String = kit_state(stage)
+	var okb := KitMesh.Builder.new(6100 + stage, KIT_PALETTE, ost)
+	# Rim stones and three low terrace rings of bevelled block walls (garden beds when restored).
 	for i: int in 44:
 		var a: float = TAU * i / 44.0 + rng.randf_range(-0.03, 0.03)
 		var s: float = rng.randf_range(0.6, 1.1)
@@ -631,7 +755,7 @@ static func _oasis(site: Node3D, stage: int, restore: float, rng: RandomNumberGe
 			var a: float = TAU * (i + 0.5) / segs
 			if (i + k * 3) % 13 == 0:
 				continue
-			b.box(Vector3(cos(a) * r0, 0.35 + k * 0.5, sin(a) * r0), Vector3(0.6, 0.7 + k * 1.0, TAU * r0 / segs + 0.05), mat("terra"), Basis(Vector3.UP, -a))
+			okb.box("concrete" if stage >= 2 else "rusty", Vector3(TAU * r0 / segs + 0.02, 0.7 + k * 1.0, 0.6), KitMesh.xf(Vector3(cos(a) * r0, 0.35 + k * 0.5, sin(a) * r0), Vector3(0, -rad_to_deg(a) + 90.0, 0)))
 			if restore > 0.3 and (i + k) % 2 == 0:
 				b.add(ProcMesh.sphere(0.9, 8, 4), ProcMesh.xf(Vector3(cos(a) * (r0 + 1.6), 0.45 + k * 0.5, sin(a) * (r0 + 1.6)), Vector3.ZERO, Vector3(1.3, 0.6, 1.3)), mat("leaf"))
 	# Palms: stumps while ruined, a ring of date palms once restored.
@@ -640,7 +764,7 @@ static func _oasis(site: Node3D, stage: int, restore: float, rng: RandomNumberGe
 		var a: float = TAU * i / 18.0 + rng.randf_range(-0.1, 0.1)
 		var p := Vector3(cos(a) * 13.2, 0, sin(a) * 13.2)
 		if restore < 0.15 or stage <= 1:
-			b.add(ProcMesh.cyl(0.2, 0.3, rng.randf_range(0.6, 2.6), 7), ProcMesh.xf(p + Vector3(0, 0.6, 0), Vector3(rng.randf_range(-12, 12), 0, rng.randf_range(-12, 12))), mat("dark"))
+			b.add(OchreProps.kcyl(0.2, 0.3, rng.randf_range(0.6, 2.6), 7), ProcMesh.xf(p + Vector3(0, 0.6, 0), Vector3(rng.randf_range(-12, 12), 0, rng.randf_range(-12, 12))), mat("dark"))
 		else:
 			palms.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU) * Basis.from_scale(Vector3.ONE * rng.randf_range(0.9, 1.25)), p))
 	_mm(site, OchreProps.palm(3), palms, 400.0, true)
@@ -656,3 +780,22 @@ static func _oasis(site: Node3D, stage: int, restore: float, rng: RandomNumberGe
 			for cc: Vector3 in corners:
 				b.beam(Vector3(cc.x, 0, cc.z), cc, 0.12, mat("steel"))
 	b.flush(site, true, 600.0)
+	# Kit dressing: the spring's pump house and header tank (Hub builds, stage 2+), pipes out to
+	# the beds and planters when restored, lamps; scrap barrels in the dry pan while ruined.
+	greenhouse(okb, KitMesh.xf(Vector3(-27.0, 0, 13.0), Vector3(0, 60, 0)), stage)  # the hero
+	if stage >= 2:
+		_kb(site, "module_small", Vector3(30.0, 0, -12.0), -110.0, stage, 81)
+		KitProps.tank(okb, KitMesh.xf(Vector3(25.0, 0, 2.0)), 1.6, 4.0, "paint:main", ost)
+		for k: int in 3:
+			var a: float = TAU * k / 3.0 + 1.2
+			KitProps.lamp_post(okb, KitMesh.xf(Vector3(cos(a) * 32.0, 0, sin(a) * 32.0)), 4.5, ost)
+	if stage >= 4:
+		for k: int in 3:
+			var a: float = TAU * k / 3.0 + 0.2
+			KitProps.pipe_run(okb, Transform3D.IDENTITY, PackedVector3Array([Vector3(25.0, 0.4, 2.0), Vector3(cos(a) * 22.0, 0.4, sin(a) * 22.0), Vector3(cos(a) * 12.5, 0.4, sin(a) * 12.5)]), 0.12, "paint:pipe")
+			KitProps.planter(okb, KitMesh.xf(Vector3(cos(a + 0.5) * 27.0, 0, sin(a + 0.5) * 27.0), Vector3(0, -rad_to_deg(a + 0.5), 0)), 2.4, ost)
+	if stage <= 1:
+		KitProps.debris(okb, KitMesh.xf(Vector3(0, 0.05, 0)), 9.0, 22)
+		for k: int in 3:
+			KitProps.barrel(okb, KitMesh.xf(Vector3(-4.0 + k * 3.0, 0.05, 2.0 - k)), "paint:barrel", true)
+	_kit_commit(site, okb, stage, "OasisKit")

@@ -35,6 +35,9 @@ func test_site_for_hub() -> void:
 	assert_eq(SiteBuilders.site_for_hub("verdance", 4), "ruin_block")
 	assert_eq(SiteBuilders.site_for_hub("anvil", 0), "foundry_yard")
 	assert_eq(SiteBuilders.site_for_hub("tidewell", 0), "hub_raft")
+	assert_eq(SiteBuilders.site_for_hub("rime", 0), "hub_camp")
+	assert_eq(SiteBuilders.site_for_hub("ochre", 0), "hub_base")
+	assert_eq(SiteBuilders.site_for_hub("ochre", 5), "hub_base", "only hub bases are hubs")
 	assert_eq(SiteBuilders.tide_stage(1), 0)
 	assert_eq(SiteBuilders.tide_stage(3), 1)
 	assert_eq(SiteBuilders.tide_stage(5), 2)
@@ -44,7 +47,7 @@ func test_build_site_has_anchors_collision_and_restyles() -> void:
 	var root := Node3D.new()
 	add_child_autofree(root)
 	var xf := Transform3D(SphereGrid.frame(Vector3(0.3, 0.8, 0.2).normalized()), Vector3(5, 1800, 3))
-	var p: SitePrefab = PlanetEnvs.build_site(root, {"planet": "rime", "prefab": "crater_camp", "transform": xf}, 1, 0.0)
+	var p: SitePrefab = PlanetEnvs.build_site(root, {"planet": "rime", "prefab": "hub_camp", "transform": xf}, 1, 0.0)
 	if not p.is_built:
 		await p.rebuilt
 	assert_true(p.is_built)
@@ -57,9 +60,7 @@ func test_build_site_has_anchors_collision_and_restyles() -> void:
 	var content: Node = p.content
 	p.set_stage(4)
 	p.set_restoration(0.9)
-	assert_eq(p.content, content, "Rime re-dresses in place")
-	var rs: RimeSite = content.get_child(0) as RimeSite
-	assert_eq(rs.level, 4)
+	assert_eq(p.content, content, "Rime re-dresses in place (RimeHubSite.set_state)")
 
 
 func test_verdance_ruin_block_footprints() -> void:
@@ -123,14 +124,13 @@ func test_planet_fraction_counts_built_hub_regions_only() -> void:
 	assert_gt(sm.growth_m[0], 0.0)
 
 
-func test_hop_time_grows_gently_with_distance() -> void:
-	assert_almost_eq(HubHop.duration(100.0), HubHop.MIN_T, 0.01)
-	assert_gt(HubHop.duration(3000.0), HubHop.duration(1700.0))
-	assert_lt(HubHop.duration(3000.0), 13.0, "a 3 km hop on Anvil still takes under 13 s")
-	assert_almost_eq(HubHop.duration(50000.0), HubHop.MAX_T, 0.01)
-	assert_almost_eq(HubHop.alt_at(0.0, 200.0), 0.0, 0.01)
-	assert_almost_eq(HubHop.alt_at(0.5, 200.0), 200.0, 0.01)
-	assert_almost_eq(HubHop.alt_at(1.0, 200.0), 0.0, 0.01)
+func test_hop_is_short_and_low() -> void:
+	assert_lt(HubHop.duration(1700.0), 10.0, "well under 10 s on screen")
+	assert_eq(HubHop.duration(5000.0), HubHop.duration(1700.0), "Anvil's long hops cost the same")
+	assert_almost_eq(HubHop.leg_alt(0.0, true), 0.0, 0.01)
+	assert_almost_eq(HubHop.leg_alt(1.0, true), HubHop.CRUISE_ALT, 0.01)
+	assert_almost_eq(HubHop.leg_alt(1.0, false), 0.0, 0.01)
+	assert_lt(HubHop.CRUISE_ALT, 80.0, "the ground stays detailed terrain")
 
 
 func test_sled_upgrade_registers_once_and_tiers_speed_up() -> void:
@@ -179,3 +179,89 @@ func test_boost_is_rebindable_without_conflicts() -> void:
 	assert_true(names.has("boost"))
 	assert_eq(Settings.conflicts(), {})
 	assert_eq(Settings.event_label(Settings.binding("boost", false)), "Shift")
+
+
+func test_pad_view_short_press_opens_map_long_press_toggles_goals() -> void:
+	var h := PadHold.new()
+	add_child_autofree(h)
+	var got: Array[String] = []
+	h.sent.connect(func(a: String) -> void: got.append(a))
+	var down := InputEventJoypadButton.new()
+	down.button_index = JOY_BUTTON_BACK
+	down.pressed = true
+	var up := InputEventJoypadButton.new()
+	up.button_index = JOY_BUTTON_BACK
+	up.pressed = false
+	assert_true(PadHold.is_hold_button(down), "View is bound to the map")
+	h._input(down)
+	h._process(0.2)
+	h._input(up)
+	assert_eq(got, ["open_globe"] as Array[String])
+	got.clear()
+	h._input(down)
+	h._process(0.3)
+	h._process(0.3)
+	h._input(up)
+	assert_eq(got, ["toggle_goals"] as Array[String], "a long press only toggles the goals")
+
+
+func test_start_yard_anchors_spaced_and_lane_open() -> void:
+	var a: Dictionary = VerdanceSite.START_YARD_ANCHORS
+	for k: String in ["pod", "bin", "shack", "generator", "composter", "radio", "locker", "nursery", "camera_bot", "signal_tower", "telescope", "stations", "lamps_0"]:
+		assert_true(a.has(k), k)
+	var inter: Array[String] = ["depot", "bench", "bin", "stations", "radio", "signal_tower", "telescope", "generator", "composter", "locker", "camera_bot", "nursery", "pod"]
+	var all: Dictionary = {"depot": [Vector3(8.0, 0, 7.5)], "bench": [Vector3(-8.0, 0, 7.5)]}
+	all.merge(a)
+	for i: int in inter.size():
+		var p: Vector3 = all[inter[i]][0]
+		if inter[i] != "pod":
+			assert_gt(absf(p.x), 2.5, inter[i] + " keeps the north lane open")
+		for j: int in range(i + 1, inter.size()):
+			assert_gt(p.distance_to(all[inter[j]][0]), 2.99, "%s / %s at least 3 m apart" % [inter[i], inter[j]])
+
+
+func test_autowalk_detours_with_longer_sidesteps() -> void:
+	var b := CharacterBody3D.new()
+	add_child_autofree(b)
+	b.global_position = Vector3(0, 1840, 0)
+	var inp := SphereAutoInput.new(Vector3(0, 0, -1))
+	inp.body = b
+	b.velocity = Vector3(1.2, 0, 0)  # pressing into a mound: jitters but gets nowhere
+	for k: int in 25:
+		inp.update(0.1)
+	assert_gt(absf(inp.get_world_move(0.0).x), 0.5, "stalled: sidestepping")
+	var first: float = inp._side_dur
+	for k: int in 25:
+		inp.update(0.1)  # still blocked sideways: the other way, longer
+	assert_gt(inp._side_dur, first)
+	for k: int in 200:  # moving freely again
+		b.global_position += Vector3(0.3, 0, 0)
+		inp.update(0.1)
+	assert_eq(inp._phase, 0, "back on its heading")
+	assert_almost_eq(inp.get_world_move(0.0), Vector3(0, 0, -1), Vector3.ONE * 0.001)
+
+
+func test_probe_clears_junk_inside_any_planets_buildings() -> void:
+	var g := _globe(6)
+	g.cells.state.fill(0)
+	g.cells.junk.fill(1.0)
+	var c0: int = 123
+	var s: Dictionary = g.terrain.reserve_site(c0, 55.0, 20.0)
+	assert_false(s.is_empty())
+	var sites: Array[Dictionary] = [s]
+	var sm := SiteManager.new()
+	g.add_child(sm)
+	sm.setup(g, "ochre", sites)
+	sm.set_process(false)
+	var p: SitePrefab = sm.build_hub(0)
+	if not p.is_built:
+		await p.rebuilt
+	for k: int in 3:
+		await get_tree().physics_frame
+	sm.probe_cells(0, p)
+	var clean: int = 0
+	for c: int in s["cells"]:
+		if not g.cells.is_dirty(c):
+			clean += 1
+	assert_gt(clean, 0, "cells under Ochre's hub buildings go clean")
+	assert_lt(clean, s["cells"].size(), "open ground keeps its junk")
