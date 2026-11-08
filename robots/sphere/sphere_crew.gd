@@ -28,7 +28,7 @@ const RING_M: float = 18.0
 const ARRIVE_M: float = 2.5
 const PASS_M: float = 4.0
 const PASS_TIGHT_M: float = 2.5  # beside a building: past a parked robot's separation, short of cutting its corner
-const LOG_KEYS: Array[String] = ["junk", "bales", "hauled", "cells", "planted", "watered", "idle_s", "stall_s", "unstuck"]
+const LOG_KEYS: Array[String] = ["junk", "bales", "hauled", "cells", "planted", "watered", "dumps", "refills", "idle_s", "stall_s", "unstuck"]
 
 var grid: SphereGrid
 var cells: SphereCells
@@ -177,10 +177,113 @@ func _go(u: Dictionary, cell_path: PackedInt32Array) -> void:
 	u["stall_t"] = 0.0
 
 
+# --- [orbC] Stations, outposts and water on the globe (ORBIT_PARITY) -------------------------
+
+const WATER_PER_CELL: float = 4.0
+## Set by the slice: puts a JunkCube into the world (haulers unloading on the conveyor).
+var add_cube_fn: Callable
+## The world (outposts, stations, depot).
+var world: Node
+
+
+func _tank(u: Dictionary) -> float:
+	var t: float = Economy.robot_stat(str(u["type"]), "tank", int(u["tier"]))
+	return t if t > 0.0 else 20.0
+
+
+func _baler() -> Node:
+	var st: Stations = Stations.of(self)
+	return st.baler if st != null else null
+
+
+## The hopper is full: tip it into the auto-baler when one stands within its service range (near
+## robots, as the flat Stations.claim_dump), else drop a bale here. True if it left for the baler.
+func _hopper_full(u: Dictionary) -> bool:
+	var bl: Node = _baler()
+	if bl != null and u["bot"] != null and str(u["role"]) == "clean":
+		var st: Stations = Stations.of(self)
+		var rng: float = float(st.def("auto_baler").get("service_range", 34.0))
+		var p: Vector3 = (u["bot"] as SphereBot).global_position
+		if p.distance_to((bl as Node3D).global_position) <= rng and bl.call("can_accept", float(u["hopper"])):
+			_drop_job(u)
+			var dp: Vector3 = bl.call("dump_point")
+			if _route_to(u, grid.cell_at(dp), "to_baler"):
+				_append_goal(u, surface.up_at(dp))
+				return true
+	_drop_bale(u)
+	return false
+
+
+## Junk units as baler contents (type -> volume), mixed by the junk types' weights.
+func _hopper_contents(units: float) -> Dictionary:
+	var out: Dictionary = {}
+	var wsum: float = 0.0
+	for id: String in Economy.junk_ids:
+		wsum += float(Economy.junk_types[id].get("weight", 1.0))
+	for id: String in Economy.junk_ids:
+		out[id] = units * float(Economy.junk_types[id].get("weight", 1.0)) / maxf(wsum, 0.001)
+	return out
+
+
+## Where a hauler unloads: the nearest working scale (the Depot or an outpost's, as the flat
+## Outposts.nearest_depot), and for a near hauler the conveyor's hopper when Stations.haul_drop
+## says it is closer. Returns a unit direction; sets u["drop"].
+func _haul_target(u: Dictionary) -> Vector3:
+	u["drop"] = ""
+	var d: Vector3 = depot_points.get(int(u["hub"]), Vector3.ZERO)
+	if d == Vector3.ZERO:
+		d = grid.centers[depot_of(int(u["hub"]))]
+	var here: Vector3 = surface.ground(unit_dir(u))
+	if world != null and world.get("outposts") is Outposts:
+		var dp: Depot = Outposts.nearest_depot(world, here)
+		if dp != null:
+			d = surface.up_at(dp.global_position)
+	if u["bot"] != null:
+		var to: Vector3 = Stations.haul_drop(u["bot"], surface.ground(d))
+		if to.distance_to(surface.ground(d)) > 0.5:
+			u["drop"] = "conveyor"
+			return surface.up_at(to)
+	return _drop_spot_at(u, d)
+
+
+## Refill a Drip's tank: the nearest of the barrel by the Depot, a working outpost's drum and a
+## clean lake within a few rings (the flat WaterNet's sources).
+func _go_refill(u: Dictionary, here: int) -> bool:
+	var me: Vector3 = unit_dir(u)
+	var best := Vector3.ZERO
+	var best_d: float = INF
+	var cands: Array[Vector3] = []
+	var dp: Vector3 = depot_points.get(int(u["hub"]), Vector3.ZERO)
+	if dp != Vector3.ZERO:
+		cands.append(dp)
+	if world != null and world.get("outposts") is Outposts:
+		for p: Dictionary in (world.get("outposts") as Outposts).refill_points():
+			cands.append(surface.up_at(p["pos"]))
+	for c: int in grid.cells_around(here, 6):
+		if cells.state[c] == 5 and not water_dirty(c):
+			cands.append(_shore_of(c))
+			break
+	for c2: Vector3 in cands:
+		var dd: float = me.angle_to(c2)
+		if dd < best_d:
+			best_d = dd
+			best = c2
+	if best == Vector3.ZERO:
+		u["idle"] = "no water"
+		return false
+	if _route_to(u, grid.cell_at(best), "to_refill"):
+		_append_goal(u, best)
+		return true
+	return false
+
+
 ## A hauler's own spot by the depot (a ring 2.2 m out, one slot per hauler name), clear of
 ## buildings, so several Haul Bugs unloading at once don't jostle on one point.
 func _drop_spot(u: Dictionary) -> Vector3:
-	var dp: Vector3 = depot_points.get(int(u["hub"]), Vector3.ZERO)
+	return _drop_spot_at(u, depot_points.get(int(u["hub"]), Vector3.ZERO))
+
+
+func _drop_spot_at(u: Dictionary, dp: Vector3) -> Vector3:
 	if dp == Vector3.ZERO:
 		return Vector3.ZERO
 	var slot: float = float(absi(hash(str(u["name"]))) % 6) / 6.0 * TAU
@@ -534,7 +637,7 @@ func _think(u: Dictionary, dt: float) -> void:
 		# building avoidance (it would keep a robot off a piece lying against a wall).
 		b.avoid_static = not b.working or b.distance_to_goal() > 2.5
 	match str(u["mode"]):
-		"go", "to_bale", "to_depot":
+		"go", "to_bale", "to_depot", "to_baler", "to_refill":
 			if _has_goal(u):
 				# A cell is 17 m across: close to its centre counts (another robot may be parked
 				# right on it, and separation would keep this one circling).
@@ -559,6 +662,14 @@ func _think(u: Dictionary, dt: float) -> void:
 			_arrive(u)
 		"work":
 			_work(u, dt)
+		"refill":
+			u["work_t"] = float(u["work_t"]) + dt
+			var tank: float = _tank(u)
+			if float(u["work_t"]) * maxf(Economy.robot_stat(str(u["type"]), "refill_rate", int(u["tier"])), 1.0) >= tank:
+				u["water"] = tank
+				u["log"]["refills"] = float(u["log"].get("refills", 0.0)) + 1.0
+				u["mode"] = "idle"
+				u["rescan"] = 0.0
 		_:
 			u["rescan"] = float(u["rescan"]) - dt
 			if float(u["rescan"]) > 0.0:
@@ -576,6 +687,8 @@ func _find_job(u: Dictionary) -> bool:
 		return _find_haul(u, here)
 	if role == "clean" and float(u["hopper"]) >= _capacity(u):
 		_drop_bale(u)
+	if role == "water" and float(u.get("water", _tank(u))) < WATER_PER_CELL:
+		return _go_refill(u, here)
 	if role == "plant" and spend_seeds and not GameState.can_afford("seeds", BigNum.from_float(1.0)):
 		u["idle"] = "out of seeds"
 		return false
@@ -627,11 +740,35 @@ func _arrive(u: Dictionary) -> void:
 			for x: float in u["carry"]:
 				v += x
 			u["log"]["hauled"] = float(u["log"]["hauled"]) + (u["carry"] as Array).size()
+			if str(u.get("drop", "")) == "conveyor" and add_cube_fn.is_valid() and u["bot"] != null:
+				# Real bales onto the conveyor's hopper; the belt carries them to the Depot.
+				var at: Vector3 = (u["bot"] as SphereBot).global_position
+				for x: float in u["carry"]:
+					var cube := JunkCube.create(BigNum.from_float(x), SphereBales.bale_info(10.0))
+					add_cube_fn.call(cube)
+					cube.global_position = at + surface.up_at(at) * 0.9
+			else:
+				cash(v)
 			(u["carry"] as Array).clear()
+			u["drop"] = ""
 			SphereBales.dress_cargo(u["bot"], 0)
-			cash(v)
 			u["mode"] = "idle"
 			u["rescan"] = 0.0
+		"to_baler":
+			var bl: Node = _baler()
+			if bl != null and float(u["hopper"]) > 0.0 and bl.call("can_accept", float(u["hopper"])):
+				var from: Vector3 = (u["bot"] as SphereBot).global_position if u["bot"] != null else surface.ground(unit_dir(u))
+				bl.call("accept", _hopper_contents(float(u["hopper"])), from + surface.up_at(from) * 0.8)
+				u["log"]["dumps"] = float(u["log"].get("dumps", 0.0)) + 1.0
+				GameState.inc_stat("robot_dumps")
+				u["hopper"] = 0.0
+			elif float(u["hopper"]) > 0.0:
+				_drop_bale(u)  # the baler filled up meanwhile
+			u["mode"] = "idle"
+			u["rescan"] = 0.0
+		"to_refill":
+			u["mode"] = "refill"
+			u["work_t"] = 0.0
 
 
 func _work(u: Dictionary, dt: float) -> void:
@@ -651,6 +788,7 @@ func _work(u: Dictionary, dt: float) -> void:
 				u["log"]["planted"] = float(u["log"]["planted"]) + 1.0
 		elif role == "water" and cells.state[c] == 2:
 			cells.set_state(c, 3)
+			u["water"] = maxf(0.0, float(u.get("water", _tank(u))) - WATER_PER_CELL)
 			u["log"]["watered"] = float(u["log"]["watered"]) + 1.0
 		cell_worked.emit(c)
 		_finish_job(u)
@@ -664,8 +802,8 @@ func _work(u: Dictionary, dt: float) -> void:
 	work_cell(c, (have - take) / upc)
 	u["hopper"] = float(u["hopper"]) + take
 	u["log"]["junk"] = float(u["log"]["junk"]) + take
-	if float(u["hopper"]) >= _capacity(u):
-		_drop_bale(u)
+	if float(u["hopper"]) >= _capacity(u) and _hopper_full(u):
+		return
 	if not (cells.is_dirty(c) or water_dirty(c)):
 		u["log"]["cells"] = float(u["log"]["cells"]) + 1.0
 		_finish_job(u)
@@ -721,8 +859,8 @@ func _work_pieces(u: Dictionary, c: int, dt: float) -> void:
 	u["pid"] = -1
 	u["hopper"] = float(u["hopper"]) + units
 	u["log"]["junk"] = float(u["log"]["junk"]) + units
-	if float(u["hopper"]) >= _capacity(u):
-		_drop_bale(u)
+	if float(u["hopper"]) >= _capacity(u) and _hopper_full(u):
+		return
 	if not (cells.is_dirty(c) or water_dirty(c)):
 		if was_dirty:
 			cell_cleaned.emit(c)
@@ -893,8 +1031,9 @@ func _find_haul(u: Dictionary, here: int) -> bool:
 		u["bale"] = -1
 		return false
 	if not carry.is_empty():
-		if _route_to(u, depot_of(int(u["hub"])), "to_depot"):
-			_append_goal(u, _drop_spot(u))
+		var drop: Vector3 = _haul_target(u)
+		if _route_to(u, grid.cell_at(drop), "to_depot"):
+			_append_goal(u, drop)
 			return true
 		return false
 	u["idle"] = "no bales"
@@ -931,6 +1070,10 @@ func status_text(u: Dictionary) -> String:
 			return "fetching a bale"
 		"to_depot":
 			return "hauling %d bales" % (u["carry"] as Array).size()
+		"to_baler":
+			return "tipping into the baler"
+		"to_refill", "refill":
+			return "refilling"
 	return "idle: %s" % (str(u["idle"]) if str(u["idle"]) != "" else "waiting")
 
 
