@@ -86,9 +86,9 @@ func refresh(animate: bool) -> void:
 				if _index < 0:
 					visible = false)
 		return
-	if objectives.step == _index and visible:
+	if objectives.position() == _index and visible:  # [v1guide] goal steps keep step: use the timeline position
 		return
-	_index = objectives.step
+	_index = objectives.position()
 	_flash = 0.0
 	_title.add_theme_color_override("font_color", UITheme.CREAM)
 	_set_texts(def)

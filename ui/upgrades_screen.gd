@@ -425,20 +425,15 @@ func _relayout() -> void:
 	_grid.columns = clampi(int(w / min_w), 1, 3 if _tab == "bots" else 4)
 
 
-## [v1guide] Objective id -> [tab, row id]: opening the bench during that objective shows its row.
-const OBJECTIVE_ROWS: Dictionary = {"tower": ["build", "signal_tower"], "tower2": ["patch", "hb_signal_tower"],
-	"compartment": ["patch", "compartment_size"], "scoop_size": ["patch", "multi_lock"], "baler": ["patch", "baler"],
-	"bench2": ["patch", "bench_tier"], "base2": ["patch", "hub_level"], "base3": ["patch", "hub_level"]}
-
-
-## [v1guide] The tab and row the current story objective asks for ([] when none).
+## [v1guide] The tab and row the current timeline step asks for ([] when none): every step that
+## happens at the bench opens on its row (Objectives.step_target).
 func objective_row() -> Array:
 	var w: Node = fleet.world if fleet else null
 	var obj: Objectives = w.get("objectives") as Objectives if w else null
 	if obj == null:
 		return []
-	var r: Variant = OBJECTIVE_ROWS.get(str(obj.current().get("id", "")))
-	if not (r is Array) or not tab_visible(str(r[0]), w):
+	var r: Array = obj.bench_row()
+	if r.size() < 2 or not tab_visible(str(r[0]), w):
 		return []
 	return r
 

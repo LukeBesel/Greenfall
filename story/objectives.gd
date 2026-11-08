@@ -147,21 +147,71 @@ func _wren() -> Wren:
 # --- State ------------------------------------------------------------------------------------
 
 func done() -> bool:
-	return step >= chain.size()
+	return step >= chain.size() and _goal_index() < 0
 
 
-## The objective on the card ({} when there is none: not revealed yet, or all done).
+# --- [v1guide] One goal timeline ---------------------------------------------------------------
+# Owner 2026-11-08: ONE list of goals. The story objectives come first; after them the goal chain
+# (data/goals.json) continues on the same card, one step at a time. Goals that already hold when a
+# step finishes are folded into it (their rewards paid with it), so nothing completes on its own
+# in the background.
+
+func goals() -> Goals:
+	return world.get("goals") as Goals if world else null
+
+
+## The goal chain index on the card once the story objectives are done (-1: none / not yet).
+func _goal_index() -> int:
+	var g: Goals = goals()
+	if g == null or step < chain.size():
+		return -1
+	var c: Array[int] = g.current()
+	return c[0] if not c.is_empty() else -1
+
+
+## A position on the timeline that changes with every finished step (the card's fade key).
+func position() -> int:
+	var g: Goals = goals()
+	return step + (g.done_count() if g else 0)
+
+
+## Quietly completes every goal that already holds; "" or "  +N cubes" for the notice.
+func _fold_goals() -> String:
+	var g: Goals = goals()
+	if g == null:
+		return ""
+	var r: Dictionary = g.absorb()
+	var txt: String = GoalsPanel.reward_text(r, 1.0) if not r.is_empty() else ""
+	return ("    " + txt) if txt != "" else ""
+
+
+## The step on the card ({} when there is none: not revealed yet, or all done). A goal step is a
+## copy of its goals.json entry with "_goal" (its index) and its reward as the why line.
 func current() -> Dictionary:
-	if not revealed or done():
+	if not revealed:
 		return {}
-	return chain[step]
+	if step < chain.size():
+		return chain[step]
+	var gi: int = _goal_index()
+	if gi < 0:
+		return {}
+	var g: Goals = goals()
+	var d: Dictionary = (g.chain[gi] as Dictionary).duplicate()
+	d["_goal"] = gi
+	var rw: String = GoalsPanel.reward_text(g.reward_of(gi), 1.0)
+	d["desc"] = (tr("Reward: %s") % rw) if rw != "" else ""
+	return d
 
 
 func target_of(def: Dictionary) -> float:
+	if def.has("_goal") and goals():
+		return goals().target_of(int(def["_goal"]))
 	return float(def.get("target", 1))
 
 
 func value_of(def: Dictionary) -> float:
+	if def.has("_goal") and goals():
+		return goals().value_of(int(def["_goal"]))
 	var key: String = str(def.get("key", ""))
 	match str(def.get("type", "stat")):
 		"stat":
@@ -246,6 +296,9 @@ func _process(delta: float) -> void:
 	if world == null:
 		return
 	_update_focus()
+	var gl: Goals = goals()
+	if gl and not gl.driven:
+		gl.driven = true  # [v1guide] the card drives the goals: one step at a time
 	if not revealed:
 		return
 	_explain_signal()
@@ -263,7 +316,7 @@ func _process(delta: float) -> void:
 	if value_of(def) >= target_of(def):
 		complete()
 		return
-	if def.get("hex", false):
+	if def.get("hex", false) or str(step_target(def).get("to", "")) == "hex":  # [v1guide] every step on dirty ground gets its hex
 		_set_hex(_pick_hex())
 		if DevHooks.has("objective-clean") and target_hex >= 0 and not _dev_cleaned:  # dev: part-clean it
 			_dev_cleaned = true
@@ -276,6 +329,9 @@ func _process(delta: float) -> void:
 func complete() -> void:
 	if done():
 		return
+	if step >= chain.size():
+		_complete_goal()
+		return
 	var i: int = step
 	var t: Array[String] = texts(chain[i])
 	step += 1
@@ -284,9 +340,10 @@ func complete() -> void:
 		print("[onboard] objective %s done at %.1f min" % [str(chain[i].get("id", "")), float(GameState.stats.get("time_played", 0.0)) / 60.0])
 	_hold = NEXT_DELAY_S
 	_set_hex(-1)
+	var folded: String = _fold_goals()  # [v1guide] goals that already hold ride along
 	var hud: Variant = world.get("hud") if world else null
 	if hud != null and (hud as Object).has_method("notify"):
-		hud.call("notify", tr("Objective complete  ·  %s") % t[0], "goal")
+		hud.call("notify", (tr("Objective complete  ·  %s") % t[0]) + folded, "goal")
 	Audio.play("chime", 1.2, -8.0)
 	completed.emit(i)
 	if not done():
@@ -298,6 +355,28 @@ func complete() -> void:
 					w.speak(tr(str(l)), 1))
 	else:
 		changed.emit(step)
+
+
+## [v1guide] A goal step is done: pay it (Goals.complete), fold in the ones that already hold, and
+## bring the next step after the beat.
+func _complete_goal() -> void:
+	var gi: int = _goal_index()
+	var g: Goals = goals()
+	if gi < 0 or g == null:
+		return
+	var text: String = tr(str(g.chain[gi].get("text", "")))
+	var rw: String = GoalsPanel.reward_text(g.reward_of(gi), 1.0)
+	g.complete(gi)
+	var folded: String = _fold_goals()
+	if DevHooks.has("autoplay"):
+		print("[onboard] goal %s done at %.1f min" % [str(g.chain[gi].get("id", "")), float(GameState.stats.get("time_played", 0.0)) / 60.0])
+	_hold = NEXT_DELAY_S
+	_set_hex(-1)
+	var hud: Variant = world.get("hud") if world else null
+	if hud != null and (hud as Object).has_method("notify"):
+		hud.call("notify", tr("Goal complete  ·  %s") % text + (("    " + rw) if rw != "" else "") + folded, "goal")
+	completed.emit(step)
+	get_tree().create_timer(NEXT_DELAY_S).timeout.connect(func() -> void: changed.emit(step))
 
 
 # --- The target hex -----------------------------------------------------------------------------
@@ -388,54 +467,113 @@ func _update_focus() -> void:
 	focus_outline.set_hex(h if ok and h != target_hex else -1)
 
 
-## Where the purple waypoint points: the current objective's place (the scale with a bale in
-## hand, the workbench for builds, the greenhouse once WREN hears the seed tin), or with no
-## objective running, the current goal's (a memory shard, the scale, the workbench, a buried part).
-## null = nothing to point at (or the restart checklist's own marker is on).
+## [v1guide] Every step guides the player (owner 2026-11-08): where the beam and trail point, and
+## which workbench row opens. {"to": "bench" | "depot" | "hex" | "place" | "", "pos": Vector3 or
+## null, "row": [tab, row id] or []}. "hex" = the nearest dirty hex (outlined too).
+const BENCH_STATS: Array[String] = ["upgrades_bought", "robots_built", "research_done", "builder_full_custom", "builder_parts_fitted",
+	"decor_placed", "decor_kinds", "decor_charm_best", "greenhouses_built", "water_tanks", "heaters_placed", "drive_tier", "robots_retired", "radio_plays"]
+const DEPOT_STATS: Array[String] = ["cubes_cashed", "junk_dumps", "robot_bales", "bales_recycled"]
+const HEX_STATS: Array[String] = ["hexes_cleaned", "junk_scooped", "cubes_made", "perfect_cubes", "hexes_restored", "hexes_thawed",
+	"plants_planted", "plants_bloomed", "garden_stipend", "eggs_found", "cats_petted"]
+
+
+func step_target(def: Dictionary) -> Dictionary:
+	var out: Dictionary = {"to": "", "row": []}
+	if def.is_empty():
+		return out
+	var p: Patch = world.get("patch") as Patch if world else null
+	var key: String = str(def.get("key", ""))
+	var typ: String = str(def.get("type", "stat"))
+	if not def.has("_goal"):  # the story objectives
+		match str(def.get("id", "")):
+			"dump3":  # a full-ish chest: to the bin; else out to the junk
+				out["to"] = "depot" if p and p.compartment.fill >= p.capacity() * 0.5 else "hex"
+			"compartment", "scoop_size", "baler":  # to the bench once affordable; else earn
+				var aff: bool = GameState.can_afford("cubes", Economy.upgrade_cost(key))
+				out = {"to": "bench" if aff else "hex", "row": ["patch", key]}
+			"power":
+				out["to"] = "depot" if p and not p.carried.is_empty() else "hex"
+			"tower", "tower2":
+				out["row"] = ["build", "signal_tower"] if SignalTower.tier() == 0 else ["patch", "hb_signal_tower"]
+				var aff2: bool = GameState.can_afford_all(SignalTower.next_cost())
+				out["to"] = "bench" if aff2 else ("depot" if p and not p.carried.is_empty() else "hex")
+			"hex", "zone":
+				out["to"] = "hex"
+			"bench2":
+				out = {"to": "bench" if BenchTiers.block_reason(world) == "" else "hex", "row": ["patch", "bench_tier"]}
+			"robot", "haul":
+				out = {"to": "bench", "row": ["bots", ""]}
+			"base2", "base3":
+				out = {"to": "bench", "row": ["patch", "hub_level"]}
+			"seed":
+				if GameState.flags.get("seed_signal", false) and not GameState.flags.get("seeds_unlocked", false):
+					out = {"to": "place", "pos": (world.first_seed as FirstSeed).greenhouse_point() if world.get("first_seed") != null else FirstSeed.GREENHOUSE_POS, "row": []}  # [orbB]
+				else:
+					out["to"] = "hex"
+			_:
+				out["to"] = "bench"
+		return _resolve(out)
+	match typ:
+		"upgrade":
+			out = {"to": "bench", "row": ["patch", key]}
+		"robot", "tier":
+			out = {"to": "bench", "row": ["bots", ""]}
+		"research":
+			out = {"to": "bench", "row": ["research", key]}
+		"hub_level", "bases_l5", "frontier_base":
+			out = {"to": "bench", "row": ["patch", "hub_level"]}
+		"earned":
+			out["to"] = "depot" if p and not p.carried.is_empty() else "hex"
+		"hex_level", "zone", "frontier_growing":
+			out["to"] = "hex"
+		"flag":
+			if key == "seeds_unlocked" and world.get("first_seed") != null:
+				out = {"to": "place", "pos": (world.first_seed as FirstSeed).greenhouse_point(), "row": []}
+			else:
+				out["to"] = "hex"
+		"stat":
+			if key in DEPOT_STATS:
+				out["to"] = "depot" if key != "cubes_cashed" or (p and not p.carried.is_empty()) else "hex"
+			elif key in BENCH_STATS:
+				out = {"to": "bench", "row": ["research", ""] if key == "research_done" else (["bots", ""] if key == "robots_built" else [])}
+			elif key == "shards_found":
+				var sh: Variant = world.get("shards")
+				var wp: Variant = (sh as ShardSystem).waypoint(p.global_position).get("pos", null) if sh is ShardSystem and p else null
+				out = {"to": "place" if wp is Vector3 else "hex", "pos": wp, "row": []}
+			elif key == "parts_found" and p and p.detector and p.detector.target >= 0:
+				out = {"to": "place", "pos": world.field.part_pos[p.detector.target], "row": []}
+			else:
+				out["to"] = "hex"
+		_:
+			out["to"] = "hex"
+	return _resolve(out)
+
+
+func _resolve(t: Dictionary) -> Dictionary:
+	match str(t.get("to", "")):
+		"bench":
+			t["pos"] = _bench_pos()
+		"depot":
+			t["pos"] = _depot_pos()
+		"hex":
+			var f: HexField = world.get("field") as HexField if world else null
+			t["pos"] = f.hex_center(target_hex) if f and target_hex >= 0 else null
+	return t
+
+
+## The workbench row the current step asks for ([] when none).
+func bench_row() -> Array:
+	return step_target(current()).get("row", [])
+
+
+## Where the purple beam points: the current step's target (null while the restart checklist runs:
+## it has its own marker).
 func waypoint_target() -> Variant:
 	if int(GameState.flags.get("tutorial_step", 0)) < Tutorial.STEPS.size():
 		return null
-	var p: Patch = world.get("patch") as Patch
-	if p == null:
+	if world.get("patch") == null:
 		return null
-	var def: Dictionary = current()
-	if not def.is_empty():
-		match str(def.get("id", "")):
-			"power":
-				return _depot_pos() if not p.carried.is_empty() else null
-			"dump3":  # [onboard2] a full-ish chest: to the bin
-				return _depot_pos() if p.compartment.fill >= p.capacity() * 0.5 else null
-			"scoop_size", "compartment", "baler":  # [onboard2] to the bench once it's affordable
-				var uid: String = str(def.get("key", ""))
-				return _bench_pos() if GameState.can_afford("cubes", Economy.upgrade_cost(uid)) else null
-			"robot", "haul", "base2", "base3", "bench2":
-				return _bench_pos()
-			"tower", "tower2":
-				if SignalTower.tier() == 0:
-					return _bench_pos()  # [camp2] the first tier is built from the workbench's Hub tab
-				return SignalTower.pos() if SignalTower.tier() < int(def.get("target", 1)) else null
-			"seed":
-				if GameState.flags.get("seed_signal", false) and not GameState.flags.get("seeds_unlocked", false):
-					return (world.first_seed as FirstSeed).greenhouse_point() if world.get("first_seed") != null else FirstSeed.GREENHOUSE_POS  # [orbB]
-		return null
-	var gl: Goals = world.get("goals") as Goals
-	if gl == null or gl.current().is_empty():
-		return null
-	var g: Dictionary = gl.chain[gl.current()[0]]
-	match str(g.get("key", "")):
-		"shards_found":
-			var sh: Variant = world.get("shards")
-			if sh is ShardSystem:
-				var w: Dictionary = (sh as ShardSystem).waypoint(p.global_position)
-				return w.get("pos", null)
-		"cubes_cashed":
-			return _depot_pos()
-		"upgrades_bought", "compartment_size":
-			return _bench_pos()
-		"parts_found":
-			if p.detector and p.detector.target >= 0:
-				return world.field.part_pos[p.detector.target]
-	return null
+	return step_target(current()).get("pos", null)
 
 
 func _bench_pos() -> Variant:

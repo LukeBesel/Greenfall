@@ -32,3 +32,77 @@ func test_glyphs_and_bale_howto_name_the_key() -> void:
 	assert_true(Objectives.bale_howto().contains(g))
 	var o: Array[String] = Objectives.texts({"text": "Power", "desc": "Press {cube} for a bale"})
 	assert_false(o[1].contains("{cube}"))
+
+
+# --- One goal timeline (owner 2026-11-08) ---------------------------------------------------------
+
+class FakeWorld extends Node:
+	var goals: Goals
+	var patch: Patch
+	var field: HexField
+	var hud: Node
+	var fleet: Node
+	var depot: Node3D
+
+
+func _timeline() -> Array:
+	var w := FakeWorld.new()
+	add_child_autofree(w)
+	var g := Goals.new()
+	w.add_child(g)
+	w.goals = g
+	var o := Objectives.new()
+	o.world = w
+	o.chain = [{"id": "a", "text": "A", "desc": "a", "type": "stat", "key": "v1g_a", "target": 1}]
+	o.revealed = true
+	return [w, g, o]
+
+
+func test_one_step_at_a_time_story_then_goals() -> void:
+	var saved_f: Dictionary = GameState.flags.duplicate(true)
+	var saved_s: Dictionary = GameState.stats.duplicate(true)
+	GameState.flags = {}
+	GameState.stats = {}
+	var t: Array = _timeline()
+	var g: Goals = t[1]
+	var o: Objectives = t[2]
+	g.driven = true
+	assert_eq(str(o.current().get("id", "")), "a", "the story step first")
+	GameState.stats["junk_scooped"] = 99.0
+	assert_eq(g.check(), -1, "goals never finish on their own while the card drives them")
+	o.step = 1
+	var d: Dictionary = o.current()
+	assert_true(d.has("_goal"), "then the goal chain, on the same card")
+	assert_eq(int(d["_goal"]), g.current()[0])
+	o.free()
+	GameState.flags = saved_f
+	GameState.stats = saved_s
+
+
+func test_folded_goals_pay_their_rewards_quietly() -> void:
+	var saved_f: Dictionary = GameState.flags.duplicate(true)
+	var saved_s: Dictionary = GameState.stats.duplicate(true)
+	GameState.flags = {}
+	GameState.stats = {"junk_scooped": 99.0, "junk_dumps": 1.0}
+	var t: Array = _timeline()
+	var g: Goals = t[1]
+	var r: Dictionary = g.absorb()
+	assert_gt(float(r.get("cubes", 0.0)), 0.0, "rewards folded in")
+	assert_true(g.is_done(0) and g.is_done(1), "scoop and dump goals done")
+	(t[2] as Objectives).free()
+	GameState.flags = saved_f
+	GameState.stats = saved_s
+
+
+func test_every_step_has_a_target() -> void:
+	var t: Array = _timeline()
+	var g: Goals = t[1]
+	var o: Objectives = t[2]
+	var cfg: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/objectives.json"))
+	for d: Dictionary in cfg["objectives"]:
+		assert_ne(str(o.step_target(d).get("to", "")), "", "story step %s points somewhere" % d["id"])
+	for i: int in g.chain.size():
+		var d2: Dictionary = (g.chain[i] as Dictionary).duplicate()
+		d2["_goal"] = i
+		assert_ne(str(o.step_target(d2).get("to", "")), "", "goal %s points somewhere" % d2["id"])
+	o.free()
