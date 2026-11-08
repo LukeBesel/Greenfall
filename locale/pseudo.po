@@ -522,7 +522,7 @@ msgid "E   look through the telescope"
 msgstr "E   [ļôôķ ţĥŕôûĝĥ ţĥé ţéļéšçôþé ~~~~~~]"
 
 #: core/offline.gd:130 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:257
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "[%d mîñ ~]"
 
@@ -542,17 +542,21 @@ msgstr "[Bàļéš ŵôŕţĥ %s ŵéŕé šţàçķéð àţ ţĥé ĥûb ŵî�
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "[Ţĥé šçŕûbbéŕš ƒîļţéŕéð ţĥé àîŕ ţĥé ŵĥôļé ţîmé. Îţ'š à ļîţţļé çļéàŕéŕ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: core/pace.gd:118
+#: core/pace.gd:127
 msgid "Lift Strength %d"
 msgstr "[Ļîƒţ Šţŕéñĝţĥ %d ~~~]"
 
-#: core/pace.gd:119
+#: core/pace.gd:128
 msgid "Too heavy: needs %s"
 msgstr "[Ţôô ĥéàvý: ñééðš %s ~~~~]"
 
-#: core/pace.gd:130
+#: core/pace.gd:139
 msgid "No Baler yet: empty your chest in the trash bin"
 msgstr "[Ñô Bàļéŕ ýéţ: émþţý ýôûŕ çĥéšţ îñ ţĥé ţŕàšĥ bîñ ~~~~~~~~~~~~~]"
+
+#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:245
+msgid "+%s cubes"
+msgstr "[+%s çûbéš ~]"
 
 #: fauna/fauna.gd:1211
 msgid "E   pet %s"
@@ -1857,7 +1861,7 @@ msgstr "[Ţĥé ðŕôñé ðûmþéð à ļîţţļé ĵûñķ bàçķ. Šçô�
 msgid "SEEDS · PAID IN FULL"
 msgstr "[ŠÉÉÐŠ · ÞÀÎÐ ÎÑ FÛĻĻ ~~~~]"
 
-#: story/ledger.gd:699 systems/events.gd:488 systems/lumi_level.gd:218
+#: story/ledger.gd:699 systems/events.gd:490 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "[+%d šééðš ~]"
 
@@ -2197,111 +2201,107 @@ msgstr "[Ðéšîĝñ: %s ~]"
 msgid "CRADLE · SUPPLY"
 msgstr "[ÇŔÀÐĻÉ · ŠÛÞÞĻÝ ~~]"
 
-#: systems/events.gd:440
+#: systems/events.gd:442
 msgid "STREAK x%d  +%d%%"
 msgstr "[ŠŢŔÉÀĶ x%d  +%d%% ~~~]"
 
-#: systems/events.gd:480 ui/goals_panel.gd:245
-msgid "+%s cubes"
-msgstr "[+%s çûbéš ~]"
-
-#: systems/events.gd:626
+#: systems/events.gd:628
 msgid "%d pieces of junk left around the crate"
 msgstr "[%d þîéçéš ôƒ ĵûñķ ļéƒţ àŕôûñð ţĥé çŕàţé ~~~~~~~~~~~]"
 
-#: systems/events.gd:651
+#: systems/events.gd:653
 msgid "Supply crate opened: %s"
 msgstr "[Šûþþļý çŕàţé ôþéñéð: %s ~~~~~]"
 
-#: systems/events.gd:653
+#: systems/events.gd:655
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "[Ţĥé šûþþļý çŕàţé'š béàçôñ ţîméð ôûţ àñð à ðŕôñé ĥàûļéð îţ bàçķ ûþ. Àñôţĥéŕ ŵîļļ çômé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:700
+#: systems/events.gd:702
 msgid "%d pieces grabbed at 3x"
 msgstr "[%d þîéçéš ĝŕàbbéð àţ 3x ~~~~~]"
 
-#: systems/events.gd:705
+#: systems/events.gd:707
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "[Ţĥé šûŕĝé ƒàðéð. Ýôû ĝŕàbbéð %d þîéçéš àţ ţŕîþļé vàļûé; ţĥéý þàý ôûţ ŵĥéñ ýôû bàļé. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:705
+#: systems/events.gd:707
 msgid "The surge faded. Next time!"
 msgstr "[Ţĥé šûŕĝé ƒàðéð. Ñéxţ ţîmé! ~~~~~~]"
 
-#: systems/events.gd:753
+#: systems/events.gd:755
 msgid "Every plant is drinking"
 msgstr "[Évéŕý þļàñţ îš ðŕîñķîñĝ ~~~~~]"
 
-#: systems/events.gd:763
+#: systems/events.gd:765
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "[Ţĥé ŕàîñ môvéš ôñ. Ţĥé ĝŕôûñð šôàķéð îţ ûþ: %s ~~~~~~~~~~~~~]"
 
-#: systems/events.gd:784
+#: systems/events.gd:786
 msgid "E   fix %s's hiccup"
 msgstr "E   [ƒîx %s'š ĥîççûþ ~~]"
 
-#: systems/events.gd:811
+#: systems/events.gd:813
 msgid "%s is %d m away"
 msgstr "[%s îš %d m àŵàý ~~]"
 
-#: systems/events.gd:813
+#: systems/events.gd:815
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "[%s šĥôôķ ôƒƒ îţš ĥîççûþš ôñ îţš ôŵñ. Îţ ļôôķš émbàŕŕàššéð. ~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:827
+#: systems/events.gd:829
 msgid "%s is fixed and back to work. %s"
 msgstr "[%s îš ƒîxéð àñð bàçķ ţô ŵôŕķ. %s ~~~~~~~~]"
 
-#: systems/events.gd:880
+#: systems/events.gd:882
 msgid "Wildlife Visit: %s"
 msgstr "[Ŵîļðļîƒé Vîšîţ: %s ~~~]"
 
-#: systems/events.gd:881
+#: systems/events.gd:883
 msgid "E   take a photo of the %s"
 msgstr "E   [ţàķé à þĥôţô ôƒ ţĥé %s ~~~~~]"
 
-#: systems/events.gd:912
+#: systems/events.gd:914
 msgid "%s, %d m away"
 msgstr "[%s, %d m àŵàý ~~]"
 
-#: systems/events.gd:915
+#: systems/events.gd:917
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "[Ţĥé %s ŵàñðéŕéð ôƒƒ. Îţ'ļļ bé bàçķ šôméŵĥéŕé ĝŕééñ. ~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:945
+#: systems/events.gd:947
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "[Šñàþ! Ţĥé %s îš îñ ýôûŕ Çôļļéçţîôñ. %s ~~~~~~~~~~]"
 
-#: systems/events.gd:945
+#: systems/events.gd:947
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "[Šñàþ! Àñôţĥéŕ ļôvéļý šĥôţ ôƒ ţĥé %s. %s ~~~~~~~~~~~]"
 
-#: systems/events.gd:995
+#: systems/events.gd:997
 msgid "Signal %d%%"
 msgstr "[Šîĝñàļ %d%% ~]"
 
-#: systems/events.gd:999
+#: systems/events.gd:1001
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "[Ţĥàţ ŵàš ţĥé šîĝñàļ: à šţàšĥ ŵîţĥ à ŕàŕé þàŕţ îñšîðé. %s ~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:1001
+#: systems/events.gd:1003
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "[Ţĥé šîĝñàļ ƒàðéð. Ţĥé þàŕţ îš šţîļļ ðôŵñ ţĥéŕé; ţĥé ðéţéçţôŕ ŵîļļ ƒîñð îţ. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:1067
+#: systems/events.gd:1069
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "[ÀÛÐÎŢ   ÝÔÛ %d  :  %d ÐŔÔÑÉ ~~~~~~]"
 
-#: systems/events.gd:1068
+#: systems/events.gd:1070
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "[Ýôû %d  :  %d Ðŕôñé   ·   %d ļéƒţ ~~~~~~~~~]"
 
-#: systems/events.gd:1105
+#: systems/events.gd:1107
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "[Àûðîţ ŵôñ, %d ţô %d! Ţĥé Ļéðĝéŕ šţàmþš îţ ÀÞÞŔÔVÉÐ. %s ~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:1109
+#: systems/events.gd:1111
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "[Ţĥé ðŕôñé ŵôñ ţĥé àûðîţ, %d ţô %d. Îţ ļéƒţ à ţîþ àñýŵàý: +%s çûbéš. ~~~~~~~~~~~~~~~~~~~~]"
 
@@ -5593,7 +5593,7 @@ msgstr "[BÉŠŢ VÀĻÛÉ ~]"
 msgid "Buy"
 msgstr "[Bûý ~]"
 
-#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:208
+#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:209
 msgid "Max"
 msgstr "[Màx ~]"
 
@@ -5605,31 +5605,31 @@ msgstr "[Ļv %d%s ~]"
 msgid "Requires %s"
 msgstr "[Ŕéqûîŕéš %s ~]"
 
-#: ui/upgrade_card.gd:189
+#: ui/upgrade_card.gd:190
 msgid "%s%s  (max)"
 msgstr "[%s%s  (màx) ~]"
 
-#: ui/upgrade_card.gd:192
+#: ui/upgrade_card.gd:193
 msgid "Off  →  On"
 msgstr "[Ôƒƒ  →  Ôñ ~]"
 
-#: ui/upgrade_card.gd:199
+#: ui/upgrade_card.gd:200
 msgid "MAX"
 msgstr "[MÀX ~]"
 
-#: ui/upgrade_card.gd:208
+#: ui/upgrade_card.gd:209
 msgid "Max (%d)"
 msgstr "[Màx (%d) ~]"
 
-#: ui/upgrade_card.gd:214
+#: ui/upgrade_card.gd:215
 msgid "in about %s"
 msgstr "[îñ àbôûţ %s ~]"
 
-#: ui/upgrade_card.gd:214
+#: ui/upgrade_card.gd:215
 msgid "earn more cubes"
 msgstr "[éàŕñ môŕé çûbéš ~~]"
 
-#: ui/upgrade_card.gd:219
+#: ui/upgrade_card.gd:220
 msgid "Where it comes from:  %s"
 msgstr "[Ŵĥéŕé îţ çôméš ƒŕôm:  %s ~~~~~]"
 

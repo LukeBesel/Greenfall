@@ -525,7 +525,7 @@ msgid "E   look through the telescope"
 msgstr "E   用望远镜看"
 
 #: core/offline.gd:130 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:257
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d 分钟"
 
@@ -545,17 +545,21 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:118
+#: core/pace.gd:127
 msgid "Lift Strength %d"
 msgstr ""
 
-#: core/pace.gd:119
+#: core/pace.gd:128
 msgid "Too heavy: needs %s"
 msgstr ""
 
-#: core/pace.gd:130
+#: core/pace.gd:139
 msgid "No Baler yet: empty your chest in the trash bin"
 msgstr ""
+
+#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:245
+msgid "+%s cubes"
+msgstr "+%s 方块"
 
 #: fauna/fauna.gd:1211
 msgid "E   pet %s"
@@ -1855,7 +1859,7 @@ msgstr "无人机倒回了一点废料。把它铲起来，或者让你的帮手
 msgid "SEEDS · PAID IN FULL"
 msgstr "种子 · 已全额支付"
 
-#: story/ledger.gd:699 systems/events.gd:488 systems/lumi_level.gd:218
+#: story/ledger.gd:699 systems/events.gd:490 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d 种子"
 
@@ -2195,111 +2199,107 @@ msgstr "外观：%s"
 msgid "CRADLE · SUPPLY"
 msgstr "CRADLE号 · 补给"
 
-#: systems/events.gd:440
+#: systems/events.gd:442
 msgid "STREAK x%d  +%d%%"
 msgstr "连击 x%d  +%d%%"
 
-#: systems/events.gd:480 ui/goals_panel.gd:245
-msgid "+%s cubes"
-msgstr "+%s 方块"
-
-#: systems/events.gd:626
+#: systems/events.gd:628
 msgid "%d pieces of junk left around the crate"
 msgstr "箱子周围还剩 %d 块废料"
 
-#: systems/events.gd:651
+#: systems/events.gd:653
 msgid "Supply crate opened: %s"
 msgstr "补给箱已打开：%s"
 
-#: systems/events.gd:653
+#: systems/events.gd:655
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "补给箱的信标超时了，无人机把它拉回了天上。还会再来的。"
 
-#: systems/events.gd:700
+#: systems/events.gd:702
 msgid "%d pieces grabbed at 3x"
 msgstr "以 3 倍价值抓到 %d 块"
 
-#: systems/events.gd:705
+#: systems/events.gd:707
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "热潮退去了。你以三倍价值抓到了 %d 块；打包时就会兑现。"
 
-#: systems/events.gd:705
+#: systems/events.gd:707
 msgid "The surge faded. Next time!"
 msgstr "热潮退去了。下次加油！"
 
-#: systems/events.gd:753
+#: systems/events.gd:755
 msgid "Every plant is drinking"
 msgstr "所有植物都在喝水"
 
-#: systems/events.gd:763
+#: systems/events.gd:765
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "雨移走了。大地把雨水都吸收了：%s"
 
-#: systems/events.gd:784
+#: systems/events.gd:786
 msgid "E   fix %s's hiccup"
 msgstr "E   治好 %s 的嗝"
 
-#: systems/events.gd:811
+#: systems/events.gd:813
 msgid "%s is %d m away"
 msgstr "%s 在 %d 米外"
 
-#: systems/events.gd:813
+#: systems/events.gd:815
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "%s 自己止住了嗝。看起来有点不好意思。"
 
-#: systems/events.gd:827
+#: systems/events.gd:829
 msgid "%s is fixed and back to work. %s"
 msgstr "%s 修好了，回去干活了。%s"
 
-#: systems/events.gd:880
+#: systems/events.gd:882
 msgid "Wildlife Visit: %s"
 msgstr "野生动物来访：%s"
 
-#: systems/events.gd:881
+#: systems/events.gd:883
 msgid "E   take a photo of the %s"
 msgstr "E   给%s拍张照"
 
-#: systems/events.gd:912
+#: systems/events.gd:914
 msgid "%s, %d m away"
 msgstr "%s，%d 米外"
 
-#: systems/events.gd:915
+#: systems/events.gd:917
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "%s走开了。它会在某个绿色的地方再出现。"
 
-#: systems/events.gd:945
+#: systems/events.gd:947
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "咔嚓！%s已加入你的收藏。%s"
 
-#: systems/events.gd:945
+#: systems/events.gd:947
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "咔嚓！又一张漂亮的%s照片。%s"
 
-#: systems/events.gd:995
+#: systems/events.gd:997
 msgid "Signal %d%%"
 msgstr "信号 %d%%"
 
-#: systems/events.gd:999
+#: systems/events.gd:1001
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "原来是这个信号：一个藏着稀有零件的储藏点。%s"
 
-#: systems/events.gd:1001
+#: systems/events.gd:1003
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "信号消失了。零件还在下面；探测器会找到它的。"
 
-#: systems/events.gd:1067
+#: systems/events.gd:1069
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "审计   你 %d  :  %d 无人机"
 
-#: systems/events.gd:1068
+#: systems/events.gd:1070
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "你 %d  :  %d 无人机   ·   剩余 %d"
 
-#: systems/events.gd:1105
+#: systems/events.gd:1107
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "审计胜利，%d 比 %d！Ledger 盖上了“批准”章。%s"
 
-#: systems/events.gd:1109
+#: systems/events.gd:1111
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "无人机赢得了审计，%d 比 %d。不过它还是留了小费：+%s 方块。"
 
@@ -5580,7 +5580,7 @@ msgstr "最划算"
 msgid "Buy"
 msgstr "购买"
 
-#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:208
+#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:209
 msgid "Max"
 msgstr "满级"
 
@@ -5592,31 +5592,31 @@ msgstr "%d 级%s"
 msgid "Requires %s"
 msgstr "需要%s"
 
-#: ui/upgrade_card.gd:189
+#: ui/upgrade_card.gd:190
 msgid "%s%s  (max)"
 msgstr "%s%s（满级）"
 
-#: ui/upgrade_card.gd:192
+#: ui/upgrade_card.gd:193
 msgid "Off  →  On"
 msgstr "关  →  开"
 
-#: ui/upgrade_card.gd:199
+#: ui/upgrade_card.gd:200
 msgid "MAX"
 msgstr "满级"
 
-#: ui/upgrade_card.gd:208
+#: ui/upgrade_card.gd:209
 msgid "Max (%d)"
 msgstr "满级（%d）"
 
-#: ui/upgrade_card.gd:214
+#: ui/upgrade_card.gd:215
 msgid "in about %s"
 msgstr "大约 %s后"
 
-#: ui/upgrade_card.gd:214
+#: ui/upgrade_card.gd:215
 msgid "earn more cubes"
 msgstr "赚更多方块"
 
-#: ui/upgrade_card.gd:219
+#: ui/upgrade_card.gd:220
 msgid "Where it comes from:  %s"
 msgstr "来源：  %s"
 

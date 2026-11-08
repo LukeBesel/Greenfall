@@ -525,7 +525,7 @@ msgid "E   look through the telescope"
 msgstr "E   regarder dans le télescope"
 
 #: core/offline.gd:130 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:257
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d min"
 
@@ -545,17 +545,21 @@ msgstr "Des balles d'une valeur de %s s'empilaient à la base sans personne pour
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Les épurateurs ont filtré l'air tout ce temps. Il est un peu plus clair."
 
-#: core/pace.gd:118
+#: core/pace.gd:127
 msgid "Lift Strength %d"
 msgstr ""
 
-#: core/pace.gd:119
+#: core/pace.gd:128
 msgid "Too heavy: needs %s"
 msgstr ""
 
-#: core/pace.gd:130
+#: core/pace.gd:139
 msgid "No Baler yet: empty your chest in the trash bin"
 msgstr ""
+
+#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:245
+msgid "+%s cubes"
+msgstr "+%s cubes"
 
 #: fauna/fauna.gd:1211
 msgid "E   pet %s"
@@ -1858,7 +1862,7 @@ msgstr "Le drone a déversé un peu de ferraille. Ramasse-la, ou laisse tes aide
 msgid "SEEDS · PAID IN FULL"
 msgstr "GRAINES · INTÉGRALEMENT RÉGLÉES"
 
-#: story/ledger.gd:699 systems/events.gd:488 systems/lumi_level.gd:218
+#: story/ledger.gd:699 systems/events.gd:490 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d graines"
 
@@ -2198,111 +2202,107 @@ msgstr "Design : %s"
 msgid "CRADLE · SUPPLY"
 msgstr "CRADLE · RAVITAILLEMENT"
 
-#: systems/events.gd:440
+#: systems/events.gd:442
 msgid "STREAK x%d  +%d%%"
 msgstr "SÉRIE x%d  +%d%%"
 
-#: systems/events.gd:480 ui/goals_panel.gd:245
-msgid "+%s cubes"
-msgstr "+%s cubes"
-
-#: systems/events.gd:626
+#: systems/events.gd:628
 msgid "%d pieces of junk left around the crate"
 msgstr "Encore %d morceaux de ferraille autour de la caisse"
 
-#: systems/events.gd:651
+#: systems/events.gd:653
 msgid "Supply crate opened: %s"
 msgstr "Caisse de ravitaillement ouverte : %s"
 
-#: systems/events.gd:653
+#: systems/events.gd:655
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "La balise de la caisse a expiré et un drone l'a remontée. Une autre viendra."
 
-#: systems/events.gd:700
+#: systems/events.gd:702
 msgid "%d pieces grabbed at 3x"
 msgstr "%d morceaux attrapés à x3"
 
-#: systems/events.gd:705
+#: systems/events.gd:707
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "Le rush est fini. Tu as attrapé %d morceaux à valeur triple ; ils paient quand tu presses."
 
-#: systems/events.gd:705
+#: systems/events.gd:707
 msgid "The surge faded. Next time!"
 msgstr "Le rush est fini. La prochaine fois !"
 
-#: systems/events.gd:753
+#: systems/events.gd:755
 msgid "Every plant is drinking"
 msgstr "Toutes les plantes boivent"
 
-#: systems/events.gd:763
+#: systems/events.gd:765
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "La pluie s'éloigne. Le sol l'a absorbée : %s"
 
-#: systems/events.gd:784
+#: systems/events.gd:786
 msgid "E   fix %s's hiccup"
 msgstr "E   soigner le hoquet de %s"
 
-#: systems/events.gd:811
+#: systems/events.gd:813
 msgid "%s is %d m away"
 msgstr "%s est à %d m"
 
-#: systems/events.gd:813
+#: systems/events.gd:815
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "%s s'est débarrassé de son hoquet tout seul. Il a l'air gêné."
 
-#: systems/events.gd:827
+#: systems/events.gd:829
 msgid "%s is fixed and back to work. %s"
 msgstr "%s est réparé et se remet au travail. %s"
 
-#: systems/events.gd:880
+#: systems/events.gd:882
 msgid "Wildlife Visit: %s"
 msgstr "Visite animale : %s"
 
-#: systems/events.gd:881
+#: systems/events.gd:883
 msgid "E   take a photo of the %s"
 msgstr "E   photographier : %s"
 
-#: systems/events.gd:912
+#: systems/events.gd:914
 msgid "%s, %d m away"
 msgstr "%s, à %d m"
 
-#: systems/events.gd:915
+#: systems/events.gd:917
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "L'animal (%s) s'est éloigné. Il reviendra quelque part dans le vert."
 
-#: systems/events.gd:945
+#: systems/events.gd:947
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "Clic ! %s rejoint ta collection. %s"
 
-#: systems/events.gd:945
+#: systems/events.gd:947
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "Clic ! Encore une jolie photo : %s. %s"
 
-#: systems/events.gd:995
+#: systems/events.gd:997
 msgid "Signal %d%%"
 msgstr "Signal %d%%"
 
-#: systems/events.gd:999
+#: systems/events.gd:1001
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "C'était donc ça, le signal : une cachette avec une pièce rare. %s"
 
-#: systems/events.gd:1001
+#: systems/events.gd:1003
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "Le signal s'est éteint. La pièce est toujours là-dessous ; le détecteur la trouvera."
 
-#: systems/events.gd:1067
+#: systems/events.gd:1069
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "AUDIT   TOI %d  :  %d DRONE"
 
-#: systems/events.gd:1068
+#: systems/events.gd:1070
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "Toi %d  :  %d Drone   ·   reste %d"
 
-#: systems/events.gd:1105
+#: systems/events.gd:1107
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "Audit gagné, %d à %d ! Le Ledger tamponne APPROUVÉ. %s"
 
-#: systems/events.gd:1109
+#: systems/events.gd:1111
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "Le drone a gagné l'audit, %d à %d. Il a quand même laissé un pourboire : +%s cubes."
 
@@ -5592,7 +5592,7 @@ msgstr "MEILLEUR RAPPORT"
 msgid "Buy"
 msgstr "Acheter"
 
-#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:208
+#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:209
 msgid "Max"
 msgstr "Max"
 
@@ -5604,31 +5604,31 @@ msgstr "Niv %d%s"
 msgid "Requires %s"
 msgstr "Nécessite %s"
 
-#: ui/upgrade_card.gd:189
+#: ui/upgrade_card.gd:190
 msgid "%s%s  (max)"
 msgstr "%s%s  (max)"
 
-#: ui/upgrade_card.gd:192
+#: ui/upgrade_card.gd:193
 msgid "Off  →  On"
 msgstr "Off  →  On"
 
-#: ui/upgrade_card.gd:199
+#: ui/upgrade_card.gd:200
 msgid "MAX"
 msgstr "MAX"
 
-#: ui/upgrade_card.gd:208
+#: ui/upgrade_card.gd:209
 msgid "Max (%d)"
 msgstr "Max (%d)"
 
-#: ui/upgrade_card.gd:214
+#: ui/upgrade_card.gd:215
 msgid "in about %s"
 msgstr "dans environ %s"
 
-#: ui/upgrade_card.gd:214
+#: ui/upgrade_card.gd:215
 msgid "earn more cubes"
 msgstr "gagne plus de cubes"
 
-#: ui/upgrade_card.gd:219
+#: ui/upgrade_card.gd:220
 msgid "Where it comes from:  %s"
 msgstr "D'où ça vient :  %s"
 

@@ -525,7 +525,7 @@ msgid "E   look through the telescope"
 msgstr "E   望遠鏡をのぞく"
 
 #: core/offline.gd:130 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:257
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d 分"
 
@@ -545,17 +545,21 @@ msgstr "%s 相当のベールが、運ぶ者もなく基地に積まれていた
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
 
-#: core/pace.gd:118
+#: core/pace.gd:127
 msgid "Lift Strength %d"
 msgstr ""
 
-#: core/pace.gd:119
+#: core/pace.gd:128
 msgid "Too heavy: needs %s"
 msgstr ""
 
-#: core/pace.gd:130
+#: core/pace.gd:139
 msgid "No Baler yet: empty your chest in the trash bin"
 msgstr ""
+
+#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:245
+msgid "+%s cubes"
+msgstr "+%s キューブ"
 
 #: fauna/fauna.gd:1211
 msgid "E   pet %s"
@@ -1855,7 +1859,7 @@ msgstr "ドローンがガラクタを少し捨てていった。すくうか、
 msgid "SEEDS · PAID IN FULL"
 msgstr "種 · 全額支払済み"
 
-#: story/ledger.gd:699 systems/events.gd:488 systems/lumi_level.gd:218
+#: story/ledger.gd:699 systems/events.gd:490 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d 種"
 
@@ -2195,111 +2199,107 @@ msgstr "デザイン：%s"
 msgid "CRADLE · SUPPLY"
 msgstr "CRADLE号 · 補給"
 
-#: systems/events.gd:440
+#: systems/events.gd:442
 msgid "STREAK x%d  +%d%%"
 msgstr "コンボ x%d  +%d%%"
 
-#: systems/events.gd:480 ui/goals_panel.gd:245
-msgid "+%s cubes"
-msgstr "+%s キューブ"
-
-#: systems/events.gd:626
+#: systems/events.gd:628
 msgid "%d pieces of junk left around the crate"
 msgstr "箱のまわりにガラクタが残り %d 個"
 
-#: systems/events.gd:651
+#: systems/events.gd:653
 msgid "Supply crate opened: %s"
 msgstr "補給箱を開けた：%s"
 
-#: systems/events.gd:653
+#: systems/events.gd:655
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "補給箱のビーコンが時間切れになり、ドローンが引き上げていった。また来るよ。"
 
-#: systems/events.gd:700
+#: systems/events.gd:702
 msgid "%d pieces grabbed at 3x"
 msgstr "3倍で %d 個ゲット"
 
-#: systems/events.gd:705
+#: systems/events.gd:707
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "ラッシュが終わった。3倍の価値で %d 個ゲット。ベールにすると支払われる。"
 
-#: systems/events.gd:705
+#: systems/events.gd:707
 msgid "The surge faded. Next time!"
 msgstr "ラッシュが終わった。また次回！"
 
-#: systems/events.gd:753
+#: systems/events.gd:755
 msgid "Every plant is drinking"
 msgstr "すべての植物が水を飲んでいる"
 
-#: systems/events.gd:763
+#: systems/events.gd:765
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "雨が去っていく。大地が吸い込んだ：%s"
 
-#: systems/events.gd:784
+#: systems/events.gd:786
 msgid "E   fix %s's hiccup"
 msgstr "E   %s のしゃっくりを治す"
 
-#: systems/events.gd:811
+#: systems/events.gd:813
 msgid "%s is %d m away"
 msgstr "%s まで %d m"
 
-#: systems/events.gd:813
+#: systems/events.gd:815
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "%s はひとりでしゃっくりが止まった。ちょっと恥ずかしそう。"
 
-#: systems/events.gd:827
+#: systems/events.gd:829
 msgid "%s is fixed and back to work. %s"
 msgstr "%s は修理されて仕事に戻った。%s"
 
-#: systems/events.gd:880
+#: systems/events.gd:882
 msgid "Wildlife Visit: %s"
 msgstr "生き物がやってきた：%s"
 
-#: systems/events.gd:881
+#: systems/events.gd:883
 msgid "E   take a photo of the %s"
 msgstr "E   %s の写真を撮る"
 
-#: systems/events.gd:912
+#: systems/events.gd:914
 msgid "%s, %d m away"
 msgstr "%s、%d m 先"
 
-#: systems/events.gd:915
+#: systems/events.gd:917
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "%s はどこかへ行ってしまった。どこか緑のある場所にまた現れるよ。"
 
-#: systems/events.gd:945
+#: systems/events.gd:947
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "パシャ！%s がコレクションに入った。%s"
 
-#: systems/events.gd:945
+#: systems/events.gd:947
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "パシャ！%s のすてきな写真をもう一枚。%s"
 
-#: systems/events.gd:995
+#: systems/events.gd:997
 msgid "Signal %d%%"
 msgstr "シグナル %d%%"
 
-#: systems/events.gd:999
+#: systems/events.gd:1001
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "あれがシグナルの正体：レアパーツが入った隠し場所。%s"
 
-#: systems/events.gd:1001
+#: systems/events.gd:1003
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "シグナルが消えた。パーツはまだ下にある。探知機が見つけてくれる。"
 
-#: systems/events.gd:1067
+#: systems/events.gd:1069
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "監査   あなた %d  :  %d ドローン"
 
-#: systems/events.gd:1068
+#: systems/events.gd:1070
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "あなた %d  :  %d ドローン   ·   残り %d"
 
-#: systems/events.gd:1105
+#: systems/events.gd:1107
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "監査に勝利、%d 対 %d！Ledger が「承認」のスタンプを押した。%s"
 
-#: systems/events.gd:1109
+#: systems/events.gd:1111
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "監査はドローンの勝ち、%d 対 %d。それでもチップを置いていった：+%s キューブ。"
 
@@ -5580,7 +5580,7 @@ msgstr "お得"
 msgid "Buy"
 msgstr "買う"
 
-#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:208
+#: ui/upgrade_card.gd:87 ui/upgrade_card.gd:209
 msgid "Max"
 msgstr "最大"
 
@@ -5592,31 +5592,31 @@ msgstr "Lv %d%s"
 msgid "Requires %s"
 msgstr "%s が必要"
 
-#: ui/upgrade_card.gd:189
+#: ui/upgrade_card.gd:190
 msgid "%s%s  (max)"
 msgstr "%s%s（最大）"
 
-#: ui/upgrade_card.gd:192
+#: ui/upgrade_card.gd:193
 msgid "Off  →  On"
 msgstr "オフ  →  オン"
 
-#: ui/upgrade_card.gd:199
+#: ui/upgrade_card.gd:200
 msgid "MAX"
 msgstr "最大"
 
-#: ui/upgrade_card.gd:208
+#: ui/upgrade_card.gd:209
 msgid "Max (%d)"
 msgstr "最大（%d）"
 
-#: ui/upgrade_card.gd:214
+#: ui/upgrade_card.gd:215
 msgid "in about %s"
 msgstr "あと約 %s"
 
-#: ui/upgrade_card.gd:214
+#: ui/upgrade_card.gd:215
 msgid "earn more cubes"
 msgstr "キューブをもっと稼ごう"
 
-#: ui/upgrade_card.gd:219
+#: ui/upgrade_card.gd:220
 msgid "Where it comes from:  %s"
 msgstr "入手方法：  %s"
 

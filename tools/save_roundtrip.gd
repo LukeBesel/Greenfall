@@ -431,6 +431,9 @@ func _old_save_migration(packed: PackedScene) -> void:
 	_check("old_save_seeds", 15.0, snappedf(GameState.get_currency("seeds").to_float(), 0.01))
 	_check("old_save_hopper", 9.0, snappedf(Composter.hopper(), 0.01))
 	_check("old_save_builder_inv", 1, RobotBuilder.count("treads"))
+	_check("old_save_pace_baler", true, Pace.baler_unlocked())  # [pace] old saves keep their bale press
+	_check("old_save_pace_lift", Pace.SIZE_LARGE, Pace.lift_class())
+	_check("old_save_pace_chest", true, Economy.stat("capacity") >= 30.0)
 	GameState.reload_in_memory = true
 	var s3: Node = packed.instantiate()
 	get_tree().root.add_child(s3)

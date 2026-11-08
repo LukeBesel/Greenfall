@@ -11,7 +11,7 @@
       "mode": "add",
       "amount": 1.0,
       "unit": "",
-      "base_cost": 120,
+      "base_cost": 100,
       "growth": 1.0,
       "max_level": 1
     },
