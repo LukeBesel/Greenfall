@@ -189,10 +189,10 @@ static func glass(powered: bool = false, state: String = "repaired") -> Standard
 		return _cache[key]
 	var m := StandardMaterial3D.new()
 	m.resource_name = key
-	m.albedo_color = Color(0.1, 0.17, 0.2) if state != "broken" else Color(0.08, 0.08, 0.07)
-	m.metallic = 0.6
-	m.roughness = 0.08 if state != "broken" else 0.55
-	m.metallic_specular = 0.8
+	m.albedo_color = Color(0.05, 0.11, 0.14) if state != "broken" else Color(0.07, 0.07, 0.06)
+	m.metallic = 0.0
+	m.roughness = 0.12 if state != "broken" else 0.6
+	m.metallic_specular = 0.35
 	if powered and state != "broken":
 		m.emission_enabled = true
 		m.emission = Color(1.0, 0.78, 0.5)

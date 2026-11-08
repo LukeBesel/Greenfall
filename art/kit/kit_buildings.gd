@@ -179,7 +179,15 @@ static func _cabin(b: KitMesh.Builder, pos: Vector3, size: Vector3, state: Strin
 			continue
 		_window(b, _x(Vector3(wx, base + h * 0.58, pos.z + d * 0.5 + 0.08)), Vector2(minf(1.3, w / nwin - 0.5), minf(0.9, h * 0.3)), state)
 	if door_x < 999.0:
-		KitProps.hatch(b, _x(Vector3(pos.x + door_x, base - 0.02, pos.z + d * 0.5 + 0.12)), Vector2(1.2, minf(2.2, h - 0.5)), state)
+		var dh: float = minf(2.2, h - 0.5)
+		var dp := Vector3(pos.x + door_x, base - 0.02, pos.z + d * 0.5 + 0.12)
+		KitProps.hatch(b, _x(dp), Vector2(1.2, dh), state)
+		# canopy over the door: sloped accent hood on two struts (breaks the box silhouette)
+		var droop := Vector3(-14, 0, 6) if state == "broken" else Vector3(-14, 0, 0)
+		b.box("paint:accent", Vector3(2.1, 0.14, 1.3), _x(dp + Vector3(0, dh + 0.62, 0.55), droop), 0.05, 2)
+		b.box("dark_steel", Vector3(1.9, 0.06, 1.1), _x(dp + Vector3(0, dh + 0.53, 0.55), droop), 0.02)
+		for sx: float in [-0.85, 0.85]:
+			b.rod("dark_steel", dp + Vector3(sx, dh + 0.15, 0.0), dp + Vector3(sx, dh + 0.5, 1.05), 0.03, 6)
 	return top + 0.18
 
 
@@ -357,13 +365,23 @@ static func _tower(b: KitMesh.Builder, state: String) -> void:
 	_clutter(b, state, [Vector3(3.4, 0, -2.0), Vector3(-3.6, 0, 1.6)], Vector3(-2.6, 0, 3.6), [Vector3(2.6, 0, 3.2)])
 
 
+## Closed rectangular profile (radial r0..r1, along y0..y1) for lathed shells/ribs, with edge
+## mask 1 only at the corners and 0 a little inside, so paint survives on the faces.
+static func _shell(r0: float, r1: float, y0: float, y1: float) -> PackedVector3Array:
+	var e: float = minf(0.08, (y1 - y0) * 0.3)
+	var er: float = minf(0.08, (r1 - r0) * 0.3)
+	return PackedVector3Array([Vector3(r0, y0, 1), Vector3(r0 + er, y0, 0), Vector3(r1 - er, y0, 0), Vector3(r1, y0, 1),
+		Vector3(r1, y0 + e, 0), Vector3(r1, y1 - e, 0), Vector3(r1, y1, 1), Vector3(r1 - er, y1, 0), Vector3(r0 + er, y1, 0),
+		Vector3(r0, y1, 1), Vector3(r0, y1 - e, 0), Vector3(r0, y0 + e, 0), Vector3(r0, y0, 1)])
+
+
 static func _hangar(b: KitMesh.Builder, state: String) -> void:
 	var broken: bool = state == "broken"
 	var r: float = 5.0
 	var length: float = 12.0
 	var z0: float = length * 0.5
 	# arched shell: lathe around Y, rotated so Y runs along -Z and the arch stands up
-	var shell := PackedVector3Array([Vector3(r, 0, 1), Vector3(r + 0.22, 0, 1), Vector3(r + 0.22, length, 1), Vector3(r, length, 1), Vector3(r, 0, 1)])
+	var shell := _shell(r, r + 0.22, 0.0, length)
 	var arch_xf: Transform3D = _x(Vector3(0, 0.3, z0), Vector3(-90, 0, 0))
 	if broken:
 		# roof has holes: build it in strips and skip some
@@ -373,11 +391,11 @@ static func _hangar(b: KitMesh.Builder, state: String) -> void:
 				continue
 			var y0: float = length * k / strips
 			var y1: float = length * (k + 1) / strips - 0.05
-			var p := PackedVector3Array([Vector3(r, y0, 1), Vector3(r + 0.22, y0, 1), Vector3(r + 0.22, y1, 1), Vector3(r, y1, 1), Vector3(r, y0, 1)])
+			var p := _shell(r, r + 0.22, y0, y1)
 			b.add("paint:main", KitMesh.lathe(p, 18, 180.0), arch_xf, -1.0, 0.0)
 		for k: int in 2:
 			var y0: float = length * (2 + k * 2) / 6.0
-			var p2 := PackedVector3Array([Vector3(r, y0, 1), Vector3(r + 0.22, y0, 1), Vector3(r + 0.22, y0 + 1.2, 1), Vector3(r, y0 + 1.2, 1), Vector3(r, y0, 1)])
+			var p2 := _shell(r, r + 0.22, y0, y0 + 1.2)
 			b.add("rusty", KitMesh.lathe(p2, 18, 120.0), arch_xf * _x(Vector3.ZERO, Vector3(0, 30, 0)), -1.0, 0.0)
 	else:
 		b.add("paint:main", KitMesh.lathe(shell, 22, 180.0), arch_xf, -1.0, 0.0)
@@ -386,7 +404,7 @@ static func _hangar(b: KitMesh.Builder, state: String) -> void:
 	for k: int in nrib:
 		var y: float = length * k / (nrib - 1)
 		y = clampf(y, 0.15, length - 0.35)
-		var rp := PackedVector3Array([Vector3(r - 0.05, y, 1), Vector3(r + 0.5, y, 1), Vector3(r + 0.5, y + 0.35, 1), Vector3(r - 0.05, y + 0.35, 1), Vector3(r - 0.05, y, 1)])
+		var rp := _shell(r - 0.05, r + 0.5, y, y + 0.35)
 		b.add("paint:accent", KitMesh.lathe(rp, 22, 180.0), arch_xf, -1.0, 0.0)
 		# buttress feet
 		for sx: float in [-1.0, 1.0]:
@@ -429,7 +447,7 @@ static func _hangar(b: KitMesh.Builder, state: String) -> void:
 	# interior glow floor + a parked crate stack visible through the door
 	b.box("concrete", Vector3(2 * r, 0.3, length), _x(Vector3(0, 0.15, 0)), 0.05)
 	KitProps.crate_stack(b, _x(Vector3(-2.0, 0.3, 1.0)), 5, state)
-	b.decal("num_04", Vector2(1.2, 1.2), _x(Vector3(-3.9, 0.3 + 4.2, z0 + 0.0)))
+	b.decal("num_04", Vector2(0.9, 0.9), _x(Vector3(-4.0, 1.7, z0 - 0.015)))
 	b.decal("label_dock", Vector2(2.4, 0.6), _x(Vector3(0, 0.3 + 4.5, z0 - 0.0)))
 	b.decal("chevrons", Vector2(2.0, 1.0), _x(Vector3(0, 0.32, z0 + 1.6), Vector3(-90, 0, 90)))
 	_clutter(b, state, [Vector3(6.6, 0, 4.6), Vector3(-6.8, 0, -3.0)], Vector3(4.2, 0, 7.6), [Vector3(-4.0, 0, 7.4)])
