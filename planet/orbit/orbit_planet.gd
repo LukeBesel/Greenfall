@@ -61,12 +61,18 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	terrain.set_cell_elevation(planet.elevation, 14.0, sorted_e[int(sorted_e.size() * 0.25)])
 	cells = SphereCells.from_planet(planet)
 	stats["grid_ms"] = Time.get_ticks_msec() - t1
+	var tq: int = Time.get_ticks_msec()  # [orbE] load-time breakdown (docs/PERFORMANCE.md)
 	_place_hubs(n_hubs if n_hubs > 0 else int(spec.get("hub_count", 10)), cells_state.is_empty())
 	if not cells_state.is_empty() and not cells.apply_dict(cells_state):
 		push_warning("[orbit] saved cells didn't match this planet; starting its state fresh.")
 		_clear_sites()
+	stats["hubs_ms"] = Time.get_ticks_msec() - tq
+	tq = Time.get_ticks_msec()
 	cells.refresh_all()
+	stats["refresh_ms"] = Time.get_ticks_msec() - tq
+	tq = Time.get_ticks_msec()
 	field = SphereField.new(grid, terrain, cells, seed_value)
+	stats["field_ms"] = Time.get_ticks_msec() - tq
 	surface = SphereSurface.new(grid.radius_m)
 	surface.height_fn = terrain.height
 	surface.cell_fn = func(p: Vector3, _hint: int) -> int: return grid.cell_at(p)
@@ -77,13 +83,17 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	streamer.shell_city = planet.city
 	add_child(streamer)
 	OrbitQuality.apply_streamer(streamer, Settings.quality, grid.radius_m)  # [orbE] per-preset budgets
+	tq = Time.get_ticks_msec()
 	streamer.setup(grid, terrain, cells)
+	stats["streamer_setup_ms"] = Time.get_ticks_msec() - tq
+	tq = Time.get_ticks_msec()
 	streamer.near_changed.connect(_on_near_changed)
 	junk_view = SphereJunkView.new()
 	junk_view.name = "Junk"
 	junk_view.setup(field)
 	add_child(junk_view)
 	_build_gravity()
+	stats["junkview_ms"] = Time.get_ticks_msec() - tq
 	stats["build_ms"] = Time.get_ticks_msec() - t0
 
 

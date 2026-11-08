@@ -48,6 +48,7 @@ func build(p_world: Node3D) -> void:
 	elif not DevHooks.has("fresh"):
 		loaded = SaveManager.load_game()
 	var od: Dictionary = GameState.orbit if loaded else {}
+	var preload_n: int = OrbitPreload.start()  # [orbE] junk models load on threads while the planet builds
 	# The planet: --orbit-planet=<id>, else the saved one, else Verdance. Its size is data (GlobeSpec).
 	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", "verdance"))
 	var spec: Dictionary = GlobeSpec.of(pid)
@@ -87,6 +88,7 @@ func build(p_world: Node3D) -> void:
 	cubes_root.name = "Cubes"
 	w.add_child(cubes_root)
 	w.set("_cubes_root", cubes_root)
+	var tq: int = Time.get_ticks_msec()  # [orbE] load breakdown
 	var site: Node3D = globe.build_start_site()
 	_build_patch()
 	_build_depot(site)
@@ -109,10 +111,17 @@ func build(p_world: Node3D) -> void:
 	w.set("pause_menu", pm)
 	if loaded:
 		restore_world()
+	globe.stats["site_patch_hud_ms"] = Time.get_ticks_msec() - tq
+	tq = Time.get_ticks_msec()
 	layers = OrbitLayers.attach(self)  # [orbE] sky + day/night, Glim, future layer, survey, system map, photo mode
+	globe.stats["layers_ms"] = Time.get_ticks_msec() - tq
+	var tw: int = Time.get_ticks_msec()
+	OrbitPreload.finish()  # [orbE] models were loading on threads all along; the settle seats them
+	globe.stats["preload_wait_ms"] = Time.get_ticks_msec() - tw
+	globe.stats["preload_models"] = preload_n
 	globe.update_centres()
 	var t2: int = Time.get_ticks_msec()
-	globe.streamer.settle()
+	globe.streamer.settle(20000, not DevHooks.has("orbit-settle-all"))  # [orbE] near chunks only; the rest streams in
 	globe.stats["settle_ms"] = Time.get_ticks_msec() - t2
 	var t3: int = Time.get_ticks_msec()
 	globe.refresh_junk_now()
@@ -134,6 +143,8 @@ func build(p_world: Node3D) -> void:
 	print("[orbit] slice on the globe: R=%.0fm hexes=%d around=%.1fkm hubs=%d (nearest hub mean %.0fm, min %.0fm) loaded=%s built=%dms planet=%dms grid=%dms settle=%dms junk_fill=%dms" % [
 		g.grid.radius_m, g.grid.cell_count(), TAU * g.grid.radius_m / 1000.0, g.sites.size(), g.hub_spacing(false), g.hub_spacing(true),
 		str(loaded), Time.get_ticks_msec() - t0, g.stats["planet_ms"], g.stats["grid_ms"], g.stats["settle_ms"], g.stats["junk_fill_ms"]])
+	if DevHooks.has("load-report"):  # [orbE] where the build time goes
+		print("[orbit-load] %s streamer=%s chunks=%d cells/chunk=%d" % [JSON.stringify(g.stats), JSON.stringify(g.streamer.stats), g.grid.chunk_count(), g.grid.cell_count() / maxi(g.grid.chunk_count(), 1)])
 	w.emit_signal("built")
 
 
