@@ -30,9 +30,16 @@ var tier: int = 1
 var mounted: bool = false
 var _saved: Dictionary = {}
 var _model: Node3D
-var _pods: Array[MeshInstance3D] = []
+var _mesh: MeshInstance3D
+var _exhaust: Array[MeshInstance3D] = []
+var _lamp: SpotLight3D
 var _glow_mat: StandardMaterial3D
 var _t: float = 0.0
+var _lit: bool = false
+var _bank: float = 0.0
+var _pitch: float = 0.0
+var _prev_fwd := Vector3.ZERO
+var _prev_spd: float = 0.0
 
 
 ## Adds the hover-sled to the Upgrades list for this session (globe scenes only, so the flat
@@ -66,14 +73,46 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_t += delta
-	if mounted and lumi:
-		var spd: float = lumi.sphere_motor.hv.length() if lumi.sphere_motor else 0.0
-		_glow_mat.emission_energy_multiplier = 0.6 + minf(spd / 20.0, 1.0) * 0.9
-		_model.position.y = -RIDE_LIFT - 0.12 + sin(_t * 3.0) * 0.015
-		_model.rotation.x = clampf(-spd * 0.004, -0.08, 0.0)
+	_set_lit(mounted)
+	if mounted and lumi and lumi.sphere_motor:
+		_ride(delta)
 	else:
-		_glow_mat.emission_energy_multiplier = 0.0 if tier <= 0 else 0.25
-		_model.position.y = sin(_t * 1.6) * 0.02
+		_model.position = Vector3(0, sin(_t * 1.6) * 0.02, 0)
+		_model.rotation = Vector3.ZERO
+		_glow_mat.albedo_color.a = 0.0
+
+
+## Ride animation: the sled floats under Lumi with a hover bob, banks into turns, noses up as it
+## speeds up and dips as it brakes; the exhaust glow stretches with speed and flares on boost.
+func _ride(delta: float) -> void:
+	var m: SphereMotor = lumi.sphere_motor
+	var spd: float = m.hv.length()
+	var fwd: Vector3 = m.fwd
+	var turn: float = 0.0
+	if _prev_fwd != Vector3.ZERO and delta > 0.0:
+		turn = _prev_fwd.signed_angle_to(fwd, lumi.up()) / delta  # rad/s, + = left
+	_prev_fwd = fwd
+	var acc: float = (spd - _prev_spd) / maxf(delta, 0.001)
+	_prev_spd = spd
+	var k: float = 1.0 - exp(-6.0 * delta)
+	_bank = lerpf(_bank, clampf(turn * spd * 0.012, -0.32, 0.32), k)
+	_pitch = lerpf(_pitch, clampf(-acc * 0.012, -0.12, 0.08), k)
+	_model.position = Vector3(0, -RIDE_LIFT - 0.12 + sin(_t * 3.2) * 0.02 * (1.0 - minf(spd / 25.0, 0.7)), 0)
+	_model.rotation = Vector3(_pitch, 0, _bank)
+	var boost: float = m.boost_t
+	var heat: float = clampf(0.25 + spd / 30.0 + boost * 0.6, 0.0, 1.3)
+	_glow_mat.albedo_color.a = clampf(heat * 0.55, 0.0, 0.8)
+	for c: MeshInstance3D in _exhaust:
+		c.scale = Vector3(1.0 + boost * 0.4, 0.6 + heat * 1.4 + sin(_t * 31.0) * 0.06, 1.0 + boost * 0.4)
+
+
+## Trims, headlamp and tail lights are lit only while it runs (kit rule: nothing glows when off).
+func _set_lit(on: bool) -> void:
+	if on == _lit or _mesh == null:
+		return
+	_lit = on
+	KitMat.apply(_mesh, "restored", on)
+	_lamp.light_energy = 1.6 if on else 0.0
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -112,6 +151,7 @@ func mount() -> void:
 	lumi.add_child(self)
 	transform = Transform3D.IDENTITY
 	mounted = true
+	_prev_fwd = Vector3.ZERO
 	Audio.play("whoosh", 1.4, -8.0)
 	mounted_changed.emit(true)
 
@@ -142,97 +182,88 @@ func dismount() -> void:
 
 # --- Model ------------------------------------------------------------------------------------
 
-## A chunky two-tone sled: rounded pearl hull with an orange nose and side skirts, panel seams,
-## bolts, a saddle, a handlebar with grips, a headlamp, a rear rack, and two hover pods with thin
-## cyan rings underneath (lit only while it runs). Bevelled everywhere; nothing is a raw box.
+## The sled from the shared art kit (art/kit, docs/ART_KIT.md): a bevelled two-tone hull (cream
+## with an orange nose and teal skirts), panel seams and bolts, hazard-striped bumper, a padded
+## saddle, a handlebar with rubber grips and a small dash, side number decals and nose chevrons,
+## a rear rack with a crate, two hover pods with thin cool trim rings, a warm headlamp and red
+## tail lights (lit only while it runs), and twin exhaust nozzles with a soft additive glow.
 func _build_model() -> Node3D:
 	var root := Node3D.new()
 	root.name = "SledModel"
-	var paint := StandardMaterial3D.new()
-	paint.vertex_color_use_as_albedo = true
-	paint.roughness = 0.38
-	paint.clearcoat_enabled = true
-	paint.clearcoat = 0.4
-	var dark := StandardMaterial3D.new()
-	dark.albedo_color = Color(0.12, 0.13, 0.14)
-	dark.roughness = 0.6
-	dark.metallic = 0.4
-	var metal := StandardMaterial3D.new()
-	metal.albedo_color = Color(0.55, 0.56, 0.58)
-	metal.metallic = 0.85
-	metal.roughness = 0.35
-	_glow_mat = StandardMaterial3D.new()
-	_glow_mat.albedo_color = GLOW
-	_glow_mat.emission_enabled = true
-	_glow_mat.emission = GLOW
-	_glow_mat.emission_energy_multiplier = 0.25
-	var lamp := StandardMaterial3D.new()
-	lamp.albedo_color = Color(1.0, 0.95, 0.85)
-	lamp.emission_enabled = true
-	lamp.emission = Color(1.0, 0.9, 0.7)
-	lamp.emission_energy_multiplier = 0.8
-	var parts: Array = []
-	# Hull: long rounded deck, raised spine, orange nose and skirts.
-	parts.append(ProcMesh.part(ProcMesh.rounded_box(Vector3(1.15, 0.32, 2.3), 0.14, 3), ProcMesh.xf(Vector3(0, 0.36, 0)), PEARL))
-	parts.append(ProcMesh.part(ProcMesh.rounded_box(Vector3(0.7, 0.22, 1.2), 0.1, 3), ProcMesh.xf(Vector3(0, 0.56, 0.25)), PEARL.darkened(0.06)))
-	parts.append(ProcMesh.part(ProcMesh.rounded_box(Vector3(1.05, 0.3, 0.6), 0.14, 3), ProcMesh.xf(Vector3(0, 0.42, -1.12), Vector3(-14, 0, 0)), ACCENT))
+	var b := KitMesh.Builder.new(4242, {"main": "cream", "accent": "orange", "trim": "teal"}, "restored")
+	# Hull: deck, raised spine, nose wedge, skirts.
+	b.box("paint:main", Vector3(1.15, 0.3, 2.2), KitMesh.xf(Vector3(0, 0.38, 0.05)))
+	b.box("paint:main", Vector3(0.66, 0.2, 1.15), KitMesh.xf(Vector3(0, 0.6, 0.3)))
+	b.box("paint:accent", Vector3(1.05, 0.28, 0.62), KitMesh.xf(Vector3(0, 0.43, -1.1), Vector3(-14, 0, 0)))
 	for sx: float in [-1.0, 1.0]:
-		parts.append(ProcMesh.part(ProcMesh.rounded_box(Vector3(0.12, 0.2, 1.9), 0.05, 2), ProcMesh.xf(Vector3(sx * 0.6, 0.3, 0.05)), ACCENT))
-	# Saddle.
-	parts.append(ProcMesh.part(ProcMesh.rounded_box(Vector3(0.5, 0.12, 0.7), 0.06, 3), ProcMesh.xf(Vector3(0, 0.72, 0.35)), Color(0.22, 0.2, 0.19)))
-	var hull := MeshInstance3D.new()
-	hull.name = "Hull"
-	hull.mesh = ProcMesh.merge(parts)
-	hull.material_override = paint
-	root.add_child(hull)
-	# Panel seams, bumper, rack, handlebar (dark/metal), bolts.
-	var dp: Array = []
-	for z: float in [-0.55, 0.15, 0.8]:
-		dp.append(ProcMesh.part(ProcMesh.rounded_box(Vector3(1.17, 0.025, 0.03), 0.01, 1), ProcMesh.xf(Vector3(0, 0.52, z))))
-	dp.append(ProcMesh.part(ProcMesh.rounded_box(Vector3(1.0, 0.12, 0.14), 0.05, 2), ProcMesh.xf(Vector3(0, 0.26, -1.42))))
-	dp.append(ProcMesh.part(ProcMesh.rounded_box(Vector3(0.9, 0.06, 0.5), 0.03, 2), ProcMesh.xf(Vector3(0, 0.58, 1.05))))
-	for sx: float in [-0.42, 0.42]:
-		dp.append(ProcMesh.part(ProcMesh.cyl(0.025, 0.025, 0.3, 8), ProcMesh.xf(Vector3(sx, 0.7, 1.05))))
-	dp.append(ProcMesh.part(ProcMesh.cyl(0.035, 0.035, 0.55, 8), ProcMesh.xf(Vector3(0, 0.82, -0.5), Vector3(-25, 0, 0))))
-	dp.append(ProcMesh.part(ProcMesh.cyl(0.03, 0.03, 0.8, 8), ProcMesh.xf(Vector3(0, 1.06, -0.62), Vector3(0, 0, 90))))
-	for sx: float in [-0.36, 0.36]:
-		dp.append(ProcMesh.part(ProcMesh.cyl(0.045, 0.045, 0.14, 10), ProcMesh.xf(Vector3(sx, 1.06, -0.62), Vector3(0, 0, 90))))
-	var dk := MeshInstance3D.new()
-	dk.mesh = ProcMesh.merge(dp)
-	dk.material_override = dark
-	root.add_child(dk)
-	var bp: Array = []
-	for sx: float in [-0.5, 0.5]:
+		b.box("paint:teal", Vector3(0.1, 0.2, 1.8), KitMesh.xf(Vector3(sx * 0.6, 0.3, 0.1)))
+		# Panel seams and bolts along each side.
+		for z: float in [-0.5, 0.15, 0.8]:
+			b.box("dark_steel", Vector3(0.02, 0.22, 0.025), KitMesh.xf(Vector3(sx * 0.585, 0.4, z)), 0.005)
 		for z: float in [-0.8, -0.2, 0.45, 0.95]:
-			bp.append(ProcMesh.part(ProcMesh.sphere(0.022, 6, 3), ProcMesh.xf(Vector3(sx, 0.52, z))))
-	var bolts := MeshInstance3D.new()
-	bolts.mesh = ProcMesh.merge(bp)
-	bolts.material_override = metal
-	root.add_child(bolts)
-	# Headlamp.
-	var hl := MeshInstance3D.new()
-	hl.mesh = ProcMesh.rounded_box(Vector3(0.34, 0.12, 0.08), 0.04, 2)
-	hl.material_override = lamp
-	hl.position = Vector3(0, 0.5, -1.4)
-	root.add_child(hl)
-	# Hover pods: rounded housings with thin glow rings.
+			b.add("steel", KitMesh.bolt(0.022, 0.02), KitMesh.xf(Vector3(sx * 0.58, 0.47, z), Vector3(0, 0, sx * -90.0)))
+		# Side number and a power label, as decals.
+		b.decal("num_01" if sx < 0.0 else "num_02", Vector2(0.26, 0.26), KitMesh.xf(Vector3(sx * 0.585, 0.42, -0.3), Vector3(0, sx * 90.0, 0)))
+	b.decal("chevrons", Vector2(0.5, 0.16), KitMesh.xf(Vector3(0, 0.58, -1.1), Vector3(-104, 0, 0)))
+	# Bumper with hazard stripes, rear rack with a crate.
+	b.box("hazard", Vector3(1.0, 0.13, 0.14), KitMesh.xf(Vector3(0, 0.26, -1.43)))
+	b.box("dark_steel", Vector3(0.9, 0.05, 0.5), KitMesh.xf(Vector3(0, 0.56, 1.05)))
+	for sx: float in [-0.42, 0.42]:
+		b.rod("dark_steel", Vector3(sx, 0.56, 1.3), Vector3(sx, 0.78, 1.3), 0.022)
+	b.rod("dark_steel", Vector3(-0.42, 0.78, 1.3), Vector3(0.42, 0.78, 1.3), 0.022)
+	KitProps.crate(b, KitMesh.xf(Vector3(0.1, 0.585, 1.02), Vector3(0, 8, 0)), Vector3(0.42, 0.3, 0.36), "paint:crate")
+	# Saddle, handlebar, grips, dash.
+	b.box("rubber", Vector3(0.48, 0.11, 0.66), KitMesh.xf(Vector3(0, 0.75, 0.35)))
+	b.rod("dark_steel", Vector3(0, 0.6, -0.42), Vector3(0, 1.02, -0.62), 0.035)
+	b.rod("dark_steel", Vector3(-0.4, 1.04, -0.62), Vector3(0.4, 1.04, -0.62), 0.03)
+	for sx: float in [-0.36, 0.36]:
+		b.cyl("rubber", 0.045, 0.14, KitMesh.xf(Vector3(sx - 0.07 * signf(sx), 1.04, -0.62), Vector3(0, 0, 90)))
+	b.box("dark_steel", Vector3(0.26, 0.1, 0.14), KitMesh.xf(Vector3(0, 0.98, -0.58), Vector3(-30, 0, 0)))
+	b.box("trim:cool", Vector3(0.18, 0.012, 0.06), KitMesh.xf(Vector3(0, 1.03, -0.6), Vector3(-30, 0, 0)), 0.003)
+	# Lights: warm headlamp lens, red tail lights.
+	b.box("dark_steel", Vector3(0.38, 0.14, 0.08), KitMesh.xf(Vector3(0, 0.5, -1.42)))
+	b.box("trim:warm", Vector3(0.3, 0.08, 0.02), KitMesh.xf(Vector3(0, 0.5, -1.465)), 0.006)
+	for sx: float in [-0.45, 0.45]:
+		b.box("trim:red", Vector3(0.14, 0.05, 0.02), KitMesh.xf(Vector3(sx, 0.47, 1.16)), 0.004)
+	# Hover pods with thin cool rings underneath; twin exhaust nozzles at the back.
 	for z: float in [-0.75, 0.75]:
-		var pod := MeshInstance3D.new()
-		pod.mesh = ProcMesh.rounded_box(Vector3(1.0, 0.18, 0.5), 0.08, 2)
-		pod.material_override = dark
-		pod.position = Vector3(0, 0.14, z)
-		root.add_child(pod)
-		var ring := MeshInstance3D.new()
-		var tm := TorusMesh.new()
-		tm.inner_radius = 0.2
-		tm.outer_radius = 0.24
-		tm.rings = 24
-		tm.ring_segments = 6
-		ring.mesh = tm
-		ring.material_override = _glow_mat
-		ring.position = Vector3(0, 0.04, z)
-		ring.scale = Vector3(1.8, 1, 0.9)
-		ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		root.add_child(ring)
-		_pods.append(pod)
+		b.box("dark_steel", Vector3(1.0, 0.17, 0.5), KitMesh.xf(Vector3(0, 0.14, z)))
+		for sx: float in [-0.3, 0.3]:
+			b.cyl("trim:cool", 0.16, 0.02, KitMesh.xf(Vector3(sx, 0.045, z)), 0.004, 20)
+	for sx: float in [-0.24, 0.24]:
+		b.cyl("steel", 0.075, 0.2, KitMesh.xf(Vector3(sx, 0.35, 1.2), Vector3(90, 0, 0)), 0.012, 12)
+		b.cyl("dark_steel", 0.055, 0.02, KitMesh.xf(Vector3(sx, 0.35, 1.305), Vector3(90, 0, 0)), 0.004, 12)
+	_mesh = KitMesh.instance(b, "restored", false)
+	_mesh.name = "Body"
+	root.add_child(_mesh)
+	# Exhaust glow: soft additive cones behind the nozzles, scaled by speed and boost.
+	_glow_mat = StandardMaterial3D.new()
+	_glow_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	_glow_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	_glow_mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+	_glow_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	_glow_mat.albedo_color = Color(GLOW.r, GLOW.g, GLOW.b, 0.0)
+	for sx: float in [-0.24, 0.24]:
+		var cone := MeshInstance3D.new()
+		var cm := CylinderMesh.new()
+		cm.top_radius = 0.05
+		cm.bottom_radius = 0.0
+		cm.height = 0.5
+		cm.radial_segments = 10
+		cm.rings = 1
+		cone.mesh = cm
+		cone.material_override = _glow_mat
+		cone.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		cone.position = Vector3(sx, 0.35, 1.55)
+		cone.rotation_degrees = Vector3(90, 0, 0)
+		root.add_child(cone)
+		_exhaust.append(cone)
+	# Headlamp: a real light while it runs (thin, warm).
+	_lamp = SpotLight3D.new()
+	_lamp.light_color = Color(1.0, 0.86, 0.66)
+	_lamp.light_energy = 0.0
+	_lamp.spot_range = 14.0
+	_lamp.spot_angle = 32.0
+	_lamp.position = Vector3(0, 0.5, -1.5)
+	root.add_child(_lamp)
 	return root
