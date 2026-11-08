@@ -42,7 +42,7 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if SaveManager.has_save():
 		_save = SaveManager.read_dict(SaveManager.slot_path())
-	Tunes.set_context("menu")  # [tunes] the main theme (the synth score if its file is missing)
+	Tunes.setup_title(_save)  # [tunes] a random song (the synth score if there are no files)
 	_build_stage()
 	_build_ui()
 
@@ -349,6 +349,7 @@ func _build_ui() -> void:
 	var ver: String = str(ProjectSettings.get_setting("application/config/version", ""))
 	col.add_child(UITheme.label(("v" + ver + "   ·   " if ver != "" else "") + tr("Made with Godot"), 12, Color(1, 1, 1, 0.4)))
 
+	_ui.add_child(TitleSongTag.new())  # [tunes] bottom-right "now playing" tag
 	_settings = SettingsPanel.new()
 	_settings.closed.connect(_on_sub_closed.bind(2))
 	_ui.add_child(_settings)

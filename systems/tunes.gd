@@ -154,6 +154,7 @@ static func grant(id: String, quiet: bool = false) -> bool:
 		return false
 	(st()["found"] as Array).append(id)
 	GameState.inc_stat("cds_found")
+	print("[tunes] CD found: %s" % id)
 	if not quiet:
 		EventBus.toast.emit(toast_text(id), "story")
 		Audio.play("sparkle", 1.1, -6.0)
@@ -393,6 +394,37 @@ static func now_playing() -> String:
 static func bpm() -> float:
 	var id: String = now_playing()
 	return bpm_of(id) if id != "" else 100.0
+
+
+## [tunes] The title screen's songs: the owned songs of the save shown on the title (start songs
+## plus its found CDs), or on a brand-new save any song, the main theme first on the very first
+## launch and favoured after. Remembers the first launch in user://tunes.cfg.
+static func setup_title(save: Dictionary) -> void:
+	var d: Node = director()
+	if d == null:
+		return
+	var pool: Array[String] = []
+	var first: String = ""
+	var main_w: float = 1.0
+	if not save.is_empty():
+		var fl: Variant = save.get("flags", {})
+		var sv: Variant = (fl as Dictionary).get("songs", {}) if fl is Dictionary else {}
+		var got: Variant = (sv as Dictionary).get("found", []) if sv is Dictionary else []
+		for id: String in available():
+			if is_start(id) or (got is Array and id in (got as Array)):
+				pool.append(id)
+	else:
+		pool = available()
+		main_w = 3.0
+		var cf := ConfigFile.new()
+		var seen: bool = cf.load("user://tunes.cfg") == OK and bool(cf.get_value("title", "launched", false))
+		if not seen:
+			first = "greenfall_main"
+			cf.set_value("title", "launched", true)
+			cf.save("user://tunes.cfg")
+	d.call("set_menu_pool", pool, first, main_w)
+	print("[tunes] title pool %s (first %s)" % [",".join(pool), first if first != "" else "-"])
+	set_context("menu")
 
 
 ## "menu" (title), "intro" (the opening cinematic), "play" (the background shuffle) or "none".

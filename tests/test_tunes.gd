@@ -245,6 +245,30 @@ func test_director_plays_title_and_intro_songs() -> void:
 	d.set_context("none")
 
 
+func test_title_plays_random_songs_with_main_first() -> void:
+	_all_files()
+	var d: Node = Director.new()
+	d.manual = true
+	add_child_autofree(d)
+	var pool: Array[String] = ["greenfall_main", "sunbaked", "clean_sweep", "dune_caravan"]
+	d.set_menu_pool(pool, "greenfall_main", 3.0)
+	d.set_context("menu")
+	d.tick(0.1)
+	assert_eq(d.current(), "greenfall_main", "the main theme first on the very first launch")
+	var seen: Dictionary = {}
+	var last: String = d.current()
+	for i: int in 12:
+		d._slot[d._main]["t"] = float(d._slot[d._main]["len"])  # jump to the song's end
+		d.tick(0.1)
+		var now: String = d.current()
+		assert_ne(now, last, "crossfades to another song")
+		assert_has(pool, now)
+		seen[now] = true
+		last = now
+	assert_gt(seen.size(), 2, "random songs")
+	d.set_context("none")
+
+
 func test_director_background_gaps_and_cd_player() -> void:
 	_all_files()
 	var d: Node = Director.new()

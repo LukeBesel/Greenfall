@@ -45,7 +45,15 @@ func _ready() -> void:
 
 ## [tunes] The owner's songs in play: the background shuffle (unless the intro is about to take
 ## over), the CDs in the rubble and the quick-select (N, with Glim's Music upgrade).
+## Dev: --cds=id,id grants CDs, --scratched=id,id puts scratched CDs in the case, --cd-drop makes
+## the next cleaned hex turn up a CD.
 func _tunes_setup() -> void:
+	for id: String in DevHooks.get_s("cds", "").split(",", false):
+		Tunes.grant(id.strip_edges(), true)
+	for id: String in DevHooks.get_s("scratched", "").split(",", false):
+		Tunes.hold(id.strip_edges())
+	if DevHooks.has("cd-drop"):
+		Tunes.st()["pity"] = 999
 	if Tunes.context() != "intro":
 		Tunes.set_context("play")
 	if world == null:

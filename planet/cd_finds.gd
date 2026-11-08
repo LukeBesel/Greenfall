@@ -165,6 +165,7 @@ func _show(id: String, hid: int, fresh: bool) -> void:
 	node.global_position = pos
 	node.rotation.y = rng.randf() * TAU
 	_discs[id] = node
+	print("[tunes] CD in the rubble: %s at hex %d%s" % [id, hid, "" if fresh else " (still there)"])
 	if fresh:
 		Vfx.burst("sparkle", pos + Vector3(0, 0.3, 0), Color(0.75, 0.9, 1.0), 0.6)
 		Audio.play("detector", 1.25, -10.0)

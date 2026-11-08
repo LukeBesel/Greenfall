@@ -40,6 +40,10 @@ var rng := RandomNumberGenerator.new()
 var manual: bool = false
 var hush: bool = false
 var scratch: String = ""  # the scratched CD playing its one play
+## The title screen's songs (set_menu_pool): a random one each time, crossfading to the next.
+var menu_pool: Array[String] = []
+var menu_first: String = ""  # plays first (the main theme on the very first launch)
+var menu_main_weight: float = 1.0
 var _scratch_t: float = 0.0
 var _crackle: AudioStreamPlayer
 
@@ -248,12 +252,10 @@ func _drive(dt: float) -> void:
 		return
 	match context:
 		"menu":
-			if not Tunes.has_file(MAIN):
-				return
-			if not playing:
-				_start(MAIN, 2.5, true)
-			elif float(s["t"]) >= float(s["len"]) - xf:
-				_start(MAIN, xf, true)  # loop with a crossfade
+			if not playing or float(s["t"]) >= float(s["len"]) - xf:
+				var id: String = _pick_menu()
+				if id != "":
+					_start(id, xf if playing else 2.5, false)
 		"play":
 			if not THEMED.has(Audio.get_music_mood()):
 				if playing:
@@ -288,6 +290,27 @@ func _drive_radio(s: Dictionary, playing: bool, xf: float) -> void:
 		_start(radio, 1.5, true)
 	elif float(s["t"]) >= float(s["len"]) - xf:
 		_start(radio, xf, true)
+
+
+## Songs for the title screen. `first` plays first if set; `main_weight` favours the main theme.
+func set_menu_pool(pool: Array[String], first: String = "", main_weight: float = 1.0) -> void:
+	menu_pool = pool.duplicate()
+	menu_first = first
+	menu_main_weight = main_weight
+
+
+func _pick_menu() -> String:
+	var pool: Array[String] = []
+	for id: String in menu_pool:
+		if Tunes.has_file(id):
+			pool.append(id)
+	if pool.is_empty():
+		return MAIN if Tunes.has_file(MAIN) else ""
+	if menu_first != "" and menu_first in pool:
+		var f: String = menu_first
+		menu_first = ""
+		return f
+	return Tunes._weighted(pool, recent, rng, func(id: String) -> float: return menu_main_weight if id == MAIN else 1.0)
 
 
 func _planet() -> String:
@@ -343,7 +366,7 @@ func _wants_hush() -> bool:
 			return true
 	match context:
 		"menu":
-			return Tunes.has_file(MAIN)
+			return Tunes.has_file(MAIN) or not Tunes.available().is_empty()
 		"intro":
 			return Tunes.has_file(INTRO)
 		"play":
