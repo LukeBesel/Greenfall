@@ -1170,55 +1170,55 @@ msgstr ""
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr ""
 
-#: scenes/slice.gd:824
+#: scenes/slice.gd:830
 msgid "HEX CLEAN!  +%s"
 msgstr ""
 
-#: scenes/slice.gd:838
+#: scenes/slice.gd:844
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
-#: scenes/slice.gd:840
+#: scenes/slice.gd:846
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr ""
 
-#: scenes/slice.gd:847
+#: scenes/slice.gd:853
 msgid "%s is out of range: %s"
 msgstr ""
 
-#: scenes/slice.gd:857
+#: scenes/slice.gd:863
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr ""
 
-#: scenes/slice.gd:860 ui/rockets_panel.gd:39
+#: scenes/slice.gd:866 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr ""
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:920
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr ""
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:921
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr ""
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:921
 msgid "Landed on the base pad."
 msgstr ""
 
-#: scenes/slice.gd:1011
+#: scenes/slice.gd:1017
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
-#: scenes/slice.gd:1182
+#: scenes/slice.gd:1188
 msgid "Welcome back. The junk waited for you."
 msgstr ""
 
-#: scenes/slice.gd:1199
+#: scenes/slice.gd:1205
 msgid "OUTPOST %d · Lv%d"
 msgstr ""
 
-#: scenes/slice.gd:1199
+#: scenes/slice.gd:1205
 msgid "OUTPOST %d · RUIN"
 msgstr ""
 
@@ -1787,20 +1787,40 @@ msgstr ""
 msgid "MISMATCH"
 msgstr ""
 
-#: story/objectives.gd:238
+#: story/objectives.gd:241
 msgid "Objective complete  ·  %s"
 msgstr ""
 
-#: story/objectives.gd:404
+#: story/objectives.gd:409
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr ""
 
-#: story/objectives.gd:405
+#: story/objectives.gd:410
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr ""
 
 #: story/shards.gd:56
 msgid "Something surfaced in the cleared ground. A memory shard."
+msgstr ""
+
+#: story/signal_tower.gd:99
+msgid "%s   rebuild the signal tower  ·  %s"
+msgstr ""
+
+#: story/signal_tower.gd:100
+msgid "%s   boost the signal tower  ·  %s"
+msgstr ""
+
+#: story/signal_tower.gd:108
+msgid "The tower needs %s."
+msgstr ""
+
+#: story/signal_tower.gd:123
+msgid "Relay signal %d%%. WREN can reach you."
+msgstr ""
+
+#: story/signal_tower.gd:123
+msgid "Relay signal %d%%. WREN comes through clearer."
 msgstr ""
 
 #: story/tutorial.gd:10
@@ -3573,64 +3593,68 @@ msgstr ""
 msgid "Build Air Scrubber"
 msgstr ""
 
-#: ui/hud.gd:76
+#: ui/hud.gd:77
 msgid "Lumi reached level %d%s"
 msgstr ""
 
-#: ui/hud.gd:161
+#: ui/hud.gd:162
 msgid "OLD TOWN   0%"
 msgstr ""
 
-#: ui/hud.gd:309
+#: ui/hud.gd:286
+msgid "WREN SIGNAL   %d%%"
+msgstr ""
+
+#: ui/hud.gd:314
 msgid "HEX  %d%% CLEAR"
 msgstr ""
 
-#: ui/hud.gd:313
+#: ui/hud.gd:318
 msgid "%s  BASE"
 msgstr ""
 
-#: ui/hud.gd:316
+#: ui/hud.gd:321
 msgid "CARRYING %d/%d"
 msgstr ""
 
-#: ui/hud.gd:340
+#: ui/hud.gd:345
 msgid "HEX  CLEAR"
 msgstr ""
 
-#: ui/hud.gd:344
+#: ui/hud.gd:349
 msgid "HEX  %s"
 msgstr ""
 
-#: ui/hud.gd:347
+#: ui/hud.gd:352
 msgid "  SUSTAIN %d%%"
 msgstr ""
 
-#: ui/hud.gd:349
+#: ui/hud.gd:354
 msgid "  THIRSTY"
 msgstr ""
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:374
+#: ui/hud.gd:379
 msgid "%s   pick up bale"
 msgstr ""
 
-#: ui/hud.gd:375
+#: ui/hud.gd:380
 msgid "%s   dig up part"
 msgstr ""
 
-#: ui/hud.gd:376
+#: ui/hud.gd:381
 msgid "%s   read memory shard"
 msgstr ""
 
-#: ui/hud.gd:377
+#: ui/hud.gd:382
 msgid "%s   pick up the seed tin"
 msgstr ""
 
-#: ui/hud.gd:378
+#: ui/hud.gd:383
 msgid "%s   set bale down"
 msgstr ""
 
-#: ui/hud.gd:379
+#: ui/hud.gd:384
 msgid "%s   workbench"
 msgstr ""
 
@@ -9777,19 +9801,11 @@ msgid ""
 msgstr ""
 
 #: data/objectives.json:brief.lines
-msgid "Your pod's dead, Lumi, and so is the relay. But the old base recycler still works."
+msgid "Lumi, it's WREN, the Cradle's caretaker. Your friend up here. Your pod's down, and the relay's failing."
 msgstr ""
 
 #: data/objectives.json:brief.lines
-msgid "Junk pressed into cubes powers it. Power rebuilds the base and builds you robot helpers."
-msgstr ""
-
-#: data/objectives.json:brief.lines
-msgid "And every bit of green you bring back charges your Bloom Core. Fill it, and you can call the Cradle."
-msgstr ""
-
-#: data/objectives.json:brief.lines
-msgid "Three bales should wake the base. Let's start there."
+msgid "Bale junk to power the old base, then build a signal tower so I can reach you. I'll be [glitch]listen—[/glitch]"
 msgstr ""
 
 #: data/objectives.json:objectives[power].text
@@ -9798,6 +9814,14 @@ msgstr ""
 
 #: data/objectives.json:objectives[power].desc
 msgid "Cubes feed the recycler. Its power wakes the base."
+msgstr ""
+
+#: data/objectives.json:objectives[tower].text
+msgid "Rebuild the signal tower"
+msgstr ""
+
+#: data/objectives.json:objectives[tower].desc
+msgid "WREN went silent. The tower lets her reach you."
 msgstr ""
 
 #: data/objectives.json:objectives[hex].text
@@ -9841,7 +9865,7 @@ msgid "Living green charges your Bloom Core."
 msgstr ""
 
 #: data/objectives.json:objectives[seed].hint
-msgid "Keep clearing ground. WREN is listening for seeds."
+msgid "Keep clearing ground. Seeds turn up in clean soil."
 msgstr ""
 
 #: data/objectives.json:objectives[base2].text
@@ -9854,6 +9878,14 @@ msgstr ""
 
 #: data/objectives.json:objectives[base2].lines
 msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
+msgstr ""
+
+#: data/objectives.json:objectives[tower2].text
+msgid "Boost the signal tower"
+msgstr ""
+
+#: data/objectives.json:objectives[tower2].desc
+msgid "A stronger signal: WREN comes through clearer."
 msgstr ""
 
 #: data/objectives.json:objectives[base3].text
@@ -10898,6 +10930,22 @@ msgid ""
 "(Someone has scratched underneath: \"they can if you let them\")"
 msgstr ""
 
+#: data/signal_tower.json:tiers[0].name
+msgid "Signal Tower"
+msgstr ""
+
+#: data/signal_tower.json:tiers[1].name
+msgid "Signal Tower Mk II"
+msgstr ""
+
+#: data/signal_tower.json:tiers[2].name
+msgid "Signal Tower Mk III"
+msgstr ""
+
+#: data/signal_tower.json:tiers[3].name
+msgid "Signal Tower Mk IV"
+msgstr ""
+
 #: data/stations.json:conveyor.name
 msgid "Conveyor Feeder"
 msgstr ""
@@ -11051,7 +11099,23 @@ msgid "Extra targeting lasers: lift several pieces at once."
 msgstr ""
 
 #: data/wren_lines.json:wake
-msgid "...that ground you just cleared... the relay got stronger. Hello again. Do that again. Please."
+msgid "...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing."
+msgstr ""
+
+#: data/wren_lines.json:wake
+msgid "...there you are. The signal's thin, but it's ours. Hello again, Lumi."
+msgstr ""
+
+#: data/wren_lines.json:signal_up
+msgid "Better. Less static. Keep building."
+msgstr ""
+
+#: data/wren_lines.json:signal_up
+msgid "Much better. I can hear the wind on your end now. And I can tell you more."
+msgstr ""
+
+#: data/wren_lines.json:signal_up
+msgid "Clear as the garden deck. Now I can tell you everything I couldn't."
 msgstr ""
 
 #: data/wren_lines.json:hex_clean

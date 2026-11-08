@@ -34,6 +34,7 @@ var _field_label: Label
 var _field_bar: Control
 var _field_frac: float = 0.0
 var _planet_label: Label
+var _relay_label: Label  # [onboard] the Signal Tower's relay signal: how well WREN can reach Lumi
 var _prompt: Label
 var _context: Label
 var _notify: NotifyStack
@@ -173,6 +174,9 @@ func _build_top_right() -> void:
 	_planet_label = UITheme.label("", 12, UITheme.MUTED)
 	_planet_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_district.add_child(_planet_label)
+	_relay_label = UITheme.label("", 12, Color(0.6, 0.85, 1.0))
+	_relay_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_district.add_child(_relay_label)
 	goals = GoalsPanel.new()
 	goals.hud = self
 	vb.add_child(goals)
@@ -279,7 +283,8 @@ func _process(delta: float) -> void:
 		var frac: float = pl.restored_fraction() if pl else 0.0
 		_planet_label.text = "%s   %s%%" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(frac * 100.0)]
 		_field_bar.queue_redraw()
-		var sig: String = _field_label.text + _planet_label.text
+		_relay_label.text = tr("WREN SIGNAL   %d%%") % SignalTower.signal_pct()
+		var sig: String = _field_label.text + _planet_label.text + _relay_label.text
 		if sig != _district_sig:
 			_district_sig = sig
 			_district_idle = 0.0

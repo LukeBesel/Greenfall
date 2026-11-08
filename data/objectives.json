@@ -1,23 +1,23 @@
 {
-  "_doc": "[onboard] The first-minutes story objectives (story/objectives.gd, ui/objective_card.gd). One at a time, in order, each with a one-line why (desc). brief.lines: WREN's 2-4 lines right after the intro (why Lumi cleans). Objective fields: text (title), desc (the why), hint (shown instead of desc until wait_flag is set), type stat|robot|zone|hub_level|flag|core, key, target (absolute: lifetime stats), hex (true: outline the target hex on the ground with its % cleaned), lines (WREN, when the objective starts). Data stays English; tr() at display.",
+  "_doc": "[onboard] The first-minutes story objectives (story/objectives.gd, ui/objective_card.gd). One at a time, in order, each with a one-line why (desc). brief.lines: WREN's one last message in the crash (two subtitle lines), then she is silent until the Signal Tower (story/signal_tower.gd). Objective fields: text (title), desc (the why), hint (shown instead of desc until wait_flag is set), type stat|robot|zone|hub_level|flag|core|tower, key, target (absolute: lifetime stats), hex (true: outline the target hex on the ground with its % cleaned), lines (WREN, when the objective starts). Data stays English; tr() at display.",
   "brief": {
     "lines": [
-      "Your pod's dead, Lumi, and so is the relay. But the old base recycler still works.",
-      "Junk pressed into cubes powers it. Power rebuilds the base and builds you robot helpers.",
-      "And every bit of green you bring back charges your Bloom Core. Fill it, and you can call the Cradle.",
-      "Three bales should wake the base. Let's start there."
+      "Lumi, it's WREN, the Cradle's caretaker. Your friend up here. Your pod's down, and the relay's failing.",
+      "Bale junk to power the old base, then build a signal tower so I can reach you. I'll be [glitch]listen—[/glitch]"
     ]
   },
   "objectives": [
     {"id": "power", "text": "Power the base: sell 3 bales", "desc": "Cubes feed the recycler. Its power wakes the base.", "type": "stat", "key": "cubes_cashed", "target": 3},
+    {"id": "tower", "text": "Rebuild the signal tower", "desc": "WREN went silent. The tower lets her reach you.", "type": "tower", "target": 1},
     {"id": "hex", "text": "Clean a hex", "desc": "Clean ground is where green can grow again.", "type": "stat", "key": "hexes_cleaned", "target": 1, "hex": true},
     {"id": "robot", "text": "Build your first robot", "desc": "A helper keeps cleaning while you work.", "type": "robot", "key": "any", "target": 1,
       "lines": ["The base has power! Enough to build you a helper. Try the Bots tab at the workbench."]},
     {"id": "zone", "text": "Send your robot to work", "desc": "Press B and paint the hexes it should clean.", "type": "zone", "target": 1},
     {"id": "haul", "text": "Build a Haul Bug", "desc": "It carries bales to the scale for you.", "type": "robot", "key": "haulbug", "target": 1},
-    {"id": "seed", "text": "Plant the first seed", "desc": "Living green charges your Bloom Core.", "hint": "Keep clearing ground. WREN is listening for seeds.", "wait_flag": "seed_signal", "type": "stat", "key": "plants_planted", "target": 1},
+    {"id": "seed", "text": "Plant the first seed", "desc": "Living green charges your Bloom Core.", "hint": "Keep clearing ground. Seeds turn up in clean soil.", "wait_flag": "seed_signal", "type": "stat", "key": "plants_planted", "target": 1},
     {"id": "base2", "text": "Rebuild the base: level 2", "desc": "A bigger base runs more robots.", "type": "hub_level", "target": 2,
       "lines": ["The hub can grow now. Rebuild it from the Hub tab at the workbench."]},
+    {"id": "tower2", "text": "Boost the signal tower", "desc": "A stronger signal: WREN comes through clearer.", "type": "tower", "target": 2},
     {"id": "base3", "text": "Rebuild the base: level 3", "desc": "Level 3 opens the Requests board.", "type": "hub_level", "target": 3}
   ]
 }

@@ -399,7 +399,7 @@ func _ready() -> void:
 	add_child(wren)
 	var subs := Subtitles.new()
 	add_child(subs)
-	wren.line_started.connect(subs.show_line)
+	wren.line_out.connect(subs.show_line)  # [onboard] through the Signal Tower gate (story/wren.gd)
 	garden = Garden.new()
 	garden.name = "Garden"
 	garden.world = self
@@ -519,7 +519,13 @@ func _ready() -> void:
 			intro.place_pod.call_deferred()
 		if not loaded:
 			wake.call()
-	objectives = Objectives.new()  # [onboard] WREN's plan after the intro + the objective card
+	SignalTower.migrate(self)  # [onboard] WREN only talks through the Signal Tower (story/signal_tower.gd)
+	if GameState.current_hub == 0 and frontier == null:
+		var tower := SignalTower.new()
+		tower.name = "SignalTower"
+		tower.world = self
+		add_child(tower)
+	objectives = Objectives.new()  # [onboard] WREN's last message after the intro + the objective card
 	objectives.world = self
 	add_child(objectives)
 	LateDirector.attach(self)  # [late] Garden Mode, Ark Bridge, Cradle Mode worlds (systems/late_director.gd)

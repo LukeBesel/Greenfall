@@ -1,9 +1,10 @@
 class_name Objectives
 extends Node
 ## [onboard] Why Lumi cleans, and what to do next: the first-minutes story objectives.
-## Right after the intro WREN gives the plan in a few short lines (data/objectives.json "brief"):
-## the pod and relay are dead, junk pressed into cubes powers the base's recycler, power rebuilds
-## the base and builds robots, and green charges the Bloom Core so Lumi can call the Cradle.
+## Right after the intro WREN, the Cradle's caretaker AI, sends one last crackly message
+## (data/objectives.json "brief"): the pod and relay are down, bale junk to power the old base,
+## build a signal tower so she can reach him. Then she is silent until the tower stands
+## (story/signal_tower.gd, Wren's signal gate). The card carries the reasons from there.
 ## Then one objective at a time shows on the HUD card (ui/objective_card.gd) with a one-line why.
 ## Objectives that target a hex outline it on the ground (story/objective_hex.gd) with its % clean
 ## and, for the last few pieces, point at what is left (TutorialMarker).
@@ -102,7 +103,7 @@ func _play_brief() -> void:
 		if text == last:
 			_reveal(), CONNECT_ONE_SHOT)
 	for l: Variant in brief_lines:
-		w.speak(tr(str(l)), 1)
+		w.speak(tr(str(l)), 0, true)  # her last message: crackly (stage 0), and it gets through
 	get_tree().create_timer(30.0).timeout.connect(_reveal)
 
 
@@ -155,6 +156,8 @@ func value_of(def: Dictionary) -> float:
 			return 1.0 if GameState.flags.get(key, false) else 0.0
 		"core":
 			return float(GameState.flags.get("core_charge", 0.0))
+		"tower":
+			return float(SignalTower.tier())
 	return 0.0
 
 
@@ -354,6 +357,8 @@ func waypoint_target() -> Variant:
 				return _depot_pos() if not p.carried.is_empty() else null
 			"robot", "haul", "base2", "base3":
 				return _bench_pos()
+			"tower", "tower2":
+				return SignalTower.pos() if SignalTower.tier() < int(def.get("target", 1)) else null
 			"seed":
 				if GameState.flags.get("seed_signal", false) and not GameState.flags.get("seeds_unlocked", false):
 					return FirstSeed.GREENHOUSE_POS

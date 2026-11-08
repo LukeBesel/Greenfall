@@ -22,9 +22,9 @@ func _cfg() -> Dictionary:
 
 func test_brief_is_short() -> void:
 	var lines: Array = _cfg()["brief"]["lines"]
-	assert_between(lines.size(), 2, 4, "2-4 WREN lines")
+	assert_between(lines.size(), 1, 2, "one last message (two subtitle lines at most)")
 	for l: Variant in lines:
-		assert_lt(str(l).length(), 110, "one subtitle line: %s" % l)
+		assert_lt(str(l).length(), 115, "one subtitle line: %s" % l)
 
 
 func test_objectives_have_a_short_why() -> void:
@@ -152,7 +152,7 @@ func test_objective_card_shows_current() -> void:
 	var o := Objectives.new()
 	o.chain = _cfg()["objectives"]
 	o.revealed = true
-	o.step = 1
+	o.step = 2
 	var card := ObjectiveCard.new()
 	add_child_autofree(card)
 	card.objectives = o
@@ -181,3 +181,34 @@ func test_shard_goal_wording_is_plain() -> void:
 	var g: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/goals.json"))
 	for d: Dictionary in g["goals"]:
 		assert_ne(str(d["text"]), "Read a memory shard", "says what to do: find one (purple marker)")
+
+
+func test_signal_tower_tiers_and_migration() -> void:
+	assert_eq(SignalTower.max_tier(), 4)
+	assert_eq(SignalTower.signal_pct(0), 0)
+	assert_eq(SignalTower.signal_pct(4), 100)
+	assert_eq(SignalTower.migrated_tier(0), 1, "an old save that heard WREN keeps a working tower")
+	assert_eq(SignalTower.migrated_tier(10), 2)
+	assert_eq(SignalTower.migrated_tier(40), 3)
+	GameState.flags["signal_tower"] = 0
+	var c: Dictionary = SignalTower.next_cost()
+	for k: String in c:
+		assert_true(k in ["cubes", "parts", "seeds"], "three currencies only")
+	assert_lt(float(c.get("cubes", 0)), 200.0, "the first tier is cheap")
+	GameState.flags.erase("signal_tower")
+	GameState.flags["wren_awake"] = true
+	SignalTower.migrate(null)
+	assert_eq(SignalTower.tier(), 1)
+	GameState.flags.erase("signal_tower")
+	GameState.flags.erase("wren_awake")
+	GameState.stats["cubes_cashed"] = 0
+	GameState.flags["tutorial_step"] = 0
+	SignalTower.migrate(null)
+	assert_eq(SignalTower.tier(), 0, "a new game starts silent")
+
+
+func test_brief_is_wrens_last_message() -> void:
+	var lines: Array = _cfg()["brief"]["lines"]
+	assert_string_contains(str(lines[0]), "WREN")
+	assert_string_contains(str(lines[-1]), "[glitch]", "it breaks up in static")
+	assert_string_contains(str(lines[-1]).to_lower(), "signal tower")

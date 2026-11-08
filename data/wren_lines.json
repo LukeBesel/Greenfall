@@ -1,7 +1,12 @@
 {
   "_doc": "WREN's lines by trigger. WREN is the ark Cradle's AI, whispering to Lumi over a failing relay. Each trigger has lines per signal stage (the relay clears as the planet is restored): 0 = fragmented (rendered with glitches), 1 = recovering, 2 = clear. A line is never repeated until the pool for that trigger and stage is used up. {name} = Lumi's name, {robot} = a robot name.",
   "wake": [
-    ["...that ground you just cleared... the relay got stronger. Hello again. Do that again. Please."]
+    ["...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing.", "...there you are. The signal's thin, but it's ours. Hello again, Lumi."]
+  ],
+  "signal_up": [
+    ["Better. Less static. Keep building."],
+    ["Much better. I can hear the wind on your end now. And I can tell you more."],
+    ["Clear as the garden deck. Now I can tell you everything I couldn't."]
   ],
   "hex_clean": [
     ["...that patch of ground. It's... brown. Brown is better than gray.", "Signal stronger. Did you do that?", "...clean... the relay likes that word. So do I.", "Another one. My static has a shape now."],
