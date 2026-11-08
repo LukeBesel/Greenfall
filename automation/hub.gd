@@ -262,9 +262,10 @@ func _build_scrubber(i: int, animate: bool) -> void:
 	if not visuals:  # [orbB]
 		return
 	var pos := Vector3(6.5 - i * 1.6, 0, -6.5)
-	var body: ShaderMaterial = Mats.worn_paint(Color(0.3, 0.42, 0.36), 0.75, 0.5, 40.0 + i, 0.5)
-	_piece(ProcMesh.rounded_box(Vector3(1.3, 1.8, 1.3), 0.08, 2), body, Transform3D(Basis(), pos + Vector3(0, 0.9, 0)), animate, 0.0)
-	_piece(ProcMesh.cyl(0.55, 0.55, 0.12, 20), Mats.metal("dark_steel"), Transform3D(Basis(), pos + Vector3(0, 1.86, 0)), animate, 0.3)
+	# [yard] A kit scrubber unit (systems/camp/yard_art.gd YardArt.scrubber); the fan spins in its shroud.
+	var unit: MeshInstance3D = _piece(ArrayMesh.new(), null, Transform3D(Basis(Vector3.UP, i * 0.4), pos), animate, 0.0)
+	YardArt.scrubber().into(unit, 0.15)
+	YardArt.set_powered(unit, true)
 	var fan := Node3D.new()
 	fan.position = pos + Vector3(0, 1.95, 0)
 	add_child(fan)
@@ -275,6 +276,7 @@ func _build_scrubber(i: int, animate: bool) -> void:
 		b.rotation = Vector3(0.25, TAU * k / 4.0, 0)
 		fan.add_child(b)
 	fan.rotation.x = -PI * 0.5
+	YardArt.kitify(fan)  # [yard]
 	_fans.append(fan)
 	if animate:
 		Vfx.burst("dust", pos + Vector3(0, 2.2, 0), Color(0.7, 0.65, 0.6, 0.6), 1.5)

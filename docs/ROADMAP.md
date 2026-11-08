@@ -47,9 +47,9 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
   comms mast, snowcat. Preview: `res://planet/planets/rime/site_preview.tscn -- --site=hub_camp
   [--site-stage=1 --site-restore=1 --time=0.9 (night)]`. `rime_ice.gdshader` gained `moss_centre`/`moss_off`.
 - Tests: `tests/test_p_seas_sites.gd`. Renders: screenshots/p_seas/.
-- Left: hub_stilts, reef_garden and buoy_field still use the older env props (coral is lumps); the flat
-  district env's towers/lighthouses still use BoxMesh parts; `--planet-env=rime` prints no env line in a
-  fresh headless run (not touched here).
+- Follow-up: reef coral, hub_stilts, buoy_field and the flat env's drowned towers and lighthouses are on
+  the kit too (TideProps.drowned_tower / lighthouse; preview `--site-props`). Left: the flat env's base
+  moorings, floating gardens and future platforms still use older parts.
 
 ## Update: loading screen keeps moving, Rime night glint (claude/greenfall-leftovers, Nov 8)
 - **District build across frames.** Behind the loading screen `scenes/slice.gd` builds as a coroutine: the
@@ -97,6 +97,10 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - Demo: `--sphere-walk[=boost|play]`, with `--sphere-start=pole`, `--sphere-view=command` and `--sphere-scene=horizon`. Tests: `tests/test_sphere_move.gd`.
 - True-scale boost lap at R 1840 m: back within 0.46 m after 11.56 km.
 - Next (waits for rollout approval): Patch.gd uses SphereMotor behind a flag.
+## Update: Bots tab list + one Locker for all looks (wt/ui7, Nov 8)
+- Done: the Bots tab uses the list + detail pattern (`ui/bench_bots.gd`): Build (one row per robot type), Tiers (next Mk), Fleet (fleet upgrades: cheapest few + two locked), and a hidden Fabricator category for orbC (`BenchBots.set_fabricator(func(world) -> Array)`, rows in the ListDetail format, cat "fabricator").
+- Done: all cosmetics live at the Locker (yard build), in four sections: Lumi, Glim (CosmeticTargets), Bots and Rocket. Bots: one design per robot TYPE (`systems/robot_design.gd`: Builder parts, paint = fleet liveries, glow colour); every robot of the type wears it, including new and Fabricator-built ones (Fleet.spawn) and restored ones (the design wins on load). Rocket: ship paint (6), trim (3) and engine glow (4) from `data/ship_style.json` (`systems/ship_style.gd`), read by ShipModel's materials; tiers keep their shapes; tier-locked looks stay hidden. The Glim panel now points to the Locker. Tests: `tests/test_ui6.gd`; the save round trip covers robot designs and ship looks.
+
 ## Update: simpler workbench (wt/ui2, Nov 7)
 Owner playtest #1: "SIMPLIFY GAME". The workbench is seven tabs (Lumi, Bots, Hub, Research, Rockets, Requests, Locker) with bigger text, one card style (`ui/bench_kit.gd`: card, title/body sizes, big button, cost row with the currency icons, spot pips) and every cost in Parts and/or cubes.
 - Done: robot part items are gone from the player-facing flow. `systems/robot_parts.gd`: a dug-up / spotted / rewarded robot part pays Parts at its rarity's value (Rusty 10 ... Legendary 450, `data/parts.json`); `GameState.parts` stays an empty legacy array that `RobotParts.fold_items()` folds into Parts every fleet tick. Save v4 (`SaveManager.migrate_v4`, after pace's v3) converts held items at the same values. Robot builds cost cubes + Parts (`data/robots.json` "parts", x1.2 per robot owned), Mk tiers cubes + `Fleet.TIER_PARTS` (200 / 700 / 2000); no recipes, no Control Cores, no rarity bonus.

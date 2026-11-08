@@ -267,11 +267,11 @@ msgstr ""
 msgid "Upgraded! Lumi feels a little less creaky."
 msgstr ""
 
-#: automation/auto_baler.gd:477
+#: automation/auto_baler.gd:478
 msgid "AUTO-BALER"
 msgstr ""
 
-#: automation/auto_baler.gd:480
+#: automation/auto_baler.gd:481
 msgid "KEEP CLEAR · 40 T"
 msgstr ""
 
@@ -283,15 +283,15 @@ msgstr ""
 msgid "TO  SCALE  ◀"
 msgstr ""
 
-#: automation/conveyor.gd:182
+#: automation/conveyor.gd:184
 msgid "BALE  FEED"
 msgstr ""
 
-#: automation/hub.gd:69
+#: automation/hub.gd:72
 msgid "Hub upgraded: %s."
 msgstr ""
 
-#: automation/hub.gd:100
+#: automation/hub.gd:103
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr ""
 
@@ -392,19 +392,19 @@ msgstr ""
 msgid "OUTPOST %d  %s"
 msgstr ""
 
-#: automation/recycler.gd:221
+#: automation/recycler.gd:222
 msgid "GONE FOR GOOD  -%d kg"
 msgstr ""
 
-#: automation/recycler.gd:281
+#: automation/recycler.gd:282
 msgid "RECYCLER"
 msgstr ""
 
-#: automation/recycler.gd:284
+#: automation/recycler.gd:285
 msgid "SHRED  ·  SMELT  ·  GONE FOR GOOD"
 msgstr ""
 
-#: automation/recycler.gd:437
+#: automation/recycler.gd:438
 msgid "HAND FEED"
 msgstr ""
 
@@ -497,7 +497,7 @@ msgstr ""
 msgid "OBSERVATORY"
 msgstr ""
 
-#: automation/telescope.gd:307
+#: automation/telescope.gd:311
 msgid "E   Telescope: look across the system"
 msgstr ""
 
@@ -780,16 +780,8 @@ msgstr ""
 msgid "Lumi hovers back onto solid ground."
 msgstr ""
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1057 scenes/slice_orbit.gd:277
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1057 scenes/slice_orbit.gd:293
 msgid "HEX CLEAN!  +%s"
-msgstr ""
-
-#: planet/planets/tidewell/env.gd:1180
-msgid "LEDGER  DREDGE %02d"
-msgstr ""
-
-#: planet/planets/tidewell/env.gd:1226
-msgid "LEDGER MINING  ORE BARGE 3"
 msgstr ""
 
 #: planet/sites/hub_hop.gd:77
@@ -896,43 +888,43 @@ msgstr ""
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr ""
 
-#: player/patch.gd:240
+#: player/patch.gd:243
 msgid "No seeds yet. Keep cleaning."
 msgstr ""
 
-#: player/patch.gd:279
+#: player/patch.gd:282
 msgid "Out of seeds. Blooming plants drop more."
 msgstr ""
 
-#: player/patch.gd:286
+#: player/patch.gd:289
 msgid "Watering can is empty. Refill at the hub."
 msgstr ""
 
-#: player/patch.gd:481
+#: player/patch.gd:484
 msgid "PERFECT BALE  %s"
 msgstr ""
 
-#: player/patch.gd:487
+#: player/patch.gd:490
 msgid "OVERSTUFFED  %s"
 msgstr ""
 
-#: player/patch.gd:491
+#: player/patch.gd:494
 msgid "PURE  %s"
 msgstr ""
 
-#: player/patch.gd:493
+#: player/patch.gd:496
 msgid "SURGE  %s"
 msgstr ""
 
-#: player/patch.gd:496
+#: player/patch.gd:499
 msgid "  (streak +%d%%)"
 msgstr ""
 
-#: player/patch.gd:539
+#: player/patch.gd:542
 msgid "Salvaged: %s"
 msgstr ""
 
-#: player/patch.gd:568
+#: player/patch.gd:571
 msgid "Recovered: %s"
 msgstr ""
 
@@ -1056,32 +1048,32 @@ msgstr ""
 msgid "Hover-sled: buy it in Upgrades"
 msgstr ""
 
-#: robots/fleet.gd:138
+#: robots/fleet.gd:139
 msgid "Locked · research %s"
 msgstr ""
 
-#: robots/fleet.gd:140
+#: robots/fleet.gd:141
 msgid "Crew full (%d/%d): upgrade the hub"
 msgstr ""
 
-#: robots/fleet.gd:142 robots/fleet.gd:217
+#: robots/fleet.gd:143 robots/fleet.gd:219
 msgid "Not enough parts"
 msgstr ""
 
-#: robots/fleet.gd:144 robots/fleet.gd:219 robots/water_net.gd:149
-#: systems/research.gd:200 systems/robot_builder.gd:349 systems/robot_builder.gd:401
+#: robots/fleet.gd:145 robots/fleet.gd:221 robots/water_net.gd:149
+#: systems/research.gd:200 systems/robot_builder.gd:350 systems/robot_builder.gd:402
 msgid "Not enough cubes"
 msgstr ""
 
-#: robots/fleet.gd:182
+#: robots/fleet.gd:183
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr ""
 
-#: robots/fleet.gd:182
+#: robots/fleet.gd:183
 msgid " Seems %s."
 msgstr ""
 
-#: robots/fleet.gd:238
+#: robots/fleet.gd:240
 msgid "%s fleet upgraded to %s."
 msgstr ""
 
@@ -1251,7 +1243,7 @@ msgstr ""
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr ""
 
-#: scenes/slice.gd:1071 scenes/slice_orbit.gd:293
+#: scenes/slice.gd:1071 scenes/slice_orbit.gd:309
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
@@ -1283,23 +1275,35 @@ msgstr ""
 msgid "Landed on the base pad."
 msgstr ""
 
-#: scenes/slice.gd:1258
+#: scenes/slice.gd:1264 scenes/slice_orbit.gd:442
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
-#: scenes/slice.gd:1444
+#: scenes/slice.gd:1453
 msgid "Welcome back. The junk waited for you."
 msgstr ""
 
-#: scenes/slice.gd:1461
+#: scenes/slice.gd:1470
 msgid "OUTPOST %d · Lv%d"
 msgstr ""
 
-#: scenes/slice.gd:1461
+#: scenes/slice.gd:1470
 msgid "OUTPOST %d · RUIN"
 msgstr ""
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:154
+#: scenes/slice_orbit.gd:339 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:102
+msgid "E   Workbench (broken): repair it"
+msgstr ""
+
+#: scenes/slice_orbit.gd:339 systems/camp/camp.gd:177
+msgid "E   Workbench: upgrades"
+msgstr ""
+
+#: scenes/slice_orbit.gd:538 systems/camp/camp.gd:224
+msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
+msgstr ""
+
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:155
 msgid "Setting the scene"
 msgstr ""
 
@@ -1842,70 +1846,70 @@ msgid ""
 msgstr ""
 
 #: story/ledger.gd:328 systems/decor.gd:122 systems/research.gd:192
-#: systems/robot_builder.gd:347 systems/robot_builder.gd:403 ui/stations_panel.gd:100
+#: systems/robot_builder.gd:348 systems/robot_builder.gd:404 ui/stations_panel.gd:100
 #: ui/telescope_panel.gd:43
 msgid "Needs %s"
 msgstr ""
 
-#: story/ledger.gd:493
+#: story/ledger.gd:490
 msgid "Ledger drone inbound, %s! It's heading for a clean hex."
 msgstr ""
 
-#: story/ledger.gd:494
+#: story/ledger.gd:491
 msgid "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground."
 msgstr ""
 
-#: story/ledger.gd:530
+#: story/ledger.gd:527
 msgid "SIGNAL JAMMED"
 msgstr ""
 
-#: story/ledger.gd:560
+#: story/ledger.gd:557
 msgid "Target re-classified as ASSET. Aborting. ...Interesting."
 msgstr ""
 
-#: story/ledger.gd:626
+#: story/ledger.gd:623
 msgid "The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."
 msgstr ""
 
-#: story/ledger.gd:682
+#: story/ledger.gd:679
 msgid "SEEDS · PAID IN FULL"
 msgstr ""
 
-#: story/ledger.gd:699 systems/events.gd:490 systems/lumi_level.gd:218
+#: story/ledger.gd:696 systems/events.gd:490 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr ""
 
-#: story/ledger.gd:769
+#: story/ledger.gd:766
 msgid "E   jack in: rewrite the Ledger's contract"
 msgstr ""
 
-#: story/ledger.gd:769
+#: story/ledger.gd:766
 msgid "E   read the amended contract"
 msgstr ""
 
-#: story/ledger.gd:794 story/ledger.gd:848
+#: story/ledger.gd:791 story/ledger.gd:845
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: ACTIVE\n"
 "WASTE IS A LINE ITEM"
 msgstr ""
 
-#: story/ledger.gd:809
+#: story/ledger.gd:806
 msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
 msgstr ""
 
-#: story/ledger.gd:848
+#: story/ledger.gd:845
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: AMENDED\n"
 "RESTORATION = ASSET"
 msgstr ""
 
-#: story/ledger.gd:966
+#: story/ledger.gd:963
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr ""
 
-#: story/ledger.gd:974
+#: story/ledger.gd:971
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr ""
 
@@ -1917,11 +1921,11 @@ msgstr ""
 msgid "Objective complete  ·  %s"
 msgstr ""
 
-#: story/objectives.gd:442
+#: story/objectives.gd:444
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr ""
 
-#: story/objectives.gd:444
+#: story/objectives.gd:446
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr ""
 
@@ -2595,11 +2599,11 @@ msgstr ""
 msgid "everything Lumi found, kept for whoever comes next"
 msgstr ""
 
-#: systems/museum.gd:279
+#: systems/museum.gd:283
 msgid "E   salute the Gnome Patrol"
 msgstr ""
 
-#: systems/museum.gd:439
+#: systems/museum.gd:443
 msgid "Every plinth is full. The Museum is complete: everything Lumi found, kept for whoever comes next."
 msgstr ""
 
@@ -2764,84 +2768,98 @@ msgstr ""
 msgid "Research complete: %s. %s"
 msgstr ""
 
-#: systems/robot_builder.gd:261
+#: systems/robot_builder.gd:262 systems/robot_design.gd:60
 msgid "Wrong slot"
 msgstr ""
 
-#: systems/robot_builder.gd:263
+#: systems/robot_builder.gd:264 systems/robot_design.gd:62
 msgid "Doesn't fit a %s"
 msgstr ""
 
-#: systems/robot_builder.gd:265
+#: systems/robot_builder.gd:266 systems/robot_design.gd:64
 msgid "Not unlocked yet"
 msgstr ""
 
-#: systems/robot_builder.gd:294
+#: systems/robot_builder.gd:295
 msgid "Names need at least 2 letters"
 msgstr ""
 
-#: systems/robot_builder.gd:296
+#: systems/robot_builder.gd:297
 msgid "Another robot is already called %s"
 msgstr ""
 
-#: systems/robot_builder.gd:341
+#: systems/robot_builder.gd:342
 msgid "Can't be crafted"
 msgstr ""
 
-#: systems/robot_builder.gd:345
+#: systems/robot_builder.gd:346
 msgid "Research %s"
 msgstr ""
 
-#: systems/robot_builder.gd:358 systems/robot_builder.gd:363
+#: systems/robot_builder.gd:359 systems/robot_builder.gd:364
 msgid "Unlock · %s"
 msgstr ""
 
-#: systems/robot_builder.gd:360
+#: systems/robot_builder.gd:361
 msgid "Requests reward · %d requests"
 msgstr ""
 
-#: systems/robot_builder.gd:398
+#: systems/robot_builder.gd:399
 msgid "Can't be bought"
 msgstr ""
 
-#: systems/robot_builder.gd:425
+#: systems/robot_builder.gd:426
 msgid "Requests reward (%d of %d requests)"
 msgstr ""
 
-#: systems/robot_builder.gd:516
+#: systems/robot_builder.gd:517
 msgid "Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d."
 msgstr ""
 
-#: systems/robot_builder.gd:526
+#: systems/robot_builder.gd:527
 msgid "A Maker Fragment was tucked inside it: +%d parts."
 msgstr ""
 
-#: systems/robot_builder.gd:558
+#: systems/robot_builder.gd:559
 msgid "%s spotted something green and lucky: a Lucky Clover!"
 msgstr ""
 
-#: systems/robot_builder.gd:561
+#: systems/robot_builder.gd:562
 msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
 msgstr ""
 
-#: systems/robot_builder.gd:568
+#: systems/robot_builder.gd:569
 msgid "%s spotted a %s: %s."
+msgstr ""
+
+#: systems/robot_design.gd:16 data/glim.json:glows[cyan].name data/ship_style.json:glows[cyan].name
+#: data/style_parts.json:swatches[cyan].name
+msgid "Cyan"
+msgstr ""
+
+#: systems/robot_design.gd:16 data/ship_style.json:glows[mint].name data/style_parts.json:swatches[mint].name
+msgid "Mint"
+msgstr ""
+
+#: systems/robot_design.gd:16 data/ship_style.json:glows[amber].name data/style_parts.json:swatches[amber].name
+msgid "Amber"
+msgstr ""
+
+#: systems/robot_design.gd:17 data/glim.json:glows[rose].name
+msgid "Rose"
+msgstr ""
+
+#: systems/robot_design.gd:17 data/glim.json:glows[violet].name data/ship_style.json:glows[violet].name
+#: data/style_parts.json:swatches[violet].name
+msgid "Violet"
+msgstr ""
+
+#: systems/robot_design.gd:17
+msgid "Moonlight"
 msgstr ""
 
 #: systems/tunes.gd:165
 msgid "New CD: %s by %s, from %s"
-msgstr ""
-
-#: systems/camp/camp.gd:176
-msgid "E   Workbench (broken): repair it"
-msgstr ""
-
-#: systems/camp/camp.gd:177
-msgid "E   Workbench: upgrades"
-msgstr ""
-
-#: systems/camp/camp.gd:224
-msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr ""
 
 #: systems/camp/camp.gd:378
@@ -3121,11 +3139,11 @@ msgstr ""
 msgid "Find Glim first"
 msgstr ""
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:142
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:147
 msgid "Maxed"
 msgstr ""
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:149
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:154
 msgid "Needs %s %d"
 msgstr ""
 
@@ -3298,6 +3316,23 @@ msgstr ""
 msgid "Milestone"
 msgstr ""
 
+#: ui/bench_bots.gd:15 ui/build_panel.gd:105 ui/robot_card.gd:110
+#: ui/robot_card.gd:244 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
+msgid "Build"
+msgstr ""
+
+#: ui/bench_bots.gd:15
+msgid "Tiers"
+msgstr ""
+
+#: ui/bench_bots.gd:15
+msgid "Fleet"
+msgstr ""
+
+#: ui/bench_bots.gd:15
+msgid "Fabricator"
+msgstr ""
+
 #: ui/bench_kit.gd:163 ui/upgrade_card.gd:221
 msgid "need %s"
 msgstr ""
@@ -3311,7 +3346,8 @@ msgstr ""
 msgid "Machines"
 msgstr ""
 
-#: ui/bench_lists.gd:12 ui/globe_view.gd:175 ui/upgrades_panel.gd:49
+#: ui/bench_lists.gd:12 ui/globe_view.gd:175 ui/locker_panel.gd:230
+#: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr ""
 
@@ -3325,11 +3361,6 @@ msgstr ""
 
 #: ui/build_panel.gd:26
 msgid "Nothing new to build right now. New buildings unlock as you play."
-msgstr ""
-
-#: ui/build_panel.gd:105 ui/robot_card.gd:110 ui/robot_card.gd:244
-#: ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
-msgid "Build"
 msgstr ""
 
 #: ui/build_panel.gd:110 ui/yard_builds_panel.gd:59
@@ -4279,7 +4310,7 @@ msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
 msgstr ""
 
 #: ui/extras_panel.gd:329
-msgid "No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."
+msgid "No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."
 msgstr ""
 
 #: ui/extras_panel.gd:338
@@ -4411,18 +4442,22 @@ msgid "lantern bot"
 msgstr ""
 
 #: ui/glim_panel.gd:64
+msgid "Change Glim's looks at the Locker in the yard."
+msgstr ""
+
+#: ui/glim_panel.gd:69
 msgid "%s  close"
 msgstr ""
 
-#: ui/glim_panel.gd:105
+#: ui/glim_panel.gd:110
 msgid "UPGRADES"
 msgstr ""
 
-#: ui/glim_panel.gd:195
+#: ui/glim_panel.gd:200
 msgid "LOOKS"
 msgstr ""
 
-#: ui/glim_panel.gd:220
+#: ui/glim_panel.gd:225
 msgid "???  %s"
 msgstr ""
 
@@ -4724,32 +4759,57 @@ msgstr ""
 msgid "ACTIVE"
 msgstr ""
 
-#: ui/list_detail.gd:438
+#: ui/list_detail.gd:443
 msgid "FREE"
 msgstr ""
 
-#: ui/list_detail.gd:541
+#: ui/list_detail.gd:546
 msgid "REQUIRES   NOT YET   %s"
 msgstr ""
 
-#: ui/list_detail.gd:541
+#: ui/list_detail.gd:546
 msgid "Not unlocked yet. Keep playing."
 msgstr ""
 
-#: ui/list_detail.gd:544
+#: ui/list_detail.gd:549
 msgid "REQUIRES   %s"
 msgstr ""
 
-#: ui/list_detail.gd:547
+#: ui/list_detail.gd:552
 msgid "REQUIRES   READY"
 msgstr ""
 
-#: ui/loading_screen.gd:153
+#: ui/loading_screen.gd:154
 msgid "Loading"
 msgstr ""
 
-#: ui/loading_screen.gd:155
+#: ui/loading_screen.gd:156
 msgid "Warming up"
+msgstr ""
+
+#: ui/locker_editors.gd:11 data/currencies.json:currencies[parts].name data/hub.json:materials.metal.name
+#: data/hub.json:materials.plastic.name data/hub.json:materials.glass.name
+msgid "Parts"
+msgstr ""
+
+#: ui/locker_editors.gd:11 ui/locker_editors.gd:12 data/style_parts.json:slots[paint].name
+msgid "Paint"
+msgstr ""
+
+#: ui/locker_editors.gd:11 ui/locker_editors.gd:12
+msgid "Glow"
+msgstr ""
+
+#: ui/locker_editors.gd:12 data/style_parts.json:slots[trim].name
+msgid "Trim"
+msgstr ""
+
+#: ui/locker_editors.gd:60
+msgid "Every %s wears this"
+msgstr ""
+
+#: ui/locker_editors.gd:213
+msgid "Ship looks: the tiers keep their shape"
 msgstr ""
 
 #: ui/locker_panel.gd:80
@@ -4760,20 +4820,20 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: ui/locker_panel.gd:154
-msgid "Fleet paint"
-msgstr ""
-
-#: ui/locker_panel.gd:187
+#: ui/locker_panel.gd:185
 msgid "The Locker"
 msgstr ""
 
-#: ui/locker_panel.gd:188
+#: ui/locker_panel.gd:186
 msgid "Build the Locker in the Build tab, then open it in the yard."
 msgstr ""
 
-#: ui/locker_panel.gd:189
+#: ui/locker_panel.gd:187
 msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play."
+msgstr ""
+
+#: ui/locker_panel.gd:228 ui/upgrades_screen.gd:15
+msgid "Bots"
 msgstr ""
 
 #: ui/lumi_builder.gd:111
@@ -6194,10 +6254,6 @@ msgstr ""
 
 #: ui/upgrade_card.gd:226
 msgid "Where it comes from:  %s"
-msgstr ""
-
-#: ui/upgrades_screen.gd:15
-msgid "Bots"
 msgstr ""
 
 #: ui/upgrades_screen.gd:16
@@ -8412,11 +8468,6 @@ msgstr ""
 msgid "The main money. Sell bales at the scale. Pays for upgrades, robots, base levels, research, rockets and decorations."
 msgstr ""
 
-#: data/currencies.json:currencies[parts].name data/hub.json:materials.metal.name data/hub.json:materials.plastic.name
-#: data/hub.json:materials.glass.name
-msgid "Parts"
-msgstr ""
-
 #: data/currencies.json:currencies[parts].short
 msgid "PARTS"
 msgstr ""
@@ -10395,28 +10446,24 @@ msgstr ""
 msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
 msgstr ""
 
-#: data/glim.json:shells[pearl].name data/style_parts.json:swatches[pearl].name
+#: data/glim.json:shells[pearl].name data/ship_style.json:paints[pearl].name data/style_parts.json:swatches[pearl].name
 msgid "Pearl"
 msgstr ""
 
-#: data/glim.json:shells[sunset].name data/style_parts.json:swatches[sunset].name
+#: data/glim.json:shells[sunset].name data/ship_style.json:paints[sunset].name data/style_parts.json:swatches[sunset].name
 msgid "Sunset"
 msgstr ""
 
-#: data/glim.json:shells[moss].name
+#: data/glim.json:shells[moss].name data/ship_style.json:paints[moss].name
 msgid "Moss"
 msgstr ""
 
-#: data/glim.json:shells[graphite].name data/style_parts.json:swatches[graphite].name
+#: data/glim.json:shells[graphite].name data/ship_style.json:trims[graphite].name data/style_parts.json:swatches[graphite].name
 msgid "Graphite"
 msgstr ""
 
 #: data/glim.json:shells[blossom].name
 msgid "Blossom"
-msgstr ""
-
-#: data/glim.json:glows[cyan].name data/style_parts.json:swatches[cyan].name
-msgid "Cyan"
 msgstr ""
 
 #: data/glim.json:glows[ember].name data/solar_system.json:star_b.name
@@ -10425,14 +10472,6 @@ msgstr ""
 
 #: data/glim.json:glows[leaf].name data/style_parts.json:options.chest[leaf].name
 msgid "Leaf"
-msgstr ""
-
-#: data/glim.json:glows[violet].name data/style_parts.json:swatches[violet].name
-msgid "Violet"
-msgstr ""
-
-#: data/glim.json:glows[rose].name
-msgid "Rose"
 msgstr ""
 
 #: data/glim.json:tops[none].name
@@ -11982,6 +12021,38 @@ msgstr ""
 msgid "An ice moon, core-mined until it froze."
 msgstr ""
 
+#: data/planets.json:rime.sites.hub_camp.name
+msgid "Drill Camp"
+msgstr ""
+
+#: data/planets.json:rime.sites.hub_camp.desc
+msgid "Cabins on skids round a plated yard, a greenhouse dome, fuel tanks, a comms mast and a snowcat."
+msgstr ""
+
+#: data/planets.json:rime.sites.derrick.name
+msgid "Frozen Derrick"
+msgstr ""
+
+#: data/planets.json:rime.sites.derrick.desc
+msgid "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."
+msgstr ""
+
+#: data/planets.json:rime.sites.borehole.name
+msgid "The Borehole"
+msgstr ""
+
+#: data/planets.json:rime.sites.borehole.desc
+msgid "The shaft under its headframe and winder house; cold mist, then a warm glow."
+msgstr ""
+
+#: data/planets.json:rime.sites.hot_springs.name
+msgid "Hot Springs"
+msgstr ""
+
+#: data/planets.json:rime.sites.hot_springs.desc
+msgid "Geothermal pools with a bathhouse and boardwalk; frozen, then steaming."
+msgstr ""
+
 #: data/planets.json:ochre.tagline
 msgid "The Ledger's first open-pit strip mine, closest to the twin suns."
 msgstr ""
@@ -13196,6 +13267,26 @@ msgid ""
 "(Someone has scratched underneath: \"they can if you let them\")"
 msgstr ""
 
+#: data/ship_style.json:paints[midnight].name data/style_parts.json:swatches[midnight].name
+msgid "Midnight"
+msgstr ""
+
+#: data/ship_style.json:paints[coral].name data/style_parts.json:swatches[coral].name
+msgid "Coral"
+msgstr ""
+
+#: data/ship_style.json:paints[lunar].name
+msgid "Lunar Silver"
+msgstr ""
+
+#: data/ship_style.json:trims[tangerine].name
+msgid "Tangerine"
+msgstr ""
+
+#: data/ship_style.json:trims[chrome].name
+msgid "Chrome"
+msgstr ""
+
 #: data/signal_tower.json:tiers[0].name
 msgid "Signal Tower"
 msgstr ""
@@ -13732,14 +13823,6 @@ msgstr ""
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky."
 msgstr ""
 
-#: data/style_parts.json:slots[paint].name
-msgid "Paint"
-msgstr ""
-
-#: data/style_parts.json:slots[trim].name
-msgid "Trim"
-msgstr ""
-
 #: data/style_parts.json:slots[accent].name
 msgid "Accent"
 msgstr ""
@@ -13933,10 +14016,6 @@ msgstr ""
 msgid "Sky"
 msgstr ""
 
-#: data/style_parts.json:swatches[mint].name
-msgid "Mint"
-msgstr ""
-
 #: data/style_parts.json:swatches[mint].unlock.text
 msgid "Upgrade a hub to level 3"
 msgstr ""
@@ -13947,10 +14026,6 @@ msgstr ""
 
 #: data/style_parts.json:swatches[soot].name
 msgid "Soot"
-msgstr ""
-
-#: data/style_parts.json:swatches[amber].name
-msgid "Amber"
 msgstr ""
 
 #: data/style_parts.json:swatches[olive].name
@@ -14001,10 +14076,6 @@ msgstr ""
 msgid "Find 4 Collection trinkets"
 msgstr ""
 
-#: data/style_parts.json:swatches[coral].name
-msgid "Coral"
-msgstr ""
-
 #: data/style_parts.json:swatches[coral].unlock.text
 msgid "Find 12 Collection trinkets"
 msgstr ""
@@ -14031,10 +14102,6 @@ msgstr ""
 
 #: data/style_parts.json:swatches[bloom].name
 msgid "Bloom green"
-msgstr ""
-
-#: data/style_parts.json:swatches[midnight].name
-msgid "Midnight"
 msgstr ""
 
 #: data/style_parts.json:swatches[copper].name

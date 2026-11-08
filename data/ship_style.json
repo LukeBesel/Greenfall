@@ -1,0 +1,22 @@
+{
+  "_doc": "[ui7] Ship looks, changed at the Locker (Rocket section, systems/ship_style.gd): hull paint, trim (the accent plates) and engine / line-light glow. The ship's tiers (shape, parts, finish) stay as they are; these only recolour. unlock: {} free, {tier: N} once the ship reaches Mk N (RocketTiers), {parts: N} bought once for N parts. Locked looks are hidden in the Locker.",
+  "paints": [
+    {"id": "pearl", "name": "Pearl", "color": "#ededE8", "unlock": {}},
+    {"id": "sunset", "name": "Sunset", "color": "#f2a46b", "unlock": {}},
+    {"id": "moss", "name": "Moss", "color": "#8fb87a", "unlock": {"tier": 2}},
+    {"id": "midnight", "name": "Midnight", "color": "#2e3a55", "unlock": {"tier": 3}},
+    {"id": "coral", "name": "Coral", "color": "#ff7f6e", "unlock": {"parts": 150}},
+    {"id": "lunar", "name": "Lunar Silver", "color": "#b9c2cc", "unlock": {"tier": 5}}
+  ],
+  "trims": [
+    {"id": "tangerine", "name": "Tangerine", "color": "#ff8029", "unlock": {}},
+    {"id": "chrome", "name": "Chrome", "color": "#c9d1d8", "unlock": {"tier": 2}},
+    {"id": "graphite", "name": "Graphite", "color": "#2c2f36", "unlock": {"parts": 120}}
+  ],
+  "glows": [
+    {"id": "cyan", "name": "Cyan", "color": "#4ce0ff", "unlock": {}},
+    {"id": "mint", "name": "Mint", "color": "#5cf2b0", "unlock": {"tier": 2}},
+    {"id": "amber", "name": "Amber", "color": "#ffb347", "unlock": {"tier": 3}},
+    {"id": "violet", "name": "Violet", "color": "#b98cff", "unlock": {"parts": 200}}
+  ]
+}

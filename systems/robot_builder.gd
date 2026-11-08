@@ -237,6 +237,7 @@ static func on_visual_rebuilt(r: Robot) -> void:
 	if r.visual:
 		RobotKit.fit(r.visual, r.build, r.role())
 	RobotPersona.ensure(r)
+	RobotDesign.after_visual(r)  # [ui7] the type's glow colour
 
 
 ## Replace a robot's whole build (save restore, presets). Parts are not touched.

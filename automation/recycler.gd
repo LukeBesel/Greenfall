@@ -34,6 +34,7 @@ var _ingot_n: int = 0
 func _ready() -> void:
 	add_to_group("recycler")
 	_build()
+	YardArt.kitify(self)  # [yard] bevelled kit parts and shaders
 
 
 ## Belt path for the conveyor's incline line, from the feeder pad edge up over the throat lip.

@@ -3,7 +3,7 @@ extends Node3D
 ## checks without a district: sky, the binary suns, the site on its own sea patch, Lumi for scale.
 ##   godot --path . res://planet/planets/tidewell/site_preview.tscn -- --site=hub_raft
 ##     --site-stage=0..2 --site-restore=0..1 --site-cam=dist,pitch_deg,yaw_deg[,fov[,target_y]]
-##     --site-lumi=x,z (Lumi hovering there) --time=0..1 (sun) --shot=... --shot-delay=S --quit-after=S
+##     --site-lumi=x,z (Lumi hovering there) --site-props (a kit drowned tower + lighthouse beside it) --time=0..1 (sun) --shot=... --shot-delay=S --quit-after=S
 
 var site: TideSite
 var sun: DirectionalLight3D
@@ -80,6 +80,16 @@ func _ready() -> void:
 		_night = true
 	var id: String = DevHooks.get_s("site", "hub_raft")
 	site = TideSite.place(id, self, int(DevHooks.get_f("site-stage", 0.0)), DevHooks.get_f("site-restore", 0.0), {"water_radius": 420.0})
+	if DevHooks.has("site-props"):  # [p_seas] --site-props: a kit drowned tower and lighthouse beside the site
+		var a: KitMesh.Builder = TideProps.builder(site, "always")
+		var ru: KitMesh.Builder = TideProps.builder(site, "ruin")
+		var gr: KitMesh.Builder = TideProps.builder(site, "green")
+		var fu: KitMesh.Builder = TideProps.builder(site, "future")
+		TideProps.drowned_tower(site, a, ru, gr, fu, Vector3(30, 0, -26), 0.4, 12.0, 10.0, 9.0, 2.0)
+		TideProps.lighthouse(site, gr, ru, Vector3(-26, 0.1, -30), 14.0)
+		for g: String in ["always", "ruin", "green", "future"]:
+			TideProps.flush(site, {"always": a, "ruin": ru, "green": gr, "future": fu}[g], g)
+		site.set_state(site.stage, site.restore)
 	if DevHooks.has("site-lumi"):
 		var lp: PackedStringArray = DevHooks.get_s("site-lumi", "0,0").split(",")
 		_lumi = PatchModel.new()
