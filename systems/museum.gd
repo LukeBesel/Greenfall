@@ -168,8 +168,7 @@ func _setup() -> void:
 			(rl as Array).append("ochre_glass")
 	if built():
 		_build_hall(false)
-	else:
-		_build_site()
+	# [camp2] No plot sign on its own: the Museum is built from the Hub tab (systems/camp/hub_builds.gd).
 	if DevHooks.has("spawn-museum"):
 		_dev_spawn.call_deferred()
 
@@ -204,16 +203,25 @@ func _try_build() -> void:
 		EventBus.toast.emit(b, "info")
 		Audio.play("buzz", 1.2, -10.0)
 		return
+	build_from_hub()
+
+
+## [camp2] Pays and builds the hall (the Hub tab's build list calls this). False if blocked.
+func build_from_hub() -> bool:
+	if blocker() != "" or built():
+		return false
 	GameState.spend_all(cost())
 	GameState.flags["museum_built"] = true
 	GameState.inc_stat("museum_built")
-	if world and world.get("interactables") != null:
-		world.interactables.unregister(_site)
-	_site.queue_free()
-	_site = null
+	if _site:
+		if world and world.get("interactables") != null:
+			world.interactables.unregister(_site)
+		_site.queue_free()
+		_site = null
 	_build_hall(true)
 	Audio.play("buy", 0.85, -2.0)
 	EventBus.toast.emit(tr("The Museum is built. Everything Lumi found has a place now, for whoever comes next."), "story")
+	return true
 
 
 ## The hall: an open pavilion (floor, back and side walls, a roof on slim columns), two rows of plinths.

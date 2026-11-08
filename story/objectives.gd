@@ -369,6 +369,8 @@ func waypoint_target() -> Variant:
 			"robot", "haul", "base2", "base3":
 				return _bench_pos()
 			"tower", "tower2":
+				if SignalTower.tier() == 0:
+					return _bench_pos()  # [camp2] the first tier is built from the workbench's Hub tab
 				return SignalTower.pos() if SignalTower.tier() < int(def.get("target", 1)) else null
 			"seed":
 				if GameState.flags.get("seed_signal", false) and not GameState.flags.get("seeds_unlocked", false):

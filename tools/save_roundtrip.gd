@@ -280,6 +280,7 @@ func _ready() -> void:
 	get_tree().root.add_child(s1)
 	for i: int in 3:
 		await get_tree().process_frame
+	_camp2_fresh_yard(s1)  # [camp2] a fresh base: only the bench and the bin; builds drop off the list
 	# Build up some mid-game state.
 	GameState.add_currency("cubes", BigNum.from_float(5000))
 	Composter.add_hopper(12.0)  # [money] the press hopper (was the compost currency)
@@ -791,3 +792,26 @@ func _profiles_roundtrip() -> void:
 	CradleMode.persist = keep[4]
 	CradleMode.path_override = keep[5]
 	GameState.from_dict(keep[6])
+
+
+## [camp2] Owner: "Only the workbench, which you have to repair to start, and the garbage bin.
+## Everything else is a build in the Hub", and one-time builds drop off the Hub list once built.
+func _camp2_fresh_yard(s: Node) -> void:
+	var c: Camp = Camp.of(s)
+	if c == null:
+		_check("camp2_node", true, false)
+		return
+	_check("camp2_fresh_yard", JSON.stringify(["workbench", "trash_bin"]), JSON.stringify(c.standing()))
+	var ids: Array = HubBuilds.available(s).map(func(e: Dictionary) -> String: return str(e["id"]))
+	_check("camp2_shack_listed", true, "shack" in ids)
+	c.repair_now()
+	GameState.add_currency("cubes", BigNum.from_float(1000))
+	GameState.add_currency("parts", BigNum.from_float(50))
+	_check("camp2_build_shack", true, HubBuilds.build(s, "shack"))
+	ids = HubBuilds.available(s).map(func(e: Dictionary) -> String: return str(e["id"]))
+	_check("camp2_shack_drops_off", false, "shack" in ids)
+	_check("camp2_shack_in_built", true, "Lean-to" in HubBuilds.built_names(s))
+	_check("camp2_shack_stands", true, "lean-to" in c.standing())
+	var lvl: int = TrashBin.level()
+	_check("camp2_bin_next_tier_only", 1, ids.count("trash_bin"))
+	_check("camp2_bin_tier_name", str(TrashBin.level_def(lvl + 1).get("name", "")), str(HubBuilds.entry(s, "trash_bin")["name"]))

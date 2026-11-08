@@ -16,6 +16,7 @@ var world: Node
 var _model: Node3D
 var _lamp_mat: StandardMaterial3D
 var _t: float = 0.0
+var _col: CollisionShape3D  # [camp2]
 
 
 static func cfg() -> Dictionary:
@@ -86,9 +87,19 @@ func _ready() -> void:
 	cs.position = Vector3(0, 1.2, 0)
 	body.add_child(cs)
 	add_child(body)
+	_col = cs
+	_show_built()  # [camp2] nothing stands here until the first tier is built in the Hub tab
 	var it: Variant = world.get("interactables") if world else null
 	if it is Interactables:
-		(it as Interactables).register(self, 2.2, _prompt, _use, func() -> bool: return tier() < max_tier())
+		(it as Interactables).register(self, 2.2, _prompt, _use, func() -> bool: return tier() >= 1 and tier() < max_tier())  # [camp2] E boosts a standing tower
+
+
+## [camp2] The tower is a Hub build (systems/camp/hub_builds.gd): hidden, with no collision,
+## until tier 1 is bought.
+func _show_built() -> void:
+	visible = tier() >= 1
+	if _col:
+		_col.disabled = tier() < 1
 
 
 func _prompt() -> String:
@@ -117,6 +128,7 @@ func raise() -> void:
 	GameState.flags["signal_tower"] = mini(tier() + 1, max_tier())
 	GameState.inc_stat("signal_tower_tiers")
 	_build()
+	_show_built()  # [camp2]
 	Audio.play("chime", 0.9, -4.0)
 	Audio.play("servo", 0.8, -8.0)
 	Vfx.burst("sparkle", global_position + Vector3(0, 2.0 + tier() * 1.1, 0), GLOW)

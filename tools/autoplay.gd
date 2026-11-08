@@ -1026,7 +1026,10 @@ func _shop(want: Dictionary) -> void:
 		if world.hub.build_scrubber():
 			_progress()
 			_event("scrubber", {"n": world.hub.scrubbers})
-	# 9) Compost press when seeds run short.
+	# 9) Compost press when seeds run short. [camp2] It is a Hub build now: build it once offered.
+	if HubBuilds.listed(world, "composter") and str(HubBuilds.entry(world, "composter")["reason"]) == "":
+		if HubBuilds.build(world, "composter"):
+			_event("build", {"id": "composter"})
 	var cp: Composter = world.get("composter")
 	if cp and cp.active() and cp.level < cp.max_level() and GameState.get_currency("seeds").to_float() < 10.0:
 		if cp.upgrade_cost().to_float() <= GameState.get_currency("cubes").to_float() * 0.25:
