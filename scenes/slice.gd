@@ -1436,6 +1436,7 @@ func _restore_world(from_memory: bool = false) -> void:
 	if GameState.world.has("patch"):
 		patch.from_dict(GameState.world["patch"])
 	fleet.restore()
+	BotFabricator.attach(self)  # [orbC] a built Bot Fabricator keeps its line running
 	if from_memory:
 		return
 	var away: float = Time.get_unix_time_from_system() - GameState.saved_unix

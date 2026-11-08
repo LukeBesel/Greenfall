@@ -100,6 +100,8 @@ static func is_built(world: Node, id: String) -> bool:
 			return t != null and t.built()
 		"museum":
 			return Museum.built()
+		"bot_fabricator":  # [orbC] per planet (robots/fabricator/bot_fabricator.gd)
+			return BotFabricator.built(world)
 	return YardBuilds.built(id)
 
 
@@ -128,6 +130,8 @@ static func listed(world: Node, id: String) -> bool:
 			return _hub_level(world) >= int(t.data.get("requires_level", 4)) or (Research.exists(rid) and Research.has(rid))
 		"museum":
 			return world != null and Museum.site_here(world) and Museum.unlocked()
+		"bot_fabricator":  # [orbC] from the 3rd planet (Tidewell) on
+			return BotFabricator.unlocked(world)
 	return YardBuilds.listed(id, _hub_level(world))
 
 
@@ -190,6 +194,11 @@ static func entry(world: Node, id: String) -> Dictionary:
 			e["desc"] = TranslationServer.translate("A hall with a plinth for everything Lumi found, for whoever comes next.")
 			e["cost"] = Museum.cost()
 			e["reason"] = Museum.blocker()
+		"bot_fabricator":  # [orbC]
+			e["name"] = str(BotFabricator.cfg().get("name", "Bot Fabricator"))
+			e["desc"] = str(BotFabricator.cfg().get("desc", ""))
+			e["cost"] = BotFabricator.cost()
+			e["reason"] = BotFabricator.block_reason(world)
 		_:
 			var d: Dictionary = YardBuilds.def(id)
 			e["name"] = str(d.get("name", id))
@@ -274,6 +283,12 @@ static func build(world: Node, id: String) -> bool:
 			if m == null or not bool(m.call("build_from_hub")):
 				return false
 			MachineReveal.reveal(world, nm, (m as Node3D).global_position, false)
+		"bot_fabricator":  # [orbC]
+			if not BotFabricator.build(world):
+				return false
+			var fdp: Node3D = world.get("depot") as Node3D if world else null
+			if fdp:
+				MachineReveal.reveal(world, nm, fdp.global_position, false)
 		_:
 			if not YardBuilds.build(id, _hub_level(world)):
 				return false  # Camp shows it and reveals it (YardBuilds.events.built)
