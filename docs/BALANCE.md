@@ -600,7 +600,7 @@ were the hidden early flood (+85 at level 2): cap_cubes_base 30 -> 8, floor 15 -
 | Upgrade | Cost | Notes |
 |---|---|---|
 | Baler | 100 | unlocks bales (stat baler_unlocked) |
-| Lift Strength | 50, 400 | Lv1 medium (jerrycans, crates), Lv2 large (tyres, TVs, fridges); stat lift_class |
+| Lift Strength | 50, 500 | Lv1 medium (jerrycans, crates), Lv2 large (tyres, TVs, fridges); stat lift_class |
 | Scoop Size (multi_lock) | 70 x2.4, max 4 | +1 piece per pulse, no longer gated |
 | Compartment Size | 45 x1.55 | +5 chest |
 | Scoop Speed | 45 x1.6 | +40 % per level |
@@ -620,15 +620,15 @@ Autoplay, game minutes at --time-scale=4 (Old Town; before = 5db7ed8):
 
 | Milestone | Before | After | Target |
 |---|---|---|---|
-| First upgrade | 0.3 | PACE_FIRST_UP | 1.5-3 |
-| Upgrades bought by the 2nd bale | 1 (5 by 0.7 min) | PACE_AT2 (0 affordable then) | ~1 after two bales |
-| Baler / first bale | (no Baler) 0.3 | PACE_BALER | 4-6 |
-| Large lift | (always) | PACE_LIFT2 | 10-15 |
-| First hex | 1.3 | PACE_HEX | |
-| First seed (seed tin) | 13.0 | PACE_SEED | 18-22 |
-| Base 2 | 18.0 | PACE_BASE2 | |
-| First robot | 6.3 | PACE_ROBOT | 35-45 |
-| Conveyor / Auto-Baler station | 32.0 / 35.2 | PACE_STATION | 35-45+ |
+| First upgrade | 0.3 | 1.3 | 1.5-3 |
+| Upgrades bought by the 2nd bale | 1 (5 by 0.7 min) | 4-8 incl. Baler + Lift 1 (0-1 affordable, purse 28-84) (0 affordable then) | ~1 after two bales |
+| Baler / first bale | (no Baler) 0.3 | 3.5-4.9 / 3.6-5.0 | 4-6 |
+| Large lift | (always) | 9.3-9.8 (Lift 2 now 500, was 400 in these runs) | 10-15 |
+| First hex | 1.3 | 5.7-6.8 | |
+| First seed (seed tin) | 13.0 | 16.1-21.2 | 18-22 |
+| Base 2 | 18.0 | 25.6-31.1 | |
+| First robot | 6.3 | 37.2 (Salvage Logic 2500) | 35-45 |
+| Conveyor / Auto-Baler station | 32.0 / 35.2 | Conveyor research starts 42-50, station after | 35-45+ |
 
 Run-to-run spread is about a minute early on. Without world2's HexField.piece_size the start ring
 can still hold large models; Pace counts those as medium so the first hexes can be cleaned.
