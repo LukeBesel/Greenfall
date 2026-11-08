@@ -164,7 +164,7 @@ func _ground() -> void:
 			var a1: int = i * spokes + j1
 			var b0: int = (i + 1) * spokes + j
 			var b1: int = (i + 1) * spokes + j1
-			for idx: int in [a0, a1, b0, a1, b1, b0]:
+			for idx: int in [a0, b0, a1, a1, b0, b1]:
 				st.add_index(idx)
 	st.generate_normals()
 	var mesh: ArrayMesh = st.commit()

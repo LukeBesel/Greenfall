@@ -549,8 +549,8 @@ func _site_reef() -> void:
 	for k: int in 22:
 		var a: float = _rng.randf() * TAU
 		var d: float = sqrt(_rng.randf()) * 24.0
-		var p := Vector3(cos(a) * d * 1.3, SEA_Y - _rng.randf_range(0.6, 1.0), sin(a) * d)
-		var s: float = _rng.randf_range(0.7, 1.4)
+		var p := Vector3(cos(a) * d * 1.3, SEA_Y - _rng.randf_range(0.25, 0.55), sin(a) * d)
+		var s: float = _rng.randf_range(1.0, 1.8)
 		var c1: String = live[k % live.size()]
 		var c2: String = live[(k * 3 + 1) % live.size()]
 		for b: Array in [[ruin, "paint:#e9e3d3", "paint:#d8d0bf"], [grn, c1, c2]]:

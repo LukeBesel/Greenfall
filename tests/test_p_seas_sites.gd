@@ -87,3 +87,19 @@ func test_kit_state_follows_restoration() -> void:
 	assert_eq(str(s._mats["_kit_state"]), "restored")
 	s.set_state(1, 0.3)
 	assert_eq(str(s._mats["_kit_state"]), "repaired")
+
+
+func test_rime_ice_patch_faces_up() -> void:
+	var root := Node3D.new()
+	add_child_autofree(root)
+	var s: RimeHubSite = RimeHubSite.place("hub_camp", root, 0, 0.0)
+	var mi: MeshInstance3D = s.find_child("SiteIce", true, false) as MeshInstance3D
+	var a: Array = mi.mesh.surface_get_arrays(0)
+	var v: PackedVector3Array = a[Mesh.ARRAY_VERTEX]
+	var idx: PackedInt32Array = a[Mesh.ARRAY_INDEX]
+	var up: int = 0
+	for t: int in range(0, idx.size(), 3):
+		var g: Vector3 = (v[idx[t + 2]] - v[idx[t]]).cross(v[idx[t + 1]] - v[idx[t]])
+		if g.y > 0.0:
+			up += 1
+	assert_gt(up, idx.size() / 3 * 0.95, "ice front faces point up (visible from above)")
