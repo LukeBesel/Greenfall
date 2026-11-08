@@ -13,6 +13,7 @@ var glim: GlimBot
 var future: FutureLayerSphere
 var survey: GlobeView
 var system_map: SystemMap
+var lumi_lod: LumiLod
 
 
 static func attach(p_so: SliceOrbit) -> OrbitLayers:
@@ -100,6 +101,15 @@ func _build() -> void:
 		get_tree().create_timer(DevHooks.get_f("orbit-survey", 3.0)).timeout.connect(open_survey)
 	if DevHooks.has("orbit-sysmap"):
 		get_tree().create_timer(DevHooks.get_f("orbit-sysmap", 3.0)).timeout.connect(func() -> void: system_map.open_map(true))
+	# Lumi far away (Command view): one merged proxy without shadows instead of the 27-mesh rig.
+	var model: Node3D = patch.get("model") as Node3D
+	if model:
+		lumi_lod = LumiLod.new()
+		lumi_lod.name = "LumiLod"
+		add_child(lumi_lod)
+		lumi_lod.setup(model, sky.eye_fn)
+		if DevHooks.has("load-report"):
+			print("[orbit-load] lumi lod: %d rig surfaces -> %d far, no shadow" % [lumi_lod.stats["surfaces_in"], lumi_lod.stats["surfaces_out"]])
 	place_intro.call_deferred()  # [orbE] if the slice made an Intro (orbB ports the pod onto the "pod" anchor)
 	if DevHooks.has("orbit-tour"):
 		var tour := OrbitSkyTour.new()
