@@ -473,6 +473,7 @@ func _mat(key: String) -> Material:
 			s.shader = PROP_ICE_SHADER
 			if key == "ice_glow":
 				s.set_shader_parameter("glow", 0.12)
+				s.set_shader_parameter("rough_add", 0.3)
 			if key == "ice_clear":
 				s.set_shader_parameter("snow_top", 0.15)
 			m = s
@@ -1118,7 +1119,7 @@ func _vapour_material(tint: Color, alpha: float) -> StandardMaterial3D:
 ## A slow vapour column: few, big, long-lived puffs drifting up (weak gravity).
 func _vapour(pos: Vector3, radius: float, amount: int, life: float, size: Vector2, speed: Vector2) -> CPUParticles3D:
 	if _vent_mat == null:
-		_vent_mat = _vapour_material(Color(0.9, 0.94, 1.0), 0.3)
+		_vent_mat = _vapour_material(Color(0.95, 0.97, 1.0), 0.4)
 	var p := CPUParticles3D.new()
 	p.amount = maxi(2, int(amount * Settings.particle_scale()))
 	p.lifetime = life
@@ -1148,7 +1149,7 @@ func _vapour(pos: Vector3, radius: float, amount: int, life: float, size: Vector
 	var q := QuadMesh.new()
 	q.size = Vector2.ONE
 	p.mesh = q
-	p.material_override = _vent_mat if size.y < 15.0 else _vapour_material(Color(0.88, 0.93, 1.0), 0.22)
+	p.material_override = _vent_mat if size.y < 15.0 else _vapour_material(Color(0.95, 0.97, 1.0), 0.38)
 	p.position = pos
 	p.visibility_aabb = AABB(Vector3(-radius - 20, -5, -radius - 20), Vector3(radius * 2 + 40, life * speed.y + 30, radius * 2 + 40))
 	_groups["always"].add_child(p)
@@ -1343,10 +1344,10 @@ func _apply_restore() -> void:
 		_bloom_mms[i].visible_instance_count = int(round(_bloom_full[i] * k))
 	if _vent_mat:
 		var vc: Color = Color(0.9, 0.94, 1.0).lerp(Color(1.0, 0.97, 0.93), w)
-		_vent_mat.albedo_color = Color(vc.r, vc.g, vc.b, lerpf(0.28, 0.42, w))
+		_vent_mat.albedo_color = Color(vc.r, vc.g, vc.b, lerpf(0.4, 0.5, w))
 	if _mist_mat:
 		var mc: Color = Color(0.88, 0.93, 1.0).lerp(Color(1.0, 0.95, 0.88), w)
-		_mist_mat.albedo_color = Color(mc.r, mc.g, mc.b, lerpf(0.22, 0.3, w))
+		_mist_mat.albedo_color = Color(mc.r, mc.g, mc.b, lerpf(0.38, 0.45, w))
 	if _mats.has("junk_coat"):
 		(_mats["junk_coat"] as ShaderMaterial).set_shader_parameter("top_amt", lerpf(0.6, 0.3, w))
 

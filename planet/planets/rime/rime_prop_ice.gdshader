@@ -8,6 +8,7 @@ uniform vec3 ice_col : source_color = vec3(0.42, 0.66, 0.84);
 uniform vec3 ice_deep : source_color = vec3(0.07, 0.24, 0.46);
 uniform vec3 frost : source_color = vec3(0.9, 0.95, 1.0);
 uniform float snow_top = 0.6;
+uniform float rough_add = 0.0;     // frosted surfaces (round shapes glint less)
 uniform float glow = 0.0;          // faint inner light (night crevasse blue / restored warmth)
 uniform vec3 glow_col : source_color = vec3(0.3, 0.7, 1.0);
 
@@ -44,7 +45,7 @@ void fragment() {
 	float top = smoothstep(0.55, 0.9, n.y + (b - 0.5) * 0.3) * snow_top;
 	col = mix(col, frost, top);
 	ALBEDO = col * (0.92 + 0.12 * b);
-	ROUGHNESS = mix(0.2 + crack * 0.2, 0.6, top);
+	ROUGHNESS = mix(0.2 + rough_add + crack * 0.2, 0.6, top);
 	SPECULAR = 0.5;
 	// Fake light scattering through thick ice: a little of the deep colour shines back.
 	EMISSION = ice_deep * 0.05 * (1.0 - fres) + glow_col * glow * (1.0 - fres) * (0.4 + 0.6 * a);
