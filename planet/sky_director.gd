@@ -108,13 +108,13 @@ func _apply_stars(level: float) -> void:
 func _process(delta: float) -> void:
 	if env == null:
 		return
+	if sphere:  # [orbE] the round planet: its own clock (the spin), lights and sky shader
+		_process_sphere(delta)
+		return
 	if not frozen:
 		# [late] Long Nights; [buddy] longer days and quicker nights until Glim is found
 		time_of_day = fmod(time_of_day + delta / DAY_LENGTH_S * CradleMode.day_speed(time_of_day) * Glim.clock_mult(time_of_day), 1.0)
 		GameState.flags["time_of_day"] = time_of_day
-	if sphere:  # [orbE] the round planet: its own clock, lights and sky shader
-		_process_sphere(delta)
-		return
 	if world and world.get("planet") != null:
 		var target: float = 1.0 - clampf(world.planet.restored_fraction() * 8.0 + float(GameState.stats.get("air_filtered", 0.0)) * 0.0005 + clear_bonus, 0.0, 0.85)
 		haze = lerpf(haze, target, clampf(delta * 0.2, 0.0, 1.0))
