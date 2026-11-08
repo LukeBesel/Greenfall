@@ -361,3 +361,15 @@ func test_toasts_do_not_hold_up_cutscenes() -> void:
 	assert_false(s.is_busy("*"), "cutscenes wait on speech only")
 	s.queue_line("Intro line.", "")
 	assert_true(s.is_busy("*"))
+
+
+func test_goals_never_dim_in_minimal_hud() -> void:  # [onboard2] QA P1
+	var mode: int = Settings.hud_mode
+	Settings.hud_mode = Settings.HudMode.MINIMAL
+	var gp := GoalsPanel.new()
+	gp._idle = 100.0
+	gp._alpha = 1.0
+	var src: String = (gp.get_script() as Script).source_code
+	assert_false(src.contains("want = 0.5"), "no dimming branch")
+	gp.free()
+	Settings.hud_mode = mode

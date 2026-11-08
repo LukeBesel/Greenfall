@@ -5,7 +5,7 @@ extends VBoxContainer
 ## the next three with their rewards. The restart checklist (tutorial steps) uses the same style
 ## above the goal and fades away once the tutorial is done. A finished goal flashes green, sends
 ## an elegant toast to the notification stack, then the next one fades in.
-## In Minimal HUD mode the tracker dims after a few seconds without progress.
+## [onboard2] The tracker never dims: goals stay fully readable in every HUD mode.
 
 const W: float = 280.0
 const ROW_W: float = W  ## titles must fit (tests/test_qa_fixes_c.gd)
@@ -150,9 +150,8 @@ func _process(delta: float) -> void:
 		_last_sig = sig
 		_idle = 0.0
 	_idle += delta
+	# [onboard2] QA P1: goals stay fully readable (dimming to 50% was unreadable over bright ground).
 	var want: float = 1.0
-	if Settings.hud_mode == Settings.HudMode.MINIMAL and not expanded and _idle > DIM_AFTER_S:
-		want = 0.5
 	_alpha = move_toward(_alpha, want, delta * (3.0 if want > _alpha else 0.5))
 	modulate.a = _alpha
 
