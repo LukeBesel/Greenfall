@@ -7158,11 +7158,11 @@ msgstr ""
 
 #: data/camp.json:builds.camera_bot.name
 msgid "Blink"
-msgstr ""
+msgstr "Blink"
 
 #: data/camp.json:builds.camera_bot.desc
 msgid "A little floating camera bot with a big lens for a face. Builds once; then he follows Lumi from base to base and photo mode opens."
-msgstr ""
+msgstr "大きなレンズの顔をした、浮かぶ小さなカメラボット。一度建てると拠点から拠点へルミについて来て、フォトモードが開く。"
 
 #: data/codex.json:categories[junk].name data/hex_levels.json:levels[0].name
 msgid "Junk"
