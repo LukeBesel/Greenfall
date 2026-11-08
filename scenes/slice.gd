@@ -115,6 +115,8 @@ func _ready() -> void:
 	district_name = str(planet.cities[planet.city[anchor_cell]]["name"]) if is_city else PlanetData.BIOMES[planet.biome[anchor_cell]].capitalize().replace("_", " ")
 	var fk: Dictionary = Frontiers.field_params(planet, hub_index)  # [biomes] frontier district?
 	var f_radius: int = int(fk.get("radius", cfg.get("radius", 9)))
+	if fk.is_empty() and loaded and GameState.world.has("field") and int((GameState.world["field"] as Dictionary).get("junk_gen", 1)) < 2:
+		f_radius = int((GameState.world["field"] as Dictionary).get("radius", 3))  # [world2] pre-gen-2 saves keep their radius-3 field
 	if not fk.is_empty():
 		district_name = str(fk.get("name", district_name))
 	layout = CityLayout.new(seed_v, 150.0, (not is_city) if fk.is_empty() else str(fk.get("layout", "wild")) != "city")
@@ -146,6 +148,7 @@ func _ready() -> void:
 	# Older saves were generated with straight hex borders; keep their piece layout identical.
 	if loaded and GameState.world.has("field"):
 		field.natural_borders = bool((GameState.world["field"] as Dictionary).get("natural_borders", false))
+		field.junk_gen = int((GameState.world["field"] as Dictionary).get("junk_gen", 1))  # [world2] older saves keep v1 junk
 	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
 	if not fk.is_empty():
 		Frontiers.toughen(field, float(fk.get("vol_mult", 1.0)))
@@ -182,6 +185,12 @@ func _ready() -> void:
 	add_child(litter)
 	litter.density_mult = float(fk.get("litter_mult", 1.0))  # [biomes]
 	litter.setup(field)
+	if fk.is_empty():  # [world2] the world past the field stays covered (frontiers have their own terrain)
+		var far := FarJunk.new()
+		far.name = "FarJunk"
+		far.world = self
+		add_child(far)
+		far.build(field)
 	city = CityView.new()
 	city.name = "City"
 	add_child(city)
@@ -542,6 +551,11 @@ func _ready() -> void:
 	scope.world = self
 	add_child(scope)
 	ExtrasDirector.attach(self)  # [extras] radio, nursery, album, welcome back, Seed of the Week (systems/extras/)
+	(func() -> void: PropColliders.push_out_pieces(self, field, view)).call_deferred()  # [world2] junk out of solid props
+	if DevHooks.has("bale-shot"):  # [world2] bale close-up staging (tools/bale_shot.gd)
+		var bs: Node = load("res://tools/bale_shot.gd").new()
+		bs.set("world", self)
+		add_child(bs)
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -653,6 +667,12 @@ func _build_board() -> void:
 	roof.position = Vector3(0, 2.3, -0.05)
 	roof.rotation_degrees = Vector3(-9, 0, 2)
 	shack.add_child(roof)
+	var roof_body := StaticBody3D.new()  # [world2] follows the roof: overhead when fixed, a slumped ramp of iron when ruined
+	roof_body.collision_layer = PhysLayers.PROP
+	var roof_cs := CollisionShape3D.new()
+	roof_cs.shape = PropColliders.box_shape(Vector3(3.6, 0.1, 2.5))
+	roof_body.add_child(roof_cs)
+	roof.add_child(roof_body)
 	var back := MeshInstance3D.new()
 	back.mesh = ProcMesh.box(Vector3(3.3, 2.3, 0.03))
 	back.material_override = iron
@@ -706,6 +726,11 @@ func _build_board() -> void:
 	cs.shape = bs
 	cs.position = Vector3(0, 1.2, -0.6)
 	sb.add_child(cs)
+	for px: float in [-1.6, 1.6]:  # [world2] the front posts
+		var pcs0 := CollisionShape3D.new()
+		pcs0.shape = PropColliders.cyl_shape(0.08, 2.1)
+		pcs0.position = Vector3(px, 1.05, 1.0)
+		sb.add_child(pcs0)
 	shack.add_child(sb)
 	# Hub dressing: a street lamp and a generator.
 	var sl := MeshInstance3D.new()

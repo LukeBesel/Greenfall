@@ -175,6 +175,7 @@ func _build_level(l: int, animate: bool) -> void:
 	var paint: ShaderMaterial = Mats.worn_paint(Color(0.35, 0.55, 0.62), 0.8, 0.4, 20.0 + l, 0.4)
 	var white: ShaderMaterial = Mats.worn_paint(Color(0.9, 0.9, 0.86), 0.9, 0.2, 30.0 + l, 0.2)
 	var d: float = 0.0
+	var pb: StaticBody3D = PropColliders.body(self, "Props%d" % l)  # [world2] solid walls, office, masts
 	match l:
 		2:
 			# Enclose the lean-to: walls, a roll-up door, floodlights. (Shack sits at x=-4.9, z=2.2.)
@@ -182,6 +183,7 @@ func _build_level(l: int, animate: bool) -> void:
 				_scaffold(Vector3(-4.9, 0, 2.2), Vector3(4.0, 2.8, 3.2), 2.2)
 			for spec: Array in [[Vector3(-4.9, 1.2, 0.6), Vector3(3.6, 2.4, 0.06)], [Vector3(-4.9, 1.2, 3.8), Vector3(3.6, 2.4, 0.06)], [Vector3(-6.7, 1.2, 2.2), Vector3(0.06, 2.4, 3.2)]]:
 				_piece(ProcMesh.box(spec[1]), iron, Transform3D(Basis(), spec[0]), animate, d)
+				PropColliders.add_box(pb, Transform3D(Basis(), to_global(spec[0])), (spec[1] as Vector3).max(Vector3(0.16, 0, 0.16)))  # [world2]
 				d += 0.25
 			_piece(ProcMesh.box(Vector3(4.0, 0.08, 3.6)), paint, Transform3D(Basis(), Vector3(-4.9, 2.5, 2.2)), animate, d)
 			for z: float in [0.9, 3.5]:
@@ -199,6 +201,8 @@ func _build_level(l: int, animate: bool) -> void:
 			_piece(ProcMesh.box(Vector3(4.2, 0.12, 3.2)), paint, Transform3D(Basis(), Vector3(5.5, 2.86, 4.5)), animate, 0.3)
 			_piece(ProcMesh.box(Vector3(0.9, 1.8, 0.05)), Mats.glass(Color(0.2, 0.3, 0.35, 0.7)), Transform3D(Basis(), Vector3(5.0, 1.0, 2.97)), animate, 0.5)
 			_piece(ProcMesh.cyl(0.04, 0.06, 7.0, 6), Mats.metal("steel"), Transform3D(Basis(), Vector3(7.0, 3.5, 5.5)), animate, 0.8)
+			PropColliders.add_box(pb, Transform3D(Basis(), to_global(Vector3(5.5, 1.4, 4.5))), Vector3(4.0, 2.8, 3.1))  # [world2] the office
+			PropColliders.add_cyl(pb, to_global(Vector3(7.0, 0.0, 5.5)), 0.08, 7.0)
 			_piece(ProcMesh.sphere(0.12, 8, 4), Mats.lamp(Color(1.0, 0.2, 0.15), 3.0), Transform3D(Basis(), Vector3(7.0, 7.05, 5.5)), animate, 1.0)
 		4:
 			# [vqa2] Solar row in the front-right of the yard, in front of the level-3 office. It used to
@@ -222,6 +226,7 @@ func _build_level(l: int, animate: bool) -> void:
 			if animate:
 				_scaffold(Vector3(-7.0, 0, -5.0), Vector3(2.0, 9.0, 2.0), 2.6)
 			_piece(ProcMesh.cyl(0.15, 0.3, 9.0, 10), white, Transform3D(Basis(), Vector3(-7.0, 4.5, -5.0)), animate, 0.0)
+			PropColliders.add_cyl(pb, to_global(Vector3(-7.0, 0.0, -5.0)), 0.3, 9.0)  # [world2] the turbine mast
 			_piece(ProcMesh.capsule(0.25, 0.9), white, Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(-7.0, 9.0, -4.7)), animate, 0.4)
 			var rotor := Node3D.new()
 			rotor.position = Vector3(-7.0, 9.0, -4.25)

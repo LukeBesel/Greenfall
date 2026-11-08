@@ -258,3 +258,38 @@ Mechanics:
   reserved for spans marked `[glitch]`/`[REDACTED]`/`█` (owner: "heavy glitches on what is redacted").
 - **Every scene load goes through the loading screen** (`Loader.goto`), with a shader warm-up pass; the
   default clear colour is near-black so nothing ever flashes purple.
+- **[world2] Props are solid, on their own layer**: street furniture, yard kit, sign posts, outposts,
+  eggs, the composter, greenhouse, pod, hub additions, future-layer posts and frontier ruins collide on
+  `PhysLayers.PROP` (`planet/phys_layers.gd`). Lumi, robots and bales mask it; the camera spring arm
+  does not (thin poles would yank the camera in). Simple boxes/cylinders with shared shapes
+  (`planet/prop_colliders.gd`); merged frontier geometry gets greedy-merged column boxes. Junk that
+  spawns inside a prop is nudged to its edge at load (deterministic; only alive bits are saved).
+  Tiny clutter (pots, weeds, paint, wires, junk, litter) stays non-solid. `tools/collider_audit.gd`
+  must report 0. Robots have no navmesh; their detour/stall logic handles the new obstacles.
+- **[world2] No yard fence**: the owner walked through it and it boxed Lumi in at the start. Lot fences
+  elsewhere are broken runs with gaps, each run solid.
+- **[world2] Junk gen 2 (new games)**: the only clear ground is what Lumi or the bots picked up. No
+  mid-road sparsity, a full ring around the base, landfill junk between the heaps, and the streets of
+  building-blocked hexes plus the hub hex outside the yard belong to the nearest junk hex
+  (`HexField.owner_hex`), so they are covered and clear with it. Each hex keeps gen 1's junk volume
+  (more, smaller pieces), so bales, cubes and hex flips pace as before. Old Town's field is radius 4
+  (was 3); past the field a static, non-interactive junk layer (`planet/far_junk.gd`) keeps the planet
+  covered, and WREN explains the survey line once. Saves without `junk_gen` keep gen 1 and radius 3.
+  Frontiers stay radius 4 (now the same hex count, still denser and tougher).
+- **[world2] Bales**: collider = the drawn bale (straps included; overstuffed bales get their wider,
+  flatter box), CCD on, lifted out of anything solid after a spawn or put-down, put down short of
+  walls, and junk mounds are solid for bales only (`PhysLayers.MOUND`, `planet/mound_colliders.gd`).
+  The bale shader is explicitly opaque, with desaturated per-item chunks, labels in the dominant junk's
+  accent colour and rough, sparse metal. **Root cause of the "transparent" bale**: its mesh,
+  `ProcMesh.rounded_box`, was inside-out (counter-clockwise from outside, so back-face culling showed
+  the far inner walls: a see-through box tinted by the pale-blue plastic colour). rounded_box (used by
+  ~130 props) and the junk-heap mesh now wind clockwise from outside; `tests/test_bale_rest.gd`
+  checks the winding.
+- **[world2] Playtest #2 follow-ups**: junk heaps are solid for Lumi and robots too (MOUND | PROP),
+  drawing in as the hex is cleaned, so piles are scooped from the edge, not vacuumed from inside.
+  Hub/blocked hexes' ground follows the junk hexes that own it (no clean-looking patches). Pieces
+  carry a size class (`HexField.piece_size`: SIZE_SMALL / SIZE_MEDIUM / SIZE_LARGE, from the
+  model's base volume, LARGE >= 2.5: tyres, TVs, microwaves, stoves), and the starting ring has no
+  large pieces (re-picked from the same type on their own RNG). Carried bales sit above Lumi's head
+  (`player/carry_point.gd`). The bale is a pillowed, lumpy pressed block with three straps one way
+  and two across.

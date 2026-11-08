@@ -135,6 +135,8 @@ func place_pod() -> void:
 	_crash_pose()
 	_hatch = _pod.get_node("Hatch")
 	EscapePod.set_open(_pod, true, CrashSite.LEAN.x)
+	PropColliders.fit(PropColliders.body(_pod, "Props"), _pod)  # [world2] the landed pod is solid
+	PropColliders.push_out_pieces(_pod, world.field, world.get("view"))
 	if _fire and is_instance_valid(_fire):
 		_fire.queue_free()
 	_fire = null

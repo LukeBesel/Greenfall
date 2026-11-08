@@ -247,7 +247,7 @@ static func _mound_mesh() -> ArrayMesh:
 			var b: Vector3 = pts[r][k + 1]
 			var c: Vector3 = pts[r + 1][k + 1]
 			var d: Vector3 = pts[r + 1][k]
-			for v: Vector3 in [a, c, b, a, d, c]:
+			for v: Vector3 in [a, b, c, a, c, d]:  # [world2] clockwise from outside (was inside-out)
 				st.add_vertex(v)
 	st.generate_normals()
 	return st.commit()
@@ -266,6 +266,7 @@ func _build_mounds() -> void:
 			mi.position = Vector3(pile.x, -0.02, pile.y)
 			mi.set_meta("pile", pile)
 			add_child(mi)
+			mi.set_meta("body", MoundColliders.make(self, pile))  # [world2] bales rest on the heap
 			list.append(mi)
 		_mounds[id] = list
 		_update_mounds(id)
@@ -277,6 +278,7 @@ func _update_mounds(id: int) -> void:
 		var pile: Vector4 = mi.get_meta("pile")
 		mi.visible = left > 0.0
 		mi.scale = Vector3(pile.z * 1.1, maxf(pile.w * left * 0.9, 0.001), pile.z * 1.1)
+		MoundColliders.update(mi.get_meta("body", null), mi.scale, mi.visible, 1.0 - field.removed_fraction(id))  # [world2]
 
 
 ## Re-seat remaining pieces of a hex on its (shrinking) mound.
@@ -311,6 +313,11 @@ func _set_shown(pid: int, on: bool) -> void:
 
 func refresh_hex(id: int, flipped_now: bool = false) -> void:
 	_write_hex(id, clock if flipped_now else -1.0)
+	if field.junk_gen >= 2:  # [world2] hub/blocked ground follows the junk hexes that own it
+		for o: Vector2i in Hex.DIRECTIONS:
+			var nb: int = int(field.axial_to_id.get(field.hex_axial[id] + o, -1))
+			if nb >= 0 and field.hex_hub[nb] != 0:
+				_write_hex(nb, clock if flipped_now else -1.0)
 	_update_mounds(id)
 	_resettle(id)
 	_dirty_tex = true
@@ -323,6 +330,10 @@ func _write_hex(id: int, flip_time: float) -> void:
 	var prev: Color = _state_img.get_pixel(x, y)
 	var ft: float = prev.g if flip_time == -1.0 else flip_time
 	var flag: float = 1.0 if field.hex_hub[id] == 1 else (0.5 if field.is_water(id) else 0.0)
+	if field.junk_gen >= 2 and field.hex_hub[id] != 0:  # [world2] only the yard slab is clean ground
+		var nb: Vector2 = FarJunk.owner_state(field, id)
+		_state_img.set_pixel(x, y, Color(nb.x, ft, nb.y, 0.0))
+		return
 	_state_img.set_pixel(x, y, Color(field.removed_fraction(id), ft, float(field.hex_clean[id]), flag))
 
 

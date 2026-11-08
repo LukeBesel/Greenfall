@@ -35,11 +35,53 @@ func test_hub_hexes_start_clean_and_empty() -> void:
 
 
 func test_pieces_live_in_their_hex() -> void:
-	# Natural borders: a piece belongs to the hex its noise-warped position falls in.
+	# Natural borders: a piece belongs to the hex its noise-warped position falls in; with the
+	# [world2] gen-2 rules, points of hub/blocked hexes go to the nearest junk neighbour (owner_hex).
 	for pid: int in field.piece_count():
 		var p: Vector3 = field.piece_pos[pid]
-		var got: int = field.hex_at(p + field.border_warp(p)) if field.natural_borders else field.hex_at(p)
-		assert_eq(got, field.piece_hex[pid])
+		assert_eq(field.owner_hex(p), field.piece_hex[pid])
+
+
+func test_gen1_keeps_the_old_layout() -> void:
+	# [world2] Older saves (no junk_gen in the save) must regenerate the exact same pieces.
+	var types: Array = []
+	for id: String in Economy.junk_ids:
+		types.append(Economy.junk_types[id])
+	var g := HexField.new(5, 3.2, 99)
+	g.junk_gen = 1
+	g.generate(types)
+	for pid: int in g.piece_count():
+		var p: Vector3 = g.piece_pos[pid]
+		assert_eq(g.hex_at(p + g.border_warp(p)), g.piece_hex[pid])
+	var center: int = g.axial_to_id[Vector2i.ZERO]
+	assert_eq(g.hex_pieces[center].size(), 0)
+	assert_eq(g.to_dict()["junk_gen"], 1)
+
+
+func test_gen2_covers_more_but_keeps_volume() -> void:
+	# [world2] Gen 2: more (smaller) pieces next to the hub, the same junk volume per hex.
+	var types: Array = []
+	for id: String in Economy.junk_ids:
+		types.append(Economy.junk_types[id])
+	var lay := CityLayout.new(4471, 150.0, false)
+	var a := HexField.new(3, 10.0, 4471, lay)
+	a.junk_gen = 1
+	a.generate(types, Vector2i(260, 420))
+	var b := HexField.new(3, 10.0, 4471, lay)
+	b.generate(types, Vector2i(260, 420))
+	var vol_a: float = 0.0
+	var vol_b: float = 0.0
+	var ring1_a: int = 0
+	var ring1_b: int = 0
+	for h: int in a.hex_count():
+		vol_a += a.hex_total[h]
+		vol_b += b.hex_total[h]
+		if Hex.distance(a.hex_axial[h], Vector2i.ZERO) == 1:
+			ring1_a += a.hex_pieces[h].size()
+			ring1_b += b.hex_pieces[h].size()
+	assert_gt(ring1_b, int(ring1_a * 1.5), "the hexes around the base read covered")
+	assert_almost_eq(vol_b, vol_a, vol_a * 0.05, "total junk volume (bales, cubes, pacing) stays the same")
+	assert_gt(b.piece_count(), a.piece_count())
 
 
 func test_natural_borders_spill_past_straight_edges() -> void:

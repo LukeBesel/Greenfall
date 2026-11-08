@@ -52,7 +52,7 @@ var _water_t: float = 0.0
 func _ready() -> void:
 	add_to_group("patch")
 	collision_layer = 2
-	collision_mask = 1 | 4
+	collision_mask = 1 | 4 | PhysLayers.PROP  # [world2] props are solid
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
 	box.size = Vector3(1.1, 1.2, 1.0)
@@ -289,8 +289,12 @@ func _handle_scoop(delta: float) -> void:
 			if k == 0:
 				Pace.heavy_hint(self, world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"))  # [pace]
 			break
+		var extra: PackedInt32Array = world.field.cluster_extra(pid)  # [world2] gen-2 junk is finer: grab the little cluster
 		_take_piece(pid)
 		took += 1
+		for e: int in extra:
+			if world.field.piece_alive[e] == 1 and compartment.can_accept(cap):
+				_take_piece(e)
 	if took > 0:
 		_scoop_timer = 1.0 / maxf(stat("scoop_rate"), 0.5)
 
@@ -553,9 +557,9 @@ func place_top_cube() -> void:
 	var c: JunkCube = pop_carried_cube()
 	if c == null:
 		return
-	var front: Vector3 = global_position + forward() * 1.25
 	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
-	var q := PhysicsRayQueryParameters3D.create(front + Vector3(0, 12.0, 0), front + Vector3(0, -1.0, 0), 1 | 4)
+	var front: Vector3 = JunkCube.free_spot(space, global_position, forward(), c.size)  # [world2] never into a wall or prop
+	var q := PhysicsRayQueryParameters3D.create(front + Vector3(0, 2.5, 0), front + Vector3(0, -1.0, 0), 1 | 4 | PhysLayers.MOUND)  # [world2] from just above (not onto roofs), heaps count
 	var hit: Dictionary = space.intersect_ray(q)
 	var y: float = 0.0
 	if not hit.is_empty():
@@ -580,6 +584,8 @@ func place_top_cube() -> void:
 
 
 func _update_stack(delta: float) -> void:
+	if not carried.is_empty():
+		_stack_root.position = CarryPoint.of(model, self)  # [world2] held clearly above Lumi, not inside him
 	# Wobbly spring sway driven by acceleration.
 	var acc: Vector3 = global_transform.basis.inverse() * (velocity - _prev_vel)
 	_stack_sway_v += (Vector2(acc.z, -acc.x) * 0.9 - _stack_sway * 60.0 - _stack_sway_v * 7.0) * delta

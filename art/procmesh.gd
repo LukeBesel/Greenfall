@@ -38,7 +38,7 @@ static func rounded_box(size: Vector3, radius: float, seg: int = 4, color: Color
 		for j: int in n:
 			for i: int in n:
 				var q: Array = [grid[j][i], grid[j][i + 1], grid[j + 1][i + 1], grid[j + 1][i]]
-				for idx: int in [0, 2, 1, 0, 3, 2]:
+				for idx: int in [0, 1, 2, 0, 2, 3]:  # [world2] clockwise from outside (was inside-out: see-through with back-face culling)
 					st.set_color(color)
 					st.set_normal(q[idx][1])
 					st.add_vertex(q[idx][0])
