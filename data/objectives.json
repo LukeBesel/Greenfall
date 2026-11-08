@@ -8,7 +8,7 @@
   },
   "objectives": [
     {"id": "power", "text": "Power the base: sell 3 bales", "desc": "Cubes feed the recycler. Its power wakes the base.", "type": "stat", "key": "cubes_cashed", "target": 3},
-    {"id": "tower", "text": "Rebuild the signal tower", "desc": "WREN went silent. The tower lets her reach you.", "type": "tower", "target": 1},
+    {"id": "tower", "text": "Build the signal tower", "desc": "WREN went silent. Build it at the workbench.", "type": "tower", "target": 1},
     {"id": "hex", "text": "Clean a hex", "desc": "Clean ground is where green can grow again.", "type": "stat", "key": "hexes_cleaned", "target": 1, "hex": true},
     {"id": "robot", "text": "Build your first robot", "desc": "A helper keeps cleaning while you work.", "type": "robot", "key": "any", "target": 1,
       "lines": ["The base has power! Enough to build you a helper. Try the Bots tab at the workbench."]},

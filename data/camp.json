@@ -1,9 +1,68 @@
 {
-  "_doc": "[camp] The landing yard (systems/camp/camp.gd, systems/camp/yard_builds.gd). A fresh base starts with only the pod, a broken workbench and the trash bin. Lumi repairs the bench (bench_repair_s) the first time E is pressed at it. Yard builds are bought in the Hub tab: requires_level is the hub level, requires_flag a GameState flag (first_sprout = the first seed has grown). pos is [x, z] in the yard (CityLayout.YARD_HALF = 8.5; the fence runs along the back and both sides, the front at +z is open). Keep every yard interactable at least min_gap metres from the next.",
+  "_doc": "[camp] The landing yard (systems/camp/camp.gd, systems/camp/yard_builds.gd). A fresh base starts with only the pod, a broken workbench and the trash bin. Lumi repairs the bench (bench_repair_s) the first time E is pressed at it. Yard builds are bought in the Hub tab: requires_level is the hub level, requires_flag a GameState flag (first_sprout = the first seed has grown). pos is [x, z] in the yard (CityLayout.YARD_HALF = 8.5; the fence runs along the back and both sides, the front at +z is open). Keep every yard interactable at least min_gap metres from the next. Every yard structure is a Hub-tab build (systems/camp/hub_builds.gd): once-builds drop off the list when built; tiered ones (trash bin, signal tower) show only their next tier. requires_bench: only after the workbench is repaired.",
   "bench_repair_s": 2.6,
   "min_gap": 3.0,
   "builds": {
-    "radio": {"name": "CD Player", "desc": "A chunky old CD player on a crate by the fence. Plays the discs you find.", "cost": {"cubes": 1200}, "requires_level": 2, "pos": [6.6, 3.4], "yaw_deg": 180.0},
-    "nursery": {"name": "Robot Nursery", "desc": "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand.", "cost": {"cubes": 2500}, "requires_level": 1, "requires_flag": "first_sprout"}
+    "shack": {
+      "name": "Lean-to",
+      "desc": "Salvaged pipe and corrugated iron over the workbench, with a work lamp. Shelter for the crew.",
+      "cost": {
+        "cubes": 120
+      },
+      "requires_level": 1,
+      "requires_bench": true
+    },
+    "generator": {
+      "name": "Generator",
+      "desc": "A patched portable generator by the lean-to. It hums; the yard feels lived in.",
+      "cost": {
+        "cubes": 300,
+        "parts": 5
+      },
+      "requires_level": 1,
+      "requires_bench": true
+    },
+    "lamps": {
+      "name": "Yard Lamps",
+      "desc": "The street lamp and the pole lamps along the fence, rewired. Light for the yard at night.",
+      "cost": {
+        "cubes": 450,
+        "parts": 10
+      },
+      "requires_level": 1,
+      "requires_bench": true
+    },
+    "composter": {
+      "name": "Compost Press",
+      "desc": "Presses plant scraps into compost and seeds. Worth building once something grows.",
+      "cost": {
+        "cubes": 300,
+        "seeds": 5
+      },
+      "requires_level": 1,
+      "requires_flag": "first_sprout"
+    },
+    "radio": {
+      "name": "CD Player",
+      "desc": "A chunky old CD player on a crate by the fence. Plays the discs you find.",
+      "cost": {
+        "cubes": 1200
+      },
+      "requires_level": 2,
+      "pos": [
+        6.6,
+        3.4
+      ],
+      "yaw_deg": 180.0
+    },
+    "nursery": {
+      "name": "Robot Nursery",
+      "desc": "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand.",
+      "cost": {
+        "cubes": 2500
+      },
+      "requires_level": 1,
+      "requires_flag": "first_sprout"
+    }
   }
 }

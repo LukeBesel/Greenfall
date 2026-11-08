@@ -162,6 +162,7 @@ func build(p_layout: CityLayout, p_field: HexField, p_hub: int = 0, p_district: 
 		_build_ruin()
 	_begin("Salvage")
 	_build_name_sign(false)  # [world2] no yard fence
+	_begin("Lamps")  # [camp2] the pole lamps are part of the "Yard Lamps" Hub build
 	_build_pole_lamps()
 	_begin("Yard")
 	_build_poles()
@@ -192,6 +193,8 @@ func _layer_range(nm: String) -> Vector2i:
 			return Vector2i(1, 1) if not start_base else Vector2i(9, 9)
 		"Salvage":
 			return Vector2i(1 if start_base else 2, 2)
+		"Lamps":  # [camp2] like Salvage, once the Yard Lamps are built (systems/camp/yard_builds.gd)
+			return Vector2i(1 if start_base else 2, 2) if YardBuilds.built("lamps") else Vector2i(9, 9)
 		"Yard":
 			return Vector2i(2, 5)  # [camp] the starter yard is bare too until hub level 2 (owner playtest #2)
 		"Future":

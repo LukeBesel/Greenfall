@@ -78,11 +78,15 @@ func _on_build(id: String) -> void:
 
 func refresh() -> void:
 	var s: Stations = _stations()
-	if s == null:
+	# [camp2] Building a station lives in the Hub tab's BUILD list (ui/yard_builds_panel.gd); this
+	# card only shows once one stands: its controls (move the baler, auto-route) and its upgrades.
+	if s == null or not (s.built("conveyor") or s.built("auto_baler") or s.built("recycler")):
 		visible = false
 		return
 	visible = true
 	for id: String in _rows:
+		(_rows[id]["label"] as Control).visible = false  # [camp2]
+		(_rows[id]["btn"] as Control).visible = false  # [camp2]
 		var d: Dictionary = s.def(id)
 		var lab: Label = _rows[id]["label"]
 		var btn: Button = _rows[id]["btn"]
