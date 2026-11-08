@@ -13876,12 +13876,12 @@ msgid "A hydraulic ram presses every bale flat before it is weighed."
 msgstr "[À ĥýðŕàûļîç ŕàm þŕéššéš évéŕý bàļé ƒļàţ béƒôŕé îţ îš ŵéîĝĥéð. ~~~~~~~~~~~~~~~~~~]"
 
 #: data/trash_bin.json:levels[4].name
-msgid "Smart Intake"
-msgstr "[Šmàŕţ Îñţàķé ~]"
+msgid "Shredder"
+msgstr "[Šĥŕéððéŕ ~]"
 
 #: data/trash_bin.json:levels[4].desc
-msgid "A clean white intake with a scanner seam. It sorts what it eats and pays the best rate."
-msgstr "[À çļéàñ ŵĥîţé îñţàķé ŵîţĥ à šçàññéŕ šéàm. Îţ šôŕţš ŵĥàţ îţ éàţš àñð þàýš ţĥé béšţ ŕàţé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "A clean white shredder with twin rotors and a scanner seam. It shreds every bale and pays the best rate."
+msgstr "[À çļéàñ ŵĥîţé šĥŕéððéŕ ŵîţĥ ţŵîñ ŕôţôŕš àñð à šçàññéŕ šéàm. Îţ šĥŕéðš évéŕý bàļé àñð þàýš ţĥé béšţ ŕàţé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/upgrades.json:upgrades[baler].name
 msgid "Baler"

@@ -69,16 +69,16 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Supply crates never appear out of nowhere: supplies are only found in the world. Every reward toast names exactly what you got, in readable text.
 
 ## Landing site and yard (camp)
-- [ ] The yard holds only the pod, a broken workbench and the trash bin. Everything else appears when it is unlocked.
-- [ ] Lumi plays a short repair animation on the workbench before it can be used.
-- [ ] Nothing appears on its own (not even the composter): everything besides the bench and bin is a Hub build. One-time builds drop off the Hub build list once built. (camp2)
-- [ ] The trash bin is upgradeable (bin → shredder).
-- [ ] There is no nursery at the start. It needs the first seed plus cubes.
-- [ ] The radio is built later at the hub. It sits away from the workbench, and its prompt names it.
-- [ ] Yard interactables are at least about 3 m apart.
-- [ ] The radio and jukebox stop the background music and play only their own song.
-- [ ] The observatory telescope sits away from spawn and its view doesn't glitch.
-- [ ] Buying a machine upgrade (belt drive, baler and so on) makes it visibly appear, with a build effect and a pointer to it. (Bug: they bought both and nothing appeared.)
+- [x] The yard holds only the pod, a broken workbench and the trash bin. Everything else appears when it is unlocked. (camp, camp2)
+- [x] Lumi plays a short repair animation on the workbench before it can be used. (camp)
+- [x] Nothing appears on its own (not even the composter): everything besides the bench and bin is a Hub build. One-time builds drop off the Hub build list once built. (camp2: data/builds.json + HubBuilds; Build/Upgrades tabs by ui3)
+- [x] The trash bin is upgradeable (bin → shredder): Dented Bin, Scrap Skip, Weigh Skip, Compactor, Shredder. (camp)
+- [x] There is no nursery at the start. It needs the first seed plus cubes. (camp)
+- [x] The radio is built later at the hub. It sits away from the workbench, and its prompt names it. (camp: CD player by the right fence)
+- [x] Yard interactables are at least about 3 m apart. (camp: test + --camp-report)
+- [~] The radio and jukebox stop the background music and play only their own song. (camp: radio + Audio.mute_score for tunes' songs; the jukebox egg is eggs2's)
+- [x] The observatory telescope sits away from spawn and its view doesn't glitch. (camp: back edge, zoom fixes)
+- [x] Buying a machine upgrade (belt drive, baler and so on) makes it visibly appear, with a build effect and a pointer to it. (Bug: they bought both and nothing appeared.) (camp: upgrades need their machine; every build gets a reveal)
 
 ## Workbench and menus (ui2)
 - [ ] The workbench is simple, small and futuristic.

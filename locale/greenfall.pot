@@ -13611,11 +13611,11 @@ msgid "A hydraulic ram presses every bale flat before it is weighed."
 msgstr ""
 
 #: data/trash_bin.json:levels[4].name
-msgid "Smart Intake"
+msgid "Shredder"
 msgstr ""
 
 #: data/trash_bin.json:levels[4].desc
-msgid "A clean white intake with a scanner seam. It sorts what it eats and pays the best rate."
+msgid "A clean white shredder with twin rotors and a scanner seam. It shreds every bale and pays the best rate."
 msgstr ""
 
 #: data/upgrades.json:upgrades[baler].name
