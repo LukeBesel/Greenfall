@@ -26,6 +26,9 @@ var categories: Array = []
 var counter: Callable
 var world: Node
 var title: String = ""
+## [ui7] Float the list and the detail as separate glass modules (ui/holo_frame.gd): the category
+## chips go on top of the list module, the counter on the detail module's eyebrow row.
+var modules: bool = false
 
 var _cat: String = ""
 var _sel: String = ""
@@ -58,16 +61,20 @@ func _ready() -> void:
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var top := HBoxContainer.new()
 	top.add_theme_constant_override("separation", 6)
-	add_child(top)
 	_cat_row = HBoxContainer.new()
 	_cat_row.add_theme_constant_override("separation", 6)
 	_cat_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(_cat_row)
-	_counter = UITheme.label("", 14, UITheme.MUTED)
+	_counter = HoloFrame.mono_label("", 13, Color(HoloFrame.EDGE, 0.7)) if modules else UITheme.label("", 14, UITheme.MUTED)
 	_counter.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	top.add_child(_counter)
+	_counter.clip_text = true
+	_counter.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_counter.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	if not modules:
+		add_child(top)
+		top.add_child(_counter)
 	var body := HBoxContainer.new()
-	body.add_theme_constant_override("separation", 14)
+	body.add_theme_constant_override("separation", HoloFrame.GAP if modules else 14)
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	add_child(body)
 	# Left: the list.
@@ -75,10 +82,12 @@ func _ready() -> void:
 	(lp[0] as Control).size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	(lp[0] as Control).size_flags_stretch_ratio = 1.0
 	body.add_child(lp[0])
+	if modules:
+		(lp[1] as VBoxContainer).add_child(top)
 	var sc := ScrollContainer.new()
 	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	sc.custom_minimum_size = Vector2(0, 300)
+	sc.custom_minimum_size = Vector2(0, 160 if modules else 300)
 	sc.follow_focus = true
 	(lp[1] as VBoxContainer).add_child(sc)
 	_list = VBoxContainer.new()
@@ -94,7 +103,16 @@ func _ready() -> void:
 	body.add_child(dp[0])
 	_detail = dp[1]
 	_d_eyebrow = BenchKit.caps("", TAG_OK)
-	_detail.add_child(_d_eyebrow)
+	if modules:
+		_d_eyebrow.add_theme_font_override("font", HoloFrame.mono())
+		var er := HBoxContainer.new()
+		er.add_theme_constant_override("separation", 10)
+		_detail.add_child(er)
+		er.add_child(_d_eyebrow)
+		_counter.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		er.add_child(_counter)
+	else:
+		_detail.add_child(_d_eyebrow)
 	var nr := HBoxContainer.new()
 	nr.add_theme_constant_override("separation", 12)
 	_detail.add_child(nr)
@@ -109,7 +127,7 @@ func _ready() -> void:
 	_d_desc = BenchKit.body("", UITheme.MUTED, BenchKit.SMALL_SIZE + 1)
 	nv.add_child(_d_desc)
 	_d_icon_box = CenterContainer.new()
-	_d_icon_box.custom_minimum_size = Vector2(72, 72)
+	_d_icon_box.custom_minimum_size = Vector2(56, 56) if modules else Vector2(72, 72)
 	nr.add_child(_d_icon_box)
 	_d_table = GridContainer.new()
 	_d_table.columns = 2
@@ -125,6 +143,10 @@ func _ready() -> void:
 	_d_cost.alignment = BoxContainer.ALIGNMENT_CENTER
 	_detail.add_child(_d_cost)
 	_d_btn = BenchKit.big_button("")
+	if modules:  # [ui7] a little more compact inside the floating frame
+		_d_btn.custom_minimum_size.y = 44
+		_detail.add_theme_constant_override("separation", 5)
+		_d_table.add_theme_constant_override("v_separation", 2)
 	_d_btn.pressed.connect(func() -> void: _do(_sel))
 	_detail.add_child(_d_btn)
 	refresh(true)
@@ -132,6 +154,12 @@ func _ready() -> void:
 
 ## A dark panel with an orange hazard edge on top: [PanelContainer, VBoxContainer body].
 func _panel() -> Array:
+	if modules:  # [ui7] a floating glass module, no hazard edge
+		var m: PanelContainer = HoloFrame.module(12)
+		var mv := VBoxContainer.new()
+		mv.add_theme_constant_override("separation", 8)
+		m.add_child(mv)
+		return [m, mv]
 	var pc := PanelContainer.new()
 	pc.add_theme_stylebox_override("panel", BenchKit.holo(Color(BenchKit.HOLO, 0.25), Color(0.02, 0.035, 0.045, 0.85), 0.3, 8, 0))
 	var outer := VBoxContainer.new()
@@ -458,6 +486,8 @@ func _tag_label(t: String, col: Color) -> Label:
 	l.add_theme_constant_override("outline_size", 0)
 	l.add_theme_constant_override("shadow_outline_size", 0)
 	l.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0))
+	if modules:
+		l.add_theme_font_override("font", HoloFrame.mono())
 	return l
 
 
@@ -534,6 +564,8 @@ func _show_detail(it: Dictionary) -> void:
 				continue
 			var k: Label = UITheme.label(str(row[0]).to_upper(), 13, UITheme.MUTED)
 			k.add_theme_constant_override("outline_size", 0)
+			if modules:
+				k.add_theme_font_override("font", HoloFrame.mono())
 			_d_table.add_child(k)
 			var v: Label = UITheme.label(str(row[1]), 17, Color.WHITE)
 			v.add_theme_constant_override("outline_size", 0)

@@ -94,6 +94,10 @@ static func tab_visible(id: String, w: Node = null) -> bool:
 var is_open: bool = false
 var _root: Control
 var _grid: GridContainer
+var _frame: MarginContainer  # [ui7] the floating frame (ui/holo_frame.gd)
+var _list_host: VBoxContainer
+var _page: PanelContainer
+var _hidden_hud: Array[CanvasLayer] = []
 var _cards: Array[UpgradeCard] = []
 var _currency: Label
 var _parts_lbl: Label  # [money] the other two currencies, small, next to cubes
@@ -122,36 +126,28 @@ func _ready() -> void:
 	_root.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_root.theme = UITheme.get_theme()
 	add_child(_root)
-	var dim := ColorRect.new()
-	dim.color = Color(0.01, 0.02, 0.03, 0.5)
-	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_root.add_child(dim)
-	var mc := MarginContainer.new()
-	mc.set_anchors_preset(Control.PRESET_FULL_RECT)
-	for side: String in ["margin_left", "margin_right", "margin_top", "margin_bottom"]:
-		mc.add_theme_constant_override(side, 36)
-	_root.add_child(mc)
-	var panel := PanelContainer.new()
-	panel.add_theme_stylebox_override("panel", BenchKit.holo(Color(BenchKit.HOLO, 0.5), Color(0.02, 0.035, 0.045, 0.9), 1.0, 12, 18))  # [ui2] glass + thin glowing frame
-	mc.add_child(panel)
+	# [ui7] Not full screen: floating glass modules (header, tabs, list, detail) with gaps where
+	# the world shows through, a light vignette instead of a dim (ui/holo_frame.gd).
+	_root.add_child(HoloFrame.vignette())
+	_frame = MarginContainer.new()
+	_frame.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_root.add_child(_frame)
 	var vb := VBoxContainer.new()
-	vb.add_theme_constant_override("separation", 12)
-	panel.add_child(vb)
+	vb.add_theme_constant_override("separation", HoloFrame.GAP)
+	_frame.add_child(vb)
+	var hm: PanelContainer = HoloFrame.module(8)
+	vb.add_child(hm)
 	var header := HBoxContainer.new()
-	vb.add_child(header)
+	hm.add_child(header)
 	header.add_theme_constant_override("separation", 8)
-	var wt: Label = UITheme.label(tr("WORKBENCH"), 26, BenchKit.HOLO)
-	wt.add_theme_constant_override("outline_size", 0)
-	wt.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	header.add_child(wt)
+	header.add_child(HoloFrame.header_title(tr("WORKBENCH")))
 	var sp := Control.new()
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(sp)
 	# [money] [ui2] The three currencies, same icons and size: cubes, parts, seeds.
 	for cur: String in ["cubes", "parts", "seeds"]:
-		header.add_child(CurrencyIcon.new(cur, 30.0))
-		var l: Label = UITheme.label("0", 26, Color.WHITE)
-		l.add_theme_constant_override("outline_size", 0)
+		header.add_child(CurrencyIcon.new(cur, 24.0))
+		var l: Label = HoloFrame.mono_label("0", 21, Color.WHITE)
 		l.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		header.add_child(l)
 		match cur:
@@ -159,24 +155,26 @@ func _ready() -> void:
 			"parts": _parts_lbl = l
 			_: _seeds_lbl = l
 		var gap := Control.new()
-		gap.custom_minimum_size = Vector2(14, 0)
+		gap.custom_minimum_size = Vector2(12, 0)
 		header.add_child(gap)
 	var close := Button.new()
 	Settings.bind_text(close, func() -> String: return tr("Close  [%s]") % Settings.glyph("open_upgrades"))  # [deck]
-	close.custom_minimum_size = Vector2(150, 44)
+	close.custom_minimum_size = Vector2(136, 34)
 	BenchKit.style_action(close, BenchKit.HOLO)
 	close.pressed.connect(close_screen)
 	_close_btn = close
 	header.add_child(close)
+	var tm: PanelContainer = HoloFrame.module(6)
+	vb.add_child(tm)
 	var tabs := HBoxContainer.new()
 	tabs.add_theme_constant_override("separation", 8)
-	vb.add_child(tabs)
+	tm.add_child(tabs)
 	for t: Dictionary in TABS:
 		var b := Button.new()
 		b.text = tr(str(t["name"]))
 		b.add_theme_font_size_override("font_size", TAB_FONT)  # [ui2] bigger, readable tabs
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
-		b.custom_minimum_size = Vector2(96, 50)  # [deck] [ui2] 7 tabs fit 1280x800 at 110% interface scale
+		b.custom_minimum_size = Vector2(96, 38)  # [deck] [ui2] 7 tabs fit 1280x800 at 110% interface scale
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.clip_text = true  # [vqa] long German / pseudo tab names shrink with an ellipsis, never widen the panel
 		b.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -192,11 +190,18 @@ func _ready() -> void:
 		_tab_buttons.append(b)
 	_style_tabs()
 	tabs.add_child(PromptLabel.new("  {ui_tab_prev}{ui_tab_next}", 13))  # [deck] tab-switch glyphs
+	# [ui7] List tabs bring their own list + detail modules; the others sit on one glass page.
+	_list_host = VBoxContainer.new()
+	_list_host.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	vb.add_child(_list_host)
+	_page = HoloFrame.module(14)
+	_page.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	vb.add_child(_page)
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.follow_focus = true  # [deck] D-pad focus scrolls the grid
-	vb.add_child(scroll)
+	_page.add_child(scroll)
 	_grid = GridContainer.new()
 	_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_grid.add_theme_constant_override("h_separation", 14)
@@ -209,9 +214,13 @@ func _ready() -> void:
 
 
 func _populate() -> void:
-	for c: Node in _grid.get_children():
-		_grid.remove_child(c)  # [ui2] out of the tree now: no focus neighbours into a dying tab
-		c.queue_free()
+	for host: Node in [_grid, _list_host]:
+		for c: Node in host.get_children():
+			host.remove_child(c)  # [ui2] out of the tree now: no focus neighbours into a dying tab
+			c.queue_free()
+	var listed: bool = tab_open(_tab) and _tab in ["patch", "build", "research", "bots"]
+	_list_host.visible = listed
+	_page.visible = not listed
 	_cards.clear()
 	_robot_cards.clear()
 	_panel = null
@@ -257,8 +266,8 @@ func _populate() -> void:
 				ld.provider = BenchLists.research
 				ld.categories = BenchLists.research_cats()
 				ld.counter = BenchLists.research_counter
-		ld.custom_minimum_size = Vector2(0, maxf(_root.get_viewport_rect().size.y - 345.0, 280.0))  # [ui7] fits without scrolling the page
-		_grid.add_child(ld)
+		ld.modules = true  # [ui7] list and detail float as their own glass modules
+		_list_host.add_child(ld)
 		_panel = ld
 		return
 	_relayout()
@@ -322,7 +331,7 @@ func _focus_default() -> void:
 	elif is_instance_valid(_panel) and not _panel.is_queued_for_deletion() and _panel.has_method("first_button"):  # [ui2]
 		target = _panel.call("first_button") as Control
 	if target == null or not _focusable(target, true):
-		target = _first_focusable(_grid, false)
+		target = _first_focusable(_list_host if _list_host.visible else _grid, false)  # [ui7]
 	if target == null or (target is BaseButton and (target as BaseButton).disabled):
 		target = _close_btn  # [ui6] a disabled button can't take focus: Close, not nothing
 	if target:
@@ -366,6 +375,7 @@ func _first_focusable(root: Node, allow_disabled: bool) -> Control:
 
 
 func _relayout() -> void:
+	HoloFrame.fit_margins(_frame, _root.size)  # [ui7]
 	# Single-panel tabs fill the width; only card grids reflow.
 	if not _grid.get_children().any(func(c: Node) -> bool: return c is UpgradeCard or c is RobotCard):  # [ui7] every tab is one panel now
 		_grid.columns = 1
@@ -390,9 +400,9 @@ func open_screen() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	EventBus.ui_modal_changed.emit(true)
 	Audio.play("click", 1.0, -6.0)
-	_root.modulate.a = 0.0
-	var tw := create_tween()
-	tw.tween_property(_root, "modulate:a", 1.0, 0.15)
+	_root.modulate.a = 1.0
+	_hidden_hud = HoloFrame.hide_hud(get_tree(), layer)  # [ui7] no HUD text through the glass
+	HoloFrame.unfold(_frame)  # [ui7] a hologram unfold, not a fade
 	_trade_t = 0.0
 	_focus_default.call_deferred()
 
@@ -419,7 +429,10 @@ func close_screen() -> void:
 	if not is_open:
 		return
 	is_open = false
-	_root.visible = false
+	HoloFrame.show_hud(_hidden_hud)
+	HoloFrame.fold(_frame, func() -> void:
+		if not is_open:
+			_root.visible = false)
 	EventBus.ui_modal_changed.emit(false)
 	Audio.play("click", 0.8, -6.0)
 	closed.emit()

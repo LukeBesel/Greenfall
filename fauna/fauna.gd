@@ -115,6 +115,7 @@ func setup(p_world: Node) -> void:
 	_cfg = FaunaRules.cfg()
 	_rng.seed = hash([int(world.get("hub_index") if world.get("hub_index") != null else 0), 1717])
 	var f: HexField = world.field
+	_globe = f is SphereField  # [orbB]
 	district_seed = f.seed_value
 	regs = FaunaRules.regions(f.biome)
 	dense = DevHooks.has("fauna-dense")
@@ -155,7 +156,7 @@ func setup(p_world: Node) -> void:
 				beats.append(b)
 	if DevHooks.has("fauna-look") or DevHooks.has("fauna-dense"):
 		# Screenshots: software rendering draws only a few frames, so populate right away.
-		_lumi_pos = world.patch.global_position if world.get("patch") else Vector3.ZERO
+		_lumi_pos = _l(world.patch.global_position) if world.get("patch") else Vector3.ZERO
 		replan()
 		for a: Animal in animals:
 			a.fade = 1.0
@@ -185,13 +186,13 @@ func clarity() -> float:
 ## Re-make the plan and start/stop animals to match it.
 func replan() -> void:
 	var f: HexField = world.field
-	var ctxs: Array = FaunaRules.contexts(f, _level_of)
+	var ctxs: Array = FaunaRules.contexts(f, _level_of, frame_cells)  # [orbB] a hub region on the globe
 	var fd: Dictionary = {}
 	var green: int = 0
 	var land: int = 0
 	for c: Dictionary in ctxs:
 		var h: int = int(c["hex"])
-		fd[h] = f.hex_center(h).distance_to(_lumi_pos)
+		fd[h] = _hex_c(h).distance_to(_lumi_pos)
 		if dense:
 			c["dense"] = true
 		if int(c["level"]) >= 0:
@@ -269,8 +270,41 @@ func _dense_plan(ctxs: Array, fd: Dictionary) -> Array:
 # --- Spawning ----------------------------------------------------------------------------------
 
 func _ground_y(p: Vector3) -> float:
+	if _globe:  # [orbB] the globe's ground in this hub frame
+		return to_local((world.field as SphereField).terrain.ground(to_global(p).normalized())).y
 	var lay: CityLayout = world.field.layout
 	return clampf(lay.height_at(p.x, p.z), 0.0, 0.3) if lay else 0.0
+
+
+# --- [orbB] The globe: Fauna sits under its hub's frame (HubFrame: site-local metres, +Y up), so
+# its own positions are local; these convert at the edges. On the flat game they are identities.
+var _globe: bool = false
+var frame_cells := PackedInt32Array()  # the hub region's cells (globe)
+
+
+func _hex_at(p: Vector3) -> int:
+	return world.field.hex_at(to_global(p)) if _globe else world.field.hex_at(p)
+
+
+func _hex_c(h: int) -> Vector3:
+	return to_local(world.field.hex_center(h)) if _globe else world.field.hex_center(h)
+
+
+## The lake surface (flat: HexField.WATER_Y).
+func _water_y(p: Vector3) -> float:
+	return _ground_y(p) + (HexField.WATER_Y - 0.06) if _globe else HexField.WATER_Y
+
+
+func _w(p: Vector3) -> Vector3:
+	return to_global(p) if _globe else p
+
+
+func _l(p: Vector3) -> Vector3:
+	return to_local(p) if _globe else p
+
+
+func _hexes() -> Variant:
+	return frame_cells if _globe else world.field.hex_count()
 
 
 ## Visible lake surface: in city districts a lake hex's kerbs and lots sit above the water line,
@@ -281,7 +315,7 @@ func open_water(p: Vector3) -> bool:
 
 
 func _in_view(p: Vector3) -> bool:
-	return _cam != null and _cam.is_position_in_frustum(p) and _cam.global_position.distance_to(p) < 30.0
+	return _cam != null and _cam.is_position_in_frustum(_w(p)) and _l(_cam.global_position).distance_to(p) < 30.0
 
 
 ## A free spot on hex h for the species (land, shore edge or water), or Vector3.INF.
@@ -290,7 +324,7 @@ func find_spot(sid: String, h: int, near: Vector3 = Vector3.INF, spread: float =
 	var d: Dictionary = FaunaRules.def(sid)
 	var where: String = str(d.get("where", "land"))
 	var junk_ok: bool = bool(d.get("junk", false))
-	var c: Vector3 = f.hex_center(h) if near == Vector3.INF else near
+	var c: Vector3 = _hex_c(h) if near == Vector3.INF else near
 	var rad: float = f.hex_size * 0.85 if spread < 0.0 else spread
 	# Grazers and rabbits like to be among the plants.
 	if near == Vector3.INF and sid in ["deer", "rabbit", "songbird", "fox"] and _rng.randf() < 0.8:
@@ -301,22 +335,22 @@ func find_spot(sid: String, h: int, near: Vector3 = Vector3.INF, spread: float =
 	var best := Vector3.INF
 	for i: int in 14:
 		var p: Vector3 = c + Vector3(_rng.randf_range(-1, 1), 0, _rng.randf_range(-1, 1)) * rad
-		var ph: int = f.hex_at(p)
+		var ph: int = _hex_at(p)
 		if ph < 0:
 			continue
 		if where == "water":
 			# Open water only: kerbs and lots in a city lake hex sit above the water line.
-			if f.is_water(ph) and f.is_clean(ph) and f.hex_at(p + Vector3(0.6, 0, 0)) == ph and f.hex_at(p - Vector3(0.6, 0, 0)) == ph \
+			if f.is_water(ph) and f.is_clean(ph) and _hex_at(p + Vector3(0.6, 0, 0)) == ph and _hex_at(p - Vector3(0.6, 0, 0)) == ph \
 					and open_water(p) and open_water(p + Vector3(0.8, 0, 0)) and open_water(p - Vector3(0.8, 0, 0)) \
 					and open_water(p + Vector3(0, 0, 0.8)) and open_water(p - Vector3(0, 0, 0.8)) \
 					and FaunaSpace.spaced_ok(p, FaunaSpace.radius_of(sid, str(d.get("kind", ""))), _others(null)):
-				return Vector3(p.x, HexField.WATER_Y, p.z)
+				return Vector3(p.x, _water_y(p), p.z)  # [orbB]
 			continue
 		if f.is_water(ph):
 			continue
 		if near == Vector3.INF and ph != h:
 			continue
-		if not FaunaRules.spot_ok(f, p, 0.45 if not junk_ok else 0.3, junk_ok) or near_outpost(p):
+		if not FaunaRules.spot_ok(f, _w(p), 0.45 if not junk_ok else 0.3, junk_ok) or near_outpost(p):
 			continue
 		if not spot_free(p, sid, str(d.get("kind", "")), null, 1.1):
 			continue
@@ -325,7 +359,7 @@ func find_spot(sid: String, h: int, near: Vector3 = Vector3.INF, spread: float =
 			var wet: bool = false
 			for k: int in 6:
 				var a: float = TAU * k / 6.0
-				if f.is_water(f.hex_at(p + Vector3(cos(a), 0, sin(a)) * 1.6)):
+				if f.is_water(_hex_at(p + Vector3(cos(a), 0, sin(a)) * 1.6)):
 					wet = true
 					break
 			if not wet:
@@ -348,7 +382,7 @@ func _plant_near(h: int) -> Vector3:
 	var opts: Array[Vector3] = []
 	for s: int in slots:
 		if s < sp_arr.size() and sp_arr[s] >= 0:
-			opts.append(pos_arr[s])
+			opts.append(_l(pos_arr[s]))  # [orbB] garden slots are world points
 	return opts[_rng.randi() % opts.size()] if not opts.is_empty() else Vector3.INF
 
 
@@ -358,7 +392,7 @@ func near_outpost(p: Vector3) -> bool:
 	if op == null:
 		return false
 	for o: Node3D in op.get("items"):
-		if is_instance_valid(o) and Vector2(o.global_position.x - p.x, o.global_position.z - p.z).length() < 7.5:
+		if is_instance_valid(o) and OrbitUp.ground_dist(_w(p), o.global_position) < 7.5:
 			return true
 	return false
 
@@ -516,7 +550,7 @@ func _spawn(key: String, e: Dictionary) -> bool:
 		"school":
 			for k: int in int(e["n"]):
 				a.members.append([Vector3(_rng.randf_range(-0.7, 0.7), _rng.randf_range(-0.01, 0.01), _rng.randf_range(-0.9, 0.9)), _rng.randf() * TAU])
-			a.pos.y = 0.055
+			a.pos.y = _water_y(a.pos) - (HexField.WATER_Y - 0.055)  # [orbB] (0.055 on the flat game)
 			a.state = St.SWIM
 		"swarm":
 			for k: int in int(e["n"]):
@@ -537,7 +571,7 @@ func _spawn(key: String, e: Dictionary) -> bool:
 			var soar: int = int(d.get("soar", 0))
 			if soar > 0 and int(key.get_slice("|", 2)) < 1 and _count_state(sid, St.SOAR) < soar:
 				a.state = St.SOAR
-				a.home = f.hex_center(a.hex)
+				a.home = _hex_c(a.hex)
 				a.alt = _rng.randf_range(7.0, 12.0)
 				a.target = Vector3(_rng.randf_range(8.0, 16.0), 0, _rng.randf_range(0.25, 0.4))
 			elif a.fade < 1.0:
@@ -554,7 +588,7 @@ func _spawn(key: String, e: Dictionary) -> bool:
 			a.anchor = Node3D.new()
 			a.anchor.name = "CatAnchor"
 			add_child(a.anchor)
-			a.anchor.global_position = a.pos
+			a.anchor.position = a.pos  # [orbB] (identical on the flat game)
 			var ints: Node = world.get("interactables")
 			if ints:
 				var aa: Animal = a
@@ -578,7 +612,7 @@ func _attach_rig(a: Animal, model: String) -> void:
 	if r == null:
 		return
 	add_child(r)
-	r.global_position = a.pos
+	r.position = a.pos  # [orbB]
 	if model == "cat":
 		r.set_coat(FaunaRig.CAT_COATS[a.coat % FaunaRig.CAT_COATS.size()])
 	a.rig = r
@@ -587,7 +621,7 @@ func _attach_rig(a: Animal, model: String) -> void:
 ## [fauna2] Poses a rigged animal from its state: the action, its speed, eyes and head look.
 func _drive_rig(a: Animal, xf: Transform3D, dt: float) -> void:
 	var r: FaunaRig = a.rig
-	r.global_transform = xf if a.kind == "cat" else Transform3D(xf.basis, Vector3(xf.origin.x, a.pos.y, xf.origin.z))  # the gallop has its own bounds
+	r.transform = xf if a.kind == "cat" else Transform3D(xf.basis, Vector3(xf.origin.x, a.pos.y, xf.origin.z))  # the gallop has its own bounds
 	var spd: float = 0.0
 	if a.rig_prev != Vector3.INF and dt > 0.0001:
 		spd = Vector2(a.pos.x - a.rig_prev.x, a.pos.z - a.rig_prev.z).length() / dt
@@ -681,12 +715,12 @@ func _toward_junk(p: Vector3) -> Vector3:
 	var f: HexField = world.field
 	var best: Vector3 = p + Vector3(6, 0, 0)
 	var bd: float = INF
-	for h: int in f.hex_count():
+	for h: int in _hexes():
 		if not f.is_clean(h) and not f.is_water(h) and f.hex_hub[h] == 0:
-			var d: float = f.hex_center(h).distance_to(p)
+			var d: float = _hex_c(h).distance_to(p)
 			if d < bd:
 				bd = d
-				best = f.hex_center(h)
+				best = _hex_c(h)
 	return best
 
 
@@ -695,13 +729,13 @@ func _build_warm_spots() -> void:
 	var f: HexField = world.field
 	var comp: Node3D = world.get("composter") as Node3D
 	if comp:
-		_warm.append(comp.global_position + Vector3(1.2, 0, 0.8))
+		_warm.append(_l(comp.global_position) + Vector3(1.2, 0, 0.8))
 	var dep: Node3D = world.get("depot") as Node3D
 	if dep:
-		_warm.append(dep.global_position + Vector3(-1.4, 0, 1.0))
-	for h: int in f.hex_count():
+		_warm.append(_l(dep.global_position) + Vector3(-1.4, 0, 1.0))
+	for h: int in _hexes():
 		if f.hex_hub[h] != 0:
-			_warm.append(f.hex_center(h) + Vector3(_rng.randf_range(-3, 3), 0, _rng.randf_range(-3, 3)))
+			_warm.append(_hex_c(h) + Vector3(_rng.randf_range(-3, 3), 0, _rng.randf_range(-3, 3)))
 	for i: int in range(_warm.size() - 1, -1, -1):
 		var w: Vector3 = _warm[i]
 		w.y = _ground_y(w)
@@ -721,7 +755,7 @@ func _process(delta: float) -> void:
 	var patch: Node3D = world.patch
 	var pv: Vector3 = patch.get("velocity") if patch.get("velocity") != null else Vector3.ZERO
 	_lumi_speed = Vector2(pv.x, pv.z).length()
-	_lumi_pos = patch.global_position
+	_lumi_pos = _l(patch.global_position)
 	_still_t = _still_t + delta if _lumi_speed < 0.4 else 0.0
 	_cam = get_viewport().get_camera_3d()
 	_night = night_amount()
@@ -736,7 +770,7 @@ func _process(delta: float) -> void:
 		_plan_t = 2.5
 		replan()
 	var despawn_r: float = float(_cfg.get("despawn_radius", 70.0))
-	var cam_p: Vector3 = _cam.global_position if _cam else _lumi_pos
+	var cam_p: Vector3 = _l(_cam.global_position) if _cam else _lumi_pos
 	for i: int in range(animals.size() - 1, -1, -1):
 		var a: Animal = animals[i]
 		if a.hex >= 0 and a.pos.distance_to(_lumi_pos) > despawn_r:
@@ -751,7 +785,7 @@ func _process(delta: float) -> void:
 		a.fade = minf(a.fade + dt * 1.6, 1.0)
 		_update(a, dt)
 		if a.anchor:
-			a.anchor.global_position = a.pos
+			a.anchor.position = a.pos  # [orbB] (identical on the flat game)
 	_draw_all()
 	_sight_t -= delta
 	if _sight_t <= 0.0:
@@ -839,7 +873,7 @@ func _flee_target(a: Animal, dist: float) -> Vector3:
 	for k: int in 7:
 		var ang: float = (k + 1) / 2 * 0.5 * (1.0 if k % 2 == 0 else -1.0)
 		var p: Vector3 = a.pos + away.rotated(Vector3.UP, ang) * dist
-		if FaunaRules.spot_ok(world.field, p, 0.35, junk_ok) and (a.kind != "rat" or world.field.hex_at(p) >= 0) and spot_free(p, a.sp, a.kind, a, a.size):
+		if FaunaRules.spot_ok(world.field, _w(p), 0.35, junk_ok) and (a.kind != "rat" or _hex_at(p) >= 0) and spot_free(p, a.sp, a.kind, a, a.size):
 			p.y = _ground_y(p)
 			return p
 	return a.pos + away * 1.5
@@ -850,7 +884,7 @@ func _wander_target(a: Animal, r: float) -> Vector3:
 	for k: int in 6:
 		var p: Vector3 = a.home + Vector3(_rng.randf_range(-r, r), 0, _rng.randf_range(-r, r))
 		var mid: Vector3 = (p + a.pos) * 0.5
-		if FaunaRules.spot_ok(world.field, p, 0.35, junk_ok) and FaunaRules.spot_ok(world.field, mid, 0.25, junk_ok) and not near_outpost(p) \
+		if FaunaRules.spot_ok(world.field, _w(p), 0.35, junk_ok) and FaunaRules.spot_ok(world.field, mid, 0.25, junk_ok) and not near_outpost(p) \
 				and spot_free(p, a.sp, a.kind, a, a.size) and not space.blocked(mid, FaunaSpace.radius_of(a.sp, a.kind) * 0.7 * a.size):
 			p.y = _ground_y(p)
 			return p
@@ -1020,10 +1054,10 @@ func _update_hopper(a: Animal, dt: float) -> void:
 			for k: int in 12:
 				var ang: float = TAU * k / 12.0
 				var p: Vector3 = a.pos + Vector3(cos(ang), 0, sin(ang)) * 1.4
-				if f.is_water(f.hex_at(p)):
+				if f.is_water(_hex_at(p)):
 					a.target = p
 					break
-			if a.target == a.pos or not f.is_water(f.hex_at(a.target)):
+			if a.target == a.pos or not f.is_water(_hex_at(a.target)):
 				a.target = _flee_target(a, 2.0)
 		else:
 			a.target = _flee_target(a, 7.0)
@@ -1035,8 +1069,8 @@ func _update_hopper(a: Animal, dt: float) -> void:
 		a.bob = air * (0.16 if frog else 0.12)
 		a.gait = 0.7 * air
 		var arrived: bool = _step(a, spd * (0.4 + air), dt, 0.2)
-		if frog and a.state == St.FLEE and world.field.is_water(world.field.hex_at(a.pos)):
-			Vfx.burst("soil", a.pos + Vector3(0, 0.12, 0), Color(0.7, 0.85, 1.0, 0.8), 0.25)
+		if frog and a.state == St.FLEE and world.field.is_water(_hex_at(a.pos)):
+			Vfx.burst("soil", _w(a.pos + Vector3(0, 0.12, 0)), Color(0.7, 0.85, 1.0, 0.8), 0.25)
 			_cooldown[a.key] = 40.0
 			_remove(a)
 			return
@@ -1192,8 +1226,8 @@ func _take_off(a: Animal, scared: bool) -> void:
 	var f: HexField = world.field
 	for k: int in 8:
 		var p: Vector3 = a.pos + away.rotated(Vector3.UP, _rng.randf_range(-0.9, 0.9)) * dist
-		var h: int = f.hex_at(p)
-		if h >= 0 and (f.is_clean(h) or f.hex_hub[h] != 0) and FaunaRules.spot_ok(f, p, 0.4) and spot_free(p, a.sp, a.kind, a, a.size):
+		var h: int = _hex_at(p)
+		if h >= 0 and (f.is_clean(h) or f.hex_hub[h] != 0) and FaunaRules.spot_ok(f, _w(p), 0.4) and spot_free(p, a.sp, a.kind, a, a.size):
 			p.y = _ground_y(p)
 			land = p
 			break
@@ -1265,14 +1299,14 @@ func _update_school(a: Animal, dt: float) -> void:
 		var nt: Vector3 = find_spot(a.sp, a.hex) if a.hex >= 0 else a.pos
 		a.target = nt if nt != Vector3.INF else a.home
 	var ahead: Vector3 = a.pos + to.normalized() * 0.8
-	if not f.is_water(f.hex_at(ahead)) or not open_water(ahead):
+	if not f.is_water(_hex_at(ahead)) or not open_water(ahead):
 		a.target = a.home
 		to = a.target - a.pos
 		to.y = 0.0
 	if to.length() > 0.01:
 		a.vel = a.vel.lerp(to.normalized() * spd, minf(dt * (5.0 if a.state == St.FLEE else 1.2), 1.0))
 	a.pos += a.vel * dt
-	a.pos.y = 0.055
+	a.pos.y = _water_y(a.pos) - (HexField.WATER_Y - 0.055)  # [orbB]
 	a.phase += dt * (25.0 if a.state == St.FLEE else 7.0)
 	a.gait = 0.9 if a.state == St.FLEE else 0.35
 	_face(a, a.vel, dt, 3.0)
@@ -1301,11 +1335,11 @@ func _swarm_center(a: Animal) -> Vector3:
 			var opts: Array[Vector3] = []
 			for s: int in slots:
 				if s < sp_arr.size() and sp_arr[s] >= 0:
-					opts.append(pos_arr[s])
+					opts.append(_l(pos_arr[s]))  # [orbB] garden slots are world points
 			if not opts.is_empty():
 				return opts[_rng.randi() % opts.size()] + Vector3(0, 0.45, 0)
 	var p: Vector3 = find_spot(a.sp, a.hex) if a.hex >= 0 else Vector3.INF
-	return (p if p != Vector3.INF else f.hex_center(a.hex)) + Vector3(0, 0.4 if a.sp == "bee" else 0.6, 0)
+	return (p if p != Vector3.INF else _hex_c(a.hex)) + Vector3(0, 0.4 if a.sp == "bee" else 0.6, 0)
 
 
 ## Ducks paddle and dabble; turtles cruise slowly with their heads up.
@@ -1324,8 +1358,8 @@ func _update_swim(a: Animal, dt: float) -> void:
 		a.target = a.pos + away.normalized() * 3.5
 	var to: Vector3 = a.target - a.pos
 	to.y = 0.0
-	var at_crumbs: bool = a.fed_t > 0.0 and f.is_water(f.hex_at(a.target)) and open_water(a.target)  # [fauna2]
-	if not at_crumbs and (not f.is_water(f.hex_at(a.target)) or not open_water(a.target) or to.length() < 0.3 or a.t < -10.0):
+	var at_crumbs: bool = a.fed_t > 0.0 and f.is_water(_hex_at(a.target)) and open_water(a.target)  # [fauna2]
+	if not at_crumbs and (not f.is_water(_hex_at(a.target)) or not open_water(a.target) or to.length() < 0.3 or a.t < -10.0):
 		var nt: Vector3 = find_spot(a.sp, a.hex) if a.hex >= 0 else a.pos
 		a.target = nt if nt != Vector3.INF else a.pos
 		a.t = 0.0
@@ -1340,7 +1374,7 @@ func _update_swim(a: Animal, dt: float) -> void:
 		_face(a, to, dt, 2.0)
 	elif a.t <= 0.0:
 		a.state = St.SWIM
-	a.pos.y = HexField.WATER_Y + (-0.005 if duck else -0.04)
+	a.pos.y = _water_y(a.pos) + (-0.005 if duck else -0.04)  # [orbB]
 	a.phase += dt * 3.0
 	a.bob = sin(a.phase) * 0.008
 	a.head_pitch = lerpf(a.head_pitch, 1.3 if a.state == St.GRAZE else 0.0, dt * 5.0)
@@ -1534,7 +1568,7 @@ func _setup_feeding() -> void:
 	_feed_anchor = Node3D.new()
 	_feed_anchor.name = "FeedAnchor"
 	add_child(_feed_anchor)
-	_feed_anchor.global_position = Vector3(0, -1000, 0)
+	_feed_anchor.position = Vector3(0, -1000, 0)
 	var ints: Node = world.get("interactables")
 	if ints:
 		ints.call("register", _feed_anchor, FEED_REACH, func() -> String: return tr("E   scatter crumbs for the birds"), feed, func() -> bool: return _feed_target != null and _feed_cool <= 0.0)
@@ -1547,7 +1581,7 @@ func _feed_tick(delta: float) -> void:
 		return
 	_feed_scan = 0.25
 	_feed_target = feed_candidate(_lumi_pos)
-	_feed_anchor.global_position = _feed_target.pos if _feed_target else Vector3(0, -1000, 0)
+	_feed_anchor.position = _feed_target.pos if _feed_target else Vector3(0, -1000, 0)
 
 
 ## The nearest bird that can be fed from where Lumi is (on the ground or on the water, not up a
@@ -1578,7 +1612,7 @@ func feed() -> void:
 		spot.y = t.pos.y
 	else:
 		spot.y = _ground_y(spot)
-	Vfx.burst("bits", spot + Vector3(0, 0.25, 0), Color(0.86, 0.72, 0.45), 0.8)
+	Vfx.burst("bits", _w(spot + Vector3(0, 0.25, 0)), Color(0.86, 0.72, 0.45), 0.8)
 	var n: int = feed_flock(t.sp, spot)
 	Audio.play("chirp", 1.1, -7.0, 0.1)
 	GameState.inc_stat("wildlife_fed")
@@ -1669,11 +1703,11 @@ func _heart(p: Vector3) -> void:
 	mi.material_override = _heart_mat.duplicate()
 	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(mi)
-	mi.global_position = p
+	mi.position = p
 	mi.scale = Vector3.ONE * 0.2
 	var tw := mi.create_tween()
 	tw.tween_property(mi, "scale", Vector3.ONE, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tw.parallel().tween_property(mi, "global_position", p + Vector3(0, 0.7, 0), 1.6).set_ease(Tween.EASE_OUT)
+	tw.parallel().tween_property(mi, "position", p + Vector3(0, 0.7, 0), 1.6).set_ease(Tween.EASE_OUT)
 	tw.parallel().tween_property(mi.material_override, "albedo_color:a", 0.0, 0.6).set_delay(1.0)
 	tw.tween_callback(mi.queue_free)
 
@@ -1817,7 +1851,7 @@ func _draw_all() -> void:
 					var wob := Vector3(sin(now * 0.9 + ph) * 0.25, 0, cos(now * 0.7 + ph * 1.3) * 0.2)
 					var fy: float = a.yaw + sin(now * 1.3 + ph) * 0.25
 					var p: Vector3 = a.pos + b * (off + wob)
-					if not world.field.is_water(world.field.hex_at(p)) or not open_water(p):
+					if not world.field.is_water(_hex_at(p)) or not open_water(p):
 						continue
 					_put("fish", Transform3D(Basis(Vector3.UP, fy).scaled(Vector3.ONE * s * (0.8 + 0.25 * fmod(ph, 1.0))), p), pack_custom(a.phase + ph, a.gait, 0.0, 0.0, a.coat, 0.0))
 			"swarm":
@@ -2003,7 +2037,7 @@ func photo_subjects(cam: Camera3D) -> Array[String]:
 		var p: Vector3 = a.pos + Vector3(0, 0.25 * a.size, 0)
 		if not cam.is_position_in_frustum(p):
 			continue
-		var d: float = cam.global_position.distance_to(p)
+		var d: float = _l(cam.global_position).distance_to(p)
 		var body: float = _body_size(a)
 		var proj: float = body / maxf(d * 2.0 * tan(deg_to_rad(cam.fov) * 0.5), 0.001)
 		if proj >= 0.04 or (a.kind in ["swarm", "school"] and d < 6.0):
@@ -2072,7 +2106,7 @@ func _sound_ok(sound: String, p: Vector3 = Vector3.INF) -> bool:
 	if cat == "":
 		return true
 	if cat in ["call", "gull", "quack"]:
-		var lis: Vector3 = _cam.global_position if _cam else _lumi_pos
+		var lis: Vector3 = _l(_cam.global_position) if _cam else _lumi_pos
 		if p != Vector3.INF and Vector2(p.x - lis.x, p.z - lis.z).length() > CALL_NEAR:
 			return false
 		if not bird_call_ok(_night):
@@ -2089,7 +2123,7 @@ func _sound_at(sound: String, p: Vector3, db: float) -> void:
 		return
 	if str(SND_CAT.get(sound, "")) in ["call", "gull", "quack"]:
 		db -= 3.0 + 5.0 * _night  # short, soft calls; quieter at night
-	var d: float = (_cam.global_position if _cam else _lumi_pos).distance_to(p)
+	var d: float = (_l(_cam.global_position) if _cam else _lumi_pos).distance_to(p)
 	var att: float = -20.0 * log(maxf(d, 2.0) / 2.0) / log(10.0)
 	if db + att < -40.0:
 		return
@@ -2230,7 +2264,7 @@ func _dev_look() -> void:
 		var f: HexField = world.field
 		for k: int in 16:
 			var cand: Vector3 = a.pos + Vector3(cos(TAU * k / 16.0), 0, sin(TAU * k / 16.0)) * gap
-			if not f.is_water(f.hex_at(cand)):
+			if not f.is_water(_hex_at(cand)):
 				lp = cand
 				break
 	patch.global_position = Vector3(lp.x, _ground_y(lp) + 0.05, lp.z)
@@ -2302,8 +2336,8 @@ func _dev_look() -> void:
 			c3.global_transform = Transform3D(Basis.looking_at(focus - eye, Vector3.UP), eye)
 			c3.fov = DevHooks.get_f("fauna-fov", 50.0)
 	if DevHooks.has("fauna-debug"):
-		var hx: int = world.field.hex_at(a.pos)
+		var hx: int = _hex_at(a.pos)
 		var ax: Vector2i = world.field.hex_axial[hx]
 		var img: Image = world.view.get("_state_img")
-		print("[fauna] state px ", img.get_pixel(ax.x + world.field.radius, ax.y + world.field.radius), " axial ", ax, " center ", world.field.hex_center(hx))
-	print("[fauna] look: %s at %s, Lumi at %s (hex %d water=%s clean=%s)" % [sid, str(a.pos), str(patch.global_position), world.field.hex_at(a.pos), str(world.field.is_water(world.field.hex_at(a.pos))), str(world.field.is_clean(world.field.hex_at(a.pos)))])
+		print("[fauna] state px ", img.get_pixel(ax.x + world.field.radius, ax.y + world.field.radius), " axial ", ax, " center ", _hex_c(hx))
+	print("[fauna] look: %s at %s, Lumi at %s (hex %d water=%s clean=%s)" % [sid, str(a.pos), str(patch.global_position), _hex_at(a.pos), str(world.field.is_water(_hex_at(a.pos))), str(world.field.is_clean(_hex_at(a.pos)))])

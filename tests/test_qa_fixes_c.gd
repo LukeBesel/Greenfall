@@ -68,7 +68,7 @@ func test_upgrades_screen_tab_closes_and_focus_follows_tabs() -> void:
 	assert_not_null(owner_, "a control is focused after switching to Research")
 	if owner_:
 		assert_false(owner_.is_queued_for_deletion())
-		assert_true(scr._grid.is_ancestor_of(owner_), "focus is inside the research panel")
+		assert_true(scr._grid.is_ancestor_of(owner_) or scr._list_host.is_ancestor_of(owner_), "focus is inside the research panel")  # [ui7] list tabs float in _list_host
 	# Active tab lit ([ui2] holo), the others quiet.
 	assert_eq(scr._tab_buttons[3].get_theme_color("font_color"), BenchKit.HOLO.lightened(0.5))
 	assert_eq(scr._tab_buttons[0].get_theme_color("font_color"), UITheme.MUTED)

@@ -137,13 +137,16 @@ func _process(delta: float) -> void:
 	var spec: Array = KINDS.get(_kind, [1.0, 0.5])
 	var calm: bool = Settings.reduced_motion
 	var bob: float = 0.0 if calm else sin(_t * 3.2) * 0.07
-	_chev.global_position = _pos + Vector3(0, float(spec[0]) + bob, 0)
+	_chev.global_position = _pos + OrbitUp.up(_pos) * (float(spec[0]) + bob)  # [orbB] local up
 	var r: float = float(spec[1])
 	_ring.visible = r > 0.0
 	if r > 0.0:
 		var pulse: float = 1.0 if calm else 1.0 + 0.06 * sin(_t * 3.2)
-		_ring.global_position = Vector3(_pos.x, _ground_y(_pos) + 0.04, _pos.z)
-		_ring.scale = Vector3(r * pulse, 0.25, r * pulse)
+		if OrbitUp.on_globe():  # [orbB] the ring lies on the local ground at the target
+			_ring.global_transform = Transform3D(SphereGrid.frame(_pos.normalized()).scaled(Vector3(r * pulse, 0.25, r * pulse)), _pos + _pos.normalized() * 0.04)
+		else:
+			_ring.global_position = Vector3(_pos.x, _ground_y(_pos) + 0.04, _pos.z)
+			_ring.scale = Vector3(r * pulse, 0.25, r * pulse)
 	# Near the target the chevron steps back so it never sits in Lumi's face.
 	var near: float = 1.0
 	var patch: Node3D = world.get("patch") as Node3D if world else null

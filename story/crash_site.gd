@@ -54,6 +54,8 @@ func setup(yaw: float) -> void:
 	_build_ground()
 	_build_damage()
 	set_stage(stage_for_upgrades())
+	PropBatch.merge(self)  # [orbE] perf: the furrow's clods and shards (static) as one mesh per material
+	PodBatch.merge(pod)  # [orbE] perf: the pod's static shell and each repair-stage group, merged per material
 	if not EventBus.upgrade_bought.is_connected(_on_upgrade):
 		EventBus.upgrade_bought.connect(_on_upgrade)
 

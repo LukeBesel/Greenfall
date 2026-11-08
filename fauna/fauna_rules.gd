@@ -174,7 +174,9 @@ static func plan(contexts: Array, regs: Array, night: bool, district_seed: int, 
 
 
 ## Hex contexts for a live district. level_of: Callable(hid) -> int (-1 when untracked).
-static func contexts(field: HexField, level_of: Callable) -> Array:
+static func contexts(field: HexField, level_of: Callable, cells := PackedInt32Array()) -> Array:
+	if field is SphereField and not cells.is_empty():  # [orbB] the globe: a hub region's cells
+		return _contexts_cells(field as SphereField, level_of, cells)
 	var out: Array = []
 	var lv := PackedInt32Array()
 	lv.resize(field.hex_count())
@@ -203,6 +205,37 @@ static func contexts(field: HexField, level_of: Callable) -> Array:
 	return out
 
 
+## [orbB] contexts() over a globe region (cell ids, grid neighbours; a cell outside the region is
+## the region's edge, like a hex outside the flat field).
+static func _contexts_cells(field: SphereField, level_of: Callable, cells: PackedInt32Array) -> Array:
+	var out: Array = []
+	var inr: Dictionary = {}
+	var lv: Dictionary = {}
+	for h: int in cells:
+		inr[h] = true
+		lv[h] = int(level_of.call(h))
+	for h: int in cells:
+		var water: bool = field.is_water(h)
+		var hub: bool = field.hex_hub[h] != 0
+		var near: int = -1
+		var edge: bool = false
+		var shore: bool = false
+		for j: int in field.grid.neighbors(h):
+			if not inr.has(j):
+				edge = true
+				continue
+			if field.is_water(j):
+				shore = true
+				continue
+			near = maxi(near, 1 if field.hex_hub[j] != 0 else int(lv[j]))
+			if int(lv[j]) < 4 and field.hex_hub[j] == 0:
+				edge = true
+		out.append({"hex": h, "level": int(lv[h]), "hub": hub, "water": water, "shore": shore and not water,
+			"clean": field.is_clean(h) or hub, "removed": field.removed_fraction(h), "locked": field.locked.has(h),
+			"edge": edge and int(lv[h]) >= 4, "near_level": near})
+	return out
+
+
 ## A point an animal may stand on: inside the field, no junk piece within r, not a building
 ## footprint, and (unless junk_ok) not on a hex that still has junk mounds under it.
 static func spot_ok(field: HexField, p: Vector3, r: float, junk_ok: bool = false) -> bool:
@@ -225,6 +258,10 @@ static func spot_ok(field: HexField, p: Vector3, r: float, junk_ok: bool = false
 		for pid: int in field.hex_pieces[hh]:
 			if field.piece_alive[pid] == 1:
 				var d: Vector3 = field.piece_pos[pid] - p
-				if d.x * d.x + d.z * d.z < r2:
+				if field is SphereField:  # [orbB] along the local ground
+					d -= p.normalized() * d.dot(p.normalized())
+					if d.length_squared() < r2:
+						return false
+				elif d.x * d.x + d.z * d.z < r2:
 					return false
 	return true

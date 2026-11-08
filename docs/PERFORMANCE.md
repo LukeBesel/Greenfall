@@ -274,6 +274,159 @@ Systems added in this pass, measured in the same runs:
 4. Sky shader: 4-octave cloud noise per sky pixel. If it shows up on the Mac GPU profiler,
    drop to 3 octaves on Low (`fbm` in planet/orbit/orbit_sky.gdshader).
 
-Rendered draw-call numbers for the globe at Low/Medium (960x540) are pending: renders were
-killed for memory in the shared container. Command (gated render):
-`xvfb-run -a -s "-screen 0 1280x720x24" godot --path . --rendering-driver vulkan --resolution 960x540 -- --fresh --quality=1 --perf --orbit --orbit-walk --orbit-scoop --quit-after=120`.
+### Perf pass 2 (Nov 8, headless only: the owner asked for no renders)
+
+All numbers come from the real `--orbit` slice, headless, on the shared 4-core container
+(load average 6-10). Headless doesn't render, so the frame numbers are CPU only. The GPU side
+is estimated from the scene census (`--scene-stats`, before frustum culling).
+
+**Build across frames.** The globe now builds behind the loading screen the way the flat
+district does:
+- `slice.gd` is `building` (disabled and not rendered) while it builds.
+- The survey and terrain elevation run on a worker thread (`BuildBudget.add_task`/`join`).
+- The globe steps, the start yard's city/kit/dressing and the chunk settle yield between steps
+  (`settle_async`).
+- SphereCells writes its state texture in one buffer pass (before: three per-pixel passes over
+  every cell).
+
+| | Longest frame before | Longest frame after | Slice built | Loader ready |
+|---|---|---|---|---|
+| Verdance (164k hexes) | ~15 s (orbB) / 6.6 s here | **0.66 s** (StreetDressing pole lamps) | 9.9 s | 11.6 s |
+| Anvil (655k hexes) | 21.9 s build (reported) | **1.15 s** (its site builder, `AnvilSites.build`, is synchronous) | **5.1 s** | **7.7 s** |
+
+The Anvil site would need `await BuildBudget.check()` inside p_anvil's builder to go below 1 s.
+The flat game is unchanged: without a budget everything stays synchronous.
+
+**CPU frame on the slice** (walking and scooping, all systems on):
+- Anvil: **130-145 fps headless** on Low and Medium alike (about 7 ms a frame; physics runs at
+  120 Hz).
+- Per-system cost per physics tick: Lumi 0.5 ms, HUD 0.3-0.4 ms, sky 0.1 ms, camera 0.1 ms,
+  streamer 0.07 ms, everything else under 0.05 ms.
+- Fixed: the HUD recomputed the planet % over every hub-region cell each frame (3.5 ms on
+  Anvil); it now refreshes 4x a second.
+
+**Draw calls with the kit hubs** (census, start yard in view, Medium; estimated draws = surfaces
++ shadow surfaces):
+
+| Group | Draws (est.) | Triangles | Note |
+|---|---|---|---|
+| Kit building bodies (`Body`) | 303 | 400k | 101 surfaces on 12 buildings, all shadowed: merging each building's surfaces by material is the biggest win (kit helper) |
+| Loose site props | 305 | 124k | 64 single meshes: candidates for MultiMesh batching (orbD/yard) |
+| Lumi (PatchModel) | 191 | 96k | 64 surfaces on 27 meshes, 63 shadowed: the hero model's own budget |
+| Kit ground plates | 153 → **102** | 581k | shadows off now (8 cm plates) |
+| Junk (near + far impostors) | ~250 | ~190k | far impostors don't cast shadows |
+| Grit / tufts MultiMeshes | 68 | 195k | |
+| **Total** | **1,691 → 1,640** (Verdance), 1,410 (Anvil) | 2.3-2.5 M | before frustum and distance culling |
+
+**Reading for the Mac (Medium, 60 fps):** the CPU side has room: about 7 ms a frame on this
+loaded box, Anvil included. The GPU side is the risk. ~1,600 draws (~1,000 after culling is a
+fair guess) and ~2.4 M triangles in the scene are fine for Apple Silicon on Metal at 1080p, but
+not with margin. First cuts, in order:
+1. Merge kit building surfaces (-200 draws).
+2. Batch the yard props (-150).
+3. Give Lumi's model fewer shadow casters (-60).
+4. Plates triangle count (581k).
+
+A real `[perf]` run on the Mac is the check:
+`godot --path . -- --orbit --quality=1 --perf --orbit-walk --orbit-scoop`.
+
+### Perf pass 3 (Nov 8, headless): load frames under 1 s, batching
+
+Same box and method as pass 2 (shared 4 cores, scene census for draws). Every change has an A/B
+switch: `--no-kit-batch`, `--no-prop-batch`.
+
+**1. No loading frame over 1 s.**
+- Anvil's foundry yard builds in steps behind the loader (`AnvilSites.build_async`;
+  `build()` is unchanged for previews and tests).
+- The site's deferred reach audit gets a frame of its own: SiteReach flood-fills a 249x249 grid
+  of physics queries (~0.7 s), and it used to land in the same frame as the next build slice.
+
+| | Longest loading frame | Loader ready |
+|---|---|---|
+| Verdance | 0.53-0.59 s | 8.4-8.5 s |
+| Anvil | 0.62 s (was 1.15 s) | 6.6-7.0 s |
+
+**2. Kit buildings merged per material** (`planet/kit_batch.gd`): all of a site's KitBuilding
+bodies become one mesh with one surface per material. Materials are shared and paint is baked
+per vertex, so it looks the same.
+- Verdance's yard: 101 body surfaces → 9 (≈303 → ≈27 est. draws).
+- The hidden originals keep their lights, ground patches and collision.
+- It re-merges after a state change (VerdanceSite.set_level), and Anvil sites merge at build.
+
+**3. Static loose props batched** (`planet/prop_batch.gd`): the crash site's furrow clods and
+shards and an Anvil site's loose pieces, about -21 to -24 surfaces each.
+- Conservative: only auto-named, script-less, childless meshes merge. Anything found by name or
+  animated stays separate.
+- The escape pod (~90 meshes, ~300 draws) is not batched: its parts are looked up by metadata,
+  animated and swapped per repair stage (story/escape_pod.gd). Batching it needs a pass by its
+  owners: merge the static shell, keep the hatch, fins, lamps and condition layers apart.
+
+**4. Lumi far away** (`planet/lumi_lod.gd`, globe only): past 30 m (Command view) the 27-mesh
+rig, 62 surfaces almost all casting shadows (~190 draws), hands over to one merged proxy with 13
+surfaces and no shadow (~26 draws). It uses the same materials, so glow and colours match, and
+is rebuilt every 4 s while the camera is far.
+
+| Estimated draws (census, start site, Medium) | Before | After |
+|---|---|---|
+| Verdance | 2,024 | **1,700** (-324) |
+| Anvil | 1,997 | **1,856** (-141) |
+| Lumi in Command view | ~190 | ~26 |
+
+The census counts both Lumi's rig and its far proxy, so in either view the real number is ~26
+or ~190 lower than the table. Still to do, by owner:
+- The escape pod (above).
+- The Anvil road barriers: 8 meshes, 487k triangles, a RetopoFlow export that needs a LOD.
+- The far junk impostors (~100 draws).
+
+### Perf pass 4 (Nov 8, headless): pod, landmarks, far impostors, site reach
+
+Same method. A/B switches: `--no-pod-batch`, `--no-far-single` (plus the pass 3 ones).
+
+**1. The escape pod batched** (`story/pod_batch.gd`): ~90 meshes become a few merged meshes.
+- The static shell merges per material in the pod's own space, so it flies, leans and lands with
+  the pod.
+- Each repair-stage group that `EscapePod.set_condition` shows or hides as a unit (Patches,
+  Planter, Bolts) merges inside itself.
+- Untouched: anything looked up by name (Hatch and the door, Beacon, Scorch, HoverGlow/Light,
+  PodLight, Spill, ReentryFire), anything held in the pod's metadata (canopy, porthole, damage
+  kit), anything scripted or with an overlay.
+- Shared materials keep the glitching seams, glyph and fin lamps animating.
+- `tests/test_pod_batch.gd` checks every stage still swaps, the animation runs on each stage and
+  unmerge restores. About -254 est. draws on both planets.
+
+**2. Landmark LOD** (`SphereJunkView._build_landmark`): a landmark uses its own import LOD within
+a triangle budget per preset (Low 3k, Medium 6k, High 12k, Ultra 24k).
+- Anvil's concrete road barriers were a 61k-triangle RetopoFlow export each, 8 in view.
+- Anvil scene: 3.19 M → 2.07 M triangles. Models under budget (the 4.5k covered car) are
+  unchanged.
+
+**3. Far junk impostors in one draw per model** (`planet/junk_far_single.gd`): the far band
+kept every surface of a model (a crate of wine bottles: 16 draws). Its surfaces now merge into
+one, each tinted with its material's average colour (albedo × texture average), under one shared
+material. The near band is unchanged. -70 est. draws on Verdance.
+
+**4. Site reach without long frames.** orbD's anchor fix (`SiteReach.fix_anchors`, which places
+the yard's 16 machines on reachable ground since 61d8b61) took ~5 s in one frame on Anvil.
+- `fix_anchors` and `audit` are now coroutines that yield behind the loading screen. They stay
+  synchronous without a budget.
+- The flood fill tests a rasterised disc mask instead of every disc per cell. Same result:
+  `--site-reach` passes on all 5 planets, and the same anchors move.
+- The loader waits for the start site's probe, so it never spills past the loading screen.
+
+| | Longest loading frame | Loader ready |
+|---|---|---|
+| Verdance | **0.44 s** | 10.3 s |
+| Anvil | **0.72 s** | 11.2 s |
+
+Ready times went up a little: the yields add frames, and the box was loaded.
+
+| Estimated draws (census, start site, Medium) | All batching off | All on |
+|---|---|---|
+| Verdance | 2,381 | **1,670** |
+| Anvil | 2,262 | **1,734** |
+
+Left over:
+- A hub built later in play (no loading screen) still runs its reach audit in one go: the
+  physics sweep is ~0.5-0.7 s, the flood fills are now cheap. Spreading it over frames in
+  SiteManager's runtime builds is the next step (orbD).
+- Lumi's rig near the camera (62 surfaces).

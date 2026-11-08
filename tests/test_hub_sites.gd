@@ -209,7 +209,7 @@ func test_start_yard_anchors_spaced_and_lane_open() -> void:
 	var a: Dictionary = VerdanceSite.START_YARD_ANCHORS
 	for k: String in ["pod", "bin", "shack", "generator", "composter", "radio", "locker", "nursery", "camera_bot", "signal_tower", "telescope", "stations", "lamps_0"]:
 		assert_true(a.has(k), k)
-	var inter: Array[String] = ["depot", "bench", "bin", "stations", "radio", "signal_tower", "telescope", "generator", "composter", "locker", "camera_bot", "nursery", "pod"]
+	var inter: Array[String] = ["depot", "bench", "bin", "stations", "radio", "signal_tower", "telescope", "generator", "composter", "locker", "camera_bot", "nursery", "pod", "fabricator"]
 	var all: Dictionary = {"depot": [Vector3(8.0, 0, 7.5)], "bench": [Vector3(-8.0, 0, 7.5)]}
 	all.merge(a)
 	for i: int in inter.size():

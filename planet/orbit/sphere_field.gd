@@ -40,6 +40,7 @@ var _type_w: Array[float] = []
 var _type_wsum: float = 0.0
 var _lift_cache: Dictionary = {}  # model id -> [upright lift, lying lift]
 var piece_lift := PackedFloat32Array()  # [orbB] rest offset above the ground (before the pile)
+var piece_model_vol := PackedFloat32Array()  # [orbB] the model's own volume (piece_vol is scaled for pacing)
 var parts_def: Dictionary = {}  # data/parts.json (set before cells materialize; Economy.parts by default)
 var landmark_defs: Array = []   # [{id, count}] (Economy.landmarks_for(biome))
 var locked_biomes: Dictionary = {}  # biome index -> true: those cells stay locked
@@ -165,7 +166,8 @@ func materialize(cell: int) -> PackedInt32Array:
 		return _materialize_floating(cell)
 	if hex_hub[cell] == 0:
 		_roll_parts(cell)
-		_roll_landmark(cell)
+		if not cells.has_flag(cell, SphereCells.F_SITE):  # [orbD] no wreck landmarks in a hub site's streets
+			_roll_landmark(cell)
 	if not cells.is_dirty(cell):
 		return out
 	var rng := RandomNumberGenerator.new()
@@ -174,7 +176,7 @@ func materialize(cell: int) -> PackedInt32Array:
 	var count: int = int(round(FULL_PIECES * left))
 	var ctr: Vector3 = grid.centers[cell]
 	var f: Basis = SphereGrid.frame(ctr)
-	var piles: Array = _roll_piles(cell)
+	var piles: Array = [] if cells.has_flag(cell, SphereCells.F_SITE) else _roll_piles(cell)  # [orbD] mounds wedged against kerbs and kit walls stalled Lumi; site cells keep loose junk only
 	hex_piles[cell] = piles
 	var lm: Dictionary = landmarks[_cell_landmark[cell]] if _cell_landmark.has(cell) else {}
 	var lm_at: Vector2 = cell_local(cell, lm["pos"]) if not lm.is_empty() else Vector2.ZERO
@@ -222,6 +224,10 @@ func materialize(cell: int) -> PackedInt32Array:
 	hex_left[cell] = FLAT_HEX_VOL * left
 	hex_total[cell] = FLAT_HEX_VOL
 	return out
+
+
+func visual_vol(pid: int) -> float:
+	return piece_model_vol[pid]
 
 
 ## Scales a cell's new pieces so their volumes sum to `target` (sizes on screen are untouched).
@@ -272,6 +278,7 @@ func _add_piece(cell: int, d: Vector3, b: Basis, lift: float, ti: int, mid: Stri
 	piece_embed.append(embed)
 	piece_alive.append(1)
 	piece_lift.append(lift)
+	piece_model_vol.append(vol)
 	piece_xf.append(Transform3D(b, Vector3.ZERO))
 	_seat(pid, d)
 	return pid

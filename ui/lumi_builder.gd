@@ -127,6 +127,7 @@ func _build() -> void:
 	var side_scroll := ScrollContainer.new()
 	side_scroll.custom_minimum_size = Vector2(SIDE_W, 0)
 	side_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	side_scroll.follow_focus = true  # [ui7] the D-pad scrolls the side list
 	body.add_child(side_scroll)
 	_side = VBoxContainer.new()
 	_side.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -220,6 +221,17 @@ func _build_side() -> void:
 	gl2.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
 	_side.add_child(gl2)
 	_side_entry("looks", tr("Saved looks"), "")
+	# [ui7] Explicit up / down links: in the Locker's floating frame the side list scrolls, and the
+	# D-pad's geometric search can't reach entries scrolled out of view.
+	var sb: Array[Button] = []
+	for c: Node in _side.get_children():
+		if c is Button:
+			sb.append(c as Button)
+	for i: int in sb.size():
+		if i > 0:
+			sb[i].focus_neighbor_top = sb[i].get_path_to(sb[i - 1]) if sb[i].is_inside_tree() else NodePath("../" + str(sb[i - 1].name))
+		if i < sb.size() - 1:
+			sb[i].focus_neighbor_bottom = sb[i].get_path_to(sb[i + 1]) if sb[i].is_inside_tree() else NodePath("../" + str(sb[i + 1].name))
 
 
 func _side_entry(slot: String, text: String, kind: String) -> void:

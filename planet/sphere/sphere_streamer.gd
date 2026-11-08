@@ -161,6 +161,34 @@ func settle(max_ms: int = 20000, near_only: bool = false) -> void:
 	_count_stats()
 
 
+## [orbE] settle() behind a loading screen: same result, but it hands frames back to the loader
+## (BuildBudget) while the worker threads build, so the bar keeps moving. Synchronous without a
+## budget (tests, tools).
+func settle_async(max_ms: int = 20000, near_only: bool = false) -> void:
+	if not BuildBudget.active():
+		settle(max_ms, near_only)
+		return
+	var t0: int = Time.get_ticks_msec()
+	_update_wants()
+	await BuildBudget.check("settle wants")
+	var later: Dictionary = {}
+	if near_only:
+		for c: int in _pending.keys():
+			if int(_pending[c]) > 0:
+				later[c] = _pending[c]
+				_pending.erase(c)
+	while (not _pending.is_empty() or not _jobs.is_empty()) and Time.get_ticks_msec() - t0 < max_ms:
+		_pump(1)
+		if BuildBudget.due():
+			await BuildBudget.pause("settle")
+		else:
+			OS.delay_usec(500)
+	for c: int in later:
+		if not _chunks.has(c) and not _jobs.has(c):
+			_pending[c] = later[c]
+	_count_stats()
+
+
 func _process(delta: float) -> void:
 	if grid == null:
 		return

@@ -30,10 +30,11 @@ func nearest(pos: Vector3) -> Dictionary:
 	var best_d: float = INF
 	for i: int in range(_items.size() - 1, -1, -1):
 		var e: Dictionary = _items[i]
-		var n: Node3D = e["node"]
-		if not is_instance_valid(n):
+		var nv: Variant = e["node"]
+		if not is_instance_valid(nv):  # [orbB] check before the typed assignment (a freed anchor errors there)
 			_items.remove_at(i)
 			continue
+		var n: Node3D = nv
 		if not n.is_inside_tree() or not n.is_visible_in_tree():  # [camp] hidden parents (unbuilt yard builds) too
 			continue
 		var en: Callable = e["enabled"]

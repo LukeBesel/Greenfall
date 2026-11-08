@@ -48,6 +48,8 @@ func _setup() -> void:
 	if DevHooks.has("orbit-hop"):
 		_dev_hop.call_deferred()
 	_wire_survey.call_deferred()
+	if DevHooks.has("soak"):  # dev QA soak (planet/sites/soak_watch.gd)
+		SoakWatch.attach(so)
 	if DevHooks.has("site-reach"):
 		_reach_audit.call_deferred()
 	if bool(GameState.flags.get("arrived_from_rocket", false)) or DevHooks.has("orbit-arrive"):
@@ -206,15 +208,15 @@ func _reach_audit() -> void:
 			await p.rebuilt
 		for k: int in 3:
 			await get_tree().physics_frame
-		SiteReach.fix_anchors(p, so.globe.terrain)  # as SiteManager does after a build (idempotent)
+		await SiteReach.fix_anchors(p, so.globe.terrain)  # as SiteManager does after a build (idempotent) [orbE] a coroutine now
 		var t0: int = Time.get_ticks_msec()
-		var r: Dictionary = SiteReach.audit(p, so.globe.terrain)
+		var r: Dictionary = await SiteReach.audit(p, so.globe.terrain)  # [orbE] a coroutine now
 		var cut: Array = r["cut"]
 		bad += cut.size() + (0 if r["start_free"] else 1)
 		print("[reach] %s hub %d %s: %d/%d anchors reachable, %d m2 walkable from the pad%s%s (%d ms)" % [
 			so.globe.planet_id, i, p.site_id, (r["anchors"] as Dictionary).size() - cut.size(), (r["anchors"] as Dictionary).size(),
 			int(int(r["reachable"]) * SiteReach.STEP * SiteReach.STEP), "" if r["start_free"] else ", LANDING SPOT BLOCKED (%s)" % r["why"],
-			"" if cut.is_empty() else ", cut off: " + ", ".join(cut), Time.get_ticks_msec() - t0])
+			"" if cut.is_empty() else ", cut off: " + ", ".join(cut.map(func(nm: String) -> String: return "%s@(%.1f,%.1f)" % [nm, p.anchor_local(nm).origin.x, p.anchor_local(nm).origin.z])), Time.get_ticks_msec() - t0])
 		if i > 0:
 			sm.free_hub(i)
 			await get_tree().process_frame

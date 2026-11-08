@@ -84,11 +84,12 @@ func anchors() -> Dictionary:
 const START_YARD_ANCHORS: Dictionary = {
 	"pod": [Vector3(0, 0, 9.8), 0.0],
 	"bin": [Vector3(8.0, 0, 4.3), -PI * 0.5],
-	"stations": [Vector3(8.5, 0, 0.8), -PI * 0.5],
+	"stations": [Vector3(16.5, 0, 1.5), 0.0],  # out on the street east of the yard (flat: "keep the base yard free")
 	"radio": [Vector3(5.0, 0, -1.5), -PI * 0.5],
 	"signal_tower": [Vector3(8.0, 0, -7.5), -PI * 0.5],
 	"telescope": [Vector3(4.8, 0, -9.0), 0.0],
-	"shack": [Vector3(-8.6, 0, 7.5), PI * 0.5],
+	"shack": [Vector3(-7.35, 0, 7.5), PI * 0.5],  # over the bench: the flat lean-to has it 0.65 m in from its centre
+	"fabricator": [Vector3(-6.0, 0, -9.6), 0.0],
 	"generator": [Vector3(-5.0, 0, 9.5), PI],
 	"composter": [Vector3(-8.5, 0, 3.8), PI * 0.5],
 	"locker": [Vector3(-8.5, 0, 0.2), PI * 0.5],
@@ -119,6 +120,8 @@ func set_level(l: int) -> void:
 			k.set_state(ks)
 			k.set_powered(level >= 2)
 		_build_lots()
+		if kit_root:
+			KitBatch.merge(kit_root)  # [orbE] the rebuilt bodies merge again
 
 
 ## The kit state for a base level: broken (1), repaired (2-3), restored (4-5).
@@ -140,10 +143,13 @@ func _make() -> void:
 	city.name = "City"
 	city.skyline = false
 	city.buildings = false  # the kit's buildings instead (below)
+	city.flush_walks = true
 	add_child(city)
 	await city.build(layout, _sidewalk_material())
+	await BuildBudget.check("site:roads")  # [orbE] behind the loading screen: a few kit buildings per frame
 	_roads()
-	_kit_blocks()
+	await BuildBudget.check("site:kit")
+	await _kit_blocks()
 	dressing = StreetDressing.new()
 	dressing.name = "Dressing"
 	dressing.skip_facades = true
@@ -291,11 +297,15 @@ func _kit_blocks() -> void:
 					var lp := Vector2(float(e[1]), float(e[2])).rotated(deg_to_rad(-turn))
 					var pal: Dictionary = {"main": "cream", "accent": ACCENTS[rng.randi() % ACCENTS.size()]}
 					_kit(str(e[0]), Vector2(c.x + lp.x, c.y + lp.y), deg_to_rad(float(e[3]) + turn), pal, 1 + rng.randi() % 3)
+					await BuildBudget.check("site:kit")  # [orbE]
 			CityLayout.Block.LANDFILL, CityLayout.Block.VACANT, CityLayout.Block.PARKING:
 				_lots.append({"c": c, "kind": "landfill" if int(b["type"]) == CityLayout.Block.LANDFILL else "lot", "seed": 1 + rng.randi() % 3})
+	await BuildBudget.check("site:lots")  # [orbE]
 	_build_lots()
+	await BuildBudget.check("site:collision")  # [orbE]
 	# The kit has no bodies of its own: one trimesh body for the buildings' solid meshes.
 	SitePrefab.collision_for(kit_root, self)
+	KitBatch.merge(kit_root)  # [orbE] perf: one surface per material for all the yard's buildings
 
 
 var _lots: Array[Dictionary] = []
