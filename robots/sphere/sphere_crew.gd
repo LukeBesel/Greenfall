@@ -52,6 +52,9 @@ var zones: Dictionary = {}
 var cashed: float = 0.0
 var depots: Dictionary = {}  # hub cell -> depot cell
 var spend_seeds: bool = true
+## Near budget: at most this many real SphereBots; past it the farthest near robots are records
+## too (a Fabricator fleet of hundreds stays cheap even right around Lumi).
+var max_near: int = 48
 
 var _claimed: Dictionary = {}  # cell -> unit name
 var _left: Dictionary = {}  # cell -> work target (junk left 0..1) while robots work it
@@ -61,6 +64,7 @@ var _far_acc: float = 0.0
 var _t: float = 0.0
 var _report_done: bool = false
 var _names: int = 0
+var _near_n: int = 0
 
 
 func setup(p_grid: SphereGrid, p_cells: SphereCells, p_field: SphereField, p_surface: SphereSurface, p_swarm: SphereSwarm = null, p_streamer: SphereStreamer = null, p_planet: String = "verdance") -> void:
@@ -90,7 +94,7 @@ func spawn(type_id: String, tier: int, cell: int, hub: int = -1, p_name: String 
 	for k: String in LOG_KEYS:
 		u["log"][k] = 0.0
 	units.append(u)
-	if _focus_dist(d) < PROMOTE_M:
+	if _focus_dist(d) < PROMOTE_M and near_count() < max_near:
 		_promote(u)
 	return u
 
@@ -108,11 +112,7 @@ func count(type_id: String) -> int:
 
 
 func near_count() -> int:
-	var n: int = 0
-	for u: Dictionary in units:
-		if u["bot"] != null:
-			n += 1
-	return n
+	return _near_n
 
 
 func is_near(u: Dictionary) -> bool:
@@ -308,8 +308,9 @@ func tick(delta: float) -> void:
 			continue
 		SphereCrewSim.advance(u["rec"], far_dt, surface.radius)
 		_think(u, far_dt)
-		if _focus_dist(unit_dir(u)) < PROMOTE_M:
+		if _focus_dist(unit_dir(u)) < PROMOTE_M and near_count() < max_near:
 			_promote(u)
+	_enforce_budget()
 
 
 ## Manually advance every robot as a far record (dev and tests: a crew with no frame loop).
@@ -323,6 +324,19 @@ func run_far(seconds: float, step_s: float = 1.0) -> void:
 			if u["bot"] == null:
 				SphereCrewSim.advance(u["rec"], dt, surface.radius)
 				_think(u, dt)
+
+
+## Demote the farthest near robots while there are more than max_near.
+func _enforce_budget() -> void:
+	if _near_n <= max_near:
+		return
+	var near: Array[Dictionary] = []
+	for u: Dictionary in units:
+		if u["bot"] != null:
+			near.append(u)
+	near.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return _focus_dist(unit_dir(a)) > _focus_dist(unit_dir(b)))
+	for i: int in near.size() - max_near:
+		_demote(near[i])
 
 
 func _focus_dist(d: Vector3) -> float:
@@ -345,6 +359,7 @@ func _promote(u: Dictionary) -> void:
 	if swarm:
 		swarm.add(b)
 	u["bot"] = b
+	_near_n += 1
 	u["stall_best"] = INF
 	u["stall_t"] = 0.0
 
@@ -355,6 +370,7 @@ func _demote(u: Dictionary) -> void:
 	u["rec"] = SphereCrewSim.demote(b)
 	(u["rec"] as Dictionary)["cell"] = keep_cell
 	u["bot"] = null
+	_near_n -= 1
 	if streamer:
 		streamer.remove_centre("bot:" + str(u["name"]))
 
@@ -640,7 +656,7 @@ func cells_cleaned() -> int:
 
 
 func _maybe_report() -> void:
-	if _report_done or not (DevHooks.has("bot-report") or DevHooks.has("robots") or DevHooks.has("orbit-far-crew")) or not DevHooks.has("quit-after"):
+	if _report_done or not (DevHooks.has("bot-report") or DevHooks.has("robots") or DevHooks.has("orbit-far-crew") or DevHooks.has("fabricator-build")) or not DevHooks.has("quit-after"):
 		return
 	if DevHooks._elapsed >= DevHooks.get_f("quit-after", 5.0) - 1.0:
 		_report_done = true
