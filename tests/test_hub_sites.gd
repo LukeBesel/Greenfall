@@ -202,3 +202,18 @@ func test_pad_view_short_press_opens_map_long_press_toggles_goals() -> void:
 	h._process(0.3)
 	h._input(up)
 	assert_eq(got, ["toggle_goals"] as Array[String], "a long press only toggles the goals")
+
+
+func test_start_yard_anchors_spaced_and_lane_open() -> void:
+	var a: Dictionary = VerdanceSite.START_YARD_ANCHORS
+	for k: String in ["pod", "bin", "shack", "generator", "composter", "radio", "locker", "nursery", "camera_bot", "signal_tower", "telescope", "stations", "lamps_0"]:
+		assert_true(a.has(k), k)
+	var inter: Array[String] = ["depot", "bench", "bin", "stations", "radio", "signal_tower", "telescope", "generator", "composter", "locker", "camera_bot", "nursery", "pod"]
+	var all: Dictionary = {"depot": [Vector3(8.0, 0, 7.5)], "bench": [Vector3(-8.0, 0, 7.5)]}
+	all.merge(a)
+	for i: int in inter.size():
+		var p: Vector3 = all[inter[i]][0]
+		if inter[i] != "pod":
+			assert_gt(absf(p.x), 2.5, inter[i] + " keeps the north lane open")
+		for j: int in range(i + 1, inter.size()):
+			assert_gt(p.distance_to(all[inter[j]][0]), 2.99, "%s / %s at least 3 m apart" % [inter[i], inter[j]])
