@@ -36,6 +36,14 @@ var _prop_body: StaticBody3D  # [world2] street furniture and lot fences (PhysLa
 var skyline: bool = true
 ## [orbD] false: sidewalks, kerbs, fences and street furniture only (the site places kit buildings).
 var buildings: bool = true
+## [orbD] Flush sidewalks (2 cm, no slab or kerb colliders): on a globe site loose junk lies on the
+## cells under them, and a 12 cm slab hid it and snagged Lumi along the kerb.
+var flush_walks: bool = false
+
+
+func _walk_h() -> float:  # [orbD] the sidewalk top street furniture stands on
+	return 0.02 if flush_walks else CityLayout.CURB_H
+
 
 
 func build(p_layout: CityLayout, p_ground_material: Material) -> void:
@@ -186,7 +194,7 @@ func _build_sidewalks(r: Rect2, detailed: bool = true) -> void:
 	# Sidewalk ring around the block: 4 slabs; tops use the shared ground shader so hex state
 	# and dirt show on them; curb faces are concrete. Collision slopes up so Patch can roll on.
 	var w: float = CityLayout.WALK_W
-	var h: float = CityLayout.CURB_H
+	var h: float = CityLayout.CURB_H if not flush_walks else 0.02  # [orbD]
 	var outer := r.grow(w)
 	var slabs: Array[Rect2] = [
 		Rect2(outer.position, Vector2(outer.size.x, w)),
@@ -214,7 +222,7 @@ func _build_sidewalks(r: Rect2, detailed: bool = true) -> void:
 			Vector3(x0, h, z0), Vector3(x1, h, z0), Vector3(x1, h, z1), Vector3(x0, h, z1)])
 		cs.shape = shape
 		body.add_child(cs)
-		if detailed:
+		if detailed and not flush_walks:  # [orbD] flush walks: nothing to catch on (globe sites)
 			add_child(body)
 		else:
 			body.free()
@@ -473,25 +481,25 @@ func _build_street_props() -> void:
 						var lean: float = _rng.randf_range(-0.15, 0.15) if _rng.randf() < 0.15 else 0.0  # leaning, half-collapsed
 						if lean == 0.0 and fmod(absf(p.x * 0.37 + p.y * 0.61), 1.0) < 0.2:
 							lean = 0.2 if p.x > p.y else -0.18  # [world3] more of them bent (own hash: the RNG stays as it was)
-						_mesh_prop(lamp_model, Vector3(p.x, CityLayout.CURB_H, p.y), lamp_yaw, near, 1.0, lean)
+						_mesh_prop(lamp_model, Vector3(p.x, _walk_h(), p.y), lamp_yaw, near, 1.0, lean)
 						if lean == 0.0:  # [world3] standing ones get a (dead) bulb; bent ones are beyond repair
 							var head: Array = lamp_head(lamp_model)
-							var lxf := Transform3D(Basis.from_euler(Vector3(0.0, lamp_yaw, 0.0)), Vector3(p.x, CityLayout.CURB_H, p.y))
+							var lxf := Transform3D(Basis.from_euler(Vector3(0.0, lamp_yaw, 0.0)), Vector3(p.x, _walk_h(), p.y))
 							var r: float = head[1]
 							lamp_bulbs.append([Transform3D(Basis().scaled(Vector3(r, r * 1.2, r) / 0.06), lxf * (head[0] as Vector3)), Color(1.0, 0.86, 0.62)])
 			if not near:
 				continue
 			# Hydrant, manholes, a payphone, benches, utility boxes.
 			var q: Vector2 = c + Vector2(_rng.randf_range(-half + 5, half - 5), -walk_mid + 0.7)
-			_mesh_prop("fire_hydrant::fire_hydrant_aged", Vector3(q.x, CityLayout.CURB_H, q.y), _rng.randf() * TAU, true)
+			_mesh_prop("fire_hydrant::fire_hydrant_aged", Vector3(q.x, _walk_h(), q.y), _rng.randf() * TAU, true)
 			var m: Vector2 = c + Vector2(_rng.randf_range(-6, 6), half)
 			_mesh_prop("water_manhole_cover", Vector3(m.x, 0.005, m.y), _rng.randf() * TAU, false)
 			if _rng.randf() < 0.4:
 				var u: Vector2 = c + Vector2(walk_mid + 0.5, _rng.randf_range(-half + 4, half - 4))
-				_mesh_prop("utility_box_01", Vector3(u.x, CityLayout.CURB_H, u.y), -PI * 0.5, true)
+				_mesh_prop("utility_box_01", Vector3(u.x, _walk_h(), u.y), -PI * 0.5, true)
 			if _rng.randf() < 0.1:
 				var pp: Vector2 = c + Vector2(_rng.randf_range(-half + 4, half - 4), walk_mid + 0.3)
-				_mesh_prop("korean_public_payphone_01", Vector3(pp.x, CityLayout.CURB_H, pp.y), 0.0, true)
+				_mesh_prop("korean_public_payphone_01", Vector3(pp.x, _walk_h(), pp.y), 0.0, true)
 
 
 # --- Skyline ------------------------------------------------------------------------

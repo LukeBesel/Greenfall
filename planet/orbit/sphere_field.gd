@@ -165,7 +165,8 @@ func materialize(cell: int) -> PackedInt32Array:
 		return _materialize_floating(cell)
 	if hex_hub[cell] == 0:
 		_roll_parts(cell)
-		_roll_landmark(cell)
+		if not cells.has_flag(cell, SphereCells.F_SITE):  # [orbD] no wreck landmarks in a hub site's streets
+			_roll_landmark(cell)
 	if not cells.is_dirty(cell):
 		return out
 	var rng := RandomNumberGenerator.new()
@@ -174,7 +175,7 @@ func materialize(cell: int) -> PackedInt32Array:
 	var count: int = int(round(FULL_PIECES * left))
 	var ctr: Vector3 = grid.centers[cell]
 	var f: Basis = SphereGrid.frame(ctr)
-	var piles: Array = _roll_piles(cell)
+	var piles: Array = [] if cells.has_flag(cell, SphereCells.F_SITE) else _roll_piles(cell)  # [orbD] mounds wedged against kerbs and kit walls stalled Lumi; site cells keep loose junk only
 	hex_piles[cell] = piles
 	var lm: Dictionary = landmarks[_cell_landmark[cell]] if _cell_landmark.has(cell) else {}
 	var lm_at: Vector2 = cell_local(cell, lm["pos"]) if not lm.is_empty() else Vector2.ZERO

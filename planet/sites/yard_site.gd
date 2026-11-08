@@ -202,6 +202,7 @@ func _process(delta: float) -> void:
 
 ## Shows what is built (the same state the flat systems read). Camp does its own bits.
 func _apply() -> void:
+	_yield_to_real_systems()
 	var lamps: bool = YardBuilds.built("lamps")
 	for h: Node3D in _extra_lamps:
 		_show(h, lamps)
@@ -218,6 +219,30 @@ func _apply() -> void:
 	for id: String in _stations:
 		_show(_stations[id], Stations.built_in_state(id))
 	_show(_fabricator, BotFabricator.built(world))
+
+
+## When orbB attaches a yard system with its own model (the real Telescope, the intro's pod and
+## crash site, the extras' radio and nursery), its model is the one that stands: this node's
+## stand-in for it goes away, so nothing is drawn twice.
+func _yield_to_real_systems() -> void:
+	# The real Telescope draws its model only once built: keep the stand-in until then.
+	var tel: Telescope = Telescope.of(world) if world.is_inside_tree() else null
+	if _telescope and tel and tel.built():
+		_telescope.queue_free()
+		_telescope = null
+	# The crashed pod: orbB's CrashSite on the slice (meta "orbit_pod", or a child named CrashSite).
+	if _pod and (world.has_meta("orbit_pod") or world.get_node_or_null("CrashSite") != null):
+		_pod.get_parent().queue_free()  # this node's crash site holder
+		_pod = null
+	# Radio and nursery: the extras' own models stand once they show (built).
+	var ex: ExtrasDirector = ExtrasDirector.of(world)
+	if ex:
+		if _radio and ex.radio and ex.radio.visible:
+			_radio.queue_free()
+			_radio = null
+		if _nursery and ex.nursery and ex.nursery.visible:
+			_nursery.queue_free()
+			_nursery = null
 
 
 static func _show(n: Node3D, on: bool) -> void:
