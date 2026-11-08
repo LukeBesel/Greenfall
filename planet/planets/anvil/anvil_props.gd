@@ -64,6 +64,10 @@ static func noisy_cyl(r_top: float, r_bot: float, h: float, segs: int, rings: in
 			var c := Vector2(cos(a), sin(a))
 			var dent: float = nz.get_noise_3d(c.x * 2.0, c.y * 2.0, y * 0.08) * amp + nz.get_noise_3d(c.x * 6.0, c.y * 6.0, y * 0.35) * amp * 0.35
 			var r2: float = rr * (1.0 + dent)
+			# UV in metres (around, up) and UV2.x 0..1 up the shell: the plate shader's courses
+			# and soot runs.
+			st.set_uv(Vector2(TAU * float(j) / segs * rr, v * h))
+			st.set_uv2(Vector2(v, 0.0))
 			st.add_vertex(Vector3(c.x * r2 + lean.x * v * v, y, c.y * r2 + lean.y * v * v))
 	for i: int in rings:
 		for j: int in segs:
@@ -72,11 +76,20 @@ static func noisy_cyl(r_top: float, r_bot: float, h: float, segs: int, rings: in
 			for idx: int in [a0, a0 + 1, b0, a0 + 1, b0 + 1, b0]:
 				st.add_index(idx)
 	st.generate_normals()
+	st.generate_tangents()
 	return st.commit()
 
 
 static func make_mat(env: AnvilEnv, key: String) -> Material:
 	match key:
+		"shell", "shell_clean":
+			# Riveted plate shells (stacks, furnace, pots); shell_clean has no soot (pots, pipes).
+			var sh := ShaderMaterial.new()
+			sh.shader = preload("res://planet/planets/anvil/anvil_plate.gdshader")
+			sh.set_shader_parameter("rust_alb", AssetLib.tex("rusty_metal_02", "diff"))
+			sh.set_shader_parameter("rust_nrm", AssetLib.tex("rusty_metal_02", "nor_gl"))
+			sh.set_shader_parameter("soot", 1.0 if key == "shell" else 0.25)
+			return sh
 		"stack":
 			var s: ShaderMaterial = Mats.worn_paint(Color(0.15, 0.13, 0.12), 0.8, 0.7, 3.0, 1.0)
 			s.set_shader_parameter("tex_scale", 0.22)
@@ -89,6 +102,20 @@ static func make_mat(env: AnvilEnv, key: String) -> Material:
 			var c: ShaderMaterial = Mats.worn_paint(Color(0.3, 0.34, 0.3), 0.4, 0.9, 11.0, 0.7)
 			c.set_shader_parameter("tex_scale", 0.9)
 			return c
+		"turbine":
+			# Weathered off-white: faint dust and grime, not a clean CG white.
+			var tw: ShaderMaterial = Mats.worn_paint(Color(0.86, 0.86, 0.84), 0.97, 0.15, 21.0, 0.35)
+			tw.set_shader_parameter("tex_scale", 0.7)
+			tw.set_shader_parameter("dust", 0.55)
+			return tw
+		"dark_metal":
+			var dm := StandardMaterial3D.new()
+			dm.albedo_color = Color(0.16, 0.16, 0.17)
+			dm.metallic = 0.7
+			dm.roughness = 0.45
+			return dm
+		"beacon":
+			return Mats.lamp(Color(1.0, 0.18, 0.1), 2.2)
 		"rust":
 			return AssetLib.pbr_material("rusty_metal_03", 0.12, Color(0.92, 0.62, 0.5), true)
 		"corr":
@@ -192,11 +219,10 @@ static func build_all(env: AnvilEnv) -> void:
 # --- Foundry --------------------------------------------------------------------------------
 
 static func _stack(env: AnvilEnv, b: Batch, fut: Batch, base: Vector3, h: float, r: float, idx: int) -> void:
-	var stack_m: Material = env.mat("stack")
 	var rust: Material = env.mat("rust")
 	var top_r: float = r * 0.8
 	add_box(b, base + Vector3(0, 3.0, 0), Vector3(r * 2.8, 8.0, r * 2.8), env.mat("concrete"))
-	b.add(noisy_cyl(top_r, r, h, 40, int(h / 4.0), 0.022, 4000 + idx), Transform3D(Basis(), base + Vector3(0, 6.0 + h * 0.5, 0)), stack_m)
+	b.add(noisy_cyl(top_r, r, h, 40, int(h / 4.0), 0.022, 4000 + idx), Transform3D(Basis(), base + Vector3(0, 6.0 + h * 0.5, 0)), env.mat("shell"))
 	# Stiffener ribs, riveted repair plates bent to the shell, and scorched patches.
 	var rib_rng := RandomNumberGenerator.new()
 	rib_rng.seed = 900 + idx
@@ -206,7 +232,7 @@ static func _stack(env: AnvilEnv, b: Batch, fut: Batch, base: Vector3, h: float,
 		var y0: float = 8.0 + rib_rng.randf_range(0.0, 6.0)
 		var y1: float = h * rib_rng.randf_range(0.45, 0.9)
 		add_beam(b, base + d * (r + 0.25) + Vector3(0, 6.0 + y0, 0), base + d * (lerpf(r, top_r, y1 / h) + 0.25) + Vector3(0, 6.0 + y1, 0), 0.38, rust)
-	for k: int in 18:
+	for k: int in 6:
 		var a: float = rib_rng.randf() * TAU
 		var y: float = rib_rng.randf_range(10.0, h - 12.0)
 		var rr0: float = lerpf(r, top_r, y / h) + 0.12
@@ -224,7 +250,6 @@ static func _stack(env: AnvilEnv, b: Batch, fut: Batch, base: Vector3, h: float,
 			add_cyl(fut, base + Vector3(0, 6.0 + y + 7.0, 0), rr + 0.25, rr + 0.35, 11.5, gm, 28)
 		add_cyl(fut, base + Vector3(0, 6.0 + y + 0.75, 0), rr + 0.5, rr + 0.5, 0.14, env.mat("line"), 32)
 	# Sooted crown, lip and two galleries with railings.
-	add_cyl(b, base + Vector3(0, 6.0 + h - 4.0, 0), top_r + 0.05, top_r + 0.1, 8.0, env.mat("soot"), 28)
 	add_cyl(b, base + Vector3(0, 6.0 + h, 0), top_r + 0.6, top_r + 0.6, 1.2, rust, 28)
 	add_cyl(fut, base + Vector3(0, 6.0 + h + 0.7, 0), top_r + 0.7, top_r + 0.7, 0.16, env.mat("line"), 32)
 	for gy_: float in [h * 0.38, h * 0.72]:
@@ -235,14 +260,35 @@ static func _stack(env: AnvilEnv, b: Batch, fut: Batch, base: Vector3, h: float,
 			var a: float = TAU * k / 16.0
 			var q: Vector3 = base + Vector3(cos(a) * (rr2 + 2.3), 6.0 + gy_, sin(a) * (rr2 + 2.3))
 			add_beam(b, q, q + Vector3(0, 1.3, 0), 0.12, rust)
-	# Cage ladder up one side and a riser pipe on another.
+	# Caged ladder up one side (rails, rungs every 45 cm, safety hoops) and a riser pipe.
 	var side := Vector3(1, 0, 0).rotated(Vector3.UP, idx * 1.3)
-	for k: int in 2:
-		var off: Vector3 = side.rotated(Vector3.UP, 0.12 * (k * 2 - 1)) * (r + 0.6)
-		add_beam(b, base + off + Vector3(0, 8.0, 0), base + off * (top_r / r) + Vector3(0, 6.0 + h, 0), 0.18, rust)
+	var tang: Vector3 = side.cross(Vector3.UP)
+	var y_lo: float = 8.0
+	var y_hi: float = h + 6.0
+	var at := func(y: float, out: float, t: float) -> Vector3:
+		var rr_y: float = lerpf(r, top_r, clampf((y - 6.0) / h, 0.0, 1.0))
+		return base + side * (rr_y + out) + tang * t + Vector3(0, y, 0)
+	for t: float in [-0.32, 0.32]:
+		add_beam(b, at.call(y_lo, 0.55, t), at.call(y_hi, 0.55, t), 0.07, rust)
+	var rungs: int = int((y_hi - y_lo) / 0.45)
+	for k: int in rungs:
+		var y: float = y_lo + k * 0.45
+		add_beam(b, at.call(y, 0.55, -0.32), at.call(y, 0.55, 0.32), 0.035, rust)
+	var hoops: int = int((y_hi - y_lo - 2.5) / 1.6)
+	for k: int in hoops:
+		var y: float = y_lo + 2.5 + k * 1.6
+		var prev: Vector3 = at.call(y, 0.55, -0.36)
+		for q: int in 7:
+			var ang: float = PI * float(q + 1) / 7.0
+			var p2: Vector3 = at.call(y, 0.55 + sin(ang) * 0.7, -cos(ang) * 0.36)
+			add_beam(b, prev, p2, 0.04, rust)
+			prev = p2
+	for t: float in [-0.36, 0.0, 0.36]:
+		var o: float = 1.25 if t == 0.0 else 0.6
+		add_beam(b, at.call(y_lo + 2.5, 0.55 + o, t), at.call(y_hi, 0.55 + o, t), 0.04, rust)
 	var pside: Vector3 = side.rotated(Vector3.UP, 2.0)
 	var pr: float = r * 0.2
-	add_cyl(b, base + pside * (r + pr + 0.8) + Vector3(0, 6.0 + h * 0.35, 0), pr, pr, h * 0.7, stack_m, 12)
+	b.add(noisy_cyl(pr, pr, h * 0.7, 14, int(h * 0.7 / 3.0), 0.03, 4100 + idx), Transform3D(Basis(), base + pside * (r + pr + 0.8) + Vector3(0, 6.0 + h * 0.35, 0)), env.mat("shell_clean"))
 	for k: int in 6:
 		var y2: float = 10.0 + k * h * 0.11
 		add_beam(b, base + pside * (lerpf(r, top_r, y2 / h) - 0.2) + Vector3(0, 6.0 + y2, 0), base + pside * (r + pr + 0.8) + Vector3(0, 6.0 + y2, 0), 0.4, rust)
@@ -527,30 +573,104 @@ static func _ruin_debris(env: AnvilEnv, b: Batch) -> void:
 
 # --- Restored: turbines and domes ------------------------------------------------------------
 
-static func _turbines(env: AnvilEnv, up: Batch, fut: Batch) -> void:
+static func _turbines(env: AnvilEnv, _up: Batch, _fut: Batch) -> void:
 	var spots: Array = [[-PI * 0.5 - 1.05, 120.0], [-PI * 0.5 - 1.25, 150.0], [PI * 0.12, 105.0], [PI * 0.3, 135.0],
 		[PI * 0.75, 170.0], [PI * 0.9, 120.0], [-PI * 0.5 + 1.6, 160.0], [PI * 1.2, 150.0], [-PI * 0.5 - 1.45, 190.0], [PI * 0.55, 210.0]]
 	for i: int in spots.size():
 		var base: Vector3 = AnvilEnv.polar(float(spots[i][0]), env.r_in + float(spots[i][1]))
-		base.y = env.gy(base) - 0.5
-		var target: Node3D = env.groups["up"] if i < 4 else env.groups["future"]
-		var b: Batch = up if i < 4 else fut
-		var h: float = 52.0
-		add_cyl(b, base + Vector3(0, h * 0.5, 0), 1.0, 1.8, h, env.mat("white"), 16)
-		add_box(b, base + Vector3(0, h + 0.6, 0.6), Vector3(1.8, 1.8, 4.6), env.mat("white"))
-		add_cyl(b, base + Vector3(0, h * 0.6, 0), 1.45, 1.45, 0.1, env.mat("line"), 20)
-		var hub := Node3D.new()
-		hub.position = base + Vector3(0, h + 0.6, -1.9)
-		hub.rotation.z = float(i) * 0.7
-		hub.set_meta("k", i % 3)
-		target.add_child(hub)
-		var bl := Batch.new()
-		bl.add(ProcMesh.sphere(0.8, 12, 6), Transform3D(), env.mat("white"))
-		for k: int in 3:
-			var a: float = TAU * k / 3.0
-			bl.add(box(), FrontierView._beam_xf(Vector3.ZERO, Vector3(cos(a), sin(a), 0) * 22.0, 1.1) * Transform3D(Basis.from_scale(Vector3(1.0, 1.0, 0.18)), Vector3.ZERO), env.mat("white"))
-		bl.flush(hub)
-		env.rotors.append(hub)
+		base.y = env.gy(base) - 0.3
+		turbine(env, env.groups["up"] if i < 4 else env.groups["future"], base, 52.0, i)
+
+
+## A twisted, tapering blade along +Y (root round, airfoil-flat toward the tip), length len_.
+static func blade_mesh(len_: float) -> ArrayMesh:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var stations: int = 14
+	var ring: int = 10
+	for i: int in stations + 1:
+		var t: float = float(i) / stations
+		var chord: float = lerpf(0.9, 2.1, smoothstep(0.0, 0.18, t)) * lerpf(1.0, 0.16, smoothstep(0.18, 1.0, t))
+		var thick: float = lerpf(0.9, chord * 0.16, smoothstep(0.0, 0.2, t))
+		var twist: float = lerpf(0.45, 0.0, t)
+		var sweep: float = chord * 0.25 * smoothstep(0.1, 0.4, t)
+		for j: int in ring + 1:
+			var a: float = TAU * float(j % ring) / ring
+			# Airfoil-ish: fuller leading edge, sharp trailing edge.
+			var x: float = cos(a) * chord * 0.5 * (1.0 if cos(a) > 0.0 else 0.75) + sweep
+			var z: float = sin(a) * thick * 0.5 * (1.0 - 0.6 * maxf(cos(a), 0.0))
+			var p := Vector3(x, t * len_, z).rotated(Vector3.UP, twist)
+			st.add_vertex(p)
+	for i: int in stations:
+		for j: int in ring:
+			var a0: int = i * (ring + 1) + j
+			var b0: int = a0 + ring + 1
+			for idx: int in [a0, a0 + 1, b0, a0 + 1, b0 + 1, b0]:
+				st.add_index(idx)
+	st.generate_normals()
+	return st.commit()
+
+
+static var _blade_cache: Dictionary = {}
+
+
+## A wind turbine on a pad: flanged tower sections, a door, a detailed nacelle (cooler fins,
+## anemometer mast, red beacon), a spinner with a warm hub light, three twisted blades turning.
+static func turbine(env: AnvilEnv, parent: Node3D, base: Vector3, h: float, k: int) -> Node3D:
+	var b := Batch.new()
+	var white: Material = env.mat("turbine")
+	var dark: Material = env.mat("dark_metal")
+	# Pad: an octagonal footing with a chamfered edge, kerb blocks, a cabinet and steps.
+	add_cyl(b, base + Vector3(0, 0.3, 0), 4.2, 4.6, 0.6, env.mat("concrete"), 8)
+	add_cyl(b, base + Vector3(0, 0.66, 0), 3.0, 3.3, 0.18, env.mat("concrete"), 8)
+	for q: int in 8:
+		var a: float = TAU * q / 8.0 + PI / 8.0
+		add_box(b, base + Vector3(cos(a) * 4.45, 0.75, sin(a) * 4.45), Vector3(3.2, 0.3, 0.35), env.mat("concrete"), Vector3(0, rad_to_deg(-a) + 90.0, 0))
+	add_box(b, base + Vector3(2.6, 1.4, 1.6), Vector3(1.2, 1.4, 0.7), env.mat("cart"), Vector3(0, 30, 0))
+	# Tower: four tapering sections with bolted flange rings at each joint.
+	var secs: int = 4
+	for q: int in secs:
+		var y0: float = 0.75 + h * float(q) / secs
+		var y1: float = 0.75 + h * float(q + 1) / secs
+		var r0: float = lerpf(1.7, 0.95, float(q) / secs)
+		var r1: float = lerpf(1.7, 0.95, float(q + 1) / secs)
+		add_cyl(b, base + Vector3(0, (y0 + y1) * 0.5, 0), r1, r0, y1 - y0 - 0.06, white, 28)
+		if q > 0:
+			b.add(ProcMesh.torus(r0 - 0.02, r0 + 0.07, 32, 4), Transform3D(Basis(), base + Vector3(0, y0, 0)), dark)
+	# Door with frame, a little step.
+	add_box(b, base + Vector3(0, 2.0, 1.66), Vector3(0.95, 2.1, 0.12), dark)
+	add_box(b, base + Vector3(0, 3.12, 1.68), Vector3(1.2, 0.12, 0.16), white)
+	add_box(b, base + Vector3(0, 0.9, 2.0), Vector3(1.2, 0.3, 0.8), env.mat("concrete"))
+	add_cyl(b, base + Vector3(0, h * 0.6, 0), 1.33, 1.33, 0.08, env.mat("line"), 28)
+	# Nacelle: rounded body, cooler fins at the back, anemometer mast and a red beacon on top.
+	var top: Vector3 = base + Vector3(0, h + 1.85, 0)
+	b.add(ProcMesh.rounded_box(Vector3(2.3, 2.3, 6.4), 0.55, 3), Transform3D(Basis(), top + Vector3(0, 0, 0.7)), white)
+	add_cyl(b, top + Vector3(0, -1.2, 0.5), 1.0, 1.0, 0.6, dark, 18)
+	for q: int in 6:
+		add_box(b, top + Vector3(0, -0.7 + q * 0.32, 3.95), Vector3(1.9, 0.07, 0.5), dark)
+	add_box(b, top + Vector3(0.0, 1.16, 0.2), Vector3(1.6, 0.06, 3.0), dark)
+	add_beam(b, top + Vector3(0.5, 1.15, 2.6), top + Vector3(0.5, 2.3, 2.6), 0.06, dark)
+	add_beam(b, top + Vector3(0.2, 2.3, 2.6), top + Vector3(0.8, 2.3, 2.6), 0.04, dark)
+	b.add(ProcMesh.sphere(0.12, 8, 4), Transform3D(Basis(), top + Vector3(-0.5, 1.4, 2.8)), env.mat("beacon"))
+	b.flush(parent)
+	# Rotor: spinner with a warm hub light, three blades.
+	var hub := AnvilRotor.new()
+	hub.name = "Rotor%d" % k
+	hub.speed = 0.55 + 0.08 * (k % 3)
+	hub.position = top + Vector3(0, 0, -2.75)
+	hub.rotation.z = float(k) * 0.7
+	parent.add_child(hub)
+	var bl := Batch.new()
+	bl.add(ProcMesh.sphere(1.0, 20, 10), Transform3D(Basis.from_scale(Vector3(1.0, 1.0, 1.5)), Vector3(0, 0, -0.5)), white)
+	bl.add(ProcMesh.sphere(0.14, 10, 5), Transform3D(Basis(), Vector3(0, 0, -1.98)), env.mat("line"))
+	var len_: float = h * 0.42
+	if not _blade_cache.has(int(len_)):
+		_blade_cache[int(len_)] = blade_mesh(len_)
+	for q: int in 3:
+		var a: float = TAU * q / 3.0
+		bl.add(_blade_cache[int(len_)], Transform3D(Basis(Vector3.FORWARD, a), Vector3(0, 0, -0.2)), white)
+	bl.flush(hub)
+	return hub
 
 
 static func _dome(env: AnvilEnv, b: Batch, c: Vector3, r: float, seed_v: int) -> void:

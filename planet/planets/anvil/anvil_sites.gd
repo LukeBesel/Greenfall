@@ -222,22 +222,7 @@ static func hall(kit: AnvilEnv, b: Batch, fut: Batch, c: Vector3, yaw: float, le
 
 
 static func turbine(kit: AnvilEnv, root: Node3D, base: Vector3, h: float, k: int) -> void:
-	var b := Batch.new()
-	b.add(AnvilProps.noisy_cyl(0.8, 1.4, h, 16, 6, 0.004, 31 + k), Transform3D(Basis(), base + Vector3(0, h * 0.5, 0)), kit.mat("white"))
-	AnvilProps.add_box(b, base + Vector3(0, h + 0.5, 0.5), Vector3(1.4, 1.4, 3.6), kit.mat("white"))
-	AnvilProps.add_cyl(b, base + Vector3(0, h * 0.6, 0), 1.15, 1.15, 0.1, kit.mat("line"), 20)
-	b.flush(root)
-	var hub := AnvilRotor.new()
-	hub.speed = 0.6 + 0.1 * k
-	hub.position = base + Vector3(0, h + 0.5, -1.5)
-	hub.rotation.z = k * 0.8
-	root.add_child(hub)
-	var bl := Batch.new()
-	bl.add(ProcMesh.sphere(0.6, 12, 6), Transform3D(), kit.mat("white"))
-	for i: int in 3:
-		var a: float = TAU * i / 3.0
-		bl.add(AnvilProps.box(), FrontierView._beam_xf(Vector3.ZERO, Vector3(cos(a), sin(a), 0) * h * 0.4, 0.9) * Transform3D(Basis.from_scale(Vector3(1.0, 1.0, 0.18)), Vector3.ZERO), kit.mat("white"))
-	bl.flush(hub)
+	AnvilProps.turbine(kit, root, base, h, k)
 
 
 ## A molten channel along a polyline (local points, y ignored): ribbon with UV.x = metres along,
@@ -335,7 +320,7 @@ static func _foundry_yard(kit: AnvilEnv, root: Node3D, stage: int, restoration: 
 	AnvilProps._stack(kit, b, fut, Vector3(19, -5.5, -35), 36.0, 2.7, 4)
 	AnvilProps._truss(kit, b, fut, Vector3(14, 0, -22), Vector3(30, 0, 6), 9.0)
 	# Hopper tower at the truss end.
-	b.add(AnvilProps.noisy_cyl(2.6, 1.0, 5.0, 16, 4, 0.03, 12), Transform3D(Basis(), Vector3(30, 9.0, 6)), kit.mat("stack"))
+	b.add(AnvilProps.noisy_cyl(2.6, 1.0, 5.0, 16, 4, 0.03, 12), Transform3D(Basis(), Vector3(30, 9.0, 6)), kit.mat("shell"))
 	for sx: float in [-1.6, 1.6]:
 		for sz: float in [-1.6, 1.6]:
 			AnvilProps.add_beam(b, Vector3(30 + sx * 1.4, 0, 6 + sz * 1.4), Vector3(30 + sx, 7.0, 6 + sz), 0.35, kit.mat("rust"))
@@ -345,7 +330,7 @@ static func _foundry_yard(kit: AnvilEnv, root: Node3D, stage: int, restoration: 
 	# Ore spur with carts along the south side.
 	_cart_line(kit, b, Vector3(-30, 0, 24), Vector3(6, 0, 30), 3)
 	# Ruin: a fallen stack section across the yard edge.
-	ruin.add(AnvilProps.noisy_cyl(2.4, 2.6, 18.0, 24, 6, 0.04, 77), Transform3D(Basis(Vector3.UP, 0.5) * Basis(Vector3.FORWARD, PI * 0.5 - 0.06), Vector3(-26, 2.2, -10)), kit.mat("stack"))
+	ruin.add(AnvilProps.noisy_cyl(2.4, 2.6, 18.0, 24, 6, 0.04, 77), Transform3D(Basis(Vector3.UP, 0.5) * Basis(Vector3.FORWARD, PI * 0.5 - 0.06), Vector3(-26, 2.2, -10)), kit.mat("shell"))
 	if stage >= 3:
 		AnvilProps._dome(kit, high, Vector3(-26, 0, 28), 8.0, 3)
 	_flush_stage(root, stage, b, ruin, high, fut)
@@ -404,12 +389,12 @@ static func _foundry_tower(kit: AnvilEnv, root: Node3D, stage: int, restoration:
 		var a: float = 0.9 + k * 0.35
 		var p0 := Vector3(cos(a) * 12.0, 2.5, sin(a) * 12.0)
 		var p1 := Vector3(cos(a) * 30.0, -0.4, sin(a) * 30.0)
-		b.add(AnvilProps.noisy_cyl(0.7, 0.7, 1.0, 12, 6, 0.02, 90 + k), FrontierView._beam_xf(p0, p1, 1.0), kit.mat("stack"))
+		b.add(AnvilProps.noisy_cyl(0.7, 0.7, 1.0, 12, 6, 0.02, 90 + k), FrontierView._beam_xf(p0, p1, 1.0), kit.mat("shell"))
 	# Slag tips at the base.
 	for k: int in 3:
 		var a: float = 3.6 + k * 0.9
 		b.add(AnvilProps.slag_mesh(30 + k), Transform3D(Basis(Vector3.UP, a) * Basis.from_scale(Vector3(8.0, 4.0 + k, 6.5)), Vector3(cos(a) * 28.0, -0.2, sin(a) * 28.0)), kit.slag_mat)
-	ruin.add(AnvilProps.noisy_cyl(4.0, 4.2, 22.0, 28, 6, 0.05, 15), Transform3D(Basis(Vector3.UP, 2.2) * Basis(Vector3.FORWARD, PI * 0.5 + 0.08), Vector3(-24, 3.6, 18)), kit.mat("stack"))
+	ruin.add(AnvilProps.noisy_cyl(4.0, 4.2, 22.0, 28, 6, 0.05, 15), Transform3D(Basis(Vector3.UP, 2.2) * Basis(Vector3.FORWARD, PI * 0.5 + 0.08), Vector3(-24, 3.6, 18)), kit.mat("shell"))
 	if stage >= 3:
 		AnvilProps._dome(kit, high, Vector3(26, 0, -18), 7.0, 5)
 	_flush_stage(root, stage, b, ruin, high, fut)
@@ -429,13 +414,13 @@ static func _lava_forge(kit: AnvilEnv, root: Node3D, stage: int, restoration: fl
 	# The furnace: a squat, bulging shell banded with straps, a hood and a soot-black chimney.
 	var f := Vector3(-6, 0, -16)
 	slab(b, kit.mat("concrete"), f + Vector3(0, 0, 2), Vector2(22, 18), 0.2, 13)
-	b.add(AnvilProps.noisy_cyl(4.6, 7.2, 13.0, 36, 10, 0.035, 41), Transform3D(Basis(), f + Vector3(0, 6.5, 0)), kit.mat("stack"))
+	b.add(AnvilProps.noisy_cyl(4.6, 7.2, 13.0, 36, 10, 0.035, 41), Transform3D(Basis(), f + Vector3(0, 6.5, 0)), kit.mat("shell"))
 	for k: int in 5:
 		var y: float = 1.5 + k * 2.6
 		var rr: float = lerpf(7.2, 4.6, y / 13.0) + 0.2
 		b.add(ProcMesh.torus(rr - 0.18, rr + 0.18, 40, 6), Transform3D(Basis(), f + Vector3(0, y, 0)), kit.mat("rust"))
-	b.add(AnvilProps.noisy_cyl(1.6, 4.8, 4.0, 28, 4, 0.03, 42), Transform3D(Basis(), f + Vector3(0, 15.0, 0)), kit.mat("soot"))
-	b.add(AnvilProps.noisy_cyl(1.3, 1.7, 26.0, 18, 10, 0.03, 43), Transform3D(Basis(), f + Vector3(0, 30.0, 0)), kit.mat("soot"))
+	b.add(AnvilProps.noisy_cyl(1.6, 4.8, 4.0, 28, 4, 0.03, 42), Transform3D(Basis(), f + Vector3(0, 15.0, 0)), kit.mat("shell"))
+	b.add(AnvilProps.noisy_cyl(1.3, 1.7, 26.0, 18, 10, 0.03, 43), Transform3D(Basis(), f + Vector3(0, 30.0, 0)), kit.mat("shell"))
 	# Tuyeres: blast pipes ringing the hearth from a bustle main.
 	b.add(ProcMesh.torus(8.0, 8.9, 48, 8), Transform3D(Basis(), f + Vector3(0, 5.0, 0)), kit.mat("stack"))
 	for k: int in 10:
@@ -475,12 +460,12 @@ static func _lava_forge(kit: AnvilEnv, root: Node3D, stage: int, restoration: fl
 			b.add(AnvilProps.noisy_cyl(0.32, 0.4, 1.0, 12, 4, 0.03, 70 + int(dz)), FrontierView._beam_xf(lb, lt, 1.0), kit.mat("rust"))
 	AnvilProps.add_beam(b, cc + Vector3(-7.5, 12.4, -2.0), cc + Vector3(7.5, 12.4, 2.0), 1.1, kit.mat("hauler"))
 	AnvilProps.add_beam(b, cc + Vector3(0, 12.0, 0), cc + Vector3(0, 6.5, 0), 0.08, kit.mat("soot"))
-	b.add(AnvilProps.noisy_cyl(1.6, 1.1, 2.4, 18, 3, 0.05, 55), Transform3D(Basis(Vector3.RIGHT, 0.35), cc + Vector3(0, 5.2, 0)), kit.mat("stack"))
+	b.add(AnvilProps.noisy_cyl(1.6, 1.1, 2.4, 18, 3, 0.05, 55), Transform3D(Basis(Vector3.RIGHT, 0.35), cc + Vector3(0, 5.2, 0)), kit.mat("shell"))
 	# Restored: the forge feeds a greenhouse with its heat.
 	if stage >= 3:
 		AnvilProps._dome(kit, high, Vector3(-28, 0, 16), 8.0, 9)
 	fut.add(ProcMesh.torus(7.3, 7.5, 64, 4), Transform3D(Basis(), f + Vector3(0, 0.4, 0)), kit.mat("line"))
-	ruin.add(AnvilProps.noisy_cyl(1.3, 1.5, 12.0, 16, 4, 0.04, 66), Transform3D(Basis(Vector3.UP, 0.9) * Basis(Vector3.FORWARD, PI * 0.5), Vector3(14, 1.2, -22)), kit.mat("soot"))
+	ruin.add(AnvilProps.noisy_cyl(1.3, 1.5, 12.0, 16, 4, 0.04, 66), Transform3D(Basis(Vector3.UP, 0.9) * Basis(Vector3.FORWARD, PI * 0.5), Vector3(14, 1.2, -22)), kit.mat("shell"))
 	_flush_stage(root, stage, b, ruin, high, fut)
 	if stage >= 4:
 		turbine(kit, root, Vector3(32, 0, -20), 28.0, 2)
@@ -521,7 +506,7 @@ static func _ruined_smelter(kit: AnvilEnv, root: Node3D, stage: int, restoration
 		var pp: Vector3 = pots[k][0]
 		var tilt: float = float(pots[k][1])
 		var xf := Transform3D(Basis(Vector3.UP, k * 1.7) * Basis(Vector3.RIGHT, tilt), pp + Vector3(0, 3.0 * cos(tilt) + 0.6, 0))
-		b.add(AnvilProps.noisy_cyl(3.2, 2.4, 6.0, 28, 6, 0.04, 300 + k), xf, kit.mat("stack"))
+		b.add(AnvilProps.noisy_cyl(3.2, 2.4, 6.0, 28, 6, 0.04, 300 + k), xf, kit.mat("shell"))
 		b.add(ProcMesh.torus(3.1, 3.6, 32, 6), xf * Transform3D(Basis(), Vector3(0, 3.0, 0)), kit.mat("rust"))
 		# Solid pot: a base and a crust of set slag inside, not a hollow cup.
 		b.add(ProcMesh.cyl(2.4, 2.4, 0.4, 24), xf * Transform3D(Basis(), Vector3(0, -2.9, 0)), kit.mat("rust"))
@@ -529,8 +514,8 @@ static func _ruined_smelter(kit: AnvilEnv, root: Node3D, stage: int, restoration
 		if k == 2:
 			b.add(AnvilProps.slag_mesh(310), Transform3D(Basis(Vector3.UP, 0.4) * Basis.from_scale(Vector3(8.0, 1.0, 4.0)), pp + Vector3(5.0, -0.1, 2.0)), kit.slag_mat)
 	# The toppled stack, broken in two.
-	b.add(AnvilProps.noisy_cyl(2.8, 3.2, 20.0, 28, 8, 0.05, 330), Transform3D(Basis(Vector3.UP, 0.3) * Basis(Vector3.FORWARD, PI * 0.5 - 0.04), Vector3(-22, 3.0, -26)), kit.mat("stack"))
-	b.add(AnvilProps.noisy_cyl(2.5, 2.8, 14.0, 28, 6, 0.06, 331), Transform3D(Basis(Vector3.UP, 0.75) * Basis(Vector3.FORWARD, PI * 0.5 + 0.12), Vector3(-5, 2.6, -32)), kit.mat("stack"))
+	b.add(AnvilProps.noisy_cyl(2.8, 3.2, 20.0, 28, 8, 0.05, 330), Transform3D(Basis(Vector3.UP, 0.3) * Basis(Vector3.FORWARD, PI * 0.5 - 0.04), Vector3(-22, 3.0, -26)), kit.mat("shell"))
+	b.add(AnvilProps.noisy_cyl(2.5, 2.8, 14.0, 28, 6, 0.06, 331), Transform3D(Basis(Vector3.UP, 0.75) * Basis(Vector3.FORWARD, PI * 0.5 + 0.12), Vector3(-5, 2.6, -32)), kit.mat("shell"))
 	b.add(AnvilProps.slag_mesh(332), Transform3D(Basis.from_scale(Vector3(6.0, 3.5, 5.0)), Vector3(26, -0.2, -20)), kit.slag_mat)
 	ruin.add(AnvilProps.slag_mesh(333), Transform3D(Basis.from_scale(Vector3(4.0, 2.0, 3.0)), Vector3(-28, -0.2, 8)), kit.mat("rust"))
 	if stage >= 3:
