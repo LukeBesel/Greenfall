@@ -40,11 +40,15 @@ uniform vec3 oil_col : source_color = vec3(0.05, 0.045, 0.04);
 uniform vec3 sand_col : source_color = vec3(0.86, 0.79, 0.62);
 uniform vec4 wakes[8];             // x, z, strength 0..1, radius
 uniform vec4 fish[6];
-uniform int debug_view = 0;          // dev: 1 clarity, 2 depth/10, 3 state rgb              // x, z, heading, length (0 = none)
+uniform int debug_view = 0;
+// Site prefabs (sites.gd): work in the mesh's own space (a local flat patch, wherever it is
+// placed on a globe) instead of world xz; grid_radius < 0 there (no play-field hexes).
+uniform bool local_space = false;          // dev: 1 clarity, 2 depth/10, 3 state rgb              // x, z, heading, length (0 = none)
 
 #include "res://art/shaders/water_light.gdshaderinc"
 
 varying vec3 wpos;
+varying vec3 lpos;
 varying float swell_h;
 varying float swell_k;
 const float SQRT3 = 1.7320508;
@@ -108,7 +112,7 @@ vec3 swell(vec2 p, float amp) {
 }
 
 void vertex() {
-	vec3 w = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	vec3 w = local_space ? VERTEX : (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	float r = length(w.xz);
 	float amp = mix(0.025, swell_amp, smoothstep(field_r, field_r + 80.0, r));
 	vec3 s = swell(w.xz, amp);
@@ -117,6 +121,7 @@ void vertex() {
 	swell_k = amp;
 	NORMAL = normalize(vec3(-s.y, 1.0, -s.z));
 	wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	lpos = local_space ? VERTEX : wpos;
 }
 
 // Cheap caustic web: a few rounds of domain warping on a sine lattice.
@@ -131,7 +136,7 @@ float caustic(vec2 p, float t) {
 }
 
 void fragment() {
-	vec2 p = wpos.xz;
+	vec2 p = lpos.xz;
 	float r = length(p);
 	float clarity = clamp(restore, 0.0, 1.0);
 	float in_field = 0.0;
@@ -197,7 +202,8 @@ void fragment() {
 	float nd = (0.55 - 0.25 * smoothstep(80.0, 600.0, cam_d)) * calm;
 
 	// --- Seabed seen through the surface (refracted one-step parallax).
-	vec3 rd = refract(V, vec3(0.0, 1.0, 0.0), 0.752);
+	vec3 Vl = local_space ? normalize(transpose(mat3(MODEL_MATRIX)) * V) : V;
+	vec3 rd = refract(Vl, vec3(0.0, 1.0, 0.0), 0.752);
 	float tdn = max(-rd.y, 0.18);
 	float L = depth / tdn;
 	vec2 hit = p + rd.xz * L;

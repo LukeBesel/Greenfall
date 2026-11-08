@@ -129,3 +129,25 @@ func test_suns_fallback() -> void:
 	assert_true(s.has("a") and s.has("b"))
 	assert_gt(float(s["a"]["energy"]), float(s["b"]["energy"]), "the companion is the dimmer star")
 	assert_gt(float(s["a"]["size"]), float(s["b"]["size"]))
+
+
+func test_site_prefabs_build_and_restage() -> void:
+	var reg: Dictionary = _kind().get("sites", {})
+	for id: String in TideSite.SITES:
+		assert_true(reg.has(id), "registry lists " + id)
+		var root := Node3D.new()
+		add_child_autofree(root)
+		root.position = Vector3(500, 30, -200)  # anywhere: sites are local
+		var s: TideSite = TideSite.place(id, root, 0, 0.0)
+		assert_not_null(s.ocean, id + " has its sea patch")
+		assert_true((s._groups["ruin"] as Node3D).visible)
+		var live: int = 0
+		for mmi: MultiMeshInstance3D in s._junk:
+			live += mmi.multimesh.visible_instance_count
+		assert_gt(live, 50, id + " is trashed when ruined")
+		s.set_state(2, 1.0)
+		assert_true((s._groups["future"] as Node3D).visible)
+		var left: int = 0
+		for mmi: MultiMeshInstance3D in s._junk:
+			left += mmi.multimesh.visible_instance_count
+		assert_eq(left, 0, id + " junk gone when restored")

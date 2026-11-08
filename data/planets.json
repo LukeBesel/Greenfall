@@ -333,6 +333,46 @@
       0.55
     ],
     "music_mood": "tidewell_swell",
-    "biome": "tidewell"
+    "biome": "tidewell",
+    "sites": {
+      "_doc": "Placeable site prefabs for the walkable globe (planet/planets/tidewell/sites.gd): TideSite.place(id, root, stage 0-2, restoration 0-1, {water_radius, seed}); a local flat patch about 60-100 m across, sea level at y = 0.14, no world-origin assumptions. Preview: res://planet/planets/tidewell/site_preview.tscn -- --site=<id>.",
+      "script": "res://planet/planets/tidewell/sites.gd",
+      "hub_raft": {
+        "kind": "hub",
+        "name": "Anchored Raft",
+        "size_m": 92,
+        "desc": "Timber raft deck on rusted pontoons: workshop shack, store, deck crane, fuel tank, moorings."
+      },
+      "hub_stilts": {
+        "kind": "hub",
+        "name": "Stilt Yard",
+        "size_m": 96,
+        "desc": "A sandy islet with a stilt deck and huts over the water, boardwalk, beached skiff."
+      },
+      "wreck": {
+        "kind": "landmark",
+        "name": "Ore Barge Wreck",
+        "size_m": 100,
+        "desc": "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+      },
+      "dredge_rig": {
+        "kind": "landmark",
+        "name": "Dredge Rig",
+        "size_m": 88,
+        "desc": "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
+      },
+      "reef_garden": {
+        "kind": "landmark",
+        "name": "Reef Garden",
+        "size_m": 84,
+        "desc": "Bleached coral breaking the surface among nets; live coral and floating gardens when restored."
+      },
+      "buoy_field": {
+        "kind": "landmark",
+        "name": "Buoy Field",
+        "size_m": 80,
+        "desc": "Rows of mooring buoys strung with rope and ghost nets; light caps when futuristic."
+      }
+    }
   }
 }
