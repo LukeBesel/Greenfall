@@ -145,6 +145,8 @@ func _ready() -> void:
 	# The quality pass sets the flat-world fog density (0.0025..0.005); on the orbit that is several
 	# times too thick, and from Command height the whole map turned to grey haze.
 	env.fog_density = 0.0003 if view == "command" else 0.0011
+	# Volumetric fog (Medium+) is sized for a flat district; at planet scale it buries every view.
+	env.volumetric_fog_enabled = false
 	if not (DevHooks.has("orbit-nohud") or DevHooks.has("no-hud")):
 		var cl := CanvasLayer.new()
 		add_child(cl)
