@@ -61,7 +61,7 @@ static func noisy_cyl(r_top: float, r_bot: float, h: float, segs: int, rings: in
 static func make_mat(env: AnvilEnv, key: String) -> Material:
 	match key:
 		"stack":
-			var s: ShaderMaterial = Mats.worn_paint(Color(0.2, 0.18, 0.17), 0.3, 0.95, 3.0, 1.0)
+			var s: ShaderMaterial = Mats.worn_paint(Color(0.15, 0.13, 0.12), 0.8, 0.7, 3.0, 1.0)
 			s.set_shader_parameter("tex_scale", 0.22)
 			return s
 		"hauler":
