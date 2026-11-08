@@ -355,7 +355,7 @@ func _handle_scoop(delta: float) -> void:
 			break
 		var pid: int = Pace.find_scoop_target(world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"), Pace.lift_class())  # [pace] Lift Strength
 		if pid < 0:
-			if k == 0:
+			if k == 0 and not Pace.press_hint(self, world.field):  # [orbC] stuck with a part-full chest: say "press"
 				Pace.heavy_hint(self, world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"))  # [pace]
 			break
 		var extra: PackedInt32Array = world.field.cluster_extra(pid)  # [world2] gen-2 junk is finer: grab the little cluster

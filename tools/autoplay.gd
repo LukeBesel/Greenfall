@@ -771,6 +771,9 @@ func _do_clean(p: Patch) -> void:
 	if p.compartment.ratio(cap) >= 0.9 and p.compartment.pending <= 0.0:
 		_cube = Pace.baler_unlocked()  # [pace] no Baler: _do_dump empties the chest at the bin
 		return
+	if Pace.press_ready(p, world.field):  # [orbC] nothing near fits: press now, don't wait under 90% forever
+		_cube = true
+		return
 	if p.compartment.fill + p.compartment.pending >= cap * 0.9:
 		return  # wait for in-flight pieces to land
 	var field: HexField = world.field

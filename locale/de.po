@@ -498,11 +498,11 @@ msgstr "Nicht genug Material."
 msgid "Telescope built. Walk up to it and press E to look across the system."
 msgstr "Teleskop gebaut. Geh hin und drück E, um über das System zu blicken."
 
-#: automation/telescope.gd:259 ui/telescope_panel.gd:11
+#: automation/telescope.gd:260 ui/telescope_panel.gd:11
 msgid "OBSERVATORY"
 msgstr "OBSERVATORIUM"
 
-#: automation/telescope.gd:311
+#: automation/telescope.gd:312
 msgid "E   Telescope: look across the system"
 msgstr "E   Teleskop: über das System blicken"
 
@@ -535,39 +535,43 @@ msgstr "Hebekraft %d"
 msgid "Too heavy: needs %s"
 msgstr "Zu schwer: braucht %s"
 
-#: core/pace.gd:141
+#: core/pace.gd:175
+msgid "Nothing here fits: press a bale"
+msgstr ""
+
+#: core/pace.gd:187
 msgid "No Baler yet: empty your chest in the trash bin"
 msgstr "Noch keine Ballenpresse: leere dein Brustfach in die Mülltonne"
 
-#: core/pace.gd:191 systems/events.gd:492 ui/goals_panel.gd:257
+#: core/pace.gd:237 systems/events.gd:492 ui/goals_panel.gd:257
 msgid "+%s cubes"
 msgstr "+%s Würfel"
 
-#: fauna/fauna.gd:1481
+#: fauna/fauna.gd:1515
 msgid "E   pet %s"
 msgstr "E   %s streicheln"
 
-#: fauna/fauna.gd:1482
+#: fauna/fauna.gd:1516
 msgid "E   pet the cat"
 msgstr "E   die Katze streicheln"
 
-#: fauna/fauna.gd:1540
+#: fauna/fauna.gd:1574
 msgid "E   scatter crumbs for the birds"
 msgstr "E   Krümel für die Vögel streuen"
 
-#: fauna/fauna.gd:1588
+#: fauna/fauna.gd:1622
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr "Die Vögel finden dich jetzt ganz in Ordnung. Krümeltüte zu deiner Sammlung hinzugefügt."
 
-#: fauna/fauna.gd:1644
+#: fauna/fauna.gd:1678
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "Die Katze hat beschlossen, dass du zu ihr gehörst. Darf ich vorstellen: %s. Sie wohnt jetzt an dieser Basis."
 
-#: fauna/fauna.gd:1964 ui/subtitles.gd:412
+#: fauna/fauna.gd:1998 ui/subtitles.gd:412
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "Neue Sichtung: %s. Steht jetzt im Kodex."
 
-#: fauna/fauna.gd:2032
+#: fauna/fauna.gd:2066
 msgid "Snap! A %s for your Collection."
 msgstr "Klick! Ein Foto (%s) für deine Sammlung."
 
@@ -785,7 +789,7 @@ msgstr "WREN: Da endet die Vermessungszone, Lumi. Da draußen gibt's nur Dunst."
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi schwebt zurück auf festen Boden."
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1063 scenes/slice_orbit.gd:304
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:346
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXFELD SAUBER!  +%s"
 
@@ -793,7 +797,7 @@ msgstr "HEXFELD SAUBER!  +%s"
 msgid "Rocket hop: %.1f km"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:89
+#: planet/sites/orbit_sites.gd:91
 msgid "The rocket is in flight."
 msgstr ""
 
@@ -853,7 +857,7 @@ msgstr ""
 "KOMPOSTPRESSE  Stufe %d\n"
 "Trichter %d%%  →  Samen"
 
-#: plants/garden.gd:263
+#: plants/garden.gd:336
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "Ein Hexfeld ist vollständig wiederhergestellt. Schon lebt etwas Kleines darin."
 
@@ -1053,11 +1057,11 @@ msgstr "Nach rechts"
 msgid "Look up"
 msgstr "Nach oben"
 
-#: player/vehicle.gd:94
+#: player/vehicle.gd:133
 msgid "Ride the hover-sled"
 msgstr ""
 
-#: player/vehicle.gd:94
+#: player/vehicle.gd:133
 msgid "Hover-sled: buy it in Upgrades"
 msgstr ""
 
@@ -1260,67 +1264,67 @@ msgstr ""
 msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
 msgstr ""
 
-#: scenes/slice.gd:368
+#: scenes/slice.gd:390
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Roboter-Uplink aktiv. Drück B für das Kommando: Zonen malen und Crews hinschicken, wo du willst."
 
-#: scenes/slice.gd:1077 scenes/slice_orbit.gd:320
+#: scenes/slice.gd:1099 scenes/slice_orbit.gd:362
 msgid "Milestone: %d hexes clean!"
 msgstr "Meilenstein: %d Hexfelder sauber!"
 
-#: scenes/slice.gd:1079
+#: scenes/slice.gd:1101
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "Der ganze Schrottplatz ist sauber. Lumi piept ein sehr langes, sehr glückliches Piepen."
 
-#: scenes/slice.gd:1086
+#: scenes/slice.gd:1108
 msgid "%s is out of range: %s"
 msgstr "%s ist außer Reichweite: %s"
 
-#: scenes/slice.gd:1096
+#: scenes/slice.gd:1118
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Gesperrt. Bring deine Basis auf Stufe 5, um die Startrampe zu bauen."
 
-#: scenes/slice.gd:1099 ui/rockets_panel.gd:39
+#: scenes/slice.gd:1121 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Energiezellen laden: %s. Raketen-Upgrades füllen sie schneller."
 
-#: scenes/slice.gd:1153
+#: scenes/slice.gd:1175
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Landung: %s. Basis %d von %d. %s"
 
-#: scenes/slice.gd:1154
+#: scenes/slice.gd:1176
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "Die Rakete parkt auf dem Platz, bereit, sobald die Zellen voll sind."
 
-#: scenes/slice.gd:1154
+#: scenes/slice.gd:1176
 msgid "Landed on the base pad."
 msgstr "Auf der Basisplattform gelandet."
 
-#: scenes/slice.gd:1270 scenes/slice_orbit.gd:530
+#: scenes/slice.gd:1292 scenes/slice_orbit.gd:723
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Upgrades brauchen eine Werkbank. Zurück zur Basis."
 
-#: scenes/slice.gd:1461
+#: scenes/slice.gd:1483
 msgid "Welcome back. The junk waited for you."
 msgstr "Willkommen zurück. Der Schrott hat auf dich gewartet."
 
-#: scenes/slice.gd:1478
+#: scenes/slice.gd:1500
 msgid "OUTPOST %d · Lv%d"
 msgstr "AUSSENPOSTEN %d · St%d"
 
-#: scenes/slice.gd:1478
+#: scenes/slice.gd:1500
 msgid "OUTPOST %d · RUIN"
 msgstr "AUSSENPOSTEN %d · RUINE"
 
-#: scenes/slice_orbit.gd:364 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:115
+#: scenes/slice_orbit.gd:406 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:238
 msgid "E   Workbench (broken): repair it"
 msgstr "E   Werkbank (kaputt): reparieren"
 
-#: scenes/slice_orbit.gd:364 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:406 systems/camp/camp.gd:177
 msgid "E   Workbench: upgrades"
 msgstr "E   Werkbank: Upgrades"
 
-#: scenes/slice_orbit.gd:630 systems/camp/camp.gd:224
+#: scenes/slice_orbit.gd:823 systems/camp/camp.gd:224
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Werkbank repariert. Drück dort E, um Würfel für Upgrades auszugeben."
 
@@ -1448,27 +1452,27 @@ msgstr "Jedes Fleckchen, das du da unten wachsen lässt, ist ein Beet mehr wie d
 msgid "Bloom Core 25%: WREN's signal is clear now."
 msgstr "Blütenkern 25%: WRENs Signal ist jetzt klar."
 
-#: story/core_charge.gd:288
+#: story/core_charge.gd:289
 msgid "Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."
 msgstr "Blütenkern 50%: Lumis Leuchten ist zurück, heller als seit Jahren."
 
-#: story/core_charge.gd:290
+#: story/core_charge.gd:291
 msgid "Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."
 msgstr "Halb geladen. Du leuchtest, Lumi. So richtig. Ich hatte vergessen, wie hell du sein kannst."
 
-#: story/core_charge.gd:324
+#: story/core_charge.gd:325
 msgid "That night..."
 msgstr "In jener Nacht..."
 
-#: story/core_charge.gd:348
+#: story/core_charge.gd:349
 msgid "Lumi, look up. That light. West to east, steady, not twinkling."
 msgstr "Lumi, schau hoch. Das Licht da. Von West nach Ost, ruhig, kein Funkeln."
 
-#: story/core_charge.gd:353
+#: story/core_charge.gd:354
 msgid "That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."
 msgstr "Das ist die Cradle. Als dein Kern aufleuchtete, hat die Arche es gehört. Sie hat gewendet. Wir kommen dich holen."
 
-#: story/core_charge.gd:363
+#: story/core_charge.gd:364
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "Blütenkern 75%: Die Cradle ist auf dem Heimweg. Halte nachts am Himmel nach ihr Ausschau."
 
@@ -2267,19 +2271,19 @@ msgstr "Frei nach %d Aufträgen"
 msgid "Locked"
 msgstr "Gesperrt"
 
-#: systems/cradle_mode.gd:261
+#: systems/cradle_mode.gd:263
 msgid "Heirloom unlocked: %s, level %d. It travels with Lumi to every world."
 msgstr "Erbstück freigeschaltet: %s, Stufe %d. Es reist mit Lumi auf jede Welt."
 
-#: systems/cradle_mode.gd:311 systems/cradle_mode.gd:317
+#: systems/cradle_mode.gd:313 systems/cradle_mode.gd:319
 msgid "Fully grown"
 msgstr "Voll ausgebaut"
 
-#: systems/cradle_mode.gd:318
+#: systems/cradle_mode.gd:320
 msgid "Restore a planet for a pick, or unlocks with Ark milestones (next: %s, at %d restoration)"
 msgstr "Stelle einen Planeten wieder her für eine Wahl, oder es wird mit Archen-Meilensteinen freigeschaltet (nächstes: %s, bei %d Wiederherstellung)"
 
-#: systems/cradle_mode.gd:331
+#: systems/cradle_mode.gd:333
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr "Erbstück: %s, Stufe %d. Es reist mit Lumi auf jede Welt."
 
@@ -2585,11 +2589,11 @@ msgstr "+{amount} % {stat} ({robot})"
 msgid "+{amount} {robot} {stat}"
 msgstr "+{amount} {stat} ({robot})"
 
-#: systems/late_director.gd:95
+#: systems/late_director.gd:96
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "Die Archenbrücke öffnet sich, sobald die Cradle heimgekehrt ist."
 
-#: systems/late_director.gd:129
+#: systems/late_director.gd:133
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."
 msgstr "Wiegenmodus: Der Saatgutspeicher der Arche hält Samen für andere Welten bereit. Pause > Archenbrücke zeigt sie und die Erbstücke, die deine Wiederherstellung freigeschaltet hat, oder säe eine neue Welt. Der Gartenmodus (H) ist auch offen."
 
@@ -3020,7 +3024,7 @@ msgstr "%s summt den Setzlingen etwas vor. Der Ruhestand steht ihm."
 msgid "%s points proudly at a new bud."
 msgstr "%s zeigt stolz auf eine neue Knospe."
 
-#: systems/extras/radio.gd:184
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:259
 msgid "E   CD player: %s"
 msgstr "E   CD-Spieler: %s"
 
@@ -3375,7 +3379,7 @@ msgstr "Flotte"
 msgid "Fabricator"
 msgstr "Fabrikator"
 
-#: ui/bench_kit.gd:163 ui/upgrade_card.gd:221
+#: ui/bench_kit.gd:164 ui/upgrade_card.gd:221
 msgid "need %s"
 msgstr "fehlt %s"
 
@@ -3388,7 +3392,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "Maschinen"
 
-#: ui/bench_lists.gd:12 ui/globe_view.gd:178 ui/locker_panel.gd:230
+#: ui/bench_lists.gd:12 ui/globe_view.gd:178 ui/locker_panel.gd:250
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "Rakete"
@@ -3650,7 +3654,7 @@ msgstr "KODEX"
 msgid "Watch the story"
 msgstr "Die Geschichte ansehen"
 
-#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:165
+#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:161
 msgid "Close  [%s]"
 msgstr "Schließen  [%s]"
 
@@ -3957,7 +3961,7 @@ msgstr "KOMMANDO"
 msgid "Mark around me"
 msgstr "Um mich markieren"
 
-#: ui/command_view.gd:281 ui/lumi_builder.gd:585 ui/photo_mode.gd:26
+#: ui/command_view.gd:281 ui/lumi_builder.gd:597 ui/photo_mode.gd:26
 msgid "Clear"
 msgstr "Leeren"
 
@@ -4099,7 +4103,7 @@ msgstr "BLÜTENKERN   %d%%"
 msgid "DESIGNS"
 msgstr "DESIGNS"
 
-#: ui/cosmetics_panel.gd:39 ui/lumi_builder.gd:540
+#: ui/cosmetics_panel.gd:39 ui/lumi_builder.gd:552
 msgid "Looks only (no bonuses)"
 msgstr "Nur Optik (keine Boni)"
 
@@ -4119,11 +4123,11 @@ msgstr "Freigeschaltet"
 msgid "Locked  %d%%"
 msgstr "Gesperrt  %d%%"
 
-#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:645
+#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:657
 msgid "Bonus: %s"
 msgstr "Bonus: %s"
 
-#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:645
+#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:657
 msgid "(off: looks only)"
 msgstr "(aus: nur Optik)"
 
@@ -4135,8 +4139,8 @@ msgstr "Eigener Look mit diesem Bonus"
 msgid "Unlocked. Press to wear."
 msgstr "Freigeschaltet. Drücken zum Anziehen."
 
-#: ui/cosmetics_panel.gd:182 ui/lumi_builder.gd:376 ui/lumi_builder.gd:493
-#: ui/lumi_builder.gd:531 ui/lumi_builder.gd:599 ui/lumi_builder.gd:600
+#: ui/cosmetics_panel.gd:182 ui/lumi_builder.gd:388 ui/lumi_builder.gd:505
+#: ui/lumi_builder.gd:543 ui/lumi_builder.gd:611 ui/lumi_builder.gd:612
 msgid "Locked: %s"
 msgstr "Gesperrt: %s"
 
@@ -4576,7 +4580,7 @@ msgstr "   ·   VERALTET"
 msgid "Re-survey      %s cubes"
 msgstr "Neu vermessen      %s Würfel"
 
-#: ui/goals_panel.gd:206 ui/list_detail.gd:418 ui/objective_card.gd:112
+#: ui/goals_panel.gd:206 ui/list_detail.gd:446 ui/objective_card.gd:112
 msgid "DONE"
 msgstr "FERTIG"
 
@@ -4696,68 +4700,68 @@ msgstr ""
 msgid "All built"
 msgstr "Alle gebaut"
 
-#: ui/hud.gd:77
+#: ui/hud.gd:79
 msgid "Lumi reached level %d%s"
 msgstr "Lumi hat Stufe %d erreicht%s"
 
-#: ui/hud.gd:162
+#: ui/hud.gd:164
 msgid "OLD TOWN   0%"
 msgstr "ALTSTADT   0%"
 
-#: ui/hud.gd:294
+#: ui/hud.gd:306
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN-SIGNAL   %d%%"
 
-#: ui/hud.gd:322
+#: ui/hud.gd:334
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% SAUBER"
 
-#: ui/hud.gd:326
+#: ui/hud.gd:338
 msgid "%s  BASE"
 msgstr "%s  BASIS"
 
-#: ui/hud.gd:329
+#: ui/hud.gd:341
 msgid "CARRYING %d/%d"
 msgstr "TRÄGT %d/%d"
 
-#: ui/hud.gd:353
+#: ui/hud.gd:367
 msgid "HEX  CLEAR"
 msgstr "HEX  SAUBER"
 
-#: ui/hud.gd:357
+#: ui/hud.gd:371
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:360
+#: ui/hud.gd:374
 msgid "  SUSTAIN %d%%"
 msgstr "  STABIL %d%%"
 
-#: ui/hud.gd:362
+#: ui/hud.gd:376
 msgid "  THIRSTY"
 msgstr "  DURSTIG"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:387
+#: ui/hud.gd:401
 msgid "%s   pick up bale"
 msgstr "%s   Ballen aufheben"
 
-#: ui/hud.gd:388
+#: ui/hud.gd:402
 msgid "%s   dig up part"
 msgstr "%s   Teil ausgraben"
 
-#: ui/hud.gd:389
+#: ui/hud.gd:403
 msgid "%s   read memory shard"
 msgstr "%s   Erinnerungssplitter lesen"
 
-#: ui/hud.gd:390
+#: ui/hud.gd:404
 msgid "%s   pick up the seed tin"
 msgstr "%s   Samendose aufheben"
 
-#: ui/hud.gd:391
+#: ui/hud.gd:405
 msgid "%s   set bale down"
 msgstr "%s   Ballen abstellen"
 
-#: ui/hud.gd:392
+#: ui/hud.gd:406
 msgid "%s   workbench"
 msgstr "%s   Werkbank"
 
@@ -4799,35 +4803,35 @@ msgstr "BALLEN FERTIG"
 msgid "◢ BURIED PART %d%%"
 msgstr "◢ VERGRABENES TEIL %d%%"
 
-#: ui/list_detail.gd:88
+#: ui/list_detail.gd:97
 msgid "Nothing here yet. Keep playing."
 msgstr "Hier ist noch nichts. Spiel weiter."
 
-#: ui/list_detail.gd:414
+#: ui/list_detail.gd:442
 msgid "LOCKED"
 msgstr "GESPERRT"
 
-#: ui/list_detail.gd:422 ui/profile_picker.gd:97
+#: ui/list_detail.gd:450 ui/profile_picker.gd:97
 msgid "ACTIVE"
 msgstr "AKTIV"
 
-#: ui/list_detail.gd:443
+#: ui/list_detail.gd:471
 msgid "FREE"
 msgstr "GRATIS"
 
-#: ui/list_detail.gd:546
+#: ui/list_detail.gd:578
 msgid "REQUIRES   NOT YET   %s"
 msgstr "BENÖTIGT   NOCH NICHT   %s"
 
-#: ui/list_detail.gd:546
+#: ui/list_detail.gd:578
 msgid "Not unlocked yet. Keep playing."
 msgstr "Noch nicht freigeschaltet. Spiel weiter."
 
-#: ui/list_detail.gd:549
+#: ui/list_detail.gd:581
 msgid "REQUIRES   %s"
 msgstr "BENÖTIGT   %s"
 
-#: ui/list_detail.gd:552
+#: ui/list_detail.gd:584
 msgid "REQUIRES   READY"
 msgstr "BENÖTIGT   BEREIT"
 
@@ -4856,11 +4860,11 @@ msgstr "Leuchten"
 msgid "Trim"
 msgstr "Zierleisten"
 
-#: ui/locker_editors.gd:60
+#: ui/locker_editors.gd:67
 msgid "Every %s wears this"
 msgstr "Jeder %s trägt das"
 
-#: ui/locker_editors.gd:213
+#: ui/locker_editors.gd:222
 msgid "Ship looks: the tiers keep their shape"
 msgstr "Schiff-Look: die Stufen behalten ihre Form"
 
@@ -4868,23 +4872,23 @@ msgstr "Schiff-Look: die Stufen behalten ihre Form"
 msgid "LOCKER"
 msgstr "SPIND"
 
-#: ui/locker_panel.gd:85 ui/telescope_view.gd:379
+#: ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "Schließen"
 
-#: ui/locker_panel.gd:185
+#: ui/locker_panel.gd:205
 msgid "The Locker"
 msgstr "Der Spind"
 
-#: ui/locker_panel.gd:186
+#: ui/locker_panel.gd:206
 msgid "Build the Locker in the Build tab, then open it in the yard."
 msgstr "Baue den Spind im Bauen-Tab und öffne ihn dann im Hof."
 
-#: ui/locker_panel.gd:187
+#: ui/locker_panel.gd:207
 msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play."
 msgstr "Gestalte Lumi und jeden Roboter: Farben, Augen, Kopfteile, Aufsätze, Flottenlack. Neue Teile schaltest du beim Spielen frei."
 
-#: ui/locker_panel.gd:228 ui/upgrades_screen.gd:15
+#: ui/locker_panel.gd:248 ui/upgrades_screen.gd:15
 msgid "Bots"
 msgstr "Bots"
 
@@ -4892,119 +4896,119 @@ msgstr "Bots"
 msgid "CHARACTER BUILDER"
 msgstr "CHARAKTER-EDITOR"
 
-#: ui/lumi_builder.gd:147
+#: ui/lumi_builder.gd:148
 msgid "Drag to turn  ·  Wheel to zoom"
 msgstr "Ziehen zum Drehen  ·  Mausrad zum Zoomen"
 
-#: ui/lumi_builder.gd:184
+#: ui/lumi_builder.gd:185
 msgid "Randomize"
 msgstr "Zufällig"
 
-#: ui/lumi_builder.gd:185
+#: ui/lumi_builder.gd:186
 msgid "Reset to preset"
 msgstr "Auf Vorlage zurücksetzen"
 
-#: ui/lumi_builder.gd:186
+#: ui/lumi_builder.gd:187
 msgid "Test laser"
 msgstr "Laser testen"
 
-#: ui/lumi_builder.gd:190 ui/profile_picker.gd:252 ui/profile_picker.gd:269
+#: ui/lumi_builder.gd:191 ui/profile_picker.gd:252 ui/profile_picker.gd:269
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ui/lumi_builder.gd:191
+#: ui/lumi_builder.gd:192
 msgid "Done"
 msgstr "Fertig"
 
-#: ui/lumi_builder.gd:191
+#: ui/lumi_builder.gd:192
 msgid "Wear look"
 msgstr "Look tragen"
 
-#: ui/lumi_builder.gd:207 ui/lumi_builder.gd:319
+#: ui/lumi_builder.gd:208 ui/lumi_builder.gd:331
 msgid "Presets"
 msgstr "Vorlagen"
 
-#: ui/lumi_builder.gd:218
+#: ui/lumi_builder.gd:219
 msgid "Saved"
 msgstr "Gespeichert"
 
-#: ui/lumi_builder.gd:222 ui/lumi_builder.gd:323
+#: ui/lumi_builder.gd:223 ui/lumi_builder.gd:335
 msgid "Saved looks"
 msgstr "Gespeicherte Looks"
 
-#: ui/lumi_builder.gd:372
+#: ui/lumi_builder.gd:384
 msgid "A design's full look. Every slot can be changed afterwards."
 msgstr "Der komplette Look eines Designs. Jeder Platz lässt sich danach ändern."
 
-#: ui/lumi_builder.gd:392
+#: ui/lumi_builder.gd:404
 msgid "Custom colour"
 msgstr "Eigene Farbe"
 
-#: ui/lumi_builder.gd:437 data/style_parts.json:advanced.name
+#: ui/lumi_builder.gd:449 data/style_parts.json:advanced.name
 msgid "Advanced colour picker"
 msgstr "Erweiterte Farbwahl"
 
-#: ui/lumi_builder.gd:447
+#: ui/lumi_builder.gd:459
 msgid "Advanced (hue, saturation, brightness)"
 msgstr "Erweitert (Farbton, Sättigung, Helligkeit)"
 
-#: ui/lumi_builder.gd:456
+#: ui/lumi_builder.gd:468
 msgid "Hue"
 msgstr "Farbton"
 
-#: ui/lumi_builder.gd:456 ui/photo_mode.gd:385
+#: ui/lumi_builder.gd:468 ui/photo_mode.gd:385
 msgid "Saturation"
 msgstr "Sättigung"
 
-#: ui/lumi_builder.gd:456
+#: ui/lumi_builder.gd:468
 msgid "Brightness"
 msgstr "Helligkeit"
 
-#: ui/lumi_builder.gd:493
+#: ui/lumi_builder.gd:505
 msgid "Equipped"
 msgstr "Ausgerüstet"
 
-#: ui/lumi_builder.gd:509
+#: ui/lumi_builder.gd:521
 msgid "How weathered the paint looks: fresh from the ark, or three hundred years of dust."
 msgstr "Wie verwittert der Lack aussieht: frisch von der Arche oder dreihundert Jahre Staub."
 
-#: ui/lumi_builder.gd:512
+#: ui/lumi_builder.gd:524
 msgid "Fresh"
 msgstr "Frisch"
 
-#: ui/lumi_builder.gd:521
+#: ui/lumi_builder.gd:533
 msgid "Weathered"
 msgstr "Verwittert"
 
-#: ui/lumi_builder.gd:527
+#: ui/lumi_builder.gd:539
 msgid "A custom look can use the bonus of any design you have unlocked."
 msgstr "Ein eigener Look kann den Bonus jedes freigeschalteten Designs nutzen."
 
-#: ui/lumi_builder.gd:551
+#: ui/lumi_builder.gd:563
 msgid "Keep up to %d looks. Load one to edit it, then press Done to wear it."
 msgstr "Bis zu %d Looks speichern. Lade einen zum Bearbeiten und drücke Fertig, um ihn zu tragen."
 
-#: ui/lumi_builder.gd:556 ui/lumi_builder.gd:580
+#: ui/lumi_builder.gd:568 ui/lumi_builder.gd:592
 msgid "Look %d"
 msgstr "Look %d"
 
-#: ui/lumi_builder.gd:564
+#: ui/lumi_builder.gd:576
 msgid "Empty"
 msgstr "Leer"
 
-#: ui/lumi_builder.gd:569 data/robot_parts.json:stats[load].name
+#: ui/lumi_builder.gd:581 data/robot_parts.json:stats[load].name
 msgid "Load"
 msgstr "Last"
 
-#: ui/lumi_builder.gd:577
+#: ui/lumi_builder.gd:589
 msgid "Save here"
 msgstr "Hier speichern"
 
-#: ui/lumi_builder.gd:647
+#: ui/lumi_builder.gd:659
 msgid "Unsaved changes"
 msgstr "Ungespeicherte Änderungen"
 
-#: ui/lumi_builder.gd:663
+#: ui/lumi_builder.gd:675
 msgid "Part of this look is still locked."
 msgstr "Ein Teil dieses Looks ist noch gesperrt."
 
@@ -6338,7 +6342,7 @@ msgstr "Forschung"
 msgid "WORKBENCH"
 msgstr "WERKBANK"
 
-#: ui/upgrades_screen.gd:228
+#: ui/upgrades_screen.gd:237
 msgid "Not open yet. Keep playing."
 msgstr "Noch nicht offen. Spiel weiter."
 

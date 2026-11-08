@@ -498,11 +498,11 @@ msgstr "素材が足りません。"
 msgid "Telescope built. Walk up to it and press E to look across the system."
 msgstr "望遠鏡が完成した。近づいて E を押すと、星系を見渡せる。"
 
-#: automation/telescope.gd:259 ui/telescope_panel.gd:11
+#: automation/telescope.gd:260 ui/telescope_panel.gd:11
 msgid "OBSERVATORY"
 msgstr "天文台"
 
-#: automation/telescope.gd:311
+#: automation/telescope.gd:312
 msgid "E   Telescope: look across the system"
 msgstr "E   望遠鏡：星系を見わたす"
 
@@ -535,39 +535,43 @@ msgstr "リフト力 %d"
 msgid "Too heavy: needs %s"
 msgstr "重すぎる：%s が必要"
 
-#: core/pace.gd:141
+#: core/pace.gd:175
+msgid "Nothing here fits: press a bale"
+msgstr ""
+
+#: core/pace.gd:187
 msgid "No Baler yet: empty your chest in the trash bin"
 msgstr "ベーラーがまだない：胸のゴミをゴミ箱に空けよう"
 
-#: core/pace.gd:191 systems/events.gd:492 ui/goals_panel.gd:257
+#: core/pace.gd:237 systems/events.gd:492 ui/goals_panel.gd:257
 msgid "+%s cubes"
 msgstr "+%s キューブ"
 
-#: fauna/fauna.gd:1481
+#: fauna/fauna.gd:1515
 msgid "E   pet %s"
 msgstr "E   %s をなでる"
 
-#: fauna/fauna.gd:1482
+#: fauna/fauna.gd:1516
 msgid "E   pet the cat"
 msgstr "E   ネコをなでる"
 
-#: fauna/fauna.gd:1540
+#: fauna/fauna.gd:1574
 msgid "E   scatter crumbs for the birds"
 msgstr "E   鳥にパンくずをまく"
 
-#: fauna/fauna.gd:1588
+#: fauna/fauna.gd:1622
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr "鳥たちはきみを気に入ったみたい。パンくず袋をコレクションに追加した。"
 
-#: fauna/fauna.gd:1644
+#: fauna/fauna.gd:1678
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "このネコはきみを自分のものだと決めたらしい。%s だよ。これからはこの基地で暮らすって。"
 
-#: fauna/fauna.gd:1964 ui/subtitles.gd:412
+#: fauna/fauna.gd:1998 ui/subtitles.gd:412
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新しく発見：%s。図鑑に追加されたよ。"
 
-#: fauna/fauna.gd:2032
+#: fauna/fauna.gd:2066
 msgid "Snap! A %s for your Collection."
 msgstr "パシャ！%s の写真をコレクションに追加。"
 
@@ -784,7 +788,7 @@ msgstr "WREN：そこが測量ゾーンの端よ、Lumi。外にはもやしか�
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi はふわりと固い地面に戻った。"
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1063 scenes/slice_orbit.gd:304
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:346
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
@@ -792,7 +796,7 @@ msgstr "ヘックス クリーン！  +%s"
 msgid "Rocket hop: %.1f km"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:89
+#: planet/sites/orbit_sites.gd:91
 msgid "The rocket is in flight."
 msgstr ""
 
@@ -852,7 +856,7 @@ msgstr ""
 "コンポストプレス  Lv %d\n"
 "ホッパー %d%%  →  種"
 
-#: plants/garden.gd:263
+#: plants/garden.gd:336
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "ヘックスが完全によみがえった。もう小さな何かが住みついている。"
 
@@ -1052,11 +1056,11 @@ msgstr "右を見る"
 msgid "Look up"
 msgstr "上を見る"
 
-#: player/vehicle.gd:94
+#: player/vehicle.gd:133
 msgid "Ride the hover-sled"
 msgstr ""
 
-#: player/vehicle.gd:94
+#: player/vehicle.gd:133
 msgid "Hover-sled: buy it in Upgrades"
 msgstr ""
 
@@ -1258,67 +1262,67 @@ msgstr ""
 msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
 msgstr ""
 
-#: scenes/slice.gd:368
+#: scenes/slice.gd:390
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーンを塗って、好きな場所にクルーを送ろう。"
 
-#: scenes/slice.gd:1077 scenes/slice_orbit.gd:320
+#: scenes/slice.gd:1099 scenes/slice_orbit.gd:362
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice.gd:1079
+#: scenes/slice.gd:1101
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
 
-#: scenes/slice.gd:1086
+#: scenes/slice.gd:1108
 msgid "%s is out of range: %s"
 msgstr "%s は範囲外：%s"
 
-#: scenes/slice.gd:1096
+#: scenes/slice.gd:1118
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:1099 ui/rockets_panel.gd:39
+#: scenes/slice.gd:1121 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:1153
+#: scenes/slice.gd:1175
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陸：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:1154
+#: scenes/slice.gd:1176
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
 
-#: scenes/slice.gd:1154
+#: scenes/slice.gd:1176
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:1270 scenes/slice_orbit.gd:530
+#: scenes/slice.gd:1292 scenes/slice_orbit.gd:723
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice.gd:1461
+#: scenes/slice.gd:1483
 msgid "Welcome back. The junk waited for you."
 msgstr "おかえり。ガラクタが待っていたよ。"
 
-#: scenes/slice.gd:1478
+#: scenes/slice.gd:1500
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:1478
+#: scenes/slice.gd:1500
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
-#: scenes/slice_orbit.gd:364 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:115
+#: scenes/slice_orbit.gd:406 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:238
 msgid "E   Workbench (broken): repair it"
 msgstr "E   作業台（故障）：修理する"
 
-#: scenes/slice_orbit.gd:364 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:406 systems/camp/camp.gd:177
 msgid "E   Workbench: upgrades"
 msgstr "E   作業台：アップグレード"
 
-#: scenes/slice_orbit.gd:630 systems/camp/camp.gd:224
+#: scenes/slice_orbit.gd:823 systems/camp/camp.gd:224
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
@@ -1446,27 +1450,27 @@ msgstr "下で育てる一区画一区画が、こういう苗床がまたひと
 msgid "Bloom Core 25%: WREN's signal is clear now."
 msgstr "ブルームコア 25%：WREN のシグナルがはっきりした。"
 
-#: story/core_charge.gd:288
+#: story/core_charge.gd:289
 msgid "Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."
 msgstr "ブルームコア 50%：Lumi の輝きが戻った。ここ何年でいちばん明るい。"
 
-#: story/core_charge.gd:290
+#: story/core_charge.gd:291
 msgid "Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."
 msgstr "半分充電。光ってるよ、Lumi。ちゃんと光ってる。こんなに明るくなれるの、忘れてた。"
 
-#: story/core_charge.gd:324
+#: story/core_charge.gd:325
 msgid "That night..."
 msgstr "あの夜……"
 
-#: story/core_charge.gd:348
+#: story/core_charge.gd:349
 msgid "Lumi, look up. That light. West to east, steady, not twinkling."
 msgstr "Lumi、上を見て。あの光。西から東へ、ゆっくりと、またたかずに。"
 
-#: story/core_charge.gd:353
+#: story/core_charge.gd:354
 msgid "That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."
 msgstr "あれが Cradle号。君のコアが灯ったとき、アークはそれを聞いた。向きを変えたんだ。君を迎えに戻ってる。"
 
-#: story/core_charge.gd:363
+#: story/core_charge.gd:364
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "ブルームコア 75%：Cradle号が帰ってくる。夜空を横切るのを探してみよう。"
 
@@ -2265,19 +2269,19 @@ msgstr "依頼 %d 件で解放"
 msgid "Locked"
 msgstr "ロック中"
 
-#: systems/cradle_mode.gd:261
+#: systems/cradle_mode.gd:263
 msgid "Heirloom unlocked: %s, level %d. It travels with Lumi to every world."
 msgstr "家宝を解放：%s、レベル %d。Lumi といっしょにどの世界へも旅をする。"
 
-#: systems/cradle_mode.gd:311 systems/cradle_mode.gd:317
+#: systems/cradle_mode.gd:313 systems/cradle_mode.gd:319
 msgid "Fully grown"
 msgstr "最大レベル"
 
-#: systems/cradle_mode.gd:318
+#: systems/cradle_mode.gd:320
 msgid "Restore a planet for a pick, or unlocks with Ark milestones (next: %s, at %d restoration)"
 msgstr "惑星を再生すると選択がもらえる。またはアークの節目で解放（次：%s、再生度 %d）"
 
-#: systems/cradle_mode.gd:331
+#: systems/cradle_mode.gd:333
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr "家宝：%s、レベル %d。Lumi といっしょにどの世界へも旅をする。"
 
@@ -2577,11 +2581,11 @@ msgstr "{robot} の{stat} +{amount}%"
 msgid "+{amount} {robot} {stat}"
 msgstr "{robot} の{stat} +{amount}"
 
-#: systems/late_director.gd:95
+#: systems/late_director.gd:96
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "アークブリッジは Cradle号が帰ってきたら開く。"
 
-#: systems/late_director.gd:129
+#: systems/late_director.gd:133
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."
 msgstr "クレイドルモード：アークの種子庫には、ほかの世界のための種がある。ポーズ > アークブリッジで、それと復興で解放した家宝を見たり、新しい世界に種をまいたりできる。ガーデンモード（H）も開いている。"
 
@@ -3012,7 +3016,7 @@ msgstr "%s は苗に鼻歌を聞かせている。引退生活が似合う。"
 msgid "%s points proudly at a new bud."
 msgstr "%s は新しいつぼみを得意げに指さす。"
 
-#: systems/extras/radio.gd:184
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:259
 msgid "E   CD player: %s"
 msgstr "E   CDプレーヤー：%s"
 
@@ -3367,7 +3371,7 @@ msgstr "艦隊"
 msgid "Fabricator"
 msgstr "ファブリケーター"
 
-#: ui/bench_kit.gd:163 ui/upgrade_card.gd:221
+#: ui/bench_kit.gd:164 ui/upgrade_card.gd:221
 msgid "need %s"
 msgstr "あと%s"
 
@@ -3380,7 +3384,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "機械"
 
-#: ui/bench_lists.gd:12 ui/globe_view.gd:178 ui/locker_panel.gd:230
+#: ui/bench_lists.gd:12 ui/globe_view.gd:178 ui/locker_panel.gd:250
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "ロケット"
@@ -3641,7 +3645,7 @@ msgstr "図鑑"
 msgid "Watch the story"
 msgstr "ストーリーを見る"
 
-#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:165
+#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:161
 msgid "Close  [%s]"
 msgstr "閉じる  [%s]"
 
@@ -3948,7 +3952,7 @@ msgstr "指揮"
 msgid "Mark around me"
 msgstr "自分の周りをマーク"
 
-#: ui/command_view.gd:281 ui/lumi_builder.gd:585 ui/photo_mode.gd:26
+#: ui/command_view.gd:281 ui/lumi_builder.gd:597 ui/photo_mode.gd:26
 msgid "Clear"
 msgstr "クリア"
 
@@ -4087,7 +4091,7 @@ msgstr "ブルームコア   %d%%"
 msgid "DESIGNS"
 msgstr "デザイン"
 
-#: ui/cosmetics_panel.gd:39 ui/lumi_builder.gd:540
+#: ui/cosmetics_panel.gd:39 ui/lumi_builder.gd:552
 msgid "Looks only (no bonuses)"
 msgstr "見た目だけ（ボーナスなし）"
 
@@ -4107,11 +4111,11 @@ msgstr "解放済み"
 msgid "Locked  %d%%"
 msgstr "ロック中  %d%%"
 
-#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:645
+#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:657
 msgid "Bonus: %s"
 msgstr "ボーナス：%s"
 
-#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:645
+#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:657
 msgid "(off: looks only)"
 msgstr "（オフ：見た目だけ）"
 
@@ -4123,8 +4127,8 @@ msgstr "この補正でカスタム外見を着用中"
 msgid "Unlocked. Press to wear."
 msgstr "解放済み。押すと着替える。"
 
-#: ui/cosmetics_panel.gd:182 ui/lumi_builder.gd:376 ui/lumi_builder.gd:493
-#: ui/lumi_builder.gd:531 ui/lumi_builder.gd:599 ui/lumi_builder.gd:600
+#: ui/cosmetics_panel.gd:182 ui/lumi_builder.gd:388 ui/lumi_builder.gd:505
+#: ui/lumi_builder.gd:543 ui/lumi_builder.gd:611 ui/lumi_builder.gd:612
 msgid "Locked: %s"
 msgstr "ロック中：%s"
 
@@ -4564,7 +4568,7 @@ msgstr "   ·   古い情報"
 msgid "Re-survey      %s cubes"
 msgstr "再調査      %s キューブ"
 
-#: ui/goals_panel.gd:206 ui/list_detail.gd:418 ui/objective_card.gd:112
+#: ui/goals_panel.gd:206 ui/list_detail.gd:446 ui/objective_card.gd:112
 msgid "DONE"
 msgstr "完了"
 
@@ -4684,68 +4688,68 @@ msgstr ""
 msgid "All built"
 msgstr "すべて建設済み"
 
-#: ui/hud.gd:77
+#: ui/hud.gd:79
 msgid "Lumi reached level %d%s"
 msgstr "Lumi がレベル %d になった%s"
 
-#: ui/hud.gd:162
+#: ui/hud.gd:164
 msgid "OLD TOWN   0%"
 msgstr "旧市街   0%"
 
-#: ui/hud.gd:294
+#: ui/hud.gd:306
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN 信号   %d%%"
 
-#: ui/hud.gd:322
+#: ui/hud.gd:334
 msgid "HEX  %d%% CLEAR"
 msgstr "ヘックス  %d%% きれい"
 
-#: ui/hud.gd:326
+#: ui/hud.gd:338
 msgid "%s  BASE"
 msgstr "%s  基地"
 
-#: ui/hud.gd:329
+#: ui/hud.gd:341
 msgid "CARRYING %d/%d"
 msgstr "運搬中 %d/%d"
 
-#: ui/hud.gd:353
+#: ui/hud.gd:367
 msgid "HEX  CLEAR"
 msgstr "ヘックス  きれい"
 
-#: ui/hud.gd:357
+#: ui/hud.gd:371
 msgid "HEX  %s"
 msgstr "ヘックス  %s"
 
-#: ui/hud.gd:360
+#: ui/hud.gd:374
 msgid "  SUSTAIN %d%%"
 msgstr "  維持 %d%%"
 
-#: ui/hud.gd:362
+#: ui/hud.gd:376
 msgid "  THIRSTY"
 msgstr "  水不足"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:387
+#: ui/hud.gd:401
 msgid "%s   pick up bale"
 msgstr "%s   ベールを持つ"
 
-#: ui/hud.gd:388
+#: ui/hud.gd:402
 msgid "%s   dig up part"
 msgstr "%s   パーツを掘り出す"
 
-#: ui/hud.gd:389
+#: ui/hud.gd:403
 msgid "%s   read memory shard"
 msgstr "%s   メモリーの破片を読む"
 
-#: ui/hud.gd:390
+#: ui/hud.gd:404
 msgid "%s   pick up the seed tin"
 msgstr "%s   種の缶を拾う"
 
-#: ui/hud.gd:391
+#: ui/hud.gd:405
 msgid "%s   set bale down"
 msgstr "%s   ベールを置く"
 
-#: ui/hud.gd:392
+#: ui/hud.gd:406
 msgid "%s   workbench"
 msgstr "%s   作業台"
 
@@ -4787,35 +4791,35 @@ msgstr "ベール完成"
 msgid "◢ BURIED PART %d%%"
 msgstr "◢ 埋もれたパーツ %d%%"
 
-#: ui/list_detail.gd:88
+#: ui/list_detail.gd:97
 msgid "Nothing here yet. Keep playing."
 msgstr "まだ何もありません。プレイを続けよう。"
 
-#: ui/list_detail.gd:414
+#: ui/list_detail.gd:442
 msgid "LOCKED"
 msgstr "未解放"
 
-#: ui/list_detail.gd:422 ui/profile_picker.gd:97
+#: ui/list_detail.gd:450 ui/profile_picker.gd:97
 msgid "ACTIVE"
 msgstr "進行中"
 
-#: ui/list_detail.gd:443
+#: ui/list_detail.gd:471
 msgid "FREE"
 msgstr "無料"
 
-#: ui/list_detail.gd:546
+#: ui/list_detail.gd:578
 msgid "REQUIRES   NOT YET   %s"
 msgstr "必要条件   未達成   %s"
 
-#: ui/list_detail.gd:546
+#: ui/list_detail.gd:578
 msgid "Not unlocked yet. Keep playing."
 msgstr "まだ解放されていません。プレイを続けよう。"
 
-#: ui/list_detail.gd:549
+#: ui/list_detail.gd:581
 msgid "REQUIRES   %s"
 msgstr "必要条件   %s"
 
-#: ui/list_detail.gd:552
+#: ui/list_detail.gd:584
 msgid "REQUIRES   READY"
 msgstr "必要条件   OK"
 
@@ -4844,11 +4848,11 @@ msgstr "発光"
 msgid "Trim"
 msgstr "トリム"
 
-#: ui/locker_editors.gd:60
+#: ui/locker_editors.gd:67
 msgid "Every %s wears this"
 msgstr "すべての%sがこれを着る"
 
-#: ui/locker_editors.gd:213
+#: ui/locker_editors.gd:222
 msgid "Ship looks: the tiers keep their shape"
 msgstr "船の見た目：ティアの形はそのまま"
 
@@ -4856,23 +4860,23 @@ msgstr "船の見た目：ティアの形はそのまま"
 msgid "LOCKER"
 msgstr "ロッカー"
 
-#: ui/locker_panel.gd:85 ui/telescope_view.gd:379
+#: ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "閉じる"
 
-#: ui/locker_panel.gd:185
+#: ui/locker_panel.gd:205
 msgid "The Locker"
 msgstr "ロッカー"
 
-#: ui/locker_panel.gd:186
+#: ui/locker_panel.gd:206
 msgid "Build the Locker in the Build tab, then open it in the yard."
 msgstr "建設タブでロッカーを建て、庭で開こう。"
 
-#: ui/locker_panel.gd:187
+#: ui/locker_panel.gd:207
 msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play."
 msgstr "Lumiとすべてのロボットを着せ替え：色、目、頭パーツ、飾り、艦隊の塗装。新しいパーツは遊ぶうちに解放されます。"
 
-#: ui/locker_panel.gd:228 ui/upgrades_screen.gd:15
+#: ui/locker_panel.gd:248 ui/upgrades_screen.gd:15
 msgid "Bots"
 msgstr "ボット"
 
@@ -4880,119 +4884,119 @@ msgstr "ボット"
 msgid "CHARACTER BUILDER"
 msgstr "キャラクターエディター"
 
-#: ui/lumi_builder.gd:147
+#: ui/lumi_builder.gd:148
 msgid "Drag to turn  ·  Wheel to zoom"
 msgstr "ドラッグで回転  ·  ホイールでズーム"
 
-#: ui/lumi_builder.gd:184
+#: ui/lumi_builder.gd:185
 msgid "Randomize"
 msgstr "ランダム"
 
-#: ui/lumi_builder.gd:185
+#: ui/lumi_builder.gd:186
 msgid "Reset to preset"
 msgstr "プリセットに戻す"
 
-#: ui/lumi_builder.gd:186
+#: ui/lumi_builder.gd:187
 msgid "Test laser"
 msgstr "レーザーをテスト"
 
-#: ui/lumi_builder.gd:190 ui/profile_picker.gd:252 ui/profile_picker.gd:269
+#: ui/lumi_builder.gd:191 ui/profile_picker.gd:252 ui/profile_picker.gd:269
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: ui/lumi_builder.gd:191
+#: ui/lumi_builder.gd:192
 msgid "Done"
 msgstr "完了"
 
-#: ui/lumi_builder.gd:191
+#: ui/lumi_builder.gd:192
 msgid "Wear look"
 msgstr "この外見を着る"
 
-#: ui/lumi_builder.gd:207 ui/lumi_builder.gd:319
+#: ui/lumi_builder.gd:208 ui/lumi_builder.gd:331
 msgid "Presets"
 msgstr "プリセット"
 
-#: ui/lumi_builder.gd:218
+#: ui/lumi_builder.gd:219
 msgid "Saved"
 msgstr "保存済み"
 
-#: ui/lumi_builder.gd:222 ui/lumi_builder.gd:323
+#: ui/lumi_builder.gd:223 ui/lumi_builder.gd:335
 msgid "Saved looks"
 msgstr "保存した外見"
 
-#: ui/lumi_builder.gd:372
+#: ui/lumi_builder.gd:384
 msgid "A design's full look. Every slot can be changed afterwards."
 msgstr "デザインの外見一式。あとで各スロットを変更できます。"
 
-#: ui/lumi_builder.gd:392
+#: ui/lumi_builder.gd:404
 msgid "Custom colour"
 msgstr "カスタムカラー"
 
-#: ui/lumi_builder.gd:437 data/style_parts.json:advanced.name
+#: ui/lumi_builder.gd:449 data/style_parts.json:advanced.name
 msgid "Advanced colour picker"
 msgstr "詳細カラーピッカー"
 
-#: ui/lumi_builder.gd:447
+#: ui/lumi_builder.gd:459
 msgid "Advanced (hue, saturation, brightness)"
 msgstr "詳細（色相・彩度・明るさ）"
 
-#: ui/lumi_builder.gd:456
+#: ui/lumi_builder.gd:468
 msgid "Hue"
 msgstr "色相"
 
-#: ui/lumi_builder.gd:456 ui/photo_mode.gd:385
+#: ui/lumi_builder.gd:468 ui/photo_mode.gd:385
 msgid "Saturation"
 msgstr "彩度"
 
-#: ui/lumi_builder.gd:456
+#: ui/lumi_builder.gd:468
 msgid "Brightness"
 msgstr "明るさ"
 
-#: ui/lumi_builder.gd:493
+#: ui/lumi_builder.gd:505
 msgid "Equipped"
 msgstr "装備中"
 
-#: ui/lumi_builder.gd:509
+#: ui/lumi_builder.gd:521
 msgid "How weathered the paint looks: fresh from the ark, or three hundred years of dust."
 msgstr "塗装の傷み具合：箱舟から出たばかりか、三百年分のほこりか。"
 
-#: ui/lumi_builder.gd:512
+#: ui/lumi_builder.gd:524
 msgid "Fresh"
 msgstr "新品"
 
-#: ui/lumi_builder.gd:521
+#: ui/lumi_builder.gd:533
 msgid "Weathered"
 msgstr "使い込み"
 
-#: ui/lumi_builder.gd:527
+#: ui/lumi_builder.gd:539
 msgid "A custom look can use the bonus of any design you have unlocked."
 msgstr "カスタム外見は、解放済みのどのデザインの補正でも使えます。"
 
-#: ui/lumi_builder.gd:551
+#: ui/lumi_builder.gd:563
 msgid "Keep up to %d looks. Load one to edit it, then press Done to wear it."
 msgstr "外見は%d個まで保存できます。読み込んで編集し、「完了」で着用します。"
 
-#: ui/lumi_builder.gd:556 ui/lumi_builder.gd:580
+#: ui/lumi_builder.gd:568 ui/lumi_builder.gd:592
 msgid "Look %d"
 msgstr "外見%d"
 
-#: ui/lumi_builder.gd:564
+#: ui/lumi_builder.gd:576
 msgid "Empty"
 msgstr "空き"
 
-#: ui/lumi_builder.gd:569 data/robot_parts.json:stats[load].name
+#: ui/lumi_builder.gd:581 data/robot_parts.json:stats[load].name
 msgid "Load"
 msgstr "積載"
 
-#: ui/lumi_builder.gd:577
+#: ui/lumi_builder.gd:589
 msgid "Save here"
 msgstr "ここに保存"
 
-#: ui/lumi_builder.gd:647
+#: ui/lumi_builder.gd:659
 msgid "Unsaved changes"
 msgstr "未保存の変更"
 
-#: ui/lumi_builder.gd:663
+#: ui/lumi_builder.gd:675
 msgid "Part of this look is still locked."
 msgstr "この外見の一部はまだロック中です。"
 
@@ -6325,7 +6329,7 @@ msgstr "研究"
 msgid "WORKBENCH"
 msgstr "作業台"
 
-#: ui/upgrades_screen.gd:228
+#: ui/upgrades_screen.gd:237
 msgid "Not open yet. Keep playing."
 msgstr "まだ開いていません。プレイを続けよう。"
 
