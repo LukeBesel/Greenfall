@@ -45,6 +45,14 @@ void fragment() {
 	float n = dot(tri(tex_rubble, wpos * mix(0.031, 0.002, far_shell), w), vec3(0.33));
 	float dirty = smoothstep(0.38, 0.62, junk + (n - 0.45) * 0.7);
 	vec3 dirt = mix(tri(tex_dirt, p, w), tri(tex_rubble, p * 1.3, w), 0.55) * vec3(0.6, 0.53, 0.46);  // [v1world] grimier (was 0.78, 0.7, 0.62): trashed ground reads dark, as on the flat field
+	// [v1world] Past the litter carpet's reach the junk ground still reads as trash: bags, rust and
+	// paper mottled from the rubble texture (mipmapped, so stable far off), fading in with distance.
+	float far_k = far_shell > 0.5 ? 1.0 : smoothstep(45.0, 95.0, length(VERTEX));
+	float tl = dot(tri(tex_rubble, wpos * 0.09, w), vec3(0.333));
+	float tl2 = dot(tri(tex_rubble, wpos * 0.23 + 3.7, w), vec3(0.333));
+	vec3 trash = mix(vec3(0.07, 0.07, 0.08), vec3(0.4, 0.31, 0.22), smoothstep(0.3, 0.46, tl));
+	trash = mix(trash, vec3(0.74, 0.7, 0.6), smoothstep(0.52, 0.62, tl2) * 0.85);
+	dirt = mix(dirt, trash, far_k * 0.7);
 	vec3 clean = tri(tex_clean, p, w) * vec3(0.95, 0.93, 0.9);
 	vec3 grass = tri(tex_grass, p * 0.8, w) * vec3(0.85, 1.0, 0.8);
 	float green = smoothstep(1.5, 2.5, state + (n - 0.45));

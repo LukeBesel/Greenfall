@@ -61,12 +61,21 @@ void fragment() {
 
 	vec3 base = BIOME[bi];
 	vec3 dirt = base * (0.92 + 0.25 * (n - 0.45));
+	// [v1world] Trashed ground reads as trash from orbit and on the intro fall: a mottle of dark bags,
+	// rust and sun-bleached paper over grimy soil (the biome only tints it), until the cell is cleaned.
+	// Three scales, so it reads at every height of the fall (blotches of heaps, streets of litter, specks).
+	float tn = dot(tri(tex_noise, wpos * 0.009, w), vec3(0.333)) * 0.55 + dot(tri(tex_noise, wpos * 0.045, w), vec3(0.333)) * 0.45;
+	float tn2 = dot(tri(tex_noise, wpos * 0.031, w), vec3(0.333)) * 0.5 + dot(tri(tex_noise, wpos * 0.13, w), vec3(0.333)) * 0.5;
+	vec3 trash = mix(vec3(0.11, 0.1, 0.1), vec3(0.44, 0.34, 0.24), smoothstep(0.38, 0.52, tn));
+	trash = mix(trash, vec3(0.7, 0.66, 0.56), smoothstep(0.52, 0.6, tn2) * 0.75);
+	trash = mix(trash, vec3(0.52, 0.22, 0.14), smoothstep(0.56, 0.62, tn) * 0.5);
+	dirt = mix(dirt * 0.65, trash, 0.72);
 	vec3 cleaned = mix(base, vec3(0.56, 0.54, 0.40), 0.7);  // fresh cleared soil
 	// Greener the further it got: planted (light) -> restored (lush).
 	float gl = green / land;
 	vec3 grass = mix(vec3(0.50, 0.66, 0.26), vec3(0.14, 0.50, 0.20), smoothstep(0.3, 0.9, gl));
 	grass *= 0.95 + 0.2 * (n2 - 0.45);
-	vec3 urban = mix(vec3(0.22, 0.23, 0.33), vec3(0.38, 0.44, 0.62), clean / land);  // slate -> clean blue-grey
+	vec3 urban = mix(mix(vec3(0.3, 0.27, 0.25), trash, 0.5), vec3(0.38, 0.44, 0.62), clean / land);  // [v1world] trashed streets -> clean blue-grey (was slate blue while dirty)
 	urban *= 0.85 + 0.35 * step(0.5, fract(n2 * 9.0));  // block speckle
 	vec3 ground = (dirt * junk + cleaned * clean + grass * green) / land;
 	float cs = smoothstep(0.0, 0.4, city);
