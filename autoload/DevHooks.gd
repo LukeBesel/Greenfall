@@ -32,6 +32,9 @@ extends Node
 ##   --demo-scoop       Patch scoops the nearest junk nonstop (pickup animation shots; --demo-yaw, --demo-speed)
 ##   --spawn-egg=ID     put Patch next to an easter egg in this district (data/eggs.json ids);
 ##                      --egg-dist=M sets the distance, --egg-poke[=S] plays its reaction after S s
+##                      [eggs2] --egg-use[=S] presses E on it after S s; --egg-parts=ID marks a collectible egg's parts
+##                      collected; --spawn-display=ID stands Lumi at its base display (--egg-poke salutes);
+##                      --tv-frame=N holds the TV broadcast on frame N, --tv-step=S advances it every S wall-clock s
 ##   --event=ID         [events] force a world event (supply_drop, salvage_surge, rain_shower, robot_hiccup,
 ##                      wildlife_visit, rare_part_signal, ledger_audit) --event-at=S wall-clock seconds after start (default 3);
 ##                      --event-land drops the supply crate from just above the junk, slowly (screenshots)

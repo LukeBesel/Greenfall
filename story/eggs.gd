@@ -43,6 +43,11 @@ func setup() -> void:
 	avoid.append((LedgerArc.relay_spot(world.field)["pos"] as Vector3))
 	for s: Dictionary in Outposts.plan(world.field):  # [outposts] keep eggs off the outpost slabs
 		avoid.append(s["pos"] as Vector3)
+	if DevHooks.has("egg-parts"):  # [eggs2] dev: --egg-parts=ID marks every part of a collectible egg as collected
+		var pid: String = DevHooks.get_s("egg-parts", "gnomes")
+		if defs.has(pid):
+			for i: int in int(defs[pid].get("parts", 1)):
+				EggCollect.add(pid, i)
 	var plan: Array[Dictionary] = plan_spots(world.field, ids, defs, avoid)
 	for p: Dictionary in plan:
 		_spawn(p)
@@ -56,6 +61,8 @@ func setup() -> void:
 	_refresh_visibility()
 	if DevHooks.has("spawn-egg"):
 		_dev_spawn.call_deferred(DevHooks.get_s("spawn-egg", "duck"))
+	if DevHooks.has("spawn-display"):  # [eggs2] dev: --spawn-display=ID puts Lumi in front of an egg's base display
+		_dev_display.call_deferred(DevHooks.get_s("spawn-display", "gnomes"))
 
 
 # --- Placement (pure, deterministic) -------------------------------------------------
@@ -341,11 +348,29 @@ func _dev_spawn(id: String) -> void:
 			world.patch.rotation.y = atan2(p.x - n.global_position.x, p.z - n.global_position.z)  # -Z (forward) toward the egg
 			world.cam.yaw = world.patch.rotation.y + DevHooks.get_f("egg-yaw", 0.4)
 			world.cam.snap()
+			if DevHooks.has("egg-use"):  # [eggs2] dev: --egg-use[=S] presses E on it after S s
+				get_tree().create_timer(DevHooks.get_f("egg-use", 0.5), false).timeout.connect(func() -> void: _use(e))
 			if DevHooks.has("egg-poke"):
 				get_tree().create_timer(DevHooks.get_f("egg-poke", 0.5), false).timeout.connect(func() -> void: _effect(e))
 			print("[eggs] spawned next to %s at %s (patch %s, yaw %.2f)" % [id, str(n.global_position), str(world.patch.global_position), world.patch.rotation.y])
 			return
 	print("[eggs] egg '%s' is not placed in this district (placed: %s)" % [id, str(placed.map(func(e: Dictionary) -> String: return e["id"]))])
+
+
+func _dev_display(id: String) -> void:  # [eggs2]
+	var disp: EggDisplay = displays.get(id)
+	if disp == null or world == null or world.patch == null:
+		print("[eggs] no display for '%s'" % id)
+		return
+	var fwd: Vector3 = disp.global_transform.basis.z
+	var p: Vector3 = disp.global_position + fwd * DevHooks.get_f("egg-dist", 2.4)
+	world.patch.global_position = Vector3(p.x, disp.global_position.y + 0.2, p.z)
+	world.patch.rotation.y = atan2(fwd.x, fwd.z)
+	world.cam.yaw = world.patch.rotation.y + DevHooks.get_f("egg-yaw", 0.4)
+	world.cam.snap()
+	if DevHooks.has("egg-poke"):
+		get_tree().create_timer(DevHooks.get_f("egg-poke", 0.5), false).timeout.connect(func() -> void: _display_used(id))
+	print("[eggs] in front of the %s display at %s" % [id, str(disp.global_position)])
 
 
 # --- Stars (the WREN constellation) -----------------------------------------------------
@@ -586,6 +611,7 @@ func _collected(e: Dictionary) -> void:
 	var d: Dictionary = e["def"]
 	var total: int = int(d.get("parts", 1))
 	var count: int = EggCollect.add(id, int(e["part"]))
+	print("[eggs] collected %s part %d (%d / %d)" % [id, int(e["part"]), count, int(d.get("parts", 1))])
 	Audio.play("pop", 1.1, -2.0)
 	Audio.play_scale("blip", count * 2, -6.0)
 	var label: String = tr("Gnome %d / %d") % [count, total] if str(e["kind"]) == "gnome" else "%d / %d" % [count, total]
