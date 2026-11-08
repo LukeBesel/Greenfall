@@ -469,71 +469,132 @@ func _site_raft() -> void:
 	fut.flush(_groups["future"])
 
 
-## The stilt yard: a sandy islet with a boardwalk deck on stilts out over the water, stilt huts,
-## a beached skiff. Ruined: junk banks on the beach, a collapsed hut; restored: mangroves, palms.
+## The stilt yard ([p_seas] kit): a sandy islet with a plank deck on braced timber piles out over the
+## water, two huts on it, a boardwalk with rope rails to the beach, a net-drying rack, a beached
+## skiff, crates and a lamp post. Ruined: junk banks on the beach, snags; restored: mangroves, palms.
 func _site_stilts() -> void:
-	var b := FrontierView.Batch.new()
-	var ruin := FrontierView.Batch.new()
-	var grn := FrontierView.Batch.new()
-	var fut := FrontierView.Batch.new()
-	var deck_y: float = 1.6
+	var a: KitMesh.Builder = TideProps.builder(self, "always")
+	var ruin: KitMesh.Builder = TideProps.builder(self, "ruin")
+	var grn: KitMesh.Builder = TideProps.builder(self, "green")
+	var fut: KitMesh.Builder = TideProps.builder(self, "future")
+	var nat := FrontierView.Batch.new()
+	var nat_ruin := FrontierView.Batch.new()
+	var nat_grn := FrontierView.Batch.new()
+	var deck_y: float = 1.9
 	var deck_c := Vector3(-14.0, 0, -10.0)
+	var bs := Basis(Vector3.UP, 0.6)
+	var sx: float = 15.0
+	var sz: float = 11.0
 	_decks.append(Vector3(deck_c.x, deck_c.z, 11.0))
-	_plank_deck(b, deck_c, 9.0, 7.0, deck_y + 0.18, 0.6, 5)
-	for k: int in 18:
-		var a: float = TAU * k / 18.0
-		var sp: Vector3 = deck_c + Vector3(cos(a) * 8.2, 0, sin(a) * 6.3)
-		_cyl(b, sp + Vector3(0, -2.5, 0), sp + Vector3(0, deck_y + 0.1, 0), 0.16 + _rng.randf() * 0.05, _mat("trunk"))
-	# Boardwalk from the deck to the beach.
-	var w0: Vector3 = deck_c + Vector3(7.0, deck_y, 5.0)
+	# Plank deck in two tones over joists, a rim beam, steel corner plates.
+	var x: float = -sx * 0.5 + 0.3
+	var i: int = 0
+	while x < sx * 0.5 - 0.35:
+		var z: float = -sz * 0.5 + 0.3
+		while z < sz * 0.5 - 0.35:
+			var ln: float = minf(_rng.randf_range(2.2, 4.2), sz * 0.5 - 0.3 - z)
+			TideProps.box(a, deck_c, bs, Vector3(x + 0.25, deck_y - 0.07, z + ln * 0.5), Vector3(0.45, 0.14, ln - 0.05), TideProps.m(self, "timber" if (i + int(z)) % 3 != 0 else "timber2"), Vector3(_rng.randf_range(-0.4, 0.4), 0, _rng.randf_range(-0.4, 0.4)), 0.035)
+			z += ln
+		x += 0.5
+		i += 1
+	for sd: float in [-1.0, 1.0]:
+		TideProps.side_wall(a, deck_c, bs, Vector3(0, deck_y - 0.55, sd * (sz * 0.5 - 0.05)), Vector3(0, 0, sd), sx, 0.5, TideProps.m(self, "timber2"), {"panel": Vector2(2.0, 0.5), "depth": 0.1})
+		TideProps.side_wall(a, deck_c, bs, Vector3(sd * (sx * 0.5 - 0.05), deck_y - 0.55, 0), Vector3(sd, 0, 0), sz, 0.5, TideProps.m(self, "timber2"), {"panel": Vector2(2.0, 0.5), "depth": 0.1})
+	# Piles with cross bracing under the deck.
+	for px: int in 5:
+		for pz: int in 4:
+			var pp := Vector3(-sx * 0.5 + 0.6 + px * (sx - 1.2) / 4.0, 0, -sz * 0.5 + 0.6 + pz * (sz - 1.2) / 3.0)
+			TideProps.pipe(a, deck_c, bs, pp + Vector3(0, -2.5, 0), pp + Vector3(0, deck_y - 0.3, 0), 0.2, TideProps.m(self, "timber2"), 10)
+			if px < 4:
+				var q := Vector3(-sx * 0.5 + 0.6 + (px + 1) * (sx - 1.2) / 4.0, 0, pp.z)
+				TideProps.pipe(a, deck_c, bs, pp + Vector3(0, -0.2, 0), q + Vector3(0, deck_y - 0.5, 0), 0.07, TideProps.m(self, "timber2"), 6)
+	TideProps.solid_box(_groups["always"], deck_c, bs, Vector3(0, deck_y - 0.6, 0), Vector3(sx, 1.2, sz), Vector3.ZERO, PhysLayers.WORLD)
+	for k: int in 6:
+		TideProps.solid_cyl(_groups["always"], deck_c, bs, Vector3(-sx * 0.5 + 0.6 + (k % 3) * (sx - 1.2) / 2.0, -2.5, -sz * 0.5 + 0.6 + (k / 3) * (sz - 1.2)), Vector3(-sx * 0.5 + 0.6 + (k % 3) * (sx - 1.2) / 2.0, deck_y - 1.2, -sz * 0.5 + 0.6 + (k / 3) * (sz - 1.2)), 0.3)
+	TideProps.rail(a, deck_c, bs, [Vector3(-sx * 0.5 + 0.2, deck_y, sz * 0.5 - 0.2), Vector3(-sx * 0.5 + 0.2, deck_y, -sz * 0.5 + 0.2), Vector3(sx * 0.5 - 0.2, deck_y, -sz * 0.5 + 0.2)] as Array[Vector3], 1.0, TideProps.m(self, "ledger"))
+	# Huts on the deck.
+	TideProps.shack(self, a, grn, fut, deck_c + bs * Vector3(-3.0, deck_y, -1.5), 0.6, Vector3(5.0, 2.7, 3.8), "cream", "teal")
+	TideProps.shack(self, a, grn, fut, deck_c + bs * Vector3(3.6, deck_y, -2.2), 0.6, Vector3(3.4, 2.5, 3.0), "orange", "cream")
+	# Boardwalk from the deck to the beach, with posts and a rope rail.
+	var w0: Vector3 = deck_c + bs * Vector3(sx * 0.5, deck_y, sz * 0.3)
 	var w1 := Vector3(-2.0, 1.4, 0.0)
-	for k: int in 12:
-		var t: float = float(k) / 11.0
-		var pp: Vector3 = w0.lerp(w1, t)
-		_box(b, pp, Vector3(1.6, 0.1, 0.32), _mat("deck"), Vector3(0, rad_to_deg(atan2(w1.x - w0.x, w1.z - w0.z)) + 90.0, _rng.randf_range(-3, 3)))
-	_shack(b, fut, deck_c + Vector3(-2.0, deck_y + 0.18, -1.0), 0.6, Vector3(4.5, 2.6, 3.6))
-	_shack(b, fut, deck_c + Vector3(4.0, deck_y + 0.18, -2.5), 0.6, Vector3(3.0, 2.4, 2.8))
-	# Beach: rocks, a skiff, junk banks (ruin), mangroves and palms (restored).
+	var n: int = int(w0.distance_to(w1) / 0.42)
+	var wyaw: float = atan2(w1.x - w0.x, w1.z - w0.z)
+	var wb := Basis(Vector3.UP, wyaw)
+	for k: int in n:
+		var pp: Vector3 = w0.lerp(w1, (k + 0.5) / n)
+		TideProps.box(a, pp, wb, Vector3(0, -0.05, 0), Vector3(1.6, 0.1, 0.38), TideProps.m(self, "timber" if k % 4 else "timber2"), Vector3(0, 0, _rng.randf_range(-2, 2)), 0.03)
+		if k % 5 == 0:
+			for sd: float in [-0.8, 0.8]:
+				TideProps.pipe(a, pp, wb, Vector3(sd, -2.0, 0), Vector3(sd, 1.0, 0), 0.09, TideProps.m(self, "timber2"), 6)
+	for sd: float in [-0.8, 0.8]:
+		a.rod(TideProps.m(self, "rope_line"), w0 + wb * Vector3(sd, 0.95, 0), w1 + wb * Vector3(sd, 0.95, 0), 0.025, 5)
+	var wz: Vector3 = (w1 - w0).normalized()
+	var wx: Vector3 = Vector3.UP.cross(wz).normalized()
+	TideProps.solid_box(_groups["always"], (w0 + w1) * 0.5, Basis(wx, wz.cross(wx), wz), Vector3(0, -0.25, 0), Vector3(1.6, 0.4, w0.distance_to(w1)), Vector3.ZERO, PhysLayers.WORLD)
+	# Beach: rocks (natural), a beached skiff, a net rack, crates, a lamp post.
 	var c: Vector2 = islands[0]["c"]
 	var rock_mat: StandardMaterial3D = AssetLib.pbr_material("dry_ground_rocks", 0.45, Color(0.7, 0.68, 0.62), true)
 	rock_mat.metallic = 0.0
 	for k: int in 16:
-		var a: float = _rng.randf() * TAU
+		var ang: float = _rng.randf() * TAU
 		var d: float = _rng.randf_range(16.0, 26.0)
-		var p := Vector3(c.x + cos(a) * d * 1.3, 0, c.y + sin(a) * d * 0.8)
+		var p := Vector3(c.x + cos(ang) * d * 1.3, 0, c.y + sin(ang) * d * 0.8)
 		p.y = bed_at(p.x, p.z).x - 0.2
 		var s: float = _rng.randf_range(0.6, 1.8)
-		b.add(_lumpy(k % 5, 0.42), _lxf(p, Vector3(_rng.randf() * 30, _rng.randf() * 360, 0), Vector3(s * 1.3, s * 0.6, s)), rock_mat)
-	var skiff := Vector3(c.x + 14.0, 0.3, c.y + 12.0)
-	b.add(_lumpy(2, 0.08, 1.0), _lxf(skiff, Vector3(0, 50, 12), Vector3(2.4, 0.5, 0.9)), _mat("rust_red"))
+		nat.add(_lumpy(k % 5, 0.42), _lxf(p, Vector3(_rng.randf() * 30, _rng.randf() * 360, 0), Vector3(s * 1.3, s * 0.6, s)), rock_mat)
+	var skiff := Vector3(c.x + 13.0, 0, c.y + 11.0)
+	skiff.y = bed_at(skiff.x, skiff.z).x + 0.1
+	TideProps.add_mesh(a, TideProps.m(self, "accent"), TideProps.hull_mesh(5.0, 1.8, 0.9, 0.35, 1.3, 0.15), Transform3D(Basis(Vector3.UP, 0.9) * Basis(Vector3.FORWARD, 0.18), skiff), 0)
+	TideProps.add_mesh(a, TideProps.m(self, "red"), TideProps.hull_mesh(5.0, 1.8, 0.9, 0.35, 1.3, 0.15), Transform3D(Basis(Vector3.UP, 0.9) * Basis(Vector3.FORWARD, 0.18), skiff), 1)
+	TideProps.solid_box(_groups["always"], skiff, Basis(Vector3.UP, 0.9), Vector3(0, 0.5, 0), Vector3(1.8, 1.0, 5.0))
+	var rack := Vector3(c.x - 4.0, 0, c.y + 6.0)
+	rack.y = bed_at(rack.x, rack.z).x
+	for sd: float in [-2.0, 2.0]:
+		a.rod(TideProps.m(self, "timber2"), rack + Vector3(sd, -0.3, 0), rack + Vector3(sd, 2.2, 0), 0.08, 6)
+	a.rod(TideProps.m(self, "timber2"), rack + Vector3(-2.2, 2.1, 0), rack + Vector3(2.2, 2.1, 0), 0.06, 6)
+	TideProps.box(a, rack, Basis(), Vector3(0, 1.3, 0), Vector3(3.8, 1.5, 0.05), TideProps.m(self, "rope"), Vector3(0, 0, 0), 0.01)
+	for k: int in 4:
+		var cp := Vector3(c.x + _rng.randf_range(-6, 6), 0, c.y + _rng.randf_range(-3, 4))
+		cp.y = bed_at(cp.x, cp.z).x
+		if cp.y > SEA_Y:
+			KitProps.crate_stack(a, Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), cp), 3, a.state)
+	var lp := Vector3(c.x - 1.0, 0, c.y - 1.0)
+	lp.y = bed_at(lp.x, lp.z).x
+	KitProps.lamp_post(grn, Transform3D(Basis(), lp), 4.0, "restored", "warm")
+	grn.lights.append({"pos": lp + Vector3(0, 3.8, 0), "color": KitMat.GLOW["warm"], "range": 8.0, "energy": 1.4})
+	# Ruined: junk banks; restored: mangroves and palms (natural meshes).
 	var heap: Array[Transform3D] = []
 	for k: int in 70:
-		var a: float = _rng.randf() * TAU
+		var ang: float = _rng.randf() * TAU
 		var d: float = _rng.randf_range(4.0, 24.0)
-		var p := Vector3(c.x + cos(a) * d * 1.3, 0, c.y + sin(a) * d * 0.7)
+		var p := Vector3(c.x + cos(ang) * d * 1.3, 0, c.y + sin(ang) * d * 0.7)
 		p.y = bed_at(p.x, p.z).x
 		if p.y > SEA_Y:
 			heap.append(Transform3D(Basis(Vector3.UP, _rng.randf() * TAU).rotated(Vector3.RIGHT, _rng.randf_range(-0.6, 0.6)), p))
 	_scatter_models(["Barrel_01", "old_tyre", "trashbag", "plastic_jerrycan", "lifebuoy", "wooden_crate_02", "rubber_boots", "plastic_bottle_gallon"], heap, _groups["ruin"], 200.0)
 	var trunk_m: Material = _mat("trunk")
 	for k: int in 26:
-		var a: float = TAU * k / 26.0
-		var p := Vector3(c.x + cos(a) * 21.0 * 1.25, 0, c.y + sin(a) * 21.0 * 0.75)
+		var ang: float = TAU * k / 26.0
+		var p := Vector3(c.x + cos(ang) * 21.0 * 1.25, 0, c.y + sin(ang) * 21.0 * 0.75)
 		var gy: float = bed_at(p.x, p.z).x
 		if gy < -0.6 or gy > 2.0 or _on_deck(p):
 			continue
 		p.y = maxf(gy, SEA_Y - 0.4)
-		_mangrove(grn, p, _rng.randf_range(0.8, 1.3), trunk_m, _mat("mangrove"))
+		_mangrove(nat_grn, p, _rng.randf_range(0.8, 1.3), trunk_m, _mat("mangrove"))
 	for k: int in 6:
 		var p := Vector3(c.x + _rng.randf_range(-8, 8), 0, c.y + _rng.randf_range(-5, 5))
 		p.y = bed_at(p.x, p.z).x
 		if p.y > 0.8:
-			_palm(grn, p, _rng.randf_range(5.0, 8.0), trunk_m, _mat("leaf"))
-			_snag(ruin, p, _mat("driftwood"))
-	b.flush(_groups["always"])
-	ruin.flush(_groups["ruin"])
-	grn.flush(_groups["green"])
-	fut.flush(_groups["future"])
+			_palm(nat_grn, p, _rng.randf_range(5.0, 8.0), trunk_m, _mat("leaf"))
+			_snag(nat_ruin, p, _mat("driftwood"))
+	TideProps.flush(self, a, "always")
+	TideProps.flush(self, ruin, "ruin")
+	TideProps.flush(self, grn, "green")
+	TideProps.flush(self, fut, "future")
+	nat.flush(_groups["always"])
+	nat_ruin.flush(_groups["ruin"])
+	nat_grn.flush(_groups["green"])
 
 
 # --- Landmarks -----------------------------------------------------------------------------------
