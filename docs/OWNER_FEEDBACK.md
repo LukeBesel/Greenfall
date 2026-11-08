@@ -175,3 +175,42 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Bots are BUILT at the workbench (Bots tab, Fabricator queue). Their LOOKS are designed at the Locker, per robot type or job, and every bot of that type wears the design (e.g. all planting bots green, including newly built ones) (ui, orbC).
 - [ ] Owner (Nov 8, later): no need to send pictures for now. Focus on finishing everything already agreed. Renders only where a helper needs one to check its own work.
 - [ ] Workbench (and Locker): simple is good, but restyle it futuristic and robot-like. Not full screen (like Moon Sweepers): floating modules with gaps that show the environment, slightly see-through glass, chamfered corners, thin glowing lines, a hologram open (ui).
+
+## 2026-11-08 playtest (round Verdance, from the start)
+Direction: the flat world's vibe is better, so build it into the round world: buildings, signs, colours, purple indicators. Make the round world close to flat, then remove the flat world. Focus only on the first planet (Verdance) for now.
+
+**Menus, audio and intro**
+1. The loading screen Lumi still has two sets of eyes overlapping. Make the loading screen simple and clean: Lumi (or the round guy) flying around, or just a loading circle, on a good background, animated continuously.
+2. Remove the Credits button.
+3. Changing the quality preset is very slow. Default it to Medium.
+4. If the settings only have basic options, drop the "Basic" header.
+5. Music:
+   - The main theme played twice in a row.
+   - Rules: main theme first when the game opens; it is the most common song; other songs mixed in; never the main theme back to back.
+   - Longer gaps between songs.
+   - Music started far too early after the pod landed: wait a few minutes.
+6. A voice-over for the intro text.
+7. The intro fall: the whole planet should look covered in trash. Parts not yet loaded looked clean.
+
+**Start area**
+8. Define the trash bin area clearly.
+9. The trash bin and workbench should be closer together.
+10. No vehicle at the start.
+11. The floating buddy is a build: you don't get him right away.
+12. The pod's hitbox is terrible.
+13. The pad should be cleaner and flatter. It looks like I'm standing on trash.
+14. Trash right outside the pad: there's a clean ring around it, so it's a long walk to reach trash.
+15. Way more trash, like the flat world, with more of it close to the pod. Bring back the city buildings.
+16. The water-to-land edge is glitchy and looks bad.
+
+**Guidance and progression**
+17. The objective markers are barely noticeable. Use a beam up to the sky with a ring around the target.
+18. The story doesn't say why we're picking up trash. WREN should say something like "pick up pieces and look for parts to build the receiver."
+19. Throwing trash in the bin needs a visual, glint or sound: it just disappears.
+20. It says to save up for the Baler, but the Baler isn't unlocked to save up for.
+21. No instructions on how to make a bale after the upgrade.
+22. A carried bale still clips into the body.
+23. "Build the signal tower" isn't an option in the workbench.
+24. The workbench shows Bots and Research early, before finding anything. Those come ~30 min in.
+25. Clicking an upgrade should show its details; only the price square buys.
+26. The start is too slow ("I already want to quit"): too much walking between trash and the bin. Speed it up.
