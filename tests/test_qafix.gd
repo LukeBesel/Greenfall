@@ -127,3 +127,19 @@ func test_egg_machines_start_dead_and_wake() -> void:
 	assert_ne(scr.material_override, lit)
 	EggPower.wake(v)
 	assert_eq(scr.material_override, lit, "the original lit screen comes back")
+
+
+# Crash fix (signal 11 on the audio mixer thread): fades don't rewrite a player's volume every frame.
+func test_fade_volume_writes_are_throttled() -> void:
+	var p := AudioStreamPlayer.new()
+	add_child_autofree(p)
+	p.volume_db = -20.0
+	assert_false(AudioVol.set_db(p, -20.1), "a change under 0.25 dB is skipped")
+	assert_true(AudioVol.set_db(p, -19.0))
+	assert_false(AudioVol.set_db(p, -18.0), "a second small step within 50 ms waits")
+	assert_true(AudioVol.set_db(p, -80.0), "a big jump (fade to silence) goes through at once")
+	assert_eq(p.volume_db, -80.0)
+	await wait_seconds(0.06)
+	assert_true(AudioVol.set_db(p, -79.0), "after 50 ms the next step is written")
+	var src: String = (load("res://audio/ambience.gd") as Script).source_code
+	assert_false(src.contains("p.volume_db = linear_to_db(cur)"), "ambience fades go through AudioVol")
