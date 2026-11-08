@@ -10,8 +10,10 @@ extends Node
 
 const JITTER_RATE: float = 1.2  # rad/s
 const FLIP_S: float = 0.5
-const MAX_FLIPS_PER_MIN: float = 6.0
-const MAX_CLIP: float = 0.01
+## PASS on the crew's average (one robot's bad minute shouldn't hide a good crew, nor the reverse;
+## the worst robot is printed too).
+const MAX_FLIPS_PER_MIN: float = 4.0
+const MAX_CLIP: float = 0.005
 const MIN_TRAVEL: float = 0.5  # m/s
 
 var crew: SphereCrew
@@ -59,7 +61,8 @@ func _process(_d: float) -> void:
 
 
 func report() -> bool:
-	var ok: bool = true
+	var worst_f: float = 0.0
+	var worst_c: float = 0.0
 	var tot_flips: float = 0.0
 	var tot_min: float = 0.0
 	var tot_in: int = 0
@@ -81,9 +84,12 @@ func report() -> bool:
 		var lg: Dictionary = u.get("log", {})
 		print("[motion] %-12s %-8s %4.1f min  reversals/min %4.1f  turn %.2f rad/s  in buildings %4.1f%%  junk %.0f bales %d hauled %d" % [nm, st["type"], mins, fpm, turn,
 			clip * 100.0, float(lg.get("junk", 0.0)), int(lg.get("bales", 0.0)), int(lg.get("hauled", 0.0))])
-		if fpm > MAX_FLIPS_PER_MIN or clip > MAX_CLIP:
-			ok = false
+		worst_f = maxf(worst_f, fpm)
+		worst_c = maxf(worst_c, clip)
 	var obs_n: int = (crew.swarm.obstacles as Array).size() if crew.swarm else 0
-	print("[motion] %d near robots watched, %d building circles nearby, %d blocked hexes: reversals/min %.1f, in buildings %.2f%% %s" % [
-		_s.size(), obs_n, crew.blocked.size(), tot_flips / maxf(tot_min, 0.01), float(tot_in) / maxf(float(tot_n), 1.0) * 100.0, "PASS" if ok else "FAIL"])
+	var avg_f: float = tot_flips / maxf(tot_min, 0.01)
+	var avg_c: float = float(tot_in) / maxf(float(tot_n), 1.0)
+	var ok: bool = avg_f <= MAX_FLIPS_PER_MIN and avg_c <= MAX_CLIP
+	print("[motion] %d near robots watched, %d building circles nearby, %d blocked hexes: reversals/min %.1f (worst %.1f), in buildings %.2f%% (worst %.1f%%) %s" % [
+		_s.size(), obs_n, crew.blocked.size(), avg_f, worst_f, avg_c * 100.0, worst_c * 100.0, "PASS" if ok else "FAIL"])
 	return ok

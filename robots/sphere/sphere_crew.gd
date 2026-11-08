@@ -80,6 +80,7 @@ var blocked: Dictionary = {}  # cell -> true
 ## Near bales as real JunkCubes (only with visuals).
 var bale_view: SphereBales
 var _obs_t: float = 0.0
+var _evict: bool = false  # new buildings: move robots that stand inside one out (once)
 const OBSTACLE_RANGE_M: float = 500.0
 
 
@@ -106,7 +107,7 @@ func spawn(type_id: String, tier: int, cell: int, hub: int = -1, p_name: String 
 	if p_name == "":
 		p_name = "%s-%d" % [Fleet.NAMES[_names % Fleet.NAMES.size()], _names]
 	_names += 1
-	var d: Vector3 = grid.centers[cell]
+	var d: Vector3 = _free_spot(grid.centers[cell])
 	var u: Dictionary = {"name": p_name, "type": type_id, "tier": tier, "role": SphereRobotKinds.role_of(type_id),
 		"hub": hub if hub >= 0 else hub_cell, "hopper": 0.0, "carry": [], "mode": "idle", "job": -1, "bale": -1,
 		"work_t": 0.0, "bot": null, "rec": {"dir": d, "heading": SphereMath.any_perpendicular(d), "goal": Vector3.ZERO,
@@ -261,8 +262,18 @@ func wants(role: String, c: int) -> bool:
 		"water":
 			return cells.state[c] == 2
 		"skim":
-			return false
+			return water_dirty(c)
 	return cells.is_dirty(c)
+
+
+## Floating junk on a lake hex (SphereField: water cells with junk left).
+func water_dirty(c: int) -> bool:
+	return cells.state[c] == 5 and cells.junk[c] > 0.02
+
+
+## Junk units in an untouched cell: a land hex, or a lake hex's floaters.
+func units_per(c: int) -> float:
+	return SphereOffline.UNITS_PER_WATER_CELL if cells.state[c] == 5 else SphereOffline.UNITS_PER_CELL
 
 
 func route(from: int, to: int, role: String = "clean") -> PackedInt32Array:
@@ -270,14 +281,14 @@ func route(from: int, to: int, role: String = "clean") -> PackedInt32Array:
 		return PackedInt32Array([to])
 	var pass_fn: Callable = func(c: int) -> bool: return cells.state[c] != 5 and not blocked.has(c)
 	if role == "skim":
-		pass_fn = func(c: int) -> bool: return cells.state[c] == 5 and not blocked.has(c)
+		pass_fn = func(c: int) -> bool: return not blocked.has(c)  # skimmers float: lakes and shore alike
 	return SpherePath.astar_grid(grid, from, to, pass_fn, 6000)
 
 
 func _real_left(c: int) -> float:
 	if field != null and field.materialized[c] == 1:
 		return 1.0 - field.removed_fraction(c) if field.hex_clean[c] == 0 else 0.0
-	return cells.junk[c] if cells.is_dirty(c) else 0.0
+	return cells.junk[c] if cells.is_dirty(c) or water_dirty(c) else 0.0
 
 
 func junk_left(c: int) -> float:
@@ -295,9 +306,9 @@ func junk_left(c: int) -> float:
 ## account (the pieces follow it, a piece ahead or behind) - otherwise a step smaller than one
 ## piece would never add up, and a big piece would lose junk nobody baled.
 func work_cell(c: int, left: float) -> void:
-	var was_dirty: bool = cells.is_dirty(c)
+	var was_dirty: bool = cells.is_dirty(c) or water_dirty(c)
 	var gone: PackedInt32Array = SphereOffline.write_cell(cells, field, c, left)
-	if left > 0.02 and cells.is_dirty(c):
+	if left > 0.02 and (cells.is_dirty(c) or water_dirty(c)):
 		_left[c] = [left, _real_left(c)]
 	else:
 		_left.erase(c)
@@ -307,7 +318,7 @@ func work_cell(c: int, left: float) -> void:
 		if junk_view.has_method("refresh_hex"):
 			junk_view.call("refresh_hex", c)
 	cell_worked.emit(c)
-	if was_dirty and not cells.is_dirty(c):
+	if was_dirty and not (cells.is_dirty(c) or water_dirty(c)):
 		cell_cleaned.emit(c)
 
 
@@ -331,6 +342,7 @@ func set_obstacles(key: Variant, circles: Array) -> void:
 		for c: int in SphereObstacles.blocked_cells(grid, _site_obs[k], -2.0):  # inflated: routes keep 2 m off walls
 			blocked[c] = true
 	_obs_t = INF  # refresh the swarm's list on the next tick
+	_evict = true
 
 
 ## Near robots only meet the buildings of sites close to Lumi (avoidance is linear in obstacles).
@@ -349,6 +361,21 @@ func _refresh_swarm_obstacles(delta: float) -> void:
 			continue
 		list.append_array(circ)
 	swarm.obstacles = list
+	if _evict:
+		_evict = false
+		for u: Dictionary in units:
+			var d: Vector3 = unit_dir(u)
+			if not _inside_building(d):
+				continue
+			var q: Vector3 = _free_spot(d)
+			(u["rec"] as Dictionary)["dir"] = q
+			if u["bot"] != null:
+				var b: SphereBot = u["bot"]
+				b.dir = q
+				b.goal = Vector3.ZERO
+				b.path.clear()
+			if str(u["mode"]) != "idle":
+				_drop_job(u)
 
 
 func set_zone_cell(role: String, cell: int, on: bool) -> void:
@@ -507,8 +534,19 @@ func _think(u: Dictionary, dt: float) -> void:
 			if _has_goal(u):
 				# A cell is 17 m across: close to its centre counts (another robot may be parked
 				# right on it, and separation would keep this one circling).
-				if b != null and not b.path.is_empty() and b.dir.angle_to(b.goal) * surface.radius < _pass_m(b.goal):
-					b.goal = b.path.pop_front()  # waypoints are cell centres: pass near, a bot may sit on one
+				if b != null and not b.path.is_empty():
+					var wd: float = b.dir.angle_to(b.goal) * surface.radius
+					# Orbit breaker: a waypoint that gets no closer for 3 s (steering round a wall
+					# or a parked robot) is passed; the next one leads on.
+					if wd < float(u.get("wp_best", INF)) - 0.3:
+						u["wp_best"] = wd
+						u["wp_t"] = 0.0
+					else:
+						u["wp_t"] = float(u.get("wp_t", 0.0)) + dt
+					if wd < _pass_m(b.goal) or float(u["wp_t"]) > 3.0:
+						b.goal = b.path.pop_front()  # waypoints are cell centres: pass near, a bot may sit on one
+						u["wp_best"] = INF
+						u["wp_t"] = 0.0
 				if b != null and b.path.is_empty() and b.distance_to_goal() < ARRIVE_M:
 					_stop(u)
 				else:
@@ -616,14 +654,15 @@ func _work(u: Dictionary, dt: float) -> void:
 	if u["bot"] != null and field != null and field.materialized[c] == 1 and field.hex_clean[c] == 0:
 		_work_pieces(u, c, dt)
 		return
-	var have: float = junk_left(c) * SphereOffline.UNITS_PER_CELL
+	var upc: float = units_per(c)
+	var have: float = junk_left(c) * upc
 	var take: float = minf(have, Offline.unit_rate(str(u["type"]), int(u["tier"])) * dt)
-	work_cell(c, (have - take) / SphereOffline.UNITS_PER_CELL)
+	work_cell(c, (have - take) / upc)
 	u["hopper"] = float(u["hopper"]) + take
 	u["log"]["junk"] = float(u["log"]["junk"]) + take
 	if float(u["hopper"]) >= _capacity(u):
 		_drop_bale(u)
-	if not cells.is_dirty(c):
+	if not (cells.is_dirty(c) or water_dirty(c)):
 		u["log"]["cells"] = float(u["log"]["cells"]) + 1.0
 		_finish_job(u)
 
@@ -651,7 +690,7 @@ func _work_pieces(u: Dictionary, c: int, dt: float) -> void:
 		b.stop_m = REACH_M * 0.6
 		u["reach_at"] = _approach(field.piece_pos[pid], b.global_position)
 		b.go_to_point(u["reach_at"])
-	var per_unit: float = SphereOffline.UNITS_PER_CELL / maxf(field.hex_total[c], 0.001)
+	var per_unit: float = units_per(c) / maxf(field.hex_total[c], 0.001)
 	var units: float = field.piece_vol[pid] * per_unit
 	u["acc"] = minf(float(u.get("acc", 0.0)) + Offline.unit_rate(str(u["type"]), int(u["tier"])) * dt, units * 2.0)
 	u["piece_t"] = float(u.get("piece_t", 0.0)) + dt
@@ -664,7 +703,7 @@ func _work_pieces(u: Dictionary, c: int, dt: float) -> void:
 	if float(u["acc"]) < units:
 		return
 	u["acc"] = float(u["acc"]) - units
-	var was_dirty: bool = cells.is_dirty(c)
+	var was_dirty: bool = cells.is_dirty(c) or water_dirty(c)
 	field.remove_piece(pid)
 	if junk_view != null:
 		junk_view.call("hide_piece", pid)
@@ -678,7 +717,7 @@ func _work_pieces(u: Dictionary, c: int, dt: float) -> void:
 	u["log"]["junk"] = float(u["log"]["junk"]) + units
 	if float(u["hopper"]) >= _capacity(u):
 		_drop_bale(u)
-	if not cells.is_dirty(c):
+	if not (cells.is_dirty(c) or water_dirty(c)):
 		if was_dirty:
 			cell_cleaned.emit(c)
 		u["log"]["cells"] = float(u["log"]["cells"]) + 1.0
@@ -705,9 +744,22 @@ func _approach(p: Vector3, from: Vector3) -> Vector3:
 ## How close a waypoint must be before the next one: generous in the open (a robot may sit on a
 ## cell centre), tight next to a building (so corners are not cut through the wall).
 func _pass_m(wp: Vector3) -> float:
-	if swarm != null and not swarm.obstacles_near(wp, 5.0).is_empty():
+	if swarm != null and not swarm.obstacles_near(wp, 2.5).is_empty():
 		return PASS_TIGHT_M
 	return PASS_M
+
+
+## `d`, or the nearest spot clear of buildings (a robot never starts inside a wall).
+func _free_spot(d: Vector3) -> Vector3:
+	if swarm == null or not _inside_building(d):
+		return d
+	for ring_m: float in [3.0, 5.0, 8.0, 12.0, 17.0]:
+		for k: int in 12:
+			var side: Vector3 = SphereMath.any_perpendicular(d).rotated(d, float(k) / 12.0 * TAU)
+			var q: Vector3 = SphereMath.advance(d, side, ring_m / surface.radius)[0]
+			if not _inside_building(q):
+				return q
+	return d
 
 
 func _inside_building(d: Vector3) -> bool:
@@ -790,9 +842,19 @@ func _drop_bale(u: Dictionary) -> void:
 	var at: Vector3 = SphereMath.advance(d, side, 0.9 / surface.radius)[0]
 	if swarm != null and _inside_building(at):
 		at = surface.up_at(_approach(surface.ground(at), surface.ground(d)))
+	if cells.state[grid.cell_at(at)] == 5:  # a Skimmer's bale goes on the nearest shore
+		at = _shore_of(grid.cell_at(at))
 	bales.append({"id": _bale_seq, "cell": grid.cell_at(at), "dir": at, "value": value, "units": units_in, "claimed": "",
 		"info": SphereBales.bale_info(units_in)})
 	u["log"]["bales"] = float(u["log"]["bales"]) + 1.0
+
+
+## Nearest land cell centre to a lake cell (BFS, a few rings), or the cell itself.
+func _shore_of(c: int) -> Vector3:
+	for k: int in grid.cells_around(c, 4):
+		if cells.state[k] != 5 and not blocked.has(k):
+			return grid.centers[k]
+	return grid.centers[c]
 
 
 func _bale_index(id: int) -> int:
@@ -858,7 +920,7 @@ func status_text(u: Dictionary) -> String:
 		"go":
 			return "heading to hex %d" % int(u["job"])
 		"work":
-			return {"plant": "planting", "water": "watering"}.get(str(u["role"]), "cleaning") + " hex %d" % int(u["job"])
+			return {"plant": "planting", "water": "watering", "skim": "skimming"}.get(str(u["role"]), "cleaning") + " hex %d" % int(u["job"])
 		"to_bale":
 			return "fetching a bale"
 		"to_depot":

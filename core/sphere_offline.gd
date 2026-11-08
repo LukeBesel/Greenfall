@@ -10,6 +10,8 @@ extends RefCounted
 ## at Offline's ~0.9 units per piece. That keeps a Scoopie's work per hour the same in both games.
 
 const UNITS_PER_CELL: float = SphereField.FULL_PIECES * 0.9
+## A lake hex's floating junk (SphereField.FLOAT_PIECES floaters): Skimmers' work.
+const UNITS_PER_WATER_CELL: float = SphereField.FLOAT_PIECES * 0.9
 ## Hub region on Verdance (163,842 cells, 10 hubs): 16 rings, ~820 cells, ~280 m across. Other
 ## planets scale it with their area per hub (region_rings), since planets differ in size and hub
 ## count (docs/DECISIONS.md "Planets differ in size"). Hex size stays 10 m everywhere, so
@@ -43,12 +45,29 @@ static func region(grid: SphereGrid, cells: SphereCells, hub: int, rings: int = 
 	return out
 
 
-## Junk units left in a list of cells.
+## The hub region's lake cells (Skimmers' ground), nearest the hub first.
+static func region_water(grid: SphereGrid, cells: SphereCells, hub: int, rings: int = REGION_RINGS) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	for c: int in grid.cells_around(hub, rings):
+		if cells.state[c] == 5:
+			out.append(c)
+	return out
+
+
+static func _dirty(cells: SphereCells, c: int) -> bool:
+	return cells.is_dirty(c) or (cells.state[c] == 5 and cells.junk[c] > 0.02)
+
+
+static func _upc(cells: SphereCells, c: int) -> float:
+	return UNITS_PER_WATER_CELL if cells.state[c] == 5 else UNITS_PER_CELL
+
+
+## Junk units left in a list of cells (land, or a lake's floaters).
 static func units_left(cells: SphereCells, list: PackedInt32Array) -> float:
 	var u: float = 0.0
 	for c: int in list:
-		if cells.is_dirty(c):
-			u += cells.junk[c] * UNITS_PER_CELL
+		if _dirty(cells, c):
+			u += cells.junk[c] * _upc(cells, c)
 	return u
 
 
@@ -84,15 +103,16 @@ static func take_units(cells: SphereCells, field: SphereField, list: PackedInt32
 	for c: int in list:
 		if budget <= 1e-6:
 			break
-		if not cells.is_dirty(c):
+		if not _dirty(cells, c):
 			continue
-		var have: float = cells.junk[c] * UNITS_PER_CELL
+		var upc: float = _upc(cells, c)
+		var have: float = cells.junk[c] * upc
 		var take: float = minf(have, budget)
 		budget -= take
-		var left: float = (have - take) / UNITS_PER_CELL
+		var left: float = (have - take) / upc
 		(out["pieces"] as PackedInt32Array).append_array(write_cell(cells, field, c, left))
 		(out["touched"] as PackedInt32Array).append(c)
-		if not cells.is_dirty(c):
+		if not _dirty(cells, c):
 			out["cells"] = int(out["cells"]) + 1
 	out["units"] = units - budget
 	return out
@@ -108,10 +128,30 @@ static func simulate(grid: SphereGrid, cells: SphereCells, field: SphereField, h
 	var total: Dictionary = {"seconds": clampf(seconds, 0.0, Offline.CAP_S), "units": 0.0, "cubes": 0.0, "waiting_value": 0.0,
 		"air": 0.0, "cells": 0, "pieces": PackedInt32Array(), "hubs": []}
 	for h: Dictionary in hubs:
-		var list: PackedInt32Array = region(grid, cells, int(h["cell"]), int(h.get("rings", def_rings)))
-		var res: Dictionary = Offline.compute(h.get("robots", []), int(h.get("scrubbers", 0)), float(h.get("filter_per_s", 1.0)),
+		var rings: int = int(h.get("rings", def_rings))
+		var list: PackedInt32Array = region(grid, cells, int(h["cell"]), rings)
+		# Skimmers work the region's lakes, everyone else its land: same maths, own junk caps.
+		var land: Array = []
+		var skim: Array = []
+		for r: Dictionary in h.get("robots", []):
+			var role: String = str(Economy.robots.get(str(r.get("type", "")), {}).get("role", "clean"))
+			if role == "skim":
+				skim.append(r)
+			else:
+				land.append(r)
+				if role == "haul":
+					skim.append(r)  # haulers serve both
+		var res: Dictionary = Offline.compute(land, int(h.get("scrubbers", 0)), float(h.get("filter_per_s", 1.0)),
 			seconds, units_left(cells, list))
 		var took: Dictionary = take_units(cells, field, list, float(res["units"]))
+		if not skim.is_empty():
+			var wl: PackedInt32Array = region_water(grid, cells, int(h["cell"]), rings)
+			var wres: Dictionary = Offline.compute(skim, 0, 1.0, seconds, units_left(cells, wl))
+			var wt: Dictionary = take_units(cells, field, wl, float(wres["units"]))
+			for k: String in ["units", "cubes", "waiting_value"]:
+				res[k] = float(res[k]) + float(wres[k])
+			took["cells"] = int(took["cells"]) + int(wt["cells"])
+			(took["pieces"] as PackedInt32Array).append_array(wt["pieces"])
 		res["cells"] = took["cells"]
 		res["hub"] = int(h["cell"])
 		for k: String in ["units", "cubes", "waiting_value", "air"]:

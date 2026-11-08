@@ -50,6 +50,8 @@ static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, wri
 	cmd.grid = src.grid
 	cmd.crew = crew
 	cmd.streamer = src.streamer
+	if lumi != null and lumi.get("input") is PlayerInput and parent.get("orbit") != null:  # the slice (the phase A toggle needs Lumi's input on)
+		cmd.lumi_input = lumi.get("input")
 	parent.add_child(cmd)
 	var around: PackedInt32Array = (src.grid as SphereGrid).cells_around(start, 2)
 	var n: int = 0
