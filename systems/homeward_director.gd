@@ -317,6 +317,9 @@ static func launch_planet(w: Node, k: int) -> bool:
 static func _launch(w: Node, target: int) -> bool:
 	if bool(w.get("launching")):
 		return false
+	if OrbitSites.of(w):  # [orbD] on a walkable globe: lift off from the hub's pad, then switch worlds
+		OrbitSites.of(w).launch_planet(target)
+		return true
 	if w.get("rocket") == null and w.has_method("_place_rocket"):
 		w.call("_place_rocket", false)
 	var r: Variant = w.get("rocket")
