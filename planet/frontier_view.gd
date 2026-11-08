@@ -196,7 +196,7 @@ func _process(delta: float) -> void:
 			(_mats["curtain"] as ShaderMaterial).set_shader_parameter("night", clampf(nt, 0.0, 1.0))
 	if _pad_mat:
 		var pc: float = float(_cradle.get("pad_clean", 0.0))
-		_pad_mat.emission_energy_multiplier = 0.4 + pc * 2.6 + (sin(_t * 2.0) * 0.4 if district.done else 0.0)
+		_pad_mat.emission_energy_multiplier = pc * 3.0 + (sin(_t * 2.0) * 0.4 if district.done else 0.0)  # [world3] was 0.4 + pc * 2.6
 
 
 # --- Materials ----------------------------------------------------------------------------
@@ -1577,7 +1577,7 @@ func _build_pad(c: Vector3) -> void:
 	_pad_mat.albedo_color = CYAN
 	_pad_mat.emission_enabled = true
 	_pad_mat.emission = CYAN
-	_pad_mat.emission_energy_multiplier = 0.4
+	_pad_mat.emission_energy_multiplier = 0.0  # [world3] dark until the pad is cleaned (nothing works when you land)
 	var b := Batch.new()
 	for rr: float in [ring_r, ring_r * 0.55]:
 		b.add(ProcMesh.torus(rr - 0.06, rr + 0.06, 96, 3), Transform3D(Basis().scaled(Vector3(1, 0.05, 1)), c + Vector3(0, 0.06, 0)), _pad_mat)
@@ -1627,7 +1627,7 @@ func _build_pad(c: Vector3) -> void:
 		pyl.add(_box(), _xf(p + Vector3(0, 2.0, 0.0), Vector3.ZERO, Vector3(0.04, 3.4, 0.04)), _mat("line"))
 		var lamp := MeshInstance3D.new()
 		lamp.mesh = ProcMesh.sphere(0.24, 12, 6)
-		lamp.material_override = Mats.lamp(Color(0.25, 0.3, 0.32), 0.1)
+		lamp.material_override = Mats.lamp(Color(0.25, 0.3, 0.32), 0.0)  # [world3] dead until the pad hexes are Sustained
 		lamp.position = p + Vector3(0, 4.35, 0)
 		root.add_child(lamp)
 		_pylon_lamps.append(lamp)
@@ -1694,7 +1694,7 @@ func set_cradle(p: Dictionary) -> void:
 		var on: bool = i < lit or district.done
 		var m: StandardMaterial3D = _pylon_lamps[i].material_override
 		m.emission = CYAN if on else Color(0.25, 0.3, 0.32)
-		m.emission_energy_multiplier = 3.0 if on else 0.1
+		m.emission_energy_multiplier = 3.0 if on else 0.0  # [world3] dead lamps (was 0.1)
 	if _beams:
 		_beams.visible = district.done
 
