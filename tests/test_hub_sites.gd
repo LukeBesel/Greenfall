@@ -114,3 +114,61 @@ func test_planet_fraction_counts_built_hub_regions_only() -> void:
 	sm.growth_m[0] = 0.0
 	sm.load_state(st)
 	assert_gt(sm.growth_m[0], 0.0)
+
+
+func test_hop_time_grows_gently_with_distance() -> void:
+	assert_almost_eq(HubHop.duration(100.0), HubHop.MIN_T, 0.01)
+	assert_gt(HubHop.duration(3000.0), HubHop.duration(1700.0))
+	assert_lt(HubHop.duration(3000.0), 13.0, "a 3 km hop on Anvil still takes under 13 s")
+	assert_almost_eq(HubHop.duration(50000.0), HubHop.MAX_T, 0.01)
+	assert_almost_eq(HubHop.alt_at(0.0, 200.0), 0.0, 0.01)
+	assert_almost_eq(HubHop.alt_at(0.5, 200.0), 200.0, 0.01)
+	assert_almost_eq(HubHop.alt_at(1.0, 200.0), 0.0, 0.01)
+
+
+func test_sled_upgrade_registers_once_and_tiers_speed_up() -> void:
+	var had: bool = Economy.upgrade_defs.has(HoverSled.UPGRADE_ID)
+	var n: int = Economy.upgrade_order.size()
+	HoverSled.register_upgrade()
+	HoverSled.register_upgrade()
+	assert_eq(Economy.upgrade_order.size(), n + (0 if had else 1))
+	var saved: Variant = GameState.upgrades.get(HoverSled.UPGRADE_ID)
+	GameState.upgrades[HoverSled.UPGRADE_ID] = 2
+	assert_eq(HoverSled.owned_tier(), 2)
+	if saved == null:
+		GameState.upgrades.erase(HoverSled.UPGRADE_ID)
+	else:
+		GameState.upgrades[HoverSled.UPGRADE_ID] = saved
+	assert_gt(float(HoverSled.tune(3)["speed_mult"]), float(HoverSled.tune(1)["speed_mult"]))
+	# Cleanup: the flat game's list stays as shipped.
+	if not had:
+		Economy.upgrade_defs.erase(HoverSled.UPGRADE_ID)
+		Economy.upgrade_order.erase(HoverSled.UPGRADE_ID)
+		Economy._index_upgrades()
+
+
+func test_sled_mount_retunes_motor_and_restores() -> void:
+	var m := SphereMotor.new()
+	var p := Patch.new()
+	p.sphere_motor = m
+	add_child_autofree(p)
+	var s := HoverSled.new()
+	s.lumi = p
+	add_child_autofree(s)
+	s.mount()
+	assert_true(s.mounted)
+	assert_gt(m.speed_mult, 2.0)
+	assert_lt(m.accel, 16.0, "heavier inertia")
+	assert_eq(s.get_parent(), p)
+	s.dismount()
+	assert_false(s.mounted)
+	assert_eq(m.speed_mult, 1.0)
+	assert_eq(m.accel, 16.0)
+	assert_ne(s.get_parent(), p)
+
+
+func test_boost_is_rebindable_without_conflicts() -> void:
+	var names: Array = Settings.REBINDABLE.map(func(e: Array) -> String: return e[0])
+	assert_true(names.has("boost"))
+	assert_eq(Settings.conflicts(), {})
+	assert_eq(Settings.event_label(Settings.binding("boost", false)), "Shift")
