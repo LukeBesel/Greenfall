@@ -188,10 +188,11 @@ func _build_water() -> void:
 	water = SphereWater.new()
 	water.name = "Lakes"
 	so.w.add_child(water)
+	water.world = so.w
 	water.setup_globe(so.globe)
 	if DevHooks.has("water-report"):
 		get_tree().create_timer(DevHooks.get_f("water-report", 6.0)).timeout.connect(func() -> void:
-			print("[water] %d lake cells shown" % water.count()))
+			print("[water] %d lake cells shown, %d fish" % [water.count(), water.fish_count()]))
 
 
 ## The flat game's Stations (conveyor feeder, auto-baler, recycler: automation/stations.gd) on the

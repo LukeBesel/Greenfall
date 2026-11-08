@@ -114,6 +114,8 @@ func _build_greenhouse() -> void:
 		for x: float in [-2.5, 2.5]:
 			PropColliders.add_cyl(pb, GREENHOUSE_POS + Vector3(x, 0, -4.0 + i * 2.0), 0.08, 2.4)
 	PropColliders.add_box(pb, Transform3D(Basis(), GREENHOUSE_POS + Vector3(-2.5, 1.1, 2.0)), Vector3(0.1, 2.2, 1.9))
+	if _globe:  # [orbB] the shapes are in this node's space (the world on the flat game)
+		pb.global_transform = global_transform
 
 
 func ready_to_find() -> bool:
@@ -175,10 +177,10 @@ func _total_time() -> float:
 func _cinematic() -> void:
 	if world.get("music") != null:
 		world.music.set_cinematic(true)
-	var cam: CameraRig = world.cam
+	var cam: Object = world.cam if world.get("cam") != null else (world.orbit as SliceOrbit).cam  # [orbB] SphereCam on the globe
 	var hud: CanvasLayer = world.hud
 	hud.visible = false
-	cam.input_enabled = false
+	cam.set("input_enabled", false)
 	if world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = false
 	for i: int in _bars.size():
@@ -189,14 +191,20 @@ func _cinematic() -> void:
 		else:
 			tw.tween_property(r, "offset_top", -90.0, 0.8)
 	Audio.play("fanfare", 0.6, -10.0)
-	var start_yaw: float = cam.yaw
-	var dist0: float = cam.distance
-	cam.distance = 3.4
+	var start_yaw: float = float(cam.get("yaw")) if not _globe else 0.0
+	var dist0: float = cam.get("distance")
+	var pitch0: float = cam.get("pitch")
+	cam.set("distance", 3.4)
 	var total: float = _total_time()
 	var tw2 := create_tween()
+	var last := [0.0]
 	tw2.tween_method(func(v: float) -> void:
-		cam.yaw = start_yaw + v * 1.6
-		cam.pitch = lerpf(-0.18, -0.42, v), 0.0, 1.0, total)
+		if _globe:  # [orbB] SphereCam turns by increments in Lumi's frame
+			cam.call("add_yaw", (v - float(last[0])) * 1.6)
+			last[0] = v
+		else:
+			cam.set("yaw", start_yaw + v * 1.6)
+		cam.set("pitch", lerpf(-0.18, -0.42, v)), 0.0, 1.0, total)
 	for l: Array in LINES:
 		world.wren.line_started.emit(str(l[0]), 1)
 		await get_tree().create_timer(float(l[1])).timeout
@@ -207,9 +215,11 @@ func _cinematic() -> void:
 			tw.tween_property(r, "offset_bottom", 0.0, 0.8)
 		else:
 			tw.tween_property(r, "offset_top", 0.0, 0.8)
-	cam.distance = dist0
+	cam.set("distance", dist0)
+	if _globe:
+		cam.set("pitch", pitch0)
 	hud.visible = true
-	cam.input_enabled = true
+	cam.set("input_enabled", true)
 	if world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = true
 
@@ -221,11 +231,11 @@ func _sprout_moment(pos: Vector3) -> void:
 	flash.light_energy = 8.0
 	flash.omni_range = 8.0
 	add_child(flash)
-	flash.global_position = pos + Vector3(0, 0.6, 0)
+	flash.global_position = pos + OrbitUp.up(pos) * 0.6  # [orbB] (Vector3.UP on the flat game)
 	var tw := create_tween()
 	tw.tween_property(flash, "light_energy", 0.0, 2.5)
 	tw.tween_callback(flash.queue_free)
-	Vfx.burst("big_sparkle", pos + Vector3(0, 0.3, 0), Color(0.7, 1.0, 0.6))
+	Vfx.burst("big_sparkle", pos + OrbitUp.up(pos) * 0.3, Color(0.7, 1.0, 0.6))
 	Audio.play("chime", 0.7, -2.0)
 	Audio.play("fanfare", 0.8, -6.0)
 	world.wren.line_started.emit(tr("...It's green. Lumi, it's actually green."), 1)
@@ -236,3 +246,76 @@ func _sprout_moment(pos: Vector3) -> void:
 	Audio.music_sting("first_sprout")
 	if world.get("music") != null:
 		world.music.set_cinematic(false)
+
+
+# --- [orbB] The globe: the greenhouse east of the start yard ------------------------------------
+
+var _globe: bool = false
+
+
+## Where the greenhouse stands (the objective's waypoint): GREENHOUSE_POS on the flat game.
+func greenhouse_point() -> Vector3:
+	return to_global(GREENHOUSE_POS)
+
+
+## Seats this node so the flat greenhouse (at GREENHOUSE_POS in this node's space) lands on a free
+## spot east of the start yard, upright on the ground there. Call before setup().
+func place_on_globe(so: SliceOrbit) -> void:
+	_globe = true
+	var site: Transform3D = so.globe.sites[0]["transform"]
+	var spot: Transform3D = find_spot(so, site)
+	global_transform = spot * Transform3D(Basis.IDENTITY, -GREENHOUSE_POS)
+	print("[first_seed] greenhouse at site-local (%.1f, %.1f)" % [(site.affine_inverse() * spot.origin).x, (site.affine_inverse() * spot.origin).z])
+
+
+## The first clear 7 x 10 m patch east of the yard (rings 16-70 m, within 65 degrees of east,
+## nearest first): open ground (no collider of the site's blocks), level within 0.6 m, dry, clear
+## of the yard's anchors. Faces back toward the hub. Deterministic per site.
+static func find_spot(so: SliceOrbit, site: Transform3D) -> Transform3D:
+	var f: SphereField = so.globe.field
+	var space: PhysicsDirectSpaceState3D = so.w.get_world_3d().direct_space_state
+	var anchors: Array[Vector3] = []
+	for nm: String in LedgerArc.YARD_ANCHORS + ["shack", "generator", "composter", "fabricator", "camera_bot"]:
+		anchors.append(site.affine_inverse() * so.yard_point(nm))
+	var box := BoxShape3D.new()
+	box.size = Vector3(6.6, 2.2, 9.6)
+	var best := Transform3D(site.basis, site * Vector3(GREENHOUSE_POS.x, 0.0, GREENHOUSE_POS.z))
+	for r: float in range(16, 72, 3):
+		for k: int in 15:
+			var a: float = deg_to_rad(-65.0 + k * (130.0 / 14.0))  # 0 = east (+x), -: north (-z)
+			var c := Vector3(cos(a) * r, 0.0, sin(a) * r)
+			if c.x < 7.0:  # clear of the lane north out of the yard (|x| < 2.5 m) and its edges
+				continue
+			var clash: bool = false
+			for an: Vector3 in anchors:
+				if Vector2(an.x - c.x, an.z - c.z).length() < 7.5:
+					clash = true
+					break
+			if clash:
+				continue
+			var yaw: float = atan2(c.x, c.z)  # local +z toward the hub
+			var lb := Basis(Vector3.UP, yaw)
+			var lo: float = INF
+			var hi: float = -INF
+			var wet: bool = false
+			for o: Vector3 in [Vector3.ZERO, Vector3(3.3, 0, 4.8), Vector3(-3.3, 0, 4.8), Vector3(3.3, 0, -4.8), Vector3(-3.3, 0, -4.8)]:
+				var gp: Vector3 = f.terrain.ground((site * (c + lb * o)).normalized())
+				var h: float = (site.affine_inverse() * gp).y
+				lo = minf(lo, h)
+				hi = maxf(hi, h)
+				var cell: int = f.hex_at(gp)
+				wet = wet or cell < 0 or f.is_water(cell)
+			if wet or hi - lo > 0.6:
+				continue
+			c.y = (lo + hi) * 0.5
+			var wc: Vector3 = site * c
+			var up: Vector3 = wc.normalized()
+			var q := PhysicsShapeQueryParameters3D.new()
+			q.shape = box
+			q.transform = Transform3D(site.basis.orthonormalized() * lb, wc + up * 1.5)
+			q.collision_mask = 1 | PhysLayers.PROP
+			if not space.intersect_shape(q, 1).is_empty():
+				continue
+			var bas: Basis = Basis(Quaternion(site.basis.y.normalized(), up)) * site.basis.orthonormalized() * lb
+			return Transform3D(bas, wc)
+	return best

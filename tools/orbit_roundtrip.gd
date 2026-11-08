@@ -293,6 +293,48 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 		await tree.process_frame
 
 
+## First Seed: the greenhouse stands on open ground east of the start yard; with enough clean
+## cells the tin gives the prompt, and the cinematic (sped up here) unlocks seeds and hands
+## the controls back.
+static func _first_seed_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callable) -> void:
+	for i: int in 4:
+		await tree.physics_frame
+	var fs: FirstSeed = s.get("first_seed") as FirstSeed
+	check.call("orbit_first_seed_built", true, fs != null and fs._tin != null)
+	if fs == null:
+		return
+	var g: OrbitPlanet = so.globe
+	var gh: Vector3 = fs.greenhouse_point()
+	var site: Transform3D = g.sites[0]["transform"]
+	var local: Vector3 = site.affine_inverse() * gh
+	var tilt: float = rad_to_deg(fs.global_basis.y.angle_to(gh.normalized()))
+	check.call("orbit_greenhouse_east_on_ground", true, absf(g.surface.altitude(gh)) < 0.7 and tilt < 1.0 and local.x > 0.0 and Vector2(local.x, local.z).length() > 14.0 and Vector2(local.x, local.z).length() < 75.0)
+	var fcfg: Dictionary = s.garden.cfg.get("first_seed", {})
+	var need0: Variant = fcfg.get("hexes_needed", 5)
+	fcfg["hexes_needed"] = 0
+	s.garden.cfg["first_seed"] = fcfg
+	var p: Patch = s.get("patch")
+	var back: Vector3 = p.global_position
+	var tin: Vector3 = fs._tin.global_position
+	p.place_on_sphere(tin + (fs.global_basis.x.normalized()) * 1.2, p.forward())
+	GameState.flags.erase("seeds_unlocked")  # (the garden check above unlocked them by hand)
+	await tree.physics_frame
+	check.call("orbit_seed_tin_prompt", "seed", s.interact_prompt(p))
+	var seeds0: float = GameState.get_currency("seeds").to_float()
+	s.try_interact(p)
+	check.call("orbit_seed_cinematic_runs", true, fs._active and not (s.get("hud") as CanvasLayer).visible and not so.cam.input_enabled)
+	Engine.time_scale = 30.0
+	var t0: int = Time.get_ticks_msec()
+	while (fs._active or not (s.get("hud") as CanvasLayer).visible) and Time.get_ticks_msec() - t0 < 15000:  # (the lines' timers drift a frame each)
+		await tree.process_frame
+	Engine.time_scale = 1.0
+	check.call("orbit_seed_unlocked", true, GameState.flags.get("seeds_unlocked", false) and GameState.get_currency("seeds").to_float() > seeds0)
+	await tree.process_frame
+	check.call("orbit_seed_controls_back", "hud true cam true", "hud %s cam %s" % [str((s.get("hud") as CanvasLayer).visible), str(so.cam.input_enabled)])
+	fcfg["hexes_needed"] = need0
+	p.place_on_sphere(back, p.forward())
+
+
 static func run(rt: Node, check: Callable) -> void:
 	var tree: SceneTree = rt.get_tree()
 	var packed: PackedScene = load("res://scenes/slice.tscn")
@@ -362,6 +404,7 @@ static func run(rt: Node, check: Callable) -> void:
 	check.call("orbit_garden_planted", 3, planted_n)
 	check.call("orbit_garden_slots_on_ground", true, gdn.slot_pos.size() > 0 and absf(gdn.slot_pos[0].length() - (g.grid.radius_m + g.terrain.height(gdn.slot_pos[0].normalized()))) < 0.05)
 	await _fauna_check(tree, s1, so, check)
+	await _first_seed_check(tree, s1, so, check)
 	# Glim's scanner marks the junk of the cell Lumi stands in (pieces by how big they look).
 	var gd: GlimDirector = GlimDirector.of(s1)
 	if gd:
