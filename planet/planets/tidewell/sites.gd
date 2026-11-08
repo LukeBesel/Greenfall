@@ -61,7 +61,7 @@ func _make(p_site: String, seed_v: int, water_r: float) -> void:
 	match site_id:
 		"hub_raft":
 			islands = []
-			_site_raft()
+			TideProps.raft(self)  # [p_seas] was _site_raft()
 		"hub_stilts":
 			islands = [{"c": Vector2(6, 4), "r": 20.0, "h": 2.6, "kind": "isle", "yaw": 0.6, "stretch": 1.4}]
 			_site_stilts()
