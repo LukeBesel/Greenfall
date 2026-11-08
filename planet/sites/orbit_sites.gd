@@ -48,6 +48,8 @@ func _setup() -> void:
 	if DevHooks.has("orbit-hop"):
 		_dev_hop.call_deferred()
 	_wire_survey.call_deferred()
+	if DevHooks.has("soak"):  # dev QA soak (planet/sites/soak_watch.gd)
+		SoakWatch.attach(so)
 	if DevHooks.has("site-reach"):
 		_reach_audit.call_deferred()
 	if bool(GameState.flags.get("arrived_from_rocket", false)) or DevHooks.has("orbit-arrive"):

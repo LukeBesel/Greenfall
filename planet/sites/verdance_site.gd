@@ -143,6 +143,7 @@ func _make() -> void:
 	city.name = "City"
 	city.skyline = false
 	city.buildings = false  # the kit's buildings instead (below)
+	city.flush_walks = true
 	add_child(city)
 	await city.build(layout, _sidewalk_material())
 	await BuildBudget.check("site:roads")  # [orbE] behind the loading screen: a few kit buildings per frame
