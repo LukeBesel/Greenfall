@@ -164,7 +164,7 @@ func _dress_planet() -> void:
 	if ResourceLoader.exists(path):
 		var scr: GDScript = load(path) as GDScript
 		if scr:
-			scr.call("apply", world, world.field, Frontiers.world_kind(world))
+			scr.call("apply", world, world.field, Frontiers.def(Frontiers.world_kind(world)))  # [main] envs take the kind def (Dictionary), not its id
 			print("[home] planet env %s applied" % path)
 
 
