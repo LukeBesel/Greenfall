@@ -122,6 +122,8 @@ static func run(rt: Node, check: Callable) -> void:
 	await tree.physics_frame
 	check.call("orbit_bin_prompt", true, s1.interact_prompt(p) != "")
 	YardBuilds.mark_built("radio")
+	var scope: Telescope = Telescope.of(s1)
+	check.call("orbit_telescope_at_anchor", true, scope != null and scope.door_point().distance_to(so1.yard_point("telescope")) < 3.0)
 	var ex: ExtrasDirector = ExtrasDirector.of(s1)
 	check.call("orbit_radio_on_anchor", true, ex != null and ex.radio != null and ex.radio.global_position.distance_to(so1.yard_point("radio")) < 0.1)
 	if ex and ex.radio:

@@ -170,7 +170,8 @@ func _pos() -> Vector3:
 
 ## [camp] Where Lumi stands to use it (in front of the door), built or not.
 func door_point() -> Vector3:
-	return _pos() + Basis(Vector3.UP, deg_to_rad(float(data.get("yaw_deg", 30.0)))) * Vector3(0, 0, 2.2)
+	var local: Vector3 = _pos() + Basis(Vector3.UP, deg_to_rad(float(data.get("yaw_deg", 30.0)))) * Vector3(0, 0, 2.2)
+	return to_global(local) if is_inside_tree() else local  # [orbB] world space (this node sits on the globe's anchor)
 
 
 static func _mat(c: Color, rough: float, metal: float = 0.0, coat: float = 0.0) -> StandardMaterial3D:
@@ -312,4 +313,4 @@ func _spawn(animate: bool) -> void:
 	if animate:
 		_model.scale = Vector3(1, 0.02, 1)
 		create_tween().tween_property(_model, "scale", Vector3.ONE, 1.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-		Vfx.burst("sparkle", _model.global_position + Vector3(0, 2.0, 0), Color(0.7, 0.9, 1.0), 1.0)
+		Vfx.burst("sparkle", _model.global_position + _model.global_basis.y.normalized() * 2.0, Color(0.7, 0.9, 1.0), 1.0)  # [orbB] local up

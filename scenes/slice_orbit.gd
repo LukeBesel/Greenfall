@@ -435,6 +435,13 @@ func _build_yard_systems() -> void:
 		w.add_child(tower)  # a child of the slice, as on the flat game (HubBuilds and the bot look it up)
 		tower.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)  # after its _ready
 	_attach_extras()
+	var scope := Telescope.new()  # the Telescope + remote progress (automation/telescope.gd)
+	scope.name = "Telescope"
+	scope.world = w
+	w.add_child(scope)
+	# Its model sits at _pos() in its own frame: put that point on the "telescope" anchor.
+	var tslot: Array = yard_slot("telescope", scope.call("_pos"))
+	scope.global_transform = (tslot[0] as Node3D).global_transform * (tslot[1] as Transform3D) * Transform3D(Basis(), -(scope.call("_pos") as Vector3))
 	_attach_camp()
 	_place_pod()
 	var cc := CoreCharge.new()  # Lumi's Bloom Core charge and its story beats (story/core_charge.gd)
