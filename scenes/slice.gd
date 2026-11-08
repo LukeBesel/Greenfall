@@ -181,6 +181,10 @@ func _ready() -> void:
 	if not fk.is_empty():  # [biomes] the frontier's own harbour / flood replaces planet lakes
 		field.water_ids = Frontiers.water_ids_for(fk, f_radius, float(cfg.get("hex_size", 3.2)))
 		field.float_mult = float(fk.get("float_mult", 1.0))
+	if bool(planet_env.get("no_lakes", false)):  # [planet-ochre] a dry planet: no planet lakes in the field
+		field.water_ids = {}
+	if planet_env.has("pieces_mult"):  # [planet-ochre] a trashed planet: more junk per hex
+		ppx = [int(float(ppx[0]) * float(planet_env["pieces_mult"])), int(float(ppx[1]) * float(planet_env["pieces_mult"]))]
 	# Older saves were generated with straight hex borders; keep their piece layout identical.
 	if loaded and GameState.world.has("field"):
 		field.natural_borders = bool((GameState.world["field"] as Dictionary).get("natural_borders", false))
