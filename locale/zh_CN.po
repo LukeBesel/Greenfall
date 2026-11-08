@@ -2838,7 +2838,7 @@ msgstr "垃圾桶，%d / %d级"
 
 #: systems/camp/hub_builds.gd:149
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
-msgstr ""
+msgstr "WREN 只能通过中继联系你。每升一级她的声音更清晰。"
 
 #: systems/camp/hub_builds.gd:153
 msgid "Tier %d of %d"
@@ -2854,7 +2854,7 @@ msgstr "博物馆"
 
 #: systems/camp/hub_builds.gd:190
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
-msgstr ""
+msgstr "一座大厅，为卢米找到的每件东西都设了展台，留给后来的人。"
 
 #: systems/camp/machine_reveal.gd:46
 msgid "%s built. Follow the light to it."
@@ -2866,7 +2866,7 @@ msgstr ""
 
 #: systems/camp/yard_builds.gd:61
 msgid "Repair the workbench first."
-msgstr ""
+msgstr "先修好工作台。"
 
 #: systems/camp/yard_builds.gd:67
 msgid "Grow your first seed first."
@@ -3333,7 +3333,7 @@ msgstr "喷洒范围"
 msgid "Refill"
 msgstr "补水"
 
-#: ui/builder_panel.gd:21 ui/command_view.gd:1238 ui/command_view.gd:1241
+#: ui/builder_panel.gd:21 ui/command_view.gd:1244 ui/command_view.gd:1247
 #: data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "清理"
@@ -3820,96 +3820,96 @@ msgstr "清除"
 msgid "CREWS"
 msgstr "队伍"
 
-#: ui/command_view.gd:600
+#: ui/command_view.gd:598
 msgid "Following the %s orders. Mark hexes or pick a mode to give it its own."
 msgstr "正在执行%s的命令。标记六角格或选择模式来给它单独下令。"
 
-#: ui/command_view.gd:609
+#: ui/command_view.gd:607
 msgid "No orders yet: roaming the district. Drag on the ground to mark where to work."
 msgstr "还没有命令：在街区里巡游。在地面上拖动来标记工作区域。"
 
-#: ui/command_view.gd:678
+#: ui/command_view.gd:684
 msgid "No robots yet. Build one at the workbench."
 msgstr "还没有机器人。去工作台造一台吧。"
 
-#: ui/command_view.gd:809
+#: ui/command_view.gd:815
 msgid "Build %s  %s"
 msgstr "建造 %s  %s"
 
-#: ui/command_view.gd:814
+#: ui/command_view.gd:820
 msgid "Max tier"
 msgstr "最高等级"
 
-#: ui/command_view.gd:814
+#: ui/command_view.gd:820
 msgid "Upgrade > %s"
 msgstr "升级 > %s"
 
-#: ui/command_view.gd:820
+#: ui/command_view.gd:826
 msgid "ready"
 msgstr "就绪"
 
-#: ui/command_view.gd:820
+#: ui/command_view.gd:826
 msgid "build at the workbench"
 msgstr "在工作台建造"
 
-#: ui/command_view.gd:827
+#: ui/command_view.gd:833
 msgid "Place refill tank here  %s  (%d/%d)"
 msgstr "在此放置补水箱  %s  （%d/%d）"
 
-#: ui/command_view.gd:829
+#: ui/command_view.gd:835
 msgid "A Water Tank at your hex. Waterers refill at the nearest one."
 msgstr "你所在六角格的水箱。浇水机器人会去最近的水箱补水。"
 
-#: ui/command_view.gd:1086
+#: ui/command_view.gd:1092
 msgid "%s · %d HEX"
 msgid_plural "%s · %d HEXES"
 msgstr[0] "%s · %d 个六角格"
 
-#: ui/command_view.gd:1122
+#: ui/command_view.gd:1128
 msgid "BASE"
 msgstr "基地"
 
-#: ui/command_view.gd:1129
+#: ui/command_view.gd:1135
 msgid "YOU"
 msgstr "你"
 
-#: ui/command_view.gd:1229
+#: ui/command_view.gd:1235
 msgid "HEX %d"
 msgstr "六角格 %d"
 
-#: ui/command_view.gd:1233
+#: ui/command_view.gd:1239
 msgid "BASE YARD"
 msgstr "基地院子"
 
-#: ui/command_view.gd:1234
+#: ui/command_view.gd:1240
 msgid "Home ground, always clean"
 msgstr "家园，永远干净"
 
-#: ui/command_view.gd:1236
+#: ui/command_view.gd:1242
 msgid "LAKE HEX %d"
 msgstr "湖面六角格 %d"
 
-#: ui/command_view.gd:1238
+#: ui/command_view.gd:1244
 msgid "Floating junk  %d%% left"
 msgstr "漂浮废料  剩余 %d%%"
 
-#: ui/command_view.gd:1244
+#: ui/command_view.gd:1250
 msgid "Junk  %d%% left"
 msgstr "废料  剩余 %d%%"
 
-#: ui/command_view.gd:1250
+#: ui/command_view.gd:1256
 msgid "Level %d · %s"
 msgstr "等级 %d · %s"
 
-#: ui/command_view.gd:1252
+#: ui/command_view.gd:1258
 msgid "In %s zone"
 msgstr "在%s区域"
 
-#: ui/command_view.gd:1305
+#: ui/command_view.gd:1311
 msgid "%d robots"
 msgstr "%d 台机器人"
 
-#: ui/command_view.gd:1308
+#: ui/command_view.gd:1314
 msgid "%d / %d hexes clean"
 msgstr "%d / %d 个六角格已清理"
 
@@ -6170,11 +6170,11 @@ msgstr ""
 
 #: ui/yard_builds_panel.gd:21
 msgid "Nothing new to build yet. More opens as the base grows."
-msgstr ""
+msgstr "暂时没有新的可建项目。基地发展后会解锁更多。"
 
 #: ui/yard_builds_panel.gd:127
 msgid "Free"
-msgstr ""
+msgstr "免费"
 
 #: water/water_view.gd:78
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
@@ -7062,23 +7062,23 @@ msgstr "棚屋"
 
 #: data/camp.json:builds.shack.desc
 msgid "Salvaged pipe and corrugated iron over the workbench, with a work lamp. Shelter for the crew."
-msgstr ""
+msgstr "回收的管子和瓦楞铁搭在工作台上方，配一盏工作灯。给队员遮风挡雨。"
 
 #: data/camp.json:builds.generator.name
 msgid "Generator"
-msgstr ""
+msgstr "发电机"
 
 #: data/camp.json:builds.generator.desc
 msgid "A patched portable generator by the lean-to. It hums; the yard feels lived in."
-msgstr ""
+msgstr "棚屋旁一台修补过的便携发电机。嗡嗡作响，院子有了生气。"
 
 #: data/camp.json:builds.lamps.name
 msgid "Yard Lamps"
-msgstr ""
+msgstr "院子灯"
 
 #: data/camp.json:builds.lamps.desc
 msgid "The street lamp and the pole lamps along the fence, rewired. Light for the yard at night."
-msgstr ""
+msgstr "重新接线的路灯和围栏边的杆灯。夜里给院子照明。"
 
 #: data/camp.json:builds.composter.name
 msgid "Compost Press"
@@ -7086,7 +7086,7 @@ msgstr ""
 
 #: data/camp.json:builds.composter.desc
 msgid "Presses plant scraps into compost and seeds. Worth building once something grows."
-msgstr ""
+msgstr "把植物残渣压成堆肥和种子。有东西长出来后就值得建。"
 
 #: data/camp.json:builds.radio.desc
 msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
@@ -11815,11 +11815,11 @@ msgstr "方块喂给回收机，它的电力会唤醒基地。"
 
 #: data/objectives.json:objectives[tower].text
 msgid "Build the signal tower"
-msgstr ""
+msgstr "建造信号塔"
 
 #: data/objectives.json:objectives[tower].desc
 msgid "WREN went silent. Build it at the workbench."
-msgstr ""
+msgstr "WREN 沉默了。到工作台去建造。"
 
 #: data/objectives.json:objectives[hex].text
 msgid "Clean a hex"
@@ -13849,12 +13849,12 @@ msgid "A hydraulic ram presses every bale flat before it is weighed."
 msgstr ""
 
 #: data/trash_bin.json:levels[4].name
-msgid "Smart Intake"
-msgstr ""
+msgid "Shredder"
+msgstr "粉碎机"
 
 #: data/trash_bin.json:levels[4].desc
-msgid "A clean white intake with a scanner seam. It sorts what it eats and pays the best rate."
-msgstr ""
+msgid "A clean white shredder with twin rotors and a scanner seam. It shreds every bale and pays the best rate."
+msgstr "洁白的双转子粉碎机，带一道扫描缝。每个垃圾块都会被粉碎，给出最好的价格。"
 
 #: data/upgrades.json:upgrades[baler].name
 msgid "Baler"

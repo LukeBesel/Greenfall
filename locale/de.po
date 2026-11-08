@@ -2846,7 +2846,7 @@ msgstr "Mülltonne, Stufe %d von %d"
 
 #: systems/camp/hub_builds.gd:149
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
-msgstr ""
+msgstr "WREN erreicht dich nur über das Relais. Jede Stufe macht sie klarer."
 
 #: systems/camp/hub_builds.gd:153
 msgid "Tier %d of %d"
@@ -2862,7 +2862,7 @@ msgstr "Museum"
 
 #: systems/camp/hub_builds.gd:190
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
-msgstr ""
+msgstr "Eine Halle mit einem Sockel für alles, was Lumi gefunden hat, für die, die nach uns kommen."
 
 #: systems/camp/machine_reveal.gd:46
 msgid "%s built. Follow the light to it."
@@ -2874,7 +2874,7 @@ msgstr ""
 
 #: systems/camp/yard_builds.gd:61
 msgid "Repair the workbench first."
-msgstr ""
+msgstr "Zuerst die Werkbank reparieren."
 
 #: systems/camp/yard_builds.gd:67
 msgid "Grow your first seed first."
@@ -3341,7 +3341,7 @@ msgstr "Sprühweite"
 msgid "Refill"
 msgstr "Nachfüllen"
 
-#: ui/builder_panel.gd:21 ui/command_view.gd:1238 ui/command_view.gd:1241
+#: ui/builder_panel.gd:21 ui/command_view.gd:1244 ui/command_view.gd:1247
 #: data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "Putzen"
@@ -3829,97 +3829,97 @@ msgstr "Leeren"
 msgid "CREWS"
 msgstr "CREWS"
 
-#: ui/command_view.gd:600
+#: ui/command_view.gd:598
 msgid "Following the %s orders. Mark hexes or pick a mode to give it its own."
 msgstr "Folgt den %s-Befehlen. Markiere Hexfelder oder wähle einen Modus für eigene Befehle."
 
-#: ui/command_view.gd:609
+#: ui/command_view.gd:607
 msgid "No orders yet: roaming the district. Drag on the ground to mark where to work."
 msgstr "Noch keine Befehle: streift durch den Bezirk. Zieh über den Boden, um Arbeitsorte zu markieren."
 
-#: ui/command_view.gd:678
+#: ui/command_view.gd:684
 msgid "No robots yet. Build one at the workbench."
 msgstr "Noch keine Roboter. Bau einen an der Werkbank."
 
-#: ui/command_view.gd:809
+#: ui/command_view.gd:815
 msgid "Build %s  %s"
 msgstr "%s bauen  %s"
 
-#: ui/command_view.gd:814
+#: ui/command_view.gd:820
 msgid "Max tier"
 msgstr "Max. Stufe"
 
-#: ui/command_view.gd:814
+#: ui/command_view.gd:820
 msgid "Upgrade > %s"
 msgstr "Upgrade > %s"
 
-#: ui/command_view.gd:820
+#: ui/command_view.gd:826
 msgid "ready"
 msgstr "bereit"
 
-#: ui/command_view.gd:820
+#: ui/command_view.gd:826
 msgid "build at the workbench"
 msgstr "an der Werkbank bauen"
 
-#: ui/command_view.gd:827
+#: ui/command_view.gd:833
 msgid "Place refill tank here  %s  (%d/%d)"
 msgstr "Nachfülltank hier setzen  %s  (%d/%d)"
 
-#: ui/command_view.gd:829
+#: ui/command_view.gd:835
 msgid "A Water Tank at your hex. Waterers refill at the nearest one."
 msgstr "Ein Wassertank auf deinem Hexfeld. Gießer tanken am nächsten."
 
-#: ui/command_view.gd:1086
+#: ui/command_view.gd:1092
 msgid "%s · %d HEX"
 msgid_plural "%s · %d HEXES"
 msgstr[0] "%s · %d HEX"
 msgstr[1] "%s · %d HEXE"
 
-#: ui/command_view.gd:1122
+#: ui/command_view.gd:1128
 msgid "BASE"
 msgstr "BASIS"
 
-#: ui/command_view.gd:1129
+#: ui/command_view.gd:1135
 msgid "YOU"
 msgstr "DU"
 
-#: ui/command_view.gd:1229
+#: ui/command_view.gd:1235
 msgid "HEX %d"
 msgstr "HEX %d"
 
-#: ui/command_view.gd:1233
+#: ui/command_view.gd:1239
 msgid "BASE YARD"
 msgstr "BASISHOF"
 
-#: ui/command_view.gd:1234
+#: ui/command_view.gd:1240
 msgid "Home ground, always clean"
 msgstr "Heimatboden, immer sauber"
 
-#: ui/command_view.gd:1236
+#: ui/command_view.gd:1242
 msgid "LAKE HEX %d"
 msgstr "SEE-HEX %d"
 
-#: ui/command_view.gd:1238
+#: ui/command_view.gd:1244
 msgid "Floating junk  %d%% left"
 msgstr "Treibender Schrott  noch %d%%"
 
-#: ui/command_view.gd:1244
+#: ui/command_view.gd:1250
 msgid "Junk  %d%% left"
 msgstr "Schrott  noch %d%%"
 
-#: ui/command_view.gd:1250
+#: ui/command_view.gd:1256
 msgid "Level %d · %s"
 msgstr "Stufe %d · %s"
 
-#: ui/command_view.gd:1252
+#: ui/command_view.gd:1258
 msgid "In %s zone"
 msgstr "In Zone %s"
 
-#: ui/command_view.gd:1305
+#: ui/command_view.gd:1311
 msgid "%d robots"
 msgstr "%d Roboter"
 
-#: ui/command_view.gd:1308
+#: ui/command_view.gd:1314
 msgid "%d / %d hexes clean"
 msgstr "%d / %d Hexfelder sauber"
 
@@ -6183,11 +6183,11 @@ msgstr ""
 
 #: ui/yard_builds_panel.gd:21
 msgid "Nothing new to build yet. More opens as the base grows."
-msgstr ""
+msgstr "Noch nichts Neues zu bauen. Mehr kommt, wenn die Basis wächst."
 
 #: ui/yard_builds_panel.gd:127
 msgid "Free"
-msgstr ""
+msgstr "Gratis"
 
 #: water/water_view.gd:78
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
@@ -7075,23 +7075,23 @@ msgstr "Unterstand"
 
 #: data/camp.json:builds.shack.desc
 msgid "Salvaged pipe and corrugated iron over the workbench, with a work lamp. Shelter for the crew."
-msgstr ""
+msgstr "Bergungsrohre und Wellblech über der Werkbank, mit Arbeitslampe. Ein Dach für die Crew."
 
 #: data/camp.json:builds.generator.name
 msgid "Generator"
-msgstr ""
+msgstr "Generator"
 
 #: data/camp.json:builds.generator.desc
 msgid "A patched portable generator by the lean-to. It hums; the yard feels lived in."
-msgstr ""
+msgstr "Ein geflickter tragbarer Generator neben dem Unterstand. Er brummt, und der Hof wirkt bewohnt."
 
 #: data/camp.json:builds.lamps.name
 msgid "Yard Lamps"
-msgstr ""
+msgstr "Hoflampen"
 
 #: data/camp.json:builds.lamps.desc
 msgid "The street lamp and the pole lamps along the fence, rewired. Light for the yard at night."
-msgstr ""
+msgstr "Die Straßenlaterne und die Mastlampen am Zaun, neu verkabelt. Licht für den Hof bei Nacht."
 
 #: data/camp.json:builds.composter.name
 msgid "Compost Press"
@@ -7099,7 +7099,7 @@ msgstr ""
 
 #: data/camp.json:builds.composter.desc
 msgid "Presses plant scraps into compost and seeds. Worth building once something grows."
-msgstr ""
+msgstr "Presst Pflanzenreste zu Kompost und Samen. Lohnt sich, sobald etwas wächst."
 
 #: data/camp.json:builds.radio.desc
 msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
@@ -11828,11 +11828,11 @@ msgstr "Würfel füttern den Recycler. Sein Strom weckt die Basis."
 
 #: data/objectives.json:objectives[tower].text
 msgid "Build the signal tower"
-msgstr ""
+msgstr "Den Signalturm bauen"
 
 #: data/objectives.json:objectives[tower].desc
 msgid "WREN went silent. Build it at the workbench."
-msgstr ""
+msgstr "WREN ist verstummt. Bau ihn an der Werkbank."
 
 #: data/objectives.json:objectives[hex].text
 msgid "Clean a hex"
@@ -13862,12 +13862,12 @@ msgid "A hydraulic ram presses every bale flat before it is weighed."
 msgstr ""
 
 #: data/trash_bin.json:levels[4].name
-msgid "Smart Intake"
-msgstr ""
+msgid "Shredder"
+msgstr "Schredder"
 
 #: data/trash_bin.json:levels[4].desc
-msgid "A clean white intake with a scanner seam. It sorts what it eats and pays the best rate."
-msgstr ""
+msgid "A clean white shredder with twin rotors and a scanner seam. It shreds every bale and pays the best rate."
+msgstr "Ein sauberer weißer Schredder mit Doppelrotoren und Scannerfuge. Er schreddert jeden Ballen und zahlt am besten."
 
 #: data/upgrades.json:upgrades[baler].name
 msgid "Baler"
