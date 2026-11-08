@@ -13,6 +13,9 @@ const SHOTS: Dictionary = {
 	"bench": [Vector3(23.2, 2.2, 2.6), Vector3(20.0, 0.8, 0.0)],
 	"locker": [Vector3(-4.0, 1.9, 7.4), Vector3(-6.4, 1.1, 4.6)],
 	"builds": [Vector3(40.5, 3.6, 6.8), Vector3(40.5, 0.6, 0.0)],
+	"stations": [Vector3(66.0, 6.0, 13.0), Vector3(66.0, 0.8, 0.0)],
+	"tower": [Vector3(90.0, 4.5, 15.0), Vector3(90.0, 3.0, 0.0)],
+	"fabricator": [Vector3(115.5, 3.6, 6.5), Vector3(114.0, 1.1, -0.3)],
 	"bins": [Vector3(0.0, 4.4, -18.0), Vector3(0.0, 0.8, -26.5)],
 }
 const BOARD_POS := Vector3(-3.6, 0, 2.2)  # scenes/slice.gd
@@ -26,7 +29,7 @@ var _cam: Camera3D
 
 func _ready() -> void:
 	_out = DevHooks.get_s("out", "screenshots/yard/lineup")
-	_shots = DevHooks.get_s("shots", "yard,shack,bench,locker,builds,bins").split(",")
+	_shots = DevHooks.get_s("shots", "yard,shack,bench,locker,builds,stations,tower,fabricator,bins").split(",")
 	var night: bool = DevHooks.has("night")
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
@@ -73,6 +76,8 @@ func _ready() -> void:
 	dressing.add_child(slab)  # YardArt hides it under the kit ground patch
 	_build_yard()
 	_build_builds()
+	_build_stations()
+	_build_towers()
 	_build_bins()
 	if DevHooks.has("hub-level"):
 		YardArt.ground_for_level(self, int(DevHooks.get_f("hub-level", 1.0)))
@@ -189,6 +194,55 @@ func _build_builds() -> void:
 	n.add_child(g)
 	YardArt.set_powered(g, true)
 	n.add_child(YardArt.nursery_grass(Vector2(5.0, 3.4)))
+
+
+## Batch 3: conveyor, auto-baler, recycler (real nodes, kitified), observatory (its model only).
+func _build_stations() -> void:
+	var cv := Conveyor.new()
+	cv.position = Vector3(58.0, 0, 0)
+	add_child(cv)
+	cv.process_mode = Node.PROCESS_MODE_DISABLED
+	var ab := AutoBaler.new()
+	ab.position = Vector3(66.0, 0, -1.0)
+	add_child(ab)
+	ab.process_mode = Node.PROCESS_MODE_DISABLED
+	var rc := Recycler.new()
+	rc.position = Vector3(72.0, 0, 0)
+	add_child(rc)
+	rc.process_mode = Node.PROCESS_MODE_DISABLED
+	var sc := Telescope.new()
+	sc.data = RemoteProgress.cfg()
+	sc.call("_spawn", false)
+	var model: Node3D = sc.get("_model")
+	sc.remove_child(model)
+	add_child(model)
+	model.position = Vector3(66.0, 0, -9.0)
+	sc.free()
+
+
+## Signal tower tiers 1-4, an air scrubber, a signal jammer.
+func _build_towers() -> void:
+	for t: int in range(1, 5):
+		var d: Dictionary = YardArt.signal_tower(t)
+		var m: MeshInstance3D = (d["kit"] as YardArt.Kit).mi(0.15)
+		m.position = Vector3(84.0 + (t - 1) * 2.6, 0, 0)
+		add_child(m)
+		YardArt.set_powered(m, true)
+	var su: MeshInstance3D = YardArt.scrubber().mi(0.15)
+	su.position = Vector3(95.5, 0, 0.5)
+	add_child(su)
+	YardArt.set_powered(su, true)
+	var fab := FabricatorModel.new()  # building: bay lit, arm posed mid-work
+	fab.position = Vector3(114.0, 0, 0)
+	add_child(fab)
+	fab.set_building(true)
+	fab.call("_pose", 1.3)
+	var jb: MeshInstance3D = YardArt.jammer_base().mi(0.15)
+	jb.position = Vector3(98.0, 0, 0.5)
+	add_child(jb)
+	var jd: MeshInstance3D = YardArt.jammer_dish().mi(0.15)
+	jd.position = Vector3(98.0, 3.0, 0.5)
+	add_child(jd)
 
 
 func _build_bins() -> void:

@@ -193,9 +193,32 @@ var _progress_pos := Vector3.ZERO
 var _progress_t: float = 0.0
 
 
+## [orbB] On the globe moves are world vectors along the ground (Patch projects them on local up).
+var world_space: bool = false
+var _play_area := PackedInt32Array()
+
+
+## [orbB] The hexes the bot plays: the whole field on the flat game; on the globe (164k+ cells) the
+## start hub's region, the cells that count for planet % (SiteManager.REGION_RINGS rings).
+func _hexes() -> Variant:
+	var f: HexField = world.field
+	if not (f is SphereField):
+		return f.hex_count()
+	if _play_area.is_empty():
+		var sf: SphereField = f
+		var so: Variant = world.get("orbit")
+		var hub: int = (so as SliceOrbit).globe.start_cell() if so else sf.grid.cell_at(world.patch.global_position)
+		_play_area = sf.grid.cells_around(hub, SiteManager.REGION_RINGS)
+	return _play_area
+
+
 func _go(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
 	var d: Vector3 = target - p.global_position
-	d.y = 0.0
+	if JunkCube.planet_radius > 0.0:  # [orbB] round planet: drop the local-up part
+		var u: Vector3 = p.global_position.normalized()
+		d -= u * d.dot(u)
+	else:
+		d.y = 0.0
 	var dist: float = d.length()
 	_move = d.normalized() * clampf(dist / 1.5, 0.35, 1.0) if dist > stop_dist else Vector3.ZERO
 	# Obstacle unstick: no progress for a while -> sidestep around it.
@@ -206,7 +229,7 @@ func _go(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
 			_progress_pos = p.global_position
 			_progress_t = 0.0
 		elif _progress_t > 1.2:
-			var side := Vector3(d.z, 0, -d.x).normalized() * (1.0 if randf() < 0.5 else -1.0)
+			var side := (Vector3(d.z, 0, -d.x) if JunkCube.planet_radius <= 0.0 else d.cross(p.global_position.normalized())).normalized() * (1.0 if randf() < 0.5 else -1.0)  # [orbB]
 			_detour = side
 			_detour_t = 1.4
 			_progress_t = 0.0
@@ -235,7 +258,7 @@ func update(delta: float) -> void:
 	_hook_goals()
 	if DevHooks.has("probe") and not _report.has("probed"):
 		_report["probed"] = true
-		for h: int in world.field.hex_count():
+		for h: int in _hexes():
 			print("[probe] hex %d hub=%d water=%d pieces=%d vol=%.0f slots=%d dist=%.0f" % [h, world.field.hex_hub[h], int(world.field.is_water(h)), world.field.hex_pieces[h].size(), world.field.hex_total[h], (world.garden.hex_slots.get(h, PackedInt32Array()) as PackedInt32Array).size(), world.field.hex_center(h).length()])
 		print("[probe] parts buried=%d" % world.field.part_pos.size())
 	_cooldown -= delta
@@ -563,7 +586,7 @@ func _do_dig(p: Patch) -> bool:
 		if det.target < 0 or _skip_hex.has(-100 - det.target):
 			return false
 		var pp: Vector3 = world.field.part_pos[det.target]
-		if Vector2(pp.x - p.global_position.x, pp.z - p.global_position.z).length() > 14.0:
+		if (Vector2(pp.x - p.global_position.x, pp.z - p.global_position.z).length() if JunkCube.planet_radius <= 0.0 else pp.distance_to(p.global_position)) > 14.0:  # [orbB]
 			return false
 		_dig_target = det.target
 	_set_task("dig")
@@ -607,7 +630,7 @@ func _pick_plant_hex(g: Garden) -> int:
 	var best: int = -1
 	var best_s: float = INF
 	var pad: Array[int] = AutoplayCampaign.pad_hexes(world)
-	for h: int in world.field.hex_count():
+	for h: int in _hexes():
 		if not _land(h) or not world.field.is_clean(h):
 			continue
 		var pc: Vector2i = _hex_planted(g, h)
@@ -724,7 +747,7 @@ func _pick_focus(p: Patch) -> int:
 		return _focus_hex
 	var best: int = -1
 	var best_s: float = INF
-	for h: int in f.hex_count():
+	for h: int in _hexes():
 		if not _land(h) or f.is_clean(h) or _skip_hex.has(h) or f.locked.has(h):
 			continue
 		var c: Vector3 = f.hex_center(h)
@@ -999,7 +1022,7 @@ func _shop(want: Dictionary) -> void:
 				gd.refresh()
 			_event("glim_" + gid, {"tier": Glim.tier(gid)})
 	# 3) Robots ([ui2] Parts + cubes; keep the next base level's Parts unless the robot can't wait).
-	var robot: String = str(want.get("robot", ""))
+	var robot: String = str(want.get("robot", "")) if fleet != null else ""  # [orbB] no Fleet on the globe yet (orbC)
 	if robot != "":
 		var hub_save: float = float(want.get("hub_save", 0.0))
 		var spare: float = GameState.get_currency("cubes").to_float() - float(want.get("robot_cost", 0.0))
@@ -1009,7 +1032,7 @@ func _shop(want: Dictionary) -> void:
 		if ok and fleet.can_build(robot):
 			var at: Vector3 = world.upgrades.build_at.call() if world.upgrades.build_at.is_valid() else BENCH_STAND
 			fleet.build(robot, at)
-	for t: String in Economy.robot_order:
+	for t: String in (Economy.robot_order if fleet != null else []):  # [orbB]
 		var treq: Dictionary = fleet.tier_requirements(t)
 		var keep_cubes: float = float(want.get("hub_save", 0.0)) * 0.5  # [ui2] a tier keeps half the base's cubes
 		if fleet.count(t) > 0 and treq.get("ok", false) and _mats_spare({"parts": (treq["parts"] as BigNum).to_float()}, false) \
@@ -1175,7 +1198,7 @@ func _useful_upgrade(id: String) -> bool:
 		var rt: String = str(u["robot"])
 		if cleaning_over and (rt in ["scoopie", "haulbug"] or (rt == "skimmer" and not _lake_dirty())):
 			return false
-		return world.fleet.count(rt) > 0
+		return world.get("fleet") != null and world.fleet.count(rt) > 0  # [orbB] no Fleet on the globe yet
 	if cleaning_over and id in CLEANING_UPGRADES:
 		return false
 	var st: Stations = Stations.of(world)
@@ -1296,7 +1319,7 @@ func _land_left_frac() -> float:
 	var f: HexField = world.field
 	var left: float = 0.0
 	var total: float = 0.0
-	for h: int in f.hex_count():
+	for h: int in _hexes():
 		if _land(h):
 			total += f.hex_total[h]
 			if not f.is_clean(h):
@@ -1306,7 +1329,7 @@ func _land_left_frac() -> float:
 
 func _lake_dirty() -> bool:
 	var f: HexField = world.field
-	for h: int in f.hex_count():
+	for h: int in _hexes():
 		if f.is_water(h) and not f.is_clean(h):
 			return true
 	return false
@@ -1395,7 +1418,7 @@ func _paint_zones() -> void:
 	if cleaners == 0 and zone_goal == 0:
 		return
 	var cand: Array = []
-	for h: int in f.hex_count():
+	for h: int in _hexes():
 		if _land(h) and not f.is_clean(h) and h != _focus_hex:
 			cand.append(h)
 	cand.sort_custom(func(a: int, b: int) -> bool: return f.hex_center(a).length() - 8.0 * f.removed_fraction(a) < f.hex_center(b).length() - 8.0 * f.removed_fraction(b))
@@ -1404,7 +1427,7 @@ func _paint_zones() -> void:
 	if g == null or not g.unlocked():
 		return
 	var garden: Array = []
-	for h: int in f.hex_count():
+	for h: int in _hexes():
 		if _land(h) and f.is_clean(h) and _hex_planted(g, h).x > 0:
 			garden.append(h)
 	if _drips() > 0:
@@ -1452,7 +1475,7 @@ func _place_tanks() -> void:
 		return
 	var g: Garden = world.garden
 	var f: HexField = world.field
-	for h: int in f.hex_count():
+	for h: int in _hexes():
 		if not _land(h) or not f.is_clean(h) or _hex_planted(g, h).x == 0:
 			continue
 		var c: Vector3 = f.hex_center(h)

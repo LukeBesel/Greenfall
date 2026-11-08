@@ -17,26 +17,9 @@ const UNITS_PER_CELL: float = SphereField.FULL_PIECES * 0.9
 ## their bots and tools (Economy stats, which Offline.unit_rate reads).
 const REGION_RINGS: int = 16
 const REF_CELLS_PER_HUB: float = 163842.0 / 10.0
-## Fallback until planets.json carries `globe` for every planet: radius vs Verdance and hub count.
-const GLOBE_DEFAULTS: Dictionary = {
-	"verdance": {"radius_scale": 1.0, "hub_count": 10}, "ochre": {"radius_scale": 0.85, "hub_count": 8},
-	"tidewell": {"radius_scale": 1.1, "hub_count": 12}, "rime": {"radius_scale": 1.2, "hub_count": 13},
-	"anvil": {"radius_scale": 1.35, "hub_count": 16},
-}
-
-
-## A planet's globe settings: data/planets.json `globe` over GLOBE_DEFAULTS.
-static func globe(planet_id: String) -> Dictionary:
-	var g: Dictionary = (GLOBE_DEFAULTS.get(planet_id, GLOBE_DEFAULTS["verdance"]) as Dictionary).duplicate()
-	var e: Variant = PlanetEnvs.all().get(planet_id, {})
-	if e is Dictionary and (e as Dictionary).get("globe") is Dictionary:
-		g.merge((e as Dictionary)["globe"], true)
-	return g
-
-
+## A planet's hub count: data/planets.json `globe` (GlobeSpec).
 static func hub_count(planet_id: String) -> int:
-	var g: Dictionary = globe(planet_id)
-	return maxi(1, int(g.get("hub_count", g.get("hubs", 10))))
+	return int(GlobeSpec.of(planet_id)["hub_count"])
 
 
 ## Rings of a hub region on a planet of `cell_count` cells with `hubs` hubs: the region keeps the

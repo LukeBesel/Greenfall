@@ -4,6 +4,7 @@ extends Node
 ## ports the real Fleet onto it). Near robots are SphereBots on the hex graph (this node is their
 ## `graph`: claim_dirty, path, work_cell, junk_left, release); far crews are data only, each
 ## clearing whole cells nearest its hub at `rate` cells per minute (the shape of Offline.compute).
+## [orbC] The real crew is SphereCrew (robots/sphere/), plugged in at the bottom of this file.
 
 var globe: OrbitPlanet
 var bots: Array[SphereBot] = []
@@ -136,3 +137,88 @@ func cleaned_by_bots() -> int:
 	for b: SphereBot in bots:
 		n += b.cleaned
 	return n
+
+
+# --- [orbC] The phase C crew (robots/sphere/): near SphereBots, far records, jobs by cell id ---
+## SphereCrew does the work; this node plugs it into the slice (scenes/slice_orbit.gd calls
+## build_crew, save_crew, restore_crew and on_view): saving in GameState.orbit["robots"]
+## (directions, never x/z) and the offline jump on load, per hub region by cell id with the flat
+## game's maths (SphereOffline over Offline.compute). The stand-in bots and far crews above stay
+## for --orbit-bots only.
+
+var crew: SphereCrew
+
+const AWAY_MIN_S: float = 120.0  # the flat slice's threshold for an offline payout
+
+
+## Builds the crew into the slice (`so` = SliceOrbit, after Patch and the camera exist).
+func build_crew(so: Node) -> SphereCrew:
+	var g: Object = so.get("globe")
+	var patch: Node3D = (so.get("w") as Node).get("patch")
+	crew = SphereCrewDev.install(g, so.get("w"), patch, so.get("cam"), Callable(g, "write_cell"))
+	crew.cell_cleaned.connect(func(_c: int) -> void:
+		var f: SphereField = g.get("field")
+		EventBus.field_progress_changed.emit(f.cleaned_count, f.junk_hex_count))
+	if DevHooks.has("fabricator-build"):  # dev: a Fabricator standing at this planet's base
+		BotFabricator.state(BotFabricator.planet_of(so.get("w")))["built"] = true
+		GameState.add_currency("cubes", BigNum.from_float(DevHooks.get_f("fabricator-build", 1e6) if DevHooks.get_f("fabricator-build", 1.0) > 1.0 else 1e6))
+		GameState.add_currency("parts", BigNum.from_float(1e5))
+	BotFabricator.attach(so.get("w"))  # a built Bot Fabricator builds into this crew
+	return crew
+
+
+func save_crew() -> Dictionary:
+	return crew.to_dict() if crew != null else {}
+
+
+## Restores the crew from GameState.orbit and, when the game was reopened from disk after a while
+## away, runs the offline jump for its robots (grouped by hub) and pays it.
+func restore_crew(so: Node, od: Dictionary, from_disk: bool) -> Dictionary:
+	if crew == null:
+		return {}
+	var rd: Dictionary = od.get("robots", {})
+	if not rd.is_empty():
+		crew.from_dict(rd)
+	if not from_disk:
+		return {}
+	var away: float = Time.get_unix_time_from_system() - GameState.saved_unix
+	if GameState.saved_unix <= 0.0 or away <= AWAY_MIN_S or crew.robots().is_empty():
+		return {}
+	var res: Dictionary = offline(away)
+	Offline.apply(res)
+	EventBus.toast.emit(Offline.summary_text(res), "info")
+	return res
+
+
+## The offline jump for every hub that has robots. Pieces it removes are hidden in the junk view.
+func offline(seconds: float) -> Dictionary:
+	var g: OrbitPlanet = globe
+	var by_hub: Dictionary = {}
+	for u: Dictionary in crew.robots():
+		var h: int = int(u["hub"])
+		if not by_hub.has(h):
+			by_hub[h] = []
+		(by_hub[h] as Array).append({"type": u["type"], "tier": u["tier"]})
+	var hubs: Array = []
+	for h: int in by_hub:
+		hubs.append({"cell": h, "robots": by_hub[h]})
+	var res: Dictionary = SphereOffline.simulate(g.get("grid"), g.get("cells"), g.get("field"), hubs, seconds, crew.planet_id)
+	var jv: Object = g.get("junk_view")
+	if jv != null:
+		for pid: int in res["pieces"]:
+			jv.call("hide_piece", pid)
+		if jv.has_method("refresh_hex"):
+			for h: Dictionary in res["hubs"]:
+				for c: int in SphereOffline.region(g.grid, g.cells, int(h["hub"]), crew.rings):
+					if g.field.materialized[c] == 1:
+						jv.call("refresh_hex", c)
+	return res
+
+
+## Command view on: free the mouse to paint zones and pick hexes; off: capture it again.
+func on_view(so: Node) -> void:
+	var cam: SphereCam = so.get("cam")
+	var w: Node = so.get("w")
+	if cam == null or w.get("bot") or DisplayServer.get_name() == "headless":
+		return
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if cam.view == "command" else Input.MOUSE_MODE_CAPTURED

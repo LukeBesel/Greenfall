@@ -1036,6 +1036,12 @@ func collect_piece(pid: int) -> void:
 		_on_hex_clean(hid)
 
 
+## [orbB] A bite was taken off a heavy globe piece (Patch._take_piece): the cell's numbers follow.
+func piece_bitten(pid: int) -> void:
+	if orbit:
+		orbit.piece_bitten(pid)
+
+
 func _on_hex_clean(hid: int) -> void:
 	if orbit:  # [orbB]
 		orbit.on_hex_clean(hid)
@@ -1436,6 +1442,7 @@ func _restore_world(from_memory: bool = false) -> void:
 	if GameState.world.has("patch"):
 		patch.from_dict(GameState.world["patch"])
 	fleet.restore()
+	BotFabricator.attach(self)  # [orbC] a built Bot Fabricator keeps its line running
 	if from_memory:
 		return
 	var away: float = Time.get_unix_time_from_system() - GameState.saved_unix
