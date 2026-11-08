@@ -346,6 +346,10 @@ func _update_mounds(id: int) -> void:
 		MoundColliders.update(e[1], mi.scale, mi.visible, 1.0 - sfield.removed_fraction(id))
 
 
+## [orbE] Landmark triangle budget per quality preset (Low, Medium, High, Ultra).
+const LANDMARK_TRIS: Array[int] = [3000, 6000, 12000, 24000]
+
+
 func _build_landmark(lm: Dictionary) -> Node3D:
 	var root := Node3D.new()
 	root.name = "Landmark_%s" % str(lm["model"])
@@ -355,7 +359,9 @@ func _build_landmark(lm: Dictionary) -> Node3D:
 	if not AssetLib.has_model(model):
 		return root
 	var mi := MeshInstance3D.new()
-	mi.mesh = AssetLib.model_mesh(model)
+	# [orbE] perf: a landmark's mesh within a triangle budget per preset, using the model's own
+	# import LODs (AssetLib.lite): Anvil's concrete road barriers were 61k triangles each (8 in view).
+	mi.mesh = AssetLib.model_mesh_lite(model, LANDMARK_TRIS[clampi(Settings.quality, 0, 3)])
 	root.add_child(mi)
 	# Solid like the flat props (PhysLayers.PROP): one box from the model's bounds, in its own frame.
 	var bb: AABB = AssetLib.model_aabb(model)
