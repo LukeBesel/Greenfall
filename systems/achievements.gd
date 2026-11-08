@@ -123,6 +123,7 @@ func _ready() -> void:
 	EventBus.research_completed.connect(func(_id: String) -> void: _t = 1.0)
 	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: _t = maxf(_t, 0.7))
 	Designs.dev_hooks(world)  # [skins] --design / --designs-all / --design-unlock
+	LumiStyle.dev_hooks(world)  # [style] --lumi-random / --lumi-set / --lumi-builder
 
 
 func _process(delta: float) -> void:

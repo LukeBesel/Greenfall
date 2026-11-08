@@ -335,7 +335,7 @@ msgstr "まず周りのガラクタを片づけよう（%d%% / %d%%）。"
 #: automation/outposts.gd:318 automation/outposts.gd:333
 #: automation/stations.gd:117
 msgid "Not enough cubes or parts."
-msgstr ""
+msgstr "キューブかパーツが足りない。"
 
 #: automation/outposts.gd:327
 msgid "Repair it first."
@@ -845,11 +845,13 @@ msgstr ""
 "コンポストプレス\n"
 "休止中"
 
-#: plants/composter.gd:154
+#: plants/composter.gd:153
 msgid ""
 "COMPOST PRESS  Lv %d\n"
 "hopper %d%%  →  seeds"
 msgstr ""
+"コンポストプレス  Lv %d\n"
+"ホッパー %d%%  →  種"
 
 #: plants/garden.gd:263
 msgid "A hex is fully restored. Something small is already living in it."
@@ -1083,9 +1085,10 @@ msgstr " %sみたい。"
 msgid "Needs a %s Control Core"
 msgstr "%sコントロールコアが必要"
 
-#: robots/fleet.gd:267
+#: robots/fleet.gd:264
 msgid "Not enough parts (scrap spares at Haggle's or run the recycler)"
 msgstr ""
+"パーツが足りない（Haggle の店で余りを解体するか、リサイクラーを動かそう）"
 
 #: robots/fleet.gd:287
 msgid "%s fleet upgraded to %s."
@@ -1972,7 +1975,7 @@ msgstr "WREN が Ledger のリレーを突き止めた：基地の%s。赤いビ
 
 #: story/ledger.gd:182
 msgid "Ledger: %s"
-msgstr ""
+msgstr "Ledger：%s"
 
 #. compass directions fill "%s of the hub" / "%s of you" ("north of you").
 #: story/ledger.gd:204
@@ -2308,7 +2311,7 @@ msgstr "Lumi のレベル"
 
 #: systems/collection.gd:88 ui/upgrades_screen.gd:17
 msgid "Requests"
-msgstr ""
+msgstr "依頼"
 
 #: systems/collection.gd:89
 msgid "Curio Capsules"
@@ -2316,7 +2319,7 @@ msgstr "珍品カプセル"
 
 #: systems/contracts.gd:230
 msgid "%s (Builder)"
-msgstr ""
+msgstr "%s（ビルダー）"
 
 #: systems/contracts.gd:232
 msgid "Builder Crate"
@@ -2328,31 +2331,31 @@ msgstr "珍品カプセル"
 
 #: systems/contracts.gd:236
 msgid "%s robot part"
-msgstr ""
+msgstr "%s ロボットパーツ"
 
 #: systems/contracts.gd:282
 msgid "Request complete: %s. Claim it at the workbench."
-msgstr ""
+msgstr "依頼達成：%s。作業台で受け取ろう。"
 
 #: systems/contracts.gd:288
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
-msgstr ""
+msgstr "依頼の時間切れ。問題なし。すぐに新しい依頼が来る。"
 
 #: systems/contracts.gd:368
 msgid "Request done: %s."
-msgstr ""
+msgstr "依頼完了：%s。"
 
 #: systems/contracts.gd:410
 msgid "Requests reward: %s. Equip it on the Requests tab."
-msgstr ""
+msgstr "依頼の報酬：%s。依頼タブで装備しよう。"
 
 #: systems/contracts.gd:413
 msgid "Requests reward: %s. Fit it in the Builder tab."
-msgstr ""
+msgstr "依頼の報酬：%s。ビルダータブで取り付けよう。"
 
 #: systems/contracts.gd:417 systems/contracts.gd:427
 msgid "Requests reward: %s."
-msgstr ""
+msgstr "依頼の報酬：%s。"
 
 #: systems/contracts.gd:435
 msgid "Unknown item"
@@ -2360,15 +2363,15 @@ msgstr "不明なアイテム"
 
 #: systems/contracts.gd:448
 msgid "Unlocks after %d requests"
-msgstr ""
+msgstr "依頼 %d 件で解放"
 
 #: systems/contracts.gd:449
 msgid "Locked"
-msgstr ""
+msgstr "ロック中"
 
-#: systems/cradle_mode.gd:253
+#: systems/cradle_mode.gd:241
 msgid "Heirloom unlocked: %s, level %d. It travels with Lumi to every world."
-msgstr ""
+msgstr "家宝を解放：%s、レベル %d。Lumi といっしょにどの世界へも旅をする。"
 
 #: systems/cradle_mode.gd:303 systems/cradle_mode.gd:309
 msgid "Fully grown"
@@ -2681,12 +2684,15 @@ msgstr "{robot} の{stat} +{amount}"
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "アークブリッジは Cradle号が帰ってきたら開く。"
 
-#: systems/late_director.gd:129
+#: systems/late_director.gd:128
 msgid ""
 "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark "
 "Bridge to see them and the Heirlooms your restoration has unlocked, or seed "
 "a new world. Garden Mode (H) is open too."
 msgstr ""
+"クレイドルモード：アークの種子庫には、ほかの世界のための種がある。ポーズ > "
+"アークブリッジで、それと復興で解放した家宝を見たり、新しい世界に種をまいたり"
+"できる。ガーデンモード（H）も開いている。"
 
 #: systems/profile_slots.gd:48 ui/world_picker.gd:138
 msgid "Profile %d"
@@ -2796,7 +2802,7 @@ msgstr "スコップの速さ"
 
 #: systems/research.gd:383
 msgid "field-note cubes"
-msgstr ""
+msgstr "フィールドノートのキューブ"
 
 #: systems/research.gd:383
 msgid "research speed"
@@ -2888,11 +2894,11 @@ msgstr "%s%s が必要"
 
 #: systems/robot_builder.gd:372
 msgid "Haggle's stall · %s"
-msgstr ""
+msgstr "Haggle の屋台 · %s"
 
 #: systems/robot_builder.gd:374
 msgid "Requests reward · %d requests"
-msgstr ""
+msgstr "依頼の報酬 · 依頼 %d 件"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
 #: systems/robot_builder.gd:384 ui/main_menu.gd:452 ui/profile_picker.gd:133
@@ -2909,7 +2915,7 @@ msgstr "いまは Haggle の屋台にない"
 
 #: systems/robot_builder.gd:459
 msgid "Requests reward (%d of %d requests)"
-msgstr ""
+msgstr "依頼の報酬（%d / %d 件）"
 
 #: systems/robot_builder.gd:550
 msgid ""
@@ -2921,7 +2927,7 @@ msgstr ""
 
 #: systems/robot_builder.gd:560
 msgid "A Maker Fragment was tucked inside it: +%d parts."
-msgstr ""
+msgstr "中にメーカーの欠片が入っていた：+%d パーツ。"
 
 #: systems/robot_builder.gd:592
 msgid "%s spotted something green and lucky: a Lucky Clover!"
@@ -2929,7 +2935,7 @@ msgstr "%s が緑で縁起のいいものを見つけた：幸運のクローバ
 
 #: systems/robot_builder.gd:595
 msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
-msgstr ""
+msgstr "%s がガラクタの中で光るメーカーの欠片を見つけた：+%d パーツ。"
 
 #: systems/robot_builder.gd:603
 msgid "%s spotted a %s."
@@ -3194,7 +3200,7 @@ msgstr ""
 
 #: ui/ark_bridge.gd:107
 msgid "Restoration %d"
-msgstr ""
+msgstr "復興度 %d"
 
 #: ui/ark_bridge.gd:110
 msgid "+%d banked from %s"
@@ -3290,9 +3296,9 @@ msgstr "フル"
 msgid "Take  (%d picks)"
 msgstr "受け取る（選択 %d）"
 
-#: ui/ark_bridge.gd:307
+#: ui/ark_bridge.gd:303
 msgid "Milestone"
-msgstr ""
+msgstr "マイルストーン"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18
@@ -3444,9 +3450,9 @@ msgstr "%s クルーのプリセット：%s"
 msgid "none saved"
 msgstr "保存なし"
 
-#: ui/builder_panel.gd:405
+#: ui/builder_panel.gd:393
 msgid "Builder bin %d   ·   Parts %s"
-msgstr ""
+msgstr "ビルダーの木箱 %d   ·   パーツ %s"
 
 #: ui/builder_panel.gd:409
 msgid "Haggle's stall: %s  (new stock in %d min)"
@@ -3586,13 +3592,13 @@ msgid ""
 msgstr ""
 "ヒント：地面が癒えると動物が戻ってくる。フォトモード（P）で撮影しよう。"
 
-#: ui/codex_screen.gd:565
+#: ui/codex_screen.gd:553
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
-msgstr ""
+msgstr "ヒント：依頼を %d 件こなそう（作業台の依頼タブ）。"
 
-#: ui/codex_screen.gd:566
+#: ui/codex_screen.gd:554
 msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
-msgstr ""
+msgstr "ヒント：珍品カプセルは、作業台の依頼の報酬トラックにある。"
 
 #: ui/codex_screen.gd:567
 msgid "Hint: keep scooping without stopping until the streak meter is full."
@@ -3699,9 +3705,9 @@ msgstr "進行状況"
 msgid "Upgrades bought"
 msgstr "購入したアップグレード"
 
-#: ui/codex_screen.gd:706
+#: ui/codex_screen.gd:694
 msgid "Field notes logged"
-msgstr ""
+msgstr "記録したフィールドノート"
 
 #: ui/codex_screen.gd:707
 msgid "Research done"
@@ -3837,7 +3843,7 @@ msgstr "アップグレード > %s"
 
 #: ui/command_view.gd:780
 msgid "%s cubes, %s parts, %s Control Core. %s"
-msgstr ""
+msgstr "%s キューブ、%s パーツ、%s コントロールコア。%s"
 
 #: ui/command_view.gd:789
 msgid "  parts %d/%d · %s"
@@ -3910,25 +3916,27 @@ msgstr "きれいなヘックス %d / %d"
 
 #: ui/contracts_panel.gd:27
 msgid "REQUESTS"
-msgstr ""
+msgstr "依頼"
 
 #: ui/contracts_panel.gd:30
 msgid ""
 "Short optional jobs and world events. Each pays cubes or parts; nothing is "
 "lost if one runs out."
 msgstr ""
+"短い任意の仕事とワールドイベント。どれもキューブかパーツがもらえる。時間切れ"
+"でも何も失わない。"
 
 #: ui/contracts_panel.gd:47
 msgid "REWARD TRACK"
-msgstr ""
+msgstr "報酬トラック"
 
 #: ui/contracts_panel.gd:86
 msgid "%d done"
-msgstr ""
+msgstr "%d 件達成"
 
 #: ui/contracts_panel.gd:89
 msgid "LIVE  ·  %s  ·  %s  ·  %s left"
-msgstr ""
+msgstr "ライブ  ·  %s  ·  %s  ·  残り %s"
 
 #: ui/contracts_panel.gd:92
 msgid "Collection  %d / %d   ·   see the Codex (K)"
@@ -3936,11 +3944,11 @@ msgstr "コレクション  %d / %d   ·   図鑑（K）を見よう"
 
 #: ui/contracts_panel.gd:140
 msgid "A new request is being posted."
-msgstr ""
+msgstr "新しい依頼を掲示中。"
 
 #: ui/contracts_panel.gd:151
 msgid "Pays  %s"
-msgstr ""
+msgstr "報酬  %s"
 
 #: ui/contracts_panel.gd:173
 msgid "Accept  (%s)"
@@ -3956,7 +3964,7 @@ msgstr "作業中"
 
 #: ui/contracts_panel.gd:198
 msgid "Claim  %s"
-msgstr ""
+msgstr "受け取る  %s"
 
 #: ui/contracts_panel.gd:238
 msgid "Next posting in %s"
@@ -3972,11 +3980,11 @@ msgstr "残り時間 %s"
 
 #: ui/contracts_panel.gd:251
 msgid "Finished. Claim it!"
-msgstr ""
+msgstr "完了。受け取ろう！"
 
 #: ui/contracts_panel.gd:275
 msgid "After %d requests"
-msgstr ""
+msgstr "依頼 %d 件のあと"
 
 #: ui/contracts_panel.gd:277
 msgid "Equipped  (press to remove)"
@@ -3984,7 +3992,7 @@ msgstr "装備中（押して外す）"
 
 #: ui/contracts_panel.gd:277
 msgid "Unlocked  ·  press to equip"
-msgstr ""
+msgstr "解放済み  ·  押して装備"
 
 #: ui/contracts_panel.gd:279 ui/cosmetics_panel.gd:129
 msgid "Unlocked"
@@ -4088,11 +4096,11 @@ msgstr "コンボ"
 
 #: ui/event_hud.gd:192
 msgid "REQUEST READY  ·  claim it at the workbench"
-msgstr ""
+msgstr "依頼完了  ·  作業台で受け取ろう"
 
 #: ui/event_hud.gd:192
 msgid "%d REQUESTS READY  ·  claim them at the workbench"
-msgstr ""
+msgstr "依頼 %d 件完了  ·  作業台で受け取ろう"
 
 #: ui/extras_panel.gd:9
 msgid "Radio"
@@ -4455,9 +4463,9 @@ msgstr "シグナルジャマーを建てる"
 msgid " (have %s)"
 msgstr " （所持 %s）"
 
-#: ui/hub_panel.gd:101
+#: ui/hub_panel.gd:96
 msgid "Parts %s"
-msgstr ""
+msgstr "パーツ %s"
 
 #: ui/hub_panel.gd:103
 msgid ""
@@ -5126,9 +5134,9 @@ msgstr ""
 msgid "RENAME PROFILE"
 msgstr ""
 
-#: ui/profile_picker.gd:252 ui/profile_picker.gd:269
+#: ui/lumi_builder.gd:189 ui/profile_picker.gd:252 ui/profile_picker.gd:269
 msgid "Cancel"
-msgstr ""
+msgstr "キャンセル"
 
 #: ui/profile_picker.gd:252
 msgid "Save"
@@ -5148,17 +5156,17 @@ msgstr "予約中  ·  %s"
 
 #: ui/research_node_card.gd:184 ui/research_panel.gd:203
 msgid "%s  ·  %s"
-msgstr ""
+msgstr "%s  ·  %s"
 
 #: ui/research_panel.gd:34 data/currencies.json:currencies[cubes].short
 msgid "CUBES"
-msgstr ""
+msgstr "キューブ"
 
 #: ui/research_panel.gd:41
 msgid ""
 "Research costs cubes and takes real time. It keeps going while you play or "
 "are away."
-msgstr ""
+msgstr "研究はキューブと実時間がかかる。プレイ中も留守中も進む。"
 
 #: ui/research_panel.gd:60
 msgid "RESEARCHING"
@@ -5198,7 +5206,7 @@ msgstr "押して予約"
 
 #: ui/research_panel.gd:214
 msgid "%s cancelled. Cubes refunded."
-msgstr ""
+msgstr "%s を中止。キューブを返却。"
 
 #: ui/robot_card.gd:40 data/currencies.json:currencies[parts].short
 msgid "PARTS"
@@ -5242,7 +5250,7 @@ msgstr "次：%s  ·  作業速度 x%.1f  ·  %s の外見"
 
 #: ui/robot_card.gd:93
 msgid "Needs %s cubes, %s parts and a %s Control Core.  %s"
-msgstr ""
+msgstr "%s キューブ、%s パーツ、%s のコントロールコアが必要。  %s"
 
 #: ui/robot_card.gd:95
 msgid "Upgrade fleet to %s"
@@ -5633,7 +5641,7 @@ msgstr "自動ルート：%s"
 
 #: ui/stations_panel.gd:104
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s"
-msgstr ""
+msgstr "リサイクルしたベール %d   ·   破壊したガラクタ %s kg   ·   パーツ %s"
 
 #: ui/system_map.gd:441 ui/system_map.gd:663
 msgid "you are here"
@@ -5924,7 +5932,7 @@ msgstr ""
 
 #: ui/trade_panel.gd:71
 msgid "Parts  %s      Robot parts in storage  %d"
-msgstr ""
+msgstr "パーツ  %s      在庫のロボットパーツ  %d"
 
 #: ui/trade_panel.gd:83
 msgid ""
@@ -5960,7 +5968,7 @@ msgstr "使い古しを買う  %s"
 
 #: ui/trade_panel.gd:112
 msgid "Scrap %d spare Rusty robot parts  ->  %s"
-msgstr ""
+msgstr "余った錆びたロボットパーツ %d 個を解体  ->  %s"
 
 #: ui/trade_panel.gd:122
 msgid "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab"
@@ -5975,6 +5983,8 @@ msgid ""
 "%s  (own %d)\n"
 "%s"
 msgstr ""
+"%s  （所持 %d）\n"
+"%s"
 
 #: ui/trade_panel.gd:171
 msgid "Swap 3 spares"
@@ -6460,7 +6470,7 @@ msgstr "データ収集家"
 
 #: data/achievements.json:achievements[data_500].desc
 msgid "Log 500 field notes."
-msgstr ""
+msgstr "フィールドノートを 500 件記録する。"
 
 #: data/achievements.json:achievements[distance_1k].name
 msgid "Long Way Round"
@@ -6787,7 +6797,7 @@ msgstr "一族の家宝"
 
 #: data/achievements.json:achievements[late_heirloom_1].desc
 msgid "Unlock an Heirloom."
-msgstr ""
+msgstr "家宝を解放する。"
 
 #: data/achievements.json:achievements[late_heirloom_20].name
 msgid "Treasured"
@@ -6799,11 +6809,11 @@ msgstr "家宝のレベルを合計20にする。"
 
 #: data/achievements.json:achievements[late_starseeds_100].name
 msgid "World Mender"
-msgstr ""
+msgstr "世界の修復者"
 
 #: data/achievements.json:achievements[late_starseeds_100].desc
 msgid "Reach 100 restoration across your worlds."
-msgstr ""
+msgstr "すべての世界で復興度 100 に到達する。"
 
 #: data/achievements.json:achievements[late_decor_1].name
 msgid "Home Touches"
@@ -8482,7 +8492,7 @@ msgstr "データキャッシュ"
 
 #: data/cradle.json:heirlooms[data_cache].desc
 msgid "Each new world starts with 600 extra cubes for research per level."
-msgstr ""
+msgstr "新しい世界はレベルごとに研究用のキューブ 600 を追加で持って始まる。"
 
 #: data/cradle.json:heirlooms[old_crew].name
 msgid "Old Crew"
@@ -8618,19 +8628,21 @@ msgstr "極から極まで古い工業地帯。サビの大地と広がる街。
 
 #: data/currencies.json:currencies[cubes].name
 msgid "Cubes"
-msgstr ""
+msgstr "キューブ"
 
 #: data/currencies.json:currencies[cubes].desc
 msgid ""
 "The main money. Sell bales at the scale. Pays for upgrades, robots, base "
 "levels, research, rockets and decorations."
 msgstr ""
+"メインのお金。はかりでベールを売ろう。アップグレード、ロボット、拠点レベル、"
+"研究、ロケット、飾りに使う。"
 
 #: data/currencies.json:currencies[parts].name
 #: data/hub.json:materials.metal.name data/hub.json:materials.plastic.name
 #: data/hub.json:materials.glass.name
 msgid "Parts"
-msgstr ""
+msgstr "パーツ"
 
 #: data/currencies.json:currencies[parts].desc
 msgid ""
@@ -8638,10 +8650,12 @@ msgid ""
 "scrap bin. Pays for robots, the Builder, base levels, stations, rocket "
 "stages and outpost repairs."
 msgstr ""
+"ガラクタ、リサイクラー、Haggle のスクラップ箱から集めたロボットパーツと建材。"
+"ロボット、ビルダー、拠点レベル、設備、ロケットの段、前哨基地の修理に使う。"
 
 #: data/currencies.json:currencies[seeds].name
 msgid "Seeds"
-msgstr ""
+msgstr "種"
 
 #: data/currencies.json:currencies[seeds].short
 msgid "SEEDS"
@@ -8652,6 +8666,8 @@ msgid ""
 "For planting. The compost press turns paper, card and spent blooms into "
 "seeds."
 msgstr ""
+"植えるためのもの。コンポストプレスが紙、段ボール、咲き終わった花を種に変え"
+"る。"
 
 #: data/decor.json:types[path].name
 msgid "Stone Path"
@@ -11724,7 +11740,7 @@ msgstr "飾りを置く（H）"
 
 #: data/goals.json:goals[late_heirloom_1].text
 msgid "Unlock an Heirloom"
-msgstr ""
+msgstr "家宝を解放する"
 
 #: data/goals.json:goals[late_garden_10].text
 msgid "Place 10 decorations"
@@ -13923,6 +13939,8 @@ msgid ""
 "Shredder drums and a little smelter. Bales go in and never come back: out "
 "come parts and clean building stock. Every bale burnt clean helps the sky."
 msgstr ""
+"シュレッダードラムと小さな溶鉱炉。ベールは入ったら二度と戻らない。出てくるの"
+"はパーツときれいな建材。きれいに燃やしたベールは空のためになる。"
 
 #: data/upgrades.json:upgrades[baler].name
 msgid "Baler"
@@ -14043,6 +14061,8 @@ msgstr "リサイクラー収率"
 #: data/upgrades.json:upgrades[recycler_yield].desc
 msgid "Sharper shredder teeth and a hotter smelter. More parts per bale."
 msgstr ""
+"よく切れるシュレッダーの刃と、より熱い溶鉱炉。ベール1つあたりのパーツが増え"
+"る。"
 
 #: data/upgrades.json:upgrades[laser_reach].name
 msgid "Laser Reach"
@@ -15935,6 +15955,8 @@ msgid ""
 "Heirlooms, a whole map of worlds. Verdance stays green; we just take what we "
 "learned somewhere new."
 msgstr ""
+"家宝、世界の地図まるごと。Verdance は緑のまま。学んだことを別の場所へ持ってい"
+"くだけ。"
 
 #: data/wren_lines.json:new_world
 msgid "...new ground... new junk..."
@@ -16489,7 +16511,7 @@ msgstr ""
 
 #: systems/cradle_mode.gd:296
 msgid "Unlocks with Ark milestones (next: %s, at %d restoration)"
-msgstr ""
+msgstr "アークのマイルストーンで解放（次：%s、復興度 %d）"
 
 #: ui/hud.gd:286
 msgid "WREN SIGNAL   %d%%"
@@ -17136,3 +17158,489 @@ msgstr ""
 msgid ""
 "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
 msgstr "鋭い粉砕刃と高温の炉。ベール1個あたりのボルトと建材が増える。"
+
+#: systems/lumi_style.gd:400
+msgid "Unlock the %s design"
+msgstr "デザイン「%s」を解放"
+
+#: systems/lumi_style.gd:402
+msgid "Reach Lumi Level %d"
+msgstr "Lumiレベル%dに到達"
+
+#: systems/lumi_style.gd:405
+msgid "Achievement: %s"
+msgstr "実績：%s"
+
+#: systems/lumi_style.gd:409
+msgid "Buy for %s"
+msgstr "%sで購入"
+
+#: ui/cosmetics_panel.gd:48
+msgid "Character Builder"
+msgstr "キャラクターエディター"
+
+#: ui/cosmetics_panel.gd:177
+msgid "Wearing a custom look with this bonus"
+msgstr "この補正でカスタム外見を着用中"
+
+#: ui/lumi_builder.gd:111
+msgid "CHARACTER BUILDER"
+msgstr "キャラクターエディター"
+
+#: ui/lumi_builder.gd:146
+msgid "Drag to turn  ·  Wheel to zoom"
+msgstr "ドラッグで回転  ·  ホイールでズーム"
+
+#: ui/lumi_builder.gd:183
+msgid "Randomize"
+msgstr "ランダム"
+
+#: ui/lumi_builder.gd:184
+msgid "Reset to preset"
+msgstr "プリセットに戻す"
+
+#: ui/lumi_builder.gd:185
+msgid "Test laser"
+msgstr "レーザーをテスト"
+
+#: ui/lumi_builder.gd:190
+msgid "Done"
+msgstr "完了"
+
+#: ui/lumi_builder.gd:190
+msgid "Wear look"
+msgstr "この外見を着る"
+
+#: ui/lumi_builder.gd:206 ui/lumi_builder.gd:318
+msgid "Presets"
+msgstr "プリセット"
+
+#: ui/lumi_builder.gd:217
+msgid "Saved"
+msgstr "保存済み"
+
+#: ui/lumi_builder.gd:221 ui/lumi_builder.gd:322
+msgid "Saved looks"
+msgstr "保存した外見"
+
+#: ui/lumi_builder.gd:371
+msgid "A design's full look. Every slot can be changed afterwards."
+msgstr "デザインの外見一式。あとで各スロットを変更できます。"
+
+#: ui/lumi_builder.gd:391
+msgid "Custom colour"
+msgstr "カスタムカラー"
+
+#: ui/lumi_builder.gd:436 data/style_parts.json:advanced.name
+msgid "Advanced colour picker"
+msgstr "詳細カラーピッカー"
+
+#: ui/lumi_builder.gd:446
+msgid "Advanced (hue, saturation, brightness)"
+msgstr "詳細（色相・彩度・明るさ）"
+
+#: ui/lumi_builder.gd:455
+msgid "Hue"
+msgstr "色相"
+
+#: ui/lumi_builder.gd:455
+msgid "Brightness"
+msgstr "明るさ"
+
+#: ui/lumi_builder.gd:492
+msgid "Equipped"
+msgstr "装備中"
+
+#: ui/lumi_builder.gd:508
+msgid ""
+"How weathered the paint looks: fresh from the ark, or three hundred years of "
+"dust."
+msgstr "塗装の傷み具合：箱舟から出たばかりか、三百年分のほこりか。"
+
+#: ui/lumi_builder.gd:511
+msgid "Fresh"
+msgstr "新品"
+
+#: ui/lumi_builder.gd:520
+msgid "Weathered"
+msgstr "使い込み"
+
+#: ui/lumi_builder.gd:526
+msgid "A custom look can use the bonus of any design you have unlocked."
+msgstr "カスタム外見は、解放済みのどのデザインの補正でも使えます。"
+
+#: ui/lumi_builder.gd:550
+msgid "Keep up to %d looks. Load one to edit it, then press Done to wear it."
+msgstr "外見は%d個まで保存できます。読み込んで編集し、「完了」で着用します。"
+
+#: ui/lumi_builder.gd:555 ui/lumi_builder.gd:579
+msgid "Look %d"
+msgstr "外見%d"
+
+#: ui/lumi_builder.gd:563
+msgid "Empty"
+msgstr "空き"
+
+#: ui/lumi_builder.gd:576
+msgid "Save here"
+msgstr "ここに保存"
+
+#: ui/lumi_builder.gd:646
+msgid "Unsaved changes"
+msgstr "未保存の変更"
+
+#: ui/lumi_builder.gd:662
+msgid "Part of this look is still locked."
+msgstr "この外見の一部はまだロック中です。"
+
+#: data/style_parts.json:slots[paint].name
+msgid "Paint"
+msgstr "塗装"
+
+#: data/style_parts.json:slots[trim].name
+msgid "Trim"
+msgstr "トリム"
+
+#: data/style_parts.json:slots[accent].name
+msgid "Accent"
+msgstr "アクセント"
+
+#: data/style_parts.json:slots[side].name
+msgid "Side modules"
+msgstr "サイドモジュール"
+
+#: data/style_parts.json:slots[wear].name
+msgid "Wear"
+msgstr "使用感"
+
+#: data/style_parts.json:slots[pattern].name
+msgid "Pattern"
+msgstr "模様"
+
+#: data/style_parts.json:slots[eyes].name
+msgid "Eye colour"
+msgstr "目の色"
+
+#: data/style_parts.json:slots[glow].name
+msgid "Light strips"
+msgstr "ライトライン"
+
+#: data/style_parts.json:slots[head].name
+msgid "Head piece"
+msgstr "頭パーツ"
+
+#: data/style_parts.json:slots[chest].name
+msgid "Chest icon"
+msgstr "胸のアイコン"
+
+#: data/style_parts.json:slots[shoulders].name
+msgid "Shoulders"
+msgstr "肩"
+
+#: data/style_parts.json:slots[held].name
+msgid "Held item"
+msgstr "持ち物"
+
+#: data/style_parts.json:slots[companion].name
+msgid "Companion"
+msgstr "おとも"
+
+#: data/style_parts.json:slots[hover].name
+msgid "Hover glow"
+msgstr "ホバーの光"
+
+#: data/style_parts.json:slots[laser].name
+msgid "Pickup laser"
+msgstr "回収レーザー"
+
+#: data/style_parts.json:slots[bonus].name
+msgid "Bonus"
+msgstr "補正"
+
+#: data/style_parts.json:options.pattern[plain].name
+msgid "Plain"
+msgstr "無地"
+
+#: data/style_parts.json:options.pattern[stripes].name
+msgid "Hazard stripes"
+msgstr "警告ストライプ"
+
+#: data/style_parts.json:options.pattern[moss].name
+msgid "Moss patches"
+msgstr "苔のパッチ"
+
+#: data/style_parts.json:options.eye_shape[crescent].name
+msgid "Crescent"
+msgstr "三日月"
+
+#: data/style_parts.json:options.eye_shape[round].name
+msgid "Round"
+msgstr "まる"
+
+#: data/style_parts.json:options.eye_shape[happy].name
+msgid "Happy arcs"
+msgstr "にっこり"
+
+#: data/style_parts.json:options.eye_shape[bar].name
+msgid "Visor bar"
+msgstr "バイザーバー"
+
+#: data/style_parts.json:options.eye_shape[heart].name
+msgid "Hearts"
+msgstr "ハート"
+
+#: data/style_parts.json:options.eye_shape[heart].unlock.cond.unit
+#: data/style_parts.json:swatches[seaglass].unlock.cond.unit
+#: data/style_parts.json:swatches[coral].unlock.cond.unit
+msgid "finds"
+msgstr "個の発見"
+
+#: data/style_parts.json:options.eye_shape[heart].unlock.text
+msgid "Find 8 Collection trinkets"
+msgstr "コレクションの小物を8個見つける"
+
+#: data/style_parts.json:options.head[none].name
+#: data/style_parts.json:options.shoulders[none].name
+#: data/style_parts.json:options.held[none].name
+#: data/style_parts.json:options.companion[none].name
+msgid "None"
+msgstr "なし"
+
+#: data/style_parts.json:options.head[fin].name
+msgid "Fin"
+msgstr "フィン"
+
+#: data/style_parts.json:options.head[antenna].name
+msgid "Antenna"
+msgstr "アンテナ"
+
+#: data/style_parts.json:options.head[antenna].unlock.cond.unit
+#: data/style_parts.json:swatches[mint].unlock.cond.unit
+msgid "hub level"
+msgstr "拠点レベル"
+
+#: data/style_parts.json:options.head[antenna].unlock.text
+msgid "Upgrade a hub to level 2"
+msgstr "拠点をレベル2に強化"
+
+#: data/style_parts.json:options.head[sprout].name
+msgid "Sprout leaf"
+msgstr "若葉"
+
+#: data/style_parts.json:options.head[catears].name
+msgid "Cat ears"
+msgstr "ネコ耳"
+
+#: data/style_parts.json:options.head[wings].name
+msgid "Wing fins"
+msgstr "翼フィン"
+
+#: data/style_parts.json:options.head[halo].name
+msgid "Halo"
+msgstr "天使の輪"
+
+#: data/style_parts.json:options.chest[recycle].name
+msgid "Recycle"
+msgstr "リサイクル"
+
+#: data/style_parts.json:options.chest[leaf].name
+msgid "Leaf"
+msgstr "葉っぱ"
+
+#: data/style_parts.json:options.chest[cross].name
+msgid "Medic cross"
+msgstr "救護十字"
+
+#: data/style_parts.json:options.chest[heart].name
+msgid "Heart"
+msgstr "ハート"
+
+#: data/style_parts.json:options.shoulders[pads].name
+msgid "Shoulder pads"
+msgstr "ショルダーパッド"
+
+#: data/style_parts.json:options.held[gear].name
+msgid "Spare gear"
+msgstr "予備の歯車"
+
+#: data/style_parts.json:options.held[medkit].name
+msgid "Med kit"
+msgstr "救急キット"
+
+#: data/style_parts.json:options.held[toolbox].name
+msgid "Toolbox"
+msgstr "工具箱"
+
+#: data/style_parts.json:options.held[watering_can].name
+msgid "Watering can"
+msgstr "じょうろ"
+
+#: data/style_parts.json:options.held[holo].name
+msgid "Holo screen"
+msgstr "ホロ画面"
+
+#: data/style_parts.json:options.companion[butterfly].name
+msgid "Butterfly"
+msgstr "チョウ"
+
+#: data/style_parts.json:options.companion[firefly].unlock.cond.unit
+#: data/style_parts.json:swatches[royal].unlock.cond.unit
+#: data/style_parts.json:swatches[lilac].unlock.cond.unit
+msgid "requests"
+msgstr "件の依頼"
+
+#: data/style_parts.json:options.companion[firefly].unlock.text
+msgid "Finish 3 Requests"
+msgstr "依頼を3件達成する"
+
+#: data/style_parts.json:options.companion[drone].name
+msgid "Tiny drone"
+msgstr "ちびドローン"
+
+#: data/style_parts.json:swatches[pearl].name
+msgid "Pearl"
+msgstr "パール"
+
+#: data/style_parts.json:swatches[white].name
+msgid "Chalk"
+msgstr "チョーク"
+
+#: data/style_parts.json:swatches[graphite].name
+msgid "Graphite"
+msgstr "グラファイト"
+
+#: data/style_parts.json:swatches[slate].name
+msgid "Slate"
+msgstr "スレート"
+
+#: data/style_parts.json:swatches[cyan].name
+msgid "Cyan"
+msgstr "シアン"
+
+#: data/style_parts.json:swatches[orange].name
+msgid "Orange"
+msgstr "オレンジ"
+
+#: data/style_parts.json:swatches[sky].name
+msgid "Sky"
+msgstr "スカイ"
+
+#: data/style_parts.json:swatches[mint].name
+msgid "Mint"
+msgstr "ミント"
+
+#: data/style_parts.json:swatches[mint].unlock.text
+msgid "Upgrade a hub to level 3"
+msgstr "拠点をレベル3に強化"
+
+#: data/style_parts.json:swatches[hazard].name
+msgid "Hazard yellow"
+msgstr "警告イエロー"
+
+#: data/style_parts.json:swatches[soot].name
+msgid "Soot"
+msgstr "すす"
+
+#: data/style_parts.json:swatches[amber].name
+msgid "Amber"
+msgstr "アンバー"
+
+#: data/style_parts.json:swatches[olive].name
+msgid "Olive"
+msgstr "オリーブ"
+
+#: data/style_parts.json:swatches[bark].name
+msgid "Bark"
+msgstr "樹皮"
+
+#: data/style_parts.json:swatches[leaf].name
+msgid "Leaf green"
+msgstr "リーフグリーン"
+
+#: data/style_parts.json:swatches[honey].name
+msgid "Honey"
+msgstr "ハニー"
+
+#: data/style_parts.json:swatches[cherry].name
+msgid "Cherry"
+msgstr "チェリー"
+
+#: data/style_parts.json:swatches[pink].name
+msgid "Pink"
+msgstr "ピンク"
+
+#: data/style_parts.json:swatches[cream].name
+msgid "Cream"
+msgstr "クリーム"
+
+#: data/style_parts.json:swatches[gunmetal].name
+msgid "Gunmetal"
+msgstr "ガンメタル"
+
+#: data/style_parts.json:swatches[ink].name
+msgid "Ink"
+msgstr "インク"
+
+#: data/style_parts.json:swatches[violet].name
+msgid "Violet"
+msgstr "バイオレット"
+
+#: data/style_parts.json:swatches[ivory].name
+msgid "Ivory"
+msgstr "アイボリー"
+
+#: data/style_parts.json:swatches[sunset].name
+msgid "Sunset"
+msgstr "サンセット"
+
+#: data/style_parts.json:swatches[seaglass].name
+msgid "Sea glass"
+msgstr "シーグラス"
+
+#: data/style_parts.json:swatches[seaglass].unlock.text
+msgid "Find 4 Collection trinkets"
+msgstr "コレクションの小物を4個見つける"
+
+#: data/style_parts.json:swatches[coral].name
+msgid "Coral"
+msgstr "コーラル"
+
+#: data/style_parts.json:swatches[coral].unlock.text
+msgid "Find 12 Collection trinkets"
+msgstr "コレクションの小物を12個見つける"
+
+#: data/style_parts.json:swatches[royal].name
+msgid "Royal blue"
+msgstr "ロイヤルブルー"
+
+#: data/style_parts.json:swatches[royal].unlock.text
+msgid "Finish 5 Requests"
+msgstr "依頼を5件達成する"
+
+#: data/style_parts.json:swatches[lilac].name
+msgid "Lilac"
+msgstr "ライラック"
+
+#: data/style_parts.json:swatches[lilac].unlock.text
+msgid "Finish 15 Requests"
+msgstr "依頼を15件達成する"
+
+#: data/style_parts.json:swatches[gold].name
+msgid "Gold"
+msgstr "ゴールド"
+
+#: data/style_parts.json:swatches[bloom].name
+msgid "Bloom green"
+msgstr "ブルームグリーン"
+
+#: data/style_parts.json:swatches[midnight].name
+msgid "Midnight"
+msgstr "ミッドナイト"
+
+#: data/style_parts.json:swatches[copper].name
+msgid "Copper"
+msgstr "カッパー"
+
+#: data/style_parts.json:swatches[rosegold].name
+msgid "Rose gold"
+msgstr "ローズゴールド"

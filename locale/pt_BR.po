@@ -337,7 +337,7 @@ msgstr "Limpe a sucata ao redor primeiro (%d%% de %d%%)."
 #: automation/outposts.gd:318 automation/outposts.gd:333
 #: automation/stations.gd:117
 msgid "Not enough cubes or parts."
-msgstr ""
+msgstr "Cubos ou peças insuficientes."
 
 #: automation/outposts.gd:327
 msgid "Repair it first."
@@ -596,7 +596,8 @@ msgid "E   scatter crumbs for the birds"
 msgstr ""
 
 #: fauna/fauna.gd:1576
-msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
+msgid ""
+"The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr ""
 
 #: fauna/fauna.gd:1632
@@ -865,11 +866,13 @@ msgstr ""
 "PRENSA DE COMPOSTO\n"
 "parada"
 
-#: plants/composter.gd:154
+#: plants/composter.gd:153
 msgid ""
 "COMPOST PRESS  Lv %d\n"
 "hopper %d%%  →  seeds"
 msgstr ""
+"PRENSA DE COMPOSTO  Nv %d\n"
+"funil %d%%  →  sementes"
 
 #: plants/garden.gd:263
 msgid "A hex is fully restored. Something small is already living in it."
@@ -1107,9 +1110,10 @@ msgstr " Parece %s."
 msgid "Needs a %s Control Core"
 msgstr "Requer um Núcleo de Controle %s"
 
-#: robots/fleet.gd:267
+#: robots/fleet.gd:264
 msgid "Not enough parts (scrap spares at Haggle's or run the recycler)"
 msgstr ""
+"Peças insuficientes (sucateie peças sobrando no Haggle ou ligue o reciclador)"
 
 #: robots/fleet.gd:287
 msgid "%s fleet upgraded to %s."
@@ -2031,7 +2035,7 @@ msgstr "WREN rastreou o relé do Ledger: %s da base. Procure o farol vermelho."
 
 #: story/ledger.gd:182
 msgid "Ledger: %s"
-msgstr ""
+msgstr "Ledger: %s"
 
 #. compass directions fill "%s of the hub" / "%s of you" ("north of you").
 #: story/ledger.gd:204
@@ -2368,7 +2372,7 @@ msgstr "Níveis de Lumi"
 
 #: systems/collection.gd:88 ui/upgrades_screen.gd:17
 msgid "Requests"
-msgstr ""
+msgstr "Pedidos"
 
 #: systems/collection.gd:89
 msgid "Curio Capsules"
@@ -2376,7 +2380,7 @@ msgstr "Cápsulas de curiosidades"
 
 #: systems/contracts.gd:230
 msgid "%s (Builder)"
-msgstr ""
+msgstr "%s (Oficina)"
 
 #: systems/contracts.gd:232
 msgid "Builder Crate"
@@ -2388,31 +2392,31 @@ msgstr "Cápsula de curiosidades"
 
 #: systems/contracts.gd:236
 msgid "%s robot part"
-msgstr ""
+msgstr "%s peça de robô"
 
 #: systems/contracts.gd:282
 msgid "Request complete: %s. Claim it at the workbench."
-msgstr ""
+msgstr "Pedido concluído: %s. Receba na bancada."
 
 #: systems/contracts.gd:288
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
-msgstr ""
+msgstr "Um pedido ficou sem tempo. Sem problema; um novo vai aparecer logo."
 
 #: systems/contracts.gd:368
 msgid "Request done: %s."
-msgstr ""
+msgstr "Pedido pago: %s."
 
 #: systems/contracts.gd:410
 msgid "Requests reward: %s. Equip it on the Requests tab."
-msgstr ""
+msgstr "Recompensa de pedidos: %s. Equipe na aba Pedidos."
 
 #: systems/contracts.gd:413
 msgid "Requests reward: %s. Fit it in the Builder tab."
-msgstr ""
+msgstr "Recompensa de pedidos: %s. Monte na aba Oficina."
 
 #: systems/contracts.gd:417 systems/contracts.gd:427
 msgid "Requests reward: %s."
-msgstr ""
+msgstr "Recompensa de pedidos: %s."
 
 #: systems/contracts.gd:435
 msgid "Unknown item"
@@ -2420,15 +2424,15 @@ msgstr "Item desconhecido"
 
 #: systems/contracts.gd:448
 msgid "Unlocks after %d requests"
-msgstr ""
+msgstr "Libera após %d pedidos"
 
 #: systems/contracts.gd:449
 msgid "Locked"
-msgstr ""
+msgstr "Bloqueado"
 
-#: systems/cradle_mode.gd:253
+#: systems/cradle_mode.gd:241
 msgid "Heirloom unlocked: %s, level %d. It travels with Lumi to every world."
-msgstr ""
+msgstr "Relíquia liberada: %s, nível %d. Ela viaja com Lumi para todo mundo."
 
 #: systems/cradle_mode.gd:303 systems/cradle_mode.gd:309
 msgid "Fully grown"
@@ -2751,12 +2755,15 @@ msgstr "+{amount} de {stat} do {robot}"
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "A Ponte da Arca se abre quando a Cradle voltar para casa."
 
-#: systems/late_director.gd:129
+#: systems/late_director.gd:128
 msgid ""
 "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark "
 "Bridge to see them and the Heirlooms your restoration has unlocked, or seed "
 "a new world. Garden Mode (H) is open too."
 msgstr ""
+"Modo Berço: o cofre de sementes da arca guarda sementes para outros mundos. "
+"Pausa > Ponte da Arca para vê-los e as relíquias que sua restauração "
+"liberou, ou semear um mundo novo. O Modo Jardim (H) também está aberto."
 
 #: systems/profile_slots.gd:48 ui/world_picker.gd:138
 msgid "Profile %d"
@@ -2867,7 +2874,7 @@ msgstr "velocidade da pá"
 
 #: systems/research.gd:383
 msgid "field-note cubes"
-msgstr ""
+msgstr "cubos de notas de campo"
 
 #: systems/research.gd:383
 msgid "research speed"
@@ -2959,11 +2966,11 @@ msgstr "Requer: %s%s"
 
 #: systems/robot_builder.gd:372
 msgid "Haggle's stall · %s"
-msgstr ""
+msgstr "Banca do Haggle · %s"
 
 #: systems/robot_builder.gd:374
 msgid "Requests reward · %d requests"
-msgstr ""
+msgstr "Recompensa de pedidos · %d pedidos"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
 #: systems/robot_builder.gd:384 ui/main_menu.gd:452 ui/profile_picker.gd:133
@@ -2980,7 +2987,7 @@ msgstr "Não está na barraca do Haggle agora"
 
 #: systems/robot_builder.gd:459
 msgid "Requests reward (%d of %d requests)"
-msgstr ""
+msgstr "Recompensa de pedidos (%d de %d pedidos)"
 
 #: systems/robot_builder.gd:550
 msgid ""
@@ -2992,7 +2999,7 @@ msgstr ""
 
 #: systems/robot_builder.gd:560
 msgid "A Maker Fragment was tucked inside it: +%d parts."
-msgstr ""
+msgstr "Havia um Fragmento Criador escondido dentro: +%d peças."
 
 #: systems/robot_builder.gd:592
 msgid "%s spotted something green and lucky: a Lucky Clover!"
@@ -3000,7 +3007,7 @@ msgstr "%s achou algo verde e sortudo: um trevo da sorte!"
 
 #: systems/robot_builder.gd:595
 msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
-msgstr ""
+msgstr "%s viu um Fragmento Criador brilhando no lixo: +%d peças."
 
 #: systems/robot_builder.gd:603
 msgid "%s spotted a %s."
@@ -3267,7 +3274,7 @@ msgstr ""
 
 #: ui/ark_bridge.gd:107
 msgid "Restoration %d"
-msgstr ""
+msgstr "Restauração %d"
 
 #: ui/ark_bridge.gd:110
 msgid "+%d banked from %s"
@@ -3363,9 +3370,9 @@ msgstr "Completo"
 msgid "Take  (%d picks)"
 msgstr "Pegar  (%d escolhas)"
 
-#: ui/ark_bridge.gd:307
+#: ui/ark_bridge.gd:303
 msgid "Milestone"
-msgstr ""
+msgstr "Marco"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18
@@ -3517,9 +3524,9 @@ msgstr "Predefinição da equipe %s: %s"
 msgid "none saved"
 msgstr "nenhuma salva"
 
-#: ui/builder_panel.gd:405
+#: ui/builder_panel.gd:393
 msgid "Builder bin %d   ·   Parts %s"
-msgstr ""
+msgstr "Caixa da oficina %d   ·   Peças %s"
 
 #: ui/builder_panel.gd:409
 msgid "Haggle's stall: %s  (new stock in %d min)"
@@ -3661,13 +3668,15 @@ msgid ""
 msgstr ""
 "Dica: os animais voltam quando o chão se cura. Fotografe-os no modo foto (P)."
 
-#: ui/codex_screen.gd:565
+#: ui/codex_screen.gd:553
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
-msgstr ""
+msgstr "Dica: conclua %d pedidos (aba Pedidos na bancada)."
 
-#: ui/codex_screen.gd:566
+#: ui/codex_screen.gd:554
 msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
 msgstr ""
+"Dica: Cápsulas de curiosidades, na trilha de recompensas dos pedidos na "
+"bancada."
 
 #: ui/codex_screen.gd:567
 msgid "Hint: keep scooping without stopping until the streak meter is full."
@@ -3774,9 +3783,9 @@ msgstr "Progresso"
 msgid "Upgrades bought"
 msgstr "Melhorias compradas"
 
-#: ui/codex_screen.gd:706
+#: ui/codex_screen.gd:694
 msgid "Field notes logged"
-msgstr ""
+msgstr "Notas de campo registradas"
 
 #: ui/codex_screen.gd:707
 msgid "Research done"
@@ -3915,7 +3924,7 @@ msgstr "Melhorar > %s"
 
 #: ui/command_view.gd:780
 msgid "%s cubes, %s parts, %s Control Core. %s"
-msgstr ""
+msgstr "%s cubos, %s peças, %s Núcleo de Controle. %s"
 
 #: ui/command_view.gd:789
 msgid "  parts %d/%d · %s"
@@ -3990,25 +3999,27 @@ msgstr "%d / %d hexágonos limpos"
 
 #: ui/contracts_panel.gd:27
 msgid "REQUESTS"
-msgstr ""
+msgstr "PEDIDOS"
 
 #: ui/contracts_panel.gd:30
 msgid ""
 "Short optional jobs and world events. Each pays cubes or parts; nothing is "
 "lost if one runs out."
 msgstr ""
+"Tarefas opcionais curtas e eventos do mundo. Cada uma paga cubos ou peças; "
+"nada se perde se uma expirar."
 
 #: ui/contracts_panel.gd:47
 msgid "REWARD TRACK"
-msgstr ""
+msgstr "TRILHA DE RECOMPENSAS"
 
 #: ui/contracts_panel.gd:86
 msgid "%d done"
-msgstr ""
+msgstr "%d feitos"
 
 #: ui/contracts_panel.gd:89
 msgid "LIVE  ·  %s  ·  %s  ·  %s left"
-msgstr ""
+msgstr "AO VIVO  ·  %s  ·  %s  ·  faltam %s"
 
 #: ui/contracts_panel.gd:92
 msgid "Collection  %d / %d   ·   see the Codex (K)"
@@ -4016,11 +4027,11 @@ msgstr "Coleção  %d / %d   ·   veja o Códice (K)"
 
 #: ui/contracts_panel.gd:140
 msgid "A new request is being posted."
-msgstr ""
+msgstr "Um novo pedido está sendo publicado."
 
 #: ui/contracts_panel.gd:151
 msgid "Pays  %s"
-msgstr ""
+msgstr "Paga  %s"
 
 #: ui/contracts_panel.gd:173
 msgid "Accept  (%s)"
@@ -4036,7 +4047,7 @@ msgstr "Em andamento"
 
 #: ui/contracts_panel.gd:198
 msgid "Claim  %s"
-msgstr ""
+msgstr "Receber  %s"
 
 #: ui/contracts_panel.gd:238
 msgid "Next posting in %s"
@@ -4052,11 +4063,11 @@ msgstr "Tempo restante %s"
 
 #: ui/contracts_panel.gd:251
 msgid "Finished. Claim it!"
-msgstr ""
+msgstr "Pronto. Receba!"
 
 #: ui/contracts_panel.gd:275
 msgid "After %d requests"
-msgstr ""
+msgstr "Após %d pedidos"
 
 #: ui/contracts_panel.gd:277
 msgid "Equipped  (press to remove)"
@@ -4064,7 +4075,7 @@ msgstr "Equipado  (aperte para tirar)"
 
 #: ui/contracts_panel.gd:277
 msgid "Unlocked  ·  press to equip"
-msgstr ""
+msgstr "Liberado  ·  aperte para equipar"
 
 #: ui/contracts_panel.gd:279 ui/cosmetics_panel.gd:129
 msgid "Unlocked"
@@ -4168,11 +4179,11 @@ msgstr "SEQUÊNCIA"
 
 #: ui/event_hud.gd:192
 msgid "REQUEST READY  ·  claim it at the workbench"
-msgstr ""
+msgstr "PEDIDO PRONTO  ·  receba na bancada"
 
 #: ui/event_hud.gd:192
 msgid "%d REQUESTS READY  ·  claim them at the workbench"
-msgstr ""
+msgstr "%d PEDIDOS PRONTOS  ·  receba na bancada"
 
 #: ui/extras_panel.gd:9
 msgid "Radio"
@@ -4541,9 +4552,9 @@ msgstr "Construir Bloqueador de Sinal"
 msgid " (have %s)"
 msgstr " (tem %s)"
 
-#: ui/hub_panel.gd:101
+#: ui/hub_panel.gd:96
 msgid "Parts %s"
-msgstr ""
+msgstr "Peças %s"
 
 #: ui/hub_panel.gd:103
 msgid ""
@@ -5214,9 +5225,9 @@ msgstr ""
 msgid "RENAME PROFILE"
 msgstr ""
 
-#: ui/profile_picker.gd:252 ui/profile_picker.gd:269
+#: ui/lumi_builder.gd:189 ui/profile_picker.gd:252 ui/profile_picker.gd:269
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: ui/profile_picker.gd:252
 msgid "Save"
@@ -5236,17 +5247,19 @@ msgstr "Na fila  ·  %s"
 
 #: ui/research_node_card.gd:184 ui/research_panel.gd:203
 msgid "%s  ·  %s"
-msgstr ""
+msgstr "%s  ·  %s"
 
 #: ui/research_panel.gd:34 data/currencies.json:currencies[cubes].short
 msgid "CUBES"
-msgstr ""
+msgstr "CUBOS"
 
 #: ui/research_panel.gd:41
 msgid ""
 "Research costs cubes and takes real time. It keeps going while you play or "
 "are away."
 msgstr ""
+"Pesquisa custa cubos e leva tempo real. Ela continua enquanto você joga ou "
+"está fora."
 
 #: ui/research_panel.gd:60
 msgid "RESEARCHING"
@@ -5286,7 +5299,7 @@ msgstr "Aperte para pôr na fila"
 
 #: ui/research_panel.gd:214
 msgid "%s cancelled. Cubes refunded."
-msgstr ""
+msgstr "%s cancelada. Cubos devolvidos."
 
 #: ui/robot_card.gd:40 data/currencies.json:currencies[parts].short
 msgid "PARTS"
@@ -5331,7 +5344,7 @@ msgstr "Próximo: %s  ·  x%.1f velocidade de trabalho  ·  visual %s"
 
 #: ui/robot_card.gd:93
 msgid "Needs %s cubes, %s parts and a %s Control Core.  %s"
-msgstr ""
+msgstr "Precisa de %s cubos, %s peças e um Núcleo de Controle %s.  %s"
 
 #: ui/robot_card.gd:95
 msgid "Upgrade fleet to %s"
@@ -5728,7 +5741,7 @@ msgstr "Rota automática: %s"
 
 #: ui/stations_panel.gd:104
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s"
-msgstr ""
+msgstr "Fardos reciclados %d   ·   Lixo destruído %s kg   ·   Peças %s"
 
 #: ui/system_map.gd:441 ui/system_map.gd:663
 msgid "you are here"
@@ -6024,7 +6037,7 @@ msgstr ""
 
 #: ui/trade_panel.gd:71
 msgid "Parts  %s      Robot parts in storage  %d"
-msgstr ""
+msgstr "Peças  %s      Peças de robô no estoque  %d"
 
 #: ui/trade_panel.gd:83
 msgid ""
@@ -6062,7 +6075,7 @@ msgstr "Comprar gasta  %s"
 
 #: ui/trade_panel.gd:112
 msgid "Scrap %d spare Rusty robot parts  ->  %s"
-msgstr ""
+msgstr "Sucatear %d peças de robô enferrujadas sobrando  ->  %s"
 
 #: ui/trade_panel.gd:122
 msgid "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab"
@@ -6077,6 +6090,8 @@ msgid ""
 "%s  (own %d)\n"
 "%s"
 msgstr ""
+"%s  (tem %d)\n"
+"%s"
 
 #: ui/trade_panel.gd:171
 msgid "Swap 3 spares"
@@ -6562,7 +6577,7 @@ msgstr "Acumulador de dados"
 
 #: data/achievements.json:achievements[data_500].desc
 msgid "Log 500 field notes."
-msgstr ""
+msgstr "Registre 500 notas de campo."
 
 #: data/achievements.json:achievements[distance_1k].name
 msgid "Long Way Round"
@@ -6890,7 +6905,7 @@ msgstr "Relíquia de família"
 
 #: data/achievements.json:achievements[late_heirloom_1].desc
 msgid "Unlock an Heirloom."
-msgstr ""
+msgstr "Libere uma relíquia."
 
 #: data/achievements.json:achievements[late_heirloom_20].name
 msgid "Treasured"
@@ -6902,11 +6917,11 @@ msgstr "Suba as relíquias para 20 níveis no total."
 
 #: data/achievements.json:achievements[late_starseeds_100].name
 msgid "World Mender"
-msgstr ""
+msgstr "Restaurador de Mundos"
 
 #: data/achievements.json:achievements[late_starseeds_100].desc
 msgid "Reach 100 restoration across your worlds."
-msgstr ""
+msgstr "Alcance 100 de restauração entre seus mundos."
 
 #: data/achievements.json:achievements[late_decor_1].name
 msgid "Home Touches"
@@ -8616,7 +8631,7 @@ msgstr "Cache de dados"
 
 #: data/cradle.json:heirlooms[data_cache].desc
 msgid "Each new world starts with 600 extra cubes for research per level."
-msgstr ""
+msgstr "Cada mundo novo começa com 600 cubos extras para pesquisa por nível."
 
 #: data/cradle.json:heirlooms[old_crew].name
 msgid "Old Crew"
@@ -8762,19 +8777,21 @@ msgstr ""
 
 #: data/currencies.json:currencies[cubes].name
 msgid "Cubes"
-msgstr ""
+msgstr "Cubos"
 
 #: data/currencies.json:currencies[cubes].desc
 msgid ""
 "The main money. Sell bales at the scale. Pays for upgrades, robots, base "
 "levels, research, rockets and decorations."
 msgstr ""
+"O dinheiro principal. Venda fardos na balança. Paga melhorias, robôs, níveis "
+"da base, pesquisa, foguetes e decorações."
 
 #: data/currencies.json:currencies[parts].name
 #: data/hub.json:materials.metal.name data/hub.json:materials.plastic.name
 #: data/hub.json:materials.glass.name
 msgid "Parts"
-msgstr ""
+msgstr "Peças"
 
 #: data/currencies.json:currencies[parts].desc
 msgid ""
@@ -8782,10 +8799,13 @@ msgid ""
 "scrap bin. Pays for robots, the Builder, base levels, stations, rocket "
 "stages and outpost repairs."
 msgstr ""
+"Peças de robô e material de obra tirados do lixo, do reciclador e da caixa "
+"de sucata do Haggle. Pagam robôs, a Oficina, níveis da base, estações, "
+"estágios de foguete e reparos de postos."
 
 #: data/currencies.json:currencies[seeds].name
 msgid "Seeds"
-msgstr ""
+msgstr "Sementes"
 
 #: data/currencies.json:currencies[seeds].short
 msgid "SEEDS"
@@ -8796,6 +8816,8 @@ msgid ""
 "For planting. The compost press turns paper, card and spent blooms into "
 "seeds."
 msgstr ""
+"Para plantar. A prensa de composto transforma papel, papelão e flores "
+"murchas em sementes."
 
 #: data/decor.json:types[path].name
 msgid "Stone Path"
@@ -10782,7 +10804,8 @@ msgid "Crumb Bag"
 msgstr ""
 
 #: data/events.json:trinkets[crumb_bag].desc
-msgid "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
+msgid ""
+"A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
 msgstr ""
 
 #: data/events.json:trinkets[pic_cat].name
@@ -11948,7 +11971,7 @@ msgstr "Coloque uma decoração (H)"
 
 #: data/goals.json:goals[late_heirloom_1].text
 msgid "Unlock an Heirloom"
-msgstr ""
+msgstr "Libere uma relíquia"
 
 #: data/goals.json:goals[late_garden_10].text
 msgid "Place 10 decorations"
@@ -14207,6 +14230,8 @@ msgid ""
 "Shredder drums and a little smelter. Bales go in and never come back: out "
 "come parts and clean building stock. Every bale burnt clean helps the sky."
 msgstr ""
+"Tambores trituradores e uma pequena fundição. Os fardos entram e nunca "
+"voltam: saem peças e material limpo. Cada fardo queimado limpo ajuda o céu."
 
 #: data/upgrades.json:upgrades[baler].name
 msgid "Baler"
@@ -14327,6 +14352,8 @@ msgstr "Rendimento do reciclador"
 #: data/upgrades.json:upgrades[recycler_yield].desc
 msgid "Sharper shredder teeth and a hotter smelter. More parts per bale."
 msgstr ""
+"Dentes de trituração mais afiados e uma fundição mais quente. Mais peças por "
+"fardo."
 
 #: data/upgrades.json:upgrades[laser_reach].name
 msgid "Laser Reach"
@@ -16342,6 +16369,8 @@ msgid ""
 "Heirlooms, a whole map of worlds. Verdance stays green; we just take what we "
 "learned somewhere new."
 msgstr ""
+"Relíquias, um mapa inteiro de mundos. Verdance continua verde; só levamos o "
+"que aprendemos para outro lugar."
 
 #: data/wren_lines.json:new_world
 msgid "...new ground... new junk..."
@@ -16908,7 +16937,7 @@ msgstr ""
 
 #: systems/cradle_mode.gd:296
 msgid "Unlocks with Ark milestones (next: %s, at %d restoration)"
-msgstr ""
+msgstr "Libera com os marcos da Arca (próximo: %s, com %d de restauração)"
 
 #: ui/hud.gd:286
 msgid "WREN SIGNAL   %d%%"
@@ -17134,3 +17163,492 @@ msgid ""
 "%s\n"
 "Charted. No landing yet."
 msgstr ""
+
+#: systems/lumi_style.gd:400
+msgid "Unlock the %s design"
+msgstr "Desbloqueie o visual %s"
+
+#: systems/lumi_style.gd:402
+msgid "Reach Lumi Level %d"
+msgstr "Alcance o nível Lumi %d"
+
+#: systems/lumi_style.gd:405
+msgid "Achievement: %s"
+msgstr "Conquista: %s"
+
+#: systems/lumi_style.gd:409
+msgid "Buy for %s"
+msgstr "Comprar por %s"
+
+#: ui/cosmetics_panel.gd:48
+msgid "Character Builder"
+msgstr "Editor de personagem"
+
+#: ui/cosmetics_panel.gd:177
+msgid "Wearing a custom look with this bonus"
+msgstr "Visual próprio com este bônus"
+
+#: ui/lumi_builder.gd:111
+msgid "CHARACTER BUILDER"
+msgstr "EDITOR DE PERSONAGEM"
+
+#: ui/lumi_builder.gd:146
+msgid "Drag to turn  ·  Wheel to zoom"
+msgstr "Arraste para girar  ·  Roda para zoom"
+
+#: ui/lumi_builder.gd:183
+msgid "Randomize"
+msgstr "Aleatório"
+
+#: ui/lumi_builder.gd:184
+msgid "Reset to preset"
+msgstr "Voltar à predefinição"
+
+#: ui/lumi_builder.gd:185
+msgid "Test laser"
+msgstr "Testar laser"
+
+#: ui/lumi_builder.gd:190
+msgid "Done"
+msgstr "Pronto"
+
+#: ui/lumi_builder.gd:190
+msgid "Wear look"
+msgstr "Usar visual"
+
+#: ui/lumi_builder.gd:206 ui/lumi_builder.gd:318
+msgid "Presets"
+msgstr "Predefinições"
+
+#: ui/lumi_builder.gd:217
+msgid "Saved"
+msgstr "Salvos"
+
+#: ui/lumi_builder.gd:221 ui/lumi_builder.gd:322
+msgid "Saved looks"
+msgstr "Visuais salvos"
+
+#: ui/lumi_builder.gd:371
+msgid "A design's full look. Every slot can be changed afterwards."
+msgstr "O visual completo de um modelo. Depois dá para mudar cada espaço."
+
+#: ui/lumi_builder.gd:391
+msgid "Custom colour"
+msgstr "Cor própria"
+
+#: ui/lumi_builder.gd:436 data/style_parts.json:advanced.name
+msgid "Advanced colour picker"
+msgstr "Seletor de cor avançado"
+
+#: ui/lumi_builder.gd:446
+msgid "Advanced (hue, saturation, brightness)"
+msgstr "Avançado (matiz, saturação, brilho)"
+
+#: ui/lumi_builder.gd:455
+msgid "Hue"
+msgstr "Matiz"
+
+#: ui/lumi_builder.gd:455
+msgid "Brightness"
+msgstr "Brilho"
+
+#: ui/lumi_builder.gd:492
+msgid "Equipped"
+msgstr "Equipado"
+
+#: ui/lumi_builder.gd:508
+msgid ""
+"How weathered the paint looks: fresh from the ark, or three hundred years of "
+"dust."
+msgstr ""
+"O quanto a pintura parece gasta: recém-saída da arca ou trezentos anos de "
+"poeira."
+
+#: ui/lumi_builder.gd:511
+msgid "Fresh"
+msgstr "Novo"
+
+#: ui/lumi_builder.gd:520
+msgid "Weathered"
+msgstr "Desgastado"
+
+#: ui/lumi_builder.gd:526
+msgid "A custom look can use the bonus of any design you have unlocked."
+msgstr "Um visual próprio pode usar o bônus de qualquer modelo desbloqueado."
+
+#: ui/lumi_builder.gd:550
+msgid "Keep up to %d looks. Load one to edit it, then press Done to wear it."
+msgstr ""
+"Guarde até %d visuais. Carregue um para editar e aperte Pronto para usar."
+
+#: ui/lumi_builder.gd:555 ui/lumi_builder.gd:579
+msgid "Look %d"
+msgstr "Visual %d"
+
+#: ui/lumi_builder.gd:563
+msgid "Empty"
+msgstr "Vazio"
+
+#: ui/lumi_builder.gd:576
+msgid "Save here"
+msgstr "Salvar aqui"
+
+#: ui/lumi_builder.gd:646
+msgid "Unsaved changes"
+msgstr "Alterações não salvas"
+
+#: ui/lumi_builder.gd:662
+msgid "Part of this look is still locked."
+msgstr "Parte deste visual ainda está bloqueada."
+
+#: data/style_parts.json:slots[paint].name
+msgid "Paint"
+msgstr "Pintura"
+
+#: data/style_parts.json:slots[trim].name
+msgid "Trim"
+msgstr "Acabamento"
+
+#: data/style_parts.json:slots[accent].name
+msgid "Accent"
+msgstr "Detalhe"
+
+#: data/style_parts.json:slots[side].name
+msgid "Side modules"
+msgstr "Módulos laterais"
+
+#: data/style_parts.json:slots[wear].name
+msgid "Wear"
+msgstr "Desgaste"
+
+#: data/style_parts.json:slots[pattern].name
+msgid "Pattern"
+msgstr "Padrão"
+
+#: data/style_parts.json:slots[eyes].name
+msgid "Eye colour"
+msgstr "Cor dos olhos"
+
+#: data/style_parts.json:slots[glow].name
+msgid "Light strips"
+msgstr "Faixas de luz"
+
+#: data/style_parts.json:slots[head].name
+msgid "Head piece"
+msgstr "Acessório de cabeça"
+
+#: data/style_parts.json:slots[chest].name
+msgid "Chest icon"
+msgstr "Ícone do peito"
+
+#: data/style_parts.json:slots[shoulders].name
+msgid "Shoulders"
+msgstr "Ombros"
+
+#: data/style_parts.json:slots[held].name
+msgid "Held item"
+msgstr "Item na mão"
+
+#: data/style_parts.json:slots[companion].name
+msgid "Companion"
+msgstr "Companheiro"
+
+#: data/style_parts.json:slots[hover].name
+msgid "Hover glow"
+msgstr "Brilho de flutuação"
+
+#: data/style_parts.json:slots[laser].name
+msgid "Pickup laser"
+msgstr "Laser de coleta"
+
+#: data/style_parts.json:slots[bonus].name
+msgid "Bonus"
+msgstr "Bônus"
+
+#: data/style_parts.json:options.pattern[plain].name
+msgid "Plain"
+msgstr "Liso"
+
+#: data/style_parts.json:options.pattern[stripes].name
+msgid "Hazard stripes"
+msgstr "Faixas de alerta"
+
+#: data/style_parts.json:options.pattern[moss].name
+msgid "Moss patches"
+msgstr "Manchas de musgo"
+
+#: data/style_parts.json:options.eye_shape[crescent].name
+msgid "Crescent"
+msgstr "Meia-lua"
+
+#: data/style_parts.json:options.eye_shape[round].name
+msgid "Round"
+msgstr "Redondos"
+
+#: data/style_parts.json:options.eye_shape[happy].name
+msgid "Happy arcs"
+msgstr "Arcos felizes"
+
+#: data/style_parts.json:options.eye_shape[bar].name
+msgid "Visor bar"
+msgstr "Barra de visor"
+
+#: data/style_parts.json:options.eye_shape[heart].name
+msgid "Hearts"
+msgstr "Corações"
+
+#: data/style_parts.json:options.eye_shape[heart].unlock.cond.unit
+#: data/style_parts.json:swatches[seaglass].unlock.cond.unit
+#: data/style_parts.json:swatches[coral].unlock.cond.unit
+msgid "finds"
+msgstr "achados"
+
+#: data/style_parts.json:options.eye_shape[heart].unlock.text
+msgid "Find 8 Collection trinkets"
+msgstr "Encontre 8 bugigangas da Coleção"
+
+#: data/style_parts.json:options.head[none].name
+#: data/style_parts.json:options.shoulders[none].name
+#: data/style_parts.json:options.held[none].name
+#: data/style_parts.json:options.companion[none].name
+msgid "None"
+msgstr "Nenhum"
+
+#: data/style_parts.json:options.head[fin].name
+msgid "Fin"
+msgstr "Barbatana"
+
+#: data/style_parts.json:options.head[antenna].name
+msgid "Antenna"
+msgstr "Antena"
+
+#: data/style_parts.json:options.head[antenna].unlock.cond.unit
+#: data/style_parts.json:swatches[mint].unlock.cond.unit
+msgid "hub level"
+msgstr "nível da base"
+
+#: data/style_parts.json:options.head[antenna].unlock.text
+msgid "Upgrade a hub to level 2"
+msgstr "Melhore uma base para o nível 2"
+
+#: data/style_parts.json:options.head[sprout].name
+msgid "Sprout leaf"
+msgstr "Folha de broto"
+
+#: data/style_parts.json:options.head[catears].name
+msgid "Cat ears"
+msgstr "Orelhas de gato"
+
+#: data/style_parts.json:options.head[wings].name
+msgid "Wing fins"
+msgstr "Barbatanas de asa"
+
+#: data/style_parts.json:options.head[halo].name
+msgid "Halo"
+msgstr "Auréola"
+
+#: data/style_parts.json:options.chest[recycle].name
+msgid "Recycle"
+msgstr "Reciclagem"
+
+#: data/style_parts.json:options.chest[leaf].name
+msgid "Leaf"
+msgstr "Folha"
+
+#: data/style_parts.json:options.chest[cross].name
+msgid "Medic cross"
+msgstr "Cruz médica"
+
+#: data/style_parts.json:options.chest[heart].name
+msgid "Heart"
+msgstr "Coração"
+
+#: data/style_parts.json:options.shoulders[pads].name
+msgid "Shoulder pads"
+msgstr "Ombreiras"
+
+#: data/style_parts.json:options.held[gear].name
+msgid "Spare gear"
+msgstr "Engrenagem reserva"
+
+#: data/style_parts.json:options.held[medkit].name
+msgid "Med kit"
+msgstr "Kit médico"
+
+#: data/style_parts.json:options.held[toolbox].name
+msgid "Toolbox"
+msgstr "Caixa de ferramentas"
+
+#: data/style_parts.json:options.held[watering_can].name
+msgid "Watering can"
+msgstr "Regador"
+
+#: data/style_parts.json:options.held[holo].name
+msgid "Holo screen"
+msgstr "Tela holo"
+
+#: data/style_parts.json:options.companion[butterfly].name
+msgid "Butterfly"
+msgstr "Borboleta"
+
+#: data/style_parts.json:options.companion[firefly].unlock.cond.unit
+#: data/style_parts.json:swatches[royal].unlock.cond.unit
+#: data/style_parts.json:swatches[lilac].unlock.cond.unit
+msgid "requests"
+msgstr "pedidos"
+
+#: data/style_parts.json:options.companion[firefly].unlock.text
+msgid "Finish 3 Requests"
+msgstr "Conclua 3 pedidos"
+
+#: data/style_parts.json:options.companion[drone].name
+msgid "Tiny drone"
+msgstr "Drone pequenino"
+
+#: data/style_parts.json:swatches[pearl].name
+msgid "Pearl"
+msgstr "Pérola"
+
+#: data/style_parts.json:swatches[white].name
+msgid "Chalk"
+msgstr "Giz"
+
+#: data/style_parts.json:swatches[graphite].name
+msgid "Graphite"
+msgstr "Grafite"
+
+#: data/style_parts.json:swatches[slate].name
+msgid "Slate"
+msgstr "Ardósia"
+
+#: data/style_parts.json:swatches[cyan].name
+msgid "Cyan"
+msgstr "Ciano"
+
+#: data/style_parts.json:swatches[orange].name
+msgid "Orange"
+msgstr "Laranja"
+
+#: data/style_parts.json:swatches[sky].name
+msgid "Sky"
+msgstr "Céu"
+
+#: data/style_parts.json:swatches[mint].name
+msgid "Mint"
+msgstr "Menta"
+
+#: data/style_parts.json:swatches[mint].unlock.text
+msgid "Upgrade a hub to level 3"
+msgstr "Melhore uma base para o nível 3"
+
+#: data/style_parts.json:swatches[hazard].name
+msgid "Hazard yellow"
+msgstr "Amarelo alerta"
+
+#: data/style_parts.json:swatches[soot].name
+msgid "Soot"
+msgstr "Fuligem"
+
+#: data/style_parts.json:swatches[amber].name
+msgid "Amber"
+msgstr "Âmbar"
+
+#: data/style_parts.json:swatches[olive].name
+msgid "Olive"
+msgstr "Oliva"
+
+#: data/style_parts.json:swatches[bark].name
+msgid "Bark"
+msgstr "Casca"
+
+#: data/style_parts.json:swatches[leaf].name
+msgid "Leaf green"
+msgstr "Verde-folha"
+
+#: data/style_parts.json:swatches[honey].name
+msgid "Honey"
+msgstr "Mel"
+
+#: data/style_parts.json:swatches[cherry].name
+msgid "Cherry"
+msgstr "Cereja"
+
+#: data/style_parts.json:swatches[pink].name
+msgid "Pink"
+msgstr "Rosa"
+
+#: data/style_parts.json:swatches[cream].name
+msgid "Cream"
+msgstr "Creme"
+
+#: data/style_parts.json:swatches[gunmetal].name
+msgid "Gunmetal"
+msgstr "Cinza-chumbo"
+
+#: data/style_parts.json:swatches[ink].name
+msgid "Ink"
+msgstr "Tinta"
+
+#: data/style_parts.json:swatches[violet].name
+msgid "Violet"
+msgstr "Violeta"
+
+#: data/style_parts.json:swatches[ivory].name
+msgid "Ivory"
+msgstr "Marfim"
+
+#: data/style_parts.json:swatches[sunset].name
+msgid "Sunset"
+msgstr "Pôr do sol"
+
+#: data/style_parts.json:swatches[seaglass].name
+msgid "Sea glass"
+msgstr "Vidro do mar"
+
+#: data/style_parts.json:swatches[seaglass].unlock.text
+msgid "Find 4 Collection trinkets"
+msgstr "Encontre 4 bugigangas da Coleção"
+
+#: data/style_parts.json:swatches[coral].name
+msgid "Coral"
+msgstr "Coral"
+
+#: data/style_parts.json:swatches[coral].unlock.text
+msgid "Find 12 Collection trinkets"
+msgstr "Encontre 12 bugigangas da Coleção"
+
+#: data/style_parts.json:swatches[royal].name
+msgid "Royal blue"
+msgstr "Azul royal"
+
+#: data/style_parts.json:swatches[royal].unlock.text
+msgid "Finish 5 Requests"
+msgstr "Conclua 5 pedidos"
+
+#: data/style_parts.json:swatches[lilac].name
+msgid "Lilac"
+msgstr "Lilás"
+
+#: data/style_parts.json:swatches[lilac].unlock.text
+msgid "Finish 15 Requests"
+msgstr "Conclua 15 pedidos"
+
+#: data/style_parts.json:swatches[gold].name
+msgid "Gold"
+msgstr "Ouro"
+
+#: data/style_parts.json:swatches[bloom].name
+msgid "Bloom green"
+msgstr "Verde-flor"
+
+#: data/style_parts.json:swatches[midnight].name
+msgid "Midnight"
+msgstr "Meia-noite"
+
+#: data/style_parts.json:swatches[copper].name
+msgid "Copper"
+msgstr "Cobre"
+
+#: data/style_parts.json:swatches[rosegold].name
+msgid "Rose gold"
+msgstr "Ouro rosé"

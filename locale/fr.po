@@ -337,7 +337,7 @@ msgstr "Dégage d'abord la ferraille autour (%d%% sur %d%%)."
 #: automation/outposts.gd:318 automation/outposts.gd:333
 #: automation/stations.gd:117
 msgid "Not enough cubes or parts."
-msgstr ""
+msgstr "Pas assez de cubes ou de pièces."
 
 #: automation/outposts.gd:327
 msgid "Repair it first."
@@ -598,7 +598,8 @@ msgid "E   scatter crumbs for the birds"
 msgstr ""
 
 #: fauna/fauna.gd:1576
-msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
+msgid ""
+"The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr ""
 
 #: fauna/fauna.gd:1632
@@ -873,11 +874,13 @@ msgstr ""
 "PRESSE À COMPOST\n"
 "en sommeil"
 
-#: plants/composter.gd:154
+#: plants/composter.gd:153
 msgid ""
 "COMPOST PRESS  Lv %d\n"
 "hopper %d%%  →  seeds"
 msgstr ""
+"PRESSE À COMPOST  Niv %d\n"
+"trémie %d%%  →  graines"
 
 #: plants/garden.gd:263
 msgid "A hex is fully restored. Something small is already living in it."
@@ -1115,9 +1118,11 @@ msgstr " Il a l'air %s."
 msgid "Needs a %s Control Core"
 msgstr "Nécessite un noyau de contrôle %s"
 
-#: robots/fleet.gd:267
+#: robots/fleet.gd:264
 msgid "Not enough parts (scrap spares at Haggle's or run the recycler)"
 msgstr ""
+"Pas assez de pièces (ferraillez des pièces en trop chez Haggle ou faites "
+"tourner le recycleur)"
 
 #: robots/fleet.gd:287
 msgid "%s fleet upgraded to %s."
@@ -2046,7 +2051,7 @@ msgstr ""
 
 #: story/ledger.gd:182
 msgid "Ledger: %s"
-msgstr ""
+msgstr "Ledger : %s"
 
 #. compass directions fill "%s of the hub" / "%s of you" ("north of you").
 #: story/ledger.gd:204
@@ -2386,7 +2391,7 @@ msgstr "Niveaux de Lumi"
 
 #: systems/collection.gd:88 ui/upgrades_screen.gd:17
 msgid "Requests"
-msgstr ""
+msgstr "Demandes"
 
 #: systems/collection.gd:89
 msgid "Curio Capsules"
@@ -2394,7 +2399,7 @@ msgstr "Capsules à curiosités"
 
 #: systems/contracts.gd:230
 msgid "%s (Builder)"
-msgstr ""
+msgstr "%s (Atelier)"
 
 #: systems/contracts.gd:232
 msgid "Builder Crate"
@@ -2406,31 +2411,31 @@ msgstr "Capsule à curiosités"
 
 #: systems/contracts.gd:236
 msgid "%s robot part"
-msgstr ""
+msgstr "%s pièce de robot"
 
 #: systems/contracts.gd:282
 msgid "Request complete: %s. Claim it at the workbench."
-msgstr ""
+msgstr "Demande terminée : %s. Récupère-la à l'établi."
 
 #: systems/contracts.gd:288
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
-msgstr ""
+msgstr "Une demande a expiré. Aucun mal ; une nouvelle arrivera bientôt."
 
 #: systems/contracts.gd:368
 msgid "Request done: %s."
-msgstr ""
+msgstr "Demande réglée : %s."
 
 #: systems/contracts.gd:410
 msgid "Requests reward: %s. Equip it on the Requests tab."
-msgstr ""
+msgstr "Récompense de demandes : %s. Équipe-la dans l'onglet Demandes."
 
 #: systems/contracts.gd:413
 msgid "Requests reward: %s. Fit it in the Builder tab."
-msgstr ""
+msgstr "Récompense de demandes : %s. Monte-la dans l'onglet Atelier."
 
 #: systems/contracts.gd:417 systems/contracts.gd:427
 msgid "Requests reward: %s."
-msgstr ""
+msgstr "Récompense de demandes : %s."
 
 #: systems/contracts.gd:435
 msgid "Unknown item"
@@ -2438,15 +2443,15 @@ msgstr "Objet inconnu"
 
 #: systems/contracts.gd:448
 msgid "Unlocks after %d requests"
-msgstr ""
+msgstr "Débloqué après %d demandes"
 
 #: systems/contracts.gd:449
 msgid "Locked"
-msgstr ""
+msgstr "Verrouillé"
 
-#: systems/cradle_mode.gd:253
+#: systems/cradle_mode.gd:241
 msgid "Heirloom unlocked: %s, level %d. It travels with Lumi to every world."
-msgstr ""
+msgstr "Héritage débloqué : %s, niveau %d. Il suit Lumi sur chaque monde."
 
 #: systems/cradle_mode.gd:303 systems/cradle_mode.gd:309
 msgid "Fully grown"
@@ -2772,12 +2777,16 @@ msgstr "+{amount} de {stat} pour {robot}"
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "Le Pont de l'Arche s'ouvre une fois le Cradle rentré au port."
 
-#: systems/late_director.gd:129
+#: systems/late_director.gd:128
 msgid ""
 "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark "
 "Bridge to see them and the Heirlooms your restoration has unlocked, or seed "
 "a new world. Garden Mode (H) is open too."
 msgstr ""
+"Mode Berceau : la réserve de graines de l'arche garde des graines pour "
+"d'autres mondes. Pause > Pont de l'Arche pour les voir avec les héritages "
+"que ta restauration a débloqués, ou ensemencer un nouveau monde. Le mode "
+"Jardin (H) est ouvert aussi."
 
 #: systems/profile_slots.gd:48 ui/world_picker.gd:138
 msgid "Profile %d"
@@ -2889,7 +2898,7 @@ msgstr "vitesse de pelle"
 
 #: systems/research.gd:383
 msgid "field-note cubes"
-msgstr ""
+msgstr "cubes des notes de terrain"
 
 #: systems/research.gd:383
 msgid "research speed"
@@ -2981,11 +2990,11 @@ msgstr "Nécessite : %s%s"
 
 #: systems/robot_builder.gd:372
 msgid "Haggle's stall · %s"
-msgstr ""
+msgstr "Étal de Haggle · %s"
 
 #: systems/robot_builder.gd:374
 msgid "Requests reward · %d requests"
-msgstr ""
+msgstr "Récompense de demandes · %d demandes"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
 #: systems/robot_builder.gd:384 ui/main_menu.gd:452 ui/profile_picker.gd:133
@@ -3002,7 +3011,7 @@ msgstr "Pas à l'étal de Haggle pour l'instant"
 
 #: systems/robot_builder.gd:459
 msgid "Requests reward (%d of %d requests)"
-msgstr ""
+msgstr "Récompense de demandes (%d sur %d demandes)"
 
 #: systems/robot_builder.gd:550
 msgid ""
@@ -3014,7 +3023,7 @@ msgstr ""
 
 #: systems/robot_builder.gd:560
 msgid "A Maker Fragment was tucked inside it: +%d parts."
-msgstr ""
+msgstr "Un fragment de Bâtisseur était caché dedans : +%d pièces."
 
 #: systems/robot_builder.gd:592
 msgid "%s spotted something green and lucky: a Lucky Clover!"
@@ -3024,6 +3033,8 @@ msgstr ""
 #: systems/robot_builder.gd:595
 msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
 msgstr ""
+"%s a repéré un fragment de Bâtisseur qui brillait dans les déchets : +%d "
+"pièces."
 
 #: systems/robot_builder.gd:603
 msgid "%s spotted a %s."
@@ -3293,7 +3304,7 @@ msgstr ""
 
 #: ui/ark_bridge.gd:107
 msgid "Restoration %d"
-msgstr ""
+msgstr "Restauration %d"
 
 #: ui/ark_bridge.gd:110
 msgid "+%d banked from %s"
@@ -3389,9 +3400,9 @@ msgstr "Complet"
 msgid "Take  (%d picks)"
 msgstr "Prendre  (%d choix)"
 
-#: ui/ark_bridge.gd:307
+#: ui/ark_bridge.gd:303
 msgid "Milestone"
-msgstr ""
+msgstr "Jalon"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18
@@ -3544,9 +3555,9 @@ msgstr "Preset d'équipe %s : %s"
 msgid "none saved"
 msgstr "aucun enregistré"
 
-#: ui/builder_panel.gd:405
+#: ui/builder_panel.gd:393
 msgid "Builder bin %d   ·   Parts %s"
-msgstr ""
+msgstr "Caisse d'atelier %d   ·   Pièces %s"
 
 #: ui/builder_panel.gd:409
 msgid "Haggle's stall: %s  (new stock in %d min)"
@@ -3690,13 +3701,15 @@ msgstr ""
 "Astuce : les animaux reviennent quand le sol guérit. Photographie-les en "
 "mode photo (P)."
 
-#: ui/codex_screen.gd:565
+#: ui/codex_screen.gd:553
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
-msgstr ""
+msgstr "Astuce : termine %d demandes (onglet Demandes à l'établi)."
 
-#: ui/codex_screen.gd:566
+#: ui/codex_screen.gd:554
 msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
 msgstr ""
+"Astuce : les Capsules à curiosités, sur la piste de récompenses des demandes "
+"à l'établi."
 
 #: ui/codex_screen.gd:567
 msgid "Hint: keep scooping without stopping until the streak meter is full."
@@ -3805,9 +3818,9 @@ msgstr "Progression"
 msgid "Upgrades bought"
 msgstr "Améliorations achetées"
 
-#: ui/codex_screen.gd:706
+#: ui/codex_screen.gd:694
 msgid "Field notes logged"
-msgstr ""
+msgstr "Notes de terrain consignées"
 
 #: ui/codex_screen.gd:707
 msgid "Research done"
@@ -3946,7 +3959,7 @@ msgstr "Améliorer > %s"
 
 #: ui/command_view.gd:780
 msgid "%s cubes, %s parts, %s Control Core. %s"
-msgstr ""
+msgstr "%s cubes, %s pièces, %s Noyau de contrôle. %s"
 
 #: ui/command_view.gd:789
 msgid "  parts %d/%d · %s"
@@ -4021,25 +4034,27 @@ msgstr "%d / %d hexagones propres"
 
 #: ui/contracts_panel.gd:27
 msgid "REQUESTS"
-msgstr ""
+msgstr "DEMANDES"
 
 #: ui/contracts_panel.gd:30
 msgid ""
 "Short optional jobs and world events. Each pays cubes or parts; nothing is "
 "lost if one runs out."
 msgstr ""
+"Petites tâches facultatives et événements du monde. Chacune paie des cubes "
+"ou des pièces ; rien n'est perdu si l'une expire."
 
 #: ui/contracts_panel.gd:47
 msgid "REWARD TRACK"
-msgstr ""
+msgstr "PISTE DE RÉCOMPENSES"
 
 #: ui/contracts_panel.gd:86
 msgid "%d done"
-msgstr ""
+msgstr "%d faites"
 
 #: ui/contracts_panel.gd:89
 msgid "LIVE  ·  %s  ·  %s  ·  %s left"
-msgstr ""
+msgstr "EN DIRECT  ·  %s  ·  %s  ·  %s restantes"
 
 #: ui/contracts_panel.gd:92
 msgid "Collection  %d / %d   ·   see the Codex (K)"
@@ -4047,11 +4062,11 @@ msgstr "Collection  %d / %d   ·   voir le Codex (K)"
 
 #: ui/contracts_panel.gd:140
 msgid "A new request is being posted."
-msgstr ""
+msgstr "Une nouvelle demande va être affichée."
 
 #: ui/contracts_panel.gd:151
 msgid "Pays  %s"
-msgstr ""
+msgstr "Paie  %s"
 
 #: ui/contracts_panel.gd:173
 msgid "Accept  (%s)"
@@ -4067,7 +4082,7 @@ msgstr "En cours"
 
 #: ui/contracts_panel.gd:198
 msgid "Claim  %s"
-msgstr ""
+msgstr "Récupérer  %s"
 
 #: ui/contracts_panel.gd:238
 msgid "Next posting in %s"
@@ -4083,11 +4098,11 @@ msgstr "Temps restant %s"
 
 #: ui/contracts_panel.gd:251
 msgid "Finished. Claim it!"
-msgstr ""
+msgstr "Terminé. Récupère-la !"
 
 #: ui/contracts_panel.gd:275
 msgid "After %d requests"
-msgstr ""
+msgstr "Après %d demandes"
 
 #: ui/contracts_panel.gd:277
 msgid "Equipped  (press to remove)"
@@ -4095,7 +4110,7 @@ msgstr "Équipé  (appuie pour retirer)"
 
 #: ui/contracts_panel.gd:277
 msgid "Unlocked  ·  press to equip"
-msgstr ""
+msgstr "Débloqué  ·  appuie pour équiper"
 
 #: ui/contracts_panel.gd:279 ui/cosmetics_panel.gd:129
 msgid "Unlocked"
@@ -4199,11 +4214,11 @@ msgstr "SÉRIE"
 
 #: ui/event_hud.gd:192
 msgid "REQUEST READY  ·  claim it at the workbench"
-msgstr ""
+msgstr "DEMANDE PRÊTE  ·  récupère-la à l'établi"
 
 #: ui/event_hud.gd:192
 msgid "%d REQUESTS READY  ·  claim them at the workbench"
-msgstr ""
+msgstr "%d DEMANDES PRÊTES  ·  récupère-les à l'établi"
 
 #: ui/extras_panel.gd:9
 msgid "Radio"
@@ -4576,9 +4591,9 @@ msgstr "Construire un brouilleur"
 msgid " (have %s)"
 msgstr " (tu as %s)"
 
-#: ui/hub_panel.gd:101
+#: ui/hub_panel.gd:96
 msgid "Parts %s"
-msgstr ""
+msgstr "Pièces %s"
 
 #: ui/hub_panel.gd:103
 msgid ""
@@ -5249,9 +5264,9 @@ msgstr ""
 msgid "RENAME PROFILE"
 msgstr ""
 
-#: ui/profile_picker.gd:252 ui/profile_picker.gd:269
+#: ui/lumi_builder.gd:189 ui/profile_picker.gd:252 ui/profile_picker.gd:269
 msgid "Cancel"
-msgstr ""
+msgstr "Annuler"
 
 #: ui/profile_picker.gd:252
 msgid "Save"
@@ -5271,17 +5286,19 @@ msgstr "En file  ·  %s"
 
 #: ui/research_node_card.gd:184 ui/research_panel.gd:203
 msgid "%s  ·  %s"
-msgstr ""
+msgstr "%s  ·  %s"
 
 #: ui/research_panel.gd:34 data/currencies.json:currencies[cubes].short
 msgid "CUBES"
-msgstr ""
+msgstr "CUBES"
 
 #: ui/research_panel.gd:41
 msgid ""
 "Research costs cubes and takes real time. It keeps going while you play or "
 "are away."
 msgstr ""
+"La recherche coûte des cubes et prend du temps réel. Elle continue pendant "
+"que tu joues ou que tu es absent."
 
 #: ui/research_panel.gd:60
 msgid "RESEARCHING"
@@ -5321,7 +5338,7 @@ msgstr "Appuie pour mettre en file"
 
 #: ui/research_panel.gd:214
 msgid "%s cancelled. Cubes refunded."
-msgstr ""
+msgstr "%s annulée. Cubes remboursés."
 
 #: ui/robot_card.gd:40 data/currencies.json:currencies[parts].short
 msgid "PARTS"
@@ -5366,7 +5383,7 @@ msgstr "Suivant : %s  ·  x%.1f vitesse de travail  ·  look %s"
 
 #: ui/robot_card.gd:93
 msgid "Needs %s cubes, %s parts and a %s Control Core.  %s"
-msgstr ""
+msgstr "Nécessite %s cubes, %s pièces et un Noyau de contrôle %s.  %s"
 
 #: ui/robot_card.gd:95
 msgid "Upgrade fleet to %s"
@@ -5764,7 +5781,7 @@ msgstr "Itinéraire auto : %s"
 
 #: ui/stations_panel.gd:104
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s"
-msgstr ""
+msgstr "Balles recyclées %d   ·   Déchets détruits %s kg   ·   Pièces %s"
 
 #: ui/system_map.gd:441 ui/system_map.gd:663
 msgid "you are here"
@@ -6060,7 +6077,7 @@ msgstr ""
 
 #: ui/trade_panel.gd:71
 msgid "Parts  %s      Robot parts in storage  %d"
-msgstr ""
+msgstr "Pièces  %s      Pièces de robot en stock  %d"
 
 #: ui/trade_panel.gd:83
 msgid ""
@@ -6098,7 +6115,7 @@ msgstr "Acheter usé  %s"
 
 #: ui/trade_panel.gd:112
 msgid "Scrap %d spare Rusty robot parts  ->  %s"
-msgstr ""
+msgstr "Ferrailler %d pièces de robot rouillées en trop  ->  %s"
 
 #: ui/trade_panel.gd:122
 msgid "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab"
@@ -6115,6 +6132,8 @@ msgid ""
 "%s  (own %d)\n"
 "%s"
 msgstr ""
+"%s  (possédé %d)\n"
+"%s"
 
 #: ui/trade_panel.gd:171
 msgid "Swap 3 spares"
@@ -6600,7 +6619,7 @@ msgstr "Accro aux données"
 
 #: data/achievements.json:achievements[data_500].desc
 msgid "Log 500 field notes."
-msgstr ""
+msgstr "Consigne 500 notes de terrain."
 
 #: data/achievements.json:achievements[distance_1k].name
 msgid "Long Way Round"
@@ -6927,7 +6946,7 @@ msgstr "Héritage de famille"
 
 #: data/achievements.json:achievements[late_heirloom_1].desc
 msgid "Unlock an Heirloom."
-msgstr ""
+msgstr "Débloque un héritage."
 
 #: data/achievements.json:achievements[late_heirloom_20].name
 msgid "Treasured"
@@ -6939,11 +6958,11 @@ msgstr "Monte tes héritages à 20 niveaux au total."
 
 #: data/achievements.json:achievements[late_starseeds_100].name
 msgid "World Mender"
-msgstr ""
+msgstr "Répare-mondes"
 
 #: data/achievements.json:achievements[late_starseeds_100].desc
 msgid "Reach 100 restoration across your worlds."
-msgstr ""
+msgstr "Atteins 100 de restauration sur tes mondes."
 
 #: data/achievements.json:achievements[late_decor_1].name
 msgid "Home Touches"
@@ -8669,6 +8688,8 @@ msgstr "Cache de données"
 #: data/cradle.json:heirlooms[data_cache].desc
 msgid "Each new world starts with 600 extra cubes for research per level."
 msgstr ""
+"Chaque nouveau monde commence avec 600 cubes en plus pour la recherche par "
+"niveau."
 
 #: data/cradle.json:heirlooms[old_crew].name
 msgid "Old Crew"
@@ -8817,19 +8838,21 @@ msgstr ""
 
 #: data/currencies.json:currencies[cubes].name
 msgid "Cubes"
-msgstr ""
+msgstr "Cubes"
 
 #: data/currencies.json:currencies[cubes].desc
 msgid ""
 "The main money. Sell bales at the scale. Pays for upgrades, robots, base "
 "levels, research, rockets and decorations."
 msgstr ""
+"L'argent principal. Vends des balles à la balance. Paie les améliorations, "
+"robots, niveaux de base, recherches, fusées et décorations."
 
 #: data/currencies.json:currencies[parts].name
 #: data/hub.json:materials.metal.name data/hub.json:materials.plastic.name
 #: data/hub.json:materials.glass.name
 msgid "Parts"
-msgstr ""
+msgstr "Pièces"
 
 #: data/currencies.json:currencies[parts].desc
 msgid ""
@@ -8837,10 +8860,13 @@ msgid ""
 "scrap bin. Pays for robots, the Builder, base levels, stations, rocket "
 "stages and outpost repairs."
 msgstr ""
+"Pièces de robot et matériaux récupérés dans les déchets, au recycleur et "
+"dans le bac à ferraille de Haggle. Paient les robots, l'Atelier, les niveaux "
+"de base, les stations, les étages de fusée et les réparations d'avant-postes."
 
 #: data/currencies.json:currencies[seeds].name
 msgid "Seeds"
-msgstr ""
+msgstr "Graines"
 
 #: data/currencies.json:currencies[seeds].short
 msgid "SEEDS"
@@ -8851,6 +8877,8 @@ msgid ""
 "For planting. The compost press turns paper, card and spent blooms into "
 "seeds."
 msgstr ""
+"Pour planter. La presse à compost transforme papier, carton et fleurs fanées "
+"en graines."
 
 #: data/decor.json:types[path].name
 msgid "Stone Path"
@@ -10883,7 +10911,8 @@ msgid "Crumb Bag"
 msgstr ""
 
 #: data/events.json:trinkets[crumb_bag].desc
-msgid "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
+msgid ""
+"A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
 msgstr ""
 
 #: data/events.json:trinkets[pic_cat].name
@@ -12065,7 +12094,7 @@ msgstr "Place une décoration (H)"
 
 #: data/goals.json:goals[late_heirloom_1].text
 msgid "Unlock an Heirloom"
-msgstr ""
+msgstr "Débloque un héritage"
 
 #: data/goals.json:goals[late_garden_10].text
 msgid "Place 10 decorations"
@@ -14365,6 +14394,9 @@ msgid ""
 "Shredder drums and a little smelter. Bales go in and never come back: out "
 "come parts and clean building stock. Every bale burnt clean helps the sky."
 msgstr ""
+"Des tambours broyeurs et un petit four. Les balles entrent et ne reviennent "
+"jamais : il en sort des pièces et des matériaux propres. Chaque balle brûlée "
+"proprement aide le ciel."
 
 #: data/upgrades.json:upgrades[baler].name
 msgid "Baler"
@@ -14486,6 +14518,8 @@ msgstr "Rendement du recycleur"
 #: data/upgrades.json:upgrades[recycler_yield].desc
 msgid "Sharper shredder teeth and a hotter smelter. More parts per bale."
 msgstr ""
+"Des dents de broyeur plus tranchantes et un four plus chaud. Plus de pièces "
+"par balle."
 
 #: data/upgrades.json:upgrades[laser_reach].name
 msgid "Laser Reach"
@@ -16561,6 +16595,8 @@ msgid ""
 "Heirlooms, a whole map of worlds. Verdance stays green; we just take what we "
 "learned somewhere new."
 msgstr ""
+"Des héritages, toute une carte de mondes. Verdance reste vert ; on emporte "
+"juste ce qu'on a appris ailleurs."
 
 #: data/wren_lines.json:new_world
 msgid "...new ground... new junk..."
@@ -17130,6 +17166,7 @@ msgstr ""
 #: systems/cradle_mode.gd:296
 msgid "Unlocks with Ark milestones (next: %s, at %d restoration)"
 msgstr ""
+"Se débloque avec les jalons de l'Arche (prochain : %s, à %d de restauration)"
 
 #: ui/hud.gd:286
 msgid "WREN SIGNAL   %d%%"
@@ -17356,3 +17393,495 @@ msgid ""
 "%s\n"
 "Charted. No landing yet."
 msgstr ""
+
+#: systems/lumi_style.gd:400
+msgid "Unlock the %s design"
+msgstr "Débloquez le design %s"
+
+#: systems/lumi_style.gd:402
+msgid "Reach Lumi Level %d"
+msgstr "Atteignez le niveau Lumi %d"
+
+#: systems/lumi_style.gd:405
+msgid "Achievement: %s"
+msgstr "Succès : %s"
+
+#: systems/lumi_style.gd:409
+msgid "Buy for %s"
+msgstr "Acheter pour %s"
+
+#: ui/cosmetics_panel.gd:48
+msgid "Character Builder"
+msgstr "Éditeur de personnage"
+
+#: ui/cosmetics_panel.gd:177
+msgid "Wearing a custom look with this bonus"
+msgstr "Look perso avec ce bonus"
+
+#: ui/lumi_builder.gd:111
+msgid "CHARACTER BUILDER"
+msgstr "ÉDITEUR DE PERSONNAGE"
+
+#: ui/lumi_builder.gd:146
+msgid "Drag to turn  ·  Wheel to zoom"
+msgstr "Glisser pour tourner  ·  Molette pour zoomer"
+
+#: ui/lumi_builder.gd:183
+msgid "Randomize"
+msgstr "Aléatoire"
+
+#: ui/lumi_builder.gd:184
+msgid "Reset to preset"
+msgstr "Revenir au modèle"
+
+#: ui/lumi_builder.gd:185
+msgid "Test laser"
+msgstr "Tester le laser"
+
+#: ui/lumi_builder.gd:190
+msgid "Done"
+msgstr "Terminé"
+
+#: ui/lumi_builder.gd:190
+msgid "Wear look"
+msgstr "Porter ce look"
+
+#: ui/lumi_builder.gd:206 ui/lumi_builder.gd:318
+msgid "Presets"
+msgstr "Modèles"
+
+#: ui/lumi_builder.gd:217
+msgid "Saved"
+msgstr "Enregistrés"
+
+#: ui/lumi_builder.gd:221 ui/lumi_builder.gd:322
+msgid "Saved looks"
+msgstr "Looks enregistrés"
+
+#: ui/lumi_builder.gd:371
+msgid "A design's full look. Every slot can be changed afterwards."
+msgstr ""
+"Le look complet d'un design. Chaque emplacement peut être modifié ensuite."
+
+#: ui/lumi_builder.gd:391
+msgid "Custom colour"
+msgstr "Couleur perso"
+
+#: ui/lumi_builder.gd:436 data/style_parts.json:advanced.name
+msgid "Advanced colour picker"
+msgstr "Sélecteur de couleur avancé"
+
+#: ui/lumi_builder.gd:446
+msgid "Advanced (hue, saturation, brightness)"
+msgstr "Avancé (teinte, saturation, luminosité)"
+
+#: ui/lumi_builder.gd:455
+msgid "Hue"
+msgstr "Teinte"
+
+#: ui/lumi_builder.gd:455
+msgid "Brightness"
+msgstr "Luminosité"
+
+#: ui/lumi_builder.gd:492
+msgid "Equipped"
+msgstr "Équipé"
+
+#: ui/lumi_builder.gd:508
+msgid ""
+"How weathered the paint looks: fresh from the ark, or three hundred years of "
+"dust."
+msgstr ""
+"L'usure de la peinture : tout juste sortie de l'arche, ou trois cents ans de "
+"poussière."
+
+#: ui/lumi_builder.gd:511
+msgid "Fresh"
+msgstr "Neuf"
+
+#: ui/lumi_builder.gd:520
+msgid "Weathered"
+msgstr "Usé"
+
+#: ui/lumi_builder.gd:526
+msgid "A custom look can use the bonus of any design you have unlocked."
+msgstr ""
+"Un look perso peut utiliser le bonus de n'importe quel design débloqué."
+
+#: ui/lumi_builder.gd:550
+msgid "Keep up to %d looks. Load one to edit it, then press Done to wear it."
+msgstr ""
+"Gardez jusqu'à %d looks. Chargez-en un pour le modifier, puis Terminé pour "
+"le porter."
+
+#: ui/lumi_builder.gd:555 ui/lumi_builder.gd:579
+msgid "Look %d"
+msgstr "Look %d"
+
+#: ui/lumi_builder.gd:563
+msgid "Empty"
+msgstr "Vide"
+
+#: ui/lumi_builder.gd:576
+msgid "Save here"
+msgstr "Enregistrer ici"
+
+#: ui/lumi_builder.gd:646
+msgid "Unsaved changes"
+msgstr "Modifications non enregistrées"
+
+#: ui/lumi_builder.gd:662
+msgid "Part of this look is still locked."
+msgstr "Une partie de ce look est encore verrouillée."
+
+#: data/style_parts.json:slots[paint].name
+msgid "Paint"
+msgstr "Peinture"
+
+#: data/style_parts.json:slots[trim].name
+msgid "Trim"
+msgstr "Liserés"
+
+#: data/style_parts.json:slots[accent].name
+msgid "Accent"
+msgstr "Accent"
+
+#: data/style_parts.json:slots[side].name
+msgid "Side modules"
+msgstr "Modules latéraux"
+
+#: data/style_parts.json:slots[wear].name
+msgid "Wear"
+msgstr "Usure"
+
+#: data/style_parts.json:slots[pattern].name
+msgid "Pattern"
+msgstr "Motif"
+
+#: data/style_parts.json:slots[eyes].name
+msgid "Eye colour"
+msgstr "Couleur des yeux"
+
+#: data/style_parts.json:slots[glow].name
+msgid "Light strips"
+msgstr "Bandes lumineuses"
+
+#: data/style_parts.json:slots[head].name
+msgid "Head piece"
+msgstr "Couvre-chef"
+
+#: data/style_parts.json:slots[chest].name
+msgid "Chest icon"
+msgstr "Icône de poitrine"
+
+#: data/style_parts.json:slots[shoulders].name
+msgid "Shoulders"
+msgstr "Épaules"
+
+#: data/style_parts.json:slots[held].name
+msgid "Held item"
+msgstr "Objet tenu"
+
+#: data/style_parts.json:slots[companion].name
+msgid "Companion"
+msgstr "Compagnon"
+
+#: data/style_parts.json:slots[hover].name
+msgid "Hover glow"
+msgstr "Halo de lévitation"
+
+#: data/style_parts.json:slots[laser].name
+msgid "Pickup laser"
+msgstr "Laser de collecte"
+
+#: data/style_parts.json:slots[bonus].name
+msgid "Bonus"
+msgstr "Bonus"
+
+#: data/style_parts.json:options.pattern[plain].name
+msgid "Plain"
+msgstr "Uni"
+
+#: data/style_parts.json:options.pattern[stripes].name
+msgid "Hazard stripes"
+msgstr "Bandes de danger"
+
+#: data/style_parts.json:options.pattern[moss].name
+msgid "Moss patches"
+msgstr "Plaques de mousse"
+
+#: data/style_parts.json:options.eye_shape[crescent].name
+msgid "Crescent"
+msgstr "Croissant"
+
+#: data/style_parts.json:options.eye_shape[round].name
+msgid "Round"
+msgstr "Rond"
+
+#: data/style_parts.json:options.eye_shape[happy].name
+msgid "Happy arcs"
+msgstr "Arcs joyeux"
+
+#: data/style_parts.json:options.eye_shape[bar].name
+msgid "Visor bar"
+msgstr "Barre de visière"
+
+#: data/style_parts.json:options.eye_shape[heart].name
+msgid "Hearts"
+msgstr "Cœurs"
+
+#: data/style_parts.json:options.eye_shape[heart].unlock.cond.unit
+#: data/style_parts.json:swatches[seaglass].unlock.cond.unit
+#: data/style_parts.json:swatches[coral].unlock.cond.unit
+msgid "finds"
+msgstr "trouvailles"
+
+#: data/style_parts.json:options.eye_shape[heart].unlock.text
+msgid "Find 8 Collection trinkets"
+msgstr "Trouvez 8 bibelots de la Collection"
+
+#: data/style_parts.json:options.head[none].name
+#: data/style_parts.json:options.shoulders[none].name
+#: data/style_parts.json:options.held[none].name
+#: data/style_parts.json:options.companion[none].name
+msgid "None"
+msgstr "Aucun"
+
+#: data/style_parts.json:options.head[fin].name
+msgid "Fin"
+msgstr "Aileron"
+
+#: data/style_parts.json:options.head[antenna].name
+msgid "Antenna"
+msgstr "Antenne"
+
+#: data/style_parts.json:options.head[antenna].unlock.cond.unit
+#: data/style_parts.json:swatches[mint].unlock.cond.unit
+msgid "hub level"
+msgstr "niveau de base"
+
+#: data/style_parts.json:options.head[antenna].unlock.text
+msgid "Upgrade a hub to level 2"
+msgstr "Améliorez une base au niveau 2"
+
+#: data/style_parts.json:options.head[sprout].name
+msgid "Sprout leaf"
+msgstr "Pousse"
+
+#: data/style_parts.json:options.head[catears].name
+msgid "Cat ears"
+msgstr "Oreilles de chat"
+
+#: data/style_parts.json:options.head[wings].name
+msgid "Wing fins"
+msgstr "Ailerons-ailes"
+
+#: data/style_parts.json:options.head[halo].name
+msgid "Halo"
+msgstr "Auréole"
+
+#: data/style_parts.json:options.chest[recycle].name
+msgid "Recycle"
+msgstr "Recyclage"
+
+#: data/style_parts.json:options.chest[leaf].name
+msgid "Leaf"
+msgstr "Feuille"
+
+#: data/style_parts.json:options.chest[cross].name
+msgid "Medic cross"
+msgstr "Croix médicale"
+
+#: data/style_parts.json:options.chest[heart].name
+msgid "Heart"
+msgstr "Cœur"
+
+#: data/style_parts.json:options.shoulders[pads].name
+msgid "Shoulder pads"
+msgstr "Épaulières"
+
+#: data/style_parts.json:options.held[gear].name
+msgid "Spare gear"
+msgstr "Engrenage de rechange"
+
+#: data/style_parts.json:options.held[medkit].name
+msgid "Med kit"
+msgstr "Trousse de soins"
+
+#: data/style_parts.json:options.held[toolbox].name
+msgid "Toolbox"
+msgstr "Boîte à outils"
+
+#: data/style_parts.json:options.held[watering_can].name
+msgid "Watering can"
+msgstr "Arrosoir"
+
+#: data/style_parts.json:options.held[holo].name
+msgid "Holo screen"
+msgstr "Écran holo"
+
+#: data/style_parts.json:options.companion[butterfly].name
+msgid "Butterfly"
+msgstr "Papillon"
+
+#: data/style_parts.json:options.companion[firefly].unlock.cond.unit
+#: data/style_parts.json:swatches[royal].unlock.cond.unit
+#: data/style_parts.json:swatches[lilac].unlock.cond.unit
+msgid "requests"
+msgstr "demandes"
+
+#: data/style_parts.json:options.companion[firefly].unlock.text
+msgid "Finish 3 Requests"
+msgstr "Terminez 3 demandes"
+
+#: data/style_parts.json:options.companion[drone].name
+msgid "Tiny drone"
+msgstr "Mini-drone"
+
+#: data/style_parts.json:swatches[pearl].name
+msgid "Pearl"
+msgstr "Nacre"
+
+#: data/style_parts.json:swatches[white].name
+msgid "Chalk"
+msgstr "Craie"
+
+#: data/style_parts.json:swatches[graphite].name
+msgid "Graphite"
+msgstr "Graphite"
+
+#: data/style_parts.json:swatches[slate].name
+msgid "Slate"
+msgstr "Ardoise"
+
+#: data/style_parts.json:swatches[cyan].name
+msgid "Cyan"
+msgstr "Cyan"
+
+#: data/style_parts.json:swatches[orange].name
+msgid "Orange"
+msgstr "Orange"
+
+#: data/style_parts.json:swatches[sky].name
+msgid "Sky"
+msgstr "Ciel"
+
+#: data/style_parts.json:swatches[mint].name
+msgid "Mint"
+msgstr "Menthe"
+
+#: data/style_parts.json:swatches[mint].unlock.text
+msgid "Upgrade a hub to level 3"
+msgstr "Améliorez une base au niveau 3"
+
+#: data/style_parts.json:swatches[hazard].name
+msgid "Hazard yellow"
+msgstr "Jaune danger"
+
+#: data/style_parts.json:swatches[soot].name
+msgid "Soot"
+msgstr "Suie"
+
+#: data/style_parts.json:swatches[amber].name
+msgid "Amber"
+msgstr "Ambre"
+
+#: data/style_parts.json:swatches[olive].name
+msgid "Olive"
+msgstr "Olive"
+
+#: data/style_parts.json:swatches[bark].name
+msgid "Bark"
+msgstr "Écorce"
+
+#: data/style_parts.json:swatches[leaf].name
+msgid "Leaf green"
+msgstr "Vert feuille"
+
+#: data/style_parts.json:swatches[honey].name
+msgid "Honey"
+msgstr "Miel"
+
+#: data/style_parts.json:swatches[cherry].name
+msgid "Cherry"
+msgstr "Cerise"
+
+#: data/style_parts.json:swatches[pink].name
+msgid "Pink"
+msgstr "Rose"
+
+#: data/style_parts.json:swatches[cream].name
+msgid "Cream"
+msgstr "Crème"
+
+#: data/style_parts.json:swatches[gunmetal].name
+msgid "Gunmetal"
+msgstr "Gris canon"
+
+#: data/style_parts.json:swatches[ink].name
+msgid "Ink"
+msgstr "Encre"
+
+#: data/style_parts.json:swatches[violet].name
+msgid "Violet"
+msgstr "Violet"
+
+#: data/style_parts.json:swatches[ivory].name
+msgid "Ivory"
+msgstr "Ivoire"
+
+#: data/style_parts.json:swatches[sunset].name
+msgid "Sunset"
+msgstr "Couchant"
+
+#: data/style_parts.json:swatches[seaglass].name
+msgid "Sea glass"
+msgstr "Verre de mer"
+
+#: data/style_parts.json:swatches[seaglass].unlock.text
+msgid "Find 4 Collection trinkets"
+msgstr "Trouvez 4 bibelots de la Collection"
+
+#: data/style_parts.json:swatches[coral].name
+msgid "Coral"
+msgstr "Corail"
+
+#: data/style_parts.json:swatches[coral].unlock.text
+msgid "Find 12 Collection trinkets"
+msgstr "Trouvez 12 bibelots de la Collection"
+
+#: data/style_parts.json:swatches[royal].name
+msgid "Royal blue"
+msgstr "Bleu roi"
+
+#: data/style_parts.json:swatches[royal].unlock.text
+msgid "Finish 5 Requests"
+msgstr "Terminez 5 demandes"
+
+#: data/style_parts.json:swatches[lilac].name
+msgid "Lilac"
+msgstr "Lilas"
+
+#: data/style_parts.json:swatches[lilac].unlock.text
+msgid "Finish 15 Requests"
+msgstr "Terminez 15 demandes"
+
+#: data/style_parts.json:swatches[gold].name
+msgid "Gold"
+msgstr "Or"
+
+#: data/style_parts.json:swatches[bloom].name
+msgid "Bloom green"
+msgstr "Vert floraison"
+
+#: data/style_parts.json:swatches[midnight].name
+msgid "Midnight"
+msgstr "Minuit"
+
+#: data/style_parts.json:swatches[copper].name
+msgid "Copper"
+msgstr "Cuivre"
+
+#: data/style_parts.json:swatches[rosegold].name
+msgid "Rose gold"
+msgstr "Or rose"

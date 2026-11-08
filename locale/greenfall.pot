@@ -15961,3 +15961,489 @@ msgstr ""
 msgid ""
 "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
 msgstr ""
+
+#: systems/lumi_style.gd:400
+msgid "Unlock the %s design"
+msgstr ""
+
+#: systems/lumi_style.gd:402
+msgid "Reach Lumi Level %d"
+msgstr ""
+
+#: systems/lumi_style.gd:405
+msgid "Achievement: %s"
+msgstr ""
+
+#: systems/lumi_style.gd:409
+msgid "Buy for %s"
+msgstr ""
+
+#: ui/cosmetics_panel.gd:48
+msgid "Character Builder"
+msgstr ""
+
+#: ui/cosmetics_panel.gd:177
+msgid "Wearing a custom look with this bonus"
+msgstr ""
+
+#: ui/lumi_builder.gd:111
+msgid "CHARACTER BUILDER"
+msgstr ""
+
+#: ui/lumi_builder.gd:146
+msgid "Drag to turn  ·  Wheel to zoom"
+msgstr ""
+
+#: ui/lumi_builder.gd:183
+msgid "Randomize"
+msgstr ""
+
+#: ui/lumi_builder.gd:184
+msgid "Reset to preset"
+msgstr ""
+
+#: ui/lumi_builder.gd:185
+msgid "Test laser"
+msgstr ""
+
+#: ui/lumi_builder.gd:190
+msgid "Done"
+msgstr ""
+
+#: ui/lumi_builder.gd:190
+msgid "Wear look"
+msgstr ""
+
+#: ui/lumi_builder.gd:206 ui/lumi_builder.gd:318
+msgid "Presets"
+msgstr ""
+
+#: ui/lumi_builder.gd:217
+msgid "Saved"
+msgstr ""
+
+#: ui/lumi_builder.gd:221 ui/lumi_builder.gd:322
+msgid "Saved looks"
+msgstr ""
+
+#: ui/lumi_builder.gd:371
+msgid "A design's full look. Every slot can be changed afterwards."
+msgstr ""
+
+#: ui/lumi_builder.gd:391
+msgid "Custom colour"
+msgstr ""
+
+#: ui/lumi_builder.gd:436 data/style_parts.json:advanced.name
+msgid "Advanced colour picker"
+msgstr ""
+
+#: ui/lumi_builder.gd:446
+msgid "Advanced (hue, saturation, brightness)"
+msgstr ""
+
+#: ui/lumi_builder.gd:455
+msgid "Hue"
+msgstr ""
+
+#: ui/lumi_builder.gd:455
+msgid "Brightness"
+msgstr ""
+
+#: ui/lumi_builder.gd:492
+msgid "Equipped"
+msgstr ""
+
+#: ui/lumi_builder.gd:508
+msgid ""
+"How weathered the paint looks: fresh from the ark, or three hundred years of "
+"dust."
+msgstr ""
+
+#: ui/lumi_builder.gd:511
+msgid "Fresh"
+msgstr ""
+
+#: ui/lumi_builder.gd:520
+msgid "Weathered"
+msgstr ""
+
+#: ui/lumi_builder.gd:526
+msgid "A custom look can use the bonus of any design you have unlocked."
+msgstr ""
+
+#: ui/lumi_builder.gd:550
+msgid "Keep up to %d looks. Load one to edit it, then press Done to wear it."
+msgstr ""
+
+#: ui/lumi_builder.gd:555 ui/lumi_builder.gd:579
+msgid "Look %d"
+msgstr ""
+
+#: ui/lumi_builder.gd:563
+msgid "Empty"
+msgstr ""
+
+#: ui/lumi_builder.gd:576
+msgid "Save here"
+msgstr ""
+
+#: ui/lumi_builder.gd:646
+msgid "Unsaved changes"
+msgstr ""
+
+#: ui/lumi_builder.gd:662
+msgid "Part of this look is still locked."
+msgstr ""
+
+#: data/style_parts.json:slots[paint].name
+msgid "Paint"
+msgstr ""
+
+#: data/style_parts.json:slots[trim].name
+msgid "Trim"
+msgstr ""
+
+#: data/style_parts.json:slots[accent].name
+msgid "Accent"
+msgstr ""
+
+#: data/style_parts.json:slots[side].name
+msgid "Side modules"
+msgstr ""
+
+#: data/style_parts.json:slots[wear].name
+msgid "Wear"
+msgstr ""
+
+#: data/style_parts.json:slots[pattern].name
+msgid "Pattern"
+msgstr ""
+
+#: data/style_parts.json:slots[eyes].name
+msgid "Eye colour"
+msgstr ""
+
+#: data/style_parts.json:slots[glow].name
+msgid "Light strips"
+msgstr ""
+
+#: data/style_parts.json:slots[head].name
+msgid "Head piece"
+msgstr ""
+
+#: data/style_parts.json:slots[chest].name
+msgid "Chest icon"
+msgstr ""
+
+#: data/style_parts.json:slots[shoulders].name
+msgid "Shoulders"
+msgstr ""
+
+#: data/style_parts.json:slots[held].name
+msgid "Held item"
+msgstr ""
+
+#: data/style_parts.json:slots[companion].name
+msgid "Companion"
+msgstr ""
+
+#: data/style_parts.json:slots[hover].name
+msgid "Hover glow"
+msgstr ""
+
+#: data/style_parts.json:slots[laser].name
+msgid "Pickup laser"
+msgstr ""
+
+#: data/style_parts.json:slots[bonus].name
+msgid "Bonus"
+msgstr ""
+
+#: data/style_parts.json:options.pattern[plain].name
+msgid "Plain"
+msgstr ""
+
+#: data/style_parts.json:options.pattern[stripes].name
+msgid "Hazard stripes"
+msgstr ""
+
+#: data/style_parts.json:options.pattern[moss].name
+msgid "Moss patches"
+msgstr ""
+
+#: data/style_parts.json:options.eye_shape[crescent].name
+msgid "Crescent"
+msgstr ""
+
+#: data/style_parts.json:options.eye_shape[round].name
+msgid "Round"
+msgstr ""
+
+#: data/style_parts.json:options.eye_shape[happy].name
+msgid "Happy arcs"
+msgstr ""
+
+#: data/style_parts.json:options.eye_shape[bar].name
+msgid "Visor bar"
+msgstr ""
+
+#: data/style_parts.json:options.eye_shape[heart].name
+msgid "Hearts"
+msgstr ""
+
+#: data/style_parts.json:options.eye_shape[heart].unlock.cond.unit
+#: data/style_parts.json:swatches[seaglass].unlock.cond.unit
+#: data/style_parts.json:swatches[coral].unlock.cond.unit
+msgid "finds"
+msgstr ""
+
+#: data/style_parts.json:options.eye_shape[heart].unlock.text
+msgid "Find 8 Collection trinkets"
+msgstr ""
+
+#: data/style_parts.json:options.head[none].name
+#: data/style_parts.json:options.shoulders[none].name
+#: data/style_parts.json:options.held[none].name
+#: data/style_parts.json:options.companion[none].name
+msgid "None"
+msgstr ""
+
+#: data/style_parts.json:options.head[fin].name
+msgid "Fin"
+msgstr ""
+
+#: data/style_parts.json:options.head[antenna].name
+msgid "Antenna"
+msgstr ""
+
+#: data/style_parts.json:options.head[antenna].unlock.cond.unit
+#: data/style_parts.json:swatches[mint].unlock.cond.unit
+msgid "hub level"
+msgstr ""
+
+#: data/style_parts.json:options.head[antenna].unlock.text
+msgid "Upgrade a hub to level 2"
+msgstr ""
+
+#: data/style_parts.json:options.head[sprout].name
+msgid "Sprout leaf"
+msgstr ""
+
+#: data/style_parts.json:options.head[catears].name
+msgid "Cat ears"
+msgstr ""
+
+#: data/style_parts.json:options.head[wings].name
+msgid "Wing fins"
+msgstr ""
+
+#: data/style_parts.json:options.head[halo].name
+msgid "Halo"
+msgstr ""
+
+#: data/style_parts.json:options.chest[recycle].name
+msgid "Recycle"
+msgstr ""
+
+#: data/style_parts.json:options.chest[leaf].name
+msgid "Leaf"
+msgstr ""
+
+#: data/style_parts.json:options.chest[cross].name
+msgid "Medic cross"
+msgstr ""
+
+#: data/style_parts.json:options.chest[heart].name
+msgid "Heart"
+msgstr ""
+
+#: data/style_parts.json:options.shoulders[pads].name
+msgid "Shoulder pads"
+msgstr ""
+
+#: data/style_parts.json:options.held[gear].name
+msgid "Spare gear"
+msgstr ""
+
+#: data/style_parts.json:options.held[medkit].name
+msgid "Med kit"
+msgstr ""
+
+#: data/style_parts.json:options.held[toolbox].name
+msgid "Toolbox"
+msgstr ""
+
+#: data/style_parts.json:options.held[watering_can].name
+msgid "Watering can"
+msgstr ""
+
+#: data/style_parts.json:options.held[holo].name
+msgid "Holo screen"
+msgstr ""
+
+#: data/style_parts.json:options.companion[butterfly].name
+msgid "Butterfly"
+msgstr ""
+
+#: data/style_parts.json:options.companion[firefly].unlock.cond.unit
+#: data/style_parts.json:swatches[royal].unlock.cond.unit
+#: data/style_parts.json:swatches[lilac].unlock.cond.unit
+msgid "requests"
+msgstr ""
+
+#: data/style_parts.json:options.companion[firefly].unlock.text
+msgid "Finish 3 Requests"
+msgstr ""
+
+#: data/style_parts.json:options.companion[drone].name
+msgid "Tiny drone"
+msgstr ""
+
+#: data/style_parts.json:swatches[pearl].name
+msgid "Pearl"
+msgstr ""
+
+#: data/style_parts.json:swatches[white].name
+msgid "Chalk"
+msgstr ""
+
+#: data/style_parts.json:swatches[graphite].name
+msgid "Graphite"
+msgstr ""
+
+#: data/style_parts.json:swatches[slate].name
+msgid "Slate"
+msgstr ""
+
+#: data/style_parts.json:swatches[cyan].name
+msgid "Cyan"
+msgstr ""
+
+#: data/style_parts.json:swatches[orange].name
+msgid "Orange"
+msgstr ""
+
+#: data/style_parts.json:swatches[sky].name
+msgid "Sky"
+msgstr ""
+
+#: data/style_parts.json:swatches[mint].name
+msgid "Mint"
+msgstr ""
+
+#: data/style_parts.json:swatches[mint].unlock.text
+msgid "Upgrade a hub to level 3"
+msgstr ""
+
+#: data/style_parts.json:swatches[hazard].name
+msgid "Hazard yellow"
+msgstr ""
+
+#: data/style_parts.json:swatches[soot].name
+msgid "Soot"
+msgstr ""
+
+#: data/style_parts.json:swatches[amber].name
+msgid "Amber"
+msgstr ""
+
+#: data/style_parts.json:swatches[olive].name
+msgid "Olive"
+msgstr ""
+
+#: data/style_parts.json:swatches[bark].name
+msgid "Bark"
+msgstr ""
+
+#: data/style_parts.json:swatches[leaf].name
+msgid "Leaf green"
+msgstr ""
+
+#: data/style_parts.json:swatches[honey].name
+msgid "Honey"
+msgstr ""
+
+#: data/style_parts.json:swatches[cherry].name
+msgid "Cherry"
+msgstr ""
+
+#: data/style_parts.json:swatches[pink].name
+msgid "Pink"
+msgstr ""
+
+#: data/style_parts.json:swatches[cream].name
+msgid "Cream"
+msgstr ""
+
+#: data/style_parts.json:swatches[gunmetal].name
+msgid "Gunmetal"
+msgstr ""
+
+#: data/style_parts.json:swatches[ink].name
+msgid "Ink"
+msgstr ""
+
+#: data/style_parts.json:swatches[violet].name
+msgid "Violet"
+msgstr ""
+
+#: data/style_parts.json:swatches[ivory].name
+msgid "Ivory"
+msgstr ""
+
+#: data/style_parts.json:swatches[sunset].name
+msgid "Sunset"
+msgstr ""
+
+#: data/style_parts.json:swatches[seaglass].name
+msgid "Sea glass"
+msgstr ""
+
+#: data/style_parts.json:swatches[seaglass].unlock.text
+msgid "Find 4 Collection trinkets"
+msgstr ""
+
+#: data/style_parts.json:swatches[coral].name
+msgid "Coral"
+msgstr ""
+
+#: data/style_parts.json:swatches[coral].unlock.text
+msgid "Find 12 Collection trinkets"
+msgstr ""
+
+#: data/style_parts.json:swatches[royal].name
+msgid "Royal blue"
+msgstr ""
+
+#: data/style_parts.json:swatches[royal].unlock.text
+msgid "Finish 5 Requests"
+msgstr ""
+
+#: data/style_parts.json:swatches[lilac].name
+msgid "Lilac"
+msgstr ""
+
+#: data/style_parts.json:swatches[lilac].unlock.text
+msgid "Finish 15 Requests"
+msgstr ""
+
+#: data/style_parts.json:swatches[gold].name
+msgid "Gold"
+msgstr ""
+
+#: data/style_parts.json:swatches[bloom].name
+msgid "Bloom green"
+msgstr ""
+
+#: data/style_parts.json:swatches[midnight].name
+msgid "Midnight"
+msgstr ""
+
+#: data/style_parts.json:swatches[copper].name
+msgid "Copper"
+msgstr ""
+
+#: data/style_parts.json:swatches[rosegold].name
+msgid "Rose gold"
+msgstr ""

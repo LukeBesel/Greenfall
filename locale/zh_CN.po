@@ -335,7 +335,7 @@ msgstr "先清理周围的废料（%d%% / %d%%）。"
 #: automation/outposts.gd:318 automation/outposts.gd:333
 #: automation/stations.gd:117
 msgid "Not enough cubes or parts."
-msgstr ""
+msgstr "方块或零件不足。"
 
 #: automation/outposts.gd:327
 msgid "Repair it first."
@@ -834,11 +834,13 @@ msgstr ""
 "堆肥压制机\n"
 "休眠中"
 
-#: plants/composter.gd:154
+#: plants/composter.gd:153
 msgid ""
 "COMPOST PRESS  Lv %d\n"
 "hopper %d%%  →  seeds"
 msgstr ""
+"堆肥压机  等级 %d\n"
+"料斗 %d%%  →  种子"
 
 #: plants/garden.gd:263
 msgid "A hex is fully restored. Something small is already living in it."
@@ -1072,9 +1074,9 @@ msgstr " 看起来%s。"
 msgid "Needs a %s Control Core"
 msgstr "需要%s控制核心"
 
-#: robots/fleet.gd:267
+#: robots/fleet.gd:264
 msgid "Not enough parts (scrap spares at Haggle's or run the recycler)"
-msgstr ""
+msgstr "零件不足（在 Haggle 那里拆掉多余零件，或开动回收炉）"
 
 #: robots/fleet.gd:287
 msgid "%s fleet upgraded to %s."
@@ -1914,7 +1916,7 @@ msgstr "WREN 追踪到了 Ledger 的中继站：在基地的%s。找找那个红
 
 #: story/ledger.gd:182
 msgid "Ledger: %s"
-msgstr ""
+msgstr "Ledger：%s"
 
 #. compass directions fill "%s of the hub" / "%s of you" ("north of you").
 #: story/ledger.gd:204
@@ -2246,7 +2248,7 @@ msgstr "Lumi 等级"
 
 #: systems/collection.gd:88 ui/upgrades_screen.gd:17
 msgid "Requests"
-msgstr ""
+msgstr "委托"
 
 #: systems/collection.gd:89
 msgid "Curio Capsules"
@@ -2254,7 +2256,7 @@ msgstr "奇物胶囊"
 
 #: systems/contracts.gd:230
 msgid "%s (Builder)"
-msgstr ""
+msgstr "%s（组装）"
 
 #: systems/contracts.gd:232
 msgid "Builder Crate"
@@ -2266,31 +2268,31 @@ msgstr "奇物胶囊"
 
 #: systems/contracts.gd:236
 msgid "%s robot part"
-msgstr ""
+msgstr "%s 机器人零件"
 
 #: systems/contracts.gd:282
 msgid "Request complete: %s. Claim it at the workbench."
-msgstr ""
+msgstr "委托完成：%s。到工作台领取。"
 
 #: systems/contracts.gd:288
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
-msgstr ""
+msgstr "一个委托超时了。没关系，很快会有新的。"
 
 #: systems/contracts.gd:368
 msgid "Request done: %s."
-msgstr ""
+msgstr "委托已领取：%s。"
 
 #: systems/contracts.gd:410
 msgid "Requests reward: %s. Equip it on the Requests tab."
-msgstr ""
+msgstr "委托奖励：%s。在委托标签页装备。"
 
 #: systems/contracts.gd:413
 msgid "Requests reward: %s. Fit it in the Builder tab."
-msgstr ""
+msgstr "委托奖励：%s。在组装标签页安装。"
 
 #: systems/contracts.gd:417 systems/contracts.gd:427
 msgid "Requests reward: %s."
-msgstr ""
+msgstr "委托奖励：%s。"
 
 #: systems/contracts.gd:435
 msgid "Unknown item"
@@ -2298,15 +2300,15 @@ msgstr "未知物品"
 
 #: systems/contracts.gd:448
 msgid "Unlocks after %d requests"
-msgstr ""
+msgstr "完成 %d 个委托后解锁"
 
 #: systems/contracts.gd:449
 msgid "Locked"
-msgstr ""
+msgstr "未解锁"
 
-#: systems/cradle_mode.gd:253
+#: systems/cradle_mode.gd:241
 msgid "Heirloom unlocked: %s, level %d. It travels with Lumi to every world."
-msgstr ""
+msgstr "传家宝已解锁：%s，等级 %d。它会随 Lumi 去往每个世界。"
 
 #: systems/cradle_mode.gd:303 systems/cradle_mode.gd:309
 msgid "Fully grown"
@@ -2614,12 +2616,14 @@ msgstr "{robot} {stat} +{amount}"
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "Cradle号回家之后，方舟舰桥才会开放。"
 
-#: systems/late_director.gd:129
+#: systems/late_director.gd:128
 msgid ""
 "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark "
 "Bridge to see them and the Heirlooms your restoration has unlocked, or seed "
 "a new world. Garden Mode (H) is open too."
 msgstr ""
+"摇篮模式：方舟的种子库里存着给其他世界的种子。暂停 > 方舟舰桥可以查看它们和你"
+"的复原度解锁的传家宝，或者播种一个新世界。花园模式（H）也已开放。"
 
 #: systems/profile_slots.gd:48 ui/world_picker.gd:138
 msgid "Profile %d"
@@ -2728,7 +2732,7 @@ msgstr "铲子速度"
 
 #: systems/research.gd:383
 msgid "field-note cubes"
-msgstr ""
+msgstr "野外笔记方块"
 
 #: systems/research.gd:383
 msgid "research speed"
@@ -2820,11 +2824,11 @@ msgstr "需要%s%s"
 
 #: systems/robot_builder.gd:372
 msgid "Haggle's stall · %s"
-msgstr ""
+msgstr "Haggle 的摊位 · %s"
 
 #: systems/robot_builder.gd:374
 msgid "Requests reward · %d requests"
-msgstr ""
+msgstr "委托奖励 · %d 个委托"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
 #: systems/robot_builder.gd:384 ui/main_menu.gd:452 ui/profile_picker.gd:133
@@ -2841,7 +2845,7 @@ msgstr "Haggle 的摊位现在没货"
 
 #: systems/robot_builder.gd:459
 msgid "Requests reward (%d of %d requests)"
-msgstr ""
+msgstr "委托奖励（%d / %d 个委托）"
 
 #: systems/robot_builder.gd:550
 msgid ""
@@ -2853,7 +2857,7 @@ msgstr ""
 
 #: systems/robot_builder.gd:560
 msgid "A Maker Fragment was tucked inside it: +%d parts."
-msgstr ""
+msgstr "里面藏着一块创造者碎片：+%d 零件。"
 
 #: systems/robot_builder.gd:592
 msgid "%s spotted something green and lucky: a Lucky Clover!"
@@ -2861,7 +2865,7 @@ msgstr "%s 发现了一样又绿又幸运的东西：幸运草！"
 
 #: systems/robot_builder.gd:595
 msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
-msgstr ""
+msgstr "%s 在垃圾里发现了一块闪光的创造者碎片：+%d 零件。"
 
 #: systems/robot_builder.gd:603
 msgid "%s spotted a %s."
@@ -3122,7 +3126,7 @@ msgstr ""
 
 #: ui/ark_bridge.gd:107
 msgid "Restoration %d"
-msgstr ""
+msgstr "复原度 %d"
 
 #: ui/ark_bridge.gd:110
 msgid "+%d banked from %s"
@@ -3218,9 +3222,9 @@ msgstr "完整"
 msgid "Take  (%d picks)"
 msgstr "领取（%d 次选择）"
 
-#: ui/ark_bridge.gd:307
+#: ui/ark_bridge.gd:303
 msgid "Milestone"
-msgstr ""
+msgstr "里程碑"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18
@@ -3372,9 +3376,9 @@ msgstr "%s队伍预设：%s"
 msgid "none saved"
 msgstr "未保存"
 
-#: ui/builder_panel.gd:405
+#: ui/builder_panel.gd:393
 msgid "Builder bin %d   ·   Parts %s"
-msgstr ""
+msgstr "组装零件箱 %d   ·   零件 %s"
 
 #: ui/builder_panel.gd:409
 msgid "Haggle's stall: %s  (new stock in %d min)"
@@ -3511,13 +3515,13 @@ msgid ""
 "(P)."
 msgstr "提示：大地恢复后，动物就会回来。用拍照模式（P）给它们拍照吧。"
 
-#: ui/codex_screen.gd:565
+#: ui/codex_screen.gd:553
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
-msgstr ""
+msgstr "提示：完成 %d 个委托（工作台的委托标签页）。"
 
-#: ui/codex_screen.gd:566
+#: ui/codex_screen.gd:554
 msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
-msgstr ""
+msgstr "提示：奇物胶囊在工作台委托的奖励轨道上。"
 
 #: ui/codex_screen.gd:567
 msgid "Hint: keep scooping without stopping until the streak meter is full."
@@ -3624,9 +3628,9 @@ msgstr "进度"
 msgid "Upgrades bought"
 msgstr "购买的升级"
 
-#: ui/codex_screen.gd:706
+#: ui/codex_screen.gd:694
 msgid "Field notes logged"
-msgstr ""
+msgstr "已记录的野外笔记"
 
 #: ui/codex_screen.gd:707
 msgid "Research done"
@@ -3760,7 +3764,7 @@ msgstr "升级 > %s"
 
 #: ui/command_view.gd:780
 msgid "%s cubes, %s parts, %s Control Core. %s"
-msgstr ""
+msgstr "%s 方块，%s 零件，%s 控制核心。%s"
 
 #: ui/command_view.gd:789
 msgid "  parts %d/%d · %s"
@@ -3833,25 +3837,25 @@ msgstr "%d / %d 个六角格已清理"
 
 #: ui/contracts_panel.gd:27
 msgid "REQUESTS"
-msgstr ""
+msgstr "委托"
 
 #: ui/contracts_panel.gd:30
 msgid ""
 "Short optional jobs and world events. Each pays cubes or parts; nothing is "
 "lost if one runs out."
-msgstr ""
+msgstr "简短的可选任务和世界事件。每个都支付方块或零件；超时也不会损失什么。"
 
 #: ui/contracts_panel.gd:47
 msgid "REWARD TRACK"
-msgstr ""
+msgstr "奖励轨道"
 
 #: ui/contracts_panel.gd:86
 msgid "%d done"
-msgstr ""
+msgstr "已完成 %d"
 
 #: ui/contracts_panel.gd:89
 msgid "LIVE  ·  %s  ·  %s  ·  %s left"
-msgstr ""
+msgstr "进行中  ·  %s  ·  %s  ·  剩余 %s"
 
 #: ui/contracts_panel.gd:92
 msgid "Collection  %d / %d   ·   see the Codex (K)"
@@ -3859,11 +3863,11 @@ msgstr "收藏  %d / %d   ·   见图鉴（K）"
 
 #: ui/contracts_panel.gd:140
 msgid "A new request is being posted."
-msgstr ""
+msgstr "正在发布新的委托。"
 
 #: ui/contracts_panel.gd:151
 msgid "Pays  %s"
-msgstr ""
+msgstr "报酬  %s"
 
 #: ui/contracts_panel.gd:173
 msgid "Accept  (%s)"
@@ -3879,7 +3883,7 @@ msgstr "进行中"
 
 #: ui/contracts_panel.gd:198
 msgid "Claim  %s"
-msgstr ""
+msgstr "领取  %s"
 
 #: ui/contracts_panel.gd:238
 msgid "Next posting in %s"
@@ -3895,11 +3899,11 @@ msgstr "剩余时间 %s"
 
 #: ui/contracts_panel.gd:251
 msgid "Finished. Claim it!"
-msgstr ""
+msgstr "完成了，去领取！"
 
 #: ui/contracts_panel.gd:275
 msgid "After %d requests"
-msgstr ""
+msgstr "完成 %d 个委托后"
 
 #: ui/contracts_panel.gd:277
 msgid "Equipped  (press to remove)"
@@ -3907,7 +3911,7 @@ msgstr "已装备（按下卸下）"
 
 #: ui/contracts_panel.gd:277
 msgid "Unlocked  ·  press to equip"
-msgstr ""
+msgstr "已解锁  ·  按下装备"
 
 #: ui/contracts_panel.gd:279 ui/cosmetics_panel.gd:129
 msgid "Unlocked"
@@ -4009,11 +4013,11 @@ msgstr "连击"
 
 #: ui/event_hud.gd:192
 msgid "REQUEST READY  ·  claim it at the workbench"
-msgstr ""
+msgstr "委托已就绪  ·  到工作台领取"
 
 #: ui/event_hud.gd:192
 msgid "%d REQUESTS READY  ·  claim them at the workbench"
-msgstr ""
+msgstr "%d 个委托已就绪  ·  到工作台领取"
 
 #: ui/extras_panel.gd:9
 msgid "Radio"
@@ -4369,9 +4373,9 @@ msgstr "建造信号干扰器"
 msgid " (have %s)"
 msgstr " （现有 %s）"
 
-#: ui/hub_panel.gd:101
+#: ui/hub_panel.gd:96
 msgid "Parts %s"
-msgstr ""
+msgstr "零件 %s"
 
 #: ui/hub_panel.gd:103
 msgid ""
@@ -5039,9 +5043,9 @@ msgstr ""
 msgid "RENAME PROFILE"
 msgstr ""
 
-#: ui/profile_picker.gd:252 ui/profile_picker.gd:269
+#: ui/lumi_builder.gd:189 ui/profile_picker.gd:252 ui/profile_picker.gd:269
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
 #: ui/profile_picker.gd:252
 msgid "Save"
@@ -5061,17 +5065,17 @@ msgstr "排队中  ·  %s"
 
 #: ui/research_node_card.gd:184 ui/research_panel.gd:203
 msgid "%s  ·  %s"
-msgstr ""
+msgstr "%s  ·  %s"
 
 #: ui/research_panel.gd:34 data/currencies.json:currencies[cubes].short
 msgid "CUBES"
-msgstr ""
+msgstr "方块"
 
 #: ui/research_panel.gd:41
 msgid ""
 "Research costs cubes and takes real time. It keeps going while you play or "
 "are away."
-msgstr ""
+msgstr "研究需要方块和真实时间。无论你在玩还是离开，它都会继续。"
 
 #: ui/research_panel.gd:60
 msgid "RESEARCHING"
@@ -5111,7 +5115,7 @@ msgstr "按下加入队列"
 
 #: ui/research_panel.gd:214
 msgid "%s cancelled. Cubes refunded."
-msgstr ""
+msgstr "%s 已取消。方块已退还。"
 
 #: ui/robot_card.gd:40 data/currencies.json:currencies[parts].short
 msgid "PARTS"
@@ -5155,7 +5159,7 @@ msgstr "下一级：%s  ·  x%.1f 工作速度  ·  %s 外观"
 
 #: ui/robot_card.gd:93
 msgid "Needs %s cubes, %s parts and a %s Control Core.  %s"
-msgstr ""
+msgstr "需要 %s 方块、%s 零件和一个%s控制核心。  %s"
 
 #: ui/robot_card.gd:95
 msgid "Upgrade fleet to %s"
@@ -5537,7 +5541,7 @@ msgstr "自动路线：%s"
 
 #: ui/stations_panel.gd:104
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s"
-msgstr ""
+msgstr "已回收草捆 %d   ·   已销毁垃圾 %s kg   ·   零件 %s"
 
 #: ui/system_map.gd:441 ui/system_map.gd:663
 msgid "you are here"
@@ -5819,7 +5823,7 @@ msgstr "“全是原装的。大部分吧。你的三个换我的一个，不问
 
 #: ui/trade_panel.gd:71
 msgid "Parts  %s      Robot parts in storage  %d"
-msgstr ""
+msgstr "零件  %s      库存机器人零件  %d"
 
 #: ui/trade_panel.gd:83
 msgid ""
@@ -5853,7 +5857,7 @@ msgstr "买磨损的  %s"
 
 #: ui/trade_panel.gd:112
 msgid "Scrap %d spare Rusty robot parts  ->  %s"
-msgstr ""
+msgstr "拆掉 %d 个多余的生锈机器人零件  ->  %s"
 
 #: ui/trade_panel.gd:122
 msgid "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab"
@@ -5868,6 +5872,8 @@ msgid ""
 "%s  (own %d)\n"
 "%s"
 msgstr ""
+"%s  （拥有 %d）\n"
+"%s"
 
 #: ui/trade_panel.gd:171
 msgid "Swap 3 spares"
@@ -6352,7 +6358,7 @@ msgstr "数据囤积者"
 
 #: data/achievements.json:achievements[data_500].desc
 msgid "Log 500 field notes."
-msgstr ""
+msgstr "记录 500 条野外笔记。"
 
 #: data/achievements.json:achievements[distance_1k].name
 msgid "Long Way Round"
@@ -6676,7 +6682,7 @@ msgstr "祖传之宝"
 
 #: data/achievements.json:achievements[late_heirloom_1].desc
 msgid "Unlock an Heirloom."
-msgstr ""
+msgstr "解锁一件传家宝。"
 
 #: data/achievements.json:achievements[late_heirloom_20].name
 msgid "Treasured"
@@ -6688,11 +6694,11 @@ msgstr "传家宝总等级达到 20。"
 
 #: data/achievements.json:achievements[late_starseeds_100].name
 msgid "World Mender"
-msgstr ""
+msgstr "世界修补者"
 
 #: data/achievements.json:achievements[late_starseeds_100].desc
 msgid "Reach 100 restoration across your worlds."
-msgstr ""
+msgstr "在你的所有世界中达到 100 复原度。"
 
 #: data/achievements.json:achievements[late_decor_1].name
 msgid "Home Touches"
@@ -8307,7 +8313,7 @@ msgstr "数据缓存"
 
 #: data/cradle.json:heirlooms[data_cache].desc
 msgid "Each new world starts with 600 extra cubes for research per level."
-msgstr ""
+msgstr "每个新世界每级额外带着 600 方块用于研究。"
 
 #: data/cradle.json:heirlooms[old_crew].name
 msgid "Old Crew"
@@ -8437,19 +8443,20 @@ msgstr "从南极到北极遍布旧工业：锈蚀之地与蔓延的城区。"
 
 #: data/currencies.json:currencies[cubes].name
 msgid "Cubes"
-msgstr ""
+msgstr "方块"
 
 #: data/currencies.json:currencies[cubes].desc
 msgid ""
 "The main money. Sell bales at the scale. Pays for upgrades, robots, base "
 "levels, research, rockets and decorations."
 msgstr ""
+"主要货币。在磅秤上卖草捆。用于升级、机器人、基地等级、研究、火箭和装饰。"
 
 #: data/currencies.json:currencies[parts].name
 #: data/hub.json:materials.metal.name data/hub.json:materials.plastic.name
 #: data/hub.json:materials.glass.name
 msgid "Parts"
-msgstr ""
+msgstr "零件"
 
 #: data/currencies.json:currencies[parts].desc
 msgid ""
@@ -8457,10 +8464,12 @@ msgid ""
 "scrap bin. Pays for robots, the Builder, base levels, stations, rocket "
 "stages and outpost repairs."
 msgstr ""
+"从垃圾、回收炉和 Haggle 的废料箱里回收的机器人零件和建材。用于机器人、组装、"
+"基地等级、设施、火箭级段和前哨维修。"
 
 #: data/currencies.json:currencies[seeds].name
 msgid "Seeds"
-msgstr ""
+msgstr "种子"
 
 #: data/currencies.json:currencies[seeds].short
 msgid "SEEDS"
@@ -8470,7 +8479,7 @@ msgstr "种子"
 msgid ""
 "For planting. The compost press turns paper, card and spent blooms into "
 "seeds."
-msgstr ""
+msgstr "用来种植。堆肥压机把纸、纸板和凋谢的花变成种子。"
 
 #: data/decor.json:types[path].name
 msgid "Stone Path"
@@ -11416,7 +11425,7 @@ msgstr "放置一件装饰（H）"
 
 #: data/goals.json:goals[late_heirloom_1].text
 msgid "Unlock an Heirloom"
-msgstr ""
+msgstr "解锁一件传家宝"
 
 #: data/goals.json:goals[late_garden_10].text
 msgid "Place 10 decorations"
@@ -13551,6 +13560,8 @@ msgid ""
 "Shredder drums and a little smelter. Bales go in and never come back: out "
 "come parts and clean building stock. Every bale burnt clean helps the sky."
 msgstr ""
+"粉碎滚筒和一座小熔炉。草捆进去就再也不会回来：出来的是零件和干净的建材。每烧"
+"干净一个草捆，天空就好一点。"
 
 #: data/upgrades.json:upgrades[baler].name
 msgid "Baler"
@@ -13668,7 +13679,7 @@ msgstr "回收炉产出"
 
 #: data/upgrades.json:upgrades[recycler_yield].desc
 msgid "Sharper shredder teeth and a hotter smelter. More parts per bale."
-msgstr ""
+msgstr "更锋利的粉碎齿和更热的熔炉。每个草捆产出更多零件。"
 
 #: data/upgrades.json:upgrades[laser_reach].name
 msgid "Laser Reach"
@@ -15418,7 +15429,7 @@ msgstr ""
 msgid ""
 "Heirlooms, a whole map of worlds. Verdance stays green; we just take what we "
 "learned somewhere new."
-msgstr ""
+msgstr "传家宝，一整张世界地图。Verdance 依然葱绿；我们只是把学到的带去别处。"
 
 #: data/wren_lines.json:new_world
 msgid "...new ground... new junk..."
@@ -15957,7 +15968,7 @@ msgstr "中继信号终于强到能收到摇篮号的旧工作单了。它们在
 
 #: systems/cradle_mode.gd:296
 msgid "Unlocks with Ark milestones (next: %s, at %d restoration)"
-msgstr ""
+msgstr "随方舟里程碑解锁（下一个：%s，需要复原度 %d）"
 
 #: ui/hud.gd:286
 msgid "WREN SIGNAL   %d%%"
@@ -16602,3 +16613,489 @@ msgstr ""
 msgid ""
 "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
 msgstr "更锋利的粉碎齿和更热的熔炉。每个捆包产出更多螺栓和建材。"
+
+#: systems/lumi_style.gd:400
+msgid "Unlock the %s design"
+msgstr "解锁%s外观"
+
+#: systems/lumi_style.gd:402
+msgid "Reach Lumi Level %d"
+msgstr "Lumi达到%d级"
+
+#: systems/lumi_style.gd:405
+msgid "Achievement: %s"
+msgstr "成就：%s"
+
+#: systems/lumi_style.gd:409
+msgid "Buy for %s"
+msgstr "花费%s购买"
+
+#: ui/cosmetics_panel.gd:48
+msgid "Character Builder"
+msgstr "角色编辑器"
+
+#: ui/cosmetics_panel.gd:177
+msgid "Wearing a custom look with this bonus"
+msgstr "正在使用带此加成的自定义外观"
+
+#: ui/lumi_builder.gd:111
+msgid "CHARACTER BUILDER"
+msgstr "角色编辑器"
+
+#: ui/lumi_builder.gd:146
+msgid "Drag to turn  ·  Wheel to zoom"
+msgstr "拖动旋转  ·  滚轮缩放"
+
+#: ui/lumi_builder.gd:183
+msgid "Randomize"
+msgstr "随机"
+
+#: ui/lumi_builder.gd:184
+msgid "Reset to preset"
+msgstr "恢复预设"
+
+#: ui/lumi_builder.gd:185
+msgid "Test laser"
+msgstr "测试激光"
+
+#: ui/lumi_builder.gd:190
+msgid "Done"
+msgstr "完成"
+
+#: ui/lumi_builder.gd:190
+msgid "Wear look"
+msgstr "穿上外观"
+
+#: ui/lumi_builder.gd:206 ui/lumi_builder.gd:318
+msgid "Presets"
+msgstr "预设"
+
+#: ui/lumi_builder.gd:217
+msgid "Saved"
+msgstr "已保存"
+
+#: ui/lumi_builder.gd:221 ui/lumi_builder.gd:322
+msgid "Saved looks"
+msgstr "已保存的外观"
+
+#: ui/lumi_builder.gd:371
+msgid "A design's full look. Every slot can be changed afterwards."
+msgstr "一套外观的完整造型。之后每个部位都可以修改。"
+
+#: ui/lumi_builder.gd:391
+msgid "Custom colour"
+msgstr "自定义颜色"
+
+#: ui/lumi_builder.gd:436 data/style_parts.json:advanced.name
+msgid "Advanced colour picker"
+msgstr "高级取色器"
+
+#: ui/lumi_builder.gd:446
+msgid "Advanced (hue, saturation, brightness)"
+msgstr "高级（色相、饱和度、亮度）"
+
+#: ui/lumi_builder.gd:455
+msgid "Hue"
+msgstr "色相"
+
+#: ui/lumi_builder.gd:455
+msgid "Brightness"
+msgstr "亮度"
+
+#: ui/lumi_builder.gd:492
+msgid "Equipped"
+msgstr "已装备"
+
+#: ui/lumi_builder.gd:508
+msgid ""
+"How weathered the paint looks: fresh from the ark, or three hundred years of "
+"dust."
+msgstr "漆面的磨损程度：刚从方舟出来，还是积了三百年的灰。"
+
+#: ui/lumi_builder.gd:511
+msgid "Fresh"
+msgstr "崭新"
+
+#: ui/lumi_builder.gd:520
+msgid "Weathered"
+msgstr "斑驳"
+
+#: ui/lumi_builder.gd:526
+msgid "A custom look can use the bonus of any design you have unlocked."
+msgstr "自定义外观可以使用任何已解锁外观的加成。"
+
+#: ui/lumi_builder.gd:550
+msgid "Keep up to %d looks. Load one to edit it, then press Done to wear it."
+msgstr "最多保存%d套外观。载入后可编辑，按“完成”即可穿上。"
+
+#: ui/lumi_builder.gd:555 ui/lumi_builder.gd:579
+msgid "Look %d"
+msgstr "外观%d"
+
+#: ui/lumi_builder.gd:563
+msgid "Empty"
+msgstr "空"
+
+#: ui/lumi_builder.gd:576
+msgid "Save here"
+msgstr "保存到此"
+
+#: ui/lumi_builder.gd:646
+msgid "Unsaved changes"
+msgstr "有未保存的修改"
+
+#: ui/lumi_builder.gd:662
+msgid "Part of this look is still locked."
+msgstr "此外观的部分内容尚未解锁。"
+
+#: data/style_parts.json:slots[paint].name
+msgid "Paint"
+msgstr "漆面"
+
+#: data/style_parts.json:slots[trim].name
+msgid "Trim"
+msgstr "饰边"
+
+#: data/style_parts.json:slots[accent].name
+msgid "Accent"
+msgstr "点缀"
+
+#: data/style_parts.json:slots[side].name
+msgid "Side modules"
+msgstr "侧面模块"
+
+#: data/style_parts.json:slots[wear].name
+msgid "Wear"
+msgstr "磨损"
+
+#: data/style_parts.json:slots[pattern].name
+msgid "Pattern"
+msgstr "图案"
+
+#: data/style_parts.json:slots[eyes].name
+msgid "Eye colour"
+msgstr "眼睛颜色"
+
+#: data/style_parts.json:slots[glow].name
+msgid "Light strips"
+msgstr "灯带"
+
+#: data/style_parts.json:slots[head].name
+msgid "Head piece"
+msgstr "头饰"
+
+#: data/style_parts.json:slots[chest].name
+msgid "Chest icon"
+msgstr "胸前图标"
+
+#: data/style_parts.json:slots[shoulders].name
+msgid "Shoulders"
+msgstr "肩部"
+
+#: data/style_parts.json:slots[held].name
+msgid "Held item"
+msgstr "手持物品"
+
+#: data/style_parts.json:slots[companion].name
+msgid "Companion"
+msgstr "伙伴"
+
+#: data/style_parts.json:slots[hover].name
+msgid "Hover glow"
+msgstr "悬浮光"
+
+#: data/style_parts.json:slots[laser].name
+msgid "Pickup laser"
+msgstr "拾取激光"
+
+#: data/style_parts.json:slots[bonus].name
+msgid "Bonus"
+msgstr "加成"
+
+#: data/style_parts.json:options.pattern[plain].name
+msgid "Plain"
+msgstr "纯色"
+
+#: data/style_parts.json:options.pattern[stripes].name
+msgid "Hazard stripes"
+msgstr "警示条纹"
+
+#: data/style_parts.json:options.pattern[moss].name
+msgid "Moss patches"
+msgstr "苔藓斑块"
+
+#: data/style_parts.json:options.eye_shape[crescent].name
+msgid "Crescent"
+msgstr "月牙"
+
+#: data/style_parts.json:options.eye_shape[round].name
+msgid "Round"
+msgstr "圆形"
+
+#: data/style_parts.json:options.eye_shape[happy].name
+msgid "Happy arcs"
+msgstr "笑眼"
+
+#: data/style_parts.json:options.eye_shape[bar].name
+msgid "Visor bar"
+msgstr "面罩光条"
+
+#: data/style_parts.json:options.eye_shape[heart].name
+msgid "Hearts"
+msgstr "爱心"
+
+#: data/style_parts.json:options.eye_shape[heart].unlock.cond.unit
+#: data/style_parts.json:swatches[seaglass].unlock.cond.unit
+#: data/style_parts.json:swatches[coral].unlock.cond.unit
+msgid "finds"
+msgstr "件发现"
+
+#: data/style_parts.json:options.eye_shape[heart].unlock.text
+msgid "Find 8 Collection trinkets"
+msgstr "找到8件收藏小玩意"
+
+#: data/style_parts.json:options.head[none].name
+#: data/style_parts.json:options.shoulders[none].name
+#: data/style_parts.json:options.held[none].name
+#: data/style_parts.json:options.companion[none].name
+msgid "None"
+msgstr "无"
+
+#: data/style_parts.json:options.head[fin].name
+msgid "Fin"
+msgstr "鳍"
+
+#: data/style_parts.json:options.head[antenna].name
+msgid "Antenna"
+msgstr "天线"
+
+#: data/style_parts.json:options.head[antenna].unlock.cond.unit
+#: data/style_parts.json:swatches[mint].unlock.cond.unit
+msgid "hub level"
+msgstr "基地等级"
+
+#: data/style_parts.json:options.head[antenna].unlock.text
+msgid "Upgrade a hub to level 2"
+msgstr "将一个基地升到2级"
+
+#: data/style_parts.json:options.head[sprout].name
+msgid "Sprout leaf"
+msgstr "嫩芽叶"
+
+#: data/style_parts.json:options.head[catears].name
+msgid "Cat ears"
+msgstr "猫耳"
+
+#: data/style_parts.json:options.head[wings].name
+msgid "Wing fins"
+msgstr "翼鳍"
+
+#: data/style_parts.json:options.head[halo].name
+msgid "Halo"
+msgstr "光环"
+
+#: data/style_parts.json:options.chest[recycle].name
+msgid "Recycle"
+msgstr "回收"
+
+#: data/style_parts.json:options.chest[leaf].name
+msgid "Leaf"
+msgstr "叶子"
+
+#: data/style_parts.json:options.chest[cross].name
+msgid "Medic cross"
+msgstr "医疗十字"
+
+#: data/style_parts.json:options.chest[heart].name
+msgid "Heart"
+msgstr "爱心"
+
+#: data/style_parts.json:options.shoulders[pads].name
+msgid "Shoulder pads"
+msgstr "护肩"
+
+#: data/style_parts.json:options.held[gear].name
+msgid "Spare gear"
+msgstr "备用齿轮"
+
+#: data/style_parts.json:options.held[medkit].name
+msgid "Med kit"
+msgstr "医疗包"
+
+#: data/style_parts.json:options.held[toolbox].name
+msgid "Toolbox"
+msgstr "工具箱"
+
+#: data/style_parts.json:options.held[watering_can].name
+msgid "Watering can"
+msgstr "洒水壶"
+
+#: data/style_parts.json:options.held[holo].name
+msgid "Holo screen"
+msgstr "全息屏"
+
+#: data/style_parts.json:options.companion[butterfly].name
+msgid "Butterfly"
+msgstr "蝴蝶"
+
+#: data/style_parts.json:options.companion[firefly].unlock.cond.unit
+#: data/style_parts.json:swatches[royal].unlock.cond.unit
+#: data/style_parts.json:swatches[lilac].unlock.cond.unit
+msgid "requests"
+msgstr "个委托"
+
+#: data/style_parts.json:options.companion[firefly].unlock.text
+msgid "Finish 3 Requests"
+msgstr "完成3个委托"
+
+#: data/style_parts.json:options.companion[drone].name
+msgid "Tiny drone"
+msgstr "迷你无人机"
+
+#: data/style_parts.json:swatches[pearl].name
+msgid "Pearl"
+msgstr "珍珠白"
+
+#: data/style_parts.json:swatches[white].name
+msgid "Chalk"
+msgstr "粉笔白"
+
+#: data/style_parts.json:swatches[graphite].name
+msgid "Graphite"
+msgstr "石墨"
+
+#: data/style_parts.json:swatches[slate].name
+msgid "Slate"
+msgstr "板岩灰"
+
+#: data/style_parts.json:swatches[cyan].name
+msgid "Cyan"
+msgstr "青色"
+
+#: data/style_parts.json:swatches[orange].name
+msgid "Orange"
+msgstr "橙色"
+
+#: data/style_parts.json:swatches[sky].name
+msgid "Sky"
+msgstr "天蓝"
+
+#: data/style_parts.json:swatches[mint].name
+msgid "Mint"
+msgstr "薄荷"
+
+#: data/style_parts.json:swatches[mint].unlock.text
+msgid "Upgrade a hub to level 3"
+msgstr "将一个基地升到3级"
+
+#: data/style_parts.json:swatches[hazard].name
+msgid "Hazard yellow"
+msgstr "警示黄"
+
+#: data/style_parts.json:swatches[soot].name
+msgid "Soot"
+msgstr "煤黑"
+
+#: data/style_parts.json:swatches[amber].name
+msgid "Amber"
+msgstr "琥珀"
+
+#: data/style_parts.json:swatches[olive].name
+msgid "Olive"
+msgstr "草绿"
+
+#: data/style_parts.json:swatches[bark].name
+msgid "Bark"
+msgstr "树皮"
+
+#: data/style_parts.json:swatches[leaf].name
+msgid "Leaf green"
+msgstr "叶绿"
+
+#: data/style_parts.json:swatches[honey].name
+msgid "Honey"
+msgstr "蜂蜜"
+
+#: data/style_parts.json:swatches[cherry].name
+msgid "Cherry"
+msgstr "樱桃红"
+
+#: data/style_parts.json:swatches[pink].name
+msgid "Pink"
+msgstr "粉色"
+
+#: data/style_parts.json:swatches[cream].name
+msgid "Cream"
+msgstr "奶油"
+
+#: data/style_parts.json:swatches[gunmetal].name
+msgid "Gunmetal"
+msgstr "枪灰"
+
+#: data/style_parts.json:swatches[ink].name
+msgid "Ink"
+msgstr "墨色"
+
+#: data/style_parts.json:swatches[violet].name
+msgid "Violet"
+msgstr "紫罗兰"
+
+#: data/style_parts.json:swatches[ivory].name
+msgid "Ivory"
+msgstr "象牙白"
+
+#: data/style_parts.json:swatches[sunset].name
+msgid "Sunset"
+msgstr "日落"
+
+#: data/style_parts.json:swatches[seaglass].name
+msgid "Sea glass"
+msgstr "海玻璃"
+
+#: data/style_parts.json:swatches[seaglass].unlock.text
+msgid "Find 4 Collection trinkets"
+msgstr "找到4件收藏小玩意"
+
+#: data/style_parts.json:swatches[coral].name
+msgid "Coral"
+msgstr "珊瑚"
+
+#: data/style_parts.json:swatches[coral].unlock.text
+msgid "Find 12 Collection trinkets"
+msgstr "找到12件收藏小玩意"
+
+#: data/style_parts.json:swatches[royal].name
+msgid "Royal blue"
+msgstr "宝蓝"
+
+#: data/style_parts.json:swatches[royal].unlock.text
+msgid "Finish 5 Requests"
+msgstr "完成5个委托"
+
+#: data/style_parts.json:swatches[lilac].name
+msgid "Lilac"
+msgstr "丁香紫"
+
+#: data/style_parts.json:swatches[lilac].unlock.text
+msgid "Finish 15 Requests"
+msgstr "完成15个委托"
+
+#: data/style_parts.json:swatches[gold].name
+msgid "Gold"
+msgstr "金色"
+
+#: data/style_parts.json:swatches[bloom].name
+msgid "Bloom green"
+msgstr "绽放绿"
+
+#: data/style_parts.json:swatches[midnight].name
+msgid "Midnight"
+msgstr "午夜蓝"
+
+#: data/style_parts.json:swatches[copper].name
+msgid "Copper"
+msgstr "铜色"
+
+#: data/style_parts.json:swatches[rosegold].name
+msgid "Rose gold"
+msgstr "玫瑰金"
