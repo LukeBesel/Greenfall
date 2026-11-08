@@ -722,21 +722,39 @@ func _place_pod() -> void:
 	var site: Node3D = CrashSite.attach(w, pod, at, 0.5)
 	site.global_basis = SphereGrid.frame(at.normalized()) * Basis(Vector3.UP, 0.5)
 	EscapePod.set_open(pod, true, CrashSite.LEAN.x)
-	# Solid: one box from the pod's own bounds, in its frame (PropColliders.fit reads world y).
-	var ab := AABB()
-	var first: bool = true
-	var inv: Transform3D = pod.global_transform.affine_inverse()
-	for c: Node in pod.find_children("*", "MeshInstance3D", true, false):
-		var mi: MeshInstance3D = c
-		if mi.mesh == null:
-			continue
-		var b: AABB = (inv * mi.global_transform) * mi.mesh.get_aabb()
-		ab = b if first else ab.merge(b)
-		first = false
-	if not first:
-		var body: StaticBody3D = PropColliders.body(pod, "Props")
-		PropColliders.add_box(body, Transform3D(pod.global_basis.orthonormalized(), pod.global_transform * ab.get_center()), ab.size * 0.85)
+	pod_body(pod)  # [v1yard] colliders that fit the model (it was one box round the fins and the open ramp)
 	w.set_meta("orbit_pod", site)
+
+
+## [v1yard] The crashed pod's colliders, fitted to EscapePod's model in its own (leaning) frame: the
+## shell as a cylinder (r 0.8 m, the widest facet), one thin slab per landing fin, and nothing for
+## the open ramp on the ground or the tapering top above Lumi's head. A child of the pod, so it
+## follows the pod when reseat_yard moves it. Lumi can walk right round it and up to the door.
+static func pod_body(pod: Node3D) -> StaticBody3D:
+	var old: Node = pod.get_node_or_null("PodBody")
+	if old:
+		old.free()
+	var b := StaticBody3D.new()
+	b.name = "PodBody"
+	b.collision_layer = PhysLayers.PROP
+	b.collision_mask = 0
+	b.add_to_group("prop_body")
+	pod.add_child(b)
+	var shell := CollisionShape3D.new()
+	shell.name = "Shell"
+	shell.shape = PropColliders.cyl_shape(0.8, 2.0)
+	shell.position = Vector3(0, 1.0, 0)
+	b.add_child(shell)
+	for k: int in 3:
+		var fin: Node3D = pod.get_node_or_null("Fin%d" % k)
+		if fin == null:
+			continue
+		var cs := CollisionShape3D.new()
+		cs.name = "Fin%d" % k
+		cs.shape = PropColliders.box_shape(Vector3(0.14, 1.0, 0.62))
+		cs.transform = fin.transform * Transform3D(Basis(), Vector3(0, 0.5, 0.95))
+		b.add_child(cs)
+	return b
 
 
 ## Camp (systems/camp/camp.gd) as on the flat game: the broken bench is its "bench" bit, the
