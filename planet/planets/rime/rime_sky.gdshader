@@ -135,7 +135,7 @@ void sky() {
 		float lit = smoothstep(-0.08, 0.35, ndl);
 		float limb = pow(clamp(dot(n, -d), 0.0, 1.0), 0.35);
 		vec3 lc = alb * lit * limb * 0.62;
-		lc += alb * 0.012;   // faint night side (ringshine)
+		lc += alb * 0.04;   // faint night side (ringshine)
 		// Thin bright atmosphere rim on the lit side.
 		lc += vec3(0.7, 0.82, 1.0) * pow(1.0 - clamp(dot(n, -d), 0.0, 1.0), 6.0) * smoothstep(-0.2, 0.4, ndl) * 0.35;
 		front = lc;
