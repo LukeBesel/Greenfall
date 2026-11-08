@@ -6,8 +6,21 @@ extends HexField
 ## that enter a near ring (materialize), deterministic per cell, and written back as the cell's
 ## junk fraction when scooped. Positions are world points on the sphere; "up" is radial.
 ## Phase B replaces the slice's HexField with this (parts, piles, landmarks, biomes).
+## [orbB] Field parity, all per cell id and deterministic per (seed, cell), made on materialize:
+## - parts: buried robot parts at the flat field's chance per hex (data/parts.json), found by
+##   the detector (nearest_part searches nearby cells only); found parts persist by cell key.
+## - piles: 0-2 junk mounds per land cell, Vector4(x, z, radius, height) in the cell's own frame
+##   (SphereGrid.frame at its centre); pieces sit on them and settle as the cell is cleaned.
+## - landmarks: big wreck props at the flat districts' rate per hex (Economy.landmarks_for).
+## - locked: cells of a locked biome (locked_biomes) can't be scooped until unlocked.
+## - floating junk on water cells with junk left (lakes count as junk hexes, as on the flat).
 
 const FULL_PIECES: int = 70  # pieces on an untouched 10 m hex (the flat districts' density)
+const FLOAT_PIECES: int = 22  # floaters on an untouched water cell
+const FLAT_DISTRICT_HEXES: float = 61.0  # a radius-4 flat district: landmark counts are per one of these
+const PILE_EMBED := Vector2(0.55, 1.02)
+const FLOATERS: Array = [["plastic", "plastic_bottle_gallon"], ["plastic", "bleach_bottle"], ["plastic", "trashbag"], ["plastic", "multi_cleaner_bottle"], ["rubber", "rubber_duck_toy"], ["rubber", "old_tyre"], ["rubber", "dirty_football"], ["glass", "wine_bottles_01"], ["paper", "cardboard_box_01"], ["plastic", "plastic_crate_01"]]
+const LYING_FLOATERS: Array = ["plastic_bottle_gallon", "bleach_bottle", "multi_cleaner_bottle", "old_tyre", "wine_bottles_01"]
 
 var grid: SphereGrid
 var terrain: SphereTerrain
@@ -18,6 +31,15 @@ var _cell_pieces: Dictionary = {}  # cell -> PackedInt32Array
 var _type_w: Array[float] = []
 var _type_wsum: float = 0.0
 var _lift_cache: Dictionary = {}  # model id -> [upright lift, lying lift]
+var piece_lift := PackedFloat32Array()  # [orbB] rest offset above the ground (before the pile)
+var parts_def: Dictionary = {}  # data/parts.json (set before cells materialize; Economy.parts by default)
+var landmark_defs: Array = []   # [{id, count}] (Economy.landmarks_for(biome))
+var locked_biomes: Dictionary = {}  # biome index -> true: those cells stay locked
+var _cell_parts: Dictionary = {}  # cell -> PackedInt32Array of part ids
+var _part_key := PackedInt32Array()  # part id -> cell * 4 + k (save key)
+var _found_keys: Dictionary = {}  # saved found parts (cell * 4 + k -> true), applied on materialize
+var _cell_landmark: Dictionary = {}  # cell -> index into landmarks
+var _saved_unlocked: Dictionary = {}  # cells of a locked biome a save says are open
 
 
 func _init(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p_seed: int = 4471) -> void:
@@ -32,12 +54,26 @@ func _init(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p
 	hex_hub.resize(n)
 	hex_water.resize(n)
 	materialized.resize(n)
+	hex_piles.resize(n)
+	hex_piles.fill([])  # shared empty list; materialize assigns a cell its own
 	junk_hex_count = 0
 	cleaned_count = 0
+	var hub_flags: bool = false  # [orbB] globes that mark hub ground with F_HUB (the orbit slice); else phase A's rule
+	for i: int in n:
+		if cells.flags[i] & SphereCells.F_HUB:
+			hub_flags = true
+			break
 	for i: int in n:
 		var water: bool = cells.state[i] == 5
 		hex_water[i] = 1 if water else 0
-		hex_hub[i] = 1 if cells.has_flag(i, SphereCells.F_SITE) and not cells.is_dirty(i) else 0
+		if water:  # [orbB] a lake with floating junk is a junk hex (flat parity); a clear one is not
+			hex_total[i] = 1.0
+			hex_left[i] = cells.junk[i] if water_dirty(i) else 0.0
+			hex_clean[i] = 0 if water_dirty(i) else 1
+			if water_dirty(i):
+				junk_hex_count += 1
+			continue
+		hex_hub[i] = 1 if cells.has_flag(i, SphereCells.F_HUB) or (cells.has_flag(i, SphereCells.F_SITE) and not cells.is_dirty(i) and not hub_flags) else 0  # [orbB] F_HUB persists
 		hex_total[i] = 1.0
 		hex_left[i] = cells.junk[i] if cells.is_dirty(i) else 0.0
 		hex_clean[i] = 0 if cells.is_dirty(i) else 1
@@ -49,6 +85,17 @@ func _init(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p
 		var w: float = float(Economy.junk_types[id].get("weight", 1.0))
 		_type_w.append(w)
 		_type_wsum += w
+	parts_def = Economy.parts
+	landmark_defs = Economy.landmarks_for("")
+
+
+func water_dirty(i: int) -> bool:
+	return cells.state[i] == 5 and cells.junk[i] > 0.02
+
+
+## Dirty for the field: land junk or floating junk.
+func cell_dirty(i: int) -> bool:
+	return cells.is_dirty(i) or water_dirty(i)
 
 
 func hex_count() -> int:
@@ -82,14 +129,22 @@ func pieces_in(cell: int) -> PackedInt32Array:
 	return _cell_pieces.get(cell, PackedInt32Array())
 
 
-## Makes the scoopable pieces of a cell (once). Count follows the cell's junk left, so a hex the
-## crews half cleaned shows half its junk. Returns the new piece ids.
+## Makes the scoopable pieces of a cell (once), with its buried parts, landmark and piles.
+## Count follows the cell's junk left, so a hex the crews half cleaned shows half its junk.
+## Returns the new piece ids.
 func materialize(cell: int) -> PackedInt32Array:
 	var out := PackedInt32Array()
 	if materialized[cell] == 1:
 		return out
 	materialized[cell] = 1
-	if not cells.is_dirty(cell) or hex_water[cell] == 1:
+	if locked_biomes.has(int(cells.biome[cell])) and not _saved_unlocked.has(cell):
+		locked[cell] = true
+	if hex_water[cell] == 1:
+		return _materialize_floating(cell)
+	if hex_hub[cell] == 0:
+		_roll_parts(cell)
+		_roll_landmark(cell)
+	if not cells.is_dirty(cell):
 		return out
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash([seed_value, cell, 911])
@@ -97,44 +152,326 @@ func materialize(cell: int) -> PackedInt32Array:
 	var count: int = int(round(FULL_PIECES * left))
 	var ctr: Vector3 = grid.centers[cell]
 	var f: Basis = SphereGrid.frame(ctr)
+	var piles: Array = _roll_piles(cell)
+	hex_piles[cell] = piles
+	var lm: Dictionary = landmarks[_cell_landmark[cell]] if _cell_landmark.has(cell) else {}
+	var lm_at: Vector2 = cell_local(cell, lm["pos"]) if not lm.is_empty() else Vector2.ZERO
+	var lm_clear: float = float(lm.get("clear", 2.2)) + 0.3
 	var vol_sum: float = 0.0
 	for k: int in count:
 		var r: float = sqrt(rng.randf()) * hex_size * 0.92
 		var a: float = rng.randf() * TAU
-		var d: Vector3 = (ctr + (f.x * cos(a) + f.z * sin(a)) * (r / grid.radius_m)).normalized()
+		var lx: float = cos(a) * r
+		var lz: float = sin(a) * r
+		var in_pile: bool = not piles.is_empty() and rng.randf() < 0.6
+		if in_pile:  # on a heap: inside its footprint
+			var pile: Vector4 = piles[rng.randi() % piles.size()]
+			var rr: float = sqrt(rng.randf()) * pile.z
+			lx = pile.x + cos(a) * rr
+			lz = pile.y + sin(a) * rr
+		if not lm.is_empty():  # pushed off the wreck, radially from it
+			var dv := Vector2(lx, lz) - lm_at
+			if dv.length() < lm_clear:
+				dv = (dv if dv.length() > 0.01 else Vector2(cos(a), sin(a))).normalized() * lm_clear
+				lx = lm_at.x + dv.x
+				lz = lm_at.y + dv.y
+		var d: Vector3 = (ctr + (f.x * lx + f.z * lz) / grid.radius_m).normalized()
 		var ti: int = _pick_type(rng)
 		var models: Array = Economy.junk_types[Economy.junk_ids[ti]].get("models", [])
 		var mdl: Dictionary = _pick_model(rng, models) if not models.is_empty() else {}
 		var mid: String = str(mdl.get("id", ""))
 		var vol: float = float(mdl.get("vol", 0.5))
 		var lie: bool = rng.randf() < float(mdl.get("lie", 0.3))
-		var s: float = rng.randf_range(0.9, 1.1)
+		var sc: float = rng.randf_range(0.9, 1.1)
 		var lf: Basis = SphereGrid.frame(d)
 		var b := Basis(lf.y, rng.randf() * TAU) * lf
 		if lie:
 			b = Basis(b.x, PI * 0.5) * b
-		b = b.scaled(Vector3.ONE * s)
-		var lift: float = float(_lifts(mid)[1 if lie else 0])
-		var pos: Vector3 = terrain.ground(d) + d * (lift * s - 0.02)
-		var pid: int = piece_pos.size()
-		piece_pos.append(pos)
-		piece_type.append(ti)
-		piece_model.append(mid)
-		piece_pose.append(1 if lie else 0)
-		piece_vol.append(vol)
-		piece_hex.append(cell)
-		piece_yaw.append(0.0)
-		piece_scale.append(s)
-		piece_tilt.append(0.0)
-		piece_embed.append(0.0)
-		piece_alive.append(1)
-		piece_xf.append(Transform3D(b, pos))
+		if in_pile:  # heaped junk leans every which way
+			b = Basis(b.z, rng.randf_range(-0.5, 0.5)) * b
+		b = b.scaled(Vector3.ONE * sc)
+		var lift: float = float(_lifts(mid)[1 if lie else 0]) * sc - 0.02
+		var pid: int = _add_piece(cell, d, b, lift, ti, mid, 1 if lie else 0, vol, sc, rng.randf_range(PILE_EMBED.x, PILE_EMBED.y) if in_pile else 0.0)
 		out.append(pid)
 		vol_sum += vol
 	_cell_pieces[cell] = out
 	# The cell's ledger in volume: total so that left / total stays the cell's junk fraction.
 	hex_left[cell] = vol_sum
 	hex_total[cell] = vol_sum / maxf(left, 0.01)
+	return out
+
+
+func _add_piece(cell: int, d: Vector3, b: Basis, lift: float, ti: int, mid: String, pose: int, vol: float, sc: float, embed: float) -> int:
+	var pid: int = piece_pos.size()
+	piece_pos.append(Vector3.ZERO)
+	piece_type.append(ti)
+	piece_model.append(mid)
+	piece_pose.append(pose)
+	piece_vol.append(vol)
+	piece_size.append(size_class(vol))
+	piece_hex.append(cell)
+	piece_yaw.append(0.0)
+	piece_scale.append(sc)
+	piece_tilt.append(0.0)
+	piece_embed.append(embed)
+	piece_alive.append(1)
+	piece_lift.append(lift)
+	piece_xf.append(Transform3D(b, Vector3.ZERO))
+	_seat(pid, d)
+	return pid
+
+
+## Puts a piece on the ground (or the lake surface, or its pile) along direction d.
+func _seat(pid: int, d: Vector3) -> void:
+	var cell: int = piece_hex[pid]
+	var base: Vector3 = terrain.ground(d)
+	if hex_water[cell] == 1:
+		base -= d * terrain.water_drop
+	var pos: Vector3 = base + d * piece_lift[pid]
+	if piece_embed[pid] > 0.0:
+		pos += d * ground_height(cell, base) * piece_embed[pid]
+	piece_pos[pid] = pos
+	var xf: Transform3D = piece_xf[pid]
+	xf.origin = pos
+	piece_xf[pid] = xf
+
+
+## Re-seat a cell's remaining pieces on its (shrinking) piles. Returns the pieces that moved.
+func resettle(cell: int) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	if (hex_piles[cell] as Array).is_empty():
+		return out
+	for pid: int in pieces_in(cell):
+		if piece_alive[pid] == 1 and piece_embed[pid] > 0.0:
+			_seat(pid, piece_pos[pid].normalized())
+			out.append(pid)
+	return out
+
+
+## Pile height (m) at a world point of a cell: heaps shrink to 30% as the cell is cleaned.
+func ground_height(id: int, pos: Vector3) -> float:
+	if id < 0 or hex_clean[id] == 1 or (hex_piles[id] as Array).is_empty():
+		return 0.0
+	var l: Vector2 = cell_local(id, pos)
+	var h: float = 0.0
+	for pile: Vector4 in hex_piles[id]:
+		var dd: float = Vector2(l.x - pile.x, l.y - pile.y).length() / pile.z
+		if dd < 1.0:
+			h = maxf(h, pile.w * sqrt(1.0 - dd * dd))
+	return h * (0.3 + 0.7 * (1.0 - removed_fraction(id)))
+
+
+## A world point in a cell's own frame (x east, z south, metres along the ground from its centre).
+func cell_local(cell: int, pos: Vector3) -> Vector2:
+	var ctr: Vector3 = grid.centers[cell]
+	var f: Basis = SphereGrid.frame(ctr)
+	var d: Vector3 = pos.normalized() - ctr
+	return Vector2(d.dot(f.x), d.dot(f.z)) * grid.radius_m
+
+
+## The surface frame of a pile (origin on the ground at its centre, y = local up).
+func pile_transform(cell: int, pile: Vector4) -> Transform3D:
+	var ctr: Vector3 = grid.centers[cell]
+	var f: Basis = SphereGrid.frame(ctr)
+	var d: Vector3 = (ctr + (f.x * pile.x + f.z * pile.y) / grid.radius_m).normalized()
+	return Transform3D(SphereGrid.frame(d), terrain.ground(d))
+
+
+func _roll_piles(cell: int) -> Array:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash([seed_value, cell, 31])
+	var piles: Array = []
+	var roll: float = rng.randf()
+	var n: int = 0 if roll < 0.3 else (1 if roll < 0.8 else 2)
+	for k: int in n:
+		var pc := Vector2(rng.randf_range(-0.35, 0.35), rng.randf_range(-0.35, 0.35)) * hex_size
+		piles.append(Vector4(pc.x, pc.y, rng.randf_range(1.6, 2.4), rng.randf_range(0.7, 1.4)))
+	return piles
+
+
+# --- [orbB] Parts ------------------------------------------------------------------------------
+
+func _roll_parts(cell: int) -> void:
+	var rar: Array = parts_def.get("rarities", [])
+	var types: Array = parts_def.get("types", [])
+	if rar.is_empty() or types.is_empty():
+		return
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash([seed_value, cell, 21])
+	var chance: float = float(parts_def.get("chance_per_hex", 0.14))
+	var n: int = int(floor(chance)) + (1 if rng.randf() < chance - floor(chance) else 0)
+	if n == 0:
+		return
+	var wsum: float = 0.0
+	for r: Dictionary in rar:
+		wsum += float(r["weight"])
+	var ctr: Vector3 = grid.centers[cell]
+	var f: Basis = SphereGrid.frame(ctr)
+	var ids := PackedInt32Array()
+	for k: int in mini(n, 4):
+		var off := Vector2(rng.randf_range(-1, 1), rng.randf_range(-1, 1)) * hex_size * 0.6
+		var d: Vector3 = (ctr + (f.x * off.x + f.z * off.y) / grid.radius_m).normalized()
+		var roll: float = rng.randf() * wsum
+		var ri: int = 0
+		for i: int in rar.size():
+			roll -= float(rar[i]["weight"])
+			if roll <= 0.0:
+				ri = i
+				break
+		var key: int = cell * 4 + k
+		ids.append(part_pos.size())
+		part_pos.append(terrain.ground(d))
+		part_type.append(rng.randi() % types.size())
+		part_rarity.append(ri)
+		part_found.append(1 if _found_keys.has(key) else 0)
+		_part_key.append(key)
+	_cell_parts[cell] = ids
+
+
+## Nearest unfound part within range (or -1): only the cells around pos are searched.
+func nearest_part(pos: Vector3, max_dist: float) -> int:
+	var best: int = -1
+	var best_d: float = max_dist
+	for c: int in grid.cells_around(grid.cell_at(pos), int(ceil(max_dist / 17.3)) + 1):
+		for i: int in _cell_parts.get(c, PackedInt32Array()):
+			if part_found[i] == 1:
+				continue
+			var d: float = part_distance(i, pos)
+			if d < best_d:
+				best_d = d
+				best = i
+	return best
+
+
+func part_distance(i: int, pos: Vector3) -> float:
+	var a: Vector3 = part_pos[i]
+	var up: Vector3 = a.normalized()
+	var v: Vector3 = pos - a
+	return (v - up * v.dot(up)).length()  # along the ground, like the flat x/z distance
+
+
+func parts_in(cell: int) -> PackedInt32Array:
+	return _cell_parts.get(cell, PackedInt32Array())
+
+
+# --- [orbB] Landmarks --------------------------------------------------------------------------
+
+func _roll_landmark(cell: int) -> void:
+	if landmark_defs.is_empty() or not cells.is_dirty(cell):
+		return
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash([seed_value, cell, 7])
+	var roll: float = rng.randf()
+	for d: Dictionary in landmark_defs:
+		roll -= float(d.get("count", 1)) / FLAT_DISTRICT_HEXES
+		if roll > 0.0:
+			continue
+		var ctr: Vector3 = grid.centers[cell]
+		var f: Basis = SphereGrid.frame(ctr)
+		var off := Vector2(rng.randf_range(-0.6, 0.6), rng.randf_range(-0.6, 0.6)) * hex_size * 0.4
+		var dir: Vector3 = (ctr + (f.x * off.x + f.z * off.y) / grid.radius_m).normalized()
+		var yaw: float = rng.randf() * TAU
+		var model: String = str(d["id"])
+		if model in ["covered_car", "concrete_road_barrier", "concrete_road_barrier_02"]:
+			yaw = (PI * 0.5 if rng.randf() < 0.5 else 0.0) + rng.randf_range(-0.25, 0.25)
+		var lf: Basis = SphereGrid.frame(dir)
+		var clear: float = 2.2
+		if AssetLib.has_model(model):
+			var bb: AABB = AssetLib.model_aabb(model)
+			clear = maxf(bb.size.x, bb.size.z) * 0.5 + 0.5
+		_cell_landmark[cell] = landmarks.size()
+		landmarks.append({"model": model, "pos": terrain.ground(dir), "yaw": yaw, "hex": cell, "clear": clear,
+			"basis": Basis(lf.y, yaw) * lf})
+		return
+
+
+# --- [orbB] Floating junk ----------------------------------------------------------------------
+
+func _materialize_floating(cell: int) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	if not water_dirty(cell):
+		return out
+	var by_id: Dictionary = {}
+	for i: int in Economy.junk_ids.size():
+		by_id[Economy.junk_ids[i]] = i
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash([seed_value, cell, 913])
+	var left: float = cells.junk[cell]
+	var count: int = int(round(FLOAT_PIECES * float_mult * left))
+	var ctr: Vector3 = grid.centers[cell]
+	var f: Basis = SphereGrid.frame(ctr)
+	var vol_sum: float = 0.0
+	for k: int in count:
+		var r: float = sqrt(rng.randf()) * hex_size * 0.92
+		var a: float = rng.randf() * TAU
+		var d: Vector3 = (ctr + (f.x * cos(a) + f.z * sin(a)) * (r / grid.radius_m)).normalized()
+		var fl: Array = FLOATERS[rng.randi() % FLOATERS.size()]
+		var tyre: bool = fl[1] == "old_tyre"
+		var vol: float = 2.5 if tyre else 0.6 * rng.randf_range(0.8, 1.3)
+		var sc: float = rng.randf_range(0.9, 1.1)
+		var lie: bool = fl[1] in LYING_FLOATERS
+		var lf: Basis = SphereGrid.frame(d)
+		var b := Basis(lf.y, rng.randf() * TAU) * lf
+		if lie:
+			b = Basis(b.x, PI * 0.5) * b
+		b = Basis(b.z, rng.randf_range(-0.3, 0.3)) * b
+		b = b.scaled(Vector3.ONE * sc)
+		var pid: int = _add_piece(cell, d, b, -0.06, int(by_id.get(fl[0], 0)), str(fl[1]), 1 if lie else 0, vol, sc, 0.0)
+		out.append(pid)
+		vol_sum += vol
+	_cell_pieces[cell] = out
+	hex_left[cell] = vol_sum
+	hex_total[cell] = vol_sum / maxf(left, 0.01)
+	return out
+
+
+# --- [orbB] Locked cells -----------------------------------------------------------------------
+
+func unlock(cell: int) -> void:
+	locked.erase(cell)
+
+
+# --- [orbB] Persistence (inside GameState.orbit; the cells' junk lives in SphereCells) --------
+
+func to_dict() -> Dictionary:
+	var found := PackedInt32Array(_found_keys.keys())
+	for i: int in part_found.size():
+		if part_found[i] == 1 and not _found_keys.has(_part_key[i]):
+			found.append(_part_key[i])
+	found.sort()
+	return {"seed": seed_value, "parts_found": _b64(found), "unlocked": _b64(PackedInt32Array(_unlocked_keys()))}
+
+
+static func _b64(a: PackedInt32Array) -> String:
+	return Marshalls.raw_to_base64(a.to_byte_array()) if not a.is_empty() else ""
+
+
+## Applies saved found parts and unlocked cells (before or after cells materialize).
+func apply_dict(d: Dictionary) -> bool:
+	if int(d.get("seed", seed_value)) != seed_value:
+		return false
+	_found_keys.clear()
+	for k: int in Marshalls.base64_to_raw(str(d.get("parts_found", ""))).to_int32_array():
+		_found_keys[k] = true
+	for i: int in part_found.size():
+		if _found_keys.has(_part_key[i]):
+			part_found[i] = 1
+	_saved_unlocked.clear()
+	for c: int in Marshalls.base64_to_raw(str(d.get("unlocked", ""))).to_int32_array():
+		_saved_unlocked[c] = true
+		locked.erase(c)
+	return true
+
+
+
+## Cells of a locked biome that were unlocked (saved, so they stay open).
+func _unlocked_keys() -> Array:
+	var out: Array = _saved_unlocked.keys()
+	if locked_biomes.is_empty():
+		return out
+	for c: int in _cell_pieces:
+		if locked_biomes.has(int(cells.biome[c])) and not locked.has(c) and not _saved_unlocked.has(c):
+			out.append(c)
 	return out
 
 
@@ -176,9 +513,9 @@ func reduce_to(cell: int, left: float) -> PackedInt32Array:
 ## whose numbers say clean but whose ledger says otherwise is settled here.
 func settle(cell: int) -> void:
 	if materialized[cell] == 0:
-		hex_left[cell] = cells.junk[cell] if cells.is_dirty(cell) else 0.0
+		hex_left[cell] = cells.junk[cell] if cell_dirty(cell) else 0.0
 		hex_total[cell] = 1.0
-	if not cells.is_dirty(cell) and hex_clean[cell] == 0:
+	if not cell_dirty(cell) and hex_clean[cell] == 0:  # [orbB] lakes too
 		hex_clean[cell] = 1
 		cleaned_count += 1
 
@@ -231,6 +568,8 @@ func nearest_alive(pos: Vector3) -> int:
 	var best_d: float = INF
 	for ring: int in range(1, 8):
 		for hid: int in hexes_near(pos, ring):
+			if locked.has(hid):  # [orbB]
+				continue
 			for pid: int in pieces_in(hid):
 				if piece_alive[pid] == 0:
 					continue
@@ -242,6 +581,3 @@ func nearest_alive(pos: Vector3) -> int:
 			return best
 	return best
 
-
-func ground_height(_id: int, _pos: Vector3) -> float:
-	return 0.0

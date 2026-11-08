@@ -58,7 +58,7 @@ func _run() -> void:
 	# [ui3] The loader / title hands over to the game a few frames later: wait for it (60 s cap).
 	if not DevHooks.has("menu"):
 		var t0: int = Time.get_ticks_msec()
-		while not (get_tree().current_scene and get_tree().current_scene.has_method("open_upgrades")) and Time.get_ticks_msec() - t0 < 60000:
+		while not (get_tree().current_scene and get_tree().current_scene.has_method("open_upgrades") and get_tree().current_scene.get("upgrades") != null) and Time.get_ticks_msec() - t0 < 120000:
 			await _frames(5)
 		await _frames(20)
 	print("[pad] screen %s (interface scale %.2f)" % [get_tree().root.get_visible_rect().size, Settings.ui_scale])

@@ -24,6 +24,12 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 4. More districts content: 41 eggs now; more biome props (nets, satellites) if Poly Haven gets them; per-biome plants/wildlife.
 5. Post-game (M11): done (wt/late). Next: per-world story threads with WREN, wildlife using the decor hook, tune Starseed income and Bloom thresholds after play-testing.
 
+## Update: shared art kit (wt/kit, Nov 8) [kit]
+- `art/kit/**`: materials (KitMat), bevelled geometry and Builder (KitMesh), props (KitProps), 7 state-aware buildings (KitBuilding: module_small/medium/large, tower, hangar, tank_farm, machine_housing) with `set_state` and `set_powered`, ground patches that replace flat slabs, a decal atlas, and a chunky wind turbine. API and art rules are in docs/ART_KIT.md.
+- Paint and trims are colour-per-vertex, so a building is about 9 draw calls. Buildings get auto LODs. Everything is cached.
+- Lineup render: `tools/kit_lineup.sh screenshots/kit/lineup`, or `--kit-lineup`. Tests: tests/test_art_kit.gd.
+- Next: yard, anvil, ochre, seas and orbD adopt the kit. The kit can add more building kinds on request.
+
 ## Update: loading screen keeps moving, Rime night glint (claude/greenfall-leftovers, Nov 8)
 - **District build across frames.** Behind the loading screen `scenes/slice.gd` builds as a coroutine: the
   heavy first half (field generation, FieldView ground/mounds/junk/landmarks, litter, far junk, CityView,
@@ -177,7 +183,7 @@ Owner playtest #1: "SIMPLIFY GAME". The workbench is seven tabs (Lumi, Bots, Hub
 - Done: **Gnome Patrol** gnomes are real pickups: E ("E   pick up gnome") lifts each one with the tractor beam (the junk PickupFx) into Lumi's hopper, with a pop, a blip ladder and a "Gnome N / 5 · added to Lumi's collection" toast; the fifth completes the egg. Shared helper for other collectible eggs: `story/egg_collect.gd` (EggCollect: parts/add/lift; opt in with `"collect": true`). Saves: same `flags.egg_<id>_parts` key, so gnomes seen in old saves count as collected (parts normalised to ints after a load).
 - Done (owner: "no display for collectibles until the very end"): **Lumi's collection + the Museum** (`data/museum.json`, `systems/museum.gd`). Every collectible is an exhibit (gnomes, Biscuit's shell, time capsule, the last broadcast, duck, WREN's constellation, golden cube, all curiosities, memory shards, trinkets, the four planet relics); kinds egg / egg_parts / eggs / shards / trinkets / relic / flag, so other planets plug in by id. Codex > Collection now opens with "LUMI'S COLLECTION": counts ("Gnome Patrol 3 / 5"), drawn silhouettes for missing ones (`ui/collect_icon.gd`) and hints; trinkets follow. The Museum is a late build at Verdance's Cradle Returns once the Cradle has answered (a "FUTURE MUSEUM" plot sign, 1.5M cubes, 600 parts, 400 seeds): an open stone hall, one plinth per exhibit, ghosts on the empty ones, the gnome patrol on a little bed (`story/egg_display.gd`). Filling every plinth sets `flags.museum_complete` (achievement "For Whoever Comes Next"), a toast, WREN line and the gnomes' salute. No base yard display.
 - Done: **The Last Jukebox** hushes the score: `Audio.hush_music(owner)` / `unhush_music(owner)` fade the whole Music bus (mood layers, stingers, radio tracks) out over 1.5 s while the waltz plays; it fades back when the waltz ends or Lumi walks 12 m away.
-- Done: **WREN's Constellation** telescope now stands on open ground (a sidewalk street corner when there is one) 28-50 m from the spawn (`min_spawn_dist`, `spot` in eggs.json; a second placement pass, so no other egg moves). The look-through is a steady eyepiece camera (`story/star_peek.gd`) aimed at the constellation's centre with a round eyepiece mask, HUD hidden, no DOF; the old view pitched Lumi's own lens camera (bobbing with her idle float, swinging with her yaw, near plane clipping her visor, the lens HUD's blinking REC and grain on top).
+- Done: **WREN's Constellation** telescope now stands on open ground (a sidewalk street corner when there is one) 28-50 m from the spawn (`min_spawn_dist`, `spot` in eggs.json; a second placement pass, so no other egg moves). Why the look-through was glitchy: it pitched Lumi's own lens camera (bobbing with her idle float, swinging with her yaw, near plane clipping her visor, the lens HUD's blinking REC and grain on top), and the constellation itself never showed: its billboards used the drone's black shadow texture with additive blending, and ignored their per-star scale. Now: a steady eyepiece camera at the telescope's head (`story/star_peek.gd`), the scope and Lumi hidden while looking, a round brass eyepiece mask, HUD hidden, a night-adapted lens environment (no fog, dimmed haze, no DOF), white star texture, `billboard_keep_scale`, and the Wren higher in the sky (~58 deg) so streets rarely hide it. E/Esc leaves; the egg counts when the look ends.
 - Done: **Still Broadcasting** (tv) plays Old Town's last news broadcast (`story/tv_broadcast.gd`): six procedurally drawn frames with captions (the green city, LEDGER SECURES EXTRACTION RIGHTS, the system strip-mined, EVACUATION: ALL RESIDENTS TO THE CRADLE, WE'LL BE BACK, static) on the TV screen (SubViewport) and in a close-up overlay; rewatchable; the egg counts when it ends. Lore/Codex text and WREN lines updated.
 - Dev: `--spawn-egg=ID --egg-use[=S]`, `--egg-parts=gnomes`, `--tv-frame=N`, `--tv-step=S`, `--museum --museum-here --museum-built --museum-sample --spawn-museum`. Tests: `tests/test_eggs2.gd`; the save round trip checks `egg_collect` (parts + museum).
 - Next: the Museum position ((-15, 4) in the Cradle Returns district) needs a look in that district; exhibits for Ochre/Tidewell/Rime/Anvil eggs can be added as `flag`/`egg` entries.
@@ -765,3 +771,52 @@ tuned in the first-hour pass); no new SFX work unless a bug.
 - CD player (Keepsakes tab, `ui/extras_cd_list.gd`): Shuffle / pick on repeat / off, lock + "found on" rows, CD case. Pre-Glim the music comes from the CD player (softer far away) and stops when you leave the district; with Glim's Music upgrade (`Glim.has_music()`, wt/buddy) any CD plays anywhere via N (`ui/tunes_picker.gd`). Credits: "Music by Lucas" (no Suno in the game; licensing note stays in audio/songs/README.md).
 - Dev: `--cds=a,b`, `--scratched=a`, `--cd-play=shuffle|id`, `--cd-drop`, `--glim-music`.
 - Next: autoplay bot could walk to CDs; a CD-player hub radio model is wt/camp.
+
+## Update: planet Ochre environment (wt/p_ochre)
+- Done: `planet/planets/ochre/` (OchreEnv `env.gd`, `pit.gd`, `props.gd`, `excavator.gd`, shaders, `junk_biome.json`):
+  the play field sits on a wide haul bench low inside an enormous terraced open-pit mine (2 steps down to a
+  sludge pond, 9 benches of layered ochre / terracotta / cream rock up to a ~100 m rim, haul roads spiralling
+  between them), layered mesas and salt pans on the plateau, a white-gold two-sun sky (canon binary star,
+  reads `SolarSystem.suns_for("ochre")` when home's helper exists) with a companion fill light, heat shimmer,
+  dust devils. Three bucket-wheel excavators (one toppled on the rim), haul trucks. Junk: ore tailings,
+  broken drill bits and rods, Ledger ore crates, bucket teeth, ore sacks (procedural, registered in AssetLib).
+  Stages: ruined (rust, slumped booms, salt crust) -> mid (repainted, booms raised, shade sails) -> future
+  (white machines with planters, wind-wheel vanes and a wind-catcher tower, solar sails with thin light
+  seams, a light seam on each terrace crest). Restoration (hex levels) greens the terraces from the floor up:
+  crop rows along the contours, water channels at each wall toe, vines, palms and succulents, an oasis pool.
+- Registry: `data/planets.json` (planet id -> env script, sky, fog, sun, ambient, palette, junk tint, music
+  mood); `planet/planets/planet_envs.gd` (PlanetEnvs: prepare/apply, dev hook). Dev: `--planet-env=ochre`
+  (a wild district dressed by the env), `--ochre-restore=0..1`, `--ochre-cam=x,y,z,tx,ty,tz`.
+- Integration for home/worlds2: call `PlanetEnvs.prepare(kind)` before the field is generated (junk models and
+  biome set), set `field.biome = kind.junk_biome`, `view.skip_horizon = true`, `field.set_meta("planet_env", id)`
+  (FutureLayer then skips its city spires), then `PlanetEnvs.apply(world, kind)` once the scene is built.
+- Next: waterfalls between terrace channels at the futuristic stage; tune on real hardware (pit terrain is
+  ~90k vertices in 16 sectors; plants ~4.7k instances in 28 MultiMeshes with visibility ranges).
+
+## Update: Ochre kit for the walkable globes (wt/p_ochre, Nov 8)
+Owner: planets become round, hex-covered, walkable globes (orbit helper). The flat pit, mesas and plateau in
+`planet/planets/ochre/` (pit.gd, `_build_terrain`, `_build_mesas`, ramps, falls) are a prototype only and will be
+rebuilt on the sphere. What carries over, and how to place it on a globe:
+- Registry: one `planet/planets/planet_envs.gd` (Rime's contract: dev_hub / prepare_field / dress_view / apply) and
+  one `data/planets.json` (rime + ochre). Ochre extras: `junk_biome`, `no_lakes`, `pieces_mult` (junk per hex,
+  "the whole world is trashed"), `prefer_biome`, `exposure`.
+- Palette (`planets.json` ochre.palette): ochre, terracotta, cream, plum strata; salt; oasis; leaf; Ledger yellow;
+  thin-line cyan. Sky/fog/ambient values there are the low-haze, high-contrast set (owner: vivid, not foggy).
+- Materials / shaders (`planet/planets/ochre/*.gdshader`), all world-space so they work on any surface:
+  - `ochre_terrain`: strata bands by height (pit walls and landforms share layers), quarry-rock triplanar,
+    red bench gravel, ochre sand, salt-pan crust (cell cracks), tailings streaks, cheap foot-of-wall occlusion,
+    restored crop rows / water channels / vines (COLOR channels: r level, g flat, b across, a "in the mine").
+    On a globe: drive COLOR from the hex's height band and slope instead of pit rings.
+  - `ochre_sky`: hot white-gold horizon, blue zenith above the haze, both suns from `SolarSystem.suns_for("ochre")`
+    (primary burns white, companion stays orange-red), stars at night.
+  - `ochre_water` (sludge -> oasis), `ochre_fall`, `ochre_sail` (canvas / solar membrane + thin hem light),
+    `ochre_foliage` (sway), `ochre_shimmer` (heat haze ring near the ground).
+- Props (`props.gd`, `excavator.gd`, all procedural, one draw per material): bucket-wheel excavator (ruined /
+  repainted / futuristic planter + wind wheel + wind-catcher), haul truck, junk set (tailings x2, tricone bit,
+  drill rod, crates x2, bucket tooth, ore sack; registered into AssetLib by `prepare_field`), boulder x3 (scree),
+  date palm x3, agave x2, barrel cactus, aloe, shade / solar sails. Each takes a Transform3D: place per hub site
+  with the local up vector as the basis Y.
+- Restoration rules (per hex on a globe, per bench here): junk clears and plants appear from the lowest ground
+  up (the water source) as hex levels rise; ruined (1) rust, slumped booms, extra scrap -> mid (2-3) repainted,
+  shade sails -> future (4-5) white machines with planters, solar sails, a thin light seam on crests, waterfalls.
+- Dev: `--planet-env=ochre`, `--ochre-lookbook=1|2` (kit under both suns), `--ochre-restore`, `--ochre-cam`.

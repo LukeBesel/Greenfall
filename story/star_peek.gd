@@ -42,6 +42,7 @@ void fragment() {
 
 func start() -> void:
 	_t = 0.0
+	print("[eggs] looking through the telescope at %s" % str(target))
 	_lock(true)
 	var eye: Vector3 = eyepiece()
 	cam = Camera3D.new()
@@ -50,6 +51,18 @@ func start() -> void:
 	cam.near = 0.05
 	cam.far = 1500.0
 	cam.attributes = null  # no far DOF: stars stay sharp
+	# A night-adapted eyepiece: the bright moonlit haze is dimmed and the fog dropped, so the stars stand out.
+	var vp_env: Environment = _world_env()
+	if vp_env:
+		var e: Environment = vp_env.duplicate()
+		e.fog_enabled = false
+		e.volumetric_fog_enabled = false
+		e.tonemap_exposure = vp_env.tonemap_exposure * 0.3
+		e.background_energy_multiplier = vp_env.background_energy_multiplier * 0.35
+		e.adjustment_enabled = true
+		e.adjustment_saturation = 0.6
+		e.glow_enabled = true
+		cam.environment = e
 	add_child(cam)
 	cam.global_position = eye
 	cam.look_at(target, Vector3.UP)
@@ -69,17 +82,26 @@ func start() -> void:
 	rect.material = mask
 	_layer.add_child(rect)
 	cam.current = true
+	if DevHooks.has("shot"):  # dev: slow software renders capture the open eyepiece, not the iris
+		_open = 1.0
+		_t = 2.2
 
 
-## World position of the eyepiece (back end of the brass tube), a little behind it.
+func _world_env() -> Environment:
+	if world and world.get("env") is Environment:
+		return world.env
+	var w3: World3D = get_viewport().find_world_3d() if get_viewport() else null
+	return w3.environment if w3 and w3.environment else null
+
+
+## Where the eye is: at the telescope's head pivot (eye height). The eyepiece end of a tube tilted
+## up at the stars dips low between the tripod legs, which then fill the picture; the whole
+## telescope is hidden while we look through it, so the view starts clean at the pivot.
 func eyepiece() -> Vector3:
 	if scope == null:
 		return Vector3(0, 1.4, 0)
 	var head: Node3D = scope.get_node_or_null("Anim")
-	if head == null:
-		return scope.global_position + Vector3(0, 1.3, 0)
-	var back: Vector3 = head.to_global(Vector3(-0.5, 0.0, 0.0))
-	return back + (back - target).normalized() * 0.15
+	return (head.global_position if head else scope.global_position + Vector3(0, 1.22, 0)) + Vector3(0, 0.12, 0)
 
 
 func close() -> void:
@@ -96,7 +118,7 @@ func _process(delta: float) -> void:
 	if _done or cam == null:
 		return
 	_t += delta
-	if _t >= HOLD_S:
+	if _t >= HOLD_S + (60.0 if DevHooks.has("shot") else 0.0):
 		_closing = true
 	_open = move_toward(_open, 0.0 if _closing else 1.0, delta / 0.6)
 	var e: float = _open * _open * (3.0 - 2.0 * _open)
@@ -126,9 +148,11 @@ func _exit_tree() -> void:
 
 
 func _show_head(on: bool) -> void:
-	var head: Node3D = scope.get_node_or_null("Anim") if is_instance_valid(scope) else null
-	if head:
-		head.visible = on
+	if is_instance_valid(scope):
+		scope.visible = on
+	# Lumi may be standing in front of the tube: she steps out of the picture while we look.
+	if world and world.get("patch") != null and world.patch and world.patch.get("model") != null:
+		(world.patch.model as Node3D).visible = on
 
 
 func _lock(on: bool) -> void:
