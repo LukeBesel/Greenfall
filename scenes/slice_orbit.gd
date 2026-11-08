@@ -19,7 +19,8 @@ extends Node
 ## --orbit-bots=N (stand-in SphereBots, default 4). The phase A scenes stay reachable as
 ## --orbit=globe (planet/orbit/verdance_globe.tscn) and --orbit=v1.
 
-const SCHEMA: int = 1  # GameState.orbit layout (see persist_save)
+const SCHEMA: int = OrbitSave.SCHEMA  # GameState.orbit layout: core/save_orbit.gd
+const HEX_MILESTONES: Array[int] = [1, 5, 10, 25, 50, 100, 150, 200, 264]  # slice.gd's, by cell id here
 
 var w: Node3D  # the slice (scenes/slice.gd)
 var globe: OrbitPlanet
@@ -27,8 +28,10 @@ var day: OrbitDay
 var crews: OrbitCrews
 var cam: SphereCam
 var dev: OrbitDev
+var layers: OrbitLayers  # [orbE]
 var view_mode: String = "follow"
 var sites: OrbitSites  # [orbD]
+var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
 
 
 ## True when --orbit asks for the slice on the globe (not one of the phase A prototypes).
@@ -47,7 +50,8 @@ func build(p_world: Node3D) -> void:
 		loaded = true
 	elif not DevHooks.has("fresh"):
 		loaded = SaveManager.load_game()
-	var od: Dictionary = GameState.orbit if loaded else {}
+	var od: Dictionary = OrbitSave.migrate(GameState.orbit) if loaded else {}
+	var preload_n: int = OrbitPreload.start()  # [orbE] junk models load on threads while the planet builds
 	# The planet: --orbit-planet=<id>, else the saved one, else Verdance. Its size is data (GlobeSpec).
 	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", "verdance"))
 	var spec: Dictionary = GlobeSpec.of(pid)
@@ -55,11 +59,23 @@ func build(p_world: Node3D) -> void:
 		push_warning("[orbit] saved globe is %s f=%d, building %s f=%d fresh" % [od.get("planet_id", "?"), int(od.get("freq", 0)), pid, int(spec["frequency"])])
 		od = {}
 		loaded = false
+		GameState.orbit = {}
 	var seed_v: int = int(DevHooks.get_f("seed", float(od.get("seed", spec.get("seed", 4471)))))
 	globe = OrbitPlanet.new()
 	globe.name = "Globe"
 	w.add_child(globe)
-	globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}))
+	# An old flat save without a globe yet: its survey and bases move onto this globe (OrbitMigrate).
+	var migrate: bool = loaded and od.is_empty() and OrbitMigrate.can_migrate(int(spec["frequency"]))
+	var report: Dictionary = {}
+	var hook := Callable()
+	if migrate:
+		hook = func(g: OrbitPlanet) -> void: report.merge(OrbitMigrate.apply(g))
+	globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}), OrbitSave.site_cells(od), hook)
+	hub_states = (od.get("hubs", {}) as Dictionary).duplicate(true)
+	if migrate:
+		hub_states = report.get("hubs", {})
+		GameState.orbit = {"migrated": "flat_v%d" % GameState.SAVE_VERSION, "hubs": hub_states}
+		print("[orbit] migrated a flat save: %s" % JSON.stringify(report))
 	if od.has("field"):
 		globe.field.apply_dict(od["field"])
 	w.set("planet", globe.planet)
@@ -87,12 +103,21 @@ func build(p_world: Node3D) -> void:
 	cubes_root.name = "Cubes"
 	w.add_child(cubes_root)
 	w.set("_cubes_root", cubes_root)
+	var tq: int = Time.get_ticks_msec()  # [orbE] load breakdown
 	var site: Node3D = globe.build_start_site()
 	_build_patch()
 	_build_depot(site)
 	sites = OrbitSites.attach(self)  # [orbD] sled, rocket hops, planet %, site state
 	if DevHooks.has("orbit-bots") or not DevHooks.has("orbit-walk"):
 		crews.spawn_demo_bots(globe.start_cell(), int(DevHooks.get_f("orbit-bots", 4.0)), w)
+	var hl := HexLevels.new()  # sparse: only cleaned cells are tracked; levels also go to SphereCells
+	hl.name = "HexLevels"
+	hl.world = w
+	hl.sparse = true
+	w.set("hex_levels", hl)  # before add_child: its tree-entered hooks may read world.hex_levels
+	w.add_child(hl)
+	hl.setup()
+	EventBus.hex_level_changed.connect(_on_hex_level)
 	var lumi_level := LumiLevel.new()
 	lumi_level.name = "LumiLevel"
 	lumi_level.world = w
@@ -108,11 +133,21 @@ func build(p_world: Node3D) -> void:
 	w.add_child(pm)
 	pm.closed.connect(on_modal_closed)
 	w.set("pause_menu", pm)
-	if loaded:
+	if loaded and not migrate:
 		restore_world()
+	elif migrate:
+		(w.get("patch") as Patch).restore_cargo(OrbitMigrate.lumi_cargo())
+	globe.stats["site_patch_hud_ms"] = Time.get_ticks_msec() - tq
+	tq = Time.get_ticks_msec()
+	layers = OrbitLayers.attach(self)  # [orbE] sky + day/night, Glim, future layer, survey, system map, photo mode
+	globe.stats["layers_ms"] = Time.get_ticks_msec() - tq
+	var tw: int = Time.get_ticks_msec()
+	OrbitPreload.finish()  # [orbE] models were loading on threads all along; the settle seats them
+	globe.stats["preload_wait_ms"] = Time.get_ticks_msec() - tw
+	globe.stats["preload_models"] = preload_n
 	globe.update_centres()
 	var t2: int = Time.get_ticks_msec()
-	globe.streamer.settle()
+	globe.streamer.settle(20000, not DevHooks.has("orbit-settle-all"))  # [orbE] near chunks only; the rest streams in
 	globe.stats["settle_ms"] = Time.get_ticks_msec() - t2
 	var t3: int = Time.get_ticks_msec()
 	globe.refresh_junk_now()
@@ -134,6 +169,8 @@ func build(p_world: Node3D) -> void:
 	print("[orbit] slice on the globe: R=%.0fm hexes=%d around=%.1fkm hubs=%d (nearest hub mean %.0fm, min %.0fm) loaded=%s built=%dms planet=%dms grid=%dms settle=%dms junk_fill=%dms" % [
 		g.grid.radius_m, g.grid.cell_count(), TAU * g.grid.radius_m / 1000.0, g.sites.size(), g.hub_spacing(false), g.hub_spacing(true),
 		str(loaded), Time.get_ticks_msec() - t0, g.stats["planet_ms"], g.stats["grid_ms"], g.stats["settle_ms"], g.stats["junk_fill_ms"]])
+	if DevHooks.has("load-report"):  # [orbE] where the build time goes
+		print("[orbit-load] %s streamer=%s chunks=%d cells/chunk=%d" % [JSON.stringify(g.stats), JSON.stringify(g.streamer.stats), g.grid.chunk_count(), g.grid.cell_count() / maxi(g.grid.chunk_count(), 1)])
 	w.emit_signal("built")
 
 
@@ -214,22 +251,54 @@ func collect_piece(pid: int) -> void:
 		on_hex_clean(hid)
 
 
+## slice.gd's _on_hex_clean by cell id: first-clean bonus (a re-dirtied cell pays only the flat
+## part again and doesn't count twice), milestones, the first hex's fanfare, the event.
 func on_hex_clean(hid: int) -> void:
 	var field: SphereField = globe.field
-	globe.cells.set_state(hid, 1)
-	var bonus: BigNum = Economy.hex_bonus(field.hex_total[hid])
+	if field.hex_water[hid] == 0:
+		globe.cells.set_state(hid, 1)
+	var paid: Dictionary = GameState.orbit.get("hexes_paid", {})
+	var first: bool = not paid.has(str(hid))
+	paid[str(hid)] = true
+	GameState.orbit["hexes_paid"] = paid
+	var bonus: BigNum = Economy.hex_bonus(field.hex_total[hid] if first else 0.0)
 	GameState.add_currency("cubes", bonus)
-	GameState.inc_stat("hexes_cleaned")
+	if first:
+		GameState.inc_stat("hexes_cleaned")
 	var center: Vector3 = field.hex_center(hid)
 	var u: Vector3 = center.normalized()
+	var patch: Patch = w.get("patch")
 	Audio.play("chime", 1.0, -3.0)
 	Vfx.burst("big_sparkle", center + u * 0.3, Color(1.0, 0.92, 0.55))
+	Vfx.ring(center, field.hex_size * 1.1, Color(1.0, 0.9, 0.5, 0.9), 0.8)
 	Vfx.float_text(center + u * 1.4, tr("HEX CLEAN!  +%s") % Settings.fmt(bonus), Color(1.0, 0.92, 0.45), 1.5, 2.0)
 	EventBus.hex_cleaned.emit(hid, center, bonus)
 	EventBus.field_progress_changed.emit(field.cleaned_count, field.junk_hex_count)
-	var patch: Patch = w.get("patch")
 	if patch:
 		patch.model.set_happy(1.0)
+	var n: int = cleaned_by_lumi()
+	if n == 1 and first:
+		EventBus.hitstop_requested.emit(0.45, 0.25)
+		Audio.play("fanfare", 1.0, -4.0)
+	if n in HEX_MILESTONES and not GameState.flags.get("hexm_%d" % n, false):
+		GameState.flags["hexm_%d" % n] = true
+		EventBus.milestone_reached.emit("hexes_%d" % n)
+		if n > 1:
+			Audio.play("fanfare", 1.0, -5.0)
+			if patch:
+				Vfx.burst("confetti", patch.global_position + patch.up() * 1.5, Color.WHITE)
+			EventBus.toast.emit(tr("Milestone: %d hexes clean!") % n, "story")
+
+
+## Hexes counted for milestones: the cells this save paid a first-clean bonus for (far crews'
+## numbers flip cells clean too, but they are not Lumi's milestones).
+func cleaned_by_lumi() -> int:
+	return (GameState.orbit.get("hexes_paid", {}) as Dictionary).size()
+
+
+func _on_hex_level(hid: int, lvl: int) -> void:
+	if globe and hid >= 0 and hid < globe.cells.n:
+		globe.cells.set_level(hid, lvl)
 
 
 func cell_at(pos: Vector3) -> int:
@@ -307,10 +376,15 @@ func persist_save() -> void:
 		"planet": g.planet.to_dict(),
 		"cells": g.cells.to_dict(),
 		"field": g.field.to_dict(),  # found parts, unlocked cells
+		"sites": OrbitSave.sites_to_array(g.sites),
+		"hubs": hub_states,
+		"migrated": str(GameState.orbit.get("migrated", "")),
+		"hexes_paid": GameState.orbit.get("hexes_paid", {}),
+		"hex_levels": (w.get("hex_levels") as HexLevels).persist(),
 		"day_t": day.elapsed(),
 		"lumi": {"at": g.to_dirh(patch.global_position), "fwd": _v_arr(patch.forward()), "cargo": pd},
 		"cubes": cubes,
-		"sites": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth
+		"site_state": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth (main: renamed from "sites", which orbB uses for site geometry)
 	}
 
 
@@ -337,7 +411,7 @@ func restore_world() -> void:
 		cam.snap()
 	patch.restore_cargo(ld.get("cargo", {}))
 	if sites:  # [orbD]
-		sites.load_state(od.get("sites", {}))
+		sites.load_state(od.get("site_state", {}))
 
 
 static func _v_arr(v: Vector3) -> Array:

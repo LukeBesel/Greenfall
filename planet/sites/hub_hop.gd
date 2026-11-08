@@ -30,7 +30,7 @@ static func duration(dist_m: float) -> float:
 
 ## Peak cruise altitude above the ground (m) for a hop of dist_m.
 static func cruise_alt(dist_m: float) -> float:
-	return clampf(dist_m * 0.12, 60.0, 520.0)
+	return clampf(dist_m * 0.06, 50.0, 300.0)  # low enough that the curve stays gentle and the ground stays near
 
 
 ## Altitude profile 0..1 -> m: a quick climb, a long cruise, a soft landing.
