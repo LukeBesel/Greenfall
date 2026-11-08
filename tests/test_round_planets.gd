@@ -1,6 +1,6 @@
 extends GutTest
-## [orbB] The title screen's "Round planets (preview)": its own save tree, the globe on New Game /
-## Continue, and nothing of it reaches the flat game's saves or Steam Cloud.
+## [orbB] The round world: its own save tree, the globe on New Game / Continue, and nothing of it
+## reaches the flat game's saves or Steam Cloud. [v1menu] It is the default now (no title toggle).
 
 var _was: bool
 
@@ -24,6 +24,20 @@ func test_preview_saves_live_apart() -> void:
 	assert_true(CradleMode.profile_path().begins_with(flat_root + SaveManager.ROUND_SUFFIX + "/"), "the Cradle profile too")
 	assert_eq(SaveManager.root_dir(true), flat_root, "the flat tree is still reachable (Steam Cloud sync)")
 	assert_eq(SaveManager.profile_dir(1, true), flat_root.path_join("p1"))
+
+
+func test_round_is_the_default() -> void:
+	var fresh: Node = load("res://autoload/Settings.gd").new()
+	assert_true(fresh.round_planets, "a first run starts round")
+	fresh.free()
+	if not "--flat" in OS.get_cmdline_user_args():
+		assert_true(SaveManager.round_planets(), "no toggle: round unless the dev hook --flat")
+		assert_true(SaveManager.root_dir().ends_with(SaveManager.ROUND_SUFFIX), "saves go to the round tree")
+
+
+func test_old_preview_off_setting_is_ignored() -> void:
+	var src: String = FileAccess.get_file_as_string("res://autoload/Settings.gd")
+	assert_false(src.contains("get_value(\"preview\", \"round_planets\""), "an old settings file's round_planets=false is never read back")
 
 
 func test_preview_starts_on_the_globe() -> void:
