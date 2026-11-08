@@ -61,7 +61,9 @@ func digest() -> String:
 		if g.cells.is_dirty(c):
 			dirty += 1
 	var sm: SiteManager = g.site_manager
-	return "planet=%s cubes=%s parts=%s seeds=%s cleaned=%d/%d dirty_cells=%d planet%%=%.2f hub_lv=%s upgrades=%d lumi=%s" % [
+	var dep: Variant = so.w.get("depot")
+	var cashed: int = int((dep as Object).get("cashed")) if dep else -1
+	return ("cashed=%d " % cashed) + "planet=%s cubes=%s parts=%s seeds=%s cleaned=%d/%d dirty_cells=%d planet%%=%.2f hub_lv=%s upgrades=%d lumi=%s" % [
 		g.planet_id, cubes, parts, seeds, f.cleaned_count, f.junk_hex_count, dirty, (sm.planet_fraction() * 100.0) if sm else -1.0,
 		str(Array(sm.levels)) if sm else "-", GameState.upgrades.size(), _fmt(g.to_dirh(lp)) if lp != Vector3.ZERO else "-"]
 
