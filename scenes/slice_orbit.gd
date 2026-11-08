@@ -339,8 +339,12 @@ func try_interact(p: Patch) -> void:
 	if ia and ia.try_use(p.global_position):
 		return
 	if near_bench():
+		var camp: Camp = w.get("camp")
 		if not Camp.bench_ok():
-			repair_bench()
+			if camp:
+				camp.repair_bench()
+			else:
+				repair_bench()
 		else:
 			open_upgrades()
 
@@ -351,6 +355,9 @@ func interact_prompt(p: Patch) -> String:
 	if ip != "":
 		return ip
 	if near_bench():
+		var camp: Camp = w.get("camp")
+		if camp:
+			return camp.bench_prompt()
 		if _repairing:
 			return ""
 		return tr("E   Workbench (broken): repair it") if not Camp.bench_ok() else tr("E   Workbench: upgrades")
@@ -427,6 +434,37 @@ func _build_yard_systems() -> void:
 		var slot: Array = yard_slot("signal_tower", SignalTower.pos())
 		w.add_child(tower)  # a child of the slice, as on the flat game (HubBuilds and the bot look it up)
 		tower.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)  # after its _ready
+	_attach_camp()
+
+
+## A yard spot in world space (the anchor's origin, or the flat yard spot on the pad).
+func yard_point(anchor: String) -> Vector3:
+	var flat: Vector3 = YardBuilds.pos(anchor, Vector3.ZERO) if YardBuilds.def(anchor).size() > 0 else Vector3.ZERO
+	var slot: Array = yard_slot(anchor, flat)
+	return (slot[0] as Node3D).global_transform * (slot[1] as Transform3D).origin
+
+
+## Camp (systems/camp/camp.gd) as on the flat game: the broken bench is its "bench" bit, the
+## yard builds (lean-to, generator, lamps, press, radio, locker, nursery, Blink) keep their
+## built state in the hub's dict, and the bin's reach is the start site's "bin" anchor. The
+## yard models on the anchors are orbD's / yard's; Camp shows and hides what exists.
+func _attach_camp() -> void:
+	w.set("_ruin_bits", {"bench": bench})
+	var camp: Camp = Camp.attach(w)
+	w.set("camp", camp)
+	if camp == null:
+		_apply_bench(Camp.bench_ok(), false)
+	var locker: Node3D = w.get_node_or_null("LockerCabinet") as Node3D
+	if locker:
+		var slot: Array = yard_slot("locker", LockerCabinet.POS)
+		locker.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)
+		var reach: Node3D = locker.get("_anchor") as Node3D
+		if reach:
+			reach.global_position = locker.global_position + locker.global_basis.z * 0.9
+	if camp.camera_bot:
+		var home: Vector3 = yard_point("camera_bot")
+		camp.camera_bot.set("_home", home)
+		camp.camera_bot.global_position = home + home.normalized() * 1.5
 
 
 # --- Hub and workbench (the start site) ---------------------------------------------------
@@ -491,7 +529,11 @@ func open_upgrades() -> void:
 			EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
 		return
 	if not Camp.bench_ok() and not DevHooks.has("open"):  # the first E repairs the broken bench
-		repair_bench()
+		var camp: Camp = w.get("camp")
+		if camp:
+			camp.repair_bench()
+		else:
+			repair_bench()
 		return
 	(w.get("upgrades") as UpgradesScreen).open_screen()
 	set_input(false)
@@ -537,7 +579,7 @@ func _build_bench() -> void:
 		i += 1
 	var pb: StaticBody3D = PropColliders.body(bench, "BenchBody")  # top level, world space
 	PropColliders.add_box(pb, bench.global_transform * Transform3D(Basis(), Vector3(0, 0.47, 0)), Vector3(2.2, 0.95, 0.8))
-	_apply_bench(Camp.bench_ok(), false)
+	# Its broken look is Camp's (it records this repaired pose first); see _attach_camp.
 
 
 func _apply_bench(ok: bool, animate: bool) -> void:

@@ -44,6 +44,7 @@ static func _snap(s: Node) -> Dictionary:
 		"milestone_1": GameState.flags.get("hexm_1", false),
 		"hub_level": (s.get("hub") as Hub).level,
 		"bench_ok": Camp.bench_ok(),
+		"yard_built": JSON.stringify(YardBuilds.state().get("built", {})),
 		"site_stage": g.site_manager.levels[0] if g.site_manager else -1,
 		"parts_near": s.field.part_pos.size() > 0,
 		"loose_cubes": cubes,
@@ -106,6 +107,11 @@ static func run(rt: Node, check: Callable) -> void:
 	s1.try_interact(p)
 	check.call("orbit_upgrades_open", true, (s1.get("upgrades") as UpgradesScreen).is_open)
 	(s1.get("upgrades") as UpgradesScreen).close_screen()
+	# The trash bin answers at the start site's "bin" anchor; a yard build's state lives in the hub.
+	p.place_on_sphere(so1.yard_point("bin") + so1.yard_point("bin").normalized() * 0.3, p.forward())
+	await tree.physics_frame
+	check.call("orbit_bin_prompt", true, s1.interact_prompt(p) != "")
+	YardBuilds.mark_built("radio")
 	# The base: a hub upgrade raises the start site's stage and stays in the site's own dict.
 	GameState.add_currency("cubes", BigNum.from_float(1e6))
 	GameState.add_currency("parts", BigNum.from_float(1e5))
