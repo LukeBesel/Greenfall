@@ -50,6 +50,7 @@ func _setup() -> void:
 	_wire_survey.call_deferred()
 	_build_stations()
 	_build_litter()
+	_build_hinterland()  # [v3city]
 	_build_water()
 	if DevHooks.has("soak"):  # dev QA soak (planet/sites/soak_watch.gd)
 		SoakWatch.attach(so)
@@ -293,6 +294,27 @@ func _on_anchors_fixed(i: int, p: SitePrefab) -> void:
 ## Ground litter on junk cells near Lumi (planet/sites/sphere_litter.gd, the flat LitterView's
 ## carpet); the slice's `litter`, so Patch's scoop sweeps it. --no-litter turns it off.
 var litter: SphereLitter
+
+
+## [v3city] The land between the hub towns (planet/sites/hinterland.gd), Verdance only.
+var hinterland: Hinterland
+
+
+func _build_hinterland() -> void:
+	if sm == null or sm.planet_id != "verdance" or DevHooks.has("no-hinterland"):
+		return
+	var hubs: Array[Vector3] = []
+	for s: Dictionary in sm.sites:
+		hubs.append((s["dir"] as Vector3).normalized())
+	hinterland = Hinterland.new()
+	hinterland.name = "Hinterland"
+	so.w.add_child(hinterland)
+	hinterland.setup(sm.grid, sm.terrain, sm.cells, hubs, int(so.globe.get("seed_value")) if so.globe.get("seed_value") != null else 4471,
+		so.globe.call("yard_keep_out") as YardKeepOut if so.globe.has_method("yard_keep_out") else null)
+	hinterland.focus = so.w.get("patch")
+	if DevHooks.has("hinter-report"):
+		get_tree().create_timer(DevHooks.get_f("hinter-report", 20.0)).timeout.connect(func() -> void:
+			print("[hinter] %s" % str(hinterland.stats)))
 
 
 func _build_litter() -> void:
