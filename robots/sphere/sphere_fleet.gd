@@ -13,6 +13,11 @@ func _ready() -> void:
 	pass  # no flat WaterNet, no "persist" group (the crew saves itself)
 
 
+func _process(_delta: float) -> void:
+	if not GameState.parts.is_empty():
+		RobotParts.fold_items()  # as the flat Fleet; the [bots] table is the crew's
+
+
 func count(type_id: String) -> int:
 	return crew.count(type_id) if crew else 0
 

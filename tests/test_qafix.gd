@@ -143,3 +143,23 @@ func test_fade_volume_writes_are_throttled() -> void:
 	assert_true(AudioVol.set_db(p, -79.0), "after 50 ms the next step is written")
 	var src: String = (load("res://audio/ambience.gd") as Script).source_code
 	assert_false(src.contains("p.volume_db = linear_to_db(cur)"), "ambience fades go through AudioVol")
+
+
+# orbC: autoplay runs stalled with the tree paused. A scratched CD the bot picked up asks
+# "Play now?" and pauses the game until someone answers (fine for a person, nobody answers for the
+# bot). The autoplay watchdog answers it like a person would and the tree runs again.
+func test_pause_watch_answers_the_scratched_cd_choice() -> void:
+	var host := Node.new()
+	add_child_autofree(host)
+	var sc := ScratchedCdUI.new()
+	host.add_child(sc)
+	var pw := PauseWatch.new()
+	pw.world = host
+	host.add_child(pw)
+	sc.ask("sunbaked")
+	assert_true(get_tree().paused, "the choice pauses the game")
+	assert_has(pw.open_screens(), "ScratchedCdUI(ask)", "the watchdog sees what holds the pause")
+	pw.resolve()
+	assert_false(get_tree().paused, "answered: the game runs again")
+	assert_eq(pw.open_screens().size(), 0)
+	get_tree().paused = false
