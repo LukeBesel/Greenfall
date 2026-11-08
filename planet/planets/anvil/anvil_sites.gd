@@ -404,7 +404,7 @@ static func _foundry_tower(kit: AnvilEnv, root: Node3D, stage: int, restoration:
 		var a: float = 0.9 + k * 0.35
 		var p0 := Vector3(cos(a) * 12.0, 2.5, sin(a) * 12.0)
 		var p1 := Vector3(cos(a) * 30.0, -0.4, sin(a) * 30.0)
-		b.add(AnvilProps.noisy_cyl(0.7, 0.7, p0.distance_to(p1), 12, 6, 0.02, 90 + k), FrontierView._beam_xf(p0, p1, 1.0), kit.mat("stack"))
+		b.add(AnvilProps.noisy_cyl(0.7, 0.7, 1.0, 12, 6, 0.02, 90 + k), FrontierView._beam_xf(p0, p1, 1.0), kit.mat("stack"))
 	# Slag tips at the base.
 	for k: int in 3:
 		var a: float = 3.6 + k * 0.9
@@ -472,7 +472,7 @@ static func _lava_forge(kit: AnvilEnv, root: Node3D, stage: int, restoration: fl
 		for dz: float in [-2.0, 2.0]:
 			var lb: Vector3 = leg + Vector3(0, 0, dz)
 			var lt: Vector3 = leg + Vector3(0, 12.0, 0)
-			b.add(AnvilProps.noisy_cyl(0.32, 0.4, lb.distance_to(lt), 12, 4, 0.03, 70 + int(dz)), FrontierView._beam_xf(lb, lt, 1.0), kit.mat("rust"))
+			b.add(AnvilProps.noisy_cyl(0.32, 0.4, 1.0, 12, 4, 0.03, 70 + int(dz)), FrontierView._beam_xf(lb, lt, 1.0), kit.mat("rust"))
 	AnvilProps.add_beam(b, cc + Vector3(-7.5, 12.4, -2.0), cc + Vector3(7.5, 12.4, 2.0), 1.1, kit.mat("hauler"))
 	AnvilProps.add_beam(b, cc + Vector3(0, 12.0, 0), cc + Vector3(0, 6.5, 0), 0.08, kit.mat("soot"))
 	b.add(AnvilProps.noisy_cyl(1.6, 1.1, 2.4, 18, 3, 0.05, 55), Transform3D(Basis(Vector3.RIGHT, 0.35), cc + Vector3(0, 5.2, 0)), kit.mat("stack"))
@@ -506,7 +506,7 @@ static func _ruined_smelter(kit: AnvilEnv, root: Node3D, stage: int, restoration
 			var hgt: float = 12.0 if rng.randf() > 0.3 else rng.randf_range(3.0, 8.0)
 			var lean := Vector3(rng.randf_range(-1.5, 1.5), 0, rng.randf_range(-1.5, 1.5)) * (0.0 if hgt > 10.0 and rng.randf() > 0.4 else 1.0)
 			AnvilProps.add_beam(b, base, base + lean + Vector3(0, hgt, 0), 0.6, kit.mat("rust"))
-			fut.add(AnvilProps.noisy_cyl(0.75, 0.9, hgt * 0.8, 10, 4, 0.12, 200 + k), FrontierView._beam_xf(base, base + lean * 0.8 + Vector3(0, hgt * 0.8, 0), 1.0), kit.mat("green"))
+			fut.add(AnvilProps.noisy_cyl(0.75, 0.9, 1.0, 10, 4, 0.12, 200 + k), FrontierView._beam_xf(base, base + lean * 0.8 + Vector3(0, hgt * 0.8, 0), 1.0), kit.mat("green"))
 			if hgt > 10.0 and k % 2 == 0:
 				var top: Vector3 = base + lean + Vector3(0, hgt, 0)
 				AnvilProps.add_beam(b, top, top + basis * Vector3(0, 1.5, -side * 10.0), 0.4, kit.mat("rust"))
