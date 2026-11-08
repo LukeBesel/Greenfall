@@ -45,6 +45,7 @@ static func build(site_root: Node3D, site_id: String, stage: int, restoration: f
 		_:
 			push_warning("AnvilSites: unknown site " + site_id)
 	KitBatch.merge(root)  # [orbE] perf: the site's kit buildings as one surface per material
+	PropBatch.merge(root)  # [orbE] and its static loose pieces
 	root.set_meta("site", site_id)
 	root.set_meta("stage", stage)
 	root.set_meta("restoration", restoration)
@@ -71,6 +72,7 @@ static func build_async(site_root: Node3D, site_id: String, stage: int, restorat
 		step.call()
 		await BuildBudget.check("anvil:yard")
 	KitBatch.merge(root)  # [orbE]
+	PropBatch.merge(root)
 	root.set_meta("site", site_id)
 	root.set_meta("stage", stage)
 	root.set_meta("restoration", restoration)
