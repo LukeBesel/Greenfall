@@ -18,6 +18,15 @@ extends HexField
 const FULL_PIECES: int = 70  # pieces on an untouched 10 m hex (the flat districts' density)
 const FLOAT_PIECES: int = 22  # floaters on an untouched water cell
 const FLAT_DISTRICT_HEXES: float = 61.0  # a radius-4 flat district: landmark counts are per one of these
+## [orbB] Pacing (owner decision (b), Nov 8): ~70 light pieces per cell, but a cell holds a flat hex's
+## total junk volume, so hexes flip, pay and level at the flat game's pace. Measured on the flat
+## Old Town gen-2 field: 407 volume per junk hex (478 pieces of 0.85). A scoop pulse there takes a
+## piece and its little cluster, ~1.22 volume: here Lumi takes a heavy piece in bites of that size
+## (bite()), so the scoop speed per volume and the chest/bale granularity stay the flat game's.
+## Pieces keep their model's size; only their volume (the ledger) is scaled.
+const FLAT_HEX_VOL: float = 407.0
+const FLAT_LAKE_VOL: float = 75.0  # a flat lake hex: 70-110 floaters of ~0.8
+const FLAT_BITE_VOL: float = 1.22
 const PILE_EMBED := Vector2(0.55, 1.02)
 const FLOATERS: Array = [["plastic", "plastic_bottle_gallon"], ["plastic", "bleach_bottle"], ["plastic", "trashbag"], ["plastic", "multi_cleaner_bottle"], ["rubber", "rubber_duck_toy"], ["rubber", "old_tyre"], ["rubber", "dirty_football"], ["glass", "wine_bottles_01"], ["paper", "cardboard_box_01"], ["plastic", "plastic_crate_01"]]
 const LYING_FLOATERS: Array = ["plastic_bottle_gallon", "bleach_bottle", "multi_cleaner_bottle", "old_tyre", "wine_bottles_01"]
@@ -27,7 +36,6 @@ var terrain: SphereTerrain
 var cells: SphereCells
 var piece_xf: Array[Transform3D] = []
 var materialized := PackedByteArray()
-var _cell_pieces: Dictionary = {}  # cell -> PackedInt32Array
 var _type_w: Array[float] = []
 var _type_wsum: float = 0.0
 var _lift_cache: Dictionary = {}  # model id -> [upright lift, lying lift]
@@ -56,6 +64,8 @@ func _init(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p
 	materialized.resize(n)
 	hex_piles.resize(n)
 	hex_piles.fill([])  # shared empty list; materialize assigns a cell its own
+	hex_pieces.resize(n)  # [orbB] the HexField layout, so flat code that walks hex_pieces works here
+	hex_pieces.fill(PackedInt32Array())
 	junk_hex_count = 0
 	cleaned_count = 0
 	var hub_flags: bool = false  # [orbB] globes that mark hub ground with F_HUB (the orbit slice); else phase A's rule
@@ -63,23 +73,35 @@ func _init(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p
 		if cells.flags[i] & SphereCells.F_HUB:
 			hub_flags = true
 			break
+	# [orbE] Load time: the per-cell pass inlines is_dirty / has_flag / water_dirty over local packed
+	# arrays (8 method calls per cell were ~3 s on Anvil's 655k cells). Same rules as before:
+	# dirty = JUNK state with junk > 0.02; a lake with floating junk is a junk hex.
+	var st: PackedByteArray = cells.state
+	var jk: PackedFloat32Array = cells.junk
+	var fl: PackedByteArray = cells.flags
+	hex_total.fill(1.0)
 	for i: int in n:
-		var water: bool = cells.state[i] == 5
-		hex_water[i] = 1 if water else 0
-		if water:  # [orbB] a lake with floating junk is a junk hex (flat parity); a clear one is not
-			hex_total[i] = 1.0
-			hex_left[i] = cells.junk[i] if water_dirty(i) else 0.0
-			hex_clean[i] = 0 if water_dirty(i) else 1
-			if water_dirty(i):
+		var j: float = jk[i]
+		if st[i] == 5:
+			hex_water[i] = 1
+			if j > 0.02:
+				hex_left[i] = j
 				junk_hex_count += 1
+			else:
+				hex_left[i] = 0.0
+				hex_clean[i] = 1
 			continue
-		hex_hub[i] = 1 if cells.has_flag(i, SphereCells.F_HUB) or (cells.has_flag(i, SphereCells.F_SITE) and not cells.is_dirty(i) and not hub_flags) else 0  # [orbB] F_HUB persists
-		hex_total[i] = 1.0
-		hex_left[i] = cells.junk[i] if cells.is_dirty(i) else 0.0
-		hex_clean[i] = 0 if cells.is_dirty(i) else 1
-		if not water and hex_hub[i] == 0:
+		var dirty: bool = st[i] == 0 and j > 0.02
+		var f_i: int = fl[i]
+		var hub: bool = (f_i & SphereCells.F_HUB) != 0 or ((f_i & SphereCells.F_SITE) != 0 and not dirty and not hub_flags)  # [orbB] F_HUB persists
+		hex_hub[i] = 1 if hub else 0
+		if dirty:
+			hex_left[i] = j
+		else:
+			hex_clean[i] = 1
+		if not hub:
 			junk_hex_count += 1
-			if hex_clean[i] == 1:
+			if not dirty:
 				cleaned_count += 1
 	for id: String in Economy.junk_ids:
 		var w: float = float(Economy.junk_types[id].get("weight", 1.0))
@@ -126,7 +148,7 @@ func hexes_near(pos: Vector3, ring: int = 1) -> Array[int]:
 
 
 func pieces_in(cell: int) -> PackedInt32Array:
-	return _cell_pieces.get(cell, PackedInt32Array())
+	return hex_pieces[cell]
 
 
 ## Makes the scoopable pieces of a cell (once), with its buried parts, landmark and piles.
@@ -194,11 +216,45 @@ func materialize(cell: int) -> PackedInt32Array:
 		var pid: int = _add_piece(cell, d, b, lift, ti, mid, 1 if lie else 0, vol, sc, rng.randf_range(PILE_EMBED.x, PILE_EMBED.y) if in_pile else 0.0)
 		out.append(pid)
 		vol_sum += vol
-	_cell_pieces[cell] = out
+	hex_pieces[cell] = out
 	# The cell's ledger in volume: total so that left / total stays the cell's junk fraction.
-	hex_left[cell] = vol_sum
-	hex_total[cell] = vol_sum / maxf(left, 0.01)
+	_scale_cell(out, vol_sum, FLAT_HEX_VOL * left)
+	hex_left[cell] = FLAT_HEX_VOL * left
+	hex_total[cell] = FLAT_HEX_VOL
 	return out
+
+
+## Scales a cell's new pieces so their volumes sum to `target` (sizes on screen are untouched).
+func _scale_cell(pids: PackedInt32Array, raw_sum: float, target: float) -> void:
+	if pids.is_empty() or raw_sum <= 0.0:
+		return
+	var k: float = target / raw_sum
+	for pid: int in pids:
+		piece_vol[pid] *= k
+
+
+## [orbB] Lumi's scoop takes a heavy piece a bite at a time: up to `max_vol` of its volume. Returns
+## the volume taken; when it is the piece's last, the caller removes the piece (collect_piece).
+func bite(pid: int, max_vol: float = FLAT_BITE_VOL) -> float:
+	_last_bite_whole = false
+	if pid < 0 or pid >= piece_alive.size() or piece_alive[pid] == 0:
+		return 0.0
+	var v: float = piece_vol[pid]
+	if v <= max_vol * 1.25:  # the rest goes in one go (no crumbs)
+		_last_bite_whole = true
+		return v
+	piece_vol[pid] = v - max_vol
+	var id: int = piece_hex[pid]
+	hex_left[id] = maxf(0.0, hex_left[id] - max_vol)
+	return max_vol
+
+
+var _last_bite_whole: bool = false
+
+
+## Whether the last bite() took what was left of the piece (the caller then removes it).
+func is_whole_take(_pid: int, _taken: float) -> bool:
+	return _last_bite_whole
 
 
 func _add_piece(cell: int, d: Vector3, b: Basis, lift: float, ti: int, mid: String, pose: int, vol: float, sc: float, embed: float) -> int:
@@ -419,9 +475,10 @@ func _materialize_floating(cell: int) -> PackedInt32Array:
 		var pid: int = _add_piece(cell, d, b, -0.06, int(by_id.get(fl[0], 0)), str(fl[1]), 1 if lie else 0, vol, sc, 0.0)
 		out.append(pid)
 		vol_sum += vol
-	_cell_pieces[cell] = out
-	hex_left[cell] = vol_sum
-	hex_total[cell] = vol_sum / maxf(left, 0.01)
+	hex_pieces[cell] = out
+	_scale_cell(out, vol_sum, FLAT_LAKE_VOL * float_mult * left)
+	hex_left[cell] = FLAT_LAKE_VOL * float_mult * left
+	hex_total[cell] = FLAT_LAKE_VOL * float_mult
 	return out
 
 
@@ -469,8 +526,8 @@ func _unlocked_keys() -> Array:
 	var out: Array = _saved_unlocked.keys()
 	if locked_biomes.is_empty():
 		return out
-	for c: int in _cell_pieces:
-		if locked_biomes.has(int(cells.biome[c])) and not locked.has(c) and not _saved_unlocked.has(c):
+	for c: int in grid.cell_count():
+		if materialized[c] == 1 and locked_biomes.has(int(cells.biome[c])) and not locked.has(c) and not _saved_unlocked.has(c):
 			out.append(c)
 	return out
 

@@ -72,9 +72,9 @@ static func build(groups: Dictionary, xf: Transform3D, mats: Dictionary, kind: S
 		# Track frame, idlers, rollers and a belt of grousered pads.
 		base.box(Vector3(x, 1.7, 0), Vector3(2.4, 2.2, 18.0), steel)
 		for z: float in [-9.0, 9.0]:
-			base.add(ProcMesh.cyl(1.7, 1.7, 3.7, 14), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(x, 1.7, z)), dark)
+			base.add(OchreProps.kcyl(1.7, 1.7, 3.7, 14), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(x, 1.7, z)), dark)
 		for z: int in 6:
-			base.add(ProcMesh.cyl(0.55, 0.55, 3.0, 10), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(x, 0.75, -6.5 + z * 2.6)), steel)
+			base.add(OchreProps.kcyl(0.55, 0.55, 3.0, 10), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(x, 0.75, -6.5 + z * 2.6)), steel)
 		for i: int in 26:
 			var zz: float = -8.4 + i * 0.68
 			base.box(Vector3(x, 0.18, zz), Vector3(3.8, 0.36, 0.6), dark)
@@ -85,7 +85,7 @@ static func build(groups: Dictionary, xf: Transform3D, mats: Dictionary, kind: S
 				var o := Vector3(0, sin(a), cos(a) * signf(zs)) * 1.75
 				base.box(Vector3(x, 1.7, zs) + o, Vector3(3.8, 0.5, 0.5), dark, Basis(Vector3.RIGHT, -a * signf(zs)))
 	base.box(Vector3(0, 3.9, 0), Vector3(12.0, 1.4, 12.0), steel)
-	base.add(ProcMesh.cyl(6.4, 6.8, 1.6, 20), ProcMesh.xf(Vector3(0, 5.4, 0)), steel)
+	base.add(OchreProps.kcyl(6.4, 6.8, 1.6, 20), ProcMesh.xf(Vector3(0, 5.4, 0)), steel)
 	# House, roof machinery, cab, walkways.
 	base.box(Vector3(-1.5, 10.6, 0), Vector3(15.0, 9.0, 10.5), paint)
 	base.box(Vector3(-3.0, 16.6, 0), Vector3(8.5, 3.0, 7.5), paint)
@@ -106,9 +106,9 @@ static func build(groups: Dictionary, xf: Transform3D, mats: Dictionary, kind: S
 	base.beam(Vector3(-8.7, 6.3, 7.45), Vector3(-1.2, 0.4, 7.45), 0.12, steel)
 	base.beam(Vector3(-8.7, 7.3, 7.45), Vector3(-1.2, 1.4, 7.45), 0.06, steel)
 	for i: int in 3:
-		base.add(ProcMesh.cyl(0.45, 0.5, 4.5, 10), ProcMesh.xf(Vector3(-6.5 + i * 1.5, 20.2, -2.5)), dark)
-	base.add(ProcMesh.cyl(0.4, 0.4, 13.0, 10), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(-1.5, 9.0, -5.55)), steel)
-	base.add(ProcMesh.cyl(0.4, 0.4, 13.0, 10), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(-1.5, 11.0, -5.55)), steel)
+		base.add(OchreProps.kcyl(0.45, 0.5, 4.5, 10), ProcMesh.xf(Vector3(-6.5 + i * 1.5, 20.2, -2.5)), dark)
+	base.add(OchreProps.kcyl(0.4, 0.4, 13.0, 10), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(-1.5, 9.0, -5.55)), steel)
+	base.add(OchreProps.kcyl(0.4, 0.4, 13.0, 10), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(-1.5, 11.0, -5.55)), steel)
 	for i: int in 5:
 		base.box(Vector3(-7.5 + i * 3.0, 12.5, 5.3), Vector3(1.6, 2.4, 0.1), dark)
 		for k: int in 5:
@@ -144,6 +144,7 @@ static func build(groups: Dictionary, xf: Transform3D, mats: Dictionary, kind: S
 		for z: float in [-0.6, 0.6]:
 			base.beam(apex + Vector3(0, 0, z), cw1 + Vector3(0, 2.5, z), 0.16, dark)
 	var lists: Array[MeshInstance3D] = base.flush(nodes["always"], true, 1600.0)
+	_kit_detail(nodes["always"], kind, str(mats.get("kit_state", "repaired")), seed_v)
 	for mi: MeshInstance3D in lists:
 		if mi.material_override == paint:
 			(out["paint"] as Array).append(mi)
@@ -224,7 +225,7 @@ static func _wheel(wheel: Node3D, mats: Dictionary, ruined: bool, rng: RandomNum
 		for k: int in 8:
 			var a: float = TAU * k / 8.0
 			b.beam(Vector3(0, 0, side * 0.6), Vector3(cos(a), sin(a), 0) * (WHEEL_R - 0.3) + Vector3(0, 0, side), 0.4, mats["steel"])
-	b.add(ProcMesh.cyl(1.6, 1.6, 3.6, 14), Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3.ZERO), mats["steel"])
+	b.add(OchreProps.kcyl(1.6, 1.6, 3.6, 14), Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3.ZERO), mats["steel"])
 	for k: int in 16:
 		if ruined and rng.randf() < 0.25:
 			continue
@@ -237,7 +238,7 @@ static func _wheel(wheel: Node3D, mats: Dictionary, ruined: bool, rng: RandomNum
 		b.box(rad * (WHEEL_R + 1.5) + tan * 1.1, Vector3(0.5, 0.35, 3.2), mats["steel"], bs)
 		b.beam(rad * (WHEEL_R - 0.4), rad * (WHEEL_R + 1.3) - tan * 1.3, 0.12, mats["steel"])
 		for t: int in 3:
-			b.add(ProcMesh.cyl(0.05, 0.22, 0.8, 4), Transform3D(bs, rad * (WHEEL_R + 1.8) + tan * 1.0 + Vector3(0, 0, -0.9 + t * 0.9)), mats["steel"])
+			b.add(OchreProps.kcyl(0.05, 0.22, 0.8, 4), Transform3D(bs, rad * (WHEEL_R + 1.8) + tan * 1.0 + Vector3(0, 0, -0.9 + t * 0.9)), mats["steel"])
 	b.flush(wheel, true, 1600.0)
 
 
@@ -264,3 +265,58 @@ static func _wheel_future(wheel: Node3D, mats: Dictionary, vanes: bool) -> void:
 			mi.material_override = mats["vane"]
 			mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 			holder.add_child(mi)
+
+
+## Kit detail layer (art/kit): bolt rows on the house panels, decals (Ledger label, number,
+## warnings, chevrons), cab and walkway trim lights and a mast beacon (lit only when not broken),
+## grab rails by the stair. One extra MeshInstance3D.
+static func _kit_detail(node: Node3D, kind: String, state: String, seed_v: int) -> void:
+	var b := KitMesh.Builder.new(9000 + seed_v, OchreSites.KIT_PALETTE, state)
+	var broken: bool = state == "broken"
+	for side: float in [-1.0, 1.0]:
+		var z: float = side * 5.28
+		var rot := Vector3(0, 0 if side > 0 else 180, 0)
+		for row: int in 3:
+			for i: int in 14:
+				b.add("dark_steel", KitMesh.bolt(0.05, 0.05), KitMesh.xf(Vector3(-8.5 + i * 1.08, 7.0 + row * 3.6, z), Vector3(90 * side, 0, 0)))
+		b.decal("logo", Vector2(2.6, 2.6), KitMesh.xf(Vector3(-5.0, 11.5, z + side * 0.02), rot))
+		b.decal("num_0%d" % (1 + seed_v % 6), Vector2(1.8, 1.8), KitMesh.xf(Vector3(2.5, 11.5, z + side * 0.02), rot))
+		b.decal("warn", Vector2(1.1, 1.0), KitMesh.xf(Vector3(5.8, 8.0, z + side * 0.02), rot))
+		b.decal("chevrons", Vector2(4.0, 0.9), KitMesh.xf(Vector3(-1.5, 6.6, z + side * 0.02), rot))
+	b.decal("label_scrap", Vector2(4.2, 1.05), KitMesh.xf(Vector3(-1.5, 14.0, 5.3)))
+	if kind != "fallen":
+		b.box("trim:warm", Vector3(3.2, 0.08, 0.08), KitMesh.xf(Vector3(6.6, 13.9, 7.45)))
+		b.box("trim:cool", Vector3(15.4, 0.06, 0.06), KitMesh.xf(Vector3(-1.5, 15.32, 6.5)))
+		b.box("trim:cool", Vector3(15.4, 0.06, 0.06), KitMesh.xf(Vector3(-1.5, 15.32, -6.5)))
+		b.add("trim:red", KitMesh.bevel_cylinder(0.35, 0.4, 0.05, 10), KitMesh.xf(Vector3(-4.0, 48.2, 0)))
+		for z: float in [-1.1, 1.1]:
+			b.add("trim:white", KitMesh.bevel_cylinder(0.3, 0.2, 0.04, 10), KitMesh.xf(Vector3(8.4, 12.0, 4.6 + z), Vector3(0, 0, -90)))
+	KitProps.railing(b, Transform3D.IDENTITY, Vector3(-8.7, 6.4, 7.6), Vector3(-1.2, 0.5, 7.6), 1.0, "paint:rail", state)
+	if broken:
+		KitProps.debris(b, KitMesh.xf(Vector3(0, 0, 0)), 14.0, 22)
+	var mi: MeshInstance3D = KitMesh.instance(b, state, not broken)
+	mi.name = "KitDetail"
+	node.add_child(mi)
+
+
+## The same layer for a haul truck: bolts on the bed ribs, decals on the doors and bed, cab
+## marker lights and headlamps (dark when broken). xf is the truck's transform in `node`.
+static func truck_detail(node: Node3D, xf: Transform3D, state: String, seed_v: int) -> void:
+	var b := KitMesh.Builder.new(9500 + seed_v, OchreSites.KIT_PALETTE, state)
+	var broken: bool = state == "broken"
+	for z: float in [-2.66, 2.66]:
+		var rot := Vector3(0, 0 if z > 0 else 180, 0)
+		for i: int in 6:
+			for k: int in 3:
+				b.add("dark_steel", KitMesh.bolt(0.04, 0.04), xf * KitMesh.xf(Vector3(-4.8 + i * 1.45, 3.5 + k * 0.7, z), Vector3(90 * signf(z), 0, 0)))
+		b.decal("logo", Vector2(1.4, 1.4), xf * KitMesh.xf(Vector3(-1.2, 4.3, z + signf(z) * 0.03), rot))
+		b.decal("num_0%d" % (1 + seed_v % 6), Vector2(0.9, 0.9), xf * KitMesh.xf(Vector3(4.2, 3.9, z * 0.84 + signf(z) * 0.03), rot))
+	b.decal("chevrons", Vector2(4.2, 0.6), xf * KitMesh.xf(Vector3(5.74, 2.0, 0), Vector3(0, 90, 0)))
+	for z: float in [-1.8, 1.8]:
+		b.add("trim:white", KitMesh.bevel_cylinder(0.22, 0.12, 0.03, 10), xf * KitMesh.xf(Vector3(5.72, 2.6, z), Vector3(0, 0, -90)))
+	for z: float in [0.4, 1.2, 2.0]:
+		b.add("trim:warm", KitMesh.bevel_cylinder(0.07, 0.08, 0.02, 8), xf * KitMesh.xf(Vector3(4.2, 4.72, z)))
+	var mi: MeshInstance3D = KitMesh.instance(b, state, not broken)
+	mi.name = "TruckKitDetail"
+	node.add_child(mi)
+

@@ -164,7 +164,10 @@ func _dress_planet() -> void:
 	if ResourceLoader.exists(path):
 		var scr: GDScript = load(path) as GDScript
 		if scr:
-			scr.call("apply", world, world.field, Frontiers.world_kind(world))
+			if world.has_meta("planet_env_applied"):  # [main] WorldLookView may have run it already
+				return
+			world.set_meta("planet_env_applied", true)
+			scr.call("apply", world, world.field, Frontiers.def(Frontiers.world_kind(world)))  # [main] envs take the kind def (Dictionary), not its id
 			print("[home] planet env %s applied" % path)
 
 
@@ -317,6 +320,9 @@ static func launch_planet(w: Node, k: int) -> bool:
 static func _launch(w: Node, target: int) -> bool:
 	if bool(w.get("launching")):
 		return false
+	if OrbitSites.of(w):  # [orbD] on a walkable globe: lift off from the hub's pad, then switch worlds
+		OrbitSites.of(w).launch_planet(target)
+		return true
 	if w.get("rocket") == null and w.has_method("_place_rocket"):
 		w.call("_place_rocket", false)
 	var r: Variant = w.get("rocket")
@@ -329,7 +335,8 @@ static func _launch(w: Node, target: int) -> bool:
 
 ## Mk VII built and the last seed planted, at the Homeward complex.
 static func home_ready(w: Node) -> bool:
-	return Homeward.drive() >= 7 and bool(GameState.flags.get("home_last_seed", false)) and Homeward.at_home_site(w) and not Homeward.done()
+	var here: bool = Homeward.at_home_site(w) or (OrbitSites.of(w) != null and Homeward.current_planet() == 0)  # [orbD] on Verdance's globe: from any hub pad
+	return Homeward.drive() >= 7 and bool(GameState.flags.get("home_last_seed", false)) and here and not Homeward.done()
 
 
 static func launch_home(w: Node) -> bool:

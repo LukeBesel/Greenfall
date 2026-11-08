@@ -170,3 +170,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] The 3rd planet (Tidewell) unlocks a bot-building bot (Bot Fabricator) so fleets reach "tons of bots"; bots go out and work on their own.
 - [ ] Finish the game to Moon Sweepers quality, with no glitches. Simple to understand, guide the player, keep it interesting and super visually appealing. All buildings look good and make sense. Run quality and visual tests.
 - [ ] Stay within the usage limit (owner: keep under about 10%): helpers resume after the weekly limit resets on Nov 10, 19:00 UTC.
+- [ ] All cosmetics live at the Locker: Lumi, Glim, bots and rockets. Nowhere else edits looks (ui).
+- [ ] Send a picture of the workbench view (main: render queued until memory frees).
+- [ ] Bots are BUILT at the workbench (Bots tab, Fabricator queue). Their LOOKS are designed at the Locker, per robot type or job, and every bot of that type wears the design (e.g. all planting bots green, including newly built ones) (ui, orbC).
+- [ ] Owner (Nov 8, later): no need to send pictures for now. Focus on finishing everything already agreed. Renders only where a helper needs one to check its own work.

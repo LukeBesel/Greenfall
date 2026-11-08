@@ -60,6 +60,14 @@
       "ambient": 1.0,
       "exposure": 1.95,
       "ambient_color": [0.4, 0.5, 0.74]
+    },
+    "sites": {
+      "_doc": "[p_seas] Placeable hub-site prefabs (planet/planets/rime/rime_site.gd): RimeHubSite.place(id, root, stage 0-2, restoration 0-1, {radius, seed}); a local ice patch about 80-90 m across (walkable trimesh, PROP colliders on every structure). Preview: res://planet/planets/rime/site_preview.tscn -- --site=<id>.",
+      "script": "res://planet/planets/rime/rime_site.gd",
+      "hub_camp": {"kind": "hub", "name": "Drill Camp", "size_m": 88, "desc": "Cabins on skids round a plated yard, a greenhouse dome, fuel tanks, a comms mast and a snowcat."},
+      "derrick": {"kind": "landmark", "name": "Frozen Derrick", "size_m": 84, "desc": "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."},
+      "borehole": {"kind": "landmark", "name": "The Borehole", "size_m": 92, "desc": "The shaft under its headframe and winder house; cold mist, then a warm glow."},
+      "hot_springs": {"kind": "landmark", "name": "Hot Springs", "size_m": 80, "desc": "Geothermal pools with a bathhouse and boardwalk; frozen, then steaming."}
     }
   },
   "ochre": {
@@ -73,10 +81,10 @@
     "music_mood": "desert_heat",
     "sky": {
       "horizon_ruined": [0.96, 0.72, 0.46],
-      "horizon_restored": [0.95, 0.82, 0.62],
+      "horizon_restored": [1.0, 0.78, 0.48],
       "zenith_ruined": [0.36, 0.5, 0.74],
-      "zenith_restored": [0.2, 0.42, 0.8],
-      "haze": [0.95, 0.66, 0.4],
+      "zenith_restored": [0.2, 0.45, 0.9],
+      "haze": [0.98, 0.6, 0.3],
       "night_zenith": [0.02, 0.025, 0.06],
       "night_horizon": [0.12, 0.07, 0.07],
       "sun_separation_deg": 24.0,
@@ -89,7 +97,7 @@
       "color_ruined": [0.86, 0.6, 0.38],
       "color_restored": [0.7, 0.76, 0.86],
       "density_ruined": 0.00035,
-      "density_restored": 0.0002,
+      "density_restored": 0.00012,
       "aerial": 0.12,
       "height_fog": [-14.0, 0.0008]
     },
@@ -108,7 +116,7 @@
       "terracotta": [0.68, 0.24, 0.12],
       "cream": [0.94, 0.83, 0.62],
       "plum": [0.4, 0.2, 0.23],
-      "salt": [0.95, 0.93, 0.87],
+      "salt": [0.8, 0.77, 0.7],
       "oasis": [0.1, 0.55, 0.54],
       "leaf": [0.36, 0.55, 0.22],
       "ledger_yellow": [0.86, 0.62, 0.12],

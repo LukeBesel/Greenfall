@@ -171,7 +171,7 @@ func _process(delta: float) -> void:
 			if float(l["w"]) <= 0.0:
 				gone.append(lid)
 			continue
-		p.volume_db = linear_to_db(cur) + LOOP_DB
+		AudioVol.set_db(p, linear_to_db(cur) + LOOP_DB)  # [qafix] crash fix: no per-frame volume churn
 		if not p.playing:
 			p.play(_rng.randf() * maxf(0.0, p.stream.get_length() - 0.1))
 	for lid: String in gone:

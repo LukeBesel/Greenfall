@@ -22,6 +22,7 @@ const REBINDABLE: Array = [
 	["zoom_in", "Zoom in"], ["zoom_out", "Zoom out"],
 	["photo_mode", "Photo mode"],  # [photo]
 	["glim_scan", "Glim: scan (hold: upgrades)"],  # [buddy]
+	["boost", "Hover boost"],  # [orbD] hold on the walkable globe (SphereInput)
 ]
 # l10n:end
 # l10n:begin
@@ -32,6 +33,7 @@ const JOY_NAMES: Dictionary = {
 	JOY_BUTTON_DPAD_UP: "D-pad up", JOY_BUTTON_DPAD_DOWN: "D-pad down",
 	JOY_BUTTON_DPAD_LEFT: "D-pad left", JOY_BUTTON_DPAD_RIGHT: "D-pad right",
 	JOY_BUTTON_MISC1: "Share",
+	JOY_BUTTON_TOUCHPAD: "Touchpad", JOY_BUTTON_PADDLE1: "Paddle 1",  # [orbD]
 }
 # l10n:end
 enum SubtitleSize { SMALL, MEDIUM, LARGE }
@@ -116,6 +118,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_register_default_actions()
 	load_settings()
+	PadHold.install(get_tree())  # [orbD] hold the pad's map button (View) for the goal tracker
 	for a: String in OS.get_cmdline_user_args():  # [l10n] dev hook: --locale=pseudo|de|es|en
 		if a.begins_with("--locale="):
 			locale_override = a.substr(9)
@@ -202,10 +205,11 @@ func _register_default_actions() -> void:
 		"ui_tab_prev": [_key(KEY_Q), _joy(JOY_BUTTON_LEFT_SHOULDER)],
 		"buy_max": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],
 		"open_codex": [_key(KEY_K), _joy(JOY_BUTTON_MISC1)],
-		"toggle_goals": [_key(KEY_G), _joy(JOY_BUTTON_LEFT_STICK)],  # [hud] expand the goal tracker
+		"toggle_goals": [_key(KEY_G), _joy(JOY_BUTTON_TOUCHPAD), _joy(JOY_BUTTON_PADDLE1)],  # [hud] expand the goal tracker; [orbD] pad: hold View (ui/pad_hold.gd), or touchpad / paddle 1
 		"photo_mode": [_key(KEY_P)],  # [photo] pad: via the pause menu
 		"garden_mode": [_key(KEY_H)],  # [late] Garden Mode (ui/garden_placer.gd); pad: via the pause menu
 		"glim_scan": [_key(KEY_F), _axis(JOY_AXIS_TRIGGER_LEFT, 1.0)],  # [buddy] tap: hex scan, hold: Glim panel
+		"boost": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],  # [orbD] hover-boost on the globe (x4), also the sled's boost
 	}
 	for action: String in _defaults:
 		if not InputMap.has_action(action):
@@ -538,6 +542,10 @@ static func event_label(ev: InputEvent) -> String:
 
 ## Glyph text for an action on the device last used (e.g. "E" or "A"), for HUD prompts.
 func glyph(action: String) -> String:
+	if action == PadHold.LONG_ACTION and last_input_pad:  # [orbD] on a pad the goals are "hold View"
+		var mb: InputEvent = binding(PadHold.SHORT_ACTION, true)
+		if mb and is_pad_event(mb):
+			return tr("hold %s") % PadGlyphs.event_name(mb)
 	var ev: InputEvent = binding(action, last_input_pad)
 	if ev == null:
 		ev = binding(action, not last_input_pad)

@@ -17,6 +17,12 @@ const COLORS: Dictionary = {
 }
 
 var planet: PlanetData
+## [orbE] Round planet (--orbit): the survey reads SphereCells (same ids as `planet`) and draws the
+## far shell's big hexes; sphere_grid places the "you are here" marker; Lumi holds it on local up.
+var cells: SphereCells
+var shell: SphereShell
+var sphere_grid: SphereGrid
+var _shell_snap: Image
 var patch_cell_provider: Callable = func() -> int: return -1
 var is_open: bool = false
 
@@ -57,6 +63,9 @@ var rocket_ready: Callable = func() -> bool: return false
 ## Why the rocket can't launch right now (shown in the hub list while rocket_ready is false).
 var rocket_lock_text: Callable = func() -> String: return "Locked. Upgrade your base to level 5 to build the launch pad."
 var launch_to: Callable = func(_hub: int) -> void: pass
+## [orbD] Which hubs the launch list offers (indices into planet.hubs); unset: the flat game's
+## base hubs. On a walkable globe: the hub sites (planet/sites/orbit_sites.gd).
+var hub_order: Callable = Callable()
 var current_hub: int = 0
 var _fly_t: float = -1.0
 var _fly_from := Vector3.ZERO
@@ -242,7 +251,10 @@ func survey_cost() -> BigNum:
 
 ## Takes a fresh snapshot of the planet state (free on first use).
 func survey() -> void:
-	_snapshot = planet.state.duplicate()
+	if cells and shell:  # [orbE]
+		shell.update(1000.0)  # flush pending big-hex aggregates first
+		_shell_snap = SphereMapMesh.snapshot(shell)
+	_snapshot = cells.state.duplicate() if cells else planet.state.duplicate()
 	_snapshot_time = float(GameState.stats.get("time_played", 0.0))
 	_build_mesh()
 
@@ -300,6 +312,8 @@ func _refresh_hubs() -> void:
 		_hub_list.add_child(l)
 	var here: Vector3 = planet.grid.centers[planet.hubs[current_hub]]
 	var order: Array = range(planet.base_hub_count if planet.base_hub_count > 0 else planet.hubs.size())  # [biomes] frontiers launch from the Rockets tab
+	if hub_order.is_valid():  # [orbD]
+		order = hub_order.call()
 	order.sort_custom(func(a: int, b: int) -> bool:
 		return here.angle_to(planet.grid.centers[planet.hubs[a]]) < here.angle_to(planet.grid.centers[planet.hubs[b]]))
 	for i: int in order.filter(func(x: int) -> bool: return x != current_hub).slice(0, 5):  # [biomes]
@@ -471,6 +485,18 @@ func _fmt_age(s: float) -> String:
 
 
 func _build_mesh() -> void:
+	if shell and _shell_snap:  # [orbE] the big hexes of the far shell, coloured from the snapshot
+		var snap: Image = _shell_snap
+		_globe.mesh = SphereMapMesh.build(shell.coarse, func(c: int) -> Color: return SphereMapMesh.survey_color(SphereMapMesh.shares(snap, c)))
+		if _holo_mat == null:
+			_holo_mat = ShaderMaterial.new()
+			_holo_mat.shader = preload("res://art/shaders/hologram.gdshader")
+		_globe.mesh.surface_set_material(0, _holo_mat)
+		if _grid_lines == null:
+			_grid_lines = MeshInstance3D.new()
+			_grid_lines.mesh = _lat_long_mesh()
+			_pivot.add_child(_grid_lines)
+		return
 	var g: GeoSphere = planet.grid
 	var verts := PackedVector3Array()
 	var cols := PackedColorArray()
@@ -574,8 +600,10 @@ func _process(delta: float) -> void:
 		return
 	var pc: int = patch_cell_provider.call()
 	if pc >= 0:
-		_marker.position = planet.grid.centers[pc] * 1.02
+		_marker.position = (sphere_grid.centers[pc] if sphere_grid else planet.grid.centers[pc]) * 1.02  # [orbE]
 		_marker.scale = Vector3.ONE * (1.0 + 0.3 * sin(Time.get_ticks_msec() * 0.008))
+		if sphere_grid:  # [orbE] "you are here": a gold pin standing on Lumi's big hex
+			_here_pin(sphere_grid.centers[pc])
 	if Engine.get_process_frames() % 30 == 0:
 		_refresh_text()
 
@@ -606,31 +634,53 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _place_handheld(delta: float) -> void:
 	var model: PatchModel = holder.get("model")
-	var hand: Vector3 = model.hand_point() if model else holder.global_position + Vector3(0, 1.0, 0)
+	# [orbE] Local up: on a round planet "up" is the radial direction under Lumi.
+	var up: Vector3 = (holder.call("up") as Vector3) if holder.has_method("up") else Vector3.UP
+	var hand: Vector3 = model.hand_point() if model else holder.global_position + up * 1.0
 	var r: float = 0.3
 	var side: Vector3 = (model.global_basis.x if model else holder.global_basis.x).normalized()
 	var fwd0: Vector3 = -(model.global_basis.z if model else holder.global_basis.z)
-	fwd0.y = 0.0
+	fwd0 -= up * fwd0.dot(up)
 	hand += side * 0.18 + fwd0.normalized() * 0.12
-	var center: Vector3 = hand + Vector3(0, r + 0.1, 0)
+	var center: Vector3 = hand + up * (r + 0.1)
 	_anchor.global_position = center
+	if up != Vector3.UP:
+		_anchor.global_basis = SphereMath.basis_from_up_fwd(up, fwd0.normalized()).scaled(_anchor.scale)
 	# Beam: from the claw up into the globe.
-	var h: float = center.y - hand.y
-	_beam.global_transform = Transform3D(Basis().scaled(Vector3(r * 0.9, h, r * 0.9)), hand + Vector3(0, h * 0.5, 0))
+	var h: float = (center - hand).dot(up)
+	var bb: Basis = SphereMath.basis_from_up_fwd(up, fwd0.normalized()) if up != Vector3.UP else Basis()
+	_beam.global_transform = Transform3D(bb.scaled_local(Vector3(r * 0.9, h, r * 0.9)), hand + up * (h * 0.5))
 	# Camera in front of Patch, a little to the side: Aurora's face lit by the globe it holds.
 	var fwd: Vector3 = -(model.global_basis.z if model else holder.global_basis.z)
-	fwd.y = 0.0
+	fwd -= up * fwd.dot(up)
 	fwd = fwd.normalized()
-	var right: Vector3 = fwd.cross(Vector3.UP)
+	var right: Vector3 = fwd.cross(up)
 	var dist: float = remap(_zoom, 1.4, 6.0, 0.9, 2.6)
-	var want: Vector3 = center + fwd * dist * 1.1 - right * dist * 0.75 + Vector3(0, 0.1 + dist * 0.1, 0)
+	var want: Vector3 = center + fwd * dist * 1.1 - right * dist * 0.75 + up * (0.1 + dist * 0.1)
 	_world_cam.global_position = _world_cam.global_position.lerp(want, clampf(delta * 4.0, 0.0, 1.0))
-	var look_at_p: Vector3 = center.lerp(holder.global_position + Vector3(0, 0.75, 0), 0.4)
-	_world_cam.look_at(look_at_p, Vector3.UP)
+	var look_at_p: Vector3 = center.lerp(holder.global_position + up * 0.75, 0.4)
+	_world_cam.look_at(look_at_p, up)
+
+
+var _pin: MeshInstance3D
+
+
+func _here_pin(dir: Vector3) -> void:
+	if _pin == null:
+		_pin = MeshInstance3D.new()
+		_pin.name = "YouAreHere"
+		_pin.mesh = ProcMesh.cyl(0.006, 0.006, 1.0, 6)
+		_pin.material_override = Mats.lamp(Color(1.0, 0.85, 0.45), 2.2)
+		_pivot.add_child(_pin)
+	var up: Vector3 = dir.normalized()
+	var h: float = 0.14
+	_pin.transform = Transform3D(SphereMath.basis_from_up_fwd(up, up.cross(Vector3.RIGHT if absf(up.x) < 0.9 else Vector3.FORWARD).normalized()).scaled_local(Vector3(1.0, h, 1.0)), up * (1.004 + h * 0.5))
+	_marker.position = up * (1.004 + h)
+	_marker.scale = Vector3.ONE * (1.4 + 0.35 * sin(Time.get_ticks_msec() * 0.008))
 
 
 func focus_on(cell: int) -> void:
-	var c: Vector3 = planet.grid.centers[cell]
+	var c: Vector3 = sphere_grid.centers[cell] if sphere_grid else planet.grid.centers[cell]  # [orbE]
 	_yaw = -atan2(c.x, c.z)
 	_pitch = asin(clampf(c.y, -1.0, 1.0))
 

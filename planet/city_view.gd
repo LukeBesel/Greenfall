@@ -31,6 +31,11 @@ var _props := MeshBatch.new()
 ## coastal, overgrown or corroded cities. White on Verdance.
 var look_tint := Color.WHITE
 var _prop_body: StaticBody3D  # [world2] street furniture and lot fences (PhysLayers.PROP)
+## [orbD] A hub site prefab on the globe (planet/sites/verdance_site.gd): no skyline backdrop
+## (the globe's own far shell is the horizon).
+var skyline: bool = true
+## [orbD] false: sidewalks, kerbs, fences and street furniture only (the site places kit buildings).
+var buildings: bool = true
 
 
 func build(p_layout: CityLayout, p_ground_material: Material) -> void:
@@ -56,8 +61,9 @@ func build(p_layout: CityLayout, p_ground_material: Material) -> void:
 	if not layout.wild:
 		await BuildBudget.check("city:props")
 		await _build_street_props()
-		await BuildBudget.check("city:skyline")
-		await _build_skyline()  # wilderness has its own horizon (FieldView hills and biome wrecks)
+		if skyline:  # [orbD]
+			await BuildBudget.check("city:skyline")
+			await _build_skyline()  # wilderness has its own horizon (FieldView hills and biome wrecks)
 	await BuildBudget.check("city:static")
 	await _static.flush_async(self)
 	await BuildBudget.check("city:props flush")
@@ -138,7 +144,7 @@ func _build_block(key: Vector2i, b: Dictionary) -> void:
 		CityLayout.Block.BUILDINGS:
 			_body = BuildingDetail.Geo.new()
 			_det = BuildingDetail.Geo.new()
-			for bd: Dictionary in b["buildings"]:
+			for bd: Dictionary in (b["buildings"] if buildings else []):  # [orbD]
 				if detailed:
 					_build_building(key, bd)
 				else:

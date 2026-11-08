@@ -129,7 +129,7 @@ func target() -> Dictionary:
 			if pid >= 0:
 				return {"pos": f.piece_pos[pid], "kind": "piece"}
 		"repair":
-			return {"pos": world.BOARD_POS, "kind": "bench"}
+			return {"pos": world.call("bench_pos"), "kind": "bench"}  # [orbB] the globe's bench anchor too
 		"dump":
 			if p.compartment.is_empty():
 				var pid2: int = f.nearest_alive(at)
@@ -137,7 +137,7 @@ func target() -> Dictionary:
 			if world.get("depot") != null:
 				return {"pos": (world.depot as Node3D).global_position, "kind": "pad"}
 		"upgrade":
-			return {"pos": world.BOARD_POS, "kind": "bench"}
+			return {"pos": world.call("bench_pos"), "kind": "bench"}  # [orbB]
 	return {}
 
 

@@ -2103,7 +2103,7 @@ func _ambience(delta: float) -> void:
 	if _cricket_vol > 0.01:
 		if not _crickets.playing:
 			_crickets.play()
-		_crickets.volume_db = linear_to_db(_cricket_vol) - 8.0
+		AudioVol.set_db(_crickets, linear_to_db(_cricket_vol) - 8.0)  # [qafix] crash fix
 	elif _crickets.playing:
 		_crickets.stop()
 	if ambience:

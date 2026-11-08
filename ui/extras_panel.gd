@@ -326,7 +326,7 @@ func _build_nursery() -> void:
 	left.add_child(_wrap(tr("Garden bonus: plants grow %d%% faster (up to %d%%).") % [int(round(Nursery.garden_bonus() * 100.0)), int(round(Nursery.BONUS_CAP * 100.0))], 14, UITheme.GREEN))
 	var recs: Array = Nursery.list()
 	if recs.is_empty():
-		left.add_child(_wrap(tr("No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."), 14, UITheme.MUTED))
+		left.add_child(_wrap(tr("No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."), 14, UITheme.MUTED))
 	for i: int in range(recs.size() - 1, -1, -1):
 		var r: Dictionary = recs[i]
 		var tdef: Dictionary = RobotBuilder.trait_def(str(r.get("trait", "")))

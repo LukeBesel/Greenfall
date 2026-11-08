@@ -100,3 +100,46 @@ func test_waypoint_trail_is_not_additive() -> void:
 	add_child_autofree(w)
 	assert_false((w._mat_trail.shader as Shader).code.contains("blend_add"))
 	assert_true((w._mat_trail.shader as Shader).code.contains("blend_mix"))
+
+
+# world3 via main: egg machines are dead on landing (no lit screen, tube, LED or glow light) and
+# come back when Lumi pokes them.
+func test_egg_machines_start_dead_and_wake() -> void:
+	for kind: String in EggPower.KINDS:
+		var n: Node3D = EggProps.build(kind)
+		add_child_autofree(n)
+		EggPower.kill(n)
+		assert_true(EggPower.is_dead(n), kind)
+		for c: Node in n.find_children("*", "", true, false):
+			if c is MeshInstance3D and (c as MeshInstance3D).material_override is StandardMaterial3D:
+				assert_false(((c as MeshInstance3D).material_override as StandardMaterial3D).emission_enabled, "%s: %s glows" % [kind, c.name])
+			if c is Light3D:
+				assert_eq((c as Light3D).light_energy, 0.0, "%s: light off" % kind)
+			if c is Label3D and not (c as Label3D).shaded:
+				assert_false((c as Label3D).visible, "%s: glowing text hidden" % kind)
+		EggPower.wake(n)
+		assert_false(EggPower.is_dead(n))
+	var v: Node3D = EggProps.build("vending")
+	add_child_autofree(v)
+	var scr: MeshInstance3D = v.get_node("Screen")
+	var lit: Material = scr.material_override
+	EggPower.kill(v)
+	assert_ne(scr.material_override, lit)
+	EggPower.wake(v)
+	assert_eq(scr.material_override, lit, "the original lit screen comes back")
+
+
+# Crash fix (signal 11 on the audio mixer thread): fades don't rewrite a player's volume every frame.
+func test_fade_volume_writes_are_throttled() -> void:
+	var p := AudioStreamPlayer.new()
+	add_child_autofree(p)
+	p.volume_db = -20.0
+	assert_false(AudioVol.set_db(p, -20.1), "a change under 0.25 dB is skipped")
+	assert_true(AudioVol.set_db(p, -19.0))
+	assert_false(AudioVol.set_db(p, -18.0), "a second small step within 50 ms waits")
+	assert_true(AudioVol.set_db(p, -80.0), "a big jump (fade to silence) goes through at once")
+	assert_eq(p.volume_db, -80.0)
+	p.set_meta(AudioVol.META, Time.get_ticks_msec() - AudioVol.MIN_GAP_MS - 1)  # 50 ms later
+	assert_true(AudioVol.set_db(p, -79.0), "after 50 ms the next step is written")
+	var src: String = (load("res://audio/ambience.gd") as Script).source_code
+	assert_false(src.contains("p.volume_db = linear_to_db(cur)"), "ambience fades go through AudioVol")

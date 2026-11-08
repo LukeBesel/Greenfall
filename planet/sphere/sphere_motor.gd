@@ -25,6 +25,9 @@ var gravity: float = 20.0
 var speed: float = 4.6
 ## Boosted top speed = speed * boost_mult; boost_ramp = seconds to reach it from walking.
 var boost_mult: float = 4.0
+## [orbD] Vehicle multiplier on the walking top speed (the hover-sled sets it; Patch keeps
+## setting `speed` from its stat every frame).
+var speed_mult: float = 1.0
 var boost_ramp: float = 0.8
 var boost_lift: float = 0.35
 var jump_speed: float = 6.5
@@ -115,7 +118,7 @@ func step(body: CharacterBody3D, wish: Vector3, delta: float, boost: bool = fals
 	var w: Vector3 = SphereMath.tangent(wish, u).limit_length(1.0)
 	boost_t = move_toward(boost_t, 1.0 if boost and w.length() > 0.1 else 0.0, delta / maxf(boost_ramp, 0.01) * (1.0 if boost else 2.0))
 	var ease_b: float = boost_t * boost_t * (3.0 - 2.0 * boost_t)
-	var top: float = speed * lerpf(1.0, boost_mult, ease_b)
+	var top: float = speed * speed_mult * lerpf(1.0, boost_mult, ease_b)  # [orbD] speed_mult
 	var target: Vector3 = w * top
 	# Slopes: the tangent part of the ground normal points downhill.
 	var down: Vector3 = SphereMath.tangent(ground_normal, u)
@@ -166,6 +169,14 @@ func step(body: CharacterBody3D, wish: Vector3, delta: float, boost: bool = fals
 		body.global_position = p1 + u1 * (ride_height - alt1)
 		if vv < 0.0:
 			vv = 0.0
+	# [orbD] Held up by a body the ground ray doesn't see (a junk mound, a prop on its own layer):
+	# land on it. Without this he hung there "falling" forever, vv grew without bound and the
+	# slide ate all his tangent speed, wedged between a mound and a prop.
+	if not grounded and vv < -2.0 and body.get_real_velocity().dot(u1) > vv * 0.3:
+		grounded = true
+		landed.emit(-vv)
+		vv = 0.0
+	vv = clampf(vv, -40.0, 40.0)
 	# Walls: keep only the tangent velocity the slide left us.
 	var real: Vector3 = SphereMath.tangent(body.get_real_velocity(), u1)
 	if real.length() < hv.length() - 0.01 and body.get_slide_collision_count() > 0:

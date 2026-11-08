@@ -48,7 +48,14 @@ var day_min: float = 24.0
 var day_t: float = 0.5  # planet rotation phase (0..1)
 var sun2: DirectionalLight3D
 var sky_mat: ShaderMaterial
-var lamp: OmniLight3D
+var sky_director: SkyDirector  # [orbE] clock, suns, moon, weather (planet/sky_director.gd)
+var future: FutureLayerSphere  # [orbE] the Future Layer on chunks
+var glim: GlimBot  # [orbE]
+var survey: GlobeView  # [orbE] the survey hologram
+var system_map: SystemMap  # [orbE]
+var patch: Patch  # [orbE] alias of lumi (the slice calls Lumi `patch`)
+var photo: PhotoMode  # [orbE]
+var launching: bool = false  # [orbE] photo mode asks (no rocket flights on the prototype) the light buddy's lantern (nights stay readable)
 var _cubes_root: Node3D
 var _spin_axis := Vector3.UP
 var _sun_dir0 := Vector3.ZERO  # first sun, rotation phase 0, planet frame
@@ -83,11 +90,13 @@ var _perf_n: int = 0
 func _ready() -> void:
 	var t0: int = Time.get_ticks_msec()
 	var seed_v: int = int(DevHooks.get_f("seed", 4471.0))
-	planet = PlanetData.new(seed_v, 7, 10.0)
+	var lv: int = int(DevHooks.get_f("orbit-level", 7.0))  # [orbE] perf: bigger globes (level 8 = 655k hexes)
+	var hex_m: float = DevHooks.get_f("orbit-hex", 10.0)
+	planet = PlanetData.new(seed_v, lv, hex_m)
 	planet.generate()
 	stats["planet_ms"] = Time.get_ticks_msec() - t0
 	var t1: int = Time.get_ticks_msec()
-	grid = SphereGrid.for_hex_size(7, 10.0)
+	grid = SphereGrid.for_hex_size(lv, hex_m)
 	terrain = SphereTerrain.new(grid, seed_v)
 	# The survey's elevation lifts the macro terrain: lakes sit low, hills read from Command view.
 	var sorted_e: PackedFloat32Array = planet.elevation.duplicate()
@@ -96,7 +105,7 @@ func _ready() -> void:
 	cells = SphereCells.from_planet(planet)
 	stats["grid_ms"] = Time.get_ticks_msec() - t1
 	view_mode = DevHooks.get_s("orbit-view", "follow")
-	_place_hubs(int(DevHooks.get_f("orbit-hubs", 10.0)))
+	_place_hubs(int(DevHooks.get_f("orbit-hubs", float(PlanetEnvs.globe("verdance")["hub_count"]))))  # [orbD] hub count from data
 	crews.clear()
 	for i: int in range(1, sites.size() if not SphereCrewDev.wanted() else 0):  # [orbC] the phase C crew replaces the stand-in crews
 		crews.append({"hub": int(sites[i]["cell"]), "rate": 0.25 + 0.05 * (i % 4), "acc": 0.0})
@@ -117,6 +126,7 @@ func _ready() -> void:
 	streamer.name = "Streamer"
 	streamer.shell_city = planet.city
 	add_child(streamer)
+	OrbitQuality.apply_streamer(streamer, Settings.quality, grid.radius_m)  # [orbE] per-preset budgets
 	streamer.setup(grid, terrain, cells)
 	streamer.near_changed.connect(_on_near_changed)
 	junk_view = SphereJunkView.new()
@@ -128,7 +138,7 @@ func _ready() -> void:
 	_cubes_root = Node3D.new()
 	_cubes_root.name = "Cubes"
 	add_child(_cubes_root)
-	_build_base(sites[0])
+	_build_sites()  # [orbD] hub site prefabs (planet/sites/), replaces the grey-box _build_base
 	for i: int in sites.size():
 		_build_beacon(sites[i], i == 0)
 	# Lumi (the real Patch) on the start site, facing north up the main street.
@@ -162,7 +172,7 @@ func _ready() -> void:
 	_build_depot(sites[0])
 	_build_lights()
 	if SphereCrewDev.wanted():  # [orbC] phase C crew (robots/sphere/) instead of the phase A stand-in bots
-		sphere_crew = SphereCrewDev.install(self)
+		sphere_crew = SphereCrewDev.install(self, self, lumi, cam, _write_cell)
 	else:
 		_spawn_bots(hub_cell, 4)
 	_update_centres()
@@ -175,9 +185,10 @@ func _ready() -> void:
 	if DevHooks.has("orbit-trail"):
 		_draw_trail()
 	Settings.apply_quality_to_tree(self)
+	OrbitQuality.apply_world(sky_director, future, Settings.quality)  # [orbE]
 	# The quality pass sets the flat-world fog density (0.0025..0.005); on the orbit that is several
 	# times too thick, and from Command height the whole map turned to grey haze.
-	env.fog_density = 0.0003 if view_mode == "command" else 0.0011
+	env.fog_density = 0.0003 if view_mode == "command" else 0.0011  # [orbE] SkyDirector.fog_scale keeps this ratio
 	if not (DevHooks.has("orbit-nohud") or DevHooks.has("no-hud")):
 		hud = HUD.new()  # the game's HUD: cubes, bale meter, hex readout, prompts
 		hud.patch = lumi
@@ -194,6 +205,9 @@ func _ready() -> void:
 	stats["ready_ms"] = Time.get_ticks_msec() - t0
 	if DevHooks.has("orbit-cash"):
 		_cash_test.call_deferred()
+	_build_sled()  # [orbD] the hover-sled (player/vehicle.gd)
+	if DevHooks.has("orbit-hop"):  # [orbD] --orbit-hop=N[,M]: rocket hop to hub N (and back to M)
+		_dev_hop.call_deferred()
 	print("[orbit] integrated: R=%.0fm hexes=%d around=%.1fkm hubs=%d (nearest hub mean %.0fm, min %.0fm) ready=%dms planet=%dms grid=%dms settle=%dms" % [
 		grid.radius_m, grid.cell_count(), TAU * grid.radius_m / 1000.0, sites.size(), _hub_spacing(false), _hub_spacing(true),
 		stats["ready_ms"], stats["planet_ms"], stats["grid_ms"], stats["settle_ms"]])
@@ -302,9 +316,10 @@ func _place_hubs(n: int) -> void:
 		picks.append(best)
 	var blocked := func(c: int) -> bool: return cells.state[c] == WATER
 	for i: int in picks.size():
-		var s: Dictionary = terrain.reserve_site(picks[i], 140.0 if i == 0 else 45.0, 40.0, blocked)
+		var flat_m: float = 140.0 if i == 0 else 82.0  # [orbD] a ruin_block prefab is 108 m square (corners at 76 m)
+		var s: Dictionary = terrain.reserve_site(picks[i], flat_m, 40.0, blocked)
 		if s.is_empty():
-			s = terrain.reserve_site(picks[i], 140.0 if i == 0 else 45.0, 40.0)  # coast: allow it
+			s = terrain.reserve_site(picks[i], flat_m, 40.0)  # coast: allow it
 		if s.is_empty():
 			continue
 		sites.append(s)
@@ -349,6 +364,75 @@ func _build_beacon(s: Dictionary, home: bool) -> void:
 	root.global_transform = s["transform"]
 	root.add_child(mi)
 	mi.position = Vector3(9.0, cyl.height * 0.5, -9.0) if home else Vector3(0, cyl.height * 0.5, 0)
+
+
+## [orbD] Every hub's site prefab (SiteManager builds the near ones; the start yard now).
+var site_manager: SiteManager
+
+
+func _build_sites() -> void:
+	site_manager = SiteManager.new()
+	site_manager.name = "Sites"
+	add_child(site_manager)
+	site_manager.setup(self, "verdance", sites, planet.seed_value)
+	var p: SitePrefab = site_manager.build_hub(0, true)
+	p.get_parent().name = "StartSite"
+	site_manager.point_shaders_at(p)
+
+
+## [orbD] The hover-sled, parked by the start site's rocket pad. --orbit-sled[=TIER] owns and
+## mounts it at the start (with --orbit-walk=boost it drives the lap test).
+var sled: HoverSled
+
+
+func _build_sled() -> void:
+	HoverSled.register_upgrade()
+	if DevHooks.has("orbit-sled"):
+		GameState.upgrades[HoverSled.UPGRADE_ID] = clampi(int(DevHooks.get_f("orbit-sled", 1.0)), 1, 3)
+	sled = HoverSled.new()
+	sled.name = "HoverSled"
+	sled.lumi = lumi
+	add_child(sled)
+	var sp: SitePrefab = site_manager.prefab(0)
+	var at: Transform3D = sp.global_transform * Transform3D(Basis(), sp.anchor_local("rocket_pad").origin + Vector3(7.0, 0, 2.0))
+	sled.global_transform = Transform3D(at.basis, terrain.ground(at.origin.normalized()))
+	if DevHooks.has("orbit-sled"):
+		sled.mount()
+
+
+## [orbD] Patch asks the world for an interact prompt when nothing of its own applies.
+func interact_prompt(_p: Node) -> String:
+	var t: String = sled.prompt() if sled else ""
+	return ("E   " + t) if t != "" else ""
+
+
+## [orbD] Rocket hops between hubs on this globe (planet/sites/hub_hop.gd).
+var hub_hop: HubHop
+
+
+func hop_to(i: int) -> bool:
+	if hub_hop == null:
+		hub_hop = HubHop.new()
+		hub_hop.name = "HubHop"
+		add_child(hub_hop)
+	var from_i: int = site_manager.nearest if site_manager.nearest >= 0 else 0
+	return await hub_hop.hop(self, from_i, clampi(i, 0, sites.size() - 1))
+
+
+func _dev_hop() -> void:
+	await get_tree().create_timer(1.0).timeout
+	var hops: PackedStringArray = DevHooks.get_s("orbit-hop", "1").split(",")
+	for h: String in hops:
+		var t0: int = Time.get_ticks_msec()
+		var ok: bool = await hop_to(int(h))
+		var d: float = lumi.global_position.distance_to(site_manager.pad_xf(int(h)).origin)
+		print("[hop] to hub %s: %s in %d ms, %.1f m from its pad, site built %s" % [h, "ok" if ok else "FAIL", Time.get_ticks_msec() - t0, d, site_manager.prefab(int(h)) != null])
+		await get_tree().create_timer(1.0).timeout
+
+
+## [orbD] Planet % over the built hubs' regions (owner decision Nov 8); the HUD reads it.
+func planet_fraction() -> float:
+	return site_manager.planet_fraction() if site_manager else 0.0
 
 
 ## The start base as a site prefab: everything in site-local metres on the flat pad (y = 0 is
@@ -522,7 +606,7 @@ func _exit_tree() -> void:
 
 ## The cash-in depot on the start site's pad (site-local metres, like any site prefab).
 func _build_depot(s: Dictionary) -> void:
-	var root: Node3D = get_node_or_null("StartSite")
+	var root: Node3D = site_manager.roots[0] if site_manager else get_node_or_null("StartSite")  # [orbD]
 	depot = Depot.new()
 	depot.name = "Depot"
 	depot.world = self
@@ -530,6 +614,9 @@ func _build_depot(s: Dictionary) -> void:
 	root.add_child(depot)
 	depot.position = Vector3(5.5, 0.0, 3.5)
 	depot.rotation.y = -PI * 0.5
+	var sp: SitePrefab = site_manager.prefab(0) if site_manager else null  # [orbD] on the site's depot anchor
+	if sp:
+		depot.transform = sp.anchor_local("depot")
 
 
 ## Dev: the start loop on the planet, headless. Before the Baler: scoop, roll to the bin (the
@@ -778,6 +865,8 @@ func _process(delta: float) -> void:
 	_update_day(delta, f)
 	if Input.is_action_just_pressed("open_command") and lumi.input is PlayerInput and (lumi.input as PlayerInput).enabled:
 		cam.view = "follow" if cam.view == "command" else "command"
+	if survey and not survey.is_open and Input.is_action_just_pressed("open_globe") and lumi.input is PlayerInput and (lumi.input as PlayerInput).enabled:  # [orbE]
+		survey.open_view()
 	if _orbit_cam:  # the whole little planet with Lumi's side toward the camera
 		var u: Vector3 = lumi.up()
 		var d: Vector3 = (u * 0.82 + f.z * 0.57).normalized()
@@ -810,68 +899,88 @@ var _elapsed: float = 0.0
 
 
 func _build_lights() -> void:
+	# [orbE] SkyDirector's sphere mode owns the clock, suns, moon, weather and sky shader; Glim
+	# (the light buddy) carries the local light that phase A's Lumi lamp stood in for.
 	day_min = DevHooks.get_f("orbit-day", 24.0)
-	var h: Vector3 = grid.centers[int(sites[0]["cell"])]
-	var lon: float = atan2(h.x, h.z)
-	_phi0 = lon + (DevHooks.get_f("orbit-time", 0.42) - 0.5) * TAU
-	sun2 = DirectionalLight3D.new()
-	sun2.name = "SecondSun"
-	sun2.light_color = Color(1.0, 0.72, 0.5)
-	sun2.shadow_enabled = false
-	sun2.sky_mode = DirectionalLight3D.SKY_MODE_LIGHT_ONLY
-	add_child(sun2)
-	lamp = OmniLight3D.new()  # Lumi's own light: nights stay readable (Glim takes this over)
-	lamp.name = "LumiLamp"
-	lamp.omni_range = 11.0
-	lamp.light_color = Color(0.75, 0.88, 1.0)
-	lamp.shadow_enabled = false
-	lumi.add_child(lamp)
-	lamp.position = Vector3(0, 2.4, 0.4)
+	sky_director = SkyDirector.new()
+	sky_director.name = "SkyDirector"
+	sky_director.world = self
+	sky_director.day_period_s = day_min * 60.0
+	sky_director.player_fn = func() -> Vector3: return lumi.global_position
+	sky_director.eye_fn = func() -> Vector3: return _orbit_cam.global_position if _orbit_cam else cam.camera.global_position
+	sky_director.space_fn = func() -> bool: return _orbit_cam != null
+	sky_director.clean_fn = func() -> float: return cells.clean_fraction()
+	sky_director.fog_scale = 0.27 if view_mode == "command" else 1.0
+	add_child(sky_director)
+	var t0: float = DevHooks.get_f("orbit-time", 0.42) if DevHooks.has("orbit-time") or not GameState.flags.has("orbit_spin") else -1.0
+	sky_director.setup_sphere(env, sun, sky_mat, grid.radius_m, t0)
+	if DevHooks.has("orbit-clouds"):
+		sky_director.clouds = DevHooks.get_f("orbit-clouds", 0.4)
+		sky_director.weather_frozen = true
+	if DevHooks.has("orbit-haze"):
+		sky_director.haze = DevHooks.get_f("orbit-haze", 1.0)
+	if DevHooks.has("orbit-freeze-time"):
+		sky_director.frozen = true
+	sun2 = sky_director.companion
+	glim = GlimBot.new()
+	glim.name = "Glim"
+	add_child(glim)
+	glim.target = lumi
+	glim.sky = sky_director
+	glim.set_light(Glim.value("light", "range", 6.0), Glim.value("light", "energy", 1.1))
+	glim.snap_to_target()
+	# [orbE] The Future Layer per cell (SphereCells.level) on the near full-detail chunks.
+	future = FutureLayerSphere.new()
+	future.name = "FutureLayer"
+	add_child(future)
+	future.setup(grid, terrain, cells, streamer)
+	future.eye_fn = sky_director.eye_fn
+	future.sky = sky_director
+	# [orbE] The survey hologram (M): SphereCells through the far shell's big hexes, Lumi's cell marked.
+	survey = GlobeView.new()
+	survey.planet = planet
+	survey.cells = cells
+	survey.shell = streamer.shell
+	survey.sphere_grid = grid
+	survey.patch_cell_provider = func() -> int: return grid.cell_at(lumi.global_position)
+	survey.holder = lumi
+	survey.world_root = self
+	add_child(survey)
+	system_map = SystemMap.new()  # [orbE] the orrery; Verdance's globe shows the walked cells
+	system_map.name = "SystemMap"
+	system_map.world = self
+	add_child(system_map)
+	survey.open_system = func() -> void: system_map.open_map(true)
+	if DevHooks.has("orbit-sysmap"):
+		get_tree().create_timer(DevHooks.get_f("orbit-sysmap", 3.0)).timeout.connect(func() -> void: system_map.open_map(true))
+	patch = lumi  # [orbE] photo mode, the system map and Glim read world.patch
+	photo = PhotoMode.new()
+	photo.world = self
+	add_child(photo)
+	if DevHooks.has("orbit-survey"):  # open the hologram after the world settles (renders, checks)
+		get_tree().create_timer(DevHooks.get_f("orbit-survey", 3.0)).timeout.connect(survey.open_view)
+	if DevHooks.has("orbit-tour"):  # [orbE] day/dusk/night render tour (tools/orbit_sky_tour.gd)
+		var tour := OrbitSkyTour.new()
+		tour.sky = sky_director
+		add_child(tour)
+	if DevHooks.has("orbit-future"):
+		print("[future] dev levels on %d cells" % FutureLayerSphere.dev_seed(cells, grid, grid.cell_at(lumi.global_position), int(DevHooks.get_f("orbit-future", 10.0))))
 
 
 ## World direction toward a sun at rotation phase phi (the planet's spin axis is world +Y).
 static func sun_dir(phi: float, decl: float) -> Vector3:
-	return Vector3(sin(phi) * cos(decl), sin(decl), cos(phi) * cos(decl)).normalized()
+	return SkyDirector.sphere_sun_dir(phi, decl)  # [orbE]
 
 
 ## Local time 0..1 (0.5 = noon) at a point, for the HUD clock and tests.
 func local_time(p: Vector3) -> float:
-	var phi: float = _phi0 + TAU * _elapsed / (day_min * 60.0)
-	var lon: float = atan2(p.x, p.z)
-	return fposmod(0.5 + (phi - lon) / TAU, 1.0)
+	return SkyDirector.local_time_at(sky_director.spin, p)  # [orbE]
 
 
-func _update_day(delta: float, f: Basis) -> void:
-	_elapsed += delta
-	var phi: float = _phi0 + TAU * _elapsed / (day_min * 60.0)
-	var s1: Vector3 = sun_dir(phi, DECLINATION)
-	var s2: Vector3 = sun_dir(phi + 0.42, DECLINATION - 0.12)
-	var u: Vector3 = lumi.up()
-	var e1: float = s1.dot(u)
-	var e2: float = s2.dot(u)
-	var d1: float = smoothstep(-0.06, 0.14, e1)
-	var d2: float = smoothstep(-0.06, 0.14, e2)
-	var day: float = maxf(d1, d2 * 0.8)
-	sun.global_basis = _toward(s1)
-	sun.light_energy = 1.2 * d1
-	sun.shadow_enabled = d1 > 0.05
-	sun2.global_basis = _toward(s2)
-	sun2.light_energy = 0.45 * d2
-	var cam_up: Vector3 = (_orbit_cam.global_position if _orbit_cam else cam.camera.global_position).normalized()
-	sky_mat.set_shader_parameter("up_dir", cam_up)
-	sky_mat.set_shader_parameter("sun1_dir", s1)
-	sky_mat.set_shader_parameter("sun2_dir", s2)
-	sky_mat.set_shader_parameter("day", day)
-	sky_mat.set_shader_parameter("star_phi", phi)
-	sky_mat.set_shader_parameter("space", 1.0 if _orbit_cam else 0.0)
-	env.ambient_light_energy = lerpf(0.75, 1.1, day)
-	env.ambient_light_sky_contribution = lerpf(0.25, 1.0, day)
-	env.ambient_light_color = Color(0.36, 0.44, 0.62)
-	env.tonemap_exposure = lerpf(1.55, 1.25, day)
-	lamp.light_energy = lerpf(2.2, 0.0, day)
-	lamp.visible = day < 0.98
-	stats["local_time"] = local_time(lumi.global_position)
-	stats["daylight"] = day
+func _update_day(_delta: float, _f: Basis) -> void:
+	# [orbE] SkyDirector._process advances the clock and lights the scene; keep the stats.
+	stats["local_time"] = sky_director.time_of_day
+	stats["daylight"] = sky_director.daylight
 
 
 static func _toward(d: Vector3) -> Basis:
@@ -909,6 +1018,8 @@ func _perf_line() -> String:
 		_perf[0] / maxi(_perf_n, 1), _perf[2], _perf[1] / maxi(_perf_n, 1), int(stats.get("junk", 0)), int(stats.get("junk_ms", 0)),
 		RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME),
 		RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME), JSON.stringify(st)]
+	if future:  # [orbE]
+		s += " future=%s fps=%d mem_mb=%d" % [JSON.stringify(future.stats), Engine.get_frames_per_second(), OS.get_static_memory_usage() / 1048576]
 	_perf = [0.0, 0.0, 0.0, 0.0]
 	_perf_n = 0
 	return s

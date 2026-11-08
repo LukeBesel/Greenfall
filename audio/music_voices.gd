@@ -66,7 +66,7 @@ func start(sample: String, pitch: float, gain: float) -> int:
 func set_gain(id: int, gain: float) -> void:
 	var idx: int = _valid(id)
 	if idx >= 0:
-		_players[idx].volume_db = _db(gain)
+		AudioVol.set_db(_players[idx], _db(gain))  # [qafix] crash fix
 
 
 func stop(id: int) -> void:

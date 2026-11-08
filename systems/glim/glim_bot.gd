@@ -199,12 +199,21 @@ func snap_to_target() -> void:
 	if target:
 		global_position = _follow_point()
 		_vel = Vector3.ZERO
-		_yaw = target.global_rotation.y
+		_yaw = 0.0 if _sphere_up() != Vector3.ZERO else target.global_rotation.y  # [orbE]
 
 
 func _follow_point() -> Vector3:
+	if _sphere_up() != Vector3.ZERO:  # [orbE] round planet: beside his head in Lumi's own frame
+		return target.global_position + target.global_basis.orthonormalized() * FOLLOW_OFFSET
 	var b: Basis = Basis(Vector3.UP, target.global_rotation.y)
 	return target.global_position + b * FOLLOW_OFFSET
+
+
+## [orbE] Local up when the target walks a round planet (Patch.sphere), else ZERO.
+func _sphere_up() -> Vector3:
+	if target and is_instance_valid(target) and target.get("sphere") != null and target.has_method("up"):
+		return target.call("up")
+	return Vector3.ZERO
 
 
 ## How bright the lantern should be: full at night, a faint glow by day.
@@ -228,10 +237,15 @@ func _process(delta: float) -> void:
 			var k: float = 9.0
 			_vel += (to * k - _vel * 2.0 * sqrt(k)) * minf(delta, 0.05)
 			global_position += _vel * delta
+		var su: Vector3 = _sphere_up()
+		if su != Vector3.ZERO:  # [orbE] stand on the local up, face with Lumi (yaw is then frame-local)
+			global_basis = target.global_basis.orthonormalized()
+			_yaw = lerp_angle(_yaw, 0.0, clampf(delta * 4.0, 0.0, 1.0))
 		# Face where he's going (or Lumi's facing when still), gently.
-		var flat := Vector3(_vel.x, 0, _vel.z)
-		var face: float = atan2(-flat.x, -flat.z) if flat.length() > 0.4 else target.global_rotation.y
-		_yaw = lerp_angle(_yaw, face, clampf(delta * 4.0, 0.0, 1.0))
+		var flat := Vector3(_vel.x, 0, _vel.z) if su == Vector3.ZERO else Vector3.ZERO
+		if su == Vector3.ZERO:
+			var face: float = atan2(-flat.x, -flat.z) if flat.length() > 0.4 else target.global_rotation.y
+			_yaw = lerp_angle(_yaw, face, clampf(delta * 4.0, 0.0, 1.0))
 	_groove = move_toward(_groove, 1.0 if music_bpm > 0.0 else 0.0, delta * 1.5)
 	if music_bpm > 0.0:
 		_beat += delta * music_bpm / 60.0

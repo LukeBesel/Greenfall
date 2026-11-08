@@ -151,12 +151,36 @@ func _crash_pose() -> void:
 	var fire: Node = _pod.get_node_or_null("ReentryFire")
 	if fire:
 		fire.queue_free()
-	_site = CrashSite.attach(world, _pod, POD_POS + Vector3(0, _ground(POD_POS), 0), 0.5)
+	_site = CrashSite.attach(world, _pod, _w(POD_POS + Vector3(0, _ground(POD_POS), 0)), 0.5)  # [orbE]
 
 
 func _ground(p: Vector3) -> float:
-	var layout: CityLayout = world.field.layout
+	var layout: CityLayout = world.field.get("layout") as CityLayout  # [orbE] the globe's field has none
 	return clampf(layout.height_at(p.x, p.z), 0.0, 0.3) if layout else 0.0
+
+
+# --- [orbE] Round planet: the in-world shots in the pod site's frame -----------------------
+## The landing and wake shots are written in flat coordinates around POD_POS (+Y up). On a
+## globe, site_xf maps them onto the pod anchor's frame (origin on the pad, +Y the local up), so
+## every shot, the chase camera and Lumi's drift stay level on the curve. Identity on the flat
+## game: nothing there changes. The globe slice sets it with site_for_anchor(pod anchor).
+var site_xf := Transform3D.IDENTITY
+
+
+static func site_for_anchor(anchor: Transform3D) -> Transform3D:
+	return anchor * Transform3D(Basis(), -POD_POS)
+
+
+func _w(v: Vector3) -> Vector3:  # intro (flat) coordinates -> world
+	return site_xf * v
+
+
+func _v(p: Vector3) -> Vector3:  # world -> intro coordinates
+	return site_xf.affine_inverse() * p
+
+
+func _up() -> Vector3:
+	return site_xf.basis.y.normalized()
 
 
 func _model() -> PatchModel:
@@ -578,7 +602,7 @@ func _phase_landing() -> void:
 	var land: Vector3 = POD_POS + Vector3(0, _ground(POD_POS), 0)
 	_pod.visible = true
 	var start: Vector3 = land + Vector3(-120, 95, 80)
-	_pod.global_position = start
+	_pod.global_position = _w(start)  # [orbE]
 	_fire = build_fire()
 	_pod.add_child(_fire)
 	# Chase shot: riding above the burning pod, the junk city rushing up below.
@@ -593,23 +617,23 @@ func _phase_landing() -> void:
 		trail_t += dt
 		var k: float = clampf(trail_t / dur, 0.0, 1.0)
 		var pos: Vector3 = start.lerp(land, k * k)
-		_pod.global_position = pos
-		_pod.look_at(pos + dir, Vector3.UP)
+		_pod.global_position = _w(pos)  # [orbE]
+		_pod.look_at(_w(pos + dir), _up())
 		_pod.rotate_object_local(Vector3.RIGHT, -PI * 0.5)
 		_pod.rotate_object_local(Vector3.UP, trail_t * 1.6)
 		_flicker_fire(_fire, trail_t)
 		if k < 0.7:
 			# Above and behind, looking down past the pod at the city.
-			_cam.global_position = pos - dir * 10.0 + Vector3(2.5, 5.0, 0)
-			_cam.look_at(pos.lerp(land, 0.6) + Vector3(0, 6.0, 0), Vector3.UP)
+			_cam.global_position = _w(pos - dir * 10.0 + Vector3(2.5, 5.0, 0))  # [orbE]
+			_cam.look_at(_w(pos.lerp(land, 0.6) + Vector3(0, 6.0, 0)), _up())
 			_cam.fov = 62.0
 		elif _cam_manual:
 			_cam_manual = false
 			_cam.fov = 55.0
 			_shot(land + Vector3(-13, 3.5, 15), land + Vector3(-6, 12, 6), land + Vector3(-11, 3, 13), land + Vector3(0, 1.5, 0), dur * 0.3)
 		if randf() < 0.7:
-			Vfx.burst("steam", pos - dir * 2.0, Color(0.45, 0.42, 0.4, 0.8), 0.7)
-			Vfx.burst("sparkle", pos, Color(1.0, 0.6, 0.25), 0.3)
+			Vfx.burst("steam", _w(pos - dir * 2.0), Color(0.45, 0.42, 0.4, 0.8), 0.7)  # [orbE]
+			Vfx.burst("sparkle", _w(pos), Color(1.0, 0.6, 0.25), 0.3)
 		await get_tree().process_frame
 	_cam_manual = false
 	if _skipped:
@@ -620,12 +644,12 @@ func _phase_landing() -> void:
 		_fire.queue_free()
 		_fire = null
 		EscapePod.set_open(_pod, true, CrashSite.LEAN.x)
-		var o_from: Vector3 = _pod.global_transform * Vector3(0, 0.3, -0.3)
-		var o_to: Vector3 = _pod.global_transform * Vector3(0, 0.05, -2.2)
+		var o_from: Vector3 = _v(_pod.global_transform * Vector3(0, 0.3, -0.3))  # [orbE] intro coordinates
+		var o_to: Vector3 = _v(_pod.global_transform * Vector3(0, 0.05, -2.2))
 		o_to.y = _ground(o_to) + 0.05
 		patch.visible = true
-		patch.global_position = o_to
-		patch.look_at(o_to + (o_to - o_from) * Vector3(1, 0, 1), Vector3.UP)
+		patch.global_position = _w(o_to)
+		patch.look_at(_w(o_to + (o_to - o_from) * Vector3(1, 0, 1)), _up())
 		if model:
 			model.core_glow = 0.15
 		await _wake(o_from, o_to)
@@ -638,14 +662,14 @@ func _phase_landing() -> void:
 	Audio.play("crunch", 0.6, 0.0)
 	EventBus.shake_requested.emit(1.0)
 	for i: int in 8:
-		Vfx.burst("dust", land + Vector3(randf_range(-1.8, 1.8), 0.3, randf_range(-1.8, 1.8)), Color(0.6, 0.55, 0.48, 0.8), 1.6)
-	Vfx.burst("bits", land + Vector3(0, 0.5, 0), Color(0.4, 0.38, 0.34), 1.0)
+		Vfx.burst("dust", _w(land + Vector3(randf_range(-1.8, 1.8), 0.3, randf_range(-1.8, 1.8))), Color(0.6, 0.55, 0.48, 0.8), 1.6)  # [orbE]
+	Vfx.burst("bits", _w(land + Vector3(0, 0.5, 0)), Color(0.4, 0.38, 0.34), 1.0)
 	_shot(land + Vector3(-11, 3, 13), land + Vector3(0, 1.5, 0), land + Vector3(-9, 2.4, 11), land + Vector3(0, 1.2, 0), 3.0)
 	if await _hold(2.4):
 		return
 	# Close on the door: a hiss of steam, the seal pops, it drops into a ramp, warm light spills
 	# out and Lumi drifts out nearly powerless.
-	var front: Vector3 = _pod.global_transform * Vector3(1.1, 1.05, -4.9)
+	var front: Vector3 = _v(_pod.global_transform * Vector3(1.1, 1.05, -4.9))  # [orbE] intro coordinates
 	_shot(front + Vector3(0, 0.45, 0), land + Vector3(0, 1.0, 0), front, land + Vector3(0, 0.75, 0), 8.0)
 	if await _hold(1.2):
 		return
@@ -658,16 +682,16 @@ func _phase_landing() -> void:
 	Audio.play("hydraulic", 0.8, -4.0)
 	if await _hold(open_t - 0.6 + 0.5):
 		return
-	var out_from: Vector3 = _pod.global_transform * Vector3(0, 0.3, -0.3)
-	var out_to: Vector3 = _pod.global_transform * Vector3(0, 0.05, -2.2)
+	var out_from: Vector3 = _v(_pod.global_transform * Vector3(0, 0.3, -0.3))  # [orbE] intro coordinates
+	var out_to: Vector3 = _v(_pod.global_transform * Vector3(0, 0.05, -2.2))
 	out_to.y = _ground(out_to) + 0.05
 	patch.visible = true
-	patch.global_position = out_from
+	patch.global_position = _w(out_from)
 	# Patch faces -Z: look along the drift so Lumi floats out face first.
-	patch.look_at(patch.global_position + (out_to - out_from) * Vector3(1, 0, 1), Vector3.UP)
+	patch.look_at(_w(out_from + (out_to - out_from) * Vector3(1, 0, 1)), _up())
 	if model:
 		model.core_glow = 0.15
-	create_tween().tween_property(patch, "global_position", out_to, 2.8).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	create_tween().tween_property(patch, "global_position", _w(out_to), 2.8).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	if await _hold(3.0):
 		return
 	await _wake(out_from, out_to)
@@ -699,11 +723,11 @@ func _wake(out_from: Vector3, out_to: Vector3) -> void:
 	if await _hold(1.4):
 		return
 	if model:
-		model.look_toward(out_to + Vector3(-3, 1, 2))
+		model.look_toward(_w(out_to + Vector3(-3, 1, 2)))  # [orbE]
 	if await _hold(1.1):
 		return
 	if model:
-		model.look_toward(out_to + Vector3(3, 1, 2))
+		model.look_toward(_w(out_to + Vector3(3, 1, 2)))
 	# WREN's one last message gets through, then the relay dies (the objectives card follows).
 	var all: Dictionary = lines()
 	if not all.has("brief_0"):
@@ -719,7 +743,7 @@ func _wake(out_from: Vector3, out_to: Vector3) -> void:
 		model.flash()
 		Audio.play("chirp" if Audio.has_sound("chirp") else "blip", 1.3, -6.0)
 	# Pull back so the battery readout and Lumi share the frame while her signal breaks up.
-	_shot(_cam.global_position, out_to + Vector3(0, 0.7, 0), out_to + fwd * 3.2 + Vector3(1.4, 1.5, 0.6), out_to + Vector3(0, 0.6, 0), 12.0)
+	_shot(_v(_cam.global_position), out_to + Vector3(0, 0.7, 0), out_to + fwd * 3.2 + Vector3(1.4, 1.5, 0.6), out_to + Vector3(0, 0.6, 0), 12.0)
 	var k: int = 1
 	while all.has("brief_%d" % k):
 		_say("brief_%d" % k)
@@ -868,8 +892,8 @@ func _fade_to(a: float, dur: float) -> void:
 
 
 func _shot(from: Vector3, from_look: Vector3, to: Vector3, to_look: Vector3, dur: float) -> void:
-	_cam_from = Transform3D(Basis(), from).looking_at(from_look, Vector3.UP)
-	_cam_to = Transform3D(Basis(), to).looking_at(to_look, Vector3.UP)
+	_cam_from = Transform3D(Basis(), _w(from)).looking_at(_w(from_look), _up())  # [orbE] site frame
+	_cam_to = Transform3D(Basis(), _w(to)).looking_at(_w(to_look), _up())
 	_cam_dur = maxf(dur, 0.01)
 	_cam_t = 0.0
 	if _cam:

@@ -289,8 +289,13 @@ func _set_xf(pid: int) -> void:
 		_g_mm[_grp[pid] * 2 + _where[pid] - 1].set_instance_transform(_slot[pid], sfield.piece_xf[pid])
 
 
-func set_focus_hex(_id: int) -> void:
-	pass  # phase B: the ground shader's focus ring reads a cell id
+var focus_cell: int = -1
+
+
+## [orbB] The cell Lumi is working (a cell id). Like the flat game, no ground ring is drawn: the
+## objective outline (story/objective_hex.gd) marks hexes; this keeps the id for whoever asks.
+func set_focus_hex(id: int) -> void:
+	focus_cell = id
 
 
 ## The ground reads SphereCells' state texture; here the cell's heaps shrink and the pieces on

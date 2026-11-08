@@ -28,6 +28,10 @@ uniform float restore = 0.0;   // 0 ruined .. 1 restored (hex levels)
 uniform float stage = 1.0;     // base level 1..5
 uniform float night = 0.0;
 uniform float time_s = 0.0;
+uniform float pan_amt = 1.0;
+// Local frame for strata and slopes (a site placed on a globe passes its own up and origin).
+uniform vec3 local_up = vec3(0.0, 1.0, 0.0);
+uniform vec3 local_origin = vec3(0.0);  // salt pans on open ground (sites turn them down)
 
 varying vec3 wpos;
 varying vec3 wnrm;
@@ -80,8 +84,8 @@ vec3 two_scale(sampler2D t, vec2 p, float s) {
 }
 
 // Sediment band colour at height y (gently dipping, wavy, a few thin pale beds).
-vec3 strata(vec3 w) {
-	float u = w.y * 0.16 + w.x * 0.0035 - w.z * 0.002 + (fbm(w.xz * 0.004) - 0.5) * 1.6;
+vec3 strata(vec3 w, float h) {
+	float u = h * 0.16 + w.x * 0.0035 - w.z * 0.002 + (fbm(w.xz * 0.004) - 0.5) * 1.6;
 	float k = fract(u / 5.0) * 5.0;
 	vec3 c = c_ochre * 1.05;
 	c = mix(c, c_terra, smoothstep(0.8, 1.05, k) - smoothstep(1.9, 2.15, k));
@@ -100,7 +104,9 @@ void vertex() {
 void fragment() {
 	vec2 p = wpos.xz;
 	vec3 n = normalize(wnrm);
-	float slope = 1.0 - clamp(n.y, 0.0, 1.0);
+	vec3 up = normalize(local_up);
+	float lh = dot(wpos - local_origin, up);
+	float slope = 1.0 - clamp(dot(n, up), 0.0, 1.0);
 	float lvl = COLOR.r;
 	float flat_b = COLOR.g;
 	float across = COLOR.b;
@@ -114,7 +120,7 @@ void fragment() {
 	tw /= (tw.x + tw.y + tw.z);
 	vec3 rock = two_scale(tex_wall, wpos.zy, 0.07) * tw.x + two_scale(tex_wall, wpos.xy, 0.07) * tw.z + two_scale(tex_wall, p, 0.07) * tw.y;
 	float rl = dot(rock, vec3(0.33));
-	vec3 st = strata(wpos);
+	vec3 st = strata(wpos, lh);
 	vec3 wall_c = st * (0.55 + rl * 0.55);
 	// Benches: red gravel and haul dust, ochre sand drifting against the toe.
 	vec3 grav = two_scale(tex_bench, p, 0.22);
@@ -129,7 +135,7 @@ void fragment() {
 	float rough = mix(0.93, 0.88, wallness);
 	// Plateau salt pans (flat ground beyond the rim) and the dried floor of the pit.
 	float flatness = 1.0 - smoothstep(0.05, 0.14, slope);
-	float pan = smoothstep(0.62, 0.67, fbm(p * 0.0026 + 3.0)) * (1.0 - pit) * flatness;
+	float pan = smoothstep(0.62, 0.67, fbm(p * 0.0026 + 3.0)) * (1.0 - pit) * flatness * pan_amt;
 	pan = max(pan, (1.0 - step(0.02, lvl)) * flat_b * pit * (1.0 - restore * 1.4));
 	if (pan > 0.001) {
 		float cr = cells(p * 0.55);
@@ -140,7 +146,7 @@ void fragment() {
 		rough = mix(rough, 0.75, pan);
 	}
 	// Tailings stains: grey-yellow streaks running down the walls from the benches.
-	float streak = smoothstep(0.62, 0.8, fbm(vec2(p.x * 0.09 + p.y * 0.09, wpos.y * 0.02) + 4.0)) * wallness * pit * (1.0 - restore);
+	float streak = smoothstep(0.62, 0.8, fbm(vec2(p.x * 0.09 + p.y * 0.09, lh * 0.02) + 4.0)) * wallness * pit * (1.0 - restore);
 	alb = mix(alb, vec3(0.7, 0.66, 0.5), streak * 0.35);
 
 	// --- Restoration: terraces green from the floor up --------------------------------------
@@ -155,12 +161,12 @@ void fragment() {
 			float kind = h21(vec2(plot, floor(lvl * 40.0 + 0.5)));
 			float row = sin(UV.y * 6.2831 / 1.35);
 			vec3 leaf = two_scale(tex_leaf, p, 0.3);
-			vec3 soil = two_scale(tex_soil, p, 0.25) * vec3(0.72, 0.56, 0.42);
+			vec3 soil = mix(two_scale(tex_soil, p, 0.25) * vec3(0.72, 0.56, 0.42), two_scale(tex_leaf, p, 0.3) * vec3(0.7, 0.85, 0.5), 0.35);
 			vec3 crop = leaf * vec3(0.85, 1.05, 0.62);
 			crop = mix(crop, leaf * vec3(1.35, 1.12, 0.45), step(0.55, kind) * (1.0 - step(0.78, kind)));  // grain
 			crop = mix(crop, leaf * vec3(0.55, 0.82, 0.45), step(0.78, kind));                          // dark greens
 			crop = mix(crop, vec3(0.62, 0.32, 0.22) * (0.8 + 0.4 * n3), step(0.93, kind));              // sorghum red
-			float rows = smoothstep(-0.25, 0.35, row);
+			float rows = mix(0.72, smoothstep(-0.25, 0.35, row), 0.38);
 			vec3 farm = mix(soil, crop, mix(rows, 0.9, step(0.55, kind) * (1.0 - step(0.78, kind))));
 			// Paths between plots, a crest strip of succulents and gravel, the channel at the toe.
 			float edge = smoothstep(0.0, 0.04, abs(fract(UV.x / 26.0 + n2 * 0.6) - 0.5) - 0.47);
@@ -179,7 +185,7 @@ void fragment() {
 		} else if (g > 0.001) {
 			// Vines hanging from the crest down the wall.
 			float len = 0.25 + 0.6 * fbm(vec2(UV.x * 0.35, 3.0));
-			float vine = smoothstep(1.0 - len, 1.0 - len + 0.15, across) * smoothstep(0.35, 0.6, fbm(vec2(UV.x * 0.9, wpos.y * 0.3)));
+			float vine = smoothstep(1.0 - len, 1.0 - len + 0.15, across) * smoothstep(0.35, 0.6, fbm(vec2(UV.x * 0.9, lh * 0.3)));
 			vec3 leaf = two_scale(tex_leaf, wpos.xy + wpos.zy, 0.35) * vec3(0.8, 1.0, 0.6);
 			alb = mix(alb, leaf, vine * g * 0.9);
 		}

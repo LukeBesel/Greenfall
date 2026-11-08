@@ -30,6 +30,27 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - Lineup render: `tools/kit_lineup.sh screenshots/kit/lineup`, or `--kit-lineup`. Tests: tests/test_art_kit.gd.
 - Next: yard, anvil, ochre, seas and orbD adopt the kit. The kit can add more building kinds on request.
 
+## Update: Tidewell + Rime hub sites at the art bar, on the kit (wt/p_seas, Nov 8)
+- Tidewell (`planet/planets/tidewell/tide_props.gd`, used by `sites.gd` and the district env): new ore
+  barge (lofted hull with boot-top, hoppers with slid lids, lattice conveyor boom, funnelled wheelhouse,
+  windlass and chain, lost container), jack-up dredge rig (K-braced lattice legs through jack houses,
+  panel-wall hull, stacked quarters, helideck, derrick, crane, bucket ladder, pipe racks, lifeboat, stair
+  tower to a boat landing) and the hub raft (three plank platforms on pontoons with gangways, a slipway,
+  shacks, crane, fuel tank, clutter). All parts are KitMesh.Builder keys on the Tidewell palette
+  (white / sky, with yellow / orange / red utility parts); state follows restoration through
+  KitMat (broken / repaired / restored); lamps light only when restored.
+- Colliders: hulls, legs, cabins, tanks, booms and containers are PROP static bodies (skimmers, robots and
+  Lumi stop at them; before, they drove through); raft decks and the slipway are WORLD.
+- Rime: new `planet/planets/rime/rime_site.gd` (`RimeSite.place(id, root, stage, restore, opts)`, the
+  TideSite API shape): hub_camp, derrick, borehole, hot_springs on local ice patches (drifts, ridges,
+  cracks, a plated pad with kerbs; walkable trimesh) with kit cabins on skids, a greenhouse dome, tanks,
+  comms mast, snowcat. Preview: `res://planet/planets/rime/site_preview.tscn -- --site=hub_camp
+  [--site-stage=1 --site-restore=1 --time=0.9 (night)]`. `rime_ice.gdshader` gained `moss_centre`/`moss_off`.
+- Tests: `tests/test_p_seas_sites.gd`. Renders: screenshots/p_seas/.
+- Follow-up: reef coral, hub_stilts, buoy_field and the flat env's drowned towers and lighthouses are on
+  the kit too (TideProps.drowned_tower / lighthouse; preview `--site-props`). Left: the flat env's base
+  moorings, floating gardens and future platforms still use older parts.
+
 ## Update: loading screen keeps moving, Rime night glint (claude/greenfall-leftovers, Nov 8)
 - **District build across frames.** Behind the loading screen `scenes/slice.gd` builds as a coroutine: the
   heavy first half (field generation, FieldView ground/mounds/junk/landmarks, litter, far junk, CityView,
@@ -76,6 +97,10 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - Demo: `--sphere-walk[=boost|play]`, with `--sphere-start=pole`, `--sphere-view=command` and `--sphere-scene=horizon`. Tests: `tests/test_sphere_move.gd`.
 - True-scale boost lap at R 1840 m: back within 0.46 m after 11.56 km.
 - Next (waits for rollout approval): Patch.gd uses SphereMotor behind a flag.
+## Update: Bots tab list + one Locker for all looks (wt/ui7, Nov 8)
+- Done: the Bots tab uses the list + detail pattern (`ui/bench_bots.gd`): Build (one row per robot type), Tiers (next Mk), Fleet (fleet upgrades: cheapest few + two locked), and a hidden Fabricator category for orbC (`BenchBots.set_fabricator(func(world) -> Array)`, rows in the ListDetail format, cat "fabricator").
+- Done: all cosmetics live at the Locker (yard build), in four sections: Lumi, Glim (CosmeticTargets), Bots and Rocket. Bots: one design per robot TYPE (`systems/robot_design.gd`: Builder parts, paint = fleet liveries, glow colour); every robot of the type wears it, including new and Fabricator-built ones (Fleet.spawn) and restored ones (the design wins on load). Rocket: ship paint (6), trim (3) and engine glow (4) from `data/ship_style.json` (`systems/ship_style.gd`), read by ShipModel's materials; tiers keep their shapes; tier-locked looks stay hidden. The Glim panel now points to the Locker. Tests: `tests/test_ui6.gd`; the save round trip covers robot designs and ship looks.
+
 ## Update: simpler workbench (wt/ui2, Nov 7)
 Owner playtest #1: "SIMPLIFY GAME". The workbench is seven tabs (Lumi, Bots, Hub, Research, Rockets, Requests, Locker) with bigger text, one card style (`ui/bench_kit.gd`: card, title/body sizes, big button, cost row with the currency icons, spot pips) and every cost in Parts and/or cubes.
 - Done: robot part items are gone from the player-facing flow. `systems/robot_parts.gd`: a dug-up / spotted / rewarded robot part pays Parts at its rarity's value (Rusty 10 ... Legendary 450, `data/parts.json`); `GameState.parts` stays an empty legacy array that `RobotParts.fold_items()` folds into Parts every fleet tick. Save v4 (`SaveManager.migrate_v4`, after pace's v3) converts held items at the same values. Robot builds cost cubes + Parts (`data/robots.json` "parts", x1.2 per robot owned), Mk tiers cubes + `Fleet.TIER_PARTS` (200 / 700 / 2000); no recipes, no Control Cores, no rarity bonus.
@@ -820,3 +845,17 @@ rebuilt on the sphere. What carries over, and how to place it on a globe:
   up (the water source) as hex levels rise; ruined (1) rust, slumped booms, extra scrap -> mid (2-3) repainted,
   shade sails -> future (4-5) white machines with planters, solar sails, a thin light seam on crests, waterfalls.
 - Dev: `--planet-env=ochre`, `--ochre-lookbook=1|2` (kit under both suns), `--ochre-restore`, `--ochre-cam`.
+## Update: hub sites, rocket hop, hover-sled (wt/orbD, phase D, Nov 8)
+- Done: **Site API** `PlanetEnvs.build_site(site_root, site, stage 1-5, restoration)` -> `SitePrefab` (planet/sites/site_prefab.gd): anchors depot/bench/rocket_pad/door, collision (trimesh of solid meshes unless the builder has bodies), `set_stage`/`set_restoration` (in-place re-dress where the builder supports it, else rebuild). Dispatch in `planet/sites/site_builders.gd`: Verdance (`VerdanceSite`: real CityView + StreetDressing blocks, ruined), Rime (p_seas' `RimeHubSite` via planets.json, like Tidewell), Anvil/Ochre/Tidewell via their own `build`/`place`. `PlanetEnvs.globe(id)` gives radius/hub count (data/planets.json `globe`, else the owner's size table).
+- Done: `site_inv` shader global (project.godot): world-space maths in building_city, deco, yard_slab, puddle, mural, fabric, light_seam, junk_coat run in the nearest site's frame on the globe (identity on the flat game).
+- Done: `SiteManager` (globe): builds hub prefabs within 420 m of Lumi, frees them past 650 m, clears junk under building footprints, planet % over the built hubs' regions (18 rings; HUD reads `world.planet_fraction()`), per-hub growth radius that greens the rest (SphereCells + survey PlanetData), save_state/load_state ready for B1.
+- Done: `HubHop` rocket hop between hubs on the same globe (no scene change): lift-off, arc over the curve, land on the target's rocket_pad; 7-15 s by distance. `--orbit-hop=N[,M]`.
+- Done: `HoverSled` (player/vehicle.gd): globe-only Upgrades entry `hover_sled` (3 tiers), retunes Lumi's SphereMotor (`speed_mult`, inertia); E to ride/leave. `--orbit-sled[=T]`. Boost is a Settings action (Shift / LS click; the goals toggle lost its LS pad binding).
+- Next (after B1): wire SiteManager into slice-on-globe (hub levels -> set_level, built flags, saves), GlobeView/_launch -> HubHop, place the pod/bench/bin on the start site's anchors.
+
+## Update: round planet phase E (wt/orbE, Nov 8)
+- Done: sky and day/night on the globe. SkyDirector sphere mode (planet/sky_director.gd) drives the world-space sky (planet/orbit/orbit_sky.gdshader) over OrbitDay. The spin is the clock and the local time follows Lumi's longitude. Binary suns from BinarySun.suns_for, a full moon opposite the suns, a cloud deck anchored to the planet, haze lifting with cleaning, storm and Long Nights, readable nights (night lift). Glim's lantern replaces the Lumi lamp.
+- Done: Future Layer per cell on LOD-0 chunks (planet/future_layer_sphere.gd), from SphereCells.level. Builds are budgeted at 2.5 ms per frame.
+- Done: survey hologram (GlobeView sphere mode, far-shell big hexes, "you are here" pin, hand-held on local up), PlanetGlobe overlay of the walked cells, system map globes sized by GlobeSize, photo mode, and core-charge and rocket cameras on local up (WorldUp).
+- Done: perf budgets per preset (planet/orbit_quality.gd) and numbers in docs/PERFORMANCE.md "Round planet". All of it is wired into the real slice through planet/orbit_layers.gd (one call in scenes/slice_orbit.gd).
+- Pending: day/dusk/night renders (killed for memory twice in the shared container; command in the orbE report), rendered draw-call numbers, Mac fps, flipping the default (main, after owner sign-off).

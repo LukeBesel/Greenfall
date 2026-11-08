@@ -278,6 +278,7 @@ func _ready() -> void:
 	var bb: BuildBudget = BuildBudget.current
 	BuildBudget.end()
 	_build_board()
+	YardArt.dress_board(_ruin_bits, self)  # [yard] chunky kit look for the lean-to, bench, lamp, generator
 	if DevHooks.has("future"):  # --future=N preview: the hub at level N too (FutureLayer.apply_preview)
 		GameState.world["hub_level"] = clampi(int(DevHooks.get_f("future", 5.0)), 1, 5)
 	hub = Hub.new()
@@ -1035,6 +1036,12 @@ func collect_piece(pid: int) -> void:
 		_on_hex_clean(hid)
 
 
+## [orbB] A bite was taken off a heavy globe piece (Patch._take_piece): the cell's numbers follow.
+func piece_bitten(pid: int) -> void:
+	if orbit:
+		orbit.piece_bitten(pid)
+
+
 func _on_hex_clean(hid: int) -> void:
 	if orbit:  # [orbB]
 		orbit.on_hex_clean(hid)
@@ -1236,14 +1243,20 @@ func interact_prompt(p: Patch) -> String:
 const BENCH_RANGE: float = 3.2
 
 
+## [orbB] Where the workbench is: BOARD_POS on the flat game, the start site's bench anchor on the globe.
+func bench_pos() -> Vector3:
+	return orbit.bench_position() if orbit else BOARD_POS
+
+
 func near_bench() -> bool:
-	if orbit:  # [orbB] the bench comes with the start site
-		return false
+	if orbit:  # [orbB] the start site's bench anchor
+		return orbit.near_bench()
 	return patch != null and patch.global_position.distance_to(BOARD_POS) < BENCH_RANGE
 
 
 func open_upgrades() -> void:
 	if orbit:  # [orbB]
+		orbit.open_upgrades()
 		return
 	if pause_menu.is_open:
 		return
@@ -1310,8 +1323,13 @@ func _setup_research_codex() -> void:
 
 
 func _open_codex(tab: String = "") -> void:
+	if orbit:  # [orbB]
+		orbit.open_codex(tab)
+		return
 	if codex.is_open:
 		return
+	if pause_menu.is_open:  # [ui7] never stack the Codex on the pause menu
+		pause_menu.close_menu()
 	codex.open_screen(tab)
 	if patch.input is PlayerInput:
 		(patch.input as PlayerInput).enabled = false
@@ -1426,6 +1444,7 @@ func _restore_world(from_memory: bool = false) -> void:
 	if GameState.world.has("patch"):
 		patch.from_dict(GameState.world["patch"])
 	fleet.restore()
+	BotFabricator.attach(self)  # [orbC] a built Bot Fabricator keeps its line running
 	if from_memory:
 		return
 	var away: float = Time.get_unix_time_from_system() - GameState.saved_unix

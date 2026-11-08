@@ -13,3 +13,4 @@ __pycache__/
 /screenshots/**/*.ogg
 /screenshots/**/*.mp3
 /screenshots/autoplay_milestones_*.json
+godot-dl/

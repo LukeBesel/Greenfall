@@ -15,6 +15,7 @@ const BUILD_CATS: Array = [["yard", "Yard"], ["machines", "Machines"], ["story",
 const BUILD_CAT_OF: Dictionary = {
 	"conveyor": "machines", "auto_baler": "machines", "recycler": "machines", "telescope": "machines", "air_scrubber": "machines",
 	"signal_tower": "story", "signal_jammer": "story", "museum": "story",
+	"bot_fabricator": "machines",  # [orbC]
 }
 
 
@@ -178,10 +179,16 @@ static func _rocket(world: Node) -> Array:
 static func upgrades_counter() -> String:
 	var have: int = 0
 	var total: int = 0
+	# [ui7] Only what's open to you now (unlocked, machine standing): not every level in the game.
 	for id: String in Economy.upgrade_order:
-		if str(Economy.upgrade_defs[id].get("tab", "patch")) in ["patch", "hub"]:
-			have += GameState.level_of(id)
-			total += maxi(Economy.upgrade_max(id), GameState.level_of(id))
+		var d: Dictionary = Economy.upgrade_defs[id]
+		if not (str(d.get("tab", "patch")) in ["patch", "hub"]) or not Economy.is_unlocked(id):
+			continue
+		var rs: String = str(d.get("requires_station", ""))
+		if rs != "" and not Stations.built_in_state(rs):
+			continue
+		have += GameState.level_of(id)
+		total += maxi(Economy.upgrade_max(id), GameState.level_of(id))
 	return _tr("INSTALLED  %d / %d") % [have, total]
 
 

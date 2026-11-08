@@ -185,8 +185,8 @@ func repair_bench() -> void:
 	var p_in: Variant = patch.get("input") if patch else null
 	if p_in is PlayerInput:
 		(p_in as PlayerInput).enabled = false
-	var target: Vector3 = _bench.global_position + Vector3(0, 0.9, 0) if _bench else world.BOARD_POS
-	if patch:
+	var target: Vector3 = _bench.global_position + OrbitUp.up(_bench.global_position) * 0.9 if _bench else world.BOARD_POS  # [orbB] local up
+	if patch and not OrbitUp.on_globe():  # [orbB] the globe's Patch turns through its SphereMotor
 		var d: Vector3 = target - patch.global_position
 		patch.rotation.y = atan2(-d.x, -d.z)
 	var model: Node = patch.get("model") if patch else null
@@ -249,6 +249,7 @@ func _apply_bench(ok: bool, animate: bool) -> void:
 			tw.tween_interval(0.25 + i * 0.12)
 			tw.tween_property(n, "transform", xf, 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		i += 1
+	YardArt.bench_state(_bench, ok, animate)  # [yard] rust, slumped pegboard and dark lamp until fixed
 
 
 func _process(delta: float) -> void:
@@ -258,7 +259,7 @@ func _process(delta: float) -> void:
 	_spark_t -= delta
 	if _spark_t <= 0.0:
 		_spark_t = randf_range(1.6, 3.4)
-		Vfx.burst("sparkle", _bench.global_position + _bench.global_transform.basis.x * 0.6 + Vector3(0, 0.75, 0), Color(1.0, 0.8, 0.4), 0.25)
+		Vfx.burst("sparkle", _bench.global_position + _bench.global_transform.basis.x * 0.6 + OrbitUp.up(_bench.global_position) * 0.75, Color(1.0, 0.8, 0.4), 0.25)
 
 
 # --- Yard by hub level --------------------------------------------------------------------------
@@ -285,6 +286,7 @@ func _apply_builds() -> void:
 	if gen:
 		gen.visible = YardBuilds.built("generator")
 		_set_solid(gen, gen.visible)  # [pace2]
+	YardArt.ground_for_level(world, hub_level())  # [yard] kit ground patch: repaired, restored from L3
 	var dressing: Node = world.get("dressing")
 	if dressing and dressing.has_method("set_level"):
 		var hub: Hub = world.get("hub") as Hub
@@ -334,6 +336,9 @@ func _on_built(id: String) -> void:
 			var c: Node3D = world.get("composter") as Node3D
 			if c:
 				at = c.global_position
+	var so2: Node = world.get("orbit")
+	if so2:  # [orbB] the globe: the build's own anchor on the start site
+		at = so2.call("yard_point", id)
 	MachineReveal.reveal(world, tr(str(YardBuilds.def(id).get("name", id))), at)
 
 
@@ -362,6 +367,9 @@ func _register_bin() -> void:
 	_bin_anchor.name = "TrashBinReach"
 	world.add_child(_bin_anchor)
 	_bin_anchor.global_position = depot.global_position + (BIN_ANCHOR - Vector3(0, 0, -1.8))
+	var so: Node = world.get("orbit")
+	if so:  # [orbB] the globe: the start site's "bin" anchor (orbD)
+		_bin_anchor.global_position = so.call("yard_point", "bin")
 	ia.register(_bin_anchor, BIN_REACH, bin_prompt, use_bin)
 
 

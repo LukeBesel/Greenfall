@@ -12,6 +12,7 @@ var _report_done: bool = false
 
 func _ready() -> void:
 	add_to_group("persist")
+	RobotDesign.register_hooks()  # [ui7] Locker type designs on globe robots too
 	if world != null:
 		water_net = WaterNet.new()
 		water_net.name = "WaterNet"
@@ -192,6 +193,7 @@ func spawn(type_id: String, tier: int, at: Vector3, bonus: float, rname: String)
 	r.world = world
 	add_child(r)
 	r.global_position = at
+	RobotDesign.apply(r)  # [ui7] every robot wears its type's design (the Locker), new ones too
 	# Boot-up: a little flash of sparks and a servo whine.
 	Vfx.burst("sparkle", at + Vector3(0, 0.6, 0), Color(1.0, 0.8, 0.4), 0.6)
 	Audio.play("servo", 0.7, -8.0)
@@ -424,4 +426,4 @@ func restore() -> void:
 		r.job = str(d.get("job", "clean"))
 		r.hopper.from_dict(d.get("hopper", {}))
 		r.trait_id = str(d.get("trait", ""))  # [drones] builder parts + personality
-		RobotBuilder.set_build(r, d.get("build", {}))
+		RobotBuilder.set_build(r, RobotDesign.parts(r.type_id) if RobotDesign.of(r.type_id).has("parts") else d.get("build", {}))  # [ui7] the type's design wins

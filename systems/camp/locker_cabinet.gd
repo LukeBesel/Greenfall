@@ -34,6 +34,10 @@ func setup(p_world: Node) -> void:
 			func() -> void: open(),
 			func() -> bool: return visible)
 	visible = is_built()
+	if DevHooks.has("open-locker"):  # [ui7] screenshots: --open-locker=bots [--locker-design]
+		YardBuilds.mark_built("locker")
+		visible = true
+		get_tree().create_timer(DevHooks.get_f("open-locker-at", 6.0)).timeout.connect(_dev_open)
 	YardBuilds.events.built.connect(_on_built)  # a method: the static signal drops it when we're freed
 
 
@@ -42,40 +46,14 @@ func _on_built(id: String) -> void:
 		visible = true
 
 
-## A tall two-door steel cabinet with a thin cyan light seam and a small vent grille.
+## [yard] A chunky two-door kit locker (systems/camp/yard_art.gd YardArt.locker): plinth, teal
+## shell, cream louvred doors, a helmet rack and a thin cyan status seam. It only shows once built,
+## so it is always powered.
 func _build_mesh() -> void:
-	var body := MeshInstance3D.new()
-	body.mesh = ProcMesh.box(Vector3(1.1, 2.0, 0.55))
-	body.material_override = Mats.metal("dark_steel")
-	body.position = Vector3(0, 1.0, 0)
-	add_child(body)
-	for side: float in [-0.275, 0.275]:
-		var door := MeshInstance3D.new()
-		door.mesh = ProcMesh.box(Vector3(0.52, 1.88, 0.04))
-		door.material_override = Mats.metal("dark_steel")
-		door.position = Vector3(side, 1.0, 0.29)
-		add_child(door)
-		var handle := MeshInstance3D.new()
-		handle.mesh = ProcMesh.box(Vector3(0.03, 0.22, 0.04))
-		handle.material_override = Mats.metal("chrome")
-		handle.position = Vector3(side * 0.25, 1.05, 0.33)
-		add_child(handle)
-		for k: int in 4:
-			var slot := MeshInstance3D.new()
-			slot.mesh = ProcMesh.box(Vector3(0.3, 0.025, 0.01))
-			slot.material_override = Mats.metal("chrome")
-			slot.position = Vector3(side, 1.7 - k * 0.06, 0.315)
-			add_child(slot)
-	var seam := MeshInstance3D.new()
-	seam.mesh = ProcMesh.box(Vector3(0.012, 1.8, 0.012))
-	seam.material_override = Mats.lamp(Color(0.45, 0.88, 1.0), 1.4)
-	seam.position = Vector3(0, 1.0, 0.315)
-	add_child(seam)
-	var top := MeshInstance3D.new()
-	top.mesh = ProcMesh.box(Vector3(1.04, 0.012, 0.012))
-	top.material_override = Mats.lamp(Color(0.45, 0.88, 1.0), 1.1)
-	top.position = Vector3(0, 1.97, 0.3)
-	add_child(top)
+	var m: MeshInstance3D = YardArt.locker().mi(0.12, "LockerBody")
+	add_child(m)
+	YardArt.set_powered(m, true)
+	YardArt.solid(self, Vector3(1.3, 2.2, 0.75), Vector3(0, 1.1, 0), "LockerSolid")
 
 
 ## Opens the Locker over the game (Esc / B or Close shuts it).
@@ -84,3 +62,25 @@ func open() -> void:
 		return
 	_overlay = LockerPanel.open_overlay(world)
 	_overlay.tree_exited.connect(func() -> void: _overlay = null)
+
+
+## [ui7] Dev: opens the Locker on a section (--open-locker=lumi|bots|rocket); --locker-design paints
+## the Scoopie design (treads, a top hat, mint glow, neon underglow) so the shot shows one applied.
+func _dev_open() -> void:
+	var sec: String = DevHooks.get_s("open-locker", "bots")
+	if DevHooks.has("locker-design"):
+		var fl: Fleet = world.get("fleet") as Fleet
+		for id: String in ["treads", "top_hat"]:
+			RobotBuilder.add_part(id)
+		if not ("livery_neon" in Contracts.owned()):
+			Contracts.owned().append("livery_neon")
+		RobotDesign.set_part(fl, "scoopie", "mobility", "treads")
+		RobotDesign.set_part(fl, "scoopie", "topper", "top_hat")
+		RobotDesign.set_field(fl, "scoopie", "glow", "mint")
+		RobotDesign.set_field(fl, "scoopie", "livery", "livery_neon")
+	open()
+	if _overlay:
+		for n: Node in _overlay.find_children("*", "", true, false):
+			if n is LockerPanel:
+				(n as LockerPanel).set_editing("target:" + sec if sec in ["lumi", "glim"] else sec)
+				break
