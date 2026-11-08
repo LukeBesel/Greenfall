@@ -8,6 +8,7 @@ const SIZE: float = 0.17  # shell radius (Lumi is ~1.3 m tall)
 const FOLLOW_OFFSET := Vector3(0.75, 1.55, 0.55)  # target-local: right, up, behind
 
 var target: Node3D
+var sky: Node  # SkyDirector (time of day for the lantern); null = always night-bright
 var light: OmniLight3D
 var light_range: float = 6.0
 var light_energy: float = 1.1
@@ -177,6 +178,7 @@ func _process(delta: float) -> void:
 	_t += delta
 	scanning = maxf(0.0, scanning - delta * 1.6)
 	if target and is_instance_valid(target):
+		visible = target.is_visible_in_tree()  # hidden with Lumi (rocket launch, cinematics)
 		var want: Vector3 = _follow_point()
 		# Critically damped spring: smooth, never overshoots much; teleport when far behind.
 		var to: Vector3 = want - global_position
@@ -202,8 +204,7 @@ func _process(delta: float) -> void:
 			_blink_t = randf_range(2.5, 5.5)
 	for e: MeshInstance3D in _eyes:
 		e.scale = Vector3(1.0, maxf(0.15, blink * (1.0 - scanning * 0.5)), 1.0)
-	var sd: Node = get_tree().current_scene.get("sky_director") if get_tree().current_scene else null
-	var night: float = night_amount(float(sd.get("time_of_day"))) if sd else 1.0
+	var night: float = night_amount(float(sky.get("time_of_day"))) if sky and is_instance_valid(sky) else 1.0
 	var flare: float = scanning * 1.5
 	_core_mat.emission_energy_multiplier = 1.4 + 2.2 * night + flare * 3.0
 	light.omni_range = lerpf(2.0, light_range, night) + flare * 2.0

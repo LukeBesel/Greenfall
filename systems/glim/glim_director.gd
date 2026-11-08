@@ -114,6 +114,7 @@ func _spawn(reveal: bool) -> void:
 	bot.name = "Glim"
 	world.add_child(bot)
 	bot.target = patch
+	bot.sky = world.get("sky_director")
 	refresh()
 	if patch:
 		bot.snap_to_target()
