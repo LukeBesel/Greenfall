@@ -238,33 +238,6 @@ static func track(b: KitMesh.Builder, a: Vector3, c: Vector3) -> void:
 		b.rod("steel", a + side * sx + Vector3(0, 0.22, 0), c + side * sx + Vector3(0, 0.22, 0), 0.06, 6)
 
 
-## A greenhouse dome: concrete ring with an accent band and warm trim, a lathed glass dome on
-## painted ribs, planters and bushes inside.
-static func dome(b: KitMesh.Builder, t: Transform3D, r: float) -> void:
-	b.add("concrete", KitMesh.bevel_cylinder(r + 0.5, 0.9, 0.15, 32), t)
-	b.add("paint:accent", KitMesh.bevel_cylinder(r + 0.3, 0.3, 0.06, 32), t * x(Vector3(0, 0.9, 0)))
-	b.add("trim:warm", KitMesh.bevel_cylinder(r + 0.32, 0.05, 0.02, 32), t * x(Vector3(0, 1.05, 0)))
-	var prof := PackedVector3Array()
-	for k: int in 11:
-		var e: float = PI * 0.5 * float(k) / 10.0
-		prof.append(Vector3(cos(e) * r, sin(e) * r, 0))
-	b.add("glass", KitMesh.lathe(prof, 32), t * x(Vector3(0, 1.2, 0)))
-	for k: int in 10:
-		var a: float = TAU * k / 10.0
-		var arc := PackedVector3Array()
-		for s: int in 9:
-			var e2: float = PI * 0.5 * float(s) / 8.0
-			arc.append(t * Vector3(cos(a) * cos(e2) * (r + 0.05), 1.2 + sin(e2) * (r + 0.05), sin(a) * cos(e2) * (r + 0.05)))
-		b.tube("paint:main", arc, 0.1, 6)
-	b.add("paint:main", KitMesh.bevel_cylinder(0.7, 0.4, 0.1, 12), t * x(Vector3(0, 1.2 + r, 0)))
-	KitProps.hatch(b, t * x(Vector3(0, 0.9, r + 0.4)), Vector2(1.2, 2.1), b.state)
-	for k: int in 4:
-		var a2: float = TAU * k / 4.0 + 0.4
-		KitProps.planter(b, t * Transform3D(Basis(Vector3.UP, -a2), Vector3(cos(a2) * r * 0.5, 1.0, sin(a2) * r * 0.5)), r * 0.45, "restored")
-	for k: int in 5:
-		KitProps.bush(b, t * x(Vector3(b.rng.randf_range(-r, r) * 0.4, 1.0, b.rng.randf_range(-r, r) * 0.4)), b.rng.randf_range(0.4, 0.9))
-
-
 ## The forge furnace: bulging bolted shell with bands, a bustle main ringing the hearth with
 ## tuyere pipes, a hood and a soot-black flanged chimney, a work deck with stairs.
 static func furnace(b: KitMesh.Builder, t: Transform3D) -> void:

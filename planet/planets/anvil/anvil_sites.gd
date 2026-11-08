@@ -470,15 +470,15 @@ static func _foundry_yard(kit: AnvilEnv, root: Node3D, stage: int, restoration: 
 	_clutter(b, [Vector3(-8, 0, 12), Vector3(9, 0, 11), Vector3(-15, 0, -12), Vector3(15, 0, -6), Vector3(-6, 0, 20), Vector3(18, 0, 22)], [Vector3(-13.5, 0, 8.5), Vector3(13.5, 0, 8.5)])
 	AnvilKit.node(b, root, "Foundry", pw)
 	if stage >= 3:
-		var db := _dome_b(stage)
-		AnvilKit.dome(db, AnvilKit.x(Vector3(-28, 0, 28)), 7.0)
-		AnvilKit.node(db, root, "Dome", pw)
+		AnvilKit.building(root, "dome", stage, 61, AnvilKit.HABITAT, Vector3(-28, 0, 28), 40.0, 1.08)
 	var hb := _b(stage, 16, AnvilKit.LEDGER)
 	AnvilKit.hauler(hb, Transform3D(Basis(Vector3.UP, 2.1), Vector3(32, 0, 30)))
 	AnvilKit.node(hb, root, "Hauler", pw)
 	var sb := Batch.new()
 	sb.add(AnvilProps.slag_mesh(21), Transform3D(Basis(Vector3.UP, 1.2) * Basis.from_scale(Vector3(9.0, 4.8, 7.5)), Vector3(-34, -0.2, 14)), kit.slag_mat)
 	sb.flush(root)
+	if stage >= 4:
+		AnvilKit.building(root, "greenhouse", stage, 66, AnvilKit.HABITAT, Vector3(-38, 0, 14), 75.0, 1.0)
 	if stage >= 2:
 		turbine(root, stage, Vector3(40, 0, -26), 1.7, 0)
 	if stage >= 4:
@@ -486,10 +486,6 @@ static func _foundry_yard(kit: AnvilEnv, root: Node3D, stage: int, restoration: 
 	edge_ring(kit, root, 46.0, r, 1501)
 	trash(kit, root, 46.0, 13.0, 700, r, 501)
 	ground_cover(kit, root, 46.0, 13.0, r, 601)
-
-
-static func _dome_b(stage: int) -> KitMesh.Builder:
-	return KitMesh.Builder.new(17, AnvilKit.HABITAT, "restored" if stage >= 4 else "repaired")
 
 
 static func _foundry_tower(kit: AnvilEnv, root: Node3D, stage: int, restoration: float) -> void:
@@ -531,9 +527,7 @@ static func _foundry_tower(kit: AnvilEnv, root: Node3D, stage: int, restoration:
 		sb.add(AnvilProps.slag_mesh(30 + k), Transform3D(Basis(Vector3.UP, a3) * Basis.from_scale(Vector3(8.0, 4.0 + k, 6.5)), Vector3(cos(a3) * 30.0, -0.2, sin(a3) * 30.0)), kit.slag_mat)
 	sb.flush(root)
 	if stage >= 3:
-		var db := _dome_b(stage)
-		AnvilKit.dome(db, AnvilKit.x(Vector3(28, 0, -20)), 6.5)
-		AnvilKit.node(db, root, "Dome", pw)
+		AnvilKit.building(root, "dome", stage, 62, AnvilKit.HABITAT, Vector3(28, 0, -20), 80.0, 1.00)
 	if stage >= 4:
 		turbine(root, stage, Vector3(-34, 0, 22), 1.7, 2)
 	edge_ring(kit, root, 40.0, r, 1503)
@@ -590,9 +584,7 @@ static func _lava_forge(kit: AnvilEnv, root: Node3D, stage: int, restoration: fl
 	AnvilKit.building(root, "machine_housing", stage, 32, AnvilKit.FOUNDRY, Vector3(16, 0, -26), -30.0, 1.2)
 	AnvilKit.building(root, "tank_farm", stage, 33, AnvilKit.FOUNDRY, Vector3(-30, 0, -4), 80.0, 1.0)
 	if stage >= 3:
-		var db := _dome_b(stage)
-		AnvilKit.dome(db, AnvilKit.x(Vector3(-28, 0, 22)), 7.0)
-		AnvilKit.node(db, root, "Dome", pw)
+		AnvilKit.building(root, "dome", stage, 63, AnvilKit.HABITAT, Vector3(-28, 0, 22), 120.0, 1.08)
 	if stage >= 4:
 		turbine(root, stage, Vector3(34, 0, -22), 1.6, 3)
 	edge_ring(kit, root, 44.0, r, 1505)
@@ -648,9 +640,7 @@ static func _ruined_smelter(kit: AnvilEnv, root: Node3D, stage: int, restoration
 	sb.add(AnvilProps.slag_mesh(332), Transform3D(Basis.from_scale(Vector3(6.0, 3.5, 5.0)), Vector3(26, -0.2, -20)), kit.slag_mat)
 	sb.flush(root)
 	if stage >= 3:
-		var db := _dome_b(stage)
-		AnvilKit.dome(db, AnvilKit.x(Vector3(26, 0, 24)), 6.5)
-		AnvilKit.node(db, root, "Dome", pw)
+		AnvilKit.building(root, "dome", stage, 64, AnvilKit.HABITAT, Vector3(26, 0, 24), 160.0, 1.00)
 	if stage >= 4:
 		turbine(root, stage, Vector3(-34, 0, 18), 1.6, 4)
 	edge_ring(kit, root, 40.0, r, 1507)
