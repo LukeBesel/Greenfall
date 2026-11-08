@@ -360,7 +360,7 @@ func _build_sites() -> void:
 	site_manager.name = "Sites"
 	add_child(site_manager)
 	site_manager.setup(self, "verdance", sites, planet.seed_value)
-	var p: SitePrefab = site_manager.build_hub(0)
+	var p: SitePrefab = site_manager.build_hub(0, true)
 	p.get_parent().name = "StartSite"
 	site_manager.point_shaders_at(p)
 

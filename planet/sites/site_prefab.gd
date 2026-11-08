@@ -143,6 +143,12 @@ func _default_anchors() -> void:
 		"door": [Vector3(0, 0, r * 0.7), 0.0],
 		"rocket_pad": [Vector3(0, 0, -r * 0.65), 0.0],
 	}
+	if content:  # a builder's own anchors win: func anchors() -> {name: [Vector3, yaw]}
+		for c: Node in content.get_children():
+			if c.has_method("anchors"):
+				var own: Dictionary = c.call("anchors")
+				for nm: String in own:
+					set_anchor(nm, own[nm][0], own[nm][1])
 	for nm: String in defaults:
 		if anchor(nm) == null:
 			set_anchor(nm, defaults[nm][0], defaults[nm][1])

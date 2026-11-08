@@ -77,15 +77,22 @@ func setup(p_globe: Node3D, p_planet: String, p_sites: Array[Dictionary], p_seed
 
 
 ## Builds hub i's prefab now (normally done by distance). Returns it (await .rebuilt if not built).
-func build_hub(i: int) -> SitePrefab:
+## sync: build it in this frame even while a loading BuildBudget is open (a caller that needs its
+## anchors right away, like the start site during the scene's _ready).
+func build_hub(i: int, sync: bool = false) -> SitePrefab:
 	if prefabs[i] != null:
 		return prefabs[i]
+	var budget: BuildBudget = BuildBudget.current
+	if sync:
+		BuildBudget.current = null
 	var s: Dictionary = sites[i].duplicate()
 	s["planet"] = planet_id
 	s["hub_index"] = i
 	s["seed"] = _seed
 	var p: SitePrefab = PlanetEnvs.build_site(roots[i], s, levels[i], restoration_of(i))
 	prefabs[i] = p
+	if sync:
+		BuildBudget.current = budget
 	if p.is_built:
 		_on_built(i, p)
 	else:
@@ -263,6 +270,7 @@ func grow(dt: float) -> int:
 	if cells == null or grid == null:
 		return 0
 	var changed: int = 0
+	var pd: PlanetData = globe.get("planet") as PlanetData if globe and globe.get("planet") is PlanetData else null
 	for i: int in sites.size():
 		if built[i] == 0:
 			continue
@@ -283,6 +291,9 @@ func grow(dt: float) -> int:
 				continue
 			cells.set_junk(c, 0.0)
 			cells.set_state(c, RESTORED)
+			if pd:  # the survey data the hologram and system map read
+				pd.set_junk(c, 0.0)
+				pd.mark_clean(c)
 			changed += 1
 	return changed
 

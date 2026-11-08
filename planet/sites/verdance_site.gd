@@ -60,6 +60,18 @@ func footprints() -> Array[Rect2]:
 	return out
 
 
+## Anchors inside the hub yard (the centre block, ~11 m half-size): the depot and the bench on
+## the south corners either side of the pod door, the rocket pad on the north side. Lumi spawns
+## at (0, 6) facing north, so the way out of the yard stays open.
+func anchors() -> Dictionary:
+	return {
+		"depot": [Vector3(8.0, 0, 7.5), -PI * 0.5],
+		"bench": [Vector3(-8.0, 0, 7.5), PI * 0.5],
+		"door": [Vector3(0, 0, 9.5), 0.0],
+		"rocket_pad": [Vector3(0, 0, -6.5), 0.0],
+	}
+
+
 ## Half-size of the built area (m).
 func extent() -> float:
 	return layout.extent + CityLayout.PITCH * 0.5 if layout else HUB_EXTENT
@@ -121,7 +133,7 @@ func _ruin_layout(reshuffle: bool) -> void:
 
 
 func _sidewalk_material() -> Material:
-	var m: StandardMaterial3D = AssetLib.pbr_material("concrete_pavement", 0.35, Color(0.78, 0.76, 0.72), true)
+	var m: StandardMaterial3D = AssetLib.pbr_material("concrete_pavement", 1.1, Color(0.58, 0.56, 0.52), true)
 	return m
 
 
