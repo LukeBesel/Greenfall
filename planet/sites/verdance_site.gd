@@ -19,6 +19,8 @@ extends Node3D
 ## through the `site_inv` shader global, which SiteManager points at the nearest site.
 
 const SITES: Array[String] = ["start_yard", "ruin_block"]
+## [v1world] Hub blocks use the flat city's buildings (CityView) and facade dressing, not kit buildings.
+const CITY_BUILDINGS: bool = true
 const START_EXTENT: float = 36.0   # 3 x 3 blocks, 108 m, on the start pad (140 m flat radius)
 const HUB_EXTENT: float = 36.0     # 3 x 3 blocks, 108 m
 ## Which share of buildings are broken off on a ruined hub.
@@ -142,7 +144,7 @@ func _make() -> void:
 	city = CityView.new()
 	city.name = "City"
 	city.skyline = false
-	city.buildings = false  # the kit's buildings instead (below)
+	city.buildings = CITY_BUILDINGS  # [v1world] the flat district's brick and factory buildings (owner, Nov 8); was the kit's
 	city.flush_walks = true
 	add_child(city)
 	await city.build(layout, _sidewalk_material())
@@ -152,7 +154,7 @@ func _make() -> void:
 	await _kit_blocks()
 	dressing = StreetDressing.new()
 	dressing.name = "Dressing"
-	dressing.skip_facades = true
+	dressing.skip_facades = not CITY_BUILDINGS  # [v1world] shopfronts, awnings, neon, murals, billboard, string lights
 	dressing.kit_yard = true
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
@@ -286,10 +288,13 @@ func _kit_blocks() -> void:
 			continue
 		var b: Dictionary = layout.blocks[key]
 		var c: Vector2 = (b["rect"] as Rect2).get_center()
-		if key == hero_key and site_id != "start_yard":
+		if key == hero_key and site_id != "start_yard" and not CITY_BUILDINGS:
 			_hero(c)
 			continue
 		match int(b["type"]):
+			CityLayout.Block.BUILDINGS when CITY_BUILDINGS:  # [v1world] CityView builds them; junk clears off their footprints
+				for bd: Dictionary in b["buildings"]:
+					_foot.append(bd["rect"])
 			CityLayout.Block.BUILDINGS:
 				var pat: Array = PATTERNS[rng.randi() % PATTERNS.size()]
 				var turn: float = float(rng.randi() % 4) * 90.0 if pat.size() == 1 else (0.0 if rng.randf() < 0.5 else 180.0)
