@@ -76,7 +76,7 @@ static func stack(b: KitMesh.Builder, t: Transform3D, h: float, r: float, seed_v
 	p.append(Vector3(top_r + 0.45, h + 0.7, 1))
 	p.append(Vector3(top_r - 0.25, h + 0.7, 1))
 	p.append(Vector3(top_r - 0.25, h - 3.0, 0))
-	b.add("paint:main", KitMesh.lathe(p, 36), tt)
+	b.add("rusty" if broken else "paint:main", KitMesh.lathe(p, 36), tt)  # broken paint fades pale: rusted iron instead
 	# Soot-blackened crown and accent bands.
 	var crown := PackedVector3Array([Vector3(rad.call(h * 0.86) + 0.03, h * 0.86, 1), Vector3(rad.call(h * 0.86) + 0.05, h * 0.87, 0), Vector3(top_r + 0.05, h - 0.15, 0), Vector3(top_r + 0.03, h - 0.1, 1)])
 	b.add("dark_steel", KitMesh.lathe(crown, 36), tt)
