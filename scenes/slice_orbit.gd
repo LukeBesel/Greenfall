@@ -443,6 +443,7 @@ func _build_yard_systems() -> void:
 	var tslot: Array = yard_slot("telescope", scope.call("_pos"))
 	scope.global_transform = (tslot[0] as Node3D).global_transform * (tslot[1] as Transform3D) * Transform3D(Basis(), -(scope.call("_pos") as Vector3))
 	_attach_camp()
+	GlimDirector.attach(w)  # Glim the lantern bot: light, hex scanner, upgrades, looks (systems/glim/)
 	_place_pod()
 	var cc := CoreCharge.new()  # Lumi's Bloom Core charge and its story beats (story/core_charge.gd)
 	cc.name = "CoreCharge"

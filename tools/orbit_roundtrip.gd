@@ -83,6 +83,21 @@ static func run(rt: Node, check: Callable) -> void:
 			if g.field.piece_alive[pid] == 1:
 				s1.collect_piece(pid)
 	check.call("orbit_cell_cleaned", clean0 + 1, s1.field.cleaned_count)
+	# Glim's scanner marks the junk of the cell Lumi stands in (pieces by how big they look).
+	var gd: GlimDirector = GlimDirector.of(s1)
+	if gd:
+		Glim.set_found(true)
+		if gd.bot == null:
+			gd.call("_spawn", false)
+		var dc: int = -1
+		for c: int in g.streamer.near_cells():
+			if g.field.hex_hub[c] == 0 and not g.field.is_clean(c) and g.field.hex_water[c] == 0 and g.field.pieces_in(c).size() > 20:
+				dc = c
+				break
+		if dc >= 0:
+			p.place_on_sphere(g.field.hex_center(dc), p.forward())
+			await tree.physics_frame
+			check.call("orbit_glim_scan_marks", true, gd.do_scan(false) > 0)
 	# The objective outline draws around a globe cell, in that cell's frame.
 	var ob: Objectives = s1.get("objectives")
 	if ob and ob.outline:
