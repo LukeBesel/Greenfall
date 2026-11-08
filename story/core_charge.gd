@@ -219,11 +219,12 @@ func _beat_memory() -> void:
 	c.begin()
 	var p: Vector3 = (world.patch as Node3D).global_position
 	var model: PatchModel = _model()
+	var up: Vector3 = WorldUp.at(world, p)  # [orbE] local up on a round planet
 	var front: Vector3 = -(world.patch as Node3D).global_transform.basis.z
-	front.y = 0.0
-	front = front.normalized() if front.length() > 0.1 else Vector3.FORWARD
-	var side: Vector3 = front.cross(Vector3.UP).normalized()
-	c.cam.global_transform = Transform3D(Basis(), p + front * 2.6 + side * 0.9 + Vector3(0, 1.2, 0)).looking_at(p + Vector3(0, 0.8, 0), Vector3.UP)
+	front -= up * front.dot(up)
+	front = front.normalized() if front.length() > 0.1 else WorldUp.flat(world, p, Vector3.FORWARD)
+	var side: Vector3 = front.cross(up).normalized()
+	c.cam.global_transform = Transform3D(Basis(), p + front * 2.6 + side * 0.9 + up * 1.2).looking_at(p + up * 0.8, up)
 	if model:
 		model.flash()
 		model.set_happy(1.0)
@@ -311,13 +312,14 @@ func _beat_ark_star() -> void:
 	var p: Vector3 = patch.global_position
 	var model: PatchModel = _model()
 	# Low behind Lumi, looking up past it at the sky.
+	var up: Vector3 = WorldUp.at(world, p)  # [orbE] local up on a round planet
 	var fwd: Vector3 = -patch.global_transform.basis.z
-	fwd.y = 0.0
-	fwd = fwd.normalized() if fwd.length() > 0.1 else Vector3.FORWARD
-	var right: Vector3 = fwd.cross(Vector3.UP).normalized()
-	var cam_pos: Vector3 = p - fwd * 3.2 + Vector3(0, 0.55, 0) + right * 0.8
-	var look: Vector3 = p + fwd * 20.0 + Vector3(0, 13.0, 0)
-	c.cam.global_transform = Transform3D(Basis(), cam_pos).looking_at(look, Vector3.UP)
+	fwd -= up * fwd.dot(up)
+	fwd = fwd.normalized() if fwd.length() > 0.1 else WorldUp.flat(world, p, Vector3.FORWARD)
+	var right: Vector3 = fwd.cross(up).normalized()
+	var cam_pos: Vector3 = p - fwd * 3.2 + up * 0.55 + right * 0.8
+	var look: Vector3 = p + fwd * 20.0 + up * 13.0
+	c.cam.global_transform = Transform3D(Basis(), cam_pos).looking_at(look, up)
 	c.cam.fov = 58.0
 	c.caption(tr("That night..."))
 	c.fade_to(0.0, 1.4)

@@ -392,7 +392,7 @@ func _place_cam(pos: Vector3, look: Vector3, dt: float) -> void:
 	var jitter := Vector3(sin(_shake_t * 1.3), sin(_shake_t * 1.7 + 2.0), sin(_shake_t * 1.1 + 4.0)) * 0.35 * s
 	if pos.distance_to(look) < 0.1:
 		return
-	_cam.look_at_from_position(pos + jitter, look + jitter * 0.5, Vector3.UP)
+	_cam.look_at_from_position(pos + jitter, look + jitter * 0.5, WorldUp.at(world, pos))  # [orbE] level on a round planet
 
 
 func _start_flight() -> void:
