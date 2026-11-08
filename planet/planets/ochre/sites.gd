@@ -294,8 +294,9 @@ static func _mm(site: Node3D, mesh: Mesh, xfs: Array, vis: float, shadows: bool,
 
 # --- Hub base: the Ledger's haul depot ------------------------------------------------------------------
 
-## The yard slab, a site office, an ore silo with its conveyor, a corrugated workshop, a water
-## tower and fuel tanks. Ruined: rust, slumped roofs, broken glass, a toppled tank. Fixed up:
+## The yard slab and the ore silo shell from the start (owner: the yard holds only the pod, a broken
+## workbench and the trash bin, which the game places); the site office, corrugated workshop, water
+## tower and fuel tanks are Hub builds and appear from stage 2. Ruined: rust, slumped roofs, broken glass, a toppled tank. Fixed up:
 ## repainted, patched, shade sails. Futuristic: white shells, solar sails with a thin hem light,
 ## planters and palms in the yard, the silo a vertical garden.
 static func _hub_base(site: Node3D, stage: int, restore: float, rng: RandomNumberGenerator) -> void:
@@ -310,19 +311,20 @@ static func _hub_base(site: Node3D, stage: int, restore: float, rng: RandomNumbe
 	for s: float in [-1.0, 1.0]:
 		b.box(Vector3(0, 0.25, s * 9.1), Vector3(22.4, 0.4, 0.3), mat("concrete"))
 		b.box(Vector3(s * 11.1, 0.25, 0), Vector3(0.3, 0.4, 18.4), mat("concrete"))
-	# Site office (two portable cabins stacked, an outside stair, windows, AC units).
-	var off := Vector3(-16.0, 0, -12.0)
-	for k: int in 2:
-		var y: float = 1.5 + k * 3.0
-		b.box(off + Vector3(0, y, 0), Vector3(12.0, 2.9, 4.0), wall)
-		for w: int in 4:
-			b.box(off + Vector3(-4.2 + w * 2.8, y + 0.3, 2.02), Vector3(1.6, 1.1, 0.06), mat("glass_broken") if ruined and (w + k) % 2 == 0 else mat("glass"))
-			b.box(off + Vector3(-4.2 + w * 2.8, y + 0.3, 2.05), Vector3(1.8, 0.08, 0.1), mat("dark"))
-		b.box(off + Vector3(5.2, y + 0.9, -2.3), Vector3(1.2, 0.8, 0.6), mat("steel"))
-	for i: int in 12:
-		b.box(off + Vector3(6.6 + i * 0.0, 0.25 + i * 0.25, 1.4 - i * 0.28), Vector3(1.0, 0.08, 0.3), mat("steel"))
-	b.beam(off + Vector3(7.1, 3.3, -1.9), off + Vector3(7.1, 0.3, 1.5), 0.08, mat("steel"))
-	b.box(off + Vector3(0, 6.1, 0), Vector3(12.4, 0.2, 4.4), roof, Basis(Vector3.RIGHT, 0.12 if ruined else 0.0) * Basis(Vector3.FORWARD, 0.06 if ruined else 0.0))
+	if stage >= 2:  # a Hub build: only the yard and the silo shell are there from the start
+		# Site office (two portable cabins stacked, an outside stair, windows, AC units).
+		var off := Vector3(-16.0, 0, -12.0)
+		for k: int in 2:
+			var y: float = 1.5 + k * 3.0
+			b.box(off + Vector3(0, y, 0), Vector3(12.0, 2.9, 4.0), wall)
+			for w: int in 4:
+				b.box(off + Vector3(-4.2 + w * 2.8, y + 0.3, 2.02), Vector3(1.6, 1.1, 0.06), mat("glass_broken") if ruined and (w + k) % 2 == 0 else mat("glass"))
+				b.box(off + Vector3(-4.2 + w * 2.8, y + 0.3, 2.05), Vector3(1.8, 0.08, 0.1), mat("dark"))
+			b.box(off + Vector3(5.2, y + 0.9, -2.3), Vector3(1.2, 0.8, 0.6), mat("steel"))
+		for i: int in 12:
+			b.box(off + Vector3(6.6 + i * 0.0, 0.25 + i * 0.25, 1.4 - i * 0.28), Vector3(1.0, 0.08, 0.3), mat("steel"))
+		b.beam(off + Vector3(7.1, 3.3, -1.9), off + Vector3(7.1, 0.3, 1.5), 0.08, mat("steel"))
+		b.box(off + Vector3(0, 6.1, 0), Vector3(12.4, 0.2, 4.4), roof, Basis(Vector3.RIGHT, 0.12 if ruined else 0.0) * Basis(Vector3.FORWARD, 0.06 if ruined else 0.0))
 	# Ore silo + conveyor gallery to the yard.
 	var silo := Vector3(17.0, 0, -10.0)
 	for x: float in [-2.6, 2.6]:
@@ -342,33 +344,34 @@ static func _hub_base(site: Node3D, stage: int, restore: float, rng: RandomNumbe
 	for k: int in 4:
 		var p: Vector3 = g0.lerp(g1, 0.2 + k * 0.2)
 		b.beam(Vector3(p.x, 0, p.z), p, 0.35, mat("steel"))
-	# Workshop: a corrugated arch on a block plinth, roller door.
-	var ws := Vector3(16.0, 0, 13.0)
-	b.box(ws + Vector3(0, 0.6, 0), Vector3(14.0, 1.2, 9.0), mat("concrete"))
-	var segs: int = 9
-	for i: int in segs:
-		var a0: float = PI * float(i) / segs
-		var a1: float = PI * float(i + 1) / segs
-		if ruined and i == 6:
-			continue
-		var p0 := Vector3(0, sin(a0) * 4.6 + 1.2, cos(a0) * 4.5)
-		var p1 := Vector3(0, sin(a1) * 4.6 + 1.2, cos(a1) * 4.5)
-		var mid: Vector3 = (p0 + p1) * 0.5
-		var d: Vector3 = p1 - p0
-		b.box(ws + mid, Vector3(14.0, 0.08, d.length() + 0.05), roof, Basis(Vector3.RIGHT, atan2(-d.y, d.z) * -1.0))
-	b.box(ws + Vector3(7.02, 2.8, 0), Vector3(0.06, 3.0, 3.6), mat("dark"))
-	# Water tower and fuel tanks.
-	var wt := Vector3(-18.0, 0, 13.0)
-	for x: float in [-1.6, 1.6]:
-		for z: float in [-1.6, 1.6]:
-			b.beam(wt + Vector3(x, 0, z), wt + Vector3(x * 0.7, 9.0, z * 0.7), 0.3, mat("dark"))
-	b.add(ProcMesh.cyl(2.6, 2.6, 3.4, 20), ProcMesh.xf(wt + Vector3(0, 10.7, 0)), wall)
-	b.add(ProcMesh.cyl(0.4, 2.7, 1.0, 20), ProcMesh.xf(wt + Vector3(0, 12.9, 0)), roof)
-	for k: int in 3:
-		var tank := Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(-3.0 + k * 3.2, 1.4, 12.5))
-		if ruined and k == 2:
-			tank = Transform3D(Basis(Vector3.UP, 0.7) * Basis(Vector3.FORWARD, PI * 0.5), Vector3(4.0, 1.25, 14.5))
-		b.add(ProcMesh.cyl(1.2, 1.2, 5.5, 18), tank, paint if k != 1 else wall)
+	if stage >= 2:  # a Hub build: only the yard and the silo shell are there from the start
+		# Workshop: a corrugated arch on a block plinth, roller door.
+		var ws := Vector3(16.0, 0, 13.0)
+		b.box(ws + Vector3(0, 0.6, 0), Vector3(14.0, 1.2, 9.0), mat("concrete"))
+		var segs: int = 9
+		for i: int in segs:
+			var a0: float = PI * float(i) / segs
+			var a1: float = PI * float(i + 1) / segs
+			if ruined and i == 6:
+				continue
+			var p0 := Vector3(0, sin(a0) * 4.6 + 1.2, cos(a0) * 4.5)
+			var p1 := Vector3(0, sin(a1) * 4.6 + 1.2, cos(a1) * 4.5)
+			var mid: Vector3 = (p0 + p1) * 0.5
+			var d: Vector3 = p1 - p0
+			b.box(ws + mid, Vector3(14.0, 0.08, d.length() + 0.05), roof, Basis(Vector3.RIGHT, atan2(-d.y, d.z) * -1.0))
+		b.box(ws + Vector3(7.02, 2.8, 0), Vector3(0.06, 3.0, 3.6), mat("dark"))
+		# Water tower and fuel tanks.
+		var wt := Vector3(-18.0, 0, 13.0)
+		for x: float in [-1.6, 1.6]:
+			for z: float in [-1.6, 1.6]:
+				b.beam(wt + Vector3(x, 0, z), wt + Vector3(x * 0.7, 9.0, z * 0.7), 0.3, mat("dark"))
+		b.add(ProcMesh.cyl(2.6, 2.6, 3.4, 20), ProcMesh.xf(wt + Vector3(0, 10.7, 0)), wall)
+		b.add(ProcMesh.cyl(0.4, 2.7, 1.0, 20), ProcMesh.xf(wt + Vector3(0, 12.9, 0)), roof)
+		for k: int in 3:
+			var tank := Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(-3.0 + k * 3.2, 1.4, 12.5))
+			if ruined and k == 2:
+				tank = Transform3D(Basis(Vector3.UP, 0.7) * Basis(Vector3.FORWARD, PI * 0.5), Vector3(4.0, 1.25, 14.5))
+			b.add(ProcMesh.cyl(1.2, 1.2, 5.5, 18), tank, paint if k != 1 else wall)
 	# Fence posts round the yard (some leaning while ruined).
 	for i: int in 22:
 		var a: float = TAU * i / 22.0
