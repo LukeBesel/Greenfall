@@ -7,7 +7,7 @@ extends SubViewportContainer
 ## shadows, no sky. Built lazily the first time the loading screen shows (never in headless runs).
 ## Swap the hero model in make_lumi() when the hero helper's red Lumi lands.
 
-const STRIP: float = 7.0  # metres from the first to the last piece
+const STRIP: float = 9.0  # metres from the first to the last piece
 const JUNK: Array[String] = ["can_rusted", "plastic_bottle_gallon", "trashbag", "cardboard_box_01",
 	"old_tyre", "metal_trash_can", "can_rusted", "plastic_bottle_gallon", "trashbag", "cardboard_box_01"]
 
@@ -36,14 +36,14 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_vp = SubViewport.new()
 	_vp.own_world_3d = true
-	_vp.transparent_bg = true
 	_vp.msaa_3d = Viewport.MSAA_2X
 	_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	_vp.handle_input_locally = false
 	_vp.gui_disable_input = true
 	add_child(_vp)
 	var env := Environment.new()
-	env.background_mode = Environment.BG_CLEAR_COLOR
+	env.background_mode = Environment.BG_COLOR
+	env.background_color = Color(0.018, 0.022, 0.032)
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.ambient_light_color = Color(0.55, 0.5, 0.52)
 	env.ambient_light_energy = 0.7
@@ -51,7 +51,7 @@ func _ready() -> void:
 	env.tonemap_exposure = 1.15
 	env.fog_enabled = true
 	env.fog_light_color = Color(0.018, 0.022, 0.032)
-	env.fog_density = 0.09
+	env.fog_density = 0.06
 	env.fog_sky_affect = 0.0
 	var we := WorldEnvironment.new()
 	we.environment = env
@@ -62,16 +62,16 @@ func _ready() -> void:
 	sun.light_energy = 1.6
 	_vp.add_child(sun)
 	var cam := Camera3D.new()
-	cam.fov = 30.0
-	cam.position = Vector3(0, 2.2, 9.5)
+	cam.fov = 26.0
+	cam.position = Vector3(0, 2.0, 7.2)
 	_vp.add_child(cam)
-	cam.look_at(Vector3(0, 0.45, 0), Vector3.UP)
+	cam.look_at(Vector3(0, 0.5, 0), Vector3.UP)
 	cam.current = true
 	# The street strip: the real dry-ground material, fading into the dark at its ends (fog).
 	var ground := MeshInstance3D.new()
 	var pm := PlaneMesh.new()
-	pm.size = Vector2(16, 3.2)
-	pm.material = AssetLib.pbr_material("dry_ground_rocks", 4.0)
+	pm.size = Vector2(40, 24)
+	pm.material = AssetLib.pbr_material("dry_ground_rocks", 10.0)
 	ground.mesh = pm
 	_vp.add_child(ground)
 	var rng := RandomNumberGenerator.new()
@@ -96,6 +96,31 @@ func _ready() -> void:
 	_lumi.add_child(_model)
 	_lumi.rotation.y = -PI * 0.5  # Lumi faces -Z by default; turn it to travel toward +X
 	_lumi.position = Vector3(-STRIP * 0.5 - 0.8, 0.3, 0.55)
+	# A couple of bigger silhouettes behind, for depth.
+	for spec: Array in [["covered_car", Vector3(-3.0, 0, -4.5), 0.6], ["concrete_road_barrier", Vector3(3.4, 0, -3.2), -0.3], ["Barrel_01", Vector3(0.6, 0, -2.4), 0.0]]:
+		if AssetLib.has_model(str(spec[0])):
+			var bg := MeshInstance3D.new()
+			bg.mesh = AssetLib.model_mesh_lite(str(spec[0]), 1500)
+			bg.position = spec[1]
+			bg.rotation.y = float(spec[2])
+			_vp.add_child(bg)
+	# Soft edges: the scene fades into the loading screen's dark on every side.
+	var fade := TextureRect.new()
+	var g := Gradient.new()
+	g.set_color(0, Color(0.018, 0.022, 0.032, 0.0))
+	g.add_point(0.62, Color(0.018, 0.022, 0.032, 0.0))
+	g.set_color(g.get_point_count() - 1, Color(0.018, 0.022, 0.032, 1.0))
+	var gt := GradientTexture2D.new()
+	gt.gradient = g
+	gt.fill = GradientTexture2D.FILL_RADIAL
+	gt.fill_from = Vector2(0.5, 0.5)
+	gt.fill_to = Vector2(1.0, 0.5)
+	fade.texture = gt
+	fade.set_anchors_preset(Control.PRESET_FULL_RECT)
+	fade.stretch_mode = TextureRect.STRETCH_SCALE
+	fade.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(fade)
 
 
 ## Restart: every piece back on the street (each new load).

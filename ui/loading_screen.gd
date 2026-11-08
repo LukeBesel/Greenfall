@@ -154,10 +154,10 @@ func _ensure_vignette() -> void:
 	if _vignette == null:
 		_vignette = LoadingVignette.new()
 		_vignette.set_anchors_preset(Control.PRESET_CENTER)
-		_vignette.offset_left = -480
-		_vignette.offset_right = 480
-		_vignette.offset_top = -270
-		_vignette.offset_bottom = 40
+		_vignette.offset_left = -560
+		_vignette.offset_right = 560
+		_vignette.offset_top = -300
+		_vignette.offset_bottom = 60
 		_vignette.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_root.add_child(_vignette)
 		_root.move_child(_vignette, 1)  # above the backdrop, under the bar
@@ -309,7 +309,7 @@ func _draw_bar() -> void:
 	var font: Font = UITheme.font()
 	var title: String = "GREENFALL"
 	var tw: float = font.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, 30).x
-	c.draw_string(font, Vector2((c.size.x - tw) * 0.5, r.position.y - (330.0 if _vignette else 120.0)), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 30, Color(CREAM, 0.85))
+	c.draw_string(font, Vector2((c.size.x - tw) * 0.5, r.position.y - (360.0 if _vignette else 120.0)), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 30, Color(CREAM, 0.85))
 	# Track and fill (the cleaned stretch glows faintly pink behind Lumi).
 	c.draw_rect(Rect2(r.position - Vector2(2, 2), r.size + Vector2(4, 4)), Color(1, 1, 1, 0.06))
 	_round_rect(c, r, Color(0.09, 0.1, 0.13))
