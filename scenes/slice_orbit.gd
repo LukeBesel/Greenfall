@@ -495,6 +495,11 @@ func _build_yard_systems() -> void:
 	obj.world = w
 	w.add_child(obj)
 	w.set("objectives", obj)
+	var bloom := Bloom.new()  # post-game milestones + Seed Ark (systems/bloom.gd)
+	bloom.name = "Bloom"
+	bloom.world = w
+	w.add_child(bloom)
+	LateDirector.attach(w)  # Homeward, the Ark Bridge, world look/story (Garden Mode's decor waits for the yard frame)
 
 
 ## A yard spot in world space (the anchor's origin, or the flat yard spot on the pad).
