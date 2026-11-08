@@ -47,9 +47,9 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
   comms mast, snowcat. Preview: `res://planet/planets/rime/site_preview.tscn -- --site=hub_camp
   [--site-stage=1 --site-restore=1 --time=0.9 (night)]`. `rime_ice.gdshader` gained `moss_centre`/`moss_off`.
 - Tests: `tests/test_p_seas_sites.gd`. Renders: screenshots/p_seas/.
-- Left: hub_stilts, reef_garden and buoy_field still use the older env props (coral is lumps); the flat
-  district env's towers/lighthouses still use BoxMesh parts; `--planet-env=rime` prints no env line in a
-  fresh headless run (not touched here).
+- Follow-up: reef coral, hub_stilts, buoy_field and the flat env's drowned towers and lighthouses are on
+  the kit too (TideProps.drowned_tower / lighthouse; preview `--site-props`). Left: the flat env's base
+  moorings, floating gardens and future platforms still use older parts.
 
 ## Update: loading screen keeps moving, Rime night glint (claude/greenfall-leftovers, Nov 8)
 - **District build across frames.** Behind the loading screen `scenes/slice.gd` builds as a coroutine: the
