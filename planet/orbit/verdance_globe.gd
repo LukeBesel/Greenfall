@@ -190,6 +190,8 @@ func _ready() -> void:
 	stats["ready_ms"] = Time.get_ticks_msec() - t0
 	if DevHooks.has("orbit-cash"):
 		_cash_test.call_deferred()
+	if DevHooks.has("orbit-hop"):  # [orbD] --orbit-hop=N[,M]: rocket hop to hub N (and back to M)
+		_dev_hop.call_deferred()
 	print("[orbit] integrated: R=%.0fm hexes=%d around=%.1fkm hubs=%d (nearest hub mean %.0fm, min %.0fm) ready=%dms planet=%dms grid=%dms settle=%dms" % [
 		grid.radius_m, grid.cell_count(), TAU * grid.radius_m / 1000.0, sites.size(), _hub_spacing(false), _hub_spacing(true),
 		stats["ready_ms"], stats["planet_ms"], stats["grid_ms"], stats["settle_ms"]])
@@ -360,6 +362,30 @@ func _build_sites() -> void:
 	var p: SitePrefab = site_manager.build_hub(0)
 	p.get_parent().name = "StartSite"
 	site_manager.point_shaders_at(p)
+
+
+## [orbD] Rocket hops between hubs on this globe (planet/sites/hub_hop.gd).
+var hub_hop: HubHop
+
+
+func hop_to(i: int) -> bool:
+	if hub_hop == null:
+		hub_hop = HubHop.new()
+		hub_hop.name = "HubHop"
+		add_child(hub_hop)
+	var from_i: int = site_manager.nearest if site_manager.nearest >= 0 else 0
+	return await hub_hop.hop(self, from_i, clampi(i, 0, sites.size() - 1))
+
+
+func _dev_hop() -> void:
+	await get_tree().create_timer(1.0).timeout
+	var hops: PackedStringArray = DevHooks.get_s("orbit-hop", "1").split(",")
+	for h: String in hops:
+		var t0: int = Time.get_ticks_msec()
+		var ok: bool = await hop_to(int(h))
+		var d: float = lumi.global_position.distance_to(site_manager.pad_xf(int(h)).origin)
+		print("[hop] to hub %s: %s in %d ms, %.1f m from its pad, site built %s" % [h, "ok" if ok else "FAIL", Time.get_ticks_msec() - t0, d, site_manager.prefab(int(h)) != null])
+		await get_tree().create_timer(1.0).timeout
 
 
 ## [orbD] Planet % over the built hubs' regions (owner decision Nov 8); the HUD reads it.

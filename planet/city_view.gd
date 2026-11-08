@@ -31,6 +31,9 @@ var _props := MeshBatch.new()
 ## coastal, overgrown or corroded cities. White on Verdance.
 var look_tint := Color.WHITE
 var _prop_body: StaticBody3D  # [world2] street furniture and lot fences (PhysLayers.PROP)
+## [orbD] A hub site prefab on the globe (planet/sites/verdance_site.gd): no skyline backdrop
+## (the globe's own far shell is the horizon).
+var skyline: bool = true
 
 
 func build(p_layout: CityLayout, p_ground_material: Material) -> void:
@@ -56,8 +59,9 @@ func build(p_layout: CityLayout, p_ground_material: Material) -> void:
 	if not layout.wild:
 		await BuildBudget.check("city:props")
 		await _build_street_props()
-		await BuildBudget.check("city:skyline")
-		await _build_skyline()  # wilderness has its own horizon (FieldView hills and biome wrecks)
+		if skyline:  # [orbD]
+			await BuildBudget.check("city:skyline")
+			await _build_skyline()  # wilderness has its own horizon (FieldView hills and biome wrecks)
 	await BuildBudget.check("city:static")
 	await _static.flush_async(self)
 	await BuildBudget.check("city:props flush")

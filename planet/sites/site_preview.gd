@@ -85,8 +85,14 @@ func _env() -> void:
 	pm.size = Vector2(1400, 600)
 	g.mesh = pm
 	g.position = Vector3(500, -0.02, 0)
-	g.material_override = AssetLib.pbr_material("brown_mud_leaves_01", 0.08, Color(0.62, 0.58, 0.5), true)
-	add_child(g)
+	var gm := StandardMaterial3D.new()
+	gm.albedo_color = Color(0.36, 0.33, 0.27)
+	gm.roughness = 0.95
+	g.material_override = gm
+	if not DevHooks.has("tilt"):
+		add_child(g)
+	else:
+		g.free()
 
 
 func _place_cam(p: SitePrefab) -> void:

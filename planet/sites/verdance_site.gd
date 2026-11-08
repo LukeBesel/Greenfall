@@ -21,6 +21,7 @@ const START_EXTENT: float = 72.0   # 5 x 5 blocks, 180 m: on the start pad (140 
 const HUB_EXTENT: float = 36.0     # 3 x 3 blocks, 108 m
 ## Which share of buildings are broken off on a ruined hub.
 const RUIN_SHARE: float = 0.7
+const START_RUIN_SHARE: float = 0.4
 
 var site_id: String = "ruin_block"
 var hub_index: int = 0
@@ -81,10 +82,10 @@ func set_restoration(r: float) -> void:
 func _make() -> void:
 	var start: bool = site_id == "start_yard"
 	layout = CityLayout.new(seed_value, START_EXTENT if start else HUB_EXTENT)
-	if not start:
-		_ruin_layout()
+	_ruin_layout(not start)
 	city = CityView.new()
 	city.name = "City"
+	city.skyline = false
 	add_child(city)
 	await city.build(layout, _sidewalk_material())
 	_roads()
@@ -92,28 +93,30 @@ func _make() -> void:
 	dressing.name = "Dressing"
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
-	if not start:
-		_build_rubble()
+	_build_rubble()
 	set_level(level)
 
 
 ## Per-hub block mix and broken buildings: the inner ring is reshuffled (buildings, landfill,
 ## parking, vacant lots) and most buildings are broken off a few floors down.
-func _ruin_layout() -> void:
+func _ruin_layout(reshuffle: bool) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_value + 61
+	var share: float = RUIN_SHARE if reshuffle else START_RUIN_SHARE
 	var kinds: Array[int] = [CityLayout.Block.BUILDINGS, CityLayout.Block.BUILDINGS, CityLayout.Block.BUILDINGS,
 		CityLayout.Block.LANDFILL, CityLayout.Block.PARKING, CityLayout.Block.VACANT]
 	for key: Vector2i in layout.blocks:
 		if key == Vector2i.ZERO:
 			continue
 		var b: Dictionary = layout.blocks[key]
-		var t: int = kinds[rng.randi() % kinds.size()]
-		b["type"] = t
-		b["buildings"] = layout._make_buildings(b["rect"], rng, key) if t == CityLayout.Block.BUILDINGS else []
+		if reshuffle:
+			var t: int = kinds[rng.randi() % kinds.size()]
+			b["type"] = t
+			b["buildings"] = layout._make_buildings(b["rect"], rng, key) if t == CityLayout.Block.BUILDINGS else []
 		for bd: Dictionary in b["buildings"]:
-			bd["ruined"] = rng.randf() < RUIN_SHARE
-			bd["floors"] = mini(int(bd["floors"]), 5)
+			bd["ruined"] = rng.randf() < share
+			# Ruins are broken off low; even standing ones stay mid-rise on a hub site.
+			bd["floors"] = rng.randi_range(2, 4) if bd["ruined"] else mini(int(bd["floors"]), 6)
 		layout.blocks[key] = b
 
 
