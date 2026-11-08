@@ -24,6 +24,20 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 4. More districts content: 41 eggs now; more biome props (nets, satellites) if Poly Haven gets them; per-biome plants/wildlife.
 5. Post-game (M11): done (wt/late). Next: per-world story threads with WREN, wildlife using the decor hook, tune Starseed income and Bloom thresholds after play-testing.
 
+## Update: movement on a sphere (wt/smove, Nov 8)
+- Done: `planet/sphere/` holds standalone movement for round planets. These pieces are adopted by the orbit prototype.
+  - SphereMotor: hover spring, radial gravity, jump, hover-boost, slopes, parallel-transported frames.
+  - SphereWalker: Lumi.
+  - SphereCam: follow and command views, spring arm, level horizon.
+  - SphereBot, SphereSteer and SphereSwarm: great-circle travel and avoidance.
+  - SphereCrewSim: far bots as records.
+  - SpherePath: A* on GeoSphere.
+  - SpherePlace: normal-aligned placement and the curved tractor scoop.
+  - SphereSurface: the plug-in for terrain height and hex lookup.
+- Demo: `--sphere-walk[=boost|play]`, with `--sphere-start=pole`, `--sphere-view=command` and `--sphere-scene=horizon`. Tests: `tests/test_sphere_move.gd`.
+- True-scale boost lap at R 1840 m: back within 0.46 m after 11.56 km.
+- Next (waits for rollout approval): Patch.gd uses SphereMotor behind a flag.
+
 ## Update: Homeward, the Verdance system campaign (wt/home)
 - The game now ends when the whole system is restored. Five fixed planets (Verdance, Ochre, Tidewell,
   Rime, Anvil; data/homeward.json, systems/homeward.gd) are profile worlds with fixed seeds, types,

@@ -8,7 +8,7 @@ extends Node3D
 ##   --sphere-walk=play       you drive (WASD/stick, Shift/LT boost, F jump, B command view)
 ##   --sphere-r=M             planet radius (default 1840 m: level-7 globe at 10 m hexes)
 ##   --sphere-start=pole      start on the north pole (default: on the equator heading north)
-##   --sphere-view=follow|command   --sphere-cam=dist,pitch[,yaw_deg]   --sphere-quit (quit after the lap)
+##   --sphere-view=follow|command  --sphere-cmd-h=M   --sphere-cam=dist,pitch[,yaw_deg]   --sphere-quit (quit after the lap)
 ##   --sphere-scene=horizon   Lumi parked, the traveller ~150 m out driving over the horizon
 ## Lap report: user://sphere_lap.json and a "[sphere] lap" line (PASS = back within 1 m).
 
@@ -85,6 +85,7 @@ func _ready() -> void:
 	cam.surface = surface
 	cam.target = walker
 	cam.view = DevHooks.get_s("sphere-view", "follow")
+	cam.command_height = DevHooks.get_f("sphere-cmd-h", cam.command_height)
 	add_child(cam)
 	walker.cam = cam
 	if DevHooks.has("sphere-cam"):
