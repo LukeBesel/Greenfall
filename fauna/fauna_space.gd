@@ -24,6 +24,11 @@ var by_node: Dictionary = {}  # node name -> props stamped (debug)
 ## Perches for songbirds: the top of tall slim things (lamp posts, poles, trees, roof crowns).
 var perches := PackedVector3Array()
 static var _tops: Dictionary = {}  # mesh RID id -> local top point (Vector3)
+## [orbB] The globe: scan() maps world geometry into this frame (Fauna's hub frame) and keeps
+## only props within reach metres (xz) of center. Identity / unlimited on the flat game.
+var frame := Transform3D.IDENTITY
+var reach: float = INF
+var center := Vector2.ZERO
 
 
 static func cell_of(x: float, z: float) -> Vector2i:
@@ -131,9 +136,11 @@ func scan(root: Node, skip: Array = []) -> int:
 			if mm and mm.mesh and mm.transform_format == MultiMesh.TRANSFORM_3D:
 				var aabb: AABB = mm.mesh.get_aabb()
 				var cnt: int = mm.instance_count if mm.visible_instance_count < 0 else mini(mm.visible_instance_count, mm.instance_count)
-				var gx: Transform3D = mmi.global_transform
+				var gx: Transform3D = frame * mmi.global_transform  # [orbB] frame
 				for i: int in cnt:
 					var ixf: Transform3D = gx * mm.get_instance_transform(i)
+					if reach < INF and Vector2(ixf.origin.x, ixf.origin.z).distance_to(center) > reach:  # [orbB]
+						continue
 					var bb: AABB = ixf * aabb
 					if perch_sized(bb):
 						perches.append(ixf * top_point(mm.mesh))
@@ -143,10 +150,11 @@ func scan(root: Node, skip: Array = []) -> int:
 						by_node[str(node.get_parent().name) + "/" + nm.left(18)] = int(by_node.get(str(node.get_parent().name) + "/" + nm.left(18), 0)) + 1
 		elif node is MeshInstance3D:
 			var mi := node as MeshInstance3D
-			if mi.mesh:
-				var bb2: AABB = mi.global_transform * mi.mesh.get_aabb()
+			var mxf: Transform3D = frame * mi.global_transform  # [orbB] frame
+			if mi.mesh and (reach == INF or Vector2(mxf.origin.x, mxf.origin.z).distance_to(center) <= reach):
+				var bb2: AABB = mxf * mi.mesh.get_aabb()
 				if perch_sized(bb2):
-					perches.append(mi.global_transform * top_point(mi.mesh))
+					perches.append(mxf * top_point(mi.mesh))
 				if prop_sized(bb2):
 					_stamp_bb(bb2)
 					n += 1
