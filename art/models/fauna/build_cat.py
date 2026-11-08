@@ -114,7 +114,7 @@ for x in (-1, 1):
 	tufts = bmesh.new()
 	for k in range(4):
 		a0 = ib + Vector(((0.004 + 0.003 * k) * x, 0.009, 0.004 + 0.007 * k))
-		fb.merge_bm(tufts, fb.capsule(a0, a0 + Vector(((0.006 - 0.004 * k) * x, 0.006, 0.02)), 0.0013, 0.0004, segs=5))
+		fb.merge_bm(tufts, fb.capsule(a0, a0 + Vector(((0.004 - 0.003 * k) * x, 0.004, 0.013)), 0.0007, 0.0002, segs=5))
 	tf = fb.mesh_obj("Tuft%d" % x, tufts, WHISK)
 	fb.bind_rigid(tf, "ear.L" if x > 0 else "ear.R")
 	parts.append(tf)
