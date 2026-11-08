@@ -111,6 +111,24 @@ func test_bots_rows_and_fabricator_slot() -> void:
 	assert_false(rows.filter(func(r: Dictionary) -> bool: return str(r["id"]) == "tier_haulbug").is_empty(), "a Mk row once you have one")
 
 
+## [ui7] A robot type you own keeps its name on the Bots tab even before its research ("? ?" is
+## only for types you have never seen).
+func test_owned_type_not_masked() -> void:
+	var f := Fleet.new()
+	add_child_autofree(f)
+	var rid: String = ""
+	for t: String in Economy.robot_order:
+		if not Research.robot_unlocked(t):
+			rid = t
+			break
+	if rid == "":
+		pass_test("every type researched")
+		return
+	f.spawn(rid, 0, Vector3.ZERO, 0.0, "Own-01")
+	var row: Dictionary = BenchBots.rows(f, Callable()).filter(func(r: Dictionary) -> bool: return str(r["id"]) == "build_" + rid)[0]
+	assert_ne(str(row["state"]), "locked")
+
+
 ## [ui7] Robot looks are per type: a design reaches every robot of the type, new ones too, and
 ## it survives a save.
 func test_type_design_reaches_new_bots_and_saves() -> void:
