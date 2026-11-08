@@ -702,6 +702,7 @@ func _machine_mats() -> Dictionary:
 	for k: String in ["steel", "dark", "glass", "concrete", "terra", "cream", "leaf", "line", "vane"]:
 		d[k] = _m(k)
 	d["paint"] = _m("paint_ruin")
+	d["kit_state"] = "broken"
 	return d
 
 
