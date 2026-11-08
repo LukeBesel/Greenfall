@@ -35,6 +35,7 @@ var _owner := PackedInt32Array()   # fine cell -> coarse cell
 var _start := PackedInt32Array()   # CSR: fine cells of coarse c = _members[_start[c] .. _start[c + 1])
 var _members := PackedInt32Array()
 var _water := PackedFloat32Array() # coarse water share (for the mesh heights)
+var _votes := PackedInt32Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])  # [orbE] biome votes (16 biomes max)
 var _dirty: Dictionary = {}
 var _dirty_t: float = 0.0
 
@@ -68,6 +69,33 @@ func _init(p_fine: SphereGrid, p_cells: SphereCells, p_terrain: SphereTerrain, p
 func _map_cells() -> void:
 	var nf: int = fine.cell_count()
 	var nc: int = coarse.cell_count()
+	# [orbE] The map only depends on the two grids: cache it like the grid (655k cells on Anvil
+	# took seconds of GDScript walking on every load).
+	var path: String = "user://sphere_shell_map_%d_%d.bin" % [nf, nc]
+	if _load_map(path, nf, nc):
+		return
+	_map_cells_walk(nf, nc)
+	var f := FileAccess.open(path, FileAccess.WRITE)
+	if f:
+		f.store_var([nf, nc, _owner, _start, _members])
+
+
+func _load_map(path: String, nf: int, nc: int) -> bool:
+	if not FileAccess.file_exists(path):
+		return false
+	var f := FileAccess.open(path, FileAccess.READ)
+	if f == null:
+		return false
+	var v: Variant = f.get_var()
+	if not (v is Array) or (v as Array).size() != 5 or int(v[0]) != nf or int(v[1]) != nc:
+		return false
+	_owner = v[2]
+	_start = v[3]
+	_members = v[4]
+	return _owner.size() == nf and _start.size() == nc + 1 and _members.size() == nf
+
+
+func _map_cells_walk(nf: int, nc: int) -> void:
 	_owner.resize(nf)
 	var counts := PackedInt32Array()
 	counts.resize(nc + 1)
@@ -97,6 +125,8 @@ func owner_of(fine_cell: int) -> int:
 
 
 func _aggregate(c: int) -> void:
+	# [orbE] Load time: local packed arrays and a fixed vote array (no Dictionary, no per-cell
+	# property lookups): the first pass over Anvil's 655k cells was ~2 s. Same results.
 	var a: int = _start[c]
 	var b: int = _start[c + 1]
 	var cnt: float = maxf(b - a, 1)
@@ -107,35 +137,40 @@ func _aggregate(c: int) -> void:
 	var city_s: float = 0.0
 	var site_s: float = 0.0
 	var seen_s: float = 0.0
-	var votes: Dictionary = {}
+	var st: PackedByteArray = cells.state
+	var jk: PackedFloat32Array = cells.junk
+	var bm: PackedByteArray = cells.biome
+	var fl: PackedByteArray = cells.flags
+	var has_city: bool = not city.is_empty()
+	_votes.fill(0)
 	for k: int in range(a, b):
 		var i: int = _members[k]
-		var st: int = cells.state[i]
-		if st == 5:
+		var s_i: int = st[i]
+		if s_i == 5:
 			water_s += 1.0
 			continue
-		var bi: int = cells.biome[i]
-		votes[bi] = int(votes.get(bi, 0)) + 1
-		if st == 0:
-			var j: float = cells.junk[i]
+		var bi: int = bm[i]
+		_votes[bi] += 1
+		if s_i == 0:
+			var j: float = jk[i]
 			junk_s += j
 			clean_s += 1.0 - j
 		else:
-			var g: float = GREEN_W[st]
+			var g: float = GREEN_W[s_i]
 			green_s += g
 			clean_s += 1.0 - g
-		var is_city: bool = (city[i] >= 0) if not city.is_empty() else (bi == 1 or bi == 6)
-		if is_city:
+		if (city[i] >= 0) if has_city else (bi == 1 or bi == 6):
 			city_s += 1.0
-		if cells.flags[i] & SphereCells.F_SITE:
+		var f_i: int = fl[i]
+		if f_i & SphereCells.F_SITE:
 			site_s += 1.0
-		if cells.flags[i] & SphereCells.F_VISITED:
+		if f_i & SphereCells.F_VISITED:
 			seen_s += 1.0
 	var best_b: int = 7  # lake when all water
-	var best_n: int = -1
-	for bi: int in votes:
-		if int(votes[bi]) > best_n:
-			best_n = int(votes[bi])
+	var best_n: int = 0
+	for bi: int in _votes.size():
+		if _votes[bi] > best_n:
+			best_n = _votes[bi]
 			best_b = bi
 	_water[c] = water_s / cnt
 	var x: int = c % TEX_W

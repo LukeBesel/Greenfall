@@ -38,6 +38,8 @@ static func _snap(s: Node) -> Dictionary:
 		"milestone_1": GameState.flags.get("hexm_1", false),
 		"parts_near": s.field.part_pos.size() > 0,
 		"loose_cubes": cubes,
+		"sky_spin": snappedf((s.get("sky_director") as SkyDirector).spin, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
+		"sky_clouds": snappedf((s.get("sky_director") as SkyDirector).clouds, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
 	}
 
 

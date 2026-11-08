@@ -42,40 +42,14 @@ func _on_built(id: String) -> void:
 		visible = true
 
 
-## A tall two-door steel cabinet with a thin cyan light seam and a small vent grille.
+## [yard] A chunky two-door kit locker (systems/camp/yard_art.gd YardArt.locker): plinth, teal
+## shell, cream louvred doors, a helmet rack and a thin cyan status seam. It only shows once built,
+## so it is always powered.
 func _build_mesh() -> void:
-	var body := MeshInstance3D.new()
-	body.mesh = ProcMesh.box(Vector3(1.1, 2.0, 0.55))
-	body.material_override = Mats.metal("dark_steel")
-	body.position = Vector3(0, 1.0, 0)
-	add_child(body)
-	for side: float in [-0.275, 0.275]:
-		var door := MeshInstance3D.new()
-		door.mesh = ProcMesh.box(Vector3(0.52, 1.88, 0.04))
-		door.material_override = Mats.metal("dark_steel")
-		door.position = Vector3(side, 1.0, 0.29)
-		add_child(door)
-		var handle := MeshInstance3D.new()
-		handle.mesh = ProcMesh.box(Vector3(0.03, 0.22, 0.04))
-		handle.material_override = Mats.metal("chrome")
-		handle.position = Vector3(side * 0.25, 1.05, 0.33)
-		add_child(handle)
-		for k: int in 4:
-			var slot := MeshInstance3D.new()
-			slot.mesh = ProcMesh.box(Vector3(0.3, 0.025, 0.01))
-			slot.material_override = Mats.metal("chrome")
-			slot.position = Vector3(side, 1.7 - k * 0.06, 0.315)
-			add_child(slot)
-	var seam := MeshInstance3D.new()
-	seam.mesh = ProcMesh.box(Vector3(0.012, 1.8, 0.012))
-	seam.material_override = Mats.lamp(Color(0.45, 0.88, 1.0), 1.4)
-	seam.position = Vector3(0, 1.0, 0.315)
-	add_child(seam)
-	var top := MeshInstance3D.new()
-	top.mesh = ProcMesh.box(Vector3(1.04, 0.012, 0.012))
-	top.material_override = Mats.lamp(Color(0.45, 0.88, 1.0), 1.1)
-	top.position = Vector3(0, 1.97, 0.3)
-	add_child(top)
+	var m: MeshInstance3D = YardArt.locker().mi(0.12, "LockerBody")
+	add_child(m)
+	YardArt.set_powered(m, true)
+	YardArt.solid(self, Vector3(1.3, 2.2, 0.75), Vector3(0, 1.1, 0), "LockerSolid")
 
 
 ## Opens the Locker over the game (Esc / B or Close shuts it).
