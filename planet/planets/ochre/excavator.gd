@@ -69,9 +69,21 @@ static func build(groups: Dictionary, xf: Transform3D, mats: Dictionary, kind: S
 	var base := OchreProps.Batch.new()
 	# Crawlers, frame and turntable.
 	for x: float in [-4.6, 4.6]:
-		base.box(Vector3(x, 1.7, 0), Vector3(3.6, 3.4, 21.0), dark)
+		# Track frame, idlers, rollers and a belt of grousered pads.
+		base.box(Vector3(x, 1.7, 0), Vector3(2.4, 2.2, 18.0), steel)
 		for z: float in [-9.0, 9.0]:
-			base.add(ProcMesh.cyl(1.7, 1.7, 3.7, 12), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(x, 1.7, z)), dark)
+			base.add(ProcMesh.cyl(1.7, 1.7, 3.7, 14), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(x, 1.7, z)), dark)
+		for z: int in 6:
+			base.add(ProcMesh.cyl(0.55, 0.55, 3.0, 10), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(x, 0.75, -6.5 + z * 2.6)), steel)
+		for i: int in 26:
+			var zz: float = -8.4 + i * 0.68
+			base.box(Vector3(x, 0.18, zz), Vector3(3.8, 0.36, 0.6), dark)
+			base.box(Vector3(x, 3.22, zz), Vector3(3.8, 0.36, 0.6), dark)
+		for i: int in 8:
+			var a: float = PI * 0.5 + PI * i / 7.0
+			for zs: float in [-9.0, 9.0]:
+				var o := Vector3(0, sin(a), cos(a) * signf(zs)) * 1.75
+				base.box(Vector3(x, 1.7, zs) + o, Vector3(3.8, 0.5, 0.5), dark, Basis(Vector3.RIGHT, -a * signf(zs)))
 	base.box(Vector3(0, 3.9, 0), Vector3(12.0, 1.4, 12.0), steel)
 	base.add(ProcMesh.cyl(6.4, 6.8, 1.6, 20), ProcMesh.xf(Vector3(0, 5.4, 0)), steel)
 	# House, roof machinery, cab, walkways.
@@ -79,7 +91,32 @@ static func build(groups: Dictionary, xf: Transform3D, mats: Dictionary, kind: S
 	base.box(Vector3(-3.0, 16.6, 0), Vector3(8.5, 3.0, 7.5), paint)
 	base.box(Vector3(6.6, 12.2, 5.8), Vector3(3.4, 3.2, 3.2), paint)
 	base.box(Vector3(8.35, 12.6, 5.8), Vector3(0.1, 1.6, 2.6), mats["glass"])
+	base.box(Vector3(6.6, 12.6, 7.42), Vector3(2.8, 1.5, 0.08), mats["glass"])
+	base.box(Vector3(7.0, 13.95, 5.8), Vector3(4.2, 0.18, 3.8), dark)
 	base.box(Vector3(-1.5, 6.3, 5.6), Vector3(16.0, 0.25, 1.4), steel)
+	# Walkways with handrails round the house, a stair down to the crawlers, ducts, stacks, vents.
+	for side: float in [-1.0, 1.0]:
+		base.box(Vector3(-1.5, 15.2, side * 5.95), Vector3(15.6, 0.2, 1.2), steel)
+		for i: int in 9:
+			base.box(Vector3(-9.0 + i * 1.9, 15.8, side * 6.5), Vector3(0.08, 1.1, 0.08), steel)
+		base.box(Vector3(-1.5, 16.35, side * 6.5), Vector3(15.6, 0.08, 0.08), steel)
+		base.box(Vector3(-1.5, 15.85, side * 6.5), Vector3(15.6, 0.06, 0.06), steel)
+	for i: int in 14:
+		base.box(Vector3(-8.5 + i * 0.55, 6.1 - i * 0.42, 6.9), Vector3(0.5, 0.08, 1.0), steel)
+	base.beam(Vector3(-8.7, 6.3, 7.45), Vector3(-1.2, 0.4, 7.45), 0.12, steel)
+	base.beam(Vector3(-8.7, 7.3, 7.45), Vector3(-1.2, 1.4, 7.45), 0.06, steel)
+	for i: int in 3:
+		base.add(ProcMesh.cyl(0.45, 0.5, 4.5, 10), ProcMesh.xf(Vector3(-6.5 + i * 1.5, 20.2, -2.5)), dark)
+	base.add(ProcMesh.cyl(0.4, 0.4, 13.0, 10), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(-1.5, 9.0, -5.55)), steel)
+	base.add(ProcMesh.cyl(0.4, 0.4, 13.0, 10), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(-1.5, 11.0, -5.55)), steel)
+	for i: int in 5:
+		base.box(Vector3(-7.5 + i * 3.0, 12.5, 5.3), Vector3(1.6, 2.4, 0.1), dark)
+		for k: int in 5:
+			base.box(Vector3(-7.5 + i * 3.0, 11.6 + k * 0.45, 5.37), Vector3(1.4, 0.06, 0.06), steel)
+	# Hazard chevrons on the counterweight and the crawler ends.
+	for i: int in 9:
+		base.box(Vector3(-35.56, 14.0, -2.8 + i * 0.7), Vector3(0.06, 2.4, 0.32), dark if i % 2 == 0 else paint, Basis(Vector3.RIGHT, 0.55))
+		base.box(Vector3(-35.56, 17.6, -2.8 + i * 0.7), Vector3(0.06, 2.4, 0.32), paint if i % 2 == 0 else dark, Basis(Vector3.RIGHT, -0.55))
 	for i: int in 9:
 		base.box(Vector3(-9.0 + i * 1.9, 13.7, -5.3), Vector3(0.12, 4.0, 0.12) if i % 2 == 0 else Vector3(1.0, 0.5, 0.06), dark)
 	# Counterweight boom and its block (behind the house).
@@ -196,6 +233,9 @@ static func _wheel(wheel: Node3D, mats: Dictionary, ruined: bool, rng: RandomNum
 		var tan := Vector3(-sin(a), cos(a), 0)
 		var bs := Basis(tan, rad, Vector3(0, 0, 1))
 		b.box(rad * (WHEEL_R + 0.6), Vector3(2.6, 1.8, 3.0), mats["dark"], bs)
+		b.box(rad * (WHEEL_R + 0.2) - tan * 1.2, Vector3(0.3, 2.4, 3.1), mats["paint"], bs)
+		b.box(rad * (WHEEL_R + 1.5) + tan * 1.1, Vector3(0.5, 0.35, 3.2), mats["steel"], bs)
+		b.beam(rad * (WHEEL_R - 0.4), rad * (WHEEL_R + 1.3) - tan * 1.3, 0.12, mats["steel"])
 		for t: int in 3:
 			b.add(ProcMesh.cyl(0.05, 0.22, 0.8, 4), Transform3D(bs, rad * (WHEEL_R + 1.8) + tan * 1.0 + Vector3(0, 0, -0.9 + t * 0.9)), mats["steel"])
 	b.flush(wheel, true, 1600.0)
