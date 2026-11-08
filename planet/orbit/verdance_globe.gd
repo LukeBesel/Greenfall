@@ -385,6 +385,12 @@ func _build_sled() -> void:
 		sled.mount()
 
 
+## [orbD] Patch asks the world for an interact prompt when nothing of its own applies.
+func interact_prompt(_p: Node) -> String:
+	var t: String = sled.prompt() if sled else ""
+	return ("E   " + t) if t != "" else ""
+
+
 ## [orbD] Rocket hops between hubs on this globe (planet/sites/hub_hop.gd).
 var hub_hop: HubHop
 
