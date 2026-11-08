@@ -83,3 +83,19 @@ func test_back_to_mood_music_fades_the_score_in() -> void:
 		assert_false(_fake.live.has(id), "the song's held voice %d stopped" % id)
 	_run(6.0)
 	assert_gt(float((_dir.get("_gains") as Dictionary)["pad"]), 0.05, "the score has faded back in")
+
+
+func test_muted_score_for_a_song_file_stays_silent() -> void:
+	_run(10.0)
+	var before: Array = _held_voices()
+	_dir.call("set_muted", true)
+	_dir.call("sting", "upgrade")
+	_run(3.0)
+	for id: int in before:
+		assert_false(_fake.live.has(id), "held voice %d stopped" % id)
+	for l: String in (_dir.get("_gains") as Dictionary):
+		assert_eq(float((_dir.get("_gains") as Dictionary)[l]), 0.0, "layer %s silent while a song file plays" % l)
+	assert_eq((_dir.get("_queue") as Array).size(), 0, "no stingers")
+	_dir.call("set_muted", false)
+	_run(6.0)
+	assert_gt(float((_dir.get("_gains") as Dictionary)["pad"]), 0.05, "the score fades back in")

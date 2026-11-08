@@ -124,6 +124,7 @@ var restoration: float = 0.0  # [sound] 0 ruined .. 1 restored (current planet)
 var activity: float = 0.0  # [sound] 0..1, recent cleaning / building; decays over ~a minute
 var gaps_enabled: bool = true  # [sound] silence between pieces
 var forced_track: String = ""  # [sound] the radio: loop this track, no gaps
+var muted: bool = false  # [camp] a song from outside the score plays (Audio.mute_score): stay silent
 
 var _active: String = "explore"  # harmony / tempo follow this (switches on a bar line)
 var _active_theme: String = "verdance"
@@ -308,6 +309,15 @@ func stop_track() -> void:
 		_cut()  # [camp] the song stops; the score fades back in from silence
 
 
+## [camp] Silences the score for a song played outside it (a recorded song file): cuts what is
+## sounding now and keeps every layer and stinger quiet until unmuted, then fades back in.
+func set_muted(on: bool) -> void:
+	if on == muted:
+		return
+	muted = on
+	_cut()
+
+
 ## [camp] Ends whatever is sounding now (pads fade out in under a second, the melody line and
 ## any queued stingers are dropped, every layer restarts from silence and fades in) and starts
 ## the next piece on the very next step instead of waiting for the bar line.
@@ -333,7 +343,7 @@ func in_gap() -> bool:
 
 
 func sting(name: String) -> void:
-	if forced_track != "":
+	if forced_track != "" or muted:
 		return  # [camp] a radio song plays alone
 	var tones: Array[int] = _chord_tones_in(60, 86)
 	if tones.is_empty():
@@ -412,7 +422,7 @@ func update(dt: float) -> void:
 	var tracked: bool = str(_target["track"]) != ""
 	for l: String in LAYERS:
 		var target: float = 0.0
-		if enabled and (_gap_left <= 0.0 or l == "air"):
+		if enabled and not muted and (_gap_left <= 0.0 or l == "air"):  # [camp] muted: silent
 			target = float(mix[l]) * (_track_curve(l) if tracked else _curve(l, _eff))
 		# Composed tracks come in quicker, so the hook's first statement is heard.
 		var fade: float = FADE_TIME * (0.35 if tracked and target > float(_gains[l]) else 1.0)
