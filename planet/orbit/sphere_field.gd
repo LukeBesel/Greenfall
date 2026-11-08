@@ -15,7 +15,13 @@ extends HexField
 ## - locked: cells of a locked biome (locked_biomes) can't be scooped until unlocked.
 ## - floating junk on water cells with junk left (lakes count as junk hexes, as on the flat).
 
-const FULL_PIECES: int = 70  # pieces on an untouched 10 m hex (the flat districts' density)
+const FULL_PIECES: int = 70  # pacing units of an untouched 10 m hex (robots / offline: SphereOffline.UNITS_PER_CELL)
+## [v1world] Pieces drawn on an untouched land cell (owner, Nov 8: "way more trash, like the flat
+## world"; the flat field lays 260-420 a hex, landfill x2.2). The ledger is in volume (FLAT_HEX_VOL),
+## so more pieces are each lighter: a cell still takes the flat hex's scoop pulses to clean.
+const DRAW_PIECES: int = 200
+## [v1world] Share of loose ground pieces swapped for a black trash bag (the flat sidewalks' bags).
+const BAG_SHARE: float = 0.08
 const FLOAT_PIECES: int = 22  # floaters on an untouched water cell
 const FLAT_DISTRICT_HEXES: float = 61.0  # a radius-4 flat district: landmark counts are per one of these
 ## [orbB] Pacing (owner decision (b), Nov 8): ~70 light pieces per cell, but a cell holds a flat hex's
@@ -116,6 +122,10 @@ func _init(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p
 		_type_wsum += w
 	parts_def = Economy.parts
 	landmark_defs = Economy.landmarks_for("")
+	_bag_type = Economy.junk_ids.find("plastic") if AssetLib.has_model("trashbag") else -1  # [v1world]
+
+
+var _bag_type: int = -1  # [v1world] junk type index of the trash bags (plastic)
 
 
 func water_dirty(i: int) -> bool:
@@ -179,7 +189,7 @@ func materialize(cell: int) -> PackedInt32Array:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash([seed_value, cell, 911])
 	var left: float = cells.junk[cell]
-	var count: int = int(round(FULL_PIECES * left))
+	var count: int = int(round(DRAW_PIECES * left))  # [v1world]
 	var ctr: Vector3 = grid.centers[cell]
 	var f: Basis = SphereGrid.frame(ctr)
 	var piles: Array = [] if cells.has_flag(cell, SphereCells.F_SITE) else _roll_piles(cell)  # [orbD] mounds wedged against kerbs and kit walls stalled Lumi; site cells keep loose junk only
@@ -224,6 +234,11 @@ func materialize(cell: int) -> PackedInt32Array:
 		var mid: String = str(mdl.get("id", ""))
 		var vol: float = float(mdl.get("vol", 0.5))
 		var lie: bool = rng.randf() < float(mdl.get("lie", 0.3))
+		if not in_pile and rng.randf() < BAG_SHARE and _bag_type >= 0:  # [v1world] black bags everywhere, as on the flat streets
+			ti = _bag_type
+			mid = "trashbag"
+			vol = 1.4
+			lie = false
 		var sc: float = rng.randf_range(0.9, 1.1)
 		var lf: Basis = SphereGrid.frame(d)
 		var b := Basis(lf.y, rng.randf() * TAU) * lf
@@ -363,10 +378,10 @@ func _roll_piles(cell: int) -> Array:
 	rng.seed = hash([seed_value, cell, 31])
 	var piles: Array = []
 	var roll: float = rng.randf()
-	var n: int = 0 if roll < 0.3 else (1 if roll < 0.8 else 2)
+	var n: int = 0 if roll < 0.12 else (1 if roll < 0.6 else 2)  # [v1world] was 30% / 50% / 20%: heaps on most cells, as on the flat landfill
 	for k: int in n:
 		var pc := Vector2(rng.randf_range(-0.35, 0.35), rng.randf_range(-0.35, 0.35)) * hex_size
-		piles.append(Vector4(pc.x, pc.y, rng.randf_range(1.6, 2.4), rng.randf_range(0.7, 1.4)))
+		piles.append(Vector4(pc.x, pc.y, rng.randf_range(1.7, 2.6), rng.randf_range(0.8, 1.5)))
 	return piles
 
 

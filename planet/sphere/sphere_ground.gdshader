@@ -42,7 +42,7 @@ void fragment() {
 	float biome = floor(st.b * 255.0 / 17.0 + 0.5);
 	float n = dot(tri(tex_rubble, wpos * mix(0.031, 0.002, far_shell), w), vec3(0.33));
 	float dirty = smoothstep(0.38, 0.62, junk + (n - 0.45) * 0.7);
-	vec3 dirt = mix(tri(tex_dirt, p, w), tri(tex_rubble, p * 1.3, w), 0.55) * vec3(0.78, 0.7, 0.62);
+	vec3 dirt = mix(tri(tex_dirt, p, w), tri(tex_rubble, p * 1.3, w), 0.55) * vec3(0.6, 0.53, 0.46);  // [v1world] grimier (was 0.78, 0.7, 0.62): trashed ground reads dark, as on the flat field
 	vec3 clean = tri(tex_clean, p, w) * vec3(0.95, 0.93, 0.9);
 	vec3 grass = tri(tex_grass, p * 0.8, w) * vec3(0.85, 1.0, 0.8);
 	float green = smoothstep(1.5, 2.5, state + (n - 0.45));
