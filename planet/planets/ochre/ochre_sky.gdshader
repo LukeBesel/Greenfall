@@ -23,6 +23,12 @@ uniform vec3 night_horizon = vec3(0.12, 0.07, 0.07);
 uniform vec3 ground = vec3(0.45, 0.3, 0.18);
 uniform float dust = 1.0;        // 1 ruined (thick haze) .. 0 clear
 uniform float energy = 1.0;
+uniform float clouds = 0.6;     // thin high cirrus
+
+float h21(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+float vn(vec2 p) { vec2 i = floor(p); vec2 f = fract(p); f = f * f * (3.0 - 2.0 * f);
+	return mix(mix(h21(i), h21(i + vec2(1, 0)), f.x), mix(h21(i + vec2(0, 1)), h21(i + vec2(1, 1)), f.x), f.y); }
+float fbm2(vec2 p) { float v = 0.0; float a = 0.5; for (int i = 0; i < 4; i++) { v += a * vn(p); p = p * 2.07 + 13.1; a *= 0.5; } return v; }
 
 float h31(vec3 p) {
 	p = fract(p * 0.3183099 + 0.1);
@@ -48,14 +54,27 @@ void sky() {
 	float day_b = smoothstep(-0.12, 0.12, normalize(sun_b_dir).y);
 	float day = max(day_a, day_b * 0.6);
 	// Day gradient: hot pale band low down, bleached or blue above.
-	float hz = pow(1.0 - clamp(up, 0.0, 1.0), 3.2);
-	vec3 day_c = mix(zenith, horizon, hz);
+	// A real gradient: hot horizon -> a warm mid band -> a deeper zenith (visible even in the
+	// low strip of sky a hub camera sees).
+	float u = clamp(up, 0.0, 1.0);
+	vec3 mid = mix(horizon, zenith, 0.45) * vec3(1.02, 0.96, 0.98);
+	vec3 day_c = mix(horizon, mid, smoothstep(0.0, 0.22, u));
+	day_c = mix(day_c, zenith * 0.85, smoothstep(0.18, 0.9, u));
 	// Dust: a thick warm haze layer near the horizon; forward scattering toward the suns.
 	float fwd = pow(max(dot(d, normalize(sun_a_dir)), 0.0), 6.0);
 	day_c = mix(day_c, haze, (pow(1.0 - abs(up), 8.0) * 0.6 + fwd * 0.35) * (0.35 + 0.65 * dust));
 	// Sunset: the low suns stain the haze rose-orange.
 	float low = 1.0 - smoothstep(0.0, 0.35, normalize(sun_a_dir).y);
 	day_c = mix(day_c, vec3(1.0, 0.55, 0.32), low * day * pow(1.0 - clamp(up, 0.0, 1.0), 4.0) * 0.6);
+	// Thin high cirrus: streaks projected on a sky plane, fading at the horizon and zenith.
+	if (clouds > 0.001 && up > 0.0) {
+		vec2 cp = d.xz / (up + 0.18) * 1.6;
+		float c = fbm2(cp * vec2(0.55, 2.4) + vec2(3.1, 7.7));
+		c = smoothstep(0.52, 0.8, c * (0.75 + 0.5 * fbm2(cp * 0.35 + 11.0)));
+		c *= smoothstep(0.02, 0.16, up) * (1.0 - smoothstep(0.55, 0.9, up)) * clouds;
+		vec3 lit = mix(vec3(1.0, 0.95, 0.88), vec3(1.0, 0.82, 0.62), pow(1.0 - u, 3.0));
+		day_c = mix(day_c, lit, c * 0.55);
+	}
 	vec3 night_c = mix(night_zenith, night_horizon, pow(1.0 - clamp(up, 0.0, 1.0), 2.5));
 	vec3 col = mix(night_c, day_c, day);
 	if (up < 0.0) {
