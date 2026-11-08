@@ -76,7 +76,7 @@ func _build_meshes() -> void:
 	# Tiny real items at very low detail.
 	for id: String in ["can_rusted", "bleach_bottle", "lubricant_spray", "garden_gloves_01", "drain_cleaner",
 			"multi_cleaner_bottle", "russian_food_cans_01", "oil_tin", "circuit_board"]:
-		_meshes.append(AssetLib.model_mesh_lite(id, [70, 140, 220, 220][clampi(Settings.quality, 0, 3)]))
+		_meshes.append(AssetLib.model_mesh_lite(id, [24, 90, 140, 140][clampi(Settings.quality, 0, 3)]))  # [world2] were 70, 140, 220, 220: the gen-2 carpet is bigger
 
 
 ## Real-world trash colours: mostly sun-faded paper, cardboard, grey film and black bags, with
@@ -143,7 +143,7 @@ func _build() -> void:
 			var layer: float = float(k) / float(n)
 			p.y = (layout.height_at(p.x, p.z) if layout else 0.0) + field.ground_height(id, p) * 0.9 + layer * 0.06 * mult
 			var n_items: int = _meshes.size() - 4
-			var mi: int = _rng.randi() % 4 if _rng.randf() < 0.72 else 4 + _rng.randi() % n_items
+			var mi: int = _rng.randi() % 4 if _rng.randf() < (0.86 if Settings.quality == Settings.Quality.LOW else 0.8) else 4 + _rng.randi() % n_items  # [world2] Low: fewer tiny items (the bulk of its triangles)
 			var b := Basis(Vector3.UP, _rng.randf() * TAU)
 			if mi >= 4:
 				b = b * Basis(Vector3.RIGHT, PI * 0.5)  # small items lie on their side

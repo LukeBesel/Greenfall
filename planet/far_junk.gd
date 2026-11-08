@@ -51,15 +51,16 @@ func build(p_field: HexField) -> void:
 	var groups: Dictionary = {}  # "q|model" -> Array[Transform3D]
 	var lgroups: Dictionary = {}  # quadrant -> [Array[Transform3D], Array[Color]]
 	var area: float = PI * (FAR_R * FAR_R - inner_r * inner_r)
-	var n_junk: int = int(area * JUNK_PER_M2)
-	var n_lit: int = int(area * LITTER_PER_M2)
+	var low: float = 0.5 if Settings.quality == Settings.Quality.LOW else 1.0  # [world2] the Mac/Low budget
+	var n_junk: int = int(area * JUNK_PER_M2 * low)
+	var n_lit: int = int(area * LITTER_PER_M2 * low)
 	for k: int in n_junk + n_lit:
 		var ang: float = rng.randf() * TAU
 		var r: float = sqrt(lerpf(inner_r * inner_r, FAR_R * FAR_R, rng.randf()))
 		var p := Vector3(cos(ang) * r, 0.0, sin(ang) * r)
 		if not _open(p):
 			continue
-		var q: int = (1 if p.x > 0.0 else 0) + (2 if p.z > 0.0 else 0)
+		var q: int = 0 if low < 1.0 else (1 if p.x > 0.0 else 0) + (2 if p.z > 0.0 else 0)  # Low: one batch per model (draw calls)
 		p.y = layout.height_at(p.x, p.z) if layout else 0.0
 		if k < n_junk:
 			var x: float = rng.randf() * wsum
