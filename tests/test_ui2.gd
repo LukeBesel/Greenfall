@@ -199,11 +199,11 @@ func test_hub_gains_list_the_next_level() -> void:
 func test_tabs_appear_once_open_and_stay() -> void:
 	GameState.flags.erase("bench_tabs")
 	assert_true(UpgradesScreen.tab_visible("patch"))
+	GameState.flags["bench_tier"] = 1  # [v1guide] Bots opens with the workbench's Mk II (ui/bench_tiers.gd)
 	assert_false(UpgradesScreen.tab_visible("bots"), "hidden on a fresh game")
-	GameState.stats["robots_built"] = 1.0
+	GameState.flags["bench_tier"] = 2
 	assert_true(UpgradesScreen.tab_visible("bots"))
-	GameState.stats["robots_built"] = 0.0
-	assert_true(UpgradesScreen.tab_visible("bots"), "an opened tab stays open")
+	assert_true("bots" in GameState.flags.get("bench_tabs", []), "an opened tab is remembered")
 
 
 func test_pause_menu_has_no_save_button() -> void:

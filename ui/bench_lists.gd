@@ -2,15 +2,14 @@ class_name BenchLists
 extends RefCounted
 ## [ui6] Row data for the workbench's list + detail tabs (ui/list_detail.gd), one provider per
 ## tab, all read from the systems that own the numbers (Economy upgrades, Hub, HubBuilds, Glim,
-## RocketTiers, Research). The owner asked for few visible rows: the Upgrades list shows what
-## you can buy soon (the cheapest few) plus at most two "? ?" locked rows per category.
+## RocketTiers, Research). [v1guide] Rows keep a fixed order (owner 2026-11-08): every open row in
+## its place, plus at most two "? ?" locked rows per category.
 
-const SOON_CAP: int = 6
 const LOCKED_SHOWN: int = 2
 
 # l10n:begin
 const UPGRADE_CATS: Array = [["lumi", "Lumi"], ["base", "Base"], ["machines", "Machines"], ["glim", "Glim"], ["rocket", "Rocket"]]
-const BUILD_CATS: Array = [["yard", "Yard"], ["machines", "Machines"], ["story", "Story"]]
+const BUILD_CATS: Array = [["story", "Story"], ["yard", "Yard"], ["machines", "Machines"]]  # [v1guide] the signal tower first: it's the first build the story asks for
 # l10n:end
 const BUILD_CAT_OF: Dictionary = {
 	"conveyor": "machines", "auto_baler": "machines", "recycler": "machines", "telescope": "machines", "air_scrubber": "machines",
@@ -62,19 +61,30 @@ static func _upgrade_item(id: String, cat: String) -> Dictionary:
 	return it
 
 
-## The cheapest few you can buy soon, then up to LOCKED_SHOWN "? ?" rows.
+## [v1guide] Owner (2026-11-08 #27): every upgrade keeps its own place in the list. Rows stay in
+## the bench order (data/workbench.json "upgrade_order", then the data order) whatever they cost or
+## whether you can pay; the first LOCKED_SHOWN locked ones show as "? ?" teasers in their place.
 static func _trim(rows: Array) -> Array:
-	var open: Array = rows.filter(func(r: Dictionary) -> bool: return str(r["state"]) in ["ready", "short"])
-	open.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return float(a.get("_cost", 0.0)) < float(b.get("_cost", 0.0)))
-	var cubes: float = GameState.get_currency("cubes").to_float()
 	var out: Array = []
-	for r: Dictionary in open:
-		if out.size() >= SOON_CAP:
-			break
-		if out.size() < 3 or float(r.get("_cost", 0.0)) <= maxf(cubes, 1.0) * 4.0:
-			out.append(r)
-	var locked: Array = rows.filter(func(r: Dictionary) -> bool: return str(r["state"]) == "locked")
-	out.append_array(locked.slice(0, LOCKED_SHOWN))
+	var locked: int = 0
+	for r: Dictionary in rows:
+		if str(r["state"]) == "locked":
+			locked += 1
+			if locked > LOCKED_SHOWN:
+				continue
+		out.append(r)
+	return out
+
+
+## [v1guide] The fixed display order of the Lumi / machine upgrades.
+static func bench_order() -> Array[String]:
+	var out: Array[String] = []
+	for id: Variant in BenchTiers.cfg().get("upgrade_order", []):
+		if Economy.upgrade_defs.has(str(id)) and not (str(id) in out):
+			out.append(str(id))
+	for id: String in Economy.upgrade_order:
+		if not (id in out):
+			out.append(id)
 	return out
 
 
@@ -82,7 +92,7 @@ static func upgrades(world: Node) -> Array:
 	var out: Array = []
 	var lumi: Array = []
 	var machines: Array = []
-	for id: String in Economy.upgrade_order:
+	for id: String in bench_order():  # [v1guide] fixed order
 		var tab: String = str(Economy.upgrade_defs[id].get("tab", "patch"))
 		if tab == "patch":
 			lumi.append(_upgrade_item(id, "lumi"))
@@ -100,6 +110,9 @@ static func upgrades(world: Node) -> Array:
 
 static func _base(world: Node) -> Array:
 	var out: Array = []
+	var bt: Dictionary = _bench_tier(world)  # [v1guide] the workbench's own tiers come first
+	if not bt.is_empty():
+		out.append(bt)
 	var hub: Hub = world.get("hub") as Hub if world else null
 	if hub:
 		var nxt: Dictionary = hub.level_def(hub.level + 1)
@@ -125,6 +138,27 @@ static func _base(world: Node) -> Array:
 			"requires": "" if reason == "" or short else reason, "action": _tr("Upgrade"),
 			"act": func() -> bool: return HubBuilds.build(world, id)})
 	return out
+
+
+## [v1guide] The next workbench tier (ui/bench_tiers.gd): it opens the next tab(s).
+static func _bench_tier(world: Node) -> Dictionary:
+	var nd: Dictionary = BenchTiers.next_def()
+	if nd.is_empty():
+		return {}
+	var cost: Dictionary = nd.get("cost", {})
+	var why: String = BenchTiers.block_reason(world)
+	var t: int = BenchTiers.tier()
+	var tabs: Array[String] = []
+	for tab: Variant in nd.get("tabs", []):
+		for td: Dictionary in UpgradesScreen.TABS:
+			if str(td["id"]) == str(tab):
+				tabs.append(_tr(str(td["name"])))
+	return {"id": "bench_tier", "cat": "base", "icon": "box", "icon_set": "ui", "name": _tr(str(nd.get("name", ""))),
+		"desc": _tr(str(nd.get("desc", ""))), "lv": t, "max": BenchTiers.max_tier(), "price": cost,
+		"state": "locked" if why != "" else _state(cost),
+		"table": [[_tr("Level"), "%d / %d" % [t, BenchTiers.max_tier()]], [_tr("Opens"), ", ".join(tabs)], [_tr("Cost"), _price_text(cost)]],
+		"requires": why, "action": _tr("Upgrade the workbench"),
+		"act": func() -> bool: return BenchTiers.buy(world)}
 
 
 static func _glim() -> Array:
@@ -180,7 +214,7 @@ static func upgrades_counter() -> String:
 	var have: int = 0
 	var total: int = 0
 	# [ui7] Only what's open to you now (unlocked, machine standing): not every level in the game.
-	for id: String in Economy.upgrade_order:
+	for id: String in bench_order():
 		var d: Dictionary = Economy.upgrade_defs[id]
 		if not (str(d.get("tab", "patch")) in ["patch", "hub"]) or not Economy.is_unlocked(id):
 			continue
@@ -206,6 +240,11 @@ static func builds(world: Node) -> Array:
 			"table": [[_tr("Cost"), _price_text(e.get("cost", {}))]],
 			"requires": "" if reason == "" or short else reason, "action": _tr("Build"),
 			"act": func() -> bool: return HubBuilds.build(world, id)})
+	# [v1guide] Per category, at most LOCKED_SHOWN "? ?" rows (five locked yard rows hid the tower).
+	var kept: Array = []
+	for c: Array in BUILD_CATS:
+		kept.append_array(_trim(out.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == str(c[0]))))
+	out = kept
 	# Machines that stand keep their few controls (route, move, the telescope view).
 	var st: Stations = Stations.of(world) if world else null
 	if st and (st.conveyor != null or st.baler != null or st.recycler != null):

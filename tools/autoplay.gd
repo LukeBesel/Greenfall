@@ -318,7 +318,10 @@ func _watch_stuck(p: Patch, delta: float) -> void:
 				_traps += 1
 				_report["bot_traps"] = _report.get("bot_traps", []) + [[snappedf(_now() / 60.0, 0.1), str(p.global_position.snapped(Vector3.ONE * 0.1)), _task]]
 				print("[bot-trap] t=%.1f task=%s pos=%s: back to the yard" % [_now() / 60.0, _task, str(p.global_position)])
-				p.global_position = BENCH_STAND + Vector3(0, 0.3, 1.5)
+				if world.get("orbit") != null and p.has_method("place_on_sphere"):  # [v1guide] the globe's yard
+					p.place_on_sphere(_bench_at() + _bench_at().normalized() * 0.3, p.forward())
+				else:
+					p.global_position = BENCH_STAND + Vector3(0, 0.3, 1.5)
 				p.velocity = Vector3.ZERO
 				_target_piece = -1
 				_set_task("")
@@ -364,7 +367,13 @@ func _haulers() -> int:
 
 
 func _at_base(p: Patch) -> bool:
-	return p.global_position.distance_to(BENCH_POS) < AT_BASE_R
+	return p.global_position.distance_to(_bench_at()) < AT_BASE_R
+
+
+## [v1guide] The workbench: the flat BENCH_POS, or the globe's bench anchor (the bot used to walk to
+## the flat spot on the globe for 60 s and then shop "remotely", which slowed every globe run).
+func _bench_at() -> Vector3:
+	return world.call("bench_pos") if world.get("orbit") != null and world.has_method("bench_pos") else BENCH_POS
 
 
 # --- Patch tasks -------------------------------------------------------------------------
@@ -389,7 +398,7 @@ func _do_tin(p: Patch) -> bool:
 func _do_bench(p: Patch) -> bool:
 	if not _bench_trip:
 		return false
-	if p.global_position.distance_to(BENCH_POS) < 3.0:
+	if p.global_position.distance_to(_bench_at()) < 3.0:  # [v1guide]
 		_bench_trip = false
 		var cp: Camp = Camp.of(world)  # [camp] fix the broken bench first (the player presses E once)
 		if cp and not Camp.bench_ok():
@@ -397,7 +406,10 @@ func _do_bench(p: Patch) -> bool:
 		_manage(p)
 		return false
 	_set_task("bench")
-	_go(p, BENCH_STAND, 0.4)
+	if world.get("orbit") != null:  # [v1guide] the globe's bench: walk up to it
+		_go(p, _bench_at(), 2.2)
+	else:
+		_go(p, BENCH_STAND, 0.4)
 	if _task_t > 60.0:
 		# Can't get there: count it, and shop anyway (the sim must not stall on pathing).
 		_bench_trip = false
@@ -1011,6 +1023,17 @@ func _shop(want: Dictionary) -> void:
 		GameState.spend_all(SignalTower.next_cost())
 		tower.raise()
 		_event("signal_tower", {"tier": SignalTower.tier()})
+	# 0b) [v1guide] The workbench tiers (ui/bench_tiers.gd): the Bots / Research / Requests tabs only
+	# open by upgrading the bench, so a player buys the next tier as soon as it's offered and paid.
+	if BenchTiers.can_buy(world) and BenchTiers.buy(world):
+		_progress()
+		_event("bench_tier", {"tier": BenchTiers.tier()})
+	# 0c) [v1guide] The story objective's upgrade (Compartment, Scoop Size, the Baler): what the card asks for.
+	var obj: Objectives = world.get("objectives") as Objectives
+	if obj and str(obj.current().get("type", "")) == "upgrade":
+		var oid: String = str(obj.current().get("key", ""))
+		if Economy.upgrade_defs.has(oid) and Economy.is_unlocked(oid) and not Economy.is_maxed(oid) and GameState.can_afford("cubes", Economy.upgrade_cost(oid)):
+			Economy.buy_upgrade(oid, 1)
 	# 1) Research ([money] cubes from the research fund, see _research_ok).
 	var guard: int = 0
 	var rid: String = _research_pick()
@@ -1050,7 +1073,7 @@ func _shop(want: Dictionary) -> void:
 			fab_wait = true
 	_fabricator_mix(world)
 	# 3) Robots ([ui2] Parts + cubes; keep the next base level's Parts unless the robot can't wait).
-	var robot: String = str(want.get("robot", "")) if fleet != null else ""  # [orbB] no Fleet on the globe yet (orbC)
+	var robot: String = str(want.get("robot", "")) if fleet != null and BenchTiers.tab_open("bots") else ""  # [orbB] no Fleet on the globe yet (orbC)  # [v1guide] the Bots tab is open
 	if robot != "":
 		var hub_save: float = float(want.get("hub_save", 0.0))
 		var spare: float = GameState.get_currency("cubes").to_float() - float(want.get("robot_cost", 0.0))
@@ -1062,7 +1085,7 @@ func _shop(want: Dictionary) -> void:
 		if ok and robot != "" and fleet.can_build(robot):
 			var at: Vector3 = world.upgrades.build_at.call() if world.upgrades.build_at.is_valid() else BENCH_STAND
 			fleet.build(robot, at)
-	for t: String in (Economy.robot_order if fleet != null else []):  # [orbB]
+	for t: String in (Economy.robot_order if fleet != null and BenchTiers.tab_open("bots") else []):  # [orbB] [v1guide]
 		var treq: Dictionary = fleet.tier_requirements(t)
 		var keep_cubes: float = float(want.get("hub_save", 0.0)) * 0.5  # [ui2] a tier keeps half the base's cubes
 		if fleet.count(t) > 0 and treq.get("ok", false) and _mats_spare({"parts": (treq["parts"] as BigNum).to_float()}, false) \
@@ -1111,6 +1134,8 @@ func _shop(want: Dictionary) -> void:
 		reserve = maxf(reserve, Research.cost(prn).to_float())  # [pace]
 	if not Pace.baler_unlocked() and Economy.is_unlocked(Pace.UP_BALER):
 		reserve = maxf(reserve, Economy.upgrade_cost(Pace.UP_BALER).to_float())  # [pace] a person saves for the Baler
+	if not BenchTiers.next_def().is_empty() and BenchTiers.block_reason(world) == "":
+		reserve = maxf(reserve, float(BenchTiers.next_cost().get("cubes", 0.0)))  # [v1guide] a person saves for the next bench tier
 	if HubBuilds.listed(world, "bot_fabricator") and not BotFabricator.built(world):
 		reserve = maxf(reserve, float(BotFabricator.cost().get("cubes", 0)))  # [orbC] a person saves for the Fabricator
 	var fab_now: BotFabricator = BotFabricator.of(world)
@@ -1410,6 +1435,8 @@ func _research_reserve() -> float:
 
 
 func _research_pick() -> String:
+	if not BenchTiers.tab_open("research"):  # [v1guide] the Research tab opens with the workbench's Mk III
+		return ""
 	if not Research.active().is_empty() and Research.queue().size() >= Research.max_queue():
 		return ""
 	var saving: bool = false

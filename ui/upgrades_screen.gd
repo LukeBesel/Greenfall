@@ -53,9 +53,18 @@ static func tab_conditions(id: String) -> Array:
 
 
 static func _cond_ok(c: Array, w: Node) -> bool:
+	return cond_ok(c, w)
+
+
+## [v1guide] One workbench.json condition (tabs and bench tiers): see the file's _doc.
+static func cond_ok(c: Array, w: Node) -> bool:
 	match str(c[0]):
 		"always":
 			return true
+		"bench_tier":  # [v1guide] the workbench's own tier (ui/bench_tiers.gd)
+			return BenchTiers.tier() >= int(c[1])
+		"tower":  # [v1guide] the signal tower's tier
+			return SignalTower.tier() >= int(c[1])
 		"earned":
 			return BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float() >= float(c[1])
 		"stat":
@@ -79,6 +88,8 @@ static func tab_visible(id: String, w: Node = null) -> bool:
 		return true
 	if _gates.has(id):
 		return tab_open(id)
+	if not BenchTiers.tab_open(id):  # [v1guide] Bots, Research, Requests: a workbench tier opens them
+		return false
 	if id == "contracts" and not Contracts.unlocked():  # [onboard] the board opens later (base 3, 45 min)
 		return false
 	var seen: Array = GameState.flags.get("bench_tabs", [])
@@ -211,6 +222,31 @@ func _ready() -> void:
 	_root.resized.connect(_relayout)
 	_relayout()
 	_root.visible = false
+	if DevHooks.has("bench-report"):  # [v1guide] dev: print the tabs and rows every N game seconds
+		var t := Timer.new()
+		t.wait_time = maxf(1.0, DevHooks.get_f("bench-report", 20.0))
+		t.autostart = true
+		t.timeout.connect(print_report)
+		add_child(t)
+
+
+## [v1guide] Dev (--bench-report[=S]): the open tabs and every row of the list tabs, in order.
+func print_report() -> void:
+	var w: Node = fleet.world if fleet else null
+	var tabs: Array[String] = []
+	for t: Dictionary in TABS:
+		if tab_visible(str(t["id"]), w):
+			tabs.append(str(t["id"]))
+	print("[bench] t=%.0fs tier=%d cubes=%s parts=%s tabs=%s fleet=%s" % [float(GameState.stats.get("time_played", 0.0)), BenchTiers.tier(),
+		Settings.fmt(GameState.get_currency("cubes")), Settings.fmt(GameState.get_currency("parts")), ",".join(tabs), str(w != null)])
+	for tid: String in ["patch", "build"]:
+		if not (tid in tabs):
+			continue
+		var rows: Array = BenchLists.upgrades(w) if tid == "patch" else BenchLists.builds(w)
+		var names: Array[String] = []
+		for r: Dictionary in rows:
+			names.append("%s:%s(%s)" % [str(r.get("cat", "")), str(r.get("id", "")), str(r.get("state", ""))])
+		print("[bench]   %s: %s" % [tid, "  ".join(names)])
 
 
 func _populate() -> void:
@@ -389,11 +425,31 @@ func _relayout() -> void:
 	_grid.columns = clampi(int(w / min_w), 1, 3 if _tab == "bots" else 4)
 
 
+## [v1guide] The tab and row the current timeline step asks for ([] when none): every step that
+## happens at the bench opens on its row (Objectives.step_target).
+func objective_row() -> Array:
+	var w: Node = fleet.world if fleet else null
+	var obj: Objectives = w.get("objectives") as Objectives if w else null
+	if obj == null:
+		return []
+	var r: Array = obj.bench_row()
+	if r.size() < 2 or not tab_visible(str(r[0]), w):
+		return []
+	return r
+
+
 func open_screen() -> void:
 	is_open = true
 	if _tab == "contracts" and not Contracts.unlocked():  # [onboard]
 		_tab = "patch"
 		_populate()
+	var orow: Array = objective_row()  # [v1guide] straight to what the objective card asks for
+	if not orow.is_empty():
+		if str(orow[0]) != _tab:
+			_tab = str(orow[0])
+			_populate()
+		if _panel is ListDetail:
+			(_panel as ListDetail).select_id(str(orow[1]))
 	_style_tabs()  # [onboard] the Requests tab appears once the board is open
 	_root.visible = true
 	_refresh_all()

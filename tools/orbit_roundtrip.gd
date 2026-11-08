@@ -217,7 +217,7 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 			var drops0: int = int(GameState.stats.get("ledger_drops", 0))
 			lg._release(hid, pids, lg._marker(lg.to_local(g.field.hex_center(hid)), Color.RED))
 			check.call("orbit_ledger_drop_dirties_cell", "0 0 true", "%d %d %s" % [g.field.hex_clean[hid], g.cells.state[hid], str(g.cells.junk[hid] > 0.0)])
-			await tree.create_timer(1.3).timeout
+			await tree.create_timer(2.2).timeout  # [v1world] denser cells drop up to 14 pieces (~1.9 s)
 			check.call("orbit_ledger_drop_landed", drops0 + 1, int(GameState.stats.get("ledger_drops", 0)))
 	var jclash: Array = []  # the base's jammer spots stay clear of the yard's anchors
 	for ji: int in 3:
@@ -482,12 +482,14 @@ static func run(rt: Node, check: Callable) -> void:
 	var ob: Objectives = s1.get("objectives")
 	if ob and ob.outline:
 		var oc: int = g.grid.neighbors(target)[2]
+		ob.set_process(false)  # [v1guide] every step now outlines its own dirty hex: hold it still for the check
 		ob.outline.set_hex(oc)
 		for i: int in 40:
 			await tree.process_frame
 		var aabb: AABB = (ob.outline.get_child(0) as MeshInstance3D).get_aabb() if ob.outline.get_child_count() > 0 else AABB()
 		check.call("orbit_outline_on_cell", true, ob.outline.global_position.distance_to(g.field.hex_center(oc)) < 0.5)
 		check.call("orbit_outline_cell_sized", true, aabb.size.x > 12.0 and aabb.size.x < 24.0 and absf(aabb.size.y) < 3.0)
+		ob.set_process(true)
 	check.call("orbit_first_hex_milestone", true, GameState.flags.get("hexm_1", false))
 	await tree.create_timer(1.4).timeout  # HexLevels samples once a second: the clean cell reaches level 1
 	check.call("orbit_hex_level_1", 1, (s1.get("hex_levels") as HexLevels).level_of(target))

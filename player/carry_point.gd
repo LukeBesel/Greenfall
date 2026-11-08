@@ -5,7 +5,7 @@ extends RefCounted
 ## ignored) in Lumi's local space, plus a small gap, a touch forward of centre so the stack reads in
 ## front of the head from the follow camera. Cached per model (the design can change).
 
-const GAP: float = 0.12
+const GAP: float = 0.2  # [v1guide] owner 2026-11-08 #22: a carried bale still clipped (was 0.12)
 const FORWARD: float = 0.08
 
 

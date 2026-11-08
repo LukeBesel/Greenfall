@@ -230,11 +230,18 @@ static func dump_compartment(patch: Node3D, at: Vector3, into: Object = null) ->
 	var model: Node = patch.get("model")
 	if model and model.has_method("set_fill"):
 		model.call("set_fill", 0.0, [0.9, 1.0])
-	Audio.play("crunch", 1.2, -8.0)
-	Audio.play("coin", 1.0, -6.0)
+	# [v1guide] Owner 2026-11-08 #19: the toss needs a glint and a sound you always hear, and the
+	# cubes should visibly tick into the counter (not just vanish).
+	var up: Vector3 = OrbitUp.up(at)
+	Audio.play("thunk", 1.0, -3.0)
+	Audio.play("crunch", 1.2, -7.0)
+	Audio.play("coin", 1.15, -2.0, 0.0)
 	Vfx.burst("dust", at, Color(0.6, 0.55, 0.5, 0.5), 0.6)
+	Vfx.burst("sparkle", at + up * 0.25, Color(1.0, 0.82, 0.4), 1.4)
+	Vfx.ring(at - up * 0.75, 1.5, Color(1.0, 0.8, 0.35, 0.85), 0.55)
 	if paid > 0.0:
-		Vfx.float_text(at + Vector3(0, 0.6, 0), TranslationServer.translate("+%s cubes") % Settings.fmt(BigNum.from_float(paid)), Color(0.9, 0.92, 0.88), 0.5, 1.0)
+		Vfx.float_text(at + up * 0.6, TranslationServer.translate("+%s cubes") % Settings.fmt(BigNum.from_float(paid)), Color(1.0, 0.86, 0.45), 0.6, 1.0)
+		CoinFlight.fly(at, paid)
 	return paid
 
 
@@ -250,7 +257,7 @@ static func try_dump(patch: Node3D, pos: Vector3, radius: float, into: Object = 
 		d.y = 0.0
 	if d.length() > radius:
 		return 0.0
-	return dump_compartment(patch, pos + Vector3(0, 0.8, 0), into)
+	return dump_compartment(patch, pos + OrbitUp.up(pos) * 0.8, into)  # [v1guide] the bin's mouth on the globe too
 
 
 ## The nearest trash bin node (camp's TrashBin, group "trash_bin") or null.
