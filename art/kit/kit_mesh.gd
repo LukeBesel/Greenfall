@@ -624,7 +624,7 @@ static func panel_wall(b: Builder, w: float, h: float, t: Transform3D, opts: Dic
 
 
 ## Grass tuft mesh (a few curved blades, vertex-coloured dark base to light tip). Cached.
-static func grass_tuft(blades: int = 7, height: float = 0.32) -> ArrayMesh:
+static func grass_tuft(blades: int = 11, height: float = 0.34) -> ArrayMesh:
 	return cached("tuft:%d:%.2f" % [blades, height], func() -> Resource:
 		var rng := RandomNumberGenerator.new()
 		rng.seed = 77
@@ -634,10 +634,10 @@ static func grass_tuft(blades: int = 7, height: float = 0.32) -> ArrayMesh:
 			var ang: float = rng.randf() * TAU
 			var lean: float = rng.randf_range(0.15, 0.5)
 			var hgt: float = height * rng.randf_range(0.6, 1.15)
-			var wid: float = rng.randf_range(0.018, 0.03)
+			var wid: float = rng.randf_range(0.03, 0.05)
 			var dir := Vector3(cos(ang), 0, sin(ang))
 			var side := Vector3(-dir.z, 0, dir.x)
-			var root: Vector3 = dir * rng.randf_range(0.0, 0.05)
+			var root: Vector3 = dir * rng.randf_range(0.0, 0.09)
 			var prev_l: Vector3
 			var prev_r: Vector3
 			for s: int in 4:
@@ -647,8 +647,9 @@ static func grass_tuft(blades: int = 7, height: float = 0.32) -> ArrayMesh:
 				var l: Vector3 = c - side * ww
 				var r: Vector3 = c + side * ww
 				if s > 0:
-					var col0 := Color(0.16, 0.3, 0.08).lerp(Color(0.42, 0.62, 0.2), f - 0.33)
-					var col1 := Color(0.16, 0.3, 0.08).lerp(Color(0.5, 0.72, 0.26), f)
+					var tip := Color(0.52, 0.6, 0.27).lerp(Color(0.66, 0.62, 0.33), rng.randf() * 0.5)
+					var col0 := Color(0.17, 0.24, 0.09).lerp(tip, f - 0.33)
+					var col1 := Color(0.17, 0.24, 0.09).lerp(tip, f)
 					var nrm: Vector3 = (r - l).cross(c - (prev_l + prev_r) * 0.5).normalized()
 					for p: Array in [[prev_l, col0], [prev_r, col0], [r, col1], [prev_l, col0], [r, col1], [l, col1]]:
 						st.set_color(p[1])
