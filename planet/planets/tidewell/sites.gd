@@ -666,25 +666,42 @@ func _branch(b: KitMesh.Builder, a: Vector3, dir: Vector3, ln: float, r: float, 
 		_branch(b, c, nd, ln * 0.7, r * 0.75, depth - 1, rng, key)
 
 
-## A buoy field: rows of mooring buoys strung with rope and snagged ghost nets (ruin); restored,
-## the nets are gone and kelp grows below; futuristic, light caps with a hair-thin glow.
+## A buoy field ([p_seas] kit): rows of navigation buoys (lathe floats in red / white / yellow,
+## cage towers with topmarks and radar reflectors) strung with sagging mooring ropes. Ruined:
+## ghost nets and junk snag the lines, the lamps are dark; restored: lit lanterns; futuristic:
+## thin cool light caps.
 func _site_buoys() -> void:
-	var always := FrontierView.Batch.new()
-	var fut := FrontierView.Batch.new()
-	var pts: Array[Transform3D] = []
+	var a: KitMesh.Builder = TideProps.builder(self, "always")
+	var grn: KitMesh.Builder = TideProps.builder(self, "green")
+	var fut: KitMesh.Builder = TideProps.builder(self, "future")
 	var pos: Array[Vector3] = []
+	var cols: Array[String] = ["paint:red", "paint:white", "paint:" + TideProps.LEDGER, "paint:accent"]
 	for i: int in 5:
 		for j: int in 4:
-			var p := Vector3((i - 2) * 11.0 + _rng.randf_range(-2, 2), SEA_Y - 0.3, (j - 1.5) * 11.0 + _rng.randf_range(-2, 2))
+			var p := Vector3((i - 2) * 11.0 + _rng.randf_range(-2, 2), SEA_Y, (j - 1.5) * 11.0 + _rng.randf_range(-2, 2))
 			pos.append(p)
-			pts.append(Transform3D(Basis(Vector3.UP, _rng.randf() * TAU).rotated(Vector3.FORWARD, _rng.randf_range(-0.15, 0.15)), p))
-			_cyl(fut, p + Vector3(0, 2.6, 0), p + Vector3(0, 2.72, 0), 0.11, _mat("lamp"))
+			var t := Transform3D(Basis(Vector3.UP, _rng.randf() * TAU) * Basis(Vector3.FORWARD, _rng.randf_range(-0.12, 0.12)), p + Vector3(0, -0.5, 0))
+			var col: String = cols[(i + j) % cols.size()]
+			a.add(col, KitMesh.lathe(PackedVector3Array([Vector3(0, -0.4, 0), Vector3(0.7, -0.3, 1), Vector3(0.95, 0.2, 1), Vector3(0.95, 0.75, 1), Vector3(0.6, 1.0, 1), Vector3(0, 1.0, 0)]), 16), t)
+			a.add("paint:white" if col != "paint:white" else "paint:red", KitMesh.lathe(PackedVector3Array([Vector3(0, 0.35, 0), Vector3(0.97, 0.35, 1), Vector3(0.97, 0.6, 1), Vector3(0, 0.6, 0)]), 16), t)
+			for k: int in 3:
+				var ang: float = TAU * k / 3.0
+				a.rod("dark_steel", t * Vector3(cos(ang) * 0.45, 1.0, sin(ang) * 0.45), t * Vector3(cos(ang) * 0.18, 2.6, sin(ang) * 0.18), 0.04, 5)
+			a.add("dark_steel", KitMesh.bevel_cylinder(0.4, 0.06, 0.02, 12), t * Transform3D(Basis(), Vector3(0, 1.8, 0)))
+			a.add(col, KitMesh.lathe(PackedVector3Array([Vector3(0, 0, 0), Vector3(0.28, 0, 1), Vector3(0, 0.45, 1)]), 10), t * Transform3D(Basis(), Vector3(0, 2.75, 0)))
+			a.box("steel", Vector3(0.3, 0.3, 0.3), t * Transform3D(Basis.from_euler(Vector3(0.6, 0.6, 0)), Vector3(0, 2.2, 0)), 0.02)
+			grn.add("trim:warm", KitMesh.bevel_cylinder(0.12, 0.18, 0.02, 10), t * Transform3D(Basis(), Vector3(0, 2.58, 0)))
+			fut.add("trim:cool", KitMesh.bevel_cylinder(0.32, 0.03, 0.01, 14), t * Transform3D(Basis(), Vector3(0, 0.62, 0)))
+			TideProps.solid_cyl(_groups["always"], p, Basis(), Vector3(0, -1.0, 0), Vector3(0, 1.0, 0), 1.0)
+			_decks.append(Vector3(p.x, p.z, 1.6))
+	if grn.lights.is_empty():
+		for k: int in mini(pos.size(), 10):
+			grn.lights.append({"pos": pos[k * 2 % pos.size()] + Vector3(0, 2.2, 0), "color": KitMat.GLOW["warm"], "range": 6.0, "energy": 1.0})
+	# Sagging mooring ropes along the rows.
 	for i: int in pos.size():
 		if i % 4 != 3:
 			var q: Vector3 = pos[i + 1]
-			var mid: Vector3 = (pos[i] + q) * 0.5 + Vector3(0, -0.1, 0)
-			_cyl(always, pos[i] + Vector3(0, 0.75, 0), mid, 0.03, _mat("trunk"))
-			_cyl(always, mid, q + Vector3(0, 0.75, 0), 0.03, _mat("trunk"))
-	_scatter_models(["ocean_buoy"], pts, _groups["always"], 300.0)
-	always.flush(_groups["always"])
-	fut.flush(_groups["future"], false)
+			KitProps.cable(a, Transform3D.IDENTITY, pos[i] + Vector3(0, 0.6, 0), q + Vector3(0, 0.6, 0), 0.7, 0.035)
+	TideProps.flush(self, a, "always")
+	TideProps.flush(self, grn, "green")
+	TideProps.flush(self, fut, "future")
