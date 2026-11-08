@@ -56,6 +56,17 @@ func _setup() -> void:
 		placer.world = world
 		placer.decor = decor
 		world.add_child(placer)
+	else:  # [orbB] the globe: each hub's Decor lives in the orbit's HubFrame; the placer follows it
+		var hf: HubFrame = (world.orbit as SliceOrbit).hub_frame
+		decor = hf.node("Decor") as Decor
+		placer = GardenPlacer.new()
+		placer.name = "GardenPlacer"
+		placer.world = world
+		placer.decor = decor
+		world.add_child(placer)
+		hf.hub_changed.connect(func(_h: int) -> void:
+			decor = hf.node("Decor") as Decor
+			placer.set_decor(decor))
 	HomewardDirector.attach(world)  # [home] the system campaign (systems/homeward_director.gd)
 	bridge = ArkBridge.new()
 	bridge.name = "ArkBridge"
@@ -106,7 +117,7 @@ func open_bridge() -> bool:
 
 
 func open_garden() -> bool:
-	return placer.open() if placer else false  # [orbB] no decor grid on the globe yet
+	return placer.open() if placer else false  # [orbB] (asleep between hubs on the globe: no decor)
 
 
 ## A cinematic or story beat owns the screen (don't leave the world now).

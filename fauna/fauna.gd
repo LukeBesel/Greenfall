@@ -482,7 +482,7 @@ func _phys_clear(p: Vector3, r: float) -> bool:
 	q.transform = Transform3D(Basis.IDENTITY, Vector3(p.x, p.y + 0.8, p.z))
 	if _globe:  # [orbB] frame-local -> world, upright in the hub frame
 		q.transform = Transform3D(global_basis.orthonormalized(), to_global(Vector3(p.x, p.y + 0.8, p.z)))
-	q.collision_mask = 1
+	q.collision_mask = 1 | (PhysLayers.PROP if _globe else 0)  # [orbB] the site prefabs build with prop colliders
 	return w3.direct_space_state.intersect_shape(q, 1).is_empty()
 
 

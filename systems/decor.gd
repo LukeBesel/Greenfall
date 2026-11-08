@@ -143,7 +143,8 @@ func setup(p_world: Node) -> void:
 	world = p_world
 	name = "Decor"
 	add_to_group("persist")
-	var st: Variant = GameState.world.get("decor")
+	_globe = world.get("orbit") != null  # [orbB]
+	var st: Variant = _state()
 	if st is Dictionary:
 		for it: Variant in (st as Dictionary).get("items", []):
 			if it is Dictionary and not def(str((it as Dictionary).get("t", ""))).is_empty():
@@ -156,8 +157,13 @@ func persist_save() -> void:
 
 
 func _store() -> void:
-	GameState.world["decor"] = {"items": items.duplicate(true)}
-	GameState.world["decor_charm"] = charm_of(items)
+	if _globe and hub_index != 0:  # [orbB] another hub's garden: its own list in the start site's dict
+		if not GameState.world.get("orbit_decor") is Dictionary:
+			GameState.world["orbit_decor"] = {}
+		(GameState.world["orbit_decor"] as Dictionary)[str(hub_index)] = {"items": items.duplicate(true)}
+	else:
+		GameState.world["decor"] = {"items": items.duplicate(true)}
+	GameState.world["decor_charm"] = charm_of(items)  # (the globe: the charm of the hub Lumi is at)
 
 
 func charm() -> float:
@@ -172,9 +178,15 @@ func place_block_reason(type_id: String, cell: Vector2i, rot: int, ignore_item: 
 	var yard: float = float(cfg().get("yard_radius", 9.0))
 	for c: Vector2i in footprint(type_id, cell, rot):
 		var p := Vector3((c.x + 0.5) * grid(), 0.0, (c.y + 0.5) * grid())
-		if Vector2(p.x, p.z).length() < yard:
+		if _globe:  # [orbB] the site's yard has its machines at anchors, and buildings with colliders
+			p.y = ground_y(p)
+			if _near_anchor(p):
+				return TranslationServer.translate("Too close to the base machines")
+			if _solid_at(p):
+				return TranslationServer.translate("Something is already here")
+		elif Vector2(p.x, p.z).length() < yard:
 			return TranslationServer.translate("Too close to the base machines")
-		var h: int = f.hex_at(p)
+		var h: int = f.hex_at(to_global(p)) if _globe else f.hex_at(p)
 		if h < 0:
 			return TranslationServer.translate("Outside the district")
 		if f.is_water(h):
@@ -245,11 +257,14 @@ func _add(it: Dictionary, fx: bool) -> void:
 		p.y = clampf(world.layout.height_at(p.x, p.z), 0.0, 0.3)
 	n.position = p
 	n.rotation.y = rot * PI * 0.5
+	if _globe:  # [orbB] frame-local, on the ground's own up
+		p.y = ground_y(p)
+		n.transform = Transform3D(up_basis(p) * Basis(Vector3.UP, rot * PI * 0.5), p)
 	items.append({"t": t, "x": cell.x, "z": cell.y, "r": rot})
 	nodes.append(n)
 	_reindex()
 	if fx:
-		Vfx.burst("sparkle", p + Vector3(0, 0.8, 0), Color(0.75, 1.0, 0.7), 0.8)
+		Vfx.burst("sparkle", n.to_global(Vector3(0, 0.8, 0)), Color(0.75, 1.0, 0.7), 0.8)
 		Audio.play("pop", 1.0, -6.0)
 		var s0: Vector3 = n.scale
 		n.scale = s0 * 0.6
@@ -262,3 +277,65 @@ func _reindex() -> void:
 		var it: Dictionary = items[i]
 		for c: Vector2i in footprint(str(it["t"]), Vector2i(int(it["x"]), int(it["z"])), int(it.get("r", 0))):
 			_occupied[c] = i
+
+
+# --- [orbB] The globe: a garden per hub, in the hub frame (planet/orbit/hub_frame.gd) -----------
+# Grid cells are hub-frame metres (site-local, +Y up). Hub 0 keeps GameState.world["decor"] (the
+# flat key); other hubs keep GameState.world["orbit_decor"][hub].
+
+var hub_index: int = 0  # set by the frame host
+var _globe: bool = false
+
+
+func _state() -> Variant:
+	if _globe and hub_index != 0:
+		return (GameState.world.get("orbit_decor", {}) as Dictionary).get(str(hub_index))
+	return GameState.world.get("decor")
+
+
+## Frame-local ground height at p (x, z).
+func ground_y(p: Vector3) -> float:
+	if not _globe:
+		return clampf(world.layout.height_at(p.x, p.z), 0.0, 0.3) if world.get("layout") != null and world.layout else 0.0
+	return to_local((world.field as SphereField).terrain.ground(to_global(Vector3(p.x, 0.0, p.z)).normalized())).y
+
+
+## Frame-local basis whose +Y is the ground's own up at p.
+func up_basis(p: Vector3) -> Basis:
+	if not _globe:
+		return Basis.IDENTITY
+	var up: Vector3 = (global_basis.inverse() * (world.field as SphereField).up_at(to_global(p))).normalized()
+	return Basis(Quaternion(Vector3.UP, up))
+
+
+func _near_anchor(p: Vector3) -> bool:
+	var so: Node = world.get("orbit")
+	if so == null or hub_index != 0:
+		return false
+	for nm: String in LedgerArc.YARD_ANCHORS:
+		var a: Vector3 = to_local(so.call("yard_point", nm))
+		if Vector2(a.x - p.x, a.z - p.z).length() < 2.2:
+			return true
+	return false
+
+
+func _solid_at(p: Vector3) -> bool:
+	if not is_inside_tree() or get_world_3d() == null:
+		return false
+	var sh := CylinderShape3D.new()
+	sh.radius = grid() * 0.42
+	sh.height = 1.6
+	var q := PhysicsShapeQueryParameters3D.new()
+	q.shape = sh
+	q.transform = Transform3D(global_basis.orthonormalized(), to_global(p + Vector3(0, 1.15, 0)))
+	q.collision_mask = 1 | PhysLayers.PROP  # the static world and props (the site prefabs' structures)
+	q.exclude = _own_bodies()
+	return not get_world_3d().direct_space_state.intersect_shape(q, 1).is_empty()
+
+
+func _own_bodies() -> Array[RID]:
+	var out: Array[RID] = []
+	for n: Node3D in nodes:
+		for sb: Node in n.find_children("*", "StaticBody3D", true, false):
+			out.append((sb as StaticBody3D).get_rid())
+	return out

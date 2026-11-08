@@ -1119,5 +1119,5 @@ func _solid_at(c: Vector3) -> bool:
 	var q := PhysicsShapeQueryParameters3D.new()
 	q.shape = sh
 	q.transform = Transform3D(global_basis.orthonormalized(), to_global(c + Vector3(0, 1.5, 0)))
-	q.collision_mask = 1
+	q.collision_mask = 1 | PhysLayers.PROP  # the static world and props (the site prefabs' structures)
 	return not get_world_3d().direct_space_state.intersect_shape(q, 1).is_empty()

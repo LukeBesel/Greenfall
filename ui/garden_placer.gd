@@ -121,20 +121,25 @@ func open() -> bool:
 	var patch: Node3D = world.patch
 	var fwd: Vector3 = -patch.global_transform.basis.z
 	_cursor_pos = patch.global_position + Vector3(fwd.x, 0, fwd.z).normalized() * 3.0
+	if _globe():  # [orbB] the decor's hub frame
+		var lp: Vector3 = decor.to_local(patch.global_position)
+		var lf: Vector3 = decor.global_basis.inverse() * fwd
+		_cursor_pos = lp + Vector3(lf.x, 0, lf.z).normalized() * 3.0
 	_cursor_pos.y = 0.0
-	if _cursor == null:
+	if _cursor == null or not is_instance_valid(_cursor):
 		_cursor = Node3D.new()
 		_cursor.name = "GardenCursor"
-		world.add_child(_cursor)
-	_cursor.global_position = _cursor_pos + Vector3(0, 0.5, 0)
+		_space().add_child(_cursor)
+	_cursor.position = _cursor_pos + Vector3(0, 0.5, 0)  # [orbB] (the world's own space on the flat game)
 	if world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = false
-	_cam_target = world.cam.target
-	_cam_dist = world.cam.distance
-	_cam_pitch = world.cam.pitch
-	world.cam.target = _cursor
-	world.cam.distance = 8.5
-	world.cam.pitch = -0.62
+	var cam: Object = _cam()
+	_cam_target = cam.get("target")
+	_cam_dist = cam.get("distance")
+	_cam_pitch = cam.get("pitch")
+	cam.set("target", _cursor)
+	cam.set("distance", 8.5)
+	cam.set("pitch", -0.62)
 	_root.visible = true
 	if world.get("hud") != null:
 		world.hud.visible = false  # a clean view of the garden: only the placement panel
@@ -157,9 +162,10 @@ func close() -> void:
 		_ghost_type = ""
 	if _tiles:
 		_tiles.visible = false
-	world.cam.target = _cam_target if is_instance_valid(_cam_target) else world.patch
-	world.cam.distance = _cam_dist
-	world.cam.pitch = _cam_pitch
+	var cam: Object = _cam()
+	cam.set("target", _cam_target if is_instance_valid(_cam_target) else world.patch)
+	cam.set("distance", _cam_dist)
+	cam.set("pitch", _cam_pitch)
 	if world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = true
 	if world.get("hud") != null:
@@ -173,13 +179,15 @@ func _process(delta: float) -> void:
 		return
 	var v: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	if v.length() > 0.05:
-		var w: Vector3 = Basis(Vector3.UP, world.cam.yaw) * Vector3(v.x, 0.0, v.y)
+		var w: Vector3 = Basis(Vector3.UP, _cam_yaw()) * Vector3(v.x, 0.0, v.y)
 		_cursor_pos += w.limit_length(1.0) * CURSOR_SPEED * delta
-		var lim: float = float(world.field.radius + 1) * world.field.hex_size * 1.75
+		var lim: float = float(world.field.radius + 1) * world.field.hex_size * 1.75 if not _globe() else 150.0  # [orbB] the hub region
 		_cursor_pos.x = clampf(_cursor_pos.x, -lim, lim)
 		_cursor_pos.z = clampf(_cursor_pos.z, -lim, lim)
 		_update_cell(false)
-	_cursor.global_position = _cursor.global_position.lerp(Decor.center_of(type_id(), cell, rot) + Vector3(0, 0.5, 0), minf(delta * 10.0, 1.0))
+	var cp: Vector3 = Decor.center_of(type_id(), cell, rot)
+	cp.y = decor.ground_y(cp) if _globe() else 0.0
+	_cursor.position = _cursor.position.lerp(cp + Vector3(0, 0.5, 0), minf(delta * 10.0, 1.0))
 
 
 ## Moves the cursor to a cell directly (dev hooks, tests, the autoplay bot).
@@ -209,7 +217,7 @@ func _refresh() -> void:
 			sb.queue_free()
 		for l: Node in _ghost.find_children("*", "Light3D", true, false):
 			l.queue_free()
-		world.add_child(_ghost)
+		_space().add_child(_ghost)
 		_ghost_type = t
 	var why: String = decor.place_block_reason(t, cell, rot)
 	var buy: String = Decor.buy_block_reason(t)
@@ -222,6 +230,9 @@ func _refresh() -> void:
 		p.y = clampf(world.layout.height_at(p.x, p.z), 0.0, 0.3)
 	_ghost.position = p + Vector3(0, 0.02, 0)
 	_ghost.rotation.y = rot * PI * 0.5
+	if _globe():  # [orbB]
+		p.y = decor.ground_y(p)
+		_ghost.transform = Transform3D(decor.up_basis(p) * Basis(Vector3.UP, rot * PI * 0.5), p + Vector3(0, 0.02, 0))
 	_draw_tiles(t, why == "")
 	var d: Dictionary = Decor.def(t)
 	var ids: Array[String] = Decor.type_ids()
@@ -238,7 +249,7 @@ func _refresh() -> void:
 
 
 func _draw_tiles(t: String, ok: bool) -> void:
-	if _tiles == null:
+	if _tiles == null or not is_instance_valid(_tiles):
 		_tiles = MultiMeshInstance3D.new()
 		_tiles.name = "GardenTiles"
 		_tiles.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -249,7 +260,7 @@ func _draw_tiles(t: String, ok: bool) -> void:
 		mm.mesh = q
 		_tiles.multimesh = mm
 		_tiles.material_override = _tile_mat
-		world.add_child(_tiles)
+		_space().add_child(_tiles)
 	_tiles.visible = true
 	_tile_mat.albedo_color = Color(0.7, 1.0, 0.75, 0.3) if ok else Color(1.0, 0.5, 0.4, 0.3)
 	var cells: Array[Vector2i] = Decor.footprint(t, cell, rot)
@@ -259,7 +270,9 @@ func _draw_tiles(t: String, ok: bool) -> void:
 		var p := Vector3((c.x + 0.5) * Decor.grid(), 0.0, (c.y + 0.5) * Decor.grid())
 		if world.get("layout") != null and world.layout:
 			p.y = clampf(world.layout.height_at(p.x, p.z), 0.0, 0.3)
-		_tiles.multimesh.set_instance_transform(i, Transform3D(Basis(), p + Vector3(0, 0.04, 0)))
+		if _globe():  # [orbB]
+			p.y = decor.ground_y(p)
+		_tiles.multimesh.set_instance_transform(i, Transform3D(decor.up_basis(p) if _globe() else Basis(), p + Vector3(0, 0.04, 0)))
 
 
 ## Place the selected decoration at the cursor. Returns true if it went down.
@@ -326,3 +339,40 @@ func _unhandled_input(event: InputEvent) -> void:
 		used = false
 	if used:
 		get_viewport().set_input_as_handled()
+
+
+# --- [orbB] The globe: the placer works in the decor's hub frame; the camera is the SphereCam ----
+
+func _globe() -> bool:
+	return world != null and world.get("orbit") != null
+
+
+## Where the cursor, ghost and tiles live: the decor's frame on the globe, the world on the flat.
+func _space() -> Node3D:
+	return decor if _globe() else world
+
+
+func _cam() -> Object:
+	return world.cam if world.get("cam") != null else (world.orbit as SliceOrbit).cam
+
+
+## The camera's heading in the space the cursor moves in.
+func _cam_yaw() -> float:
+	if not _globe():
+		return world.cam.yaw
+	var cam3d: Camera3D = get_viewport().get_camera_3d()
+	if cam3d == null:
+		return 0.0
+	var f: Vector3 = decor.global_basis.inverse() * -cam3d.global_basis.z
+	return atan2(-f.x, -f.z)
+
+
+## The frame moved to another hub (or slept): a new decor, or none.
+func set_decor(d: Decor) -> void:
+	if is_open:
+		close()
+	decor = d
+	_cursor = null
+	_ghost = null
+	_ghost_type = ""
+	_tiles = null

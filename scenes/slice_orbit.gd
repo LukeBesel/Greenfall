@@ -17,8 +17,8 @@ extends Node
 ## GameState.world is the start site's own dict (GameState.use_orbit_world).
 ## Not here: CityLayout/CityView/StreetDressing/litter/far junk/water (orbD sites), Fleet/robot
 ## builder/Command view (orbC), SkyDirector/GlobeView/FutureLayer, the intro cinematic and photo
-## mode (orbE); Garden Mode's decor, frontier districts (retired on the globe). Fauna, eggs,
-## outposts and the Ledger arc run per hub (HubFrame).
+## mode (orbE); frontier districts (retired on the globe). Fauna, eggs, outposts, the Ledger arc
+## and Garden Mode's decor run per hub (HubFrame).
 ##
 ## Dev flags (phase A's, now on the slice): --orbit-walk[=boost] --orbit-lap-quit,
 ## --orbit-scoop, --orbit-cash --orbit-cash-quit, --orbit-view=follow|ground|command,
@@ -503,7 +503,7 @@ func _build_yard_systems() -> void:
 	bloom.name = "Bloom"
 	bloom.world = w
 	w.add_child(bloom)
-	LateDirector.attach(w)  # Homeward, the Ark Bridge, world look/story (Garden Mode's decor waits for the yard frame)
+	LateDirector.attach(w)  # Homeward, the Ark Bridge, world look/story, Garden Mode (its decor per hub in the frame)
 
 
 ## A yard spot in world space (the anchor's origin, or the flat yard spot on the pad).
@@ -584,6 +584,12 @@ func _build_hub_frame() -> void:
 		f.add_child(lg)
 		lg.setup()
 		return lg)
+	hub_frame.host("Decor", func(f: HubFrame, hub: int) -> Node:  # Garden Mode's decorations at this hub
+		var dc := Decor.new()
+		dc.hub_index = hub
+		f.add_child(dc)
+		dc.setup(w)
+		return dc)
 	w.set("eggs", hub_frame.node("EasterEggs") as EasterEggs)
 	w.set("outposts", hub_frame.node("Outposts") as Outposts)
 	w.set("ledger", hub_frame.node("Ledger") as LedgerArc)
