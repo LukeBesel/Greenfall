@@ -6,6 +6,7 @@ extends VBoxContainer
 ##               HubBuilds.available(world, "tiered"): trash bin, signal tower, air scrubbers,
 ##               signal jammers, ...).
 ##   Machines  - machine upgrades (tab "hub", e.g. Belt Drive) once their machine stands.
+##   Glim      - [buddy] Glim's upgrade tracks (ui/glim_bench.gd), once he's found.
 ##   Rocket    - the rocket stages, once the pad is open.
 ## A section with nothing in it is not shown.
 
@@ -22,12 +23,16 @@ var _grids: Array[GridContainer] = []
 var _rockets: RocketsPanel
 var _rocket_head: Label
 var _t: float = 0.0
+var _glim: GlimBench  # [buddy]
 
 
 func _ready() -> void:
 	add_theme_constant_override("separation", 12)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_add_card_section(tr("Lumi"), "patch")
+	_glim = GlimBench.new()  # [buddy] Glim's tracks, once he's found
+	_glim.world = world
+	add_child(_glim)
 	_base = VBoxContainer.new()
 	_base.add_theme_constant_override("separation", 10)
 	add_child(_base)
@@ -106,6 +111,8 @@ func _world() -> Node:
 func refresh() -> void:
 	if _hub_panel:
 		_hub_panel.refresh()
+	if _glim and _glim.is_inside_tree():  # [buddy]
+		_glim.refresh()
 	var w: Node = _world()
 	var items: Array = HubBuilds.available(w, "tiered")
 	var want: Array[String] = []
