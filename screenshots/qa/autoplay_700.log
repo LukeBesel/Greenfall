@@ -1,0 +1,167 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DevHooks] args: { "fresh": "1", "autoplay": "1", "time-scale": "4", "quit-after": "700" }
+[loader] loading res://scenes/main_menu.tscn
+[loader] loading res://scenes/slice.tscn
+[farjunk] 5701 pieces + 76750 litter from 75 to 125 m (12 models)
+[tunes] context play
+[slice] built in 15243 ms  district=Old Town hub=0
+[future] score=0.00 pieces=0 built in 1.9 ms
+[outposts] district 0: 3 outposts hex35@(-43,11) hex30@(-12,-48) hex42@(46,41) levels []
+[eggs] district 0: 12 eggs, 19 props placed
+[warmup] 374 materials across 2 viewports
+[meadow] grass=15709 flowers=6650 sprouts=4053 thriving=0 in 560 ms
+[loader] ready in 18700 ms
+[Autoplay]    0.2 min  goal {"id":"scoop_15","n":1}
+[Autoplay]    0.3 min  goal {"id":"dump_1","n":2}
+[Autoplay]   1.2 min cubes=19 rate=0.34/s partscur=1 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=2 research= pos=(-4.2, 0.0, 3.3) esc=1
+[tunes] now playing morning_shift (play)
+[lumi] level 2 at 1.6 min (+23 cubes)
+[Autoplay] first_upgrade_s at 96.7s
+[Campaign] first_upgrade_s at 1.6 min
+[Autoplay]    1.6 min  goal {"id":"upgrade_1","n":3}
+[Autoplay]   2.2 min cubes=37 rate=1.40/s partscur=6 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=3 research= pos=(-4.1, 0.0, 3.2) esc=3
+[Autoplay]   3.2 min cubes=37 rate=0.00/s partscur=6 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=3 research= pos=(-4.2, 0.0, 3.3) esc=5
+[Autoplay]   4.2 min cubes=37 rate=0.00/s partscur=7 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=3 research= pos=(-17.2, 0.0, 8.0) esc=6
+[Autoplay]   5.2 min cubes=37 rate=0.00/s partscur=7 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=3 research= pos=(-18.7, 0.0, 8.6) esc=6
+[glim] found (junk) at 5.2 min played
+[Autoplay]   6.2 min cubes=59 rate=0.50/s partscur=20 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=3 research= pos=(-4.2, 0.1, 22.1) esc=6
+[Autoplay]   7.2 min cubes=69 rate=0.20/s partscur=23 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=3 research= pos=(-18.6, 0.0, 16.1) esc=6
+[Autoplay]   8.2 min cubes=69 rate=0.00/s partscur=24 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=dump goals=3 research= pos=(-1.3, 0.0, 3.1) esc=6
+[Autoplay]    8.2 min  signal_tower {"tier":1}
+[Autoplay]   9.2 min cubes=32 rate=0.21/s partscur=24 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=3 research= pos=(4.3, 0.0, 2.5) esc=9
+[Autoplay]  10.2 min cubes=32 rate=0.00/s partscur=24 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=3 research= pos=(-18.6, 0.0, 21.9) esc=9
+[Autoplay]  11.2 min cubes=32 rate=0.00/s partscur=25 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=3 research= pos=(-12.6, 0.1, 11.1) esc=9
+[Autoplay]  12.2 min cubes=43 rate=1.14/s partscur=27 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=dump goals=3 research= pos=(-7.3, 0.0, 1.8) esc=9
+[lumi] level 3 at 12.4 min (+40 cubes)
+[Autoplay] baler_s at 749.8s
+[Campaign] baler_s at 12.5 min
+[Autoplay]   12.5 min  goal {"id":"baler_1","n":4}
+[Autoplay] first_cube_s at 760.9s
+[Campaign] first_cube_s at 12.7 min
+[Autoplay]   12.7 min  goal {"id":"bale_1","n":5}
+[Autoplay] first_cashin_s at 767.1s
+[Campaign] first_cashin_s at 12.8 min
+[Autoplay]   12.8 min  goal {"id":"cash_1","n":6}
+[Autoplay]   12.8 min  goal {"id":"perfect_1","n":7}
+[Autoplay] lift_1_s at 768.4s
+[Campaign] lift_1_s at 12.8 min
+[Autoplay]   12.8 min  goal {"id":"lift_1","n":8}
+[Autoplay]  13.2 min cubes=42 rate=3.35/s partscur=91 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=8 research= pos=(-24.6, 0.1, 7.2) esc=9
+[Autoplay]   13.4 min  goal {"id":"upgrades_5","n":9}
+[Autoplay]  14.2 min cubes=20 rate=2.12/s partscur=94 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=9 research= pos=(-4.2, 0.0, 1.3) esc=9
+[Autoplay]  15.2 min cubes=20 rate=0.00/s partscur=94 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=dig goals=9 research= pos=(11.4, 0.1, -5.9) esc=10
+[Autoplay]  16.2 min cubes=38 rate=1.73/s partscur=131 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=9 research= pos=(-15.6, 0.0, 0.4) esc=10
+[Autoplay] first_hex_s at 972.1s
+[Campaign] first_hex_s at 16.2 min
+[Autoplay]   16.2 min  hex_clean {"hex":6,"n":1}
+[Autoplay]   16.2 min  goal {"id":"hex_1","n":10}
+[Autoplay] first_hexlv_1_s at 972.9s
+[Campaign] first_hexlv_1_s at 16.2 min
+[Autoplay]   16.2 min  hex_level {"hex":6,"level":1}
+[tunes] now playing clean_sweep (play)
+[Autoplay]  17.2 min cubes=37 rate=3.61/s partscur=142 seeds=0 parts=0 hexes=1 lv=[1, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=10 research= pos=(-19.0, 0.0, 18.4) esc=10
+[Autoplay]  18.2 min cubes=37 rate=0.00/s partscur=142 seeds=0 parts=0 hexes=1 lv=[1, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=10 research= pos=(-19.0, 0.0, 20.7) esc=10
+[Autoplay]  19.2 min cubes=37 rate=0.00/s partscur=202 seeds=0 parts=0 hexes=1 lv=[1, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=10 research= pos=(-19.0, 0.0, 23.2) esc=10
+[Autoplay]  20.2 min cubes=37 rate=0.00/s partscur=227 seeds=0 parts=0 hexes=1 lv=[1, 0, 0, 0, 0] robots={  } hub=1 task=dig goals=10 research= pos=(15.6, 0.0, -3.5) esc=11
+[Autoplay]  21.2 min cubes=64 rate=2.66/s partscur=308 seeds=0 parts=0 hexes=1 lv=[1, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=10 research= pos=(2.1, 0.0, 6.8) esc=11
+[lumi] level 4 at 21.2 min (+64 cubes)
+[Autoplay]   21.3 min  goal {"id":"compartment_3","n":11}
+[Autoplay]  22.2 min cubes=198 rate=4.22/s partscur=342 seeds=0 parts=0 hexes=1 lv=[1, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=11 research= pos=(5.7, 0.0, 7.1) esc=11
+[Autoplay]   23.1 min  hex_clean {"hex":2,"n":2}
+[Autoplay]   23.1 min  hex_level {"hex":2,"level":1}
+[Autoplay]  23.2 min cubes=401 rate=20.27/s partscur=380 seeds=0 parts=0 hexes=2 lv=[2, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=11 research= pos=(7.8, 0.1, 12.2) esc=11
+[Autoplay]   23.4 min  goal {"id":"cash_10","n":12}
+[Autoplay]   23.4 min  goal {"id":"parts_2","n":13}
+[Autoplay]   23.4 min  goal {"id":"earn_1k","n":14}
+[Autoplay] lift_2_s at 1426.6s
+[Campaign] lift_2_s at 23.8 min
+[Autoplay]  24.2 min cubes=257 rate=7.66/s partscur=628 seeds=0 parts=0 hexes=2 lv=[2, 0, 0, 0, 0] robots={  } hub=1 task=dig goals=14 research= pos=(14.9, 0.0, -12.7) esc=11
+[Autoplay]  25.2 min cubes=257 rate=0.00/s partscur=874 seeds=0 parts=0 hexes=2 lv=[2, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=14 research= pos=(11.9, 0.1, -6.1) esc=12
+[Autoplay]   26.1 min  hex_clean {"hex":3,"n":3}
+[lumi] level 5 at 26.1 min (+89 cubes  +10 parts  +5 parts)
+[Autoplay]   26.1 min  goal {"id":"hex_3","n":15}
+[Autoplay]   26.1 min  hex_level {"hex":3,"level":1}
+[Autoplay]   26.1 min  goal {"id":"shards_1","n":16}
+[Autoplay]   26.1 min  goal {"id":"lift_2","n":17}
+[Autoplay]  26.2 min cubes=1096 rate=23.15/s partscur=1108 seeds=0 parts=0 hexes=3 lv=[3, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=17 research= pos=(-9.6, 0.1, 13.4) esc=12
+[Autoplay]   26.2 min  hex_clean {"hex":1,"n":4}
+[Autoplay]   26.2 min  hex_level {"hex":1,"level":1}
+[Autoplay]   26.3 min  research_start {"id":"soil_survey"}
+[Autoplay]   26.3 min  research_start {"id":"water_testing"}
+[Autoplay]   26.3 min  goal {"id":"upgrades_12","n":18}
+[events] started salvage_surge
+[Autoplay] first_research_s at 1609.7s
+[Campaign] first_research_s at 26.8 min
+[Autoplay]   26.8 min  research {"id":"soil_survey"}
+[Autoplay]   26.8 min  goal {"id":"research_1","n":19}
+[Autoplay]  27.2 min cubes=1066 rate=9.57/s partscur=1116 seeds=0 parts=0 hexes=4 lv=[4, 0, 0, 0, 0] robots={  } hub=1 task=deliver goals=19 research=water_testing pos=(-2.8, 0.0, -1.1) esc=12
+[Autoplay]   27.3 min  research {"id":"water_testing"}
+[Autoplay]  28.2 min cubes=1157 rate=1.52/s partscur=1125 seeds=0 parts=0 hexes=4 lv=[4, 0, 0, 0, 0] robots={  } hub=1 task=clean goals=19 research= pos=(-25.2, 0.1, 10.0) esc=12
+[events] ended salvage_surge handled=false  The surge faded. Next time!
+[Autoplay]   28.7 min  goal {"id":"earn_3k","n":20}
+[Autoplay]   28.7 min  goal {"id":"pet_cat","n":21}
+[Autoplay] base_2_s at 1724.2s
+[Campaign] base_2_s at 28.7 min
+[Autoplay]   28.7 min  base {"level":2}
+[tunes] now playing morning_shift (play)
+[Autoplay]  29.2 min cubes=389 rate=14.00/s partscur=980 seeds=0 parts=0 hexes=4 lv=[4, 0, 0, 0, 0] robots={  } hub=2 task=clean goals=21 research= pos=(-17.4, 0.0, 3.4) esc=12
+[Autoplay]  30.2 min cubes=451 rate=1.44/s partscur=1190 seeds=0 parts=0 hexes=4 lv=[4, 0, 0, 0, 0] robots={  } hub=2 task=deliver goals=21 research= pos=(-10.1, 0.1, 4.6) esc=12
+[Autoplay]  31.2 min cubes=556 rate=1.85/s partscur=1222 seeds=0 parts=0 hexes=4 lv=[4, 0, 0, 0, 0] robots={  } hub=2 task=clean goals=21 research= pos=(-26.6, 0.0, 17.6) esc=12
+[Autoplay]  32.2 min cubes=625 rate=1.36/s partscur=1230 seeds=0 parts=0 hexes=4 lv=[4, 0, 0, 0, 0] robots={  } hub=2 task=clean goals=21 research= pos=(-27.2, 0.0, 17.6) esc=12
+[Autoplay]  33.2 min cubes=687 rate=1.21/s partscur=1238 seeds=0 parts=0 hexes=4 lv=[4, 0, 0, 0, 0] robots={  } hub=2 task=deliver goals=21 research= pos=(-7.2, 0.0, 0.0) esc=12
+[Autoplay]   33.9 min  hex_clean {"hex":18,"n":5}
+[Autoplay]   33.9 min  goal {"id":"hex_5","n":22}
+[Autoplay]   33.9 min  hex_level {"hex":18,"level":1}
+[Autoplay]  34.2 min cubes=1118 rate=10.90/s partscur=1332 seeds=0 parts=0 hexes=5 lv=[5, 0, 0, 0, 0] robots={  } hub=2 task=clean goals=22 research= pos=(-5.7, 0.1, -13.2) esc=12
+[Autoplay]   34.6 min  goal {"id":"upgrades_20","n":23}
+[lumi] level 6 at 34.7 min (+118 cubes)
+[Autoplay]   35.0 min  hex_clean {"hex":5,"n":6}
+[Autoplay]   35.0 min  hex_level {"hex":5,"level":1}
+[Autoplay]  35.2 min cubes=1227 rate=17.96/s partscur=1353 seeds=0 parts=0 hexes=6 lv=[6, 0, 0, 0, 0] robots={  } hub=2 task=clean goals=23 research= pos=(0.3, 0.0, -3.5) esc=12
+[Autoplay]  36.2 min cubes=1319 rate=2.67/s partscur=1547 seeds=0 parts=0 hexes=6 lv=[6, 0, 0, 0, 0] robots={  } hub=2 task=clean goals=23 research= pos=(16.2, 0.0, -18.2) esc=12
+[Autoplay]   36.2 min  hex_clean {"hex":4,"n":7}
+[Autoplay]   36.2 min  goal {"id":"hex_7","n":24}
+[Autoplay]   36.2 min  hex_level {"hex":4,"level":1}
+[Autoplay]   36.2 min  goal {"id":"base_2","n":25}
+[events] started salvage_surge
+[Autoplay] seed_tin_s at 2226.4s
+[Campaign] seed_tin_s at 37.1 min
+[Autoplay]  37.2 min cubes=2251 rate=15.96/s partscur=1549 seeds=1 parts=0 hexes=7 lv=[7, 0, 0, 0, 0] robots={  } hub=2 task=plant goals=25 research= pos=(5.0, 0.0, 7.2) esc=12
+[Autoplay]   37.4 min  signal_tower {"tier":2}
+[Autoplay]  38.2 min cubes=1466 rate=2.56/s partscur=1528 seeds=0 parts=0 hexes=7 lv=[7, 0, 0, 0, 0] robots={  } hub=2 task=clean goals=25 research= pos=(24.2, 0.1, 13.4) esc=12
+[events] ended salvage_surge handled=false  The surge faded. Next time!
+[Autoplay]   38.4 min  composter {"level":2}
+[tunes] now playing greenfall_main (play)
+[Autoplay] first_hexlv_2_s at 2335.0s
+[Campaign] first_hexlv_2_s at 38.9 min
+[Autoplay]   38.9 min  hex_level {"hex":1,"level":2}
+[Autoplay]  39.2 min cubes=1457 rate=3.91/s partscur=1540 seeds=0 parts=0 hexes=6 lv=[7, 1, 0, 0, 0] robots={  } hub=2 task=clean goals=25 research= pos=(3.5, 0.0, 4.8) esc=12
+[ledger] drop landed: hex 2, 14 pieces, clean=false
+[Autoplay]  40.2 min cubes=1849 rate=11.50/s partscur=1565 seeds=0 parts=0 hexes=6 lv=[7, 1, 0, 0, 0] robots={  } hub=2 task=deliver goals=25 research= pos=(22.1, 0.1, 10.9) esc=12
+[Autoplay]   40.3 min  composter {"level":3}
+[Autoplay]  41.2 min cubes=1463 rate=1.55/s partscur=1639 seeds=0 parts=0 hexes=6 lv=[7, 1, 0, 0, 0] robots={  } hub=2 task=deliver goals=25 research= pos=(24.1, 0.0, 15.7) esc=12
+[Autoplay]  42.2 min cubes=1610 rate=2.49/s partscur=1675 seeds=1 parts=0 hexes=6 lv=[7, 1, 0, 0, 0] robots={  } hub=2 task=clean goals=25 research= pos=(-7.9, 0.1, 13.5) esc=12
+[events] started rain_shower
+[Autoplay] first_hexlv_4_s at 2542.0s
+[Campaign] first_hexlv_4_s at 42.4 min
+[Autoplay]   42.4 min  hex_level {"hex":1,"level":4}
+[Autoplay]   42.9 min  hex_clean {"hex":10,"n":7}
+[Autoplay]   43.0 min  hex_level {"hex":10,"level":1}
+[Autoplay]   43.0 min  hex_clean {"hex":2,"n":8}
+[Autoplay]   43.2 min  research_start {"id":"salvage_logic"}
+[Autoplay]  43.2 min cubes=125 rate=20.60/s partscur=1723 seeds=1 parts=0 hexes=8 lv=[8, 1, 1, 1, 0] robots={  } hub=2 task=clean goals=25 research=salvage_logic pos=(0.7, 0.0, -0.3) esc=12
+[ledger] drop landed: hex 4, 12 pieces, clean=false
+[Autoplay]  44.2 min cubes=205 rate=1.42/s partscur=1727 seeds=1 parts=0 hexes=7 lv=[8, 1, 1, 1, 0] robots={  } hub=2 task=deliver goals=25 research=salvage_logic pos=(16.7, 0.0, 26.4) esc=12
+[events] ended rain_shower handled=true  The rain moves on. The ground soaked it up: +71 cubes  +2 seeds
+[Autoplay]   44.4 min  hex_level {"hex":3,"level":2}
+[Autoplay]  45.2 min cubes=471 rate=4.59/s partscur=1753 seeds=1 parts=0 hexes=7 lv=[8, 2, 1, 1, 0] robots={  } hub=2 task=clean goals=25 research=salvage_logic pos=(20.7, 0.0, 28.3) esc=12
+[DevHooks] quitting after 700.0s
+[tunes] context none
+[Autoplay] report: {"baler_s":749.8,"base_2_s":1724.2,"campaign_min":[["first_upgrade_s",1.6],["baler_s",12.5],["first_cube_s",12.7],["first_cashin_s",12.8],["lift_1_s",12.8],["first_hex_s",16.2],["first_hexlv_1_s",16.2],["lift_2_s",23.8],["first_research_s",26.8],["base_2_s",28.7],["seed_tin_s",37.1],["first_hexlv_2_s",38.9],["first_hexlv_4_s",42.4]],"cubes":519.986596966778,"cubes_fell":0,"cubes_made":54.0,"dead_gaps_min":[[1.6,12.5,10.9],[16.5,21.3,4.8],[28.7,33.9,5.1]],"district":"Old Town","earned_total":8959.42347196677,"fell_through":0,"first_cashin_s":767.1,"first_cube_s":760.9,"first_hex_s":972.1,"first_hexlv_1_s":972.9,"first_hexlv_2_s":2335.0,"first_hexlv_4_s":2542.0,"first_research_s":1609.7,"first_upgrade_s":96.7,"game_time_min":45.4,"game_time_s":2723.3,"goal_gaps_min":[[1.6,12.5,10.9],[16.2,21.3,5.1],[28.7,33.9,5.2],[36.2,45.4,9.2]],"goals_done":25,"goals_total":172,"hexes_cleaned":7,"hub_level":2,"ignored_pieces":6,"junk_hexes":55,"lift_1_s":768.4,"lift_2_s":1426.6,"next_goals":["research_4","hex_10","scoopie_1"],"pace_affordable_at_2nd_bale":1,"pace_cubes_at_2nd_bale":59.3744824290574,"pace_upgrades_at_2nd_bale":4,"parts_bought":0,"parts_found":15.0,"perfect_cubes":49.0,"remote_shops":0,"research_done":["soil_survey","water_testing"],"research_idle_max_s":1570.0,"research_idle_s":2519.0,"research_starved_s":2519.0,"robots":{},"seed_tin_s":2226.4,"stuck_escapes":12,"stuck_robots":{},"upgrades":{"baler":1,"carry_stack":1,"compactor_pressure":1,"compartment_size":4,"detector_range":1,"lift_strength":2,"multi_lock":1,"scoop_speed":3,"scoop_width":3,"tread_speed":3}}
+WARNING: 31 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+
+real	11m43.638s
+user	6m0.071s
+sys	0m13.502s

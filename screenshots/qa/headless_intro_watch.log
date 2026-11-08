@@ -1,0 +1,236 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DevHooks] args: { "fresh": "1", "intro": "1", "qa-watch": "1", "quit-after": "240" }
+[qa] probe on, 0 steps
+[loader] loading res://scenes/main_menu.tscn
+[qa-watch] t=0.8 game=0.8
+  [610,1160 60x24 a=1.00] Loading
+[loader] loading res://scenes/slice.tscn
+[farjunk] 2858 pieces + 38361 litter from 75 to 125 m (12 models)
+[tunes] context play
+[slice] built in 14304 ms  district=Old Town hub=0
+[future] score=0.00 pieces=0 built in 2.1 ms
+[outposts] district 0: 3 outposts hex35@(-43,11) hex30@(-12,-48) hex42@(46,41) levels []
+[eggs] district 0: 12 eggs, 19 props placed
+[warmup] 337 materials across 2 viewports
+[meadow] grass=6668 flowers=3068 sprouts=2706 thriving=0 in 328 ms
+[qa-watch] t=18.5 game=18.5
+  [594,1160 91x24 a=1.00] Warming up
+[loader] ready in 17193 ms
+[tunes] now playing fall_of_lm1 (intro)
+[intro] score: fall_of_lm1
+[intro] start (phase 0)
+[qa-watch] t=19.2 game=19.2
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=21.7 game=21.7
+  [460,553 360x94 a=0.31] GREENFALL
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=22.7 game=22.7
+  [246,1227 788x29 a=0.32] Three hundred $e=rs ag#, the las> seeds left Verdance aboard the ark C$adl1▓
+  [460,553 360x94 a=0.94] GREENFALL
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=23.2 game=23.2
+  [255,1227 770x29 a=1.00] Three hundred years ago, the last seeds left Verdance aboard the ark Cradle.
+  [460,553 360x94 a=1.00] GREENFALL
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=28.7 game=28.7
+  [460,553 360x94 a=1.00] GREENFALL
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=31.2 game=31.2
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=32.2 game=32.2
+  [301,1227 678x29 a=1.00] Lumi, the ark's little seed-keeper, sang to the seedlings every night.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=37.8 game=37.8
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=38.3 game=38.3
+  [343,1232 38x18 a=1.00] WREN
+  [393,1227 544x29 a=1.00] Humming again, Lumi? They can't hear you, you know.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=42.8 game=42.8
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=43.3 game=43.3
+  [437,1232 38x18 a=1.00] WREN
+  [487,1227 356x29 a=1.00] ...They do grow faster when you do.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=46.8 game=46.8
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=48.8 game=48.8
+  [457,1227 365x29 a=0.99] Then, one night, the sky came apart.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=52.4 game=52.4
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=56.4 game=56.4
+  [313,1232 38x18 a=0.83] WREN
+  [363,1227 603x29 a=0.83] Hull breach in the vault bay! Lumi, leave the trays, get clear!
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=61.4 game=61.4
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=65.5 game=65.5
+  [355,1232 38x18 a=1.00] WREN
+  [405,1227 520x29 a=1.00] Lumi— hold on— I can't turn her around— ▒/#1 |>$
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=66.0 game=66.0
+  [354,1232 38x18 a=1.00] WREN
+  [404,1227 521x29 a=1.00] Lumi— hold on— I can't turn her around— hol$ %n*
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=66.5 game=66.5
+  [352,1232 38x18 a=1.00] WREN
+  [402,1227 525x29 a=1.00] Lumi— hold on— I can't turn her around— h>░d o10
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=67.0 game=67.0
+  [344,1232 38x18 a=1.00] WREN
+  [394,1227 541x29 a=1.00] Lumi— hold on— I can't turn her around— 1o@@ $n—
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=67.5 game=67.5
+  [353,1232 38x18 a=1.00] WREN
+  [403,1227 524x29 a=1.00] Lumi— hold on— I can't turn her around— h/|0 0=—
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=68.0 game=68.0
+  [351,1232 38x18 a=1.00] WREN
+  [401,1227 527x29 a=1.00] Lumi— hold on— I can't turn her around— 1+&░ #░/
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=68.5 game=68.5
+  [351,1232 38x18 a=1.00] WREN
+  [401,1227 527x29 a=1.00] Lumi— hold on— I can't turn her around— h<%= <+#
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=69.0 game=69.0
+  [357,1232 38x18 a=1.00] WREN
+  [407,1227 516x29 a=1.00] Lumi— hold on— I can't turn her around— %*l/ on+
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=69.5 game=69.5
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=72.0 game=72.0
+  [390,1227 500x29 a=1.00] The ark could not turn back. The pod fell for days.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=76.5 game=76.5
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[intro] song fades out at 65.2s (song at 65.2s)
+[qa-watch] t=95.2 game=95.2
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=0.86] B L O O M   C O R E
+  [157,118 38x39 a=0.86] 4%
+  [48,161 216x18 a=0.86] GREEN LIGHT  ·  NONE DETECTED
+[qa-watch] t=97.7 game=97.7
+  [313,1232 38x18 a=1.00] WREN
+  [363,1227 604x29 a=1.00] Lumi, it's WREN, the Cradle's caretaker. Your friend up here.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=0.35] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[qa-watch] t=102.7 game=102.7
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=0.35] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[qa-watch] t=103.2 game=103.2
+  [414,1232 38x18 a=1.00] WREN
+  [464,1227 401x29 a=1.00] Your pod's down, and the relay's failing.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=1.00] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[qa-watch] t=107.3 game=107.3
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=1.00] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[qa-watch] t=107.8 game=107.8
+  [230,1232 38x18 a=1.00] WREN
+  [280,1227 770x29 a=1.00] Bale junk to power the old base, then build a signal tower so I can reach you.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=0.35] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[qa-watch] t=113.8 game=113.8
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=0.35] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[qa-watch] t=114.3 game=114.3
+  [547,1232 38x18 a=1.00] WREN
+  [597,1227 135x29 a=1.00] I'll be +/+|0\<
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=1.00] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[qa-watch] t=114.8 game=114.8
+  [547,1232 38x18 a=1.00] WREN
+  [597,1227 136x29 a=1.00] I'll be l|$1e=|
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=0.35] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[qa-watch] t=115.3 game=115.3
+  [537,1232 38x18 a=1.00] WREN
+  [587,1227 155x29 a=1.00] I'll be *|=▓en—
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=1.00] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[qa-watch] t=115.8 game=115.8
+  [545,1232 38x18 a=1.00] WREN
+  [595,1227 140x29 a=1.00] I'll be ><st\%<
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=0.35] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[qa-watch] t=116.3 game=116.3
+  [541,1232 38x18 a=1.00] WREN
+  [591,1227 148x29 a=1.00] I'll be ░░/\|+▒
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=1.00] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[qa-watch] t=116.8 game=116.8
+  [543,1232 38x18 a=0.77] WREN
+  [593,1227 143x29 a=0.77] I'll be >i@>=/&
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=0.35] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[qa-watch] t=117.3 game=117.3
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=1.00] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[intro] subtitles: 12 lines shown one at a time, tightest margin +0.00s, 0 short
+[tunes] context play
+[intro] finished after 100.2s (skipped=false, input restored=true)
+[qa-watch] t=119.8 game=119.8
+  [56,22 16x42 a=1.00] 0
+  [972,115 184x18 a=0.50] RESTART CHECKLIST
+  [972,138 272x24 a=0.50] Hold  LMB  to scoop junk
+  [1215,167 29x18 a=0.50] 0 / 8
+  [460,1128 360x22 a=0.80] OLD TOWN  BASE
+  [924,1229 12x20 a=1.00] M
+  [949,1228 33x22 a=1.00] map
+  [1000,1229 9x20 a=1.00] B
+  [1022,1228 74x22 a=1.00] command
+  [1114,1229 9x20 a=1.00] V
+  [1136,1228 31x22 a=1.00] lens
+  [1185,1229 10x20 a=1.00] G
+  [1208,1228 40x22 a=1.00] goals
+[qa-watch] t=120.8 game=120.8
+  [56,22 16x42 a=1.00] 0
+  [972,116 237x18 a=0.50] OBJECTIVE
+  [1213,115 31x20 a=0.50] 0 / 3
+  [972,139 272x27 a=0.50] Power the base: sell 3 bales
+  [972,170 272x47 a=0.50] Cubes feed the recycler. Its power wakes the base.
+  [972,257 184x18 a=0.50] RESTART CHECKLIST
+  [972,280 272x24 a=0.50] Hold  LMB  to scoop junk
+  [1215,309 29x18 a=0.50] 0 / 8
+  [460,1128 360x22 a=0.80] OLD TOWN  BASE
+  [924,1229 12x20 a=1.00] M
+  [949,1228 33x22 a=1.00] map
+  [1000,1229 9x20 a=1.00] B
+  [1022,1228 74x22 a=1.00] command
+  [1114,1229 9x20 a=1.00] V
+  [1136,1228 31x22 a=1.00] lens
+  [1185,1229 10x20 a=1.00] G
+  [1208,1228 40x22 a=1.00] goals
+[tunes] now playing greenfall_main (play)
+[DevHooks] quitting after 240.0s
+[tunes] context none
+WARNING: 18 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
