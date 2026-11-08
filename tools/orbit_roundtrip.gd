@@ -54,6 +54,18 @@ static func _snap(s: Node) -> Dictionary:
 	}
 
 
+## [orbC] Stops a slice's robot crew (the brain and every real robot) so state compares as saved.
+static func _freeze_crew(s: Node) -> void:
+	var so: SliceOrbit = s.get("orbit")
+	var crew: SphereCrew = so.crews.crew if so and so.crews else null
+	if crew == null:
+		return
+	crew.set_process(false)
+	for u: Dictionary in crew.robots():
+		if u["bot"] != null:
+			(u["bot"] as Node).set_process(false)
+
+
 static func _garden_sig(s: Node) -> String:
 	var gdn: Garden = s.get("garden")
 	if gdn == null:
@@ -65,18 +77,6 @@ static func _garden_sig(s: Node) -> String:
 	for k: Variant in keys:
 		parts.append("%s:%s" % [str(k), str((cells[k] as Array)[0])])
 	return ",".join(parts)
-
-
-## [orbC] Stops a slice's robot crew (the brain and every real robot) so state compares as saved.
-static func _freeze_crew(s: Node) -> void:
-	var so: SliceOrbit = s.get("orbit")
-	var crew: SphereCrew = so.crews.crew if so and so.crews else null
-	if crew == null:
-		return
-	crew.set_process(false)
-	for u: Dictionary in crew.robots():
-		if u["bot"] != null:
-			(u["bot"] as Node).set_process(false)
 
 
 static func run(rt: Node, check: Callable) -> void:

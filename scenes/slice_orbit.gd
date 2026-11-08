@@ -138,6 +138,8 @@ func build(p_world: Node3D) -> void:
 	crews.build_crew(self)  # [orbC] the robot crew (planet/orbit/orbit_crews.gd)
 	if DevHooks.has("orbit-bots"):  # [orbC] stand-in bots only on request (the crew replaces them)
 		crews.spawn_demo_bots(globe.start_cell(), int(DevHooks.get_f("orbit-bots", 4.0)), w)
+	await BuildBudget.check("orbit crew")  # [orbE]
+	BuildBudget.span(0.65, 0.8)
 	var garden := Garden.new()  # sparse: a cell's slots come when Lumi plants or waters near it
 	garden.name = "Garden"
 	garden.world = w
@@ -145,8 +147,6 @@ func build(p_world: Node3D) -> void:
 	w.add_child(garden)
 	w.set("garden", garden)
 	garden.setup()
-	await BuildBudget.check("orbit crew")  # [orbE]
-	BuildBudget.span(0.65, 0.8)
 	var hl := HexLevels.new()  # sparse: only cleaned cells are tracked; levels also go to SphereCells
 	hl.name = "HexLevels"
 	hl.world = w
