@@ -323,6 +323,15 @@ func _near_cells() -> PackedInt32Array:
 	return _near
 
 
+## [orbB] The globe: rotates the hub frame's +Y onto the ground's own up at p (the frame is a
+## tangent plane at the hub, about 5 degrees off at 100 m). Identity on the flat game.
+func _tilt(p: Vector3) -> Basis:
+	if not _globe:
+		return Basis.IDENTITY
+	var up: Vector3 = (global_basis.inverse() * to_global(p).normalized()).normalized()
+	return Basis(Quaternion(Vector3.UP, up))
+
+
 func _hexes() -> Variant:
 	return frame_cells if _globe else world.field.hex_count()
 
@@ -1897,7 +1906,8 @@ func _draw_all() -> void:
 						var blink: float = clampf(sin(now * (1.3 + fmod(ph2, 0.7)) + ph2 * 5.0) * 2.0 - 0.6, 0.0, 1.0) * clampf(_night * 1.5 - 0.3, 0.0, 1.0) * a.fade
 						_put_glow(p2 + Vector3(0, 0.3, 0), blink)
 			_:
-				var b2 := Basis(Vector3.UP, a.yaw)
+				var tb: Basis = _tilt(a.pos)  # [orbB] the ground's own up (identity on the flat game)
+				var b2 := tb * Basis(Vector3.UP, a.yaw)
 				if a.roll != 0.0:
 					b2 = b2 * Basis(Vector3.BACK, a.roll)
 				if a.kind == "swim" and a.state == St.GRAZE and a.sp == "duck":
@@ -1905,10 +1915,10 @@ func _draw_all() -> void:
 				var breathe: float = 1.0
 				if a.kind == "cat" and a.state == St.SLEEP:
 					breathe = 1.0 + sin(now * 1.6 + a.phase) * 0.025
-				var xf := Transform3D(b2.scaled(Vector3(s, s * breathe, s)), a.pos + Vector3(0, a.bob, 0))
+				var xf := Transform3D((b2 * Basis.from_scale(Vector3(s, s * breathe, s))) if _globe else b2.scaled(Vector3(s, s * breathe, s)), a.pos + tb * Vector3(0, a.bob, 0))
 				if a.rig:
 					a.rig.visible = true
-					_drive_rig(a, Transform3D(Basis(Vector3.UP, a.yaw).scaled(Vector3.ONE * s), a.pos + Vector3(0, a.bob, 0)), _frame_dt)
+					_drive_rig(a, Transform3D(tb * Basis(Vector3.UP, a.yaw).scaled(Vector3.ONE * s), a.pos + tb * Vector3(0, a.bob, 0)), _frame_dt)
 					continue
 				var model: String = _model_for(a)
 				if model == "rat" and not is_rigged(FaunaModels.mesh("rat")):

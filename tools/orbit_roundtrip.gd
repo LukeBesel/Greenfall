@@ -149,6 +149,10 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 			bad.append("%s alt %.1f" % [str(a.sp), alt])
 	check.call("orbit_fauna_animals", true, fa.animals.size() > 0)
 	check.call("orbit_fauna_on_the_ground", "[]", str(bad))
+	var far_p := Vector3(0, 0, 120.0)  # 120 m out the frame's up is degrees off; the animal's is the ground's
+	var off_frame: float = rad_to_deg((fa.global_basis * Vector3.UP).angle_to(fa.to_global(far_p).normalized()))
+	var off_animal: float = rad_to_deg((fa.global_basis * (fa._tilt(far_p) * Vector3.UP)).angle_to(fa.to_global(far_p).normalized()))
+	check.call("orbit_fauna_upright_far_out", true, off_frame > 3.0 and off_animal < 0.05)
 	# Easter eggs: this hub's set, standing on the ground clear of the yard; one can be poked.
 	var eg: EasterEggs = hf.node("EasterEggs") as EasterEggs
 	check.call("orbit_eggs_placed", true, eg != null and eg.placed.size() > 0)
