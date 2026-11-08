@@ -137,7 +137,8 @@ func test_frontier_unlocks_follow_research_and_bases() -> void:
 func test_frontier_fields_are_bigger_and_tougher() -> void:
 	var cfg: Dictionary = Economy.planet.get("slice_field", {})
 	for k: Dictionary in Frontiers.kinds():
-		assert_gt(int(k["radius"]), int(cfg.get("radius", 3)), "%s has more hexes" % k["id"])
+		# [world2] Old Town grew to radius 4 (gen-2 junk); frontiers keep 4 with denser, tougher junk.
+		assert_true(int(k["radius"]) >= int(cfg.get("radius", 3)), "%s has at least as many hexes" % k["id"])
 		assert_gt(float(k["vol_mult"]), 1.0, "%s junk is bulkier" % k["id"])
 		assert_gt(float(k["value_mult"]), 1.0)
 		assert_true(Economy.biome_sets.has(str(k["biome"])), "%s has a junk set" % k["id"])

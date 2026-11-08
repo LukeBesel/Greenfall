@@ -11,7 +11,7 @@
        {"id": "metal_jerrycan", "vol": 1.8, "w": 0.8, "lie": 0.5},
        {"id": "rusted_wheel_rim_01", "vol": 2.2, "w": 0.5, "lie": 0.9}
      ]},
-    {"id": "plastic", "name": "Plastic", "value": 0.6, "cube_color": "#9fb3bf", "flecks": "#d9c45a", "weight": 1.6,
+    {"id": "plastic", "name": "Plastic", "value": 0.6, "cube_color": "#a9aca5", "flecks": "#d9c45a", "weight": 1.6,
      "models": [
        {"id": "plastic_bottle_gallon", "vol": 0.9, "w": 2.0, "lie": 0.7},
        {"id": "bleach_bottle", "vol": 0.6, "w": 2.0, "lie": 0.7},

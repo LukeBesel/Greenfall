@@ -56,6 +56,30 @@ func _reveal(hid: int, fresh: bool) -> void:
 		EventBus.toast.emit(tr("Something surfaced in the cleared ground. A memory shard."), "story")
 
 
+## [onboard] Where the next unread shard is, for the purple waypoint: a surfaced one (read it), else
+## the nearest hex still hiding one (clean it). {pos, surfaced} or {}.
+func waypoint(from: Vector3) -> Dictionary:
+	var best: Dictionary = {}
+	var bd: float = INF
+	for hid: int in _visible:
+		var n: Node3D = _visible[hid]
+		var d: float = n.global_position.distance_to(from)
+		if d < bd:
+			bd = d
+			best = {"pos": n.global_position, "surfaced": true}
+	if not best.is_empty():
+		return best
+	for hid: int in _placed:
+		if found(int(_placed[hid])) or world.field.is_clean(hid):
+			continue
+		var c: Vector3 = world.field.hex_center(hid)
+		var d2: float = c.distance_to(from)
+		if d2 < bd:
+			bd = d2
+			best = {"pos": c, "surfaced": false, "hex": hid}
+	return best
+
+
 ## Returns the shard index within reach of a position, or -1.
 func nearby(pos: Vector3) -> int:
 	for hid: int in _visible:

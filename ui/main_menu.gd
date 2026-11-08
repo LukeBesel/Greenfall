@@ -11,6 +11,7 @@ const GAME_SCENE: String = "res://scenes/slice.tscn"
 var _cam: Camera3D
 var _pivot: Node3D
 var _model: PatchModel
+var _cine: TitleCinematic  # [pod2]
 var _t: float = 0.0
 var _ui: Control
 var _menu_box: VBoxContainer
@@ -42,6 +43,7 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if SaveManager.has_save():
 		_save = SaveManager.read_dict(SaveManager.slot_path())
+	Tunes.setup_title(_save)  # [tunes] a random song (the synth score if there are no files)
 	_build_stage()
 	_build_ui()
 
@@ -145,8 +147,9 @@ func _build_stage() -> void:
 	_pivot = Node3D.new()
 	add_child(_pivot)
 	_model = PatchModel.new()
-	_pivot.add_child(_model)
 	var skin: String = str((_save.get("flags", {}) as Dictionary).get("patch_skin", ""))
+	_model.set_meta("lumi_style", LumiStyle.from_save_flags(_save.get("flags", {}), skin))  # [style] the save's look
+	_pivot.add_child(_model)
 	if skin != "":
 		_model.set_variant(skin)
 	_model.set_happy(0.9)
@@ -157,6 +160,10 @@ func _build_stage() -> void:
 	add_child(_cam)
 	_cam.current = true
 	_place_camera()
+	# [pod2] The slow title cinematic: high over the district, the crash site, down to Lumi cleaning.
+	_cine = TitleCinematic.new()
+	add_child(_cine)
+	_cine.setup(self, _cam, _pivot, _model)
 
 
 ## A carpet of litter and a few heaped piles: the world Aurora has come to clean.
@@ -245,11 +252,14 @@ func _process(delta: float) -> void:
 	if _cam == null:
 		return
 	_t += delta
-	_pivot.position.y = 0.32 + sin(_t * 1.3) * 0.06
-	_pivot.rotation.y = sin(_t * 0.35) * 0.35
-	_pivot.rotation.z = sin(_t * 0.9) * 0.025
-	_model.look_toward(_cam.global_position)
-	_place_camera()
+	if _cine:
+		_cine.step(delta)  # [pod2] camera and Lumi
+	else:
+		_pivot.position.y = 0.32 + sin(_t * 1.3) * 0.06
+		_pivot.rotation.y = sin(_t * 0.35) * 0.35
+		_pivot.rotation.z = sin(_t * 0.9) * 0.025
+		_model.look_toward(_cam.global_position)
+		_place_camera()
 	if _intro_ms >= 0 and not _leaving:
 		var s: float = (Time.get_ticks_msec() - _intro_ms) / 1000.0
 		_fade.color.a = 1.0 - smoothstep(0.0, 1.1, s)
@@ -348,6 +358,7 @@ func _build_ui() -> void:
 	var ver: String = str(ProjectSettings.get_setting("application/config/version", ""))
 	col.add_child(UITheme.label(("v" + ver + "   ·   " if ver != "" else "") + tr("Made with Godot"), 12, Color(1, 1, 1, 0.4)))
 
+	_ui.add_child(TitleSongTag.new())  # [tunes] bottom-right "now playing" tag
 	_settings = SettingsPanel.new()
 	_settings.closed.connect(_on_sub_closed.bind(2))
 	_ui.add_child(_settings)
@@ -594,6 +605,7 @@ func _credits_bbcode() -> String:
 	var gold: String = UITheme.GOLD.to_html(false)
 	var muted: String = UITheme.MUTED.to_html(false)
 	var out: String = tr("[b][color=#%s]GREENFALL[/color][/b]\nCode, procedural meshes, synthesized audio and writing are original to Greenfall.\n\n") % gold
+	out += tr("Music by Lucas") + "\n\n"  # [tunes]
 	var f := FileAccess.open("res://docs/CREDITS.md", FileAccess.READ)
 	if f == null:
 		return out + tr("Third-party assets: CC0, Poly Haven (polyhaven.com).")

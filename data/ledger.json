@@ -15,7 +15,7 @@
     "min_pieces": 3,
     "warn_s": 6.5
   },
-  "seed_drop": {"every_s": [200, 320], "seeds": [3, 6]},
+  "seed_drop": {"enabled": false, "every_s": [200, 320], "seeds": [3, 6]},
   "jammer": {
     "id": "signal_jammer", "name": "Signal Jammer",
     "desc": "A dish that sings static at the Ledger's drones. Drops inside its radius around the base are blocked, and drones come less often.",

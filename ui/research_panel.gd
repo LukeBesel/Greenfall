@@ -31,14 +31,14 @@ func _ready() -> void:
 	var dvb := VBoxContainer.new()
 	dvb.add_theme_constant_override("separation", 2)
 	dbox.add_child(dvb)
-	dvb.add_child(UITheme.label(tr("CUBES"), 12, UITheme.MUTED))
+	dvb.add_child(UITheme.label(tr("CUBES"), 14, UITheme.MUTED))  # [ui2] readable sizes
 	var drow := HBoxContainer.new()
 	drow.add_theme_constant_override("separation", 8)
 	dvb.add_child(drow)
 	drow.add_child(CurrencyIcon.new("cubes", 30.0))
 	_data_lbl = UITheme.label("0", 30, UITheme.CREAM)
 	drow.add_child(_data_lbl)
-	var earn := UITheme.label(tr("Research costs cubes and takes real time. It keeps going while you play or are away."), 12, UITheme.MUTED)
+	var earn := UITheme.label(tr("Research costs cubes and takes real time. It keeps going while you play or are away."), 14, UITheme.MUTED)
 	earn.autowrap_mode = TextServer.AUTOWRAP_WORD
 	earn.custom_minimum_size = Vector2(200, 0)
 	dvb.add_child(earn)
@@ -57,12 +57,12 @@ func _ready() -> void:
 	avb.add_theme_constant_override("separation", 2)
 	avb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	ahb.add_child(avb)
-	avb.add_child(UITheme.label(tr("RESEARCHING"), 12, UITheme.MUTED))
-	_active_name = UITheme.label("", 18, UITheme.CREAM)
+	avb.add_child(UITheme.label(tr("RESEARCHING"), 14, UITheme.MUTED))
+	_active_name = UITheme.label("", 21, UITheme.CREAM)
 	avb.add_child(_active_name)
-	_active_time = UITheme.label("", 14, UITheme.GOLD)
+	_active_time = UITheme.label("", 17, UITheme.GOLD)
 	avb.add_child(_active_time)
-	_queue_lbl = UITheme.label("", 12, UITheme.MUTED)
+	_queue_lbl = UITheme.label("", 14, UITheme.MUTED)
 	_queue_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_queue_lbl.custom_minimum_size = Vector2(190, 0)
 	avb.add_child(_queue_lbl)
@@ -74,20 +74,20 @@ func _ready() -> void:
 	var dt := VBoxContainer.new()
 	dt.add_theme_constant_override("separation", 2)
 	det.add_child(dt)
-	_d_name = UITheme.label("", 18, Color.WHITE)
+	_d_name = UITheme.label("", 22, Color.WHITE)
 	dt.add_child(_d_name)
-	_d_desc = UITheme.label("", 13, UITheme.MUTED)
+	_d_desc = UITheme.label("", 16, UITheme.MUTED)
 	_d_desc.autowrap_mode = TextServer.AUTOWRAP_WORD
 	dt.add_child(_d_desc)
-	_d_fx = UITheme.label("", 13, UITheme.GREEN)
+	_d_fx = UITheme.label("", 16, UITheme.GREEN)
 	_d_fx.autowrap_mode = TextServer.AUTOWRAP_WORD
 	dt.add_child(_d_fx)
 	var crow := HBoxContainer.new()
 	dt.add_child(crow)
-	_d_cost = UITheme.label("", 13, UITheme.GOLD)
+	_d_cost = UITheme.label("", 16, UITheme.GOLD)
 	_d_cost.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	crow.add_child(_d_cost)
-	_d_hint = UITheme.label("", 12, UITheme.MUTED)
+	_d_hint = UITheme.label("", 14, UITheme.MUTED)
 	crow.add_child(_d_hint)
 	_graph = Graph.new()
 	_graph.panel = self
@@ -251,7 +251,7 @@ class Ring extends Control:
 ## flowing dots toward running research, and one ResearchNodeCard per node.
 class Graph extends Control:
 	const HEADER: float = 44.0
-	const ROW: float = 104.0
+	const ROW: float = 114.0  # [ui2] taller cards
 	var panel: ResearchPanel
 	var cards: Dictionary = {}  # id -> ResearchNodeCard
 	var _branch_idx: Dictionary = {}
@@ -337,8 +337,8 @@ class Graph extends Control:
 					total += 1
 					done += 1 if Research.has(id) else 0
 			var x0: float = i * cw + (cw - ResearchNodeCard.W) * 0.5
-			draw_string(f, Vector2(x0, 20), tr(str(br[i]["name"])).to_upper(), HORIZONTAL_ALIGNMENT_LEFT, ResearchNodeCard.W, 15, col)
-			draw_string(f, Vector2(x0, 20), "%d/%d" % [done, total], HORIZONTAL_ALIGNMENT_RIGHT, ResearchNodeCard.W, 12, UITheme.MUTED)
+			draw_string(f, Vector2(x0, 22), tr(str(br[i]["name"])).to_upper(), HORIZONTAL_ALIGNMENT_LEFT, ResearchNodeCard.W, 17, col)
+			draw_string(f, Vector2(x0, 22), "%d/%d" % [done, total], HORIZONTAL_ALIGNMENT_RIGHT, ResearchNodeCard.W, 14, UITheme.MUTED)
 			draw_rect(Rect2(x0, 28, ResearchNodeCard.W, 2), Color(1, 1, 1, 0.07))
 			draw_rect(Rect2(x0, 28, ResearchNodeCard.W * done / maxf(total, 1.0), 2), col)
 		# Connectors behind the cards.

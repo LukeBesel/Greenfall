@@ -90,6 +90,9 @@ static func sanitize(d: Variant) -> Dictionary:
 	var src: Dictionary = d
 	for k: Variant in src.get("pct", {}):
 		(out["pct"] as Dictionary)[str(k)] = clampf(float(src["pct"][k]), 0.0, 1.0)
+	out["seen"] = []  # [sysmap2] planet ids spotted early by the telescope
+	for x: Variant in src.get("seen", []):
+		(out["seen"] as Array).append(str(x))
 	for k: String in ["beats", "relics"]:
 		for x: Variant in src.get(k, []):
 			(out[k] as Array).append(str(x))
@@ -301,6 +304,59 @@ static func pct_list() -> Array:
 
 static func can_reach(k: int) -> bool:
 	return reach_blocker(k, drive(), pct_list()) == ""
+
+
+# --- [sysmap2] Discovery ------------------------------------------------------------------------
+# Planets are found strictly in campaign order (data/homeward.json). Planet k shows on the system
+# map once planet k-1 is discovered and either reaches discover_at, was spotted by the telescope
+# (state "seen", see spot()) or Lumi has been to k. Unlocked (travel allowed) = discovered and
+# reach_blocker() clear (the chart at chart_at and the drive tier).
+
+## Pure: is planet k discovered, given per-planet restoration, the spotted ids and visited flags.
+static func discovered_of(k: int, pcts: Array, seen: Array, visited: Array) -> bool:
+	if k <= 0:
+		return true
+	if k >= planets().size() or not discovered_of(k - 1, pcts, seen, visited):
+		return false
+	if k < visited.size() and bool(visited[k]):
+		return true
+	if str(planet_def(k).get("id", "")) in seen:
+		return true
+	return float(pcts[k - 1]) >= float(cfg().get("discover_at", 0.25)) - 0.0001
+
+
+static func _visited_list() -> Array:
+	var out: Array = []
+	for k: int in planets().size():
+		out.append(k == current_planet() or world_of(k) >= 0)
+	return out
+
+
+static func discovered(k: int) -> bool:
+	return discovered_of(k, pct_list(), state().get("seen", []), _visited_list())
+
+
+## Travel allowed: discovered, charted and the drive reaches it (or Lumi is already there).
+static func unlocked(k: int) -> bool:
+	return k == current_planet() or (discovered(k) and can_reach(k))
+
+
+## How many planets are discovered (they always form a prefix of the campaign order).
+static func discovered_count() -> int:
+	var n: int = 0
+	while n < planets().size() and discovered(n):
+		n += 1
+	return n
+
+
+## The telescope spotted planet k. Only the next undiscovered planet in order can be spotted.
+## Returns true if this revealed it.
+static func spot(k: int) -> bool:
+	if k <= 0 or k >= planets().size() or discovered(k) or k != discovered_count():
+		return false
+	(state()["seen"] as Array).append(str(planet_def(k).get("id", "")))
+	save()
+	return true
 
 
 # --- Drive upgrades ---------------------------------------------------------------------------

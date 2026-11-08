@@ -60,6 +60,20 @@ static func of(n: Node) -> Stations:
 	return n.get_tree().get_first_node_in_group("stations") as Stations
 
 
+## [camp] Whether machine `id` ("conveyor", "auto_baler", "recycler") stands at this base, from
+## the saved state (works without the scene: Economy uses it to lock the machine upgrades).
+static func built_in_state(id: String) -> bool:
+	var st: Variant = GameState.world.get("stations")
+	if not (st is Dictionary):
+		return false
+	match id:
+		"conveyor", "recycler":
+			return bool((st as Dictionary).get(id, false))
+		"auto_baler", "baler":
+			return (st as Dictionary).has("baler")
+	return false
+
+
 func state() -> Dictionary:
 	if not GameState.world.has("stations"):
 		GameState.world["stations"] = {}
@@ -130,16 +144,19 @@ func build(id: String) -> bool:
 			_spawn_conveyor()
 			conveyor.build_in()
 			EventBus.toast.emit(tr("Conveyor Feeder online. Drop bales on the yellow pad."), "story")
+			MachineReveal.reveal(world, tr(str(def("conveyor").get("name", "Conveyor Feeder"))), HOPPER_POS, false)  # [camp]
 		"recycler":
 			st["recycler"] = true
 			_spawn_recycler()
 			recycler.build_in()
 			EventBus.toast.emit(tr("Recycler lit. Bales that go in here are gone for good."), "story")
+			MachineReveal.reveal(world, tr(str(def("recycler").get("name", "Recycler"))), RECYCLER_POS, false)  # [camp]
 		"auto_baler":
 			var p: Vector3 = frontier_pos()
 			_spawn_baler(p, true)
 			st["baler"] = baler.to_dict()
 			EventBus.toast.emit(tr("Auto-baler dropped at the cleaning frontier. Cleaners will tip their hoppers into it."), "story")
+			MachineReveal.reveal(world, tr(str(def("auto_baler").get("name", "Auto-baler"))), p, false)  # [camp] it lands out at the frontier: follow the trail
 	Audio.play("buy", 1.0, -2.0)
 	return true
 

@@ -53,6 +53,7 @@ var _blink: float = 0.0
 var _blink_wait: float = 2.0
 var _scene_changed: bool = false
 var _tip: int = 0
+var _vignette: LoadingVignette
 
 
 func _ready() -> void:
@@ -120,6 +121,7 @@ func goto(path: String) -> void:
 	_scene_changed = false
 	_tip = randi()
 	_reset_pieces()
+	_ensure_vignette()
 	_status.text = _status_text(0)
 	visible = true
 	if _alpha <= 0.0:
@@ -143,6 +145,24 @@ func _status_text(stage: int) -> String:
 		1: return tr("Setting the scene")
 		2: return tr("Warming up")
 	return ""
+
+
+## [pod2] The 3D street scene above the bar (built on first use; skipped headless).
+func _ensure_vignette() -> void:
+	if DisplayServer.get_name() == "headless" or DevHooks.has("loader-2d"):
+		return
+	if _vignette == null:
+		_vignette = LoadingVignette.new()
+		_vignette.set_anchors_preset(Control.PRESET_CENTER)
+		_vignette.offset_left = -560
+		_vignette.offset_right = 560
+		_vignette.offset_top = -300
+		_vignette.offset_bottom = 60
+		_vignette.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_root.add_child(_vignette)
+		_root.move_child(_vignette, 1)  # above the backdrop, under the bar
+	else:
+		_vignette.reset()
 
 
 func _apply_alpha() -> void:
@@ -223,6 +243,9 @@ func _process(delta: float) -> void:
 	if shown < target:
 		shown = minf(target, shown + maxf((target - shown) * minf(1.0, real * 3.5), real * 0.04))
 	_update_lumi(real)
+	if _vignette:
+		_vignette.progress = shown
+		_vignette.set_active(visible)
 	_canvas.queue_redraw()
 
 
@@ -286,7 +309,7 @@ func _draw_bar() -> void:
 	var font: Font = UITheme.font()
 	var title: String = "GREENFALL"
 	var tw: float = font.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, 30).x
-	c.draw_string(font, Vector2((c.size.x - tw) * 0.5, r.position.y - 120.0), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 30, Color(CREAM, 0.85))
+	c.draw_string(font, Vector2((c.size.x - tw) * 0.5, r.position.y - (360.0 if _vignette else 120.0)), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 30, Color(CREAM, 0.85))
 	# Track and fill (the cleaned stretch glows faintly pink behind Lumi).
 	c.draw_rect(Rect2(r.position - Vector2(2, 2), r.size + Vector2(4, 4)), Color(1, 1, 1, 0.06))
 	_round_rect(c, r, Color(0.09, 0.1, 0.13))
@@ -295,6 +318,11 @@ func _draw_bar() -> void:
 		_round_rect(c, fill.grow(3.0), Color(GLOW, 0.12))
 		_round_rect(c, fill, Color(0.93, 0.9, 0.88))
 		_round_rect(c, Rect2(fill.position + Vector2(0, fill.size.y - 3.0), Vector2(fill.size.x, 3.0)), Color(GLOW, 0.75))
+	if _vignette:
+		# [pod2] The 3D street above the bar shows Lumi and the junk; the bar stays clean.
+		var pct3: String = "%d%%" % int(round(shown * 100.0))
+		c.draw_string(font, Vector2(r.end.x + 14.0, r.position.y + 10.0), pct3, HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color(CREAM, 0.45))
+		return
 	# The line of garbage waiting ahead.
 	for p: Dictionary in _pieces:
 		if p["taken"]:

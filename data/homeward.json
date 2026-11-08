@@ -2,7 +2,7 @@
   "_doc": "[home] Homeward: the campaign across the Verdance system (systems/homeward.gd). Five fixed planets in order (profile worlds; planet 0 = Verdance = world 0). A planet's restoration (0..1): Verdance = its Bloom Core charge (100% when the Cradle answers); other planets = w_thriving * min(1, thriving hexes / thriving) + w_bases * min(1, bases at level 5 / bases) + w_start * min(1, start-district Thriving share / start_ratio). It never drops (best value kept in the profile). System restoration = mean over the five. A restored planet (100%) gives its relic and one Heirloom pick. Drive tiers (Mk V-VII) are the rocket's interplanetary drive, kept in the profile and carried to every planet: a planet needs drive >= nav and its chart (the previous planet at chart_at). Mk VII needs every relic, the whole system restored and Lumi at Verdance's Cradle Returns. Costs: cubes and parts.",
   "weights": {"thriving": 0.5, "bases": 0.3, "start": 0.2},
   "start_ratio": 0.6,
-  "chart_at": 0.5,
+  "chart_at": 0.5, "discover_at": 0.25,
   "planets": [
     {"id": "verdance", "name": "Verdance", "type": "verdance", "seed": 4471, "mods": [], "nav": 0,
       "twist": "Home. The Makers' world, buried under the Ledger's leavings. Restore it to the Cradle Returns pad.",

@@ -1,8 +1,11 @@
 class_name RobotBuilder
 extends Node
 ## [drones] Robot Builder: per-robot part slots (Chassis, Head, Mobility, Tool, Topper), the part
-## inventory, crafting, Haggle's builder stall, Maker Fragments, crew presets, personality traits,
-## and salvage spotting (the Scan stat). Rules are static so the UI, tests and the save round trip
+## collection, unlocking, Maker Fragments, crew presets, personality traits and salvage spotting.
+## [ui2] Builder parts are pure cosmetics, edited in the workbench Locker (ui/locker_panel.gd):
+## owning a part unlocks it for every robot (fitting it uses nothing up); unlocking costs Parts
+## (+ cubes for the shop ones) or comes from research, Requests and rare finds. The one perk left
+## is the Maker set (three Maker parts: +5% speed, +6% work). Personalities are flavour only. Rules are static so the UI, tests and the save round trip
 ## can use them without a world; one instance per slice ticks salvage finds and dev hooks.
 ##
 ## State: GameState.flags["builder"] = {inv: {part_id: n}, fragments: n, presets: {crew: build},
@@ -183,12 +186,9 @@ static func generic_mods(build: Dictionary, trait_id: String = "") -> Dictionary
 	var mul := func(mods: Dictionary) -> void:
 		for k: String in mods:
 			out[k] = float(out.get(k, 1.0)) * float(mods[k])
-	for slot: String in build:
-		mul.call(part(str(build[slot])).get("mods", {}))
+	# [ui2] Parts and personalities are cosmetic; only the Maker set keeps a small perk.
 	if has_set(build):
 		mul.call(cfg().get("set_bonus", {}).get("mods", {}))
-	if trait_id != "":
-		mul.call(trait_def(trait_id).get("mods", {}))
 	return out
 
 
@@ -261,10 +261,8 @@ static func equip(r: Robot, slot: String, id: String) -> String:
 			return TranslationServer.translate("Wrong slot")
 		if not fits(id, r.type_id):
 			return TranslationServer.translate("Doesn't fit a %s") % TranslationServer.translate(str(Economy.robots.get(r.type_id, {}).get("name", r.type_id)))
-		if not take_part(id):
-			return TranslationServer.translate("None in the parts bin")
-	if cur != "":
-		inv()[cur] = count(cur) + 1
+		if count(id) <= 0:  # [ui2] owned = unlocked for every robot, nothing is used up
+			return TranslationServer.translate("Not unlocked yet")
 	if id == "":
 		r.build.erase(slot)
 	else:
@@ -329,18 +327,12 @@ static func craftable(id: String) -> bool:
 	return source_kind(id) in ["craft", "research", "set"]
 
 
-## Index into GameState.parts of the cheapest stored part of a type at min_rarity or better
-## (spares cores a Mk tier still needs where it can).
-static func _part_to_use(type_id: String, min_rarity: int) -> int:
-	var idx: int = Fleet.part_index(type_id)
-	var best: int = -1
-	for i: int in GameState.parts.size():
-		var p: Dictionary = GameState.parts[i]
-		if int(p["type"]) != idx or int(p["rarity"]) < min_rarity:
-			continue
-		if best < 0 or int(p["rarity"]) < int(GameState.parts[best]["rarity"]):
-			best = i
-	return best
+## [ui2] Parts to unlock a craftable part: its parts plus what the robot part item it used to
+## consume is worth (data/parts.json rarity value), so prices stay where they were.
+static func craft_parts(id: String) -> float:
+	var src: Dictionary = part(id).get("source", {})
+	var extra: float = RobotParts.value(int(src.get("min_rarity", 0))) if str(src.get("part", "")) != "" else 0.0
+	return float(src.get("parts", 0)) + extra
 
 
 static func craft_block_reason(id: String) -> String:
@@ -351,48 +343,31 @@ static func craft_block_reason(id: String) -> String:
 	var lr: String = locked_research(id)
 	if lr != "":
 		return TranslationServer.translate("Research %s") % TranslationServer.translate(str(Research.def(lr).get("name", lr)))
-	var ptype: String = str(src.get("part", ""))
-	if ptype != "" and _part_to_use(ptype, int(src.get("min_rarity", 0))) < 0:
-		var pname: String = TranslationServer.translate(str(Economy.part_type(Fleet.part_index(ptype)).get("name", ptype)))
-		var mr: int = int(src.get("min_rarity", 0))
-		return TranslationServer.translate("Needs a %s%s") % ["%s+ " % TranslationServer.translate(str(Economy.rarity(mr).get("name", ""))) if mr > 0 else "", pname]
-	if not GameState.can_afford("parts", BigNum.from_float(float(src.get("parts", 0)))):  # [money]
-		return TranslationServer.translate("Needs %s") % L10nFmt.amount("parts", float(src.get("parts", 0)))
+	if not GameState.can_afford("parts", BigNum.from_float(craft_parts(id))):  # [ui2]
+		return TranslationServer.translate("Needs %s") % L10nFmt.amount("parts", craft_parts(id))
 	if not GameState.can_afford("cubes", BigNum.from_float(float(src.get("cubes", 0)))):
 		return TranslationServer.translate("Not enough cubes")
 	return ""
 
 
-## Short cost line, e.g. "40 parts + Drive Wheel Assembly".
+## Short unlock line, e.g. "Unlock · 50 parts" ([ui2] costs are Parts + cubes only).
 static func cost_text(id: String) -> String:
 	var src: Dictionary = part(id).get("source", {})
-	var bits: Array[String] = []
 	match str(src.get("kind", "")):
 		"haggle":
-			return TranslationServer.translate("Haggle's stall · %s") % Currencies.cost_text({"cubes": src.get("cubes", 0), "parts": src.get("parts", 0)})  # [money]
+			return TranslationServer.translate("Unlock · %s") % Currencies.cost_text({"cubes": src.get("cubes", 0), "parts": src.get("parts", 0)})  # [money]
 		"request":
 			return TranslationServer.translate("Requests reward · %d requests") % int(src.get("requests", 0))
 		"drop":
 			return TranslationServer.translate(str(src.get("hint", "Rare find")))
-	if int(src.get("parts", 0)) > 0:  # [money]
-		bits.append(L10nFmt.amount("parts", float(src["parts"])))
-	var ptype: String = str(src.get("part", ""))
-	if ptype != "":
-		var mr: int = int(src.get("min_rarity", 0))
-		bits.append("%s%s" % ["%s+ " % TranslationServer.translate(str(Economy.rarity(mr).get("name", ""))) if mr > 0 else "", TranslationServer.translate(str(Economy.part_type(Fleet.part_index(ptype)).get("name", ptype)))])
-	if int(src.get("cubes", 0)) > 0:
-		bits.append(TranslationServer.translate("%s cubes") % Settings.fmt(BigNum.from_float(float(src["cubes"]))))
-	return TranslationServer.translate("Craft · %s") % " + ".join(bits)
+	return TranslationServer.translate("Unlock · %s") % Currencies.cost_text({"cubes": src.get("cubes", 0), "parts": craft_parts(id)})
 
 
 static func craft(id: String) -> bool:
 	if craft_block_reason(id) != "":
 		return false
 	var src: Dictionary = part(id)["source"]
-	var ptype: String = str(src.get("part", ""))
-	if ptype != "":
-		GameState.parts.remove_at(_part_to_use(ptype, int(src.get("min_rarity", 0))))
-	GameState.spend("parts", BigNum.from_float(float(src.get("parts", 0))))  # [money]
+	GameState.spend("parts", BigNum.from_float(craft_parts(id)))  # [ui2]
 	GameState.spend("cubes", BigNum.from_float(float(src.get("cubes", 0))))
 	add_part(id)
 	GameState.inc_stat("builder_crafted")
@@ -401,22 +376,13 @@ static func craft(id: String) -> bool:
 	return true
 
 
-## Haggle's builder stall: a few haggle-source parts, reshuffled every rotate_s of play time.
-static func haggle_offers(play_time: float = -1.0) -> Array[String]:
-	if play_time < 0.0:
-		play_time = float(GameState.stats.get("time_played", 0.0))
-	var hc: Dictionary = cfg().get("haggle", {})
-	var pool: Array[String] = []
+## [ui2] The shop parts ("haggle" source: cubes + parts). No rotating stall any more: all of
+## them are always on offer in the Locker. play_time is ignored (kept for older callers).
+static func haggle_offers(_play_time: float = -1.0) -> Array[String]:
+	var out: Array[String] = []
 	for p: Dictionary in all_parts():
 		if str(p.get("source", {}).get("kind", "")) == "haggle":
-			pool.append(str(p["id"]))
-	var r := RandomNumberGenerator.new()
-	r.seed = int(play_time / maxf(float(hc.get("rotate_s", 480)), 1.0)) * 7919 + 17
-	var out: Array[String] = []
-	while out.size() < mini(int(hc.get("offers", 3)), pool.size()):
-		var id: String = pool[r.randi() % pool.size()]
-		if not (id in out):
-			out.append(id)
+			out.append(str(p["id"]))
 	return out
 
 
@@ -429,7 +395,7 @@ static func haggle_seconds_left(play_time: float = -1.0) -> float:
 
 static func haggle_block_reason(id: String) -> String:
 	if not (id in haggle_offers()):
-		return TranslationServer.translate("Not in Haggle's stall right now")
+		return TranslationServer.translate("Can't be bought")
 	var src: Dictionary = part(id).get("source", {})
 	if not GameState.can_afford("cubes", BigNum.from_float(float(src.get("cubes", 0)))):
 		return TranslationServer.translate("Not enough cubes")
@@ -547,7 +513,7 @@ func _on_robot_built(_n: String) -> void:
 	st()["starter"] = true
 	add_part("treads")
 	add_part("bobble_plant")
-	EventBus.toast.emit(tr("Haggle: \"First bot? Treads on the house. And a plant, bots like plants.\" (Workbench > Builder)"), "story")
+	EventBus.toast.emit(tr("Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d.") % LockerPanel.HUB_LEVEL, "story")  # [ui2]
 
 
 ## Dug-up parts sometimes come with a Maker Fragment (much likelier on Vintage/Legendary finds).
@@ -596,11 +562,10 @@ func _salvage_find(r: Robot, sc: Dictionary) -> void:
 	else:
 		var t: int = rng.randi() % maxi(Economy.parts.get("types", [1]).size(), 1)
 		var rar: int = 0 if rng.randf() < 0.7 else 1
-		GameState.parts.append({"type": t, "rarity": rar})
 		_quiet = true
-		EventBus.part_found.emit(t, rar)
+		RobotParts.salvage(t, rar)  # [ui2] pays Parts
 		_quiet = false
-		EventBus.toast.emit(tr("%s spotted a %s.") % [r.robot_name, L10nFmt.part_name(rar, t)], "hint")
+		EventBus.toast.emit(tr("%s spotted a %s: %s.") % [r.robot_name, L10nFmt.part_name(rar, t), RobotParts.gain_text(rar)], "hint")
 	Audio.play("detector", 1.4, -10.0)
 
 

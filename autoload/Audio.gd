@@ -30,6 +30,7 @@ const PlanetThemes := preload("res://audio/planet_themes.gd")  # [sound]
 const MusicTracks := preload("res://audio/music_tracks.gd")  # [sound]
 const AmbienceBeds := preload("res://audio/ambience.gd")  # [sound]
 const AmbienceSynth := preload("res://audio/ambience_synth.gd")  # [sound]
+const TunesDirector := preload("res://audio/tunes_director.gd")  # [tunes]
 ## [sound] Mix: how far music / ambience dip while WREN speaks, and the attack / release times.
 const DUCK_MUSIC_DB: float = -7.0
 const DUCK_AMB_DB: float = -4.5
@@ -50,6 +51,12 @@ var _hold_id: String = ""  # [sound] radio preview (wins over the world while se
 var _hold_resto: float = 0.0
 var _duck_until_us: int = 0
 var _duck: float = 0.0  # 0..1, smoothed
+## [eggs2] Hush: a source that plays its own music in the world (the jukebox) fades the whole
+## score out (mood layers, stingers, radio tracks: everything on the Music bus) while it plays.
+const HUSH_FADE_S: float = 1.5
+var _hush_by: Dictionary = {}  # owner -> true
+var _hush: float = 0.0  # 0..1, smoothed
+var _tunes_hush: bool = false  # [tunes] a song (or the quiet between songs) owns the music
 
 
 func _ready() -> void:
@@ -74,6 +81,9 @@ func _ready() -> void:
 	_ambience = AmbienceBeds.new()
 	_ambience.name = "Ambience"
 	add_child(_ambience)
+	var tunes: Node = TunesDirector.new()  # [tunes] the owner's songs (systems/tunes.gd)
+	tunes.name = "TunesDirector"
+	add_child(tunes)
 	apply_volumes()
 
 
@@ -131,7 +141,7 @@ func apply_volumes() -> void:
 	# [sound] A slider at 0 mutes its bus (linear_to_db(0) is -inf); the duck rides on top.
 	_set_bus_level(0, Settings.master_volume, 0.0)
 	_set_bus_level(AudioServer.get_bus_index("SFX"), Settings.sfx_volume, 0.0)
-	_set_bus_level(AudioServer.get_bus_index("Music"), Settings.music_volume, DUCK_MUSIC_DB * _duck)
+	_set_bus_level(AudioServer.get_bus_index("Music"), Settings.music_volume * (1.0 - _hush), DUCK_MUSIC_DB * _duck)  # [eggs2] hush
 	_set_bus_level(AudioServer.get_bus_index("Ambience"), 1.0, DUCK_AMB_DB * _duck)
 
 
@@ -153,6 +163,33 @@ func duck(seconds: float) -> void:
 
 func get_duck() -> float:
 	return _duck
+
+
+## [eggs2] Fades all background music out (over HUSH_FADE_S) until every owner has called
+## unhush_music(). SFX and the ambience bed keep playing.
+func hush_music(owner_id: String) -> void:
+	_hush_by[owner_id] = true
+
+
+func unhush_music(owner_id: String) -> void:
+	_hush_by.erase(owner_id)
+
+
+func is_music_hushed() -> bool:
+	return not _hush_by.is_empty()
+
+
+## 0 = normal music, 1 = fully faded out.
+func get_hush() -> float:
+	return _hush
+
+
+## Eases the hush toward its target; _process calls it with real time (tests call it directly).
+func step_hush(dt: float) -> void:
+	var want: float = 1.0 if not _hush_by.is_empty() else 0.0
+	if want != _hush:
+		_hush = move_toward(_hush, want, dt / HUSH_FADE_S)
+		apply_volumes()
 
 
 # --- Playback -----------------------------------------------------------------
@@ -321,6 +358,18 @@ func stop_track() -> void:
 		_music.call("stop_track")
 
 
+## [camp] For songs played outside the score (recorded song files, the radio's library): true
+## silences the mood score and its stingers at once; false fades the score back in from silence.
+## Composed radio tracks (play_track) cut the score by themselves.
+func mute_score(on: bool) -> void:
+	if _music:
+		_music.call("set_muted", on)
+
+
+func is_score_muted() -> bool:
+	return bool(_music.get("muted")) if _music else false
+
+
 ## The composed track playing now ("" for a generative piece or a silence gap).
 func get_music_track() -> String:
 	return "" if _music == null or bool(_music.call("in_gap")) else str(_music.call("current_track"))
@@ -372,6 +421,16 @@ func _apply_resto(x: float) -> void:
 		_ambience.call("set_restoration", x)
 
 
+## [tunes] The song director (audio/tunes_director.gd) hushes the synth score while a song plays
+## or the shuffle owns the quiet between songs. Stingers still play in the gaps.
+func tunes_hush(on: bool) -> void:
+	_tunes_hush = on
+
+
+func is_tunes_hushed() -> bool:
+	return _tunes_hush
+
+
 func get_music_intensity() -> float:
 	return float(_music.get("intensity")) if _music else 0.0
 
@@ -379,6 +438,8 @@ func get_music_intensity() -> float:
 ## Short musical stinger built from the current chord: "upgrade", "hex_clean", "first_sprout",
 ## "robot_built", "level_up". Routed to the Music bus.
 func music_sting(sting_name: String) -> void:
+	if _tunes_hush and Tunes.now_playing() != "":  # [tunes] no synth stingers over a song
+		return
 	if _music:
 		_music.call("sting", sting_name)
 
@@ -390,7 +451,8 @@ func _process(_delta: float) -> void:
 	var now: int = Time.get_ticks_usec()
 	var dt: float = (now - _music_last_us) / 1000000.0
 	_music_last_us = now
-	_music.set("enabled", music_enabled)
+	step_hush(dt)  # [eggs2]
+	_music.set("enabled", music_enabled and not _tunes_hush)  # [tunes]
 	_music.call("update", dt)
 	if _music_lpf:
 		_music_lpf.cutoff_hz = float(_music.get("lpf_cutoff"))

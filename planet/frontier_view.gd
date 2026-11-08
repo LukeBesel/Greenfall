@@ -117,6 +117,11 @@ func build() -> void:
 			_build_cradle()
 	_setup_field_water()
 	_weather_junk()
+	for g: String in _groups:  # [world2] the frontier's ruins, pads and kit are solid
+		PropColliders.from_geometry(PropColliders.body(_groups[g], "Props"), _groups[g], 0.5, 0.5, ["Terrain", "IceSheet", "Heater", "Greenhouse", "Cradle"])
+	var pad_root: Node3D = get_node_or_null("Pad")
+	if pad_root:  # [world2] the landing pad's pylons
+		PropColliders.from_geometry(PropColliders.body(pad_root, "Props"), pad_root, 0.5, 0.5)
 	set_level(level, false)
 	var counts: Array[String] = []
 	for g: String in _groups:
@@ -138,6 +143,7 @@ func set_level(l: int, animate: bool) -> void:
 			node.scale = Vector3(1, 0.02, 1)
 			node.create_tween().tween_property(node, "scale", Vector3.ONE, 1.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		node.visible = want
+		PropColliders.set_active(node, want)  # [world2]
 	# The harbour's water hexes stay sea ice until the port is futuristic (like the flood plane).
 	var wm: ShaderMaterial = _water_mat()
 	if wm and kid == "frozen_port":

@@ -76,6 +76,11 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
 - **Animals are pure visuals**: no colliders, no navigation; standing spots and wander targets (plus their midpoint) are checked against live junk pieces, mounds and building footprints. Robots and Lumi pass through them.
 - **The plan is stateless**: counts come from hex levels, biome, lake cleanliness and time of day, seeded per district/hex/species, so nothing about the animals needs saving except player-facing progress (sightings, photos, the adopted cat).
 - **Sightings need the animal in view and near Lumi**; photo credit needs the animal in the photo camera's frustum at >= ~4% of the frame height (no occlusion test).
+- **Real models after owner feedback (wt/fauna2)**: the primitive-built animals read as fake. Now: the cat is sculpted and rigged in Blender (`art/models/fauna/build_cat.py`: one remeshed seamless skin, coat masks in vertex colours, glossy eyes, 8 baked actions) and drawn as a skinned `FaunaRig` with a fur shader + fur shells near the camera; deer, stags and red foxes are Quaternius's CC0 animated animals (smoothed and recoloured by `build_quaternius.py`). Numerous animals (birds, ducks, rabbits, seals, fish) are sculpted in Blender as smooth parts (`build_small.py`) and assembled into the existing MultiMesh vertex-shader rig, so flocks stay cheap. Kenney and Poly Pizza were blocked by the proxy; the Quaternius Google Drive hit its download quota, so the three glTFs came from a public GitHub mirror of the same CC0 pack.
+- **Blender needs python3-numpy** for its glTF exporter (`apt-get install -y python3-numpy`); the environment setup script doesn't install it yet.
+- **Two-part wings**: the outer wing carries a second pivot (CUSTOM1 = shoulder) so the hand can lag and fold on the upstroke; one rigid wing per side read as a "paper plane".
+- **Spacing without colliders**: animals still have no physics bodies. Every place one stands is checked against other animals (body radius per species, including where they're heading), a prop grid stamped from prop-sized meshes (catches the many props that have no collider), one physics shape query on the static layer, fence lines, the yard and outposts. The grid is rebuilt every 90 s rather than tracked live.
+- **Perches come from geometry**: the top of any tall, slim mesh (lamp posts, roof crowns, trees) is a perch, read from the mesh's highest vertices, so new props become perches without data.
 
 ## Whole game (wt/beat, Nov 7)
 - **The Cradle is the true ending.** The Verdance Bloom milestone (finale, Bloom Core 100%, Seed Ark)
@@ -190,8 +195,9 @@ Mechanics:
 - **Research costs cubes (x10 the old Data) plus real time**; the old Data sources ("field notes":
   hexes cleaned, restored, shards, robot bales, blooms) pay those cubes instead, so research paces as
   it did. Thriving wildlife notes are a small cube trickle (6/min per hex, capped at 300/min).
-- **Robot part items stay items** (the rarity-graded parts the recipes, tiers and the Builder use);
-  they are not a currency. In the UI they are "robot parts"; the currency is "Parts".
+- ~~Robot part items stay items~~ [ui2, Nov 7]: superseded. The owner found the two "parts" confusing;
+  a found robot part now pays Parts at its rarity's value (save v4 converts held items), builds and
+  Mk tiers cost Parts + cubes. See "Simpler workbench" below.
 - **Contracts and World Events are one Requests board.** Requests pay cubes or parts; the token shop
   became a reward track (liveries, Builder parts, Curio Capsules, rare robot parts at 2..20 finished
   requests; a Vintage part every 5 after). Handled world events count as finished requests.
@@ -206,6 +212,28 @@ Mechanics:
   plentiful where Data used to be the gate.
 - **The Ledger is quieter**: one uplink line per act; coupons and quips are small notify-stack
   entries, coupons every 12-20 min (was 4-7).
+
+## Simpler workbench (wt/ui2, Nov 7)
+- **One parts**: robot part items became Parts at the rarity's old scrap value (10/25/60/150/450).
+  Keeping the rarity roll keeps the detector exciting (a Legendary find is a big Parts payout).
+- **Build cost = cubes + Parts** (Scoopie 70, Haul Bug 40, Seedling/Drip 45, Skimmer 60, Multibot
+  140; cubes x1.35 and Parts x1.2 per robot owned: a garden needs many Drips, and Haggle no longer
+  sells the missing parts for cubes). Mk steps: cubes as before + 200 / 700 / 2000 Parts; the rare
+  Restored+ Control Core used to be the gate. Tuned with the autoplay so robots and base levels
+  (which also want Parts) arrive about when they did. No rarity bonus any more.
+- **No trading**: Haggle's trade, scrap and swap are gone; Haggle survives only as a name in data
+  ids ("haggle" source = the Locker shop). His builder stall no longer rotates.
+- **Requests start themselves and never expire**: the owner found Accept / Pass / timers too much.
+- **Locker at hub level 3**; cosmetic parts are unlocks (owning one fits every robot). Robot Builder
+  parts lost their stat mods (pure cosmetics); the Maker set's +5% speed / +6% work is the one perk.
+- **Hub card shows "what you get"** computed from data (sell bonus, crew spots, the scrubber,
+  stations and Locker levels, the launch pad at 5).
+- **Playtest 2: futuristic, smaller, honest costs.** One holo style (BenchKit.holo) for workbench,
+  pause and settings. Affordable = green glow, otherwise dim with the missing amount in red. Tabs
+  are hidden (not locked) until their data condition holds (data/workbench.json), so the "pace"
+  helper can move unlocks without code. No Save button: autosave every minute and on quit; "Quit"
+  saves and returns to the title. Keepsakes opens the Codex Collection.
+
 ## Keepsakes (wt/extras, Nov 7)
 - **One idle-gains entry point**: `Offline.simulate` (time cap, junk cap, `offline_units` bookkeeping) so the welcome card and any remote view (telescope) share one capped calculation; currency only moves in `Offline.apply`.
 - **Radio songs are MusicDirector moods** (same key and layers), so they crossfade like any mood; the override lives in Audio and is cleared when the district leaves the tree.
@@ -269,3 +297,53 @@ Supersedes "Planet travel: districts per base on a 40k-hex planet" above.
 - **Hubs are sites on the globe**: each a level pad (`SphereTerrain.reserve_site`, flat + blend radius) with its base and landmarks built as a site prefab in site-local metres (`build(site_root, stage, restoration)`, +Y up, y = 0 on the pad).
 - **Streaming**: only the ground near the camera, Lumi and working robots is 3D (threaded LOD chunks, collision within 70 m); scoopable junk exists only in a ~70 m ring per centre and is otherwise a number per hex (SphereCells); the rest of the globe is a low-detail shell reading the same per-hex state texture. Robots far from Lumi are data records advanced like offline progress.
 - **Phase A (`--orbit`, default off)**: the real Lumi (`player/patch.gd`) runs on the sphere through `Patch.enable_sphere()` + SphereMotor (hover, radial gravity, boost, jump, camera-frame input); the flat game is unchanged when it isn't called. Bales fall with radial gravity (a point-gravity Area3D); the Depot reads its pad in its own frame. `SphereField` (a HexField over SphereGrid cells) and `SphereJunkView` give Patch, the HUD and the Depot the APIs they already use.
+- **[world2] Props are solid, on their own layer**: street furniture, yard kit, sign posts, outposts,
+  eggs, the composter, greenhouse, pod, hub additions, future-layer posts and frontier ruins collide on
+  `PhysLayers.PROP` (`planet/phys_layers.gd`). Lumi, robots and bales mask it; the camera spring arm
+  does not (thin poles would yank the camera in). Simple boxes/cylinders with shared shapes
+  (`planet/prop_colliders.gd`); merged frontier geometry gets greedy-merged column boxes. Junk that
+  spawns inside a prop is nudged to its edge at load (deterministic; only alive bits are saved).
+  Tiny clutter (pots, weeds, paint, wires, junk, litter) stays non-solid. `tools/collider_audit.gd`
+  must report 0. Robots have no navmesh; their detour/stall logic handles the new obstacles.
+- **[world2] No yard fence**: the owner walked through it and it boxed Lumi in at the start. Lot fences
+  elsewhere are broken runs with gaps, each run solid.
+- **[world2] Junk gen 2 (new games)**: the only clear ground is what Lumi or the bots picked up. No
+  mid-road sparsity, a full ring around the base, landfill junk between the heaps, and the streets of
+  building-blocked hexes plus the hub hex outside the yard belong to the nearest junk hex
+  (`HexField.owner_hex`), so they are covered and clear with it. Each hex keeps gen 1's junk volume
+  (more, smaller pieces), so bales, cubes and hex flips pace as before. Old Town's field is radius 4
+  (was 3); past the field a static, non-interactive junk layer (`planet/far_junk.gd`) keeps the planet
+  covered, and WREN explains the survey line once. Saves without `junk_gen` keep gen 1 and radius 3.
+  Frontiers stay radius 4 (now the same hex count, still denser and tougher).
+- **[world2] Bales**: collider = the drawn bale (straps included; overstuffed bales get their wider,
+  flatter box), CCD on, lifted out of anything solid after a spawn or put-down, put down short of
+  walls, and junk mounds are solid for bales only (`PhysLayers.MOUND`, `planet/mound_colliders.gd`).
+  The bale shader is explicitly opaque, with desaturated per-item chunks, labels in the dominant junk's
+  accent colour and rough, sparse metal. **Root cause of the "transparent" bale**: its mesh,
+  `ProcMesh.rounded_box`, was inside-out (counter-clockwise from outside, so back-face culling showed
+  the far inner walls: a see-through box tinted by the pale-blue plastic colour). rounded_box (used by
+  ~130 props) and the junk-heap mesh now wind clockwise from outside; `tests/test_bale_rest.gd`
+  checks the winding.
+- **[world2] Playtest #2 follow-ups**: junk heaps are solid for Lumi and robots too (MOUND | PROP),
+  drawing in as the hex is cleaned, so piles are scooped from the edge, not vacuumed from inside.
+  Hub/blocked hexes' ground follows the junk hexes that own it (no clean-looking patches). Pieces
+  carry a size class (`HexField.piece_size`: SIZE_SMALL / SIZE_MEDIUM / SIZE_LARGE, from the
+  model's base volume, LARGE >= 2.5: tyres, TVs, microwaves, stoves), and the starting ring has no
+  large pieces (re-picked from the same type on their own RNG). Carried bales sit above Lumi's head
+  (`player/carry_point.gd`). The bale is a pillowed, lumpy pressed block with three straps one way
+  and two across.
+
+## Character Builder (wt/style, Nov 7)
+- **A style is a layer the hero model reads**, not a fork of it: `systems/lumi_style.gd` (data `data/style_parts.json`). Two tagged one-line hooks in `PatchModel._build` (`# [style]`): first line `var v: Dictionary = LumiStyle.variant_for(self, VARIANTS[variant])`, last line `LumiStyle.after_build(self)`. `variant_for` turns the style into a VARIANTS-shaped dict (so PatchModel builds its own native add-ons and colours); `after_build` recolours what VARIANTS has no key for and adds a `LumiStyleRig` child (`player/lumi_style_rig.gd`) for eye shapes and non-native add-ons. Hero rebuild: keep both hook lines, keep `_mats`, `_face_mat`, `_ring_mat`, `_float`, `_head`, `_arm_l` (with meta `wrist`), `_icon`, `_part()`, `_paint()`, `_load_parts()/_parts/_pivot()`; everything is read through get()/has_method() and degrades quietly if missing.
+- **The six designs are presets** read straight from `PatchModel.VARIANTS` (`LumiStyle.preset(id)`), so a preset reproduces the design exactly (tests/test_lumi_style.gd checks every VARIANTS key and acc id, and `unmapped_acc()` flags a renamed add-on).
+- **Bonus = worn design**: the style's `bonus` is written to `flags.patch_skin`, so `Designs.mult` and "Looks only" are unchanged; a custom look can take any unlocked design's bonus. A model of variant X shows the worn style only when its bonus is X, else X's preset (dev `--design=`, previews and lineups keep working).
+- **Eye shapes without touching bot_face**: crescent and happy arcs are native (happy = VARIANTS `happy` 1.0); round / visor bar / hearts are a `next_pass` (`art/shaders/lumi_eyes.gdshader`) on the face material, with bot_face's eyes hidden by `eye_radius = -1`; look/blink/wink/happy/energy/eye_color are copied each frame. If the hero adds native shapes later, drop them from `LumiStyle.OVERLAY_SHAPES`.
+- **Colours saved as [r,g,b] floats** (4 decimals) in `flags.lumi_style`, `flags.lumi_looks` (5), `flags.style_bought`; swatches are hex in the JSON. Off-swatch colours need the advanced picker (80 parts); the designs' own colours are always allowed once the design is unlocked.
+- **Unlocks trickle over the whole game**: free starters, Lumi Level, hub level, each design (its parts and colours), Collection finds, Requests, achievements (Alive Again, Gardener, Overachiever, A District in Bloom) and a few buys for parts/seeds only.
+- **Add-on names the applicator expects** (add-on library = aurora.glb + designs.glb mesh names; first found wins, else a procedural stand-in):
+  - native PatchModel acc ids (VARIANTS `acc`, built by PatchModel): `antenna` (fin), `acc_sprout`, `acc_catears`, `acc_pixel` (wing fins + heart lenses), `acc_pad_r`, `acc_pad_l`, `gear` (mesh `acc_gear`), `acc_toolbox` + `case` (mesh `acc_case`), `holo`, `butterfly` (meshes `acc_bfly_body`, `acc_wing`); chest icons `acc_icon_leaf`, `acc_icon_cross`.
+  - library meshes the builder picks up if the hero models them: `acc_antenna` (plain antenna, head-relative pivot like `antenna`), `acc_halo` (head-relative pivot), `acc_icon_heart` (same pivot as `acc_icon_leaf`), `acc_medkit`, `acc_watering_can` (left claw, origin at the grip), `acc_firefly`, `acc_drone` (companions, origin at the body centre, facing -Z).
+  - material slot `side` on the side-module plates (optional `_mats["side"]`): the side-module colour; until then side modules follow trim.
+- **Locked cosmetics are never shown** (owner playtest #2): locked designs are a dark silhouette (`LumiStyle.silhouette`, `DesignPreview.show_design(id, hidden)`) named "???" with only the unlock hint; locked presets, parts, swatches and bonuses in the builder are "???" cards / grey "?" swatches with the hint.
+- **Other dressable bots plug in through `CosmeticTargets`** (`systems/cosmetic_targets.gd`): `register(id, {name, order, editor: Callable(world) -> Control, unlocked: Callable -> bool, hint})`, `all()`, `make_editor(id, world)`, `display_name(id)` ("???" while locked). Lumi is built in (`LumiBuilder`). Part unlock rules can reuse `LumiStyle.unlock_met / unlock_progress / unlock_text / buy` with their own data.
+- **LumiBuilder is a hostable Control**: `var b := LumiBuilder.new(); b.world = world; parent.add_child(b)` (embedded: no backdrop, the host owns Esc and LB/RB, footer button "Wear look", signals `worn` / `closed`), or `LumiBuilder.open(world, parent)` for a full-screen overlay (CanvasLayer 100).

@@ -26,6 +26,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] WREN is introduced as the ark's caretaker AI. It leaves one last message as the pod crashes, then goes silent.
 - [ ] Signal towers bring WREN back: better towers unlock more messages, and they get clearer at higher signal.
 - [ ] Bird and WREN chatter is rare, never constant.
+- [ ] Only ONE message line is on screen at a time, anywhere in the game (subtitles, toasts, rewards, hints). Every message stays up long enough for an average reader. (onboard2)
 - [ ] Goal text after leaving the pod stays long enough to read.
 - [ ] Goal and task-bar text is easy to read.
 - [ ] Goals say "Clean a hex", never "this hex".
@@ -47,11 +48,14 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Walking off the edge never drops Lumi out of the world. (orbit)
 
 ## Walk around the planet (orbit)
-- [ ] Each planet is a real, small, round planet you can walk all the way around, like moon sweeper games. You can see it curve.
+- [ ] Each planet is a real, small, round planet you can walk all the way around, like moon sweeper games. The curve is subtle: planets are big, so the ground looks nearly flat nearby and only gently curves at the horizon. No exaggerated tiny-planet bending.
 - [ ] It is big enough that you never set foot on most hexes, because the bots clean those.
 - [ ] The whole planet is covered in hexes. Bases are sites on the globe, so far apart that you need the rocket to travel between hubs on the same planet.
 - [ ] Only the area near Lumi is loaded. Bots working far away are simulated cheaply.
-- [ ] Order: a prototype and plan first, then the owner reviews, then a rollout split across helpers.
+- [x] Order: a prototype and plan first, then the owner reviews, then a rollout split across helpers. (prototype done, lap test passes)
+- Owner decisions (Nov 8): BIG planets (164k hexes, R 1.84 km, 11.6 km around). Planet % counts the hub regions; the rest greens on its own. Travel is the x4 boost plus a buyable vehicle later, with the rocket between hubs. REAL day and night sides of the planet.
+- [ ] Rollout phase A: Lumi in the real game on the sphere. (orbit)
+- [ ] Rollout phases B-F: hex field and saves, robots and Command view, hub sites, future/system map/Homeward, Mac performance. (3-4 helpers)
 
 ## Pacing and economy (pace)
 - [ ] There are only 3 currencies: cubes, parts and seeds.
@@ -61,21 +65,23 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] After two bales you can afford about 1 upgrade.
 - [ ] Auto-cubing and automation come much later.
 - [ ] Overpowered upgrades are slowed down.
+- [ ] The full game takes about 20 h: grindy, but upgrades speed it up and something new arrives every 5-20 min, never a long stretch with no goal. Planting ramps up around 1-2 h, and the first planet takes 3-4 h, with plenty going on throughout. (pace2)
 - [ ] The magnet comes late, is capped, isn't glitchy, and never pulls pieces Lumi can't lift.
 - [ ] The first seed comes at about 20 min (or with super luck). Planting ramps up at about 1 h.
 - [ ] The rare-part beam indicator is an upgrade, and dig events appear only once digging is unlocked.
 - [ ] Supply crates never appear out of nowhere: supplies are only found in the world. Every reward toast names exactly what you got, in readable text.
 
 ## Landing site and yard (camp)
-- [ ] The yard holds only the pod, a broken workbench and the trash bin. Everything else appears when it is unlocked.
-- [ ] Lumi plays a short repair animation on the workbench before it can be used.
-- [ ] The trash bin is upgradeable (bin → shredder).
-- [ ] There is no nursery at the start. It needs the first seed plus cubes.
-- [ ] The radio is built later at the hub. It sits away from the workbench, and its prompt names it.
-- [ ] Yard interactables are at least about 3 m apart.
-- [ ] The radio and jukebox stop the background music and play only their own song.
-- [ ] The observatory telescope sits away from spawn and its view doesn't glitch.
-- [ ] Buying a machine upgrade (belt drive, baler and so on) makes it visibly appear, with a build effect and a pointer to it. (Bug: they bought both and nothing appeared.)
+- [x] The yard holds only the pod, a broken workbench and the trash bin. Everything else appears when it is unlocked. (camp, camp2)
+- [x] Lumi plays a short repair animation on the workbench before it can be used. (camp)
+- [x] Nothing appears on its own (not even the composter): everything besides the bench and bin is a Hub build. One-time builds drop off the Hub build list once built. (camp2: data/builds.json + HubBuilds; Build/Upgrades tabs by ui3)
+- [x] The trash bin is upgradeable (bin → shredder): Dented Bin, Scrap Skip, Weigh Skip, Compactor, Shredder. (camp)
+- [x] There is no nursery at the start. It needs the first seed plus cubes. (camp)
+- [x] The radio is built later at the hub. It sits away from the workbench, and its prompt names it. (camp: CD player by the right fence)
+- [x] Yard interactables are at least about 3 m apart. (camp: test + --camp-report)
+- [~] The radio and jukebox stop the background music and play only their own song. (camp: radio + Audio.mute_score for tunes' songs; the jukebox egg is eggs2's)
+- [x] The observatory telescope sits away from spawn and its view doesn't glitch. (camp: back edge, zoom fixes)
+- [x] Buying a machine upgrade (belt drive, baler and so on) makes it visibly appear, with a build effect and a pointer to it. (Bug: they bought both and nothing appeared.) (camp: upgrades need their machine; every build gets a reveal)
 
 ## Workbench and menus (ui2)
 - [ ] The workbench is simple, small and futuristic.
@@ -85,6 +91,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Currency icons look cool.
 - [ ] Locked tabs and options show a lock and can't be opened.
 - [ ] It's very clear what you can and can't afford.
+- [ ] Workbench tabs: Upgrades holds everything with tiers; Build holds one-time buildings, which drop off once built. As few tabs as possible. (ui3 + camp2)
 - [ ] The upgrades page isn't glitchy or bulky.
 - [ ] Settings are simplified.
 - [ ] The pause menu has no Save button: saving is automatic. "Quit" saves and returns to the title screen. Fewer buttons, but Photo mode, Codex and Keepsakes stay.
@@ -126,10 +133,20 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [x] Rime is merged.
 - [x] Rime at night is bright enough to read, and the gas giant is smaller. (rime2, render v2)
 - [ ] Ochre, Tidewell (ocean, hover over water) and Anvil (red, Nether vibe) are merged.
+- [ ] The next planet unlocks without 100% on the current one (about 50% plus the drive). Today the Mk V and Mk VI drives require a 100% planet; fixing that. Only the final launch home needs everything. (pace2)
+- [ ] You can't 100% a planet until you bring tools, bots and upgrades from later planets (e.g. a deep drill from Ochre, a water bot from Tidewell). Gated hexes say what they need, so you return later with new toys. (pace2)
 
 ## Music and docs
 - [x] The Suno prompts doc has a grinding playlist per planet, with context in each prompt, as plain copyable text plus a .txt file.
-- [ ] Once Suno MP3s arrive: per-planet shuffle playlists in the game.
+- [x] The owner's first 5 songs are in audio/songs/.
+- [ ] The main theme plays on the title screen and The Fall of LM-1 plays in the intro. (tunes)
+- [ ] You start with the main theme plus 1-2 songs. The rest unlock from CDs found in the rubble, with a readable "New song" toast. (tunes)
+- [ ] Unlocked songs shuffle at random with quiet gaps between them. The radio is a CD player with a Random mode, and it also lets you pick a song. (tunes)
+- [ ] Each song's intact CD is found on its home planet and unlocks it for good; the artist is shown as from that planet. (tunes)
+- [ ] 5-10 rare scratched CDs per planet hold songs from other planets. Each plays once (Play now / Keep), then breaks, and is clearly labelled as one listen. (tunes)
+- [ ] Later, a light-buddy "Music" upgrade downloads your CDs so you can play any found song anywhere. (tunes + buddy)
+- [ ] New MP3s can be dropped in by song name. (tunes)
+- [ ] Every song has a funny in-world artist with a short bio, drawn from a recurring cast of about 6-8 artists. Artists appear on the DVD toast, in the radio and on a Codex Artists page. The game never mentions Suno; the credits just say "Music by Lucas". (tunes)
 - [x] Music is frozen. Sound effects stay satisfying.
 
 ## Download

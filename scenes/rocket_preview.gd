@@ -70,7 +70,7 @@ func _ready() -> void:
 
 
 func _set_state(s: String) -> void:
-	var m: RocketModel = _rocket.model
+	var m: ShipModel = _rocket.model
 	var pad: LaunchPad = _rocket.pad
 	match s:
 		"steam":

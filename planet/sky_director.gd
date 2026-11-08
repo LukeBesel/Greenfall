@@ -109,7 +109,8 @@ func _process(delta: float) -> void:
 	if env == null:
 		return
 	if not frozen:
-		time_of_day = fmod(time_of_day + delta / DAY_LENGTH_S * CradleMode.day_speed(time_of_day), 1.0)  # [late] Long Nights
+		# [late] Long Nights; [buddy] longer days and quicker nights until Glim is found
+		time_of_day = fmod(time_of_day + delta / DAY_LENGTH_S * CradleMode.day_speed(time_of_day) * Glim.clock_mult(time_of_day), 1.0)
 		GameState.flags["time_of_day"] = time_of_day
 	if world and world.get("planet") != null:
 		var target: float = 1.0 - clampf(world.planet.restored_fraction() * 8.0 + float(GameState.stats.get("air_filtered", 0.0)) * 0.0005 + clear_bonus, 0.0, 0.85)
@@ -131,6 +132,11 @@ func _apply() -> void:
 	var m_elev: float = sin(clampf(night_t, 0.0, 1.0) * PI) * 60.0
 	moon.rotation_degrees = Vector3(-maxf(m_elev, -10.0), 150.0 - night_t * 60.0, 0.0)
 	moon.light_energy = 0.55 * smoothstep(0.0, 10.0, m_elev) * (1.0 - sun_up)
+	var lift: float = night_lift() * (1.0 - sun_up)  # [buddy] brighter early nights
+	if lift > 0.0:
+		# A low moon still lights the street a little (no "pitch black" between moonset and dawn).
+		moon.light_energy = maxf(moon.light_energy, 0.2 * (1.0 - sun_up)) + 0.4 * lift * smoothstep(-5.0, 10.0, m_elev)
+		moon.light_color = Color(0.62, 0.72, 1.0).lerp(Color(0.78, 0.84, 1.0), lift * 0.6)
 	moon.visible = moon.light_energy > 0.01
 	_apply_stars(star_level(sun_up))  # [vqa2]
 	# Haze drives sky scattering, fog and saturation.
@@ -149,6 +155,9 @@ func _apply() -> void:
 	env.adjustment_contrast = 1.1
 	env.ambient_light_energy = lerpf(0.55, 1.25 if env.sdfgi_enabled else 1.7, maxf(sun_up, 0.35))
 	env.tonemap_exposure = lerpf(1.6, 1.3, sun_up)
+	if lift > 0.0:  # [buddy] more ambient and exposure at night; the sky stays dark and starry
+		env.ambient_light_energy *= 1.0 + 0.45 * lift
+		env.tonemap_exposure *= 1.0 + 0.2 * lift
 	if not grade.is_empty() or storm > 0.0:
 		_apply_grade(sun_up)
 	if night_dark > 0.0:  # [worlds2] Long Nights: a dimmer moon, less ambient, a darker sky
@@ -159,6 +168,15 @@ func _apply() -> void:
 		sky_mat.energy_multiplier = 1.0 - 0.5 * nd
 	if binary:  # [worlds2] the companion sun follows the primary; orbit-scaled energies
 		binary.update(sun, sun_up)
+
+
+## [buddy] How much early nights are lifted (moon, ambient, exposure): full until Glim (the
+## lantern bot) is found, then a gentler lift that stays (nights are moody, never unreadable).
+## --night-classic turns it off (before/after renders).
+static func night_lift() -> float:
+	if DevHooks.has("night-classic"):
+		return 0.0
+	return 1.0 if not Glim.is_found() else 0.65
 
 
 ## [biomes] Blend the frontier grade over the computed sky and fog; then the storm on top.

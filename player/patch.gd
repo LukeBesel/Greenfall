@@ -58,7 +58,7 @@ var _water_t: float = 0.0
 func _ready() -> void:
 	add_to_group("patch")
 	collision_layer = 2
-	collision_mask = 1 | 4
+	collision_mask = 1 | 4 | PhysLayers.PROP  # [world2] props are solid
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
 	box.size = Vector3(1.1, 1.2, 1.0)
@@ -333,11 +333,14 @@ func _handle_scoop(delta: float) -> void:
 	# Magnet arm: pull nearby junk toward the scoop.
 	var mag: float = stat("magnet_radius")
 	if mag > 0.0:
-		var field: HexField = world.field
-		for pid: int in field.pieces_within(scoop_origin(), stat("scoop_reach") + mag):
-			var to_me: Vector3 = _tangent(scoop_origin() - field.piece_pos[pid])
-			if to_me.length() > 0.4:
-				world.view.move_piece(pid, field.piece_pos[pid] + to_me.normalized() * minf(2.5 * delta, to_me.length()))
+		if sphere:  # [orbit] pull along the ground (local up)
+			var field: HexField = world.field
+			for pid: int in field.pieces_within(scoop_origin(), stat("scoop_reach") + mag):
+				var to_me: Vector3 = _tangent(scoop_origin() - field.piece_pos[pid])
+				if to_me.length() > 0.4:
+					world.view.move_piece(pid, field.piece_pos[pid] + to_me.normalized() * minf(2.5 * delta, to_me.length()))
+		else:
+			Pace.magnet_step(self, world.field, world.view, scoop_origin(), stat("scoop_reach") + mag, delta)  # [pace] capped, smooth, liftable only
 	_scoop_timer -= delta
 	if _scoop_timer > 0.0:
 		return
@@ -347,11 +350,17 @@ func _handle_scoop(delta: float) -> void:
 	for k: int in locks:
 		if k > 0 and not compartment.can_accept(cap):
 			break
-		var pid: int = world.field.find_scoop_target(scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"))
+		var pid: int = Pace.find_scoop_target(world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"), Pace.lift_class())  # [pace] Lift Strength
 		if pid < 0:
+			if k == 0:
+				Pace.heavy_hint(self, world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"))  # [pace]
 			break
+		var extra: PackedInt32Array = world.field.cluster_extra(pid)  # [world2] gen-2 junk is finer: grab the little cluster
 		_take_piece(pid)
 		took += 1
+		for e: int in extra:
+			if world.field.piece_alive[e] == 1 and compartment.can_accept(cap):
+				_take_piece(e)
 	if took > 0:
 		_scoop_timer = 1.0 / maxf(stat("scoop_rate"), 0.5)
 
@@ -398,7 +407,7 @@ func _piece_arrived(type_id: String, vol: float, color: Color) -> void:
 		Audio.play("ding", 1.0, -6.0)
 		model.flash()
 	_was_in_band = in_band
-	if stat("auto_compactor") >= 1.0 and not compartment.can_accept(cap) and _cubing <= 0.0:
+	if stat("auto_compactor") >= 1.0 and Pace.baler_unlocked() and not compartment.can_accept(cap) and _cubing <= 0.0:  # [pace]
 		start_cube()
 
 
@@ -424,6 +433,9 @@ func _handle_cubing(delta: float) -> void:
 			model.open_hatch(0.0)
 		return
 	if input.cube_pressed():
+		if not Pace.baler_unlocked():  # [pace] the bale press is an upgrade
+			Pace.baler_hint(self)
+			return
 		if compartment.is_empty() or compartment.pending > 0.0:
 			if compartment.is_empty():
 				Audio.play("buzz", 1.2, -10.0)
@@ -432,7 +444,7 @@ func _handle_cubing(delta: float) -> void:
 
 
 func start_cube() -> void:
-	if compartment.is_empty():
+	if compartment.is_empty() or not Pace.baler_unlocked():  # [pace]
 		return
 	_cubing = CUBE_TIME
 	_cube_spawned = false
@@ -522,10 +534,9 @@ func _maybe_salvage_part(type_id: String) -> void:
 			r = i
 			break
 	var t: int = randi() % Economy.parts.get("types", [1]).size()
-	GameState.parts.append({"type": t, "rarity": r})
-	EventBus.part_found.emit(t, r)
+	RobotParts.salvage(t, r)  # [ui2] salvaged robot parts pay Parts
 	var rd: Dictionary = Economy.rarity(r)
-	EventBus.toast.emit(tr("Salvaged: %s") % L10nFmt.part_label(tr(str(rd.get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))), "hint")  # [i18n2]
+	EventBus.toast.emit(tr("Salvaged: %s") % L10nFmt.part_label(tr(str(rd.get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))) + "  " + RobotParts.gain_text(r), "hint")  # [i18n2] [ui2]
 	Audio.play("ding", 1.3, -10.0)
 
 
@@ -533,9 +544,8 @@ func _on_part_found(idx: int) -> void:
 	var f: HexField = world.field
 	var t: int = f.part_type[idx]
 	var r: int = f.part_rarity[idx]
-	GameState.parts.append({"type": t, "rarity": r})
 	GameState.inc_stat("parts_found")
-	EventBus.part_found.emit(t, r)
+	RobotParts.salvage(t, r)  # [ui2] pays Parts at the rarity's value
 	var rar: Dictionary = Economy.rarity(r)
 	var pt: Dictionary = Economy.part_type(t)
 	var col: Color = UITheme.rarity_color(r)
@@ -611,13 +621,43 @@ func place_top_cube() -> void:
 	var c: JunkCube = pop_carried_cube()
 	if c == null:
 		return
-	var front: Vector3 = global_position + forward() * 1.25
-	var u: Vector3 = sphere.up_at(front) if sphere else Vector3.UP
+	if sphere:
+		_place_cube_sphere(c)
+		return
 	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
-	var q := PhysicsRayQueryParameters3D.create(front + u * 12.0, front - u * 1.0, 1 | 4)
+	var front: Vector3 = JunkCube.free_spot(space, global_position, forward(), c.size)  # [world2] never into a wall or prop
+	var q := PhysicsRayQueryParameters3D.create(front + Vector3(0, 2.5, 0), front + Vector3(0, -1.0, 0), 1 | 4 | PhysLayers.MOUND)  # [world2] from just above (not onto roofs), heaps count
 	var hit: Dictionary = space.intersect_ray(q)
-	# Ground under `front`: the flat districts' y = 0, or the planet's surface.
-	var base: Vector3 = sphere.ground(u) if sphere else Vector3(front.x, 0.0, front.z)
+	var y: float = 0.0
+	if not hit.is_empty():
+		y = (hit["position"] as Vector3).y
+		if hit["collider"] is JunkCube:
+			front = (hit["collider"] as JunkCube).global_position
+			front.y = y
+	var dest: Vector3 = front + Vector3(0, c.size * 0.5 + 0.02, 0)
+	var start: Vector3 = c.global_position
+	var tw := c.create_tween()
+	tw.tween_method(func(t: float) -> void:
+		var top: Vector3 = (start + dest) * 0.5 + Vector3(0, 0.6, 0)
+		c.global_position = start.lerp(top, t).lerp(top.lerp(dest, t), t)
+		, 0.0, 1.0, 0.2)
+	tw.tween_callback(func() -> void:
+		c.rotation = Vector3(0, rotation.y, 0)
+		c.set_carried(false)
+		c.linear_velocity = Vector3.ZERO
+		Audio.play("thud", 1.0, -6.0)
+		c.squish(0.18))
+	model.squash(0.2)
+
+
+## [orbit] place_top_cube on a round planet: everything along the local up.
+func _place_cube_sphere(c: JunkCube) -> void:
+	var front: Vector3 = global_position + forward() * 1.25
+	var u: Vector3 = sphere.up_at(front)
+	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var q := PhysicsRayQueryParameters3D.create(front + u * 2.5, front - u * 1.0, 1 | 4 | PhysLayers.MOUND)
+	var hit: Dictionary = space.intersect_ray(q)
+	var base: Vector3 = sphere.ground(u)
 	if not hit.is_empty():
 		var hp: Vector3 = hit["position"]
 		base = front + u * (hp - front).dot(u)
@@ -642,6 +682,8 @@ func place_top_cube() -> void:
 
 
 func _update_stack(delta: float) -> void:
+	if not carried.is_empty():
+		_stack_root.position = CarryPoint.of(model, self)  # [world2] held clearly above Lumi, not inside him
 	# Wobbly spring sway driven by acceleration.
 	var acc: Vector3 = global_transform.basis.inverse() * (velocity - _prev_vel)
 	_stack_sway_v += (Vector2(acc.z, -acc.x) * 0.9 - _stack_sway * 60.0 - _stack_sway_v * 7.0) * delta

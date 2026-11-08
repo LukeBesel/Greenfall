@@ -106,11 +106,11 @@ func test_queue_chains_through_offline_time() -> void:
 
 func test_queue_limit() -> void:
 	_give(10000)
-	for id: String in ["scoop_beam", "salvage_logic", "soil_survey", "water_testing"]:
+	for id: String in ["scoop_beam", "field_notebook", "soil_survey", "water_testing"]:  # [pace] salvage_logic waits for base 2
 		assert_true(Research.start(id), id)
 	assert_eq(Research.queue().size(), Research.max_queue())
-	assert_false(Research.start("field_notebook"))
-	assert_eq(Research.reason("field_notebook"), "Queue is full")
+	assert_false(Research.start("hardy_weeds"))
+	assert_eq(Research.reason("hardy_weeds"), "Queue is full")
 
 
 func test_cancel_refunds_and_cascades() -> void:
@@ -150,6 +150,9 @@ func test_research_speed_shortens_time() -> void:
 
 
 func test_robot_types_gated() -> void:
+	assert_false(Research.robot_unlocked("scoopie"), "[pace] helpers wait for Salvage Logic (base 2)")
+	assert_false(Research.robot_unlocked("haulbug"))
+	Research.grant("salvage_logic")
 	assert_true(Research.robot_unlocked("scoopie"))
 	assert_true(Research.robot_unlocked("haulbug"))
 	assert_false(Research.robot_unlocked("seedling"))

@@ -15,6 +15,9 @@ extends Node
 const PATH: String = "res://data/events.json"
 
 static var _cfg: Dictionary = {}
+## [ui2] Simple board: a new request starts right away (no Accept / Pass) and never runs out of
+## time; the player only claims it. Tests of the old offer flow turn this off.
+static var auto_accept: bool = true
 static var _shop: Array = []
 
 var world: Node
@@ -159,6 +162,8 @@ static func step(st: Dictionary, dt: float, value_fn: Callable, offer_fn: Callab
 		arr.append(wait_slot(0.0))
 	for i: int in arr.size():
 		var s: Dictionary = arr[i]
+		if auto_accept and str(s.get("state", "")) == "offer":
+			accept_slot(s, float(value_fn.call(s)))  # [ui2]
 		match str(s.get("state", "wait")):
 			"offer":
 				s["offer_left"] = float(s.get("offer_left", 0.0)) - dt
@@ -169,7 +174,7 @@ static func step(st: Dictionary, dt: float, value_fn: Callable, offer_fn: Callab
 				if count_of(s, float(value_fn.call(s))) >= float(s.get("n", 1)):
 					s["state"] = "done"
 					out.append({"kind": "done", "i": i})
-				else:
+				elif not auto_accept:  # [ui2] auto-accepted requests have no time limit
 					s["left"] = float(s.get("left", 0.0)) - dt
 					if float(s["left"]) <= 0.0:
 						arr[i] = wait_slot(float(cfg().get("fail_cooldown_s", 120)))
@@ -180,6 +185,8 @@ static func step(st: Dictionary, dt: float, value_fn: Callable, offer_fn: Callab
 				s["wait"] = float(s.get("wait", 0.0)) - dt
 				if float(s["wait"]) <= 0.0:
 					arr[i] = offer_fn.call(i)
+					if auto_accept and str((arr[i] as Dictionary).get("state", "")) == "offer":
+						accept_slot(arr[i], float(value_fn.call(arr[i])))  # [ui2]
 					out.append({"kind": "offer", "i": i})
 	return out
 
@@ -227,13 +234,13 @@ static func track_name(t: Dictionary) -> String:
 		"livery":
 			return TranslationServer.translate(str(shop_item(str(t.get("id", ""))).get("name", "")))
 		"builder":
-			return TranslationServer.translate("%s (Builder)") % TranslationServer.translate(str(RobotBuilder.part(str(t.get("id", ""))).get("name", "")))
+			return TranslationServer.translate("%s (robot style)") % TranslationServer.translate(str(RobotBuilder.part(str(t.get("id", ""))).get("name", "")))  # [ui2]
 		"builder_crate":
 			return TranslationServer.translate("Builder Crate")
 		"capsule":
 			return TranslationServer.translate("Curio Capsule")
 		"part":
-			return TranslationServer.translate("%s robot part") % TranslationServer.translate(str(Economy.rarity(int(t.get("rarity", 3))).get("name", "")))
+			return L10nFmt.amount("parts", RobotParts.value(int(t.get("rarity", 3))), true)  # [ui2] pays Parts
 	return "?"
 
 
@@ -247,9 +254,32 @@ static func owned() -> Array:
 
 # --- Live node --------------------------------------------------------------------------------
 
+## [onboard] The board opens later (owner: "you should not unlock contracts for a while"): at base
+## level unlock_hub_level, or after unlock_play_s of play, whichever comes first. A save that
+## already used the board keeps it. Dev: --requests-unlocked (and --contracts-sample / --tab=contracts).
+static func unlocked() -> bool:
+	if GameState.flags.get("requests_unlocked", false):
+		return true
+	if DevHooks.has("requests-unlocked") or DevHooks.has("contracts-sample") or DevHooks.get_s("tab", "") == "contracts":
+		return true
+	return unlock_due(int(GameState.world.get("hub_level", 1)), float(GameState.stats.get("time_played", 0.0)), state())
+
+
+## Pure: does this state open the board?
+static func unlock_due(hub_level: int, played_s: float, st: Dictionary) -> bool:
+	if int(st.get("done_total", 0)) > 0:
+		return true
+	for s: Variant in st.get("slots", []):
+		if s is Dictionary and str((s as Dictionary).get("state", "")) in ["active", "done"]:
+			return true
+	return hub_level >= int(cfg().get("unlock_hub_level", 3)) or played_s >= float(cfg().get("unlock_play_s", 2700))
+
+
 func _ready() -> void:
 	rng.randomize()
-	step(state(), 0.0, live_value, new_offer)  # a fresh board is filled right away
+	if unlocked():  # [onboard]
+		GameState.flags["requests_unlocked"] = true
+		step(state(), 0.0, live_value, new_offer)  # a fresh board is filled right away
 	if DevHooks.has("contracts-sample"):
 		_sample.call_deferred()
 
@@ -274,6 +304,10 @@ func _process(delta: float) -> void:
 		return
 	var dt: float = _t
 	_t = 0.0
+	if not GameState.flags.get("requests_unlocked", false):  # [onboard] closed until a later milestone
+		if not unlocked():
+			return
+		_announce_unlock()
 	_count_events()
 	for e: Dictionary in step(state(), dt, live_value, new_offer):
 		var s: Dictionary = slots()[int(e["i"])]
@@ -286,6 +320,22 @@ func _process(delta: float) -> void:
 					world.wren.say("contract_done", 0.6)
 			"failed":
 				EventBus.toast.emit(tr("A request ran out of time. No harm done; a new one will be posted soon."), "info")
+
+
+## [onboard] The board opens: one WREN line and a toast, then the first offers.
+func _announce_unlock() -> void:
+	GameState.flags["requests_unlocked"] = true
+	st_events_baseline()
+	step(state(), 0.0, live_value, new_offer)
+	EventBus.toast.emit(tr("New at the workbench: the Requests board. Small jobs, real rewards."), "story")
+	Audio.play("chime", 1.1, -6.0)
+	if world.get("wren") != null:
+		(world.wren as Wren).speak(tr("The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."), 1)
+
+
+## [onboard] World events handled before the board opened don't count toward its reward track.
+func st_events_baseline() -> void:
+	state()["events_seen"] = float(GameState.stats.get("ev_events_done", 0.0))
 
 
 ## [money] Handled world events count as finished requests (the board shows them live).
@@ -407,10 +457,10 @@ func _grant_step(t: Dictionary) -> void:
 			var id: String = str(t.get("id", ""))
 			if not (id in owned()):
 				owned().append(id)
-			EventBus.toast.emit(tr("Requests reward: %s. Equip it on the Requests tab.") % track_name(t), "story")
+			EventBus.toast.emit(tr("Requests reward: %s. Paint your fleet with it in the Locker.") % track_name(t), "story")  # [ui2]
 		"builder":
 			RobotBuilder.add_part(str(t.get("id", "")))
-			EventBus.toast.emit(tr("Requests reward: %s. Fit it in the Builder tab.") % track_name(t), "story")
+			EventBus.toast.emit(tr("Requests reward: %s. Fit it in the Locker.") % track_name(t), "story")  # [ui2]
 		"builder_crate":
 			var pid: String = RobotBuilder.roll_unowned(rng)
 			RobotBuilder.add_part(pid)
@@ -422,9 +472,8 @@ func _grant_step(t: Dictionary) -> void:
 		"part":
 			var ty: int = rng.randi() % maxi(Economy.parts.get("types", [1]).size(), 1)
 			var r: int = int(t.get("rarity", 3))
-			GameState.parts.append({"type": ty, "rarity": r})
-			EventBus.part_found.emit(ty, r)
-			EventBus.toast.emit(tr("Requests reward: %s.") % L10nFmt.part_name(r, ty), "story")
+			RobotParts.salvage(ty, r)  # [ui2] pays Parts
+			EventBus.toast.emit(tr("Requests reward: %s.") % RobotParts.gain_text(r), "story")
 	Audio.play("fanfare", 1.1, -8.0)
 
 

@@ -111,13 +111,18 @@ func test_crew_cap_follows_base_level() -> void:
 		r.robot_name = "S%d" % i
 		f.add_child(r)
 	GameState.currencies["cubes"] = BigNum.from_float(1.0e9)
-	for k: int in 8:
-		GameState.parts.append({"type": k, "rarity": 0})
+	GameState.currencies["parts"] = BigNum.from_float(1.0e6)  # [ui2] builds cost Parts
+	var fl: Variant = (GameState.flags["research"] as Dictionary).duplicate(true) if GameState.flags.get("research") is Dictionary else null
+	Research.grant("salvage_logic")  # [pace] helpers need Salvage Logic first
 	assert_false(f.can_build("scoopie"), "cleaner crew is full at level 1")
 	assert_string_contains(f.build_block_reason("scoopie"), "Crew full")
 	assert_true(f.can_build("skimmer"), "other crews still have room")
 	GameState.world["hub_level"] = 2
 	assert_true(f.can_build("scoopie"), "a hub level raises the cap")
+	if fl is Dictionary:
+		GameState.flags["research"] = fl
+	else:
+		GameState.flags.erase("research")
 
 
 func test_tier_scales_water_gear() -> void:

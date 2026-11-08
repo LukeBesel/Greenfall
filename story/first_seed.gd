@@ -108,6 +108,12 @@ func _build_greenhouse() -> void:
 		cs.position = Vector3(x, 0.2, 0)
 		sb.add_child(cs)
 	gh.add_child(sb)
+	# [world2] The frame posts and the standing glass side are solid too (the roof is overhead).
+	var pb: StaticBody3D = PropColliders.body(gh, "Props")
+	for i: int in 5:
+		for x: float in [-2.5, 2.5]:
+			PropColliders.add_cyl(pb, GREENHOUSE_POS + Vector3(x, 0, -4.0 + i * 2.0), 0.08, 2.4)
+	PropColliders.add_box(pb, Transform3D(Basis(), GREENHOUSE_POS + Vector3(-2.5, 1.1, 2.0)), Vector3(0.1, 2.2, 1.9))
 
 
 func ready_to_find() -> bool:
