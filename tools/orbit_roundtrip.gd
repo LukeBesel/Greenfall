@@ -217,7 +217,7 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 			var drops0: int = int(GameState.stats.get("ledger_drops", 0))
 			lg._release(hid, pids, lg._marker(lg.to_local(g.field.hex_center(hid)), Color.RED))
 			check.call("orbit_ledger_drop_dirties_cell", "0 0 true", "%d %d %s" % [g.field.hex_clean[hid], g.cells.state[hid], str(g.cells.junk[hid] > 0.0)])
-			await tree.create_timer(1.3).timeout
+			await tree.create_timer(2.2).timeout  # [v1world] denser cells drop up to 14 pieces (~1.9 s)
 			check.call("orbit_ledger_drop_landed", drops0 + 1, int(GameState.stats.get("ledger_drops", 0)))
 	var jclash: Array = []  # the base's jammer spots stay clear of the yard's anchors
 	for ji: int in 3:
