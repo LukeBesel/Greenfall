@@ -18,7 +18,7 @@ extends Node
 ##      --camp-bin=N (trash bin level), --camp-report, --camp-buy=conveyor+auto_baler[+recycler]
 ##      (buy stations live after --camp-buy-at=S s, with their reveal).
 
-const BIN_ANCHOR := Vector3(2.2, 0.0, -4.5)  # beside the bin, off the weigh plate
+const BIN_ANCHOR := Vector3(2.0, 0.0, -3.2)  # [camp2] front-right of the bin, off the plate, clear of the signal tower
 const BIN_REACH: float = 1.6
 
 var world: Node
@@ -28,7 +28,6 @@ var _bench_xf: Transform3D
 var _tools: Array = []  # [node, home transform, broken transform]
 var _spark_t: float = 0.0
 var _bin_anchor: Node3D
-var _comp_polled: bool = false
 
 
 static func attach(slice: Node) -> Camp:
@@ -78,12 +77,30 @@ static func migrate() -> void:
 		YardBuilds.mark_built("nursery")
 
 
+## [camp2] Second pass (everything became a Hub build): whatever already stood in a played
+## district counts as built. Before camp2 the lean-to, generator and lamps stood from hub level 2
+## at Old Town (always at the other bases), and the compost press once something had grown.
+static func migrate2() -> void:
+	var st: Dictionary = YardBuilds.state()
+	if st.has("migrated2"):
+		return
+	st["migrated2"] = true
+	if not GameState.world.has("field"):
+		return  # a fresh district
+	if GameState.current_hub != 0 or int(GameState.world.get("hub_level", 1)) >= 2:
+		for id: String in ["shack", "generator", "lamps"]:
+			YardBuilds.mark_built(id)
+	if bool(GameState.flags.get("first_sprout", false)):
+		YardBuilds.mark_built("composter")
+
+
 # --- Setup ------------------------------------------------------------------------------------
 
 func _setup() -> void:
 	add_to_group("persist")
 	# Before anything reads the state: the slice has already loaded (or not) the district.
 	migrate()
+	migrate2()  # [camp2]
 	if DevHooks.has("camp-broken"):
 		set_bench_ok(false)
 	elif DevHooks.has("camp-fixed"):
@@ -111,9 +128,9 @@ func _setup() -> void:
 				_tools.append([n, n.transform, broken])
 	_apply_bench(bench_ok(), false)
 	var hub: Hub = world.get("hub") as Hub
-	_apply_level(hub.level if hub else 1)
+	_apply_builds()  # [camp2] everything but the bench and the bin is a Hub build
 	if hub:
-		hub.level_changed.connect(_apply_level)
+		hub.level_changed.connect(func(_l: int) -> void: _apply_builds())  # after the slice's own ruin/level pass
 	YardBuilds.events.built.connect(_on_built)
 	_register_bin()
 	if DevHooks.has("camp-repair"):
@@ -238,17 +255,43 @@ func _process(delta: float) -> void:
 
 # --- Yard by hub level --------------------------------------------------------------------------
 
-## Old Town's starter yard (hub 0) stays bare at level 1: no lean-to over the bench, no
-## generator, no street lamp (the yard's pole lamps still light it at night).
-func _apply_level(l: int) -> void:
-	if int(world.get("hub_index")) != 0:
-		return
-	var bare: bool = l <= 1
+## [camp2] Shows exactly what has been built: the lean-to (its frame, roof, walls and work lamp),
+## the generator, the yard lamps (street lamp + the fence pole lamps) and the compost press.
+## Nothing appears on its own. At the other bases the lean-to keeps its ruined look by hub level
+## (scenes/slice.gd _apply_base_level) once it is built.
+func _apply_builds() -> void:
 	var bits: Dictionary = world.get("_ruin_bits")
-	for k: String in ["frame", "roof", "back", "side", "lamp", "bulb", "street_lamp", "street_light", "generator"]:
+	var shack: bool = YardBuilds.built("shack")
+	for k: String in ["frame", "roof", "back", "side", "lamp", "bulb", "post_l", "post_r"]:
 		var n: Node3D = bits.get(k) as Node3D
 		if n:
-			n.visible = not bare
+			n.visible = shack and _was_shown(k)
+			_set_solid(n, n.visible)  # [pace2] hidden parts must not leave invisible walls (posts, roof)
+	var lamps: bool = YardBuilds.built("lamps")
+	for k: String in ["street_lamp", "street_light"]:
+		var n2: Node3D = bits.get(k) as Node3D
+		if n2:
+			n2.visible = lamps and _was_shown(k)
+			_set_solid(n2, n2.visible)  # [pace2]
+	var gen: Node3D = bits.get("generator") as Node3D
+	if gen:
+		gen.visible = YardBuilds.built("generator")
+		_set_solid(gen, gen.visible)  # [pace2]
+	var dressing: Node = world.get("dressing")
+	if dressing and dressing.has_method("set_level"):
+		var hub: Hub = world.get("hub") as Hub
+		dressing.call("set_level", hub.level if hub else 1, false)  # its "Lamps" layer reads YardBuilds
+	var comp: Node3D = world.get("composter") as Node3D
+	if comp:
+		comp.visible = YardBuilds.built("composter")
+		_set_solid(comp, comp.visible)  # [pace2]
+
+
+## Whether the slice's own ruin pass would show this bit (hub level 2+, or Old Town).
+func _was_shown(k: String) -> bool:
+	var hub: Hub = world.get("hub") as Hub
+	var ruined: bool = (hub.level if hub else 1) <= 1 and int(world.get("hub_index")) != 0
+	return not (ruined and k in ["side", "lamp", "bulb", "street_light"])
 
 
 func _on_built(id: String) -> void:
@@ -260,22 +303,27 @@ func _on_built(id: String) -> void:
 		"nursery":
 			if ex and ex.nursery:
 				ex.nursery.set_built(true, true)
+		_:
+			_apply_builds()  # [camp2] lean-to, generator, lamps, compost press
 	var at: Vector3 = YardBuilds.pos(id, Vector3.ZERO)
-	if id == "nursery" and ex and ex.nursery:
-		at = ex.nursery.global_position
+	var bits: Dictionary = world.get("_ruin_bits")
+	match id:
+		"nursery":
+			if ex and ex.nursery:
+				at = ex.nursery.global_position
+		"shack":
+			at = world.BOARD_POS
+		"generator", "lamps":
+			var n: Node3D = bits.get("generator" if id == "generator" else "street_lamp") as Node3D
+			if n:
+				at = n.global_position
+		"composter":
+			var c: Node3D = world.get("composter") as Node3D
+			if c:
+				at = c.global_position
 	MachineReveal.reveal(world, tr(str(YardBuilds.def(id).get("name", id))), at)
 
 
-## Composter: hidden until it works (something has grown). Polled: the flag is set by story code.
-func _physics_process(_delta: float) -> void:
-	var comp: Node3D = world.get("composter") as Node3D
-	if comp and comp.has_method("active"):
-		var on: bool = bool(comp.call("active"))
-		if comp.visible != on:
-			comp.visible = on
-			if on and _comp_polled:  # woke up during play (not on load): show where it is
-				MachineReveal.reveal(world, tr("Compost Press"), comp.global_position)
-		_comp_polled = true
 
 
 # --- The trash bin --------------------------------------------------------------------------------
@@ -337,6 +385,41 @@ func points() -> Array:
 	var scope: Telescope = Telescope.of(world)
 	if scope:
 		out.append(["telescope", scope.door_point(), scope.built()])
+	var tower: Node3D = world.get_node_or_null("SignalTower") as Node3D
+	if tower:  # [camp2]
+		out.append(["signal_tower", tower.global_position, tower.visible])
+	return out
+
+
+## [camp2] What visibly stands in the yard right now (the bench and the bin always; every
+## other structure only once built). A fresh base lists exactly ["workbench", "trash_bin"].
+func standing() -> Array[String]:
+	var out: Array[String] = ["workbench", "trash_bin"]
+	var bits: Dictionary = world.get("_ruin_bits")
+	var checks: Dictionary = {"lean-to": bits.get("frame"), "generator": bits.get("generator"), "lamps": bits.get("street_lamp"),
+		"composter": world.get("composter"), "signal_tower": world.get_node_or_null("SignalTower")}
+	var ex: ExtrasDirector = ExtrasDirector.of(world)
+	if ex:
+		checks["cd_player"] = ex.radio
+		checks["nursery"] = ex.nursery
+	var st: Stations = Stations.of(world)
+	if st:
+		checks["conveyor"] = st.conveyor
+		checks["auto_baler"] = st.baler
+		checks["recycler"] = st.recycler
+	for k: String in checks:
+		var n: Node3D = checks[k] as Node3D
+		if n and n.is_inside_tree() and n.is_visible_in_tree():
+			out.append(k)
+	var dressing: Node = world.get("dressing")
+	var lay: Node3D = dressing.get_node_or_null("Lamps") as Node3D if dressing else null
+	if lay and lay.is_visible_in_tree() and not ("lamps" in out):
+		out.append("lamps")
+	var scope: Telescope = Telescope.of(world)
+	if scope and scope.built():
+		out.append("telescope")
+	if world.get_node_or_null("Museum") and Museum.built():
+		out.append("museum")
 	return out
 
 
@@ -362,3 +445,11 @@ func report() -> String:
 		lines.append("[camp]   %-10s (%.1f, %.1f) shown=%s" % [p[0], v.x, v.z, str(p[2])])
 	lines.append("[camp] too_close=%s" % str(too_close()))
 	return "\n".join(lines)
+
+
+## [pace2] Turns the collision of a yard part (and its children) on or off with its visibility.
+static func _set_solid(n: Node, on: bool) -> void:
+	if n is CollisionShape3D:
+		(n as CollisionShape3D).set_deferred("disabled", not on)
+	for c: Node in n.get_children():
+		_set_solid(c, on)

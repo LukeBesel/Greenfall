@@ -38,6 +38,10 @@ var _interact: bool = false
 var _dt: float = 0.0
 var _cooldown: float = 0.0
 var _stuck_timer: float = 0.0
+var _escape_side: float = 1.0  # [pace2]
+var _trap_pos: Vector3 = Vector3.INF
+var _trap_t: float = 0.0
+var _traps: int = 0
 var _last_pos := Vector3.ZERO
 var _report: Dictionary = {}
 var _log: Array = []
@@ -264,6 +268,24 @@ func update(delta: float) -> void:
 
 ## Wedged against something for a long time while trying to move: back off in a random direction.
 func _watch_stuck(p: Patch, delta: float) -> void:
+	# [pace2] Last resort: boxed in for 90 s (heaps or props all round): hop back to the yard, as a
+	# player would call for help, and log the spot so the world can be checked for traps.
+	if _move.length() >= 0.2:
+		if p.global_position.distance_to(_trap_pos) > 2.5:
+			_trap_pos = p.global_position
+			_trap_t = 0.0
+		else:
+			_trap_t += delta
+			if _trap_t > 90.0:
+				_trap_t = 0.0
+				_traps += 1
+				_report["bot_traps"] = _report.get("bot_traps", []) + [[snappedf(_now() / 60.0, 0.1), str(p.global_position.snapped(Vector3.ONE * 0.1)), _task]]
+				print("[bot-trap] t=%.1f task=%s pos=%s: back to the yard" % [_now() / 60.0, _task, str(p.global_position)])
+				p.global_position = BENCH_STAND + Vector3(0, 0.3, 1.5)
+				p.velocity = Vector3.ZERO
+				_target_piece = -1
+				_set_task("")
+				return
 	if _move.length() < 0.2:
 		_watch_t = 0.0
 		_watch_pos = p.global_position
@@ -275,9 +297,17 @@ func _watch_stuck(p: Patch, delta: float) -> void:
 	elif _watch_t > 6.0:
 		_watch_t = 0.0
 		_escapes += 1
-		var a: float = randf() * TAU
-		_escape_dir = Vector3(cos(a), 0, sin(a))
-		_escape_t = 2.5
+		if _target_piece >= 0 and DevHooks.has("bot-debug"):
+			var f: HexField = world.field
+			print("[bot-esc] t=%.1f task=%s pos=%s piece=%d at %s size=%d embed=%.2f" % [_now() / 60.0, _task, str(p.global_position), _target_piece, str(f.piece_pos[_target_piece]), Pace.piece_size(f, _target_piece), f.piece_embed[_target_piece] if _target_piece < f.piece_embed.size() else -1.0])
+		# [pace2] Sidestep around the obstacle (perpendicular to where we were heading, alternating
+		# sides, a little backwards) instead of a random direction that often points back into it.
+		var head: Vector3 = Vector3(_move.x, 0, _move.z).normalized()
+		_escape_side = -_escape_side
+		_escape_dir = (Vector3(head.z, 0, -head.x) * _escape_side - head * 0.35).normalized()
+		_escape_t = 1.6 + 0.4 * float(_escapes % 3)
+		if _target_piece >= 0 and _escapes % 2 == 0:
+			_ignore_piece[_target_piece] = true
 		_target_piece = -1
 
 
@@ -489,7 +519,16 @@ func _pace_research_next() -> String:
 		if int(GameState.world.get("hub_level", 1)) < mb:
 			return ""
 		return id
+	# [pace2] Once base 3 is up, the garden chain (Pollinator Survey = the garden taking off).
+	if int(GameState.world.get("hub_level", 1)) >= 3:
+		for id: String in PACE_GARDEN_CHAIN:
+			if not Research.exists(id) or Research.has(id) or Research.is_active(id) or Research.is_queued(id):
+				continue
+			return id if Research.status(id) == "available" else ""
 	return ""
+
+
+const PACE_GARDEN_CHAIN: Array[String] = ["soil_survey", "hardy_weeds", "wild_mint", "pollinator_survey"]
 
 
 func _drop_all(p: Patch) -> void:
@@ -1011,7 +1050,7 @@ func _shop(want: Dictionary) -> void:
 	if prn != "":
 		reserve = maxf(reserve, Research.cost(prn).to_float())  # [pace]
 	if not Pace.baler_unlocked() and Economy.is_unlocked(Pace.UP_BALER):
-		reserve = maxf(reserve, Economy.upgrade_cost(Pace.UP_BALER).to_float() * 0.6)  # [pace] a person saves for the Baler
+		reserve = maxf(reserve, Economy.upgrade_cost(Pace.UP_BALER).to_float())  # [pace] a person saves for the Baler
 	guard = 0
 	while guard < 20:
 		guard += 1
@@ -1026,7 +1065,10 @@ func _shop(want: Dictionary) -> void:
 		if world.hub.build_scrubber():
 			_progress()
 			_event("scrubber", {"n": world.hub.scrubbers})
-	# 9) Compost press when seeds run short.
+	# 9) Compost press when seeds run short. [camp2] It is a Hub build now: build it once offered.
+	if HubBuilds.listed(world, "composter") and str(HubBuilds.entry(world, "composter")["reason"]) == "":
+		if HubBuilds.build(world, "composter"):
+			_event("build", {"id": "composter"})
 	var cp: Composter = world.get("composter")
 	if cp and cp.active() and cp.level < cp.max_level() and GameState.get_currency("seeds").to_float() < 10.0:
 		if cp.upgrade_cost().to_float() <= GameState.get_currency("cubes").to_float() * 0.25:
@@ -1079,6 +1121,39 @@ func _goal_upgrade() -> String:
 					var c: String = _best_upgrade(0.0)
 					if c != "":
 						return c
+	return ""
+
+
+## [pace2] Research an on-screen goal needs right now (a robot's blueprint, a "Research X" goal),
+## walking back through its prerequisites; "" when none can start.
+func _goal_research() -> String:
+	var gl: Goals = world.get("goals")
+	if gl == null:
+		return ""
+	for i: int in gl.current():
+		var g: Dictionary = gl.chain[i]
+		var want: String = ""
+		match str(g.get("type", "")):
+			"robot":
+				if not Research.robot_unlocked(str(g["key"])):
+					want = Research.robot_requirement(str(g["key"]))
+			"research":
+				want = str(g.get("key", ""))
+		var guard: int = 0
+		while want != "" and Research.exists(want) and not Research.has(want) and guard < 8:
+			guard += 1
+			if Research.is_active(want) or Research.is_queued(want):
+				break
+			if Research.status(want) == "available":
+				if Research.can_start(want):
+					return want
+				break
+			var nxt: String = ""
+			for r: String in Research.requires(want):
+				if not Research.has(r):
+					nxt = r
+					break
+			want = nxt
 	return ""
 
 
@@ -1235,7 +1310,7 @@ func _lake_dirty() -> bool:
 ## the base levels pace as they did with Data); it also starts research when it is rich.
 func _research_ok(id: String) -> bool:
 	var c: float = Research.cost(id).to_float()
-	if id in ["salvage_logic", "conveyor", "auto_baler"] and GameState.get_currency("cubes").to_float() >= c:
+	if (id in ["salvage_logic", "conveyor", "auto_baler"] or id in PACE_GARDEN_CHAIN) and GameState.get_currency("cubes").to_float() >= c:
 		return true  # [pace] the helper and automation unlocks come before saving for base 3
 	var fund: float = float(GameState.stats.get("notes_cubes", 0.0)) + float(GameState.stats.get("wildlife_cubes", 0.0)) - float(GameState.stats.get("bot_research_spent", 0.0))
 	return c <= fund or GameState.get_currency("cubes").to_float() > maxf(c * 4.0, _research_reserve())
@@ -1244,6 +1319,9 @@ func _research_ok(id: String) -> bool:
 ## Cubes the bot keeps for the next base level / robot before dipping into them for research.
 func _research_reserve() -> float:
 	var nxt: Dictionary = world.hub.level_def(world.hub.level + 1) if world.get("hub") != null else {}
+	if world.get("hub") != null and int(world.hub.level) >= 2:
+		# [pace2] mid game: a player researches with spare cubes instead of hoarding 1.5x the next base
+		return float(nxt.get("cost", {}).get("cubes", 0.0)) * 0.5 + 1000.0
 	return float(nxt.get("cost", {}).get("cubes", 0.0)) * 1.5 + 2000.0
 
 
@@ -1251,6 +1329,9 @@ func _research_pick() -> String:
 	if not Research.active().is_empty() and Research.queue().size() >= Research.max_queue():
 		return ""
 	var saving: bool = false
+	var gr: String = _goal_research()  # [pace2] the goal on screen first
+	if gr != "":
+		return gr
 	var need: String = _pace_research_next()  # [pace] save for the helper / automation unlock
 	if need != "":
 		return need if _research_ok(need) and Research.can_start(need) else ""

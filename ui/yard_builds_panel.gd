@@ -1,84 +1,127 @@
 class_name YardBuildsPanel
 extends VBoxContainer
-## [camp] Hub tab section: the yard. Upgrade the trash bin (automation/trash_bin.gd) and build the
-## radio and the robot nursery (systems/camp/yard_builds.gd). A build is only listed once it can
-## be earned (the nursery after the first sprout), so nothing is spoiled early.
+## [camp2] Hub tab section: BUILD. One list of every yard structure that can be built here now
+## (systems/camp/hub_builds.gd, kind one_time): lean-to, generator, lamps, the first signal tower,
+## compost press, CD player, bale stations, nursery, telescope, museum, the first jammer. Only what
+## is unlocked is listed; they drop off once built (a collapsed "Built:" line names them). Tiered
+## things (trash bin levels, tower tiers, scrubbers, more jammers) are the Upgrades tab's (ui3).
 
-var _rows: Dictionary = {}  # id -> [Label, Button]
+var _list: VBoxContainer
+var _built: Label
+var _empty: Label
+var _sig: String = ""
 
 
 func _ready() -> void:
-	add_theme_constant_override("separation", 8)
-	add_child(UITheme.label(tr("YARD"), 18, UITheme.CREAM))
-	_add_row("trash_bin", func() -> bool: return TrashBin.upgrade(_hub_level()))
-	for id: String in YardBuilds.IDS:
-		var bid: String = id
-		_add_row(bid, func() -> bool: return YardBuilds.build(bid, _hub_level()))
+	add_theme_constant_override("separation", 10)
+	add_child(BenchKit.caps(tr("Build")))
+	_list = VBoxContainer.new()
+	_list.add_theme_constant_override("separation", 12)
+	add_child(_list)
+	_empty = BenchKit.body(tr("Nothing new to build yet. More opens as the base grows."), UITheme.MUTED, BenchKit.SMALL_SIZE)
+	add_child(_empty)
+	_built = BenchKit.body("", UITheme.MUTED, BenchKit.SMALL_SIZE)
+	add_child(_built)
 	refresh()
 
 
-func _add_row(id: String, act: Callable) -> void:
-	var l: Label = UITheme.label("", 15, UITheme.CREAM)
-	l.autowrap_mode = TextServer.AUTOWRAP_WORD
-	add_child(l)
-	var b := Button.new()
-	b.custom_minimum_size = Vector2(320, 44)
+func _hub_panel() -> HubPanel:
+	var n: Node = get_parent()
+	while n and not (n is HubPanel):
+		n = n.get_parent()
+	return n as HubPanel
+
+
+func _world() -> Node:
+	var hp: HubPanel = _hub_panel()
+	if hp and hp.hub:
+		return hp.hub.get_parent()
+	return get_tree().current_scene if is_inside_tree() else null
+
+
+func first_button() -> Button:
+	for c: Node in _list.find_children("Btn", "Button", true, false):
+		return c as Button
+	return null
+
+
+func refresh() -> void:
+	if _list == null:
+		return
+	var w: Node = _world()
+	var items: Array[Dictionary] = HubBuilds.available(w, "one_time")
+	_sig = _sync(_list, items, _sig)
+	_empty.visible = items.is_empty()
+	var done: Array[String] = []
+	for n: String in HubBuilds.built_names(w):
+		done.append(tr(n))
+	_built.visible = not done.is_empty()
+	_built.text = tr("Built:  %s") % ",  ".join(done)
+
+
+## Rebuilds a list's rows only when its entries change; costs and states refresh in place.
+func _sync(box: VBoxContainer, items: Array[Dictionary], old_sig: String) -> String:
+	var keys: Array[String] = []
+	for e: Dictionary in items:
+		keys.append("%s:%s" % [e["id"], e["name"]])
+	var sig: String = ",".join(keys)
+	if sig != old_sig:
+		for c: Node in box.get_children():
+			box.remove_child(c)
+			c.queue_free()
+		for e: Dictionary in items:
+			box.add_child(_row(str(e["id"])))
+	for i: int in mini(items.size(), box.get_child_count()):
+		_fill(box.get_child(i), items[i])
+	return sig
+
+
+func _row(id: String) -> VBoxContainer:
+	var v := VBoxContainer.new()
+	v.name = id
+	v.add_theme_constant_override("separation", 4)
+	var l: Label = BenchKit.body("", UITheme.CREAM)
+	l.name = "Text"
+	v.add_child(l)
+	var h := HBoxContainer.new()
+	h.name = "Row"
+	h.add_theme_constant_override("separation", 12)
+	v.add_child(h)
+	var b: Button = BenchKit.soft_button("")
+	b.name = "Btn"
+	b.clip_text = true
+	b.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	b.pressed.connect(func() -> void:
-		if bool(act.call()):
+		if HubBuilds.build(_world(), id):
 			Audio.play("buy", 0.95, -2.0)
 			EventBus.ui_modal_changed.emit(false)
 		else:
 			Audio.play("buzz", 1.2, -8.0)
-		refresh())
-	add_child(b)
-	_rows[id] = [l, b]
-
-
-func _hub_level() -> int:
-	var hp: HubPanel = get_parent() as HubPanel
-	if hp and hp.hub:
-		return hp.hub.level
-	return int(GameState.world.get("hub_level", 1))
-
-
-func refresh() -> void:
-	if _rows.is_empty():
-		return
-	var hl: int = _hub_level()
-	# Trash bin.
-	var bl: Label = _rows["trash_bin"][0]
-	var bb: Button = _rows["trash_bin"][1]
-	var cur: Dictionary = TrashBin.level_def(TrashBin.level())
-	var nxt: Dictionary = TrashBin.next_def()
-	var head: String = tr("Trash bin: %s (level %d)   ·   bales sell for %d%% here") % [tr(str(cur.get("name", ""))), TrashBin.level(), int(round(TrashBin.value_mult() * 100.0))]
-	if nxt.is_empty():
-		bl.text = head + "\n" + tr("Fully upgraded.")
-		bb.visible = false
-	else:
-		var why: String = TrashBin.block_reason(hl)
-		bl.text = "%s\n%s: %s\n%s" % [head, tr(str(nxt["name"])), tr(str(nxt.get("desc", ""))), why if why != "" and why != tr("Not enough materials.") else tr("Needs %s") % HubPanel.cost_text(nxt.get("cost", {}))]
-		bb.text = tr("Upgrade to %s") % tr(str(nxt["name"]))
-		bb.disabled = why != ""
-		bb.visible = true
-	# Radio, nursery.
-	for id: String in YardBuilds.IDS:
-		var l: Label = _rows[id][0]
-		var b: Button = _rows[id][1]
-		var on: bool = YardBuilds.listed(id)
-		l.visible = on
-		b.visible = on and not YardBuilds.built(id)
-		if not on:
-			continue
-		var d: Dictionary = YardBuilds.def(id)
-		var nm: String = tr(str(d.get("name", id)))
-		var why2: String = YardBuilds.block_reason(id, hl)
-		var status: String
-		if YardBuilds.built(id):
-			status = tr("Built. Walk up to it and press E.") if id == "radio" else tr("Built.")
-		elif why2 != "" and why2 != tr("Not enough materials."):
-			status = why2
+		var hp: HubPanel = _hub_panel()
+		if hp:
+			hp.refresh()
 		else:
-			status = tr("Needs %s") % HubPanel.cost_text(d.get("cost", {}))
-		l.text = "%s   ·   %s\n%s" % [nm, tr(str(d.get("desc", ""))), status]
-		b.text = tr("Build %s") % nm
-		b.disabled = why2 != ""
+			refresh())
+	h.add_child(b)
+	var cr := BenchKit.CostRow.new(20, 18)
+	cr.name = "Cost"
+	h.add_child(cr)
+	return v
+
+
+func _fill(row: Node, e: Dictionary) -> void:
+	var l: Label = row.get_node("Text")
+	var b: Button = row.get_node("Row/Btn")
+	var cr: BenchKit.CostRow = row.get_node("Row/Cost")
+	var why: String = str(e["reason"])
+	var head: String = tr(str(e["name"]))
+	if str(e["tier"]) != "":
+		head += "   ·   " + str(e["tier"])
+	var line2: String = tr(str(e["desc"]))
+	if why != "" and not HubBuilds.not_enough(why):
+		line2 += "\n" + why
+	l.text = "%s\n%s" % [head, line2]
+	var upgrade: bool = str(e["kind"]) == "tiered"
+	b.text = tr("Upgrade to %s") % tr(str(e["name"])) if upgrade else tr("Build %s") % tr(str(e["name"]))
+	b.disabled = why != ""
+	cr.set_cost(e["cost"], tr("Free"))

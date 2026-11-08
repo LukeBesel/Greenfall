@@ -36,7 +36,7 @@ static func refresh(menu: Node) -> void:
 	a.visible = (CradleMode.unlocked() or Homeward.answered()) and not WeeklyChallenge.active  # [home] Heirloom picks; [extras] none in the challenge
 	var hs: Button = menu.find_child("HomeSystem", true, false) as Button
 	if hs:
-		hs.visible = Homeward.answered() and Homeward.current_planet() >= 0
+		hs.visible = Homeward.system_open() and Homeward.current_planet() >= 0  # [pace2]
 	var vb: Node = g.get_parent()
 	var list: Array[Button] = []
 	for c: Node in vb.get_children():

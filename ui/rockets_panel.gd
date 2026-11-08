@@ -43,7 +43,7 @@ func refresh() -> void:
 	else:
 		var lvl: int = world.hub.level if world.hub else 1
 		sv.add_child(UITheme.label(tr("Not built yet"), 20, UITheme.CREAM))
-		var l := UITheme.label(tr("The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Hub tab.") % lvl, 14, UITheme.MUTED)
+		var l := UITheme.label(tr("The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab.") % lvl, 14, UITheme.MUTED)
 		if not Demo.rockets_allowed():  # [steam]
 			l.text = tr("Rockets to the rest of Verdance are in the full game. The demo stays in the first district.")
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

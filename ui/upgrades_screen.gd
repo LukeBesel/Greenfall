@@ -10,17 +10,16 @@ signal closed
 
 # l10n:begin
 const TABS: Array[Dictionary] = [
-	{"id": "patch", "name": "Lumi"},
+	{"id": "patch", "name": "Upgrades"},  # [ui3] everything with levels or tiers (Lumi, base, machines, rocket)
 	{"id": "bots", "name": "Bots"},
-	{"id": "hub", "name": "Hub"},
+	{"id": "build", "name": "Build"},  # [ui3] one-time buildings (HubBuilds)
 	{"id": "research", "name": "Research"},
-	{"id": "rockets", "name": "Rockets"},
 	{"id": "contracts", "name": "Requests"},  # [money] contracts + world events
 	{"id": "locker", "name": "Locker"},  # [ui2] Cosmetics + the robot Builder
 ]
 # l10n:end
 ## [ui2] Old tab ids (dev hooks, other branches) and where they went.
-const TAB_ALIASES: Dictionary = {"cosmetics": "locker", "builder": "locker", "trade": "bots"}
+const TAB_ALIASES: Dictionary = {"cosmetics": "locker", "builder": "locker", "trade": "bots", "hub": "patch", "rockets": "patch"}  # [ui3] Hub and Rockets folded into Upgrades
 const TAB_FONT: int = 19
 
 ## [ui2] id -> Callable() -> bool. A tab whose gate returns false is locked (see set_tab_gate).
@@ -70,6 +69,8 @@ static func _cond_ok(c: Array, w: Node) -> bool:
 			return lv >= int(c[1]) or Achievements.best_hub_level() >= int(c[1])
 		"flag":
 			return bool(GameState.flags.get(str(c[1]), false))
+		"builds":  # [ui3] something to build, or something built (camp2's HubBuilds)
+			return BuildPanel.has_content(w if w else (Engine.get_main_loop() as SceneTree).current_scene)
 	return false
 
 
@@ -248,20 +249,23 @@ func _populate() -> void:
 		_grid.add_child(lp)
 		_panel = lp
 		return
-	if _tab == "hub":
+	if _tab == "patch":  # [ui3] the Upgrades tab: Lumi, Base, Machines, Rocket sections
 		_grid.columns = 1
-		var hp := HubPanel.new()
-		hp.hub = hub
-		_grid.add_child(hp)
-		_hub_panel = hp
-		_panel = hp
+		var up := UpgradesPanel.new()
+		up.world = w
+		up.hub = hub
+		_grid.add_child(up)
+		for c: UpgradeCard in up.cards:
+			_cards.append(c)
+		up.card_bought.connect(_refresh_all)
+		_panel = up
 		return
-	if _tab == "rockets":
+	if _tab == "build":  # [ui3] one-time buildings
 		_grid.columns = 1
-		var rp := RocketsPanel.new()
-		rp.world = w
-		rp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		_grid.add_child(rp)
+		var bp := BuildPanel.new()
+		bp.world = w
+		_grid.add_child(bp)
+		_panel = bp
 		return
 	_relayout()
 	if _tab == "bots" and fleet:
@@ -354,7 +358,7 @@ var _focus_sig: String = ""
 
 
 func _wire_focus() -> void:
-	if not _tab in ["patch", "bots", "hub"]:
+	if not _tab in ["patch", "bots", "build", "locker"]:  # [ui3]
 		return
 	var sig: String = FocusGrid.signature(_grid) + "|%d" % _grid.columns
 	if sig != _focus_sig:
@@ -387,7 +391,7 @@ func _first_focusable(root: Node, allow_disabled: bool) -> Control:
 
 func _relayout() -> void:
 	# Single-panel tabs fill the width; only card grids reflow.
-	if _tab != "patch" and _tab != "bots":  # [ui2] single-panel tabs
+	if _tab != "bots":  # [ui2] [ui3] single-panel tabs (Upgrades lays out its own sections)
 		_grid.columns = 1
 		return
 	var w: float = _root.size.x - 110.0
@@ -486,5 +490,4 @@ func _refresh_all() -> void:
 		rc.refresh()
 	if _tab == "bots" and is_instance_valid(_alloc):
 		_alloc.refresh()
-	if _tab == "hub" and is_instance_valid(_hub_panel):
-		_hub_panel.refresh()
+

@@ -55,6 +55,12 @@ func _run() -> void:
 		var wh: PackedStringArray = DevHooks.get_s("audit-size", "1280x720").split("x")
 		get_tree().root.size = Vector2i(int(wh[0]), int(wh[1]))
 	await _frames(20)
+	# [ui3] The loader / title hands over to the game a few frames later: wait for it (60 s cap).
+	if not DevHooks.has("menu"):
+		var t0: int = Time.get_ticks_msec()
+		while not (get_tree().current_scene and get_tree().current_scene.has_method("open_upgrades")) and Time.get_ticks_msec() - t0 < 60000:
+			await _frames(5)
+		await _frames(20)
 	print("[pad] screen %s (interface scale %.2f)" % [get_tree().root.get_visible_rect().size, Settings.ui_scale])
 	Settings.last_input_pad = true
 	Settings.input_device_changed.emit(true)  # prompts switch to pad glyphs

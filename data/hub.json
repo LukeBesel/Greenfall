@@ -4,7 +4,7 @@
   "levels": [
     {"level": 1, "name": "Lean-to", "desc": "Pipe frame, tin roof, a bench.", "cost": {}},
     {"level": 2, "name": "Workshop", "desc": "Walls, a roll-up door, floodlights. Bales sell for more at a proper scale.", "cost": {"cubes": 1500, "parts": 150}, "bonus": {"sell_mult": 0.1}},
-    {"level": 3, "name": "Depot Station", "desc": "A second building, a radio mast and a sorting table.", "cost": {"cubes": 12000, "parts": 350}, "bonus": {"sell_mult": 0.2}},
+    {"level": 3, "name": "Depot Station", "desc": "A second building, a radio mast and a sorting table.", "cost": {"cubes": 9000, "parts": 350}, "bonus": {"sell_mult": 0.2}},
     {"level": 4, "name": "Solar Yard", "desc": "Solar panels and a greenhouse frame. Power for bigger machines.", "cost": {"cubes": 28000, "parts": 140}, "bonus": {"sell_mult": 0.35}},
     {"level": 5, "name": "Garden Station", "desc": "A wind turbine, clean paint, planters, and a pad that could take a rocket.", "cost": {"cubes": 30000, "parts": 110}, "bonus": {"sell_mult": 0.5}}
   ],

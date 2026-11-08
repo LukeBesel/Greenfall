@@ -181,7 +181,7 @@ func refresh() -> void:
 	var before: float = Economy.stat_with_upgrade_level(upgrade_id, lv)
 	var after: float = Economy.stat_with_upgrade_level(upgrade_id, lv + 1)
 	if not unlocked and def.has("requires_station") and not Stations.built_in_state(str(def["requires_station"])):
-		_change.text = tr("Build the %s first (Hub tab)") % tr(str(Economy.read_json("res://data/stations.json").get(str(def["requires_station"]), {}).get("name", def["requires_station"])))  # [camp]
+		_change.text = tr("Build the %s first (Build tab)") % tr(str(Economy.read_json("res://data/stations.json").get(str(def["requires_station"]), {}).get("name", def["requires_station"])))  # [camp]
 		_change.add_theme_color_override("font_color", UITheme.MUTED)
 	elif not unlocked:
 		var req: Dictionary = def.get("requires", {})
@@ -206,14 +206,14 @@ func refresh() -> void:
 	var ratio: float = 1.0 if maxed else clampf(money.ratio_to(cost), 0.0, 1.0)
 	_bar.value = ratio
 	_affordable = unlocked and not maxed and ratio >= 1.0
-	_cost.add_theme_color_override("font_color", BenchKit.OK if _affordable or maxed else BenchKit.SHORT)  # [ui2] green = affordable, red = short
+	_cost.add_theme_color_override("font_color", BenchKit.OK if _affordable or maxed else (BenchKit.SHORT if ratio < 1.0 else UITheme.MUTED))  # [ui2] green = affordable, red = short; [ui4] muted = locked
 	var can10: int = Economy.max_affordable(upgrade_id)
 	_btn1.disabled = not _affordable
 	_btn10.disabled = not unlocked or maxed or can10 < 2
 	_btn10.text = "x%d" % mini(10, maxi(can10, 2)) if can10 >= 2 else "x10"
 	_btnmax.disabled = not unlocked or maxed or can10 < 1
 	_btnmax.text = tr("Max (%d)") % can10 if can10 > 1 else tr("Max")
-	if _affordable or maxed:
+	if _affordable or maxed or not unlocked or ratio >= 1.0:  # [ui4] locked: the lock line says why; never a negative "need"
 		_eta.text = ""
 	else:
 		var rate: float = GameState.income_rate()

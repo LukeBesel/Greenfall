@@ -8,7 +8,7 @@
   },
   "objectives": [
     {"id": "power", "text": "Power the base: sell 3 bales", "desc": "Cubes feed the recycler. Its power wakes the base.", "type": "stat", "key": "cubes_cashed", "target": 3},
-    {"id": "tower", "text": "Rebuild the signal tower", "desc": "WREN went silent. The tower lets her reach you.", "type": "tower", "target": 1},
+    {"id": "tower", "text": "Build the signal tower", "desc": "WREN went silent. Build it at the workbench.", "type": "tower", "target": 1},
     {"id": "hex", "text": "Clean a hex", "desc": "Clean ground is where green can grow again.", "type": "stat", "key": "hexes_cleaned", "target": 1, "hex": true},
     {"id": "robot", "text": "Build your first robot", "desc": "A helper keeps cleaning while you work.", "type": "robot", "key": "any", "target": 1,
       "lines": ["The base has power! Enough to build you a helper. Try the Bots tab at the workbench."]},
@@ -16,7 +16,7 @@
     {"id": "haul", "text": "Build a Haul Bug", "desc": "It carries bales to the scale for you.", "type": "robot", "key": "haulbug", "target": 1},
     {"id": "seed", "text": "Plant the first seed", "desc": "Living green charges your Bloom Core.", "hint": "Keep clearing ground. Seeds turn up in clean soil.", "wait_flag": "seed_signal", "type": "stat", "key": "plants_planted", "target": 1},
     {"id": "base2", "text": "Rebuild the base: level 2", "desc": "A bigger base runs more robots.", "type": "hub_level", "target": 2,
-      "lines": ["The hub can grow now. Rebuild it from the Hub tab at the workbench."]},
+      "lines": ["The hub can grow now. Rebuild it from the Upgrades tab at the workbench."]},
     {"id": "tower2", "text": "Boost the signal tower", "desc": "A stronger signal: WREN comes through clearer.", "type": "tower", "target": 2},
     {"id": "base3", "text": "Rebuild the base: level 3", "desc": "Level 3 opens the Requests board.", "type": "hub_level", "target": 3}
   ]

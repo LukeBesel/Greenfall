@@ -18,7 +18,7 @@ const HEIGHT: Dictionary = {"cat": 0.0, "deer": 1.22, "stag": 1.55, "fox": 0.5, 
 ## Cat coats (index = Animal.coat): ginger tabby, black tuxedo, grey tabby, brown tabby,
 ## cream, calico.
 const CAT_COATS: Array[Dictionary] = [
-	{"base": Color(0.86, 0.54, 0.3), "stripe": Color(0.62, 0.32, 0.13), "stripe_amt": 1.0, "white_amt": 0.45, "iris": Color(0.8, 0.64, 0.16)},
+	{"base": Color(0.88, 0.56, 0.3), "stripe": Color(0.55, 0.25, 0.08), "stripe_amt": 1.0, "white_amt": 0.45, "iris": Color(0.8, 0.64, 0.16)},
 	{"base": Color(0.07, 0.065, 0.07), "stripe": Color(0.05, 0.05, 0.05), "stripe_amt": 0.0, "white_amt": 0.75, "iris": Color(0.6, 0.72, 0.18)},
 	{"base": Color(0.55, 0.56, 0.58), "stripe": Color(0.24, 0.24, 0.26), "stripe_amt": 1.0, "white_amt": 0.35, "iris": Color(0.45, 0.68, 0.3)},
 	{"base": Color(0.55, 0.43, 0.3), "stripe": Color(0.18, 0.13, 0.09), "stripe_amt": 1.0, "white_amt": 0.2, "iris": Color(0.72, 0.58, 0.2)},
@@ -171,9 +171,15 @@ static func _material(nm: String) -> Material:
 			w.albedo_color = Color(0.97, 0.96, 0.93)
 			w.roughness = 0.4
 			m = w
+		"Mouth":
+			var mo := StandardMaterial3D.new()
+			mo.albedo_color = Color(0.22, 0.11, 0.1)
+			mo.roughness = 0.5
+			m = mo
 		"Skin":
 			var k := StandardMaterial3D.new()
-			k.albedo_color = Color(0.93, 0.68, 0.66)
+			k.vertex_color_use_as_albedo = true
+			k.albedo_color = Color(1, 1, 1)
 			k.roughness = 0.6
 			k.backlight_enabled = true
 			k.backlight = Color(0.6, 0.3, 0.3)

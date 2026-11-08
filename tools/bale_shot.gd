@@ -56,7 +56,7 @@ func _ready() -> void:
 	if cam.has_method("snap"):
 		cam.call("snap")
 	if DevHooks.get_s("bale-shot", "") == "carry":  # Lumi holding one bale, seen from behind-left
-		await get_tree().create_timer(2.0).timeout
+		await get_tree().physics_frame  # (software renders run a few frames a minute: no game-time waits)
 		p.global_position = Vector3(0.0, 0.2, 2.0)
 		p.rotation.y = 0.0
 		(p as Patch).pick_up(cubes[2])
