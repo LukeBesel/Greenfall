@@ -1075,7 +1075,9 @@ func _dev_hooks() -> void:
 	if DevHooks.has("shot-from-ready"):
 		# Dev: count --shot-delay / --quit-after from the moment Anvil is built (the async district
 		# loader takes minutes on software rendering).
-		DevHooks.set("_start_ms", Time.get_ticks_msec())
+		# Use with a long --shot-delay (it blocks early shots): the shot lands S seconds after ready.
+		var settle: float = DevHooks.get_f("shot-from-ready", 50.0)
+		DevHooks.set("_start_ms", Time.get_ticks_msec() - int((DevHooks.get_f("shot-delay", 2.0) - settle) * 1000.0))
 	if DevHooks.has("anvil-lookbook"):
 		_lookbook()
 	if DevHooks.has("anvil-site"):
