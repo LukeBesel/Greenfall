@@ -523,6 +523,9 @@ static func _ruined_smelter(kit: AnvilEnv, root: Node3D, stage: int, restoration
 		var xf := Transform3D(Basis(Vector3.UP, k * 1.7) * Basis(Vector3.RIGHT, tilt), pp + Vector3(0, 3.0 * cos(tilt) + 0.6, 0))
 		b.add(AnvilProps.noisy_cyl(3.2, 2.4, 6.0, 28, 6, 0.04, 300 + k), xf, kit.mat("stack"))
 		b.add(ProcMesh.torus(3.1, 3.6, 32, 6), xf * Transform3D(Basis(), Vector3(0, 3.0, 0)), kit.mat("rust"))
+		# Solid pot: a base and a crust of set slag inside, not a hollow cup.
+		b.add(ProcMesh.cyl(2.4, 2.4, 0.4, 24), xf * Transform3D(Basis(), Vector3(0, -2.9, 0)), kit.mat("rust"))
+		b.add(ProcMesh.cyl(3.05, 3.0, 0.5, 24), xf * Transform3D(Basis(), Vector3(0, 2.2, 0)), kit.slag_mat)
 		if k == 2:
 			b.add(AnvilProps.slag_mesh(310), Transform3D(Basis(Vector3.UP, 0.4) * Basis.from_scale(Vector3(8.0, 1.0, 4.0)), pp + Vector3(5.0, -0.1, 2.0)), kit.slag_mat)
 	# The toppled stack, broken in two.
