@@ -754,7 +754,29 @@ func _physics_process(delta: float) -> void:
 	_lap_tick(delta)
 
 
+var _perf_acc: Array[float] = [0.0, 0.0, 0.0, 0.0]
+var _perf_n: int = 0
+
+
+func _perf_tick(delta: float) -> void:
+	_perf_acc[0] += Performance.get_monitor(Performance.TIME_PROCESS) * 1000.0
+	_perf_acc[1] += Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS) * 1000.0
+	_perf_acc[2] = maxf(_perf_acc[2], Performance.get_monitor(Performance.TIME_PROCESS) * 1000.0)
+	_perf_acc[3] += delta
+	_perf_n += 1
+	if _perf_acc[3] >= 5.0 * Engine.time_scale:
+		print("[orbit-perf] process_ms avg=%.2f max=%.2f physics_ms avg=%.2f chunks=%d built=%d chunk_build_avg_ms=%.0f junk=%d junk_rebuild_ms=%d draw_calls=%d prims=%d" % [
+			_perf_acc[0] / _perf_n, _perf_acc[2], _perf_acc[1] / _perf_n, _chunks.size(), int(stats.get("chunks_built", 0)),
+			float(stats.get("chunk_ms_sum", 0.0)) / maxf(1.0, float(stats.get("chunks_built", 1))), int(stats.get("junk_instances", 0)),
+			int(stats.get("junk_rebuild_ms", 0)),
+			RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME),
+			RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME)])
+		_perf_acc = [0.0, 0.0, 0.0, 0.0]
+		_perf_n = 0
+
+
 func _process(delta: float) -> void:
+	_perf_tick(delta)
 	_orient_sky()
 	var c: int = globe.cell_at(walker.global_position, _walker_cell)
 	if c != _walker_cell:
