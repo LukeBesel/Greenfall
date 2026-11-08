@@ -18345,3 +18345,145 @@ msgstr "[Çôþþéŕ ~]"
 #: data/style_parts.json:swatches[rosegold].name
 msgid "Rose gold"
 msgstr "[Ŕôšé ĝôļð ~]"
+
+#: autoload/Settings.gd:24
+msgid "Glim: scan (hold: upgrades)"
+msgstr "[Ĝļîm: šçàñ (ĥôļð: ûþĝŕàðéš) ~~~~~~]"
+
+#: story/ledger_uplink.gd:159
+msgid "LEDGER // AMENDED"
+msgstr "[ĻÉÐĜÉŔ // ÀMÉÑÐÉÐ ~~~]"
+
+#: story/ledger_uplink.gd:159
+msgid "INTERCEPT // LEDGER"
+msgstr "[ÎÑŢÉŔÇÉÞŢ // ĻÉÐĜÉŔ ~~~~]"
+
+#: systems/glim/glim.gd:14
+msgid "Find Glim first"
+msgstr "[Fîñð Ĝļîm ƒîŕšţ ~~]"
+
+#: systems/glim/glim.gd:14 ui/glim_panel.gd:142
+msgid "Maxed"
+msgstr "[Màxéð ~]"
+
+#: systems/glim/glim.gd:14 ui/glim_panel.gd:149
+msgid "Needs %s %d"
+msgstr "[Ñééðš %s %d ~]"
+
+#: systems/glim/glim.gd:14
+msgid "Buy %d Glim upgrades"
+msgstr "[Bûý %d Ĝļîm ûþĝŕàðéš ~~~~]"
+
+#: systems/glim/glim_director.gd:150
+msgid ""
+"A little lantern bot flickers awake in the junk beside you: Glim! He'll "
+"light the way at night."
+msgstr ""
+"[À ļîţţļé ļàñţéŕñ bôţ ƒļîçķéŕš àŵàķé îñ ţĥé ĵûñķ béšîðé ýôû: Ĝļîm! Ĥé'ļļ "
+"ļîĝĥţ ţĥé ŵàý àţ ñîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/glim/glim_director.gd:152
+msgid ""
+"Something in the junk blinks back at you: Glim, a little lantern bot! He'll "
+"light the way at night."
+msgstr ""
+"[Šôméţĥîñĝ îñ ţĥé ĵûñķ bļîñķš bàçķ àţ ýôû: Ĝļîm, à ļîţţļé ļàñţéŕñ bôţ! Ĥé'ļļ "
+"ļîĝĥţ ţĥé ŵàý àţ ñîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/glim/glim_director.gd:154
+msgid ""
+"Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
+msgstr ""
+"[Ţàþ %s: Ĝļîm šçàñš ýôûŕ ĥéx ƒôŕ ĵûñķ ýôû mîššéð. Ĥôļð %s ƒôŕ ĥîš ûþĝŕàðéš. "
+"~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/glim/glim_director.gd:200
+msgid "All clear here!"
+msgstr "[Àļļ çļéàŕ ĥéŕé! ~~]"
+
+#: systems/glim/glim_director.gd:202
+msgid "Only big pieces left"
+msgstr "[Ôñļý bîĝ þîéçéš ļéƒţ ~~~~]"
+
+#: ui/glim_panel.gd:40
+msgid "GLIM"
+msgstr "[ĜĻÎM ~]"
+
+#: ui/glim_panel.gd:42
+msgid "lantern bot"
+msgstr "[ļàñţéŕñ bôţ ~]"
+
+#: ui/glim_panel.gd:64
+msgid "%s  close"
+msgstr "[%s  çļôšé ~]"
+
+#: ui/glim_panel.gd:195
+msgid "LOOKS"
+msgstr "[ĻÔÔĶŠ ~]"
+
+#: ui/glim_panel.gd:220
+msgid "???  %s"
+msgstr "[???  %s]"
+
+#: data/glim.json:tracks[light].desc
+msgid "A brighter, wider lantern for night shifts."
+msgstr "[À bŕîĝĥţéŕ, ŵîðéŕ ļàñţéŕñ ƒôŕ ñîĝĥţ šĥîƒţš. ~~~~~~~~~~~~]"
+
+#: data/glim.json:tracks[scan].name
+msgid "Hex Scanner"
+msgstr "[Ĥéx Šçàññéŕ ~]"
+
+#: data/glim.json:tracks[scan].desc
+msgid ""
+"Pings the junk left in your hex. Upgrades reach the hexes around you and "
+"recharge faster."
+msgstr ""
+"[Þîñĝš ţĥé ĵûñķ ļéƒţ îñ ýôûŕ ĥéx. Ûþĝŕàðéš ŕéàçĥ ţĥé ĥéxéš àŕôûñð ýôû àñð "
+"ŕéçĥàŕĝé ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/glim.json:tracks[auto].name
+msgid "Auto-Scan"
+msgstr "[Àûţô-Šçàñ ~]"
+
+#: data/glim.json:tracks[auto].desc
+msgid "Glim pings on his own every few seconds."
+msgstr "[Ĝļîm þîñĝš ôñ ĥîš ôŵñ évéŕý ƒéŵ šéçôñðš. ~~~~~~~~~~~]"
+
+#: data/glim.json:tracks[magnet].name
+msgid "Tidy Tug"
+msgstr "[Ţîðý Ţûĝ ~]"
+
+#: data/glim.json:tracks[magnet].desc
+msgid "A gentle tractor tug: tiny pieces scoot toward Lumi."
+msgstr "[À ĝéñţļé ţŕàçţôŕ ţûĝ: ţîñý þîéçéš šçôôţ ţôŵàŕð Ļûmî. ~~~~~~~~~~~~~~~]"
+
+#: data/glim.json:tracks[music].name
+msgid "Music"
+msgstr "[Mûšîç ~]"
+
+#: data/glim.json:tracks[music].desc
+msgid ""
+"Glim downloads the CDs you've found: play any found song, anywhere, anytime."
+msgstr ""
+"[Ĝļîm ðôŵñļôàðš ţĥé ÇÐš ýôû'vé ƒôûñð: þļàý àñý ƒôûñð šôñĝ, àñýŵĥéŕé, "
+"àñýţîmé. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/glim.json:shells[moss].name
+msgid "Moss"
+msgstr "[Môšš ~]"
+
+#: data/glim.json:shells[blossom].name
+msgid "Blossom"
+msgstr "[Bļôššôm ~]"
+
+#: data/glim.json:glows[rose].name
+msgid "Rose"
+msgstr "[Ŕôšé ~]"
+
+#: data/glim.json:tops[none].name
+msgid "Nothing"
+msgstr "[Ñôţĥîñĝ ~]"
+
+#: data/glim.json:tops[beanie].name
+msgid "Little Beanie"
+msgstr "[Ļîţţļé Béàñîé ~~]"

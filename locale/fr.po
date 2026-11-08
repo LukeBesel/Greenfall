@@ -17885,3 +17885,135 @@ msgstr "Cuivre"
 #: data/style_parts.json:swatches[rosegold].name
 msgid "Rose gold"
 msgstr "Or rose"
+
+#: autoload/Settings.gd:24
+msgid "Glim: scan (hold: upgrades)"
+msgstr ""
+
+#: story/ledger_uplink.gd:159
+msgid "LEDGER // AMENDED"
+msgstr ""
+
+#: story/ledger_uplink.gd:159
+msgid "INTERCEPT // LEDGER"
+msgstr ""
+
+#: systems/glim/glim.gd:14
+msgid "Find Glim first"
+msgstr ""
+
+#: systems/glim/glim.gd:14 ui/glim_panel.gd:142
+msgid "Maxed"
+msgstr ""
+
+#: systems/glim/glim.gd:14 ui/glim_panel.gd:149
+msgid "Needs %s %d"
+msgstr ""
+
+#: systems/glim/glim.gd:14
+msgid "Buy %d Glim upgrades"
+msgstr ""
+
+#: systems/glim/glim_director.gd:150
+msgid ""
+"A little lantern bot flickers awake in the junk beside you: Glim! He'll "
+"light the way at night."
+msgstr ""
+
+#: systems/glim/glim_director.gd:152
+msgid ""
+"Something in the junk blinks back at you: Glim, a little lantern bot! He'll "
+"light the way at night."
+msgstr ""
+
+#: systems/glim/glim_director.gd:154
+msgid ""
+"Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
+msgstr ""
+
+#: systems/glim/glim_director.gd:200
+msgid "All clear here!"
+msgstr ""
+
+#: systems/glim/glim_director.gd:202
+msgid "Only big pieces left"
+msgstr ""
+
+#: ui/glim_panel.gd:40
+msgid "GLIM"
+msgstr ""
+
+#: ui/glim_panel.gd:42
+msgid "lantern bot"
+msgstr ""
+
+#: ui/glim_panel.gd:64
+msgid "%s  close"
+msgstr ""
+
+#: ui/glim_panel.gd:195
+msgid "LOOKS"
+msgstr ""
+
+#: ui/glim_panel.gd:220
+msgid "???  %s"
+msgstr ""
+
+#: data/glim.json:tracks[light].desc
+msgid "A brighter, wider lantern for night shifts."
+msgstr ""
+
+#: data/glim.json:tracks[scan].name
+msgid "Hex Scanner"
+msgstr ""
+
+#: data/glim.json:tracks[scan].desc
+msgid ""
+"Pings the junk left in your hex. Upgrades reach the hexes around you and "
+"recharge faster."
+msgstr ""
+
+#: data/glim.json:tracks[auto].name
+msgid "Auto-Scan"
+msgstr ""
+
+#: data/glim.json:tracks[auto].desc
+msgid "Glim pings on his own every few seconds."
+msgstr ""
+
+#: data/glim.json:tracks[magnet].name
+msgid "Tidy Tug"
+msgstr ""
+
+#: data/glim.json:tracks[magnet].desc
+msgid "A gentle tractor tug: tiny pieces scoot toward Lumi."
+msgstr ""
+
+#: data/glim.json:tracks[music].name
+msgid "Music"
+msgstr ""
+
+#: data/glim.json:tracks[music].desc
+msgid ""
+"Glim downloads the CDs you've found: play any found song, anywhere, anytime."
+msgstr ""
+
+#: data/glim.json:shells[moss].name
+msgid "Moss"
+msgstr ""
+
+#: data/glim.json:shells[blossom].name
+msgid "Blossom"
+msgstr ""
+
+#: data/glim.json:glows[rose].name
+msgid "Rose"
+msgstr ""
+
+#: data/glim.json:tops[none].name
+msgid "Nothing"
+msgstr ""
+
+#: data/glim.json:tops[beanie].name
+msgid "Little Beanie"
+msgstr ""

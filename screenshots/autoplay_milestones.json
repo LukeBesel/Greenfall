@@ -1,7 +1,18 @@
 {
   "first_cube_s": 17.5,
-  "first_cashin_s": 21.6,
-  "first_upgrade_s": 21.9,
-  "first_hex_s": 83.8,
-  "first_hexlv_1_s": 84.2
+  "first_upgrade_s": 19.9,
+  "first_cashin_s": 21.7,
+  "first_hex_s": 75.3,
+  "first_hexlv_1_s": 76.2,
+  "first_research_s": 286.6,
+  "first_robot_s": 387.7,
+  "first_scoopie_s": 387.7,
+  "first_haulbug_s": 388.7,
+  "seed_tin_s": 726.6,
+  "base_2_s": 731.8,
+  "first_hexlv_2_s": 851.4,
+  "first_hexlv_4_s": 992.3,
+  "first_hexlv_3_s": 1124.3,
+  "first_hexlv_5_s": 1326.4,
+  "first_skimmer_s": 1728.6
 }

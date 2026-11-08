@@ -99,10 +99,18 @@ func _snapshot(s: Node) -> Dictionary:
 		"extras": JSON.stringify(ExtrasRoundtrip.snap(s)),  # [extras] radio, album, nursery
 		# [camp] the workbench repair, the trash bin's level, yard builds, and what's shown.
 		"camp": "bench=%s bin=L%d built=%s radio_shown=%s bench_prompt=%s" % [str(Camp.bench_ok()), TrashBin.level(), JSON.stringify(YardBuilds.state().get("built", {})), str(ExtrasDirector.of(s).radio.visible if ExtrasDirector.of(s) else false), (Camp.of(s).bench_prompt() if Camp.of(s) else "")],
+		"glim": JSON.stringify(_glim_snap(s)),  # [buddy] found, tiers, looks, the bot in the scene
 	}
 
 
 ## [wild] Persisted animal state, plus whether the adopted cat is back in the live district.
+## [buddy] Glim's saved state (JSON-normalised) and whether his body is in the district.
+func _glim_snap(s: Node) -> Dictionary:
+	var d: GlimDirector = GlimDirector.of(s)
+	return {"state": JSON.parse_string(JSON.stringify(Glim.st())), "bot": d != null and d.bot != null,
+		"range": snappedf(Glim.value("light", "range"), 0.01), "worn": [Glim.worn("shells"), Glim.worn("glows"), Glim.worn("tops")]}
+
+
 func _fauna(s: Node) -> String:
 	var named: String = "-"
 	if s.get("fauna") != null:
@@ -411,6 +419,15 @@ func _ready() -> void:
 	else:
 		_check("camp_node", true, false)
 	ExtrasRoundtrip.setup(s1)  # [extras] radio song, album records, a retired caretaker
+	# [buddy] Glim found, a few upgrade tiers, a bought shell and a top.
+	GlimDirector.of(s1).find_now("junk")
+	(Glim.st()["tiers"] as Dictionary)["light"] = 2
+	(Glim.st()["tiers"] as Dictionary)["scan"] = 1
+	GameState.add_currency("cubes", BigNum.from_float(500))
+	Glim.buy_look("shells", "sunset")
+	Glim.wear("shells", "sunset")
+	GameState.stats["hexes_cleaned"] = maxf(float(GameState.stats.get("hexes_cleaned", 0.0)), 4.0)
+	Glim.wear("tops", "sprout")
 	s1.patch.global_position = Vector3(3.0, 0.2, 5.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
 	s1.add_cube(dropped)

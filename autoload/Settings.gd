@@ -21,6 +21,7 @@ const REBINDABLE: Array = [
 	["toggle_goals", "Show more goals"],  # [hud]
 	["zoom_in", "Zoom in"], ["zoom_out", "Zoom out"],
 	["photo_mode", "Photo mode"],  # [photo]
+	["glim_scan", "Glim: scan (hold: upgrades)"],  # [buddy]
 ]
 # l10n:end
 # l10n:begin
@@ -204,6 +205,7 @@ func _register_default_actions() -> void:
 		"toggle_goals": [_key(KEY_G), _joy(JOY_BUTTON_LEFT_STICK)],  # [hud] expand the goal tracker
 		"photo_mode": [_key(KEY_P)],  # [photo] pad: via the pause menu
 		"garden_mode": [_key(KEY_H)],  # [late] Garden Mode (ui/garden_placer.gd); pad: via the pause menu
+		"glim_scan": [_key(KEY_F), _axis(JOY_AXIS_TRIGGER_LEFT, 1.0)],  # [buddy] tap: hex scan, hold: Glim panel
 	}
 	for action: String in _defaults:
 		if not InputMap.has_action(action):

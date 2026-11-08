@@ -569,6 +569,7 @@ func _ready() -> void:
 		bs.set("world", self)
 		add_child(bs)
 	camp = Camp.attach(self)  # [camp] after the extras: it shows the radio / nursery once built
+	GlimDirector.attach(self)  # [buddy] Glim the lantern bot: light, hex scanner, upgrades, looks (systems/glim/)
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -1142,7 +1143,8 @@ func _open_command() -> void:
 func any_modal_open() -> bool:
 	return upgrades.is_open or pause_menu.is_open or globe.is_open or command.is_open \
 		or (codex != null and codex.is_open) or (doc_view != null and doc_view.is_open) \
-		or (photo != null and photo.is_open)  # [photo]
+		or (photo != null and photo.is_open) \
+		or (get_node_or_null("GlimPanel") != null and (get_node("GlimPanel") as GlimPanel).is_open)  # [photo] [buddy]
 
 
 func _on_modal_closed() -> void:
