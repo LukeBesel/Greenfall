@@ -97,6 +97,7 @@ var _grid: GridContainer
 var _frame: MarginContainer  # [ui7] the floating frame (ui/holo_frame.gd)
 var _list_host: VBoxContainer
 var _page: PanelContainer
+var _hidden_hud: Array[CanvasLayer] = []
 var _cards: Array[UpgradeCard] = []
 var _currency: Label
 var _parts_lbl: Label  # [money] the other two currencies, small, next to cubes
@@ -400,6 +401,7 @@ func open_screen() -> void:
 	EventBus.ui_modal_changed.emit(true)
 	Audio.play("click", 1.0, -6.0)
 	_root.modulate.a = 1.0
+	_hidden_hud = HoloFrame.hide_hud(get_tree(), layer)  # [ui7] no HUD text through the glass
 	HoloFrame.unfold(_frame)  # [ui7] a hologram unfold, not a fade
 	_trade_t = 0.0
 	_focus_default.call_deferred()
@@ -427,6 +429,7 @@ func close_screen() -> void:
 	if not is_open:
 		return
 	is_open = false
+	HoloFrame.show_hud(_hidden_hud)
 	HoloFrame.fold(_frame, func() -> void:
 		if not is_open:
 			_root.visible = false)

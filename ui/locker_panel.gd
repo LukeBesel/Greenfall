@@ -93,10 +93,12 @@ static func open_overlay(w: Node) -> CanvasLayer:
 	vb.add_child(lp)
 	var tree: SceneTree = Engine.get_main_loop() as SceneTree
 	var was_paused: bool = tree.paused
+	var hidden: Array[CanvasLayer] = HoloFrame.hide_hud(tree, cl.layer)  # [ui7] no HUD text through the glass
 	var shut := func() -> void:
 		if not is_instance_valid(cl) or cl.has_meta("closing"):
 			return
 		tree.paused = was_paused
+		HoloFrame.show_hud(hidden)
 		EventBus.ui_modal_changed.emit(false)
 		cl.set_meta("closing", true)
 		HoloFrame.fold(frame, func() -> void:

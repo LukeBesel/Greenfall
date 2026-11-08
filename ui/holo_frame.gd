@@ -8,7 +8,7 @@ extends RefCounted
 ## nothing flickers once it is open.
 
 const EDGE := Color(0.45, 0.88, 1.0)
-const GLASS_A: float = 0.68
+const GLASS_A: float = 0.74
 const GAP: int = 12
 const CUT: int = 12
 
@@ -59,11 +59,29 @@ static func header_title(name_: String) -> HBoxContainer:
 	hb.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	hb.add_child(Leds.new())
 	hb.add_child(mono_label("LM-1 //", 17, Color(EDGE, 0.55)))
-	var t: Label = mono_label(name_.to_upper(), 20, EDGE.lightened(0.35))
-	t.clip_text = true
-	t.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	hb.add_child(t)
+	hb.add_child(mono_label(name_.to_upper(), 20, EDGE.lightened(0.35)))
 	return hb
+
+
+## The HUD layers under the frame (CanvasLayer 1..`below`-1) are hidden while it is open, so no
+## HUD text shows through the glass. Returns what was hidden, for show_hud().
+static func hide_hud(tree: SceneTree, below: int) -> Array[CanvasLayer]:
+	var out: Array[CanvasLayer] = []
+	if tree == null or tree.root == null:
+		return out
+	for n: Node in tree.root.find_children("*", "CanvasLayer", true, false):
+		var cl := n as CanvasLayer
+		if cl.visible and cl.layer > 0 and cl.layer < below:
+			cl.visible = false
+			out.append(cl)
+	return out
+
+
+static func show_hud(layers: Array[CanvasLayer]) -> void:
+	for cl: CanvasLayer in layers:
+		if is_instance_valid(cl):
+			cl.visible = true
+	layers.clear()
 
 
 ## The full-screen layer behind the modules: no dim, only a light vignette (it also keeps
