@@ -27,6 +27,7 @@ EYE = fb.material("Eye", (0.6, 0.65, 0.2, 1), 0.05)
 NOSE = fb.material("Nose", (0.85, 0.5, 0.5, 1), 0.35)
 SKIN = fb.material("Skin", (0.95, 0.72, 0.7, 1), 0.6)
 WHISK = fb.material("Whisker", (0.97, 0.96, 0.92, 1), 0.4)
+MOUTH = fb.material("Mouth", (0.25, 0.12, 0.12, 1), 0.5)
 
 # ------------------------------------------------------------------------- body (one skin)
 # Kitten-ish proportions: a big round head with chubby cheeks and a small muzzle, a short round
@@ -95,28 +96,52 @@ for x in (-1, 1):
 	low = fb.mesh_obj("LowLid%d" % x, lo, FUR)
 	fb.bind_rigid(low, "head")
 	parts.append(low)
-	# Ears: larger, set wider, soft rounded triangles; furry outside, pink inside.
+	# Ears: larger, set wider; a thin furry shell with a rounded tip, a soft pink inner ear
+	# (darker deep inside) set back from the rim, and a few pale ear-fur tufts.
 	eb = HEAD + Vector((0.046 * x, -0.006, 0.05))
-	bm = fb.capsule(eb, eb + Vector((0.022 * x, 0.004, 0.058)), 0.031, 0.005, segs=12)
-	bmesh.ops.scale(bm, vec=(1.0, 0.42, 1.0), space=Matrix.Translation(-eb), verts=bm.verts)
+	tip = eb + Vector((0.022 * x, 0.004, 0.058))
+	bm = fb.capsule(eb, tip, 0.031, 0.007, segs=14)
+	bmesh.ops.scale(bm, vec=(1.0, 0.3, 1.0), space=Matrix.Translation(-eb), verts=bm.verts)
 	ear = fb.mesh_obj("Ear%d" % x, bm, FUR)
 	fb.bind_rigid(ear, "ear.L" if x > 0 else "ear.R")
 	parts.append(ear)
-	bm2 = fb.capsule(eb + Vector((0.0, 0.01, 0.004)), eb + Vector((0.019 * x, 0.013, 0.052)), 0.021, 0.004, segs=12)
-	bmesh.ops.scale(bm2, vec=(1.0, 0.25, 1.0), space=Matrix.Translation(-(eb + Vector((0, 0.01, 0)))), verts=bm2.verts)
+	ib = eb + Vector((0.002 * x, 0.007, 0.008))
+	bm2 = fb.capsule(ib, ib + Vector((0.017 * x, 0.004, 0.042)), 0.019, 0.005, segs=14)
+	bmesh.ops.scale(bm2, vec=(1.0, 0.18, 1.0), space=Matrix.Translation(-ib), verts=bm2.verts)
 	inner = fb.mesh_obj("EarIn%d" % x, bm2, SKIN)
 	fb.bind_rigid(inner, "ear.L" if x > 0 else "ear.R")
 	parts.append(inner)
+	tufts = bmesh.new()
+	for k in range(4):
+		a0 = ib + Vector(((0.004 + 0.003 * k) * x, 0.009, 0.004 + 0.007 * k))
+		fb.merge_bm(tufts, fb.capsule(a0, a0 + Vector(((0.006 - 0.004 * k) * x, 0.006, 0.02)), 0.0013, 0.0004, segs=5))
+	tf = fb.mesh_obj("Tuft%d" % x, tufts, WHISK)
+	fb.bind_rigid(tf, "ear.L" if x > 0 else "ear.R")
+	parts.append(tf)
 	for k in range(3):
 		o = HEAD + Vector((0.024 * x, 0.064, -0.03 - 0.005 * k))
 		t = o + Vector((0.09 * x, 0.012 - 0.008 * k, 0.012 - 0.014 * k))
 		w = fb.mesh_obj("Wh%d%d" % (x, k), fb.capsule(o, t, 0.0009, 0.0004, segs=5), WHISK)
 		fb.bind_rigid(w, "head")
 		parts.append(w)
-nose = fb.mesh_obj("Nose", fb.ellipsoid(HEAD + Vector((0, 0.074, -0.012)), (0.0095, 0.0055, 0.006), rot=(15, 0, 0)), NOSE)
+# Nose: a soft rounded triangle with two nostrils, a philtrum down to a small "w" mouth.
+nb = bmesh.new()
+nc = HEAD + Vector((0, 0.074, -0.011))
+fb.merge_bm(nb, fb.ellipsoid(nc, (0.0098, 0.0055, 0.0062), rot=(15, 0, 0)))
+fb.merge_bm(nb, fb.ellipsoid(nc + Vector((0, 0.001, -0.004)), (0.005, 0.0045, 0.004)))
+nose = fb.mesh_obj("Nose", nb, NOSE)
 fb.bind_rigid(nose, "head")
 parts.append(nose)
-mouth = fb.mesh_obj("Mouth", fb.capsule(HEAD + Vector((0, 0.074, -0.019)), HEAD + Vector((0, 0.072, -0.03)), 0.0013, 0.0013, segs=5), NOSE)
+mb = bmesh.new()
+for x in (-1, 1):
+	fb.merge_bm(mb, fb.ellipsoid(nc + Vector((0.0045 * x, 0.004, -0.0025)), (0.0022, 0.0012, 0.0016), rot=(0, 0, 30 * x)))  # nostrils
+m0 = nc + Vector((0, 0.0035, -0.0065))
+m1 = HEAD + Vector((0, 0.073, -0.023))
+fb.merge_bm(mb, fb.capsule(m0, m1, 0.0009, 0.0009, segs=5))  # philtrum
+for x in (-1, 1):
+	fb.merge_bm(mb, fb.capsule(m1, m1 + Vector((0.006 * x, -0.0015, -0.002)), 0.0009, 0.0008, segs=5))
+	fb.merge_bm(mb, fb.capsule(m1 + Vector((0.006 * x, -0.0015, -0.002)), m1 + Vector((0.011 * x, -0.004, 0.0005)), 0.0008, 0.0007, segs=5))
+mouth = fb.mesh_obj("Mouth", mb, MOUTH)
 fb.bind_rigid(mouth, "head")
 parts.append(mouth)
 
@@ -144,10 +169,17 @@ def coat(co, n):
 	elif z < 0.14:
 		s = math.sin(z * 95.0 + fbm(co, 14) * 0.8)
 	elif (co - HEAD).length < 0.09:
-		s = (math.sin(x * 150.0 + fbm(co, 14) * 0.8) * 0.5 - 0.35) if z > HEAD.z + 0.035 else -1.0
+		rel = co - HEAD
+		s = -1.0
+		if rel.z > 0.03 and rel.y > -0.02:
+			# Classic M: three narrow upright marks over the brow, curving out at the sides.
+			s = math.sin(abs(rel.x) * 190.0 - rel.z * 30.0 + fbm(co, 14) * 0.4) * 0.9 - 0.1
+		elif abs(rel.x) > 0.045 and -0.045 < rel.z < 0.015 and rel.y < 0.05:
+			# Cheek stripes sweeping back from the eyes.
+			s = math.sin(rel.z * 170.0 + rel.y * 40.0) * 0.9 - 0.15
 	else:
 		s = math.sin(y * 62.0 + (z - 0.18) * 30.0 * (1 if x > 0 else -1) * 0.5 + fbm(co, 10) * 0.7)
-	stripe = max(0.0, min(1.0, (s + 0.1) * 0.85)) ** 1.25 * (1.0 if n.z > -0.4 else 0.25)
+	stripe = max(0.0, min(1.0, (s + 0.2) * 0.95)) ** 1.1 * (1.0 if n.z > -0.4 else 0.25)
 	patch = max(0.0, min(1.0, fbm(co, 9.0) * 1.6 + 0.5))
 	occ = 0.78 + 0.22 * max(0.0, min(1.0, n.z * 0.6 + 0.6))
 	return (white, stripe, patch, occ)
@@ -159,6 +191,14 @@ for o in parts:
 		fb.colors(o, lambda co, n: (0, 0, 0, 1))
 	elif o.name.startswith(("Ear", "Lid", "LowLid")) and not o.name.startswith("EarIn"):
 		fb.colors(o, coat)
+	elif o.name.startswith("EarIn"):
+		# Deeper rose at the base, paler towards the rim and tip.
+		def earc(co, n, o=o):
+			zmin = min(v.co.z for v in o.data.vertices)
+			t = max(0.0, min(1.0, (co.z - zmin) / 0.045))
+			c = (0.72 + 0.22 * t, 0.42 + 0.26 * t, 0.42 + 0.24 * t)
+			return (c[0] ** 2.2, c[1] ** 2.2, c[2] ** 2.2, 1)
+		fb.colors(o, earc)
 	else:
 		fb.colors(o, lambda co, n: (1, 0, 0, 1))
 
