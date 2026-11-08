@@ -13,7 +13,17 @@ extends RefCounted
 ## normalised centroid of one icosphere triangle, so neighbouring cells share exact corner points.
 ## Scale with radius_m (metres).
 ##
-## Sizes at hex circumradius 10 m (the flat districts' hex_size): see docs/SPHERE_GRID.md.
+## Sizes at hex circumradius 10 m (the flat districts' hex_size: 17.3 m flat-to-flat, 20 m tip to
+## tip; measured on the grid: corner 10.0 m, centre spacing 17.35 m). Horizon = distance to the
+## horizon from a camera 6 / 12 m up on flat ground; dip = how far it sits below eye level at 12 m;
+## drop = how far the ground falls below the tangent plane 100 m away. Walk at 4.6 m/s.
+##   level  hexes     R       around   walk    horizon    dip    drop   chunks
+##   5      10,242    460 m   2.9 km   10 min  74/105 m   13.1°  10.9 m   42
+##   6      40,962    920 m   5.8 km   21 min  105/149 m  9.3°   5.4 m    162   (survey globe)
+##   7      163,842   1840 m  11.6 km  42 min  149/210 m  6.5°   2.7 m    642   <- recommended
+##   8      655,362   3681 m  23.1 km  84 min  210/297 m  4.6°   1.4 m    2562
+## Level 7: nearby ground reads flat, the curve shows gently at the horizon (~200 m) and clearly
+## from a jump or the Command view; hubs ~1.7 km apart need the rocket; the grid loads in ~30 ms.
 
 const MAX_N: int = 6       # neighbour / corner stride
 const CHUNK_DROP: int = 4  # chunk = cell of level (level - 4): ~256 cells per chunk
