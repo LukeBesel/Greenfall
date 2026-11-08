@@ -201,6 +201,22 @@ static func glass(powered: bool = false, state: String = "repaired") -> Standard
 	return m
 
 
+## Light, see-through greenhouse/dome glass (alpha). Broken = grimy, nearly opaque.
+static func glasshouse(state: String = "repaired") -> StandardMaterial3D:
+	var key: String = "glasshouse:" + state
+	if _cache.has(key):
+		return _cache[key]
+	var m := StandardMaterial3D.new()
+	m.resource_name = key
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.albedo_color = Color(0.7, 0.88, 0.9, 0.28) if state != "broken" else Color(0.42, 0.4, 0.33, 0.8)
+	m.roughness = 0.08 if state != "broken" else 0.7
+	m.metallic_specular = 0.6
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	_cache[key] = m
+	return m
+
+
 ## Emissive trim strip / lamp lens. kind: "warm", "cool", "green", "red", "white" or a Color.
 ## Unpowered trims are dark frosted plastic, so a ruined site never glows.
 static func trim(kind: Variant = "cool", powered: bool = true, energy: float = 2.2) -> StandardMaterial3D:
@@ -360,6 +376,8 @@ static func for_key(key: String, state: String = "repaired", powered: bool = tru
 			return rubber()
 		"glass":
 			return glass(powered, state)
+		"glasshouse":
+			return glasshouse(state)
 		"trim":
 			if arg == "":
 				return trim_vc(powered and state != "broken")

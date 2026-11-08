@@ -20,6 +20,7 @@ static func _snap(s: Node) -> Dictionary:
 	return {
 		"schema": int(GameState.orbit.get("schema", 0)),
 		"cells_n": g.grid.cell_count(),
+		"freq": "%d saved=%d %s" % [g.grid.freq, int(GameState.orbit.get("freq", 0)), str(GameState.orbit.get("planet_id", ""))],
 		"cubes": snappedf(GameState.get_currency("cubes").to_float(), 0.01),
 		"cells_junk": hash(cd["junk"]),
 		"cells_state": hash(cd["state"]),
@@ -28,6 +29,8 @@ static func _snap(s: Node) -> Dictionary:
 		"planet_clean": snappedf(g.planet.restored_fraction(), 0.000001),
 		"lumi_dir": "%.4f,%.4f,%.4f" % [at[0], at[1], at[2]],
 		"lumi_fill": snappedf(p.compartment.fill, 0.01),
+		"parts_found": s.field.part_found.count(1),
+		"parts_near": s.field.part_pos.size() > 0,
 		"loose_cubes": cubes,
 	}
 
@@ -68,6 +71,8 @@ static func run(rt: Node, check: Callable) -> void:
 			so.crews.work_cell(c, 0.4)
 			break
 	g.cells.set_level(g.start_cell(), 3)
+	if g.field.part_pos.size() > 0:  # the detector dug one up
+		g.field.part_found[0] = 1
 	# Lumi walks 40 m off the pad with something in the chest.
 	var d: Vector3 = g.terrain.local_to_dir(g.start_cell(), 40.0, -25.0)
 	p.place_on_sphere(g.terrain.ground(d), -SphereGrid.frame(d).z)

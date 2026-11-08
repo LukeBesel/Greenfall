@@ -65,8 +65,7 @@ func _process(delta: float) -> void:
 		strength = 0.0
 		readout_changed.emit("", Color.WHITE, 0.0)
 		return
-	var p: Vector3 = field.part_pos[target]
-	var d: float = Vector2(p.x - patch.global_position.x, p.z - patch.global_position.z).length()
+	var d: float = field.part_distance(target, patch.global_position)  # [orbB] along the ground (flat: x/z)
 	var sig: float = float(Economy.rarity(field.part_rarity[target]).get("signal", 1.0))
 	strength = clampf(1.0 - d / (r * sig), 0.0, 1.0)
 	var interval: float = lerpf(float(_cfg.get("max_interval", 1.4)), float(_cfg.get("min_interval", 0.08)), pow(strength, 1.6))
@@ -95,8 +94,7 @@ static func active() -> bool:
 func can_dig() -> bool:
 	if target < 0 or digging > 0.0:
 		return false
-	var p: Vector3 = field.part_pos[target]
-	return Vector2(p.x - patch.global_position.x, p.z - patch.global_position.z).length() <= float(_cfg.get("dig_range", 1.4))
+	return field.part_distance(target, patch.global_position) <= float(_cfg.get("dig_range", 1.4))  # [orbB]
 
 
 ## Starts digging; calls back on_found(part_index) when done.
