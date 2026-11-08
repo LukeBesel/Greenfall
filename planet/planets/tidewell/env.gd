@@ -60,6 +60,7 @@ var _isle_mat: ShaderMaterial
 var _rafts: MultiMesh
 var _raft_hex := PackedInt32Array()
 var _beams: Array[Node3D] = []
+var _beam_mat: ShaderMaterial
 var _lamps: Array[StandardMaterial3D] = []
 var _fish: Array[Dictionary] = []
 var _tick: float = 0.0
@@ -328,6 +329,12 @@ func _process(delta: float) -> void:
 	for b: Node3D in _beams:
 		if b.is_visible_in_tree():
 			b.rotation.y += delta * 0.6
+	if _beam_mat:
+		# A hair-thin sweep by day, a soft (still thin) beam at night.
+		var sd: Node = world.get("sky_director")
+		var tod: float = float(sd.get("time_of_day")) if sd else 0.5
+		var night: float = clampf(1.0 - smoothstep(0.2, 0.3, tod) + smoothstep(0.72, 0.82, tod), 0.0, 1.0)
+		_beam_mat.set_shader_parameter("energy", lerpf(0.025, 0.22, night))
 	_update_fish(delta)
 
 
@@ -1275,6 +1282,7 @@ func _build_lighthouses() -> void:
 	var n: int = 0
 	var beam_mat := ShaderMaterial.new()
 	beam_mat.shader = preload(DIR + "beam.gdshader")
+	_beam_mat = beam_mat
 	for isl: Dictionary in islands:
 		if n >= 2 or str(isl["kind"]) != "isle" or isl.get("far", false) or float(isl["h"]) < 3.5:
 			continue
@@ -1320,7 +1328,7 @@ func _build_lighthouses() -> void:
 		for side: float in [1.0, -1.0]:
 			var cone := CylinderMesh.new()
 			cone.top_radius = 0.25
-			cone.bottom_radius = 7.0
+			cone.bottom_radius = 2.6
 			cone.height = 160.0
 			cone.radial_segments = 12
 			cone.cap_top = false
