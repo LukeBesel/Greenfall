@@ -44,7 +44,9 @@ static func wanted() -> bool:
 	return DevHooks.has("orbit") and not DevHooks.get_s("orbit", "") in ["v1", "globe"]
 
 
-## Builds the whole orbit slice into `p_world`. Synchronous (no BuildBudget yields yet).
+## Builds the whole orbit slice into `p_world`. [orbE] Behind the loading screen (a BuildBudget is
+## open, scenes/slice.gd `building`) it yields between steps and runs the survey on a thread, so
+## the first frame no longer freezes for the whole build; synchronous otherwise (tests, tools).
 func build(p_world: Node3D) -> void:
 	w = p_world
 	var t0: int = Time.get_ticks_msec()
@@ -77,7 +79,9 @@ func build(p_world: Node3D) -> void:
 	var hook := Callable()
 	if migrate:
 		hook = func(g: OrbitPlanet) -> void: report.merge(OrbitMigrate.apply(g))
-	globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}), OrbitSave.site_cells(od), hook)
+	BuildBudget.span(0.0, 0.5)  # [orbE] loading bar: the globe is the first half
+	await globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}), OrbitSave.site_cells(od), hook)
+	BuildBudget.span(0.5, 0.65)
 	hub_states = (od.get("hubs", {}) as Dictionary).duplicate(true)
 	# GameState.world is the start site's own dict on the globe (the flat one is kept for saves).
 	GameState.use_orbit_world(OrbitMigrate.hub_world() if migrate else ((od.get("hub_worlds", {}) as Dictionary).get("0", {}) as Dictionary).duplicate(true))
@@ -112,16 +116,28 @@ func build(p_world: Node3D) -> void:
 	cubes_root.name = "Cubes"
 	w.add_child(cubes_root)
 	w.set("_cubes_root", cubes_root)
+	await BuildBudget.check("orbit crews")  # [orbE]
 	var tq: int = Time.get_ticks_msec()  # [orbE] load breakdown
-	var site: Node3D = globe.build_start_site()
+	var tr0: bool = AssetLib.tracing
+	if DevHooks.has("load-report"):
+		AssetLib.tracing = true
+		AssetLib.traced.clear()
+	var site: Node3D = await globe.build_start_site()
+	if DevHooks.has("load-report"):  # [orbE] what the start site loads on the main thread
+		print("[orbit-load] start site %d ms, %d models: %s" % [Time.get_ticks_msec() - tq, AssetLib.traced.size(), ",".join(AssetLib.traced)])
+		AssetLib.tracing = tr0
+	await BuildBudget.check("orbit start site")  # [orbE]
 	_build_patch()
 	_build_depot(site)
+	await BuildBudget.check("orbit lumi")  # [orbE]
 	sites = OrbitSites.attach(self)  # [orbD] sled, rocket hops, planet %, site state
 	_build_hub()
 	_build_bench()
 	crews.build_crew(self)  # [orbC] the robot crew (planet/orbit/orbit_crews.gd)
 	if DevHooks.has("orbit-bots"):  # [orbC] stand-in bots only on request (the crew replaces them)
 		crews.spawn_demo_bots(globe.start_cell(), int(DevHooks.get_f("orbit-bots", 4.0)), w)
+	await BuildBudget.check("orbit crew")  # [orbE]
+	BuildBudget.span(0.65, 0.8)
 	var hl := HexLevels.new()  # sparse: only cleaned cells are tracked; levels also go to SphereCells
 	hl.name = "HexLevels"
 	hl.world = w
@@ -145,10 +161,13 @@ func build(p_world: Node3D) -> void:
 	w.add_child(pm)
 	pm.closed.connect(on_modal_closed)
 	w.set("pause_menu", pm)
+	await BuildBudget.check("orbit hud")  # [orbE]
 	_build_upgrades()
 	w.call("_setup_research_codex")  # slice.gd's own: Research, Achievements, the Codex (UI + data)
+	await BuildBudget.check("orbit codex")  # [orbE]
 	_build_story()
 	_build_yard_systems()
+	await BuildBudget.check("orbit story")  # [orbE]
 	if loaded and not migrate:
 		restore_world()
 	elif migrate:
@@ -157,17 +176,20 @@ func build(p_world: Node3D) -> void:
 	tq = Time.get_ticks_msec()
 	layers = OrbitLayers.attach(self)  # [orbE] sky + day/night, Glim, future layer, survey, system map, photo mode
 	globe.stats["layers_ms"] = Time.get_ticks_msec() - tq
+	await BuildBudget.check("orbit layers")  # [orbE]
+	BuildBudget.span(0.8, 1.0)
 	var tw: int = Time.get_ticks_msec()
 	OrbitPreload.finish()  # [orbE] models were loading on threads all along; the settle seats them
 	globe.stats["preload_wait_ms"] = Time.get_ticks_msec() - tw
 	globe.stats["preload_models"] = preload_n
 	globe.update_centres()
 	var t2: int = Time.get_ticks_msec()
-	globe.streamer.settle(20000, not DevHooks.has("orbit-settle-all"))  # [orbE] near chunks only; the rest streams in
+	await globe.streamer.settle_async(20000, not DevHooks.has("orbit-settle-all"))  # [orbE] near chunks only; the rest streams in
 	globe.stats["settle_ms"] = Time.get_ticks_msec() - t2
 	var t3: int = Time.get_ticks_msec()
 	globe.refresh_junk_now()
 	globe.stats["junk_fill_ms"] = Time.get_ticks_msec() - t3
+	await BuildBudget.check("orbit junk")  # [orbE]
 	Settings.apply_quality_to_tree(w)
 	day.after_quality(view_mode == "command")
 	if DevHooks.has("give"):
@@ -187,7 +209,8 @@ func build(p_world: Node3D) -> void:
 		str(loaded), Time.get_ticks_msec() - t0, g.stats["planet_ms"], g.stats["grid_ms"], g.stats["settle_ms"], g.stats["junk_fill_ms"]])
 	if DevHooks.has("load-report"):  # [orbE] where the build time goes
 		print("[orbit-load] %s streamer=%s chunks=%d cells/chunk=%d" % [JSON.stringify(g.stats), JSON.stringify(g.streamer.stats), g.grid.chunk_count(), g.grid.cell_count() / maxi(g.grid.chunk_count(), 1)])
-	w.emit_signal("built")
+	if not bool(w.get("building")):  # [orbE] behind the loader, slice.gd emits once it has re-enabled the world
+		w.emit_signal("built")
 
 
 func _build_patch() -> void:

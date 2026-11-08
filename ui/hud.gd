@@ -20,6 +20,8 @@ const FADE_AFTER_S: float = 6.0
 const CONTEXT_HOLD_S: float = 3.0
 const CONTEXT_COLOR := Color(0.8, 0.82, 0.8)  # [onboard] brighter than UITheme.MUTED
 
+var _planet_t: float = 0.0  # [orbE] planet % refresh timer
+var _planet_frac: float = 0.0
 var patch: Patch
 var world: Node
 
@@ -282,13 +284,19 @@ func _process(delta: float) -> void:
 		var pct: float = float(f.cleaned_count) / maxf(f.junk_hex_count, 1)
 		_field_frac = pct
 		_field_label.text = "%s   %d%%" % [str(world.district_name).to_upper(), int(floor(pct * 100.0))]
-		var pl: PlanetData = world.planet if world.get("planet") != null else null
-		var frac: float = pl.restored_fraction() if pl else 0.0
-		var orb: Variant = world.get("orbit")  # [orbD] globe: planet % over the hub regions
-		if orb is SliceOrbit and (orb as SliceOrbit).sites:
-			frac = (orb as SliceOrbit).sites.planet_fraction()
-		elif world.has_method("planet_fraction"):
-			frac = world.planet_fraction()
+		# [orbE] The planet % walks every hub-region cell on a globe (Anvil: ~3.5 ms a frame): a few
+		# times a second is plenty for a percentage.
+		_planet_t -= get_process_delta_time()
+		if _planet_t <= 0.0:
+			_planet_t = 0.25
+			var pl: PlanetData = world.planet if world.get("planet") != null else null
+			_planet_frac = pl.restored_fraction() if pl else 0.0
+			var orb: Variant = world.get("orbit")  # [orbD] globe: planet % over the hub regions
+			if orb is SliceOrbit and (orb as SliceOrbit).sites:
+				_planet_frac = (orb as SliceOrbit).sites.planet_fraction()
+			elif world.has_method("planet_fraction"):
+				_planet_frac = world.planet_fraction()
+		var frac: float = _planet_frac
 		_planet_label.text = "%s   %s%%" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(frac * 100.0)]
 		_field_bar.queue_redraw()
 		_relay_label.text = tr("WREN SIGNAL   %d%%") % SignalTower.signal_pct()
