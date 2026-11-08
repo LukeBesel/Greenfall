@@ -131,12 +131,15 @@ func pulse(origin: Vector3, hexes: Array[int]) -> int:
 		last_big += _big[i]
 	for h: int in hexes:  # the ring covers the scanned hexes even when they're empty
 		if h >= 0:
-			_reach = maxf(_reach, Vector2(field.hex_center(h).x - origin.x, field.hex_center(h).z - origin.z).length() + field.hex_size)
+			_reach = maxf(_reach, OrbitUp.ground_dist(origin, field.hex_center(h)) + field.hex_size)  # [orbB]
 	_reach = clampf(_reach, field.hex_size, 60.0)
 	_t = 0.0
 	_ring.visible = true
-	_ring.global_position = Vector3(origin.x, origin.y + 0.06, origin.z)
-	_ring.scale = Vector3(_reach + 1.0, 1.0, _reach + 1.0)
+	if OrbitUp.on_globe():  # [orbB] the ring lies on the local ground
+		_ring.global_transform = Transform3D(SphereGrid.frame(origin.normalized()).scaled(Vector3(_reach + 1.0, 1.0, _reach + 1.0)), origin + origin.normalized() * 0.06)
+	else:
+		_ring.global_position = Vector3(origin.x, origin.y + 0.06, origin.z)
+		_ring.scale = Vector3(_reach + 1.0, 1.0, _reach + 1.0)
 	last_count = _pids.size()
 	return last_count
 
@@ -170,9 +173,12 @@ func _process(delta: float) -> void:
 			continue
 		var pop: float = 1.0 + 0.6 * exp(-age * 7.0)  # a small pop as the ring passes
 		var p: Vector3 = field.piece_pos[pid]
-		var top: float = 0.55 + clampf(field.piece_vol[pid], 0.0, 2.0) * 0.5
+		var top: float = 0.55 + clampf(field.visual_vol(pid), 0.0, 2.0) * 0.5  # [orbB] how big it looks
 		var xf := Transform3D(Basis(Vector3.UP, _t * 2.2 + float(pid)).scaled(Vector3(pop, -pop, pop)),
 			Vector3(p.x, p.y + top + sin(_t * 3.0 + float(pid) * 0.7) * 0.06, p.z))  # point down at the piece
+		if OrbitUp.on_globe():  # [orbB] above the piece along its local up
+			var pu: Vector3 = p.normalized()
+			xf = Transform3D((SphereGrid.frame(pu) * Basis(Vector3.UP, _t * 2.2 + float(pid))).scaled(Vector3(pop, -pop, pop)), p + pu * (top + sin(_t * 3.0 + float(pid) * 0.7) * 0.06))
 		_mm.set_instance_transform(shown, xf)
 		var c: Color = COL_BIG if _big[i] == 1 else COL_OK
 		c.a = a

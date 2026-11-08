@@ -9,13 +9,15 @@ extends Node
 ## slice's `field`, SphereJunkView as its `view`, sites, gravity), sky and day/night (OrbitDay),
 ## stand-in crews (OrbitCrews), the real Patch on a SphereMotor with SphereCam, the HUD, the
 ## Depot on the start pad, Lumi Level, the pause menu, hex levels (sparse), the Hub (logic; the
-## site prefab shows its stage), the workbench (bench anchor) + Upgrades, Research/Achievements/
-## Codex, music, WREN + subtitles, Goals, the restart checklist (Tutorial), Requests (Contracts).
+## site prefab shows its stage), the workbench + Upgrades, Research/Achievements/Codex, music,
+## WREN + subtitles, Goals, Tutorial, Requests, Interactables, WorldEvents, the Signal Tower,
+## Extras (CD player, nursery, album, welcome back, Seed of the Week), the Telescope, Camp (broken
+## bench, trash bin, yard builds), Glim, the crashed pod, CoreCharge, Objectives (+ the cell
+## outline), the garden (sparse, per cell). Yard systems stand on orbD's hub-0 anchors (yard_slot).
 ## GameState.world is the start site's own dict (GameState.use_orbit_world).
-## Not ported yet (left null on the slice, skipped): CityLayout/CityView/StreetDressing/litter/
-## far junk/water (orbD sites), Fleet/robot builder/Command view (orbC), SkyDirector/GlobeView/
-## FutureLayer (orbE), Camp (bench repair, trash bin, yard builds), garden, events, intro/
-## objectives/signal tower, core charge, outposts, eggs, ledger, telescope, extras, Glim, photo.
+## Not here: CityLayout/CityView/StreetDressing/litter/far junk/water (orbD sites), Fleet/robot
+## builder/Command view (orbC), SkyDirector/GlobeView/FutureLayer, the intro cinematic and photo
+## mode (orbE); outposts, eggs, the Ledger arc, Bloom/late director, fauna, frontier districts.
 ##
 ## Dev flags (phase A's, now on the slice): --orbit-walk[=boost] --orbit-lap-quit,
 ## --orbit-scoop, --orbit-cash --orbit-cash-quit, --orbit-view=follow|ground|command,
@@ -138,6 +140,13 @@ func build(p_world: Node3D) -> void:
 		crews.spawn_demo_bots(globe.start_cell(), int(DevHooks.get_f("orbit-bots", 4.0)), w)
 	await BuildBudget.check("orbit crew")  # [orbE]
 	BuildBudget.span(0.65, 0.8)
+	var garden := Garden.new()  # sparse: a cell's slots come when Lumi plants or waters near it
+	garden.name = "Garden"
+	garden.world = w
+	garden.sparse = true
+	w.add_child(garden)
+	w.set("garden", garden)
+	garden.setup()
 	var hl := HexLevels.new()  # sparse: only cleaned cells are tracked; levels also go to SphereCells
 	hl.name = "HexLevels"
 	hl.world = w
@@ -216,7 +225,9 @@ func build(p_world: Node3D) -> void:
 func _build_patch() -> void:
 	var g: OrbitPlanet = globe
 	var hub_cell: int = g.start_cell()
-	var spawn_dir: Vector3 = g.terrain.local_to_dir(hub_cell, 0.0, 6.0)
+	# Facing north from the pad's middle: the crashed pod (anchor "pod", 9.8 m south) stays behind
+	# the follow camera (~6 m back) instead of filling the view or swallowing the camera.
+	var spawn_dir: Vector3 = g.terrain.local_to_dir(hub_cell, 0.0, 0.5)
 	var north: Vector3 = -SphereGrid.frame(spawn_dir).z
 	cam = SphereCam.new()
 	cam.name = "SphereCam"
@@ -458,7 +469,26 @@ func _build_yard_systems() -> void:
 		var slot: Array = yard_slot("signal_tower", SignalTower.pos())
 		w.add_child(tower)  # a child of the slice, as on the flat game (HubBuilds and the bot look it up)
 		tower.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)  # after its _ready
+	_attach_extras()
+	var scope := Telescope.new()  # the Telescope + remote progress (automation/telescope.gd)
+	scope.name = "Telescope"
+	scope.world = w
+	w.add_child(scope)
+	# Its model sits at _pos() in its own frame: put that point on the "telescope" anchor.
+	var tslot: Array = yard_slot("telescope", scope.call("_pos"))
+	scope.global_transform = (tslot[0] as Node3D).global_transform * (tslot[1] as Transform3D) * Transform3D(Basis(), -(scope.call("_pos") as Vector3))
 	_attach_camp()
+	GlimDirector.attach(w)  # Glim the lantern bot: light, hex scanner, upgrades, looks (systems/glim/)
+	_place_pod()
+	var cc := CoreCharge.new()  # Lumi's Bloom Core charge and its story beats (story/core_charge.gd)
+	cc.name = "CoreCharge"
+	cc.world = w
+	w.add_child(cc)
+	w.set("core_charge", cc)
+	var obj := Objectives.new()  # WREN's last message after the intro + the objective card and outline
+	obj.world = w
+	w.add_child(obj)
+	w.set("objectives", obj)
 
 
 ## A yard spot in world space (the anchor's origin, or the flat yard spot on the pad).
@@ -466,6 +496,54 @@ func yard_point(anchor: String) -> Vector3:
 	var flat: Vector3 = YardBuilds.pos(anchor, Vector3.ZERO) if YardBuilds.def(anchor).size() > 0 else Vector3.ZERO
 	var slot: Array = yard_slot(anchor, flat)
 	return (slot[0] as Node3D).global_transform * (slot[1] as Transform3D).origin
+
+
+## Extras as on the flat game (radio / CD player, robot nursery, album, welcome back, Seed of the
+## Week); the radio and the nursery stand on the start site's anchors (the nursery's caretakers
+## wander in its own frame, so they come along).
+func _attach_extras() -> void:
+	var ex: ExtrasDirector = ExtrasDirector.attach(w)
+	if ex == null:
+		return
+	if ex.radio:
+		var slot: Array = yard_slot("radio", Radio.POS)
+		ex.radio.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)
+		var reach: Node3D = ex.radio.get("_anchor") as Node3D
+		if reach:
+			reach.global_position = ex.radio.global_position + ex.radio.global_basis.x * 1.0
+	if ex.nursery:
+		var slot2: Array = yard_slot("nursery", ex.nursery.position)
+		ex.nursery.global_transform = (slot2[0] as Node3D).global_transform * (slot2[1] as Transform3D)
+		ex.nursery.set("center", ex.nursery.global_position)
+
+
+## The landing pod in its crash site on the start site's "pod" anchor. The intro cinematic itself
+## is camera work for orbE; on the globe it doesn't play yet, so the landing counts as done.
+func _place_pod() -> void:
+	GameState.flags["intro_done"] = true
+	var pod: Node3D = Intro.build_pod()
+	var fire: Node = pod.get_node_or_null("ReentryFire")
+	if fire:
+		fire.queue_free()
+	var at: Vector3 = yard_point("pod")
+	var site: Node3D = CrashSite.attach(w, pod, at, 0.5)
+	site.global_basis = SphereGrid.frame(at.normalized()) * Basis(Vector3.UP, 0.5)
+	EscapePod.set_open(pod, true, CrashSite.LEAN.x)
+	# Solid: one box from the pod's own bounds, in its frame (PropColliders.fit reads world y).
+	var ab := AABB()
+	var first: bool = true
+	var inv: Transform3D = pod.global_transform.affine_inverse()
+	for c: Node in pod.find_children("*", "MeshInstance3D", true, false):
+		var mi: MeshInstance3D = c
+		if mi.mesh == null:
+			continue
+		var b: AABB = (inv * mi.global_transform) * mi.mesh.get_aabb()
+		ab = b if first else ab.merge(b)
+		first = false
+	if not first:
+		var body: StaticBody3D = PropColliders.body(pod, "Props")
+		PropColliders.add_box(body, Transform3D(pod.global_basis.orthonormalized(), pod.global_transform * ab.get_center()), ab.size * 0.85)
+	w.set_meta("orbit_pod", site)
 
 
 ## Camp (systems/camp/camp.gd) as on the flat game: the broken bench is its "bench" bit, the
@@ -753,6 +831,9 @@ func persist_save() -> void:
 			cd["at"] = g.to_dirh(c.global_position)
 			cd["basis"] = _basis_arr(c.global_basis)
 			cubes.append(cd)
+	var gdn: Garden = w.get("garden")
+	if gdn:
+		GameState.world["garden"] = gdn.persist()  # the hub's dict (GameState.world on the globe)
 	var pd: Dictionary = patch.to_dict()
 	pd.erase("pos")
 	pd.erase("yaw")

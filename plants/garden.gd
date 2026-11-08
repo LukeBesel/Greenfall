@@ -36,6 +36,11 @@ var _tick: float = 0.0
 const VARIANT_TRIS: int = 3000  # [green]
 const MAX_VARIANTS: int = 3  # [green] caps the batch count (chunk x species x variant)
 var meadow: Meadow  # [green] living ground cover driven by hex life (plants/meadow.gd)
+## [orbB] Sparse (the globe): a cell's slots are made when Lumi plants or waters near it (a 164k-cell
+## globe can't hold every slot), laid out in the cell's own frame on the globe ground and seeded by
+## the cell, so a cell always gets the same slots; saved per cell, not by slot index.
+var sparse: bool = false
+var _saved_cells: Dictionary = {}  # cell -> [species bytes, stage bytes, water floats] not made yet
 
 
 func setup() -> void:
@@ -44,6 +49,9 @@ func setup() -> void:
 	for s: Dictionary in species:
 		_sp_weight_sum += float(s.get("weight", 1.0))
 	var field: HexField = world.field
+	if sparse:  # [orbB] slots come per cell, on demand (ensure_hex)
+		_load_sparse()
+		return
 	for id: int in field.hex_count():
 		if field.hex_hub[id] == 0 and not field.is_water(id) and not (id in late_hexes):
 			_make_slots(id)
@@ -82,8 +90,40 @@ func plantable(s: int) -> bool:
 	return true
 
 
+## [orbB] Sparse mode: make a land cell's slots (once) and restore what a save had planted there.
+func ensure_hex(hid: int) -> void:
+	if not sparse or hid < 0 or hex_slots.has(hid):
+		return
+	var field: HexField = world.field
+	if field.hex_hub[hid] != 0 or field.is_water(hid):
+		return
+	var first: int = slot_pos.size()
+	_make_slots(hid)
+	for i: int in range(first, slot_pos.size()):
+		var ck: Vector2i = _chunk_of(i)
+		_chunk_cap[ck] = int(_chunk_cap.get(ck, 0)) + 1
+	var d: Variant = _saved_cells.get(hid)
+	if d is Array and (d as Array).size() == 3:
+		var sp: PackedByteArray = d[0]
+		var st: PackedByteArray = d[1]
+		var wa: PackedFloat32Array = d[2]
+		var ids: PackedInt32Array = hex_slots[hid]
+		for k: int in mini(ids.size(), sp.size()):
+			var sl: int = ids[k]
+			slot_species[sl] = int(sp[k]) - 1
+			slot_stage[sl] = st[k]
+			slot_water[sl] = wa[k] if k < wa.size() else 0.0
+			if slot_species[sl] >= 0:
+				_update_inst(sl)
+		_saved_cells.erase(hid)
+		_recount(hid)
+
+
 func _make_slots(hid: int) -> void:
 	var field: HexField = world.field
+	if field is SphereField:  # [orbB] the cell's own frame on the globe ground
+		_make_slots_sphere(field as SphereField, hid)
+		return
 	var spacing: float = float(cfg.get("slot_spacing", 2.3))
 	var c: Vector3 = field.hex_center(hid)
 	var rng := RandomNumberGenerator.new()
@@ -109,6 +149,32 @@ func _make_slots(hid: int) -> void:
 	hex_slots[hid] = ids
 
 
+func _make_slots_sphere(f: SphereField, hid: int) -> void:
+	var spacing: float = float(cfg.get("slot_spacing", 2.3))
+	var ctr: Vector3 = f.grid.centers[hid]
+	var fr: Basis = SphereGrid.frame(ctr)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = f.seed_value * 31 + hid
+	var ids := PackedInt32Array()
+	var r: int = int(ceil(f.hex_size / spacing)) + 1
+	for gx: int in range(-r, r + 1):
+		for gz: int in range(-r, r + 1):
+			var lx: float = gx * spacing + rng.randf_range(-0.5, 0.5)
+			var lz: float = gz * spacing + rng.randf_range(-0.5, 0.5)
+			var d: Vector3 = (ctr + (fr.x * lx + fr.z * lz) / f.grid.radius_m).normalized()
+			if f.grid.cell_at(d) != hid:
+				continue
+			ids.append(slot_pos.size())
+			slot_pos.append(f.terrain.ground(d))
+			slot_hex.append(hid)
+			slot_species.append(-1)
+			slot_stage.append(0)
+			slot_progress.append(0.0)
+			slot_water.append(0.0)
+			slot_yaw.append(rng.randf() * TAU)
+	hex_slots[hid] = ids
+
+
 func unlocked() -> bool:
 	return GameState.flags.get("seeds_unlocked", false)
 
@@ -122,6 +188,7 @@ func planted_near(pos: Vector3, fwd: Vector3, reach: float = 2.8) -> Array[int]:
 	var out: Array[int] = []
 	var hid: int = world.field.hex_at(pos + fwd * 1.0)
 	for h: int in [hid, world.field.hex_at(pos)]:
+		ensure_hex(h)  # [orbB]
 		if not hex_slots.has(h):
 			continue
 		for s: int in hex_slots[h]:
@@ -134,6 +201,8 @@ func _slot_near(pos: Vector3, fwd: Vector3, reach: float, empty: bool) -> int:
 	var best: int = -1
 	var best_d: float = INF
 	for h: int in [world.field.hex_at(pos + fwd * 1.0), world.field.hex_at(pos)]:
+		if world.field.is_clean(h):
+			ensure_hex(h)  # [orbB]
 		if not hex_slots.has(h) or not world.field.is_clean(h):
 			continue
 		for s: int in hex_slots[h]:
@@ -158,7 +227,7 @@ func plant(slot: int) -> bool:
 	slot_water[slot] = 0.0
 	_update_inst(slot)
 	var p: Vector3 = slot_pos[slot]
-	Vfx.burst("soil", p + Vector3(0, 0.05, 0), Color(0.36, 0.27, 0.2), 0.8)
+	Vfx.burst("soil", p + OrbitUp.up(p) * 0.05, Color(0.36, 0.27, 0.2), 0.8)  # [orbB] local up
 	Audio.play("dig", 1.1, -8.0)
 	GameState.inc_stat("plants_planted")
 	_recount(slot_hex[slot])
@@ -232,7 +301,7 @@ func _process(delta: float) -> void:
 					if slot_stage[s] == 4:
 						GameState.add_currency("seeds", BigNum.from_float(float(sp.get("seed_yield", 0.5)) * seed_mult))
 						GameState.inc_stat("plants_bloomed")
-						Vfx.burst("sparkle", slot_pos[s] + Vector3(0, 0.5, 0), Color(1.0, 0.95, 0.6), 0.25)
+						Vfx.burst("sparkle", slot_pos[s] + OrbitUp.up(slot_pos[s]) * 0.5, Color(1.0, 0.95, 0.6), 0.25)  # [orbB]
 	for h: int in changed_hexes:
 		_recount(h)
 
@@ -251,7 +320,7 @@ func _recount(hid: int) -> void:
 	hex_life[hid] = life
 	world.view.set_life(hid, life)
 	var planet: PlanetData = world.planet
-	var cell: int = world.slice_cells[hid]
+	var cell: int = hid if sparse else world.slice_cells[hid]  # [orbB] cell ids are planet ids on the globe
 	var before: int = planet.state[cell]
 	if life >= float(cfg.get("restored_life", 0.8)):
 		planet.state[cell] = PlanetData.State.RESTORED
@@ -259,6 +328,10 @@ func _recount(hid: int) -> void:
 		planet.state[cell] = PlanetData.State.GROWING
 	elif planted > 0:
 		planet.state[cell] = PlanetData.State.PLANTED
+	if sparse and before != planet.state[cell]:  # [orbB] the globe's cells (far shell, planet %) follow
+		var so: Node = world.get("orbit")
+		if so:
+			(so.get("globe") as OrbitPlanet).cells.set_state(cell, planet.state[cell])
 	if before != planet.state[cell] and planet.state[cell] == PlanetData.State.RESTORED:
 		EventBus.toast.emit(tr("A hex is fully restored. Something small is already living in it."), "story")
 		Audio.play("chime", 0.8, -4.0)
@@ -274,10 +347,14 @@ func _slot_xf(s: int) -> Transform3D:
 	var b := Basis(Vector3.UP, slot_yaw[s]).scaled(Vector3.ONE * sc)
 	if slot_water[s] <= 0.0 and slot_stage[s] > 0:
 		b = Basis(Vector3.RIGHT, 0.35) * b  # droop when thirsty
+	if sparse:  # [orbB] stand on the local ground
+		b = SphereGrid.frame(slot_pos[s].normalized()) * b
 	return Transform3D(b, slot_pos[s])
 
 
 func _chunk_of(s: int) -> Vector2i:
+	if sparse:  # [orbB] batch by the globe's chunks
+		return Vector2i((world.field as SphereField).grid.cell_chunk[slot_hex[s]], -1)
 	return Vector2i(floori(slot_pos[s].x / CHUNK), floori(slot_pos[s].z / CHUNK))
 
 
@@ -321,7 +398,43 @@ func _update_inst(s: int) -> void:
 
 # --- Persistence -----------------------------------------------------------------------
 
+## [orbB] Sparse save: per planted cell, its slots' species / stage / water.
+func persist_sparse() -> Dictionary:
+	var out: Dictionary = {}
+	for h: int in hex_slots:
+		var ids: PackedInt32Array = hex_slots[h]
+		var any: bool = false
+		var sp := PackedByteArray()
+		var st := PackedByteArray()
+		var wa := PackedFloat32Array()
+		for sl: int in ids:
+			sp.append(slot_species[sl] + 1)
+			st.append(slot_stage[sl])
+			wa.append(slot_water[sl])
+			any = any or slot_species[sl] >= 0
+		if any:
+			out[str(h)] = [Marshalls.raw_to_base64(sp), Marshalls.raw_to_base64(st), Marshalls.raw_to_base64(wa.to_byte_array())]
+	for h: int in _saved_cells:  # planted cells this run never came near: keep them
+		var e: Array = _saved_cells[h]
+		out[str(h)] = [Marshalls.raw_to_base64(e[0]), Marshalls.raw_to_base64(e[1]), Marshalls.raw_to_base64((e[2] as PackedFloat32Array).to_byte_array())]
+	return {"cells": out}
+
+
+func _load_sparse() -> void:
+	var d: Dictionary = GameState.world.get("garden", {})
+	var cells: Dictionary = d.get("cells", {})
+	for k: Variant in cells:
+		var e: Array = cells[k]
+		if e.size() < 3:
+			continue
+		_saved_cells[int(str(k))] = [Marshalls.base64_to_raw(str(e[0])), Marshalls.base64_to_raw(str(e[1])), Marshalls.base64_to_raw(str(e[2])).to_float32_array()]
+	for h: int in _saved_cells.keys():  # planted cells come back with their plants
+		ensure_hex(h)
+
+
 func persist() -> Dictionary:
+	if sparse:  # [orbB]
+		return persist_sparse()
 	var sp := PackedByteArray()
 	sp.resize(slot_species.size())
 	for i: int in slot_species.size():

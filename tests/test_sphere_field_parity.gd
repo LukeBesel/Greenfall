@@ -150,3 +150,14 @@ func test_cell_holds_a_flat_hex_of_volume_in_bites() -> void:
 	assert_almost_eq(taken, v0, 0.001, "every bit of the piece's volume is taken once")
 	assert_eq(f.piece_scale[pid], scl, "pieces keep their model's size")
 	assert_almost_eq(f.hex_left[cell], SphereField.FLAT_HEX_VOL - v0, 0.01, "the ledger follows the bites")
+
+
+func test_chest_pending_has_no_float_residue() -> void:
+	var c := Compartment.new()
+	var vols: Array[float] = [1.22, 0.30000001, 2.4417, 1.22, 0.7071, 1.22, 0.1, 0.2]
+	for v: float in vols:
+		c.reserve(v)
+	vols.reverse()
+	for v: float in vols:
+		c.add("metal", v)
+	assert_eq(c.pending, 0.0, "nothing is left 'flying in' once every piece arrived (a dump isn't blocked)")

@@ -299,7 +299,7 @@ func _pick_hex() -> int:
 	if _hex_ok(h):
 		if fh != h and _hex_ok(fh) and f.removed_fraction(fh) > f.removed_fraction(h) + 0.15:
 			h = fh
-		elif Vector2(f.hex_center(h).x - at.x, f.hex_center(h).z - at.z).length() > f.hex_size * 6.0:
+		elif OrbitUp.ground_dist(at, f.hex_center(h)) > f.hex_size * 6.0:  # [orbB] along the ground
 			h = -1
 	else:
 		h = -1
