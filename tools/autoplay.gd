@@ -1011,6 +1011,17 @@ func _shop(want: Dictionary) -> void:
 		GameState.spend_all(SignalTower.next_cost())
 		tower.raise()
 		_event("signal_tower", {"tier": SignalTower.tier()})
+	# 0b) [v1guide] The workbench tiers (ui/bench_tiers.gd): the Bots / Research / Requests tabs only
+	# open by upgrading the bench, so a player buys the next tier as soon as it's offered and paid.
+	if BenchTiers.can_buy(world) and BenchTiers.buy(world):
+		_progress()
+		_event("bench_tier", {"tier": BenchTiers.tier()})
+	# 0c) [v1guide] The story objective's upgrade (Compartment, Scoop Size, the Baler): what the card asks for.
+	var obj: Objectives = world.get("objectives") as Objectives
+	if obj and str(obj.current().get("type", "")) == "upgrade":
+		var oid: String = str(obj.current().get("key", ""))
+		if Economy.upgrade_defs.has(oid) and Economy.is_unlocked(oid) and not Economy.is_maxed(oid) and GameState.can_afford("cubes", Economy.upgrade_cost(oid)):
+			Economy.buy_upgrade(oid, 1)
 	# 1) Research ([money] cubes from the research fund, see _research_ok).
 	var guard: int = 0
 	var rid: String = _research_pick()
@@ -1050,7 +1061,7 @@ func _shop(want: Dictionary) -> void:
 			fab_wait = true
 	_fabricator_mix(world)
 	# 3) Robots ([ui2] Parts + cubes; keep the next base level's Parts unless the robot can't wait).
-	var robot: String = str(want.get("robot", "")) if fleet != null else ""  # [orbB] no Fleet on the globe yet (orbC)
+	var robot: String = str(want.get("robot", "")) if fleet != null and BenchTiers.tab_open("bots") else ""  # [orbB] no Fleet on the globe yet (orbC)  # [v1guide] the Bots tab is open
 	if robot != "":
 		var hub_save: float = float(want.get("hub_save", 0.0))
 		var spare: float = GameState.get_currency("cubes").to_float() - float(want.get("robot_cost", 0.0))
@@ -1062,7 +1073,7 @@ func _shop(want: Dictionary) -> void:
 		if ok and robot != "" and fleet.can_build(robot):
 			var at: Vector3 = world.upgrades.build_at.call() if world.upgrades.build_at.is_valid() else BENCH_STAND
 			fleet.build(robot, at)
-	for t: String in (Economy.robot_order if fleet != null else []):  # [orbB]
+	for t: String in (Economy.robot_order if fleet != null and BenchTiers.tab_open("bots") else []):  # [orbB] [v1guide]
 		var treq: Dictionary = fleet.tier_requirements(t)
 		var keep_cubes: float = float(want.get("hub_save", 0.0)) * 0.5  # [ui2] a tier keeps half the base's cubes
 		if fleet.count(t) > 0 and treq.get("ok", false) and _mats_spare({"parts": (treq["parts"] as BigNum).to_float()}, false) \
@@ -1111,6 +1122,8 @@ func _shop(want: Dictionary) -> void:
 		reserve = maxf(reserve, Research.cost(prn).to_float())  # [pace]
 	if not Pace.baler_unlocked() and Economy.is_unlocked(Pace.UP_BALER):
 		reserve = maxf(reserve, Economy.upgrade_cost(Pace.UP_BALER).to_float())  # [pace] a person saves for the Baler
+	if not BenchTiers.next_def().is_empty() and BenchTiers.block_reason(world) == "":
+		reserve = maxf(reserve, float(BenchTiers.next_cost().get("cubes", 0.0)))  # [v1guide] a person saves for the next bench tier
 	if HubBuilds.listed(world, "bot_fabricator") and not BotFabricator.built(world):
 		reserve = maxf(reserve, float(BotFabricator.cost().get("cubes", 0)))  # [orbC] a person saves for the Fabricator
 	var fab_now: BotFabricator = BotFabricator.of(world)
@@ -1410,6 +1423,8 @@ func _research_reserve() -> float:
 
 
 func _research_pick() -> String:
+	if not BenchTiers.tab_open("research"):  # [v1guide] the Research tab opens with the workbench's Mk III
+		return ""
 	if not Research.active().is_empty() and Research.queue().size() >= Research.max_queue():
 		return ""
 	var saving: bool = false
