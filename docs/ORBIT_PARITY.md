@@ -1,6 +1,6 @@
 # Round planets: parity with the flat game
 
-What the flat game has, and where each piece stands on the walkable globe (`--orbit`, or the title screen's **Round planets (preview)**). Last checked Nov 9 on `wt/orbB` (orbB).
+What the flat game has, and where each piece stands on the walkable globe (`--orbit`, or the title screen's **Round planets (preview)**). Last checked Nov 9 on `wt/orbB` (orbB); First Seed, compost press, seed finds and memory shards turned green in the wrap-up.
 
 **Status**
 - **works**: built on the globe and exercised by a check.
@@ -69,12 +69,12 @@ Same upgrades bought, no errors.
 | World events (+ streak HUD) | partial | orbB | Built; `tools/events_check.tscn` is flat-only. Port it to `--orbit`. |
 | Camp: broken bench, trash bin, yard builds | works | | On orbD's anchors; `orbit_bin_prompt`, `yard_built` in the save comparison. |
 | Stations (conveyor, auto baler, recycler) | partial | orbD / orbC | The machines stand in the yard, idle. The flat `Stations` node (their feeding logic) isn't built on the globe. |
-| Composter (organic junk to seeds) | missing | orbB | The base's seed economy. |
-| Seed finds (early trickle) | missing | orbB | Rare seeds in scooped junk after the seed tin. |
+| Composter (organic junk to seeds) | works | | On the start yard's `composter` anchor (YardSite's stand-in steps aside). Paper feeds it and it presses seeds. Checks: `orbit_composter_*`. |
+| Seed finds (early trickle) | works | | `orbit_seed_finds`. |
 | Garden (plant, water, grow) | works | | Sparse, per cell; `orbit_garden_planted`, `orbit_garden_slots_on_ground`. |
-| Seeds unlock: First Seed (greenhouse, Maker tin, first sprout) | missing | orbB | The main way seeds unlock. On the globe seeds unlock only via the Ledger (act 4), contracts or the weekly seed. **Top gap.** |
-| Meadow (restored ground cover) | missing | orbB / orbE | Grass and flowers over restored cells. The Future Layer shows levels, not ground cover. |
-| Wildlife (butterflies, birdsong) | missing | orbB | Separate from Fauna; ambience over restored cells. |
+| Seeds unlock: First Seed (greenhouse, Maker tin, first sprout) | works | | The greenhouse stands on a clear patch east of the start yard (`FirstSeed.find_spot`). Checks: `orbit_first_seed_built`, `orbit_greenhouse_east_on_ground`, `orbit_seed_*` (prompt, cinematic, unlock, controls back). |
+| Meadow (restored ground cover) | missing | orbB / orbE | Grass and flowers over restored cells. A per-cell `MeadowSphere` exists in history (cf2ca15, reverted for the playtest), ready to re-land. |
+| Wildlife (butterflies, birdsong) | missing | orbB | Separate from Fauna; ambience over restored cells. A per-hub port exists in history (cf2ca15, reverted for the playtest), ready to re-land. |
 | Fauna (animals) | works | | Per hub. Checks: `orbit_fauna_*` (frame, ground, upright far out, hops, sleep). Perf about 1.6 ms/frame. |
 | Garden Mode decor | works | | Per hub; `orbit_decor_*`, `orbit_garden_mode_*`. |
 | Outposts | works | | Per hub; `orbit_outpost*`. Robots delivering to outposts wait on orbC's real Fleet. |
@@ -83,7 +83,7 @@ Same upgrades bought, no errors.
 | Extras: CD player, nursery, album, welcome back, Seed of the Week | works | | `orbit_radio_*`; the nursery is on its anchor. |
 | Glim (light, scanner, upgrades) | works | | `orbit_glim_scan_marks`. |
 | Cargo pods (other districts' robots pay) | retired | | Far crews on the globe are records that keep working (orbC, `orbit_offline_2h_within_10pct`). |
-| Feel FX (bale press juice, hex reveal) | missing | orbB | Vfx and audio polish on the core loop. |
+| Feel FX (bale press juice, hex reveal) | partial | orbB | The bale press squash runs (Patch calls it). The rest (bale pop, upgrade show-off, hex sweep on the local up) is in a stash on wt/orbB ("orbB Feel FX WIP"). |
 
 ## Robots and Command view
 
@@ -117,7 +117,7 @@ Same upgrades bought, no errors.
 | Intro cinematic | missing | orbE | On the globe the pod is placed and `intro_done` is set; the cinematic doesn't play. |
 | Crashed pod | works | | `orbit_pod_out_of_view`, `orbit_camera_clear_of_pod`. |
 | Core charge | works | | Built. |
-| Memory shards + document view | missing | orbB | Shards in cleaned cells restore WREN's memory. `doc_view` is null, so the Ledger's "read the amended contract" does nothing on the globe. |
+| Memory shards + document view | works | | In the start hub's region; they surface on the ground when their cell is clean. The paper view also opens the Ledger's contract and the eggs' notes. Checks: `orbit_shard*`. |
 | Easter eggs, collectibles, museum | works | | Per hub; `orbit_eggs_*`, `orbit_egg_prompt`. |
 | Ledger arc (drones, jammers, relay, resolve) | works | | Per hub; `orbit_ledger_*`. The resolve cinematic runs in the frame; I didn't take a picture of it. |
 | Bloom (milestones, Seed Ark, finale) | partial | orbE | Built; the finale on the globe is unchecked. |
@@ -151,7 +151,7 @@ Same upgrades bought, no errors.
 
 | Owner | Gaps |
 |---|---|
-| orbB | First Seed (top: the main seed unlock); composter and seed finds; memory shards + document view; Wildlife; Meadow (with orbE); Feel FX; an `--orbit` events check and a contracts check; Cradle-world launch onto a globe (with orbE). |
+| orbB | Wildlife and Meadow (re-land cf2ca15); Feel FX (stash); an `--orbit` events check and a contracts check; Cradle-world launch onto a globe (with orbE). |
 | orbC | Fleet / robot builder on the globe; water net (Drip refills); haulers delivering to outposts. |
 | orbD | Ground litter; water surface; street power; Stations' feeding logic in the yard (with orbC); other planets' end-to-end check. |
 | orbE | Intro cinematic; binary sun; lens overlay; Bloom finale on the globe; perf on the Mac. |
