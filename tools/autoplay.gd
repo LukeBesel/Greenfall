@@ -111,8 +111,12 @@ func _init(p_world: Node) -> void:
 		_progress()
 		var r: Robot = world.fleet.find_robot(n) if world.fleet else null
 		var tid: String = r.type_id if r else "?"
+		if r == null and world.fleet is SphereFleet:  # [v3qa] globe crews: the unit by name
+			for u: Dictionary in (world.fleet as SphereFleet).crew.robots():
+				if str(u["name"]) == n:
+					tid = str(u["type"])
 		_mark("first_%s_s" % tid)
-		_event("robot", {"type": tid, "name": n, "fleet": world.fleet.robots().size() if world.fleet else 0}))
+		_event("robot", {"type": tid, "name": n, "fleet": world.fleet.robot_total() if world.fleet else 0}))
 	_hook(EventBus.research_completed, func(id: String) -> void:
 		_mark("first_research_s")
 		_event("research", {"id": id}))
@@ -1499,7 +1503,7 @@ func _paint_zones() -> void:
 		if int(a.get("clean", 0)) > 0 and fleet.move_job("clean", "water"):
 			_event("allocate", {"from": "clean", "to": "water"})
 	var f: HexField = world.field
-	var cleaners: int = fleet.robots_with_role("clean").size()
+	var cleaners: int = fleet.crew_size("clean") if fleet is SphereFleet else fleet.robots_with_role("clean").size()  # [v3qa] globe crew
 	var want_n: int = clampi(2 + cleaners, 3, 6)
 	var zone_goal: int = _zone_goal_target()
 	want_n = maxi(want_n, zone_goal)
@@ -1509,7 +1513,8 @@ func _paint_zones() -> void:
 	for h: int in _hexes():
 		if _land(h) and not f.is_clean(h) and h != _focus_hex:
 			cand.append(h)
-	cand.sort_custom(func(a: int, b: int) -> bool: return f.hex_center(a).length() - 8.0 * f.removed_fraction(a) < f.hex_center(b).length() - 8.0 * f.removed_fraction(b))
+	var o: Vector3 = world.depot.global_position if f is SphereField and world.get("depot") != null else Vector3.ZERO  # [v3qa] the globe's centre is the planet's
+	cand.sort_custom(func(a: int, b: int) -> bool: return f.hex_center(a).distance_to(o) - 8.0 * f.removed_fraction(a) < f.hex_center(b).distance_to(o) - 8.0 * f.removed_fraction(b))
 	_set_zone("clean", cand.slice(0, want_n))
 	var g: Garden = world.garden
 	if g == null or not g.unlocked():
@@ -1529,6 +1534,9 @@ func _paint_zones() -> void:
 
 
 func _zone_goal_target() -> int:
+	var ob: Objectives = world.get("objectives") as Objectives  # [v3qa] the story step "Send your robot to work"
+	if ob and str(ob.current().get("type", "")) == "zone":
+		return int(ob.current().get("target", 1))
 	var gl: Goals = world.get("goals")
 	if gl == null:
 		return 0
@@ -1540,6 +1548,21 @@ func _zone_goal_target() -> int:
 
 func _set_zone(key: String, hexes: Array) -> void:
 	var fleet: Fleet = world.fleet
+	if fleet is SphereFleet:  # [v3qa] the globe crew's painted zones (what Command view B paints)
+		var crew: SphereCrew = (fleet as SphereFleet).crew
+		var had: Dictionary = (crew.zones.get(key, {}) as Dictionary).duplicate()
+		var ch: bool = false
+		for c: Variant in had:
+			if not hexes.has(int(c)):
+				crew.set_zone_cell(key, int(c), false)
+				ch = true
+		for h: Variant in hexes:
+			if not had.has(int(h)):
+				crew.set_zone_cell(key, int(h), true)
+				ch = true
+		if ch:
+			_log.append({"t": _now(), "event": "zone", "key": key, "hexes": hexes})
+		return
 	var cur: Array = (fleet.order(key, false)["zone"] as Array).duplicate()
 	var changed: bool = false
 	for h: Variant in cur:
