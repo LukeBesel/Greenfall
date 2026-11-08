@@ -114,6 +114,8 @@ func _ready() -> void:
 		var au := L10nAudit.new()
 		au.name = "L10nAudit"
 		add_child(au)
+	if has("quality-probe"):  # [v1menu] times quality preset switches (tools/quality_switch_probe.gd)
+		add_child(load("res://tools/quality_switch_probe.gd").new())
 	if has("pad-audit"):  # [deck] controller-only screen audit (tools/pad_audit.gd)
 		add_child(PadAudit.new())
 	if has("no-hud"):  # [steam] store/trailer shots without HUD, toasts and subtitles

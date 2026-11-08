@@ -6,13 +6,19 @@
   "morning_shift"
  ],
  "gap_s": [
-  30,
-  90
+  75,
+  180
  ],
  "first_gap_s": [
-  10,
-  25
+  20,
+  45
  ],
+ "landing_gap_s": [
+  150,
+  240
+ ],
+ "main_share": 0.6,
+ "_doc_v1menu": "[v1menu] gap_s: silence between background songs; first_gap_s: after a load; landing_gap_s: after the pod lands in a new game; main_share: chance the main theme is picked when it may play (never twice in a row), so it stays the most common song.",
  "crossfade_s": 4.0,
  "other_planet_weight": 0.12,
  "story_weight": 0.5,

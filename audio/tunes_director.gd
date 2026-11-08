@@ -148,10 +148,13 @@ static func _empty() -> Dictionary:
 func set_context(c: String) -> void:
 	if c == context:
 		return
+	var was: String = context
 	context = c
 	print("[tunes] context %s" % c)
 	if c == "play":
 		_start_gap(true)
+		if was == "intro":  # [v1menu] the pod has landed: a few quiet minutes before any song
+			_start_gap_cfg("landing_gap_s", [150, 240])
 	elif c != "intro":
 		_fade_all(1.5)
 
@@ -310,7 +313,7 @@ func _pick_menu() -> String:
 		var f: String = menu_first
 		menu_first = ""
 		return f
-	return Tunes._weighted(pool, recent, rng, func(id: String) -> float: return menu_main_weight if id == MAIN else 1.0)
+	return Tunes.pick_main_rule(pool, recent, rng, func(_id: String) -> float: return 1.0)  # [v1menu]
 
 
 func _planet() -> String:
@@ -393,7 +396,11 @@ func _pool_has_any() -> bool:
 
 
 func _start_gap(first: bool) -> void:
-	var r: Array = Tunes.cfg().get("first_gap_s" if first else "gap_s", [10, 25] if first else [30, 90])
+	_start_gap_cfg("first_gap_s" if first else "gap_s", [20, 45] if first else [75, 180])
+
+
+func _start_gap_cfg(key: String, fallback: Array) -> void:
+	var r: Array = Tunes.cfg().get(key, fallback)
 	gap_left = rng.randf_range(float(r[0]), float(r[1]))
 
 

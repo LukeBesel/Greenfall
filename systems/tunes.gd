@@ -24,6 +24,7 @@ static var _glim: GDScript
 static var _glim_checked: bool = false
 ## Tests: pretend these ids have (true) or lack (false) a file, whatever is on disk.
 static var file_override: Dictionary = {}
+static var _title_opened: bool = false  # [v1menu] the title has played its first song this launch
 
 
 static func cfg() -> Dictionary:
@@ -330,7 +331,32 @@ static func pick_next(planet: String, mood: String, restoration: float, recent: 
 	for id: String in found():
 		if fits(id, planet, mood, restoration):
 			pool.append(id)
-	return _weighted(pool, recent, rng, func(id: String) -> float: return weight(id, planet))
+	return pick_main_rule(pool, recent, rng, func(id: String) -> float: return weight(id, planet))  # [v1menu]
+
+
+## [v1menu] The owner's rules for the title and the background shuffle (2026-11-08): the main theme
+## is the most common song (picked with probability cfg main_share whenever it may play), the
+## other songs are mixed in by `w`, and the main theme never plays twice in a row (the intro's
+## cinematic song in between does not count). "" when only the main theme fits and it just played.
+static func pick_main_rule(pool: Array[String], recent: Array, rng: RandomNumberGenerator, w: Callable) -> String:
+	const MAIN_ID: String = "greenfall_main"
+	var last: String = last_heard(recent)
+	var others: Array[String] = []
+	for id: String in pool:
+		if id != MAIN_ID:
+			others.append(id)
+	var main_ok: bool = MAIN_ID in pool and last != MAIN_ID
+	if main_ok and (others.is_empty() or rng.randf() < float(cfg().get("main_share", 0.6))):
+		return MAIN_ID
+	return _weighted(others, recent, rng, w)
+
+
+## The last song heard before now, skipping cinematic songs (the intro's score).
+static func last_heard(recent: Array) -> String:
+	for i: int in range(recent.size() - 1, -1, -1):
+		if str(song(str(recent[i])).get("kind", "")) != "cinematic":
+			return str(recent[i])
+	return ""
 
 
 ## The CD player's shuffle: every owned song, evenly.
@@ -397,8 +423,8 @@ static func bpm() -> float:
 
 
 ## [tunes] The title screen's songs: the owned songs of the save shown on the title (start songs
-## plus its found CDs), or on a brand-new save any song, the main theme first on the very first
-## launch and favoured after. Remembers the first launch in user://tunes.cfg.
+## plus its found CDs), or on a brand-new save any song. [v1menu] The main theme first every time
+## the game opens, then pick_main_rule.
 static func setup_title(save: Dictionary) -> void:
 	var d: Node = director()
 	if d == null:
@@ -416,12 +442,10 @@ static func setup_title(save: Dictionary) -> void:
 	else:
 		pool = available()
 		main_w = 3.0
-		var cf := ConfigFile.new()
-		var seen: bool = cf.load("user://tunes.cfg") == OK and bool(cf.get_value("title", "launched", false))
-		if not seen:
-			first = "greenfall_main"
-			cf.set_value("title", "launched", true)
-			cf.save("user://tunes.cfg")
+
+	if not _title_opened:  # [v1menu] the main theme first whenever the game opens
+		_title_opened = true
+		first = "greenfall_main"
 	d.call("set_menu_pool", pool, first, main_w)
 	print("[tunes] title pool %s (first %s)" % [",".join(pool), first if first != "" else "-"])
 	set_context("menu")
