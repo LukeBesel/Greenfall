@@ -28,7 +28,7 @@ func test_wake_when_the_signal_tower_goes_up() -> void:  # [onboard] was: on the
 	wren.on_signal_raised(1)
 	assert_true(wren.awake())
 	assert_eq(wren._queue.size(), 1)
-	assert_string_contains(str(wren._queue[0]["text"]), "WREN")
+	assert_string_contains(str(wren._queue[0]["text"]), "Lumi")  # the first line after the tower greets Lumi
 
 
 func test_gate_holds_story_lines_until_the_tower() -> void:  # [onboard]

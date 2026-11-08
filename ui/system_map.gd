@@ -221,6 +221,9 @@ func _build() -> void:
 	_ship = ShipModel.for_display()  # [ship] parked by the current planet, flies the trips
 	_ship.scale = Vector3.ONE * 0.045 * ShipTiers.scale_of(_ship.tier)
 	_sys.add_child(_ship)
+	for n: Node in _ship.find_children("*", "Label3D", true, false):  # [sysmap2] hull lettering is unreadable at map scale and the map has no 3D text
+		n.get_parent().remove_child(n)
+		n.free()
 	_cards = Control.new()
 	_cards.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_cards.mouse_filter = Control.MOUSE_FILTER_IGNORE
