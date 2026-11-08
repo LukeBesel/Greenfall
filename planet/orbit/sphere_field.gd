@@ -27,7 +27,6 @@ var terrain: SphereTerrain
 var cells: SphereCells
 var piece_xf: Array[Transform3D] = []
 var materialized := PackedByteArray()
-var _cell_pieces: Dictionary = {}  # cell -> PackedInt32Array
 var _type_w: Array[float] = []
 var _type_wsum: float = 0.0
 var _lift_cache: Dictionary = {}  # model id -> [upright lift, lying lift]
@@ -56,6 +55,8 @@ func _init(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p
 	materialized.resize(n)
 	hex_piles.resize(n)
 	hex_piles.fill([])  # shared empty list; materialize assigns a cell its own
+	hex_pieces.resize(n)  # [orbB] the HexField layout, so flat code that walks hex_pieces works here
+	hex_pieces.fill(PackedInt32Array())
 	junk_hex_count = 0
 	cleaned_count = 0
 	var hub_flags: bool = false  # [orbB] globes that mark hub ground with F_HUB (the orbit slice); else phase A's rule
@@ -138,7 +139,7 @@ func hexes_near(pos: Vector3, ring: int = 1) -> Array[int]:
 
 
 func pieces_in(cell: int) -> PackedInt32Array:
-	return _cell_pieces.get(cell, PackedInt32Array())
+	return hex_pieces[cell]
 
 
 ## Makes the scoopable pieces of a cell (once), with its buried parts, landmark and piles.
@@ -206,7 +207,7 @@ func materialize(cell: int) -> PackedInt32Array:
 		var pid: int = _add_piece(cell, d, b, lift, ti, mid, 1 if lie else 0, vol, sc, rng.randf_range(PILE_EMBED.x, PILE_EMBED.y) if in_pile else 0.0)
 		out.append(pid)
 		vol_sum += vol
-	_cell_pieces[cell] = out
+	hex_pieces[cell] = out
 	# The cell's ledger in volume: total so that left / total stays the cell's junk fraction.
 	hex_left[cell] = vol_sum
 	hex_total[cell] = vol_sum / maxf(left, 0.01)
@@ -431,7 +432,7 @@ func _materialize_floating(cell: int) -> PackedInt32Array:
 		var pid: int = _add_piece(cell, d, b, -0.06, int(by_id.get(fl[0], 0)), str(fl[1]), 1 if lie else 0, vol, sc, 0.0)
 		out.append(pid)
 		vol_sum += vol
-	_cell_pieces[cell] = out
+	hex_pieces[cell] = out
 	hex_left[cell] = vol_sum
 	hex_total[cell] = vol_sum / maxf(left, 0.01)
 	return out
@@ -481,8 +482,8 @@ func _unlocked_keys() -> Array:
 	var out: Array = _saved_unlocked.keys()
 	if locked_biomes.is_empty():
 		return out
-	for c: int in _cell_pieces:
-		if locked_biomes.has(int(cells.biome[c])) and not locked.has(c) and not _saved_unlocked.has(c):
+	for c: int in grid.cell_count():
+		if materialized[c] == 1 and locked_biomes.has(int(cells.biome[c])) and not locked.has(c) and not _saved_unlocked.has(c):
 			out.append(c)
 	return out
 
