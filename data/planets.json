@@ -115,6 +115,28 @@
     "tagline": "The Ledger's first open-pit strip mine, closest to the twin suns.",
     "no_lakes": true,
     "pieces_mult": 1.6,
-    "exposure": 0.82
+    "exposure": 0.82,
+    "sites": {
+      "script": "res://planet/planets/ochre/sites.gd",
+      "api": "OchreSites.build(id, root, stage 1..5, restoration 0..1) -> Node3D, local +Y up, origin at the site centre",
+      "list": {
+        "hub_base": {
+          "name": "Ledger Haul Depot",
+          "diameter_m": 92
+        },
+        "toppled_excavator": {
+          "name": "The Fallen Wheel",
+          "diameter_m": 96
+        },
+        "pit_fragment": {
+          "name": "Bench Cut",
+          "diameter_m": 100
+        },
+        "oasis": {
+          "name": "Spring Terraces",
+          "diameter_m": 80
+        }
+      }
+    }
   }
 }

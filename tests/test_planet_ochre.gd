@@ -98,3 +98,24 @@ func test_apply_headless_and_stages() -> void:
 		junk1 += (p[0] as MultiMesh).visible_instance_count
 	assert_gt(junk0, 3000, "the pit is trashed")
 	assert_eq(junk1, 0, "restored pit is clean")
+
+
+func test_site_prefabs_build_local() -> void:
+	var sites: Dictionary = (PlanetEnvs.entry("ochre").get("sites", {}) as Dictionary).get("list", {})
+	assert_eq(sites.size(), OchreSites.SITES.size(), "registry lists every site")
+	for id: String in OchreSites.SITES:
+		assert_true(sites.has(id), "%s in registry" % id)
+		for stage: int in [1, 5]:
+			var root := Node3D.new()
+			add_child_autofree(root)
+			root.position = Vector3(500, 40, -300)  # anywhere: sites are local
+			var site: Node3D = OchreSites.build(id, root, stage, 0.0 if stage == 1 else 1.0)
+			var geo: Array = site.find_children("*", "GeometryInstance3D", true, false)
+			assert_gt(geo.size(), 3, "%s stage %d has geometry" % [id, stage])
+			var r: float = 0.0
+			for g: Node in geo:
+				var gi: GeometryInstance3D = g
+				var aabb: AABB = gi.get_aabb()
+				var c: Vector3 = root.to_local(gi.global_transform * aabb.get_center())
+				r = maxf(r, Vector2(c.x, c.z).length())
+			assert_lt(r, 60.0, "%s stays within its patch" % id)

@@ -82,6 +82,29 @@ static func build(env: OchreEnv) -> void:
 	print("[ochre] lookbook at %s" % str(p.call(0.0, 0.0)))
 
 
+## Dev `--ochre-site=<id>`: the site twice on a levelled pad, ruined (stage 1, restoration 0) on the
+## left and futuristic (stage 5, restoration 1) on the right.
+static func build_site(env: OchreEnv, id: String) -> void:
+	var y0: float = env.pit.height_at(ORIGIN.x, ORIGIN.y) + 0.6
+	var pad := MeshInstance3D.new()
+	pad.mesh = _vc_box(Vector3(260.0, 6.0, 160.0), Color(0.3, 1.0, 0.5, 0.0))
+	pad.material_override = env._tmat()
+	pad.position = Vector3(ORIGIN.x, y0 - 3.05, ORIGIN.y)
+	env.add_child(pad)
+	for k: int in 2:
+		var holder := Node3D.new()
+		holder.name = "Site%d" % k
+		holder.position = Vector3(ORIGIN.x + (-56.0 if k == 0 else 56.0), y0, ORIGIN.y)
+		env.add_child(holder)
+		OchreSites.build(id, holder, 1 if k == 0 else 5, 0.0 if k == 0 else 1.0)
+	print("[ochre] site %s at %s" % [id, str(Vector3(ORIGIN.x, y0, ORIGIN.y))])
+
+
+static func site_camera(pit: OchrePit) -> Array:
+	var o := Vector3(ORIGIN.x, pit.height_at(ORIGIN.x, ORIGIN.y) + 0.6, ORIGIN.y)
+	return [o + Vector3(0.0, 62.0, 118.0), o + Vector3(0.0, -4.0, -4.0)]
+
+
 ## The two lookbook cameras: [position, target].
 static func camera(view: int, pit: OchrePit) -> Array:
 	var y0: float = pit.height_at(ORIGIN.x, ORIGIN.y) + 0.6

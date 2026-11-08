@@ -154,7 +154,13 @@ func build() -> void:
 	set_level(level, false)
 	if world.get("hub") != null:
 		world.hub.level_changed.connect(func(l: int) -> void: set_level(l, true))
-	if DevHooks.has("ochre-lookbook"):
+	if DevHooks.has("ochre-site"):
+		OchreLookbook.build_site(self, DevHooks.get_s("ochre-site", "hub_base"))
+		var sc: Array = OchreLookbook.site_camera(pit)
+		var sa: Vector3 = sc[0]
+		var sb: Vector3 = sc[1]
+		_dev_camera.call_deferred("%f,%f,%f,%f,%f,%f" % [sa.x, sa.y, sa.z, sb.x, sb.y, sb.z])
+	elif DevHooks.has("ochre-lookbook"):
 		OchreLookbook.build(self)
 		var lc: Array = OchreLookbook.camera(int(DevHooks.get_f("ochre-lookbook", 1.0)), pit)
 		var a: Vector3 = lc[0]
@@ -473,7 +479,7 @@ func _build_mesas() -> void:
 		var pp: Vector2 = pit.polar_of(c.x, c.y)
 		if pp.y < OchrePit.RIM_RHO + rad * 2.2 / OchrePit.squash(pp.x) + 25.0:
 			continue
-		if DevHooks.has("ochre-lookbook") and c.distance_to(OchreLookbook.ORIGIN) < rad * 2.2 + 220.0:
+		if (DevHooks.has("ochre-lookbook") or DevHooks.has("ochre-site")) and c.distance_to(OchreLookbook.ORIGIN) < rad * 2.2 + 260.0:
 			continue
 		var ok: bool = true
 		for q: Vector3 in placed:
@@ -763,53 +769,7 @@ func _build_trucks() -> void:
 
 
 func _truck(b: OchreProps.Batch, xf: Transform3D, paint: Material, ruined: bool) -> void:
-	var box: BoxMesh = OchreProps.unit_box()
-	var put := func(pos: Vector3, size: Vector3, mat: Material, rot: Vector3 = Vector3.ZERO) -> void:
-		b.add(box, xf * ProcMesh.xf(pos, rot, size), mat)
-	# Chassis rails, axles, fuel tank, bumper with grille.
-	for z: float in [-1.1, 1.1]:
-		put.call(Vector3(0, 1.9, z), Vector3(11.0, 0.7, 0.5), _m("dark"))
-	put.call(Vector3(5.4, 2.2, 0), Vector3(0.6, 1.4, 5.0), paint)
-	for i: int in 7:
-		put.call(Vector3(5.72, 2.0 + i * 0.16, 0), Vector3(0.04, 0.08, 3.2), _m("dark"))
-	b.add(ProcMesh.cyl(0.55, 0.55, 2.2, 12), xf * Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(0.8, 1.7, 2.35)), _m("steel"))
-	# Dump bed: floor, tapered sides with ribs, cab canopy.
-	var tilt: float = -6.0 if not ruined else -16.0
-	var bed := ProcMesh.xf(Vector3(-1.2, 3.0, 0), Vector3(0, 0, tilt))
-	b.add(box, xf * bed * ProcMesh.xf(Vector3(0, 0, 0), Vector3.ZERO, Vector3(8.0, 0.3, 5.2)), paint)
-	for z: float in [-2.55, 2.55]:
-		b.add(box, xf * bed * ProcMesh.xf(Vector3(0, 1.2, z), Vector3(z * 3.0, 0, 0), Vector3(8.0, 2.4, 0.18)), paint)
-		for i: int in 6:
-			b.add(box, xf * bed * ProcMesh.xf(Vector3(-3.6 + i * 1.45, 1.2, z * 1.04), Vector3.ZERO, Vector3(0.18, 2.4, 0.18)), _m("dark"))
-	b.add(box, xf * bed * ProcMesh.xf(Vector3(-4.0, 1.2, 0), Vector3.ZERO, Vector3(0.2, 2.4, 5.2)), paint)
-	b.add(box, xf * bed * ProcMesh.xf(Vector3(5.0, 2.5, 0), Vector3(0, 0, 8.0), Vector3(2.4, 0.18, 5.4)), paint)
-	# Cab with windows, deck rail, ladder, exhaust stacks, mirrors, headlights.
-	put.call(Vector3(4.2, 3.6, 1.2), Vector3(2.2, 2.2, 2.0), paint)
-	put.call(Vector3(5.32, 3.95, 1.2), Vector3(0.05, 1.0, 1.6), _m("glass"))
-	put.call(Vector3(4.2, 3.95, 2.22), Vector3(1.6, 0.9, 0.05), _m("glass"))
-	put.call(Vector3(4.6, 2.45, -0.3), Vector3(1.6, 0.12, 4.4), _m("steel"))
-	for i: int in 6:
-		put.call(Vector3(5.1, 2.5, -2.2 + i * 0.85), Vector3(0.05, 0.9, 0.05), _m("steel"))
-	put.call(Vector3(5.1, 2.95, -0.1), Vector3(0.05, 0.05, 4.3), _m("steel"))
-	for i: int in 5:
-		put.call(Vector3(5.75, 0.5 + i * 0.4, -2.2), Vector3(0.05, 0.05, 0.6), _m("steel"))
-	for z: float in [-0.6, 0.0]:
-		b.add(ProcMesh.cyl(0.14, 0.16, 2.6, 8), xf * ProcMesh.xf(Vector3(3.2, 4.4, z)), _m("dark"))
-	put.call(Vector3(5.5, 4.2, 2.6), Vector3(0.1, 0.6, 0.35), _m("dark"))
-	for z: float in [-1.8, 1.8]:
-		put.call(Vector3(5.73, 2.6, z), Vector3(0.04, 0.3, 0.5), _m("glass"))
-	# Wheels: tyre, rim, hub; a missing one on a ruined truck.
-	for x: float in [-3.4, 3.6]:
-		for z: float in [-2.4, 2.4]:
-			if ruined and x > 0.0 and z > 0.0:
-				continue
-			var wx := Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(x, 1.55, z))
-			b.add(ProcMesh.cyl(1.55, 1.55, 1.1, 18), xf * wx, _m("rubber"))
-			for g: int in 9:
-				var a: float = TAU * g / 9.0
-				b.add(box, xf * wx * ProcMesh.xf(Vector3(cos(a) * 1.5, 0, sin(a) * 1.5), Vector3(0, -rad_to_deg(a), 0), Vector3(0.28, 1.14, 0.2)), _m("rubber"))
-			b.add(ProcMesh.cyl(0.9, 0.9, 1.16, 14), xf * wx, _m("steel"))
-			b.add(ProcMesh.cyl(0.3, 0.3, 1.3, 8), xf * wx, _m("dark"))
+	OchreSites.truck(b, xf, paint, ruined)
 
 
 # --- Sails -----------------------------------------------------------------------------------------
@@ -1382,7 +1342,7 @@ func _process(delta: float) -> void:
 		_fluff.global_position = p.global_position + Vector3(0, 2.5, 0)
 	_grit.emitting = level <= 2 and restore_shown < 0.45
 	_fluff.emitting = restore_shown > 0.35
-	if (DevHooks.has("ochre-cam") or DevHooks.has("ochre-lookbook")) and world.get("hud") != null:
+	if (DevHooks.has("ochre-cam") or DevHooks.has("ochre-lookbook") or DevHooks.has("ochre-site")) and world.get("hud") != null:
 		(world.get("hud") as CanvasLayer).visible = false
 	if DevHooks.has("ochre-debug") and fmod(_t, 5.0) < delta:
 		var env: Environment = world.get("_env")
