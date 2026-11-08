@@ -234,7 +234,7 @@ func _populate() -> void:
 		_grid.add_child(cnp)
 		_panel = cnp
 		return
-	if _tab in ["patch", "build", "research"]:  # [ui6] one list + one detail panel (ui/list_detail.gd)
+	if _tab in ["patch", "build", "research", "bots"]:  # [ui6] [ui7] one list + one detail panel (ui/list_detail.gd)
 		_grid.columns = 1
 		var ld := ListDetail.new()
 		ld.world = w
@@ -247,6 +247,12 @@ func _populate() -> void:
 				ld.provider = func() -> Array: return BenchLists.builds(w)
 				ld.categories = BenchLists.BUILD_CATS
 				ld.counter = func() -> String: return BenchLists.builds_counter(w)
+			"bots":  # [ui7] Build / Tiers / Fleet / Fabricator (ui/bench_bots.gd)
+				var fl: Fleet = fleet
+				var ba: Callable = build_at
+				ld.provider = func() -> Array: return BenchBots.rows(fl, ba)
+				ld.categories = BenchBots.CATS
+				ld.counter = func() -> String: return BenchBots.counter(fl)
 			"research":
 				ld.provider = BenchLists.research
 				ld.categories = BenchLists.research_cats()
@@ -340,7 +346,7 @@ var _focus_sig: String = ""
 
 
 func _wire_focus() -> void:
-	if not _tab in ["bots"]:  # [ui3] [ui6] list tabs link their own rows
+	if not _tab.is_empty():  # [ui3] [ui6] [ui7] every tab is a list that links its own rows
 		return
 	var sig: String = FocusGrid.signature(_grid) + "|%d" % _grid.columns
 	if sig != _focus_sig:

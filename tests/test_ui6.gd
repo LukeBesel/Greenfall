@@ -85,3 +85,27 @@ func test_no_locker_tab() -> void:
 	for t: Dictionary in UpgradesScreen.TABS:
 		assert_ne(str(t["id"]), "locker")
 	assert_lte(UpgradesScreen.TABS.size(), 5)
+
+
+## [ui7] The Bots tab in the list pattern, with a hidden Fabricator slot for orbC.
+func test_bots_rows_and_fabricator_slot() -> void:
+	Research.grant("salvage_logic")
+	var f := Fleet.new()
+	add_child_autofree(f)
+	var rows: Array = BenchBots.rows(f, Callable())
+	var builds: Array = rows.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == "build")
+	assert_eq(builds.size(), Economy.robot_order.size(), "one build row per robot type")
+	assert_true(rows.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == "fabricator").is_empty(), "no Fabricator until it plugs in")
+	BenchBots.set_fabricator(func(_w: Node) -> Array: return [{"id": "fab_1", "cat": "fabricator", "name": "Queue", "state": "busy"}])
+	rows = BenchBots.rows(f, Callable())
+	assert_eq(rows.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == "fabricator").size(), 1)
+	BenchBots.set_fabricator(Callable())
+	GameState.currencies["cubes"] = BigNum.from_float(1.0e6)
+	GameState.currencies["parts"] = BigNum.from_float(1.0e4)
+	rows = BenchBots.rows(f, Callable())
+	var hb: Dictionary = rows.filter(func(r: Dictionary) -> bool: return str(r["id"]) == "build_haulbug")[0]
+	assert_eq(str(hb["state"]), "ready")
+	assert_true((hb["act"] as Callable).call())
+	assert_eq(f.count("haulbug"), 1)
+	rows = BenchBots.rows(f, Callable())
+	assert_false(rows.filter(func(r: Dictionary) -> bool: return str(r["id"]) == "tier_haulbug").is_empty(), "a Mk row once you have one")

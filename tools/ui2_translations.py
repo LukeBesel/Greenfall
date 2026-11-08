@@ -3,6 +3,19 @@
 import re, sys
 
 T = {
+"Tiers": ["Stufen", "Niveles", "Niveaux", "ティア", "Níveis", "等级"],
+"Fleet": ["Flotte", "Flota", "Flotte", "艦隊", "Frota", "车队"],
+"Fabricator": ["Fabrikator", "Fabricador", "Fabricateur", "ファブリケーター", "Fabricador", "制造机"],
+"Research: %s": ["Forschung: %s", "Investigación: %s", "Recherche : %s", "研究：%s", "Pesquisa: %s", "研究：%s"],
+"Built": ["Gebaut", "Construidos", "Construits", "建造数", "Construídos", "已建"],
+"Tanks": ["Tanks", "Tanques", "Réservoirs", "タンク", "Tanques", "水罐"],
+"Build a %s": ["%s bauen", "Construir un %s", "Construire un %s", "%sを作る", "Construir um %s", "建造%s"],
+"Build your first %s": ["Ersten %s bauen", "Construir tu primer %s", "Construire ton premier %s", "最初の%sを作る", "Construir seu primeiro %s", "建造第一台%s"],
+"Every %s gets the new look and works faster.": ["Jeder %s bekommt den neuen Look und arbeitet schneller.", "Cada %s recibe el nuevo aspecto y trabaja más rápido.", "Chaque %s prend le nouveau look et travaille plus vite.", "すべての%sが新しい見た目になり、作業が速くなります。", "Cada %s ganha o novo visual e trabalha mais rápido.", "每台%s都换上新外观，干活更快。"],
+"Work speed": ["Arbeitstempo", "Velocidad de trabajo", "Vitesse de travail", "作業速度", "Velocidade de trabalho", "工作速度"],
+"Robots": ["Roboter", "Robots", "Robots", "ロボット", "Robôs", "机器人"],
+"Multibot jobs": ["Multibot-Aufgaben", "Tareas de Multibot", "Tâches des Multibots", "マルチボットの仕事", "Tarefas do Multibot", "多功能机器人分工"],
+"ROBOTS  %d   ·   CREW SPOTS %d": ["ROBOTER  %d   ·   CREW-PLÄTZE %d", "ROBOTS  %d   ·   PLAZAS %d", "ROBOTS  %d   ·   PLACES %d", "ロボット  %d   ·   クルー枠 %d", "ROBÔS  %d   ·   VAGAS %d", "机器人  %d   ·   小队名额 %d"],
 "Compost Press": ["Kompostpresse", "Prensa de compost", "Presse à compost", "堆肥プレス", "Prensa de composto", "堆肥压榨机"],
 "A chunky old CD player on a crate by the fence. Plays the discs you find.": ["Ein klobiger alter CD-Spieler auf einer Kiste am Zaun. Spielt die Discs, die du findest.", "Un viejo y robusto reproductor de CD sobre una caja junto a la valla. Reproduce los discos que encuentras.", "Un vieux lecteur CD massif sur une caisse près de la clôture. Il joue les disques que tu trouves.", "柵のそばの木箱に載った古くてごつい CD プレーヤー。見つけたディスクを再生します。", "Um velho e robusto CD player sobre um caixote junto à cerca. Toca os discos que você encontra.", "围栏边木箱上一台笨重的老式CD机。播放你找到的唱片。"],
 "Robot Nursery": ["Roboter-Kindergarten", "Guardería de robots", "Nurserie à robots", "ロボット保育所", "Berçário de robôs", "机器人育儿所"],

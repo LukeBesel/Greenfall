@@ -280,14 +280,6 @@ msgstr "前往  磅秤  ◀"
 msgid "BALE  FEED"
 msgstr "捆包入口"
 
-#: automation/depot.gd:296
-msgid "TRASH"
-msgstr "垃圾"
-
-#: automation/depot.gd:333
-msgid "SCRAP  INTAKE  ·  WEIGH HERE"
-msgstr "废料收购  ·  在此称重"
-
 #: automation/hub.gd:69
 msgid "Hub upgraded: %s."
 msgstr "基地已升级：%s。"
@@ -483,8 +475,8 @@ msgstr "每 %d 个捆包送 1 个去回收炉"
 msgid "Requires hub level %d or research: %s."
 msgstr "需要基地等级 %d 或研究：%s。"
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:378
-#: systems/camp/camp.gd:390 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:380
+#: systems/camp/camp.gd:392 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
 #: systems/camp/hub_builds.gd:161 systems/camp/hub_builds.gd:171 systems/camp/yard_builds.gd:91
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
@@ -523,19 +515,19 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:127
+#: core/pace.gd:129
 msgid "Lift Strength %d"
 msgstr "举升力 %d"
 
-#: core/pace.gd:128
+#: core/pace.gd:130
 msgid "Too heavy: needs %s"
 msgstr "太重了：需要 %s"
 
-#: core/pace.gd:139
+#: core/pace.gd:141
 msgid "No Baler yet: empty your chest in the trash bin"
 msgstr "还没有打包机：把胸舱里的垃圾倒进垃圾桶"
 
-#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:257
+#: core/pace.gd:191 systems/events.gd:482 ui/goals_panel.gd:257
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
@@ -780,7 +772,7 @@ msgstr "WREN：那里是勘测区的边缘，Lumi。外面只有雾霾。"
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi 悬浮着回到了坚实的地面。"
 
-#: planet/orbit/verdance_globe.gd:556 scenes/slice.gd:1056 scenes/slice_orbit.gd:208
+#: planet/orbit/verdance_globe.gd:556 scenes/slice.gd:1057 scenes/slice_orbit.gd:261
 msgid "HEX CLEAN!  +%s"
 msgstr "六角格清理完毕！  +%s"
 
@@ -856,27 +848,27 @@ msgstr ""
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "一个六角格完全恢复了。已经有小东西住在里面了。"
 
-#: plants/hex_levels.gd:90
+#: plants/hex_levels.gd:111
 msgid "HEX  LV %d  %s"
 msgstr "六角格  %d 级  %s"
 
-#: plants/hex_levels.gd:93
+#: plants/hex_levels.gd:114
 msgid "      SUSTAIN  %d%%"
 msgstr "      稳定  %d%%"
 
-#: plants/hex_levels.gd:95
+#: plants/hex_levels.gd:116
 msgid "      THIRSTY"
 msgstr "      缺水"
 
-#: plants/hex_levels.gd:97
+#: plants/hex_levels.gd:118
 msgid "      next: %s"
 msgstr "      下一级：%s"
 
-#: plants/hex_levels.gd:253
+#: plants/hex_levels.gd:275
 msgid "HEX LV %d  %s"
 msgstr "六角格 %d 级  %s"
 
-#: plants/hex_levels.gd:260
+#: plants/hex_levels.gd:282
 msgid "Hex Lv %d  %s.   %s"
 msgstr "六角格 %d 级  %s。   %s"
 
@@ -888,11 +880,11 @@ msgstr "+1 种子"
 msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
 msgstr "一颗干燥的老种子，还好好地封在壳里。废料里藏着几颗这样的种子。"
 
-#: player/detector.gd:83
+#: player/detector.gd:82
 msgid "BURIED PART  %s  ·  %.1f m"
 msgstr "埋藏零件  %s  ·  %.1f 米"
 
-#: player/detector.gd:86
+#: player/detector.gd:85
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "埋藏零件  ·  信号 %d%%"
 
@@ -1238,55 +1230,55 @@ msgstr "水箱已放置。附近的浇水机器人会来这里补水。"
 msgid "WATER"
 msgstr "水"
 
-#: scenes/slice.gd:367
+#: scenes/slice.gd:368
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "机器人上行链路上线。按 B 打开指挥：划定区域，把队伍派到你想去的地方。"
 
-#: scenes/slice.gd:1070
+#: scenes/slice.gd:1071 scenes/slice_orbit.gd:277
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice.gd:1072
+#: scenes/slice.gd:1073
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "整个废料场都干净了。Lumi 发出一声好长好长、非常开心的哔——"
 
-#: scenes/slice.gd:1079
+#: scenes/slice.gd:1080
 msgid "%s is out of range: %s"
 msgstr "%s 超出范围：%s"
 
-#: scenes/slice.gd:1089
+#: scenes/slice.gd:1090
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "未解锁。将基地升到 5 级才能建造发射台。"
 
-#: scenes/slice.gd:1092 ui/rockets_panel.gd:39
+#: scenes/slice.gd:1093 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice.gd:1146
+#: scenes/slice.gd:1147
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陆：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:1147
+#: scenes/slice.gd:1148
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "火箭停在空地上，电池充满就能出发。"
 
-#: scenes/slice.gd:1147
+#: scenes/slice.gd:1148
 msgid "Landed on the base pad."
 msgstr "已降落在基地平台。"
 
-#: scenes/slice.gd:1257
+#: scenes/slice.gd:1258
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice.gd:1442
+#: scenes/slice.gd:1443
 msgid "Welcome back. The junk waited for you."
 msgstr "欢迎回来。废料一直在等你。"
 
-#: scenes/slice.gd:1459
+#: scenes/slice.gd:1460
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨 %d · %d级"
 
-#: scenes/slice.gd:1459
+#: scenes/slice.gd:1460
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
@@ -1564,87 +1556,87 @@ msgstr ""
 "5 分钟后\n"
 "回来"
 
-#: story/eggs.gd:338
+#: story/eggs.gd:340
 msgid "Something metal surfaced in the cleared ground."
 msgstr "清理过的地面里冒出了什么金属的东西。"
 
-#: story/eggs.gd:551 story/eggs.gd:613
+#: story/eggs.gd:553 story/eggs.gd:615
 msgid "Gnome %d / %d"
 msgstr "地精 %d / %d"
 
-#: story/eggs.gd:559
+#: story/eggs.gd:561
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "最后一张海报指向附近某处。有个橙色的东西蜷在那儿。"
 
-#: story/eggs.gd:614
+#: story/eggs.gd:616
 msgid "%s   ·   added to Lumi's collection"
 msgstr "%s   ·   已加入 Lumi 的收藏"
 
-#: story/eggs.gd:630
+#: story/eggs.gd:632
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "收音机轻轻地沙沙作响。上面还没有东西醒来。天黑后再来吧。"
 
-#: story/eggs.gd:631
+#: story/eggs.gd:633
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "透过望远镜：只有明亮又多尘的天空。天黑后再来吧。"
 
-#: story/eggs.gd:660
+#: story/eggs.gd:662
 msgid "SOLD OUT"
 msgstr "售罄"
 
-#: story/eggs.gd:677
+#: story/eggs.gd:680
 msgid "QUACK!"
 msgstr "嘎！"
 
-#: story/eggs.gd:695
+#: story/eggs.gd:698
 msgid "NEW CHALLENGER!"
 msgstr "新挑战者！"
 
-#: story/eggs.gd:698
+#: story/eggs.gd:701
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "游戏结束  ·  得分 12"
 
-#: story/eggs.gd:726
+#: story/eggs.gd:729
 msgid "hi, Gus"
 msgstr "嗨，Gus"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "CONFETTI"
 msgstr "彩纸"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "LIGHT JAZZ"
 msgstr "轻爵士"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "99% DUCKS"
 msgstr "鸭子含量 99%"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "SUNNY (INDOORS)"
 msgstr "晴（室内）"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:774
 msgid "FOG OF NOODLES"
 msgstr "面条雾"
 
-#: story/eggs.gd:776
+#: story/eggs.gd:779
 msgid "1ST PLACE"
 msgstr "第一名"
 
-#: story/eggs.gd:834
+#: story/eggs.gd:837
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "鸭子吱吱地说出一个秘密：“%s”可以解锁 %s 外观。"
 
-#: story/eggs.gd:835
+#: story/eggs.gd:838
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "鸭子已经把它知道的全教给你了。嘎。"
 
-#: story/eggs.gd:1063
+#: story/eggs.gd:1066
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "发现奇物：%s（%d / %d）   %s"
 
-#: story/eggs.gd:1074
+#: story/eggs.gd:1077
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "清单上的奇物全部找到了。Lumi 的收藏舱装满了回忆。"
 
@@ -2850,19 +2842,19 @@ msgstr "E   工作台：升级"
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
-#: systems/camp/camp.gd:376
+#: systems/camp/camp.gd:378
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   %s（%d 级）：已满级"
 
-#: systems/camp/camp.gd:379
+#: systems/camp/camp.gd:381
 msgid "E   %s (Lv %d): %s"
 msgstr "E   %s（%d 级）：%s"
 
-#: systems/camp/camp.gd:380
+#: systems/camp/camp.gd:382
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   %s（%d 级）：升级为 %s，需要 %s"
 
-#: systems/camp/camp.gd:386
+#: systems/camp/camp.gd:388
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "垃圾桶已升级：%s。捆包在这里按 %d%% 出售。"
 
@@ -2946,27 +2938,27 @@ msgstr "只有 Mk I-II 机器人可以提前退休。%s 还要 %d 分钟才能�
 msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
 msgstr "%s 退休去了苗圃花园。+%d 零件，花儿也有了园丁。"
 
-#: systems/extras/nursery.gd:223
+#: systems/extras/nursery.gd:214
 msgid "E   Say hi to %s"
 msgstr "E   和 %s 打招呼"
 
-#: systems/extras/nursery.gd:281
+#: systems/extras/nursery.gd:272
 msgid "CARETAKER · %s"
 msgstr "园丁 · %s"
 
-#: systems/extras/nursery.gd:328
+#: systems/extras/nursery.gd:319
 msgid "%s beeps hello and shows Lumi the marigolds."
 msgstr "%s 哔哔地打招呼，给 Lumi 看金盏花。"
 
-#: systems/extras/nursery.gd:329
+#: systems/extras/nursery.gd:320
 msgid "%s is busy with the watering can, but waves anyway."
 msgstr "%s 正忙着拿洒水壶，但还是挥了挥手。"
 
-#: systems/extras/nursery.gd:330
+#: systems/extras/nursery.gd:321
 msgid "%s hums to the seedlings. Retirement suits it."
 msgstr "%s 对着幼苗哼歌。退休生活很适合它。"
 
-#: systems/extras/nursery.gd:331
+#: systems/extras/nursery.gd:322
 msgid "%s points proudly at a new bud."
 msgstr "%s 骄傲地指着一个新花苞。"
 
@@ -3308,6 +3300,23 @@ msgstr "领取（%d 次选择）"
 msgid "Milestone"
 msgstr "里程碑"
 
+#: ui/bench_bots.gd:15 ui/build_panel.gd:105 ui/robot_card.gd:110
+#: ui/robot_card.gd:244 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
+msgid "Build"
+msgstr "建造"
+
+#: ui/bench_bots.gd:15
+msgid "Tiers"
+msgstr "等级"
+
+#: ui/bench_bots.gd:15
+msgid "Fleet"
+msgstr "车队"
+
+#: ui/bench_bots.gd:15
+msgid "Fabricator"
+msgstr "制造机"
+
 #: ui/bench_kit.gd:163 ui/upgrade_card.gd:221
 msgid "need %s"
 msgstr "还差%s"
@@ -3336,11 +3345,6 @@ msgstr "故事"
 #: ui/build_panel.gd:26
 msgid "Nothing new to build right now. New buildings unlock as you play."
 msgstr "目前没有新的可建造项目。新建筑会在游戏中解锁。"
-
-#: ui/build_panel.gd:105 ui/robot_card.gd:110 ui/robot_card.gd:244
-#: ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
-msgid "Build"
-msgstr "建造"
 
 #: ui/build_panel.gd:110 ui/yard_builds_panel.gd:59
 msgid "Built:  %s"
@@ -4621,60 +4625,60 @@ msgstr "Lumi 达到了 %d 级%s"
 msgid "OLD TOWN   0%"
 msgstr "老城区   0%"
 
-#: ui/hud.gd:291
+#: ui/hud.gd:294
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN 信号   %d%%"
 
-#: ui/hud.gd:319
+#: ui/hud.gd:322
 msgid "HEX  %d%% CLEAR"
 msgstr "六角格  已清理 %d%%"
 
-#: ui/hud.gd:323
+#: ui/hud.gd:326
 msgid "%s  BASE"
 msgstr "%s  基地"
 
-#: ui/hud.gd:326
+#: ui/hud.gd:329
 msgid "CARRYING %d/%d"
 msgstr "携带 %d/%d"
 
-#: ui/hud.gd:350
+#: ui/hud.gd:353
 msgid "HEX  CLEAR"
 msgstr "六角格  已清理"
 
-#: ui/hud.gd:354
+#: ui/hud.gd:357
 msgid "HEX  %s"
 msgstr "六角格  %s"
 
-#: ui/hud.gd:357
+#: ui/hud.gd:360
 msgid "  SUSTAIN %d%%"
 msgstr "  稳定 %d%%"
 
-#: ui/hud.gd:359
+#: ui/hud.gd:362
 msgid "  THIRSTY"
 msgstr "  缺水"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:384
+#: ui/hud.gd:387
 msgid "%s   pick up bale"
 msgstr "%s   拿起捆包"
 
-#: ui/hud.gd:385
+#: ui/hud.gd:388
 msgid "%s   dig up part"
 msgstr "%s   挖出零件"
 
-#: ui/hud.gd:386
+#: ui/hud.gd:389
 msgid "%s   read memory shard"
 msgstr "%s   阅读记忆碎片"
 
-#: ui/hud.gd:387
+#: ui/hud.gd:390
 msgid "%s   pick up the seed tin"
 msgstr "%s   拿起种子罐"
 
-#: ui/hud.gd:388
+#: ui/hud.gd:391
 msgid "%s   set bale down"
 msgstr "%s   放下捆包"
 
-#: ui/hud.gd:389
+#: ui/hud.gd:392
 msgid "%s   workbench"
 msgstr "%s   工作台"
 
@@ -11246,7 +11250,7 @@ msgstr "让每株植物都开花"
 msgid "Wildlife has moved in"
 msgstr "野生动物已经入住"
 
-#: data/homeward.json:planets[verdance].name data/telescope.json:planets_default[verdance].name
+#: data/homeward.json:planets[verdance].name data/planets.json:verdance.name data/telescope.json:planets_default[verdance].name
 msgid "Verdance"
 msgstr "Verdance"
 
@@ -16101,6 +16105,12 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "TRASH"
+#~ msgstr "垃圾"
+
+#~ msgid "SCRAP  INTAKE  ·  WEIGH HERE"
+#~ msgstr "废料收购  ·  在此称重"
 
 #~ msgid "PAD 01"
 #~ msgstr "平台 01"
