@@ -52,10 +52,15 @@ func get_world_move(_cam_yaw: float) -> Vector3:
 func _detour(delta: float) -> void:
 	if body == null or not active or stick.length() < 0.1:
 		return
-	var up: Vector3 = body.global_position.normalized()
-	var spd: float = (body.velocity - up * body.velocity.dot(up)).length()
-	var stalled: bool = spd < 0.6
-	_stall = _stall + delta if stalled else maxf(0.0, _stall - delta)
+	# Stalled = little net ground covered over the last WINDOW_S (pressing on a mound jitters
+	# at ~1 m/s without getting anywhere, so instantaneous speed can't tell).
+	_win_t += delta
+	if _win_t >= WINDOW_S:
+		var p: Vector3 = body.global_position
+		_win_stalled = _win_pos != Vector3.ZERO and p.distance_to(_win_pos) < WINDOW_MIN_M
+		_win_pos = p
+		_win_t = 0.0
+	_stall = _stall + delta if _win_stalled else 0.0
 	_phase_t += delta
 	match _phase:
 		0:  # ahead: a stall starts a sidestep, each one longer while the obstacle goes on
@@ -73,6 +78,7 @@ func _detour(delta: float) -> void:
 				_phase = 2
 				_phase_t = 0.0
 				_stall = 0.0
+				_win_stalled = false
 		2:  # pass the obstacle: still blocked -> keep sidestepping the same way
 			if _stall >= STALL_S:
 				_go_side()
@@ -90,12 +96,20 @@ func _detour(delta: float) -> void:
 
 
 var _escal: int = 0
+const WINDOW_S: float = 0.5
+const WINDOW_MIN_M: float = 0.6
+var _win_t: float = 0.0
+var _win_pos := Vector3.ZERO
+var _win_stalled: bool = false
 var _side_dur: float = SIDE_S
 var _net: float = 0.0
 var _free_t: float = 0.0
 
 
 func _go_side() -> void:
+	_win_stalled = false
+	_win_t = 0.0
+	_win_pos = Vector3.ZERO
 	_escal = mini(_escal + 1, 6)
 	_side_dur = SIDE_S * float(_escal)
 	_phase = 1

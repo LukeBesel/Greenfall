@@ -226,16 +226,16 @@ func test_autowalk_detours_with_longer_sidesteps() -> void:
 	b.global_position = Vector3(0, 1840, 0)
 	var inp := SphereAutoInput.new(Vector3(0, 0, -1))
 	inp.body = b
-	b.velocity = Vector3.ZERO  # pushing into a wall
-	for k: int in 8:
+	b.velocity = Vector3(1.2, 0, 0)  # pressing into a mound: jitters but gets nowhere
+	for k: int in 25:
 		inp.update(0.1)
 	assert_gt(absf(inp.get_world_move(0.0).x), 0.5, "stalled: sidestepping")
 	var first: float = inp._side_dur
-	for k: int in 8:
+	for k: int in 25:
 		inp.update(0.1)  # still blocked sideways: the other way, longer
 	assert_gt(inp._side_dur, first)
-	b.velocity = Vector3(3, 0, 0)  # moving freely again
-	for k: int in 200:
+	for k: int in 200:  # moving freely again
+		b.global_position += Vector3(0.3, 0, 0)
 		inp.update(0.1)
 	assert_eq(inp._phase, 0, "back on its heading")
 	assert_almost_eq(inp.get_world_move(0.0), Vector3(0, 0, -1), Vector3.ONE * 0.001)
