@@ -46,7 +46,8 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 ## Walk around the planet (orbit)
 - [ ] Each planet is a real, small, round planet you can walk all the way around, like moon sweeper games. You can see it curve.
 - [ ] It is big enough that you never set foot on most hexes, because the bots clean those.
-- [ ] Bases are sites on the globe.
+- [ ] The whole planet is covered in hexes. Bases are sites on the globe, so far apart that you need the rocket to travel between hubs on the same planet.
+- [ ] Only the area near Lumi is loaded. Bots working far away are simulated cheaply.
 - [ ] Order: a prototype and plan first, then the owner reviews, then a rollout split across helpers.
 
 ## Pacing and economy (pace)
