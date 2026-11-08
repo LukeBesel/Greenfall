@@ -110,7 +110,8 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Animals (cats, deer, fish) look real and cute.
 
 ## Easter eggs (eggs2)
-- [ ] Gnomes are picked up and collected onto a display.
+- [ ] Gnomes and other collectibles are picked up into a Codex Collection page. No display at the base.
+- [ ] One Museum is built near the end (the Verdance launch phase), left behind for whoever comes after. It shows every collectible, with empty plinths for missing ones. Filling it is the 100% goal.
 - [ ] The jukebox stops the music and plays its own tune.
 - [ ] The brass telescope sits away from spawn and its view doesn't glitch.
 - [ ] The TV shows images that tell what happened to the world.
