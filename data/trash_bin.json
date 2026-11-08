@@ -5,6 +5,6 @@
     {"name": "Scrap Skip", "desc": "A proper steel skip. Bales go in faster and weigh in a little heavier.", "cost": {"cubes": 250}, "requires_level": 1, "value_mult": 1.08, "feed_interval": 0.2},
     {"name": "Weigh Skip", "desc": "A ribbed skip on a calibrated scale with a warning beacon. Honest weights, better pay.", "cost": {"cubes": 1500, "parts": 10}, "requires_level": 2, "value_mult": 1.18, "feed_interval": 0.16},
     {"name": "Compactor", "desc": "A hydraulic ram presses every bale flat before it is weighed.", "cost": {"cubes": 6000, "parts": 30}, "requires_level": 3, "value_mult": 1.3, "feed_interval": 0.12},
-    {"name": "Smart Intake", "desc": "A clean white intake with a scanner seam. It sorts what it eats and pays the best rate.", "cost": {"cubes": 20000, "parts": 80}, "requires_level": 4, "value_mult": 1.45, "feed_interval": 0.09}
+    {"name": "Shredder", "desc": "A clean white shredder with twin rotors and a scanner seam. It shreds every bale and pays the best rate.", "cost": {"cubes": 20000, "parts": 80}, "requires_level": 4, "value_mult": 1.45, "feed_interval": 0.09}
   ]
 }
