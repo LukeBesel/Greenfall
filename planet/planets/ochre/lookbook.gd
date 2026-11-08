@@ -16,11 +16,11 @@ static func build(env: OchreEnv) -> void:
 	env.add_child(root)
 	var pit: OchrePit = env.pit
 	# A levelled pad so the kit sits on one ground height.
-	var base_y: float = pit.height_at(ORIGIN.x, ORIGIN.y)
+	var base_y: float = top(pit, Vector2(130.0, 110.0)) - 0.6
 	var pad := MeshInstance3D.new()
 	pad.mesh = _vc_box(Vector3(130.0, 6.0, 110.0), Color(0.0, 1.0, 0.5, 0.0))
 	pad.material_override = env._tmat()
-	pad.position = Vector3(ORIGIN.x, base_y - 3.0 + 0.6, ORIGIN.y + 5.0)
+	pad.position = Vector3(ORIGIN.x, base_y - 3.0 + 0.6, ORIGIN.y)
 	root.add_child(pad)
 	var y0: float = base_y + 0.6
 	var p := func(x: float, z: float) -> Vector3: return Vector3(ORIGIN.x + x, y0, ORIGIN.y + z)
@@ -85,7 +85,7 @@ static func build(env: OchreEnv) -> void:
 ## Dev `--ochre-site=<id>`: the site twice on a levelled pad, ruined (stage 1, restoration 0) on the
 ## left and futuristic (stage 5, restoration 1) on the right.
 static func build_site(env: OchreEnv, id: String) -> void:
-	var y0: float = env.pit.height_at(ORIGIN.x, ORIGIN.y) + 0.6
+	var y0: float = top(env.pit, Vector2(260.0, 160.0))
 	var pad := MeshInstance3D.new()
 	pad.mesh = _vc_box(Vector3(260.0, 6.0, 160.0), Color(0.3, 1.0, 0.5, 0.0))
 	pad.material_override = env._tmat()
@@ -101,17 +101,27 @@ static func build_site(env: OchreEnv, id: String) -> void:
 
 
 static func site_camera(pit: OchrePit) -> Array:
-	var o := Vector3(ORIGIN.x, pit.height_at(ORIGIN.x, ORIGIN.y) + 0.6, ORIGIN.y)
+	var o := Vector3(ORIGIN.x, top(pit, Vector2(260.0, 160.0)), ORIGIN.y)
 	return [o + Vector3(0.0, 62.0, 118.0), o + Vector3(0.0, -4.0, -4.0)]
 
 
 ## The two lookbook cameras: [position, target].
 static func camera(view: int, pit: OchrePit) -> Array:
-	var y0: float = pit.height_at(ORIGIN.x, ORIGIN.y) + 0.6
-	var o := Vector3(ORIGIN.x, y0, ORIGIN.y)
+	var o := Vector3(ORIGIN.x, top(pit, Vector2(130.0, 110.0)), ORIGIN.y)
 	if view == 2:
 		return [o + Vector3(-6.0, 4.0, -62.0), o + Vector3(-30.0, 52.0, 60.0)]
 	return [o + Vector3(0.0, 15.0, 74.0), o + Vector3(0.0, 9.0, 0.0)]
+
+
+## The stage height: just above the highest ground (dunes) under a pad of `size` round ORIGIN.
+static func top(pit: OchrePit, size: Vector2) -> float:
+	var h: float = -INF
+	for i: int in 13:
+		for j: int in 13:
+			var x: float = ORIGIN.x + (float(i) / 12.0 - 0.5) * size.x * 1.15
+			var z: float = ORIGIN.y + (float(j) / 12.0 - 0.5) * size.y * 1.15
+			h = maxf(h, pit.height_at(x, z))
+	return h + 0.6
 
 
 ## A box with one vertex colour (the terrain shader reads its data from COLOR).
