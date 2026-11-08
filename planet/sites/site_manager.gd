@@ -38,6 +38,8 @@ var levels: PackedInt32Array      # base level per hub (1..5)
 var growth_m: PackedFloat32Array  # growth radius past the region, per hub
 var regions: Array[PackedInt32Array] = []
 var nearest: int = -1
+## Whose position streams the sites (Lumi); else globe.lumi, else the camera.
+var focus_node: Node3D
 var _region_of: Dictionary = {}   # cell -> hub (first hub wins)
 var _grow_acc: float = 0.0
 var _poll: float = 0.0
@@ -165,6 +167,8 @@ func tick(delta: float) -> void:
 
 
 func _focus() -> Vector3:
+	if focus_node and focus_node.is_inside_tree():
+		return focus_node.global_position
 	var l: Variant = globe.get("lumi") if globe else null
 	if l is Node3D and (l as Node3D).is_inside_tree():
 		return (l as Node3D).global_position

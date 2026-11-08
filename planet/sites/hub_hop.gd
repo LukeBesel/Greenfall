@@ -41,12 +41,12 @@ static func alt_at(t: float, peak: float) -> float:
 
 
 func hop(globe: Node3D, from_i: int, to_i: int) -> bool:
+	return await hop_with(globe.get("site_manager"), globe.get("lumi"), globe.get("cam"), globe.get("terrain"), from_i, to_i)
+
+
+func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerrain, from_i: int, to_i: int) -> bool:
 	if flying or from_i == to_i:
 		return false
-	var sm: SiteManager = globe.get("site_manager")
-	var lumi: Patch = globe.get("lumi")
-	var cam: SphereCam = globe.get("cam")
-	var terrain: SphereTerrain = globe.get("terrain")
 	if sm == null or lumi == null or cam == null or terrain == null:
 		return false
 	flying = true

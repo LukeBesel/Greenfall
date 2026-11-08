@@ -28,6 +28,7 @@ var crews: OrbitCrews
 var cam: SphereCam
 var dev: OrbitDev
 var view_mode: String = "follow"
+var sites: OrbitSites  # [orbD]
 
 
 ## True when --orbit asks for the slice on the globe (not one of the phase A prototypes).
@@ -80,6 +81,7 @@ func build(p_world: Node3D) -> void:
 	var site: Node3D = globe.build_start_site()
 	_build_patch()
 	_build_depot(site)
+	sites = OrbitSites.attach(self)  # [orbD] sled, rocket hops, planet %, site state
 	if DevHooks.has("orbit-bots") or not DevHooks.has("orbit-walk"):
 		crews.spawn_demo_bots(globe.start_cell(), int(DevHooks.get_f("orbit-bots", 4.0)), w)
 	var lumi_level := LumiLevel.new()
@@ -180,6 +182,9 @@ func _build_depot(site: Node3D) -> void:
 	site.add_child(depot)
 	depot.position = Vector3(5.5, 0.0, 3.5)
 	depot.rotation.y = -PI * 0.5
+	var sp: SitePrefab = globe.site_manager.prefab(0) if globe.site_manager else null  # [orbD] on the site's depot anchor
+	if sp:
+		depot.transform = sp.anchor_local("depot")
 	w.set("depot", depot)
 
 
@@ -222,7 +227,7 @@ func try_interact(_p: Patch) -> void:
 
 
 func interact_prompt(_p: Patch) -> String:
-	return ""
+	return sites.interact_prompt() if sites else ""  # [orbD] the hover-sled
 
 
 func any_modal_open() -> bool:
@@ -288,6 +293,7 @@ func persist_save() -> void:
 		"day_t": day.elapsed(),
 		"lumi": {"at": g.to_dirh(patch.global_position), "fwd": _v_arr(patch.forward()), "cargo": pd},
 		"cubes": cubes,
+		"sites": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth
 	}
 
 
@@ -313,6 +319,8 @@ func restore_world() -> void:
 		cam.reset_frame(patch.forward())
 		cam.snap()
 	patch.restore_cargo(ld.get("cargo", {}))
+	if sites:  # [orbD]
+		sites.load_state(od.get("sites", {}))
 
 
 static func _v_arr(v: Vector3) -> Array:
