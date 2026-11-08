@@ -26,6 +26,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] WREN is introduced as the ark's caretaker AI. It leaves one last message as the pod crashes, then goes silent.
 - [ ] Signal towers bring WREN back: better towers unlock more messages, and they get clearer at higher signal.
 - [ ] Bird and WREN chatter is rare, never constant.
+- [ ] Only ONE message line is on screen at a time, anywhere in the game (subtitles, toasts, rewards, hints). Every message stays up long enough for an average reader. (onboard2)
 - [ ] Goal text after leaving the pod stays long enough to read.
 - [ ] Goal and task-bar text is easy to read.
 - [ ] Goals say "Clean a hex", never "this hex".
