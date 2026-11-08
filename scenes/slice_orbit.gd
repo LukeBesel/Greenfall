@@ -44,7 +44,9 @@ var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.
 
 ## True when --orbit asks for the slice on the globe (not one of the phase A prototypes).
 static func wanted() -> bool:
-	return DevHooks.has("orbit") and not DevHooks.get_s("orbit", "") in ["v1", "globe"]
+	if DevHooks.has("orbit"):
+		return not DevHooks.get_s("orbit", "") in ["v1", "globe"]
+	return SaveManager.round_planets()  # the title screen's "Round planets (preview)"
 
 
 ## Builds the whole orbit slice into `p_world`. [orbE] Behind the loading screen (a BuildBudget is

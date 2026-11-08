@@ -38,10 +38,35 @@ func _ready() -> void:
 
 ## [steam] The demo keeps its saves apart (Demo.SAVE_DIR) so a full-game save never opens in it.
 ## [worlds2] The folder that holds the profile folders.
-func root_dir() -> String:
+func root_dir(flat: bool = false) -> String:
+	if round_planets() and not flat:  # [orbB] the round-planets preview keeps its saves apart
+		return ("user://saves_" + dev_dir if dev_dir != "" else SAVE_DIR) + ROUND_SUFFIX
 	if dev_dir != "":  # [beat]
 		return "user://saves_" + dev_dir
 	return Demo.SAVE_DIR if Demo.is_demo() else SAVE_DIR
+
+
+## [orbB] Title screen "Round planets (preview)" (Settings.round_planets): New Game and Continue
+## start on the globe (SliceOrbit.wanted), saving under user://saves_round (profiles, worlds,
+## album and all), so the flat game's saves are never read or written. Steam Cloud stays the
+## flat game's (SteamService skips the preview's files). Not in the demo.
+const ROUND_SUFFIX: String = "_round"
+
+
+func round_planets() -> bool:
+	return Settings.round_planets and not Demo.is_demo()
+
+
+## Turns the preview on or off (title screen): saves the setting, then points at that save tree's
+## remembered profile and reloads its Cradle profile. The caller rebuilds the menu.
+func set_round_planets(on: bool) -> void:
+	Settings.round_planets = on
+	Settings.save_settings()
+	migrate_to_profiles(root_dir())
+	profile_slot = read_profile_choice()
+	DirAccess.make_dir_recursive_absolute(save_dir())
+	CradleMode.boot()
+	print("[save] round planets %s: %s" % ["on" if on else "off", save_dir()])
 
 
 ## [worlds2] The current save profile's folder: world slots and profile.save live here.
@@ -49,8 +74,8 @@ func save_dir() -> String:
 	return profile_dir(profile_slot)
 
 
-func profile_dir(n: int) -> String:
-	return root_dir().path_join("p%d" % clampi(n, 1, PROFILES))
+func profile_dir(n: int, flat: bool = false) -> String:  # [orbB] flat: the flat game's tree whatever the preview
+	return root_dir(flat).path_join("p%d" % clampi(n, 1, PROFILES))
 
 
 ## [worlds2] Moves pre-profile saves (slot_N.save, profile.save in `root`) into root/p1, unless p1
