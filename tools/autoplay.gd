@@ -834,6 +834,13 @@ func _shopping_list() -> Dictionary:
 
 func _shop(want: Dictionary) -> void:
 	var fleet: Fleet = world.fleet
+	# 0) [onboard] The Signal Tower: the first tier right away (WREN), later tiers with the base level.
+	var tower: SignalTower = world.get_node_or_null("SignalTower") as SignalTower
+	if tower and SignalTower.tier() < mini(SignalTower.max_tier(), maxi(1, int(GameState.world.get("hub_level", 1)))) \
+			and GameState.can_afford_all(SignalTower.next_cost(), 1.5):
+		GameState.spend_all(SignalTower.next_cost())
+		tower.raise()
+		_event("signal_tower", {"tier": SignalTower.tier()})
 	# 1) Research ([money] cubes from the research fund, see _research_ok).
 	var guard: int = 0
 	var rid: String = _research_pick()

@@ -1,11 +1,12 @@
 {
-  "first_cube_s": 7.9,
-  "first_cashin_s": 13.5,
+  "first_cube_s": 8.0,
+  "first_cashin_s": 13.6,
   "first_upgrade_s": 14.3,
-  "first_hex_s": 93.7,
-  "first_hexlv_1_s": 94.5,
-  "first_research_s": 346.6,
-  "first_robot_s": 419.6,
-  "first_scoopie_s": 419.6,
-  "first_haulbug_s": 448.4
+  "first_hex_s": 88.1,
+  "first_hexlv_1_s": 88.5,
+  "first_research_s": 330.2,
+  "first_robot_s": 468.6,
+  "first_scoopie_s": 468.6,
+  "first_haulbug_s": 492.1,
+  "seed_tin_s": 952.9
 }
