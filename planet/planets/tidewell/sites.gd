@@ -307,9 +307,11 @@ func _plank_deck(b: FrontierView.Batch, c: Vector3, rx: float, rz: float, y: flo
 	nz.frequency = 0.9
 	var bs := Basis(Vector3.UP, yaw)
 	var tones: Array[String] = ["plank_a", "plank_b", "plank_c"]
+	# A solid sub-deck under the boards, so the gaps read as shadow lines, not open water.
+	b.add(_blob_slab(variant, 0.12, 1.0), _lxf(c + Vector3(0, y - 0.2, 0), Vector3(0, rad_to_deg(yaw), 0), Vector3(rx * 0.99, 0.2, rz * 0.98)), _mat("trunk"))
 	var x: float = -rx
 	while x < rx:
-		var w: float = _rng.randf_range(0.26, 0.34)
+		var w: float = _rng.randf_range(0.5, 0.62)
 		var u: float = x / rx
 		if absf(u) < 1.0:
 			var half: float = rz * sqrt(maxf(0.0, 1.0 - u * u))
@@ -346,8 +348,8 @@ func _mat(key: String) -> Material:
 			_mats[key] = t
 			return t
 		"tin_roof":
-			var r := AssetLib.pbr_material("rusty_metal_03", 0.4, Color(0.9, 0.85, 0.8), true)
-			r.metallic = 0.3
+			var r := AssetLib.pbr_material("corrugated_iron", 0.5, Color(0.86, 0.62, 0.46), true)
+			r.metallic = 0.2
 			_mats[key] = r
 			return r
 		"plank_a", "plank_b", "plank_c":
