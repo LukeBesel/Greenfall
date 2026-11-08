@@ -52,6 +52,8 @@ func _tunes_setup() -> void:
 		Tunes.grant(id.strip_edges(), true)
 	for id: String in DevHooks.get_s("scratched", "").split(",", false):
 		Tunes.hold(id.strip_edges())
+	if DevHooks.has("cd-play"):  # --cd-play=shuffle|song id: the CD player plays it
+		Radio.play(DevHooks.get_s("cd-play", "shuffle"))
 	if DevHooks.has("cd-drop"):
 		Tunes.st()["pity"] = 999
 	if Tunes.context() != "intro":

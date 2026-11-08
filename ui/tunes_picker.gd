@@ -122,7 +122,7 @@ func _add(text: String, on: bool, id: String) -> Button:
 		Audio.play("click", 1.0, -6.0)
 		Radio.play(id)
 		if id != "" and id != Tunes.SHUFFLE:
-			EventBus.toast.emit(tr("Now playing: %s by %s") % [tr(Tunes.title(id)), tr(Tunes.artist_name(id))], "info")
+			EventBus.toast.emit(tr("Now playing: %s by %s") % [tr(Tunes.title(id)), tr(Tunes.artist_name(id))], "low")
 		close())
 	_list.add_child(b)
 	return b
