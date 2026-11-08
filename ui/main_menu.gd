@@ -11,6 +11,7 @@ const GAME_SCENE: String = "res://scenes/slice.tscn"
 var _cam: Camera3D
 var _pivot: Node3D
 var _model: PatchModel
+var _cine: TitleCinematic  # [pod2]
 var _t: float = 0.0
 var _ui: Control
 var _menu_box: VBoxContainer
@@ -157,6 +158,10 @@ func _build_stage() -> void:
 	add_child(_cam)
 	_cam.current = true
 	_place_camera()
+	# [pod2] The slow title cinematic: high over the district, the crash site, down to Lumi cleaning.
+	_cine = TitleCinematic.new()
+	add_child(_cine)
+	_cine.setup(self, _cam, _pivot, _model)
 
 
 ## A carpet of litter and a few heaped piles: the world Aurora has come to clean.
@@ -245,11 +250,14 @@ func _process(delta: float) -> void:
 	if _cam == null:
 		return
 	_t += delta
-	_pivot.position.y = 0.32 + sin(_t * 1.3) * 0.06
-	_pivot.rotation.y = sin(_t * 0.35) * 0.35
-	_pivot.rotation.z = sin(_t * 0.9) * 0.025
-	_model.look_toward(_cam.global_position)
-	_place_camera()
+	if _cine:
+		_cine.step(delta)  # [pod2] camera and Lumi
+	else:
+		_pivot.position.y = 0.32 + sin(_t * 1.3) * 0.06
+		_pivot.rotation.y = sin(_t * 0.35) * 0.35
+		_pivot.rotation.z = sin(_t * 0.9) * 0.025
+		_model.look_toward(_cam.global_position)
+		_place_camera()
 	if _intro_ms >= 0 and not _leaving:
 		var s: float = (Time.get_ticks_msec() - _intro_ms) / 1000.0
 		_fade.color.a = 1.0 - smoothstep(0.0, 1.1, s)
