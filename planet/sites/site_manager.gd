@@ -178,6 +178,17 @@ func probe_cells(i: int, p: SitePrefab) -> int:
 	return n
 
 
+## [orbD] A stage restyled in place can add buildings (Ochre's stage 2): the cells under them go
+## clean now, as the probe after a build at that stage would (else a reload clears a cell the save
+## had dirty).
+func _reprobe(i: int, p: SitePrefab) -> void:
+	if cells == null or not is_inside_tree():
+		return
+	await get_tree().physics_frame
+	if is_instance_valid(p) and p.is_inside_tree() and prefabs[i] == p:
+		probe_cells(i, p)
+
+
 func _solid_above(space: PhysicsDirectSpaceState3D, p: SitePrefab, g: Vector3, up: Vector3) -> bool:
 	var q := PhysicsRayQueryParameters3D.create(g + up * 60.0, g + up * SOLID_ABOVE_M)
 	q.collision_mask = 0xFFFFFFFF
@@ -323,6 +334,7 @@ func set_level(i: int, l: int) -> void:
 	levels[i] = clampi(l, 1, 5)
 	if prefabs[i] != null:
 		(prefabs[i] as SitePrefab).set_stage(levels[i])
+		_reprobe(i, prefabs[i])
 	var sp: StreetPower = power.get(i) as StreetPower
 	if sp and is_instance_valid(sp):
 		sp.set_hub_level(levels[i], true)
