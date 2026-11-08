@@ -247,7 +247,7 @@ func loop(sound: String, level: float, pitch: float = 1.0) -> void:
 		p.stream = _loops[sound]
 		add_child(p)
 		_loop_players[sound] = p
-	p.volume_db = linear_to_db(level) - 22.0
+	AudioVol.set_db(p, linear_to_db(level) - 22.0)  # [qafix] crash fix: loops are re-levelled every frame
 	p.pitch_scale = pitch
 	if not p.playing:
 		p.play()

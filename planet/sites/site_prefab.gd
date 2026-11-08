@@ -9,7 +9,7 @@ extends Node3D
 ## - collision: one StaticBody3D (layer 1, which SphereMotor's ground ray reads) with trimesh
 ##   shapes of the prefab's solid meshes, unless the builder made its own bodies.
 ## - set_stage(level 1..5) / set_restoration(0..1): live re-dress. Builders that can re-dress in
-##   place (TideSite.set_state, RimeSite.set_level/set_restore, VerdanceSite.set_level) do;
+##   place (TideSite / RimeHubSite.set_state, VerdanceSite.set_level) do;
 ##   the rest are rebuilt.
 
 signal rebuilt

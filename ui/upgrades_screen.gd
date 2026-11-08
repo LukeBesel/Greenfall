@@ -18,7 +18,7 @@ const TABS: Array[Dictionary] = [
 ]  # [ui6] the Locker is a yard build now (systems/camp/locker_cabinet.gd), not a tab
 # l10n:end
 ## [ui2] Old tab ids (dev hooks, other branches) and where they went.
-const TAB_ALIASES: Dictionary = {"cosmetics": "patch", "builder": "patch", "locker": "patch", "trade": "bots", "hub": "patch", "rockets": "patch"}  # [ui3] Hub and Rockets folded into Upgrades
+const TAB_ALIASES: Dictionary = {"upgrades": "patch", "cosmetics": "patch", "builder": "patch", "locker": "patch", "trade": "bots", "hub": "patch", "rockets": "patch"}  # [ui3] Hub and Rockets folded into Upgrades  # [qafix] "upgrades" is the Upgrades tab (id patch)
 const TAB_FONT: int = 19
 
 ## [ui2] id -> Callable() -> bool. A tab whose gate returns false is locked (see set_tab_gate).

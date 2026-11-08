@@ -212,6 +212,8 @@ func _build_patch() -> void:
 			patch.input = SphereAutoInput.new(Vector3(0, 0, -1), true)
 		_:
 			patch.input = SphereAutoInput.new(Vector3(0, 0, -1), false)
+	if patch.input is SphereAutoInput:  # [orbD] lap tests detour round mounds and props
+		(patch.input as SphereAutoInput).body = patch
 	if DevHooks.has("orbit-scoop") and patch.input is SphereAutoInput:
 		(patch.input as SphereAutoInput).scoop = true
 	patch.enable_sphere(g.surface, cam)
