@@ -195,8 +195,8 @@ static func glass(powered: bool = false, state: String = "repaired") -> Standard
 	m.metallic_specular = 0.35
 	if powered and state != "broken":
 		m.emission_enabled = true
-		m.emission = Color(1.0, 0.78, 0.5)
-		m.emission_energy_multiplier = 0.9
+		m.emission = Color(1.0, 0.7, 0.4)
+		m.emission_energy_multiplier = 0.4
 	_cache[key] = m
 	return m
 
