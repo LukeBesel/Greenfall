@@ -198,7 +198,7 @@ func _world_row(i: int) -> Control:
 	if here:
 		b.text = tr("You are here")
 		b.disabled = true
-	elif not CradleMode.unlocked() and Homeward.answered():  # [home] system planets: by rocket, until the ending
+	elif not CradleMode.unlocked() and Homeward.system_open():  # [pace2]  # [home] system planets: by rocket, until the ending
 		b.text = tr("By rocket")
 		b.disabled = true
 	else:

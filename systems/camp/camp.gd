@@ -262,18 +262,21 @@ func _process(delta: float) -> void:
 func _apply_builds() -> void:
 	var bits: Dictionary = world.get("_ruin_bits")
 	var shack: bool = YardBuilds.built("shack")
-	for k: String in ["frame", "roof", "back", "side", "lamp", "bulb"]:
+	for k: String in ["frame", "roof", "back", "side", "lamp", "bulb", "post_l", "post_r"]:
 		var n: Node3D = bits.get(k) as Node3D
 		if n:
 			n.visible = shack and _was_shown(k)
+			_set_solid(n, n.visible)  # [pace2] hidden parts must not leave invisible walls (posts, roof)
 	var lamps: bool = YardBuilds.built("lamps")
 	for k: String in ["street_lamp", "street_light"]:
 		var n2: Node3D = bits.get(k) as Node3D
 		if n2:
 			n2.visible = lamps and _was_shown(k)
+			_set_solid(n2, n2.visible)  # [pace2]
 	var gen: Node3D = bits.get("generator") as Node3D
 	if gen:
 		gen.visible = YardBuilds.built("generator")
+		_set_solid(gen, gen.visible)  # [pace2]
 	var dressing: Node = world.get("dressing")
 	if dressing and dressing.has_method("set_level"):
 		var hub: Hub = world.get("hub") as Hub
@@ -281,6 +284,7 @@ func _apply_builds() -> void:
 	var comp: Node3D = world.get("composter") as Node3D
 	if comp:
 		comp.visible = YardBuilds.built("composter")
+		_set_solid(comp, comp.visible)  # [pace2]
 
 
 ## Whether the slice's own ruin pass would show this bit (hub level 2+, or Old Town).
@@ -441,3 +445,11 @@ func report() -> String:
 		lines.append("[camp]   %-10s (%.1f, %.1f) shown=%s" % [p[0], v.x, v.z, str(p[2])])
 	lines.append("[camp] too_close=%s" % str(too_close()))
 	return "\n".join(lines)
+
+
+## [pace2] Turns the collision of a yard part (and its children) on or off with its visibility.
+static func _set_solid(n: Node, on: bool) -> void:
+	if n is CollisionShape3D:
+		(n as CollisionShape3D).set_deferred("disabled", not on)
+	for c: Node in n.get_children():
+		_set_solid(c, on)

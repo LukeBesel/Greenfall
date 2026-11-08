@@ -18,9 +18,11 @@ static func _t() -> float:
 
 
 static func step(world: Node) -> String:
-	if not Homeward.answered():
+	if not Homeward.system_open():  # [pace2] the system opens with partial progress
 		return ""
-	AutoplayLate.mark("home_answered_s")
+	if Homeward.answered():
+		AutoplayLate.mark("home_answered_s")
+	AutoplayLate.mark("home_system_open_s")
 	if Homeward.done():
 		AutoplayLate.mark("homecoming_s")
 		return "" if not (BloomFinale.playing or Homecoming.playing) else "ending"
@@ -41,22 +43,34 @@ static func step(world: Node) -> String:
 		_landed_t = _t()
 	AutoplayLate.mark("home_on_%s_s" % pid)
 	var ff: bool = DevHooks.has("home-ff")
-	if ff and not Homeward.restored(k) and _t() - _landed_t > DevHooks.get_f("home-ff", 20.0):
-		(Homeward.state()["pct"] as Dictionary)[pid] = 0.999
+	_track_plateau(k)
+	if ff and not planet_done(k) and _t() - _landed_t > DevHooks.get_f("home-ff", 20.0):
+		(Homeward.state()["pct"] as Dictionary)[pid] = minf(0.999, Homeward.cap_for(k))
 		d._on_restored(Homeward.store_current(1.0))
 	if Homeward.restored(k):
 		AutoplayLate.mark("home_restored_%s_s" % pid)
+	if planet_done(k):
+		AutoplayLate.mark("home_left_%s_%d_s" % [pid, int(floor(Homeward.stored_pct(k) * 100.0))])
 	elif not ff:
 		return ""
 	else:
 		return "wait"
-	# Next planet still to restore, in order.
+	# [pace2] Next planet that can still improve, in order: forward while later planets are new,
+	# back to an earlier one once its tech has been found (return trips).
 	var target: int = -1
 	for i: int in Homeward.planets().size():
-		if not Homeward.restored(i):
+		if not planet_done(i):
 			target = i
 			break
-	if target > 0:
+	if target == 0 and k != 0:
+		if ff:
+			_ff_rocket()
+		if SystemMap.launch_blocker(world, 0) != "":
+			return ""
+		AutoplayLate.mark("home_return_verdance_s")
+		HomewardDirector._launch(world, Homeward.PLANET_BASE)
+		return "fly back to Verdance"
+	if target > 0 and target != k:
 		var nav: int = int(Homeward.planet_def(target).get("nav", 5))
 		while Homeward.drive() < nav:
 			if not _build_drive(world, ff):
@@ -103,6 +117,34 @@ static func step(world: Node) -> String:
 	if HomewardDirector.launch_home(world):
 		return "launch home"
 	return "wait"
+
+
+## [pace2] A planet is "done for now" once it reaches the cap its missing tech allows, or (the one
+## Lumi is on) it sits past its chart without gaining for PLATEAU_S: move on, come back with tech.
+const PLATEAU_S: float = 1800.0
+static var _plateau: Dictionary = {}  # planet -> {"pct", "t", "cap", "stuck"}
+
+
+static func planet_done(i: int) -> bool:
+	if Homeward.restored(i):
+		return true
+	var pct: float = Homeward.stored_pct(i)
+	var cap: float = Homeward.cap_for(i)
+	if pct >= cap - 0.005:
+		return true
+	var pl: Dictionary = _plateau.get(i, {})
+	return bool(pl.get("stuck", false)) and cap <= float(pl.get("cap", 0.0)) + 0.0001
+
+
+static func _track_plateau(k: int) -> void:
+	var pct: float = Homeward.stored_pct(k)
+	var cap: float = Homeward.cap_for(k)
+	var pl: Dictionary = _plateau.get(k, {})
+	if pl.is_empty() or pct > float(pl.get("pct", 0.0)) + 0.01 or cap > float(pl.get("cap", 0.0)) + 0.0001:
+		_plateau[k] = {"pct": pct, "t": _t(), "cap": cap, "stuck": false}
+		return
+	if pct >= float(Homeward.cfg().get("chart_at", 0.5)) and _t() - float(pl["t"]) > PLATEAU_S:
+		pl["stuck"] = true
 
 
 static func _build_drive(world: Node, ff: bool) -> bool:

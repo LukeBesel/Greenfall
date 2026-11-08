@@ -101,6 +101,12 @@ func _ready() -> void:
 		Settings.colorblind = true
 	if has("time-scale"):
 		Engine.time_scale = float(args["time-scale"])
+		# [pace2] Keep each physics step as short as at 4x: at 16x a 120 Hz tick is 0.13 s of game
+		# time and Lumi wedges into props and heaps, which skews fast-forward pacing runs.
+		if Engine.time_scale > 4.0:
+			var base_hz: int = int(ProjectSettings.get_setting("physics/common/physics_ticks_per_second", 120))
+			Engine.physics_ticks_per_second = int(ceil(base_hz * Engine.time_scale / 4.0))
+			Engine.max_physics_steps_per_frame = maxi(Engine.max_physics_steps_per_frame, 8 * int(ceil(Engine.time_scale / 4.0)))
 	if has("l10n-audit"):  # [l10n] untranslated on-screen text (tools/l10n_audit.gd), use with --locale=pseudo
 		var au := L10nAudit.new()
 		au.name = "L10nAudit"

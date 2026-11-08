@@ -676,3 +676,69 @@ Render cost at the start view (lavapipe, `--perf`, primitives / draw calls): Low
 -> 6.02M / 1739 (gen 2, after the Low budget: tiny litter items at 24 tris and 14% of the carpet,
 half the far layer in one batch per model); High 20.6M -> 27.4M before the far-layer cut (estimator
 after it: 15.4M -> 19.9M, Medium 12.5M -> 16.8M).
+
+## Whole-game curve and return trips (wt/pace2, Nov 8)
+Owner targets: the whole game about 20 h for a typical player, grindy but never boring; Verdance
+(New Game to the first launch to another planet) 3-4 h; planting ramps at 1-2 h (garden takes off
+75-110 min); something new every 5-10 min early and 10-20 min later; no goal-less stretch over
+10-15 min. You can leave a planet at about 50%; 100% needs tools from later planets.
+
+**Bot-to-human factor: about 2x.** The autoplay bot never reads, never explores and shops
+instantly, but it now loses time to props and heaps (world2 colliders) and plays the slow start
+the same as a person. So bot targets are half the human ones:
+
+| Stretch | Human target | Bot target | Bot measured (pace2 run 4, 16x) |
+|---|---|---|---|
+| Baler / first bale | 5-10 min | 3-5 | 9.5 |
+| Base 2 | 40-60 min | 20-30 | 27.5 |
+| First robot | 60-90 min | 35-45 | 46.8 (Salvage Logic 2500; now 1800) |
+| Base 3 | 2.5-3 h | 75-100 | 102.1 |
+| Garden takes off (Pollinator Survey) | 2.5-3.5 h | 75-110 | 106.0 (was 163) |
+| Base 4 | 4.5-5.5 h | 150-170 | 168.3 (was 164) |
+| Verdance system opens (Mk V: 50% or a level 3 base) | 3-4 h | 1.5-2 h | gate at base 3 = 102; Mk V (60k) est. 130-140, to measure |
+| Each later planet to its chart (50%) | 3-4 h | 1.5-2 h | not measured yet |
+| Return trips (Verdance 68% -> 100%, each planet's cap) + Homeward | 3-4 h | 1.5-2 h | not measured yet |
+| Whole game | ~20 h | ~10 h | not measured yet |
+
+Before (main after the pace merge, coordinator's run): base 2 31, first robot 40, base 3 81,
+garden 163, base 4 164, base 5 / launch 246 min. The garden fix was the bot hoarding 1.5x the next
+base's cost before researching (Pollinator Survey 2000 waited 80 min with 17k cubes in hand); the
+bot now keeps half the next base and works an on-screen goal's research first.
+
+**Return trips (data/homeward.json `tech`, planets' `needs_tech`, research `requires_tech`).**
+A planet's restoration (Homeward's planet-% value, whatever it counts: hub regions on round
+planets) is capped until the listed tech is found; each tech is found when its planet reaches
+25%. Every cap is above the chart (50%), so you can always move on.
+
+| Planet | Found there (at 25%) | Where it is needed |
+|---|---|---|
+| Verdance | (start) | Its own cap: 68% without the Deep Drill, 80% without the Tide Pump, 90% without the Heat Core, 97% without the Cryo Beacon |
+| Ochre | Deep Drill | Verdance's buried landfill: Dune Charts research, so the Dust Flats; caps Ochre at 75% without the Tide Pump, 90% without the Heat Core |
+| Tidewell | Tide Pump | Verdance's flooded streets: Pump Works, so the Sunken City; Ochre's last quarter; caps Tidewell at 75% without the Cryo Beacon, 90% without the Heat Core |
+| Rime | Cryo Beacon | Verdance's Ark Beacon (the Cradle Returns and the finale); Tidewell's last quarter; Rime itself caps at 80% without the Heat Core |
+| Anvil | Heat Core | Verdance's Thermal Lance, so the Frozen Port's ice; the last 10% of Ochre, Tidewell and Rime |
+
+Drives open from partial progress: Mk V (60k cubes, was 2.5M) needs Verdance at 50% or a base at level 3 (data `or_base_level`: the core only passes 25% around base 3 now that the frontiers wait for later-planet tech); Mk VI needs
+another planet at 50%; only Mk VII Homeward keeps the whole system at 100% plus all relics. Relics
+and 100% stay completion rewards. The Bloom Core follows Verdance's cap, so the 75% ark-star beat
+and the Cradle finale come on a return trip; the system map, the late menu's planet switch and the
+Ark Bridge open with `Homeward.system_open()` (the Cradle's answer, a built Mk V, or the Mk V gate).
+
+The campaign bot (tools/autoplay_home.gd) works a planet until it reaches its current cap, or
+plateaus past its chart for 30 min, then goes to the first planet that can still improve: forward
+while there are new planets, back once new tech raises an earlier cap.
+
+Levers for round planets: everything above is data (caps, `at`, drive gates and costs), read through
+Homeward.stored_pct, so a new planet-% definition keeps the same gates.
+
+Measured run 4 (pace2, 16x; before the Mk V `or_base_level` gate, so the bot stayed on Verdance):
+base 5 177 min (was 246), second district base 5 208; Bloom Core 25% at 105 min and still under
+50% at 222 min. Goal-less stretches over 15 min: 29.5-46.8 (saving for Salvage Logic; now 1800
+cubes) and 102-143 (the bot did not research the Seedling Blueprint; it now researches what an
+on-screen goal needs). A 16x run manages only about 2x real time here, so later planets need staged
+runs (`--save-dir=campaign_pace2` without `--fresh`).
+
+Also fixed on the way (bot pacing was skewed): the bare Old Town yard hid the lean-to but kept its
+front posts solid (invisible walls where Lumi stuck for minutes; camp now turns collision off with
+the hidden parts); the bot sidesteps obstacles, and when boxed in for 90 s hops back to the yard and
+logs `[bot-trap]`; `--time-scale` above 4 raises the physics tick rate so steps stay as short as 4x.
