@@ -7,8 +7,8 @@ shader_type sky;
 
 uniform vec3 zenith_col = vec3(0.004, 0.008, 0.026);
 uniform vec3 horizon_col = vec3(0.1, 0.19, 0.32);
-uniform vec3 night_zenith = vec3(0.001, 0.002, 0.006);
-uniform vec3 night_horizon = vec3(0.008, 0.016, 0.034);
+uniform vec3 night_zenith = vec3(0.004, 0.008, 0.022);
+uniform vec3 night_horizon = vec3(0.03, 0.05, 0.095);
 uniform float day = 1.0;           // 0 night .. 1 full day
 uniform float stars_day = 0.55;    // star strength by day (1 at night)
 uniform float haze = 1.0;          // ice-crystal haze near the horizon (ruined) .. 0 restored
@@ -20,8 +20,9 @@ uniform vec3 sun_b_dir = vec3(0.2, 0.6, 0.75);
 uniform vec3 sun_b_col = vec3(1.0, 0.62, 0.38);
 uniform float sun_b_size = 0.18;
 uniform float sun_b_amt = 0.25;
-uniform vec3 giant_dir = vec3(-0.38, 0.17, -0.91);
-uniform float giant_r = 0.325;     // sin of the angular radius
+uniform vec3 giant_dir = vec3(-0.36, 0.38, -0.85);
+uniform float giant_r = 0.11;      // sin of the angular radius (data/planets.json giant_radius_deg)
+uniform float giant_fade = 0.18;   // distance haze over the giant (0 = crisp)
 uniform vec3 giant_pole = vec3(0.25, 0.95, 0.18);
 uniform float ring_in = 1.3;
 uniform float ring_out = 2.15;
@@ -141,6 +142,7 @@ void sky() {
 		occl = 1.0;
 		// Its edge melts a little into the horizon haze (it is far beyond the air).
 		front = mix(front, col, exp(-max(el, 0.0) * 40.0) * 0.35);
+		front = mix(front, col + horizon_col * 0.1 * dayk, giant_fade);
 	}
 	// --- Rings ---------------------------------------------------------------------------
 	// The giant is far away: rays near it are treated as parallel (gnomonic offset v from its

@@ -3,7 +3,7 @@ extends Node3D
 ## [planet-rime] RIME, the ice moon the Ledger core-mined until it froze. The whole environment of
 ## one district on Rime, self-contained:
 ##   sky       black-blue thin air, the system's two suns as small distant points (weak light,
-##             stars out by day), a huge ringed gas giant low over the crater rim, faint aurora at
+##             stars out by day), a ringed gas giant high over the crater rim, faint aurora at
 ##             night (rime_sky.gdshader); giantshine instead of moonlight
 ##   land      heightfield from the field edge to the horizon: glassy blue ice sheets, shattered
 ##             pressure ridges (with tilted slabs), deep glowing crevasses, soft snow drifts, ice
@@ -263,7 +263,7 @@ static func _polar(ang: float, dist: float) -> Vector2:
 ## Fixed composition (angle 0 = +x, -PI/2 = -z = the default view): the borehole front-left under
 ## the gas giant, derricks around it, geysers and pools spread round the field.
 func _layout_sites() -> void:
-	var gd: Array = kind.get("sky", {}).get("giant_dir", [-0.38, 0.17, -0.91])
+	var gd: Array = kind.get("sky", {}).get("giant_dir", [-0.36, 0.38, -0.85])
 	var giant_az: float = atan2(float(gd[2]), float(gd[0]))
 	var b: Vector2 = _polar(giant_az - 0.1, _r_in + 105.0)
 	_bore = Vector3(b.x, b.y, 30.0)
@@ -1239,10 +1239,13 @@ func _setup_sky() -> void:
 		_sky_mat.set_shader_parameter("zenith_col", _v3(sk["zenith"]))
 	if sk.has("horizon"):
 		_sky_mat.set_shader_parameter("horizon_col", _v3(sk["horizon"]))
+	if sk.has("night_zenith"):
+		_sky_mat.set_shader_parameter("night_zenith", _v3(sk["night_zenith"]))
 	_sky_mat.set_shader_parameter("stars_day", float(sk.get("stars_day", 0.55)))
-	var gd: Vector3 = _v3(sk.get("giant_dir", [-0.38, 0.17, -0.91])).normalized()
+	var gd: Vector3 = _v3(sk.get("giant_dir", [-0.36, 0.38, -0.85])).normalized()
 	_sky_mat.set_shader_parameter("giant_dir", gd)
-	_sky_mat.set_shader_parameter("giant_r", sin(deg_to_rad(float(sk.get("giant_radius_deg", 15.0)))))
+	_sky_mat.set_shader_parameter("giant_fade", float(sk.get("giant_fade", 0.18)))
+	_sky_mat.set_shader_parameter("giant_r", sin(deg_to_rad(float(sk.get("giant_radius_deg", 6.5)))))
 	var tilt: float = deg_to_rad(float(sk.get("ring_tilt_deg", 0.0)))
 	_sky_mat.set_shader_parameter("giant_pole", Basis(Vector3(gd.z, 0, -gd.x).normalized(), tilt) * Basis(gd, 0.25) * Vector3.UP)
 	var a: Dictionary = suns["a"]
@@ -1409,6 +1412,11 @@ func _process(delta: float) -> void:
 	_update_light()
 
 
+func _night_amb() -> Color:
+	var c: Vector3 = _v3(kind.get("night", {}).get("ambient_color", [0.4, 0.5, 0.74]))
+	return Color(c.x, c.y, c.z)
+
+
 ## Runs after SkyDirector each frame: Rime's own fog, ambient, exposure, the two suns and
 ## giantshine, on top of the day cycle it keeps.
 func _update_light() -> void:
@@ -1443,11 +1451,11 @@ func _update_light() -> void:
 	# Giantshine: the gas giant's reflected light replaces the moon at night.
 	if sd and sd.get("moon") != null:
 		var moon: DirectionalLight3D = sd.get("moon")
-		var gd: Vector3 = (_sky_mat.get_shader_parameter("giant_dir") as Vector3) if _sky_mat else Vector3(-0.38, 0.17, -0.91)
-		var gl: Vector3 = Vector3(gd.x, maxf(gd.y, 0.6), gd.z).normalized()
+		var gd: Vector3 = (_sky_mat.get_shader_parameter("giant_dir") as Vector3) if _sky_mat else Vector3(-0.36, 0.38, -0.85)
+		var gl: Vector3 = Vector3(gd.x, maxf(gd.y, 0.75), gd.z).normalized()
 		moon.look_at_from_position(Vector3.ZERO, -gl, Vector3.UP)
-		moon.light_color = Color(0.86, 0.82, 0.74)
-		moon.light_energy = 0.42 * night
+		moon.light_color = Color(0.8, 0.86, 1.0)
+		moon.light_energy = float(kind.get("night", {}).get("giantshine", 1.05)) * night
 		moon.visible = night > 0.02
 	if _sky_mat:
 		_sky_mat.set_shader_parameter("sun_a_dir", sdir)
@@ -1460,7 +1468,7 @@ func _update_light() -> void:
 	var fog: Dictionary = kind.get("fog", {})
 	var fc: Vector3 = _v3(fog.get("color", [0.55, 0.68, 0.9]))
 	var day_fog := Color(fc.x, fc.y, fc.z)
-	_env.fog_light_color = Color(0.03, 0.05, 0.1).lerp(day_fog, sun_up)
+	_env.fog_light_color = Color(0.12, 0.17, 0.28).lerp(day_fog, sun_up)
 	_env.fog_density = float(fog.get("density", 0.0006)) * lerpf(1.25, 0.85, w)
 	_env.fog_sky_affect = 0.0
 	_env.fog_aerial_perspective = float(fog.get("aerial", 0.35))
@@ -1471,8 +1479,8 @@ func _update_light() -> void:
 	_env.volumetric_fog_sky_affect = 0.0
 	var amb: Dictionary = kind.get("ambient", {})
 	var ac: Vector3 = _v3(amb.get("color", [0.6, 0.72, 0.92]))
-	_env.ambient_light_color = Color(0.22, 0.27, 0.42).lerp(Color(ac.x, ac.y, ac.z), sun_up).lerp(Color(0.75, 0.72, 0.68), w * 0.15)
-	_env.ambient_light_energy = lerpf(0.55, float(amb.get("energy", 1.0)), sun_up)
-	_env.tonemap_exposure = lerpf(1.55, 1.42, sun_up)
+	_env.ambient_light_color = _night_amb().lerp(Color(ac.x, ac.y, ac.z), sun_up).lerp(Color(0.75, 0.72, 0.68), w * 0.15)
+	_env.ambient_light_energy = lerpf(float(kind.get("night", {}).get("ambient", 1.0)), float(amb.get("energy", 1.0)), sun_up)
+	_env.tonemap_exposure = lerpf(float(kind.get("night", {}).get("exposure", 1.95)), 1.5, sun_up)
 	_env.adjustment_saturation = lerpf(1.02, 1.14, w)
 	_env.adjustment_contrast = 1.08
