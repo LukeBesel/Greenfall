@@ -8,12 +8,13 @@ extends RefCounted
 const Batch = FrontierView.Batch
 const LINE := Color(1.0, 0.88, 0.7)
 
-static var _box_mesh: BoxMesh
+static var _box_mesh: Mesh
 
 
-static func box() -> BoxMesh:
+static func box() -> Mesh:
 	if _box_mesh == null:
-		_box_mesh = ProcMesh.box(Vector3.ONE)
+		# Beveled unit box: every plate, beam and panel catches a soft edge highlight.
+		_box_mesh = ProcMesh.rounded_box(Vector3.ONE, 0.12, 2)
 	return _box_mesh
 
 
