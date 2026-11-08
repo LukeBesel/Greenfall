@@ -1831,23 +1831,23 @@ msgstr "Algo apareceu no chão limpo. Um fragmento de memória."
 
 #: story/signal_tower.gd:99
 msgid "%s   rebuild the signal tower  ·  %s"
-msgstr ""
+msgstr "%s   reconstruir a torre de sinal  ·  %s"
 
 #: story/signal_tower.gd:100
 msgid "%s   boost the signal tower  ·  %s"
-msgstr ""
+msgstr "%s   reforçar a torre de sinal  ·  %s"
 
 #: story/signal_tower.gd:108
 msgid "The tower needs %s."
-msgstr ""
+msgstr "A torre precisa de %s."
 
 #: story/signal_tower.gd:123
 msgid "Relay signal %d%%. WREN can reach you."
-msgstr ""
+msgstr "Sinal do relé %d%%. WREN consegue falar com você."
 
 #: story/signal_tower.gd:123
 msgid "Relay signal %d%%. WREN comes through clearer."
-msgstr ""
+msgstr "Sinal do relé %d%%. WREN chega mais clara."
 
 #: story/tutorial.gd:10
 msgid "Hold  {scoop}  to scoop junk"
@@ -3644,7 +3644,7 @@ msgstr "CIDADE VELHA   0%"
 
 #: ui/hud.gd:286
 msgid "WREN SIGNAL   %d%%"
-msgstr ""
+msgstr "SINAL DA WREN   %d%%"
 
 #: ui/hud.gd:314
 msgid "HEX  %d%% CLEAR"
@@ -9940,11 +9940,11 @@ msgstr ""
 
 #: data/objectives.json:brief.lines
 msgid "Lumi, it's WREN, the Cradle's caretaker. Your friend up here. Your pod's down, and the relay's failing."
-msgstr ""
+msgstr "Lumi, é a WREN, a guardiã do Cradle. Sua amiga aqui em cima. Sua cápsula caiu e o relé está falhando."
 
 #: data/objectives.json:brief.lines
 msgid "Bale junk to power the old base, then build a signal tower so I can reach you. I'll be [glitch]listen—[/glitch]"
-msgstr ""
+msgstr "Prense sucata em fardos para energizar a velha base e construa uma torre de sinal para eu falar com você. Vou ficar [glitch]ouvin—[/glitch]"
 
 #: data/objectives.json:objectives[power].text
 msgid "Power the base: sell 3 bales"
@@ -9956,11 +9956,11 @@ msgstr "Os cubos alimentam o reciclador. A energia dele acorda a base."
 
 #: data/objectives.json:objectives[tower].text
 msgid "Rebuild the signal tower"
-msgstr ""
+msgstr "Reconstrua a torre de sinal"
 
 #: data/objectives.json:objectives[tower].desc
 msgid "WREN went silent. The tower lets her reach you."
-msgstr ""
+msgstr "A WREN ficou em silêncio. A torre deixa ela falar com você."
 
 #: data/objectives.json:objectives[hex].text
 msgid "Clean a hex"
@@ -10004,7 +10004,7 @@ msgstr "Verde vivo carrega seu Núcleo Floral."
 
 #: data/objectives.json:objectives[seed].hint
 msgid "Keep clearing ground. Seeds turn up in clean soil."
-msgstr ""
+msgstr "Continue limpando o chão. Sementes aparecem em solo limpo."
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base: level 2"
@@ -10020,11 +10020,11 @@ msgstr "O hub já pode crescer. Reconstrua-o na aba Base da bancada."
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"
-msgstr ""
+msgstr "Reforce a torre de sinal"
 
 #: data/objectives.json:objectives[tower2].desc
 msgid "A stronger signal: WREN comes through clearer."
-msgstr ""
+msgstr "Sinal mais forte: a WREN chega mais clara."
 
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base: level 3"
@@ -11134,19 +11134,19 @@ msgstr ""
 
 #: data/signal_tower.json:tiers[0].name
 msgid "Signal Tower"
-msgstr ""
+msgstr "Torre de sinal"
 
 #: data/signal_tower.json:tiers[1].name
 msgid "Signal Tower Mk II"
-msgstr ""
+msgstr "Torre de sinal Mk II"
 
 #: data/signal_tower.json:tiers[2].name
 msgid "Signal Tower Mk III"
-msgstr ""
+msgstr "Torre de sinal Mk III"
 
 #: data/signal_tower.json:tiers[3].name
 msgid "Signal Tower Mk IV"
-msgstr ""
+msgstr "Torre de sinal Mk IV"
 
 #: data/stations.json:conveyor.name
 msgid "Conveyor Feeder"
@@ -11302,23 +11302,23 @@ msgstr "Lasers de mira extras: levante várias peças de uma vez."
 
 #: data/wren_lines.json:wake
 msgid "...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing."
-msgstr ""
+msgstr "...Lumi? ...É a WREN. Sua torre está me segurando. Por pouco. Mantenha ela de pé."
 
 #: data/wren_lines.json:wake
 msgid "...there you are. The signal's thin, but it's ours. Hello again, Lumi."
-msgstr ""
+msgstr "...aí está você. O sinal é fraco, mas é nosso. Oi de novo, Lumi."
 
 #: data/wren_lines.json:signal_up
 msgid "Better. Less static. Keep building."
-msgstr ""
+msgstr "Melhor. Menos estática. Continue construindo."
 
 #: data/wren_lines.json:signal_up
 msgid "Much better. I can hear the wind on your end now. And I can tell you more."
-msgstr ""
+msgstr "Bem melhor. Já ouço o vento do seu lado. E posso te contar mais."
 
 #: data/wren_lines.json:signal_up
 msgid "Clear as the garden deck. Now I can tell you everything I couldn't."
-msgstr ""
+msgstr "Claro como no deck do jardim. Agora posso te contar tudo o que não podia."
 
 #: data/wren_lines.json:hex_clean
 msgid "...that patch of ground. It's... brown. Brown is better than gray."

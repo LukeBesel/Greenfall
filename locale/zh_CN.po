@@ -1828,23 +1828,23 @@ msgstr "清理过的地面里冒出了什么东西。一块记忆碎片。"
 
 #: story/signal_tower.gd:99
 msgid "%s   rebuild the signal tower  ·  %s"
-msgstr ""
+msgstr "%s   重建信号塔  ·  %s"
 
 #: story/signal_tower.gd:100
 msgid "%s   boost the signal tower  ·  %s"
-msgstr ""
+msgstr "%s   增强信号塔  ·  %s"
 
 #: story/signal_tower.gd:108
 msgid "The tower needs %s."
-msgstr ""
+msgstr "信号塔需要 %s。"
 
 #: story/signal_tower.gd:123
 msgid "Relay signal %d%%. WREN can reach you."
-msgstr ""
+msgstr "中继信号 %d%%。WREN 能联系到你了。"
 
 #: story/signal_tower.gd:123
 msgid "Relay signal %d%%. WREN comes through clearer."
-msgstr ""
+msgstr "中继信号 %d%%。WREN 的声音更清楚了。"
 
 #: story/tutorial.gd:10
 msgid "Hold  {scoop}  to scoop junk"
@@ -3633,7 +3633,7 @@ msgstr "老城区   0%"
 
 #: ui/hud.gd:286
 msgid "WREN SIGNAL   %d%%"
-msgstr ""
+msgstr "WREN 信号   %d%%"
 
 #: ui/hud.gd:314
 msgid "HEX  %d%% CLEAR"
@@ -9928,11 +9928,11 @@ msgstr ""
 
 #: data/objectives.json:brief.lines
 msgid "Lumi, it's WREN, the Cradle's caretaker. Your friend up here. Your pod's down, and the relay's failing."
-msgstr ""
+msgstr "Lumi，我是 WREN，摇篮号的看护者。你在上面的朋友。你的舱坠毁了，中继也快撑不住了。"
 
 #: data/objectives.json:brief.lines
 msgid "Bale junk to power the old base, then build a signal tower so I can reach you. I'll be [glitch]listen—[/glitch]"
-msgstr ""
+msgstr "把垃圾压成方块给旧基地供电，然后建一座信号塔，让我能联系到你。我会一直[glitch]听着——[/glitch]"
 
 #: data/objectives.json:objectives[power].text
 msgid "Power the base: sell 3 bales"
@@ -9944,11 +9944,11 @@ msgstr "方块喂给回收机，它的电力会唤醒基地。"
 
 #: data/objectives.json:objectives[tower].text
 msgid "Rebuild the signal tower"
-msgstr ""
+msgstr "重建信号塔"
 
 #: data/objectives.json:objectives[tower].desc
 msgid "WREN went silent. The tower lets her reach you."
-msgstr ""
+msgstr "WREN 沉默了。信号塔能让她联系到你。"
 
 #: data/objectives.json:objectives[hex].text
 msgid "Clean a hex"
@@ -9992,7 +9992,7 @@ msgstr "有生命的绿色会给绽放核心充电。"
 
 #: data/objectives.json:objectives[seed].hint
 msgid "Keep clearing ground. Seeds turn up in clean soil."
-msgstr ""
+msgstr "继续清理土地。干净的土里会冒出种子。"
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base: level 2"
@@ -10008,11 +10008,11 @@ msgstr "基地现在可以扩建了。在工作台的基地标签页里重建它
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"
-msgstr ""
+msgstr "增强信号塔"
 
 #: data/objectives.json:objectives[tower2].desc
 msgid "A stronger signal: WREN comes through clearer."
-msgstr ""
+msgstr "信号更强：WREN 的声音更清楚。"
 
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base: level 3"
@@ -11122,19 +11122,19 @@ msgstr ""
 
 #: data/signal_tower.json:tiers[0].name
 msgid "Signal Tower"
-msgstr ""
+msgstr "信号塔"
 
 #: data/signal_tower.json:tiers[1].name
 msgid "Signal Tower Mk II"
-msgstr ""
+msgstr "信号塔 Mk II"
 
 #: data/signal_tower.json:tiers[2].name
 msgid "Signal Tower Mk III"
-msgstr ""
+msgstr "信号塔 Mk III"
 
 #: data/signal_tower.json:tiers[3].name
 msgid "Signal Tower Mk IV"
-msgstr ""
+msgstr "信号塔 Mk IV"
 
 #: data/stations.json:conveyor.name
 msgid "Conveyor Feeder"
@@ -11290,23 +11290,23 @@ msgstr "额外的瞄准激光：一次举起多件废料。"
 
 #: data/wren_lines.json:wake
 msgid "...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing."
-msgstr ""
+msgstr "……Lumi？……我是 WREN。你的塔把我接上了。勉强。别让它倒下。"
 
 #: data/wren_lines.json:wake
 msgid "...there you are. The signal's thin, but it's ours. Hello again, Lumi."
-msgstr ""
+msgstr "……你在这儿。信号很弱，但它是我们的。又见面了，Lumi。"
 
 #: data/wren_lines.json:signal_up
 msgid "Better. Less static. Keep building."
-msgstr ""
+msgstr "好多了。杂音少了。继续建。"
 
 #: data/wren_lines.json:signal_up
 msgid "Much better. I can hear the wind on your end now. And I can tell you more."
-msgstr ""
+msgstr "好太多了。我现在能听见你那边的风声了。也能告诉你更多事了。"
 
 #: data/wren_lines.json:signal_up
 msgid "Clear as the garden deck. Now I can tell you everything I couldn't."
-msgstr ""
+msgstr "清楚得像在花园甲板上。现在我能把以前说不出的都告诉你了。"
 
 #: data/wren_lines.json:hex_clean
 msgid "...that patch of ground. It's... brown. Brown is better than gray."

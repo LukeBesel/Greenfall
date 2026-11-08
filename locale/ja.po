@@ -1828,23 +1828,23 @@ msgstr "片づいた地面から何かが出てきた。メモリーの破片だ
 
 #: story/signal_tower.gd:99
 msgid "%s   rebuild the signal tower  ·  %s"
-msgstr ""
+msgstr "%s   信号塔を建て直す  ·  %s"
 
 #: story/signal_tower.gd:100
 msgid "%s   boost the signal tower  ·  %s"
-msgstr ""
+msgstr "%s   信号塔を強化する  ·  %s"
 
 #: story/signal_tower.gd:108
 msgid "The tower needs %s."
-msgstr ""
+msgstr "塔には %s が必要。"
 
 #: story/signal_tower.gd:123
 msgid "Relay signal %d%%. WREN can reach you."
-msgstr ""
+msgstr "中継信号 %d%%。WRENの声が届く。"
 
 #: story/signal_tower.gd:123
 msgid "Relay signal %d%%. WREN comes through clearer."
-msgstr ""
+msgstr "中継信号 %d%%。WRENの声がはっきりしてきた。"
 
 #: story/tutorial.gd:10
 msgid "Hold  {scoop}  to scoop junk"
@@ -3633,7 +3633,7 @@ msgstr "旧市街   0%"
 
 #: ui/hud.gd:286
 msgid "WREN SIGNAL   %d%%"
-msgstr ""
+msgstr "WREN 信号   %d%%"
 
 #: ui/hud.gd:314
 msgid "HEX  %d%% CLEAR"
@@ -9928,11 +9928,11 @@ msgstr ""
 
 #: data/objectives.json:brief.lines
 msgid "Lumi, it's WREN, the Cradle's caretaker. Your friend up here. Your pod's down, and the relay's failing."
-msgstr ""
+msgstr "Lumi、WRENよ。クレイドルの世話係で、上にいるあなたの友達。ポッドは墜落して、中継器ももう持たない。"
 
 #: data/objectives.json:brief.lines
 msgid "Bale junk to power the old base, then build a signal tower so I can reach you. I'll be [glitch]listen—[/glitch]"
-msgstr ""
+msgstr "ゴミをベールにして古い基地に電力を。それから信号塔を建てて、私が届くように。ずっと[glitch]聞いて——[/glitch]"
 
 #: data/objectives.json:objectives[power].text
 msgid "Power the base: sell 3 bales"
@@ -9944,11 +9944,11 @@ msgstr "キューブはリサイクラーの燃料。その電力が基地を目
 
 #: data/objectives.json:objectives[tower].text
 msgid "Rebuild the signal tower"
-msgstr ""
+msgstr "信号塔を建て直す"
 
 #: data/objectives.json:objectives[tower].desc
 msgid "WREN went silent. The tower lets her reach you."
-msgstr ""
+msgstr "WRENは沈黙した。塔があれば彼女の声が届く。"
 
 #: data/objectives.json:objectives[hex].text
 msgid "Clean a hex"
@@ -9992,7 +9992,7 @@ msgstr "生きた緑がブルームコアを充電する。"
 
 #: data/objectives.json:objectives[seed].hint
 msgid "Keep clearing ground. Seeds turn up in clean soil."
-msgstr ""
+msgstr "地面の掃除を続けて。きれいな土から種が見つかる。"
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base: level 2"
@@ -10008,11 +10008,11 @@ msgstr "基地を拡張できるようになったわ。作業台の基地タブ
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"
-msgstr ""
+msgstr "信号塔を強化する"
 
 #: data/objectives.json:objectives[tower2].desc
 msgid "A stronger signal: WREN comes through clearer."
-msgstr ""
+msgstr "信号が強くなれば、WRENの声がはっきりする。"
 
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base: level 3"
@@ -11122,19 +11122,19 @@ msgstr ""
 
 #: data/signal_tower.json:tiers[0].name
 msgid "Signal Tower"
-msgstr ""
+msgstr "信号塔"
 
 #: data/signal_tower.json:tiers[1].name
 msgid "Signal Tower Mk II"
-msgstr ""
+msgstr "信号塔 Mk II"
 
 #: data/signal_tower.json:tiers[2].name
 msgid "Signal Tower Mk III"
-msgstr ""
+msgstr "信号塔 Mk III"
 
 #: data/signal_tower.json:tiers[3].name
 msgid "Signal Tower Mk IV"
-msgstr ""
+msgstr "信号塔 Mk IV"
 
 #: data/stations.json:conveyor.name
 msgid "Conveyor Feeder"
@@ -11290,23 +11290,23 @@ msgstr "追加の照準レーザー：一度に複数のガラクタを持ち上
 
 #: data/wren_lines.json:wake
 msgid "...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing."
-msgstr ""
+msgstr "……Lumi？……WRENよ。あなたの塔が私をつないでる。ぎりぎりね。倒さないで。"
 
 #: data/wren_lines.json:wake
 msgid "...there you are. The signal's thin, but it's ours. Hello again, Lumi."
-msgstr ""
+msgstr "……いた。信号は弱いけど、私たちのもの。また会えたね、Lumi。"
 
 #: data/wren_lines.json:signal_up
 msgid "Better. Less static. Keep building."
-msgstr ""
+msgstr "よくなった。ノイズが減った。もっと建てて。"
 
 #: data/wren_lines.json:signal_up
 msgid "Much better. I can hear the wind on your end now. And I can tell you more."
-msgstr ""
+msgstr "ずっといい。そっちの風の音が聞こえる。もっと話せるわ。"
 
 #: data/wren_lines.json:signal_up
 msgid "Clear as the garden deck. Now I can tell you everything I couldn't."
-msgstr ""
+msgstr "庭園デッキみたいにクリア。言えなかったこと、全部話せる。"
 
 #: data/wren_lines.json:hex_clean
 msgid "...that patch of ground. It's... brown. Brown is better than gray."
