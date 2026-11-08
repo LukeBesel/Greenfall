@@ -525,7 +525,7 @@ msgstr "天文台"
 
 #: automation/telescope.gd:307
 msgid "E   Telescope: look across the system"
-msgstr ""
+msgstr "E   望遠鏡：星系を見わたす"
 
 #: core/offline.gd:130 steam/demo_end_screen.gd:124
 #: systems/remote_progress.gd:289 systems/extras/welcome_back.gd:56
@@ -553,15 +553,15 @@ msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ
 
 #: core/pace.gd:127
 msgid "Lift Strength %d"
-msgstr ""
+msgstr "リフト力 %d"
 
 #: core/pace.gd:128
 msgid "Too heavy: needs %s"
-msgstr ""
+msgstr "重すぎる：%s が必要"
 
 #: core/pace.gd:139
 msgid "No Baler yet: empty your chest in the trash bin"
-msgstr ""
+msgstr "ベーラーがまだない：胸のゴミをゴミ箱に空けよう"
 
 #: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:257
 msgid "+%s cubes"
@@ -577,12 +577,12 @@ msgstr "E   ネコをなでる"
 
 #: fauna/fauna.gd:1540
 msgid "E   scatter crumbs for the birds"
-msgstr ""
+msgstr "E   鳥にパンくずをまく"
 
 #: fauna/fauna.gd:1588
 msgid ""
 "The birds have decided you're all right. Crumb Bag added to your Collection."
-msgstr ""
+msgstr "鳥たちはきみを気に入ったみたい。パンくず袋をコレクションに追加した。"
 
 #: fauna/fauna.gd:1644
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
@@ -612,7 +612,7 @@ msgstr "CDケースがいっぱいだ。"
 msgid ""
 "Past the survey line the junk runs too deep to start on. One district at a "
 "time: clean this one, then the rockets take us to the next."
-msgstr ""
+msgstr "測量線の向こうはガラクタが深すぎて手がつけられない。地区は1つずつ：ここを片づけたら、ロケットで次へ行こう。"
 
 #: planet/frontier_district.gd:279
 msgid ""
@@ -817,19 +817,19 @@ msgstr "光  水  いのち"
 #: planet/world_bounds.gd:105
 msgid ""
 "WREN: That's the edge of the survey zone, Lumi. Nothing out there but haze."
-msgstr ""
+msgstr "WREN：そこが測量ゾーンの端よ、Lumi。外にはもやしかない。"
 
 #: planet/world_bounds.gd:166
 msgid "Lumi hovers back onto solid ground."
-msgstr ""
+msgstr "Lumi はふわりと固い地面に戻った。"
 
 #: planet/planets/tidewell/env.gd:1180
 msgid "LEDGER  DREDGE %02d"
-msgstr ""
+msgstr "LEDGER  浚渫船 %02d"
 
 #: planet/planets/tidewell/env.gd:1226
 msgid "LEDGER MINING  ORE BARGE 3"
-msgstr ""
+msgstr "LEDGER マイニング  鉱石バージ 3"
 
 #: plants/composter.gd:77
 msgid "E   compost press  ·  dormant until something grows"
@@ -1314,7 +1314,7 @@ msgstr "前哨基地 %d · 廃墟"
 
 #: scenes/story_preview.gd:156 ui/loading_screen.gd:154
 msgid "Setting the scene"
-msgstr ""
+msgstr "舞台を準備中"
 
 #: steam/demo.gd:73
 msgid ""
@@ -2082,27 +2082,27 @@ msgstr "中継信号 %d%%。WRENの声がはっきりしてきた。"
 
 #: story/story_pause.gd:30
 msgid "Paused"
-msgstr ""
+msgstr "一時停止"
 
 #: story/story_pause.gd:36
 msgid "%s  resume   ·   %s  skip"
-msgstr ""
+msgstr "%s  再開   ·   %s  スキップ"
 
 #: story/story_pause.gd:36
 msgid "Space"
-msgstr ""
+msgstr "スペース"
 
 #: story/story_pause.gd:36
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #: story/story_pause.gd:45
 msgid "%s  pause   ·   %s  skip"
-msgstr ""
+msgstr "%s  一時停止   ·   %s  スキップ"
 
 #: story/story_pause.gd:46
 msgid "Space  pause   ·   Esc  skip"
-msgstr ""
+msgstr "スペース  一時停止   ·   Esc  スキップ"
 
 #: story/tutorial.gd:10
 msgid "{interact}  at the workbench to repair it"
@@ -2539,23 +2539,23 @@ msgstr "監査はドローンの勝ち、%d 対 %d。それでもチップを置
 
 #: systems/homeward.gd:147
 msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
-msgstr ""
+msgstr "%s を %d%% まで復元（%d%%）するか、基地を Lv %d にする"
 
 #: systems/homeward.gd:148
 msgid "Restore %s to %d%% (%d%%)"
-msgstr ""
+msgstr "%s を %d%% まで復元（%d%%）"
 
 #: systems/homeward.gd:155
 msgid "Restore another planet to %d%% (best %d%%)"
-msgstr ""
+msgstr "ほかの惑星を %d%% まで復元（最高 %d%%）"
 
 #: systems/homeward.gd:206
 msgid "Needs %s: found on %s"
-msgstr ""
+msgstr "%s が必要：%s で見つかる"
 
 #: systems/homeward.gd:351
 msgid "New tech: %s. %s"
-msgstr ""
+msgstr "新技術：%s。%s"
 
 #: systems/homeward.gd:398
 msgid "Needs the %s drive"
@@ -2757,11 +2757,11 @@ msgstr "すべての台座が埋まった。博物館は完成：Lumiが見つ�
 
 #: systems/profile_slots.gd:48 ui/world_picker.gd:138
 msgid "Profile %d"
-msgstr ""
+msgstr "プロフィール %d"
 
 #: systems/profile_slots.gd:106
 msgid "%d:%02d h"
-msgstr ""
+msgstr "%d:%02d 時間"
 
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:237
 #: ui/settings_panel.gd:320
@@ -2994,31 +2994,31 @@ msgstr "新しいCD：%s（%s、%s出身）"
 
 #: systems/camp/camp.gd:171
 msgid "E   Workbench (broken): repair it"
-msgstr ""
+msgstr "E   作業台（故障）：修理する"
 
 #: systems/camp/camp.gd:172
 msgid "E   Workbench: upgrades"
-msgstr ""
+msgstr "E   作業台：アップグレード"
 
 #: systems/camp/camp.gd:219
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
-msgstr ""
+msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
 #: systems/camp/camp.gd:354
 msgid "E   %s (Lv %d): fully upgraded"
-msgstr ""
+msgstr "E   %s（Lv %d）：アップグレード完了"
 
 #: systems/camp/camp.gd:357
 msgid "E   %s (Lv %d): %s"
-msgstr ""
+msgstr "E   %s（Lv %d）：%s"
 
 #: systems/camp/camp.gd:358
 msgid "E   %s (Lv %d): upgrade to %s for %s"
-msgstr ""
+msgstr "E   %s（Lv %d）：%s にアップグレード（%s）"
 
 #: systems/camp/camp.gd:364
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
-msgstr ""
+msgstr "ゴミ箱をアップグレード：%s。ここではベールが %d%% で売れる。"
 
 #: systems/camp/hub_builds.gd:144
 msgid "Trash bin, level %d of %d"
@@ -3052,11 +3052,11 @@ msgstr "E   ロッカーを開く"
 
 #: systems/camp/machine_reveal.gd:46
 msgid "%s built. Follow the light to it."
-msgstr ""
+msgstr "%s を建てた。光をたどって行ってみよう。"
 
 #: systems/camp/machine_reveal.gd:46
 msgid "%s built."
-msgstr ""
+msgstr "%s を建てた。"
 
 #: systems/camp/yard_builds.gd:61
 msgid "Repair the workbench first."
@@ -3064,11 +3064,11 @@ msgstr "まず作業台を修理しよう。"
 
 #: systems/camp/yard_builds.gd:67
 msgid "Grow your first seed first."
-msgstr ""
+msgstr "まずは最初の種を育てよう。"
 
 #: systems/camp/yard_builds.gd:67
 msgid "Not yet."
-msgstr ""
+msgstr "まだだめ。"
 
 #: systems/extras/album.gd:86
 msgid "First arrival"
@@ -3130,7 +3130,7 @@ msgstr "%s は新しいつぼみを得意げに指さす。"
 
 #: systems/extras/radio.gd:184
 msgid "E   CD player: %s"
-msgstr ""
+msgstr "E   CDプレーヤー：%s"
 
 #: systems/extras/radio.gd:184
 msgid "mood music"
@@ -3291,19 +3291,19 @@ msgstr "仕事に戻る"
 
 #: systems/glim/glim.gd:14
 msgid "Find Glim first"
-msgstr ""
+msgstr "まず Glim を見つけよう"
 
 #: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:142
 msgid "Maxed"
-msgstr ""
+msgstr "最大"
 
 #: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:149
 msgid "Needs %s %d"
-msgstr ""
+msgstr "%s %d が必要"
 
 #: systems/glim/glim.gd:14
 msgid "Buy %d Glim upgrades"
-msgstr ""
+msgstr "Glim のアップグレードを %d 個買う"
 
 #: systems/glim/glim.gd:14 ui/bench_lists.gd:12 ui/glim_bench.gd:13
 msgid "Glim"
@@ -3311,32 +3311,32 @@ msgstr "Glim"
 
 #: systems/glim/glim.gd:14
 msgid "Find the little lantern bot in the junk"
-msgstr ""
+msgstr "ガラクタの中の小さなランタンボットを見つける"
 
 #: systems/glim/glim_director.gd:156
 msgid ""
 "A little lantern bot flickers awake in the junk beside you: Glim! He'll "
 "light the way at night."
-msgstr ""
+msgstr "すぐそばのガラクタの中で、小さなランタンボットがまたたいて目を覚ました：Glim！夜は道を照らしてくれる。"
 
 #: systems/glim/glim_director.gd:158
 msgid ""
 "Something in the junk blinks back at you: Glim, a little lantern bot! He'll "
 "light the way at night."
-msgstr ""
+msgstr "ガラクタの中から何かがまばたきを返してきた：小さなランタンボットの Glim！夜は道を照らしてくれる。"
 
 #: systems/glim/glim_director.gd:160
 msgid ""
 "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
-msgstr ""
+msgstr "%s をタップ：Glim がヘックスをスキャンして取り残したガラクタを探す。%s 長押しでアップグレード。"
 
 #: systems/glim/glim_director.gd:216
 msgid "All clear here!"
-msgstr ""
+msgstr "ここはすっかりきれい！"
 
 #: systems/glim/glim_director.gd:218
 msgid "Only big pieces left"
-msgstr ""
+msgstr "大きいものだけ残っている"
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -3611,6 +3611,8 @@ msgid ""
 "No robots yet. Build one in the Bots tab, then style it here.\n"
 "Your first robot comes with treads and a bobble plant."
 msgstr ""
+"まだロボットがいない。ボットタブで1台作って、ここでコーディネートしよう。\n"
+"最初のロボットはキャタピラとゆらゆらプラント付き。"
 
 #: ui/builder_panel.gd:227
 msgid "PART SLOTS"
@@ -3757,7 +3759,7 @@ msgstr "図鑑"
 
 #: ui/codex_screen.gd:89
 msgid "Watch the story"
-msgstr ""
+msgstr "ストーリーを見る"
 
 #: ui/codex_screen.gd:100 ui/upgrades_screen.gd:165
 msgid "Close  [%s]"
@@ -4609,15 +4611,15 @@ msgstr "アップグレード"
 
 #: ui/glim_panel.gd:40
 msgid "GLIM"
-msgstr ""
+msgstr "GLIM"
 
 #: ui/glim_panel.gd:42
 msgid "lantern bot"
-msgstr ""
+msgstr "ランタンボット"
 
 #: ui/glim_panel.gd:64
 msgid "%s  close"
-msgstr ""
+msgstr "%s  閉じる"
 
 #: ui/glim_panel.gd:105
 msgid "UPGRADES"
@@ -4625,11 +4627,11 @@ msgstr "アップグレード"
 
 #: ui/glim_panel.gd:195
 msgid "LOOKS"
-msgstr ""
+msgstr "見た目"
 
 #: ui/glim_panel.gd:220
 msgid "???  %s"
-msgstr ""
+msgstr "???  %s"
 
 #: ui/globe_view.gd:121
 msgid "Survey"
@@ -4818,6 +4820,8 @@ msgid ""
 "%s   %d / %d\n"
 "%s"
 msgstr ""
+"%s   %d / %d\n"
+"%s"
 
 #: ui/hub_panel.gd:250
 msgid "All built"
@@ -4960,11 +4964,11 @@ msgstr "必要条件   OK"
 
 #: ui/loading_screen.gd:153
 msgid "Loading"
-msgstr ""
+msgstr "読み込み中"
 
 #: ui/loading_screen.gd:155
 msgid "Warming up"
-msgstr ""
+msgstr "ウォームアップ中"
 
 #: ui/locker_panel.gd:80
 msgid "LOCKER"
@@ -5130,7 +5134,7 @@ msgstr "つづきから"
 #. planets.
 #: ui/main_menu.gd:345
 msgid "Profiles"
-msgstr ""
+msgstr "プロフィール"
 
 #: ui/main_menu.gd:347
 msgid "New Game"
@@ -5540,74 +5544,74 @@ msgstr "フォトモード   Tab"
 
 #: ui/profile_picker.gd:38
 msgid "SAVE PROFILES"
-msgstr ""
+msgstr "セーブプロフィール"
 
 #: ui/profile_picker.gd:39
 msgid "Each profile has its own planets and progress. Settings are shared."
-msgstr ""
+msgstr "プロフィールごとに惑星と進行状況が別々。設定は共通。"
 
 #: ui/profile_picker.gd:111
 msgid "New"
-msgstr ""
+msgstr "新規"
 
 #: ui/profile_picker.gd:112
 msgid "Rename"
-msgstr ""
+msgstr "名前変更"
 
 #: ui/profile_picker.gd:114 ui/profile_picker.gd:233
 msgid "Delete"
-msgstr ""
+msgstr "削除"
 
 #: ui/profile_picker.gd:122
 msgid "Empty slot"
-msgstr ""
+msgstr "空きスロット"
 
 #. Save profile summary: play time, number of planets, the current planet's
 #. name.
 #: ui/profile_picker.gd:125
 msgid "%s  ·  %s  ·  on %s"
-msgstr ""
+msgstr "%s  ·  %s  ·  %s にいる"
 
 #: ui/profile_picker.gd:126
 msgid "%d planet"
 msgid_plural "%d planets"
-msgstr[0] ""
+msgstr[0] "%d 個の惑星"
 
 #. Save profile summary: how far the Bloom (restoration milestones) has come.
 #: ui/profile_picker.gd:131
 msgid "Bloom %d%%"
-msgstr ""
+msgstr "ブルーム %d%%"
 
 #: ui/profile_picker.gd:134
 msgid "%s seeds"
-msgstr ""
+msgstr "種 %s 個"
 
 #: ui/profile_picker.gd:211
 msgid "START OVER IN %s?"
-msgstr ""
+msgstr "%s でやり直す？"
 
 #: ui/profile_picker.gd:212
 msgid ""
 "Every world, Heirloom and Starseed in this profile will be erased. The other"
 " profiles stay as they are."
-msgstr ""
+msgstr "このプロフィールのすべての世界、家宝、スターシードが消去される。ほかのプロフィールはそのまま。"
 
 #: ui/profile_picker.gd:231
 msgid "DELETE %s?"
-msgstr ""
+msgstr "%s を削除する？"
 
 #: ui/profile_picker.gd:232
 msgid ""
 "This profile's worlds and progress will be erased. This can't be undone."
-msgstr ""
+msgstr "このプロフィールの世界と進行状況が消去される。元に戻せない。"
 
 #: ui/profile_picker.gd:238
 msgid "RENAME PROFILE"
-msgstr ""
+msgstr "プロフィール名を変更"
 
 #: ui/profile_picker.gd:252
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: ui/research_node_card.gd:175 ui/research_panel.gd:194
 msgid "Researched"
@@ -5755,7 +5759,7 @@ msgstr "まだ建てていない"
 msgid ""
 "The launch pad comes with a level 5 base (yours is level %d). Upgrade the "
 "base in the Upgrades tab."
-msgstr ""
+msgstr "発射台には Lv 5 の基地が必要（いまは Lv %d）。アップグレードタブで基地を強化しよう。"
 
 #: ui/rockets_panel.gd:48
 msgid ""
@@ -6189,7 +6193,7 @@ msgstr "リサイクルしたベール %d   ·   破壊したガラクタ %s kg 
 
 #: ui/system_map.gd:654
 msgid "%s  ·  %.2f AU"
-msgstr ""
+msgstr "%s  ·  %.2f AU"
 
 #: ui/system_map.gd:661
 msgid "In flight"
@@ -6197,11 +6201,11 @@ msgstr "飛行中"
 
 #: ui/system_map.gd:664
 msgid "Lumi is here"
-msgstr ""
+msgstr "Lumi はここ"
 
 #: ui/system_map.gd:670
 msgid "Ready to launch"
-msgstr ""
+msgstr "発射準備完了"
 
 #: ui/system_map.gd:689 data/goals.json:goals[home_launch].text
 msgid "Launch home"
@@ -6213,23 +6217,23 @@ msgstr "地区を選ぶ"
 
 #: ui/system_map.gd:711
 msgid "System %d%% restored  ·  relics %d/%d"
-msgstr ""
+msgstr "星系 %d%% 復元  ·  遺物 %d/%d"
 
 #: ui/system_map.gd:713
 msgid "%d Heirloom picks"
-msgstr ""
+msgstr "家宝の選択 %d 回"
 
 #: ui/system_map.gd:715
 msgid "Left/Right planet  ·  A zoom  ·  B back"
-msgstr ""
+msgstr "左右 惑星  ·  A ズーム  ·  B 戻る"
 
 #: ui/system_map.gd:733
 msgid "Build the drive"
-msgstr ""
+msgstr "ドライブを建造"
 
 #: ui/system_map.gd:749
 msgid "Not discovered yet"
-msgstr ""
+msgstr "まだ未発見"
 
 #: ui/system_map.gd:755
 msgid "Rocket not ready"
@@ -6277,7 +6281,7 @@ msgstr "まだ他の世界を訪れていない。アークブリッジから別
 
 #: ui/telescope_view.gd:477
 msgid "Spotted %s: it now shows on the system map"
-msgstr ""
+msgstr "%s を発見：星系マップに表示されるようになった"
 
 #: ui/telescope_view.gd:480
 msgid ""
@@ -6302,12 +6306,16 @@ msgid ""
 "An unknown world.\n"
 "Too faint to chart yet."
 msgstr ""
+"未知の世界。\n"
+"まだ暗すぎて記録できない。"
 
 #: ui/telescope_view.gd:485
 msgid ""
 "%s\n"
 "Charted. No landing yet."
 msgstr ""
+"%s\n"
+"記録済み。まだ着陸していない。"
 
 #: ui/telescope_view.gd:492
 msgid "You stand on %s."
@@ -6499,27 +6507,27 @@ msgstr "Lumi のポッドが %s に着陸した。荒れ果てて、待ってい
 
 #: ui/world_picker.gd:32
 msgid "PLANETS"
-msgstr ""
+msgstr "惑星"
 
 #: ui/world_picker.gd:33
 msgid "Every planet keeps its own save. Pick one to continue there."
-msgstr ""
+msgstr "惑星ごとにセーブがある。続きを遊ぶ惑星を選ぼう。"
 
 #: ui/world_picker.gd:89
 msgid "PLANET %d"
-msgstr ""
+msgstr "惑星 %d"
 
 #: ui/world_picker.gd:100
 msgid "Current"
-msgstr ""
+msgstr "現在"
 
 #: ui/world_picker.gd:115
 msgid "Home world"
-msgstr ""
+msgstr "ふるさと"
 
 #: ui/world_picker.gd:117
 msgid "%d hexes"
-msgstr ""
+msgstr "%d ヘックス"
 
 #: ui/yard_builds_panel.gd:21
 msgid "Nothing new to build yet. More opens as the base grows."
@@ -7489,7 +7497,7 @@ msgstr "ロボット保育所"
 msgid ""
 "A walled lawn with flower beds where retired robots tend the garden and lend"
 " your crew a hand."
-msgstr ""
+msgstr "花壇のある塀に囲まれた芝生。引退したロボットたちが庭の世話をして、チームを手伝ってくれる。"
 
 #: data/codex.json:categories[junk].name data/hex_levels.json:levels[0].name
 msgid "Junk"
@@ -8977,6 +8985,8 @@ msgid ""
 " or made by the recycler. Pays for robots and their Mk tiers, base levels, "
 "stations, Locker styles, rocket stages and outpost repairs."
 msgstr ""
+"ガラクタから回収したり、探知機で掘り出したり、リサイクラーで作ったりしたロボットのパーツと建材。ロボットとその Mk "
+"ランク、基地レベル、設備、ロッカーのスタイル、ロケットの段、前哨基地の修理に使う。"
 
 #: data/currencies.json:currencies[seeds].name
 msgid "Seeds"
@@ -10726,12 +10736,12 @@ msgstr "ささやきのようにやわらかく、うわさのように速い。
 
 #: data/events.json:trinkets[crumb_bag].name
 msgid "Crumb Bag"
-msgstr ""
+msgstr "パンくず袋"
 
 #: data/events.json:trinkets[crumb_bag].desc
 msgid ""
 "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
-msgstr ""
+msgstr "パンくずと種殻の入った紙袋。ハトたちはもうこの音を覚えている。"
 
 #: data/events.json:trinkets[pic_cat].name
 msgid "Photo: Stray Cat"
@@ -11215,42 +11225,42 @@ msgstr "ランタン"
 
 #: data/glim.json:tracks[light].desc
 msgid "A brighter, wider lantern for night shifts."
-msgstr ""
+msgstr "夜勤用の、もっと明るく広いランタン。"
 
 #: data/glim.json:tracks[scan].name
 msgid "Hex Scanner"
-msgstr ""
+msgstr "ヘックススキャナー"
 
 #: data/glim.json:tracks[scan].desc
 msgid ""
 "Pings the junk left in your hex. Upgrades reach the hexes around you and "
 "recharge faster."
-msgstr ""
+msgstr "ヘックスに残ったガラクタを探知する。アップグレードで周りのヘックスまで届き、チャージも速くなる。"
 
 #: data/glim.json:tracks[auto].name
 msgid "Auto-Scan"
-msgstr ""
+msgstr "オートスキャン"
 
 #: data/glim.json:tracks[auto].desc
 msgid "Glim pings on his own every few seconds."
-msgstr ""
+msgstr "Glim が数秒ごとに自分でスキャンする。"
 
 #: data/glim.json:tracks[magnet].name
 msgid "Tidy Tug"
-msgstr ""
+msgstr "おかたづけトラクター"
 
 #: data/glim.json:tracks[magnet].desc
 msgid "A gentle tractor tug: tiny pieces scoot toward Lumi."
-msgstr ""
+msgstr "やさしいトラクタービーム：小さなかけらが Lumi のほうへすべってくる。"
 
 #: data/glim.json:tracks[music].name
 msgid "Music"
-msgstr ""
+msgstr "ミュージック"
 
 #: data/glim.json:tracks[music].desc
 msgid ""
 "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
-msgstr ""
+msgstr "Glim が見つけたCDをダウンロード：見つけた曲をいつでもどこでも再生できる。"
 
 #: data/glim.json:shells[pearl].name
 #: data/style_parts.json:swatches[pearl].name
@@ -11264,7 +11274,7 @@ msgstr "サンセット"
 
 #: data/glim.json:shells[moss].name
 msgid "Moss"
-msgstr ""
+msgstr "コケ"
 
 #: data/glim.json:shells[graphite].name
 #: data/style_parts.json:swatches[graphite].name
@@ -11273,7 +11283,7 @@ msgstr "グラファイト"
 
 #: data/glim.json:shells[blossom].name
 msgid "Blossom"
-msgstr ""
+msgstr "花"
 
 #: data/glim.json:glows[cyan].name data/style_parts.json:swatches[cyan].name
 msgid "Cyan"
@@ -11295,11 +11305,11 @@ msgstr "バイオレット"
 
 #: data/glim.json:glows[rose].name
 msgid "Rose"
-msgstr ""
+msgstr "ローズ"
 
 #: data/glim.json:tops[none].name
 msgid "Nothing"
-msgstr ""
+msgstr "なし"
 
 #: data/glim.json:tops[antenna].name
 #: data/style_parts.json:options.head[antenna].name
@@ -11308,7 +11318,7 @@ msgstr "アンテナ"
 
 #: data/glim.json:tops[beanie].name
 msgid "Little Beanie"
-msgstr ""
+msgstr "ちいさなニット帽"
 
 #: data/glim.json:tops[halo].name
 #: data/style_parts.json:options.head[halo].name
@@ -11321,7 +11331,7 @@ msgstr "ガラクタを15個すくう"
 
 #: data/goals.json:goals[dump_1].text
 msgid "Empty your chest in the bin"
-msgstr ""
+msgstr "胸のゴミをゴミ箱に空ける"
 
 #: data/goals.json:goals[upgrade_1].text
 msgid "Install a workbench upgrade"
@@ -11329,7 +11339,7 @@ msgstr "作業台でアップグレードを取り付ける"
 
 #: data/goals.json:goals[baler_1].text
 msgid "Install the Baler"
-msgstr ""
+msgstr "ベーラーを取り付ける"
 
 #: data/goals.json:goals[bale_1].text
 msgid "Compress your first bale"
@@ -11341,7 +11351,7 @@ msgstr "はかりでベールを売る"
 
 #: data/goals.json:goals[lift_1].text
 msgid "Lift Strength level 1"
-msgstr ""
+msgstr "リフト力 Lv 1"
 
 #: data/goals.json:goals[hex_1].text
 msgid "Clean your first hex"
@@ -11389,7 +11399,7 @@ msgstr "ヘックスを5個片づける"
 
 #: data/goals.json:goals[lift_2].text
 msgid "Lift Strength level 2 (large junk)"
-msgstr ""
+msgstr "リフト力 Lv 2（大きなガラクタ）"
 
 #: data/goals.json:goals[upgrades_12].text
 msgid "Install 12 upgrades"
@@ -12051,43 +12061,43 @@ msgstr "Anvil"
 
 #: data/homeward.json:tech[deep_drill].name
 msgid "Deep Drill"
-msgstr ""
+msgstr "ディープドリル"
 
 #: data/homeward.json:tech[deep_drill].desc
 msgid ""
 "Ochre's miners bored through bedrock. On Verdance it breaks open the buried "
 "landfill of the Dust Flats."
-msgstr ""
+msgstr "Ochre の鉱夫たちは岩盤を掘り抜いた。Verdance ではダストフラットに埋もれた埋立地を掘り起こせる。"
 
 #: data/homeward.json:tech[tide_pump].name
 msgid "Tide Pump"
-msgstr ""
+msgstr "タイドポンプ"
 
 #: data/homeward.json:tech[tide_pump].desc
 msgid ""
 "Tidewell's sea pumps. On Verdance they drain the flooded streets of the "
 "Sunken City."
-msgstr ""
+msgstr "Tidewell の海水ポンプ。Verdance では水没都市の冠水した街路を排水する。"
 
 #: data/homeward.json:tech[cryo_beacon].name
 msgid "Cryo Beacon"
-msgstr ""
+msgstr "クライオビーコン"
 
 #: data/homeward.json:tech[cryo_beacon].desc
 msgid ""
 "A beacon that sings through deep cold: what Verdance's Ark Beacon was "
 "missing."
-msgstr ""
+msgstr "深い寒さを越えて歌うビーコン：Verdance のアークビーコンに足りなかったもの。"
 
 #: data/homeward.json:tech[heat_core].name
 msgid "Heat Core"
-msgstr ""
+msgstr "ヒートコア"
 
 #: data/homeward.json:tech[heat_core].desc
 msgid ""
 "Anvil's forge heart. Wound into the beam, it melts the Frozen Port's ice on "
 "Verdance."
-msgstr ""
+msgstr "Anvil の炉の心臓。ビームに巻き込めば、Verdance のフローズンポートの氷を溶かす。"
 
 #: data/homeward.json:relics.ochre_glass.name
 #: data/museum.json:exhibits[ochre_glass].name
@@ -13003,70 +13013,70 @@ msgstr "特殊モジュール"
 
 #: data/planets.json:rime.tagline
 msgid "An ice moon, core-mined until it froze."
-msgstr ""
+msgstr "核まで掘り尽くされ、凍りついた氷の衛星。"
 
 #: data/planets.json:tidewell.tagline
 msgid ""
 "An ocean world. The Ledger's dredging rigs still stand in the shallows."
-msgstr ""
+msgstr "海の世界。浅瀬には Ledger の浚渫リグがいまも立っている。"
 
 #: data/planets.json:tidewell.sites.hub_raft.name
 msgid "Anchored Raft"
-msgstr ""
+msgstr "係留いかだ"
 
 #: data/planets.json:tidewell.sites.hub_raft.desc
 msgid ""
 "Timber raft deck on rusted pontoons: workshop shack, store, deck crane, fuel"
 " tank, moorings."
-msgstr ""
+msgstr "錆びたポンツーンにのった木のいかだ：作業小屋、ショップ、甲板クレーン、燃料タンク、係留所。"
 
 #: data/planets.json:tidewell.sites.hub_stilts.name
 msgid "Stilt Yard"
-msgstr ""
+msgstr "高床ヤード"
 
 #: data/planets.json:tidewell.sites.hub_stilts.desc
 msgid ""
 "A sandy islet with a stilt deck and huts over the water, boardwalk, beached "
 "skiff."
-msgstr ""
+msgstr "砂の小島に、水上の高床デッキと小屋、桟橋、浜に上がった小舟。"
 
 #: data/planets.json:tidewell.sites.wreck.name
 msgid "Ore Barge Wreck"
-msgstr ""
+msgstr "鉱石バージの残骸"
 
 #: data/planets.json:tidewell.sites.wreck.desc
 msgid ""
 "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters "
 "when restored."
-msgstr ""
+msgstr "砂州のそばで半分沈んだ Ledger の採掘バージ。復元するとホッパーがプランターになる。"
 
 #: data/planets.json:tidewell.sites.dredge_rig.name
 msgid "Dredge Rig"
-msgstr ""
+msgstr "浚渫リグ"
 
 #: data/planets.json:tidewell.sites.dredge_rig.desc
 msgid "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
-msgstr ""
+msgstr "バケットラダー、デリック、クレーンを備えた Ledger の自己昇降式浚渫リグ。"
 
 #: data/planets.json:tidewell.sites.reef_garden.name
 msgid "Reef Garden"
-msgstr ""
+msgstr "リーフガーデン"
 
 #: data/planets.json:tidewell.sites.reef_garden.desc
 msgid ""
 "Bleached coral breaking the surface among nets; live coral and floating "
 "gardens when restored."
-msgstr ""
+msgstr "網の間から顔を出す白化したサンゴ。復元すると生きたサンゴと浮かぶ庭になる。"
 
 #: data/planets.json:tidewell.sites.buoy_field.name
 msgid "Buoy Field"
-msgstr ""
+msgstr "ブイフィールド"
 
 #: data/planets.json:tidewell.sites.buoy_field.desc
 msgid ""
 "Rows of mooring buoys strung with rope and ghost nets; light caps when "
 "futuristic."
-msgstr ""
+msgstr "ロープとゴーストネットが絡んだ係留ブイの列。未来化すると光るキャップがつく。"
 
 #: data/radio.json:songs[verdance_sprout].name
 #: data/songs.json:songs[sprout_step].title
@@ -13303,7 +13313,7 @@ msgstr "サルベージ論理"
 msgid ""
 "Lumi rewrites the base's old assembly logic. The base can build helpers "
 "again: Scoopies, Haul Bugs and Skimmers."
-msgstr ""
+msgstr "Lumi が基地の古い組立ロジックを書き換える。基地はまたヘルパーを作れるようになる：Scoopie、Haul Bug、Skimmer。"
 
 #: data/research.json:nodes[seedling_blueprint].name
 msgid "Seedling Blueprint"
@@ -14057,7 +14067,7 @@ msgstr "Mk I Cradle"
 msgid ""
 "A compact one-seat glider: pearl hull, swept wings, twin engines and lift "
 "fans for vertical take-off."
-msgstr ""
+msgstr "コンパクトな1人乗りグライダー：パールの機体、後退翼、双発エンジン、垂直離陸用のリフトファン。"
 
 #: data/rockets.json:tiers[1].name
 msgid "Mk II Glide"
@@ -14067,7 +14077,7 @@ msgstr "Mk II Glide"
 msgid ""
 "Wing extensions steady the climb: shorter countdown, faster flight, cells "
 "refill twice as fast. Cargo pods carry 50% more."
-msgstr ""
+msgstr "翼の延長で上昇が安定：カウントダウン短縮、飛行速度アップ、セルの充電が2倍速。貨物ポッドの積載量 50% アップ。"
 
 #: data/rockets.json:tiers[2].name
 msgid "Mk III Halo"
@@ -14077,7 +14087,7 @@ msgstr "Mk III Halo"
 msgid ""
 "Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry "
 "2.5x, more often."
-msgstr ""
+msgstr "大きなエンジンと新しいキャノピー。セルは1分で充電、貨物ポッドは 2.5 倍をより頻繁に運ぶ。"
 
 #: data/rockets.json:tiers[3].name
 msgid "Mk IV Aurora Warp"
@@ -14087,7 +14097,7 @@ msgstr "Mk IV Aurora Warp"
 msgid ""
 "Landing gear, cargo pods and a warp core: instant hops with no recharge. "
 "Cargo pods carry 4x, every 30 s."
-msgstr ""
+msgstr "着陸脚、貨物ポッド、ワープコア：充電なしで即ジャンプ。貨物ポッドは 4 倍を 30 秒ごとに運ぶ。"
 
 #: data/shards.json:shards[back_soon].kind
 msgid "sign"
@@ -15038,38 +15048,38 @@ msgstr "ローズゴールド"
 
 #: data/trash_bin.json:levels[0].name
 msgid "Dented Bin"
-msgstr ""
+msgstr "へこんだゴミ箱"
 
 #: data/trash_bin.json:levels[0].desc
 msgid ""
 "A dented wheelie bin on a rusty weigh plate. It swallows one bale at a time."
-msgstr ""
+msgstr "錆びた計量板の上の、へこんだキャスター付きゴミ箱。ベールを1つずつ飲み込む。"
 
 #: data/trash_bin.json:levels[1].name
 msgid "Scrap Skip"
-msgstr ""
+msgstr "スクラップスキップ"
 
 #: data/trash_bin.json:levels[1].desc
 msgid "A proper steel skip. Bales go in faster and weigh in a little heavier."
-msgstr ""
+msgstr "ちゃんとした鋼のスキップ。ベールが速く入り、少し重く量れる。"
 
 #: data/trash_bin.json:levels[2].name
 msgid "Weigh Skip"
-msgstr ""
+msgstr "計量スキップ"
 
 #: data/trash_bin.json:levels[2].desc
 msgid ""
 "A ribbed skip on a calibrated scale with a warning beacon. Honest weights, "
 "better pay."
-msgstr ""
+msgstr "校正済みのはかりに載った、警告灯つきのリブ付きスキップ。正直な重さで、支払いもアップ。"
 
 #: data/trash_bin.json:levels[3].name
 msgid "Compactor"
-msgstr ""
+msgstr "コンパクター"
 
 #: data/trash_bin.json:levels[3].desc
 msgid "A hydraulic ram presses every bale flat before it is weighed."
-msgstr ""
+msgstr "油圧ラムがベールを計量前にぺしゃんこに押しつぶす。"
 
 #: data/trash_bin.json:levels[4].name
 msgid "Shredder"
@@ -15089,17 +15099,17 @@ msgstr "ベーラー"
 msgid ""
 "Fit the bale press in your chest. Press junk into bales: they sell for far "
 "more than loose junk."
-msgstr ""
+msgstr "胸にベールプレスを取り付ける。ガラクタをベールにまとめよう：ばらのガラクタよりずっと高く売れる。"
 
 #: data/upgrades.json:upgrades[lift_strength].name
 msgid "Lift Strength"
-msgstr ""
+msgstr "リフト力"
 
 #: data/upgrades.json:upgrades[lift_strength].desc
 msgid ""
 "Stronger lift beams. Level 1: medium junk (jerrycans, crates). Level 2: "
 "large junk (tyres, TVs, fridges)."
-msgstr ""
+msgstr "より強いリフトビーム。Lv 1：中くらいのガラクタ（ポリタンク、木箱）。Lv 2：大きなガラクタ（タイヤ、テレビ、冷蔵庫）。"
 
 #: data/upgrades.json:upgrades[compartment_size].name
 msgid "Compartment Size"
@@ -15165,7 +15175,7 @@ msgstr "マグネットアーム"
 msgid ""
 "A few loose pieces nearby drift toward you while scooping. Never heavy ones,"
 " never from inside a heap."
-msgstr ""
+msgstr "すくっている間、近くのばらのかけらがいくつか寄ってくる。重いものや山の中のものは来ない。"
 
 #: data/upgrades.json:upgrades[detector_range].name
 msgid "Detector Coil"
@@ -15213,16 +15223,16 @@ msgstr "スコップサイズ"
 
 #: data/upgrades.json:upgrades[multi_lock].desc
 msgid "Lock onto one more piece per scoop pulse."
-msgstr ""
+msgstr "すくいパルスごとにロックできるかけらが1つ増える。"
 
 #: data/upgrades.json:upgrades[signal_finder].name
 msgid "Signal Finder"
-msgstr ""
+msgstr "シグナルファインダー"
 
 #: data/upgrades.json:upgrades[signal_finder].desc
 msgid ""
 "Tunes the detector to strong pings: rare part signals show as a violet beam."
-msgstr ""
+msgstr "探知機を強いピンに合わせる：レアパーツの信号が紫のビームで表示される。"
 
 #: data/weekly.json:twists[scoopies_only].name
 msgid "Scoopies Only"
@@ -17065,13 +17075,13 @@ msgstr "よし。最後の種は、Cradle が旅立った土の中。今度は�
 msgid ""
 "An ice moon. The Ledger ran its cold storage out here. Cold keeps things, "
 "{name}. Including evidence."
-msgstr ""
+msgstr "氷の衛星。Ledger はここで冷蔵倉庫を営んでいた。寒さはものを保存するの、{name}。証拠もね。"
 
 #: data/wren_lines.json:world_ice_moon_arrival
 msgid ""
 "Everything froze where they dropped it. Even the junk looks like it's "
 "waiting for a refund."
-msgstr ""
+msgstr "何もかも、落とされた場所で凍りついている。ガラクタまで返金を待っているみたい。"
 
 #: data/wren_lines.json:world_ice_moon_memory_1
 msgid ""
@@ -17079,137 +17089,138 @@ msgid ""
 "moon's lakes for coolant and shipped the water off-world. The trash, they "
 "left right here."
 msgstr ""
+"Ledger の氷輸送マニフェスト、まだサイロのメモリーに残ってる。この衛星の湖を冷却材に溶かして、水を星の外へ運んだ。ゴミはここに置いていった。"
 
 #: data/wren_lines.json:world_ice_moon_halfway
 msgid ""
 "Halfway. The lakes under the ice are filling again. The Ledger never "
 "budgeted for things coming back."
-msgstr ""
+msgstr "半分まで来た。氷の下の湖がまた満ちてきている。Ledger は、ものが戻ってくることを予算に入れていなかった。"
 
 #: data/wren_lines.json:world_ice_moon_memory_2
 msgid ""
 "That silo was a seed vault before the Ledger made it a depot. Someone kept "
 "seeds hidden in the bottom tier anyway. I'd have liked to meet them."
-msgstr ""
+msgstr "あのサイロは、Ledger が倉庫にする前は種子の保管庫だった。それでも誰かが最下層に種を隠していた。会ってみたかったな。"
 
 #: data/wren_lines.json:world_ice_moon_restored
 msgid ""
 "Green under a ringed sky. The Ledger wrote this moon off as a loss. It was "
 "wrong about that too."
-msgstr ""
+msgstr "環のかかった空の下に緑。Ledger はこの衛星を損失として処理した。それも間違いだった。"
 
 #: data/wren_lines.json:world_desert_world_arrival
 msgid ""
 "A desert world. It wasn't always one. The Ledger pumped its aquifers dry and"
 " sold the water by the litre."
-msgstr ""
+msgstr "砂漠の世界。昔からこうだったわけじゃない。Ledger が帯水層をくみ尽くして、水をリットル単位で売った。"
 
 #: data/wren_lines.json:world_desert_world_arrival
 msgid "Sun, sand and one very small robot. I like our odds. Mostly."
-msgstr ""
+msgstr "太陽と砂と、とても小さなロボット。勝ち目はあると思う。たぶんね。"
 
 #: data/wren_lines.json:world_desert_world_memory_1
 msgid ""
 "Ledger survey file, partial: 'Remaining yield negligible. Recommend "
 "abandonment in place.' In place. That's their phrase for leaving the mess."
-msgstr ""
+msgstr "Ledger の調査ファイル、一部：「残存産出量は無視できる程度。現地での放棄を推奨。」現地で。散らかしたまま去ることを、彼らはそう呼ぶ。"
 
 #: data/wren_lines.json:world_desert_world_halfway
 msgid ""
 "Halfway green, on a planet they filed as 'negligible'. I'm keeping a list of"
 " their mistakes. It's getting long."
-msgstr ""
+msgstr "「無視できる」と分類された惑星が、半分緑になった。彼らの間違いリストをつけてるの。どんどん長くなってる。"
 
 #: data/wren_lines.json:world_desert_world_memory_2
 msgid ""
 "That solar tower powered the pumps. When the water ran out they stopped "
 "paying for the mirrors, and they fell over one by one. You're standing them "
 "back up."
-msgstr ""
+msgstr "あのソーラータワーがポンプを動かしていた。水が尽きると鏡の代金を払わなくなって、鏡は1枚ずつ倒れていった。きみがそれを起こし直してる。"
 
 #: data/wren_lines.json:world_desert_world_restored
 msgid ""
 "Shade, water, flowers in the sand. 'Negligible', they said. I'm framing that"
 " word."
-msgstr ""
+msgstr "日陰、水、砂の中の花。「無視できる」って言ってたっけ。その言葉、額に入れて飾ろう。"
 
 #: data/wren_lines.json:world_ocean_world_arrival
 msgid ""
 "An ocean world. The Ledger dredged its sea floor for metals and dumped the "
 "tailings along every coast. Mind the edges."
-msgstr ""
+msgstr "海の世界。Ledger は金属のために海底をさらって、残りかすをあらゆる海岸に捨てた。縁に気をつけて。"
 
 #: data/wren_lines.json:world_ocean_world_arrival
 msgid "Salt in the air, salt on the junk. Don't lick anything, {name}."
-msgstr ""
+msgstr "空気に塩、ガラクタにも塩。何もなめちゃだめよ、{name}。"
 
 #: data/wren_lines.json:world_ocean_world_memory_1
 msgid ""
 "I found the dumping schedule. Every tide for forty years. They called it "
 "'coastal storage'. The sea called it something else."
-msgstr ""
+msgstr "投棄スケジュールを見つけた。潮のたびに、40年間。彼らはそれを「沿岸保管」と呼んだ。海は別の呼び方をしてたはず。"
 
 #: data/wren_lines.json:world_ocean_world_halfway
 msgid "Halfway. The water's clearing. The fish are cautiously reconsidering."
-msgstr ""
+msgstr "半分まで来た。水が澄んできた。魚たちが慎重に考え直してる。"
 
 #: data/wren_lines.json:world_ocean_world_memory_2
 msgid ""
 "Those surge gates kept the Ledger's dredging yards dry. When they left, "
 "nobody closed them, and the sea took the yards back. Fair."
-msgstr ""
+msgstr "あの防潮ゲートが Ledger の浚渫ヤードを乾かしていた。彼らが去ったあと誰も閉めなくて、海がヤードを取り戻した。妥当ね。"
 
 #: data/wren_lines.json:world_ocean_world_restored
 msgid ""
 "Green to the waterline, clear water past it. 'Coastal storage' is just coast"
 " again."
-msgstr ""
+msgstr "水ぎわまで緑、その先は澄んだ水。「沿岸保管」はただの海岸に戻った。"
 
 #: data/wren_lines.json:world_fungal_world_arrival
 msgid ""
 "A marsh world. The Ledger's chemical works drained into these valleys for a "
 "century. Everything grows here, mostly the wrong things first."
-msgstr ""
+msgstr "湿地の世界。Ledger の化学工場が100年間この谷に排水を流していた。ここでは何でも育つ。たいてい、まずは間違ったものから。"
 
 #: data/wren_lines.json:world_fungal_world_arrival
 msgid ""
 "Mist on everything. If you get lost, follow the squelching. That'll be you."
-msgstr ""
+msgstr "どこもかしこも霧。迷ったら、ぐちゃぐちゃいう音をたどって。それがきみだから。"
 
 #: data/wren_lines.json:world_fungal_world_memory_1
 msgid ""
 "Ledger compliance report: 'Runoff within acceptable limits.' Acceptable to "
 "whom, I'd like to ask. The frogs weren't consulted."
-msgstr ""
+msgstr "Ledger のコンプライアンス報告：「排水は許容範囲内。」誰にとって許容なのか聞きたいわ。カエルたちには相談がなかった。"
 
 #: data/wren_lines.json:world_fungal_world_halfway
 msgid ""
 "Halfway. The mist smells less like a laboratory every morning. Progress has "
 "a smell. It's mud."
-msgstr ""
+msgstr "半分まで来た。霧は毎朝、実験室のにおいが薄れていく。進歩にはにおいがある。泥のにおい。"
 
 #: data/wren_lines.json:world_fungal_world_memory_2
 msgid ""
 "That cooling tower ran the chemical works. The fungi moved in after the "
 "Ledger moved out. They've been cleaning up longer than we have. Respect."
-msgstr ""
+msgstr "あの冷却塔は化学工場のものだった。Ledger が出ていったあと、菌類が住みついた。私たちより長く掃除してきたのよ。尊敬する。"
 
 #: data/wren_lines.json:world_fungal_world_restored
 msgid ""
 "Clear air over the marsh. Reeds, frogs, real flowers. The runoff is just "
 "rain now."
-msgstr ""
+msgstr "湿地の上に澄んだ空気。アシ、カエル、本物の花。排水はもうただの雨。"
 
 #: data/wren_lines.json:world_rust_world_arrival
 msgid ""
 "A rust world. This is where the Ledger broke its own ships. Pole to pole, "
 "and nothing switched off properly."
-msgstr ""
+msgstr "錆の世界。Ledger が自分たちの船を解体した場所。極から極まで、何ひとつきちんと止められていない。"
 
 #: data/wren_lines.json:world_rust_world_arrival
 msgid ""
 "The air tastes like old pennies. I don't have a tongue. I can still tell."
-msgstr ""
+msgstr "空気が古い硬貨の味がする。舌はないけど、それでもわかる。"
 
 #: data/wren_lines.json:world_rust_world_memory_1
 msgid ""
@@ -17217,27 +17228,30 @@ msgid ""
 "the system, filed here. They kept perfect books on how they ruined "
 "everything."
 msgstr ""
+"Ledger "
+"の台帳、文字どおりの意味で：星系のすべての惑星からはぎ取ったトン数が、ここに保管されている。すべてを台無しにした方法を、完璧に記帳していた。"
 
 #: data/wren_lines.json:world_rust_world_halfway
 msgid ""
 "Halfway. Less rust in the wind. I don't have lungs, but I have standards."
-msgstr ""
+msgstr "半分まで来た。風の中の錆が減った。肺はないけど、こだわりはある。"
 
 #: data/wren_lines.json:world_rust_world_memory_2
 msgid ""
 "That gantry scrapped the Ledger's fleet when the money ran out. The ark was "
 "on the list. Someone took it off. I think about that a lot."
 msgstr ""
+"お金が尽きたとき、あのガントリーが Ledger の艦隊を解体した。アークもリストに載っていた。誰かがそれを消した。よく考えるの、そのこと。"
 
 #: data/wren_lines.json:world_rust_world_restored
 msgid ""
 "A rust world, green. The old cranes have flowers at their feet. The books "
 "are closed, {name}. We balanced them."
-msgstr ""
+msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
 
 #: ui/locker_panel.gd:164
 msgid "Buddy"
-msgstr ""
+msgstr "相棒"
 
 #: data/camp.json:builds.camera_bot.name
 msgid "Blink"
@@ -17248,6 +17262,182 @@ msgid ""
 "A little floating camera bot with a big lens for a face. Builds once; then "
 "he follows Lumi from base to base and photo mode opens."
 msgstr "大きなレンズの顔をした、浮かぶ小さなカメラボット。一度建てると拠点から拠点へルミについて来て、フォトモードが開く。"
+
+#: data/songs.json:songs[signal_found].title
+msgid "Signal Found"
+msgstr "シグナル発見"
+
+#: data/songs.json:songs[what_the_ledger_took].title
+msgid "What the Ledger Took"
+msgstr "Ledger が奪ったもの"
+
+#: data/songs.json:songs[drone_sweep].title
+msgid "Drone Sweep"
+msgstr "ドローン・スイープ"
+
+#: data/songs.json:songs[small_robot_big_sky].title
+msgid "Small Robot, Big Sky"
+msgstr "小さなロボット、大きな空"
+
+#: data/songs.json:songs[dumpster_disco].title
+msgid "Dumpster Disco"
+msgstr "ゴミ箱ディスコ"
+
+#: data/songs.json:songs[pocket_full_of_bolts].title
+msgid "Pocket Full of Bolts"
+msgstr "ポケットいっぱいのボルト"
+
+#: data/songs.json:songs[tin_can_parade].title
+msgid "Tin Can Parade"
+msgstr "ブリキ缶パレード"
+
+#: data/songs.json:songs[cardboard_kingdom].title
+msgid "Cardboard Kingdom"
+msgstr "段ボール王国"
+
+#: data/songs.json:songs[rain_on_rust].title
+msgid "Rain on Rust"
+msgstr "錆に降る雨"
+
+#: data/songs.json:songs[streetlight_memory].title
+msgid "Streetlight Memory"
+msgstr "街灯のメモリー"
+
+#: data/songs.json:songs[the_last_bus_stop].title
+msgid "The Last Bus Stop"
+msgstr "最後のバス停"
+
+#: data/songs.json:songs[something_in_the_alley].title
+msgid "Something in the Alley"
+msgstr "路地裏の何か"
+
+#: data/songs.json:songs[green_again].title
+msgid "Green Again"
+msgstr "ふたたび緑に"
+
+#: data/songs.json:songs[dawn_patrol].title
+msgid "Dawn Patrol"
+msgstr "夜明けのパトロール"
+
+#: data/songs.json:songs[cactus_cowbot].title
+msgid "Cactus Cowbot"
+msgstr "サボテン・カウボット"
+
+#: data/songs.json:songs[heatwave_hustle].title
+msgid "Heatwave Hustle"
+msgstr "熱波ハッスル"
+
+#: data/songs.json:songs[mirage_market].title
+msgid "Mirage Market"
+msgstr "蜃気楼マーケット"
+
+#: data/songs.json:songs[endless_sand].title
+msgid "Endless Sand"
+msgstr "果てしない砂"
+
+#: data/songs.json:songs[letters_in_the_pit].title
+msgid "Letters in the Pit"
+msgstr "穴の中の手紙"
+
+#: data/songs.json:songs[sandstorm_warning].title
+msgid "Sandstorm Warning"
+msgstr "砂嵐警報"
+
+#: data/songs.json:songs[bones_of_the_excavator].title
+msgid "Bones of the Excavator"
+msgstr "掘削機の骨"
+
+#: data/songs.json:songs[first_rain_on_ochre].title
+msgid "First Rain on Ochre"
+msgstr "Ochre に初めての雨"
+
+#: data/songs.json:songs[bubble_pop].title
+msgid "Bubble Pop"
+msgstr "バブル・ポップ"
+
+#: data/songs.json:songs[pier_pressure].title
+msgid "Pier Pressure"
+msgstr "桟橋プレッシャー"
+
+#: data/songs.json:songs[crab_shuffle].title
+msgid "Crab Shuffle"
+msgstr "カニ・シャッフル"
+
+#: data/songs.json:songs[drifting_raft].title
+msgid "Drifting Raft"
+msgstr "漂ういかだ"
+
+#: data/songs.json:songs[the_deep_below].title
+msgid "The Deep Below"
+msgstr "深みの底"
+
+#: data/songs.json:songs[lighthouse_ghost].title
+msgid "Lighthouse Ghost"
+msgstr "灯台のゴースト"
+
+#: data/songs.json:songs[coral_comeback].title
+msgid "Coral Comeback"
+msgstr "サンゴのカムバック"
+
+#: data/songs.json:songs[penguin_bot_waddle].title
+msgid "Penguin Bot Waddle"
+msgstr "ペンギンボットのよちよち歩き"
+
+#: data/songs.json:songs[ice_rink_lights].title
+msgid "Ice Rink Lights"
+msgstr "アイスリンクの灯"
+
+#: data/songs.json:songs[the_long_way_home].title
+msgid "The Long Way Home"
+msgstr "遠回りの帰り道"
+
+#: data/songs.json:songs[whiteout].title
+msgid "Whiteout"
+msgstr "ホワイトアウト"
+
+#: data/songs.json:songs[frozen_voices].title
+msgid "Frozen Voices"
+msgstr "凍った声"
+
+#: data/songs.json:songs[hot_spring_hangout].title
+msgid "Hot Spring Hangout"
+msgstr "温泉でまったり"
+
+#: data/songs.json:songs[spring_under_ice].title
+msgid "Spring Under Ice"
+msgstr "氷の下の泉"
+
+#: data/songs.json:songs[molten_groove].title
+msgid "Molten Groove"
+msgstr "溶岩グルーヴ"
+
+#: data/songs.json:songs[forge_stomp].title
+msgid "Forge Stomp"
+msgstr "フォージ・ストンプ"
+
+#: data/songs.json:songs[lava_lamp_lounge].title
+msgid "Lava Lamp Lounge"
+msgstr "ラバランプ・ラウンジ"
+
+#: data/songs.json:songs[ember_drift].title
+msgid "Ember Drift"
+msgstr "燃えさしの漂流"
+
+#: data/songs.json:songs[the_clerk_s_regret].title
+msgid "The Clerk's Regret"
+msgstr "事務員の後悔"
+
+#: data/songs.json:songs[furnace_heartbeat].title
+msgid "Furnace Heartbeat"
+msgstr "炉の鼓動"
+
+#: data/songs.json:songs[shadows_in_the_smelter].title
+msgid "Shadows in the Smelter"
+msgstr "精錬所の影"
+
+#: data/songs.json:songs[cool_stone].title
+msgid "Cool Stone"
+msgstr "クール・ストーン"
 
 #~ msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
 #~ msgstr "ハブ レベル%dで解放（現在%d）。アップグレードタブでハブを強化しよう。"

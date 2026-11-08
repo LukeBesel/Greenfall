@@ -16944,3 +16944,179 @@ msgid ""
 "A little floating camera bot with a big lens for a face. Builds once; then "
 "he follows Lumi from base to base and photo mode opens."
 msgstr ""
+
+#: data/songs.json:songs[signal_found].title
+msgid "Signal Found"
+msgstr ""
+
+#: data/songs.json:songs[what_the_ledger_took].title
+msgid "What the Ledger Took"
+msgstr ""
+
+#: data/songs.json:songs[drone_sweep].title
+msgid "Drone Sweep"
+msgstr ""
+
+#: data/songs.json:songs[small_robot_big_sky].title
+msgid "Small Robot, Big Sky"
+msgstr ""
+
+#: data/songs.json:songs[dumpster_disco].title
+msgid "Dumpster Disco"
+msgstr ""
+
+#: data/songs.json:songs[pocket_full_of_bolts].title
+msgid "Pocket Full of Bolts"
+msgstr ""
+
+#: data/songs.json:songs[tin_can_parade].title
+msgid "Tin Can Parade"
+msgstr ""
+
+#: data/songs.json:songs[cardboard_kingdom].title
+msgid "Cardboard Kingdom"
+msgstr ""
+
+#: data/songs.json:songs[rain_on_rust].title
+msgid "Rain on Rust"
+msgstr ""
+
+#: data/songs.json:songs[streetlight_memory].title
+msgid "Streetlight Memory"
+msgstr ""
+
+#: data/songs.json:songs[the_last_bus_stop].title
+msgid "The Last Bus Stop"
+msgstr ""
+
+#: data/songs.json:songs[something_in_the_alley].title
+msgid "Something in the Alley"
+msgstr ""
+
+#: data/songs.json:songs[green_again].title
+msgid "Green Again"
+msgstr ""
+
+#: data/songs.json:songs[dawn_patrol].title
+msgid "Dawn Patrol"
+msgstr ""
+
+#: data/songs.json:songs[cactus_cowbot].title
+msgid "Cactus Cowbot"
+msgstr ""
+
+#: data/songs.json:songs[heatwave_hustle].title
+msgid "Heatwave Hustle"
+msgstr ""
+
+#: data/songs.json:songs[mirage_market].title
+msgid "Mirage Market"
+msgstr ""
+
+#: data/songs.json:songs[endless_sand].title
+msgid "Endless Sand"
+msgstr ""
+
+#: data/songs.json:songs[letters_in_the_pit].title
+msgid "Letters in the Pit"
+msgstr ""
+
+#: data/songs.json:songs[sandstorm_warning].title
+msgid "Sandstorm Warning"
+msgstr ""
+
+#: data/songs.json:songs[bones_of_the_excavator].title
+msgid "Bones of the Excavator"
+msgstr ""
+
+#: data/songs.json:songs[first_rain_on_ochre].title
+msgid "First Rain on Ochre"
+msgstr ""
+
+#: data/songs.json:songs[bubble_pop].title
+msgid "Bubble Pop"
+msgstr ""
+
+#: data/songs.json:songs[pier_pressure].title
+msgid "Pier Pressure"
+msgstr ""
+
+#: data/songs.json:songs[crab_shuffle].title
+msgid "Crab Shuffle"
+msgstr ""
+
+#: data/songs.json:songs[drifting_raft].title
+msgid "Drifting Raft"
+msgstr ""
+
+#: data/songs.json:songs[the_deep_below].title
+msgid "The Deep Below"
+msgstr ""
+
+#: data/songs.json:songs[lighthouse_ghost].title
+msgid "Lighthouse Ghost"
+msgstr ""
+
+#: data/songs.json:songs[coral_comeback].title
+msgid "Coral Comeback"
+msgstr ""
+
+#: data/songs.json:songs[penguin_bot_waddle].title
+msgid "Penguin Bot Waddle"
+msgstr ""
+
+#: data/songs.json:songs[ice_rink_lights].title
+msgid "Ice Rink Lights"
+msgstr ""
+
+#: data/songs.json:songs[the_long_way_home].title
+msgid "The Long Way Home"
+msgstr ""
+
+#: data/songs.json:songs[whiteout].title
+msgid "Whiteout"
+msgstr ""
+
+#: data/songs.json:songs[frozen_voices].title
+msgid "Frozen Voices"
+msgstr ""
+
+#: data/songs.json:songs[hot_spring_hangout].title
+msgid "Hot Spring Hangout"
+msgstr ""
+
+#: data/songs.json:songs[spring_under_ice].title
+msgid "Spring Under Ice"
+msgstr ""
+
+#: data/songs.json:songs[molten_groove].title
+msgid "Molten Groove"
+msgstr ""
+
+#: data/songs.json:songs[forge_stomp].title
+msgid "Forge Stomp"
+msgstr ""
+
+#: data/songs.json:songs[lava_lamp_lounge].title
+msgid "Lava Lamp Lounge"
+msgstr ""
+
+#: data/songs.json:songs[ember_drift].title
+msgid "Ember Drift"
+msgstr ""
+
+#: data/songs.json:songs[the_clerk_s_regret].title
+msgid "The Clerk's Regret"
+msgstr ""
+
+#: data/songs.json:songs[furnace_heartbeat].title
+msgid "Furnace Heartbeat"
+msgstr ""
+
+#: data/songs.json:songs[shadows_in_the_smelter].title
+msgid "Shadows in the Smelter"
+msgstr ""
+
+#: data/songs.json:songs[cool_stone].title
+msgid "Cool Stone"
+msgstr ""

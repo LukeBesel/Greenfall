@@ -19299,3 +19299,179 @@ msgstr ""
 "[À ļîţţļé ƒļôàţîñĝ çàméŕà bôţ ŵîţĥ à bîĝ ļéñš ƒôŕ à ƒàçé. Bûîļðš ôñçé; ţĥéñ "
 "ĥé ƒôļļôŵš Ļûmî ƒŕôm bàšé ţô bàšé àñð þĥôţô môðé ôþéñš. "
 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/songs.json:songs[signal_found].title
+msgid "Signal Found"
+msgstr "[Šîĝñàļ Fôûñð ~]"
+
+#: data/songs.json:songs[what_the_ledger_took].title
+msgid "What the Ledger Took"
+msgstr "[Ŵĥàţ ţĥé Ļéðĝéŕ Ţôôķ ~~~~]"
+
+#: data/songs.json:songs[drone_sweep].title
+msgid "Drone Sweep"
+msgstr "[Ðŕôñé Šŵééþ ~]"
+
+#: data/songs.json:songs[small_robot_big_sky].title
+msgid "Small Robot, Big Sky"
+msgstr "[Šmàļļ Ŕôbôţ, Bîĝ Šķý ~~~~]"
+
+#: data/songs.json:songs[dumpster_disco].title
+msgid "Dumpster Disco"
+msgstr "[Ðûmþšţéŕ Ðîšçô ~~]"
+
+#: data/songs.json:songs[pocket_full_of_bolts].title
+msgid "Pocket Full of Bolts"
+msgstr "[Þôçķéţ Fûļļ ôƒ Bôļţš ~~~~]"
+
+#: data/songs.json:songs[tin_can_parade].title
+msgid "Tin Can Parade"
+msgstr "[Ţîñ Çàñ Þàŕàðé ~~]"
+
+#: data/songs.json:songs[cardboard_kingdom].title
+msgid "Cardboard Kingdom"
+msgstr "[Çàŕðbôàŕð Ķîñĝðôm ~~~]"
+
+#: data/songs.json:songs[rain_on_rust].title
+msgid "Rain on Rust"
+msgstr "[Ŕàîñ ôñ Ŕûšţ ~]"
+
+#: data/songs.json:songs[streetlight_memory].title
+msgid "Streetlight Memory"
+msgstr "[Šţŕééţļîĝĥţ Mémôŕý ~~~]"
+
+#: data/songs.json:songs[the_last_bus_stop].title
+msgid "The Last Bus Stop"
+msgstr "[Ţĥé Ļàšţ Bûš Šţôþ ~~~]"
+
+#: data/songs.json:songs[something_in_the_alley].title
+msgid "Something in the Alley"
+msgstr "[Šôméţĥîñĝ îñ ţĥé Àļļéý ~~~~~]"
+
+#: data/songs.json:songs[green_again].title
+msgid "Green Again"
+msgstr "[Ĝŕééñ Àĝàîñ ~]"
+
+#: data/songs.json:songs[dawn_patrol].title
+msgid "Dawn Patrol"
+msgstr "[Ðàŵñ Þàţŕôļ ~]"
+
+#: data/songs.json:songs[cactus_cowbot].title
+msgid "Cactus Cowbot"
+msgstr "[Çàçţûš Çôŵbôţ ~~]"
+
+#: data/songs.json:songs[heatwave_hustle].title
+msgid "Heatwave Hustle"
+msgstr "[Ĥéàţŵàvé Ĥûšţļé ~~]"
+
+#: data/songs.json:songs[mirage_market].title
+msgid "Mirage Market"
+msgstr "[Mîŕàĝé Màŕķéţ ~~]"
+
+#: data/songs.json:songs[endless_sand].title
+msgid "Endless Sand"
+msgstr "[Éñðļéšš Šàñð ~]"
+
+#: data/songs.json:songs[letters_in_the_pit].title
+msgid "Letters in the Pit"
+msgstr "[Ļéţţéŕš îñ ţĥé Þîţ ~~~]"
+
+#: data/songs.json:songs[sandstorm_warning].title
+msgid "Sandstorm Warning"
+msgstr "[Šàñðšţôŕm Ŵàŕñîñĝ ~~~]"
+
+#: data/songs.json:songs[bones_of_the_excavator].title
+msgid "Bones of the Excavator"
+msgstr "[Bôñéš ôƒ ţĥé Éxçàvàţôŕ ~~~~~]"
+
+#: data/songs.json:songs[first_rain_on_ochre].title
+msgid "First Rain on Ochre"
+msgstr "[Fîŕšţ Ŕàîñ ôñ Ôçĥŕé ~~~~]"
+
+#: data/songs.json:songs[bubble_pop].title
+msgid "Bubble Pop"
+msgstr "[Bûbbļé Þôþ ~]"
+
+#: data/songs.json:songs[pier_pressure].title
+msgid "Pier Pressure"
+msgstr "[Þîéŕ Þŕéššûŕé ~~]"
+
+#: data/songs.json:songs[crab_shuffle].title
+msgid "Crab Shuffle"
+msgstr "[Çŕàb Šĥûƒƒļé ~]"
+
+#: data/songs.json:songs[drifting_raft].title
+msgid "Drifting Raft"
+msgstr "[Ðŕîƒţîñĝ Ŕàƒţ ~~]"
+
+#: data/songs.json:songs[the_deep_below].title
+msgid "The Deep Below"
+msgstr "[Ţĥé Ðééþ Béļôŵ ~~]"
+
+#: data/songs.json:songs[lighthouse_ghost].title
+msgid "Lighthouse Ghost"
+msgstr "[Ļîĝĥţĥôûšé Ĝĥôšţ ~~~]"
+
+#: data/songs.json:songs[coral_comeback].title
+msgid "Coral Comeback"
+msgstr "[Çôŕàļ Çômébàçķ ~~]"
+
+#: data/songs.json:songs[penguin_bot_waddle].title
+msgid "Penguin Bot Waddle"
+msgstr "[Þéñĝûîñ Bôţ Ŵàððļé ~~~]"
+
+#: data/songs.json:songs[ice_rink_lights].title
+msgid "Ice Rink Lights"
+msgstr "[Îçé Ŕîñķ Ļîĝĥţš ~~]"
+
+#: data/songs.json:songs[the_long_way_home].title
+msgid "The Long Way Home"
+msgstr "[Ţĥé Ļôñĝ Ŵàý Ĥômé ~~~]"
+
+#: data/songs.json:songs[whiteout].title
+msgid "Whiteout"
+msgstr "[Ŵĥîţéôûţ ~]"
+
+#: data/songs.json:songs[frozen_voices].title
+msgid "Frozen Voices"
+msgstr "[Fŕôžéñ Vôîçéš ~~]"
+
+#: data/songs.json:songs[hot_spring_hangout].title
+msgid "Hot Spring Hangout"
+msgstr "[Ĥôţ Šþŕîñĝ Ĥàñĝôûţ ~~~]"
+
+#: data/songs.json:songs[spring_under_ice].title
+msgid "Spring Under Ice"
+msgstr "[Šþŕîñĝ Ûñðéŕ Îçé ~~~]"
+
+#: data/songs.json:songs[molten_groove].title
+msgid "Molten Groove"
+msgstr "[Môļţéñ Ĝŕôôvé ~~]"
+
+#: data/songs.json:songs[forge_stomp].title
+msgid "Forge Stomp"
+msgstr "[Fôŕĝé Šţômþ ~]"
+
+#: data/songs.json:songs[lava_lamp_lounge].title
+msgid "Lava Lamp Lounge"
+msgstr "[Ļàvà Ļàmþ Ļôûñĝé ~~~]"
+
+#: data/songs.json:songs[ember_drift].title
+msgid "Ember Drift"
+msgstr "[Émbéŕ Ðŕîƒţ ~]"
+
+#: data/songs.json:songs[the_clerk_s_regret].title
+msgid "The Clerk's Regret"
+msgstr "[Ţĥé Çļéŕķ'š Ŕéĝŕéţ ~~~]"
+
+#: data/songs.json:songs[furnace_heartbeat].title
+msgid "Furnace Heartbeat"
+msgstr "[Fûŕñàçé Ĥéàŕţbéàţ ~~~]"
+
+#: data/songs.json:songs[shadows_in_the_smelter].title
+msgid "Shadows in the Smelter"
+msgstr "[Šĥàðôŵš îñ ţĥé Šméļţéŕ ~~~~~]"
+
+#: data/songs.json:songs[cool_stone].title
+msgid "Cool Stone"
+msgstr "[Çôôļ Šţôñé ~]"
