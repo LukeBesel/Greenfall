@@ -52,7 +52,10 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] It is big enough that you never set foot on most hexes, because the bots clean those.
 - [ ] The whole planet is covered in hexes. Bases are sites on the globe, so far apart that you need the rocket to travel between hubs on the same planet.
 - [ ] Only the area near Lumi is loaded. Bots working far away are simulated cheaply.
-- [ ] Order: a prototype and plan first, then the owner reviews, then a rollout split across helpers.
+- [x] Order: a prototype and plan first, then the owner reviews, then a rollout split across helpers. (prototype done, lap test passes)
+- Owner decisions (Nov 8): BIG planets (164k hexes, R 1.84 km, 11.6 km around). Planet % counts the hub regions; the rest greens on its own. Travel is the x4 boost plus a buyable vehicle later, with the rocket between hubs. REAL day and night sides of the planet.
+- [ ] Rollout phase A: Lumi in the real game on the sphere. (orbit)
+- [ ] Rollout phases B-F: hex field and saves, robots and Command view, hub sites, future/system map/Homeward, Mac performance. (3-4 helpers)
 
 ## Pacing and economy (pace)
 - [ ] There are only 3 currencies: cubes, parts and seeds.
