@@ -329,3 +329,51 @@ not with margin. First cuts, in order:
 
 A real `[perf]` run on the Mac is the check:
 `godot --path . -- --orbit --quality=1 --perf --orbit-walk --orbit-scoop`.
+
+### Perf pass 3 (Nov 8, headless): load frames under 1 s, batching
+
+Same box and method as pass 2 (shared 4 cores, scene census for draws). Every change has an A/B
+switch: `--no-kit-batch`, `--no-prop-batch`.
+
+**1. No loading frame over 1 s.**
+- Anvil's foundry yard builds in steps behind the loader (`AnvilSites.build_async`;
+  `build()` is unchanged for previews and tests).
+- The site's deferred reach audit gets a frame of its own: SiteReach flood-fills a 249x249 grid
+  of physics queries (~0.7 s), and it used to land in the same frame as the next build slice.
+
+| | Longest loading frame | Loader ready |
+|---|---|---|
+| Verdance | 0.53-0.59 s | 8.4-8.5 s |
+| Anvil | 0.62 s (was 1.15 s) | 6.6-7.0 s |
+
+**2. Kit buildings merged per material** (`planet/kit_batch.gd`): all of a site's KitBuilding
+bodies become one mesh with one surface per material. Materials are shared and paint is baked
+per vertex, so it looks the same.
+- Verdance's yard: 101 body surfaces → 9 (≈303 → ≈27 est. draws).
+- The hidden originals keep their lights, ground patches and collision.
+- It re-merges after a state change (VerdanceSite.set_level), and Anvil sites merge at build.
+
+**3. Static loose props batched** (`planet/prop_batch.gd`): the crash site's furrow clods and
+shards and an Anvil site's loose pieces, about -21 to -24 surfaces each.
+- Conservative: only auto-named, script-less, childless meshes merge. Anything found by name or
+  animated stays separate.
+- The escape pod (~90 meshes, ~300 draws) is not batched: its parts are looked up by metadata,
+  animated and swapped per repair stage (story/escape_pod.gd). Batching it needs a pass by its
+  owners: merge the static shell, keep the hatch, fins, lamps and condition layers apart.
+
+**4. Lumi far away** (`planet/lumi_lod.gd`, globe only): past 30 m (Command view) the 27-mesh
+rig, 62 surfaces almost all casting shadows (~190 draws), hands over to one merged proxy with 13
+surfaces and no shadow (~26 draws). It uses the same materials, so glow and colours match, and
+is rebuilt every 4 s while the camera is far.
+
+| Estimated draws (census, start site, Medium) | Before | After |
+|---|---|---|
+| Verdance | 2,024 | **1,700** (-324) |
+| Anvil | 1,997 | **1,856** (-141) |
+| Lumi in Command view | ~190 | ~26 |
+
+The census counts both Lumi's rig and its far proxy, so in either view the real number is ~26
+or ~190 lower than the table. Still to do, by owner:
+- The escape pod (above).
+- The Anvil road barriers: 8 meshes, 487k triangles, a RetopoFlow export that needs a LOD.
+- The far junk impostors (~100 draws).
