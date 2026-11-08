@@ -498,11 +498,11 @@ msgstr "材料不足。"
 msgid "Telescope built. Walk up to it and press E to look across the system."
 msgstr "望远镜已建成。走过去按 E，眺望整个星系。"
 
-#: automation/telescope.gd:259 ui/telescope_panel.gd:11
+#: automation/telescope.gd:260 ui/telescope_panel.gd:11
 msgid "OBSERVATORY"
 msgstr "天文台"
 
-#: automation/telescope.gd:311
+#: automation/telescope.gd:312
 msgid "E   Telescope: look across the system"
 msgstr "E   望远镜：眺望整个星系"
 
@@ -535,39 +535,43 @@ msgstr "举升力 %d"
 msgid "Too heavy: needs %s"
 msgstr "太重了：需要 %s"
 
-#: core/pace.gd:141
+#: core/pace.gd:175
+msgid "Nothing here fits: press a bale"
+msgstr ""
+
+#: core/pace.gd:187
 msgid "No Baler yet: empty your chest in the trash bin"
 msgstr "还没有打包机：把胸舱里的垃圾倒进垃圾桶"
 
-#: core/pace.gd:191 systems/events.gd:492 ui/goals_panel.gd:257
+#: core/pace.gd:237 systems/events.gd:492 ui/goals_panel.gd:257
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
-#: fauna/fauna.gd:1481
+#: fauna/fauna.gd:1515
 msgid "E   pet %s"
 msgstr "E   摸摸%s"
 
-#: fauna/fauna.gd:1482
+#: fauna/fauna.gd:1516
 msgid "E   pet the cat"
 msgstr "E   摸摸猫咪"
 
-#: fauna/fauna.gd:1540
+#: fauna/fauna.gd:1574
 msgid "E   scatter crumbs for the birds"
 msgstr "E   给鸟儿撒面包屑"
 
-#: fauna/fauna.gd:1588
+#: fauna/fauna.gd:1622
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr "鸟儿们觉得你还不错。面包屑袋已加入你的收藏。"
 
-#: fauna/fauna.gd:1644
+#: fauna/fauna.gd:1678
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "这只猫认定你是她的了。来认识一下%s吧。她现在住在这个基地。"
 
-#: fauna/fauna.gd:1964 ui/subtitles.gd:412
+#: fauna/fauna.gd:1998 ui/subtitles.gd:412
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新发现：%s。已收入图鉴。"
 
-#: fauna/fauna.gd:2032
+#: fauna/fauna.gd:2066
 msgid "Snap! A %s for your Collection."
 msgstr "咔嚓！一张%s的照片，收进你的收藏。"
 
@@ -784,7 +788,7 @@ msgstr "WREN：那里是勘测区的边缘，Lumi。外面只有雾霾。"
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi 悬浮着回到了坚实的地面。"
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1063 scenes/slice_orbit.gd:304
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:346
 msgid "HEX CLEAN!  +%s"
 msgstr "六角格清理完毕！  +%s"
 
@@ -792,7 +796,7 @@ msgstr "六角格清理完毕！  +%s"
 msgid "Rocket hop: %.1f km"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:89
+#: planet/sites/orbit_sites.gd:91
 msgid "The rocket is in flight."
 msgstr ""
 
@@ -852,7 +856,7 @@ msgstr ""
 "堆肥压机  等级 %d\n"
 "料斗 %d%%  →  种子"
 
-#: plants/garden.gd:263
+#: plants/garden.gd:336
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "一个六角格完全恢复了。已经有小东西住在里面了。"
 
@@ -1052,11 +1056,11 @@ msgstr "看右边"
 msgid "Look up"
 msgstr "看上面"
 
-#: player/vehicle.gd:94
+#: player/vehicle.gd:133
 msgid "Ride the hover-sled"
 msgstr ""
 
-#: player/vehicle.gd:94
+#: player/vehicle.gd:133
 msgid "Hover-sled: buy it in Upgrades"
 msgstr ""
 
@@ -1258,67 +1262,67 @@ msgstr ""
 msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
 msgstr ""
 
-#: scenes/slice.gd:368
+#: scenes/slice.gd:390
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "机器人上行链路上线。按 B 打开指挥：划定区域，把队伍派到你想去的地方。"
 
-#: scenes/slice.gd:1077 scenes/slice_orbit.gd:320
+#: scenes/slice.gd:1099 scenes/slice_orbit.gd:362
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice.gd:1079
+#: scenes/slice.gd:1101
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "整个废料场都干净了。Lumi 发出一声好长好长、非常开心的哔——"
 
-#: scenes/slice.gd:1086
+#: scenes/slice.gd:1108
 msgid "%s is out of range: %s"
 msgstr "%s 超出范围：%s"
 
-#: scenes/slice.gd:1096
+#: scenes/slice.gd:1118
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "未解锁。将基地升到 5 级才能建造发射台。"
 
-#: scenes/slice.gd:1099 ui/rockets_panel.gd:39
+#: scenes/slice.gd:1121 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice.gd:1153
+#: scenes/slice.gd:1175
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陆：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:1154
+#: scenes/slice.gd:1176
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "火箭停在空地上，电池充满就能出发。"
 
-#: scenes/slice.gd:1154
+#: scenes/slice.gd:1176
 msgid "Landed on the base pad."
 msgstr "已降落在基地平台。"
 
-#: scenes/slice.gd:1270 scenes/slice_orbit.gd:530
+#: scenes/slice.gd:1292 scenes/slice_orbit.gd:723
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice.gd:1461
+#: scenes/slice.gd:1483
 msgid "Welcome back. The junk waited for you."
 msgstr "欢迎回来。废料一直在等你。"
 
-#: scenes/slice.gd:1478
+#: scenes/slice.gd:1500
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨 %d · %d级"
 
-#: scenes/slice.gd:1478
+#: scenes/slice.gd:1500
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
-#: scenes/slice_orbit.gd:364 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:115
+#: scenes/slice_orbit.gd:406 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:238
 msgid "E   Workbench (broken): repair it"
 msgstr "E   工作台（损坏）：修好它"
 
-#: scenes/slice_orbit.gd:364 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:406 systems/camp/camp.gd:177
 msgid "E   Workbench: upgrades"
 msgstr "E   工作台：升级"
 
-#: scenes/slice_orbit.gd:630 systems/camp/camp.gd:224
+#: scenes/slice_orbit.gd:823 systems/camp/camp.gd:224
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
@@ -1446,27 +1450,27 @@ msgstr "你在下面种出的每一小片，都是又一块这样的苗床。你
 msgid "Bloom Core 25%: WREN's signal is clear now."
 msgstr "绽放核心 25%：WREN 的信号清晰了。"
 
-#: story/core_charge.gd:288
+#: story/core_charge.gd:289
 msgid "Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."
 msgstr "绽放核心 50%：Lumi 的光芒回来了，比这些年来都要亮。"
 
-#: story/core_charge.gd:290
+#: story/core_charge.gd:291
 msgid "Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."
 msgstr "充了一半。你在发光，Lumi。是真正地发光。我都忘了你能这么亮。"
 
-#: story/core_charge.gd:324
+#: story/core_charge.gd:325
 msgid "That night..."
 msgstr "那天夜里……"
 
-#: story/core_charge.gd:348
+#: story/core_charge.gd:349
 msgid "Lumi, look up. That light. West to east, steady, not twinkling."
 msgstr "Lumi，抬头看。那道光。从西到东，平稳，不闪烁。"
 
-#: story/core_charge.gd:353
+#: story/core_charge.gd:354
 msgid "That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."
 msgstr "那是 Cradle号。你的核心亮起时，方舟听见了。它调头了。我们回来接你了。"
 
-#: story/core_charge.gd:363
+#: story/core_charge.gd:364
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "绽放核心 75%：Cradle号正在回家的路上。夜里留意它划过天空。"
 
@@ -2265,19 +2269,19 @@ msgstr "完成 %d 个委托后解锁"
 msgid "Locked"
 msgstr "未解锁"
 
-#: systems/cradle_mode.gd:261
+#: systems/cradle_mode.gd:263
 msgid "Heirloom unlocked: %s, level %d. It travels with Lumi to every world."
 msgstr "传家宝已解锁：%s，等级 %d。它会随 Lumi 去往每个世界。"
 
-#: systems/cradle_mode.gd:311 systems/cradle_mode.gd:317
+#: systems/cradle_mode.gd:313 systems/cradle_mode.gd:319
 msgid "Fully grown"
 msgstr "已满级"
 
-#: systems/cradle_mode.gd:318
+#: systems/cradle_mode.gd:320
 msgid "Restore a planet for a pick, or unlocks with Ark milestones (next: %s, at %d restoration)"
 msgstr "恢复一个星球可获得一次选择，或随方舟里程碑解锁（下一个：%s，恢复度 %d）"
 
-#: systems/cradle_mode.gd:331
+#: systems/cradle_mode.gd:333
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr "传家宝：%s，等级 %d。它会随 Lumi 前往每一个世界。"
 
@@ -2577,11 +2581,11 @@ msgstr "{robot} {stat} +{amount}%"
 msgid "+{amount} {robot} {stat}"
 msgstr "{robot} {stat} +{amount}"
 
-#: systems/late_director.gd:95
+#: systems/late_director.gd:96
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "Cradle号回家之后，方舟舰桥才会开放。"
 
-#: systems/late_director.gd:129
+#: systems/late_director.gd:133
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."
 msgstr "摇篮模式：方舟的种子库里存着给其他世界的种子。暂停 > 方舟舰桥可以查看它们和你的复原度解锁的传家宝，或者播种一个新世界。花园模式（H）也已开放。"
 
@@ -3012,7 +3016,7 @@ msgstr "%s 对着幼苗哼歌。退休生活很适合它。"
 msgid "%s points proudly at a new bud."
 msgstr "%s 骄傲地指着一个新花苞。"
 
-#: systems/extras/radio.gd:184
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:259
 msgid "E   CD player: %s"
 msgstr "E   CD 播放机：%s"
 
@@ -3367,7 +3371,7 @@ msgstr "车队"
 msgid "Fabricator"
 msgstr "制造机"
 
-#: ui/bench_kit.gd:163 ui/upgrade_card.gd:221
+#: ui/bench_kit.gd:164 ui/upgrade_card.gd:221
 msgid "need %s"
 msgstr "还差%s"
 
@@ -3380,7 +3384,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "机器"
 
-#: ui/bench_lists.gd:12 ui/globe_view.gd:178 ui/locker_panel.gd:230
+#: ui/bench_lists.gd:12 ui/globe_view.gd:178 ui/locker_panel.gd:250
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "火箭"
@@ -3641,7 +3645,7 @@ msgstr "图鉴"
 msgid "Watch the story"
 msgstr "观看剧情"
 
-#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:165
+#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:161
 msgid "Close  [%s]"
 msgstr "关闭  [%s]"
 
@@ -3948,7 +3952,7 @@ msgstr "指挥"
 msgid "Mark around me"
 msgstr "标记我周围"
 
-#: ui/command_view.gd:281 ui/lumi_builder.gd:585 ui/photo_mode.gd:26
+#: ui/command_view.gd:281 ui/lumi_builder.gd:597 ui/photo_mode.gd:26
 msgid "Clear"
 msgstr "清除"
 
@@ -4087,7 +4091,7 @@ msgstr "绽放核心   %d%%"
 msgid "DESIGNS"
 msgstr "外观"
 
-#: ui/cosmetics_panel.gd:39 ui/lumi_builder.gd:540
+#: ui/cosmetics_panel.gd:39 ui/lumi_builder.gd:552
 msgid "Looks only (no bonuses)"
 msgstr "仅外观（无加成）"
 
@@ -4107,11 +4111,11 @@ msgstr "已解锁"
 msgid "Locked  %d%%"
 msgstr "未解锁  %d%%"
 
-#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:645
+#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:657
 msgid "Bonus: %s"
 msgstr "加成：%s"
 
-#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:645
+#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:657
 msgid "(off: looks only)"
 msgstr "（已关闭：仅外观）"
 
@@ -4123,8 +4127,8 @@ msgstr "正在使用带此加成的自定义外观"
 msgid "Unlocked. Press to wear."
 msgstr "已解锁。按下即可穿戴。"
 
-#: ui/cosmetics_panel.gd:182 ui/lumi_builder.gd:376 ui/lumi_builder.gd:493
-#: ui/lumi_builder.gd:531 ui/lumi_builder.gd:599 ui/lumi_builder.gd:600
+#: ui/cosmetics_panel.gd:182 ui/lumi_builder.gd:388 ui/lumi_builder.gd:505
+#: ui/lumi_builder.gd:543 ui/lumi_builder.gd:611 ui/lumi_builder.gd:612
 msgid "Locked: %s"
 msgstr "未解锁：%s"
 
@@ -4564,7 +4568,7 @@ msgstr "   ·   已过时"
 msgid "Re-survey      %s cubes"
 msgstr "重新勘测      %s 方块"
 
-#: ui/goals_panel.gd:206 ui/list_detail.gd:418 ui/objective_card.gd:112
+#: ui/goals_panel.gd:206 ui/list_detail.gd:446 ui/objective_card.gd:112
 msgid "DONE"
 msgstr "完成"
 
@@ -4684,68 +4688,68 @@ msgstr ""
 msgid "All built"
 msgstr "已全部建成"
 
-#: ui/hud.gd:77
+#: ui/hud.gd:79
 msgid "Lumi reached level %d%s"
 msgstr "Lumi 达到了 %d 级%s"
 
-#: ui/hud.gd:162
+#: ui/hud.gd:164
 msgid "OLD TOWN   0%"
 msgstr "老城区   0%"
 
-#: ui/hud.gd:294
+#: ui/hud.gd:306
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN 信号   %d%%"
 
-#: ui/hud.gd:322
+#: ui/hud.gd:334
 msgid "HEX  %d%% CLEAR"
 msgstr "六角格  已清理 %d%%"
 
-#: ui/hud.gd:326
+#: ui/hud.gd:338
 msgid "%s  BASE"
 msgstr "%s  基地"
 
-#: ui/hud.gd:329
+#: ui/hud.gd:341
 msgid "CARRYING %d/%d"
 msgstr "携带 %d/%d"
 
-#: ui/hud.gd:353
+#: ui/hud.gd:367
 msgid "HEX  CLEAR"
 msgstr "六角格  已清理"
 
-#: ui/hud.gd:357
+#: ui/hud.gd:371
 msgid "HEX  %s"
 msgstr "六角格  %s"
 
-#: ui/hud.gd:360
+#: ui/hud.gd:374
 msgid "  SUSTAIN %d%%"
 msgstr "  稳定 %d%%"
 
-#: ui/hud.gd:362
+#: ui/hud.gd:376
 msgid "  THIRSTY"
 msgstr "  缺水"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:387
+#: ui/hud.gd:401
 msgid "%s   pick up bale"
 msgstr "%s   拿起捆包"
 
-#: ui/hud.gd:388
+#: ui/hud.gd:402
 msgid "%s   dig up part"
 msgstr "%s   挖出零件"
 
-#: ui/hud.gd:389
+#: ui/hud.gd:403
 msgid "%s   read memory shard"
 msgstr "%s   阅读记忆碎片"
 
-#: ui/hud.gd:390
+#: ui/hud.gd:404
 msgid "%s   pick up the seed tin"
 msgstr "%s   拿起种子罐"
 
-#: ui/hud.gd:391
+#: ui/hud.gd:405
 msgid "%s   set bale down"
 msgstr "%s   放下捆包"
 
-#: ui/hud.gd:392
+#: ui/hud.gd:406
 msgid "%s   workbench"
 msgstr "%s   工作台"
 
@@ -4787,35 +4791,35 @@ msgstr "捆包就绪"
 msgid "◢ BURIED PART %d%%"
 msgstr "◢ 埋藏零件 %d%%"
 
-#: ui/list_detail.gd:88
+#: ui/list_detail.gd:97
 msgid "Nothing here yet. Keep playing."
 msgstr "这里还什么都没有。继续游戏吧。"
 
-#: ui/list_detail.gd:414
+#: ui/list_detail.gd:442
 msgid "LOCKED"
 msgstr "未解锁"
 
-#: ui/list_detail.gd:422 ui/profile_picker.gd:97
+#: ui/list_detail.gd:450 ui/profile_picker.gd:97
 msgid "ACTIVE"
 msgstr "进行中"
 
-#: ui/list_detail.gd:443
+#: ui/list_detail.gd:471
 msgid "FREE"
 msgstr "免费"
 
-#: ui/list_detail.gd:546
+#: ui/list_detail.gd:578
 msgid "REQUIRES   NOT YET   %s"
 msgstr "需要   尚未满足   %s"
 
-#: ui/list_detail.gd:546
+#: ui/list_detail.gd:578
 msgid "Not unlocked yet. Keep playing."
 msgstr "尚未解锁。继续游戏吧。"
 
-#: ui/list_detail.gd:549
+#: ui/list_detail.gd:581
 msgid "REQUIRES   %s"
 msgstr "需要   %s"
 
-#: ui/list_detail.gd:552
+#: ui/list_detail.gd:584
 msgid "REQUIRES   READY"
 msgstr "需要   已就绪"
 
@@ -4844,11 +4848,11 @@ msgstr "光效"
 msgid "Trim"
 msgstr "饰边"
 
-#: ui/locker_editors.gd:60
+#: ui/locker_editors.gd:67
 msgid "Every %s wears this"
 msgstr "每台%s都会换上"
 
-#: ui/locker_editors.gd:213
+#: ui/locker_editors.gd:222
 msgid "Ship looks: the tiers keep their shape"
 msgstr "飞船外观：等级外形不变"
 
@@ -4856,23 +4860,23 @@ msgstr "飞船外观：等级外形不变"
 msgid "LOCKER"
 msgstr "储物柜"
 
-#: ui/locker_panel.gd:85 ui/telescope_view.gd:379
+#: ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "关闭"
 
-#: ui/locker_panel.gd:185
+#: ui/locker_panel.gd:205
 msgid "The Locker"
 msgstr "储物柜"
 
-#: ui/locker_panel.gd:186
+#: ui/locker_panel.gd:206
 msgid "Build the Locker in the Build tab, then open it in the yard."
 msgstr "在建造页签建好储物柜，然后在院子里打开它。"
 
-#: ui/locker_panel.gd:187
+#: ui/locker_panel.gd:207
 msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play."
 msgstr "装扮Lumi和每台机器人：颜色、眼睛、头饰、顶饰、车队涂装。新部件会在游戏中逐步解锁。"
 
-#: ui/locker_panel.gd:228 ui/upgrades_screen.gd:15
+#: ui/locker_panel.gd:248 ui/upgrades_screen.gd:15
 msgid "Bots"
 msgstr "机器人"
 
@@ -4880,119 +4884,119 @@ msgstr "机器人"
 msgid "CHARACTER BUILDER"
 msgstr "角色编辑器"
 
-#: ui/lumi_builder.gd:147
+#: ui/lumi_builder.gd:148
 msgid "Drag to turn  ·  Wheel to zoom"
 msgstr "拖动旋转  ·  滚轮缩放"
 
-#: ui/lumi_builder.gd:184
+#: ui/lumi_builder.gd:185
 msgid "Randomize"
 msgstr "随机"
 
-#: ui/lumi_builder.gd:185
+#: ui/lumi_builder.gd:186
 msgid "Reset to preset"
 msgstr "恢复预设"
 
-#: ui/lumi_builder.gd:186
+#: ui/lumi_builder.gd:187
 msgid "Test laser"
 msgstr "测试激光"
 
-#: ui/lumi_builder.gd:190 ui/profile_picker.gd:252 ui/profile_picker.gd:269
+#: ui/lumi_builder.gd:191 ui/profile_picker.gd:252 ui/profile_picker.gd:269
 msgid "Cancel"
 msgstr "取消"
 
-#: ui/lumi_builder.gd:191
+#: ui/lumi_builder.gd:192
 msgid "Done"
 msgstr "完成"
 
-#: ui/lumi_builder.gd:191
+#: ui/lumi_builder.gd:192
 msgid "Wear look"
 msgstr "穿上外观"
 
-#: ui/lumi_builder.gd:207 ui/lumi_builder.gd:319
+#: ui/lumi_builder.gd:208 ui/lumi_builder.gd:331
 msgid "Presets"
 msgstr "预设"
 
-#: ui/lumi_builder.gd:218
+#: ui/lumi_builder.gd:219
 msgid "Saved"
 msgstr "已保存"
 
-#: ui/lumi_builder.gd:222 ui/lumi_builder.gd:323
+#: ui/lumi_builder.gd:223 ui/lumi_builder.gd:335
 msgid "Saved looks"
 msgstr "已保存的外观"
 
-#: ui/lumi_builder.gd:372
+#: ui/lumi_builder.gd:384
 msgid "A design's full look. Every slot can be changed afterwards."
 msgstr "一套外观的完整造型。之后每个部位都可以修改。"
 
-#: ui/lumi_builder.gd:392
+#: ui/lumi_builder.gd:404
 msgid "Custom colour"
 msgstr "自定义颜色"
 
-#: ui/lumi_builder.gd:437 data/style_parts.json:advanced.name
+#: ui/lumi_builder.gd:449 data/style_parts.json:advanced.name
 msgid "Advanced colour picker"
 msgstr "高级取色器"
 
-#: ui/lumi_builder.gd:447
+#: ui/lumi_builder.gd:459
 msgid "Advanced (hue, saturation, brightness)"
 msgstr "高级（色相、饱和度、亮度）"
 
-#: ui/lumi_builder.gd:456
+#: ui/lumi_builder.gd:468
 msgid "Hue"
 msgstr "色相"
 
-#: ui/lumi_builder.gd:456 ui/photo_mode.gd:385
+#: ui/lumi_builder.gd:468 ui/photo_mode.gd:385
 msgid "Saturation"
 msgstr "饱和度"
 
-#: ui/lumi_builder.gd:456
+#: ui/lumi_builder.gd:468
 msgid "Brightness"
 msgstr "亮度"
 
-#: ui/lumi_builder.gd:493
+#: ui/lumi_builder.gd:505
 msgid "Equipped"
 msgstr "已装备"
 
-#: ui/lumi_builder.gd:509
+#: ui/lumi_builder.gd:521
 msgid "How weathered the paint looks: fresh from the ark, or three hundred years of dust."
 msgstr "漆面的磨损程度：刚从方舟出来，还是积了三百年的灰。"
 
-#: ui/lumi_builder.gd:512
+#: ui/lumi_builder.gd:524
 msgid "Fresh"
 msgstr "崭新"
 
-#: ui/lumi_builder.gd:521
+#: ui/lumi_builder.gd:533
 msgid "Weathered"
 msgstr "斑驳"
 
-#: ui/lumi_builder.gd:527
+#: ui/lumi_builder.gd:539
 msgid "A custom look can use the bonus of any design you have unlocked."
 msgstr "自定义外观可以使用任何已解锁外观的加成。"
 
-#: ui/lumi_builder.gd:551
+#: ui/lumi_builder.gd:563
 msgid "Keep up to %d looks. Load one to edit it, then press Done to wear it."
 msgstr "最多保存%d套外观。载入后可编辑，按“完成”即可穿上。"
 
-#: ui/lumi_builder.gd:556 ui/lumi_builder.gd:580
+#: ui/lumi_builder.gd:568 ui/lumi_builder.gd:592
 msgid "Look %d"
 msgstr "外观%d"
 
-#: ui/lumi_builder.gd:564
+#: ui/lumi_builder.gd:576
 msgid "Empty"
 msgstr "空"
 
-#: ui/lumi_builder.gd:569 data/robot_parts.json:stats[load].name
+#: ui/lumi_builder.gd:581 data/robot_parts.json:stats[load].name
 msgid "Load"
 msgstr "载重"
 
-#: ui/lumi_builder.gd:577
+#: ui/lumi_builder.gd:589
 msgid "Save here"
 msgstr "保存到此"
 
-#: ui/lumi_builder.gd:647
+#: ui/lumi_builder.gd:659
 msgid "Unsaved changes"
 msgstr "有未保存的修改"
 
-#: ui/lumi_builder.gd:663
+#: ui/lumi_builder.gd:675
 msgid "Part of this look is still locked."
 msgstr "此外观的部分内容尚未解锁。"
 
@@ -6325,7 +6329,7 @@ msgstr "研究"
 msgid "WORKBENCH"
 msgstr "工作台"
 
-#: ui/upgrades_screen.gd:228
+#: ui/upgrades_screen.gd:237
 msgid "Not open yet. Keep playing."
 msgstr "尚未开放。继续游戏吧。"
 

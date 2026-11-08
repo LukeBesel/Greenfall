@@ -532,6 +532,40 @@ static func cost_text(cost: Dictionary) -> String:
 
 # --- Travel -----------------------------------------------------------------------------------
 
+## [orbC] What a crew brings to planet k (data/homeward.json planets[k].arrival): the tools and
+## bots of the planets before it, so each bigger planet starts further along and never plays
+## slower than Verdance. Keys (all optional): research_tier (grants every research below that
+## tier), robots (kit robots, added to the Heirloom crew), robot_tier {type: Mk index}, cubes, parts.
+static func arrival_kit(k: int) -> Dictionary:
+	return (planet_def(k).get("arrival", {}) as Dictionary).duplicate(true) if k > 0 else {}
+
+
+static func apply_arrival(k: int) -> Dictionary:
+	return apply_kit(arrival_kit(k))
+
+
+static func apply_kit(a: Dictionary) -> Dictionary:
+	if a.is_empty():
+		return a
+	if float(a.get("cubes", 0.0)) > 0.0:
+		GameState.add_currency("cubes", BigNum.from_float(float(a["cubes"])))
+	if float(a.get("parts", 0.0)) > 0.0:
+		GameState.add_currency("parts", BigNum.from_float(float(a["parts"])))
+	var tier: int = int(a.get("research_tier", 0))
+	if tier > 0:
+		for rid: String in Research.ids():
+			if int(Research.def(rid).get("tier", 0)) < tier and not Research.has(rid):
+				Research.grant(rid)
+	var bots: Array = (GameState.flags.get("late_start_robots", []) as Array).duplicate()
+	bots.append_array(a.get("robots", []))
+	if not bots.is_empty():
+		GameState.flags["late_start_robots"] = bots
+	var rt: Dictionary = a.get("robot_tier", {})
+	for t: String in rt:
+		GameState.flags["tier_" + t] = maxi(int(GameState.flags.get("tier_" + t, 0)), int(rt[t]))
+	return a
+
+
 ## Creates planet k's world record (fixed seed, name, type, modifiers) in the profile.
 static func make_planet_world(k: int) -> Dictionary:
 	var d: Dictionary = planet_def(k)

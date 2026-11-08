@@ -54,11 +54,13 @@ static func boot() -> void:
 	if DevHooks.has("planet-start"):  # [orbC] dev: start fresh on campaign planet ID (e.g. tidewell), as a rocket arrival would
 		var pk: int = Homeward.planet_index(DevHooks.get_s("planet-start", "tidewell"))
 		if pk > 0:
+			var carry: Dictionary = _carry_flags()
+			carry["rocket_tier"] = maxi(int(GameState.flags.get("rocket_tier", 1)), 1)  # as Homeward.travel_to_planet
 			Homeward.make_planet_world(pk)
 			profile["current"] = worlds().size() - 1
 			profile["unlocked"] = true
 			apply_current()
-			prepare_new_world_state({})
+			prepare_new_world_state(carry)
 
 
 # --- Profile ---------------------------------------------------------------------------
@@ -443,6 +445,7 @@ static func prepare_new_world_state(carry: Dictionary) -> void:
 		for rid: String in Research.ids():
 			if int(Research.def(rid).get("tier", 0)) < tier:
 				Research.grant(rid)
+	Homeward.apply_arrival(Homeward.current_planet())  # [orbC] the tools and bots of the planets before this one
 	mirror_stats()
 
 
