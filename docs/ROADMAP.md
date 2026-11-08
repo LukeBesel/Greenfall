@@ -541,5 +541,10 @@ tuned in the first-hour pass); no new SFX work unless a bug.
 - On the shared contract now (planet/planets/planet_envs.gd: dev_hub / prepare_field / dress_view / apply);
   own slice hooks dropped. Owner (Nov 8): flat-world layout paused for the walkable sphere; env.gd's header lists
   what transfers to a globe (sea shader, generic hover-over-water, suns, props, junk palette, restoration rules).
+- Site prefabs for the globe (Nov 8): `TideSite.place(id, root, stage, restoration)` in planet/planets/tidewell/sites.gd
+  builds compact local scenes on their own sea patch (ocean shader `local_space`): hubs `hub_raft` (anchored raft) and
+  `hub_stilts` (stilt yard on an islet); landmarks `wreck`, `dredge_rig`, `reef_garden`, `buoy_field`. Listed in
+  data/planets.json "tidewell".sites. Preview: `res://planet/planets/tidewell/site_preview.tscn -- --site=<id>
+  --site-stage=0..2 --site-restore=0..1 --site-cam=dist,pitch,yaw[,fov,ty]`. Floating junk thins with restoration.
 - Next: home wires Tidewell as a campaign planet (call the same hooks from its world build); fauna2 may add
   `tidewell` to gull/fish regions; sound: music key `tidewell_swell`.
