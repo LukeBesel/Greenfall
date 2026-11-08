@@ -1099,6 +1099,12 @@ func _shop(want: Dictionary) -> void:
 	if HubBuilds.listed(world, "composter") and str(HubBuilds.entry(world, "composter")["reason"]) == "":
 		if HubBuilds.build(world, "composter"):
 			_event("build", {"id": "composter"})
+	# 10) [orbC] The Bot Fabricator once it is offered (3rd planet on) and the bot holds 1.5x its
+	# cube cost; it then runs on its default mix.
+	if HubBuilds.listed(world, "bot_fabricator") and str(HubBuilds.entry(world, "bot_fabricator")["reason"]) == "":
+		if GameState.get_currency("cubes").to_float() >= float(BotFabricator.cost().get("cubes", 0)) * 1.5 and HubBuilds.build(world, "bot_fabricator"):
+			_event("build", {"id": "bot_fabricator"})
+			print("[autoplay] Bot Fabricator built at %.1f min" % (DevHooks._elapsed * Engine.time_scale / 60.0))
 	var cp: Composter = world.get("composter")
 	if cp and cp.active() and cp.level < cp.max_level() and GameState.get_currency("seeds").to_float() < 10.0:
 		if cp.upgrade_cost().to_float() <= GameState.get_currency("cubes").to_float() * 0.25:
