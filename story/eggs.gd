@@ -25,6 +25,7 @@ const SPAWN_Z: float = 3.0
 const STAR_POS := Vector3(110, 170, -190)
 var _peek: Node  # [eggs2] StarPeek while looking through the telescope
 var _tv: Node  # [eggs2] TvBroadcast while it plays
+var _dev_use: Dictionary = {}  # [eggs2] dev --egg-use target
 const JUKEBOX_LEAVE_M: float = 12.0  # [eggs2]
 var _jukebox_on: bool = false  # [eggs2] the waltz is playing (the score is hushed)
 
@@ -346,8 +347,11 @@ func _dev_spawn(id: String) -> void:
 			world.patch.rotation.y = atan2(p.x - n.global_position.x, p.z - n.global_position.z)  # -Z (forward) toward the egg
 			world.cam.yaw = world.patch.rotation.y + DevHooks.get_f("egg-yaw", 0.4)
 			world.cam.snap()
-			if DevHooks.has("egg-use"):  # [eggs2] dev: --egg-use[=S] presses E on it after S s
-				get_tree().create_timer(DevHooks.get_f("egg-use", 0.5), false).timeout.connect(func() -> void: _use(e))
+			if DevHooks.has("egg-use"):  # [eggs2] dev: --egg-use[=S] presses E on it S wall-clock s after start
+				_dev_use = e
+			if DevHooks.has("egg-cam"):  # [eggs2] dev: camera distance for egg shots
+				world.cam.distance = DevHooks.get_f("egg-cam", 4.0)
+				world.cam.snap()
 			if DevHooks.has("egg-poke"):
 				get_tree().create_timer(DevHooks.get_f("egg-poke", 0.5), false).timeout.connect(func() -> void: _effect(e))
 			print("[eggs] spawned next to %s at %s (patch %s, yaw %.2f)" % [id, str(n.global_position), str(world.patch.global_position), world.patch.rotation.y])
@@ -430,6 +434,11 @@ func _process(delta: float) -> void:
 		_star_mat.albedo_color.a = _night_amount() * boost * (0.85 + 0.15 * sin(_t * 1.7))
 	_animate(delta)
 	_glint(delta)
+	if not _dev_use.is_empty() and DevHooks._elapsed >= DevHooks.get_f("egg-use", 0.5):  # [eggs2] wall clock (slow renders)
+		var du: Dictionary = _dev_use
+		_dev_use = {}
+		print("[eggs] dev use %s at %.1fs" % [du["id"], DevHooks._elapsed])
+		_use(du)
 	_tick += delta
 	if _tick < 0.15 or world == null or world.patch == null:
 		return
