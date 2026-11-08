@@ -269,7 +269,8 @@ func _celebrate(id: String) -> void:
 	EventBus.toast.emit(_reward_text(ms.get("reward", {})), "hint")
 	Audio.play("fanfare", 0.9, -4.0)
 	if world and world.get("patch") != null:
-		Vfx.burst("big_sparkle", (world.patch as Node3D).global_position + Vector3(0, 1.5, 0), Color(0.8, 1.0, 0.6))
+		var bp: Vector3 = (world.patch as Node3D).global_position
+		Vfx.burst("big_sparkle", bp + OrbitUp.up(bp) * 1.5, Color(0.8, 1.0, 0.6))  # [orbB] local up
 	if world and world.get("wren") != null:
 		world.wren.say("bloom_milestone", 1.0, true)
 	if bool(ms.get("finale", false)):

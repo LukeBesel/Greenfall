@@ -497,6 +497,11 @@ func _build_yard_systems() -> void:
 	obj.world = w
 	w.add_child(obj)
 	w.set("objectives", obj)
+	var bloom := Bloom.new()  # post-game milestones + Seed Ark (systems/bloom.gd)
+	bloom.name = "Bloom"
+	bloom.world = w
+	w.add_child(bloom)
+	LateDirector.attach(w)  # Homeward, the Ark Bridge, world look/story (Garden Mode's decor waits for the yard frame)
 
 
 ## A yard spot in world space (the anchor's origin, or the flat yard spot on the pad).
@@ -607,6 +612,27 @@ func reseat_yard() -> void:
 	var bin_reach: Variant = camp.get("_bin_anchor") if camp else null
 	if bin_reach is Node3D:
 		(bin_reach as Node3D).global_position = yard_point("bin")
+	# [orbB] the CD player, the nursery, the Telescope and the crashed pod follow their anchors too
+	var ex: ExtrasDirector = ExtrasDirector.of(w)
+	if ex and ex.radio:
+		var rs: Array = yard_slot("radio", Radio.POS)
+		ex.radio.global_transform = (rs[0] as Node3D).global_transform * (rs[1] as Transform3D)
+		var rr: Node3D = ex.radio.get("_anchor") as Node3D
+		if rr:
+			rr.global_position = ex.radio.global_position + ex.radio.global_basis.x * 1.0
+	if ex and ex.nursery:
+		var ns: Array = yard_slot("nursery", ex.nursery.position)
+		ex.nursery.global_transform = (ns[0] as Node3D).global_transform * (ns[1] as Transform3D)
+		ex.nursery.set("center", ex.nursery.global_position)
+	var scope: Telescope = Telescope.of(w)
+	if scope:
+		var tp: Vector3 = scope.call("_pos")
+		var tsl: Array = yard_slot("telescope", tp)
+		scope.global_transform = (tsl[0] as Node3D).global_transform * (tsl[1] as Transform3D) * Transform3D(Basis(), -tp)
+	var pod_site: Node3D = w.get_meta("orbit_pod", null) as Node3D
+	if pod_site:
+		var at: Vector3 = yard_point("pod")
+		pod_site.global_transform = Transform3D(SphereGrid.frame(at.normalized()) * Basis(Vector3.UP, 0.5), at)
 	if DevHooks.has("yard-report"):
 		var dd := func(n: Variant, anchor: String) -> String:
 			return "%.2f" % (n as Node3D).global_position.distance_to(yard_point(anchor)) if n is Node3D else "-"
