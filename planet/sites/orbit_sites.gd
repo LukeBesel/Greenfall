@@ -28,6 +28,7 @@ func _setup() -> void:
 	var patch: Patch = so.w.get("patch")
 	if sm:
 		sm.focus_node = patch
+		sm.anchors_fixed.connect(_on_anchors_fixed)
 	HoverSled.register_upgrade()
 	if DevHooks.has("orbit-sled"):
 		GameState.upgrades[HoverSled.UPGRADE_ID] = clampi(int(DevHooks.get_f("orbit-sled", 1.0)), 1, 3)
@@ -47,6 +48,8 @@ func _setup() -> void:
 	if DevHooks.has("orbit-hop"):
 		_dev_hop.call_deferred()
 	_wire_survey.call_deferred()
+	if DevHooks.has("site-reach"):
+		_reach_audit.call_deferred()
 	if bool(GameState.flags.get("arrived_from_rocket", false)) or DevHooks.has("orbit-arrive"):
 		GameState.flags.erase("arrived_from_rocket")
 		_arrive.call_deferred()
@@ -119,6 +122,15 @@ func _arrive() -> void:
 	print("[hop] arrived on %s start site: %s" % [so.globe.planet_id, "ok" if ok else "FAIL"])
 
 
+## The start site's depot follows its anchor if it had to move out of the prefab's geometry.
+func _on_anchors_fixed(i: int, p: SitePrefab) -> void:
+	if i != 0:
+		return
+	var d: Variant = so.w.get("depot")
+	if d is Node3D and (d as Node3D).get_parent() == p.get_parent():
+		(d as Node3D).transform = p.anchor_local("depot")
+
+
 func interact_prompt() -> String:
 	var t: String = sled.prompt() if sled else ""
 	return ("E   " + t) if t != "" else ""
@@ -157,3 +169,31 @@ func _dev_hop() -> void:
 		var d: float = patch.global_position.distance_to(sm.pad_xf(int(h)).origin)
 		print("[hop] to hub %s: %s in %d ms, %.1f m from its pad, site built %s" % [h, "ok" if ok else "FAIL", Time.get_ticks_msec() - t0, d, sm.prefab(int(h)) != null])
 		await get_tree().create_timer(1.0).timeout
+
+
+## Dev: --site-reach. Narrow-gap audit (planet/sites/site_reach.gd) of every hub site on this
+## globe, one at a time; prints a [reach] line per hub and quits (1 if an anchor is cut off).
+func _reach_audit() -> void:
+	await get_tree().create_timer(1.0).timeout
+	sm.set_process(false)
+	var bad: int = 0
+	for i: int in sm.sites.size():
+		var p: SitePrefab = sm.build_hub(i, true)
+		if not p.is_built:
+			await p.rebuilt
+		for k: int in 3:
+			await get_tree().physics_frame
+		SiteReach.fix_anchors(p, so.globe.terrain)  # as SiteManager does after a build (idempotent)
+		var t0: int = Time.get_ticks_msec()
+		var r: Dictionary = SiteReach.audit(p, so.globe.terrain)
+		var cut: Array = r["cut"]
+		bad += cut.size() + (0 if r["start_free"] else 1)
+		print("[reach] %s hub %d %s: %d/%d anchors reachable, %d m2 walkable from the pad%s%s (%d ms)" % [
+			so.globe.planet_id, i, p.site_id, (r["anchors"] as Dictionary).size() - cut.size(), (r["anchors"] as Dictionary).size(),
+			int(int(r["reachable"]) * SiteReach.STEP * SiteReach.STEP), "" if r["start_free"] else ", LANDING SPOT BLOCKED (%s)" % r["why"],
+			"" if cut.is_empty() else ", cut off: " + ", ".join(cut), Time.get_ticks_msec() - t0])
+		if i > 0:
+			sm.free_hub(i)
+			await get_tree().process_frame
+	print("[reach] %s: %s" % [so.globe.planet_id, "PASS" if bad == 0 else "FAIL (%d)" % bad])
+	get_tree().quit(0 if bad == 0 else 1)
