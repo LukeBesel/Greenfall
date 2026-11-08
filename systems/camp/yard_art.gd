@@ -1061,3 +1061,39 @@ static func _scatter_point(rng: RandomNumberGenerator, half: float, feet: Array,
 		var d: float = rng.randf_range(0.6, 1.8)
 		return Vector3(f.x + cos(a) * d, 0.012, f.z + sin(a) * d)
 	return Vector3(rng.randf_range(-half, half), 0.012, rng.randf_range(-half, half))
+
+
+# --- The Locker (systems/camp/locker_cabinet.gd; ui6 owns the gameplay) ------------------------------
+
+## Local: front +Z, origin on the ground. About 1.2 x 2.3 x 0.7 m.
+static func locker() -> Kit:
+	var k := Kit.new()
+	k.box(Vector3(1.3, 0.14, 0.74), Vector3(0, 0.07, 0), DARK)  # plinth
+	k.hazard(Vector3(1.31, 0.06, 0.745), Vector3(0, 0.09, 0))
+	k.box(Vector3(1.2, 2.0, 0.66), Vector3(0, 1.14, -0.02), TEAL, Vector3.ZERO, 0.06)
+	k.box(Vector3(1.28, 0.12, 0.72), Vector3(0, 2.18, -0.02), TEAL_D, Vector3.ZERO, 0.04)  # crown
+	for s: float in [-1.0, 1.0]:
+		var x: float = s * 0.29
+		k.box(Vector3(0.54, 1.82, 0.05), Vector3(x, 1.12, 0.32), CREAM, Vector3.ZERO, 0.03)
+		k.box(Vector3(0.44, 0.6, 0.02), Vector3(x, 0.62, 0.35), CREAM.darkened(0.06), Vector3.ZERO, 0.01)  # lower inset
+		k.vent(0.36, 0.26, Vector3(x, 1.72, 0.345), CREAM.darkened(0.12), Vector3.ZERO, 4)
+		k.box(Vector3(0.04, 0.26, 0.05), Vector3(-s * 0.04 + x - s * 0.18, 1.12, 0.37), STEEL, Vector3.ZERO, 0.015)  # handle
+		k.box(Vector3(0.16, 0.06, 0.012), Vector3(x, 1.38, 0.352), ORANGE, Vector3.ZERO, 0.005)  # name tag
+		for y: float in [0.4, 1.85]:  # hinges
+			k.box(Vector3(0.04, 0.1, 0.04), Vector3(s * 0.57, y, 0.33), GUNMETAL, Vector3.ZERO, 0.01)
+		k.bolts4(Vector3(x, 1.12, 0.35), Vector3(0.23, 0, 0), Vector3(0, 0.86, 0), Vector3.BACK, STEEL, 0.014)
+	k.glow_box(Vector3(0.018, 1.7, 0.018), Vector3(0, 1.12, 0.36), CYAN)  # status seam
+	k.box(Vector3(0.3, 0.14, 0.06), Vector3(0, 2.0, 0.33), DARK, Vector3.ZERO, 0.02)  # little screen
+	k.glow_box(Vector3(0.24, 0.08, 0.02), Vector3(0, 2.0, 0.36), MINT)
+	# Helmet on top, coat hooks with a scarf on the side: someone's personal corner.
+	k.cyl(0.2, 0.18, Vector3(0.25, 2.33, -0.05), ORANGE, Vector3(0, 0, 0), 0.08, 16)
+	k.box(Vector3(0.34, 0.03, 0.2), Vector3(0.25, 2.26, 0.12), ORANGE.darkened(0.15), Vector3(-8, 0, 0), 0.01)
+	k.glow_cyl(0.035, 0.03, Vector3(0.25, 2.38, 0.14), WARM, Vector3(70, 0, 0), 10)
+	k.box(Vector3(0.05, 0.05, 0.5), Vector3(-0.62, 1.6, -0.02), GUNMETAL, Vector3.ZERO, 0.012)
+	for z: float in [-0.15, 0.15]:
+		k.cyl(0.015, 0.1, Vector3(-0.67, 1.6, z), STEEL, Vector3(0, 0, 90), 0.004, 6)
+	k.box(Vector3(0.03, 0.6, 0.14), Vector3(-0.68, 1.3, -0.15), RED, Vector3(0, 0, 4), 0.012)
+	k.hazard(Vector3(0.03, 0.08, 0.14), Vector3(-0.685, 1.06, -0.15), Vector3(0, 0, 4), CREAM)
+	k.cable([Vector3(0.5, 2.24, -0.3), Vector3(0.62, 1.4, -0.36), Vector3(0.66, 0.2, -0.36), Vector3(0.9, 0.03, -0.3)], 0.02)
+	k.light(Vector3(0, 1.4, 0.7), CYAN, 0.25, 1.4)
+	return k

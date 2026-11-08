@@ -11,6 +11,7 @@ const SHOTS: Dictionary = {
 	"yard": [Vector3(7.5, 7.5, 11.0), Vector3(-1.5, 0.3, -0.5)],
 	"shack": [Vector3(1.2, 2.6, 4.2), Vector3(-4.6, 1.0, 1.4)],
 	"bench": [Vector3(23.2, 2.2, 2.6), Vector3(20.0, 0.8, 0.0)],
+	"locker": [Vector3(-4.0, 1.9, 7.4), Vector3(-6.4, 1.1, 4.6)],
 	"bins": [Vector3(0.0, 4.4, -18.0), Vector3(0.0, 0.8, -26.5)],
 }
 const BOARD_POS := Vector3(-3.6, 0, 2.2)  # scenes/slice.gd
@@ -24,7 +25,7 @@ var _cam: Camera3D
 
 func _ready() -> void:
 	_out = DevHooks.get_s("out", "screenshots/yard/lineup")
-	_shots = DevHooks.get_s("shots", "yard,shack,bench,bins").split(",")
+	_shots = DevHooks.get_s("shots", "yard,shack,bench,locker,bins").split(",")
 	var night: bool = DevHooks.has("night")
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
@@ -148,6 +149,11 @@ var depot: Node3D  # read by YardArt.dress_board (like the slice's)
 func _build_yard() -> void:
 	_board(BOARD_POS + Vector3(-1.3, 0, 0), true, true)
 	_board(Vector3(20.0, 0, 0.0), false, false)
+	var lk: MeshInstance3D = YardArt.locker().mi(0.12, "Locker")  # systems/camp/locker_cabinet.gd
+	lk.position = Vector3(-6.4, 0, 4.6)
+	lk.rotation.y = deg_to_rad(90.0)
+	add_child(lk)
+	YardArt.set_powered(lk, true)
 
 
 func _build_bins() -> void:
