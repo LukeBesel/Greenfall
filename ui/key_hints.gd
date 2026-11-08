@@ -138,6 +138,10 @@ func _process(delta: float) -> void:
 			_rebuild()
 	if mode == Mode.PAUSE:
 		return
+	if get_tree().paused:  # [ui5] the pause menu has its own legend: never both on screen
+		_alpha = 0.0
+		visible = false
+		return
 	_peek = maxf(0.0, _peek - delta)
 	if DevHooks.has("hints-full"):  # dev: the held-Tab list (shots)
 		_peek = 1.0
@@ -152,6 +156,13 @@ func _process(delta: float) -> void:
 	_alpha = move_toward(_alpha, 1.0 if want else 0.0, delta * (5.0 if want else 1.5))
 	modulate.a = _alpha
 	visible = _alpha > 0.0
+
+
+## [ui5] Hidden at once when the game pauses (also when this node itself stops processing).
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PAUSED and mode == Mode.HUD:
+		_alpha = 0.0
+		visible = false
 
 
 func _bench_or_modal() -> bool:

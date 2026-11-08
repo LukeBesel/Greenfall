@@ -3,6 +3,11 @@
 import re, sys
 
 T = {
+"{ui_cancel}  back": ["{ui_cancel}  zurück", "{ui_cancel}  volver", "{ui_cancel}  retour", "{ui_cancel}  戻る", "{ui_cancel}  voltar", "{ui_cancel}  返回"],
+"%d / %d curiosities": ["%d / %d Kuriositäten", "%d / %d curiosidades", "%d / %d curiosités", "珍品 %d / %d", "%d / %d curiosidades", "奇物 %d / %d"],
+"%d / %d collectibles": ["%d / %d Sammelstücke", "%d / %d coleccionables", "%d / %d objets de collection", "コレクション %d / %d", "%d / %d colecionáveis", "收藏品 %d / %d"],
+"%d / %d achievements": ["%d / %d Erfolge", "%d / %d logros", "%d / %d succès", "実績 %d / %d", "%d / %d conquistas", "成就 %d / %d"],
+"%d / %d entries": ["%d / %d Einträge", "%d / %d entradas", "%d / %d entrées", "項目 %d / %d", "%d / %d entradas", "条目 %d / %d"],
 "Build the Robot Nursery in the Build tab first.": ["Baue zuerst den Roboter-Kindergarten im Bauen-Tab.", "Construye primero la Guardería de robots en la pestaña Construir.", "Construis d'abord la Nurserie à robots dans l'onglet Construire.", "先に建設タブでロボット保育所を建てよう。", "Construa primeiro o Berçário de robôs na aba Construir.", "先在建造页签建好机器人育儿所。"],
 "New at the workbench, Build tab: Signal Jammer. It scrambles the Ledger's drones near the base.": ["Neu an der Werkbank, Bauen-Tab: Störsender. Er bringt die Drohnen des Ledgers nahe der Basis durcheinander.", "Nuevo en el banco, pestaña Construir: Inhibidor de señal. Confunde a los drones del Ledger cerca de la base.", "Nouveau à l'établi, onglet Construire : Brouilleur. Il perturbe les drones du Ledger près de la base.", "作業台の建設タブに新項目：信号妨害装置。拠点近くのレジャーのドローンを混乱させます。", "Novo na bancada, aba Construir: Bloqueador de sinal. Confunde os drones do Ledger perto da base.", "工作台建造页签新增：信号干扰器。它会扰乱基地附近的账本无人机。"],
 "The hub can grow now. Rebuild it from the Upgrades tab at the workbench.": ["Der Hub kann jetzt wachsen. Bau ihn im Upgrades-Tab der Werkbank aus.", "La base ya puede crecer. Reconstrúyela desde la pestaña Mejoras del banco.", "La base peut grandir. Reconstruis-la depuis l'onglet Améliorations de l'établi.", "ハブを大きくできます。作業台のアップグレードタブから改築しよう。", "A base pode crescer agora. Reconstrua pela aba Melhorias da bancada.", "基地现在可以扩建了。在工作台的升级页签里改建。"],
