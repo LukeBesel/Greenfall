@@ -482,7 +482,7 @@ func _plan_islands() -> void:
 		var c := Vector2(cos(ang), sin(ang)) * dist
 		if _clashes(c, rad):
 			continue
-		var peak: float = {"isle": _rng.randf_range(3.0, 9.0), "bar": _rng.randf_range(0.25, 0.5), "reef": -0.9}[k]
+		var peak: float = {"isle": _rng.randf_range(6.0, 15.0), "bar": _rng.randf_range(0.25, 0.5), "reef": -0.9}[k]
 		islands.append({"c": c, "r": rad, "h": peak, "kind": k, "yaw": _rng.randf() * TAU, "stretch": 1.0 if k == "isle" else 2.4})
 	for i: int in int(cfg.get("far_count", 5)):
 		var ang2: float = TAU * (float(i) + _rng.randf_range(0.1, 0.8)) / float(cfg.get("far_count", 5))
@@ -867,6 +867,8 @@ func _mat(key: String) -> Material:
 			m = Mats.worn_paint(Color(0.2, 0.24, 0.26), 0.45, 0.85, 5.0, 0.9)
 		"concrete":
 			var c := AssetLib.pbr_material("dirty_concrete", 0.25, Color(0.78, 0.8, 0.78), true)
+			c.metallic = 0.0  # the arm map's metal channel made the shafts mirror the sky
+			c.metallic_texture = null
 			m = c
 		"window":
 			m = Mats.glass(Color(0.04, 0.07, 0.08, 1.0), 0.15)
