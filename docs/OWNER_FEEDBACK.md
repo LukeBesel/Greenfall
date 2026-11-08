@@ -12,6 +12,9 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [x] Readable text has no heavy glitch effect. Heavy glitching is used only on redacted story text.
 - [x] SPACEBAR pauses the story.
 - [x] There is a way to rewatch the story ("Watch the story").
+- [ ] The loading screen is a tiny 3D scene of the real world, with the real red Lumi model scooping junk along the bar. (pod2)
+- [ ] Title screen: the camera starts high over the junk, drifts past the smoking pod at the crash site, and glides down to Lumi cleaning piece by piece. (pod2)
+- [ ] The ark is redesigned in our Seedglider style. (ship)
 - [ ] Lumi's eyes have no glitches, no double eyes, and don't close slowly.
 - [ ] The escape pod door looks good and doesn't glitch.
 - [ ] The pod matches the ship design, and its animations match the pod.
