@@ -251,7 +251,7 @@ func _populate() -> void:
 				ld.provider = BenchLists.research
 				ld.categories = BenchLists.research_cats()
 				ld.counter = BenchLists.research_counter
-		ld.custom_minimum_size = Vector2(0, maxf(_root.size.y - 250.0, 360.0))
+		ld.custom_minimum_size = Vector2(0, maxf(_root.size.y - 300.0, 300.0))  # fits without scrolling the page
 		_grid.add_child(ld)
 		_panel = ld
 		return

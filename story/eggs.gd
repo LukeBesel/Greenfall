@@ -22,7 +22,7 @@ var _scoop_cd: Dictionary = {}
 ## [eggs2] Where Lumi starts (scenes/slice.gd SPAWN): far-out eggs measure from here.
 const SPAWN_Z: float = 3.0
 ## [eggs2] Where WREN's constellation hangs in the sky (the telescope aims here).
-const STAR_POS := Vector3(110, 170, -190)
+const STAR_POS := Vector3(80, 260, -140)  # high (~58 deg) so streets and towers rarely hide it
 var _peek: Node  # [eggs2] StarPeek while looking through the telescope
 var _tv: Node  # [eggs2] TvBroadcast while it plays
 var _dev_use: Dictionary = {}  # [eggs2] dev --egg-use target
@@ -43,6 +43,8 @@ func setup() -> void:
 	avoid.append((LedgerArc.relay_spot(world.field)["pos"] as Vector3))
 	for s: Dictionary in Outposts.plan(world.field):  # [outposts] keep eggs off the outpost slabs
 		avoid.append(s["pos"] as Vector3)
+	if DevHooks.has("museum-sample"):  # [eggs2] dev: a partly filled collection
+		Museum.dev_sample()
 	if DevHooks.has("egg-parts"):  # [eggs2] dev: --egg-parts=ID marks every part of a collectible egg as collected
 		var pid: String = DevHooks.get_s("egg-parts", "gnomes")
 		if defs.has(pid):
@@ -385,8 +387,9 @@ func _build_stars() -> void:
 	_star_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	_star_mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
 	_star_mat.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	_star_mat.billboard_keep_scale = true  # [eggs2] without it every star drew at full size and W R E N blurred into one blob
 	_star_mat.disable_fog = true
-	_star_mat.albedo_texture = LedgerDrone._shadow_tex()
+	_star_mat.albedo_texture = _star_tex()  # [eggs2] was the drone's BLACK shadow blob: additive black = no stars at all
 	_star_mat.albedo_color = Color(0.85, 0.92, 1.0, 0.0)
 	var q := QuadMesh.new()
 	q.size = Vector2(3.2, 3.2)
@@ -397,14 +400,14 @@ func _build_stars() -> void:
 	for ch: String in "WREN":
 		for s: Array in LETTERS[ch]:
 			pts.append(Vector2(x0 + float(s[0]) * 2.4, float(s[1]) * 2.4 - 4.0))
-		x0 += 6.5
+		x0 += 7.0
 	# Big bird stars a bit brighter.
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
 	mm.mesh = q
 	mm.instance_count = pts.size()
 	for i: int in pts.size():
-		var sc: float = 1.6 if i < STAR_PATTERN.size() else 0.75
+		var sc: float = 1.1 if i < STAR_PATTERN.size() else 0.34  # [eggs2] small enough that the letters read through the eyepiece
 		mm.set_instance_transform(i, Transform3D(Basis().scaled(Vector3.ONE * sc), Vector3(pts[i].x, pts[i].y, 0)))
 	var mmi := MultiMeshInstance3D.new()
 	mmi.multimesh = mm
@@ -416,6 +419,23 @@ func _build_stars() -> void:
 	_stars.position = STAR_POS
 	_stars.look_at_from_position(_stars.position, Vector3.ZERO, Vector3.UP)
 	_stars.rotate_object_local(Vector3.UP, PI)
+
+
+## [eggs2] A soft white star: bright core, faint halo.
+static func _star_tex() -> GradientTexture2D:
+	var g := Gradient.new()
+	g.set_color(0, Color(1, 1, 1, 1))
+	g.set_color(1, Color(1, 1, 1, 0))
+	g.add_point(0.12, Color(1, 1, 1, 0.85))
+	g.add_point(0.3, Color(0.8, 0.9, 1.0, 0.12))
+	var t := GradientTexture2D.new()
+	t.gradient = g
+	t.fill = GradientTexture2D.FILL_RADIAL
+	t.fill_from = Vector2(0.5, 0.5)
+	t.fill_to = Vector2(1.0, 0.5)
+	t.width = 64
+	t.height = 64
+	return t
 
 
 func _night_amount() -> float:
@@ -435,6 +455,9 @@ func _process(delta: float) -> void:
 	if _star_mat:
 		var boost: float = 1.0 if is_found("stars") else 0.55
 		_star_mat.albedo_color.a = _night_amount() * boost * (0.85 + 0.15 * sin(_t * 1.7))
+		# [eggs2] Through the eyepiece the Wren burns bright (HDR white over the darkened lens sky).
+		var k: float = 2.5 if is_instance_valid(_peek) else 1.0
+		_star_mat.albedo_color = Color(0.85 * k, 0.92 * k, 1.0 * k, 1.0 if is_instance_valid(_peek) else _star_mat.albedo_color.a)
 	_animate(delta)
 	_glint(delta)
 	if not _dev_use.is_empty() and DevHooks._elapsed >= DevHooks.get_f("egg-use", 0.5):  # [eggs2] wall clock (slow renders)
@@ -936,14 +959,9 @@ func _peek_stars(e: Dictionary) -> void:
 			found(id))
 	Audio.play("servo", 0.8, -8.0)
 	if head:
-		var tw := head.create_tween()
-		tw.tween_property(head, "rotation:z", elev, 0.8).set_trans(Tween.TRANS_SINE)
-		tw.tween_callback(func() -> void:
-			add_child(peek)
-			peek.start())
-	else:
-		add_child(peek)
-		peek.start()
+		head.rotation.z = elev  # on the Wren (the tube is hidden while we look through it)
+	add_child(peek)
+	peek.start()
 
 
 func _hop(n: Node3D) -> void:

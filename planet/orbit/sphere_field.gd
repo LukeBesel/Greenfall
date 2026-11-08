@@ -34,10 +34,15 @@ func _init(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p
 	materialized.resize(n)
 	junk_hex_count = 0
 	cleaned_count = 0
+	var hub_flags: bool = false  # [orbB] globes that mark hub ground with F_HUB (the orbit slice); else phase A's rule
+	for i: int in n:
+		if cells.flags[i] & SphereCells.F_HUB:
+			hub_flags = true
+			break
 	for i: int in n:
 		var water: bool = cells.state[i] == 5
 		hex_water[i] = 1 if water else 0
-		hex_hub[i] = 1 if cells.has_flag(i, SphereCells.F_SITE) and not cells.is_dirty(i) else 0
+		hex_hub[i] = 1 if cells.has_flag(i, SphereCells.F_HUB) or (cells.has_flag(i, SphereCells.F_SITE) and not cells.is_dirty(i) and not hub_flags) else 0  # [orbB] F_HUB persists
 		hex_total[i] = 1.0
 		hex_left[i] = cells.junk[i] if cells.is_dirty(i) else 0.0
 		hex_clean[i] = 0 if cells.is_dirty(i) else 1

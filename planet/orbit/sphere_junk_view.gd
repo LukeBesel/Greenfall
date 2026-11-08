@@ -1,24 +1,32 @@
 class_name SphereJunkView
-extends Node3D
+extends FieldView
 ## [orbit] Phase A: draws SphereField's scoopable pieces in the near ring (one MultiMesh per
 ## model) and answers the FieldView calls Patch makes (piece_transform, piece_mesh, move_piece,
 ## hide_piece, set_focus_hex, refresh_hex). Phase B moves JunkLOD (near/far buffers) onto this.
+## [orbB] A FieldView subclass, so it is the slice's `view` on the globe (scenes/slice_orbit.gd).
+## The flat ground/mound/landmark machinery of FieldView is never built; the calls other systems
+## make on it are answered here (no-ops where the globe's ground reads SphereCells instead).
 
-var field: SphereField
+var sfield: SphereField
 var stats: Dictionary = {}
-var _mms: Dictionary = {}  # model id -> MultiMeshInstance3D
+var _mm_by_model: Dictionary = {}  # model id -> MultiMeshInstance3D
 var _slot: Dictionary = {}  # pid -> [model id, instance index]
 var _near := PackedInt32Array()
 var _hidden_xf := Transform3D(Basis().scaled(Vector3.ONE * 0.0001), Vector3.ZERO)
 
 
-func setup(p_field: SphereField) -> void:
+func setup(p_field: HexField) -> void:
 	field = p_field
+	sfield = p_field as SphereField
+
+
+func _process(_delta: float) -> void:
+	pass  # [orbB] no flat ground, LOD or life texture to tick
 
 
 func _mm_for(model: String) -> MultiMeshInstance3D:
-	if _mms.has(model):
-		return _mms[model]
+	if _mm_by_model.has(model):
+		return _mm_by_model[model]
 	var mesh: Mesh = AssetLib.model_mesh_lite(model, 1500) if model != "" and AssetLib.has_model(model) else null
 	if mesh == null:
 		var bm := BoxMesh.new()
@@ -32,7 +40,7 @@ func _mm_for(model: String) -> MultiMeshInstance3D:
 	mmi.extra_cull_margin = 4.0
 	mmi.name = "Junk_" + model
 	add_child(mmi)
-	_mms[model] = mmi
+	_mm_by_model[model] = mmi
 	return mmi
 
 
@@ -42,18 +50,18 @@ func rebuild(near: PackedInt32Array) -> void:
 	_near = near
 	var groups: Dictionary = {}  # model -> PackedInt32Array of pids
 	for c: int in near:
-		for pid: int in field.pieces_in(c):
-			if field.piece_alive[pid] == 0:
+		for pid: int in sfield.pieces_in(c):
+			if sfield.piece_alive[pid] == 0:
 				continue
-			var m: String = field.piece_model[pid]
+			var m: String = sfield.piece_model[pid]
 			var arr: PackedInt32Array = groups.get(m, PackedInt32Array())
 			arr.append(pid)
 			groups[m] = arr
 	_slot.clear()
 	var total: int = 0
-	for m: String in _mms.keys():
+	for m: String in _mm_by_model.keys():
 		if not groups.has(m):
-			(_mms[m] as MultiMeshInstance3D).multimesh.instance_count = 0
+			(_mm_by_model[m] as MultiMeshInstance3D).multimesh.instance_count = 0
 	for m: String in groups:
 		var pids: PackedInt32Array = groups[m]
 		var mm: MultiMesh = _mm_for(m).multimesh
@@ -62,7 +70,7 @@ func rebuild(near: PackedInt32Array) -> void:
 		var buf := PackedFloat32Array()
 		buf.resize(pids.size() * 12)
 		for i: int in pids.size():
-			var xf: Transform3D = field.piece_xf[pids[i]]
+			var xf: Transform3D = sfield.piece_xf[pids[i]]
 			var b: Basis = xf.basis
 			var o: int = i * 12
 			buf[o] = b.x.x; buf[o + 1] = b.y.x; buf[o + 2] = b.z.x; buf[o + 3] = xf.origin.x
@@ -76,11 +84,11 @@ func rebuild(near: PackedInt32Array) -> void:
 
 
 func piece_transform(pid: int) -> Transform3D:
-	return field.piece_xf[pid]
+	return sfield.piece_xf[pid]
 
 
 func piece_mesh(pid: int) -> Mesh:
-	var m: String = field.piece_model[pid]
+	var m: String = sfield.piece_model[pid]
 	return AssetLib.model_mesh(m) if m != "" and AssetLib.has_model(m) else BoxMesh.new()
 
 
@@ -88,17 +96,17 @@ func hide_piece(pid: int) -> void:
 	var s: Variant = _slot.get(pid)
 	if s == null:
 		return
-	(_mms[s[0]] as MultiMeshInstance3D).multimesh.set_instance_transform(int(s[1]), _hidden_xf)
+	(_mm_by_model[s[0]] as MultiMeshInstance3D).multimesh.set_instance_transform(int(s[1]), _hidden_xf)
 
 
 func move_piece(pid: int, pos: Vector3) -> void:
-	field.piece_pos[pid] = pos
-	var xf: Transform3D = field.piece_xf[pid]
+	sfield.piece_pos[pid] = pos
+	var xf: Transform3D = sfield.piece_xf[pid]
 	xf.origin = pos
-	field.piece_xf[pid] = xf
+	sfield.piece_xf[pid] = xf
 	var s: Variant = _slot.get(pid)
 	if s != null:
-		(_mms[s[0]] as MultiMeshInstance3D).multimesh.set_instance_transform(int(s[1]), xf)
+		(_mm_by_model[s[0]] as MultiMeshInstance3D).multimesh.set_instance_transform(int(s[1]), xf)
 
 
 func set_focus_hex(_id: int) -> void:
@@ -107,3 +115,34 @@ func set_focus_hex(_id: int) -> void:
 
 func refresh_hex(_id: int, _flipped_now: bool = false) -> void:
 	pass  # the ground reads SphereCells' state texture
+
+
+# --- [orbB] FieldView calls the globe answers without a flat ground ----------------------
+
+func set_junk_overlay(_m: Material) -> void:
+	pass
+
+
+func set_life(_id: int, _life: float) -> void:
+	pass
+
+
+func set_level(id: int, lvl: int) -> void:
+	if sfield and sfield.cells:
+		sfield.cells.set_level(id, clampi(lvl, 0, 15))
+
+
+func set_rows(_id: int, _angle01: float) -> void:
+	pass
+
+
+func set_grid_visible(_v: float) -> void:
+	pass
+
+
+func state_texture() -> ImageTexture:
+	return sfield.cells.texture if sfield and sfield.cells else null
+
+
+func life_texture() -> ImageTexture:
+	return null

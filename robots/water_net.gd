@@ -30,7 +30,7 @@ func _ready() -> void:
 	_drop_mat.roughness = 0.05
 	if world == null:
 		return
-	_build_barrel()
+	_check_barrel()  # [qafix] QA #11: the barrel comes with the Drip blueprint, not on a fresh yard
 	for d: Variant in GameState.world.get("water_tanks", []):
 		if d is Dictionary:
 			var p: Array = (d as Dictionary).get("pos", [0.0, 0.0])
@@ -179,8 +179,24 @@ func _add_tank(pos: Vector3, water: float, fx: bool) -> void:
 		n.create_tween().tween_property(n, "scale", Vector3.ONE, 0.6).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 
+## [qafix] QA #11 (owner: "the yard holds only the pod, a broken workbench and the trash bin"):
+## the water barrel is built once waterers exist (Drip blueprint researched, or a Drip on the
+## base from an older save).
+static func barrel_wanted(fleet_: Node) -> bool:
+	if Research.has("drip_blueprint"):
+		return true
+	return fleet_ != null and fleet_.has_method("count") and int(fleet_.call("count", "drip")) > 0
+
+
+func _check_barrel() -> void:
+	if _barrel == null and barrel_wanted(get_parent()):
+		_build_barrel()
+
+
 func _process(delta: float) -> void:
 	_t += delta
+	if _barrel == null and fmod(_t, 1.0) < delta:  # [qafix] about once a second
+		_check_barrel()
 	var cap: float = float(cfg().get("capacity", 80.0))
 	var regen: float = float(cfg().get("regen", 1.2)) * tank_regen_mult()  # [biomes]
 	for t: Dictionary in tanks:

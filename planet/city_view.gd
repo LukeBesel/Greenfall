@@ -411,6 +411,35 @@ func _mesh_prop(model: String, pos: Vector3, yaw: float, collide: bool, scl: flo
 			PropColliders.add_box(_prop_body, Transform3D(rot, pos + rot * (aabb.get_center() * scl)), Vector3(maxf(aabb.size.x, 0.2), aabb.size.y, maxf(aabb.size.z, 0.2)) * scl * 0.9)
 
 
+## [world3] Street lamp heads, [Transform3D, Color]: dead bulbs that StreetPower lights by hex.
+var lamp_bulbs: Array = []
+static var _bulb_at: Dictionary = {}
+
+
+## Centre and size of a lamp model's bulb (its "*_bulb" / "*_glass" surfaces).
+static func lamp_head(model: String) -> Array:
+	if _bulb_at.has(model):
+		return _bulb_at[model]
+	var out: Array = [Vector3(0, 3.0, 0), 0.12]
+	var m: Mesh = AssetLib.model_mesh(model) if AssetLib.has_model(model) else null
+	if m:
+		for s: int in m.get_surface_count():
+			var mat: Material = m.surface_get_material(s)
+			var nm: String = mat.resource_name if mat else ""
+			if nm.ends_with("_glass") or nm.ends_with("_bulb"):
+				var lo := Vector3(1e9, 1e9, 1e9)
+				var hi := -lo
+				for v: Vector3 in m.surface_get_arrays(s)[Mesh.ARRAY_VERTEX] as PackedVector3Array:
+					lo = lo.min(v)
+					hi = hi.max(v)
+				if nm.ends_with("_bulb"):
+					out[0] = (lo + hi) * 0.5
+				else:
+					out[1] = minf(hi.x - lo.x, hi.y - lo.y) * 0.3
+	_bulb_at[model] = out
+	return out
+
+
 func _build_street_props() -> void:
 	var lamp_spacing: float = 18.0
 	var n: int = int(layout.extent / CityLayout.PITCH)
@@ -436,7 +465,14 @@ func _build_street_props() -> void:
 						var lamp_model: String = "street_lamp_02" if _rng.randf() < 0.5 else "street_lamp_01"
 						var lamp_yaw: float = yaw + _rng.randf_range(-0.05, 0.05)
 						var lean: float = _rng.randf_range(-0.15, 0.15) if _rng.randf() < 0.15 else 0.0  # leaning, half-collapsed
+						if lean == 0.0 and fmod(absf(p.x * 0.37 + p.y * 0.61), 1.0) < 0.2:
+							lean = 0.2 if p.x > p.y else -0.18  # [world3] more of them bent (own hash: the RNG stays as it was)
 						_mesh_prop(lamp_model, Vector3(p.x, CityLayout.CURB_H, p.y), lamp_yaw, near, 1.0, lean)
+						if lean == 0.0:  # [world3] standing ones get a (dead) bulb; bent ones are beyond repair
+							var head: Array = lamp_head(lamp_model)
+							var lxf := Transform3D(Basis.from_euler(Vector3(0.0, lamp_yaw, 0.0)), Vector3(p.x, CityLayout.CURB_H, p.y))
+							var r: float = head[1]
+							lamp_bulbs.append([Transform3D(Basis().scaled(Vector3(r, r * 1.2, r) / 0.06), lxf * (head[0] as Vector3)), Color(1.0, 0.86, 0.62)])
 			if not near:
 				continue
 			# Hydrant, manholes, a payphone, benches, utility boxes.
