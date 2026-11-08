@@ -175,8 +175,8 @@ func _wire() -> void:
 			return r != null
 
 
-## A new globe robot: built beside the start hub's depot, assigned to the hub with the fewest
-## robots, so the crew spreads over the planet by itself.
+## A new globe robot: assigned to the hub with the fewest robots (so the crew spreads over the
+## planet by itself) and delivered beside that hub (the start hub's depot for the start hub).
 static func spawn_on_globe(crew: SphereCrew, sites: Array, type_id: String, tier: int) -> bool:
 	var per_hub: Dictionary = {}
 	for s: Dictionary in sites:
@@ -190,8 +190,15 @@ static func spawn_on_globe(crew: SphereCrew, sites: Array, type_id: String, tier
 		if int(per_hub[h]) < best:
 			best = int(per_hub[h])
 			hub = h
-	var ring: PackedInt32Array = crew.grid.cells_around(crew.depot_of(crew.hub_cell), 1)
-	crew.spawn(type_id, tier, ring[1 + randi() % (ring.size() - 1)], hub)
+	# Hubs are 1.6-5.5 km apart across lakes: the robot is shipped to its hub's site (as a far
+	# record when that is away from Lumi) instead of trekking there, and starts work at once.
+	var at: int = crew.depot_of(crew.hub_cell) if hub == crew.hub_cell else hub
+	var ring: PackedInt32Array = crew.grid.cells_around(at, 1)
+	var land: Array[int] = []
+	for c: int in ring:
+		if c != at and crew.cells.state[c] != 5:
+			land.append(c)
+	crew.spawn(type_id, tier, land[randi() % land.size()] if not land.is_empty() else at, hub)
 	return true
 
 
