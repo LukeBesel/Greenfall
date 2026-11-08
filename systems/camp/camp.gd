@@ -316,6 +316,8 @@ func _on_built(id: String) -> void:
 				camera_bot.set_built(true)
 		_:
 			_apply_builds()  # [camp2] lean-to, generator, lamps, compost press
+			if id == "lamps":
+				_power_on_street_lamp()  # [camp4] world3's flicker-then-on moment
 	var at: Vector3 = YardBuilds.pos(id, Vector3.ZERO)
 	var bits: Dictionary = world.get("_ruin_bits")
 	match id:
@@ -335,6 +337,18 @@ func _on_built(id: String) -> void:
 	MachineReveal.reveal(world, tr(str(YardBuilds.def(id).get("name", id))), at)
 
 
+
+
+## [camp4] The yard street lamp comes on with world3's flicker-then-on moment
+## (planet/power_fx.gd PowerFx.flicker_on). Loaded by path so this file doesn't depend on
+## world3 having landed: without it the lamp just turns on.
+func _power_on_street_lamp() -> void:
+	var lt: Light3D = (world.get("_ruin_bits") as Dictionary).get("street_light") as Light3D
+	if lt == null or not lt.visible or not ResourceLoader.exists("res://planet/power_fx.gd"):
+		return
+	var fx: Variant = load("res://planet/power_fx.gd")
+	if fx is GDScript:
+		(fx as GDScript).call("flicker_on", self, [], [lt], 0.4)
 
 
 # --- The trash bin --------------------------------------------------------------------------------
