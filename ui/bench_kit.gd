@@ -25,6 +25,7 @@ static func holo(border: Color = Color(HOLO, 0.32), bg: Color = CARD_BG, glow: f
 	sb.shadow_color = Color(border.r, border.g, border.b, 0.16 * glow)
 	sb.shadow_size = int(round(7.0 * glow))
 	sb.anti_aliasing = true
+	sb.corner_detail = 1  # [ui7] chamfered (cut) corners, the holo frame's look
 	return sb
 
 

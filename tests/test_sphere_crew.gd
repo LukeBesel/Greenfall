@@ -324,3 +324,142 @@ func test_materialized_cell_takes_a_full_cell_of_work() -> void:
 	for pid: int in field.pieces_in(c):
 		alive += field.piece_alive[pid]
 	assert_lte(alive, 1, "the pieces are gone too")
+
+
+# --- [orbC] polish: buildings, piece-by-piece work, 3D bales ---------------------------------
+
+func _box_site(w: Dictionary, at_cell: int) -> Node3D:
+	var surface: SphereSurface = w["surface"]
+	var d: Vector3 = _g5.centers[at_cell]
+	var root := Node3D.new()
+	root.set("size_m", 90.0)
+	add_child_autofree(root)
+	root.global_transform = Transform3D(SphereMath.basis_from_up_fwd(d, SphereMath.any_perpendicular(d)), surface.ground(d))
+	var sb := StaticBody3D.new()
+	root.add_child(sb)
+	var cs := CollisionShape3D.new()
+	var bx := BoxShape3D.new()
+	bx.size = Vector3(8.0, 4.0, 4.0)
+	cs.shape = bx
+	cs.position = Vector3(0, 2.0, 0)
+	sb.add_child(cs)
+	return root
+
+
+func test_site_colliders_become_obstacles_and_blocked_cells() -> void:
+	var w: Dictionary = _world()
+	var crew: SphereCrew = w["crew"]
+	var c: int = _g5.cells_around(100, 2)[10]
+	var site: Node3D = _box_site(w, c)
+	var circ: Array = SphereObstacles.circles(site, crew.surface)
+	assert_gt(circ.size(), 2, "an 8 x 4 m box is tiled")
+	for ob: Array in circ:
+		assert_lt((ob[0] as Vector3).angle_to(_g5.centers[c]) * _g5.radius_m, 4.5, "on the box")
+		assert_lt(float(ob[1]), 2.5, "a tight fit")
+	crew.set_obstacles("s", circ)
+	assert_true(crew.blocked.has(c), "routes avoid the cell under the building")
+	var p: PackedInt32Array = crew.route(_g5.cells_around(100, 4)[50], _g5.cells_around(c, 2)[12])
+	assert_false(p.slice(1, p.size() - 1).has(c), "no route through it")
+	crew.tick(3.0)  # the swarm gets the circles
+	var stand: Vector3 = crew._approach(crew.surface.ground(_g5.centers[c]), crew.surface.ground(_g5.centers[100]))
+	assert_false(crew._inside_building(crew.surface.up_at(stand)), "scoops a piece under a wall from outside")
+
+
+func test_near_robot_drives_to_each_piece() -> void:
+	var w: Dictionary = _world()
+	var crew: SphereCrew = w["crew"]
+	var cells: SphereCells = w["cells"]
+	var field := SphereField.new(_g5, _t5, cells, 7)
+	crew.field = field
+	var c: int = _g5.cells_around(100, 1)[2]
+	field.materialize(c)
+	var u: Dictionary = crew.spawn("scoopie", 0, c)
+	crew.order(u, c)
+	var took_near: int = 0
+	var took: int = 0
+	var alive: Dictionary = {}
+	for pid: int in field.pieces_in(c):
+		alive[pid] = true
+	for i: int in 600:
+		(u["bot"] as SphereBot).step(0.1)
+		crew.tick(0.1)
+		for pid: int in alive.keys():
+			if field.piece_alive[pid] == 0:
+				alive.erase(pid)
+				took += 1
+				if (u["bot"] as SphereBot).global_position.distance_to(field.piece_pos[pid]) < 2.0:
+					took_near += 1
+	assert_gt(took, 10)
+	assert_gt(float(took_near) / took, 0.8, "pieces go where the robot is (%d of %d)" % [took_near, took])
+
+
+func test_command_overlay_clusters_hundreds() -> void:
+	var pts: Array = []
+	for i: int in 300:
+		pts.append({"pos": Vector2(400 + (i % 20) * 3.0, 300 + (i / 20) * 3.0), "role": "clean" if i % 4 else "haul", "state": 0})
+	pts.append({"pos": Vector2(900, 100), "role": "plant", "state": 2})
+	var cl: Array = CommandOverlay.cluster(pts, CommandOverlay.CLUSTER_PX)
+	assert_lt(cl.size(), 12, "300 crowded robots read as a few clusters (%d)" % cl.size())
+	var total: int = 0
+	var lone: Dictionary = {}
+	for c: Dictionary in cl:
+		total += int(c["n"])
+		if int(c["n"]) == 1:
+			lone = c
+	assert_eq(total, 301, "every robot is in one mark")
+	assert_eq(int(lone.get("worst", -1)), 2, "a lone stuck robot keeps its warning")
+
+
+func test_command_pan_moves_away_from_lumi_and_back() -> void:
+	var w: Dictionary = _world()
+	var cam := SphereCam.new()
+	cam.surface = w["surface"]
+	cam.target = w["lumi"]
+	add_child_autofree(cam)
+	cam.reset_frame(SphereMath.any_perpendicular(_g5.centers[100]))
+	cam.view = "command"
+	cam.command_height = 100.0
+	for i: int in 30:
+		cam.pan_command(Vector2(0, -1), 0.1)
+	var moved: float = cam.command_focus.angle_to(_g5.centers[100]) * _g5.radius_m
+	assert_almost_eq(moved, 100.0 * 1.2 * 3.0, 5.0, "panned forward at 1.2 x height per second")
+	cam.update_camera(0.0)
+	var below: Vector3 = (w["surface"] as SphereSurface).up_at(cam.camera.global_position)
+	assert_lt(below.angle_to(cam.command_focus) * _g5.radius_m, 60.0, "the camera is over the panned spot")
+	cam.view = "follow"
+	cam.update_camera(0.0)
+	assert_eq(cam.command_focus, Vector3.ZERO, "leaving Command recentres on Lumi")
+
+
+func test_skimmers_clean_lakes_and_bale_on_the_shore() -> void:
+	var w: Dictionary = _world()
+	var crew: SphereCrew = w["crew"]
+	var cells: SphereCells = w["cells"]
+	var lake: PackedInt32Array = _g5.cells_around(_g5.cells_around(100, 2)[14], 1)
+	for c: int in lake:
+		cells.set_state(c, 5)
+		cells.set_junk(c, 1.0)
+	var u: Dictionary = crew.spawn("skimmer", 0, 100)
+	_run(crew, 400.0, 0.2)
+	var cleaned: int = 0
+	for c: int in lake:
+		cleaned += 1 if not crew.water_dirty(c) else 0
+	assert_gt(cleaned, 1, "the skimmer cleared lake hexes")
+	assert_gt(float(u["log"]["junk"]), SphereOffline.UNITS_PER_WATER_CELL, "it netted floaters")
+	for b: Dictionary in crew.bales:
+		assert_ne(cells.state[_g5.cell_at(b["dir"])], 5, "bales sit on the shore, not in the lake")
+	assert_eq(crew.stuck_count(), 0)
+
+
+func test_offline_skimmers_work_the_lakes() -> void:
+	var cells := SphereCells.new(_g5.cell_count())
+	var lake: PackedInt32Array = _g5.cells_around(_g5.cells_around(100, 2)[14], 1)
+	for c: int in lake:
+		cells.set_state(c, 5)
+		cells.set_junk(c, 1.0)
+	var land0: float = SphereOffline.units_left(cells, SphereOffline.region(_g5, cells, 100, 4))
+	var fleet: Array = [{"type": "skimmer", "tier": 0}, {"type": "haulbug", "tier": 0}]
+	var r: Dictionary = SphereOffline.simulate(_g5, cells, null, [{"cell": 100, "robots": fleet, "rings": 4}], 3600.0)
+	assert_gt(float(r["cubes"]), 0.0)
+	assert_almost_eq(SphereOffline.units_left(cells, SphereOffline.region(_g5, cells, 100, 4)), land0, 0.01, "land untouched")
+	assert_lt(SphereOffline.units_left(cells, SphereOffline.region_water(_g5, cells, 100, 4)), lake.size() * SphereOffline.UNITS_PER_WATER_CELL, "lakes cleaner")

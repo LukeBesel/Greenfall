@@ -34,6 +34,10 @@ var _robot_editor: BuilderPanel
 var _paint: HBoxContainer
 var _bots_sig: String = ""
 var _t: float = 0.0
+## [ui7] Floating glass modules (ui/holo_frame.gd): the section bar and the editor page are their
+## own modules; list + detail editors (Bots, Rocket) float as two.
+var modules: bool = false
+var _page: PanelContainer
 
 
 ## Registers the editor for a kind of bot ("lumi", or "robot" to replace the robot editor).
@@ -50,7 +54,7 @@ static func is_open_for(_w: Node) -> bool:
 	return DevHooks.has("locker") or YardBuilds.built("locker")  # [ui6] the cabinet stands
 
 
-## [ui6] The Locker over the game (from the cabinet's E prompt): dim, a holo frame, Close / Esc / B.
+## [ui6] The Locker over the game (from the cabinet's E prompt): [ui7] floating holo modules, Close / Esc / B.
 ## Pauses the world while open. Returns the layer (it frees itself on close).
 static func open_overlay(w: Node) -> CanvasLayer:
 	var cl := CanvasLayer.new()
@@ -60,45 +64,46 @@ static func open_overlay(w: Node) -> CanvasLayer:
 	root.set_anchors_preset(Control.PRESET_FULL_RECT)
 	root.theme = UITheme.get_theme()
 	cl.add_child(root)
-	var dim := ColorRect.new()
-	dim.color = Color(0.01, 0.02, 0.03, 0.55)
-	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
-	root.add_child(dim)
-	var mc := MarginContainer.new()
-	mc.set_anchors_preset(Control.PRESET_FULL_RECT)
-	for side: String in ["margin_left", "margin_right", "margin_top", "margin_bottom"]:
-		mc.add_theme_constant_override(side, 36)
-	root.add_child(mc)
-	var panel := PanelContainer.new()
-	panel.add_theme_stylebox_override("panel", BenchKit.holo(Color(BenchKit.HOLO, 0.5), Color(0.02, 0.035, 0.045, 0.92), 1.0, 12, 18))
-	mc.add_child(panel)
+	root.add_child(HoloFrame.vignette())  # [ui7] floating glass modules, no fullscreen dim
+	var frame := MarginContainer.new()
+	frame.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.add_child(frame)
+	var fit := func() -> void: HoloFrame.fit_margins(frame, root.size)
+	root.resized.connect(fit)
 	var vb := VBoxContainer.new()
-	vb.add_theme_constant_override("separation", 10)
-	panel.add_child(vb)
+	vb.add_theme_constant_override("separation", HoloFrame.GAP)
+	frame.add_child(vb)
+	var hm: PanelContainer = HoloFrame.module(8)
+	vb.add_child(hm)
 	var head := HBoxContainer.new()
-	vb.add_child(head)
-	var t: Label = UITheme.label(TranslationServer.translate("LOCKER"), 26, BenchKit.HOLO)
-	t.add_theme_constant_override("outline_size", 0)
+	hm.add_child(head)
+	var t: HBoxContainer = HoloFrame.header_title(TranslationServer.translate("LOCKER"))
 	t.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	head.add_child(t)
 	var close := Button.new()
 	close.text = TranslationServer.translate("Close")
-	close.custom_minimum_size = Vector2(140, 44)
+	close.custom_minimum_size = Vector2(136, 38)
 	BenchKit.style_action(close, BenchKit.HOLO)
 	head.add_child(close)
 	var lp := LockerPanel.new()
 	lp.world = w
 	lp.fleet = w.get("fleet") as Fleet if w else null
+	lp.modules = true
 	lp.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	vb.add_child(lp)
 	var tree: SceneTree = Engine.get_main_loop() as SceneTree
 	var was_paused: bool = tree.paused
+	var hidden: Array[CanvasLayer] = HoloFrame.hide_hud(tree, cl.layer)  # [ui7] no HUD text through the glass
 	var shut := func() -> void:
-		if not is_instance_valid(cl):
+		if not is_instance_valid(cl) or cl.has_meta("closing"):
 			return
 		tree.paused = was_paused
+		HoloFrame.show_hud(hidden)
 		EventBus.ui_modal_changed.emit(false)
-		cl.queue_free()
+		cl.set_meta("closing", true)
+		HoloFrame.fold(frame, func() -> void:
+			if is_instance_valid(cl):
+				cl.queue_free())
 	close.pressed.connect(shut)
 	cl.set_meta("shut", shut)
 	var catcher := _OverlayInput.new()
@@ -109,6 +114,8 @@ static func open_overlay(w: Node) -> CanvasLayer:
 	EventBus.ui_modal_changed.emit(true)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	(func() -> void:
+		fit.call()
+		HoloFrame.unfold(frame)
 		var f: Button = lp.first_button()
 		(f if f else close).grab_focus()).call_deferred()
 	return cl
@@ -138,7 +145,13 @@ func _ready() -> void:
 	add_theme_constant_override("separation", 10)
 	var bar := HBoxContainer.new()
 	bar.add_theme_constant_override("separation", 10)
-	add_child(bar)
+	if modules:
+		add_theme_constant_override("separation", HoloFrame.GAP)
+		var bm: PanelContainer = HoloFrame.module(6)
+		add_child(bm)
+		bm.add_child(bar)
+	else:
+		add_child(bar)
 	var sc := ScrollContainer.new()
 	sc.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	sc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -161,7 +174,13 @@ func _ready() -> void:
 	hsc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hsc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	hsc.follow_focus = true
-	add_child(hsc)
+	if modules:
+		_page = HoloFrame.module(12)
+		_page.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		add_child(_page)
+		_page.add_child(hsc)
+	else:
+		add_child(hsc)
 	_host = VBoxContainer.new()
 	_host.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_host.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -288,6 +307,10 @@ func _show_editor() -> void:
 	if ed == null:
 		return
 	_editor = ed
+	if _page:  # [ui7] list + detail editors bring their own modules; the rest sit on the glass page
+		var own: bool = ed is LockerEditors.BotEditor or ed is LockerEditors.ShipEditor
+		_page.add_theme_stylebox_override("panel", StyleBoxEmpty.new() if own else HoloFrame.glass(HoloFrame.GLASS_A, 0.55, 12))
+		_page.get_child(0).visible = not own
 	ed.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	ed.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_host.add_child(ed)
@@ -320,9 +343,12 @@ func _make_editor(kind: String) -> Control:
 	elif kind == "bots":  # [ui7] per-type robot designs
 		var be := LockerEditors.BotEditor.new()
 		be.fleet = fleet
+		be.modules = modules
 		ed = be
 	elif kind == "rocket":  # [ui7] ship paint, trim, glow
-		ed = LockerEditors.ShipEditor.new()
+		var se := LockerEditors.ShipEditor.new()
+		se.modules = modules
+		ed = se
 	elif kind.begins_with("target:"):  # [ui6] CosmeticTargets editors (Lumi's builder, Glim's looks, ...)
 		ed = CosmeticTargets.make_editor(kind.substr(7), world)
 	elif kind == "lumi":

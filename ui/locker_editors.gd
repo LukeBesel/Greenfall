@@ -34,9 +34,10 @@ class BotEditor extends VBoxContainer:
 	var _type: String = ""
 	var _chips: HBoxContainer
 	var _ld: ListDetail
+	var modules: bool = false  # [ui7] floating glass modules (ui/holo_frame.gd)
 
 	func _ready() -> void:
-		add_theme_constant_override("separation", 8)
+		add_theme_constant_override("separation", HoloFrame.GAP if modules else 8)
 		size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		size_flags_vertical = Control.SIZE_EXPAND_FILL
 		if fleet == null and world:
@@ -45,7 +46,12 @@ class BotEditor extends VBoxContainer:
 		_type = types[0] if not types.is_empty() else ""
 		_chips = HBoxContainer.new()
 		_chips.add_theme_constant_override("separation", 6)
-		add_child(_chips)
+		if modules:
+			var cm: PanelContainer = HoloFrame.module(6)
+			add_child(cm)
+			cm.add_child(_chips)
+		else:
+			add_child(_chips)
 		for rid: String in types:
 			var b := Button.new()
 			b.text = TranslationServer.translate(str(Economy.robots[rid].get("name", rid)))
@@ -55,6 +61,7 @@ class BotEditor extends VBoxContainer:
 			_chips.add_child(b)
 		_ld = ListDetail.new()
 		_ld.world = world
+		_ld.modules = modules
 		_ld.categories = LockerEditors.BOT_CATS
 		_ld.provider = func() -> Array: return LockerEditors.bot_rows(fleet, _type)
 		_ld.counter = func() -> String: return TranslationServer.translate("Every %s wears this") % TranslationServer.translate(str(Economy.robots.get(_type, {}).get("name", _type))) if _type != "" else ""
@@ -202,12 +209,14 @@ static func ship_rows(world: Node) -> Array:
 class ShipEditor extends VBoxContainer:
 	var world: Node
 	var _ld: ListDetail
+	var modules: bool = false  # [ui7]
 
 	func _ready() -> void:
 		size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		size_flags_vertical = Control.SIZE_EXPAND_FILL
 		_ld = ListDetail.new()
 		_ld.world = world
+		_ld.modules = modules
 		_ld.categories = LockerEditors.SHIP_CATS
 		_ld.provider = func() -> Array: return LockerEditors.ship_rows(world)
 		_ld.counter = func() -> String: return TranslationServer.translate("Ship looks: the tiers keep their shape")
