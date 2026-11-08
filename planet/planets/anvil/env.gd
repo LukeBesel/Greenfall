@@ -456,7 +456,8 @@ func height(x: float, z: float) -> float:
 	var m: float = _n1.get_noise_2d(x, z) + _n3.get_noise_2d(x, z) * 0.18
 	var mask: float = _smooth(0.1, 0.19, m) * _smooth(105.0, 210.0, t) * keep
 	var mh: float = lerpf(34.0, 82.0, _n3.get_noise_2d(x * 0.5, z * 0.5) * 0.5 + 0.5) * mask
-	h += _terrace(mh, 9.0)
+	var jit: float = _n2.get_noise_2d(x * 2.3, z * 2.3)
+	h += lerpf(_terrace(mh + jit * 3.5, 9.0 + jit * 2.5), mh, 0.25) + jit * 1.2 * mask
 	# Buttes: smaller, taller towers further out.
 	var bt: float = _smooth(0.42, 0.5, _n2.get_noise_2d(x * 0.33, z * 0.33)) * _smooth(260.0, 380.0, t) * keep
 	h += _terrace(bt * 95.0, 12.0)
@@ -632,9 +633,16 @@ func bowl_h(rr: float, ang: float) -> float:
 		var berm: float = (1.0 - absf((rr - PIT_R - 5.0) / 5.0)) if rr < PIT_R + 10.0 else 0.0
 		return RIM_Y + 0.15 + maxf(berm, 0.0) * 1.4
 	var u: float = (PIT_R - rr) / (PIT_R * (1.0 - SHAFT_K))
-	u += _n2.get_noise_2d(cos(ang) * 60.0, sin(ang) * 60.0) * 0.035
+	# Eroded benches: wandering edges, slumps and scree, uneven bench floors.
+	var cx: float = cos(ang) * rr
+	var cz: float = sin(ang) * rr
+	u += _n2.get_noise_2d(cos(ang) * 60.0, sin(ang) * 60.0) * 0.06 + _n3.get_noise_2d(cx * 4.0, cz * 4.0) * 0.025
 	var d: float = clampf(u, 0.0, 1.0) * PIT_DEPTH
-	return RIM_Y - _terrace(d, PIT_DEPTH / 6.0) - (2.0 if rr < PIT_R * SHAFT_K + 1.5 else 0.0)
+	var t: float = _terrace(d, PIT_DEPTH / 6.0)
+	var slump: float = maxf(_n1.get_noise_2d(cx * 3.0 + 90.0, cz * 3.0), 0.0) * 6.0
+	t = lerpf(t, d, clampf(slump / 6.0, 0.0, 0.7))
+	t += _n2.get_noise_2d(cx * 9.0, cz * 9.0) * 0.6
+	return RIM_Y - t - (2.0 if rr < PIT_R * SHAFT_K + 1.5 else 0.0)
 
 
 # --- Plants (restored) ---------------------------------------------------------------------

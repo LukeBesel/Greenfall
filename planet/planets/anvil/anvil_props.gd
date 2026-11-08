@@ -29,6 +29,34 @@ static func add_cyl(b: Batch, pos: Vector3, r_top: float, r_bot: float, h: float
 	b.add(ProcMesh.cyl(r_top, r_bot, h, segs), Transform3D(basis, pos), m)
 
 
+## A weathered shell: a tapered tube with dents, bulges and a slight lean (no perfect circle).
+static func noisy_cyl(r_top: float, r_bot: float, h: float, segs: int, rings: int, amp: float, seed_v: int) -> ArrayMesh:
+	var nz := FastNoiseLite.new()
+	nz.seed = seed_v
+	nz.frequency = 0.9
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var lean := Vector2(nz.get_noise_1d(3.0), nz.get_noise_1d(7.0)) * h * 0.012
+	for i: int in rings + 1:
+		var v: float = float(i) / rings
+		var y: float = -h * 0.5 + v * h
+		var rr: float = lerpf(r_bot, r_top, v)
+		for j: int in segs + 1:
+			var a: float = TAU * float(j % segs) / segs
+			var c := Vector2(cos(a), sin(a))
+			var dent: float = nz.get_noise_3d(c.x * 2.0, c.y * 2.0, y * 0.08) * amp + nz.get_noise_3d(c.x * 6.0, c.y * 6.0, y * 0.35) * amp * 0.35
+			var r2: float = rr * (1.0 + dent)
+			st.add_vertex(Vector3(c.x * r2 + lean.x * v * v, y, c.y * r2 + lean.y * v * v))
+	for i: int in rings:
+		for j: int in segs:
+			var a0: int = i * (segs + 1) + j
+			var b0: int = a0 + segs + 1
+			for idx: int in [a0, b0, a0 + 1, a0 + 1, b0, b0 + 1]:
+				st.add_index(idx)
+	st.generate_normals()
+	return st.commit()
+
+
 static func make_mat(env: AnvilEnv, key: String) -> Material:
 	match key:
 		"stack":
@@ -150,7 +178,23 @@ static func _stack(env: AnvilEnv, b: Batch, fut: Batch, base: Vector3, h: float,
 	var rust: Material = env.mat("rust")
 	var top_r: float = r * 0.8
 	add_box(b, base + Vector3(0, 3.0, 0), Vector3(r * 2.8, 8.0, r * 2.8), env.mat("concrete"))
-	add_cyl(b, base + Vector3(0, 6.0 + h * 0.5, 0), top_r, r, h, stack_m, 28)
+	b.add(noisy_cyl(top_r, r, h, 40, int(h / 4.0), 0.022, 4000 + idx), Transform3D(Basis(), base + Vector3(0, 6.0 + h * 0.5, 0)), stack_m)
+	# Stiffener ribs, riveted repair plates bent to the shell, and scorched patches.
+	var rib_rng := RandomNumberGenerator.new()
+	rib_rng.seed = 900 + idx
+	for k: int in 12:
+		var a: float = TAU * k / 12.0 + rib_rng.randf_range(-0.05, 0.05)
+		var d := Vector3(cos(a), 0, sin(a))
+		var y0: float = 8.0 + rib_rng.randf_range(0.0, 6.0)
+		var y1: float = h * rib_rng.randf_range(0.45, 0.9)
+		add_beam(b, base + d * (r + 0.25) + Vector3(0, 6.0 + y0, 0), base + d * (lerpf(r, top_r, y1 / h) + 0.25) + Vector3(0, 6.0 + y1, 0), 0.38, rust)
+	for k: int in 18:
+		var a: float = rib_rng.randf() * TAU
+		var y: float = rib_rng.randf_range(10.0, h - 12.0)
+		var rr0: float = lerpf(r, top_r, y / h) + 0.12
+		var w: float = rib_rng.randf_range(2.0, 4.5)
+		var basis := Basis(Vector3.UP, -a + PI * 0.5) * Basis(Vector3.FORWARD, rib_rng.randf_range(-0.08, 0.08))
+		b.add(box(), Transform3D(basis * Basis.from_scale(Vector3(w, rib_rng.randf_range(1.5, 4.0), 0.18)), base + Vector3(cos(a) * rr0, 6.0 + y, sin(a) * rr0)), rust if k % 3 else env.mat("soot"))
 	var bands: int = int(h / 14.0)
 	for k: int in bands:
 		var y: float = 12.0 + k * 14.0
