@@ -169,8 +169,23 @@ static func _load_model(id: String) -> void:
 	else:
 		mesh = _merge(found)
 	root.free()
+	if id in DEAD_LAMPS:
+		_kill_emission(mesh)
 	_meshes[id] = mesh
 	_aabbs[id] = mesh.get_aabb()
+
+
+## [world3] Models whose lamps ship lit; in this world nothing works until it is fixed.
+const DEAD_LAMPS: Array[String] = ["ocean_buoy"]
+
+
+static func _kill_emission(mesh: Mesh) -> void:
+	for s: int in mesh.get_surface_count():
+		var m: StandardMaterial3D = mesh.surface_get_material(s) as StandardMaterial3D
+		if m and m.emission_enabled:
+			var d: StandardMaterial3D = m.duplicate()
+			d.emission_enabled = false
+			mesh.surface_set_material(s, d)
 
 
 static func _collect(n: Node, xf: Transform3D, out: Array) -> void:

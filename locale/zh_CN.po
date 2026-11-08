@@ -280,11 +280,11 @@ msgstr "前往  磅秤  ◀"
 msgid "BALE  FEED"
 msgstr "捆包入口"
 
-#: automation/depot.gd:290
+#: automation/depot.gd:296
 msgid "TRASH"
 msgstr "垃圾"
 
-#: automation/depot.gd:327
+#: automation/depot.gd:333
 msgid "SCRAP  INTAKE  ·  WEIGH HERE"
 msgstr "废料收购  ·  在此称重"
 
@@ -502,24 +502,24 @@ msgstr "天文台"
 msgid "E   Telescope: look across the system"
 msgstr "E   望远镜：眺望整个星系"
 
-#: core/offline.gd:130 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
+#: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
 #: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d 分钟"
 
-#: core/offline.gd:131
+#: core/offline.gd:142
 msgid "While you were away (%s):"
 msgstr "你离开期间（%s）："
 
-#: core/offline.gd:133
+#: core/offline.gd:144
 msgid "The fleet baled and delivered %s cubes."
 msgstr "机队打包并交付了 %s 个方块。"
 
-#: core/offline.gd:135
+#: core/offline.gd:146
 msgid "Bales worth %s were stacked at the hub with nobody to haul them. Lumi cashed them in. A Haul Bug would keep them moving."
 msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现了。有台 Haul Bug 就能让它们动起来。"
 
-#: core/offline.gd:137
+#: core/offline.gd:148
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
@@ -780,7 +780,7 @@ msgstr "WREN：那里是勘测区的边缘，Lumi。外面只有雾霾。"
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi 悬浮着回到了坚实的地面。"
 
-#: planet/orbit/verdance_globe.gd:546 scenes/slice.gd:1016
+#: planet/orbit/verdance_globe.gd:556 scenes/slice.gd:1056 scenes/slice_orbit.gd:208
 msgid "HEX CLEAN!  +%s"
 msgstr "六角格清理完毕！  +%s"
 
@@ -1234,59 +1234,59 @@ msgstr "离另一个水箱太近"
 msgid "Water Tank placed. Waterers nearby will refill here."
 msgstr "水箱已放置。附近的浇水机器人会来这里补水。"
 
-#: robots/water_net.gd:292 ui/hotbar.gd:28
+#: robots/water_net.gd:308 ui/hotbar.gd:28
 msgid "WATER"
 msgstr "水"
 
-#: scenes/slice.gd:355
+#: scenes/slice.gd:367
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "机器人上行链路上线。按 B 打开指挥：划定区域，把队伍派到你想去的地方。"
 
-#: scenes/slice.gd:1030
+#: scenes/slice.gd:1070
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice.gd:1032
+#: scenes/slice.gd:1072
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "整个废料场都干净了。Lumi 发出一声好长好长、非常开心的哔——"
 
-#: scenes/slice.gd:1039
+#: scenes/slice.gd:1079
 msgid "%s is out of range: %s"
 msgstr "%s 超出范围：%s"
 
-#: scenes/slice.gd:1049
+#: scenes/slice.gd:1089
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "未解锁。将基地升到 5 级才能建造发射台。"
 
-#: scenes/slice.gd:1052 ui/rockets_panel.gd:39
+#: scenes/slice.gd:1092 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice.gd:1106
+#: scenes/slice.gd:1146
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陆：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:1107
+#: scenes/slice.gd:1147
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "火箭停在空地上，电池充满就能出发。"
 
-#: scenes/slice.gd:1107
+#: scenes/slice.gd:1147
 msgid "Landed on the base pad."
 msgstr "已降落在基地平台。"
 
-#: scenes/slice.gd:1206
+#: scenes/slice.gd:1257
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice.gd:1377
+#: scenes/slice.gd:1442
 msgid "Welcome back. The junk waited for you."
 msgstr "欢迎回来。废料一直在等你。"
 
-#: scenes/slice.gd:1394
+#: scenes/slice.gd:1459
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨 %d · %d级"
 
-#: scenes/slice.gd:1394
+#: scenes/slice.gd:1459
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
@@ -1330,7 +1330,7 @@ msgstr "已建造机器人"
 msgid "Time played"
 msgstr "游戏时长"
 
-#: steam/demo_end_screen.gd:78 ui/main_menu.gd:350
+#: steam/demo_end_screen.gd:78 ui/main_menu.gd:355
 msgid "Wishlist on Steam"
 msgstr "在 Steam 上加入愿望单"
 
@@ -1346,7 +1346,7 @@ msgstr "标题画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:457
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:462
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
 
@@ -1564,87 +1564,87 @@ msgstr ""
 "5 分钟后\n"
 "回来"
 
-#: story/eggs.gd:336
+#: story/eggs.gd:338
 msgid "Something metal surfaced in the cleared ground."
 msgstr "清理过的地面里冒出了什么金属的东西。"
 
-#: story/eggs.gd:528 story/eggs.gd:590
+#: story/eggs.gd:551 story/eggs.gd:613
 msgid "Gnome %d / %d"
 msgstr "地精 %d / %d"
 
-#: story/eggs.gd:536
+#: story/eggs.gd:559
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "最后一张海报指向附近某处。有个橙色的东西蜷在那儿。"
 
-#: story/eggs.gd:591
+#: story/eggs.gd:614
 msgid "%s   ·   added to Lumi's collection"
 msgstr "%s   ·   已加入 Lumi 的收藏"
 
-#: story/eggs.gd:607
+#: story/eggs.gd:630
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "收音机轻轻地沙沙作响。上面还没有东西醒来。天黑后再来吧。"
 
-#: story/eggs.gd:608
+#: story/eggs.gd:631
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "透过望远镜：只有明亮又多尘的天空。天黑后再来吧。"
 
-#: story/eggs.gd:637
+#: story/eggs.gd:660
 msgid "SOLD OUT"
 msgstr "售罄"
 
-#: story/eggs.gd:654
+#: story/eggs.gd:677
 msgid "QUACK!"
 msgstr "嘎！"
 
-#: story/eggs.gd:672
+#: story/eggs.gd:695
 msgid "NEW CHALLENGER!"
 msgstr "新挑战者！"
 
-#: story/eggs.gd:675
+#: story/eggs.gd:698
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "游戏结束  ·  得分 12"
 
-#: story/eggs.gd:703
+#: story/eggs.gd:726
 msgid "hi, Gus"
 msgstr "嗨，Gus"
 
-#: story/eggs.gd:748
+#: story/eggs.gd:771
 msgid "CONFETTI"
 msgstr "彩纸"
 
-#: story/eggs.gd:748
+#: story/eggs.gd:771
 msgid "LIGHT JAZZ"
 msgstr "轻爵士"
 
-#: story/eggs.gd:748
+#: story/eggs.gd:771
 msgid "99% DUCKS"
 msgstr "鸭子含量 99%"
 
-#: story/eggs.gd:748
+#: story/eggs.gd:771
 msgid "SUNNY (INDOORS)"
 msgstr "晴（室内）"
 
-#: story/eggs.gd:748
+#: story/eggs.gd:771
 msgid "FOG OF NOODLES"
 msgstr "面条雾"
 
-#: story/eggs.gd:753
+#: story/eggs.gd:776
 msgid "1ST PLACE"
 msgstr "第一名"
 
-#: story/eggs.gd:811
+#: story/eggs.gd:834
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "鸭子吱吱地说出一个秘密：“%s”可以解锁 %s 外观。"
 
-#: story/eggs.gd:812
+#: story/eggs.gd:835
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "鸭子已经把它知道的全教给你了。嘎。"
 
-#: story/eggs.gd:1045
+#: story/eggs.gd:1063
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "发现奇物：%s（%d / %d）   %s"
 
-#: story/eggs.gd:1056
+#: story/eggs.gd:1074
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "清单上的奇物全部找到了。Lumi 的收藏舱装满了回忆。"
 
@@ -1933,7 +1933,7 @@ msgstr "目标完成  ·  %s"
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr "听到哔哔声了吗？你的探测器发现附近埋着一个机器人零件。哔得越快，你就离得越近。"
 
-#: story/objectives.gd:443
+#: story/objectives.gd:444
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
@@ -2025,31 +2025,31 @@ msgstr "疏散通知：全体居民前往Cradle号"
 msgid "OLD TOWN, TONIGHT. A SIGN ON THE TOWN HALL"
 msgstr "今晚的老城区。市政厅上的横幅"
 
-#: story/tv_broadcast.gd:25 story/tv_broadcast.gd:197
+#: story/tv_broadcast.gd:25 story/tv_broadcast.gd:200
 msgid "SIGNAL LOST"
 msgstr "信号丢失"
 
-#: story/tv_broadcast.gd:103
+#: story/tv_broadcast.gd:104
 msgid "CH 4  ·  OLD TOWN NEWS  ·  LAST BROADCAST"
 msgstr "4频道  ·  老城区新闻  ·  最后一次播报"
 
-#: story/tv_broadcast.gd:117
+#: story/tv_broadcast.gd:118
 msgid "{interact}  [k]/ Esc  [/k]turn it off"
 msgstr "{interact}  [k]/ Esc  [/k]关掉"
 
-#: story/tv_broadcast.gd:206
+#: story/tv_broadcast.gd:209
 msgid "LIVE"
 msgstr "直播"
 
-#: story/tv_broadcast.gd:326
+#: story/tv_broadcast.gd:329
 msgid "BREAKING"
 msgstr "突发"
 
-#: story/tv_broadcast.gd:354
+#: story/tv_broadcast.gd:357
 msgid "CRADLE"
 msgstr "Cradle号"
 
-#: story/tv_broadcast.gd:375
+#: story/tv_broadcast.gd:378
 msgid "WE'LL BE BACK"
 msgstr "我们会回来的"
 
@@ -2573,39 +2573,39 @@ msgstr "花费%s购买"
 msgid "Not enough cubes, parts or seeds"
 msgstr "方块、零件或种子不足"
 
-#: systems/museum.gd:183
+#: systems/museum.gd:186
 msgid "FUTURE MUSEUM"
 msgstr "未来的博物馆"
 
-#: systems/museum.gd:184
+#: systems/museum.gd:187
 msgid "for whoever comes next"
 msgstr "为后来的人"
 
-#: systems/museum.gd:196
+#: systems/museum.gd:199
 msgid "E   build the Museum   %s"
 msgstr "E   建造博物馆   %s"
 
-#: systems/museum.gd:196
+#: systems/museum.gd:199
 msgid "Museum   %s   (%s)"
 msgstr "博物馆   %s   (%s)"
 
-#: systems/museum.gd:223
+#: systems/museum.gd:226
 msgid "The Museum is built. Everything Lumi found has a place now, for whoever comes next."
 msgstr "博物馆建好了。Lumi 找到的一切都有了归处，留给后来的人。"
 
-#: systems/museum.gd:248
+#: systems/museum.gd:251
 msgid "THE MUSEUM OF COMING BACK"
 msgstr "归来博物馆"
 
-#: systems/museum.gd:249
+#: systems/museum.gd:252
 msgid "everything Lumi found, kept for whoever comes next"
 msgstr "Lumi 找到的一切，为后来的人保存"
 
-#: systems/museum.gd:276
+#: systems/museum.gd:279
 msgid "E   salute the Gnome Patrol"
 msgstr "E   向地精巡逻队敬礼"
 
-#: systems/museum.gd:436
+#: systems/museum.gd:439
 msgid "Every plinth is full. The Museum is complete: everything Lumi found, kept for whoever comes next."
 msgstr "所有展台都已摆满。博物馆完成了：Lumi 找到的一切，为后来的人保存。"
 
@@ -2986,7 +2986,7 @@ msgstr "收音机新歌：%s"
 msgid "Not this week: %s"
 msgstr "本周不行：%s"
 
-#: systems/extras/weekly.gd:254 ui/extras_panel.gd:9 ui/extras_panel.gd:349
+#: systems/extras/weekly.gd:254 ui/extras_panel.gd:9 ui/extras_panel.gd:375
 #: data/achievements.json:achievements[extras_weekly_1].name
 msgid "Seed of the Week"
 msgstr "每周种子"
@@ -3011,7 +3011,7 @@ msgstr "目标"
 msgid "Clean %d hexes"
 msgstr "清理 %d 个六角格"
 
-#: systems/extras/weekly_run.gd:92 ui/extras_panel.gd:353
+#: systems/extras/weekly_run.gd:92 ui/extras_panel.gd:379
 msgid "Seed"
 msgstr "种子"
 
@@ -3047,7 +3047,7 @@ msgstr "第 %d 周，%d 年"
 msgid "Start the clock"
 msgstr "开始计时"
 
-#: systems/extras/weekly_run.gd:96 systems/extras/weekly_run.gd:123 ui/extras_panel.gd:357
+#: systems/extras/weekly_run.gd:96 systems/extras/weekly_run.gd:123 ui/extras_panel.gd:383
 msgid "Return home"
 msgstr "回家"
 
@@ -4089,7 +4089,7 @@ msgstr "用爱与废料制作"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "代码、程序化网格、合成音乐和音效以及文字均为 Greenfall 原创。"
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:608
+#: ui/credits_roll.gd:148 ui/main_menu.gd:613
 msgid "Music by Lucas"
 msgstr "音乐：Lucas"
 
@@ -4229,135 +4229,135 @@ msgstr "相册"
 msgid "Nursery"
 msgstr "苗圃"
 
-#: ui/extras_panel.gd:58
+#: ui/extras_panel.gd:79
 msgid "KEEPSAKES"
 msgstr "纪念"
 
-#: ui/extras_panel.gd:70
+#: ui/extras_panel.gd:91
 msgid "%s / %s  switch tabs"
 msgstr "%s / %s  切换标签"
 
-#: ui/extras_panel.gd:204
+#: ui/extras_panel.gd:230
 msgid "DISTRICTS"
 msgstr "街区"
 
-#: ui/extras_panel.gd:206
+#: ui/extras_panel.gd:232
 msgid "Lumi takes a picture of each district on arrival, and \"after\" pictures as it is restored."
 msgstr "Lumi 到达每个街区时会拍一张照片，修复过程中还会拍“之后”的照片。"
 
-#: ui/extras_panel.gd:210
+#: ui/extras_panel.gd:236
 msgid "Before only"
 msgstr "只有之前"
 
-#: ui/extras_panel.gd:218
+#: ui/extras_panel.gd:244
 msgid "PHOTOS  ·  %d"
 msgstr "照片  ·  %d"
 
-#: ui/extras_panel.gd:230
+#: ui/extras_panel.gd:256
 msgid "Photo"
 msgstr "照片"
 
-#: ui/extras_panel.gd:239
+#: ui/extras_panel.gd:265
 msgid "Photos you take in photo mode show up here."
 msgstr "在拍照模式中拍的照片会出现在这里。"
 
-#: ui/extras_panel.gd:243 ui/photo_panel.gd:58
+#: ui/extras_panel.gd:269 ui/photo_panel.gd:58
 msgid "PHOTO MODE"
 msgstr "拍照模式"
 
-#: ui/extras_panel.gd:253
+#: ui/extras_panel.gd:279
 msgid "No pictures yet."
 msgstr "还没有照片。"
 
-#: ui/extras_panel.gd:264
+#: ui/extras_panel.gd:290
 msgid "BEFORE"
 msgstr "之前"
 
-#: ui/extras_panel.gd:283
+#: ui/extras_panel.gd:309
 msgid "not yet"
 msgstr "尚未"
 
-#: ui/extras_panel.gd:293
+#: ui/extras_panel.gd:319
 msgid "The \"after\" picture comes when the district is half clean."
 msgstr "街区清理过半时会拍下“之后”的照片。"
 
-#: ui/extras_panel.gd:299
+#: ui/extras_panel.gd:325
 msgid "CARETAKERS  ·  %d"
 msgstr "园丁  ·  %d"
 
-#: ui/extras_panel.gd:300
+#: ui/extras_panel.gd:326
 msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
 msgstr "花园加成：植物生长快 %d%%（最多 %d%%）。"
 
-#: ui/extras_panel.gd:303
+#: ui/extras_panel.gd:329
 msgid "No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."
 msgstr "还没有机器人退休。老机器人或 Mk I-II 机器人可以在这里或工作台的组装中退休；它们会照料基地的苗圃花园。"
 
-#: ui/extras_panel.gd:312
+#: ui/extras_panel.gd:338
 msgid "RETIRE A ROBOT"
 msgstr "让机器人退休"
 
-#: ui/extras_panel.gd:314
+#: ui/extras_panel.gd:340
 msgid "Retiring gives a few parts back, and the robot keeps its name and personality in the nursery."
 msgstr "退休会返还一些零件，机器人在苗圃里保留它的名字和个性。"
 
-#: ui/extras_panel.gd:316
+#: ui/extras_panel.gd:342
 msgid "No robots in this district."
 msgstr "这个街区没有机器人。"
 
-#: ui/extras_panel.gd:323
+#: ui/extras_panel.gd:349
 msgid "Press again to retire (+%d parts)"
 msgstr "再按一次确认退休（+%d 零件）"
 
-#: ui/extras_panel.gd:323
+#: ui/extras_panel.gd:349
 msgid "Retire  (+%d parts)"
 msgstr "退休  （+%d 零件）"
 
-#: ui/extras_panel.gd:348
+#: ui/extras_panel.gd:374
 msgid "WEEK %d, %d"
 msgstr "第 %d 周，%d 年"
 
-#: ui/extras_panel.gd:350
+#: ui/extras_panel.gd:376
 msgid "The same seed and twist for everyone this week. Clean %d hexes as fast as you can. It has its own save, so your world is untouched."
 msgstr "本周所有人都是同样的种子和变化。尽快清理 %d 个六角格。它有独立存档，你的世界不受影响。"
 
-#: ui/extras_panel.gd:351
+#: ui/extras_panel.gd:377
 msgid "Twist: %s"
 msgstr "变化：%s"
 
-#: ui/extras_panel.gd:354
+#: ui/extras_panel.gd:380
 msgid "Best time"
 msgstr "最佳时间"
 
-#: ui/extras_panel.gd:355
+#: ui/extras_panel.gd:381
 msgid "Best score"
 msgstr "最高得分"
 
-#: ui/extras_panel.gd:361
+#: ui/extras_panel.gd:387
 msgid "Restart this week's run"
 msgstr "重新开始本周挑战"
 
-#: ui/extras_panel.gd:365
+#: ui/extras_panel.gd:391
 msgid "Resume this week's run"
 msgstr "继续本周挑战"
 
-#: ui/extras_panel.gd:365
+#: ui/extras_panel.gd:391
 msgid "Start the challenge"
 msgstr "开始挑战"
 
-#: ui/extras_panel.gd:369
+#: ui/extras_panel.gd:395
 msgid "PAINT CHIPS  ·  %d"
 msgstr "色片  ·  %d"
 
-#: ui/extras_panel.gd:370
+#: ui/extras_panel.gd:396
 msgid "Finish a week's challenge for its paint chip. Chips unlock the weekly decorations in Garden Mode and paint them."
 msgstr "完成一周的挑战即可获得那周的色片。色片能解锁花园模式的每周装饰并为它们上色。"
 
-#: ui/extras_panel.gd:383
+#: ui/extras_panel.gd:409
 msgid "No chips yet."
 msgstr "还没有色片。"
 
-#: ui/extras_panel.gd:415
+#: ui/extras_panel.gd:442
 msgid "No picture yet"
 msgstr "还没有照片"
 
@@ -4732,19 +4732,19 @@ msgstr "进行中"
 msgid "FREE"
 msgstr "免费"
 
-#: ui/list_detail.gd:539
+#: ui/list_detail.gd:541
 msgid "REQUIRES   NOT YET   %s"
 msgstr "需要   尚未满足   %s"
 
-#: ui/list_detail.gd:539
+#: ui/list_detail.gd:541
 msgid "Not unlocked yet. Keep playing."
 msgstr "尚未解锁。继续游戏吧。"
 
-#: ui/list_detail.gd:542
+#: ui/list_detail.gd:544
 msgid "REQUIRES   %s"
 msgstr "需要   %s"
 
-#: ui/list_detail.gd:545
+#: ui/list_detail.gd:547
 msgid "REQUIRES   READY"
 msgstr "需要   已就绪"
 
@@ -4912,103 +4912,102 @@ msgstr "试玩版  ·  第一个街区"
 msgid "Continue"
 msgstr "继续"
 
-#. Profiles button subtitle: the active save profile's name and its number of planets.
-#: ui/main_menu.gd:345
-msgid "Profiles"
-msgstr "存档"
-
-#: ui/main_menu.gd:347
+#: ui/main_menu.gd:347 ui/main_menu.gd:352
 msgid "New Game"
 msgstr "新游戏"
 
-#: ui/main_menu.gd:351 ui/main_menu.gd:550 ui/pause_menu.gd:66
+#: ui/main_menu.gd:349
+msgid "Profiles"
+msgstr "存档"
+
+#: ui/main_menu.gd:356 ui/main_menu.gd:555 ui/pause_menu.gd:66
 msgid "Settings"
 msgstr "设置"
 
-#: ui/main_menu.gd:352 ui/main_menu.gd:550
+#: ui/main_menu.gd:357 ui/main_menu.gd:555
 msgid "Credits"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:353 ui/pause_menu.gd:70
+#: ui/main_menu.gd:358 ui/pause_menu.gd:70
 msgid "Quit"
 msgstr "退出"
 
-#: ui/main_menu.gd:359
+#: ui/main_menu.gd:364
 msgid "Made with Godot"
 msgstr "使用 Godot 制作"
 
-#: ui/main_menu.gd:457
+#: ui/main_menu.gd:462
 msgid "%dm"
 msgstr "%d分钟"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:463
+#: ui/main_menu.gd:468
 msgid "Hub %d"
 msgstr "基地 %d"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:463 ui/profile_picker.gd:133
+#: ui/main_menu.gd:468 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s 方块"
 
-#: ui/main_menu.gd:469
+#: ui/main_menu.gd:474
 msgid "Jan"
 msgstr "1月"
 
-#: ui/main_menu.gd:469
+#: ui/main_menu.gd:474
 msgid "Feb"
 msgstr "2月"
 
-#: ui/main_menu.gd:469
+#: ui/main_menu.gd:474
 msgid "Mar"
 msgstr "3月"
 
-#: ui/main_menu.gd:469
+#: ui/main_menu.gd:474
 msgid "Apr"
 msgstr "4月"
 
-#: ui/main_menu.gd:469
+#: ui/main_menu.gd:474
 msgid "May"
 msgstr "5月"
 
-#: ui/main_menu.gd:469
+#: ui/main_menu.gd:474
 msgid "Jun"
 msgstr "6月"
 
-#: ui/main_menu.gd:469
+#: ui/main_menu.gd:474
 msgid "Jul"
 msgstr "7月"
 
-#: ui/main_menu.gd:469
+#: ui/main_menu.gd:474
 msgid "Aug"
 msgstr "8月"
 
-#: ui/main_menu.gd:469
+#: ui/main_menu.gd:474
 msgid "Sep"
 msgstr "9月"
 
-#: ui/main_menu.gd:469
+#: ui/main_menu.gd:474
 msgid "Oct"
 msgstr "10月"
 
-#: ui/main_menu.gd:469
+#: ui/main_menu.gd:474
 msgid "Nov"
 msgstr "11月"
 
-#: ui/main_menu.gd:469
+#: ui/main_menu.gd:474
 msgid "Dec"
 msgstr "12月"
 
-#: ui/main_menu.gd:579
+#: ui/main_menu.gd:584
 msgid "CREDITS"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:594 ui/profile_picker.gd:49 ui/settings_panel.gd:122
+#: ui/main_menu.gd:599 ui/profile_picker.gd:49 ui/settings_panel.gd:122
 #: ui/settings_panel.gd:147 ui/world_picker.gd:53
 msgid "Back"
 msgstr "返回"
 
-#: ui/main_menu.gd:607
+#: ui/main_menu.gd:612
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5018,27 +5017,27 @@ msgstr ""
 "代码、程序化网格、合成音频和文字均为 Greenfall 原创。\n"
 "\n"
 
-#: ui/main_menu.gd:611
+#: ui/main_menu.gd:616
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "第三方资源：CC0，Poly Haven（polyhaven.com）。"
 
-#: ui/main_menu.gd:629
+#: ui/main_menu.gd:634
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]作者：%s[/color]"
 
-#: ui/main_menu.gd:663
+#: ui/main_menu.gd:668
 msgid "START A NEW GAME?"
 msgstr "开始新游戏？"
 
-#: ui/main_menu.gd:664
+#: ui/main_menu.gd:669
 msgid "Your current save will be erased. This can't be undone."
 msgstr "你当前的存档将被删除。此操作无法撤销。"
 
-#: ui/main_menu.gd:672
+#: ui/main_menu.gd:677
 msgid "Keep my save"
 msgstr "保留存档"
 
-#: ui/main_menu.gd:678 ui/profile_picker.gd:213
+#: ui/main_menu.gd:683 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "删除并开始"
 
@@ -11251,7 +11250,7 @@ msgstr "野生动物已经入住"
 msgid "Verdance"
 msgstr "Verdance"
 
-#: data/homeward.json:planets[ochre].name data/telescope.json:planets_default[ochre].name
+#: data/homeward.json:planets[ochre].name data/planets.json:ochre.name data/telescope.json:planets_default[ochre].name
 msgid "Ochre"
 msgstr "Ochre"
 
@@ -12155,6 +12154,26 @@ msgstr "特殊模块"
 #: data/planets.json:rime.tagline
 msgid "An ice moon, core-mined until it froze."
 msgstr "一颗冰卫星，被采矿直至核心，直到冻结。"
+
+#: data/planets.json:ochre.tagline
+msgid "The Ledger's first open-pit strip mine, closest to the twin suns."
+msgstr ""
+
+#: data/planets.json:ochre.sites.list.hub_base.name
+msgid "Ledger Haul Depot"
+msgstr ""
+
+#: data/planets.json:ochre.sites.list.toppled_excavator.name
+msgid "The Fallen Wheel"
+msgstr ""
+
+#: data/planets.json:ochre.sites.list.pit_fragment.name
+msgid "Bench Cut"
+msgstr ""
+
+#: data/planets.json:ochre.sites.list.oasis.name
+msgid "Spring Terraces"
+msgstr ""
 
 #: data/planets.json:tidewell.tagline
 msgid "An ocean world. The Ledger's dredging rigs still stand in the shallows."

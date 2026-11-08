@@ -48,9 +48,14 @@ void fragment() {
 	float oil_mask = smoothstep(0.55, 0.75, fbm(v_world.xz * 0.55 + vec2(3.0, 7.0))) * oil * water;
 	float ndv = clamp(dot(NORMAL, VIEW), 0.0, 1.0);
 	vec3 rainbow = 0.5 + 0.5 * cos(6.2831 * (film * 2.6 + ndv * 0.9 + vec3(0.0, 0.33, 0.67)));
-	vec3 wet = vec3(0.075, 0.07, 0.065);
-	vec3 deep = vec3(0.012, 0.014, 0.018);
-	ALBEDO = mix(mix(wet, deep, water), rainbow * 0.12 + deep, oil_mask * 0.6);
+	// [qafix] QA #9: without screen-space reflections (Low, Medium, High, the Compatibility and
+	// Mobile renderers) a near-black puddle read as a hole in the ground. Damp-ground colours plus a
+	// cheap sky sheen at grazing angles keep it reading as water on every preset.
+	vec3 wet = vec3(0.16, 0.14, 0.12);
+	vec3 deep = vec3(0.085, 0.09, 0.1);
+	float fres = pow(1.0 - ndv, 3.0);
+	vec3 sheen = vec3(0.32, 0.36, 0.42) * fres * water * 0.7;
+	ALBEDO = mix(mix(wet, deep, water), rainbow * 0.12 + deep, oil_mask * 0.6) + sheen;
 	ROUGHNESS = mix(0.45, 0.02, water);
 	METALLIC = 0.0;
 	SPECULAR = 0.6;

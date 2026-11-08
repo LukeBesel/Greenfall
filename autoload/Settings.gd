@@ -645,7 +645,8 @@ func apply_render_quality(env: Environment, vp: Viewport) -> void:
 		vp.use_taa = q >= Quality.HIGH
 		# [deck] Low: no MSAA (costly on APUs); FXAA instead.
 		vp.msaa_3d = Viewport.MSAA_DISABLED if (q >= Quality.HIGH or q == Quality.LOW) else Viewport.MSAA_2X
-		vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA if q <= Quality.MEDIUM else Viewport.SCREEN_SPACE_AA_DISABLED
+		var ssaa_ok: bool = RenderingServer.get_current_rendering_method() != "gl_compatibility"  # [qafix] QA #35: FXAA only warns there
+		vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA if (q <= Quality.MEDIUM and ssaa_ok) else Viewport.SCREEN_SPACE_AA_DISABLED
 		vp.mesh_lod_threshold = [4.0, 2.0, 1.0, 0.5][q]
 	RenderingServer.directional_shadow_atlas_set_size([2048, 4096, 4096, 8192][q], true)
 	# [deck] Shadow filtering: fewer PCF taps on Low (still soft-edged).

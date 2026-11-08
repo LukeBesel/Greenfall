@@ -86,15 +86,21 @@ func _build() -> void:
 	add_child(face)
 	_needle = MeshInstance3D.new()
 	_needle.mesh = ProcMesh.box(Vector3(0.015, 0.18, 0.01))
-	_needle.material_override = Mats.lamp(Color(0.8, 0.1, 0.05), 0.5)
+	_needle.material_override = Mats.rubber(Color(0.75, 0.1, 0.05))  # [world3] painted, not lit
 	_needle.position = dial.position + Vector3(0, 0, 0.05)
 	add_child(_needle)
 	var lamp := MeshInstance3D.new()
 	lamp.mesh = ProcMesh.sphere(0.06, 10, 5)
 	_light_mat = ShaderMaterial.new()
-	lamp.material_override = Mats.lamp(Color(1.0, 0.65, 0.2), 1.2)
+	# [world3] A dead bulb (nothing works when you land) until the generator is built (Hub tab).
+	var lm: StandardMaterial3D = Mats.lamp(Color(1.0, 0.65, 0.2), 1.2)
+	lamp.material_override = lm
 	lamp.position = post.position + Vector3(0, 1.05, 0)
 	add_child(lamp)
+	PowerFx.set_power([lm], [], YardBuilds.built("generator"))
+	YardBuilds.events.built.connect(func(id: String) -> void:
+		if id == "generator" and is_inside_tree():
+			PowerFx.flicker_on(self, [lm], [], 1.0))
 
 func pad_contains(world_pos: Vector3) -> bool:
 	var d: Vector3 = _local(world_pos)  # [orbit] the pad's own up (a depot on a round planet is tilted)

@@ -19,6 +19,9 @@ var districts: Dictionary = {}
 var current_hub: int = 0
 ## Whole-planet state (PlanetData.to_dict()).
 var planet_state: Dictionary = {}
+## [orbB] The walkable globe's state (scenes/slice_orbit.gd: schema, cells, sites, positions as
+## direction + height). Empty until an --orbit run saves; the flat keys above are left alone.
+var orbit: Dictionary = {}
 ## Set while switching districts: the next scene load uses the in-memory state (not saved).
 var reload_in_memory: bool = false
 var created_unix: float = 0.0
@@ -49,6 +52,7 @@ func new_game() -> void:
 	districts = {0: world}
 	current_hub = 0
 	planet_state = {}
+	orbit = {}  # [orbB]
 	created_unix = Time.get_unix_time_from_system()
 	saved_unix = 0.0
 	_income_log.clear()
@@ -208,6 +212,7 @@ func to_dict() -> Dictionary:
 		"districts": _districts_for_save(),
 		"current_hub": current_hub,
 		"planet_state": planet_state.duplicate(true),
+		"orbit": orbit.duplicate(true),  # [orbB]
 	}
 
 
@@ -232,6 +237,7 @@ func from_dict(d: Dictionary) -> void:
 	parts = (d.get("parts", []) as Array).duplicate(true)
 	current_hub = int(d.get("current_hub", 0))
 	planet_state = (d.get("planet_state", {}) as Dictionary).duplicate(true)
+	orbit = (d.get("orbit", {}) as Dictionary).duplicate(true)  # [orbB]
 	districts = {}
 	var ds: Dictionary = d.get("districts", {})
 	for k: Variant in ds:
