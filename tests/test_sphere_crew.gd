@@ -271,11 +271,11 @@ func test_offline_capped_by_region_junk() -> void:
 
 func test_region_scales_with_planet_size() -> void:
 	assert_eq(SphereOffline.region_rings(163842, 10), 16, "Verdance")
-	var anvil_cells: int = int(163842 * 1.35 * 1.35)
+	var anvil_cells: int = 655362  # Anvil: frequency 256, 4x Verdance
 	var ochre_cells: int = int(163842 * 0.85 * 0.85)
 	assert_gte(SphereOffline.region_rings(anvil_cells, SphereOffline.hub_count("anvil")), 16)
 	assert_lte(SphereOffline.region_rings(ochre_cells, SphereOffline.hub_count("ochre")), 16)
-	assert_eq(SphereOffline.hub_count("anvil"), 16)
+	assert_eq(SphereOffline.hub_count("anvil"), 20)
 
 
 # --- Command view -----------------------------------------------------------------------
