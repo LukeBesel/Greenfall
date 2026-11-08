@@ -20,6 +20,9 @@ var _focus := Vector3.ZERO
 var _noise_t: float = 0.0
 ## Mouse look not yet applied (Settings.mouse_smoothing eases it in over a few frames).
 var _look_pending := Vector2.ZERO
+## [onboard2] Arm length that keeps the view's edges clear of nearby walls and roofs (see clear_length).
+var _clear_len: float = INF
+var _clear_t: float = 0.0
 
 
 func _ready() -> void:
@@ -100,7 +103,17 @@ func _process(delta: float) -> void:
 		global_position = _focus
 		camera.near = 0.05
 		camera.fov = lerpf(camera.fov, Settings.fov, clampf(delta * 6.0, 0.0, 1.0))
-		_arm.spring_length = lerpf(_arm.spring_length, distance, clampf(delta * 8.0, 0.0, 1.0))
+		# [onboard2] The arm alone only sweeps the centre line, so a roof or wall near the camera could
+		# fill a corner of the view as a big dark slab. Pull in until the frustum's near edges are clear.
+		_clear_t -= delta
+		if _clear_t <= 0.0:
+			_clear_t = 0.1
+			var vp: Vector2 = get_viewport().get_visible_rect().size if get_viewport() else Vector2(16, 9)
+			_clear_len = clear_length(get_world_3d().direct_space_state, _focus, view_basis(yaw, pitch), distance, \
+					min_distance, camera.fov, vp.x / maxf(vp.y, 1.0))
+		var want_len: float = minf(distance, _clear_len)
+		var rate: float = 8.0 if want_len < _arm.spring_length else 3.0  # in quickly, out gently
+		_arm.spring_length = lerpf(_arm.spring_length, want_len, clampf(delta * rate, 0.0, 1.0))
 	rotation.y = yaw
 	_pitch_node.rotation.x = pitch
 	# Shake.
@@ -110,6 +123,52 @@ func _process(delta: float) -> void:
 	camera.h_offset = sin(_noise_t * 1.3) * 0.25 * s
 	camera.v_offset = sin(_noise_t * 1.7 + 2.0) * 0.25 * s
 	camera.rotation.z = sin(_noise_t * 0.9 + 5.0) * 0.03 * s
+
+
+## The arm's orientation for a yaw/pitch (the camera looks along -Z of it, and sits at +Z * length).
+static func view_basis(yaw_: float, pitch_: float) -> Basis:
+	return Basis(Vector3.UP, yaw_) * Basis(Vector3.RIGHT, pitch_)
+
+
+## Directions (in view space) to the frustum's corners and edge midpoints, top excluded (the sky).
+static func edge_dirs(fov_deg: float, aspect: float) -> Array[Vector3]:
+	var ty: float = tan(deg_to_rad(fov_deg) * 0.5)
+	var tx: float = ty * aspect
+	var out: Array[Vector3] = []
+	for v: Vector2 in [Vector2(-1, -1), Vector2(0, -1), Vector2(1, -1), Vector2(-1, 0), Vector2(1, 0), Vector2(-1, 1), Vector2(1, 1)]:
+		out.append(Vector3(v.x * tx, v.y * ty, -1.0).normalized())
+	return out
+
+
+## [onboard2] The longest arm (from `want` down to `min_len`) whose camera sees no WORLD geometry
+## (walls, roofs, stations) close by along its view edges: anything nearer than ~40% of the arm,
+## standing higher than the focus, would fill that part of the screen. Ground hits don't count.
+static func clear_length(space: PhysicsDirectSpaceState3D, focus: Vector3, b: Basis, want: float, min_len: float, \
+		fov_deg: float, aspect: float) -> float:
+	if space == null:
+		return want
+	var dirs: Array[Vector3] = edge_dirs(fov_deg, aspect)
+	var q := PhysicsRayQueryParameters3D.new()
+	q.collision_mask = PhysLayers.WORLD
+	q.hit_from_inside = true
+	var l: float = want
+	for k: int in 7:
+		var cam_pos: Vector3 = focus + b * Vector3(0, 0, l)
+		var reach: float = maxf(2.0, l * 0.4)
+		var blocked: bool = false
+		for d: Vector3 in dirs:
+			q.from = cam_pos
+			q.to = cam_pos + b * d * reach
+			var hit: Dictionary = space.intersect_ray(q)
+			if not hit.is_empty() and (hit["position"] as Vector3).y > focus.y - 0.6:
+				blocked = true
+				break
+		if not blocked:
+			return l
+		if l <= min_len:
+			break
+		l = maxf(min_len, l * 0.8)
+	return min_len
 
 
 func snap() -> void:

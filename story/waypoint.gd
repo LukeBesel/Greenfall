@@ -11,6 +11,9 @@ const TRAIL_N: int = 9
 const TRAIL_STEP_M: float = 1.7
 const TRAIL_START_M: float = 1.6
 const NEAR_M: float = 3.0
+## [onboard2] Off-screen target: a small arrow on the screen edge, inside this thin band (px) that
+## the HUD keeps free (no text, nothing else lives there).
+const EDGE_INSET: float = 14.0
 
 const SHADER_CODE: String = """
 shader_type spatial;
@@ -42,6 +45,8 @@ var _trail: MultiMeshInstance3D
 var _mat_beam: ShaderMaterial
 var _mat: ShaderMaterial
 var _pos := Vector3.ZERO
+var _arrow_layer: CanvasLayer
+var arrow: EdgeArrow
 
 static var _shader: Shader
 
@@ -85,6 +90,13 @@ func _ready() -> void:
 	_trail.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(_trail)
 	visible = false
+	_arrow_layer = CanvasLayer.new()
+	_arrow_layer.layer = 1
+	add_child(_arrow_layer)
+	arrow = EdgeArrow.new()
+	arrow.color = COLOR
+	_arrow_layer.add_child(arrow)
+	arrow.visible = false
 
 
 ## World position to point at, or null for none.
@@ -104,6 +116,7 @@ func _process(delta: float) -> void:
 	_alpha = move_toward(_alpha, 1.0 if has else 0.0, delta * (2.0 if has else 3.0))
 	visible = _alpha > 0.0
 	if not visible or not (_target is Vector3) or p == null:
+		arrow.visible = false
 		return
 	var goal: Vector3 = _target
 	_pos = goal if _pos.distance_to(goal) > 30.0 or _pos == Vector3.ZERO else _pos.lerp(goal, clampf(delta * 6.0, 0.0, 1.0))
@@ -119,6 +132,36 @@ func _process(delta: float) -> void:
 	_ring.global_position = _pos + Vector3(0, 0.05, 0)
 	_ring.scale = Vector3.ONE * (1.0 + 0.08 * sin(_t * 2.2))
 	_update_trail(p.global_position, _pos)
+	_update_arrow(cam)
+
+
+## [onboard2] When the beam is off screen, a small arrow on the screen edge points toward it.
+func _update_arrow(cam: Camera3D) -> void:
+	if cam == null:
+		arrow.visible = false
+		return
+	var rect: Rect2 = get_viewport().get_visible_rect().grow(-EDGE_INSET)
+	var pt: Vector3 = _pos + Vector3(0, 1.5, 0)
+	var local: Vector3 = cam.global_transform.affine_inverse() * pt
+	if not cam.is_position_behind(pt) and rect.has_point(cam.unproject_position(pt)):
+		arrow.visible = false
+		return
+	var dir := Vector2(local.x, -local.y)
+	if local.z > 0.0 and absf(dir.x) < 0.001:  # straight behind: point down (turn around)
+		dir = Vector2(0, 1)
+	arrow.visible = true
+	arrow.place(edge_point(rect, dir), dir.angle(), _alpha)
+
+
+## Where a ray from the rect's centre along dir leaves the rect.
+static func edge_point(rect: Rect2, dir: Vector2) -> Vector2:
+	var c: Vector2 = rect.get_center()
+	var h: Vector2 = rect.size * 0.5
+	if dir.length_squared() < 1e-8:
+		return c
+	var tx: float = h.x / absf(dir.x) if absf(dir.x) > 1e-6 else INF
+	var ty: float = h.y / absf(dir.y) if absf(dir.y) > 1e-6 else INF
+	return c + dir * minf(tx, ty)
 
 
 func _update_trail(from: Vector3, to: Vector3) -> void:

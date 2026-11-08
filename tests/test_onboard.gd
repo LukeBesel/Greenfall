@@ -212,3 +212,81 @@ func test_brief_is_wrens_last_message() -> void:
 	assert_string_contains(str(lines[0]), "WREN")
 	assert_string_contains(str(lines[-1]), "[glitch]", "it breaks up in static")
 	assert_string_contains(str(lines[-1]).to_lower(), "signal tower")
+
+
+# --- [onboard2] -------------------------------------------------------------------------------
+
+func test_notify_stack_never_shows_ghost_rows() -> void:
+	var ns := NotifyStack.new()
+	add_child_autofree(ns)
+	for i: int in 6:
+		ns.push("Toast number %d with enough words to wrap onto a second line here" % i, "info")
+	assert_lte(ns.count(), NotifyStack.MAX, "at most three rows")
+	assert_lte(ns.live_count(), 2, "two-line rows: the line budget retires older ones at once")
+	ns._process(0.3)
+	assert_lte(ns.count(), 2, "rows on their way out are gone within a quarter second")
+	for i: int in ns.count():
+		ns._process(0.0)
+	ns._process(0.31)
+	for r: Dictionary in ns._rows:
+		assert_true((r["node"] as Control).modulate.a > 0.99, "every row left is fully visible, never half-faded")
+
+
+func test_notify_short_rows_stack_three() -> void:
+	var ns := NotifyStack.new()
+	add_child_autofree(ns)
+	for t: String in ["One", "Two", "Three", "Four"]:
+		ns.push(t, "info")
+	assert_eq(ns.count(), 3)
+	assert_eq(ns.live_count(), 3)
+
+
+func test_camera_pulls_in_when_a_roof_fills_the_view_edge() -> void:
+	var focus := Vector3(5000, 1.1, 0)
+	var b: Basis = CameraRig.view_basis(0.0, -0.75)
+	var space: PhysicsDirectSpaceState3D = get_viewport().world_3d.direct_space_state
+	assert_eq(CameraRig.clear_length(space, focus, b, 22.0, 3.5, 70.0, 16.0 / 9.0), 22.0, "open sky: full length")
+	# A building roof under the camera's lower-left view edge, close to where the camera would sit.
+	var cam_pos: Vector3 = focus + b * Vector3(0, 0, 22.0)
+	var body := StaticBody3D.new()
+	body.collision_layer = PhysLayers.WORLD
+	var cs := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(8, 1, 8)
+	cs.shape = box
+	body.add_child(cs)
+	add_child_autofree(body)
+	body.global_position = cam_pos + Vector3(-3.0, -5.0, 0.0)
+	await wait_physics_frames(2)
+	var l: float = CameraRig.clear_length(space, focus, b, 22.0, 3.5, 70.0, 16.0 / 9.0)
+	assert_lt(l, 22.0, "pulled in past the roof edge")
+	assert_gte(l, 3.5)
+
+
+func test_camera_ignores_the_ground() -> void:
+	var focus := Vector3(-5000, 1.1, 0)
+	var body := StaticBody3D.new()
+	body.collision_layer = PhysLayers.WORLD
+	var cs := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(200, 1, 200)
+	cs.shape = box
+	body.add_child(cs)
+	add_child_autofree(body)
+	body.global_position = Vector3(-5000, -0.5, 0)
+	await wait_physics_frames(2)
+	var space: PhysicsDirectSpaceState3D = get_viewport().world_3d.direct_space_state
+	var b: Basis = CameraRig.view_basis(0.0, -0.3)
+	assert_eq(CameraRig.clear_length(space, focus, b, 6.2, 3.5, 70.0, 16.0 / 9.0), 6.2, "the ground under Lumi doesn't pull the camera in")
+
+
+func test_waypoint_edge_point_stays_on_the_border() -> void:
+	var r := Rect2(14, 14, 1252, 692)
+	assert_eq(Waypoint.edge_point(r, Vector2(1, 0)), Vector2(1266, 360))
+	assert_eq(Waypoint.edge_point(r, Vector2(0, -3)), Vector2(640, 14))
+	var p: Vector2 = Waypoint.edge_point(r, Vector2(-5, 4))
+	assert_true(is_equal_approx(p.x, 14.0) or is_equal_approx(p.y, 706.0))
+	var w := Waypoint.new()
+	add_child_autofree(w)
+	assert_not_null(w.arrow)
+	assert_false(w.arrow.visible, "no arrow without a target")
