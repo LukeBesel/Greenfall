@@ -442,7 +442,13 @@ tuned in the first-hour pass); no new SFX work unless a bug.
   flickering wiring, spark bursts and stuttering seams. Mends with upgrades (no new save state):
   first upgrade = sparks stop, panel bolted back, faint smoke; 4 upgrade levels = repaired, clean paint,
   calm beacon (`CrashSite.stage_for_upgrades()`).
-- Previews: `res://scenes/story_preview.tscn -- --view=ark|pod|crash|loading --out=...`.
+- **Playtest #2** (owner): Space / pad A pauses and resumes the intro and the Bloom Core memories
+  (`story/story_pause.gd`, freezes Engine.time_scale); Esc / B skips. The Codex has a "Watch the story"
+  button: `Intro.replay()` plays the whole intro with a temporary pod and puts Lumi, the camera and the
+  real crash site back afterwards (no save change). Repair stages read clearly: torn panel with live
+  wiring, then a bolted tangerine-studded patch, then a clean plate with a cyan line, a calm cyan halo on
+  the ground and blinking fin lamps.
+- Previews: `res://scenes/story_preview.tscn -- --view=ark|pod|crash|loading|introframe --out=...`.
 - Tests: `tests/test_subtitles.gd` (rule for every intro line, chunking, glitch spans, one line at a time),
   `tests/test_crash_site.gd` (pod parts, door angle, repair stages).
 - Next: split the district build across frames so the loading bar keeps moving during it; pre-build
