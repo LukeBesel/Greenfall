@@ -121,6 +121,13 @@ func build(p_world: Node3D) -> void:
 	crews.build_crew(self)  # [orbC] the robot crew (planet/orbit/orbit_crews.gd)
 	if DevHooks.has("orbit-bots"):  # [orbC] stand-in bots only on request (the crew replaces them)
 		crews.spawn_demo_bots(globe.start_cell(), int(DevHooks.get_f("orbit-bots", 4.0)), w)
+	var garden := Garden.new()  # sparse: a cell's slots come when Lumi plants or waters near it
+	garden.name = "Garden"
+	garden.world = w
+	garden.sparse = true
+	w.add_child(garden)
+	w.set("garden", garden)
+	garden.setup()
 	var hl := HexLevels.new()  # sparse: only cleaned cells are tracked; levels also go to SphereCells
 	hl.name = "HexLevels"
 	hl.world = w
@@ -757,6 +764,9 @@ func persist_save() -> void:
 			cd["at"] = g.to_dirh(c.global_position)
 			cd["basis"] = _basis_arr(c.global_basis)
 			cubes.append(cd)
+	var gdn: Garden = w.get("garden")
+	if gdn:
+		GameState.world["garden"] = gdn.persist()  # the hub's dict (GameState.world on the globe)
 	var pd: Dictionary = patch.to_dict()
 	pd.erase("pos")
 	pd.erase("yaw")

@@ -44,6 +44,7 @@ static func _snap(s: Node) -> Dictionary:
 		"milestone_1": GameState.flags.get("hexm_1", false),
 		"hub_level": (s.get("hub") as Hub).level,
 		"bench_ok": Camp.bench_ok(),
+		"garden": _garden_sig(s),
 		"yard_built": JSON.stringify(YardBuilds.state().get("built", {})),
 		"site_stage": g.site_manager.levels[0] if g.site_manager else -1,
 		"parts_near": s.field.part_pos.size() > 0,
@@ -51,6 +52,19 @@ static func _snap(s: Node) -> Dictionary:
 		"sky_spin": snappedf((s.get("sky_director") as SkyDirector).spin, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
 		"sky_clouds": snappedf((s.get("sky_director") as SkyDirector).clouds, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
 	}
+
+
+static func _garden_sig(s: Node) -> String:
+	var gdn: Garden = s.get("garden")
+	if gdn == null:
+		return "-"
+	var cells: Dictionary = gdn.persist_sparse().get("cells", {})
+	var keys: Array = cells.keys()
+	keys.sort()
+	var parts: Array = []
+	for k: Variant in keys:
+		parts.append("%s:%s" % [str(k), str((cells[k] as Array)[0])])
+	return ",".join(parts)
 
 
 static func run(rt: Node, check: Callable) -> void:
@@ -83,6 +97,20 @@ static func run(rt: Node, check: Callable) -> void:
 			if g.field.piece_alive[pid] == 1:
 				s1.collect_piece(pid)
 	check.call("orbit_cell_cleaned", clean0 + 1, s1.field.cleaned_count)
+	# The garden: plant and water in the cell Lumi just cleaned (its slots are made on demand).
+	var gdn: Garden = s1.get("garden")
+	GameState.flags["seeds_unlocked"] = true
+	GameState.add_currency("seeds", BigNum.from_float(10))
+	var ctr: Vector3 = g.field.hex_center(target)
+	var fwd: Vector3 = SphereGrid.frame(ctr.normalized()).x
+	var planted_n: int = 0
+	for k: int in 3:
+		var sl: int = gdn.free_slot_near(ctr - fwd * 1.0, fwd, 6.0)
+		if sl >= 0 and gdn.plant(sl):
+			gdn.water(sl, 120.0)
+			planted_n += 1
+	check.call("orbit_garden_planted", 3, planted_n)
+	check.call("orbit_garden_slots_on_ground", true, gdn.slot_pos.size() > 0 and absf(gdn.slot_pos[0].length() - (g.grid.radius_m + g.terrain.height(gdn.slot_pos[0].normalized()))) < 0.05)
 	# Glim's scanner marks the junk of the cell Lumi stands in (pieces by how big they look).
 	var gd: GlimDirector = GlimDirector.of(s1)
 	if gd:
