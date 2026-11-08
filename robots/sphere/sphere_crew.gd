@@ -52,6 +52,15 @@ var zones: Dictionary = {}
 var cashed: float = 0.0
 var depots: Dictionary = {}  # hub cell -> depot cell
 var spend_seeds: bool = true
+## Near budget: at most this many real SphereBots; past it the farthest near robots are records
+## too (a Fabricator fleet of hundreds stays cheap even right around Lumi).
+var max_near: int = 48
+## Robot looks (owner: designed per type at the Locker, worn by every robot of that type, the
+## Fabricator's included). Every globe robot that becomes real is dressed by dress(): the equipped
+## livery (systems/liveries.gd, as on the flat fleet) and then each hook here, called as
+## hook.call(body: Node3D, visual: Node3D, type_id: String, tier: int). The Locker's per-type
+## design registers itself with SphereCrew.dress_hooks.append(...).
+static var dress_hooks: Array[Callable] = []
 
 var _claimed: Dictionary = {}  # cell -> unit name
 var _left: Dictionary = {}  # cell -> work target (junk left 0..1) while robots work it
@@ -61,6 +70,7 @@ var _far_acc: float = 0.0
 var _t: float = 0.0
 var _report_done: bool = false
 var _names: int = 0
+var _near_n: int = 0
 
 
 func setup(p_grid: SphereGrid, p_cells: SphereCells, p_field: SphereField, p_surface: SphereSurface, p_swarm: SphereSwarm = null, p_streamer: SphereStreamer = null, p_planet: String = "verdance") -> void:
@@ -90,7 +100,7 @@ func spawn(type_id: String, tier: int, cell: int, hub: int = -1, p_name: String 
 	for k: String in LOG_KEYS:
 		u["log"][k] = 0.0
 	units.append(u)
-	if _focus_dist(d) < PROMOTE_M:
+	if _focus_dist(d) < PROMOTE_M and near_count() < max_near:
 		_promote(u)
 	return u
 
@@ -108,11 +118,7 @@ func count(type_id: String) -> int:
 
 
 func near_count() -> int:
-	var n: int = 0
-	for u: Dictionary in units:
-		if u["bot"] != null:
-			n += 1
-	return n
+	return _near_n
 
 
 func is_near(u: Dictionary) -> bool:
@@ -221,25 +227,38 @@ func route(from: int, to: int, role: String = "clean") -> PackedInt32Array:
 	return SpherePath.astar_grid(grid, from, to, pass_fn, 6000)
 
 
-func junk_left(c: int) -> float:
-	var real: float = cells.junk[c] if cells.is_dirty(c) else 0.0
+func _real_left(c: int) -> float:
 	if field != null and field.materialized[c] == 1:
-		real = 1.0 - field.removed_fraction(c) if field.hex_clean[c] == 0 else 0.0
-	return minf(real, float(_left.get(c, 1.0)))
+		return 1.0 - field.removed_fraction(c) if field.hex_clean[c] == 0 else 0.0
+	return cells.junk[c] if cells.is_dirty(c) else 0.0
 
 
-## Robots work in small steps; a materialized cell loses whole pieces, so the work target is kept
-## here and the pieces follow it (otherwise a step smaller than one piece would never add up).
+func junk_left(c: int) -> float:
+	var real: float = _real_left(c)
+	if not _left.has(c):
+		return real
+	if real <= 0.0:
+		return 0.0
+	# Work target, less anything someone else (Lumi) took since the crew's last write.
+	var a: Array = _left[c]
+	return clampf(float(a[0]) - maxf(0.0, float(a[1]) - real), 0.0, 1.0)
+
+
+## Robots work in small steps; a materialized cell loses whole pieces, so the work target is the
+## account (the pieces follow it, a piece ahead or behind) - otherwise a step smaller than one
+## piece would never add up, and a big piece would lose junk nobody baled.
 func work_cell(c: int, left: float) -> void:
 	var was_dirty: bool = cells.is_dirty(c)
-	if left > 0.02:
-		_left[c] = left
+	var gone: PackedInt32Array = SphereOffline.write_cell(cells, field, c, left)
+	if left > 0.02 and cells.is_dirty(c):
+		_left[c] = [left, _real_left(c)]
 	else:
 		_left.erase(c)
-	var gone: PackedInt32Array = SphereOffline.write_cell(cells, field, c, left)
-	if junk_view != null:
+	if junk_view != null and not gone.is_empty():
 		for pid: int in gone:
 			junk_view.call("hide_piece", pid)
+		if junk_view.has_method("refresh_hex"):
+			junk_view.call("refresh_hex", c)
 	cell_worked.emit(c)
 	if was_dirty and not cells.is_dirty(c):
 		cell_cleaned.emit(c)
@@ -295,8 +314,9 @@ func tick(delta: float) -> void:
 			continue
 		SphereCrewSim.advance(u["rec"], far_dt, surface.radius)
 		_think(u, far_dt)
-		if _focus_dist(unit_dir(u)) < PROMOTE_M:
+		if _focus_dist(unit_dir(u)) < PROMOTE_M and near_count() < max_near:
 			_promote(u)
+	_enforce_budget()
 
 
 ## Manually advance every robot as a far record (dev and tests: a crew with no frame loop).
@@ -310,6 +330,19 @@ func run_far(seconds: float, step_s: float = 1.0) -> void:
 			if u["bot"] == null:
 				SphereCrewSim.advance(u["rec"], dt, surface.radius)
 				_think(u, dt)
+
+
+## Demote the farthest near robots while there are more than max_near.
+func _enforce_budget() -> void:
+	if _near_n <= max_near:
+		return
+	var near: Array[Dictionary] = []
+	for u: Dictionary in units:
+		if u["bot"] != null:
+			near.append(u)
+	near.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return _focus_dist(unit_dir(a)) > _focus_dist(unit_dir(b)))
+	for i: int in near.size() - max_near:
+		_demote(near[i])
 
 
 func _focus_dist(d: Vector3) -> float:
@@ -328,12 +361,32 @@ func _promote(u: Dictionary) -> void:
 	if visuals:
 		b.add_visual(str(u["type"]), str(Economy.robot_tiers[clampi(int(u["tier"]), 0, Economy.robot_tiers.size() - 1)].get("look", "salvage")) if not Economy.robot_tiers.is_empty() else "salvage")
 	SphereRobotKinds.apply(b, str(u["type"]), int(u["tier"]))
+	dress(b, str(u["type"]), int(u["tier"]))
 	b.swarm = swarm
 	if swarm:
 		swarm.add(b)
 	u["bot"] = b
+	_near_n += 1
 	u["stall_best"] = INF
 	u["stall_t"] = 0.0
+
+
+## Same looks as a workbench-built robot of this type (see dress_hooks).
+static func dress(b: Node3D, type_id: String, tier: int) -> void:
+	var want: String = Liveries.equipped()
+	var cur: Node = b.get_node_or_null(Liveries.NODE_NAME)
+	if cur and str(cur.get_meta("livery", "")) != want:
+		b.remove_child(cur)
+		cur.queue_free()
+		cur = null
+	if cur == null and want != "":
+		var n: Node3D = Liveries.build(want)
+		if n:
+			b.add_child(n)
+	var vis: Node3D = b.get("visual") as Node3D if "visual" in b else null
+	for h: Callable in dress_hooks:
+		if h.is_valid():
+			h.call(b, vis, type_id, tier)
 
 
 func _demote(u: Dictionary) -> void:
@@ -342,6 +395,7 @@ func _demote(u: Dictionary) -> void:
 	u["rec"] = SphereCrewSim.demote(b)
 	(u["rec"] as Dictionary)["cell"] = keep_cell
 	u["bot"] = null
+	_near_n -= 1
 	if streamer:
 		streamer.remove_centre("bot:" + str(u["name"]))
 
@@ -627,7 +681,7 @@ func cells_cleaned() -> int:
 
 
 func _maybe_report() -> void:
-	if _report_done or not (DevHooks.has("bot-report") or DevHooks.has("robots") or DevHooks.has("orbit-far-crew")) or not DevHooks.has("quit-after"):
+	if _report_done or not (DevHooks.has("bot-report") or DevHooks.has("robots") or DevHooks.has("orbit-far-crew") or DevHooks.has("fabricator-build")) or not DevHooks.has("quit-after"):
 		return
 	if DevHooks._elapsed >= DevHooks.get_f("quit-after", 5.0) - 1.0:
 		_report_done = true

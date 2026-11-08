@@ -172,7 +172,7 @@ func _ready() -> void:
 	_build_depot(sites[0])
 	_build_lights()
 	if SphereCrewDev.wanted():  # [orbC] phase C crew (robots/sphere/) instead of the phase A stand-in bots
-		sphere_crew = SphereCrewDev.install(self)
+		sphere_crew = SphereCrewDev.install(self, self, lumi, cam, _write_cell)
 	else:
 		_spawn_bots(hub_cell, 4)
 	_update_centres()

@@ -30,6 +30,27 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - Lineup render: `tools/kit_lineup.sh screenshots/kit/lineup`, or `--kit-lineup`. Tests: tests/test_art_kit.gd.
 - Next: yard, anvil, ochre, seas and orbD adopt the kit. The kit can add more building kinds on request.
 
+## Update: Tidewell + Rime hub sites at the art bar, on the kit (wt/p_seas, Nov 8)
+- Tidewell (`planet/planets/tidewell/tide_props.gd`, used by `sites.gd` and the district env): new ore
+  barge (lofted hull with boot-top, hoppers with slid lids, lattice conveyor boom, funnelled wheelhouse,
+  windlass and chain, lost container), jack-up dredge rig (K-braced lattice legs through jack houses,
+  panel-wall hull, stacked quarters, helideck, derrick, crane, bucket ladder, pipe racks, lifeboat, stair
+  tower to a boat landing) and the hub raft (three plank platforms on pontoons with gangways, a slipway,
+  shacks, crane, fuel tank, clutter). All parts are KitMesh.Builder keys on the Tidewell palette
+  (white / sky, with yellow / orange / red utility parts); state follows restoration through
+  KitMat (broken / repaired / restored); lamps light only when restored.
+- Colliders: hulls, legs, cabins, tanks, booms and containers are PROP static bodies (skimmers, robots and
+  Lumi stop at them; before, they drove through); raft decks and the slipway are WORLD.
+- Rime: new `planet/planets/rime/rime_site.gd` (`RimeSite.place(id, root, stage, restore, opts)`, the
+  TideSite API shape): hub_camp, derrick, borehole, hot_springs on local ice patches (drifts, ridges,
+  cracks, a plated pad with kerbs; walkable trimesh) with kit cabins on skids, a greenhouse dome, tanks,
+  comms mast, snowcat. Preview: `res://planet/planets/rime/site_preview.tscn -- --site=hub_camp
+  [--site-stage=1 --site-restore=1 --time=0.9 (night)]`. `rime_ice.gdshader` gained `moss_centre`/`moss_off`.
+- Tests: `tests/test_p_seas_sites.gd`. Renders: screenshots/p_seas/.
+- Left: hub_stilts, reef_garden and buoy_field still use the older env props (coral is lumps); the flat
+  district env's towers/lighthouses still use BoxMesh parts; `--planet-env=rime` prints no env line in a
+  fresh headless run (not touched here).
+
 ## Update: loading screen keeps moving, Rime night glint (claude/greenfall-leftovers, Nov 8)
 - **District build across frames.** Behind the loading screen `scenes/slice.gd` builds as a coroutine: the
   heavy first half (field generation, FieldView ground/mounds/junk/landmarks, litter, far junk, CityView,
