@@ -375,6 +375,13 @@ func _dev_cam() -> void:
 	if not DevHooks.has("tide-cam"):
 		return
 	var c: PackedStringArray = DevHooks.get_s("tide-cam", "30,-0.3,0").split(",")
+	var pt: Node3D = world.get("patch")
+	if DevHooks.has("tide-water") and pt and not has_meta("placed"):  # Lumi hovering on open water
+		set_meta("placed", true)
+		for h: int in field.hex_count():
+			if field.is_water(h) and Hex.distance(field.hex_axial[h], Vector2i.ZERO) == 2:
+				pt.global_position = field.hex_center(h) + Vector3(0, 0.3, 0)
+				break
 	var cam: Node = world.get("cam")
 	if cam == null:
 		return
