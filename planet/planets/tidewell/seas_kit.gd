@@ -1,12 +1,14 @@
 class_name SeasKit
 extends RefCounted
-## [p_seas] Small build kit for the Tidewell and Rime hub sites (until art/kit lands on main):
-## bevelled boxes and cylinders (bevel faces carry vertex COLOR.r = 1 so seas_paint.gdshader can
-## wear their edges), greebles (bolts, ribs, rails, ladders, vents, pipes with flanges, lamp
-## housings), image decals (hazard stripes, the Ledger emblem, stencil hull numbers drawn as
-## shapes, never 3D text) and simple static colliders on the PROP / WORLD layers.
-## All mesh builders are cached by their (rounded) dimensions; place them through a
-## FrontierView.Batch so each material ends up as one draw.
+## [p_seas] Placement layer for the Tidewell and Rime hub sites on top of the shared art kit
+## (art/kit, docs/ART_KIT.md): every part goes into a KitMesh.Builder under a kit material KEY
+## ("paint:#rrggbb", "steel", "hazard", "trim:warm", ...), so materials, wear states (broken /
+## repaired / restored) and power come from KitMat. What this file adds for the seas sites:
+## framed placement (origin + basis), chunkier bevels, greebles (bolts, ribs, rails, ladders,
+## vents, flanged pipes, lamp housings, trusses, lattice towers), a lofted ship hull with a
+## boot-top, mesh->kit-primitive conversion (rocks, coils), the helipad image decal, and simple
+## static colliders on the PROP / WORLD layers.
+## bevel_box / bevel_cyl (ArrayMesh) remain for custom-material batches (Rime's glassy ice).
 
 static var _cache: Dictionary = {}
 
@@ -140,6 +142,13 @@ static func bevel_cyl(r: float, hgt: float, segs: int = 14, b: float = -1.0) -> 
 	return m
 
 
+## Chunky default bevel for a box of `size` (sites read from far away: a bit more than the kit's).
+static func _bev(size: Vector3, b: float) -> float:
+	if b >= 0.0:
+		return minf(b, minf(size.x, minf(size.y, size.z)) * 0.45)
+	return clampf(minf(size.x, minf(size.y, size.z)) * 0.16, 0.008, 0.2)
+
+
 ## Transform placing a +Y unit-axis mesh from a to c.
 static func axis_xf(a: Vector3, c: Vector3) -> Transform3D:
 	var d: Vector3 = c - a
@@ -149,23 +158,29 @@ static func axis_xf(a: Vector3, c: Vector3) -> Transform3D:
 	return Transform3D(Basis(x, y, z), (a + c) * 0.5)
 
 
-# --- Placement helpers (into a FrontierView.Batch) ------------------------------------------------
+# --- Placement helpers (into a KitMesh.Builder) ------------------------------------------------
 
 ## A bevelled box at local `pos` in frame (o, bs) with extra rotation `rot` (degrees, local).
-static func box(bt: FrontierView.Batch, o: Vector3, bs: Basis, pos: Vector3, size: Vector3, mat: Material, rot: Vector3 = Vector3.ZERO, bev: float = -1.0) -> void:
+static func box(bt: KitMesh.Builder, o: Vector3, bs: Basis, pos: Vector3, size: Vector3, mat: String, rot: Vector3 = Vector3.ZERO, bev: float = -1.0) -> void:
 	var lb: Basis = bs * Basis.from_euler(rot * (PI / 180.0))
-	bt.add(bevel_box(size, bev), Transform3D(lb, o + bs * pos), mat)
+	bt.add(mat, KitMesh.bevel_box(size.max(Vector3.ONE * 0.01), _bev(size, bev)), Transform3D(lb, o + bs * pos))
 
 
 ## A bevelled cylinder (pipe, post, tank) between local points a and c, radius r.
-static func pipe(bt: FrontierView.Batch, o: Vector3, bs: Basis, a: Vector3, c: Vector3, r: float, mat: Material, segs: int = 12) -> void:
+static func pipe(bt: KitMesh.Builder, o: Vector3, bs: Basis, a: Vector3, c: Vector3, r: float, mat: String, segs: int = 12) -> void:
 	var wa: Vector3 = o + bs * a
 	var wc: Vector3 = o + bs * c
-	bt.add(bevel_cyl(r, wa.distance_to(wc), segs), axis_xf(wa, wc), mat)
+	var ln: float = wa.distance_to(wc)
+	if ln < 0.001:
+		return
+	if r < 0.05:
+		bt.rod(mat, wa, wc, r, mini(segs, 6))
+	else:
+		bt.add(mat, KitMesh.bevel_cylinder(r, ln, clampf(minf(r, ln) * 0.2, 0.01, 0.16), segs), KitMesh.look_y(wa, wc - wa))
 
 
 ## A pipe with chunky flanges at both ends (and every `every` metres).
-static func flanged_pipe(bt: FrontierView.Batch, o: Vector3, bs: Basis, a: Vector3, c: Vector3, r: float, mat: Material, flange_mat: Material, every: float = 4.0) -> void:
+static func flanged_pipe(bt: KitMesh.Builder, o: Vector3, bs: Basis, a: Vector3, c: Vector3, r: float, mat: String, flange_mat: String, every: float = 4.0) -> void:
 	pipe(bt, o, bs, a, c, r, mat)
 	var n: int = maxi(1, int(a.distance_to(c) / every))
 	for k: int in n + 1:
@@ -175,14 +190,14 @@ static func flanged_pipe(bt: FrontierView.Batch, o: Vector3, bs: Basis, a: Vecto
 
 
 ## A row of n bolt heads from a to c on a face pointing `nrm` (local).
-static func bolts(bt: FrontierView.Batch, o: Vector3, bs: Basis, a: Vector3, c: Vector3, n: int, nrm: Vector3, mat: Material, r: float = 0.05) -> void:
+static func bolts(bt: KitMesh.Builder, o: Vector3, bs: Basis, a: Vector3, c: Vector3, n: int, nrm: Vector3, mat: String, r: float = 0.05) -> void:
 	for k: int in n:
 		var p: Vector3 = a.lerp(c, (float(k) + 0.5) / n)
 		pipe(bt, o, bs, p, p + nrm * r * 0.8, r, mat, 6)
 
 
 ## A railing along local points: posts every ~1.6 m, a top rail and a mid rail.
-static func rail(bt: FrontierView.Batch, o: Vector3, bs: Basis, pts: Array[Vector3], hgt: float, mat: Material, r: float = 0.04) -> void:
+static func rail(bt: KitMesh.Builder, o: Vector3, bs: Basis, pts: Array[Vector3], hgt: float, mat: String, r: float = 0.04) -> void:
 	for i: int in pts.size() - 1:
 		var a: Vector3 = pts[i]
 		var c: Vector3 = pts[i + 1]
@@ -197,7 +212,7 @@ static func rail(bt: FrontierView.Batch, o: Vector3, bs: Basis, pts: Array[Vecto
 
 
 ## A ladder from a (bottom) to c (top), width w, facing `out`.
-static func ladder(bt: FrontierView.Batch, o: Vector3, bs: Basis, a: Vector3, c: Vector3, w: float, out: Vector3, mat: Material) -> void:
+static func ladder(bt: KitMesh.Builder, o: Vector3, bs: Basis, a: Vector3, c: Vector3, w: float, out: Vector3, mat: String) -> void:
 	var side: Vector3 = out.cross(Vector3.UP).normalized() * w * 0.5
 	pipe(bt, o, bs, a - side, c - side, 0.035, mat, 6)
 	pipe(bt, o, bs, a + side, c + side, 0.035, mat, 6)
@@ -208,7 +223,7 @@ static func ladder(bt: FrontierView.Batch, o: Vector3, bs: Basis, a: Vector3, c:
 
 
 ## A louvred vent box on a face: frame + slats (normal `out`, local).
-static func vent(bt: FrontierView.Batch, o: Vector3, bs: Basis, pos: Vector3, w: float, hgt: float, out: Vector3, frame: Material, dark: Material) -> void:
+static func vent(bt: KitMesh.Builder, o: Vector3, bs: Basis, pos: Vector3, w: float, hgt: float, out: Vector3, frame: String, dark: String) -> void:
 	var yaw: float = rad_to_deg(atan2(out.x, out.z))
 	box(bt, o, bs, pos, Vector3(w, hgt, 0.12), frame, Vector3(0, yaw, 0))
 	box(bt, o, bs, pos + out * 0.04, Vector3(w * 0.84, hgt * 0.8, 0.08), dark, Vector3(0, yaw, 0), 0.01)
@@ -219,7 +234,7 @@ static func vent(bt: FrontierView.Batch, o: Vector3, bs: Basis, pos: Vector3, w:
 
 
 ## Raised plating ribs on a flat face: n vertical strips across a span (a to c), height hgt.
-static func ribs(bt: FrontierView.Batch, o: Vector3, bs: Basis, a: Vector3, c: Vector3, n: int, hgt: float, out: Vector3, mat: Material) -> void:
+static func ribs(bt: KitMesh.Builder, o: Vector3, bs: Basis, a: Vector3, c: Vector3, n: int, hgt: float, out: Vector3, mat: String) -> void:
 	var yaw: float = rad_to_deg(atan2(out.x, out.z))
 	for k: int in n:
 		var p: Vector3 = a.lerp(c, (float(k) + 0.5) / n) + out * 0.04
@@ -227,7 +242,7 @@ static func ribs(bt: FrontierView.Batch, o: Vector3, bs: Basis, a: Vector3, c: V
 
 
 ## A caged work lamp on a short arm; `lit` adds the lens (warm or cool emissive material).
-static func lamp(bt: FrontierView.Batch, lit_bt: FrontierView.Batch, o: Vector3, bs: Basis, pos: Vector3, out: Vector3, body: Material, lens: Material) -> void:
+static func lamp(bt: KitMesh.Builder, lit_bt: KitMesh.Builder, o: Vector3, bs: Basis, pos: Vector3, out: Vector3, body: String, lens: String) -> void:
 	pipe(bt, o, bs, pos, pos + out * 0.35, 0.04, body, 6)
 	var hp: Vector3 = pos + out * 0.42 + Vector3(0, -0.05, 0)
 	pipe(bt, o, bs, hp - Vector3(0, 0.11, 0), hp + Vector3(0, 0.11, 0), 0.14, body, 10)
@@ -268,115 +283,86 @@ static func solid_cyl(parent: Node3D, o: Vector3, bs: Basis, a: Vector3, c: Vect
 	return body
 
 
-# --- Materials ------------------------------------------------------------------------------------
+# --- Decals and custom meshes ---------------------------------------------------------------------
 
-## A kit paint (seas_paint.gdshader). opts: rust, edge, rough, metal, grime, waterline, tone,
-## nrm (detail strength), detail ("metal_plate" etc.), emission (Color), energy.
-static func paint(col: Color, opts: Dictionary = {}) -> ShaderMaterial:
-	var m := ShaderMaterial.new()
-	m.shader = preload("res://planet/planets/tidewell/seas_paint.gdshader")
-	m.set_shader_parameter("paint", col)
-	m.set_shader_parameter("paint2", opts.get("paint2", col))
-	m.set_shader_parameter("rust", float(opts.get("rust", 0.0)))
-	m.set_shader_parameter("edge_wear", float(opts.get("edge", 0.55)))
-	m.set_shader_parameter("roughness_v", float(opts.get("rough", 0.55)))
-	m.set_shader_parameter("metallic_v", float(opts.get("metal", 0.15)))
-	m.set_shader_parameter("grime", float(opts.get("grime", 0.45)))
-	m.set_shader_parameter("waterline", float(opts.get("waterline", -1000.0)))
-	m.set_shader_parameter("tone_var", float(opts.get("tone", 0.07)))
-	m.set_shader_parameter("detail_nrm", float(opts.get("nrm", 0.3)))
-	m.set_shader_parameter("detail_scale", float(opts.get("dscale", 0.35)))
-	m.set_shader_parameter("edge_col", opts.get("edge_col", Color(0.86, 0.84, 0.78)))
-	m.set_shader_parameter("detail_tex", AssetLib.tex(str(opts.get("detail", "metal_plate")), "nor_gl"))
-	m.set_shader_parameter("rust_tex", AssetLib.tex("rusty_metal_02", "diff"))
-	if opts.has("emission"):
-		m.set_shader_parameter("emission_c", opts["emission"])
-		m.set_shader_parameter("emission_e", float(opts.get("energy", 1.0)))
-	return m
+## A kit atlas decal (docs/ART_KIT.md: logo, num_01..06, warn, chevrons, arrow, ...) at local pos
+## on a face whose outward normal is `out` (local), w x h metres.
+static func decal(bt: KitMesh.Builder, o: Vector3, bs: Basis, pos: Vector3, out: Vector3, w: float, hgt: float, name: String) -> void:
+	var n: Vector3 = (bs * out).normalized()
+	var up: Vector3 = Vector3.UP if absf(n.dot(Vector3.UP)) < 0.95 else bs * Vector3.FORWARD
+	var x: Vector3 = up.cross(n).normalized()
+	var y: Vector3 = n.cross(x).normalized()
+	bt.decal(name, Vector2(w, hgt), Transform3D(Basis(x, y, n), o + bs * pos + n * 0.02))
 
 
-## Diagonal hazard stripes (yellow / near-black), triplanar.
-static func hazard_mat(a: Color = Color(0.95, 0.72, 0.12), b: Color = Color(0.08, 0.08, 0.08)) -> StandardMaterial3D:
-	var key: String = "haz_%s_%s" % [a.to_html(), b.to_html()]
-	if _cache.has(key):
-		return _cache[key]
-	var img := Image.create(64, 64, true, Image.FORMAT_RGB8)
-	for y: int in 64:
-		for x: int in 64:
-			img.set_pixel(x, y, a if ((x + y) / 16) % 2 == 0 else b)
-	img.generate_mipmaps()
-	var m := StandardMaterial3D.new()
-	m.albedo_texture = ImageTexture.create_from_image(img)
-	m.uv1_triplanar = true
-	m.uv1_scale = Vector3.ONE * 1.6
-	m.roughness = 0.6
-	_cache[key] = m
-	return m
-
-
-## An image decal material (alpha-tested quad): "emblem" (the Ledger hex-and-chevron), or digits
-## like "07" drawn as stencil segments. Never 3D text.
-static func decal_mat(kind: String, col: Color = Color(0.92, 0.9, 0.82)) -> StandardMaterial3D:
-	var key: String = "decal_%s_%s" % [kind, col.to_html()]
-	if _cache.has(key):
-		return _cache[key]
-	var w: int = 128 if kind in ["emblem", "helipad"] else 64 * kind.length()
-	var img := Image.create(w, 128, true, Image.FORMAT_RGBA8)
-	img.fill(Color(0, 0, 0, 0))
-	if kind == "emblem":
-		var c := Vector2(64, 64)
-		for y: int in 128:
-			for x: int in 128:
-				var p := Vector2(x, y) - c
-				var hx: float = maxf(absf(p.x) * 0.866 + absf(p.y) * 0.5, absf(p.y))  # hexagon
-				var ring: bool = hx < 58.0 and hx > 46.0
-				var chev: bool = absf(p.y + 8.0 - absf(p.x) * 0.9) < 9.0 and absf(p.x) < 30.0
-				var bar: bool = absf(p.y - 22.0) < 6.0 and absf(p.x) < 26.0
-				if ring or chev or bar:
-					img.set_pixel(x, y, col)
-	elif kind == "helipad":
+## The helipad marking (ring and H), an image decal on its own quad (not in the kit atlas).
+static func helipad(parent: Node3D, pos: Vector3, size: float, col: Color = Color(0.96, 0.78, 0.2)) -> MeshInstance3D:
+	var key: String = "helipad_%s" % col.to_html()
+	if not _cache.has(key):
+		var img := Image.create(128, 128, true, Image.FORMAT_RGBA8)
+		img.fill(Color(0, 0, 0, 0))
 		for y: int in 128:
 			for x: int in 128:
 				var d: float = Vector2(x - 63.5, y - 63.5).length()
 				var hh: bool = (absf(x - 44.0) < 6.0 or absf(x - 84.0) < 6.0 or absf(y - 64.0) < 5.0) and absf(x - 64.0) < 26.0 and absf(y - 64.0) < 28.0
 				if (d > 52.0 and d < 60.0) or hh:
 					img.set_pixel(x, y, col)
-	else:
-		# Seven-segment stencil digits (with stencil bridges), one 64 px cell each.
-		var segs: Dictionary = {"0": "abcdef", "1": "bc", "2": "abged", "3": "abgcd", "4": "fgbc", "5": "afgcd", "6": "afgedc", "7": "abc", "8": "abcdefg", "9": "abcdfg"}
-		for i: int in kind.length():
-			var on: String = segs.get(kind[i], "")
-			var ox: int = i * 64 + 10
-			var rects: Dictionary = {"a": Rect2i(ox + 8, 10, 28, 10), "g": Rect2i(ox + 8, 59, 28, 10), "d": Rect2i(ox + 8, 108, 28, 10),
-				"f": Rect2i(ox, 18, 10, 40), "b": Rect2i(ox + 34, 18, 10, 40), "e": Rect2i(ox, 70, 10, 40), "c": Rect2i(ox + 34, 70, 10, 40)}
-			for sgm: String in on:
-				img.fill_rect(rects[sgm], col)
-	img.generate_mipmaps()
-	var m := StandardMaterial3D.new()
-	m.albedo_texture = ImageTexture.create_from_image(img)
-	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
-	m.alpha_scissor_threshold = 0.5
-	m.roughness = 0.7
-	m.cull_mode = BaseMaterial3D.CULL_DISABLED
-	_cache[key] = m
-	return m
-
-
-## A decal quad at local pos on a face with outward normal `out` (local), w x h metres.
-static func decal(parent: Node3D, o: Vector3, bs: Basis, pos: Vector3, out: Vector3, w: float, hgt: float, mat: Material) -> MeshInstance3D:
-	var q := QuadMesh.new()
-	q.size = Vector2(w, hgt)
+		img.generate_mipmaps()
+		var m := StandardMaterial3D.new()
+		m.albedo_texture = ImageTexture.create_from_image(img)
+		m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
+		m.alpha_scissor_threshold = 0.5
+		m.roughness = 0.7
+		_cache[key] = m
+	var q := PlaneMesh.new()
+	q.size = Vector2(size, size)
 	var mi := MeshInstance3D.new()
 	mi.mesh = q
-	mi.material_override = mat
+	mi.material_override = _cache[key]
 	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	var n: Vector3 = (bs * out).normalized()
-	var up: Vector3 = Vector3.UP if absf(n.dot(Vector3.UP)) < 0.95 else bs * Vector3.FORWARD
-	var x: Vector3 = up.cross(n).normalized()
-	var y: Vector3 = n.cross(x).normalized()
-	mi.transform = Transform3D(Basis(x, y, n), o + bs * pos + n * 0.03)
+	mi.position = pos + Vector3(0, 0.03, 0)
 	parent.add_child(mi)
 	return mi
+
+
+## Any Mesh (first surface) as kit primitive arrays [v, n, c, uv, idx]: COLOR.r edge (from the
+## mesh's own colour if it has one), g = 1 (no extra AO), so it can go into a KitMesh.Builder.
+## mask: -1 all triangles, 0 / 1 only triangles whose COLOR.g is below / above 0.5 (hull boot-top).
+static func prim_of(mesh: Mesh, mask: int = -1) -> Array:
+	var key: String = "prim_%d_%d" % [mesh.get_instance_id(), mask]
+	if _cache.has(key):
+		return _cache[key]
+	var a: Array = mesh.surface_get_arrays(0)
+	var v: PackedVector3Array = a[Mesh.ARRAY_VERTEX]
+	var n: PackedVector3Array = a[Mesh.ARRAY_NORMAL]
+	var c: PackedColorArray = a[Mesh.ARRAY_COLOR] if a[Mesh.ARRAY_COLOR] != null else PackedColorArray()
+	var uv: PackedVector2Array = a[Mesh.ARRAY_TEX_UV] if a[Mesh.ARRAY_TEX_UV] != null else PackedVector2Array()
+	var src_idx: PackedInt32Array = a[Mesh.ARRAY_INDEX] if a[Mesh.ARRAY_INDEX] != null else PackedInt32Array()
+	if src_idx.is_empty():
+		src_idx.resize(v.size())
+		for i: int in v.size():
+			src_idx[i] = i
+	var cols := PackedColorArray()
+	cols.resize(v.size())
+	for i: int in v.size():
+		cols[i] = Color(c[i].r if c.size() > i else 0.0, 1.0, 0.0)
+	if uv.size() != v.size():
+		uv.resize(v.size())
+	var idx := PackedInt32Array()
+	for t: int in range(0, src_idx.size(), 3):
+		if mask >= 0 and c.size() > 0:
+			var g: float = (c[src_idx[t]].g + c[src_idx[t + 1]].g + c[src_idx[t + 2]].g) / 3.0
+			if (g > 0.5) != (mask == 1):
+				continue
+		idx.append_array([src_idx[t], src_idx[t + 1], src_idx[t + 2]])
+	var out: Array = [v, n, cols, uv, idx]
+	_cache[key] = out
+	return out
+
+
+## Adds a Mesh (rock, coil, bulb, hull) to a builder under a kit key.
+static func add_mesh(bt: KitMesh.Builder, key: String, mesh: Mesh, xf: Transform3D, mask: int = -1) -> void:
+	bt.add(key, prim_of(mesh, mask), xf)
 
 
 ## A lofted ship hull along +Z (bow at +Z), keel at y = 0, deck at `depth` (+ sheer toward the
@@ -473,7 +459,7 @@ static func hull_mesh(length: float, beam: float, depth: float, boot: float = -1
 
 
 ## A triangular lattice truss from a to c (width w, depth hgt), chords r, n bays of braces.
-static func truss(bt: FrontierView.Batch, o: Vector3, bs: Basis, a: Vector3, c: Vector3, w: float, hgt: float, mat: Material, r: float = 0.1, taper: float = 1.0) -> void:
+static func truss(bt: KitMesh.Builder, o: Vector3, bs: Basis, a: Vector3, c: Vector3, w: float, hgt: float, mat: String, r: float = 0.1, taper: float = 1.0) -> void:
 	var ax: Vector3 = (c - a).normalized()
 	var ref: Vector3 = Vector3.UP if absf(ax.dot(Vector3.UP)) < 0.9 else Vector3.RIGHT
 	var side: Vector3 = ax.cross(ref).normalized() * w * 0.5
@@ -497,7 +483,7 @@ static func truss(bt: FrontierView.Batch, o: Vector3, bs: Basis, a: Vector3, c: 
 
 ## A vertical lattice tower (sides 3 or 4) from base y0 to top y1 at local xz, radius r0 -> r1,
 ## horizontal rings and X bracing every `step` metres.
-static func tower(bt: FrontierView.Batch, o: Vector3, bs: Basis, c: Vector3, y0: float, y1: float, r0: float, r1: float, sides: int, mat: Material, chord: float = 0.16, step: float = 2.4, rot: float = 0.0) -> void:
+static func tower(bt: KitMesh.Builder, o: Vector3, bs: Basis, c: Vector3, y0: float, y1: float, r0: float, r1: float, sides: int, mat: String, chord: float = 0.16, step: float = 2.4, rot: float = 0.0) -> void:
 	var corner := func(k: int, y: float) -> Vector3:
 		var t: float = (y - y0) / maxf(0.01, y1 - y0)
 		var rr: float = lerpf(r0, r1, t)

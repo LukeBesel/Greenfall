@@ -10,120 +10,77 @@ extends RefCounted
 ## Colliders (PROP layer) go under the always group so robots, skimmers and Lumi bump into hulls,
 ## legs and cabins instead of driving through them.
 
-const LEDGER := Color(0.96, 0.7, 0.14)
-const NAVY := Color(0.15, 0.24, 0.32)
-const ANTIFOUL := Color(0.62, 0.17, 0.12)
-const CREAM := Color(0.9, 0.87, 0.79)
-const TEAL := Color(0.1, 0.52, 0.56)
-const ORANGE := Color(0.95, 0.44, 0.12)
-const STEEL := Color(0.25, 0.27, 0.29)
-const TIMBER := Color(0.56, 0.41, 0.28)
+## The seas palette (kit "paint:<colour>" keys; colour baked per vertex, one paint draw call).
+const LEDGER := "#f5b324"     # the Ledger's yellow: utility parts, booms, legs, rails
+const NAVY := "navy"
+const ANTIFOUL := "#a3301f"   # hull bottoms below the boot-top
+const CREAM := "cream"
+const TEAL := "teal"
+const ORANGE := "orange"
+const TIMBER := "#8f6a47"
+const TIMBER2 := "#664a33"
+
+## TideProps names -> kit material keys (docs/ART_KIT.md "Material keys").
+const KEYS: Dictionary = {
+	"hull": "paint:" + NAVY, "navy": "paint:" + NAVY, "antifoul": "paint:" + ANTIFOUL,
+	"ledger": "paint:" + LEDGER, "cream": "paint:" + CREAM, "teal": "paint:" + TEAL,
+	"orange": "paint:" + ORANGE, "red": "paint:red", "white": "paint:white", "sky": "paint:sky",
+	"timber": "paint:" + TIMBER, "timber2": "paint:" + TIMBER2, "rope": "paint:#a08a60",
+	"rope_line": "paint:#8a7752", "snow": "paint:#eef3fa", "solar": "paint:#1a2a55",
+	"steel": "steel", "steel_plain": "steel", "dark": "dark_steel", "dark_rubber": "rubber",
+	"ore": "dirt", "soil": "dirt", "leaf": "leaves", "concrete": "concrete", "hazard": "hazard",
+	"glass": "glass", "glass_lit": "trim:warm", "lamp_warm": "trim:warm", "bulb": "trim:warm",
+	"lamp_cool": "trim:cool", "lamp_red": "trim:red",
+}
+## Each site group is built in the kit state that matches when it shows.
+const GROUP_STATE: Dictionary = {"always": "repaired", "ruin": "broken", "green": "restored", "mid": "repaired", "future": "restored"}
 
 
-## The kit paints for one env (cached in env._mats under "k:"); all take the sea's waterline.
-static func m(env: Node, key: String) -> Material:
-	var mats: Dictionary = env.get("_mats")
-	if mats.has("k:" + key):
-		return mats["k:" + key]
-	var wl: float = TidewellEnv.SEA_Y + (env as Node3D).global_position.y if (env as Node3D).is_inside_tree() else TidewellEnv.SEA_Y
-	if env.get("kit_dry") == true:
-		wl = -1000.0  # Rime: no sea, no algae band
-	var mt: Material
-	match key:
-		"hull":
-			mt = SeasKit.paint(NAVY, {"waterline": wl, "edge": 0.6, "rough": 0.5})
-			(mt as ShaderMaterial).set_shader_parameter("paint2", ANTIFOUL)
-		"ledger":
-			mt = SeasKit.paint(LEDGER, {"waterline": wl, "edge": 0.7, "rough": 0.45})
-		"cream":
-			mt = SeasKit.paint(CREAM, {"waterline": wl, "edge": 0.4, "rough": 0.55, "metal": 0.05})
-			(mt as ShaderMaterial).set_shader_parameter("paint2", TEAL)
-		"teal":
-			mt = SeasKit.paint(TEAL, {"waterline": wl, "edge": 0.6, "rough": 0.45})
-			(mt as ShaderMaterial).set_shader_parameter("paint2", LEDGER)
-		"orange":
-			mt = SeasKit.paint(ORANGE, {"waterline": wl, "edge": 0.5, "rough": 0.5, "metal": 0.05})
-			(mt as ShaderMaterial).set_shader_parameter("paint2", CREAM)
-		"steel":
-			mt = SeasKit.paint(STEEL, {"waterline": wl, "edge": 0.8, "rough": 0.42, "metal": 0.55})
-		"red":
-			mt = SeasKit.paint(Color(0.72, 0.16, 0.12), {"waterline": wl, "edge": 0.6, "rough": 0.5})
-		"timber":
-			mt = SeasKit.paint(TIMBER, {"waterline": wl, "edge": 0.35, "rough": 0.85, "metal": 0.0, "detail": "concrete_floor_worn_001", "nrm": 0.45, "tone": 0.14})
-		"ore":
-			mt = SeasKit.paint(Color(0.3, 0.24, 0.2), {"edge": 0.0, "rough": 0.95, "metal": 0.0, "detail": "dry_ground_rocks", "nrm": 0.8, "dscale": 0.6, "tone": 0.2})
-		"white":
-			mt = SeasKit.paint(Color(0.94, 0.95, 0.96), {"waterline": wl, "edge": 0.15, "rough": 0.3, "metal": 0.05, "tone": 0.02})
-			(mt as ShaderMaterial).set_shader_parameter("paint2", Color(0.62, 0.86, 0.95))
-		"dark":
-			mt = SeasKit.paint(Color(0.06, 0.07, 0.08), {"edge": 0.0, "rough": 0.7, "metal": 0.0, "tone": 0.02})
-		"glass":
-			mt = Mats.glass(Color(0.05, 0.1, 0.13, 1.0), 0.08)
-		"glass_lit":
-			var g := Mats.lamp(Color(1.0, 0.82, 0.55), 0.9)
-			g.albedo_color = Color(1.0, 0.86, 0.62)
-			mt = g
-		"lamp_warm":
-			mt = Mats.lamp(Color(1.0, 0.82, 0.55), 2.2)
-		"snow":
-			mt = SeasKit.paint(Color(0.9, 0.94, 1.0), {"edge": 0.0, "rough": 0.7, "metal": 0.0, "detail": "snow_02", "nrm": 0.6, "dscale": 0.5, "tone": 0.04, "grime": 0.1})
-		"navy":
-			mt = SeasKit.paint(NAVY, {"waterline": wl, "edge": 0.6, "rough": 0.5})
-		"lamp_red":
-			mt = Mats.lamp(Color(1.0, 0.25, 0.18), 2.4)
-		"concrete":
-			mt = SeasKit.paint(Color(0.62, 0.63, 0.62), {"edge": 0.5, "rough": 0.85, "metal": 0.0, "detail": "dirty_concrete", "nrm": 0.6, "tone": 0.1, "edge_col": Color(0.78, 0.78, 0.76)})
-		"steel_plain":
-			mt = Mats.metal("dark_steel")
-		"bulb":
-			mt = Mats.lamp(Color(1.0, 0.8, 0.5), 2.6)
-		"rope_line":
-			var rl := StandardMaterial3D.new()
-			rl.albedo_color = Color(0.62, 0.54, 0.38)
-			rl.roughness = 0.95
-			mt = rl
-		"dark_rubber":
-			mt = Mats.rubber()
-		"timber2":
-			mt = SeasKit.paint(Color(0.4, 0.29, 0.2), {"waterline": wl, "edge": 0.3, "rough": 0.88, "metal": 0.0, "detail": "concrete_floor_worn_001", "nrm": 0.45, "tone": 0.14})
-		"lamp_cool":
-			mt = Mats.lamp(Color(0.66, 0.92, 1.0), 1.4)
-		"rope":
-			var r := StandardMaterial3D.new()
-			r.albedo_color = Color(0.72, 0.62, 0.42)
-			r.roughness = 0.95
-			mt = r
-		"solar":
-			var sp := StandardMaterial3D.new()
-			sp.albedo_color = Color(0.06, 0.12, 0.26)
-			sp.metallic = 0.5
-			sp.roughness = 0.15
-			mt = sp
-		"hazard":
-			mt = SeasKit.hazard_mat()
-		"leaf":
-			var lf := StandardMaterial3D.new()
-			lf.albedo_texture = AssetLib.tex("leafy_grass", "diff")
-			lf.albedo_color = Color(0.6, 0.9, 0.48)
-			lf.uv1_triplanar = true
-			lf.uv1_scale = Vector3.ONE * 0.8
-			lf.roughness = 0.8
-			mt = lf
-		"soil":
-			mt = SeasKit.paint(Color(0.24, 0.17, 0.12), {"edge": 0.0, "rough": 0.95, "metal": 0.0, "detail": "farm_soil", "nrm": 0.6, "tone": 0.2})
-		_:
-			mt = SeasKit.paint(Color.MAGENTA)
-	mats["k:" + key] = mt
-	return mt
+## Kit key for a TideProps material name (env kept for the old call shape).
+static func m(_env: Node, key: String) -> String:
+	return str(KEYS.get(key, "paint:" + key))
 
 
-## Rust follows the state: ruin ~0.9, restored fades to ~0.15, future clean.
+## A kit builder for one of the env's groups.
+static func builder(env: Node, group: String) -> KitMesh.Builder:
+	var rng: RandomNumberGenerator = env.get("_rng")
+	return KitMesh.Builder.new(rng.randi(), {}, str(GROUP_STATE.get(group, "repaired")))
+
+
+## Commits a builder into the group as one MeshInstance3D (kit materials for its state). The
+## always group's meshes are remembered: set_rust re-applies their state as the site recovers.
+static func flush(env: Node, b: KitMesh.Builder, group: String) -> MeshInstance3D:
+	if b.surface_count() == 0:
+		return null
+	var mi: MeshInstance3D = KitMesh.instance(b, b.state, group != "ruin")
+	mi.name = "Kit_" + group
+	_g(env, group).add_child(mi)
+	if group in ["always", "mid"]:
+		var mats: Dictionary = env.get("_mats")
+		if not mats.has("_kit_always"):
+			mats["_kit_always"] = []
+		(mats["_kit_always"] as Array).append(mi)
+	return mi
+
+
+## The kit wear state for a site state: broken while ruined, repaired as it recovers, restored.
+static func kit_state(stage: int, restore: float) -> String:
+	if stage == 0:
+		return "broken" if restore < 0.5 else "repaired"
+	if stage == 1 and restore < 0.6:
+		return "repaired"
+	return "restored"
+
+
+## Re-applies the always-built structures' kit state (rust, wear, lit glass) for a site state.
+## (Named for its old job: rust follows restoration.)
 static func set_rust(env: Node, stage: int, restore: float) -> void:
-	var r: float = 0.0 if stage == 2 else lerpf(0.9, 0.15, clampf(restore, 0.0, 1.0)) if stage == 0 else lerpf(0.45, 0.12, clampf(restore, 0.0, 1.0))
+	var st: String = kit_state(stage, restore)
 	var mats: Dictionary = env.get("_mats")
-	for k: String in mats:
-		if k.begins_with("k:") and mats[k] is ShaderMaterial:
-			(mats[k] as ShaderMaterial).set_shader_parameter("rust", r)
+	for mi: MeshInstance3D in mats.get("_kit_always", []):
+		if is_instance_valid(mi):
+			KitMat.apply(mi, st, stage >= 1)
+	mats["_kit_state"] = st
 
 
 static func _g(env: Node, g: String) -> Node3D:
@@ -139,10 +96,10 @@ static func _g(env: Node, g: String) -> Node3D:
 static func barge(env: Node, p: Vector3, yaw: float) -> void:
 	var rng: RandomNumberGenerator = env.get("_rng")
 	var always: Node3D = _g(env, "always")
-	var a := FrontierView.Batch.new()
-	var ruin := FrontierView.Batch.new()
-	var grn := FrontierView.Batch.new()
-	var fut := FrontierView.Batch.new()
+	var a := builder(env, "always")
+	var ruin := builder(env, "ruin")
+	var grn := builder(env, "green")
+	var fut := builder(env, "future")
 	var bs := Basis(Vector3.UP, yaw) * Basis(Vector3.RIGHT, deg_to_rad(5.0)) * Basis(Vector3.FORWARD, deg_to_rad(7.0))
 	var o := Vector3(p.x, -2.3, p.z)
 	var L: float = 52.0
@@ -150,7 +107,8 @@ static func barge(env: Node, p: Vector3, yaw: float) -> void:
 	var D: float = 6.0
 	var sheer: float = 1.4
 	var deck := func(z: float) -> float: return D + sheer * pow(clampf((z + L * 0.5) / L, 0.0, 1.0), 2.2) - 0.02
-	a.add(SeasKit.hull_mesh(L, W, D, 3.0, 11.0, sheer), Transform3D(bs, o), m(env, "hull"))
+	SeasKit.add_mesh(a, m(env, "hull"), SeasKit.hull_mesh(L, W, D, 3.0, 11.0, sheer), Transform3D(bs, o), 0)
+	SeasKit.add_mesh(a, m(env, "antifoul"), SeasKit.hull_mesh(L, W, D, 3.0, 11.0, sheer), Transform3D(bs, o), 1)
 	# Rub rails / strakes along the midbody and a gunwale cap.
 	for sd: float in [-1.0, 1.0]:
 		for y: float in [2.1, 4.3]:
@@ -164,8 +122,8 @@ static func barge(env: Node, p: Vector3, yaw: float) -> void:
 		pts = [Vector3(sd * W * 0.47, deck.call(6.0), 6.0), Vector3(sd * W * 0.45, deck.call(16.0), 16.0)]
 		SeasKit.rail(a, o, bs, pts, 1.0, m(env, "ledger"))
 		# Hull number + emblem near the bow (image decals).
-		SeasKit.decal(always, o, bs, Vector3(sd * (W * 0.5 + 0.08), 4.9, 17.0), Vector3(sd, 0, 0), 2.6, 2.4, SeasKit.decal_mat("03"))
-		SeasKit.decal(always, o, bs, Vector3(sd * (W * 0.5 + 0.08), 4.6, -2.0), Vector3(sd, 0, 0), 2.2, 2.2, SeasKit.decal_mat("emblem", Color(0.96, 0.72, 0.18)))
+		SeasKit.decal(a, o, bs, Vector3(sd * (W * 0.5 + 0.08), 4.9, 17.0), Vector3(sd, 0, 0), 2.4, 2.4, "num_03")
+		SeasKit.decal(a, o, bs, Vector3(sd * (W * 0.5 + 0.08), 4.6, -2.0), Vector3(sd, 0, 0), 2.2, 2.2, "logo")
 	# Hoppers: coamings with hazard caps, ore heaps, hatch lids (some slid off and tilted).
 	for k: int in 4:
 		var hz: float = -11.0 + k * 7.6
@@ -174,7 +132,7 @@ static func barge(env: Node, p: Vector3, yaw: float) -> void:
 		SeasKit.box(a, o, bs, Vector3(0, y + 0.97, hz), Vector3(8.7, 0.08, 6.3), m(env, "hazard"))
 		SeasKit.box(a, o, bs, Vector3(0, y + 0.7, hz), Vector3(7.6, 0.4, 5.2), m(env, "dark"))
 		for j: int in 3:
-			a.add(env.call("_lumpy", j + k, 0.4, 2.2), Transform3D(bs * Basis.from_scale(Vector3(2.4, 0.9, 1.8)), o + bs * Vector3(-2.2 + j * 2.2, y + 0.9, hz + rng.randf_range(-1, 1))), m(env, "ore"))
+			SeasKit.add_mesh(a, m(env, "ore"), env.call("_lumpy", j + k, 0.4, 2.2), Transform3D(bs * Basis.from_scale(Vector3(2.4, 0.9, 1.8)), o + bs * Vector3(-2.2 + j * 2.2, y + 0.9, hz + rng.randf_range(-1, 1))))
 		var lid_x: float = [0.0, 3.5, -2.0, 6.0][k]
 		var tilt: Vector3 = [Vector3(0, 0, 0), Vector3(0, 0, -9), Vector3(4, 8, 0), Vector3(0, 12, -24)][k]
 		var lid_y: float = y + 1.25 + absf(tilt.z) * 0.04
@@ -233,7 +191,7 @@ static func barge(env: Node, p: Vector3, yaw: float) -> void:
 	SeasKit.pipe(a, o, bs, Vector3(0, wy + 5.0, fz), Vector3(0, wy + 9.5, fz - 0.7), 1.0, m(env, "teal"), 16)
 	SeasKit.pipe(a, o, bs, Vector3(0, wy + 8.0, fz - 0.46), Vector3(0, wy + 8.8, fz - 0.58), 1.04, m(env, "ledger"), 16)
 	SeasKit.pipe(a, o, bs, Vector3(0, wy + 9.4, fz - 0.68), Vector3(0, wy + 9.7, fz - 0.72), 1.08, m(env, "dark"), 16)
-	SeasKit.decal(always, o, bs, Vector3(0, wy + 7.0, fz + 0.62), Vector3(0, 0.06, 1).normalized(), 1.4, 1.4, SeasKit.decal_mat("emblem", Color(0.96, 0.72, 0.18)))
+	SeasKit.decal(a, o, bs, Vector3(0, wy + 7.0, fz + 1.02), Vector3(0, 0.06, 1).normalized(), 1.4, 1.4, "logo")
 	var mb := Vector3(0, wy + 6.0, wz + 0.4)
 	SeasKit.pipe(a, o, bs, mb, mb + Vector3(0, 4.5, 0), 0.14, m(env, "cream"), 10)
 	SeasKit.pipe(a, o, bs, mb + Vector3(-1.6, 3.4, 0), mb + Vector3(1.6, 3.4, 0), 0.07, m(env, "cream"), 8)
@@ -280,7 +238,7 @@ static func barge(env: Node, p: Vector3, yaw: float) -> void:
 	for k: int in 3:
 		var rp := Vector3([3.8, -3.6, 2.0][k], 0, [-23.5, 19.5, 20.5][k])
 		for j: int in 3:
-			a.add(coil, Transform3D(bs, o + bs * (rp + Vector3(0, deck.call(rp.z) + 0.1 + j * 0.14, 0))), m(env, "rope"))
+			SeasKit.add_mesh(a, m(env, "rope"), coil, Transform3D(bs, o + bs * (rp + Vector3(0, deck.call(rp.z) + 0.1 + j * 0.14, 0))))
 	for k: int in 6:
 		var dz: float = rng.randf_range(-16.0, 18.0)
 		SeasKit.box(ruin, o, bs, Vector3(rng.randf_range(-4.5, 4.5), deck.call(dz) + 0.15, dz), Vector3(rng.randf_range(0.8, 2.0), 0.12, rng.randf_range(0.5, 1.4)), m(env, "steel"), Vector3(rng.randf_range(-15, 15), rng.randf() * 360.0, rng.randf_range(-15, 15)))
@@ -291,7 +249,7 @@ static func barge(env: Node, p: Vector3, yaw: float) -> void:
 		SeasKit.box(grn, o, bs, Vector3(0, y + 1.0, hz), Vector3(7.6, 0.2, 5.2), m(env, "soil"))
 		for j: int in 5:
 			var s: float = rng.randf_range(0.7, 1.3)
-			grn.add(env.call("_lumpy", 5 + j % 3, 0.5, 3.0), Transform3D(bs * Basis.from_scale(Vector3(s * 1.3, s, s * 1.3)), o + bs * Vector3(rng.randf_range(-2.8, 2.8), y + 1.4, hz + rng.randf_range(-1.8, 1.8))), m(env, "leaf"))
+			SeasKit.add_mesh(grn, m(env, "leaf"), env.call("_lumpy", 5 + j % 3, 0.5, 3.0), Transform3D(bs * Basis.from_scale(Vector3(s * 1.3, s, s * 1.3)), o + bs * Vector3(rng.randf_range(-2.8, 2.8), y + 1.4, hz + rng.randf_range(-1.8, 1.8))))
 	for k: int in 3:
 		SeasKit.box(grn, o, bs, Vector3(-3.0 + k * 3.0, wy + 6.45, wz - 0.4), Vector3(2.6, 0.08, 3.4), m(env, "solar"), Vector3(-10, 0, 0))
 	var bulb := SphereMesh.new()
@@ -304,16 +262,16 @@ static func barge(env: Node, p: Vector3, yaw: float) -> void:
 		for k: int in 16:
 			var t: float = (float(k) + 0.5) / 16.0
 			var lp: Vector3 = top_m.lerp(end, t) - Vector3(0, sin(t * PI) * 1.2, 0)
-			grn.add(bulb, Transform3D(bs, o + bs * lp), m(env, "bulb"))
+			SeasKit.add_mesh(grn, m(env, "bulb"), bulb, Transform3D(bs, o + bs * lp))
 		SeasKit.pipe(grn, o, bs, top_m, end, 0.012, m(env, "dark"), 4)
 	# Future: white cladding over the wheelhouse and a thin light line at the deck edge.
 	SeasKit.box(fut, o, bs, Vector3(0, wy + 3.1, wz + 0.2), Vector3(11.4, 6.4, 6.8), m(env, "white"))
 	for sd: float in [-1.0, 1.0]:
 		SeasKit.box(fut, o, bs, Vector3(sd * W * 0.51, D + 0.32, -6.0), Vector3(0.05, 0.05, 36.0), m(env, "lamp_cool"), Vector3.ZERO, 0.01)
-	a.flush(always)
-	ruin.flush(_g(env, "ruin"))
-	grn.flush(_g(env, "green"))
-	fut.flush(_g(env, "future"))
+	flush(env, a, "always")
+	flush(env, ruin, "ruin")
+	flush(env, grn, "green")
+	flush(env, fut, "future")
 	# Colliders: the hull in four tilted slices, the wheelhouse, the container, the boom turret.
 	for k: int in 4:
 		var z: float = -19.5 + k * 13.0
@@ -342,10 +300,10 @@ static func barge(env: Node, p: Vector3, yaw: float) -> void:
 static func rig(env: Node, p: Vector3, yaw: float, number: int = 7) -> void:
 	var rng: RandomNumberGenerator = env.get("_rng")
 	var always: Node3D = _g(env, "always")
-	var a := FrontierView.Batch.new()
-	var grn := FrontierView.Batch.new()
-	var fut := FrontierView.Batch.new()
-	var ruin := FrontierView.Batch.new()
+	var a := builder(env, "always")
+	var grn := builder(env, "green")
+	var fut := builder(env, "future")
+	var ruin := builder(env, "ruin")
 	var bs := Basis(Vector3.UP, yaw) * Basis(Vector3.FORWARD, deg_to_rad(2.5))
 	var o := Vector3(p.x, 0.0, p.z)
 	var dy: float = 10.0          # hull bottom
@@ -358,8 +316,8 @@ static func rig(env: Node, p: Vector3, yaw: float, number: int = 7) -> void:
 	for sd: float in [-1.0, 1.0]:
 		SeasKit.ribs(a, o, bs, Vector3(-hx + 1.0, dy + 1.7, sd * hz), Vector3(hx - 1.0, dy + 1.7, sd * hz), 9, 2.8, Vector3(0, 0, sd), m(env, "steel"))
 		SeasKit.ribs(a, o, bs, Vector3(sd * hx, dy + 1.7, -hz + 1.0), Vector3(sd * hx, dy + 1.7, hz - 1.0), 7, 2.8, Vector3(sd, 0, 0), m(env, "steel"))
-		SeasKit.decal(always, o, bs, Vector3(sd * (hx + 0.05), dy + 1.9, -4.0), Vector3(sd, 0, 0), 2.4, 2.4, SeasKit.decal_mat("emblem", Color(0.96, 0.72, 0.18)))
-		SeasKit.decal(always, o, bs, Vector3(sd * (hx + 0.05), dy + 1.9, 4.0), Vector3(sd, 0, 0), 2.6, 2.2, SeasKit.decal_mat("%02d" % number))
+		SeasKit.decal(a, o, bs, Vector3(sd * (hx + 0.05), dy + 1.9, -4.0), Vector3(sd, 0, 0), 2.4, 2.4, "logo")
+		SeasKit.decal(a, o, bs, Vector3(sd * (hx + 0.05), dy + 1.9, 4.0), Vector3(sd, 0, 0), 2.2, 2.2, "num_%02d" % clampi(number, 1, 6))
 	SeasKit.rail(a, o, bs, [Vector3(-hx + 0.3, top, -hz + 0.3), Vector3(hx - 0.3, top, -hz + 0.3), Vector3(hx - 0.3, top, hz - 0.3), Vector3(-hx + 0.3, top, hz - 0.3), Vector3(-hx + 0.3, top, -hz + 3.0)] as Array[Vector3], 1.1, m(env, "ledger"))
 	# Legs: triangular lattice towers with K-bracing, red/white tips, jack houses at the deck.
 	for lx: float in [-1.0, 1.0]:
@@ -395,12 +353,12 @@ static func rig(env: Node, p: Vector3, yaw: float, number: int = 7) -> void:
 	SeasKit.pipe(a, o, bs, qc + Vector3(1.6, ty, 1.0), qc + Vector3(1.6, ty + 1.0, 1.0), 0.12, m(env, "steel"), 8)
 	SeasKit.pipe(a, o, bs, qc + Vector3(1.6, ty + 1.3, 1.4), qc + Vector3(1.6, ty + 1.5, 0.7), 0.8, m(env, "cream"), 16)
 	SeasKit.pipe(grn, o, bs, qc + Vector3(-1.5, ty + 6.0, 0), qc + Vector3(-1.5, ty + 6.3, 0), 0.13, m(env, "lamp_warm"), 8)
-	SeasKit.decal(always, o, bs, qc + Vector3(0, 4.4, 3.56), Vector3(0, 0, 1), 1.8, 1.8, SeasKit.decal_mat("emblem", Color(0.15, 0.24, 0.32)))
+	SeasKit.decal(a, o, bs, qc + Vector3(0, 4.4, 4.0), Vector3(0, 0, 1), 1.8, 1.8, "logo")
 	# Helideck: an octagon cantilevered past the quarters on a truss, with the H and a net rail.
 	var hc := Vector3(-hx - 4.5, ty + top - 0.6, -hz + 5.5)
 	SeasKit.box(a, o, bs, hc + Vector3(0, -0.2, 0), Vector3(8.4, 0.5, 8.4), m(env, "steel"), Vector3(0, 22.5, 0), 0.2)
 	SeasKit.box(a, o, bs, hc + Vector3(0, -0.2, 0), Vector3(8.4, 0.5, 8.4), m(env, "steel"), Vector3(0, 67.5, 0), 0.2)
-	SeasKit.decal(always, o, bs, hc + Vector3(0, 0.06, 0), Vector3(0, 1, 0), 7.2, 7.2, SeasKit.decal_mat("helipad", Color(0.96, 0.78, 0.2)))
+	SeasKit.helipad(always, o + bs * (hc + Vector3(0, 0.06, 0)), 7.2)
 	for k: int in 3:
 		SeasKit.truss(a, o, bs, hc + Vector3(4.2, -0.5, -3.0 + k * 3.0), hc + Vector3(9.2, -ty + 0.5, -2.0 + k * 2.0), 0.6, 0.6, m(env, "ledger"), 0.12)
 	# Derrick on its drill floor.
@@ -451,7 +409,7 @@ static func rig(env: Node, p: Vector3, yaw: float, number: int = 7) -> void:
 		SeasKit.ribs(a, o, bs, cpos + Vector3(-2.8, 0, 1.2), cpos + Vector3(2.8, 0, 1.2), 9, 2.3, Vector3(0, 0, 1), m(env, cols[k]))
 	# Lifeboat on davits over the side, and a stair tower to a boat landing.
 	var lbp := Vector3(-6.0, top + 1.5, hz + 1.8)
-	a.add(SeasKit.hull_mesh(6.5, 2.4, 1.3, 0.5, 1.6, 0.2), Transform3D(bs * Basis(Vector3.UP, PI * 0.5), o + bs * lbp), m(env, "orange"))
+	SeasKit.add_mesh(a, m(env, "orange"), SeasKit.hull_mesh(6.5, 2.4, 1.3, 0.5, 1.6, 0.2), Transform3D(bs * Basis(Vector3.UP, PI * 0.5), o + bs * lbp))
 	SeasKit.box(a, o, bs, lbp + Vector3(0, 1.6, 0), Vector3(5.2, 0.7, 2.0), m(env, "orange"))
 	for dx: float in [-2.6, 2.6]:
 		SeasKit.pipe(a, o, bs, Vector3(-6.0 + dx, top, hz - 0.6), Vector3(-6.0 + dx, top + 3.4, hz + 1.8), 0.14, m(env, "steel"), 8)
@@ -480,10 +438,10 @@ static func rig(env: Node, p: Vector3, yaw: float, number: int = 7) -> void:
 		SeasKit.box(fut, o, bs, Vector3(-1.0 + (k % 2) * 6.4, top + 5.3, 8.6 + (k / 2) * 0.1), Vector3(5.6, 0.08, 2.2), m(env, "solar"), Vector3(-8, 0, 0))
 	# Ruin: drifting debris under the legs, a toppled container on the deck.
 	SeasKit.box(ruin, o, bs, Vector3(-9.0, top + 1.0, 6.0), Vector3(6.0, 2.5, 2.4), m(env, "teal"), Vector3(0, 40, 86))
-	a.flush(always)
-	grn.flush(_g(env, "green"))
-	fut.flush(_g(env, "future"))
-	ruin.flush(_g(env, "ruin"))
+	flush(env, a, "always")
+	flush(env, grn, "green")
+	flush(env, fut, "future")
+	flush(env, ruin, "ruin")
 
 
 # --- Raft hub ------------------------------------------------------------------------------------------
@@ -491,7 +449,7 @@ static func rig(env: Node, p: Vector3, yaw: float, number: int = 7) -> void:
 ## A lived-in shack on a deck: bevelled walls with corrugation ribs, a pitched roof with overhang
 ## and ridge cap, framed door with a step and a lamp, framed windows with sills and shutters, an AC
 ## box, a stove pipe, a flower box (restored). Colour from `paint` ("cream", "teal", "orange").
-static func shack(env: Node, a: FrontierView.Batch, grn: FrontierView.Batch, fut: FrontierView.Batch, o: Vector3, yaw: float, size: Vector3, paint: String, trim: String) -> void:
+static func shack(env: Node, a: KitMesh.Builder, grn: KitMesh.Builder, fut: KitMesh.Builder, o: Vector3, yaw: float, size: Vector3, paint: String, trim: String) -> void:
 	var bs := Basis(Vector3.UP, yaw)
 	var hx: float = size.x * 0.5
 	var hz: float = size.z * 0.5
@@ -536,7 +494,7 @@ static func shack(env: Node, a: FrontierView.Batch, grn: FrontierView.Batch, fut
 			SeasKit.box(a, o, bs, wp + wn * 0.1 + side * s2 * 0.82, Vector3(0.42, 1.05, 0.06), m(env, "teal" if paint != "teal" else "orange"), Vector3(0, yaw_d + s2 * 12.0, 0), 0.02)
 		SeasKit.box(grn, o, bs, wp + wn * 0.32 + Vector3(0, -0.72, 0), Vector3(1.2, 0.26, 0.3), m(env, "timber"), Vector3(0, yaw_d, 0))
 		for k: int in 3:
-			grn.add(env.call("_lumpy", 5 + k, 0.5, 3.0), Transform3D(bs * Basis.from_scale(Vector3(0.28, 0.24, 0.2)), o + bs * (wp + wn * 0.32 + side * (k - 1) * 0.36 + Vector3(0, -0.5, 0))), m(env, "leaf"))
+			SeasKit.add_mesh(grn, m(env, "leaf"), env.call("_lumpy", 5 + k, 0.5, 3.0), Transform3D(bs * Basis.from_scale(Vector3(0.28, 0.24, 0.2)), o + bs * (wp + wn * 0.32 + side * (k - 1) * 0.36 + Vector3(0, -0.5, 0))))
 	# AC box, stove pipe with a cap, a little antenna.
 	SeasKit.box(a, o, bs, Vector3(-hx - 0.4, 1.0, -hz * 0.3), Vector3(0.7, 0.8, 1.1), m(env, "cream"))
 	SeasKit.vent(a, o, bs, Vector3(-hx - 0.76, 1.0, -hz * 0.3), 0.6, 0.6, Vector3(-1, 0, 0), m(env, "steel"), m(env, "dark"))
@@ -550,7 +508,7 @@ static func shack(env: Node, a: FrontierView.Batch, grn: FrontierView.Batch, fut
 ## A rectangular timber platform module centred at local c (size sx x sz, deck top at y): plank
 ## boards in two tones over a bevelled rim beam, steel corner plates, orange pontoon floats along
 ## the long sides (with the algae waterline), cleats. Adds a WORLD-layer deck collider.
-static func platform(env: Node, a: FrontierView.Batch, o: Vector3, bs: Basis, c: Vector3, sx: float, sz: float, y: float) -> void:
+static func platform(env: Node, a: KitMesh.Builder, o: Vector3, bs: Basis, c: Vector3, sx: float, sz: float, y: float) -> void:
 	var rng: RandomNumberGenerator = env.get("_rng")
 	var x: float = -sx * 0.5 + 0.3
 	var i: int = 0
@@ -590,10 +548,10 @@ static func platform(env: Node, a: FrontierView.Batch, o: Vector3, bs: Basis, c:
 static func raft(env: Node) -> void:
 	var rng: RandomNumberGenerator = env.get("_rng")
 	var always: Node3D = _g(env, "always")
-	var a := FrontierView.Batch.new()
-	var ruin := FrontierView.Batch.new()
-	var grn := FrontierView.Batch.new()
-	var fut := FrontierView.Batch.new()
+	var a := builder(env, "always")
+	var ruin := builder(env, "ruin")
+	var grn := builder(env, "green")
+	var fut := builder(env, "future")
 	var bs := Basis(Vector3.UP, 0.3)
 	var o := Vector3.ZERO
 	var y: float = 0.75
@@ -660,14 +618,14 @@ static func raft(env: Node) -> void:
 	coil.outer_radius = 0.55
 	for rp: Vector3 in [Vector3(-8.0, y, -5.0), Vector3(8.5, y, 5.5), Vector3(-15.5, y, 6.5)]:
 		for j: int in 3:
-			a.add(coil, Transform3D(bs, o + bs * (rp + Vector3(0, 0.1 + j * 0.12, 0))), m(env, "rope"))
+			SeasKit.add_mesh(a, m(env, "rope"), coil, Transform3D(bs, o + bs * (rp + Vector3(0, 0.1 + j * 0.12, 0))))
 	var tyre := TorusMesh.new()
 	tyre.inner_radius = 0.25
 	tyre.outer_radius = 0.5
 	for k: int in 8:
 		var md: Array = mods[k % 3]
 		var tp: Vector3 = (md[0] as Vector3) + Vector3(rng.randf_range(-0.4, 0.4) * float(md[1]), y - 0.5, (float(md[2]) * 0.5 + 0.15) * (1.0 if k % 2 == 0 else -1.0))
-		a.add(tyre, Transform3D(bs * Basis(Vector3.RIGHT, PI * 0.5), o + bs * tp), m(env, "dark_rubber"))
+		SeasKit.add_mesh(a, m(env, "dark_rubber"), tyre, Transform3D(bs * Basis(Vector3.RIGHT, PI * 0.5), o + bs * tp))
 	# Moorings to two buoys.
 	var bpts: Array[Transform3D] = []
 	for k: int in 2:
@@ -693,7 +651,7 @@ static func raft(env: Node) -> void:
 		SeasKit.box(grn, o, bs, pp + Vector3(0, 0.58, 0), Vector3(1.45, 0.06, 0.66), m(env, "soil"))
 		for j: int in 3:
 			var s: float = rng.randf_range(0.3, 0.5)
-			grn.add(env.call("_lumpy", 5 + j, 0.55, 3.0), Transform3D(bs * Basis.from_scale(Vector3(s * 1.2, s, s)), o + bs * (pp + Vector3(-0.5 + j * 0.5, 0.75, 0))), m(env, "leaf"))
+			SeasKit.add_mesh(grn, m(env, "leaf"), env.call("_lumpy", 5 + j, 0.55, 3.0), Transform3D(bs * Basis.from_scale(Vector3(s * 1.2, s, s)), o + bs * (pp + Vector3(-0.5 + j * 0.5, 0.75, 0))))
 	var bulb := SphereMesh.new()
 	bulb.radius = 0.08
 	bulb.height = 0.16
@@ -702,13 +660,13 @@ static func raft(env: Node) -> void:
 	for seg: Array in [[Vector3(-9.0, y + 3.3, 6.0), Vector3(0.0, y + 3.3, 6.0)], [Vector3(0.0, y + 3.3, 6.0), Vector3(9.0, y + 3.3, 6.0)], [Vector3(9.0, y + 3.3, 6.0), Vector3(12.0, y + 3.3, -9.0)]]:
 		for k: int in 10:
 			var t: float = (float(k) + 0.5) / 10.0
-			grn.add(bulb, Transform3D(bs, o + bs * ((seg[0] as Vector3).lerp(seg[1], t) - Vector3(0, sin(t * PI) * 0.6, 0))), m(env, "lamp_warm"))
+			SeasKit.add_mesh(grn, m(env, "lamp_warm"), bulb, Transform3D(bs, o + bs * ((seg[0] as Vector3).lerp(seg[1], t) - Vector3(0, sin(t * PI) * 0.6, 0))))
 	# Future: a white canopy sail on slim masts over the main deck.
 	for k: int in 3:
 		var ang: float = TAU * k / 3.0
 		SeasKit.pipe(fut, o, bs, Vector3(cos(ang) * 8.0, y, sin(ang) * 5.5), Vector3(cos(ang) * 8.0, y + 6.5, sin(ang) * 5.5), 0.12, m(env, "white"), 10)
-	fut.add(env.call("_blob_slab", 12, 0.12, 1.0, 3), Transform3D(bs * Basis.from_euler(Vector3(4, 30, 0) * (PI / 180.0)) * Basis.from_scale(Vector3(10.0, 0.08, 7.5)), o + bs * Vector3(0, y + 6.6, 0)), env.call("_mat", "white"))
-	a.flush(always)
-	ruin.flush(_g(env, "ruin"))
-	grn.flush(_g(env, "green"))
-	fut.flush(_g(env, "future"))
+	SeasKit.add_mesh(fut, m(env, "white"), env.call("_blob_slab", 12, 0.12, 1.0, 3), Transform3D(bs * Basis.from_euler(Vector3(4, 30, 0) * (PI / 180.0)) * Basis.from_scale(Vector3(10.0, 0.08, 7.5)), o + bs * Vector3(0, y + 6.6, 0)))
+	flush(env, a, "always")
+	flush(env, ruin, "ruin")
+	flush(env, grn, "green")
+	flush(env, fut, "future")

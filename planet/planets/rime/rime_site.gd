@@ -27,7 +27,6 @@ const ICE_SHADER := preload("res://planet/planets/rime/rime_ice.gdshader")
 const PROP_ICE_SHADER := preload("res://planet/planets/rime/rime_prop_ice.gdshader")
 const POOL_SHADER := preload("res://planet/planets/rime/rime_pool.gdshader")
 
-var kit_dry: bool = true
 var site_id: String = ""
 var radius: float = 44.0
 var pad_r: float = 16.0
@@ -37,6 +36,7 @@ var _rn := FastNoiseLite.new()
 var _pools_mi: Array[MeshInstance3D] = []
 var _steam: Array[CPUParticles3D] = []
 var _decks: Array[Vector3] = []
+var _ice_b: Dictionary = {}  # group -> FrontierView.Batch of glassy ice (custom material, not kit)
 
 
 static func place(p_site: String, root: Node3D, p_stage: int = 0, p_restoration: float = 0.0, opts: Dictionary = {}) -> RimeSite:
@@ -83,6 +83,8 @@ func _make(p_site: String, seed_v: int, r: float) -> void:
 			_site_borehole()
 		"hot_springs":
 			_site_springs()
+	for g: String in _ice_b:
+		(_ice_b[g] as FrontierView.Batch).flush(_groups[g])
 
 
 func set_state(p_stage: int, p_restoration: float) -> void:
@@ -198,7 +200,7 @@ func _ice_mat(key: String) -> ShaderMaterial:
 ## The compacted pad: steel deck plates and walkway gratings, timber kerbs round its edge, grit
 ## and boot-trodden snow, marker poles with flags.
 func _pad_dressing() -> void:
-	var a := FrontierView.Batch.new()
+	var a := TideProps.builder(self, "always")
 	var o := Vector3.ZERO
 	var bs := Basis()
 	var n: int = int(pad_r * pad_r * 0.06)
@@ -222,12 +224,12 @@ func _pad_dressing() -> void:
 		p.y = ground_y(p.x, p.z)
 		SeasKit.pipe(a, o, bs, p + Vector3(0, -0.3, 0), p + Vector3(0, 2.2, 0), 0.04, TideProps.m(self, "orange"), 6)
 		SeasKit.box(a, o, bs, p + Vector3(0.22, 1.95, 0), Vector3(0.42, 0.28, 0.02), TideProps.m(self, "red"), Vector3(0, _rng.randf() * 360.0, 0), 0.005)
-	a.flush(_groups["always"])
+	TideProps.flush(self, a, "always")
 
 
 ## Ice boulders and tilted pressure slabs round the pad (glassy prop ice).
 func _ice_rocks() -> void:
-	var a := FrontierView.Batch.new()
+	var a := TideProps.builder(self, "always")
 	for k: int in 22:
 		var ang: float = _rng.randf() * TAU
 		var d: float = _rng.randf_range(pad_r + 6.0, radius * 0.85)
@@ -235,10 +237,10 @@ func _ice_rocks() -> void:
 		p.y = ground_y(p.x, p.z) - 0.3
 		var s: float = _rng.randf_range(0.8, 2.6)
 		if k % 3 == 0:
-			SeasKit.box(a, p, Basis(), Vector3.ZERO, Vector3(s * 2.2, s * 0.5, s * 1.6), _ice_mat("clear"), Vector3(_rng.randf_range(-35, 35), _rng.randf() * 360.0, _rng.randf_range(-30, 30)), 0.12)
+			_ice_add("always", SeasKit.bevel_box(Vector3(s * 2.2, s * 0.5, s * 1.6), 0.12), Transform3D(Basis.from_euler(Vector3(_rng.randf_range(-35, 35), _rng.randf() * 360.0, _rng.randf_range(-30, 30)) * (PI / 180.0)), p), _ice_mat("clear"))
 		else:
-			a.add(_lumpy(k % 5, 0.4, 1.8), _lxf(p, Vector3(0, _rng.randf() * 360.0, 0), Vector3(s * 1.2, s * 0.7, s)), _ice_mat("frost" if k % 2 == 0 else "ice"))
-	a.flush(_groups["always"])
+			_ice_add("always", _lumpy(k % 5, 0.4, 1.8), _lxf(p, Vector3(0, _rng.randf() * 360.0, 0), Vector3(s * 1.2, s * 0.7, s)), _ice_mat("frost" if k % 2 == 0 else "ice"))
+	TideProps.flush(self, a, "always")
 
 
 func _steam_at(p: Vector3, r: float) -> void:
@@ -285,7 +287,7 @@ func _steam_at(p: Vector3, r: float) -> void:
 
 ## A modular cabin on skids: rounded bevel body, snow cap on the roof, window row, door with a
 ## porch and steps, heater vent, chimney, antenna. Lit windows / porch lamp when restored.
-func _cabin(a: FrontierView.Batch, grn: FrontierView.Batch, fut: FrontierView.Batch, c: Vector3, yaw: float, size: Vector3, paint: String) -> void:
+func _cabin(a: KitMesh.Builder, grn: KitMesh.Builder, fut: KitMesh.Builder, c: Vector3, yaw: float, size: Vector3, paint: String) -> void:
 	var bs := Basis(Vector3.UP, yaw)
 	var o: Vector3 = c + Vector3(0, ground_y(c.x, c.z), 0)
 	var hx: float = size.x * 0.5
@@ -297,7 +299,7 @@ func _cabin(a: FrontierView.Batch, grn: FrontierView.Batch, fut: FrontierView.Ba
 	SeasKit.box(a, o, bs, Vector3(0, 0.7 + size.y * 0.5, 0), size, TideProps.m(self, paint), Vector3.ZERO, 0.32)
 	SeasKit.box(a, o, bs, Vector3(0, 0.7 + size.y * 0.25, 0), Vector3(size.x + 0.04, 0.14, size.z + 0.04), TideProps.m(self, "navy"), Vector3.ZERO, 0.04)
 	SeasKit.box(a, o, bs, Vector3(0, 0.75 + size.y + 0.1, 0), Vector3(size.x - 0.1, 0.32, size.z - 0.1), TideProps.m(self, "snow"), Vector3.ZERO, 0.14)
-	a.add(_lumpy(2, 0.3, 1.5), Transform3D(bs * Basis.from_scale(Vector3(hx * 0.7, 0.35, hz * 0.6)), o + bs * Vector3(-hx * 0.2, 0.9 + size.y, 0)), _ice_mat("frost"))
+	_ice_add("always", _lumpy(2, 0.3, 1.5), Transform3D(bs * Basis.from_scale(Vector3(hx * 0.7, 0.35, hz * 0.6)), o + bs * Vector3(-hx * 0.2, 0.9 + size.y, 0)), _ice_mat("frost"))
 	var nw: int = int(size.x / 1.5)
 	for w: int in nw:
 		var wx: float = -hx + 1.0 + w * (size.x - 2.0) / maxf(1.0, nw - 1)
@@ -317,7 +319,7 @@ func _cabin(a: FrontierView.Batch, grn: FrontierView.Batch, fut: FrontierView.Ba
 	SeasKit.pipe(a, o, bs, Vector3(-hx * 0.5, 0.7 + size.y, -hz * 0.4), Vector3(-hx * 0.5, 0.7 + size.y + 1.3, -hz * 0.4), 0.12, TideProps.m(self, "steel"), 8)
 	SeasKit.pipe(a, o, bs, Vector3(-hx * 0.5, 0.7 + size.y + 1.3, -hz * 0.4), Vector3(-hx * 0.5, 0.7 + size.y + 1.45, -hz * 0.4), 0.24, TideProps.m(self, "dark"), 8)
 	SeasKit.pipe(a, o, bs, Vector3(hx * 0.6, 0.7 + size.y, -hz * 0.3), Vector3(hx * 0.6, 0.7 + size.y + 2.4, -hz * 0.3), 0.03, TideProps.m(self, "steel"), 6)
-	SeasKit.decal(_groups["always"], o, bs, Vector3(-hx * 0.45, 0.7 + size.y * 0.55, hz + 0.02), Vector3(0, 0, 1), 0.9, 0.9, SeasKit.decal_mat("emblem", Color(0.95, 0.95, 0.92)))
+	SeasKit.decal(a, o, bs, Vector3(-hx * 0.45, 0.7 + size.y * 0.55, hz + 0.02), Vector3(0, 0, 1), 0.9, 0.9, "logo")
 	SeasKit.box(fut, o, bs, Vector3(0, 0.7 + size.y * 0.5, 0), size + Vector3(0.1, 0.1, 0.1), TideProps.m(self, "white"), Vector3.ZERO, 0.36)
 	SeasKit.box(fut, o, bs, Vector3(0, 0.7 + size.y * 0.25, 0), Vector3(size.x + 0.16, 0.04, size.z + 0.16), TideProps.m(self, "lamp_cool"), Vector3.ZERO, 0.01)
 	SeasKit.solid_box(_groups["always"], o, bs, Vector3(0, 0.7 + size.y * 0.5, 0), size + Vector3(0.8, 1.4, 0.3))
@@ -325,7 +327,7 @@ func _cabin(a: FrontierView.Batch, grn: FrontierView.Batch, fut: FrontierView.Ba
 
 
 ## A horizontal tank on a skid frame with hazard bands and a ladder.
-func _tank(a: FrontierView.Batch, c: Vector3, yaw: float, ln: float, r: float, paint: String) -> void:
+func _tank(a: KitMesh.Builder, c: Vector3, yaw: float, ln: float, r: float, paint: String) -> void:
 	var bs := Basis(Vector3.UP, yaw)
 	var o: Vector3 = c + Vector3(0, ground_y(c.x, c.z), 0)
 	SeasKit.pipe(a, o, bs, Vector3(-ln * 0.5, r + 0.5, 0), Vector3(ln * 0.5, r + 0.5, 0), r, TideProps.m(self, paint), 20)
@@ -336,13 +338,13 @@ func _tank(a: FrontierView.Batch, c: Vector3, yaw: float, ln: float, r: float, p
 		SeasKit.pipe(a, o, bs, Vector3(-ln * 0.5, 0.12, sd * r * 0.8), Vector3(ln * 0.5, 0.12, sd * r * 0.8), 0.12, TideProps.m(self, "steel"), 8)
 	SeasKit.ladder(a, o, bs, Vector3(ln * 0.2, 0.1, r + 0.15), Vector3(ln * 0.2, r * 2.0 + 0.5, r * 0.4 + 0.15), 0.5, Vector3(0, 0, 1), TideProps.m(self, "steel"))
 	SeasKit.pipe(a, o, bs, Vector3(0, r * 2.0 + 0.45, 0), Vector3(0, r * 2.0 + 0.85, 0), 0.25, TideProps.m(self, "steel"), 10)
-	a.add(_lumpy(1, 0.3, 1.5), Transform3D(bs * Basis.from_scale(Vector3(ln * 0.35, 0.18, r * 0.6)), o + bs * Vector3(0, r * 2.0 + 0.45, 0)), _ice_mat("frost"))
+	_ice_add("always", _lumpy(1, 0.3, 1.5), Transform3D(bs * Basis.from_scale(Vector3(ln * 0.35, 0.18, r * 0.6)), o + bs * Vector3(0, r * 2.0 + 0.45, 0)), _ice_mat("frost"))
 	SeasKit.solid_box(_groups["always"], o, bs, Vector3(0, r + 0.5, 0), Vector3(ln, r * 2.0 + 1.0, r * 2.0))
 
 
 ## A glass greenhouse dome: ribbed white frame on a kerb ring; ruined it has lost most panes,
 ## restored it is glazed, green inside and warmly lit.
-func _dome(a: FrontierView.Batch, ruin: FrontierView.Batch, grn: FrontierView.Batch, c: Vector3, r: float) -> void:
+func _dome(a: KitMesh.Builder, ruin: KitMesh.Builder, grn: KitMesh.Builder, c: Vector3, r: float) -> void:
 	var o: Vector3 = c + Vector3(0, ground_y(c.x, c.z), 0)
 	var bs := Basis()
 	SeasKit.pipe(a, o, bs, Vector3(0, 0.0, 0), Vector3(0, 0.5, 0), r + 0.4, TideProps.m(self, "steel"), 32)
@@ -367,47 +369,40 @@ func _dome(a: FrontierView.Batch, ruin: FrontierView.Batch, grn: FrontierView.Ba
 	glass.is_hemisphere = true
 	glass.radial_segments = 30
 	glass.rings = 10
-	grn.add(glass, Transform3D(Basis(), o + Vector3(0, 0.5, 0)), _mat_glass())
+	SeasKit.add_mesh(grn, "glasshouse", glass, Transform3D(Basis(), o + Vector3(0, 0.5, 0)))
 	var bed := SphereMesh.new()
 	bed.radius = r * 0.8
 	bed.height = r * 1.6
 	bed.is_hemisphere = true
 	bed.radial_segments = 16
 	bed.rings = 5
-	grn.add(bed, Transform3D(Basis.from_scale(Vector3(1, 0.25, 1)), o + Vector3(0, 0.45, 0)), TideProps.m(self, "leaf"))
+	SeasKit.add_mesh(grn, TideProps.m(self, "leaf"), bed, Transform3D(Basis.from_scale(Vector3(1, 0.25, 1)), o + Vector3(0, 0.45, 0)))
 	for k: int in 7:
 		var ang: float = _rng.randf() * TAU
 		var q: Vector3 = Vector3(cos(ang), 0, sin(ang)) * r * _rng.randf_range(0.15, 0.6)
 		var s: float = _rng.randf_range(0.6, 1.2)
-		grn.add(_lumpy(5 + k % 3, 0.5, 3.0), Transform3D(Basis.from_scale(Vector3(s, s * 1.3, s)), o + q + Vector3(0, 0.9 + s * 0.6, 0)), TideProps.m(self, "leaf"))
-	grn.add(glass, Transform3D(Basis.from_scale(Vector3(0.12, 0.12, 0.12)), o + Vector3(0, r + 0.2, 0)), TideProps.m(self, "lamp_warm"))
+		SeasKit.add_mesh(grn, TideProps.m(self, "leaf"), _lumpy(5 + k % 3, 0.5, 3.0), Transform3D(Basis.from_scale(Vector3(s, s * 1.3, s)), o + q + Vector3(0, 0.9 + s * 0.6, 0)))
+	SeasKit.add_mesh(grn, TideProps.m(self, "lamp_warm"), glass, Transform3D(Basis.from_scale(Vector3(0.12, 0.12, 0.12)), o + Vector3(0, r + 0.2, 0)))
 	# Ruin: a few cracked panes left, broken glass and frame bits in the snow.
 	for k: int in 4:
 		var ang: float = _rng.randf() * TAU
 		var lat: float = _rng.randf_range(0.2, 0.9)
 		var p := Vector3(cos(ang) * r * cos(lat), 0.5 + r * sin(lat), sin(ang) * r * cos(lat))
-		SeasKit.box(ruin, o, bs, p, Vector3(1.4, 0.04, 1.2), _mat_glass(), Vector3(rad_to_deg(lat) * 0.0, -rad_to_deg(ang), 90.0 - rad_to_deg(lat)), 0.01)
+		SeasKit.box(ruin, o, bs, p, Vector3(1.4, 0.04, 1.2), "glasshouse", Vector3(rad_to_deg(lat) * 0.0, -rad_to_deg(ang), 90.0 - rad_to_deg(lat)), 0.01)
 	for k: int in 5:
 		var q := Vector3(_rng.randf_range(-r, r), 0.1, _rng.randf_range(-r, r)) * 1.2
 		SeasKit.pipe(ruin, o, bs, q, q + Vector3(_rng.randf_range(-1.5, 1.5), 0.05, _rng.randf_range(-1.5, 1.5)), 0.08, TideProps.m(self, "cream"), 6)
 	SeasKit.solid_cyl(_groups["always"], o, bs, Vector3.ZERO, Vector3(0, r, 0), r)
 
 
-func _mat_glass() -> StandardMaterial3D:
-	if _mats.has("glassdome"):
-		return _mats["glassdome"]
-	var g := StandardMaterial3D.new()
-	g.albedo_color = Color(0.82, 0.92, 1.0, 0.25)
-	g.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	g.roughness = 0.05
-	g.metallic_specular = 0.8
-	g.cull_mode = BaseMaterial3D.CULL_DISABLED
-	_mats["glassdome"] = g
-	return g
+func _ice_add(group: String, mesh: Mesh, xf: Transform3D, mat: Material) -> void:
+	if not _ice_b.has(group):
+		_ice_b[group] = FrontierView.Batch.new()
+	(_ice_b[group] as FrontierView.Batch).add(mesh, xf, mat)
 
 
 ## A lattice comms mast with a dish, guy lines and a red beacon (lit when restored).
-func _mast(a: FrontierView.Batch, grn: FrontierView.Batch, c: Vector3, h: float) -> void:
+func _mast(a: KitMesh.Builder, grn: KitMesh.Builder, c: Vector3, h: float) -> void:
 	var o: Vector3 = c + Vector3(0, ground_y(c.x, c.z), 0)
 	var bs := Basis()
 	SeasKit.box(a, o, bs, Vector3(0, 0.2, 0), Vector3(2.0, 0.4, 2.0), TideProps.m(self, "steel"))
@@ -430,7 +425,7 @@ func _mast(a: FrontierView.Batch, grn: FrontierView.Batch, c: Vector3, h: float)
 
 
 ## A little snowcat: body, glazed cab, two rubber track units with tread ribs, a roof light bar.
-func _snowcat(a: FrontierView.Batch, grn: FrontierView.Batch, c: Vector3, yaw: float, paint: String) -> void:
+func _snowcat(a: KitMesh.Builder, grn: KitMesh.Builder, c: Vector3, yaw: float, paint: String) -> void:
 	var bs := Basis(Vector3.UP, yaw)
 	var o: Vector3 = c + Vector3(0, ground_y(c.x, c.z), 0)
 	for sd: float in [-1.0, 1.0]:
@@ -455,10 +450,10 @@ func _snowcat(a: FrontierView.Batch, grn: FrontierView.Batch, c: Vector3, yaw: f
 ## The drill camp hub: three cabins on skids round a plated yard, a greenhouse dome, fuel tanks,
 ## a comms mast, a snowcat, sleds, crates and drums; string lights between the cabins (restored).
 func _site_camp() -> void:
-	var a := FrontierView.Batch.new()
-	var ruin := FrontierView.Batch.new()
-	var grn := FrontierView.Batch.new()
-	var fut := FrontierView.Batch.new()
+	var a := TideProps.builder(self, "always")
+	var ruin := TideProps.builder(self, "ruin")
+	var grn := TideProps.builder(self, "green")
+	var fut := TideProps.builder(self, "future")
 	_cabin(a, grn, fut, Vector3(-8.0, 0, -6.0), 0.35, Vector3(8.0, 2.8, 3.6), "orange")
 	_cabin(a, grn, fut, Vector3(5.0, 0, -9.5), -0.2, Vector3(6.5, 2.6, 3.4), "cream")
 	_cabin(a, grn, fut, Vector3(11.0, 0, 1.0), -1.3, Vector3(6.0, 2.6, 3.4), "teal")
@@ -520,7 +515,7 @@ func _site_camp() -> void:
 		var p1: Vector3 = posts[(i + 1) % posts.size()] + Vector3(0, 3.5, 0)
 		for k: int in 10:
 			var t: float = (k + 0.5) / 10.0
-			grn.add(bulb, Transform3D(Basis(), p0.lerp(p1, t) - Vector3(0, sin(t * PI) * 0.7, 0)), TideProps.m(self, "bulb"))
+			SeasKit.add_mesh(grn, TideProps.m(self, "bulb"), bulb, Transform3D(Basis(), p0.lerp(p1, t) - Vector3(0, sin(t * PI) * 0.7, 0)))
 	# Ruin: drifted junk heaps, a toppled drum stack, snow-buried sheet metal.
 	var heap: Array[Transform3D] = []
 	for k: int in 40:
@@ -536,21 +531,21 @@ func _site_camp() -> void:
 		var p := Vector3(_rng.randf_range(-14, 14), 0, _rng.randf_range(-12, 14))
 		p.y = ground_y(p.x, p.z) + 0.05
 		SeasKit.box(ruin, p, Basis(), Vector3.ZERO, Vector3(_rng.randf_range(1.0, 2.2), 0.06, _rng.randf_range(0.6, 1.3)), TideProps.m(self, ["red", "steel", "orange"][k % 3]), Vector3(_rng.randf_range(-10, 10), _rng.randf() * 360.0, _rng.randf_range(-10, 10)), 0.02)
-		a.add(_lumpy(k % 4, 0.35, 1.6), _lxf(p + Vector3(0.4, -0.1, 0.2), Vector3(0, _rng.randf() * 360.0, 0), Vector3(1.2, 0.35, 0.8)), TideProps.m(self, "snow"))
-	a.flush(_groups["always"])
-	ruin.flush(_groups["ruin"])
-	grn.flush(_groups["green"])
-	fut.flush(_groups["future"])
+		SeasKit.add_mesh(a, TideProps.m(self, "snow"), _lumpy(k % 4, 0.35, 1.6), _lxf(p + Vector3(0.4, -0.1, 0.2), Vector3(0, _rng.randf() * 360.0, 0), Vector3(1.2, 0.35, 0.8)))
+	TideProps.flush(self, a, "always")
+	TideProps.flush(self, ruin, "ruin")
+	TideProps.flush(self, grn, "green")
+	TideProps.flush(self, fut, "future")
 
 
 ## A Ledger core-drill derrick frozen into the ice: a lattice tower on a drill floor, drawworks
 ## shed, pipe rack, mud tanks, icicles; the ice grips its feet when ruined; restored it is a
 ## geothermal tap with a warm vent.
 func _site_derrick() -> void:
-	var a := FrontierView.Batch.new()
-	var ruin := FrontierView.Batch.new()
-	var grn := FrontierView.Batch.new()
-	var fut := FrontierView.Batch.new()
+	var a := TideProps.builder(self, "always")
+	var ruin := TideProps.builder(self, "ruin")
+	var grn := TideProps.builder(self, "green")
+	var fut := TideProps.builder(self, "future")
 	var o := Vector3(0, ground_y(0, 0), 0)
 	var bs := Basis(Vector3.UP, 0.4) * Basis(Vector3.FORWARD, deg_to_rad(3.0))
 	SeasKit.box(a, o, bs, Vector3(0, 1.0, 0), Vector3(8.0, 2.0, 8.0), TideProps.m(self, "navy"))
@@ -573,7 +568,7 @@ func _site_derrick() -> void:
 			ic.bottom_radius = 0.0
 			ic.height = _rng.randf_range(0.8, 2.4)
 			ic.radial_segments = 5
-			ruin.add(ic, Transform3D(bs, o + bs * (q + Vector3(0, -ic.height * 0.5 - 0.15, 0))), _ice_mat("clear"))
+			_ice_add("ruin", ic, Transform3D(bs, o + bs * (q + Vector3(0, -ic.height * 0.5 - 0.15, 0))), _ice_mat("clear"))
 	# Drawworks shed, pipe rack with drill pipe, mud tanks.
 	_cabin(a, grn, fut, Vector3(7.5, 0, -2.0), 0.4 + PI * 0.5, Vector3(5.0, 2.6, 3.2), "orange")
 	var rk := Vector3(-8.0, ground_y(-8.0, 2.0), 2.0)
@@ -584,7 +579,7 @@ func _site_derrick() -> void:
 	_tank(a, Vector3(-3.0, 0, -9.0), 0.4, 5.0, 1.0, "ledger")
 	_tank(a, Vector3(1.5, 0, -10.5), 0.4, 4.0, 0.9, "teal")
 	# Ruin: ice grips the drill floor, a fallen crown block, junk.
-	ruin.add(_lumpy(3, 0.35, 1.6), Transform3D(bs * Basis.from_scale(Vector3(6.5, 2.6, 6.0)), o + Vector3(0, -0.8, 0)), _ice_mat("ice"))
+	_ice_add("ruin", _lumpy(3, 0.35, 1.6), Transform3D(bs * Basis.from_scale(Vector3(6.5, 2.6, 6.0)), o + Vector3(0, -0.8, 0)), _ice_mat("ice"))
 	SeasKit.box(ruin, o, Basis(), Vector3(6.0, 0.8, 6.0), Vector3(2.4, 1.6, 2.4), TideProps.m(self, "ledger"), Vector3(20, 35, 40))
 	var heap: Array[Transform3D] = []
 	for k: int in 26:
@@ -601,10 +596,10 @@ func _site_derrick() -> void:
 	for c: int in 2:
 		var ang: float = PI * c + PI * 0.25
 		SeasKit.pipe(fut, o, bs, Vector3(cos(ang) * 3.05, 2.3, sin(ang) * 3.05), Vector3(cos(ang) * 0.95, 27.5, sin(ang) * 0.95), 0.04, TideProps.m(self, "lamp_cool"), 4)
-	a.flush(_groups["always"])
-	ruin.flush(_groups["ruin"])
-	grn.flush(_groups["green"])
-	fut.flush(_groups["future"])
+	TideProps.flush(self, a, "always")
+	TideProps.flush(self, ruin, "ruin")
+	TideProps.flush(self, grn, "green")
+	TideProps.flush(self, fut, "future")
 	SeasKit.solid_box(_groups["always"], o, bs, Vector3(0, 1.5, 0), Vector3(8.6, 3.0, 8.6))
 	SeasKit.solid_box(_groups["always"], rk, Basis(Vector3.UP, 0.4), Vector3(0, 0.8, 0), Vector3(8.0, 1.6, 3.0))
 
@@ -612,10 +607,10 @@ func _site_derrick() -> void:
 ## The borehole: a wide shaft ringed by a concrete collar with a hazard kerb and rail, a headframe
 ## with sheave wheels over it, a winder house; cold mist when ruined, warm glow when restored.
 func _site_borehole() -> void:
-	var a := FrontierView.Batch.new()
-	var ruin := FrontierView.Batch.new()
-	var grn := FrontierView.Batch.new()
-	var fut := FrontierView.Batch.new()
+	var a := TideProps.builder(self, "always")
+	var ruin := TideProps.builder(self, "ruin")
+	var grn := TideProps.builder(self, "green")
+	var fut := TideProps.builder(self, "future")
 	var o := Vector3(0, 0.0, 0)
 	var bs := Basis()
 	var r: float = 7.0
@@ -651,7 +646,7 @@ func _site_borehole() -> void:
 		wheel.outer_radius = 1.75
 		wheel.rings = 24
 		wheel.ring_segments = 6
-		a.add(wheel, Transform3D(Basis(Vector3.RIGHT, PI * 0.5), o + Vector3(sd, ht + 1.9, 0)), TideProps.m(self, "steel_plain"))
+		SeasKit.add_mesh(a, TideProps.m(self, "steel_plain"), wheel, Transform3D(Basis(Vector3.RIGHT, PI * 0.5), o + Vector3(sd, ht + 1.9, 0)))
 		SeasKit.pipe(a, o, bs, Vector3(sd, ht + 1.9, -0.3), Vector3(sd, ht + 1.9, 0.3), 0.25, TideProps.m(self, "steel"), 10)
 		SeasKit.pipe(a, o, bs, Vector3(sd + 1.6 * signf(sd), ht + 1.9, 0), Vector3(sd + 1.6 * signf(sd), -6.0, 0), 0.04, TideProps.m(self, "dark"), 4)
 	SeasKit.box(a, o, bs, Vector3(1.0, -4.0, 0), Vector3(1.6, 2.4, 1.6), TideProps.m(self, "ledger"))  # cage, half way down
@@ -677,10 +672,10 @@ func _site_borehole() -> void:
 		p.y = ground_y(p.x, p.z)
 		SeasKit.box(ruin, p, Basis(), Vector3(0, 0.3, 0), Vector3(1.8, 0.6, 1.4), TideProps.m(self, "concrete"), Vector3(_rng.randf_range(-20, 20), _rng.randf() * 360.0, _rng.randf_range(-20, 20)), 0.1)
 	SeasKit.pipe(fut, o, bs, Vector3(0, 1.15, 0), Vector3(0, 1.2, 0), r + 0.5, TideProps.m(self, "lamp_cool"), 32)
-	a.flush(_groups["always"])
-	ruin.flush(_groups["ruin"])
-	grn.flush(_groups["green"])
-	fut.flush(_groups["future"])
+	TideProps.flush(self, a, "always")
+	TideProps.flush(self, ruin, "ruin")
+	TideProps.flush(self, grn, "green")
+	TideProps.flush(self, fut, "future")
 	for k: int in 12:
 		var ang: float = TAU * k / 12.0
 		SeasKit.solid_box(_groups["always"], o, bs, Vector3(cos(ang), 0, sin(ang)) * (r + 1.6), Vector3(2.6, 3.0, TAU * (r + 1.6) / 12.0 + 0.2), Vector3(0, -rad_to_deg(ang), 0))
@@ -690,10 +685,10 @@ func _site_borehole() -> void:
 ## Hot springs: three pools in rocky ice rims (frozen when ruined, steaming and turquoise when
 ## restored), a bathhouse cabin, a boardwalk, a pipe from a geothermal wellhead.
 func _site_springs() -> void:
-	var a := FrontierView.Batch.new()
-	var ruin := FrontierView.Batch.new()
-	var grn := FrontierView.Batch.new()
-	var fut := FrontierView.Batch.new()
+	var a := TideProps.builder(self, "always")
+	var ruin := TideProps.builder(self, "ruin")
+	var grn := TideProps.builder(self, "green")
+	var fut := TideProps.builder(self, "future")
 	var pm := ShaderMaterial.new()
 	pm.shader = POOL_SHADER
 	var disc := CylinderMesh.new()
@@ -721,7 +716,7 @@ func _site_springs() -> void:
 			var ang: float = TAU * k / n + _rng.randf_range(-0.1, 0.1)
 			var p: Vector3 = c + Vector3(cos(ang) * rr, 0, sin(ang) * rr * 0.9)
 			var s: float = _rng.randf_range(0.5, 1.0)
-			a.add(_lumpy(k % 5, 0.4, 1.8), _lxf(p + Vector3(0, -0.05, 0), Vector3(0, _rng.randf() * 360.0, 0), Vector3(s * 1.2, s * 0.6, s)), _ice_mat("frost" if k % 3 else "ice"))
+			_ice_add("always", _lumpy(k % 5, 0.4, 1.8), _lxf(p + Vector3(0, -0.05, 0), Vector3(0, _rng.randf() * 360.0, 0), Vector3(s * 1.2, s * 0.6, s)), _ice_mat("frost" if k % 3 else "ice"))
 		_steam_at(c + Vector3(0, 0.4, 0), rr * 0.7)
 	# Boardwalk between the pools to the bathhouse.
 	var bw: Array[Vector3] = [Vector3(-12.0, 0, -6.0), Vector3(-6.0, 0, -3.0), Vector3(1.0, 0, 0.5), Vector3(8.5, 0, 3.5)]
@@ -769,10 +764,10 @@ func _site_springs() -> void:
 		SeasKit.pipe(a, p, Basis(), Vector3.ZERO, Vector3(0, 1.6, 0), 0.06, TideProps.m(self, "timber2"), 6)
 		SeasKit.box(a, p, Basis(), Vector3(0, 1.75, 0), Vector3(0.32, 0.4, 0.32), TideProps.m(self, "steel"), Vector3(0, 45, 0), 0.05)
 		SeasKit.box(grn, p, Basis(), Vector3(0, 1.75, 0), Vector3(0.24, 0.32, 0.36), TideProps.m(self, "lamp_warm"), Vector3(0, 45, 0), 0.03)
-	a.flush(_groups["always"])
-	ruin.flush(_groups["ruin"])
-	grn.flush(_groups["green"])
-	fut.flush(_groups["future"])
+	TideProps.flush(self, a, "always")
+	TideProps.flush(self, ruin, "ruin")
+	TideProps.flush(self, grn, "green")
+	TideProps.flush(self, fut, "future")
 	SeasKit.solid_box(_groups["always"], wh, Basis(), Vector3(0, 1.3, 0), Vector3(2.2, 2.6, 2.2))
 
 
