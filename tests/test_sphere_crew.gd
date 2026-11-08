@@ -271,11 +271,16 @@ func test_offline_capped_by_region_junk() -> void:
 
 func test_region_scales_with_planet_size() -> void:
 	assert_eq(SphereOffline.region_rings(163842, 10), 16, "Verdance")
-	var anvil_cells: int = int(163842 * 1.35 * 1.35)
-	var ochre_cells: int = int(163842 * 0.85 * 0.85)
-	assert_gte(SphereOffline.region_rings(anvil_cells, SphereOffline.hub_count("anvil")), 16)
-	assert_lte(SphereOffline.region_rings(ochre_cells, SphereOffline.hub_count("ochre")), 16)
-	assert_eq(SphereOffline.hub_count("anvil"), 16)
+	# Every planet's hub region keeps the same share of its hub's ground (planets.json globe).
+	var ref: float = (1.0 + 3.0 * 16.0 * 17.0) / (163842.0 / 10.0)
+	for id: String in ["verdance", "ochre", "tidewell", "rime", "anvil"]:
+		var sp: Dictionary = GlobeSpec.of(id)
+		var n: int = GlobeSpec.cells_for(int(sp["frequency"]))
+		var hubs: int = SphereOffline.hub_count(id)
+		assert_eq(hubs, int(sp["hub_count"]))
+		var r: int = SphereOffline.region_rings(n, hubs)
+		var share: float = (1.0 + 3.0 * r * (r + 1)) / (float(n) / hubs)
+		assert_almost_eq(share / ref, 1.0, 0.15, "%s: %d rings" % [id, r])
 
 
 # --- Command view -----------------------------------------------------------------------
