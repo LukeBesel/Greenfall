@@ -208,3 +208,8 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
   parts lost their stat mods (pure cosmetics); the Maker set's +5% speed / +6% work is the one perk.
 - **Hub card shows "what you get"** computed from data (sell bonus, crew spots, the scrubber,
   stations and Locker levels, the launch pad at 5).
+- **Playtest 2: futuristic, smaller, honest costs.** One holo style (BenchKit.holo) for workbench,
+  pause and settings. Affordable = green glow, otherwise dim with the missing amount in red. Tabs
+  are hidden (not locked) until their data condition holds (data/workbench.json), so the "pace"
+  helper can move unlocks without code. No Save button: autosave every minute and on quit; "Quit"
+  saves and returns to the title. Keepsakes opens the Codex Collection.
