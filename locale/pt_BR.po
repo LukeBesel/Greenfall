@@ -112,7 +112,7 @@ msgstr "Visão de lente"
 msgid "Codex"
 msgstr "Códice"
 
-#: autoload/Settings.gd:20
+#: autoload/Settings.gd:20 ui/fabricator_panel.gd:77
 msgid "Pause"
 msgstr "Pausa"
 
@@ -433,8 +433,8 @@ msgstr "Cubos ou peças insuficientes"
 msgid "Rocket upgraded: %s."
 msgstr "Foguete melhorado: %s."
 
-#: automation/stations.gd:122 automation/telescope.gd:98 systems/camp/yard_builds.gd:81
-#: ui/stations_panel.gd:96
+#: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:89
+#: systems/camp/yard_builds.gd:81 ui/stations_panel.gd:96
 msgid "Built."
 msgstr "Construído."
 
@@ -483,10 +483,10 @@ msgstr "1 a cada %d fardos para o reciclador"
 msgid "Requires hub level %d or research: %s."
 msgstr "Requer base nível %d ou a pesquisa: %s."
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:380
-#: systems/camp/camp.gd:392 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
-#: systems/camp/hub_builds.gd:161 systems/camp/hub_builds.gd:171 systems/camp/yard_builds.gd:91
-#: ui/telescope_panel.gd:40
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:93
+#: systems/camp/camp.gd:380 systems/camp/camp.gd:392 systems/camp/hub_builds.gd:79
+#: systems/camp/hub_builds.gd:155 systems/camp/hub_builds.gd:165 systems/camp/hub_builds.gd:175
+#: systems/camp/yard_builds.gd:91 ui/telescope_panel.gd:40
 msgid "Not enough materials."
 msgstr "Materiais insuficientes."
 
@@ -781,17 +781,9 @@ msgstr "WREN: Ali é o limite da zona de mapeamento, Lumi. Lá fora só tem nebl
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi flutua de volta para o chão firme."
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1057 scenes/slice_orbit.gd:285
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1057 scenes/slice_orbit.gd:288
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXÁGONO LIMPO!  +%s"
-
-#: planet/planets/tidewell/env.gd:1180
-msgid "LEDGER  DREDGE %02d"
-msgstr "LEDGER  DRAGA %02d"
-
-#: planet/planets/tidewell/env.gd:1226
-msgid "LEDGER MINING  ORE BARGE 3"
-msgstr "LEDGER MINING  BARCAÇA DE MINÉRIO 3"
 
 #: planet/sites/hub_hop.gd:77
 msgid "Rocket hop: %.1f km"
@@ -1240,11 +1232,23 @@ msgstr "Tanque de água colocado. Regadores próximos vão reabastecer aqui."
 msgid "WATER"
 msgstr "ÁGUA"
 
+#: robots/fabricator/bot_fabricator.gd:91 systems/camp/yard_builds.gd:89
+msgid "Not yet."
+msgstr "Ainda não."
+
+#: robots/fabricator/bot_fabricator.gd:361
+msgid "Fleet %d / %d"
+msgstr ""
+
+#: robots/fabricator/bot_fabricator.gd:363
+msgid "Building a %s, %d%%"
+msgstr ""
+
 #: scenes/slice.gd:368
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Link dos robôs online. Aperte B para o Comando: pinte zonas e mande equipes para onde quiser."
 
-#: scenes/slice.gd:1071 scenes/slice_orbit.gd:301
+#: scenes/slice.gd:1071 scenes/slice_orbit.gd:304
 msgid "Milestone: %d hexes clean!"
 msgstr "Marco: %d hexágonos limpos!"
 
@@ -1276,31 +1280,31 @@ msgstr "O foguete está estacionado no pátio, pronto quando as células recarre
 msgid "Landed on the base pad."
 msgstr "Pousou na plataforma da base."
 
-#: scenes/slice.gd:1264 scenes/slice_orbit.gd:434
+#: scenes/slice.gd:1264 scenes/slice_orbit.gd:437
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Melhorias precisam de uma bancada. Volte para a base."
 
-#: scenes/slice.gd:1452
+#: scenes/slice.gd:1453
 msgid "Welcome back. The junk waited for you."
 msgstr "Bem-vindo de volta. A sucata esperou por você."
 
-#: scenes/slice.gd:1469
+#: scenes/slice.gd:1470
 msgid "OUTPOST %d · Lv%d"
 msgstr "POSTO %d · Nv%d"
 
-#: scenes/slice.gd:1469
+#: scenes/slice.gd:1470
 msgid "OUTPOST %d · RUIN"
 msgstr "POSTO %d · RUÍNA"
 
-#: scenes/slice_orbit.gd:331 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:96
+#: scenes/slice_orbit.gd:334 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:102
 msgid "E   Workbench (broken): repair it"
 msgstr "E   Bancada (quebrada): consertar"
 
-#: scenes/slice_orbit.gd:331 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:334 systems/camp/camp.gd:177
 msgid "E   Workbench: upgrades"
 msgstr "E   Bancada: melhorias"
 
-#: scenes/slice_orbit.gd:530 systems/camp/camp.gd:224
+#: scenes/slice_orbit.gd:533 systems/camp/camp.gd:224
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Bancada consertada. Aperte E nela para gastar cubos em melhorias."
 
@@ -2900,27 +2904,27 @@ msgstr "E   %s (Nv %d): melhorar para %s por %s"
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "Lixeira melhorada: %s. Fardos vendem por %d%% aqui."
 
-#: systems/camp/hub_builds.gd:144
+#: systems/camp/hub_builds.gd:148
 msgid "Trash bin, level %d of %d"
 msgstr "Lixeira, nível %d de %d"
 
-#: systems/camp/hub_builds.gd:149
+#: systems/camp/hub_builds.gd:153
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
 msgstr "WREN só consegue falar com você pelo relé. Cada nível a deixa mais clara."
 
-#: systems/camp/hub_builds.gd:153
+#: systems/camp/hub_builds.gd:157
 msgid "Tier %d of %d"
 msgstr "Nível %d de %d"
 
-#: systems/camp/hub_builds.gd:162 systems/camp/hub_builds.gd:173
+#: systems/camp/hub_builds.gd:166 systems/camp/hub_builds.gd:177
 msgid "%d of %d built"
 msgstr "%d de %d construídos"
 
-#: systems/camp/hub_builds.gd:189
+#: systems/camp/hub_builds.gd:193
 msgid "Museum"
 msgstr "Museu"
 
-#: systems/camp/hub_builds.gd:190
+#: systems/camp/hub_builds.gd:194
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "Um salão com um pedestal para tudo o que Lumi encontrou, para quem vier depois."
 
@@ -2943,10 +2947,6 @@ msgstr "Conserte a bancada primeiro."
 #: systems/camp/yard_builds.gd:89
 msgid "Grow your first seed first."
 msgstr "Primeiro faça sua primeira semente crescer."
-
-#: systems/camp/yard_builds.gd:89
-msgid "Not yet."
-msgstr "Ainda não."
 
 #: systems/extras/album.gd:86
 msgid "First arrival"
@@ -4412,6 +4412,18 @@ msgstr "Ainda sem fichas."
 msgid "No picture yet"
 msgstr "Ainda sem foto"
 
+#: ui/fabricator_panel.gd:17
+msgid "Bot Fabricator"
+msgstr ""
+
+#: ui/fabricator_panel.gd:20
+msgid "Mix: how many of each it builds in turn. New robots go to the hub that needs them most."
+msgstr ""
+
+#: ui/fabricator_panel.gd:77 ui/pause_menu.gd:50
+msgid "Resume"
+msgstr "Continuar"
+
 #: ui/frontier_rockets.gd:11
 msgid "FRONTIERS"
 msgstr "FRONTEIRAS"
@@ -5128,10 +5140,6 @@ msgstr "OBJETIVO"
 #: ui/pause_menu.gd:43
 msgid "PAUSED"
 msgstr "PAUSADO"
-
-#: ui/pause_menu.gd:50
-msgid "Resume"
-msgstr "Continuar"
 
 #: ui/pause_menu.gd:55
 msgid "Codex  [%s]"
@@ -12215,6 +12223,38 @@ msgstr "Módulo especial"
 msgid "An ice moon, core-mined until it froze."
 msgstr "Uma lua de gelo, minerada até o núcleo até congelar."
 
+#: data/planets.json:rime.sites.hub_camp.name
+msgid "Drill Camp"
+msgstr ""
+
+#: data/planets.json:rime.sites.hub_camp.desc
+msgid "Cabins on skids round a plated yard, a greenhouse dome, fuel tanks, a comms mast and a snowcat."
+msgstr ""
+
+#: data/planets.json:rime.sites.derrick.name
+msgid "Frozen Derrick"
+msgstr ""
+
+#: data/planets.json:rime.sites.derrick.desc
+msgid "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."
+msgstr ""
+
+#: data/planets.json:rime.sites.borehole.name
+msgid "The Borehole"
+msgstr ""
+
+#: data/planets.json:rime.sites.borehole.desc
+msgid "The shaft under its headframe and winder house; cold mist, then a warm glow."
+msgstr ""
+
+#: data/planets.json:rime.sites.hot_springs.name
+msgid "Hot Springs"
+msgstr ""
+
+#: data/planets.json:rime.sites.hot_springs.desc
+msgid "Geothermal pools with a bathhouse and boardwalk; frozen, then steaming."
+msgstr ""
+
 #: data/planets.json:ochre.tagline
 msgid "The Ledger's first open-pit strip mine, closest to the twin suns."
 msgstr ""
@@ -16158,17 +16198,23 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
 
-#~ msgid "TRASH"
-#~ msgstr "LIXO"
+#~ msgid "LEDGER  DREDGE %02d"
+#~ msgstr "LEDGER  DRAGA %02d"
 
-#~ msgid "SCRAP  INTAKE  ·  WEIGH HERE"
-#~ msgstr "RECEBIMENTO DE SUCATA  ·  PESE AQUI"
+#~ msgid "LEDGER MINING  ORE BARGE 3"
+#~ msgstr "LEDGER MINING  BARCAÇA DE MINÉRIO 3"
 
 #~ msgid "No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."
 #~ msgstr "Ninguém se aposentou ainda. Robôs velhos ou Mk I-II podem se aposentar aqui ou na Oficina da bancada; eles vão cuidar do jardim do viveiro na base."
 
 #~ msgid "Fleet paint"
 #~ msgstr "Pintura da frota"
+
+#~ msgid "TRASH"
+#~ msgstr "LIXO"
+
+#~ msgid "SCRAP  INTAKE  ·  WEIGH HERE"
+#~ msgstr "RECEBIMENTO DE SUCATA  ·  PESE AQUI"
 
 #~ msgid "PAD 01"
 #~ msgstr "PLATAFORMA 01"

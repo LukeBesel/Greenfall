@@ -109,7 +109,7 @@ msgstr "[Ļéñš vîéŵ ~]"
 msgid "Codex"
 msgstr "[Çôðéx ~]"
 
-#: autoload/Settings.gd:20
+#: autoload/Settings.gd:20 ui/fabricator_panel.gd:77
 msgid "Pause"
 msgstr "[Þàûšé ~]"
 
@@ -430,8 +430,8 @@ msgstr "[Ñôţ éñôûĝĥ çûbéš ôŕ þàŕţš ~~~~~~]"
 msgid "Rocket upgraded: %s."
 msgstr "[Ŕôçķéţ ûþĝŕàðéð: %s. ~~~~]"
 
-#: automation/stations.gd:122 automation/telescope.gd:98 systems/camp/yard_builds.gd:81
-#: ui/stations_panel.gd:96
+#: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:89
+#: systems/camp/yard_builds.gd:81 ui/stations_panel.gd:96
 msgid "Built."
 msgstr "[Bûîļţ. ~]"
 
@@ -480,10 +480,10 @@ msgstr "[Évéŕý %dţĥ bàļé ţô ţĥé ŕéçýçļéŕ ~~~~~~~~]"
 msgid "Requires hub level %d or research: %s."
 msgstr "[Ŕéqûîŕéš ĥûb ļévéļ %d ôŕ ŕéšéàŕçĥ: %s. ~~~~~~~~~~]"
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:380
-#: systems/camp/camp.gd:392 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
-#: systems/camp/hub_builds.gd:161 systems/camp/hub_builds.gd:171 systems/camp/yard_builds.gd:91
-#: ui/telescope_panel.gd:40
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:93
+#: systems/camp/camp.gd:380 systems/camp/camp.gd:392 systems/camp/hub_builds.gd:79
+#: systems/camp/hub_builds.gd:155 systems/camp/hub_builds.gd:165 systems/camp/hub_builds.gd:175
+#: systems/camp/yard_builds.gd:91 ui/telescope_panel.gd:40
 msgid "Not enough materials."
 msgstr "[Ñôţ éñôûĝĥ màţéŕîàļš. ~~~~]"
 
@@ -778,17 +778,9 @@ msgstr "[ŴŔÉÑ: Ţĥàţ'š ţĥé éðĝé ôƒ ţĥé šûŕvéý žôñé,
 msgid "Lumi hovers back onto solid ground."
 msgstr "[Ļûmî ĥôvéŕš bàçķ ôñţô šôļîð ĝŕôûñð. ~~~~~~~~~]"
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1057 scenes/slice_orbit.gd:285
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1057 scenes/slice_orbit.gd:288
 msgid "HEX CLEAN!  +%s"
 msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
-
-#: planet/planets/tidewell/env.gd:1180
-msgid "LEDGER  DREDGE %02d"
-msgstr "[ĻÉÐĜÉŔ  ÐŔÉÐĜÉ %02d ~~~~]"
-
-#: planet/planets/tidewell/env.gd:1226
-msgid "LEDGER MINING  ORE BARGE 3"
-msgstr "[ĻÉÐĜÉŔ MÎÑÎÑĜ  ÔŔÉ BÀŔĜÉ 3 ~~~~~~]"
 
 #: planet/sites/hub_hop.gd:77
 msgid "Rocket hop: %.1f km"
@@ -1237,11 +1229,23 @@ msgstr "[Ŵàţéŕ Ţàñķ þļàçéð. Ŵàţéŕéŕš ñéàŕbý ŵîļļ
 msgid "WATER"
 msgstr "[ŴÀŢÉŔ ~]"
 
+#: robots/fabricator/bot_fabricator.gd:91 systems/camp/yard_builds.gd:89
+msgid "Not yet."
+msgstr "[Ñôţ ýéţ. ~]"
+
+#: robots/fabricator/bot_fabricator.gd:361
+msgid "Fleet %d / %d"
+msgstr "[Fļééţ %d / %d ~~]"
+
+#: robots/fabricator/bot_fabricator.gd:363
+msgid "Building a %s, %d%%"
+msgstr "[Bûîļðîñĝ à %s, %d%% ~~~~]"
+
 #: scenes/slice.gd:368
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: þàîñţ žôñéš àñð šéñð çŕéŵš ŵĥéŕé ýôû ŵàñţ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1071 scenes/slice_orbit.gd:301
+#: scenes/slice.gd:1071 scenes/slice_orbit.gd:304
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
@@ -1273,31 +1277,31 @@ msgstr "[Ţĥé ŕôçķéţ îš þàŕķéð ôñ ţĥé ļôţ, ŕéàðý ŵ
 msgid "Landed on the base pad."
 msgstr "[Ļàñðéð ôñ ţĥé bàšé þàð. ~~~~~]"
 
-#: scenes/slice.gd:1264 scenes/slice_orbit.gd:434
+#: scenes/slice.gd:1264 scenes/slice_orbit.gd:437
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1452
+#: scenes/slice.gd:1453
 msgid "Welcome back. The junk waited for you."
 msgstr "[Ŵéļçômé bàçķ. Ţĥé ĵûñķ ŵàîţéð ƒôŕ ýôû. ~~~~~~~~~~]"
 
-#: scenes/slice.gd:1469
+#: scenes/slice.gd:1470
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:1469
+#: scenes/slice.gd:1470
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
-#: scenes/slice_orbit.gd:331 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:96
+#: scenes/slice_orbit.gd:334 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:102
 msgid "E   Workbench (broken): repair it"
 msgstr "E   [Ŵôŕķbéñçĥ (bŕôķéñ): ŕéþàîŕ îţ ~~~~~~~]"
 
-#: scenes/slice_orbit.gd:331 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:334 systems/camp/camp.gd:177
 msgid "E   Workbench: upgrades"
 msgstr "E   [Ŵôŕķbéñçĥ: ûþĝŕàðéš ~~~~]"
 
-#: scenes/slice_orbit.gd:530 systems/camp/camp.gd:224
+#: scenes/slice_orbit.gd:533 systems/camp/camp.gd:224
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð. Þŕéšš É àţ îţ ţô šþéñð çûbéš ôñ ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~]"
 
@@ -2897,27 +2901,27 @@ msgstr "E   [%s (Ļv %d): ûþĝŕàðé ţô %s ƒôŕ %s ~~~~~~~~]"
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "[Ţŕàšĥ bîñ ûþĝŕàðéð: %s. Bàļéš šéļļ ƒôŕ %d%% ĥéŕé. ~~~~~~~~~~~~~~]"
 
-#: systems/camp/hub_builds.gd:144
+#: systems/camp/hub_builds.gd:148
 msgid "Trash bin, level %d of %d"
 msgstr "[Ţŕàšĥ bîñ, ļévéļ %d ôƒ %d ~~~~~~]"
 
-#: systems/camp/hub_builds.gd:149
+#: systems/camp/hub_builds.gd:153
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
 msgstr "[ŴŔÉÑ çàñ ôñļý ŕéàçĥ ýôû ţĥŕôûĝĥ ţĥé ŕéļàý. Éàçĥ ţîéŕ màķéš ĥéŕ çļéàŕéŕ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/camp/hub_builds.gd:153
+#: systems/camp/hub_builds.gd:157
 msgid "Tier %d of %d"
 msgstr "[Ţîéŕ %d ôƒ %d ~~]"
 
-#: systems/camp/hub_builds.gd:162 systems/camp/hub_builds.gd:173
+#: systems/camp/hub_builds.gd:166 systems/camp/hub_builds.gd:177
 msgid "%d of %d built"
 msgstr "[%d ôƒ %d bûîļţ ~~]"
 
-#: systems/camp/hub_builds.gd:189
+#: systems/camp/hub_builds.gd:193
 msgid "Museum"
 msgstr "[Mûšéûm ~]"
 
-#: systems/camp/hub_builds.gd:190
+#: systems/camp/hub_builds.gd:194
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "[À ĥàļļ ŵîţĥ à þļîñţĥ ƒôŕ évéŕýţĥîñĝ Ļûmî ƒôûñð, ƒôŕ ŵĥôévéŕ çôméš ñéxţ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -2940,10 +2944,6 @@ msgstr "[Ŕéþàîŕ ţĥé ŵôŕķbéñçĥ ƒîŕšţ. ~~~~~~]"
 #: systems/camp/yard_builds.gd:89
 msgid "Grow your first seed first."
 msgstr "[Ĝŕôŵ ýôûŕ ƒîŕšţ šééð ƒîŕšţ. ~~~~~~]"
-
-#: systems/camp/yard_builds.gd:89
-msgid "Not yet."
-msgstr "[Ñôţ ýéţ. ~]"
 
 #: systems/extras/album.gd:86
 msgid "First arrival"
@@ -4409,6 +4409,18 @@ msgstr "[Ñô çĥîþš ýéţ. ~~]"
 msgid "No picture yet"
 msgstr "[Ñô þîçţûŕé ýéţ ~~]"
 
+#: ui/fabricator_panel.gd:17
+msgid "Bot Fabricator"
+msgstr "[Bôţ Fàbŕîçàţôŕ ~~]"
+
+#: ui/fabricator_panel.gd:20
+msgid "Mix: how many of each it builds in turn. New robots go to the hub that needs them most."
+msgstr "[Mîx: ĥôŵ màñý ôƒ éàçĥ îţ bûîļðš îñ ţûŕñ. Ñéŵ ŕôbôţš ĝô ţô ţĥé ĥûb ţĥàţ ñééðš ţĥém môšţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/fabricator_panel.gd:77 ui/pause_menu.gd:50
+msgid "Resume"
+msgstr "[Ŕéšûmé ~]"
+
 #: ui/frontier_rockets.gd:11
 msgid "FRONTIERS"
 msgstr "[FŔÔÑŢÎÉŔŠ ~]"
@@ -5125,10 +5137,6 @@ msgstr "[ÔBĴÉÇŢÎVÉ ~]"
 #: ui/pause_menu.gd:43
 msgid "PAUSED"
 msgstr "[ÞÀÛŠÉÐ ~]"
-
-#: ui/pause_menu.gd:50
-msgid "Resume"
-msgstr "[Ŕéšûmé ~]"
 
 #: ui/pause_menu.gd:55
 msgid "Codex  [%s]"
@@ -12211,6 +12219,38 @@ msgstr "[Šþéçîàļ Môðûļé ~~]"
 #: data/planets.json:rime.tagline
 msgid "An ice moon, core-mined until it froze."
 msgstr "[Àñ îçé môôñ, çôŕé-mîñéð ûñţîļ îţ ƒŕôžé. ~~~~~~~~~~~]"
+
+#: data/planets.json:rime.sites.hub_camp.name
+msgid "Drill Camp"
+msgstr "[Ðŕîļļ Çàmþ ~]"
+
+#: data/planets.json:rime.sites.hub_camp.desc
+msgid "Cabins on skids round a plated yard, a greenhouse dome, fuel tanks, a comms mast and a snowcat."
+msgstr "[Çàbîñš ôñ šķîðš ŕôûñð à þļàţéð ýàŕð, à ĝŕééñĥôûšé ðômé, ƒûéļ ţàñķš, à çômmš màšţ àñð à šñôŵçàţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/planets.json:rime.sites.derrick.name
+msgid "Frozen Derrick"
+msgstr "[Fŕôžéñ Ðéŕŕîçķ ~~]"
+
+#: data/planets.json:rime.sites.derrick.desc
+msgid "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."
+msgstr "[À Ļéðĝéŕ çôŕé-ðŕîļļ ðéŕŕîçķ ƒŕôžéñ îñţô ţĥé îçé; à ĝéôţĥéŕmàļ ţàþ ŵĥéñ ŕéšţôŕéð. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/planets.json:rime.sites.borehole.name
+msgid "The Borehole"
+msgstr "[Ţĥé Bôŕéĥôļé ~]"
+
+#: data/planets.json:rime.sites.borehole.desc
+msgid "The shaft under its headframe and winder house; cold mist, then a warm glow."
+msgstr "[Ţĥé šĥàƒţ ûñðéŕ îţš ĥéàðƒŕàmé àñð ŵîñðéŕ ĥôûšé; çôļð mîšţ, ţĥéñ à ŵàŕm ĝļôŵ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/planets.json:rime.sites.hot_springs.name
+msgid "Hot Springs"
+msgstr "[Ĥôţ Šþŕîñĝš ~]"
+
+#: data/planets.json:rime.sites.hot_springs.desc
+msgid "Geothermal pools with a bathhouse and boardwalk; frozen, then steaming."
+msgstr "[Ĝéôţĥéŕmàļ þôôļš ŵîţĥ à bàţĥĥôûšé àñð bôàŕðŵàļķ; ƒŕôžéñ, ţĥéñ šţéàmîñĝ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/planets.json:ochre.tagline
 msgid "The Ledger's first open-pit strip mine, closest to the twin suns."

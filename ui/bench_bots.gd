@@ -94,7 +94,16 @@ static func rows(fleet: Fleet, build_at: Callable) -> Array:
 		it["icon_set"] = "hud"
 		fleet_rows.append(it)
 	out.append_array(BenchLists._trim(fleet_rows))
-	# The Fabricator (orbC), when it has registered and has something to show.
+	# The Bot Fabricator (orbC, robots/fabricator/): one row whose detail is its panel (mix, pause).
+	var fab: BotFabricator = BotFabricator.of(world) if world else null
+	if fab:
+		out.append({"id": "fabricator", "cat": "fabricator", "icon": "auto", "icon_set": "ui", "name": _tr("Bot Fabricator"),
+			"desc": fab.status_line(), "state": "busy", "tag": _tr("PAUSED") if fab.paused() else _tr("ACTIVE"),
+			"table": [], "action": "", "custom": func(_w: Node) -> Control:
+				var fp := FabricatorPanel.new()
+				fp.fab = fab
+				return fp})
+	# Anything else plugged in through set_fabricator().
 	if _fabricator.is_valid():
 		var fr: Variant = _fabricator.call(world)
 		if fr is Array:

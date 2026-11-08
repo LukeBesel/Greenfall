@@ -12,6 +12,7 @@ var _report_done: bool = false
 
 func _ready() -> void:
 	add_to_group("persist")
+	RobotDesign.register_hooks()  # [ui7] Locker type designs on globe robots too
 	if world != null:
 		water_net = WaterNet.new()
 		water_net.name = "WaterNet"

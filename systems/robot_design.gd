@@ -109,3 +109,41 @@ static func after_visual(r: Robot) -> void:
 static func livery_for(type_id: String) -> String:
 	var d: Dictionary = of(type_id)
 	return str(d["livery"]) if d.has("livery") else Liveries.equipped()
+
+
+static var _hooked: bool = false
+
+
+## [ui7] Globe robots (robots/sphere/) are dressed through SphereCrew.dress_hooks: the same type
+## design (parts, livery, glow) as the flat fleet's robots. Idempotent; Fleet._ready calls it.
+static func register_hooks() -> void:
+	if _hooked:
+		return
+	_hooked = true
+	SphereCrew.dress_hooks.append(dress_sphere)
+
+
+static func dress_sphere(body: Node3D, visual: Node3D, type_id: String, _tier: int) -> void:
+	var want: String = livery_for(type_id)
+	var cur: Node = body.get_node_or_null(Liveries.NODE_NAME)
+	if cur and str(cur.get_meta("livery", "")) != want:
+		body.remove_child(cur)
+		cur.queue_free()
+		cur = null
+	if cur == null and want != "":
+		var n: Node3D = Liveries.build(want)
+		if n:
+			body.add_child(n)
+	if visual == null:
+		return
+	if of(type_id).has("parts") and visual is RobotVisual:
+		RobotKit.fit(visual as RobotVisual, parts(type_id), str(Economy.robots.get(type_id, {}).get("role", "clean")))
+	var gid: String = str(of(type_id).get("glow", ""))
+	if gid != "":
+		var col: Color = glow_color(gid)
+		var mats: Variant = visual.get("_glow_mats")
+		if mats is Array:
+			for m: Variant in mats:
+				if m is StandardMaterial3D:
+					(m as StandardMaterial3D).emission = col
+					(m as StandardMaterial3D).albedo_color = col.darkened(0.3)

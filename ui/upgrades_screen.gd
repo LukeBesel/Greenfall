@@ -262,20 +262,8 @@ func _populate() -> void:
 		_panel = ld
 		return
 	_relayout()
-	if _tab == "bots" and fleet:
-		for rid: String in Economy.robot_order:
-			var rc := RobotCard.new(rid, fleet, build_at)
-			rc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			rc.goto_tab.connect(_set_tab)
-			_grid.add_child(rc)
-			_robot_cards.append(rc)
-		if fleet.count("multibot") > 0:  # [ui2] the Multibot job board only once there are multibots
-			var ab := AllocationBoard.new()
-			ab.fleet = fleet
-			ab.world = fleet.world
-			ab.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			_grid.add_child(ab)
-			_alloc = ab
+	# [ui7] The Bots tab is a list + detail (ui/bench_bots.gd); orbC's Fabricator panel is its
+	# "Fabricator" category's detail now.
 	for id: String in Economy.upgrade_order:
 		if str(Economy.upgrade_defs[id].get("tab", "patch")) != _tab or _tab == "bots":  # [ui2] bot upgrades live on their RobotCard
 			continue

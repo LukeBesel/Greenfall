@@ -159,3 +159,14 @@ func test_locker_bot_rows_hide_locked_parts() -> void:
 			var pid: String = str(r["id"]).trim_prefix("part_")
 			assert_eq(RobotBuilder.locked_research(pid), "", "%s: research-locked parts stay hidden" % pid)
 	assert_gt(rows.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == "glow").size(), 5)
+
+
+## [ui7] The Fabricator is a Bots category, and globe robots wear the type design too.
+func test_globe_robots_get_the_type_design_hook() -> void:
+	RobotDesign.register_hooks()
+	assert_true(SphereCrew.dress_hooks.has(Callable(RobotDesign.dress_sphere)) or SphereCrew.dress_hooks.size() > 0)
+	var body := Node3D.new()
+	add_child_autofree(body)
+	RobotDesign._all()["scoopie"] = {"livery": ""}
+	RobotDesign.dress_sphere(body, null, "scoopie", 0)
+	assert_null(body.get_node_or_null(Liveries.NODE_NAME), "a plain design wears no livery")

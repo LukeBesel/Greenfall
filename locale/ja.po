@@ -112,7 +112,7 @@ msgstr "レンズビュー"
 msgid "Codex"
 msgstr "図鑑"
 
-#: autoload/Settings.gd:20
+#: autoload/Settings.gd:20 ui/fabricator_panel.gd:77
 msgid "Pause"
 msgstr "ポーズ"
 
@@ -433,8 +433,8 @@ msgstr "キューブかパーツが足りない"
 msgid "Rocket upgraded: %s."
 msgstr "ロケットをアップグレード：%s。"
 
-#: automation/stations.gd:122 automation/telescope.gd:98 systems/camp/yard_builds.gd:81
-#: ui/stations_panel.gd:96
+#: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:89
+#: systems/camp/yard_builds.gd:81 ui/stations_panel.gd:96
 msgid "Built."
 msgstr "建設完了。"
 
@@ -483,10 +483,10 @@ msgstr "ベール%d個に1個をリサイクラーへ"
 msgid "Requires hub level %d or research: %s."
 msgstr "基地レベル %d または研究「%s」が必要。"
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:380
-#: systems/camp/camp.gd:392 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
-#: systems/camp/hub_builds.gd:161 systems/camp/hub_builds.gd:171 systems/camp/yard_builds.gd:91
-#: ui/telescope_panel.gd:40
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:93
+#: systems/camp/camp.gd:380 systems/camp/camp.gd:392 systems/camp/hub_builds.gd:79
+#: systems/camp/hub_builds.gd:155 systems/camp/hub_builds.gd:165 systems/camp/hub_builds.gd:175
+#: systems/camp/yard_builds.gd:91 ui/telescope_panel.gd:40
 msgid "Not enough materials."
 msgstr "素材が足りません。"
 
@@ -780,17 +780,9 @@ msgstr "WREN：そこが測量ゾーンの端よ、Lumi。外にはもやしか�
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi はふわりと固い地面に戻った。"
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1057 scenes/slice_orbit.gd:285
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1057 scenes/slice_orbit.gd:288
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
-
-#: planet/planets/tidewell/env.gd:1180
-msgid "LEDGER  DREDGE %02d"
-msgstr "LEDGER  浚渫船 %02d"
-
-#: planet/planets/tidewell/env.gd:1226
-msgid "LEDGER MINING  ORE BARGE 3"
-msgstr "LEDGER マイニング  鉱石バージ 3"
 
 #: planet/sites/hub_hop.gd:77
 msgid "Rocket hop: %.1f km"
@@ -1238,11 +1230,23 @@ msgstr "給水タンクを設置。近くの水やりロボはここで補給す
 msgid "WATER"
 msgstr "水"
 
+#: robots/fabricator/bot_fabricator.gd:91 systems/camp/yard_builds.gd:89
+msgid "Not yet."
+msgstr "まだだめ。"
+
+#: robots/fabricator/bot_fabricator.gd:361
+msgid "Fleet %d / %d"
+msgstr ""
+
+#: robots/fabricator/bot_fabricator.gd:363
+msgid "Building a %s, %d%%"
+msgstr ""
+
 #: scenes/slice.gd:368
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーンを塗って、好きな場所にクルーを送ろう。"
 
-#: scenes/slice.gd:1071 scenes/slice_orbit.gd:301
+#: scenes/slice.gd:1071 scenes/slice_orbit.gd:304
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
@@ -1274,31 +1278,31 @@ msgstr "ロケットは空き地に駐機中。セルが満タンになればい
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:1264 scenes/slice_orbit.gd:434
+#: scenes/slice.gd:1264 scenes/slice_orbit.gd:437
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice.gd:1452
+#: scenes/slice.gd:1453
 msgid "Welcome back. The junk waited for you."
 msgstr "おかえり。ガラクタが待っていたよ。"
 
-#: scenes/slice.gd:1469
+#: scenes/slice.gd:1470
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:1469
+#: scenes/slice.gd:1470
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
-#: scenes/slice_orbit.gd:331 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:96
+#: scenes/slice_orbit.gd:334 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:102
 msgid "E   Workbench (broken): repair it"
 msgstr "E   作業台（故障）：修理する"
 
-#: scenes/slice_orbit.gd:331 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:334 systems/camp/camp.gd:177
 msgid "E   Workbench: upgrades"
 msgstr "E   作業台：アップグレード"
 
-#: scenes/slice_orbit.gd:530 systems/camp/camp.gd:224
+#: scenes/slice_orbit.gd:533 systems/camp/camp.gd:224
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
@@ -2892,27 +2896,27 @@ msgstr "E   %s（Lv %d）：%s にアップグレード（%s）"
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "ゴミ箱をアップグレード：%s。ここではベールが %d%% で売れる。"
 
-#: systems/camp/hub_builds.gd:144
+#: systems/camp/hub_builds.gd:148
 msgid "Trash bin, level %d of %d"
 msgstr "ゴミ箱 レベル%d / %d"
 
-#: systems/camp/hub_builds.gd:149
+#: systems/camp/hub_builds.gd:153
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
 msgstr "WRENは中継塔を通してしか話せない。段階が上がるほど声がはっきりする。"
 
-#: systems/camp/hub_builds.gd:153
+#: systems/camp/hub_builds.gd:157
 msgid "Tier %d of %d"
 msgstr "ティア %d / %d"
 
-#: systems/camp/hub_builds.gd:162 systems/camp/hub_builds.gd:173
+#: systems/camp/hub_builds.gd:166 systems/camp/hub_builds.gd:177
 msgid "%d of %d built"
 msgstr "%d / %d 建設済み"
 
-#: systems/camp/hub_builds.gd:189
+#: systems/camp/hub_builds.gd:193
 msgid "Museum"
 msgstr "博物館"
 
-#: systems/camp/hub_builds.gd:190
+#: systems/camp/hub_builds.gd:194
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "ルミが見つけたすべてを台座に飾るホール。次に来る誰かのために。"
 
@@ -2935,10 +2939,6 @@ msgstr "まず作業台を修理しよう。"
 #: systems/camp/yard_builds.gd:89
 msgid "Grow your first seed first."
 msgstr "まずは最初の種を育てよう。"
-
-#: systems/camp/yard_builds.gd:89
-msgid "Not yet."
-msgstr "まだだめ。"
 
 #: systems/extras/album.gd:86
 msgid "First arrival"
@@ -4400,6 +4400,18 @@ msgstr "まだチップがない。"
 msgid "No picture yet"
 msgstr "まだ写真がない"
 
+#: ui/fabricator_panel.gd:17
+msgid "Bot Fabricator"
+msgstr ""
+
+#: ui/fabricator_panel.gd:20
+msgid "Mix: how many of each it builds in turn. New robots go to the hub that needs them most."
+msgstr ""
+
+#: ui/fabricator_panel.gd:77 ui/pause_menu.gd:50
+msgid "Resume"
+msgstr "再開"
+
 #: ui/frontier_rockets.gd:11
 msgid "FRONTIERS"
 msgstr "辺境"
@@ -5116,10 +5128,6 @@ msgstr "目標"
 #: ui/pause_menu.gd:43
 msgid "PAUSED"
 msgstr "ポーズ中"
-
-#: ui/pause_menu.gd:50
-msgid "Resume"
-msgstr "再開"
 
 #: ui/pause_menu.gd:55
 msgid "Codex  [%s]"
@@ -12202,6 +12210,38 @@ msgstr "特殊モジュール"
 msgid "An ice moon, core-mined until it froze."
 msgstr "核まで掘り尽くされ、凍りついた氷の衛星。"
 
+#: data/planets.json:rime.sites.hub_camp.name
+msgid "Drill Camp"
+msgstr ""
+
+#: data/planets.json:rime.sites.hub_camp.desc
+msgid "Cabins on skids round a plated yard, a greenhouse dome, fuel tanks, a comms mast and a snowcat."
+msgstr ""
+
+#: data/planets.json:rime.sites.derrick.name
+msgid "Frozen Derrick"
+msgstr ""
+
+#: data/planets.json:rime.sites.derrick.desc
+msgid "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."
+msgstr ""
+
+#: data/planets.json:rime.sites.borehole.name
+msgid "The Borehole"
+msgstr ""
+
+#: data/planets.json:rime.sites.borehole.desc
+msgid "The shaft under its headframe and winder house; cold mist, then a warm glow."
+msgstr ""
+
+#: data/planets.json:rime.sites.hot_springs.name
+msgid "Hot Springs"
+msgstr ""
+
+#: data/planets.json:rime.sites.hot_springs.desc
+msgid "Geothermal pools with a bathhouse and boardwalk; frozen, then steaming."
+msgstr ""
+
 #: data/planets.json:ochre.tagline
 msgid "The Ledger's first open-pit strip mine, closest to the twin suns."
 msgstr ""
@@ -16145,17 +16185,23 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
 
-#~ msgid "TRASH"
-#~ msgstr "ゴミ"
+#~ msgid "LEDGER  DREDGE %02d"
+#~ msgstr "LEDGER  浚渫船 %02d"
 
-#~ msgid "SCRAP  INTAKE  ·  WEIGH HERE"
-#~ msgstr "スクラップ受付  ·  ここで計量"
+#~ msgid "LEDGER MINING  ORE BARGE 3"
+#~ msgstr "LEDGER マイニング  鉱石バージ 3"
 
 #~ msgid "No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."
 #~ msgstr "まだ誰も引退していない。古いロボットや Mk I-II のロボットはここか作業台のビルダーで引退でき、基地の苗床ガーデンの世話をしてくれる。"
 
 #~ msgid "Fleet paint"
 #~ msgstr "艦隊の塗装"
+
+#~ msgid "TRASH"
+#~ msgstr "ゴミ"
+
+#~ msgid "SCRAP  INTAKE  ·  WEIGH HERE"
+#~ msgstr "スクラップ受付  ·  ここで計量"
 
 #~ msgid "PAD 01"
 #~ msgstr "パッド 01"
