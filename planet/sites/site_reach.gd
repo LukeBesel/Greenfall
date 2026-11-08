@@ -192,8 +192,8 @@ static func audit(p: SitePrefab, terrain: SphereTerrain, only: Node = null) -> D
 		var stack := PackedInt32Array([s0])
 		seen[s0] = 1
 		while not stack.is_empty():
-			if (reach & 255) == 0 and BuildBudget.due():  # [orbE] behind the loading screen: hand frames back
-				await BuildBudget.pause("site audit")
+			if (reach & 63) == 0 and _due():  # [orbE] hand frames back (loading screen or gameplay budget)
+				await _pause("site audit")
 			var c: int = stack[stack.size() - 1]
 			stack.resize(stack.size() - 1)
 			reach += 1
@@ -342,6 +342,39 @@ static func nearest_free(p: SitePrefab, terrain: SphereTerrain, local: Vector3, 
 ## Moves a prefab's standard anchors out of its geometry (builders that don't know the anchor
 ## defaults: Ochre's yard, Tidewell's raft deck). The rocket pad moves so that the spot Lumi
 ## steps off to is free. Returns the anchors moved.
+# --- [orbE] Frame budget ------------------------------------------------------------------
+## Behind the loading screen the audit yields on the loader's BuildBudget. In play (a hub built
+## as Lumi comes near) there is none: with play_budget(tree, us) set, it hands the frame back
+## after `us` microseconds of work instead (SiteManager sets ~4 ms), so a new hub's reach audit
+## is spread over a short "constructing" moment instead of a 0.5-0.7 s hitch. Unset (tools,
+## tests) it runs straight through, as before.
+static var _tree: SceneTree
+static var _play_us: int = 0
+static var _since: int = 0
+static var frames_yielded: int = 0
+
+
+static func play_budget(tree: SceneTree, us: int) -> void:
+	_tree = tree
+	_play_us = us
+	_since = Time.get_ticks_usec()
+
+
+static func _due() -> bool:
+	if BuildBudget.active():
+		return BuildBudget.due()
+	return _play_us > 0 and _tree != null and Time.get_ticks_usec() - _since >= _play_us
+
+
+static func _pause(at: String) -> void:
+	if BuildBudget.active():
+		await BuildBudget.pause(at)
+		return
+	await _tree.process_frame
+	frames_yielded += 1
+	_since = Time.get_ticks_usec()
+
+
 ## [orbE] A coroutine: behind the globe's loading screen it yields between candidate spots (the
 ## yard's 16 machines took ~5 s of flood fills in one frame on Anvil); without a BuildBudget it
 ## runs straight through, exactly as before.
@@ -397,8 +430,8 @@ static func fix_anchors(p: SitePrefab, terrain: SphereTerrain) -> PackedStringAr
 		while rr <= HALF_M and not found:
 			var k_n: int = maxi(8, int(TAU * rr / STEP))
 			for k: int in k_n:
-				if BuildBudget.due():  # [orbE]
-					await BuildBudget.pause("site reach")
+				if _due():  # [orbE]
+					await _pause("site reach")
 				var a: float = TAU * k / k_n
 				var c := at + Vector3(cos(a) * rr, 0, sin(a) * rr)
 				if _all_reach(reach_at, c, rad) and spaced.call(c, rad):

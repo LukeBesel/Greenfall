@@ -27,6 +27,7 @@ const GROW_M_PER_MIN: float = 6.0
 const GROW_MAX_M: float = 900.0
 const RESTORED: int = 4
 
+const PLAY_BUDGET_US: int = 4000  # [orbE] reach audit work per frame in play
 var probed: Dictionary = {}  # [orbE] hub index -> true once its footprint probe and anchor fix are done
 var globe: Node3D
 var planet_id: String = "verdance"
@@ -138,7 +139,14 @@ func _probe_footprints(i: int, p: SitePrefab) -> int:
 	if not is_instance_valid(p) or not p.is_inside_tree():
 		return 0
 	var n: int = probe_cells(i, p)
-	var moved: PackedStringArray = await SiteReach.fix_anchors(p, terrain)  # [orbE] yields behind the loader
+	# [orbE] In play, a few ms a frame: a hub built as Lumi comes near is "constructing" for a
+	# moment instead of freezing the game (the loading screen uses its own budget).
+	SiteReach.play_budget(get_tree(), PLAY_BUDGET_US)
+	var tf: int = Time.get_ticks_msec()
+	var f0: int = SiteReach.frames_yielded
+	var moved: PackedStringArray = await SiteReach.fix_anchors(p, terrain)  # [orbE] yields
+	if DevHooks.has("load-report"):
+		print("[sites] hub %d reach fix: %d ms over %d frames" % [i, Time.get_ticks_msec() - tf, SiteReach.frames_yielded - f0])
 	print("[sites] %s hub %d (%s): %d junk cells under its buildings cleared%s" % [planet_id, i, p.site_id, n,
 		"" if moved.is_empty() else ", anchors moved clear: " + ",".join(moved)])
 	if not moved.is_empty():
