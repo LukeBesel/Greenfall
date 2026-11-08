@@ -16,6 +16,7 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - [x] M11 Post-game: Verdance Bloom milestones, Cradle finale (the true ending, then end credits), endless Seed Ark waves, Cradle Mode (new worlds, Starseeds, Heirlooms, world modifiers, Ark Bridge), Garden Mode decorating. Whole game playable New Game -> Cradle -> Seed Ark -> new worlds; see docs/WALKTHROUGH.md.
 
 ## Next steps for a new session
+0a. QA pass (Nov 8, first 45 min): docs/QA_REPORT.md lists 3 P1s (faded objective text, several messages at once, first objective needs the locked Baler) plus P2/P3 items with screenshots in screenshots/qa/.
 0. Owner-side Steam/Apple setup: see docs/steam/README.md (app id, depots, signing). Website: enable Pages, fill website/config.js.
 0b. Visual QA: see docs/VISUAL_QA.md (render checklist with dev-hook commands and status); its "todo" rows are the next sweep.
 1. Play-test feedback from the owner (docs/PLAYTEST.md); fix what they hit first.

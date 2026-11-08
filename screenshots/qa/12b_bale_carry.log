@@ -1,0 +1,467 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)
+ALSA lib confmisc.c:855:(parse_card) cannot find card '0'
+ALSA lib conf.c:5208:(_snd_config_evaluate) function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:5208:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) error evaluating name
+ALSA lib conf.c:5208:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5731:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2721:(snd_pcm_open_noupdate) Unknown PCM default
+ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
+   at: init_output_device (drivers/alsa/audio_driver_alsa.cpp:97)
+WARNING: All audio drivers failed, falling back to the dummy driver.
+     at: initialize (servers/audio/audio_server.cpp:258)
+
+[steam] GodotSteam extension not installed (addons/godotsteam); running without Steam
+[DevHooks] args: { "quality": "0", "perf": "1", "qa-watch": "1", "quit-after": "200", "fresh": "1", "no-intro": "1", "bale-shot": "carry", "qa-seq": "120:shot=screenshots/qa/12b_bale_carry.png;180:shot=screenshots/qa/12b_bale_carry_b.png" }
+[qa] probe on, 2 steps
+[loader] loading res://scenes/main_menu.tscn
+[qa-watch] t=2.1 game=2.1
+  [610,600 60x24 a=1.00] Loading
+[perf] t=3s frames=8 game_fps=2.53 draw_calls=97 objects=126 prims=29526
+[qa-watch] t=3.1 game=3.1
+  [610,600 60x24 a=1.00] Setting the scene
+[loader] loading res://scenes/slice.tscn
+[qa-watch] t=3.7 game=3.7
+  [610,600 60x24 a=1.00] Loading
+[qa-watch] t=5.4 game=5.4
+  [610,600 60x24 a=1.00] Setting the scene
+WARNING: Screen-space indirect lighting (SSIL) is only available when using the Forward+ renderer.
+     at: environment_set_ssil (servers/rendering/storage/environment_storage.cpp:775)
+     GDScript backtrace (most recent call first):
+         [0] _build_environment (res://scenes/slice.gd:621)
+         [1] _ready (res://scenes/slice.gd:83)
+WARNING: Screen-space reflections (SSR) are only available when using the Forward+ renderer.
+     at: environment_set_ssr (servers/rendering/storage/environment_storage.cpp:653)
+     GDScript backtrace (most recent call first):
+         [0] _build_environment (res://scenes/slice.gd:622)
+         [1] _ready (res://scenes/slice.gd:83)
+WARNING: SDFGI is only available when using the Forward+ renderer.
+     at: environment_set_sdfgi (servers/rendering/storage/environment_storage.cpp:822)
+     GDScript backtrace (most recent call first):
+         [0] _build_environment (res://scenes/slice.gd:624)
+         [1] _ready (res://scenes/slice.gd:83)
+WARNING: Volumetric fog is only available when using the Forward+ renderer.
+     at: environment_set_volumetric_fog (servers/rendering/storage/environment_storage.cpp:458)
+     GDScript backtrace (most recent call first):
+         [0] _build_environment (res://scenes/slice.gd:628)
+         [1] _ready (res://scenes/slice.gd:83)
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+     GDScript backtrace (most recent call first):
+         [0] apply_render_quality (res://autoload/Settings.gd:646)
+         [1] _build_environment (res://scenes/slice.gd:657)
+         [2] _ready (res://scenes/slice.gd:83)
+[farjunk] 2858 pieces + 38361 litter from 75 to 125 m (12 models)
+[tunes] context play
+[slice] built in 13098 ms  district=Old Town hub=0
+[future] score=0.00 pieces=0 built in 1.5 ms
+[outposts] district 0: 3 outposts hex35@(-43,11) hex30@(-12,-48) hex42@(46,41) levels []
+[eggs] district 0: 12 eggs, 19 props placed
+[bale-shot] mound bale over pile (-24.91287, 11.81911, 1.772546, 1.041759)
+[perf] t=25s frames=23 game_fps=0.70 draw_calls=3864 objects=3467 prims=17175969
+[warmup] 380 materials across 2 viewports
+[meadow] grass=6668 flowers=3068 sprouts=2706 thriving=0 in 310 ms
+[qa-watch] t=26.5 game=26.5
+  [594,600 91x24 a=1.00] Warming up
+  [56,22 16x42 a=1.00] 0
+  [958,22 300x20 a=1.00] OLD TOWN   0%
+  [958,51 300x18 a=1.00] VERDANCE   0.0000%
+  [958,72 300x18 a=1.00] WREN SIGNAL   0%
+  [972,115 184x18 a=1.00] RESTART CHECKLIST
+  [972,138 272x24 a=1.00] Hold  LMB  to scoop junk
+  [1215,167 29x18 a=1.00] 0 / 8
+  [460,568 360x22 a=1.00] OLD TOWN  BASE
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+[perf] t=28s frames=26 game_fps=0.77 draw_calls=1962 objects=2623 prims=5558681
+[perf] t=32s frames=29 game_fps=0.78 draw_calls=1579 objects=2232 prims=5557359
+[qa-watch] t=35.0 game=35.0
+  [594,600 91x24 a=1.00] Warming up
+  [56,22 16x42 a=1.00] 0
+  [958,22 300x20 a=1.00] OLD TOWN   0%
+  [958,51 300x18 a=1.00] VERDANCE   0.0000%
+  [958,72 300x18 a=1.00] WREN SIGNAL   0%
+  [972,115 184x18 a=1.00] RESTART CHECKLIST
+  [972,138 272x24 a=1.00] Hold  LMB  to scoop junk
+  [1215,167 29x18 a=1.00] 0 / 8
+  [460,568 360x22 a=1.00] OLD TOWN  BASE
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+  [313,506 38x18 a=0.83] WREN
+  [363,501 604x29 a=0.83] Lumi, it's WREN, the Cradle's caretaker. Your friend up here.
+[perf] t=36s frames=33 game_fps=1.11 draw_calls=1622 objects=2480 prims=5772217
+[qa-watch] t=36.9 game=36.9
+  [594,600 91x24 a=1.00] Warming up
+  [56,22 16x42 a=1.00] 0
+  [958,22 300x20 a=1.00] OLD TOWN   0%
+  [958,51 300x18 a=1.00] VERDANCE   0.0000%
+  [958,72 300x18 a=1.00] WREN SIGNAL   0%
+  [972,115 184x18 a=1.00] RESTART CHECKLIST
+  [972,138 272x24 a=1.00] Hold  LMB  to scoop junk
+  [1215,167 29x18 a=1.00] 0 / 8
+  [460,542 360x24 a=1.00] E   set bale down
+  [460,568 360x22 a=1.00] CARRYING 1/1
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+  [313,506 38x18 a=1.00] WREN
+  [363,501 604x29 a=1.00] Lumi, it's WREN, the Cradle's caretaker. Your friend up here.
+[loader] ready in 34544 ms
+[perf] t=40s frames=37 game_fps=1.03 draw_calls=1613 objects=2462 prims=5773219
+[qa-watch] t=42.6 game=42.6
+  [56,22 16x42 a=1.00] 0
+  [958,22 300x20 a=1.00] OLD TOWN   0%
+  [958,51 300x18 a=1.00] VERDANCE   0.0000%
+  [958,72 300x18 a=1.00] WREN SIGNAL   0%
+  [972,115 184x18 a=1.00] RESTART CHECKLIST
+  [972,138 272x24 a=1.00] Hold  LMB  to scoop junk
+  [1215,167 29x18 a=1.00] 0 / 8
+  [460,542 360x24 a=1.00] E   set bale down
+  [460,568 360x22 a=1.00] CARRYING 1/1
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+  [313,506 38x18 a=1.00] WREN
+  [363,501 604x29 a=1.00] Lumi, it's WREN, the Cradle's caretaker. Your friend up here.
+[perf] t=43s frames=41 game_fps=1.10 draw_calls=1543 objects=2357 prims=5750883
+[bale-shot] bale at (1.21, 0.3, 1.01) size 0.58 sleeping=true colors=[(0.6627, 0.6745, 0.6471, 1.0), (0.549, 0.4784, 0.3608, 1.0)]
+[bale-shot] bale at (1.93, 0.48, 1.25) size 0.60 sleeping=true colors=[(0.5412, 0.498, 0.4549, 1.0), (0.6627, 0.6745, 0.6471, 1.0), (0.3725, 0.4784, 0.3686, 1.0)]
+[bale-shot] bale at (0.0, 1.76, 1.92) size 0.59 sleeping=false colors=[(0.5412, 0.498, 0.4549, 1.0)]
+[bale-shot] bale at (1.21, 0.3, 0.12) size 0.64 sleeping=true colors=[(0.6627, 0.6745, 0.6471, 1.0), (0.1804, 0.1725, 0.1686, 1.0), (0.2902, 0.3529, 0.298, 1.0)]
+[bale-shot] bale at (2.07, 0.3, -0.53) size 0.58 sleeping=true colors=[(0.549, 0.4784, 0.3608, 1.0), (0.3725, 0.4784, 0.3686, 1.0)]
+[perf] t=47s frames=45 game_fps=1.25 draw_calls=1544 objects=2356 prims=5750881
+[perf] t=50s frames=49 game_fps=1.24 draw_calls=1543 objects=2356 prims=5750877
+[perf] t=53s frames=53 game_fps=1.24 draw_calls=1536 objects=2246 prims=5747803
+[qa-watch] t=54.6 game=54.6
+  [56,22 16x42 a=1.00] 0
+  [972,115 184x18 a=0.50] RESTART CHECKLIST
+  [972,138 272x24 a=0.50] Hold  LMB  to scoop junk
+  [1215,167 29x18 a=0.50] 0 / 8
+  [460,542 360x24 a=1.00] E   set bale down
+  [460,568 360x22 a=1.00] CARRYING 1/1
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+[perf] t=56s frames=57 game_fps=1.29 draw_calls=1536 objects=2195 prims=5745917
+[qa-watch] t=57.0 game=57.0
+  [56,22 16x42 a=1.00] 0
+  [972,115 184x18 a=0.50] RESTART CHECKLIST
+  [972,138 272x24 a=0.50] Hold  LMB  to scoop junk
+  [1215,167 29x18 a=0.50] 0 / 8
+  [460,542 360x24 a=1.00] E   set bale down
+  [460,568 360x22 a=1.00] CARRYING 1/1
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+  [414,506 38x18 a=1.00] WREN
+  [464,501 401x29 a=1.00] Your pod's down, and the relay's failing.
+[perf] t=59s frames=61 game_fps=1.27 draw_calls=1535 objects=2197 prims=5745937
+[perf] t=62s frames=65 game_fps=1.27 draw_calls=1534 objects=2196 prims=5745935
+[perf] t=66s frames=69 game_fps=1.27 draw_calls=1535 objects=2196 prims=5745939
+[perf] t=69s frames=73 game_fps=1.29 draw_calls=1532 objects=2196 prims=5752251
+[qa-watch] t=70.3 game=70.3
+  [56,22 16x42 a=1.00] 0
+  [972,116 267x18 a=0.50] OBJECTIVE
+  [972,139 272x27 a=0.50] Power the base: sell 3 bales
+  [972,170 272x47 a=0.50] Cubes feed the recycler. Its power wakes the base.
+  [972,257 184x18 a=0.50] RESTART CHECKLIST
+  [972,280 272x24 a=0.50] Hold  LMB  to scoop junk
+  [1215,309 29x18 a=0.50] 0 / 8
+  [460,542 360x24 a=1.00] E   set bale down
+  [460,568 360x22 a=1.00] CARRYING 1/1
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+[perf] t=72s frames=77 game_fps=1.29 draw_calls=1545 objects=2512 prims=5753209
+[qa-watch] t=71.8 game=71.8
+  [56,22 16x42 a=1.00] 0
+  [972,116 237x18 a=0.50] OBJECTIVE
+  [1213,115 31x20 a=0.50] 0 / 3
+  [972,139 272x27 a=0.50] Power the base: sell 3 bales
+  [972,170 272x47 a=0.50] Cubes feed the recycler. Its power wakes the base.
+  [972,257 184x18 a=0.50] RESTART CHECKLIST
+  [972,280 272x24 a=0.50] Hold  LMB  to scoop junk
+  [1215,309 29x18 a=0.50] 0 / 8
+  [460,542 360x24 a=1.00] E   set bale down
+  [460,568 360x22 a=1.00] CARRYING 1/1
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+  [230,506 38x18 a=0.83] WREN
+  [280,501 770x29 a=0.83] Bale junk to power the old base, then build a signal tower so I can reach you.
+[perf] t=75s frames=81 game_fps=1.29 draw_calls=1544 objects=2512 prims=5753205
+[tunes] now playing morning_shift (play)
+[perf] t=79s frames=86 game_fps=1.34 draw_calls=1545 objects=2511 prims=5753205
+[perf] t=82s frames=90 game_fps=1.30 draw_calls=1544 objects=2511 prims=5753201
+[perf] t=85s frames=94 game_fps=1.30 draw_calls=1544 objects=2511 prims=5753201
+[perf] t=88s frames=98 game_fps=1.30 draw_calls=1546 objects=2512 prims=5751505
+[perf] t=91s frames=102 game_fps=1.29 draw_calls=1538 objects=2313 prims=5750845
+[qa-watch] t=91.8 game=91.8
+  [56,22 16x42 a=1.00] 0
+  [972,116 237x18 a=0.50] OBJECTIVE
+  [1213,115 31x20 a=0.50] 0 / 3
+  [972,139 272x27 a=0.50] Power the base: sell 3 bales
+  [972,170 272x47 a=0.50] Cubes feed the recycler. Its power wakes the base.
+  [972,257 184x18 a=0.50] RESTART CHECKLIST
+  [972,280 272x24 a=0.50] Hold  LMB  to scoop junk
+  [1215,309 29x18 a=0.50] 0 / 8
+  [460,542 360x24 a=1.00] E   set bale down
+  [460,568 360x22 a=1.00] CARRYING 1/1
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+[perf] t=94s frames=106 game_fps=1.27 draw_calls=1545 objects=2365 prims=5744843
+[qa-watch] t=94.1 game=94.1
+  [56,22 16x42 a=1.00] 0
+  [972,116 237x18 a=0.50] OBJECTIVE
+  [1213,115 31x20 a=0.50] 0 / 3
+  [972,139 272x27 a=0.50] Power the base: sell 3 bales
+  [972,170 272x47 a=0.50] Cubes feed the recycler. Its power wakes the base.
+  [972,257 184x18 a=0.50] RESTART CHECKLIST
+  [972,280 272x24 a=0.50] Hold  LMB  to scoop junk
+  [1215,309 29x18 a=0.50] 0 / 8
+  [460,542 360x24 a=1.00] E   set bale down
+  [460,568 360x22 a=1.00] CARRYING 1/1
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+  [543,506 38x18 a=1.00] WREN
+  [593,501 144x29 a=1.00] I'll be =\sten—
+[qa-watch] t=96.5 game=96.5
+  [56,22 16x42 a=1.00] 0
+  [972,116 237x18 a=0.50] OBJECTIVE
+  [1213,115 31x20 a=0.50] 0 / 3
+  [972,139 272x27 a=0.50] Power the base: sell 3 bales
+  [972,170 272x47 a=0.50] Cubes feed the recycler. Its power wakes the base.
+  [972,257 184x18 a=0.50] RESTART CHECKLIST
+  [972,280 272x24 a=0.50] Hold  LMB  to scoop junk
+  [1215,309 29x18 a=0.50] 0 / 8
+  [460,542 360x24 a=1.00] E   set bale down
+  [460,568 360x22 a=1.00] CARRYING 1/1
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+  [547,506 38x18 a=1.00] WREN
+  [597,501 135x29 a=1.00] I'll be l/st*▓&
+[perf] t=97s frames=110 game_fps=1.30 draw_calls=1550 objects=2366 prims=5744851
+[qa-watch] t=98.0 game=98.0
+  [56,22 16x42 a=1.00] 0
+  [972,116 237x18 a=0.50] OBJECTIVE
+  [1213,115 31x20 a=0.50] 0 / 3
+  [972,139 272x27 a=0.50] Power the base: sell 3 bales
+  [972,170 272x47 a=0.50] Cubes feed the recycler. Its power wakes the base.
+  [972,257 184x18 a=0.50] RESTART CHECKLIST
+  [972,280 272x24 a=0.50] Hold  LMB  to scoop junk
+  [1215,309 29x18 a=0.50] 0 / 8
+  [460,542 360x24 a=1.00] E   set bale down
+  [460,568 360x22 a=1.00] CARRYING 1/1
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+  [546,506 38x18 a=1.00] WREN
+  [596,501 138x29 a=1.00] I'll be %is/+n*
+[perf] t=100s frames=114 game_fps=1.31 draw_calls=1551 objects=2365 prims=5744843
+[qa-watch] t=100.3 game=100.3
+  [56,22 16x42 a=1.00] 0
+  [972,116 237x18 a=0.50] OBJECTIVE
+  [1213,115 31x20 a=0.50] 0 / 3
+  [972,139 272x27 a=0.50] Power the base: sell 3 bales
+  [972,170 272x47 a=0.50] Cubes feed the recycler. Its power wakes the base.
+  [972,257 184x18 a=0.50] RESTART CHECKLIST
+  [972,280 272x24 a=0.50] Hold  LMB  to scoop junk
+  [1215,309 29x18 a=0.50] 0 / 8
+  [460,542 360x24 a=1.00] E   set bale down
+  [460,568 360x22 a=1.00] CARRYING 1/1
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+  [543,506 38x18 a=1.00] WREN
+  [593,501 144x29 a=1.00] I'll be l<@te░+
+[qa-watch] t=101.8 game=101.8
+  [56,22 16x42 a=1.00] 0
+  [972,116 237x18 a=0.50] OBJECTIVE
+  [1213,115 31x20 a=0.50] 0 / 3
+  [972,139 272x27 a=0.50] Power the base: sell 3 bales
+  [972,170 272x47 a=0.50] Cubes feed the recycler. Its power wakes the base.
+  [972,257 184x18 a=0.50] RESTART CHECKLIST
+  [972,280 272x24 a=0.50] Hold  LMB  to scoop junk
+  [1215,309 29x18 a=0.50] 0 / 8
+  [460,542 360x24 a=1.00] E   set bale down
+  [460,568 360x22 a=1.00] CARRYING 1/1
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+  [533,506 38x18 a=1.00] WREN
+  [583,501 163x29 a=1.00] I'll be ▓*<░%*—
+[perf] t=103s frames=118 game_fps=1.30 draw_calls=1540 objects=2313 prims=5744531
+[qa-watch] t=104.1 game=104.1
+  [56,22 16x42 a=1.00] 0
+  [972,116 237x18 a=0.50] OBJECTIVE
+  [1213,115 31x20 a=0.50] 0 / 3
+  [972,139 272x27 a=0.50] Power the base: sell 3 bales
+  [972,170 272x47 a=0.50] Cubes feed the recycler. Its power wakes the base.
+  [972,257 184x18 a=0.50] RESTART CHECKLIST
+  [972,280 272x24 a=0.50] Hold  LMB  to scoop junk
+  [1215,309 29x18 a=0.50] 0 / 8
+  [460,542 360x24 a=1.00] E   set bale down
+  [460,568 360x22 a=1.00] CARRYING 1/1
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+[perf] t=106s frames=122 game_fps=1.28 draw_calls=1541 objects=2313 prims=5744535
+[perf] t=110s frames=126 game_fps=1.26 draw_calls=1538 objects=2313 prims=5750847
+[perf] t=113s frames=130 game_fps=1.31 draw_calls=1538 objects=2312 prims=5750843
+[perf] t=116s frames=134 game_fps=1.26 draw_calls=1539 objects=2315 prims=5750873
+[perf] t=120s frames=139 game_fps=1.31 draw_calls=1540 objects=2315 prims=5744553
+[qa] run shot=screenshots/qa/12b_bale_carry.png
+[DevHooks] screenshot -> /workspace/Greenfall/screenshots/qa/12b_bale_carry.png (OK)
+[perf] t=123s frames=143 game_fps=1.24 draw_calls=1540 objects=2314 prims=5744509
+[perf] t=126s frames=147 game_fps=1.27 draw_calls=1539 objects=2314 prims=5744505
+[perf] t=129s frames=151 game_fps=1.27 draw_calls=1539 objects=2313 prims=5744501
+[perf] t=132s frames=155 game_fps=1.27 draw_calls=1539 objects=2313 prims=5744501
+[perf] t=136s frames=159 game_fps=1.25 draw_calls=1538 objects=2314 prims=5750825
+[perf] t=139s frames=163 game_fps=1.27 draw_calls=1529 objects=2306 prims=5747773
+[perf] t=142s frames=167 game_fps=1.29 draw_calls=1529 objects=2305 prims=5747769
+[perf] t=145s frames=171 game_fps=1.27 draw_calls=1530 objects=2308 prims=5747801
+[perf] t=148s frames=175 game_fps=1.28 draw_calls=1529 objects=2307 prims=5747793
+[perf] t=151s frames=179 game_fps=1.25 draw_calls=1529 objects=2307 prims=5747793
+[perf] t=154s frames=183 game_fps=1.24 draw_calls=1529 objects=2307 prims=5746185
+[perf] t=158s frames=187 game_fps=1.27 draw_calls=1528 objects=2306 prims=5746177
+[perf] t=161s frames=191 game_fps=1.29 draw_calls=1529 objects=2307 prims=5746185
+[perf] t=164s frames=195 game_fps=1.31 draw_calls=1534 objects=2410 prims=5746385
+[qa-watch] t=163.7 game=163.7
+  [56,22 16x42 a=1.00] 0
+  [972,116 237x18 a=0.50] OBJECTIVE
+  [1213,115 31x20 a=0.50] 0 / 3
+  [972,139 272x27 a=0.50] Power the base: sell 3 bales
+  [972,170 272x47 a=0.50] Cubes feed the recycler. Its power wakes the base.
+  [972,257 184x18 a=0.50] RESTART CHECKLIST
+  [972,280 272x24 a=0.50] Hold  LMB  to scoop junk
+  [1215,309 29x18 a=0.50] 0 / 8
+  [460,542 360x24 a=1.00] E   set bale down
+  [460,568 360x22 a=1.00] CARRYING 1/1
+  [41,419 288x47 a=0.83] New sighting: Rat. It's in the Codex now.
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+[perf] t=167s frames=199 game_fps=1.28 draw_calls=1534 objects=2410 prims=5746385
+[perf] t=170s frames=203 game_fps=1.28 draw_calls=1535 objects=2411 prims=5746393
+[perf] t=173s frames=207 game_fps=1.33 draw_calls=1536 objects=2415 prims=5746417
+[perf] t=176s frames=211 game_fps=1.30 draw_calls=1529 objects=2309 prims=5746209
+[qa-watch] t=176.8 game=176.8
+  [56,22 16x42 a=1.00] 0
+  [972,116 237x18 a=0.50] OBJECTIVE
+  [1213,115 31x20 a=0.50] 0 / 3
+  [972,139 272x27 a=0.50] Power the base: sell 3 bales
+  [972,170 272x47 a=0.50] Cubes feed the recycler. Its power wakes the base.
+  [972,257 184x18 a=0.50] RESTART CHECKLIST
+  [972,280 272x24 a=0.50] Hold  LMB  to scoop junk
+  [1215,309 29x18 a=0.50] 0 / 8
+  [460,542 360x24 a=1.00] E   set bale down
+  [460,568 360x22 a=1.00] CARRYING 1/1
+  [924,669 12x20 a=1.00] M
+  [949,668 33x22 a=1.00] map
+  [1000,669 9x20 a=1.00] B
+  [1022,668 74x22 a=1.00] command
+  [1114,669 9x20 a=1.00] V
+  [1136,668 31x22 a=1.00] lens
+  [1185,669 10x20 a=1.00] G
+  [1208,668 40x22 a=1.00] goals
+[perf] t=180s frames=216 game_fps=1.35 draw_calls=1530 objects=2311 prims=5746209
+[qa] run shot=screenshots/qa/12b_bale_carry_b.png
+[DevHooks] screenshot -> /workspace/Greenfall/screenshots/qa/12b_bale_carry_b.png (OK)
+[perf] t=183s frames=220 game_fps=1.24 draw_calls=1531 objects=2312 prims=5746429
+[perf] t=187s frames=225 game_fps=1.35 draw_calls=1530 objects=2310 prims=5746429
+[perf] t=190s frames=229 game_fps=1.32 draw_calls=1531 objects=2312 prims=5746429
+[perf] t=193s frames=234 game_fps=1.34 draw_calls=1530 objects=2310 prims=5746429
+[perf] t=197s frames=239 game_fps=1.35 draw_calls=1529 objects=2310 prims=5746425
+[DevHooks] quitting after 200.2s
+[tunes] context none
+WARNING: 18 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
