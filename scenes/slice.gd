@@ -1328,6 +1328,8 @@ func _open_codex(tab: String = "") -> void:
 		return
 	if codex.is_open:
 		return
+	if pause_menu.is_open:  # [ui7] never stack the Codex on the pause menu
+		pause_menu.close_menu()
 	codex.open_screen(tab)
 	if patch.input is PlayerInput:
 		(patch.input as PlayerInput).enabled = false

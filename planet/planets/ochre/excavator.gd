@@ -72,9 +72,9 @@ static func build(groups: Dictionary, xf: Transform3D, mats: Dictionary, kind: S
 		# Track frame, idlers, rollers and a belt of grousered pads.
 		base.box(Vector3(x, 1.7, 0), Vector3(2.4, 2.2, 18.0), steel)
 		for z: float in [-9.0, 9.0]:
-			base.add(ProcMesh.cyl(1.7, 1.7, 3.7, 14), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(x, 1.7, z)), dark)
+			base.add(OchreProps.kcyl(1.7, 1.7, 3.7, 14), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(x, 1.7, z)), dark)
 		for z: int in 6:
-			base.add(ProcMesh.cyl(0.55, 0.55, 3.0, 10), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(x, 0.75, -6.5 + z * 2.6)), steel)
+			base.add(OchreProps.kcyl(0.55, 0.55, 3.0, 10), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(x, 0.75, -6.5 + z * 2.6)), steel)
 		for i: int in 26:
 			var zz: float = -8.4 + i * 0.68
 			base.box(Vector3(x, 0.18, zz), Vector3(3.8, 0.36, 0.6), dark)
@@ -85,7 +85,7 @@ static func build(groups: Dictionary, xf: Transform3D, mats: Dictionary, kind: S
 				var o := Vector3(0, sin(a), cos(a) * signf(zs)) * 1.75
 				base.box(Vector3(x, 1.7, zs) + o, Vector3(3.8, 0.5, 0.5), dark, Basis(Vector3.RIGHT, -a * signf(zs)))
 	base.box(Vector3(0, 3.9, 0), Vector3(12.0, 1.4, 12.0), steel)
-	base.add(ProcMesh.cyl(6.4, 6.8, 1.6, 20), ProcMesh.xf(Vector3(0, 5.4, 0)), steel)
+	base.add(OchreProps.kcyl(6.4, 6.8, 1.6, 20), ProcMesh.xf(Vector3(0, 5.4, 0)), steel)
 	# House, roof machinery, cab, walkways.
 	base.box(Vector3(-1.5, 10.6, 0), Vector3(15.0, 9.0, 10.5), paint)
 	base.box(Vector3(-3.0, 16.6, 0), Vector3(8.5, 3.0, 7.5), paint)
@@ -106,9 +106,9 @@ static func build(groups: Dictionary, xf: Transform3D, mats: Dictionary, kind: S
 	base.beam(Vector3(-8.7, 6.3, 7.45), Vector3(-1.2, 0.4, 7.45), 0.12, steel)
 	base.beam(Vector3(-8.7, 7.3, 7.45), Vector3(-1.2, 1.4, 7.45), 0.06, steel)
 	for i: int in 3:
-		base.add(ProcMesh.cyl(0.45, 0.5, 4.5, 10), ProcMesh.xf(Vector3(-6.5 + i * 1.5, 20.2, -2.5)), dark)
-	base.add(ProcMesh.cyl(0.4, 0.4, 13.0, 10), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(-1.5, 9.0, -5.55)), steel)
-	base.add(ProcMesh.cyl(0.4, 0.4, 13.0, 10), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(-1.5, 11.0, -5.55)), steel)
+		base.add(OchreProps.kcyl(0.45, 0.5, 4.5, 10), ProcMesh.xf(Vector3(-6.5 + i * 1.5, 20.2, -2.5)), dark)
+	base.add(OchreProps.kcyl(0.4, 0.4, 13.0, 10), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(-1.5, 9.0, -5.55)), steel)
+	base.add(OchreProps.kcyl(0.4, 0.4, 13.0, 10), Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(-1.5, 11.0, -5.55)), steel)
 	for i: int in 5:
 		base.box(Vector3(-7.5 + i * 3.0, 12.5, 5.3), Vector3(1.6, 2.4, 0.1), dark)
 		for k: int in 5:
@@ -224,7 +224,7 @@ static func _wheel(wheel: Node3D, mats: Dictionary, ruined: bool, rng: RandomNum
 		for k: int in 8:
 			var a: float = TAU * k / 8.0
 			b.beam(Vector3(0, 0, side * 0.6), Vector3(cos(a), sin(a), 0) * (WHEEL_R - 0.3) + Vector3(0, 0, side), 0.4, mats["steel"])
-	b.add(ProcMesh.cyl(1.6, 1.6, 3.6, 14), Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3.ZERO), mats["steel"])
+	b.add(OchreProps.kcyl(1.6, 1.6, 3.6, 14), Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3.ZERO), mats["steel"])
 	for k: int in 16:
 		if ruined and rng.randf() < 0.25:
 			continue
@@ -237,7 +237,7 @@ static func _wheel(wheel: Node3D, mats: Dictionary, ruined: bool, rng: RandomNum
 		b.box(rad * (WHEEL_R + 1.5) + tan * 1.1, Vector3(0.5, 0.35, 3.2), mats["steel"], bs)
 		b.beam(rad * (WHEEL_R - 0.4), rad * (WHEEL_R + 1.3) - tan * 1.3, 0.12, mats["steel"])
 		for t: int in 3:
-			b.add(ProcMesh.cyl(0.05, 0.22, 0.8, 4), Transform3D(bs, rad * (WHEEL_R + 1.8) + tan * 1.0 + Vector3(0, 0, -0.9 + t * 0.9)), mats["steel"])
+			b.add(OchreProps.kcyl(0.05, 0.22, 0.8, 4), Transform3D(bs, rad * (WHEEL_R + 1.8) + tan * 1.0 + Vector3(0, 0, -0.9 + t * 0.9)), mats["steel"])
 	b.flush(wheel, true, 1600.0)
 
 

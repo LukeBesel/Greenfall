@@ -63,6 +63,9 @@ var rocket_ready: Callable = func() -> bool: return false
 ## Why the rocket can't launch right now (shown in the hub list while rocket_ready is false).
 var rocket_lock_text: Callable = func() -> String: return "Locked. Upgrade your base to level 5 to build the launch pad."
 var launch_to: Callable = func(_hub: int) -> void: pass
+## [orbD] Which hubs the launch list offers (indices into planet.hubs); unset: the flat game's
+## base hubs. On a walkable globe: the hub sites (planet/sites/orbit_sites.gd).
+var hub_order: Callable = Callable()
 var current_hub: int = 0
 var _fly_t: float = -1.0
 var _fly_from := Vector3.ZERO
@@ -309,6 +312,8 @@ func _refresh_hubs() -> void:
 		_hub_list.add_child(l)
 	var here: Vector3 = planet.grid.centers[planet.hubs[current_hub]]
 	var order: Array = range(planet.base_hub_count if planet.base_hub_count > 0 else planet.hubs.size())  # [biomes] frontiers launch from the Rockets tab
+	if hub_order.is_valid():  # [orbD]
+		order = hub_order.call()
 	order.sort_custom(func(a: int, b: int) -> bool:
 		return here.angle_to(planet.grid.centers[planet.hubs[a]]) < here.angle_to(planet.grid.centers[planet.hubs[b]]))
 	for i: int in order.filter(func(x: int) -> bool: return x != current_hub).slice(0, 5):  # [biomes]

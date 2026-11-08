@@ -100,10 +100,24 @@ func _build() -> void:
 		get_tree().create_timer(DevHooks.get_f("orbit-survey", 3.0)).timeout.connect(open_survey)
 	if DevHooks.has("orbit-sysmap"):
 		get_tree().create_timer(DevHooks.get_f("orbit-sysmap", 3.0)).timeout.connect(func() -> void: system_map.open_map(true))
+	place_intro.call_deferred()  # [orbE] if the slice made an Intro (orbB ports the pod onto the "pod" anchor)
 	if DevHooks.has("orbit-tour"):
 		var tour := OrbitSkyTour.new()
 		tour.sky = sky
 		add_child(tour)
+
+
+## The intro's in-world shots (crash, landing, pod) in the start site's "pod" anchor frame
+## (story/intro.gd site_xf). Called once the slice has an Intro; safe to call again.
+func place_intro() -> bool:
+	var it: Variant = so.w.get("intro")
+	var site: Node3D = so.globe.start_site
+	if not (it is Intro) or site == null:
+		return false
+	var anchor: Node3D = site.find_child("pod", true, false) as Node3D
+	var xf: Transform3D = anchor.global_transform if anchor else site.global_transform
+	(it as Intro).site_xf = Intro.site_for_anchor(Transform3D(xf.basis.orthonormalized(), xf.origin))
+	return true
 
 
 func open_survey() -> void:

@@ -93,3 +93,14 @@ func test_radius_comes_from_the_planet() -> void:
 	_setup(2484.0, Vector3(0, 2484, 0), 0.5)  # Anvil-sized globe
 	assert_almost_eq(float(_sd.sky_shader.get_shader_parameter("planet_r")), 2484.0, 0.01)
 	assert_almost_eq(_sd.planet_radius, 2484.0, 0.01)
+
+
+func test_one_turn_per_day_period() -> void:
+	_setup(1840.0, Vector3(0, 0, 1840), 0.3)
+	_sd.day_period_s = 1000.0
+	Glim.set_found(true)  # no early-day clock multiplier
+	var s0: float = _sd.spin
+	for i: int in 100:
+		_sd._process(1.0)  # 100 s = a tenth of a turn
+	var turned: float = fposmod(_sd.spin - s0, TAU) / TAU
+	assert_almost_eq(turned, 0.1, 0.01, "the spin is the only clock (daytime, Glim found)")

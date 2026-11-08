@@ -1288,15 +1288,15 @@ msgstr "Pousou na plataforma da base."
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Melhorias precisam de uma bancada. Volte para a base."
 
-#: scenes/slice.gd:1459
+#: scenes/slice.gd:1461
 msgid "Welcome back. The junk waited for you."
 msgstr "Bem-vindo de volta. A sucata esperou por você."
 
-#: scenes/slice.gd:1476
+#: scenes/slice.gd:1478
 msgid "OUTPOST %d · Lv%d"
 msgstr "POSTO %d · Nv%d"
 
-#: scenes/slice.gd:1476
+#: scenes/slice.gd:1478
 msgid "OUTPOST %d · RUIN"
 msgstr "POSTO %d · RUÍNA"
 

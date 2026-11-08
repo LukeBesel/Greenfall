@@ -239,3 +239,29 @@ func test_autowalk_detours_with_longer_sidesteps() -> void:
 		inp.update(0.1)
 	assert_eq(inp._phase, 0, "back on its heading")
 	assert_almost_eq(inp.get_world_move(0.0), Vector3(0, 0, -1), Vector3.ONE * 0.001)
+
+
+func test_probe_clears_junk_inside_any_planets_buildings() -> void:
+	var g := _globe(6)
+	g.cells.state.fill(0)
+	g.cells.junk.fill(1.0)
+	var c0: int = 123
+	var s: Dictionary = g.terrain.reserve_site(c0, 55.0, 20.0)
+	assert_false(s.is_empty())
+	var sites: Array[Dictionary] = [s]
+	var sm := SiteManager.new()
+	g.add_child(sm)
+	sm.setup(g, "ochre", sites)
+	sm.set_process(false)
+	var p: SitePrefab = sm.build_hub(0)
+	if not p.is_built:
+		await p.rebuilt
+	for k: int in 3:
+		await get_tree().physics_frame
+	sm.probe_cells(0, p)
+	var clean: int = 0
+	for c: int in s["cells"]:
+		if not g.cells.is_dirty(c):
+			clean += 1
+	assert_gt(clean, 0, "cells under Ochre's hub buildings go clean")
+	assert_lt(clean, s["cells"].size(), "open ground keeps its junk")
