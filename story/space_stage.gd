@@ -250,7 +250,7 @@ func _build_vault() -> void:
 	(vault_pod.get_node("Scorch") as Node3D).visible = false
 	vault_pod.position = Vector3(0, 0, 3.7)
 	root.add_child(vault_pod)
-	(vault_pod.get_node("Hatch") as Node3D).rotation.x = -1.45
+	EscapePod.set_open(vault_pod, true)
 	var bay_lamp := OmniLight3D.new()
 	bay_lamp.light_color = Color(1.0, 0.7, 0.4)
 	bay_lamp.light_energy = 1.2

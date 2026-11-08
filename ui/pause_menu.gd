@@ -105,7 +105,7 @@ func _quit_to_title() -> void:
 	get_tree().paused = false
 	EventBus.ui_modal_changed.emit(false)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	get_tree().change_scene_to_file(TITLE_SCENE)
+	Loader.goto(TITLE_SCENE)  # [intro2] loading screen
 
 
 func open_menu() -> void:

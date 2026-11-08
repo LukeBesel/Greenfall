@@ -1,0 +1,299 @@
+<title>Greenfall Suno Prompts</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+/* Layout: one reading column of song cards grouped by planet; sticky planet nav on top. */
+:root {
+  --bg: #f3f5ef; --panel: #ffffff; --ink: #1d2a22; --muted: #5d6b62; --line: #d8ded5;
+  --accent: #2f7d4a; --accent-ink: #ffffff; --made: #e6f2e9;
+  --display: "Fraunces", Georgia, serif; --body: "Atkinson Hyperlegible", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121814; --panel: #1a221c; --ink: #e4ebe5; --muted: #9aa89f; --line: #2b362e; --accent: #6fcf8f; --accent-ink: #0d1a12; --made: #1d3324; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #121814; --panel: #1a221c; --ink: #e4ebe5; --muted: #9aa89f; --line: #2b362e; --accent: #6fcf8f; --accent-ink: #0d1a12; --made: #1d3324; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 64px; }
+h1 { font-family: var(--display); font-size: clamp(30px, 6vw, 44px); line-height: 1.1; margin: 0 0 8px; text-wrap: balance; }
+.lede { color: var(--muted); margin: 0 0 18px; max-width: 62ch; }
+.how { display: grid; gap: 6px; margin: 0 0 22px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+.how b { color: var(--accent); }
+.how p { margin: 0; }
+nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); display: flex; gap: 8px; flex-wrap: wrap; padding-block: 10px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+nav a { color: var(--ink); text-decoration: none; font-size: 14px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; }
+nav a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.progress { margin-left: auto; font-size: 14px; color: var(--muted); align-self: center; font-variant-numeric: tabular-nums; }
+.planet { padding-top: 26px; scroll-margin-top: 60px; }
+.ph { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-bottom: 10px; }
+.ph h2 { font-family: var(--display); font-size: 26px; margin: 0; }
+.ph .sub { margin: 0; color: var(--muted); font-size: 14px; flex-basis: 100%; }
+.ph .count { font-size: 13px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.songs { display: grid; gap: 12px; }
+.song { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 8px; min-width: 0; }
+.song.is-made { background: var(--made); }
+.head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.num { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.head h3 { margin: 0; font-size: 18px; }
+.use { font-size: 13px; color: var(--muted); }
+.prompt { margin: 0; font-family: var(--mono); font-size: 14px; line-height: 1.6; user-select: all; overflow-wrap: anywhere; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: inherit; font-size: 14px; border-radius: 8px; padding: 7px 14px; cursor: pointer; }
+.copy { background: var(--accent); color: var(--accent-ink); border: 1px solid var(--accent); font-weight: 700; }
+.done { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.done[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.len { font-size: 12px; color: var(--muted); margin-left: auto; font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: no-preference) { .copy { transition: transform .12s; } .copy:active { transform: scale(.97); } }
+</style>
+<div class="wrap">
+  <h1>Greenfall Suno Prompts</h1>
+  <p class="lede">45 instrumental songs: three story themes, then a playlist for each planet. Each card has one prompt. Press Copy, then paste it into Suno.</p>
+  <div class="how">
+    <p><b>In Suno:</b> Create, Custom mode, Instrumental on. Paste the prompt into Style of Music and type the song name into Title. Leave Lyrics empty.</p>
+    <p><b>Simple mode</b> also works: paste into the song description. If Suno says it is too long, use Custom mode.</p>
+    <p><b>Mark made</b> keeps track of finished songs in this browser.</p>
+  </div>
+  <nav aria-label="Planets"><a href="#g0">Story themes</a><a href="#g1">Verdance</a><a href="#g2">Ochre</a><a href="#g3">Tidewell</a><a href="#g4">Rime</a><a href="#g5">Anvil</a><span class="progress" id="progress"></span></nav>
+  <section class="planet" id="g0">
+  <header class="ph"><h2>Story themes</h2><span class="count">3 songs</span></header>
+  <div class="songs"><article class="song" data-key="p1">
+  <div class="head"><span class="num">01</span><h3>Greenfall (Main Theme)</h3><span class="use">Title screen</span></div>
+  <p class="prompt" id="p1">Title theme for a game about a small robot bringing a dead, trash-buried world back to life. Hopeful and a little lonely, with a melody you hum afterwards. Warm felt piano carries the tune over soft strings and gentle synth pads, building slowly to a wide, uplifting swell. Instrumental, 85 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p1" id="bp1">Copy prompt</button><button class="done" type="button" data-key="p1" id="dp1" aria-pressed="false">Mark made</button><span class="len">295 characters</span></div>
+</article><article class="song" data-key="p2">
+  <div class="head"><span class="num">02</span><h3>The Fall of LM-1</h3><span class="use">Opening cutscene</span></div>
+  <p class="prompt" id="p2">A giant ark ship is torn apart by a meteor storm and one tiny escape pod falls toward a planet covered in trash. Big tense strings, pounding taiko and choir swells with alarm-like rhythms, then everything drops away to a quiet, lonely piano as the pod lands. Cinematic, instrumental.</p>
+  <div class="row"><button class="copy" type="button" data-for="p2" id="bp2">Copy prompt</button><button class="done" type="button" data-key="p2" id="dp2" aria-pressed="false">Mark made</button><span class="len">283 characters</span></div>
+</article><article class="song" data-key="p3">
+  <div class="head"><span class="num">03</span><h3>The Ledger</h3><span class="use">Villain theme</span></div>
+  <p class="prompt" id="p3">Villain theme for the Ledger, a cold mining corporation that stripped a whole star system and left it buried in junk, still sending glitchy messages and drones. Dark corporate synthwave, ticking-clock percussion, detuned bass, stuttering arpeggios. Sinister and stylish rather than scary. Instrumental, 100 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p3" id="bp3">Copy prompt</button><button class="done" type="button" data-key="p3" id="dp3" aria-pressed="false">Mark made</button><span class="len">311 characters</span></div>
+</article></div>
+</section><section class="planet" id="g1">
+  <header class="ph"><h2>Verdance</h2><p class="sub">home planet: junk-covered city that turns green</p><span class="count">10 songs</span></header>
+  <div class="songs"><article class="song" data-key="p4">
+  <div class="head"><span class="num">04</span><h3>Sprout Step</h3><span class="use">Playlist, upbeat</span></div>
+  <p class="prompt" id="p4">Bright and bouncy, for scooping junk off city streets and pressing it into bales. Glockenspiel and plucky piano melody, round synth bass, light drums with handclaps. Cheerful and motivating, steady enough to loop for hours. Instrumental, 115 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p4" id="bp4">Copy prompt</button><button class="done" type="button" data-key="p4" id="dp4" aria-pressed="false">Mark made</button><span class="len">246 characters</span></div>
+</article><article class="song" data-key="p5">
+  <div class="head"><span class="num">05</span><h3>Clean Sweep</h3><span class="use">Playlist, upbeat</span></div>
+  <p class="prompt" id="p5">Sunny indie-pop groove for a little robot sweeping an abandoned city back to life. Whistled lead melody, ukulele strums, claps and warm synth bass. Optimistic and catchy, loops without getting tiring. Instrumental, 120 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p5" id="bp5">Copy prompt</button><button class="done" type="button" data-key="p5" id="dp5" aria-pressed="false">Mark made</button><span class="len">223 characters</span></div>
+</article><article class="song" data-key="p6">
+  <div class="head"><span class="num">06</span><h3>Little Helpers</h3><span class="use">Playlist, upbeat</span></div>
+  <p class="prompt" id="p6">A crew of small worker robots buzzing around a junkyard base. Toy-box chiptune with a square-wave lead, bouncy bass and light 8-bit drums. Playful and busy, like a workshop full of gadgets. Instrumental, 125 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p6" id="bp6">Copy prompt</button><button class="done" type="button" data-key="p6" id="dp6" aria-pressed="false">Mark made</button><span class="len">212 characters</span></div>
+</article><article class="song" data-key="p7">
+  <div class="head"><span class="num">07</span><h3>Neon Gutters</h3><span class="use">Playlist, groovy</span></div>
+  <p class="prompt" id="p7">Rusty neon signs flicker over trash-filled streets at sunset. Dreamy retro synthpop with warm analog arpeggios, soft gated drums and a nostalgic lead. Upbeat but relaxed, a steady loop for long work sessions. Instrumental, 108 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p7" id="bp7">Copy prompt</button><button class="done" type="button" data-key="p7" id="dp7" aria-pressed="false">Mark made</button><span class="len">231 characters</span></div>
+</article><article class="song" data-key="p8">
+  <div class="head"><span class="num">08</span><h3>Morning Shift</h3><span class="use">Playlist, bright</span></div>
+  <p class="prompt" id="p8">Early light over a city half-buried in junk as the first robots head out to work. Fresh acoustic folk: fingerpicked guitar, soft mandolin, gentle shaker. Bright and hopeful, easy to hear on repeat. Instrumental, 100 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p8" id="bp8">Copy prompt</button><button class="done" type="button" data-key="p8" id="dp8" aria-pressed="false">Mark made</button><span class="len">220 characters</span></div>
+</article><article class="song" data-key="p9">
+  <div class="head"><span class="num">09</span><h3>Bale by Bale</h3><span class="use">Playlist, chill</span></div>
+  <p class="prompt" id="p9">Focus music for steady, repetitive cleanup work. Mellow lofi hip hop with rhodes chords, vinyl crackle, soft kick and snare and a small melodic hook. Calm and warm, loops for hours. Instrumental, 85 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p9" id="bp9">Copy prompt</button><button class="done" type="button" data-key="p9" id="dp9" aria-pressed="false">Mark made</button><span class="len">203 characters</span></div>
+</article><article class="song" data-key="p10">
+  <div class="head"><span class="num">10</span><h3>Rust and Ribbons</h3><span class="use">Playlist, calm</span></div>
+  <p class="prompt" id="p10">Wandering alone through quiet ruined streets while plants push up through the cracks. Sparse nostalgic piano with soft reverb over a warm analog pad, long gentle pauses between phrases. Peaceful, open-world exploration feel. Instrumental, 75 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p10" id="bp10">Copy prompt</button><button class="done" type="button" data-key="p10" id="dp10" aria-pressed="false">Mark made</button><span class="len">246 characters</span></div>
+</article><article class="song" data-key="p11">
+  <div class="head"><span class="num">11</span><h3>Old Town at Rest</h3><span class="use">Playlist, calm</span></div>
+  <p class="prompt" id="p11">Home base at the end of a long day: a repaired workbench, a humming generator, a few robots parked nearby. Gentle piano and soft ambient pads, slow and sparse. Warm and quiet. Instrumental, 70 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p11" id="bp11">Copy prompt</button><button class="done" type="button" data-key="p11" id="dp11" aria-pressed="false">Mark made</button><span class="len">197 characters</span></div>
+</article><article class="song" data-key="p12">
+  <div class="head"><span class="num">12</span><h3>Verdance Night</h3><span class="use">Night</span></div>
+  <p class="prompt" id="p12">Night falls over the junk city and only a few street lamps still glow. Music-box melody, soft cricket-like textures, warm low pads. Sleepy and calm, loops smoothly. Instrumental, 60 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p12" id="bp12">Copy prompt</button><button class="done" type="button" data-key="p12" id="dp12" aria-pressed="false">Mark made</button><span class="len">186 characters</span></div>
+</article><article class="song" data-key="p13">
+  <div class="head"><span class="num">13</span><h3>Verdance in Bloom</h3><span class="use">Restored planet</span></div>
+  <p class="prompt" id="p13">The once trash-covered city is green again: gardens on every corner, birds back in the trees. Joyful orchestral pop with bright strings, a flute melody and birdsong-like trills. Spring celebration that still loops well. Instrumental, 105 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p13" id="bp13">Copy prompt</button><button class="done" type="button" data-key="p13" id="dp13" aria-pressed="false">Mark made</button><span class="len">242 characters</span></div>
+</article></div>
+</section><section class="planet" id="g2">
+  <header class="ph"><h2>Ochre</h2><p class="sub">desert planet, two blazing suns, giant strip mine</p><span class="count">8 songs</span></header>
+  <div class="songs"><article class="song" data-key="p14">
+  <div class="head"><span class="num">14</span><h3>Sunbaked</h3><span class="use">Playlist, upbeat</span></div>
+  <p class="prompt" id="p14">Two blazing suns over orange dunes and a giant abandoned strip mine. Upbeat desert adventure with marimba and oud melody, hand drums and warm plucks. Energetic and sunny, built to loop while working. Instrumental, 118 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p14" id="bp14">Copy prompt</button><button class="done" type="button" data-key="p14" id="dp14" aria-pressed="false">Mark made</button><span class="len">222 characters</span></div>
+</article><article class="song" data-key="p15">
+  <div class="head"><span class="num">15</span><h3>Strip Mine Shuffle</h3><span class="use">Playlist, funky</span></div>
+  <p class="prompt" id="p15">Hauling scrap out of a terraced mining pit under a white-hot sky. Funky desert groove: slap bass, darbuka, hand claps, wah guitar licks. Playful heat-haze swagger. Instrumental, 112 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p15" id="bp15">Copy prompt</button><button class="done" type="button" data-key="p15" id="dp15" aria-pressed="false">Mark made</button><span class="len">186 characters</span></div>
+</article><article class="song" data-key="p16">
+  <div class="head"><span class="num">16</span><h3>Dune Caravan</h3><span class="use">Playlist, steady</span></div>
+  <p class="prompt" id="p16">A long line of robots crossing rolling dunes, carrying scrap home. Rolling groove with frame drum, kalimba arpeggios and warm bass. Hopeful travelling feel. Instrumental, 105 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p16" id="bp16">Copy prompt</button><button class="done" type="button" data-key="p16" id="dp16" aria-pressed="false">Mark made</button><span class="len">179 characters</span></div>
+</article><article class="song" data-key="p17">
+  <div class="head"><span class="num">17</span><h3>Glass Dunes</h3><span class="use">Playlist, bright</span></div>
+  <p class="prompt" id="p17">Wind has polished the sand into glittering glass ridges. Shimmering ambient electronic with plucked kanun arpeggios and a soft pulse beat. Bright and hopeful. Instrumental, 96 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p17" id="bp17">Copy prompt</button><button class="done" type="button" data-key="p17" id="dp17" aria-pressed="false">Mark made</button><span class="len">180 characters</span></div>
+</article><article class="song" data-key="p18">
+  <div class="head"><span class="num">18</span><h3>Sandglass</h3><span class="use">Playlist, chill</span></div>
+  <p class="prompt" id="p18">A slow hot afternoon, steady work in the shade of a rusted mining crane. Chill lofi beat with oud samples, dusty drums and warm bass. Relaxed and loop-friendly. Instrumental, 84 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p18" id="bp18">Copy prompt</button><button class="done" type="button" data-key="p18" id="dp18" aria-pressed="false">Mark made</button><span class="len">182 characters</span></div>
+</article><article class="song" data-key="p19">
+  <div class="head"><span class="num">19</span><h3>Twin Noon</h3><span class="use">Playlist, calm</span></div>
+  <p class="prompt" id="p19">Midday under two suns, heat shimmering over empty land. Slow western-style ambient: reverb twang guitar, soft harmonica pads, wide open space. Calm and sunbaked. Instrumental, 72 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p19" id="bp19">Copy prompt</button><button class="done" type="button" data-key="p19" id="dp19" aria-pressed="false">Mark made</button><span class="len">183 characters</span></div>
+</article><article class="song" data-key="p20">
+  <div class="head"><span class="num">20</span><h3>Mirage Night</h3><span class="use">Night</span></div>
+  <p class="prompt" id="p20">Desert night, warm wind, the mine&#x27;s silhouette against the stars. Hazy ambient with soft duduk, shimmering pads and a slow heat-wave pulse. Mysterious and calm. Instrumental, 65 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p20" id="bp20">Copy prompt</button><button class="done" type="button" data-key="p20" id="dp20" aria-pressed="false">Mark made</button><span class="len">182 characters</span></div>
+</article><article class="song" data-key="p21">
+  <div class="head"><span class="num">21</span><h3>Oasis Terraces</h3><span class="use">Restored planet</span></div>
+  <p class="prompt" id="p21">The old mine pit has become terraced gardens around a bright blue oasis. Flowing strings, kalimba and gentle hand percussion, water and life returning. Warm and joyful, still loopable. Instrumental, 100 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p21" id="bp21">Copy prompt</button><button class="done" type="button" data-key="p21" id="dp21" aria-pressed="false">Mark made</button><span class="len">207 characters</span></div>
+</article></div>
+</section><section class="planet" id="g3">
+  <header class="ph"><h2>Tidewell</h2><p class="sub">ocean planet, hover over the water</p><span class="count">8 songs</span></header>
+  <div class="songs"><article class="song" data-key="p22">
+  <div class="head"><span class="num">22</span><h3>Tradewinds</h3><span class="use">Playlist, upbeat</span></div>
+  <p class="prompt" id="p22">Hovering over a turquoise ocean between tiny islands, scooping floating junk out of the waves. Breezy tropical track with steel-drum arpeggios, a light shuffle beat and ukulele. Sunny adventure that loops easily. Instrumental, 112 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p22" id="bp22">Copy prompt</button><button class="done" type="button" data-key="p22" id="dp22" aria-pressed="false">Mark made</button><span class="len">235 characters</span></div>
+</article><article class="song" data-key="p23">
+  <div class="head"><span class="num">23</span><h3>Hover Hop</h3><span class="use">Playlist, upbeat</span></div>
+  <p class="prompt" id="p23">Skimming fast across open water from island to island. Summery chiptune pop with bright arpeggios, bouncy synth bass and splashy drums. Playful and energetic. Instrumental, 126 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p23" id="bp23">Copy prompt</button><button class="done" type="button" data-key="p23" id="dp23" aria-pressed="false">Mark made</button><span class="len">181 characters</span></div>
+</article><article class="song" data-key="p24">
+  <div class="head"><span class="num">24</span><h3>Skipping Stones</h3><span class="use">Playlist, playful</span></div>
+  <p class="prompt" id="p24">Sun on the water, gulls overhead, junk bobbing in the surf. Bouncy island pop with marimba, whistles and a light bossa groove. Carefree and catchy. Instrumental, 120 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p24" id="bp24">Copy prompt</button><button class="done" type="button" data-key="p24" id="dp24" aria-pressed="false">Mark made</button><span class="len">170 characters</span></div>
+</article><article class="song" data-key="p25">
+  <div class="head"><span class="num">25</span><h3>Salt and Sails</h3><span class="use">Playlist, cheerful</span></div>
+  <p class="prompt" id="p25">Old harbour wrecks and rusty buoys along a windy coast. Sea-shanty flavoured tune with accordion, fiddle and soft stomps. Warm, cheerful and breezy. Instrumental, 104 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p25" id="bp25">Copy prompt</button><button class="done" type="button" data-key="p25" id="dp25" aria-pressed="false">Mark made</button><span class="len">171 characters</span></div>
+</article><article class="song" data-key="p26">
+  <div class="head"><span class="num">26</span><h3>Low Tide Lofi</h3><span class="use">Playlist, chill</span></div>
+  <p class="prompt" id="p26">Slow work on a quiet beach at low tide. Chill lofi beat with soft guitar loops, ocean-wave texture and mellow keys. Lazy afternoon feel, made for long loops. Instrumental, 82 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p26" id="bp26">Copy prompt</button><button class="done" type="button" data-key="p26" id="dp26" aria-pressed="false">Mark made</button><span class="len">179 characters</span></div>
+</article><article class="song" data-key="p27">
+  <div class="head"><span class="num">27</span><h3>Glass Lagoon</h3><span class="use">Playlist, calm</span></div>
+  <p class="prompt" id="p27">A clear shallow lagoon with coral visible under still water. Airy tropical ambient with vibraphone melody and a soft bossa nova rhythm. Calm, sunny and spacious. Instrumental, 90 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p27" id="bp27">Copy prompt</button><button class="done" type="button" data-key="p27" id="dp27" aria-pressed="false">Mark made</button><span class="len">183 characters</span></div>
+</article><article class="song" data-key="p28">
+  <div class="head"><span class="num">28</span><h3>Tidepools</h3><span class="use">Night</span></div>
+  <p class="prompt" id="p28">Night on the ocean planet, bioluminescent glow in the waves. Calm underwater ambient with soft bells, flowing pads and gentle wave textures. Dreamy deep blue. Instrumental, 62 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p28" id="bp28">Copy prompt</button><button class="done" type="button" data-key="p28" id="dp28" aria-pressed="false">Mark made</button><span class="len">180 characters</span></div>
+</article><article class="song" data-key="p29">
+  <div class="head"><span class="num">29</span><h3>Kelp Garden</h3><span class="use">Restored planet</span></div>
+  <p class="prompt" id="p29">The seas are clean again: kelp forests, schools of fish, floating island gardens. Uplifting orchestral piece with harp glissandos, warm strings and gentle steel pan. Sparkling and alive. Instrumental, 98 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p29" id="bp29">Copy prompt</button><button class="done" type="button" data-key="p29" id="dp29" aria-pressed="false">Mark made</button><span class="len">208 characters</span></div>
+</article></div>
+</section><section class="planet" id="g4">
+  <header class="ph"><h2>Rime</h2><p class="sub">ice moon, farthest from the suns, ringed giant planet in the sky</p><span class="count">8 songs</span></header>
+  <div class="songs"><article class="song" data-key="p30">
+  <div class="head"><span class="num">30</span><h3>Snowplow</h3><span class="use">Playlist, upbeat</span></div>
+  <p class="prompt" id="p30">Pushing through fresh snow on a frozen moon, digging out buried scrap. Crisp indie pop with sleigh-bell shimmer, bright piano and bouncy bass. Cheerful winter energy that loops well. Instrumental, 118 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p30" id="bp30">Copy prompt</button><button class="done" type="button" data-key="p30" id="dp30" aria-pressed="false">Mark made</button><span class="len">205 characters</span></div>
+</article><article class="song" data-key="p31">
+  <div class="head"><span class="num">31</span><h3>Hoarfrost</h3><span class="use">Playlist, steady</span></div>
+  <p class="prompt" id="p31">Glassy blue ice plains under a huge ringed planet. Crystalline ambient electronic: glass-bell melody, soft pulsing synth, light glitch percussion. Cold but beautiful. Instrumental, 96 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p31" id="bp31">Copy prompt</button><button class="done" type="button" data-key="p31" id="dp31" aria-pressed="false">Mark made</button><span class="len">188 characters</span></div>
+</article><article class="song" data-key="p32">
+  <div class="head"><span class="num">32</span><h3>Crunch Ice</h3><span class="use">Playlist, chill</span></div>
+  <p class="prompt" id="p32">Steady work inside a heated dome while snow blows outside. Chill downtempo with crunchy glitch beats, icy plucks and warm bass. Focused and warm against the cold. Instrumental, 90 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p32" id="bp32">Copy prompt</button><button class="done" type="button" data-key="p32" id="dp32" aria-pressed="false">Mark made</button><span class="len">184 characters</span></div>
+</article><article class="song" data-key="p33">
+  <div class="head"><span class="num">33</span><h3>Aurora Drift</h3><span class="use">Playlist, dreamy</span></div>
+  <p class="prompt" id="p33">Green and violet aurora rippling over frozen ridges. Dreamy icy synthpop with a celesta melody, airy pads and a slow warm build. Wonder and stillness. Instrumental, 88 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p33" id="bp33">Copy prompt</button><button class="done" type="button" data-key="p33" id="dp33" aria-pressed="false">Mark made</button><span class="len">172 characters</span></div>
+</article><article class="song" data-key="p34">
+  <div class="head"><span class="num">34</span><h3>Ringlight</h3><span class="use">Playlist, calm</span></div>
+  <p class="prompt" id="p34">A giant ringed gas planet hangs over a frozen crater. Minimal ambient electronic with music-box arpeggios and a soft sub pulse. Vast and quietly amazed. Instrumental, 84 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p34" id="bp34">Copy prompt</button><button class="done" type="button" data-key="p34" id="dp34" aria-pressed="false">Mark made</button><span class="len">174 characters</span></div>
+</article><article class="song" data-key="p35">
+  <div class="head"><span class="num">35</span><h3>Frozen Harbor</h3><span class="use">Playlist, calm</span></div>
+  <p class="prompt" id="p35">An abandoned drilling port locked in ice, snow falling softly. Slow nostalgic piano with cold reverb and soft string pads. Peaceful and reflective. Instrumental, 68 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p35" id="bp35">Copy prompt</button><button class="done" type="button" data-key="p35" id="dp35" aria-pressed="false">Mark made</button><span class="len">169 characters</span></div>
+</article><article class="song" data-key="p36">
+  <div class="head"><span class="num">36</span><h3>Long Night</h3><span class="use">Night</span></div>
+  <p class="prompt" id="p36">The long night on an ice moon far from its suns. Sparse frozen ambient with distant piano notes and wind-like pads. Lonely and still. Instrumental, 55 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p36" id="bp36">Copy prompt</button><button class="done" type="button" data-key="p36" id="dp36" aria-pressed="false">Mark made</button><span class="len">155 characters</span></div>
+</article><article class="song" data-key="p37">
+  <div class="head"><span class="num">37</span><h3>Thaw</h3><span class="use">Restored planet</span></div>
+  <p class="prompt" id="p37">Warmth returns from deep underground: frozen pools become steaming hot springs and moss spreads over the ice. A warm melody over icy bells, strings melting in, gentle drums arriving. Spring after a long winter, emotional build. Instrumental, 92 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p37" id="bp37">Copy prompt</button><button class="done" type="button" data-key="p37" id="dp37" aria-pressed="false">Mark made</button><span class="len">249 characters</span></div>
+</article></div>
+</section><section class="planet" id="g5">
+  <header class="ph"><h2>Anvil</h2><p class="sub">red Mars-like foundry world, the Ledger&#x27;s home, the hardest planet</p><span class="count">8 songs</span></header>
+  <div class="songs"><article class="song" data-key="p38">
+  <div class="head"><span class="num">38</span><h3>Red Engine</h3><span class="use">Playlist, dark and driving</span></div>
+  <p class="prompt" id="p38">A red Mars-like foundry world of iron towers and lava rivers, home of the Ledger. Driving dark synthwave with distorted bass arpeggios and clanging metal percussion. Gritty and heavy but groovy enough to loop. Instrumental, 110 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p38" id="bp38">Copy prompt</button><button class="done" type="button" data-key="p38" id="dp38" aria-pressed="false">Mark made</button><span class="len">232 characters</span></div>
+</article><article class="song" data-key="p39">
+  <div class="head"><span class="num">39</span><h3>Slag Run</h3><span class="use">Playlist, dark and driving</span></div>
+  <p class="prompt" id="p39">Hauling scrap past roaring furnaces and rivers of molten slag. Dark industrial techno: pounding kick, gritty hi-hats, hammer-on-anvil hits. Relentless and driving. Instrumental, 126 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p39" id="bp39">Copy prompt</button><button class="done" type="button" data-key="p39" id="dp39" aria-pressed="false">Mark made</button><span class="len">186 characters</span></div>
+</article><article class="song" data-key="p40">
+  <div class="head"><span class="num">40</span><h3>Foundry Heart</h3><span class="use">Playlist, dark and groovy</span></div>
+  <p class="prompt" id="p40">Deep inside an abandoned volcanic foundry, like walking through an underworld. Dark ambient groove with a heartbeat kick, deep pulsing sub bass, eerie choir pads and metallic hits. Ominous and hypnotic. Instrumental, 90 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p40" id="bp40">Copy prompt</button><button class="done" type="button" data-key="p40" id="dp40" aria-pressed="false">Mark made</button><span class="len">224 characters</span></div>
+</article><article class="song" data-key="p41">
+  <div class="head"><span class="num">41</span><h3>Ember Market</h3><span class="use">Playlist, mysterious</span></div>
+  <p class="prompt" id="p41">A ruined forge city lit by drifting embers. Mysterious dark-fantasy groove with a low cello ostinato, frame drums and an eerie flute. Ancient and strange. Instrumental, 98 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p41" id="bp41">Copy prompt</button><button class="done" type="button" data-key="p41" id="dp41" aria-pressed="false">Mark made</button><span class="len">176 characters</span></div>
+</article><article class="song" data-key="p42">
+  <div class="head"><span class="num">42</span><h3>Red Dust Waltz</h3><span class="use">Playlist, eerie</span></div>
+  <p class="prompt" id="p42">A dust storm rolls over rusted machines on a red planet. Eerie music-box waltz with detuned piano, low drones and howling wind. Sad and beautiful. Instrumental, 80 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p42" id="bp42">Copy prompt</button><button class="done" type="button" data-key="p42" id="dp42" aria-pressed="false">Mark made</button><span class="len">168 characters</span></div>
+</article><article class="song" data-key="p43">
+  <div class="head"><span class="num">43</span><h3>Magma Crawl</h3><span class="use">Playlist, heavy and slow</span></div>
+  <p class="prompt" id="p43">Lava slowly creeping across black rock under a blood-red sky. Slow heavy dark ambient with deep sub drones, distant metallic clangs and crackling fire textures. Menacing and huge. Instrumental, 70 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p43" id="bp43">Copy prompt</button><button class="done" type="button" data-key="p43" id="dp43" aria-pressed="false">Mark made</button><span class="len">201 characters</span></div>
+</article><article class="song" data-key="p44">
+  <div class="head"><span class="num">44</span><h3>Ash Choir</h3><span class="use">Night</span></div>
+  <p class="prompt" id="p44">Ash drifts through red light as night falls on the volcanic world. Haunting dark ambient with a low wordless choir, distant bells and rumbling drones. Mysterious and slow. Instrumental, 60 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p44" id="bp44">Copy prompt</button><button class="done" type="button" data-key="p44" id="dp44" aria-pressed="false">Mark made</button><span class="len">193 characters</span></div>
+</article><article class="song" data-key="p45">
+  <div class="head"><span class="num">45</span><h3>Iron Bloom</h3><span class="use">Restored planet</span></div>
+  <p class="prompt" id="p45">The foundry world restored: flowers growing between cooled lava flows, iron towers wrapped in vines. Hopeful cinematic piano and strings over a soft industrial pulse, warm choir swell. Darkness turning to light, triumphant ending. Instrumental, 95 bpm.</p>
+  <div class="row"><button class="copy" type="button" data-for="p45" id="bp45">Copy prompt</button><button class="done" type="button" data-key="p45" id="dp45" aria-pressed="false">Mark made</button><span class="len">252 characters</span></div>
+</article></div>
+</section>
+</div>
+<script>
+(function () {
+  var KEY = 'greenfall-suno-made';
+  var made = {};
+  try { made = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { made = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(made)); } catch (e) {} }
+  function paint() {
+    var cards = document.querySelectorAll('.song'), n = 0;
+    cards.forEach(function (c) {
+      var on = !!made[c.dataset.key];
+      if (on) n++;
+      c.classList.toggle('is-made', on);
+      var b = c.querySelector('.done');
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.textContent = on ? 'Made' : 'Mark made';
+    });
+    document.getElementById('progress').textContent = n + ' / ' + cards.length + ' made';
+  }
+  function selectText(el) {
+    var r = document.createRange(); r.selectNodeContents(el);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest('button');
+    if (!b) return;
+    if (b.classList.contains('copy')) {
+      var el = document.getElementById(b.dataset.for);
+      var text = el.textContent;
+      var ok = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy prompt'; }, 1600); };
+      var fail = function () { selectText(el); b.textContent = 'Selected: press Cmd+C'; setTimeout(function () { b.textContent = 'Copy prompt'; }, 2600); };
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(ok, fail); }
+        else { fail(); }
+      } catch (e) { fail(); }
+    } else if (b.classList.contains('done')) {
+      var k = b.dataset.key;
+      if (made[k]) delete made[k]; else made[k] = true;
+      save(); paint();
+    }
+  });
+  paint();
+})();
+</script>

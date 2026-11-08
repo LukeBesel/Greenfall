@@ -934,10 +934,11 @@ func resolve() -> void:
 		var who: String = str(l[0])
 		var text: String = tr(str(l[1])).format({"name": pname})  # [l10n]
 		var dur: float = float(l[2])
+		dur = maxf(dur, Subtitles.total_time(text))  # [intro2] every line stays up long enough to read
 		match who:
-			"wren": world.wren.line_started.emit(text, 2)
-			"ledger": uplink.show_now(text, false, maxf(dur - text.length() / 42.0 - 0.6, 0.3))
-			"friendly": uplink.show_now(text, true, maxf(dur - text.length() / 42.0 - 0.6, 0.3))
+			"wren": uplink._bind().show_now(text, "wren")
+			"ledger": uplink.show_now(text, false)
+			"friendly": uplink.show_now(text, true)
 		if str(l[1]).begins_with("RECALCULATING"):
 			_set_relay_friendly(true, true)
 			Vfx.burst("big_sparkle", rp + Vector3(0, 2.0, 0.4), Color(0.5, 1.0, 0.6))
