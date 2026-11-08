@@ -30,6 +30,7 @@ const PlanetThemes := preload("res://audio/planet_themes.gd")  # [sound]
 const MusicTracks := preload("res://audio/music_tracks.gd")  # [sound]
 const AmbienceBeds := preload("res://audio/ambience.gd")  # [sound]
 const AmbienceSynth := preload("res://audio/ambience_synth.gd")  # [sound]
+const TunesDirector := preload("res://audio/tunes_director.gd")  # [tunes]
 ## [sound] Mix: how far music / ambience dip while WREN speaks, and the attack / release times.
 const DUCK_MUSIC_DB: float = -7.0
 const DUCK_AMB_DB: float = -4.5
@@ -50,6 +51,7 @@ var _hold_id: String = ""  # [sound] radio preview (wins over the world while se
 var _hold_resto: float = 0.0
 var _duck_until_us: int = 0
 var _duck: float = 0.0  # 0..1, smoothed
+var _tunes_hush: bool = false  # [tunes] a song (or the quiet between songs) owns the music
 
 
 func _ready() -> void:
@@ -74,6 +76,9 @@ func _ready() -> void:
 	_ambience = AmbienceBeds.new()
 	_ambience.name = "Ambience"
 	add_child(_ambience)
+	var tunes: Node = TunesDirector.new()  # [tunes] the owner's songs (systems/tunes.gd)
+	tunes.name = "TunesDirector"
+	add_child(tunes)
 	apply_volumes()
 
 
@@ -372,6 +377,16 @@ func _apply_resto(x: float) -> void:
 		_ambience.call("set_restoration", x)
 
 
+## [tunes] The song director (audio/tunes_director.gd) hushes the synth score while a song plays
+## or the shuffle owns the quiet between songs. Stingers still play in the gaps.
+func tunes_hush(on: bool) -> void:
+	_tunes_hush = on
+
+
+func is_tunes_hushed() -> bool:
+	return _tunes_hush
+
+
 func get_music_intensity() -> float:
 	return float(_music.get("intensity")) if _music else 0.0
 
@@ -379,6 +394,8 @@ func get_music_intensity() -> float:
 ## Short musical stinger built from the current chord: "upgrade", "hex_clean", "first_sprout",
 ## "robot_built", "level_up". Routed to the Music bus.
 func music_sting(sting_name: String) -> void:
+	if _tunes_hush and Tunes.now_playing() != "":  # [tunes] no synth stingers over a song
+		return
 	if _music:
 		_music.call("sting", sting_name)
 
@@ -390,7 +407,7 @@ func _process(_delta: float) -> void:
 	var now: int = Time.get_ticks_usec()
 	var dt: float = (now - _music_last_us) / 1000000.0
 	_music_last_us = now
-	_music.set("enabled", music_enabled)
+	_music.set("enabled", music_enabled and not _tunes_hush)  # [tunes]
 	_music.call("update", dt)
 	if _music_lpf:
 		_music_lpf.cutoff_hz = float(_music.get("lpf_cutoff"))

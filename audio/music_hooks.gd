@@ -33,6 +33,7 @@ func _ready() -> void:
 			_last_hex_sting = now
 			Audio.music_sting("hex_clean"))
 	Audio.set_music_mood("explore")
+	_tunes_setup()  # [tunes]
 	# [sound] Dev: --planet-theme=ochre|tidewell|rime|anvil and --restoration=0..1 (pins it).
 	if DevHooks.has("planet-theme"):
 		var ok: bool = Audio.set_planet_theme(DevHooks.get_s("planet-theme", "verdance"))
@@ -40,6 +41,29 @@ func _ready() -> void:
 	if DevHooks.has("restoration"):
 		_pinned_resto = clampf(DevHooks.get_f("restoration", 0.0), 0.0, 1.0)
 	_update_intensity()
+
+
+## [tunes] The owner's songs in play: the background shuffle (unless the intro is about to take
+## over), the CDs in the rubble and the quick-select (N, with Glim's Music upgrade).
+func _tunes_setup() -> void:
+	if Tunes.context() != "intro":
+		Tunes.set_context("play")
+	if world == null:
+		return
+	var cd := CdFinds.new()
+	cd.world = world
+	add_child(cd)
+	var pk := TunesPicker.new()
+	pk.world = world
+	world.add_child.call_deferred(pk)
+	var d: Node = Tunes.director()
+	if d and world.get("patch") != null:
+		d.set("listener", world.patch)
+
+
+func _exit_tree() -> void:
+	if Tunes.context() == "play":
+		Tunes.set_context("none")  # [tunes] the next scene picks its own music
 
 
 ## Story beats call this around cutscenes (first sprout, launches).

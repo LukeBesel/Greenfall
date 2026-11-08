@@ -1,0 +1,192 @@
+class_name CdFinds
+extends Node3D
+## [tunes] CDs in the rubble: now and then a cleaned hex turns up an old CD in a cracked jewel
+## case (only where junk was, never out of thin air). Walk over it to pick it up: the song joins
+## the CD player and the shuffle (Tunes.grant, toast "New CD: <song> by <artist>").
+## - Each planet's CDs are found on that planet (data/songs.json found_on); songs without an MP3
+##   never drop.
+## - A bit rarer than ordinary finds, with a pity counter so every CD turns up in time: the chance
+##   grows with each cleaned hex since the last CD and is certain after cd_find.guarantee_hexes.
+## - A CD left lying stays where it surfaced (flags.songs.pending) until Lumi picks it up.
+## State: GameState.flags.songs {found, pity, pending: {song id: {hub, hex, planet}}}.
+
+const PICK_R: float = 1.7
+const OFFSET := Vector3(-0.9, 0.04, 1.1)
+
+var world: Node
+var rng := RandomNumberGenerator.new()
+var _discs: Dictionary = {}  # song id -> Node3D
+var _t: float = 0.0
+var _spin: float = 0.0
+
+
+func _ready() -> void:
+	name = "CdFinds"
+	rng.randomize()
+	EventBus.hex_cleaned.connect(func(hid: int, _p: Vector3, _b: BigNum) -> void: on_hex_cleaned(hid))
+	_restore.call_deferred()
+
+
+# --- Rules (static) ----------------------------------------------------------------------
+
+static func tuning() -> Dictionary:
+	return Tunes.cfg().get("cd_find", {})
+
+
+static func pending() -> Dictionary:
+	var st: Dictionary = Tunes.st()
+	if not (st.get("pending") is Dictionary):
+		st["pending"] = {}
+	return st["pending"]
+
+
+static func pity() -> int:
+	return int(Tunes.st().get("pity", 0))
+
+
+## Chance that the next cleaned hex turns up a CD after `since` hexes without one.
+static func chance(since: int) -> float:
+	var c: Dictionary = tuning()
+	if since + 1 >= int(c.get("guarantee_hexes", 18)):
+		return 1.0
+	return clampf(float(c.get("base_chance", 0.05)) + float(c.get("pity_step", 0.035)) * since, 0.0, 1.0)
+
+
+## CDs that may drop here now: this planet's, not owned and not already lying in this district.
+static func candidates(planet: String, hub: int) -> Array[String]:
+	var out: Array[String] = []
+	var pend: Dictionary = pending()
+	for id: String in Tunes.cds_left(planet):
+		var p: Variant = pend.get(id)
+		if p is Dictionary and int((p as Dictionary).get("hub", -1)) == hub and str((p as Dictionary).get("planet", "")) == planet:
+			continue
+		out.append(id)
+	return out
+
+
+## One cleaned hex: maybe a CD (returns its id, or ""). Pure apart from the saved pity counter.
+static func roll(planet: String, hub: int, r: float, pick: float) -> String:
+	if float(GameState.stats.get("hexes_cleaned", 0.0)) < float(tuning().get("min_hexes", 4)):
+		return ""
+	var cand: Array[String] = candidates(planet, hub)
+	if cand.is_empty():
+		return ""
+	var since: int = pity()
+	if r >= chance(since):
+		Tunes.st()["pity"] = since + 1
+		return ""
+	Tunes.st()["pity"] = 0
+	return cand[clampi(int(pick * cand.size()), 0, cand.size() - 1)]
+
+
+static func take(id: String) -> bool:
+	pending().erase(id)
+	return Tunes.grant(id)
+
+
+# --- Live --------------------------------------------------------------------------------
+
+func on_hex_cleaned(hid: int) -> void:
+	if world == null or world.get("field") == null:
+		return
+	var planet: String = SolarSystem.current_id()
+	var id: String = roll(planet, GameState.current_hub, rng.randf(), rng.randf())
+	if id == "":
+		return
+	pending()[id] = {"hub": GameState.current_hub, "hex": hid, "planet": planet}
+	_show(id, hid, true)
+
+
+func _restore() -> void:
+	if world == null or world.get("field") == null:
+		return
+	var planet: String = SolarSystem.current_id()
+	for id: Variant in pending().keys():
+		var p: Dictionary = pending()[id]
+		if Tunes.is_found(str(id)):
+			pending().erase(id)
+			continue
+		if int(p.get("hub", -1)) == GameState.current_hub and str(p.get("planet", "")) == planet:
+			var hid: int = int(p.get("hex", -1))
+			if hid >= 0 and hid < world.field.hex_count() and world.field.is_clean(hid):
+				_show(str(id), hid, false)
+
+
+func _show(id: String, hid: int, fresh: bool) -> void:
+	if _discs.has(id):
+		return
+	var node: Node3D = build_cd()
+	add_child(node)
+	var pos: Vector3 = world.field.hex_center(hid) + OFFSET
+	node.global_position = pos
+	node.rotation.y = rng.randf() * TAU
+	_discs[id] = node
+	if fresh:
+		Vfx.burst("sparkle", pos + Vector3(0, 0.3, 0), Color(0.75, 0.9, 1.0), 0.6)
+		Audio.play("detector", 1.25, -10.0)
+		EventBus.toast.emit(tr("Something shiny turned up in the cleared rubble. An old CD!"), "hint")
+
+
+func _process(delta: float) -> void:
+	_spin += delta
+	for id: String in _discs:
+		var n: Node3D = _discs[id]
+		var glint: OmniLight3D = n.get_node_or_null("Glint") as OmniLight3D
+		if glint:
+			glint.light_energy = 0.5 + 0.35 * maxf(0.0, sin(_spin * 2.4 + float(id.length())))
+	_t += delta
+	if _t < 0.12 or world == null:
+		return
+	_t = 0.0
+	var patch: Node3D = world.get("patch") as Node3D
+	if patch == null:
+		return
+	var d: Node = Tunes.director()
+	if d and d.get("listener") == null:
+		d.set("listener", patch)
+	for id: String in _discs.keys():
+		var n: Node3D = _discs[id]
+		if n.global_position.distance_to(patch.global_position) < PICK_R:
+			_discs.erase(id)
+			Vfx.burst("sparkle", n.global_position + Vector3(0, 0.4, 0), Color(0.8, 0.95, 1.0), 0.8)
+			n.queue_free()
+			take(id)
+
+
+## A CD in a cracked jewel case, lying half out of it in the dirt.
+static func build_cd() -> Node3D:
+	var root := Node3D.new()
+	root.name = "CD"
+	var case_mat := StandardMaterial3D.new()
+	case_mat.albedo_color = Color(0.82, 0.86, 0.9, 0.35)
+	case_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	case_mat.roughness = 0.15
+	case_mat.metallic_specular = 0.8
+	var tray := DecorProps.paint(Color(0.08, 0.08, 0.09), 0.6)
+	var disc := DecorProps.paint(Color(0.86, 0.88, 0.92), 0.12, 0.95)
+	var label := DecorProps.paint(Color(0.95, 0.62, 0.22), 0.5)
+	var hub := DecorProps.paint(Color(0.92, 0.94, 0.97, 0.6), 0.2)
+	var s: float = 1.9  # a real CD is tiny next to Lumi; a little larger so it reads
+	var case_ := Node3D.new()
+	case_.rotation_degrees = Vector3(0, 0, 4)
+	root.add_child(case_)
+	case_.add_child(EggProps.mesh(ProcMesh.box(Vector3(0.142, 0.006, 0.125) * s), tray, Vector3(0, 0.003 * s, 0)))
+	# The lid, cracked: two panes at a slight angle.
+	case_.add_child(EggProps.mesh(ProcMesh.box(Vector3(0.142, 0.004, 0.07) * s), case_mat, Vector3(0, 0.009 * s, -0.03 * s), Vector3(3, 0, 0)))
+	case_.add_child(EggProps.mesh(ProcMesh.box(Vector3(0.142, 0.004, 0.052) * s), case_mat, Vector3(0.004 * s, 0.013 * s, 0.037 * s), Vector3(-9, 4, 0)))
+	# The disc slid half out, tipped onto the dirt.
+	var d := Node3D.new()
+	d.position = Vector3(0.07 * s, 0.012 * s, 0.01 * s)
+	d.rotation_degrees = Vector3(0, 0, -7)
+	root.add_child(d)
+	d.add_child(EggProps.mesh(ProcMesh.cyl(0.06 * s, 0.06 * s, 0.0024 * s, 32), disc))
+	d.add_child(EggProps.mesh(ProcMesh.cyl(0.052 * s, 0.052 * s, 0.0026 * s, 28), label, Vector3(0, 0.0003 * s, 0), Vector3.ZERO, Vector3(1, 1, 1)))
+	d.add_child(EggProps.mesh(ProcMesh.cyl(0.019 * s, 0.019 * s, 0.003 * s, 16), hub))
+	var glint := OmniLight3D.new()
+	glint.name = "Glint"
+	glint.light_color = Color(0.8, 0.92, 1.0)
+	glint.light_energy = 0.6
+	glint.omni_range = 1.4
+	glint.position = Vector3(0, 0.35, 0)
+	root.add_child(glint)
+	return root

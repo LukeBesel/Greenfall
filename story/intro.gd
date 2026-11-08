@@ -254,6 +254,7 @@ func play() -> void:
 		world.hud.visible = false
 	if world.get("music") != null:
 		world.music.set_cinematic(true)
+	_tunes_start()  # [tunes] The Fall of LM-1 from the first frame (before the motif, which it replaces)
 	Audio.music_sting("motif")  # [sound] the Greenfall motif; the Homecoming ending quotes it
 	_build_overlay()
 	_drop_cover()  # [first]
@@ -614,6 +615,7 @@ func _phase_landing() -> void:
 	_crash_pose()
 	_fire.queue_free()
 	_fire = null
+	_tunes_land()  # [tunes]
 	Audio.play("thud", 0.5, 4.0)
 	Audio.play("crunch", 0.6, 0.0)
 	EventBus.shake_requested.emit(1.0)
@@ -851,6 +853,9 @@ func _shot(from: Vector3, from_look: Vector3, to: Vector3, to_look: Vector3, dur
 func _process(delta: float) -> void:
 	if not running:
 		return
+	var td: Node = Tunes.director()  # [tunes] the song holds still while the cinematic is paused
+	if td and Tunes.context() == "intro":
+		td.call("set_paused", _pauser != null and _pauser.paused)
 	_t += delta
 	if _cam and not _cam_manual:
 		_cam_t += delta
@@ -911,6 +916,7 @@ func _finish() -> void:
 		if patch.global_position.distance_to(POD_POS) > 6.0 or _skipped or not patch.visible:
 			patch.global_position = Vector3(0, 0.05, 3.0)
 	GameState.flags["intro_done"] = true
+	_tunes_land(1.2 if _skipped else 4.0)  # [tunes]
 	if _skipped:
 		_subs().clear()
 	_report_subtitles()
@@ -945,6 +951,10 @@ func _finish() -> void:
 			world.hud.visible = true
 		if world.get("music") != null:
 			world.music.set_cinematic(false)
+		var td2: Node = Tunes.director()  # [tunes] back to the background shuffle
+		if td2:
+			td2.call("set_paused", false)
+		Tunes.set_context("play")
 		for b: ColorRect in _bars:
 			b.visible = false
 		_title.visible = false
@@ -957,6 +967,23 @@ func _finish() -> void:
 	tw.tween_callback(func() -> void:
 		_layer.queue_free()
 		finished.emit())
+
+
+## [tunes] The Fall of LM-1 (audio/songs/fall_of_lm1.mp3) scores the intro from its first frame.
+## Without the file the synth score and the motif play as before.
+func _tunes_start() -> void:
+	var td: Node = Tunes.director()
+	if td:
+		td.call("intro_start")
+	print("[intro] score: %s" % (Tunes.now_playing() if Tunes.now_playing() != "" else "synth"))
+
+
+## The pod has landed: the song fades out under the impact and the quiet wake-up.
+func _tunes_land(fade: float = 4.0) -> void:
+	var td: Node = Tunes.director()
+	if td and Tunes.context() == "intro" and Tunes.now_playing() != "":
+		td.call("intro_land", fade)
+		print("[intro] song fades out at %.1fs (song at %.1fs)" % [_t, float(td.call("position"))])
 
 
 ## [intro2] Dev check: how long each intro line was really on screen against the reading rule.

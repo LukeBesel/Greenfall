@@ -1,6 +1,6 @@
 class_name Radio
 extends Node3D
-## [extras] The base radio: a little valve radio on the workbench that plays the score's composed
+## [extras] The base radio, now a CD player ([tunes]), that plays the score's composed
 ## planet tracks (audio/music_tracks.gd via Audio.play_track; a restored planet plays the track's
 ## restored variant). Songs unlock as districts and planets are restored (data/radio.json), with a
 ## small toast. Picking a song loops it with no gaps until "Back to mood music" (Audio.stop_track).
@@ -135,9 +135,24 @@ static func playing() -> String:
 
 
 ## Plays a song ("" = back to the mood music). False if it is still locked.
+## [tunes] "shuffle" and the owner's songs (systems/tunes.gd ids) go to the CD player's songs.
 static func play(id: String) -> bool:
+	if id == Tunes.SHUFFLE or not Tunes.song(id).is_empty() or (id == "" and Tunes.radio_mode() != ""):  # [tunes]
+		if id != "" and id != Tunes.SHUFFLE and not Tunes.play(id):
+			return false
+		if id == Tunes.SHUFFLE:
+			Tunes.shuffle()
+		elif id == "":
+			Tunes.stop()
+		Audio.stop_track()
+		st()["song"] = id
+		if id != "":
+			GameState.inc_stat("radio_plays")
+		return true
 	if id != "" and not is_unlocked(id):
 		return false
+	if Tunes.radio_mode() != "":
+		Tunes.stop()  # [tunes]
 	st()["song"] = id
 	if id != "":
 		Audio.play_track(id)
@@ -167,13 +182,18 @@ func setup(p_world: Node) -> void:
 	# Quietly catch up on songs earned before this build (no toast burst on load).
 	_note_here()
 	check_unlocks()
-	if playing() != "" and is_unlocked(playing()):
-		Audio.play_track(playing())
+	var td: Node = Tunes.director()  # [tunes] the CD player's songs come from here
+	if td:
+		td.set("radio_source", self)
+	if playing() != "" and (is_unlocked(playing()) or playing() == Tunes.SHUFFLE or Tunes.is_found(playing())):
+		play(playing())  # [tunes] routes CDs too
 
 
 func _exit_tree() -> void:
 	# Leaving the district (title screen, travel): the next scene sets its own music.
 	Audio.stop_track()
+	if not Tunes.glim_music():  # [tunes] before Glim's Music upgrade the CDs play only here
+		Tunes.stop()
 
 
 func _process(delta: float) -> void:

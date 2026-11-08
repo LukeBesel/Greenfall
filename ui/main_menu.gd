@@ -42,6 +42,7 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if SaveManager.has_save():
 		_save = SaveManager.read_dict(SaveManager.slot_path())
+	Tunes.set_context("menu")  # [tunes] the main theme (the synth score if its file is missing)
 	_build_stage()
 	_build_ui()
 
@@ -594,6 +595,7 @@ func _credits_bbcode() -> String:
 	var gold: String = UITheme.GOLD.to_html(false)
 	var muted: String = UITheme.MUTED.to_html(false)
 	var out: String = tr("[b][color=#%s]GREENFALL[/color][/b]\nCode, procedural meshes, synthesized audio and writing are original to Greenfall.\n\n") % gold
+	out += tr("Music by Lucas") + "\n\n"  # [tunes]
 	var f := FileAccess.open("res://docs/CREDITS.md", FileAccess.READ)
 	if f == null:
 		return out + tr("Third-party assets: CC0, Poly Haven (polyhaven.com).")
