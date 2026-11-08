@@ -1236,6 +1236,11 @@ func interact_prompt(p: Patch) -> String:
 const BENCH_RANGE: float = 3.2
 
 
+## [orbB] Where the workbench is: BOARD_POS on the flat game, the start site's bench anchor on the globe.
+func bench_pos() -> Vector3:
+	return orbit.bench_position() if orbit else BOARD_POS
+
+
 func near_bench() -> bool:
 	if orbit:  # [orbB] the start site's bench anchor
 		return orbit.near_bench()

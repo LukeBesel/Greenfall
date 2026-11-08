@@ -8,10 +8,14 @@ extends Node
 ## Built here: the globe (OrbitPlanet: survey, terrain, cells, streamer, SphereField as the
 ## slice's `field`, SphereJunkView as its `view`, sites, gravity), sky and day/night (OrbitDay),
 ## stand-in crews (OrbitCrews), the real Patch on a SphereMotor with SphereCam, the HUD, the
-## Depot on the start pad, Lumi Level and the pause menu.
+## Depot on the start pad, Lumi Level, the pause menu, hex levels (sparse), the Hub (logic; the
+## site prefab shows its stage), the workbench (bench anchor) + Upgrades, Research/Achievements/
+## Codex, music, WREN + subtitles, Goals, the restart checklist (Tutorial), Requests (Contracts).
+## GameState.world is the start site's own dict (GameState.use_orbit_world).
 ## Not ported yet (left null on the slice, skipped): CityLayout/CityView/StreetDressing/litter/
 ## far junk/water (orbD sites), Fleet/robot builder/Command view (orbC), SkyDirector/GlobeView/
-## FutureLayer (orbE), Hub/Camp/garden/hex levels/story/events/research and the rest.
+## FutureLayer (orbE), Camp (bench repair, trash bin, yard builds), garden, events, intro/
+## objectives/signal tower, core charge, outposts, eggs, ledger, telescope, extras, Glim, photo.
 ##
 ## Dev flags (phase A's, now on the slice): --orbit-walk[=boost] --orbit-lap-quit,
 ## --orbit-scoop, --orbit-cash --orbit-cash-quit, --orbit-view=follow|ground|command,
@@ -135,6 +139,7 @@ func build(p_world: Node3D) -> void:
 	w.set("pause_menu", pm)
 	_build_upgrades()
 	w.call("_setup_research_codex")  # slice.gd's own: Research, Achievements, the Codex (UI + data)
+	_build_story()
 	if loaded and not migrate:
 		restore_world()
 	elif migrate:
@@ -314,6 +319,38 @@ func any_modal_open() -> bool:
 		if m != null and bool(m.get("is_open")):
 			return true
 	return false
+
+
+# --- Story, music, goals (no flat geometry) ---------------------------------------------
+
+## The systems the flat slice builds after the board that only read world state: music, WREN and
+## the subtitles, goals, the restart checklist (tutorial), the Requests board.
+func _build_story() -> void:
+	var music := MusicHooks.new()
+	music.world = w
+	w.add_child(music)
+	w.set("music", music)
+	var wren := Wren.new()
+	wren.world = w
+	w.add_child(wren)
+	w.set("wren", wren)
+	var subs := Subtitles.new()
+	w.add_child(subs)
+	wren.line_out.connect(subs.show_line)
+	var goals := Goals.new()
+	goals.name = "Goals"
+	goals.world = w
+	w.add_child(goals)
+	w.set("goals", goals)
+	var tut := Tutorial.new()
+	tut.world = w
+	w.add_child(tut)
+	w.set("tutorial", tut)
+	var ct := Contracts.new()
+	ct.name = "Contracts"
+	ct.world = w
+	w.add_child(ct)
+	w.set("contracts", ct)
 
 
 # --- Hub and workbench (the start site) ---------------------------------------------------
