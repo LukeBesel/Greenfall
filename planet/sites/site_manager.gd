@@ -163,6 +163,7 @@ func probe_cells(i: int, p: SitePrefab) -> int:
 	if space == null:
 		return 0
 	var n: int = 0
+	var ko: YardKeepOut = _keep_out(i)
 	for c: int in sites[i]["cells"]:
 		if not cells.is_dirty(c) and cells.state[c] != 0:
 			continue
@@ -170,6 +171,8 @@ func probe_cells(i: int, p: SitePrefab) -> int:
 		var f: Basis = SphereGrid.frame(dir)
 		for o: Vector2 in PROBE:
 			var d: Vector3 = (dir + (f.x * o.x + f.z * o.y) / terrain.R).normalized()
+			if ko and ko.blocks(d):
+				continue  # [v1yard] the pad and its machines: no junk lands there anyway
 			var g: Vector3 = terrain.ground(d)
 			if _solid_above(space, p, g, d):
 				_clear_cell(c)
@@ -221,6 +224,11 @@ func _clear_cell(c: int) -> void:
 		f.hex_clean[c] = 1
 
 
+## [v1yard] The start yard's per-piece keep-out (OrbitPlanet.yard_keep_out), for hub 0 only.
+func _keep_out(i: int) -> YardKeepOut:
+	return globe.call("yard_keep_out") as YardKeepOut if i == 0 and globe.has_method("yard_keep_out") else null
+
+
 ## Junk never sits inside a building: cells whose centre falls in a footprint go clean.
 func _clear_footprints(i: int, p: SitePrefab) -> void:
 	if cells == null or p.content == null:
@@ -230,6 +238,16 @@ func _clear_footprints(i: int, p: SitePrefab) -> void:
 		if c.has_method("footprints"):
 			rects.append_array(c.call("footprints"))
 	if rects.is_empty():
+		return
+	var ko: YardKeepOut = _keep_out(i)
+	if ko:  # [v1yard] the start yard: pieces keep off the buildings one by one; only cells wholly under them go clean
+		ko.add_footprints(rects)
+		var field: Variant = globe.get("field")
+		for c: int in sites[i]["cells"]:
+			if ko.cell_inside(grid, c):
+				_clear_cell(c)
+			elif field is SphereField and (field as SphereField).materialized[c] == 1:
+				print("[sites] hub 0 cell %d already had its junk when the footprints came" % c)
 		return
 	var inv: Transform3D = (sites[i]["transform"] as Transform3D).affine_inverse()
 	for c: int in sites[i]["cells"]:

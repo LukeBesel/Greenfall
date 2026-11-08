@@ -93,6 +93,12 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	await BuildBudget.check("globe cells")  # [orbE]
 	tq = Time.get_ticks_msec()
 	field = SphereField.new(grid, terrain, cells, seed_value)
+	var ko: YardKeepOut = yard_keep_out()  # [v1yard] junk right up to the pad's edge, small pieces near the start
+	if ko:
+		field.keep_out = ko.blocks
+		var c0: int = start_cell()
+		for c: int in grid.cells_within(grid.centers[c0], YardKeepOut.SMALL_ONLY_M, c0):
+			field.small_only[c] = true
 	stats["field_ms"] = Time.get_ticks_msec() - tq
 	await BuildBudget.check("globe field")  # [orbE]
 	surface = SphereSurface.new(grid.radius_m)
@@ -155,8 +161,15 @@ func _place_hubs(n: int, fresh: bool, saved := PackedInt32Array()) -> void:
 
 
 func _clear_site(s: Dictionary, hub_cell: int, i: int) -> void:
+	var ko: YardKeepOut = yard_keep_out() if i == 0 else null  # [v1yard] only the pad's own cells go clean
 	for c: int in s["cells"]:
 		cells.set_flag(c, SphereCells.F_SITE)
+		if ko:
+			if ko.cell_inside(grid, c):
+				cells.state[c] = 1
+				cells.junk[c] = 0.0
+				cells.flags[c] |= SphereCells.F_HUB
+			continue
 		if grid.distance_m(c, hub_cell) < (60.0 if i > 0 else 22.0):
 			cells.state[c] = 1
 			cells.junk[c] = 0.0
@@ -167,6 +180,17 @@ func _clear_sites() -> void:
 	cells = SphereCells.from_planet(planet)
 	for s: Dictionary in sites:
 		_clear_site(s, int(s["cell"]), int(s["index"]))
+
+
+## [v1yard] The start yard's per-piece keep-out (the pad, the pod; SiteManager adds the building
+## footprints), or null off Verdance (other planets' start prefabs keep the 22 m clear core).
+func yard_keep_out() -> YardKeepOut:
+	if _keep_out == null and not sites.is_empty() and str(spec.get("id", "verdance")) == "verdance":
+		_keep_out = YardKeepOut.for_site(sites[0], terrain)
+	return _keep_out
+
+
+var _keep_out: YardKeepOut
 
 
 func start_cell() -> int:
@@ -230,9 +254,56 @@ static func _box(root: Node3D, at: Vector3, size: Vector3, mat: Material, collid
 # --- Cells <-> field ----------------------------------------------------------------------
 
 func _on_near_changed(added: PackedInt32Array, _removed: PackedInt32Array) -> void:
+	# [v1world] The globe lays the flat world's density (SphereField.DRAW_PIECES), so a ring move
+	# while walking materializes only the cells close to a tracked body now; the outer ring's cells
+	# follow over the next frames under a time budget (they are 35-70 m out, past the scoop's reach).
+	var t0: int = Time.get_ticks_usec()
+	var soon: Array[Vector3] = []
+	if _live:
+		for k: String in trackers:
+			var b: Node3D = trackers[k]
+			if is_instance_valid(b) and b.is_inside_tree():
+				soon.append(b.global_position)
 	for c: int in added:
-		field.materialize(c)
+		if field.materialized[c] == 1:
+			continue
+		var now: bool = not _live
+		for p: Vector3 in soon:
+			if grid.great_circle_m(p, grid.centers[c]) < FILL_NOW_M:
+				now = true
+				break
+		if now:
+			field.materialize(c)
+		elif not _fill_set.has(c):
+			_fill_set[c] = true
+			_fill_q.append(c)
 	_junk_dirty = true
+	if _live and not added.is_empty():
+		stats["near_fill_max_ms"] = maxf(float(stats.get("near_fill_max_ms", 0.0)), (Time.get_ticks_usec() - t0) / 1000.0)
+
+
+const FILL_NOW_M: float = 36.0  # [v1world]
+const FILL_BUDGET_US: int = 3000  # [v1world] deferred materializing per frame
+var _live: bool = false  # [v1world] the world is running (the build materializes at once)
+var _fill_q: Array[int] = []
+var _fill_set: Dictionary = {}
+
+
+## [v1world] Materializes queued near cells under a per-frame time budget (all of them: flush).
+func _drain_fill(flush: bool) -> void:
+	var t0: int = Time.get_ticks_usec()
+	var did: bool = false
+	while not _fill_q.is_empty():
+		var c: int = _fill_q.pop_front()
+		_fill_set.erase(c)
+		if field.materialized[c] == 0 and streamer.is_near(c):
+			field.materialize(c)
+			did = true
+		if not flush and Time.get_ticks_usec() - t0 > FILL_BUDGET_US:
+			break
+	if did:
+		_junk_dirty = true
+		stats["near_fill_max_ms"] = maxf(float(stats.get("near_fill_max_ms", 0.0)), (Time.get_ticks_usec() - t0) / 1000.0)
 
 
 ## Redraw the near ring's junk on the next frame (after pieces were added or moved).
@@ -317,7 +388,10 @@ func update_centres() -> void:
 func _process(_delta: float) -> void:
 	if streamer == null:
 		return
+	_live = true  # [v1world]
 	update_centres()
+	if not _fill_q.is_empty():  # [v1world]
+		_drain_fill(false)
 	if _junk_dirty:
 		_junk_dirty = false
 		junk_view.rebuild(streamer.near_cells())
@@ -328,6 +402,7 @@ func _process(_delta: float) -> void:
 ## Draw the near ring's junk right now (after loading: no pop-in over the first frames).
 func refresh_junk_now() -> void:
 	update_centres()
+	_drain_fill(true)  # [v1world]
 	_junk_dirty = false
 	junk_view.rebuild(streamer.near_cells())
 	junk_view.flush()

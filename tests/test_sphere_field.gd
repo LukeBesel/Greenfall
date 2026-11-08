@@ -27,7 +27,7 @@ func test_ids_are_globe_cells() -> void:
 
 func test_materialize_is_deterministic_and_matches_junk() -> void:
 	var pids: PackedInt32Array = _field.materialize(_cell)
-	assert_eq(pids.size(), SphereField.FULL_PIECES, "an untouched hex gets the full piece count")
+	assert_eq(pids.size(), SphereField.DRAW_PIECES, "an untouched hex gets the full piece count")
 	assert_eq(_field.materialize(_cell).size(), 0, "only once")
 	assert_almost_eq(_field.removed_fraction(_cell), 0.0, 0.001)
 	for pid: int in pids:

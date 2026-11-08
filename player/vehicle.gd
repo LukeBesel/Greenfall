@@ -40,6 +40,7 @@ var _bank: float = 0.0
 var _pitch: float = 0.0
 var _prev_fwd := Vector3.ZERO
 var _prev_spd: float = 0.0
+var _own_t: float = 0.0
 
 
 ## Adds the hover-sled to the Upgrades list for this session (globe scenes only, so the flat
@@ -69,10 +70,17 @@ static func tune(t: int) -> Dictionary:
 func _ready() -> void:
 	_model = _build_model()
 	add_child(_model)
+	visible = owned_tier() > 0  # [v1yard]
 
 
 func _process(delta: float) -> void:
 	_t += delta
+	_own_t -= delta
+	if _own_t <= 0.0:  # [v1yard] no vehicle at the start: the parked sled shows once it is bought
+		_own_t = 0.5
+		visible = mounted or owned_tier() > 0
+	if not visible:
+		return
 	_set_lit(mounted)
 	if mounted and lumi and lumi.sphere_motor:
 		_ride(delta)
@@ -128,9 +136,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 ## Prompt for the HUD when Lumi is near the parked sled ("" otherwise).
 func prompt() -> String:
-	if lumi == null or mounted or global_position.distance_to(lumi.global_position) > REACH:
-		return ""
-	return tr("Ride the hover-sled") if owned_tier() > 0 else tr("Hover-sled: buy it in Upgrades")
+	if lumi == null or mounted or owned_tier() <= 0 or global_position.distance_to(lumi.global_position) > REACH:
+		return ""  # [v1yard] not there until it is bought
+	return tr("Ride the hover-sled")
 
 
 func mount() -> void:

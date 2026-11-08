@@ -177,7 +177,7 @@ func _build_litter() -> void:
 	if DevHooks.has("litter-report"):
 		for k: int in 3:  # three reports, a report-interval apart (a scoop run shows the sweep)
 			get_tree().create_timer(DevHooks.get_f("litter-report", 6.0) * (k + 1)).timeout.connect(func() -> void:
-				print("[litter] %d cells laid, %d pieces" % [litter.get("_cell").size(), litter.piece_count()]))
+				print("[litter] %d cells laid, %d pieces, slowest cell %.1f ms, near-ring fill max %.1f ms" % [litter.get("_cell").size(), litter.piece_count(), litter.build_max_ms, float(so.globe.stats.get("near_fill_max_ms", 0.0))]))  # [v1world] timings
 
 
 ## Lake surfaces on near water cells (planet/sites/sphere_water.gd). --water-report prints a count.

@@ -34,8 +34,8 @@ func _build() -> void:
 	day.set_process(false)
 	if day.sun2:
 		day.sun2.visible = false  # the director's companion fill replaces it
-	if day.lamp:
-		day.lamp.queue_free()  # Glim carries the local light
+	if day.lamp and Glim.is_found():  # [v1yard] Glim carries the local light once he is found; Lumi's lamp until then
+		day.lamp.queue_free()
 		day.lamp = null
 	sky = SkyDirector.new()
 	sky.name = "SkyDirector"
@@ -58,14 +58,9 @@ func _build() -> void:
 			sky.spin = SkyDirector.spin_for_local_time(sky.time_of_day, patch.global_position)
 		sky.frozen = true
 	w.set("sky_director", sky)
-	# Glim, the light buddy.
-	glim = GlimBot.new()
-	glim.name = "Glim"
-	w.add_child(glim)
-	glim.target = patch
-	glim.sky = sky
-	glim.set_light(Glim.value("light", "range", 6.0), Glim.value("light", "energy", 1.1))
-	glim.snap_to_target()
+	# [v1yard] Glim, the light buddy, comes as on the flat game: GlimDirector finds him in the junk
+	# (5 min and 25 pieces in, or the first dusk) and keeps his body. Not at the start.
+	_sync_glim()
 	# The Future Layer per cell on the near chunks.
 	future = FutureLayerSphere.new()
 	future.name = "FutureLayer"
@@ -150,7 +145,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
+## [v1yard] GlimDirector's Glim (once found) lights by this sky; Lumi's own lamp goes then.
+func _sync_glim() -> void:
+	var gd: GlimDirector = GlimDirector.of(so.w)
+	glim = gd.bot if gd else null
+	if glim and glim.sky == null:
+		glim.sky = sky
+	if glim and so.day.lamp:
+		so.day.lamp.queue_free()
+		so.day.lamp = null
+
+
 func _process(_delta: float) -> void:
+	if glim == null and Glim.is_found():
+		_sync_glim()
 	sky.fog_scale = 0.27 if so.cam and so.cam.view == "command" else 1.0
 	so.day.stats["local_time"] = sky.time_of_day
 	so.day.stats["daylight"] = sky.daylight
