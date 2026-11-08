@@ -8,9 +8,12 @@ extends Node3D
 ##   bins   trash bin levels 1-5 on their plates
 
 const SHOTS: Dictionary = {
-	"yard": [Vector3(9.0, 3.6, 2.2), Vector3(0.0, 1.0, 1.0)],
-	"bins": [Vector3(0.0, 4.4, -3.0), Vector3(0.0, 0.8, -11.5)],
+	"yard": [Vector3(7.5, 7.5, 11.0), Vector3(-1.5, 0.3, -0.5)],
+	"shack": [Vector3(1.2, 2.6, 4.2), Vector3(-4.6, 1.0, 1.4)],
+	"bench": [Vector3(23.2, 2.2, 2.6), Vector3(20.0, 0.8, 0.0)],
+	"bins": [Vector3(0.0, 4.4, -18.0), Vector3(0.0, 0.8, -26.5)],
 }
+const BOARD_POS := Vector3(-3.6, 0, 2.2)  # scenes/slice.gd
 
 var _shots: PackedStringArray
 var _i: int = -1
@@ -21,7 +24,7 @@ var _cam: Camera3D
 
 func _ready() -> void:
 	_out = DevHooks.get_s("out", "screenshots/yard/lineup")
-	_shots = DevHooks.get_s("shots", "yard,bins").split(",")
+	_shots = DevHooks.get_s("shots", "yard,shack,bench,bins").split(",")
 	var night: bool = DevHooks.has("night")
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
@@ -51,10 +54,17 @@ func _ready() -> void:
 	add_child(sun)
 	var ground := MeshInstance3D.new()
 	var pm := PlaneMesh.new()
-	pm.size = Vector2(60, 60)
+	pm.size = Vector2(80, 80)
 	ground.mesh = pm
-	ground.material_override = AssetLib.pbr_material("dirty_concrete", 0.25, Color(0.85, 0.8, 0.72), true)
+	ground.material_override = AssetLib.pbr_material("dirty_concrete", 0.25, Color(0.7, 0.62, 0.52), true)
 	add_child(ground)
+	var slab := MeshInstance3D.new()  # stands in for StreetDressing's painted yard slab
+	var sp := PlaneMesh.new()
+	sp.size = Vector2(17, 17)
+	slab.mesh = sp
+	slab.position.y = 0.012
+	slab.material_override = AssetLib.pbr_material("concrete_floor_worn_001", 0.3, Color(0.85, 0.83, 0.8), true)
+	add_child(slab)
 	_build_yard()
 	_build_bins()
 	_cam = Camera3D.new()
@@ -64,17 +74,19 @@ func _ready() -> void:
 
 
 ## The same node layout scenes/slice.gd _build_board makes (the parts YardArt.dress_board restyles).
-func _board(at: Vector3, bench_ok: bool, with_shack: bool) -> void:
+## The same node layout scenes/slice.gd _build_board makes (the parts YardArt.dress_board restyles),
+## at the real yard positions when `full`.
+func _board(shack_at: Vector3, bench_ok: bool, full: bool) -> void:
 	var bits: Dictionary = {}
 	var shack := Node3D.new()
-	shack.position = at
+	shack.position = shack_at
 	shack.rotation_degrees = Vector3(0, 90, 0)
 	add_child(shack)
 	for k: String in ["frame", "roof", "back", "side"]:
 		var m := MeshInstance3D.new()
 		shack.add_child(m)
 		bits[k] = m
-		m.visible = with_shack
+		m.visible = full
 	(bits["roof"] as Node3D).position = Vector3(0, 2.3, -0.05)
 	(bits["roof"] as Node3D).rotation_degrees = Vector3(-9, 0, 2)
 	(bits["back"] as Node3D).position = Vector3(0, 1.15, -1.15)
@@ -90,7 +102,7 @@ func _board(at: Vector3, bench_ok: bool, with_shack: bool) -> void:
 		mi.rotation.y = spec[2]
 		bench.add_child(mi)
 	bits["bench"] = bench
-	if with_shack:
+	if full:
 		var bulb := MeshInstance3D.new()
 		bulb.position = Vector3(0, 2.15, -0.4)
 		shack.add_child(bulb)
@@ -104,7 +116,7 @@ func _board(at: Vector3, bench_ok: bool, with_shack: bool) -> void:
 		lamp.rotation_degrees = Vector3(-90, 0, 0)
 		shack.add_child(lamp)
 		var sl := MeshInstance3D.new()
-		sl.position = at + Vector3(2.8, 0, 2.6)
+		sl.position = Vector3(4.2, 0, -3.0)
 		add_child(sl)
 		var light := SpotLight3D.new()
 		light.light_color = Color(1.0, 0.82, 0.6)
@@ -117,28 +129,32 @@ func _board(at: Vector3, bench_ok: bool, with_shack: bool) -> void:
 		bits["street_lamp"] = sl
 		bits["street_light"] = light
 		var gen := MeshInstance3D.new()
-		gen.position = at + Vector3(1.6, 0, -3.0)
-		gen.rotation_degrees = Vector3(0, 70, 0)
 		add_child(gen)
 		bits["generator"] = gen
-	YardArt.dress_board(bits)
-	if with_shack:
-		(bits["street_light"] as Node3D).position.y = YardArt.LAMP_HEAD_Y - 0.12
+		var d := Depot.new()
+		d.position = Vector3(0, 0, -1.8)
+		add_child(d)
+		d.process_mode = Node.PROCESS_MODE_DISABLED
+		set("depot", d)
+	YardArt.dress_board(bits, self if full else null)
 	if not bench_ok:  # what camp.gd does to a broken bench
 		bench.transform = bench.transform * Transform3D(Basis.from_euler(Vector3(0.06, 0.1, -0.2)), Vector3(0.15, -0.16, 0.05))
 	YardArt.bench_state(bench, bench_ok, false)
 
 
+var depot: Node3D  # read by YardArt.dress_board (like the slice's)
+
+
 func _build_yard() -> void:
-	_board(Vector3(-0.5, 0, 0), true, true)
-	_board(Vector3(-0.5, 0, 5.0), false, false)
+	_board(BOARD_POS + Vector3(-1.3, 0, 0), true, true)
+	_board(Vector3(20.0, 0, 0.0), false, false)
 
 
 func _build_bins() -> void:
 	for l: int in range(1, 6):
 		var d := Depot.new()
 		add_child(d)
-		d.position = Vector3(-10.0 + (l - 1) * 5.0, 0, -11.0)
+		d.position = Vector3(-10.0 + (l - 1) * 5.0, 0, -25.0)
 		d.process_mode = Node.PROCESS_MODE_DISABLED
 		d._build_body(l)
 		YardArt.set_powered(d._scale_post, l >= 2)

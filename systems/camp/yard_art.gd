@@ -318,7 +318,7 @@ static func solid(parent: Node3D, size: Vector3, pos: Vector3, nm: String = "Sol
 
 ## Restyles the yard pieces scenes/slice.gd _build_board made, in place: same nodes, names,
 ## transforms and colliders (camp.gd and the slice's ruin pass keep driving them).
-static func dress_board(bits: Dictionary) -> void:
+static func dress_board(bits: Dictionary, world: Node3D = null) -> void:
 	var frame: MeshInstance3D = bits.get("frame") as MeshInstance3D
 	if frame:
 		shack_frame().into(frame, 0.2)
@@ -352,9 +352,24 @@ static func dress_board(bits: Dictionary) -> void:
 			follow.call()
 	var gen: MeshInstance3D = bits.get("generator") as MeshInstance3D
 	if gen:
+		# Out from under the lean-to's open side (it hid the bench), panel and cable toward the shack.
+		gen.position = Vector3(-5.2, 0.0, -0.7)
+		gen.rotation_degrees = Vector3(0, 90, 0)
 		generator().into(gen, 0.15)
 		set_powered(gen, true)  # it only shows once built: built = running
 		solid(gen, Vector3(1.45, 1.1, 0.85), Vector3(0, 0.55, 0), "GeneratorBody")
+	if world and world.is_inside_tree():
+		var feet: Array = []
+		for key: String in ["generator", "street_lamp"]:
+			var n: Node3D = bits.get(key) as Node3D
+			if n:
+				feet.append(n.global_position)
+		var dp: Node3D = world.get("depot") as Node3D
+		if dp:
+			feet.append(dp.global_position)
+			feet.append(dp.global_position + Vector3(0, 0, -2.7))
+		var fr: Node3D = bits.get("frame") as Node3D
+		dress_ground(world, fr.get_parent() as Node3D if fr else null, 8.5, feet)
 
 
 # Lean-to (shack-local: opens toward +Z, back wall at z -1.15, posts at x +-1.6).
@@ -816,9 +831,9 @@ static func depot_pad(radius: float) -> MeshInstance3D:
 	for ix: float in [-1.0, 1.0]:
 		for iz: float in [-1.0, 1.0]:
 			var c := Vector3(ix * q * 0.5 + ix * 0.04, 0.075, iz * q * 0.5 + iz * 0.04)
-			k.box(Vector3(q - 0.06, 0.02, q - 0.06), c, Color(0.5, 0.52, 0.53, 0.0), Vector3.ZERO, 0.008)
+			k.box(Vector3(q - 0.06, 0.02, q - 0.06), c, Color(0.5, 0.53, 0.55, 0.65), Vector3.ZERO, 0.008)
 			for t: int in 5:  # tread bars
-				k.box(Vector3(q - 0.2, 0.012, 0.035), c + Vector3(0, 0.014, -q * 0.36 + t * q * 0.18), Color(0.6, 0.62, 0.63, 0.0), Vector3(0, 45.0 * ix * iz, 0), 0.005)
+				k.box(Vector3(q - 0.2, 0.016, 0.05), c + Vector3(0, 0.014, -q * 0.36 + t * q * 0.18), Color(0.62, 0.64, 0.66, 0.5), Vector3(0, 45.0 * ix * iz, 0), 0.008)
 			k.bolts4(c + Vector3(0, 0.01, 0), Vector3(q * 0.5 - 0.07, 0, 0), Vector3(0, 0, q * 0.5 - 0.07), Vector3.UP, STEEL, 0.018)
 	k.box(Vector3(0.5, 0.02, 0.5), Vector3(0, 0.075, 0), DARK, Vector3.ZERO, 0.008)  # drain grate
 	for t: int in 5:
@@ -856,3 +871,172 @@ static func depot_scale() -> MeshInstance3D:
 	k.light(Vector3(0, SCALE_DIAL_Y + 0.42, 0.1), AMBER, 0.35, 1.6)
 	k.cable([Vector3(0.0, 1.2, -0.08), Vector3(0.0, 0.6, -0.1), Vector3(-0.05, 0.03, -0.25), Vector3(-0.4, 0.03, -0.5)], 0.02)
 	return k.mi(0.3, "ScalePost")
+
+
+# --- Yard ground ------------------------------------------------------------------------------------
+
+## The yard is never a flat slab (owner): on top of the painted yard slab (planet/street_dressing.gd)
+## this adds a cracked concrete footing under the lean-to and bench, broken slab plates, a kerb
+## round the edge (gap at the walkway), drain covers, grit drifted against everything, and dry
+## grass tufts in the corners and cracks. Visual only, at most ~5 cm proud (Lumi and bales pass).
+## `half` = the yard's half-size; `feet` = world points of things that collect grit round their base.
+static func dress_ground(world: Node3D, shack: Node3D, half: float = 8.5, feet: Array = []) -> Node3D:
+	var root := Node3D.new()
+	root.name = "YardGround"
+	world.add_child(root)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 7151
+	var k := Kit.new()
+	var conc := Color(0.66, 0.64, 0.6)
+	# Footing under the lean-to/bench (in the shack's frame), split by a crack, with a kerb lip.
+	if shack:
+		k.push(world.global_transform.affine_inverse() * shack.global_transform)
+		k.box(Vector3(2.0, 0.05, 2.9), Vector3(-0.92, 0.012, -0.05), conc, Vector3(0, 0, 0.3), 0.015)
+		k.box(Vector3(1.78, 0.05, 2.9), Vector3(1.0, 0.012, -0.05), conc.darkened(0.06), Vector3(0, 0, -0.4), 0.015)
+		k.box(Vector3(3.9, 0.08, 0.16), Vector3(0, 0.03, -1.42), conc.darkened(0.12), Vector3.ZERO, 0.03)
+		feet.append(shack.global_position)
+		k.pop()
+	# Broken slab plates in the open corners (each two pieces with a crack between).
+	for p: Array in [[Vector2(-7.2, -7.4), 1.6], [Vector2(6.3, -6.6), 1.8], [Vector2(-6.9, -1.4), 1.6], [Vector2(3.7, 6.7), 1.7],
+			[Vector2(-3.3, 6.8), 1.9], [Vector2(6.8, 6.6), 1.5], [Vector2(7.0, -2.6), 1.3]]:
+		var c: Vector2 = p[0]
+		var s: float = p[1]
+		var yaw: float = rng.randf_range(-0.25, 0.25)
+		var split: float = rng.randf_range(0.35, 0.65)
+		var tint: Color = conc.darkened(rng.randf_range(-0.05, 0.15))
+		k.push(Transform3D(Basis(Vector3.UP, yaw), Vector3(c.x, 0.0, c.y)))
+		var w1: float = s * split - 0.03
+		var w2: float = s * (1.0 - split) - 0.03
+		k.box(Vector3(w1, 0.045, s), Vector3(-s * 0.5 + w1 * 0.5, 0.016, 0), tint, Vector3(rng.randf_range(-1.2, 1.2), 0, rng.randf_range(-1.2, 1.2)), 0.015)
+		k.box(Vector3(w2, 0.045, s * rng.randf_range(0.7, 1.0)), Vector3(s * 0.5 - w2 * 0.5, 0.016, 0), tint.darkened(0.05), Vector3(rng.randf_range(-1.5, 1.5), rng.randf_range(-4, 4), rng.randf_range(-1.5, 1.5)), 0.015)
+		k.pop()
+		feet.append(Vector3(c.x, 0, c.y))
+	# Kerb stones along the edge; the front (walkway, +z) leaves a gap in the middle.
+	for side: int in 4:
+		var n: int = int(half * 2.0 / 1.0)
+		for i: int in n:
+			var t: float = -half + 0.5 + i * 1.0
+			if side == 2 and absf(t) < 1.8:
+				continue
+			if rng.randf() < 0.08:
+				continue  # a missing stone
+			var pos: Vector3
+			var rot: float
+			match side:
+				0:
+					pos = Vector3(t, 0.05, -half + 0.08)
+					rot = 0.0
+				1:
+					pos = Vector3(half - 0.08, 0.05, t)
+					rot = 90.0
+				2:
+					pos = Vector3(t, 0.05, half - 0.08)
+					rot = 0.0
+				_:
+					pos = Vector3(-half + 0.08, 0.05, t)
+					rot = 90.0
+			var tilt := Vector3(rng.randf_range(-2.0, 2.0), rot + rng.randf_range(-2.5, 2.5), rng.randf_range(-2.0, 2.0))
+			if i % 2 == 0 and side == 2:
+				k.hazard(Vector3(0.96, 0.12, 0.2), pos, tilt)
+			else:
+				k.box(Vector3(0.96, 0.12, 0.2), pos, conc.lightened(0.05).darkened(rng.randf_range(0.0, 0.15)), tilt, 0.03)
+	# Drain covers and a manhole.
+	for d: Array in [[Vector3(3.9, 0.02, 3.4), 0.32], [Vector3(-6.2, 0.02, -3.9), 0.42], [Vector3(-2.0, 0.02, -5.6), 0.28]]:
+		var at: Vector3 = d[0]
+		var r: float = d[1]
+		k.cyl(r + 0.05, 0.035, at, GUNMETAL, Vector3.ZERO, 0.01, 18)
+		k.cyl(r, 0.04, at + Vector3(0, 0.006, 0), Color(0.36, 0.38, 0.4, 0.0), Vector3.ZERO, 0.008, 18)
+		for i: int in 4:
+			k.box(Vector3(r * 1.6, 0.012, 0.03), at + Vector3(0, 0.028, -r * 0.45 + i * r * 0.3), DARK, Vector3.ZERO, 0.004)
+		for a: int in 6:
+			k.bolt(at + Vector3(cos(a * TAU / 6) * (r - 0.03), 0.026, sin(a * TAU / 6) * (r - 0.03)), Vector3.UP, STEEL, 0.012)
+	var ground: MeshInstance3D = k.mi(0.3, "Plates")
+	ground.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	root.add_child(ground)
+	root.add_child(_grit(rng, half, feet))
+	root.add_child(_tufts(rng, half, feet))
+	return root
+
+
+## Pebbles and grit: drifted along the kerb and round the feet of things, a light sprinkle elsewhere.
+static func _grit(rng: RandomNumberGenerator, half: float, feet: Array) -> MultiMeshInstance3D:
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_colors = true
+	mm.mesh = bbox(Vector3(1, 0.6, 0.8), 0.25)
+	var n: int = 900
+	mm.instance_count = n
+	for i: int in n:
+		var p: Vector3 = _scatter_point(rng, half, feet, 0.55)
+		var s: float = rng.randf_range(0.03, 0.09) * (1.8 if rng.randf() < 0.1 else 1.0)
+		var b := Basis.from_euler(Vector3(rng.randf() * TAU, rng.randf() * TAU, rng.randf() * TAU)).scaled(Vector3.ONE * s)
+		mm.set_instance_transform(i, Transform3D(b, p + Vector3(0, s * 0.2, 0)))
+		var g: float = rng.randf_range(0.32, 0.62)
+		mm.set_instance_color(i, Color(g * rng.randf_range(1.0, 1.15), g, g * rng.randf_range(0.85, 1.0)))
+	var mi := MultiMeshInstance3D.new()
+	mi.name = "Grit"
+	mi.multimesh = mm
+	var m := StandardMaterial3D.new()
+	m.vertex_color_use_as_albedo = true
+	m.roughness = 0.92
+	mi.material_override = m
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	return mi
+
+
+## Dry grass tufts: in corners, along the kerb and against the footings.
+static func _tufts(rng: RandomNumberGenerator, half: float, feet: Array) -> MultiMeshInstance3D:
+	var parts: Array = []
+	for b: int in 9:
+		var a: float = b * TAU / 9.0 + rng.randf_range(-0.2, 0.2)
+		var h: float = rng.randf_range(0.2, 0.42)
+		var lean: float = rng.randf_range(12.0, 32.0)
+		var col: Color = Color(0.45, 0.58, 0.24).lerp(Color(0.72, 0.66, 0.36), rng.randf())
+		parts.append(ProcMesh.part(bbox(Vector3(0.035, h, 0.01), 0.004),
+			Transform3D(Basis(Vector3.UP, a) * Basis(Vector3.RIGHT, deg_to_rad(lean)), Vector3(cos(a), 0, sin(a)) * 0.03 + Vector3(0, h * 0.45, 0)), col))
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_colors = true
+	mm.mesh = ProcMesh.merge(parts)
+	var n: int = 220
+	mm.instance_count = n
+	var last := Vector3.ZERO
+	for i: int in n:
+		var p: Vector3 = _scatter_point(rng, half, feet, 0.6) if i % 3 == 0 else last + Vector3(rng.randf_range(-0.2, 0.2), 0, rng.randf_range(-0.2, 0.2))
+		last = p
+		var s: float = rng.randf_range(0.6, 1.4)
+		mm.set_instance_transform(i, Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(s, s * rng.randf_range(0.8, 1.3), s)), p))
+		var g: float = rng.randf_range(0.75, 1.1)
+		mm.set_instance_color(i, Color(g, g, g))
+	var mi := MultiMeshInstance3D.new()
+	mi.name = "Tufts"
+	mi.multimesh = mm
+	var m := StandardMaterial3D.new()
+	m.vertex_color_use_as_albedo = true
+	m.roughness = 0.85
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	mi.material_override = m
+	return mi
+
+
+## A point that prefers the yard's edge band and the feet of things (edge_bias = share at edges).
+static func _scatter_point(rng: RandomNumberGenerator, half: float, feet: Array, edge_bias: float) -> Vector3:
+	var r: float = rng.randf()
+	if r < edge_bias:
+		var t: float = rng.randf_range(-half, half)
+		var inset: float = 0.15 + absf(rng.randfn(0.0, 0.35))
+		match rng.randi() % 4:
+			0:
+				return Vector3(t, 0.012, -half + inset)
+			1:
+				return Vector3(half - inset, 0.012, t)
+			2:
+				return Vector3(t, 0.012, half - inset)
+			_:
+				return Vector3(-half + inset, 0.012, t)
+	if r < edge_bias + 0.3 and not feet.is_empty():
+		var f: Vector3 = feet[rng.randi() % feet.size()]
+		var a: float = rng.randf() * TAU
+		var d: float = rng.randf_range(0.6, 1.8)
+		return Vector3(f.x + cos(a) * d, 0.012, f.z + sin(a) * d)
+	return Vector3(rng.randf_range(-half, half), 0.012, rng.randf_range(-half, half))
