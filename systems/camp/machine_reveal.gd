@@ -95,6 +95,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_t += delta
+	if DevHooks.has("reveal-hold"):  # screenshots on slow software renders: keep it lit
+		_t = minf(_t, LIFE * 0.5)
 	var fade_in: float = clampf(_t / 0.4, 0.0, 1.0)
 	var fade_out: float = clampf((LIFE - _t) / 1.2, 0.0, 1.0)
 	var a: float = fade_in * fade_out
