@@ -11,6 +11,7 @@ const TEX_W: int = 512
 const F_SITE: int = 1      # reserved by a hub site
 const F_VISITED: int = 2   # Lumi has set foot here
 const F_NEAR: int = 4      # inside the 3D junk ring (set by the streamer)
+const F_HUB: int = 8       # [orbB] hub ground (the cleared yard of a site): not a junk hex, not counted
 
 var n: int = 0
 var junk := PackedFloat32Array()   # remaining junk 1 = untouched .. 0 = clean
