@@ -173,6 +173,7 @@
     },
     {
       "id": "belt_speed",
+      "requires_station": "conveyor",
       "name": "Belt Drive",
       "tab": "hub",
       "icon": "speed",
@@ -187,6 +188,7 @@
     },
     {
       "id": "baler_speed",
+      "requires_station": "auto_baler",
       "name": "Baler Hydraulics",
       "tab": "hub",
       "icon": "press",
@@ -201,6 +203,7 @@
     },
     {
       "id": "recycler_yield",
+      "requires_station": "recycler",
       "name": "Recycler Yield",
       "tab": "hub",
       "icon": "auto",

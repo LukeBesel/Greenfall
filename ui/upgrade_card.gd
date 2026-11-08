@@ -178,7 +178,10 @@ func refresh() -> void:
 	var unit: String = tr(str(def.get("unit", "")))
 	var before: float = Economy.stat_with_upgrade_level(upgrade_id, lv)
 	var after: float = Economy.stat_with_upgrade_level(upgrade_id, lv + 1)
-	if not unlocked:
+	if not unlocked and def.has("requires_station") and not Stations.built_in_state(str(def["requires_station"])):
+		_change.text = tr("Build the %s first (Hub tab)") % tr(str(Economy.read_json("res://data/stations.json").get(str(def["requires_station"]), {}).get("name", def["requires_station"])))  # [camp]
+		_change.add_theme_color_override("font_color", UITheme.MUTED)
+	elif not unlocked:
 		var req: Dictionary = def.get("requires", {})
 		var parts: Array[String] = []
 		for rid: String in req:

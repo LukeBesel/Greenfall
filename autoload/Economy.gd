@@ -160,6 +160,11 @@ func is_maxed(id: String) -> bool:
 
 func is_unlocked(id: String) -> bool:
 	var u: Dictionary = upgrade_defs[id]
+	# [camp] Machine upgrades (Belt Drive, Baler Hydraulics, Recycler Yield) need their machine
+	# built first: they used to sell with nothing in the yard to show for it.
+	var sid: String = str(upgrade_defs[id].get("requires_station", ""))
+	if sid != "" and not Stations.built_in_state(sid):
+		return false
 	var req: Dictionary = u.get("requires", {})
 	for rid: String in req:
 		if GameState.level_of(rid) < int(req[rid]):

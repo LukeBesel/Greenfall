@@ -55,31 +55,8 @@ func _build() -> void:
 	_chute = Node3D.new()
 	_chute.position = Vector3(0, 0, -2.7)
 	add_child(_chute)
-	# The skip: a tapered open-top steel bin with lifting lugs.
-	var skip_mat: ShaderMaterial = Mats.worn_paint(Color(0.22, 0.42, 0.3), 0.6, 0.6, 7.0, 0.6)
-	var parts: Array = []
-	var w: float = 2.6
-	var d: float = 1.6
-	var h: float = 1.25
-	parts.append(ProcMesh.part(ProcMesh.box(Vector3(w * 0.8, 0.08, d)), ProcMesh.xf(Vector3(0, 0.05, 0))))
-	parts.append(ProcMesh.part(ProcMesh.box(Vector3(w, h, 0.06)), ProcMesh.xf(Vector3(0, h * 0.5, d * 0.5))))
-	parts.append(ProcMesh.part(ProcMesh.box(Vector3(w, h, 0.06)), ProcMesh.xf(Vector3(0, h * 0.5, -d * 0.5))))
-	parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.06, h * 1.05, d)), ProcMesh.xf(Vector3(w * 0.45, h * 0.5, 0), Vector3(0, 0, -12))))
-	parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.06, h * 1.05, d)), ProcMesh.xf(Vector3(-w * 0.45, h * 0.5, 0), Vector3(0, 0, 12))))
-	for x: float in [-0.9, 0.0, 0.9]:
-		parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.08, h, 0.1)), ProcMesh.xf(Vector3(x, h * 0.5, d * 0.5 + 0.05))))
-	var skip := MeshInstance3D.new()
-	skip.mesh = ProcMesh.merge(parts)
-	skip.material_override = skip_mat
-	_chute.add_child(skip)
-	# Junk already inside the skip.
-	var fill := MeshInstance3D.new()
-	fill.mesh = FieldView._mound_mesh()
-	fill.material_override = AssetLib.pbr_material("rubble", 1.0, Color(0.6, 0.55, 0.5), true)
-	fill.scale = Vector3(1.15, 0.5, 0.7)
-	fill.position = Vector3(0, h * 0.55, 0)
-	_chute.add_child(fill)
-	_chute_mouth = _chute.position + Vector3(0, h + 0.4, 0)
+	_build_body(TrashBin.level())  # [camp] the bin's body follows its level (automation/trash_bin.gd)
+	TrashBin.events.changed.connect(_on_bin_changed)
 	# Scale head: a post with a big analog dial facing the plate.
 	var post := MeshInstance3D.new()
 	post.mesh = ProcMesh.cyl(0.05, 0.06, 1.4, 10)
@@ -118,18 +95,6 @@ func _build() -> void:
 	lamp.material_override = Mats.lamp(Color(1.0, 0.65, 0.2), 1.2)
 	lamp.position = post.position + Vector3(0, 1.05, 0)
 	add_child(lamp)
-	var sign_label := Mats.stencil(tr("SCRAP  INTAKE  ·  WEIGH HERE"), 64, Color(0.92, 0.9, 0.82, 0.9))
-	sign_label.position = Vector3(0, h * 0.62, d * 0.5 + 0.11)
-	_chute.add_child(sign_label)
-	var sb := StaticBody3D.new()
-	var cs := CollisionShape3D.new()
-	var bs := BoxShape3D.new()
-	bs.size = Vector3(w, h + 0.2, d)
-	cs.shape = bs
-	cs.position = Vector3(0, (h + 0.2) * 0.5, 0)
-	sb.add_child(cs)
-	_chute.add_child(sb)
-
 
 func pad_contains(world_pos: Vector3) -> bool:
 	var d: Vector3 = world_pos - global_position
@@ -141,6 +106,8 @@ func pad_contains(world_pos: Vector3) -> bool:
 func sell_factor() -> float:
 	var w: Node = world if world else get_parent()
 	var m: float = 1.0 + value_bonus
+	if not bare:
+		m *= TrashBin.value_mult()  # [camp] the bin's level
 	if w and w.get("hub") != null:
 		m += float(w.hub.sell_mult())
 	if w and w.get("field") != null:  # [biomes] frontier junk sells for more (data/frontiers.json value_mult)
@@ -164,7 +131,7 @@ func _physics_process(delta: float) -> void:
 	if patch and _feed_timer <= 0.0 and pad_contains(patch.global_position) and patch.has_method("pop_carried_cube"):
 		var cube: JunkCube = patch.pop_carried_cube()
 		if cube:
-			_feed_timer = FEED_INTERVAL
+			_feed_timer = FEED_INTERVAL if bare else TrashBin.feed_interval()  # [camp]
 			_swallow(cube)
 	if patch and not bare and _feed_timer <= 0.0:  # [pace] no Baler yet: empty the chest loose
 		var bin: Node3D = Pace.trash_bin(get_tree(), global_position)
@@ -216,5 +183,179 @@ func _cash(cube: JunkCube) -> void:
 	Vfx.burst("dust", mouth_world() - Vector3(0, 0.3, 0), Color(0.6, 0.55, 0.5, 0.5), 0.8)
 	Audio.play("clunk", 0.8, -4.0)
 	_needle_t = 1.0
+	if _ram:  # [camp] the compactor presses each bale
+		var tw := create_tween()
+		tw.tween_property(_ram, "position:y", 1.35, 0.08)
+		tw.tween_property(_ram, "position:y", 1.95, 0.3).set_trans(Tween.TRANS_SINE)
 	EventBus.shake_requested.emit(0.05)
 	cube.queue_free()
+
+
+# --- [camp] The bin's body by level (data/trash_bin.json) ---------------------------------------
+
+var _ram: Node3D  # level 4+: the compactor ram plate (bobs as a bale goes in)
+var _body_level: int = 0
+
+
+func _on_bin_changed(l: int) -> void:
+	if bare or not is_inside_tree() or l == _body_level:
+		return
+	_build_body(l)
+	Vfx.burst("dust", mouth_world(), Color(0.7, 0.65, 0.6, 0.6), 1.4)
+	Vfx.burst("sparkle", mouth_world() + Vector3(0, 0.4, 0), Color(1.0, 0.85, 0.5), 0.8)
+	Audio.play("clunk", 0.7, -2.0)
+	_chute.scale = Vector3(1, 0.05, 1)
+	create_tween().tween_property(_chute, "scale", Vector3.ONE, 0.7).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+
+func _build_body(l: int) -> void:
+	_body_level = l
+	_ram = null
+	for c: Node in _chute.get_children():
+		c.queue_free()
+	var size: Vector3
+	if l <= 1:
+		size = _build_wheelie()
+	else:
+		size = _build_skip(l)
+	var sb := StaticBody3D.new()
+	sb.name = "BinBody"
+	var cs := CollisionShape3D.new()
+	var bs := BoxShape3D.new()
+	bs.size = size
+	cs.shape = bs
+	cs.position = Vector3(0, size.y * 0.5, 0)
+	sb.add_child(cs)
+	_chute.add_child(sb)
+
+
+## Level 1: a dented, faded wheelie bin with its lid flopped open, standing at the plate's head.
+func _build_wheelie() -> Vector3:
+	var paint: ShaderMaterial = Mats.worn_paint(Color(0.2, 0.36, 0.24), 0.75, 0.55, 6.0, 0.75)
+	var dark: StandardMaterial3D = Mats.metal("dark_steel")
+	var bin := Node3D.new()
+	bin.rotation = Vector3(0.0, 0.18, deg_to_rad(-3.0))  # a little crooked
+	_chute.add_child(bin)
+	var w: float = 0.86
+	var d: float = 0.92
+	var h: float = 1.08
+	var parts: Array = []
+	parts.append(ProcMesh.part(ProcMesh.box(Vector3(w * 0.86, 0.06, d * 0.86)), ProcMesh.xf(Vector3(0, 0.12, 0))))
+	parts.append(ProcMesh.part(ProcMesh.box(Vector3(w, h, 0.05)), ProcMesh.xf(Vector3(0, h * 0.5 + 0.08, d * 0.5), Vector3(-3, 0, 0))))
+	parts.append(ProcMesh.part(ProcMesh.box(Vector3(w, h, 0.05)), ProcMesh.xf(Vector3(0, h * 0.5 + 0.08, -d * 0.5), Vector3(3, 0, 0))))
+	parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.05, h, d)), ProcMesh.xf(Vector3(w * 0.5, h * 0.5 + 0.08, 0), Vector3(0, 0, 3))))
+	parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.05, h, d)), ProcMesh.xf(Vector3(-w * 0.5, h * 0.5 + 0.08, 0), Vector3(0, 0, -3))))
+	# A dent: a pushed-in panel on the front face.
+	parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.34, 0.28, 0.04)), ProcMesh.xf(Vector3(0.14, 0.62, d * 0.5 - 0.02), Vector3(-8, 10, 6))))
+	# Rim lip.
+	parts.append(ProcMesh.part(ProcMesh.box(Vector3(w + 0.08, 0.06, d + 0.08)), ProcMesh.xf(Vector3(0, h + 0.1, 0))))
+	var body := MeshInstance3D.new()
+	body.mesh = ProcMesh.merge(parts)
+	body.material_override = paint
+	bin.add_child(body)
+	# Lid flopped back over the hinge, hanging at an angle.
+	var lid := MeshInstance3D.new()
+	lid.mesh = ProcMesh.box(Vector3(w + 0.1, 0.05, d + 0.06))
+	lid.material_override = paint
+	lid.position = Vector3(0, h + 0.05, -d * 0.5 - 0.42)
+	lid.rotation_degrees = Vector3(-62, 0, 4)
+	bin.add_child(lid)
+	# Wheels and axle at the back, a handle bar over them.
+	for x: float in [-w * 0.42, w * 0.42]:
+		var wh := MeshInstance3D.new()
+		wh.mesh = ProcMesh.cyl(0.11, 0.11, 0.06, 12)
+		wh.material_override = dark
+		wh.rotation_degrees = Vector3(0, 0, 90)
+		wh.position = Vector3(x, 0.11, -d * 0.5 - 0.02)
+		bin.add_child(wh)
+	var bar := MeshInstance3D.new()
+	bar.mesh = ProcMesh.cyl(0.02, 0.02, w * 0.9, 8)
+	bar.material_override = dark
+	bar.rotation_degrees = Vector3(0, 0, 90)
+	bar.position = Vector3(0, h + 0.02, -d * 0.5 - 0.06)
+	bin.add_child(bar)
+	# Junk heaped over the rim.
+	var fill := MeshInstance3D.new()
+	fill.mesh = FieldView._mound_mesh()
+	fill.material_override = AssetLib.pbr_material("rubble", 1.0, Color(0.6, 0.55, 0.5), true)
+	fill.scale = Vector3(0.4, 0.3, 0.42)
+	fill.position = Vector3(0, h + 0.02, 0)
+	bin.add_child(fill)
+	var sign_label := Mats.stencil(tr("TRASH"), 48, Color(0.92, 0.9, 0.82, 0.85))
+	sign_label.position = Vector3(-0.12, 0.86, d * 0.5 + 0.04)
+	bin.add_child(sign_label)
+	_chute_mouth = _chute.position + Vector3(0, h + 0.35, 0)
+	return Vector3(w + 0.1, h + 0.15, d + 0.1)
+
+
+## Levels 2+: the steel skip; 3 adds side ribs and a beacon, 4 a compactor ram, 5 a clean white
+## shell with a thin cyan scanner seam.
+func _build_skip(l: int) -> Vector3:
+	var smart: bool = l >= 5
+	var skip_mat: ShaderMaterial = Mats.worn_paint(Color(0.86, 0.88, 0.89) if smart else Color(0.22, 0.42, 0.3), 0.15 if smart else 0.6, 0.5 if smart else 0.6, 7.0, 0.2 if smart else 0.6)
+	var parts: Array = []
+	var w: float = 2.6
+	var d: float = 1.6
+	var h: float = 1.25
+	parts.append(ProcMesh.part(ProcMesh.box(Vector3(w * 0.8, 0.08, d)), ProcMesh.xf(Vector3(0, 0.05, 0))))
+	parts.append(ProcMesh.part(ProcMesh.box(Vector3(w, h, 0.06)), ProcMesh.xf(Vector3(0, h * 0.5, d * 0.5))))
+	parts.append(ProcMesh.part(ProcMesh.box(Vector3(w, h, 0.06)), ProcMesh.xf(Vector3(0, h * 0.5, -d * 0.5))))
+	parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.06, h * 1.05, d)), ProcMesh.xf(Vector3(w * 0.45, h * 0.5, 0), Vector3(0, 0, -12))))
+	parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.06, h * 1.05, d)), ProcMesh.xf(Vector3(-w * 0.45, h * 0.5, 0), Vector3(0, 0, 12))))
+	for x: float in [-0.9, 0.0, 0.9]:
+		parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.08, h, 0.1)), ProcMesh.xf(Vector3(x, h * 0.5, d * 0.5 + 0.05))))
+	if l >= 3:
+		for x: float in [-0.9, 0.0, 0.9]:
+			parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.08, h, 0.1)), ProcMesh.xf(Vector3(x, h * 0.5, -d * 0.5 - 0.05))))
+		parts.append(ProcMesh.part(ProcMesh.box(Vector3(w + 0.1, 0.08, 0.14)), ProcMesh.xf(Vector3(0, h, d * 0.5 + 0.04))))
+	var skip := MeshInstance3D.new()
+	skip.mesh = ProcMesh.merge(parts)
+	skip.material_override = skip_mat
+	_chute.add_child(skip)
+	var fill := MeshInstance3D.new()
+	fill.mesh = FieldView._mound_mesh()
+	fill.material_override = AssetLib.pbr_material("rubble", 1.0, Color(0.6, 0.55, 0.5), true)
+	fill.scale = Vector3(1.15, 0.5, 0.7)
+	fill.position = Vector3(0, h * 0.55, 0)
+	_chute.add_child(fill)
+	var sign_label := Mats.stencil(tr("SCRAP  INTAKE  ·  WEIGH HERE"), 64, Color(0.2, 0.24, 0.26, 0.9) if smart else Color(0.92, 0.9, 0.82, 0.9))
+	sign_label.position = Vector3(0, h * 0.62, d * 0.5 + 0.11)
+	_chute.add_child(sign_label)
+	var top: float = h
+	if l == 3:
+		var beacon := MeshInstance3D.new()
+		beacon.mesh = ProcMesh.cyl(0.07, 0.08, 0.14, 12)
+		beacon.material_override = Mats.lamp(Color(1.0, 0.6, 0.12), 1.6)
+		beacon.position = Vector3(w * 0.5 - 0.1, h + 0.1, d * 0.5 - 0.1)
+		_chute.add_child(beacon)
+	if l >= 4:
+		var frame_mat: StandardMaterial3D = Mats.metal("dark_steel")
+		var fparts: Array = []
+		for x: float in [-w * 0.5 - 0.08, w * 0.5 + 0.08]:
+			fparts.append(ProcMesh.part(ProcMesh.box(Vector3(0.14, 2.5, 0.18)), ProcMesh.xf(Vector3(x, 1.25, -0.1))))
+		fparts.append(ProcMesh.part(ProcMesh.box(Vector3(w + 0.4, 0.2, 0.26)), ProcMesh.xf(Vector3(0, 2.5, -0.1))))
+		fparts.append(ProcMesh.part(ProcMesh.cyl(0.07, 0.07, 0.5, 10), ProcMesh.xf(Vector3(0, 2.2, -0.1))))
+		var frame := MeshInstance3D.new()
+		frame.mesh = ProcMesh.merge(fparts)
+		frame.material_override = frame_mat
+		_chute.add_child(frame)
+		_ram = MeshInstance3D.new()
+		(_ram as MeshInstance3D).mesh = ProcMesh.box(Vector3(w * 0.7, 0.1, d * 0.6))
+		(_ram as MeshInstance3D).material_override = Mats.worn_paint(Color(0.9, 0.7, 0.15), 0.5, 0.5, 4.0, 0.5) if not smart else frame_mat
+		_ram.position = Vector3(0, 1.95, -0.1)
+		_chute.add_child(_ram)
+		top = 2.6
+	if smart:
+		var seam := MeshInstance3D.new()
+		seam.mesh = ProcMesh.box(Vector3(w + 0.02, 0.025, 0.02))
+		var gm := StandardMaterial3D.new()
+		gm.albedo_color = Color(0.5, 0.9, 1.0)
+		gm.emission_enabled = true
+		gm.emission = Color(0.5, 0.9, 1.0)
+		gm.emission_energy_multiplier = 1.4
+		gm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		seam.material_override = gm
+		seam.position = Vector3(0, h - 0.14, d * 0.5 + 0.1)
+		_chute.add_child(seam)
+	_chute_mouth = _chute.position + Vector3(0, h + 0.4, 0)
+	return Vector3(w, top + 0.2 if l >= 4 else h + 0.2, d)

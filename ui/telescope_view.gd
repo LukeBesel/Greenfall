@@ -283,6 +283,7 @@ func _clear_scene() -> void:
 		b.queue_free()
 	_planet_nodes.clear()
 	_orrery = null
+	_sel_ring = null  # [camp] freed with the orrery: never touch a stale ring
 	district = null
 	_first = null
 
@@ -695,7 +696,7 @@ func _process(delta: float) -> void:
 	if absf(rx) > 0.2:
 		_yaw -= rx * delta * 1.2
 	if absf(ry) > 0.2:
-		_dist = clampf(_dist + ry * delta * 30.0, 30.0 if mode == "remote" else 60.0, 100.0 if mode == "remote" else 170.0)
+		_dist += ry * delta * 30.0
 	if mode == "system":
 		if _orrery:
 			for n: Node in _orrery.get_children():
@@ -706,8 +707,6 @@ func _process(delta: float) -> void:
 				pair.rotation.y += delta * 0.4
 		_yaw += delta * 0.02
 		_pitch = 0.95
-		if _dist < 50.0:
-			_dist = 122.0
 		var goal := Vector3.ZERO
 		if picked >= 0 and picked < _planet_nodes.size() and _sel_ring:
 			var pn: Node3D = _planet_nodes[picked]
@@ -722,10 +721,17 @@ func _process(delta: float) -> void:
 		if fmod(_t, 0.5) < delta:
 			_refresh_remote()
 		_check_spots(delta)
+	var dr: Vector2 = _dist_range()  # [camp] one zoom range per view for wheel and stick (no snapping back)
+	_dist = clampf(_dist, dr.x, dr.y)
 	var off := Vector3(sin(_yaw) * cos(_pitch), sin(_pitch), cos(_yaw) * cos(_pitch)) * _dist
 	_cam.position = _focus + off
 	_cam.look_at(_focus, Vector3.UP)
 	_reticle.queue_redraw()
+
+
+## [camp] Zoom limits: the orrery stays whole in the system view; a district stays in frame.
+func _dist_range() -> Vector2:
+	return Vector2(30.0, 100.0) if mode == "remote" else Vector2(80.0, 170.0)
 
 
 func _check_spots(delta: float) -> void:
@@ -781,9 +787,9 @@ func _on_view_input(ev: InputEvent) -> void:
 		if mb.button_index == MOUSE_BUTTON_LEFT:
 			_drag = mb.pressed
 		elif mb.button_index == MOUSE_BUTTON_WHEEL_UP and mb.pressed:
-			_dist = maxf(_dist - 4.0, 30.0)
+			_dist = maxf(_dist - 4.0, _dist_range().x)  # [camp]
 		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN and mb.pressed:
-			_dist = minf(_dist + 4.0, 140.0)
+			_dist = minf(_dist + 4.0, _dist_range().y)  # [camp]
 	elif ev is InputEventMouseMotion and _drag:
 		_yaw -= (ev as InputEventMouseMotion).relative.x * 0.005
 

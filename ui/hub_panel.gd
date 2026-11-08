@@ -11,6 +11,7 @@ var _scrub_btn: Button
 var _mats: Label
 var _stations: StationsPanel  # [stations]
 var _scope: TelescopePanel  # [scope]
+var _yard: YardBuildsPanel  # [camp]
 var _jam_sep: HSeparator
 var _jam: Label
 var _jam_btn: Button
@@ -58,6 +59,9 @@ func _ready() -> void:
 	add_child(HSeparator.new())
 	_scope = TelescopePanel.new()
 	add_child(_scope)
+	add_child(HSeparator.new())  # [camp] trash bin, radio, nursery (ui/yard_builds_panel.gd)
+	_yard = YardBuildsPanel.new()
+	add_child(_yard)
 	# Signal Jammer (the Ledger arc, story/ledger.gd): shown once the dump drones start.
 	_jam_sep = HSeparator.new()
 	add_child(_jam_sep)
@@ -131,6 +135,8 @@ func refresh() -> void:
 		_stations.refresh()
 	if _scope:  # [scope]
 		_scope.refresh()
+	if _yard:  # [camp]
+		_yard.refresh()
 	var lg: Node = _ledger()
 	var jam_on: bool = lg != null and lg.jammer_visible()
 	_jam_sep.visible = jam_on

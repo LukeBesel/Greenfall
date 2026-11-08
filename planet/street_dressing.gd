@@ -193,7 +193,7 @@ func _layer_range(nm: String) -> Vector2i:
 		"Salvage":
 			return Vector2i(1 if start_base else 2, 2)
 		"Yard":
-			return Vector2i(1 if start_base else 2, 5)
+			return Vector2i(2, 5)  # [camp] the starter yard is bare too until hub level 2 (owner playtest #2)
 		"Future":
 			return Vector2i(3, 5)
 		"Thrive":
