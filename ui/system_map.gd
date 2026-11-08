@@ -335,8 +335,8 @@ func _pid_of(k: int) -> String:
 ## The globe radius of planet k in map units.
 func _globe_r(k: int) -> float:
 	var id: String = _pid_of(k)
-	if GlobeSize.DEFAULT_SCALE.has(id):  # [orbE] planets differ in size: the map follows the globes
-		return GLOBE_BASE * GlobeSize.scale_of(id)
+	if GlobeSize.IDS.has(id):  # [orbE] planets differ in size: the map follows the globes
+		return GLOBE_BASE * pow(GlobeSize.scale_of(id), 0.7)  # gently compressed: Anvil (2x) reads big, still fits the orrery
 	if GLOBE_R.has(id):
 		return float(GLOBE_R[id])
 	return 0.85 + float(Homeward.planet_def(k).get("orbit", 1.0)) * 0.1

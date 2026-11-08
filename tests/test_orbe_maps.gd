@@ -8,7 +8,8 @@ func test_globe_sizes() -> void:
 	assert_almost_eq(GlobeSize.scale_of("verdance"), 1.0, 0.001)
 	assert_lt(GlobeSize.scale_of("ochre"), 1.0)
 	assert_gt(GlobeSize.scale_of("anvil"), GlobeSize.scale_of("rime"))
-	assert_gt(GlobeSize.cells_of("anvil"), 290000, "Anvil is the largest globe (~300k hexes)")
+	assert_eq(GlobeSize.cells_of("anvil"), 655362, "Anvil is the largest globe (2x radius, 655k hexes)")
+	assert_eq(GlobeSize.cells_of("verdance"), 163842)
 	assert_almost_eq(GlobeSize.radius_m("verdance"), 1840.0, 0.5)
 
 
