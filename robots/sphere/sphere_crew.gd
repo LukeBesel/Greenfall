@@ -58,6 +58,9 @@ var spend_seeds: bool = true
 ## Near budget: at most this many real SphereBots; past it the farthest near robots are records
 ## too (a Fabricator fleet of hundreds stays cheap even right around Lumi).
 var max_near: int = 48
+## Dev: the terrain, so the report can recount cleaned hexes the way a reload does.
+var terrain_for_recount: SphereTerrain
+var _touched: Dictionary = {}  # dev: cells the crew wrote
 ## Robot looks (owner: designed per type at the Locker, worn by every robot of that type, the
 ## Fabricator's included). Every globe robot that becomes real is dressed by dress(): the equipped
 ## livery (systems/liveries.gd, as on the flat fleet) and then each hook here, called as
@@ -306,6 +309,7 @@ func junk_left(c: int) -> float:
 ## account (the pieces follow it, a piece ahead or behind) - otherwise a step smaller than one
 ## piece would never add up, and a big piece would lose junk nobody baled.
 func work_cell(c: int, left: float) -> void:
+	_touched[c] = true
 	var was_dirty: bool = cells.is_dirty(c) or water_dirty(c)
 	var gone: PackedInt32Array = SphereOffline.write_cell(cells, field, c, left)
 	if left > 0.02 and (cells.is_dirty(c) or water_dirty(c)):
@@ -703,6 +707,7 @@ func _work_pieces(u: Dictionary, c: int, dt: float) -> void:
 	if float(u["acc"]) < units:
 		return
 	u["acc"] = float(u["acc"]) - units
+	_touched[c] = true
 	var was_dirty: bool = cells.is_dirty(c) or water_dirty(c)
 	if field.remove_piece(pid) and (field.hex_hub[c] == 1 or field.hex_water[c] == 1):
 		field.cleaned_count -= 1  # HexField counts every hex; the globe's load rule skips hub ground and lakes
@@ -968,6 +973,15 @@ func print_report() -> void:
 				parts.append("%s=%s" % [k, str(snappedf(float(u["log"][k]), 0.1))])
 		print("[bots] %-12s %-9s %-4s %5.0fm | %s | %s | stalled %.0fs | idle %.0fs" % [u["name"], u["type"], "near" if is_near(u) else "far",
 			_focus_dist(unit_dir(u)) if focus else -1.0, ", ".join(parts), status_text(u), float(u["log"]["stall_s"]), float(u["log"]["idle_s"])])
+	if field != null and terrain_for_recount != null:  # live ledger vs what a reload would count
+		var re := SphereField.new(grid, terrain_for_recount, cells, 7)
+		print("[bots] field cleaned live %d, recount from cells %d %s" % [field.cleaned_count, re.cleaned_count, "PASS" if re.cleaned_count == field.cleaned_count else "FAIL"])
+		if re.cleaned_count != field.cleaned_count:
+			var odd: PackedStringArray = []
+			for i: int in field.hex_clean.size():
+				if re.hex_clean[i] != field.hex_clean[i] and re.hex_hub[i] == 0 and re.hex_water[i] == 0:
+					odd.append("%d(live=%d reload=%d junk=%.3f st=%d mat=%d worked=%s)" % [i, field.hex_clean[i], re.hex_clean[i], cells.junk[i], cells.state[i], field.materialized[i], str(_touched.has(i))])
+			print("[bots] mismatched hexes: %s" % ", ".join(odd.slice(0, 8)))
 	var stuck: int = stuck_count()
 	print("[bots] stuck=%d %s" % [stuck, "PASS" if stuck == 0 else "FAIL"])
 
