@@ -13,6 +13,9 @@ var digging: float = 0.0
 
 var _cfg: Dictionary
 var _beep_timer: float = 0.0
+var _sound_t: float = 0.0  # [v2feel] time to the next audible beep
+const SOUND_FROM: float = 0.55  # [v2feel] signal strength where the beep starts (about 7 m at 16 m range)
+const SOUND_GAP_S: float = 0.45  # [v2feel] shortest gap between audible beeps
 var _lamp: MeshInstance3D
 var _lamp_mat: StandardMaterial3D
 var _light: OmniLight3D
@@ -73,7 +76,13 @@ func _process(delta: float) -> void:
 	if _beep_timer <= 0.0:
 		_beep_timer = interval
 		_flash = 1.0
-		Audio.play("detector", lerpf(0.9, 1.5, strength), lerpf(-20.0, -7.0, strength), 0.0)
+		# [v2feel] Owner item 32: the lamp's beep played nonstop (the globe always has a part in
+		# range). Far off the lamp only blinks; it beeps once Lumi is homing in, and never faster
+		# than SOUND_GAP_S.
+		_sound_t -= interval
+		if strength >= SOUND_FROM and _sound_t <= 0.0:
+			_sound_t = SOUND_GAP_S
+			Audio.play("detector", lerpf(0.9, 1.5, strength), lerpf(-22.0, -11.0, strength), 0.0)
 	var rar: Dictionary = Economy.rarity(field.part_rarity[target])
 	var text: String = ""
 	var col := Color(1, 0.3, 0.25)
