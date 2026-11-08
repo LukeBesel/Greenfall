@@ -551,6 +551,9 @@ func open_codex(tab: String = "") -> void:
 	var cx: CodexScreen = w.get("codex")
 	if cx == null or cx.is_open:
 		return
+	var pm: PauseMenu = w.get("pause_menu")
+	if pm and pm.is_open:  # [ui7] never stack the Codex on the pause menu
+		pm.close_menu()
 	cx.open_screen(tab)
 	set_input(false)
 

@@ -1286,15 +1286,15 @@ msgstr "已降落在基地平台。"
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice.gd:1459
+#: scenes/slice.gd:1461
 msgid "Welcome back. The junk waited for you."
 msgstr "欢迎回来。废料一直在等你。"
 
-#: scenes/slice.gd:1476
+#: scenes/slice.gd:1478
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨 %d · %d级"
 
-#: scenes/slice.gd:1476
+#: scenes/slice.gd:1478
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 

@@ -1288,15 +1288,15 @@ msgstr "Aterrizaje en la plataforma de la base."
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Las mejoras necesitan un banco de trabajo. Vuelve a la base."
 
-#: scenes/slice.gd:1459
+#: scenes/slice.gd:1461
 msgid "Welcome back. The junk waited for you."
 msgstr "Bienvenido de nuevo. La chatarra te ha esperado."
 
-#: scenes/slice.gd:1476
+#: scenes/slice.gd:1478
 msgid "OUTPOST %d · Lv%d"
 msgstr "PUESTO %d · Nv%d"
 
-#: scenes/slice.gd:1476
+#: scenes/slice.gd:1478
 msgid "OUTPOST %d · RUIN"
 msgstr "PUESTO %d · RUINA"
 
