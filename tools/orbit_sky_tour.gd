@@ -23,6 +23,10 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if sky == null:
 		return
+	var ld: Node = get_node_or_null("/root/Loader")
+	if ld and bool(ld.get("active")):  # the settle clock starts once the loading screen is gone
+		_t0 = Time.get_ticks_msec()
+		return
 	var el: float = (Time.get_ticks_msec() - _t0) / 1000.0
 	if el < _next:
 		return

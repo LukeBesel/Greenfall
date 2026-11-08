@@ -125,6 +125,7 @@ func _ready() -> void:
 	streamer.name = "Streamer"
 	streamer.shell_city = planet.city
 	add_child(streamer)
+	OrbitQuality.apply_streamer(streamer, Settings.quality, grid.radius_m)  # [orbE] per-preset budgets
 	streamer.setup(grid, terrain, cells)
 	streamer.near_changed.connect(_on_near_changed)
 	junk_view = SphereJunkView.new()
@@ -180,6 +181,7 @@ func _ready() -> void:
 	if DevHooks.has("orbit-trail"):
 		_draw_trail()
 	Settings.apply_quality_to_tree(self)
+	OrbitQuality.apply_world(sky_director, future, Settings.quality)  # [orbE]
 	# The quality pass sets the flat-world fog density (0.0025..0.005); on the orbit that is several
 	# times too thick, and from Command height the whole map turned to grey haze.
 	env.fog_density = 0.0003 if view_mode == "command" else 0.0011  # [orbE] SkyDirector.fog_scale keeps this ratio

@@ -10,7 +10,6 @@ extends Node3D
 ## District-wide pieces (skyline, aurora, traffic) wait for the hub sites (phase D).
 
 const CHANNELS: Array[String] = ["line", "orb", "sign", "post", "planter", "platform"]
-const RANGE_M: float = 320.0  # chunks farther than this from the camera drop their pieces
 
 var grid: SphereGrid
 var terrain: SphereTerrain
@@ -18,6 +17,7 @@ var cells: SphereCells
 var streamer: SphereStreamer
 var eye_fn: Callable  # () -> Vector3 camera position
 var sky: Node  # SkyDirector: clear_bonus / night_tint hooks, like the flat layer
+var range_m: float = 320.0  # chunks farther than this from the camera drop their pieces (OrbitQuality)
 var hex_r: float = 5.8  # centre-to-corner (m), measured from the grid
 var stats: Dictionary = {"chunks": 0, "pieces": 0, "build_us_max": 0}
 var _mats: Dictionary = {}
@@ -192,7 +192,7 @@ func _process(delta: float) -> void:
 func _sweep() -> void:
 	var eye: Vector3 = eye_fn.call() if eye_fn.is_valid() else Vector3.ZERO
 	for c: int in _chunks.keys():
-		var far: bool = eye != Vector3.ZERO and grid.great_circle_m(eye, grid.centers[grid.chunk_cells[grid.chunk_start[c]]]) > RANGE_M + grid.chunk_radius[c] * grid.radius_m
+		var far: bool = eye != Vector3.ZERO and grid.great_circle_m(eye, grid.centers[grid.chunk_cells[grid.chunk_start[c]]]) > range_m + grid.chunk_radius[c] * grid.radius_m
 		if streamer.loaded_lod(c) != 0 or far:
 			_drop(c)
 	var sum: float = 0.0
