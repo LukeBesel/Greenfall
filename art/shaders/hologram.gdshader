@@ -7,7 +7,9 @@ render_mode unshaded, blend_mix, depth_draw_always, cull_back, fog_disabled, sha
 
 uniform float brightness = 1.15;
 uniform float alpha = 0.9;
-uniform vec4 rim_color : source_color = vec4(0.45, 0.9, 1.0, 1.0);
+// [v2map] seed-keeper teal rim, a cream sweep.
+uniform vec4 rim_color : source_color = vec4(0.47, 0.86, 0.78, 1.0);
+uniform vec4 sweep_color : source_color = vec4(0.98, 0.93, 0.8, 1.0);
 // Screen pixels per scan line (gentle shimmer, never finer than ~3 px).
 uniform float scan_px = 4.0;
 
@@ -23,7 +25,7 @@ void fragment() {
 	float sweep = smoothstep(0.06, 0.0, abs(fract(obj.y * 0.5 + 0.5 - TIME * 0.12) - 0.5));
 	vec3 c = COLOR.rgb * brightness * scan;
 	c += rim_color.rgb * fres * 0.8;
-	c += rim_color.rgb * sweep * 0.25;
+	c += sweep_color.rgb * sweep * 0.18;
 	ALBEDO = c;
 	ALPHA = clamp(alpha + fres * 0.1, 0.0, 1.0);
 }
