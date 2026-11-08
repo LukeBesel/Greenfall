@@ -116,6 +116,11 @@ func _dev_hooks() -> void:
 				Homeward.make_planet_world(k)
 		CradleMode.profile["current"] = 0
 		Homeward.mirror_stats()
+	if DevHooks.has("home-pct"):  # [sysmap2] dev: --home-pct=verdance:1,ochre:0.3 sets planet restoration
+		for kv: String in DevHooks.get_s("home-pct", "").split(","):
+			var parts: PackedStringArray = kv.split(":")
+			if parts.size() == 2 and Homeward.planet_index(parts[0]) >= 0:
+				(s["pct"] as Dictionary)[parts[0]] = clampf(float(parts[1]), 0.0, 1.0)
 	if DevHooks.has("home-ready"):
 		s["drive"] = 7
 		GameState.flags["home_last_seed"] = true

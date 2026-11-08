@@ -472,13 +472,17 @@ func _select(i: int) -> void:
 		return
 	var en: Dictionary = entries[i]
 	var w: Dictionary = en["world"]
+	var hk: int = Homeward.planet_index(str(en.get("id", "")))  # [sysmap2] spotting reveals the next planet on the map
+	if hk > 0 and Homeward.spot(hk):
+		EventBus.toast.emit(tr("Spotted %s: it now shows on the system map") % Homeward.planet_name(hk), "info")
 	if bool(en["visited"]):
 		var snap: Dictionary = RemoteProgress.snapshot(w)
 		_right.text = tr("%s\nDistrict %d%% clean · %d robots\nLast visit %s") % [tr(str(en["name"])), int(round(float(snap.get("share", 0.0)) * 100.0)), (snap.get("robots", []) as Array).size(), ago_text(float(snap.get("saved_unix", 0.0)))]
 	elif bool(en["here"]):
 		_right.text = tr("%s\nYou are here.") % tr(str(en["name"]))
 	else:
-		_right.text = tr("%s\nNot visited yet.") % tr(str(en["name"]))
+		# [sysmap2] no "not visited": a planet past the next one in order is still too faint to chart
+		_right.text = tr("An unknown world.\nToo faint to chart yet.") if hk > 0 and not Homeward.discovered(hk) else tr("%s\nCharted. No landing yet.") % tr(str(en["name"]))
 
 
 func _on_pick(i: int) -> void:

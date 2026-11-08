@@ -16662,3 +16662,51 @@ msgstr "ずっといい。そっちの風の音が聞こえる。もっと話せ
 #: data/wren_lines.json:signal_up
 msgid "Clear as the garden deck. Now I can tell you everything I couldn't."
 msgstr "庭園デッキみたいにクリア。言えなかったこと、全部話せる。"
+
+#: ui/system_map.gd:647
+msgid "%s  ·  %.2f AU"
+msgstr ""
+
+#: ui/system_map.gd:657
+msgid "Lumi is here"
+msgstr ""
+
+#: ui/system_map.gd:663
+msgid "Ready to launch"
+msgstr ""
+
+#: ui/system_map.gd:704
+msgid "System %d%% restored  ·  relics %d/%d"
+msgstr ""
+
+#: ui/system_map.gd:706
+msgid "%d Heirloom picks"
+msgstr ""
+
+#: ui/system_map.gd:708
+msgid "Left/Right planet  ·  A zoom  ·  B back"
+msgstr ""
+
+#: ui/system_map.gd:726
+msgid "Build the drive"
+msgstr ""
+
+#: ui/system_map.gd:742
+msgid "Not discovered yet"
+msgstr ""
+
+#: ui/telescope_view.gd:476
+msgid "Spotted %s: it now shows on the system map"
+msgstr ""
+
+#: ui/telescope_view.gd:484
+msgid ""
+"An unknown world.\n"
+"Too faint to chart yet."
+msgstr ""
+
+#: ui/telescope_view.gd:484
+msgid ""
+"%s\n"
+"Charted. No landing yet."
+msgstr ""
