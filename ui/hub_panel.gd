@@ -8,6 +8,8 @@ extends HBoxContainer
 const SIDE_H: float = 460.0
 
 var hub: Hub
+## [ui3] Only the next-level card (the Upgrades tab's Base section).
+var hero_only: bool = false
 var _lv_pips: BenchKit.Pips
 var _lv_lbl: Label
 var _name: Label
@@ -69,6 +71,9 @@ func _ready() -> void:
 	hv.add_child(_btn)
 	_now = BenchKit.body("", UITheme.MUTED, BenchKit.SMALL_SIZE)
 	hv.add_child(_now)
+	if hero_only:  # [ui3] the Upgrades tab shows just the level card; buildings live in the Build tab
+		refresh()
+		return
 	# --- Built at the hub -----------------------------------------------------------------
 	# The side column scrolls on its own, so the level card always stays in view.
 	var side_sc := ScrollContainer.new()
@@ -228,6 +233,8 @@ func refresh() -> void:
 			_btn.text = tr("Continue in the full game")
 			_btn.disabled = false
 		BenchKit.set_accent(_hero, Color(BenchKit.OK, 0.8) if not _btn.disabled else Color(BenchKit.HOLO, 0.3))
+	if hero_only:
+		return
 	# Air Scrubbers.
 	var sd: Dictionary = hub.scrubber_def()
 	var locked: bool = hub.level < int(sd.get("requires_level", 2))

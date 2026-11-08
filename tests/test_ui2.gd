@@ -164,11 +164,11 @@ func test_tab_gate() -> void:
 	assert_true(UpgradesScreen.tab_open("contracts"))
 
 
-func test_tabs_are_the_simple_seven() -> void:
+func test_tabs_are_the_simple_six() -> void:
 	var ids: Array[String] = []
 	for t: Dictionary in UpgradesScreen.TABS:
 		ids.append(str(t["id"]))
-	assert_eq(ids, ["patch", "bots", "hub", "research", "rockets", "contracts", "locker"] as Array[String])
+	assert_eq(ids, ["patch", "bots", "build", "research", "contracts", "locker"] as Array[String])  # [ui3]
 	assert_eq(UpgradesScreen.TAB_ALIASES["builder"], "locker")
 	assert_eq(UpgradesScreen.TAB_ALIASES["cosmetics"], "locker")
 
