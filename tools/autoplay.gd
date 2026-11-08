@@ -39,6 +39,9 @@ var _dt: float = 0.0
 var _cooldown: float = 0.0
 var _stuck_timer: float = 0.0
 var _escape_side: float = 1.0  # [pace2]
+var _trap_pos: Vector3 = Vector3.INF
+var _trap_t: float = 0.0
+var _traps: int = 0
 var _last_pos := Vector3.ZERO
 var _report: Dictionary = {}
 var _log: Array = []
@@ -265,6 +268,24 @@ func update(delta: float) -> void:
 
 ## Wedged against something for a long time while trying to move: back off in a random direction.
 func _watch_stuck(p: Patch, delta: float) -> void:
+	# [pace2] Last resort: boxed in for 90 s (heaps or props all round): hop back to the yard, as a
+	# player would call for help, and log the spot so the world can be checked for traps.
+	if _move.length() >= 0.2:
+		if p.global_position.distance_to(_trap_pos) > 2.5:
+			_trap_pos = p.global_position
+			_trap_t = 0.0
+		else:
+			_trap_t += delta
+			if _trap_t > 90.0:
+				_trap_t = 0.0
+				_traps += 1
+				_report["bot_traps"] = _report.get("bot_traps", []) + [[snappedf(_now() / 60.0, 0.1), str(p.global_position.snapped(Vector3.ONE * 0.1)), _task]]
+				print("[bot-trap] t=%.1f task=%s pos=%s: back to the yard" % [_now() / 60.0, _task, str(p.global_position)])
+				p.global_position = BENCH_STAND + Vector3(0, 0.3, 1.5)
+				p.velocity = Vector3.ZERO
+				_target_piece = -1
+				_set_task("")
+				return
 	if _move.length() < 0.2:
 		_watch_t = 0.0
 		_watch_pos = p.global_position

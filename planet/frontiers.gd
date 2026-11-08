@@ -110,6 +110,12 @@ static func unlock_status(id: String, frontier_hubs: Dictionary) -> Dictionary:
 		var ok: bool = Research.has(rid)
 		met += int(ok)
 		lines.append(TranslationServer.translate("%s Research %s") % ["✓" if ok else "·", TranslationServer.translate(str(Research.def(rid).get("name", rid)))])
+		var rt: String = str(Research.def(rid).get("requires_tech", ""))  # [pace2] e.g. "Needs Deep Drill: found on Ochre"
+		if rt != "" and not ok:
+			total += 1
+			var okt: bool = Homeward.has_tech(rt)
+			met += int(okt)
+			lines.append("%s %s" % ["✓" if okt else "·", Homeward.tech_hint(rt)])
 	if u.has("bases_l5"):
 		total += 1
 		var have: int = bases_at_level(5)

@@ -84,7 +84,7 @@ static func state() -> Dictionary:
 
 ## A loaded profile's homeward dict, cleaned (numbers back to ints after JSON).
 static func sanitize(d: Variant) -> Dictionary:
-	var out: Dictionary = {"pct": {}, "beats": [], "relics": []}
+	var out: Dictionary = {"pct": {}, "beats": [], "relics": [], "techs": []}
 	if not (d is Dictionary):
 		return out
 	var src: Dictionary = d
@@ -93,7 +93,7 @@ static func sanitize(d: Variant) -> Dictionary:
 	out["seen"] = []  # [sysmap2] planet ids spotted early by the telescope
 	for x: Variant in src.get("seen", []):
 		(out["seen"] as Array).append(str(x))
-	for k: String in ["beats", "relics"]:
+	for k: String in ["beats", "relics", "techs"]:  # [pace2] techs: tools found on later planets
 		for x: Variant in src.get(k, []):
 			(out[k] as Array).append(str(x))
 	out["drive"] = int(src.get("drive", 0))
@@ -162,6 +162,76 @@ static func picks() -> int:
 
 static func relics() -> Array:
 	return state()["relics"]
+
+
+# --- [pace2] Tech from later planets (return trips) -------------------------------------------
+
+static func techs() -> Array:
+	var s: Dictionary = state()
+	if not (s.get("techs") is Array):
+		s["techs"] = []
+	return s["techs"]
+
+
+static func has_tech(id: String) -> bool:
+	return id in techs() or DevHooks.has("all-tech")
+
+
+static func tech_defs() -> Array:
+	return cfg().get("tech", [])
+
+
+static func tech_def(id: String) -> Dictionary:
+	for t: Dictionary in tech_defs():
+		if str(t.get("id", "")) == id:
+			return t
+	return {}
+
+
+static func tech_name(id: String) -> String:
+	return TranslationServer.translate(str(tech_def(id).get("name", id)))
+
+
+## "Deep Drill: found on Ochre" (the hint shown wherever a tech gates something).
+static func tech_hint(id: String) -> String:
+	var pid: String = str(tech_def(id).get("planet", ""))
+	var pname: String = pid
+	for k: int in planets().size():
+		if str(planet_def(k).get("id", "")) == pid:
+			pname = planet_name(k)
+	return TranslationServer.translate("Needs %s: found on %s") % [tech_name(id), pname]
+
+
+## Highest restoration planet k can reach with the tech found so far (1.0 = no cap).
+static func cap_for(k: int) -> float:
+	var cap: float = 1.0
+	for pair: Variant in planet_def(k).get("needs_tech", []):
+		if pair is Array and (pair as Array).size() >= 2 and not has_tech(str(pair[0])):
+			cap = minf(cap, float(pair[1]))
+	return cap
+
+
+## The tech still missing for planet k's next step (its lowest cap), or "".
+static func blocking_tech(k: int) -> String:
+	var best: String = ""
+	var cap: float = 2.0
+	for pair: Variant in planet_def(k).get("needs_tech", []):
+		if pair is Array and (pair as Array).size() >= 2 and not has_tech(str(pair[0])) and float(pair[1]) < cap:
+			cap = float(pair[1])
+			best = str(pair[0])
+	return best
+
+
+## Grants the tech found on planet k once its restoration reaches each tech's `at`. Returns new ids.
+static func grant_techs(k: int) -> Array[String]:
+	var out: Array[String] = []
+	var pid: String = str(planet_def(k).get("id", ""))
+	for t: Dictionary in tech_defs():
+		var id: String = str(t.get("id", ""))
+		if str(t.get("planet", "")) == pid and not (id in techs()) and stored_pct(k) >= float(t.get("at", 0.25)) - 0.0001:
+			techs().append(id)
+			out.append(id)
+	return out
 
 
 static func beat_done(key: String) -> bool:
@@ -269,10 +339,12 @@ static func store_current(v: float) -> Array[int]:
 		return out
 	var id: String = str(planet_def(k).get("id", ""))
 	var old: float = stored_pct(k)
-	var now: float = maxf(old, clampf(v, 0.0, 1.0))
+	var now: float = maxf(old, minf(clampf(v, 0.0, 1.0), cap_for(k)))  # [pace2] capped until later-planet tech
 	if now <= old:
 		return out
 	(state()["pct"] as Dictionary)[id] = now
+	for tid: String in grant_techs(k):  # [pace2]
+		EventBus.toast.emit(TranslationServer.translate("New tech: %s. %s") % [tech_name(tid), TranslationServer.translate(str(tech_def(tid).get("desc", "")))], "story")
 	if old < 0.9999 and now >= 0.9999:
 		out.append(k)
 		var relic: String = str(planet_def(k).get("relic", ""))

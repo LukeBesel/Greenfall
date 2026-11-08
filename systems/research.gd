@@ -136,6 +136,9 @@ static func status(id: String) -> String:
 		return "active"
 	if is_queued(id):
 		return "queued"
+	var rt: String = str(def(id).get("requires_tech", ""))  # [pace2]
+	if rt != "" and not Homeward.has_tech(rt):
+		return "locked"
 	return "available" if prereqs_met(id, true) else "locked"
 
 
@@ -171,6 +174,9 @@ static func can_start(id: String) -> bool:
 static func reason(id: String) -> String:
 	if not exists(id):
 		return TranslationServer.translate("Unknown research")
+	var rt: String = str(def(id).get("requires_tech", ""))  # [pace2] tools from later planets
+	if rt != "" and not Homeward.has_tech(rt) and not has(id):
+		return Homeward.tech_hint(rt)
 	match status(id):
 		"researched":
 			return TranslationServer.translate("Already researched")
