@@ -170,7 +170,7 @@ func test_objective_card_shows_current() -> void:
 func test_waypoint_quiet_during_checklist_and_builds() -> void:
 	var o := Objectives.new()
 	GameState.flags["tutorial_step"] = 0
-	assert_eq(o.waypoint_target(), null, "the checklist has its own marker")
+	assert_eq(o.waypoint_target(), null, "no world, no beam")  # [v2guide] the checklist step now drives the one beacon (places only)
 	o.free()
 	var w := Waypoint.new()
 	add_child_autofree(w)

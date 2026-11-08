@@ -433,29 +433,11 @@ func _set_hex(h: int) -> void:
 
 
 ## The last few pieces of the target hex: the amber pointer, so the last can is never a hunt.
+## [v2guide] Owner playtest 2 #37: no pointer on the last pieces of a hex (the outline is enough),
+## so this only clears the old amber pointer (saves made while it showed).
 func _point_at_last() -> void:
-	if target_hex < 0 or hex_fraction() < POINT_AT:
-		if marker:
-			marker.clear()
-		return
-	var f: HexField = world.field
-	var at: Vector3 = world.patch.global_position
-	var out: int = -1
-	var bd: float = INF
-	for pid: int in f.hex_pieces[target_hex]:
-		if f.piece_alive[pid] == 0:
-			continue
-		var d: float = f.piece_pos[pid].distance_squared_to(at)
-		if d < bd:
-			bd = d
-			out = pid
-	if out < 0:
-		return
-	if marker == null:
-		marker = TutorialMarker.new()
-		marker.world = world
-		add_child(marker)
-	marker.set_target(f.piece_pos[out], "piece")
+	if marker:
+		marker.clear()
 
 
 # --- Focus outline and waypoint ------------------------------------------------------------------
@@ -492,7 +474,7 @@ func step_target(def: Dictionary) -> Dictionary:
 	if not def.has("_goal"):  # the story objectives
 		match str(def.get("id", "")):
 			"dump3":  # a full-ish chest: to the bin; else out to the junk
-				out["to"] = "depot" if p and p.compartment.fill >= p.capacity() * 0.5 else "hex"
+				out["to"] = "bin" if p and p.compartment.fill >= p.capacity() * 0.5 else "hex"
 			"compartment", "scoop_size", "baler":  # to the bench once affordable; else earn
 				var aff: bool = GameState.can_afford("cubes", Economy.upgrade_cost(key))
 				out = {"to": "bench" if aff else "hex", "row": ["patch", key]}
@@ -537,7 +519,9 @@ func step_target(def: Dictionary) -> Dictionary:
 			else:
 				out["to"] = "hex"
 		"stat":
-			if key in DEPOT_STATS:
+			if key == "junk_dumps":  # [v2guide] the chest goes into the bin's body, not onto the scale
+				out["to"] = "bin" if p and not p.compartment.is_empty() else "hex"
+			elif key in DEPOT_STATS:
 				out["to"] = "depot" if key != "cubes_cashed" or (p and not p.carried.is_empty()) else "hex"
 			elif key in BENCH_STATS:
 				out = {"to": "bench", "row": ["research", ""] if key == "research_done" else (["bots", ""] if key == "robots_built" else [])}
@@ -545,8 +529,7 @@ func step_target(def: Dictionary) -> Dictionary:
 				var sh: Variant = world.get("shards")
 				var wp: Variant = (sh as ShardSystem).waypoint(p.global_position).get("pos", null) if sh is ShardSystem and p else null
 				out = {"to": "place" if wp is Vector3 else "hex", "pos": wp, "row": []}
-			elif key == "parts_found" and p and p.detector and p.detector.target >= 0:
-				out = {"to": "place", "pos": world.field.part_pos[p.detector.target], "row": []}
+			# [v2guide] #37: no beam on parts (the detector's signal finds them)
 			else:
 				out["to"] = "hex"
 		_:
@@ -560,10 +543,12 @@ func _resolve(t: Dictionary) -> Dictionary:
 			t["pos"] = _bench_pos()
 		"depot":
 			t["pos"] = _depot_pos()
-		"hex":
-			var f: HexField = world.get("field") as HexField if world else null
-			t["pos"] = f.hex_center(target_hex) if f and target_hex >= 0 else null
+		"bin":  # [v2guide]
+			t["pos"] = bin_point(world)
+		"hex":  # [v2guide] #37: cleaning a hex needs no beam (the hex outline shows it)
+			t["pos"] = null
 	return t
+
 
 
 ## The workbench row the current step asks for ([] when none).
@@ -573,11 +558,15 @@ func bench_row() -> Array:
 
 ## Where the purple beam points: the current step's target (null while the restart checklist runs:
 ## it has its own marker).
+## [v2guide] One card, one beacon: while the restart checklist runs, its step is the card's text
+## (ui/goals_panel.gd) and the beacon stands on that step's target.
 func waypoint_target() -> Variant:
-	if int(GameState.flags.get("tutorial_step", 0)) < Tutorial.STEPS.size():
+	if world == null or world.get("patch") == null:
 		return null
-	if world.get("patch") == null:
-		return null
+	var tut: Tutorial = world.get("tutorial") as Tutorial
+	if tut and not tut.done():  # #37: only places (bench, bin), never pieces
+		var tt: Dictionary = tut.target()
+		return tt.get("pos", null) if str(tt.get("kind", "")) in ["bench", "pad"] else null
 	return step_target(current()).get("pos", null)
 
 
@@ -586,6 +575,14 @@ func _bench_pos() -> Variant:
 		return world.call("bench_pos")
 	var sc: Script = world.get_script() as Script
 	return sc.get_script_constant_map().get("BOARD_POS", null) if sc else null
+
+
+## [v2guide] The trash bin's body (the depot's chute), where the chest is emptied.
+static func bin_point(w: Node) -> Variant:
+	var d: Variant = w.get("depot") if w else null
+	if d is Node3D and (d as Node3D).has_method("bin_world"):
+		return (d as Node3D).call("bin_world")
+	return (d as Node3D).global_position if d is Node3D else null
 
 
 func _depot_pos() -> Variant:

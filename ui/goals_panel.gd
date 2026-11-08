@@ -22,6 +22,7 @@ var _rows: Array[Dictionary] = []
 var _idle: float = 0.0
 var _last_sig: String = ""
 var _alpha: float = 1.0
+var _sub: String = ""  # [v2guide] the latest checklist / hint text
 
 
 func _ready() -> void:
@@ -76,7 +77,24 @@ func set_checklist(text: String) -> void:
 	if checklist.tutorial == null:
 		var w: Node = hud.get("world") if hud else null
 		checklist.tutorial = (w.get("tutorial") as Tutorial) if w else null
-	checklist.set_text(text)
+	_sub = text
+	_route_sub()
+
+
+## [v2guide] Owner playtest 2 #33: ONE card. While a story objective is on the card, the checklist
+## step (or a one-off hint) replaces the card's text instead of showing as a second card; before the
+## objectives show (the first minute) the checklist card carries it alone.
+func _route_sub() -> void:
+	if _objective_running() and objective.visible:
+		if checklist.visible:
+			checklist.visible = false
+			checklist.modulate.a = 0.0
+		var tut: Tutorial = checklist.tutorial
+		var pr: Array = tut.step_progress() if tut and not tut.done() else [-1.0, ""]
+		objective.set_substep(ChecklistCard._strip_bb(_sub).strip_edges().replace("  ", " "), pr)
+	else:
+		objective.set_substep("")
+		checklist.set_text(_sub)
 
 
 ## [first] While the restart checklist runs, the goal rows stay out of the way (one instruction at a
@@ -131,6 +149,7 @@ func _process(delta: float) -> void:
 		var ob: Variant = wo.get("objectives") if wo else null
 		if ob is Objectives:
 			objective.bind(ob as Objectives)
+	_route_sub()  # [v2guide]
 	var total: int = _goals.chain.size()
 	var done: int = _goals.done_count()
 	var show_n: int = 3 if expanded else 1
