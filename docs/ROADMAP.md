@@ -827,3 +827,10 @@ rebuilt on the sphere. What carries over, and how to place it on a globe:
 - Done: `HubHop` rocket hop between hubs on the same globe (no scene change): lift-off, arc over the curve, land on the target's rocket_pad; 7-15 s by distance. `--orbit-hop=N[,M]`.
 - Done: `HoverSled` (player/vehicle.gd): globe-only Upgrades entry `hover_sled` (3 tiers), retunes Lumi's SphereMotor (`speed_mult`, inertia); E to ride/leave. `--orbit-sled[=T]`. Boost is a Settings action (Shift / LS click; the goals toggle lost its LS pad binding).
 - Next (after B1): wire SiteManager into slice-on-globe (hub levels -> set_level, built flags, saves), GlobeView/_launch -> HubHop, place the pod/bench/bin on the start site's anchors.
+
+## Update: round planet phase E (wt/orbE, Nov 8)
+- Done: sky and day/night on the globe. SkyDirector sphere mode (planet/sky_director.gd) drives the world-space sky (planet/orbit/orbit_sky.gdshader) over OrbitDay. The spin is the clock and the local time follows Lumi's longitude. Binary suns from BinarySun.suns_for, a full moon opposite the suns, a cloud deck anchored to the planet, haze lifting with cleaning, storm and Long Nights, readable nights (night lift). Glim's lantern replaces the Lumi lamp.
+- Done: Future Layer per cell on LOD-0 chunks (planet/future_layer_sphere.gd), from SphereCells.level. Builds are budgeted at 2.5 ms per frame.
+- Done: survey hologram (GlobeView sphere mode, far-shell big hexes, "you are here" pin, hand-held on local up), PlanetGlobe overlay of the walked cells, system map globes sized by GlobeSize, photo mode, and core-charge and rocket cameras on local up (WorldUp).
+- Done: perf budgets per preset (planet/orbit_quality.gd) and numbers in docs/PERFORMANCE.md "Round planet". All of it is wired into the real slice through planet/orbit_layers.gd (one call in scenes/slice_orbit.gd).
+- Pending: day/dusk/night renders (killed for memory twice in the shared container; command in the orbE report), rendered draw-call numbers, Mac fps, flipping the default (main, after owner sign-off).
