@@ -26,6 +26,23 @@ func _ready() -> void:
 	match _view:
 		"hero":
 			_hero()
+		"solo":
+			var t1: int = int(DevHooks.get_f("ship-tier", 1.0))
+			_row([t1] as Array[int], 0.0, 32.0)
+			_cam.fov = 30.0
+			_cam.position = Vector3(-1.5, 4.2, 12.5)
+			_cam.look_at(Vector3(0.3, 0.9, 0.4), Vector3.UP)
+		"ark", "ark_below":
+			var ark := CradleShip.new()
+			add_child(ark)
+			ark.position = Vector3(0, 14.0, 0)
+			_cam.fov = 38.0
+			if _view == "ark":
+				_cam.position = Vector3(-52.0, 32.0, -46.0)
+				_cam.look_at(Vector3(0, 13.0, 1.0), Vector3.UP)
+			else:
+				_cam.position = Vector3(30.0, -14.0, -34.0)
+				_cam.look_at(Vector3(0, 9.0, -1.0), Vector3.UP)
 		"pair":
 			var w2: float = _row([1, 7] as Array[int], 10.5, 32.0)
 			_frame(w2, 27.0, 26.0)
@@ -40,7 +57,7 @@ func _ready() -> void:
 
 
 func _env() -> void:
-	if _view in ["lineup", "pair"]:
+	if _view in ["lineup", "pair", "solo", "ark", "ark_below"]:
 		_studio()
 		return
 	var env := Environment.new()
@@ -136,7 +153,8 @@ func _studio() -> void:
 	gm.specular_mode = BaseMaterial3D.SPECULAR_DISABLED  # the rim light glinting off the floor bloomed across the frame
 	pm.material = gm
 	ground.mesh = pm
-	add_child(ground)
+	if not _view.begins_with("ark"):
+		add_child(ground)
 
 
 ## Display scale: every tier at roughly the same screen size (the growth shows in the parts).
