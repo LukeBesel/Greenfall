@@ -109,6 +109,9 @@ static func configure(p: SitePrefab, opts: Dictionary = {}) -> bool:
 				return false
 			var scr: Script = load(path)
 			p.builder = func(parent: Node3D, st: int, r: float) -> void:
+				if _has_static(scr, "build_async"):  # [orbE] yields behind the loading screen (AnvilSites)
+					await scr.call("build_async", parent, sid, st, r)
+					return
 				_call_external(scr, parent, sid, st, r, opts)
 			p.restyler = func(content: Node3D, st: int, r: float) -> bool:
 				for c: Node in content.get_children():
@@ -141,6 +144,14 @@ static func _call_external(scr: Script, parent: Node3D, sid: String, st: int, r:
 		scr.callv(nm, call_args)
 		return
 	push_warning("SiteBuilders: %s has no static build/place(…4 args)" % scr.resource_path)
+
+
+## [orbE] Whether a planet's site script has this static function.
+static func _has_static(scr: Script, fn: String) -> bool:
+	for m: Dictionary in scr.get_script_method_list():
+		if str(m.get("name", "")) == fn:
+			return true
+	return false
 
 
 static func _first(n: Node, cls_prefix: String) -> Node:

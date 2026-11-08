@@ -79,6 +79,8 @@ func build(p_world: Node3D) -> void:
 	var hook := Callable()
 	if migrate:
 		hook = func(g: OrbitPlanet) -> void: report.merge(OrbitMigrate.apply(g))
+	if DevHooks.has("load-report"):  # [orbE] the stretch before the first yield
+		print("[orbit-load] before globe: %d ms" % (Time.get_ticks_msec() - t0))
 	BuildBudget.span(0.0, 0.5)  # [orbE] loading bar: the globe is the first half
 	await globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}), OrbitSave.site_cells(od), hook)
 	BuildBudget.span(0.5, 0.65)
@@ -127,6 +129,10 @@ func build(p_world: Node3D) -> void:
 		print("[orbit-load] start site %d ms, %d models: %s" % [Time.get_ticks_msec() - tq, AssetLib.traced.size(), ",".join(AssetLib.traced)])
 		AssetLib.tracing = tr0
 	await BuildBudget.check("orbit start site")  # [orbE]
+	# The site's deferred footprint probe and anchor reach audit (~0.7 s of physics queries on the
+	# next physics frame): give it a frame of its own, so it never stacks with a build slice.
+	await BuildBudget.pause("site probe")
+	await BuildBudget.pause("site probe")
 	_build_patch()
 	_build_depot(site)
 	await BuildBudget.check("orbit lumi")  # [orbE]

@@ -105,6 +105,12 @@ func _ready() -> void:
 			process_mode = Node.PROCESS_MODE_INHERIT
 			ovp.disable_3d = not o_had_3d
 			built.emit()
+			if DevHooks.has("load-report"):  # [orbE] the first live frame after the build
+				var tf: int = Time.get_ticks_msec()
+				await get_tree().process_frame
+				var tf2: int = Time.get_ticks_msec()
+				await get_tree().process_frame
+				print("[orbit-load] first live frames: %d ms, %d ms" % [tf2 - tf, Time.get_ticks_msec() - tf2])
 		return
 	if DevHooks.has("orbit"):  # [orbit] phase A prototypes: --orbit=globe (verdance_globe), --orbit=v1 (orbit_world)
 		get_tree().change_scene_to_file.call_deferred("res://planet/orbit/%s.tscn" % ("orbit_world" if DevHooks.get_s("orbit", "") == "v1" else "verdance_globe"))
