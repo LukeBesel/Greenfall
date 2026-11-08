@@ -19,6 +19,7 @@ var _dir := Vector3.UP
 var _fwd := Vector3.FORWARD
 var _working: bool = false
 var cleaned: int = 0
+var _retry: float = 0.0
 
 
 func setup(p_world: OrbitWorld, p_cell: int, hub: int, type_id: String) -> void:
@@ -36,8 +37,11 @@ func _process(delta: float) -> void:
 	if globe == null:
 		return
 	var moving: float = 0.0
-	if _target < 0:
+	_retry -= delta
+	if _target < 0 and _retry <= 0.0:
 		_target = world.claim_dirty(cell, hub_cell, 9)
+		if _target < 0:
+			_retry = 3.0  # nothing left nearby: look again later, not every frame
 		_path = world.path(cell, _target) if _target >= 0 else PackedInt32Array()
 	if not _path.is_empty():
 		var goal: Vector3 = globe.grid.centers[_path[0]]
