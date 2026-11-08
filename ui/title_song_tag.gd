@@ -15,7 +15,7 @@ var _id: String = ""
 
 func _ready() -> void:
 	name = "TitleSongTag"
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)  # [qafix] QA #21: set_anchors_preset kept a 0x0 rect, so the tag sat off-screen
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var hb := HBoxContainer.new()
 	hb.add_theme_constant_override("separation", 8)
@@ -35,8 +35,9 @@ func _ready() -> void:
 	_label = UITheme.label("", 15, Color(1.0, 0.96, 0.88))
 	_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.5))
 	_label.add_theme_constant_override("shadow_offset_y", 1)
-	_label.clip_text = true
-	_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	# [qafix] QA #21: a clipped Label in a box has no minimum width, so it collapsed to 1 px. It
+	# sizes to its text now (the text is shortened in _short); the box keeps it at the right edge.
+	_label.clip_text = false
 	hb.add_child(_label)
 	modulate.a = 0.0
 
@@ -46,13 +47,18 @@ func _process(delta: float) -> void:
 	if id != _id:
 		_id = id
 		if id != "":
-			_label.text = "%s, %s" % [tr(Tunes.title(id)), tr(Tunes.artist_name(id))]
+			_label.text = short("%s, %s" % [tr(Tunes.title(id)), tr(Tunes.artist_name(id))])
 			_t = 0.0
 	_t += delta
 	var want: float = 0.0
 	if _id != "":
 		want = 1.0 if _t < BRIGHT_S else SUBTLE
 	modulate.a = move_toward(modulate.a, want, delta / (0.8 if want > modulate.a else 1.6))
+
+
+## [qafix] Long song + artist names end in an ellipsis instead of running off the screen.
+static func short(text: String, max_chars: int = 56) -> String:
+	return text if text.length() <= max_chars else text.left(max_chars - 1).strip_edges() + "…"
 
 
 class NoteIcon extends Control:

@@ -803,7 +803,7 @@ func _build_battery(root: Control) -> void:
 	box.modulate.a = 0.0
 	root.add_child(box)
 	_battery = box
-	box.add_child(UITheme.label("B L O O M   C O R E", 12, Color(1, 1, 1, 0.6)))
+	box.add_child(UITheme.label("B L O O M   C O R E", 15, Color(1, 1, 1, 0.85)))  # [qafix] QA #27: was 12 px at 60%
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 10)
 	box.add_child(row)
@@ -823,7 +823,7 @@ func _build_battery(root: Control) -> void:
 	cells.add_child(nub)
 	_battery_pct = UITheme.label("%d%%" % int(round(CoreCharge.START * 100.0)), 26, Color(1.0, 0.45, 0.3))
 	row.add_child(_battery_pct)
-	box.add_child(UITheme.label(tr("GREEN LIGHT  ·  NONE DETECTED"), 12, Color(1.0, 0.6, 0.4, 0.85)))
+	box.add_child(UITheme.label(tr("GREEN LIGHT  ·  NONE DETECTED"), 15, Color(1.0, 0.6, 0.4, 0.95)))  # [qafix] QA #27
 
 
 func _show_battery() -> void:

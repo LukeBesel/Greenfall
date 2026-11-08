@@ -406,7 +406,7 @@ func _style_row(b: Button, it: Dictionary) -> void:
 			tl.remove_child(c)
 			c.queue_free()
 		var bg: Color = TAG_OK
-		var fg: Color = Color(0.1, 0.06, 0.02)
+		var fg: Color = Color(0.1, 0.06, 0.02) if not on else TAG_OK.lightened(0.3)  # on the orange row the tag turns dark: light text
 		match st:
 			"locked":
 				bg = Color(0.3, 0.31, 0.33, 0.9)
@@ -449,8 +449,10 @@ func _style_row(b: Button, it: Dictionary) -> void:
 
 
 func _tag_label(t: String, col: Color) -> Label:
-	var l: Label = UITheme.label(t, 13, col)
+	var l: Label = UITheme.label(t, 14, col)
 	l.add_theme_constant_override("outline_size", 0)
+	l.add_theme_constant_override("shadow_outline_size", 0)
+	l.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0))
 	return l
 
 

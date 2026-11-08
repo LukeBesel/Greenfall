@@ -25,6 +25,27 @@ var _tex_cache: Dictionary = {}
 var _confirm: String = ""
 
 
+## [qafix] QA #22: a tab shows only once its thing exists (owner: "the radio is built later at
+## the hub", "there is no nursery at the start"). The Seed of the Week is always there.
+static func tab_open(t: String) -> bool:
+	match t:
+		"radio":
+			return YardBuilds.built("radio")
+		"album":
+			return CameraBot.available() or not PhotoAlbum.districts().is_empty()
+		"nursery":
+			return YardBuilds.built("nursery") or Nursery.count() > 0
+	return true
+
+
+static func open_tabs() -> Array[String]:
+	var out: Array[String] = []
+	for t: String in TABS:
+		if tab_open(t):
+			out.append(t)
+	return out
+
+
 static func open_for(slice: Node, p_tab: String = "radio") -> void:
 	var p: ExtrasPanel = slice.get_node_or_null("ExtrasPanel") as ExtrasPanel if slice else null
 	if p:
@@ -79,6 +100,11 @@ func _ready() -> void:
 func open_panel(p_tab: String = "") -> void:
 	if p_tab in TABS:
 		tab = p_tab
+	var tabs: Array[String] = open_tabs()  # [qafix]
+	if not (tab in tabs):
+		tab = tabs[0]
+	for k: String in _tab_btns:
+		(_tab_btns[k] as Button).visible = k in tabs
 	if not is_open:
 		is_open = true
 		_root.visible = true
@@ -390,8 +416,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		close_panel()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev"):
-		var i: int = TABS.find(tab)
-		_set_tab(TABS[(i + (1 if event.is_action_pressed("ui_tab_next") else TABS.size() - 1)) % TABS.size()])
+		var tabs: Array[String] = open_tabs()  # [qafix] only the tabs that are there
+		var i: int = maxi(tabs.find(tab), 0)
+		_set_tab(tabs[(i + (1 if event.is_action_pressed("ui_tab_next") else tabs.size() - 1)) % tabs.size()])
 		get_viewport().set_input_as_handled()
 
 
