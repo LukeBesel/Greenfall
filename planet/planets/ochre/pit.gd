@@ -58,7 +58,7 @@ func _init(seed_v: int) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v + 77
 	for i: int in 34:
-		var lo: int = rng.randi_range(2, N_UP + 1)
+		var lo: int = rng.randi_range(3, N_UP + 1)
 		gullies.append([rng.randf() * TAU - PI, rng.randf_range(2.5, 6.0), rng.randf_range(2.0, 5.5), lo, mini(lo + rng.randi_range(1, 5), N_UP + 2)])
 	for i: int in 4:
 		slumps.append([rng.randf() * TAU - PI, rng.randf_range(0.07, 0.14), rng.randi_range(1, N_UP - 4), rng.randi_range(2, 4)])
