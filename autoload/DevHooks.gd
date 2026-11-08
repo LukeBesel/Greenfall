@@ -71,6 +71,7 @@ extends Node
 ##   --demo-end[=S]     [steam] show the end-of-demo screen after S seconds
 ##   [late] --post-finale (Verdance won), --world=N, --heirlooms=id:lv+.., --starseeds=N, --open=ark|garden,
 ##          --decor-sample, --new-world[=S], --no-banner; full list in systems/late_director.gd
+##   [kit] --kit-lineup  art kit lineup (docs/ART_KIT.md); with --out=PREFIX it renders every piece and quits
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0
@@ -117,6 +118,8 @@ func _ready() -> void:
 		add_child(load("res://steam/store_shots.gd").new())
 	if has("demo-end"):  # [steam] open the end-of-demo screen after S seconds (screenshots)
 		get_tree().create_timer(get_f("demo-end", 5.0)).timeout.connect(func() -> void: Demo.show_end_screen("auto"))
+	if has("kit-lineup"):  # [kit] art kit lineup (art/kit/kit_lineup.gd; --out=PREFIX renders and quits)
+		get_tree().change_scene_to_file.call_deferred("res://art/kit/kit_lineup.tscn")
 	if not args.is_empty():
 		print("[DevHooks] args: ", args)
 

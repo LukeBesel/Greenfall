@@ -166,3 +166,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Use as many helpers as needed, all aligned and not overwriting each other (file ownership in owners.md; main merges).
 - [ ] Fully build the walkable round planets (orbB to orbE).
 - [ ] Planets come in different sizes: Ochre (2nd) a bit smaller, later ones larger, Anvil (last) the largest. Later planets unlock more and speed things up so the game keeps moving (orbB grid sizes, orbD hub counts, pacing).
+- [ ] Planets grow much larger as you go; the last (Anvil) is about 4x the starter (radius 2x). Data has been set to 0.85 / 1.3 / 1.6 / 2.0x.
+- [ ] The 3rd planet (Tidewell) unlocks a bot-building bot (Bot Fabricator) so fleets reach "tons of bots"; bots go out and work on their own.
+- [ ] Finish the game to Moon Sweepers quality, with no glitches. Simple to understand, guide the player, keep it interesting and super visually appealing. All buildings look good and make sense. Run quality and visual tests.
+- [ ] Stay within the usage limit (owner: keep under about 10%): helpers resume after the weekly limit resets on Nov 10, 19:00 UTC.

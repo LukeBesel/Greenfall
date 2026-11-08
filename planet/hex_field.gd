@@ -533,6 +533,11 @@ func bury_parts(parts_def: Dictionary) -> void:
 		part_found.append(0)
 
 
+## [orbB] Distance from a world point to part i along the ground (SphereField measures on the globe).
+func part_distance(i: int, pos: Vector3) -> float:
+	return Vector2(pos.x - part_pos[i].x, pos.z - part_pos[i].z).length()
+
+
 ## Nearest unfound part within range (or -1).
 func nearest_part(pos: Vector3, max_dist: float) -> int:
 	var best: int = -1
