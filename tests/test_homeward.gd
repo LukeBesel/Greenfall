@@ -63,6 +63,9 @@ func test_store_never_drops_and_restoring_gives_relic_and_pick() -> void:
 	assert_eq(Homeward.store_current(0.4), [] as Array[int])
 	Homeward.store_current(0.2)
 	assert_almost_eq(Homeward.stored_pct(1), 0.4, 0.0001, "never drops")
+	assert_eq(Homeward.store_current(1.0), [] as Array[int], "[pace2] capped until later-planet tech")
+	assert_almost_eq(Homeward.stored_pct(1), Homeward.cap_for(1), 0.0001)
+	Homeward.techs().append_array(["tide_pump", "heat_core"])
 	assert_eq(Homeward.store_current(1.0), [1] as Array[int])
 	assert_true("ochre_glass" in Homeward.relics())
 	assert_eq(Homeward.picks(), 1)
@@ -90,20 +93,28 @@ func test_reach_needs_drive_and_chart() -> void:
 
 
 func test_drive_gates_and_costs() -> void:
-	assert_ne(Homeward.drive_blocker(), "", "Mk V waits for the Cradle's answer")
-	Homeward.state()["answered"] = true
+	var pct: Dictionary = Homeward.state()["pct"]
+	assert_ne(Homeward.drive_blocker(), "", "Mk V waits for a partly restored Verdance")
+	assert_false(Homeward.system_open())
+	GameState.world["hub_level"] = 3  # [pace2] or a base at level 3 ...
+	assert_true(Homeward.system_open(), "a level 3 base opens the system too")
+	GameState.world["hub_level"] = 1
+	assert_false(Homeward.system_open())
+	pct["verdance"] = 0.55  # ... or about half of Verdance; no Cradle answer, no relic
+	assert_true(Homeward.system_open(), "the system map opens before 100%")
 	assert_string_contains(Homeward.drive_blocker(), "cubes")
 	GameState.add_currency("cubes", BigNum.from_float(5.0e6))
 	GameState.add_currency("parts", BigNum.from_float(1000))
 	assert_eq(Homeward.drive_blocker(), "")
 	assert_true(Homeward.buy_drive())
 	assert_eq(Homeward.drive(), 5)
-	assert_ne(Homeward.drive_blocker(), "", "Mk VI needs a relic")
-	Homeward.relics().append("ochre_glass")
+	assert_ne(Homeward.drive_blocker(), "", "Mk VI needs another planet about half restored")
+	pct["ochre"] = 0.5  # [pace2] Ochre's chart, no relic needed
 	assert_eq(Homeward.drive_blocker(), "")
+	assert_true(Homeward.relics().is_empty())
 	assert_true(Homeward.buy_drive())
 	assert_eq(Homeward.drive(), 6)
-	for r: String in ["tidewell_pearl", "rime_core", "anvil_ingot"]:
+	for r: String in ["ochre_glass", "tidewell_pearl", "rime_core", "anvil_ingot"]:
 		Homeward.relics().append(r)
 	GameState.add_currency("cubes", BigNum.from_float(1.0e7))
 	GameState.add_currency("parts", BigNum.from_float(3000))
@@ -182,3 +193,49 @@ func test_score_track_waits_for_the_ending() -> void:
 	GameState.stats["ark_waves"] = 4.0
 	assert_gt(CradleMode.bank(), 0)
 	assert_gt(float(CradleMode.profile.get("starseeds_total", 0.0)), 0.0, "post-game: the score track runs")
+
+
+## [pace2] Leaving each planet at about 50%: the chart (chart_at) and drive tiers open every next
+## planet without any planet at 100%.
+func test_leave_each_planet_at_half() -> void:
+	var pct: Dictionary = Homeward.state()["pct"]
+	GameState.add_currency("cubes", BigNum.from_float(1.0e8))
+	GameState.add_currency("parts", BigNum.from_float(1.0e5))
+	var ids: Array = []
+	for d: Dictionary in Homeward.planets():
+		ids.append(str(d["id"]))
+	for k: int in range(1, ids.size()):
+		pct[ids[k - 1]] = 0.55
+		while Homeward.drive() < int(Homeward.planet_def(k).get("nav", 0)):
+			assert_eq(Homeward.drive_blocker(), "", "drive for %s at about half: %s" % [ids[k], Homeward.drive_blocker()])
+			assert_true(Homeward.buy_drive())
+		assert_eq(Homeward.reach_blocker(k, Homeward.drive(), Homeward.pct_list()), "", "%s reachable" % ids[k])
+	assert_false(Homeward.answered(), "the Cradle can answer later")
+	assert_true(Homeward.relics().is_empty())
+	assert_ne(Homeward.drive_blocker(true), "", "only Mk VII Homeward needs the whole system")
+
+
+## [pace2] 100% needs tools from later planets: Verdance stops at its cap until Ochre's Deep Drill,
+## a tech is found at 25% of its planet, and the Dust Flats research says where to get it.
+func test_later_planet_tech_caps_and_unlocks() -> void:
+	assert_almost_eq(Homeward.cap_for(0), 0.68, 0.001, "Verdance capped at about two thirds")
+	assert_eq(Homeward.blocking_tech(0), "deep_drill")
+	assert_eq(Homeward.cap_for(4), 1.0, "the last planet has no later tech to wait for")
+	for k: int in Homeward.planets().size():
+		assert_gt(Homeward.cap_for(k), float(Homeward.cfg()["chart_at"]), "%d can always reach its chart" % k)
+	assert_false(Research.can_start("dune_charts"))
+	assert_string_contains(Research.reason("dune_charts"), "Ochre")
+	assert_eq(Research.status("dune_charts"), "locked")
+	var pct: Dictionary = Homeward.state()["pct"]
+	pct["ochre"] = 0.3
+	assert_eq(Homeward.grant_techs(1), ["deep_drill"] as Array[String])
+	assert_true(Homeward.has_tech("deep_drill"))
+	assert_almost_eq(Homeward.cap_for(0), 0.8, 0.001, "the next cap: the Tide Pump")
+	assert_eq(Homeward.grant_techs(1), [] as Array[String], "granted once")
+	for t: Dictionary in Homeward.tech_defs():
+		if not Homeward.has_tech(str(t["id"])):
+			Homeward.techs().append(str(t["id"]))
+	for k2: int in Homeward.planets().size():
+		assert_eq(Homeward.cap_for(k2), 1.0, "every tech found: 100% possible")
+	var again: Dictionary = Homeward.sanitize(Homeward.state())
+	assert_eq((again["techs"] as Array).size(), Homeward.tech_defs().size(), "techs survive a save")

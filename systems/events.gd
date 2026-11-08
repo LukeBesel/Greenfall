@@ -104,10 +104,14 @@ static func eligible_ids(ctx: Dictionary) -> Dictionary:
 			ok = false
 		if bool(req.get("ledger_resolved", false)) and not bool(ctx.get("ledger_resolved", false)):
 			ok = false
+		if str(req.get("flag", "")) != "" and not bool((ctx.get("flags", GameState.flags) as Dictionary).get(str(req["flag"]), false)):
+			ok = false  # [pace] needs an unlock (has_baler, has_signal_finder, ...: Pace.sync_flags)
 		if id in ["supply_drop", "salvage_surge", "ledger_audit"] and int(ctx.get("junk_hexes", 0)) <= 0:
 			ok = false
 		if id == "rare_part_signal" and int(ctx.get("parts_left", 0)) <= 0:
 			ok = false
+		if not bool(e.get("enabled", true)):
+			ok = false  # [pace] no spontaneous reward crates (owner playtest #2): supplies are found, never dropped
 		out[id] = ok
 	return out
 
@@ -493,9 +497,8 @@ func _pay(rw: Dictionary, at: Vector3, source: String) -> String:
 			var pr: Array = rw["part_rarity"]
 			r = int(pr[0]) if rng.randf() < 0.75 else int(pr[1])
 		var t: int = rng.randi() % maxi(Economy.parts.get("types", [1]).size(), 1)
-		GameState.parts.append({"type": t, "rarity": r})
-		EventBus.part_found.emit(t, r)
-		bits.append("+" + L10nFmt.part_name(r, t))  # [i18n2]
+		RobotParts.salvage(t, r)  # [ui2] a found robot part pays Parts
+		bits.append(RobotParts.gain_text(r))
 	if rng.randf() < float(rw.get("trinket_chance", 0.0)):
 		var tid: String = Collection.roll(source, rng.randf())
 		if tid != "" and Collection.grant(tid):

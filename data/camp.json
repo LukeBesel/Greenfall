@@ -1,0 +1,93 @@
+{
+  "_doc": "[camp] The landing yard (systems/camp/camp.gd, systems/camp/yard_builds.gd). A fresh base starts with only the pod, a broken workbench and the trash bin. Lumi repairs the bench (bench_repair_s) the first time E is pressed at it. Yard builds are bought in the Hub tab: requires_level is the hub level, requires_flag a GameState flag (first_sprout = the first seed has grown). pos is [x, z] in the yard (CityLayout.YARD_HALF = 8.5; the fence runs along the back and both sides, the front at +z is open). Keep every yard interactable at least min_gap metres from the next. Every yard structure is a Hub-tab build (systems/camp/hub_builds.gd): once-builds drop off the list when built; tiered ones (trash bin, signal tower) show only their next tier. requires_bench: only after the workbench is repaired. camera_bot (camp3): global (one build for the whole game, GameState.flags.yard_global), unlocked at hub level 2 or after or_played_s seconds of play, and not listed before that (hidden_until_unlocked). Photo mode needs him (ui/photo_mode.gd).",
+  "bench_repair_s": 2.6,
+  "min_gap": 3.0,
+  "builds": {
+    "shack": {
+      "name": "Lean-to",
+      "desc": "Salvaged pipe and corrugated iron over the workbench, with a work lamp. Shelter for the crew.",
+      "cost": {
+        "cubes": 120
+      },
+      "requires_level": 1,
+      "requires_bench": true
+    },
+    "generator": {
+      "name": "Generator",
+      "desc": "A patched portable generator by the lean-to. It hums; the yard feels lived in.",
+      "cost": {
+        "cubes": 300,
+        "parts": 5
+      },
+      "requires_level": 1,
+      "requires_bench": true
+    },
+    "lamps": {
+      "name": "Yard Lamps",
+      "desc": "The street lamp and the pole lamps along the fence, rewired. Light for the yard at night.",
+      "cost": {
+        "cubes": 450,
+        "parts": 10
+      },
+      "requires_level": 1,
+      "requires_bench": true
+    },
+    "composter": {
+      "name": "Compost Press",
+      "desc": "Presses plant scraps into compost and seeds. Worth building once something grows.",
+      "cost": {
+        "cubes": 300,
+        "seeds": 5
+      },
+      "requires_level": 1,
+      "requires_flag": "first_sprout"
+    },
+    "radio": {
+      "name": "CD Player",
+      "desc": "A chunky old CD player on a crate by the fence. Plays the discs you find.",
+      "cost": {
+        "cubes": 1200
+      },
+      "requires_level": 2,
+      "pos": [
+        6.6,
+        3.4
+      ],
+      "yaw_deg": 180.0
+    },
+    "locker": {
+      "name": "Locker",
+      "desc": "A tall steel locker by the bench. Open it to change Lumi's look, Glim's and your robots'.",
+      "cost": {"cubes": 600, "parts": 120},
+      "requires_level": 2,
+      "pos": [-6.4, 4.6],
+      "yaw_deg": 90.0
+    },
+    "nursery": {
+      "name": "Robot Nursery",
+      "desc": "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand.",
+      "cost": {
+        "cubes": 2500
+      },
+      "requires_level": 1,
+      "requires_flag": "first_sprout"
+    },
+    "camera_bot": {
+      "name": "Blink",
+      "desc": "A little floating camera bot with a big lens for a face. Builds once; then he follows Lumi from base to base and photo mode opens.",
+      "cost": {
+        "cubes": 400,
+        "parts": 80
+      },
+      "requires_level": 2,
+      "or_played_s": 1500,
+      "requires_bench": true,
+      "hidden_until_unlocked": true,
+      "global": true,
+      "pos": [
+        -6.2,
+        4.4
+      ]
+    }
+  }
+}

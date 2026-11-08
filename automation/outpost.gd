@@ -87,6 +87,7 @@ func set_level(new_level: int, animate: bool, done: Callable = Callable()) -> vo
 			_ruin = null
 		_build_fixed(level, 0)
 		_make_scale()
+		_fit_fixed()  # [world2]
 		if done.is_valid():
 			done.call()
 		return
@@ -107,6 +108,7 @@ func set_level(new_level: int, animate: bool, done: Callable = Callable()) -> vo
 	tw.tween_interval(2.6)
 	tw.tween_callback(func() -> void:
 		_make_scale()
+		_fit_fixed()  # [world2] once every part has landed
 		busy = false
 		Audio.play("fanfare", 1.0, -4.0)
 		Vfx.burst("confetti", to_global(Vector3(0, 3.0, 0)), Color.WHITE)
@@ -119,6 +121,10 @@ func set_level(new_level: int, animate: bool, done: Callable = Callable()) -> vo
 func _clear_ruin() -> void:
 	var old: Node3D = _ruin
 	_ruin = null
+	var rb: Node = old.get_node_or_null("Props")  # [world2] its colliders go at once
+	if rb:
+		old.remove_child(rb)
+		rb.queue_free()
 	var k: int = 0
 	for c: Node in old.get_children():
 		if not c is Node3D:
@@ -391,6 +397,7 @@ func _build_ruin() -> void:
 	_model(_ruin, "cardboard_box_01", PAD + Vector3(0.2, 0.1, 0.9), 33.0, 0.4, Vector3(0, 0, 12))
 	_model(_ruin, "plastic_crate_01", KIOSK + Vector3(1.4, 0.0, 1.6), 64.0, 0.35, Vector3(0, 0, 0))
 	_model(_ruin, "rusted_wheel_rim_01", Vector3(1.2, 0.05, -1.0), 10.0, 0.12)
+	PropColliders.fit(PropColliders.body(_ruin, "Props"), _ruin)  # [world2] the wreck is solid
 
 
 # --- Working outpost -------------------------------------------------------------------
@@ -638,6 +645,12 @@ func _build_fixed(lv: int, drop_lv: int) -> void:
 		cp.add_child(EggProps.label(tr("RECHARGE"), 34, Color(0.75, 0.95, 1.0), Vector3(0, 0.14, 0.7), Vector3(-90, 0, 0), true))
 	if drop_lv > 0:
 		_drop_in(drop_lv)
+
+
+## [world2] Colliders for the working outpost's props (kiosk and skip have their own boxes).
+func _fit_fixed() -> void:
+	if _fixed and _fixed.is_inside_tree():
+		PropColliders.fit(PropColliders.body(_fixed, "Props"), _fixed)
 
 
 func _collider(n: Node3D, size: Vector3, center: Vector3) -> void:

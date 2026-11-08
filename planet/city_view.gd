@@ -30,6 +30,7 @@ var _props := MeshBatch.new()
 ## [worlds2] A Cradle Mode world's facade tint (systems/world_look.gd): frosted, sun-bleached,
 ## coastal, overgrown or corroded cities. White on Verdance.
 var look_tint := Color.WHITE
+var _prop_body: StaticBody3D  # [world2] street furniture and lot fences (PhysLayers.PROP)
 
 
 func build(p_layout: CityLayout, p_ground_material: Material) -> void:
@@ -41,23 +42,34 @@ func build(p_layout: CityLayout, p_ground_material: Material) -> void:
 	_static.cell = CityLayout.PITCH * 2.0
 	_props.cell = CityLayout.PITCH * 2.0
 	_props.visibility_end = 260.0
-	_load_kit(APT)
-	_load_kit(FAC)
+	await _load_kit(APT)
+	await _load_kit(FAC)
 	_curb_mat = AssetLib.pbr_material("concrete_pavement", 1.2, Color(0.82, 0.8, 0.78), true)
+	var bi: int = 0
 	for key: Vector2i in layout.blocks:
+		bi += 1
+		BuildBudget.sub(0.6 * float(bi) / layout.blocks.size())
+		await BuildBudget.check("city:block")  # [leftovers] time-sliced behind the loading screen
 		_build_block(key, layout.blocks[key])
-	_flush_batches()
+	await BuildBudget.check("city:batches")
+	await _flush_batches()
 	if not layout.wild:
-		_build_street_props()
-		_build_skyline()  # wilderness has its own horizon (FieldView hills and biome wrecks)
-	_static.flush(self)
-	_props.flush(self)
+		await BuildBudget.check("city:props")
+		await _build_street_props()
+		await BuildBudget.check("city:skyline")
+		await _build_skyline()  # wilderness has its own horizon (FieldView hills and biome wrecks)
+	await BuildBudget.check("city:static")
+	await _static.flush_async(self)
+	await BuildBudget.check("city:props flush")
+	await _props.flush_async(self)
 
 
 # --- Kit --------------------------------------------------------------------------
 
 func _load_kit(id: String) -> void:
-	var ps: PackedScene = load(AssetLib.MODEL_DIR % [id, id])
+	var keep: Resource = await BuildBudget.fetch(AssetLib.MODEL_DIR % [id, id])  # [leftovers]
+	await BuildBudget.check("city:kit")
+	var ps: PackedScene = keep if keep is PackedScene else load(AssetLib.MODEL_DIR % [id, id])
 	var root: Node = ps.instantiate()
 	var d: Dictionary = {}
 	for c: Node in root.get_children():
@@ -92,6 +104,7 @@ func _place(_block: Vector2i, kit: String, piece: String, xf: Transform3D) -> vo
 
 func _flush_batches() -> void:
 	for key: String in _batches:
+		await BuildBudget.check("city:batch")
 		var parts: PackedStringArray = key.split("|")
 		var mesh: Mesh = AssetLib.lite(_kit[parts[0]][parts[1]], 600)
 		var xfs: Array = _batches[key]
@@ -103,6 +116,7 @@ func _flush_batches() -> void:
 			mm.set_instance_transform(i, xfs[i])
 		var mmi := MultiMeshInstance3D.new()
 		mmi.multimesh = mm
+		mmi.set_meta("inst_xf", xfs)  # [world2] for the collider audit
 		mmi.visibility_range_end = 420.0
 		add_child(mmi)
 	_batches.clear()
@@ -326,9 +340,12 @@ func _fire_escape_mesh(node: String) -> Mesh:
 
 
 func _build_fence(r: Rect2, partial: bool) -> void:
-	# Low chainlink run along part of a lot's edge.
+	# [world2] Broken chain-link runs along a lot's edges: a few panels standing, then a gap where
+	# the fence is down, so a lot is never boxed in. Each standing run gets one thin box collider.
 	var mat: StandardMaterial3D = Mats.metal("steel")
 	var parts: Array = []
+	if _prop_body == null:
+		_prop_body = PropColliders.body(self, "StreetProps")
 	var edges: Array = [[r.position, Vector2(r.end.x, r.position.y)], [r.position, Vector2(r.position.x, r.end.y)]]
 	if not partial:
 		edges.append([Vector2(r.end.x, r.position.y), r.end])
@@ -336,16 +353,40 @@ func _build_fence(r: Rect2, partial: bool) -> void:
 		var a: Vector2 = e[0]
 		var bb: Vector2 = e[1]
 		var n: int = int(a.distance_to(bb) / 2.5)
-		for k: int in n + 1:
-			if partial and _rng.randf() < 0.35:
-				continue
-			var p: Vector2 = a.lerp(bb, float(k) / n)
-			parts.append(ProcMesh.part(ProcMesh.cyl(0.03, 0.03, 1.8, 6), ProcMesh.xf(Vector3(p.x, 0.9, p.y), Vector3(_rng.randf_range(-4, 4), 0, _rng.randf_range(-4, 4)))))
-		var mid: Vector2 = (a + bb) * 0.5
-		var len_: float = a.distance_to(bb)
-		var horiz: bool = absf(a.y - bb.y) < 0.01
-		parts.append(ProcMesh.part(ProcMesh.cyl(0.02, 0.02, len_, 6), ProcMesh.xf(Vector3(mid.x, 1.78, mid.y), Vector3(0, 0, 90) if horiz else Vector3(90, 0, 0))))
+		var k: int = _rng.randi_range(0, 2)  # start a little way in: corners stay open
+		while k < n:
+			var run: int = mini(_rng.randi_range(1, 3), n - k)
+			var p0: Vector2 = a.lerp(bb, float(k) / n)
+			var p1: Vector2 = a.lerp(bb, float(k + run) / n)
+			for q: int in run + 1:
+				var p: Vector2 = a.lerp(bb, float(k + q) / n)
+				parts.append(ProcMesh.part(ProcMesh.cyl(0.03, 0.03, 1.8, 6), ProcMesh.xf(Vector3(p.x, 0.9, p.y), Vector3(_rng.randf_range(-4, 4), 0, _rng.randf_range(-4, 4)))))
+			var mid: Vector2 = (p0 + p1) * 0.5
+			var len_: float = p0.distance_to(p1)
+			var horiz: bool = absf(a.y - bb.y) < 0.01
+			for y: float in [1.78, 0.9]:
+				parts.append(ProcMesh.part(ProcMesh.cyl(0.02, 0.02, len_, 6), ProcMesh.xf(Vector3(mid.x, y, mid.y), Vector3(0, 0, 90) if horiz else Vector3(90, 0, 0))))
+			# Chain-link suggested by a diagonal lattice of thin wires.
+			for q: int in int(len_ / 0.6):
+				var t0: float = float(q) / int(len_ / 0.6)
+				var t1: float = minf(t0 + 0.6 / len_, 1.0)
+				var x0: Vector2 = p0.lerp(p1, t0)
+				var x1: Vector2 = p0.lerp(p1, t1)
+				var d3 := Vector3(x1.x - x0.x, 1.6, x1.y - x0.y)
+				var c3 := Vector3((x0.x + x1.x) * 0.5, 0.88, (x0.y + x1.y) * 0.5)
+				parts.append(ProcMesh.part(ProcMesh.cyl(0.006, 0.006, d3.length(), 3), Transform3D(_align_y(d3), c3)))
+				var d4 := Vector3(x0.x - x1.x, 1.6, x0.y - x1.y)
+				parts.append(ProcMesh.part(ProcMesh.cyl(0.006, 0.006, d4.length(), 3), Transform3D(_align_y(d4), c3)))
+			PropColliders.add_run(_prop_body, Vector3(p0.x, 0, p0.y), Vector3(p1.x, 0, p1.y), 1.8, 0.16)
+			k += run + _rng.randi_range(2, 3)  # the gap: two or three panels down
 	_static.merge(ProcMesh.merge(parts), Transform3D.IDENTITY, mat, true, Vector3(r.get_center().x, 0, r.get_center().y))  # [deck]
+
+
+## Basis whose Y axis points along d (for rods between two points).
+static func _align_y(d: Vector3) -> Basis:
+	var y: Vector3 = d.normalized()
+	var x: Vector3 = y.cross(Vector3.FORWARD if absf(y.z) < 0.9 else Vector3.RIGHT).normalized()
+	return Basis(x, y, x.cross(y))
 
 
 # --- Street furniture ---------------------------------------------------------------
@@ -357,16 +398,17 @@ func _mesh_prop(model: String, pos: Vector3, yaw: float, collide: bool, scl: flo
 	var xf := Transform3D(Basis.from_euler(Vector3(0.0, yaw, roll)) * Basis.from_scale(Vector3.ONE * scl), pos)
 	_props.instance(mesh, xf)
 	if collide:
+		# [world2] One shared PROP body, shared shapes; lamp posts get a slim post (their heads and
+		# arms are overhead), everything else a box of its bounds.
+		if _prop_body == null:
+			_prop_body = PropColliders.body(self, "StreetProps")
 		var aabb: AABB = mesh.get_aabb()
-		var body := StaticBody3D.new()
-		body.transform = Transform3D(Basis.from_euler(Vector3(0.0, yaw, roll)), pos)
-		var cs := CollisionShape3D.new()
-		var box := BoxShape3D.new()
-		box.size = Vector3(maxf(aabb.size.x, 0.2), aabb.size.y, maxf(aabb.size.z, 0.2)) * scl * 0.9
-		cs.shape = box
-		cs.position = aabb.get_center() * scl
-		body.add_child(cs)
-		add_child(body)
+		var rot := Basis.from_euler(Vector3(0.0, yaw, roll))
+		if "lamp" in model:
+			var foot: Vector3 = pos + rot * Vector3(0, 0, 0)
+			PropColliders.add_box(_prop_body, Transform3D(rot, foot + rot * Vector3(0, aabb.end.y * scl * 0.5, 0)), Vector3(0.3, aabb.end.y * scl, 0.3))
+		else:
+			PropColliders.add_box(_prop_body, Transform3D(rot, pos + rot * (aabb.get_center() * scl)), Vector3(maxf(aabb.size.x, 0.2), aabb.size.y, maxf(aabb.size.z, 0.2)) * scl * 0.9)
 
 
 func _build_street_props() -> void:
@@ -376,6 +418,7 @@ func _build_street_props() -> void:
 	var walk_mid: float = half - CityLayout.ROAD_W * 0.5 - CityLayout.WALK_W * 0.5
 	for bx: int in range(-n, n + 1):
 		for bz: int in range(-n, n + 1):
+			await BuildBudget.check("city:street props")
 			var c := Vector2(bx, bz) * CityLayout.PITCH
 			if c.length() > layout.extent:
 				continue
@@ -444,6 +487,8 @@ func _build_skyline() -> void:
 	var rust_w: StandardMaterial3D = rust_mat.duplicate()
 	rust_w.uv1_world_triplanar = true
 	for i: int in 90:
+		if i % 10 == 9:
+			await BuildBudget.check("city:skyline")
 		var ang: float = TAU * i / 90.0 + _rng.randf_range(-0.03, 0.03)
 		var dist: float = r0 + _rng.randf_range(0.0, 170.0)
 		var w: float = _rng.randf_range(14.0, 28.0)

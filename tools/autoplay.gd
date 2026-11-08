@@ -3,8 +3,9 @@ extends InputSource
 ## Playtest bot that plays like a sensible human through the first couple of hours:
 ##   - cleans one focus hex at a time (the nearest unfinished one), bales near the Perfect band,
 ##     sells bales (until Haul Bugs take over), digs up detector parts on the way;
-##   - shops at the workbench: goal-unblocking upgrades first, then robots (buying missing parts at
-##     Haggle's when that is all that is missing), base levels, stations, research, cheap upgrades;
+##   - shops at the workbench: goal-unblocking upgrades first, then robots ([ui2] Parts + cubes;
+##     Parts for the next base level are kept unless the robot can't wait), base levels, stations,
+##     research, cheap upgrades;
 ##   - paints Command zones (cleaners to the frontier, planters/waterers to the garden hexes);
 ##   - picks up the seed tin, plants one hex at a time, waters by hand until Drips take over,
 ##     places Water Tanks, reads memory shards.
@@ -37,6 +38,10 @@ var _interact: bool = false
 var _dt: float = 0.0
 var _cooldown: float = 0.0
 var _stuck_timer: float = 0.0
+var _escape_side: float = 1.0  # [pace2]
+var _trap_pos: Vector3 = Vector3.INF
+var _trap_t: float = 0.0
+var _traps: int = 0
 var _last_pos := Vector3.ZERO
 var _report: Dictionary = {}
 var _log: Array = []
@@ -54,7 +59,6 @@ var _bench_trip: bool = false
 var _last_bench_t: float = -999.0
 var _refilling: bool = false
 var _goals_hooked: bool = false
-var _trade: TradePanel
 var _hub_level_seen: int = 1
 var _goal_times: Array[float] = []
 var _progress_times: Array[float] = []
@@ -84,9 +88,12 @@ func _init(p_world: Node) -> void:
 	_start_t = float(GameState.stats.get("time_played", 0.0))
 	Research.now_override = 1000.0
 	_hook(EventBus.cube_made, func(_i: Dictionary) -> void: _mark("first_cube_s"))
-	_hook(EventBus.cube_cashed, func(_v: BigNum, _p: Vector3) -> void: _mark("first_cashin_s"))
+	_hook(EventBus.cube_cashed, func(_v: BigNum, _p: Vector3) -> void:
+		_mark("first_cashin_s")
+		_pace_cashed())  # [pace]
 	_hook(EventBus.upgrade_bought, func(id: String, lv: int) -> void:
 		_mark("first_upgrade_s")
+		_pace_bought(id, lv)  # [pace]
 		_progress()
 		_log.append({"t": _now(), "event": "upgrade", "id": id, "level": lv}))
 	_hook(EventBus.hex_cleaned, func(h: int, _p: Vector3, _b: BigNum) -> void:
@@ -105,7 +112,7 @@ func _init(p_world: Node) -> void:
 	_hook(EventBus.research_completed, func(id: String) -> void:
 		_mark("first_research_s")
 		_event("research", {"id": id}))
-	_hook(EventBus.part_found, func(t: int, r: int) -> void: _event("part", {"type": t, "rarity": r, "stored": GameState.parts.size()}))
+	_hook(EventBus.part_found, func(t: int, r: int) -> void: _event("part", {"type": t, "rarity": r, "parts": snappedf(GameState.get_currency("parts").to_float(), 1.0)}))
 	world.tree_exiting.connect(write_report)
 	world.tree_exiting.connect(_unhook)  # [beat] rocket travel reloads the scene: drop the old bot's hooks
 
@@ -254,13 +261,31 @@ func update(delta: float) -> void:
 		_escape_t -= delta
 		_move = _escape_dir
 		return
-	if not (_do_tin(p) or _do_bench(p) or _do_shard(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_garden(p)):
+	if not (_do_tin(p) or _do_bench(p) or _do_shard(p) or _do_dump(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_garden(p)):
 		_do_clean(p)
 	_watch_stuck(p, delta)
 
 
 ## Wedged against something for a long time while trying to move: back off in a random direction.
 func _watch_stuck(p: Patch, delta: float) -> void:
+	# [pace2] Last resort: boxed in for 90 s (heaps or props all round): hop back to the yard, as a
+	# player would call for help, and log the spot so the world can be checked for traps.
+	if _move.length() >= 0.2:
+		if p.global_position.distance_to(_trap_pos) > 2.5:
+			_trap_pos = p.global_position
+			_trap_t = 0.0
+		else:
+			_trap_t += delta
+			if _trap_t > 90.0:
+				_trap_t = 0.0
+				_traps += 1
+				_report["bot_traps"] = _report.get("bot_traps", []) + [[snappedf(_now() / 60.0, 0.1), str(p.global_position.snapped(Vector3.ONE * 0.1)), _task]]
+				print("[bot-trap] t=%.1f task=%s pos=%s: back to the yard" % [_now() / 60.0, _task, str(p.global_position)])
+				p.global_position = BENCH_STAND + Vector3(0, 0.3, 1.5)
+				p.velocity = Vector3.ZERO
+				_target_piece = -1
+				_set_task("")
+				return
 	if _move.length() < 0.2:
 		_watch_t = 0.0
 		_watch_pos = p.global_position
@@ -272,9 +297,17 @@ func _watch_stuck(p: Patch, delta: float) -> void:
 	elif _watch_t > 6.0:
 		_watch_t = 0.0
 		_escapes += 1
-		var a: float = randf() * TAU
-		_escape_dir = Vector3(cos(a), 0, sin(a))
-		_escape_t = 2.5
+		if _target_piece >= 0 and DevHooks.has("bot-debug"):
+			var f: HexField = world.field
+			print("[bot-esc] t=%.1f task=%s pos=%s piece=%d at %s size=%d embed=%.2f" % [_now() / 60.0, _task, str(p.global_position), _target_piece, str(f.piece_pos[_target_piece]), Pace.piece_size(f, _target_piece), f.piece_embed[_target_piece] if _target_piece < f.piece_embed.size() else -1.0])
+		# [pace2] Sidestep around the obstacle (perpendicular to where we were heading, alternating
+		# sides, a little backwards) instead of a random direction that often points back into it.
+		var head: Vector3 = Vector3(_move.x, 0, _move.z).normalized()
+		_escape_side = -_escape_side
+		_escape_dir = (Vector3(head.z, 0, -head.x) * _escape_side - head * 0.35).normalized()
+		_escape_t = 1.6 + 0.4 * float(_escapes % 3)
+		if _target_piece >= 0 and _escapes % 2 == 0:
+			_ignore_piece[_target_piece] = true
 		_target_piece = -1
 
 
@@ -321,6 +354,9 @@ func _do_bench(p: Patch) -> bool:
 		return false
 	if p.global_position.distance_to(BENCH_POS) < 3.0:
 		_bench_trip = false
+		var cp: Camp = Camp.of(world)  # [camp] fix the broken bench first (the player presses E once)
+		if cp and not Camp.bench_ok():
+			cp.repair_now()
 		_manage(p)
 		return false
 	_set_task("bench")
@@ -408,6 +444,91 @@ func _do_deliver(p: Patch) -> bool:
 	_set_task("deliver")
 	_go(p, world.depot.global_position, 0.6)
 	return true
+
+
+## [pace] Before the Baler: roll to the trash bin (or the scale pad) when the chest is full, or
+## when there is nothing left to scoop.
+func _do_dump(p: Patch) -> bool:
+	if not Pace.dump_allowed() or p.compartment.is_empty() or not p.carried.is_empty():
+		return false
+	var full: bool = p.compartment.ratio(p.capacity()) >= 0.85
+	if not full and not (_task == "idle" or _task == "dump"):
+		return false
+	_set_task("dump")
+	var bin: Node3D = Pace.trash_bin(p.get_tree(), world.depot.global_position)
+	_go(p, bin.global_position if bin else world.depot.global_position, 0.6)
+	if _task_t > 60.0:
+		_set_task("")
+		return false
+	return true
+
+
+var _pace_cash_n: int = 0
+
+
+func _pace_cashed() -> void:
+	_pace_cash_n += 1
+	if _pace_cash_n == 2:
+		_report["pace_upgrades_at_2nd_bale"] = int(GameState.stats.get("upgrades_bought", 0))
+		_report["pace_affordable_at_2nd_bale"] = _pace_affordable()
+		_report["pace_cubes_at_2nd_bale"] = GameState.get_currency("cubes").to_float()
+
+
+## Distinct upgrades the purse could buy one level of right now.
+func _pace_affordable() -> int:
+	var n: int = 0
+	for id: String in Economy.upgrade_order:
+		if Economy.upgrade_defs[id].get("tab", "") == "patch" and Economy.is_unlocked(id) and not Economy.is_maxed(id) and GameState.can_afford("cubes", Economy.upgrade_cost(id)):
+			n += 1
+	return n
+
+
+func _pace_bought(id: String, lv: int) -> void:
+	match id:
+		Pace.UP_BALER:
+			_mark("baler_s")
+		Pace.UP_LIFT:
+			_mark("lift_%d_s" % lv)
+			_skip_hex.clear()  # heavy pieces are fair game now
+			_ignore_piece.clear()
+		"signal_finder":
+			_mark("signal_finder_s")
+		"auto_compactor":
+			_mark("auto_compactor_s")
+
+
+## The next slow-start unlock worth buying now ("" = none): the Baler first, then Lift Strength.
+func _pace_upgrade() -> String:
+	for id: String in [Pace.UP_BALER, Pace.UP_LIFT]:
+		if Economy.upgrade_defs.has(id) and Economy.is_unlocked(id) and not Economy.is_maxed(id):
+			if GameState.can_afford("cubes", Economy.upgrade_cost(id)):
+				return id
+			if id == Pace.UP_BALER:
+				return ""  # save for the Baler
+	return ""
+
+
+## [pace] The helper / automation research a planner works toward once the base allows it.
+func _pace_research_next() -> String:
+	for id: String in ["salvage_logic", "conveyor", "auto_baler"]:
+		if not Research.exists(id) or Research.has(id) or Research.is_active(id) or Research.is_queued(id):
+			continue
+		if Research.status(id) != "available":
+			return ""
+		var mb: int = int(Research.def(id).get("min_base_level", 0))
+		if int(GameState.world.get("hub_level", 1)) < mb:
+			return ""
+		return id
+	# [pace2] Once base 3 is up, the garden chain (Pollinator Survey = the garden taking off).
+	if int(GameState.world.get("hub_level", 1)) >= 3:
+		for id: String in PACE_GARDEN_CHAIN:
+			if not Research.exists(id) or Research.has(id) or Research.is_active(id) or Research.is_queued(id):
+				continue
+			return id if Research.status(id) == "available" else ""
+	return ""
+
+
+const PACE_GARDEN_CHAIN: Array[String] = ["soil_survey", "hardy_weeds", "wild_mint", "pollinator_survey"]
 
 
 func _drop_all(p: Patch) -> void:
@@ -624,7 +745,7 @@ func _do_clean(p: Patch) -> void:
 		p.set_tool(Patch.Tool.SCOOP)
 	var cap: float = p.capacity()
 	if p.compartment.ratio(cap) >= 0.9 and p.compartment.pending <= 0.0:
-		_cube = true
+		_cube = Pace.baler_unlocked()  # [pace] no Baler: _do_dump empties the chest at the bin
 		return
 	if p.compartment.fill + p.compartment.pending >= cap * 0.9:
 		return  # wait for in-flight pieces to land
@@ -634,7 +755,7 @@ func _do_clean(p: Patch) -> void:
 		return
 	if h < 0:
 		_set_task("idle")
-		if not p.compartment.is_empty():
+		if not p.compartment.is_empty() and Pace.baler_unlocked():  # [pace]
 			_cube = true
 		elif p.global_position.distance_to(WATER_STAND) > 4.0:
 			_go(p, WATER_STAND, 1.0)
@@ -700,7 +821,7 @@ func _nearest_piece_in(p: Patch, h: int) -> int:
 	var best: int = -1
 	var best_d: float = INF
 	for pid: int in field.hex_pieces[h]:
-		if field.piece_alive[pid] == 0 or _ignore_piece.has(pid):
+		if field.piece_alive[pid] == 0 or _ignore_piece.has(pid) or not Pace.can_lift(field, pid):  # [pace] Lift Strength
 			continue
 		var d: float = field.piece_pos[pid].distance_squared_to(p.global_position)
 		if d < best_d:
@@ -806,10 +927,10 @@ func _shopping_list() -> Dictionary:
 	var robot: String = _next_robot()
 	out["robot"] = robot
 	if robot != "":
-		var cost: float = world.fleet.build_cost(robot).to_float() + _missing_parts(robot) * TradePanel.BUY_PRICE[0]
+		var cost: float = world.fleet.build_cost(robot).to_float()
 		out["robot_cost"] = cost
 		out["reserve"] = cost
-		if cubes >= cost:
+		if cubes >= cost and GameState.can_afford("parts", world.fleet.build_parts(robot)):  # [ui2]
 			out["trip"] = true
 	var hub: Hub = world.hub
 	var nxt: Dictionary = hub.level_def(hub.level + 1)
@@ -833,6 +954,8 @@ func _shopping_list() -> Dictionary:
 		for id: String in ["conveyor", "auto_baler", "recycler"]:
 			if st.block_reason(id) == "":
 				out["trip"] = true
+	if _pace_upgrade() != "":
+		out["trip"] = true  # [pace]
 	var up: String = _best_upgrade(float(out["reserve"]), float(out.get("hub_save", 0.0)) <= 0.0)
 	if up != "" and (_goal_upgrade() != "" or Economy.upgrade_cost(up).to_float() * 3.0 < cubes):
 		out["trip"] = true
@@ -841,6 +964,13 @@ func _shopping_list() -> Dictionary:
 
 func _shop(want: Dictionary) -> void:
 	var fleet: Fleet = world.fleet
+	# 0) [onboard] The Signal Tower: the first tier right away (WREN), later tiers with the base level.
+	var tower: SignalTower = world.get_node_or_null("SignalTower") as SignalTower
+	if tower and SignalTower.tier() < mini(SignalTower.max_tier(), maxi(1, int(GameState.world.get("hub_level", 1)))) \
+			and GameState.can_afford_all(SignalTower.next_cost(), 1.5):
+		GameState.spend_all(SignalTower.next_cost())
+		tower.raise()
+		_event("signal_tower", {"tier": SignalTower.tier()})
 	# 1) Research ([money] cubes from the research fund, see _research_ok).
 	var guard: int = 0
 	var rid: String = _research_pick()
@@ -857,20 +987,33 @@ func _shop(want: Dictionary) -> void:
 	var gu: String = _goal_upgrade()
 	if gu != "":
 		Economy.buy_upgrade(gu, 1)
-	# 3) Robots (buy missing parts at Haggle's when that is all that is missing).
+	# 2b) [pace] The slow-start unlocks (Baler, Lift Strength) before anything else.
+	var pu: String = _pace_upgrade()
+	if pu != "":
+		Economy.buy_upgrade(pu, 1)
+	# 2c) [buddy] Glim's Lantern and Hex Scanner when affordable (1.5x margin: never starves the core loop).
+	for gid: String in ["light", "scan"]:
+		if Glim.block_reason(gid) == "" and GameState.can_afford_all(Glim.next_cost(gid), 1.5) and Glim.buy(gid):
+			var gd: GlimDirector = GlimDirector.of(world)
+			if gd:
+				gd.refresh()
+			_event("glim_" + gid, {"tier": Glim.tier(gid)})
+	# 3) Robots ([ui2] Parts + cubes; keep the next base level's Parts unless the robot can't wait).
 	var robot: String = str(want.get("robot", ""))
 	if robot != "":
-		_swap_spares(robot)
 		var hub_save: float = float(want.get("hub_save", 0.0))
 		var spare: float = GameState.get_currency("cubes").to_float() - float(want.get("robot_cost", 0.0))
-		var ok: bool = hub_save <= 0.0 or spare >= hub_save or _robot_goal(robot) or _essential(robot)
-		if ok:
-			_buy_parts_for(robot)
+		var must: bool = _robot_goal(robot) or _essential(robot)
+		var ok: bool = hub_save <= 0.0 or spare >= hub_save or must
+		ok = ok and (must or hub_save <= 0.0 or _mats_spare({"parts": fleet.build_parts(robot).to_float()}, false))
 		if ok and fleet.can_build(robot):
 			var at: Vector3 = world.upgrades.build_at.call() if world.upgrades.build_at.is_valid() else BENCH_STAND
 			fleet.build(robot, at)
 	for t: String in Economy.robot_order:
-		if fleet.count(t) > 0 and fleet.tier_requirements(t).get("ok", false):
+		var treq: Dictionary = fleet.tier_requirements(t)
+		var keep_cubes: float = float(want.get("hub_save", 0.0)) * 0.5  # [ui2] a tier keeps half the base's cubes
+		if fleet.count(t) > 0 and treq.get("ok", false) and _mats_spare({"parts": (treq["parts"] as BigNum).to_float()}, false) \
+				and GameState.get_currency("cubes").to_float() - (treq["cost"] as BigNum).to_float() >= keep_cubes:
 			if fleet.upgrade_tier(t):
 				_progress()
 				_event("tier", {"type": t, "tier": fleet.tier_of(t)})
@@ -890,6 +1033,8 @@ func _shop(want: Dictionary) -> void:
 			if st.block_reason(id) != "" or not _mats_spare(st.def(id).get("cost", {}), force):
 				continue
 			if st.build(id):
+				_mark("first_station_s")  # [pace]
+				_mark("first_%s_s" % id)
 				_progress()
 				_event("station", {"id": id})
 		# Recycle every 2nd bale while the next base level is short of materials, else none.
@@ -908,6 +1053,11 @@ func _shop(want: Dictionary) -> void:
 	var leak: bool = float(want.get("hub_save", 0.0)) <= 0.0
 	if robot == "" or fleet.can_build(robot):
 		reserve = float(want.get("hub_save", 0.0))
+	var prn: String = _pace_research_next()
+	if prn != "":
+		reserve = maxf(reserve, Research.cost(prn).to_float())  # [pace]
+	if not Pace.baler_unlocked() and Economy.is_unlocked(Pace.UP_BALER):
+		reserve = maxf(reserve, Economy.upgrade_cost(Pace.UP_BALER).to_float())  # [pace] a person saves for the Baler
 	guard = 0
 	while guard < 20:
 		guard += 1
@@ -922,7 +1072,10 @@ func _shop(want: Dictionary) -> void:
 		if world.hub.build_scrubber():
 			_progress()
 			_event("scrubber", {"n": world.hub.scrubbers})
-	# 9) Compost press when seeds run short.
+	# 9) Compost press when seeds run short. [camp2] It is a Hub build now: build it once offered.
+	if HubBuilds.listed(world, "composter") and str(HubBuilds.entry(world, "composter")["reason"]) == "":
+		if HubBuilds.build(world, "composter"):
+			_event("build", {"id": "composter"})
 	var cp: Composter = world.get("composter")
 	if cp and cp.active() and cp.level < cp.max_level() and GameState.get_currency("seeds").to_float() < 10.0:
 		if cp.upgrade_cost().to_float() <= GameState.get_currency("cubes").to_float() * 0.25:
@@ -975,6 +1128,39 @@ func _goal_upgrade() -> String:
 					var c: String = _best_upgrade(0.0)
 					if c != "":
 						return c
+	return ""
+
+
+## [pace2] Research an on-screen goal needs right now (a robot's blueprint, a "Research X" goal),
+## walking back through its prerequisites; "" when none can start.
+func _goal_research() -> String:
+	var gl: Goals = world.get("goals")
+	if gl == null:
+		return ""
+	for i: int in gl.current():
+		var g: Dictionary = gl.chain[i]
+		var want: String = ""
+		match str(g.get("type", "")):
+			"robot":
+				if not Research.robot_unlocked(str(g["key"])):
+					want = Research.robot_requirement(str(g["key"]))
+			"research":
+				want = str(g.get("key", ""))
+		var guard: int = 0
+		while want != "" and Research.exists(want) and not Research.has(want) and guard < 8:
+			guard += 1
+			if Research.is_active(want) or Research.is_queued(want):
+				break
+			if Research.status(want) == "available":
+				if Research.can_start(want):
+					return want
+				break
+			var nxt: String = ""
+			for r: String in Research.requires(want):
+				if not Research.has(r):
+					nxt = r
+					break
+			want = nxt
 	return ""
 
 
@@ -1126,57 +1312,13 @@ func _lake_dirty() -> bool:
 	return false
 
 
-func _missing_parts(type_id: String) -> int:
-	var n: int = 0
-	for r: Dictionary in world.fleet.recipe_status(type_id):
-		if not r["have"]:
-			n += 1
-	return n
-
-
-func _trade_panel() -> TradePanel:
-	if _trade == null:
-		_trade = TradePanel.new()
-		_trade.fleet = world.fleet
-		_trade.visible = false
-		world.add_child(_trade)
-	return _trade
-
-
-func _buy_parts_for(type_id: String) -> void:
-	var miss: Array[int] = []
-	for r: Dictionary in world.fleet.recipe_status(type_id):
-		if not r["have"]:
-			miss.append(Fleet.part_index(str(r["part_id"])))
-	if miss.is_empty():
-		return
-	var tp: TradePanel = _trade_panel()
-	tp.refresh()
-	var total: float = world.fleet.build_cost(type_id).to_float()
-	for t: int in miss:
-		total += tp._price(t, 0)
-	if GameState.get_currency("cubes").to_float() < total:
-		return
-	for t: int in miss:
-		tp._buy(t, 0, tp._price(t, 0))
-		_parts_bought += 1
-		_event("part_bought", {"type": t})
-
-
-## Three spare parts for one a recipe needs (Haggle's swap).
-func _swap_spares(robot: String) -> void:
-	var tp: TradePanel = _trade_panel()
-	for r: Dictionary in world.fleet.recipe_status(robot):
-		if not r["have"] and tp.swap_take().size() >= 3:
-			tp._swap(Fleet.part_index(str(r["part_id"])))
-			_event("part_swap", {"type": str(r["part_id"])})
-
-
 ## [money] Research costs cubes now. The bot treats the field-note cubes (the old Data income)
 ## as its research fund, like a player who spends the research share on research (so research and
 ## the base levels pace as they did with Data); it also starts research when it is rich.
 func _research_ok(id: String) -> bool:
 	var c: float = Research.cost(id).to_float()
+	if (id in ["salvage_logic", "conveyor", "auto_baler"] or id in PACE_GARDEN_CHAIN) and GameState.get_currency("cubes").to_float() >= c:
+		return true  # [pace] the helper and automation unlocks come before saving for base 3
 	var fund: float = float(GameState.stats.get("notes_cubes", 0.0)) + float(GameState.stats.get("wildlife_cubes", 0.0)) - float(GameState.stats.get("bot_research_spent", 0.0))
 	return c <= fund or GameState.get_currency("cubes").to_float() > maxf(c * 4.0, _research_reserve())
 
@@ -1184,6 +1326,9 @@ func _research_ok(id: String) -> bool:
 ## Cubes the bot keeps for the next base level / robot before dipping into them for research.
 func _research_reserve() -> float:
 	var nxt: Dictionary = world.hub.level_def(world.hub.level + 1) if world.get("hub") != null else {}
+	if world.get("hub") != null and int(world.hub.level) >= 2:
+		# [pace2] mid game: a player researches with spare cubes instead of hoarding 1.5x the next base
+		return float(nxt.get("cost", {}).get("cubes", 0.0)) * 0.5 + 1000.0
 	return float(nxt.get("cost", {}).get("cubes", 0.0)) * 1.5 + 2000.0
 
 
@@ -1191,6 +1336,12 @@ func _research_pick() -> String:
 	if not Research.active().is_empty() and Research.queue().size() >= Research.max_queue():
 		return ""
 	var saving: bool = false
+	var gr: String = _goal_research()  # [pace2] the goal on screen first
+	if gr != "":
+		return gr
+	var need: String = _pace_research_next()  # [pace] save for the helper / automation unlock
+	if need != "":
+		return need if _research_ok(need) and Research.can_start(need) else ""
 	var prio: Array[String] = AutoplayCampaign.research_first(world)
 	prio.append_array(RESEARCH_PRIORITY)
 	for id: String in prio:
@@ -1363,7 +1514,7 @@ func _snapshot() -> void:
 	var ngoals: int = world.goals.done_count() if world.get("goals") else 0
 	_log.append({"t": _now(), "pos": [snappedf(world.patch.global_position.x, 0.1), snappedf(world.patch.global_position.z, 0.1)], "escapes": _escapes, "remote_shops": _remote_shops, "cubes": snappedf(GameState.get_currency("cubes").to_float(), 1.0),
 		"rate": snappedf(GameState.income_rate(), 0.01), "earned": snappedf(BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float(), 1.0), "parts_cur": snappedf(GameState.get_currency("parts").to_float(), 0.1),  # [money]
-		"seeds": snappedf(GameState.get_currency("seeds").to_float(), 0.1), "parts": GameState.parts.size(),
+		"seeds": snappedf(GameState.get_currency("seeds").to_float(), 0.1), "parts": snappedf(GameState.get_currency("parts").to_float(), 1.0),
 		"hexes": world.field.cleaned_count, "hex_levels": lv, "robots": types, "hub": int(world.hub.level),
 		"task": _task, "research": Research.active_id(), "upgrades": int(GameState.stats.get("upgrades_bought", 0)),
 		"bots": _robot_health(), "goals": ngoals, "stats": _stat_pick(["research_done", "plants_bloomed", "garden_stipend", "air_filtered", "robots_built", "robot_bales", "bales_recycled", "plants_planted"])})

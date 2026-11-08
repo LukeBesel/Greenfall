@@ -239,8 +239,7 @@ func test_build_block_reason_shows_research_lock() -> void:
 	var f := _fleet(null)
 	GameState.world["hub_level"] = 1
 	GameState.currencies["cubes"] = BigNum.from_float(1.0e9)
-	for k: int in 8:
-		GameState.parts.append({"type": k, "rarity": 0})
+	GameState.currencies["parts"] = BigNum.from_float(1.0e6)  # [ui2] builds cost Parts
 	var why: String = f.build_block_reason("drip")
 	assert_string_starts_with(why, "Locked")
 	assert_false(f.can_build("drip"))
@@ -249,32 +248,7 @@ func test_build_block_reason_shows_research_lock() -> void:
 	assert_true(f.can_build("drip"))
 
 
-# --- #7 Control Core choice ----------------------------------------------------------------
-
-func test_scoopie_build_spares_the_tier_up_core() -> void:
-	var f := _fleet(null)
-	var core: int = Fleet.part_index("core")
-	var need: int = int(Economy.robot_tiers[1]["requires_core_rarity"])
-	GameState.parts.append({"type": core, "rarity": need})  # the Mk II core
-	GameState.parts.append({"type": core, "rarity": 0})
-	var pick: Dictionary = {}
-	for r: Dictionary in f.recipe_status("scoopie"):
-		if r["part_id"] == "core":
-			pick = r
-	assert_eq(int(pick["rarity"]), 0, "the spare core goes into the robot")
-	# Only tier-up cores left: use the weakest one.
-	GameState.parts = [{"type": core, "rarity": need + 1}, {"type": core, "rarity": need}]
-	for r: Dictionary in f.recipe_status("scoopie"):
-		if r["part_id"] == "core":
-			pick = r
-	assert_eq(int(pick["rarity"]), need)
-	# Non-core slots still take the best part.
-	var chassis: int = Fleet.part_index("chassis")
-	GameState.parts = [{"type": chassis, "rarity": 0}, {"type": chassis, "rarity": 3}]
-	for r: Dictionary in f.recipe_status("scoopie"):
-		if r["part_id"] == "chassis":
-			pick = r
-	assert_eq(int(pick["rarity"]), 3)
+# --- #7 Control Core choice: [ui2] gone (builds and Mk tiers cost Parts, tests/test_ui2.gd) ---
 
 
 # --- #19 Multibot crew caps -----------------------------------------------------------------

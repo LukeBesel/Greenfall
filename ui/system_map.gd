@@ -2,22 +2,44 @@ class_name SystemMap
 extends CanvasLayer
 ## [home] The solar-system hologram, the hero UI for travel (Homeward, systems/homeward.gd): a 3D
 ## orrery of the Verdance system in its own World3D. Two suns at the centre (Hearth and its
-## orange companion Ember, data/solar_system.json) circle each other; thin glowing orbit lines;
-## the five planets in their looks with a restoration ring, their name, % and the drive they need;
-## a parallax starfield. Select a planet (D-pad / list / click) and the camera glides in to it.
-## On the planet Lumi is on, "Choose a district" zooms all the way in and hands over to the survey
-## globe (ui/globe_view.gd: hubs and districts); closing the globe zooms back out to the system.
-## Elsewhere, Launch flies the rocket there (automation/rocket.gd -> HomewardDirector). Left
-## cards: system restoration, relics and the rocket's interplanetary drive (build the next tier).
-## Opens from the survey globe (M > Solar system), the pause menu or --open=system. Also the view
-## of an interplanetary flight (fly()). Pad: D-pad / stick move focus, A presses, B / Esc backs out.
+## orange companion Ember, data/solar_system.json) circle each other; thin orbit lines; each planet
+## a detailed PlanetGlobe (ui/planet_globe.gd); a parallax starfield.
+## [sysmap2] A clean view: no text in the 3D scene. Only discovered planets show (they are found in
+## campaign order, Homeward.discovered); the one Lumi is on wears a soft gold ring. One small panel
+## at the right edge describes the selected planet (status, restoration, launch / build the drive it
+## needs) with a one-line system summary; the orrery is framed into the space left of it with an
+## off-axis projection, so no planet ever passes under the panel.
+## Select a planet (Left/Right, click) and Accept / click zooms in to it. On the planet Lumi is on,
+## "Choose a district" zooms all the way in and hands over to the survey globe (ui/globe_view.gd:
+## hubs and districts); closing the globe zooms back out to the system. Elsewhere, Launch flies the
+## rocket there (automation/rocket.gd -> HomewardDirector). Opens from the survey globe (M > Solar
+## system), the pause menu or --open=system. Also the view of an interplanetary flight (fly()).
+## Pad: Left/Right pick a planet, A zooms in (then presses the panel button), B / Esc backs out.
 
 signal closed
 
 const HOLO := Color(0.45, 0.88, 1.0)
 const GOLD := Color(1.0, 0.78, 0.36)
 const AU_UNITS: float = 8.0
-const HOME_CAM := Vector3(0, 33.0, 44.0)
+const FOV: float = 42.0
+const NEAR: float = 0.05
+## [sysmap] Map radius per planet, and how far its rings reach (in radii: Ochre's dust, Rime's ice
+## spikes, Anvil's embers); orbits are spaced so no ring ever sweeps through a neighbouring planet.
+const GLOBE_R: Dictionary = {"verdance": 1.95, "ochre": 1.5, "tidewell": 2.0, "anvil": 1.7, "rime": 1.45}
+const RING_REACH: Dictionary = {"ochre": 2.6, "rime": 2.45, "anvil": 2.2}
+const SUN_ZONE: float = 4.4
+const ORBIT_GAP: float = 0.3
+## Overview camera elevation (radians): low and wide. Its distance is fitted to the discovered
+## planets, so the view starts close around Verdance and widens as the system is found.
+const OVERVIEW_ELEV: float = 0.45
+## The selected planet swells a little in the overview so its silhouette and rings read.
+const SELECT_GROW: float = 1.3
+## Zoomed framing: the globe fills this share of the screen height, its rings at most RING_FILL.
+const GLOBE_FILL: float = 0.55
+const RING_FILL: float = 0.8
+## The info panel (canvas px) and the margin kept around it and the screen edge.
+const PANEL_W: float = 300.0
+const MARGIN: float = 24.0
 
 var world: Node
 var is_open: bool = false
@@ -28,17 +50,17 @@ var _vp: SubViewport
 var _cam: Camera3D
 var _sys: Node3D
 var _planets: Array[Node3D] = []
-var _rings: Array[MeshInstance3D] = []
-var _labels: Array[Label3D] = []
+var _globes: Array[PlanetGlobe] = []  # null for planets not discovered yet
+var _orbit_rs: Array[float] = []
+var _resto_t: float = 0.0
 var _orbits: Array[MeshInstance3D] = []
 var _orbit_mats: Array[StandardMaterial3D] = []
 var _sun_a: Node3D
 var _sun_b: Node3D
 var _marker: MeshInstance3D
+var _ship: ShipModel  # [ship] Lumi's ship at its current tier
 var _cards: Control
-var _left: VBoxContainer
-var _right: VBoxContainer
-var _list: VBoxContainer
+var _panel: PanelContainer
 var _first: Control
 var _fade: ColorRect
 var _fly_from: int = -1
@@ -47,13 +69,18 @@ var _fly_t: float = -1.0
 var _fly_dur: float = 3.0
 var _locked: bool = false
 var _t: float = 0.0
-## Camera framing: eased toward the target each frame (zoom in on a planet, back out).
+## Camera framing: eased toward the target each frame (zoom in on a planet, back out). The frustum
+## offset (off-axis shift, near-plane units) eases with it.
 var _cam_from := Transform3D()
 var _cam_to := Transform3D()
+var _off_from := Vector2.ZERO
+var _off_to := Vector2.ZERO
 var _cam_k: float = 1.0
 var _cam_dur: float = 1.2
 var _zoom_planet: int = -1
 var _handing_over: bool = false
+var _ov_xf := Transform3D()
+var _ov_off := Vector2.ZERO
 
 
 func _ready() -> void:
@@ -79,11 +106,13 @@ func open_map(from_planet: bool = false) -> void:
 	_root.modulate.a = 0.0
 	create_tween().tween_property(_root, "modulate:a", 1.0, 0.35)
 	if from_planet:  # back from the globe: start close on the planet, then pull out
-		_cam.global_transform = _planet_frame(selected, 1.6)
-		_frame(_overview(), 1.6)
+		_cam.global_transform = _planet_frame(selected, 1.6 * _globe_r(selected))
+		_cam.frustum_offset = _zoom_off()
+		_frame(_ov_xf, _ov_off, 1.6)
 	else:
-		_cam.global_transform = Transform3D(Basis(), HOME_CAM * 1.35).looking_at(Vector3.ZERO, Vector3.UP)
-		_frame(_overview(), 1.4)
+		_cam.global_transform = Transform3D(Basis(), _ov_xf.origin * 1.35).looking_at(Vector3.ZERO, Vector3.UP)
+		_cam.frustum_offset = _ov_off
+		_frame(_ov_xf, _ov_off, 1.4)
 	if not _locked:
 		get_tree().paused = true
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -165,8 +194,10 @@ func _build() -> void:
 	we.environment = env
 	_vp.add_child(we)
 	_cam = Camera3D.new()
-	_cam.fov = 42.0
-	_cam.near = 0.05
+	_cam.fov = FOV  # PlanetGlobe's LOD reads it
+	_cam.projection = Camera3D.PROJECTION_FRUSTUM  # off-axis: the orrery sits left of the panel
+	_cam.size = 2.0 * NEAR * tan(deg_to_rad(FOV) * 0.5)
+	_cam.near = NEAR
 	_cam.far = 900.0
 	_vp.add_child(_cam)
 	_cam.current = true
@@ -175,17 +206,24 @@ func _build() -> void:
 	_build_stars()
 	_build_suns()
 	_planets.clear()
-	_rings.clear()
-	_labels.clear()
+	_globes.clear()
 	_orbits.clear()
 	_orbit_mats.clear()
+	_layout_orbits()
 	for k: int in Homeward.planets().size():
 		_build_planet(k)
+	_fit_overview()
 	_marker = MeshInstance3D.new()
 	_marker.mesh = ProcMesh.sphere(0.16, 12, 6)
 	_marker.material_override = Mats.lamp(Color(1.0, 0.95, 0.7), 4.0)
 	_marker.visible = false
 	_sys.add_child(_marker)
+	_ship = ShipModel.for_display()  # [ship] parked by the current planet, flies the trips
+	_ship.scale = Vector3.ONE * 0.045 * ShipTiers.scale_of(_ship.tier)
+	_sys.add_child(_ship)
+	for n: Node in _ship.find_children("*", "Label3D", true, false):  # [sysmap2] hull lettering is unreadable at map scale and the map has no 3D text
+		n.get_parent().remove_child(n)
+		n.free()
 	_cards = Control.new()
 	_cards.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_cards.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -204,6 +242,7 @@ func _teardown() -> void:
 	_svc = null
 	_vp = null
 	_first = null
+	_panel = null
 
 
 ## Two shells of tiny star points at different depths (they slide past each other: parallax).
@@ -257,13 +296,7 @@ func _sun(col: Color, r: float, energy: float) -> Node3D:
 	hm.albedo_color = Color(col.r, col.g, col.b, 0.55)
 	halo.material_override = hm
 	halo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	n.add_child(halo)
-	var l := OmniLight3D.new()
-	l.light_color = col
-	l.light_energy = energy * 0.9
-	l.omni_range = 70.0
-	l.omni_attenuation = 0.6
-	n.add_child(l)
+	n.add_child(halo)  # no OmniLight: the globes light themselves from these nodes
 	_sys.add_child(n)
 	return n
 
@@ -288,11 +321,60 @@ func _planet_color(k: int) -> Color:
 
 
 func _orbit_r(k: int) -> float:
-	return SolarSystem.orbit_au(str(Homeward.planet_def(k).get("id", "verdance"))) * AU_UNITS
+	if k >= 0 and k < _orbit_rs.size():
+		return _orbit_rs[k]
+	return SolarSystem.orbit_au(_pid_of(k)) * AU_UNITS
+
+
+func _pid_of(k: int) -> String:
+	return str(Homeward.planet_def(k).get("id", "verdance"))
+
+
+## The globe radius of planet k in map units.
+func _globe_r(k: int) -> float:
+	var id: String = _pid_of(k)
+	if GLOBE_R.has(id):
+		return float(GLOBE_R[id])
+	return 0.85 + float(Homeward.planet_def(k).get("orbit", 1.0)) * 0.1
+
+
+## Outer edge of the planet's own rings (or its atmosphere halo when it has none).
+func _ring_out(k: int) -> float:
+	return _globe_r(k) * float(RING_REACH.get(_pid_of(k), 1.15))
+
+
+## Everything drawn around planet k: rings plus the gold "Lumi is here" ring just outside them.
+func _reach(k: int) -> float:
+	return _ring_out(k) + 0.12
+
+
+## Orbits in AU order, each lane wide enough that no ring reaches a neighbouring globe. Laid out
+## for all five planets, so a planet never moves when another is discovered.
+func _layout_orbits() -> void:
+	var n: int = Homeward.planets().size()
+	_orbit_rs.resize(n)
+	var r: float = SUN_ZONE
+	var prev: int = -1
+	for k: int in _au_order():
+		if prev < 0:
+			r += _reach(k)
+		else:
+			r += maxf(_reach(prev) + _globe_r(k), _reach(k) + _globe_r(prev)) + ORBIT_GAP
+		_orbit_rs[k] = r
+		prev = k
+
+
+## Planet indices from the suns outward.
+func _au_order() -> Array[int]:
+	var order: Array[int] = []
+	for k: int in Homeward.planets().size():
+		order.append(k)
+	order.sort_custom(func(a: int, b: int) -> bool: return SolarSystem.orbit_au(_pid_of(a)) < SolarSystem.orbit_au(_pid_of(b)))
+	return order
 
 
 func _orbit_angle(k: int) -> float:
-	var au: float = SolarSystem.orbit_au(str(Homeward.planet_def(k).get("id", "verdance")))
+	var au: float = SolarSystem.orbit_au(_pid_of(k))
 	return 0.6 + k * 2.4 + _t * 0.05 / pow(au, 1.5)
 
 
@@ -304,12 +386,8 @@ func _planet_pos(k: int) -> Vector3:
 
 func _build_planet(k: int) -> void:
 	var d: Dictionary = Homeward.planet_def(k)
-	var col: Color = _planet_color(k)
-	var pct: float = Homeward.stored_pct(k)
-	var here: bool = k == Homeward.current_planet()
-	var open: bool = here or Homeward.can_reach(k) or Homeward.world_of(k) >= 0
-	var radius: float = 0.85 + float(d.get("orbit", 1.0)) * 0.1
-	# Orbit line.
+	var known: bool = Homeward.discovered(k)
+	# Orbit line (only for discovered planets: an empty lane would give the next one away).
 	var im := ImmediateMesh.new()
 	im.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
 	var r: float = _orbit_r(k)
@@ -321,81 +399,45 @@ func _build_planet(k: int) -> void:
 	om.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	om.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	om.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
-	om.albedo_color = Color(HOLO, 0.22)
+	om.albedo_color = Color(HOLO, 0.16)
 	var orbit := MeshInstance3D.new()
 	orbit.mesh = im
 	orbit.material_override = om
 	orbit.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	orbit.visible = known
 	_sys.add_child(orbit)
 	_orbits.append(orbit)
 	_orbit_mats.append(om)
-	# The planet: its colour, greener as it is restored, dusty grey while unreached.
 	var p := Node3D.new()
+	p.visible = known
 	_sys.add_child(p)
-	var body := MeshInstance3D.new()
-	body.mesh = ProcMesh.sphere(radius, 40, 20)
-	var m := ShaderMaterial.new()
-	m.shader = preload("res://art/shaders/space_planet.gdshader")
-	m.set_shader_parameter("seed", 3.7 + k * 5.3)
-	m.set_shader_parameter("green", pct * 0.9)
-	var tint := StandardMaterial3D.new()
-	tint.albedo_color = col.lerp(Color(0.35, 0.34, 0.33), 0.0 if open else 0.55)
-	tint.roughness = 0.85
-	tint.emission_enabled = true
-	tint.emission = tint.albedo_color
-	tint.emission_energy_multiplier = 0.04
-	body.material_override = m if k == 0 else tint
-	p.add_child(body)
-	# Thin atmosphere rim.
-	var atmo := MeshInstance3D.new()
-	atmo.mesh = ProcMesh.sphere(radius * 1.08, 40, 20)
-	var am := ShaderMaterial.new()
-	am.shader = _rim_shader()
-	am.set_shader_parameter("tint", col.lerp(Color(0.6, 0.9, 1.0), 0.5))
-	atmo.material_override = am
-	atmo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	p.add_child(atmo)
-	# Restoration ring: a dim full ring with the restored share lit green.
-	var ring := MeshInstance3D.new()
-	ring.mesh = _arc_mesh(radius * 1.65, radius * 1.75, pct)
-	ring.material_override = Mats.lamp(Color(0.55, 1.0, 0.6), 2.0)
-	ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	p.add_child(ring)
-	var back := MeshInstance3D.new()
-	back.mesh = _arc_mesh(radius * 1.65, radius * 1.75, 1.0)
-	var bm := StandardMaterial3D.new()
-	bm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	bm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	bm.albedo_color = Color(HOLO, 0.12)
-	bm.cull_mode = BaseMaterial3D.CULL_DISABLED
-	back.material_override = bm
-	back.position.y = -0.01
-	p.add_child(back)
-	_rings.append(ring)
-	# Label: name, %, and the drive it needs.
-	var lab := Label3D.new()
-	lab.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	lab.fixed_size = true
-	lab.pixel_size = 0.0008
-	lab.font_size = 26
-	lab.outline_size = 7
-	lab.outline_modulate = Color(0, 0.02, 0.05, 0.8)
-	lab.no_depth_test = true
-	lab.position = Vector3(0, radius * 2.0 + 0.3, 0)
-	var tag: String
-	if here:
-		tag = tr("you are here")
-	elif Homeward.restored(k):
-		tag = tr("restored")
-	elif open:
-		tag = "%d%%" % int(floor(pct * 100.0 + 0.0001))
-	else:
-		tag = tr("needs %s") % tr(str(Homeward.drive_def(int(d.get("nav", 5))).get("name", "")))
-	lab.text = "%s\n%s" % [Homeward.planet_name(k).to_upper(), tag]
-	lab.modulate = Color.WHITE if open else Color(0.75, 0.8, 0.85, 0.8)
-	p.add_child(lab)
-	_labels.append(lab)
 	_planets.append(p)
+	if not known:
+		_globes.append(null)
+		return
+	# The planet: a detailed PlanetGlobe (relief, clouds, rings, restoration greening), lit from
+	# the map's two sun nodes.
+	var g := PlanetGlobe.new()
+	g.radius = _globe_r(k)
+	g.max_lod = 2 if Settings.quality >= 1 else 1
+	p.add_child(g)
+	g.setup(str(d.get("id", "")), Homeward.stored_pct(k), _planet_color(k))
+	g.track_suns(_sun_a, _sun_b)
+	_globes.append(g)
+	if k == Homeward.current_planet():  # where Lumi is: a soft gold ring, no text
+		var ring := MeshInstance3D.new()
+		var rr: float = _ring_out(k) + 0.04
+		ring.mesh = _arc_mesh(rr, rr + 0.07, 1.0)
+		var rm := StandardMaterial3D.new()
+		rm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		rm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		rm.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+		rm.cull_mode = BaseMaterial3D.CULL_DISABLED
+		rm.albedo_color = Color(GOLD, 0.45)
+		ring.material_override = rm
+		ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		ring.name = "HereRing"
+		p.add_child(ring)
 
 
 ## A bright core with a soft, thin halo (stars, sun halos).
@@ -411,20 +453,6 @@ static func _glow_tex() -> GradientTexture2D:
 	grad.colors = PackedColorArray([Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0.22), Color(1, 1, 1, 0.05), Color(1, 1, 1, 0)])
 	g.gradient = grad
 	return g
-
-
-static func _rim_shader() -> Shader:
-	var s := Shader.new()
-	s.code = """shader_type spatial;
-render_mode unshaded, blend_add, depth_draw_never, cull_back;
-uniform vec4 tint : source_color = vec4(0.6, 0.9, 1.0, 1.0);
-void fragment() {
-	float f = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), 3.0);
-	ALBEDO = tint.rgb * f * 1.4;
-	ALPHA = f;
-}
-"""
-	return s
 
 
 ## A flat ring segment from 12 o'clock clockwise, `frac` of the way round.
@@ -448,8 +476,81 @@ static func _arc_mesh(r0: float, r1: float, frac: float) -> ArrayMesh:
 
 # --- Camera ------------------------------------------------------------------------------------
 
-func _overview() -> Transform3D:
-	return Transform3D(Basis(), HOME_CAM).looking_at(Vector3(0, -2.0, 0), Vector3.UP)
+## The free screen area for the orrery, in half-height units around the screen centre (x right,
+## y up): everything left of the panel, inside the margin.
+func free_rect() -> Rect2:
+	var vs: Vector2 = _root.get_viewport_rect().size if _root and _root.is_inside_tree() else Vector2(1280, 720)
+	vs = Vector2(maxf(vs.x, 1.0), maxf(vs.y, 1.0))
+	var h: float = vs.y * 0.5
+	var x0: float = (MARGIN - vs.x * 0.5) / h
+	var x1: float = (vs.x - PANEL_W - MARGIN * 2.0 - vs.x * 0.5) / h
+	var y: float = (h - MARGIN) / h
+	return Rect2(x0, -y, x1 - x0, 2.0 * y)
+
+
+## Frustum offset (near-plane units) that moves view point `from` (half-height units) to `to`.
+func _off_for(from: Vector2, to: Vector2) -> Vector2:
+	return (from - to) * NEAR * tan(deg_to_rad(FOV) * 0.5)
+
+
+## Overview: a fixed low elevation, pulled back until every discovered planet (with its rings,
+## swollen when selected) and the suns fit the free area, then shifted to centre there.
+func _fit_overview() -> void:
+	var known: Array[int] = []
+	for k: int in _planets.size():
+		if Homeward.discovered(k):
+			known.append(k)
+	var e: float = SUN_ZONE
+	for k: int in known:
+		e = maxf(e, _orbit_r(k) + _reach(k))
+	var fr: Rect2 = free_rect()
+	var lo: float = 0.5
+	var hi: float = 8.0
+	for _i: int in 26:
+		var m: float = (lo + hi) * 0.5
+		var bx: Rect2 = _overview_box(_overview_at(e * m), known)
+		if bx.size.x <= fr.size.x and bx.size.y <= fr.size.y:
+			hi = m
+		else:
+			lo = m
+	_ov_xf = _overview_at(e * hi)
+	_ov_off = _off_for(_overview_box(_ov_xf, known).get_center(), fr.get_center())
+
+
+func _overview_at(dist: float) -> Transform3D:
+	var eye := Vector3(0.0, sin(OVERVIEW_ELEV), cos(OVERVIEW_ELEV)) * dist
+	return Transform3D(Basis(), eye).looking_at(Vector3.ZERO, Vector3.UP)
+
+
+## Screen box (half-height units, y up, no offset) of the suns and the given planets over their
+## whole orbits.
+func _overview_box(xf: Transform3D, ks: Array[int]) -> Rect2:
+	var t: float = tan(deg_to_rad(FOV) * 0.5)
+	var inv: Transform3D = xf.affine_inverse()
+	var lo := Vector2(INF, INF)
+	var hi := Vector2(-INF, -INF)
+	var pts: Array = []
+	for i: int in 16:
+		var a: float = TAU * i / 16.0
+		pts.append([Vector3(cos(a), 0.0, sin(a)) * SUN_ZONE * 0.75, 0.6])
+	for k: int in ks:
+		var rr: float = _reach(k) * SELECT_GROW
+		for i: int in 36:
+			var a: float = TAU * i / 36.0
+			pts.append([Vector3(cos(a), 0.0, sin(a)) * _orbit_r(k), rr])
+	for pr: Array in pts:
+		var v: Vector3 = inv * (pr[0] as Vector3)
+		var z: float = maxf(-v.z, 0.01)
+		var c := Vector2(v.x / z / t, v.y / z / t)
+		var rad: float = float(pr[1]) / z / t
+		lo = Vector2(minf(lo.x, c.x - rad), minf(lo.y, c.y - rad))
+		hi = Vector2(maxf(hi.x, c.x + rad), maxf(hi.y, c.y + rad))
+	return Rect2(lo, hi - lo)
+
+
+## The offset that centres a zoomed planet (on the view axis) in the free area.
+func _zoom_off() -> Vector2:
+	return _off_for(Vector2.ZERO, free_rect().get_center())
 
 
 ## Close on planet k (dist in planet radii-ish units), from the sun side so it is lit.
@@ -461,19 +562,34 @@ func _planet_frame(k: int, dist: float) -> Transform3D:
 	return Transform3D(Basis(), eye).looking_at(p + Vector3(0, 0.1, 0), Vector3.UP)
 
 
-func _frame(to: Transform3D, dur: float) -> void:
+## Zoomed-in distance for planet k: the globe fills GLOBE_FILL of the screen height and its rings
+## at most RING_FILL, so the relief, clouds and rings read (a 15 px globe is a dot).
+func _zoom_dist(k: int) -> float:
+	var t: float = tan(deg_to_rad(FOV) * 0.5)
+	var eye: float = maxf(_globe_r(k) / (t * GLOBE_FILL), _ring_out(k) / (t * RING_FILL))
+	return eye / 1.52  # _planet_frame's offset is ~1.52 x dist long
+
+
+func _frame(to: Transform3D, off: Vector2, dur: float) -> void:
 	_cam_from = _cam.global_transform if _cam else to
+	_off_from = _cam.frustum_offset if _cam else off
 	_cam_to = to
+	_off_to = off
 	_cam_k = 0.0
 	_cam_dur = maxf(0.05, dur)
 
 
 func _zoom_to(k: int) -> void:
 	_zoom_planet = k
-	_frame(_planet_frame(k, 6.5), 1.3)
+	_frame(_planet_frame(k, _zoom_dist(k)), _zoom_off(), 1.3)
 
 
-# --- Cards -------------------------------------------------------------------------------------
+func _unzoom() -> void:
+	_zoom_planet = -1
+	_frame(_ov_xf, _ov_off, 1.0)
+
+
+# --- The info panel ----------------------------------------------------------------------------
 
 func _rebuild_cards() -> void:
 	if _cards == null:
@@ -481,51 +597,21 @@ func _rebuild_cards() -> void:
 	for c: Node in _cards.get_children():
 		c.queue_free()
 	_first = null
-	_left = VBoxContainer.new()
-	_left.add_theme_constant_override("separation", 10)
-	_left.position = Vector2(28, 28)
-	_cards.add_child(_left)
-	_build_left()
-	_right = VBoxContainer.new()
-	_right.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	_right.offset_right = -28
-	_right.offset_top = 28
-	_right.grow_horizontal = Control.GROW_DIRECTION_BEGIN
-	_right.add_theme_constant_override("separation", 10)
-	_cards.add_child(_right)
-	_build_right()
-	var hint := UITheme.label(tr("In flight") if _locked else tr("D-pad / click  pick a planet      Enter / A  choose      Esc / B  back"), 13, Color(HOLO, 0.7))
-	hint.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
-	hint.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	hint.offset_top = -40
-	hint.offset_bottom = -18
-	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_cards.add_child(hint)
-
-
-func _card(title: String, subtitle: String, width: float) -> Array:
-	var pc := PanelContainer.new()
-	var sb := UITheme.box(Color(0.03, 0.12, 0.17, 0.62), Color(HOLO, 0.4), 1, 2, 14)
-	sb.shadow_color = Color(HOLO, 0.08)
-	sb.shadow_size = 8
-	pc.add_theme_stylebox_override("panel", sb)
-	pc.custom_minimum_size = Vector2(width, 0)
-	var body := VBoxContainer.new()
-	body.add_theme_constant_override("separation", 6)
-	pc.add_child(body)
-	body.add_child(UITheme.label(subtitle, 11, Color(HOLO, 0.7)))
-	body.add_child(UITheme.label(title.to_upper(), 20, HOLO.lerp(Color.WHITE, 0.5)))
-	var line := ColorRect.new()
-	line.color = Color(HOLO, 0.45)
-	line.custom_minimum_size = Vector2(0, 1)
-	body.add_child(line)
-	return [pc, body]
+	_panel = _info_panel()
+	_panel.set_anchors_preset(Control.PRESET_CENTER_RIGHT)
+	_panel.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	_panel.grow_vertical = Control.GROW_DIRECTION_BOTH
+	_panel.offset_right = -MARGIN
+	_panel.offset_left = -MARGIN - PANEL_W
+	_cards.add_child(_panel)
+	if _first and is_open and not _locked:
+		_first.call_deferred("grab_focus")
 
 
 func _bar(v: float, col: Color) -> ProgressBar:
 	var b := ProgressBar.new()
 	b.show_percentage = false
-	b.custom_minimum_size = Vector2(0, 6)
+	b.custom_minimum_size = Vector2(0, 5)
 	b.max_value = 1.0
 	b.value = v
 	b.add_theme_stylebox_override("fill", UITheme.box(col, Color(0, 0, 0, 0), 0, 3, 0))
@@ -543,151 +629,124 @@ func _button(b: Button) -> void:
 	b.add_theme_color_override("font_hover_color", Color.WHITE)
 	b.add_theme_color_override("font_focus_color", Color.WHITE)
 	b.add_theme_color_override("font_disabled_color", Color(HOLO, 0.4))
+	b.clip_text = true
 
 
-func _build_left() -> void:
-	var c: Array = _card(tr("Verdance system"), tr("two suns  ·  five worlds  ·  system restoration"), 300)
-	_left.add_child(c[0])
-	var b: VBoxContainer = c[1]
-	var sp: float = Homeward.system_pct()
-	b.add_child(UITheme.label("%d %%" % int(floor(sp * 100.0 + 0.0001)), 38, HOLO.lerp(Color.WHITE, 0.7)))
-	b.add_child(UITheme.label(tr("restored  ·  %d of %d planets") % [int(GameState.stats.get("planets_restored", 0)), Homeward.planets().size()], 13, UITheme.MUTED))
-	b.add_child(_bar(sp, Color(0.55, 1.0, 0.6)))
-	var rel := HBoxContainer.new()
-	rel.add_theme_constant_override("separation", 6)
-	b.add_child(rel)
-	rel.add_child(UITheme.label(tr("Relics"), 13, UITheme.MUTED))
-	for k: int in range(1, Homeward.planets().size()):
-		var rid: String = str(Homeward.planet_def(k).get("relic", ""))
-		var have: bool = rid in Homeward.relics()
-		var l := UITheme.label("◆" if have else "◇", 16, GOLD if have else Color(HOLO, 0.35))
-		l.tooltip_text = tr(str(Homeward.relic_def(rid).get("name", rid))) if have else tr("Restore %s") % Homeward.planet_name(k)
-		l.mouse_filter = Control.MOUSE_FILTER_PASS
-		rel.add_child(l)
+func _wrap(text: String, size: int, col: Color) -> Label:
+	var l := UITheme.label(text, size, col)
+	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	l.custom_minimum_size = Vector2(PANEL_W - 28.0, 0)
+	return l
+
+
+## The selected planet: what it is, where it stands, the one thing to do there, and a one-line
+## system summary. The only text on the map.
+func _info_panel() -> PanelContainer:
+	var k: int = selected
+	var d: Dictionary = Homeward.planet_def(k)
+	var pc := PanelContainer.new()
+	pc.add_theme_stylebox_override("panel", UITheme.box(Color(0.03, 0.1, 0.14, 0.72), Color(HOLO, 0.32), 1, 3, 14))
+	pc.custom_minimum_size = Vector2(PANEL_W, 0)
+	var b := VBoxContainer.new()
+	b.add_theme_constant_override("separation", 7)
+	pc.add_child(b)
+	var t: Dictionary = WorldGen.world_type(str(d.get("type", "")))
+	b.add_child(UITheme.label(tr("%s  ·  %.2f AU") % [tr(str(t.get("name", "Home world"))), SolarSystem.orbit_au(_pid_of(k))], 11, Color(HOLO, 0.7)))
+	b.add_child(UITheme.label(Homeward.planet_name(k).to_upper(), 20, HOLO.lerp(Color.WHITE, 0.5)))
+	var here: bool = k == Homeward.current_planet()
+	var why: String = launch_blocker(world, k)
+	var status: String
+	var status_col: Color = UITheme.MUTED
+	if _locked:
+		status = tr("In flight")
+		status_col = GOLD
+	elif here:
+		status = tr("Lumi is here")
+		status_col = GOLD
+	elif Homeward.restored(k):
+		status = tr("Restored")
+		status_col = UITheme.GREEN
+	elif why == "":
+		status = tr("Ready to launch")
+		status_col = UITheme.GREEN
+	else:
+		status = why
+	b.add_child(_wrap(status, 13, status_col))
+	var p: float = Homeward.stored_pct(k)
+	if here or p > 0.0 or Homeward.world_of(k) >= 0:
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 8)
+		var bar := _bar(p, Color(0.55, 1.0, 0.6))
+		bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		row.add_child(bar)
+		row.add_child(UITheme.label("%d%%" % int(floor(p * 100.0 + 0.0001)), 13, Color.WHITE))
+		b.add_child(row)
+	var act := Button.new()
+	act.custom_minimum_size = Vector2(0, 38)
+	_button(act)
+	if here and HomewardDirector.home_ready(world):
+		act.text = tr("Launch home")
+		act.pressed.connect(func() -> void:
+			close_map()
+			HomewardDirector.launch_home(world))
+	elif here:
+		act.text = tr("Choose a district")
+		act.disabled = _locked or world == null or world.get("globe") == null
+		act.pressed.connect(_hand_to_globe)
+	else:
+		act.text = tr("Launch")
+		act.disabled = why != "" or _locked
+		act.pressed.connect(func() -> void:
+			var kk: int = selected
+			close_map()
+			HomewardDirector.launch_planet(world, kk))
+	b.add_child(act)
+	_first = act
+	_drive_row(b, k)
+	var line := ColorRect.new()
+	line.color = Color(HOLO, 0.25)
+	line.custom_minimum_size = Vector2(0, 1)
+	b.add_child(line)
+	var foot: String = tr("System %d%% restored  ·  relics %d/%d") % [int(floor(Homeward.system_pct() * 100.0 + 0.0001)), Homeward.relics().size(), Homeward.planets().size() - 1]
 	if Homeward.picks() > 0:
-		b.add_child(UITheme.label(tr("Heirloom picks waiting: %d (Pause > Ark Bridge)") % Homeward.picks(), 13, GOLD))
-	var d: Array = _card(tr("Rocket drive"), tr("interplanetary  ·  carried to every planet"), 300)
-	_left.add_child(d[0])
-	var db: VBoxContainer = d[1]
-	var cur: Dictionary = Homeward.drive_def(Homeward.drive())
-	db.add_child(UITheme.label(tr(str(cur.get("name", "District hops only"))), 15, Color.WHITE))
+		foot += "  ·  " + tr("%d Heirloom picks") % Homeward.picks()
+	b.add_child(_wrap(foot, 11, UITheme.MUTED))
+	b.add_child(_wrap(tr("Left/Right planet  ·  A zoom  ·  B back"), 10, Color(HOLO, 0.55)))
+	return pc
+
+
+## The interplanetary drive, shown only where it matters: the selected planet needs a better drive,
+## or the Homeward rocket waits at home. Builds the next tier.
+func _drive_row(b: VBoxContainer, k: int) -> void:
 	var nd: Dictionary = Homeward.next_drive()
 	if nd.is_empty():
-		db.add_child(UITheme.label(tr("The Homeward rocket stands ready."), 13, UITheme.GREEN))
 		return
-	db.add_child(UITheme.label(tr("Next: %s") % tr(str(nd["name"])), 14, GOLD))
-	var dl := UITheme.label(tr(str(nd.get("desc", ""))), 12, UITheme.MUTED)
-	dl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	dl.custom_minimum_size = Vector2(270, 0)
-	db.add_child(dl)
-	db.add_child(UITheme.label(Homeward.cost_text(nd.get("cost", {})), 13, UITheme.CREAM))
+	var needs: bool = int(Homeward.planet_def(k).get("nav", 0)) > Homeward.drive() and Homeward.discovered(k)
+	var home: bool = bool(nd.get("home_only", false)) and k == 0
+	if not needs and not home:
+		return
+	b.add_child(_wrap("%s  ·  %s" % [tr(str(nd["name"])), Homeward.cost_text(nd.get("cost", {}))], 12, GOLD))
 	var why: String = Homeward.drive_blocker(Homeward.at_home_site(world))
 	var bb := Button.new()
-	bb.custom_minimum_size = Vector2(0, 36)
-	bb.text = tr("Build") if why == "" else why
+	bb.custom_minimum_size = Vector2(0, 34)
+	bb.text = tr("Build the drive") if why == "" else why
 	bb.disabled = why != "" or _locked
-	bb.clip_text = true
 	_button(bb)
 	bb.pressed.connect(func() -> void:
 		if Homeward.buy_drive(Homeward.at_home_site(world)):
 			Audio.play("buy", 1.0, -4.0)
 			HomewardDirector.on_drive_built(world)
-			_rebuild_cards()
-			if _first:
-				_first.call_deferred("grab_focus"))
-	db.add_child(bb)
-
-
-func _build_right() -> void:
-	var c: Array = _card(tr("Planets"), tr("pick a world"), 330)
-	_right.add_child(c[0])
-	_list = c[1]
-	var here: int = Homeward.current_planet()
-	var buttons: Array[Button] = []
-	for k: int in Homeward.planets().size():
-		var b := Button.new()
-		b.custom_minimum_size = Vector2(0, 34)
-		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		var pct: int = int(floor(Homeward.stored_pct(k) * 100.0 + 0.0001))
-		var tag: String = tr("you are here") if k == here else (tr("restored") if Homeward.restored(k) else ("%d%%" % pct if Homeward.world_of(k) >= 0 else tr("unvisited")))
-		b.text = "%s   ·   %s" % [Homeward.planet_name(k).to_upper(), tag]
-		b.disabled = _locked
-		_button(b)
-		var kk: int = k
-		b.focus_entered.connect(func() -> void: _select(kk))
-		b.pressed.connect(func() -> void: _select(kk, true))
-		_list.add_child(b)
-		buttons.append(b)
-		if _first == null and k == selected:
-			_first = b
-	_right.add_child(_detail())
-
-
-func _select(k: int, zoom: bool = false) -> void:
-	if k != selected:
-		selected = k
-		if _right and _right.get_child_count() > 1:
-			var old: Node = _right.get_child(1)
-			_right.remove_child(old)
-			old.queue_free()
-			_right.add_child(_detail())
-		Audio.play("blip", 1.2, -12.0)
-	if not _locked and (zoom or (_zoom_planet >= 0 and k != _zoom_planet)):
-		_zoom_to(k)
-
-
-func _detail() -> Control:
-	var d: Dictionary = Homeward.planet_def(selected)
-	var t: Dictionary = WorldGen.world_type(str(d.get("type", "")))
-	var au: float = SolarSystem.orbit_au(str(d.get("id", "verdance")))
-	var c: Array = _card(Homeward.planet_name(selected), tr("%s  ·  %.2f AU from the suns") % [tr(str(t.get("name", "Home world"))), au], 330)
-	var b: VBoxContainer = c[1]
-	var tw := UITheme.label(tr(str(d.get("twist", ""))), 13, UITheme.CREAM)
-	tw.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	tw.custom_minimum_size = Vector2(300, 0)
-	b.add_child(tw)
-	var mods: Array[String] = []
-	for id: Variant in d.get("mods", []):
-		mods.append(tr(str(WorldGen.modifier(str(id)).get("name", id))))
-	if not mods.is_empty():
-		b.add_child(UITheme.label(", ".join(mods), 12, Color(HOLO, 0.85)))
-	var p: float = Homeward.stored_pct(selected)
-	b.add_child(UITheme.label(tr("Restored %d%%") % int(floor(p * 100.0 + 0.0001)), 14, Color.WHITE))
-	b.add_child(_bar(p, Color(0.55, 1.0, 0.6)))
-	var goal := UITheme.label(tr("Goal: %d Thriving hexes, %d bases at level 5, a Thriving landing district") % [int(d.get("thriving", 0)), int(d.get("bases", 1))] if selected > 0 else tr("Goal: the Bloom Core full (Cradle Returns)"), 12, UITheme.MUTED)
-	goal.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	goal.custom_minimum_size = Vector2(300, 0)
-	b.add_child(goal)
-	var lb := Button.new()
-	lb.custom_minimum_size = Vector2(0, 40)
-	_button(lb)
-	var here: bool = selected == Homeward.current_planet()
-	if here and HomewardDirector.home_ready(world):
-		lb.text = tr("Launch home")
-		lb.pressed.connect(func() -> void:
-			close_map()
-			HomewardDirector.launch_home(world))
-	elif here:
-		lb.text = tr("Choose a district")
-		lb.disabled = _locked or world == null or world.get("globe") == null
-		lb.pressed.connect(_hand_to_globe)
-	else:
-		var why: String = launch_blocker(world, selected)
-		lb.text = tr("Launch") if why == "" else why
-		lb.disabled = why != "" or _locked
-		lb.pressed.connect(func() -> void:
-			var k: int = selected
-			close_map()
-			HomewardDirector.launch_planet(world, k))
-	lb.clip_text = true
-	b.add_child(lb)
-	return c[0]
+			_rebuild_cards())
+	b.add_child(bb)
 
 
 ## "" if Lumi can fly from here to planet k now, else why not.
 static func launch_blocker(w: Node, k: int) -> String:
 	if k == Homeward.current_planet():
 		return TranslationServer.translate("You are here")
+	if not Homeward.discovered(k):
+		return TranslationServer.translate("Not discovered yet")
 	var r: String = Homeward.reach_blocker(k, Homeward.drive(), Homeward.pct_list())
 	if r != "":
 		return r
@@ -697,12 +756,34 @@ static func launch_blocker(w: Node, k: int) -> String:
 	return ""
 
 
+func _select(k: int, zoom: bool = false) -> void:
+	if k < 0 or k >= _planets.size() or not Homeward.discovered(k):
+		return
+	if k != selected:
+		selected = k
+		_rebuild_cards()
+		Audio.play("blip", 1.2, -12.0)
+	if not _locked and (zoom or (_zoom_planet >= 0 and k != _zoom_planet)):
+		_zoom_to(k)
+
+
+## Step the selection along the discovered planets, suns outward.
+func _cycle(step: int) -> void:
+	var order: Array[int] = []
+	for k: int in _au_order():
+		if Homeward.discovered(k):
+			order.append(k)
+	if order.is_empty():
+		return
+	_select(order[posmod(order.find(selected) + step, order.size())])
+
+
 ## Zoom all the way into this planet and hand over to the survey globe (hubs and districts).
 func _hand_to_globe() -> void:
 	if _handing_over or world == null or world.get("globe") == null:
 		return
 	_handing_over = true
-	_frame(_planet_frame(selected, 1.2), 0.9)
+	_frame(_planet_frame(selected, 1.2 * _globe_r(selected)), _zoom_off(), 0.9)
 	_fade.create_tween().tween_property(_fade, "color:a", 1.0, 0.8)
 	await get_tree().create_timer(0.85, true, false, true).timeout
 	_handing_over = false
@@ -725,30 +806,46 @@ func _process(delta: float) -> void:
 	if not is_open or _vp == null:
 		return
 	_t += delta
-	# The two suns circle their common centre; planets ride their orbits and spin.
+	# The two suns circle their common centre; planets ride their orbits (the globes spin).
 	var sa: float = _t * 0.35
 	_sun_a.position = Vector3(cos(sa), 0, sin(sa)) * 0.55
 	_sun_b.position = -Vector3(cos(sa), 0, sin(sa)) * 3.4
 	for k: int in _planets.size():
 		_planets[k].position = _planet_pos(k)
-		_planets[k].get_child(0).rotation.y = _t * 0.2
 		var sel: bool = k == selected
-		_orbit_mats[k].albedo_color = Color(HOLO, 0.5 if sel else 0.18)
-		_labels[k].modulate.a = 1.0 if sel or _zoom_planet < 0 else 0.45
+		# Globe, rings and gold ring swell together.
+		var grow: float = SELECT_GROW if sel and _zoom_planet < 0 and _fly_t < 0.0 else 1.0
+		_planets[k].scale = Vector3.ONE * lerpf(_planets[k].scale.x, grow, clampf(delta * 4.0, 0.0, 1.0))
+		_orbit_mats[k].albedo_color = Color(HOLO, 0.45 if sel else 0.16)
 	# Camera easing (follows a moving planet while zoomed).
 	if _zoom_planet >= 0 and _cam_k >= 1.0 and not _handing_over:
-		_cam_to = _planet_frame(_zoom_planet, 6.5)
+		_cam_to = _planet_frame(_zoom_planet, _zoom_dist(_zoom_planet))
 		_cam.global_transform = _cam.global_transform.interpolate_with(_cam_to, clampf(delta * 3.0, 0.0, 1.0))
+		_cam.frustum_offset = _off_to
 	elif _cam_k < 1.0:
 		_cam_k = minf(1.0, _cam_k + delta / _cam_dur)
 		if _zoom_planet >= 0 and not _handing_over:
-			_cam_to = _planet_frame(_zoom_planet, 6.5)
+			_cam_to = _planet_frame(_zoom_planet, _zoom_dist(_zoom_planet))
 		var e: float = _cam_k * _cam_k * (3.0 - 2.0 * _cam_k)
 		_cam.global_transform = _cam_from.interpolate_with(_cam_to, e)
+		_cam.frustum_offset = _off_from.lerp(_off_to, e)
 	else:
 		# Overview: a slow drift so the starfield shells slide past each other.
-		var drift := Transform3D(Basis(Vector3.UP, sin(_t * 0.07) * 0.08), Vector3.ZERO) * _overview()
+		var drift := Transform3D(Basis(Vector3.UP, sin(_t * 0.07) * 0.08), Vector3.ZERO) * _ov_xf
 		_cam.global_transform = _cam.global_transform.interpolate_with(drift, clampf(delta * 0.8, 0.0, 1.0))
+		_cam.frustum_offset = _ov_off
+	# Restoration can change while the map is open: retint the globes, don't rebuild.
+	_resto_t -= delta
+	if _resto_t <= 0.0:
+		_resto_t = 1.0
+		for k: int in _globes.size():
+			var g: PlanetGlobe = _globes[k]
+			if g and absf(Homeward.stored_pct(k) - g.restoration) > 0.001:
+				g.set_restoration(Homeward.stored_pct(k))
+	if _ship and not (_fly_t >= 0.0 and _fly_from >= 0 and _fly_to >= 0):  # [ship] parked by the current planet
+		var hk: int = clampi(Homeward.current_planet(), 0, _planets.size() - 1)
+		_ship.position = _planet_pos(hk) + Vector3(cos(_t * 0.25), 0.35, sin(_t * 0.25)) * 1.7
+		ShipModel.face_along(_ship, Vector3(-sin(_t * 0.25), 0, cos(_t * 0.25)))
 	# Interplanetary flight marker.
 	if _fly_t >= 0.0 and _fly_from >= 0 and _fly_to >= 0:
 		_fly_t = minf(1.0, _fly_t + delta / _fly_dur)
@@ -757,18 +854,68 @@ func _process(delta: float) -> void:
 		var mid: Vector3 = (a + b) * 0.5 + Vector3(0, a.distance_to(b) * 0.3, 0)
 		var u: float = _fly_t
 		var pos: Vector3 = a.lerp(mid, u).lerp(mid.lerp(b, u), u)
-		_marker.visible = true
+		_marker.visible = _ship == null  # [ship] the ship itself flies the arc
 		_marker.position = pos
+		if _ship:
+			ShipModel.face_along(_ship, pos - _ship.position)
+			_ship.position = pos
+			_ship.plume.power = 1.0
 		_cam.global_transform = _cam.global_transform.interpolate_with(Transform3D(Basis(), pos + Vector3(0, 6, 10)).looking_at(pos, Vector3.UP), clampf(delta * 2.0, 0.0, 1.0))
+		_cam.frustum_offset = _zoom_off()
+
+
+## Planet picking runs before the GUI: Left/Right must not move button focus, and Accept in the
+## overview zooms in (once zoomed it presses the panel's focused button).
+func _input(event: InputEvent) -> void:
+	if not is_open or _locked or _handing_over:
+		return
+	if event.is_action_pressed("ui_left"):
+		_cycle(-1)
+	elif event.is_action_pressed("ui_right"):
+		_cycle(1)
+	elif event.is_action_pressed("ui_accept") and _zoom_planet < 0 and not (event is InputEventMouseButton):
+		_select(selected, true)
+	else:
+		return
+	get_viewport().set_input_as_handled()
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_open or _locked:
 		return
+	var mb := event as InputEventMouseButton
+	if mb and mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+		var k: int = _pick_at()
+		if k >= 0:
+			_select(k, true)
+			get_viewport().set_input_as_handled()
+			return
 	if event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel"):
 		if _zoom_planet >= 0:
-			_zoom_planet = -1
-			_frame(_overview(), 1.0)
+			_unzoom()
 		else:
 			close_map()
 		get_viewport().set_input_as_handled()
+
+
+## Click picking: the discovered planet whose globe (or rings) is under the mouse, -1 if none.
+func _pick_at() -> int:
+	if _cam == null or _svc == null or _vp == null or _svc.size.x <= 0.0:
+		return -1
+	var m: Vector2 = _svc.get_local_mouse_position() * (Vector2(_vp.size) / _svc.size)
+	var best: int = -1
+	var best_d: float = INF
+	var right: Vector3 = _cam.global_transform.basis.x
+	for k: int in _planets.size():
+		if not _planets[k].visible:
+			continue
+		var pos: Vector3 = _planets[k].global_position
+		if _cam.is_position_behind(pos):
+			continue
+		var sp: Vector2 = _cam.unproject_position(pos)
+		var pr: float = (_cam.unproject_position(pos + right * _ring_out(k) * _planets[k].scale.x) - sp).length()
+		var dd: float = m.distance_to(sp)
+		if dd < maxf(pr, 22.0) and dd < best_d:
+			best_d = dd
+			best = k
+	return best

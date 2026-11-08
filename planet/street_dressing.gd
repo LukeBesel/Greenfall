@@ -8,8 +8,9 @@ extends Node3D
 ## Purely presentational and deterministic from the district seed (nothing is saved). Built
 ## once, only around the hub (CityView.DETAIL_RING blocks); batched into a handful of merged
 ## meshes and MultiMeshes. Animation (neon buzz, bulb twinkle, cloth sway) lives in shaders.
-## Collision only on the crate stacks parked on the hub yard's fence corners and the billboard
-## legs, which stand outside the junk field.
+## [world2] Solid props get simple shared colliders on PhysLayers.PROP (planet/prop_colliders.gd),
+## one body per level layer, switched off while the layer is hidden. The yard has no fence any
+## more (the owner's playtest: it boxed Lumi in at the start and had no hitbox).
 
 const NEAR_R: float = 52.0           # facades farther than this from the hub get nothing
 const FLOOR_H: float = 3.0
@@ -128,6 +129,7 @@ var _lm_kind: String = ""
 var _lm_pos := Vector3.ZERO
 var _lm_top := Vector3.ZERO
 var _warm: float = 0.8
+var _body: StaticBody3D  # [world2] the current layer's prop colliders
 
 
 func build(p_layout: CityLayout, p_field: HexField, p_hub: int = 0, p_district: String = "", p_biome: String = "", p_level: int = 1) -> void:
@@ -144,40 +146,63 @@ func build(p_layout: CityLayout, p_field: HexField, p_hub: int = 0, p_district: 
 	_begin("Base")
 	if not layout.wild and not skip_facades:  # [biomes]
 		_collect_facades()
+		await BuildBudget.check("dress:shopfronts")  # [leftovers] time-sliced behind the loading screen
 		_build_shopfronts()
+		await BuildBudget.check("dress:murals")
 		_build_murals()
+		await BuildBudget.check("dress:billboard")
 		_build_billboard()
 		if start_base:
+			await BuildBudget.check("dress:street_lines")
 			_build_street_lines()
+	await BuildBudget.check("dress:yard_paint")
 	_build_yard_paint()
 	if biome != "dust_dunes":
+		await BuildBudget.check("dress:puddles")
 		_build_puddles()
+	await BuildBudget.check("dress:weeds")
 	_build_weeds()
+	await BuildBudget.check("dress:drifts")
 	_build_drifts(0.5)
+	await BuildBudget.check("dress:landmark")
 	_build_landmark()
+	await BuildBudget.check("dress:name_sign")
 	if level <= 1 and not start_base:
 		_begin("Ruin")
+		await BuildBudget.check("dress:ruin")
 		_build_ruin()
 	_begin("Salvage")
-	_build_fence(false)
-	_build_name_sign(false)
+	_build_name_sign(false)  # [world2] no yard fence
+	_begin("Lamps")  # [camp2] the pole lamps are part of the "Yard Lamps" Hub build
+	await BuildBudget.check("dress:pole_lamps")
 	_build_pole_lamps()
 	_begin("Yard")
+	await BuildBudget.check("dress:poles")
 	_build_poles()
+	await BuildBudget.check("dress:crates")
 	_build_crates()
+	await BuildBudget.check("dress:camp")
 	_build_camp()
+	await BuildBudget.check("dress:festoons")
 	_build_festoons()
 	if not layout.wild and not start_base:
+		await BuildBudget.check("dress:street_lines")
 		_build_street_lines()
 	_begin("Future")
-	_build_future_fence()
+	_build_pole_sleeves()  # [world2] the white panel fence is gone; the pole sleeves stay
+	await BuildBudget.check("dress:holo_sign")
 	_build_holo_sign()
+	await BuildBudget.check("dress:guide_lights")
 	_build_guide_lights()
 	_begin("Thrive")
+	await BuildBudget.check("dress:planters")
 	_build_planters()
+	await BuildBudget.check("dress:drones")
 	_build_drones()
 	_begin("Beacon")
+	await BuildBudget.check("dress:beacon")
 	_build_beacon()
+	await BuildBudget.check("dress:flush")
 	_flush()
 	set_level(level, false)
 
@@ -191,8 +216,10 @@ func _layer_range(nm: String) -> Vector2i:
 			return Vector2i(1, 1) if not start_base else Vector2i(9, 9)
 		"Salvage":
 			return Vector2i(1 if start_base else 2, 2)
+		"Lamps":  # [camp2] like Salvage, once the Yard Lamps are built (systems/camp/yard_builds.gd)
+			return Vector2i(1 if start_base else 2, 2) if YardBuilds.built("lamps") else Vector2i(9, 9)
 		"Yard":
-			return Vector2i(1 if start_base else 2, 5)
+			return Vector2i(2, 5)  # [camp] the starter yard is bare too until hub level 2 (owner playtest #2)
 		"Future":
 			return Vector2i(3, 5)
 		"Thrive":
@@ -213,6 +240,7 @@ func _begin(nm: String) -> void:
 	_layers[nm] = node
 	_cur = node
 	_rng.seed = layout.seed_value * 7 + 90210 + (0 if nm == "Base" else nm.hash() % 100000)
+	_body = PropColliders.body(node, "Props")  # [world2]
 	_deco = Geo.new()
 	_tubes = Geo.new()
 	_bulbs = []
@@ -243,6 +271,7 @@ func set_level(l: int, animate: bool) -> void:
 		var want: bool = level >= r.x and level <= r.y
 		if want == node.visible:
 			continue
+		PropColliders.set_active(node, want)  # [world2] hidden layers don't block
 		if not animate:
 			node.visible = want
 			node.scale = Vector3.ONE
@@ -561,10 +590,12 @@ func _build_shopfronts() -> void:
 			var cp: Vector3 = base + al3 * off2 + out3 * 0.42
 			if _rng.randf() < 0.5:
 				_crate(Transform3D(Basis.looking_at(-al3).rotated(Vector3.UP, _rng.randf_range(-0.2, 0.2)), cp + Vector3.UP * 0.16), _plastic[_rng.randi() % _plastic.size()])
+				_solid_box(Transform3D(Basis.looking_at(-al3), cp + Vector3.UP * 0.32), Vector3(0.62, 0.64, 0.44))  # [world2]
 				if _rng.randf() < 0.5:
 					_crate(Transform3D(Basis.looking_at(-al3).rotated(Vector3.UP, _rng.randf_range(-0.3, 0.3)), cp + Vector3.UP * 0.48), _plastic[_rng.randi() % _plastic.size()])
 			else:
 				_barrels.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), cp + out3 * 0.05), _plastic[_rng.randi() % _plastic.size()]])
+				_solid_cyl(cp + out3 * 0.05, 0.3, 0.95)  # [world2]
 	# Laundry hung out of upper windows on taller facades that face the hub.
 	for f: Dictionary in _facades:
 		var fa: Vector2 = f["a"]
@@ -818,18 +849,11 @@ func _build_billboard() -> void:
 	var y0: float = 6.0
 	var steel := Color(0.22, 0.22, 0.24, STEEL)
 	var rust := Color(0.42, 0.25, 0.15, STEEL)
-	var body := StaticBody3D.new()
-	_cur.add_child(body)
 	for lx: float in [-w * 0.3, w * 0.3]:
 		var p := Vector3(x + lx, 0, z)
 		_deco.box(Transform3D(Basis(), p + Vector3(0, y0 * 0.5, 0)), Vector3(0.45, y0, 0.45), steel)
 		_deco.box(Transform3D(Basis(), p + Vector3(0, 0.3, 0)), Vector3(0.8, 0.6, 0.8), Color(0.55, 0.53, 0.5, PAINT))
-		var cs := CollisionShape3D.new()
-		var bs := BoxShape3D.new()
-		bs.size = Vector3(0.8, y0, 0.8)
-		cs.shape = bs
-		cs.position = p + Vector3(0, y0 * 0.5, 0)
-		body.add_child(cs)
+		_solid_box(Transform3D(Basis(), p + Vector3(0, y0 * 0.5, 0)), Vector3(0.8, y0, 0.8))  # [world2] PROP layer
 	# Back panel, frame, catwalk and railing.
 	var c := Vector3(x, y0 + h * 0.5, z)
 	_deco.box(Transform3D(Basis(), c - Vector3(0, 0, 0.12)), Vector3(w, h, 0.2), Color(0.35, 0.34, 0.33, STEEL))
@@ -976,6 +1000,7 @@ func _pole(base: Vector3, h: float) -> Vector3:
 	var wood := Color(0.36, 0.27, 0.2, PAINT)
 	_deco.box(Transform3D(Basis(Vector3.UP, _rng.randf() * 0.5), base + Vector3(0, h * 0.5, 0)), Vector3(0.16, h, 0.16), wood)
 	_deco.box(Transform3D(Basis(), base + Vector3(0, h - 0.25, 0)), Vector3(0.7, 0.08, 0.08), wood.darkened(0.2))
+	_solid_cyl(base, 0.16, h)  # [world2]
 	return base + Vector3(0, h - 0.2, 0)
 
 
@@ -1173,8 +1198,6 @@ func _build_puddles() -> void:
 ## (hub ground: no junk, no plant slots, nothing parks there).
 func _build_crates() -> void:
 	var y: float = CityLayout.YARD_HALF - 0.95
-	var body := StaticBody3D.new()
-	_cur.add_child(body)
 	var corners: Array[Vector2] = [Vector2(-y, -y), Vector2(y, -y), Vector2(-y, y), Vector2(y, y)]
 	# Which salvage kit sits in which corner: the starter yard keeps its classic set; elsewhere a
 	# seeded pick, always with the work light (kit 3) and the biome's own kit when it has one.
@@ -1204,12 +1227,7 @@ func _build_crates() -> void:
 		var base := Vector3(c.x, 0, c.y)
 		var out := Vector3(signf(c.x), 0, signf(c.y))
 		_corner_kit(kits[ci], base, out)
-		var cs := CollisionShape3D.new()
-		var bs := BoxShape3D.new()
-		bs.size = Vector3(1.6, 1.0, 1.6)
-		cs.shape = bs
-		cs.position = base + Vector3(-out.x * 0.15, 0.5, -out.z * 0.15)
-		body.add_child(cs)
+		_solid_box(Transform3D(Basis(), base + Vector3(-out.x * 0.15, 0.5, -out.z * 0.15)), Vector3(1.6, 1.0, 1.6))  # [world2] PROP layer
 
 
 func _corner_kit(kit: int, base: Vector3, out: Vector3) -> void:
@@ -1227,11 +1245,13 @@ func _corner_kit(kit: int, base: Vector3, out: Vector3) -> void:
 			if snow:
 				_deco.box(Transform3D(Basis(Vector3.UP, yaw), base + Vector3(0, top + n * 0.32 + 0.02, 0)), Vector3(0.62, 0.06, 0.42), SNOW)
 			_barrels.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), base + Vector3(-out.x * 1.0, 0, 0)), _plastic[1 % _plastic.size()]])
+			_solid_cyl(base + Vector3(-out.x * 1.0, 0, 0), 0.3, 0.95)  # [world2]
 		1:  # steel drums and a tarp-covered heap
 			for k: int in 3:
 				@warning_ignore("integer_division")
 				var dp: Vector3 = base + Vector3(-out.x * (0.1 + (k % 2) * 0.62), top, -out.z * (k / 2) * 0.62 - out.z * 0.1)
 				_drums.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), dp), [Color(0.55, 0.13, 0.08), Color(0.12, 0.25, 0.45), Color(0.2, 0.32, 0.18)][k]])
+				_solid_cyl(dp, 0.3, 0.9)  # [world2]
 				if snow:
 					_deco.cyl(dp + Vector3(0, 0.88, 0), dp + Vector3(0, 0.94, 0), 0.29, 0.25, SNOW, 10)
 			_tarp(Transform3D(Basis(Vector3.UP, _rng.randf_range(0.0, TAU)), base + Vector3(-out.x * 0.4, 0, -out.z * 1.5)), Vector2(1.8, 1.4), 0.75, _tarp_cols[0])
@@ -1269,6 +1289,7 @@ func _corner_kit(kit: int, base: Vector3, out: Vector3) -> void:
 			_prop("ocean_buoy", Transform3D(Basis(Vector3.UP, _rng.randf() * TAU).scaled(Vector3.ONE * 0.7), base + Vector3(0, top, 0)))
 			_prop("lifebuoy", Transform3D(Basis(Vector3.RIGHT, PI * 0.5 - 0.15).rotated(Vector3.UP, atan2(out.x, out.z)), base + Vector3(out.x * 0.55, 0.9, -out.z * 0.5)))
 			_drums.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), base + Vector3(-out.x * 1.0, 0, -out.z * 0.3)), Color(0.85, 0.85, 0.82)])
+			_solid_cyl(base + Vector3(-out.x * 1.0, 0, -out.z * 0.3), 0.3, 0.9)  # [world2]
 		12:  # dunes: sun-bleached tarp shade over jerrycans
 			_tarp_shade(base + Vector3(-out.x * 0.6, 0, -out.z * 0.6), yaw)
 			for k: int in 3:
@@ -1278,7 +1299,9 @@ func _corner_kit(kit: int, base: Vector3, out: Vector3) -> void:
 				@warning_ignore("integer_division")
 				var dp: Vector3 = base + Vector3(-out.x * (0.1 + (k % 2) * 0.62), top, -out.z * (k / 2) * 0.62)
 				_drums.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), dp), Color(0.42, 0.24, 0.14).lerp(Color(0.2, 0.22, 0.25), _rng.randf())])
+				_solid_cyl(dp, 0.3, 0.9)  # [world2]
 			_drums.append([Transform3D(Basis(Vector3.RIGHT, PI * 0.5).rotated(Vector3.UP, yaw + 0.7), base + Vector3(-out.x * 1.3, 0.3, -out.z * 1.4)), Color(0.5, 0.28, 0.14)])
+			_solid_box(Transform3D(Basis(Vector3.UP, yaw + 0.7), base + Vector3(-out.x * 1.3, 0.3, -out.z * 1.4)), Vector3(0.6, 0.6, 0.9))  # [world2]
 		14:  # marsh: lantern post and crates on a plank deck
 			for k: int in 6:
 				_deco.box(Transform3D(Basis(Vector3.UP, yaw), base + Vector3((k - 2.5) * 0.3 * -out.x, 0.04, -out.z * 0.4)), Vector3(0.26, 0.06, 1.8), Color(0.36, 0.28, 0.2, PAINT))
@@ -1308,6 +1331,7 @@ func _pallet(xf: Transform3D) -> void:
 
 ## A tarpaulin thrown over a heap: a lumpy draped grid, drooping to the ground at the edges.
 func _tarp(xf: Transform3D, size: Vector2, h: float, col: Color) -> void:
+	_solid_box(Transform3D(xf.basis.orthonormalized(), xf.origin + Vector3(0, h * 0.5, 0)), Vector3(size.x * 0.85, h, size.y * 0.85))  # [world2] the heap under it
 	col.a = FABRIC
 	var n: int = 9
 	var pts: Array = []
@@ -1337,6 +1361,7 @@ func _tarp(xf: Transform3D, size: Vector2, h: float, col: Color) -> void:
 ## Construction work light on a tripod, lamp lit, cable snaking off along the fence.
 func _work_light(base: Vector3, aim: Vector3) -> void:
 	var steel := Color(0.85, 0.65, 0.1, STEEL)  # yellow-painted steel
+	_solid_cyl(base, 0.45, 2.1)  # [world2] the tripod
 	var top: Vector3 = base + Vector3.UP * 1.9
 	for k: int in 3:
 		var a: float = TAU * k / 3.0 + 0.3
@@ -1479,6 +1504,7 @@ func _mm(nm: String, mesh: Mesh, items: Array, mat: Material, shadows: bool, col
 	var mmi := MultiMeshInstance3D.new()
 	mmi.name = nm
 	mmi.multimesh = mm
+	mmi.set_meta("inst_xf", items.map(func(it: Array) -> Transform3D: return it[0]))  # [world2] for the collider audit
 	if mat:
 		mmi.material_override = mat
 	mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if shadows else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -1731,6 +1757,7 @@ func _col(pos: Vector3, size: Vector3, b: Basis = Basis()) -> void:
 		return  # never block junk
 	if _lm_body == null:
 		_lm_body = StaticBody3D.new()
+		_lm_body.collision_layer = PhysLayers.PROP  # [world2]
 		_cur.add_child(_lm_body)
 	var cs := CollisionShape3D.new()
 	var bs := BoxShape3D.new()
@@ -2143,8 +2170,7 @@ func _beach_shack(p: Vector3) -> void:
 # --- Ruined base (level 1) -------------------------------------------------------------------
 
 func _build_ruin() -> void:
-	_build_fence(true)
-	_build_name_sign(true)
+	_build_name_sign(true)  # [world2] no ruined fence either
 	# The light poles: most have toppled into the yard; one still stands, trailing dead wires.
 	var tops: Array[Vector3] = _pole_tops()
 	var stand: int = _rng.randi() % 2
@@ -2185,8 +2211,10 @@ func _build_ruin() -> void:
 				_deco.box(Transform3D(Basis(Vector3.UP, yaw), p + Vector3(0, 0.03, 0)), Vector3(0.16, 0.04, _rng.randf_range(0.9, 1.8)), Color(0.5, 0.4, 0.28, PAINT).darkened(_rng.randf_range(0.0, 0.3)))
 			3:
 				_drums.append([Transform3D(Basis(Vector3.RIGHT, PI * 0.5).rotated(Vector3.UP, yaw), p + Vector3(0, 0.29, 0)), Color(0.45, 0.26, 0.15).lerp(Color(0.2, 0.25, 0.35), _rng.randf())])
+				_solid_box(Transform3D(Basis(Vector3.UP, yaw), p + Vector3(0, 0.29, 0)), Vector3(0.58, 0.58, 0.88))  # [world2]
 			4:
 				_crate(Transform3D(Basis(Vector3.RIGHT, PI * 0.5).rotated(Vector3.UP, yaw), p + Vector3(0, 0.2, 0)), _plastic[_rng.randi() % _plastic.size()].darkened(0.3))
+				_solid_box(Transform3D(Basis(Vector3.UP, yaw), p + Vector3(0, 0.2, 0)), Vector3(0.6, 0.4, 0.4))  # [world2]
 			5:
 				_pallet(Transform3D(Basis(Vector3.UP, yaw).rotated(Vector3(1, 0, 0), _rng.randf_range(0.05, 0.25)), p + Vector3(0, 0.08, 0)))
 	_build_drifts(1.6)
@@ -2208,6 +2236,7 @@ func _fallen_pole(base: Vector3, dir: Vector3, h: float) -> void:
 	var b := Basis(side, dir, side.cross(dir).normalized())
 	_deco.box(Transform3D(b, base + dir * h * 0.5 + Vector3(0, 0.09, 0)), Vector3(0.16, h, 0.16), wood)
 	_deco.box(Transform3D(Basis(dir, Vector3.UP, dir.cross(Vector3.UP)).rotated(dir, 0.4), base + dir * (h - 0.25) + Vector3(0, 0.2, 0)), Vector3(0.08, 0.7, 0.08), wood.darkened(0.2))
+	_solid_cyl(base + dir * (h - 0.25), 0.2, 0.55)  # [world2] the crossbar sticking up (the pole itself lies flat)
 	_deco.box(Transform3D(Basis(Vector3.UP, _rng.randf()), base + Vector3(0, 0.2, 0)), Vector3(0.2, 0.4, 0.2), wood.darkened(0.3))
 
 
@@ -2226,123 +2255,7 @@ func _dead_wire(a: Vector3, b: Vector3, sag: float) -> void:
 		_bulbs.append([Transform3D(Basis(Vector3.UP, _rng.randf() * TAU), pp), Color(0.06, 0.06, 0.055)])
 
 
-# --- Fence and name sign (ruined / patched) ----------------------------------------------------
-
-func _fence_style() -> String:
-	if not layout.wild:
-		return "chain"
-	return "scrap" if biome in ["rustlands", "sprawl", "old_capital"] else "wire"
-
-
-## Back and side fences of the yard (the front stays open). Ruined: posts missing or leaning,
-## rails down, panels fallen flat. Patched: every post up, rails whole, a few fresh patch sheets.
-func _build_fence(ruined: bool) -> void:
-	var hh: float = CityLayout.YARD_HALF + 0.15
-	var style: String = _fence_style()
-	var edges: Array = [[Vector2(-hh, -hh), Vector2(hh, -hh)], [Vector2(-hh, -hh), Vector2(-hh, hh)], [Vector2(hh, -hh), Vector2(hh, hh)]]
-	var steel := Color(0.42, 0.43, 0.45, STEEL)
-	var wood := Color(0.42, 0.32, 0.22, PAINT)
-	var rope: Color = Color(0.7, 0.62, 0.45, PAINT) if biome in ["neon_coast", "lake"] else Color(0.25, 0.24, 0.22, STEEL)
-	var post_h: float = 1.8 if style != "wire" else 1.3
-	for e: Array in edges:
-		var a: Vector2 = e[0]
-		var b: Vector2 = e[1]
-		var inward: Vector3 = -_xz((a + b) * 0.5, 0.0).normalized()
-		var n: int = int(a.distance_to(b) / 2.5)
-		var tops: Array = []  # top point of each post, or null if it is down
-		for k: int in n + 1:
-			var p2: Vector2 = a.lerp(b, float(k) / n)
-			var bp: Vector3 = _xz(p2, 0.0)
-			var state: int = 0
-			if ruined:
-				var r: float = _rng.randf()
-				state = 0 if r < 0.45 else (1 if r < 0.75 else 2)
-			if state == 2:
-				_deco.box(Transform3D(Basis(Vector3.UP, _rng.randf()), bp + Vector3(0, 0.12, 0)), Vector3(0.1, 0.24, 0.1), wood if style == "wire" else steel)
-				tops.append(null)
-				continue
-			var lean := Vector3.ZERO
-			if state == 1:
-				lean = (inward * (1.0 if _rng.randf() < 0.6 else -1.0) + Vector3(_rng.randf_range(-0.5, 0.5), 0, _rng.randf_range(-0.5, 0.5))).normalized() * post_h * _rng.randf_range(0.3, 0.7)
-			var top: Vector3 = bp + Vector3(0, post_h, 0) + lean
-			var fresh: bool = not ruined and not start_base and _rng.randf() < 0.3
-			var pc: Color = (wood if style == "wire" else steel)
-			if fresh:
-				pc = pc.lightened(0.3)
-			_deco.rod(bp, top, 0.06 if style == "wire" else 0.035, pc)
-			if biome == "frostcap":
-				_deco.box(Transform3D(Basis(), top + Vector3(0, 0.03, 0)), Vector3(0.16, 0.06, 0.16), SNOW)
-			@warning_ignore("incompatible_ternary")
-			tops.append(top if state == 0 else null)
-		for k: int in n:
-			var t0: Variant = tops[k]
-			var t1: Variant = tops[k + 1]
-			var pa: Vector3 = _xz(a.lerp(b, float(k) / n), 0.0)
-			var pb: Vector3 = _xz(a.lerp(b, float(k + 1) / n), 0.0)
-			match style:
-				"chain":
-					if t0 != null and t1 != null and (not ruined or _rng.randf() < 0.6):
-						_deco.rod(t0, t1, 0.022, steel)
-						if not ruined:
-							_deco.rod(pa + Vector3(0, 0.9, 0), pb + Vector3(0, 0.9, 0), 0.016, steel)
-							# Chain-link mesh, suggested by a diagonal lattice of thin wires.
-							for q: int in 8:
-								var tq: float = q / 8.0
-								var x0: Vector3 = pa.lerp(pb, tq)
-								var x1: Vector3 = pa.lerp(pb, minf(tq + 0.25, 1.0))
-								_deco.rod(x0 + Vector3(0, 0.08, 0), x1 + Vector3(0, 1.7, 0), 0.006, steel.darkened(0.2))
-								_deco.rod(x1 + Vector3(0, 0.08, 0), x0 + Vector3(0, 1.7, 0), 0.006, steel.darkened(0.2))
-							if not start_base and _rng.randf() < 0.22:
-								var pc2: Color = _paint_main.lerp(Color(0.6, 0.6, 0.6), 0.3)
-								pc2.a = STEEL
-								_deco.box(Transform3D(Basis.looking_at(inward).rotated(inward, _rng.randf_range(-0.08, 0.08)), (pa + pb) * 0.5 + Vector3(0, 0.75, 0) + inward * 0.06), Vector3(2.3, 1.15, 0.03), pc2)
-					elif ruined and _rng.randf() < 0.5:
-						var m: Vector3 = (pa + pb) * 0.5 + inward * _rng.randf_range(0.3, 1.2)
-						_deco.rod(m - (pb - pa) * 0.4 + Vector3(0, 0.03, 0), m + (pb - pa) * 0.35 + Vector3(0, 0.03, 0), 0.022, steel)
-				"wire":
-					for y: float in [0.6, 1.1]:
-						if t0 != null and t1 != null:
-							_deco.rod(pa + Vector3(0, y, 0), pb + Vector3(0, y, 0), 0.012 if rope.a < 0.1 else 0.008, rope)
-						elif ruined and _rng.randf() < 0.6:
-							_deco.rod(pa + Vector3(0, y * 0.5, 0), (pa + pb) * 0.5 + inward * 0.3 + Vector3(0, 0.02, 0), 0.008, rope)
-				"scrap":
-					var cols: Array[Color] = [Color(0.45, 0.26, 0.15), Color(0.3, 0.4, 0.5), Color(0.32, 0.42, 0.3), Color(0.5, 0.48, 0.45)]
-					var pc3: Color = cols[_rng.randi() % cols.size()].darkened(_rng.randf_range(0.0, 0.2))
-					pc3.a = STEEL
-					var r2: float = _rng.randf() if ruined else 1.0
-					var mid: Vector3 = (pa + pb) * 0.5
-					var bb := Basis.looking_at(inward)
-					if r2 < 0.3:
-						continue
-					elif r2 < 0.55:
-						_deco.box(Transform3D(bb.rotated(bb.x, -PI * 0.5 + 0.05), mid + inward * 0.9 + Vector3(0, 0.05, 0)), Vector3(2.4, 1.7, 0.03), pc3)
-					else:
-						_deco.box(Transform3D(bb.rotated(inward, _rng.randf_range(-0.06, 0.06)).rotated(bb.x, _rng.randf_range(-0.2, 0.1) if ruined else 0.0), mid + Vector3(0, 0.85, 0)), Vector3(2.45, 1.7, 0.03), pc3)
-						for q: int in 5:
-							var rx: Vector3 = pa.lerp(pb, 0.1 + q * 0.2) + Vector3(0, 0.05, 0) - inward * 0.02
-							_deco.rod(rx, rx + Vector3(0, 1.6, 0), 0.012, pc3.darkened(0.2))
-	if ruined:
-		return
-	if biome in ["neon_coast", "lake"]:
-		_nets(-hh)
-
-
-## Fishing nets hung over the back fence, with floats.
-func _nets(z: float) -> void:
-	var col := Color(0.18, 0.28, 0.22, PAINT)
-	for spec: Array in [[-6.5, 3.5], [1.5, 3.0]]:
-		var x0: float = spec[0]
-		var w: float = spec[1]
-		for i: int in int(w / 0.25) + 1:
-			var x: float = x0 + i * 0.25
-			var drop: float = 1.2 + 0.3 * sin(i * 0.9)
-			_deco.rod(Vector3(x, 1.75, z + 0.08), Vector3(x + 0.05, 1.75 - drop, z + 0.14), 0.006, col)
-		for j: int in 5:
-			var y: float = 1.75 - j * 0.25
-			_deco.rod(Vector3(x0, y, z + 0.1), Vector3(x0 + w, y - 0.05, z + 0.1), 0.006, col)
-		for i: int in int(w / 0.6):
-			_deco.box(Transform3D(Basis(), Vector3(x0 + 0.3 + i * 0.6, 1.72, z + 0.12)), Vector3(0.12, 0.1, 0.1), Color(0.95, 0.45, 0.12, PLAST))
-
+# --- Name sign (ruined / patched) ----------------------------------------------------------
 
 ## The district's name board over the back fence. Broken: one post snapped, the board hanging
 ## off the other, letters peeled away.
@@ -2354,12 +2267,16 @@ func _build_name_sign(broken: bool) -> void:
 	for sx: float in [-2.45, 2.45]:
 		var hgt: float = 3.6 if not (broken and sx > 0.0) else 1.3
 		_deco.box(Transform3D(Basis(), Vector3(x + sx, hgt * 0.5, z)), Vector3(0.16, hgt, 0.16), post)
+		_solid_box(Transform3D(Basis(), Vector3(x + sx, hgt * 0.5, z)), Vector3(0.22, hgt, 0.22))  # [world2]
 		if broken and sx > 0.0:
 			_deco.box(Transform3D(Basis(Vector3.BACK, 1.45).rotated(Vector3.UP, 0.4), Vector3(x + sx + 0.9, 0.1, z + 0.6)), Vector3(0.16, 2.2, 0.16), post)
+			_solid_box(Transform3D(Basis(Vector3.BACK, 1.45).rotated(Vector3.UP, 0.4), Vector3(x + sx + 0.9, 0.1, z + 0.6)), Vector3(0.2, 2.2, 0.2))  # [world2]
 	var board_xf := Transform3D(Basis(), Vector3(x, 2.85, z + 0.1))
 	if broken:
 		var pivot := Vector3(x - 2.4, 3.45, z + 0.1)
 		board_xf = Transform3D(Basis(Vector3.BACK, -0.62).rotated(Vector3.UP, 0.12), pivot) * Transform3D(Basis(), Vector3(2.4, -0.62, 0))
+	if broken:  # [world2] the board hangs down to the ground
+		_solid_box(Transform3D(board_xf.basis.orthonormalized(), board_xf.origin), Vector3(4.8, 1.3, 0.2))
 	var bg: Color = _sign_bg.lerp(Color(0.62, 0.6, 0.55), 0.45 if broken else 0.12)
 	bg.a = PAINT
 	_deco.box(board_xf, Vector3(4.8, 1.3, 0.08), bg)
@@ -2413,6 +2330,7 @@ func _build_camp() -> void:
 				_deco.box(Transform3D(Basis(Vector3.UP, _rng.randf_range(-0.015, 0.015)), Vector3(x, 0.035, 6.2)), Vector3(0.26, 0.05, 3.7 - (i % 3) * 0.15), wood.darkened(_rng.randf_range(0.0, 0.25)))
 			for c: Vector2 in [Vector2(-8.35, 4.35), Vector2(-4.75, 4.35)]:
 				_deco.box(Transform3D(Basis(), Vector3(c.x, 0.45, c.y)), Vector3(0.18, 0.9, 0.18), wood.darkened(0.3))
+				_solid_box(Transform3D(Basis(), Vector3(c.x, 0.45, c.y)), Vector3(0.22, 0.9, 0.22))  # [world2]
 			_deco.rod(Vector3(-8.35, 0.82, 4.35), Vector3(-4.75, 0.78, 4.35), 0.02, Color(0.7, 0.62, 0.45, PAINT))
 		"rustlands":
 			for k: int in 3:
@@ -2444,6 +2362,7 @@ func _tarp_shade(c: Vector3, yaw: float) -> void:
 		var hgt: float = 2.3 if q.y < 0 else 1.9
 		var bp: Vector3 = c + b * Vector3(q.x, 0, q.y)
 		_deco.rod(bp, bp + Vector3(0, hgt, 0), 0.035, wood)
+		_solid_cyl(bp, 0.07, hgt)  # [world2]
 		corners.append(bp + Vector3(0, hgt, 0))
 	var col: Color = _tarp_cols[0]
 	var n: int = 5
@@ -2467,6 +2386,7 @@ func _lanterns() -> void:
 func _lantern_post(p: Vector3) -> void:
 	var wood := Color(0.33, 0.26, 0.19, PAINT)
 	_deco.box(Transform3D(Basis(), p + Vector3(0, 0.8, 0)), Vector3(0.1, 1.6, 0.1), wood)
+	_solid_cyl(p, 0.1, 1.6)  # [world2]
 	var arm: Vector3 = p + Vector3(0, 1.55, 0) - Vector3(p.x, 0, p.z).normalized() * 0.4
 	_deco.rod(p + Vector3(0, 1.55, 0), arm, 0.02, wood)
 	_deco.box(Transform3D(Basis(), arm - Vector3(0, 0.08, 0)), Vector3(0.18, 0.02, 0.18), Color(0.15, 0.15, 0.15, STEEL))
@@ -2475,37 +2395,24 @@ func _lantern_post(p: Vector3) -> void:
 
 # --- Restored base: the futuristic kit (levels 3-5) -----------------------------------------
 
-## White panel fence with dark glass and cyan light strips (replaces the patched fence).
-func _build_future_fence() -> void:
-	var hh: float = CityLayout.YARD_HALF + 0.15
-	var edges: Array = [[Vector2(-hh, -hh), Vector2(hh, -hh)], [Vector2(-hh, -hh), Vector2(-hh, hh)], [Vector2(hh, -hh), Vector2(hh, hh)]]
-	for e: Array in edges:
-		var a: Vector2 = e[0]
-		var b: Vector2 = e[1]
-		var inward: Vector3 = -_xz((a + b) * 0.5, 0.0).normalized()
-		var bb := Basis.looking_at(-inward)
-		var n: int = int(a.distance_to(b) / 2.5)
-		for k: int in n + 1:
-			var bp: Vector3 = _xz(a.lerp(b, float(k) / n), 0.0)
-			_deco.box(Transform3D(bb, bp + Vector3(0, 0.95, 0)), Vector3(0.16, 1.9, 0.16), GLOSS)
-			_deco.box(Transform3D(bb, bp + Vector3(0, 1.93, 0)), Vector3(0.2, 0.08, 0.2), Color(_accent.r, _accent.g, _accent.b, PLAST))
-			if k < n:
-				var pb: Vector3 = _xz(a.lerp(b, float(k + 1) / n), 0.0)
-				var mid: Vector3 = (bp + pb) * 0.5
-				var w: float = bp.distance_to(pb) - 0.16
-				_deco.box(Transform3D(bb, mid + Vector3(0, 0.55, 0)), Vector3(w, 0.9, 0.06), GLOSS)
-				_deco.box(Transform3D(bb, mid + Vector3(0, 1.38, 0)), Vector3(w, 0.62, 0.04), GLASS)
-		var a3: Vector3 = _xz(a, 0.0) + inward * 0.05
-		var b3: Vector3 = _xz(b, 0.0) + inward * 0.05
-		_tubes.rod(a3 + Vector3(0, 1.72, 0), b3 + Vector3(0, 1.72, 0), 0.025, CYAN, Vector2(11.0, 0.0))
-		_tubes.rod(a3 + Vector3(0, 0.08, 0), b3 + Vector3(0, 0.08, 0), 0.02, CYAN, Vector2(11.3, 0.0))
-	# The light poles get white sleeves with a cyan strip and an orange cap light.
+## The light poles get white sleeves with a cyan strip and an orange cap light (level 3+).
+## [world2] (The white panel fence that came with them is gone: no yard fence at all.)
+func _build_pole_sleeves() -> void:
 	for t: Vector3 in _pole_tops():
 		var bp2 := Vector3(t.x, 0, t.z)
 		var inw: Vector3 = -bp2.normalized()
 		_deco.box(Transform3D(Basis(), bp2 + Vector3(0, 2.6, 0)), Vector3(0.26, 5.2, 0.26), GLOSS)
 		_tubes.box(Transform3D(Basis.looking_at(-inw), bp2 + inw * 0.135 + Vector3(0, 2.6, 0)), Vector3(0.05, 4.8, 0.01), CYAN, Vector2(12.0, 0.0))
 		_tubes.box(Transform3D(Basis(), t + Vector3(0, 0.3, 0)), Vector3(0.18, 0.1, 0.18), _accent, Vector2(12.5, 0.0))
+
+
+## [world2] Solid prop colliders in the current layer (shared shapes, PhysLayers.PROP).
+func _solid_box(xf: Transform3D, size: Vector3) -> void:
+	PropColliders.add_box(_body, xf, size)
+
+
+func _solid_cyl(base: Vector3, r: float, h: float) -> void:
+	PropColliders.add_cyl(_body, base, r, h)
 
 
 ## Holographic name sign: a white projector pylon pair throwing the district name in cyan.
@@ -2515,6 +2422,7 @@ func _build_holo_sign() -> void:
 	for sx: float in [-2.5, 2.5]:
 		var bp := Vector3(x + sx, 0, z)
 		_deco.box(Transform3D(Basis(), bp + Vector3(0, 1.4, 0)), Vector3(0.3, 2.8, 0.3), GLOSS)
+		_solid_box(Transform3D(Basis(), bp + Vector3(0, 1.4, 0)), Vector3(0.36, 2.8, 0.36))  # [world2]
 		_deco.box(Transform3D(Basis(), bp + Vector3(0, 2.86, 0)), Vector3(0.4, 0.12, 0.4), GLASS)
 		_tubes.box(Transform3D(Basis(), bp + Vector3(0, 1.4, 0.155)), Vector3(0.05, 2.5, 0.01), CYAN, Vector2(13.0, 0.0))
 		_tubes.box(Transform3D(Basis(), bp + Vector3(0, 2.94, 0)), Vector3(0.3, 0.03, 0.3), _accent, Vector2(13.4, 0.0))
@@ -2587,6 +2495,7 @@ func _build_planters() -> void:
 	var flowers: Array[String] = ["flower_gazania", "flower_heliophila", "celandine_01", "dandelion_01"]
 	for sp: Vector3 in spots:
 		_deco.cyl(sp, sp + Vector3(0, 0.55, 0), 0.38, 0.46, GLOSS, 16)
+		_solid_cyl(sp, 0.46, 0.55)  # [world2]
 		_deco.cyl(sp + Vector3(0, 0.5, 0), sp + Vector3(0, 0.52, 0), 0.42, 0.42, Color(0.16, 0.12, 0.09, PAINT), 16)
 		_tubes.cyl(sp + Vector3(0, 0.12, 0), sp + Vector3(0, 0.16, 0), 0.4, 0.4, CYAN, 16, false, Vector2(18.0, 0.0))
 		for k: int in 6:

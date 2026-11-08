@@ -310,6 +310,10 @@ func _ready() -> void:
 	scroll.custom_minimum_size = Vector2(0, 330)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	sv.add_child(scroll)
+	# [ui4] The crew list gives up height on short screens (1280x720 at 125%) so the panel fits.
+	_list_scroll = scroll
+	_fit_list.call_deferred()
+	get_viewport().size_changed.connect(_fit_list)  # a method: disconnects itself when the view is freed
 	_list = VBoxContainer.new()
 	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_list.add_theme_constant_override("separation", 3)
@@ -606,6 +610,14 @@ func _refresh() -> void:
 	_rebuild_list()
 
 
+var _list_scroll: ScrollContainer  # [ui4]
+
+
+func _fit_list() -> void:
+	if is_instance_valid(_list_scroll) and _list_scroll.is_inside_tree():
+		_list_scroll.custom_minimum_size.y = clampf(_list_scroll.get_viewport().get_visible_rect().size.y - 370.0, 140.0, 330.0)
+
+
 func _rebuild_list() -> void:
 	# The list buttons are rebuilt on every refresh: remember which one had focus.
 	var fo: Control = get_viewport().gui_get_focus_owner() if is_inside_tree() else null
@@ -615,8 +627,34 @@ func _rebuild_list() -> void:
 	for c: Node in _list.get_children():
 		c.queue_free()
 	_fill_list()
+	_link_list_focus()  # [ui4]
 	if refocus:
 		_restore_focus()
+
+
+## [ui4] Explicit up / down D-pad links down the crew list (group, Build + Upgrade row, robots),
+## so every row is reachable with a pad even when the list scrolls (Godot's geometric search
+## skipped robot rows under a build row). The ends keep their default exits.
+func _link_list_focus() -> void:
+	var rows: Array = []  # each: Array[Button] (one per list line)
+	for c: Node in _list.get_children():
+		if c.is_queued_for_deletion():
+			continue
+		if c is Button:
+			rows.append([c])
+		elif c is HBoxContainer:
+			var line: Array = []
+			for b: Node in c.get_children():
+				if b is Button:
+					line.append(b)
+			if not line.is_empty():
+				rows.append(line)
+	for i: int in rows.size():
+		for b: Button in rows[i]:
+			if i > 0:
+				b.focus_neighbor_top = b.get_path_to(rows[i - 1][0])
+			if i < rows.size() - 1:
+				b.focus_neighbor_bottom = b.get_path_to(rows[i + 1][0])
 
 
 ## Content row laid over a Button (the Button keeps focus, toggle and metas).
@@ -753,6 +791,10 @@ func _add_build_row(role_id: String) -> void:
 			_refresh())
 		_style_button(u, UITheme.GOLD, false)
 		row.add_child(u)
+		# [ui4] Explicit D-pad links: the narrow Upgrade button beside the wide Build button was
+		# unreachable with Godot's geometric search inside the scrolled list.
+		b.focus_neighbor_right = b.get_path_to(u)
+		u.focus_neighbor_left = u.get_path_to(b)
 		_list.add_child(row)
 		var info := UITheme.label("", 11, Color(UITheme.MUTED, 0.85))
 		info.add_theme_constant_override("shadow_outline_size", 0)
@@ -777,16 +819,11 @@ func _refresh_build() -> void:
 					var maxed: bool = req.get("maxed", false)
 					(b as Button).text = tr("Max tier") if maxed else tr("Upgrade > %s") % tr(str(req["next"]["name"]))
 					(b as Button).disabled = maxed or not (at_bench and req["ok"])
-					(b as Button).tooltip_text = "" if maxed else tr("%s cubes, %s parts, %s Control Core. %s") % [Settings.fmt(req["cost"]), Settings.fmt(req["parts"]), tr(str(Economy.rarity(int(req["core_rarity"])).get("name", "?"))), req["reason"]]
+					(b as Button).tooltip_text = "" if maxed else "%s. %s" % [Currencies.cost_text({"cubes": (req["cost"] as BigNum).to_float(), "parts": (req["parts"] as BigNum).to_float()}), req["reason"]]  # [ui2]
 		elif c.has_meta("build_info"):
 			var t2: String = str(c.get_meta("build_info"))
-			var have: int = 0
-			var rs: Array = f.recipe_status(t2)
-			for r: Dictionary in rs:
-				if r["have"]:
-					have += 1
 			var why: String = f.build_block_reason(t2)
-			(c as Label).text = tr("  parts %d/%d · %s") % [have, rs.size(), ("ready" if why == "" else why) if at_bench else tr("build at the workbench")]
+			(c as Label).text = "  %s · %s" % [L10nFmt.amount("parts", f.build_parts(t2).to_float()), (tr("ready") if why == "" else why) if at_bench else tr("build at the workbench")]  # [ui2] Parts, no part recipe
 	if _tank_btn:
 		var net: WaterNet = f.water_net
 		if net == null:

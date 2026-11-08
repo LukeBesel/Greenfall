@@ -94,6 +94,8 @@ func test_only_old_or_low_tier_robots_retire() -> void:
 	var r := Robot.new()
 	r.robot_name = "Test-01"
 	r.tier = 0
+	assert_ne(Nursery.retire_block_reason(r), "", "[camp] no nursery built here yet")
+	YardBuilds.mark_built("nursery")
 	assert_eq(Nursery.retire_block_reason(r), "", "Mk I can retire")
 	r.tier = 3
 	GameState.stats["time_played"] = 100.0

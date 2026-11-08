@@ -269,7 +269,7 @@ func _rand_dir() -> Vector3:
 
 ## Laser colour: the worn design's glow (cyan for Aurora).  [skins]
 func _glow() -> Color:
-	return PatchModel.glow_of(model.variant) if model else CYAN
+	return LumiStyle.laser_of(model) if model else CYAN  # [style] Character Builder laser colour
 
 
 func _draw_slot(s: Slot) -> void:

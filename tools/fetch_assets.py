@@ -90,6 +90,9 @@ def main():
     for k, a in all_jobs:
         authors = ", ".join(infos.get(a, {}).get("authors", {}).keys()) or "Poly Haven"
         lines.append(f"| {infos.get(a, {}).get('name', a)} (`{a}`) | {k} | {authors} | CC0 | https://polyhaven.com/a/{a} |")
+    # [fauna2] Vendored packs (kept in the repo, not fetched).
+    for v in manifest.get("vendored", []):
+        lines.append(f"| {v['name']} (`{v['path']}`) | {v['type']} | {v['author']} | {v['license']} | {v['source']} |")
     lines += ["", "## Fonts", "Godot's built-in default font (Open Sans / Noto, OFL/Apache) is used for UI.", ""]
     open(os.path.join(ROOT, "docs/CREDITS.md"), "w").write("\n".join(lines) + "\n")
 

@@ -1,7 +1,12 @@
 {
   "_doc": "WREN's lines by trigger. WREN is the ark Cradle's AI, whispering to Lumi over a failing relay. Each trigger has lines per signal stage (the relay clears as the planet is restored): 0 = fragmented (rendered with glitches), 1 = recovering, 2 = clear. A line is never repeated until the pool for that trigger and stage is used up. {name} = Lumi's name, {robot} = a robot name.",
   "wake": [
-    ["...carrier... Lumi? Relay at four percent. It's WREN. Hello. Hello. I'm still here.", "...that ground you just cleared... the relay got stronger. Hello again. Do that again. Please."]
+    ["...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing.", "...there you are. The signal's thin, but it's ours. Hello again, Lumi."]
+  ],
+  "signal_up": [
+    ["Better. Less static. Keep building."],
+    ["Much better. I can hear the wind on your end now. And I can tell you more."],
+    ["Clear as the garden deck. Now I can tell you everything I couldn't."]
   ],
   "hex_clean": [
     ["...that patch of ground. It's... brown. Brown is better than gray.", "Signal stronger. Did you do that?", "...clean... the relay likes that word. So do I.", "Another one. My static has a shape now."],
@@ -45,7 +50,7 @@
   ],
   "first_robot_hint": [
     [],
-    ["If you find enough parts, the workbench can put a helper together. Chassis, wheels, an arm, a core.", "Electronics junk sometimes hides parts. So does the ground, if you listen for it."],
+    ["With enough parts, the workbench can put a helper together. Bots tab, one button.", "Electronics junk sometimes hides parts. So does the ground, if you listen for it."],
     []
   ],
   "night": [
@@ -153,10 +158,15 @@
     ["Four hundred and twelve years on hold. Honestly? Relatable.", "The phone company's hold music outlived the phone company. That's art."],
     ["If anyone ever does pick up on the other end, I'd like to hear what they say."]
   ],
+  "museum_complete": [
+    ["...all of it... kept..."],
+    ["Every plinth full. Whoever comes next will know exactly who was here, and what they loved.", "The Museum is complete. I've logged it as a landmark. Not a strategic one. A sentimental one."],
+    ["Every last gnome, shard and ring, on its plinth. You didn't just clean the world, {name}. You remembered it."]
+  ],
   "egg_tv": [
-    ["...weather... it said green..."],
-    ["'Outlook: green.' That TV has been wrong for three hundred years and it's finally about to be right.", "Someone was watching the forecast when they left. I hope it said sunny."],
-    ["The weather channel. Still on. Still hopeful. I like it."]
+    ["...broadcast... we'll be... back..."],
+    ["That was the last news out of Old Town. The rigs, the waste, the shuttles up to me. I carried every one of those people.", "'We'll be back.' They meant it. I still have the passenger list."],
+    ["Still broadcasting, after all this time. Somebody wanted whoever came back to know what happened. Now you do."]
   ],
   "egg_snail": [
     ["...small... slow... alive...!"],

@@ -120,6 +120,10 @@ func test_cannot_open_during_flights_and_cinematics() -> void:
 	var pm := PhotoMode.new()
 	pm.world = w
 	add_child_autofree(pm)
+	var had: Variant = GameState.flags.get("yard_global")
+	GameState.flags["yard_global"] = {}
+	assert_eq(pm.block_reason(), "locked", "[camp3] no photo mode before Blink, the camera bot, is built")
+	YardBuilds.mark_built(CameraBot.ID)
 	assert_eq(pm.block_reason(), "")
 	w.launching = true
 	assert_string_contains(pm.block_reason(), "rocket")
@@ -135,6 +139,10 @@ func test_cannot_open_during_flights_and_cinematics() -> void:
 	assert_eq(pm.block_reason(true), "", "the pause menu path is allowed")
 	w.modal = false
 	assert_false(pm.is_open)
+	if had == null:
+		GameState.flags.erase("yard_global")
+	else:
+		GameState.flags["yard_global"] = had
 
 
 func test_open_close_restores_everything() -> void:

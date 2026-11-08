@@ -79,6 +79,8 @@ func test_one_completion_per_beat() -> void:
 	GameState.stats["junk_scooped"] = 100.0
 	GameState.stats["cubes_made"] = 5.0
 	GameState.stats["cubes_cashed"] = 5.0
+	GameState.stats["junk_dumps"] = 5.0  # [pace] the second goal empties the chest
+	GameState.stats["upgrades_bought"] = 5.0
 	assert_gte(g.check(), 0)
 	assert_eq(g.done_count(), 1)
 	g.check()

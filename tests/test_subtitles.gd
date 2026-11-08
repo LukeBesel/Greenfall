@@ -75,3 +75,18 @@ func test_one_line_at_a_time() -> void:
 	assert_false(s.is_busy("wren"))
 	s.clear()
 	assert_false(s.is_busy())
+
+
+## [intro3] The crash ends with WREN's one brief (data/objectives.json), last words breaking up.
+func test_intro_ends_with_the_brief() -> void:
+	var lines: Dictionary = Intro.lines()
+	for gone: String in ["wake", "green", "plan", "home"]:
+		assert_false(lines.has(gone), "no second WREN speech at the crash: " + gone)
+	var brief: Array = Intro.brief_lines()
+	assert_gt(brief.size(), 0)
+	var last: String = str(lines["brief_%d" % (brief.size() - 1)][0])
+	assert_true(last.contains(Subtitles.GLITCH_OPEN), "the last words break up")
+	var cs: PackedStringArray = Subtitles.chunks(last)
+	var gm: Array = Subtitles.glitch_mask(cs[cs.size() - 1])
+	assert_false(str(gm[0]).contains("[glitch]"), "markup never reaches the screen")
+	assert_true((gm[1] as Array).has(true), "the tail is marked heavy")

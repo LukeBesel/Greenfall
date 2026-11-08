@@ -1,7 +1,8 @@
 extends GutTest
-## [drones] Robot Builder rules (systems/robot_builder.gd): balance of the part data, stat
-## multipliers, fitting and the parts bin, crafting, Haggle's stall, the Maker set, presets,
-## traits, renaming, the kit visuals and robot save data.
+## [drones] Robot Builder rules (systems/robot_builder.gd). [ui2] Parts are cosmetics (the
+## Locker): no stat mods except the Maker set's small perk, owned parts fit every robot, unlocks
+## cost Parts (+ cubes), the shop lists every shop part. Also presets, traits, renaming, the kit
+## visuals and robot save data.
 
 var _flags: Dictionary
 var _stats: Dictionary
@@ -39,7 +40,7 @@ func _bot(type_id: String = "scoopie", rname: String = "Tester-01") -> Robot:
 	return r
 
 
-func test_every_part_is_a_tradeoff_and_gentle() -> void:
+func test_parts_are_cosmetic() -> void:
 	var slots: Array = []
 	for s: Dictionary in RobotBuilder.cfg()["slots"]:
 		slots.append(str(s["id"]))
@@ -47,22 +48,10 @@ func test_every_part_is_a_tradeoff_and_gentle() -> void:
 	for p: Dictionary in RobotBuilder.all_parts():
 		assert_true(str(p["slot"]) in slots, "%s has a known slot" % p["id"])
 		assert_true(p.has("source") and str(p["source"].get("kind", "")) in ["craft", "haggle", "request", "research", "drop", "set"], "%s has a source" % p["id"])
-		var mods: Dictionary = p.get("mods", {})
-		if str(p["slot"]) == "topper":
-			assert_true(mods.is_empty(), "%s: toppers are cosmetic" % p["id"])
-			continue
-		var up: bool = false
-		var down: bool = false
-		for k: String in mods:
-			assert_true(RobotBuilder.CONCRETE.has(k), "%s: known stat %s" % [p["id"], k])
-			var v: float = float(mods[k])
-			assert_between(v, 0.7, 1.6, "%s %s stays gentle" % [p["id"], k])
-			up = up or v > 1.0
-			down = down or v < 1.0
-		assert_true(up and down, "%s is specialised: an upside and a downside" % p["id"])
+		assert_true((p.get("mods", {}) as Dictionary).is_empty(), "%s changes no stats" % p["id"])
+		assert_true(RobotBuilder.generic_mods({str(p["slot"]): str(p["id"])}).is_empty(), "%s alone: no mods" % p["id"])
 		if str(p["source"]["kind"]) == "research":
 			assert_false(Research.def(str(p["source"]["research"])).is_empty(), "%s research node exists" % p["id"])
-
 
 func test_some_parts_from_each_economy() -> void:
 	var kinds: Dictionary = {}
@@ -78,21 +67,22 @@ func test_some_parts_from_each_economy() -> void:
 			assert_eq(int(p["source"].get("requests", -1)), int(t["n"]), "%s: requests count matches the track" % t["id"])
 
 
-func test_mods_scale_robot_stats() -> void:
+func test_fitting_uses_nothing_and_changes_no_stats() -> void:
 	var r := _bot()
-	r.trait_id = "chatty"  # scan only
+	r.trait_id = "chatty"
 	RobotBuilder.refresh_mods(r)
 	var base_speed: float = r.stat("speed")
 	var base_cap: float = r.stat("capacity")
+	assert_ne(RobotBuilder.equip(r, "mobility", "treads"), "", "locked parts can't be fitted")
 	RobotBuilder.add_part("treads")
 	assert_eq(RobotBuilder.equip(r, "mobility", "treads"), "")
-	assert_almost_eq(r.stat("speed"), base_speed * 0.88, 0.0001)
-	assert_almost_eq(r.stat("capacity"), base_cap * 1.2, 0.0001)
-	assert_eq(RobotBuilder.count("treads"), 0, "fitting takes it out of the bin")
+	assert_almost_eq(r.stat("speed"), base_speed, 0.0001, "cosmetic")
+	assert_almost_eq(r.stat("capacity"), base_cap, 0.0001, "cosmetic")
+	assert_eq(RobotBuilder.count("treads"), 1, "an unlocked part stays unlocked")
+	var r2 := _bot("scoopie", "Second-02")
+	assert_eq(RobotBuilder.equip(r2, "mobility", "treads"), "", "one unlock fits every robot")
 	assert_eq(RobotBuilder.equip(r, "mobility", ""), "")
-	assert_eq(RobotBuilder.count("treads"), 1, "unfitting puts it back")
-	assert_almost_eq(r.stat("speed"), base_speed, 0.0001)
-
+	assert_eq(RobotBuilder.count("treads"), 1)
 
 func test_tools_fit_their_crew_only() -> void:
 	var h := _bot("haulbug", "Hauler-01")
@@ -102,25 +92,23 @@ func test_tools_fit_their_crew_only() -> void:
 	assert_true(RobotBuilder.fits("long_forks", "haulbug"))
 	assert_true(RobotBuilder.fits("wide_scoop", "multibot"), "multibots take any tool")
 	assert_false(RobotBuilder.fits("mist_sprayer", "scoopie"))
-	assert_ne(RobotBuilder.equip(h, "head", "big_eye"), "", "nothing in the bin")
+	assert_ne(RobotBuilder.equip(h, "head", "big_eye"), "", "not unlocked")
 
 
-func test_craft_uses_parts_and_a_stored_part() -> void:
+func test_unlock_costs_parts_only() -> void:
 	assert_ne(RobotBuilder.craft_block_reason("treads"), "")
-	GameState.parts.append({"type": Fleet.part_index("locomotion"), "rarity": 2})
-	GameState.parts.append({"type": Fleet.part_index("locomotion"), "rarity": 0})
+	var need: float = RobotBuilder.craft_parts("treads")
+	assert_almost_eq(need, 30.0 + RobotParts.value(0), 0.001, "parts + the old robot part's worth")
 	assert_string_contains(RobotBuilder.craft_block_reason("treads"), "parts")
-	GameState.add_currency("parts", BigNum.from_float(50))
+	GameState.add_currency("parts", BigNum.from_float(need + 5.0))
 	assert_eq(RobotBuilder.craft_block_reason("treads"), "")
 	assert_true(RobotBuilder.craft("treads"))
 	assert_eq(RobotBuilder.count("treads"), 1)
-	assert_eq(GameState.parts.size(), 1)
-	assert_eq(int(GameState.parts[0]["rarity"]), 2, "the cheapest part of the type was used")
-	assert_almost_eq(GameState.get_currency("parts").to_float(), 20.0, 0.001, "treads cost 30 parts")
-
+	assert_eq(GameState.parts.size(), 0, "no robot part items involved")
+	assert_almost_eq(GameState.get_currency("parts").to_float(), 5.0, 0.001)
+	assert_string_starts_with(RobotBuilder.cost_text("antenna"), "Unlock")
 
 func test_research_gate() -> void:
-	GameState.parts.append({"type": Fleet.part_index("locomotion"), "rarity": 0})
 	GameState.add_currency("parts", BigNum.from_float(500))
 	assert_string_contains(RobotBuilder.craft_block_reason("rotor"), "Research")
 	Research.grant("swarm_sync")
@@ -129,23 +117,22 @@ func test_research_gate() -> void:
 
 func test_maker_set_needs_parts_and_gives_bonus() -> void:
 	# [money] Maker Fragments are Parts now: a fragment find pays FRAGMENT_PARTS parts.
-	GameState.parts.append({"type": Fleet.part_index("chassis"), "rarity": 1})
 	RobotBuilder.add_fragments(3)
 	assert_almost_eq(GameState.get_currency("parts").to_float(), 3.0 * RobotBuilder.FRAGMENT_PARTS, 0.001)
-	assert_string_contains(RobotBuilder.craft_block_reason("maker_shell"), "Vintage", "needs a Vintage+ chassis")
-	GameState.parts.append({"type": Fleet.part_index("chassis"), "rarity": 3})
-	assert_string_contains(RobotBuilder.craft_block_reason("maker_shell"), "parts", "and 250 parts")
-	RobotBuilder.add_fragments(7)
+	var need: float = RobotBuilder.craft_parts("maker_shell")
+	assert_almost_eq(need, 250.0 + RobotParts.value(3), 0.001, "250 parts + a Vintage part's worth")
+	assert_string_contains(RobotBuilder.craft_block_reason("maker_shell"), "parts")
+	GameState.add_currency("parts", BigNum.from_float(need - 3.0 * RobotBuilder.FRAGMENT_PARTS))
 	assert_true(RobotBuilder.craft("maker_shell"))
 	assert_almost_eq(GameState.get_currency("parts").to_float(), 0.0, 0.001)
 	var b: Dictionary = {"chassis": "maker_shell", "head": "maker_optic", "mobility": "maker_glider"}
 	assert_true(RobotBuilder.has_set(b))
 	var with_set: Dictionary = RobotBuilder.generic_mods(b)
-	var speed_parts: float = 0.95 * 1.12
-	assert_almost_eq(float(with_set["speed"]), speed_parts * 1.05, 0.0001, "set bonus on top")
+	assert_almost_eq(float(with_set["speed"]), 1.05, 0.0001, "the one perk: the Maker set")
+	assert_almost_eq(float(with_set["work"]), 1.06, 0.0001)
 	b.erase("head")
 	assert_false(RobotBuilder.has_set(b))
-
+	assert_true(RobotBuilder.generic_mods(b).is_empty())
 
 func test_full_custom_goal_stat() -> void:
 	var r := _bot()
@@ -191,8 +178,7 @@ func test_traits_are_stable_and_gentle() -> void:
 		seen[RobotBuilder.trait_for_name("Bot-%d" % i)] = true
 	assert_gte(seen.size(), 4, "names spread over the traits")
 	for t: Dictionary in RobotBuilder.traits():
-		for k: String in t.get("mods", {}):
-			assert_between(float(t["mods"][k]), 0.94, 1.16, "trait %s is flavour, not a build" % t["id"])
+		assert_true(RobotBuilder.concrete_mods({}, str(t["id"])).is_empty(), "trait %s is flavour only" % t["id"])
 		assert_true(Audio.has_sound(str(t.get("beep", ""))), "trait %s beep exists" % t["id"])
 
 
@@ -213,24 +199,16 @@ func test_presets_and_save_dict() -> void:
 	assert_almost_eq(r2.stat("capacity"), r.stat("capacity") / float(r.build_mods.get("capacity", 1.0)) * float(r2.build_mods.get("capacity", 1.0)), 0.0001)
 
 
-func test_haggle_stall_rotates_and_sells() -> void:
-	var a: Array[String] = RobotBuilder.haggle_offers(10.0)
-	assert_eq(a.size(), 3)
-	assert_eq(a, RobotBuilder.haggle_offers(100.0), "same stock inside one rotation")
+func test_shop_lists_every_shop_part() -> void:
+	var a: Array[String] = RobotBuilder.haggle_offers()
+	assert_gt(a.size(), 3, "no rotation: every shop part is on offer")
 	for id: String in a:
 		assert_eq(RobotBuilder.source_kind(id), "haggle")
-	var differs: bool = false
-	for k: int in 6:
-		if RobotBuilder.haggle_offers(10.0 + 480.0 * (k + 1)) != a:
-			differs = true
-	assert_true(differs, "stock rotates")
-	GameState.stats["time_played"] = 10.0
 	assert_ne(RobotBuilder.buy_haggle(a[0]), "")
 	GameState.add_currency("cubes", BigNum.from_float(5000))
 	GameState.add_currency("parts", BigNum.from_float(250))
 	assert_eq(RobotBuilder.buy_haggle(a[0]), "")
 	assert_eq(RobotBuilder.count(a[0]), 1)
-
 
 func test_rename_moves_orders() -> void:
 	var r := _bot("scoopie", "Old-01")

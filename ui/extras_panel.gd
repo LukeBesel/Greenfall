@@ -6,7 +6,7 @@ extends CanvasLayer
 ## before/after slider, B (or Esc) closes.
 
 const TABS: Array[String] = ["radio", "album", "nursery", "weekly"]
-const TAB_NAMES: Dictionary = {"radio": "Radio", "album": "Album", "nursery": "Nursery", "weekly": "Seed of the Week"}  # l10n
+const TAB_NAMES: Dictionary = {"radio": "CD Player", "album": "Album", "nursery": "Nursery", "weekly": "Seed of the Week"}  # l10n
 const VIEW_SIZE := Vector2(560, 315)
 
 var world: Node
@@ -184,34 +184,11 @@ func _tex(path: String) -> Texture2D:
 # --- Radio -------------------------------------------------------------------------------
 
 func _build_radio() -> void:
-	var left: VBoxContainer = _col(420, tr("SONGS  ·  %d / %d") % [Radio.unlocked_count(), Radio.songs().size()])
-	var cur: String = Radio.playing()
-	for s: Dictionary in Radio.songs():
-		var id: String = str(s["id"])
-		var ok: bool = Radio.is_unlocked(id)
-		var txt: String = ("%s%s\n%s" % ["▶  " if id == cur else "", tr(Radio.title(id)), tr(str(s.get("desc", "")))]) if ok \
-			else ("? ? ?\n%s" % (tr("Unlocks: %s") % tr(str(s.get("hint", "")))))
-		var b: Button = _btn(left, txt, func() -> void:
-			if Radio.play(id):
-				EventBus.toast.emit(tr("Now playing: %s") % tr(Radio.title(id)), "info")
-			_rebuild(), 56)
-		b.add_theme_color_override("font_color", UITheme.GOLD if id == cur else (UITheme.CREAM if ok else UITheme.MUTED))
-		if id == cur:
-			_first = b
-	var right: VBoxContainer = _col(0, tr("NOW PLAYING"))
-	if cur != "":
-		right.add_child(UITheme.label(tr(Radio.title(cur)), 26, Color.WHITE))
-		right.add_child(_wrap(tr(str(Radio.song(cur).get("desc", ""))), 15, UITheme.MUTED))
-		right.add_child(_wrap(tr("Your pick loops everywhere until you switch back to the mood music. A restored planet plays its restored version."), 13, UITheme.MUTED))
-		var back: Button = _btn(right, tr("Back to mood music"), func() -> void:
-			Radio.play("")
-			EventBus.toast.emit(tr("The radio hands the music back to the day."), "info")
-			_rebuild())
-		UITheme.orange_button(back)
-	else:
-		right.add_child(UITheme.label(tr("Mood music"), 26, Color.WHITE))
-		right.add_child(_wrap(tr("The music follows the day: the yard, the streets, the night. Pick a song to play it instead."), 15, UITheme.MUTED))
-	right.add_child(_wrap(tr("New songs come in as districts and planets are restored."), 13, UITheme.GREEN))
+	# [tunes] The CD player: Shuffle (all your CDs), or pick one to play on repeat. Locked CDs show
+	# where they are found. ui/extras_cd_list.gd builds the rows.
+	ExtrasCdList.build(self, _body, func(b: Button) -> void:
+		if _first == null:
+			_first = b, _rebuild)
 
 
 # --- Album -------------------------------------------------------------------------------

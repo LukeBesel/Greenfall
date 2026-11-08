@@ -54,6 +54,11 @@ func _process(delta: float) -> void:
 	_light.light_energy = _flash * 1.6
 	if digging > 0.0:
 		return
+	if not active():  # [onboard] quiet during the restart checklist: one new thing at a time
+		target = -1
+		strength = 0.0
+		readout_changed.emit("", Color.WHITE, 0.0)
+		return
 	var r: float = range_m()
 	target = field.nearest_part(patch.global_position, r)
 	if target < 0:
@@ -74,11 +79,17 @@ func _process(delta: float) -> void:
 	var text: String = ""
 	var col := Color(1, 0.3, 0.25)
 	if d < 4.0:
-		text = tr("SIGNAL  %s  ·  %.1f m") % [tr(str(rar.get("name", "?"))).to_upper(), d]
+		# [onboard] "BURIED PART" says what the signal is (it read "SIGNAL 62%", unexplained).
+		text = tr("BURIED PART  %s  ·  %.1f m") % [tr(str(rar.get("name", "?"))).to_upper(), d]
 		col = UITheme.rarity_color(field.part_rarity[target])
 	elif strength > 0.0:
-		text = tr("SIGNAL  %d%%") % int(strength * 100.0)
+		text = tr("BURIED PART  ·  SIGNAL %d%%") % int(strength * 100.0)
 	readout_changed.emit(text, col, strength)
+
+
+## [onboard] The detector listens once the restart checklist is done (dev: --detector-on).
+static func active() -> bool:
+	return int(GameState.flags.get("tutorial_step", 0)) >= Tutorial.STEPS.size() or DevHooks.has("detector-on")
 
 
 func can_dig() -> bool:

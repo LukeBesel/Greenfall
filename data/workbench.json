@@ -1,0 +1,11 @@
+{
+  "_doc": "[ui2] Workbench tabs appear only once they are open (the owner: don't show what you can't use yet). A tab opens when ANY of its conditions holds, and stays open for good (flags.bench_tabs). Conditions: [\"earned\", N] lifetime cubes earned; [\"stat\", key, N] GameState.stats[key] >= N; [\"hub_level\", N]; [\"flag\", key]; [\"always\"]; [\"builds\"] something to build or built (HubBuilds, [ui3]). rockets is not a tab any more: it sets when the Upgrades tab shows its Rocket section. Other systems can add a gate in code: UpgradesScreen.set_tab_gate(id, func() -> bool, hint), which wins over this table.",
+  "tabs": {
+    "patch": [["always"]],
+    "bots": [["earned", 300], ["stat", "robots_built", 1]],
+    "research": [["earned", 500], ["stat", "research_done", 1]],
+    "build": [["builds"]],
+    "contracts": [["stat", "hexes_cleaned", 6], ["stat", "contracts_done", 1]],
+    "rockets": [["hub_level", 4]]
+  }
+}

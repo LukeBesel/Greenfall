@@ -14,6 +14,18 @@ func _check(name_: String, a: Variant, b: Variant) -> void:
 		_fails += 1
 
 
+## [style] A compact, order-stable signature of a look.
+func _style_sig(st: Dictionary) -> String:
+	var n: Dictionary = LumiStyle.normalize(st)
+	var bits: Array[String] = [str(n["bonus"]), str(n.get("name", ""))]
+	for k: String in LumiStyle.COLOR_SLOTS:
+		bits.append(LumiStyle.col(n, k).to_html(false))
+	for k: String in LumiStyle.PART_SLOTS:
+		bits.append(str(n[k]))
+	bits.append("%.2f" % float(n["wear"]))
+	return ",".join(bits)
+
+
 func _snapshot(s: Node) -> Dictionary:
 	var f: Fleet = s.fleet
 	var types: Array = []
@@ -71,17 +83,43 @@ func _snapshot(s: Node) -> Dictionary:
 		"fauna": _fauna(s),  # [wild]
 		# [skins] Lumi's designs: worn, unlocked, looks-only, and the model actually built with it.
 		"design": "%s %s looks_only=%s model=%s" % [Designs.current(), JSON.stringify(Designs.unlocked()), str(Designs.looks_only()), (s.patch.model as PatchModel).variant],
+		# [style] Character Builder: the worn look (and what the model actually shows), saved looks, bought parts.
+		"lumi_style": _style_sig(LumiStyle.current()),
+		"lumi_model": _style_sig(LumiStyle.style_for_model(s.patch.model)) + " laser=" + LumiStyle.laser_of(s.patch.model).to_html(false) + " rig=" + str(s.patch.model.get_node_or_null("LumiStyleRig") != null),
+		"lumi_looks": JSON.stringify(LumiStyle.looks().map(func(l: Variant) -> String: return _style_sig(l) if l is Dictionary and not (l as Dictionary).is_empty() else "-")),
+		"style_bought": JSON.stringify(LumiStyle.bought()),
 		# [late] Garden Mode decorations and their charm; Cradle Mode world tag.
 		"decor": JSON.stringify(GameState.world.get("decor", {})),
 		"decor_charm": snappedf(float(GameState.world.get("decor_charm", 0.0)), 0.01),
 		"world_index": int(GameState.flags.get("world_index", 0)),
 		# [scope] the Telescope at this base, its sightings and use stats.
+		# [onboard] story objectives, WREN's brief, the detector explanation, the Requests board unlock.
+		"onboard": "obj=%d tower=%d backlog=%d brief=%s signal=%s requests=%s" % [int(GameState.flags.get("objective_step", 0)), SignalTower.tier(), (GameState.flags.get("wren_backlog", []) as Array).size(), str(GameState.flags.get("onboard_brief", false)), str(GameState.flags.get("signal_explained", false)), str(GameState.flags.get("requests_unlocked", false))],
 		"telescope": "%s %s uses=%d" % [str(Telescope.of(s).built() if Telescope.of(s) else "none"), str(Codex.is_unlocked("sightings:first_light")), int(GameState.stats.get("telescope_uses", 0))],
 		"extras": JSON.stringify(ExtrasRoundtrip.snap(s)),  # [extras] radio, album, nursery
+		# [camp] the workbench repair, the trash bin's level, yard builds, and what's shown.
+		"camera_bot": "%s shown=%s" % [str(CameraBot.available()), str(Camp.of(s).camera_bot != null and Camp.of(s).camera_bot.visible if Camp.of(s) else false)],  # [camp3]
+		"camp": "bench=%s bin=L%d built=%s radio_shown=%s bench_prompt=%s" % [str(Camp.bench_ok()), TrashBin.level(), JSON.stringify(YardBuilds.state().get("built", {})), str(ExtrasDirector.of(s).radio.visible if ExtrasDirector.of(s) else false), (Camp.of(s).bench_prompt() if Camp.of(s) else "")],
+		"glim": JSON.stringify(_glim_snap(s)),  # [buddy] found, tiers, looks, the bot in the scene
+		"egg_collect": _egg_collect(s),  # [eggs2] collected gnomes and the Museum
 	}
 
 
+## [eggs2] Collected gnome parts, the Museum build flag and how many of its exhibits are full.
+func _egg_collect(_s: Node) -> String:
+	var parts: Array = EggCollect.parts("gnomes").duplicate()
+	parts.sort()
+	return "%s museum=%s full=%d" % [str(parts), str(Museum.built()), Museum.filled()]
+
+
 ## [wild] Persisted animal state, plus whether the adopted cat is back in the live district.
+## [buddy] Glim's saved state (JSON-normalised) and whether his body is in the district.
+func _glim_snap(s: Node) -> Dictionary:
+	var d: GlimDirector = GlimDirector.of(s)
+	return {"state": JSON.parse_string(JSON.stringify(Glim.st())), "bot": d != null and d.bot != null,
+		"range": snappedf(Glim.value("light", "range"), 0.01), "worn": [Glim.worn("shells"), Glim.worn("glows"), Glim.worn("tops")]}
+
+
 func _fauna(s: Node) -> String:
 	var named: String = "-"
 	if s.get("fauna") != null:
@@ -243,6 +281,7 @@ func _ready() -> void:
 	get_tree().root.add_child(s1)
 	for i: int in 3:
 		await get_tree().process_frame
+	_camp2_fresh_yard(s1)  # [camp2] a fresh base: only the bench and the bin; builds drop off the list
 	# Build up some mid-game state.
 	GameState.add_currency("cubes", BigNum.from_float(5000))
 	Composter.add_hopper(12.0)  # [money] the press hopper (was the compost currency)
@@ -313,7 +352,18 @@ func _ready() -> void:
 	Collection.grant("photo_moss_deer", true)
 	Contracts.owned().append("livery_halo")
 	GameState.flags["livery"] = "livery_halo"
+	EggCollect.add("gnomes", 3)  # [eggs2] two gnomes brought home
+	EggCollect.add("gnomes", 0)
+	GameState.flags["museum_built"] = true
 	WorldEvents.persist_state()["recent"] = ["supply_drop", "rain_shower"]
+	# [onboard] Past the brief, on the "Rebuild the base: level 2" objective, detector explained, board open.
+	GameState.flags["onboard_brief"] = true
+	GameState.flags["objective_step"] = 11
+	GameState.flags["objectives_v2"] = true
+	GameState.flags["signal_explained"] = true
+	GameState.flags["requests_unlocked"] = true
+	GameState.flags["signal_tower"] = 2
+	GameState.flags["wren_backlog"] = ["A line WREN couldn't send."]
 	# [hud] Some Lumi XP across a couple of levels.
 	if s1.get("lumi_level") != null:
 		s1.lumi_level.add("dev", LumiLevel.need(1) + LumiLevel.need(2) + 37)
@@ -349,6 +399,19 @@ func _ready() -> void:
 	Designs.select("nova")
 	Designs.set_looks_only(true)
 	(s1.patch.model as PatchModel).set_variant("nova")
+	# [style] A custom look on Nova's bonus (heart eyes, halo, drone, pink laser), a saved look, a bought swatch.
+	var look: Dictionary = LumiStyle.preset("nova")
+	LumiStyle.set_value(look, "paint", Color("#3d63ff"))
+	LumiStyle.set_value(look, "laser", Color("#ff5480"))
+	LumiStyle.set_value(look, "hover", Color("#85ff5c"))
+	look["eye_shape"] = "heart"
+	look["head"] = "halo"
+	look["companion"] = "drone"
+	look["held"] = "medkit"
+	LumiStyle.set_current(look)
+	LumiStyle.save_look(1, LumiStyle.preset("bolt"), "Hazard")
+	LumiStyle.bought().append("swatch:copper")
+	LumiStyle.refresh_player(s1)
 	_late_decorate(s1, 4)  # [late] a few Garden Mode decorations
 	# [scope] Build the Telescope (research route) and log its first sighting.
 	var scope: Telescope = Telescope.of(s1)
@@ -362,7 +425,25 @@ func _ready() -> void:
 		GameState.inc_stat("telescope_uses", 2.0)
 	else:
 		_check("scope_node", true, false)
+	if Camp.of(s1):  # [camp] fix the bench, raise the bin, build the radio
+		Camp.of(s1).repair_now()
+		TrashBin.set_level(3)
+		YardBuilds.mark_built("radio")
+		YardBuilds.mark_built(CameraBot.ID)  # [camp3] Blink, the camera bot
+		Camp.of(s1).camera_bot.set_built(false)
+		ExtrasDirector.of(s1).radio.set_built(true, false)
+	else:
+		_check("camp_node", true, false)
 	ExtrasRoundtrip.setup(s1)  # [extras] radio song, album records, a retired caretaker
+	# [buddy] Glim found, a few upgrade tiers, a bought shell and a top.
+	GlimDirector.of(s1).find_now("junk")
+	(Glim.st()["tiers"] as Dictionary)["light"] = 2
+	(Glim.st()["tiers"] as Dictionary)["scan"] = 1
+	GameState.add_currency("cubes", BigNum.from_float(500))
+	Glim.buy_look("shells", "sunset")
+	Glim.wear("shells", "sunset")
+	GameState.stats["hexes_cleaned"] = maxf(float(GameState.stats.get("hexes_cleaned", 0.0)), 4.0)
+	Glim.wear("tops", "sprout")
 	s1.patch.global_position = Vector3(3.0, 0.2, 5.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
 	s1.add_cube(dropped)
@@ -401,6 +482,7 @@ func _ready() -> void:
 	_homeward_roundtrip()  # [home] the system campaign's profile state
 	_profiles_roundtrip()  # [worlds2] save profiles: migration into p1, profiles kept apart
 	await _old_save_migration(packed)  # [money] a v1 save with the old currencies loads into the three
+	_v2_save_migration()  # [ui2] robot part items -> Parts
 	SaveManager.delete_save()
 	print("[roundtrip] %s (%d failures)" % ["OK" if _fails == 0 else "FAILED", _fails])
 	get_tree().quit(1 if _fails > 0 else 0)
@@ -419,6 +501,7 @@ func _old_save_migration(packed: PackedScene) -> void:
 		cur[k] = BigNum.from_float(float(old[k])).serialize()
 	d["currencies"] = cur
 	d["flags"]["builder"] = {"inv": {"treads": 1}, "fragments": 2}
+	d["parts"] = [{"type": 0, "rarity": 0}, {"type": 3, "rarity": 3}]  # [ui2] robot part items -> Parts (v3)
 	SaveManager.write_dict(SaveManager.slot_path(), d)
 	Currencies.warn_legacy = false
 	var ok: bool = SaveManager.load_game()
@@ -427,10 +510,14 @@ func _old_save_migration(packed: PackedScene) -> void:
 	_check("old_save_version", GameState.SAVE_VERSION, int(GameState.to_dict()["version"]))
 	_check("old_save_ids", JSON.stringify(["cubes", "parts", "seeds"]), JSON.stringify(_sorted_keys(GameState.currencies)))
 	_check("old_save_cubes", 2000.0 + 75.0 * 10.0 + 3.0 * 150.0, snappedf(GameState.get_currency("cubes").to_float(), 0.01))
-	_check("old_save_parts", 40.0 * 5.0 + 120.0 + 60.0 + 30.0 + 11.0 * 5.0 + 2.0 * 25.0, snappedf(GameState.get_currency("parts").to_float(), 0.01))
+	_check("old_save_parts", 40.0 * 5.0 + 120.0 + 60.0 + 30.0 + 11.0 * 5.0 + 2.0 * 25.0 + 10.0 + 150.0, snappedf(GameState.get_currency("parts").to_float(), 0.01))
+	_check("old_save_no_part_items", 0, GameState.parts.size())  # [ui2]
 	_check("old_save_seeds", 15.0, snappedf(GameState.get_currency("seeds").to_float(), 0.01))
 	_check("old_save_hopper", 9.0, snappedf(Composter.hopper(), 0.01))
 	_check("old_save_builder_inv", 1, RobotBuilder.count("treads"))
+	_check("old_save_pace_baler", true, Pace.baler_unlocked())  # [pace] old saves keep their bale press
+	_check("old_save_pace_lift", Pace.SIZE_LARGE, Pace.lift_class())
+	_check("old_save_pace_chest", true, Economy.stat("capacity") >= 30.0)
 	GameState.reload_in_memory = true
 	var s3: Node = packed.instantiate()
 	get_tree().root.add_child(s3)
@@ -439,6 +526,24 @@ func _old_save_migration(packed: PackedScene) -> void:
 	_check("old_save_slice_runs", true, is_instance_valid(s3) and s3.is_inside_tree())
 	s3.queue_free()
 	await get_tree().process_frame
+
+
+## [ui2] A v2 save (three currencies, robot part items in storage) -> v4 (via pace v3): the items become Parts
+## at their rarity's value; nothing else changes.
+func _v2_save_migration() -> void:
+	GameState.new_game()
+	var d: Dictionary = GameState.to_dict()
+	d["version"] = 2
+	d["currencies"]["parts"] = BigNum.from_float(100.0).serialize()
+	d["parts"] = [{"type": 0, "rarity": 0}, {"type": 1, "rarity": 1}, {"type": 3, "rarity": 2}, {"type": 3, "rarity": 4}]
+	d["flags"]["tier_scoopie"] = 1
+	SaveManager.write_dict(SaveManager.slot_path(), d)
+	var ok: bool = SaveManager.load_game()
+	_check("v3_save_loads", true, ok)
+	_check("v4_save_version", GameState.SAVE_VERSION, int(GameState.to_dict()["version"]))
+	_check("v3_parts_from_items", 100.0 + 10.0 + 25.0 + 60.0 + 450.0, snappedf(GameState.get_currency("parts").to_float(), 0.01))
+	_check("v3_no_items_left", 0, GameState.parts.size())
+	_check("v3_tier_kept", 1, int(GameState.flags.get("tier_scoopie", 0)))
 
 
 func _sorted_keys(d: Dictionary) -> Array:
@@ -601,6 +706,7 @@ func _homeward_roundtrip() -> void:
 	(hs["pct"] as Dictionary)["tidewell"] = 0.62
 	hs["relics"] = ["ochre_glass"]
 	hs["beats"] = ["ochre_arrive", "ochre_half", "ochre_restored"]
+	hs["seen"] = ["rime"]  # [sysmap2] spotted by the telescope
 	var w: Dictionary = Homeward.make_planet_world(2)
 	CradleMode.save_profile()
 	var before: String = JSON.stringify(CradleMode.to_dict())
@@ -612,6 +718,8 @@ func _homeward_roundtrip() -> void:
 	_check("home_picks", 2, Homeward.picks())
 	_check("home_relics", ["ochre_glass"], Homeward.relics())
 	_check("home_beat", true, Homeward.beat_done("ochre_half"))
+	_check("home_seen", ["rime"], Homeward.state().get("seen", []))
+	_check("home_rime_discovered", true, Homeward.discovered(3))
 	_check("home_pct_tidewell", 0.62, snappedf(Homeward.stored_pct(2), 0.01))
 	_check("home_system_pct", snappedf((1.0 + 1.0 + 0.62) / 5.0, 0.001), snappedf(Homeward.system_pct(), 0.001))
 	_check("home_planet_world", 1, Homeward.world_of(2))
@@ -688,3 +796,28 @@ func _profiles_roundtrip() -> void:
 	CradleMode.persist = keep[4]
 	CradleMode.path_override = keep[5]
 	GameState.from_dict(keep[6])
+
+
+## [camp2] Owner: "Only the workbench, which you have to repair to start, and the garbage bin.
+## Everything else is a build in the Hub", and one-time builds drop off the Hub list once built.
+func _camp2_fresh_yard(s: Node) -> void:
+	var c: Camp = Camp.of(s)
+	if c == null:
+		_check("camp2_node", true, false)
+		return
+	_check("camp2_fresh_yard", JSON.stringify(["workbench", "trash_bin"]), JSON.stringify(c.standing()))
+	_check("camp3_no_photo_mode_at_start", false, CameraBot.available() and not DevHooks.has("photo"))  # [camp3]
+	_check("camp3_no_camera_bot_at_start", false, c.camera_bot.visible if c.camera_bot else true)
+	var ids: Array = HubBuilds.available(s).map(func(e: Dictionary) -> String: return str(e["id"]))
+	_check("camp2_shack_listed", true, "shack" in ids)
+	c.repair_now()
+	GameState.add_currency("cubes", BigNum.from_float(1000))
+	GameState.add_currency("parts", BigNum.from_float(50))
+	_check("camp2_build_shack", true, HubBuilds.build(s, "shack"))
+	ids = HubBuilds.available(s).map(func(e: Dictionary) -> String: return str(e["id"]))
+	_check("camp2_shack_drops_off", false, "shack" in ids)
+	_check("camp2_shack_in_built", true, "Lean-to" in HubBuilds.built_names(s))
+	_check("camp2_shack_stands", true, "lean-to" in c.standing())
+	var lvl: int = TrashBin.level()
+	_check("camp2_bin_next_tier_only", 1, ids.count("trash_bin"))
+	_check("camp2_bin_tier_name", str(TrashBin.level_def(lvl + 1).get("name", "")), str(HubBuilds.entry(s, "trash_bin")["name"]))

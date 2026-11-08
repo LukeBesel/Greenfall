@@ -1,14 +1,15 @@
 class_name SettingsPanel
 extends Control
-## Reusable settings screen (title menu and pause menu). Tabs: Audio, Graphics, Controls, Gameplay,
-## Accessibility. Controls holds key / controller rebinding (stored by Settings).
+## Reusable settings screen (title menu and pause menu). [ui2] Opens on Basics (volume, quality,
+## fullscreen, sensitivity, language); "More settings" reveals the full tabs: Audio, Graphics,
+## Controls, Gameplay, Accessibility. Controls holds key / controller rebinding (stored by Settings).
 ## Every change is applied immediately and written with Settings.save_settings().
 ## Controller: up/down moves between rows, left/right changes a value, Q/E or the shoulders switch
 ## tabs, B / Esc closes.
 
 signal closed
 
-const TABS: Array[String] = ["Audio", "Graphics", "Controls", "Gameplay", "Accessibility"]  # l10n
+const TABS: Array[String] = ["Basics", "Audio", "Graphics", "Controls", "Gameplay", "Accessibility"]  # l10n
 const ROW_W: float = 300.0
 const BIND_W: float = 190.0
 ## Seconds a rebind capture waits before giving up (pad-only players have no Esc).
@@ -31,6 +32,10 @@ var _bind_warning: Label
 var _capture_action: String = ""
 var _capture_pad: bool = false
 var _capture_t: float = 0.0
+## [ui2] The full tabs (everything but Basics) show once "More settings" is pressed.
+var _more: bool = false
+var _tabs_hint: Control
+var _back_hint: Control
 
 
 func _ready() -> void:
@@ -47,7 +52,7 @@ func _ready() -> void:
 	add_child(center)
 	_panel = PanelContainer.new()
 	_panel.custom_minimum_size = Vector2(860, 0)
-	_panel.add_theme_stylebox_override("panel", UITheme.box(Color(0.06, 0.065, 0.07, 0.88), UITheme.RUST, 1, 6, 22))
+	_panel.add_theme_stylebox_override("panel", BenchKit.holo(Color(BenchKit.HOLO, 0.5), Color(0.02, 0.035, 0.045, 0.9), 1.0, 12, 22))  # [ui2] holo
 	center.add_child(_panel)
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 12)
@@ -55,12 +60,16 @@ func _ready() -> void:
 
 	var head := HBoxContainer.new()
 	vb.add_child(head)
-	var title := UITheme.label(tr("SETTINGS"), 30, UITheme.GOLD)
+	var title := UITheme.label(tr("SETTINGS"), 28, BenchKit.HOLO)  # [ui2]
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	head.add_child(title)
 	var hint := PromptLabel.new(tr("{ui_tab_prev}{ui_tab_next}  switch tabs     {ui_cancel}  back"), 13)  # [deck]
 	hint.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	head.add_child(hint)
+	_tabs_hint = hint
+	_back_hint = PromptLabel.new(tr("{ui_cancel}  back"), 13)  # [ui5] Basics has one tab: no "switch tabs"
+	_back_hint.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	head.add_child(_back_hint)
 
 	var tabs := HBoxContainer.new()
 	tabs.add_theme_constant_override("separation", 8)
@@ -101,11 +110,7 @@ func _ready() -> void:
 		page.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		stack.add_child(page)
 		_pages.append(page)
-	_build_audio(_pages[0])
-	_build_graphics(_pages[1])
-	_build_controls(_pages[2])
-	_build_gameplay(_pages[3])
-	_build_access(_pages[4])
+	_build_all()
 
 	var foot := HBoxContainer.new()
 	vb.add_child(foot)
@@ -121,6 +126,7 @@ func _ready() -> void:
 	foot.add_child(_back)
 	_tab_buttons[0].button_pressed = true
 	_show_tab(0)
+	_set_more(false)
 	visible = false
 	_fit()
 	get_viewport().size_changed.connect(_fit)
@@ -135,11 +141,7 @@ func _relocalize() -> void:
 		for c: Node in page.get_children():
 			page.remove_child(c)
 			c.queue_free()
-	_build_audio(_pages[0])
-	_build_graphics(_pages[1])
-	_build_controls(_pages[2])
-	_build_gameplay(_pages[3])
-	_build_access(_pages[4])
+	_build_all()
 	for i: int in TABS.size():
 		_tab_buttons[i].text = tr(TABS[i]).to_upper()
 	_back.text = tr("Back")
@@ -154,7 +156,7 @@ func _relocalize() -> void:
 func _fit() -> void:
 	var vs: Vector2 = get_viewport_rect().size
 	_panel.custom_minimum_size.x = minf(860.0, vs.x - 24.0)
-	_scroll.custom_minimum_size.y = clampf(vs.y - 230.0, 220.0, 400.0)
+	_scroll.custom_minimum_size.y = clampf(vs.y - 240.0, 220.0, 470.0)  # [ui5] tall enough for every Basics row at 720 p
 
 
 # --- Open / close -------------------------------------------------------------------
@@ -162,6 +164,8 @@ func _fit() -> void:
 func open_panel() -> void:
 	is_open = true
 	visible = true
+	if _tab == 0:
+		_set_more(false)  # [ui2] start simple; the full tabs stay open if you were in one
 	modulate.a = 0.0
 	_panel.scale = Vector2(0.97, 0.97)
 	_panel.pivot_offset = _panel.size * 0.5
@@ -196,10 +200,71 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func select_tab(i: int) -> void:
+	if i > 0:
+		_set_more(true)
 	_tab_buttons[clampi(i, 0, TABS.size() - 1)].button_pressed = true
 
 
+func _build_all() -> void:
+	_build_basics(_pages[0])
+	_build_audio(_pages[1])
+	_build_graphics(_pages[2])
+	_build_controls(_pages[3])
+	_build_gameplay(_pages[4])
+	_build_access(_pages[5])
+
+
+## [ui2] Shows or hides the full tabs; Basics is always there.
+func _set_more(on: bool) -> void:
+	_more = on
+	for i: int in range(1, _tab_buttons.size()):
+		_tab_buttons[i].visible = on
+	_tab_buttons[0].visible = true
+	if _tabs_hint:
+		_tabs_hint.visible = on
+		_back_hint.visible = not on
+
+
+## [ui2] The few settings most players want, then a way to everything else.
+func _build_basics(p: VBoxContainer) -> void:
+	# [ui5] No "Basics" caption (the tab says it), so the last row fits above the footer.
+	_slider(p, "Master", Settings.master_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
+		Settings.master_volume = v
+		Audio.apply_volumes())
+	_slider(p, "Music", Settings.music_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
+		Settings.music_volume = v
+		Audio.apply_volumes())
+	_cycler(p, tr("Quality preset"), [tr("Low"), tr("Medium"), tr("High"), tr("Ultra")], Settings.quality, func(i: int) -> void:
+		Settings.set_quality_manual(i)
+		Settings.apply_quality_to_tree(get_tree().current_scene))
+	_toggle(p, tr("Fullscreen"), Settings.fullscreen, func(v: bool) -> void:
+		Settings.fullscreen = v
+		Settings.apply_display())
+	_slider(p, tr("Mouse sensitivity"), Settings.mouse_sensitivity, 0.001, 0.008, 0.00025,
+		func(v: float) -> String: return "x%.1f" % (v / 0.0035),
+		func(v: float) -> void: Settings.mouse_sensitivity = v)
+	var codes: Array = Settings.LANGUAGES.map(func(l: Array) -> String: return str(l[0]))
+	var names: Array = Settings.LANGUAGES.map(func(l: Array) -> String: return tr("System default") if str(l[0]) == "" else str(l[1]))
+	_cycler(p, tr("Language"), names, maxi(0, codes.find(Settings.language)), func(i: int) -> void:
+		Settings.language = codes[i]
+		Settings.apply_language()
+		_relocalize.call_deferred())
+	var more := Button.new()
+	more.text = tr("More settings  (sound, graphics, controls, accessibility)")
+	more.custom_minimum_size = Vector2(0, 44)
+	more.pressed.connect(func() -> void:
+		_set_more(true)
+		select_tab(1)
+		_tab_buttons[1].grab_focus.call_deferred())
+	_row(p, tr("Everything else"), more)
+
+
 func _show_tab(i: int) -> void:
+	if i != _tab and _pages.size() == TABS.size() and i != 3:  # [ui2] fresh values (Basics shares rows with the other tabs); Controls keeps its capture state
+		for c: Node in _pages[i].get_children():
+			_pages[i].remove_child(c)
+			c.queue_free()
+		[_build_basics, _build_audio, _build_graphics, _build_controls, _build_gameplay, _build_access][i].call(_pages[i])
 	_tab = i
 	for p: int in _pages.size():
 		_pages[p].visible = p == i

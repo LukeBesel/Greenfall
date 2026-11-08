@@ -723,10 +723,12 @@ func rebuild() -> void:
 			buf[o + 18] = cu.b
 			buf[o + 19] = float(_known[k])
 		var mm: MultiMesh = (_mmi[ch] as MultiMeshInstance3D).multimesh
+		(_mmi[ch] as MultiMeshInstance3D).set_meta("inst_xf", xfs)  # [world2] collider audit / FutureColliders
 		mm.instance_count = n
 		if n > 0:
 			mm.buffer = buf
 		(_mmi[ch] as MultiMeshInstance3D).visible = n > 0
+	_build_post_colliders(p["post"]["xf"])  # [world2]
 	_build_labels(p["labels"])
 	_movers = p["movers"]
 	for m: Dictionary in _movers:
@@ -740,6 +742,16 @@ func rebuild() -> void:
 	if not _built:
 		print("[future] score=%.2f pieces=%d built in %.1f ms" % [float(p["score"]), count(p), (Time.get_ticks_usec() - t0) / 1000.0])
 	_built = true
+
+
+## [world2] Way-sign posts standing on the ground are solid (shared cylinders, PhysLayers.PROP).
+func _build_post_colliders(xfs: Array) -> void:
+	var pb: StaticBody3D = PropColliders.body(self, "PostColliders")
+	for t: Transform3D in xfs:
+		var h: float = t.basis.y.length()
+		var base: Vector3 = t.origin - Vector3(0, h * 0.5, 0)
+		if base.y < 0.5 and h > 0.5:
+			PropColliders.add_cyl(pb, base, maxf(t.basis.x.length() * 0.5, 0.06), h)
 
 
 func _build_labels(list: Array) -> void:

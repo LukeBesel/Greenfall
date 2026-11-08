@@ -8,7 +8,8 @@ extends CanvasLayer
 ## were still compiling). Now the clear colour and boot splash are near-black, and this screen
 ## draws from the first frame while:
 ##   1. the scene loads on a thread (ResourceLoader.load_threaded_request),
-##   2. it is instanced (the district builds synchronously in _ready: the bar waits there),
+##   2. it is instanced; [leftovers] the district builds across frames (a BuildBudget is open:
+##      systems/build_budget.gd), the bar shows its real progress and Lumi keeps moving,
 ##   3. ShaderWarmup draws every material in the new scene once, off-screen behind this cover,
 ##      for a few frames so the first gameplay frames neither hitch nor flash,
 ## then it fades out. The bar: a little red-and-white Pixel Lumi hovers along it, scooping up a
@@ -53,6 +54,13 @@ var _blink: float = 0.0
 var _blink_wait: float = 2.0
 var _scene_changed: bool = false
 var _tip: int = 0
+var _vignette: LoadingVignette
+## Longest gap between two loader frames during this load (ms), and when the last frame ran.
+var max_stall_ms: float = 0.0
+var _stall_stage: int = 0
+var _last_frame_us: int = 0
+var _build_frames: int = -1
+var _build_still: int = 0
 
 
 func _ready() -> void:
@@ -115,11 +123,14 @@ func goto(path: String) -> void:
 	_stage = 1
 	_t = 0.0
 	_shown_ms = Time.get_ticks_msec()
+	max_stall_ms = 0.0
+	_last_frame_us = 0
 	shown = 0.0
 	target = 0.03
 	_scene_changed = false
 	_tip = randi()
 	_reset_pieces()
+	_ensure_vignette()
 	_status.text = _status_text(0)
 	visible = true
 	if _alpha <= 0.0:
@@ -145,6 +156,24 @@ func _status_text(stage: int) -> String:
 	return ""
 
 
+## [pod2] The 3D street scene above the bar (built on first use; skipped headless).
+func _ensure_vignette() -> void:
+	if DisplayServer.get_name() == "headless" or DevHooks.has("loader-2d"):
+		return
+	if _vignette == null:
+		_vignette = LoadingVignette.new()
+		_vignette.set_anchors_preset(Control.PRESET_CENTER)
+		_vignette.offset_left = -560
+		_vignette.offset_right = 560
+		_vignette.offset_top = -300
+		_vignette.offset_bottom = 60
+		_vignette.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_root.add_child(_vignette)
+		_root.move_child(_vignette, 1)  # above the backdrop, under the bar
+	else:
+		_vignette.reset()
+
+
 func _apply_alpha() -> void:
 	_root.modulate.a = _alpha
 	visible = _alpha > 0.001
@@ -153,6 +182,13 @@ func _apply_alpha() -> void:
 func _process(delta: float) -> void:
 	if not visible and not active:
 		return
+	if active:
+		var now_us: int = Time.get_ticks_usec()
+		if _last_frame_us > 0:
+			if (now_us - _last_frame_us) / 1000.0 > max_stall_ms:
+				max_stall_ms = (now_us - _last_frame_us) / 1000.0
+				_stall_stage = _stage
+		_last_frame_us = now_us
 	var real: float = delta / maxf(Engine.time_scale, 0.0001)  # [intro2] pacing in real seconds
 	real = minf(real, 0.1)
 	_t += real
@@ -164,18 +200,18 @@ func _process(delta: float) -> void:
 			var prog: Array = []
 			var st: int = ResourceLoader.load_threaded_get_status(_path, prog)
 			if prog.size() > 0:
-				target = maxf(target, 0.04 + 0.5 * float(prog[0]))
+				target = maxf(target, 0.04 + 0.14 * float(prog[0]))
 			if st == ResourceLoader.THREAD_LOAD_LOADED and _alpha >= 1.0:
 				_stage = 2
-				target = maxf(target, 0.56)
+				target = maxf(target, 0.18)
 			elif st == ResourceLoader.THREAD_LOAD_FAILED or st == ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:
 				push_warning("[loader] threaded load failed for %s, loading directly" % _path)
 				_stage = 2
 		2:
 			# Let the bar reach the "building" mark, draw one frame, then instance (this frame
 			# blocks while the new scene's _ready builds everything).
-			target = maxf(target, 0.6)
-			if shown >= 0.55 or _t > 4.0:
+			target = maxf(target, 0.2)
+			if shown >= 0.18 or _t > 4.0:
 				_status.text = _status_text(1)
 				_stage = 5
 		5:
@@ -185,22 +221,27 @@ func _process(delta: float) -> void:
 				ps = load(_path) as PackedScene
 			var tree := get_tree()
 			tree.paused = false
+			BuildBudget.begin(tree)  # [leftovers] the new scene may build across frames
+			_build_frames = -1
+			_build_still = 0
 			if ps:
 				tree.change_scene_to_packed(ps)
 			else:
 				tree.change_scene_to_file(_path)
 		6:
-			if _scene_changed and get_tree().current_scene != null:
+			if _scene_changed and get_tree().current_scene != null and _still_building():
+				target = maxf(target, 0.2 + 0.65 * BuildBudget.current.progress())
+			elif _scene_changed and get_tree().current_scene != null:
+				BuildBudget.end()
 				_stage = 3
-				target = maxf(target, 0.72)
-				shown = maxf(shown, 0.7)
+				target = maxf(target, 0.86)
 				_status.text = _status_text(2)
 				_warm = ShaderWarmup.new()
 				add_child(_warm)
 				_warm.start(get_tree().current_scene)
 		3:
 			var wk: float = _warm.progress() if _warm else 1.0
-			target = maxf(target, 0.72 + 0.26 * wk)
+			target = maxf(target, 0.86 + 0.12 * wk)
 			var min_ok: bool = (Time.get_ticks_msec() - _shown_ms) / 1000.0 >= (0.0 if _headless() else MIN_SHOW_S)
 			if (_warm == null or _warm.finished()) and min_ok:
 				target = 1.0
@@ -210,7 +251,7 @@ func _process(delta: float) -> void:
 					if _warm:
 						_warm.queue_free()
 						_warm = null
-					print("[loader] ready in %d ms" % (Time.get_ticks_msec() - _shown_ms))
+					print("[loader] ready in %d ms, longest frame %.0f ms (ending in stage %s) (%s)" % [Time.get_ticks_msec() - _shown_ms, max_stall_ms, ["idle", "load", "pre-build", "warm-up", "fade", "switch", "build"][_stall_stage], _path])
 		4:
 			_alpha = maxf(0.0, _alpha - real / 0.45)
 			_apply_alpha()
@@ -223,7 +264,28 @@ func _process(delta: float) -> void:
 	if shown < target:
 		shown = minf(target, shown + maxf((target - shown) * minf(1.0, real * 3.5), real * 0.04))
 	_update_lumi(real)
+	if _vignette:
+		_vignette.progress = shown
+		_vignette.set_active(visible)
 	_canvas.queue_redraw()
+
+
+## [leftovers] The new scene is still building across frames (scenes/slice.gd `building`). A
+## build coroutine stopped by a script error would never finish: after 60 loader frames with
+## no build frame, carry on with what exists.
+func _still_building() -> bool:
+	var sc: Node = get_tree().current_scene
+	if BuildBudget.current == null or sc.get("building") != true:
+		return false
+	if BuildBudget.current.frames == _build_frames:
+		_build_still += 1
+		if _build_still > 60:
+			push_error("[loader] the scene stopped building; showing it as it is")
+			return false
+	else:
+		_build_frames = BuildBudget.current.frames
+		_build_still = 0
+	return true
 
 
 ## Headless runs and screenshot tooling skip the minimum show time.
@@ -286,7 +348,7 @@ func _draw_bar() -> void:
 	var font: Font = UITheme.font()
 	var title: String = "GREENFALL"
 	var tw: float = font.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, 30).x
-	c.draw_string(font, Vector2((c.size.x - tw) * 0.5, r.position.y - 120.0), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 30, Color(CREAM, 0.85))
+	c.draw_string(font, Vector2((c.size.x - tw) * 0.5, r.position.y - (360.0 if _vignette else 120.0)), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 30, Color(CREAM, 0.85))
 	# Track and fill (the cleaned stretch glows faintly pink behind Lumi).
 	c.draw_rect(Rect2(r.position - Vector2(2, 2), r.size + Vector2(4, 4)), Color(1, 1, 1, 0.06))
 	_round_rect(c, r, Color(0.09, 0.1, 0.13))
@@ -295,6 +357,11 @@ func _draw_bar() -> void:
 		_round_rect(c, fill.grow(3.0), Color(GLOW, 0.12))
 		_round_rect(c, fill, Color(0.93, 0.9, 0.88))
 		_round_rect(c, Rect2(fill.position + Vector2(0, fill.size.y - 3.0), Vector2(fill.size.x, 3.0)), Color(GLOW, 0.75))
+	if _vignette:
+		# [pod2] The 3D street above the bar shows Lumi and the junk; the bar stays clean.
+		var pct3: String = "%d%%" % int(round(shown * 100.0))
+		c.draw_string(font, Vector2(r.end.x + 14.0, r.position.y + 10.0), pct3, HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color(CREAM, 0.45))
+		return
 	# The line of garbage waiting ahead.
 	for p: Dictionary in _pieces:
 		if p["taken"]:

@@ -158,7 +158,7 @@ func _check_acts() -> void:
 		_drop_timer = float(cfg.get("drop", {}).get("first_after_s", 45.0))
 		_wren_later("ledger_drones", 7.0)
 		get_tree().create_timer(14.0, false).timeout.connect(func() -> void:
-			EventBus.toast.emit(tr("New at the workbench, Hub tab: Signal Jammer. It scrambles the Ledger's drones near the base."), "hint"))
+			EventBus.toast.emit(tr("New at the workbench, Build tab: Signal Jammer. It scrambles the Ledger's drones near the base."), "hint"))
 	if cur < 3 and nxt >= 3:
 		GameState.flags["ledger_relay_hub"] = GameState.current_hub
 		_place_relay()
@@ -245,7 +245,7 @@ func _process(delta: float) -> void:
 		if _drop_timer <= 0.0:
 			var ok: bool = start_drop()
 			_drop_timer = drop_interval() if ok else 40.0
-	if a >= 4 and drone == null and GameState.flags.get("seeds_unlocked", false):
+	if a >= 4 and drone == null and GameState.flags.get("seeds_unlocked", false) and bool(cfg.get("seed_drop", {}).get("enabled", true)):  # [pace] no spontaneous crates
 		_seed_timer -= delta
 		if _seed_timer <= 0.0:
 			_seed_timer = _range_of(cfg.get("seed_drop", {}).get("every_s", [200, 320]))

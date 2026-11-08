@@ -1,6 +1,7 @@
 class_name PauseMenu
 extends CanvasLayer
 ## Pause menu. Pauses the tree while open. Settings live in the shared SettingsPanel.
+## [ui2] Resume, Codex, Photo mode, (Garden / Ark when open), Keepsakes, Settings, Quit (saves, then title).
 
 signal closed
 signal codex_requested
@@ -14,6 +15,7 @@ var _menu: Control
 var _first: Button
 var _settings_btn: Button
 var _settings: SettingsPanel
+var _center_keys: Control  # [onboard] key hints strip
 
 
 func _ready() -> void:
@@ -33,12 +35,12 @@ func _ready() -> void:
 	_menu = center
 	var panel := PanelContainer.new()
 	panel.custom_minimum_size = Vector2(380, 0)
-	panel.add_theme_stylebox_override("panel", UITheme.box(Color(0.06, 0.065, 0.07, 0.88), UITheme.RUST, 1, 6, 22))
+	panel.add_theme_stylebox_override("panel", BenchKit.holo(Color(BenchKit.HOLO, 0.5), Color(0.02, 0.035, 0.045, 0.88), 1.0, 12, 22))  # [ui2] holo
 	center.add_child(panel)
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 10)
 	panel.add_child(vb)
-	var title := UITheme.label(tr("PAUSED"), 32, UITheme.GOLD)
+	var title := UITheme.label(tr("PAUSED"), 28, BenchKit.HOLO)  # [ui2]
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(title)
 	var gap := Control.new()
@@ -52,30 +54,40 @@ func _ready() -> void:
 		codex_requested.emit())
 	Settings.bind_text(codex_btn, func() -> String: return tr("Codex  [%s]") % Settings.glyph("open_codex"))  # [deck]
 	buttons.append(codex_btn)
-	buttons.append(_button(vb, tr("Photo mode  [%s]") % Settings.glyph("photo_mode"), func() -> void:  # [photo]
+	var photo_btn: Button = _button(vb, tr("Photo mode  [%s]") % Settings.glyph("photo_mode"), func() -> void:  # [photo]
 		close_menu()
-		photo_requested.emit()))
+		photo_requested.emit())
+	photo_btn.name = "PhotoBtn"  # [camp3] hidden until Blink, the camera bot, is built
+	buttons.append(photo_btn)
 	buttons.append_array(LateMenu.add_buttons(self, vb, _button))  # [late] Garden Mode, Ark Bridge
 	buttons.append(_button(vb, tr("Keepsakes"), func() -> void:  # [extras] radio, album, nursery, Seed of the Week
 		close_menu()
 		ExtrasPanel.open_for(get_parent(), "")))
 	_settings_btn = _button(vb, tr("Settings"), _open_settings)
 	buttons.append(_settings_btn)
-	buttons.append(_button(vb, tr("Save game"), func() -> void:
-		if SaveManager.save_game():
-			EventBus.toast.emit(tr("Saved."), "info")))
-	buttons.append(_button(vb, tr("Quit to title"), _quit_to_title))
-	buttons.append(_button(vb, tr("Quit to desktop"), func() -> void:
-		SaveManager.save_game()
-		get_tree().quit()))
+	# [ui2] No Save button: the game autosaves every minute and on quit. Quit saves and goes to
+	# the title screen (Quit to desktop lives on the title screen).
+	buttons.append(_button(vb, tr("Quit"), _quit_to_title))
 	for i: int in buttons.size():
 		var b: Button = buttons[i]
 		b.focus_neighbor_top = b.get_path_to(buttons[wrapi(i - 1, 0, buttons.size())])
 		b.focus_neighbor_bottom = b.get_path_to(buttons[wrapi(i + 1, 0, buttons.size())])
+	# [onboard] The controls at a glance, under the menu (in game: hold Tab away from the workbench).
+	var keys_mc := MarginContainer.new()
+	keys_mc.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)  # [ui4] full width: the strip wraps instead of running off a small screen
+	keys_mc.add_theme_constant_override("margin_left", 24)
+	keys_mc.add_theme_constant_override("margin_right", 24)
+	keys_mc.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	keys_mc.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	keys_mc.add_theme_constant_override("margin_bottom", 28)
+	keys_mc.add_child(KeyHints.new(KeyHints.Mode.PAUSE))
+	_center_keys = keys_mc
+	_root.add_child(keys_mc)
 	_settings = SettingsPanel.new()
 	_settings.dim_background = false
 	_settings.closed.connect(func() -> void:
 		_menu.visible = true
+		_fit_keys()  # [onboard] [ui4]
 		_settings_btn.grab_focus())
 	_root.add_child(_settings)
 	_root.visible = false
@@ -84,8 +96,9 @@ func _ready() -> void:
 func _button(parent: Control, text: String, cb: Callable) -> Button:
 	var b := Button.new()
 	b.text = text
-	b.custom_minimum_size = Vector2(0, 48)
+	b.custom_minimum_size = Vector2(0, 46)
 	b.add_theme_font_size_override("font_size", 17)
+	BenchKit.style_action(b, BenchKit.HOLO)  # [ui2]
 	b.pressed.connect(func() -> void:
 		Audio.play("click", 1.0, -6.0)
 		cb.call())
@@ -96,6 +109,7 @@ func _button(parent: Control, text: String, cb: Callable) -> Button:
 
 func _open_settings() -> void:
 	_menu.visible = false
+	_center_keys.visible = false  # [onboard]
 	_settings.open_panel()
 
 
@@ -117,8 +131,18 @@ func open_menu() -> void:
 	get_tree().paused = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	EventBus.ui_modal_changed.emit(true)
+	var pb: Button = _menu.find_child("PhotoBtn", true, false) as Button  # [camp3]
+	if pb:
+		pb.visible = CameraBot.available()
 	LateMenu.refresh(self)  # [late] show Garden Mode / Ark Bridge once they are open
+	_fit_keys()
 	_first.call_deferred("grab_focus")
+
+
+## [ui4] The key strip only shows where it can't overlap the menu (short screens / big UI scale).
+func _fit_keys() -> void:
+	if _center_keys:
+		_center_keys.visible = get_viewport().get_visible_rect().size.y >= 680.0
 
 
 func close_menu() -> void:

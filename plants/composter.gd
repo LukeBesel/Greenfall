@@ -39,9 +39,12 @@ func _ready() -> void:
 	level = int(GameState.world.get("composter_level", 1))
 	_build()
 	position = POS
+	(func() -> void: PropColliders.fit(PropColliders.body(self, "Props"), self)).call_deferred()  # [world2] solid bins
 
 
 func active() -> bool:
+	if not YardBuilds.built("composter") and not DevHooks.has("unlock-seeds"):
+		return false  # [camp2] a Hub build now: it does nothing until it is built
 	return bool(GameState.flags.get("first_sprout", false)) or DevHooks.has("unlock-seeds")
 
 
@@ -66,7 +69,7 @@ func max_level() -> int:
 
 
 func near(p: Vector3) -> bool:
-	return p.distance_to(global_position) < RANGE
+	return is_visible_in_tree() and p.distance_to(global_position) < RANGE  # [camp] hidden until it works
 
 
 func prompt() -> String:
