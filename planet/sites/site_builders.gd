@@ -3,21 +3,17 @@ extends RefCounted
 ## [orbD] Which prefab each planet's hubs get and how to build it. PlanetEnvs.build_site calls
 ## configure(prefab) to wire a SitePrefab's builder/restyler to the planet's own site code:
 ##   verdance  VerdanceSite.build(parent, id, stage, restoration, opts)        (planet/sites/)
-##   rime      RimeSite.place(parent, id, stage, restoration)                  (planet/sites/)
+##   rime      RimeHubSite.place(id, root, stage 0-2, restoration, opts)      (p_seas)
 ##   anvil     AnvilSites.build(site_root, id, stage 1-5, restoration)        (p_anvil)
 ##   ochre     OchreSites.build(id, root, stage 1-5, restoration)             (p_ochre)
 ##   tidewell  TideSite.place(id, root, stage 0-2, restoration, opts)         (p_seas)
 ## Any other planet whose data/planets.json entry lists `sites` with a `script` works too: the
 ## script's static build/place is called with the argument order its signature shows.
-## Stage is always the base level 1..5 here; Tidewell's 0..2 is mapped (1 -> 0, 2-3 -> 1, 4-5 -> 2).
+## Stage is always the base level 1..5 here; a `place` builder's 0..2 is mapped (1 -> 0, 2-3 -> 1, 4-5 -> 2).
 
 const VERDANCE_SITES: Array = [
 	{"id": "start_yard", "kind": "hub", "size_m": 180, "clear_core_m": 14},
 	{"id": "ruin_block", "kind": "hub", "size_m": 108, "clear_core_m": 12},
-]
-const RIME_SITES: Array = [
-	{"id": "crater_camp", "kind": "hub", "size_m": 92, "clear_core_m": 14},
-	{"id": "drill_field", "kind": "landmark", "size_m": 84, "clear_core_m": 10},
 ]
 
 
@@ -26,8 +22,6 @@ static func sites_of(planet_id: String) -> Array:
 	match planet_id:
 		"verdance", "":
 			return _with_script(VERDANCE_SITES, "res://planet/sites/verdance_site.gd")
-		"rime":
-			return _with_script(RIME_SITES, "res://planet/sites/rime_site.gd")
 	var e: Dictionary = PlanetEnvs.entry(planet_id)
 	var raw: Variant = e.get("sites", [])
 	var out: Array = []
@@ -101,16 +95,6 @@ static func configure(p: SitePrefab, opts: Dictionary = {}) -> bool:
 				vs.set_level(st)
 				vs.set_restoration(r)
 				return true
-		"rime":
-			p.builder = func(parent: Node3D, st: int, r: float) -> void:
-				RimeSite.place(parent, sid, st, r, int(opts.get("seed", 9091)))
-			p.restyler = func(content: Node3D, st: int, r: float) -> bool:
-				var rs: RimeSite = _first(content, "RimeSite") as RimeSite
-				if rs == null:
-					return false
-				rs.set_level(st, false)
-				rs.set_restore(r)
-				return true
 		_:
 			var path: String = str(d.get("script", ""))
 			if path == "" or not ResourceLoader.exists(path):
@@ -121,7 +105,7 @@ static func configure(p: SitePrefab, opts: Dictionary = {}) -> bool:
 				_call_external(scr, parent, sid, st, r, opts)
 			p.restyler = func(content: Node3D, st: int, r: float) -> bool:
 				for c: Node in content.get_children():
-					if c.has_method("set_state"):  # TideSite: stage 0..2
+					if c.has_method("set_state"):  # TideSite / RimeHubSite: stage 0..2
 						c.call("set_state", tide_stage(st), r)
 						return true
 				return false

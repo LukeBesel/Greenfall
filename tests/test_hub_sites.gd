@@ -35,6 +35,7 @@ func test_site_for_hub() -> void:
 	assert_eq(SiteBuilders.site_for_hub("verdance", 4), "ruin_block")
 	assert_eq(SiteBuilders.site_for_hub("anvil", 0), "foundry_yard")
 	assert_eq(SiteBuilders.site_for_hub("tidewell", 0), "hub_raft")
+	assert_eq(SiteBuilders.site_for_hub("rime", 0), "hub_camp")
 	assert_eq(SiteBuilders.tide_stage(1), 0)
 	assert_eq(SiteBuilders.tide_stage(3), 1)
 	assert_eq(SiteBuilders.tide_stage(5), 2)
@@ -44,7 +45,7 @@ func test_build_site_has_anchors_collision_and_restyles() -> void:
 	var root := Node3D.new()
 	add_child_autofree(root)
 	var xf := Transform3D(SphereGrid.frame(Vector3(0.3, 0.8, 0.2).normalized()), Vector3(5, 1800, 3))
-	var p: SitePrefab = PlanetEnvs.build_site(root, {"planet": "rime", "prefab": "crater_camp", "transform": xf}, 1, 0.0)
+	var p: SitePrefab = PlanetEnvs.build_site(root, {"planet": "rime", "prefab": "hub_camp", "transform": xf}, 1, 0.0)
 	if not p.is_built:
 		await p.rebuilt
 	assert_true(p.is_built)
@@ -57,9 +58,7 @@ func test_build_site_has_anchors_collision_and_restyles() -> void:
 	var content: Node = p.content
 	p.set_stage(4)
 	p.set_restoration(0.9)
-	assert_eq(p.content, content, "Rime re-dresses in place")
-	var rs: RimeSite = content.get_child(0) as RimeSite
-	assert_eq(rs.level, 4)
+	assert_eq(p.content, content, "Rime re-dresses in place (RimeHubSite.set_state)")
 
 
 func test_verdance_ruin_block_footprints() -> void:
