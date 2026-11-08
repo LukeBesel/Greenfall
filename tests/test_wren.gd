@@ -86,3 +86,55 @@ func test_vars_formatted() -> void:
 	GameState.flags["stage_override"] = 1
 	wren.say("robot_built", 1.0, true, {"robot": "Rivet-07"})
 	assert_false(str(wren._queue[0]["text"]).contains("{robot}"))
+
+
+## [v2guide] Owner playtest 2 #34: once the tower carries her, WREN briefs Lumi (who she is, the plan
+## home), then speaks one line as each new story step starts; never twice for a step, never during
+## a modal, never before the tower.
+func test_wren_briefs_then_narrates_each_step_once() -> void:
+	var flags0: Dictionary = GameState.flags.duplicate(true)
+	var stats0: Dictionary = GameState.stats.duplicate(true)
+	var src := GDScript.new()
+	src.source_code = "extends Node\nvar wren\nvar modal := false\nfunc any_modal_open() -> bool:\n\treturn modal\n"
+	src.reload()
+	var w: Node = src.new()
+	add_child_autofree(w)
+	var wren := Wren.new()
+	wren.world = w
+	w.add_child(wren)
+	w.set("wren", wren)
+	wren.set_process(false)
+	var ob := Objectives.new()
+	ob.world = w
+	var cfg: Dictionary = Economy.read_json(Objectives.PATH)
+	ob.chain = cfg["objectives"]
+	ob.wren_brief = (cfg["wren_brief"] as Dictionary)["lines"]
+	for i: int in ob.chain.size():
+		if str(ob.chain[i]["id"]) == "hex":
+			ob.step = i
+	GameState.stats["hexes_cleaned"] = 0
+	GameState.flags.erase("wren_briefed")
+	GameState.flags.erase("wren_steps")
+	GameState.flags["signal_tower"] = 0
+	ob._narrate()
+	assert_eq(wren._queue.size(), 0, "no tower, no WREN")
+	GameState.flags["signal_tower"] = 1
+	w.set("modal", true)
+	ob._narrate()
+	assert_eq(wren._queue.size(), 0, "nothing during a modal")
+	w.set("modal", false)
+	ob._narrate()
+	assert_eq(wren._queue.size(), 3, "the briefing: who she is, the ark, the way home")
+	var brief: String = " ".join(wren._queue.map(func(l: Dictionary) -> String: return str(l["text"])))
+	assert_true(brief.contains("Cradle") and brief.contains("Verdance") and brief.contains("home"))
+	ob._narrate()
+	assert_eq(wren._queue.size(), 4, "then the current step's line")
+	ob._narrate()
+	assert_eq(wren._queue.size(), 4, "one line per step")
+	for d: Dictionary in ob.chain:
+		var ls: Array = d.get("lines", [])
+		assert_eq(ls.size(), 1, "%s: one short line" % d["id"])
+		assert_lt(str(ls[0]).length(), 100, "%s: subtitle-sized" % d["id"])
+	ob.free()
+	GameState.flags = flags0
+	GameState.stats = stats0
