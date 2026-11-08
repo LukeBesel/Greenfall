@@ -1,5 +1,5 @@
 class_name LockerPanel
-extends HBoxContainer
+extends VBoxContainer
 ## [ui2] Workbench "Locker" tab: one place to style any bot. It opens once the hub reaches
 ## HUB_LEVEL (before that the tab shows what opens it). Left: who you are editing (Lumi first,
 ## then every robot) and the fleet paint (liveries won from Requests). Right: that bot's editor.
@@ -23,7 +23,7 @@ static var _editors: Dictionary = {}  # id -> Callable(world) -> Control, or a C
 var world: Node
 var fleet: Fleet
 var _who: String = "lumi"  # "lumi" or a robot name
-var _list: VBoxContainer
+var _list: HBoxContainer  # [ui3] the slim bot bar
 var _who_btns: Array[Button] = []
 var _host: VBoxContainer
 var _editor: Control
@@ -60,30 +60,40 @@ func _ready() -> void:
 		_build_locked()
 		return
 	GameState.flags["locker_open"] = true
-	var lc: Array = BenchKit.card(Color(1, 1, 1, 0.1), 250)
-	var left: PanelContainer = lc[0]
-	left.size_flags_horizontal = Control.SIZE_FILL
-	add_child(left)
-	var lv: VBoxContainer = lc[1]
-	lv.add_child(BenchKit.caps(tr("Editing")))
+	# [ui3] One slim bar on top (who you edit, then the fleet paint), so the editor gets the full
+	# width (the Lumi builder needs it at 1280x720 and 125% UI scale).
+	add_theme_constant_override("separation", 10)
+	var bar := HBoxContainer.new()
+	bar.add_theme_constant_override("separation", 10)
+	add_child(bar)
 	var sc := ScrollContainer.new()
-	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	sc.custom_minimum_size = Vector2(0, 300)
-	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	sc.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	sc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	sc.custom_minimum_size = Vector2(0, 52)
 	sc.follow_focus = true
-	lv.add_child(sc)
-	_list = VBoxContainer.new()
-	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	bar.add_child(sc)
+	_list = HBoxContainer.new()
 	_list.add_theme_constant_override("separation", 6)
 	sc.add_child(_list)
-	lv.add_child(BenchKit.caps(tr("Fleet paint")))
+	var pv := VBoxContainer.new()
+	pv.add_theme_constant_override("separation", 2)
+	bar.add_child(pv)
+	pv.add_child(BenchKit.caps(tr("Fleet paint")))
 	_paint = HBoxContainer.new()
 	_paint.add_theme_constant_override("separation", 6)
-	lv.add_child(_paint)
+	pv.add_child(_paint)
+	# The editor scrolls sideways if a wide one (the Lumi builder) meets a small screen at a big
+	# UI scale, instead of pushing the workbench off the screen.
+	var hsc := ScrollContainer.new()
+	hsc.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	hsc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hsc.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hsc.follow_focus = true
+	add_child(hsc)
 	_host = VBoxContainer.new()
 	_host.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_host.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	add_child(_host)
+	hsc.add_child(_host)
 	_rebuild_list()
 	_rebuild_paint()
 	_show_editor()
@@ -158,9 +168,9 @@ func _rebuild_list() -> void:
 
 func _add_who(id: String, title: String, sub: String, col: Color) -> void:
 	var b := Button.new()
-	b.text = "%s\n%s" % [title, sub]
-	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	b.custom_minimum_size = Vector2(0, 58)
+	b.text = title
+	b.tooltip_text = sub
+	b.custom_minimum_size = Vector2(120, 44)
 	b.clip_text = true
 	b.add_theme_font_size_override("font_size", 16)
 	b.set_meta("who", id)
@@ -266,6 +276,8 @@ func _rebuild_paint() -> void:
 	for it: Dictionary in Contracts.shop():
 		var id: String = str(it.get("id", ""))
 		var have: bool = id in owned
+		if not have:
+			continue  # [ui3] only the paints you own (nothing shown before it's unlocked)
 		var col: Color = Color.html(str(it.get("color", "#8fe8d8")))
 		var b := Button.new()
 		b.custom_minimum_size = Vector2(40, 40)
@@ -275,7 +287,8 @@ func _rebuild_paint() -> void:
 		b.add_theme_stylebox_override("hover", UITheme.box(Color(col, 1.0) if have else Color(col, 0.18), Color.WHITE, 2, 20, 4))
 		b.disabled = not have
 		if not have:
-			b.text = "?"
+			b.focus_mode = Control.FOCUS_NONE  # [ui3] locked chips aren't stops for the D-pad
+			b.custom_minimum_size = Vector2(28, 28)
 		b.pressed.connect(func() -> void:
 			if GameState.flags.get("livery", "") == id:
 				GameState.flags["livery"] = ""

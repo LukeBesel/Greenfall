@@ -358,7 +358,7 @@ var _focus_sig: String = ""
 
 
 func _wire_focus() -> void:
-	if not _tab in ["patch", "bots", "build"]:  # [ui3]
+	if not _tab in ["patch", "bots", "build", "locker"]:  # [ui3]
 		return
 	var sig: String = FocusGrid.signature(_grid) + "|%d" % _grid.columns
 	if sig != _focus_sig:

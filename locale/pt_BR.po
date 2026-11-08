@@ -24,7 +24,7 @@ msgstr "Cada %s da frota."
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr "Base (Mk I, antes de nível e raridade das peças)"
 
-#: autoload/Economy.gd:128
+#: autoload/Economy.gd:128 ui/upgrades_panel.gd:34
 msgid "Base"
 msgstr "Base"
 
@@ -92,7 +92,7 @@ msgstr "Ferramenta: plantar"
 msgid "Tool: water"
 msgstr "Ferramenta: regar"
 
-#: autoload/Settings.gd:19
+#: autoload/Settings.gd:19 ui/upgrades_screen.gd:13
 msgid "Upgrades"
 msgstr "Melhorias"
 
@@ -339,6 +339,7 @@ msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr "Limpe a sucata ao redor primeiro (%d%% de %d%%)."
 
 #: automation/outposts.gd:318 automation/outposts.gd:333 automation/stations.gd:131
+#: systems/camp/hub_builds.gd:79
 msgid "Not enough cubes or parts."
 msgstr "Cubos ou peças insuficientes."
 
@@ -346,7 +347,7 @@ msgstr "Cubos ou peças insuficientes."
 msgid "Repair it first."
 msgstr "Conserte primeiro."
 
-#: automation/outposts.gd:329 automation/trash_bin.gd:82 ui/yard_builds_panel.gd:55
+#: automation/outposts.gd:329 automation/trash_bin.gd:82
 msgid "Fully upgraded."
 msgstr "Totalmente melhorado."
 
@@ -451,16 +452,16 @@ msgid "Rocket upgraded: %s."
 msgstr "Foguete melhorado: %s."
 
 #: automation/stations.gd:122 automation/telescope.gd:98 systems/camp/yard_builds.gd:59
-#: ui/stations_panel.gd:92 ui/yard_builds_panel.gd:77
+#: ui/stations_panel.gd:96
 msgid "Built."
 msgstr "Construído."
 
-#: automation/stations.gd:126 ui/stations_panel.gd:93
+#: automation/stations.gd:126 ui/stations_panel.gd:97
 msgid "Requires research: %s."
 msgstr "Requer pesquisa: %s."
 
-#: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:62
-#: ui/stations_panel.gd:93
+#: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:64
+#: ui/stations_panel.gd:97
 msgid "Requires hub level %d."
 msgstr "Requer base nível %d."
 
@@ -500,9 +501,10 @@ msgstr "1 a cada %d fardos para o reciclador"
 msgid "Requires hub level %d or research: %s."
 msgstr "Requer base nível %d ou a pesquisa: %s."
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:305
-#: systems/camp/camp.gd:317 systems/camp/yard_builds.gd:67 ui/telescope_panel.gd:40
-#: ui/yard_builds_panel.gd:59 ui/yard_builds_panel.gd:78
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:349
+#: systems/camp/camp.gd:361 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
+#: systems/camp/hub_builds.gd:161 systems/camp/hub_builds.gd:171 systems/camp/yard_builds.gd:69
+#: ui/telescope_panel.gd:40
 msgid "Not enough materials."
 msgstr "Materiais insuficientes."
 
@@ -797,31 +799,31 @@ msgstr ""
 msgid "Lumi hovers back onto solid ground."
 msgstr ""
 
-#: plants/composter.gd:75
+#: plants/composter.gd:77
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   prensa de composto  ·  parada até algo crescer"
 
-#: plants/composter.gd:77
+#: plants/composter.gd:79
 msgid "E   compost press  ·  Lv %d (max)"
 msgstr "E   prensa de composto  ·  Nv %d (máx.)"
 
-#: plants/composter.gd:78
+#: plants/composter.gd:80
 msgid "E   upgrade compost press to Lv %d  ·  %s cubes"
 msgstr "E   melhorar prensa para Nv %d  ·  %s cubos"
 
-#: plants/composter.gd:83
+#: plants/composter.gd:85
 msgid "The press is cold. Grow something first: it runs on what plants leave behind."
 msgstr "A prensa está fria. Faça algo crescer primeiro: ela funciona com o que as plantas deixam."
 
-#: plants/composter.gd:89
+#: plants/composter.gd:91
 msgid "Not enough cubes to upgrade the press."
 msgstr "Cubos insuficientes para melhorar a prensa."
 
-#: plants/composter.gd:98
+#: plants/composter.gd:100
 msgid "Compost press Lv %d: %.0f s cycles, %.1f seeds each."
 msgstr "Prensa de composto Nv %d: ciclos de %.0f s, %.1f sementes cada."
 
-#: plants/composter.gd:152
+#: plants/composter.gd:154
 msgid ""
 "COMPOST PRESS\n"
 "dormant"
@@ -829,7 +831,7 @@ msgstr ""
 "PRENSA DE COMPOSTO\n"
 "parada"
 
-#: plants/composter.gd:154
+#: plants/composter.gd:156
 msgid ""
 "COMPOST PRESS  Lv %d\n"
 "hopper %d%%  →  seeds"
@@ -1846,8 +1848,8 @@ msgstr ""
 "O Ledger está do nosso lado agora. Os bloqueadores só cantarolam junto com a música."
 
 #: story/ledger.gd:328 systems/decor.gd:122 systems/research.gd:186
-#: systems/robot_builder.gd:347 systems/robot_builder.gd:403 ui/stations_panel.gd:96
-#: ui/telescope_panel.gd:43 ui/yard_builds_panel.gd:59 ui/yard_builds_panel.gd:81
+#: systems/robot_builder.gd:347 systems/robot_builder.gd:403 ui/stations_panel.gd:100
+#: ui/telescope_panel.gd:43
 msgid "Needs %s"
 msgstr "Requer %s"
 
@@ -1927,11 +1929,11 @@ msgstr "LEDGER  WMS-07"
 msgid "Objective complete  ·  %s"
 msgstr "Objetivo concluído  ·  %s"
 
-#: story/objectives.gd:408
+#: story/objectives.gd:410
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr "Ouviu esse bipe? Seu detector achou uma peça de robô enterrada aqui perto. Quanto mais rápido o bipe, mais perto você está."
 
-#: story/objectives.gd:409
+#: story/objectives.gd:411
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PEÇA ENTERRADA: ande na direção dela até a leitura chegar ao máximo e desenterre."
 
@@ -1939,23 +1941,23 @@ msgstr "PEÇA ENTERRADA: ande na direção dela até a leitura chegar ao máximo
 msgid "Something surfaced in the cleared ground. A memory shard."
 msgstr "Algo apareceu no chão limpo. Um fragmento de memória."
 
-#: story/signal_tower.gd:99
+#: story/signal_tower.gd:110
 msgid "%s   rebuild the signal tower  ·  %s"
 msgstr "%s   reconstruir a torre de sinal  ·  %s"
 
-#: story/signal_tower.gd:100
+#: story/signal_tower.gd:111
 msgid "%s   boost the signal tower  ·  %s"
 msgstr "%s   reforçar a torre de sinal  ·  %s"
 
-#: story/signal_tower.gd:108
+#: story/signal_tower.gd:119
 msgid "The tower needs %s."
 msgstr "A torre precisa de %s."
 
-#: story/signal_tower.gd:123
+#: story/signal_tower.gd:135
 msgid "Relay signal %d%%. WREN can reach you."
 msgstr "Sinal do relé %d%%. WREN consegue falar com você."
 
-#: story/signal_tower.gd:123
+#: story/signal_tower.gd:135
 msgid "Relay signal %d%%. WREN comes through clearer."
 msgstr "Sinal do relé %d%%. WREN chega mais clara."
 
@@ -2171,7 +2173,7 @@ msgstr "Sequências de limpeza"
 msgid "Lumi Levels"
 msgstr "Níveis de Lumi"
 
-#: systems/collection.gd:88 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:18
+#: systems/collection.gd:88 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:17
 msgid "Requests"
 msgstr "Pedidos"
 
@@ -2557,43 +2559,43 @@ msgstr "Conquista: %s"
 msgid "Buy for %s"
 msgstr "Comprar por %s"
 
-#: systems/museum.gd:119
+#: systems/museum.gd:119 systems/camp/hub_builds.gd:80
 msgid "Not enough cubes, parts or seeds"
 msgstr "Cubos, peças ou sementes insuficientes"
 
-#: systems/museum.gd:184
+#: systems/museum.gd:183
 msgid "FUTURE MUSEUM"
 msgstr "FUTURO MUSEU"
 
-#: systems/museum.gd:185
+#: systems/museum.gd:184
 msgid "for whoever comes next"
 msgstr "para quem vier depois"
 
-#: systems/museum.gd:197
+#: systems/museum.gd:196
 msgid "E   build the Museum   %s"
 msgstr "E   construir o Museu   %s"
 
-#: systems/museum.gd:197
+#: systems/museum.gd:196
 msgid "Museum   %s   (%s)"
 msgstr "Museu   %s   (%s)"
 
-#: systems/museum.gd:216
+#: systems/museum.gd:223
 msgid "The Museum is built. Everything Lumi found has a place now, for whoever comes next."
 msgstr "O Museu está pronto. Tudo o que Lumi encontrou agora tem seu lugar, para quem vier depois."
 
-#: systems/museum.gd:240
+#: systems/museum.gd:248
 msgid "THE MUSEUM OF COMING BACK"
 msgstr "O MUSEU DO RETORNO"
 
-#: systems/museum.gd:241
+#: systems/museum.gd:249
 msgid "everything Lumi found, kept for whoever comes next"
 msgstr "tudo o que Lumi encontrou, guardado para quem vier depois"
 
-#: systems/museum.gd:268
+#: systems/museum.gd:276
 msgid "E   salute the Gnome Patrol"
 msgstr "E   saudar a Patrulha dos gnomos"
 
-#: systems/museum.gd:428
+#: systems/museum.gd:436
 msgid "Every plinth is full. The Museum is complete: everything Lumi found, kept for whoever comes next."
 msgstr "Todos os pedestais estão ocupados. O Museu está completo: tudo o que Lumi encontrou, guardado para quem vier depois."
 
@@ -2826,36 +2828,56 @@ msgstr "%s encontrou: %s, %s."
 msgid "New CD: %s by %s, from %s"
 msgstr "Novo CD: %s de %s, de %s"
 
-#: systems/camp/camp.gd:151
+#: systems/camp/camp.gd:168
 msgid "E   Workbench (broken): repair it"
 msgstr ""
 
-#: systems/camp/camp.gd:152
+#: systems/camp/camp.gd:169
 msgid "E   Workbench: upgrades"
 msgstr ""
 
-#: systems/camp/camp.gd:199
+#: systems/camp/camp.gd:216
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr ""
 
-#: systems/camp/camp.gd:277
-msgid "Compost Press"
-msgstr ""
-
-#: systems/camp/camp.gd:303
+#: systems/camp/camp.gd:347
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr ""
 
-#: systems/camp/camp.gd:306
+#: systems/camp/camp.gd:350
 msgid "E   %s (Lv %d): %s"
 msgstr ""
 
-#: systems/camp/camp.gd:307
+#: systems/camp/camp.gd:351
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr ""
 
-#: systems/camp/camp.gd:313
+#: systems/camp/camp.gd:357
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
+msgstr ""
+
+#: systems/camp/hub_builds.gd:144
+msgid "Trash bin, level %d of %d"
+msgstr ""
+
+#: systems/camp/hub_builds.gd:149
+msgid "WREN can only reach you through the relay. Each tier makes her clearer."
+msgstr ""
+
+#: systems/camp/hub_builds.gd:153
+msgid "Tier %d of %d"
+msgstr ""
+
+#: systems/camp/hub_builds.gd:162 systems/camp/hub_builds.gd:173
+msgid "%d of %d built"
+msgstr ""
+
+#: systems/camp/hub_builds.gd:189
+msgid "Museum"
+msgstr ""
+
+#: systems/camp/hub_builds.gd:190
+msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr ""
 
 #: systems/camp/machine_reveal.gd:46
@@ -2866,11 +2888,15 @@ msgstr ""
 msgid "%s built."
 msgstr ""
 
-#: systems/camp/yard_builds.gd:65
+#: systems/camp/yard_builds.gd:61
+msgid "Repair the workbench first."
+msgstr ""
+
+#: systems/camp/yard_builds.gd:67
 msgid "Grow your first seed first."
 msgstr ""
 
-#: systems/camp/yard_builds.gd:65
+#: systems/camp/yard_builds.gd:67
 msgid "Not yet."
 msgstr ""
 
@@ -3103,23 +3129,23 @@ msgstr ""
 msgid "Buy %d Glim upgrades"
 msgstr ""
 
-#: systems/glim/glim_director.gd:150
+#: systems/glim/glim_director.gd:152
 msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
 msgstr ""
 
-#: systems/glim/glim_director.gd:152
+#: systems/glim/glim_director.gd:154
 msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
 msgstr ""
 
-#: systems/glim/glim_director.gd:154
+#: systems/glim/glim_director.gd:156
 msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
 msgstr ""
 
-#: systems/glim/glim_director.gd:200
+#: systems/glim/glim_director.gd:212
 msgid "All clear here!"
 msgstr ""
 
-#: systems/glim/glim_director.gd:202
+#: systems/glim/glim_director.gd:214
 msgid "Only big pieces left"
 msgstr ""
 
@@ -3263,6 +3289,19 @@ msgstr "Marco"
 #: ui/bench_kit.gd:163 ui/upgrade_card.gd:221
 msgid "need %s"
 msgstr "faltam %s"
+
+#: ui/build_panel.gd:26
+msgid "Nothing new to build right now. New buildings unlock as you play."
+msgstr ""
+
+#: ui/build_panel.gd:105 ui/robot_card.gd:110 ui/robot_card.gd:244
+#: ui/upgrades_screen.gd:15 ui/yard_builds_panel.gd:17
+msgid "Build"
+msgstr "Construir"
+
+#: ui/build_panel.gd:110 ui/yard_builds_panel.gd:59
+msgid "Built:  %s"
+msgstr ""
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
@@ -3503,7 +3542,7 @@ msgstr "CÓDICE"
 msgid "Watch the story"
 msgstr ""
 
-#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:166
+#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:167
 msgid "Close  [%s]"
 msgstr "Fechar  [%s]"
 
@@ -3907,8 +3946,8 @@ msgstr "%d / %d hexágonos limpos"
 #: ui/contracts_panel.gd:75
 msgid "%d done"
 msgid_plural "%d done"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d feito"
+msgstr[1] "%d feitos"
 
 #: ui/contracts_panel.gd:80
 msgid "Live now:  %s  ·  %s  ·  %s left"
@@ -4369,7 +4408,7 @@ msgstr "Bases"
 msgid "Solar system"
 msgstr "Sistema solar"
 
-#: ui/globe_view.gd:169
+#: ui/globe_view.gd:169 ui/upgrades_panel.gd:44
 msgid "Rocket"
 msgstr "Foguete"
 
@@ -4433,97 +4472,97 @@ msgstr "+%d XP"
 msgid "CORE %d%%"
 msgstr "NÚCLEO %d%%"
 
-#: ui/hub_panel.gd:57
+#: ui/hub_panel.gd:59
 msgid "What you get"
 msgstr "O que você ganha"
 
-#: ui/hub_panel.gd:65
+#: ui/hub_panel.gd:67 ui/upgrades_panel.gd:137
 msgid "Upgrade"
 msgstr "Melhorar"
 
-#: ui/hub_panel.gd:92 ui/hub_panel.gd:243
+#: ui/hub_panel.gd:97 ui/hub_panel.gd:250
 msgid "Build Air Scrubber"
 msgstr "Construir Purificador de Ar"
 
-#: ui/hub_panel.gd:129
+#: ui/hub_panel.gd:134
 msgid "Build Signal Jammer"
 msgstr "Construir Bloqueador de Sinal"
 
-#: ui/hub_panel.gd:168
+#: ui/hub_panel.gd:173
 msgid " (have %s)"
 msgstr " (tem %s)"
 
-#: ui/hub_panel.gd:181
+#: ui/hub_panel.gd:186
 msgid "Bales sell for +%d%% (now +%d%%)"
 msgstr "Fardos vendem por +%d%% (agora +%d%%)"
 
-#: ui/hub_panel.gd:184
+#: ui/hub_panel.gd:189
 msgid "+%d robot spots in every crew"
 msgstr "+%d vagas de robô em cada equipe"
 
-#: ui/hub_panel.gd:187
+#: ui/hub_panel.gd:192
 msgid "Air Scrubbers: clear the dusty sky"
 msgstr "Purificadores de ar: limpam o céu empoeirado"
 
-#: ui/hub_panel.gd:192
+#: ui/hub_panel.gd:197
 msgid "Unlocks the %s"
 msgstr "Desbloqueia: %s"
 
-#: ui/hub_panel.gd:194
+#: ui/hub_panel.gd:199
 msgid "Opens the Locker: style Lumi and your robots"
 msgstr "Abre o Armário: personalize Lumi e seus robôs"
 
-#: ui/hub_panel.gd:196
+#: ui/hub_panel.gd:201
 msgid "A launch pad: rockets to the next district"
 msgstr "Uma plataforma de lançamento: foguetes para o próximo distrito"
 
-#: ui/hub_panel.gd:207
+#: ui/hub_panel.gd:212
 msgid "Now: level %d, %s. Bales sell for +%d%%."
 msgstr "Agora: nível %d, %s. Fardos vendem por +%d%%."
 
-#: ui/hub_panel.gd:209
+#: ui/hub_panel.gd:214
 msgid "Hub level %d  ·  fully built"
 msgstr "Base nível %d  ·  completa"
 
-#: ui/hub_panel.gd:212
+#: ui/hub_panel.gd:217
 msgid "Every hub level is built."
 msgstr "Todos os níveis da base estão construídos."
 
-#: ui/hub_panel.gd:214
+#: ui/hub_panel.gd:219
 msgid "Fully built"
 msgstr "Completa"
 
-#: ui/hub_panel.gd:217
+#: ui/hub_panel.gd:222
 msgid "Next: hub level %d"
 msgstr "Próximo: base nível %d"
 
-#: ui/hub_panel.gd:224
+#: ui/hub_panel.gd:229
 msgid "Upgrade to level %d"
 msgstr "Melhorar para nível %d"
 
-#: ui/hub_panel.gd:224
+#: ui/hub_panel.gd:229
 msgid "Not enough yet"
 msgstr "Ainda não é suficiente"
 
-#: ui/hub_panel.gd:228
+#: ui/hub_panel.gd:233
 msgid "Continue in the full game"
 msgstr "Continue no jogo completo"
 
-#: ui/hub_panel.gd:237
+#: ui/hub_panel.gd:244
 msgid "Opens at hub level %d."
 msgstr "Abre com a base no nível %d."
 
-#: ui/hub_panel.gd:239
+#: ui/hub_panel.gd:246
 msgid "All built."
 msgstr "Todos construídos."
 
-#: ui/hub_panel.gd:242
+#: ui/hub_panel.gd:249
 msgid ""
 "%s   %d / %d\n"
 "%s"
 msgstr ""
 
-#: ui/hub_panel.gd:243
+#: ui/hub_panel.gd:250
 msgid "All built"
 msgstr "Todos construídos"
 
@@ -4638,32 +4677,28 @@ msgstr ""
 msgid "Warming up"
 msgstr ""
 
-#: ui/locker_panel.gd:68
-msgid "Editing"
-msgstr "Editando"
-
-#: ui/locker_panel.gd:79
+#: ui/locker_panel.gd:81
 msgid "Fleet paint"
 msgstr "Pintura da frota"
 
-#: ui/locker_panel.gd:104
+#: ui/locker_panel.gd:114
 msgid "The Locker"
 msgstr "O Armário"
 
-#: ui/locker_panel.gd:105
+#: ui/locker_panel.gd:115
 msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play."
 msgstr "Personalize Lumi e cada robô: cores, olhos, peças de cabeça, enfeites, pintura da frota. Novas peças são desbloqueadas jogando."
 
-#: ui/locker_panel.gd:115
+#: ui/locker_panel.gd:125
 msgid "Opens at hub level %d (now %d). Upgrade the hub in the Hub tab."
 msgstr "Abre com a base no nível %d (agora %d). Melhore a base na aba Base."
 
-#: ui/locker_panel.gd:150 ui/photo_mode.gd:393 ui/photo_mode.gd:420
-#: ui/upgrades_screen.gd:13
+#: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
+#: ui/upgrades_panel.gd:30
 msgid "Lumi"
 msgstr "Lumi"
 
-#: ui/locker_panel.gd:150
+#: ui/locker_panel.gd:160
 msgid "You"
 msgstr "Você"
 
@@ -5344,10 +5379,6 @@ msgstr "Equipe"
 msgid "Tier"
 msgstr "Nível"
 
-#: ui/robot_card.gd:110 ui/robot_card.gd:244
-msgid "Build"
-msgstr "Construir"
-
 #: ui/robot_card.gd:130
 msgid "Fleet upgrades"
 msgstr "Melhorias da frota"
@@ -5400,7 +5431,7 @@ msgstr "nível máximo"
 msgid "next: x%s work speed"
 msgstr "próximo: x%s velocidade de trabalho"
 
-#: ui/robot_card.gd:257 ui/rockets_panel.gd:119 ui/yard_builds_panel.gd:60
+#: ui/robot_card.gd:257 ui/rockets_panel.gd:119 ui/yard_builds_panel.gd:125
 msgid "Upgrade to %s"
 msgstr "Melhorar para %s"
 
@@ -5816,19 +5847,19 @@ msgstr "AUTOMAÇÃO DE FARDOS  &  RECICLAGEM"
 msgid "Move to frontier"
 msgstr "Mover para a fronteira"
 
-#: ui/stations_panel.gd:98 ui/telescope_panel.gd:45
+#: ui/stations_panel.gd:102 ui/telescope_panel.gd:45
 msgid "%s built"
 msgstr "%s construído"
 
-#: ui/stations_panel.gd:98 ui/telescope_panel.gd:45 ui/yard_builds_panel.gd:83
+#: ui/stations_panel.gd:102 ui/telescope_panel.gd:45 ui/yard_builds_panel.gd:125
 msgid "Build %s"
 msgstr "Construir: %s"
 
-#: ui/stations_panel.gd:103
+#: ui/stations_panel.gd:107
 msgid "Auto-route: %s"
 msgstr "Rota automática: %s"
 
-#: ui/stations_panel.gd:104
+#: ui/stations_panel.gd:108
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s"
 msgstr "Fardos reciclados %d   ·   Lixo destruído %s kg   ·   Peças %s"
 
@@ -5880,7 +5911,7 @@ msgstr ""
 msgid "Rocket not ready"
 msgstr "Foguete não está pronto"
 
-#: ui/telescope_panel.gd:39 ui/yard_builds_panel.gd:77
+#: ui/telescope_panel.gd:39
 msgid "Built. Walk up to it and press E."
 msgstr "Construído. Chegue perto e aperte E."
 
@@ -6114,31 +6145,27 @@ msgstr "faltam %s · ~%s"
 msgid "Where it comes from:  %s"
 msgstr "De onde vem:  %s"
 
+#: ui/upgrades_panel.gd:43
+msgid "Machines"
+msgstr ""
+
 #: ui/upgrades_screen.gd:14
 msgid "Bots"
 msgstr "Bots"
-
-#: ui/upgrades_screen.gd:15
-msgid "Hub"
-msgstr "Base"
 
 #: ui/upgrades_screen.gd:16
 msgid "Research"
 msgstr "Pesquisa"
 
-#: ui/upgrades_screen.gd:17
-msgid "Rockets"
-msgstr "Foguetes"
-
-#: ui/upgrades_screen.gd:19
+#: ui/upgrades_screen.gd:18
 msgid "Locker"
 msgstr "Armário"
 
-#: ui/upgrades_screen.gd:144
+#: ui/upgrades_screen.gd:145
 msgid "WORKBENCH"
 msgstr "BANCADA"
 
-#: ui/upgrades_screen.gd:229
+#: ui/upgrades_screen.gd:230
 msgid "Not open yet. Keep playing."
 msgstr "Ainda não abriu. Continue jogando."
 
@@ -6174,12 +6201,12 @@ msgstr ""
 msgid "%d hexes"
 msgstr ""
 
-#: ui/yard_builds_panel.gd:12
-msgid "YARD"
+#: ui/yard_builds_panel.gd:21
+msgid "Nothing new to build yet. More opens as the base grows."
 msgstr ""
 
-#: ui/yard_builds_panel.gd:53
-msgid "Trash bin: %s (level %d)   ·   bales sell for %d%% here"
+#: ui/yard_builds_panel.gd:127
+msgid "Free"
 msgstr ""
 
 #: water/water_view.gd:78
@@ -7061,6 +7088,38 @@ msgstr "Seis distritos em flor, ou 3% do planeta recuperado."
 #: data/bloom.json:milestones[evergreen].desc
 msgid "Twelve districts in bloom, or 5% of the planet reclaimed."
 msgstr "Doze distritos em flor, ou 5% do planeta recuperado."
+
+#: data/camp.json:builds.shack.name data/hub.json:levels[0].name
+msgid "Lean-to"
+msgstr "Puxadinho"
+
+#: data/camp.json:builds.shack.desc
+msgid "Salvaged pipe and corrugated iron over the workbench, with a work lamp. Shelter for the crew."
+msgstr ""
+
+#: data/camp.json:builds.generator.name
+msgid "Generator"
+msgstr ""
+
+#: data/camp.json:builds.generator.desc
+msgid "A patched portable generator by the lean-to. It hums; the yard feels lived in."
+msgstr ""
+
+#: data/camp.json:builds.lamps.name
+msgid "Yard Lamps"
+msgstr ""
+
+#: data/camp.json:builds.lamps.desc
+msgid "The street lamp and the pole lamps along the fence, rewired. Light for the yard at night."
+msgstr ""
+
+#: data/camp.json:builds.composter.name
+msgid "Compost Press"
+msgstr ""
+
+#: data/camp.json:builds.composter.desc
+msgid "Presses plant scraps into compost and seeds. Worth building once something grows."
+msgstr ""
 
 #: data/camp.json:builds.radio.desc
 msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
@@ -11423,10 +11482,6 @@ msgstr ""
 "\n"
 "— T. Hale, Contabilidade"
 
-#: data/hub.json:levels[0].name
-msgid "Lean-to"
-msgstr "Puxadinho"
-
 #: data/hub.json:levels[0].desc
 msgid "Pipe frame, tin roof, a bench."
 msgstr "Estrutura de cano, telhado de zinco, um banco."
@@ -11792,12 +11847,12 @@ msgid "Cubes feed the recycler. Its power wakes the base."
 msgstr "Os cubos alimentam o reciclador. A energia dele acorda a base."
 
 #: data/objectives.json:objectives[tower].text
-msgid "Rebuild the signal tower"
-msgstr "Reconstrua a torre de sinal"
+msgid "Build the signal tower"
+msgstr ""
 
 #: data/objectives.json:objectives[tower].desc
-msgid "WREN went silent. The tower lets her reach you."
-msgstr "A WREN ficou em silêncio. A torre deixa ela falar com você."
+msgid "WREN went silent. Build it at the workbench."
+msgstr ""
 
 #: data/objectives.json:objectives[hex].text
 msgid "Clean a hex"
@@ -15613,6 +15668,21 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "Editing"
+#~ msgstr "Editando"
+
+#~ msgid "Hub"
+#~ msgstr "Base"
+
+#~ msgid "Rockets"
+#~ msgstr "Foguetes"
+
+#~ msgid "Rebuild the signal tower"
+#~ msgstr "Reconstrua a torre de sinal"
+
+#~ msgid "WREN went silent. The tower lets her reach you."
+#~ msgstr "A WREN ficou em silêncio. A torre deixa ela falar com você."
 
 #~ msgid "Radio"
 #~ msgstr "Rádio"

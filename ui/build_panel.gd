@@ -4,15 +4,13 @@ extends VBoxContainer
 ## separate tab"). The list is camp2's single source, HubBuilds.available(world, "one_time")
 ## (data/builds.json): only unlocked, not-yet-built things, in order; a building drops off once it
 ## stands and joins the small "Built" line. Building goes through HubBuilds.build (pay, place,
-## reveal). Also the Signal Jammer once the Ledger's drones start, and the controls of machines
-## that already stand (bale stations' route / move, the telescope).
+## reveal; the first Signal Jammer is one of them). Also the controls of machines that already stand (bale stations' route / move, the telescope).
 
 var world: Node
 var _list: VBoxContainer
 var _rows: Dictionary = {}  # id -> BenchRow
 var _empty: Label
 var _built: Label
-var _jam_row: BenchRow
 var _stations: StationsPanel
 var _scope: TelescopePanel
 var _ops: VBoxContainer
@@ -27,15 +25,6 @@ func _ready() -> void:
 	add_child(_list)
 	_empty = BenchKit.body(tr("Nothing new to build right now. New buildings unlock as you play."), UITheme.MUTED)
 	add_child(_empty)
-	_jam_row = BenchRow.new()
-	add_child(_jam_row)
-	_jam_row.pressed.connect(func() -> void:
-		var lg: Node = _ledger()
-		if lg and lg.build_jammer():
-			Audio.play("buy", 1.1, -2.0)
-		else:
-			Audio.play("buzz", 1.2, -8.0)
-		refresh())
 	_built = BenchKit.body("", UITheme.MUTED, BenchKit.SMALL_SIZE)
 	add_child(_built)
 	# Machines that stand: their few controls (route, move, open the telescope).
@@ -114,12 +103,7 @@ func refresh() -> void:
 		var reason: String = str(e.get("reason", ""))
 		row.show_entry(tr(str(e.get("name", id))), str(e.get("tier", "")), tr(str(e.get("desc", ""))), e.get("cost", {}),
 			tr("Build"), reason, HubBuilds.not_enough(reason))
-	var lg: Node = _ledger()
-	var jam_on: bool = lg != null and lg.jammer_visible()
-	_jam_row.visible = jam_on
-	if jam_on:
-		_jam_row.show_entry(tr("Signal Jammer"), "", lg.jammer_text(), {}, tr("Build"), "" if lg.can_build_jammer() else tr("Not available"), false)
-	_empty.visible = items.is_empty() and not jam_on
+	_empty.visible = items.is_empty()
 	var names: Array[String] = []
 	for n: String in HubBuilds.built_names(w):
 		names.append(tr(n))

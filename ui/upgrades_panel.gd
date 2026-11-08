@@ -2,9 +2,9 @@ class_name UpgradesPanel
 extends VBoxContainer
 ## [ui3] Workbench "Upgrades" tab: everything with levels or tiers, grouped simply.
 ##   Lumi      - Lumi's upgrade cards (upgrades.json, tab "patch").
-##   Base      - the next hub level card, the next tier of each tiered build (camp2's
-##               HubBuilds.available(world, "tiered"): trash bin, signal tower, ...) and the
-##               Air Scrubbers.
+##   Base      - the next hub level card and the next tier of each tiered build (camp2's
+##               HubBuilds.available(world, "tiered"): trash bin, signal tower, air scrubbers,
+##               signal jammers, ...).
 ##   Machines  - machine upgrades (tab "hub", e.g. Belt Drive) once their machine stands.
 ##   Rocket    - the rocket stages, once the pad is open.
 ## A section with nothing in it is not shown.
@@ -17,7 +17,6 @@ var cards: Array[UpgradeCard] = []
 var _base: VBoxContainer
 var _tier_list: VBoxContainer
 var _tier_rows: Dictionary = {}  # id -> BenchRow
-var _scrub_row: BenchRow
 var _hub_panel: HubPanel
 var _grids: Array[GridContainer] = []
 var _rockets: RocketsPanel
@@ -41,14 +40,6 @@ func _ready() -> void:
 	_tier_list = VBoxContainer.new()
 	_tier_list.add_theme_constant_override("separation", 10)
 	_base.add_child(_tier_list)
-	_scrub_row = BenchRow.new()
-	_base.add_child(_scrub_row)
-	_scrub_row.pressed.connect(func() -> void:
-		if hub and hub.build_scrubber():
-			Audio.play("buy", 1.0, -2.0)
-		else:
-			Audio.play("buzz", 1.2, -8.0)
-		refresh())
 	_add_card_section(tr("Machines"), "hub")
 	_rocket_head = BenchKit.caps(tr("Rocket"))
 	add_child(_rocket_head)
@@ -144,20 +135,6 @@ func refresh() -> void:
 		var reason: String = str(e.get("reason", ""))
 		row.show_entry(tr(str(e.get("name", id))), str(e.get("tier", "")), tr(str(e.get("desc", ""))), e.get("cost", {}),
 			tr("Upgrade"), reason, HubBuilds.not_enough(reason))
-	# Air Scrubbers: a counted building (up to max), shown from their hub level on.
-	var show_scrub: bool = false
-	if hub:
-		var sd: Dictionary = hub.scrubber_def()
-		var maxed: bool = hub.scrubbers >= int(sd.get("max", 6))
-		show_scrub = hub.level >= int(sd.get("requires_level", 2)) and not maxed
-		if show_scrub:
-			var c: Dictionary = (sd.get("cost", {}) as Dictionary).duplicate()
-			for k: String in c:
-				c[k] = float(c[k]) * hub.scrubber_cost_mult()
-			var ok: bool = Hub.can_pay(sd.get("cost", {}), hub.scrubber_cost_mult())
-			_scrub_row.show_entry(tr(str(sd.get("name", ""))), tr("%d of %d") % [hub.scrubbers, int(sd.get("max", 6))], tr(str(sd.get("desc", ""))), c,
-				tr("Add one"), "" if ok else tr("Not enough cubes"), true)
-	_scrub_row.visible = show_scrub
 	var rockets_on: bool = UpgradesScreen.tab_visible("rockets", w)
 	_rocket_head.visible = rockets_on
 	_rockets.visible = rockets_on
