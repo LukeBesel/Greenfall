@@ -146,6 +146,8 @@ func _process(delta: float) -> void:
 		var a: Dictionary = def(id)
 		EventBus.toast.emit(tr("Achievement: %s. %s") % [tr(str(a.get("name", id))), tr(str(a.get("desc", "")))], "story")
 		Audio.play("chime", 1.0, -2.0)
+	if SignalTower.tier() == 0 and not DevHooks.has("codex-toasts"):
+		found.clear()  # [v3clear] owner item 41: no Codex chatter in the first minutes (the entries are still logged)
 	if found.size() > 2:
 		EventBus.toast.emit(tr("Codex: %d new entries.") % found.size(), "info")
 	else:

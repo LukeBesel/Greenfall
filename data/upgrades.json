@@ -31,10 +31,10 @@
     },
     {
       "id": "compartment_size",
-      "name": "Compartment Size",
+      "name": "Chest Size",
       "tab": "patch",
       "icon": "box",
-      "desc": "A roomier chest. More junk per cube.",
+      "desc": "A bigger chest. Fewer trips to the bin.",
       "stat": "capacity",
       "mode": "add",
       "amount": 5.0,

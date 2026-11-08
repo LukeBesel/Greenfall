@@ -80,7 +80,7 @@ func value_of(i: int) -> float:
 			var fl: Node = world.get("fleet") if world else null
 			if fl == null:
 				return 0.0
-			return float(fl.call("robots").size()) if key == "any" else float(fl.call("count", key))
+			return float(fl.call("robot_total") if fl.has_method("robot_total") else fl.call("robots").size()) if key == "any" else float(fl.call("count", key))  # [v3clear] the globe's SphereFleet counts its crew, not Robot children
 		"tier":
 			var best: int = 0
 			for k: String in GameState.flags:

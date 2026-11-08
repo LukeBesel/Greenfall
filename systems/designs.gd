@@ -151,7 +151,7 @@ static func check_unlocks(quiet: bool = false) -> Array[String]:
 		out.append(id)
 		if not quiet:
 			pending_toasts.append(id)
-			EventBus.toast.emit(TranslationServer.translate("New design unlocked: %s. Wear it from the workbench (Cosmetics).") % TranslationServer.translate(str(def(id).get("name", id))), "story")
+			EventBus.toast.emit(TranslationServer.translate("New look unlocked: %s. Try it on at the Locker.") % TranslationServer.translate(str(def(id).get("name", id))), "story")
 	if not out.is_empty() and not quiet:
 		DesignToast.show_next()
 	return out

@@ -512,7 +512,7 @@ static func run(rt: Node, check: Callable) -> void:
 	p.place_on_sphere(so1.bench_position() + so1.bench_position().normalized() * 0.3, p.forward())
 	await tree.physics_frame
 	check.call("orbit_bench_starts_broken", false, Camp.bench_ok())
-	check.call("orbit_bench_prompt", TranslationServer.translate("E   Workbench (broken): repair it"), s1.interact_prompt(p))
+	check.call("orbit_bench_prompt", TranslationServer.translate("E   Fix the workbench"), s1.interact_prompt(p))
 	s1.try_interact(p)  # the first E repairs it
 	await tree.create_timer(float(Camp.cfg().get("bench_repair_s", 2.6)) + 0.6).timeout
 	check.call("orbit_bench_repaired", true, Camp.bench_ok())

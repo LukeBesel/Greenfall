@@ -7,10 +7,10 @@ extends Node
 
 # l10n:begin
 const STEPS: Array[Dictionary] = [
-	{"id": "repair", "text": "{interact}  at the workbench to repair it"},
-	{"id": "scoop", "text": "Hold  {scoop}  to scoop junk", "goal": 8},
-	{"id": "dump", "text": "Empty your chest into the trash bin"},
-	{"id": "upgrade", "text": "{interact}  at the workbench to upgrade"},
+	{"id": "repair", "text": "Fix the workbench: press  {interact}  at it"},
+	{"id": "scoop", "text": "Pick up trash: hold  {scoop}", "goal": 8},
+	{"id": "dump", "text": "Bring your chest to the trash bin"},
+	{"id": "upgrade", "text": "Buy an upgrade: press  {interact}  at the bench"},
 ]
 # [onboard2] QA P2: every early step uses what Lumi has at the start (the broken bench, his scoop,
 # the trash bin). Bales come later, with the Baler (story objectives, data/objectives.json).

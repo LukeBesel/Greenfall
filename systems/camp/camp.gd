@@ -173,8 +173,8 @@ func bench_prompt() -> String:
 	if repairing:
 		return ""
 	if not bench_ok():
-		return tr("E   Workbench (broken): repair it")
-	return tr("E   Workbench: upgrades")
+		return tr("E   Fix the workbench")  # [v3clear] verbs first, plain words
+	return tr("E   Open the workbench")
 
 
 func repair_bench() -> void:
@@ -221,7 +221,7 @@ func repair_bench() -> void:
 			(p_in as PlayerInput).enabled = true
 		GameState.inc_stat("bench_repaired")
 		Audio.play("chime", 1.0, -4.0)
-		EventBus.toast.emit(tr("Workbench fixed. Press E at it to spend cubes on upgrades."), "info"))
+		EventBus.toast.emit(tr("Workbench fixed! Press %s at it to buy upgrades.") % Settings.glyph("interact"), "info"))  # [v3clear] the key glyph
 
 
 ## Instant repair (autoplay, tests).
@@ -383,8 +383,10 @@ func bin_prompt() -> String:
 	if TrashBin.next_def().is_empty():
 		return tr("E   %s (Lv %d): fully upgraded") % [nm, TrashBin.level()]
 	var why: String = TrashBin.block_reason(hub_level())
-	if why != "" and why != tr("Not enough materials."):
-		return tr("E   %s (Lv %d): %s") % [nm, TrashBin.level(), why]
+	# [v3clear] Owner item 41: at the bin the job is emptying the chest (that happens by walking up);
+	# an upgrade you can't buy yet is no prompt at all (it read like the bin's own instruction).
+	if why != "" or not GameState.can_afford_all(TrashBin.next_cost()):
+		return ""
 	return tr("E   %s (Lv %d): upgrade to %s for %s") % [nm, TrashBin.level(), tr(TrashBin.name_of(TrashBin.level() + 1)), HubPanel.cost_text(TrashBin.next_cost())]
 
 

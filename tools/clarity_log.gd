@@ -19,6 +19,8 @@ var _worst_empty: float = 0.0
 var _cards: int = 0
 var _toasts: int = 0
 var _wren_hooked: bool = false
+var _fleet_t: float = 0.0
+var _last_fleet: String = "-"
 
 
 func _init(w: Node = null) -> void:
@@ -27,6 +29,10 @@ func _init(w: Node = null) -> void:
 
 
 func _ready() -> void:
+	if DevHooks.has("clarity-bench2"):  # dev: start with the Bot Bay (robot step checks)
+		GameState.flags["bench_tier"] = 2
+		Research.grant("salvage_logic")
+		GameState.add_currency("parts", BigNum.from_float(500.0))
 	EventBus.toast.connect(func(text: String, kind: String) -> void:
 		_toasts += 1
 		_say("toast(%s): %s" % [kind, text]))
@@ -75,6 +81,18 @@ func _process(delta: float) -> void:
 		_worst_empty = maxf(_worst_empty, now - _empty_since)
 	else:
 		_empty_since = -1.0
+	_fleet_t -= POLL_S
+	if _fleet_t <= 0.0:
+		_fleet_t = 30.0
+		var fl: Variant = world.get("fleet")
+		if fl is Fleet:
+			var why: String = (fl as Fleet).build_block_reason("scoopie")
+			if why != _last_fleet:
+				_last_fleet = why
+				_say("scoopie: %s (bench tier %d)" % [why if why != "" else "can be built", BenchTiers.tier()])
+		elif fl == null and _last_fleet != "none":
+			_last_fleet = "none"
+			_say("no Fleet in this world")
 	var hud: Variant = world.get("hud")
 	var pr: String = ""
 	if hud is HUD:

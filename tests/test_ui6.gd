@@ -45,8 +45,7 @@ func test_list_detail_rows_categories_and_locked_rows() -> void:
 	ld.set_category("b")
 	assert_eq(ld._rows.size(), 2)
 	var parts: Array = (ld._rows["l0"] as Button).get_meta("parts")
-	assert_eq((parts[1] as Label).text, "?  ?", "locked rows hide their name")
-	assert_eq(ld._d_name.text, "?  ?")
+	assert_eq((parts[1] as Label).text, "Secret", "[v3clear] locked rows keep their name (the detail says what unlocks them)")
 	assert_false(ld._d_btn.visible, "no action on a locked row")
 
 

@@ -25,6 +25,8 @@ const BIN_RADIUS: float = 2.2
 
 static var _model_vol: Dictionary = {}
 static var _hint_t: int = 0
+## [v3clear] When a scoop last met a piece too heavy to lift (ms; the objective card says so).
+static var heavy_at: int = 0
 
 
 static func size_class(base_vol: float) -> int:
@@ -140,8 +142,9 @@ static func heavy_hint(patch: Node3D, field: HexField, origin: Vector3, forward:
 	if pid < 0 or can_lift(field, pid):
 		return
 	_hint_t = now
-	var need: String = TranslationServer.translate("Lift Strength %d") % piece_size(field, pid)
-	Vfx.float_text(field.piece_pos[pid] + Vector3(0, 1.0, 0), TranslationServer.translate("Too heavy: needs %s") % need, Color(1.0, 0.75, 0.45), 0.4, 0.6)
+	heavy_at = now  # [v3clear]
+	var at: Vector3 = field.piece_pos[pid]
+	Vfx.float_text(at + OrbitUp.up(at) * 1.0, TranslationServer.translate("Too heavy. Upgrade Lift at the bench."), Color(1.0, 0.75, 0.45), 0.4, 0.6)  # [v3clear] plain words, local up
 	Audio.play("buzz", 0.8, -12.0)
 
 
@@ -186,7 +189,7 @@ static func press_hint(patch: Node3D, field: HexField) -> bool:
 	if now - _hint_t < 4000 or not press_ready(patch, field):
 		return false
 	_hint_t = now
-	Vfx.float_text(patch.global_position + patch.call("up") * 1.9, TranslationServer.translate("Nothing here fits: press a bale"), Color(0.85, 1.0, 0.7), 0.4, 0.8)
+	Vfx.float_text(patch.global_position + patch.call("up") * 1.9, TranslationServer.translate("Nothing here fits. Press [%s] to make a bale.") % Settings.glyph("cube"), Color(0.85, 1.0, 0.7), 0.4, 0.8)
 	Audio.play("ding", 1.2, -12.0)
 	return true
 
@@ -198,7 +201,7 @@ static func baler_hint(patch: Node3D) -> void:
 		return
 	_hint_t = now
 	Audio.play("buzz", 1.2, -10.0)
-	Vfx.float_text(patch.global_position + Vector3(0, 1.9, 0), TranslationServer.translate("No Baler yet: empty your chest in the trash bin"), Color(1.0, 0.85, 0.5), 0.4, 0.7)
+	Vfx.float_text(patch.global_position + OrbitUp.up(patch.global_position) * 1.9, TranslationServer.translate("No Baler yet. Bring your chest to the bin."), Color(1.0, 0.85, 0.5), 0.4, 0.7)
 
 
 # --- Emptying the chest (before the Baler) -------------------------------------------------

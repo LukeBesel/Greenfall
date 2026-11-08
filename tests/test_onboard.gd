@@ -41,7 +41,7 @@ func test_objectives_have_a_short_why() -> void:
 		assert_lt(font.get_string_size(str(d["text"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 18).x, (ObjectiveCard.W - 28.0) * 2.0, "title fits two lines")
 	var hex_ones: Array = list.filter(func(d: Dictionary) -> bool: return d.get("hex", false))
 	assert_eq(hex_ones.size(), 1)
-	assert_eq(str(hex_ones[0]["text"]), "Clean a hex")
+	assert_eq(str(hex_ones[0]["text"]), "Clean the glowing hex")
 
 
 func test_checklist_has_no_this_hex() -> void:
@@ -160,7 +160,7 @@ func test_objective_card_shows_current() -> void:
 	card.objectives = o
 	card.refresh(false)
 	assert_true(card.visible)
-	assert_eq(card._title.text, "Clean a hex")
+	assert_eq(card._title.text, "Clean the glowing hex")
 	o.step = o.chain.size()
 	card.refresh(false)
 	assert_true(o.current().is_empty())
