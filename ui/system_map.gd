@@ -27,10 +27,11 @@ const SUN_ZONE: float = 4.4
 const ORBIT_GAP: float = 0.3
 ## Overview camera: a low, wide angle (elevation in radians), pulled back by OVERVIEW_DIST x the
 ## system's extent and aimed a little toward the viewer so the near lanes stay on screen. Tuned
-## so every planet stays clear of the cards at 16:9 and reads at 17-40 px radius (720p).
+## so every planet stays inside the middle of the screen at 16:9 (planets pass under the side
+## cards only at the far edge) and reads at 15-35 px radius at 720p.
 const OVERVIEW_ELEV: float = 0.45
-const OVERVIEW_DIST: float = 1.65
-const OVERVIEW_AIM: float = 0.4
+const OVERVIEW_DIST: float = 1.9
+const OVERVIEW_AIM: float = 0.45
 ## The selected planet swells a little in the overview so its silhouette and rings read.
 const SELECT_GROW: float = 1.3
 ## Zoomed framing: the globe fills this share of the screen height, its rings at most RING_FILL.
