@@ -30,6 +30,8 @@ static func _snap(s: Node) -> Dictionary:
 		"lumi_dir": "%.4f,%.4f,%.4f" % [at[0], at[1], at[2]],
 		"lumi_fill": snappedf(p.compartment.fill, 0.01),
 		"parts_found": s.field.part_found.count(1),
+		"sites": str(OrbitSave.site_cells(GameState.orbit)),
+		"sites_built": str(OrbitSave.sites_to_array((s.get("orbit") as SliceOrbit).globe.sites)),
 		"hexes_paid": (GameState.orbit.get("hexes_paid", {}) as Dictionary).size(),
 		"hex_level_target": (s.get("hex_levels") as HexLevels).level_of(int(s.get_meta("rt_target", -1))),
 		"cells_level_target": g.cells.level[int(s.get_meta("rt_target", 0))],

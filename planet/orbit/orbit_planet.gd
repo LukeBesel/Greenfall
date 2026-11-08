@@ -40,7 +40,8 @@ var _junk_dirty: bool = true
 
 ## Builds the globe of `p_spec` (GlobeSpec.of: frequency, hub_count). planet_state /
 ## cells_state are saved dicts (empty for a new game). n_hubs < 0: the spec's hub count.
-func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1, planet_state: Dictionary = {}, cells_state: Dictionary = {}) -> void:
+## site_cells: a save's pads, in order (empty: pick them from the survey).
+func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1, planet_state: Dictionary = {}, cells_state: Dictionary = {}, site_cells := PackedInt32Array()) -> void:
 	seed_value = p_seed
 	spec = p_spec
 	var f: int = int(spec.get("frequency", GlobeSpec.VERDANCE_FREQ))
@@ -61,7 +62,7 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	terrain.set_cell_elevation(planet.elevation, 14.0, sorted_e[int(sorted_e.size() * 0.25)])
 	cells = SphereCells.from_planet(planet)
 	stats["grid_ms"] = Time.get_ticks_msec() - t1
-	_place_hubs(n_hubs if n_hubs > 0 else int(spec.get("hub_count", 10)), cells_state.is_empty())
+	_place_hubs(n_hubs if n_hubs > 0 else int(spec.get("hub_count", 10)), cells_state.is_empty(), site_cells)
 	if not cells_state.is_empty() and not cells.apply_dict(cells_state):
 		push_warning("[orbit] saved cells didn't match this planet; starting its state fresh.")
 		_clear_sites()
@@ -90,9 +91,11 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 
 ## Farthest-point subset of the survey's hub candidates, starting at the Junkyard Hub, each
 ## reserved as a level pad. fresh: clear the yard (the only clean ground at the start).
-func _place_hubs(n: int, fresh: bool) -> void:
+func _place_hubs(n: int, fresh: bool, saved := PackedInt32Array()) -> void:
 	var picks: Array[int] = [planet.hubs[0]]
-	while picks.size() < mini(n, planet.hubs.size()):
+	if not saved.is_empty() and saved[0] >= 0 and saved[saved.size() - 1] < grid.cell_count():
+		picks.assign(Array(saved))  # [orbB] the save's pads, whatever the hub picking does now
+	while picks.size() < mini(n, planet.hubs.size()) and saved.is_empty():
 		var best: int = -1
 		var best_d: float = -1.0
 		for h: int in planet.hubs:

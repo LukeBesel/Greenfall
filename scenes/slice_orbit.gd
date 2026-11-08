@@ -19,7 +19,7 @@ extends Node
 ## --orbit-bots=N (stand-in SphereBots, default 4). The phase A scenes stay reachable as
 ## --orbit=globe (planet/orbit/verdance_globe.tscn) and --orbit=v1.
 
-const SCHEMA: int = 1  # GameState.orbit layout (see persist_save)
+const SCHEMA: int = OrbitSave.SCHEMA  # GameState.orbit layout: core/save_orbit.gd
 const HEX_MILESTONES: Array[int] = [1, 5, 10, 25, 50, 100, 150, 200, 264]  # slice.gd's, by cell id here
 
 var w: Node3D  # the slice (scenes/slice.gd)
@@ -29,6 +29,7 @@ var crews: OrbitCrews
 var cam: SphereCam
 var dev: OrbitDev
 var view_mode: String = "follow"
+var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
 
 
 ## True when --orbit asks for the slice on the globe (not one of the phase A prototypes).
@@ -47,7 +48,7 @@ func build(p_world: Node3D) -> void:
 		loaded = true
 	elif not DevHooks.has("fresh"):
 		loaded = SaveManager.load_game()
-	var od: Dictionary = GameState.orbit if loaded else {}
+	var od: Dictionary = OrbitSave.migrate(GameState.orbit) if loaded else {}
 	# The planet: --orbit-planet=<id>, else the saved one, else Verdance. Its size is data (GlobeSpec).
 	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", "verdance"))
 	var spec: Dictionary = GlobeSpec.of(pid)
@@ -60,7 +61,8 @@ func build(p_world: Node3D) -> void:
 	globe = OrbitPlanet.new()
 	globe.name = "Globe"
 	w.add_child(globe)
-	globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}))
+	globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}), OrbitSave.site_cells(od))
+	hub_states = (od.get("hubs", {}) as Dictionary).duplicate(true)
 	if od.has("field"):
 		globe.field.apply_dict(od["field"])
 	w.set("planet", globe.planet)
@@ -344,6 +346,9 @@ func persist_save() -> void:
 		"planet": g.planet.to_dict(),
 		"cells": g.cells.to_dict(),
 		"field": g.field.to_dict(),  # found parts, unlocked cells
+		"sites": OrbitSave.sites_to_array(g.sites),
+		"hubs": hub_states,
+		"migrated": str(GameState.orbit.get("migrated", "")),
 		"hexes_paid": GameState.orbit.get("hexes_paid", {}),
 		"hex_levels": (w.get("hex_levels") as HexLevels).persist(),
 		"day_t": day.elapsed(),
