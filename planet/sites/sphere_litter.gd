@@ -100,7 +100,8 @@ func _process(_delta: float) -> void:
 	var kob: Object = sfield.keep_out.get_object() if sfield.keep_out.is_valid() else null
 	if kob is YardKeepOut:  # [v1world] a copy for the worker (footprints may still be appended on the main thread)
 		var yk: YardKeepOut = kob
-		_job_ctx["ko"] = {"rects": yk.rects.duplicate(), "discs": yk.discs.duplicate(), "inv": yk.xf_inv, "r": yk.radius}
+		_job_ctx["ko"] = {"rects": yk.rects.duplicate(), "discs": yk.discs.duplicate(), "inv": yk.xf_inv, "r": yk.radius,
+			"bins": yk._bins.duplicate(true), "bin_m": YardKeepOut.BIN_M}  # [v3city] the town's footprints, binned
 	_task = WorkerThreadPool.add_task(_job, false, "litter cells")
 
 
@@ -241,6 +242,14 @@ static func _ko_blocks(ko: Dictionary, dir: Vector3) -> bool:
 	for r: Rect2 in ko["rects"]:
 		if r.has_point(q):
 			return true
+	var bins: Dictionary = ko.get("bins", {})
+	if not bins.is_empty():  # [v3city]
+		var bm: float = float(ko["bin_m"])
+		var bin: Variant = bins.get(Vector2i(floori(q.x / bm), floori(q.y / bm)))
+		if bin != null:
+			for r2: Rect2 in bin:
+				if r2.has_point(q):
+					return true
 	for dd: Vector3 in ko["discs"]:
 		if q.distance_squared_to(Vector2(dd.x, dd.y)) < dd.z * dd.z:
 			return true

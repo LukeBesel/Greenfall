@@ -300,23 +300,23 @@ msgstr "基地已升级：%s。"
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "空气净化器启动。风扇伴着一声悠长、满是灰尘的叹息转了起来。"
 
-#: automation/outpost.gd:485
+#: automation/outpost.gd:504
 msgid "SCALE"
 msgstr "磅秤"
 
-#: automation/outpost.gd:496
+#: automation/outpost.gd:515
 msgid "OUTPOST %d%s"
 msgstr "前哨 %d%s"
 
-#: automation/outpost.gd:496
+#: automation/outpost.gd:515
 msgid "  ·  BIG SKIP"
 msgstr "  ·  大料箱"
 
-#: automation/outpost.gd:611
+#: automation/outpost.gd:630
 msgid "OUTPOST %d  ·  ONLINE"
 msgstr "前哨 %d  ·  运行中"
 
-#: automation/outpost.gd:645
+#: automation/outpost.gd:664
 msgid "RECHARGE"
 msgstr "充能"
 
@@ -507,7 +507,7 @@ msgid "E   Telescope: look across the system"
 msgstr "E   望远镜：眺望整个星系"
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:500 ui/upgrade_card.gd:258
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:502 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d 分钟"
 
@@ -784,7 +784,7 @@ msgstr "WREN：那里是勘测区的边缘，Lumi。外面只有雾霾。"
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi 悬浮着回到了坚实的地面。"
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:361
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:363
 msgid "HEX CLEAN!  +%s"
 msgstr "六角格清理完毕！  +%s"
 
@@ -792,20 +792,20 @@ msgstr "六角格清理完毕！  +%s"
 msgid "Rocket hop: %.1f km"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:99
+#: planet/sites/orbit_sites.gd:101
 msgid "The rocket is in flight."
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:148
+#: planet/sites/orbit_sites.gd:150
 msgid "E   Rocket: choose a destination"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:181
+#: planet/sites/orbit_sites.gd:183
 msgid "%s site"
 msgstr ""
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:182 ui/main_menu.gd:476
+#: planet/sites/orbit_sites.gd:184 ui/main_menu.gd:476
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -1073,32 +1073,32 @@ msgstr "看上面"
 msgid "Ride the hover-sled"
 msgstr ""
 
-#: robots/fleet.gd:139
+#: robots/fleet.gd:145
 msgid "Locked · research %s"
 msgstr "未解锁 · 研究 %s"
 
-#: robots/fleet.gd:141
+#: robots/fleet.gd:147
 msgid "Crew full (%d/%d): upgrade the hub"
 msgstr "队伍已满（%d/%d）：请升级基地"
 
-#: robots/fleet.gd:143 robots/fleet.gd:219
+#: robots/fleet.gd:149 robots/fleet.gd:225
 msgid "Not enough parts"
 msgstr "零件不足"
 
-#: robots/fleet.gd:145 robots/fleet.gd:221 robots/water_net.gd:149
+#: robots/fleet.gd:151 robots/fleet.gd:227 robots/water_net.gd:149
 #: systems/research.gd:200 systems/robot_builder.gd:350 systems/robot_builder.gd:402
 msgid "Not enough cubes"
 msgstr "方块不足"
 
-#: robots/fleet.gd:183
+#: robots/fleet.gd:189
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr "%s %s 组装完成。它四下看了看，就开始干活了。%s"
 
-#: robots/fleet.gd:183
+#: robots/fleet.gd:189
 msgid " Seems %s."
 msgstr " 看起来%s。"
 
-#: robots/fleet.gd:240
+#: robots/fleet.gd:246
 msgid "%s fleet upgraded to %s."
 msgstr "%s机队已升级为 %s。"
 
@@ -1264,11 +1264,15 @@ msgid "Building a %s, %d%%"
 msgstr ""
 
 #: robots/sphere/command_overlay.gd:39
-msgid "%s zone"
+msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:39
+#: robots/sphere/command_overlay.gd:40
 msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:41
+msgid "%s zone"
 msgstr ""
 
 #: robots/sphere/sphere_fleet.gd:53
@@ -1279,7 +1283,7 @@ msgstr ""
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "机器人上行链路上线。按 B 打开指挥：划定区域，把队伍派到你想去的地方。"
 
-#: scenes/slice.gd:1099 scenes/slice_orbit.gd:377
+#: scenes/slice.gd:1099 scenes/slice_orbit.gd:379
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
@@ -1311,7 +1315,7 @@ msgstr "火箭停在空地上，电池充满就能出发。"
 msgid "Landed on the base pad."
 msgstr "已降落在基地平台。"
 
-#: scenes/slice.gd:1294 scenes/slice_orbit.gd:915
+#: scenes/slice.gd:1294 scenes/slice_orbit.gd:917
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
@@ -1327,15 +1331,15 @@ msgstr "前哨 %d · %d级"
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
-#: scenes/slice_orbit.gd:446 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:515
+#: scenes/slice_orbit.gd:448 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:515
 msgid "E   Fix the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:446 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:448 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:1015
+#: scenes/slice_orbit.gd:1017
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
@@ -3370,7 +3374,7 @@ msgstr "播种新世界"
 msgid "The Cradle has to come home first."
 msgstr "Cradle号得先回家。"
 
-#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:351
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:353
 #: ui/rockets_panel.gd:81 ui/system_map.gd:724
 msgid "Launch"
 msgstr "发射"
@@ -3437,7 +3441,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "机器"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:186 ui/locker_panel.gd:250
+#: ui/bench_lists.gd:11 ui/globe_view.gd:188 ui/locker_panel.gd:250
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "火箭"
@@ -3881,7 +3885,7 @@ msgstr "不平整捆包"
 msgid "Bales cashed in"
 msgstr "兑现的捆包"
 
-#: ui/codex_screen.gd:774 ui/globe_view.gd:154 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:774 ui/globe_view.gd:156 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "种植"
 
@@ -4573,75 +4577,75 @@ msgstr "外观"
 msgid "???  %s"
 msgstr "???  %s"
 
-#: ui/globe_view.gd:137
+#: ui/globe_view.gd:139
 msgid "Survey"
 msgstr "勘测"
 
-#: ui/globe_view.gd:137
-msgid "Verdance  ·  hand-held projection"
-msgstr "Verdance  ·  手持投影"
+#: ui/globe_view.gd:139
+msgid "Verdance  ·  seed-keeper's survey"
+msgstr ""
 
-#: ui/globe_view.gd:153
+#: ui/globe_view.gd:155
 msgid "Not cleaned yet"
 msgstr "尚未清理"
 
-#: ui/globe_view.gd:153
+#: ui/globe_view.gd:155
 msgid "Cleaned"
 msgstr "已清理"
 
-#: ui/globe_view.gd:154 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:156 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr "已种植"
 
-#: ui/globe_view.gd:155 ui/system_map.gd:683 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:157 ui/system_map.gd:683 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr "已恢复"
 
-#: ui/globe_view.gd:155
+#: ui/globe_view.gd:157
 msgid "Cities"
 msgstr "城市"
 
-#: ui/globe_view.gd:156
-msgid "Bases"
-msgstr "基地"
+#: ui/globe_view.gd:158
+msgid "Hubs"
+msgstr ""
 
-#: ui/globe_view.gd:171 ui/late_menu.gd:21
+#: ui/globe_view.gd:173 ui/late_menu.gd:21
 msgid "Solar system"
 msgstr "太阳系"
 
-#: ui/globe_view.gd:186
+#: ui/globe_view.gd:188
 msgid "Travel between bases"
 msgstr "在基地间旅行"
 
-#: ui/globe_view.gd:206
+#: ui/globe_view.gd:208
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr "[k]拖动旋转   ·   滚轮缩放   ·   [/k][p]{@look}  旋转     {zoom_out}{zoom_in}  缩放     {@dpad}  发射列表     [/p]{open_globe}  关闭"
 
-#: ui/globe_view.gd:293
+#: ui/globe_view.gd:295
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"
 msgstr ""
 
-#: ui/globe_view.gd:348
+#: ui/globe_view.gd:350
 msgid "%d sectors away"
 msgstr "相隔 %d 个扇区"
 
-#: ui/globe_view.gd:470
+#: ui/globe_view.gd:472
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "的星球已收复  ·  %s / %s 个陆地六角格"
 
-#: ui/globe_view.gd:477
+#: ui/globe_view.gd:479
 msgid "%s HEXES CLEAN"
 msgstr "%s 个六角格已清理"
 
-#: ui/globe_view.gd:479
+#: ui/globe_view.gd:481
 msgid "Surveyed %s ago%s"
 msgstr "%s前勘测%s"
 
-#: ui/globe_view.gd:479
+#: ui/globe_view.gd:481
 msgid "   ·   OUTDATED"
 msgstr "   ·   已过时"
 
-#: ui/globe_view.gd:480
+#: ui/globe_view.gd:482
 msgid "Re-survey      %s cubes"
 msgstr "重新勘测      %s 方块"
 
@@ -16444,6 +16448,12 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Verdance  ·  hand-held projection"
+#~ msgstr "Verdance  ·  手持投影"
+
+#~ msgid "Bases"
+#~ msgstr "基地"
 
 #~ msgid "A whole hex is clean! The ground remembers its colors."
 #~ msgstr "整片六角格都干净了！大地想起了它的颜色。"

@@ -121,6 +121,18 @@ func _check() -> void:
 		else:
 			rec = [bp, 0]
 		_robot_last[id] = rec
+	# [v3qa] The globe's robots are SphereBots (no physics body): check the crew's units too.
+	var crew: SphereCrew = so.crews.crew if so.crews else null
+	if crew:
+		for u: Dictionary in crew.robots():
+			n_bots += 1
+			var b: SphereBot = u["bot"]
+			if b != null:
+				var ua: float = g.terrain.altitude(b.global_position)
+				if ua < -1.0 or ua > 6.0:
+					_warn("robot %s %.1f m %s the terrain (cell %d)" % [u["name"], absf(ua), "under" if ua < 0 else "above", g.grid.cell_at(b.global_position)])
+			if crew.is_stuck(u):
+				_warn("robot %s (%s) stuck at cell %d mode %s" % [u["name"], u["type"], crew.unit_cell(u), str(u["mode"])])
 	if DevHooks.has("soak-debug"):
 		var comp: Compartment = p.compartment
 		var dep: Variant = so.w.get("depot")

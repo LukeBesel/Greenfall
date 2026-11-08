@@ -300,23 +300,23 @@ msgstr "Base mejorada: %s."
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "Depurador de aire en marcha. Los ventiladores arrancan con un largo suspiro polvoriento."
 
-#: automation/outpost.gd:485
+#: automation/outpost.gd:504
 msgid "SCALE"
 msgstr "BÁSCULA"
 
-#: automation/outpost.gd:496
+#: automation/outpost.gd:515
 msgid "OUTPOST %d%s"
 msgstr "PUESTO %d%s"
 
-#: automation/outpost.gd:496
+#: automation/outpost.gd:515
 msgid "  ·  BIG SKIP"
 msgstr "  ·  GRAN CONTENEDOR"
 
-#: automation/outpost.gd:611
+#: automation/outpost.gd:630
 msgid "OUTPOST %d  ·  ONLINE"
 msgstr "PUESTO %d  ·  EN LÍNEA"
 
-#: automation/outpost.gd:645
+#: automation/outpost.gd:664
 msgid "RECHARGE"
 msgstr "RECARGA"
 
@@ -507,7 +507,7 @@ msgid "E   Telescope: look across the system"
 msgstr "E   Telescopio: mirar el sistema"
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:500 ui/upgrade_card.gd:258
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:502 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d min"
 
@@ -785,7 +785,7 @@ msgstr "WREN: Ese es el borde de la zona de exploración, Lumi. Ahí fuera solo 
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi vuelve flotando a tierra firme."
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:361
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:363
 msgid "HEX CLEAN!  +%s"
 msgstr "¡HEXÁGONO LIMPIO!  +%s"
 
@@ -793,20 +793,20 @@ msgstr "¡HEXÁGONO LIMPIO!  +%s"
 msgid "Rocket hop: %.1f km"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:99
+#: planet/sites/orbit_sites.gd:101
 msgid "The rocket is in flight."
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:148
+#: planet/sites/orbit_sites.gd:150
 msgid "E   Rocket: choose a destination"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:181
+#: planet/sites/orbit_sites.gd:183
 msgid "%s site"
 msgstr ""
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:182 ui/main_menu.gd:476
+#: planet/sites/orbit_sites.gd:184 ui/main_menu.gd:476
 msgid "Hub %d"
 msgstr "Base %d"
 
@@ -1074,32 +1074,32 @@ msgstr "Mirar arriba"
 msgid "Ride the hover-sled"
 msgstr ""
 
-#: robots/fleet.gd:139
+#: robots/fleet.gd:145
 msgid "Locked · research %s"
 msgstr "Bloqueado · investigación %s"
 
-#: robots/fleet.gd:141
+#: robots/fleet.gd:147
 msgid "Crew full (%d/%d): upgrade the hub"
 msgstr "Equipo completo (%d/%d): mejora la base"
 
-#: robots/fleet.gd:143 robots/fleet.gd:219
+#: robots/fleet.gd:149 robots/fleet.gd:225
 msgid "Not enough parts"
 msgstr "No hay suficientes piezas"
 
-#: robots/fleet.gd:145 robots/fleet.gd:221 robots/water_net.gd:149
+#: robots/fleet.gd:151 robots/fleet.gd:227 robots/water_net.gd:149
 #: systems/research.gd:200 systems/robot_builder.gd:350 systems/robot_builder.gd:402
 msgid "Not enough cubes"
 msgstr "No hay cubos suficientes"
 
-#: robots/fleet.gd:183
+#: robots/fleet.gd:189
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr "%s %s montado. Mira a su alrededor y se pone a trabajar.%s"
 
-#: robots/fleet.gd:183
+#: robots/fleet.gd:189
 msgid " Seems %s."
 msgstr " Parece %s."
 
-#: robots/fleet.gd:240
+#: robots/fleet.gd:246
 msgid "%s fleet upgraded to %s."
 msgstr "Flota de %s mejorada a %s."
 
@@ -1266,11 +1266,15 @@ msgid "Building a %s, %d%%"
 msgstr ""
 
 #: robots/sphere/command_overlay.gd:39
-msgid "%s zone"
+msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:39
+#: robots/sphere/command_overlay.gd:40
 msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:41
+msgid "%s zone"
 msgstr ""
 
 #: robots/sphere/sphere_fleet.gd:53
@@ -1281,7 +1285,7 @@ msgstr ""
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Enlace de robots en línea. Pulsa B para el mando: pinta zonas y manda equipos donde quieras."
 
-#: scenes/slice.gd:1099 scenes/slice_orbit.gd:377
+#: scenes/slice.gd:1099 scenes/slice_orbit.gd:379
 msgid "Milestone: %d hexes clean!"
 msgstr "Hito: ¡%d hexágonos limpios!"
 
@@ -1313,7 +1317,7 @@ msgstr "El cohete está aparcado en el solar, listo cuando se recarguen sus celd
 msgid "Landed on the base pad."
 msgstr "Aterrizaje en la plataforma de la base."
 
-#: scenes/slice.gd:1294 scenes/slice_orbit.gd:915
+#: scenes/slice.gd:1294 scenes/slice_orbit.gd:917
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Las mejoras necesitan un banco de trabajo. Vuelve a la base."
 
@@ -1329,15 +1333,15 @@ msgstr "PUESTO %d · Nv%d"
 msgid "OUTPOST %d · RUIN"
 msgstr "PUESTO %d · RUINA"
 
-#: scenes/slice_orbit.gd:446 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:515
+#: scenes/slice_orbit.gd:448 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:515
 msgid "E   Fix the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:446 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:448 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:1015
+#: scenes/slice_orbit.gd:1017
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Banco de trabajo reparado. Pulsa E en él para gastar cubos en mejoras."
 
@@ -3378,7 +3382,7 @@ msgstr "SEMBRAR UN MUNDO NUEVO"
 msgid "The Cradle has to come home first."
 msgstr "Primero tiene que volver el Cradle."
 
-#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:351
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:353
 #: ui/rockets_panel.gd:81 ui/system_map.gd:724
 msgid "Launch"
 msgstr "Despegar"
@@ -3445,7 +3449,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "Máquinas"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:186 ui/locker_panel.gd:250
+#: ui/bench_lists.gd:11 ui/globe_view.gd:188 ui/locker_panel.gd:250
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "Cohete"
@@ -3890,7 +3894,7 @@ msgstr "Pacas grumosas"
 msgid "Bales cashed in"
 msgstr "Pacas cobradas"
 
-#: ui/codex_screen.gd:774 ui/globe_view.gd:154 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:774 ui/globe_view.gd:156 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "Cultivo"
 
@@ -4585,75 +4589,75 @@ msgstr "ASPECTO"
 msgid "???  %s"
 msgstr "???  %s"
 
-#: ui/globe_view.gd:137
+#: ui/globe_view.gd:139
 msgid "Survey"
 msgstr "Explorar"
 
-#: ui/globe_view.gd:137
-msgid "Verdance  ·  hand-held projection"
-msgstr "Verdance  ·  proyección portátil"
+#: ui/globe_view.gd:139
+msgid "Verdance  ·  seed-keeper's survey"
+msgstr ""
 
-#: ui/globe_view.gd:153
+#: ui/globe_view.gd:155
 msgid "Not cleaned yet"
 msgstr "Aún sin limpiar"
 
-#: ui/globe_view.gd:153
+#: ui/globe_view.gd:155
 msgid "Cleaned"
 msgstr "Limpiado"
 
-#: ui/globe_view.gd:154 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:156 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr "Plantado"
 
-#: ui/globe_view.gd:155 ui/system_map.gd:683 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:157 ui/system_map.gd:683 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr "Restaurado"
 
-#: ui/globe_view.gd:155
+#: ui/globe_view.gd:157
 msgid "Cities"
 msgstr "Ciudades"
 
-#: ui/globe_view.gd:156
-msgid "Bases"
-msgstr "Bases"
+#: ui/globe_view.gd:158
+msgid "Hubs"
+msgstr ""
 
-#: ui/globe_view.gd:171 ui/late_menu.gd:21
+#: ui/globe_view.gd:173 ui/late_menu.gd:21
 msgid "Solar system"
 msgstr "Sistema solar"
 
-#: ui/globe_view.gd:186
+#: ui/globe_view.gd:188
 msgid "Travel between bases"
 msgstr "Viajar entre bases"
 
-#: ui/globe_view.gd:206
+#: ui/globe_view.gd:208
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr "[k]Arrastra para girar   ·   Rueda para zoom   ·   [/k][p]{@look}  girar     {zoom_out}{zoom_in}  zoom     {@dpad}  lista de vuelos     [/p]{open_globe}  cerrar"
 
-#: ui/globe_view.gd:293
+#: ui/globe_view.gd:295
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"
 msgstr ""
 
-#: ui/globe_view.gd:348
+#: ui/globe_view.gd:350
 msgid "%d sectors away"
 msgstr "a %d sectores"
 
-#: ui/globe_view.gd:470
+#: ui/globe_view.gd:472
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "del planeta recuperado  ·  %s de %s hexágonos de tierra"
 
-#: ui/globe_view.gd:477
+#: ui/globe_view.gd:479
 msgid "%s HEXES CLEAN"
 msgstr "%s HEXÁGONOS LIMPIOS"
 
-#: ui/globe_view.gd:479
+#: ui/globe_view.gd:481
 msgid "Surveyed %s ago%s"
 msgstr "Explorado hace %s%s"
 
-#: ui/globe_view.gd:479
+#: ui/globe_view.gd:481
 msgid "   ·   OUTDATED"
 msgstr "   ·   DESACTUALIZADO"
 
-#: ui/globe_view.gd:480
+#: ui/globe_view.gd:482
 msgid "Re-survey      %s cubes"
 msgstr "Volver a explorar      %s cubos"
 
@@ -16457,6 +16461,12 @@ msgstr "Ese pórtico desguazó la flota del Ledger cuando se acabó el dinero. E
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "Verdance  ·  hand-held projection"
+#~ msgstr "Verdance  ·  proyección portátil"
+
+#~ msgid "Bases"
+#~ msgstr "Bases"
 
 #~ msgid "A whole hex is clean! The ground remembers its colors."
 #~ msgstr "¡Un hexágono entero está limpio! El suelo recuerda sus colores."

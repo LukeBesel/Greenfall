@@ -297,23 +297,23 @@ msgstr "[Ĥûb ûþĝŕàðéð: %s. ~~~]"
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "[Àîŕ Šçŕûbbéŕ ôñļîñé. Ţĥé ƒàñš šþîñ ûþ ŵîţĥ à ļôñĝ, ðûšţý šîĝĥ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: automation/outpost.gd:485
+#: automation/outpost.gd:504
 msgid "SCALE"
 msgstr "[ŠÇÀĻÉ ~]"
 
-#: automation/outpost.gd:496
+#: automation/outpost.gd:515
 msgid "OUTPOST %d%s"
 msgstr "[ÔÛŢÞÔŠŢ %d%s ~]"
 
-#: automation/outpost.gd:496
+#: automation/outpost.gd:515
 msgid "  ·  BIG SKIP"
 msgstr "  [·  BÎĜ ŠĶÎÞ ~~]"
 
-#: automation/outpost.gd:611
+#: automation/outpost.gd:630
 msgid "OUTPOST %d  ·  ONLINE"
 msgstr "[ÔÛŢÞÔŠŢ %d  ·  ÔÑĻÎÑÉ ~~~~]"
 
-#: automation/outpost.gd:645
+#: automation/outpost.gd:664
 msgid "RECHARGE"
 msgstr "[ŔÉÇĤÀŔĜÉ ~]"
 
@@ -504,7 +504,7 @@ msgid "E   Telescope: look across the system"
 msgstr "E   [Ţéļéšçôþé: ļôôķ àçŕôšš ţĥé šýšţém ~~~~~~~~~]"
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:500 ui/upgrade_card.gd:258
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:502 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "[%d mîñ ~]"
 
@@ -782,7 +782,7 @@ msgstr "[ŴŔÉÑ: Ţĥàţ'š ţĥé éðĝé ôƒ ţĥé šûŕvéý žôñé,
 msgid "Lumi hovers back onto solid ground."
 msgstr "[Ļûmî ĥôvéŕš bàçķ ôñţô šôļîð ĝŕôûñð. ~~~~~~~~~]"
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:361
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:363
 msgid "HEX CLEAN!  +%s"
 msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 
@@ -790,20 +790,20 @@ msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 msgid "Rocket hop: %.1f km"
 msgstr "[Ŕôçķéţ ĥôþ: %.1f ķm ~~~~]"
 
-#: planet/sites/orbit_sites.gd:99
+#: planet/sites/orbit_sites.gd:101
 msgid "The rocket is in flight."
 msgstr "[Ţĥé ŕôçķéţ îš îñ ƒļîĝĥţ. ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:148
+#: planet/sites/orbit_sites.gd:150
 msgid "E   Rocket: choose a destination"
 msgstr "E   [Ŕôçķéţ: çĥôôšé à ðéšţîñàţîôñ ~~~~~~~]"
 
-#: planet/sites/orbit_sites.gd:181
+#: planet/sites/orbit_sites.gd:183
 msgid "%s site"
 msgstr "[%s šîţé ~]"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:182 ui/main_menu.gd:476
+#: planet/sites/orbit_sites.gd:184 ui/main_menu.gd:476
 msgid "Hub %d"
 msgstr "[Ĥûb %d ~]"
 
@@ -1071,32 +1071,32 @@ msgstr "[Ļôôķ ûþ ~]"
 msgid "Ride the hover-sled"
 msgstr "[Ŕîðé ţĥé ĥôvéŕ-šļéð ~~~~]"
 
-#: robots/fleet.gd:139
+#: robots/fleet.gd:145
 msgid "Locked · research %s"
 msgstr "[Ļôçķéð · ŕéšéàŕçĥ %s ~~~~]"
 
-#: robots/fleet.gd:141
+#: robots/fleet.gd:147
 msgid "Crew full (%d/%d): upgrade the hub"
 msgstr "[Çŕéŵ ƒûļļ (%d/%d): ûþĝŕàðé ţĥé ĥûb ~~~~~~~~~]"
 
-#: robots/fleet.gd:143 robots/fleet.gd:219
+#: robots/fleet.gd:149 robots/fleet.gd:225
 msgid "Not enough parts"
 msgstr "[Ñôţ éñôûĝĥ þàŕţš ~~~]"
 
-#: robots/fleet.gd:145 robots/fleet.gd:221 robots/water_net.gd:149
+#: robots/fleet.gd:151 robots/fleet.gd:227 robots/water_net.gd:149
 #: systems/research.gd:200 systems/robot_builder.gd:350 systems/robot_builder.gd:402
 msgid "Not enough cubes"
 msgstr "[Ñôţ éñôûĝĥ çûbéš ~~~]"
 
-#: robots/fleet.gd:183
+#: robots/fleet.gd:189
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr "[%s %s àššémbļéð. Îţ ļôôķš àŕôûñð, ţĥéñ ĝéţš ţô ŵôŕķ.%s ~~~~~~~~~~~~~~~~]"
 
-#: robots/fleet.gd:183
+#: robots/fleet.gd:189
 msgid " Seems %s."
 msgstr " [Šéémš %s. ~]"
 
-#: robots/fleet.gd:240
+#: robots/fleet.gd:246
 msgid "%s fleet upgraded to %s."
 msgstr "[%s ƒļééţ ûþĝŕàðéð ţô %s. ~~~~~]"
 
@@ -1263,12 +1263,16 @@ msgid "Building a %s, %d%%"
 msgstr "[Bûîļðîñĝ à %s, %d%% ~~~~]"
 
 #: robots/sphere/command_overlay.gd:39
-msgid "%s zone"
-msgstr "[%s žôñé ~]"
+msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
+msgstr "[Ý: ŕôļé · Ĥôļð À: þàîñţ · Ĥôļð X: éŕàšé · Ļéƒţ šţîçķ: môvé ~~~~~~~~~~~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:39
+#: robots/sphere/command_overlay.gd:40
 msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
 msgstr "[Ţàb: ŕôļé · Ļéƒţ: þàîñţ · Ŕîĝĥţ: éŕàšé · Mîððļé: šéñð à ŕôbôţ · É: bàçķ ţô Ļûmî ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: robots/sphere/command_overlay.gd:41
+msgid "%s zone"
+msgstr "[%s žôñé ~]"
 
 #: robots/sphere/sphere_fleet.gd:53
 msgid "%s %s assembled. It looks around, then gets to work."
@@ -1278,7 +1282,7 @@ msgstr "[%s %s àššémbļéð. Îţ ļôôķš àŕôûñð, ţĥéñ ĝéţš
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: þàîñţ žôñéš àñð šéñð çŕéŵš ŵĥéŕé ýôû ŵàñţ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1099 scenes/slice_orbit.gd:377
+#: scenes/slice.gd:1099 scenes/slice_orbit.gd:379
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
@@ -1310,7 +1314,7 @@ msgstr "[Ţĥé ŕôçķéţ îš þàŕķéð ôñ ţĥé ļôţ, ŕéàðý ŵ
 msgid "Landed on the base pad."
 msgstr "[Ļàñðéð ôñ ţĥé bàšé þàð. ~~~~~]"
 
-#: scenes/slice.gd:1294 scenes/slice_orbit.gd:915
+#: scenes/slice.gd:1294 scenes/slice_orbit.gd:917
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
@@ -1326,15 +1330,15 @@ msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
-#: scenes/slice_orbit.gd:446 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:515
+#: scenes/slice_orbit.gd:448 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:515
 msgid "E   Fix the workbench"
 msgstr "E   [Fîx ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:446 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:448 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   [Ôþéñ ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:1015
+#: scenes/slice_orbit.gd:1017
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð. Þŕéšš É àţ îţ ţô šþéñð çûbéš ôñ ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~]"
 
@@ -3375,7 +3379,7 @@ msgstr "[ŠÉÉÐ À ÑÉŴ ŴÔŔĻÐ ~~~]"
 msgid "The Cradle has to come home first."
 msgstr "[Ţĥé Çŕàðļé ĥàš ţô çômé ĥômé ƒîŕšţ. ~~~~~~~~~]"
 
-#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:351
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:353
 #: ui/rockets_panel.gd:81 ui/system_map.gd:724
 msgid "Launch"
 msgstr "[Ļàûñçĥ ~]"
@@ -3442,7 +3446,7 @@ msgstr "[Ļûmî ~]"
 msgid "Machines"
 msgstr "[Màçĥîñéš ~]"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:186 ui/locker_panel.gd:250
+#: ui/bench_lists.gd:11 ui/globe_view.gd:188 ui/locker_panel.gd:250
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "[Ŕôçķéţ ~]"
@@ -3887,7 +3891,7 @@ msgstr "[Ļûmþý bàļéš ~]"
 msgid "Bales cashed in"
 msgstr "[Bàļéš çàšĥéð îñ ~~]"
 
-#: ui/codex_screen.gd:774 ui/globe_view.gd:154 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:774 ui/globe_view.gd:156 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "[Ĝŕôŵîñĝ ~]"
 
@@ -4582,75 +4586,75 @@ msgstr "[ĻÔÔĶŠ ~]"
 msgid "???  %s"
 msgstr "[???  %s]"
 
-#: ui/globe_view.gd:137
+#: ui/globe_view.gd:139
 msgid "Survey"
 msgstr "[Šûŕvéý ~]"
 
-#: ui/globe_view.gd:137
-msgid "Verdance  ·  hand-held projection"
-msgstr "[Véŕðàñçé  ·  ĥàñð-ĥéļð þŕôĵéçţîôñ ~~~~~~~~~]"
+#: ui/globe_view.gd:139
+msgid "Verdance  ·  seed-keeper's survey"
+msgstr "[Véŕðàñçé  ·  šééð-ķééþéŕ'š šûŕvéý ~~~~~~~~~]"
 
-#: ui/globe_view.gd:153
+#: ui/globe_view.gd:155
 msgid "Not cleaned yet"
 msgstr "[Ñôţ çļéàñéð ýéţ ~~]"
 
-#: ui/globe_view.gd:153
+#: ui/globe_view.gd:155
 msgid "Cleaned"
 msgstr "[Çļéàñéð ~]"
 
-#: ui/globe_view.gd:154 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:156 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr "[Þļàñţéð ~]"
 
-#: ui/globe_view.gd:155 ui/system_map.gd:683 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:157 ui/system_map.gd:683 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr "[Ŕéšţôŕéð ~]"
 
-#: ui/globe_view.gd:155
+#: ui/globe_view.gd:157
 msgid "Cities"
 msgstr "[Çîţîéš ~]"
 
-#: ui/globe_view.gd:156
-msgid "Bases"
-msgstr "[Bàšéš ~]"
+#: ui/globe_view.gd:158
+msgid "Hubs"
+msgstr "[Ĥûbš ~]"
 
-#: ui/globe_view.gd:171 ui/late_menu.gd:21
+#: ui/globe_view.gd:173 ui/late_menu.gd:21
 msgid "Solar system"
 msgstr "[Šôļàŕ šýšţém ~]"
 
-#: ui/globe_view.gd:186
+#: ui/globe_view.gd:188
 msgid "Travel between bases"
 msgstr "[Ţŕàvéļ béţŵééñ bàšéš ~~~~]"
 
-#: ui/globe_view.gd:206
+#: ui/globe_view.gd:208
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr "[[k]Ðŕàĝ ţô šþîñ   ·   Ŵĥééļ ţô žôôm   ·   [/k][p]{@look}  šþîñ     {zoom_out}{zoom_in}  žôôm     {@dpad}  ļàûñçĥ ļîšţ     [/p]{open_globe}  çļôšé ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/globe_view.gd:293
+#: ui/globe_view.gd:295
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"
 msgstr "[[k]Ðŕàĝ ţô šþîñ   ·   Ŵĥééļ ţô žôôm   ·   [/k][p]{@look}  šþîñ     {zoom_out}{zoom_in}  žôôm     [/p]{open_globe}  çļôšé ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/globe_view.gd:348
+#: ui/globe_view.gd:350
 msgid "%d sectors away"
 msgstr "[%d šéçţôŕš àŵàý ~~]"
 
-#: ui/globe_view.gd:470
+#: ui/globe_view.gd:472
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "[ôƒ ţĥé þļàñéţ ŕéçļàîméð  ·  %s ôƒ %s ļàñð ĥéxéš ~~~~~~~~~~~~~]"
 
-#: ui/globe_view.gd:477
+#: ui/globe_view.gd:479
 msgid "%s HEXES CLEAN"
 msgstr "[%s ĤÉXÉŠ ÇĻÉÀÑ ~~]"
 
-#: ui/globe_view.gd:479
+#: ui/globe_view.gd:481
 msgid "Surveyed %s ago%s"
 msgstr "[Šûŕvéýéð %s àĝô%s ~~~]"
 
-#: ui/globe_view.gd:479
+#: ui/globe_view.gd:481
 msgid "   ·   OUTDATED"
 msgstr "   [·   ÔÛŢÐÀŢÉÐ ~~]"
 
-#: ui/globe_view.gd:480
+#: ui/globe_view.gd:482
 msgid "Re-survey      %s cubes"
 msgstr "[Ŕé-šûŕvéý      %s çûbéš ~~~~~]"
 

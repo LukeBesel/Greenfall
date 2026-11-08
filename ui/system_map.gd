@@ -18,7 +18,7 @@ extends CanvasLayer
 
 signal closed
 
-const HOLO := Color(0.45, 0.88, 1.0)
+const HOLO := Color(0.47, 0.86, 0.78)  # [v2map] seed-keeper teal, as the survey map
 const GOLD := Color(1.0, 0.78, 0.36)
 const AU_UNITS: float = 8.0
 const FOV: float = 42.0

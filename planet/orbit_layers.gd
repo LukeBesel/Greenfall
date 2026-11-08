@@ -79,6 +79,16 @@ func _build() -> void:
 	survey.patch_cell_provider = func() -> int: return g.grid.cell_at(patch.global_position)
 	survey.holder = patch
 	survey.world_root = w
+	survey.hub_dirs = func() -> Array:  # [v2map] sprout glyphs on the map
+		var out: Array = []
+		if g.site_manager:
+			for st: Dictionary in g.site_manager.sites:
+				out.append((st["transform"] as Transform3D).origin.normalized())
+		return out
+	survey.pod_dir = func() -> Vector3:  # [v2map] the crashed pod's smoke plume
+		var site: Node3D = g.start_site
+		var pod: Node3D = site.find_child("pod", true, false) as Node3D if site else null
+		return (pod.global_position - g.global_position).normalized() if pod else Vector3.ZERO
 	survey.travel_in_map = false  # [v2map] travel is at the rocket (planet/sites/orbit_sites.gd)
 	survey.hub_count = func() -> int: return g.site_manager.sites.size() if g.site_manager else g.planet.hubs.size()  # [v2map] the legend counted the flat hubs
 	w.add_child(survey)

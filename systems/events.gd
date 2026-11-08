@@ -255,7 +255,7 @@ func context() -> Dictionary:
 			lvl = maxi(lvl, int(hl.levels[h]))
 	var parts_left: int = f.part_found.count(0)
 	var fleet: Fleet = world.get("fleet") as Fleet
-	return {"junk_hexes": junk, "planted": planted, "robots": fleet.robots().size() if fleet else 0, "max_hex_level": lvl,
+	return {"junk_hexes": junk, "planted": planted, "robots": fleet.robot_total() if fleet else 0, "max_hex_level": lvl,
 		"ledger_resolved": LedgerArc.resolved(), "parts_left": parts_left}
 
 
@@ -707,7 +707,7 @@ func _update_surge(_delta: float) -> void:
 	if _tick_t > 0.35:
 		_tick_t = 0.0
 		var pids: PackedInt32Array = world.field.hex_pieces[h]
-		for k: int in 3:
+		for k: int in (3 if not pids.is_empty() else 0):  # [v3qa] a globe cell out of the near ring has no pieces
 			var pid: int = pids[rng.randi() % pids.size()]
 			if world.field.piece_alive[pid] == 1:
 				Vfx.burst("sparkle", world.field.piece_pos[pid] + OrbitUp.up(world.field.piece_pos[pid]) * 0.2, Color(1.0, 0.85, 0.35), 0.25)

@@ -36,7 +36,9 @@ func _process(_d: float) -> void:
 	var on: bool = cmd != null and cmd.is_active()
 	visible = on
 	if on:
-		_label.text = "%s  ·  %s" % [(tr("%s zone") % tr(cmd.role.capitalize())).to_upper(), tr("Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi")]
+		var keys: String = tr("Y: role · Hold A: paint · Hold X: erase · Left stick: move") if cmd.using_pad \
+			else tr("Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi")  # [v3qa] pad
+		_label.text = "%s  ·  %s" % [(tr("%s zone") % tr(cmd.role.capitalize())).to_upper(), keys]
 		queue_redraw()
 
 
@@ -83,6 +85,11 @@ func _draw() -> void:
 	# Painted zone of the selected role.
 	var zone: Dictionary = crew.zones.get(cmd.role, {})
 	var zc: Color = ROLE_COL.get(cmd.role, Color.WHITE)
+	if cmd.using_pad:  # [v3qa] the pad's cursor: a reticle at the screen centre
+		var mid: Vector2 = size * 0.5
+		draw_arc(mid, 14.0, 0.0, TAU, 32, Color(zc, 0.9), 2.5)
+		draw_line(mid - Vector2(22, 0), mid - Vector2(8, 0), Color(zc, 0.9), 2.0)
+		draw_line(mid + Vector2(8, 0), mid + Vector2(22, 0), Color(zc, 0.9), 2.0)
 	for c: int in zone:
 		var sp: Variant = screen_of(cam, surf, surf.ground(cmd.grid.centers[c]))
 		if sp != null:

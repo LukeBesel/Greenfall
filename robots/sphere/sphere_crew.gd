@@ -87,7 +87,27 @@ var _evict: bool = false  # new buildings: move robots that stand inside one out
 const OBSTACLE_RANGE_M: float = 500.0
 
 
+## [v3qa] The crew in play (Goals.zone_hex_count reads its painted zones: the "Send your robot to
+## work" step never finished on the globe, its zones aren't in GameState.world.orders).
+static var active: SphereCrew = null
+
+
+## [v3qa] Cells painted into any role's zone.
+func zone_cells() -> Dictionary:
+	var out: Dictionary = {}
+	for r: Variant in zones:
+		for c: Variant in (zones[r] as Dictionary):
+			out[int(c)] = true
+	return out
+
+
+func _exit_tree() -> void:
+	if active == self:
+		active = null
+
+
 func setup(p_grid: SphereGrid, p_cells: SphereCells, p_field: SphereField, p_surface: SphereSurface, p_swarm: SphereSwarm = null, p_streamer: SphereStreamer = null, p_planet: String = "verdance") -> void:
+	active = self  # [v3qa]
 	planet_id = p_planet
 	rings = SphereOffline.rings_for(p_grid, p_planet)
 	if visuals and bale_view == null:
@@ -1142,7 +1162,10 @@ func to_dict() -> Dictionary:
 	for b: Dictionary in bales:
 		var bd: Vector3 = b.get("dir", grid.centers[int(b["cell"])])
 		bl.append({"cell": b["cell"], "dir": [bd.x, bd.y, bd.z], "value": b["value"], "units": b.get("units", 0.0)})
-	return {"v": 1, "robots": list, "bales": bl, "cashed": cashed}
+	var zd: Dictionary = {}  # [v3qa] painted Command zones survive a reload
+	for r: Variant in zones:
+		zd[str(r)] = (zones[r] as Dictionary).keys()
+	return {"v": 1, "robots": list, "bales": bl, "cashed": cashed, "zones": zd}
 
 
 func from_dict(d: Dictionary) -> void:
@@ -1173,3 +1196,10 @@ func from_dict(d: Dictionary) -> void:
 		var bd: Vector3 = Vector3(float(dv[0]), float(dv[1]), float(dv[2])).normalized() if dv.size() == 3 else grid.centers[int(b["cell"])]
 		bales.append({"id": _bale_seq, "cell": int(b["cell"]), "dir": bd, "value": float(b["value"]), "units": float(b.get("units", 0.0)), "claimed": ""})
 	cashed = float(d.get("cashed", 0.0))
+	zones.clear()  # [v3qa]
+	var zd: Dictionary = d.get("zones", {})
+	for r: Variant in zd:
+		var z: Dictionary = {}
+		for c: Variant in zd[r]:
+			z[int(c)] = true
+		zones[str(r)] = z

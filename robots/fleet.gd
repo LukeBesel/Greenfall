@@ -49,6 +49,12 @@ func robots() -> Array[Robot]:
 	return out
 
 
+## [v3qa] How many robots there are. SphereFleet (round planets) counts its crew: its robots()
+## is empty, so goals and objectives that asked robots().size() never saw the first robot.
+func robot_total() -> int:
+	return robots().size()
+
+
 func count(type_id: String) -> int:
 	var n: int = 0
 	for r: Robot in robots():
