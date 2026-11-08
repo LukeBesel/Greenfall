@@ -112,12 +112,6 @@ static func make_mat(env: AnvilEnv, key: String) -> Material:
 			var c: ShaderMaterial = Mats.worn_paint(Color(0.3, 0.34, 0.3), 0.4, 0.9, 11.0, 0.7)
 			c.set_shader_parameter("tex_scale", 0.9)
 			return c
-		"turbine":
-			# Weathered off-white: faint dust and grime, not a clean CG white.
-			var tw: ShaderMaterial = Mats.worn_paint(Color(0.86, 0.86, 0.84), 0.97, 0.15, 21.0, 0.35)
-			tw.set_shader_parameter("tex_scale", 0.7)
-			tw.set_shader_parameter("dust", 0.55)
-			return tw
 		"dark_metal":
 			var dm := StandardMaterial3D.new()
 			dm.albedo_color = Color(0.16, 0.16, 0.17)
@@ -644,95 +638,10 @@ static func _turbines(env: AnvilEnv, _up: Batch, _fut: Batch) -> void:
 		turbine(env, env.groups["up"] if i < 4 else env.groups["future"], base, 52.0, i)
 
 
-## A twisted, tapering blade along +Y (root round, airfoil-flat toward the tip), length len_.
-static func blade_mesh(len_: float) -> ArrayMesh:
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var stations: int = 14
-	var ring: int = 10
-	for i: int in stations + 1:
-		var t: float = float(i) / stations
-		var chord: float = lerpf(0.9, 2.1, smoothstep(0.0, 0.18, t)) * lerpf(1.0, 0.16, smoothstep(0.18, 1.0, t))
-		var thick: float = lerpf(0.9, chord * 0.16, smoothstep(0.0, 0.2, t))
-		var twist: float = lerpf(0.45, 0.0, t)
-		var sweep: float = chord * 0.25 * smoothstep(0.1, 0.4, t)
-		for j: int in ring + 1:
-			var a: float = TAU * float(j % ring) / ring
-			# Airfoil-ish: fuller leading edge, sharp trailing edge.
-			var x: float = cos(a) * chord * 0.5 * (1.0 if cos(a) > 0.0 else 0.75) + sweep
-			var z: float = sin(a) * thick * 0.5 * (1.0 - 0.6 * maxf(cos(a), 0.0))
-			var p := Vector3(x, t * len_, z).rotated(Vector3.UP, twist)
-			st.add_vertex(p)
-	for i: int in stations:
-		for j: int in ring:
-			var a0: int = i * (ring + 1) + j
-			var b0: int = a0 + ring + 1
-			for idx: int in [a0, a0 + 1, b0, a0 + 1, b0 + 1, b0]:
-				st.add_index(idx)
-	st.generate_normals()
-	return st.commit()
-
-
-static var _blade_cache: Dictionary = {}
-
-
-## A wind turbine on a pad: flanged tower sections, a door, a detailed nacelle (cooler fins,
-## anemometer mast, red beacon), a spinner with a warm hub light, three twisted blades turning.
-static func turbine(env: AnvilEnv, parent: Node3D, base: Vector3, h: float, k: int) -> Node3D:
-	var b := Batch.new()
-	var white: Material = env.mat("turbine")
-	var dark: Material = env.mat("dark_metal")
-	# Pad: an octagonal footing with a chamfered edge, kerb blocks, a cabinet and steps.
-	add_cyl(b, base + Vector3(0, 0.3, 0), 4.2, 4.6, 0.6, env.mat("concrete"), 8)
-	add_cyl(b, base + Vector3(0, 0.66, 0), 3.0, 3.3, 0.18, env.mat("concrete"), 8)
-	for q: int in 8:
-		var a: float = TAU * q / 8.0 + PI / 8.0
-		add_box(b, base + Vector3(cos(a) * 4.45, 0.75, sin(a) * 4.45), Vector3(3.2, 0.3, 0.35), env.mat("concrete"), Vector3(0, rad_to_deg(-a) + 90.0, 0))
-	add_box(b, base + Vector3(2.6, 1.4, 1.6), Vector3(1.2, 1.4, 0.7), env.mat("cart"), Vector3(0, 30, 0))
-	# Tower: four tapering sections with bolted flange rings at each joint.
-	var secs: int = 4
-	for q: int in secs:
-		var y0: float = 0.75 + h * float(q) / secs
-		var y1: float = 0.75 + h * float(q + 1) / secs
-		var r0: float = lerpf(1.7, 0.95, float(q) / secs)
-		var r1: float = lerpf(1.7, 0.95, float(q + 1) / secs)
-		add_cyl(b, base + Vector3(0, (y0 + y1) * 0.5, 0), r1, r0, y1 - y0 - 0.06, white, 28)
-		if q > 0:
-			b.add(ProcMesh.torus(r0 - 0.02, r0 + 0.07, 32, 4), Transform3D(Basis(), base + Vector3(0, y0, 0)), dark)
-	# Door with frame, a little step.
-	add_box(b, base + Vector3(0, 2.0, 1.66), Vector3(0.95, 2.1, 0.12), dark)
-	add_box(b, base + Vector3(0, 3.12, 1.68), Vector3(1.2, 0.12, 0.16), white)
-	add_box(b, base + Vector3(0, 0.9, 2.0), Vector3(1.2, 0.3, 0.8), env.mat("concrete"))
-	add_cyl(b, base + Vector3(0, h * 0.6, 0), 1.33, 1.33, 0.08, env.mat("line"), 28)
-	# Nacelle: rounded body, cooler fins at the back, anemometer mast and a red beacon on top.
-	var top: Vector3 = base + Vector3(0, h + 1.85, 0)
-	b.add(ProcMesh.rounded_box(Vector3(2.3, 2.3, 6.4), 0.55, 3), Transform3D(Basis(), top + Vector3(0, 0, 0.7)), white)
-	add_cyl(b, top + Vector3(0, -1.2, 0.5), 1.0, 1.0, 0.6, dark, 18)
-	for q: int in 6:
-		add_box(b, top + Vector3(0, -0.7 + q * 0.32, 3.95), Vector3(1.9, 0.07, 0.5), dark)
-	add_box(b, top + Vector3(0.0, 1.16, 0.2), Vector3(1.6, 0.06, 3.0), dark)
-	add_beam(b, top + Vector3(0.5, 1.15, 2.6), top + Vector3(0.5, 2.3, 2.6), 0.06, dark)
-	add_beam(b, top + Vector3(0.2, 2.3, 2.6), top + Vector3(0.8, 2.3, 2.6), 0.04, dark)
-	b.add(ProcMesh.sphere(0.12, 8, 4), Transform3D(Basis(), top + Vector3(-0.5, 1.4, 2.8)), env.mat("beacon"))
-	b.flush(parent)
-	# Rotor: spinner with a warm hub light, three blades.
-	var hub := AnvilRotor.new()
-	hub.name = "Rotor%d" % k
-	hub.speed = 0.55 + 0.08 * (k % 3)
-	hub.position = top + Vector3(0, 0, -2.75)
-	hub.rotation.z = float(k) * 0.7
-	parent.add_child(hub)
-	var bl := Batch.new()
-	bl.add(ProcMesh.sphere(1.0, 20, 10), Transform3D(Basis.from_scale(Vector3(1.0, 1.0, 1.5)), Vector3(0, 0, -0.5)), white)
-	bl.add(ProcMesh.sphere(0.14, 10, 5), Transform3D(Basis(), Vector3(0, 0, -1.98)), env.mat("line"))
-	var len_: float = h * 0.42
-	if not _blade_cache.has(int(len_)):
-		_blade_cache[int(len_)] = blade_mesh(len_)
-	for q: int in 3:
-		var a: float = TAU * q / 3.0
-		bl.add(_blade_cache[int(len_)], Transform3D(Basis(Vector3.FORWARD, a), Vector3(0, 0, -0.2)), white)
-	bl.flush(hub)
-	return hub
+## A wind turbine for the wild world: the art kit's turbine (KitProps.wind_turbine + spinning
+## turbine_rotor at turbine_hub), scaled to height h, through AnvilSites.turbine.
+static func turbine(env: AnvilEnv, parent: Node3D, base: Vector3, h: float, k: int) -> void:
+	AnvilSites.turbine(parent, clampi(env.level, 2, 5), base, h / 15.0, k)
 
 
 static func _dome(env: AnvilEnv, b: Batch, c: Vector3, r: float, seed_v: int) -> void:
