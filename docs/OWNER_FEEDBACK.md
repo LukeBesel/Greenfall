@@ -131,6 +131,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [x] Rime at night is bright enough to read, and the gas giant is smaller. (rime2, render v2)
 - [ ] Ochre, Tidewell (ocean, hover over water) and Anvil (red, Nether vibe) are merged.
 - [ ] The next planet unlocks without 100% on the current one (about 50% plus the drive). Today the Mk V and Mk VI drives require a 100% planet; fixing that. Only the final launch home needs everything. (pace2)
+- [ ] You can't 100% a planet until you bring tools, bots and upgrades from later planets (e.g. a deep drill from Ochre, a water bot from Tidewell). Gated hexes say what they need, so you return later with new toys. (pace2)
 
 ## Music and docs
 - [x] The Suno prompts doc has a grinding playlist per planet, with context in each prompt, as plain copyable text plus a .txt file.
