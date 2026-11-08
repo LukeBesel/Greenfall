@@ -81,6 +81,7 @@ var _pet_t: float = 0.0  # [fauna2] petting an animal: claw reach + head tilt
 var _pet_dur: float = 0.0
 ## Bloom Core glow: multiplies the eyes, thruster ring and cyan trim (low battery < 1, charged > 1).
 var core_glow: float = 1.0
+const EYE_MIN_ENERGY: float = 2.8  # [v2feel]
 
 
 ## Set before adding to the tree to build a given design (previews) instead of the worn one.
@@ -601,9 +602,11 @@ func _process(delta: float) -> void:
 	_blink = maxf(0.0, _blink - delta * 7.0)
 	_face_mat.set_shader_parameter("look", _look)
 	_face_mat.set_shader_parameter("happy", maxf(clampf((_happy - 0.6) * 2.5, 0.0, 1.0), _happy_bias * (1.0 - minf(_eye_flash * 2.0, 1.0))))
-	_face_mat.set_shader_parameter("blink", 0.9 if sleeping else _blink)
+	_face_mat.set_shader_parameter("blink", 1.0 if sleeping else _blink)  # [v2feel] asleep: cleanly shut (0.9 left a squashed sliver)
 	_eye_flash = maxf(0.0, _eye_flash - delta * 6.0)
-	_face_mat.set_shader_parameter("energy", 1.2 * minf(core_glow, 1.0) if sleeping else 4.0 * core_glow + _flash * 2.0 + _eye_flash * 3.0)
+	# [v2feel] Awake eyes stay fully lit on a low core (the intro's wake read as half-closed at 0.9);
+	# the core and ring still show the battery.
+	_face_mat.set_shader_parameter("energy", 1.2 * minf(core_glow, 1.0) if sleeping else maxf(4.0 * core_glow, EYE_MIN_ENERGY) + _flash * 2.0 + _eye_flash * 3.0)
 
 
 func set_motion(speed: float, speed_ratio: float, local_accel: Vector2, delta: float) -> void:

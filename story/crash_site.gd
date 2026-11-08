@@ -55,6 +55,7 @@ func setup(yaw: float) -> void:
 	_build_damage()
 	set_stage(stage_for_upgrades())
 	PropBatch.merge(self)  # [orbE] perf: the furrow's clods and shards (static) as one mesh per material
+	_build_plume()  # [v2feel] after the merge: the plume's shader works in its own frame
 	PodBatch.merge(pod)  # [orbE] perf: the pod's static shell and each repair-stage group, merged per material
 	if not EventBus.upgrade_bought.is_connected(_on_upgrade):
 		EventBus.upgrade_bought.connect(_on_upgrade)
@@ -188,6 +189,34 @@ func _build_damage() -> void:
 	_smoke.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	_smoke.position = home + Vector3(0, 0.2, 0)
 	pod.add_child(_smoke)
+
+
+## [v2feel] Owner item 38: a very tall smoke column over the pod, home's landmark from far across the
+## globe (one cylinder and a shader, art/shaders/smoke_plume.gdshader). In the site's frame: +Y up.
+const PLUME_H: float = 320.0
+
+
+func _build_plume() -> void:
+	var cyl := CylinderMesh.new()
+	cyl.height = PLUME_H
+	cyl.bottom_radius = 1.0
+	cyl.top_radius = 22.0
+	cyl.radial_segments = 18
+	cyl.rings = 16
+	cyl.cap_top = false
+	cyl.cap_bottom = false
+	var mat := ShaderMaterial.new()
+	mat.shader = load("res://art/shaders/smoke_plume.gdshader")
+	mat.set_shader_parameter("height", PLUME_H)
+	cyl.material = mat
+	var mi := MeshInstance3D.new()
+	mi.name = "Plume"
+	mi.mesh = cyl
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	mi.custom_aabb = AABB(Vector3(-40, -PLUME_H * 0.5, -40), Vector3(120, PLUME_H, 80))
+	mi.position = Vector3(0, PLUME_H * 0.5 + 1.2, 0)
+	mi.add_to_group("see_through")  # transparent and faded near the camera: never a view blocker
+	add_child(mi)
 
 
 func _process(delta: float) -> void:
