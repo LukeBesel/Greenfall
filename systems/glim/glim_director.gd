@@ -11,6 +11,7 @@ extends Node
 ##   --glim-scan[=S]        pulse the scanner S game seconds after start (default 3), then every 6 s
 ##   --glim-open[=S]        open the Glim panel after S wall-clock seconds
 ##   --glim-cam[=dist]      close-up camera on Glim (screenshots)
+##   --glim-groove[=BPM]    Glim bobs to an imaginary song (music visuals without a song)
 
 const HOLD_OPEN_S: float = 0.45
 
@@ -25,6 +26,7 @@ var _mag_t: float = 0.0
 var _dusk_checked: bool = false
 var _dev_scan_t: float = -1.0
 var _pieces: int = 0
+var _music_t: float = 0.0
 
 
 static func attach(slice: Node) -> GlimDirector:
@@ -226,6 +228,12 @@ func _process(delta: float) -> void:
 		if _dev_scan_t < 0.0:
 			do_scan(true)
 			_dev_scan_t = 6.0
+	_music_t -= delta
+	if _music_t <= 0.0:  # [tunes] bob to found songs once Glim has the Music upgrade
+		_music_t = 0.25
+		bot.music_bpm = Glim.song_bpm() if Glim.has_music() and Glim.song_playing() != "" else 0.0
+		if DevHooks.has("glim-groove"):
+			bot.music_bpm = DevHooks.get_f("glim-groove", 100.0)
 	_mag_t += delta
 	if _mag_t >= 0.1:
 		_magnet(_mag_t)

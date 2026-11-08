@@ -13,6 +13,10 @@ var light: OmniLight3D
 var light_range: float = 6.0
 var light_energy: float = 1.1
 var scanning: float = 0.0  # 0..1 brief scan flare (eyes squint, core flares)
+var music_bpm: float = 0.0  # > 0 while a found song plays (Music upgrade): bob to the beat, notes
+var _notes: Array[Label3D] = []
+var _beat: float = 0.0
+var _groove: float = 0.0  # 0..1 eases in/out with the music
 var _root: Node3D
 var _shell_mat: StandardMaterial3D
 var _accent_mat: StandardMaterial3D
@@ -151,6 +155,37 @@ func _build_top(id: String) -> Node3D:
 	return n
 
 
+## Soft music-note glow: three little notes drift up around him while a song plays.
+func _update_notes(_delta: float) -> void:
+	if _groove <= 0.0:
+		for n: Label3D in _notes:
+			n.visible = false
+		return
+	if _notes.is_empty():
+		for i: int in 3:
+			var n := Label3D.new()
+			n.text = ["♪", "♫", "♪"][i]
+			n.font_size = 48
+			n.pixel_size = 0.0035
+			n.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+			n.shaded = false
+			n.no_depth_test = false
+			n.outline_size = 0
+			n.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			add_child(n)
+			_notes.append(n)
+	var g: Color = Glim.worn_color("glows")
+	for i: int in _notes.size():
+		var n: Label3D = _notes[i]
+		var ph: float = fmod(_t * 0.45 + float(i) / 3.0, 1.0)  # rise 0..1, staggered
+		var side: float = sin(float(i) * 2.4 + _t * 0.7)
+		n.visible = true
+		n.position = Vector3(side * 0.22, SIZE * 0.9 + ph * 0.45, cos(float(i) * 2.4) * 0.12)
+		var c: Color = g.lerp(Color.WHITE, 0.3)
+		c.a = sin(ph * PI) * 0.85 * _groove
+		n.modulate = c
+
+
 func set_light(range_m: float, energy: float) -> void:
 	light_range = range_m
 	light_energy = energy
@@ -193,8 +228,14 @@ func _process(delta: float) -> void:
 		var flat := Vector3(_vel.x, 0, _vel.z)
 		var face: float = atan2(-flat.x, -flat.z) if flat.length() > 0.4 else target.global_rotation.y
 		_yaw = lerp_angle(_yaw, face, clampf(delta * 4.0, 0.0, 1.0))
-	_root.position.y = sin(_t * 2.1) * 0.05
-	_root.rotation = Vector3(sin(_t * 1.3) * 0.08 - clampf(_vel.length() * 0.04, 0.0, 0.25), _yaw, sin(_t * 1.7) * 0.06)
+	_groove = move_toward(_groove, 1.0 if music_bpm > 0.0 else 0.0, delta * 1.5)
+	if music_bpm > 0.0:
+		_beat += delta * music_bpm / 60.0
+	var hop: float = absf(sin(_beat * PI))  # one hop per beat
+	_root.position.y = sin(_t * 2.1) * 0.05 * (1.0 - _groove) + (hop * 0.07 - 0.02) * _groove
+	_root.rotation = Vector3(sin(_t * 1.3) * 0.08 - clampf(_vel.length() * 0.04, 0.0, 0.25), _yaw,
+		sin(_t * 1.7) * 0.06 * (1.0 - _groove) + sin(_beat * PI * 0.5) * 0.16 * _groove)  # sway every two beats
+	_update_notes(delta)
 	# Blink now and then; squint while scanning.
 	_blink_t -= delta
 	var blink: float = 1.0
@@ -206,7 +247,7 @@ func _process(delta: float) -> void:
 		e.scale = Vector3(1.0, maxf(0.15, blink * (1.0 - scanning * 0.5)), 1.0)
 	var night: float = night_amount(float(sky.get("time_of_day"))) if sky and is_instance_valid(sky) else 1.0
 	var flare: float = scanning * 1.5
-	_core_mat.emission_energy_multiplier = 1.4 + 2.2 * night + flare * 3.0
+	_core_mat.emission_energy_multiplier = 1.4 + 2.2 * night + flare * 3.0 + hop * 0.8 * _groove
 	light.omni_range = lerpf(2.0, light_range, night) + flare * 2.0
 	light.light_energy = lerpf(0.25, light_energy, night) + flare
 	light.visible = light.light_energy > 0.05

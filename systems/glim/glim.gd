@@ -154,6 +154,50 @@ static func buy(id: String) -> bool:
 	return true
 
 
+## The Music upgrade: Glim carries the found CDs (the "tunes" helper's library gates its
+## play-anywhere quick-select on this).
+static func has_music() -> bool:
+	return is_found() and tier("music") >= 1
+
+
+## [tunes] What's playing from the found-CD library ("" = nothing), and its tempo. Looked up by
+## class name (Tunes.now_playing() / Tunes.bpm()) so this works with or without that branch;
+## falls back to the radio / music track override.
+static func song_playing() -> String:
+	var t: Script = _tunes()
+	if t:
+		return str(t.call("now_playing"))
+	return Audio.get_music_track() if Audio.has_method("get_music_track") else ""
+
+
+static func song_bpm() -> float:
+	var t: Script = _tunes()
+	if t and _has_static(t, "bpm"):
+		return maxf(40.0, float(t.call("bpm")))
+	return 100.0
+
+
+static var _tunes_script: Variant = false
+
+
+static func _tunes() -> Script:
+	if _tunes_script is bool:
+		_tunes_script = null
+		for c: Dictionary in ProjectSettings.get_global_class_list():
+			if str(c.get("class", "")) == "Tunes":
+				_tunes_script = load(str(c["path"]))
+				break
+	var s: Script = _tunes_script as Script
+	return s if s and _has_static(s, "now_playing") else null
+
+
+static func _has_static(s: Script, fn: String) -> bool:
+	for m: Dictionary in s.get_script_method_list():
+		if str(m.get("name", "")) == fn:
+			return true
+	return false
+
+
 # --- Looks ----------------------------------------------------------------------------------
 
 static func looks(slot: String) -> Array:

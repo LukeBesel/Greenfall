@@ -34,7 +34,7 @@ func test_data_uses_only_three_currencies() -> void:
 	var n: int = 0
 	for t: Variant in Glim.tracks():
 		var tiers: Array = (t as Dictionary)["tiers"]
-		assert_between(tiers.size(), 2, 4, "3-4 tiers (incl. base) per track")
+		assert_between(tiers.size(), 1, 3, "1-3 bought tiers per track")
 		assert_eq(((t as Dictionary)["values"] as Array).size(), tiers.size() + 1, "a value per tier + base")
 		for tr_: Variant in tiers:
 			for k: String in ((tr_ as Dictionary)["cost"] as Dictionary):
@@ -46,7 +46,7 @@ func test_data_uses_only_three_currencies() -> void:
 			for k: String in (u.get("cost", {}) as Dictionary):
 				assert_true(k in Currencies.IDS)
 	assert_gt(n, 0)
-	for id: String in ["light", "scan", "auto", "magnet"]:
+	for id: String in ["light", "scan", "auto", "magnet", "music"]:
 		assert_false(Glim.track(id).is_empty(), id)
 
 
@@ -96,10 +96,10 @@ func test_buy_needs_found_money_and_requirements() -> void:
 func test_tracks_max_out() -> void:
 	Glim.set_found(true)
 	_give(1.0e7, 1.0e6, 1000)
-	for id: String in ["light", "scan", "auto", "magnet"]:
+	for id: String in ["light", "scan", "auto", "magnet", "music"]:
 		while Glim.buy(id):
 			pass
-	for id: String in ["light", "scan", "auto", "magnet"]:
+	for id: String in ["light", "scan", "auto", "magnet", "music"]:
 		assert_eq(Glim.tier(id), Glim.max_tier(id), id)
 		assert_eq(Glim.block_reason(id), "Maxed")
 		assert_true(Glim.next_cost(id).is_empty())
@@ -164,3 +164,20 @@ func test_scanner_lists_remaining_pieces() -> void:
 func test_night_amount() -> void:
 	assert_almost_eq(GlimBot.night_amount(0.5), 0.0, 0.001, "noon: faint")
 	assert_almost_eq(GlimBot.night_amount(0.0), 1.0, 0.001, "midnight: full")
+
+
+func test_music_upgrade_gate() -> void:
+	assert_false(Glim.has_music())
+	Glim.set_found(true)
+	_give(100000, 10000, 100)
+	assert_eq(Glim.block_reason("music"), "Needs Lantern 1", "mid-game: after the first lantern tier")
+	assert_true(Glim.buy("light"))
+	assert_false(Glim.has_music())
+	var cost: Dictionary = Glim.next_cost("music")
+	for k: String in ["cubes", "parts", "seeds"]:
+		assert_gt(float(cost.get(k, 0.0)), 0.0, "costs all three currencies")
+	assert_true(Glim.buy("music"))
+	assert_true(Glim.has_music())
+	assert_gt(Glim.song_bpm(), 0.0)
+	Glim.set_found(false)
+	assert_false(Glim.has_music(), "no Glim, no music")

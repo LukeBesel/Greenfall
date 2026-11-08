@@ -2889,23 +2889,23 @@ msgstr "[Bûý ƒôŕ %s ~]"
 msgid "Buy %d Glim upgrades"
 msgstr "[Bûý %d Ĝļîm ûþĝŕàðéš ~~~~]"
 
-#: systems/glim/glim_director.gd:147
+#: systems/glim/glim_director.gd:150
 msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
 msgstr "[À ļîţţļé ļàñţéŕñ bôţ ƒļîçķéŕš àŵàķé îñ ţĥé ĵûñķ béšîðé ýôû: Ĝļîm! Ĥé'ļļ ļîĝĥţ ţĥé ŵàý àţ ñîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/glim/glim_director.gd:149
+#: systems/glim/glim_director.gd:152
 msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
 msgstr "[Šôméţĥîñĝ îñ ţĥé ĵûñķ bļîñķš bàçķ àţ ýôû: Ĝļîm, à ļîţţļé ļàñţéŕñ bôţ! Ĥé'ļļ ļîĝĥţ ţĥé ŵàý àţ ñîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/glim/glim_director.gd:151
+#: systems/glim/glim_director.gd:154
 msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
 msgstr "[Ţàþ %s: Ĝļîm šçàñš ýôûŕ ĥéx ƒôŕ ĵûñķ ýôû mîššéð. Ĥôļð %s ƒôŕ ĥîš ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/glim/glim_director.gd:196
+#: systems/glim/glim_director.gd:200
 msgid "All clear here!"
 msgstr "[Àļļ çļéàŕ ĥéŕé! ~~]"
 
-#: systems/glim/glim_director.gd:198
+#: systems/glim/glim_director.gd:202
 msgid "Only big pieces left"
 msgstr "[Ôñļý bîĝ þîéçéš ļéƒţ ~~~~]"
 
@@ -9853,6 +9853,14 @@ msgstr "[Ţîðý Ţûĝ ~]"
 #: data/glim.json:tracks[magnet].desc
 msgid "A gentle tractor tug: tiny pieces scoot toward Lumi."
 msgstr "[À ĝéñţļé ţŕàçţôŕ ţûĝ: ţîñý þîéçéš šçôôţ ţôŵàŕð Ļûmî. ~~~~~~~~~~~~~~~]"
+
+#: data/glim.json:tracks[music].name
+msgid "Music"
+msgstr "[Mûšîç ~]"
+
+#: data/glim.json:tracks[music].desc
+msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
+msgstr "[Ĝļîm ðôŵñļôàðš ţĥé ÇÐš ýôû'vé ƒôûñð: þļàý àñý ƒôûñð šôñĝ, àñýŵĥéŕé, àñýţîmé. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/glim.json:shells[pearl].name
 msgid "Pearl"

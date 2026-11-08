@@ -2881,23 +2881,23 @@ msgstr ""
 msgid "Buy %d Glim upgrades"
 msgstr ""
 
-#: systems/glim/glim_director.gd:147
+#: systems/glim/glim_director.gd:150
 msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
 msgstr ""
 
-#: systems/glim/glim_director.gd:149
+#: systems/glim/glim_director.gd:152
 msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
 msgstr ""
 
-#: systems/glim/glim_director.gd:151
+#: systems/glim/glim_director.gd:154
 msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
 msgstr ""
 
-#: systems/glim/glim_director.gd:196
+#: systems/glim/glim_director.gd:200
 msgid "All clear here!"
 msgstr ""
 
-#: systems/glim/glim_director.gd:198
+#: systems/glim/glim_director.gd:202
 msgid "Only big pieces left"
 msgstr ""
 
@@ -9839,6 +9839,14 @@ msgstr ""
 
 #: data/glim.json:tracks[magnet].desc
 msgid "A gentle tractor tug: tiny pieces scoot toward Lumi."
+msgstr ""
+
+#: data/glim.json:tracks[music].name
+msgid "Music"
+msgstr ""
+
+#: data/glim.json:tracks[music].desc
+msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
 msgstr ""
 
 #: data/glim.json:shells[pearl].name
