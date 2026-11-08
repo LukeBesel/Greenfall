@@ -87,6 +87,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Currency icons look cool.
 - [ ] Locked tabs and options show a lock and can't be opened.
 - [ ] It's very clear what you can and can't afford.
+- [ ] Workbench tabs: Upgrades holds everything with tiers; Build holds one-time buildings, which drop off once built. As few tabs as possible. (ui3 + camp2)
 - [ ] The upgrades page isn't glitchy or bulky.
 - [ ] Settings are simplified.
 - [ ] The pause menu has no Save button: saving is automatic. "Quit" saves and returns to the title screen. Fewer buttons, but Photo mode, Codex and Keepsakes stay.
