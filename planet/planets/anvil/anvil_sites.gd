@@ -527,6 +527,22 @@ static func hall(kit: AnvilEnv, b: Batch, fut: Batch, c: Vector3, yaw: float, le
 		AnvilProps.add_plate(b, basis, c + basis * Vector3(lx + len_ / teeth * 0.45, h + 1.3, 0), Vector3(0.3, 2.8, w), kit.mat("stack"))
 	# A loading door, dark inside.
 	AnvilProps.add_plate(b, basis, c + basis * Vector3(0, h * 0.3, w * 0.5 + 0.08), Vector3(6.0, h * 0.6, 0.3), kit.mat("soot"))
+	# Hazard-striped door frame and a grimy skirting along the walls.
+	for sx: float in [-1.0, 1.0]:
+		AnvilProps.add_plate(b, basis, c + basis * Vector3(sx * 3.25, h * 0.32, w * 0.5 + 0.18), Vector3(0.45, h * 0.64, 0.2), kit.mat("hazard"))
+	AnvilProps.add_plate(b, basis, c + basis * Vector3(0, h * 0.64 + 0.2, w * 0.5 + 0.18), Vector3(6.9, 0.4, 0.2), kit.mat("hazard"))
+	for side: float in [-1.0, 1.0]:
+		AnvilProps.add_plate(b, basis, c + basis * Vector3(0, 0.45, side * (w * 0.5 + 0.16)), Vector3(len_, 0.9, 0.12), kit.mat("concrete"))
+	# Roof vents (stubby cowled stacks) and caged wall lamps (lit once restored).
+	for k: int in 3:
+		var vp: Vector3 = c + basis * Vector3(-len_ * 0.3 + k * len_ * 0.3, h + 3.4, rng.randf_range(-w * 0.25, w * 0.25))
+		b.add(AnvilProps.noisy_cyl(0.55, 0.6, 1.8, 14, 2, 0.03, seed_v + k), Transform3D(Basis(), vp), kit.mat("shell"))
+		b.add(ProcMesh.cyl(0.9, 0.5, 0.4, 14), Transform3D(Basis(), vp + Vector3(0, 1.2, 0)), kit.mat("rust"))
+	for k: int in 4:
+		var lp: Vector3 = c + basis * Vector3(-len_ * 0.375 + k * len_ * 0.25, h * 0.78, w * 0.5 + 0.35)
+		AnvilProps.add_plate(b, basis, lp + basis * Vector3(0, 0.25, -0.12), Vector3(0.25, 0.12, 0.3), kit.mat("rust"))
+		b.add(ProcMesh.sphere(0.16, 10, 5), Transform3D(Basis(), lp), kit.mat("lamp_dead"))
+		fut.add(ProcMesh.sphere(0.17, 10, 5), Transform3D(Basis(), lp), kit.mat("lamp_warm"))
 	for side: float in [-1.0, 1.0]:
 		fut.add(AnvilProps.box(), Transform3D(basis * Basis.from_scale(Vector3(len_, 0.12, 0.12)), c + basis * Vector3(0, h - 0.3, side * (w * 0.5 + 0.45))), kit.mat("line"))
 		fut.add(AnvilProps.box(), Transform3D(basis * Basis.from_scale(Vector3(len_ * 0.95, 0.7, 0.5)), c + basis * Vector3(0, h * 0.62, side * (w * 0.5 + 0.5))), kit.mat("green"))
@@ -630,6 +646,10 @@ static func _foundry_yard(kit: AnvilEnv, root: Node3D, stage: int, restoration: 
 	AnvilProps._stack(kit, b, fut, Vector3(-22, -5.5, -31), 44.0, 3.2, 1)
 	AnvilProps._stack(kit, b, fut, Vector3(19, -5.5, -35), 36.0, 2.7, 4)
 	AnvilProps._truss(kit, b, fut, Vector3(14, 0, -22), Vector3(30, 0, 6), 9.0)
+	# Power and signal cables slung from the stacks to the hall roof.
+	for k: int in 3:
+		AnvilProps.cable(b, Vector3(-20.5, 14.0 + k * 1.2, -29.5), Vector3(-14.0 + k * 3.0, 11.6, -20.0), 1.4 + k * 0.4, 0.06, kit.mat("cable"))
+		AnvilProps.cable(b, Vector3(17.8, 12.0 + k, -33.5), Vector3(10.0 + k * 2.5, 11.6, -20.0), 1.2 + k * 0.5, 0.06, kit.mat("cable"))
 	# Hopper tower at the truss end.
 	b.add(AnvilProps.noisy_cyl(2.6, 1.0, 5.0, 16, 4, 0.03, 12), Transform3D(Basis(), Vector3(30, 9.0, 6)), kit.mat("shell"))
 	for sx: float in [-1.6, 1.6]:

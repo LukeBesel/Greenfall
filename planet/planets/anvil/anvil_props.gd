@@ -43,6 +43,16 @@ static func add_beam(b: Batch, a: Vector3, c: Vector3, thick: float, m: Material
 	b.add(box(), FrontierView._beam_xf(a, c, thick), m)
 
 
+## A sagging cable from a to c (catenary-ish, n segments).
+static func cable(b: Batch, a: Vector3, c: Vector3, sag: float, thick: float, m: Material, n: int = 12) -> void:
+	var prev: Vector3 = a
+	for k: int in n:
+		var t: float = float(k + 1) / n
+		var p: Vector3 = a.lerp(c, t) - Vector3(0, sag * 4.0 * t * (1.0 - t), 0)
+		add_beam(b, prev, p, thick, m)
+		prev = p
+
+
 static func add_cyl(b: Batch, pos: Vector3, r_top: float, r_bot: float, h: float, m: Material, segs: int = 24, basis: Basis = Basis()) -> void:
 	b.add(ProcMesh.cyl(r_top, r_bot, h, segs), Transform3D(basis, pos), m)
 
@@ -140,6 +150,34 @@ static func make_mat(env: AnvilEnv, key: String) -> Material:
 			rg.set_shader_parameter("ember", 0.0)
 			rg.set_shader_parameter("strata", 0.6)
 			return rg
+		"hazard":
+			# Worn yellow/black hazard stripes (a small generated texture, world triplanar).
+			var img := Image.create(64, 64, true, Image.FORMAT_RGB8)
+			for y: int in 64:
+				for x: int in 64:
+					var on: bool = ((x + y) >> 4) % 2 == 0
+					var c: Color = Color(0.86, 0.6, 0.08) if on else Color(0.05, 0.045, 0.04)
+					img.set_pixel(x, y, c.darkened(randf() * 0.15))
+			img.generate_mipmaps()
+			var hz := StandardMaterial3D.new()
+			hz.albedo_texture = ImageTexture.create_from_image(img)
+			hz.uv1_triplanar = true
+			hz.uv1_world_triplanar = true
+			hz.uv1_scale = Vector3.ONE * 0.9
+			hz.roughness = 0.7
+			return hz
+		"lamp_warm":
+			return Mats.lamp(Color(1.0, 0.78, 0.48), 1.6)
+		"lamp_dead":
+			var ld := StandardMaterial3D.new()
+			ld.albedo_color = Color(0.22, 0.2, 0.17)
+			ld.roughness = 0.3
+			return ld
+		"cable":
+			var cb := StandardMaterial3D.new()
+			cb.albedo_color = Color(0.04, 0.035, 0.03)
+			cb.roughness = 0.6
+			return cb
 		"rust":
 			return AssetLib.pbr_material("rusty_metal_03", 0.12, Color(0.92, 0.62, 0.5), true)
 		"corr":
