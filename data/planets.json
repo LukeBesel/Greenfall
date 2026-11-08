@@ -198,9 +198,9 @@
     "restored": {
       "_doc": "sky/fog targets at full restore: the dust sky clears to a pale terraformed blue",
       "rayleigh": [
-        0.34,
-        0.54,
-        0.98
+        0.26,
+        0.5,
+        1.0
       ],
       "rayleigh_coef": 2.6,
       "mie": [
@@ -212,9 +212,9 @@
       "turbidity": 3.0,
       "sat": 1.12,
       "fog": [
-        0.88,
-        0.8,
-        0.76
+        0.62,
+        0.74,
+        0.92
       ],
       "fog_mult": 0.5,
       "height_fog": 0.002

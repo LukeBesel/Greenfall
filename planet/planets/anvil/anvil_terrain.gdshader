@@ -125,8 +125,8 @@ void fragment() {
 		alb = mix(alb, lichen_col * (0.7 + 0.6 * n3), lich * 0.8 * mix(0.55, 1.0, flat_));
 		float red = smoothstep(0.62, 0.4, n2 + slope * 0.9 - restore * 0.55 + (n1 - 0.5) * 0.4) * smoothstep(0.15, 0.55, restore) * flat_;
 		alb = mix(alb, redleaf_col * lg * 2.8, red * 0.85);
-		float green = smoothstep(0.56, 0.36, (1.0 - n2) * 0.8 + slope * 0.9 - restore * 0.6 + (n1 - 0.5) * 0.5) * smoothstep(0.4, 0.95, restore) * flat_;
-		alb = mix(alb, green_col * lg * 2.5, green);
+		float green = smoothstep(0.52, 0.34, (1.0 - n2) * 0.8 + slope * 0.9 - restore * 0.42 + (n1 - 0.5) * 0.6 + (n3 - 0.5) * 0.25) * smoothstep(0.4, 0.95, restore) * flat_;
+		alb = mix(alb, green_col * lg * 2.5 * mix(0.8, 1.2, n3), green);
 		rough = mix(rough, 0.82, max(red, green));
 	}
 	alb *= mix(0.84, 1.06, n1);
