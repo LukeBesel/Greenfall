@@ -55,11 +55,10 @@ func test_upgrades_show_few_rows_per_category() -> void:
 	var items: Array = BenchLists.upgrades(null)
 	var lumi: Array = items.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == "lumi")
 	assert_gt(lumi.size(), 0)
-	assert_lte(lumi.size(), BenchLists.SOON_CAP + BenchLists.LOCKED_SHOWN)
+	# [v1guide] Owner 2026-11-08 #27: every open upgrade keeps its row (fixed order, maxed ones say
+	# DONE in place); only the locked "? ?" teasers are capped.
 	var locked: int = lumi.filter(func(r: Dictionary) -> bool: return str(r["state"]) == "locked").size()
 	assert_lte(locked, BenchLists.LOCKED_SHOWN)
-	for r: Dictionary in lumi:
-		assert_ne(str(r["state"]), "done", "maxed upgrades drop off")
 
 
 func test_research_rows_per_branch() -> void:

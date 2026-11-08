@@ -178,13 +178,15 @@ func test_demo_flag_and_limits() -> void:
 	assert_true(Demo.can_raise_base(4))
 	assert_true(Demo.rockets_allowed())
 	assert_false(Demo.block("rocket"))
-	assert_eq(SaveManager.root_dir(), SaveManager.SAVE_DIR)  # [worlds2] profiles live under it
+	var sfx: String = SaveManager.ROUND_SUFFIX if SaveManager.round_planets() else ""  # [v1menu] the round world is the default
+	assert_eq(SaveManager.root_dir(), SaveManager.SAVE_DIR + sfx)  # [worlds2] profiles live under it
 	Demo.override = 1
 	assert_true(Demo.is_demo())
 	assert_true(Demo.can_raise_base(1))
 	assert_false(Demo.can_raise_base(Demo.MAX_BASE_LEVEL))
 	assert_false(Demo.rockets_allowed())
-	assert_eq(SaveManager.root_dir(), Demo.SAVE_DIR)
+	assert_eq(SaveManager.root_dir(), Demo.SAVE_DIR + sfx)
+	assert_eq(SaveManager.root_dir(true), Demo.SAVE_DIR, "the flat tree")
 
 
 func test_demo_caps_the_base() -> void:

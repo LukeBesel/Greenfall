@@ -272,6 +272,20 @@ func set_category(cid: String) -> void:
 		f.grab_focus.call_deferred()
 
 
+## [v1guide] Shows row `id` (its category, selected). False when it isn't listed.
+func select_id(id: String) -> bool:
+	if _items.is_empty():
+		_items = provider.call() if provider.is_valid() else []
+	var it: Dictionary = _find(id)
+	if it.is_empty():
+		return false
+	_cat = str(it.get("cat", ""))
+	_sel = id
+	if is_inside_tree():
+		refresh(true)
+	return true
+
+
 func next_category(step: int) -> bool:
 	var ids: Array = _cat_btns.keys()
 	if ids.size() <= 1:
@@ -301,8 +315,15 @@ func _rebuild_rows(rows: Array) -> void:
 			if ev.is_action_pressed("ui_left") or ev.is_action_pressed("ui_right"):
 				if next_category(1 if ev.is_action_pressed("ui_right") else -1):
 					b.accept_event())
+		# [v1guide] Owner (2026-11-08 #25): a click on a row only shows its details; only the price
+		# tag (or the detail panel's buy button) buys. A on a pad / Enter still acts on the row.
+		b.button_down.connect(func() -> void:
+			b.set_meta("mouse", Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)))
 		b.pressed.connect(func() -> void:
-			if _sel != id:
+			if bool(b.get_meta("mouse", false)):
+				b.set_meta("mouse", false)
+				_select(id)
+			elif _sel != id:
 				_select(id)
 			else:
 				_do(id))
@@ -330,7 +351,15 @@ func _rebuild_rows(rows: Array) -> void:
 		var tag := PanelContainer.new()
 		tag.custom_minimum_size = Vector2(78, 0)
 		tag.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		tag.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		tag.mouse_filter = Control.MOUSE_FILTER_STOP  # [v1guide] the price square is the buy button
+		tag.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		tag.tooltip_text = tr("Buy")
+		tag.gui_input.connect(func(ev: InputEvent) -> void:
+			var mb: InputEventMouseButton = ev as InputEventMouseButton
+			if mb and mb.button_index == MOUSE_BUTTON_LEFT and not mb.pressed:
+				tag.accept_event()
+				_select(id)
+				_do(id))
 		hb.add_child(tag)
 		var tl := HBoxContainer.new()
 		tl.alignment = BoxContainer.ALIGNMENT_CENTER

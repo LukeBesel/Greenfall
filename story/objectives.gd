@@ -182,6 +182,8 @@ func value_of(def: Dictionary) -> float:
 			return float(SignalTower.tier())
 		"upgrade":  # [onboard2] an upgrade's level (Scoop Size, Compartment, the Baler)
 			return float(GameState.level_of(key))
+		"bench":  # [v1guide] the workbench's tier (ui/bench_tiers.gd)
+			return float(BenchTiers.tier())
 	return 0.0
 
 
@@ -386,7 +388,7 @@ func waypoint_target() -> Variant:
 			"scoop_size", "compartment", "baler":  # [onboard2] to the bench once it's affordable
 				var uid: String = str(def.get("key", ""))
 				return _bench_pos() if GameState.can_afford("cubes", Economy.upgrade_cost(uid)) else null
-			"robot", "haul", "base2", "base3":
+			"robot", "haul", "base2", "base3", "bench2":
 				return _bench_pos()
 			"tower", "tower2":
 				if SignalTower.tier() == 0:

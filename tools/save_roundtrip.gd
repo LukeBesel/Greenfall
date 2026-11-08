@@ -366,7 +366,8 @@ func _ready() -> void:
 	WorldEvents.persist_state()["recent"] = ["supply_drop", "rain_shower"]
 	# [onboard] Past the brief, on the "Rebuild the base: level 2" objective, detector explained, board open.
 	GameState.flags["onboard_brief"] = true
-	GameState.flags["objective_step"] = 11
+	var ochain: Array = (Economy.read_json("res://data/objectives.json").get("objectives", []) as Array).map(func(d: Dictionary) -> String: return str(d["id"]))
+	GameState.flags["objective_step"] = maxi(0, ochain.find("base2"))  # [v1guide] by id: objectives get inserted
 	GameState.flags["objectives_v2"] = true
 	GameState.flags["signal_explained"] = true
 	GameState.flags["requests_unlocked"] = true
