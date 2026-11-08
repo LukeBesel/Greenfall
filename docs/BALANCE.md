@@ -610,3 +610,8 @@ after; the after bot first detoured to dig a buried part, hence the late first b
 Without the cluster pickup (volume kept, more pickups) the same run was 15-35% slower (base 2 at 18,
 first Thriving at 34.5); with gen-2 counts but no volume scaling the economy would run ahead instead.
 Solid props add bot "stuck escapes" (6 -> 31 in the run; the bot steers straight): no robot got stuck.
+
+Playtest #2 run (heaps now solid for Lumi and robots, `--save-dir` isolated): first robot 8.6, base 2
+16.6, first Thriving 32.2, 15 hexes / 44 goals / 29.8k earned at 34.7 min. Scooping heaps from the edge
+costs time on landfill hexes; the "pace" helper is re-pacing the start anyway (slower by design).
+Single autoplay runs vary a lot (part luck, the bot digging first); compare several before tuning.

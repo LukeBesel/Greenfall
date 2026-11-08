@@ -215,3 +215,11 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
   The bale shader is explicitly opaque, with desaturated per-item chunks, labels in the dominant junk's
   accent colour and rough, sparse metal (the pale plastic colour plus sky-mirroring metal read as a
   transparent blue block).
+- **[world2] Playtest #2 follow-ups**: junk heaps are solid for Lumi and robots too (MOUND | PROP),
+  drawing in as the hex is cleaned, so piles are scooped from the edge, not vacuumed from inside.
+  Hub/blocked hexes' ground follows the junk hexes that own it (no clean-looking patches). Pieces
+  carry a size class (`HexField.piece_size`: SIZE_SMALL / SIZE_MEDIUM / SIZE_LARGE, from the
+  model's base volume, LARGE >= 2.5: tyres, TVs, microwaves, stoves), and the starting ring has no
+  large pieces (re-picked from the same type on their own RNG). Carried bales sit above Lumi's head
+  (`player/carry_point.gd`). The bale is a pillowed, lumpy pressed block with three straps one way
+  and two across.
