@@ -36,14 +36,14 @@ var stack_point := Vector3(0, 1.3, 0.3)
 var lens_point := Vector3(0, 0.86, -0.36)
 ## [hero] Attachment anchors for head pieces, chest icons, held items and back gear (character
 ## builder). Positions in the model's float space (head_top in the head's space); see get_anchor().
-const ANCHORS := {"head_top": Vector3(0, 0.6, 0.0), "chest_plate": Vector3(0, 0.417, -0.236), "hand_r": Vector3(0, 0, -0.1), "hand_l": Vector3(0, 0, -0.1), "back": Vector3(0, 0.42, 0.225)}
+const ANCHORS := {"head_top": Vector3(0, 0.61, 0.0), "chest_plate": Vector3(0, 0.417, -0.236), "hand_r": Vector3(0, 0, -0.1), "hand_l": Vector3(0, 0, -0.1), "back": Vector3(0, 0.42, 0.225)}
 ## Eye shapes for bot_face.gdshader's eye_shape (VARIANTS may set "eyes"; set_eye_shape() at runtime).
 const EYE_SHAPES := ["crescent", "round", "happy", "bar", "heart"]
 var _anchors: Dictionary = {}
 ## [hero] Detector beacon: a small red lamp on the rear of the fin mount (head space), parented to
 ## the head so it follows hover bob, lean, head turn/tilt and every pose (owner: "the blinking red
 ## dot sometimes comes off the player's head" when it lived on Patch at a fixed height).
-const BEACON_LOCAL := Vector3(0, 0.5965, 0.21)  # on the fin mount, behind the stalk (build_aurora.py prints it)
+const BEACON_LOCAL := Vector3(0, 0.608, 0.21)  # on the fin mount, behind the stalk (build_aurora.py prints it)
 var _beacon: MeshInstance3D
 var _beacon_mat: StandardMaterial3D
 var _beacon_light: OmniLight3D

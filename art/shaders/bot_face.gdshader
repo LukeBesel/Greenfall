@@ -135,6 +135,6 @@ void fragment() {
 	EMISSION = eye_e * energy * 0.6
 		+ cyan * halo * energy * 0.1
 		+ vec3(1.0) * glint * energy * 0.7
-		+ vec3(0.5, 0.56, 0.62) * (streak * 0.08 + streak2 * 0.04)
+		+ vec3(1.0, 0.72, 0.5) * streak * 0.16 + vec3(0.5, 0.7, 0.8) * streak2 * 0.06
 		+ vec3(0.35, 0.45, 0.55) * fres * 0.1;
 }

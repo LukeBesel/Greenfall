@@ -309,7 +309,7 @@ def with_material(obj, material):
 HEAD_P = Vector((0, 0.56, 0))
 HC = 0.855                         # head centre height
 HA, HB, HCZ = 0.415, 0.295, 0.335  # head half sizes (x, y, z)
-E_H, E_V = 2.7, 2.35               # superellipsoid exponents: horizontal (x-z), vertical
+E_H, E_V = 3.0, 2.9               # superellipsoid exponents: horizontal (x-z), vertical
 HW, HH, HD = HA * 2, HB * 2, HCZ * 2
 
 
@@ -415,6 +415,10 @@ def conform(name, material, depth_fn, grow=0.0, back=0.05, rings=14, seg=96, wal
 	for j in range(seg):
 		walls.append(bm.faces.new((ring_vs[-1][j], ring_vs[-1][(j + 1) % seg], backs[(j + 1) % seg], backs[j])))
 	walls.append(bm.faces.new(backs))
+	# [hero v2] Triangulate the (non-planar on the curved capsule) back cap, or the EXACT boolean
+	# leaves a patch of shell in the middle of the visor.
+	tri = bmesh.ops.triangulate(bm, faces=[walls[-1]])
+	walls = walls[:-1] + list(tri["faces"])
 	bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
 	wall_set = set(walls)
 	obj = from_bm(bm, name, material)
@@ -552,12 +556,12 @@ head = join("head", head_parts)
 # the crown, carrying a flat amber paddle with a lighter lit top edge (concept).
 p, n = shell_hit((0, 3.0, 0.16), (0, -1, 0))
 FIN_BASE = Vector((0, (p.y if p is not None else HC + HB) - 0.004, 0.16))
-STALK_END = FIN_BASE + Vector((0, 0.13, 0.075))
+STALK_END = FIN_BASE + Vector((0, 0.1, 0.12))
 fin_parts = [
 	rbox("fin_mount", (0.07, 0.03, 0.09), FIN_BASE + Vector((0, 0.008, 0.0)), 0.012, "trim", segs=2, sub=1),
 	cyl("fin_hinge", 0.014, 0.08, FIN_BASE + Vector((0, 0.026, -0.005)), "steel", axis='X', verts=16, bevel=0.003),
 ]
-stalk = rbox("fin_stalk", (0.034, 0.016, 0.155), (0, 0, 0), 0.006, "fin", segs=2, sub=1)
+stalk = rbox("fin_stalk", (0.034, 0.016, 0.17), (0, 0, 0), 0.006, "fin", segs=2, sub=1)
 ang = math.degrees(math.atan2(STALK_END.y - FIN_BASE.y, STALK_END.z - FIN_BASE.z))
 xform(stalk, (FIN_BASE + STALK_END) * 0.5 + Vector((0, 0.012, 0)), (-ang, 0, 0))
 fin_parts.append(stalk)
@@ -572,11 +576,11 @@ for k in range(40):
 	w = 0.04 * (1.0 - 0.25 * max(z, 0.0))
 	pad_pts.append((x * w, z * 0.125))
 paddle = prism("fin_paddle", pad_pts, 0.016, (0, 0, 0), "paddle", bevel=0.004, segs=2, sub=1, rot=(90, 0, 0))
-xform(paddle, STALK_END + Vector((0, 0.02, 0.07)), (-8, 0, 0))
+xform(paddle, STALK_END + Vector((0, 0.014, 0.085)), (-8, 0, 0))
 fin_parts.append(paddle)
 edge = [(math.cos(2 * math.pi * k / 40) * 0.04 * (1.0 - 0.25 * max(math.sin(2 * math.pi * k / 40), 0.0)), math.sin(2 * math.pi * k / 40) * 0.125) for k in range(40)]
 rim = loop_tube("fin_edge", [(x, 0.0085, z) for (x, z) in edge], 0.0035, "paddle_edge", sides=6)
-xform(rim, STALK_END + Vector((0, 0.02, 0.07)), (-8, 0, 0))
+xform(rim, STALK_END + Vector((0, 0.014, 0.085)), (-8, 0, 0))
 fin_parts.append(rim)
 fin_parts.append(screw(FIN_BASE + Vector((0.036, 0.008, 0.02)), (1, 0, 0), r=0.006))
 fin_parts.append(screw(FIN_BASE + Vector((-0.036, 0.008, 0.02)), (-1, 0, 0), r=0.006))
@@ -590,7 +594,7 @@ visor = conform("visor", "face", lambda s_: 0.03 - 0.022 * (1 - s_ * s_) - 0.004
 
 # ---------------------------------------------------------------- BODY (pivot = float origin)
 body_parts = []
-TY, TH, TW, TD = 0.415, 0.31, 0.54, 0.42
+TY, TH, TW, TD = 0.415, 0.31, 0.6, 0.42
 upper = rbox("torso", (TW, TH, TD), (0, TY, 0), 0.1, "paint", segs=4, sub=2)
 BAND_Y = 0.528
 groove(upper, (0.8, 0.014, 0.8), (0, BAND_Y, 0), depth=0.01)          # light band seam

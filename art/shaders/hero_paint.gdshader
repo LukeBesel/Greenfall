@@ -134,12 +134,12 @@ void fragment() {
 	float dens = clamp(edge * edge_wear * 1.5 + joint * 0.7 + up * 0.45 + patch_ * 0.35, 0.0, 1.0);
 	// Ragged dark speckle chips in two sizes (cells warped by noise) plus a few big flakes on edges.
 	vec3 wp = opos + (vec3(n3(opos * 60.0), n3(opos * 60.0 + 7.0), n3(opos * 60.0 + 13.0)) - 0.5) * 0.006;
-	float r1 = (0.1 + 0.26 * dens) * step(0.0, 0.35 + 0.6 * dens - 0.0);
+	float r1 = 0.08 + 0.24 * dens;
 	vec2 c1 = cell(wp * 95.0 + seed);
-	float on1 = step(c1.y, 0.3 + 0.6 * dens);
+	float on1 = step(c1.y, 0.04 + 0.7 * dens * dens);
 	float sp1 = (1.0 - smoothstep(0.0, 0.05, c1.x - r1)) * on1;
 	vec2 c2 = cell(wp * 210.0 + seed * 2.0);
-	float sp2 = (1.0 - smoothstep(0.0, 0.08, c2.x - (0.12 + 0.2 * dens))) * step(c2.y, 0.22 + 0.5 * dens);
+	float sp2 = (1.0 - smoothstep(0.0, 0.08, c2.x - (0.12 + 0.2 * dens))) * step(c2.y, 0.03 + 0.45 * dens * dens);
 	vec2 c3 = cell(wp * 34.0 + seed * 3.0);
 	float fl_r = 0.34 * smoothstep(0.35, 1.0, edge * edge_wear * 1.4 + joint * 0.5);
 	float flake = (1.0 - smoothstep(0.0, 0.04, c3.x - fl_r)) * step(c3.y, 0.55) * step(0.001, fl_r);

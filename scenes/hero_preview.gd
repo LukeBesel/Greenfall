@@ -205,9 +205,9 @@ func _pose() -> void:
 		return
 	# Left arm raised and reaching toward the can (the portrait's beam arm), claws open.
 	var arm: Node3D = _model.get("_arm_l")
-	arm.rotation = Vector3(0.75, 0.15, -0.85)
+	arm.rotation = Vector3(0.35, 0.3, -1.1)
 	var el: Node3D = arm.get_meta("elbow")
-	el.rotation = Vector3(0.35, 0.0, 0.0)
+	el.rotation = Vector3(0.25, 0.0, 0.0)
 	for f: Node3D in _model.get("_claws"):
 		var dir: Vector2 = f.get_meta("dir")
 		f.rotation = Vector3(-dir.y, dir.x, 0) * 0.5
