@@ -969,13 +969,10 @@ func _apply_restore() -> void:
 ## flat district, terrain and far props are hidden; sky, suns, moons and Lumi stay.
 func _site_preview(arg: String) -> void:
 	var a: PackedStringArray = arg.split(",")
-	var keep: Array[Node] = [self, world.get("patch"), world.get("cam"), world.get("sky_director"), world.get("_sun")]
-	for c: Node in world.get_children():
-		if c is Node3D and not (c in keep) and not (c is WorldEnvironment):
-			(c as Node3D).visible = false
-	for c: Node in get_children():
-		if c is Node3D and not (c is DirectionalLight3D) and not (c.name in ["Moons", "PrimaryDisc", "CompanionDisc", "RedHaze", "SeedMotes"]) and not str(c.name).begins_with("DustDevil"):
-			(c as Node3D).visible = false
+	_hide_district()
+	# Systems that build later (nurseries, decor) are hidden again once they exist.
+	get_tree().create_timer(1.0).timeout.connect(_hide_district)
+	get_tree().create_timer(4.0).timeout.connect(_hide_district)
 	var site_root := Node3D.new()
 	site_root.name = "SitePreview"
 	world.add_child(site_root)
@@ -985,6 +982,18 @@ func _site_preview(arg: String) -> void:
 	if world.get("hud") != null:
 		(world.hud as CanvasLayer).visible = false
 	print("[planet-anvil] site %s stage %d restoration %.2f" % [a[0], stage, rest])
+
+
+func _hide_district() -> void:
+	var keep: Array[Node] = [self, world.get("patch"), world.get("cam"), world.get("sky_director"), world.get("_sun")]
+	for c: Node in world.get_children():
+		if c.name == "SitePreview":
+			continue
+		if c is Node3D and not (c in keep) and not (c is WorldEnvironment):
+			(c as Node3D).visible = false
+	for c: Node in get_children():
+		if c is Node3D and not (c is DirectionalLight3D) and not (c.name in ["Moons", "PrimaryDisc", "CompanionDisc", "RedHaze", "SeedMotes"]) and not str(c.name).begins_with("DustDevil"):
+			(c as Node3D).visible = false
 
 
 ## Dev (--anvil-lookbook): Anvil's props, materials and restoration look staged in front of Lumi

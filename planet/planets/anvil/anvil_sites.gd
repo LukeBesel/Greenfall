@@ -132,7 +132,7 @@ static func trash(kit: AnvilEnv, root: Node3D, radius: float, keep_r: float, cou
 		for i: int in per:
 			# Clumped: most junk lies in drifts, some scattered.
 			var a: float = rng.randf() * TAU
-			var r: float = lerpf(keep_r, radius * 0.95, sqrt(rng.randf()))
+			var r: float = lerpf(keep_r, radius * 0.95, pow(rng.randf(), 0.8))
 			var p := Vector3(cos(a) * r, 0, sin(a) * r)
 			var tilt := Basis(Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)).normalized(), rng.randf_range(0.0, 1.4)) if rng.randf() < 0.55 else Basis()
 			var bs: Basis = Basis(Vector3.UP, rng.randf() * TAU) * tilt * Basis.from_scale(Vector3.ONE * rng.randf_range(0.8, 1.3))
@@ -147,7 +147,7 @@ static func trash(kit: AnvilEnv, root: Node3D, radius: float, keep_r: float, cou
 		root.add_child(mmi)
 	# Scrap mounds: lumpy heaps of slag and rusted scrap.
 	var b := Batch.new()
-	var n_m: int = int(10 * left + 0.5)
+	var n_m: int = int(22 * left + 0.5)
 	for k: int in n_m:
 		var a: float = rng.randf() * TAU
 		var r: float = rng.randf_range(keep_r + 4.0, radius * 0.85)
@@ -258,14 +258,14 @@ static func lava_channel(kit: AnvilEnv, root: Node3D, pts: PackedVector3Array, w
 			dist += pts[i].distance_to(pts[i - 1])
 		var hw: float = width * 0.5 * (1.0 + nz.get_noise_1d(dist * 3.0) * 0.3)
 		st.set_uv(Vector2(dist, 0.0))
-		st.add_vertex(Vector3(p.x, -0.25, p.z) - side * hw)
+		st.add_vertex(Vector3(p.x, 0.12, p.z) - side * hw)
 		st.set_uv(Vector2(dist, 1.0))
-		st.add_vertex(Vector3(p.x, -0.25, p.z) + side * hw)
+		st.add_vertex(Vector3(p.x, 0.12, p.z) + side * hw)
 		if i % 2 == 0:
 			for sgn: float in [-1.0, 1.0]:
 				var q: Vector3 = p + side * sgn * (hw + 0.6)
 				var w: float = 1.1 + absf(nz.get_noise_1d(dist * 5.0 + sgn * 40.0)) * 1.6
-				banks.add(AnvilProps.slag_mesh(seed_v + i * 2 + int(sgn)), Transform3D(Basis(Vector3.UP, dist) * Basis.from_scale(Vector3(w, w * 0.45, w * 0.8)), Vector3(q.x, -0.2, q.z)), kit.slag_mat)
+				banks.add(AnvilProps.slag_mesh(seed_v + i * 2 + int(sgn)), Transform3D(Basis(Vector3.UP, dist) * Basis.from_scale(Vector3(w, w * 0.32, w * 0.8)), Vector3(q.x, -0.1, q.z)), kit.slag_mat)
 	for i: int in pts.size() - 1:
 		var a: int = i * 2
 		for idx: int in [a, a + 2, a + 1, a + 1, a + 2, a + 3]:
@@ -352,7 +352,7 @@ static func _foundry_yard(kit: AnvilEnv, root: Node3D, stage: int, restoration: 
 		turbine(kit, root, Vector3(38, 0, -24), 30.0, 0)
 	if stage >= 4:
 		turbine(kit, root, Vector3(-40, 0, -6), 34.0, 1)
-	trash(kit, root, 46.0, 12.0, 320, r, 501)
+	trash(kit, root, 46.0, 12.0, 900, r, 501)
 	plants(kit, root, 46.0, 12.0, 500, r, 601)
 
 
@@ -412,7 +412,7 @@ static func _foundry_tower(kit: AnvilEnv, root: Node3D, stage: int, restoration:
 	if stage >= 3:
 		AnvilProps._dome(kit, high, Vector3(26, 0, -18), 7.0, 5)
 	_flush_stage(root, stage, b, ruin, high, fut)
-	trash(kit, root, 40.0, 14.0, 260, r, 503)
+	trash(kit, root, 40.0, 14.0, 800, r, 503)
 	plants(kit, root, 40.0, 14.0, 420, r, 603)
 
 
@@ -457,7 +457,7 @@ static func _lava_forge(kit: AnvilEnv, root: Node3D, stage: int, restoration: fl
 	var pool := MeshInstance3D.new()
 	pool.name = "LavaPool"
 	pool.mesh = lava_pool_mesh(7.5, 6.0, 88)
-	pool.position = pool_c + Vector3(0, -0.2, 0)
+	pool.position = pool_c + Vector3(0, 0.1, 0)
 	pool.material_override = lava
 	pool.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	root.add_child(pool)
@@ -481,7 +481,7 @@ static func _lava_forge(kit: AnvilEnv, root: Node3D, stage: int, restoration: fl
 	_flush_stage(root, stage, b, ruin, high, fut)
 	if stage >= 4:
 		turbine(kit, root, Vector3(32, 0, -20), 28.0, 2)
-	trash(kit, root, 44.0, 10.0, 260, r, 505)
+	trash(kit, root, 44.0, 7.0, 800, r, 505)
 	plants(kit, root, 44.0, 10.0, 420, r, 605)
 
 
@@ -530,5 +530,5 @@ static func _ruined_smelter(kit: AnvilEnv, root: Node3D, stage: int, restoration
 	if stage >= 3:
 		AnvilProps._dome(kit, high, Vector3(26, 0, 22), 7.0, 11)
 	_flush_stage(root, stage, b, ruin, high, fut)
-	trash(kit, root, 40.0, 6.0, 300, r, 507)
+	trash(kit, root, 40.0, 6.0, 900, r, 507)
 	plants(kit, root, 40.0, 6.0, 520, r * (1.2 if stage >= 4 else 1.0), 607)

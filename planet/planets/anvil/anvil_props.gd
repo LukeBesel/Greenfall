@@ -61,7 +61,7 @@ static func noisy_cyl(r_top: float, r_bot: float, h: float, segs: int, rings: in
 static func make_mat(env: AnvilEnv, key: String) -> Material:
 	match key:
 		"stack":
-			var s: ShaderMaterial = Mats.worn_paint(Color(0.36, 0.31, 0.28), 0.35, 0.95, 3.0, 0.8)
+			var s: ShaderMaterial = Mats.worn_paint(Color(0.2, 0.18, 0.17), 0.3, 0.95, 3.0, 1.0)
 			s.set_shader_parameter("tex_scale", 0.22)
 			return s
 		"hauler":
@@ -455,8 +455,11 @@ static func slag_mesh(seed_v: int) -> ArrayMesh:
 			var u: float = float(i) / (nr - 1)
 			var rr: float = u * (1.0 + nz.get_noise_2d(cos(a), sin(a)) * 0.35)
 			# Lumpy tipped-load profile: a ragged crest, dumped lobes and gullies down the flanks.
-			var gully: float = absf(nz.get_noise_2d(cos(a) * 4.0 + 9.0, sin(a) * 4.0)) * 0.12 * u
-			var hgt: float = pow(1.0 - u, 1.15) * (1.0 + nz.get_noise_2d(cos(a) * 2.0 + 3.0, sin(a) * 2.0) * 0.25) - gully + nz.get_noise_2d(cos(a) * u * 6.0, sin(a) * u * 6.0) * 0.05 * (1.0 - u)
+			var gully: float = absf(nz.get_noise_2d(cos(a) * 4.0 + 9.0, sin(a) * 4.0)) * 0.14 * u
+			# Rounded, lumpy tip (a dumped heap, not a cone): domed crest, knobbly dumped blocks.
+			var dome: float = pow(maxf(1.0 - u * u, 0.0), 0.75)
+			var lumps: float = nz.get_noise_2d(cos(a) * u * 5.0 + 20.0, sin(a) * u * 5.0) * 0.16 + nz.get_noise_2d(cos(a) * u * 13.0, sin(a) * u * 13.0) * 0.06
+			var hgt: float = dome * (0.82 + nz.get_noise_2d(cos(a) * 2.0 + 3.0, sin(a) * 2.0) * 0.3) - gully + lumps * (1.0 - u * 0.6)
 			st.add_vertex(Vector3(cos(a) * rr, maxf(hgt, 0.0) - (0.05 if i == nr - 1 else 0.0), sin(a) * rr))
 	for j: int in na:
 		for i: int in nr - 1:
