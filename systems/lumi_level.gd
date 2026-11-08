@@ -216,12 +216,13 @@ func _grant(lv: int) -> String:
 	if int(plan["seeds"]) > 0:
 		GameState.add_currency("seeds", BigNum.from_float(int(plan["seeds"])))
 		bits.append(tr("+%d seeds") % int(plan["seeds"]))
+	var parts_paid: float = 0.0  # [qafix] QA #20: every Parts gain shows as one "+N parts"
 	if int(plan["parts"]) > 0:
 		var types: Array = Economy.parts.get("types", [])
 		var t: int = randi() % maxi(types.size(), 1)
 		var r: int = int(plan["part_rarity"])
 		RobotParts.salvage(t, r)  # [ui2] a robot part pays Parts
-		bits.append(RobotParts.gain_text(r))
+		parts_paid += RobotParts.value(r)
 	var bonus: int = int(plan["bonus_parts"])
 	if bool(plan["trinket"]):
 		var left: Array[String] = Collection.unfound("lumi_level")  # in order: L10, L20, ...
@@ -232,5 +233,7 @@ func _grant(lv: int) -> String:
 			bonus += int(rw.get("trinket_parts", 15))
 	if bonus > 0:
 		GameState.add_currency("parts", BigNum.from_float(bonus))
-		bits.append(L10nFmt.reward("parts", bonus))
+		parts_paid += bonus
+	if parts_paid > 0.0:
+		bits.append(L10nFmt.amount("parts", parts_paid, true))
 	return "  ".join(bits)

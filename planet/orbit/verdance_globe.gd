@@ -65,6 +65,7 @@ var hubs: Array[int] = []
 var sites: Array[Dictionary] = []
 var bots: Array[SphereBot] = []
 var crews: Array[Dictionary] = []
+var sphere_crew: SphereCrew  # [orbC]
 var stats: Dictionary = {}
 var view_mode: String = "follow"
 var view: SphereJunkView  # the FieldView role (Patch calls world.view)
@@ -106,7 +107,7 @@ func _ready() -> void:
 	view_mode = DevHooks.get_s("orbit-view", "follow")
 	_place_hubs(int(DevHooks.get_f("orbit-hubs", 10.0)))
 	crews.clear()
-	for i: int in range(1, sites.size()):
+	for i: int in range(1, sites.size() if not SphereCrewDev.wanted() else 0):  # [orbC] the phase C crew replaces the stand-in crews
 		crews.append({"hub": int(sites[i]["cell"]), "rate": 0.25 + 0.05 * (i % 4), "acc": 0.0})
 	if DevHooks.has("orbit-presim"):
 		var all_crews: Array[Dictionary] = []
@@ -170,7 +171,10 @@ func _ready() -> void:
 	cam.snap()
 	_build_depot(sites[0])
 	_build_lights()
-	_spawn_bots(hub_cell, 4)
+	if SphereCrewDev.wanted():  # [orbC] phase C crew (robots/sphere/) instead of the phase A stand-in bots
+		sphere_crew = SphereCrewDev.install(self)
+	else:
+		_spawn_bots(hub_cell, 4)
 	_update_centres()
 	var t2: int = Time.get_ticks_msec()
 	streamer.settle()

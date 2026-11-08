@@ -49,6 +49,8 @@ var _arrow_layer: CanvasLayer
 var arrow: EdgeArrow
 
 static var _shader: Shader
+static var _shader_mix: Shader  # [qafix]
+var _mat_trail: ShaderMaterial  # [qafix]
 
 
 func _ready() -> void:
@@ -58,6 +60,14 @@ func _ready() -> void:
 		_shader.code = SHADER_CODE
 	_mat = ShaderMaterial.new()
 	_mat.shader = _shader
+	# [qafix] QA #36: additive chevrons washed out to a thin white line on pale ground; the trail
+	# blends normally so it stays purple everywhere (the beam and ring still glow additively).
+	if _shader_mix == null:
+		_shader_mix = Shader.new()
+		_shader_mix.code = SHADER_CODE.replace("blend_add", "blend_mix")
+	_mat_trail = ShaderMaterial.new()
+	_mat_trail.shader = _shader_mix
+	_mat_trail.set_shader_parameter("energy", 1.0)
 	_mat_beam = ShaderMaterial.new()
 	_mat_beam.shader = _shader
 	_mat_beam.set_shader_parameter("beam", true)
@@ -86,7 +96,7 @@ func _ready() -> void:
 	mm.mesh = _chevron()
 	mm.instance_count = TRAIL_N
 	_trail.multimesh = mm
-	_trail.material_override = _mat
+	_trail.material_override = _mat_trail  # [qafix]
 	_trail.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(_trail)
 	visible = false
@@ -123,6 +133,7 @@ func _process(delta: float) -> void:
 	var pulse: float = 0.85 + 0.15 * sin(_t * 2.2)
 	_mat.set_shader_parameter("alpha", _alpha * pulse)
 	_mat_beam.set_shader_parameter("alpha", _alpha * pulse)
+	_mat_trail.set_shader_parameter("alpha", _alpha * pulse)  # [qafix]
 	_beam.global_position = _pos
 	var cam: Camera3D = get_viewport().get_camera_3d()
 	if cam:  # the beam is a camera-facing strip (cylindrical billboard)
@@ -192,7 +203,7 @@ func _update_trail(from: Vector3, to: Vector3) -> void:
 static func _chevron() -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var w: float = 0.07
+	var w: float = 0.1  # [qafix] QA #36: a little bolder (was 0.07)
 	var pts: Array[Vector3] = [Vector3(-0.25, 0, 0.12), Vector3(0, 0, -0.14), Vector3(0.25, 0, 0.12)]
 	for k: int in 2:
 		var a: Vector3 = pts[k]

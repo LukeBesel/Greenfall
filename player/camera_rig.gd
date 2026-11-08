@@ -114,6 +114,7 @@ func _process(delta: float) -> void:
 		var want_len: float = minf(distance, _clear_len)
 		var rate: float = 8.0 if want_len < _arm.spring_length else 3.0  # in quickly, out gently
 		_arm.spring_length = lerpf(_arm.spring_length, want_len, clampf(delta * rate, 0.0, 1.0))
+	_hide_target_when_inside(not lens_view and _arm.get_hit_length() < HIDE_TARGET_M)  # [qafix]
 	rotation.y = yaw
 	_pitch_node.rotation.x = pitch
 	# Shake.
@@ -123,6 +124,25 @@ func _process(delta: float) -> void:
 	camera.h_offset = sin(_noise_t * 1.3) * 0.25 * s
 	camera.v_offset = sin(_noise_t * 1.7 + 2.0) * 0.25 * s
 	camera.rotation.z = sin(_noise_t * 0.9 + 5.0) * 0.03 * s
+
+
+## [qafix] QA #7: with a wall right behind Lumi the arm squeezes the camera into his head, which
+## then fills half the screen. Closer than this (m from the focus point), Lumi's model is hidden.
+const HIDE_TARGET_M: float = 1.25
+var _hidden_model: Node3D
+
+
+func _hide_target_when_inside(inside: bool) -> void:
+	var p: Patch = target as Patch
+	var m: Node3D = p.model if p != null else null
+	var want: Node3D = m if inside else null
+	if want == _hidden_model:
+		return
+	if is_instance_valid(_hidden_model):
+		_hidden_model.visible = true
+	_hidden_model = want
+	if want:
+		want.visible = false
 
 
 ## The arm's orientation for a yaw/pitch (the camera looks along -Z of it, and sits at +Z * length).

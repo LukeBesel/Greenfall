@@ -565,7 +565,7 @@ func _on_part_found(idx: int) -> void:
 	if r >= 3:
 		Audio.play("fanfare", 1.0, -8.0)
 	Vfx.float_text(pos + Vector3(0, 1.4, 0), L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "Part")))), col, 0.55, 0.8)  # [i18n2]
-	EventBus.toast.emit(tr("Recovered: %s") % L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "part")))), "hint")  # [i18n2]
+	EventBus.toast.emit(tr("Recovered: %s") % L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "part")))) + "  " + RobotParts.gain_text(r), "hint")  # [i18n2] [qafix] QA #20: name the Parts it paid
 
 
 func nearest_loose_cube() -> JunkCube:

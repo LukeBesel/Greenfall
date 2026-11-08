@@ -24,14 +24,9 @@ static func compute(robots: Array, scrubbers: int, filter_per_s: float, elapsed_
 		if role == "haul":
 			haulers += 1
 			continue
-		# Seconds per piece: travel + pick. Roughly 0.9 units of junk per piece.
-		var rate: float = Economy.robot_stat(type_id, "scoop_rate", tier) * 0.35
-		units += rate * 0.9 * t * OFFLINE_RATE
+		units += unit_rate(type_id, tier) * t * OFFLINE_RATE
 	units = minf(units, maxf(junk_left, 0.0))
-	var eff: float = 1.0
-	if not robots.is_empty():
-		eff = Economy.robot_stat(str(robots[0].get("type", "scoopie")), "efficiency", int(robots[0].get("tier", 0)))
-	var value: float = units * AVG_VALUE_PER_UNIT * eff
+	var value: float = units_value(robots, units)
 	return {
 		"seconds": t,
 		"units": units,
@@ -39,6 +34,22 @@ static func compute(robots: Array, scrubbers: int, filter_per_s: float, elapsed_
 		"waiting_value": 0.0 if haulers > 0 else value,
 		"air": scrubbers * filter_per_s * t,
 	}
+
+
+## [orbC] Junk units one cleaner robot takes per second while it works (its online rate):
+## seconds per piece = travel + pick, roughly 0.9 units of junk per piece. Offline earns
+## OFFLINE_RATE of this; far crews on the round planet (robots/sphere/sphere_crew.gd) earn it in
+## full. One code path for "off-screen" and "offline".
+static func unit_rate(type_id: String, tier: int) -> float:
+	return Economy.robot_stat(type_id, "scoop_rate", tier) * 0.35 * 0.9
+
+
+## [orbC] Cube value of `units` of baled junk for this fleet (the first robot's efficiency).
+static func units_value(robots: Array, units: float) -> float:
+	var eff: float = 1.0
+	if not robots.is_empty():
+		eff = Economy.robot_stat(str(robots[0].get("type", "scoopie")), "efficiency", int(robots[0].get("tier", 0)))
+	return units * AVG_VALUE_PER_UNIT * eff
 
 
 ## [extras] The one entry point for idle gains on a district (the welcome-back card, and anything

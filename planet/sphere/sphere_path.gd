@@ -42,6 +42,46 @@ static func astar(grid: GeoSphere, from: int, to: int, passable: Callable = Call
 	return PackedInt32Array()
 
 
+## [orbC] The same A* on a SphereGrid (the walkable globe's grid: neighbours in fixed strides of
+## SphereGrid.MAX_N). `max_m` (optional) gives up on cells farther than that from both ends, so a
+## blocked goal fails fast instead of flooding the planet.
+static func astar_grid(grid: SphereGrid, from: int, to: int, passable: Callable = Callable(), max_expand: int = 20000) -> PackedInt32Array:
+	if from == to:
+		return PackedInt32Array([to])
+	var goal: Vector3 = grid.centers[to]
+	var g := {from: 0.0}
+	var came := {}
+	var closed := {}
+	var heap_f := PackedFloat32Array([grid.centers[from].angle_to(goal)])
+	var heap_c := PackedInt32Array([from])
+	var expanded: int = 0
+	while not heap_c.is_empty():
+		var cur: int = _pop(heap_f, heap_c)
+		if cur == to:
+			return _rebuild(came, to)
+		if closed.has(cur):
+			continue
+		closed[cur] = true
+		expanded += 1
+		if expanded > max_expand:
+			break
+		var gc: float = g[cur]
+		var cdir: Vector3 = grid.centers[cur]
+		for k: int in grid.nbr_count[cur]:
+			var nb: int = grid.nbr[cur * SphereGrid.MAX_N + k]
+			if closed.has(nb):
+				continue
+			if passable.is_valid() and nb != to and not passable.call(nb):
+				continue
+			var ng: float = gc + cdir.angle_to(grid.centers[nb])
+			if g.has(nb) and ng >= g[nb]:
+				continue
+			g[nb] = ng
+			came[nb] = cur
+			_push(heap_f, heap_c, ng + grid.centers[nb].angle_to(goal), nb)
+	return PackedInt32Array()
+
+
 ## Cell path -> unit directions, dropping the start cell.
 static func to_dirs(grid: GeoSphere, cells: PackedInt32Array) -> Array[Vector3]:
 	var out: Array[Vector3] = []
