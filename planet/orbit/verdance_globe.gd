@@ -47,7 +47,7 @@ var district_name: String = "Verdance"
 var day_min: float = 24.0
 var day_t: float = 0.5  # planet rotation phase (0..1)
 var sun2: DirectionalLight3D
-var sky_sun: DirectionalLight3D
+var sky_mat: ShaderMaterial
 var lamp: OmniLight3D
 var _cubes_root: Node3D
 var _spin_axis := Vector3.UP
@@ -405,16 +405,9 @@ func _build_env() -> void:
 	env = Environment.new()
 	env.background_mode = Environment.BG_SKY
 	var sky := Sky.new()
-	var sm := PhysicalSkyMaterial.new()
-	sm.rayleigh_coefficient = 2.4
-	sm.rayleigh_color = Color(0.3, 0.45, 0.85)
-	sm.mie_coefficient = 0.006
-	sm.mie_eccentricity = 0.82
-	sm.mie_color = Color(0.95, 0.85, 0.75)
-	sm.turbidity = 6.0
-	sm.sun_disk_scale = 1.2
-	sm.ground_color = Color(0.36, 0.42, 0.52)
-	sky.sky_material = sm
+	sky_mat = ShaderMaterial.new()  # world-space sky: zenith = local up, suns fixed in space
+	sky_mat.shader = preload("res://planet/orbit/orbit_sky.gdshader")
+	sky.sky_material = sky_mat
 	sky.process_mode = Sky.PROCESS_MODE_REALTIME
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
@@ -778,7 +771,6 @@ func _physics_process(delta: float) -> void:
 func _process(delta: float) -> void:
 	_perf_tick(delta)
 	var f: Basis = cam.frame
-	env.sky_rotation = f.get_euler()
 	_update_day(delta, f)
 	if Input.is_action_just_pressed("open_command") and lumi.input is PlayerInput and (lumi.input as PlayerInput).enabled:
 		cam.view = "follow" if cam.view == "command" else "command"
@@ -804,7 +796,7 @@ func _process(delta: float) -> void:
 # --- Day and night (owner: real day and night sides) -------------------------------------
 ## Two suns fixed in space light one side of the planet; the planet turns once every day_min
 ## minutes, so walking far changes your local time and every spot gets its own day. The sky
-## dome follows the local frame (sky_rotation), so a sky-only light carries the sun's direction
+## shader (orbit_sky.gdshader) works in world space with the local up under the camera, so the
 ## into sky space for the disk; the scene is lit by the real (world-space) lights.
 
 const DECLINATION: float = 0.25
@@ -824,11 +816,6 @@ func _build_lights() -> void:
 	sun2.shadow_enabled = false
 	sun2.sky_mode = DirectionalLight3D.SKY_MODE_LIGHT_ONLY
 	add_child(sun2)
-	sky_sun = DirectionalLight3D.new()
-	sky_sun.name = "SkySun"
-	sky_sun.sky_mode = DirectionalLight3D.SKY_MODE_SKY_ONLY
-	sky_sun.light_color = sun.light_color
-	add_child(sky_sun)
 	lamp = OmniLight3D.new()  # Lumi's own light: nights stay readable (Glim takes this over)
 	lamp.name = "LumiLamp"
 	lamp.omni_range = 11.0
@@ -866,9 +853,13 @@ func _update_day(delta: float, f: Basis) -> void:
 	sun.shadow_enabled = d1 > 0.05
 	sun2.global_basis = _toward(s2)
 	sun2.light_energy = 0.45 * d2
-	var sky_dir: Vector3 = (f * s1) if DevHooks.has("orbit-skyflip") else (f.transposed() * s1)
-	sky_sun.global_basis = _toward(sky_dir)
-	sky_sun.light_energy = 1.0
+	var cam_up: Vector3 = (_orbit_cam.global_position if _orbit_cam else cam.camera.global_position).normalized()
+	sky_mat.set_shader_parameter("up_dir", cam_up)
+	sky_mat.set_shader_parameter("sun1_dir", s1)
+	sky_mat.set_shader_parameter("sun2_dir", s2)
+	sky_mat.set_shader_parameter("day", day)
+	sky_mat.set_shader_parameter("star_phi", phi)
+	sky_mat.set_shader_parameter("space", 1.0 if _orbit_cam else 0.0)
 	env.ambient_light_energy = lerpf(0.75, 1.1, day)
 	env.ambient_light_sky_contribution = lerpf(0.25, 1.0, day)
 	env.ambient_light_color = Color(0.36, 0.44, 0.62)

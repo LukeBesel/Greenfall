@@ -82,6 +82,7 @@ Owner decisions are in `docs/DECISIONS.md` ("Round planets"). Phase A is on `wt/
 1. **Site API:**
    - `PlanetEnvs` (`planet/planets/planet_envs.gd`, `data/planets.json`) gets `build_site(site_root: Node3D, site: Dictionary, stage: int, restoration: float)`.
    - `site` is what `SphereTerrain.reserve_site` returns: `transform`, `flat`, `blend`, `cells`.
+   - The cloud renders showed grey-box buildings: those were phase-A stand-ins. Real city dressing (the flat game's `StreetDressing`/`CityView` buildings, props and materials) must come over here; nothing blocky ships.
    - Prefabs are 60-100 m and built in site-local metres (+Y up, y = 0 on the pad), with their own collision. They provide named anchors (`depot`, `bench`, `rocket_pad`, `door`) and `set_stage` / `set_restoration`.
    - Port Rime first (it's already in that shape), then Ochre/Tidewell/Anvil from their helpers.
 2. **Verdance hubs:**
@@ -101,9 +102,8 @@ Owner decisions are in `docs/DECISIONS.md` ("Round planets"). Phase A is on `wt/
 **Goal:** everything that looks at the world from above or over time works on the globe, and it holds up on a Mac.
 
 1. **Day and night:**
-   - Merge `planet/sky_director.gd` with phase A's real day/night sides (`verdance_globe.gd:_update_day`: two suns fixed in space, planet turns every 24 min, sky-only light carries the disk into the local sky frame).
+   - Merge `planet/sky_director.gd` (weather, clouds, Glim, the binary-sun look) with phase A's real day/night sides (`verdance_globe.gd:_update_day`: two suns fixed in space, planet turns every 24 min) and its world-space sky (`planet/orbit/orbit_sky.gdshader`: zenith = local up, haze below the horizon, stars at night, never black). The flat game's PhysicalSkyMaterial can't be used with a rotated sky dome (the cloud renders showed a black sky).
    - Night readability rules from the shared vision. Glim's light replaces phase A's Lumi lamp.
-   - Check the sun disk against the lit side in a render; `--orbit-skyflip` flips the sky-space convention if it's mirrored.
 2. **Future layer (`planet/future_layer.gd`):** per cell from `SphereCells.level` (4 bits), drawn on chunks near the camera.
 3. **Survey hologram, `GlobeView`, system map (`ui/system_map.gd`), `PlanetGlobe` (`ui/planet_globe.gd`):** read `SphereCells` directly (same ids), with a "you are here" marker from Lumi's cell.
 4. **Homeward / cinematics / photo mode:**
