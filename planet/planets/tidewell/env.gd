@@ -1197,8 +1197,8 @@ func _build_barge() -> void:
 ## The half-sunk ore barge at p (local), its stencil, and junk spilled round it (ruin_parent).
 func _barge(p: Vector3, yaw: float, parent: Node3D, ruin_parent: Node3D) -> void:
 	var b := FrontierView.Batch.new()
-	var basis := Basis(Vector3.UP, yaw) * Basis(Vector3.RIGHT, deg_to_rad(-7.0)) * Basis(Vector3.FORWARD, deg_to_rad(11.0))
-	var o := Vector3(p.x, -1.6, p.z)
+	var basis := Basis(Vector3.UP, yaw) * Basis(Vector3.RIGHT, deg_to_rad(-5.0)) * Basis(Vector3.FORWARD, deg_to_rad(8.0))
+	var o := Vector3(p.x, -0.5, p.z)
 	var xf := func(v: Vector3) -> Vector3: return o + basis * v
 	if not _mats.has("_box"):
 		_mats["_box"] = ProcMesh.rounded_box(Vector3.ONE, 0.07, 2)
