@@ -79,6 +79,8 @@ func _build() -> void:
 	survey.patch_cell_provider = func() -> int: return g.grid.cell_at(patch.global_position)
 	survey.holder = patch
 	survey.world_root = w
+	survey.travel_in_map = false  # [v2map] travel is at the rocket (planet/sites/orbit_sites.gd)
+	survey.hub_count = func() -> int: return g.site_manager.sites.size() if g.site_manager else g.planet.hubs.size()  # [v2map] the legend counted the flat hubs
 	w.add_child(survey)
 	survey.closed.connect(so.on_modal_closed)
 	w.set("globe", survey)

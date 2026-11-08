@@ -81,6 +81,8 @@ var _system_btn: Button
 var travel_in_map: bool = true
 var _rocket_card: Control
 var _hint: PromptLabel
+## [v2map] How many bases the legend counts (the round globe has its hub sites, not planet.hubs).
+var hub_count: Callable = Callable()
 
 
 func _ready() -> void:
@@ -186,21 +188,24 @@ func _ready() -> void:
 	_hub_list = VBoxContainer.new()
 	_hub_list.add_theme_constant_override("separation", 6)
 	(c2[1] as VBoxContainer).add_child(_hub_list)
-	# Bottom centre: big readout.
+	# [v2map] Top centre: big readout and the controls on one soft plate (at the bottom the
+	# subtitles covered them, and bare text over the daylit world was hard to read).
+	var top := PanelContainer.new()
+	top.add_theme_stylebox_override("panel", UITheme.box(Color(0.02, 0.06, 0.06, 0.62), Color(0, 0, 0, 0), 0, 12, 10))
+	top.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	top.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	top.offset_top = 18
+	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_root.add_child(top)
+	var tv := VBoxContainer.new()
+	tv.add_theme_constant_override("separation", 2)
+	top.add_child(tv)
 	_big = UITheme.label("", 24, Color(HOLO, 0.9))
-	_big.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
-	_big.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	_big.offset_top = -86
-	_big.offset_bottom = -46
 	_big.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_root.add_child(_big)
+	tv.add_child(_big)
 	var hint := PromptLabel.new(tr("[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"), 13)  # [deck]
 	hint.align_center = true
-	hint.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
-	hint.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	hint.offset_top = -38
-	hint.offset_bottom = -18
-	_root.add_child(hint)
+	tv.add_child(hint)
 	_hint = hint
 	_root.visible = false
 
@@ -466,7 +471,7 @@ func _refresh_text() -> void:
 	_bar.value = frac * 100.0
 	var vals: Dictionary = {"junk": junk, "clean": counts.get(PlanetData.State.CLEAN, 0), "planted": counts.get(PlanetData.State.PLANTED, 0),
 		"growing": counts.get(PlanetData.State.GROWING, 0), "restored": counts.get(PlanetData.State.RESTORED, 0),
-		"cities": planet.cities.size(), "hubs": planet.hubs.size()}
+		"cities": planet.cities.size(), "hubs": int(hub_count.call()) if hub_count.is_valid() else planet.hubs.size()}
 	for k: String in vals:
 		((_rows.get_node(k) as HBoxContainer).get_node("Value") as Label).text = _num(int(vals[k]))
 	_big.text = tr("%s HEXES CLEAN") % _num(cleaned)
@@ -499,7 +504,8 @@ func _fmt_age(s: float) -> String:
 func _build_mesh() -> void:
 	if shell and _shell_snap:  # [orbE] the big hexes of the far shell, coloured from the snapshot
 		var snap: Image = _shell_snap
-		_globe.mesh = SphereMapMesh.build(shell.coarse, func(c: int) -> Color: return SphereMapMesh.survey_color(SphereMapMesh.shares(snap, c)))
+		# [v2map] no gaps between the big hexes: at hand-held size they were sub-pixel and stippled
+		_globe.mesh = SphereMapMesh.build(shell.coarse, func(c: int) -> Color: return SphereMapMesh.survey_color(SphereMapMesh.shares(snap, c)), 1.004, 1.0)
 		if _holo_mat == null:
 			_holo_mat = ShaderMaterial.new()
 			_holo_mat.shader = preload("res://art/shaders/hologram.gdshader")
@@ -576,6 +582,8 @@ func _lat_long_mesh() -> ArrayMesh:
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
 	mat.albedo_color = Color(0.35, 0.8, 1.0, 1.0) * 0.25
+	mat.disable_fog = true  # [v2map] glitch pass: the world fog greyed the hologram in hand-held mode
+	mat.render_priority = 1  # after the globe (same centre: sorting flipped lines over / under it)
 	m.surface_set_material(0, mat)
 	return m
 
@@ -653,25 +661,28 @@ func _place_handheld(delta: float) -> void:
 	var side: Vector3 = (model.global_basis.x if model else holder.global_basis.x).normalized()
 	var fwd0: Vector3 = -(model.global_basis.z if model else holder.global_basis.z)
 	fwd0 -= up * fwd0.dot(up)
-	hand += side * 0.18 + fwd0.normalized() * 0.12
-	var center: Vector3 = hand + up * (r + 0.1)
+	fwd0 = fwd0.normalized()
+	# [v2map] Glitch pass: the globe floats in front of Lumi at eye height and the camera looks over
+	# his right shoulder at it. (It used to sit at his hand with the camera in front of him, so his
+	# big head covered most of the globe.)
+	var center: Vector3 = holder.global_position + up * 1.25 + fwd0 * 0.75 + side * 0.05
 	_anchor.global_position = center
 	if up != Vector3.UP:
-		_anchor.global_basis = SphereMath.basis_from_up_fwd(up, fwd0.normalized()).scaled(_anchor.scale)
-	# Beam: from the claw up into the globe.
-	var h: float = (center - hand).dot(up)
-	var bb: Basis = SphereMath.basis_from_up_fwd(up, fwd0.normalized()) if up != Vector3.UP else Basis()
-	_beam.global_transform = Transform3D(bb.scaled_local(Vector3(r * 0.9, h, r * 0.9)), hand + up * (h * 0.5))
-	# Camera in front of Patch, a little to the side: Aurora's face lit by the globe it holds.
-	var fwd: Vector3 = -(model.global_basis.z if model else holder.global_basis.z)
-	fwd -= up * fwd.dot(up)
-	fwd = fwd.normalized()
-	var right: Vector3 = fwd.cross(up)
-	var dist: float = remap(_zoom, 1.4, 6.0, 0.9, 2.6)
-	var want: Vector3 = center + fwd * dist * 1.1 - right * dist * 0.75 + up * (0.1 + dist * 0.1)
+		_anchor.global_basis = SphereMath.basis_from_up_fwd(up, fwd0).scaled(_anchor.scale)
+	# Beam: from the claw to the globe's underside.
+	var bottom: Vector3 = center - up * r * 0.8
+	var axis: Vector3 = bottom - hand
+	var h: float = maxf(axis.length(), 0.01)
+	var y: Vector3 = axis / h
+	var x: Vector3 = y.cross(fwd0 if absf(y.dot(fwd0)) < 0.95 else side).normalized()
+	var z: Vector3 = x.cross(y).normalized()
+	_beam.global_transform = Transform3D(Basis(x * r * 0.9, y * h, z * r * 0.9), hand + axis * 0.5)
+	var right: Vector3 = fwd0.cross(up).normalized()
+	var dist: float = remap(_zoom, 1.4, 6.0, 1.3, 3.4)
+	var want: Vector3 = center - fwd0 * dist + right * dist * 0.3 + up * dist * 0.38
 	_world_cam.global_position = _world_cam.global_position.lerp(want, clampf(delta * 4.0, 0.0, 1.0))
-	var look_at_p: Vector3 = center.lerp(holder.global_position + up * 0.75, 0.4)
-	_world_cam.look_at(look_at_p, up)
+	# Aim a little left of the globe so it sits right of centre, clear of the survey card.
+	_world_cam.look_at(center - right * dist * 0.2, up)
 
 
 var _pin: MeshInstance3D
