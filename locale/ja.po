@@ -1772,8 +1772,8 @@ msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "緑の光  ·  検知なし"
 
 #: story/ledger.gd:161
-msgid "New at the workbench, Hub tab: Signal Jammer. It scrambles the Ledger's drones near the base."
-msgstr "作業台に新登場、基地タブ：シグナルジャマー。基地の近くで Ledger のドローンを混乱させる。"
+msgid "New at the workbench, Build tab: Signal Jammer. It scrambles the Ledger's drones near the base."
+msgstr ""
 
 #: story/ledger.gd:170
 msgid "WREN traced the Ledger's relay: %s of the hub. Look for the red beacon."
@@ -2850,7 +2850,7 @@ msgstr ""
 
 #: systems/camp/hub_builds.gd:144
 msgid "Trash bin, level %d of %d"
-msgstr ""
+msgstr "ゴミ箱 レベル%d / %d"
 
 #: systems/camp/hub_builds.gd:149
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
@@ -2858,15 +2858,15 @@ msgstr ""
 
 #: systems/camp/hub_builds.gd:153
 msgid "Tier %d of %d"
-msgstr ""
+msgstr "ティア %d / %d"
 
 #: systems/camp/hub_builds.gd:162 systems/camp/hub_builds.gd:173
 msgid "%d of %d built"
-msgstr ""
+msgstr "%d / %d 建設済み"
 
 #: systems/camp/hub_builds.gd:189
 msgid "Museum"
-msgstr ""
+msgstr "博物館"
 
 #: systems/camp/hub_builds.gd:190
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
@@ -2913,7 +2913,7 @@ msgid "Album: an \"after\" picture of %s (%s)."
 msgstr "アルバム：%s の「アフター」写真（%s）。"
 
 #: systems/extras/nursery.gd:90
-msgid "Build the Robot Nursery in the Hub tab first."
+msgid "Build the Robot Nursery in the Build tab first."
 msgstr ""
 
 #: systems/extras/nursery.gd:94
@@ -3284,7 +3284,7 @@ msgstr "あと%s"
 
 #: ui/build_panel.gd:26
 msgid "Nothing new to build right now. New buildings unlock as you play."
-msgstr ""
+msgstr "今は新しく建てるものはありません。遊ぶうちに新しい建物が解放されます。"
 
 #: ui/build_panel.gd:105 ui/robot_card.gd:110 ui/robot_card.gd:244
 #: ui/upgrades_screen.gd:15 ui/yard_builds_panel.gd:17
@@ -3293,7 +3293,7 @@ msgstr "建造"
 
 #: ui/build_panel.gd:110 ui/yard_builds_panel.gd:59
 msgid "Built:  %s"
-msgstr ""
+msgstr "建設済み：  %s"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
@@ -4678,8 +4678,8 @@ msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet pa
 msgstr "Lumiとすべてのロボットを着せ替え：色、目、頭パーツ、飾り、艦隊の塗装。新しいパーツは遊ぶうちに解放されます。"
 
 #: ui/locker_panel.gd:125
-msgid "Opens at hub level %d (now %d). Upgrade the hub in the Hub tab."
-msgstr "ハブ レベル%dで解放（現在%d）。ハブタブでアップグレードしよう。"
+msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
+msgstr ""
 
 #: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
 #: ui/upgrades_panel.gd:30
@@ -5376,7 +5376,7 @@ msgstr "研究を開く"
 
 #: ui/robot_card.gd:187
 msgid "Lv %d  ·  %s%s (max)"
-msgstr ""
+msgstr "Lv %d  ·  %s%s（最大）"
 
 #: ui/robot_card.gd:188 ui/upgrade_card.gd:87 ui/upgrade_card.gd:215
 msgid "Max"
@@ -5384,7 +5384,7 @@ msgstr "最大"
 
 #: ui/robot_card.gd:194
 msgid "+  %s cubes"
-msgstr ""
+msgstr "+  %s キューブ"
 
 #: ui/robot_card.gd:196
 msgid "Need %s more cubes"
@@ -5435,8 +5435,8 @@ msgid "Not built yet"
 msgstr "まだ建てていない"
 
 #: ui/rockets_panel.gd:46
-msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Hub tab."
-msgstr "発射台はレベル5の基地で使えるようになる（いまはレベル %d）。基地タブで基地をアップグレードしよう。"
+msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab."
+msgstr ""
 
 #: ui/rockets_panel.gd:48
 msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
@@ -6101,8 +6101,8 @@ msgid "Lv %d%s"
 msgstr "Lv %d%s"
 
 #: ui/upgrade_card.gd:184
-msgid "Build the %s first (Hub tab)"
-msgstr ""
+msgid "Build the %s first (Build tab)"
+msgstr "先に%sを建てよう（建設タブ）"
 
 #: ui/upgrade_card.gd:191
 msgid "Requires %s"
@@ -6134,7 +6134,7 @@ msgstr "入手方法：  %s"
 
 #: ui/upgrades_panel.gd:43
 msgid "Machines"
-msgstr ""
+msgstr "機械"
 
 #: ui/upgrades_screen.gd:14
 msgid "Bots"
@@ -11894,8 +11894,8 @@ msgid "A bigger base runs more robots."
 msgstr "大きな基地ほど多くのロボットを動かせる。"
 
 #: data/objectives.json:objectives[base2].lines
-msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
-msgstr "基地を拡張できるようになったわ。作業台の基地タブで再建して。"
+msgid "The hub can grow now. Rebuild it from the Upgrades tab at the workbench."
+msgstr ""
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"
@@ -15655,6 +15655,18 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "New at the workbench, Hub tab: Signal Jammer. It scrambles the Ledger's drones near the base."
+#~ msgstr "作業台に新登場、基地タブ：シグナルジャマー。基地の近くで Ledger のドローンを混乱させる。"
+
+#~ msgid "Opens at hub level %d (now %d). Upgrade the hub in the Hub tab."
+#~ msgstr "ハブ レベル%dで解放（現在%d）。ハブタブでアップグレードしよう。"
+
+#~ msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Hub tab."
+#~ msgstr "発射台はレベル5の基地で使えるようになる（いまはレベル %d）。基地タブで基地をアップグレードしよう。"
+
+#~ msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
+#~ msgstr "基地を拡張できるようになったわ。作業台の基地タブで再建して。"
 
 #~ msgid "Editing"
 #~ msgstr "編集中"

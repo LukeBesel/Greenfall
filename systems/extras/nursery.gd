@@ -87,7 +87,7 @@ static func retire_block_reason(r: Robot) -> String:
 	if r == null or not is_instance_valid(r):
 		return "none"
 	if not YardBuilds.built("nursery"):  # [camp] the nursery is a Hub-tab build now
-		return TranslationServer.translate("Build the Robot Nursery in the Hub tab first.")
+		return TranslationServer.translate("Build the Robot Nursery in the Build tab first.")
 	if r.tier <= LOW_TIER or served_s(r.robot_name) >= OLD_S:
 		return ""
 	var left: int = int(ceil((OLD_S - served_s(r.robot_name)) / 60.0))

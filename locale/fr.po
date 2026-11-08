@@ -1774,8 +1774,8 @@ msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "LUMIÈRE VERTE  ·  RIEN DÉTECTÉ"
 
 #: story/ledger.gd:161
-msgid "New at the workbench, Hub tab: Signal Jammer. It scrambles the Ledger's drones near the base."
-msgstr "Nouveau à l'établi, onglet Base : Brouilleur. Il perturbe les drones du Ledger près de la base."
+msgid "New at the workbench, Build tab: Signal Jammer. It scrambles the Ledger's drones near the base."
+msgstr ""
 
 #: story/ledger.gd:170
 msgid "WREN traced the Ledger's relay: %s of the hub. Look for the red beacon."
@@ -2858,7 +2858,7 @@ msgstr ""
 
 #: systems/camp/hub_builds.gd:144
 msgid "Trash bin, level %d of %d"
-msgstr ""
+msgstr "Poubelle, niveau %d sur %d"
 
 #: systems/camp/hub_builds.gd:149
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
@@ -2866,15 +2866,15 @@ msgstr ""
 
 #: systems/camp/hub_builds.gd:153
 msgid "Tier %d of %d"
-msgstr ""
+msgstr "Niveau %d sur %d"
 
 #: systems/camp/hub_builds.gd:162 systems/camp/hub_builds.gd:173
 msgid "%d of %d built"
-msgstr ""
+msgstr "%d sur %d construits"
 
 #: systems/camp/hub_builds.gd:189
 msgid "Museum"
-msgstr ""
+msgstr "Musée"
 
 #: systems/camp/hub_builds.gd:190
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
@@ -2921,7 +2921,7 @@ msgid "Album: an \"after\" picture of %s (%s)."
 msgstr "Album : une photo « après » de %s (%s)."
 
 #: systems/extras/nursery.gd:90
-msgid "Build the Robot Nursery in the Hub tab first."
+msgid "Build the Robot Nursery in the Build tab first."
 msgstr ""
 
 #: systems/extras/nursery.gd:94
@@ -3292,7 +3292,7 @@ msgstr "manque %s"
 
 #: ui/build_panel.gd:26
 msgid "Nothing new to build right now. New buildings unlock as you play."
-msgstr ""
+msgstr "Rien de nouveau à construire pour l'instant. De nouveaux bâtiments se débloquent en jouant."
 
 #: ui/build_panel.gd:105 ui/robot_card.gd:110 ui/robot_card.gd:244
 #: ui/upgrades_screen.gd:15 ui/yard_builds_panel.gd:17
@@ -3301,7 +3301,7 @@ msgstr "Construire"
 
 #: ui/build_panel.gd:110 ui/yard_builds_panel.gd:59
 msgid "Built:  %s"
-msgstr ""
+msgstr "Construit :  %s"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
@@ -4690,8 +4690,8 @@ msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet pa
 msgstr "Personnalise Lumi et chaque robot : couleurs, yeux, coiffes, accessoires, peinture de flotte. De nouvelles pièces se débloquent en jouant."
 
 #: ui/locker_panel.gd:125
-msgid "Opens at hub level %d (now %d). Upgrade the hub in the Hub tab."
-msgstr "S'ouvre au niveau %d de la base (actuellement %d). Améliore la base dans l'onglet Base."
+msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
+msgstr ""
 
 #: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
 #: ui/upgrades_panel.gd:30
@@ -5389,7 +5389,7 @@ msgstr "Ouvrir la Recherche"
 
 #: ui/robot_card.gd:187
 msgid "Lv %d  ·  %s%s (max)"
-msgstr ""
+msgstr "Niv %d  ·  %s%s (max)"
 
 #: ui/robot_card.gd:188 ui/upgrade_card.gd:87 ui/upgrade_card.gd:215
 msgid "Max"
@@ -5397,7 +5397,7 @@ msgstr "Max"
 
 #: ui/robot_card.gd:194
 msgid "+  %s cubes"
-msgstr ""
+msgstr "+  %s cubes"
 
 #: ui/robot_card.gd:196
 msgid "Need %s more cubes"
@@ -5448,8 +5448,8 @@ msgid "Not built yet"
 msgstr "Pas encore construit"
 
 #: ui/rockets_panel.gd:46
-msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Hub tab."
-msgstr "Le pas de tir vient avec une base niveau 5 (la tienne est niveau %d). Améliore la base dans l'onglet Base."
+msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab."
+msgstr ""
 
 #: ui/rockets_panel.gd:48
 msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
@@ -6114,8 +6114,8 @@ msgid "Lv %d%s"
 msgstr "Niv %d%s"
 
 #: ui/upgrade_card.gd:184
-msgid "Build the %s first (Hub tab)"
-msgstr ""
+msgid "Build the %s first (Build tab)"
+msgstr "Construis d'abord : %s (onglet Construire)"
 
 #: ui/upgrade_card.gd:191
 msgid "Requires %s"
@@ -6147,7 +6147,7 @@ msgstr "D'où ça vient :  %s"
 
 #: ui/upgrades_panel.gd:43
 msgid "Machines"
-msgstr ""
+msgstr "Machines"
 
 #: ui/upgrades_screen.gd:14
 msgid "Bots"
@@ -11907,8 +11907,8 @@ msgid "A bigger base runs more robots."
 msgstr "Une base plus grande fait tourner plus de robots."
 
 #: data/objectives.json:objectives[base2].lines
-msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
-msgstr "Le hub peut grandir. Reconstruis-le depuis l'onglet Base à l'établi."
+msgid "The hub can grow now. Rebuild it from the Upgrades tab at the workbench."
+msgstr ""
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"
@@ -15668,6 +15668,18 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "New at the workbench, Hub tab: Signal Jammer. It scrambles the Ledger's drones near the base."
+#~ msgstr "Nouveau à l'établi, onglet Base : Brouilleur. Il perturbe les drones du Ledger près de la base."
+
+#~ msgid "Opens at hub level %d (now %d). Upgrade the hub in the Hub tab."
+#~ msgstr "S'ouvre au niveau %d de la base (actuellement %d). Améliore la base dans l'onglet Base."
+
+#~ msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Hub tab."
+#~ msgstr "Le pas de tir vient avec une base niveau 5 (la tienne est niveau %d). Améliore la base dans l'onglet Base."
+
+#~ msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
+#~ msgstr "Le hub peut grandir. Reconstruis-le depuis l'onglet Base à l'établi."
 
 #~ msgid "Editing"
 #~ msgstr "En édition"

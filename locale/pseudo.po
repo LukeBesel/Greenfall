@@ -1773,8 +1773,8 @@ msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "[ĜŔÉÉÑ ĻÎĜĤŢ  ·  ÑÔÑÉ ÐÉŢÉÇŢÉÐ ~~~~~~~]"
 
 #: story/ledger.gd:161
-msgid "New at the workbench, Hub tab: Signal Jammer. It scrambles the Ledger's drones near the base."
-msgstr "[Ñéŵ àţ ţĥé ŵôŕķbéñçĥ, Ĥûb ţàb: Šîĝñàļ Ĵàmméŕ. Îţ šçŕàmbļéš ţĥé Ļéðĝéŕ'š ðŕôñéš ñéàŕ ţĥé bàšé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "New at the workbench, Build tab: Signal Jammer. It scrambles the Ledger's drones near the base."
+msgstr "[Ñéŵ àţ ţĥé ŵôŕķbéñçĥ, Bûîļð ţàb: Šîĝñàļ Ĵàmméŕ. Îţ šçŕàmbļéš ţĥé Ļéðĝéŕ'š ðŕôñéš ñéàŕ ţĥé bàšé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/ledger.gd:170
 msgid "WREN traced the Ledger's relay: %s of the hub. Look for the red beacon."
@@ -2920,8 +2920,8 @@ msgid "Album: an \"after\" picture of %s (%s)."
 msgstr "[Àļbûm: àñ \"àƒţéŕ\" þîçţûŕé ôƒ %s (%s). ~~~~~~~~~~]"
 
 #: systems/extras/nursery.gd:90
-msgid "Build the Robot Nursery in the Hub tab first."
-msgstr "[Bûîļð ţĥé Ŕôbôţ Ñûŕšéŕý îñ ţĥé Ĥûb ţàb ƒîŕšţ. ~~~~~~~~~~~~~]"
+msgid "Build the Robot Nursery in the Build tab first."
+msgstr "[Bûîļð ţĥé Ŕôbôţ Ñûŕšéŕý îñ ţĥé Bûîļð ţàb ƒîŕšţ. ~~~~~~~~~~~~~]"
 
 #: systems/extras/nursery.gd:94
 msgid "Only Mk I-II robots retire early. %s can retire in %d min."
@@ -4693,8 +4693,8 @@ msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet pa
 msgstr "[Šţýļé Ļûmî àñð évéŕý ŕôbôţ: çôļôûŕš, éýéš, ĥéàð þîéçéš, ţôþþéŕš, ƒļééţ þàîñţ. Ñéŵ þîéçéš ûñļôçķ àš ýôû þļàý. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/locker_panel.gd:125
-msgid "Opens at hub level %d (now %d). Upgrade the hub in the Hub tab."
-msgstr "[Ôþéñš àţ ĥûb ļévéļ %d (ñôŵ %d). Ûþĝŕàðé ţĥé ĥûb îñ ţĥé Ĥûb ţàb. ~~~~~~~~~~~~~~~~~~~]"
+msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
+msgstr "[Ôþéñš àţ ĥûb ļévéļ %d (ñôŵ %d). Ûþĝŕàðé ţĥé ĥûb îñ ţĥé Ûþĝŕàðéš ţàb. ~~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
 #: ui/upgrades_panel.gd:30
@@ -5451,8 +5451,8 @@ msgid "Not built yet"
 msgstr "[Ñôţ bûîļţ ýéţ ~~]"
 
 #: ui/rockets_panel.gd:46
-msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Hub tab."
-msgstr "[Ţĥé ļàûñçĥ þàð çôméš ŵîţĥ à ļévéļ 5 bàšé (ýôûŕš îš ļévéļ %d). Ûþĝŕàðé ţĥé bàšé îñ ţĥé Ĥûb ţàb. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab."
+msgstr "[Ţĥé ļàûñçĥ þàð çôméš ŵîţĥ à ļévéļ 5 bàšé (ýôûŕš îš ļévéļ %d). Ûþĝŕàðé ţĥé bàšé îñ ţĥé Ûþĝŕàðéš ţàb. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/rockets_panel.gd:48
 msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
@@ -6121,8 +6121,8 @@ msgid "Lv %d%s"
 msgstr "[Ļv %d%s ~]"
 
 #: ui/upgrade_card.gd:184
-msgid "Build the %s first (Hub tab)"
-msgstr "[Bûîļð ţĥé %s ƒîŕšţ (Ĥûb ţàb) ~~~~~~~]"
+msgid "Build the %s first (Build tab)"
+msgstr "[Bûîļð ţĥé %s ƒîŕšţ (Bûîļð ţàb) ~~~~~~~]"
 
 #: ui/upgrade_card.gd:191
 msgid "Requires %s"
@@ -11914,8 +11914,8 @@ msgid "A bigger base runs more robots."
 msgstr "[À bîĝĝéŕ bàšé ŕûñš môŕé ŕôbôţš. ~~~~~~~~]"
 
 #: data/objectives.json:objectives[base2].lines
-msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
-msgstr "[Ţĥé ĥûb çàñ ĝŕôŵ ñôŵ. Ŕébûîļð îţ ƒŕôm ţĥé Ĥûb ţàb àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~]"
+msgid "The hub can grow now. Rebuild it from the Upgrades tab at the workbench."
+msgstr "[Ţĥé ĥûb çàñ ĝŕôŵ ñôŵ. Ŕébûîļð îţ ƒŕôm ţĥé Ûþĝŕàðéš ţàb àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"

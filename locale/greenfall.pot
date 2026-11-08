@@ -1760,7 +1760,7 @@ msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr ""
 
 #: story/ledger.gd:161
-msgid "New at the workbench, Hub tab: Signal Jammer. It scrambles the Ledger's drones near the base."
+msgid "New at the workbench, Build tab: Signal Jammer. It scrambles the Ledger's drones near the base."
 msgstr ""
 
 #: story/ledger.gd:170
@@ -2895,7 +2895,7 @@ msgid "Album: an \"after\" picture of %s (%s)."
 msgstr ""
 
 #: systems/extras/nursery.gd:90
-msgid "Build the Robot Nursery in the Hub tab first."
+msgid "Build the Robot Nursery in the Build tab first."
 msgstr ""
 
 #: systems/extras/nursery.gd:94
@@ -4658,7 +4658,7 @@ msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet pa
 msgstr ""
 
 #: ui/locker_panel.gd:125
-msgid "Opens at hub level %d (now %d). Upgrade the hub in the Hub tab."
+msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
 msgstr ""
 
 #: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
@@ -5413,7 +5413,7 @@ msgid "Not built yet"
 msgstr ""
 
 #: ui/rockets_panel.gd:46
-msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Hub tab."
+msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab."
 msgstr ""
 
 #: ui/rockets_panel.gd:48
@@ -6064,7 +6064,7 @@ msgid "Lv %d%s"
 msgstr ""
 
 #: ui/upgrade_card.gd:184
-msgid "Build the %s first (Hub tab)"
+msgid "Build the %s first (Build tab)"
 msgstr ""
 
 #: ui/upgrade_card.gd:191
@@ -11713,7 +11713,7 @@ msgid "A bigger base runs more robots."
 msgstr ""
 
 #: data/objectives.json:objectives[base2].lines
-msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
+msgid "The hub can grow now. Rebuild it from the Upgrades tab at the workbench."
 msgstr ""
 
 #: data/objectives.json:objectives[tower2].text

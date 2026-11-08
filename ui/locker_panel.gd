@@ -122,7 +122,7 @@ func _build_locked() -> void:
 	var pips := BenchKit.Pips.new(HUB_LEVEL, true, UITheme.GOLD)
 	pips.set_counts(mini(lv, HUB_LEVEL), HUB_LEVEL)
 	pr.add_child(pips)
-	pr.add_child(UITheme.label(tr("Opens at hub level %d (now %d). Upgrade the hub in the Hub tab.") % [HUB_LEVEL, lv], BenchKit.BODY_SIZE, UITheme.CREAM))
+	pr.add_child(UITheme.label(tr("Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab.") % [HUB_LEVEL, lv], BenchKit.BODY_SIZE, UITheme.CREAM))
 
 
 func first_button() -> Button:

@@ -3,6 +3,22 @@
 import re, sys
 
 T = {
+"Trash bin, level %d of %d": ["Mülltonne, Stufe %d von %d", "Contenedor, nivel %d de %d", "Poubelle, niveau %d sur %d", "ゴミ箱 レベル%d / %d", "Lixeira, nível %d de %d", "垃圾桶，%d / %d级"],
+"Tier %d of %d": ["Stufe %d von %d", "Nivel %d de %d", "Niveau %d sur %d", "ティア %d / %d", "Nível %d de %d", "等级 %d / %d"],
+"%d of %d built": ["%d von %d gebaut", "%d de %d construidos", "%d sur %d construits", "%d / %d 建設済み", "%d de %d construídos", "已建 %d / %d"],
+"Museum": ["Museum", "Museo", "Musée", "博物館", "Museu", "博物馆"],
+"Lv %d  ·  %s%s (max)": ["St. %d  ·  %s%s (max.)", "Nv %d  ·  %s%s (máx.)", "Niv %d  ·  %s%s (max)", "Lv %d  ·  %s%s（最大）", "Nv %d  ·  %s%s (máx.)", "%d级  ·  %s%s（满级）"],
+"+  %s cubes": ["+  %s Würfel", "+  %s cubos", "+  %s cubes", "+  %s キューブ", "+  %s cubos", "+  %s 方块"],
+"Build the %s first (Build tab)": ["Baue zuerst: %s (Bauen-Tab)", "Construye primero: %s (pestaña Construir)", "Construis d'abord : %s (onglet Construire)", "先に%sを建てよう（建設タブ）", "Construa primeiro: %s (aba Construir)", "先建造%s（建造页签）"],
+"Upgrades": ["Upgrades", "Mejoras", "Améliorations", "アップグレード", "Melhorias", "升级"],
+"Base": ["Basis", "Base", "Base", "拠点", "Base", "基地"],
+"Machines": ["Maschinen", "Máquinas", "Machines", "機械", "Máquinas", "机器"],
+"Rocket": ["Rakete", "Cohete", "Fusée", "ロケット", "Foguete", "火箭"],
+"Lumi": ["Lumi", "Lumi", "Lumi", "Lumi", "Lumi", "Lumi"],
+"Nothing new to build right now. New buildings unlock as you play.": ["Gerade gibt es nichts Neues zu bauen. Neue Gebäude schaltest du beim Spielen frei.", "Ahora no hay nada nuevo que construir. Desbloquearás edificios nuevos jugando.", "Rien de nouveau à construire pour l'instant. De nouveaux bâtiments se débloquent en jouant.", "今は新しく建てるものはありません。遊ぶうちに新しい建物が解放されます。", "Nada novo para construir agora. Novos prédios são desbloqueados jogando.", "目前没有新的可建造项目。新建筑会在游戏中解锁。"],
+"Built:  %s": ["Gebaut:  %s", "Construido:  %s", "Construit :  %s", "建設済み：  %s", "Construído:  %s", "已建成：  %s"],
+"Add one": ["Eins dazu", "Añadir uno", "En ajouter un", "1つ追加", "Adicionar um", "再加一个"],
+"%d of %d": ["%d von %d", "%d de %d", "%d sur %d", "%d / %d", "%d de %d", "%d / %d"],
 "Basics": ["Grundlagen", "Básico", "Essentiel", "基本", "Básico", "基础"],
 "Keepsakes": ["Andenken", "Recuerdos", "Souvenirs", "記念品", "Lembranças", "纪念品"],
 "Quit": ["Beenden", "Salir", "Quitter", "終了", "Sair", "退出"],

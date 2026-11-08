@@ -1772,8 +1772,8 @@ msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "绿光  ·  未检测到"
 
 #: story/ledger.gd:161
-msgid "New at the workbench, Hub tab: Signal Jammer. It scrambles the Ledger's drones near the base."
-msgstr "工作台新增，基地页：信号干扰器。它能扰乱基地附近 Ledger 的无人机。"
+msgid "New at the workbench, Build tab: Signal Jammer. It scrambles the Ledger's drones near the base."
+msgstr ""
 
 #: story/ledger.gd:170
 msgid "WREN traced the Ledger's relay: %s of the hub. Look for the red beacon."
@@ -2850,7 +2850,7 @@ msgstr ""
 
 #: systems/camp/hub_builds.gd:144
 msgid "Trash bin, level %d of %d"
-msgstr ""
+msgstr "垃圾桶，%d / %d级"
 
 #: systems/camp/hub_builds.gd:149
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
@@ -2858,15 +2858,15 @@ msgstr ""
 
 #: systems/camp/hub_builds.gd:153
 msgid "Tier %d of %d"
-msgstr ""
+msgstr "等级 %d / %d"
 
 #: systems/camp/hub_builds.gd:162 systems/camp/hub_builds.gd:173
 msgid "%d of %d built"
-msgstr ""
+msgstr "已建 %d / %d"
 
 #: systems/camp/hub_builds.gd:189
 msgid "Museum"
-msgstr ""
+msgstr "博物馆"
 
 #: systems/camp/hub_builds.gd:190
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
@@ -2913,7 +2913,7 @@ msgid "Album: an \"after\" picture of %s (%s)."
 msgstr "相册：%s 的一张“之后”照片（%s）。"
 
 #: systems/extras/nursery.gd:90
-msgid "Build the Robot Nursery in the Hub tab first."
+msgid "Build the Robot Nursery in the Build tab first."
 msgstr ""
 
 #: systems/extras/nursery.gd:94
@@ -3284,7 +3284,7 @@ msgstr "还差%s"
 
 #: ui/build_panel.gd:26
 msgid "Nothing new to build right now. New buildings unlock as you play."
-msgstr ""
+msgstr "目前没有新的可建造项目。新建筑会在游戏中解锁。"
 
 #: ui/build_panel.gd:105 ui/robot_card.gd:110 ui/robot_card.gd:244
 #: ui/upgrades_screen.gd:15 ui/yard_builds_panel.gd:17
@@ -3293,7 +3293,7 @@ msgstr "建造"
 
 #: ui/build_panel.gd:110 ui/yard_builds_panel.gd:59
 msgid "Built:  %s"
-msgstr ""
+msgstr "已建成：  %s"
 
 #: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
 #: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
@@ -4678,8 +4678,8 @@ msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet pa
 msgstr "装扮Lumi和每台机器人：颜色、眼睛、头饰、顶饰、车队涂装。新部件会在游戏中逐步解锁。"
 
 #: ui/locker_panel.gd:125
-msgid "Opens at hub level %d (now %d). Upgrade the hub in the Hub tab."
-msgstr "基地%d级时开放（当前%d级）。在基地页签升级基地。"
+msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
+msgstr ""
 
 #: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
 #: ui/upgrades_panel.gd:30
@@ -5376,7 +5376,7 @@ msgstr "打开研究"
 
 #: ui/robot_card.gd:187
 msgid "Lv %d  ·  %s%s (max)"
-msgstr ""
+msgstr "%d级  ·  %s%s（满级）"
 
 #: ui/robot_card.gd:188 ui/upgrade_card.gd:87 ui/upgrade_card.gd:215
 msgid "Max"
@@ -5384,7 +5384,7 @@ msgstr "满级"
 
 #: ui/robot_card.gd:194
 msgid "+  %s cubes"
-msgstr ""
+msgstr "+  %s 方块"
 
 #: ui/robot_card.gd:196
 msgid "Need %s more cubes"
@@ -5435,8 +5435,8 @@ msgid "Not built yet"
 msgstr "尚未建造"
 
 #: ui/rockets_panel.gd:46
-msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Hub tab."
-msgstr "发射台需要 5 级基地（你的是 %d 级）。在“基地”页升级基地。"
+msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab."
+msgstr ""
 
 #: ui/rockets_panel.gd:48
 msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
@@ -6101,8 +6101,8 @@ msgid "Lv %d%s"
 msgstr "%d 级%s"
 
 #: ui/upgrade_card.gd:184
-msgid "Build the %s first (Hub tab)"
-msgstr ""
+msgid "Build the %s first (Build tab)"
+msgstr "先建造%s（建造页签）"
 
 #: ui/upgrade_card.gd:191
 msgid "Requires %s"
@@ -6134,7 +6134,7 @@ msgstr "来源：  %s"
 
 #: ui/upgrades_panel.gd:43
 msgid "Machines"
-msgstr ""
+msgstr "机器"
 
 #: ui/upgrades_screen.gd:14
 msgid "Bots"
@@ -11894,8 +11894,8 @@ msgid "A bigger base runs more robots."
 msgstr "更大的基地能带动更多机器人。"
 
 #: data/objectives.json:objectives[base2].lines
-msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
-msgstr "基地现在可以扩建了。在工作台的基地标签页里重建它。"
+msgid "The hub can grow now. Rebuild it from the Upgrades tab at the workbench."
+msgstr ""
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"
@@ -15655,6 +15655,18 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "New at the workbench, Hub tab: Signal Jammer. It scrambles the Ledger's drones near the base."
+#~ msgstr "工作台新增，基地页：信号干扰器。它能扰乱基地附近 Ledger 的无人机。"
+
+#~ msgid "Opens at hub level %d (now %d). Upgrade the hub in the Hub tab."
+#~ msgstr "基地%d级时开放（当前%d级）。在基地页签升级基地。"
+
+#~ msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Hub tab."
+#~ msgstr "发射台需要 5 级基地（你的是 %d 级）。在“基地”页升级基地。"
+
+#~ msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
+#~ msgstr "基地现在可以扩建了。在工作台的基地标签页里重建它。"
 
 #~ msgid "Editing"
 #~ msgstr "正在编辑"
