@@ -425,6 +425,11 @@ func _style_row(b: Button, it: Dictionary) -> void:
 					bg = Color(0.55, 0.16, 0.1, 0.85)
 					fg = Color(1.0, 0.82, 0.76)
 				var price: Dictionary = Currencies.fold(it.get("price", {}))
+				if str(it.get("tag", "")) != "" and price.is_empty():  # [ui7] WORN / OWNED style tags
+					bg = Color(BenchKit.HOLO, 0.22)
+					fg = BenchKit.HOLO
+					tl.add_child(_tag_label(str(it["tag"]), fg))
+					price = {"_": 1.0}
 				var shown: int = 0
 				for cid: String in Currencies.IDS:
 					var v: float = float(price.get(cid, 0.0))
@@ -434,7 +439,7 @@ func _style_row(b: Button, it: Dictionary) -> void:
 					var ic := CurrencyIcon.new(cid, 14.0, fg)
 					tl.add_child(ic)
 					tl.add_child(_tag_label(Settings.fmt(BigNum.from_float(ceilf(v))), fg))
-				if shown == 0:
+				if shown == 0 and not price.has("_"):
 					tl.add_child(_tag_label(tr("FREE"), fg))
 		if on and st != "locked":
 			bg = Color(0.08, 0.06, 0.04, 0.85)

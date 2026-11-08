@@ -1060,12 +1060,12 @@ msgstr "ロック中 · 研究 %s"
 msgid "Crew full (%d/%d): upgrade the hub"
 msgstr "クルーが満員（%d/%d）：基地をアップグレードしよう"
 
-#: robots/fleet.gd:142 robots/fleet.gd:217
+#: robots/fleet.gd:142 robots/fleet.gd:218
 msgid "Not enough parts"
 msgstr "パーツが足りません"
 
-#: robots/fleet.gd:144 robots/fleet.gd:219 robots/water_net.gd:149
-#: systems/research.gd:200 systems/robot_builder.gd:349 systems/robot_builder.gd:401
+#: robots/fleet.gd:144 robots/fleet.gd:220 robots/water_net.gd:149
+#: systems/research.gd:200 systems/robot_builder.gd:350 systems/robot_builder.gd:402
 msgid "Not enough cubes"
 msgstr "キューブが足りない"
 
@@ -1077,7 +1077,7 @@ msgstr "%s %s 組み立て完了。きょろきょろしてから、仕事に取
 msgid " Seems %s."
 msgstr " %sみたい。"
 
-#: robots/fleet.gd:238
+#: robots/fleet.gd:239
 msgid "%s fleet upgraded to %s."
 msgstr "%s フリートを %s にアップグレード。"
 
@@ -1840,7 +1840,7 @@ msgstr ""
 "Ledger はもう私たちの味方。ジャマーは音楽に合わせてハミングしているだけ。"
 
 #: story/ledger.gd:328 systems/decor.gd:122 systems/research.gd:192
-#: systems/robot_builder.gd:347 systems/robot_builder.gd:403 ui/stations_panel.gd:100
+#: systems/robot_builder.gd:348 systems/robot_builder.gd:404 ui/stations_panel.gd:100
 #: ui/telescope_panel.gd:43
 msgid "Needs %s"
 msgstr "%s が必要"
@@ -2762,69 +2762,95 @@ msgstr "留守のあいだに研究が完了：%s。"
 msgid "Research complete: %s. %s"
 msgstr "研究完了：%s。%s"
 
-#: systems/robot_builder.gd:261
+#: systems/robot_builder.gd:262 systems/robot_design.gd:60
 msgid "Wrong slot"
 msgstr "スロットが違う"
 
-#: systems/robot_builder.gd:263
+#: systems/robot_builder.gd:264 systems/robot_design.gd:62
 msgid "Doesn't fit a %s"
 msgstr "%s には合わない"
 
-#: systems/robot_builder.gd:265
+#: systems/robot_builder.gd:266 systems/robot_design.gd:64
 msgid "Not unlocked yet"
 msgstr "まだ解放されていません"
 
-#: systems/robot_builder.gd:294
+#: systems/robot_builder.gd:295
 msgid "Names need at least 2 letters"
 msgstr "名前は2文字以上必要"
 
-#: systems/robot_builder.gd:296
+#: systems/robot_builder.gd:297
 msgid "Another robot is already called %s"
 msgstr "ほかのロボットがすでに %s という名前"
 
-#: systems/robot_builder.gd:341
+#: systems/robot_builder.gd:342
 msgid "Can't be crafted"
 msgstr "作れない"
 
-#: systems/robot_builder.gd:345
+#: systems/robot_builder.gd:346
 msgid "Research %s"
 msgstr "研究 %s"
 
-#: systems/robot_builder.gd:358 systems/robot_builder.gd:363
+#: systems/robot_builder.gd:359 systems/robot_builder.gd:364
 msgid "Unlock · %s"
 msgstr "解放 · %s"
 
-#: systems/robot_builder.gd:360
+#: systems/robot_builder.gd:361
 msgid "Requests reward · %d requests"
 msgstr "依頼の報酬 · 依頼 %d 件"
 
-#: systems/robot_builder.gd:398
+#: systems/robot_builder.gd:399
 msgid "Can't be bought"
 msgstr "購入できません"
 
-#: systems/robot_builder.gd:425
+#: systems/robot_builder.gd:426
 msgid "Requests reward (%d of %d requests)"
 msgstr "依頼の報酬（%d / %d 件）"
 
-#: systems/robot_builder.gd:516
+#: systems/robot_builder.gd:517
 msgid "Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d."
 msgstr "最初のボットにはキャタピラとゆらゆら植物が付いてきた。ハブがレベル%dになったらロッカーで飾ろう。"
 
-#: systems/robot_builder.gd:526
+#: systems/robot_builder.gd:527
 msgid "A Maker Fragment was tucked inside it: +%d parts."
 msgstr "中にメーカーの欠片が入っていた：+%d パーツ。"
 
-#: systems/robot_builder.gd:558
+#: systems/robot_builder.gd:559
 msgid "%s spotted something green and lucky: a Lucky Clover!"
 msgstr "%s が緑で縁起のいいものを見つけた：幸運のクローバー！"
 
-#: systems/robot_builder.gd:561
+#: systems/robot_builder.gd:562
 msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
 msgstr "%s がガラクタの中で光るメーカーの欠片を見つけた：+%d パーツ。"
 
-#: systems/robot_builder.gd:568
+#: systems/robot_builder.gd:569
 msgid "%s spotted a %s: %s."
 msgstr "%sが%sを見つけた：%s。"
+
+#: systems/robot_design.gd:16 data/glim.json:glows[cyan].name data/ship_style.json:glows[cyan].name
+#: data/style_parts.json:swatches[cyan].name
+msgid "Cyan"
+msgstr "シアン"
+
+#: systems/robot_design.gd:16 data/ship_style.json:glows[mint].name data/style_parts.json:swatches[mint].name
+msgid "Mint"
+msgstr "ミント"
+
+#: systems/robot_design.gd:16 data/ship_style.json:glows[amber].name data/style_parts.json:swatches[amber].name
+msgid "Amber"
+msgstr "アンバー"
+
+#: systems/robot_design.gd:17 data/glim.json:glows[rose].name
+msgid "Rose"
+msgstr "ローズ"
+
+#: systems/robot_design.gd:17 data/glim.json:glows[violet].name data/ship_style.json:glows[violet].name
+#: data/style_parts.json:swatches[violet].name
+msgid "Violet"
+msgstr "バイオレット"
+
+#: systems/robot_design.gd:17
+msgid "Moonlight"
+msgstr "月光"
 
 #: systems/tunes.gd:165
 msgid "New CD: %s by %s, from %s"
@@ -3123,11 +3149,11 @@ msgstr "仕事に戻る"
 msgid "Find Glim first"
 msgstr "まず Glim を見つけよう"
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:142
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:147
 msgid "Maxed"
 msgstr "最大"
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:149
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:154
 msgid "Needs %s %d"
 msgstr "%s %d が必要"
 
@@ -3330,7 +3356,8 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "機械"
 
-#: ui/bench_lists.gd:12 ui/globe_view.gd:169 ui/upgrades_panel.gd:49
+#: ui/bench_lists.gd:12 ui/globe_view.gd:169 ui/locker_panel.gd:230
+#: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "ロケット"
 
@@ -4294,8 +4321,8 @@ msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
 msgstr "ガーデンボーナス：植物の成長が %d%% 速い（最大 %d%%）。"
 
 #: ui/extras_panel.gd:329
-msgid "No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."
-msgstr "まだ誰も引退していない。古いロボットや Mk I-II のロボットはここか作業台のビルダーで引退でき、基地の苗床ガーデンの世話をしてくれる。"
+msgid "No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."
+msgstr ""
 
 #: ui/extras_panel.gd:338
 msgid "RETIRE A ROBOT"
@@ -4414,18 +4441,22 @@ msgid "lantern bot"
 msgstr "ランタンボット"
 
 #: ui/glim_panel.gd:64
+msgid "Change Glim's looks at the Locker in the yard."
+msgstr "Glimの見た目は庭のロッカーで変えよう。"
+
+#: ui/glim_panel.gd:69
 msgid "%s  close"
 msgstr "%s  閉じる"
 
-#: ui/glim_panel.gd:105
+#: ui/glim_panel.gd:110
 msgid "UPGRADES"
 msgstr "アップグレード"
 
-#: ui/glim_panel.gd:195
+#: ui/glim_panel.gd:200
 msgid "LOOKS"
 msgstr "見た目"
 
-#: ui/glim_panel.gd:220
+#: ui/glim_panel.gd:225
 msgid "???  %s"
 msgstr "???  %s"
 
@@ -4732,23 +4763,23 @@ msgstr "未解放"
 msgid "ACTIVE"
 msgstr "進行中"
 
-#: ui/list_detail.gd:438
+#: ui/list_detail.gd:443
 msgid "FREE"
 msgstr "無料"
 
-#: ui/list_detail.gd:541
+#: ui/list_detail.gd:546
 msgid "REQUIRES   NOT YET   %s"
 msgstr "必要条件   未達成   %s"
 
-#: ui/list_detail.gd:541
+#: ui/list_detail.gd:546
 msgid "Not unlocked yet. Keep playing."
 msgstr "まだ解放されていません。プレイを続けよう。"
 
-#: ui/list_detail.gd:544
+#: ui/list_detail.gd:549
 msgid "REQUIRES   %s"
 msgstr "必要条件   %s"
 
-#: ui/list_detail.gd:547
+#: ui/list_detail.gd:552
 msgid "REQUIRES   READY"
 msgstr "必要条件   OK"
 
@@ -4760,6 +4791,31 @@ msgstr "読み込み中"
 msgid "Warming up"
 msgstr "ウォームアップ中"
 
+#: ui/locker_editors.gd:11 data/currencies.json:currencies[parts].name data/hub.json:materials.metal.name
+#: data/hub.json:materials.plastic.name data/hub.json:materials.glass.name
+msgid "Parts"
+msgstr "パーツ"
+
+#: ui/locker_editors.gd:11 ui/locker_editors.gd:12 data/style_parts.json:slots[paint].name
+msgid "Paint"
+msgstr "塗装"
+
+#: ui/locker_editors.gd:11 ui/locker_editors.gd:12
+msgid "Glow"
+msgstr "発光"
+
+#: ui/locker_editors.gd:12 data/style_parts.json:slots[trim].name
+msgid "Trim"
+msgstr "トリム"
+
+#: ui/locker_editors.gd:60
+msgid "Every %s wears this"
+msgstr "すべての%sがこれを着る"
+
+#: ui/locker_editors.gd:213
+msgid "Ship looks: the tiers keep their shape"
+msgstr "船の見た目：ティアの形はそのまま"
+
 #: ui/locker_panel.gd:80
 msgid "LOCKER"
 msgstr "ロッカー"
@@ -4768,21 +4824,21 @@ msgstr "ロッカー"
 msgid "Close"
 msgstr "閉じる"
 
-#: ui/locker_panel.gd:154
-msgid "Fleet paint"
-msgstr "艦隊の塗装"
-
-#: ui/locker_panel.gd:187
+#: ui/locker_panel.gd:185
 msgid "The Locker"
 msgstr "ロッカー"
 
-#: ui/locker_panel.gd:188
+#: ui/locker_panel.gd:186
 msgid "Build the Locker in the Build tab, then open it in the yard."
 msgstr "建設タブでロッカーを建て、庭で開こう。"
 
-#: ui/locker_panel.gd:189
+#: ui/locker_panel.gd:187
 msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play."
 msgstr "Lumiとすべてのロボットを着せ替え：色、目、頭パーツ、飾り、艦隊の塗装。新しいパーツは遊ぶうちに解放されます。"
+
+#: ui/locker_panel.gd:228 ui/upgrades_screen.gd:15
+msgid "Bots"
+msgstr "ボット"
 
 #: ui/lumi_builder.gd:111
 msgid "CHARACTER BUILDER"
@@ -6228,10 +6284,6 @@ msgstr "あと%s · 約%s"
 #: ui/upgrade_card.gd:226
 msgid "Where it comes from:  %s"
 msgstr "入手方法：  %s"
-
-#: ui/upgrades_screen.gd:15
-msgid "Bots"
-msgstr "ボット"
 
 #: ui/upgrades_screen.gd:16
 msgid "Research"
@@ -8445,11 +8497,6 @@ msgstr "キューブ"
 msgid "The main money. Sell bales at the scale. Pays for upgrades, robots, base levels, research, rockets and decorations."
 msgstr "メインのお金。はかりでベールを売ろう。アップグレード、ロボット、拠点レベル、研究、ロケット、飾りに使う。"
 
-#: data/currencies.json:currencies[parts].name data/hub.json:materials.metal.name data/hub.json:materials.plastic.name
-#: data/hub.json:materials.glass.name
-msgid "Parts"
-msgstr "パーツ"
-
 #: data/currencies.json:currencies[parts].short
 msgid "PARTS"
 msgstr "パーツ"
@@ -10490,29 +10537,25 @@ msgstr "ミュージック"
 msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
 msgstr "Glim が見つけたCDをダウンロード：見つけた曲をいつでもどこでも再生できる。"
 
-#: data/glim.json:shells[pearl].name data/style_parts.json:swatches[pearl].name
+#: data/glim.json:shells[pearl].name data/ship_style.json:paints[pearl].name data/style_parts.json:swatches[pearl].name
 msgid "Pearl"
 msgstr "パール"
 
-#: data/glim.json:shells[sunset].name data/style_parts.json:swatches[sunset].name
+#: data/glim.json:shells[sunset].name data/ship_style.json:paints[sunset].name data/style_parts.json:swatches[sunset].name
 msgid "Sunset"
 msgstr "サンセット"
 
-#: data/glim.json:shells[moss].name
+#: data/glim.json:shells[moss].name data/ship_style.json:paints[moss].name
 msgid "Moss"
 msgstr "コケ"
 
-#: data/glim.json:shells[graphite].name data/style_parts.json:swatches[graphite].name
+#: data/glim.json:shells[graphite].name data/ship_style.json:trims[graphite].name data/style_parts.json:swatches[graphite].name
 msgid "Graphite"
 msgstr "グラファイト"
 
 #: data/glim.json:shells[blossom].name
 msgid "Blossom"
 msgstr "花"
-
-#: data/glim.json:glows[cyan].name data/style_parts.json:swatches[cyan].name
-msgid "Cyan"
-msgstr "シアン"
 
 #: data/glim.json:glows[ember].name data/solar_system.json:star_b.name
 msgid "Ember"
@@ -10521,14 +10564,6 @@ msgstr "Ember"
 #: data/glim.json:glows[leaf].name data/style_parts.json:options.chest[leaf].name
 msgid "Leaf"
 msgstr "葉っぱ"
-
-#: data/glim.json:glows[violet].name data/style_parts.json:swatches[violet].name
-msgid "Violet"
-msgstr "バイオレット"
-
-#: data/glim.json:glows[rose].name
-msgid "Rose"
-msgstr "ローズ"
 
 #: data/glim.json:tops[none].name
 msgid "Nothing"
@@ -13437,6 +13472,26 @@ msgstr ""
 "\n"
 "（誰かが下にひっかいて書いている：「任せてくれればできる」）"
 
+#: data/ship_style.json:paints[midnight].name data/style_parts.json:swatches[midnight].name
+msgid "Midnight"
+msgstr "ミッドナイト"
+
+#: data/ship_style.json:paints[coral].name data/style_parts.json:swatches[coral].name
+msgid "Coral"
+msgstr "コーラル"
+
+#: data/ship_style.json:paints[lunar].name
+msgid "Lunar Silver"
+msgstr "ルナシルバー"
+
+#: data/ship_style.json:trims[tangerine].name
+msgid "Tangerine"
+msgstr "タンジェリン"
+
+#: data/ship_style.json:trims[chrome].name
+msgid "Chrome"
+msgstr "クローム"
+
 #: data/signal_tower.json:tiers[0].name
 msgid "Signal Tower"
 msgstr "信号塔"
@@ -13973,14 +14028,6 @@ msgstr "清掃の最前線に設置する油圧ベールプレス。清掃ロボ
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky."
 msgstr "シュレッダードラムと小さな溶鉱炉。ベールは入ったら二度と戻らない。出てくるのはパーツときれいな建材。きれいに燃やしたベールは空のためになる。"
 
-#: data/style_parts.json:slots[paint].name
-msgid "Paint"
-msgstr "塗装"
-
-#: data/style_parts.json:slots[trim].name
-msgid "Trim"
-msgstr "トリム"
-
 #: data/style_parts.json:slots[accent].name
 msgid "Accent"
 msgstr "アクセント"
@@ -14174,10 +14221,6 @@ msgstr "オレンジ"
 msgid "Sky"
 msgstr "スカイ"
 
-#: data/style_parts.json:swatches[mint].name
-msgid "Mint"
-msgstr "ミント"
-
 #: data/style_parts.json:swatches[mint].unlock.text
 msgid "Upgrade a hub to level 3"
 msgstr "拠点をレベル3に強化"
@@ -14189,10 +14232,6 @@ msgstr "警告イエロー"
 #: data/style_parts.json:swatches[soot].name
 msgid "Soot"
 msgstr "すす"
-
-#: data/style_parts.json:swatches[amber].name
-msgid "Amber"
-msgstr "アンバー"
 
 #: data/style_parts.json:swatches[olive].name
 msgid "Olive"
@@ -14242,10 +14281,6 @@ msgstr "シーグラス"
 msgid "Find 4 Collection trinkets"
 msgstr "コレクションの小物を4個見つける"
 
-#: data/style_parts.json:swatches[coral].name
-msgid "Coral"
-msgstr "コーラル"
-
 #: data/style_parts.json:swatches[coral].unlock.text
 msgid "Find 12 Collection trinkets"
 msgstr "コレクションの小物を12個見つける"
@@ -14273,10 +14308,6 @@ msgstr "ゴールド"
 #: data/style_parts.json:swatches[bloom].name
 msgid "Bloom green"
 msgstr "ブルームグリーン"
-
-#: data/style_parts.json:swatches[midnight].name
-msgid "Midnight"
-msgstr "ミッドナイト"
 
 #: data/style_parts.json:swatches[copper].name
 msgid "Copper"
@@ -16105,6 +16136,12 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."
+#~ msgstr "まだ誰も引退していない。古いロボットや Mk I-II のロボットはここか作業台のビルダーで引退でき、基地の苗床ガーデンの世話をしてくれる。"
+
+#~ msgid "Fleet paint"
+#~ msgstr "艦隊の塗装"
 
 #~ msgid "TRASH"
 #~ msgstr "ゴミ"
