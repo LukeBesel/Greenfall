@@ -53,7 +53,7 @@ const PALETTES: Dictionary = {
 ## A kit builder for one of the env's groups, with its planet's palette.
 static func builder(env: Node, group: String) -> KitMesh.Builder:
 	var rng: RandomNumberGenerator = env.get("_rng")
-	var pal: Dictionary = PALETTES["rime" if env is RimeSite else "tidewell"]
+	var pal: Dictionary = PALETTES["rime" if env is RimeHubSite else "tidewell"]
 	return KitMesh.Builder.new(rng.randi(), pal, str(GROUP_STATE.get(group, "repaired")))
 
 

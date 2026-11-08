@@ -61,11 +61,11 @@ func test_skimmer_ray_hits_the_wreck_hull() -> void:
 
 
 func test_rime_sites_build_and_restage() -> void:
-	for id: String in RimeSite.SITES:
+	for id: String in RimeHubSite.SITES:
 		var root := Node3D.new()
 		add_child_autofree(root)
 		root.position = Vector3(300, 12, -80)
-		var s: RimeSite = RimeSite.place(id, root, 0, 0.0)
+		var s: RimeHubSite = RimeHubSite.place(id, root, 0, 0.0)
 		assert_true((s._groups["ruin"] as Node3D).visible, id + " ruined")
 		assert_false((s._groups["green"] as Node3D).visible)
 		assert_gt(_bodies(s, PhysLayers.WORLD), 0, id + " ice is walkable")

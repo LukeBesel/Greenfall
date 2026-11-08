@@ -6,7 +6,7 @@ extends Node3D
 ##     --site-stage=0..2 --site-restore=0..1 --site-cam=dist,pitch_deg,yaw_deg[,fov[,target_y]]
 ##     --site-lumi=x,z (Lumi hovering there) --time=0..1 (sun) --shot=... --shot-delay=S --quit-after=S
 
-var site: RimeSite
+var site: RimeHubSite
 var sun: DirectionalLight3D
 var _lumi: Node3D
 var _t: float = 0.0
@@ -78,7 +78,7 @@ func _ready() -> void:
 		env.fog_light_color = Color(0.1, 0.14, 0.24)
 		_night = true
 	var id: String = DevHooks.get_s("site", "hub_camp")
-	site = RimeSite.place(id, self, int(DevHooks.get_f("site-stage", 0.0)), DevHooks.get_f("site-restore", 0.0))
+	site = RimeHubSite.place(id, self, int(DevHooks.get_f("site-stage", 0.0)), DevHooks.get_f("site-restore", 0.0))
 	if DevHooks.has("site-lumi"):
 		var lp: PackedStringArray = DevHooks.get_s("site-lumi", "0,0").split(",")
 		_lumi = PatchModel.new()
@@ -97,6 +97,8 @@ func _ready() -> void:
 	cam.position = target + Vector3(sin(yaw) * cos(pitch), sin(pitch), cos(yaw) * cos(pitch)) * dist
 	cam.look_at(target, Vector3.UP)
 	cam.current = true
+	if _night:
+		site.set_night(1.0)
 	print("[site-preview] %s stage=%d restore=%.2f" % [id, site.stage, site.restore])
 
 

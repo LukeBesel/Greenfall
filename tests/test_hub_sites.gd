@@ -58,7 +58,7 @@ func test_build_site_has_anchors_collision_and_restyles() -> void:
 	p.set_stage(4)
 	p.set_restoration(0.9)
 	assert_eq(p.content, content, "Rime re-dresses in place")
-	var rs: RimeSite = content.get_child(0) as RimeSite
+	var rs: RimeHubSite = content.get_child(0) as RimeHubSite
 	assert_eq(rs.level, 4)
 
 

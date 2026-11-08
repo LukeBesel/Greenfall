@@ -1,10 +1,10 @@
-class_name RimeSite
+class_name RimeHubSite
 extends TidewellEnv
 ## [p_seas] Rime's placeable hub-site prefabs for the walkable globe, same API shape as TideSite:
 ## compact local scenes (about 80-90 m across) on their own ice patch, no world-origin
 ## assumptions. (Extends TidewellEnv only to share its prop helpers: _lumpy, _blob_slab,
 ## _scatter_models and the TideProps kit helpers; nothing of the sea is built.)
-##   RimeSite.place(site_id, root, stage, restoration, opts) -> RimeSite
+##   RimeHubSite.place(site_id, root, stage, restoration, opts) -> RimeHubSite
 ##     site_id      one of SITES
 ##     stage        0 ruin, 1 restored, 2 futuristic
 ##     restoration  0..1: rust, moss, thawed pools, lit windows
@@ -39,8 +39,8 @@ var _decks: Array[Vector3] = []
 var _ice_b: Dictionary = {}  # group -> FrontierView.Batch of glassy ice (custom material, not kit)
 
 
-static func place(p_site: String, root: Node3D, p_stage: int = 0, p_restoration: float = 0.0, opts: Dictionary = {}) -> RimeSite:
-	var s := RimeSite.new()
+static func place(p_site: String, root: Node3D, p_stage: int = 0, p_restoration: float = 0.0, opts: Dictionary = {}) -> RimeHubSite:
+	var s := RimeHubSite.new()
 	s.name = "RimeSite_" + p_site
 	root.add_child(s)
 	s._make(p_site, int(opts.get("seed", hash(p_site) % 100000)), float(opts.get("radius", float(SITES.get(p_site, {}).get("radius", 44.0)))))
@@ -112,15 +112,17 @@ func _hm(x: float, z: float) -> Array:
 	var edge: float = 1.0 - smoothstep(radius * 0.8, radius, d)
 	var n: float = _hn.get_noise_2d(x, z)
 	var rg: float = _rn.get_noise_2d(x * 1.3, z)
-	var drift: float = clampf(n * 0.9 + 0.35, 0.0, 1.0)
-	var ridge: float = smoothstep(0.55, 0.9, rg)
-	var h: float = (drift * 1.6 + ridge * 2.2) * pad * edge
-	h += 0.25 * pad * edge * _hn.get_noise_2d(x * 4.0, z * 4.0)
+	var drift: float = clampf(n * 0.9 + 0.45, 0.0, 1.0)
+	var ridge: float = smoothstep(0.5, 0.85, rg)
+	var h: float = (drift * 2.4 + ridge * 3.4) * pad * edge
+	h += 0.3 * pad * edge * _hn.get_noise_2d(x * 4.0, z * 4.0)
 	var crev: float = smoothstep(0.86, 0.97, _rn.get_noise_2d(x * 2.2 + 40.0, z * 2.2)) * pad
 	var hollow: float = clampf(-n, 0.0, 1.0) * pad
 	h -= crev * 0.5
 	# The rim blends down to the globe surface (y = 0).
-	return [h, crev, drift * pad, ridge * pad, hollow]
+	# The pad is boot-trodden, compacted snow (never bare blue ice), with grit near its middle.
+	var snow: float = lerpf(0.75 - 0.25 * clampf(_hn.get_noise_2d(x * 3.0, z * 3.0), 0.0, 1.0), drift, pad)
+	return [h, crev, snow, ridge * pad, hollow]
 
 
 func _ground() -> void:
@@ -180,6 +182,13 @@ func _ground() -> void:
 	_groups["always"].add_child(body)
 
 
+## Night (0..1): roughens the bare ice so giantshine spreads instead of mirroring a black sky,
+## and lights the crevasses (rime_ice.gdshader). Sky owners call this with their night amount.
+func set_night(v: float) -> void:
+	if ground_mat:
+		ground_mat.set_shader_parameter("night", clampf(v, 0.0, 1.0))
+
+
 func ground_y(x: float, z: float) -> float:
 	return float(_hm(x, z)[0])
 
@@ -230,9 +239,9 @@ func _pad_dressing() -> void:
 ## Ice boulders and tilted pressure slabs round the pad (glassy prop ice).
 func _ice_rocks() -> void:
 	var a := TideProps.builder(self, "always")
-	for k: int in 22:
+	for k: int in 48:
 		var ang: float = _rng.randf() * TAU
-		var d: float = _rng.randf_range(pad_r + 6.0, radius * 0.85)
+		var d: float = _rng.randf_range(pad_r + 5.0, radius * 0.9)
 		var p := Vector3(cos(ang) * d, 0, sin(ang) * d)
 		p.y = ground_y(p.x, p.z) - 0.3
 		var s: float = _rng.randf_range(0.8, 2.6)
@@ -240,6 +249,21 @@ func _ice_rocks() -> void:
 			_ice_add("always", TideProps.kit_mesh(KitMesh.bevel_box(Vector3(s * 2.2, s * 0.5, s * 1.6), 0.12)), Transform3D(Basis.from_euler(Vector3(_rng.randf_range(-35, 35), _rng.randf() * 360.0, _rng.randf_range(-30, 30)) * (PI / 180.0)), p), _ice_mat("clear"))
 		else:
 			_ice_add("always", _lumpy(k % 5, 0.4, 1.8), _lxf(p, Vector3(0, _rng.randf() * 360.0, 0), Vector3(s * 1.2, s * 0.7, s)), _ice_mat("frost" if k % 2 == 0 else "ice"))
+	# Pressure ridges: rows of tilted slabs shoved up where the ridge noise peaks.
+	var placed: int = 0
+	for k: int in 400:
+		if placed >= 34:
+			break
+		var ang: float = _rng.randf() * TAU
+		var d: float = _rng.randf_range(pad_r + 7.0, radius * 0.88)
+		var p := Vector3(cos(ang) * d, 0, sin(ang) * d)
+		if _rn.get_noise_2d(p.x * 1.3, p.z) < 0.55:
+			continue
+		placed += 1
+		p.y = ground_y(p.x, p.z) - 0.4
+		var sz := Vector3(_rng.randf_range(1.6, 3.4), _rng.randf_range(0.3, 0.6), _rng.randf_range(1.2, 2.4))
+		var yaw: float = rad_to_deg(atan2(_rn.get_noise_2d(p.x * 1.3 + 1.0, p.z) - _rn.get_noise_2d(p.x * 1.3 - 1.0, p.z), _rn.get_noise_2d(p.x * 1.3, p.z + 1.0) - _rn.get_noise_2d(p.x * 1.3, p.z - 1.0)))
+		_ice_add("always", TideProps.kit_mesh(KitMesh.bevel_box(sz, 0.1)), Transform3D(Basis.from_euler(Vector3(_rng.randf_range(25, 60), yaw, _rng.randf_range(-12, 12)) * (PI / 180.0)), p), _ice_mat("clear" if k % 3 == 0 else "ice"))
 	TideProps.flush(self, a, "always")
 
 
