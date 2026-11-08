@@ -154,7 +154,13 @@ func build() -> void:
 	set_level(level, false)
 	if world.get("hub") != null:
 		world.hub.level_changed.connect(func(l: int) -> void: set_level(l, true))
-	if DevHooks.has("ochre-cam"):
+	if DevHooks.has("ochre-lookbook"):
+		OchreLookbook.build(self)
+		var lc: Array = OchreLookbook.camera(int(DevHooks.get_f("ochre-lookbook", 1.0)), pit)
+		var a: Vector3 = lc[0]
+		var b: Vector3 = lc[1]
+		_dev_camera.call_deferred("%f,%f,%f,%f,%f,%f" % [a.x, a.y, a.z, b.x, b.y, b.z])
+	elif DevHooks.has("ochre-cam"):
 		_dev_camera.call_deferred(DevHooks.get_s("ochre-cam", "0,60,120,0,0,-150"))
 	var counts: Array[String] = []
 	for g: String in _groups:
@@ -466,6 +472,8 @@ func _build_mesas() -> void:
 		var rad: float = _rng.randf_range(35.0, 130.0) * (1.0 + dist / 2200.0)
 		var pp: Vector2 = pit.polar_of(c.x, c.y)
 		if pp.y < OchrePit.RIM_RHO + rad * 2.2 / OchrePit.squash(pp.x) + 25.0:
+			continue
+		if DevHooks.has("ochre-lookbook") and c.distance_to(OchreLookbook.ORIGIN) < rad * 2.2 + 220.0:
 			continue
 		var ok: bool = true
 		for q: Vector3 in placed:
@@ -1374,7 +1382,7 @@ func _process(delta: float) -> void:
 		_fluff.global_position = p.global_position + Vector3(0, 2.5, 0)
 	_grit.emitting = level <= 2 and restore_shown < 0.45
 	_fluff.emitting = restore_shown > 0.35
-	if DevHooks.has("ochre-cam") and world.get("hud") != null:
+	if (DevHooks.has("ochre-cam") or DevHooks.has("ochre-lookbook")) and world.get("hud") != null:
 		(world.get("hud") as CanvasLayer).visible = false
 	if DevHooks.has("ochre-debug") and fmod(_t, 5.0) < delta:
 		var env: Environment = world.get("_env")
