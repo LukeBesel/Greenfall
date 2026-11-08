@@ -160,6 +160,38 @@ func load_cache(path: String) -> bool:
 	return centers.size() == 10 * int(pow(4, level)) + 2
 
 
+## [orbB] The same cells as a SphereGrid of any frequency (ids, centres and neighbour order
+## match), so PlanetData can survey a planet of any size. Level grids keep their GeoSphere ids
+## (identical to SphereGrid's), so this is only needed for non-power-of-two frequencies.
+var freq: int = 0
+
+
+static func from_grid(sg: SphereGrid) -> GeoSphere:
+	var g := GeoSphere.new(sg.level)
+	g.freq = sg.freq
+	g.centers = sg.centers
+	g.tris = sg.tris
+	var n: int = sg.cell_count()
+	g.neighbor_start.resize(n + 1)
+	var lst := PackedInt32Array()
+	lst.resize(n * 6)
+	var w: int = 0
+	for i: int in n:
+		g.neighbor_start[i] = w
+		for k: int in sg.nbr_count[i]:
+			lst[w] = sg.nbr[i * SphereGrid.MAX_N + k]
+			w += 1
+	g.neighbor_start[n] = w
+	lst.resize(w)
+	g.neighbor_list = lst
+	return g
+
+
+## [orbB] Frequency of this grid (2^level for the level grids).
+func frequency() -> int:
+	return freq if freq > 0 else 1 << level
+
+
 static func cached(p_level: int) -> GeoSphere:
 	var g := GeoSphere.new(p_level)
 	var path: String = "user://geosphere_%d.bin" % p_level

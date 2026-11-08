@@ -20,6 +20,7 @@ static func _snap(s: Node) -> Dictionary:
 	return {
 		"schema": int(GameState.orbit.get("schema", 0)),
 		"cells_n": g.grid.cell_count(),
+		"freq": "%d saved=%d %s" % [g.grid.freq, int(GameState.orbit.get("freq", 0)), str(GameState.orbit.get("planet_id", ""))],
 		"cubes": snappedf(GameState.get_currency("cubes").to_float(), 0.01),
 		"cells_junk": hash(cd["junk"]),
 		"cells_state": hash(cd["state"]),
