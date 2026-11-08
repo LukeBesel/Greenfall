@@ -561,7 +561,7 @@ func bench_row() -> Array:
 ## [v2guide] One card, one beacon: while the restart checklist runs, its step is the card's text
 ## (ui/goals_panel.gd) and the beacon stands on that step's target.
 func waypoint_target() -> Variant:
-	if world.get("patch") == null:
+	if world == null or world.get("patch") == null:
 		return null
 	var tut: Tutorial = world.get("tutorial") as Tutorial
 	if tut and not tut.done():  # #37: only places (bench, bin), never pieces
