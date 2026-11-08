@@ -107,3 +107,28 @@ for k in range(8):
     d.rounded_rectangle([20, 20 + k * 28, 236, 36 + k * 28], 6, fill=(16, 16, 18, 255))
 save(im, "grille")
 print("decals written to", os.path.abspath(OUT))
+
+# ---- atlas: every decal in one texture so a building's decals are ONE draw call ----
+import json
+names = sorted(f[:-4] for f in os.listdir(OUT) if f.endswith(".png") and f != "atlas.png")
+CELL = 256
+COLS = 8
+atlas = Image.new("RGBA", (CELL * COLS, CELL * COLS), (0, 0, 0, 0))
+rects = {}
+x = y = 0
+row_h = 0
+for n in names:
+    im = Image.open(os.path.join(OUT, n + ".png")).convert("RGBA")
+    w, h = im.size
+    if x + w > CELL * COLS:
+        x = 0
+        y += row_h
+        row_h = 0
+    atlas.paste(im, (x, y))
+    pad = 2  # avoid bleeding from neighbours when mipmapped
+    rects[n] = [(x + pad) / atlas.width, (y + pad) / atlas.height, (w - 2 * pad) / atlas.width, (h - 2 * pad) / atlas.height]
+    x += w
+    row_h = max(row_h, h)
+atlas.save(os.path.join(OUT, "atlas.png"))
+json.dump(rects, open(os.path.join(OUT, "atlas.json"), "w"), indent=1, sort_keys=True)
+print("atlas:", len(rects), "decals")

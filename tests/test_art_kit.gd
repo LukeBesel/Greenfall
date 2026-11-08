@@ -68,11 +68,11 @@ func test_builder_surfaces_by_key() -> void:
 	b.tube("rubber", PackedVector3Array([Vector3.ZERO, Vector3(1, 0, 0), Vector3(1, 1, 0)]), 0.05, 6, 0.2)
 	b.decal("arrow", Vector2(1, 1), KitMesh.xf(Vector3(0, 0, 0.5)))
 	var m: ArrayMesh = b.commit()
-	assert_eq(m.get_surface_count(), 4, "one surface per key")
+	assert_eq(m.get_surface_count(), 4, "one surface per material")
 	var names: Array = []
 	for s: int in m.get_surface_count():
 		names.append(m.surface_get_name(s))
-	assert_eq(names, ["paint:main", "steel", "rubber", "decal:arrow"])
+	assert_eq(names, ["paint", "steel", "rubber", "decal"])
 	assert_gt(b.tri_count(), 100)
 
 
@@ -81,7 +81,7 @@ func test_panel_wall_and_missing_panels() -> void:
 	KitMesh.panel_wall(full, 6.0, 3.0, Transform3D.IDENTITY, {"key": "paint:main"})
 	var broken := KitMesh.Builder.new(1)
 	KitMesh.panel_wall(broken, 6.0, 3.0, Transform3D.IDENTITY, {"key": "paint:main", "missing": 0.5, "tilt": 1.0})
-	assert_true(full.surf.has("paint:main") and full.surf.has("steel") and full.surf.has("dark_steel"), "panels, bolts, frame")
+	assert_true(full.surf.has("paint") and full.surf.has("steel") and full.surf.has("dark_steel"), "panels, bolts, frame")
 	assert_lt(broken.tri_count(), full.tri_count(), "broken wall is missing panels")
 
 
@@ -98,12 +98,21 @@ func test_materials_cached_and_power_switch() -> void:
 
 
 func test_apply_sets_surface_materials() -> void:
-	var b := KitMesh.Builder.new(1)
+	var b := KitMesh.Builder.new(1, {"main": "orange"}, "restored")
 	b.box("paint:main", Vector3.ONE)
+	b.box("paint:accent", Vector3.ONE)
+	b.box("hazard", Vector3.ONE)
 	b.box("trim:warm", Vector3(1, 0.05, 0.05))
-	var mi := KitMesh.instance(b, "restored", true, {"main": "orange"})
-	assert_same(mi.get_surface_override_material(0), KitMat.paint("orange", "restored"))
-	assert_true((mi.get_surface_override_material(1) as StandardMaterial3D).emission_enabled)
+	b.box("trim:red", Vector3(1, 0.05, 0.05))
+	assert_eq(b.surface_count(), 2, "all paints share one surface, all trims another")
+	var cust: PackedFloat32Array = b.surf["paint"][5]
+	assert_almost_eq(cust[0], KitMat.color("orange").r, 0.01, "palette role baked per vertex")
+	assert_almost_eq(cust[1], KitMat.color("orange").g, 0.01)
+	var mi := KitMesh.instance(b)
+	assert_same(mi.get_surface_override_material(0), KitMat.paint_vc("restored"))
+	assert_same(mi.get_surface_override_material(1), KitMat.trim_vc(true))
+	KitMat.apply(mi, "broken", true)
+	assert_same(mi.get_surface_override_material(1), KitMat.trim_vc(false), "broken trims are dark")
 	mi.free()
 
 
@@ -121,3 +130,53 @@ func test_ground_patch_all_states() -> void:
 	assert_same((a.get_node("Plates") as MeshInstance3D).mesh, (b.get_node("Plates") as MeshInstance3D).mesh, "patch meshes cached")
 	a.free()
 	b.free()
+
+
+func test_props_build() -> void:
+	var b := KitMesh.Builder.new(4)
+	for st: String in KitMat.STATES:
+		KitProps.lamp_post(b, Transform3D.IDENTITY, 4.0, st)
+		KitProps.antenna(b, Transform3D.IDENTITY, 4.0, st)
+		KitProps.dish(b, Transform3D.IDENTITY, 1.0, st)
+		KitProps.tank(b, Transform3D.IDENTITY, 1.0, 2.5, "paint:main", st)
+		KitProps.solar_panel(b, Transform3D.IDENTITY, Vector2(2, 1), st)
+		KitProps.stairs(b, Transform3D.IDENTITY, 1.5, 2.0, 1.0, "paint:rail", st)
+		KitProps.crate_stack(b, Transform3D.IDENTITY, 5, st)
+		KitProps.planter(b, Transform3D.IDENTITY, 2.0, st)
+		KitProps.hatch(b, Transform3D.IDENTITY, Vector2(1.2, 2.2), st)
+	KitProps.ladder(b, Transform3D.IDENTITY, 4.0)
+	KitProps.vent(b, Transform3D.IDENTITY)
+	KitProps.barrel(b, Transform3D.IDENTITY, "paint:barrel", true)
+	KitProps.debris(b, Transform3D.IDENTITY)
+	KitProps.pipe_run(b, Transform3D.IDENTITY, PackedVector3Array([Vector3.ZERO, Vector3(0, 2, 0), Vector3(2, 2, 0)]))
+	KitProps.cable(b, Transform3D.IDENTITY, Vector3(0, 3, 0), Vector3(4, 3, 0))
+	var m: ArrayMesh = b.commit()
+	assert_gt(m.get_surface_count(), 8)
+	assert_gt(b.lights.size(), 0, "lamps and door lights request lights")
+
+
+func test_buildings_all_kinds_and_states() -> void:
+	for k: String in KitBuilding.KINDS:
+		var d: KitBuilding.BuildData = KitBuilding.mesh_for(k, "repaired", 1)
+		assert_not_null(d.mesh, k)
+		assert_lt(d.mesh.get_surface_count(), 13, k + ": few draw calls")
+		assert_gt(d.tris, 2000, k + ": detailed")
+		assert_lt(d.tris, 140000, k + ": not absurdly heavy")
+		assert_same(KitBuilding.mesh_for(k, "repaired", 1), d, k + " cached")
+	var bld := KitBuilding.create("module_small", "broken", 2)
+	add_child(bld)
+	assert_false(bld.is_lit(), "broken buildings are dark")
+	var broken_mesh: Mesh = (bld.get_node("Body") as MeshInstance3D).mesh
+	bld.set_state("restored")
+	assert_true(bld.is_lit())
+	assert_ne((bld.get_node("Body") as MeshInstance3D).mesh, broken_mesh, "state swaps geometry")
+	var lit: int = 0
+	for c: Node in bld.get_children():
+		if c is OmniLight3D and (c as OmniLight3D).visible:
+			lit += 1
+	assert_gt(lit, 0, "restored building has lights on")
+	bld.set_powered(false)
+	for c: Node in bld.get_children():
+		if c is OmniLight3D:
+			assert_false((c as OmniLight3D).visible, "unpowered: lights off")
+	bld.free()

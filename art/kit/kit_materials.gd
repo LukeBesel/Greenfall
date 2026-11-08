@@ -29,6 +29,16 @@ const PALETTE: Dictionary = {
 	"plum": Color(0.42, 0.24, 0.42),
 }
 
+## Default palette ROLES used by KitMesh.Builder for "paint:<role>" keys. Any role can be
+## overridden per building/planet; values are PALETTE names, "#rrggbb" or Colors.
+## "broken_<role>" is used instead in the broken state. "hazard" is the stripe colour,
+## "trim_<kind>" remaps a glow kind (e.g. {"trim_cool": "green"}).
+const ROLES: Dictionary = {
+	"main": "cream", "accent": "teal", "pipe": "orange", "rail": "yellow", "pole": "slate",
+	"crate": "orange", "barrel": "red", "patch": "#9a9a92", "flower_a": "#e8577a", "flower_b": "#f2e5c4",
+	"broken_main": "#8d8576", "broken_accent": "#3f5a5a", "hazard": "yellow",
+}
+
 ## Emissive trim colours (thin and subtle: "futuristic but not tron").
 const GLOW: Dictionary = {
 	"warm": Color(1.0, 0.72, 0.38),
@@ -231,6 +241,26 @@ static func foliage(state: String = "restored") -> StandardMaterial3D:
 	return m
 
 
+## Leafy bushes in planters (restored sites). Triplanar leaf texture, no alpha. Broken = dry.
+static func leaves(state: String = "restored") -> StandardMaterial3D:
+	var key: String = "leaves:" + state
+	if _cache.has(key):
+		return _cache[key]
+	var m := StandardMaterial3D.new()
+	m.resource_name = key
+	m.albedo_texture = _tex("leafy_grass", "diff")
+	m.normal_enabled = true
+	m.normal_texture = _tex("leafy_grass", "nor_gl")
+	m.uv1_triplanar = true
+	m.uv1_scale = Vector3.ONE * 1.6
+	m.albedo_color = Color(0.75, 1.0, 0.55) if state != "broken" else Color(0.75, 0.6, 0.38)
+	m.roughness = 0.85
+	m.diffuse_mode = BaseMaterial3D.DIFFUSE_LAMBERT_WRAP
+	m.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
+	_cache[key] = m
+	return m
+
+
 ## Soil / dirt under props (ground patches).
 static func dirt(state: String = "repaired") -> ShaderMaterial:
 	var key: String = "dirt:" + state
@@ -269,15 +299,48 @@ static func decal(name: String, state: String = "repaired") -> StandardMaterial3
 	return m
 
 
+## Painted metal whose colour comes from the mesh (CUSTOM0, set by KitMesh.Builder): one material
+## for every paint colour + hazard stripes on a building.
+static func paint_vc(state: String = "repaired") -> ShaderMaterial:
+	var key: String = "paint_vc:" + state
+	if _cache.has(key):
+		return _cache[key]
+	var m := _surface(key, "metal_plate", state)
+	m.set_shader_parameter("paint_from_vertex", true)
+	m.set_shader_parameter("paint_amount", 1.0)
+	m.set_shader_parameter("clearcoat_amt", 0.35 if state == "restored" else 0.0)
+	_cache[key] = m
+	return m
+
+
+const TRIM_SHADER: Shader = preload("res://art/kit/kit_trim.gdshader")
+
+
+## Trims whose glow colour comes from the mesh (CUSTOM0). powered false = dark lenses.
+static func trim_vc(powered: bool = true, energy: float = 2.2) -> ShaderMaterial:
+	var key: String = "trim_vc:%s:%.2f" % [powered, energy]
+	if _cache.has(key):
+		return _cache[key]
+	var m := ShaderMaterial.new()
+	m.resource_name = key
+	m.shader = TRIM_SHADER
+	m.set_shader_parameter("powered", 1.0 if powered else 0.0)
+	m.set_shader_parameter("energy", energy)
+	_cache[key] = m
+	return m
+
+
 ## Material for a surface key as KitMesh names surfaces.
 ## Keys: paint:<colour>, steel, dark_steel, rusty, concrete, hazard, rubber, glass, trim:<kind>,
-## foliage, dirt, decal:<name>. "paint:accent" etc. can be remapped by the caller through `palette`.
+## foliage, leaves, dirt, decal:<name>. "paint:accent" etc. can be remapped by the caller through `palette`.
 static func for_key(key: String, state: String = "repaired", powered: bool = true, palette: Dictionary = {}) -> Material:
 	var parts: PackedStringArray = key.split(":", true, 1)
 	var head: String = parts[0]
 	var arg: String = parts[1] if parts.size() > 1 else ""
 	match head:
 		"paint":
+			if arg == "":
+				return paint_vc(state)
 			var c: String = str(palette.get(arg, arg))
 			if state == "broken" and palette.has("broken_" + arg):
 				c = str(palette["broken_" + arg])
@@ -297,13 +360,17 @@ static func for_key(key: String, state: String = "repaired", powered: bool = tru
 		"glass":
 			return glass(powered, state)
 		"trim":
+			if arg == "":
+				return trim_vc(powered and state != "broken")
 			return trim(str(palette.get("trim_" + arg, arg)), powered and state != "broken")
 		"foliage":
 			return foliage(state)
+		"leaves":
+			return leaves(state)
 		"dirt":
 			return dirt(state)
 		"decal":
-			return decal(arg, state)
+			return decal(arg if arg != "" else "atlas", state)
 	return paint("cream", state)
 
 

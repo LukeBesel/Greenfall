@@ -64,20 +64,57 @@ class Builder:
 	var surf: Dictionary = {}
 	var order: PackedStringArray = []
 	var rng := RandomNumberGenerator.new()
+	## Point lights requested by props (lamp posts, door lamps): {pos, color, range, energy}.
+	## Assemblers turn them into OmniLight3D nodes when powered.
+	var lights: Array[Dictionary] = []
+	## Palette roles ("main" -> "cream") and state, resolved at build time: every "paint:<role>"
+	## part lands in ONE "paint" surface with its colour per vertex (CUSTOM0), every "trim:<kind>"
+	## in ONE "trim" surface, and "hazard" is paint with the stripe flag. Fewer draw calls.
+	var palette: Dictionary = {}
+	var state: String = "repaired"
 
-	func _init(seed_: int = 1) -> void:
+	func _init(seed_: int = 1, palette_: Dictionary = {}, state_: String = "repaired") -> void:
 		rng.seed = seed_
+		palette = KitMat.ROLES.duplicate()
+		palette.merge(palette_, true)
+		state = state_
+
+	## Resolve a key to (surface key, CUSTOM0 colour).
+	func _route(key: String) -> Array:
+		if key.begins_with("paint:"):
+			var role: String = key.substr(6)
+			var c: Variant = palette.get(role, role)
+			if state == "broken" and palette.has("broken_" + role):
+				c = palette["broken_" + role]
+			var col: Color = c if c is Color else KitMat.color(str(c))
+			if state == "broken":
+				col = col.darkened(0.15)
+			col.a = 0.0
+			return ["paint", col]
+		if key == "hazard":
+			var hz: Color = KitMat.color(str(palette.get("hazard", "yellow")))
+			hz.a = 1.0
+			return ["paint", hz]
+		if key.begins_with("trim:"):
+			var kind: String = key.substr(5)
+			kind = str(palette.get("trim_" + kind, kind))
+			var g: Color = KitMat.GLOW.get(kind, KitMat.color(kind) if kind.begins_with("#") else KitMat.GLOW["cool"])
+			g.a = 1.0
+			return ["trim", g]
+		return [key, Color(0, 0, 0, 0)]
 
 	func _surf(key: String) -> Array:
 		if not surf.has(key):
-			surf[key] = [PackedVector3Array(), PackedVector3Array(), PackedColorArray(), PackedVector2Array(), PackedInt32Array()]
+			surf[key] = [PackedVector3Array(), PackedVector3Array(), PackedColorArray(), PackedVector2Array(), PackedInt32Array(), PackedFloat32Array()]
 			order.append(key)
 		return surf[key]
 
 	## Append primitive arrays (see KitMesh primitives) under a material key.
 	## seed < 0 picks a random per-part seed; ao_bottom scales the baked bottom AO (0 = none).
 	func add(key: String, prim: Array, t: Transform3D = Transform3D.IDENTITY, seed_: float = -1.0, ao_bottom: float = 1.0) -> void:
-		var s: Array = _surf(key)
+		var route: Array = _route(key)
+		var s: Array = _surf(route[0])
+		var cust_c: Color = route[1]
 		var v: PackedVector3Array = s[0]
 		var base: int = v.size()
 		var pv: PackedVector3Array = prim[0]
@@ -93,7 +130,13 @@ class Builder:
 		var scaled: bool = not t.basis.is_conformal() or absf(t.basis.get_scale().x - 1.0) > 0.001
 		var cols := PackedColorArray()
 		cols.resize(n)
+		var cust := PackedFloat32Array()
+		cust.resize(n * 4)
 		for i: int in n:
+			cust[i * 4] = cust_c.r
+			cust[i * 4 + 1] = cust_c.g
+			cust[i * 4 + 2] = cust_c.b
+			cust[i * 4 + 3] = cust_c.a
 			var c: Color = pc[i]
 			c.b = sd
 			c.g = lerpf(1.0, c.g, ao_bottom)
@@ -114,6 +157,9 @@ class Builder:
 		su.append_array(puv)
 		var si: PackedInt32Array = s[4]
 		si.append_array(idx)
+		var sx: PackedFloat32Array = s[5]
+		sx.append_array(cust)
+		s[5] = sx
 		s[0] = v
 		s[1] = sn
 		s[2] = sc
@@ -148,8 +194,9 @@ class Builder:
 		add(key, KitMesh.sweep(pts, radius, sides, bend), Transform3D.IDENTITY)
 
 	## Image decal quad facing +Z of t (sits 4 mm proud of the surface). size in metres.
+	## All decals share the atlas (art/kit/decals/atlas.png): one "decal" surface per mesh.
 	func decal(name: String, size: Vector2, t: Transform3D) -> void:
-		add("decal:" + name, KitMesh.quad(size), t * Transform3D(Basis(), Vector3(0, 0, 0.004)), 0.5, 0.0)
+		add("decal", KitMesh.decal_quad(name, size), t * Transform3D(Basis(), Vector3(0, 0, 0.004)), 0.5, 0.0)
 
 	func tri_count() -> int:
 		var n: int = 0
@@ -157,6 +204,10 @@ class Builder:
 			@warning_ignore("integer_division")
 			n += (surf[k][4] as PackedInt32Array).size() / 3
 		return n
+
+	## Surfaces (draw calls) commit() will produce.
+	func surface_count() -> int:
+		return order.size()
 
 	func commit(into: ArrayMesh = null) -> ArrayMesh:
 		var m: ArrayMesh = into if into else ArrayMesh.new()
@@ -171,16 +222,19 @@ class Builder:
 			arrays[Mesh.ARRAY_COLOR] = s[2]
 			arrays[Mesh.ARRAY_TEX_UV] = s[3]
 			arrays[Mesh.ARRAY_INDEX] = s[4]
-			m.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+			arrays[Mesh.ARRAY_CUSTOM0] = s[5]
+			m.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays, [], {},
+				Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT)
 			m.surface_set_name(m.get_surface_count() - 1, k)
 		return m
 
 
 ## Build a MeshInstance3D from a builder with kit materials applied.
-static func instance(b: Builder, state: String = "repaired", powered: bool = true, palette: Dictionary = {}) -> MeshInstance3D:
+## state defaults to the builder's state (palette was already resolved by the builder).
+static func instance(b: Builder, state: String = "", powered: bool = true) -> MeshInstance3D:
 	var mi := MeshInstance3D.new()
 	mi.mesh = b.commit()
-	KitMat.apply(mi, state, powered, palette)
+	KitMat.apply(mi, state if state != "" else b.state, powered)
 	return mi
 
 
@@ -285,12 +339,13 @@ static func _bevel_box(size: Vector3, bevel: float, seg: int) -> Array:
 
 ## Lathe a profile around +Y. profile: Vector3(radius, y, edge_mask) from bottom to top.
 ## Consecutive segments bending more than ~50 degrees get a hard edge (split normals).
-static func lathe(profile: PackedVector3Array, sides: int = 16) -> Array:
-	var key: String = "lathe:%d:%s" % [sides, str(profile).hash()]
-	return _prim(key, func() -> Array: return _lathe(profile, sides))
+## arc_deg < 360 makes a partial revolve (arches, hangar roofs) from angle 0 (+X) towards +Z.
+static func lathe(profile: PackedVector3Array, sides: int = 16, arc_deg: float = 360.0) -> Array:
+	var key: String = "lathe:%d:%.1f:%s" % [sides, arc_deg, str(profile).hash()]
+	return _prim(key, func() -> Array: return _lathe(profile, sides, arc_deg))
 
 
-static func _lathe(profile: PackedVector3Array, sides: int) -> Array:
+static func _lathe(profile: PackedVector3Array, sides: int, arc_deg: float = 360.0) -> Array:
 	var v := PackedVector3Array()
 	var nn := PackedVector3Array()
 	var cc := PackedColorArray()
@@ -322,7 +377,7 @@ static func _lathe(profile: PackedVector3Array, sides: int) -> Array:
 			continue
 		var base: int = v.size()
 		for k: int in sides + 1:
-			var th: float = TAU * float(k) / sides
+			var th: float = deg_to_rad(arc_deg) * float(k) / sides
 			var cs: float = cos(th)
 			var sn: float = sin(th)
 			for e: int in 2:
@@ -388,6 +443,31 @@ static func quad(size: Vector2) -> Array:
 		_emit_tri(idx, 0, 1, 2, v[0], v[1], v[2], Vector3.BACK)
 		_emit_tri(idx, 0, 2, 3, v[0], v[2], v[3], Vector3.BACK)
 		return [v, n, c, uv, idx])
+
+
+static var _atlas: Dictionary = {}
+
+
+## UV rect (x, y, w, h) of a decal in the atlas; whole texture if unknown.
+static func decal_rect(name: String) -> Rect2:
+	if _atlas.is_empty():
+		var f := FileAccess.open("res://art/kit/decals/atlas.json", FileAccess.READ)
+		if f:
+			_atlas = JSON.parse_string(f.get_as_text())
+	var r: Array = _atlas.get(name, [0, 0, 1, 1])
+	return Rect2(r[0], r[1], r[2], r[3])
+
+
+## Quad like quad() with UVs mapped to a decal's atlas rect.
+static func decal_quad(name: String, size: Vector2) -> Array:
+	return _prim("dq:%s:%.3f,%.3f" % [name, size.x, size.y], func() -> Array:
+		var a: Array = quad(size).duplicate(true)
+		var r: Rect2 = decal_rect(name)
+		var uv := PackedVector2Array()
+		for p: Vector2 in (a[ARR_UV] as PackedVector2Array):
+			uv.append(r.position + p * r.size)
+		a[ARR_UV] = uv
+		return a)
 
 
 ## Tube swept along a polyline (pipes, cables, rails). bend > 0 rounds corners with that radius
@@ -478,7 +558,8 @@ static func sweep(pts: PackedVector3Array, radius: float, sides: int = 8, bend: 
 ## opts: panel (Vector2 panel size, default 1.2 x 1.0), key (paint key, default "paint:main"),
 ##       key2 (alternate panel colour key or ""), depth (0.12), missing (0..1 chance a panel is
 ##       gone - broken state), tilt (0..1 jitter), bolts (true), trim ("" or trim key: glowing
-##       strip under the top edge), hazard (true: hazard band at the bottom).
+##       strip under the top edge), hazard (true: hazard band at the bottom), patch (0..1 chance a
+##       panel is a mismatched "paint:patch" repair panel - repaired state).
 static func panel_wall(b: Builder, w: float, h: float, t: Transform3D, opts: Dictionary = {}) -> void:
 	var psz: Vector2 = opts.get("panel", Vector2(1.2, 1.0))
 	var key: String = opts.get("key", "paint:main")
@@ -489,6 +570,7 @@ static func panel_wall(b: Builder, w: float, h: float, t: Transform3D, opts: Dic
 	var bolts: bool = opts.get("bolts", true)
 	var trim: String = opts.get("trim", "")
 	var hazard: bool = opts.get("hazard", false)
+	var patch: float = opts.get("patch", 0.0)
 	var nx: int = maxi(1, roundi(w / psz.x))
 	var ny: int = maxi(1, roundi(h / psz.y))
 	var pw: float = w / nx
@@ -522,6 +604,8 @@ static func panel_wall(b: Builder, w: float, h: float, t: Transform3D, opts: Dic
 			var k: String = key
 			if key2 != "" and (i + j * 3) % 4 == 1:
 				k = key2
+			if patch > 0.0 and b.rng.randf() < patch:
+				k = "paint:patch"
 			var psize := Vector3(pw - gap, ph - gap, depth * 0.5)
 			b.box(k, psize, t * xf(Vector3(cx, cy, 0.0) + off, rot), minf(0.035, depth * 0.2), 1)
 			# raised stiffener rib on tall panels
@@ -612,7 +696,7 @@ static func ground_patch(size: Vector2, state: String = "repaired", seed_: int =
 	var mi := MeshInstance3D.new()
 	mi.name = "Plates"
 	mi.mesh = data.mesh
-	KitMat.apply(mi, state, true, opts.get("palette", {}))
+	KitMat.apply(mi, state, true)
 	root.add_child(mi)
 	var gi := MultiMeshInstance3D.new()
 	gi.name = "Grit"
@@ -637,7 +721,7 @@ class _PatchData:
 
 
 static func _build_patch(out: _PatchData, size: Vector2, state: String, seed_: int, opts: Dictionary) -> void:
-	var b := Builder.new(seed_)
+	var b := Builder.new(seed_, opts.get("palette", {}), state)
 	var rng: RandomNumberGenerator = b.rng
 	var broken: bool = state == "broken"
 	var restored: bool = state == "restored"

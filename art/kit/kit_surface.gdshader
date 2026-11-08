@@ -15,6 +15,7 @@ uniform vec4 paint_color : source_color = vec4(0.9, 0.86, 0.76, 1.0);
 uniform vec4 paint_color2 : source_color = vec4(0.06, 0.06, 0.07, 1.0);
 uniform float paint_amount : hint_range(0.0, 1.0) = 1.0;    // 0 = bare base material
 uniform int pattern = 0;                                      // 1 = hazard stripes
+uniform bool paint_from_vertex = false;                       // paint colour from CUSTOM0 (KitMesh.Builder), a > 0.5 = hazard
 uniform float stripe_freq = 2.6;                              // stripes per metre (hazard)
 uniform float edge_wear : hint_range(0.0, 1.0) = 0.35;        // chipped paint at edges
 uniform float patch_wear : hint_range(0.0, 1.0) = 0.0;        // chipped paint on faces
@@ -42,6 +43,7 @@ uniform sampler2D rust_arm : filter_linear_mipmap_anisotropic, repeat_enable;
 varying vec3 opos;
 varying vec3 onrm;
 varying vec4 vcol;
+varying vec4 vcust;
 
 float h31(vec3 p) {
 	p = fract(p * 0.3183099 + vec3(0.1, 0.2, 0.3));
@@ -72,6 +74,7 @@ void vertex() {
 	opos = VERTEX;
 	onrm = NORMAL;
 	vcol = COLOR;
+	vcust = CUSTOM0;
 }
 
 void fragment() {
@@ -101,11 +104,11 @@ void fragment() {
 	float patch_chip = smoothstep(1.0 - patch_wear * 0.6, 1.02 - patch_wear * 0.6, big + fine * 0.15);
 	float paint = paint_amount * (1.0 - max(edge_chip, patch_chip));
 	// paint colour: per-part variation, hazard pattern, fade
-	vec3 pc = paint_color.rgb;
-	if (pattern == 1) {
+	vec3 pc = paint_from_vertex ? vcust.rgb : paint_color.rgb;
+	if (pattern == 1 || (paint_from_vertex && vcust.a > 0.5)) {
 		float s = fract((opos.x + opos.y + opos.z * 0.7) * stripe_freq);
 		float m = smoothstep(0.47, 0.53, s) * (1.0 - smoothstep(0.97, 1.0, s));
-		pc = mix(paint_color.rgb, paint_color2.rgb, m);
+		pc = mix(pc, paint_color2.rgb, m);
 	}
 	pc *= 0.93 + vcol.b * 0.14;
 	pc *= mix(0.94, 1.04, n3(q * 2.5));
