@@ -18,6 +18,7 @@ extends Node3D
 signal cell_cleaned(cell: int)
 signal cell_worked(cell: int)
 signal bale_cashed(value: float)
+signal reporting
 
 const DEMOTE_M: float = 320.0
 const PROMOTE_M: float = 260.0
@@ -49,9 +50,11 @@ var bales: Array[Dictionary] = []  # {id, cell, value, claimed}
 ## Painted Command zones: role -> {cell: true}. Empty = the whole hub region.
 var zones: Dictionary = {}
 var cashed: float = 0.0
+var depots: Dictionary = {}  # hub cell -> depot cell
 var spend_seeds: bool = true
 
 var _claimed: Dictionary = {}  # cell -> unit name
+var _left: Dictionary = {}  # cell -> work target (junk left 0..1) while robots work it
 var _skip: Dictionary = {}  # cell -> time it may be claimed again
 var _bale_seq: int = 0
 var _far_acc: float = 0.0
@@ -219,13 +222,20 @@ func route(from: int, to: int, role: String = "clean") -> PackedInt32Array:
 
 
 func junk_left(c: int) -> float:
+	var real: float = cells.junk[c] if cells.is_dirty(c) else 0.0
 	if field != null and field.materialized[c] == 1:
-		return 1.0 - field.removed_fraction(c) if field.hex_clean[c] == 0 else 0.0
-	return cells.junk[c] if cells.is_dirty(c) else 0.0
+		real = 1.0 - field.removed_fraction(c) if field.hex_clean[c] == 0 else 0.0
+	return minf(real, float(_left.get(c, 1.0)))
 
 
+## Robots work in small steps; a materialized cell loses whole pieces, so the work target is kept
+## here and the pieces follow it (otherwise a step smaller than one piece would never add up).
 func work_cell(c: int, left: float) -> void:
 	var was_dirty: bool = cells.is_dirty(c)
+	if left > 0.02:
+		_left[c] = left
+	else:
+		_left.erase(c)
 	var gone: PackedInt32Array = SphereOffline.write_cell(cells, field, c, left)
 	if junk_view != null:
 		for pid: int in gone:
@@ -558,9 +568,19 @@ func _find_haul(u: Dictionary, here: int) -> bool:
 		u["bale"] = -1
 		return false
 	if not carry.is_empty():
-		return _route_to(u, depot_cell if depot_cell >= 0 else int(u["hub"]), "to_depot")
+		return _route_to(u, depot_of(int(u["hub"])), "to_depot")
 	u["idle"] = "no bales"
 	return false
+
+
+## Where a hub's haulers cash bales: the start hub's depot, or a hub's own cell (each hub site
+## gets its depot anchor in phase D: set depots[hub]).
+func depot_of(hub: int) -> int:
+	if depots.has(hub):
+		return int(depots[hub])
+	if hub == hub_cell and depot_cell >= 0:
+		return depot_cell
+	return hub
 
 
 func cash(value: float) -> void:
@@ -607,10 +627,11 @@ func cells_cleaned() -> int:
 
 
 func _maybe_report() -> void:
-	if _report_done or not (DevHooks.has("bot-report") or DevHooks.has("robots")) or not DevHooks.has("quit-after"):
+	if _report_done or not (DevHooks.has("bot-report") or DevHooks.has("robots") or DevHooks.has("orbit-far-crew")) or not DevHooks.has("quit-after"):
 		return
 	if DevHooks._elapsed >= DevHooks.get_f("quit-after", 5.0) - 1.0:
 		_report_done = true
+		reporting.emit()
 		print_report()
 
 
