@@ -50,6 +50,7 @@ func _setup() -> void:
 	_wire_survey.call_deferred()
 	_build_stations()
 	_build_litter()
+	_build_water()
 	if DevHooks.has("soak"):  # dev QA soak (planet/sites/soak_watch.gd)
 		SoakWatch.attach(so)
 	if DevHooks.has("site-reach"):
@@ -177,6 +178,20 @@ func _build_litter() -> void:
 		for k: int in 3:  # three reports, a report-interval apart (a scoop run shows the sweep)
 			get_tree().create_timer(DevHooks.get_f("litter-report", 6.0) * (k + 1)).timeout.connect(func() -> void:
 				print("[litter] %d cells laid, %d pieces" % [litter.get("_cell").size(), litter.piece_count()]))
+
+
+## Lake surfaces on near water cells (planet/sites/sphere_water.gd). --water-report prints a count.
+var water: SphereWater
+
+
+func _build_water() -> void:
+	water = SphereWater.new()
+	water.name = "Lakes"
+	so.w.add_child(water)
+	water.setup_globe(so.globe)
+	if DevHooks.has("water-report"):
+		get_tree().create_timer(DevHooks.get_f("water-report", 6.0)).timeout.connect(func() -> void:
+			print("[water] %d lake cells shown" % water.count()))
 
 
 ## The flat game's Stations (conveyor feeder, auto-baler, recycler: automation/stations.gd) on the
