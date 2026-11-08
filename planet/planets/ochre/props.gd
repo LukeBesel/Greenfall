@@ -248,6 +248,43 @@ static func _sack() -> ArrayMesh:
 	return _commit(st, _cached_mat("canvas", func() -> Material: return _mat_vc("polystyrene", 0.95, 0.0, 2.0)))
 
 
+# --- Rocks --------------------------------------------------------------------------------------------
+
+## A weathered boulder: a squashed, faceted, noise-pushed sphere (about 1 m; scale per instance).
+## Instance colour tints it to the local strata.
+static func boulder(seed_v: int) -> ArrayMesh:
+	var key: String = "boulder_%d" % seed_v
+	if _cache.has(key):
+		return _cache[key]
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_v
+	var nz := FastNoiseLite.new()
+	nz.seed = seed_v
+	nz.frequency = 1.4
+	var st := _new_st()
+	st.set_smooth_group(-1)
+	var sph := SphereMesh.new()
+	sph.radial_segments = 10
+	sph.rings = 6
+	var arr: Array = sph.surface_get_arrays(0)
+	var v: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
+	var idx: PackedInt32Array = arr[Mesh.ARRAY_INDEX]
+	var sq := Vector3(rng.randf_range(0.8, 1.3), rng.randf_range(0.45, 0.8), rng.randf_range(0.7, 1.1))
+	for i: int in idx:
+		var d: Vector3 = v[i].normalized()
+		var h: float = 1.0 + nz.get_noise_3d(d.x, d.y, d.z) * 0.35
+		var p: Vector3 = d * h * sq
+		p.y = maxf(p.y, -0.15)
+		var c := Color(1, 1, 1).darkened(clampf(-d.y, 0.0, 1.0) * 0.35)
+		st.set_color(c)
+		st.add_vertex(p + Vector3(0, 0.12, 0))
+	var m: ArrayMesh = _commit(st, _cached_mat("boulder", func() -> Material:
+		var bm: StandardMaterial3D = _mat_vc("quarry_wall", 0.92, 0.0, 0.35)
+		return bm))
+	_cache[key] = m
+	return m
+
+
 # --- Plants ------------------------------------------------------------------------------------
 
 static func foliage_mat() -> ShaderMaterial:

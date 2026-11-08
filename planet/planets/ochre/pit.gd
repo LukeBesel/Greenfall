@@ -31,6 +31,12 @@ var ramps: Array = []
 var n1 := FastNoiseLite.new()
 var n2 := FastNoiseLite.new()
 var n3 := FastNoiseLite.new()
+var n4 := FastNoiseLite.new()   # bench-edge wander (3D: angle circle + rho)
+var n5 := FastNoiseLite.new()   # bench height drift
+## Erosion gullies cut down the walls: [angle, half-width (m), depth (m), lowest level, highest level]
+var gullies: Array = []
+## Collapsed sections: [angle, half-span (rad), first wall index, walls spanned]
+var slumps: Array = []
 
 
 func _init(seed_v: int) -> void:
@@ -41,6 +47,21 @@ func _init(seed_v: int) -> void:
 		nz.fractal_type = FastNoiseLite.FRACTAL_FBM
 		nz.fractal_octaves = 3
 		nz.frequency = [0.004, 0.02, 0.0016][k]
+	n4.seed = seed_v + 401
+	n4.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+	n4.fractal_type = FastNoiseLite.FRACTAL_FBM
+	n4.fractal_octaves = 3
+	n4.frequency = 0.0065
+	n5.seed = seed_v + 503
+	n5.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+	n5.frequency = 0.012
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_v + 77
+	for i: int in 34:
+		var lo: int = rng.randi_range(2, N_UP + 1)
+		gullies.append([rng.randf() * TAU - PI, rng.randf_range(2.5, 6.0), rng.randf_range(2.0, 5.5), lo, mini(lo + rng.randi_range(1, 5), N_UP + 2)])
+	for i: int in 4:
+		slumps.append([rng.randf() * TAU - PI, rng.randf_range(0.07, 0.14), rng.randi_range(1, N_UP - 4), rng.randi_range(2, 4)])
 	# Floor, down steps (wall 3.5, bench), field bench, nine up steps, the rim.
 	bands.append([0.0, FLOOR_R, FLOOR_Y, FLOOR_Y, false, 0])
 	bands.append([FLOOR_R, FLOOR_R + 3.5, FLOOR_Y, FLOOR_Y + DOWN_H, true, 0])
@@ -69,14 +90,30 @@ static func squash(th: float) -> float:
 	return 1.0 + 0.18 * cos(2.0 * th) + 0.05 * sin(3.0 * th + 1.0)
 
 
+## How far a bench line wanders from its ring (pit units): terrace edges pinch and swell.
+func wobble(th: float, rho: float) -> float:
+	if rho > RIM_RHO + 60.0:
+		return 0.0
+	return n4.get_noise_3d(cos(th) * 420.0, sin(th) * 420.0, rho * 0.9) * 5.0 * clampf(rho / 70.0, 0.0, 1.0)
+
+
 func world_at(th: float, rho: float) -> Vector2:
-	return CENTER + Vector2(cos(th), sin(th)) * rho * squash(th)
+	return CENTER + Vector2(cos(th), sin(th)) * (rho + wobble(th, rho)) * squash(th)
 
 
+## Pit polar coordinates (angle, unwarped rho) of a world point.
 func polar_of(x: float, z: float) -> Vector2:
 	var q := Vector2(x, z) - CENTER
 	var th: float = atan2(q.y, q.x)
-	return Vector2(th, q.length() / squash(th))
+	var rw: float = q.length() / squash(th)
+	var r: float = rw
+	for i: int in 3:
+		r = rw - wobble(th, r)
+	return Vector2(th, r)
+
+
+static func _ang(a: float, b: float) -> float:
+	return absf(wrapf(a - b, -PI, PI))
 
 
 ## Profile height and data at pit radius rho: [y, level, flat(0/1), across 0..1].
@@ -117,7 +154,42 @@ func sample(th: float, rho: float) -> Array:
 		# Tailings heaps: long flat-topped spoil dumps just beyond the rim.
 		var heap: float = smoothstep(0.15, 0.45, n3.get_noise_2d(w.x * 2.2, w.y * 2.2)) * 16.0
 		heap *= smoothstep(12.0, 40.0, t) * (1.0 - smoothstep(110.0, 190.0, t))
-		y = RIM_Y + 0.4 + und + heap + n2.get_noise_2d(w.x, w.y) * 0.4
+		# Wind-built dunes on the plateau: long asymmetric crests that wander.
+		var u: float = (w.x * 0.8 + w.y * 0.6 + n1.get_noise_2d(w.x * 2.0, w.y * 2.0) * 40.0) / 34.0
+		var fr: float = u - floorf(u)
+		var dune: float = (smoothstep(0.0, 0.8, fr) if fr < 0.8 else 1.0 - smoothstep(0.8, 1.0, fr)) * (2.0 + 2.5 * (n2.get_noise_2d(w.x * 0.3, w.y * 0.3) * 0.5 + 0.5))
+		y = RIM_Y + 0.4 + und + heap + dune * smoothstep(20.0, 90.0, t) + n2.get_noise_2d(w.x, w.y) * 0.4
+	if rho < RIM_RHO + 4.0 and rho > FIELD_IN - 6.0:
+		var lvl: int = int(pr[1])
+		var away: float = smoothstep(80.0, 130.0, w.length())
+		var sq: float = squash(th)
+		# Benches drift up and down along their length; sand drifts bank against each wall foot.
+		if lvl != 2:
+			y += n5.get_noise_2d(w.x, w.y) * 2.2 * away
+			if flat > 0.5:
+				y += 1.3 * smoothstep(0.62, 1.0, float(pr[3])) * (0.6 + 0.4 * n2.get_noise_2d(w.x * 0.5, w.y * 0.5))
+		# Collapsed sections: the steps slump into one rubble slope.
+		for sl: Array in slumps:
+			var da: float = _ang(th, float(sl[0]))
+			if da < float(sl[1]):
+				var r0: float = FIELD_OUT + STEP_P * int(sl[2]) - 6.0
+				var r1: float = r0 + STEP_P * int(sl[3]) + 6.0
+				if rho > r0 and rho < r1:
+					var f: float = (rho - r0) / (r1 - r0)
+					var lin: float = lerpf(float(profile(r0)[0]), float(profile(r1)[0]), f * f * (3.0 - 2.0 * f) * 0.4 + f * 0.6)
+					lin += n2.get_noise_2d(w.x * 1.5, w.y * 1.5) * 1.6
+					var m: float = (1.0 - smoothstep(float(sl[1]) * 0.55, float(sl[1]), da)) * smoothstep(0.0, 0.15, f) * smoothstep(1.0, 0.85, f)
+					y = lerpf(y, lin, m * away)
+		# Gullies: erosion channels notch the crests and score the walls.
+		for g: Array in gullies:
+			if lvl < int(g[3]) or lvl > int(g[4]):
+				continue
+			var dm: float = _ang(th, float(g[0])) * rho * sq
+			var hw: float = float(g[1]) * (1.0 + 0.4 * n5.get_noise_1d(rho * 3.0))
+			if dm < hw * 2.2:
+				var prof_g: float = exp(-pow(dm / hw, 2.0))
+				var wallish: float = 1.0 - smoothstep(0.05, 0.3, float(pr[3])) if flat > 0.5 else 1.0
+				y -= float(g[2]) * prof_g * clampf(wallish, 0.0, 1.0) * away
 	# Haul roads cut down into whatever they cross.
 	for r: Dictionary in ramps:
 		var rr: Array = ramp_at(r, th)

@@ -16,7 +16,7 @@ extends Node3D
 
 const DIR: String = "res://planet/planets/ochre/"
 const SUN_DEG: float = 1.25          # disc radius (degrees) of a size-1.0 star
-const SPOKES: int = 416
+const SPOKES: int = 576
 const SECTORS: int = 16
 
 var world: Node
@@ -143,6 +143,7 @@ func build() -> void:
 	_build_trucks()
 	_build_sails()
 	_build_ruin_junk()
+	_build_scree()
 	_build_falls()
 	_build_plants()
 	_build_fx()
@@ -435,66 +436,94 @@ func _build_terrain() -> void:
 		(_groups["always"] as Node3D).add_child(mi)
 
 
-## Layered mesas and buttes on the plateau beyond the rim (same strata as the pit walls).
+## Weathered mesas and buttes on the plateau beyond the rim (same strata as the pit walls): wide
+## talus aprons, stepped cliffs with ledges, notches and slight overhangs, broken uneven caps.
+## One mesh; each landform is its own function call so it can be placed per site.
 func _build_mesas() -> void:
-	var mat: ShaderMaterial = _tmat()
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var nz := FastNoiseLite.new()
+	nz.seed = field.seed_value + 909
+	nz.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+	nz.fractal_type = FastNoiseLite.FRACTAL_FBM
+	nz.fractal_octaves = 4
+	nz.frequency = 0.012
 	var placed: Array[Vector3] = []
 	var tries: int = 0
-	var spokes: int = 44
-	# Profile: [height fraction, radius fraction, flat]: talus apron, cliff, ledge, upper cliff, cap.
-	var prof: Array = [[-0.06, 1.75, 0.0], [0.1, 1.3, 0.0], [0.2, 1.06, 0.0], [0.52, 1.0, 0.0], [0.56, 0.86, 1.0], [0.6, 0.8, 0.0], [0.93, 0.76, 0.0], [1.0, 0.7, 1.0], [1.0, 0.0, 1.0]]
-	while placed.size() < 24 and tries < 600:
+	while placed.size() < 22 and tries < 700:
 		tries += 1
 		var ang: float = _rng.randf() * TAU
-		var dist: float = _rng.randf_range(500.0, 1400.0)
+		var dist: float = _rng.randf_range(520.0, 1450.0)
 		var c := Vector2(cos(ang), sin(ang)) * dist
-		var rad: float = _rng.randf_range(45.0, 140.0) * (1.0 + dist / 2000.0)
+		var rad: float = _rng.randf_range(35.0, 130.0) * (1.0 + dist / 2200.0)
 		var pp: Vector2 = pit.polar_of(c.x, c.y)
-		if pp.y < OchrePit.RIM_RHO + rad * 1.9 / OchrePit.squash(pp.x) + 25.0:
+		if pp.y < OchrePit.RIM_RHO + rad * 2.2 / OchrePit.squash(pp.x) + 25.0:
 			continue
 		var ok: bool = true
 		for q: Vector3 in placed:
-			if Vector2(q.x, q.y).distance_to(c) < (q.z + rad) * 1.5:
+			if Vector2(q.x, q.y).distance_to(c) < (q.z + rad) * 1.4:
 				ok = false
 				break
 		if not ok:
 			continue
 		placed.append(Vector3(c.x, c.y, rad))
-		var hgt: float = _rng.randf_range(70.0, 170.0) * (0.8 + rad / 220.0)
-		var y0: float = pit.height_at(c.x, c.y) - 3.0
-		var lobes: float = _rng.randf_range(2.0, 4.0)
-		var ph: float = _rng.randf() * TAU
-		var elong: float = _rng.randf_range(1.0, 1.7)
-		var rot: float = _rng.randf() * TAU
-		var verts: Array = []
-		for j: int in spokes + 1:
-			var a: float = TAU * float(j) / spokes
-			var col: Array = []
-			for k: int in prof.size():
-				var pr: Array = prof[k]
-				var lob: float = 1.0 + 0.16 * sin(a * lobes + ph) + 0.07 * sin(a * 7.0 + ph * 2.0) + (_rng.randf() - 0.5) * 0.05 * (1.0 if k < 7 else 0.0)
-				var rr: float = rad * float(pr[1]) * lob
-				var lp := Vector2(cos(a) * rr * elong, sin(a) * rr).rotated(rot)
-				var y: float = y0 + hgt * float(pr[0]) + (0.0 if k < 2 else (_rng.randf() - 0.5) * 1.2)
-				col.append([Vector3(c.x + lp.x, y, c.y + lp.y), float(pr[2])])
-			verts.append(col)
-		for j: int in spokes:
-			for k: int in prof.size() - 1:
-				var q: Array = [verts[j][k], verts[j + 1][k], verts[j + 1][k + 1], verts[j][k + 1]]
-				for idx: int in [0, 2, 1, 0, 3, 2]:
-					var e: Array = q[idx]
-					st.set_color(Color(0.0, e[1], 0.0, 0.0))
-					st.set_uv(Vector2.ZERO)
-					st.add_vertex(e[0])
+		var butte: bool = rad < 60.0
+		var hgt: float = _rng.randf_range(60.0, 175.0) * (0.75 + rad / 260.0) * (1.25 if butte else 1.0)
+		_mesa(st, nz, c, rad, hgt, butte, pit.height_at(c.x, c.y) - 4.0)
 	st.index()
 	st.generate_normals()
 	var mi := MeshInstance3D.new()
 	mi.name = "Mesas"
 	mi.mesh = st.commit()
-	mi.material_override = mat
+	mi.material_override = _tmat()
 	(_groups["always"] as Node3D).add_child(mi)
+
+
+## One landform: rings of [height fraction, radius fraction, flat] from a concave talus apron up
+## stepped cliffs to an uneven cap, every vertex pushed by 3D noise (lobes, notches, overhangs).
+func _mesa(st: SurfaceTool, nz: FastNoiseLite, c: Vector2, rad: float, hgt: float, butte: bool, y0: float) -> void:
+	var spokes: int = 72
+	var prof: Array = [[-0.05, 2.1, 0.0], [0.04, 1.75, 0.0], [0.11, 1.45, 0.0], [0.18, 1.22, 0.0], [0.24, 1.08, 0.0],
+		[0.4, 1.03, 0.0], [0.5, 1.0, 0.0], [0.53, 0.9, 1.0], [0.56, 0.86, 0.0], [0.72, 0.84, 0.0], [0.84, 0.82, 0.0],
+		[0.87, 0.74, 1.0], [0.9, 0.71, 0.0], [0.97, 0.69, 0.0], [1.0, 0.6, 1.0], [1.02, 0.3, 1.0], [1.03, 0.0, 1.0]]
+	if butte:
+		prof = [[-0.05, 2.4, 0.0], [0.06, 1.9, 0.0], [0.16, 1.45, 0.0], [0.26, 1.15, 0.0], [0.34, 1.0, 0.0],
+			[0.6, 0.94, 0.0], [0.64, 0.82, 1.0], [0.68, 0.78, 0.0], [0.92, 0.72, 0.0], [0.97, 0.66, 0.0], [1.0, 0.45, 1.0], [1.01, 0.0, 1.0]]
+	var elong: float = _rng.randf_range(1.0, 1.9)
+	var rot: float = _rng.randf() * TAU
+	var notch_a: float = _rng.randf() * TAU
+	var notch_w: float = _rng.randf_range(0.15, 0.4)
+	var off: float = _rng.randf() * 1000.0
+	var verts: Array = []
+	for j: int in spokes + 1:
+		var a: float = TAU * float(j % spokes) / spokes
+		var col: Array = []
+		for k: int in prof.size():
+			var pr: Array = prof[k]
+			var hf: float = float(pr[0])
+			var y: float = y0 + hgt * hf
+			var px: float = cos(a) * 80.0 + off
+			var pz: float = sin(a) * 80.0
+			var n: float = nz.get_noise_3d(px, pz, y * 1.2)
+			# Lobes and weathering; notches cut into the upper cliffs; ledges overhang a little.
+			var lob: float = 1.0 + 0.32 * n + 0.08 * nz.get_noise_3d(px * 4.0, pz * 4.0, y * 3.0)
+			var notch: float = 1.0 - 0.45 * exp(-pow(absf(wrapf(a - notch_a, -PI, PI)) / notch_w, 2.0)) * smoothstep(0.45, 0.9, hf)
+			var rr: float = rad * float(pr[1]) * lob * notch
+			if k == prof.size() - 1:
+				rr = 0.0
+			var lp := Vector2(cos(a) * rr * elong, sin(a) * rr).rotated(rot)
+			if float(pr[2]) > 0.5 and hf > 0.9:
+				y += nz.get_noise_2d(lp.x * 2.0 + off, lp.y * 2.0) * hgt * 0.06
+			col.append([Vector3(c.x + lp.x, y, c.y + lp.y), float(pr[2])])
+		verts.append(col)
+	for j: int in spokes:
+		for k: int in prof.size() - 1:
+			var q: Array = [verts[j][k], verts[j + 1][k], verts[j + 1][k + 1], verts[j][k + 1]]
+			for idx: int in [0, 2, 1, 0, 3, 2]:
+				var e: Array = q[idx]
+				st.set_color(Color(0.0, e[1], 0.0, 0.0))
+				st.set_uv(Vector2.ZERO)
+				st.add_vertex(e[0])
 
 
 ## The pit-floor pond (sludge -> oasis).
@@ -919,6 +948,56 @@ func _update_junk() -> void:
 		var n: int = lv.bsearch(-reach) if reach >= 0.0 else lv.size()
 		if mm.visible_instance_count != n:
 			mm.visible_instance_count = n
+
+
+## Rockfall and scree: boulders banked at wall feet, spilled down the collapsed sections and gully
+## mouths, strewn on the plateau. Tinted to the strata they fell from.
+func _build_scree() -> void:
+	var cols: Array[Color] = [_pal("ochre", Color(0.86, 0.5, 0.19)), _pal("terracotta", Color(0.68, 0.24, 0.12)), _pal("cream", Color(0.94, 0.83, 0.62)), _pal("plum", Color(0.4, 0.2, 0.23))]
+	var lists: Array = [[], [], []]
+	var n_try: int = int(9000 * [0.5, 0.8, 1.0, 1.0][clampi(Settings.quality, 0, 3)])
+	for i: int in n_try:
+		var th: float = _rng.randf() * TAU - PI
+		var rho: float
+		var pick: float = _rng.randf()
+		var sl_hit: bool = false
+		if pick < 0.25 and not pit.slumps.is_empty():
+			var sl: Array = pit.slumps[_rng.randi() % pit.slumps.size()]
+			th = float(sl[0]) + _rng.randf_range(-1.0, 1.0) * float(sl[1]) * 0.8
+			rho = OchrePit.FIELD_OUT + OchrePit.STEP_P * int(sl[2]) + _rng.randf() * OchrePit.STEP_P * int(sl[3])
+			sl_hit = true
+		elif pick < 0.85:
+			rho = OchrePit.FIELD_OUT + OchrePit.STEP_P * float(_rng.randi_range(-1, OchrePit.N_UP - 1)) - _rng.randf_range(0.0, 3.0)
+			if rho < OchrePit.FIELD_OUT - 20.0:
+				rho = OchrePit.FIELD_IN - 3.5 - _rng.randf_range(0.0, 3.0)
+		else:
+			rho = OchrePit.RIM_RHO + _rng.randf_range(5.0, 500.0)
+		if _on_ramp(th, rho):
+			continue
+		var w: Vector2 = pit.world_at(th, rho)
+		if w.length() < r_clip + 6.0:
+			continue
+		var y: float = pit.height_at(w.x, w.y)
+		var sz: float = pow(_rng.randf(), 2.2) * (3.2 if sl_hit else 2.4) + 0.35
+		var xf := Transform3D(Basis(Vector3.UP, _rng.randf() * TAU) * Basis(Vector3.RIGHT, _rng.randf_range(-0.3, 0.3)) * Basis.from_scale(Vector3.ONE * sz), Vector3(w.x, y - sz * 0.15, w.y))
+		var band: int = int(floorf((y * 0.16 + w.x * 0.0035) / 1.0)) % 4
+		var col: Color = cols[absi(band)].lerp(Color(0.8, 0.6, 0.42), 0.25)
+		(lists[i % 3] as Array).append([xf, col])
+	for k: int in 3:
+		var list: Array = lists[k]
+		var mm := MultiMesh.new()
+		mm.transform_format = MultiMesh.TRANSFORM_3D
+		mm.use_colors = true
+		mm.mesh = OchreProps.boulder(k + 1)
+		mm.instance_count = list.size()
+		for i: int in list.size():
+			mm.set_instance_transform(i, list[i][0])
+			mm.set_instance_color(i, list[i][1])
+		var mmi := MultiMeshInstance3D.new()
+		mmi.name = "Scree%d" % k
+		mmi.multimesh = mm
+		mmi.visibility_range_end = 650.0
+		(_groups["always"] as Node3D).add_child(mmi)
 
 
 ## Futuristic: water spills from the terrace channels down the walls below at a few spots.
