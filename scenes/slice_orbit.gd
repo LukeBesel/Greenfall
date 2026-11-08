@@ -59,7 +59,8 @@ func build(p_world: Node3D) -> void:
 	var od: Dictionary = OrbitSave.migrate(GameState.orbit) if loaded else {}
 	var preload_n: int = OrbitPreload.start()  # [orbE] junk models load on threads while the planet builds
 	# The planet: --orbit-planet=<id>, else the saved one, else Verdance. Its size is data (GlobeSpec).
-	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", "verdance"))
+	var home_pid: String = str(Homeward.planet_def(maxi(Homeward.current_planet(), 0)).get("id", "verdance"))  # [orbD] a new world after an interplanet flight
+	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", home_pid))
 	var spec: Dictionary = GlobeSpec.of(pid)
 	if int(od.get("freq", spec["frequency"])) != int(spec["frequency"]) or str(od.get("planet_id", pid)) != pid:
 		push_warning("[orbit] saved globe is %s f=%d, building %s f=%d fresh" % [od.get("planet_id", "?"), int(od.get("freq", 0)), pid, int(spec["frequency"])])
