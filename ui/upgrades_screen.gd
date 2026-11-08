@@ -10,16 +10,15 @@ signal closed
 
 # l10n:begin
 const TABS: Array[Dictionary] = [
-	{"id": "patch", "name": "Upgrades"},  # [ui3] everything with levels or tiers (Lumi, base, machines, rocket)
+	{"id": "patch", "name": "Upgrades"},  # [ui3] [ui6] everything with levels or tiers: Lumi, Base, Machines, Glim, Rocket
+	{"id": "build", "name": "Build"},  # [ui3] [ui6] one-time buildings (HubBuilds): Yard, Machines, Story
 	{"id": "bots", "name": "Bots"},
-	{"id": "build", "name": "Build"},  # [ui3] one-time buildings (HubBuilds)
 	{"id": "research", "name": "Research"},
-	{"id": "contracts", "name": "Requests"},  # [money] contracts + world events
-	{"id": "locker", "name": "Locker"},  # [ui2] Cosmetics + the robot Builder
-]
+	{"id": "contracts", "name": "Requests"},  # [money] contracts + world events (onboard gate)
+]  # [ui6] the Locker is a yard build now (systems/camp/locker_cabinet.gd), not a tab
 # l10n:end
 ## [ui2] Old tab ids (dev hooks, other branches) and where they went.
-const TAB_ALIASES: Dictionary = {"cosmetics": "locker", "builder": "locker", "trade": "bots", "hub": "patch", "rockets": "patch"}  # [ui3] Hub and Rockets folded into Upgrades
+const TAB_ALIASES: Dictionary = {"cosmetics": "patch", "builder": "patch", "locker": "patch", "trade": "bots", "hub": "patch", "rockets": "patch"}  # [ui3] Hub and Rockets folded into Upgrades
 const TAB_FONT: int = 19
 
 ## [ui2] id -> Callable() -> bool. A tab whose gate returns false is locked (see set_tab_gate).
@@ -110,7 +109,6 @@ var _panel: Control  # [ui2] the single-panel tab's panel (focus target)
 var _hub_panel: HubPanel
 var hub: Hub
 var _alloc: AllocationBoard
-var _research: ResearchPanel
 var build_at: Callable = func() -> Vector3: return Vector3.ZERO
 
 
@@ -229,11 +227,6 @@ func _populate() -> void:
 		row.add_child(BenchKit.Glyph.new("lock", 52, UITheme.MUTED))
 		row.add_child(BenchKit.body(str(_gate_hints.get(_tab, "")) if str(_gate_hints.get(_tab, "")) != "" else tr("Not open yet. Keep playing."), UITheme.CREAM, 20))
 		return
-	if _tab == "research":
-		_grid.columns = 1
-		_research = ResearchPanel.new()
-		_grid.add_child(_research)
-		return
 	if _tab == "contracts":  # [events] contracts board + token shop
 		_grid.columns = 1
 		var cnp := ContractsPanel.new()
@@ -241,31 +234,26 @@ func _populate() -> void:
 		_grid.add_child(cnp)
 		_panel = cnp
 		return
-	if _tab == "locker":  # [ui2] Cosmetics + Builder: pick the bot, style it
+	if _tab in ["patch", "build", "research"]:  # [ui6] one list + one detail panel (ui/list_detail.gd)
 		_grid.columns = 1
-		var lp := LockerPanel.new()
-		lp.world = w
-		lp.fleet = fleet
-		_grid.add_child(lp)
-		_panel = lp
-		return
-	if _tab == "patch":  # [ui3] the Upgrades tab: Lumi, Base, Machines, Rocket sections
-		_grid.columns = 1
-		var up := UpgradesPanel.new()
-		up.world = w
-		up.hub = hub
-		_grid.add_child(up)
-		for c: UpgradeCard in up.cards:
-			_cards.append(c)
-		up.card_bought.connect(_refresh_all)
-		_panel = up
-		return
-	if _tab == "build":  # [ui3] one-time buildings
-		_grid.columns = 1
-		var bp := BuildPanel.new()
-		bp.world = w
-		_grid.add_child(bp)
-		_panel = bp
+		var ld := ListDetail.new()
+		ld.world = w
+		match _tab:
+			"patch":
+				ld.provider = func() -> Array: return BenchLists.upgrades(w)
+				ld.categories = BenchLists.UPGRADE_CATS
+				ld.counter = BenchLists.upgrades_counter
+			"build":
+				ld.provider = func() -> Array: return BenchLists.builds(w)
+				ld.categories = BenchLists.BUILD_CATS
+				ld.counter = func() -> String: return BenchLists.builds_counter(w)
+			"research":
+				ld.provider = BenchLists.research
+				ld.categories = BenchLists.research_cats()
+				ld.counter = BenchLists.research_counter
+		ld.custom_minimum_size = Vector2(0, maxf(_root.size.y - 250.0, 360.0))
+		_grid.add_child(ld)
+		_panel = ld
 		return
 	_relayout()
 	if _tab == "bots" and fleet:
@@ -332,10 +320,6 @@ func _focus_default() -> void:
 	if not is_open:
 		return
 	_wire_focus()
-	if _tab == "research":
-		if is_instance_valid(_research) and not _research.is_queued_for_deletion():
-			_research.focus_first()
-		return
 	var target: Control = null
 	if not _cards.is_empty() and is_instance_valid(_cards[0]):
 		target = _cards[0].first_button()
@@ -358,7 +342,7 @@ var _focus_sig: String = ""
 
 
 func _wire_focus() -> void:
-	if not _tab in ["patch", "bots", "build", "locker"]:  # [ui3]
+	if not _tab in ["bots"]:  # [ui3] [ui6] list tabs link their own rows
 		return
 	var sig: String = FocusGrid.signature(_grid) + "|%d" % _grid.columns
 	if sig != _focus_sig:

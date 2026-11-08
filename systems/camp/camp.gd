@@ -129,6 +129,9 @@ func _setup() -> void:
 	_apply_bench(bench_ok(), false)
 	var hub: Hub = world.get("hub") as Hub
 	_apply_builds()  # [camp2] everything but the bench and the bin is a Hub build
+	var locker := LockerCabinet.new()  # [ui6] the Locker is a yard build: E opens the character builder
+	world.add_child(locker)
+	locker.setup(world)
 	if hub:
 		hub.level_changed.connect(func(_l: int) -> void: _apply_builds())  # after the slice's own ruin/level pass
 	YardBuilds.events.built.connect(_on_built)

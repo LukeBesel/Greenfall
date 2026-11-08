@@ -55,6 +55,14 @@
       ],
       "yaw_deg": 180.0
     },
+    "locker": {
+      "name": "Locker",
+      "desc": "A tall steel locker by the bench. Open it to change Lumi's look, Glim's and your robots'.",
+      "cost": {"cubes": 600, "parts": 120},
+      "requires_level": 2,
+      "pos": [-6.4, 4.6],
+      "yaw_deg": 90.0
+    },
     "nursery": {
       "name": "Robot Nursery",
       "desc": "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand.",
