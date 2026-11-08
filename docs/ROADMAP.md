@@ -525,3 +525,29 @@ tuned in the first-hour pass); no new SFX work unless a bug.
   `tests/test_crash_site.gd` (pod parts, door angle, repair stages).
 - Next: split the district build across frames so the loading bar keeps moving during it; pre-build
   the intro's SpaceStage behind the loader (its first frames compile on the intro's black fade now).
+
+## Update: escape pod hero pass, loading-screen street, title cinematic (wt/pod2)
+- **Escape pod** (`story/escape_pod.gd`, paint `art/shaders/pod_paint.gdshader`): a sleek twelve-facet
+  teardrop on a flared thruster skirt (four bells, tangerine lip), a raked faceted glass canopy over
+  the door with graphite frame bars, three swept graphite fins that double as landing legs (tangerine
+  tips, cyan leading-edge lines, orange running lamps), dark panel seams, cyan seams, raised plates,
+  vent grilles, RCS nubs, grab rails, a mast beacon, and a big porthole in the door with Lumi's C-eye
+  glyph. Seedglider palette; the paint is a satin pearl clear-coat with a re-entry heat-tint gradient
+  (straw, bronze, blue-violet, soot at the base) driven by one `heat` uniform. Same model in the ark's
+  rack, the intro fall and the crash site.
+- **Condition** (`EscapePod.set_condition` / `animate`, driven by `CrashSite` from the upgrades
+  already bought; nothing new saved): 0 crash-damaged (heat-tinted and sooty, cracked canopy and
+  porthole, a torn panel over live wiring with a swaying dangling cable, stuttering seams and glyph,
+  sparks, smoke); 1 patched (bolted steel plates, strobing fin lamps, faint smoke); 2 restored
+  (`REPAIR_LEVELS` = 4: clean pearl and tangerine, lit fin edges, a soft pulsing hover glow and light
+  under the skirt); 3 planter-beacon (`PLANTER_LEVELS` = 14: a ring of seedlings round the skirt and
+  a soft green beacon beam).
+- **Loading screen** (`ui/loading_vignette.gd`): the 2D bar art is replaced by a small 3D street in
+  the game's look (real ground material and junk meshes, one warm light, fog, soft edges) where red
+  Lumi (`LoadingVignette.make_lumi()`, the Pixel colourway; swap in the hero helper's red Lumi there)
+  glides along as the bar fills and beams up each piece. Built on first use, never headless
+  (`--loader-2d` keeps the old 2D bar).
+- **Title screen** (`ui/title_cinematic.gd`, hooked from `ui/main_menu.gd`): a 72 s loop: high over the
+  junk-covered district, over the crash site (damaged pod smoking and sparking), down to Lumi, who
+  cleans the clearing piece by piece (beam, the piece lifts and vanishes, a hop), then up again.
+  Low preset: fewer pieces. Dev: `--title-t=S` start time, `--title-hold` freeze the camera.
