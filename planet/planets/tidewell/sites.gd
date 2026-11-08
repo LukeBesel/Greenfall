@@ -538,28 +538,71 @@ func _site_stilts() -> void:
 
 # --- Landmarks -----------------------------------------------------------------------------------
 
-## A reef garden: coral heads and shallows round a sandbar; ruined, bleached dead coral breaks the
-## surface among nets; restored, live coral (also drawn under the water by the sea shader), and
-## floating garden rafts.
+## A reef garden ([p_seas] art pass): coral heads breaking the surface round a sandbar. Every head
+## is a cluster: branching staghorn coral, a brain dome, a table plate on a stalk, tube sponges.
+## Ruined: the same shapes bleached bone-white among ghost nets; restored: living colours, and
+## floating garden rafts (pontoon decks with kit planters) moored round the reef.
 func _site_reef() -> void:
-	var ruin := FrontierView.Batch.new()
-	var grn := FrontierView.Batch.new()
-	for k: int in 26:
+	var ruin: KitMesh.Builder = TideProps.builder(self, "ruin")
+	var grn: KitMesh.Builder = TideProps.builder(self, "green")
+	var live: Array[String] = ["paint:#f2785a", "paint:#ffb347", "paint:#c46bd6", "paint:#4fc3b0", "paint:#f25c8a", "paint:#ffd166"]
+	for k: int in 22:
 		var a: float = _rng.randf() * TAU
 		var d: float = sqrt(_rng.randf()) * 24.0
-		var p := Vector3(cos(a) * d * 1.3, 0, sin(a) * d)
-		var s: float = _rng.randf_range(0.5, 1.5)
-		var y: float = SEA_Y - _rng.randf_range(0.0, 0.35)
-		ruin.add(_lumpy(k % 5, 0.6, 3.5), _lxf(Vector3(p.x, y, p.z), Vector3(0, _rng.randf() * 360, 0), Vector3(s, s * 0.6, s)), _mat("coral_dead"))
-		if k % 2 == 0:
-			grn.add(_lumpy((k + 1) % 5, 0.65, 4.0), _lxf(Vector3(p.x, y - 0.05, p.z), Vector3(0, _rng.randf() * 360, 0), Vector3(s * 0.8, s * 0.5, s * 0.8)), _mat("coral"))
-	for k: int in 6:
-		var a: float = TAU * k / 6.0 + 0.3
-		var gp := Vector3(cos(a) * 30.0, SEA_Y, sin(a) * 26.0)
-		_decks.append(Vector3(gp.x, gp.z, 3.0))
-		_planter(grn, gp + Vector3(0, -0.15, 0), _rng.randf_range(1.4, 2.4))
-	ruin.flush(_groups["ruin"])
-	grn.flush(_groups["green"])
+		var p := Vector3(cos(a) * d * 1.3, SEA_Y - _rng.randf_range(0.6, 1.0), sin(a) * d)
+		var s: float = _rng.randf_range(0.7, 1.4)
+		var c1: String = live[k % live.size()]
+		var c2: String = live[(k * 3 + 1) % live.size()]
+		for b: Array in [[ruin, "paint:#e9e3d3", "paint:#d8d0bf"], [grn, c1, c2]]:
+			_coral_head(b[0], p, s, str(b[1]), str(b[2]), k)
+	# Floating garden rafts round the reef (restored).
+	for k: int in 5:
+		var a: float = TAU * k / 5.0 + 0.3
+		var gp := Vector3(cos(a) * 31.0, SEA_Y, sin(a) * 27.0)
+		_decks.append(Vector3(gp.x, gp.z, 3.5))
+		var t := Transform3D(Basis(Vector3.UP, a + PI * 0.5), gp)
+		for sd: float in [-1.0, 1.0]:
+			grn.add("paint:orange", KitMesh.bevel_cylinder(0.42, 4.2, 0.1, 14), t * Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3(2.1, 0.05, sd * 1.1)))
+		grn.box("paint:" + TideProps.TIMBER, Vector3(4.6, 0.14, 3.0), t * KitMesh.xf(Vector3(0, 0.5, 0)), 0.04)
+		KitProps.planter(grn, t * KitMesh.xf(Vector3(0, 0.57, -0.5)), 3.2, "restored")
+		KitProps.planter(grn, t * KitMesh.xf(Vector3(0, 0.57, 0.7)), 2.4, "restored")
+	TideProps.flush(self, ruin, "ruin")
+	TideProps.flush(self, grn, "green")
+
+
+## One coral head at p (crest about at sea level), scale s, two colours.
+func _coral_head(b: KitMesh.Builder, p: Vector3, s: float, c1: String, c2: String, k: int) -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 900 + k  # same shape ruined and restored
+	# Rock base and a brain dome.
+	TideProps.add_mesh(b, c2, _lumpy(k % 5, 0.35, 2.4), Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(1.6, 0.7, 1.3) * s), p))
+	TideProps.add_mesh(b, c1, _lumpy((k + 2) % 5, 0.12, 6.0), Transform3D(Basis().scaled(Vector3(0.8, 0.55, 0.8) * s), p + Vector3(rng.randf_range(-0.6, 0.6), 0.5 * s, rng.randf_range(-0.6, 0.6))))
+	# Staghorn: forking rods with rounded tips.
+	for br: int in 3:
+		var base: Vector3 = p + Vector3(rng.randf_range(-0.9, 0.9), 0.4 * s, rng.randf_range(-0.9, 0.9)) * s
+		var dir := Vector3(rng.randf_range(-0.5, 0.5), 1.0, rng.randf_range(-0.5, 0.5)).normalized()
+		_branch(b, base, dir, 0.9 * s, 0.13 * s, 3, rng, c1)
+	# Table coral on a stalk, tube sponges.
+	if k % 3 == 0:
+		var tp: Vector3 = p + Vector3(rng.randf_range(-1.2, 1.2), 0.0, rng.randf_range(-1.2, 1.2)) * s
+		b.rod(c2, tp, tp + Vector3(0, 0.9 * s, 0), 0.12 * s, 8)
+		b.add(c2, KitMesh.bevel_cylinder(1.1 * s, 0.14 * s, 0.05, 18), Transform3D(Basis(Vector3.RIGHT, rng.randf_range(-0.12, 0.12)), tp + Vector3(0, 0.9 * s, 0)))
+	for t: int in 3:
+		var sp: Vector3 = p + Vector3(rng.randf_range(-1.3, 1.3), 0.2 * s, rng.randf_range(-1.3, 1.3)) * s
+		var h: float = rng.randf_range(0.5, 1.0) * s
+		b.add(c1 if t % 2 else c2, KitMesh.bevel_cylinder(0.14 * s, h, 0.04, 10), Transform3D(Basis(Vector3.FORWARD, rng.randf_range(-0.3, 0.3)), sp))
+		b.add("dark_steel", KitMesh.bevel_cylinder(0.09 * s, 0.04, 0.01, 10), Transform3D(Basis(), sp + Vector3(0, h - 0.01, 0)))
+
+
+func _branch(b: KitMesh.Builder, a: Vector3, dir: Vector3, ln: float, r: float, depth: int, rng: RandomNumberGenerator, key: String) -> void:
+	var c: Vector3 = a + dir * ln
+	b.rod(key, a, c, r, 6)
+	b.add(key, KitMesh.pebble(depth % 4), Transform3D(Basis().scaled(Vector3.ONE * r * 1.1), c))
+	if depth <= 0:
+		return
+	for f: int in 2:
+		var nd := (dir + Vector3(rng.randf_range(-0.7, 0.7), 0.25, rng.randf_range(-0.7, 0.7))).normalized()
+		_branch(b, c, nd, ln * 0.7, r * 0.75, depth - 1, rng, key)
 
 
 ## A buoy field: rows of mooring buoys strung with rope and snagged ghost nets (ruin); restored,
