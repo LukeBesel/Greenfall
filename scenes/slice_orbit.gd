@@ -59,6 +59,8 @@ func build(p_world: Node3D) -> void:
 	globe.name = "Globe"
 	w.add_child(globe)
 	globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}))
+	if od.has("field"):
+		globe.field.apply_dict(od["field"])
 	w.set("planet", globe.planet)
 	w.set("field", globe.field)
 	w.set("view", globe.junk_view)
@@ -123,7 +125,7 @@ func build(p_world: Node3D) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	w.add_to_group("persist")
 	var g: OrbitPlanet = globe
-	print("[orbit] %s f=%d" % [pid, g.grid.freq])
+	print("[orbit] %s f=%d near ring: pieces=%d parts=%d landmarks=%d mounds=%d" % [pid, g.grid.freq, g.field.piece_pos.size(), g.field.part_pos.size(), g.field.landmarks.size(), g.junk_view.mound_count()])
 	print("[orbit] slice on the globe: R=%.0fm hexes=%d around=%.1fkm hubs=%d (nearest hub mean %.0fm, min %.0fm) loaded=%s built=%dms planet=%dms grid=%dms settle=%dms" % [
 		g.grid.radius_m, g.grid.cell_count(), TAU * g.grid.radius_m / 1000.0, g.sites.size(), g.hub_spacing(false), g.hub_spacing(true),
 		str(loaded), Time.get_ticks_msec() - t0, g.stats["planet_ms"], g.stats["grid_ms"], g.stats["settle_ms"]])
@@ -199,6 +201,7 @@ func collect_piece(pid: int) -> void:
 	var became_clean: bool = field.remove_piece(pid)
 	globe.write_cell(hid)
 	globe.junk_view.hide_piece(pid)
+	globe.junk_view.refresh_hex(hid, became_clean)
 	if became_clean:
 		on_hex_clean(hid)
 
@@ -295,6 +298,7 @@ func persist_save() -> void:
 		"cells_n": g.grid.cell_count(),
 		"planet": g.planet.to_dict(),
 		"cells": g.cells.to_dict(),
+		"field": g.field.to_dict(),  # found parts, unlocked cells
 		"day_t": day.elapsed(),
 		"lumi": {"at": g.to_dirh(patch.global_position), "fwd": _v_arr(patch.forward()), "cargo": pd},
 		"cubes": cubes,
