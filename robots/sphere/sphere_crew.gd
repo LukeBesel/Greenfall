@@ -374,7 +374,7 @@ func wants(role: String, c: int) -> bool:
 
 ## Floating junk on a lake hex (SphereField: water cells with junk left).
 func water_dirty(c: int) -> bool:
-	return cells.state[c] == 5 and cells.junk[c] > 0.02
+	return cells.state[c] == 5 and cells.junk[c] > SphereCells.CLEAN_LEFT  # [v2feel]
 
 
 ## Junk units in an untouched cell: a land hex, or a lake hex's floaters.
@@ -415,7 +415,7 @@ func work_cell(c: int, left: float) -> void:
 	_touched[c] = true
 	var was_dirty: bool = cells.is_dirty(c) or water_dirty(c)
 	var gone: PackedInt32Array = SphereOffline.write_cell(cells, field, c, left)
-	if left > 0.02 and (cells.is_dirty(c) or water_dirty(c)):
+	if left > SphereCells.CLEAN_LEFT and (cells.is_dirty(c) or water_dirty(c)):  # [v2feel]
 		_left[c] = [left, _real_left(c)]
 	else:
 		_left.erase(c)

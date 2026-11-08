@@ -388,7 +388,7 @@ func _complete_goal() -> void:
 
 func _hex_ok(h: int) -> bool:
 	var f: HexField = world.field
-	return h >= 0 and h < f.hex_count() and not f.is_clean(h) and f.hex_hub[h] == 0 and not f.is_water(h) and not f.locked.has(h)
+	return h >= 0 and h < f.hex_count() and not f.is_clean(h) and f.hex_hub[h] == 0 and not f.is_water(h) and not f.locked.has(h) and Pace.hex_clearable(f, h)  # [v2feel] clearable now
 
 
 ## The hex to finish: kept while it is unfinished, so the outline doesn't flicker as Lumi walks.

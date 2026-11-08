@@ -97,7 +97,7 @@ func _tint(c: int) -> void:
 
 
 func _clear(c: int) -> bool:
-	return cells.junk[c] <= 0.02
+	return SphereCells.clean_left(cells.junk[c])  # [v2feel]
 
 
 func count() -> int:

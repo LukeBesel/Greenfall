@@ -104,8 +104,17 @@ func has_flag(i: int, f: int) -> bool:
 	return (flags[i] & f) != 0
 
 
+## [v2feel] THE "this cell is clean" rule (owner item 36): 95% cleared counts as clean and the
+## rest sweeps away. Lumi, robots, offline, saves and loads all test junk left against this.
+const CLEAN_LEFT: float = 0.05
+
+
+static func clean_left(left: float) -> bool:
+	return left <= CLEAN_LEFT
+
+
 func is_dirty(i: int) -> bool:
-	return state[i] == 0 and junk[i] > 0.02
+	return state[i] == 0 and junk[i] > CLEAN_LEFT
 
 
 func _touch(i: int) -> void:
