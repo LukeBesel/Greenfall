@@ -42,6 +42,7 @@ void fragment() {
 
 func start() -> void:
 	_t = 0.0
+	print("[eggs] looking through the telescope at %s" % str(target))
 	_lock(true)
 	var eye: Vector3 = eyepiece()
 	cam = Camera3D.new()
@@ -69,6 +70,9 @@ func start() -> void:
 	rect.material = mask
 	_layer.add_child(rect)
 	cam.current = true
+	if DevHooks.has("shot"):  # dev: slow software renders capture the open eyepiece, not the iris
+		_open = 1.0
+		_t = 2.2
 
 
 ## World position of the eyepiece (back end of the brass tube), a little behind it.
@@ -96,7 +100,7 @@ func _process(delta: float) -> void:
 	if _done or cam == null:
 		return
 	_t += delta
-	if _t >= HOLD_S:
+	if _t >= HOLD_S + (60.0 if DevHooks.has("shot") else 0.0):
 		_closing = true
 	_open = move_toward(_open, 0.0 if _closing else 1.0, delta / 0.6)
 	var e: float = _open * _open * (3.0 - 2.0 * _open)

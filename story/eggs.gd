@@ -933,14 +933,9 @@ func _peek_stars(e: Dictionary) -> void:
 			found(id))
 	Audio.play("servo", 0.8, -8.0)
 	if head:
-		var tw := head.create_tween()
-		tw.tween_property(head, "rotation:z", elev, 0.8).set_trans(Tween.TRANS_SINE)
-		tw.tween_callback(func() -> void:
-			add_child(peek)
-			peek.start())
-	else:
-		add_child(peek)
-		peek.start()
+		head.rotation.z = elev  # on the Wren (the tube is hidden while we look through it)
+	add_child(peek)
+	peek.start()
 
 
 func _hop(n: Node3D) -> void:
