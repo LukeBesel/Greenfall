@@ -298,7 +298,7 @@ func _process(delta: float) -> void:
 				_planet_frac = world.planet_fraction()
 		var frac: float = _planet_frac
 		_planet_label.text = "%s   %s%%" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(frac * 100.0)]
-		if orb is SliceOrbit:  # [orbB] the globe has no district: one planet line (hub regions), its bar
+		if world.get("orbit") is SliceOrbit:  # [orbB] the globe has no district: one planet line (hub regions), its bar
 			_field_label.text = _planet_label.text
 			_field_frac = frac
 			_planet_label.visible = false
