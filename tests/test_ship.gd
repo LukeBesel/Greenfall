@@ -105,3 +105,13 @@ func test_ark_keeps_its_api() -> void:
 	ark.release_pod(2, false)
 	assert_gt(ark.wake_points().size(), 10)
 	assert_gt(ark.dome_world().y, 5.0)
+
+
+func test_no_floating_3d_text() -> void:
+	# [ship2] Owner: no text over 3D. The pad (and its level 4 hologram) carry no Label3D captions.
+	for holo: bool in [false, true]:
+		var pad := LaunchPad.new()
+		pad.construction = holo
+		add_child_autofree(pad)
+		var labels: Array = pad.find_children("*", "Label3D", true, false).filter(func(n: Node) -> bool: return (n as Node3D).is_visible_in_tree())
+		assert_eq(labels.size(), 0, "no captions on the pad (hologram=%s)" % holo)
