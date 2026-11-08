@@ -315,13 +315,13 @@ func _plank_deck(b: FrontierView.Batch, c: Vector3, rx: float, rz: float, y: flo
 			var half: float = rz * sqrt(maxf(0.0, 1.0 - u * u))
 			var a: float = atan2(0.0, u)
 			half *= 1.0 + nz.get_noise_2d(u * 2.0, 0.0) * 0.18
-			var z0: float = -half * (1.0 + nz.get_noise_2d(u * 3.0, 5.0) * 0.1)
+			var z0: float = -half
 			var z1: float = half
 			var z: float = z0
 			while z < z1 - 0.4:
 				var ln: float = minf(_rng.randf_range(2.0, 4.5), z1 - z)
 				var pc := c + bs * Vector3(x + w * 0.5, y - 0.05 + _rng.randf_range(-0.015, 0.015), z + ln * 0.5)
-				_box(b, pc, Vector3(w - 0.03, 0.1, ln - 0.04), _mat(tones[_rng.randi() % 3]), Vector3(_rng.randf_range(-0.6, 0.6), rad_to_deg(yaw), _rng.randf_range(-0.6, 0.6)))
+				_box(b, pc, Vector3(w - 0.03, 0.1, ln - 0.04), _mat(tones[_rng.randi() % 3]), Vector3(_rng.randf_range(-0.3, 0.3), rad_to_deg(yaw), _rng.randf_range(-0.3, 0.3)))
 				z += ln
 			if int(x / 2.2) != int((x + w) / 2.2):  # a joist every couple of metres
 				_box(b, c + bs * Vector3(x, y - 0.22, (z0 + z1) * 0.5), Vector3(0.2, 0.22, z1 - z0), _mat("trunk"), Vector3(0, rad_to_deg(yaw), 0))
@@ -351,11 +351,16 @@ func _mat(key: String) -> Material:
 			_mats[key] = r
 			return r
 		"plank_a", "plank_b", "plank_c":
-			var tint: Color = {"plank_a": Color(0.62, 0.48, 0.34), "plank_b": Color(0.52, 0.42, 0.32), "plank_c": Color(0.68, 0.6, 0.5)}[key]
-			var pl := AssetLib.pbr_material("rusty_painted_metal", 0.6, tint, true)
-			pl.metallic = 0.0
-			pl.metallic_texture = null
-			pl.roughness = 0.9
+			# Sun- and salt-bleached timber: per-plank tones, fine grain from a stretched normal map.
+			var tint: Color = {"plank_a": Color(0.74, 0.64, 0.52), "plank_b": Color(0.62, 0.53, 0.43), "plank_c": Color(0.8, 0.74, 0.64)}[key]
+			var pl := StandardMaterial3D.new()
+			pl.albedo_color = tint
+			pl.roughness = 0.88
+			pl.normal_enabled = true
+			pl.normal_texture = AssetLib.tex("concrete_floor_worn_001", "nor_gl")
+			pl.normal_scale = 0.5
+			pl.uv1_triplanar = true
+			pl.uv1_scale = Vector3(0.3, 0.3, 3.0)
 			_mats[key] = pl
 			return pl
 		"deck":
