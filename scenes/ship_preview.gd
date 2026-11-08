@@ -41,7 +41,12 @@ func _ready() -> void:
 				_cam.position = Vector3(-52.0, 32.0, -46.0)
 				_cam.look_at(Vector3(0, 13.0, 1.0), Vector3.UP)
 			else:
-				_cam.position = Vector3(30.0, -14.0, -34.0)
+				var under := DirectionalLight3D.new()  # light the belly and the pod rack
+				under.rotation_degrees = Vector3(55, 30, 0)
+				under.light_energy = 1.3
+				under.light_color = Color(0.85, 0.9, 1.0)
+				add_child(under)
+				_cam.position = Vector3(40.0, -18.0, -46.0)
 				_cam.look_at(Vector3(0, 9.0, -1.0), Vector3.UP)
 		"pair":
 			var w2: float = _row([1, 7] as Array[int], 10.5, 32.0)
