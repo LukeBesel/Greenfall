@@ -39,6 +39,9 @@ void fragment() {
 """
 
 var world: Node
+## [onboard] The focus outline (the hex Lumi stands in) is dimmer and has no % label.
+var show_label: bool = true
+var strength: float = 1.0
 var hex: int = -1
 var _want: int = -1
 var _alpha: float = 0.0
@@ -48,6 +51,7 @@ var _label: Label3D
 var _loops: Array[PackedVector2Array] = []
 var _inward: Array[float] = []
 var _height_t: float = 0.0
+var _cache: Dictionary = {}  # hex -> loops (contours cost ~30 ms; Lumi walks back and forth)
 
 static var _shader: Shader
 
@@ -100,10 +104,11 @@ func _process(delta: float) -> void:
 	if not visible:
 		return
 	var frac: float = f.removed_fraction(hex)
-	_mat.set_shader_parameter("alpha", _alpha * (0.85 + 0.15 * sin(Time.get_ticks_msec() * 0.0021)))
+	_mat.set_shader_parameter("alpha", strength * _alpha * (0.8 + 0.2 * sin(Time.get_ticks_msec() * 0.0021)))
 	_mat.set_shader_parameter("tint", CYAN.lerp(GREEN, clampf(frac, 0.0, 1.0)))
 	_mat.set_shader_parameter("run", 0.0 if Settings.reduced_motion else 1.0)
 	_label.text = "%d%%" % int(floor(frac * 100.0))
+	_label.visible = show_label
 	_label.modulate.a = _alpha
 	_label.outline_modulate.a = 0.55 * _alpha
 	_height_t -= delta
@@ -113,7 +118,9 @@ func _process(delta: float) -> void:
 
 
 func _build(f: HexField) -> void:
-	_loops = contour(f, hex)
+	if not _cache.has(hex):
+		_cache[hex] = contour(f, hex, maxf(STEP_M, f.hex_size * 0.06))
+	_loops = _cache[hex]
 	_inward.clear()
 	for loop: PackedVector2Array in _loops:
 		_inward.append(_inward_sign(f, loop))

@@ -27,6 +27,8 @@ var step: int = 0
 var revealed: bool = false
 var target_hex: int = -1
 var outline: ObjectiveHex
+var focus_outline: ObjectiveHex  ## the hex Lumi stands in: a dimmer laser border, no label
+var waypoint: Waypoint
 var marker: TutorialMarker
 var _t: float = 0.0
 var _hold: float = 0.0
@@ -47,6 +49,14 @@ func _ready() -> void:
 	outline = ObjectiveHex.new()
 	outline.world = world
 	add_child(outline)
+	focus_outline = ObjectiveHex.new()
+	focus_outline.world = world
+	focus_outline.show_label = false
+	focus_outline.strength = 0.5
+	add_child(focus_outline)
+	waypoint = Waypoint.new()
+	waypoint.world = world
+	add_child(waypoint)
 	if not GameState.flags.get("onboard_brief", false) and _veteran():
 		GameState.flags["onboard_brief"] = true  # an older save: no brief, no toasts for the backlog
 	if GameState.flags.get("onboard_brief", false):
@@ -185,7 +195,10 @@ func hex_fraction() -> float:
 # --- Frame ------------------------------------------------------------------------------------
 
 func _process(delta: float) -> void:
-	if world == null or not revealed:
+	if world == null:
+		return
+	_update_focus()
+	if not revealed:
 		return
 	_explain_signal()
 	_hold = maxf(0.0, _hold - delta)
@@ -194,6 +207,7 @@ func _process(delta: float) -> void:
 		return
 	_t = REFRESH_S
 	var def: Dictionary = current()
+	waypoint.set_target(waypoint_target())
 	if def.is_empty() or _hold > 0.0:
 		_set_hex(-1)
 		return
@@ -307,6 +321,71 @@ func _point_at_last() -> void:
 		marker.world = world
 		add_child(marker)
 	marker.set_target(f.piece_pos[out], "piece")
+
+
+# --- Focus outline and waypoint ------------------------------------------------------------------
+
+## The hex Lumi is standing in gets a soft laser border while it still has junk (not the
+## objective's hex: that one has its own, brighter one).
+func _update_focus() -> void:
+	var p: Patch = world.get("patch") as Patch
+	var f: HexField = world.get("field") as HexField
+	if p == null or f == null or focus_outline == null:
+		return
+	var h: int = p.focus_hex()
+	var ok: bool = h >= 0 and h < f.hex_count() and f.hex_hub[h] == 0 and not f.is_clean(h) and not f.is_water(h)
+	focus_outline.set_hex(h if ok and h != target_hex else -1)
+
+
+## Where the purple waypoint points: the current objective's place (the scale with a bale in
+## hand, the workbench for builds, the greenhouse once WREN hears the seed tin), or with no
+## objective running, the current goal's (a memory shard, the scale, the workbench, a buried part).
+## null = nothing to point at (or the restart checklist's own marker is on).
+func waypoint_target() -> Variant:
+	if int(GameState.flags.get("tutorial_step", 0)) < Tutorial.STEPS.size():
+		return null
+	var p: Patch = world.get("patch") as Patch
+	if p == null:
+		return null
+	var def: Dictionary = current()
+	if not def.is_empty():
+		match str(def.get("id", "")):
+			"power":
+				return _depot_pos() if not p.carried.is_empty() else null
+			"robot", "haul", "base2", "base3":
+				return _bench_pos()
+			"seed":
+				if GameState.flags.get("seed_signal", false) and not GameState.flags.get("seeds_unlocked", false):
+					return FirstSeed.GREENHOUSE_POS
+		return null
+	var gl: Goals = world.get("goals") as Goals
+	if gl == null or gl.current().is_empty():
+		return null
+	var g: Dictionary = gl.chain[gl.current()[0]]
+	match str(g.get("key", "")):
+		"shards_found":
+			var sh: Variant = world.get("shards")
+			if sh is ShardSystem:
+				var w: Dictionary = (sh as ShardSystem).waypoint(p.global_position)
+				return w.get("pos", null)
+		"cubes_cashed":
+			return _depot_pos()
+		"upgrades_bought", "compartment_size":
+			return _bench_pos()
+		"parts_found":
+			if p.detector and p.detector.target >= 0:
+				return world.field.part_pos[p.detector.target]
+	return null
+
+
+func _bench_pos() -> Variant:
+	var sc: Script = world.get_script() as Script
+	return sc.get_script_constant_map().get("BOARD_POS", null) if sc else null
+
+
+func _depot_pos() -> Variant:
+	var d: Variant = world.get("depot")
+	return (d as Node3D).global_position if d is Node3D else null
 
 
 # --- The part detector -------------------------------------------------------------------------

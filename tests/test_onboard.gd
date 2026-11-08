@@ -163,3 +163,21 @@ func test_objective_card_shows_current() -> void:
 	card.refresh(false)
 	assert_true(o.current().is_empty())
 	o.free()
+
+
+func test_waypoint_quiet_during_checklist_and_builds() -> void:
+	var o := Objectives.new()
+	GameState.flags["tutorial_step"] = 0
+	assert_eq(o.waypoint_target(), null, "the checklist has its own marker")
+	o.free()
+	var w := Waypoint.new()
+	add_child_autofree(w)
+	assert_eq(w._trail.multimesh.instance_count, Waypoint.TRAIL_N)
+	w.set_target(Vector3(10, 0, 0))
+	assert_eq(w._target, Vector3(10, 0, 0))
+
+
+func test_shard_goal_wording_is_plain() -> void:
+	var g: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/goals.json"))
+	for d: Dictionary in g["goals"]:
+		assert_ne(str(d["text"]), "Read a memory shard", "says what to do: find one (purple marker)")

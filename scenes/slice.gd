@@ -504,9 +504,10 @@ func _ready() -> void:
 	intro = Intro.new()
 	intro.world = self
 	add_child(intro)
+	# [onboard] The old "LM-1 online..." wake toast flashed by too fast to read; WREN's brief and the
+	# objective card (story/objectives.gd) tell the plan now, and they stay.
 	var wake := func() -> void:
-		get_tree().create_timer(1.5).timeout.connect(func() -> void:
-			Story.once("wake", tr("LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."), "story"))
+		pass
 	if intro.should_play():
 		intro.finished.connect(wake)
 		hud.visible = false  # [first] no one-frame HUD/world flash before the deferred intro starts

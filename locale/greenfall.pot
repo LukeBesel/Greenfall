@@ -1170,59 +1170,55 @@ msgstr ""
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr ""
 
-#: scenes/slice.gd:509
-msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
-msgstr ""
-
-#: scenes/slice.gd:823
+#: scenes/slice.gd:824
 msgid "HEX CLEAN!  +%s"
 msgstr ""
 
-#: scenes/slice.gd:837
+#: scenes/slice.gd:838
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
-#: scenes/slice.gd:839
+#: scenes/slice.gd:840
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr ""
 
-#: scenes/slice.gd:846
+#: scenes/slice.gd:847
 msgid "%s is out of range: %s"
 msgstr ""
 
-#: scenes/slice.gd:856
+#: scenes/slice.gd:857
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr ""
 
-#: scenes/slice.gd:859 ui/rockets_panel.gd:39
+#: scenes/slice.gd:860 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr ""
 
-#: scenes/slice.gd:913
+#: scenes/slice.gd:914
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr ""
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:915
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr ""
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:915
 msgid "Landed on the base pad."
 msgstr ""
 
-#: scenes/slice.gd:1010
+#: scenes/slice.gd:1011
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
-#: scenes/slice.gd:1181
+#: scenes/slice.gd:1182
 msgid "Welcome back. The junk waited for you."
 msgstr ""
 
-#: scenes/slice.gd:1198
+#: scenes/slice.gd:1199
 msgid "OUTPOST %d · Lv%d"
 msgstr ""
 
-#: scenes/slice.gd:1198
+#: scenes/slice.gd:1199
 msgid "OUTPOST %d · RUIN"
 msgstr ""
 
@@ -1791,15 +1787,15 @@ msgstr ""
 msgid "MISMATCH"
 msgstr ""
 
-#: story/objectives.gd:218
+#: story/objectives.gd:238
 msgid "Objective complete  ·  %s"
 msgstr ""
 
-#: story/objectives.gd:319
+#: story/objectives.gd:404
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr ""
 
-#: story/objectives.gd:320
+#: story/objectives.gd:405
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr ""
 
@@ -3589,48 +3585,52 @@ msgstr ""
 msgid "HEX  %d%% CLEAR"
 msgstr ""
 
-#: ui/hud.gd:314
+#: ui/hud.gd:313
+msgid "%s  BASE"
+msgstr ""
+
+#: ui/hud.gd:316
 msgid "CARRYING %d/%d"
 msgstr ""
 
-#: ui/hud.gd:336
+#: ui/hud.gd:340
 msgid "HEX  CLEAR"
 msgstr ""
 
-#: ui/hud.gd:340
+#: ui/hud.gd:344
 msgid "HEX  %s"
 msgstr ""
 
-#: ui/hud.gd:343
+#: ui/hud.gd:347
 msgid "  SUSTAIN %d%%"
 msgstr ""
 
-#: ui/hud.gd:345
+#: ui/hud.gd:349
 msgid "  THIRSTY"
 msgstr ""
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:370
+#: ui/hud.gd:374
 msgid "%s   pick up bale"
 msgstr ""
 
-#: ui/hud.gd:371
+#: ui/hud.gd:375
 msgid "%s   dig up part"
 msgstr ""
 
-#: ui/hud.gd:372
+#: ui/hud.gd:376
 msgid "%s   read memory shard"
 msgstr ""
 
-#: ui/hud.gd:373
+#: ui/hud.gd:377
 msgid "%s   pick up the seed tin"
 msgstr ""
 
-#: ui/hud.gd:374
+#: ui/hud.gd:378
 msgid "%s   set bale down"
 msgstr ""
 
-#: ui/hud.gd:375
+#: ui/hud.gd:379
 msgid "%s   workbench"
 msgstr ""
 
@@ -8871,7 +8871,7 @@ msgid "Compartment Size level 3"
 msgstr ""
 
 #: data/goals.json:goals[shards_1].text
-msgid "Read a memory shard"
+msgid "Find a memory shard"
 msgstr ""
 
 #: data/goals.json:goals[hex_3].text
@@ -9832,18 +9832,6 @@ msgstr ""
 msgid "It carries bales to the scale for you."
 msgstr ""
 
-#: data/objectives.json:objectives[base2].text
-msgid "Rebuild the base: level 2"
-msgstr ""
-
-#: data/objectives.json:objectives[base2].desc
-msgid "A bigger base runs more robots."
-msgstr ""
-
-#: data/objectives.json:objectives[base2].lines
-msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
-msgstr ""
-
 #: data/objectives.json:objectives[seed].text
 msgid "Plant the first seed"
 msgstr ""
@@ -9854,6 +9842,18 @@ msgstr ""
 
 #: data/objectives.json:objectives[seed].hint
 msgid "Keep clearing ground. WREN is listening for seeds."
+msgstr ""
+
+#: data/objectives.json:objectives[base2].text
+msgid "Rebuild the base: level 2"
+msgstr ""
+
+#: data/objectives.json:objectives[base2].desc
+msgid "A bigger base runs more robots."
+msgstr ""
+
+#: data/objectives.json:objectives[base2].lines
+msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
 msgstr ""
 
 #: data/objectives.json:objectives[base3].text

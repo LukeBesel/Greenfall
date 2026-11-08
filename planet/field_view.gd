@@ -337,8 +337,9 @@ func set_life(id: int, life: float) -> void:
 	_life_tex.update(_life_img)
 
 
-func set_focus_hex(id: int) -> void:
-	_ground_mat.set_shader_parameter("focus_axial", Vector2(9999, 9999) if id < 0 else Vector2(field.hex_axial[id]))
+func set_focus_hex(_id: int) -> void:
+	# [onboard] The straight amber focus line is replaced by the laser outline (story/objective_hex.gd).
+	_ground_mat.set_shader_parameter("focus_axial", Vector2(9999, 9999))
 
 
 func set_grid_visible(v: float) -> void:

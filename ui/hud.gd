@@ -309,6 +309,8 @@ func _update_context(delta: float, minimal: bool) -> void:
 			hex_text = tr("HEX  %d%% CLEAR") % int(floor(world.field.removed_fraction(h) * 100.0))
 		else:
 			hex_text = _short_level(h)
+	elif h >= 0 and world:  # [onboard] on the hub ground: say where you are
+		hex_text = tr("%s  BASE") % str(world.district_name).to_upper()
 	var strong: bool = _signal_text != "" and (_signal_strength >= 0.5 or not minimal)
 	if not patch.carried.is_empty():
 		text = tr("CARRYING %d/%d") % [patch.carried.size(), patch.carry_cap()]
@@ -323,7 +325,9 @@ func _update_context(delta: float, minimal: bool) -> void:
 	_context_idle += delta
 	_context.text = text
 	_context.add_theme_color_override("font_color", _signal_color if strong and patch.carried.is_empty() else CONTEXT_COLOR)
-	var want: float = 1.0 if (_context_idle < CONTEXT_HOLD_S or strong or not patch.carried.is_empty()) and text != "" else 0.0
+	# [onboard] Always on (playtest 2: "always show the % of the hex I'm standing in"); it only
+	# brightens for a few seconds after a change.
+	var want: float = (1.0 if (_context_idle < CONTEXT_HOLD_S or strong or not patch.carried.is_empty()) else 0.8) if text != "" else 0.0
 	if hotbar.celebrating():
 		want = 0.0
 	_context.modulate.a = move_toward(_context.modulate.a, want, delta * (4.0 if want > 0.0 else 1.2))

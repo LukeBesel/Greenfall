@@ -1172,59 +1172,55 @@ msgstr "水"
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーンを塗って、好きな場所にクルーを送ろう。"
 
-#: scenes/slice.gd:509
-msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
-msgstr "LM-1 起動。ブルームコア 4%：緑の光 微弱。Cradle号リレー：かすか。何かを育てよう。"
-
-#: scenes/slice.gd:823
+#: scenes/slice.gd:824
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
-#: scenes/slice.gd:837
+#: scenes/slice.gd:838
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice.gd:839
+#: scenes/slice.gd:840
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
 
-#: scenes/slice.gd:846
+#: scenes/slice.gd:847
 msgid "%s is out of range: %s"
 msgstr "%s は範囲外：%s"
 
-#: scenes/slice.gd:856
+#: scenes/slice.gd:857
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:859 ui/rockets_panel.gd:39
+#: scenes/slice.gd:860 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:913
+#: scenes/slice.gd:914
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陸：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:915
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:915
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:1010
+#: scenes/slice.gd:1011
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice.gd:1181
+#: scenes/slice.gd:1182
 msgid "Welcome back. The junk waited for you."
 msgstr "おかえり。ガラクタが待っていたよ。"
 
-#: scenes/slice.gd:1198
+#: scenes/slice.gd:1199
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:1198
+#: scenes/slice.gd:1199
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
@@ -1814,15 +1810,15 @@ msgstr "項目 %04d   チェックサム %s"
 msgid "MISMATCH"
 msgstr "不一致"
 
-#: story/objectives.gd:224
+#: story/objectives.gd:238
 msgid "Objective complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:325
+#: story/objectives.gd:404
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr "ピッピッて音、聞こえる？探知機が近くに埋まったロボットのパーツを見つけたの。速く鳴るほど近いよ。"
 
-#: story/objectives.gd:326
+#: story/objectives.gd:405
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
 
@@ -3619,48 +3615,52 @@ msgstr "旧市街   0%"
 msgid "HEX  %d%% CLEAR"
 msgstr "ヘックス  %d%% きれい"
 
-#: ui/hud.gd:314
+#: ui/hud.gd:313
+msgid "%s  BASE"
+msgstr "%s  基地"
+
+#: ui/hud.gd:316
 msgid "CARRYING %d/%d"
 msgstr "運搬中 %d/%d"
 
-#: ui/hud.gd:336
+#: ui/hud.gd:340
 msgid "HEX  CLEAR"
 msgstr "ヘックス  きれい"
 
-#: ui/hud.gd:340
+#: ui/hud.gd:344
 msgid "HEX  %s"
 msgstr "ヘックス  %s"
 
-#: ui/hud.gd:343
+#: ui/hud.gd:347
 msgid "  SUSTAIN %d%%"
 msgstr "  維持 %d%%"
 
-#: ui/hud.gd:345
+#: ui/hud.gd:349
 msgid "  THIRSTY"
 msgstr "  水不足"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:370
+#: ui/hud.gd:374
 msgid "%s   pick up bale"
 msgstr "%s   ベールを持つ"
 
-#: ui/hud.gd:371
+#: ui/hud.gd:375
 msgid "%s   dig up part"
 msgstr "%s   パーツを掘り出す"
 
-#: ui/hud.gd:372
+#: ui/hud.gd:376
 msgid "%s   read memory shard"
 msgstr "%s   メモリーの破片を読む"
 
-#: ui/hud.gd:373
+#: ui/hud.gd:377
 msgid "%s   pick up the seed tin"
 msgstr "%s   種の缶を拾う"
 
-#: ui/hud.gd:374
+#: ui/hud.gd:378
 msgid "%s   set bale down"
 msgstr "%s   ベールを置く"
 
-#: ui/hud.gd:375
+#: ui/hud.gd:379
 msgid "%s   workbench"
 msgstr "%s   作業台"
 
@@ -8987,8 +8987,8 @@ msgid "Compartment Size level 3"
 msgstr "コンテナ容量をレベル3に"
 
 #: data/goals.json:goals[shards_1].text
-msgid "Read a memory shard"
-msgstr "メモリーの破片を読む"
+msgid "Find a memory shard"
+msgstr "メモリーの破片を見つける"
 
 #: data/goals.json:goals[hex_3].text
 msgid "Clean 3 hexes"
@@ -9958,18 +9958,6 @@ msgstr "Bを押して、掃除させるヘックスを塗ろう。"
 msgid "It carries bales to the scale for you."
 msgstr "ベールをはかりまで運んでくれる。"
 
-#: data/objectives.json:objectives[base2].text
-msgid "Rebuild the base: level 2"
-msgstr "基地を再建：レベル2"
-
-#: data/objectives.json:objectives[base2].desc
-msgid "A bigger base runs more robots."
-msgstr "大きな基地ほど多くのロボットを動かせる。"
-
-#: data/objectives.json:objectives[base2].lines
-msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
-msgstr "基地を拡張できるようになったわ。作業台の基地タブで再建して。"
-
 #: data/objectives.json:objectives[seed].text
 msgid "Plant the first seed"
 msgstr "最初の種を植える"
@@ -9981,6 +9969,18 @@ msgstr "生きた緑がブルームコアを充電する。"
 #: data/objectives.json:objectives[seed].hint
 msgid "Keep clearing ground. WREN is listening for seeds."
 msgstr "地面の掃除を続けて。WRENが種の気配を探ってる。"
+
+#: data/objectives.json:objectives[base2].text
+msgid "Rebuild the base: level 2"
+msgstr "基地を再建：レベル2"
+
+#: data/objectives.json:objectives[base2].desc
+msgid "A bigger base runs more robots."
+msgstr "大きな基地ほど多くのロボットを動かせる。"
+
+#: data/objectives.json:objectives[base2].lines
+msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
+msgstr "基地を拡張できるようになったわ。作業台の基地タブで再建して。"
 
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base: level 3"
@@ -12731,6 +12731,12 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
+#~ msgstr "LM-1 起動。ブルームコア 4%：緑の光 微弱。Cradle号リレー：かすか。何かを育てよう。"
+
+#~ msgid "Read a memory shard"
+#~ msgstr "メモリーの破片を読む"
 
 #~ msgid "SIGNAL  %s  ·  %.1f m"
 #~ msgstr "シグナル  %s  ·  %.1f m"

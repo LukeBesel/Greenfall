@@ -1175,59 +1175,55 @@ msgstr "ÁGUA"
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Link dos robôs online. Aperte B para o Comando: pinte zonas e mande equipes para onde quiser."
 
-#: scenes/slice.gd:509
-msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
-msgstr "LM-1 online. Núcleo Floral 4%: luz verde fraca. Relé da Cradle: quase nada. Faça algo crescer."
-
-#: scenes/slice.gd:823
+#: scenes/slice.gd:824
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXÁGONO LIMPO!  +%s"
 
-#: scenes/slice.gd:837
+#: scenes/slice.gd:838
 msgid "Milestone: %d hexes clean!"
 msgstr "Marco: %d hexágonos limpos!"
 
-#: scenes/slice.gd:839
+#: scenes/slice.gd:840
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "O ferro-velho inteiro está limpo. Lumi solta um bipe muito longo e muito feliz."
 
-#: scenes/slice.gd:846
+#: scenes/slice.gd:847
 msgid "%s is out of range: %s"
 msgstr "%s está fora de alcance: %s"
 
-#: scenes/slice.gd:856
+#: scenes/slice.gd:857
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Bloqueado. Leve sua base ao nível 5 para construir a plataforma de lançamento."
 
-#: scenes/slice.gd:859 ui/rockets_panel.gd:39
+#: scenes/slice.gd:860 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Células de energia recarregando: %s. Melhorias do foguete recarregam mais rápido."
 
-#: scenes/slice.gd:913
+#: scenes/slice.gd:914
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Pouso: %s. Base %d de %d. %s"
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:915
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "O foguete está estacionado no pátio, pronto quando as células recarregarem."
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:915
 msgid "Landed on the base pad."
 msgstr "Pousou na plataforma da base."
 
-#: scenes/slice.gd:1010
+#: scenes/slice.gd:1011
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Melhorias precisam de uma bancada. Volte para a base."
 
-#: scenes/slice.gd:1181
+#: scenes/slice.gd:1182
 msgid "Welcome back. The junk waited for you."
 msgstr "Bem-vindo de volta. A sucata esperou por você."
 
-#: scenes/slice.gd:1198
+#: scenes/slice.gd:1199
 msgid "OUTPOST %d · Lv%d"
 msgstr "POSTO %d · Nv%d"
 
-#: scenes/slice.gd:1198
+#: scenes/slice.gd:1199
 msgid "OUTPOST %d · RUIN"
 msgstr "POSTO %d · RUÍNA"
 
@@ -1817,15 +1813,15 @@ msgstr "item %04d   checksum %s"
 msgid "MISMATCH"
 msgstr "DIVERGÊNCIA"
 
-#: story/objectives.gd:224
+#: story/objectives.gd:238
 msgid "Objective complete  ·  %s"
 msgstr "Objetivo concluído  ·  %s"
 
-#: story/objectives.gd:325
+#: story/objectives.gd:404
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr "Ouviu esse bipe? Seu detector achou uma peça de robô enterrada aqui perto. Quanto mais rápido o bipe, mais perto você está."
 
-#: story/objectives.gd:326
+#: story/objectives.gd:405
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PEÇA ENTERRADA: ande na direção dela até a leitura chegar ao máximo e desenterre."
 
@@ -3630,48 +3626,52 @@ msgstr "CIDADE VELHA   0%"
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% LIMPO"
 
-#: ui/hud.gd:314
+#: ui/hud.gd:313
+msgid "%s  BASE"
+msgstr "BASE %s"
+
+#: ui/hud.gd:316
 msgid "CARRYING %d/%d"
 msgstr "CARREGANDO %d/%d"
 
-#: ui/hud.gd:336
+#: ui/hud.gd:340
 msgid "HEX  CLEAR"
 msgstr "HEX  LIMPO"
 
-#: ui/hud.gd:340
+#: ui/hud.gd:344
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:343
+#: ui/hud.gd:347
 msgid "  SUSTAIN %d%%"
 msgstr "  SUSTENTADO %d%%"
 
-#: ui/hud.gd:345
+#: ui/hud.gd:349
 msgid "  THIRSTY"
 msgstr "  COM SEDE"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:370
+#: ui/hud.gd:374
 msgid "%s   pick up bale"
 msgstr "%s   pegar fardo"
 
-#: ui/hud.gd:371
+#: ui/hud.gd:375
 msgid "%s   dig up part"
 msgstr "%s   desenterrar peça"
 
-#: ui/hud.gd:372
+#: ui/hud.gd:376
 msgid "%s   read memory shard"
 msgstr "%s   ler fragmento de memória"
 
-#: ui/hud.gd:373
+#: ui/hud.gd:377
 msgid "%s   pick up the seed tin"
 msgstr "%s   pegar a lata de sementes"
 
-#: ui/hud.gd:374
+#: ui/hud.gd:378
 msgid "%s   set bale down"
 msgstr "%s   largar fardo"
 
-#: ui/hud.gd:375
+#: ui/hud.gd:379
 msgid "%s   workbench"
 msgstr "%s   bancada"
 
@@ -8999,8 +8999,8 @@ msgid "Compartment Size level 3"
 msgstr "Tamanho do compartimento nível 3"
 
 #: data/goals.json:goals[shards_1].text
-msgid "Read a memory shard"
-msgstr "Leia um fragmento de memória"
+msgid "Find a memory shard"
+msgstr "Encontre um fragmento de memória"
 
 #: data/goals.json:goals[hex_3].text
 msgid "Clean 3 hexes"
@@ -9970,18 +9970,6 @@ msgstr "Aperte B e pinte os hexes que ele deve limpar."
 msgid "It carries bales to the scale for you."
 msgstr "Ele leva os fardos até a balança para você."
 
-#: data/objectives.json:objectives[base2].text
-msgid "Rebuild the base: level 2"
-msgstr "Reconstrua a base: nível 2"
-
-#: data/objectives.json:objectives[base2].desc
-msgid "A bigger base runs more robots."
-msgstr "Uma base maior sustenta mais robôs."
-
-#: data/objectives.json:objectives[base2].lines
-msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
-msgstr "O hub já pode crescer. Reconstrua-o na aba Base da bancada."
-
 #: data/objectives.json:objectives[seed].text
 msgid "Plant the first seed"
 msgstr "Plante a primeira semente"
@@ -9993,6 +9981,18 @@ msgstr "Verde vivo carrega seu Núcleo Floral."
 #: data/objectives.json:objectives[seed].hint
 msgid "Keep clearing ground. WREN is listening for seeds."
 msgstr "Continue limpando o chão. WREN está à escuta de sementes."
+
+#: data/objectives.json:objectives[base2].text
+msgid "Rebuild the base: level 2"
+msgstr "Reconstrua a base: nível 2"
+
+#: data/objectives.json:objectives[base2].desc
+msgid "A bigger base runs more robots."
+msgstr "Uma base maior sustenta mais robôs."
+
+#: data/objectives.json:objectives[base2].lines
+msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
+msgstr "O hub já pode crescer. Reconstrua-o na aba Base da bancada."
 
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base: level 3"
@@ -12743,6 +12743,12 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
+#~ msgstr "LM-1 online. Núcleo Floral 4%: luz verde fraca. Relé da Cradle: quase nada. Faça algo crescer."
+
+#~ msgid "Read a memory shard"
+#~ msgstr "Leia um fragmento de memória"
 
 #~ msgid "SIGNAL  %s  ·  %.1f m"
 #~ msgstr "SINAL  %s  ·  %.1f m"
