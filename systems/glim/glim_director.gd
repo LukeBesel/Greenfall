@@ -93,16 +93,25 @@ func _dev_hooks() -> void:
 ## The Locker (ui/locker_panel.gd) lists CosmeticTargets: Glim registers his looks editor there.
 ## The editor finds the live director through the world it is given (the registry is static).
 func _register_cosmetics() -> void:
+	register_cosmetics()
+
+
+## Static callables only: the registry is static and outlives this node (a lambda here would
+## capture a freed director after a district change).
+static func register_cosmetics() -> void:
 	CosmeticTargets.register("glim", {
 		"name": "Glim",
 		"order": 20,
-		"editor": func(w: Node) -> Control:
-			var ed := GlimPanel.GlimLooksEditor.new()
-			ed.director = GlimDirector.of(w)
-			return ed,
-		"unlocked": func() -> bool: return Glim.is_found(),
+		"editor": GlimDirector.make_looks_editor,
+		"unlocked": Glim.is_found,
 		"hint": "Find the little lantern bot in the junk",
 	})
+
+
+static func make_looks_editor(w: Node) -> Control:
+	var ed := GlimPanel.GlimLooksEditor.new()
+	ed.director = GlimDirector.of(w)
+	return ed
 
 
 func _spawn(reveal: bool) -> void:

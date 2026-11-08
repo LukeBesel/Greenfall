@@ -228,8 +228,7 @@ func test_bench_reasons() -> void:
 
 
 func test_glim_in_locker_targets() -> void:
-	var d := GlimDirector.new()
-	d._register_cosmetics()
+	GlimDirector.register_cosmetics()
 	assert_true(CosmeticTargets.has("glim"))
 	assert_false(CosmeticTargets.is_unlocked("glim"), "locked until found")
 	Glim.set_found(true)
@@ -238,12 +237,10 @@ func test_glim_in_locker_targets() -> void:
 	assert_not_null(ed)
 	if ed:
 		ed.free()
-	d.free()
 
 
 func test_locker_edits_glim() -> void:
-	var d := GlimDirector.new()
-	d._register_cosmetics()
+	GlimDirector.register_cosmetics()
 	Glim.set_found(true)
 	GameState.flags["locker_open"] = true
 	var lp := LockerPanel.new()
@@ -255,4 +252,3 @@ func test_locker_edits_glim() -> void:
 	assert_has(ids, "ct:glim", "Glim has a button in the Locker's bot bar")
 	lp.set_editing("ct:glim")
 	assert_true(lp._editor is GlimPanel.GlimLooksEditor, "and his looks editor opens")
-	d.free()
