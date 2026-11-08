@@ -2858,27 +2858,27 @@ msgstr ""
 
 #: systems/camp/hub_builds.gd:144
 msgid "Trash bin, level %d of %d"
-msgstr ""
+msgstr "Cubo de basura, nivel %d de %d"
 
 #: systems/camp/hub_builds.gd:149
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
-msgstr ""
+msgstr "WREN solo puede contactarte por el relé. Cada nivel la hace más clara."
 
 #: systems/camp/hub_builds.gd:153
 msgid "Tier %d of %d"
-msgstr ""
+msgstr "Nivel %d de %d"
 
 #: systems/camp/hub_builds.gd:162 systems/camp/hub_builds.gd:173
 msgid "%d of %d built"
-msgstr ""
+msgstr "%d de %d construidos"
 
 #: systems/camp/hub_builds.gd:189
 msgid "Museum"
-msgstr ""
+msgstr "Museo"
 
 #: systems/camp/hub_builds.gd:190
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
-msgstr ""
+msgstr "Una sala con un pedestal para todo lo que Lumi encontró, para quien venga después."
 
 #: systems/camp/machine_reveal.gd:46
 msgid "%s built. Follow the light to it."
@@ -2890,7 +2890,7 @@ msgstr ""
 
 #: systems/camp/yard_builds.gd:61
 msgid "Repair the workbench first."
-msgstr ""
+msgstr "Primero repara el banco de trabajo."
 
 #: systems/camp/yard_builds.gd:67
 msgid "Grow your first seed first."
@@ -6202,15 +6202,15 @@ msgstr ""
 
 #: ui/yard_builds_panel.gd:21
 msgid "Nothing new to build yet. More opens as the base grows."
-msgstr ""
+msgstr "Aún no hay nada nuevo que construir. Habrá más a medida que crezca la base."
 
 #: ui/yard_builds_panel.gd:59
 msgid "Built:  %s"
-msgstr ""
+msgstr "Construido:  %s"
 
 #: ui/yard_builds_panel.gd:127
 msgid "Free"
-msgstr ""
+msgstr "Gratis"
 
 #: water/water_view.gd:78
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
@@ -7098,23 +7098,23 @@ msgstr "Cobertizo"
 
 #: data/camp.json:builds.shack.desc
 msgid "Salvaged pipe and corrugated iron over the workbench, with a work lamp. Shelter for the crew."
-msgstr ""
+msgstr "Tubos recuperados y chapa ondulada sobre el banco, con una lámpara de trabajo. Refugio para el equipo."
 
 #: data/camp.json:builds.generator.name
 msgid "Generator"
-msgstr ""
+msgstr "Generador"
 
 #: data/camp.json:builds.generator.desc
 msgid "A patched portable generator by the lean-to. It hums; the yard feels lived in."
-msgstr ""
+msgstr "Un generador portátil remendado junto al cobertizo. Zumba; el patio parece habitado."
 
 #: data/camp.json:builds.lamps.name
 msgid "Yard Lamps"
-msgstr ""
+msgstr "Lámparas del patio"
 
 #: data/camp.json:builds.lamps.desc
 msgid "The street lamp and the pole lamps along the fence, rewired. Light for the yard at night."
-msgstr ""
+msgstr "La farola y las lámparas de poste junto a la valla, recableadas. Luz para el patio de noche."
 
 #: data/camp.json:builds.composter.name
 msgid "Compost Press"
@@ -7122,7 +7122,7 @@ msgstr ""
 
 #: data/camp.json:builds.composter.desc
 msgid "Presses plant scraps into compost and seeds. Worth building once something grows."
-msgstr ""
+msgstr "Prensa restos vegetales en compost y semillas. Vale la pena cuando algo crece."
 
 #: data/camp.json:builds.radio.desc
 msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
@@ -11851,11 +11851,11 @@ msgstr "Los cubos alimentan el reciclador. Su energía despierta la base."
 
 #: data/objectives.json:objectives[tower].text
 msgid "Build the signal tower"
-msgstr ""
+msgstr "Construye la torre de señal"
 
 #: data/objectives.json:objectives[tower].desc
 msgid "WREN went silent. Build it at the workbench."
-msgstr ""
+msgstr "WREN se quedó en silencio. Constrúyela en el banco."
 
 #: data/objectives.json:objectives[hex].text
 msgid "Clean a hex"
