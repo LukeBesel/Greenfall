@@ -138,6 +138,7 @@ func _build(bench: Node3D) -> void:
 	bits["generator"] = gen
 	YardArt.dress_board(bits)  # the yard helper's models into the flat node layout
 	gen.position = Vector3.ZERO  # dress_board moves it out from under the flat lean-to; here the anchor is the spot
+	_bin_bay()
 	# Compost press, CD-player stand, robot nursery (the models their systems build).
 	_composter = _slot("composter")
 	var cp: Dictionary = YardArt.composter()
@@ -254,6 +255,48 @@ func _yield_to_real_systems() -> void:
 		if _nursery and ex.nursery and ex.nursery.visible:
 			_nursery.queue_free()
 			_nursery = null
+
+
+## [v1yard] The trash bin's bay: a marked rectangle round the depot's plate and the bin's reach
+## (a dark band with a yellow painted border, chevrons toward the yard) and a lamp post that is always
+## lit, so the bin reads from across the yard, day or night.
+func _bin_bay() -> void:
+	var dep: Vector3 = prefab.anchor_local("depot").origin
+	var bin: Vector3 = prefab.anchor_local("bin").origin
+	var bay := Node3D.new()
+	bay.name = "BinBay"
+	bay.position = Vector3(dep.x, 0.07, (dep.z + bin.z) * 0.5)  # on the pad's slab
+	add_child(bay)
+	var sz := Vector2(4.6, absf(dep.z - bin.z) + 4.4)  # x across, z along
+	var k := YardArt.Kit.new()
+	for side: int in 4:  # a dark band inside the paint, so the bay reads against the pale pad
+		var ax: bool = side < 2
+		var sg: float = -1.0 if side % 2 == 0 else 1.0
+		k.box(Vector3(sz.x, 0.01, 0.5) if ax else Vector3(0.5, 0.01, sz.y), Vector3(0, 0.005, sg * (sz.y * 0.5 - 0.25)) if ax else Vector3(sg * (sz.x * 0.5 - 0.25), 0.005, 0), Color(0.24, 0.25, 0.26))
+	for side: int in 4:  # the painted border
+		var along_x: bool = side < 2
+		var sgn: float = -1.0 if side % 2 == 0 else 1.0
+		var len_: float = sz.x if along_x else sz.y
+		var p := Vector3(0, 0.035, sgn * (sz.y * 0.5 - 0.09)) if along_x else Vector3(sgn * (sz.x * 0.5 - 0.09), 0.035, 0)
+		k.hazard(Vector3(len_, 0.012, 0.16) if along_x else Vector3(0.16, 0.012, len_), p)
+	k.decal("chevrons", Vector2(1.2, 0.36), Vector3(sz.x * 0.5 - 0.5, 0.045, 0), Vector3(-90, 90, 0))
+	bay.add_child(k.mi(0.2, "BayPaint"))
+	var post := Node3D.new()
+	post.name = "BayLamp"
+	post.position = Vector3(-sz.x * 0.5 + 0.35, -0.07, -sz.y * 0.5 + 0.35)
+	bay.add_child(post)
+	post.add_child(YardArt.street_lamp().mi(0.15, "Post"))
+	var light := SpotLight3D.new()
+	light.name = "BayLight"
+	light.light_color = Color(1.0, 0.86, 0.62)
+	light.light_energy = 3.0
+	light.spot_range = 8.0
+	light.spot_angle = 50.0
+	light.position = Vector3(0, YardArt.LAMP_HEAD_Y - 0.12, 0)
+	light.rotation_degrees = Vector3(-72, -135, 0)
+	post.add_child(light)
+	YardArt.set_powered(post, true)
+	YardArt.solid(post, Vector3(0.3, 2.0, 0.3), Vector3(0, 1.0, 0), "PostBody")
 
 
 static func _show(n: Node3D, on: bool) -> void:
