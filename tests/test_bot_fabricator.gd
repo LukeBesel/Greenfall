@@ -250,3 +250,31 @@ func test_near_bales_are_real_cubes_and_lumi_can_take_them() -> void:
 	crew.bale_view.sync()
 	assert_eq(crew.bales.size(), 1, "Lumi's bale is no longer the crew's")
 	assert_eq(int(crew.bales[0]["id"]), 2)
+
+
+func test_arrival_kits_grow_planet_by_planet() -> void:
+	# [orbC] data/homeward.json planets[k].arrival: later planets start further along.
+	var prev_tier: int = 0
+	var prev_bots: int = 0
+	for k: int in range(1, Homeward.planets().size()):
+		var a: Dictionary = Homeward.arrival_kit(k)
+		assert_false(a.is_empty(), "planet %d has an arrival kit" % k)
+		assert_gte(int(a.get("research_tier", 0)), prev_tier)
+		assert_gte((a.get("robots", []) as Array).size(), prev_bots)
+		prev_tier = int(a.get("research_tier", 0))
+		prev_bots = (a.get("robots", []) as Array).size()
+	assert_true(Homeward.arrival_kit(0).is_empty(), "Verdance starts from nothing")
+
+
+func test_apply_arrival_grants_bots_tiers_and_money() -> void:
+	var a: Dictionary = Homeward.arrival_kit(Homeward.planet_index("rime")).duplicate(true)
+	a.erase("research_tier")  # research effects outlive the flags this test restores
+	GameState.flags.erase("late_start_robots")
+	GameState.currencies["cubes"] = BigNum.from_float(0.0)
+	GameState.currencies["parts"] = BigNum.from_float(0.0)
+	Homeward.apply_kit(a)
+	assert_almost_eq(GameState.get_currency("cubes").to_float(), float(a["cubes"]), 0.01)
+	assert_almost_eq(GameState.get_currency("parts").to_float(), float(a["parts"]), 0.01)
+	assert_eq((GameState.flags.get("late_start_robots", []) as Array).size(), (a["robots"] as Array).size())
+	for t: String in a.get("robot_tier", {}):
+		assert_gte(int(GameState.flags.get("tier_" + t, 0)), int(a["robot_tier"][t]))

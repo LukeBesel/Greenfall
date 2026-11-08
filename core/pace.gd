@@ -131,6 +131,52 @@ static func heavy_hint(patch: Node3D, field: HexField, origin: Vector3, forward:
 	Audio.play("buzz", 0.8, -12.0)
 
 
+## [orbC] When pressing a bale is the move. The player may press at any fill once the Baler is
+## bought; this decides when the game says so (the hint below) and when the bot presses, so nobody
+## waits forever with a chest just under the press threshold: at PRESS_AT full, or at least
+## PRESS_SOON full when nothing within PRESS_LOOK_M can go in (every piece there too heavy for Lift
+## Strength, or none left).
+const PRESS_AT: float = 0.9
+const PRESS_SOON: float = 0.5
+const PRESS_LOOK_M: float = 6.0
+
+
+static func press_ready(patch: Node3D, field: HexField) -> bool:
+	var comp: Compartment = patch.get("compartment")
+	if comp == null or comp.is_empty() or comp.pending > 0.0 or not baler_unlocked():
+		return false
+	if float(patch.get("_cubing")) > 0.0:
+		return false
+	var r: float = comp.ratio(float(patch.call("capacity")))
+	if r >= PRESS_AT:
+		return true
+	return press_rule(r, r >= PRESS_SOON and field != null and not liftable_near(field, patch.call("scoop_origin"), PRESS_LOOK_M))
+
+
+## The decision itself: chest share `r`, and whether nothing near can go in.
+static func press_rule(r: float, nothing_fits: bool) -> bool:
+	return r >= PRESS_AT or (r >= PRESS_SOON and nothing_fits)
+
+
+## True if a piece Lumi can lift lies within `r` metres of `at`.
+static func liftable_near(field: HexField, at: Vector3, r: float) -> bool:
+	for pid: int in field.pieces_within(at, r):
+		if field.piece_alive[pid] == 1 and not field.locked.has(field.piece_hex[pid]) and can_lift(field, pid):
+			return true
+	return false
+
+
+## The prompt for that state: shown (at most every few seconds) when the scoop finds nothing.
+static func press_hint(patch: Node3D, field: HexField) -> bool:
+	var now: int = Time.get_ticks_msec()
+	if now - _hint_t < 4000 or not press_ready(patch, field):
+		return false
+	_hint_t = now
+	Vfx.float_text(patch.global_position + patch.call("up") * 1.9, TranslationServer.translate("Nothing here fits: press a bale"), Color(0.85, 1.0, 0.7), 0.4, 0.8)
+	Audio.play("ding", 1.2, -12.0)
+	return true
+
+
 ## Pressed the bale key without a Baler: a short hint instead.
 static func baler_hint(patch: Node3D) -> void:
 	var now: int = Time.get_ticks_msec()
