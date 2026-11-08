@@ -222,12 +222,12 @@ func _road_quad(st: SurfaceTool, axis: int, c: float, t0: float, t1: float, hw: 
 
 ## Block layouts in block-local metres (the inner rect is ~21.8 m square): [kind, x, z, yaw°].
 const PATTERNS: Array = [
-	[["module_large", 0.0, 0.0, 0.0]],
-	[["module_medium", 0.0, -5.4, 0.0], ["module_medium", 0.0, 5.4, 180.0]],
+	[["module_large", -1.5, -2.0, 0.0], ["module_small", 6.5, 6.5, 180.0], ["machine_housing", -6.0, 7.0, 180.0]],
+	[["module_medium", -4.0, -5.4, 0.0], ["module_medium", 4.0, 5.4, 180.0], ["tower", 6.5, -6.0, 0.0], ["machine_housing", -6.0, 6.0, 90.0]],
 	[["module_small", -5.0, -4.6, 0.0], ["module_small", 5.0, -4.6, 0.0], ["machine_housing", -5.0, 5.0, 180.0], ["module_small", 5.0, 5.0, 180.0]],
-	[["hangar", 0.0, 0.0, 90.0]],
-	[["tank_farm", 0.0, -4.0, 0.0], ["machine_housing", 0.0, 6.2, 180.0]],
-	[["tower", -5.5, -5.5, 0.0], ["module_medium", 3.5, 4.0, 180.0]],
+	[["hangar", -2.0, 0.0, 90.0], ["tower", 7.0, -6.5, 0.0], ["module_small", 7.0, 5.5, 180.0]],
+	[["tank_farm", -1.0, -4.0, 0.0], ["machine_housing", -5.0, 6.2, 180.0], ["module_small", 5.0, 6.2, 180.0]],
+	[["tower", -5.5, -5.5, 0.0], ["module_medium", 3.5, -3.0, 0.0], ["module_small", -4.0, 5.5, 180.0], ["machine_housing", 5.0, 6.5, 180.0]],
 ]
 ## Verdance's kit palette (docs/ART_KIT.md): cream with a teal accent; a few buildings take a
 ## second accent so a block isn't one colour.
@@ -292,9 +292,10 @@ func _kit(kind: String, at: Vector2, yaw: float, pal: Dictionary, seed_v: int) -
 ## a large module flanked by a tower and a tank farm, the hub sign on its front.
 func _hero(c: Vector2) -> void:
 	var pal: Dictionary = {"main": "cream", "accent": "teal"}
-	_kit("module_large", c + Vector2(0, 1.5), PI, pal, 1 + hub_index % 3)
-	_kit("tower", c + Vector2(-7.5, -6.0), PI, pal, 1 + (hub_index + 1) % 3)
-	_kit("machine_housing", c + Vector2(7.0, -6.0), PI, {"main": "cream", "accent": "orange"}, 1 + (hub_index + 2) % 3)
+	_kit("hangar", c + Vector2(0, 1.0), PI * 0.5, pal, 1 + hub_index % 3)
+	_kit("tower", c + Vector2(-8.0, -6.5), PI, pal, 1 + (hub_index + 1) % 3)
+	_kit("tank_farm", c + Vector2(7.5, -6.0), PI, {"main": "cream", "accent": "orange"}, 1 + (hub_index + 2) % 3)
+	_kit("dome", c + Vector2(-8.5, 6.5), 0.0, pal, 1 + hub_index % 3)
 
 
 ## Yard and lot dressing for the current state: kit ground patches everywhere; landfill heaps of
