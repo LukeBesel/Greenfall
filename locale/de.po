@@ -24,7 +24,7 @@ msgstr "Jeder %s der Flotte."
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr "Basis (Mk I, vor Stufe und Teile-Seltenheit)"
 
-#: autoload/Economy.gd:128 ui/upgrades_panel.gd:34
+#: autoload/Economy.gd:128 ui/upgrades_panel.gd:39
 msgid "Base"
 msgstr "Basis"
 
@@ -2045,7 +2045,7 @@ msgstr "WIR KOMMEN WIEDER"
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "%d Erfolge freigeschaltet. Sieh sie dir im Kodex an (K)."
 
-#: systems/achievements.gd:147 ui/notify_stack.gd:24
+#: systems/achievements.gd:147 ui/notify_stack.gd:27
 msgid "Achievement: %s. %s"
 msgstr "Erfolg: %s. %s"
 
@@ -2563,7 +2563,7 @@ msgstr "Erfolg: %s"
 msgid "Buy for %s"
 msgstr "Kaufen für %s"
 
-#: systems/museum.gd:119 systems/camp/hub_builds.gd:80
+#: systems/museum.gd:119 systems/camp/hub_builds.gd:80 ui/glim_bench.gd:42
 msgid "Not enough cubes, parts or seeds"
 msgstr "Nicht genug Würfel, Teile oder Samen"
 
@@ -3121,11 +3121,11 @@ msgstr "Zurück an die Arbeit"
 msgid "Find Glim first"
 msgstr ""
 
-#: systems/glim/glim.gd:14 ui/glim_panel.gd:142
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:142
 msgid "Maxed"
 msgstr ""
 
-#: systems/glim/glim.gd:14 ui/glim_panel.gd:149
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:149
 msgid "Needs %s %d"
 msgstr ""
 
@@ -3133,23 +3133,31 @@ msgstr ""
 msgid "Buy %d Glim upgrades"
 msgstr ""
 
-#: systems/glim/glim_director.gd:152
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:13
+msgid "Glim"
+msgstr ""
+
+#: systems/glim/glim.gd:14
+msgid "Find the little lantern bot in the junk"
+msgstr ""
+
+#: systems/glim/glim_director.gd:147
 msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
 msgstr ""
 
-#: systems/glim/glim_director.gd:154
+#: systems/glim/glim_director.gd:149
 msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
 msgstr ""
 
-#: systems/glim/glim_director.gd:156
+#: systems/glim/glim_director.gd:151
 msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
 msgstr ""
 
-#: systems/glim/glim_director.gd:212
+#: systems/glim/glim_director.gd:207
 msgid "All clear here!"
 msgstr ""
 
-#: systems/glim/glim_director.gd:214
+#: systems/glim/glim_director.gd:209
 msgid "Only big pieces left"
 msgstr ""
 
@@ -4348,6 +4356,10 @@ msgstr "[%s] platzieren   [%s] drehen   [%s / %s] Objekt   [%s] aufheben   [%s] 
 msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
 msgstr "Aufgehoben: %s. Stell es woanders ab oder lass es im Lager."
 
+#: ui/glim_bench.gd:58 ui/hub_panel.gd:67 ui/upgrades_panel.gd:144
+msgid "Upgrade"
+msgstr "Ausbauen"
+
 #: ui/glim_panel.gd:40
 msgid "GLIM"
 msgstr ""
@@ -4408,7 +4420,7 @@ msgstr "Basen"
 msgid "Solar system"
 msgstr "Sonnensystem"
 
-#: ui/globe_view.gd:169 ui/upgrades_panel.gd:44
+#: ui/globe_view.gd:169 ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "Rakete"
 
@@ -4475,10 +4487,6 @@ msgstr "KERN %d%%"
 #: ui/hub_panel.gd:59
 msgid "What you get"
 msgstr "Das bekommst du"
-
-#: ui/hub_panel.gd:67 ui/upgrades_panel.gd:137
-msgid "Upgrade"
-msgstr "Ausbauen"
 
 #: ui/hub_panel.gd:97 ui/hub_panel.gd:250
 msgid "Build Air Scrubber"
@@ -4694,13 +4702,17 @@ msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
 msgstr "Öffnet bei Hub-Stufe %d (jetzt %d). Baue den Hub im Upgrades-Tab aus."
 
 #: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
-#: ui/upgrades_panel.gd:30
+#: ui/upgrades_panel.gd:32
 msgid "Lumi"
 msgstr "Lumi"
 
 #: ui/locker_panel.gd:160
 msgid "You"
 msgstr "Du"
+
+#: ui/locker_panel.gd:164
+msgid "Buddy"
+msgstr ""
 
 #: ui/lumi_builder.gd:111
 msgid "CHARACTER BUILDER"
@@ -6145,7 +6157,7 @@ msgstr "fehlt %s · ~%s"
 msgid "Where it comes from:  %s"
 msgstr "Woher es kommt:  %s"
 
-#: ui/upgrades_panel.gd:43
+#: ui/upgrades_panel.gd:48
 msgid "Machines"
 msgstr "Maschinen"
 

@@ -158,10 +158,14 @@ func _rebuild_list() -> void:
 		c.queue_free()
 	_who_btns.clear()
 	_add_who("lumi", tr("Lumi"), tr("You"), UITheme.GOLD)
+	for t: Dictionary in CosmeticTargets.all():  # [buddy] other dressable bots (Glim), once unlocked
+		var tid: String = str(t.get("id", ""))
+		if tid != "lumi" and CosmeticTargets.is_unlocked(tid):
+			_add_who("ct:" + tid, CosmeticTargets.display_name(tid), tr("Buddy"), Color(0.45, 0.9, 1.0))
 	for r: Robot in _bots():
 		var sub: String = "%s  ·  %s" % [tr(str(Economy.robots.get(r.type_id, {}).get("name", r.type_id))), Economy.tier_name(r.tier)]
 		_add_who(r.robot_name, r.robot_name, sub, RobotBuilder.CREW_COLORS.get(r.role(), UITheme.GOLD))
-	if _who != "lumi" and _find_robot(_who) == null:
+	if _who != "lumi" and not _who.begins_with("ct:") and _find_robot(_who) == null:  # [buddy]
 		_who = "lumi"
 	_style_list()
 
@@ -207,7 +211,7 @@ func set_editing(who: String) -> void:
 
 
 func _show_editor() -> void:
-	var kind: String = "lumi" if _who == "lumi" else "robot"
+	var kind: String = "lumi" if _who == "lumi" else (_who if _who.begins_with("ct:") else "robot")  # [buddy] ct:<target>
 	if kind == "robot" and _editor_kind == "robot" and is_instance_valid(_robot_editor):
 		_robot_editor.select_robot(_find_robot(_who))
 		return
@@ -246,6 +250,8 @@ func _make_editor(kind: String) -> Control:
 		ed = reg
 		if ed.get_parent():
 			ed.get_parent().remove_child(ed)
+	elif kind.begins_with("ct:"):  # [buddy] a CosmeticTargets editor (Glim, ...)
+		ed = CosmeticTargets.make_editor(kind.substr(3), world)
 	elif kind == "lumi":
 		if ResourceLoader.exists(LUMI_BUILDER_PATH):
 			var scr: Script = load(LUMI_BUILDER_PATH)
@@ -311,7 +317,7 @@ func _process(delta: float) -> void:
 	_t = 0.0
 	if _bots_signature() != _bots_sig:
 		_rebuild_list()
-		if _who != "lumi" and _find_robot(_who) == null:
+		if _who != "lumi" and not _who.begins_with("ct:") and _find_robot(_who) == null:  # [buddy]
 			set_editing("lumi")
 
 

@@ -991,6 +991,13 @@ func _shop(want: Dictionary) -> void:
 	var pu: String = _pace_upgrade()
 	if pu != "":
 		Economy.buy_upgrade(pu, 1)
+	# 2c) [buddy] Glim's Lantern and Hex Scanner when affordable (1.5x margin: never starves the core loop).
+	for gid: String in ["light", "scan"]:
+		if Glim.block_reason(gid) == "" and GameState.can_afford_all(Glim.next_cost(gid), 1.5) and Glim.buy(gid):
+			var gd: GlimDirector = GlimDirector.of(world)
+			if gd:
+				gd.refresh()
+			_event("glim_" + gid, {"tier": Glim.tier(gid)})
 	# 3) Robots ([ui2] Parts + cubes; keep the next base level's Parts unless the robot can't wait).
 	var robot: String = str(want.get("robot", ""))
 	if robot != "":

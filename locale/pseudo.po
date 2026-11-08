@@ -21,7 +21,7 @@ msgstr "[Évéŕý %s îñ ţĥé ƒļééţ. ~~~~~]"
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr "[Bàšé (Mķ Î, béƒôŕé ţîéŕ àñð þàŕţ ŕàŕîţý) ~~~~~~~~~~~]"
 
-#: autoload/Economy.gd:128 ui/upgrades_panel.gd:34
+#: autoload/Economy.gd:128 ui/upgrades_panel.gd:39
 msgid "Base"
 msgstr "[Bàšé ~]"
 
@@ -2044,7 +2044,7 @@ msgstr "[ŴÉ'ĻĻ BÉ BÀÇĶ ~~]"
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "[%d àçĥîévéméñţš ûñļôçķéð. Šéé ţĥém îñ ţĥé Çôðéx (Ķ). ~~~~~~~~~~~~~~~]"
 
-#: systems/achievements.gd:147 ui/notify_stack.gd:24
+#: systems/achievements.gd:147 ui/notify_stack.gd:27
 msgid "Achievement: %s. %s"
 msgstr "[Àçĥîévéméñţ: %s. %s ~~~~]"
 
@@ -2562,7 +2562,7 @@ msgstr "[Àçĥîévéméñţ: %s ~~]"
 msgid "Buy for %s"
 msgstr "[Bûý ƒôŕ %s ~]"
 
-#: systems/museum.gd:119 systems/camp/hub_builds.gd:80
+#: systems/museum.gd:119 systems/camp/hub_builds.gd:80 ui/glim_bench.gd:42
 msgid "Not enough cubes, parts or seeds"
 msgstr "[Ñôţ éñôûĝĥ çûbéš, þàŕţš ôŕ šééðš ~~~~~~~~]"
 
@@ -3120,11 +3120,11 @@ msgstr "[Bàçķ ţô ŵôŕķ ~]"
 msgid "Find Glim first"
 msgstr "[Fîñð Ĝļîm ƒîŕšţ ~~]"
 
-#: systems/glim/glim.gd:14 ui/glim_panel.gd:142
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:142
 msgid "Maxed"
 msgstr "[Màxéð ~]"
 
-#: systems/glim/glim.gd:14 ui/glim_panel.gd:149
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:149
 msgid "Needs %s %d"
 msgstr "[Ñééðš %s %d ~]"
 
@@ -3132,23 +3132,31 @@ msgstr "[Ñééðš %s %d ~]"
 msgid "Buy %d Glim upgrades"
 msgstr "[Bûý %d Ĝļîm ûþĝŕàðéš ~~~~]"
 
-#: systems/glim/glim_director.gd:152
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:13
+msgid "Glim"
+msgstr "[Ĝļîm ~]"
+
+#: systems/glim/glim.gd:14
+msgid "Find the little lantern bot in the junk"
+msgstr "[Fîñð ţĥé ļîţţļé ļàñţéŕñ bôţ îñ ţĥé ĵûñķ ~~~~~~~~~~~]"
+
+#: systems/glim/glim_director.gd:147
 msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
 msgstr "[À ļîţţļé ļàñţéŕñ bôţ ƒļîçķéŕš àŵàķé îñ ţĥé ĵûñķ béšîðé ýôû: Ĝļîm! Ĥé'ļļ ļîĝĥţ ţĥé ŵàý àţ ñîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/glim/glim_director.gd:154
+#: systems/glim/glim_director.gd:149
 msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
 msgstr "[Šôméţĥîñĝ îñ ţĥé ĵûñķ bļîñķš bàçķ àţ ýôû: Ĝļîm, à ļîţţļé ļàñţéŕñ bôţ! Ĥé'ļļ ļîĝĥţ ţĥé ŵàý àţ ñîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/glim/glim_director.gd:156
+#: systems/glim/glim_director.gd:151
 msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
 msgstr "[Ţàþ %s: Ĝļîm šçàñš ýôûŕ ĥéx ƒôŕ ĵûñķ ýôû mîššéð. Ĥôļð %s ƒôŕ ĥîš ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/glim/glim_director.gd:212
+#: systems/glim/glim_director.gd:207
 msgid "All clear here!"
 msgstr "[Àļļ çļéàŕ ĥéŕé! ~~]"
 
-#: systems/glim/glim_director.gd:214
+#: systems/glim/glim_director.gd:209
 msgid "Only big pieces left"
 msgstr "[Ôñļý bîĝ þîéçéš ļéƒţ ~~~~]"
 
@@ -4349,6 +4357,10 @@ msgstr "[[%s] þļàçé   [%s] ŕôţàţé   [%s / %s] îţém   [%s] þîçķ
 msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
 msgstr "[Þîçķéð ûþ: %s. Þûţ îţ ðôŵñ šôméŵĥéŕé éļšé, ôŕ ļéàvé îţ îñ šţôŕàĝé. ~~~~~~~~~~~~~~~~~~~~]"
 
+#: ui/glim_bench.gd:58 ui/hub_panel.gd:67 ui/upgrades_panel.gd:144
+msgid "Upgrade"
+msgstr "[Ûþĝŕàðé ~]"
+
 #: ui/glim_panel.gd:40
 msgid "GLIM"
 msgstr "[ĜĻÎM ~]"
@@ -4409,7 +4421,7 @@ msgstr "[Bàšéš ~]"
 msgid "Solar system"
 msgstr "[Šôļàŕ šýšţém ~]"
 
-#: ui/globe_view.gd:169 ui/upgrades_panel.gd:44
+#: ui/globe_view.gd:169 ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "[Ŕôçķéţ ~]"
 
@@ -4476,10 +4488,6 @@ msgstr "[ÇÔŔÉ %d%% ~]"
 #: ui/hub_panel.gd:59
 msgid "What you get"
 msgstr "[Ŵĥàţ ýôû ĝéţ ~]"
-
-#: ui/hub_panel.gd:67 ui/upgrades_panel.gd:137
-msgid "Upgrade"
-msgstr "[Ûþĝŕàðé ~]"
 
 #: ui/hub_panel.gd:97 ui/hub_panel.gd:250
 msgid "Build Air Scrubber"
@@ -4697,13 +4705,17 @@ msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
 msgstr "[Ôþéñš àţ ĥûb ļévéļ %d (ñôŵ %d). Ûþĝŕàðé ţĥé ĥûb îñ ţĥé Ûþĝŕàðéš ţàb. ~~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
-#: ui/upgrades_panel.gd:30
+#: ui/upgrades_panel.gd:32
 msgid "Lumi"
 msgstr "[Ļûmî ~]"
 
 #: ui/locker_panel.gd:160
 msgid "You"
 msgstr "[Ýôû ~]"
+
+#: ui/locker_panel.gd:164
+msgid "Buddy"
+msgstr "[Bûððý ~]"
 
 #: ui/lumi_builder.gd:111
 msgid "CHARACTER BUILDER"
@@ -6152,7 +6164,7 @@ msgstr "[ñééð %s · ~%s ~~]"
 msgid "Where it comes from:  %s"
 msgstr "[Ŵĥéŕé îţ çôméš ƒŕôm:  %s ~~~~~]"
 
-#: ui/upgrades_panel.gd:43
+#: ui/upgrades_panel.gd:48
 msgid "Machines"
 msgstr "[Màçĥîñéš ~]"
 

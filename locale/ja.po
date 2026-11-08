@@ -24,7 +24,7 @@ msgstr "フリートの全%s。"
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr "基本（Mk I、ティアとパーツのレア度を除く）"
 
-#: autoload/Economy.gd:128 ui/upgrades_panel.gd:34
+#: autoload/Economy.gd:128 ui/upgrades_panel.gd:39
 msgid "Base"
 msgstr "基本"
 
@@ -2043,7 +2043,7 @@ msgstr "また帰ってくる"
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "実績を %d 個解除。図鑑（K）で見られます。"
 
-#: systems/achievements.gd:147 ui/notify_stack.gd:24
+#: systems/achievements.gd:147 ui/notify_stack.gd:27
 msgid "Achievement: %s. %s"
 msgstr "実績：%s。%s"
 
@@ -2555,7 +2555,7 @@ msgstr "実績：%s"
 msgid "Buy for %s"
 msgstr "%sで購入"
 
-#: systems/museum.gd:119 systems/camp/hub_builds.gd:80
+#: systems/museum.gd:119 systems/camp/hub_builds.gd:80 ui/glim_bench.gd:42
 msgid "Not enough cubes, parts or seeds"
 msgstr "キューブ、パーツ、種が足りません"
 
@@ -3113,11 +3113,11 @@ msgstr "仕事に戻る"
 msgid "Find Glim first"
 msgstr ""
 
-#: systems/glim/glim.gd:14 ui/glim_panel.gd:142
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:142
 msgid "Maxed"
 msgstr ""
 
-#: systems/glim/glim.gd:14 ui/glim_panel.gd:149
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:149
 msgid "Needs %s %d"
 msgstr ""
 
@@ -3125,23 +3125,31 @@ msgstr ""
 msgid "Buy %d Glim upgrades"
 msgstr ""
 
-#: systems/glim/glim_director.gd:152
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:13
+msgid "Glim"
+msgstr ""
+
+#: systems/glim/glim.gd:14
+msgid "Find the little lantern bot in the junk"
+msgstr ""
+
+#: systems/glim/glim_director.gd:147
 msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
 msgstr ""
 
-#: systems/glim/glim_director.gd:154
+#: systems/glim/glim_director.gd:149
 msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
 msgstr ""
 
-#: systems/glim/glim_director.gd:156
+#: systems/glim/glim_director.gd:151
 msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
 msgstr ""
 
-#: systems/glim/glim_director.gd:212
+#: systems/glim/glim_director.gd:207
 msgid "All clear here!"
 msgstr ""
 
-#: systems/glim/glim_director.gd:214
+#: systems/glim/glim_director.gd:209
 msgid "Only big pieces left"
 msgstr ""
 
@@ -4336,6 +4344,10 @@ msgstr "[%s] 置く   [%s] 回す   [%s / %s] アイテム   [%s] 拾う   [%s] 
 msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
 msgstr "拾った：%s。別の場所に置くか、しまっておこう。"
 
+#: ui/glim_bench.gd:58 ui/hub_panel.gd:67 ui/upgrades_panel.gd:144
+msgid "Upgrade"
+msgstr "アップグレード"
+
 #: ui/glim_panel.gd:40
 msgid "GLIM"
 msgstr ""
@@ -4396,7 +4408,7 @@ msgstr "基地"
 msgid "Solar system"
 msgstr "太陽系"
 
-#: ui/globe_view.gd:169 ui/upgrades_panel.gd:44
+#: ui/globe_view.gd:169 ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "ロケット"
 
@@ -4463,10 +4475,6 @@ msgstr "コア %d%%"
 #: ui/hub_panel.gd:59
 msgid "What you get"
 msgstr "得られるもの"
-
-#: ui/hub_panel.gd:67 ui/upgrades_panel.gd:137
-msgid "Upgrade"
-msgstr "アップグレード"
 
 #: ui/hub_panel.gd:97 ui/hub_panel.gd:250
 msgid "Build Air Scrubber"
@@ -4682,13 +4690,17 @@ msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
 msgstr "ハブ レベル%dで解放（現在%d）。アップグレードタブでハブを強化しよう。"
 
 #: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
-#: ui/upgrades_panel.gd:30
+#: ui/upgrades_panel.gd:32
 msgid "Lumi"
 msgstr "Lumi"
 
 #: ui/locker_panel.gd:160
 msgid "You"
 msgstr "あなた"
+
+#: ui/locker_panel.gd:164
+msgid "Buddy"
+msgstr ""
 
 #: ui/lumi_builder.gd:111
 msgid "CHARACTER BUILDER"
@@ -6132,7 +6144,7 @@ msgstr "あと%s · 約%s"
 msgid "Where it comes from:  %s"
 msgstr "入手方法：  %s"
 
-#: ui/upgrades_panel.gd:43
+#: ui/upgrades_panel.gd:48
 msgid "Machines"
 msgstr "機械"
 
