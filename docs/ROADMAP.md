@@ -532,3 +532,12 @@ tuned in the first-hour pass); no new SFX work unless a bug.
   `tests/test_crash_site.gd` (pod parts, door angle, repair stages).
 - Next: split the district build across frames so the loading bar keeps moving during it; pre-build
   the intro's SpaceStage behind the loader (its first frames compile on the intro's black fade now).
+
+## Update: the owner's songs, CDs and artists (wt/tunes)
+- Done: song library `data/songs.json` (all 45 planned songs from docs/music/suno_prompts.json; files in audio/songs/<id>.mp3, missing ones skipped everywhere, so new MP3s drop in by id + import). `systems/tunes.gd` (rules, class `Tunes`), `audio/tunes_director.gd` (playback on a "Songs" bus, child of Audio; hushes the synth score via `Audio.tunes_hush`, which stays the fallback when no song fits).
+- Title screen: a random owned song each time (main theme first on the very first launch), crossfading, with a now-playing tag bottom right (`ui/title_song_tag.gd`). Intro: The Fall of LM-1 from the first frame, paused with the cinematic, faded at the landing.
+- In play: background shuffle of owned songs that fit the planet and moment (home planet first, story songs sometimes, other planets rarely; night/restored songs only then), 30-90 s quiet gaps, never the same song twice in a row.
+- CDs (`planet/cd_finds.gd`): intact CDs surface on cleaned hexes of the artist's home planet (pity guarantee by 18 hexes, kept in flags.songs.pending until picked up); scratched one-play CDs (5-10 per planet, songs you don't own; "Play now / Keep for later", CD case of 4, `ui/scratched_cd_ui.gd`). 13 in-world artists with homes and bios; Codex "Artists" tab (`ui/codex_artists.gd`). Start songs: Greenfall (Main Theme), Clean Sweep, Morning Shift.
+- CD player (Keepsakes tab, `ui/extras_cd_list.gd`): Shuffle / pick on repeat / off, lock + "found on" rows, CD case. Pre-Glim the music comes from the CD player (softer far away) and stops when you leave the district; with Glim's Music upgrade (`Glim.has_music()`, wt/buddy) any CD plays anywhere via N (`ui/tunes_picker.gd`). Credits: "Music by Lucas" (no Suno in the game; licensing note stays in audio/songs/README.md).
+- Dev: `--cds=a,b`, `--scratched=a`, `--cd-play=shuffle|id`, `--cd-drop`, `--glim-music`.
+- Next: autoplay bot could walk to CDs; a CD-player hub radio model is wt/camp.
