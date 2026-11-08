@@ -385,7 +385,7 @@ func _build_stars() -> void:
 	_star_mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
 	_star_mat.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
 	_star_mat.disable_fog = true
-	_star_mat.albedo_texture = LedgerDrone._shadow_tex()
+	_star_mat.albedo_texture = _star_tex()  # [eggs2] was the drone's BLACK shadow blob: additive black = no stars at all
 	_star_mat.albedo_color = Color(0.85, 0.92, 1.0, 0.0)
 	var q := QuadMesh.new()
 	q.size = Vector2(3.2, 3.2)
@@ -417,6 +417,23 @@ func _build_stars() -> void:
 	_stars.rotate_object_local(Vector3.UP, PI)
 
 
+## [eggs2] A soft white star: bright core, faint halo.
+static func _star_tex() -> GradientTexture2D:
+	var g := Gradient.new()
+	g.set_color(0, Color(1, 1, 1, 1))
+	g.set_color(1, Color(1, 1, 1, 0))
+	g.add_point(0.18, Color(1, 1, 1, 0.9))
+	g.add_point(0.45, Color(0.8, 0.9, 1.0, 0.18))
+	var t := GradientTexture2D.new()
+	t.gradient = g
+	t.fill = GradientTexture2D.FILL_RADIAL
+	t.fill_from = Vector2(0.5, 0.5)
+	t.fill_to = Vector2(1.0, 0.5)
+	t.width = 64
+	t.height = 64
+	return t
+
+
 func _night_amount() -> float:
 	if world.get("sky_director") == null:
 		return 0.0
@@ -435,7 +452,7 @@ func _process(delta: float) -> void:
 		var boost: float = 1.0 if is_found("stars") else 0.55
 		_star_mat.albedo_color.a = _night_amount() * boost * (0.85 + 0.15 * sin(_t * 1.7))
 		# [eggs2] Through the eyepiece the Wren burns bright (HDR white over the darkened lens sky).
-		var k: float = 6.0 if is_instance_valid(_peek) else 1.0
+		var k: float = 2.5 if is_instance_valid(_peek) else 1.0
 		_star_mat.albedo_color = Color(0.85 * k, 0.92 * k, 1.0 * k, 1.0 if is_instance_valid(_peek) else _star_mat.albedo_color.a)
 	_animate(delta)
 	_glint(delta)
