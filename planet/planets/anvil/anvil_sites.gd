@@ -17,7 +17,7 @@ extends RefCounted
 
 const Batch = FrontierView.Batch
 const SITES: Array[String] = ["foundry_yard", "foundry_tower", "lava_forge", "ruined_smelter"]
-const TRASH: Array[String] = ["rusted_wheel_rim_02", "Barrel_01", "barrel_03", "old_tyre", "tire_pump", "wooden_crate_02", "metal_jerrycan", "can_rusted", "oil_tin", "propane_tank"]
+const TRASH: Array[String] = ["rusted_wheel_rim_02", "Barrel_01", "old_tyre", "tire_pump", "wooden_crate_02", "metal_jerrycan", "can_rusted", "oil_tin", "propane_tank"]
 
 
 static func build(site_root: Node3D, site_id: String, stage: int, restoration: float) -> Node3D:
@@ -469,8 +469,10 @@ static func _lava_forge(kit: AnvilEnv, root: Node3D, stage: int, restoration: fl
 	var cc: Vector3 = pts[12]
 	for sgn: float in [-1.0, 1.0]:
 		var leg: Vector3 = cc + Vector3(-7.0 * sgn, 0, 2.0 * sgn)
-		AnvilProps.add_beam(b, leg + Vector3(0, 0, -2.0), leg + Vector3(0, 12.0, 0), 0.6, kit.mat("rust"))
-		AnvilProps.add_beam(b, leg + Vector3(0, 0, 2.0), leg + Vector3(0, 12.0, 0), 0.6, kit.mat("rust"))
+		for dz: float in [-2.0, 2.0]:
+			var lb: Vector3 = leg + Vector3(0, 0, dz)
+			var lt: Vector3 = leg + Vector3(0, 12.0, 0)
+			b.add(AnvilProps.noisy_cyl(0.32, 0.4, lb.distance_to(lt), 12, 4, 0.03, 70 + int(dz)), FrontierView._beam_xf(lb, lt, 1.0), kit.mat("rust"))
 	AnvilProps.add_beam(b, cc + Vector3(-7.5, 12.4, -2.0), cc + Vector3(7.5, 12.4, 2.0), 1.1, kit.mat("hauler"))
 	AnvilProps.add_beam(b, cc + Vector3(0, 12.0, 0), cc + Vector3(0, 6.5, 0), 0.08, kit.mat("soot"))
 	b.add(AnvilProps.noisy_cyl(1.6, 1.1, 2.4, 18, 3, 0.05, 55), Transform3D(Basis(Vector3.RIGHT, 0.35), cc + Vector3(0, 5.2, 0)), kit.mat("stack"))
