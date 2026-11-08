@@ -10,3 +10,6 @@ Lap run first: `[orbit] LAP walked=11579m around=11564m game_time=2545s (42.4 mi
 - `orbit_mid.png`: the whole globe from orbit with land and water and the walked lap drawn as a pale cyan pole-to-pole line (DELAY=50, presim 600).
 
 General: the sky is black in the play and ground views (no sky or atmosphere visible behind the buildings).
+
+## Phase A (local, QUALITY=0, 640x360, `--orbit --orbit-nohud --orbit-time=0.4`)
+- `orbit_phaseA_play.png`: the real Lumi on the start site with the Depot/trash bin, real junk models in the field, and the new world-space sky (no longer black). The grey-box buildings are phase-A stand-ins; the real city dressing comes with phase D.
