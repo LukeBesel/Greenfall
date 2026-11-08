@@ -28,6 +28,7 @@ uniform float restore = 0.0;   // 0 ruined .. 1 restored (hex levels)
 uniform float stage = 1.0;     // base level 1..5
 uniform float night = 0.0;
 uniform float time_s = 0.0;
+uniform float pan_amt = 1.0;  // salt pans on open ground (sites turn them down)
 
 varying vec3 wpos;
 varying vec3 wnrm;
@@ -129,7 +130,7 @@ void fragment() {
 	float rough = mix(0.93, 0.88, wallness);
 	// Plateau salt pans (flat ground beyond the rim) and the dried floor of the pit.
 	float flatness = 1.0 - smoothstep(0.05, 0.14, slope);
-	float pan = smoothstep(0.62, 0.67, fbm(p * 0.0026 + 3.0)) * (1.0 - pit) * flatness;
+	float pan = smoothstep(0.62, 0.67, fbm(p * 0.0026 + 3.0)) * (1.0 - pit) * flatness * pan_amt;
 	pan = max(pan, (1.0 - step(0.02, lvl)) * flat_b * pit * (1.0 - restore * 1.4));
 	if (pan > 0.001) {
 		float cr = cells(p * 0.55);

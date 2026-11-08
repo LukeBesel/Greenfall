@@ -69,6 +69,7 @@ static func terrain_mat(restore: float, stage: int) -> ShaderMaterial:
 	m.set_shader_parameter("stage", float(stage))
 	# Salt crust reads as crust, not a white glare (it was overbright under the closest suns).
 	m.set_shader_parameter("c_salt", Vector3(0.74, 0.7, 0.62))
+	m.set_shader_parameter("pan_amt", 0.0)
 	return m
 
 
@@ -257,7 +258,7 @@ static func _plants(site: Node3D, radius: float, clear_r: float, restore: float,
 	var lists: Array = []
 	for k: Array in kinds:
 		lists.append([])
-	var n: int = int(220.0 * restore)
+	var n: int = int(130.0 * restore)
 	for i: int in n:
 		var a: float = rng.randf() * TAU
 		var d: float = lerpf(clear_r + 1.0, radius * 0.95, sqrt(rng.randf()))

@@ -119,5 +119,7 @@ func _ground() -> void:
 				st.add_vertex(Vector3(p.x, -0.05, p.y))
 	var mi := MeshInstance3D.new()
 	mi.mesh = st.commit()
-	mi.material_override = OchreSites.terrain_mat(0.0, 1)
+	var gm: ShaderMaterial = OchreSites.terrain_mat(0.0, 1)
+	gm.set_shader_parameter("pan_amt", 0.3)
+	mi.material_override = gm
 	add_child(mi)
