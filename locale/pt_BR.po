@@ -292,20 +292,6 @@ msgstr "Base melhorada: %s."
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "Purificador de ar ligado. As ventoinhas giram com um longo suspiro empoeirado."
 
-#: automation/launch_pad.gd:116
-msgid "PAD 01"
-msgstr "PLATAFORMA 01"
-
-#: automation/launch_pad.gd:238
-msgid "LANDING PAD"
-msgstr ""
-
-#: automation/launch_pad.gd:301
-msgid ""
-"LANDING PAD\n"
-"BASE LEVEL 5"
-msgstr ""
-
 #: automation/outpost.gd:485
 msgid "SCALE"
 msgstr "BALANÇA"
@@ -419,19 +405,11 @@ msgstr "TRITURAR  ·  FUNDIR  ·  SUMIU DE VEZ"
 msgid "HAND FEED"
 msgstr "À MÃO"
 
-#: automation/rocket.gd:267
-msgid "IGNITION"
-msgstr "IGNIÇÃO"
-
-#: automation/rocket.gd:319
+#: automation/rocket.gd:315
 msgid "LIFT OFF"
 msgstr "DECOLAGEM"
 
-#: automation/rocket.gd:324
-msgid "WARP"
-msgstr "DOBRA"
-
-#: automation/rocket.gd:890
+#: automation/rocket.gd:861
 msgid "Space / Esc  skip"
 msgstr "Espaço / Esc  pular"
 
@@ -597,7 +575,7 @@ msgstr "Algo brilha no entulho limpo. Um CD antigo!"
 msgid "Your CD case is full."
 msgstr "Seu estojo de CDs está cheio."
 
-#: planet/far_junk.gd:190
+#: planet/far_junk.gd:198
 msgid "Past the survey line the junk runs too deep to start on. One district at a time: clean this one, then the rockets take us to the next."
 msgstr ""
 
@@ -797,6 +775,14 @@ msgstr ""
 
 #: planet/world_bounds.gd:166
 msgid "Lumi hovers back onto solid ground."
+msgstr ""
+
+#: planet/planets/tidewell/env.gd:1180
+msgid "LEDGER  DREDGE %02d"
+msgstr ""
+
+#: planet/planets/tidewell/env.gd:1226
+msgid "LEDGER MINING  ORE BARGE 3"
 msgstr ""
 
 #: plants/composter.gd:77
@@ -1218,63 +1204,63 @@ msgstr "Tanque de água colocado. Regadores próximos vão reabastecer aqui."
 msgid "WATER"
 msgstr "ÁGUA"
 
-#: scenes/slice.gd:302
+#: scenes/slice.gd:349
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Link dos robôs online. Aperte B para o Comando: pinte zonas e mande equipes para onde quiser."
 
-#: scenes/slice.gd:893
+#: scenes/slice.gd:1010
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXÁGONO LIMPO!  +%s"
 
-#: scenes/slice.gd:907
+#: scenes/slice.gd:1024
 msgid "Milestone: %d hexes clean!"
 msgstr "Marco: %d hexágonos limpos!"
 
-#: scenes/slice.gd:909
+#: scenes/slice.gd:1026
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "O ferro-velho inteiro está limpo. Lumi solta um bipe muito longo e muito feliz."
 
-#: scenes/slice.gd:916
+#: scenes/slice.gd:1033
 msgid "%s is out of range: %s"
 msgstr "%s está fora de alcance: %s"
 
-#: scenes/slice.gd:926
+#: scenes/slice.gd:1043
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Bloqueado. Leve sua base ao nível 5 para construir a plataforma de lançamento."
 
-#: scenes/slice.gd:929 ui/rockets_panel.gd:39
+#: scenes/slice.gd:1046 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Células de energia recarregando: %s. Melhorias do foguete recarregam mais rápido."
 
-#: scenes/slice.gd:983
+#: scenes/slice.gd:1100
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Pouso: %s. Base %d de %d. %s"
 
-#: scenes/slice.gd:984
+#: scenes/slice.gd:1101
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "O foguete está estacionado no pátio, pronto quando as células recarregarem."
 
-#: scenes/slice.gd:984
+#: scenes/slice.gd:1101
 msgid "Landed on the base pad."
 msgstr "Pousou na plataforma da base."
 
-#: scenes/slice.gd:1083
+#: scenes/slice.gd:1200
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Melhorias precisam de uma bancada. Volte para a base."
 
-#: scenes/slice.gd:1254
+#: scenes/slice.gd:1371
 msgid "Welcome back. The junk waited for you."
 msgstr "Bem-vindo de volta. A sucata esperou por você."
 
-#: scenes/slice.gd:1271
+#: scenes/slice.gd:1388
 msgid "OUTPOST %d · Lv%d"
 msgstr "POSTO %d · Nv%d"
 
-#: scenes/slice.gd:1271
+#: scenes/slice.gd:1388
 msgid "OUTPOST %d · RUIN"
 msgstr "POSTO %d · RUÍNA"
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:145
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:154
 msgid "Setting the scene"
 msgstr ""
 
@@ -4685,11 +4671,11 @@ msgstr "FARDO PRONTO"
 msgid "◢ BURIED PART %d%%"
 msgstr "◢ PEÇA ENTERRADA %d%%"
 
-#: ui/loading_screen.gd:144
+#: ui/loading_screen.gd:153
 msgid "Loading"
 msgstr ""
 
-#: ui/loading_screen.gd:146
+#: ui/loading_screen.gd:155
 msgid "Warming up"
 msgstr ""
 
@@ -9328,7 +9314,7 @@ msgstr "Todo inverno, as equipes do porto faziam um boneco de neve em volta de u
 msgid "Lumi straightens the snowbot's scarf. Its old lamp eyes flicker once, as if to say thanks."
 msgstr "Lumi ajeita o cachecol do robô de neve. Os velhos olhos de lâmpada piscam uma vez, como quem agradece."
 
-#: data/eggs.json:eggs[bottle_message].name
+#: data/eggs.json:eggs[bottle_message].name data/songs.json:songs[message_in_a_bottle].title
 msgid "Message in a Bottle"
 msgstr "Mensagem numa garrafa"
 
@@ -9834,7 +9820,7 @@ msgstr "Medalhão de semente"
 msgid "A locket with one seed inside instead of a photo. Someone loved gardens."
 msgstr "Um medalhão com uma semente dentro no lugar de uma foto. Alguém amava jardins."
 
-#: data/events.json:trinkets[snow_globe].name
+#: data/events.json:trinkets[snow_globe].name data/songs.json:songs[snow_globe].title
 msgid "Snow Globe"
 msgstr "Globo de neve"
 
@@ -11194,7 +11180,8 @@ msgstr "Verdance"
 msgid "Ochre"
 msgstr "Ochre"
 
-#: data/homeward.json:planets[tidewell].name data/telescope.json:planets_default[tidewell].name
+#: data/homeward.json:planets[tidewell].name data/planets.json:tidewell.name data/planets.json:tidewell.district.name
+#: data/telescope.json:planets_default[tidewell].name
 msgid "Tidewell"
 msgstr "Tidewell"
 
@@ -12092,6 +12079,58 @@ msgstr "Módulo especial"
 
 #: data/planets.json:rime.tagline
 msgid "An ice moon, core-mined until it froze."
+msgstr ""
+
+#: data/planets.json:tidewell.tagline
+msgid "An ocean world. The Ledger's dredging rigs still stand in the shallows."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_raft.name
+msgid "Anchored Raft"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_raft.desc
+msgid "Timber raft deck on rusted pontoons: workshop shack, store, deck crane, fuel tank, moorings."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_stilts.name
+msgid "Stilt Yard"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.hub_stilts.desc
+msgid "A sandy islet with a stilt deck and huts over the water, boardwalk, beached skiff."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.wreck.name
+msgid "Ore Barge Wreck"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.wreck.desc
+msgid "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.dredge_rig.name
+msgid "Dredge Rig"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.dredge_rig.desc
+msgid "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.reef_garden.name
+msgid "Reef Garden"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.reef_garden.desc
+msgid "Bleached coral breaking the surface among nets; live coral and floating gardens when restored."
+msgstr ""
+
+#: data/planets.json:tidewell.sites.buoy_field.name
+msgid "Buoy Field"
+msgstr ""
+
+#: data/planets.json:tidewell.sites.buoy_field.desc
+msgid "Rows of mooring buoys strung with rope and ghost nets; light caps when futuristic."
 msgstr ""
 
 #: data/radio.json:songs[verdance_sprout].name data/songs.json:songs[sprout_step].title
@@ -13607,6 +13646,182 @@ msgstr "Magma Crawl"
 #: data/songs.json:songs[iron_bloom].title
 msgid "Iron Bloom"
 msgstr "Iron Bloom"
+
+#: data/songs.json:songs[signal_found].title
+msgid "Signal Found"
+msgstr ""
+
+#: data/songs.json:songs[what_the_ledger_took].title
+msgid "What the Ledger Took"
+msgstr ""
+
+#: data/songs.json:songs[drone_sweep].title
+msgid "Drone Sweep"
+msgstr ""
+
+#: data/songs.json:songs[small_robot_big_sky].title
+msgid "Small Robot, Big Sky"
+msgstr ""
+
+#: data/songs.json:songs[dumpster_disco].title
+msgid "Dumpster Disco"
+msgstr ""
+
+#: data/songs.json:songs[pocket_full_of_bolts].title
+msgid "Pocket Full of Bolts"
+msgstr ""
+
+#: data/songs.json:songs[tin_can_parade].title
+msgid "Tin Can Parade"
+msgstr ""
+
+#: data/songs.json:songs[cardboard_kingdom].title
+msgid "Cardboard Kingdom"
+msgstr ""
+
+#: data/songs.json:songs[rain_on_rust].title
+msgid "Rain on Rust"
+msgstr ""
+
+#: data/songs.json:songs[streetlight_memory].title
+msgid "Streetlight Memory"
+msgstr ""
+
+#: data/songs.json:songs[the_last_bus_stop].title
+msgid "The Last Bus Stop"
+msgstr ""
+
+#: data/songs.json:songs[something_in_the_alley].title
+msgid "Something in the Alley"
+msgstr ""
+
+#: data/songs.json:songs[green_again].title
+msgid "Green Again"
+msgstr ""
+
+#: data/songs.json:songs[dawn_patrol].title
+msgid "Dawn Patrol"
+msgstr ""
+
+#: data/songs.json:songs[cactus_cowbot].title
+msgid "Cactus Cowbot"
+msgstr ""
+
+#: data/songs.json:songs[heatwave_hustle].title
+msgid "Heatwave Hustle"
+msgstr ""
+
+#: data/songs.json:songs[mirage_market].title
+msgid "Mirage Market"
+msgstr ""
+
+#: data/songs.json:songs[endless_sand].title
+msgid "Endless Sand"
+msgstr ""
+
+#: data/songs.json:songs[letters_in_the_pit].title
+msgid "Letters in the Pit"
+msgstr ""
+
+#: data/songs.json:songs[sandstorm_warning].title
+msgid "Sandstorm Warning"
+msgstr ""
+
+#: data/songs.json:songs[bones_of_the_excavator].title
+msgid "Bones of the Excavator"
+msgstr ""
+
+#: data/songs.json:songs[first_rain_on_ochre].title
+msgid "First Rain on Ochre"
+msgstr ""
+
+#: data/songs.json:songs[bubble_pop].title
+msgid "Bubble Pop"
+msgstr ""
+
+#: data/songs.json:songs[pier_pressure].title
+msgid "Pier Pressure"
+msgstr ""
+
+#: data/songs.json:songs[crab_shuffle].title
+msgid "Crab Shuffle"
+msgstr ""
+
+#: data/songs.json:songs[drifting_raft].title
+msgid "Drifting Raft"
+msgstr ""
+
+#: data/songs.json:songs[the_deep_below].title
+msgid "The Deep Below"
+msgstr ""
+
+#: data/songs.json:songs[lighthouse_ghost].title
+msgid "Lighthouse Ghost"
+msgstr ""
+
+#: data/songs.json:songs[coral_comeback].title
+msgid "Coral Comeback"
+msgstr ""
+
+#: data/songs.json:songs[penguin_bot_waddle].title
+msgid "Penguin Bot Waddle"
+msgstr ""
+
+#: data/songs.json:songs[ice_rink_lights].title
+msgid "Ice Rink Lights"
+msgstr ""
+
+#: data/songs.json:songs[the_long_way_home].title
+msgid "The Long Way Home"
+msgstr ""
+
+#: data/songs.json:songs[whiteout].title
+msgid "Whiteout"
+msgstr ""
+
+#: data/songs.json:songs[frozen_voices].title
+msgid "Frozen Voices"
+msgstr ""
+
+#: data/songs.json:songs[hot_spring_hangout].title
+msgid "Hot Spring Hangout"
+msgstr ""
+
+#: data/songs.json:songs[spring_under_ice].title
+msgid "Spring Under Ice"
+msgstr ""
+
+#: data/songs.json:songs[molten_groove].title
+msgid "Molten Groove"
+msgstr ""
+
+#: data/songs.json:songs[forge_stomp].title
+msgid "Forge Stomp"
+msgstr ""
+
+#: data/songs.json:songs[lava_lamp_lounge].title
+msgid "Lava Lamp Lounge"
+msgstr ""
+
+#: data/songs.json:songs[ember_drift].title
+msgid "Ember Drift"
+msgstr ""
+
+#: data/songs.json:songs[the_clerk_s_regret].title
+msgid "The Clerk's Regret"
+msgstr ""
+
+#: data/songs.json:songs[furnace_heartbeat].title
+msgid "Furnace Heartbeat"
+msgstr ""
+
+#: data/songs.json:songs[shadows_in_the_smelter].title
+msgid "Shadows in the Smelter"
+msgstr ""
+
+#: data/songs.json:songs[cool_stone].title
+msgid "Cool Stone"
+msgstr ""
 
 #: data/stations.json:conveyor.name
 msgid "Conveyor Feeder"
@@ -15760,6 +15975,15 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "PAD 01"
+#~ msgstr "PLATAFORMA 01"
+
+#~ msgid "IGNITION"
+#~ msgstr "IGNIÇÃO"
+
+#~ msgid "WARP"
+#~ msgstr "DOBRA"
 
 #~ msgid "Press  {cube}  to press a bale"
 #~ msgstr "Aperte  {cube}  para prensar um fardo"
