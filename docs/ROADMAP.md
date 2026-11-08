@@ -814,3 +814,10 @@ rebuilt on the sphere. What carries over, and how to place it on a globe:
   up (the water source) as hex levels rise; ruined (1) rust, slumped booms, extra scrap -> mid (2-3) repainted,
   shade sails -> future (4-5) white machines with planters, solar sails, a thin light seam on crests, waterfalls.
 - Dev: `--planet-env=ochre`, `--ochre-lookbook=1|2` (kit under both suns), `--ochre-restore`, `--ochre-cam`.
+
+## Update: round planet phase E (wt/orbE, Nov 8)
+- Done: sky and day/night on the globe. SkyDirector sphere mode (planet/sky_director.gd) drives the world-space sky (planet/orbit/orbit_sky.gdshader) over OrbitDay. The spin is the clock and the local time follows Lumi's longitude. Binary suns from BinarySun.suns_for, a full moon opposite the suns, a cloud deck anchored to the planet, haze lifting with cleaning, storm and Long Nights, readable nights (night lift). Glim's lantern replaces the Lumi lamp.
+- Done: Future Layer per cell on LOD-0 chunks (planet/future_layer_sphere.gd), from SphereCells.level. Builds are budgeted at 2.5 ms per frame.
+- Done: survey hologram (GlobeView sphere mode, far-shell big hexes, "you are here" pin, hand-held on local up), PlanetGlobe overlay of the walked cells, system map globes sized by GlobeSize, photo mode, and core-charge and rocket cameras on local up (WorldUp).
+- Done: perf budgets per preset (planet/orbit_quality.gd) and numbers in docs/PERFORMANCE.md "Round planet". All of it is wired into the real slice through planet/orbit_layers.gd (one call in scenes/slice_orbit.gd).
+- Pending: day/dusk/night renders (killed for memory twice in the shared container; command in the orbE report), rendered draw-call numbers, Mac fps, flipping the default (main, after owner sign-off).
