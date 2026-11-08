@@ -27,6 +27,8 @@ func _ready() -> void:
 		_lap_start = _lumi().global_position
 	if DevHooks.has("orbit-cash"):
 		_cash_test.call_deferred()
+	if DevHooks.has("orbit-reload"):
+		_reload_check.call_deferred()
 
 
 func _lumi() -> Patch:
@@ -147,3 +149,27 @@ func _cash_test() -> void:
 	print("[orbit] cash: bale cashed=%d cubes %.0f -> %.0f %s" % [depot.cashed, c1, c2, "PASS" if ok else "FAIL"])
 	if DevHooks.has("orbit-lap-quit") or DevHooks.has("orbit-cash-quit"):
 		get_tree().quit(0 if ok else 1)
+
+
+## [orbB] Save/load across processes (tools/orbit_reload_check.sh):
+## --orbit-reload=write  walks Lumi 35 m off the pad, saves, prints "[reload] wrote ..." and quits;
+## --orbit-reload=read   (a new process, no --fresh) prints where the save put Lumi, PASS/FAIL.
+func _reload_check() -> void:
+	var lumi: Patch = _lumi()
+	var g: OrbitPlanet = so.globe
+	if DevHooks.get_s("orbit-reload", "read") == "write":
+		await get_tree().create_timer(1.0).timeout
+		var d: Vector3 = g.terrain.local_to_dir(g.start_cell(), 28.0, -21.0)
+		lumi.place_on_sphere(g.terrain.ground(d), -SphereGrid.frame(d).z)
+		GameState.add_currency("cubes", BigNum.from_float(321))
+		await get_tree().create_timer(0.5).timeout
+		var ok: bool = SaveManager.save_game()
+		print("[reload] wrote lumi=%s cubes=%.0f saved=%s" % [str(g.to_dirh(lumi.global_position)), GameState.get_currency("cubes").to_float(), str(ok)])
+		get_tree().quit(0 if ok else 1)
+		return
+	await get_tree().create_timer(1.0).timeout
+	var want: Array = (GameState.orbit.get("lumi", {}) as Dictionary).get("at", [])
+	var got: Array = g.to_dirh(lumi.global_position)
+	var ok2: bool = want.size() == 4 and Vector3(float(want[0]), float(want[1]), float(want[2])).distance_to(Vector3(float(got[0]), float(got[1]), float(got[2]))) * g.grid.radius_m < 0.5
+	print("[reload] read lumi=%s saved=%s cubes=%.0f %s" % [str(got), str(want), GameState.get_currency("cubes").to_float(), "PASS" if ok2 else "FAIL"])
+	get_tree().quit(0 if ok2 else 1)

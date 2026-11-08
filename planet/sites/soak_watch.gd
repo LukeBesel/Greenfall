@@ -29,7 +29,9 @@ static func attach(p_so: SliceOrbit) -> SoakWatch:
 
 
 func _ready() -> void:
-	(func() -> void: print("[soak] digest start " + digest())).call_deferred()
+	# [orbB] after the build (it awaits behind the loading screen): a deferred call ran before the
+	# save was restored and read the spawn spot
+	so.w.connect("built", func() -> void: print("[soak] digest start " + digest()), CONNECT_ONE_SHOT)
 	so.w.tree_exiting.connect(func() -> void: print("[soak] digest exit %s (warnings %d)" % [digest(), _warns]))
 
 
