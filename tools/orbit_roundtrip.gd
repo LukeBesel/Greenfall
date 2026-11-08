@@ -421,6 +421,8 @@ static func run(rt: Node, check: Callable) -> void:
 			var gi := n as GeometryInstance3D
 			if not gi.is_visible_in_tree() or gi is MultiMeshInstance3D or s1.get("patch").is_ancestor_of(gi) or (s1.get_node_or_null("Glim") and s1.get_node("Glim").is_ancestor_of(gi)):
 				continue
+			if gi.is_in_group("see_through"):  # [v2feel] the pod's smoke plume fades out near the camera
+				continue
 			if n.get_parent() is OrbitPlanet or str(n.get_path()).contains("Streamer") or str(n.get_path()).contains("Content/"):
 				continue
 			var ab: AABB = gi.global_transform * gi.get_aabb()
