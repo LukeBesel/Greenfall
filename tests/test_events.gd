@@ -62,7 +62,7 @@ func test_pick_event_is_weighted() -> void:
 
 
 func test_eligibility_from_context() -> void:
-	var early: Dictionary = WorldEvents.eligible_ids({"junk_hexes": 30, "planted": 0, "robots": 0, "max_hex_level": 1, "ledger_resolved": false, "parts_left": 3})
+	var early: Dictionary = WorldEvents.eligible_ids({"junk_hexes": 30, "planted": 0, "robots": 0, "max_hex_level": 1, "ledger_resolved": false, "parts_left": 3, "flags": {"has_baler": true, "has_signal_finder": true}})
 	assert_true(early["supply_drop"])
 	assert_true(early["salvage_surge"])
 	assert_true(early["rare_part_signal"])
@@ -70,6 +70,9 @@ func test_eligibility_from_context() -> void:
 	assert_false(early["robot_hiccup"], "hiccup needs a robot")
 	assert_false(early["wildlife_visit"], "wildlife needs a Sustained hex")
 	assert_false(early["ledger_audit"], "audit waits for the Ledger arc")
+	var fresh: Dictionary = WorldEvents.eligible_ids({"junk_hexes": 30, "parts_left": 3, "flags": {}})  # [pace]
+	assert_false(fresh["rare_part_signal"], "the violet beam needs the Signal Finder")
+	assert_false(fresh["salvage_surge"], "bale bonuses need the Baler")
 	var late: Dictionary = WorldEvents.eligible_ids({"junk_hexes": 0, "planted": 40, "robots": 6, "max_hex_level": 5, "ledger_resolved": true, "parts_left": 0})
 	assert_false(late["supply_drop"], "no junk left -> no drop")
 	assert_false(late["rare_part_signal"])

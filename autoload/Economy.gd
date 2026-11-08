@@ -159,11 +159,35 @@ func is_maxed(id: String) -> bool:
 
 
 func is_unlocked(id: String) -> bool:
-	var req: Dictionary = upgrade_defs[id].get("requires", {})
+	var u: Dictionary = upgrade_defs[id]
+	var req: Dictionary = u.get("requires", {})
 	for rid: String in req:
 		if GameState.level_of(rid) < int(req[rid]):
 			return false
+	# [pace] Late upgrades (automation) can also wait for research or a base level.
+	var rr: String = str(u.get("requires_research", ""))
+	if rr != "" and not Research.has(rr):
+		return false
+	var mb: int = int(u.get("min_base_level", 0))
+	if mb > 0 and int(GameState.world.get("hub_level", 1)) < mb and Frontiers.bases_at_level(mb) == 0:
+		return false
 	return true
+
+
+## [pace] Why an upgrade is locked, for the workbench ("" when unlocked).
+func lock_reason(id: String) -> String:
+	var u: Dictionary = upgrade_defs[id]
+	var req: Dictionary = u.get("requires", {})
+	for rid: String in req:
+		if GameState.level_of(rid) < int(req[rid]) and upgrade_defs.has(rid):
+			return tr("Needs %s Lv %d") % [tr(str(upgrade_defs[rid].get("name", rid))), int(req[rid])]
+	var rr: String = str(u.get("requires_research", ""))
+	if rr != "" and not Research.has(rr):
+		return tr("Needs research: %s") % tr(str(Research.def(rr).get("name", rr)))
+	var mb: int = int(u.get("min_base_level", 0))
+	if mb > 0 and int(GameState.world.get("hub_level", 1)) < mb and Frontiers.bases_at_level(mb) == 0:
+		return tr("Needs base level %d") % mb
+	return ""
 
 
 static func cost_at(base_cost: float, growth: float, level: int) -> BigNum:
@@ -219,6 +243,7 @@ func buy_upgrade(id: String, n: int = 1) -> int:
 		return 0
 	GameState.upgrades[id] = GameState.level_of(id) + count
 	GameState.inc_stat("upgrades_bought", count)
+	Pace.sync_flags()  # [pace]
 	EventBus.upgrade_bought.emit(id, GameState.level_of(id))
 	return count
 

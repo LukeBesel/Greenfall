@@ -19,21 +19,24 @@ func after_each() -> void:
 func test_data_loaded() -> void:
 	assert_gt(Economy.junk_ids.size(), 4)
 	assert_true(Economy.upgrade_defs.has("compartment_size"))
-	assert_almost_eq(Economy.stat("capacity"), 30.0, 0.001)
+	assert_almost_eq(Economy.stat("capacity"), float(Economy.patch_base["capacity"]), 0.001)
 
 
 func test_stat_add_and_mul() -> void:
 	GameState.upgrades["compartment_size"] = 3
-	assert_almost_eq(Economy.stat("capacity"), 48.0, 0.001)
+	var per: float = float(Economy.upgrade_defs["compartment_size"]["amount"])  # [pace] data-driven
+	assert_almost_eq(Economy.stat("capacity"), float(Economy.patch_base["capacity"]) + 3.0 * per, 0.001)
 	GameState.upgrades["tread_speed"] = 2
 	assert_almost_eq(Economy.stat("move_speed"), 4.6 * 1.2, 0.001)
 
 
 func test_cost_growth_and_n() -> void:
+	var b: float = float(Economy.upgrade_defs["compartment_size"]["base_cost"])
+	var g: float = float(Economy.upgrade_defs["compartment_size"]["growth"])
 	var c0: float = Economy.upgrade_cost("compartment_size").to_float()
-	assert_almost_eq(c0, 30.0, 0.001)
+	assert_almost_eq(c0, b, 0.001)
 	var c3: float = Economy.cost_for_n("compartment_size", 3).to_float()
-	assert_almost_eq(c3, 30.0 + 30.0 * 1.55 + 30.0 * 1.55 * 1.55, 0.01)
+	assert_almost_eq(c3, b + b * g + b * g * g, 0.01)
 
 
 func test_buy_spends_and_levels() -> void:
@@ -41,22 +44,29 @@ func test_buy_spends_and_levels() -> void:
 	var got: int = Economy.buy_upgrade("compartment_size", 1)
 	assert_eq(got, 1)
 	assert_eq(GameState.level_of("compartment_size"), 1)
-	assert_almost_eq(GameState.get_currency("cubes").to_float(), 70.0, 0.001)
+	assert_almost_eq(GameState.get_currency("cubes").to_float(), 100.0 - float(Economy.upgrade_defs["compartment_size"]["base_cost"]), 0.001)
 
 
 func test_buy_max_respects_budget_and_cap() -> void:
 	GameState.currencies["cubes"] = BigNum.from_float(1.0e9)
 	var got: int = Economy.buy_upgrade("auto_compactor", 0)
-	assert_eq(got, 0, "locked until compartment_size 2")
-	GameState.upgrades["compartment_size"] = 2
+	assert_eq(got, 0, "locked until its requirements are met")
+	GameState.upgrades["compartment_size"] = 6
+	GameState.upgrades["baler"] = 1
+	var done: Array = Research.done_list()
+	var had: bool = "auto_baler" in done
+	if not had:
+		done.append("auto_baler")  # [pace] auto-cubing waits for the Auto-Baler research
 	got = Economy.buy_upgrade("auto_compactor", 0)
+	if not had:
+		done.erase("auto_baler")
 	assert_eq(got, 1, "max level 1")
 
 
 func test_cannot_overspend() -> void:
-	GameState.currencies["cubes"] = BigNum.from_float(20.0)
+	GameState.currencies["cubes"] = BigNum.from_float(float(Economy.upgrade_defs["compartment_size"]["base_cost"]) - 5.0)
 	assert_eq(Economy.buy_upgrade("compartment_size", 1), 0)
-	assert_almost_eq(GameState.get_currency("cubes").to_float(), 20.0, 0.001)
+	assert_almost_eq(GameState.get_currency("cubes").to_float(), float(Economy.upgrade_defs["compartment_size"]["base_cost"]) - 5.0, 0.001)
 
 
 func test_cube_values() -> void:
