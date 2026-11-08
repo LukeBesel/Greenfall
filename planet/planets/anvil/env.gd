@@ -66,6 +66,7 @@ var _sun_b: DirectionalLight3D
 var _sun_a_disc: MeshInstance3D
 var _sun_b_disc: MeshInstance3D
 var _stars: Texture2D
+var _shared_suns: bool = false
 var _suns: Dictionary = {}
 var _t: float = 0.0
 var _tick: float = 99.0
@@ -309,7 +310,14 @@ func _sky() -> void:
 	var b: Dictionary = _suns["b"]
 	if sun:
 		sun.light_angular_distance = 0.6 * float(a.get("size", 0.72))
-	# The companion: its own disc in the sky and a warm unshadowed fill.
+	# The shared SkyDirector draws both suns now (planet/binary_sun.gd): size them for Anvil and
+	# draw nothing of our own.
+	var bin: Node = sd.get("binary") if sd else null
+	if bin and bin.has_method("setup") and we and we.sky and we.sky.sky_material is PhysicalSkyMaterial:
+		bin.call("setup", ID, we.sky.sky_material)
+		_shared_suns = true
+		return
+	# Fallback (no shared binary sun): the companion gets its own disc and a warm fill.
 	_sun_b = DirectionalLight3D.new()
 	_sun_b.name = "CompanionSun"
 	_sun_b.shadow_enabled = false
@@ -369,11 +377,14 @@ func _update_suns() -> void:
 	var se: Dictionary = entry.get("sun", {})
 	# Anvil's suns ride lower (elev_max_deg) and give less light.
 	var k: float = float(se.get("elev_max_deg", 52.0)) / 70.0
-	if sd:
+	if sd and not _shared_suns:  # the shared binary sun places its companion off the primary first
 		sun.rotation_degrees.x *= k
 	var a: Dictionary = _suns["a"]
 	var b: Dictionary = _suns["b"]
 	sun.light_energy *= float(se.get("energy_mult", 0.82)) * float(a.get("energy", 1.0))
+	if _shared_suns:
+		_night_floor(sun)
+		return
 	var sep: float = deg_to_rad(float(b.get("sep_deg", 11.0)))
 	_sun_b.global_basis = Basis(Vector3.UP, sep) * Basis(sun.global_basis.x, -sep * 0.3) * sun.global_basis
 	_sun_b.visible = sun.visible
@@ -392,15 +403,21 @@ func _update_suns() -> void:
 			sm.night_sky = want
 	# Same day curve as the primary, at the companion's share of the light.
 	_sun_b.light_energy = sun.light_energy * float(b.get("energy", 0.2)) / maxf(float(a.get("energy", 1.0)), 0.01)
+	_night_floor(sun)
+
+
+## Anvil's ambient share, and nights that stay readable: an ambient floor and a dim ember-tinted
+## fog light.
+func _night_floor(sun: DirectionalLight3D) -> void:
 	var we: Environment = world.get("_env")
-	if we:
-		we.ambient_light_energy *= float((entry.get("ambient", {}) as Dictionary).get("energy_mult", 0.95))
-		# Nights stay readable: an ambient floor and a dim ember-tinted fog light.
-		var nt: Dictionary = entry.get("night", {})
-		var night_k: float = 1.0 - _smooth(-0.05, 0.15, sun.global_basis.z.y)
-		if night_k > 0.0:
-			we.ambient_light_energy = maxf(we.ambient_light_energy, float(nt.get("ambient_min", 0.85)) * night_k)
-			we.fog_light_color = we.fog_light_color.lerp(col(nt.get("fog"), Color(0.32, 0.14, 0.1)), night_k * 0.6)
+	if we == null:
+		return
+	we.ambient_light_energy *= float((entry.get("ambient", {}) as Dictionary).get("energy_mult", 0.95))
+	var nt: Dictionary = entry.get("night", {})
+	var night_k: float = 1.0 - _smooth(-0.05, 0.15, sun.global_basis.z.y)
+	if night_k > 0.0:
+		we.ambient_light_energy = maxf(we.ambient_light_energy, float(nt.get("ambient_min", 0.85)) * night_k)
+		we.fog_light_color = we.fog_light_color.lerp(col(nt.get("fog"), Color(0.32, 0.14, 0.1)), night_k * 0.6)
 
 
 # --- Ground and terrain -------------------------------------------------------------------
@@ -990,7 +1007,7 @@ func _site_preview(arg: String) -> void:
 	var pm := PlaneMesh.new()
 	pm.size = Vector2(1600, 1600)
 	back.mesh = pm
-	back.position.y = -0.7
+	back.position.y = -0.22
 	back.material_override = terrain_mat
 	site_root.add_child(back)
 	if world.get("hud") != null:
@@ -1072,6 +1089,12 @@ func _lookbook() -> void:
 ## --planet-cam=dist,pitch,yaw[,fov] for landscape shots; --planet-view=x,y,z,lx,ly,lz[,fov] puts a
 ## free camera anywhere (landmark close-ups beyond the walkable field).
 func _dev_hooks() -> void:
+	if DevHooks.has("shot-from-ready"):
+		# Dev: count --shot-delay / --quit-after from the moment Anvil is built (the async district
+		# loader takes minutes on software rendering).
+		# Use with a long --shot-delay (it blocks early shots): the shot lands S seconds after ready.
+		var settle: float = DevHooks.get_f("shot-from-ready", 50.0)
+		DevHooks.set("_start_ms", Time.get_ticks_msec() - int((DevHooks.get_f("shot-delay", 2.0) - settle) * 1000.0))
 	if DevHooks.has("anvil-lookbook"):
 		_lookbook()
 	if DevHooks.has("anvil-site"):

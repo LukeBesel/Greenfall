@@ -57,7 +57,7 @@ func setup(p_world: Node) -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS  # photo mode pauses the tree; he still poses
 	_home = YardBuilds.pos(ID, Vector3(-6.2, 0, 4.4))
 	_build()
-	position = _home + Vector3(0, 1.5, 0)
+	position = _home + OrbitUp.up(_home) * 1.5  # [orbB] local up
 	visible = YardBuilds.built(ID)
 	var ph: Node = world.get("photo")
 	if ph and ph.has_signal("captured"):
@@ -142,19 +142,25 @@ func _process(delta: float) -> void:
 		GameState.inc_stat("blink_shoots")
 	_was_open = shooting
 	# Where he wants to be: his spot in the yard, or (photo mode) a little in front of Lumi.
-	var goal: Vector3 = _home + Vector3(0, 1.5, 0)
-	var look: Vector3 = patch.global_position + Vector3(0, 0.9, 0) if patch else goal + Vector3(0, 0, 1)
+	var up: Vector3 = OrbitUp.up(_home)  # [orbB] local up (world up on the flat game)
+	var goal: Vector3 = _home + up * 1.5
+	var look: Vector3 = patch.global_position + up * 0.9 if patch else goal + Vector3(0, 0, 1)
 	if shooting and patch:
 		var fwd: Vector3 = -patch.global_transform.basis.z
-		goal = patch.global_position + fwd * 1.6 + patch.global_transform.basis.x * 0.8 + Vector3(0, 1.3, 0)
+		goal = patch.global_position + fwd * 1.6 + patch.global_transform.basis.x * 0.8 + up * 1.3
 	elif patch and patch.global_position.distance_to(_home) > 14.0:
-		goal = _home + Vector3(0, 1.5, 0)  # Lumi is out in the field: he stays home
-	global_position = global_position.lerp(goal + Vector3(0, sin(_t * 2.1) * 0.06, 0), clampf(delta * (3.0 if shooting else 1.5), 0.0, 1.0))
+		goal = _home + up * 1.5  # Lumi is out in the field: he stays home
+	global_position = global_position.lerp(goal + up * (sin(_t * 2.1) * 0.06), clampf(delta * (3.0 if shooting else 1.5), 0.0, 1.0))
 	var to: Vector3 = look - global_position
-	to.y = 0.0
-	if to.length() > 0.05:
-		var want: float = atan2(-to.x, -to.z)
-		rotation.y = lerp_angle(rotation.y, want, clampf(delta * 4.0, 0.0, 1.0))
+	if OrbitUp.on_globe():  # [orbB] face along the local ground
+		to -= up * to.dot(up)
+		if to.length() > 0.05:
+			global_basis = global_basis.orthonormalized().slerp(Basis.looking_at(-to.normalized(), up), clampf(delta * 4.0, 0.0, 1.0)).orthonormalized()
+	else:
+		to.y = 0.0
+		if to.length() > 0.05:
+			var want: float = atan2(-to.x, -to.z)
+			rotation.y = lerp_angle(rotation.y, want, clampf(delta * 4.0, 0.0, 1.0))
 	_model.rotation.z = sin(_t * 1.3) * 0.06
 	# Iris: breathes at rest, tightens while shooting, flashes white on a capture.
 	_flash = maxf(0.0, _flash - delta * 3.0)

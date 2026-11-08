@@ -13,6 +13,8 @@ extends RefCounted
 const SITES: Array[String] = ["hub_base", "toppled_excavator", "pit_fragment", "oasis"]
 
 static var _mats: Dictionary = {}
+## Footprints to keep palms and scrap off (hero buildings, the silo, the dome): [Vector2 xz, radius].
+static var _avoid: Array = []
 
 
 static func build(id: String, root: Node3D, stage: int, restoration: float) -> Node3D:
@@ -24,6 +26,11 @@ static func build(id: String, root: Node3D, stage: int, restoration: float) -> N
 	var st: int = clampi(stage, 1, 5)
 	var r: float = clampf(restoration, 0.0, 1.0)
 	var tmat: ShaderMaterial = terrain_mat(r, st)
+	# Strata and slopes follow the site's own up (a site on a globe is tilted in world space).
+	var frame: Transform3D = root.global_transform if root.is_inside_tree() else root.transform
+	tmat.set_shader_parameter("local_up", frame.basis.y.normalized())
+	tmat.set_shader_parameter("local_origin", frame.origin)
+	_avoid.clear()
 	match id:
 		"hub_base":
 			_ground(site, tmat, 46.0, 0.0, rng)
@@ -172,6 +179,7 @@ static func machine_mats(stage: int) -> Dictionary:
 	for k: String in ["steel", "dark", "glass", "concrete", "terra", "cream", "leaf", "line", "vane"]:
 		d[k] = mat(k)
 	d["paint"] = mat("paint_ruin" if stage <= 1 else ("paint_mid" if stage <= 3 else "paint_future"))
+	d["kit_state"] = kit_state(stage)
 	return d
 
 
@@ -234,6 +242,8 @@ static func _scatter(site: Node3D, radius: float, clear_r: float, stage: int, re
 			id = ids[0]
 			big = rng.randf_range(4.0, 9.0)
 		var lie: Basis = Basis(Vector3.FORWARD, PI * 0.5) if id == "ochre_drill_rod" else Basis()
+		if stage >= 2 and _avoided(Vector2(cos(a) * d, sin(a) * d)):
+			continue
 		if not lists.has(id):
 			lists[id] = []
 		(lists[id] as Array).append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU) * lie * Basis.from_scale(Vector3(big, big * (0.6 if big > 3.0 else 1.0), big)), Vector3(cos(a) * d, -0.05, sin(a) * d)))
@@ -251,17 +261,26 @@ static func _scatter(site: Node3D, radius: float, clear_r: float, stage: int, re
 	_plants(site, radius, clear_r, restore, rng)
 
 
+static func _avoided(p: Vector2) -> bool:
+	for a: Array in _avoid:
+		if p.distance_to(a[0]) < float(a[1]):
+			return true
+	return false
+
+
 static func _plants(site: Node3D, radius: float, clear_r: float, restore: float, rng: RandomNumberGenerator) -> void:
 	if restore < 0.05:
 		return
-	var kinds: Array = [[OchreProps.palm(1), 0.18], [OchreProps.palm(2), 0.18], [OchreProps.agave(1), 0.25], [OchreProps.agave(2), 0.15], [OchreProps.aloe(1), 0.12], [OchreProps.barrel_cactus(), 0.12]]
+	var kinds: Array = [[OchreProps.palm(1), 0.11], [OchreProps.palm(2), 0.11], [OchreProps.agave(1), 0.3], [OchreProps.agave(2), 0.2], [OchreProps.aloe(1), 0.14], [OchreProps.barrel_cactus(), 0.14]]
 	var lists: Array = []
 	for k: Array in kinds:
 		lists.append([])
-	var n: int = int(130.0 * restore)
+	var n: int = int(70.0 * restore)
 	for i: int in n:
 		var a: float = rng.randf() * TAU
 		var d: float = lerpf(clear_r + 1.0, radius * 0.95, sqrt(rng.randf()))
+		if _avoided(Vector2(cos(a) * d, sin(a) * d)):
+			continue
 		var r: float = rng.randf()
 		var k: int = 0
 		var acc: float = 0.0
@@ -307,10 +326,13 @@ static func kit_state(stage: int) -> String:
 
 
 ## A ready-made kit building (with its own plates, clutter and lamps), lit from stage 2.
-static func _kb(site: Node3D, kind: String, pos: Vector3, yaw_deg: float, stage: int, seed_v: int) -> KitBuilding:
+static func _kb(site: Node3D, kind: String, pos: Vector3, yaw_deg: float, stage: int, seed_v: int, scale_: float = 1.0) -> KitBuilding:
 	var k: KitBuilding = KitBuilding.create(kind, kit_state(stage), seed_v, KIT_PALETTE, stage >= 2)
 	k.position = pos
 	k.rotation_degrees.y = yaw_deg
+	k.scale = Vector3.ONE * scale_
+	var fp: Vector2 = KitBuilding.FOOTPRINT.get(kind, Vector2(10, 10))
+	_avoid.append([Vector2(pos.x, pos.z), fp.length() * 0.5 * scale_ + 2.5])
 	site.add_child(k)
 	return k
 
@@ -395,7 +417,25 @@ static func ore_silo(b: KitMesh.Builder, t: Transform3D, stage: int) -> void:
 ## The oasis greenhouse dome (about 15 m across, 8 m tall): a bevelled concrete ring wall, a
 ## ribbed glass dome with a lantern cap, an airlock porch, vents and a decal. Broken: bare ribs
 ## with gaps, shattered glass, debris. Restored: green inside, lit lantern and porch lamps.
-static func greenhouse(b: KitMesh.Builder, t: Transform3D, stage: int) -> void:
+## Pale aqua greenhouse glass: clear, cool, a bright fresnel rim, the planting showing through.
+static func dome_glass() -> StandardMaterial3D:
+	if _mats.has("dome_glass"):
+		return _mats["dome_glass"]
+	var m := StandardMaterial3D.new()
+	m.albedo_color = Color(0.72, 0.92, 0.95, 0.28)
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	m.roughness = 0.04
+	m.metallic = 0.1
+	m.metallic_specular = 0.8
+	m.rim_enabled = true
+	m.rim = 0.6
+	m.rim_tint = 0.3
+	_mats["dome_glass"] = m
+	return m
+
+
+static func greenhouse(b: KitMesh.Builder, t: Transform3D, stage: int, site: Node3D = null) -> void:
 	var broken: bool = stage <= 1
 	var X := func(p: Vector3, r: Vector3 = Vector3.ZERO) -> Transform3D: return t * KitMesh.xf(p, r)
 	var R: float = 7.5
@@ -406,7 +446,16 @@ static func greenhouse(b: KitMesh.Builder, t: Transform3D, stage: int) -> void:
 		var a: float = PI * 0.5 * float(k) / 8.0
 		prof.append(Vector3(cos(a) * R, 1.45 + sin(a) * 6.3, 1.0 if k in [0, 8] else 0.0))
 	if not broken:
-		b.add("glass", KitMesh.lathe(prof, 24), X.call(Vector3.ZERO))
+		if site:
+			var gl := MeshInstance3D.new()
+			gl.name = "DomeGlass"
+			gl.mesh = OchreProps._prim_mesh(KitMesh.lathe(prof, 24), Vector3.ZERO)
+			gl.transform = t
+			gl.material_override = dome_glass()
+			gl.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			site.add_child(gl)
+		else:
+			b.add("glass", KitMesh.lathe(prof, 24), X.call(Vector3.ZERO))
 	var ribs: int = 16
 	for i: int in ribs:
 		if broken and i % 5 == 2:
@@ -453,6 +502,8 @@ static func _hub_base(site: Node3D, stage: int, _restore: float, _rng: RandomNum
 	_plates(site, Vector2(30.0, 24.0), Vector3(0, 0, 0), 0.0, stage, 41)
 	var b := KitMesh.Builder.new(4100 + stage, KIT_PALETTE, st)
 	ore_silo(b, KitMesh.xf(Vector3(19.0, 0, -12.0)), stage)
+	_avoid.append([Vector2(19.0, -12.0), 7.0])
+	_avoid.append([Vector2(2.0, -7.0), 7.0])
 	# Yard clutter: crate stacks, barrels, lamp posts, a hazard barrier line.
 	KitProps.crate_stack(b, KitMesh.xf(Vector3(-11.0, 0, 8.5), Vector3(0, 20, 0)), 5, st)
 	KitProps.crate_stack(b, KitMesh.xf(Vector3(9.0, 0, 9.0), Vector3(0, -15, 0)), 3, st)
@@ -478,9 +529,12 @@ static func _hub_base(site: Node3D, stage: int, _restore: float, _rng: RandomNum
 	if stage <= 3:
 		OchreSites.truck(tb, Transform3D(Basis(Vector3.UP, 2.1), Vector3(-5.0, 0.0, 3.0)) * (Transform3D(Basis(Vector3.FORWARD, deg_to_rad(-75.0)), Vector3(0, 2.6, 0)) if stage <= 1 else Transform3D()), _paint(stage), stage <= 1)
 	tb.flush(site, true, 700.0)
+	OchreExcavator.truck_detail(site, Transform3D(Basis(Vector3.UP, 0.4), Vector3(3.0, 0.0, -3.0)), kit_state(stage), 1)
+	if stage <= 3 and stage >= 2:
+		OchreExcavator.truck_detail(site, Transform3D(Basis(Vector3.UP, 2.1), Vector3(-5.0, 0.0, 3.0)), kit_state(stage), 2)
 	# Hub builds.
 	if stage >= 2:
-		_kb(site, "module_large", Vector3(-19.0, 0, -13.0), 15.0, stage, 51)  # the hero: site office
+		_kb(site, "module_large", Vector3(-20.0, 0, -15.0), 15.0, stage, 51, 1.55)  # the hero: site office
 		_kb(site, "hangar", Vector3(20.0, 0, 15.0), -100.0, stage, 52)
 		_kb(site, "machine_housing", Vector3(8.0, 0, -19.0), 0.0, stage, 53)
 		_kb(site, "tank_farm", Vector3(-21.0, 0, 15.0), 70.0, stage, 54)
@@ -542,7 +596,8 @@ static func _toppled(site: Node3D, stage: int, _restore: float, _rng: RandomNumb
 	var fut := Node3D.new()
 	fut.visible = stage >= 4
 	site.add_child(fut)
-	var xf := Transform3D(Basis(Vector3.UP, 0.3) * Basis.from_scale(Vector3.ONE * 0.7), Vector3(-6.0, -0.3, 2.0))
+	var xf := Transform3D(Basis(Vector3.UP, 0.3) * Basis.from_scale(Vector3.ONE * 0.9), Vector3(-6.0, -0.3, 2.0))
+	_avoid.append([Vector2(-6.0, 2.0), 16.0])
 	OchreExcavator.build({"always": site, "future": fut}, xf, machine_mats(stage), "fallen", 31)
 	for n: Node in site.find_children("WheelFuture", "Node3D", true, false):
 		(n as Node3D).visible = stage >= 4
@@ -687,7 +742,7 @@ static func _pit(site: Node3D, tmat: ShaderMaterial, stage: int, restore: float,
 	site.add_child(pond)
 	if restore > 0.05:
 		var palms: Array = []
-		for i: int in int(40 * restore):
+		for i: int in int(14 * restore):
 			var a: float = rng.randf() * TAU
 			var k: int = rng.randi_range(0, mini(steps, int(restore * steps) + 1))
 			var rr: float = (r_floor * 0.85 if k == 0 else r_floor + (k - 1) * pitch + wall + 1.0) + rng.randf() * 1.2
@@ -707,7 +762,7 @@ static func _pit(site: Node3D, tmat: ShaderMaterial, stage: int, restore: float,
 			var a: float = TAU * k / 4.0 + 0.5
 			KitProps.lamp_post(kb, KitMesh.xf(Vector3(cos(a) * (rim + 2.0), 0, sin(a) * (rim + 2.0))), 4.5, kst)
 		_kb(site, "machine_housing", Vector3(cos(ramp_a0) * (r_out + 6.0), 0, sin(ramp_a0) * (r_out + 6.0)), -rad_to_deg(ramp_a0) - 90.0, stage, 71)
-		_kb(site, "tower", Vector3(cos(ramp_a0 + PI) * (r_out + 4.0), 0, sin(ramp_a0 + PI) * (r_out + 4.0)), 0.0, stage, 72)  # the hero: pump tower
+		_kb(site, "tower", Vector3(cos(ramp_a0 + PI) * (r_out + 4.0), 0, sin(ramp_a0 + PI) * (r_out + 4.0)), 0.0, stage, 72, 1.6)  # the hero: pump tower
 	if stage >= 4:
 		var pts := PackedVector3Array()
 		for k: int in 9:
@@ -760,8 +815,8 @@ static func _oasis(site: Node3D, stage: int, restore: float, rng: RandomNumberGe
 				b.add(ProcMesh.sphere(0.9, 8, 4), ProcMesh.xf(Vector3(cos(a) * (r0 + 1.6), 0.45 + k * 0.5, sin(a) * (r0 + 1.6)), Vector3.ZERO, Vector3(1.3, 0.6, 1.3)), mat("leaf"))
 	# Palms: stumps while ruined, a ring of date palms once restored.
 	var palms: Array = []
-	for i: int in 18:
-		var a: float = TAU * i / 18.0 + rng.randf_range(-0.1, 0.1)
+	for i: int in 4:
+		var a: float = TAU * i / 4.0 + 0.4 + rng.randf_range(-0.15, 0.15)
 		var p := Vector3(cos(a) * 13.2, 0, sin(a) * 13.2)
 		if restore < 0.15 or stage <= 1:
 			b.add(OchreProps.kcyl(0.2, 0.3, rng.randf_range(0.6, 2.6), 7), ProcMesh.xf(p + Vector3(0, 0.6, 0), Vector3(rng.randf_range(-12, 12), 0, rng.randf_range(-12, 12))), mat("dark"))
@@ -782,7 +837,8 @@ static func _oasis(site: Node3D, stage: int, restore: float, rng: RandomNumberGe
 	b.flush(site, true, 600.0)
 	# Kit dressing: the spring's pump house and header tank (Hub builds, stage 2+), pipes out to
 	# the beds and planters when restored, lamps; scrap barrels in the dry pan while ruined.
-	greenhouse(okb, KitMesh.xf(Vector3(-27.0, 0, 13.0), Vector3(0, 60, 0)), stage)  # the hero
+	greenhouse(okb, KitMesh.xf(Vector3(-27.0, 0, 13.0), Vector3(0, 60, 0)) * Transform3D(Basis.from_scale(Vector3.ONE * 1.45), Vector3.ZERO), stage, site)  # the hero
+	_avoid.append([Vector2(-27.0, 13.0), 14.0])
 	if stage >= 2:
 		_kb(site, "module_small", Vector3(30.0, 0, -12.0), -110.0, stage, 81)
 		KitProps.tank(okb, KitMesh.xf(Vector3(25.0, 0, 2.0)), 1.6, 4.0, "paint:main", ost)

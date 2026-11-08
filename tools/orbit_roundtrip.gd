@@ -44,12 +44,25 @@ static func _snap(s: Node) -> Dictionary:
 		"milestone_1": GameState.flags.get("hexm_1", false),
 		"hub_level": (s.get("hub") as Hub).level,
 		"bench_ok": Camp.bench_ok(),
+		"yard_built": JSON.stringify(YardBuilds.state().get("built", {})),
 		"site_stage": g.site_manager.levels[0] if g.site_manager else -1,
 		"parts_near": s.field.part_pos.size() > 0,
 		"loose_cubes": cubes,
 		"sky_spin": snappedf((s.get("sky_director") as SkyDirector).spin, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
 		"sky_clouds": snappedf((s.get("sky_director") as SkyDirector).clouds, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
 	}
+
+
+## [orbC] Stops a slice's robot crew (the brain and every real robot) so state compares as saved.
+static func _freeze_crew(s: Node) -> void:
+	var so: SliceOrbit = s.get("orbit")
+	var crew: SphereCrew = so.crews.crew if so and so.crews else null
+	if crew == null:
+		return
+	crew.set_process(false)
+	for u: Dictionary in crew.robots():
+		if u["bot"] != null:
+			(u["bot"] as Node).set_process(false)
 
 
 static func run(rt: Node, check: Callable) -> void:
@@ -106,6 +119,11 @@ static func run(rt: Node, check: Callable) -> void:
 	s1.try_interact(p)
 	check.call("orbit_upgrades_open", true, (s1.get("upgrades") as UpgradesScreen).is_open)
 	(s1.get("upgrades") as UpgradesScreen).close_screen()
+	# The trash bin answers at the start site's "bin" anchor; a yard build's state lives in the hub.
+	p.place_on_sphere(so1.yard_point("bin") + so1.yard_point("bin").normalized() * 0.3, p.forward())
+	await tree.physics_frame
+	check.call("orbit_bin_prompt", true, s1.interact_prompt(p) != "")
+	YardBuilds.mark_built("radio")
 	# The base: a hub upgrade raises the start site's stage and stays in the site's own dict.
 	GameState.add_currency("cubes", BigNum.from_float(1e6))
 	GameState.add_currency("parts", BigNum.from_float(1e5))
@@ -144,8 +162,10 @@ static func run(rt: Node, check: Callable) -> void:
 	GameState.reload_in_memory = true
 	var s2: Node = packed.instantiate()
 	tree.root.add_child(s2)
+	_freeze_crew(s2)  # [orbC] the reloaded robots must not work before the comparison
 	for i: int in 5:
 		await tree.process_frame
+		_freeze_crew(s2)
 	s2.set_meta("rt_target", s1_target)
 	var b: Dictionary = _snap(s2)
 	for k: String in a:

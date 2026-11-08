@@ -58,7 +58,7 @@ func _environment(kind: Dictionary) -> void:
 	sm.set_shader_parameter("horizon", c.call("horizon_restored", Color(0.95, 0.82, 0.62)))
 	sm.set_shader_parameter("zenith", c.call("zenith_restored", Color(0.2, 0.42, 0.8)))
 	sm.set_shader_parameter("haze", c.call("haze", Color(0.95, 0.66, 0.4)))
-	sm.set_shader_parameter("dust", 0.35)
+	sm.set_shader_parameter("dust", 0.12)
 	sm.set_shader_parameter("energy", float(sk.get("energy", 0.75)))
 	sky.sky_material = sm
 	env.sky = sky
@@ -72,10 +72,10 @@ func _environment(kind: Dictionary) -> void:
 	env.glow_intensity = 0.4
 	env.glow_hdr_threshold = 1.2
 	env.fog_enabled = true
-	env.fog_density = 0.0005
-	env.fog_light_color = Color(0.88, 0.74, 0.56)
+	env.fog_density = 0.00016
+	env.fog_light_color = Color(0.95, 0.72, 0.48)
 	env.adjustment_enabled = true
-	env.adjustment_saturation = 1.25
+	env.adjustment_saturation = 1.35
 	env.adjustment_contrast = 1.15
 	var we := WorldEnvironment.new()
 	we.environment = env

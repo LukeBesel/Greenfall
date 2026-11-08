@@ -152,7 +152,7 @@ void fragment() {
 	NORMAL = normalize((VIEW_MATRIX * (MODEL_MATRIX * vec4(on, 0.0))).xyz);
 
 	ALBEDO = clamp(alb, 0.0, 1.0);
-	ROUGHNESS = clamp(rough, 0.12, 1.0);
+	ROUGHNESS = clamp(rough, 0.32, 1.0);  // [main] floor raised: glossy plates mirrored the sun as a sharp half-disc glint (p_anvil report)
 	METALLIC = clamp(metal, 0.0, 1.0);
 	AO = ao;
 	AO_LIGHT_AFFECT = 0.25;

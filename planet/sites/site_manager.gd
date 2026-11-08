@@ -14,6 +14,8 @@ extends Node3D
 ## sites_array: SphereTerrain.reserve_site results, hub 0 first.
 
 signal site_built(i: int, prefab: SitePrefab)
+## Some anchors moved out of the prefab's geometry after the first physics frame (re-read them).
+signal anchors_fixed(i: int, prefab: SitePrefab)
 
 const BUILD_R: float = 420.0
 const FREE_R: float = 650.0
@@ -135,7 +137,11 @@ func _probe_footprints(i: int, p: SitePrefab) -> int:
 	if not is_instance_valid(p) or not p.is_inside_tree():
 		return 0
 	var n: int = probe_cells(i, p)
-	print("[sites] %s hub %d (%s): %d junk cells under its buildings cleared" % [planet_id, i, p.site_id, n])
+	var moved: PackedStringArray = SiteReach.fix_anchors(p, terrain)
+	print("[sites] %s hub %d (%s): %d junk cells under its buildings cleared%s" % [planet_id, i, p.site_id, n,
+		"" if moved.is_empty() else ", anchors moved clear: " + ",".join(moved)])
+	if not moved.is_empty():
+		anchors_fixed.emit(i, p)
 	return n
 
 
@@ -178,6 +184,7 @@ func _solid_above(space: PhysicsDirectSpaceState3D, p: SitePrefab, g: Vector3, u
 func _clear_cell(c: int) -> void:
 	cells.set_junk(c, 0.0)
 	cells.set_state(c, 1)
+	cells.set_flag(c, SphereCells.F_HUB)  # hub ground, saved with the cells: on reload the field counts it as hub, never as "cleaned"
 	var field: Variant = globe.get("field")
 	if field is SphereField:
 		var f: SphereField = field

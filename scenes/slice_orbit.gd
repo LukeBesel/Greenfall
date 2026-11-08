@@ -59,7 +59,8 @@ func build(p_world: Node3D) -> void:
 	var od: Dictionary = OrbitSave.migrate(GameState.orbit) if loaded else {}
 	var preload_n: int = OrbitPreload.start()  # [orbE] junk models load on threads while the planet builds
 	# The planet: --orbit-planet=<id>, else the saved one, else Verdance. Its size is data (GlobeSpec).
-	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", "verdance"))
+	var home_pid: String = str(Homeward.planet_def(maxi(Homeward.current_planet(), 0)).get("id", "verdance"))  # [orbD] a new world after an interplanet flight
+	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", home_pid))
 	var spec: Dictionary = GlobeSpec.of(pid)
 	if int(od.get("freq", spec["frequency"])) != int(spec["frequency"]) or str(od.get("planet_id", pid)) != pid:
 		push_warning("[orbit] saved globe is %s f=%d, building %s f=%d fresh" % [od.get("planet_id", "?"), int(od.get("freq", 0)), pid, int(spec["frequency"])])
@@ -147,6 +148,7 @@ func build(p_world: Node3D) -> void:
 	_build_upgrades()
 	w.call("_setup_research_codex")  # slice.gd's own: Research, Achievements, the Codex (UI + data)
 	_build_story()
+	_build_yard_systems()
 	if loaded and not migrate:
 		restore_world()
 	elif migrate:
@@ -333,16 +335,30 @@ func cell_at(pos: Vector3) -> int:
 	return globe.cell_at(pos)
 
 
-func try_interact(_p: Patch) -> void:
+func try_interact(p: Patch) -> void:
+	var ia: Interactables = w.get("interactables")
+	if ia and ia.try_use(p.global_position):
+		return
 	if near_bench():
+		var camp: Camp = w.get("camp")
 		if not Camp.bench_ok():
-			repair_bench()
+			if camp:
+				camp.repair_bench()
+			else:
+				repair_bench()
 		else:
 			open_upgrades()
 
 
-func interact_prompt(_p: Patch) -> String:
+func interact_prompt(p: Patch) -> String:
+	var ia: Interactables = w.get("interactables")
+	var ip: String = ia.prompt(p.global_position) if ia else ""
+	if ip != "":
+		return ip
 	if near_bench():
+		var camp: Camp = w.get("camp")
+		if camp:
+			return camp.bench_prompt()
 		if _repairing:
 			return ""
 		return tr("E   Workbench (broken): repair it") if not Camp.bench_ok() else tr("E   Workbench: upgrades")
@@ -387,6 +403,69 @@ func _build_story() -> void:
 	ct.world = w
 	w.add_child(ct)
 	w.set("contracts", ct)
+
+
+# --- Yard systems on the start site's anchors ---------------------------------------------
+
+## Where a yard system stands: the hub-0 prefab's named anchor (orbD), else its flat yard spot
+## on the pad. Returns [parent, local transform].
+func yard_slot(anchor: String, flat_pos: Vector3) -> Array:
+	var sm: SiteManager = globe.site_manager
+	var sp: SitePrefab = sm.prefab(0) if sm else null
+	if sp and sp.anchor_names().has(anchor):
+		return [sp, sp.anchor_local(anchor)]
+	return [sp if sp else globe.start_site, Transform3D(Basis(), flat_pos)]
+
+
+func _build_yard_systems() -> void:
+	var ia := Interactables.new()  # generic E-interactables (eggs, relay, bin, tower, ...)
+	ia.name = "Interactables"
+	w.add_child(ia)
+	w.set("interactables", ia)
+	var ev := WorldEvents.new()  # world events + the cleaning streak (systems/events.gd)
+	ev.name = "WorldEvents"
+	ev.world = w
+	w.add_child(ev)
+	w.set("events", ev)
+	SignalTower.migrate(w)  # WREN only talks through the Signal Tower (story/signal_tower.gd)
+	if GameState.current_hub == 0:
+		var tower := SignalTower.new()
+		tower.name = "SignalTower"
+		tower.world = w
+		var slot: Array = yard_slot("signal_tower", SignalTower.pos())
+		w.add_child(tower)  # a child of the slice, as on the flat game (HubBuilds and the bot look it up)
+		tower.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)  # after its _ready
+	_attach_camp()
+
+
+## A yard spot in world space (the anchor's origin, or the flat yard spot on the pad).
+func yard_point(anchor: String) -> Vector3:
+	var flat: Vector3 = YardBuilds.pos(anchor, Vector3.ZERO) if YardBuilds.def(anchor).size() > 0 else Vector3.ZERO
+	var slot: Array = yard_slot(anchor, flat)
+	return (slot[0] as Node3D).global_transform * (slot[1] as Transform3D).origin
+
+
+## Camp (systems/camp/camp.gd) as on the flat game: the broken bench is its "bench" bit, the
+## yard builds (lean-to, generator, lamps, press, radio, locker, nursery, Blink) keep their
+## built state in the hub's dict, and the bin's reach is the start site's "bin" anchor. The
+## yard models on the anchors are orbD's / yard's; Camp shows and hides what exists.
+func _attach_camp() -> void:
+	w.set("_ruin_bits", {"bench": bench})
+	var camp: Camp = Camp.attach(w)
+	w.set("camp", camp)
+	if camp == null:
+		_apply_bench(Camp.bench_ok(), false)
+	var locker: Node3D = w.get_node_or_null("LockerCabinet") as Node3D
+	if locker:
+		var slot: Array = yard_slot("locker", LockerCabinet.POS)
+		locker.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)
+		var reach: Node3D = locker.get("_anchor") as Node3D
+		if reach:
+			reach.global_position = locker.global_position + locker.global_basis.z * 0.9
+	if camp.camera_bot:
+		var home: Vector3 = yard_point("camera_bot")
+		camp.camera_bot.set("_home", home)
+		camp.camera_bot.global_position = home + home.normalized() * 1.5
 
 
 # --- Hub and workbench (the start site) ---------------------------------------------------
@@ -451,7 +530,11 @@ func open_upgrades() -> void:
 			EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
 		return
 	if not Camp.bench_ok() and not DevHooks.has("open"):  # the first E repairs the broken bench
-		repair_bench()
+		var camp: Camp = w.get("camp")
+		if camp:
+			camp.repair_bench()
+		else:
+			repair_bench()
 		return
 	(w.get("upgrades") as UpgradesScreen).open_screen()
 	set_input(false)
@@ -497,7 +580,7 @@ func _build_bench() -> void:
 		i += 1
 	var pb: StaticBody3D = PropColliders.body(bench, "BenchBody")  # top level, world space
 	PropColliders.add_box(pb, bench.global_transform * Transform3D(Basis(), Vector3(0, 0.47, 0)), Vector3(2.2, 0.95, 0.8))
-	_apply_bench(Camp.bench_ok(), false)
+	# Its broken look is Camp's (it records this repaired pose first); see _attach_camp.
 
 
 func _apply_bench(ok: bool, animate: bool) -> void:

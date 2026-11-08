@@ -78,6 +78,15 @@ func _apply_env(frontier: bool) -> void:
 		return
 	var lay: Variant = world.get("layout")
 	var kind: String = "frontier" if frontier else ("wild" if lay is CityLayout and (lay as CityLayout).wild else "city")
+	# [main] Planet envs (planet/planets/*/env.gd) use a STATIC apply(world, field, kind_def: Dictionary)
+	# that builds its own node. Call that once (HomewardDirector may already have) instead of
+	# instancing the script: a bare instance has no field and errors every frame.
+	if _has_static_apply(sc):
+		if not world.has_meta("planet_env_applied"):
+			world.set_meta("planet_env_applied", true)
+			sc.call("apply", world, world.get("field"), Frontiers.def(Frontiers.world_kind(world)))
+		print("[worlds2] planet env %s (static)" % env_script)
+		return
 	env = sc.new()
 	if env is Node:
 		(env as Node).name = "PlanetEnv"
@@ -85,6 +94,13 @@ func _apply_env(frontier: bool) -> void:
 	if env.has_method("apply"):
 		env.call("apply", world, world.get("field"), kind)
 	print("[worlds2] planet env %s (%s)" % [env_script, kind])
+
+
+static func _has_static_apply(sc: Script) -> bool:
+	for m: Dictionary in sc.get_script_method_list():
+		if str(m.get("name", "")) == "apply" and (int(m.get("flags", 0)) & METHOD_FLAG_STATIC) != 0:
+			return true
+	return false
 
 
 ## The weathering overlay from a look's city.weather block.
