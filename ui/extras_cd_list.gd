@@ -109,7 +109,8 @@ static func build(_panel: Node, body: Control, on_btn: Callable, rebuild: Callab
 			right.add_child(UITheme.label(_t(Tunes.title(id)), 26, Color.WHITE))
 			var a: Dictionary = Tunes.artist(str(Tunes.song(id).get("artist", "")))
 			right.add_child(UITheme.label(_t("by %s, from %s") % [_t(str(a.get("name", ""))), Tunes.planet_name(Tunes.home(id))], 16, UITheme.GOLD))
-			right.add_child(_wrap(_t(str(Tunes.song(id).get("desc", ""))), 15, UITheme.MUTED))
+			if str(Tunes.song(id).get("desc", "")) != "":
+				right.add_child(_wrap(_t(str(Tunes.song(id).get("desc", ""))), 15, UITheme.MUTED))
 			right.add_child(_wrap("%s  ·  %s" % [_t(str(a.get("genre", ""))), _t(str(a.get("bio", "")))], 13, UITheme.MUTED))
 		var off: Button = _row(right, _t("Turn off (back to the day's music)"), "", Color.WHITE, func() -> void:
 			Radio.play("")
