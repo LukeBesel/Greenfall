@@ -36,6 +36,8 @@ func test_site_for_hub() -> void:
 	assert_eq(SiteBuilders.site_for_hub("anvil", 0), "foundry_yard")
 	assert_eq(SiteBuilders.site_for_hub("tidewell", 0), "hub_raft")
 	assert_eq(SiteBuilders.site_for_hub("rime", 0), "hub_camp")
+	assert_eq(SiteBuilders.site_for_hub("ochre", 0), "hub_base")
+	assert_eq(SiteBuilders.site_for_hub("ochre", 5), "hub_base", "only hub bases are hubs")
 	assert_eq(SiteBuilders.tide_stage(1), 0)
 	assert_eq(SiteBuilders.tide_stage(3), 1)
 	assert_eq(SiteBuilders.tide_stage(5), 2)

@@ -31,13 +31,20 @@ static func sites_of(planet_id: String) -> Array:
 				out.append((s as Dictionary).duplicate())
 	elif raw is Dictionary:
 		var scr: String = str((raw as Dictionary).get("script", ""))
-		for k: String in raw:
-			var v: Variant = raw[k]
+		var src: Dictionary = raw
+		if (raw as Dictionary).get("list") is Dictionary:  # Ochre: {script, api, list: {id: {...}}}
+			src = (raw as Dictionary)["list"]
+		for k: String in src:
+			var v: Variant = src[k]
 			if v is Dictionary:
 				var d: Dictionary = (v as Dictionary).duplicate()
 				d["id"] = k
 				if not d.has("script"):
 					d["script"] = scr
+				if not d.has("kind"):  # no kind given: "hub..." ids are hub bases, the rest landmarks
+					d["kind"] = "hub" if k.begins_with("hub") else "landmark"
+				if not d.has("size_m") and d.has("diameter_m"):
+					d["size_m"] = d["diameter_m"]
 				out.append(d)
 	var hubs: Array = out.filter(func(d: Dictionary) -> bool: return str(d.get("kind", "hub")) == "hub")
 	var rest: Array = out.filter(func(d: Dictionary) -> bool: return str(d.get("kind", "hub")) != "hub")
